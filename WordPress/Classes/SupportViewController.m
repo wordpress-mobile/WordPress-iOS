@@ -40,6 +40,10 @@ typedef NS_ENUM(NSInteger, SettingsViewControllerSections)
     [super viewDidLoad];
     
     [WPStyleGuide configureColorsForView:self.view andTableView:self.tableView];
+    
+    if([self.navigationController.viewControllers count] == 1) {
+        self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:NSLocalizedString(@"Close", @"") style:[WPStyleGuide barButtonStyleForBordered] target:self action:@selector(dismiss)];
+    }
 }
 
 - (void)didReceiveMemoryWarning
@@ -206,6 +210,10 @@ typedef NS_ENUM(NSInteger, SettingsViewControllerSections)
     }
 
     return mailComposeViewController;
+}
+
+- (void)dismiss {
+    [self dismissViewControllerAnimated:YES completion:nil];
 }
 
 #pragma mark - MFMailComposeViewControllerDelegate methods

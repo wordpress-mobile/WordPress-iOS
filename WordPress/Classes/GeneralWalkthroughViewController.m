@@ -15,6 +15,7 @@
 #import "AddUsersBlogsViewController.h"
 #import "NewAddUsersBlogViewController.h"
 #import "AboutViewController.h"
+#import "SupportViewController.h"
 #import "WPNUXMainButton.h"
 #import "WPNUXPrimaryButton.h"
 #import "WPNUXSecondaryButton.h"
@@ -346,13 +347,13 @@ CGFloat const GeneralWalkthroughiOS7StatusBarOffset = 10.0;
 - (void)clickedInfoButton:(id)sender
 {
     [WPMobileStats trackEventForSelfHostedAndWPCom:StatsEventNUXFirstWalkthroughClickedInfo];
-    AboutViewController *aboutViewController = [[AboutViewController alloc] init];
-	aboutViewController.modalTransitionStyle = UIModalTransitionStyleFlipHorizontal;
-    UINavigationController *nc = [[UINavigationController alloc] initWithRootViewController:aboutViewController];
+
+    SupportViewController *supportViewController = [[SupportViewController alloc] init];
+    UINavigationController *nc = [[UINavigationController alloc] initWithRootViewController:supportViewController];
     nc.navigationBar.translucent = NO;
     nc.modalPresentationStyle = UIModalPresentationFormSheet;
+    nc.modalTransitionStyle = UIModalTransitionStyleFlipHorizontal;
     [self.navigationController presentViewController:nc animated:YES completion:nil];
-	[self.navigationController setNavigationBarHidden:YES];
 }
 
 - (void)clickedSkipToCreate:(id)sender
