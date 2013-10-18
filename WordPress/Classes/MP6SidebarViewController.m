@@ -1043,11 +1043,11 @@ CGFloat const SidebarViewControllerStatusBarViewHeight = 20.0;
     } else {
         _wantedSection = 0;
     }
-    [self.tableView beginUpdates];
 }
 
 - (void)controllerDidChangeContent:(NSFetchedResultsController *)controller {
-    [self.tableView endUpdates];
+    [self.tableView reloadData];
+    
     NSIndexPath *indexPath = [self.tableView indexPathForSelectedRow];
     if (indexPath != nil) {
         if (indexPath.section != _wantedSection || _changingContentForSelectedSection) {
@@ -1073,6 +1073,9 @@ CGFloat const SidebarViewControllerStatusBarViewHeight = 20.0;
      forChangeType:(NSFetchedResultsChangeType)type
       newIndexPath:(NSIndexPath *)newIndexPath {
     
+    // Note: we're not adding/removing sections individually, and instead opting for
+    // a reloadData, as the performance on iOS 6 is terrible for adding individual sections for blogs.
+    
     if (NSFetchedResultsChangeUpdate == type && newIndexPath != nil) {
         // Seriously, Apple?
         // http://developer.apple.com/library/ios/#releasenotes/iPhone/NSFetchedResultsChangeMoveReportedAsNSFetchedResultsChangeUpdate/_index.html
@@ -1083,18 +1086,20 @@ CGFloat const SidebarViewControllerStatusBarViewHeight = 20.0;
         case NSFetchedResultsChangeInsert:
         {
             DDLogVerbose(@"Inserting row %d: %@", newIndexPath.row, anObject);
+            
             NSIndexPath *openIndexPath = [self.tableView indexPathForSelectedRow];
             if (openIndexPath.section == (newIndexPath.row + 1)) {
                 // We're swapping the content for the currently selected section and need to update accordingly.
                 _changingContentForSelectedSection = YES;
             }
-            [self.tableView insertSections:[NSIndexSet indexSetWithIndex:(newIndexPath.row + 1)] withRowAnimation:UITableViewRowAnimationAutomatic];
+            
             _wantedSection = newIndexPath.row + 1;
             break;
         }
         case NSFetchedResultsChangeDelete:
         {
             DDLogVerbose(@"Deleting row %d: %@", indexPath.row, anObject);
+            
             Blog *blog = (Blog *)anObject;
             if ([blog isEqual:_currentlyOpenedBlog]) {
                 _currentlyOpenedBlog = nil;
@@ -1105,7 +1110,6 @@ CGFloat const SidebarViewControllerStatusBarViewHeight = 20.0;
                 _changingContentForSelectedSection = YES;
             }
 
-            [self.tableView deleteSections:[NSIndexSet indexSetWithIndex:(indexPath.row + 1)] withRowAnimation:UITableViewRowAnimationNone];
             _wantedSection = 0;
             break;
         }
