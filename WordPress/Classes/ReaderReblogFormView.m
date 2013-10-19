@@ -60,7 +60,6 @@
 		self.promptLabel.text = NSLocalizedString(@"Add your thoughts here... (optional)", @"Placeholder text prompting the user to add a note to the post they are reblogging.");
 		
         NSArray *blogs = [[NSUserDefaults standardUserDefaults] arrayForKey:@"wpcom_users_blogs"];
-        blogs = nil;
         _blogsAvailable = blogs && blogs.count > 0;
         [self setupReblogDestinations:blogs];
         [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(userDefaultsChanged) name:NSUserDefaultsDidChangeNotification object:[NSUserDefaults standardUserDefaults]];

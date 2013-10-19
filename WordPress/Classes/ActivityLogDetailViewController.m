@@ -58,9 +58,17 @@
     self.navigationItem.rightBarButtonItem = shareButton;
 }
 
+- (void)viewWillAppear:(BOOL)animated
+{
+    [super viewWillAppear:animated];
+    
+    [self.textView scrollRectToVisible:CGRectMake(0, 0, 1, 1) animated:NO];
+}
+
 - (void)viewWillDisappear:(BOOL)animated
 {
     [super viewWillDisappear:animated];
+    
     if (self.popover) {
         [self.popover dismissPopoverAnimated:animated];
         self.popover = nil;

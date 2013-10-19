@@ -286,7 +286,7 @@
 							  embedWidth, embedHeight, self.remoteURL, self.remoteURL, embedWidth, embedHeight];
 				}
 				
-				NSLog(@"media.html: %@", result);
+				DDLogVerbose(@"media.html: %@", result);
 			}
 		}
 	}

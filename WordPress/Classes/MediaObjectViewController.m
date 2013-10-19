@@ -22,7 +22,7 @@
     DDLogInfo(@"%@ %@", self, NSStringFromSelector(_cmd));
     [super viewDidLoad];
 	appDelegate = (WordPressAppDelegate *)[[UIApplication sharedApplication] delegate];
-	NSLog(@"media: %@", media);
+	DDLogVerbose(@"media: %@", media);
 	
 	if((media != nil) && ([media.mediaType isEqualToString:@"video"])) {
 		self.navigationItem.title = NSLocalizedString(@"Video", @"");

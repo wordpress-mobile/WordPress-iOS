@@ -59,7 +59,7 @@
 - (void)setPath:(NSString *)path {
     if (![_path isEqualToString:path]) {
         _path = path;
-        NSLog(@"Path is: %@", self.path);
+        DDLogInfo(@"Path is: %@", self.path);
         if ([self isViewLoaded]) {
             [webView loadPath:self.path];
         }

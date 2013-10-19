@@ -671,7 +671,7 @@
         }
         case 1:
         {
-            NSLog(@"Reloading map");
+            DDLogVerbose(@"Reloading map");
             if (mapGeotagTableViewCell == nil) {
                 mapGeotagTableViewCell = [[UITableViewCell alloc] initWithFrame:CGRectMake(0, 0, tableView.frame.size.width, 188)];
             }
@@ -1480,7 +1480,7 @@
             }
             addressLabel.text = address;
         } else {
-            NSLog(@"Reverse geocoder failed for coordinate (%.6f, %.6f): %@",
+            DDLogError(@"Reverse geocoder failed for coordinate (%.6f, %.6f): %@",
                   c.latitude,
                   c.longitude,
                   [error localizedDescription]);
@@ -1835,7 +1835,7 @@
     
     [imageMedia uploadWithSuccess:^{
         if ([imageMedia isDeleted]) {
-            NSLog(@"Media deleted while uploading (%@)", imageMedia);
+            DDLogWarn(@"Media deleted while uploading (%@)", imageMedia);
             return;
         }
         [imageMedia save];
@@ -1907,7 +1907,6 @@
         NSString *originalSizeStr = [NSString stringWithFormat:NSLocalizedString(@"Original (%@)", @"Original (width x height)"), [NSString stringWithFormat:@"%ix%i", (int)originalSize.width, (int)originalSize.height]];
         
 		UIActionSheet *resizeActionSheet;
-		//NSLog(@"img dimension: %f x %f ",_currentImage.size.width, _currentImage.size.height );
 		
 		if(_currentImage.size.width > largeSize.width  && _currentImage.size.height > largeSize.height) {
 			resizeActionSheet = [[UIActionSheet alloc] initWithTitle:NSLocalizedString(@"Choose Image Size", @"")

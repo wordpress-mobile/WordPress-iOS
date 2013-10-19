@@ -38,8 +38,8 @@
     NSError *error = nil;
     [[self resultsController] performFetch:&error];
     [super viewDidLoad];
-    NSLog(@"Blog selector delegate: %@", self.tableView.delegate);
-    NSLog(@"Blog selector dataSource: %@", self.tableView.dataSource);
+    DDLogVerbose(@"Blog selector delegate: %@", self.tableView.delegate);
+    DDLogVerbose(@"Blog selector dataSource: %@", self.tableView.dataSource);
 }
 
 - (void)viewDidUnload

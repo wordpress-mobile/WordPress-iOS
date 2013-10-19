@@ -266,7 +266,6 @@
         NSURLRequest *currentRequest = [webView request];
         if ( currentRequest != nil) {
             NSURL *currentURL = [currentRequest URL];
-           // NSLog(@"Current URL is %@", currentURL.absoluteString);
             permaLink = currentURL.absoluteString;
         }
         

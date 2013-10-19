@@ -102,7 +102,6 @@
 //conditional load of author_email if url is empty per ticket #273
     NSString *authorURL = comment.author_url;
 	if ( authorURL == nil || [authorURL isEqualToString:@"http://"] || [authorURL isEqualToString:@""]) {
-		//NSLog(@"authorURL was nill or empty");
 		urlLabel.text = comment.author_email;
 	}else {
 		urlLabel.text = authorURL;

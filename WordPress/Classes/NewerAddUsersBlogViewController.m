@@ -223,7 +223,7 @@
     NSError *error;
     [[WordPressAppDelegate sharedWordPressApplicationDelegate].managedObjectContext save:&error];
     if (error != nil) {
-        NSLog(@"Error adding blogs: %@", [error localizedDescription]);
+        DDLogVerbose(@"Error adding blogs: %@", [error localizedDescription]);
     }
     
     if (self.blogAdditionCompleted) {

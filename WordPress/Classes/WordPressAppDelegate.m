@@ -324,7 +324,7 @@ int ddLogLevel = LOG_LEVEL_INFO;
         _hasRecordedApplicationOpenedEvent = YES;
         [WPMobileStats trackEventForSelfHostedAndWPCom:StatsEventAppOpenedDueToPushNotification];
 
-        NSLog(@"Launched with a remote notification as parameter:  %@", remoteNotif);
+        DDLogInfo(@"Launched with a remote notification as parameter:  %@", remoteNotif);
         [self openNotificationScreenWithOptions:remoteNotif];
     }
     
@@ -339,7 +339,7 @@ int ddLogLevel = LOG_LEVEL_INFO;
      */
     [[[NSURLCredentialStorage sharedCredentialStorage] allCredentials] enumerateKeysAndObjectsUsingBlock:^(NSURLProtectionSpace *ps, NSDictionary *dict, BOOL *stop) {
         [dict enumerateKeysAndObjectsUsingBlock:^(id key, NSURLCredential *credential, BOOL *stop) {
-            NSLog(@"Removing credential %@ for %@", [credential user], [ps host]);
+            DDLogVerbose(@"Removing credential %@ for %@", [credential user], [ps host]);
             [[NSURLCredentialStorage sharedCredentialStorage] removeCredential:credential forProtectionSpace:ps];
         }];
     }];
@@ -366,13 +366,13 @@ int ddLogLevel = LOG_LEVEL_INFO;
 
         /* Handle the callback and notify the delegate. */
         [[CameraPlusPickerManager sharedManager] handleCameraPlusPickerCallback:url usingBlock:^(CameraPlusPickedImages *images) {
-            NSLog(@"Camera+ returned %@", [images images]);
+            DDLogInfo(@"Camera+ returned %@", [images images]);
             UIImage *image = [images image];
             UIImageWriteToSavedPhotosAlbum(image, nil, nil, nil);
             NSDictionary *userInfo = [NSDictionary dictionaryWithObject:image forKey:@"image"];
             [[NSNotificationCenter defaultCenter] postNotificationName:kCameraPlusImagesNotification object:nil userInfo:userInfo];
         } cancelBlock:^(void) {
-            NSLog(@"Camera+ picker canceled");
+            DDLogInfo(@"Camera+ picker canceled");
         }];
         return YES;
     }
@@ -383,7 +383,7 @@ int ddLogLevel = LOG_LEVEL_INFO;
 
     if (url && [url isKindOfClass:[NSURL class]]) {
         NSString *URLString = [url absoluteString];
-        NSLog(@"Application launched with URL: %@", URLString);
+        DDLogInfo(@"Application launched with URL: %@", URLString);
         if ([[url absoluteString] hasPrefix:@"wordpress://wpcom_signup_completed"]) {
             NSDictionary *params = [[url query] dictionaryFromQueryString];
             DDLogInfo(@"%@", params);
@@ -908,13 +908,6 @@ int ddLogLevel = LOG_LEVEL_INFO;
 	int num_blogs = [Blog countWithContext:[self managedObjectContext]];
 	NSString *numblogs = [[NSString stringWithFormat:@"%d", num_blogs] stringByUrlEncoding];
 	
-	//NSLog(@"UUID %@", deviceuuid);
-	//NSLog(@"app version %@",appversion);
-	//NSLog(@"language %@",language);
-	//NSLog(@"os_version, %@", osversion);
-	//NSLog(@"count of blogs %@",numblogs);
-	//NSLog(@"device_model: %@", deviceModel);
-	
 	//handle data coming back
 	statsData = [[NSMutableData alloc] init];
 	
@@ -1052,12 +1045,12 @@ int ddLogLevel = LOG_LEVEL_INFO;
 					stringByReplacingOccurrencesOfString: @">" withString: @""]
 				   stringByReplacingOccurrencesOfString: @" " withString: @""];
 
-    NSLog(@"Device token received in didRegisterForRemoteNotificationsWithDeviceToken: %@", myToken);
+    DDLogInfo(@"Device token received in didRegisterForRemoteNotificationsWithDeviceToken: %@", myToken);
     
 	// Store the token
     NSString *previousToken = [[NSUserDefaults standardUserDefaults] objectForKey:kApnsDeviceTokenPrefKey];
     if (![previousToken isEqualToString:myToken]) {
-         NSLog(@"Device Token has changed! OLD Value %@, NEW value %@", previousToken, myToken);
+         DDLogInfo(@"Device Token has changed! OLD Value %@, NEW value %@", previousToken, myToken);
         [[NSUserDefaults standardUserDefaults] setObject:myToken forKey:kApnsDeviceTokenPrefKey];
         [[WordPressComApi sharedApi] syncPushNotificationInfo]; //synch info again since the device token has changed.
     }
@@ -1198,7 +1191,7 @@ int ddLogLevel = LOG_LEVEL_INFO;
     statsDataString = [[statsDataString componentsSeparatedByCharactersInSet:[NSCharacterSet newlineCharacterSet]] objectAtIndex:0];
 	NSString *appversion = [[[NSBundle mainBundle] infoDictionary] objectForKey:@"CFBundleVersion"];
     if ([statsDataString compare:appversion options:NSNumericSearch] > 0) {
-        NSLog(@"There's a new version: %@", statsDataString);
+        DDLogInfo(@"There's a new version: %@", statsDataString);
         UIAlertView *alert = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"Update Available", @"Popup title to highlight a new version of the app being available.")
                                                         message:NSLocalizedString(@"A new version of WordPress for iOS is now available", @"Generic popup message to highlight a new version of the app being available.")
                                                        delegate:self

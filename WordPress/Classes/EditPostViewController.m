@@ -1514,7 +1514,7 @@ CGFloat const EditPostViewControllerTextViewOffset = 10.0;
 }
 
 - (void)restoreText:(NSString *)text withRange:(NSRange)range {
-    NSLog(@"restoreText:%@",text);
+    DDLogVerbose(@"restoreText:%@",text);
     NSString *oldText = textView.text;
     NSRange oldRange = textView.selectedRange;
     textView.scrollEnabled = NO;
