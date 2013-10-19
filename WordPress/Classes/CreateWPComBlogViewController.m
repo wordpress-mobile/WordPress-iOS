@@ -179,9 +179,9 @@ NSUInteger const CreateBlogBlogUrlFieldTag = 1;
                 _blogTitleCell = [[UITableViewTextFieldCell alloc] initWithStyle:UITableViewCellStyleDefault
                                                                  reuseIdentifier:@"TextCell"];
             }
-            _blogTitleCell.textLabel.text = NSLocalizedString(@"Blog Title", nil);
+            _blogTitleCell.textLabel.text = NSLocalizedString(@"Site Title", @"Label for site title field in create an account process");
             _blogTitleTextField = _blogTitleCell.textField;
-            _blogTitleTextField.placeholder = NSLocalizedString(@"My Blog", nil);
+            _blogTitleTextField.placeholder = NSLocalizedString(@"My Site", @"Placeholder for site title field in create an account process");
             _blogTitleTextField.delegate = self;
             [self styleTextFieldCell:_blogTitleCell];
             cell = _blogTitleCell;

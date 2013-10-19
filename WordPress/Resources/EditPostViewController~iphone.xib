@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="4504" systemVersion="12E55" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="4510" systemVersion="12F37" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none">
     <dependencies>
         <deployment version="1280" defaultVersion="1536" identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="3734.1"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="3742"/>
     </dependencies>
     <objects>
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="EditPostViewController">
@@ -21,8 +21,8 @@
                 <outlet property="tabPointer" destination="302" id="303"/>
                 <outlet property="tagsLabel" destination="343" id="347"/>
                 <outlet property="tagsTextField" destination="341" id="346"/>
+                <outlet property="tapToStartWritingLabel" destination="39c-kp-Zdo" id="9hV-wl-Qpv"/>
                 <outlet property="textView" destination="323" id="331"/>
-                <outlet property="textViewPlaceHolderField" destination="327" id="332"/>
                 <outlet property="titleLabel" destination="328" id="335"/>
                 <outlet property="titleTextField" destination="322" id="334"/>
                 <outlet property="toolbar" destination="289" id="333"/>
@@ -143,16 +143,13 @@
                                         <outlet property="delegate" destination="-1" id="359"/>
                                     </connections>
                                 </textView>
-                                <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" enabled="NO" contentHorizontalAlignment="left" contentVerticalAlignment="top" placeholder="Tap here to begin writing." minimumFontSize="17" id="327" userLabel="placeholderTextField">
-                                    <rect key="frame" x="7" y="136" width="310" height="31"/>
-                                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="39c-kp-Zdo">
+                                    <rect key="frame" x="7" y="143" width="306" height="21"/>
+                                    <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES" flexibleMaxY="YES"/>
                                     <fontDescription key="fontDescription" name="Helvetica" family="Helvetica" pointSize="16"/>
-                                    <textInputTraits key="textInputTraits"/>
-                                    <connections>
-                                        <action selector="touchTextView:" destination="-1" eventType="touchUpInside" id="375"/>
-                                        <outlet property="delegate" destination="-1" id="360"/>
-                                    </connections>
-                                </textField>
+                                    <color key="textColor" white="0.71571751644736847" alpha="1" colorSpace="calibratedWhite"/>
+                                    <nil key="highlightedColor"/>
+                                </label>
                             </subviews>
                             <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         </view>

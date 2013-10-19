@@ -20,6 +20,7 @@
 #import "NSString+Helpers.h"
 #import "NSURL+Util.h"
 #import "WPToast.h"
+#import "iOS7CorrectedTextView.h"
 
 #define APPROVE_BUTTON_TAG 1
 #define UNAPPROVE_BUTTON_TAG 2

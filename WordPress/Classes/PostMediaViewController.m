@@ -47,6 +47,7 @@
 - (void)dealloc {
     picker.delegate = nil;
     addPopover.delegate = nil;
+    [[NSNotificationCenter defaultCenter] removeObserver:self];
 }
 
 - (id)initWithPost:(AbstractPost *)aPost {
@@ -801,7 +802,7 @@
 }
 
 - (void)showResizeActionSheet {
-	if(self.isShowingResizeActionSheet == NO) {
+	if (!self.isShowingResizeActionSheet) {
 		isShowingResizeActionSheet = YES;
         
         Blog *currentBlog = self.apost.blog;
@@ -1088,11 +1089,11 @@
 		NSNumber *resizePreference = [NSNumber numberWithInt:-1];
 		if([[NSUserDefaults standardUserDefaults] objectForKey:@"media_resize_preference"] != nil)
 			resizePreference = [nf numberFromString:[[NSUserDefaults standardUserDefaults] objectForKey:@"media_resize_preference"]];
-		BOOL showResizeActionSheet;
+		BOOL showResizeActionSheet = NO;
 		switch ([resizePreference intValue]) {
 			case 0:
             {
-                showResizeActionSheet = true;
+                showResizeActionSheet = YES;
 				break;
             }
 			case 1:
@@ -1118,7 +1119,7 @@
             }
 			default:
             {
-                showResizeActionSheet = true;
+                showResizeActionSheet = YES;
 				break;
             }
 		}

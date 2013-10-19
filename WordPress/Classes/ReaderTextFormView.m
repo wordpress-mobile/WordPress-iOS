@@ -7,6 +7,7 @@
 //
 
 #import "ReaderTextFormView.h"
+#import "iOS7CorrectedTextView.h"
 
 @interface ReaderTextFormView()
 
@@ -31,7 +32,7 @@
 		
 		UIFont *font = [UIFont systemFontOfSize:ReaderTextFormFontSize];
 		
-		self.textView = [[UITextView alloc] initWithFrame:CGRectMake(15.0f, 15.0f, width - 30.0, height - 30.0f)];
+		self.textView = [[iOS7CorrectedTextView alloc] initWithFrame:CGRectMake(15.0f, 15.0f, width - 30.0, height - 30.0f)];
 		_textView.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
 		_textView.font = font;
 		_textView.delegate = self;

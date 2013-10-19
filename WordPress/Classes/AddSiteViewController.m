@@ -29,7 +29,10 @@ CGSize const AddSiteLogoSize = { 320.0, 70.0 };
     logoImage.autoresizingMask = UIViewAutoresizingFlexibleWidth;
     logoImage.contentMode = UIViewContentModeCenter;
     tableView.tableHeaderView = logoImage;
-    
+
+    saveButton = [[UIBarButtonItem alloc] initWithTitle:NSLocalizedString(@"Add", @"Add button to add a site from Settings.") style:[WPStyleGuide barButtonStyleForDone] target:self action:@selector(save:)];
+    self.navigationItem.rightBarButtonItem = saveButton;
+
     self.navigationItem.title = NSLocalizedString(@"Add Blog", @"");
 }
 
