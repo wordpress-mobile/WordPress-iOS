@@ -95,9 +95,15 @@ NSString *const WordPressComApiErrorMessageKey = @"WordPressComApiErrorMessageKe
             password = [SFHFKeychainUtils getPasswordForUsername:username
                                                   andServiceName:kWPcomXMLRPCUrl
                                                            error:&error];
+            if (error) {
+                DDLogError(@"Error getting WordPress.com password: %@", error);
+            }
             authToken = [SFHFKeychainUtils getPasswordForUsername:username
                                                    andServiceName:WordPressComApiOauthServiceName
-                                                            error:nil];
+                                                            error:&error];
+            if (error) {
+                DDLogError(@"Error getting WordPress.com OAuth token: %@", error);
+            }
         }
         _sharedApi = [[self alloc] initWithBaseURL:[NSURL URLWithString:WordPressComApiClientEndpointURL] ];
         _sharedApi.username = username;
