@@ -10,6 +10,7 @@
 #import "WordPressAppDelegate.h"
 #import <QuartzCore/QuartzCore.h>
 #import "UIImageView+Gravatar.h"
+#import "ContextManager.h"
 
 @interface BlogSelectorButton (PrivateMethods)
 - (void)tap;
@@ -99,8 +100,8 @@
 - (void)loadBlogsForType:(BlogSelectorButtonType)aType {
     blogType = aType;
     NSString *defaultsKey = [self defaultsKey];
-    NSManagedObjectContext *moc = [[WordPressAppDelegate sharedWordPressApplicationDelegate] managedObjectContext];
-    NSPersistentStoreCoordinator *psc = [[WordPressAppDelegate sharedWordPressApplicationDelegate] persistentStoreCoordinator];
+    NSManagedObjectContext *moc = [[ContextManager sharedInstance] mainContext];
+    NSPersistentStoreCoordinator *psc = [[ContextManager sharedInstance] persistentStoreCoordinator];
     NSError *error = nil;
 
     if (defaultsKey != nil) {

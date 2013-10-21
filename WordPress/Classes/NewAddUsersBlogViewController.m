@@ -19,6 +19,7 @@
 #import "Blog.h"
 #import "WPNUXUtility.h"
 #import "WPAccount.h"
+#import "ContextManager.h"
 
 @interface NewAddUsersBlogViewController () <
     UITableViewDelegate,
@@ -367,7 +368,7 @@ CGFloat const AddUsersBlogBottomBackgroundHeight = 64;
 
     _addSelectedButton.enabled = NO;
     
-    NSManagedObjectContext *context = [WordPressAppDelegate sharedWordPressApplicationDelegate].managedObjectContext;
+    NSManagedObjectContext *context = [[ContextManager sharedInstance] mainContext];
     NSManagedObjectContext *backgroundMOC = [[NSManagedObjectContext alloc] initWithConcurrencyType:NSPrivateQueueConcurrencyType];
     backgroundMOC.parentContext = context;
   

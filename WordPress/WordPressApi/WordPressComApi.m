@@ -17,6 +17,7 @@
 #import <AFJSONRequestOperation.h>
 #import <UIDeviceHardware.h>
 #import "UIDevice+WordPressIdentifier.h"
+#import "ContextManager.h"
 
 NSString *const WordPressComApiClientEndpointURL = @"https://public-api.wordpress.com/rest/v1/";
 NSString *const WordPressComApiOauthBaseUrl = @"https://public-api.wordpress.com/oauth2";
@@ -237,7 +238,7 @@ NSString *const WordPressComApiErrorMessageKey = @"WordPressComApiErrorMessageKe
     [self clearAuthorizationHeader];
 
     // Remove all notes
-    [Note removeAllNotesWithContext:[[WordPressAppDelegate sharedWordPressApplicationDelegate] managedObjectContext]];
+    [Note removeAllNotesWithContext:[[ContextManager sharedInstance] mainContext]];
 
     [self clearWpcomCookies];
 
@@ -612,7 +613,7 @@ NSString *const WordPressComApiErrorMessageKey = @"WordPressComApiErrorMessageKe
 
     [self getPath:@"notifications/" parameters:requestParameters success:^(AFHTTPRequestOperation *operation, id responseObject){
         // save the notes
-        NSManagedObjectContext *context = [[WordPressAppDelegate sharedWordPressApplicationDelegate] managedObjectContext];
+        NSManagedObjectContext *context = [[ContextManager sharedInstance] mainContext];
         [Note syncNotesWithResponse:[responseObject objectForKey:@"notes"] withManagedObjectContext:context];
         if (success != nil ) success( operation, responseObject );
         

@@ -14,6 +14,7 @@
 #import "WPAvatarSource.h"
 #import "NSString+Helpers.h"
 #import "WordPressAppDelegate.h"
+#import "ContextManager.h"
 
 NSInteger const ReaderTopicEndpointIndex = 3;
 NSInteger const ReaderPostSummaryLength = 150;
@@ -75,7 +76,7 @@ NSString *const ReaderExtrasArrayKey = @"ReaderExtrasArrayKey";
     [[NSUserDefaults standardUserDefaults] removeObjectForKey:ReaderExtrasArrayKey];
 	[NSUserDefaults resetStandardUserDefaults];
 	
-	NSManagedObjectContext *context = [[WordPressAppDelegate sharedWordPressApplicationDelegate] managedObjectContext];
+	NSManagedObjectContext *context = [[ContextManager sharedInstance] mainContext];
 	NSFetchRequest *request = [NSFetchRequest fetchRequestWithEntityName:@"ReaderPost"];
     request.includesPropertyValues = NO;
     NSError *error;
@@ -772,7 +773,7 @@ NSString *const ReaderExtrasArrayKey = @"ReaderExtrasArrayKey";
 									 if (postsArr) {									 
 										 [ReaderPost syncPostsFromEndpoint:path
 																 withArray:postsArr
-															   withContext:[[WordPressAppDelegate sharedWordPressApplicationDelegate] managedObjectContext]
+															   withContext:[[ContextManager sharedInstance] mainContext]
 																   success:^{
 																	   if (success) {
 																		   success(operation, responseObject);
@@ -784,7 +785,7 @@ NSString *const ReaderExtrasArrayKey = @"ReaderExtrasArrayKey";
 										 
 										 if (!loadingMore) {
 											 NSTimeInterval interval = - (60 * 60 * 24 * 7); // 7 days.
-											 [ReaderPost deletePostsSyncedEarlierThan:[NSDate dateWithTimeInterval:interval sinceDate:[NSDate date]] withContext:[[WordPressAppDelegate sharedWordPressApplicationDelegate] managedObjectContext]];
+											 [ReaderPost deletePostsSyncedEarlierThan:[NSDate dateWithTimeInterval:interval sinceDate:[NSDate date]] withContext:[[ContextManager sharedInstance] mainContext]] ;
 										 }
 										 return;
 									 }

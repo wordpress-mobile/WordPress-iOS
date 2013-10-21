@@ -14,6 +14,7 @@
 #import "WordPressAppDelegate.h"
 #import "NSString+Helpers.h"
 #import "WPAccount.h"
+#import "ContextManager.h"
 
 // General
 NSString *const StatsEventAppOpened = @"Application Opened";
@@ -258,7 +259,7 @@ NSString *const StatsEventAddBlogsClickedAddSelected = @"Add Blogs - Clicked Add
     [Mixpanel sharedInstanceWithToken:[WordPressComApiCredentials mixpanelAPIToken]];
     NSDictionary *properties = @{
                                  @"connected_to_dotcom": @([[WordPressComApi sharedApi] hasCredentials]),
-                                 @"number_of_blogs" : @([Blog countWithContext:[[WordPressAppDelegate sharedWordPressApplicationDelegate] managedObjectContext]]) };
+                                 @"number_of_blogs" : @([Blog countWithContext:[[ContextManager sharedInstance] mainContext]]) };
     [[Mixpanel sharedInstance] registerSuperProperties:properties];
     
     NSString *username = [[WPAccount defaultWordPressComAccount] username];

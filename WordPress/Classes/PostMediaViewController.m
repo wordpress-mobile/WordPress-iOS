@@ -11,6 +11,7 @@
 #import "Post.h"
 #import <ImageIO/ImageIO.h>
 #import "WPPopoverBackgroundView.h"
+#import "ContextManager.h"
 
 #define TAG_ACTIONSHEET_PHOTO 1
 #define TAG_ACTIONSHEET_VIDEO 2
@@ -1639,10 +1640,9 @@
     if (resultsController != nil) {
         return resultsController;
     }
-    
-    WordPressAppDelegate *appDelegate = (WordPressAppDelegate*)[[UIApplication sharedApplication] delegate];
+
     NSFetchRequest *fetchRequest = [[NSFetchRequest alloc] init];
-    [fetchRequest setEntity:[NSEntityDescription entityForName:@"Media" inManagedObjectContext:appDelegate.managedObjectContext]];
+    [fetchRequest setEntity:[NSEntityDescription entityForName:@"Media" inManagedObjectContext:[[ContextManager sharedInstance] mainContext]]];
     [fetchRequest setPredicate:[NSPredicate predicateWithFormat:@"%@ IN posts AND mediaType != 'featured'", self.apost]];
     NSSortDescriptor *sortDescriptorDate = [[NSSortDescriptor alloc] initWithKey:@"creationDate" ascending:NO];
     NSArray *sortDescriptors = [[NSArray alloc] initWithObjects:sortDescriptorDate, nil];
@@ -1650,7 +1650,7 @@
     
     resultsController = [[NSFetchedResultsController alloc]
                                                       initWithFetchRequest:fetchRequest
-                                                      managedObjectContext:appDelegate.managedObjectContext
+                                                      managedObjectContext:[[ContextManager sharedInstance] mainContext]
                                                       sectionNameKeyPath:nil
                                                       cacheName:[NSString stringWithFormat:@"Media-%@-%@",
                                                                  self.apost.blog.hostURL,
