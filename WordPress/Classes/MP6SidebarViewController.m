@@ -39,6 +39,7 @@
 @property (nonatomic, strong) NSFetchedResultsController *resultsController;
 @property (nonatomic, strong) Post *currentQuickPost;
 @property (nonatomic, strong) IBOutlet NSLayoutConstraint *topLayoutConstraint;
+@property (nonatomic, assign) BOOL sidebarShouldReloadBlogs;
 
 @end
 
@@ -174,7 +175,7 @@ CGFloat const SidebarViewControllerStatusBarViewHeight = 20.0;
     
     NSError *error = nil;
     if (![_resultsController performFetch:&error]) {
-        DDLogError(@"Couldn't fecth blogs: %@", [error localizedDescription]);
+        DDLogError(@"Couldn't fetch blogs: %@", [error localizedDescription]);
         _resultsController = nil;
     }
     
@@ -1043,10 +1044,13 @@ CGFloat const SidebarViewControllerStatusBarViewHeight = 20.0;
     } else {
         _wantedSection = 0;
     }
+    _sidebarShouldReloadBlogs = NO;
 }
 
 - (void)controllerDidChangeContent:(NSFetchedResultsController *)controller {
-    [self.tableView reloadData];
+    if (_sidebarShouldReloadBlogs) {
+        [self.tableView reloadData];
+    }
     
     NSIndexPath *indexPath = [self.tableView indexPathForSelectedRow];
     if (indexPath != nil) {
@@ -1073,9 +1077,6 @@ CGFloat const SidebarViewControllerStatusBarViewHeight = 20.0;
      forChangeType:(NSFetchedResultsChangeType)type
       newIndexPath:(NSIndexPath *)newIndexPath {
     
-    // Note: we're not adding/removing sections individually, and instead opting for
-    // a reloadData, as the performance on iOS 6 is terrible for adding individual sections for blogs.
-    
     if (NSFetchedResultsChangeUpdate == type && newIndexPath != nil) {
         // Seriously, Apple?
         // http://developer.apple.com/library/ios/#releasenotes/iPhone/NSFetchedResultsChangeMoveReportedAsNSFetchedResultsChangeUpdate/_index.html
@@ -1094,6 +1095,7 @@ CGFloat const SidebarViewControllerStatusBarViewHeight = 20.0;
             }
             
             _wantedSection = newIndexPath.row + 1;
+            _sidebarShouldReloadBlogs = YES;
             break;
         }
         case NSFetchedResultsChangeDelete:
@@ -1111,6 +1113,7 @@ CGFloat const SidebarViewControllerStatusBarViewHeight = 20.0;
             }
 
             _wantedSection = 0;
+            _sidebarShouldReloadBlogs = YES;
             break;
         }
     }
