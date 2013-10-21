@@ -457,7 +457,7 @@ NSTimeInterval const ReaderPostDetailViewControllerRefreshTimeout = 300; // 5 mi
 	[self.post toggleLikedWithSuccess:^{
 		
 	} failure:^(NSError *error) {
-		WPLog(@"Error Liking Post : %@", [error localizedDescription]);
+		DDLogError(@"Error Liking Post : %@", [error localizedDescription]);
 		[self updateToolbar];
 	}];
 	[self updateToolbar];

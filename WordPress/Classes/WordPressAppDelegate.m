@@ -9,7 +9,6 @@
 #import "CPopoverManager.h"
 #import "BetaUIWindow.h"
 #import "MigrateBlogsFromFiles.h"
-//#import "InAppSettings.h"
 #import "Blog.h"
 #import "Media.h"
 #import "CameraPlusPickerManager.h"
@@ -32,9 +31,6 @@
 #import "Note.h"
 #import "UIColor+Helpers.h"
 #import <Security/Security.h>
-#import "DDLog.h"
-#import "DDTTYLogger.h"
-#import "DDASLLogger.h"
 
 @interface WordPressAppDelegate (Private) <CrashlyticsDelegate>
 
@@ -127,12 +123,12 @@ int ddLogLevel = LOG_LEVEL_INFO;
     // set the blocks 
     internetReachability.reachableBlock = ^(Reachability*reach)
     {  
-        WPLog(@"Internet connection is back");
+        DDLogInfo(@"Internet connection is back");
         self.connectionAvailable = YES;
     };
     internetReachability.unreachableBlock = ^(Reachability*reach)
     {
-        WPLog(@"No internet connection");
+        DDLogInfo(@"No internet connection");
         self.connectionAvailable = NO;
     };
     // start the notifier which will cause the reachability object to retain itself!
@@ -143,12 +139,12 @@ int ddLogLevel = LOG_LEVEL_INFO;
     // set the blocks 
     wpcomReachability.reachableBlock = ^(Reachability*reach)
     {  
-        WPLog(@"Connection to WordPress.com is back");
+        DDLogInfo(@"Connection to WordPress.com is back");
         self.wpcomAvailable = YES;
     };
     wpcomReachability.unreachableBlock = ^(Reachability*reach)
     {
-        WPLog(@"No connection to WordPress.com");
+        DDLogInfo(@"No connection to WordPress.com");
         self.wpcomAvailable = NO;
     };
     // start the notifier which will cause the reachability object to retain itself!
@@ -480,7 +476,7 @@ int ddLogLevel = LOG_LEVEL_INFO;
 #pragma mark Public Methods
 
 - (void)showAlertWithTitle:(NSString *)title message:(NSString *)message {
-	WPLog(@"Showing alert with title: %@", message);
+	DDLogInfo(@"Showing alert with title: %@", message);
     UIAlertView *alert = [[UIAlertView alloc] initWithTitle:title
                           message:message
                           delegate:self
@@ -534,7 +530,7 @@ int ddLogLevel = LOG_LEVEL_INFO;
     NSDictionary *dictionary = [[NSDictionary alloc] initWithObjectsAndKeys:ua, @"UserAgent", nil];
     // We have to call registerDefaults else the change isn't picked up by UIWebViews.
     [[NSUserDefaults standardUserDefaults] registerDefaults:dictionary];
-    WPLog(@"User-Agent set to: %@", ua);
+    DDLogVerbose(@"User-Agent set to: %@", ua);
 }
 
 - (void)useAppUserAgent {
@@ -543,7 +539,7 @@ int ddLogLevel = LOG_LEVEL_INFO;
     // We have to call registerDefaults else the change isn't picked up by UIWebViews.
     [[NSUserDefaults standardUserDefaults] registerDefaults:dictionary];
     
-    WPLog(@"User-Agent set to: %@", ua);
+    DDLogVerbose(@"User-Agent set to: %@", ua);
 }
 
 #pragma mark -

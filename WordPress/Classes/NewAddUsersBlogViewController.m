@@ -390,7 +390,7 @@ CGFloat const AddUsersBlogBottomBackgroundHeight = 64;
 
 - (void)createBlog:(NSDictionary *)blogInfo withAccount:(WPAccount *)account withContext:(NSManagedObjectContext*)context
 {
-    WPLog(@"creating blog: %@", blogInfo);
+    DDLogInfo(@"creating blog: %@", blogInfo);
     Blog *blog = [account findOrCreateBlogFromDictionary:blogInfo withContext:context];
     blog.geolocationEnabled = YES;
 

@@ -117,7 +117,7 @@ static NSString *_lastAuthedName = nil;
 
 
 - (void)showAuthFailed {
-    WPLog(@"Auth Failed, showing login screen");
+    DDLogError(@"Auth Failed, showing login screen");
     [self showBlogSettings];
     if ([blog isWPcom]) {
         UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"Authentication Error", @"")
@@ -309,7 +309,7 @@ static NSString *_lastAuthedName = nil;
         for (NSHTTPCookie *cookie in cookies) {
             if([cookie.name isEqualToString:@"wordpress_logged_in"]){
                 // We should be authed.
-                WPLog(@"Authed. Loading stats.");
+                DDLogInfo(@"Authed. Loading stats.");
                 statsWebViewController.authed = YES;
                 [[statsWebViewController class] setLastAuthedName:username];
                 [statsWebViewController loadStats];

@@ -556,7 +556,7 @@
 }
 
 - (void)createBlog:(NSDictionary *)blogInfo withContext:(NSManagedObjectContext *)context {
-    WPLog(@"creating blog: %@", blogInfo);
+    DDLogInfo(@"creating blog: %@", blogInfo);
     
     Blog *blog = [_account findOrCreateBlogFromDictionary:blogInfo withContext:context];
     blog.geolocationEnabled = self.geolocationEnabled;
