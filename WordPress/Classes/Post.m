@@ -42,52 +42,9 @@
 @dynamic categories;
 @synthesize specialType, featuredImageURL;
 
-+ (Post *)newPostForBlog:(Blog *)blog withContext:(NSManagedObjectContext*)context {
-    Blog *contextBlog = (Blog *)[context objectWithID:blog.objectID];
-    Post *post = [NSEntityDescription insertNewObjectForEntityForName:NSStringFromClass(self.class) inManagedObjectContext:context];
-    post.blog = contextBlog;
-    return post;
++ (NSString *const)remoteUniqueIdentifier {
+    return @"postid";
 }
-
-+ (Post *)newDraftForBlog:(Blog *)blog {
-    Post *post = [self newPostForBlog:blog withContext:blog.managedObjectContext];
-    post.remoteStatus = AbstractPostRemoteStatusLocal;
-    post.status = @"publish";
-    [post save];
-    
-    return post;
-}
-
-+ (Post *)findWithBlog:(Blog *)blog andPostID:(NSNumber *)postID withContext:(NSManagedObjectContext*)context {
-    Blog *contextBlog = (Blog *)[context objectWithID:blog.objectID];
-    NSSet *results = [contextBlog.posts filteredSetUsingPredicate:[NSPredicate predicateWithFormat:@"postID == %@ AND original == NULL",postID]];
-    
-    if (results && (results.count > 0)) {
-        return [[results allObjects] objectAtIndex:0];
-    }
-    return nil;
-}
-
-+ (Post *)findOrCreateWithBlog:(Blog *)blog andPostID:(NSNumber *)postID withContext:(NSManagedObjectContext*)context {
-    Post *post = [self findWithBlog:blog andPostID:postID withContext:context];
-    
-    if (post == nil) {
-        post = [Post newPostForBlog:blog withContext:context];
-        post.postID = postID;
-        post.remoteStatus = AbstractPostRemoteStatusSync;
-    }
-    [post findComments];
-    return post;
-}
-
-- (id)init {
-    if (self = [super init]) {
-        appDelegate = (WordPressAppDelegate *)[[UIApplication sharedApplication] delegate];
-    }
-    
-    return self;
-}
-
 
 - (void)updateFromDictionary:(NSDictionary *)postInfo {
     self.postTitle      = [postInfo objectForKey:@"title"];
@@ -249,7 +206,7 @@
 
     // check if post deleted after media upload started
     if (self.content == nil) {
-        appDelegate.isUploadingPost = NO;
+        [WordPressAppDelegate sharedWordPressApplicationDelegate].isUploadingPost = NO;
         [[NSNotificationCenter defaultCenter] postNotificationName:@"PostUploadCancelled" object:self];
     } else {
         self.content = [NSString stringWithFormat:@"%@\n\n%@", [media html], self.content];
@@ -260,7 +217,7 @@
 }
 
 - (void)mediaUploadFailed:(NSNotification *)notification {
-    appDelegate.isUploadingPost = NO;
+    [WordPressAppDelegate sharedWordPressApplicationDelegate].isUploadingPost = NO;
 
     UIAlertView *alert = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"Quick Photo Failed", @"")
                                                     message:NSLocalizedString(@"Sorry, the photo upload failed. The post has been saved as a Local Draft.", @"")

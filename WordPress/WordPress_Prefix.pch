@@ -38,6 +38,8 @@
 #define IS_RETINA ([[UIScreen mainScreen] respondsToSelector:@selector(scale)] && [[UIScreen mainScreen] scale] == 2)
 #endif
 
+#define AssertSubclassMethod() NSAssert(NO, @"You must override %@ in a subclass", NSStringFromSelector(_cmd))
+
 // WPFLog is deprecated - use DDLogError, Info, Verbose, etc
 #define WPFLog(fmt, ...) DDLogInfo(fmt, ##__VA_ARGS__)
 #define WPFLogMethod() DDLogInfo(@"%@ %@", self, NSStringFromSelector(_cmd));

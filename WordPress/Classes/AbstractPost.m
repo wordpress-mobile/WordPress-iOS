@@ -39,6 +39,93 @@
     [self save];
 }
 
++ (AbstractPost *)newPostForBlog:(Blog *)blog {
+    AbstractPost *post = [NSEntityDescription insertNewObjectForEntityForName:NSStringFromClass(self) inManagedObjectContext:blog.managedObjectContext];
+    post.blog = blog;
+    return post;
+}
+
++ (AbstractPost *)newDraftForBlog:(Blog *)blog {
+    AbstractPost *post = [self newPostForBlog:blog];
+    post.remoteStatus = AbstractPostRemoteStatusLocal;
+    post.status = @"publish";
+    [post save];
+    return post;
+}
+
++ (NSArray *)existingPostsForBlog:(Blog *)blog inContext:(NSManagedObjectContext *)context {
+    NSFetchRequest *existingFetch = [NSFetchRequest fetchRequestWithEntityName:NSStringFromClass(self)];
+    existingFetch.predicate = [NSPredicate predicateWithFormat:@"(remoteStatusNumber = %@) AND (postID != NULL) AND (original == NULL) AND (blog == %@)",
+                               [NSNumber numberWithInt:AbstractPostRemoteStatusSync], blog];
+    
+    NSError *error;
+    NSArray *existing = [context executeFetchRequest:existingFetch error:&error];
+    if (error) {
+        DDLogError(@"Failed to fetch existing posts: %@", error);
+        existing = nil;
+    }
+    return existing;
+}
+
++ (void)mergeNewPosts:(NSArray *)newObjects forBlog:(Blog *)blog {
+    NSManagedObjectContext *derived = [[ContextManager sharedInstance] derivedContext];
+    
+    [derived performBlockAndWait:^{
+        NSMutableArray *objectsToKeep = [NSMutableArray array];
+        Blog *contextBlog = (Blog *)[derived objectWithID:blog.objectID];
+        
+        NSArray *existingObjects = [self existingPostsForBlog:contextBlog inContext:derived];
+        for (NSDictionary *newPost in newObjects) {
+            NSNumber *postID = [[newPost objectForKey:[self remoteUniqueIdentifier]] numericValue];
+            AbstractPost *post;
+            
+            NSArray *existingPostsWithPostId = [existingObjects filteredArrayUsingPredicate:[NSPredicate predicateWithFormat:@"postID == %@", postID]];
+            if (existingPostsWithPostId && existingPostsWithPostId.count > 0) {
+                post = existingPostsWithPostId[0];
+            } else {
+                post = [self newPostForBlog:blog];
+                post.postID = postID;
+                post.remoteStatus = AbstractPostRemoteStatusSync;
+                [post updateFromDictionary:newPost];
+            }
+            
+            [objectsToKeep addObject:post];
+        }
+        
+        NSArray *objectsToKeepIDs = [objectsToKeep valueForKey:@"objectID"];
+        for (AbstractPost *post in existingObjects) {
+            if (![objectsToKeepIDs containsObject:post.objectID] && post.objectID != nil) {
+                if (post.revision) {
+                    BOOL isPresent = NO;
+                    
+                    for (AbstractPost *p in objectsToKeep) {
+                        if ([p.postID isEqual:post.postID]) {
+                            isPresent = YES;
+                            break;
+                        }
+                    }
+                    
+                    if (!isPresent) {
+                        post.remoteStatus = AbstractPostRemoteStatusLocal;
+                        post.postID = nil;
+                        post.permaLink = nil;
+                    }
+                } else {
+                    DDLogCInfo(@"Deleting %@: %@", NSStringFromClass(self), post);
+                    [derived deleteObject:post];
+                }
+            }
+        }
+        
+        [[ContextManager sharedInstance] saveWithContext:derived];
+        [[ContextManager sharedInstance] saveMainContext];
+    }];
+}
+
+- (void)updateFromDictionary:(NSDictionary *)postInfo {
+    AssertSubclassMethod();
+}
+
 #pragma mark -
 #pragma mark Revision management
 
