@@ -9,7 +9,6 @@
 #import "CPopoverManager.h"
 #import "BetaUIWindow.h"
 #import "MigrateBlogsFromFiles.h"
-//#import "InAppSettings.h"
 #import "Blog.h"
 #import "Media.h"
 #import "CameraPlusPickerManager.h"
@@ -32,9 +31,6 @@
 #import "Note.h"
 #import "UIColor+Helpers.h"
 #import <Security/Security.h>
-#import "DDLog.h"
-#import "DDTTYLogger.h"
-#import "DDASLLogger.h"
 
 @interface WordPressAppDelegate (Private) <CrashlyticsDelegate>
 
