@@ -718,7 +718,7 @@
             self.hasOlderPosts = [NSNumber numberWithBool:YES];
         }
 
-        [self mergePosts:posts];
+        [Post mergeNewPosts:responseObject forBlog:self];
 
         self.lastPostsSync = [NSDate date];
         self.isSyncingPosts = NO;
@@ -773,7 +773,7 @@
             self.hasOlderPages = [NSNumber numberWithBool:YES];
         }
 
-        [self mergePages:pages];
+        [Page mergeNewPosts:responseObject forBlog:self];
         self.lastPagesSync = [NSDate date];
         self.isSyncingPages = NO;
         if (success) {
@@ -819,114 +819,6 @@
     }
 
     [self dataSave];
-}
-
-- (void)mergePosts:(NSArray *)newPosts {
-    // Don't even bother if blog has been deleted while fetching posts
-    if ([self isDeleted] || self.managedObjectContext == nil)
-        return;
-    
-    NSManagedObjectContext *backgroundMOC = [[ContextManager sharedInstance] derivedContext];
-    
-    [backgroundMOC performBlock:^{
-        NSMutableArray *postsToKeep = [NSMutableArray array];
-        for (NSDictionary *postInfo in newPosts) {
-            NSNumber *postID = [[postInfo objectForKey:@"postid"] numericValue];
-            Post *newPost = [Post findOrCreateWithBlog:self andPostID:postID withContext:backgroundMOC];
-            if (newPost.remoteStatus == AbstractPostRemoteStatusSync) {
-                [newPost updateFromDictionary:postInfo];
-            }
-            [postsToKeep addObject:newPost];
-        }
-        
-        NSArray *syncedPosts = [self syncedPostsWithEntityName:@"Post" withContext:backgroundMOC];
-        NSArray *postsToKeepObjectIDs = [postsToKeep valueForKey:@"objectID"];
-        for (Post *post in syncedPosts) {
-            
-            if (![postsToKeepObjectIDs containsObject:post.objectID]) {
-                //the current stored post is not contained "as-is" on the server response
-                
-                if (post.revision) { //edited post before the refresh is finished
-                    //We should check if this post is already available on the blog
-                    BOOL presence = NO;
-                    
-                    for (Post *currentPostToKeep in postsToKeep) {
-                        if([currentPostToKeep.postID isEqualToNumber:post.postID]) {
-                            presence = YES;
-                            break;
-                        }
-                    }
-                    if( presence == YES ) {
-                        //post is on the server (most cases), kept it unchanged
-                    } else {
-                        //post is deleted on the server, make it local, otherwise you can't upload it anymore
-                        post.remoteStatus = AbstractPostRemoteStatusLocal;
-                        post.postID = nil;
-                        post.permaLink = nil;
-                    }
-                } else {
-                    //post is not on the server anymore. delete it.
-                    DDLogInfo(@"Deleting post: %@", post.postTitle);
-                    DDLogInfo(@"%d posts left", [self.posts count]);
-                    [backgroundMOC deleteObject:post];
-                }
-            }
-        }
-        
-        [[ContextManager sharedInstance] saveWithContext:backgroundMOC];
-    }];
-}
-
-- (void)mergePages:(NSArray *)newPages {
-    if ([self isDeleted] || self.managedObjectContext == nil)
-        return;
-    
-    NSManagedObjectContext *backgroundMOC = [[ContextManager sharedInstance] derivedContext];
-
-    [backgroundMOC performBlock:^{
-        NSMutableArray *pagesToKeep = [NSMutableArray array];
-        for (NSDictionary *pageInfo in newPages) {
-            NSNumber *pageID = [[pageInfo objectForKey:@"page_id"] numericValue];
-            Page *newPage = [Page findOrCreateWithBlog:self andPageID:pageID withContext:backgroundMOC];
-            if (newPage.remoteStatus == AbstractPostRemoteStatusSync) {
-                [newPage updateFromDictionary:pageInfo];
-            }
-            [pagesToKeep addObject:newPage];
-        }
-
-        NSArray *syncedPages = [self syncedPostsWithEntityName:@"Page" withContext:backgroundMOC];
-        NSArray *pagesToKeepObjectIDs = [pagesToKeep valueForKey:@"objectID"];
-        for (Page *page in syncedPages) {
-            if (![pagesToKeepObjectIDs containsObject:page.objectID]) {
-
-                if (page.revision) { //edited page before the refresh is finished
-                    //We should check if this page is already available on the blog
-                    BOOL presence = NO;
-
-                    for (Page *currentPageToKeep in pagesToKeep) {
-                        if([currentPageToKeep.postID isEqualToNumber:page.postID]) {
-                            presence = YES;
-                            break;
-                        }
-                    }
-                    if( presence == YES ) {
-                        //page is on the server (most cases), kept it unchanged
-                    } else {
-                        //page is deleted on the server, make it local, otherwise you can't upload it anymore
-                        page.remoteStatus = AbstractPostRemoteStatusLocal;
-                        page.postID = nil;
-                        page.permaLink = nil;
-                    }
-                } else {
-                    //page is not on the server anymore. delete it.
-                    DDLogInfo(@"Deleting page: %@", page);
-                    [backgroundMOC deleteObject:page];
-                }
-            }
-        }
-
-        [[ContextManager sharedInstance] saveWithContext:backgroundMOC];
-    }];
 }
 
 - (void)mergeComments:(NSArray *)newComments {
