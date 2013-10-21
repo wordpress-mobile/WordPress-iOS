@@ -212,7 +212,7 @@
 }
 
 - (void)didReceiveMemoryWarning {
-    WPLog(@"%@ %@", self, NSStringFromSelector(_cmd));
+    DDLogWarn(@"%@ %@", self, NSStringFromSelector(_cmd));
     [super didReceiveMemoryWarning];
 }
 
@@ -1449,9 +1449,9 @@
 		Coordinate *c = [[Coordinate alloc] initWithCoordinate:coordinate];
 		self.post.geolocation = c;
 		postDetailViewController.hasLocation.enabled = YES;
-        WPLog(@"Added geotag (%+.6f, %+.6f)",
-			  c.latitude,
-			  c.longitude);
+        DDLogInfo(@"Added geotag (%+.6f, %+.6f)",
+                  c.latitude,
+                  c.longitude);
 		[locationManager stopUpdatingLocation];
         [postDetailViewController refreshButtons];
 		[tableView reloadData];
@@ -1627,9 +1627,9 @@
 				   resultBlock: ^(ALAsset *myasset) {
 					   ALAssetRepresentation *rep = [myasset defaultRepresentation];
 					   
-					   WPLog(@"getJPEGFromAssetForURL: default asset representation for %@: uti: %@ size: %lld url: %@ orientation: %d scale: %f metadata: %@",
-							 url, [rep UTI], [rep size], [rep url], [rep orientation],
-							 [rep scale], [rep metadata]);
+					   DDLogInfo(@"getJPEGFromAssetForURL: default asset representation for %@: uti: %@ size: %lld url: %@ orientation: %d scale: %f metadata: %@",
+                                 url, [rep UTI], [rep size], [rep url], [rep orientation],
+                                 [rep scale], [rep metadata]);
 					   
 					   Byte *buf = malloc([rep size]);  // will be freed automatically when associated NSData is deallocated
 					   NSError *err = nil;
@@ -1639,7 +1639,7 @@
 						   // Are err and bytes == 0 redundant? Doc says 0 return means
 						   // error occurred which presumably means NSError is returned.
 						   free(buf); // Free up memory so we don't leak.
-						   WPLog(@"error from getBytes: %@", err);
+						   DDLogError(@"error from getBytes: %@", err);
 						   
 						   return;
 					   }
@@ -1667,7 +1667,7 @@
 					   CFRelease(source);
 				   }
 				  failureBlock: ^(NSError *err) {
-					  WPLog(@"can't get asset %@: %@", url, err);
+					  DDLogError(@"can't get asset %@: %@", url, err);
 					  _currentImageMetadata = nil;
 				  }];
 }
@@ -1797,7 +1797,7 @@
         }
 		
 		if(!success) {
-			WPLog(@"***Could not create data from image destination ***");
+			DDLogError(@"***Could not create data from image destination ***");
 			//write the data without EXIF to disk
 			NSFileManager *fileManager = [NSFileManager defaultManager];
 			[fileManager createFileAtPath:filepath contents:imageData attributes:nil];

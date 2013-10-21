@@ -402,7 +402,7 @@
 
 - (void)syncPostsWithSuccess:(void (^)())success failure:(void (^)(NSError *error))failure loadMore:(BOOL)more {
     if (self.isSyncingPosts) {
-        WPLog(@"Already syncing posts. Skip");
+        DDLogWarn(@"Already syncing posts. Skip");
         return;
     }
     self.isSyncingPosts = YES;
@@ -413,7 +413,7 @@
 
 - (void)syncPagesWithSuccess:(void (^)())success failure:(void (^)(NSError *error))failure loadMore:(BOOL)more {
 	if (self.isSyncingPages) {
-        WPLog(@"Already syncing pages. Skip");
+        DDLogWarn(@"Already syncing pages. Skip");
         return;
     }
     self.isSyncingPages = YES;
@@ -441,7 +441,7 @@
 
 - (void)syncCommentsWithSuccess:(void (^)())success failure:(void (^)(NSError *error))failure {
 	if (self.isSyncingComments) {
-        WPLog(@"Already syncing comments. Skip");
+        DDLogWarn(@"Already syncing comments. Skip");
         return;
     }
     self.isSyncingComments = YES;
@@ -828,7 +828,7 @@
 	if (syncedCategories && (syncedCategories.count > 0)) {
 		for (Category *cat in syncedCategories) {
 			if(![categoriesToKeep containsObject:cat]) {
-				WPLog(@"Deleting Category: %@", cat);
+				DDLogInfo(@"Deleting Category: %@", cat);
 				[[self managedObjectContext] deleteObject:cat];
 			}
 		}
@@ -883,8 +883,8 @@
                     }
                 } else {
                     //post is not on the server anymore. delete it.
-                    WPLog(@"Deleting post: %@", post.postTitle);
-                    WPLog(@"%d posts left", [self.posts count]);
+                    DDLogInfo(@"Deleting post: %@", post.postTitle);
+                    DDLogInfo(@"%d posts left", [self.posts count]);
                     [backgroundMOC deleteObject:post];
                 }
             }
@@ -937,7 +937,7 @@
                     }
                 } else {
                     //page is not on the server anymore. delete it.
-                    WPLog(@"Deleting page: %@", page);
+                    DDLogInfo(@"Deleting page: %@", page);
                     [backgroundMOC deleteObject:page];
                 }
             }
@@ -971,7 +971,7 @@
             for (Comment *comment in syncedComments) {
                 // Don't delete unpublished comments
                 if(![commentsToKeep containsObject:comment] && comment.commentID != nil) {
-                    WPLog(@"Deleting Comment: %@", comment);
+                    DDLogInfo(@"Deleting Comment: %@", comment);
                     [backgroundMOC deleteObject:comment];
                 }
             }

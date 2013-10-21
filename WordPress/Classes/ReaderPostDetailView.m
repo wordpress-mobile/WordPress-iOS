@@ -327,7 +327,7 @@
 		self.followButton.selected = [self.post.isFollowing boolValue]; // for good measure!
 		[self setNeedsLayout];
 	} failure:^(NSError *error) {
-		WPLog(@"Error Following Blog : %@", [error localizedDescription]);
+		DDLogError(@"Error Following Blog : %@", [error localizedDescription]);
 		[_followButton setSelected:self.post.isFollowing];
 		[self setNeedsLayout];
 		

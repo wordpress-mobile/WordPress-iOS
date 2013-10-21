@@ -232,7 +232,7 @@
 #pragma mark Memory Management
 
 - (void)didReceiveMemoryWarning {
-    WPLog(@"%@ %@", self, NSStringFromSelector(_cmd));
+    DDLogWarn(@"%@ %@", self, NSStringFromSelector(_cmd));
     [super didReceiveMemoryWarning];
 }
 
@@ -292,7 +292,7 @@
 
     @try {
         post = [self.resultsController objectAtIndexPath:indexPath];
-        WPLog(@"Selected post at indexPath: (%i,%i)", indexPath.section, indexPath.row);
+        DDLogInfo(@"Selected post at indexPath: (%i,%i)", indexPath.section, indexPath.row);
     }
     @catch (NSException *e) {
         DDLogError(@"Can't select post at indexPath (%i,%i)", indexPath.section, indexPath.row);

@@ -201,7 +201,7 @@
         [WPMobileStats trackEventForWPCom:StatsEventReaderReblogged];
 		
 	} failure:^(NSError *error) {
-		WPLog(@"Error Reblogging Post : %@", [error localizedDescription]);
+		DDLogError(@"Error Reblogging Post : %@", [error localizedDescription]);
 		[self enableForm:YES];
 		[self.activityView stopAnimating];
 		[self.textView becomeFirstResponder];

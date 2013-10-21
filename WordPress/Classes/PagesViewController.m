@@ -52,7 +52,7 @@
 
     @try {
         page = [self.resultsController objectAtIndexPath:indexPath];
-        WPLog(@"Selected page at indexPath: (%i,%i)", indexPath.section, indexPath.row);
+        DDLogInfo(@"Selected page at indexPath: (%i,%i)", indexPath.section, indexPath.row);
     }
     @catch (NSException *e) {
         DDLogError(@"Can't select page at indexPath (%i,%i)", indexPath.section, indexPath.row);

@@ -93,7 +93,7 @@
                          }
                      }
                  } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
-                     WPLog(@"Error while creating category: %@", [error localizedDescription]);
+                     DDLogError(@"Error while creating category: %@", [error localizedDescription]);
                      // Just in case another thread has saved while we were creating
                      [[blog managedObjectContext] deleteObject:category];
                      [blog dataSave]; // Commit core data changes

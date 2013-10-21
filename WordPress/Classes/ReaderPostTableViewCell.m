@@ -427,7 +427,7 @@
             [WPMobileStats trackEventForWPCom:StatsEventReaderUnlikedPost];
         }
 	} failure:^(NSError *error) {
-		WPLog(@"Error Liking Post : %@", [error localizedDescription]);
+		DDLogError(@"Error Liking Post : %@", [error localizedDescription]);
 		[self updateControlBar];
 	}];
 	

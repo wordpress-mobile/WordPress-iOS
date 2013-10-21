@@ -233,7 +233,7 @@
 
 - (void)createBlog:(NSDictionary *)blogInfo withAccount:(WPAccount *)account
 {
-    WPLog(@"creating blog: %@", blogInfo);
+    DDLogInfo(@"creating blog: %@", blogInfo);
     Blog *blog = [account findOrCreateBlogFromDictionary:blogInfo withContext:account.managedObjectContext];
 	blog.geolocationEnabled = YES;
 	[blog dataSave];

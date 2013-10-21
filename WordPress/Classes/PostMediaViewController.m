@@ -1152,7 +1152,7 @@
 				   resultBlock: ^(ALAsset *myasset) {
 					   ALAssetRepresentation *rep = [myasset defaultRepresentation];
 					   
-					   WPLog(@"getJPEGFromAssetForURL: default asset representation for %@: uti: %@ size: %lld url: %@ orientation: %d scale: %f metadata: %@", 
+					   DDLogInfo(@"getJPEGFromAssetForURL: default asset representation for %@: uti: %@ size: %lld url: %@ orientation: %d scale: %f metadata: %@",
 							 url, [rep UTI], [rep size], [rep url], [rep orientation], 
 							 [rep scale], [rep metadata]);
 					   
@@ -1164,7 +1164,7 @@
 						   // Are err and bytes == 0 redundant? Doc says 0 return means 
 						   // error occurred which presumably means NSError is returned.
 						   free(buf); // Free up memory so we don't leak.
-						   WPLog(@"error from getBytes: %@", err);
+						   DDLogError(@"error from getBytes: %@", err);
 						   
 						   return;
 					   } 
@@ -1192,7 +1192,7 @@
 					   CFRelease(source);
 				   }
 				  failureBlock: ^(NSError *err) {
-					  WPLog(@"can't get asset %@: %@", url, err);
+					  DDLogError(@"can't get asset %@: %@", url, err);
 					  self.currentImageMetadata = nil;
 				  }];
 }
@@ -1626,7 +1626,7 @@
         self.videoEnabled = enabled;
         self.isCheckingVideoCapability = NO;
     } failure:^(NSError *error) {
-        WPLog(@"checkVideoPressEnabled failed: %@", [error localizedDescription]);
+        DDLogError(@"checkVideoPressEnabled failed: %@", [error localizedDescription]);
         self.videoEnabled = YES;
         self.isCheckingVideoCapability = NO;
     }];
