@@ -10,7 +10,7 @@
 #import "NSString+Helpers.h"
 #import "JSONKit.h"
 #import "WordPressComApi.h"
-#import "WordPressAppDelegate.h"
+#import "ContextManager.h"
 
 const NSUInteger NoteKeepCount = 20;
 
@@ -66,8 +66,7 @@ const NSUInteger NoteKeepCount = 20;
 }
 
 + (void)refreshUnreadNotesWithContext:(NSManagedObjectContext *)context {
-    NSManagedObjectModel *model = [[WordPressAppDelegate sharedWordPressApplicationDelegate] managedObjectModel];
-    NSFetchRequest *request = [model fetchRequestTemplateForName:@"UnreadNotes"];
+    NSFetchRequest *request = [[ContextManager sharedInstance] fetchRequestTemplateForName:@"UnreadNotes"];
     NSError *error = nil;
     NSArray *notes = [context executeFetchRequest:request error:&error];
     if ([notes count] > 0) {

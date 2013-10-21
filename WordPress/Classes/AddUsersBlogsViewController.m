@@ -15,6 +15,7 @@
 #import "UIImageView+Gravatar.h"
 #import "WPAccount.h"
 #import "SupportViewController.h"
+#import "ContextManager.h"
 
 @interface AddUsersBlogsViewController() <CreateWPComBlogViewControllerDelegate>
 
@@ -534,8 +535,7 @@
 - (void)saveSelectedBlogs {
     [[NSUserDefaults standardUserDefaults] setBool:YES forKey:@"refreshCommentsRequired"];
 	
-    NSManagedObjectContext *backgroundMOC = [[NSManagedObjectContext alloc] initWithConcurrencyType:NSPrivateQueueConcurrencyType];
-    backgroundMOC.parentContext = [WordPressAppDelegate sharedWordPressApplicationDelegate].managedObjectContext;
+    NSManagedObjectContext *backgroundMOC = [[ContextManager sharedInstance] derivedContext];
     
     [backgroundMOC performBlock:^{
         for (NSDictionary *blog in usersBlogs) {
@@ -544,13 +544,8 @@
             }
         }
         
-        NSError *error;
-        if(![backgroundMOC save:&error]) {
-            WPFLog(@"Core data context save error on adding blogs: %@", error);
-            #if DEBUG
-            exit(-1);
-            #endif
-        }
+        [[ContextManager sharedInstance] saveWithContext:backgroundMOC];
+        [[ContextManager sharedInstance] saveMainContext];
         
         dispatch_async(dispatch_get_main_queue(), ^{
             [self.navigationController popToRootViewControllerAnimated:YES];

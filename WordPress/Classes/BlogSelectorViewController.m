@@ -12,6 +12,7 @@
 #import "BlogsTableViewCell.h"
 #import "UIImageView+Gravatar.h"
 #import "NSString+XMLExtensions.h" 
+#import "ContextManager.h"
 
 @interface BlogSelectorViewController (PrivateMethods)
 - (NSFetchedResultsController *)resultsController;
@@ -146,9 +147,8 @@
         return resultsController;
     }
     
-    WordPressAppDelegate *appDelegate = [WordPressAppDelegate sharedWordPressApplicationDelegate];
     NSFetchRequest *fetchRequest = [[NSFetchRequest alloc] init];
-    [fetchRequest setEntity:[NSEntityDescription entityForName:@"Blog" inManagedObjectContext:appDelegate.managedObjectContext]];
+    [fetchRequest setEntity:[NSEntityDescription entityForName:@"Blog" inManagedObjectContext:[[ContextManager sharedInstance] mainContext]]];
     NSSortDescriptor *sortDescriptor = [[NSSortDescriptor alloc] initWithKey:@"blogName" ascending:YES];
     NSArray *sortDescriptors = [[NSArray alloc] initWithObjects:sortDescriptor, nil];
     [fetchRequest setSortDescriptors:sortDescriptors];
@@ -157,7 +157,7 @@
     // Since we don't really use sections we skip the cache here
     resultsController = [[NSFetchedResultsController alloc]
                                                        initWithFetchRequest:fetchRequest
-                                                       managedObjectContext:appDelegate.managedObjectContext
+                                                       managedObjectContext:[[ContextManager sharedInstance] mainContext]
                                                          sectionNameKeyPath:nil
                                                                   cacheName:nil];
     resultsController.delegate = self;

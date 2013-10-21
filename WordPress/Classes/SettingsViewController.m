@@ -47,6 +47,7 @@
 #import "WPTableViewSectionHeaderView.h"
 #import "AddUsersBlogsViewController.h"
 #import "SupportViewController.h"
+#import "ContextManager.h"
 
 typedef enum {
 
@@ -604,7 +605,7 @@ typedef enum {
     }
 
     NSFetchRequest *fetchRequest = [[NSFetchRequest alloc] init];
-    NSManagedObjectContext *moc = [[WordPressAppDelegate sharedWordPressApplicationDelegate] managedObjectContext];
+    NSManagedObjectContext *moc = [[ContextManager sharedInstance] mainContext];
     [fetchRequest setEntity:[NSEntityDescription entityForName:@"Blog" inManagedObjectContext:moc]];
     [fetchRequest setSortDescriptors:[NSArray arrayWithObject:[NSSortDescriptor sortDescriptorWithKey:@"blogName" ascending:YES]]];
     

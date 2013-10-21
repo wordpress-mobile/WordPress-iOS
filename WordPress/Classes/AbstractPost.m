@@ -8,6 +8,7 @@
 
 #import "AbstractPost.h"
 #import "Media.h"
+#import "ContextManager.h"
 
 @implementation AbstractPost
 

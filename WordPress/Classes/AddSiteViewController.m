@@ -100,7 +100,7 @@ CGSize const AddSiteLogoSize = { 320.0, 70.0 };
     NSMutableDictionary *newBlog = [NSMutableDictionary dictionaryWithDictionary:blogDetails];
     [newBlog setObject:xmlrpc forKey:@"xmlrpc"];
  
-    self.blog = [account findOrCreateBlogFromDictionary:newBlog withContext:[WordPressAppDelegate sharedWordPressApplicationDelegate].managedObjectContext];
+    self.blog = [account findOrCreateBlogFromDictionary:newBlog withContext:account.managedObjectContext];
     self.blog.geolocationEnabled = self.geolocationEnabled;
     [self.blog dataSave];
 }

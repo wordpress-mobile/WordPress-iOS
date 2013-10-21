@@ -12,6 +12,8 @@
 #import "WordPressAppDelegate.h"
 #import "WordPressComApi.h"
 #import "SFHFKeychainUtils.h"
+#import "ContextManager.h"
+
 
 static NSString * const DefaultDotcomAccountDefaultsKey = @"AccountDefaultDotcom";
 static NSString * const DotcomXmlrpcKey = @"https://wordpress.com/xmlrpc.php";
@@ -39,7 +41,7 @@ NSString * const WPAccountDefaultWordPressComAccountChangedNotification = @"WPAc
     if (__defaultDotcomAccount) {
         return __defaultDotcomAccount;
     }
-    NSManagedObjectContext *context = [[WordPressAppDelegate sharedWordPressApplicationDelegate] managedObjectContext];
+    NSManagedObjectContext *context = [[ContextManager sharedInstance] mainContext];
 
     NSURL *accountURL = [[NSUserDefaults standardUserDefaults] URLForKey:DefaultDotcomAccountDefaultsKey];
     if (!accountURL) {
@@ -106,7 +108,7 @@ NSString * const WPAccountDefaultWordPressComAccountChangedNotification = @"WPAc
     NSFetchRequest *request = [NSFetchRequest fetchRequestWithEntityName:@"Account"];
     [request setPredicate:[NSPredicate predicateWithFormat:@"xmlrpc like %@ AND username like %@", xmlrpc, username]];
     [request setIncludesPendingChanges:YES];
-    NSManagedObjectContext *context = [[WordPressAppDelegate sharedWordPressApplicationDelegate] managedObjectContext];
+    NSManagedObjectContext *context = [[ContextManager sharedInstance] mainContext];
     NSArray *results = [context executeFetchRequest:request error:nil];
     WPAccount *account = nil;
     if ([results count] > 0) {

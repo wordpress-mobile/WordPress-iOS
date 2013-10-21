@@ -15,21 +15,12 @@
 #import "NSURL+IDN.h"
 #import "NSString+XMLExtensions.h"
 #import "WPError.h"
+#import "ContextManager.h"
 
 @interface Blog (PrivateMethods)
-- (WPXMLRPCRequestOperation *)operationForOptionsWithSuccess:(void (^)())success failure:(void (^)(NSError *error))failure;
-- (WPXMLRPCRequestOperation *)operationForPostFormatsWithSuccess:(void (^)())success failure:(void (^)(NSError *error))failure;
-- (WPXMLRPCRequestOperation *)operationForCommentsWithSuccess:(void (^)())success failure:(void (^)(NSError *error))failure;
-- (WPXMLRPCRequestOperation *)operationForCategoriesWithSuccess:(void (^)())success failure:(void (^)(NSError *error))failure;
-- (WPXMLRPCRequestOperation *)operationForPostsWithSuccess:(void (^)())success failure:(void (^)(NSError *error))failure loadMore:(BOOL)more;
-- (WPXMLRPCRequestOperation *)operationForPagesWithSuccess:(void (^)())success failure:(void (^)(NSError *error))failure loadMore:(BOOL)more;
-
-- (void)mergeCategories:(NSArray *)newCategories;
-- (void)mergeComments:(NSArray *)newComments;
-- (void)mergePages:(NSArray *)newPages;
-- (void)mergePosts:(NSArray *)newPosts;
 
 @property (readwrite, assign) BOOL reachable;
+
 @end
 
 
@@ -268,38 +259,7 @@
 }
 
 - (void)dataSave {
-    [self dataSaveWithContext:self.managedObjectContext];
-}
-
-- (void)dataSaveWithContext:(NSManagedObjectContext*)context {
-    __block NSError *error = nil;
-    [context performBlock:^{
-        if (![context save:&error]) {
-            DDLogInfo(@"Unresolved Core Data Save error %@, %@", error, [error userInfo]);
-            #if DEBUG
-            exit(-1);
-            #endif
-        }
-        if (context.parentContext) {
-            [context.parentContext performBlock:^{
-                if (![context.parentContext save:&error]) {
-                    DDLogInfo(@"Unresolved Core Data Save error %@, %@", error, [error userInfo]);
-                    #if DEBUG
-                    exit(-1);
-                    #endif
-                }
-            }];
-        }
-        // Is this needed?
-//        dispatch_block_t notify = ^{
-//            [[NSNotificationCenter defaultCenter] postNotificationName:BlogChangedNotification object:nil];
-//        };
-//        if (![NSThread isMainThread]) {
-//            dispatch_async(dispatch_get_main_queue(), notify);
-//        } else {
-//            notify();
-//        }
-    }];
+    [[ContextManager sharedInstance] saveWithContext:self.managedObjectContext];
 }
 
 - (void)remove {
@@ -866,8 +826,7 @@
     if ([self isDeleted] || self.managedObjectContext == nil)
         return;
     
-    NSManagedObjectContext *backgroundMOC = [[NSManagedObjectContext alloc] initWithConcurrencyType:NSPrivateQueueConcurrencyType];
-    backgroundMOC.parentContext = [WordPressAppDelegate sharedWordPressApplicationDelegate].managedObjectContext;
+    NSManagedObjectContext *backgroundMOC = [[ContextManager sharedInstance] derivedContext];
     
     [backgroundMOC performBlock:^{
         NSMutableArray *postsToKeep = [NSMutableArray array];
@@ -914,7 +873,7 @@
             }
         }
         
-        [self dataSaveWithContext:backgroundMOC];
+        [[ContextManager sharedInstance] saveWithContext:backgroundMOC];
     }];
 }
 
@@ -922,8 +881,7 @@
     if ([self isDeleted] || self.managedObjectContext == nil)
         return;
     
-    NSManagedObjectContext *backgroundMOC = [[NSManagedObjectContext alloc] initWithConcurrencyType:NSPrivateQueueConcurrencyType];
-    backgroundMOC.parentContext = [WordPressAppDelegate sharedWordPressApplicationDelegate].managedObjectContext;
+    NSManagedObjectContext *backgroundMOC = [[ContextManager sharedInstance] derivedContext];
 
     [backgroundMOC performBlock:^{
         NSMutableArray *pagesToKeep = [NSMutableArray array];
@@ -967,7 +925,7 @@
             }
         }
 
-        [self dataSaveWithContext:backgroundMOC];
+        [[ContextManager sharedInstance] saveWithContext:backgroundMOC];
     }];
 }
 
@@ -976,8 +934,7 @@
     if ([self isDeleted] || self.managedObjectContext == nil)
         return;
 
-    NSManagedObjectContext *backgroundMOC = [[NSManagedObjectContext alloc] initWithConcurrencyType:NSPrivateQueueConcurrencyType];
-    backgroundMOC.parentContext = [WordPressAppDelegate sharedWordPressApplicationDelegate].managedObjectContext;
+    NSManagedObjectContext *backgroundMOC = [[ContextManager sharedInstance] derivedContext];
     
     [backgroundMOC performBlock:^{
         NSMutableArray *commentsToKeep = [NSMutableArray array];
@@ -1001,7 +958,7 @@
             }
         }
         
-        [self dataSaveWithContext:backgroundMOC];
+        [[ContextManager sharedInstance] saveWithContext:backgroundMOC];
     }];
 }
 

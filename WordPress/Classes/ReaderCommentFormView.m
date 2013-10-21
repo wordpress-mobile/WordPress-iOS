@@ -8,9 +8,9 @@
 
 #import "ReaderCommentFormView.h"
 #import "WordPressComApi.h"
-#import "WordPressAppDelegate.h"
 #import "WPToast.h"
 #import "IOS7CorrectedTextView.h"
+#import "ContextManager.h"
 
 @implementation ReaderCommentFormView
 
@@ -76,7 +76,7 @@
 								   
 								   [ReaderComment syncAndThreadComments:commentsArr
 																forPost:self.post
-															withContext:[[WordPressAppDelegate sharedWordPressApplicationDelegate] managedObjectContext]];
+															withContext:[[ContextManager sharedInstance] mainContext]];
 								   
 								   if([self.delegate respondsToSelector:@selector(readerTextFormDidSend:)]) {
 									   [self.delegate readerTextFormDidSend:self];

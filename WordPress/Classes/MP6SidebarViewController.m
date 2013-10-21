@@ -23,6 +23,7 @@
 #import "WPAccount.h"
 #import "QuickPhotoViewController.h"
 #import "GeneralWalkthroughViewController.h"
+#import "ContextManager.h"
 
 @interface MP6SidebarViewController () <UITableViewDataSource, UITableViewDelegate, NSFetchedResultsControllerDelegate, UIActionSheetDelegate> {
     Blog *_currentlyOpenedBlog;
@@ -155,7 +156,7 @@ CGFloat const SidebarViewControllerStatusBarViewHeight = 20.0;
 - (NSFetchedResultsController *)resultsController {
     if (_resultsController != nil) return _resultsController;
     
-    NSManagedObjectContext *moc = [[WordPressAppDelegate sharedWordPressApplicationDelegate] managedObjectContext];
+    NSManagedObjectContext *moc = [[ContextManager sharedInstance] mainContext];
     
     NSFetchRequest *fetchRequest = [[NSFetchRequest alloc] init];
     [fetchRequest setEntity:[NSEntityDescription entityForName:@"Blog" inManagedObjectContext:moc]];
