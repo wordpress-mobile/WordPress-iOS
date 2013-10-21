@@ -33,6 +33,7 @@ typedef enum {
 // Takes the NSDictionary from a XMLRPC call and creates or updates a post
 + (Comment *)createOrReplaceFromDictionary:(NSDictionary *)commentInfo forBlog:(Blog *)blog withContext:(NSManagedObjectContext*)context;
 - (Comment *)newReply;
++ (void)mergeNewComments:(NSArray *)newComments forBlog:(Blog *)blog;
 
 ///---------------------
 /// @name Helper methods

@@ -7,6 +7,7 @@
 //
 
 #import "Category.h"
+#import "ContextManager.h"
 
 @interface Category(PrivateMethods)
 + (Category *)newCategoryForBlog:(Blog *)blog;
@@ -102,4 +103,34 @@
                      }
                  }];
 }
+
++ (void)mergeNewCategories:(NSArray *)newCategories forBlog:(Blog *)blog {
+    NSManagedObjectContext *derived = [[ContextManager sharedInstance] derivedContext];
+    
+    [derived performBlockAndWait:^{
+        NSMutableArray *categoriesToKeep = [NSMutableArray array];
+        Blog *contextBlog = (Blog *)[derived objectWithID:blog.objectID];
+        
+        for (NSDictionary *categoryInfo in newCategories) {
+            Category *newCategory = [Category createOrReplaceFromDictionary:categoryInfo forBlog:contextBlog];
+            if (newCategory != nil) {
+                [categoriesToKeep addObject:newCategory];
+            } else {
+                DDLogInfo(@"-[Category createOrReplaceFromDictionary:forBlog:] returned a nil category: %@", categoryInfo);
+            }
+        }
+        
+        NSSet *existingCategories = ((Blog *)[derived objectWithID:contextBlog.objectID]).categories;
+        if (existingCategories && (existingCategories.count > 0)) {
+            for (Category *c in existingCategories) {
+                if (![categoriesToKeep containsObject:c]) {
+                    DDLogInfo(@"Deleting Category: %@", c);
+                    [derived deleteObject:c];
+                }
+            }
+        }
+        [[ContextManager sharedInstance] saveWithContext:derived];
+    }];
+}
+
 @end
