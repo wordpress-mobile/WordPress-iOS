@@ -641,7 +641,7 @@
         if ([self isDeleted] || self.managedObjectContext == nil)
             return;
 
-        [self mergeComments:responseObject];
+        [Comment mergeNewComments:responseObject forBlog:self];
         self.isSyncingComments = NO;
         self.lastCommentsSync = [NSDate date];
 
@@ -669,7 +669,8 @@
         if ([self isDeleted] || self.managedObjectContext == nil)
             return;
 
-        [self mergeCategories:responseObject];
+        [Category mergeNewCategories:responseObject forBlog:self];
+        
         if (success) {
             success();
         }
@@ -789,69 +790,6 @@
     }];
 
     return operation;
-}
-
-#pragma mark -
-
-- (void)mergeCategories:(NSArray *)newCategories {
-    // Don't even bother if blog has been deleted while fetching categories
-    if ([self isDeleted] || self.managedObjectContext == nil)
-        return;
-
-	NSMutableArray *categoriesToKeep = [NSMutableArray array];
-    for (NSDictionary *categoryInfo in newCategories) {
-        Category *newCat = [Category createOrReplaceFromDictionary:categoryInfo forBlog:self];
-        if (newCat != nil) {
-            [categoriesToKeep addObject:newCat];
-        } else {
-            DDLogInfo(@"-[Category createOrReplaceFromDictionary:forBlog:] returned a nil category: %@", categoryInfo);
-        }
-    }
-
-	NSSet *syncedCategories = self.categories;
-	if (syncedCategories && (syncedCategories.count > 0)) {
-		for (Category *cat in syncedCategories) {
-			if(![categoriesToKeep containsObject:cat]) {
-				DDLogInfo(@"Deleting Category: %@", cat);
-				[[self managedObjectContext] deleteObject:cat];
-			}
-		}
-    }
-
-    [self dataSave];
-}
-
-- (void)mergeComments:(NSArray *)newComments {
-    // Don't even bother if blog has been deleted while fetching comments
-    if ([self isDeleted] || self.managedObjectContext == nil)
-        return;
-
-    NSManagedObjectContext *backgroundMOC = [[ContextManager sharedInstance] derivedContext];
-    
-    [backgroundMOC performBlock:^{
-        NSMutableArray *commentsToKeep = [NSMutableArray array];
-        for (NSDictionary *commentInfo in newComments) {
-            Comment *newComment = [Comment createOrReplaceFromDictionary:commentInfo forBlog:self withContext:backgroundMOC];
-            if (newComment != nil) {
-                [commentsToKeep addObject:newComment];
-            } else {
-                DDLogInfo(@"-[Comment createOrReplaceFromDictionary:forBlog:] returned a nil comment: %@", commentInfo);
-            }
-        }
-        
-        NSSet *syncedComments = ((Blog *)[backgroundMOC objectWithID:self.objectID]).comments;
-        if (syncedComments && (syncedComments.count > 0)) {
-            for (Comment *comment in syncedComments) {
-                // Don't delete unpublished comments
-                if(![commentsToKeep containsObject:comment] && comment.commentID != nil) {
-                    DDLogInfo(@"Deleting Comment: %@", comment);
-                    [backgroundMOC deleteObject:comment];
-                }
-            }
-        }
-        
-        [[ContextManager sharedInstance] saveWithContext:backgroundMOC];
-    }];
 }
 
 @end

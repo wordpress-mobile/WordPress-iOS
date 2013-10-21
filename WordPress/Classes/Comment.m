@@ -7,6 +7,7 @@
 //
 
 #import "Comment.h"
+#import "ContextManager.h"
 
 @interface Comment (WordPressApi)
 - (NSDictionary *)XMLRPCDictionary;
@@ -52,6 +53,37 @@
     [comment findPostWithContext:context];
     
     return comment;
+}
+
++ (void)mergeNewComments:(NSArray *)newComments forBlog:(Blog *)blog {
+    NSManagedObjectContext *derived = [[ContextManager sharedInstance] derivedContext];
+    
+    [derived performBlockAndWait:^{
+        NSMutableArray *commentsToKeep = [NSMutableArray array];
+        Blog *contextBlog = (Blog *)[derived objectWithID:blog.objectID];
+        
+        for (NSDictionary *commentInfo in newComments) {
+            Comment *newComment = [Comment createOrReplaceFromDictionary:commentInfo forBlog:contextBlog withContext:derived];
+            if (newComment != nil) {
+                [commentsToKeep addObject:newComment];
+            } else {
+                DDLogInfo(@"-[Comment createOrReplaceFromDictionary:forBlog:] returned a nil comment: %@", commentInfo);
+            }
+        }
+        
+        NSSet *existingComments = ((Blog *)[derived objectWithID:contextBlog.objectID]).comments;
+        if (existingComments && (existingComments.count > 0)) {
+            for (Comment *comment in existingComments) {
+                // Don't delete unpublished comments
+                if(![commentsToKeep containsObject:comment] && comment.commentID != nil) {
+                    WPLog(@"Deleting Comment: %@", comment);
+                    [derived deleteObject:comment];
+                }
+            }
+        }
+        
+        [[ContextManager sharedInstance] saveWithContext:derived];
+    }];
 }
 
 - (Comment *)newReply {
