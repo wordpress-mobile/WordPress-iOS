@@ -514,7 +514,11 @@
         if (IS_IPAD) {
             [self.navigationController pushViewController:supportViewController animated:YES];
         } else {
-            [appDelegate.navigationController presentViewController:supportViewController animated:YES completion:nil];
+            UINavigationController *navController = [[UINavigationController alloc] initWithRootViewController:supportViewController];
+            navController.modalPresentationStyle = UIModalPresentationFormSheet;
+            navController.modalTransitionStyle = UIModalTransitionStyleCoverVertical;
+            navController.navigationBar.translucent = NO;
+            [self presentViewController:navController animated:YES completion:nil];
         }
     }
 

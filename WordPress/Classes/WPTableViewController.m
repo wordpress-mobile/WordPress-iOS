@@ -538,7 +538,7 @@ NSTimeInterval const WPTableViewControllerRefreshTimeout = 300; // 5 minutes
 	switch(buttonIndex) {
 		case 0: {
             SupportViewController *supportViewController = [[SupportViewController alloc] init];
-//            helpViewController.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:NSLocalizedString(@"Cancel", nil) style:UIBarButtonItemStylePlain target:self action:@selector(dismissModal:)];
+
             // Probably should be modal
             UINavigationController *navController = [[UINavigationController alloc] initWithRootViewController:supportViewController];
             navController.navigationBar.translucent = NO;
