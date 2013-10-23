@@ -10,7 +10,7 @@
 #import "WordPressComApi.h"
 #import "UIBarButtonItem+Styled.h"
 #import "AFHTTPClient.h"
-#import "HelpViewController.h"
+#import "SupportViewController.h"
 #import "WPWebViewController.h"
 #import "JetpackSettingsViewController.h"
 #import "ReachabilityUtils.h"
@@ -402,9 +402,8 @@
                 //Domain Error or malformed response
                 [[UIApplication sharedApplication] openURL:[NSURL URLWithString: @"http://ios.wordpress.org/faq/#faq_3"]];
             } else {
-                HelpViewController *helpViewController = [[HelpViewController alloc] init];
-                helpViewController.isBlogSetup = YES;
-                [self.navigationController pushViewController:helpViewController animated:YES];
+                SupportViewController *supportViewController = [[SupportViewController alloc] init];
+                [self.navigationController pushViewController:supportViewController animated:YES];
             }
 			break;
 		}

@@ -1003,10 +1003,9 @@ CGFloat const GeneralWalkthroughiOS7StatusBarOffset = 10.0;
 
 - (void)showHelpViewController:(BOOL)animated
 {
-    HelpViewController *helpViewController = [[HelpViewController alloc] init];
-    helpViewController.isBlogSetup = YES;
+    SupportViewController *supportViewController = [[SupportViewController alloc] init];
     [self.navigationController setNavigationBarHidden:NO animated:NO];
-    [self.navigationController pushViewController:helpViewController animated:animated];
+    [self.navigationController pushViewController:supportViewController animated:animated];
 }
 
 - (BOOL)isUrlWPCom:(NSString *)url

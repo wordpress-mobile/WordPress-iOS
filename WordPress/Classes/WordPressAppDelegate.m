@@ -31,6 +31,7 @@
 #import "Note.h"
 #import "UIColor+Helpers.h"
 #import <Security/Security.h>
+#import "SupportViewController.h"
 
 @interface WordPressAppDelegate (Private) <CrashlyticsDelegate>
 
@@ -1253,8 +1254,8 @@ int ddLogLevel = LOG_LEVEL_INFO;
 		//Need Help Alert
 		switch(buttonIndex) {
 			case 0: {
-				HelpViewController *helpViewController = [[HelpViewController alloc] init];
-                UINavigationController *aNavigationController = [[UINavigationController alloc] initWithRootViewController:helpViewController];
+				SupportViewController *supportViewController = [[SupportViewController alloc] init];
+                UINavigationController *aNavigationController = [[UINavigationController alloc] initWithRootViewController:supportViewController];
                 aNavigationController.navigationBar.translucent = NO;
                 if (IS_IPAD) {
                     aNavigationController.modalTransitionStyle = UIModalTransitionStyleCrossDissolve;

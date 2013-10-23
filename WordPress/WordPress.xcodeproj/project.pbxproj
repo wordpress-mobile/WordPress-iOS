@@ -184,8 +184,6 @@
 		37363A4D15AB26CD00D3A6B4 /* navbar_button_bg_landscape_active.png in Resources */ = {isa = PBXBuildFile; fileRef = 37363A4B15AB26CD00D3A6B4 /* navbar_button_bg_landscape_active.png */; };
 		37417FAF15BEFA9C0067DFEA /* sidebar_border_bg.png in Resources */ = {isa = PBXBuildFile; fileRef = 37417FAD15BEFA9C0067DFEA /* sidebar_border_bg.png */; };
 		37417FB015BEFA9C0067DFEA /* sidebar_border_bg@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 37417FAE15BEFA9C0067DFEA /* sidebar_border_bg@2x.png */; };
-		3744A0DE130ABB0800CE7BE1 /* HelpViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3744A0DC130ABB0800CE7BE1 /* HelpViewController.m */; };
-		3744A0DF130ABB0800CE7BE1 /* HelpViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 3744A0DD130ABB0800CE7BE1 /* HelpViewController.xib */; };
 		374CB15515B85CF300DD0EBC /* settings.png in Resources */ = {isa = PBXBuildFile; fileRef = 374CB15315B85CF300DD0EBC /* settings.png */; };
 		374CB15615B85CF300DD0EBC /* settings@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 374CB15415B85CF300DD0EBC /* settings@2x.png */; };
 		374CB16215B93C0800DD0EBC /* AudioToolbox.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 374CB16115B93C0800DD0EBC /* AudioToolbox.framework */; };
@@ -1243,9 +1241,6 @@
 		37363A4B15AB26CD00D3A6B4 /* navbar_button_bg_landscape_active.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = navbar_button_bg_landscape_active.png; path = Resources/Images/navbar_button_bg_landscape_active.png; sourceTree = "<group>"; };
 		37417FAD15BEFA9C0067DFEA /* sidebar_border_bg.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = sidebar_border_bg.png; path = Resources/Images/sidebar_border_bg.png; sourceTree = "<group>"; };
 		37417FAE15BEFA9C0067DFEA /* sidebar_border_bg@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "sidebar_border_bg@2x.png"; path = "Resources/Images/sidebar_border_bg@2x.png"; sourceTree = "<group>"; };
-		3744A0DB130ABB0800CE7BE1 /* HelpViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HelpViewController.h; sourceTree = "<group>"; };
-		3744A0DC130ABB0800CE7BE1 /* HelpViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HelpViewController.m; sourceTree = "<group>"; };
-		3744A0DD130ABB0800CE7BE1 /* HelpViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = HelpViewController.xib; path = Resources/HelpViewController.xib; sourceTree = "<group>"; };
 		374CB15315B85CF300DD0EBC /* settings.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = settings.png; path = Resources/Images/settings.png; sourceTree = "<group>"; };
 		374CB15415B85CF300DD0EBC /* settings@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "settings@2x.png"; path = "Resources/Images/settings@2x.png"; sourceTree = "<group>"; };
 		374CB16115B93C0800DD0EBC /* AudioToolbox.framework */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = wrapper.framework; name = AudioToolbox.framework; path = System/Library/Frameworks/AudioToolbox.framework; sourceTree = SDKROOT; };
@@ -2688,15 +2683,6 @@
 			name = "Navigation Bar";
 			sourceTree = "<group>";
 		};
-		3744A0DA130ABAFA00CE7BE1 /* Help */ = {
-			isa = PBXGroup;
-			children = (
-				3744A0DB130ABB0800CE7BE1 /* HelpViewController.h */,
-				3744A0DC130ABB0800CE7BE1 /* HelpViewController.m */,
-			);
-			name = Help;
-			sourceTree = "<group>";
-		};
 		374F188915A5895B00524ED0 /* Sidebar */ = {
 			isa = PBXGroup;
 			children = (
@@ -3772,7 +3758,6 @@
 			children = (
 				E1523EB216D3B2EE002C5A36 /* Sharing */,
 				30AF6CFE13C230CC00A29C00 /* About */,
-				3744A0DA130ABAFA00CE7BE1 /* Help */,
 				3768BEED13041E3F00E7C9A9 /* Beta */,
 				292CECFE1027259000BD407D /* SFHFKeychainUtils.h */,
 				292CECFF1027259000BD407D /* SFHFKeychainUtils.m */,
@@ -4233,7 +4218,6 @@
 				37245ADB13FC23FF006CDBE3 /* WPWebViewController.xib */,
 				28AD735F0D9D9599002E5188 /* MainWindow.xib */,
 				30AF6CF413C2289600A29C00 /* AboutViewController.xib */,
-				3744A0DD130ABB0800CE7BE1 /* HelpViewController.xib */,
 				A0E293FD0E21037200C6919C /* WPAddCategoryViewController.xib */,
 				ACAC7B690E1F8C0700AC7074 /* WPSelectionTableViewController.xib */,
 				3768BEF013041E7900E7C9A9 /* BetaFeedbackViewController.xib */,
@@ -4504,7 +4488,6 @@
 				E1B4A9E512FC8B2500EB3F67 /* blueArrow@2x.png in Resources */,
 				85ED989417DFA0A500090D0B /* AppIcon40x40@2x.png in Resources */,
 				3768BEF213041E7900E7C9A9 /* BetaFeedbackViewController.xib in Resources */,
-				3744A0DF130ABB0800CE7BE1 /* HelpViewController.xib in Resources */,
 				3704ACFC13128C9800120911 /* Default.png in Resources */,
 				3704ACFD13128C9800120911 /* Default@2x.png in Resources */,
 				3768F4901340BBD60075B633 /* blavatar-wporg@2x.png in Resources */,
@@ -5299,7 +5282,6 @@
 				3768BEF113041E7900E7C9A9 /* BetaFeedbackViewController.m in Sources */,
 				85468F3A17C483F1008AB9C1 /* NewCommentsTableViewCell.m in Sources */,
 				E1D458691309589C00BF0235 /* Coordinate.m in Sources */,
-				3744A0DE130ABB0800CE7BE1 /* HelpViewController.m in Sources */,
 				E159D1051309AB0D00F498E2 /* MigrateBlogsFromFiles.m in Sources */,
 				E17078FD130A95B600F30433 /* WordPress-1-2.xcmappingmodel in Sources */,
 				85F2C4C717B9F6E600A303E0 /* NewGeneralWalkthroughViewController.m in Sources */,

@@ -9,7 +9,7 @@
 #import "CreateAccountAndBlogViewController.h"
 #import <SVProgressHUD/SVProgressHUD.h>
 #import <QuartzCore/QuartzCore.h>
-#import "HelpViewController.h"
+#import "SupportViewController.h"
 #import "WordPressComApi.h"
 #import "UIView+FormSheetHelpers.h"
 #import "WPNUXBackButton.h"
@@ -960,9 +960,8 @@ CGFloat const CreateAccountAndBlogKeyboardOffset = 132.0;
 - (void)clickedHelpButton
 {
     [WPMobileStats trackEventForSelfHostedAndWPCom:StatsEventNUXCreateAccountClickedHelp];
-    HelpViewController *helpViewController = [[HelpViewController alloc] init];
-    helpViewController.isBlogSetup = YES;
-    [self.navigationController pushViewController:helpViewController animated:YES];
+    SupportViewController *supportViewController = [[SupportViewController alloc] init];
+    [self.navigationController pushViewController:supportViewController animated:YES];
 }
 
 - (void)clickedCancelButton

@@ -3,7 +3,6 @@
 
 #import "Constants.h"
 #import "Blog.h"
-#import "HelpViewController.h"
 #import "Reachability.h"
 #import "PanelNavigationController.h"
 #import "Constants.h"

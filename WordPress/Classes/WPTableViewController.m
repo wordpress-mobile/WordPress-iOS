@@ -15,6 +15,7 @@
 #import "WPWebViewController.h"
 #import "SoundUtil.h"
 #import "WPInfoView.h"
+#import "SupportViewController.h"
 
 NSTimeInterval const WPTableViewControllerRefreshTimeout = 300; // 5 minutes
 
@@ -536,11 +537,10 @@ NSTimeInterval const WPTableViewControllerRefreshTimeout = 300; // 5 minutes
 - (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex { 
 	switch(buttonIndex) {
 		case 0: {
-            HelpViewController *helpViewController = [[HelpViewController alloc] init];
-            helpViewController.isBlogSetup = YES;
-            helpViewController.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:NSLocalizedString(@"Cancel", nil) style:UIBarButtonItemStylePlain target:self action:@selector(dismissModal:)];
+            SupportViewController *supportViewController = [[SupportViewController alloc] init];
+//            helpViewController.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:NSLocalizedString(@"Cancel", nil) style:UIBarButtonItemStylePlain target:self action:@selector(dismissModal:)];
             // Probably should be modal
-            UINavigationController *navController = [[UINavigationController alloc] initWithRootViewController:helpViewController];
+            UINavigationController *navController = [[UINavigationController alloc] initWithRootViewController:supportViewController];
             navController.navigationBar.translucent = NO;
             if (IS_IPAD) {
                 navController.modalPresentationStyle = UIModalPresentationFormSheet;

@@ -22,7 +22,7 @@
 #import "WPNUXUtility.h"
 #import "NewWPWalkthroughOverlayView.h"
 #import "WPWebViewController.h"
-#import "HelpViewController.h"
+#import "SupportViewController.h"
 #import "WPAccount.h"
 #import "Blog.h"
 #import "Blog+Jetpack.h"
@@ -289,10 +289,9 @@
 
 - (void)showHelpViewController:(BOOL)animated
 {
-    HelpViewController *helpViewController = [[HelpViewController alloc] init];
-    helpViewController.isBlogSetup = YES;
+    SupportViewController *supportViewController = [[SupportViewController alloc] init];
     [self.navigationController setNavigationBarHidden:NO animated:NO];
-    [self.navigationController pushViewController:helpViewController animated:animated];
+    [self.navigationController pushViewController:supportViewController animated:animated];
 }
 
 - (BOOL)isUrlWPCom:(NSString *)url
