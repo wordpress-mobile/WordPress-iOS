@@ -34,6 +34,10 @@
     
 }
 
++ (NSString *const)remoteUniqueIdentifier {
+    return @"";
+}
+
 - (void)markRemoteStatusFailed {
     self.remoteStatus = AbstractPostRemoteStatusFailed;
     [self save];
@@ -68,7 +72,7 @@
 }
 
 + (void)mergeNewPosts:(NSArray *)newObjects forBlog:(Blog *)blog {
-    NSManagedObjectContext *derived = [[ContextManager sharedInstance] derivedContext];
+    NSManagedObjectContext *derived = [[ContextManager sharedInstance] newDerivedContext];
     
     [derived performBlockAndWait:^{
         NSMutableArray *objectsToKeep = [NSMutableArray array];
@@ -118,7 +122,6 @@
         }
         
         [[ContextManager sharedInstance] saveWithContext:derived];
-        [[ContextManager sharedInstance] saveMainContext];
     }];
 }
 
@@ -268,11 +271,7 @@
 }
 
 - (void)autosave {
-    NSError *error = nil;
-    if (![[self managedObjectContext] save:&error]) {
-        // We better not crash on autosave
-        DDLogInfo(@"[Autosave] Unresolved Core Data Save error %@, %@", error, [error userInfo]);
-    }
+    [[ContextManager sharedInstance] saveWithContext:[self managedObjectContext]];
 }
 
 @end

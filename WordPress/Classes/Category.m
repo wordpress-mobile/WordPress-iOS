@@ -105,7 +105,7 @@
 }
 
 + (void)mergeNewCategories:(NSArray *)newCategories forBlog:(Blog *)blog {
-    NSManagedObjectContext *derived = [[ContextManager sharedInstance] derivedContext];
+    NSManagedObjectContext *derived = [[ContextManager sharedInstance] newDerivedContext];
     
     [derived performBlockAndWait:^{
         NSMutableArray *categoriesToKeep = [NSMutableArray array];
