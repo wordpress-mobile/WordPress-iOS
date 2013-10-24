@@ -13,7 +13,7 @@
 + (instancetype)sharedInstance;
 
 - (NSPersistentStoreCoordinator *)persistentStoreCoordinator;
-- (NSManagedObjectContext *const)derivedContext;
+- (NSManagedObjectContext *const)newDerivedContext;
 - (NSManagedObjectContext *const)mainContext;
 
 - (void)saveMainContext;

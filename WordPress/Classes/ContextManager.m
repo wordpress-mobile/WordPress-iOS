@@ -33,7 +33,7 @@ static ContextManager *instance;
 
 #pragma mark - Contexts
 
-- (NSManagedObjectContext *const)derivedContext {
+- (NSManagedObjectContext *const)newDerivedContext {
     NSManagedObjectContext *derived = [[NSManagedObjectContext alloc] initWithConcurrencyType:NSPrivateQueueConcurrencyType];
     derived.undoManager = nil;
     derived.parentContext = [self mainContext];
@@ -49,7 +49,29 @@ static ContextManager *instance;
     _mainContext.undoManager = nil;
     _mainContext.parentContext = [self masterContext];
     
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(mergeChangesForMainContext:) name:NSManagedObjectContextObjectsDidChangeNotification object:_mainContext];
+    
     return _mainContext;
+}
+
+- (void)mergeChangesForMainContext:(NSNotification *)notification {
+    __block NSError *error;
+    [self.mainContext performBlock:^{
+        if (![self.mainContext save:&error]) {
+            DDLogError(@"Unresolved core data error saving main context after merge: %@", error);
+            #if DEBUG
+            abort();
+            #endif
+        }
+        [self.masterContext performBlock:^{
+            if (![self.masterContext save:&error]) {
+                DDLogError(@"Unresolved core data error saving main context after merge: %@", error);
+                #if DEBUG
+                abort();
+                #endif
+            }
+        }];
+    }];
 }
 
 - (NSManagedObjectContext *)masterContext {
@@ -74,7 +96,7 @@ static ContextManager *instance;
 
 - (void)saveWithContext:(NSManagedObjectContext *)context {
     [context obtainPermanentIDsForObjects:context.insertedObjects.allObjects error:nil];
-    [context performBlockAndWait:^{
+    [context performBlock:^{
         NSError *error;
         if (![context save:&error]) {
             DDLogError(@"Unresolved Core Data Save error %@, %@", error, [error userInfo]);

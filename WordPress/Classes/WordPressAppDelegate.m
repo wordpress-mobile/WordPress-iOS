@@ -846,7 +846,7 @@ int ddLogLevel = LOG_LEVEL_INFO;
 - (void)cleanUnusedMediaFileFromTmpDir {
     DDLogInfo(@"%@ %@", self, NSStringFromSelector(_cmd));
 
-    NSManagedObjectContext *context = [[ContextManager sharedInstance] derivedContext];
+    NSManagedObjectContext *context = [[ContextManager sharedInstance] newDerivedContext];
     [context performBlock:^{
         NSError *error;
         NSMutableArray *mediaToKeep = [NSMutableArray array];

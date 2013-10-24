@@ -56,7 +56,7 @@
 }
 
 + (void)mergeNewComments:(NSArray *)newComments forBlog:(Blog *)blog {
-    NSManagedObjectContext *derived = [[ContextManager sharedInstance] derivedContext];
+    NSManagedObjectContext *derived = [[ContextManager sharedInstance] newDerivedContext];
     
     [derived performBlockAndWait:^{
         NSMutableArray *commentsToKeep = [NSMutableArray array];
