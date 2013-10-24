@@ -558,14 +558,8 @@
     
     Blog *blog = [_account findOrCreateBlogFromDictionary:blogInfo withContext:context];
     blog.geolocationEnabled = self.geolocationEnabled;
-    
-    dispatch_async(dispatch_get_main_queue(), ^{
-        [blog syncBlogWithSuccess:^{
-            if( ![blog isWPcom] )
-                [[WordPressComApi sharedApi] syncPushNotificationInfo];
-        }
-                          failure:nil];
-    });
+
+    [blog syncBlogWithSuccess:nil failure:nil];
 }
 
 - (void)checkAddSelectedButtonStatus {
