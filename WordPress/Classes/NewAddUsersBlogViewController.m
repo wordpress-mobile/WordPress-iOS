@@ -368,20 +368,15 @@ CGFloat const AddUsersBlogBottomBackgroundHeight = 64;
 
     _addSelectedButton.enabled = NO;
     
-    NSManagedObjectContext *context = [[ContextManager sharedInstance] mainContext];
-    NSManagedObjectContext *backgroundMOC = [[NSManagedObjectContext alloc] initWithConcurrencyType:NSPrivateQueueConcurrencyType];
-    backgroundMOC.parentContext = context;
-  
-    [backgroundMOC performBlock:^{
+    NSManagedObjectContext *context = [[ContextManager sharedInstance] newDerivedContext];
+    [context performBlock:^{
         for (NSDictionary *blog in _usersBlogs) {
             if([_selectedBlogs containsObject:[blog valueForKey:@"blogid"]]) {
                 [self createBlog:blog withContext:context];
             }
         }
-        NSError *error;
-        if (![backgroundMOC save:&error]) {
-            DDLogError(@"Unresolved core data save error: %@", error);
-        }
+
+        [[ContextManager sharedInstance] saveWithContext:context];
         
         dispatch_async(dispatch_get_main_queue(), ^{
             if (self.blogAdditionCompleted) {
