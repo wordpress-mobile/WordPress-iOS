@@ -1234,7 +1234,7 @@
 		371C367A156CCFDD007EA03E /* SidebarSectionHeaderView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SidebarSectionHeaderView.m; sourceTree = "<group>"; };
 		37245ADB13FC23FF006CDBE3 /* WPWebViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = WPWebViewController.xib; path = Resources/WPWebViewController.xib; sourceTree = "<group>"; };
 		372AD15216682BA100F21BC1 /* NotificationsFollowDetailViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NotificationsFollowDetailViewController.h; sourceTree = "<group>"; };
-		372AD15316682BA100F21BC1 /* NotificationsFollowDetailViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NotificationsFollowDetailViewController.m; sourceTree = "<group>"; };
+		372AD15316682BA100F21BC1 /* NotificationsFollowDetailViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; lineEnding = 0; path = NotificationsFollowDetailViewController.m; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objc; };
 		37363A3715AB0DE000D3A6B4 /* cell_gradient_bg.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = cell_gradient_bg.png; path = Resources/Images/cell_gradient_bg.png; sourceTree = "<group>"; };
 		37363A3C15AB105200D3A6B4 /* cell_gradient_bg@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "cell_gradient_bg@2x.png"; path = "Resources/Images/cell_gradient_bg@2x.png"; sourceTree = "<group>"; };
 		37363A4615AB262500D3A6B4 /* navbar_button_bg_landscape.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = navbar_button_bg_landscape.png; path = Resources/Images/navbar_button_bg_landscape.png; sourceTree = "<group>"; };
@@ -1682,7 +1682,7 @@
 		8362C1031201E7CE00599347 /* WebSignupViewController-iPad.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = "WebSignupViewController-iPad.xib"; path = "Resources-iPad/WebSignupViewController-iPad.xib"; sourceTree = "<group>"; };
 		8362C54512027BC300599347 /* AddUsersBlogsViewController~ipad.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = "AddUsersBlogsViewController~ipad.xib"; path = "Resources-iPad/AddUsersBlogsViewController~ipad.xib"; sourceTree = "<group>"; };
 		8369FF8E11F4F3BF003106C7 /* AddUsersBlogsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AddUsersBlogsViewController.h; sourceTree = "<group>"; };
-		8369FF8F11F4F3BF003106C7 /* AddUsersBlogsViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AddUsersBlogsViewController.m; sourceTree = "<group>"; };
+		8369FF8F11F4F3BF003106C7 /* AddUsersBlogsViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; lineEnding = 0; path = AddUsersBlogsViewController.m; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objc; };
 		8369FF9011F4F3BF003106C7 /* AddUsersBlogsViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = AddUsersBlogsViewController.xib; path = Resources/AddUsersBlogsViewController.xib; sourceTree = "<group>"; };
 		8370D10811FA499A009D650F /* UITableViewActivityCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UITableViewActivityCell.h; sourceTree = "<group>"; };
 		8370D10911FA499A009D650F /* UITableViewActivityCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = UITableViewActivityCell.m; sourceTree = "<group>"; };
@@ -1694,7 +1694,7 @@
 		8370D11C11FA4CD5009D650F /* logo_wpcom@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "logo_wpcom@2x.png"; path = "Resources/Images/logo_wpcom@2x.png"; sourceTree = "<group>"; };
 		8370D11D11FA4CD5009D650F /* logo_wpcom.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = logo_wpcom.png; path = Resources/Images/logo_wpcom.png; sourceTree = "<group>"; };
 		8370D1BA11FA6295009D650F /* AddSiteViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AddSiteViewController.h; sourceTree = "<group>"; };
-		8370D1BB11FA6295009D650F /* AddSiteViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AddSiteViewController.m; sourceTree = "<group>"; };
+		8370D1BB11FA6295009D650F /* AddSiteViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; lineEnding = 0; path = AddSiteViewController.m; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objc; };
 		8370D1BC11FA6295009D650F /* AddSiteViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = AddSiteViewController.xib; path = Resources/AddSiteViewController.xib; sourceTree = "<group>"; };
 		837576C211305C67002EAA27 /* hasLocation.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = hasLocation.png; path = Resources/Images/hasLocation.png; sourceTree = "<group>"; };
 		8383178512270E980047B476 /* PostMediaViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PostMediaViewController.h; sourceTree = "<group>"; };
@@ -1865,7 +1865,7 @@
 		8599658817DA9438005F84EB /* icon-info-message.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "icon-info-message.png"; sourceTree = "<group>"; };
 		8599658917DA9438005F84EB /* icon-info-message@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "icon-info-message@2x.png"; sourceTree = "<group>"; };
 		85A1B6731742E7EF00BA5E35 /* WPMobileStats.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WPMobileStats.h; sourceTree = "<group>"; };
-		85A1B6741742E7EF00BA5E35 /* WPMobileStats.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WPMobileStats.m; sourceTree = "<group>"; };
+		85A1B6741742E7EF00BA5E35 /* WPMobileStats.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; lineEnding = 0; path = WPMobileStats.m; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objc; };
 		85A69CFF17C530FE0061E254 /* OpenSans-BoldItalic.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "OpenSans-BoldItalic.ttf"; sourceTree = "<group>"; };
 		85A69D0017C530FE0061E254 /* OpenSans-Italic.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "OpenSans-Italic.ttf"; sourceTree = "<group>"; };
 		85A69D0117C530FE0061E254 /* OpenSans-LightItalic.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "OpenSans-LightItalic.ttf"; sourceTree = "<group>"; };
@@ -2019,7 +2019,7 @@
 		C5C272DE0E7EC00A0034AA46 /* uncheck.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = uncheck.png; path = Resources/Images/uncheck.png; sourceTree = "<group>"; };
 		C5C272E00E7EC00F0034AA46 /* check.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = check.png; path = Resources/Images/check.png; sourceTree = "<group>"; };
 		CC0199E7165C17020073A966 /* NotificationsCommentDetailViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NotificationsCommentDetailViewController.h; sourceTree = "<group>"; };
-		CC0199E8165C17020073A966 /* NotificationsCommentDetailViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NotificationsCommentDetailViewController.m; sourceTree = "<group>"; };
+		CC0199E8165C17020073A966 /* NotificationsCommentDetailViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; lineEnding = 0; path = NotificationsCommentDetailViewController.m; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objc; };
 		CC098B8216A9ECF800450976 /* CameraPlusPickerManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = CameraPlusPickerManager.h; path = Vendor/CameraPlus/CameraPlusPickerManager.h; sourceTree = SOURCE_ROOT; };
 		CC098B8316A9ECF800450976 /* CameraPlusPickerManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = CameraPlusPickerManager.m; path = Vendor/CameraPlus/CameraPlusPickerManager.m; sourceTree = SOURCE_ROOT; };
 		CC0E20AC15B87DA100D3468B /* WPWebBridge.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WPWebBridge.h; sourceTree = "<group>"; };
@@ -2230,7 +2230,7 @@
 		E1A386C914DB05F700954CF8 /* CoreMedia.framework */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = wrapper.framework; name = CoreMedia.framework; path = System/Library/Frameworks/CoreMedia.framework; sourceTree = SDKROOT; };
 		E1A38C921581879D00439E55 /* WPTableViewControllerSubclass.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = WPTableViewControllerSubclass.h; sourceTree = "<group>"; };
 		E1AB07AB1578D34300D6AD64 /* SettingsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SettingsViewController.h; sourceTree = "<group>"; };
-		E1AB07AC1578D34300D6AD64 /* SettingsViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SettingsViewController.m; sourceTree = "<group>"; };
+		E1AB07AC1578D34300D6AD64 /* SettingsViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; lineEnding = 0; path = SettingsViewController.m; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objc; };
 		E1B4A9DF12FC8B1000EB3F67 /* EGORefreshTableHeaderView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EGORefreshTableHeaderView.h; sourceTree = "<group>"; };
 		E1B4A9E012FC8B1000EB3F67 /* EGORefreshTableHeaderView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EGORefreshTableHeaderView.m; sourceTree = "<group>"; };
 		E1B4A9E212FC8B2500EB3F67 /* blueArrow.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = blueArrow.png; path = Resources/Images/blueArrow.png; sourceTree = "<group>"; };

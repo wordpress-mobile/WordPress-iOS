@@ -21,6 +21,7 @@
 #import "NSURL+Util.h"
 #import "WPToast.h"
 #import "IOS7CorrectedTextView.h"
+#import "WPAccount.h"
 
 #define APPROVE_BUTTON_TAG 1
 #define UNAPPROVE_BUTTON_TAG 2
@@ -301,8 +302,8 @@ NS_ENUM(NSUInteger, NotifcationCommentCellType){
     }
     WPWebViewController *webViewController = [[WPWebViewController alloc] initWithNibName:nil bundle:nil];
     if ([url isWordPressDotComUrl]) {
-        [webViewController setUsername:[WordPressComApi sharedApi].username];
-        [webViewController setPassword:[WordPressComApi sharedApi].password];
+        [webViewController setUsername:[[WPAccount defaultWordPressComAccount] username]];
+        [webViewController setPassword:[[WPAccount defaultWordPressComAccount] password]];
         [webViewController setUrl:[url ensureSecureURL]];
     } else {
         [webViewController setUrl:url];        

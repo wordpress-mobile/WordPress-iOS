@@ -633,15 +633,15 @@ NSString *const WPReaderViewControllerDisplayedNativeFriendFinder = @"DisplayedN
 - (void)syncItemsWithUserInteraction:(BOOL)userInteraction success:(void (^)())success failure:(void (^)(NSError *))failure {
     WPFLogMethod();
     // if needs auth.
-    if([WPCookie hasCookieForURL:[NSURL URLWithString:@"https://wordpress.com"] andUsername:[[WordPressComApi sharedApi] username]]) {
+    if([WPCookie hasCookieForURL:[NSURL URLWithString:@"https://wordpress.com"] andUsername:[[WPAccount defaultWordPressComAccount] username]]) {
        [self syncItemsWithSuccess:success failure:failure];
         return;
     }
     
     //
     [[WordPressAppDelegate sharedWordPressApplicationDelegate] useDefaultUserAgent];
-    NSString *username = [[WordPressComApi sharedApi] username];
-    NSString *password = [[WordPressComApi sharedApi] password];
+    NSString *username = [[WPAccount defaultWordPressComAccount] username];
+    NSString *password = [[WPAccount defaultWordPressComAccount] password];
     NSMutableURLRequest *mRequest = [[NSMutableURLRequest alloc] init];
     NSString *requestBody = [NSString stringWithFormat:@"log=%@&pwd=%@&redirect_to=http://wordpress.com",
                              [username stringByUrlEncoding],

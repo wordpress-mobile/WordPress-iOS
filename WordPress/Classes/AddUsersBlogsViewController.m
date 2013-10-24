@@ -442,7 +442,7 @@
         label.shadowColor = [UIColor whiteColor];
         label.textAlignment = NSTextAlignmentCenter;
 
-        if ([WordPressComApi sharedApi].username) {
+        if ([[WPAccount defaultWordPressComAccount] username]) {
             label.text = NSLocalizedString(@"You do not seem to have any blogs. Would you like to create one now?", @"");
         } else {
             label.text = NSLocalizedString(@"You do not seem to have any blogs.", @"");
@@ -451,7 +451,7 @@
         label.frame = CGRectMake(0.0, 0.0, width, 38.0);
         [self.noblogsView addSubview:label];
         
-        if ([WordPressComApi sharedApi].username) {            
+        if ([[WPAccount defaultWordPressComAccount] username]) {            
             width = 282.0f;
             height = 44.0f;
             x = (noblogsView.frame.size.width / 2.0f) - (width / 2.0f);

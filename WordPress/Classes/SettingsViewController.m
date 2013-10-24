@@ -252,7 +252,7 @@ typedef enum {
             return 1;
             
         case SettingsSectionWpcom:
-            return ([WordPressComApi sharedApi].username && [[WordPressComApi sharedApi] hasCredentials]) ? 2 : 1;
+            return ([[WPAccount defaultWordPressComAccount] username] && [[WordPressComApi sharedApi] hasCredentials]) ? 2 : 1;
             
         case SettingsSectionMedia:
             return [mediaSettingsArray count];
@@ -357,7 +357,7 @@ typedef enum {
         if ([[WordPressComApi sharedApi] hasCredentials]) {
             if (indexPath.row == 0) {
                 cell.textLabel.text = NSLocalizedString(@"Username:", @"");
-                cell.detailTextLabel.text = [WordPressComApi sharedApi].username;
+                cell.detailTextLabel.text = [[WPAccount defaultWordPressComAccount] username];
                 cell.detailTextLabel.textColor = [UIColor UIColorFromHex:0x888888];
                 cell.selectionStyle = UITableViewCellSelectionStyleNone;
             } else {
@@ -542,7 +542,7 @@ typedef enum {
 
                 // Present the Sign out ActionSheet
                 NSString *signOutTitle = NSLocalizedString(@"You are logged in as %@", @"");
-                signOutTitle = [NSString stringWithFormat:signOutTitle, [WordPressComApi sharedApi].username];
+                signOutTitle = [NSString stringWithFormat:signOutTitle, [[WPAccount defaultWordPressComAccount] username]];
                 UIActionSheet *actionSheet;
                 actionSheet = [[UIActionSheet alloc] initWithTitle:signOutTitle 
                                                           delegate:self 
