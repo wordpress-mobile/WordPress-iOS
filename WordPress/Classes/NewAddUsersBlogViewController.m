@@ -374,34 +374,31 @@ CGFloat const AddUsersBlogBottomBackgroundHeight = 64;
     [backgroundMOC performBlock:^{
         for (NSDictionary *blog in _usersBlogs) {
             if([_selectedBlogs containsObject:[blog valueForKey:@"blogid"]]) {
-                [self createBlog:blog withAccount:self.account withContext:backgroundMOC];
+                [self createBlog:blog withContext:context];
             }
         }
         NSError *error;
         if (![backgroundMOC save:&error]) {
-            DDLogError(@"Error saving context on new blogs added %@", error);
+            DDLogError(@"Unresolved core data save error: %@", error);
         }
+        
+        dispatch_async(dispatch_get_main_queue(), ^{
+            if (self.blogAdditionCompleted) {
+                self.blogAdditionCompleted(self);
+            }
+            [[WordPressComApi sharedApi] syncPushNotificationInfo];
+            [[NSNotificationCenter defaultCenter] postNotificationName:@"BlogsRefreshNotification" object:nil];
+        });
     }];
-
-    if (self.blogAdditionCompleted) {
-        self.blogAdditionCompleted(self);
-    }
 }
 
-- (void)createBlog:(NSDictionary *)blogInfo withAccount:(WPAccount *)account withContext:(NSManagedObjectContext*)context
+- (void)createBlog:(NSDictionary *)blogInfo withContext:(NSManagedObjectContext *)context
 {
     DDLogInfo(@"creating blog: %@", blogInfo);
-    Blog *blog = [account findOrCreateBlogFromDictionary:blogInfo withContext:context];
+    Blog *blog = [_account findOrCreateBlogFromDictionary:blogInfo withContext:context];
     blog.geolocationEnabled = YES;
 
-    dispatch_async(dispatch_get_main_queue(), ^{
-        [blog syncBlogWithSuccess:^{
-            if( ! [blog isWPcom] )
-                [[WordPressComApi sharedApi] syncPushNotificationInfo];
-        }
-                          failure:nil];
-        [[NSNotificationCenter defaultCenter] postNotificationName:@"BlogsRefreshNotification" object:nil];
-    });
+    [blog syncBlogWithSuccess:nil failure:nil];
 }
 
 - (void)toggleButtons
