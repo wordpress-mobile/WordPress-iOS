@@ -10,6 +10,7 @@
 #import "WordPressAppDelegate.h"
 #import "WordPressComApi.h"
 #import "WPcomLoginViewController.h"
+#import "WPAccount.h"
 
 @implementation WPError
 
@@ -63,7 +64,7 @@
     } else if ([error.domain isEqualToString:WordPressComApiErrorDomain]) {
         DDLogError(@"wp.com API error: %@: %@", [error.userInfo objectForKey:WordPressComApiErrorCodeKey], [error localizedDescription]);
         if (error.code == WordPressComApiErrorInvalidToken || error.code == WordPressComApiErrorAuthorizationRequired) {
-            if ([WordPressComApi sharedApi].password == nil) {
+            if ([[WPAccount defaultWordPressComAccount] password] == nil) {
                 [WPcomLoginViewController presentLoginScreen];
             }
             [[WordPressComApi sharedApi] refreshTokenWithSuccess:nil failure:^(NSError *error) {

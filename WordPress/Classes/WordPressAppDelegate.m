@@ -158,9 +158,9 @@ int ddLogLevel = LOG_LEVEL_INFO;
 }
 
 - (void)setupSingleSignOn {
-    if ([[WordPressComApi sharedApi] username]) {
-        [[WPComOAuthController sharedController] setWordPressComUsername:[[WordPressComApi sharedApi] username]];
-        [[WPComOAuthController sharedController] setWordPressComPassword:[[WordPressComApi sharedApi] password]];
+    if ([[WPAccount defaultWordPressComAccount] username]) {
+        [[WPComOAuthController sharedController] setWordPressComUsername:[[WPAccount defaultWordPressComAccount] username]];
+        [[WPComOAuthController sharedController] setWordPressComPassword:[[WPAccount defaultWordPressComAccount] password]];
     }
 }
 
@@ -179,12 +179,12 @@ int ddLogLevel = LOG_LEVEL_INFO;
     BOOL hasCredentials = [[WordPressComApi sharedApi] hasCredentials];
     [self setCommonCrashlyticsParameters];
 
-    if (hasCredentials && [WordPressComApi sharedApi].username != nil) {
-        [Crashlytics setUserName:[WordPressComApi sharedApi].username];
+    if (hasCredentials && [[WPAccount defaultWordPressComAccount] username] != nil) {
+        [Crashlytics setUserName:[[WPAccount defaultWordPressComAccount] username]];
     }
 
     void (^wpcomLoggedInBlock)(NSNotification *) = ^(NSNotification *note) {
-        [Crashlytics setUserName:[WordPressComApi sharedApi].username];
+        [Crashlytics setUserName:[[WPAccount defaultWordPressComAccount] username]];
         [self setCommonCrashlyticsParameters];
     };
     void (^wpcomLoggedOutBlock)(NSNotification *) = ^(NSNotification *note) {

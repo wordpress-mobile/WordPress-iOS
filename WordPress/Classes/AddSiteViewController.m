@@ -124,8 +124,8 @@ CGSize const AddSiteLogoSize = { 320.0, 70.0 };
 
 - (void)connectToJetpack
 {
-    NSString *wpcomUsername = [WordPressComApi sharedApi].username;
-    NSString *wpcomPassword = [WordPressComApi sharedApi].password;
+    NSString *wpcomUsername = [[WPAccount defaultWordPressComAccount] username];
+    NSString *wpcomPassword = [[WPAccount defaultWordPressComAccount] password];
     if ((wpcomUsername != nil) && (wpcomPassword != nil)) {
         // Try with a known WordPress.com username first
         [SVProgressHUD showWithStatus:NSLocalizedString(@"Connecting to Jetpack", @"") maskType:SVProgressHUDMaskTypeBlack];
