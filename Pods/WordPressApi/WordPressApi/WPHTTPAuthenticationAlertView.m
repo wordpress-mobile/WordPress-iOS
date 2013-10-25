@@ -8,6 +8,10 @@
 
 #import "WPHTTPAuthenticationAlertView.h"
 
+@interface WPHTTPAuthenticationAlertView () <UIAlertViewDelegate>
+
+@end
+
 @implementation WPHTTPAuthenticationAlertView {
     NSURLAuthenticationChallenge *_challenge;
     UITextField *usernameField, *passwordField;
@@ -17,12 +21,13 @@
 - (id)initWithChallenge:(NSURLAuthenticationChallenge *)challenge {
     self = [super initWithTitle:nil
                         message:nil
-                       delegate:self
+                       delegate:nil
               cancelButtonTitle:NSLocalizedString(@"Cancel", @"Cancel button label.")
               otherButtonTitles:nil];
 
     if (self) {
         _challenge = challenge;
+        self.delegate = self;
 
         if ([challenge.protectionSpace.authenticationMethod isEqualToString:NSURLAuthenticationMethodServerTrust]) {
             self.alertViewStyle = UIAlertViewStyleDefault;
@@ -39,8 +44,8 @@
     return self;
 }
 
-
--(void)dismissWithClickedButtonIndex:(NSInteger)buttonIndex animated:(BOOL)animated {
+- (void)alertView:(UIAlertView *)alertView didDismissWithButtonIndex:(NSInteger)buttonIndex
+{
     if (buttonIndex == 1) {
         NSURLCredential *credential;
         if ([_challenge.protectionSpace.authenticationMethod isEqualToString:NSURLAuthenticationMethodServerTrust]) {
@@ -62,7 +67,6 @@
     } else {
         [[_challenge sender] cancelAuthenticationChallenge:_challenge];
     }
-    [super dismissWithClickedButtonIndex:buttonIndex animated:animated];
 }
 
 @end
