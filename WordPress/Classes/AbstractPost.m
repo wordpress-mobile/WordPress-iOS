@@ -87,11 +87,11 @@
             if (existingPostsWithPostId && existingPostsWithPostId.count > 0) {
                 post = existingPostsWithPostId[0];
             } else {
-                post = [self newPostForBlog:blog];
+                post = [self newPostForBlog:contextBlog];
                 post.postID = postID;
                 post.remoteStatus = AbstractPostRemoteStatusSync;
-                [post updateFromDictionary:newPost];
             }
+            [post updateFromDictionary:newPost];
             
             [objectsToKeep addObject:post];
         }
@@ -115,7 +115,7 @@
                         post.permaLink = nil;
                     }
                 } else {
-                    DDLogCInfo(@"Deleting %@: %@", NSStringFromClass(self), post);
+                    DDLogInfo(@"Deleting %@: %@", NSStringFromClass(self), post);
                     [derived deleteObject:post];
                 }
             }

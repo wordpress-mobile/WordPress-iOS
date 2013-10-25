@@ -9,6 +9,7 @@
 #import "BasePost.h"
 #import "Media.h"
 #import "NSMutableDictionary+Helpers.h"
+#import "ContextManager.h"
 
 @interface BasePost(ProtectedMethods)
 + (NSString *)titleForStatus:(NSString *)status;
@@ -72,11 +73,7 @@
 }
 
 - (void)save {
-    NSError *error;
-    if (![[self managedObjectContext] save:&error]) {
-        DDLogError(@"Unresolved Core Data Save error %@, %@", error, [error userInfo]);
-        exit(-1);
-    }
+    [[ContextManager sharedInstance] saveWithContext:self.managedObjectContext];
 }
 
 - (NSString *)statusTitle {
