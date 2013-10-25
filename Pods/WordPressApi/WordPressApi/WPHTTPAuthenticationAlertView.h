@@ -7,11 +7,8 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "AFHTTPRequestOperation.h"
 
-@interface WPHTTPAuthenticationAlertView : NSObject <UIAlertViewDelegate>
-
+@interface WPHTTPAuthenticationAlertView : UIAlertView
 - (id)initWithChallenge:(NSURLAuthenticationChallenge *)challenge;
-
-- (void)show;
-
 @end
