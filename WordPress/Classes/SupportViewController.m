@@ -196,7 +196,7 @@ typedef NS_ENUM(NSInteger, SettingsViewControllerSections)
     
     [mailComposeViewController setMessageBody:messageBody isHTML:NO];
     [mailComposeViewController setSubject:@"WordPress for iOS Help Request"];
-    [mailComposeViewController setToRecipients:@[@"support@wordpress.com"]];
+    [mailComposeViewController setToRecipients:@[@"mobile-support@automattic.com"]];
 
     if (logFiles.count > 0) {
         DDLogFileInfo *logFileInfo = (DDLogFileInfo *)logFiles[0];
