@@ -182,10 +182,10 @@ typedef NS_ENUM(NSInteger, SettingsViewControllerSections)
     
     NSMutableString *messageBody = [NSMutableString string];
     [messageBody appendFormat:@"\n\n==========\n%@\n\n", NSLocalizedString(@"Please leave your comments above this line.", @"")];
-    [messageBody appendFormat:@"%@: %@\n", NSLocalizedString(@"Device", @""), device];
-    [messageBody appendFormat:@"%@: %@\n", NSLocalizedString(@"App Version", @""), appVersion];
-    [messageBody appendFormat:@"%@: %@\n", NSLocalizedString(@"Locale", @""), locale];
-    [messageBody appendFormat:@"%@: %@\n", NSLocalizedString(@"iOS Version", @""), iosVersion];
+    [messageBody appendFormat:@"Device: %@\n", device];
+    [messageBody appendFormat:@"App Version: %@\n", appVersion];
+    [messageBody appendFormat:@"Locale: %@\n", locale];
+    [messageBody appendFormat:@"OS Version: %@\n", iosVersion];
     
     WordPressAppDelegate *delegate = (WordPressAppDelegate *)[[UIApplication sharedApplication] delegate];
     DDFileLogger *fileLogger = delegate.fileLogger;
