@@ -339,8 +339,9 @@
 
 	_titleLabel.text = [post.postTitle trim];
 	_snippetLabel.text = post.summary;
-	
-	_bylineLabel.text = [NSString stringWithFormat:@"%@ \non %@", [post prettyDateString], post.blogName];
+
+    NSString *onBlog = [NSString stringWithFormat:NSLocalizedString(@"on %@", @"'on <Blog Name>', displayed on reader list for each post"), post.blogName];
+	_bylineLabel.text = [NSString stringWithFormat:@"%@\n%@", [post prettyDateString], onBlog];
 
 	self.showImage = NO;
 	self.cellImageView.hidden = YES;
