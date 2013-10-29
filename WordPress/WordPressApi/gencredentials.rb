@@ -123,7 +123,7 @@ crashlytics = nil
 googleplus = nil
 quantcast = nil
 File.open(path) do |f|
-  f.lines.each do |l|
+  f.each_line do |l|
     (k,v) = l.split("=")
     if k == "WPCOM_APP_ID"
       client = v.chomp
