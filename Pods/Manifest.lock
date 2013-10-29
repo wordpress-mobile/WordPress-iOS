@@ -52,7 +52,7 @@ DEPENDENCIES:
   - SFHFKeychainUtils (~> 0.0.1)
   - SVProgressHUD (~> 0.9)
   - UIDeviceIdentifier (~> 0.1)
-  - WordPressApi (from `https://raw.github.com/koke/WordPressApi/master/WordPressApi.podspec`)
+  - WordPressApi (from `https://github.com/koke/WordPressApi.git`)
   - wpxmlrpc (~> 0.1)
 
 EXTERNAL SOURCES:
@@ -65,7 +65,7 @@ EXTERNAL SOURCES:
   NSURL+IDN:
     :podspec: https://raw.github.com/koke/NSURL-IDN/master/Podfile
   WordPressApi:
-    :podspec: https://raw.github.com/koke/WordPressApi/master/WordPressApi.podspec
+    :git: https://github.com/koke/WordPressApi.git
 
 SPEC CHECKSUMS:
   AFNetworking: 3cbae45f61a9f995cdbd56bd571223910d7f4e44

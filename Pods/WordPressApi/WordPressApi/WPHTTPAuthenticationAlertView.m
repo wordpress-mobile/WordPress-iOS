@@ -28,7 +28,7 @@
     if (self) {
         _challenge = challenge;
         self.delegate = self;
-
+        
         if ([challenge.protectionSpace.authenticationMethod isEqualToString:NSURLAuthenticationMethodServerTrust]) {
             self.alertViewStyle = UIAlertViewStyleDefault;
             self.title = NSLocalizedString(@"Certificate error", @"Popup title for wrong SSL certificate.");
@@ -43,6 +43,7 @@
     }
     return self;
 }
+
 
 - (void)alertView:(UIAlertView *)alertView didDismissWithButtonIndex:(NSInteger)buttonIndex
 {
@@ -61,7 +62,7 @@
             }
             credential = [NSURLCredential credentialWithUser:username password:password persistence:NSURLCredentialPersistencePermanent];
         }
-
+        
         [[NSURLCredentialStorage sharedCredentialStorage] setDefaultCredential:credential forProtectionSpace:[_challenge protectionSpace]];
         [[_challenge sender] useCredential:credential forAuthenticationChallenge:_challenge];
     } else {
