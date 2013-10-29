@@ -1,10 +1,11 @@
-//
-//  ContextManager.m
-//  WordPress
-//
-//  Created by DX074-XL on 2013-10-18.
-//  Copyright (c) 2013 WordPress. All rights reserved.
-//
+/*
+ * ContextManager.m
+ *
+ * Copyright (c) 2013 WordPress. All rights reserved.
+ *
+ * Licensed under GNU General Public License 2.0.
+ * Some rights reserved. See license.txt
+ */
 
 #import "ContextManager.h"
 #import "WordPressComApi.h"
@@ -17,7 +18,7 @@ static ContextManager *instance;
 @property (nonatomic, strong) NSPersistentStoreCoordinator *persistentStoreCoordinator;
 @property (nonatomic, strong) NSManagedObjectModel *managedObjectModel;
 @property (nonatomic, strong) NSManagedObjectContext *mainContext;
-@property (nonatomic, strong) NSManagedObjectContext *masterContext;
+@property (nonatomic, strong) NSManagedObjectContext *backgroundContext;
 
 @end
 
@@ -35,8 +36,10 @@ static ContextManager *instance;
 
 - (NSManagedObjectContext *const)newDerivedContext {
     NSManagedObjectContext *derived = [[NSManagedObjectContext alloc] initWithConcurrencyType:NSPrivateQueueConcurrencyType];
-    derived.undoManager = nil;
-    derived.parentContext = [self mainContext];
+    [derived performBlockAndWait:^{
+        derived.parentContext = self.backgroundContext;
+    }];
+    
     return derived;
 }
 
@@ -46,55 +49,30 @@ static ContextManager *instance;
     }
     
     _mainContext = [[NSManagedObjectContext alloc] initWithConcurrencyType:NSMainQueueConcurrencyType];
-    _mainContext.undoManager = nil;
-    _mainContext.parentContext = [self masterContext];
+    _mainContext.parentContext = self.backgroundContext;
     
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(mergeChangesForMainContext:) name:NSManagedObjectContextObjectsDidChangeNotification object:_mainContext];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(mergeChangesIntoMainContext:) name:NSManagedObjectContextDidSaveNotification object:self.backgroundContext];
     
     return _mainContext;
 }
 
-- (void)mergeChangesForMainContext:(NSNotification *)notification {
-    __block NSError *error;
-    [self.mainContext performBlock:^{
-        if (![self.mainContext save:&error]) {
-            DDLogError(@"Unresolved core data error saving main context after merge: %@", error);
-            #if DEBUG
-            abort();
-            #endif
-        }
-        [self.masterContext performBlock:^{
-            if (![self.masterContext save:&error]) {
-                DDLogError(@"Unresolved core data error saving main context after merge: %@", error);
-                #if DEBUG
-                abort();
-                #endif
-            }
-        }];
-    }];
-}
-
-- (NSManagedObjectContext *)masterContext {
-    if (_masterContext) {
-        return _masterContext;
+- (NSManagedObjectContext *)backgroundContext {
+    if (_backgroundContext) {
+        return _backgroundContext;
     }
-    _masterContext = [[NSManagedObjectContext alloc] initWithConcurrencyType:NSPrivateQueueConcurrencyType];
-    _masterContext.persistentStoreCoordinator = [self persistentStoreCoordinator];
-    return _masterContext;
+    _backgroundContext = [[NSManagedObjectContext alloc] initWithConcurrencyType:NSPrivateQueueConcurrencyType];
+    _backgroundContext.persistentStoreCoordinator = [self persistentStoreCoordinator];
+    return _backgroundContext;
 }
 
 - (NSFetchRequest *)fetchRequestTemplateForName:(NSString *)templateName {
     return [self.managedObjectModel fetchRequestTemplateForName:templateName];
 }
 
-#pragma mark - Context Saving
-
-- (void)saveMainContext {
-    [self saveWithContext:self.mainContext];
-    [self saveWithContext:self.masterContext];
-}
+#pragma mark - Context Saving and Merging
 
 - (void)saveWithContext:(NSManagedObjectContext *)context {
+    NSLog(@"Saving a context: %@", context);
     [context obtainPermanentIDsForObjects:context.insertedObjects.allObjects error:nil];
     [context performBlock:^{
         NSError *error;
@@ -103,6 +81,20 @@ static ContextManager *instance;
             #if DEBUG
             abort();
             #endif
+        }
+    }];
+}
+
+- (void)mergeChangesIntoMainContext:(NSNotification *)notification {
+    NSLog(@"Merging main");
+    [self.mainContext performBlock:^{
+        [self.mainContext mergeChangesFromContextDidSaveNotification:notification];
+        NSError *error;
+        if (![self.mainContext save:&error]) {
+            DDLogError(@"Unresolved core data error saving main context after merge: %@", error);
+#if DEBUG
+            abort();
+#endif
         }
     }];
 }
