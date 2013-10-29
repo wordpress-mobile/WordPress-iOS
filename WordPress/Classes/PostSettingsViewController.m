@@ -2118,9 +2118,8 @@
     }
     
     if (selContext == kSelectionsCategoriesContext) {
-        NSMutableSet *categories = [self.post mutableSetValueForKey:@"categories"];
-        [categories removeAllObjects];
-        [categories addObjectsFromArray:selectedObjects];
+        [self.post.categories removeAllObjects];
+        [self.post.categories addObjectsFromArray:selectedObjects];
         [tableView reloadData];
     }
 }

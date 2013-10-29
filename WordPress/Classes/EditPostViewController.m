@@ -682,6 +682,8 @@ CGFloat const EditPostViewControllerTextViewOffset = 10.0;
     }
 
     if (selContext == kSelectionsCategoriesContext) {
+        [self.post.categories removeAllObjects];
+        [self.post.categories addObjectsFromArray:selectedObjects];
         [categoriesButton setTitle:[NSString decodeXMLCharactersIn:[self.post categoriesText]] forState:UIControlStateNormal];
     }
 
