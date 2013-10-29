@@ -107,7 +107,7 @@
                           password:_password
                            success:^{
                                [SVProgressHUD dismiss];
-                               if (![[WPAccount defaultWordPressComAccount] username]) {
+                               if (![[WordPressComApi sharedApi] hasCredentials]) {
                                    [[WordPressComApi sharedApi] signInWithUsername:_username password:_password success:nil failure:nil];
                                }
                                [self setAuthenticating:NO];
