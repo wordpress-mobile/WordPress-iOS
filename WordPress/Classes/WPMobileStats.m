@@ -261,6 +261,7 @@ NSString *const StatsEventAddBlogsClickedAddSelected = @"Add Blogs - Clicked Add
     NSUInteger sessionCount = [[[NSUserDefaults standardUserDefaults] objectForKey:@"session_count"] intValue];
     sessionCount++;
     [[NSUserDefaults standardUserDefaults] setObject:@(sessionCount) forKey:@"session_count"];
+    [[NSUserDefaults standardUserDefaults] synchronize];
 
     NSDictionary *properties = @{
                                  @"session_count": @(sessionCount),
