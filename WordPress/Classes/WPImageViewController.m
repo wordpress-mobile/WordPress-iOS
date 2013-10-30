@@ -100,7 +100,6 @@
 	
 	self.imageView = [[UIImageView alloc] initWithFrame:frame];
 	_imageView.userInteractionEnabled = YES;
-    _imageView.autoresizingMask = UIViewAutoresizingFlexibleHeight | UIViewAutoresizingFlexibleWidth;
 	[_scrollView addSubview:_imageView];
 	
 	UITapGestureRecognizer *tgr2 = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(handleImageDoubleTapped:)];
