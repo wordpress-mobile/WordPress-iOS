@@ -278,7 +278,7 @@
 }
 
 - (void)editPost:(AbstractPost *)apost {
-    EditPostViewController *editPostViewController = [[EditPostViewController alloc] initWithPost:[apost createRevision]];
+    EditPostViewController *editPostViewController = [[EditPostViewController alloc] initWithPost:apost];
     UINavigationController *navController = [[UINavigationController alloc] initWithRootViewController:editPostViewController];
     navController.modalPresentationStyle = UIModalPresentationCurrentContext;
     [self.panelNavigationController.detailViewController presentViewController:navController animated:YES completion:nil];

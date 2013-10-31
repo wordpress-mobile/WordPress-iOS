@@ -276,7 +276,7 @@
 	}
     EditPostViewController *postViewController;
 	[self checkForNewItem];
-    AbstractPost *postRevision = [self.apost createRevision];
+    AbstractPost *postRevision = self.apost;
     postViewController = [self getPostOrPageController: postRevision];
 
     UINavigationController *nav = [[UINavigationController alloc] initWithRootViewController:postViewController];

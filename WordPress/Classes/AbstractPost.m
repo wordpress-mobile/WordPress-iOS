@@ -175,7 +175,7 @@
 
 - (void)deleteRevision {
     if (self.revision) {
-        [self.managedObjectContext performBlockAndWait:^{
+        [self.managedObjectContext performBlock:^{
             [self.managedObjectContext deleteObject:self.revision];
             [self setPrimitiveValue:nil forKey:@"revision"];
         }];
@@ -184,7 +184,7 @@
 
 - (void)applyRevision {
     if ([self isOriginal]) {
-        [self.managedObjectContext performBlockAndWait:^{
+        [self.managedObjectContext performBlock:^{
             [self cloneFrom:self.revision];
             self.isFeaturedImageChanged = self.revision.isFeaturedImageChanged;
         }];

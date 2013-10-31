@@ -7,6 +7,7 @@
 #import "WPAddCategoryViewController.h"
 #import "WPAlertView.h"
 #import "IOS7CorrectedTextView.h"
+#import "ContextManager.h"
 
 NSTimeInterval kAnimationDuration = 0.3f;
 
@@ -26,6 +27,7 @@ NSString *const EditPostViewControllerAutosaveDidFailNotification = @"EditPostVi
 
 @property (nonatomic, strong) WPAlertView *linkHelperAlertView;
 @property (nonatomic, assign) BOOL hasChangesToAutosave;
+@property (nonatomic, strong) NSManagedObjectContext *revisionContext;
 
 @end
 
@@ -94,19 +96,33 @@ CGFloat const EditPostViewControllerTextViewOffset = 10.0;
             self.editMode = EditPostViewControllerModeNewPost;
         } else {
             self.editMode = EditPostViewControllerModeEditPost;
-#if USE_AUTOSAVES
-            _backupPost = [NSEntityDescription insertNewObjectForEntityForName:[[aPost entity] name] inManagedObjectContext:[aPost managedObjectContext]];
-            [_backupPost cloneFrom:aPost];
-#endif
         }
     }
     
     return self;
 }
 
+static AbstractPost *original;
+
 - (void)viewDidLoad {
     WPFLogMethod();
     [super viewDidLoad];
+    
+    _revisionContext = [[ContextManager sharedInstance] newDerivedContext];
+    self.apost = (AbstractPost *)[_revisionContext objectWithID:self.apost.objectID];
+    
+    [_revisionContext performBlock:^{
+        self.apost = [self.apost createRevision];
+        original = self.apost.original;
+        dispatch_async(dispatch_get_main_queue(), ^{
+            [self refreshUIForCurrentPost];
+        });
+    }];
+   
+#if USE_AUTOSAVES
+    _backupPost = [NSEntityDescription insertNewObjectForEntityForName:[[aPost entity] name] inManagedObjectContext:[aPost managedObjectContext]];
+    [_backupPost cloneFrom:aPost];
+#endif
     
     titleLabel.text = NSLocalizedString(@"Title:", @"Label for the title of the post field. Should be the same as WP core.");
     tagsLabel.text = NSLocalizedString(@"Tags:", @"Label for the tags field. Should be the same as WP core.");
@@ -148,27 +164,29 @@ CGFloat const EditPostViewControllerTextViewOffset = 10.0;
     }
     textView.inputAccessoryView = editorToolbar;
 
-    if (!self.postSettingsViewController) {
-        self.postSettingsViewController = [[PostSettingsViewController alloc] initWithPost:self.apost];
-        self.postSettingsViewController.postDetailViewController = self;
-        [self addChildViewController:self.postSettingsViewController];
+    if (!IS_IOS7) {
+        if (!self.postSettingsViewController) {
+            self.postSettingsViewController = [[PostSettingsViewController alloc] initWithPost:self.apost];
+            self.postSettingsViewController.postDetailViewController = self;
+            [self addChildViewController:self.postSettingsViewController];
+        }
+        
+        if (!self.postPreviewViewController) {
+            self.postPreviewViewController = [[PostPreviewViewController alloc] initWithPost:self.apost];
+            self.postPreviewViewController.postDetailViewController = self;
+            [self addChildViewController:self.postPreviewViewController];
+        }
+        
+        if (!self.postMediaViewController) {
+            self.postMediaViewController = [[PostMediaViewController alloc] initWithPost:self.apost];
+            self.postMediaViewController.postDetailViewController = self;
+            [self addChildViewController:self.postMediaViewController];
+        }
+        
+        self.postSettingsViewController.view.frame = editView.frame;
+        self.postMediaViewController.view.frame = editView.frame;
+        self.postPreviewViewController.view.frame = editView.frame;
     }
-
-    if (!self.postPreviewViewController) {
-        self.postPreviewViewController = [[PostPreviewViewController alloc] initWithPost:self.apost];
-        self.postPreviewViewController.postDetailViewController = self;
-        [self addChildViewController:self.postPreviewViewController];
-    }
-
-    if (!self.postMediaViewController) {
-        self.postMediaViewController = [[PostMediaViewController alloc] initWithPost:self.apost];
-        self.postMediaViewController.postDetailViewController = self;
-        [self addChildViewController:self.postMediaViewController];
-    }
-
-    self.postSettingsViewController.view.frame = editView.frame;
-    self.postMediaViewController.view.frame = editView.frame;
-    self.postPreviewViewController.view.frame = editView.frame;
     
     self.title = [self editorTitle];
 
@@ -198,9 +216,7 @@ CGFloat const EditPostViewControllerTextViewOffset = 10.0;
 	} else {
 		self.hasLocation.enabled = NO;
 	}
-
-    [self refreshUIForCurrentPost];
-
+    
     if (_autosavingIndicatorView == nil) {
         _autosavingIndicatorView = [[AutosavingIndicatorView alloc] initWithFrame:CGRectZero];
         _autosavingIndicatorView.hidden = YES;
@@ -725,11 +741,10 @@ CGFloat const EditPostViewControllerTextViewOffset = 10.0;
 #endif
     [self.apost.original deleteRevision];
 
-	//remove the original post in case of local draft unsaved
-	if(self.editMode == EditPostViewControllerModeNewPost)
-		[self.apost.original deletePostWithSuccess:nil failure:nil]; //we can pass nil because this is a local draft. no remote errors.
+	if (self.editMode == EditPostViewControllerModeNewPost) {
+        [self.apost.original remove];
+    }
 
-	self.apost = nil; // Just in case
     [self dismissEditView];
 }
 
@@ -772,9 +787,9 @@ CGFloat const EditPostViewControllerTextViewOffset = 10.0;
         } failure:^(NSError *error) {
             DDLogError(@"post failed: %@", [error localizedDescription]);
         }];
-	} else {
-		[self.apost.original save];
 	}
+    
+    [self.apost.original save];
 
     [self dismissEditView];
 }
