@@ -894,11 +894,7 @@ NSTimeInterval const WPTableViewControllerRefreshTimeout = 300; // 5 minutes
 }
 
 - (NSManagedObjectContext *)managedObjectContext {
-	if (self.blog) {
-        return self.blog.managedObjectContext;
-    } else {
-        return [[ContextManager sharedInstance] mainContext];
-    }
+    return [[ContextManager sharedInstance] mainContext];
 }
 
 #define AssertNoBlogSubclassMethod() NSAssert(self.blog, @"You must override %@ in a subclass if there is no blog", NSStringFromSelector(_cmd))
@@ -914,16 +910,11 @@ NSTimeInterval const WPTableViewControllerRefreshTimeout = 300; // 5 minutes
     AssertSubclassMethod();
 }
 
-#pragma clang diagnostic pop
-
 - (NSFetchRequest *)fetchRequest {
     AssertNoBlogSubclassMethod();
-    NSFetchRequest *fetchRequest = [[NSFetchRequest alloc] init];
-    [fetchRequest setEntity:[NSEntityDescription entityForName:[self entityName] inManagedObjectContext:[self managedObjectContext]]];
-    [fetchRequest setPredicate:[NSPredicate predicateWithFormat:@"blog == %@", self.blog]];
-
-    return fetchRequest;
 }
+
+#pragma clang diagnostic pop
 
 - (NSString *)sectionNameKeyPath {
     return nil;

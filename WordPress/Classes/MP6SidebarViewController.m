@@ -154,15 +154,13 @@ CGFloat const SidebarViewControllerStatusBarViewHeight = 20.0;
 }
 
 - (NSFetchedResultsController *)resultsController {
-    if (_resultsController != nil) return _resultsController;
+    if (_resultsController) return _resultsController;
     
     NSManagedObjectContext *moc = [[ContextManager sharedInstance] mainContext];
-    
-    NSFetchRequest *fetchRequest = [[NSFetchRequest alloc] init];
-    [fetchRequest setEntity:[NSEntityDescription entityForName:@"Blog" inManagedObjectContext:moc]];
-    NSSortDescriptor *sortDescriptor = [[NSSortDescriptor alloc] initWithKey:@"blogName" ascending:YES];
-    NSArray *sortDescriptors = [[NSArray alloc] initWithObjects:sortDescriptor, nil];
-    [fetchRequest setSortDescriptors:sortDescriptors];
+    NSFetchRequest *fetchRequest = [NSFetchRequest fetchRequestWithEntityName:@"Blog"];
+    fetchRequest.entity = [NSEntityDescription entityForName:@"Blog" inManagedObjectContext:moc];
+    NSSortDescriptor *sortDescriptor = [NSSortDescriptor sortDescriptorWithKey:@"blogName" ascending:YES];
+    fetchRequest.sortDescriptors = @[sortDescriptor];
     
     // For some reasons, the cache sometimes gets corrupted
     // Since we don't really use sections we skip the cache here
