@@ -272,8 +272,4 @@
     }
 }
 
-- (void)autosave {
-    [[ContextManager sharedInstance] saveWithContext:[self managedObjectContext]];
-}
-
 @end
