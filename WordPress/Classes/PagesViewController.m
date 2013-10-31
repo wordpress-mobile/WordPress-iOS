@@ -39,7 +39,7 @@
 
 // For iPhone
 - (void)editPost:(AbstractPost *)apost {
-    EditPageViewController *editPostViewController = [[EditPageViewController alloc] initWithPost:[apost createRevision]];
+    EditPageViewController *editPostViewController = [[EditPageViewController alloc] initWithPost:apost];
     UINavigationController *navController = [[UINavigationController alloc] initWithRootViewController:editPostViewController];
     navController.modalPresentationStyle = UIModalPresentationCurrentContext;
     [self.panelNavigationController.detailViewController presentViewController:navController animated:YES completion:nil];

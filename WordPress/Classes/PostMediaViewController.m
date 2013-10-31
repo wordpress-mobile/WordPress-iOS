@@ -363,7 +363,7 @@
         [[NSNotificationCenter defaultCenter] postNotificationName:@"ShouldRemoveMedia" object:[self.resultsController objectAtIndexPath:indexPath]];
         Media *media = [self.resultsController objectAtIndexPath:indexPath];
         [media remove];
-        [media save];
+//        [media save];
 	}
 }
 
