@@ -150,33 +150,16 @@ NSString *const ReaderExtrasArrayKey = @"ReaderExtrasArrayKey";
         return;
     }
     
-    // Reuse the same background context for every call. Update the parent context if necessary
-    static NSManagedObjectContext *backgroundMoc;
-    if (backgroundMoc == nil) {
-		backgroundMoc = [[NSManagedObjectContext alloc] initWithConcurrencyType:NSPrivateQueueConcurrencyType];
-    }
-    if (![backgroundMoc.parentContext isEqual:context]) {
-        [backgroundMoc setParentContext:context];
-    }
-
-    [backgroundMoc performBlock:^{
-        NSError *error;
+    NSManagedObjectContext *backgroundMOC = [[ContextManager sharedInstance] newDerivedContext];
+    [backgroundMOC performBlock:^{
         for (NSDictionary *postData in arr) {
             if (![postData isKindOfClass:[NSDictionary class]]) {
                 continue;
             }
-            [self createOrUpdateWithDictionary:postData forEndpoint:endpoint withContext:backgroundMoc];
+            [self createOrUpdateWithDictionary:postData forEndpoint:endpoint withContext:backgroundMOC];
         }
-		
-        if(![backgroundMoc save:&error]){
-            DDLogError(@"Failed to sync ReaderPosts: %@", error);
-        }
-        [context performBlock:^{
-            NSError *error;
-            if (![context save:&error]) {
-                DDLogError(@"Failed to sync ReaderPosts: %@", error);
-            }
-        }];
+        
+        [[ContextManager sharedInstance] saveDerivedContext:backgroundMOC];
 		
 		if (success) {
 			dispatch_async(dispatch_get_main_queue(), success);

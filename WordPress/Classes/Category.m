@@ -105,11 +105,11 @@
 }
 
 + (void)mergeNewCategories:(NSArray *)newCategories forBlog:(Blog *)blog {
-    NSManagedObjectContext *derived = [[ContextManager sharedInstance] newDerivedContext];
+    NSManagedObjectContext *backgroundMOC = [[ContextManager sharedInstance] newDerivedContext];
     
-    [derived performBlockAndWait:^{
+    [backgroundMOC performBlock:^{
         NSMutableArray *categoriesToKeep = [NSMutableArray array];
-        Blog *contextBlog = (Blog *)[derived objectWithID:blog.objectID];
+        Blog *contextBlog = (Blog *)[backgroundMOC existingObjectWithID:blog.objectID error:nil];
         
         for (NSDictionary *categoryInfo in newCategories) {
             Category *newCategory = [Category createOrReplaceFromDictionary:categoryInfo forBlog:contextBlog];
@@ -120,16 +120,16 @@
             }
         }
         
-        NSSet *existingCategories = ((Blog *)[derived objectWithID:contextBlog.objectID]).categories;
+        NSSet *existingCategories = contextBlog.categories;
         if (existingCategories && (existingCategories.count > 0)) {
             for (Category *c in existingCategories) {
                 if (![categoriesToKeep containsObject:c]) {
                     DDLogInfo(@"Deleting Category: %@", c);
-                    [derived deleteObject:c];
+                    [backgroundMOC deleteObject:c];
                 }
             }
         }
-        [[ContextManager sharedInstance] saveWithContext:derived];
+        [[ContextManager sharedInstance] saveDerivedContext:backgroundMOC];
     }];
 }
 

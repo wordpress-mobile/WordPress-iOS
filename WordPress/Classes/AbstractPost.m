@@ -121,7 +121,8 @@
             }
         }
         
-        [[ContextManager sharedInstance] saveWithContext:derived];
+        [[ContextManager sharedInstance] saveDerivedContext:derived];
+        
     }];
 }
 
@@ -164,7 +165,7 @@
         return self.revision;
     }
 	
-    AbstractPost *post = [NSEntityDescription insertNewObjectForEntityForName:[[self entity] name] inManagedObjectContext:[self managedObjectContext]];
+    AbstractPost *post = [NSEntityDescription insertNewObjectForEntityForName:NSStringFromClass(self.class) inManagedObjectContext:self.managedObjectContext];
     [post cloneFrom:self];
     [post setValue:self forKey:@"original"];
     [post setValue:nil forKey:@"revision"];
@@ -174,15 +175,19 @@
 
 - (void)deleteRevision {
     if (self.revision) {
-        [[self managedObjectContext] deleteObject:self.revision];
-        [self setPrimitiveValue:nil forKey:@"revision"];
+        [self.managedObjectContext performBlockAndWait:^{
+            [self.managedObjectContext deleteObject:self.revision];
+            [self setPrimitiveValue:nil forKey:@"revision"];
+        }];
     }
 }
 
 - (void)applyRevision {
     if ([self isOriginal]) {
-        [self cloneFrom:self.revision];
-        self.isFeaturedImageChanged = self.revision.isFeaturedImageChanged;
+        [self.managedObjectContext performBlockAndWait:^{
+            [self cloneFrom:self.revision];
+            self.isFeaturedImageChanged = self.revision.isFeaturedImageChanged;
+        }];
     }
 }
 

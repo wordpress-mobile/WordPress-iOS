@@ -60,6 +60,6 @@
 /**
  Save a context via this convenience method
 */
-- (void)saveWithContext:(NSManagedObjectContext *)context;
+- (void)saveDerivedContext:(NSManagedObjectContext *)context;
 
 @end

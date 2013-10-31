@@ -68,12 +68,17 @@
     if (self.remoteStatus == AbstractPostRemoteStatusPushing || self.remoteStatus == AbstractPostRemoteStatusLocal) {
         [[NSNotificationCenter defaultCenter] postNotificationName:@"PostUploadCancelled" object:self];
     }
-    [[self managedObjectContext] deleteObject:self];
-    [self save];
+    [self.managedObjectContext performBlockAndWait:^{
+        [self.managedObjectContext deleteObject:self];
+        [self save];
+    }];
+    
 }
 
 - (void)save {
-    [[ContextManager sharedInstance] saveWithContext:self.managedObjectContext];
+    [self.managedObjectContext performBlock:^{
+        [self.managedObjectContext save:nil];
+    }];
 }
 
 - (NSString *)statusTitle {
