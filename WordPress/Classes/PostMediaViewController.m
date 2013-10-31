@@ -1641,24 +1641,22 @@
         return resultsController;
     }
 
-    NSFetchRequest *fetchRequest = [[NSFetchRequest alloc] init];
-    [fetchRequest setEntity:[NSEntityDescription entityForName:@"Media" inManagedObjectContext:[[ContextManager sharedInstance] mainContext]]];
-    [fetchRequest setPredicate:[NSPredicate predicateWithFormat:@"%@ IN posts AND mediaType != 'featured'", self.apost]];
-    NSSortDescriptor *sortDescriptorDate = [[NSSortDescriptor alloc] initWithKey:@"creationDate" ascending:NO];
-    NSArray *sortDescriptors = [[NSArray alloc] initWithObjects:sortDescriptorDate, nil];
-    [fetchRequest setSortDescriptors:sortDescriptors];
+    NSString *cacheName = [NSString stringWithFormat:@"Media-%@-%@",
+                           self.apost.blog.hostURL,
+                           self.apost.postID];
+    
+    [NSFetchedResultsController deleteCacheWithName:cacheName];
+    
+    NSFetchRequest *fetchRequest = [NSFetchRequest fetchRequestWithEntityName:@"Media"];
+    fetchRequest.predicate = [NSPredicate predicateWithFormat:@"%@ IN posts AND mediaType != 'featured'", self.apost];
+    fetchRequest.sortDescriptors = @[[NSSortDescriptor sortDescriptorWithKey:@"creationDate" ascending:NO]];
     
     resultsController = [[NSFetchedResultsController alloc]
                                                       initWithFetchRequest:fetchRequest
                                                       managedObjectContext:[[ContextManager sharedInstance] mainContext]
                                                       sectionNameKeyPath:nil
-                                                      cacheName:[NSString stringWithFormat:@"Media-%@-%@",
-                                                                 self.apost.blog.hostURL,
-                                                                 self.apost.postID]];
+                                                      cacheName:cacheName];
     resultsController.delegate = self;
-    
-     sortDescriptorDate = nil;
-     sortDescriptors = nil;
     
     NSError *error = nil;
     if (![resultsController performFetch:&error]) {
