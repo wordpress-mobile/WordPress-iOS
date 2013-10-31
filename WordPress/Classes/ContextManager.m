@@ -62,21 +62,14 @@ static ContextManager *instance;
     _backgroundContext.persistentStoreCoordinator = [self persistentStoreCoordinator];
     _backgroundContext.mergePolicy = NSMergeByPropertyObjectTrumpMergePolicy;
     
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(saveMasterContext:) name:NSManagedObjectContextDidSaveNotification object:self.mainContext];
-    
     return _backgroundContext;
-}
-
-- (void)saveMasterContext:(NSNotification *)n {
-    [self.backgroundContext performBlock:^{
-        [self.backgroundContext save:nil];
-    }];
 }
 
 #pragma mark - Context Saving and Merging
 
 - (void)saveDerivedContext:(NSManagedObjectContext *)context {
     [context performBlock:^{
+        NSLog(@"Saving a context %@", context);
         [context obtainPermanentIDsForObjects:context.insertedObjects.allObjects error:nil];
         NSError *error;
         if (![context save:&error]) {
@@ -86,8 +79,15 @@ static ContextManager *instance;
             #endif
         }
 
-        [context.parentContext performBlock:^{
-            [context save:nil];
+        [self.mainContext performBlock:^{
+            NSLog(@"Save main context");
+            [self.mainContext save:nil];
+            
+            [self.backgroundContext performBlock:^{
+                NSLog(@"Persisting");
+                [self.backgroundContext save:nil];
+            }];
+            
         }];
     }];
 }
