@@ -179,21 +179,23 @@
 	}
 }
 
-- (BOOL)hasChanges {
-    if ([super hasChanges]) return YES;
+- (BOOL)hasChanged {
+    if ([super hasChanged]) return YES;
    
-    if ((self.tags != ((Post *)self.original).tags)
-        && (![self.tags isEqual:((Post *)self.original).tags]))
+    Post *original = (Post *)self.original;
+    
+    if ((self.tags != original.tags)
+        && (![self.tags isEqual:original.tags]))
         return YES;
     
-    if ((self.postFormat != ((Post *)self.original).postFormat)
-        && (![self.postFormat isEqual:((Post *)self.original).postFormat]))
+    if ((self.postFormat != original.postFormat)
+        && (![self.postFormat isEqual:original.postFormat]))
         return YES;
 
-    if (![self.categories isEqual:((Post *)self.original).categories]) return YES;
+    if (![self.categories isEqual:original.categories]) return YES;
     
-	if ((self.geolocation != ((Post *)self.original).geolocation)
-		 && (![self.geolocation isEqual:((Post *)self.original).geolocation]) )
+	if ((self.geolocation != original.geolocation)
+		 && (![self.geolocation isEqual:original.geolocation]) )
         return YES;
 
     return NO;

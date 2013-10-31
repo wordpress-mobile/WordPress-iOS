@@ -85,7 +85,7 @@
 }
 
 
-- (BOOL)hasChanges {
+- (BOOL)hasChanged {
     return NO;
 }
 

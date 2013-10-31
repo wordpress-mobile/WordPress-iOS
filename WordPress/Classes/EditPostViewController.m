@@ -981,7 +981,7 @@ CGFloat const EditPostViewControllerTextViewOffset = 10.0;
 		return;
 	}
 
-    if (!self.hasChanges) {
+    if (![self hasChanges]) {
         [WPMobileStats trackEventForWPComWithSavedProperties:[self formattedStatEventString:StatsEventPostDetailClosedEditor]];
         [self discard];
         return;
@@ -1147,7 +1147,7 @@ CGFloat const EditPostViewControllerTextViewOffset = 10.0;
 }
 
 - (BOOL)hasChanges {
-    return self.apost.hasChanges;
+    return [self.apost hasChanged];
 }
 
 #pragma mark -

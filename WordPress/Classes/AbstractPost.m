@@ -198,7 +198,7 @@
 }
 
 - (BOOL)isOriginal {
-    return ([self primitiveValueForKey:@"original"] == nil);
+    return ([self original] == nil);
 }
 
 - (AbstractPost *)revision {
@@ -209,13 +209,15 @@
     return [self primitiveValueForKey:@"original"];
 }
 
-- (BOOL)hasChanges {
+- (BOOL)hasChanged {
     if (![self isRevision])
         return NO;
     
+    AbstractPost *original = (AbstractPost *)self.original;
+    
     //Do not move the Featured Image check below in the code.
-    if ((self.post_thumbnail != self.original.post_thumbnail)
-        && (![self.post_thumbnail  isEqual:self.original.post_thumbnail])){
+    if ((self.post_thumbnail != original.post_thumbnail)
+        && (![self.post_thumbnail  isEqual:original.post_thumbnail])){
         self.isFeaturedImageChanged = YES;
         return YES;
     } else
@@ -227,27 +229,27 @@
         return NO;
 	
     // We need the extra check since [nil isEqual:nil] returns NO
-    if ((self.postTitle != self.original.postTitle)
-        && (![self.postTitle isEqual:self.original.postTitle]))
+    if ((self.postTitle != original.postTitle)
+        && (![self.postTitle isEqual:original.postTitle]))
         return YES;
-    if ((self.content != self.original.content)
-        && (![self.content isEqual:self.original.content]))
-        return YES;
-	
-    if ((self.status != self.original.status)
-        && (![self.status isEqual:self.original.status]))
+    if ((self.content != original.content)
+        && (![self.content isEqual:original.content]))
         return YES;
 	
-    if ((self.password != self.original.password)
-        && (![self.password isEqual:self.original.password]))
+    if ((self.status != original.status)
+        && (![self.status isEqual:original.status]))
         return YES;
 	
-    if ((self.dateCreated != self.original.dateCreated)
-        && (![self.dateCreated isEqual:self.original.dateCreated]))
+    if ((self.password != original.password)
+        && (![self.password isEqual:original.password]))
         return YES;
 	
-	if ((self.permaLink != self.original.permaLink)
-        && (![self.permaLink  isEqual:self.original.permaLink]))
+    if ((self.dateCreated != original.dateCreated)
+        && (![self.dateCreated isEqual:original.dateCreated]))
+        return YES;
+	
+	if ((self.permaLink != original.permaLink)
+        && (![self.permaLink  isEqual:original.permaLink]))
         return YES;
 	
     if (self.hasRemote == NO) {
@@ -256,7 +258,7 @@
     
     // Relationships are not going to be nil, just empty sets,
     // so we can avoid the extra check
-    if (![self.media isEqual:self.original.media])
+    if (![self.media isEqual:original.media])
         return YES;
 	
     return NO;
