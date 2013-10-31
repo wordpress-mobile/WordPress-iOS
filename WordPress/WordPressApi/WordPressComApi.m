@@ -613,7 +613,7 @@ NSString *const WordPressComApiErrorMessageKey = @"WordPressComApiErrorMessageKe
 
     [self getPath:@"notifications/" parameters:requestParameters success:^(AFHTTPRequestOperation *operation, id responseObject){
         // save the notes
-        NSManagedObjectContext *context = [[ContextManager sharedInstance] mainContext];
+        NSManagedObjectContext *context = [[ContextManager sharedInstance] newDerivedContext];
         [Note syncNotesWithResponse:[responseObject objectForKey:@"notes"] withManagedObjectContext:context];
         if (success != nil ) success( operation, responseObject );
         

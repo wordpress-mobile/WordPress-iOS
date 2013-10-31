@@ -397,8 +397,6 @@ int ddLogLevel = LOG_LEVEL_INFO;
             });
         }];
     }
-
-    [[ContextManager sharedInstance] saveMainContext];
 }
 
 - (void)applicationWillEnterForeground:(UIApplication *)application

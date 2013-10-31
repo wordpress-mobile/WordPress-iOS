@@ -7,6 +7,7 @@
 
 #import "Post.h"
 #import "NSMutableDictionary+Helpers.h"
+#import "ContextManager.h"
 
 @interface Post(InternalProperties)
 // We shouldn't need to store this, but if we don't send IDs on edits
@@ -231,9 +232,7 @@
     [[NSNotificationCenter defaultCenter] removeObserver:self];
 }
 
-- (void)uploadWithSuccess:(void (^)())success failure:(void (^)(NSError *error))failure {    
-    [self save];
-    
+- (void)uploadWithSuccess:(void (^)())success failure:(void (^)(NSError *error))failure {
     if ([self hasRemote]) {
         [self editPostWithSuccess:success failure:failure];
     } else {
@@ -395,7 +394,9 @@
         if (failure) {
             NSDictionary *userInfo = [NSDictionary dictionaryWithObject:@"Can't edit a post if it's not in the server" forKey:NSLocalizedDescriptionKey];
             NSError *error = [NSError errorWithDomain:@"org.wordpress.iphone" code:0 userInfo:userInfo];
-            failure(error);
+            dispatch_async(dispatch_get_main_queue(), ^{
+                failure(error);
+            });
         }
         return;
     }
@@ -443,7 +444,9 @@
     }
     [self remove];
     if (!remote && success) {
-        success();
+        dispatch_async(dispatch_get_main_queue(), ^{
+            success();
+        });
     }
 }
 

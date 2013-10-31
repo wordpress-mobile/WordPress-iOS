@@ -10,6 +10,7 @@
 #import "UIImage+Resize.h"
 #import "NSString+Helpers.h"
 #import "AFHTTPRequestOperation.h"
+#import "ContextManager.h"
 
 @interface Media (PrivateMethods)
 - (void)xmlrpcUploadWithSuccess:(void (^)())success failure:(void (^)(NSError *error))failure ;
@@ -95,20 +96,20 @@
 - (NSString *)remoteStatusText {
     return [Media titleForRemoteStatus:self.remoteStatusNumber];
 }
-
 - (void)remove {
     [self cancelUpload];
     NSError *error = nil;
     [[NSFileManager defaultManager] removeItemAtPath:self.localURL error:&error];
-    [[self managedObjectContext] deleteObject:self];
+    
+    [self.managedObjectContext performBlockAndWait:^{
+        [self.managedObjectContext deleteObject:self];
+    }];
 }
 
 - (void)save {
-    NSError *error;
-    if (![[self managedObjectContext] save:&error]) {
-        DDLogError(@"Unresolved Core Data Save error %@, %@", error, [error userInfo]);
-        exit(-1);
-    }
+    [self.managedObjectContext performBlock:^{
+        [self.managedObjectContext save:nil];
+    }];
 }
 
 - (void)cancelUpload {

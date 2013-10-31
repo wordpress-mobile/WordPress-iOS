@@ -259,7 +259,9 @@
 }
 
 - (void)dataSave {
-    [[ContextManager sharedInstance] saveWithContext:self.managedObjectContext];
+    [self.managedObjectContext performBlock:^{
+        [self.managedObjectContext save:nil];
+    }];
 }
 
 - (void)remove {
@@ -268,8 +270,10 @@
     _reachability.reachableBlock = nil;
     _reachability.unreachableBlock = nil;
     [_reachability stopNotifier];
-    [[self managedObjectContext] deleteObject:self];
-    [self dataSave];
+    [self.managedObjectContext performBlock:^{
+        [[self managedObjectContext] deleteObject:self];
+        [self dataSave];
+    }];
 }
 
 - (void)setXmlrpc:(NSString *)xmlrpc {

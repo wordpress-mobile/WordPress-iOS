@@ -66,7 +66,7 @@ const NSUInteger NoteKeepCount = 20;
 }
 
 + (void)refreshUnreadNotesWithContext:(NSManagedObjectContext *)context {
-    NSFetchRequest *request = [[ContextManager sharedInstance] fetchRequestTemplateForName:@"UnreadNotes"];
+    NSFetchRequest *request = [[ContextManager sharedInstance].managedObjectModel fetchRequestTemplateForName:@"UnreadNotes"];
     NSError *error = nil;
     NSArray *notes = [context executeFetchRequest:request error:&error];
     if ([notes count] > 0) {
