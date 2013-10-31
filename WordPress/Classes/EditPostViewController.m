@@ -688,7 +688,7 @@ CGFloat const EditPostViewControllerTextViewOffset = 10.0;
     }
 
     _hasChangesToAutosave = YES;
-    [self.apost autosave];
+    [self.apost save];
 
 	[self refreshButtons];
 }
@@ -814,8 +814,8 @@ CGFloat const EditPostViewControllerTextViewOffset = 10.0;
             self.apost.password = @"";
         }
     }
-
-    [self.apost autosave];
+    
+    [self.apost save];
 }
 
 - (BOOL)canAutosaveRemotely {
@@ -1446,7 +1446,7 @@ CGFloat const EditPostViewControllerTextViewOffset = 10.0;
 	}
     _hasChangesToAutosave = YES;
     [self refreshUIForCurrentPost];
-    [self.apost autosave];
+    [self.apost save];
     [self incrementCharactersChangedForAutosaveBy:content.length];
 }
 
@@ -1482,7 +1482,7 @@ CGFloat const EditPostViewControllerTextViewOffset = 10.0;
 	}
     _hasChangesToAutosave = YES;
     [self refreshUIForCurrentPost];
-    [self.apost autosave];
+    [self.apost save];
     [self incrementCharactersChangedForAutosaveBy:content.length];
 }
 

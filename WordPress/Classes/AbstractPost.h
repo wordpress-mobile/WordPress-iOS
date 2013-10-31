@@ -34,8 +34,4 @@
 + (void)mergeNewPosts:(NSArray *)newObjects forBlog:(Blog *)blog;
 - (void)updateFromDictionary:(NSDictionary *)postInfo;
 
-// Autosave for local drafts
-- (void)autosave;
-
-
 @end
