@@ -11,8 +11,7 @@
 #import "NSString+XMLExtensions.h"
 #import "WordPressAppDelegate.h"
 #import "WordPressComApi.h"
-
-#import <SFHFKeychainUtils/SFHFKeychainUtils.h>
+#import "SFHFKeychainUtils.h"
 
 static NSString * const DefaultDotcomAccountDefaultsKey = @"AccountDefaultDotcom";
 static NSString * const DotcomXmlrpcKey = @"https://wordpress.com/xmlrpc.php";
