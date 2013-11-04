@@ -246,6 +246,12 @@ NSString *const WordPressXMLRPCApiErrorDomain = @"WordPressXMLRPCApiError";
             }
         } failure:^(NSError *error){
             [self logError:error];
+            if ([error.domain isEqual:WordPressXMLRPCApiErrorDomain] && error.code == WordPressXMLRPCApiMobilePluginRedirectedError) {
+                if (failure) {
+                    failure(error);
+                }
+                return;
+            }
             // ---------------------------------------------------
             // 3. Fetch the original url and look for the RSD link
             // ---------------------------------------------------
@@ -408,7 +414,9 @@ NSString *const WordPressXMLRPCApiErrorDomain = @"WordPressXMLRPCApiError";
         }
     } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
         if (isRedirected) {
-            if (operation.responseString != nil && [operation.responseString rangeOfString:@"<meta name=\"GENERATOR\" content=\"www.dudamobile.com\">"].location != NSNotFound) {
+            if (operation.responseString != nil
+                && ([operation.responseString rangeOfString:@"<meta name=\"GENERATOR\" content=\"www.dudamobile.com\">"].location != NSNotFound
+                 || [operation.responseString rangeOfString:@"dm404Container"].location != NSNotFound)) {
                 error = [NSError errorWithDomain:WordPressXMLRPCApiErrorDomain code:WordPressXMLRPCApiMobilePluginRedirectedError userInfo:@{NSLocalizedDescriptionKey: NSLocalizedStringFromTable(@"You seem to have installed a mobile plugin from DudaMobile which is preventing the app to connect to your blog", @"WordPressApi", nil)}];
             }
         }

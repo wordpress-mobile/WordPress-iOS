@@ -535,6 +535,8 @@
             [self validationDidFail:nil];
 		} else if ([error.domain isEqual:WPXMLRPCErrorDomain] && error.code == WPXMLRPCInvalidInputError) {
 			[self validationDidFail:error];
+        } else if ([error.domain isEqual:WordPressXMLRPCApiErrorDomain]) {
+            [self validationDidFail:error];
 		} else if([error.domain isEqual:AFNetworkingErrorDomain]) {
 			NSString *str = [NSString stringWithFormat:NSLocalizedString(@"There was a server error communicating with your site:\n%@\nTap 'Need Help?' to view the FAQ.", @""), [error localizedDescription]];
 			NSDictionary *userInfo = [NSDictionary dictionaryWithObjectsAndKeys:
