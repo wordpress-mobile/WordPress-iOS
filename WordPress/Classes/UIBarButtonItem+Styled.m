@@ -49,6 +49,9 @@
 }
 
 + (void)load {
+    if (IS_IOS7) {
+        return;
+    }
     if ([self respondsToSelector:@selector(appearance)]) {
         Method origMethod = class_getInstanceMethod(self, @selector(initWithImage:style:target:action:));
         Method newMethod = class_getInstanceMethod(self, @selector(initStyledWithImage:style:target:action:));
