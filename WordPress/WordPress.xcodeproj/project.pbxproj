@@ -2260,8 +2260,6 @@
 		E1D0D82616D3D19200E33F4C /* PocketAPITypes.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PocketAPITypes.h; sourceTree = "<group>"; };
 		E1D0D84516D3D2EA00E33F4C /* PocketActivity.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PocketActivity.h; sourceTree = "<group>"; };
 		E1D0D84616D3D2EA00E33F4C /* PocketActivity.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PocketActivity.m; sourceTree = "<group>"; };
-		E1D0D84816D3D62100E33F4C /* SFHFKeychainUtils.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SFHFKeychainUtils.h; sourceTree = "<group>"; };
-		E1D0D84916D3D62100E33F4C /* SFHFKeychainUtils.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SFHFKeychainUtils.m; sourceTree = "<group>"; };
 		E1D552CC12E77BD80032C680 /* tabPointer.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = tabPointer.png; path = Resources/Images/tabPointer.png; sourceTree = "<group>"; };
 		E1D552CD12E77BD80032C680 /* tabPointer@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "tabPointer@2x.png"; path = "Resources/Images/tabPointer@2x.png"; sourceTree = "<group>"; };
 		E1D5548F12E8C61B0032C680 /* Icon-dev-72.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Icon-dev-72.png"; sourceTree = "<group>"; };
@@ -4245,8 +4243,6 @@
 		E1D0D81E16D3D19200E33F4C /* PocketAPI */ = {
 			isa = PBXGroup;
 			children = (
-				E1D0D84816D3D62100E33F4C /* SFHFKeychainUtils.h */,
-				E1D0D84916D3D62100E33F4C /* SFHFKeychainUtils.m */,
 				E1D0D81F16D3D19200E33F4C /* PocketAPI+NSOperation.h */,
 				E1D0D82016D3D19200E33F4C /* PocketAPI.h */,
 				E1D0D82116D3D19200E33F4C /* PocketAPI.m */,
