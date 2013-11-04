@@ -82,6 +82,58 @@ int ddLogLevel = LOG_LEVEL_INFO;
     }
 }
 
++ (void)fixKeychainAccess
+{
+	NSDictionary *query = @{
+                            (__bridge id)kSecClass: (__bridge id)kSecClassGenericPassword,
+                            (__bridge id)kSecAttrAccessible: (__bridge id)kSecAttrAccessibleWhenUnlocked,
+                            (__bridge id)kSecReturnAttributes: @YES,
+                            (__bridge id)kSecMatchLimit: (__bridge id)kSecMatchLimitAll
+                            };
+
+    CFTypeRef result = NULL;
+	OSStatus status = SecItemCopyMatching((__bridge CFDictionaryRef)query, &result);
+    if (status != errSecSuccess) {
+        return;
+    }
+    DDLogVerbose(@"Fixing keychain items with wrong access requirements");
+    for (NSDictionary *item in (__bridge_transfer NSArray *)result) {
+        NSDictionary *itemQuery = @{
+                                    (__bridge id)kSecClass: (__bridge id)kSecClassGenericPassword,
+                                    (__bridge id)kSecAttrAccessible: (__bridge id)kSecAttrAccessibleWhenUnlocked,
+                                    (__bridge id)kSecAttrService: item[(__bridge id)kSecAttrService],
+                                    (__bridge id)kSecAttrAccount: item[(__bridge id)kSecAttrAccount],
+                                    (__bridge id)kSecReturnAttributes: @YES,
+                                    (__bridge id)kSecReturnData: @YES,
+                                    };
+
+        CFTypeRef itemResult = NULL;
+        status = SecItemCopyMatching((__bridge CFDictionaryRef)itemQuery, &itemResult);
+        if (status == errSecSuccess) {
+            NSDictionary *itemDictionary = (__bridge NSDictionary *)itemResult;
+            NSDictionary *updateQuery = @{
+                                        (__bridge id)kSecClass: (__bridge id)kSecClassGenericPassword,
+                                        (__bridge id)kSecAttrAccessible: (__bridge id)kSecAttrAccessibleWhenUnlocked,
+                                        (__bridge id)kSecAttrService: item[(__bridge id)kSecAttrService],
+                                        (__bridge id)kSecAttrAccount: item[(__bridge id)kSecAttrAccount],
+                                        };
+            NSDictionary *updatedAttributes = @{
+                                                (__bridge id)kSecValueData: itemDictionary[(__bridge id)kSecValueData],
+                                                (__bridge id)kSecAttrAccessible: (__bridge id)kSecAttrAccessibleAfterFirstUnlock,
+                                                };
+            status = SecItemUpdate((__bridge CFDictionaryRef)updateQuery, (__bridge CFDictionaryRef)updatedAttributes);
+            if (status == errSecSuccess) {
+                DDLogInfo(@"Migrated keychain item %@", item);
+            } else {
+                DDLogError(@"Error migrating keychain item: %d", status);
+            }
+        } else {
+            DDLogError(@"Error migrating keychain item: %d", status);
+        }
+    }
+    NSLog(@"end fixing");
+}
+
 #pragma mark -
 #pragma mark UIApplicationDelegate Methods
 
@@ -299,6 +351,10 @@ int ddLogLevel = LOG_LEVEL_INFO;
 	[window makeKeyAndVisible];
 
 	[self registerForPushNotifications];
+
+    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_BACKGROUND, 0), ^{
+        [WordPressAppDelegate fixKeychainAccess];
+    });
     
     //Information related to the reason for its launching, which can include things other than notifications.
     NSDictionary *remoteNotif = [launchOptions objectForKey:UIApplicationLaunchOptionsRemoteNotificationKey];
