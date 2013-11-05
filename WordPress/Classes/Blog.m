@@ -488,7 +488,7 @@
             success();
         }
     } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
-        DDLogError(@"syncBlogWithSuccess:failure: encountered an error: %@", [error localizedDescription]);
+        DDLogError(@"syncBlogWithSuccess:failure: encountered an error: %@", error);
         if (failure) {
             failure(error);
         }
@@ -531,7 +531,7 @@
                 }
                 if (success) success();
             } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
-                DDLogError(@"Error while checking if VideoPress is enabled: %@", [error localizedDescription]);
+                DDLogError(@"Error while checking if VideoPress is enabled: %@", error);
                 
                 NSString *errorMessage = [error localizedDescription];
                 
@@ -579,7 +579,7 @@
             success(videoEnabled);
         }
     } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
-        DDLogError(@"Error while checking if VideoPress is enabled: %@", [error localizedDescription]);
+        DDLogError(@"Error while checking if VideoPress is enabled: %@", error);
         
         if (failure) {
             failure(error);
@@ -624,7 +624,7 @@
             success();
         }
     } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
-        DDLogError(@"Error syncing options: %@", [error localizedDescription]);
+        DDLogError(@"Error syncing options: %@", error);
 
         if (failure) {
             failure(error);
@@ -663,7 +663,7 @@
             success();
         }
     } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
-        DDLogError(@"Error syncing post formats: %@", [error localizedDescription]);
+        DDLogError(@"Error syncing post formats: %@", error);
 
         if (failure) {
             failure(error);
@@ -690,7 +690,7 @@
         }
         [[NSNotificationCenter defaultCenter] postNotificationName:kCommentsChangedNotificationName object:self];
     } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
-        DDLogError(@"Error syncing comments: %@", [error localizedDescription]);
+        DDLogError(@"Error syncing comments: %@", error);
         self.isSyncingComments = NO;
 
         if (failure) {
@@ -714,7 +714,7 @@
             success();
         }
     } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
-        DDLogError(@"Error syncing categories: %@", [error localizedDescription]);
+        DDLogError(@"Error syncing categories: %@", error);
 
         if (failure) {
             failure(error);
@@ -767,7 +767,7 @@
             success();
         }
     } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
-        DDLogError(@"Error syncing posts: %@", [error localizedDescription]);
+        DDLogError(@"Error syncing posts: %@", error);
         self.isSyncingPosts = NO;
 
         if (failure) {
@@ -820,7 +820,7 @@
             success();
         }
     } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
-        DDLogError(@"Error syncing pages: %@", [error localizedDescription]);
+        DDLogError(@"Error syncing pages: %@", error);
         self.isSyncingPages = NO;
 
         if (failure) {
