@@ -193,7 +193,7 @@ typedef enum {
         if (_isSigningOut) {
             return;
         } else {
-            _isSigningOut = true;
+            _isSigningOut = YES;
         }
         
         if (IS_IPAD) {
