@@ -77,6 +77,7 @@ typedef enum {
 
 @implementation SettingsViewController {
     NSFetchedResultsController *_resultsController;
+    BOOL _isSigningOut;
 }
 
 @synthesize mediaSettingsArray;
@@ -189,6 +190,12 @@ typedef enum {
 
 - (void)checkCloseButton {
     if ([[self.resultsController fetchedObjects] count] == 0 && ![[WordPressComApi sharedApi] hasCredentials]) {
+        if (_isSigningOut) {
+            return;
+        } else {
+            _isSigningOut = true;
+        }
+        
         if (IS_IPAD) {
             // On the iPad the NUX is displayed as a UIFormSheet which still shows all the sidebar stuff in the background.
             // As this looks pretty ugly, we'll hide it by putting the loading image view on top of it.
