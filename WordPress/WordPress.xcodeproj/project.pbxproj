@@ -782,6 +782,9 @@
 		C533CF350E6D3ADA000C3DE8 /* CommentsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = C533CF340E6D3ADA000C3DE8 /* CommentsViewController.m */; };
 		C545E0A21811B9880020844C /* ContextManager.m in Sources */ = {isa = PBXBuildFile; fileRef = C545E0A11811B9880020844C /* ContextManager.m */; };
 		C55A90D90E8026CD00E1C9B5 /* WPSegmentedSelectionTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = C55A90D80E8026CD00E1C9B5 /* WPSegmentedSelectionTableViewController.m */; };
+		C56D4F521823EA810008A5A4 /* BaseXMLRPCManagedObject.m in Sources */ = {isa = PBXBuildFile; fileRef = C56D4F511823EA810008A5A4 /* BaseXMLRPCManagedObject.m */; };
+		C56D4F551823FA770008A5A4 /* WPIncrementalStore.m in Sources */ = {isa = PBXBuildFile; fileRef = C56D4F541823FA770008A5A4 /* WPIncrementalStore.m */; };
+		C56D4F581823FB2B0008A5A4 /* WPXMLRPCIncrementalStoreClient.m in Sources */ = {isa = PBXBuildFile; fileRef = C56D4F571823FB2B0008A5A4 /* WPXMLRPCIncrementalStoreClient.m */; };
 		C58349C51806F95100B64089 /* IOS7CorrectedTextView.m in Sources */ = {isa = PBXBuildFile; fileRef = C58349C41806F95100B64089 /* IOS7CorrectedTextView.m */; };
 		C59D3D4B0E6410D300AA591D /* NSString+XMLExtensions.m in Sources */ = {isa = PBXBuildFile; fileRef = C59D3D4A0E6410D300AA591D /* NSString+XMLExtensions.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
 		C5C272DF0E7EC00A0034AA46 /* uncheck.png in Resources */ = {isa = PBXBuildFile; fileRef = C5C272DE0E7EC00A0034AA46 /* uncheck.png */; };
@@ -1937,12 +1940,19 @@
 		C545E0A11811B9880020844C /* ContextManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ContextManager.m; sourceTree = "<group>"; };
 		C55A90D70E8026C500E1C9B5 /* WPSegmentedSelectionTableViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WPSegmentedSelectionTableViewController.h; sourceTree = "<group>"; };
 		C55A90D80E8026CD00E1C9B5 /* WPSegmentedSelectionTableViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WPSegmentedSelectionTableViewController.m; sourceTree = "<group>"; };
+		C56D4F501823EA810008A5A4 /* BaseXMLRPCManagedObject.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BaseXMLRPCManagedObject.h; sourceTree = "<group>"; };
+		C56D4F511823EA810008A5A4 /* BaseXMLRPCManagedObject.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BaseXMLRPCManagedObject.m; sourceTree = "<group>"; };
+		C56D4F531823FA770008A5A4 /* WPIncrementalStore.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WPIncrementalStore.h; sourceTree = "<group>"; };
+		C56D4F541823FA770008A5A4 /* WPIncrementalStore.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WPIncrementalStore.m; sourceTree = "<group>"; };
+		C56D4F561823FB2B0008A5A4 /* WPXMLRPCIncrementalStoreClient.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WPXMLRPCIncrementalStoreClient.h; sourceTree = "<group>"; };
+		C56D4F571823FB2B0008A5A4 /* WPXMLRPCIncrementalStoreClient.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WPXMLRPCIncrementalStoreClient.m; sourceTree = "<group>"; };
 		C58349C31806F95100B64089 /* IOS7CorrectedTextView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IOS7CorrectedTextView.h; sourceTree = "<group>"; };
 		C58349C41806F95100B64089 /* IOS7CorrectedTextView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = IOS7CorrectedTextView.m; sourceTree = "<group>"; };
 		C59D3D490E6410D300AA591D /* NSString+XMLExtensions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSString+XMLExtensions.h"; sourceTree = "<group>"; };
 		C59D3D4A0E6410D300AA591D /* NSString+XMLExtensions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSString+XMLExtensions.m"; sourceTree = "<group>"; };
 		C5C272DE0E7EC00A0034AA46 /* uncheck.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = uncheck.png; path = Resources/Images/uncheck.png; sourceTree = "<group>"; };
 		C5C272E00E7EC00F0034AA46 /* check.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = check.png; path = Resources/Images/check.png; sourceTree = "<group>"; };
+		C5D541D418297EB800D6FFF3 /* WordPress 13.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = file; path = "WordPress 13.xcdatamodel"; sourceTree = "<group>"; };
 		CC0199E7165C17020073A966 /* NotificationsCommentDetailViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NotificationsCommentDetailViewController.h; sourceTree = "<group>"; };
 		CC0199E8165C17020073A966 /* NotificationsCommentDetailViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; lineEnding = 0; path = NotificationsCommentDetailViewController.m; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objc; };
 		CC098B8216A9ECF800450976 /* CameraPlusPickerManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = CameraPlusPickerManager.h; path = Vendor/CameraPlus/CameraPlusPickerManager.h; sourceTree = SOURCE_ROOT; };
@@ -2379,6 +2389,10 @@
 				45F45B3511614BA50022D394 /* CPopoverManager.m */,
 				C545E0A01811B9880020844C /* ContextManager.h */,
 				C545E0A11811B9880020844C /* ContextManager.m */,
+				C56D4F531823FA770008A5A4 /* WPIncrementalStore.h */,
+				C56D4F541823FA770008A5A4 /* WPIncrementalStore.m */,
+				C56D4F561823FB2B0008A5A4 /* WPXMLRPCIncrementalStoreClient.h */,
+				C56D4F571823FB2B0008A5A4 /* WPXMLRPCIncrementalStoreClient.m */,
 			);
 			path = Classes;
 			sourceTree = "<group>";
@@ -2519,6 +2533,8 @@
 				833AF25A114575A50016DE8F /* PostAnnotation.m */,
 				CC1D802F1658354C002A542F /* Note.h */,
 				CC1D80301658354C002A542F /* Note.m */,
+				C56D4F501823EA810008A5A4 /* BaseXMLRPCManagedObject.h */,
+				C56D4F511823EA810008A5A4 /* BaseXMLRPCManagedObject.m */,
 			);
 			name = Models;
 			sourceTree = "<group>";
@@ -5208,11 +5224,13 @@
 				8566BC95170F84BC003C6BCF /* CreateWPComAccountViewController.m in Sources */,
 				85D805521715F4EA0075EEAC /* CreateWPComBlogViewController.m in Sources */,
 				85D8055D171631F10075EEAC /* SelectWPComLanguageViewController.m in Sources */,
+				C56D4F521823EA810008A5A4 /* BaseXMLRPCManagedObject.m in Sources */,
 				8525398B171761D9003F6B32 /* WPComLanguages.m in Sources */,
 				85149741171E13DF00B87F3F /* WPAsyncBlockOperation.m in Sources */,
 				85149747171E671000B87F3F /* SelectWPComBlogVisibilityViewController.m in Sources */,
 				858DE40F1730384F000AC628 /* GeneralWalkthroughViewController.m in Sources */,
 				85C720B11730CEFA00460645 /* WPWalkthroughTextField.m in Sources */,
+				C56D4F551823FA770008A5A4 /* WPIncrementalStore.m in Sources */,
 				85E105861731A597001071A3 /* WPWalkthroughOverlayView.m in Sources */,
 				85E105911731D066001071A3 /* LoginCompletedWalkthroughViewController.m in Sources */,
 				85D08A5E17332C4A00E2BBCA /* NewAddUsersBlogViewController.m in Sources */,
@@ -5247,6 +5265,7 @@
 				5D42A3FF175E75EE005CFF05 /* ReaderTopicsViewController.m in Sources */,
 				5D42A400175E75EE005CFF05 /* ReaderVideoView.m in Sources */,
 				5D42A405175E76A7005CFF05 /* WPImageViewController.m in Sources */,
+				C56D4F581823FB2B0008A5A4 /* WPXMLRPCIncrementalStoreClient.m in Sources */,
 				5D42A406175E76A7005CFF05 /* WPWebVideoViewController.m in Sources */,
 				5D2A8FF2175EC15800263144 /* ReaderTextFormView.m in Sources */,
 				5D477099175F73CA0086C6A3 /* ReaderCommentFormView.m in Sources */,
@@ -5738,6 +5757,7 @@
 		E125443B12BF5A7200D87A0A /* WordPress.xcdatamodeld */ = {
 			isa = XCVersionGroup;
 			children = (
+				C5D541D418297EB800D6FFF3 /* WordPress 13.xcdatamodel */,
 				5D42A3BB175E686F005CFF05 /* WordPress 12.xcdatamodel */,
 				E17B98E7171FFB450073E30D /* WordPress 11.xcdatamodel */,
 				FDFB011916B1EA1C00F589A8 /* WordPress 10.xcdatamodel */,
@@ -5751,7 +5771,7 @@
 				8350E15911D28B4A00A7B073 /* WordPress.xcdatamodel */,
 				E125443D12BF5A7200D87A0A /* WordPress 2.xcdatamodel */,
 			);
-			currentVersion = 5D42A3BB175E686F005CFF05 /* WordPress 12.xcdatamodel */;
+			currentVersion = C5D541D418297EB800D6FFF3 /* WordPress 13.xcdatamodel */;
 			name = WordPress.xcdatamodeld;
 			path = Classes/WordPress.xcdatamodeld;
 			sourceTree = "<group>";

@@ -76,6 +76,7 @@
 }
 
 - (void)save {
+    return;
     [self.managedObjectContext performBlock:^{
         [self.managedObjectContext save:nil];
     }];

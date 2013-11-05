@@ -35,6 +35,7 @@ $RECYCLE.BIN/
 .svn/
 
 # Project
+Pods
 /Entitlements.plist
 Pods/Documentation
 Pods/Pods.xcodeproj/*.mode1v3
