@@ -127,7 +127,7 @@ NSString * const WPAccountDefaultWordPressComAccountChangedNotification = @"WPAc
     NSError *error;
     WPAccount *contextAccount = (WPAccount *)[context existingObjectWithID:self.objectID error:&error];
     if (error) {
-        DDLogCError(@"Unable to get WPAccount for context %@: %@", context, error);
+        DDLogError(@"Unable to get WPAccount for context %@: %@", context, error);
         
         // If we continue, then on a context save the app will crash: the account relationship cannot be nil
         #if DEBUG
@@ -138,7 +138,8 @@ NSString * const WPAccountDefaultWordPressComAccountChangedNotification = @"WPAc
     NSString *blogUrl = [[blogInfo objectForKey:@"url"] stringByReplacingOccurrencesOfString:@"http://" withString:@""];
 	if([blogUrl hasSuffix:@"/"])
 		blogUrl = [blogUrl substringToIndex:blogUrl.length-1];
-	blogUrl= [blogUrl stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceCharacterSet]];
+    
+	blogUrl = [blogUrl stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceCharacterSet]];
 
     NSSet *foundBlogs = [contextAccount.blogs filteredSetUsingPredicate:[NSPredicate predicateWithFormat:@"url like %@", blogUrl]];
     if ([foundBlogs count]) {

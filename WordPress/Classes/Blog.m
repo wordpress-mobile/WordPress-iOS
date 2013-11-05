@@ -463,16 +463,19 @@
     [operations addObject:operation];
     operation = [self operationForCategoriesWithSuccess:nil failure:nil];
     [operations addObject:operation];
+    
     if (!self.isSyncingComments) {
         operation = [self operationForCommentsWithSuccess:nil failure:nil];
         [operations addObject:operation];
         self.isSyncingComments = YES;
     }
+    
     if (!self.isSyncingPosts) {
         operation = [self operationForPostsWithSuccess:nil failure:nil loadMore:NO];
         [operations addObject:operation];
         self.isSyncingPosts = YES;
     }
+    
     if (!self.isSyncingPages) {
         operation = [self operationForPagesWithSuccess:nil failure:nil loadMore:NO];
         [operations addObject:operation];
@@ -480,14 +483,17 @@
     }
 
     AFHTTPRequestOperation *combinedOperation = [self.api combinedHTTPRequestOperationWithOperations:operations success:^(AFHTTPRequestOperation *operation, id responseObject) {
+        DDLogVerbose(@"syncBlogWithSuccess:failure: completed successfully.");
         if (success) {
             success();
         }
     } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+        DDLogError(@"syncBlogWithSuccess:failure: encountered an error: %@", error);
         if (failure) {
             failure(error);
         }
     }];
+    
     [self.api enqueueHTTPRequestOperation:combinedOperation];
 }
 
@@ -525,19 +531,30 @@
                 }
                 if (success) success();
             } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+                DDLogError(@"Error while checking if VideoPress is enabled: %@", error);
+                
                 NSString *errorMessage = [error localizedDescription];
                 
+                // FIXME - This is very fragile checking error messages text
                 if ([errorMessage isEqualToString:@"Parse Error. Please check your XML-RPC endpoint."])
                 {
                     [self setIsActivated:[NSNumber numberWithBool:YES]];
                     [self dataSave];
-                    if (success) success();
+                    if (success) {
+                        success();
+                    }
                 } else if ([errorMessage isEqualToString:@"Site not activated."]) {
-                    if (failure) failure(error);
+                    if (failure) {
+                        failure(error);
+                    }
                 } else if ([errorMessage isEqualToString:@"Blog not found."]) {
-                    if (failure) failure(error);
+                    if (failure) {
+                        failure(error);
+                    }
                 } else {
-                    if (failure) failure(error);
+                    if (failure) {
+                        failure(error);
+                    }
                 }
                 
             }];
@@ -552,14 +569,21 @@
     WPXMLRPCRequest *request = [self.api XMLRPCRequestWithMethod:@"wpcom.getFeatures" parameters:parameters];
     WPXMLRPCRequestOperation *operation = [self.api XMLRPCRequestOperationWithRequest:request success:^(AFHTTPRequestOperation *operation, id responseObject) {
         BOOL videoEnabled = YES;
-        if(([responseObject isKindOfClass:[NSDictionary class]]) && ([responseObject objectForKey:@"videopress_enabled"] != nil))
+        if(([responseObject isKindOfClass:[NSDictionary class]]) && ([responseObject objectForKey:@"videopress_enabled"] != nil)) {
             videoEnabled = [[responseObject objectForKey:@"videopress_enabled"] boolValue];
-        else
+        } else {
             videoEnabled = YES;
+        }
 
-        if (success) success(videoEnabled);
+        if (success) {
+            success(videoEnabled);
+        }
     } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
-        if (failure) failure(error);
+        DDLogError(@"Error while checking if VideoPress is enabled: %@", error);
+        
+        if (failure) {
+            failure(error);
+        }
     }];
     [self.api enqueueXMLRPCRequestOperation:operation];
 }
@@ -600,7 +624,7 @@
             success();
         }
     } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
-        DDLogInfo(@"Error syncing options: %@", [error localizedDescription]);
+        DDLogError(@"Error syncing options: %@", error);
 
         if (failure) {
             failure(error);
@@ -639,7 +663,7 @@
             success();
         }
     } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
-        DDLogInfo(@"Error syncing post formats: %@", [error localizedDescription]);
+        DDLogError(@"Error syncing post formats: %@", error);
 
         if (failure) {
             failure(error);
@@ -666,7 +690,7 @@
         }
         [[NSNotificationCenter defaultCenter] postNotificationName:kCommentsChangedNotificationName object:self];
     } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
-        DDLogInfo(@"Error syncing comments: %@", [error localizedDescription]);
+        DDLogError(@"Error syncing comments: %@", error);
         self.isSyncingComments = NO;
 
         if (failure) {
@@ -690,7 +714,7 @@
             success();
         }
     } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
-        DDLogInfo(@"Error syncing categories: %@", [error localizedDescription]);
+        DDLogError(@"Error syncing categories: %@", error);
 
         if (failure) {
             failure(error);
@@ -743,7 +767,7 @@
             success();
         }
     } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
-        DDLogInfo(@"Error syncing posts: %@", [error localizedDescription]);
+        DDLogError(@"Error syncing posts: %@", error);
         self.isSyncingPosts = NO;
 
         if (failure) {
@@ -796,7 +820,7 @@
             success();
         }
     } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
-        DDLogInfo(@"Error syncing pages: %@", [error localizedDescription]);
+        DDLogError(@"Error syncing pages: %@", error);
         self.isSyncingPages = NO;
 
         if (failure) {
