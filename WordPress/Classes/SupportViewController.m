@@ -182,10 +182,10 @@ typedef NS_ENUM(NSInteger, SettingsViewControllerSections)
     
     NSMutableString *messageBody = [NSMutableString string];
     [messageBody appendFormat:@"\n\n==========\n%@\n\n", NSLocalizedString(@"Please leave your comments above this line.", @"")];
-    [messageBody appendFormat:@"%@: %@\n", NSLocalizedString(@"Device", @""), device];
-    [messageBody appendFormat:@"%@: %@\n", NSLocalizedString(@"App Version", @""), appVersion];
-    [messageBody appendFormat:@"%@: %@\n", NSLocalizedString(@"Locale", @""), locale];
-    [messageBody appendFormat:@"%@: %@\n", NSLocalizedString(@"iOS Version", @""), iosVersion];
+    [messageBody appendFormat:@"Device: %@\n", device];
+    [messageBody appendFormat:@"App Version: %@\n", appVersion];
+    [messageBody appendFormat:@"Locale: %@\n", locale];
+    [messageBody appendFormat:@"OS Version: %@\n", iosVersion];
     
     WordPressAppDelegate *delegate = (WordPressAppDelegate *)[[UIApplication sharedApplication] delegate];
     DDFileLogger *fileLogger = delegate.fileLogger;
@@ -196,7 +196,7 @@ typedef NS_ENUM(NSInteger, SettingsViewControllerSections)
     
     [mailComposeViewController setMessageBody:messageBody isHTML:NO];
     [mailComposeViewController setSubject:@"WordPress for iOS Help Request"];
-    [mailComposeViewController setToRecipients:@[@"support@wordpress.com"]];
+    [mailComposeViewController setToRecipients:@[@"mobile-support@automattic.com"]];
 
     if (logFiles.count > 0) {
         DDLogFileInfo *logFileInfo = (DDLogFileInfo *)logFiles[0];

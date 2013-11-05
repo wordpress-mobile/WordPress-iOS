@@ -14,7 +14,7 @@ PODS:
   - google-plus-ios-sdk (1.3.0)
   - JSONKit (1.5pre)
   - MGImageUtilities (0.0.1)
-  - Mixpanel (2.0.0)
+  - Mixpanel (2.0.4)
   - NSLogger (1.1)
   - NSLogger-CocoaLumberjack-connector (1.3):
     - CocoaLumberjack
@@ -27,7 +27,6 @@ PODS:
   - Quantcast-Measure/Core (1.2.10)
   - Reachability (3.0.0)
   - SFHFKeychainUtils (0.0.1)
-  - SSKeychain (0.2.1)
   - SVProgressHUD (0.9)
   - UIDeviceIdentifier (0.1)
   - WordPressApi (0.0.1):
@@ -36,25 +35,24 @@ PODS:
   - wpxmlrpc (0.1)
 
 DEPENDENCIES:
-  - AFNetworking (= 1.2)
+  - AFNetworking (= 1.2.0)
   - CocoaLumberjack (~> 1.6.2)
   - CTidy (from `git://github.com/wordpress-mobile/CTidy.git`)
-  - DTCoreText (~> 1.6)
-  - google-plus-ios-sdk (~> 1.3.0)
+  - DTCoreText (= 1.6.5)
+  - google-plus-ios-sdk (= 1.3.0)
   - JSONKit (~> 1.4)
   - MGImageUtilities (from `git://github.com/wordpress-mobile/MGImageUtilities.git`)
   - Mixpanel
   - NSLogger-CocoaLumberjack-connector (~> 1.3)
   - NSObject-SafeExpectations (from `https://raw.github.com/koke/NSObject-SafeExpectations/master/NSObject-SafeExpectations.podspec`)
   - NSURL+IDN (from `https://raw.github.com/koke/NSURL-IDN/master/Podfile`)
-  - OHHTTPStubs (~> 1.1)
+  - OHHTTPStubs (= 1.1.1)
   - Quantcast-Measure (~> 1.2.10)
-  - Reachability (~> 3.0.0)
+  - Reachability (= 3.0.0)
   - SFHFKeychainUtils (~> 0.0.1)
-  - SSKeychain (~> 0.2)
   - SVProgressHUD (~> 0.9)
   - UIDeviceIdentifier (~> 0.1)
-  - WordPressApi (from `https://raw.github.com/koke/WordPressApi/master/WordPressApi.podspec`)
+  - WordPressApi (from `https://github.com/koke/WordPressApi.git`)
   - wpxmlrpc (~> 0.1)
 
 EXTERNAL SOURCES:
@@ -67,7 +65,7 @@ EXTERNAL SOURCES:
   NSURL+IDN:
     :podspec: https://raw.github.com/koke/NSURL-IDN/master/Podfile
   WordPressApi:
-    :podspec: https://raw.github.com/koke/WordPressApi/master/WordPressApi.podspec
+    :git: https://github.com/koke/WordPressApi.git
 
 SPEC CHECKSUMS:
   AFNetworking: 3cbae45f61a9f995cdbd56bd571223910d7f4e44
@@ -78,7 +76,7 @@ SPEC CHECKSUMS:
   google-plus-ios-sdk: 38378c4094a72a4fcdd5254c03fdd1813b345fb9
   JSONKit: 409734ab3407fce90ef7eaa95d7168f38d9a6601
   MGImageUtilities: ab3580f2161b10f8a41331baea87aaafbd688950
-  Mixpanel: e4af97adb60a10541b7869929a83d734025058a6
+  Mixpanel: b23d1b358f9e2d3904ee13621beed4e5205929a5
   NSLogger: 4567fef08d0db18a89cce91b2053823fc0950738
   NSLogger-CocoaLumberjack-connector: da77800fec7415c1d378dfd93465031a58c5a9a8
   NSObject-SafeExpectations: 241ab1289cbc33a00307cd025d22883646f2e1f0
@@ -87,10 +85,9 @@ SPEC CHECKSUMS:
   Quantcast-Measure: ac7f72eae4b41082f7b07475ded9b820ca57c6aa
   Reachability: 500bd76bf6cd8ff2c6fb715fc5f44ef6e4c024f2
   SFHFKeychainUtils: e828dbd9eaa509486acf95d8de2ebd414c4b7451
-  SSKeychain: ffa1a79eb716d9ed1ca184fb0cf218087ca28486
   SVProgressHUD: 03d4845ec8e64591726428a08236c6a5489d45f8
   UIDeviceIdentifier: 64036321b0f77ff41b4200002f0c138431c00d86
   WordPressApi: 76f9d7752b090197c172e2c5e6fccbffbaf7c336
   wpxmlrpc: 0b27d4c3734db9470f0dccc3c8d4a6f8e491fd0b
 
-COCOAPODS: 0.26.2
+COCOAPODS: 0.27.1

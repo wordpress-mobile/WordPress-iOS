@@ -825,10 +825,13 @@ int ddLogLevel = LOG_LEVEL_INFO;
 
 - (void)customizeForiOS7
 {
+    UIColor *defaultTintColor = self.window.tintColor;
     self.window.tintColor = [WPStyleGuide newKidOnTheBlockBlue];
 
     [[UINavigationBar appearance] setBarTintColor:[WPStyleGuide newKidOnTheBlockBlue]];
+    [[UINavigationBar appearanceWhenContainedIn:[MFMailComposeViewController class], nil] setBarTintColor:[UIColor whiteColor]];
     [[UINavigationBar appearance] setTintColor:[UIColor whiteColor]];
+    [[UINavigationBar appearanceWhenContainedIn:[MFMailComposeViewController class], nil] setTintColor:defaultTintColor];
     [[UINavigationBar appearance] setTitleTextAttributes:@{UITextAttributeTextColor: [UIColor whiteColor], UITextAttributeFont : [UIFont fontWithName:@"OpenSans-Bold" size:16.0]} ];
     [[UINavigationBar appearance] setBackgroundImage:[UIImage imageNamed:@"transparent-point"] forBarMetrics:UIBarMetricsDefault];
     [[UINavigationBar appearance] setShadowImage:[UIImage imageNamed:@"transparent-point"]];
