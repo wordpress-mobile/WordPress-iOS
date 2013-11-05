@@ -351,7 +351,6 @@ CGFloat const GeneralWalkthroughiOS7StatusBarOffset = 10.0;
     UINavigationController *nc = [[UINavigationController alloc] initWithRootViewController:supportViewController];
     nc.navigationBar.translucent = NO;
     nc.modalPresentationStyle = UIModalPresentationFormSheet;
-    nc.modalTransitionStyle = UIModalTransitionStyleFlipHorizontal;
     [self.navigationController presentViewController:nc animated:YES completion:nil];
 }
 
