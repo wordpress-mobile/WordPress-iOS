@@ -1,1 +1,0 @@
-PODS_NSLOGGER_OTHER_LDFLAGS = -framework CFNetwork -framework SystemConfiguration
