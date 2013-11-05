@@ -12,7 +12,7 @@
 
 @implementation AbstractPost
 
-@dynamic blog, media;
+@dynamic media;
 @dynamic comments;
 
 - (void)remove {
@@ -20,6 +20,28 @@
         [media cancelUpload];
     }
 	[super remove];
+}
+
++ (id)representationOrArrayOfRepresentationsOfEntity:(NSEntityDescription *)entity fromResponseObject:(id)responseObject requestOperation:(AFHTTPRequestOperation *)requestOperation {
+    return [super representationOrArrayOfRepresentationsOfEntity:entity fromResponseObject:responseObject requestOperation:requestOperation];
+}
+
++ (NSDictionary *)representationOfAttributes:(NSDictionary *)attributes ofManagedObject:(NSManagedObject *)managedObject {
+    return @{};
+}
+
++ (NSString *)resourceIdentifierForRepresentation:(NSDictionary *)representation ofEntity:(NSEntityDescription *)entity fromResponse:(NSHTTPURLResponse *)response {
+    return representation[@"postid"] ? representation[@"postid"] : representation[@"page_id"];
+}
+
++ (NSDictionary *)attributesForRepresentation:(NSDictionary *)representation ofEntity:(NSEntityDescription *)entity {
+    NSNumber *postID = [representation[@"postid"] isKindOfClass:[NSString class]] ? [representation[@"postid"] numericValue] : representation[@"postid"];
+    return @{@"postID": postID,
+             @"postTitle": representation[@"title"]};
+}
+
++ (NSDictionary *)representationsForRelationshipsFromRepresentation:(NSDictionary *)representation ofEntity:(NSEntityDescription *)entity fromResponse:(NSHTTPURLResponse *)response {
+    return @{};
 }
 
 - (void)awakeFromFetch {
@@ -72,6 +94,7 @@
 }
 
 + (void)mergeNewPosts:(NSArray *)newObjects forBlog:(Blog *)blog {
+    return;
     NSManagedObjectContext *derived = [[ContextManager sharedInstance] newDerivedContext];
     
     [derived performBlockAndWait:^{

@@ -105,6 +105,7 @@
 }
 
 + (void)mergeNewCategories:(NSArray *)newCategories forBlog:(Blog *)blog {
+    return;
     NSManagedObjectContext *backgroundMOC = [[ContextManager sharedInstance] newDerivedContext];
     
     [backgroundMOC performBlock:^{

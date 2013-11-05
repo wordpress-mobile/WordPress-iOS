@@ -22,6 +22,14 @@ pod 'Quantcast-Measure', '~> 1.2.10'
 pod 'CocoaLumberjack', '~>1.6.2'
 pod 'NSLogger-CocoaLumberjack-connector', '~>1.3'
 
+# The podspec for the XL fork is private, so manually adding the
+# dependencies
+pod 'InflectorKit'
+pod 'TransformerKit'
+pod 'AFIncrementalStore', :git =>
+'git://github.com/xtremelabs/AFIncrementalStore.git', :tag => '0.5.5'
+
+
 target :WordPressTest, :exclusive => true do
   pod 'OHHTTPStubs', '1.1.1'
 end

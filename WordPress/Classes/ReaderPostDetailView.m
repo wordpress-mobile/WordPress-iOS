@@ -103,7 +103,7 @@
 		_authorLabel.backgroundColor = [UIColor clearColor];
 		_authorLabel.font = [UIFont fontWithName:@"OpenSans" size:13.0f];//[UIFont boldSystemFontOfSize:14.0f];
 		_authorLabel.text = (self.post.author != nil) ? self.post.author : self.post.authorDisplayName;
-		_authorLabel.textColor = [UIColor colorWithHexString:@"404040"];
+		_authorLabel.textColor = DTColorCreateWithHexString(@"404040");
 		[_authorView addSubview:_authorLabel];
 		
 		self.dateLabel = [[UILabel alloc] initWithFrame:CGRectMake(avatarSize + padding + 10.0f, padding + labelHeight, labelWidth, labelHeight)];
@@ -111,7 +111,7 @@
 		_dateLabel.backgroundColor = [UIColor clearColor];
 		_dateLabel.font = [UIFont fontWithName:@"OpenSans" size:13.0f];//[UIFont systemFontOfSize:14.0f];
 		_dateLabel.text = [NSString stringWithFormat:@"%@ on", [self.post prettyDateString]];
-		_dateLabel.textColor = [UIColor colorWithHexString:@"404040"];//[UIColor colorWithHexString:@"aaaaaa"];
+		_dateLabel.textColor = DTColorCreateWithHexString(@"404040");//[UIColor colorWithHexString:@"aaaaaa"];
 		[_authorView addSubview:_dateLabel];
 		
 		self.blogLabel = [[UILabel alloc] initWithFrame:CGRectMake(avatarSize + padding + 10.0f, padding + labelHeight * 2, labelWidth, labelHeight)];
@@ -119,7 +119,7 @@
 		_blogLabel.backgroundColor = [UIColor clearColor];
 		_blogLabel.font = [UIFont fontWithName:@"OpenSans" size:13.0f];//[UIFont systemFontOfSize:14.0f];
 		_blogLabel.text = self.post.blogName;
-		_blogLabel.textColor = [UIColor colorWithHexString:@"278dbc"];
+		_blogLabel.textColor = DTColorCreateWithHexString(@"278dbc");
 		[_authorView addSubview:_blogLabel];
 		
 		CGRect followFrame = _blogLabel.frame;
