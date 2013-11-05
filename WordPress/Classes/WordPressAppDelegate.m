@@ -825,7 +825,7 @@ int ddLogLevel = LOG_LEVEL_INFO;
 
 - (void)customizeForiOS7
 {
-    UIColor *defaultTintColor = [[self window] tintColor];
+    UIColor *defaultTintColor = self.window.tintColor;
     self.window.tintColor = [WPStyleGuide newKidOnTheBlockBlue];
 
     [[UINavigationBar appearance] setBarTintColor:[WPStyleGuide newKidOnTheBlockBlue]];
