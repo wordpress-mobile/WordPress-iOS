@@ -569,18 +569,21 @@
     WPXMLRPCRequest *request = [self.api XMLRPCRequestWithMethod:@"wpcom.getFeatures" parameters:parameters];
     WPXMLRPCRequestOperation *operation = [self.api XMLRPCRequestOperationWithRequest:request success:^(AFHTTPRequestOperation *operation, id responseObject) {
         BOOL videoEnabled = YES;
-        if(([responseObject isKindOfClass:[NSDictionary class]]) && ([responseObject objectForKey:@"videopress_enabled"] != nil))
+        if(([responseObject isKindOfClass:[NSDictionary class]]) && ([responseObject objectForKey:@"videopress_enabled"] != nil)) {
             videoEnabled = [[responseObject objectForKey:@"videopress_enabled"] boolValue];
-        else
+        } else {
             videoEnabled = YES;
+        }
 
-        if (success)
+        if (success) {
             success(videoEnabled);
+        }
     } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
         DDLogError(@"Error while checking if VideoPress is enabled: %@", [error localizedDescription]);
         
-        if (failure)
+        if (failure) {
             failure(error);
+        }
     }];
     [self.api enqueueXMLRPCRequestOperation:operation];
 }
