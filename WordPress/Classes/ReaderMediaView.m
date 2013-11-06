@@ -77,6 +77,7 @@
 				failure:(void (^)(ReaderMediaView *, NSError *))failure {
 	if (image) {
 		self.isShowingPlaceholder = YES;
+        self.placeholderRatio = self.frame.size.width / self.frame.size.height;
 	}
 	// Weak refs to avoid retain loop.
 	__weak ReaderMediaView *selfRef = self;

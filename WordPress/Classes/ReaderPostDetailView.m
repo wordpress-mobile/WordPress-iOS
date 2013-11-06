@@ -41,7 +41,7 @@
 
 - (void)_updateLayout;
 - (void)updateAttributedString:(NSAttributedString *)attrString;
-- (void)updateMediaLayout:(ReaderMediaView *)mediaView;
+- (BOOL)updateMediaLayout:(ReaderMediaView *)mediaView;
 - (void)handleAuthorViewTapped:(id)sender;
 - (void)handleImageLinkTapped:(id)sender;
 - (void)handleLinkTapped:(id)sender;
@@ -198,7 +198,6 @@
 
 - (void)updateAttributedString:(NSAttributedString *)attrString {
 	_textContentView.attributedString = attrString;
-	[self _updateLayout];
 }
 
 
@@ -278,8 +277,8 @@
 }
 
 
-- (void)updateMediaLayout:(ReaderMediaView *)imageView {
-
+- (BOOL)updateMediaLayout:(ReaderMediaView *)imageView {
+    BOOL frameChanged = NO;
 	NSURL *url = imageView.contentURL;
 	
 	CGSize originalSize = imageView.frame.size;
@@ -290,16 +289,26 @@
 		viewSize.width *= scale;
 		viewSize.height *= scale;
 	} else {
-		viewSize.width = _textContentView.frame.size.width - (_textContentView.edgeInsets.left + _textContentView.edgeInsets.right);
-		if (imageView.isShowingPlaceholder) {
-			viewSize.height = viewSize.width * 0.66f;
-		} else {
-			viewSize.height = viewSize.height * (_textContentView.frame.size.width / imageView.image.size.width);
-		}
-		
-		viewSize.height += imageView.edgeInsets.top; // account for the top edge inset.
+        CGFloat ratio = viewSize.width / viewSize.height;
+        CGFloat width = _textContentView.frame.size.width;
+        CGFloat availableWidth = _textContentView.frame.size.width - (_textContentView.edgeInsets.left + _textContentView.edgeInsets.right);
+        
+        viewSize.width = availableWidth;
+        
+        if (imageView.isShowingPlaceholder) {
+            viewSize.height = roundf(width / imageView.placeholderRatio);
+        } else {
+            viewSize.height = roundf(width / ratio);
+        }
+
+        viewSize.height += imageView.edgeInsets.top; // account for the top edge inset.
 	}
 
+    // Widths should always match
+    if (viewSize.height != originalSize.height) {
+        frameChanged = YES;
+    }
+    
 	NSPredicate *pred = [NSPredicate predicateWithFormat:@"contentURL == %@", url];
 	
 	// update all attachments that matchin this URL (possibly multiple images with same size)
@@ -307,6 +316,8 @@
 		attachment.originalSize = originalSize;
 		attachment.displaySize = viewSize;
 	}
+    
+    return frameChanged;
 }
 
 
@@ -428,15 +439,17 @@
 
 - (void)handleMediaViewLoaded:(ReaderMediaView *)mediaView {
 	
-	[self updateMediaLayout:mediaView];
+	BOOL frameChanged = [self updateMediaLayout:mediaView];
 	
-	// need to reset the layouter because otherwise we get the old framesetter or cached layout frames
-	self.textContentView.layouter = nil;
-	
-	// layout might have changed due to image sizes
-	[self.textContentView relayoutText];
-	
-	[self _updateLayout];
+    if (frameChanged) {
+        // need to reset the layouter because otherwise we get the old framesetter or cached layout frames
+        self.textContentView.layouter = nil;
+
+        // layout might have changed due to image sizes
+        [self.textContentView relayoutText];
+
+        [self _updateLayout];
+    }
 }
 
 
@@ -489,7 +502,9 @@
 
 - (UIView *)attributedTextContentView:(DTAttributedTextContentView *)attributedTextContentView viewForAttachment:(DTTextAttachment *)attachment frame:(CGRect)frame {
 	
-	CGFloat width = _textContentView.frame.size.width - (_textContentView.edgeInsets.left + _textContentView.edgeInsets.right);
+    CGFloat width = _textContentView.frame.size.width;
+    CGFloat availableWidth = _textContentView.frame.size.width - (_textContentView.edgeInsets.left + _textContentView.edgeInsets.right);
+
 	// The ReaderImageView view will conform to the width constraints of the _textContentView. We want the image itself to run out to the edges,
 	// so position it offset by the inverse of _textContentView's edgeInsets. Also add top padding so we don't bump into a line of text.
 	// Remeber to add an extra 10px to the frame to preserve aspect ratio.
@@ -521,14 +536,20 @@
 		if( [imageAttachment.image isKindOfClass:[UIImage class]] ) {
 			image = imageAttachment.image;
 			
-			frame.size.width = width;
-			frame.size.height = image.size.height * (width / image.size.width);
-			
+            CGFloat ratio = image.size.width / image.size.height;
+            frame.size.width = availableWidth;
+            frame.size.height = roundf(width / ratio);
 		} else {
 			image = [UIImage imageNamed:@"wp_img_placeholder.png"];
 
-			frame.size.width = width;
-			frame.size.height = width * 0.66f;
+			if (frame.size.width > 1.0f && frame.size.height > 1.0f) {
+                CGFloat ratio = frame.size.width / frame.size.height;
+                frame.size.width = availableWidth;
+                frame.size.height = roundf(width / ratio);
+            } else {
+                frame.size.width = availableWidth;
+                frame.size.height = roundf(width * 0.66f);
+            }
 		}
 		
 		// offset the top edge inset keeping the image from bumping the text above it.
@@ -577,8 +598,12 @@
 	
 		// make sure we have a reasonable size.
 		if (frame.size.width > width) {
-			frame.size.height = frame.size.height * (width / frame.size.width);
-			frame.size.width = width;
+            if (frame.size.height == 0) {
+                frame.size.height = roundf(frame.size.width * 0.66f);
+            }
+            CGFloat ratio = frame.size.width / frame.size.height;
+            frame.size.width = availableWidth;
+            frame.size.height = roundf(width / ratio);
 		}
 		
 		// offset the top edge inset keeping the image from bumping the text above it.
