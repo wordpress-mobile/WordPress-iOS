@@ -26,7 +26,6 @@ PODS:
     - Quantcast-Measure/Core
   - Quantcast-Measure/Core (1.2.10)
   - Reachability (3.0.0)
-  - SFHFKeychainUtils (0.0.1)
   - SVProgressHUD (0.9)
   - UIDeviceIdentifier (0.1)
   - WordPressApi (0.0.1):
@@ -49,7 +48,6 @@ DEPENDENCIES:
   - OHHTTPStubs (= 1.1.1)
   - Quantcast-Measure (~> 1.2.10)
   - Reachability (= 3.0.0)
-  - SFHFKeychainUtils (~> 0.0.1)
   - SVProgressHUD (~> 0.9)
   - UIDeviceIdentifier (~> 0.1)
   - WordPressApi (from `https://github.com/koke/WordPressApi.git`)
@@ -69,7 +67,7 @@ EXTERNAL SOURCES:
 
 SPEC CHECKSUMS:
   AFNetworking: 3cbae45f61a9f995cdbd56bd571223910d7f4e44
-  CocoaLumberjack: d73e1e317ced14ab930797dda6c17156ff17aaa1
+  CocoaLumberjack: 2619775f386bbec1e870eddb5040f870c68726b1
   CTidy: 6a35875a96dd441822e620732c1113be19769067
   DTCoreText: 8798221d6da3bc079be24e808f152910c6f5e264
   DTFoundation: 86e59f373c7a9b9f859f8a9c1debf072979eebec
@@ -84,7 +82,6 @@ SPEC CHECKSUMS:
   OHHTTPStubs: cb1cef742f2fba18b192fb92ede52a69cf3a04d5
   Quantcast-Measure: ac7f72eae4b41082f7b07475ded9b820ca57c6aa
   Reachability: 500bd76bf6cd8ff2c6fb715fc5f44ef6e4c024f2
-  SFHFKeychainUtils: e828dbd9eaa509486acf95d8de2ebd414c4b7451
   SVProgressHUD: 03d4845ec8e64591726428a08236c6a5489d45f8
   UIDeviceIdentifier: 64036321b0f77ff41b4200002f0c138431c00d86
   WordPressApi: 76f9d7752b090197c172e2c5e6fccbffbaf7c336
