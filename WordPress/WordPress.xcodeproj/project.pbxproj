@@ -765,22 +765,6 @@
 		85ED98A517DFA9C800090D0B /* AppIcon60x60@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 85ED98A417DFA9C800090D0B /* AppIcon60x60@2x.png */; };
 		85ED98A717DFAA9F00090D0B /* AppIcon72x72@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 85ED98A617DFAA9F00090D0B /* AppIcon72x72@2x.png */; };
 		85ED98AB17DFB17200090D0B /* iTunesArtwork@2x in Resources */ = {isa = PBXBuildFile; fileRef = 85ED98AA17DFB17200090D0B /* iTunesArtwork@2x */; };
-		85F2C4BC17B9F6E600A303E0 /* CreateAccountAndBlogPage3ViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 85F2C49C17B9F6E600A303E0 /* CreateAccountAndBlogPage3ViewController.m */; };
-		85F2C4BE17B9F6E600A303E0 /* GeneralWalkthroughPage1ViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 85F2C4A117B9F6E600A303E0 /* GeneralWalkthroughPage1ViewController.m */; };
-		85F2C4BF17B9F6E600A303E0 /* GeneralWalkthroughPage2ViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 85F2C4A317B9F6E600A303E0 /* GeneralWalkthroughPage2ViewController.m */; };
-		85F2C4C017B9F6E600A303E0 /* GeneralWalkthroughPage3ViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 85F2C4A517B9F6E600A303E0 /* GeneralWalkthroughPage3ViewController.m */; };
-		85F2C4C117B9F6E600A303E0 /* LoginCompletedWalkthroughPage1ViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 85F2C4A717B9F6E600A303E0 /* LoginCompletedWalkthroughPage1ViewController.m */; };
-		85F2C4C217B9F6E600A303E0 /* LoginCompletedWalkthroughPage2ViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 85F2C4A917B9F6E600A303E0 /* LoginCompletedWalkthroughPage2ViewController.m */; };
-		85F2C4C317B9F6E600A303E0 /* LoginCompletedWalkthroughPage3ViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 85F2C4AB17B9F6E600A303E0 /* LoginCompletedWalkthroughPage3ViewController.m */; };
-		85F2C4C417B9F6E600A303E0 /* LoginCompletedWalkthroughPage4ViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 85F2C4AD17B9F6E600A303E0 /* LoginCompletedWalkthroughPage4ViewController.m */; };
-		85F2C4C517B9F6E600A303E0 /* NewCreateAccountAndBlogViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 85F2C4AF17B9F6E600A303E0 /* NewCreateAccountAndBlogViewController.m */; };
-		85F2C4C617B9F6E600A303E0 /* NewerAddUsersBlogViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 85F2C4B117B9F6E600A303E0 /* NewerAddUsersBlogViewController.m */; };
-		85F2C4C717B9F6E600A303E0 /* NewGeneralWalkthroughViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 85F2C4B317B9F6E600A303E0 /* NewGeneralWalkthroughViewController.m */; };
-		85F2C4C817B9F6E600A303E0 /* NewLoginCompletedWalkthroughViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 85F2C4B517B9F6E600A303E0 /* NewLoginCompletedWalkthroughViewController.m */; };
-		85F2C4C917B9F6E600A303E0 /* NewWPWalkthroughOverlayView.m in Sources */ = {isa = PBXBuildFile; fileRef = 85F2C4B717B9F6E600A303E0 /* NewWPWalkthroughOverlayView.m */; };
-		85F2C4CA17B9F6E600A303E0 /* NewWPWalkthroughOverlayView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 85F2C4B817B9F6E600A303E0 /* NewWPWalkthroughOverlayView.xib */; };
-		85F2C4CC17B9F6E600A303E0 /* NUX.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 85F2C4BB17B9F6E600A303E0 /* NUX.storyboard */; };
-		85F2C4CF17B9F81A00A303E0 /* BaseNUXViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 85F2C4CE17B9F81A00A303E0 /* BaseNUXViewController.m */; };
 		85F2C4D417BA0ED400A303E0 /* MP6SidebarViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 85F2C4D217BA0ED400A303E0 /* MP6SidebarViewController.m */; };
 		85F2C4D517BA0ED400A303E0 /* MP6SidebarViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 85F2C4D317BA0ED400A303E0 /* MP6SidebarViewController.xib */; };
 		93740DC917D8F85600C41B2F /* WPAlertView.h in Resources */ = {isa = PBXBuildFile; fileRef = 93740DC817D8F85600C41B2F /* WPAlertView.h */; };
@@ -1927,35 +1911,6 @@
 		85ED98A417DFA9C800090D0B /* AppIcon60x60@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "AppIcon60x60@2x.png"; sourceTree = "<group>"; };
 		85ED98A617DFAA9F00090D0B /* AppIcon72x72@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "AppIcon72x72@2x.png"; sourceTree = "<group>"; };
 		85ED98AA17DFB17200090D0B /* iTunesArtwork@2x */ = {isa = PBXFileReference; lastKnownFileType = file; path = "iTunesArtwork@2x"; sourceTree = "<group>"; };
-		85F2C49C17B9F6E600A303E0 /* CreateAccountAndBlogPage3ViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CreateAccountAndBlogPage3ViewController.m; sourceTree = "<group>"; };
-		85F2C4A017B9F6E600A303E0 /* GeneralWalkthroughPage1ViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GeneralWalkthroughPage1ViewController.h; sourceTree = "<group>"; };
-		85F2C4A117B9F6E600A303E0 /* GeneralWalkthroughPage1ViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GeneralWalkthroughPage1ViewController.m; sourceTree = "<group>"; };
-		85F2C4A217B9F6E600A303E0 /* GeneralWalkthroughPage2ViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GeneralWalkthroughPage2ViewController.h; sourceTree = "<group>"; };
-		85F2C4A317B9F6E600A303E0 /* GeneralWalkthroughPage2ViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GeneralWalkthroughPage2ViewController.m; sourceTree = "<group>"; };
-		85F2C4A417B9F6E600A303E0 /* GeneralWalkthroughPage3ViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GeneralWalkthroughPage3ViewController.h; sourceTree = "<group>"; };
-		85F2C4A517B9F6E600A303E0 /* GeneralWalkthroughPage3ViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GeneralWalkthroughPage3ViewController.m; sourceTree = "<group>"; };
-		85F2C4A617B9F6E600A303E0 /* LoginCompletedWalkthroughPage1ViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LoginCompletedWalkthroughPage1ViewController.h; sourceTree = "<group>"; };
-		85F2C4A717B9F6E600A303E0 /* LoginCompletedWalkthroughPage1ViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LoginCompletedWalkthroughPage1ViewController.m; sourceTree = "<group>"; };
-		85F2C4A817B9F6E600A303E0 /* LoginCompletedWalkthroughPage2ViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LoginCompletedWalkthroughPage2ViewController.h; sourceTree = "<group>"; };
-		85F2C4A917B9F6E600A303E0 /* LoginCompletedWalkthroughPage2ViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LoginCompletedWalkthroughPage2ViewController.m; sourceTree = "<group>"; };
-		85F2C4AA17B9F6E600A303E0 /* LoginCompletedWalkthroughPage3ViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LoginCompletedWalkthroughPage3ViewController.h; sourceTree = "<group>"; };
-		85F2C4AB17B9F6E600A303E0 /* LoginCompletedWalkthroughPage3ViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LoginCompletedWalkthroughPage3ViewController.m; sourceTree = "<group>"; };
-		85F2C4AC17B9F6E600A303E0 /* LoginCompletedWalkthroughPage4ViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LoginCompletedWalkthroughPage4ViewController.h; sourceTree = "<group>"; };
-		85F2C4AD17B9F6E600A303E0 /* LoginCompletedWalkthroughPage4ViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LoginCompletedWalkthroughPage4ViewController.m; sourceTree = "<group>"; };
-		85F2C4AE17B9F6E600A303E0 /* NewCreateAccountAndBlogViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NewCreateAccountAndBlogViewController.h; sourceTree = "<group>"; };
-		85F2C4AF17B9F6E600A303E0 /* NewCreateAccountAndBlogViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NewCreateAccountAndBlogViewController.m; sourceTree = "<group>"; };
-		85F2C4B017B9F6E600A303E0 /* NewerAddUsersBlogViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NewerAddUsersBlogViewController.h; sourceTree = "<group>"; };
-		85F2C4B117B9F6E600A303E0 /* NewerAddUsersBlogViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NewerAddUsersBlogViewController.m; sourceTree = "<group>"; };
-		85F2C4B217B9F6E600A303E0 /* NewGeneralWalkthroughViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NewGeneralWalkthroughViewController.h; sourceTree = "<group>"; };
-		85F2C4B317B9F6E600A303E0 /* NewGeneralWalkthroughViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NewGeneralWalkthroughViewController.m; sourceTree = "<group>"; };
-		85F2C4B417B9F6E600A303E0 /* NewLoginCompletedWalkthroughViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NewLoginCompletedWalkthroughViewController.h; sourceTree = "<group>"; };
-		85F2C4B517B9F6E600A303E0 /* NewLoginCompletedWalkthroughViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NewLoginCompletedWalkthroughViewController.m; sourceTree = "<group>"; };
-		85F2C4B617B9F6E600A303E0 /* NewWPWalkthroughOverlayView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NewWPWalkthroughOverlayView.h; sourceTree = "<group>"; };
-		85F2C4B717B9F6E600A303E0 /* NewWPWalkthroughOverlayView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NewWPWalkthroughOverlayView.m; sourceTree = "<group>"; };
-		85F2C4B817B9F6E600A303E0 /* NewWPWalkthroughOverlayView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = NewWPWalkthroughOverlayView.xib; sourceTree = "<group>"; };
-		85F2C4BB17B9F6E600A303E0 /* NUX.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = NUX.storyboard; sourceTree = "<group>"; };
-		85F2C4CD17B9F81A00A303E0 /* BaseNUXViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BaseNUXViewController.h; sourceTree = "<group>"; };
-		85F2C4CE17B9F81A00A303E0 /* BaseNUXViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BaseNUXViewController.m; sourceTree = "<group>"; };
 		85F2C4D117BA0ED400A303E0 /* MP6SidebarViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MP6SidebarViewController.h; sourceTree = "<group>"; };
 		85F2C4D217BA0ED400A303E0 /* MP6SidebarViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MP6SidebarViewController.m; sourceTree = "<group>"; };
 		85F2C4D317BA0ED400A303E0 /* MP6SidebarViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = MP6SidebarViewController.xib; sourceTree = "<group>"; };
@@ -2439,7 +2394,6 @@
 			isa = PBXGroup;
 			children = (
 				85325A5617BC3C76008E87D1 /* iOS 7 */,
-				85F2C49B17B9F68500A303E0 /* New NUX */,
 				85A1B6721742E7DB00BA5E35 /* Stats */,
 				E159D1011309AAF200F498E2 /* Migrations */,
 				C59D3D480E6410BC00AA591D /* Categories */,
@@ -3397,42 +3351,6 @@
 				85ED54F117CC1A01006564AE /* icon-posts-editor-inspector-active@2x.png */,
 			);
 			name = "Post Editor";
-			sourceTree = "<group>";
-		};
-		85F2C49B17B9F68500A303E0 /* New NUX */ = {
-			isa = PBXGroup;
-			children = (
-				85F2C4CD17B9F81A00A303E0 /* BaseNUXViewController.h */,
-				85F2C4CE17B9F81A00A303E0 /* BaseNUXViewController.m */,
-				85F2C49C17B9F6E600A303E0 /* CreateAccountAndBlogPage3ViewController.m */,
-				85F2C4A017B9F6E600A303E0 /* GeneralWalkthroughPage1ViewController.h */,
-				85F2C4A117B9F6E600A303E0 /* GeneralWalkthroughPage1ViewController.m */,
-				85F2C4A217B9F6E600A303E0 /* GeneralWalkthroughPage2ViewController.h */,
-				85F2C4A317B9F6E600A303E0 /* GeneralWalkthroughPage2ViewController.m */,
-				85F2C4A417B9F6E600A303E0 /* GeneralWalkthroughPage3ViewController.h */,
-				85F2C4A517B9F6E600A303E0 /* GeneralWalkthroughPage3ViewController.m */,
-				85F2C4A617B9F6E600A303E0 /* LoginCompletedWalkthroughPage1ViewController.h */,
-				85F2C4A717B9F6E600A303E0 /* LoginCompletedWalkthroughPage1ViewController.m */,
-				85F2C4A817B9F6E600A303E0 /* LoginCompletedWalkthroughPage2ViewController.h */,
-				85F2C4A917B9F6E600A303E0 /* LoginCompletedWalkthroughPage2ViewController.m */,
-				85F2C4AA17B9F6E600A303E0 /* LoginCompletedWalkthroughPage3ViewController.h */,
-				85F2C4AB17B9F6E600A303E0 /* LoginCompletedWalkthroughPage3ViewController.m */,
-				85F2C4AC17B9F6E600A303E0 /* LoginCompletedWalkthroughPage4ViewController.h */,
-				85F2C4AD17B9F6E600A303E0 /* LoginCompletedWalkthroughPage4ViewController.m */,
-				85F2C4AE17B9F6E600A303E0 /* NewCreateAccountAndBlogViewController.h */,
-				85F2C4AF17B9F6E600A303E0 /* NewCreateAccountAndBlogViewController.m */,
-				85F2C4B017B9F6E600A303E0 /* NewerAddUsersBlogViewController.h */,
-				85F2C4B117B9F6E600A303E0 /* NewerAddUsersBlogViewController.m */,
-				85F2C4B217B9F6E600A303E0 /* NewGeneralWalkthroughViewController.h */,
-				85F2C4B317B9F6E600A303E0 /* NewGeneralWalkthroughViewController.m */,
-				85F2C4B417B9F6E600A303E0 /* NewLoginCompletedWalkthroughViewController.h */,
-				85F2C4B517B9F6E600A303E0 /* NewLoginCompletedWalkthroughViewController.m */,
-				85F2C4B617B9F6E600A303E0 /* NewWPWalkthroughOverlayView.h */,
-				85F2C4B717B9F6E600A303E0 /* NewWPWalkthroughOverlayView.m */,
-				85F2C4B817B9F6E600A303E0 /* NewWPWalkthroughOverlayView.xib */,
-				85F2C4BB17B9F6E600A303E0 /* NUX.storyboard */,
-			);
-			name = "New NUX";
 			sourceTree = "<group>";
 		};
 		85F2C4D017BA0EB300A303E0 /* New Menu */ = {
@@ -4776,7 +4694,6 @@
 				85325A2C17BB0DF8008E87D1 /* icon-menu-toggle-active.png in Resources */,
 				85495F6017C6FACF00871A7A /* icon-comments-reply-active@2x.png in Resources */,
 				377636F315B0360C00C1C5C6 /* tabPointer_black@2x.png in Resources */,
-				85F2C4CC17B9F6E600A303E0 /* NUX.storyboard in Resources */,
 				850DE06A17CDAF92003A1057 /* icon-comments-unapprove@2x.png in Resources */,
 				5DEB6EF915B48404004E81F3 /* popover_arrow.png in Resources */,
 				5DEB6EFA15B48404004E81F3 /* popover_bg.png in Resources */,
@@ -5078,7 +4995,6 @@
 				5D7BEA8B1774A0C500423E7F /* btn-primary@2x.png in Resources */,
 				5D7BEA8C1774A0C500423E7F /* btn-secondary-tap.png in Resources */,
 				5D7BEA8D1774A0C500423E7F /* btn-secondary-tap@2x.png in Resources */,
-				85F2C4CA17B9F6E600A303E0 /* NewWPWalkthroughOverlayView.xib in Resources */,
 				5D7BEA8E1774A0C500423E7F /* btn-secondary.png in Resources */,
 				857F55CB17CEC5E100E154E1 /* toggleButtonMain-ios7@2x.png in Resources */,
 				5D7BEA8F1774A0C500423E7F /* btn-secondary@2x.png in Resources */,
@@ -5233,7 +5149,6 @@
 				93C486511810445D00A24725 /* ActivityLogViewController.m in Sources */,
 				ACC156CC0E10E67600D6E1A0 /* EditPostViewController.m in Sources */,
 				ACBAB5FE0E121C7300F38795 /* PostSettingsViewController.m in Sources */,
-				85F2C4BE17B9F6E600A303E0 /* GeneralWalkthroughPage1ViewController.m in Sources */,
 				ACBAB6860E1247F700F38795 /* PostPreviewViewController.m in Sources */,
 				C58349C51806F95100B64089 /* IOS7CorrectedTextView.m in Sources */,
 				ACAC79C60E1F50EB00AC7074 /* WPSelectionTableViewController.m in Sources */,
@@ -5252,8 +5167,6 @@
 				296526FE105810E100597FA3 /* NSString+Helpers.m in Sources */,
 				2994EEEE10DF0FCD008336A6 /* ReplyToCommentViewController.m in Sources */,
 				2906F812110CDA8900169D56 /* EditCommentViewController.m in Sources */,
-				85F2C4CF17B9F81A00A303E0 /* BaseNUXViewController.m in Sources */,
-				85F2C4C217B9F6E600A303E0 /* LoginCompletedWalkthroughPage2ViewController.m in Sources */,
 				45F45B3611614BA50022D394 /* CPopoverManager.m in Sources */,
 				83418AAA11C9FA6E00ACF00C /* Comment.m in Sources */,
 				E125443C12BF5A7200D87A0A /* WordPress.xcdatamodeld in Sources */,
@@ -5285,8 +5198,6 @@
 				E1D458691309589C00BF0235 /* Coordinate.m in Sources */,
 				E159D1051309AB0D00F498E2 /* MigrateBlogsFromFiles.m in Sources */,
 				E17078FD130A95B600F30433 /* WordPress-1-2.xcmappingmodel in Sources */,
-				85F2C4C717B9F6E600A303E0 /* NewGeneralWalkthroughViewController.m in Sources */,
-				85F2C4C117B9F6E600A303E0 /* LoginCompletedWalkthroughPage1ViewController.m in Sources */,
 				E18D43E1130BD8E9006155DE /* PostToAbstractPost.m in Sources */,
 				E11930C41312F8A800F34124 /* FakeMigration.m in Sources */,
 				375D090D133B94C3000CC9CD /* BlogsTableViewCell.m in Sources */,
@@ -5323,7 +5234,6 @@
 				852F4E8C17BED193005ED539 /* PostSettingsSelectionViewController.m in Sources */,
 				CC6B3BE715A33E16005A4523 /* WPFriendFinderNudgeView.m in Sources */,
 				5D9832F015A78AB400A5E783 /* UINavigationBar+Styled.m in Sources */,
-				85F2C4C917B9F6E600A303E0 /* NewWPWalkthroughOverlayView.m in Sources */,
 				5D9832F315A78CCB00A5E783 /* UIToolbar+Styled.m in Sources */,
 				E1745A9A15AF49C000A3F7C5 /* UIViewController+Styled.m in Sources */,
 				E1745AA715AF4E5900A3F7C5 /* UIBarButtonItem+Styled.m in Sources */,
@@ -5334,11 +5244,9 @@
 				5D1EE80215E7AF3E007F1F02 /* JetpackSettingsViewController.m in Sources */,
 				5D3E334E15EEBB6B005FC6F2 /* ReachabilityUtils.m in Sources */,
 				5D87E10C15F5120C0012C595 /* SettingsPageViewController.m in Sources */,
-				85F2C4C017B9F6E600A303E0 /* GeneralWalkthroughPage3ViewController.m in Sources */,
 				5DC3A44D1610B9BC00A890BE /* UINavigationController+Rotation.m in Sources */,
 				E1A0FAE7162F11CF0063B098 /* UIDevice+WordPressIdentifier.m in Sources */,
 				CC1D80141656D938002A542F /* NotificationsViewController.m in Sources */,
-				85F2C4C617B9F6E600A303E0 /* NewerAddUsersBlogViewController.m in Sources */,
 				CC1D802B165830AB002A542F /* NotificationsTableViewCell.m in Sources */,
 				CC1D80311658354C002A542F /* Note.m in Sources */,
 				CC0199E9165C17020073A966 /* NotificationsCommentDetailViewController.m in Sources */,
@@ -5366,13 +5274,11 @@
 				E1D0D81616D3B86800E33F4C /* SafariActivity.m in Sources */,
 				85495F4817C6D9A500871A7A /* CommentViewController.m in Sources */,
 				E1D0D82916D3D19200E33F4C /* PocketAPI.m in Sources */,
-				85F2C4C417B9F6E600A303E0 /* LoginCompletedWalkthroughPage4ViewController.m in Sources */,
 				E1D0D82A16D3D19200E33F4C /* PocketAPILogin.m in Sources */,
 				E1D0D82B16D3D19200E33F4C /* PocketAPIOperation.m in Sources */,
 				E1D0D84716D3D2EA00E33F4C /* PocketActivity.m in Sources */,
 				E15051CB16CA5DDB00D3DDDC /* Blog+Jetpack.m in Sources */,
 				85325A5917BC42E5008E87D1 /* NewPostTableViewCell.m in Sources */,
-				85F2C4C817B9F6E600A303E0 /* NewLoginCompletedWalkthroughViewController.m in Sources */,
 				8566BC95170F84BC003C6BCF /* CreateWPComAccountViewController.m in Sources */,
 				85D805521715F4EA0075EEAC /* CreateWPComBlogViewController.m in Sources */,
 				85D8055D171631F10075EEAC /* SelectWPComLanguageViewController.m in Sources */,
@@ -5397,14 +5303,12 @@
 				85F2C4D417BA0ED400A303E0 /* MP6SidebarViewController.m in Sources */,
 				E10DB0081771926D00B7A0A3 /* GooglePlusActivity.m in Sources */,
 				5D42A3DE175E7452005CFF05 /* AbstractComment.m in Sources */,
-				85F2C4BF17B9F6E600A303E0 /* GeneralWalkthroughPage2ViewController.m in Sources */,
 				5D42A3DF175E7452005CFF05 /* AbstractPost.m in Sources */,
 				5D42A3E0175E7452005CFF05 /* BasePost.m in Sources */,
 				5D42A3E1175E7452005CFF05 /* ReaderComment.m in Sources */,
 				5D42A3E2175E7452005CFF05 /* ReaderPost.m in Sources */,
 				5D42A3F7175E75EE005CFF05 /* ReaderCommentTableViewCell.m in Sources */,
 				5D42A3F8175E75EE005CFF05 /* ReaderImageView.m in Sources */,
-				85F2C4C517B9F6E600A303E0 /* NewCreateAccountAndBlogViewController.m in Sources */,
 				E1D062D4177C685C00644185 /* ReaderButton.m in Sources */,
 				5D42A3F9175E75EE005CFF05 /* ReaderMediaView.m in Sources */,
 				5D42A3FA175E75EE005CFF05 /* ReaderPostDetailView.m in Sources */,
@@ -5412,7 +5316,6 @@
 				5D42A3FC175E75EE005CFF05 /* ReaderPostsViewController.m in Sources */,
 				857F55B517CEA01A00E154E1 /* WPKeyboardToolbarBase.m in Sources */,
 				5D42A3FD175E75EE005CFF05 /* ReaderPostTableViewCell.m in Sources */,
-				85F2C4C317B9F6E600A303E0 /* LoginCompletedWalkthroughPage3ViewController.m in Sources */,
 				5D42A3FE175E75EE005CFF05 /* ReaderTableViewCell.m in Sources */,
 				5D42A3FF175E75EE005CFF05 /* ReaderTopicsViewController.m in Sources */,
 				5D42A400175E75EE005CFF05 /* ReaderVideoView.m in Sources */,
@@ -5420,7 +5323,6 @@
 				5D42A406175E76A7005CFF05 /* WPWebVideoViewController.m in Sources */,
 				5D2A8FF2175EC15800263144 /* ReaderTextFormView.m in Sources */,
 				5D477099175F73CA0086C6A3 /* ReaderCommentFormView.m in Sources */,
-				85F2C4BC17B9F6E600A303E0 /* CreateAccountAndBlogPage3ViewController.m in Sources */,
 				5D5A953B1760DDE0000F7A1E /* ReaderReblogFormView.m in Sources */,
 				857F961817D95F530071D9D1 /* WPTableViewSectionFooterView.m in Sources */,
 				5D8572BA17611B36004CC20D /* ReaderUsersBlogsViewController.m in Sources */,
