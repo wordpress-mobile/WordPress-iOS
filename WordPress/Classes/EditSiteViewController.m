@@ -316,7 +316,7 @@
         cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
         cell.selectionStyle = UITableViewCellSelectionStyleBlue;
         cell.detailTextLabel.textColor = [UIColor UIColorFromHex:0x888888];
-        
+        [WPStyleGuide configureTableViewCell:cell];
         return cell;        
     }
     
