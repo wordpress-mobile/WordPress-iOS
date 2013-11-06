@@ -298,6 +298,7 @@
             switchCellPushNotifications.textLabel.text = NSLocalizedString(@"Push Notifications", @"");
             switchCellPushNotifications.selectionStyle = UITableViewCellSelectionStyleNone;
             switchCellPushNotifications.cellSwitch.on = [self getBlogPushNotificationsSetting];
+            [WPStyleGuide configureTableViewCell:switchCellPushNotifications];
             return switchCellPushNotifications;
         }
 	} else if(indexPath.section == 2) {
