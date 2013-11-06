@@ -70,7 +70,6 @@
 - (UIView *)viewAfter:(UIView *)view;
 - (NSArray *)partiallyVisibleViews;
 - (BOOL)viewControllerExpectsWidePanel:(UIViewController *)controller;
-- (void)relayAppearanceMethod:(void(^)(UIViewController* controller))relay;
 - (void)adjustFramesForRotation;
 
 - (UIView *)createWrapViewForViewController:(UIViewController *)controller;
@@ -85,27 +84,11 @@
 - (void)setPanelNavigationController:(PanelNavigationController *)panelNavigationController;
 @end
 
-@interface UIViewController (PanelNavigationController_ViewContainmentEmulation)
-
-- (void)addChildViewController:(UIViewController *)childController;
-- (void)removeFromParentViewController;
-- (void)willMoveToParentViewController:(UIViewController *)parent;
-- (void)didMoveToParentViewController:(UIViewController *)parent;
-
-- (BOOL)vdc_shouldRelay;
-- (void)vdc_viewWillAppear:(bool)animated;
-- (void)vdc_viewDidAppear:(bool)animated;
-- (void)vdc_viewWillDisappear:(bool)animated;
-- (void)vdc_viewDidDisappear:(bool)animated;
-
-@end
-
 #pragma mark -
 
 @implementation PanelNavigationController {
     CGFloat _panOrigin;
     CGFloat _stackOffset;
-    BOOL _isAppeared;
     BOOL _isShowingPoppedIcon;
     BOOL _panned;
     BOOL _pushing;
@@ -126,7 +109,6 @@ CGFloat const PanelNavigationControllerStatusBarViewHeight = 20.0;
 - (id)initWithDetailController:(UIViewController *)detailController masterViewController:(UIViewController *)masterController {
     self = [super init];
     if (self) {
-        _isAppeared = NO;
 
         if (detailController) {
             _navigationController = [[UINavigationController alloc] initWithRootViewController:detailController];
@@ -159,9 +141,7 @@ CGFloat const PanelNavigationControllerStatusBarViewHeight = 20.0;
 }
 
 - (void)loadView {
-    _isAppeared = NO;
-    self.view = [[UIView alloc] init];
-    self.view.frame = [UIScreen mainScreen].applicationFrame;
+    self.view = [[UIView alloc] initWithFrame:CGRectZero];
     self.view.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
     self.view.autoresizesSubviews = YES;
     self.view.clipsToBounds = YES;
@@ -170,26 +150,21 @@ CGFloat const PanelNavigationControllerStatusBarViewHeight = 20.0;
 - (void)viewDidLoad {
     [super viewDidLoad];
     
-    self.detailViewContainer = [[UIView alloc] init];
-    
-    if (IS_IPAD) {
-        self.detailViewContainer.autoresizingMask = UIViewAutoresizingFlexibleHeight;
-    } else {
-        self.detailViewContainer.autoresizingMask = (UIViewAutoresizingFlexibleHeight | UIViewAutoresizingFlexibleWidth);
-    }
+    self.detailViewContainer = [[UIView alloc] initWithFrame:self.view.bounds];
+    self.detailViewContainer.autoresizingMask = (UIViewAutoresizingFlexibleHeight | UIViewAutoresizingFlexibleWidth);
     self.detailViewContainer.autoresizesSubviews = YES;
     self.detailViewContainer.clipsToBounds = YES;
     [self.view addSubview:self.detailViewContainer];
     
     if (self.navigationController) {
         [self addChildViewController:self.navigationController];
+        self.navigationController.view.frame = self.detailViewContainer.bounds;
         [self.detailViewContainer addSubview:self.navigationController.view];
         [self.navigationController didMoveToParentViewController:self];
     } else if (self.detailViewController) {
         UIView *wrappedView = [self createWrapViewForViewController:self.detailViewController];
         [self.detailViewContainer addSubview:wrappedView];
     }
-    self.detailViewContainer.frame = CGRectMake(0, 0, DETAIL_WIDE_WIDTH, DETAIL_HEIGHT);
 
     [self.detailViews addObject:self.detailViewContainer];
     [self.detailViewWidths addObject:[NSNumber numberWithFloat:DETAIL_WIDE_WIDTH]];
@@ -211,11 +186,7 @@ CGFloat const PanelNavigationControllerStatusBarViewHeight = 20.0;
     } else {
         _stackOffset = 0;
     }
-    
-    if (IS_IPAD) {
-        [self showSidebarAnimated:NO];
-    }
-    
+
     [self displayLoadingImageView];
     
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(didReceiveNotesNotification:)
@@ -245,40 +216,27 @@ CGFloat const PanelNavigationControllerStatusBarViewHeight = 20.0;
         viewToPrepare = [self createWrapViewForViewController:self.detailViewController];
     }
 
-    [self prepareDetailView:viewToPrepare forController:self.detailViewController];
-
     [self addPanner];
-    [self relayAppearanceMethod:^(UIViewController *controller) {
-        [controller viewWillAppear:animated];
-    }];
+    [self adjustFramesForRotation];
 }
 
 - (void)viewDidAppear:(BOOL)animated {
     [super viewDidAppear:animated];
     [self addStatusBarBackgroundView];
+}
 
-    _isAppeared = YES;
-    [self relayAppearanceMethod:^(UIViewController *controller) {
-        [controller viewDidAppear:animated];
-    }];
+- (void)willMoveToParentViewController:(UIViewController *)parent {
+    NSLog(@"parent change");
 }
 
 - (void)viewWillDisappear:(BOOL)animated {
     [super viewWillDisappear:animated];
 
     [self removePanner];
-    [self relayAppearanceMethod:^(UIViewController *controller) {
-        [controller viewWillDisappear:animated];
-    }];
 }
 
 - (void)viewDidDisappear:(BOOL)animated {
     [super viewDidDisappear:animated];
-
-    _isAppeared = NO;
-    [self relayAppearanceMethod:^(UIViewController *controller) {
-        [controller viewDidDisappear:animated];
-    }];
 }
 
 - (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation
@@ -294,28 +252,24 @@ CGFloat const PanelNavigationControllerStatusBarViewHeight = 20.0;
 //    if (IS_IPAD)
 //        [self setStackOffset:[self nearestValidOffsetWithVelocity:0] duration:duration];
     
-    [self relayAppearanceMethod:^(UIViewController *controller) {
-        [controller willAnimateRotationToInterfaceOrientation:interfaceOrientation duration:duration];
-    }];
 }
 
 - (void)willRotateToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation duration:(NSTimeInterval)duration {
     [super willRotateToInterfaceOrientation:toInterfaceOrientation duration:duration];
-    
-    [self relayAppearanceMethod:^(UIViewController *controller) {
-        [controller willRotateToInterfaceOrientation:toInterfaceOrientation duration:duration];
-    }];
 }
 
 - (void)didRotateFromInterfaceOrientation:(UIInterfaceOrientation)fromInterfaceOrientation {
     [super didRotateFromInterfaceOrientation:fromInterfaceOrientation];
+    [self adjustFramesForRotation];
 
-    [self relayAppearanceMethod:^(UIViewController *controller) {
-        [controller didRotateFromInterfaceOrientation:fromInterfaceOrientation];
-    }];
 }
 
 - (void)adjustFramesForRotation {
+    return;
+    CGRect frame = self.navigationController.view.frame;
+    frame.size = self.view.bounds.size;
+    self.navigationController.view.frame = frame;
+    return;
     // Set the detail view's new width due to the rotation on the iPad if wide panels are expected.
     if (IS_IPAD && [self viewControllerExpectsWidePanel:self.detailViewController]) {
         CGRect frm = self.detailViewContainer.frame;
@@ -574,17 +528,10 @@ CGFloat const PanelNavigationControllerStatusBarViewHeight = 20.0;
             [self.navigationController setToolbarHidden:YES animated:YES];
             sidebarButton = _detailViewController.navigationItem.leftBarButtonItem; // Retained and auto released to address a scenario found by running the analyzer where the object could leak.
         } else {
-            if (_isAppeared) {
-                [_detailViewController vdc_viewWillDisappear:NO];
-            }
-            
             [_detailViewController willMoveToParentViewController:nil];
             UIView *view = [self viewOrViewWrapper:_detailViewController.view];
             [view removeFromSuperview];
             
-            if (_isAppeared) {
-                [_detailViewController vdc_viewDidDisappear:NO];
-            }
             [_detailViewController setPanelNavigationController:nil];
             [_detailViewController removeFromParentViewController];
             [_detailViewController didMoveToParentViewController:nil];
@@ -686,14 +633,7 @@ CGFloat const PanelNavigationControllerStatusBarViewHeight = 20.0;
             }
             
             [self prepareDetailView:wrappedView forController:_detailViewController];
-            if (_isAppeared) {
-                [_detailViewController vdc_viewWillAppear:NO];
-            }
             [self.detailViewContainer addSubview:wrappedView];
-            
-            if (_isAppeared) {
-                [_detailViewController vdc_viewDidAppear:NO];
-            }
             [_detailViewController didMoveToParentViewController:self];
         }
     }
@@ -1553,24 +1493,6 @@ CGFloat const PanelNavigationControllerStatusBarViewHeight = 20.0;
     return [NSArray arrayWithArray:views];
 }
 
-- (void)relayAppearanceMethod:(void(^)(UIViewController* controller))relay {
-    bool shouldRelay = ![self respondsToSelector:@selector(automaticallyForwardAppearanceAndRotationMethodsToChildViewControllers)] || ![self performSelector:@selector(automaticallyForwardAppearanceAndRotationMethodsToChildViewControllers)];
-
-    // don't relay if the controller supports automatic relaying
-    if (!shouldRelay)
-        return;
-
-    relay(self.masterViewController);
-    if (self.navigationController) {
-        relay(self.navigationController);
-    } else {
-        relay(self.detailViewController);
-        for (UIViewController *controller in self.detailViewControllers) {
-            relay(controller);
-        }
-    }
-}
-
 #pragma mark - Navigation methods
 
 - (void)pushViewController:(UIViewController *)viewController animated:(BOOL)animated {
@@ -1606,19 +1528,12 @@ CGFloat const PanelNavigationControllerStatusBarViewHeight = 20.0;
         }
                 
         [self addChildViewController:viewController];
-        if (_isAppeared) {
-            [viewController vdc_viewWillAppear:animated];
-        }
 
         UIView *wrappedView = [self createWrapViewForViewController:viewController];
         [self.view addSubview:wrappedView];
 
         [self.detailViews addObject:wrappedView];
         [self.detailViewWidths addObject:[NSNumber numberWithFloat:newPanelWidth]];
-
-        if (_isAppeared) {
-            [viewController vdc_viewDidAppear:animated];
-        }
 
         [UIView animateWithDuration:CLOSE_SLIDE_DURATION(animated) animations:^{
             topView.frame = topViewFrame;
@@ -1649,14 +1564,12 @@ CGFloat const PanelNavigationControllerStatusBarViewHeight = 20.0;
         if (self.topViewController != self.detailViewController) {
             viewController = self.topViewController;
             [viewController willMoveToParentViewController:nil];
-            [viewController vdc_viewWillDisappear:animated];
             [viewController removeFromParentViewController];
 
             UIView *view = [self viewOrViewWrapper:viewController.view];
             [view removeFromSuperview];
 //            [viewController.view removeFromSuperview];
-            [viewController vdc_viewDidDisappear:animated];
-            
+
             // cleanup wrapper and toolbar.
 //            [self removeWrapperForView:viewController.view];
             
@@ -1758,73 +1671,6 @@ static const char *panelNavigationControllerKey = "PanelNavigationController";
 
 - (void)setPanelNavigationController:(PanelNavigationController *)panelNavigationController {
     objc_setAssociatedObject(self, panelNavigationControllerKey, panelNavigationController, OBJC_ASSOCIATION_ASSIGN);
-}
-
-@end
-
-@implementation UIViewController (PanelNavigationControllerPanel)
-
-#define OBJC_ADD_METHOD_IF_MISSING(selector,fakeSelector,args)     if (!class_getInstanceMethod(self, selector)) { \
-    class_addMethod([UIViewController class], selector, method_getImplementation(class_getInstanceMethod(self, fakeSelector)), args); }
-
-
-+ (void)load {
-    [super load];
-    OBJC_ADD_METHOD_IF_MISSING(@selector(addChildViewController:), @selector(fake_addChildViewController:), "v@:@");
-    OBJC_ADD_METHOD_IF_MISSING(@selector(removeFromParentViewController), @selector(fake_removeFromParentViewController), "v@:");
-    OBJC_ADD_METHOD_IF_MISSING(@selector(willMoveToParentViewController:), @selector(fake_willMoveToParentViewController:), "v@:@");
-    OBJC_ADD_METHOD_IF_MISSING(@selector(didMoveToParentViewController:), @selector(fake_didMoveToParentViewController:), "v@:@");
-}
-
-- (void)fake_addChildViewController:(UIViewController *)childController {
-}
-
-- (void)fake_removeFromParentViewController {
-}
-
-- (void)fake_willMoveToParentViewController:(UIViewController *)parent {
-}
-
-- (void)fake_didMoveToParentViewController:(UIViewController *)parent {
-}
-
-@end
-
-@implementation UIViewController (PanelNavigationController_ViewContainmentEmulation_Fakes)
-
-- (BOOL)vdc_shouldRelay {
-    if (self.panelNavigationController)
-        return [self.panelNavigationController vdc_shouldRelay];
-
-    return ![self respondsToSelector:@selector(automaticallyForwardAppearanceAndRotationMethodsToChildViewControllers)] || ![self performSelector:@selector(automaticallyForwardAppearanceAndRotationMethodsToChildViewControllers)];
-}
-
-- (void)vdc_viewWillAppear:(bool)animated {
-    if (![self vdc_shouldRelay])
-        return;
-
-    [self viewWillAppear:animated];
-}
-
-- (void)vdc_viewDidAppear:(bool)animated{
-    if (![self vdc_shouldRelay])
-        return;
-
-    [self viewDidAppear:animated];
-}
-
-- (void)vdc_viewWillDisappear:(bool)animated{
-    if (![self vdc_shouldRelay])
-        return;
-
-    [self viewWillDisappear:animated];
-}
-
-- (void)vdc_viewDidDisappear:(bool)animated{
-    if (![self vdc_shouldRelay])
-        return;
-
-    [self viewDidDisappear:animated];
 }
 
 @end
