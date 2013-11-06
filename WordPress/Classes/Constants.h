@@ -184,3 +184,6 @@ typedef NS_ENUM(NSUInteger, EditPageMode) {
 #define image_medium_size_h 360
 #define image_large_size_w 640
 #define image_large_size_h 480
+
+// User Defaults Keys
+#define kWPUserDefaultsFeedbackEnabled @"wp_feedback_enabled"

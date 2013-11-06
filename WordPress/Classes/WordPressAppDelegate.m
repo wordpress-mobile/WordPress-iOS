@@ -313,6 +313,8 @@ int ddLogLevel = LOG_LEVEL_INFO;
 
 	// Stats use core data, so run them after initialization
 	[self checkIfStatsShouldRun];
+    
+    [self checkIfFeedbackShouldBeEnabled];
 
 	// Clean media files asynchronously
     // dispatch_async feels a bit faster than performSelectorOnBackground:
@@ -1011,6 +1013,31 @@ int ddLogLevel = LOG_LEVEL_INFO;
 	NSDate *theDate = [NSDate date];
 	[defaults setObject:theDate forKey:@"statsDate"];
 	[defaults synchronize];
+}
+
+- (void)checkIfFeedbackShouldBeEnabled
+{
+    NSURL *url = [NSURL URLWithString:@"http://api.wordpress.org/iphoneapp/feedback-check/1.0/"];
+    NSURLRequest *request = [[NSURLRequest alloc] initWithURL:url
+                                                  cachePolicy:NSURLCacheStorageNotAllowed
+                                              timeoutInterval:10.0];
+    AFJSONRequestOperation *operation = [AFJSONRequestOperation JSONRequestOperationWithRequest:request success:^(NSURLRequest *request, NSHTTPURLResponse *response, id JSON) {
+        DDLogVerbose(@"Feedback response received: %@", JSON);
+        NSNumber *feedbackEnabled = JSON[@"feedback-enabled"];
+        
+        NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
+        [defaults setBool:feedbackEnabled.boolValue forKey:kWPUserDefaultsFeedbackEnabled];
+        [defaults synchronize];
+    } failure:^(NSURLRequest *request, NSHTTPURLResponse *response, NSError *error, id JSON) {
+        DDLogError(@"Error received while checking feedback enabled status: %@", error);
+
+        // Lets be pessimistic and turn off feedback by default if this call doesn't work
+        NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
+        [defaults setBool:NO forKey:kWPUserDefaultsFeedbackEnabled];
+        [defaults synchronize];
+    }];
+    
+    [operation start];
 }
 
 - (void)cleanUnusedMediaFileFromTmpDir {
