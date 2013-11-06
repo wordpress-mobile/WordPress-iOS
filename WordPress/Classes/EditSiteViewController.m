@@ -102,8 +102,15 @@
     self.navigationItem.rightBarButtonItem = saveButton;
     
     if (!IS_IPAD) {
-        [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(handleKeyboardDidShow:) name:UIKeyboardDidShowNotification object:nil];
-        [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(handleKeyboardWillHide:) name:UIKeyboardWillHideNotification object:nil];
+        [[NSNotificationCenter defaultCenter] addObserver:self
+                                                 selector:@selector(handleKeyboardDidShow:)
+                                                     name:UIKeyboardDidShowNotification
+                                                   object:nil];
+        
+        [[NSNotificationCenter defaultCenter] addObserver:self
+                                                 selector:@selector(handleKeyboardWillHide:)
+                                                     name:UIKeyboardWillHideNotification
+                                                   object:nil];
     }
     
     UITapGestureRecognizer *tgr = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(handleViewTapped)];
@@ -142,7 +149,6 @@
     return 2;
 }
 
-
 - (NSInteger)tableView:(UITableView *)tv numberOfRowsInSection:(NSInteger)section {
     switch (section) {
 		case 0:
@@ -155,25 +161,25 @@
         case 2:
             return 1;
 	}
+    
 	return 0;
 }
 
-
-- (UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section
-{
+- (UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section {
     WPTableViewSectionHeaderView *header = [[WPTableViewSectionHeaderView alloc] initWithFrame:CGRectMake(0, 0, CGRectGetWidth(self.view.bounds), 0)];
     header.title = [self titleForHeaderInSection:section];
+    
     return header;
 }
 
-- (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section
-{
+- (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section {
     NSString *title = [self titleForHeaderInSection:section];
-    return [WPTableViewSectionHeaderView heightForTitle:title andWidth:CGRectGetWidth(self.view.bounds)];
+    CGFloat height = [WPTableViewSectionHeaderView heightForTitle:title andWidth:CGRectGetWidth(self.view.bounds)];
+    
+    return height;
 }
 
-- (NSString *)titleForHeaderInSection:(NSInteger)section
-{
+- (NSString *)titleForHeaderInSection:(NSInteger)section {
 	NSString *result = nil;
 	switch (section) {
 		case 0:
@@ -184,7 +190,9 @@
             break;
         case 2:
             result = NSLocalizedString(@"Jetpack Stats", @"");
+            break;
 	}
+    
 	return result;
 }
 
@@ -219,7 +227,7 @@
             
             return self.urlCell;
         }
-        else if(indexPath.row == 1) {
+        else if (indexPath.row == 1) {
             self.usernameCell = (UITableViewTextFieldCell *)[tableView dequeueReusableCellWithIdentifier:@"UsernameCell"];
             if (self.usernameCell == nil) {
                 self.usernameCell = [[UITableViewTextFieldCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:@"UsernameCell"];
@@ -245,7 +253,7 @@
             
             return self.usernameCell;
         }
-        else if(indexPath.row == 2) {
+        else if (indexPath.row == 2) {
             self.passwordCell = (UITableViewTextFieldCell *)[tableView dequeueReusableCellWithIdentifier:@"PasswordCell"];
             if (self.passwordCell == nil) {
                 self.passwordCell = [[UITableViewTextFieldCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:@"PasswordCell"];
@@ -261,16 +269,15 @@
                 }
                 [WPStyleGuide configureTableViewCell:self.passwordCell];
 			}
+            
             return self.passwordCell;
         }				        
-    } else if(indexPath.section == 1) {
-        if(indexPath.row == 0) {
-            if(switchCell == nil) {
+    } else if (indexPath.section == 1) {
+        if (indexPath.row == 0) {
+            if (switchCell == nil) {
                 NSArray *topLevelObjects = [[NSBundle mainBundle] loadNibNamed:@"UITableViewSwitchCell" owner:nil options:nil];
-                for(id currentObject in topLevelObjects)
-                {
-                    if([currentObject isKindOfClass:[UITableViewSwitchCell class]])
-                    {
+                for (id currentObject in topLevelObjects) {
+                    if ([currentObject isKindOfClass:[UITableViewSwitchCell class]]) {
                         switchCell = (UITableViewSwitchCell *)currentObject;
                         break;
                     }
@@ -281,14 +288,13 @@
             switchCell.cellSwitch.on = self.geolocationEnabled;
             [switchCell.cellSwitch addTarget:self action:@selector(toggleGeolocation:) forControlEvents:UIControlEventValueChanged];
             [WPStyleGuide configureTableViewCell:switchCell];
+            
             return switchCell;
-        } else if(indexPath.row == 1) {
-            if(switchCellPushNotifications == nil) {
+        } else if (indexPath.row == 1) {
+            if (switchCellPushNotifications == nil) {
                 NSArray *topLevelObjects = [[NSBundle mainBundle] loadNibNamed:@"UITableViewSwitchCell" owner:nil options:nil];
-                for(id currentObject in topLevelObjects)
-                {
-                    if([currentObject isKindOfClass:[UITableViewSwitchCell class]])
-                    {
+                for (id currentObject in topLevelObjects) {
+                    if ([currentObject isKindOfClass:[UITableViewSwitchCell class]]) {
                         switchCellPushNotifications = (UITableViewSwitchCell *)currentObject;
                         break;
                     }
@@ -298,14 +304,15 @@
             switchCellPushNotifications.selectionStyle = UITableViewCellSelectionStyleNone;
             switchCellPushNotifications.cellSwitch.on = [self getBlogPushNotificationsSetting];
             [WPStyleGuide configureTableViewCell:switchCellPushNotifications];
+            
             return switchCellPushNotifications;
         }
-	} else if(indexPath.section == 2) {
+	} else if (indexPath.section == 2) {
         
         UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:@"Cell"];
-        if(!cell) {
+        if (!cell) {
             cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleValue1 reuseIdentifier:@"Cell"];
-        };
+        }
         cell.textLabel.text = NSLocalizedString(@"Configure", @"");
         if (blog.jetpackUsername) {
             cell.detailTextLabel.text = [NSString stringWithFormat:NSLocalizedString(@"Connected as %@", @"Connected to jetpack as the specified usernaem"), blog.jetpackUsername];
@@ -317,6 +324,7 @@
         cell.selectionStyle = UITableViewCellSelectionStyleBlue;
         cell.detailTextLabel.textColor = [UIColor UIColorFromHex:0x888888];
         [WPStyleGuide configureTableViewCell:cell];
+        
         return cell;        
     }
     
@@ -331,8 +339,8 @@
 - (void)tableView:(UITableView *)tv didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
 	UITableViewCell *cell = [tv cellForRowAtIndexPath:indexPath];
 	if (indexPath.section == 0) {
-        for(UIView *subview in cell.subviews) {
-            if(subview.class == [UITextField class]) {
+        for (UIView *subview in cell.subviews) {
+            if (subview.class == [UITextField class]) {
                 [subview becomeFirstResponder];
                 break;
             }
@@ -360,7 +368,6 @@
     lastTextField = textField;
 }
 
-
 - (BOOL)textFieldShouldReturn:(UITextField *)textField {
     if (textField == usernameTextField) {
         [passwordTextField becomeFirstResponder];
@@ -371,7 +378,6 @@
     }
 	return NO;
 }
-
 
 - (BOOL)textField:(UITextField *)textField shouldChangeCharactersInRange:(NSRange)range replacementString:(NSString *)string {
     UITableViewCell *cell = (UITableViewCell *)[textField superview];
@@ -396,7 +402,7 @@
 #pragma mark UIAlertViewDelegate
 
 - (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex { 
-	switch(buttonIndex) {
+	switch (buttonIndex) {
 		case 0: {
             if ( alertView.tag == 20 ) {
                 //Domain Error or malformed response
@@ -473,7 +479,7 @@
 - (NSString *)getURLToValidate {
     NSString *urlToValidate = self.url;
 	
-    if(![urlToValidate hasPrefix:@"http"])
+    if (![urlToValidate hasPrefix:@"http"])
         urlToValidate = [NSString stringWithFormat:@"http://%@", url];
 	
     NSError *error = nil;
@@ -489,8 +495,7 @@
     return urlToValidate;
 }
 
-- (void)validateXmlprcURL:(NSURL *)xmlRpcURL
-{
+- (void)validateXmlprcURL:(NSURL *)xmlRpcURL {
     WordPressXMLRPCApi *api = [WordPressXMLRPCApi apiWithXMLRPCEndpoint:xmlRpcURL username:usernameTextField.text password:passwordTextField.text];
 
     [api getBlogOptionsWithSuccess:^(id options){
@@ -508,8 +513,7 @@
     }];
 }
 
-- (void)loginForSiteWithXmlRpcUrl:(NSURL *)xmlRpcURL
-{
+- (void)loginForSiteWithXmlRpcUrl:(NSURL *)xmlRpcURL {
     WordPressXMLRPCApi *api = [WordPressXMLRPCApi apiWithXMLRPCEndpoint:xmlRpcURL username:usernameTextField.text password:passwordTextField.text];
     [api getBlogsWithSuccess:^(NSArray *blogs) {
         [SVProgressHUD dismiss];
@@ -554,7 +558,6 @@
     }];
 }
 
-
 - (void)validationSuccess:(NSString *)xmlrpc {
 	[savingIndicator stopAnimating];
 	[savingIndicator setHidden:YES];
@@ -568,7 +571,6 @@
     [self.navigationItem setHidesBackButton:NO animated:NO];
 
 }
-
 
 - (void)validationDidFail:(id)wrong {
 	[savingIndicator stopAnimating];
@@ -617,7 +619,6 @@
 	[self.navigationItem setHidesBackButton:NO animated:NO];
 }
 
-
 - (void)validateFields {
     self.url = [NSURL IDNEncodedURL:urlTextField.text];
     DDLogInfo(@"blog url: %@", self.url);
@@ -653,7 +654,6 @@
     }
 }
 
-
 - (void)save:(id)sender {
     [urlTextField resignFirstResponder];
     [usernameTextField resignFirstResponder];
@@ -677,7 +677,7 @@
         blog.geolocationEnabled = self.geolocationEnabled;
         [blog dataSave];
         
-        if(switchCellPushNotifications){
+        if (switchCellPushNotifications){
             BOOL muted = ! switchCellPushNotifications.cellSwitch.on;
             if (_notificationPreferences) {
                 NSMutableDictionary *mutedBlogsDictionary = [[_notificationPreferences objectForKey:@"muted_blogs"] mutableCopy];
@@ -689,14 +689,14 @@
                 for ( ; i < [mutedBlogsArray count]; i++) {
                     updatedPreference = [[mutedBlogsArray objectAtIndex:i] mutableCopy];
                     NSString *currentblogID = [updatedPreference objectForKey:@"blog_id"];
-                    if( [blogID intValue] == [currentblogID intValue]  ) {
+                    if ([blogID intValue] == [currentblogID intValue]) {
                         [updatedPreference setValue:[NSNumber numberWithBool:muted] forKey:@"value"];
                         hasMatch = YES;
                         break;
                     }
                 }
                 
-                if(hasMatch){
+                if (hasMatch){
                     [mutedBlogsArray setObject:updatedPreference atIndexedSubscript:i];
                     [mutedBlogsDictionary setValue:mutedBlogsArray forKey:@"value"];
                     [_notificationPreferences setValue:mutedBlogsDictionary forKey:@"muted_blogs"];
@@ -706,12 +706,12 @@
             }
         }
 	}
-	if(blog == nil || blog.username == nil) {
+	if (blog == nil || blog.username == nil) {
 		[self validateFields];
 	} else {
-		if ([self.startingUser isEqualToString:usernameTextField.text]
-			&& [self.startingPwd isEqualToString:passwordTextField.text]
-			&& [self.startingUrl isEqualToString:urlTextField.text]) {
+		if ([self.startingUser isEqualToString:usernameTextField.text] &&
+            [self.startingPwd isEqualToString:passwordTextField.text] &&
+			[self.startingUrl isEqualToString:urlTextField.text]) {
 			// No need to check if nothing changed
             [self cancel:nil];
             
@@ -721,7 +721,6 @@
     }
 }
 
-
 - (IBAction)cancel:(id)sender {
     if (isCancellable) {
         [self dismissViewControllerAnimated:YES completion:nil];
@@ -729,7 +728,7 @@
         [self.navigationController popToRootViewControllerAnimated:YES];
     }
     
-    if (self.delegate){
+    if (self.delegate) {
         // If sender is not nil then the user tapped the cancel button.
         BOOL wascancelled = (sender != nil);
         [self.delegate controllerDidDismiss:self cancelled:wascancelled];
@@ -739,10 +738,9 @@
 - (void)enableDisableSaveButton {
     BOOL hasContent;
     
-    if ( [urlTextField.text isEqualToString:@""] ||
+    if ([urlTextField.text isEqualToString:@""] ||
          [usernameTextField.text isEqualToString:@""] ||
-         [passwordTextField.text isEqualToString:@""] )
-    {
+         [passwordTextField.text isEqualToString:@""]) {
         hasContent = NO;
     } else {
         hasContent = YES;
@@ -750,8 +748,6 @@
     
     self.navigationItem.rightBarButtonItem.enabled = hasContent;
 }
-
-
 
 - (void)reloadNotificationSettings {
     _notificationPreferences = [[[NSUserDefaults standardUserDefaults] objectForKey:@"notification_preferences"] mutableCopy];
@@ -765,9 +761,9 @@
         NSDictionary *mutedBlogsDictionary = [_notificationPreferences objectForKey:@"muted_blogs"];
         NSArray *mutedBlogsArray = [mutedBlogsDictionary objectForKey:@"value"];
         NSNumber *blogID = [blog isWPcom] ? blog.blogID : [blog jetpackBlogID];
-        for(NSDictionary *currentBlog in mutedBlogsArray ){
+        for (NSDictionary *currentBlog in mutedBlogsArray ){
             NSString *currentBlogID = [currentBlog objectForKey:@"blog_id"];
-            if( [blogID intValue] == [currentBlogID intValue]  ) {
+            if ([blogID intValue] == [currentBlogID intValue]) {
                 return ![[currentBlog objectForKey:@"value"] boolValue];
             }
         }
@@ -777,8 +773,7 @@
     }
 }
 
-- (BOOL)canEditUsernameAndURL
-{
+- (BOOL)canEditUsernameAndURL {
     return NO;
 }
 
@@ -788,7 +783,7 @@
 - (void)handleKeyboardDidShow:(NSNotification *)notification {    
     CGRect rect = [[notification.userInfo valueForKey:UIKeyboardFrameEndUserInfoKey] CGRectValue];    
     CGRect frame = self.view.frame;
-    if(UIInterfaceOrientationIsLandscape(self.interfaceOrientation)) {
+    if (UIInterfaceOrientationIsLandscape(self.interfaceOrientation)) {
         frame.size.height -= rect.size.width;
     } else {
         frame.size.height -= rect.size.height;
@@ -802,11 +797,10 @@
     }
 }
 
-
 - (void)handleKeyboardWillHide:(NSNotification *)notification {
     CGRect rect = [[notification.userInfo valueForKey:UIKeyboardFrameEndUserInfoKey] CGRectValue];
     CGRect frame = self.view.frame;
-    if(UIInterfaceOrientationIsLandscape(self.interfaceOrientation)) {
+    if (UIInterfaceOrientationIsLandscape(self.interfaceOrientation)) {
         frame.size.height += rect.size.width;
     } else {
         frame.size.height += rect.size.height;
