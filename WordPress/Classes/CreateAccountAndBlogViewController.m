@@ -43,6 +43,7 @@
     UIImageView *_page2Icon;
     UILabel *_page2Title;
     UILabel *_page2TOSLabel;
+    UILabel *_page2WordPressComLabel;
     UITextField *_page2SiteTitleText;
     UITextField *_page2SiteAddressText;
     UITextField *_page2SiteLanguageText;
@@ -533,6 +534,20 @@ CGFloat const CreateAccountAndBlogKeyboardOffset = 132.0;
         _page2SiteAddressText.autocorrectionType = UITextAutocorrectionTypeNo;
         _page2SiteAddressText.autocapitalizationType = UITextAutocapitalizationTypeNone;
         [_scrollView addSubview:_page2SiteAddressText];
+        
+        // add .wordpress.com label to textfield
+        _page2WordPressComLabel = [[UILabel alloc] init];
+        _page2WordPressComLabel.text = @".wordpress.com";
+        _page2WordPressComLabel.textAlignment = NSTextAlignmentCenter;
+        _page2WordPressComLabel.font = [WPNUXUtility descriptionTextFont];
+        _page2WordPressComLabel.textColor = [UIColor whiteColor];
+        _page2WordPressComLabel.backgroundColor = [WPNUXUtility backgroundColor];
+        [_page2WordPressComLabel sizeToFit];
+        
+        UIEdgeInsets siteAddressTextInsets = [(WPWalkthroughTextField *)_page2SiteAddressText textInsets];
+        siteAddressTextInsets.right += _page2WordPressComLabel.frame.size.width + 10;
+        [(WPWalkthroughTextField *)_page2SiteAddressText setTextInsets:siteAddressTextInsets];
+        [_page2SiteAddressText addSubview:_page2WordPressComLabel];
     }
     
     // Add Site Language
@@ -628,6 +643,13 @@ CGFloat const CreateAccountAndBlogKeyboardOffset = 132.0;
     x = [self adjustX:x forPage:currentPage];
     y = CGRectGetMaxY(_page2SiteTitleText.frame) + 0.5*CreateAccountAndBlogStandardOffset;
     _page2SiteAddressText.frame = CGRectIntegral(CGRectMake(x, y, CreateAccountAndBlogTextFieldWidth, CreateAccountAndBlogTextFieldHeight));
+    
+    // Layout WordPressCom Label
+    [_page2WordPressComLabel sizeToFit];
+    CGSize wordPressComLabelSize = _page2WordPressComLabel.frame.size;
+    wordPressComLabelSize.height = _page2SiteAddressText.frame.size.height - 10;
+    wordPressComLabelSize.width += 10;
+    _page2WordPressComLabel.frame = CGRectMake(_page2SiteAddressText.frame.size.width - wordPressComLabelSize.width - 5, (_page2SiteAddressText.frame.size.height - wordPressComLabelSize.height) / 2, wordPressComLabelSize.width, wordPressComLabelSize.height);
 
     // Layout Site Language
     x = (_viewWidth - CreateAccountAndBlogTextFieldWidth)/2.0;
@@ -1258,7 +1280,7 @@ CGFloat const CreateAccountAndBlogKeyboardOffset = 132.0;
         [SVProgressHUD dismiss];
         _page1FieldsValid = YES;
         if ([[_page2SiteAddressText.text trim] length] == 0) {
-            _page2SiteAddressText.text = _defaultSiteUrl = [NSString stringWithFormat:@"%@.wordpress.com", _page1UsernameText.text];
+            _page2SiteAddressText.text = _defaultSiteUrl = _page1UsernameText.text;
         }
         [self updatePage3Labels];
         [self moveToPage:2];

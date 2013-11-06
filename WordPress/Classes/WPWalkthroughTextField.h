@@ -10,4 +10,6 @@
 
 @interface WPWalkthroughTextField : UITextField
 
+@property (nonatomic) UIEdgeInsets textInsets;
+
 @end
