@@ -864,12 +864,18 @@
 		
         if (IS_IOS7) {
             if (IS_IPAD) {
-                [resizeActionSheet showFromBarButtonItem:[self.navigationItem.rightBarButtonItems objectAtIndex:1] animated:YES];
+                if (self.shouldShowResizeActionSheet) {
+                    [resizeActionSheet showFromBarButtonItem:[self.navigationItem.rightBarButtonItems objectAtIndex:1] animated:YES];
+                }
             } else {
-                [resizeActionSheet showInView:self.view];
+                if (self.shouldShowResizeActionSheet) {
+                    [resizeActionSheet showInView:self.view];
+                }
             }
         } else {
-            [resizeActionSheet showInView:postDetailViewController.view];
+            if (self.shouldShowResizeActionSheet) {
+                [resizeActionSheet showInView:postDetailViewController.view];
+            }
         }
 	}
 }
@@ -1084,11 +1090,11 @@
 		NSNumber *resizePreference = [NSNumber numberWithInt:-1];
 		if([[NSUserDefaults standardUserDefaults] objectForKey:@"media_resize_preference"] != nil)
 			resizePreference = [nf numberFromString:[[NSUserDefaults standardUserDefaults] objectForKey:@"media_resize_preference"]];
-		BOOL showResizeActionSheet = NO;
+        self.shouldShowResizeActionSheet = NO;
 		switch ([resizePreference intValue]) {
 			case 0:
             {
-                showResizeActionSheet = YES;
+                self.shouldShowResizeActionSheet = YES;
 				break;
             }
 			case 1:
@@ -1113,7 +1119,7 @@
             }
 			default:
             {
-                showResizeActionSheet = YES;
+                self.shouldShowResizeActionSheet = NO;
 				break;
             }
 		}
@@ -1127,7 +1133,7 @@
             }
         } else {
             [postDetailViewController.navigationController dismissViewControllerAnimated:YES completion:^{
-                if (showResizeActionSheet) {
+                if (self.shouldShowResizeActionSheet) {
                     [self showResizeActionSheet];
                 }
             }];

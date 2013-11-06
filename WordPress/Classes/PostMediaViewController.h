@@ -75,6 +75,7 @@ static inline double radians(double degrees) {
 @property (nonatomic, strong) WPAlertView *customSizeAlert;
 @property (nonatomic, strong) UIActionSheet *currentActionSheet;
 @property (nonatomic, strong) NSString *statsPrefix;
+@property BOOL shouldShowResizeActionSheet;
 
 - (id)initWithPost:(AbstractPost *)aPost;
 
