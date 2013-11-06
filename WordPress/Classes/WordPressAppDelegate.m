@@ -1023,7 +1023,10 @@ int ddLogLevel = LOG_LEVEL_INFO;
                                               timeoutInterval:10.0];
     AFJSONRequestOperation *operation = [AFJSONRequestOperation JSONRequestOperationWithRequest:request success:^(NSURLRequest *request, NSHTTPURLResponse *response, id JSON) {
         DDLogVerbose(@"Feedback response received: %@", JSON);
-        NSNumber *feedbackEnabled = JSON[@"feedback-enabled"] ?: @YES;
+        NSNumber *feedbackEnabled = JSON[@"feedback-enabled"];
+        if (feedbackEnabled == nil) {
+            feedbackEnabled = @YES;
+        }
         
         NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
         [defaults setBool:feedbackEnabled.boolValue forKey:kWPUserDefaultsFeedbackEnabled];
