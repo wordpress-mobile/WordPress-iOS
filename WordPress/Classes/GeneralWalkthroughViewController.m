@@ -458,8 +458,8 @@ CGFloat const GeneralWalkthroughiOS7StatusBarOffset = 10.0;
 
 - (void)addPage1Controls
 {
-    UIImage *infoButtonImage = [UIImage imageNamed:@"btn-about"];
-    UIImage *infoButtonImageHighlighted = [UIImage imageNamed:@"btn-about-tap"];
+    UIImage *infoButtonImage = [UIImage imageNamed:@"btn-help"];
+    UIImage *infoButtonImageHighlighted = [UIImage imageNamed:@"btn-help-tap"];
     if (_page1InfoButton == nil) {
         _page1InfoButton = [UIButton buttonWithType:UIButtonTypeCustom];
         [_page1InfoButton setImage:infoButtonImage forState:UIControlStateNormal];
