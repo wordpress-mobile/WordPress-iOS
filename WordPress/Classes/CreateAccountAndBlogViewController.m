@@ -552,8 +552,8 @@ CGFloat const CreateAccountAndBlogKeyboardOffset = 132.0;
     
     // Add Site Language Dropdown Image
     if (_page2SiteLanguageDropdownImage == nil) {
-        UIImage *dropDownImage = [UIImage imageNamed:@"textDropdownIcon"];
-        _page2SiteLanguageDropdownImage = [[UIImageView alloc] initWithImage:dropDownImage];
+        UIImage *pushDetailImage = [UIImage imageNamed:@"textPushDetailIcon"];
+        _page2SiteLanguageDropdownImage = [[UIImageView alloc] initWithImage:pushDetailImage];
         [_scrollView addSubview:_page2SiteLanguageDropdownImage];
     }
     
