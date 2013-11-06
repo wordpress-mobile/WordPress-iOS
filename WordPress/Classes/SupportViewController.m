@@ -13,9 +13,8 @@
 #import "WordPressAppDelegate.h"
 
 @interface SupportViewController ()
-{
-    BOOL feedbackEnabled;
-}
+
+@property (nonatomic, assign) BOOL feedbackEnabled;
 
 @end
 
@@ -34,7 +33,7 @@ typedef NS_ENUM(NSInteger, SettingsViewControllerSections)
     self = [super initWithStyle:UITableViewStyleGrouped];
     if (self) {
         self.title = NSLocalizedString(@"Support", @"");
-        feedbackEnabled = YES;
+        _feedbackEnabled = YES;
     }
 
     return self;
@@ -44,7 +43,7 @@ typedef NS_ENUM(NSInteger, SettingsViewControllerSections)
     [super viewDidLoad];
     
     NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
-    feedbackEnabled = [defaults boolForKey:kWPUserDefaultsFeedbackEnabled];
+    self.feedbackEnabled = [defaults boolForKey:kWPUserDefaultsFeedbackEnabled];
     
     [WPStyleGuide configureColorsForView:self.view andTableView:self.tableView];
     
@@ -72,7 +71,7 @@ typedef NS_ENUM(NSInteger, SettingsViewControllerSections)
         return 2;
     
     if (section == SettingsSectionFeedback) {
-        return feedbackEnabled ? 1 : 0;
+        return self.feedbackEnabled ? 1 : 0;
     }
 
     return 1;
