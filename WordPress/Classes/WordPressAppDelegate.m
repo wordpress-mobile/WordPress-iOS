@@ -1023,7 +1023,7 @@ int ddLogLevel = LOG_LEVEL_INFO;
                                               timeoutInterval:10.0];
     AFJSONRequestOperation *operation = [AFJSONRequestOperation JSONRequestOperationWithRequest:request success:^(NSURLRequest *request, NSHTTPURLResponse *response, id JSON) {
         DDLogVerbose(@"Feedback response received: %@", JSON);
-        NSNumber *feedbackEnabled = JSON[@"feedback-enabled"];
+        NSNumber *feedbackEnabled = JSON[@"feedback-enabled"] ?: @YES;
         
         NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
         [defaults setBool:feedbackEnabled.boolValue forKey:kWPUserDefaultsFeedbackEnabled];
@@ -1031,9 +1031,9 @@ int ddLogLevel = LOG_LEVEL_INFO;
     } failure:^(NSURLRequest *request, NSHTTPURLResponse *response, NSError *error, id JSON) {
         DDLogError(@"Error received while checking feedback enabled status: %@", error);
 
-        // Lets be pessimistic and turn off feedback by default if this call doesn't work
+        // Lets be optimistic and turn on feedback by default if this call doesn't work
         NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
-        [defaults setBool:NO forKey:kWPUserDefaultsFeedbackEnabled];
+        [defaults setBool:YES forKey:kWPUserDefaultsFeedbackEnabled];
         [defaults synchronize];
     }];
     
