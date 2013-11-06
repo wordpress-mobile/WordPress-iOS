@@ -109,7 +109,6 @@
     UITapGestureRecognizer *tgr = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(handleViewTapped)];
     tgr.cancelsTouchesInView = NO;
     [tableView addGestureRecognizer:tgr];
-
 }
 
 

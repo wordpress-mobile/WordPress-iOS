@@ -262,7 +262,11 @@
 + (void)configureTableViewCell:(UITableViewCell *)cell
 {
     cell.textLabel.font = [self tableviewTextFont];
+    [cell.textLabel sizeToFit];
+
     cell.detailTextLabel.font = [self tableviewSubtitleFont];
+    [cell.detailTextLabel sizeToFit];
+    
     cell.textLabel.textColor = [self whisperGrey];
     cell.detailTextLabel.textColor = [self whisperGrey];
 }
