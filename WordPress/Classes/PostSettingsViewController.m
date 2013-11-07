@@ -1282,7 +1282,7 @@
             popoverRect = [self.view convertRect:publishOnDateLabel.frame fromView:[publishOnDateLabel superview]];
 
         popoverRect.size.width = 100.0f;
-        [popover presentPopoverFromRect:popoverRect inView:self.view permittedArrowDirections:UIPopoverArrowDirectionUp animated:YES];
+        [popover presentPopoverFromRect:popoverRect inView:self.view permittedArrowDirections:UIPopoverArrowDirectionAny animated:YES];
     } else {
         CGFloat width = postDetailViewController.view.frame.size.width;
         CGFloat height = 0.0;
