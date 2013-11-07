@@ -257,8 +257,9 @@
                 }
                 [WPStyleGuide configureTableViewTextCell:self.passwordCell];
                 
-                // In this particular view, right alignment looks better for the password
-                passwordTextField.textAlignment = NSTextAlignmentRight;
+                // If the other rows can't be edited, it looks better to align the password to the right as well
+                if (![self canEditUsernameAndURL])
+                    passwordTextField.textAlignment = NSTextAlignmentRight;
 			}
             
             return self.passwordCell;
