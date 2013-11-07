@@ -74,7 +74,7 @@
 + (void)mergeNewPosts:(NSArray *)newObjects forBlog:(Blog *)blog {
     NSManagedObjectContext *derived = [[ContextManager sharedInstance] newDerivedContext];
     
-    [derived performBlockAndWait:^{
+    [derived performBlock:^{
         NSMutableArray *objectsToKeep = [NSMutableArray array];
         Blog *contextBlog = (Blog *)[derived existingObjectWithID:blog.objectID error:nil];
         

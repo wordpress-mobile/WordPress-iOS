@@ -57,7 +57,7 @@
     NSManagedObjectContext *backgroundMOC = [[ContextManager sharedInstance] newDerivedContext];
     [backgroundMOC performBlock:^{
         NSMutableArray *commentsToKeep = [NSMutableArray array];
-        Blog *contextBlog = (Blog *)[backgroundMOC objectWithID:blog.objectID];
+        Blog *contextBlog = (Blog *)[backgroundMOC existingObjectWithID:blog.objectID error:nil];
         
         for (NSDictionary *commentInfo in newComments) {
             Comment *newComment = [Comment createOrReplaceFromDictionary:commentInfo forBlog:contextBlog];
