@@ -51,7 +51,6 @@
 typedef enum {
     SettingsSectionBlogs = 0,
     SettingsSectionWpcom,
-    SettingsSectionNotifications,
     SettingsSectionMedia,
     SettingsSectionSounds,
     SettingsSectionInfo,
@@ -92,13 +91,11 @@ typedef enum {
     [[NSNotificationCenter defaultCenter] addObserverForName:WordPressComApiDidLoginNotification object:nil queue:nil usingBlock:^(NSNotification *note) {
         NSMutableIndexSet *sections = [NSMutableIndexSet indexSet];
         [sections addIndex:SettingsSectionWpcom];
-        [sections addIndex:SettingsSectionNotifications];
         [self.tableView reloadSections:sections withRowAnimation:UITableViewRowAnimationFade];
     }];
     [[NSNotificationCenter defaultCenter] addObserverForName:WordPressComApiDidLogoutNotification object:nil queue:nil usingBlock:^(NSNotification *note) {
         NSMutableIndexSet *sections = [NSMutableIndexSet indexSet];
         [sections addIndex:SettingsSectionWpcom];
-        [sections addIndex:SettingsSectionNotifications];
         [self.tableView reloadSections:sections withRowAnimation:UITableViewRowAnimationFade];
     }];
     
@@ -237,6 +234,10 @@ typedef enum {
     imageView.layer.mask = maskLayer;
 }
 
+- (BOOL)supportsNotifications {
+    return nil != [[NSUserDefaults standardUserDefaults] objectForKey:kApnsDeviceTokenPrefKey];
+}
+
 #pragma mark - 
 #pragma mark Table view data source
 
@@ -244,25 +245,42 @@ typedef enum {
     return SettingsSectionCount;
 }
 
+// The Sign Out row in Wpcom section can change, so identify it dynamically
+- (NSInteger)signOutRow {
+    return [self supportsNotifications] ? 2 : 1;
+}
+
+- (NSInteger)notificationsRow {
+    return [self supportsNotifications] ? 1 : -1;
+}
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
+    int numWpcomRows = 0;
+    
     switch (section) {
         case SettingsSectionBlogs:
             // Number of blogs plus an extra row for adding a new site
             return [[self.resultsController fetchedObjects] count] + 1;
             
         case SettingsSectionWpcom:
-            return ([[WPAccount defaultWordPressComAccount] username] && [[WordPressComApi sharedApi] hasCredentials]) ? 2 : 1;
+            numWpcomRows = 1;
+            if ([[WordPressComApi sharedApi] hasCredentials]) {
+                // Allow notifications management?
+                if ([self supportsNotifications]) {
+                    numWpcomRows += 1;
+                }
+            }
             
+            // Show a Sign Out row?
+            if ([[WPAccount defaultWordPressComAccount] username]) {
+                numWpcomRows += 1;
+            }
+            
+            return numWpcomRows;
+
         case SettingsSectionMedia:
             return [mediaSettingsArray count];
-			
-        case SettingsSectionNotifications:
-            if ([[WordPressComApi sharedApi] hasCredentials] && nil != [[NSUserDefaults standardUserDefaults] objectForKey:kApnsDeviceTokenPrefKey])
-                return 1;
-            else
-                return 0;
-            
+			         
         case SettingsSectionSounds :
             return 1;
             
@@ -304,13 +322,7 @@ typedef enum {
 
     } else if (section == SettingsSectionMedia) {
         return NSLocalizedString(@"Media", @"Title label for the media settings section in the app settings");
-		
-    } else if (section == SettingsSectionNotifications) {
-        if ([[WordPressComApi sharedApi] hasCredentials] && nil != [[NSUserDefaults standardUserDefaults] objectForKey:kApnsDeviceTokenPrefKey])
-            return NSLocalizedString(@"Notifications", @"");
-        else
-            return nil;
-        
+
     } else if (section == SettingsSectionSounds) {
         return NSLocalizedString(@"Sounds", @"Title label for the sounds section in the app settings.");
         
@@ -359,6 +371,9 @@ typedef enum {
                 cell.detailTextLabel.text = [[WPAccount defaultWordPressComAccount] username];
                 cell.detailTextLabel.textColor = [UIColor UIColorFromHex:0x888888];
                 cell.selectionStyle = UITableViewCellSelectionStyleNone;
+            } else if (indexPath.row == [self notificationsRow]) {
+                cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
+                cell.textLabel.text = NSLocalizedString(@"Manage Notifications", @"");
             } else {
                 cell.textLabel.textAlignment = NSTextAlignmentCenter;
                 cell.textLabel.text = NSLocalizedString(@"Sign Out", @"Sign out from WordPress.com");
@@ -395,11 +410,6 @@ typedef enum {
         aSwitch.on = ![[NSUserDefaults standardUserDefaults] boolForKey:kSettingsMuteSoundsKey];
         cell.accessoryView = aSwitch;
 
-    } else if (indexPath.section == SettingsSectionNotifications) {
-        if ([[WordPressComApi sharedApi] hasCredentials] && nil != [[NSUserDefaults standardUserDefaults] objectForKey:kApnsDeviceTokenPrefKey]) {
-            cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
-            cell.textLabel.text = NSLocalizedString(@"Manage Notifications", @"");
-        }
     } else if (indexPath.section == SettingsSectionInfo) {
         if (indexPath.row == 0) {
             // App Version
@@ -481,7 +491,7 @@ typedef enum {
         isSignInCell = indexPath.section == SettingsSectionWpcom && indexPath.row == 0;
     }
     
-    BOOL isSignOutCell = indexPath.section == SettingsSectionWpcom && indexPath.row == 1;
+    BOOL isSignOutCell = indexPath.section == SettingsSectionWpcom && indexPath.row == [self signOutRow];
     if (isSignOutCell || isSignInCell) {
         [WPStyleGuide configureTableViewActionCell:cell];
     }
@@ -536,7 +546,7 @@ typedef enum {
         }
     } else if (indexPath.section == SettingsSectionWpcom) {
         if ([[WordPressComApi sharedApi] hasCredentials]) {
-            if (indexPath.row == 1) {
+            if (indexPath.row == [self signOutRow]) {
                 [WPMobileStats trackEventForWPCom:StatsEventSettingsClickedSignOutOfDotCom];
 
                 // Present the Sign out ActionSheet
@@ -549,6 +559,11 @@ typedef enum {
                                             destructiveButtonTitle:NSLocalizedString(@"Sign Out", @"")otherButtonTitles:nil, nil ];
                 actionSheet.actionSheetStyle = UIActionSheetStyleDefault;
                 [actionSheet showInView:self.view];
+            } else if (indexPath.row == [self notificationsRow]) {
+                [WPMobileStats trackEventForWPCom:StatsEventSettingsClickedManageNotifications];
+            
+                NotificationSettingsViewController *notificationSettingsViewController = [[NotificationSettingsViewController alloc] initWithStyle:UITableViewStyleGrouped];
+                [self.navigationController pushViewController:notificationSettingsViewController animated:YES];
             }
         } else {
             [WPMobileStats trackEventForWPCom:StatsEventSettingsClickedSignIntoDotCom];
@@ -571,11 +586,6 @@ typedef enum {
         SettingsPageViewController *controller = [[SettingsPageViewController alloc] initWithDictionary:dict];
         [self.navigationController pushViewController:controller animated:YES];
     
-    } else if (indexPath.section == SettingsSectionNotifications) {
-        [WPMobileStats trackEventForWPCom:StatsEventSettingsClickedManageNotifications];
-        
-        NotificationSettingsViewController *notificationSettingsViewController = [[NotificationSettingsViewController alloc] initWithStyle:UITableViewStyleGrouped];
-        [self.navigationController pushViewController:notificationSettingsViewController animated:YES];
     } else if (indexPath.section == SettingsSectionSounds) {
         // nothing to do.
         
