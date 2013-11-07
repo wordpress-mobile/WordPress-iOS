@@ -278,9 +278,6 @@ int ddLogLevel = LOG_LEVEL_INFO;
 
     MP6SidebarViewController *sidebarViewController = [[MP6SidebarViewController alloc] init];
     
-    CGRect bounds = [[UIScreen mainScreen] bounds];
-    [window setFrame:bounds];
-    [window setBounds:bounds]; // for good measure.
     panelNavigationController = [[PanelNavigationController alloc] initWithDetailController:nil masterViewController:sidebarViewController];
     window.rootViewController = panelNavigationController;
     window.backgroundColor = [UIColor blackColor];
