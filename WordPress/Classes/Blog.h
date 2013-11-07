@@ -9,7 +9,6 @@
 #import <CommonCrypto/CommonDigest.h>
 #import <CoreData/CoreData.h>
 #import <WordPressApi/WordPressApi.h>
-#import "BaseXMLRPCManagedObject.h"
 
 #import "Reachability.h"
 
@@ -17,7 +16,7 @@
 
 @class WPAccount;
 
-@interface Blog : BaseXMLRPCManagedObject
+@interface Blog : NSManagedObject
 
 @property (nonatomic, strong) NSNumber *blogID;
 @property (nonatomic, strong) NSString *blogName, *xmlrpc, *apiKey;

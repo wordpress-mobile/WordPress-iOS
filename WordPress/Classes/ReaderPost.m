@@ -15,7 +15,6 @@
 #import "NSString+Helpers.h"
 #import "WordPressAppDelegate.h"
 #import "ContextManager.h"
-#import "WPXMLRPCIncrementalStoreClient.h"
 
 NSInteger const ReaderTopicEndpointIndex = 3;
 NSInteger const ReaderPostSummaryLength = 150;
@@ -119,12 +118,6 @@ NSString *const ReaderExtrasArrayKey = @"ReaderExtrasArrayKey";
 
 + (NSString *)currentEndpoint {
 	return [[self currentTopic] objectForKey:@"endpoint"];
-}
-
-+ (NSMutableURLRequest *)requestForFetchRequest:(NSFetchRequest *)fetchRequest withContext:(NSManagedObjectContext *)context {
-    NSString *path = [self currentEndpoint];
-    NSDictionary *params = @{@"number":@(ReaderPostsToSync), @"per_page":@(ReaderPostsToSync)};
-    return [[WPXMLRPCIncrementalStoreClient sharedClient] requestWithMethod:@"GET" path:path parameters:params];
 }
 
 
@@ -754,7 +747,6 @@ NSString *const ReaderExtrasArrayKey = @"ReaderExtrasArrayKey";
 				 loadingMore:(BOOL)loadingMore
 					 success:(WordPressComApiRestSuccessResponseBlock)success
 					 failure:(WordPressComApiRestSuccessFailureBlock)failure {
-    return;
 	WPFLogMethod();
 	[[WordPressComApi sharedApi] getPath:path
 							  parameters:params

@@ -10,12 +10,6 @@
 
 #define TAG_OFFSET 1010
 
-@interface PostsViewController ()
-
-@property (nonatomic, strong) NSArray *objects;
-
-@end
-
 @implementation PostsViewController
 
 @synthesize postReaderViewController;
@@ -41,20 +35,6 @@
 - (void)viewDidLoad {
     DDLogInfo(@"%@ %@", self, NSStringFromSelector(_cmd));
     [super viewDidLoad];
-    
-    self.tableView.dataSource = self;
-    self.tableView.delegate = self;
-    
-    _objects = self.blog.posts.allObjects;
-    if (!_objects.count) {
-        NSLog(@"Observing for objects coming back");
-        [self.blog.managedObjectContext performBlock:^{
-            [self.blog.managedObjectContext refreshObject:self.blog mergeChanges:NO];
-        }];
-        [self.blog addObserver:self forKeyPath:@"posts" options:NSKeyValueObservingOptionNew context:0];
-    } else {
-        NSLog(@"have objects right away %@", _objects);
-    }
     
 	// ShouldRefreshPosts
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(updatePostsTableViewAfterPostSaved:) name:@"AsynchronousPostIsPosted" object:nil];
@@ -104,19 +84,6 @@
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(sidebarOpened) name:SidebarOpenedNotification object:nil];
 }
 
-- (void)observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary *)change context:(void *)context {
-    if ([keyPath isEqualToString:@"posts"]) {
-        _objects = self.blog.posts.allObjects;
-        NSLog(@"Got objects %@", _objects);
-        if (_objects.count) {
-            [self.blog removeObserver:self forKeyPath:@"posts"];
-        }
-       
-        [self.tableView reloadData];
-    }
-
-}
-
 - (void)viewDidAppear:(BOOL)animated
 {
     [super viewDidAppear:animated];
@@ -156,7 +123,6 @@
 }
 
 - (void)dealloc {
-    
     [[NSNotificationCenter defaultCenter] removeObserver:self];
 }
 
@@ -199,7 +165,6 @@
 }
 
 - (void)loadMoreWithSuccess:(void (^)())success failure:(void (^)(NSError *))failure {
-    return;
     [self.blog syncPostsWithSuccess:success failure:failure loadMore:YES];
 }
 
@@ -225,12 +190,8 @@
     return 0.0;
 }
 
-- (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
-    return 1;
-}
-
 - (void)configureCell:(NewPostTableViewCell *)cell atIndexPath:(NSIndexPath *)indexPath {    
-    Post *apost = _objects[indexPath.row];//(Post*) [self.resultsController objectAtIndexPath:indexPath];
+    Post *apost = (Post*) [self.resultsController objectAtIndexPath:indexPath];
     cell.post = apost;
 	if (cell.post.remoteStatus == AbstractPostRemoteStatusPushing) {
 		cell.selectionStyle = UITableViewCellSelectionStyleNone;
@@ -239,12 +200,8 @@
 	}
 }
 
-- (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
-    return _objects.count;
-}
-
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
-	AbstractPost *post = _objects[indexPath.row];//[self.resultsController objectAtIndexPath:indexPath];
+	AbstractPost *post = [self.resultsController objectAtIndexPath:indexPath];
 	if (post.remoteStatus == AbstractPostRemoteStatusPushing) {
 		// Don't allow editing while pushing changes
 		return;
@@ -255,7 +212,7 @@
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
-    AbstractPost *post = _objects[indexPath.row];//[self.resultsController objectAtIndexPath:indexPath];
+    AbstractPost *post = [self.resultsController objectAtIndexPath:indexPath];
     return [NewPostTableViewCell rowHeightForPost:post andWidth:CGRectGetWidth(self.tableView.bounds)];
 }
 
@@ -397,12 +354,11 @@
 
 - (NSFetchRequest *)fetchRequest {
     NSFetchRequest *fetchRequest = [NSFetchRequest fetchRequestWithEntityName:[self entityName]];
-    fetchRequest.predicate = [NSPredicate predicateWithFormat:@"blog == %@ && original == NULL", self.blog];
+    fetchRequest.predicate = [NSPredicate predicateWithFormat:@"(blog == %@) && (original == nil)", self.blog];
     NSSortDescriptor *sortDescriptorLocal = [NSSortDescriptor sortDescriptorWithKey:@"remoteStatusNumber" ascending:YES];
     NSSortDescriptor *sortDescriptorDate = [NSSortDescriptor sortDescriptorWithKey:@"date_created_gmt" ascending:NO];
     fetchRequest.sortDescriptors = @[sortDescriptorLocal, sortDescriptorDate];
     fetchRequest.fetchBatchSize = 10;
-    fetchRequest.returnsObjectsAsFaults = NO;
     return fetchRequest;
 }
 
@@ -411,7 +367,6 @@
 }
 
 - (void)syncItemsWithUserInteraction:(BOOL)userInteraction success:(void (^)())success failure:(void (^)(NSError *))failure {
-    return;
     // If triggered by a pull to refresh, sync categories, post formats, ...
     if (userInteraction) {
         [self.blog syncBlogPostsWithSuccess:success failure:failure];

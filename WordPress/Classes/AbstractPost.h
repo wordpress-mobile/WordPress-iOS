@@ -14,7 +14,7 @@
 @interface AbstractPost : BasePost
 
 // Relationships
-//@property (nonatomic, strong) Blog * blog;
+@property (nonatomic, strong) Blog * blog;
 @property (nonatomic, strong) NSMutableSet * media;
 @property (weak, readonly) AbstractPost *original;
 @property (weak, readonly) AbstractPost *revision;

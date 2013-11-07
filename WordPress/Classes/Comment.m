@@ -54,7 +54,6 @@
 }
 
 + (void)mergeNewComments:(NSArray *)newComments forBlog:(Blog *)blog {
-    return;
     NSManagedObjectContext *backgroundMOC = [[ContextManager sharedInstance] newDerivedContext];
     [backgroundMOC performBlock:^{
         NSMutableArray *commentsToKeep = [NSMutableArray array];
@@ -248,7 +247,6 @@
 }
 
 - (void)save {
-    return;
     [self.managedObjectContext performBlock:^{
         [self.managedObjectContext save:nil];
     }];

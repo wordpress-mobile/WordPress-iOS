@@ -51,7 +51,7 @@ const NSUInteger NoteKeepCount = 20;
 
 
 + (BOOL)syncNotesWithResponse:(NSArray *)notesData withManagedObjectContext:(NSManagedObjectContext *)context {
-    return YES;
+    
     [notesData enumerateObjectsUsingBlock:^(id noteData, NSUInteger idx, BOOL *stop) {
         [self createOrUpdateNoteWithData:noteData withManagedObjectContext:context];
     }];

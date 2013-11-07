@@ -8,12 +8,6 @@
 #import "Post.h"
 #import "NSMutableDictionary+Helpers.h"
 #import "ContextManager.h"
-#import <wpxmlrpc/WPXMLRPCEncoder.h>
-
-const struct PostLocalRemoteMappingKeys PostLocalRemoteMappingKeys = {
-    .postID = @"postid",
-    .postTitle = @"title"
-};
 
 @interface Post(InternalProperties)
 // We shouldn't need to store this, but if we don't send IDs on edits
@@ -51,71 +45,6 @@ const struct PostLocalRemoteMappingKeys PostLocalRemoteMappingKeys = {
 
 + (NSString *const)remoteUniqueIdentifier {
     return @"postid";
-}
-
-// TODO create category on fetch request for expression maps
-static NSDictionary *(^dictionaryFromComparisonPredicate)(NSComparisonPredicate *) = ^NSDictionary *(NSComparisonPredicate *comparisonPredicate) {
-    if ([comparisonPredicate predicateOperatorType] == NSEqualToPredicateOperatorType) {
-        NSExpression *rightExpression = [comparisonPredicate rightExpression];
-        NSExpression *leftExpression = [comparisonPredicate leftExpression];
-        
-        if ([leftExpression expressionType] == NSKeyPathExpressionType) {
-            NSExpression *right = [rightExpression constantValue];
-            if (!right) {
-                right = [NSExpression expressionForConstantValue:[NSNull null]];
-            }
-            NSDictionary *dictionaryComparison = [NSDictionary dictionaryWithObject:right forKey:[leftExpression description]];
-            return dictionaryComparison;
-        } else {
-            NSDictionary *dictionaryComparison = [NSDictionary dictionaryWithObject:[leftExpression constantValue] forKey:[rightExpression description]];
-            return dictionaryComparison;
-        }
-        
-    }
-    return nil;
-};
-
-+ (NSMutableURLRequest *)requestForFetchRequest:(NSFetchRequest *)fetchRequest withContext:(NSManagedObjectContext *)context {
-    NSCompoundPredicate *p = (NSCompoundPredicate *)fetchRequest.predicate;
-    NSMutableDictionary *predicateParts = [NSMutableDictionary dictionary];
-    [p.subpredicates enumerateObjectsUsingBlock:^(id obj, NSUInteger idx, BOOL *stop) {
-        [predicateParts addEntriesFromDictionary:dictionaryFromComparisonPredicate(obj)];
-    }];
-    
-    NSManagedObjectID *blog = (NSManagedObjectID *)predicateParts[@"blog"];
-    Blog *b = (Blog *)[context objectWithID:blog];
-    NSMutableURLRequest *request = [NSMutableURLRequest requestWithURL:[NSURL URLWithString:b.xmlrpc]];
-    WPXMLRPCEncoder *encoder = [[WPXMLRPCEncoder alloc] initWithMethod:@"metaWeblog.getRecentPosts" andParameters:@[b.blogID, b.username, b.password]];
-    request.HTTPBody = encoder.body;
-    request.HTTPMethod = @"POST";
-    [request addValue:@"text/xml" forHTTPHeaderField:@"Content-Type"];
-    
-    return request;
-}
-
-+ (NSDictionary *)representationOfAttributes:(NSDictionary *)attributes ofManagedObject:(NSManagedObject *)managedObject {
-    return @{};
-}
-
-+ (NSDictionary *)attributesForRepresentation:(NSDictionary *)representation ofEntity:(NSEntityDescription *)entity {
-    NSNumber *postID = [representation[@"postid"] isKindOfClass:[NSString class]] ? [representation[@"postid"] numericValue] : representation[@"postid"];
-    return @{@"postID": postID,
-             @"postTitle": representation[@"title"]};
-}
-
-+ (NSString *)resourceIdentifierForRepresentation:(NSDictionary *)representation ofEntity:(NSEntityDescription *)entity fromResponse:(NSHTTPURLResponse *)response {
-    return representation[@"postid"];
-}
-
-+ (id)representationOrArrayOfRepresentationsOfEntity:(NSEntityDescription *)entity fromResponseObject:(id)responseObject requestOperation:(AFHTTPRequestOperation *)requestOperation {
-
-    
-    return [super representationOrArrayOfRepresentationsOfEntity:entity fromResponseObject:responseObject requestOperation:requestOperation];
-}
-
-+ (NSDictionary *)representationsForRelationshipsFromRepresentation:(NSDictionary *)representation ofEntity:(NSEntityDescription *)entity fromResponse:(NSHTTPURLResponse *)response {
-    // Categories needs to be considered here
-    return nil;
 }
 
 - (void)updateFromDictionary:(NSDictionary *)postInfo {

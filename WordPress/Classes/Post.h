@@ -12,11 +12,6 @@
 #import "AbstractPost.h"
 #import "Media.h"
 
-extern const struct PostLocalRemoteMappingKeys {
-    __unsafe_unretained NSString *postID;
-    __unsafe_unretained NSString *postTitle;
-} PostLocalRemoteMappingKeys;
-
 @interface Post :  AbstractPost
 
 ///-------------------------------

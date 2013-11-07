@@ -52,35 +52,6 @@
     [[NSNotificationCenter defaultCenter] removeObserver:self];
 }
 
-+ (NSMutableURLRequest *)requestForFetchRequest:(NSFetchRequest *)fetchRequest withContext:(NSManagedObjectContext *)context {
-    return nil;
-}
-
-+ (NSString *)methodNameForCRUDOperation:(XMLRPCCRUDOperation)op {
-    return nil;
-}
-
-+ (BOOL)shouldFetchRemoteValuesForRelationship:(NSRelationshipDescription *)relationship forObjectWithID:(NSManagedObjectID *)objectID inManagedObjectContext:(NSManagedObjectContext *)context {
-    if ([relationship.name isEqualToString:@"posts"]) {
-        return YES;
-    }
-    return NO;
-}
-
-+ (NSMutableURLRequest *)requestWithMethod:(NSString *)method pathForRelationship:(NSRelationshipDescription *)relationship forObjectWithID:(NSManagedObjectID *)objectID withContext:(NSManagedObjectContext *)context {
-    NSLog(@"Relationship %@ on Blog queried", relationship.name);
-    if ([relationship.name isEqualToString:@"posts"]) {
-        Blog *theBlog = (Blog *)[context objectWithID:objectID];
-        NSFetchRequest *r = [NSFetchRequest fetchRequestWithEntityName:@"Post"];
-        r.predicate = [NSPredicate predicateWithFormat:@"blog == %@ AND 1 == 1", theBlog.objectID];
-        return [Post requestForFetchRequest:r withContext:context];
-    }
-    return nil;
-}
-
-+ (NSDictionary *)representationsForRelationshipsFromRepresentation:(NSDictionary *)representation ofEntity:(NSEntityDescription *)entity fromResponse:(NSHTTPURLResponse *)response {
-    return @{};
-}
 
 - (BOOL)geolocationEnabled
 {
@@ -288,7 +259,6 @@
 }
 
 - (void)dataSave {
-    return;
     [self.managedObjectContext performBlock:^{
         [self.managedObjectContext save:nil];
     }];
@@ -449,7 +419,6 @@
 }
 
 - (void)syncBlogWithSuccess:(void (^)())success failure:(void (^)(NSError *error))failure {
-    return;
     WPXMLRPCRequestOperation *operation;
     NSMutableArray *operations = [NSMutableArray arrayWithCapacity:6];
     operation = [self operationForOptionsWithSuccess:nil failure:nil];
@@ -493,7 +462,6 @@
 }
 
 - (void)syncBlogPostsWithSuccess:(void (^)())success failure:(void (^)(NSError *error))failure {
-    return;
     WPXMLRPCRequestOperation *operation;
     NSMutableArray *operations = [NSMutableArray arrayWithCapacity:4];
     operation = [self operationForOptionsWithSuccess:nil failure:nil];

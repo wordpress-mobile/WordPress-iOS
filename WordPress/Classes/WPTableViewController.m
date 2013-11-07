@@ -81,8 +81,8 @@ NSTimeInterval const WPTableViewControllerRefreshTimeout = 300; // 5 minutes
     [super viewDidLoad];
 	
 	self.tableView = [[UITableView alloc] initWithFrame:self.view.bounds];
-//	self.tableView.delegate = self;
-//	self.tableView.dataSource = self;
+	self.tableView.delegate = self;
+	self.tableView.dataSource = self;
 	self.tableView.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
 	[self.view addSubview:self.tableView];
     
@@ -153,7 +153,6 @@ NSTimeInterval const WPTableViewControllerRefreshTimeout = 300; // 5 minutes
     if (didPromptForCredentials) {
         return;
     }
-    return;
     NSDate *lastSynced = [self lastSyncDate];
     if (lastSynced == nil || ABS([lastSynced timeIntervalSinceNow]) > WPTableViewControllerRefreshTimeout) {
         // If table is at the original scroll position, simulate a pull to refresh
@@ -294,9 +293,6 @@ NSTimeInterval const WPTableViewControllerRefreshTimeout = 300; // 5 minutes
 #pragma mark - Table view data source
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
-    if (!self.resultsController) {
-        return 1;
-    }
     return [[self.resultsController sections] count];
 }
 
@@ -306,9 +302,6 @@ NSTimeInterval const WPTableViewControllerRefreshTimeout = 300; // 5 minutes
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
-    if (!self.resultsController) {
-        return 1;
-    }
     id <NSFetchedResultsSectionInfo> sectionInfo = nil;
     sectionInfo = [[self.resultsController sections] objectAtIndex:section];
     return [sectionInfo numberOfObjects];
@@ -617,7 +610,7 @@ NSTimeInterval const WPTableViewControllerRefreshTimeout = 300; // 5 minutes
     if (![self isViewLoaded]) return;
     
     [self.noResultsView removeFromSuperview];
-    return;
+    
     if (self.resultsController && [[_resultsController fetchedObjects] count] == 0 && !self.isSyncing) {
         // Show no results view.
 
