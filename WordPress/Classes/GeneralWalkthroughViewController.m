@@ -34,7 +34,7 @@
     UIScrollViewDelegate,
     UITextFieldDelegate> {
     UIScrollView *_scrollView;
-    UIView *_mainTextureView;
+    UIView *_mainView;
     WPNUXSecondaryButton *_skipToCreateAccount;
     WPNUXPrimaryButton *_skipToSignIn;
     
@@ -47,7 +47,6 @@
     UIImageView *_page1BottomSeparator;
     UIView *_bottomPanelLine;
     UIView *_bottomPanel;
-    UIView *_bottomPanelTextureView;
     UIPageControl *_pageControl;
     
     // Page 2
@@ -62,7 +61,6 @@
     CGFloat _viewHeight;
     
     CGFloat _bottomPanelOriginalX;
-    CGFloat _bottomPanelTextureOriginalX;
     CGFloat _skipToCreateAccountOriginalX;
     CGFloat _skipToSignInOriginalX;
     CGFloat _pageControlOriginalX;
@@ -110,7 +108,7 @@ CGFloat const GeneralWalkthroughiOS7StatusBarOffset = 20.0;
         
     self.view.backgroundColor = [WPNUXUtility backgroundColor];
 
-    [self addBackgroundTexture];
+    [self addMainView];
     [self addScrollview];
     [self initializePage1];
     [self initializePage2];
@@ -191,10 +189,6 @@ CGFloat const GeneralWalkthroughiOS7StatusBarOffset = 20.0;
     CGRect bottomPanelFrame = _bottomPanel.frame;
     bottomPanelFrame.origin.x = _bottomPanelOriginalX + contentOffset.x;
     _bottomPanel.frame = bottomPanelFrame;
-    
-    CGRect bottomPanelTextureFrame = _bottomPanelTextureView.frame;
-    bottomPanelTextureFrame.origin.x = _bottomPanelOriginalX + contentOffset.x;
-    _bottomPanelTextureView.frame = bottomPanelTextureFrame;
 }
 
 #pragma mark - UITextField delegate methods
@@ -408,12 +402,11 @@ CGFloat const GeneralWalkthroughiOS7StatusBarOffset = 20.0;
 
 #pragma mark - Private Methods
 
-- (void)addBackgroundTexture
+- (void)addMainView
 {
-    _mainTextureView = [[UIView alloc] initWithFrame:self.view.bounds];
-    _mainTextureView.backgroundColor = [UIColor colorWithPatternImage:[UIImage imageNamed:@"ui-texture"]];
-    [self.view addSubview:_mainTextureView];
-    _mainTextureView.userInteractionEnabled = NO;
+    _mainView = [[UIView alloc] initWithFrame:self.view.bounds];
+    [self.view addSubview:_mainView];
+    _mainView.userInteractionEnabled = NO;
 }
 
 - (void)addScrollview
@@ -519,14 +512,6 @@ CGFloat const GeneralWalkthroughiOS7StatusBarOffset = 20.0;
         [_bottomPanel addGestureRecognizer:gestureRecognizer];
     }
     
-    // Bottom Texture View
-    if (_bottomPanelTextureView == nil) {
-        _bottomPanelTextureView = [[UIView alloc] init];
-        _bottomPanelTextureView.backgroundColor = [UIColor colorWithPatternImage:[UIImage imageNamed:@"ui-texture"]];
-        _bottomPanelTextureView.userInteractionEnabled = NO;
-        [_scrollView addSubview:_bottomPanelTextureView];
-    }
-    
     // Bottom Panel "Black" Line
     if (_bottomPanelLine == nil) {
         _bottomPanelLine = [[UIView alloc] init];
@@ -624,9 +609,6 @@ CGFloat const GeneralWalkthroughiOS7StatusBarOffset = 20.0;
     x = [self adjustX:x forPage:1];
     y = _viewHeight - GeneralWalkthroughBottomBackgroundHeight;
     _bottomPanel.frame = CGRectMake(x, y, _viewWidth, GeneralWalkthroughBottomBackgroundHeight);
-    
-    // Layout Bottom Panel Gradient View
-    _bottomPanelTextureView.frame = _bottomPanel.frame;
     
     // Layout Bottom Panel Line
     x = 0;
@@ -797,7 +779,6 @@ CGFloat const GeneralWalkthroughiOS7StatusBarOffset = 20.0;
         _skipToCreateAccountOriginalX = CGRectGetMinX(_skipToCreateAccount.frame);
         _skipToSignInOriginalX = CGRectGetMinX(_skipToSignIn.frame);
         _bottomPanelOriginalX = CGRectGetMinX(_bottomPanel.frame);
-        _bottomPanelTextureOriginalX = CGRectGetMinX(_bottomPanelTextureView.frame);
         _pageControlOriginalX = CGRectGetMinX(_pageControl.frame);
     }
 }
