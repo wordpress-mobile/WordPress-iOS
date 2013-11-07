@@ -102,8 +102,6 @@ CGFloat const EditPostViewControllerTextViewOffset = 10.0;
     return self;
 }
 
-static AbstractPost *original;
-
 - (void)viewDidLoad {
     WPFLogMethod();
     [super viewDidLoad];
@@ -113,7 +111,6 @@ static AbstractPost *original;
     
     [_revisionContext performBlock:^{
         self.apost = [self.apost createRevision];
-        original = self.apost.original;
         dispatch_async(dispatch_get_main_queue(), ^{
             [self refreshUIForCurrentPost];
         });

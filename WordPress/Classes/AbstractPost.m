@@ -184,10 +184,8 @@
 
 - (void)applyRevision {
     if ([self isOriginal]) {
-        [self.managedObjectContext performBlock:^{
-            [self cloneFrom:self.revision];
-            self.isFeaturedImageChanged = self.revision.isFeaturedImageChanged;
-        }];
+        [self cloneFrom:self.revision];
+        self.isFeaturedImageChanged = self.revision.isFeaturedImageChanged;
     }
 }
 
