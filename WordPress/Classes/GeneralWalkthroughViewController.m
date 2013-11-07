@@ -1311,8 +1311,8 @@ CGFloat const GeneralWalkthroughiOS7StatusBarOffset = 10.0;
     [newBlog setObject:xmlRPCUrl forKey:@"xmlrpc"];
 
     _blog = [account findOrCreateBlogFromDictionary:newBlog withContext:account.managedObjectContext];
+    [_blog.managedObjectContext obtainPermanentIDsForObjects:@[_blog] error:nil];
     [_blog dataSave];
-
 }
 
 - (WPAccount *)createAccountWithUsername:(NSString *)username andPassword:(NSString *)password isWPCom:(BOOL)isWPCom xmlRPCUrl:(NSString *)xmlRPCUrl {
