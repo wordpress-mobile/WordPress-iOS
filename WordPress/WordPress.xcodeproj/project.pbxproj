@@ -2839,7 +2839,7 @@
 		93069F5C17625C28000C966D /* UIButtonBarActionSmallBlack.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = UIButtonBarActionSmallBlack.png; sourceTree = "<group>"; };
 		93069F5D17625C28000C966D /* UIButtonBarActionSmallBlack@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "UIButtonBarActionSmallBlack@2x.png"; sourceTree = "<group>"; };
 		930C6373182BD86300976C21 /* WP Internal.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "WP Internal.app"; sourceTree = BUILT_PRODUCTS_DIR; };
-		930C6374182BD86400976C21 /* WordPress Internal-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; name = "WordPress Internal-Info.plist"; path = "/Users/aaron/src/WordPress-iOS-public/WordPress/WordPress Internal-Info.plist"; sourceTree = "<absolute>"; };
+		930C6374182BD86400976C21 /* WordPress-Internal-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; name = "WordPress-Internal-Info.plist"; path = "/Users/aaron/src/WordPress-iOS-public/WordPress/WordPress-Internal-Info.plist"; sourceTree = "<absolute>"; };
 		93740DC817D8F85600C41B2F /* WPAlertView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WPAlertView.h; sourceTree = "<group>"; };
 		93740DCA17D8F86700C41B2F /* WPAlertView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WPAlertView.m; sourceTree = "<group>"; };
 		93740DCC17D8F87B00C41B2F /* WPAlertView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = WPAlertView.xib; sourceTree = "<group>"; };
@@ -3411,7 +3411,7 @@
 				85D80557171630B30075EEAC /* DotCom-Languages.plist */,
 				8D1107310486CEB800E47090 /* Info.plist */,
 				E1D91454134A853D0089019C /* Localizable.strings */,
-				930C6374182BD86400976C21 /* WordPress Internal-Info.plist */,
+				930C6374182BD86400976C21 /* WordPress-Internal-Info.plist */,
 				E125443B12BF5A7200D87A0A /* WordPress.xcdatamodeld */,
 			);
 			name = Resources;
@@ -5146,9 +5146,9 @@
 			productReference = 1D6058910D05DD3D006BFB54 /* WordPress.app */;
 			productType = "com.apple.product-type.application";
 		};
-		930C5FAC182BD86300976C21 /* WordPress Internal */ = {
+		930C5FAC182BD86300976C21 /* WordPress-Internal */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = 930C636E182BD86300976C21 /* Build configuration list for PBXNativeTarget "WordPress Internal" */;
+			buildConfigurationList = 930C636E182BD86300976C21 /* Build configuration list for PBXNativeTarget "WordPress-Internal" */;
 			buildPhases = (
 				930C5FAD182BD86300976C21 /* Resources */,
 				930C6289182BD86300976C21 /* CopyFiles */,
@@ -5162,7 +5162,7 @@
 			);
 			dependencies = (
 			);
-			name = "WordPress Internal";
+			name = "WordPress-Internal";
 			productName = WordPress;
 			productReference = 930C6373182BD86300976C21 /* WP Internal.app */;
 			productType = "com.apple.product-type.application";
@@ -5236,7 +5236,7 @@
 			projectRoot = "";
 			targets = (
 				1D6058900D05DD3D006BFB54 /* WordPress */,
-				930C5FAC182BD86300976C21 /* WordPress Internal */,
+				930C5FAC182BD86300976C21 /* WordPress-Internal */,
 				E16AB92914D978240047A2E5 /* WordPressTest */,
 			);
 		};
@@ -7453,7 +7453,7 @@
 				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
 				GCC_THUMB_SUPPORT = NO;
 				GCC_TREAT_WARNINGS_AS_ERRORS = NO;
-				INFOPLIST_FILE = "WordPress Internal-Info.plist";
+				INFOPLIST_FILE = "WordPress-Internal-Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 6.0;
 				OTHER_CFLAGS = (
 					"-Wno-format-security",
@@ -7488,7 +7488,7 @@
 				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
 				GCC_THUMB_SUPPORT = NO;
 				GCC_TREAT_WARNINGS_AS_ERRORS = YES;
-				INFOPLIST_FILE = "WordPress Internal-Info.plist";
+				INFOPLIST_FILE = "WordPress-Internal-Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 6.0;
 				OTHER_CFLAGS = (
 					"-Wno-format-security",
@@ -7522,7 +7522,7 @@
 				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
 				GCC_THUMB_SUPPORT = NO;
 				GCC_TREAT_WARNINGS_AS_ERRORS = YES;
-				INFOPLIST_FILE = "WordPress Internal-Info.plist";
+				INFOPLIST_FILE = "WordPress-Internal-Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 6.0;
 				OTHER_CFLAGS = (
 					"-Wno-format",
@@ -7684,7 +7684,7 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		930C636E182BD86300976C21 /* Build configuration list for PBXNativeTarget "WordPress Internal" */ = {
+		930C636E182BD86300976C21 /* Build configuration list for PBXNativeTarget "WordPress-Internal" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				930C636F182BD86300976C21 /* Debug */,

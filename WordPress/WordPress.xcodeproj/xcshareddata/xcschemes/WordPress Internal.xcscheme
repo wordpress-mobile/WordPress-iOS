@@ -44,7 +44,7 @@
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "930C5FAC182BD86300976C21"
             BuildableName = "WP Internal.app"
-            BlueprintName = "WordPress Internal"
+            BlueprintName = "WordPress-Internal"
             ReferencedContainer = "container:WordPress.xcodeproj">
          </BuildableReference>
       </MacroExpansion>
@@ -63,7 +63,7 @@
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "930C5FAC182BD86300976C21"
             BuildableName = "WP Internal.app"
-            BlueprintName = "WordPress Internal"
+            BlueprintName = "WordPress-Internal"
             ReferencedContainer = "container:WordPress.xcodeproj">
          </BuildableReference>
       </BuildableProductRunnable>
@@ -124,7 +124,7 @@
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "930C5FAC182BD86300976C21"
             BuildableName = "WP Internal.app"
-            BlueprintName = "WordPress Internal"
+            BlueprintName = "WordPress-Internal"
             ReferencedContainer = "container:WordPress.xcodeproj">
          </BuildableReference>
       </BuildableProductRunnable>
