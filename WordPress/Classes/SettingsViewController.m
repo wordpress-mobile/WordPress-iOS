@@ -49,15 +49,12 @@
 #import "SupportViewController.h"
 
 typedef enum {
-
     SettingsSectionBlogs = 0,
-    SettingsSectionBlogsAdd,
     SettingsSectionWpcom,
     SettingsSectionNotifications,
     SettingsSectionMedia,
     SettingsSectionSounds,
     SettingsSectionInfo,
-    
     SettingsSectionCount
 } SettingsSection;
 
@@ -106,7 +103,12 @@ typedef enum {
     }];
     
     [WPStyleGuide configureColorsForView:self.view andTableView:self.tableView];
-    [self setupMedia];    
+    [self setupMedia];
+    
+    // Force insets; without this, separators aren't long enough in blog rows that have imageViews
+    if ([self.tableView respondsToSelector:@selector(setSeparatorInset:)]) {
+        [self.tableView setSeparatorInset:UIEdgeInsetsMake(0, 15, 0, 0)];
+    }
 }
 
 
@@ -246,10 +248,8 @@ typedef enum {
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
     switch (section) {
         case SettingsSectionBlogs:
-            return [[self.resultsController fetchedObjects] count];
-            
-        case SettingsSectionBlogsAdd:
-            return 1;
+            // Number of blogs plus an extra row for adding a new site
+            return [[self.resultsController fetchedObjects] count] + 1;
             
         case SettingsSectionWpcom:
             return ([[WPAccount defaultWordPressComAccount] username] && [[WordPressComApi sharedApi] hasCredentials]) ? 2 : 1;
@@ -301,10 +301,7 @@ typedef enum {
         
     } else if (section == SettingsSectionWpcom) {
         return NSLocalizedString(@"WordPress.com", @"");
-        
-    } else if (section == SettingsSectionBlogsAdd) {
-        return nil;
-        
+
     } else if (section == SettingsSectionMedia) {
         return NSLocalizedString(@"Media", @"Title label for the media settings section in the app settings");
 		
@@ -330,28 +327,30 @@ typedef enum {
     cell.accessoryType = UITableViewCellAccessoryNone;
     cell.accessoryView = nil;
     if (indexPath.section == SettingsSectionBlogs) {
-        Blog *blog = [self.resultsController objectAtIndexPath:[NSIndexPath indexPathForRow:indexPath.row inSection:0]];
-        if ([blog.blogName length] != 0) {
-            cell.textLabel.text = blog.blogName;
+        
+        if (indexPath.row < [[self.resultsController fetchedObjects] count]) {
+            Blog *blog = [self.resultsController objectAtIndexPath:[NSIndexPath indexPathForRow:indexPath.row inSection:0]];
+            if ([blog.blogName length] != 0) {
+                cell.textLabel.text = blog.blogName;
+            } else {
+                cell.textLabel.text = blog.url;
+            }
+            
+            [cell.imageView setImageWithBlavatarUrl:blog.blavatarUrl isWPcom:blog.isWPcom];
+            cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
+            
+            if (indexPath.row == 0) {
+                [self maskImageView:cell.imageView corner:UIRectCornerTopLeft];
+            } else if (indexPath.row == ([self.tableView numberOfRowsInSection:indexPath.section] -1)) {
+                [self maskImageView:cell.imageView corner:UIRectCornerBottomLeft];
+            } else {
+                cell.imageView.layer.mask = NULL;
+            }
         } else {
-            cell.textLabel.text = blog.url;
+            cell.textLabel.text = NSLocalizedString(@"Add a Site", @"");
+            cell.selectionStyle = UITableViewCellSelectionStyleBlue;
+            cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
         }
-        
-        [cell.imageView setImageWithBlavatarUrl:blog.blavatarUrl isWPcom:blog.isWPcom];
-        cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
-        
-        if (indexPath.row == 0) {
-            [self maskImageView:cell.imageView corner:UIRectCornerTopLeft];
-        } else if (indexPath.row == ([self.tableView numberOfRowsInSection:indexPath.section] -1)) {
-            [self maskImageView:cell.imageView corner:UIRectCornerBottomLeft];
-        } else {
-            cell.imageView.layer.mask = NULL;
-        }
-        
-    } else if (indexPath.section == SettingsSectionBlogsAdd) {
-        cell.textLabel.text = NSLocalizedString(@"Add a Site", @"");
-        cell.selectionStyle = UITableViewCellSelectionStyleBlue;
-        cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
 
     } else if (indexPath.section == SettingsSectionWpcom) {
         if ([[WordPressComApi sharedApi] hasCredentials]) {
@@ -520,20 +519,21 @@ typedef enum {
     [tableView deselectRowAtIndexPath:indexPath animated:YES];
     
     if (indexPath.section == SettingsSectionBlogs) {
-        [WPMobileStats trackEventForWPCom:StatsEventSettingsClickedEditBlog];
-        
-        Blog *blog = [self.resultsController objectAtIndexPath:indexPath];
+        if (indexPath.row < [[self.resultsController fetchedObjects] count]) {
+            [WPMobileStats trackEventForWPCom:StatsEventSettingsClickedEditBlog];
+            
+            Blog *blog = [self.resultsController objectAtIndexPath:indexPath];
 
-		EditSiteViewController *editSiteViewController = [[EditSiteViewController alloc] init];
-        editSiteViewController.blog = blog;
-        [self.navigationController pushViewController:editSiteViewController animated:YES];
-
-    } else if (indexPath.section == SettingsSectionBlogsAdd) {
-        [WPMobileStats trackEventForWPCom:StatsEventSettingsClickedAddBlog];
-        
-        WelcomeViewController *welcomeViewController = [[WelcomeViewController alloc] initWithStyle:UITableViewStyleGrouped];
-        welcomeViewController.title = NSLocalizedString(@"Add a Site", nil);
-        [self.navigationController pushViewController:welcomeViewController animated:YES];
+            EditSiteViewController *editSiteViewController = [[EditSiteViewController alloc] init];
+            editSiteViewController.blog = blog;
+            [self.navigationController pushViewController:editSiteViewController animated:YES];
+        } else {
+            [WPMobileStats trackEventForWPCom:StatsEventSettingsClickedAddBlog];
+            
+            WelcomeViewController *welcomeViewController = [[WelcomeViewController alloc] initWithStyle:UITableViewStyleGrouped];
+            welcomeViewController.title = NSLocalizedString(@"Add a Site", nil);
+            [self.navigationController pushViewController:welcomeViewController animated:YES];
+        }
     } else if (indexPath.section == SettingsSectionWpcom) {
         if ([[WordPressComApi sharedApi] hasCredentials]) {
             if (indexPath.row == 1) {
