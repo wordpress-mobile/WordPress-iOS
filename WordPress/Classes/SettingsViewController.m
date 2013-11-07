@@ -338,6 +338,7 @@ typedef enum {
         }
         
         [cell.imageView setImageWithBlavatarUrl:blog.blavatarUrl isWPcom:blog.isWPcom];
+        cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
         
         if (indexPath.row == 0) {
             [self maskImageView:cell.imageView corner:UIRectCornerTopLeft];
