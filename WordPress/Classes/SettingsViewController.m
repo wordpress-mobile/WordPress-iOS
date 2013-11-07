@@ -350,10 +350,9 @@ typedef enum {
         
     } else if (indexPath.section == SettingsSectionBlogsAdd) {
         cell.textLabel.text = NSLocalizedString(@"Add a Site", @"");
-        cell.textLabel.textAlignment = NSTextAlignmentCenter;
         cell.selectionStyle = UITableViewCellSelectionStyleBlue;
         cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
-        
+
     } else if (indexPath.section == SettingsSectionWpcom) {
         if ([[WordPressComApi sharedApi] hasCredentials]) {
             if (indexPath.row == 0) {
@@ -484,8 +483,7 @@ typedef enum {
     }
     
     BOOL isSignOutCell = indexPath.section == SettingsSectionWpcom && indexPath.row == 1;
-    BOOL isAddBlogsCell = indexPath.section == SettingsSectionBlogsAdd;
-    if (isSignOutCell || isAddBlogsCell || isSignInCell) {
+    if (isSignOutCell || isSignInCell) {
         [WPStyleGuide configureTableViewActionCell:cell];
     }
     
