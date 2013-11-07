@@ -45,6 +45,7 @@
 
     CGSize labelSize = [self.textLabel.text sizeWithFont:[UIFont boldSystemFontOfSize:17]];
     labelSize.width = ceil(labelSize.width/5) * 5; // Round to upper 5
+    labelSize.width = MAX(90, labelSize.width); // Impose alignment for shorter labels
 
     if (IS_IPAD) {
         frame = CGRectMake(labelSize.width + 60,
