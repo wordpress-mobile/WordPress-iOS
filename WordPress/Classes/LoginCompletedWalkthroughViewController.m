@@ -16,7 +16,7 @@
 
 @interface LoginCompletedWalkthroughViewController ()<UIScrollViewDelegate> {
     UIScrollView *_scrollView;
-    UIView *_mainTextureView;
+    UIView *_mainView;
     UILabel *_skipToApp;
     
     // Page 1
@@ -28,7 +28,6 @@
     UIImageView *_page1BottomSeparator;
     UIView *_bottomPanelLine;
     UIView *_bottomPanel;
-    UIView *_bottomPanelTextureView;
     UIPageControl *_pageControl;
     
     // Page 2
@@ -55,7 +54,6 @@
     
     CGFloat _currentPage;
     CGFloat _bottomPanelOriginalX;
-    CGFloat _bottomPanelTextureOriginalX;
     CGFloat _skipToAppOriginalX;
     CGFloat _pageControlOriginalX;
     CGFloat _heightFromSwipeToContinueToBottom;
@@ -137,10 +135,6 @@ CGFloat const LoginCompeltedWalkthroughSwipeToContinueTopOffset = 14.0;
     bottomPanelFrame.origin.x = _bottomPanelOriginalX + contentOffset.x;
     _bottomPanel.frame = bottomPanelFrame;
     
-    CGRect bottomPanelTextureFrame = _bottomPanelTextureView.frame;
-    bottomPanelTextureFrame.origin.x = _bottomPanelOriginalX + contentOffset.x;
-    _bottomPanelTextureView.frame = bottomPanelTextureFrame;
-    
     CGRect pageControlFrame = _pageControl.frame;
     pageControlFrame.origin.x = _pageControlOriginalX + contentOffset.x;
     _pageControl.frame = pageControlFrame;
@@ -156,7 +150,6 @@ CGFloat const LoginCompeltedWalkthroughSwipeToContinueTopOffset = 14.0;
         _savedOriginalPositionsOfStickyControls = YES;
         _skipToAppOriginalX = CGRectGetMinX(_skipToApp.frame);
         _bottomPanelOriginalX = CGRectGetMinX(_bottomPanel.frame);
-        _bottomPanelTextureOriginalX = CGRectGetMinX(_bottomPanelTextureView.frame);
         _pageControlOriginalX = CGRectGetMinX(_pageControl.frame);
     }
 }
@@ -182,10 +175,9 @@ CGFloat const LoginCompeltedWalkthroughSwipeToContinueTopOffset = 14.0;
 
 - (void)addBackgroundTexture
 {
-    _mainTextureView = [[UIView alloc] initWithFrame:self.view.bounds];
-    _mainTextureView.backgroundColor = [UIColor colorWithPatternImage:[UIImage imageNamed:@"ui-texture"]];
-    [self.view addSubview:_mainTextureView];
-    _mainTextureView.userInteractionEnabled = NO;
+    _mainView = [[UIView alloc] initWithFrame:self.view.bounds];
+    [self.view addSubview:_mainView];
+    _mainView.userInteractionEnabled = NO;
 }
 
 - (void)addScrollview
@@ -281,14 +273,6 @@ CGFloat const LoginCompeltedWalkthroughSwipeToContinueTopOffset = 14.0;
         [_bottomPanel addGestureRecognizer:gestureRecognizer];
     }
     
-    // Bottom Texture View
-    if (_bottomPanelTextureView == nil) {
-        _bottomPanelTextureView = [[UIView alloc] init];
-        _bottomPanelTextureView.backgroundColor = [UIColor colorWithPatternImage:[UIImage imageNamed:@"ui-texture"]];
-        _bottomPanelTextureView.userInteractionEnabled = NO;
-        [_scrollView addSubview:_bottomPanelTextureView];
-    }
-    
     // Bottom Panel "Black" Line
     if (_bottomPanelLine == nil) {
         _bottomPanelLine = [[UIView alloc] init];
@@ -380,9 +364,6 @@ CGFloat const LoginCompeltedWalkthroughSwipeToContinueTopOffset = 14.0;
     x = [self adjustX:x forPage:1];
     y = _viewHeight - LoginCompletedWalkthroughBottomBackgroundHeight;
     _bottomPanel.frame = CGRectMake(x, y, _viewWidth, LoginCompletedWalkthroughBottomBackgroundHeight);
-    
-    // Layout Bottom Panel Gradient View
-    _bottomPanelTextureView.frame = _bottomPanel.frame;
         
     // Layout Bottom Panel Line
     x = 0;
