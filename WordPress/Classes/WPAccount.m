@@ -125,7 +125,7 @@ NSString * const WPAccountDefaultWordPressComAccountChangedNotification = @"WPAc
 #pragma mark - Blog creation
 
 - (Blog *)findOrCreateBlogFromDictionary:(NSDictionary *)blogInfo withContext:(NSManagedObjectContext*)context {
-    WPAccount *contextAccount = (WPAccount *)[context objectWithID:self.objectID];
+    WPAccount *contextAccount = (WPAccount *)[context existingObjectWithID:self.objectID error:nil];
     
     NSString *blogUrl = [[blogInfo objectForKey:@"url"] stringByReplacingOccurrencesOfString:@"http://" withString:@""];
 	if([blogUrl hasSuffix:@"/"])
