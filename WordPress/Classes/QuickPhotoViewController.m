@@ -98,8 +98,12 @@
 
 - (void)viewDidAppear:(BOOL)animated {
     [super viewDidAppear:animated];
+
+    // On iOS6 viewDidAppear is called a second time after the keyboard is visible.
+    if (CGRectEqualToRect(startingFrame, CGRectZero)) {
+        startingFrame = self.view.frame;
+    }
     
-    startingFrame = self.view.frame;
     if (self.photo == nil) {
         [self showPicker];
     } else {
