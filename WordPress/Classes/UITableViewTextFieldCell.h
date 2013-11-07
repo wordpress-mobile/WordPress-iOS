@@ -20,4 +20,5 @@
 @property (nonatomic, strong) UITextField *textField;
 @property (nonatomic, assign) BOOL shouldDismissOnReturn;
 @property (nonatomic, assign) id<UITableViewTextFieldCellDelegate> delegate;
+@property (nonatomic, assign) CGFloat minimumLabelWidth;
 @end
