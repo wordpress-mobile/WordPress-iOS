@@ -95,7 +95,7 @@ CGFloat const GeneralWalkthroughTextFieldWidth = 289.0;
 CGFloat const GeneralWalkthroughTextFieldHeight = 40.0;
 CGFloat const GeneralWalkthroughSignInButtonWidth = 160.0;
 CGFloat const GeneralWalkthroughSignInButtonHeight = 41.0;
-CGFloat const GeneralWalkthroughiOS7StatusBarOffset = 10.0;
+CGFloat const GeneralWalkthroughiOS7StatusBarOffset = 20.0;
 
 - (void)dealloc
 {
