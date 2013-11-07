@@ -71,13 +71,19 @@
 }
 
 
+- (void)setPlaceholder:(UIImage *)image {
+	_imageView.image = image;
+	self.isShowingPlaceholder = YES;
+    self.placeholderRatio = self.frame.size.width / self.frame.size.height;
+}
+
+
 - (void)setImageWithURL:(NSURL *)url
 	   placeholderImage:(UIImage *)image
 				success:(void (^)(ReaderMediaView *))success
 				failure:(void (^)(ReaderMediaView *, NSError *))failure {
 	if (image) {
-		self.isShowingPlaceholder = YES;
-        self.placeholderRatio = self.frame.size.width / self.frame.size.height;
+        [self setPlaceholder:image];
 	}
 	// Weak refs to avoid retain loop.
 	__weak ReaderMediaView *selfRef = self;
@@ -93,7 +99,6 @@
 								failure(selfRef, error);
 							}
 						}];
-	
 }
 
 
