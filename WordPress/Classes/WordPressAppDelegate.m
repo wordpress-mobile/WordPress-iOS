@@ -1017,10 +1017,9 @@ int ddLogLevel = LOG_LEVEL_INFO;
 
 - (void)checkIfFeedbackShouldBeEnabled
 {
+    [[NSUserDefaults standardUserDefaults] registerDefaults:@{kWPUserDefaultsFeedbackEnabled: @YES}];
     NSURL *url = [NSURL URLWithString:@"http://api.wordpress.org/iphoneapp/feedback-check/1.0/"];
-    NSURLRequest *request = [[NSURLRequest alloc] initWithURL:url
-                                                  cachePolicy:NSURLCacheStorageNotAllowed
-                                              timeoutInterval:10.0];
+    NSURLRequest *request = [[NSURLRequest alloc] initWithURL:url];
     AFJSONRequestOperation *operation = [AFJSONRequestOperation JSONRequestOperationWithRequest:request success:^(NSURLRequest *request, NSHTTPURLResponse *response, id JSON) {
         DDLogVerbose(@"Feedback response received: %@", JSON);
         NSNumber *feedbackEnabled = JSON[@"feedback-enabled"];
