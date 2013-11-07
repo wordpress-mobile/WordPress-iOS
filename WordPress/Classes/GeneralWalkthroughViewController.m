@@ -43,8 +43,6 @@
     UIImageView *_page1Icon;
     UILabel *_page1Title;
     UILabel *_page1Description;
-    UIImageView *_page1TopSeparator;
-    UIImageView *_page1BottomSeparator;
     UIView *_bottomPanelLine;
     UIView *_bottomPanel;
     UIPageControl *_pageControl;
@@ -473,12 +471,6 @@ CGFloat const GeneralWalkthroughiOS7StatusBarOffset = 20.0;
         _page1Title.textColor = [UIColor whiteColor];
         [_scrollView addSubview:_page1Title];
     }
-    
-    // Add Top Separator
-    if (_page1TopSeparator == nil) {
-        _page1TopSeparator = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"ui-line"]];
-        [_scrollView addSubview:_page1TopSeparator];
-    }
 
     // Add Description
     if (_page1Description == nil) {
@@ -494,12 +486,6 @@ CGFloat const GeneralWalkthroughiOS7StatusBarOffset = 20.0;
         _page1Description.layer.shadowRadius = 2.0;
         _page1Description.textColor = [WPNUXUtility descriptionTextColor];
         [_scrollView addSubview:_page1Description];
-    }
-
-    // Add Bottom Separator
-    if (_page1BottomSeparator == nil) {
-        _page1BottomSeparator = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"ui-line"]];
-        [_scrollView addSubview:_page1BottomSeparator];
     }
     
     // Bottom Panel
@@ -585,24 +571,12 @@ CGFloat const GeneralWalkthroughiOS7StatusBarOffset = 20.0;
     y = CGRectGetMaxY(_page1Icon.frame) + 0.5*GeneralWalkthroughStandardOffset;
     _page1Title.frame = CGRectIntegral(CGRectMake(x, y, titleSize.width, titleSize.height));
     
-    // Layout Top Separator
-    x = GeneralWalkthroughStandardOffset;
-    x = [self adjustX:x forPage:1];
-    y = CGRectGetMaxY(_page1Title.frame) + GeneralWalkthroughStandardOffset;
-    _page1TopSeparator.frame = CGRectMake(x, y, _viewWidth - 2*GeneralWalkthroughStandardOffset, 2);
-    
     // Layout Description
     CGSize labelSize = [_page1Description.text sizeWithFont:_page1Description.font constrainedToSize:CGSizeMake(GeneralWalkthroughMaxTextWidth, CGFLOAT_MAX) lineBreakMode:NSLineBreakByWordWrapping];
     x = (_viewWidth - labelSize.width)/2.0;
     x = [self adjustX:x forPage:1];
-    y = CGRectGetMaxY(_page1TopSeparator.frame) + 0.5*GeneralWalkthroughStandardOffset;
+    y = CGRectGetMaxY(_page1Title.frame) + 0.5*GeneralWalkthroughStandardOffset;
     _page1Description.frame = CGRectIntegral(CGRectMake(x, y, labelSize.width, labelSize.height));
-    
-    // Layout Bottom Separator
-    x = GeneralWalkthroughStandardOffset;
-    x = [self adjustX:x forPage:1];
-    y = CGRectGetMaxY(_page1Description.frame) + 0.5*GeneralWalkthroughStandardOffset;
-    _page1BottomSeparator.frame = CGRectMake(x, y, _viewWidth - 2*GeneralWalkthroughStandardOffset, 2);
         
     // Layout Bottom Panel
     x = 0;
@@ -641,8 +615,8 @@ CGFloat const GeneralWalkthroughiOS7StatusBarOffset = 20.0;
     _skipToSignIn.frame = CGRectMake(x, y, CGRectGetWidth(_skipToSignIn.frame), CGRectGetHeight(_skipToSignIn.frame));
     
     _heightFromPageControl = _viewHeight - CGRectGetMinY(_pageControl.frame) - CGRectGetHeight(_pageControl.frame);
-    NSArray *viewsToCenter = @[_page1Icon, _page1Title, _page1TopSeparator, _page1Description, _page1BottomSeparator];
-    [WPNUXUtility centerViews:viewsToCenter withStartingView:_page1Icon andEndingView:_page1BottomSeparator forHeight:(_viewHeight - _heightFromPageControl)];
+    NSArray *viewsToCenter = @[_page1Icon, _page1Title, _page1Description];
+    [WPNUXUtility centerViews:viewsToCenter withStartingView:_page1Icon andEndingView:_page1Description forHeight:(_viewHeight - _heightFromPageControl)];
 }
 
 - (void)initializePage2
