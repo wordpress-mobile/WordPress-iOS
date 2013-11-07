@@ -684,8 +684,11 @@ NSString *const ReaderExtrasArrayKey = @"ReaderExtrasArrayKey";
 }
 
 - (NSURL *)featuredImageURL {
-    // FIXME: NSURL fails if the URL contains spaces.
-    return [NSURL URLWithString:self.featuredImage];
+    if (self.featuredImage) {
+        return [NSURL URLWithString:self.featuredImage];
+    }
+
+    return nil;
 }
 
 - (NSString *)featuredImageForWidth:(NSUInteger)width height:(NSUInteger)height {
