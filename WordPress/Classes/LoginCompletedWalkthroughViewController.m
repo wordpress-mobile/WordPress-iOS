@@ -23,7 +23,6 @@
     UIImageView *_page1Icon;
     UILabel *_page1Title;
     UILabel *_page1Description;
-    UILabel *_page1SwipeToContinue;
 
     UIView *_bottomPanelLine;
     UIView *_bottomPanel;
@@ -51,7 +50,7 @@
     CGFloat _bottomPanelOriginalX;
     CGFloat _skipToAppOriginalX;
     CGFloat _pageControlOriginalX;
-    CGFloat _heightFromSwipeToContinueToBottom;
+    CGFloat _heightFromPageControlToBottom;
 
     BOOL _savedOriginalPositionsOfStickyControls;
     BOOL _isDismissing;
@@ -273,20 +272,6 @@ CGFloat const LoginCompeltedWalkthroughSwipeToContinueTopOffset = 14.0;
         [_scrollView addSubview:_pageControl];
     }
     
-    // Add "SWIPE TO CONTINUE"
-    if (_page1SwipeToContinue == nil) {
-        _page1SwipeToContinue = [[UILabel alloc] init];
-        [_page1SwipeToContinue setTextColor:[WPNUXUtility swipeToContinueTextColor]];
-        [_page1SwipeToContinue setShadowColor:[WPNUXUtility textShadowColor]];
-        _page1SwipeToContinue.backgroundColor = [UIColor clearColor];
-        _page1SwipeToContinue.textAlignment = NSTextAlignmentCenter;
-        _page1SwipeToContinue.numberOfLines = 1;
-        _page1SwipeToContinue.font = [WPNUXUtility swipeToContinueFont];
-        _page1SwipeToContinue.text = [NSLocalizedString(@"swipe to continue", nil) uppercaseString];
-        [_page1SwipeToContinue sizeToFit];
-        [_scrollView addSubview:_page1SwipeToContinue];
-    }
-    
     // Add Skip to App Button
     if (_skipToApp == nil) {
         _skipToApp = [[UILabel alloc] init];
@@ -354,21 +339,15 @@ CGFloat const LoginCompeltedWalkthroughSwipeToContinueTopOffset = 14.0;
     y = CGRectGetMinY(_bottomPanel.frame) - LoginCompletedWalkthroughStandardOffset - CGRectGetHeight(_pageControl.frame) + verticalSpaceForPageControl;
     _pageControl.frame = CGRectIntegral(CGRectMake(x, y, pageControlSize.width, pageControlSize.height));
 
-    // Layout Swipe to Continue Label
-    x = (_viewWidth - CGRectGetWidth(_page1SwipeToContinue.frame))/2.0;
-    x = [self adjustX:x forPage:1];
-    y = CGRectGetMinY(_pageControl.frame) - LoginCompeltedWalkthroughSwipeToContinueTopOffset - CGRectGetHeight(_page1SwipeToContinue.frame) + verticalSpaceForPageControl;
-    _page1SwipeToContinue.frame = CGRectIntegral(CGRectMake(x, y, CGRectGetWidth(_page1SwipeToContinue.frame), CGRectGetHeight(_page1SwipeToContinue.frame)));
-
     // Layout Skip and Start Using App
     CGSize skipToAppLabelSize = [_skipToApp.text sizeWithFont:_skipToApp.font constrainedToSize:CGSizeMake(_viewWidth - 2*LoginCompletedWalkthroughStandardOffset, CGFLOAT_MAX) lineBreakMode:NSLineBreakByWordWrapping];
     x = (_viewWidth - skipToAppLabelSize.width)/2.0;
     y = CGRectGetMinY(_bottomPanel.frame) + (CGRectGetHeight(_bottomPanel.frame) - skipToAppLabelSize.height)/2.0;
     _skipToApp.frame = CGRectIntegral(CGRectMake(x, y, skipToAppLabelSize.width, skipToAppLabelSize.height));
     
-    _heightFromSwipeToContinueToBottom = _viewHeight - CGRectGetMinY(_page1SwipeToContinue.frame) - CGRectGetHeight(_page1SwipeToContinue.frame);
+    _heightFromPageControlToBottom = _viewHeight - CGRectGetMinY(_pageControl.frame) - CGRectGetHeight(_pageControl.frame);
     NSArray *viewsToCenter = @[_page1Icon, _page1Title, _page1Description];
-    [WPNUXUtility centerViews:viewsToCenter withStartingView:_page1Icon andEndingView:_page1Description forHeight:(_viewHeight-_heightFromSwipeToContinueToBottom)];
+    [WPNUXUtility centerViews:viewsToCenter withStartingView:_page1Icon andEndingView:_page1Description forHeight:(_viewHeight-_heightFromPageControlToBottom)];
 }
 
 - (void)initializePage2
@@ -442,7 +421,7 @@ CGFloat const LoginCompeltedWalkthroughSwipeToContinueTopOffset = 14.0;
     _page2Description.frame = CGRectIntegral(CGRectMake(x, y, labelSize.width, labelSize.height));
 
     NSArray *viewsToCenter = @[_page2Icon, _page2Title, _page2Description];
-    [WPNUXUtility centerViews:viewsToCenter withStartingView:_page2Icon andEndingView:_page2Description forHeight:(_viewHeight-_heightFromSwipeToContinueToBottom)];
+    [WPNUXUtility centerViews:viewsToCenter withStartingView:_page2Icon andEndingView:_page2Description forHeight:(_viewHeight-_heightFromPageControlToBottom)];
 }
 
 - (void)initializePage3
@@ -516,7 +495,7 @@ CGFloat const LoginCompeltedWalkthroughSwipeToContinueTopOffset = 14.0;
     _page3Description.frame = CGRectIntegral(CGRectMake(x, y, labelSize.width, labelSize.height));
     
     NSArray *viewsToCenter = @[_page3Icon, _page3Title, _page3Description];
-    [WPNUXUtility centerViews:viewsToCenter withStartingView:_page3Icon andEndingView:_page3Description forHeight:(_viewHeight-_heightFromSwipeToContinueToBottom)];
+    [WPNUXUtility centerViews:viewsToCenter withStartingView:_page3Icon andEndingView:_page3Description forHeight:(_viewHeight-_heightFromPageControlToBottom)];
 }
 
 - (void)initializePage4
@@ -589,7 +568,7 @@ CGFloat const LoginCompeltedWalkthroughSwipeToContinueTopOffset = 14.0;
     _page4TapToContinue.frame = CGRectIntegral(CGRectMake(x, y, CGRectGetWidth(_page4TapToContinue.frame), CGRectGetHeight(_page4TapToContinue.frame)));
     
     NSArray *viewsToCenter = @[_page4Icon, _page4Title];
-    [WPNUXUtility centerViews:viewsToCenter withStartingView:_page4Title andEndingView:_page4Title forHeight:(_viewHeight-_heightFromSwipeToContinueToBottom)];
+    [WPNUXUtility centerViews:viewsToCenter withStartingView:_page4Title andEndingView:_page4Title forHeight:(_viewHeight-_heightFromPageControlToBottom)];
 }
 
 - (CGFloat)adjustX:(CGFloat)x forPage:(NSUInteger)page
