@@ -24,8 +24,7 @@
     UILabel *_page1Title;
     UILabel *_page1Description;
     UILabel *_page1SwipeToContinue;
-    UIImageView *_page1TopSeparator;
-    UIImageView *_page1BottomSeparator;
+
     UIView *_bottomPanelLine;
     UIView *_bottomPanel;
     UIPageControl *_pageControl;
@@ -34,15 +33,11 @@
     UIImageView *_page2Icon;
     UILabel *_page2Title;
     UILabel *_page2Description;
-    UIImageView *_page2TopSeparator;
-    UIImageView *_page2BottomSeparator;
     
     // Page 3
     UIImageView *_page3Icon;
     UILabel *_page3Title;
     UILabel *_page3Description;
-    UIImageView *_page3TopSeparator;
-    UIImageView *_page3BottomSeparator;
     
     // Page 4
     UIImageView *_page4Icon;
@@ -235,12 +230,6 @@ CGFloat const LoginCompeltedWalkthroughSwipeToContinueTopOffset = 14.0;
         [_scrollView addSubview:_page1Title];
     }
     
-    // Add Top Separator
-    if (_page1TopSeparator == nil) {
-        _page1TopSeparator = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"ui-line"]];
-        [_scrollView addSubview:_page1TopSeparator];
-    }
-    
     // Add Description
     if (_page1Description == nil) {
         _page1Description = [[UILabel alloc] init];
@@ -255,12 +244,6 @@ CGFloat const LoginCompeltedWalkthroughSwipeToContinueTopOffset = 14.0;
         _page1Title.layer.shadowRadius = 2.0;
         _page1Description.textColor = [WPNUXUtility descriptionTextColor];
         [_scrollView addSubview:_page1Description];
-    }
-    
-    // Add Bottom Separator
-    if (_page1BottomSeparator == nil) {
-        _page1BottomSeparator = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"ui-line"]];
-        [_scrollView addSubview:_page1BottomSeparator];
     }
     
     // Bottom Panel
@@ -340,24 +323,12 @@ CGFloat const LoginCompeltedWalkthroughSwipeToContinueTopOffset = 14.0;
     y = CGRectGetMaxY(_page1Icon.frame) + 0.5*LoginCompletedWalkthroughStandardOffset;
     _page1Title.frame = CGRectIntegral(CGRectMake(x, y, titleSize.width, titleSize.height));
     
-    // Layout Top Separator
-    x = LoginCompletedWalkthroughStandardOffset;
-    x = [self adjustX:x forPage:1];
-    y = CGRectGetMaxY(_page1Title.frame) + LoginCompletedWalkthroughStandardOffset;
-    _page1TopSeparator.frame = CGRectMake(x, y, _viewWidth - 2*LoginCompletedWalkthroughStandardOffset, 2);
-    
     // Layout Description
     CGSize labelSize = [_page1Description.text sizeWithFont:_page1Description.font constrainedToSize:CGSizeMake(LoginCompletedWalkthroughMaxTextWidth, CGFLOAT_MAX) lineBreakMode:NSLineBreakByWordWrapping];
     x = (_viewWidth - labelSize.width)/2.0;
     x = [self adjustX:x forPage:1];
-    y = CGRectGetMaxY(_page1TopSeparator.frame) + 0.5*LoginCompletedWalkthroughStandardOffset;
+    y = CGRectGetMaxY(_page1Title.frame) + 0.5*LoginCompletedWalkthroughStandardOffset;
     _page1Description.frame = CGRectIntegral(CGRectMake(x, y, labelSize.width, labelSize.height));
-
-    // Layout Bottom Separator
-    x = LoginCompletedWalkthroughStandardOffset;
-    x = [self adjustX:x forPage:1];
-    y = CGRectGetMaxY(_page1Description.frame) + 0.5*LoginCompletedWalkthroughStandardOffset;
-    _page1BottomSeparator.frame = CGRectMake(x, y, _viewWidth - 2*LoginCompletedWalkthroughStandardOffset, 2);
     
     // Layout Bottom Panel
     x = 0;
@@ -396,8 +367,8 @@ CGFloat const LoginCompeltedWalkthroughSwipeToContinueTopOffset = 14.0;
     _skipToApp.frame = CGRectIntegral(CGRectMake(x, y, skipToAppLabelSize.width, skipToAppLabelSize.height));
     
     _heightFromSwipeToContinueToBottom = _viewHeight - CGRectGetMinY(_page1SwipeToContinue.frame) - CGRectGetHeight(_page1SwipeToContinue.frame);
-    NSArray *viewsToCenter = @[_page1Icon, _page1Title, _page1TopSeparator, _page1Description, _page1BottomSeparator];
-    [WPNUXUtility centerViews:viewsToCenter withStartingView:_page1Icon andEndingView:_page1BottomSeparator forHeight:(_viewHeight-_heightFromSwipeToContinueToBottom)];
+    NSArray *viewsToCenter = @[_page1Icon, _page1Title, _page1Description];
+    [WPNUXUtility centerViews:viewsToCenter withStartingView:_page1Icon andEndingView:_page1Description forHeight:(_viewHeight-_heightFromSwipeToContinueToBottom)];
 }
 
 - (void)initializePage2
@@ -430,12 +401,6 @@ CGFloat const LoginCompeltedWalkthroughSwipeToContinueTopOffset = 14.0;
         [_scrollView addSubview:_page2Title];
     }
     
-    // Add Top Separator
-    if (_page2TopSeparator == nil) {
-        _page2TopSeparator = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"ui-line"]];
-        [_scrollView addSubview:_page2TopSeparator];
-    }
-    
     // Add Description
     if (_page2Description == nil) {
         _page2Description = [[UILabel alloc] init];
@@ -450,12 +415,6 @@ CGFloat const LoginCompeltedWalkthroughSwipeToContinueTopOffset = 14.0;
         _page2Description.layer.shadowRadius = 2.0;
         _page2Description.textColor = [WPNUXUtility descriptionTextColor];
         [_scrollView addSubview:_page2Description];
-    }
-    
-    // Add Bottom Separator
-    if (_page2BottomSeparator == nil) {
-        _page2BottomSeparator = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"ui-line"]];
-        [_scrollView addSubview:_page2BottomSeparator];
     }
 }
 
@@ -475,27 +434,15 @@ CGFloat const LoginCompeltedWalkthroughSwipeToContinueTopOffset = 14.0;
     y = CGRectGetMaxY(_page2Icon.frame) + 0.5*LoginCompletedWalkthroughStandardOffset;
     _page2Title.frame = CGRectIntegral(CGRectMake(x, y, titleSize.width, titleSize.height));
     
-    // Layout Top Separator
-    x = LoginCompletedWalkthroughStandardOffset;
-    x = [self adjustX:x forPage:2];
-    y = CGRectGetMaxY(_page2Title.frame) + LoginCompletedWalkthroughStandardOffset;
-    _page2TopSeparator.frame = CGRectMake(x, y, _viewWidth - 2*LoginCompletedWalkthroughStandardOffset, 2);
-    
     // Layout Description
     CGSize labelSize = [_page2Description.text sizeWithFont:_page2Description.font constrainedToSize:CGSizeMake(LoginCompletedWalkthroughMaxTextWidth, CGFLOAT_MAX) lineBreakMode:NSLineBreakByWordWrapping];
     x = (_viewWidth - labelSize.width)/2.0;
     x = [self adjustX:x forPage:2];
-    y = CGRectGetMaxY(_page2TopSeparator.frame) + 0.5*LoginCompletedWalkthroughStandardOffset;
+    y = CGRectGetMaxY(_page2Title.frame) + 0.5*LoginCompletedWalkthroughStandardOffset;
     _page2Description.frame = CGRectIntegral(CGRectMake(x, y, labelSize.width, labelSize.height));
-    
-    // Layout Bottom Separator
-    x = LoginCompletedWalkthroughStandardOffset;
-    x = [self adjustX:x forPage:2];
-    y = CGRectGetMaxY(_page2Description.frame) + 0.5*LoginCompletedWalkthroughStandardOffset;
-    _page2BottomSeparator.frame = CGRectMake(x, y, _viewWidth - 2*LoginCompletedWalkthroughStandardOffset, 2);
-    
-    NSArray *viewsToCenter = @[_page2Icon, _page2Title, _page2TopSeparator, _page2Description, _page2BottomSeparator];
-    [WPNUXUtility centerViews:viewsToCenter withStartingView:_page2Icon andEndingView:_page2BottomSeparator forHeight:(_viewHeight-_heightFromSwipeToContinueToBottom)];
+
+    NSArray *viewsToCenter = @[_page2Icon, _page2Title, _page2Description];
+    [WPNUXUtility centerViews:viewsToCenter withStartingView:_page2Icon andEndingView:_page2Description forHeight:(_viewHeight-_heightFromSwipeToContinueToBottom)];
 }
 
 - (void)initializePage3
@@ -528,12 +475,6 @@ CGFloat const LoginCompeltedWalkthroughSwipeToContinueTopOffset = 14.0;
         [_scrollView addSubview:_page3Title];
     }
     
-    // Add Top Separator
-    if (_page3TopSeparator == nil) {
-        _page3TopSeparator = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"ui-line"]];
-        [_scrollView addSubview:_page3TopSeparator];
-    }
-    
     // Add Description
     if (_page3Description == nil) {
         _page3Description = [[UILabel alloc] init];
@@ -548,12 +489,6 @@ CGFloat const LoginCompeltedWalkthroughSwipeToContinueTopOffset = 14.0;
         _page3Description.layer.shadowRadius = 2.0;
         _page3Description.textColor = [WPNUXUtility descriptionTextColor];
         [_scrollView addSubview:_page3Description];
-    }
-    
-    // Add Bottom Separator
-    if (_page3BottomSeparator == nil) {
-        _page3BottomSeparator = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"ui-line"]];
-        [_scrollView addSubview:_page3BottomSeparator];
     }
 }
 
@@ -573,27 +508,15 @@ CGFloat const LoginCompeltedWalkthroughSwipeToContinueTopOffset = 14.0;
     y = CGRectGetMaxY(_page3Icon.frame) + 0.5*LoginCompletedWalkthroughStandardOffset;
     _page3Title.frame = CGRectIntegral(CGRectMake(x, y, titleSize.width, titleSize.height));
     
-    // Layout Top Separator
-    x = LoginCompletedWalkthroughStandardOffset;
-    x = [self adjustX:x forPage:3];
-    y = CGRectGetMaxY(_page3Title.frame) + LoginCompletedWalkthroughStandardOffset;
-    _page3TopSeparator.frame = CGRectMake(x, y, _viewWidth - 2*LoginCompletedWalkthroughStandardOffset, 2);
-    
     // Layout Description
     CGSize labelSize = [_page3Description.text sizeWithFont:_page3Description.font constrainedToSize:CGSizeMake(LoginCompletedWalkthroughMaxTextWidth, CGFLOAT_MAX) lineBreakMode:NSLineBreakByWordWrapping];
     x = (_viewWidth - labelSize.width)/2.0;
     x = [self adjustX:x forPage:3];
-    y = CGRectGetMaxY(_page3TopSeparator.frame) + 0.5*LoginCompletedWalkthroughStandardOffset;
+    y = CGRectGetMaxY(_page3Title.frame) + 0.5*LoginCompletedWalkthroughStandardOffset;
     _page3Description.frame = CGRectIntegral(CGRectMake(x, y, labelSize.width, labelSize.height));
     
-    // Layout Bottom Separator
-    x = LoginCompletedWalkthroughStandardOffset;
-    x = [self adjustX:x forPage:3];
-    y = CGRectGetMaxY(_page3Description.frame) + 0.5*LoginCompletedWalkthroughStandardOffset;
-    _page3BottomSeparator.frame = CGRectMake(x, y, _viewWidth - 2*LoginCompletedWalkthroughStandardOffset, 2);
-    
-    NSArray *viewsToCenter = @[_page3Icon, _page3Title, _page3TopSeparator, _page3Description, _page3BottomSeparator];
-    [WPNUXUtility centerViews:viewsToCenter withStartingView:_page3Icon andEndingView:_page3BottomSeparator forHeight:(_viewHeight-_heightFromSwipeToContinueToBottom)];
+    NSArray *viewsToCenter = @[_page3Icon, _page3Title, _page3Description];
+    [WPNUXUtility centerViews:viewsToCenter withStartingView:_page3Icon andEndingView:_page3Description forHeight:(_viewHeight-_heightFromSwipeToContinueToBottom)];
 }
 
 - (void)initializePage4
