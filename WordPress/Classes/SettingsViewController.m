@@ -57,6 +57,8 @@ typedef enum {
     SettingsSectionCount
 } SettingsSection;
 
+CGFloat const blavatarImageViewSize = 50.f;
+
 @interface SettingsViewController () <NSFetchedResultsControllerDelegate, UIActionSheetDelegate, WPcomLoginViewControllerDelegate>
 
 @property (weak, readonly) NSFetchedResultsController *resultsController;
@@ -101,11 +103,6 @@ typedef enum {
     
     [WPStyleGuide configureColorsForView:self.view andTableView:self.tableView];
     [self setupMedia];
-    
-    // Force insets; without this, separators aren't long enough in blog rows that have imageViews
-    if ([self.tableView respondsToSelector:@selector(setSeparatorInset:)]) {
-        [self.tableView setSeparatorInset:UIEdgeInsetsMake(0, 15, 0, 0)];
-    }
 }
 
 
@@ -362,6 +359,12 @@ typedef enum {
             cell.textLabel.text = NSLocalizedString(@"Add a Site", @"");
             cell.selectionStyle = UITableViewCellSelectionStyleBlue;
             cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
+            
+            // To align the label, create and add a blank image
+            UIGraphicsBeginImageContextWithOptions(CGSizeMake(blavatarImageViewSize, blavatarImageViewSize), NO, 0.0);
+            UIImage *blank = UIGraphicsGetImageFromCurrentImageContext();
+            UIGraphicsEndImageContext();
+            [cell.imageView setImage:blank];
         }
 
     } else if (indexPath.section == SettingsSectionWpcom) {
