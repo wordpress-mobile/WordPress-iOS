@@ -17,6 +17,8 @@
     if (self)
     {
         self.textInsets = UIEdgeInsetsMake(7, 10, 7, 10);
+        self.layer.cornerRadius = 1.0;
+        self.clipsToBounds = YES;
     }
     return self;
 }
