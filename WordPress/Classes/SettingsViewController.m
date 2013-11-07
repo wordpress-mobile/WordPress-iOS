@@ -88,7 +88,7 @@ CGFloat const blavatarImageViewSize = 50.f;
     
     self.title = NSLocalizedString(@"Settings", @"App Settings");
     self.navigationItem.leftBarButtonItem = self.editButtonItem;
-    self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:NSLocalizedString(@"Close", @"") style:[WPStyleGuide barButtonStyleForBordered] target:self action:@selector(dismiss)];
+    self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:NSLocalizedString(@"Done", @"") style:[WPStyleGuide barButtonStyleForBordered] target:self action:@selector(dismiss)];
     
     [[NSNotificationCenter defaultCenter] addObserverForName:WordPressComApiDidLoginNotification object:nil queue:nil usingBlock:^(NSNotification *note) {
         NSMutableIndexSet *sections = [NSMutableIndexSet indexSet];
