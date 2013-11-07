@@ -16,8 +16,6 @@
     UILabel *_title;
     UILabel *_description;
     UILabel *_bottomLabel;
-    UIImageView *_topSeparator;
-    UIImageView *_bottomSeparator;
     WPNUXSecondaryButton *_leftButton;
     WPNUXPrimaryButton *_rightButton;
     
@@ -143,23 +141,14 @@ CGFloat const WPWalkthroughGrayOverlayMaxLabelWidth = 289.0;
     x = (_viewWidth - titleSize.width)/2.0;
     y = CGRectGetMaxY(_logo.frame) + 0.5*WPWalkthroughGrayOverlayStandardOffset;
     _title.frame = CGRectIntegral(CGRectMake(x, y, titleSize.width, titleSize.height));
-    
-    // Layout Top Separator
-    x = WPWalkthroughGrayOverlayStandardOffset;
-    y = CGRectGetMaxY(_title.frame) + WPWalkthroughGrayOverlayStandardOffset;
-    _topSeparator.frame = CGRectMake(x, y, _viewWidth-2*WPWalkthroughGrayOverlayStandardOffset, 2);
-    
+
     // Layout Description
     CGSize labelSize = [_description.text sizeWithFont:_description.font constrainedToSize:CGSizeMake(WPWalkthroughGrayOverlayMaxLabelWidth, CGFLOAT_MAX) lineBreakMode:NSLineBreakByWordWrapping];
     x = (_viewWidth - labelSize.width)/2.0;
-    y = CGRectGetMaxY(_topSeparator.frame) + 0.5*WPWalkthroughGrayOverlayStandardOffset;
+    y = CGRectGetMaxY(_title.frame) + 0.5*WPWalkthroughGrayOverlayStandardOffset;
     _description.frame = CGRectIntegral(CGRectMake(x, y, labelSize.width, labelSize.height));
     
-    // Layout Bottom Separator
-    x = WPWalkthroughGrayOverlayStandardOffset;
-    y = CGRectGetMaxY(_description.frame) + 0.5*WPWalkthroughGrayOverlayStandardOffset;
-    _bottomSeparator.frame = CGRectMake(x, y, _viewWidth - 2*WPWalkthroughGrayOverlayStandardOffset, 2);
-    
+
     // Layout Bottom Label
     CGSize bottomLabelSize = [_bottomLabel.text sizeWithFont:_bottomLabel.font];
     x = (_viewWidth - bottomLabelSize.width)/2.0;
@@ -181,8 +170,8 @@ CGFloat const WPWalkthroughGrayOverlayMaxLabelWidth = 289.0;
     }
     
     CGFloat heightFromBottomLabel = _viewHeight - CGRectGetMinY(_bottomLabel.frame) - CGRectGetHeight(_bottomLabel.frame);
-    NSArray *viewsToCenter = @[_logo, _title, _description, _topSeparator, _bottomSeparator];
-    [WPNUXUtility centerViews:viewsToCenter withStartingView:_logo andEndingView:_bottomSeparator forHeight:(_viewHeight-heightFromBottomLabel)];
+    NSArray *viewsToCenter = @[_logo, _title, _description];
+    [WPNUXUtility centerViews:viewsToCenter withStartingView:_logo andEndingView:_description forHeight:(_viewHeight-heightFromBottomLabel)];
 }
 
 - (void)dismiss
@@ -229,10 +218,6 @@ CGFloat const WPWalkthroughGrayOverlayMaxLabelWidth = 289.0;
     _title.textColor = [UIColor whiteColor];
     [self addSubview:_title];
     
-    // Add Top Separator
-    _topSeparator = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"ui-line-dark"]];
-    [self addSubview:_topSeparator];
-    
     // Add Description
     _description = [[UILabel alloc] init];
     _description.backgroundColor = [UIColor clearColor];
@@ -244,10 +229,6 @@ CGFloat const WPWalkthroughGrayOverlayMaxLabelWidth = 289.0;
     _description.shadowColor = [UIColor blackColor];
     _description.textColor = [UIColor whiteColor];
     [self addSubview:_description];
-    
-    // Add Bottom Separator
-    _bottomSeparator = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"ui-line-dark"]];
-    [self addSubview:_bottomSeparator];
     
     // Add Bottom Label
     _bottomLabel = [[UILabel alloc] init];
