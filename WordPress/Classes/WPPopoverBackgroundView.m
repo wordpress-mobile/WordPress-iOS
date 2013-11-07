@@ -80,8 +80,8 @@
             break;
             
         case UIPopoverArrowDirectionLeft:
-            left += ARROW_BASE;
-            width -= ARROW_BASE;
+            left += ARROW_HEIGHT;
+            width -= ARROW_HEIGHT;
             coordinate = ((height / 2) + self.arrowOffset) - (ARROW_HEIGHT/2);
             coordinate = MIN(MAX(CAP_INSET, coordinate), height - (CAP_INSET + (ARROW_BASE / 2)));
             arrowImageView.frame = CGRectMake(1.0f, coordinate, ARROW_BASE, ARROW_HEIGHT); 
@@ -89,7 +89,7 @@
             break;
             
         case UIPopoverArrowDirectionRight:
-            width -= ARROW_BASE;
+            width -= ARROW_HEIGHT;
             coordinate = ((height / 2) + self.arrowOffset)- (ARROW_HEIGHT/2);
             coordinate = MIN(MAX(CAP_INSET, coordinate), height - (CAP_INSET + (ARROW_BASE / 2)));
             arrowImageView.frame = CGRectMake(width-1.0f, coordinate, ARROW_BASE, ARROW_HEIGHT); 
