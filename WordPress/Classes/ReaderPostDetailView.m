@@ -20,10 +20,11 @@
 #import "WPWebVideoViewController.h"
 #import "UIImageView+Gravatar.h"
 #import "UILabel+SuggestSize.h"
+#import "ReaderMediaQueue.h"
 
 #define ContentTextViewYOffset -32
 
-@interface ReaderPostDetailView()<DTAttributedTextContentViewDelegate> {
+@interface ReaderPostDetailView()<DTAttributedTextContentViewDelegate, ReaderMediaQueueDelegate> {
 	BOOL _relayoutTextFlag;
 }
 
@@ -37,6 +38,7 @@
 @property (nonatomic, strong) UIButton *followButton;
 @property (nonatomic, strong) DTAttributedTextContentView *textContentView;
 @property (nonatomic, strong) NSMutableArray *mediaArray;
+@property (nonatomic, strong) ReaderMediaQueue *mediaQueue;
 @property (nonatomic, weak) id<ReaderPostDetailViewDelegate>delegate;
 
 - (void)_updateLayout;
@@ -69,7 +71,8 @@
 		self.delegate = delegate;
 		
 		self.mediaArray = [NSMutableArray array];
-
+        self.mediaQueue = [[ReaderMediaQueue alloc] initWithDelegate:self];
+        
 		CGFloat width = frame.size.width;
         CGFloat padding = 20.0f;
         CGFloat labelWidth = width - 100.0f;
@@ -520,13 +523,14 @@
 			frame.size.width = MAX(frame.size.width, 1.0f);
 			frame.size.height = MAX(frame.size.height, 1.0f);
 			ReaderImageView *imageView = [[ReaderImageView alloc] initWithFrame:frame];
-			[imageView setImageWithURL:attachment.contentURL
-					  placeholderImage:nil
-							   success:^(ReaderMediaView *readerMediaView) {
-								   [self handleMediaViewLoaded:(ReaderImageView *)readerMediaView];
-							   } failure:^(ReaderMediaView *readerMediaView, NSError *error) {
-								   [self handleMediaViewLoaded:readerMediaView];
-							   }];
+            [_mediaArray addObject:imageView];
+            [self.mediaQueue enqueueMedia:imageView
+                                  withURL:attachment.contentURL
+                         placeholderImage:nil
+                                     size:CGSizeMake(15.0f, 15.0f)
+                                isPrivate:self.post.isPrivate
+                                  success:nil
+                                  failure:nil];
 			return imageView;
 		}
 		
@@ -568,16 +572,18 @@
 		} else {
 			imageView.contentMode = UIViewContentModeCenter;
 			imageView.backgroundColor = [UIColor colorWithRed:192.0f/255.0f green:192.0f/255.0f blue:192.0f/255.0f alpha:1.0];
-			[imageView setImageWithURL:attachment.contentURL
-					  placeholderImage:image
-							   success:^(id readerImageView) {
-								   ReaderImageView *imageView = readerImageView;
-								   imageView.contentMode = UIViewContentModeScaleAspectFit;
-								   imageView.backgroundColor = [UIColor clearColor];
-								   [self handleMediaViewLoaded:readerImageView];
-							   } failure:^(id readerImageView, NSError *error) {
-								   [self handleMediaViewLoaded:readerImageView];
-							   }];
+            
+            [self.mediaQueue enqueueMedia:imageView
+                                  withURL:attachment.contentURL
+                         placeholderImage:image
+                                     size:CGSizeMake(width, 0)
+                                isPrivate:self.post.isPrivate
+                                  success:^(ReaderMediaView *readerMediaView) {
+                                      ReaderImageView *imageView = (ReaderImageView *)readerMediaView;
+                                      imageView.contentMode = UIViewContentModeScaleAspectFit;
+                                      imageView.backgroundColor = [UIColor clearColor];
+                                  }
+                                  failure:nil];
 		}
 
 		return imageView;
@@ -622,13 +628,35 @@
 			[self handleMediaViewLoaded:readerVideoView];
 			
 		}];
-		
+        
 		[videoView addTarget:self action:@selector(handleVideoTapped:) forControlEvents:UIControlEventTouchUpInside];
-		
 
 		return videoView;
 	}
 	
+}
+
+#pragma mark ReaderMediaQueueDelegate methods
+
+- (void)readerMediaQueue:(ReaderMediaQueue *)mediaQueue didLoadBatch:(NSArray *)batch {
+    BOOL frameChanged = NO;
+    
+    for (NSInteger i = 0; i < [batch count]; i++) {
+        ReaderMediaView *mediaView = [batch objectAtIndex:i];
+        if ([self updateMediaLayout:mediaView]) {
+            frameChanged = YES;
+        }
+    }
+
+    if (frameChanged) {
+        // need to reset the layouter because otherwise we get the old framesetter or cached layout frames
+        self.textContentView.layouter = nil;
+        
+        // layout might have changed due to image sizes
+        [self.textContentView relayoutText];
+        
+        [self _updateLayout];
+    }
 }
 
 @end

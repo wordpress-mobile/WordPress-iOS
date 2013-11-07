@@ -19,7 +19,7 @@
 - (UIImage *)image;
 - (void)setImage:(UIImage *)image;
 - (NSURL *)contentURL;
-
+- (void)setPlaceholder:(UIImage *)image;
 - (void)setImageWithURL:(NSURL *)url
 	   placeholderImage:(UIImage *)image
 				success:(void (^)(ReaderMediaView *readerMediaView))success
