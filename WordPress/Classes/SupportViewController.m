@@ -33,7 +33,7 @@ typedef NS_ENUM(NSInteger, SettingsViewControllerSections)
     self = [super initWithStyle:UITableViewStyleGrouped];
     if (self) {
         self.title = NSLocalizedString(@"Support", @"");
-        _feedbackEnabled = YES;
+        self.feedbackEnabled = YES;
     }
 
     return self;
