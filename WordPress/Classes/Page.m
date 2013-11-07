@@ -36,10 +36,6 @@
     return @"page_id";
 }
 
-+ (NSMutableURLRequest *)requestForFetchRequest:(NSFetchRequest *)fetchRequest withContext:(NSManagedObjectContext *)context {
-    return nil;
-}
-
 - (void)updateFromDictionary:(NSDictionary *)postInfo {
 	self.postTitle      = [postInfo objectForKey:@"title"];
     self.postID         = [[postInfo objectForKey:@"page_id"] numericValue];

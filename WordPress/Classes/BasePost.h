@@ -9,7 +9,6 @@
 #import <Foundation/Foundation.h>
 #import "Blog.h"
 #import "DateUtils.h"
-#import "BaseXMLRPCManagedObject.h"
 
 typedef enum {
     AbstractPostRemoteStatusPushing,    // Uploading post
@@ -18,7 +17,7 @@ typedef enum {
     AbstractPostRemoteStatusSync,       // Post uploaded
 } AbstractPostRemoteStatus;
 
-@interface BasePost : BaseXMLRPCManagedObject {
+@interface BasePost : NSManagedObject {
 
 }
 

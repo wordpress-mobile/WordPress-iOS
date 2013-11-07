@@ -10,7 +10,6 @@
 #import "ContextManager.h"
 #import "WordPressComApi.h"
 #import "MigrateBlogsFromFiles.h"
-#import "WPIncrementalStore.h"
 
 static ContextManager *instance;
 
@@ -69,7 +68,6 @@ static ContextManager *instance;
 #pragma mark - Context Saving and Merging
 
 - (void)saveDerivedContext:(NSManagedObjectContext *)context {
-    return;
     [context performBlock:^{
         NSLog(@"Saving a context %@", context);
         [context obtainPermanentIDsForObjects:context.insertedObjects.allObjects error:nil];
@@ -180,10 +178,7 @@ static ContextManager *instance;
 	DDLogInfo(@"End of debugging migration detection");
 #endif
     _persistentStoreCoordinator = [[NSPersistentStoreCoordinator alloc] initWithManagedObjectModel:[self managedObjectModel]];
-    
-    WPIncrementalStore *incrementalStore = (WPIncrementalStore *)[_persistentStoreCoordinator addPersistentStoreWithType:[WPIncrementalStore type] configuration:nil URL:nil options:nil error:nil];
-    
-    if (![incrementalStore.backingPersistentStoreCoordinator addPersistentStoreWithType:NSSQLiteStoreType configuration:nil URL:storeURL options:options error:&error]) {
+    if (![_persistentStoreCoordinator addPersistentStoreWithType:NSSQLiteStoreType configuration:nil URL:storeURL options:options error:&error]) {
 		DDLogError(@"Error opening the database. %@\nDeleting the file and trying again", error);
 #ifdef CORE_DATA_MIGRATION_DEBUG
 		// Don't delete the database on debug builds
