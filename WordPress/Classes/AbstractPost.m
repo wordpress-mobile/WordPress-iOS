@@ -76,7 +76,7 @@
     
     [derived performBlockAndWait:^{
         NSMutableArray *objectsToKeep = [NSMutableArray array];
-        Blog *contextBlog = (Blog *)[derived objectWithID:blog.objectID];
+        Blog *contextBlog = (Blog *)[derived existingObjectWithID:blog.objectID error:nil];
         
         NSArray *existingObjects = [self existingPostsForBlog:contextBlog inContext:derived];
         for (NSDictionary *newPost in newObjects) {
