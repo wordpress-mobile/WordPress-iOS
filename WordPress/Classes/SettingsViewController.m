@@ -355,7 +355,7 @@ typedef enum {
     } else if (indexPath.section == SettingsSectionWpcom) {
         if ([[WordPressComApi sharedApi] hasCredentials]) {
             if (indexPath.row == 0) {
-                cell.textLabel.text = NSLocalizedString(@"Username:", @"");
+                cell.textLabel.text = NSLocalizedString(@"Username", @"");
                 cell.detailTextLabel.text = [[WPAccount defaultWordPressComAccount] username];
                 cell.detailTextLabel.textColor = [UIColor UIColorFromHex:0x888888];
                 cell.selectionStyle = UITableViewCellSelectionStyleNone;
@@ -403,7 +403,7 @@ typedef enum {
     } else if (indexPath.section == SettingsSectionInfo) {
         if (indexPath.row == 0) {
             // App Version
-            cell.textLabel.text = NSLocalizedString(@"Version:", @"");
+            cell.textLabel.text = NSLocalizedString(@"Version", @"");
             NSString *appversion = [[[NSBundle mainBundle] infoDictionary] objectForKey:@"CFBundleVersion"];
 #if DEBUG
             appversion = [appversion stringByAppendingString:@" (DEV)"];
