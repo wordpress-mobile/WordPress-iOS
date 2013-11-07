@@ -210,19 +210,17 @@
                 [urlTextField addTarget:self action:@selector(enableDisableSaveButton) forControlEvents:UIControlEventEditingChanged];
                 [self configureTextField:urlTextField asPassword:NO];
                 urlTextField.keyboardType = UIKeyboardTypeURL;
-                [WPStyleGuide configureTableViewCell:self.urlCell];
 				if (blog.url != nil) {
 					urlTextField.text = blog.url;
+                    
+                    // Make a margin exception for URLs since they're so long
+                    urlCell.minimumLabelWidth = 30;
                 } else {
                     urlTextField.text = @"";
                 }
-                if ([self canEditUsernameAndURL]) {
-                    urlTextField.enabled = YES;
-                    urlTextField.textColor = [UIColor blackColor];
-                } else {
-                    urlTextField.enabled = NO;
-                    urlTextField.textColor = [UIColor darkGrayColor];
-                }
+                
+                urlTextField.enabled = [self canEditUsernameAndURL];
+                [WPStyleGuide configureTableViewTextCell:self.urlCell];
             }
             
             return self.urlCell;
@@ -241,14 +239,9 @@
                 } else {
                     usernameTextField.text = @"";
                 }
-                if ([self canEditUsernameAndURL]) {
-                    usernameTextField.enabled = YES;
-                    usernameTextField.textColor = [UIColor blackColor];
-                } else {
-                    usernameTextField.enabled = NO;
-                    usernameTextField.textColor = [UIColor darkGrayColor];
-                }
-                [WPStyleGuide configureTableViewCell:self.usernameCell];
+
+                usernameTextField.enabled = [self canEditUsernameAndURL];
+                [WPStyleGuide configureTableViewTextCell:self.usernameCell];
 			}
             
             return self.usernameCell;
@@ -267,7 +260,7 @@
                 } else {
                     passwordTextField.text = @"";
                 }
-                [WPStyleGuide configureTableViewCell:self.passwordCell];
+                [WPStyleGuide configureTableViewTextCell:self.passwordCell];
 			}
             
             return self.passwordCell;
@@ -322,7 +315,6 @@
         cell.selectionStyle = UITableViewCellSelectionStyleNone;
         cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
         cell.selectionStyle = UITableViewCellSelectionStyleBlue;
-        cell.detailTextLabel.textColor = [UIColor UIColorFromHex:0x888888];
         [WPStyleGuide configureTableViewCell:cell];
         
         return cell;        

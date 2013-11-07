@@ -274,7 +274,15 @@
 + (void)configureTableViewTextCell:(UITableViewTextFieldCell *)cell
 {
     [self configureTableViewCell:cell];
-    cell.textField.font = [self tableviewTextFont];
+    cell.textField.font = [self tableviewSubtitleFont];
+    
+    if (cell.textField.enabled) {
+        cell.textField.textColor = [self whisperGrey];
+        cell.textField.textAlignment = NSTextAlignmentLeft;
+    } else {
+        cell.textField.textColor = [self allTAllShadeGrey];
+        cell.textField.textAlignment = NSTextAlignmentRight;
+    }
 }
 
 + (void)configureColorsForView:(UIView *)view andTableView:(UITableView *)tableView
