@@ -43,7 +43,6 @@
     UIImageView *_page1Icon;
     UILabel *_page1Title;
     UILabel *_page1Description;
-    UILabel *_page1SwipeToContinue;
     UIImageView *_page1TopSeparator;
     UIImageView *_page1BottomSeparator;
     UIView *_bottomPanelLine;
@@ -67,7 +66,7 @@
     CGFloat _skipToCreateAccountOriginalX;
     CGFloat _skipToSignInOriginalX;
     CGFloat _pageControlOriginalX;
-    CGFloat _heightFromSwipeToContinue;
+    CGFloat _heightFromPageControl;
         
     CGFloat _keyboardOffset;
     
@@ -546,20 +545,6 @@ CGFloat const GeneralWalkthroughiOS7StatusBarOffset = 20.0;
         [_scrollView addSubview:_pageControl];
     }
 
-    // Add "SWIPE TO CONTINUE" text
-    if (_page1SwipeToContinue == nil) {
-        _page1SwipeToContinue = [[UILabel alloc] init];
-        [_page1SwipeToContinue setTextColor:[WPNUXUtility swipeToContinueTextColor]];
-        [_page1SwipeToContinue setShadowColor:[WPNUXUtility textShadowColor]];
-        _page1SwipeToContinue.backgroundColor = [UIColor clearColor];
-        _page1SwipeToContinue.textAlignment = NSTextAlignmentCenter;
-        _page1SwipeToContinue.numberOfLines = 1;
-        _page1SwipeToContinue.font = [WPNUXUtility swipeToContinueFont];
-        _page1SwipeToContinue.text = [NSLocalizedString(@"swipe to continue", nil) uppercaseString];
-        [_page1SwipeToContinue sizeToFit];
-        [_scrollView addSubview:_page1SwipeToContinue];
-    }
-
     // Add Skip to Create Account Button
     if (_skipToCreateAccount == nil) {
         _skipToCreateAccount = [[WPNUXSecondaryButton alloc] init];
@@ -660,12 +645,6 @@ CGFloat const GeneralWalkthroughiOS7StatusBarOffset = 20.0;
     x = [self adjustX:x forPage:1];
     y = CGRectGetMinY(_bottomPanel.frame) - GeneralWalkthroughStandardOffset - CGRectGetHeight(_pageControl.frame) + verticalSpaceForPageControl;
     _pageControl.frame = CGRectIntegral(CGRectMake(x, y, pageControlSize.width, pageControlSize.height));
-
-    // Layout Swipe to Continue
-    x = (_viewWidth - CGRectGetWidth(_page1SwipeToContinue.frame))/2.0;
-    x = [self adjustX:x forPage:1];
-    y = CGRectGetMinY(_pageControl.frame) - GeneralWalkthroughSwipeToContinueTopOffset - CGRectGetHeight(_page1SwipeToContinue.frame) + verticalSpaceForPageControl;
-    _page1SwipeToContinue.frame = CGRectIntegral(CGRectMake(x, y, CGRectGetWidth(_page1SwipeToContinue.frame), CGRectGetHeight(_page1SwipeToContinue.frame)));
     
     // Layout Skip to Create Account Button
     x = GeneralWalkthroughStandardOffset;
@@ -679,9 +658,9 @@ CGFloat const GeneralWalkthroughiOS7StatusBarOffset = 20.0;
     y = CGRectGetMinY(_skipToCreateAccount.frame);
     _skipToSignIn.frame = CGRectMake(x, y, CGRectGetWidth(_skipToSignIn.frame), CGRectGetHeight(_skipToSignIn.frame));
     
-    _heightFromSwipeToContinue = _viewHeight - CGRectGetMinY(_page1SwipeToContinue.frame) - CGRectGetHeight(_page1SwipeToContinue.frame);
+    _heightFromPageControl = _viewHeight - CGRectGetMinY(_pageControl.frame) - CGRectGetHeight(_pageControl.frame);
     NSArray *viewsToCenter = @[_page1Icon, _page1Title, _page1TopSeparator, _page1Description, _page1BottomSeparator];
-    [WPNUXUtility centerViews:viewsToCenter withStartingView:_page1Icon andEndingView:_page1BottomSeparator forHeight:(_viewHeight - _heightFromSwipeToContinue)];
+    [WPNUXUtility centerViews:viewsToCenter withStartingView:_page1Icon andEndingView:_page1BottomSeparator forHeight:(_viewHeight - _heightFromPageControl)];
 }
 
 - (void)initializePage2
@@ -806,7 +785,7 @@ CGFloat const GeneralWalkthroughiOS7StatusBarOffset = 20.0;
     _createAccountLabel.frame = CGRectIntegral(CGRectMake(x, y, createAccountLabelSize.width, createAccountLabelSize.height));
     
     NSArray *viewsToCenter = @[_page2Icon, _usernameText, _passwordText, _siteUrlText, _signInButton];
-    [WPNUXUtility centerViews:viewsToCenter withStartingView:_page2Icon andEndingView:_signInButton forHeight:(_viewHeight-_heightFromSwipeToContinue)];
+    [WPNUXUtility centerViews:viewsToCenter withStartingView:_page2Icon andEndingView:_signInButton forHeight:(_viewHeight-_heightFromPageControl)];
 }
 
 - (void)savePositionsOfStickyControls
