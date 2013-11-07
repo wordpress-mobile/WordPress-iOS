@@ -12,7 +12,7 @@
 
 typedef void(^JetpackSettingsCompletionBlock)(BOOL didAuthenticate);
 
-@interface JetpackSettingsViewController : UITableViewController
+@interface JetpackSettingsViewController : UIViewController
 @property (nonatomic, assign) BOOL canBeSkipped;
 // Always add the buttons to the view. Don't touch the navigation bar
 @property (nonatomic, assign) BOOL ignoreNavigationController;
