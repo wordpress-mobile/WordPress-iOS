@@ -777,17 +777,21 @@ CGFloat const EditPostViewControllerTextViewOffset = 10.0;
 
     [self.apost.original applyRevision];
     [self.apost.original deleteRevision];
-	if (upload) {
-		NSString *postTitle = self.apost.postTitle;
-        [self.apost.original uploadWithSuccess:^{
-            DDLogInfo(@"post uploaded: %@", postTitle);
-        } failure:^(NSError *error) {
-            DDLogError(@"post failed: %@", [error localizedDescription]);
-        }];
-	}
     
-    [self.apost.original save];
-
+    __block AbstractPost *post = self.apost.original;
+    [[ContextManager sharedInstance] saveDerivedContext:_revisionContext withCompletionBlock:^{
+        Post *mainContextPost = (Post *)[[[ContextManager sharedInstance] mainContext] existingObjectWithID:post.objectID error:nil];
+        
+        if (upload) {
+            NSString *postTitle = post.postTitle;
+            [mainContextPost uploadWithSuccess:^{
+                DDLogInfo(@"post uploaded: %@", postTitle);
+            } failure:^(NSError *error) {
+                DDLogError(@"post failed: %@", [error localizedDescription]);
+            }];
+        }
+    }];
+    
     [self dismissEditView];
 }
 

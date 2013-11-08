@@ -47,18 +47,7 @@
  */
 - (void)setCategoriesFromNames:(NSArray *)categoryNames;
 
-///------------------------
-/// @name Remote management
-///------------------------
-///
-/// The following methods will change the post on the WordPress site
-
-/**
- Uploads a new post or changes to an edited post
- */
-- (void)uploadWithSuccess:(void (^)())success failure:(void (^)(NSError *error))failure;
 
 - (void)getFeaturedImageURLWithSuccess:(void (^)())success failure:(void (^)(NSError *error))failure;
-
 
 @end
