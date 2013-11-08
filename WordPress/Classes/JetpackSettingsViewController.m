@@ -16,6 +16,7 @@
 #import "WPNUXMainButton.h"
 #import "WPWalkthroughTextField.h"
 #import "UIView+FormSheetHelpers.h"
+#import "WPNUXSecondaryButton.h"
 
 @interface JetpackSettingsViewController () <UITextFieldDelegate>
 
@@ -34,6 +35,7 @@
     WPNUXMainButton *_signInButton;
     WPNUXMainButton *_installJetbackButton;
     UIButton *_moreInformationButton;
+    WPNUXSecondaryButton *_skipButton;
     
     CGFloat _viewWidth;
     CGFloat _viewHeight;
@@ -64,6 +66,7 @@ CGFloat const JetpackSignInButtonHeight = 41.0;
         _blog = blog;
 		self.username = _blog.jetpackUsername;
 		self.password = _blog.jetpackPassword;
+        self.initialSignIn = YES;
     }
     return self;
 }
@@ -79,7 +82,7 @@ CGFloat const JetpackSignInButtonHeight = 41.0;
 - (void)viewWillAppear:(BOOL)animated
 {
     [super viewWillAppear:animated];
-    [self.navigationController setNavigationBarHidden:NO animated:animated];
+    [self.navigationController setNavigationBarHidden:_initialSignIn animated:animated];
 }
 
 - (void)viewDidLoad {
@@ -90,7 +93,7 @@ CGFloat const JetpackSignInButtonHeight = 41.0;
     _viewHeight = [self.view formSheetViewHeight];
 
     self.title = NSLocalizedString(@"Jetpack Connect", @"");
-    self.view.backgroundColor = [WPNUXUtility backgroundColor];
+    self.view.backgroundColor = [WPNUXUtility jetpackBackgroundColor];
     
     [self initializeView];
     
@@ -100,9 +103,18 @@ CGFloat const JetpackSignInButtonHeight = 41.0;
         [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(keyboardWillHide:) name:UIKeyboardWillHideNotification object:nil];
     }
 
-    if ([self useNavigationController]) {
+    // add observer to detect text field changes
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(textFieldDidChangeNotificaitonRecieved:) name:UITextFieldTextDidChangeNotification object:_usernameText];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(textFieldDidChangeNotificaitonRecieved:) name:UITextFieldTextDidChangeNotification object:_passwordText];
+    
+    if (_initialSignIn) {
         if (self.canBeSkipped) {
-            self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:NSLocalizedString(@"Skip", @"") style:[WPStyleGuide barButtonStyleForBordered] target:self action:@selector(skip:)];
+            _skipButton = [[WPNUXSecondaryButton alloc] init];
+            [_skipButton setTitle:NSLocalizedString(@"Skip", @"") forState:UIControlStateNormal];
+            [_skipButton addTarget:self action:@selector(skip:) forControlEvents:UIControlEventTouchUpInside];
+            [_skipButton sizeToFit];
+            [self.view addSubview:_skipButton];
+            
             self.navigationItem.hidesBackButton = YES;
         }
     }
@@ -144,7 +156,7 @@ CGFloat const JetpackSignInButtonHeight = 41.0;
         _description.lineBreakMode = NSLineBreakByWordWrapping;
         _description.font = [WPNUXUtility descriptionTextFont];
         _description.text = NSLocalizedString(@"Hold the web in the palm of your hand. Full publishing power in a pint-sized package.", @"NUX First Walkthrough Page 1 Description");
-        _description.textColor = [WPNUXUtility descriptionTextColor];
+        _description.textColor = [WPNUXUtility jetpackDescriptionTextColor];
         [self.view addSubview:_description];
     }
     
@@ -177,7 +189,8 @@ CGFloat const JetpackSignInButtonHeight = 41.0;
     // Add Sign In Button
     if (_signInButton == nil) {
         _signInButton = [[WPNUXMainButton alloc] init];
-        [_signInButton setTitle:NSLocalizedString(@"Sign In", nil) forState:UIControlStateNormal];
+        NSString *title = _initialSignIn ? NSLocalizedString(@"Sign In", nil) : NSLocalizedString(@"Save", nil);
+        [_signInButton setTitle:title forState:UIControlStateNormal];
         [_signInButton addTarget:self action:@selector(save:) forControlEvents:UIControlEventTouchUpInside];
         [self.view addSubview:_signInButton];
         _signInButton.enabled = NO;
@@ -196,7 +209,7 @@ CGFloat const JetpackSignInButtonHeight = 41.0;
         _moreInformationButton = [UIButton buttonWithType:UIButtonTypeCustom];
         [_moreInformationButton setTitle:NSLocalizedString(@"More information", @"") forState:UIControlStateNormal];
         [_moreInformationButton addTarget:self action:@selector(openMoreInformationURL) forControlEvents:UIControlEventTouchUpInside];
-        [_moreInformationButton setTitleColor:[WPNUXUtility confirmationLabelColor] forState:UIControlStateNormal];
+        [_moreInformationButton setTitleColor:[WPNUXUtility jetpackDescriptionTextColor] forState:UIControlStateNormal];
         _moreInformationButton.titleLabel.font = [WPNUXUtility confirmationLabelFont];
         [self.view addSubview:_moreInformationButton];
     }
@@ -251,6 +264,23 @@ CGFloat const JetpackSignInButtonHeight = 41.0;
     y = CGRectGetMaxY(_installJetbackButton.frame);
     _moreInformationButton.frame = CGRectIntegral(CGRectMake(x, y, JetpackSignInButtonWidth, JetpackSignInButtonHeight));
     _moreInformationButton.hidden = hasJetpack;
+    
+    // Layout Skip Button
+    x = CGRectGetWidth(self.view.frame) - CGRectGetWidth(_skipButton.frame) - JetpackStandardOffset;
+    y = CGRectGetMaxY(self.view.frame) - JetpackStandardOffset - CGRectGetHeight(_skipButton.frame);
+    _skipButton.frame = CGRectMake(x, y, CGRectGetWidth(_skipButton.frame), CGRectGetHeight(_skipButton.frame));
+    
+    NSArray *viewsToCenter;
+    UIView *endingView;
+    if (hasJetpack) {
+        viewsToCenter = @[_icon, _description, _usernameText, _passwordText, _signInButton];
+        endingView = _signInButton;
+    } else {
+        viewsToCenter = @[_icon, _description, _installJetbackButton, _moreInformationButton];
+        endingView = _moreInformationButton;
+    }
+    
+    [WPNUXUtility centerViews:viewsToCenter withStartingView:_icon andEndingView:endingView forHeight:(_viewHeight)];
 }
 
 
@@ -287,9 +317,22 @@ CGFloat const JetpackSignInButtonHeight = 41.0;
                            }];
 }
 
-- (void)textFieldDidEndEditing:(UITextField *)textField {
+- (BOOL)textFieldShouldReturn:(UITextField *)textField {
     
-	if([textField isEqual:_usernameText]) {
+    if (textField == _usernameText) {
+        [_passwordText becomeFirstResponder];
+    } else if (textField == _passwordText) {
+        [self save:nil];
+    }
+    
+	return YES;
+}
+
+- (void)textFieldDidChangeNotificaitonRecieved:(NSNotification *)notification {
+    
+    UITextField *textField = (UITextField *)notification.object;
+    
+    if([textField isEqual:_usernameText]) {
 		self.username = _usernameText.text;
 	} else {
 		self.password = _passwordText.text;
@@ -307,8 +350,8 @@ CGFloat const JetpackSignInButtonHeight = 41.0;
     _keyboardOffset = (CGRectGetMaxY(_signInButton.frame) - CGRectGetMinY(keyboardFrame)) + CGRectGetHeight(_signInButton.frame);
     
     [UIView animateWithDuration:animationDuration animations:^{
-        NSArray *controlsToMove = @[_description, _usernameText, _passwordText, _signInButton];
-        NSArray *controlsToHide = @[_icon];
+        NSArray *controlsToMove = @[_usernameText, _passwordText, _signInButton];
+        NSArray *controlsToHide = @[_icon, _description];
 
         for (UIControl *control in controlsToMove) {
             CGRect frame = control.frame;
@@ -327,8 +370,8 @@ CGFloat const JetpackSignInButtonHeight = 41.0;
     NSDictionary *keyboardInfo = notification.userInfo;
     CGFloat animationDuration = [[keyboardInfo objectForKey:UIKeyboardAnimationDurationUserInfoKey] floatValue];
     [UIView animateWithDuration:animationDuration animations:^{
-        NSArray *controlsToMove = @[_description, _usernameText, _passwordText, _signInButton];
-        NSArray *controlsToHide = @[_icon];
+        NSArray *controlsToMove = @[_usernameText, _passwordText, _signInButton];
+        NSArray *controlsToHide = @[_icon, _description];
 
         for (UIControl *control in controlsToMove) {
             CGRect frame = control.frame;
@@ -343,9 +386,6 @@ CGFloat const JetpackSignInButtonHeight = 41.0;
 
 #pragma mark - Custom methods
 
-- (BOOL)useNavigationController {
-    return !self.ignoreNavigationController && self.navigationController;
-}
 
 - (BOOL)saveEnabled {
     return (!_authenticating && _usernameText.text.length && _passwordText.text.length);
@@ -388,8 +428,9 @@ CGFloat const JetpackSignInButtonHeight = 41.0;
         [webViewController setWpLoginURL:wpLoginURL];
     }
     
-    if ([self useNavigationController]) {
+    if (self.navigationController) {
         [self.navigationController pushViewController:webViewController animated:YES];
+        [self.navigationController setNavigationBarHidden:NO animated:YES];
     } else {
         UINavigationController *navController = [[UINavigationController alloc] initWithRootViewController:webViewController];
         navController.navigationBar.translucent = NO;
