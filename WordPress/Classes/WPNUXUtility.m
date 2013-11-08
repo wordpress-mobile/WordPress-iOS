@@ -14,7 +14,7 @@
 
 + (UIFont *)textFieldFont
 {
-    return [UIFont fontWithName:@"OpenSans" size:18.0];
+    return [UIFont fontWithName:@"OpenSans" size:16.0];
 }
 
 + (UIFont *)descriptionTextFont
