@@ -108,7 +108,13 @@ EOF
   printf("@end\n")
 end
 
-path = File.expand_path("~/.wpcom_app_credentials")
+rawpath = ENV['WPCOM_CONFIG']
+if rawpath.nil?
+    $stderr.puts "error: file WPCOM_CONFIG not defined"
+    exit 1
+end
+
+path = File.expand_path(rawpath)
 unless File.exists?(path)
   $stderr.puts "error: file #{path} not found"
   exit 1
