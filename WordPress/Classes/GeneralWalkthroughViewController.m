@@ -535,7 +535,7 @@ CGFloat const GeneralWalkthroughiOS7StatusBarOffset = 20.0;
     x = GeneralWalkthroughStandardOffset;
     x = (_viewWidth - CGRectGetWidth(_skipToCreateAccount.frame))/2.0;
     y = CGRectGetMinY(_bottomPanel.frame) + GeneralWalkthroughStandardOffset;
-    _skipToCreateAccount.frame = CGRectMake(x, y, CGRectGetWidth(_skipToCreateAccount.frame), CGRectGetHeight(_skipToCreateAccount.frame));
+    _skipToCreateAccount.frame = CGRectMake(x, y, CGRectGetWidth(_skipToCreateAccount.frame), 33);
     
     _heightFromBottomPanel = _viewHeight - CGRectGetMinY(_bottomPanel.frame);
     NSArray *viewsToCenter = @[_page1Icon, _page1Title, _skipToSignIn];
