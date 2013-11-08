@@ -269,16 +269,8 @@ CGFloat const WPWalkthroughGrayOverlayMaxLabelWidth = 289.0;
 
 - (void)adjustOverlayDismissal
 {
-    if (self.overlayMode == WPWalkthroughGrayOverlayViewOverlayModeTapToDismiss) {
-        _gestureRecognizer.numberOfTapsRequired = 1;
-    } else if (self.overlayMode == WPWalkthroughGrayOverlayViewOverlayModeDoubleTapToDismiss) {
-        _gestureRecognizer.numberOfTapsRequired = 2;
-    } else {
-        // This is for the two button mode, we still want the gesture recognizer to fire off
-        // as it will redirect the button taps to the correct target. Plus we also enable
-        // tap to dismiss for the two button mode.
-        _gestureRecognizer.numberOfTapsRequired = 1;
-    }
+    // We always want a tap on the view to dismiss
+    _gestureRecognizer.numberOfTapsRequired = 1;
 }
 
 
@@ -300,10 +292,6 @@ CGFloat const WPWalkthroughGrayOverlayMaxLabelWidth = 289.0;
     if (gestureRecognizer.numberOfTapsRequired == 1) {
         if (self.singleTapCompletionBlock) {
             self.singleTapCompletionBlock(self);
-        }
-    } else if (gestureRecognizer.numberOfTapsRequired == 2) {
-        if (self.doubleTapCompletionBlock) {
-            self.doubleTapCompletionBlock(self);
         }
     }
 }
