@@ -245,21 +245,31 @@ CGFloat const blavatarImageViewSize = 50.f;
 }
 
 // The Sign Out row in Wpcom section can change, so identify it dynamically
-- (NSInteger)signOutRow {
+- (NSInteger)rowForSignOut {
     return [self supportsNotifications] ? 2 : 1;
 }
 
-- (NSInteger)notificationsRow {
+- (NSInteger)rowForNotifications {
     return [self supportsNotifications] ? 1 : -1;
+}
+
+- (NSInteger)rowForAddSite {
+    return [[self.resultsController fetchedObjects] count];
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
     int numWpcomRows = 0;
+    int numBlogRows = 0;
     
     switch (section) {
         case SettingsSectionBlogs:
-            // Number of blogs plus an extra row for adding a new site
-            return [[self.resultsController fetchedObjects] count] + 1;
+            numBlogRows = [[self.resultsController fetchedObjects] count];
+            
+            // When not editing, an extra row for adding a new site
+            if (![tableView isEditing]) {
+                numBlogRows += 1;
+            }
+            return numBlogRows;
             
         case SettingsSectionWpcom:
             numWpcomRows = 1;
@@ -339,7 +349,7 @@ CGFloat const blavatarImageViewSize = 50.f;
     cell.accessoryView = nil;
     if (indexPath.section == SettingsSectionBlogs) {
         
-        if (indexPath.row < [[self.resultsController fetchedObjects] count]) {
+        if (indexPath.row < [self rowForAddSite]) {
             Blog *blog = [self.resultsController objectAtIndexPath:[NSIndexPath indexPathForRow:indexPath.row inSection:0]];
             if ([blog.blogName length] != 0) {
                 cell.textLabel.text = blog.blogName;
@@ -376,7 +386,7 @@ CGFloat const blavatarImageViewSize = 50.f;
                 cell.detailTextLabel.text = [[WPAccount defaultWordPressComAccount] username];
                 cell.detailTextLabel.textColor = [UIColor UIColorFromHex:0x888888];
                 cell.selectionStyle = UITableViewCellSelectionStyleNone;
-            } else if (indexPath.row == [self notificationsRow]) {
+            } else if (indexPath.row == [self rowForNotifications]) {
                 cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
                 cell.textLabel.text = NSLocalizedString(@"Manage Notifications", @"");
             } else {
@@ -496,7 +506,7 @@ CGFloat const blavatarImageViewSize = 50.f;
         isSignInCell = indexPath.section == SettingsSectionWpcom && indexPath.row == 0;
     }
     
-    BOOL isSignOutCell = indexPath.section == SettingsSectionWpcom && indexPath.row == [self signOutRow];
+    BOOL isSignOutCell = indexPath.section == SettingsSectionWpcom && indexPath.row == [self rowForSignOut];
     if (isSignOutCell || isSignInCell) {
         [WPStyleGuide configureTableViewActionCell:cell];
     }
@@ -534,7 +544,7 @@ CGFloat const blavatarImageViewSize = 50.f;
     [tableView deselectRowAtIndexPath:indexPath animated:YES];
     
     if (indexPath.section == SettingsSectionBlogs) {
-        if (indexPath.row < [[self.resultsController fetchedObjects] count]) {
+        if (indexPath.row < [self rowForAddSite]) {
             [WPMobileStats trackEventForWPCom:StatsEventSettingsClickedEditBlog];
             
             Blog *blog = [self.resultsController objectAtIndexPath:indexPath];
@@ -551,7 +561,7 @@ CGFloat const blavatarImageViewSize = 50.f;
         }
     } else if (indexPath.section == SettingsSectionWpcom) {
         if ([[WordPressComApi sharedApi] hasCredentials]) {
-            if (indexPath.row == [self signOutRow]) {
+            if (indexPath.row == [self rowForSignOut]) {
                 [WPMobileStats trackEventForWPCom:StatsEventSettingsClickedSignOutOfDotCom];
 
                 // Present the Sign out ActionSheet
@@ -564,7 +574,7 @@ CGFloat const blavatarImageViewSize = 50.f;
                                             destructiveButtonTitle:NSLocalizedString(@"Sign Out", @"")otherButtonTitles:nil, nil ];
                 actionSheet.actionSheetStyle = UIActionSheetStyleDefault;
                 [actionSheet showInView:self.view];
-            } else if (indexPath.row == [self notificationsRow]) {
+            } else if (indexPath.row == [self rowForNotifications]) {
                 [WPMobileStats trackEventForWPCom:StatsEventSettingsClickedManageNotifications];
             
                 NotificationSettingsViewController *notificationSettingsViewController = [[NotificationSettingsViewController alloc] initWithStyle:UITableViewStyleGrouped];
@@ -613,18 +623,26 @@ CGFloat const blavatarImageViewSize = 50.f;
 
     // Smoothly animate all sections that can or can't be edited, and deal with the Done button
     NSIndexSet *indexSetToChange = [NSIndexSet indexSetWithIndexesInRange:NSMakeRange(1, SettingsSectionCount-1)];
+    
+    // And the "Add a Site" row too
+    NSArray *rowsToChange = [NSArray arrayWithObject:[NSIndexPath indexPathForRow:[self rowForAddSite] inSection:SettingsSectionBlogs]];
+    
     UITableViewRowAnimation rowAnimation = animated ? UITableViewRowAnimationFade : UITableViewRowAnimationNone;
+    [self.tableView beginUpdates];
     if (editing) {
+        [self.tableView deleteRowsAtIndexPaths:rowsToChange withRowAnimation:rowAnimation];
         [self.tableView deleteSections:indexSetToChange withRowAnimation:rowAnimation];
         [self.navigationItem setRightBarButtonItem:nil animated:animated];
     } else {
+        [self.tableView insertRowsAtIndexPaths:rowsToChange withRowAnimation:rowAnimation];
         [self.tableView insertSections:indexSetToChange withRowAnimation:rowAnimation];
         [self.navigationItem setRightBarButtonItem:self.doneButton animated:animated];
     }
+    [self.tableView endUpdates];
 }
 
 
-#pragma mark - 
+#pragma mark -
 #pragma mark NSFetchedResultsController
 
 - (NSFetchedResultsController *)resultsController {
