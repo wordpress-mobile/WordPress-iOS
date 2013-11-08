@@ -53,7 +53,7 @@
     AbstractPost *post = [self newPostForBlog:blog];
     post.remoteStatus = AbstractPostRemoteStatusLocal;
     post.status = @"publish";
-    [post save];
+    [blog.managedObjectContext obtainPermanentIDsForObjects:@[post] error:nil];
     return post;
 }
 
