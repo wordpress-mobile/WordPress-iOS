@@ -43,7 +43,6 @@
     UILabel *_page1Title;
     UILabel *_page1Description;
     UIView *_bottomPanel;
-    UIPageControl *_pageControl;
     WPNUXMainButton *_skipToSignIn;
     
     // Page 2
@@ -58,8 +57,7 @@
     
     CGFloat _bottomPanelOriginalX;
     CGFloat _skipToCreateAccountOriginalX;
-    CGFloat _pageControlOriginalX;
-    CGFloat _heightFromPageControl;
+    CGFloat _heightFromBottomPanel;
         
     CGFloat _keyboardOffset;
     
@@ -167,10 +165,6 @@ CGFloat const GeneralWalkthroughiOS7StatusBarOffset = 20.0;
     if (pageViewed < 2) {
         // If the user is editing the sign in page and then swipes over, dismiss keyboard
         [self.view endEditing:YES];
-        
-        CGRect pageControlFrame = _pageControl.frame;
-        pageControlFrame.origin.x = _pageControlOriginalX + contentOffset.x;
-        _pageControl.frame = pageControlFrame;
     }
     
     CGRect skipToCreateAccountFrame = _skipToCreateAccount.frame;
@@ -484,17 +478,6 @@ CGFloat const GeneralWalkthroughiOS7StatusBarOffset = 20.0;
         gestureRecognizer.numberOfTapsRequired = 1;
         [_bottomPanel addGestureRecognizer:gestureRecognizer];
     }
-        
-    // Add Page Control
-    if (_pageControl == nil) {
-        // The page control adds a bunch of extra space for padding that messes with our calculations.
-        _pageControl = [[UIPageControl alloc] init];
-        [_pageControl addTarget:self action:@selector(pageNumberChanged:) forControlEvents:UIControlEventValueChanged];
-        _pageControl.numberOfPages = 2;
-        [_pageControl sizeToFit];
-        [WPNUXUtility configurePageControlTintColors:_pageControl];
-        [_scrollView addSubview:_pageControl];
-    }
 
     // Add Skip to Create Account Button
     if (_skipToCreateAccount == nil) {
@@ -569,19 +552,6 @@ CGFloat const GeneralWalkthroughiOS7StatusBarOffset = 20.0;
     x = [self adjustX:x forPage:1];
     y = _viewHeight - GeneralWalkthroughBottomBackgroundHeight;
     _bottomPanel.frame = CGRectMake(x, y, _viewWidth, GeneralWalkthroughBottomBackgroundHeight);
-        
-    // Layout Page Control
-    CGFloat verticalSpaceForPageControl = 15;
-    CGSize pageControlSize = [_pageControl sizeForNumberOfPages:2];
-    x = (_viewWidth - pageControlSize.width)/2.0;
-    if (IS_IPAD) {
-        // UIPageControl seems to add about half it's size in padding on the iPad
-        // TODO : Figure out why this is happening
-        x += pageControlSize.width/2.0;
-    }
-    x = [self adjustX:x forPage:1];
-    y = CGRectGetMinY(_bottomPanel.frame) - GeneralWalkthroughStandardOffset - CGRectGetHeight(_pageControl.frame) + verticalSpaceForPageControl;
-    _pageControl.frame = CGRectIntegral(CGRectMake(x, y, pageControlSize.width, pageControlSize.height));
     
     // Layout Skip to Create Account Button
     x = GeneralWalkthroughStandardOffset;
@@ -589,9 +559,9 @@ CGFloat const GeneralWalkthroughiOS7StatusBarOffset = 20.0;
     y = CGRectGetMinY(_bottomPanel.frame) + GeneralWalkthroughStandardOffset;
     _skipToCreateAccount.frame = CGRectMake(x, y, CGRectGetWidth(_skipToCreateAccount.frame), CGRectGetHeight(_skipToCreateAccount.frame));
     
-    _heightFromPageControl = _viewHeight - CGRectGetMinY(_pageControl.frame) - CGRectGetHeight(_pageControl.frame);
+    _heightFromBottomPanel = _viewHeight - CGRectGetMinY(_bottomPanel.frame);
     NSArray *viewsToCenter = @[_page1Icon, _page1Title, _page1Description, _skipToSignIn];
-    [WPNUXUtility centerViews:viewsToCenter withStartingView:_page1Icon andEndingView:_skipToSignIn forHeight:(_viewHeight - _heightFromPageControl)];
+    [WPNUXUtility centerViews:viewsToCenter withStartingView:_page1Icon andEndingView:_skipToSignIn forHeight:(_viewHeight - _heightFromBottomPanel)];
 }
 
 - (void)initializePage2
@@ -690,7 +660,7 @@ CGFloat const GeneralWalkthroughiOS7StatusBarOffset = 20.0;
     _signInButton.frame = CGRectMake(x, y, GeneralWalkthroughSignInButtonWidth, GeneralWalkthroughSignInButtonHeight);
     
     NSArray *viewsToCenter = @[_page2Icon, _usernameText, _passwordText, _siteUrlText, _signInButton];
-    [WPNUXUtility centerViews:viewsToCenter withStartingView:_page2Icon andEndingView:_signInButton forHeight:(_viewHeight-_heightFromPageControl)];
+    [WPNUXUtility centerViews:viewsToCenter withStartingView:_page2Icon andEndingView:_signInButton forHeight:(_viewHeight-_heightFromBottomPanel)];
 }
 
 - (void)savePositionsOfStickyControls
@@ -701,7 +671,6 @@ CGFloat const GeneralWalkthroughiOS7StatusBarOffset = 20.0;
         _savedOriginalPositionsOfStickyControls = YES;
         _skipToCreateAccountOriginalX = CGRectGetMinX(_skipToCreateAccount.frame);
         _bottomPanelOriginalX = CGRectGetMinX(_bottomPanel.frame);
-        _pageControlOriginalX = CGRectGetMinX(_pageControl.frame);
     }
 }
 
@@ -713,7 +682,6 @@ CGFloat const GeneralWalkthroughiOS7StatusBarOffset = 20.0;
 - (void)flagPageViewed:(NSUInteger)pageViewed
 {
     _currentPage = pageViewed;
-    _pageControl.currentPage = pageViewed - 1;
     // We do this so we don't keep flagging events if the user goes back and forth on pages
     if (pageViewed == 2 && !_viewedPage2) {
         _viewedPage2 = YES;
