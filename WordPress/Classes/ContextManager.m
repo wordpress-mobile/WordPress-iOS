@@ -86,6 +86,10 @@ static ContextManager *instance;
 #pragma mark - Context Saving and Merging
 
 - (void)saveDerivedContext:(NSManagedObjectContext *)context {
+    [self saveDerivedContext:context withCompletionBlock:nil];
+}
+
+- (void)saveDerivedContext:(NSManagedObjectContext *)context withCompletionBlock:(void (^)())completionBlock {
     [context performBlock:^{
         __block NSError *error;
         
@@ -96,7 +100,11 @@ static ContextManager *instance;
                                            reason:@"Unresolved Core Data Save Error"
                                          userInfo:[error userInfo]];
         }
-
+        
+        if (completionBlock) {
+            dispatch_async(dispatch_get_main_queue(), completionBlock);
+        }
+        
         [self.mainContext performBlock:^{
             DDLogInfo(@"Save main context");
             if (![self.mainContext save:&error]) {
