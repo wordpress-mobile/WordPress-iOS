@@ -962,29 +962,6 @@ CGFloat const PanelNavigationControllerStatusBarViewHeight = 20.0;
     }
 }
 
-- (void)teaseSidebar {
-    if (IS_IPAD)
-        return;
-
-    [self closeSidebarAnimated:NO];
-    CGRect previousFrame = self.detailViewContainer.frame;
-    [UIView animateWithDuration:0.5f
-                          delay:DURATION_FAST
-                        options:UIViewAnimationOptionCurveEaseInOut
-                     animations:^{
-                         CGRect frame = previousFrame;
-                         frame.origin.x += DETAIL_LEDGE;
-                         self.detailViewContainer.frame = frame;
-                     } completion:^(BOOL finished) {
-                         [UIView animateWithDuration:DURATION_FAST
-                                               delay:0.f
-                                             options:UIViewAnimationOptionCurveEaseInOut
-                                          animations:^{
-                                              self.detailViewContainer.frame = previousFrame;
-                                          } completion:nil];
-                     }];
-}
-
 - (void)centerTapped {
     [self closeSidebar];
 }

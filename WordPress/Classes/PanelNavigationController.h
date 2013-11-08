@@ -33,7 +33,6 @@
 - (void)closeSidebar;
 - (void)showSidebar;
 - (void)toggleSidebar;
-- (void)teaseSidebar;
 - (void)clearDetailViewController;
 
 // Notifications
