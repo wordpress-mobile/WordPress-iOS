@@ -52,7 +52,6 @@
     UITextField *_passwordText;
     UITextField *_siteUrlText;
     WPNUXMainButton *_signInButton;
-    UILabel *_createAccountLabel;
     
     CGFloat _viewWidth;
     CGFloat _viewHeight;
@@ -169,14 +168,14 @@ CGFloat const GeneralWalkthroughiOS7StatusBarOffset = 20.0;
         // If the user is editing the sign in page and then swipes over, dismiss keyboard
         [self.view endEditing:YES];
         
-        CGRect skipToCreateAccountFrame = _skipToCreateAccount.frame;
-        skipToCreateAccountFrame.origin.x = _skipToCreateAccountOriginalX + contentOffset.x;
-        _skipToCreateAccount.frame = skipToCreateAccountFrame;
-        
         CGRect pageControlFrame = _pageControl.frame;
         pageControlFrame.origin.x = _pageControlOriginalX + contentOffset.x;
         _pageControl.frame = pageControlFrame;
     }
+    
+    CGRect skipToCreateAccountFrame = _skipToCreateAccount.frame;
+    skipToCreateAccountFrame.origin.x = _skipToCreateAccountOriginalX + contentOffset.x;
+    _skipToCreateAccount.frame = skipToCreateAccountFrame;
     
     CGRect bottomPanelFrame = _bottomPanel.frame;
     bottomPanelFrame.origin.x = _bottomPanelOriginalX + contentOffset.x;
@@ -656,23 +655,6 @@ CGFloat const GeneralWalkthroughiOS7StatusBarOffset = 20.0;
         [_scrollView addSubview:_signInButton];
         _signInButton.enabled = NO;
     }
-    
-    // Add Create Account Text
-    if (_createAccountLabel == nil) {
-        _createAccountLabel = [[UILabel alloc] init];
-        _createAccountLabel.numberOfLines = 2;
-        _createAccountLabel.lineBreakMode = NSLineBreakByWordWrapping;
-        _createAccountLabel.textAlignment = NSTextAlignmentCenter;
-        _createAccountLabel.backgroundColor = [UIColor clearColor];
-        _createAccountLabel.textColor = [UIColor whiteColor];
-        _createAccountLabel.font = [UIFont fontWithName:@"OpenSans" size:15.0];
-        _createAccountLabel.text = NSLocalizedString(@"Don't have an account? Create one!", @"NUX First Walkthrough Page 2 Create Account Label");
-        UITapGestureRecognizer *tapGestureRecognizer = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(clickedCreateAccount:)];
-        tapGestureRecognizer.numberOfTapsRequired = 1;
-        _createAccountLabel.userInteractionEnabled = YES;
-        [_createAccountLabel addGestureRecognizer:tapGestureRecognizer];
-        [_scrollView addSubview:_createAccountLabel];
-    }
 }
 
 - (void)layoutPage2Controls
@@ -706,13 +688,6 @@ CGFloat const GeneralWalkthroughiOS7StatusBarOffset = 20.0;
     x = [self adjustX:x forPage:2];
     y = CGRectGetMaxY(_siteUrlText.frame) + GeneralWalkthroughStandardOffset;
     _signInButton.frame = CGRectMake(x, y, GeneralWalkthroughSignInButtonWidth, GeneralWalkthroughSignInButtonHeight);
-
-    // Layout Create Account Label
-    CGSize createAccountLabelSize = [_createAccountLabel.text sizeWithFont:_createAccountLabel.font constrainedToSize:CGSizeMake(_viewWidth - 2*GeneralWalkthroughStandardOffset, CGFLOAT_MAX) lineBreakMode:NSLineBreakByWordWrapping];
-    x = (_viewWidth - createAccountLabelSize.width)/2.0;
-    x = [self adjustX:x forPage:2];
-    y = CGRectGetMinY(_bottomPanel.frame) + (CGRectGetHeight(_bottomPanel.frame) - createAccountLabelSize.height)/2.0;
-    _createAccountLabel.frame = CGRectIntegral(CGRectMake(x, y, createAccountLabelSize.width, createAccountLabelSize.height));
     
     NSArray *viewsToCenter = @[_page2Icon, _usernameText, _passwordText, _siteUrlText, _signInButton];
     [WPNUXUtility centerViews:viewsToCenter withStartingView:_page2Icon andEndingView:_signInButton forHeight:(_viewHeight-_heightFromPageControl)];
