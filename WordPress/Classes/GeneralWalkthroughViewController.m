@@ -644,13 +644,13 @@ CGFloat const GeneralWalkthroughiOS7StatusBarOffset = 20.0;
     // Layout Password
     x = (_viewWidth - GeneralWalkthroughTextFieldWidth)/2.0;
     x = [self adjustX:x forPage:2];
-    y = CGRectGetMaxY(_usernameText.frame);
+    y = CGRectGetMaxY(_usernameText.frame) - 1;
     _passwordText.frame = CGRectIntegral(CGRectMake(x, y, GeneralWalkthroughTextFieldWidth, GeneralWalkthroughTextFieldHeight));
 
     // Layout Site URL
     x = (_viewWidth - GeneralWalkthroughTextFieldWidth)/2.0;
     x = [self adjustX:x forPage:2];
-    y = CGRectGetMaxY(_passwordText.frame);
+    y = CGRectGetMaxY(_passwordText.frame) - 1;
     _siteUrlText.frame = CGRectIntegral(CGRectMake(x, y, GeneralWalkthroughTextFieldWidth, GeneralWalkthroughTextFieldHeight));
 
     // Layout Sign in Button
