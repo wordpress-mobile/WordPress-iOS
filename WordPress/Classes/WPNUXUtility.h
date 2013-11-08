@@ -17,7 +17,6 @@
 + (UIFont *)tosLabelFont;
 + (UIFont *)confirmationLabelFont;
 
-+ (UIColor *)textShadowColor;
 + (UIColor *)bottomPanelLineColor;
 + (UIColor *)descriptionTextColor;
 + (UIColor *)bottomPanelBackgroundColor;

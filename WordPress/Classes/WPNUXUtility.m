@@ -49,11 +49,6 @@
 
 #pragma mark - Colors
 
-+ (UIColor *)textShadowColor
-{
-    return [UIColor colorWithRed:0.0 green:115.0/255.0 blue:164.0/255.0 alpha:0.5];
-}
-
 + (UIColor *)bottomPanelLineColor
 {
     return [UIColor colorWithRed:17.0/255.0 green:17.0/255.0 blue:17.0/255.0 alpha:0.95];

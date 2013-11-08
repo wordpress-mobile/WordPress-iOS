@@ -144,9 +144,6 @@ CGFloat const JetpackSignInButtonHeight = 41.0;
         _description.lineBreakMode = NSLineBreakByWordWrapping;
         _description.font = [WPNUXUtility descriptionTextFont];
         _description.text = NSLocalizedString(@"Hold the web in the palm of your hand. Full publishing power in a pint-sized package.", @"NUX First Walkthrough Page 1 Description");
-        _description.shadowColor = [WPNUXUtility textShadowColor];
-        _description.shadowOffset = CGSizeMake(0.0, 1.0);
-        _description.layer.shadowRadius = 2.0;
         _description.textColor = [WPNUXUtility descriptionTextColor];
         [self.view addSubview:_description];
     }

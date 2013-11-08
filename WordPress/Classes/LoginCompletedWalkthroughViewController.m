@@ -222,9 +222,6 @@ CGFloat const LoginCompeltedWalkthroughSwipeToContinueTopOffset = 14.0;
         _page1Title.lineBreakMode = NSLineBreakByWordWrapping;
         _page1Title.font = [WPNUXUtility titleFont];
         _page1Title.text = NSLocalizedString(@"Track your site's statistics", @"NUX Second Walkthrough Page 1 Title");
-        _page1Title.shadowColor = [WPNUXUtility textShadowColor];
-        _page1Title.shadowOffset = CGSizeMake(0.0, 1.0);
-        _page1Title.layer.shadowRadius = 2.0;
         _page1Title.textColor = [UIColor whiteColor];
         [_scrollView addSubview:_page1Title];
     }
@@ -238,9 +235,6 @@ CGFloat const LoginCompeltedWalkthroughSwipeToContinueTopOffset = 14.0;
         _page1Description.lineBreakMode = NSLineBreakByWordWrapping;
         _page1Description.font = [WPNUXUtility descriptionTextFont];
         _page1Description.text = NSLocalizedString(@"Learn what your visitors respond to so you can give them more of it", @"NUX Second Walkthrough Page 1 Description");
-        _page1Description.shadowOffset = CGSizeMake(0.0, 1.0);
-        _page1Description.shadowColor = [WPNUXUtility textShadowColor];
-        _page1Title.layer.shadowRadius = 2.0;
         _page1Description.textColor = [WPNUXUtility descriptionTextColor];
         [_scrollView addSubview:_page1Description];
     }
@@ -373,9 +367,6 @@ CGFloat const LoginCompeltedWalkthroughSwipeToContinueTopOffset = 14.0;
         _page2Title.lineBreakMode = NSLineBreakByWordWrapping;
         _page2Title.font = [WPNUXUtility titleFont];
         _page2Title.text = NSLocalizedString(@"Explore the WordPress.com Reader", @"NUX Second Walkthrough Page 2 Title");
-        _page2Title.shadowColor = [WPNUXUtility textShadowColor];
-        _page2Title.shadowOffset = CGSizeMake(0.0, 1.0);
-        _page2Title.layer.shadowRadius = 2.0;
         _page2Title.textColor = [UIColor whiteColor];
         [_scrollView addSubview:_page2Title];
     }
@@ -389,9 +380,6 @@ CGFloat const LoginCompeltedWalkthroughSwipeToContinueTopOffset = 14.0;
         _page2Description.lineBreakMode = NSLineBreakByWordWrapping;
         _page2Description.font = [WPNUXUtility descriptionTextFont];
         _page2Description.text = NSLocalizedString(@"Browse the entire WordPress ecosystem. Thousands of topics at the flick of a finger.", @"NUX Second Walkthrough Page 2 Description");
-        _page2Description.shadowOffset = CGSizeMake(0.0, 1.0);
-        _page2Description.shadowColor = [WPNUXUtility textShadowColor];
-        _page2Description.layer.shadowRadius = 2.0;
         _page2Description.textColor = [WPNUXUtility descriptionTextColor];
         [_scrollView addSubview:_page2Description];
     }
@@ -447,9 +435,6 @@ CGFloat const LoginCompeltedWalkthroughSwipeToContinueTopOffset = 14.0;
         _page3Title.lineBreakMode = NSLineBreakByWordWrapping;
         _page3Title.font = [WPNUXUtility titleFont];
         _page3Title.text = NSLocalizedString(@"Get real-time comment notifications", @"NUX Second Walkthrough Page 3 Title");
-        _page3Title.shadowColor = [WPNUXUtility textShadowColor];
-        _page3Title.shadowOffset = CGSizeMake(0.0, 1.0);
-        _page3Title.layer.shadowRadius = 2.0;
         _page3Title.textColor = [UIColor whiteColor];
         [_scrollView addSubview:_page3Title];
     }
@@ -463,9 +448,6 @@ CGFloat const LoginCompeltedWalkthroughSwipeToContinueTopOffset = 14.0;
         _page3Description.lineBreakMode = NSLineBreakByWordWrapping;
         _page3Description.font = [WPNUXUtility descriptionTextFont];
         _page3Description.text = NSLocalizedString(@"Keep the conversation going with notifications on the go. No need for a desktop to nurture the dialogue.", @"NUX Second Walkthrough Page 3 Description");
-        _page3Description.shadowOffset = CGSizeMake(0.0, 1.0);
-        _page3Description.shadowColor = [WPNUXUtility textShadowColor];
-        _page3Description.layer.shadowRadius = 2.0;
         _page3Description.textColor = [WPNUXUtility descriptionTextColor];
         [_scrollView addSubview:_page3Description];
     }
@@ -521,9 +503,6 @@ CGFloat const LoginCompeltedWalkthroughSwipeToContinueTopOffset = 14.0;
         _page4Title.lineBreakMode = NSLineBreakByWordWrapping;
         _page4Title.font = [WPNUXUtility titleFont];
         _page4Title.text = NSLocalizedString(@"Get started!", @"NUX Second Walkthrough Page 4 Title");
-        _page4Title.shadowColor = [WPNUXUtility textShadowColor];
-        _page4Title.shadowOffset = CGSizeMake(0.0, 1.0);
-        _page4Title.layer.shadowRadius = 2.0;
         _page4Title.textColor = [UIColor whiteColor];
         [_scrollView addSubview:_page4Title];
     }
@@ -532,7 +511,6 @@ CGFloat const LoginCompeltedWalkthroughSwipeToContinueTopOffset = 14.0;
     if (_page4TapToContinue == nil) {
         _page4TapToContinue = [[UILabel alloc] init];
         [_page4TapToContinue setTextColor:[WPNUXUtility swipeToContinueTextColor]];
-        [_page4TapToContinue setShadowColor:[WPNUXUtility textShadowColor]];
         _page4TapToContinue.backgroundColor = [UIColor clearColor];
         _page4TapToContinue.textAlignment = NSTextAlignmentCenter;
         _page4TapToContinue.numberOfLines = 1;

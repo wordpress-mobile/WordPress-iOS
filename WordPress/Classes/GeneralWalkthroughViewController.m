@@ -465,9 +465,6 @@ CGFloat const GeneralWalkthroughiOS7StatusBarOffset = 20.0;
         _page1Title.lineBreakMode = NSLineBreakByWordWrapping;
         _page1Title.font = [WPNUXUtility titleFont];        
         _page1Title.text = NSLocalizedString(@"Welcome to WordPress", @"NUX First Walkthrough Page 1 Title");
-        _page1Title.shadowColor = [WPNUXUtility textShadowColor];
-        _page1Title.shadowOffset = CGSizeMake(0.0, 1.0);
-        _page1Title.layer.shadowRadius = 2.0;
         _page1Title.textColor = [UIColor whiteColor];
         [_scrollView addSubview:_page1Title];
     }
@@ -481,9 +478,6 @@ CGFloat const GeneralWalkthroughiOS7StatusBarOffset = 20.0;
         _page1Description.lineBreakMode = NSLineBreakByWordWrapping;
         _page1Description.font = [WPNUXUtility descriptionTextFont];
         _page1Description.text = NSLocalizedString(@"Hold the web in the palm of your hand. Full publishing power in a pint-sized package.", @"NUX First Walkthrough Page 1 Description");
-        _page1Description.shadowColor = [WPNUXUtility textShadowColor];
-        _page1Description.shadowOffset = CGSizeMake(0.0, 1.0);
-        _page1Description.layer.shadowRadius = 2.0;
         _page1Description.textColor = [WPNUXUtility descriptionTextColor];
         [_scrollView addSubview:_page1Description];
     }
@@ -691,8 +685,6 @@ CGFloat const GeneralWalkthroughiOS7StatusBarOffset = 20.0;
         _createAccountLabel.textColor = [UIColor whiteColor];
         _createAccountLabel.font = [UIFont fontWithName:@"OpenSans" size:15.0];
         _createAccountLabel.text = NSLocalizedString(@"Don't have an account? Create one!", @"NUX First Walkthrough Page 2 Create Account Label");
-        _createAccountLabel.shadowColor = [UIColor blackColor];
-        _createAccountLabel.shadowOffset = CGSizeMake(0.0, 1.0);
         UITapGestureRecognizer *tapGestureRecognizer = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(clickedCreateAccount:)];
         tapGestureRecognizer.numberOfTapsRequired = 1;
         _createAccountLabel.userInteractionEnabled = YES;
