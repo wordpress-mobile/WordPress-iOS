@@ -97,7 +97,7 @@
 CGFloat const CreateAccountAndBlogStandardOffset = 16.0;
 CGFloat const CreateAccountAndBlogIconVerticalOffset = 70.0;
 CGFloat const CreateAccountAndBlogMaxTextWidth = 289.0;
-CGFloat const CreateAccountAndBlogTextFieldWidth = 289.0;
+CGFloat const CreateAccountAndBlogTextFieldWidth = 320.0;
 CGFloat const CreateAccountAndBlogTextFieldHeight = 40.0;
 CGFloat const CreateAccountAndBlogKeyboardOffset = 132.0;
 
@@ -449,13 +449,13 @@ CGFloat const CreateAccountAndBlogKeyboardOffset = 132.0;
     // Layout Username
     x = (_viewWidth - CreateAccountAndBlogTextFieldWidth)/2.0;
     x = [self adjustX:x forPage:currentPage];
-    y = CGRectGetMaxY(_page1EmailText.frame) + 0.5*CreateAccountAndBlogStandardOffset;
+    y = CGRectGetMaxY(_page1EmailText.frame) - 1;
     _page1UsernameText.frame = CGRectIntegral(CGRectMake(x, y, CreateAccountAndBlogTextFieldWidth, CreateAccountAndBlogTextFieldHeight));
 
     // Layout Password
     x = (_viewWidth - CreateAccountAndBlogTextFieldWidth)/2.0;
     x = [self adjustX:x forPage:currentPage];
-    y = CGRectGetMaxY(_page1UsernameText.frame) + 0.5*CreateAccountAndBlogStandardOffset;
+    y = CGRectGetMaxY(_page1UsernameText.frame) - 1;
     _page1PasswordText.frame = CGRectIntegral(CGRectMake(x, y, CreateAccountAndBlogTextFieldWidth, CreateAccountAndBlogTextFieldHeight));
     
     // Layout Next Button
@@ -631,7 +631,7 @@ CGFloat const CreateAccountAndBlogKeyboardOffset = 132.0;
     // Layout Site Address
     x = (_viewWidth - CreateAccountAndBlogTextFieldWidth)/2.0;
     x = [self adjustX:x forPage:currentPage];
-    y = CGRectGetMaxY(_page2SiteTitleText.frame) + 0.5*CreateAccountAndBlogStandardOffset;
+    y = CGRectGetMaxY(_page2SiteTitleText.frame) - 1;
     _page2SiteAddressText.frame = CGRectIntegral(CGRectMake(x, y, CreateAccountAndBlogTextFieldWidth, CreateAccountAndBlogTextFieldHeight));
     
     // Layout WordPressCom Label
@@ -644,7 +644,7 @@ CGFloat const CreateAccountAndBlogKeyboardOffset = 132.0;
     // Layout Site Language
     x = (_viewWidth - CreateAccountAndBlogTextFieldWidth)/2.0;
     x = [self adjustX:x forPage:currentPage];
-    y = CGRectGetMaxY(_page2SiteAddressText.frame) + 0.5*CreateAccountAndBlogStandardOffset;
+    y = CGRectGetMaxY(_page2SiteAddressText.frame) - 1;
     _page2SiteLanguageText.frame = CGRectIntegral(CGRectMake(x, y, CreateAccountAndBlogTextFieldWidth, CreateAccountAndBlogTextFieldHeight));
     
     // Layout Dropdown Image
