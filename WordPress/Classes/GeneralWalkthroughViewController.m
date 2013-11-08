@@ -42,7 +42,6 @@
     UIImageView *_page1Icon;
     UILabel *_page1Title;
     UILabel *_page1Description;
-    UIView *_bottomPanelLine;
     UIView *_bottomPanel;
     UIPageControl *_pageControl;
     WPNUXMainButton *_skipToSignIn;
@@ -486,13 +485,6 @@ CGFloat const GeneralWalkthroughiOS7StatusBarOffset = 20.0;
         gestureRecognizer.numberOfTapsRequired = 1;
         [_bottomPanel addGestureRecognizer:gestureRecognizer];
     }
-    
-    // Bottom Panel "Black" Line
-    if (_bottomPanelLine == nil) {
-        _bottomPanelLine = [[UIView alloc] init];
-        _bottomPanelLine.backgroundColor = [WPNUXUtility bottomPanelLineColor];
-        [_scrollView addSubview:_bottomPanelLine];
-    }
         
     // Add Page Control
     if (_pageControl == nil) {
@@ -578,11 +570,6 @@ CGFloat const GeneralWalkthroughiOS7StatusBarOffset = 20.0;
     x = [self adjustX:x forPage:1];
     y = _viewHeight - GeneralWalkthroughBottomBackgroundHeight;
     _bottomPanel.frame = CGRectMake(x, y, _viewWidth, GeneralWalkthroughBottomBackgroundHeight);
-    
-    // Layout Bottom Panel Line
-    x = 0;
-    y = CGRectGetMinY(_bottomPanel.frame);
-    _bottomPanelLine.frame = CGRectMake(x, y, _viewWidth, 1);
         
     // Layout Page Control
     CGFloat verticalSpaceForPageControl = 15;
