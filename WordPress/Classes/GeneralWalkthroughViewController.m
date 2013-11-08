@@ -41,7 +41,6 @@
     UIButton *_page1InfoButton;
     UIImageView *_page1Icon;
     UILabel *_page1Title;
-    UILabel *_page1Description;
     UIView *_bottomPanel;
     WPNUXMainButton *_skipToSignIn;
     
@@ -454,19 +453,6 @@ CGFloat const GeneralWalkthroughiOS7StatusBarOffset = 20.0;
         _page1Title.textColor = [UIColor whiteColor];
         [_scrollView addSubview:_page1Title];
     }
-
-    // Add Description
-    if (_page1Description == nil) {
-        _page1Description = [[UILabel alloc] init];
-        _page1Description.backgroundColor = [UIColor clearColor];
-        _page1Description.textAlignment = NSTextAlignmentCenter;
-        _page1Description.numberOfLines = 0;
-        _page1Description.lineBreakMode = NSLineBreakByWordWrapping;
-        _page1Description.font = [WPNUXUtility descriptionTextFont];
-        _page1Description.text = NSLocalizedString(@"Hold the web in the palm of your hand. Full publishing power in a pint-sized package.", @"NUX First Walkthrough Page 1 Description");
-        _page1Description.textColor = [WPNUXUtility descriptionTextColor];
-        [_scrollView addSubview:_page1Description];
-    }
     
     // Bottom Panel
     if (_bottomPanel == nil) {
@@ -533,17 +519,10 @@ CGFloat const GeneralWalkthroughiOS7StatusBarOffset = 20.0;
     y = CGRectGetMaxY(_page1Icon.frame) + 0.5*GeneralWalkthroughStandardOffset;
     _page1Title.frame = CGRectIntegral(CGRectMake(x, y, titleSize.width, titleSize.height));
     
-    // Layout Description
-    CGSize labelSize = [_page1Description.text sizeWithFont:_page1Description.font constrainedToSize:CGSizeMake(GeneralWalkthroughMaxTextWidth, CGFLOAT_MAX) lineBreakMode:NSLineBreakByWordWrapping];
-    x = (_viewWidth - labelSize.width)/2.0;
-    x = [self adjustX:x forPage:1];
-    y = CGRectGetMaxY(_page1Title.frame) + 0.5*GeneralWalkthroughStandardOffset;
-    _page1Description.frame = CGRectIntegral(CGRectMake(x, y, labelSize.width, labelSize.height));
-    
     // Layout Skip to Sign In Button
     x = (_viewWidth - GeneralWalkthroughSignInButtonWidth) / 2.0;
     x = [self adjustX:x forPage:1];
-    y = CGRectGetMaxY(_page1Description.frame) + GeneralWalkthroughStandardOffset;
+    y = CGRectGetMaxY(_page1Title.frame) + GeneralWalkthroughStandardOffset;
     _skipToSignIn.frame = CGRectMake(x, y, GeneralWalkthroughSignInButtonWidth, GeneralWalkthroughSignInButtonHeight);
     
     // Layout Bottom Panel
@@ -559,7 +538,7 @@ CGFloat const GeneralWalkthroughiOS7StatusBarOffset = 20.0;
     _skipToCreateAccount.frame = CGRectMake(x, y, CGRectGetWidth(_skipToCreateAccount.frame), CGRectGetHeight(_skipToCreateAccount.frame));
     
     _heightFromBottomPanel = _viewHeight - CGRectGetMinY(_bottomPanel.frame);
-    NSArray *viewsToCenter = @[_page1Icon, _page1Title, _page1Description, _skipToSignIn];
+    NSArray *viewsToCenter = @[_page1Icon, _page1Title, _skipToSignIn];
     [WPNUXUtility centerViews:viewsToCenter withStartingView:_page1Icon andEndingView:_skipToSignIn forHeight:(_viewHeight - _heightFromBottomPanel)];
 }
 
