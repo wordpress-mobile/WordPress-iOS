@@ -25,7 +25,6 @@
     UILabel *_page1Title;
     UILabel *_page1Description;
 
-    UIView *_bottomPanelLine;
     UIView *_bottomPanel;
     UIPageControl *_pageControl;
     
@@ -42,7 +41,6 @@
     // Page 4
     UIImageView *_page4Icon;
     UILabel *_page4Title;
-    UILabel *_page4TapToContinue;
     
     CGFloat _viewWidth;
     CGFloat _viewHeight;
@@ -253,18 +251,11 @@ CGFloat const LoginCompeltedWalkthroughSwipeToContinueTopOffset = 14.0;
     // Bottom Panel
     if (_bottomPanel == nil) {
         _bottomPanel = [[UIView alloc] init];
-        _bottomPanel.backgroundColor = [WPNUXUtility bottomPanelBackgroundColor];
+        _bottomPanel.backgroundColor = [UIColor clearColor];
         [_scrollView addSubview:_bottomPanel];
         UITapGestureRecognizer *gestureRecognizer = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(clickedBottomPanel:)];
         gestureRecognizer.numberOfTapsRequired = 1;
         [_bottomPanel addGestureRecognizer:gestureRecognizer];
-    }
-    
-    // Bottom Panel "Black" Line
-    if (_bottomPanelLine == nil) {
-        _bottomPanelLine = [[UIView alloc] init];
-        _bottomPanelLine.backgroundColor = [WPNUXUtility bottomPanelLineColor];
-        [_scrollView addSubview:_bottomPanelLine];
     }
     
     // Add Page Control
@@ -315,11 +306,6 @@ CGFloat const LoginCompeltedWalkthroughSwipeToContinueTopOffset = 14.0;
     x = [self adjustX:x forPage:1];
     y = _viewHeight - LoginCompletedWalkthroughBottomBackgroundHeight;
     _bottomPanel.frame = CGRectMake(x, y, _viewWidth, LoginCompletedWalkthroughBottomBackgroundHeight);
-        
-    // Layout Bottom Panel Line
-    x = 0;
-    y = CGRectGetMinY(_bottomPanel.frame);
-    _bottomPanelLine.frame = CGRectMake(x, y, _viewWidth, 1);
     
     // Layout Page Control
     CGFloat verticalSpaceForPageControl = 15;
@@ -507,19 +493,6 @@ CGFloat const LoginCompeltedWalkthroughSwipeToContinueTopOffset = 14.0;
         _page4Title.textColor = [UIColor whiteColor];
         [_scrollView addSubview:_page4Title];
     }
-    
-    // Add "SWIPE TO CONTINUE"
-    if (_page4TapToContinue == nil) {
-        _page4TapToContinue = [[UILabel alloc] init];
-        [_page4TapToContinue setTextColor:[WPNUXUtility swipeToContinueTextColor]];
-        _page4TapToContinue.backgroundColor = [UIColor clearColor];
-        _page4TapToContinue.textAlignment = NSTextAlignmentCenter;
-        _page4TapToContinue.numberOfLines = 1;
-        _page4TapToContinue.font = [WPNUXUtility swipeToContinueFont];
-        _page4TapToContinue.text = [NSLocalizedString(@"tap to continue", nil) uppercaseString];
-        [_page4TapToContinue sizeToFit];
-        [_scrollView addSubview:_page4TapToContinue];
-    }
 }
 
 - (void)layoutPage4Controls
@@ -538,13 +511,6 @@ CGFloat const LoginCompeltedWalkthroughSwipeToContinueTopOffset = 14.0;
     x = [self adjustX:x forPage:currentPage];
     y = CGRectGetMaxY(_page4Icon.frame) + 0.5*LoginCompletedWalkthroughStandardOffset;
     _page4Title.frame = CGRectIntegral(CGRectMake(x, y, titleSize.width, titleSize.height));
-    
-    // Layout Swipe to Continue Label
-    CGFloat verticalSpaceForPageControl = 15;
-    x = (_viewWidth - CGRectGetWidth(_page4TapToContinue.frame))/2.0;
-    x = [self adjustX:x forPage:4];
-    y = CGRectGetMinY(_pageControl.frame) - LoginCompeltedWalkthroughSwipeToContinueTopOffset - CGRectGetHeight(_page4TapToContinue.frame) + verticalSpaceForPageControl;
-    _page4TapToContinue.frame = CGRectIntegral(CGRectMake(x, y, CGRectGetWidth(_page4TapToContinue.frame), CGRectGetHeight(_page4TapToContinue.frame)));
     
     NSArray *viewsToCenter = @[_page4Icon, _page4Title];
     [WPNUXUtility centerViews:viewsToCenter withStartingView:_page4Title andEndingView:_page4Title forHeight:(_viewHeight-_heightFromPageControlToBottom)];
