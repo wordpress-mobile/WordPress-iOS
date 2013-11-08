@@ -341,7 +341,9 @@
     [tv deselectRowAtIndexPath:indexPath animated:YES];
     
     if (indexPath.section == 2) {
+        
         JetpackSettingsViewController *controller = [[JetpackSettingsViewController alloc] initWithBlog:blog];
+        controller.initialSignIn = NO;
         [controller setCompletionBlock:^(BOOL didAuthenticate) {
             [self.navigationController popViewControllerAnimated:YES];
         }];
