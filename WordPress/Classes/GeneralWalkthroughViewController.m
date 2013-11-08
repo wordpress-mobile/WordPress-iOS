@@ -472,7 +472,7 @@ CGFloat const GeneralWalkthroughiOS7StatusBarOffset = 20.0;
     // Bottom Panel
     if (_bottomPanel == nil) {
         _bottomPanel = [[UIView alloc] init];
-        _bottomPanel.backgroundColor = [WPNUXUtility bottomPanelBackgroundColor];
+        _bottomPanel.backgroundColor = [UIColor clearColor];
         [_scrollView addSubview:_bottomPanel];
         UITapGestureRecognizer *gestureRecognizer = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(clickedBottomPanel:)];
         gestureRecognizer.numberOfTapsRequired = 1;
