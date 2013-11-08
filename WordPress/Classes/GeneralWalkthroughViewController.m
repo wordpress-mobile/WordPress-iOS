@@ -585,7 +585,7 @@ CGFloat const GeneralWalkthroughiOS7StatusBarOffset = 20.0;
     
     // Layout Skip to Create Account Button
     x = GeneralWalkthroughStandardOffset;
-    x = [self adjustX:x forPage:1];
+    x = (_viewWidth - CGRectGetWidth(_skipToCreateAccount.frame))/2.0;
     y = CGRectGetMinY(_bottomPanel.frame) + GeneralWalkthroughStandardOffset;
     _skipToCreateAccount.frame = CGRectMake(x, y, CGRectGetWidth(_skipToCreateAccount.frame), CGRectGetHeight(_skipToCreateAccount.frame));
     
