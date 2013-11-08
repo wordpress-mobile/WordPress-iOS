@@ -46,11 +46,11 @@
 
 CGFloat const JetpackiOS7StatusBarOffset = 20.0;
 CGFloat const JetpackStandardOffset = 16;
-CGFloat const JetpackTextFieldWidth = 289.0;
+CGFloat const JetpackTextFieldWidth = 320.0;
 CGFloat const JetpackMaxTextWidth = 289.0;
-CGFloat const JetpackTextFieldHeight = 40.0;
+CGFloat const JetpackTextFieldHeight = 44.0;
 CGFloat const JetpackIconVerticalOffset = 77;
-CGFloat const JetpackSignInButtonWidth = 160.0;
+CGFloat const JetpackSignInButtonWidth = 289.0;
 CGFloat const JetpackSignInButtonHeight = 41.0;
 @synthesize username = _username;
 @synthesize password = _password;
@@ -243,7 +243,7 @@ CGFloat const JetpackSignInButtonHeight = 41.0;
     
     // Layout Password
     x = (_viewWidth - JetpackTextFieldWidth)/2.0;
-    y = CGRectGetMaxY(_usernameText.frame) + 0.5*JetpackStandardOffset;
+    y = CGRectGetMaxY(_usernameText.frame);
     _passwordText.frame = CGRectIntegral(CGRectMake(x, y, JetpackTextFieldWidth, JetpackTextFieldHeight));
     _passwordText.hidden = !hasJetpack;
     
