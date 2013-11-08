@@ -49,22 +49,21 @@
 #import "SupportViewController.h"
 
 typedef enum {
-
     SettingsSectionBlogs = 0,
-    SettingsSectionBlogsAdd,
     SettingsSectionWpcom,
-    SettingsSectionNotifications,
     SettingsSectionMedia,
     SettingsSectionSounds,
     SettingsSectionInfo,
-    
     SettingsSectionCount
 } SettingsSection;
+
+CGFloat const blavatarImageViewSize = 50.f;
 
 @interface SettingsViewController () <NSFetchedResultsControllerDelegate, UIActionSheetDelegate, WPcomLoginViewControllerDelegate>
 
 @property (weak, readonly) NSFetchedResultsController *resultsController;
 @property (nonatomic, strong) NSArray *mediaSettingsArray;
+@property (nonatomic, strong) UIBarButtonItem *doneButton;
 
 - (void)configureCell:(UITableViewCell *)cell atIndexPath:(NSIndexPath *)indexPath;
 - (UITableViewCell *)cellForIndexPath:(NSIndexPath *)indexPath;
@@ -90,31 +89,28 @@ typedef enum {
     
     self.title = NSLocalizedString(@"Settings", @"App Settings");
     self.navigationItem.leftBarButtonItem = self.editButtonItem;
-    self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:NSLocalizedString(@"Close", @"") style:[WPStyleGuide barButtonStyleForBordered] target:self action:@selector(dismiss)];
+    self.doneButton = [[UIBarButtonItem alloc] initWithTitle:NSLocalizedString(@"Done", @"") style:[WPStyleGuide barButtonStyleForBordered] target:self action:@selector(dismiss)];
+    self.navigationItem.rightBarButtonItem = self.doneButton;
     
     [[NSNotificationCenter defaultCenter] addObserverForName:WordPressComApiDidLoginNotification object:nil queue:nil usingBlock:^(NSNotification *note) {
         NSMutableIndexSet *sections = [NSMutableIndexSet indexSet];
         [sections addIndex:SettingsSectionWpcom];
-        [sections addIndex:SettingsSectionNotifications];
         [self.tableView reloadSections:sections withRowAnimation:UITableViewRowAnimationFade];
     }];
     [[NSNotificationCenter defaultCenter] addObserverForName:WordPressComApiDidLogoutNotification object:nil queue:nil usingBlock:^(NSNotification *note) {
         NSMutableIndexSet *sections = [NSMutableIndexSet indexSet];
         [sections addIndex:SettingsSectionWpcom];
-        [sections addIndex:SettingsSectionNotifications];
         [self.tableView reloadSections:sections withRowAnimation:UITableViewRowAnimationFade];
     }];
     
     [WPStyleGuide configureColorsForView:self.view andTableView:self.tableView];
-    [self setupMedia];    
+    [self setupMedia];
 }
-
 
 - (void)viewDidUnload {
     [[NSNotificationCenter defaultCenter] removeObserver:self];
     [super viewDidUnload];
 }
-
 
 - (void)viewWillDisappear:(BOOL)animated {
     [super viewWillDisappear:animated];
@@ -122,7 +118,6 @@ typedef enum {
     // blog is added, and other rows/sections are added as well (e.g. notifications).
     self.resultsController.delegate = nil;
 }
-
 
 - (void)viewWillAppear:(BOOL)animated {
     [super viewWillAppear:animated];
@@ -132,7 +127,6 @@ typedef enum {
     self.editButtonItem.enabled = ([[self.resultsController fetchedObjects] count] > 0); // Disable if we have no blogs.
     [self.tableView reloadData];
 }
-
 
 - (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation {
     return [super shouldAutorotateToInterfaceOrientation:interfaceOrientation];
@@ -181,11 +175,9 @@ typedef enum {
     self.mediaSettingsArray = [NSArray arrayWithObjects:imageResizeDict, videoQualityDict, videoContentDict, nil];
 }
 
-
 - (void)dismiss {
     [self dismissViewControllerAnimated:YES completion:nil];
 }
-
 
 - (void)checkCloseButton {
     if ([[self.resultsController fetchedObjects] count] == 0 && ![[WordPressComApi sharedApi] hasCredentials]) {
@@ -205,7 +197,6 @@ typedef enum {
         self.navigationItem.rightBarButtonItem.enabled = YES;
     }
 }
-
 
 - (void)handleMuteSoundsChanged:(id)sender {
     UISwitch *aSwitch = (UISwitch *)sender;
@@ -235,34 +226,64 @@ typedef enum {
     imageView.layer.mask = maskLayer;
 }
 
+- (BOOL)supportsNotifications {
+    return nil != [[NSUserDefaults standardUserDefaults] objectForKey:kApnsDeviceTokenPrefKey];
+}
+
+
 #pragma mark - 
 #pragma mark Table view data source
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
-    return SettingsSectionCount;
+    return [self.tableView isEditing] ? 1 : SettingsSectionCount;
 }
 
+// The Sign Out row in Wpcom section can change, so identify it dynamically
+- (NSInteger)rowForSignOut {
+    return [self supportsNotifications] ? 2 : 1;
+}
+
+- (NSInteger)rowForNotifications {
+    return [self supportsNotifications] ? 1 : -1;
+}
+
+- (NSInteger)rowForAddSite {
+    return [[self.resultsController fetchedObjects] count];
+}
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
+    int numWpcomRows = 0;
+    int numBlogRows = 0;
+    
     switch (section) {
         case SettingsSectionBlogs:
-            return [[self.resultsController fetchedObjects] count];
+            numBlogRows = [[self.resultsController fetchedObjects] count];
             
-        case SettingsSectionBlogsAdd:
-            return 1;
+            // When not editing, an extra row for adding a new site
+            if (![tableView isEditing]) {
+                numBlogRows += 1;
+            }
+            return numBlogRows;
             
         case SettingsSectionWpcom:
-            return ([[WPAccount defaultWordPressComAccount] username] && [[WordPressComApi sharedApi] hasCredentials]) ? 2 : 1;
+            numWpcomRows = 1;
+            if ([[WordPressComApi sharedApi] hasCredentials]) {
+                // Allow notifications management?
+                if ([self supportsNotifications]) {
+                    numWpcomRows += 1;
+                }
+            }
             
+            // Show a Sign Out row?
+            if ([[WPAccount defaultWordPressComAccount] username]) {
+                numWpcomRows += 1;
+            }
+            
+            return numWpcomRows;
+
         case SettingsSectionMedia:
             return [mediaSettingsArray count];
-			
-        case SettingsSectionNotifications:
-            if ([[WordPressComApi sharedApi] hasCredentials] && nil != [[NSUserDefaults standardUserDefaults] objectForKey:kApnsDeviceTokenPrefKey])
-                return 1;
-            else
-                return 0;
-            
+			         
         case SettingsSectionSounds :
             return 1;
             
@@ -281,39 +302,27 @@ typedef enum {
     return nil;
 }
 
-
 - (UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section {
     WPTableViewSectionHeaderView *header = [[WPTableViewSectionHeaderView alloc] initWithFrame:CGRectMake(0, 0, CGRectGetWidth(self.view.bounds), 0)];
     header.title = [self titleForHeaderInSection:section];
     return header;
 }
 
-- (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section
-{
+- (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section {
     NSString *title = [self titleForHeaderInSection:section];
     return [WPTableViewSectionHeaderView heightForTitle:title andWidth:CGRectGetWidth(self.view.bounds)];
 }
 
-- (NSString *)titleForHeaderInSection:(NSInteger)section
-{
+- (NSString *)titleForHeaderInSection:(NSInteger)section {
     if (section == SettingsSectionBlogs) {
         return NSLocalizedString(@"Sites", @"Title label for the user sites in the app settings");
         
     } else if (section == SettingsSectionWpcom) {
         return NSLocalizedString(@"WordPress.com", @"");
-        
-    } else if (section == SettingsSectionBlogsAdd) {
-        return nil;
-        
+
     } else if (section == SettingsSectionMedia) {
         return NSLocalizedString(@"Media", @"Title label for the media settings section in the app settings");
-		
-    } else if (section == SettingsSectionNotifications) {
-        if ([[WordPressComApi sharedApi] hasCredentials] && nil != [[NSUserDefaults standardUserDefaults] objectForKey:kApnsDeviceTokenPrefKey])
-            return NSLocalizedString(@"Notifications", @"");
-        else
-            return nil;
-        
+
     } else if (section == SettingsSectionSounds) {
         return NSLocalizedString(@"Sounds", @"Title label for the sounds section in the app settings.");
         
@@ -330,36 +339,47 @@ typedef enum {
     cell.accessoryType = UITableViewCellAccessoryNone;
     cell.accessoryView = nil;
     if (indexPath.section == SettingsSectionBlogs) {
-        Blog *blog = [self.resultsController objectAtIndexPath:[NSIndexPath indexPathForRow:indexPath.row inSection:0]];
-        if ([blog.blogName length] != 0) {
-            cell.textLabel.text = blog.blogName;
+        
+        if (indexPath.row < [self rowForAddSite]) {
+            Blog *blog = [self.resultsController objectAtIndexPath:[NSIndexPath indexPathForRow:indexPath.row inSection:0]];
+            if ([blog.blogName length] != 0) {
+                cell.textLabel.text = blog.blogName;
+            } else {
+                cell.textLabel.text = blog.url;
+            }
+            
+            [cell.imageView setImageWithBlavatarUrl:blog.blavatarUrl isWPcom:blog.isWPcom];
+            cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
+            
+            if (indexPath.row == 0) {
+                [self maskImageView:cell.imageView corner:UIRectCornerTopLeft];
+            } else if (indexPath.row == ([self.tableView numberOfRowsInSection:indexPath.section] -1)) {
+                [self maskImageView:cell.imageView corner:UIRectCornerBottomLeft];
+            } else {
+                cell.imageView.layer.mask = NULL;
+            }
         } else {
-            cell.textLabel.text = blog.url;
+            cell.textLabel.text = NSLocalizedString(@"Add a Site", @"");
+            cell.selectionStyle = UITableViewCellSelectionStyleBlue;
+            cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
+            
+            // To align the label, create and add a blank image
+            UIGraphicsBeginImageContextWithOptions(CGSizeMake(blavatarImageViewSize, blavatarImageViewSize), NO, 0.0);
+            UIImage *blank = UIGraphicsGetImageFromCurrentImageContext();
+            UIGraphicsEndImageContext();
+            [cell.imageView setImage:blank];
         }
-        
-        [cell.imageView setImageWithBlavatarUrl:blog.blavatarUrl isWPcom:blog.isWPcom];
-        
-        if (indexPath.row == 0) {
-            [self maskImageView:cell.imageView corner:UIRectCornerTopLeft];
-        } else if (indexPath.row == ([self.tableView numberOfRowsInSection:indexPath.section] -1)) {
-            [self maskImageView:cell.imageView corner:UIRectCornerBottomLeft];
-        } else {
-            cell.imageView.layer.mask = NULL;
-        }
-        
-    } else if (indexPath.section == SettingsSectionBlogsAdd) {
-        cell.textLabel.text = NSLocalizedString(@"Add a Site", @"");
-        cell.textLabel.textAlignment = NSTextAlignmentCenter;
-        cell.selectionStyle = UITableViewCellSelectionStyleBlue;
-        cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
-        
+
     } else if (indexPath.section == SettingsSectionWpcom) {
         if ([[WordPressComApi sharedApi] hasCredentials]) {
             if (indexPath.row == 0) {
-                cell.textLabel.text = NSLocalizedString(@"Username:", @"");
+                cell.textLabel.text = NSLocalizedString(@"Username", @"");
                 cell.detailTextLabel.text = [[WPAccount defaultWordPressComAccount] username];
                 cell.detailTextLabel.textColor = [UIColor UIColorFromHex:0x888888];
                 cell.selectionStyle = UITableViewCellSelectionStyleNone;
+            } else if (indexPath.row == [self rowForNotifications]) {
+                cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
+                cell.textLabel.text = NSLocalizedString(@"Manage Notifications", @"");
             } else {
                 cell.textLabel.textAlignment = NSTextAlignmentCenter;
                 cell.textLabel.text = NSLocalizedString(@"Sign Out", @"Sign out from WordPress.com");
@@ -387,7 +407,7 @@ typedef enum {
         NSArray *titles = [dict objectForKey:@"Titles"];
         cell.detailTextLabel.text = [titles objectAtIndex:index];
         
-    } else if(indexPath.section == SettingsSectionSounds) {
+    } else if (indexPath.section == SettingsSectionSounds) {
         cell.selectionStyle = UITableViewCellSelectionStyleNone;
         cell.accessoryType = UITableViewCellAccessoryNone;
         cell.textLabel.text = NSLocalizedString(@"Enable Sounds", @"Title for the setting to enable in-app sounds");
@@ -396,15 +416,10 @@ typedef enum {
         aSwitch.on = ![[NSUserDefaults standardUserDefaults] boolForKey:kSettingsMuteSoundsKey];
         cell.accessoryView = aSwitch;
 
-    } else if (indexPath.section == SettingsSectionNotifications) {
-        if ([[WordPressComApi sharedApi] hasCredentials] && nil != [[NSUserDefaults standardUserDefaults] objectForKey:kApnsDeviceTokenPrefKey]) {
-            cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
-            cell.textLabel.text = NSLocalizedString(@"Manage Notifications", @"");
-        }
     } else if (indexPath.section == SettingsSectionInfo) {
         if (indexPath.row == 0) {
             // App Version
-            cell.textLabel.text = NSLocalizedString(@"Version:", @"");
+            cell.textLabel.text = NSLocalizedString(@"Version", @"");
             NSString *appversion = [[[NSBundle mainBundle] infoDictionary] objectForKey:@"CFBundleVersion"];
 #if DEBUG
             appversion = [appversion stringByAppendingString:@" (DEV)"];
@@ -422,7 +437,6 @@ typedef enum {
         }
     }
 }
-
 
 - (UITableViewCell *)cellForIndexPath:(NSIndexPath *)indexPath {
     NSString *cellIdentifier = @"Cell";
@@ -471,8 +485,7 @@ typedef enum {
     return cell;
 }
 
-- (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
-{
+- (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
     UITableViewCell *cell = [self cellForIndexPath:indexPath];
     [WPStyleGuide configureTableViewCell:cell];
     [self configureCell:cell atIndexPath:indexPath];
@@ -482,30 +495,27 @@ typedef enum {
         isSignInCell = indexPath.section == SettingsSectionWpcom && indexPath.row == 0;
     }
     
-    BOOL isSignOutCell = indexPath.section == SettingsSectionWpcom && indexPath.row == 1;
-    BOOL isAddBlogsCell = indexPath.section == SettingsSectionBlogsAdd;
-    if (isSignOutCell || isAddBlogsCell || isSignInCell) {
+    BOOL isSignOutCell = indexPath.section == SettingsSectionWpcom && indexPath.row == [self rowForSignOut];
+    if (isSignOutCell || isSignInCell) {
         [WPStyleGuide configureTableViewActionCell:cell];
     }
     
     return cell;
 }
 
-- (BOOL)tableView:(UITableView *)tableView canEditRowAtIndexPath:(NSIndexPath *)indexPath
-{
+- (BOOL)tableView:(UITableView *)tableView canEditRowAtIndexPath:(NSIndexPath *)indexPath {
     // Return NO if you do not want the specified item to be editable.
     return (indexPath.section == SettingsSectionBlogs);
 }
 
-- (void)tableView:(UITableView *)tableView commitEditingStyle:(UITableViewCellEditingStyle)editingStyle forRowAtIndexPath:(NSIndexPath *)indexPath
-{
+- (void)tableView:(UITableView *)tableView commitEditingStyle:(UITableViewCellEditingStyle)editingStyle forRowAtIndexPath:(NSIndexPath *)indexPath {
     if (editingStyle == UITableViewCellEditingStyleDelete) {
         [WPMobileStats trackEventForWPCom:StatsEventSettingsRemovedBlog];
         
         Blog *blog = [self.resultsController objectAtIndexPath:[NSIndexPath indexPathForRow:indexPath.row inSection:0]];
         [blog remove];
         
-        if([[self.resultsController fetchedObjects] count] == 0) {
+        if ([[self.resultsController fetchedObjects] count] == 0) {
             [self setEditing:NO];
             self.editButtonItem.enabled = NO;
         }
@@ -516,28 +526,28 @@ typedef enum {
 #pragma mark - 
 #pragma mark Table view delegate
 
-- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
-{
+- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
     [tableView deselectRowAtIndexPath:indexPath animated:YES];
     
     if (indexPath.section == SettingsSectionBlogs) {
-        [WPMobileStats trackEventForWPCom:StatsEventSettingsClickedEditBlog];
-        
-        Blog *blog = [self.resultsController objectAtIndexPath:indexPath];
+        if (indexPath.row < [self rowForAddSite]) {
+            [WPMobileStats trackEventForWPCom:StatsEventSettingsClickedEditBlog];
+            
+            Blog *blog = [self.resultsController objectAtIndexPath:indexPath];
 
-		EditSiteViewController *editSiteViewController = [[EditSiteViewController alloc] init];
-        editSiteViewController.blog = blog;
-        [self.navigationController pushViewController:editSiteViewController animated:YES];
-
-    } else if (indexPath.section == SettingsSectionBlogsAdd) {
-        [WPMobileStats trackEventForWPCom:StatsEventSettingsClickedAddBlog];
-        
-        WelcomeViewController *welcomeViewController = [[WelcomeViewController alloc] initWithStyle:UITableViewStyleGrouped];
-        welcomeViewController.title = NSLocalizedString(@"Add a Site", nil);
-        [self.navigationController pushViewController:welcomeViewController animated:YES];
+            EditSiteViewController *editSiteViewController = [[EditSiteViewController alloc] init];
+            editSiteViewController.blog = blog;
+            [self.navigationController pushViewController:editSiteViewController animated:YES];
+        } else {
+            [WPMobileStats trackEventForWPCom:StatsEventSettingsClickedAddBlog];
+            
+            WelcomeViewController *welcomeViewController = [[WelcomeViewController alloc] initWithStyle:UITableViewStyleGrouped];
+            welcomeViewController.title = NSLocalizedString(@"Add a Site", nil);
+            [self.navigationController pushViewController:welcomeViewController animated:YES];
+        }
     } else if (indexPath.section == SettingsSectionWpcom) {
         if ([[WordPressComApi sharedApi] hasCredentials]) {
-            if (indexPath.row == 1) {
+            if (indexPath.row == [self rowForSignOut]) {
                 [WPMobileStats trackEventForWPCom:StatsEventSettingsClickedSignOutOfDotCom];
 
                 // Present the Sign out ActionSheet
@@ -550,6 +560,11 @@ typedef enum {
                                             destructiveButtonTitle:NSLocalizedString(@"Sign Out", @"")otherButtonTitles:nil, nil ];
                 actionSheet.actionSheetStyle = UIActionSheetStyleDefault;
                 [actionSheet showInView:self.view];
+            } else if (indexPath.row == [self rowForNotifications]) {
+                [WPMobileStats trackEventForWPCom:StatsEventSettingsClickedManageNotifications];
+            
+                NotificationSettingsViewController *notificationSettingsViewController = [[NotificationSettingsViewController alloc] initWithStyle:UITableViewStyleGrouped];
+                [self.navigationController pushViewController:notificationSettingsViewController animated:YES];
             }
         } else {
             [WPMobileStats trackEventForWPCom:StatsEventSettingsClickedSignIntoDotCom];
@@ -572,11 +587,6 @@ typedef enum {
         SettingsPageViewController *controller = [[SettingsPageViewController alloc] initWithDictionary:dict];
         [self.navigationController pushViewController:controller animated:YES];
     
-    } else if (indexPath.section == SettingsSectionNotifications) {
-        [WPMobileStats trackEventForWPCom:StatsEventSettingsClickedManageNotifications];
-        
-        NotificationSettingsViewController *notificationSettingsViewController = [[NotificationSettingsViewController alloc] initWithStyle:UITableViewStyleGrouped];
-        [self.navigationController pushViewController:notificationSettingsViewController animated:YES];
     } else if (indexPath.section == SettingsSectionSounds) {
         // nothing to do.
         
@@ -594,8 +604,31 @@ typedef enum {
     }
 }
 
+- (void)setEditing:(BOOL)editing animated:(BOOL)animated {
+    [super setEditing:editing animated:animated];
 
-#pragma mark - 
+    // Smoothly animate all sections that can or can't be edited, and deal with the Done button
+    NSIndexSet *indexSetToChange = [NSIndexSet indexSetWithIndexesInRange:NSMakeRange(1, SettingsSectionCount-1)];
+    
+    // And the "Add a Site" row too
+    NSArray *rowsToChange = [NSArray arrayWithObject:[NSIndexPath indexPathForRow:[self rowForAddSite] inSection:SettingsSectionBlogs]];
+    
+    UITableViewRowAnimation rowAnimation = animated ? UITableViewRowAnimationFade : UITableViewRowAnimationNone;
+    [self.tableView beginUpdates];
+    if (editing) {
+        [self.tableView deleteRowsAtIndexPaths:rowsToChange withRowAnimation:rowAnimation];
+        [self.tableView deleteSections:indexSetToChange withRowAnimation:rowAnimation];
+        [self.navigationItem setRightBarButtonItem:nil animated:animated];
+    } else {
+        [self.tableView insertRowsAtIndexPaths:rowsToChange withRowAnimation:rowAnimation];
+        [self.tableView insertSections:indexSetToChange withRowAnimation:rowAnimation];
+        [self.navigationItem setRightBarButtonItem:self.doneButton animated:animated];
+    }
+    [self.tableView endUpdates];
+}
+
+
+#pragma mark -
 #pragma mark NSFetchedResultsController
 
 - (NSFetchedResultsController *)resultsController {
@@ -691,7 +724,7 @@ typedef enum {
 #pragma mark Action Sheet Delegate Methods
 
 - (void)actionSheet:(UIActionSheet *)actionSheet clickedButtonAtIndex:(NSInteger)buttonIndex {
-    if(buttonIndex == 0) {
+    if (buttonIndex == 0) {
         [WPMobileStats trackEventForWPCom:StatsEventSettingsSignedOutOfDotCom];
         
         // Sign out
