@@ -13,11 +13,12 @@
 #import "WPWalkthroughOverlayView.h"
 #import "WordPressAppDelegate.h"
 #import "WPNUXUtility.h"
+#import "WPNUXSecondaryButton.h"
 
 @interface LoginCompletedWalkthroughViewController ()<UIScrollViewDelegate> {
     UIScrollView *_scrollView;
     UIView *_mainView;
-    UILabel *_skipToApp;
+    UIButton *_skipToApp;
     
     // Page 1
     UIImageView *_page1Icon;
@@ -278,20 +279,10 @@ CGFloat const LoginCompeltedWalkthroughSwipeToContinueTopOffset = 14.0;
     
     // Add Skip to App Button
     if (_skipToApp == nil) {
-        _skipToApp = [[UILabel alloc] init];
-        _skipToApp.numberOfLines = 2;
-        _skipToApp.lineBreakMode = NSLineBreakByWordWrapping;
-        _skipToApp.textAlignment = NSTextAlignmentCenter;
-        _skipToApp.backgroundColor = [UIColor clearColor];
-        _skipToApp.textColor = [UIColor whiteColor];
-        _skipToApp.font = [UIFont fontWithName:@"OpenSans" size:15.0];
-        _skipToApp.text = NSLocalizedString(@"Tap to start using WordPress", @"NUX Second Walkthrough Bottom Skip Label");
-        _skipToApp.shadowColor = [UIColor blackColor];
+        _skipToApp = [[WPNUXSecondaryButton alloc] init];;
+        [_skipToApp setTitle:NSLocalizedString(@"Start using WordPress", @"NUX Second Walkthrough Bottom Skip Label") forState:UIControlStateNormal];
         [_skipToApp sizeToFit];
-        UITapGestureRecognizer *tapGestureRecognizer = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(clickedSkipToApp:)];
-        tapGestureRecognizer.numberOfTapsRequired = 1;
-        _skipToApp.userInteractionEnabled = YES;
-        [_skipToApp addGestureRecognizer:tapGestureRecognizer];
+        [_skipToApp addTarget:self action:@selector(clickedSkipToApp:) forControlEvents:UIControlEventTouchUpInside];
         [_scrollView addSubview:_skipToApp];
     }
 }
@@ -344,10 +335,10 @@ CGFloat const LoginCompeltedWalkthroughSwipeToContinueTopOffset = 14.0;
     _pageControl.frame = CGRectIntegral(CGRectMake(x, y, pageControlSize.width, pageControlSize.height));
 
     // Layout Skip and Start Using App
-    CGSize skipToAppLabelSize = [_skipToApp.text sizeWithFont:_skipToApp.font constrainedToSize:CGSizeMake(_viewWidth - 2*LoginCompletedWalkthroughStandardOffset, CGFLOAT_MAX) lineBreakMode:NSLineBreakByWordWrapping];
-    x = (_viewWidth - skipToAppLabelSize.width)/2.0;
-    y = CGRectGetMinY(_bottomPanel.frame) + (CGRectGetHeight(_bottomPanel.frame) - skipToAppLabelSize.height)/2.0;
-    _skipToApp.frame = CGRectIntegral(CGRectMake(x, y, skipToAppLabelSize.width, skipToAppLabelSize.height));
+    CGSize skipToAppSize = _skipToApp.frame.size;
+    x = (_viewWidth - skipToAppSize.width)/2.0;
+    y = CGRectGetMinY(_bottomPanel.frame) + (CGRectGetHeight(_bottomPanel.frame) - skipToAppSize.height)/2.0;
+    _skipToApp.frame = CGRectIntegral(CGRectMake(x, y, skipToAppSize.width, skipToAppSize.height));
     
     _heightFromPageControlToBottom = _viewHeight - CGRectGetMinY(_pageControl.frame) - CGRectGetHeight(_pageControl.frame);
     NSArray *viewsToCenter = @[_page1Icon, _page1Title, _page1Description];
