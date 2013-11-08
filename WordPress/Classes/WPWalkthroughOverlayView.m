@@ -290,8 +290,8 @@ CGFloat const WPWalkthroughGrayOverlayMaxLabelWidth = 289.0;
         return;
     
     if (gestureRecognizer.numberOfTapsRequired == 1) {
-        if (self.singleTapCompletionBlock) {
-            self.singleTapCompletionBlock(self);
+        if (self.dismissCompletionBlock) {
+            self.dismissCompletionBlock(self);
         }
     }
 }

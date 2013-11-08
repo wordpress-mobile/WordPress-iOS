@@ -233,7 +233,7 @@ CGFloat const GeneralWalkthroughiOS7StatusBarOffset = 20.0;
     overlayView.footerDescription = [NSLocalizedString(@"tap to dismiss", nil) uppercaseString];
     overlayView.secondaryButtonText = NSLocalizedString(@"Need Help?", nil);
     overlayView.primaryButtonText = NSLocalizedString(@"OK", nil);
-    overlayView.singleTapCompletionBlock = ^(WPWalkthroughOverlayView *overlayView){
+    overlayView.dismissCompletionBlock = ^(WPWalkthroughOverlayView *overlayView){
         [overlayView dismiss];
     };
     return overlayView;

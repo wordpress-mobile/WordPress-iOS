@@ -157,7 +157,7 @@ CGFloat const LoginCompeltedWalkthroughSwipeToContinueTopOffset = 14.0;
     grayOverlay.footerDescription = [NSLocalizedString(@"tap to continue", nil) uppercaseString];
     grayOverlay.icon = WPWalkthroughGrayOverlayViewBlueCheckmarkIcon;
     grayOverlay.hideBackgroundView = YES;
-    grayOverlay.singleTapCompletionBlock = ^(WPWalkthroughOverlayView * overlayView){
+    grayOverlay.dismissCompletionBlock = ^(WPWalkthroughOverlayView * overlayView){
         if (!self.showsExtraWalkthroughPages) {
             [self dismiss];
         } else {
