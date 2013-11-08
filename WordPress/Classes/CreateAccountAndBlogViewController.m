@@ -843,8 +843,8 @@ CGFloat const CreateAccountAndBlogKeyboardOffset = 132.0;
     _page3Title.frame = CGRectIntegral(CGRectMake(x, y, titleSize.width, titleSize.height));
     
     // Layout First Line Separator
-    CGFloat lineSeparatorWidth = _viewWidth - 2*CreateAccountAndBlogStandardOffset;
-    CGFloat lineSeparatorHeight = 2;
+    CGFloat lineSeparatorWidth = _viewWidth - CreateAccountAndBlogStandardOffset;
+    CGFloat lineSeparatorHeight = 1;
     x = CreateAccountAndBlogStandardOffset;
     x = [self adjustX:x forPage:currentPage];
     y = CGRectGetMaxY(_page3Title.frame) + CreateAccountAndBlogStandardOffset;
