@@ -107,12 +107,10 @@ CGFloat const blavatarImageViewSize = 50.f;
     [self setupMedia];
 }
 
-
 - (void)viewDidUnload {
     [[NSNotificationCenter defaultCenter] removeObserver:self];
     [super viewDidUnload];
 }
-
 
 - (void)viewWillDisappear:(BOOL)animated {
     [super viewWillDisappear:animated];
@@ -120,7 +118,6 @@ CGFloat const blavatarImageViewSize = 50.f;
     // blog is added, and other rows/sections are added as well (e.g. notifications).
     self.resultsController.delegate = nil;
 }
-
 
 - (void)viewWillAppear:(BOOL)animated {
     [super viewWillAppear:animated];
@@ -130,7 +127,6 @@ CGFloat const blavatarImageViewSize = 50.f;
     self.editButtonItem.enabled = ([[self.resultsController fetchedObjects] count] > 0); // Disable if we have no blogs.
     [self.tableView reloadData];
 }
-
 
 - (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation {
     return [super shouldAutorotateToInterfaceOrientation:interfaceOrientation];
@@ -179,11 +175,9 @@ CGFloat const blavatarImageViewSize = 50.f;
     self.mediaSettingsArray = [NSArray arrayWithObjects:imageResizeDict, videoQualityDict, videoContentDict, nil];
 }
 
-
 - (void)dismiss {
     [self dismissViewControllerAnimated:YES completion:nil];
 }
-
 
 - (void)checkCloseButton {
     if ([[self.resultsController fetchedObjects] count] == 0 && ![[WordPressComApi sharedApi] hasCredentials]) {
@@ -203,7 +197,6 @@ CGFloat const blavatarImageViewSize = 50.f;
         self.navigationItem.rightBarButtonItem.enabled = YES;
     }
 }
-
 
 - (void)handleMuteSoundsChanged:(id)sender {
     UISwitch *aSwitch = (UISwitch *)sender;
@@ -236,6 +229,7 @@ CGFloat const blavatarImageViewSize = 50.f;
 - (BOOL)supportsNotifications {
     return nil != [[NSUserDefaults standardUserDefaults] objectForKey:kApnsDeviceTokenPrefKey];
 }
+
 
 #pragma mark - 
 #pragma mark Table view data source
@@ -308,21 +302,18 @@ CGFloat const blavatarImageViewSize = 50.f;
     return nil;
 }
 
-
 - (UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section {
     WPTableViewSectionHeaderView *header = [[WPTableViewSectionHeaderView alloc] initWithFrame:CGRectMake(0, 0, CGRectGetWidth(self.view.bounds), 0)];
     header.title = [self titleForHeaderInSection:section];
     return header;
 }
 
-- (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section
-{
+- (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section {
     NSString *title = [self titleForHeaderInSection:section];
     return [WPTableViewSectionHeaderView heightForTitle:title andWidth:CGRectGetWidth(self.view.bounds)];
 }
 
-- (NSString *)titleForHeaderInSection:(NSInteger)section
-{
+- (NSString *)titleForHeaderInSection:(NSInteger)section {
     if (section == SettingsSectionBlogs) {
         return NSLocalizedString(@"Sites", @"Title label for the user sites in the app settings");
         
@@ -416,7 +407,7 @@ CGFloat const blavatarImageViewSize = 50.f;
         NSArray *titles = [dict objectForKey:@"Titles"];
         cell.detailTextLabel.text = [titles objectAtIndex:index];
         
-    } else if(indexPath.section == SettingsSectionSounds) {
+    } else if (indexPath.section == SettingsSectionSounds) {
         cell.selectionStyle = UITableViewCellSelectionStyleNone;
         cell.accessoryType = UITableViewCellAccessoryNone;
         cell.textLabel.text = NSLocalizedString(@"Enable Sounds", @"Title for the setting to enable in-app sounds");
@@ -446,7 +437,6 @@ CGFloat const blavatarImageViewSize = 50.f;
         }
     }
 }
-
 
 - (UITableViewCell *)cellForIndexPath:(NSIndexPath *)indexPath {
     NSString *cellIdentifier = @"Cell";
@@ -495,8 +485,7 @@ CGFloat const blavatarImageViewSize = 50.f;
     return cell;
 }
 
-- (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
-{
+- (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
     UITableViewCell *cell = [self cellForIndexPath:indexPath];
     [WPStyleGuide configureTableViewCell:cell];
     [self configureCell:cell atIndexPath:indexPath];
@@ -514,21 +503,19 @@ CGFloat const blavatarImageViewSize = 50.f;
     return cell;
 }
 
-- (BOOL)tableView:(UITableView *)tableView canEditRowAtIndexPath:(NSIndexPath *)indexPath
-{
+- (BOOL)tableView:(UITableView *)tableView canEditRowAtIndexPath:(NSIndexPath *)indexPath {
     // Return NO if you do not want the specified item to be editable.
     return (indexPath.section == SettingsSectionBlogs);
 }
 
-- (void)tableView:(UITableView *)tableView commitEditingStyle:(UITableViewCellEditingStyle)editingStyle forRowAtIndexPath:(NSIndexPath *)indexPath
-{
+- (void)tableView:(UITableView *)tableView commitEditingStyle:(UITableViewCellEditingStyle)editingStyle forRowAtIndexPath:(NSIndexPath *)indexPath {
     if (editingStyle == UITableViewCellEditingStyleDelete) {
         [WPMobileStats trackEventForWPCom:StatsEventSettingsRemovedBlog];
         
         Blog *blog = [self.resultsController objectAtIndexPath:[NSIndexPath indexPathForRow:indexPath.row inSection:0]];
         [blog remove];
         
-        if([[self.resultsController fetchedObjects] count] == 0) {
+        if ([[self.resultsController fetchedObjects] count] == 0) {
             [self setEditing:NO];
             self.editButtonItem.enabled = NO;
         }
@@ -539,8 +526,7 @@ CGFloat const blavatarImageViewSize = 50.f;
 #pragma mark - 
 #pragma mark Table view delegate
 
-- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
-{
+- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
     [tableView deselectRowAtIndexPath:indexPath animated:YES];
     
     if (indexPath.section == SettingsSectionBlogs) {
@@ -738,7 +724,7 @@ CGFloat const blavatarImageViewSize = 50.f;
 #pragma mark Action Sheet Delegate Methods
 
 - (void)actionSheet:(UIActionSheet *)actionSheet clickedButtonAtIndex:(NSInteger)buttonIndex {
-    if(buttonIndex == 0) {
+    if (buttonIndex == 0) {
         [WPMobileStats trackEventForWPCom:StatsEventSettingsSignedOutOfDotCom];
         
         // Sign out
