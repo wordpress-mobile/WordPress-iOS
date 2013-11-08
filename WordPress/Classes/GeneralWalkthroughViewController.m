@@ -36,7 +36,6 @@
     UIScrollView *_scrollView;
     UIView *_mainView;
     WPNUXSecondaryButton *_skipToCreateAccount;
-    WPNUXPrimaryButton *_skipToSignIn;
     
     // Page 1
     UIButton *_page1InfoButton;
@@ -46,6 +45,7 @@
     UIView *_bottomPanelLine;
     UIView *_bottomPanel;
     UIPageControl *_pageControl;
+    WPNUXMainButton *_skipToSignIn;
     
     // Page 2
     UIImageView *_page2Icon;
@@ -60,7 +60,6 @@
     
     CGFloat _bottomPanelOriginalX;
     CGFloat _skipToCreateAccountOriginalX;
-    CGFloat _skipToSignInOriginalX;
     CGFloat _pageControlOriginalX;
     CGFloat _heightFromPageControl;
         
@@ -174,10 +173,6 @@ CGFloat const GeneralWalkthroughiOS7StatusBarOffset = 20.0;
         CGRect skipToCreateAccountFrame = _skipToCreateAccount.frame;
         skipToCreateAccountFrame.origin.x = _skipToCreateAccountOriginalX + contentOffset.x;
         _skipToCreateAccount.frame = skipToCreateAccountFrame;
-        
-        CGRect skipToSignInFrame = _skipToSignIn.frame;
-        skipToSignInFrame.origin.x = _skipToSignInOriginalX + contentOffset.x;
-        _skipToSignIn.frame = skipToSignInFrame;
         
         CGRect pageControlFrame = _pageControl.frame;
         pageControlFrame.origin.x = _pageControlOriginalX + contentOffset.x;
@@ -521,7 +516,7 @@ CGFloat const GeneralWalkthroughiOS7StatusBarOffset = 20.0;
         
     // Add Skip to Sign in Button
     if (_skipToSignIn == nil) {
-        _skipToSignIn = [[WPNUXPrimaryButton alloc] init];
+        _skipToSignIn = [[WPNUXMainButton alloc] init];
         [_skipToSignIn setTitle:NSLocalizedString(@"Sign In", nil) forState:UIControlStateNormal];
         [_skipToSignIn addTarget:self action:@selector(clickedSkipToSignIn:) forControlEvents:UIControlEventTouchUpInside];
         [_skipToSignIn sizeToFit];
@@ -571,7 +566,13 @@ CGFloat const GeneralWalkthroughiOS7StatusBarOffset = 20.0;
     x = [self adjustX:x forPage:1];
     y = CGRectGetMaxY(_page1Title.frame) + 0.5*GeneralWalkthroughStandardOffset;
     _page1Description.frame = CGRectIntegral(CGRectMake(x, y, labelSize.width, labelSize.height));
-        
+    
+    // Layout Skip to Sign In Button
+    x = (_viewWidth - GeneralWalkthroughSignInButtonWidth) / 2.0;
+    x = [self adjustX:x forPage:1];
+    y = CGRectGetMaxY(_page1Description.frame) + GeneralWalkthroughStandardOffset;
+    _skipToSignIn.frame = CGRectMake(x, y, GeneralWalkthroughSignInButtonWidth, GeneralWalkthroughSignInButtonHeight);
+    
     // Layout Bottom Panel
     x = 0;
     x = [self adjustX:x forPage:1];
@@ -601,16 +602,10 @@ CGFloat const GeneralWalkthroughiOS7StatusBarOffset = 20.0;
     x = [self adjustX:x forPage:1];
     y = CGRectGetMinY(_bottomPanel.frame) + GeneralWalkthroughStandardOffset;
     _skipToCreateAccount.frame = CGRectMake(x, y, CGRectGetWidth(_skipToCreateAccount.frame), CGRectGetHeight(_skipToCreateAccount.frame));
-
-    // Layout Skip to Sign In Button
-    x = _viewWidth - GeneralWalkthroughStandardOffset - CGRectGetWidth(_skipToSignIn.frame);
-    x = [self adjustX:x forPage:1];
-    y = CGRectGetMinY(_skipToCreateAccount.frame);
-    _skipToSignIn.frame = CGRectMake(x, y, CGRectGetWidth(_skipToSignIn.frame), CGRectGetHeight(_skipToSignIn.frame));
     
     _heightFromPageControl = _viewHeight - CGRectGetMinY(_pageControl.frame) - CGRectGetHeight(_pageControl.frame);
-    NSArray *viewsToCenter = @[_page1Icon, _page1Title, _page1Description];
-    [WPNUXUtility centerViews:viewsToCenter withStartingView:_page1Icon andEndingView:_page1Description forHeight:(_viewHeight - _heightFromPageControl)];
+    NSArray *viewsToCenter = @[_page1Icon, _page1Title, _page1Description, _skipToSignIn];
+    [WPNUXUtility centerViews:viewsToCenter withStartingView:_page1Icon andEndingView:_skipToSignIn forHeight:(_viewHeight - _heightFromPageControl)];
 }
 
 - (void)initializePage2
@@ -743,7 +738,6 @@ CGFloat const GeneralWalkthroughiOS7StatusBarOffset = 20.0;
     if (!_savedOriginalPositionsOfStickyControls) {
         _savedOriginalPositionsOfStickyControls = YES;
         _skipToCreateAccountOriginalX = CGRectGetMinX(_skipToCreateAccount.frame);
-        _skipToSignInOriginalX = CGRectGetMinX(_skipToSignIn.frame);
         _bottomPanelOriginalX = CGRectGetMinX(_bottomPanel.frame);
         _pageControlOriginalX = CGRectGetMinX(_pageControl.frame);
     }
