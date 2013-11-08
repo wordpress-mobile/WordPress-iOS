@@ -62,11 +62,6 @@ CGFloat const CommentsSectionHeaderHeight = 24.0;
     self.tableView.tableFooterView = [[UIView alloc] initWithFrame:CGRectZero];
 }
 
-- (UIColor *)backgroundColorForRefreshHeaderView
-{
-    return [WPStyleGuide itsEverywhereGrey];
-}
-
 - (void)viewWillAppear:(BOOL)animated {
     WPFLogMethod();
 

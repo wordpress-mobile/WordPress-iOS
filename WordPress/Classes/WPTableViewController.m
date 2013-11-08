@@ -8,7 +8,6 @@
 
 #import "WPTableViewController.h"
 #import "WPTableViewControllerSubclass.h"
-#import "EGORefreshTableHeaderView.h" 
 #import "WordPressAppDelegate.h"
 #import "EditSiteViewController.h"
 #import "ReachabilityUtils.h"
@@ -19,7 +18,7 @@
 
 NSTimeInterval const WPTableViewControllerRefreshTimeout = 300; // 5 minutes
 
-@interface WPTableViewController () <EGORefreshTableHeaderDelegate>
+@interface WPTableViewController ()
 
 @property (nonatomic, strong) NSFetchedResultsController *resultsController;
 @property (nonatomic) BOOL swipeActionsEnabled;
@@ -40,7 +39,6 @@ NSTimeInterval const WPTableViewControllerRefreshTimeout = 300; // 5 minutes
 @end
 
 @implementation WPTableViewController {
-    EGORefreshTableHeaderView *_refreshHeaderView;
     EditSiteViewController *editSiteViewController;
     UIView *noResultsView;
     NSIndexPath *_indexPathSelectedBeforeUpdates;
@@ -79,21 +77,13 @@ NSTimeInterval const WPTableViewControllerRefreshTimeout = 300; // 5 minutes
 {
     [super viewDidLoad];
 	
-	self.tableView = [[UITableView alloc] initWithFrame:self.view.bounds];
 	self.tableView.delegate = self;
 	self.tableView.dataSource = self;
 	self.tableView.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
-	[self.view addSubview:self.tableView];
-    
-    if (_refreshHeaderView == nil) {
-		_refreshHeaderView = [[EGORefreshTableHeaderView alloc] initWithFrame:CGRectMake(0.0f, 0.0f - self.tableView.bounds.size.height, self.tableView.frame.size.width, self.tableView.bounds.size.height)];
-		_refreshHeaderView.delegate = self;
-        _refreshHeaderView.backgroundColor = [self backgroundColorForRefreshHeaderView];
-		[self.tableView addSubview:_refreshHeaderView];
-    }
-	
-	//  update the last update date
-	[_refreshHeaderView refreshLastUpdatedDate];
+
+    UIRefreshControl *refreshControl = [[UIRefreshControl alloc] init];
+    [refreshControl addTarget:self action:@selector(refresh) forControlEvents:UIControlEventValueChanged];
+    self.refreshControl = refreshControl;
 
     self.tableView.allowsSelectionDuringEditing = YES;
     self.tableView.backgroundColor = TABLE_VIEW_BACKGROUND_COLOR;
@@ -122,7 +112,6 @@ NSTimeInterval const WPTableViewControllerRefreshTimeout = 300; // 5 minutes
 	self.tableView.delegate = nil;
 	self.tableView.dataSource = nil;
 	self.tableView =  nil;
-     _refreshHeaderView = nil;
     
     if (self.swipeActionsEnabled) {
         [self disableSwipeGestureRecognizer];
@@ -175,7 +164,6 @@ NSTimeInterval const WPTableViewControllerRefreshTimeout = 300; // 5 minutes
 - (void)setEditing:(BOOL)editing animated:(BOOL)animated {
     [self removeSwipeView:NO];
     [super setEditing:editing animated:animated];
-    _refreshHeaderView.hidden = editing;
 }
 
 
@@ -198,11 +186,6 @@ NSTimeInterval const WPTableViewControllerRefreshTimeout = 300; // 5 minutes
         didPlayPullSound = YES;
     }
     
-}
-
-- (UIColor *)backgroundColorForRefreshHeaderView
-{
-    return _refreshHeaderView.backgroundColor;
 }
 
 - (NSString *)noResultsText
@@ -480,34 +463,17 @@ NSTimeInterval const WPTableViewControllerRefreshTimeout = 300; // 5 minutes
     }
 }
 
-#pragma mark - EGORefreshTableHeaderDelegate Methods
+#pragma mark - UIRefreshControl Methods
 
-- (void)egoRefreshTableHeaderDidTriggerRefresh:(EGORefreshTableHeaderView *)view{
+- (void)refresh {
     didTriggerRefresh = YES;
 	[self syncItemsViaUserInteraction];
     [noResultsView removeFromSuperview];
 }
 
-- (BOOL)egoRefreshTableHeaderDataSourceIsLoading:(EGORefreshTableHeaderView *)view{
-	return [self isSyncing]; // should return if data source model is reloading
-}
-
-- (NSDate*)egoRefreshTableHeaderDataSourceLastUpdated:(EGORefreshTableHeaderView *)view{
-	return [self lastSyncDate]; // should return date data source was last changed
-}
 
 #pragma mark -
 #pragma mark UIScrollViewDelegate Methods
-
-- (void)scrollViewDidScroll:(UIScrollView *)scrollView{
-	if (!self.editing)
-        [_refreshHeaderView egoRefreshScrollViewDidScroll:scrollView];
-}
-
-- (void)scrollViewDidEndDragging:(UIScrollView *)scrollView willDecelerate:(BOOL)decelerate{
-	if (!self.editing)
-		[_refreshHeaderView egoRefreshScrollViewDidEndDragging:scrollView];
-}
 
 - (void)scrollViewWillBeginDragging:(UIScrollView *)scrollView {
     _isScrolling = YES;
@@ -624,7 +590,7 @@ NSTimeInterval const WPTableViewControllerRefreshTimeout = 300; // 5 minutes
 }
 
 - (void)hideRefreshHeader {
-    [_refreshHeaderView egoRefreshScrollViewDataSourceDidFinishedLoading:self.tableView];
+    [self.refreshControl endRefreshing];
     if ([self isViewLoaded] && self.tableView.window && didTriggerRefresh) {
         [SoundUtil playRollupSound];
     }
