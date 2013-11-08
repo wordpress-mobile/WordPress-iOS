@@ -39,7 +39,7 @@
     [self setBackgroundImage:tappedImage forState:UIControlStateHighlighted];
     [self setTitleColor:[UIColor colorWithRed:1.0 green:1.0 blue:1.0 alpha:0.9] forState:UIControlStateNormal];
     [self setTitleColor:[UIColor colorWithRed:1.0 green:1.0 blue:1.0 alpha:0.4] forState:UIControlStateDisabled];
-    [self setTitleColor:[UIColor colorWithRed:9.0/255.0 green:134.0/255.0 blue:181.0/255.0 alpha:0.4] forState:UIControlStateHighlighted];
+    [self setTitleColor:[UIColor colorWithRed:9.0/255.0 green:134.0/255.0 blue:181.0/255.0 alpha:1.0] forState:UIControlStateHighlighted];
     self.titleLabel.font = [UIFont fontWithName:@"OpenSans" size:20.0];
 }
 
