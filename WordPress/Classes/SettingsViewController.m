@@ -63,6 +63,7 @@ CGFloat const blavatarImageViewSize = 50.f;
 
 @property (weak, readonly) NSFetchedResultsController *resultsController;
 @property (nonatomic, strong) NSArray *mediaSettingsArray;
+@property (nonatomic, strong) UIBarButtonItem *doneButton;
 
 - (void)configureCell:(UITableViewCell *)cell atIndexPath:(NSIndexPath *)indexPath;
 - (UITableViewCell *)cellForIndexPath:(NSIndexPath *)indexPath;
@@ -88,7 +89,8 @@ CGFloat const blavatarImageViewSize = 50.f;
     
     self.title = NSLocalizedString(@"Settings", @"App Settings");
     self.navigationItem.leftBarButtonItem = self.editButtonItem;
-    self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:NSLocalizedString(@"Done", @"") style:[WPStyleGuide barButtonStyleForBordered] target:self action:@selector(dismiss)];
+    self.doneButton = [[UIBarButtonItem alloc] initWithTitle:NSLocalizedString(@"Done", @"") style:[WPStyleGuide barButtonStyleForBordered] target:self action:@selector(dismiss)];
+    self.navigationItem.rightBarButtonItem = self.doneButton;
     
     [[NSNotificationCenter defaultCenter] addObserverForName:WordPressComApiDidLoginNotification object:nil queue:nil usingBlock:^(NSNotification *note) {
         NSMutableIndexSet *sections = [NSMutableIndexSet indexSet];
@@ -239,7 +241,7 @@ CGFloat const blavatarImageViewSize = 50.f;
 #pragma mark Table view data source
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
-    return SettingsSectionCount;
+    return [self.tableView isEditing] ? 1 : SettingsSectionCount;
 }
 
 // The Sign Out row in Wpcom section can change, so identify it dynamically
@@ -603,6 +605,21 @@ CGFloat const blavatarImageViewSize = 50.f;
             SupportViewController *supportViewController = [[SupportViewController alloc] init];
             [self.navigationController pushViewController:supportViewController animated:YES];
         }
+    }
+}
+
+- (void)setEditing:(BOOL)editing animated:(BOOL)animated {
+    [super setEditing:editing animated:animated];
+
+    // Smoothly animate all sections that can or can't be edited, and deal with the Done button
+    NSIndexSet *indexSetToChange = [NSIndexSet indexSetWithIndexesInRange:NSMakeRange(1, SettingsSectionCount-1)];
+    UITableViewRowAnimation rowAnimation = animated ? UITableViewRowAnimationFade : UITableViewRowAnimationNone;
+    if (editing) {
+        [self.tableView deleteSections:indexSetToChange withRowAnimation:rowAnimation];
+        [self.navigationItem setRightBarButtonItem:nil animated:animated];
+    } else {
+        [self.tableView insertSections:indexSetToChange withRowAnimation:rowAnimation];
+        [self.navigationItem setRightBarButtonItem:self.doneButton animated:animated];
     }
 }
 
