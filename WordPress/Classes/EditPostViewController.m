@@ -107,7 +107,7 @@ CGFloat const EditPostViewControllerTextViewOffset = 10.0;
     [super viewDidLoad];
     
     _revisionContext = [[ContextManager sharedInstance] newDerivedContext];
-    self.apost = (AbstractPost *)[_revisionContext objectWithID:self.apost.objectID];
+    self.apost = (AbstractPost *)[_revisionContext existingObjectWithID:self.apost.objectID error:nil];
     
     [_revisionContext performBlock:^{
         self.apost = [self.apost createRevision];
@@ -773,8 +773,6 @@ CGFloat const EditPostViewControllerTextViewOffset = 10.0;
     [WPMobileStats trackEventForWPComWithSavedProperties:[self formattedStatEventString:StatsEventPostDetailClosedEditor]];
     
     [self logSavePostStats];
-    
-    [self autosaveContent];
 
     [self.view endEditing:YES];
 
@@ -1074,7 +1072,6 @@ CGFloat const EditPostViewControllerTextViewOffset = 10.0;
     title = [title stringByTrimmingCharactersInSet:charSet];
     
     _linkHelperAlertView.overlayTitle = title;
-//    _linkHelperAlertView.overlayDescription = NS Localized String(@"Enter the URL and link text below.", @"Alert view description for creating a link in the post editor.");
     _linkHelperAlertView.overlayDescription = @"";
     _linkHelperAlertView.footerDescription = [NSLocalizedString(@"tap to dismiss", nil) uppercaseString];
     _linkHelperAlertView.firstTextFieldPlaceholder = NSLocalizedString(@"Text to be linked", @"Popup to aid in creating a Link in the Post Editor.");
