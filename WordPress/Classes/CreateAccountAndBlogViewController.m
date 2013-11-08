@@ -1308,10 +1308,8 @@ CGFloat const CreateAccountAndBlogKeyboardOffset = 132.0;
 - (void)showError:(NSString *)message
 {
     WPWalkthroughOverlayView *overlayView = [[WPWalkthroughOverlayView alloc] initWithFrame:self.view.bounds];
-    overlayView.overlayMode = WPWalkthroughGrayOverlayViewOverlayModeTapToDismiss;
     overlayView.overlayTitle = NSLocalizedString(@"Error", nil);
     overlayView.overlayDescription = message;
-    overlayView.footerDescription = [NSLocalizedString(@"tap to dismiss", nil) uppercaseString];
     overlayView.dismissCompletionBlock = ^(WPWalkthroughOverlayView *overlayView){
         [overlayView dismiss];
     };

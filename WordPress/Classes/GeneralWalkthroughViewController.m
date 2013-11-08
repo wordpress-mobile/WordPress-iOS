@@ -230,7 +230,6 @@ CGFloat const GeneralWalkthroughiOS7StatusBarOffset = 20.0;
     overlayView.overlayMode = WPWalkthroughGrayOverlayViewOverlayModeTwoButtonMode;
     overlayView.overlayTitle = NSLocalizedString(@"Sorry, we can't log you in.", nil);
     overlayView.overlayDescription = message;
-    overlayView.footerDescription = [NSLocalizedString(@"tap to dismiss", nil) uppercaseString];
     overlayView.secondaryButtonText = NSLocalizedString(@"Need Help?", nil);
     overlayView.primaryButtonText = NSLocalizedString(@"OK", nil);
     overlayView.dismissCompletionBlock = ^(WPWalkthroughOverlayView *overlayView){

@@ -39,10 +39,11 @@ CGFloat const WPWalkthroughGrayOverlayMaxLabelWidth = 289.0;
 {
     self = [super initWithFrame:frame];
     if (self) {
-        _overlayMode = WPWalkthroughGrayOverlayViewOverlayModeTapToDismiss;
+        _overlayMode = WPWalkthroughGrayOverlayViewOverlayModePrimaryButton;
         [self configureBackgroundColor];
         [self addViewElements];
         [self addGestureRecognizer];
+        [self setPrimaryButtonText:NSLocalizedString(@"OK", nil)];
     }
     return self;
 }
@@ -156,17 +157,23 @@ CGFloat const WPWalkthroughGrayOverlayMaxLabelWidth = 289.0;
     _bottomLabel.frame = CGRectIntegral(CGRectMake(x, y, bottomLabelSize.width, bottomLabelSize.height));
     
     // Layout Bottom Buttons
+    if (self.overlayMode == WPWalkthroughGrayOverlayViewOverlayModePrimaryButton ||
+        self.overlayMode == WPWalkthroughGrayOverlayViewOverlayModeTwoButtonMode) {
+        
+        x = _viewWidth - CGRectGetWidth(_primaryButton.frame) - WPWalkthroughGrayOverlayStandardOffset;
+        y = (_viewHeight - WPWalkthroughGrayOverlayBottomPanelHeight + WPWalkthroughGrayOverlayStandardOffset);
+        _primaryButton.frame = CGRectIntegral(CGRectMake(x, y, CGRectGetWidth(_primaryButton.frame), CGRectGetHeight(_primaryButton.frame)));
+    } else {
+        _primaryButton.frame = CGRectZero;
+    }
+    
     if (self.overlayMode == WPWalkthroughGrayOverlayViewOverlayModeTwoButtonMode) {
+        
         x = WPWalkthroughGrayOverlayStandardOffset;
         y = (_viewHeight - WPWalkthroughGrayOverlayBottomPanelHeight + WPWalkthroughGrayOverlayStandardOffset);
         _secondaryButton.frame = CGRectIntegral(CGRectMake(x, y, CGRectGetWidth(_secondaryButton.frame), CGRectGetHeight(_secondaryButton.frame)));
-        
-        x = _viewWidth - CGRectGetWidth(_primaryButton.frame) - WPWalkthroughGrayOverlayStandardOffset;
-        y = CGRectGetMinY(_secondaryButton.frame);
-        _primaryButton.frame = CGRectIntegral(CGRectMake(x, y, CGRectGetWidth(_primaryButton.frame), CGRectGetHeight(_primaryButton.frame)));
     } else {
         _secondaryButton.frame = CGRectZero;
-        _primaryButton.frame = CGRectZero;
     }
     
     CGFloat heightFromBottomLabel = _viewHeight - CGRectGetMinY(_bottomLabel.frame) - CGRectGetHeight(_bottomLabel.frame);
@@ -300,6 +307,8 @@ CGFloat const WPWalkthroughGrayOverlayMaxLabelWidth = 289.0;
 {
     if (self.secondaryButtonCompletionBlock) {
         self.secondaryButtonCompletionBlock(self);
+    } else if (self.dismissCompletionBlock) {
+        self.dismissCompletionBlock(self);
     }
 }
 
@@ -307,6 +316,8 @@ CGFloat const WPWalkthroughGrayOverlayMaxLabelWidth = 289.0;
 {
     if (self.primaryButtonCompletionBlock) {
         self.primaryButtonCompletionBlock(self);
+    } else if (self.dismissCompletionBlock) {
+        self.dismissCompletionBlock(self);
     }
 }
 

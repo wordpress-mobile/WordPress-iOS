@@ -11,6 +11,7 @@
 typedef NS_ENUM(NSUInteger, WPWalkthroughOverlayViewOverlayMode) {
     WPWalkthroughGrayOverlayViewOverlayModeTapToDismiss,
     WPWalkthroughGrayOverlayViewOverlayModeTwoButtonMode,
+    WPWalkthroughGrayOverlayViewOverlayModePrimaryButton
 };
 
 typedef NS_ENUM(NSUInteger, WPWalkthroughOverlayViewIcon) {

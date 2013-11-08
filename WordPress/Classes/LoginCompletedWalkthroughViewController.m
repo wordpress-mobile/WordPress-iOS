@@ -153,17 +153,27 @@ CGFloat const LoginCompeltedWalkthroughSwipeToContinueTopOffset = 14.0;
     WPWalkthroughOverlayView *grayOverlay = [[WPWalkthroughOverlayView alloc] initWithFrame:CGRectMake(0, 0, _viewWidth, _viewHeight)];
     grayOverlay.overlayTitle = NSLocalizedString(@"Success!", @"NUX Second Walkthrough Success Overlay Title");
     grayOverlay.overlayDescription = NSLocalizedString(@"You have successfully signed into your WordPress account!", @"NUX Second Walkthrough Success Overlay Description");
-    grayOverlay.overlayMode = WPWalkthroughGrayOverlayViewOverlayModeTapToDismiss;
-    grayOverlay.footerDescription = [NSLocalizedString(@"tap to continue", nil) uppercaseString];
     grayOverlay.icon = WPWalkthroughGrayOverlayViewBlueCheckmarkIcon;
     grayOverlay.hideBackgroundView = YES;
     grayOverlay.dismissCompletionBlock = ^(WPWalkthroughOverlayView * overlayView){
-        if (!self.showsExtraWalkthroughPages) {
-            [self dismiss];
-        } else {
-            [overlayView dismiss];
-        }
+        [self dismiss];
     };
+    
+    self.showsExtraWalkthroughPages = YES;
+    
+    if (self.showsExtraWalkthroughPages) {
+        
+        grayOverlay.overlayMode = WPWalkthroughGrayOverlayViewOverlayModeTwoButtonMode;
+        grayOverlay.primaryButtonText = NSLocalizedString(@"Get started!", nil);
+        grayOverlay.secondaryButtonText = NSLocalizedString(@"Learn more", nil);
+        grayOverlay.primaryButtonCompletionBlock = ^(WPWalkthroughOverlayView * overlayView){
+            [self dismiss];
+        };
+        grayOverlay.secondaryButtonCompletionBlock = ^(WPWalkthroughOverlayView * overlayView){
+            [overlayView dismiss];
+        };
+    }
+    
     [self.view addSubview:grayOverlay];
 }
 
