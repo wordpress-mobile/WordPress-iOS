@@ -1156,10 +1156,21 @@ int ddLogLevel = LOG_LEVEL_INFO;
 #else
         NSNumber *sandbox = [NSNumber numberWithBool:NO];
 #endif
+        NSArray *parameters = @[account.username,
+                                account.password,
+                                token,
+                                [[UIDevice currentDevice] wordpressIdentifier],
+                                @"apple",
+                                sandbox,
+#ifdef INTERNAL_BUILD
+                                @"org.wordpress.internal"
+#endif
+                                ];
+        
         WPXMLRPCClient *api = [[WPXMLRPCClient alloc] initWithXMLRPCEndpoint:[NSURL URLWithString:authURL]];
         [api setAuthorizationHeaderWithToken:[[WordPressComApi sharedApi] authToken]];
         [api callMethod:@"wpcom.mobile_push_unregister_token"
-             parameters:[NSArray arrayWithObjects:account.username, account.password, token, [[UIDevice currentDevice] wordpressIdentifier], @"apple", sandbox, nil]
+             parameters:parameters
                 success:^(AFHTTPRequestOperation *operation, id responseObject) {
                     DDLogInfo(@"Unregistered token %@", token);
                 } failure:^(AFHTTPRequestOperation *operation, NSError *error) {

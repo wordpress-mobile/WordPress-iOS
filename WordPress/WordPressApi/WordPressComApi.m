@@ -461,11 +461,20 @@ NSString *const WordPressComApiErrorMessageKey = @"WordPressComApiErrorMessageKe
     if ([updatedSettings count] == 0)
         return;
 
+    NSArray *parameters = @[[self usernameForXmlrpc],
+                            [self passwordForXmlrpc],
+                            updatedSettings,
+                            token,
+                            @"apple",
+#ifdef INTERNAL_BUILD
+                            @"org.wordpress.internal",
+#endif
+                            ];
     WPXMLRPCClient *api = [[WPXMLRPCClient alloc] initWithXMLRPCEndpoint:[NSURL URLWithString:kWPcomXMLRPCUrl]];
     [api setAuthorizationHeaderWithToken:self.authToken];
     //Update supported notifications dictionary
     [api callMethod:@"wpcom.set_mobile_push_notification_settings"
-         parameters:[NSArray arrayWithObjects:[self usernameForXmlrpc], [self passwordForXmlrpc], updatedSettings, token, @"apple", nil]
+         parameters:parameters
             success:^(AFHTTPRequestOperation *operation, id responseObject) {
                 // Hooray!
                 if (success)
@@ -483,10 +492,19 @@ NSString *const WordPressComApiErrorMessageKey = @"WordPressComApiErrorMessageKe
     if(![[WordPressComApi sharedApi] hasCredentials])
         return;
     
+    NSArray *parameters = @[[self usernameForXmlrpc],
+                            [self passwordForXmlrpc],
+                            token,
+                            @"apple",
+#ifdef INTERNAL_BUILD
+                            @"org.wordpress.internal",
+#endif
+                            ];
+    
     WPXMLRPCClient *api = [[WPXMLRPCClient alloc] initWithXMLRPCEndpoint:[NSURL URLWithString:kWPcomXMLRPCUrl]];
     [api setAuthorizationHeaderWithToken:self.authToken];
     [api callMethod:@"wpcom.get_mobile_push_notification_settings"
-         parameters:[NSArray arrayWithObjects:[self usernameForXmlrpc], [self passwordForXmlrpc], token, @"apple", nil]
+         parameters:parameters
             success:^(AFHTTPRequestOperation *operation, id responseObject) {
                 NSDictionary *supportedNotifications = (NSDictionary *)responseObject;
                 [[NSUserDefaults standardUserDefaults] setObject:supportedNotifications forKey:@"notification_preferences"];
@@ -527,8 +545,17 @@ NSString *const WordPressComApiErrorMessageKey = @"WordPressComApiErrorMessageKe
                                    @"production": production,
                                    @"app_version": [[[NSBundle mainBundle] infoDictionary] objectForKey:@"CFBundleVersion"],
                                    @"os_version": [[UIDevice currentDevice] systemVersion],
+#ifdef INTERNAL_BUILD
+                                   @"app_secret_key": @"org.wordpress.internal",
+#endif
                                    };
-    WPXMLRPCRequest *tokenRequest = [api XMLRPCRequestWithMethod:@"wpcom.mobile_push_register_token" parameters:[NSArray arrayWithObjects:[self usernameForXmlrpc], [self passwordForXmlrpc], token, tokenOptions, nil]];
+    NSArray *parameters = @[
+                            [self usernameForXmlrpc],
+                            [self passwordForXmlrpc],
+                            token,
+                            tokenOptions
+                            ];
+    WPXMLRPCRequest *tokenRequest = [api XMLRPCRequestWithMethod:@"wpcom.mobile_push_register_token" parameters:parameters];
     WPXMLRPCRequestOperation *tokenOperation = [api XMLRPCRequestOperationWithRequest:tokenRequest success:^(AFHTTPRequestOperation *operation, id responseObject) {
         WPFLog(@"Registered token %@" , token);
     } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
@@ -537,7 +564,14 @@ NSString *const WordPressComApiErrorMessageKey = @"WordPressComApiErrorMessageKe
     
     [operations addObject:tokenOperation];
     
-    NSArray *settingsParameters = [NSArray arrayWithObjects:[self usernameForXmlrpc], [self passwordForXmlrpc], token, @"apple", nil];
+    NSArray *settingsParameters = @[[self usernameForXmlrpc],
+                                    [self passwordForXmlrpc],
+                                    token,
+                                    @"apple",
+#ifdef INTERNAL_BUILD
+                                    @"org.wordpress.internal",
+#endif
+                                    ];
     WPXMLRPCRequest *settingsRequest = [api XMLRPCRequestWithMethod:@"wpcom.get_mobile_push_notification_settings" parameters:settingsParameters];
     WPXMLRPCRequestOperation *settingsOperation = [api XMLRPCRequestOperationWithRequest:settingsRequest success:^(AFHTTPRequestOperation *operation, id responseObject) {
         NSDictionary *supportedNotifications = (NSDictionary *)responseObject;

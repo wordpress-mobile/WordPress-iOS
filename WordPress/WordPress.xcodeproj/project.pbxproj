@@ -6744,7 +6744,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "DERIVED_TMP_DIR=/tmp/WordPress.build\ncp ${SOURCE_ROOT}/WordPressApi/WordPressComApiCredentials.m ${DERIVED_TMP_DIR}/WordPressComApiCredentials.m\n\nWPCOM_CONFIG=$HOME/.wpcom_app_credentials\necho \"Checking for WordPress.com Oauth App Secret in $WPCOM_CONFIG\"\nif [ -a $WPCOM_CONFIG ]\nthen\necho \"Config found\"\nsource $WPCOM_CONFIG\nelse\necho \"No config found\"\nexit 0\nfi\n\nif [ -z $WPCOM_APP_ID ]\nthen\necho \"warning: Missing WPCOM_APP_ID\"\nexit 1\nfi\nif [ -z $WPCOM_APP_SECRET ]\nthen\necho \"warning: Missing WPCOM_APP_SECRET\"\nexit 1\nfi\n\necho \"Generating credentials file in ${DERIVED_TMP_DIR}/WordPressComApiCredentials.m\"\nruby ${SOURCE_ROOT}/WordPressApi/gencredentials.rb > ${DERIVED_TMP_DIR}/WordPressComApiCredentials.m\n";
+			shellScript = "DERIVED_TMP_DIR=/tmp/WordPress.build\ncp ${SOURCE_ROOT}/WordPressApi/WordPressComApiCredentials.m ${DERIVED_TMP_DIR}/WordPressComApiCredentials.m\n\nexport WPCOM_CONFIG=$HOME/.wpcom_internal_app_credentials\necho \"Checking for WordPress.com Oauth App Secret in $WPCOM_CONFIG\"\nif [ -a $WPCOM_CONFIG ]\nthen\necho \"Config found\"\nsource $WPCOM_CONFIG\nelse\necho \"No config found\"\nexit 0\nfi\n\nif [ -z $WPCOM_APP_ID ]\nthen\necho \"warning: Missing WPCOM_APP_ID\"\nexit 1\nfi\nif [ -z $WPCOM_APP_SECRET ]\nthen\necho \"warning: Missing WPCOM_APP_SECRET\"\nexit 1\nfi\n\necho \"Generating credentials file in ${DERIVED_TMP_DIR}/WordPressComApiCredentials.m\"\nruby ${SOURCE_ROOT}/WordPressApi/gencredentials.rb > ${DERIVED_TMP_DIR}/WordPressComApiCredentials.m\n";
 			showEnvVarsInLog = 0;
 		};
 		930C636C182BD86300976C21 /* Copy Pods Resources */ = {
@@ -6801,7 +6801,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "DERIVED_TMP_DIR=/tmp/WordPress.build\ncp ${SOURCE_ROOT}/WordPressApi/WordPressComApiCredentials.m ${DERIVED_TMP_DIR}/WordPressComApiCredentials.m\n\nWPCOM_CONFIG=$HOME/.wpcom_app_credentials\necho \"Checking for WordPress.com Oauth App Secret in $WPCOM_CONFIG\"\nif [ -a $WPCOM_CONFIG ]\nthen\necho \"Config found\"\nsource $WPCOM_CONFIG\nelse\necho \"No config found\"\nexit 0\nfi\n\nif [ -z $WPCOM_APP_ID ]\nthen\necho \"warning: Missing WPCOM_APP_ID\"\nexit 1\nfi\nif [ -z $WPCOM_APP_SECRET ]\nthen\necho \"warning: Missing WPCOM_APP_SECRET\"\nexit 1\nfi\n\necho \"Generating credentials file in ${DERIVED_TMP_DIR}/WordPressComApiCredentials.m\"\nruby ${SOURCE_ROOT}/WordPressApi/gencredentials.rb > ${DERIVED_TMP_DIR}/WordPressComApiCredentials.m\n";
+			shellScript = "DERIVED_TMP_DIR=/tmp/WordPress.build\ncp ${SOURCE_ROOT}/WordPressApi/WordPressComApiCredentials.m ${DERIVED_TMP_DIR}/WordPressComApiCredentials.m\n\nexport WPCOM_CONFIG=$HOME/.wpcom_app_credentials\necho \"Checking for WordPress.com Oauth App Secret in $WPCOM_CONFIG\"\nif [ -a $WPCOM_CONFIG ]\nthen\necho \"Config found\"\nsource $WPCOM_CONFIG\nelse\necho \"No config found\"\nexit 0\nfi\n\nif [ -z $WPCOM_APP_ID ]\nthen\necho \"warning: Missing WPCOM_APP_ID\"\nexit 1\nfi\nif [ -z $WPCOM_APP_SECRET ]\nthen\necho \"warning: Missing WPCOM_APP_SECRET\"\nexit 1\nfi\n\necho \"Generating credentials file in ${DERIVED_TMP_DIR}/WordPressComApiCredentials.m\"\nruby ${SOURCE_ROOT}/WordPressApi/gencredentials.rb > ${DERIVED_TMP_DIR}/WordPressComApiCredentials.m\n";
 			showEnvVarsInLog = 0;
 		};
 		E1CCFB31175D62320016BD8A /* ShellScript */ = {
@@ -7313,7 +7313,7 @@
 				CLANG_ENABLE_MODULES = NO;
 				CLANG_ENABLE_OBJC_ARC = YES;
 				CLANG_WARN__ARC_BRIDGE_CAST_NONARC = NO;
-				CODE_SIGN_IDENTITY = "iPhone Developer";
+				CODE_SIGN_IDENTITY = "";
 				COPY_PHASE_STRIP = NO;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
@@ -7334,7 +7334,7 @@
 					"-Wno-format",
 				);
 				PRODUCT_NAME = WordPress;
-				PROVISIONING_PROFILE = "CD13E454-2501-4C5D-98AE-D1EB67ED57ED";
+				PROVISIONING_PROFILE = "CD4D3C77-5918-4EBF-ADC3-80845C13D204";
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
 			name = Debug;
@@ -7348,7 +7348,7 @@
 				CLANG_ENABLE_MODULES = NO;
 				CLANG_ENABLE_OBJC_ARC = YES;
 				CLANG_WARN__ARC_BRIDGE_CAST_NONARC = NO;
-				CODE_SIGN_IDENTITY = "iPhone Developer";
+				CODE_SIGN_IDENTITY = "";
 				COPY_PHASE_STRIP = YES;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
@@ -7406,7 +7406,7 @@
 				CLANG_ENABLE_OBJC_ARC = YES;
 				CLANG_WARN__ARC_BRIDGE_CAST_NONARC = NO;
 				CODE_SIGN_ENTITLEMENTS = Entitlements.plist;
-				CODE_SIGN_IDENTITY = "iPhone Developer";
+				CODE_SIGN_IDENTITY = "";
 				COPY_PHASE_STRIP = YES;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
@@ -7450,6 +7450,11 @@
 				GCC_OPTIMIZATION_LEVEL = 0;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = WordPress_Prefix.pch;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					INTERNAL_BUILD,
+					"$(inherited)",
+					"COCOAPODS=1",
+				);
 				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
 				GCC_THUMB_SUPPORT = NO;
 				GCC_TREAT_WARNINGS_AS_ERRORS = NO;
@@ -7461,7 +7466,7 @@
 					"-Wno-format",
 				);
 				PRODUCT_NAME = "WP Internal";
-				PROVISIONING_PROFILE = "BC4F5C10-AD55-45E4-B80C-C9930DBBEA9A";
+				PROVISIONING_PROFILE = "66F7FAD2-9E02-4347-ACDB-683916A4EC7C";
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
 			name = Debug;
@@ -7484,7 +7489,11 @@
 				);
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = WordPress_Prefix.pch;
-				GCC_PREPROCESSOR_DEFINITIONS = NS_BLOCK_ASSERTIONS;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					INTERNAL_BUILD,
+					NS_BLOCK_ASSERTIONS,
+					"$(inherited)",
+				);
 				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
 				GCC_THUMB_SUPPORT = NO;
 				GCC_TREAT_WARNINGS_AS_ERRORS = YES;
