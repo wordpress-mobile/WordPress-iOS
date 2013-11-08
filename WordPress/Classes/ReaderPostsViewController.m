@@ -834,9 +834,6 @@ NSString *const WPReaderViewControllerDisplayedNativeFriendFinder = @"DisplayedN
     if ([WordPressAppDelegate sharedWordPressApplicationDelegate].connectionAvailable == YES && ![self isSyncing] ) {
 		[[NSUserDefaults standardUserDefaults] removeObjectForKey:ReaderLastSyncDateKey];
 		[NSUserDefaults resetStandardUserDefaults];
-		if (IS_IPAD) {
-			[self simulatePullToRefresh];
-		}
     }
 
     if ([self isCurrentCategoryFreshlyPressed]) {

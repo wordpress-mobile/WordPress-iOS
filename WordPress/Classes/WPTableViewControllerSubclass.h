@@ -39,12 +39,6 @@
  */
 - (void)syncItemsWithUserInteraction:(BOOL)userInteraction;
 
-/**
- Simulate a pull to refresh.
- 
- Subclasses can call this method if they need to simulate a pull to refresh, but it is not meant to be implemented by subclasses.
- */
-- (void)simulatePullToRefresh;
 
 /// ----------------------------------------------
 /// @name Methods that subclasses should implement

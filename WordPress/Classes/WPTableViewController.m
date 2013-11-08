@@ -154,13 +154,8 @@ NSTimeInterval const WPTableViewControllerRefreshTimeout = 300; // 5 minutes
     }
     NSDate *lastSynced = [self lastSyncDate];
     if (lastSynced == nil || ABS([lastSynced timeIntervalSinceNow]) > WPTableViewControllerRefreshTimeout) {
-        // If table is at the original scroll position, simulate a pull to refresh
-        if (self.tableView.contentOffset.y == 0) {
-            [self simulatePullToRefresh];
-        } else {
-        // Otherwise, just update in the background
-            [self syncItemsWithUserInteraction:NO];
-        }
+        // Update in the background
+        [self syncItemsWithUserInteraction:NO];
     }
 }
 
@@ -228,9 +223,7 @@ NSTimeInterval const WPTableViewControllerRefreshTimeout = 300; // 5 minutes
     self.resultsController = nil;
     [self.tableView reloadData];
     WordPressAppDelegate *appDelegate = [WordPressAppDelegate sharedWordPressApplicationDelegate];
-    if ( appDelegate.connectionAvailable == YES && [self.resultsController.fetchedObjects count] == 0 && ![self isSyncing] ) {
-        [self simulatePullToRefresh];
-    } else {
+    if (!(appDelegate.connectionAvailable == YES && [self.resultsController.fetchedObjects count] == 0 && ![self isSyncing])) {
         [self configureNoResultsView];
     }
 }
@@ -640,15 +633,6 @@ NSTimeInterval const WPTableViewControllerRefreshTimeout = 300; // 5 minutes
 
 - (void)dismissModal:(id)sender {
     [self dismissViewControllerAnimated:YES completion:nil];
-}
-
-- (void)simulatePullToRefresh {
-    if(!_refreshHeaderView) return;
-    
-    CGPoint offset = self.tableView.contentOffset;
-    offset.y = - 65.0f;
-    [self.tableView setContentOffset:offset];
-    [_refreshHeaderView egoRefreshScrollViewDidEndDragging:self.tableView];
 }
 
 - (void)syncItemsWithUserInteraction:(BOOL)userInteraction {
