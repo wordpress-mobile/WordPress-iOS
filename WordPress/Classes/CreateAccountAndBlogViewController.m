@@ -98,7 +98,7 @@ CGFloat const CreateAccountAndBlogStandardOffset = 16.0;
 CGFloat const CreateAccountAndBlogIconVerticalOffset = 70.0;
 CGFloat const CreateAccountAndBlogMaxTextWidth = 289.0;
 CGFloat const CreateAccountAndBlogTextFieldWidth = 320.0;
-CGFloat const CreateAccountAndBlogTextFieldHeight = 40.0;
+CGFloat const CreateAccountAndBlogTextFieldHeight = 44.0;
 CGFloat const CreateAccountAndBlogKeyboardOffset = 132.0;
 
 
