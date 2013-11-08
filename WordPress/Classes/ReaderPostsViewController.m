@@ -54,7 +54,6 @@ NSString *const WPReaderViewControllerDisplayedNativeFriendFinder = @"DisplayedN
 - (void)handleReblogButtonTapped:(id)sender;
 - (void)showReblogForm;
 - (void)hideReblogForm;
-- (void)syncItemsWithSuccess:(void (^)())success failure:(void (^)(NSError *))failure;
 - (void)onSyncSuccess:(AFHTTPRequestOperation *)operation response:(id)responseObject;
 - (void)handleKeyboardDidShow:(NSNotification *)notification;
 - (void)handleKeyboardWillHide:(NSNotification *)notification;
@@ -629,11 +628,11 @@ NSString *const WPReaderViewControllerDisplayedNativeFriendFinder = @"DisplayedN
 }
 
 
-- (void)syncItemsWithUserInteraction:(BOOL)userInteraction success:(void (^)())success failure:(void (^)(NSError *))failure {
+- (void)syncItemsWithSuccess:(void (^)())success failure:(void (^)(NSError *))failure {
     WPFLogMethod();
     // if needs auth.
     if([WPCookie hasCookieForURL:[NSURL URLWithString:@"https://wordpress.com"] andUsername:[[WPAccount defaultWordPressComAccount] username]]) {
-       [self syncItemsWithSuccess:success failure:failure];
+       [self syncReaderItemsWithSuccess:success failure:failure];
         return;
     }
     
@@ -656,17 +655,17 @@ NSString *const WPReaderViewControllerDisplayedNativeFriendFinder = @"DisplayedN
     AFHTTPRequestOperation *authRequest = [[AFHTTPRequestOperation alloc] initWithRequest:mRequest];
     [authRequest setCompletionBlockWithSuccess:^(AFHTTPRequestOperation *operation, id responseObject) {
         [[WordPressAppDelegate sharedWordPressApplicationDelegate] useAppUserAgent];
-        [self syncItemsWithSuccess:success failure:failure];
+        [self syncReaderItemsWithSuccess:success failure:failure];
     } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
         [[WordPressAppDelegate sharedWordPressApplicationDelegate] useAppUserAgent];
-        [self syncItemsWithSuccess:success failure:failure];
+        [self syncReaderItemsWithSuccess:success failure:failure];
     }];
     
     [authRequest start];    
 }
 
     
-- (void)syncItemsWithSuccess:(void (^)())success failure:(void (^)(NSError *))failure {
+- (void)syncReaderItemsWithSuccess:(void (^)())success failure:(void (^)(NSError *))failure {
     WPFLogMethod();
 	NSString *endpoint = [ReaderPost currentEndpoint];
 	NSNumber *numberToSync = [NSNumber numberWithInteger:ReaderPostsToSync];

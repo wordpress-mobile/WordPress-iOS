@@ -155,7 +155,7 @@ NSTimeInterval const WPTableViewControllerRefreshTimeout = 300; // 5 minutes
     NSDate *lastSynced = [self lastSyncDate];
     if (lastSynced == nil || ABS([lastSynced timeIntervalSinceNow]) > WPTableViewControllerRefreshTimeout) {
         // Update in the background
-        [self syncItemsWithUserInteraction:NO];
+        [self syncItems];
     }
 }
 
@@ -484,7 +484,7 @@ NSTimeInterval const WPTableViewControllerRefreshTimeout = 300; // 5 minutes
 
 - (void)egoRefreshTableHeaderDidTriggerRefresh:(EGORefreshTableHeaderView *)view{
     didTriggerRefresh = YES;
-	[self syncItemsWithUserInteraction:YES];
+	[self syncItemsViaUserInteraction];
     [noResultsView removeFromSuperview];
 }
 
@@ -635,13 +635,21 @@ NSTimeInterval const WPTableViewControllerRefreshTimeout = 300; // 5 minutes
     [self dismissViewControllerAnimated:YES completion:nil];
 }
 
-- (void)syncItemsWithUserInteraction:(BOOL)userInteraction {
+- (void)syncItems {
+    [self syncItemsViaUserInteraction:NO];
+}
+
+- (void)syncItemsViaUserInteraction {
+    [self syncItemsViaUserInteraction:YES];
+}
+
+- (void)syncItemsViaUserInteraction:(BOOL)userInteraction {
     if ([self isSyncing]) {
         return;
     }
 
     _isSyncing = YES;
-    [self syncItemsWithUserInteraction:userInteraction success:^{
+    [self syncItemsWithSuccess:^{
         [self hideRefreshHeader];
         _isSyncing = NO;
         [self configureNoResultsView];
@@ -917,8 +925,13 @@ NSTimeInterval const WPTableViewControllerRefreshTimeout = 300; // 5 minutes
     AssertSubclassMethod();
 }
 
-- (void)syncItemsWithUserInteraction:(BOOL)userInteraction success:(void (^)())success failure:(void (^)(NSError *))failure {
+- (void)syncItemsWithSuccess:(void (^)())success failure:(void (^)(NSError *))failure {
     AssertSubclassMethod();
+}
+
+- (void)syncItemsViaUserInteractionWithSuccess:(void (^)())success failure:(void (^)(NSError *error))failure {
+    // By default, sync items the same way. Subclasses can override if they need different behavior.
+    [self syncItemsWithSuccess:success failure:failure];
 }
 
 - (BOOL)isSyncing {
