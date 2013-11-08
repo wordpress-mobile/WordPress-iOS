@@ -231,8 +231,8 @@ CGFloat const GeneralWalkthroughiOS7StatusBarOffset = 20.0;
     overlayView.overlayTitle = NSLocalizedString(@"Sorry, we can't log you in.", nil);
     overlayView.overlayDescription = message;
     overlayView.footerDescription = [NSLocalizedString(@"tap to dismiss", nil) uppercaseString];
-    overlayView.leftButtonText = NSLocalizedString(@"Need Help?", nil);
-    overlayView.rightButtonText = NSLocalizedString(@"OK", nil);
+    overlayView.secondaryButtonText = NSLocalizedString(@"Need Help?", nil);
+    overlayView.primaryButtonText = NSLocalizedString(@"OK", nil);
     overlayView.singleTapCompletionBlock = ^(WPWalkthroughOverlayView *overlayView){
         [overlayView dismiss];
     };
@@ -242,14 +242,14 @@ CGFloat const GeneralWalkthroughiOS7StatusBarOffset = 20.0;
 - (void)displayErrorMessageForXMLRPC:(NSString *)message
 {
     WPWalkthroughOverlayView *overlayView = [self baseLoginErrorOverlayView:message];
-    overlayView.rightButtonText = NSLocalizedString(@"Enable Now", nil);
-    overlayView.button1CompletionBlock = ^(WPWalkthroughOverlayView *overlayView){
+    overlayView.primaryButtonText = NSLocalizedString(@"Enable Now", nil);
+    overlayView.secondaryButtonCompletionBlock = ^(WPWalkthroughOverlayView *overlayView){
         [WPMobileStats trackEventForSelfHostedAndWPCom:StatsEventNUXFirstWalkthroughClickedNeededHelpOnError properties:@{@"error_message": message}];
         
         [overlayView dismiss];
         [self showHelpViewController:NO];
     };
-    overlayView.button2CompletionBlock = ^(WPWalkthroughOverlayView *overlayView){
+    overlayView.primaryButtonCompletionBlock = ^(WPWalkthroughOverlayView *overlayView){
         [WPMobileStats trackEventForSelfHostedAndWPCom:StatsEventNUXFirstWalkthroughClickedEnableXMLRPCServices];
         
         [overlayView dismiss];
@@ -280,7 +280,7 @@ CGFloat const GeneralWalkthroughiOS7StatusBarOffset = 20.0;
 - (void)displayErrorMessageForBadUrl:(NSString *)message
 {
     WPWalkthroughOverlayView *overlayView = [self baseLoginErrorOverlayView:message];
-    overlayView.button1CompletionBlock = ^(WPWalkthroughOverlayView *overlayView){
+    overlayView.secondaryButtonCompletionBlock = ^(WPWalkthroughOverlayView *overlayView){
         [WPMobileStats trackEventForSelfHostedAndWPCom:StatsEventNUXFirstWalkthroughClickedNeededHelpOnError properties:@{@"error_message": message}];
         
         [overlayView dismiss];  
@@ -289,7 +289,7 @@ CGFloat const GeneralWalkthroughiOS7StatusBarOffset = 20.0;
         [self.navigationController setNavigationBarHidden:NO animated:NO];
         [self.navigationController pushViewController:webViewController animated:NO];
     };
-    overlayView.button2CompletionBlock = ^(WPWalkthroughOverlayView *overlayView){
+    overlayView.primaryButtonCompletionBlock = ^(WPWalkthroughOverlayView *overlayView){
         [overlayView dismiss];
     };
     [self.view addSubview:overlayView];
@@ -298,13 +298,13 @@ CGFloat const GeneralWalkthroughiOS7StatusBarOffset = 20.0;
 - (void)displayGenericErrorMessage:(NSString *)message
 {
     WPWalkthroughOverlayView *overlayView = [self baseLoginErrorOverlayView:message];
-    overlayView.button1CompletionBlock = ^(WPWalkthroughOverlayView *overlayView){
+    overlayView.secondaryButtonCompletionBlock = ^(WPWalkthroughOverlayView *overlayView){
         [WPMobileStats trackEventForSelfHostedAndWPCom:StatsEventNUXFirstWalkthroughClickedNeededHelpOnError properties:@{@"error_message": message}];
         
         [overlayView dismiss];
         [self showHelpViewController:NO];
     };
-    overlayView.button2CompletionBlock = ^(WPWalkthroughOverlayView *overlayView){
+    overlayView.primaryButtonCompletionBlock = ^(WPWalkthroughOverlayView *overlayView){
         [overlayView dismiss];
     };
     [self.view addSubview:overlayView];

@@ -16,8 +16,8 @@
     UILabel *_title;
     UILabel *_description;
     UILabel *_bottomLabel;
-    WPNUXSecondaryButton *_leftButton;
-    WPNUXPrimaryButton *_rightButton;
+    WPNUXSecondaryButton *_secondaryButton;
+    WPNUXPrimaryButton *_primaryButton;
     
     CGFloat _viewWidth;
     CGFloat _viewHeight;
@@ -83,22 +83,22 @@ CGFloat const WPWalkthroughGrayOverlayMaxLabelWidth = 289.0;
     }
 }
 
-- (void)setLeftButtonText:(NSString *)leftButtonText
+- (void)setSecondaryButtonText:(NSString *)leftButtonText
 {
-    if (_leftButtonText != leftButtonText) {
-        _leftButtonText = leftButtonText;
-        [_leftButton setTitle:_leftButtonText forState:UIControlStateNormal];
-        [_leftButton sizeToFit];
+    if (_secondaryButtonText != leftButtonText) {
+        _secondaryButtonText = leftButtonText;
+        [_secondaryButton setTitle:_secondaryButtonText forState:UIControlStateNormal];
+        [_secondaryButton sizeToFit];
         [self setNeedsLayout];
     }
 }
 
-- (void)setRightButtonText:(NSString *)rightButtonText
+- (void)setPrimaryButtonText:(NSString *)rightButtonText
 {
-    if (_rightButtonText != rightButtonText) {
-        _rightButtonText = rightButtonText;
-        [_rightButton setTitle:_rightButtonText forState:UIControlStateNormal];
-        [_rightButton sizeToFit];
+    if (_primaryButtonText != rightButtonText) {
+        _primaryButtonText = rightButtonText;
+        [_primaryButton setTitle:_primaryButtonText forState:UIControlStateNormal];
+        [_primaryButton sizeToFit];
         [self setNeedsLayout];
     }
 }
@@ -159,14 +159,14 @@ CGFloat const WPWalkthroughGrayOverlayMaxLabelWidth = 289.0;
     if (self.overlayMode == WPWalkthroughGrayOverlayViewOverlayModeTwoButtonMode) {
         x = WPWalkthroughGrayOverlayStandardOffset;
         y = (_viewHeight - WPWalkthroughGrayOverlayBottomPanelHeight + WPWalkthroughGrayOverlayStandardOffset);
-        _leftButton.frame = CGRectIntegral(CGRectMake(x, y, CGRectGetWidth(_leftButton.frame), CGRectGetHeight(_leftButton.frame)));
+        _secondaryButton.frame = CGRectIntegral(CGRectMake(x, y, CGRectGetWidth(_secondaryButton.frame), CGRectGetHeight(_secondaryButton.frame)));
         
-        x = _viewWidth - CGRectGetWidth(_rightButton.frame) - WPWalkthroughGrayOverlayStandardOffset;
-        y = CGRectGetMinY(_leftButton.frame);
-        _rightButton.frame = CGRectIntegral(CGRectMake(x, y, CGRectGetWidth(_rightButton.frame), CGRectGetHeight(_rightButton.frame)));
+        x = _viewWidth - CGRectGetWidth(_primaryButton.frame) - WPWalkthroughGrayOverlayStandardOffset;
+        y = CGRectGetMinY(_secondaryButton.frame);
+        _primaryButton.frame = CGRectIntegral(CGRectMake(x, y, CGRectGetWidth(_primaryButton.frame), CGRectGetHeight(_primaryButton.frame)));
     } else {
-        _leftButton.frame = CGRectZero;
-        _rightButton.frame = CGRectZero;
+        _secondaryButton.frame = CGRectZero;
+        _primaryButton.frame = CGRectZero;
     }
     
     CGFloat heightFromBottomLabel = _viewHeight - CGRectGetMinY(_bottomLabel.frame) - CGRectGetHeight(_bottomLabel.frame);
@@ -241,18 +241,18 @@ CGFloat const WPWalkthroughGrayOverlayMaxLabelWidth = 289.0;
     [self addSubview:_bottomLabel];
     
     // Add Button 1
-    _leftButton = [[WPNUXSecondaryButton alloc] init];
-    [_leftButton setTitle:self.leftButtonText forState:UIControlStateNormal];
-    [_leftButton sizeToFit];
-    [_leftButton addTarget:self action:@selector(clickedOnButton1) forControlEvents:UIControlEventTouchUpInside];
-    [self addSubview:_leftButton];
+    _secondaryButton = [[WPNUXSecondaryButton alloc] init];
+    [_secondaryButton setTitle:self.secondaryButtonText forState:UIControlStateNormal];
+    [_secondaryButton sizeToFit];
+    [_secondaryButton addTarget:self action:@selector(secondaryButtonAction) forControlEvents:UIControlEventTouchUpInside];
+    [self addSubview:_secondaryButton];
     
     // Add Button 2
-    _rightButton = [[WPNUXPrimaryButton alloc] init];
-    [_rightButton setTitle:self.rightButtonText forState:UIControlStateNormal];
-    [_rightButton sizeToFit];
-    [_rightButton addTarget:self action:@selector(clickedOnButton2) forControlEvents:UIControlEventTouchUpInside];
-    [self addSubview:_rightButton];
+    _primaryButton = [[WPNUXPrimaryButton alloc] init];
+    [_primaryButton setTitle:self.primaryButtonText forState:UIControlStateNormal];
+    [_primaryButton sizeToFit];
+    [_primaryButton addTarget:self action:@selector(primaryButtonAction) forControlEvents:UIControlEventTouchUpInside];
+    [self addSubview:_primaryButton];
 }
 
 - (void)configureIcon
@@ -288,8 +288,8 @@ CGFloat const WPWalkthroughGrayOverlayMaxLabelWidth = 289.0;
 
     // To avoid accidentally dismissing the view when the user was trying to tap one of the buttons,
     // add some padding around the button frames.
-    CGRect button1Frame = CGRectInset(_leftButton.frame, -2 * WPWalkthroughGrayOverlayStandardOffset, -WPWalkthroughGrayOverlayStandardOffset);
-    CGRect button2Frame = CGRectInset(_rightButton.frame, -2 * WPWalkthroughGrayOverlayStandardOffset, -WPWalkthroughGrayOverlayStandardOffset);
+    CGRect button1Frame = CGRectInset(_secondaryButton.frame, -2 * WPWalkthroughGrayOverlayStandardOffset, -WPWalkthroughGrayOverlayStandardOffset);
+    CGRect button2Frame = CGRectInset(_primaryButton.frame, -2 * WPWalkthroughGrayOverlayStandardOffset, -WPWalkthroughGrayOverlayStandardOffset);
 
     BOOL touchedButton1 = CGRectContainsPoint(button1Frame, touchPoint);
     BOOL touchedButton2 = CGRectContainsPoint(button2Frame, touchPoint);
@@ -308,17 +308,17 @@ CGFloat const WPWalkthroughGrayOverlayMaxLabelWidth = 289.0;
     }
 }
 
-- (void)clickedOnButton1
+- (void)secondaryButtonAction
 {
-    if (self.button1CompletionBlock) {
-        self.button1CompletionBlock(self);
+    if (self.secondaryButtonCompletionBlock) {
+        self.secondaryButtonCompletionBlock(self);
     }
 }
 
-- (void)clickedOnButton2
+- (void)primaryButtonAction
 {
-    if (self.button2CompletionBlock) {
-        self.button2CompletionBlock(self);
+    if (self.primaryButtonCompletionBlock) {
+        self.primaryButtonCompletionBlock(self);
     }
 }
 
