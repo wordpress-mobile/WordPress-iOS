@@ -86,9 +86,9 @@ CGFloat const GeneralWalkthroughStandardOffset = 16;
 CGFloat const GeneralWalkthroughBottomBackgroundHeight = 64;
 CGFloat const GeneralWalkthroughMaxTextWidth = 289.0;
 CGFloat const GeneralWalkthroughSwipeToContinueTopOffset = 14.0;
-CGFloat const GeneralWalkthroughTextFieldWidth = 289.0;
+CGFloat const GeneralWalkthroughTextFieldWidth = 320.0;
 CGFloat const GeneralWalkthroughTextFieldHeight = 40.0;
-CGFloat const GeneralWalkthroughSignInButtonWidth = 160.0;
+CGFloat const GeneralWalkthroughSignInButtonWidth = 289.0;
 CGFloat const GeneralWalkthroughSignInButtonHeight = 41.0;
 CGFloat const GeneralWalkthroughiOS7StatusBarOffset = 20.0;
 
@@ -710,13 +710,13 @@ CGFloat const GeneralWalkthroughiOS7StatusBarOffset = 20.0;
     // Layout Password
     x = (_viewWidth - GeneralWalkthroughTextFieldWidth)/2.0;
     x = [self adjustX:x forPage:2];
-    y = CGRectGetMaxY(_usernameText.frame) + 0.5*GeneralWalkthroughStandardOffset;
+    y = CGRectGetMaxY(_usernameText.frame);
     _passwordText.frame = CGRectIntegral(CGRectMake(x, y, GeneralWalkthroughTextFieldWidth, GeneralWalkthroughTextFieldHeight));
 
     // Layout Site URL
     x = (_viewWidth - GeneralWalkthroughTextFieldWidth)/2.0;
     x = [self adjustX:x forPage:2];
-    y = CGRectGetMaxY(_passwordText.frame) + 0.5*GeneralWalkthroughStandardOffset;
+    y = CGRectGetMaxY(_passwordText.frame);
     _siteUrlText.frame = CGRectIntegral(CGRectMake(x, y, GeneralWalkthroughTextFieldWidth, GeneralWalkthroughTextFieldHeight));
 
     // Layout Sign in Button
