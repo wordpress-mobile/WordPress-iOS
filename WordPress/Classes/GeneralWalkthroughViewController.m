@@ -556,7 +556,7 @@ CGFloat const GeneralWalkthroughiOS7StatusBarOffset = 20.0;
     
     // Add Username
     if (_usernameText == nil) {
-        _usernameText = [[WPWalkthroughTextField alloc] init];
+        _usernameText = [[WPWalkthroughTextField alloc] initWithLeftViewImage:[UIImage imageNamed:@"icon-username-field"]];
         _usernameText.backgroundColor = [UIColor whiteColor];
         _usernameText.placeholder = NSLocalizedString(@"Username / Email", @"NUX First Walkthrough Page 2 Username Placeholder");
         _usernameText.font = [WPNUXUtility textFieldFont];
@@ -569,7 +569,7 @@ CGFloat const GeneralWalkthroughiOS7StatusBarOffset = 20.0;
     
     // Add Password
     if (_passwordText == nil) {
-        _passwordText = [[WPWalkthroughTextField alloc] init];
+        _passwordText = [[WPWalkthroughTextField alloc] initWithLeftViewImage:[UIImage imageNamed:@"icon-password-field"]];
         _passwordText.backgroundColor = [UIColor whiteColor];
         _passwordText.placeholder = NSLocalizedString(@"Password", nil);
         _passwordText.font = [WPNUXUtility textFieldFont];
@@ -581,7 +581,7 @@ CGFloat const GeneralWalkthroughiOS7StatusBarOffset = 20.0;
     
     // Add Site Url
     if (_siteUrlText == nil) {
-        _siteUrlText = [[WPWalkthroughTextField alloc] init];
+        _siteUrlText = [[WPWalkthroughTextField alloc] initWithLeftViewImage:[UIImage imageNamed:@"icon-url-field"]];
         _siteUrlText.backgroundColor = [UIColor whiteColor];
         _siteUrlText.placeholder = NSLocalizedString(@"Site Address (URL)", @"NUX First Walkthrough Page 2 Site Address Placeholder");
         _siteUrlText.font = [WPNUXUtility textFieldFont];

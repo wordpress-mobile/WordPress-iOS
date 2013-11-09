@@ -339,7 +339,7 @@ CGFloat const CreateAccountAndBlogKeyboardOffset = 132.0;
     
     // Add Email
     if (_page1EmailText == nil) {
-        _page1EmailText = [[WPWalkthroughTextField alloc] init];
+        _page1EmailText = [[WPWalkthroughTextField alloc] initWithLeftViewImage:[UIImage imageNamed:@"icon-email-field"]];
         _page1EmailText.backgroundColor = [UIColor whiteColor];
         _page1EmailText.placeholder = NSLocalizedString(@"Email Address", @"NUX Create Account Page 1 Email Placeholder");
         _page1EmailText.font = [WPNUXUtility textFieldFont];
@@ -353,7 +353,7 @@ CGFloat const CreateAccountAndBlogKeyboardOffset = 132.0;
     
     // Add Username
     if (_page1UsernameText == nil) {
-        _page1UsernameText = [[WPWalkthroughTextField alloc] init];
+        _page1UsernameText = [[WPWalkthroughTextField alloc] initWithLeftViewImage:[UIImage imageNamed:@"icon-username-field"]];
         _page1UsernameText.backgroundColor = [UIColor whiteColor];
         _page1UsernameText.placeholder = NSLocalizedString(@"Username", nil);
         _page1UsernameText.font = [WPNUXUtility textFieldFont];
@@ -367,7 +367,7 @@ CGFloat const CreateAccountAndBlogKeyboardOffset = 132.0;
     
     // Add Password
     if (_page1PasswordText == nil) {
-        _page1PasswordText = [[WPWalkthroughTextField alloc] init];
+        _page1PasswordText = [[WPWalkthroughTextField alloc] initWithLeftViewImage:[UIImage imageNamed:@"icon-password-field"]];
         _page1PasswordText.secureTextEntry = YES;
         _page1PasswordText.backgroundColor = [UIColor whiteColor];
         _page1PasswordText.placeholder = NSLocalizedString(@"Password", nil);
@@ -505,7 +505,7 @@ CGFloat const CreateAccountAndBlogKeyboardOffset = 132.0;
     
     // Add Site Title
     if (_page2SiteTitleText == nil) {
-        _page2SiteTitleText = [[WPWalkthroughTextField alloc] init];
+        _page2SiteTitleText = [[WPWalkthroughTextField alloc] initWithLeftViewImage:[UIImage imageNamed:@"icon-username-field"]];
         _page2SiteTitleText.backgroundColor = [UIColor whiteColor];
         _page2SiteTitleText.placeholder = NSLocalizedString(@"Site Title", @"NUX Create Account Page 2 Site Title Placeholder");
         _page2SiteTitleText.font = [WPNUXUtility textFieldFont];
@@ -518,7 +518,7 @@ CGFloat const CreateAccountAndBlogKeyboardOffset = 132.0;
     
     // Add Site Address
     if (_page2SiteAddressText == nil) {
-        _page2SiteAddressText = [[WPWalkthroughTextField alloc] init];
+        _page2SiteAddressText = [[WPWalkthroughTextField alloc] initWithLeftViewImage:[UIImage imageNamed:@"icon-url-field"]];
         _page2SiteAddressText.backgroundColor = [UIColor whiteColor];
         _page2SiteAddressText.placeholder = NSLocalizedString(@"Site Address (URL)", nil);
         _page2SiteAddressText.font = [WPNUXUtility textFieldFont];
@@ -546,7 +546,7 @@ CGFloat const CreateAccountAndBlogKeyboardOffset = 132.0;
     
     // Add Site Language
     if (_page2SiteLanguageText == nil) {
-        _page2SiteLanguageText = [[WPWalkthroughTextField alloc] init];
+        _page2SiteLanguageText = [[WPWalkthroughTextField alloc] initWithLeftViewImage:[UIImage imageNamed:@"icon-language-field"]];
         _page2SiteLanguageText.backgroundColor = [UIColor whiteColor];
         _page2SiteLanguageText.placeholder = NSLocalizedString(@"Site Language", @"NUX Create Account Page 2 Site Language Placeholder");
         _page2SiteLanguageText.font = [WPNUXUtility textFieldFont];
