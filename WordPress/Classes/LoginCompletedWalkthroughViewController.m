@@ -308,7 +308,6 @@ CGFloat const LoginCompeltedWalkthroughSwipeToContinueTopOffset = 14.0;
     _bottomPanel.frame = CGRectMake(x, y, _viewWidth, LoginCompletedWalkthroughBottomBackgroundHeight);
     
     // Layout Page Control
-    CGFloat verticalSpaceForPageControl = 15;
     CGSize pageControlSize = [_pageControl sizeForNumberOfPages:4];
     x = (_viewWidth - CGRectGetWidth(_pageControl.frame))/2.0;
     if (IS_IPAD) {
@@ -317,7 +316,7 @@ CGFloat const LoginCompeltedWalkthroughSwipeToContinueTopOffset = 14.0;
         x += pageControlSize.width/2.0;
     }
     x = [self adjustX:x forPage:1];
-    y = CGRectGetMinY(_bottomPanel.frame) - LoginCompletedWalkthroughStandardOffset - CGRectGetHeight(_pageControl.frame) + verticalSpaceForPageControl;
+    y = CGRectGetMinY(_bottomPanel.frame) - LoginCompletedWalkthroughStandardOffset;
     _pageControl.frame = CGRectIntegral(CGRectMake(x, y, pageControlSize.width, pageControlSize.height));
 
     // Layout Skip and Start Using App

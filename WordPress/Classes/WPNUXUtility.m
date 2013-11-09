@@ -113,7 +113,7 @@
 {
     // This only works on iOS6+
     if ([pageControl respondsToSelector:@selector(pageIndicatorTintColor)]) {
-        UIColor *currentPageTintColor = [UIColor colorWithRed:46.0/255.0 green:162.0/255.0 blue:204.0/255.0 alpha:1.0];
+        UIColor *currentPageTintColor =  [UIColor colorWithRed:187.0/255.0 green:221.0/255.0 blue:237.0/255.0 alpha:1.0];
         UIColor *pageIndicatorTintColor = [UIColor colorWithRed:38.0/255.0 green:151.0/255.0 blue:197.0/255.0 alpha:1.0];
         pageControl.pageIndicatorTintColor = pageIndicatorTintColor;
         pageControl.currentPageIndicatorTintColor = currentPageTintColor;
