@@ -308,7 +308,7 @@ NS_ENUM(NSUInteger, NotifcationCommentCellType){
     } else {
         [webViewController setUrl:url];        
     }
-    [self.panelNavigationController pushViewController:webViewController fromViewController:self animated:YES];
+    [self.navigationController pushViewController:webViewController animated:YES];
 }
 
 - (IBAction)moderateComment:(id)sender {

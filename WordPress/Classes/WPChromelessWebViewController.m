@@ -119,7 +119,7 @@
                 if([currURL.path isEqualToString:reqURL.path]) {
                     if ([currURL.query isEqualToString:reqURL.query]) {
                         // if the detail controller is ourself disregard the click so we don't spam a series of the same page.
-                        [self.panelNavigationController popToViewController:prevController animated:YES];
+                        [self.navigationController popToViewController:prevController animated:YES];
                         return NO;
                     }
                 }
@@ -131,13 +131,13 @@
         if ([host rangeOfString:@"wordpress.com"].location == NSNotFound) {
             WPWebViewController *webViewController = [[WPWebViewController alloc] init];
             [webViewController setUrl:request.URL];
-            [self.panelNavigationController pushViewController:webViewController animated:YES];
+            [self.navigationController pushViewController:webViewController animated:YES];
             return NO;
         }
         
         WPChromelessWebViewController *controller = [[WPChromelessWebViewController alloc] init];
         [controller loadPath:request.URL.absoluteString];        
-        [self.panelNavigationController pushViewController:controller fromViewController:self animated:YES];
+        [self.navigationController pushViewController:controller animated:YES];
         
         return NO;
     }

@@ -432,7 +432,7 @@
 }
 
 - (void)dismiss {
-    [self.panelNavigationController popViewControllerAnimated:NO];
+    [self.navigationController popViewControllerAnimated:NO];
 }
 
 - (void)goBack {
@@ -580,8 +580,7 @@
         
         WPWebViewController *webViewController = [[WPWebViewController alloc] init];
         [webViewController setUrl:[request URL]];
-        if ( self.panelNavigationController  )
-            [self.panelNavigationController pushViewController:webViewController fromViewController:self animated:YES];
+        [self.navigationController pushViewController:webViewController animated:YES];
         return NO;
     }
     

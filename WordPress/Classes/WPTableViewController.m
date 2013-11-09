@@ -455,7 +455,7 @@ NSTimeInterval const WPTableViewControllerRefreshTimeout = 300; // 5 minutes
         case NSFetchedResultsChangeDelete:
             [self.tableView deleteRowsAtIndexPaths:[NSArray arrayWithObject:indexPath] withRowAnimation:[self tableViewRowAnimation]];
             if ([_indexPathSelectedBeforeUpdates isEqual:indexPath]) {
-                [self.panelNavigationController popToViewController:self animated:YES];
+                [self.navigationController popToViewController:self animated:YES];
             }
             break;
             

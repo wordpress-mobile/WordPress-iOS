@@ -417,9 +417,7 @@ CGFloat const CommentViewUnapproveButtonTag = 701;
             webViewController.password = blog.password;
         }
         
-        if (self.panelNavigationController) {
-            [self.panelNavigationController pushViewController:webViewController fromViewController:self animated:YES];
-        }
+        [self.navigationController pushViewController:webViewController animated:YES];
 	}
 }
 
@@ -431,7 +429,7 @@ CGFloat const CommentViewUnapproveButtonTag = 701;
     [self.comment removeObserver:self forKeyPath:@"status"];
     [self moderateCommentWithSelector:@selector(remove)];
     if (IS_IPAD) {
-        [self.panelNavigationController popToRootViewControllerAnimated:YES];
+        [self.navigationController popToRootViewControllerAnimated:YES];
     }
 }
 
@@ -453,7 +451,7 @@ CGFloat const CommentViewUnapproveButtonTag = 701;
     [self.comment removeObserver:self forKeyPath:@"status"];
     [self moderateCommentWithSelector:@selector(spam)];
     if (IS_IPAD) {
-        [self.panelNavigationController popToRootViewControllerAnimated:YES];
+        [self.navigationController popToRootViewControllerAnimated:YES];
     }
 }
 

@@ -125,9 +125,9 @@ CGFloat const CommentsSectionHeaderHeight = 24.0;
         vc.comment = comment;
         [self.tableView selectRowAtIndexPath:indexPath animated:YES scrollPosition:UITableViewScrollPositionNone];
         
-        [self.panelNavigationController pushViewController:vc fromViewController:self animated:YES];
+        [self.navigationController pushViewController:vc animated:YES];
     } else {
-        [self.panelNavigationController popToViewController:self animated:YES];
+        [self.navigationController popToViewController:self animated:YES];
     }
 }
 

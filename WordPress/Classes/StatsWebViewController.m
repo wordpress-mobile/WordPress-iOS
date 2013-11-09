@@ -420,7 +420,7 @@ static NSString *_lastAuthedName = nil;
             [query rangeOfString:@"no-chrome"].location == NSNotFound) {
             WPWebViewController *webViewController = [[WPWebViewController alloc] init];
             [webViewController setUrl:request.URL];
-            [self.panelNavigationController pushViewController:webViewController fromViewController:self animated:YES];
+            [self.navigationController pushViewController:webViewController animated:YES];
             return NO;
         }
         
