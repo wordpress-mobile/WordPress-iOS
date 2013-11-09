@@ -10,6 +10,7 @@
 #import "WordPressAppDelegate.h"
 #import "UIImageView+Gravatar.h"
 #import "WordPressComApi.h"
+#import "SettingsViewController.h"
 
 CGFloat const blavatarImageSize = 50.f;
 
@@ -32,6 +33,11 @@ CGFloat const blavatarImageSize = 50.f;
 - (void)viewDidLoad
 {
     [super viewDidLoad];
+    
+    self.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:NSLocalizedString(@"Settings", nil)
+                                                                             style:UIBarButtonItemStylePlain
+                                                                            target:self
+                                                                            action:@selector(showSettings:)];
     
     [[NSNotificationCenter defaultCenter] addObserverForName:WordPressComApiDidLoginNotification object:nil queue:nil usingBlock:^(NSNotification *note) {
         [self.tableView reloadSections:[NSIndexSet indexSetWithIndex:0] withRowAnimation:UITableViewRowAnimationFade];
@@ -67,6 +73,22 @@ CGFloat const blavatarImageSize = 50.f;
 {
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.
+}
+
+
+#pragma mark - Actions
+
+- (void)showSettings:(id)sender {
+    [WPMobileStats incrementProperty:StatsPropertySidebarClickedSettings forEvent:StatsEventAppClosed];
+    
+    SettingsViewController *settingsViewController = [[SettingsViewController alloc] initWithStyle:UITableViewStyleGrouped];
+    UINavigationController *aNavigationController = [[UINavigationController alloc] initWithRootViewController:settingsViewController];
+    aNavigationController.navigationBar.translucent = NO;
+    if (IS_IPAD)
+        aNavigationController.modalTransitionStyle = UIModalTransitionStyleCrossDissolve;
+    aNavigationController.modalPresentationStyle = UIModalPresentationFormSheet;
+    
+    [self.navigationController presentViewController:aNavigationController animated:YES completion:nil];
 }
 
 
