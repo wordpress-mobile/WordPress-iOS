@@ -11,6 +11,8 @@
 #import "UIImageView+Gravatar.h"
 #import "WordPressComApi.h"
 #import "SettingsViewController.h"
+#import "WelcomeViewController.h"
+#import "BlogDetailsViewController.h"
 
 CGFloat const blavatarImageSize = 50.f;
 
@@ -203,8 +205,29 @@ CGFloat const blavatarImageSize = 50.f;
         [cell.imageView setImage:blank];
     }
 }
+
 - (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section {
     return 1;
+}
+
+- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
+    [tableView deselectRowAtIndexPath:indexPath animated:YES];
+    
+    if (indexPath.row < [self rowForAddSite]) {
+        [WPMobileStats trackEventForWPCom:StatsEventSettingsClickedEditBlog];
+        
+        Blog *blog = [self.resultsController objectAtIndexPath:indexPath];
+        
+        BlogDetailsViewController *blogDetailsViewController = [[BlogDetailsViewController alloc] init];
+        blogDetailsViewController.blog = blog;
+        [self.navigationController pushViewController:blogDetailsViewController animated:YES];
+    } else {
+        [WPMobileStats trackEventForWPCom:StatsEventSettingsClickedAddBlog];
+        
+        WelcomeViewController *welcomeViewController = [[WelcomeViewController alloc] initWithStyle:UITableViewStyleGrouped];
+        welcomeViewController.title = NSLocalizedString(@"Add a Site", nil);
+        [self.navigationController pushViewController:welcomeViewController animated:YES];
+    }
 }
 
 

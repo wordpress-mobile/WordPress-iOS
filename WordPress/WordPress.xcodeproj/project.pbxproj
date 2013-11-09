@@ -302,6 +302,8 @@
 		46FB5C6E182EB27700A70A90 /* icon-tab-reader.png in Resources */ = {isa = PBXBuildFile; fileRef = 46FB5C6B182EB27700A70A90 /* icon-tab-reader.png */; };
 		46FB5C6F182EB27700A70A90 /* icon-tab-reader@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 46FB5C6C182EB27700A70A90 /* icon-tab-reader@2x.png */; };
 		46FB5C70182EB27700A70A90 /* icon-tab-reader@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 46FB5C6C182EB27700A70A90 /* icon-tab-reader@2x.png */; };
+		46FB5C73182EC59E00A70A90 /* BlogDetailsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 46FB5C72182EC59E00A70A90 /* BlogDetailsViewController.m */; };
+		46FB5C74182EC59E00A70A90 /* BlogDetailsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 46FB5C72182EC59E00A70A90 /* BlogDetailsViewController.m */; };
 		5D119DA3176FBE040073D83A /* UIImageView+AFNetworkingExtra.m in Sources */ = {isa = PBXBuildFile; fileRef = 5D119DA2176FBE040073D83A /* UIImageView+AFNetworkingExtra.m */; };
 		5D1392A7157D4D92007D51B8 /* StatsWebViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 5D1392A6157D4D92007D51B8 /* StatsWebViewController.m */; };
 		5D15F4AF15B8C407001B14EA /* toolbarItalicHighlighted.png in Resources */ = {isa = PBXBuildFile; fileRef = 5D15F49715B8C407001B14EA /* toolbarItalicHighlighted.png */; };
@@ -2285,6 +2287,8 @@
 		46FB5C66182EAFD500A70A90 /* icon-tab-notifications@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "icon-tab-notifications@2x.png"; sourceTree = "<group>"; };
 		46FB5C6B182EB27700A70A90 /* icon-tab-reader.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "icon-tab-reader.png"; sourceTree = "<group>"; };
 		46FB5C6C182EB27700A70A90 /* icon-tab-reader@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "icon-tab-reader@2x.png"; sourceTree = "<group>"; };
+		46FB5C71182EC59E00A70A90 /* BlogDetailsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BlogDetailsViewController.h; sourceTree = "<group>"; };
+		46FB5C72182EC59E00A70A90 /* BlogDetailsViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BlogDetailsViewController.m; sourceTree = "<group>"; };
 		5D119DA1176FBE040073D83A /* UIImageView+AFNetworkingExtra.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIImageView+AFNetworkingExtra.h"; sourceTree = "<group>"; };
 		5D119DA2176FBE040073D83A /* UIImageView+AFNetworkingExtra.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIImageView+AFNetworkingExtra.m"; sourceTree = "<group>"; };
 		5D1392A5157D4D92007D51B8 /* StatsWebViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = StatsWebViewController.h; sourceTree = "<group>"; };
@@ -4392,6 +4396,8 @@
 			children = (
 				46FB5C5A182DE90F00A70A90 /* BlogListViewController.h */,
 				46FB5C5B182DE90F00A70A90 /* BlogListViewController.m */,
+				46FB5C71182EC59E00A70A90 /* BlogDetailsViewController.h */,
+				46FB5C72182EC59E00A70A90 /* BlogDetailsViewController.m */,
 				E13FA0F9134C8DDC007DCDD0 /* BlogSelectorViewController.h */,
 				E13FA0FA134C8DDC007DCDD0 /* BlogSelectorViewController.m */,
 				83610AA711F4AD2C00421116 /* WPcomLoginViewController.h */,
@@ -7041,6 +7047,7 @@
 				5D42A3DF175E7452005CFF05 /* AbstractPost.m in Sources */,
 				5D42A3E0175E7452005CFF05 /* BasePost.m in Sources */,
 				5D42A3E1175E7452005CFF05 /* ReaderComment.m in Sources */,
+				46FB5C73182EC59E00A70A90 /* BlogDetailsViewController.m in Sources */,
 				5D42A3E2175E7452005CFF05 /* ReaderPost.m in Sources */,
 				5D42A3F7175E75EE005CFF05 /* ReaderCommentTableViewCell.m in Sources */,
 				5D42A3F8175E75EE005CFF05 /* ReaderImageView.m in Sources */,
@@ -7247,6 +7254,7 @@
 				930C632F182BD86300976C21 /* AbstractPost.m in Sources */,
 				930C6330182BD86300976C21 /* BasePost.m in Sources */,
 				930C6331182BD86300976C21 /* ReaderComment.m in Sources */,
+				46FB5C74182EC59E00A70A90 /* BlogDetailsViewController.m in Sources */,
 				930C6332182BD86300976C21 /* ReaderPost.m in Sources */,
 				930C6333182BD86300976C21 /* ReaderCommentTableViewCell.m in Sources */,
 				930C6334182BD86300976C21 /* ReaderImageView.m in Sources */,
