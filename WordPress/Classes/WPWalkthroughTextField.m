@@ -8,11 +8,14 @@
 
 #import "WPWalkthroughTextField.h"
 
+@interface WPWalkthroughTextField ()
+@property (nonatomic, strong) UIImage *leftViewImage;
+@end
+
 @implementation WPWalkthroughTextField
 
 - (id)init
 {
-    
     self = [super init];
     if (self)
     {
@@ -20,6 +23,18 @@
         self.layer.cornerRadius = 1.0;
         self.clipsToBounds = YES;
         self.showTopLineSeparator = NO;
+    }
+    return self;
+}
+
+- (instancetype)initWithLeftViewImage:(UIImage *)image
+{
+    self = [self init];
+    if (self)
+    {
+        self.leftViewImage = image;
+        self.leftView = [[UIImageView alloc] initWithImage:image];
+        self.leftViewMode = UITextFieldViewModeAlways;
     }
     return self;
 }
@@ -42,16 +57,37 @@
     }
 }
 
+- (CGRect)calculateTextRectForBounds:(CGRect)bounds {
+    
+    if (_leftViewImage) {
+        
+        CGFloat leftViewWidth = _leftViewImage.size.width;
+        return CGRectMake(leftViewWidth + 2 * _textInsets.left, _textInsets.top, bounds.size.width - leftViewWidth - 2 * _textInsets.left - _textInsets.right, bounds.size.height - _textInsets.top - _textInsets.bottom);
+    } else {
+        return CGRectMake(_textInsets.left, _textInsets.top, bounds.size.width - _textInsets.left - _textInsets.right, bounds.size.height - _textInsets.top - _textInsets.bottom);
+    }
+}
+
 // placeholder position
 - (CGRect)textRectForBounds:(CGRect)bounds
 {
-    return CGRectMake(_textInsets.left, _textInsets.top, bounds.size.width - _textInsets.left - _textInsets.right, bounds.size.height - _textInsets.top - _textInsets.bottom);
+    return [self calculateTextRectForBounds:bounds];
 }
 
 // text position
 - (CGRect)editingRectForBounds:(CGRect)bounds
 {
-    return CGRectMake(_textInsets.left, _textInsets.top, bounds.size.width - _textInsets.left - _textInsets.right, bounds.size.height - _textInsets.top - _textInsets.bottom);
+    return [self calculateTextRectForBounds:bounds];
+}
+
+// left view position
+- (CGRect)leftViewRectForBounds:(CGRect)bounds {
+    
+    if (_leftViewImage) {
+        return CGRectMake(_textInsets.left, (CGRectGetHeight(bounds) - _leftViewImage.size.height) / 2.0, _leftViewImage.size.width, _leftViewImage.size.height);
+    } else {
+        return [super leftViewRectForBounds:bounds];
+    }
 }
 
 @end

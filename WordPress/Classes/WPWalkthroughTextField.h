@@ -13,4 +13,6 @@
 @property (nonatomic) UIEdgeInsets textInsets;
 @property (nonatomic) BOOL showTopLineSeparator;
 
+- (instancetype)initWithLeftViewImage:(UIImage *)image;
+
 @end
