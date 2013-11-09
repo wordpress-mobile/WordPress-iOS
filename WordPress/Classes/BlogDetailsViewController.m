@@ -8,6 +8,24 @@
 
 #import "BlogDetailsViewController.h"
 #import "Blog+Jetpack.h"
+#import "EditSiteViewController.h"
+#import "PostViewController.h"
+#import "PagesViewController.h"
+#import "CommentsViewController.h"
+#import "StatsWebViewController.h"
+#import "WPWebViewController.h"
+
+typedef enum {
+    BlogDetailsRowPosts = 0,
+    BlogDetailsRowPages,
+    BlogDetailsRowComments,
+    BlogDetailsRowStats,
+    BlogDetailsRowViewSite,
+    BlogDetailsRowViewAdmin,
+    BlogDetailsRowEdit,
+    BlogDetailsRowCount
+} BlogDetailsRow;
+
 
 @interface BlogDetailsViewController ()
 
@@ -16,8 +34,7 @@
 @implementation BlogDetailsViewController
 @synthesize blog = _blog;
 
-- (id)initWithStyle:(UITableViewStyle)style
-{
+- (id)initWithStyle:(UITableViewStyle)style {
     self = [super initWithStyle:style];
     if (self) {
         // Custom initialization
@@ -25,15 +42,8 @@
     return self;
 }
 
-- (void)viewDidLoad
-{
+- (void)viewDidLoad {
     [super viewDidLoad];
-
-    // Uncomment the following line to preserve selection between presentations.
-    // self.clearsSelectionOnViewWillAppear = NO;
- 
-    // Uncomment the following line to display an Edit button in the navigation bar for this view controller.
-    // self.navigationItem.rightBarButtonItem = self.editButtonItem;
 }
 
 - (void)setBlog:(Blog *)blog {
@@ -43,41 +53,132 @@
 
 #pragma mark - Table view data source
 
-- (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
-{
-    // Return the number of sections.
-    return 0;
+- (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView{
+    return 1;
 }
 
-- (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
-{
+- (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
     // Return the number of rows in the section.
-    return 0;
+    return BlogDetailsRowCount;
 }
 
-- (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
-{
-    static NSString *CellIdentifier = @"Cell";
-    UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier forIndexPath:indexPath];
+- (void)configureCell:(UITableViewCell *)cell atIndexPath:(NSIndexPath *)indexPath {
+    if (indexPath.row == BlogDetailsRowPosts) {
+        cell.textLabel.text = NSLocalizedString(@"Posts", nil);
+    } else if (indexPath.row == BlogDetailsRowPages) {
+        cell.textLabel.text = NSLocalizedString(@"Pages", nil);
+    } else if (indexPath.row == BlogDetailsRowComments) {
+        cell.textLabel.text = NSLocalizedString(@"Comments", nil);
+    } else if (indexPath.row == BlogDetailsRowStats) {
+        cell.textLabel.text = NSLocalizedString(@"Stats", nil);
+    } else if (indexPath.row == BlogDetailsRowViewSite) {
+        cell.textLabel.text = NSLocalizedString(@"View Site", nil);
+    } else if (indexPath.row == BlogDetailsRowViewAdmin) {
+        cell.textLabel.text = NSLocalizedString(@"View Admin", nil);
+    } else if (indexPath.row == BlogDetailsRowEdit) {
+        cell.textLabel.text = NSLocalizedString(@"Edit Blog", nil);
+    }
+}
+
+- (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
+    static NSString *CellIdentifier = @"BlogDetailsCell";
+    UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier];
+
+    if (cell == nil) {
+        cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:CellIdentifier];
+        [cell setAccessoryType:UITableViewCellAccessoryDisclosureIndicator];
+    }
     
-    // Configure the cell...
-    
+    [self configureCell:cell atIndexPath:indexPath];
+    [WPStyleGuide configureTableViewCell:cell];
+
     return cell;
 }
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
     [tableView deselectRowAtIndexPath:indexPath animated:YES];
     
-//    if (indexPath.row < [self rowForAddSite]) {
-//        [WPMobileStats trackEventForWPCom:StatsEventSettingsClickedEditBlog];
-//        
-//        Blog *blog = [self.resultsController objectAtIndexPath:indexPath];
-//        
-//        EditSiteViewController *editSiteViewController = [[EditSiteViewController alloc] init];
-//        editSiteViewController.blog = blog;
-//        [self.navigationController pushViewController:editSiteViewController animated:YES];
-//    }
+    if (indexPath.row == BlogDetailsRowEdit) {
+        [WPMobileStats trackEventForWPCom:StatsEventSettingsClickedEditBlog];
+        
+        EditSiteViewController *editSiteViewController = [[EditSiteViewController alloc] init];
+        editSiteViewController.blog = self.blog;
+        [self.navigationController pushViewController:editSiteViewController animated:YES];
+    }
+    
+    Class controllerClass;
+    if (indexPath.row == BlogDetailsRowPosts) {
+        [WPMobileStats incrementProperty:StatsPropertySidebarSiteClickedPosts forEvent:StatsEventAppClosed];
+        controllerClass = [PostsViewController class];
+    } else if (indexPath.row == BlogDetailsRowPages) {
+        [WPMobileStats incrementProperty:StatsPropertySidebarSiteClickedPages forEvent:StatsEventAppClosed];
+        controllerClass = [PagesViewController class];
+    } else if (indexPath.row == BlogDetailsRowComments) {
+        [WPMobileStats incrementProperty:StatsPropertySidebarSiteClickedComments forEvent:StatsEventAppClosed];
+        controllerClass = [CommentsViewController class];
+    } else if (indexPath.row == BlogDetailsRowStats) {
+        [WPMobileStats incrementProperty:StatsPropertySidebarSiteClickedStats forEvent:StatsEventAppClosed];
+        controllerClass =  [StatsWebViewController class];
+    } else if (indexPath.row == BlogDetailsRowViewSite) {
+        [self showViewSiteForBlog:self.blog];
+    } else if (indexPath.row == BlogDetailsRowViewAdmin) {
+        [self showViewAdminForBlog:self.blog];
+    }
+        
+    // Check if the controller is already on the screen
+    if ([self.navigationController.visibleViewController isMemberOfClass:controllerClass]) {
+        if ([self.navigationController.visibleViewController respondsToSelector:@selector(setBlog:)]) {
+            [self.navigationController.visibleViewController performSelector:@selector(setBlog:) withObject:self.blog];
+        }
+        [self.navigationController popToRootViewControllerAnimated:NO];
+    
+        return;
+    }
+
+    UIViewController *viewController = (UIViewController *)[[controllerClass alloc] init];
+    if ([viewController respondsToSelector:@selector(setBlog:)]) {
+        [viewController performSelector:@selector(setBlog:) withObject:self.blog];
+        [self.navigationController pushViewController:viewController animated:YES];
+    }
+    
 }
+
+#pragma mark - Private methods
+- (void)showViewSiteForBlog:(Blog *)blog {
+    [WPMobileStats incrementProperty:StatsPropertySidebarSiteClickedViewSite forEvent:StatsEventAppClosed];
+    
+    NSString *blogURL = blog.homeURL;
+    if (![blogURL hasPrefix:@"http"]) {
+        blogURL = [NSString stringWithFormat:@"http://%@", blogURL];
+    } else if ([blog isWPcom] && [blog.url rangeOfString:@"wordpress.com"].location == NSNotFound) {
+        blogURL = [blog.xmlrpc stringByReplacingOccurrencesOfString:@"xmlrpc.php" withString:@""];
+    }
+    
+    // Check if the same site already loaded
+    if ([self.navigationController.visibleViewController isMemberOfClass:[WPWebViewController class]] &&
+        [((WPWebViewController*)self.navigationController.visibleViewController).url.absoluteString isEqual:blogURL]) {
+        // Do nothing
+    } else {
+        WPWebViewController *webViewController = [[WPWebViewController alloc] init];
+        [webViewController setUrl:[NSURL URLWithString:blogURL]];
+        if ([blog isPrivate]) {
+            [webViewController setUsername:blog.username];
+            [webViewController setPassword:blog.password];
+            [webViewController setWpLoginURL:[NSURL URLWithString:blog.loginUrl]];
+        }
+        [self.navigationController pushViewController:webViewController animated:YES];
+    }
+    return;
+}
+
+- (void)showViewAdminForBlog:(Blog *)blog
+{
+    [WPMobileStats incrementProperty:StatsPropertySidebarSiteClickedViewAdmin forEvent:StatsEventAppClosed];
+    
+    NSString *dashboardUrl = [blog.xmlrpc stringByReplacingOccurrencesOfString:@"xmlrpc.php" withString:@"wp-admin/"];
+    [[UIApplication sharedApplication] openURL:[NSURL URLWithString:dashboardUrl]];
+}
+
 
 /*
 // Override to support conditional editing of the table view.
