@@ -143,7 +143,7 @@ CGFloat const JetpackSignInButtonHeight = 41.0;
     
     // Add Logo
     if (_icon == nil) {
-        _icon = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"icon-wp"]];
+        _icon = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"icon-jetpack"]];
         [self.view addSubview:_icon];
     }
     

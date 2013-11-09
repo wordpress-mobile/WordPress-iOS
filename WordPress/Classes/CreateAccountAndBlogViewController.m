@@ -300,11 +300,9 @@ CGFloat const CreateAccountAndBlogKeyboardOffset = 132.0;
 {
     // Add Help Button
     UIImage *helpButtonImage = [UIImage imageNamed:@"btn-help"];
-    UIImage *helpButtonImageHighlighted = [UIImage imageNamed:@"btn-help-tap"];
     if (_helpButton == nil) {
         _helpButton = [UIButton buttonWithType:UIButtonTypeCustom];
         [_helpButton setImage:helpButtonImage forState:UIControlStateNormal];
-        [_helpButton setImage:helpButtonImageHighlighted forState:UIControlStateHighlighted];
         _helpButton.frame = CGRectMake(0, 0, helpButtonImage.size.width, helpButtonImage.size.height);
         [_helpButton addTarget:self action:@selector(clickedHelpButton) forControlEvents:UIControlEventTouchUpInside];
         [_scrollView addSubview:_helpButton];

@@ -424,12 +424,10 @@ CGFloat const GeneralWalkthroughiOS7StatusBarOffset = 20.0;
 
 - (void)addPage1Controls
 {
-    UIImage *infoButtonImage = [UIImage imageNamed:@"btn-about"];
-    UIImage *infoButtonImageHighlighted = [UIImage imageNamed:@"btn-about-tap"];
+    UIImage *infoButtonImage = [UIImage imageNamed:@"btn-help"];
     if (_page1InfoButton == nil) {
         _page1InfoButton = [UIButton buttonWithType:UIButtonTypeCustom];
         [_page1InfoButton setImage:infoButtonImage forState:UIControlStateNormal];
-        [_page1InfoButton setImage:infoButtonImageHighlighted forState:UIControlStateHighlighted];
         _page1InfoButton.frame = CGRectMake(GeneralWalkthroughStandardOffset, GeneralWalkthroughStandardOffset, infoButtonImage.size.width, infoButtonImage.size.height);
         [_page1InfoButton addTarget:self action:@selector(clickedInfoButton:) forControlEvents:UIControlEventTouchUpInside];
         [_scrollView addSubview:_page1InfoButton];
