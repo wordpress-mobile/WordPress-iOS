@@ -211,21 +211,21 @@ int ddLogLevel = LOG_LEVEL_INFO;
     ReaderPostsViewController *readerPostsViewController = [[ReaderPostsViewController alloc] init];
     UINavigationController *readerNavigationController = [[UINavigationController alloc] initWithRootViewController:readerPostsViewController];
     readerNavigationController.navigationBar.translucent = NO;
-    readerNavigationController.tabBarItem.image = [UIImage imageNamed:@"blavatar-wporg"];
+    readerNavigationController.tabBarItem.image = [UIImage imageNamed:@"icon-tab-reader"];
     readerPostsViewController.title = @"Reader";
     
     NotificationsViewController *notificationsViewController = [[NotificationsViewController alloc] init];
     UINavigationController *notificationsNavigationController = [[UINavigationController alloc] initWithRootViewController:notificationsViewController];
     notificationsNavigationController.navigationBar.translucent = NO;
-    notificationsNavigationController.tabBarItem.image = [UIImage imageNamed:@"blavatar-wporg"];
+    notificationsNavigationController.tabBarItem.image = [UIImage imageNamed:@"icon-tab-notifications"];
     notificationsViewController.title = @"Notifications";
     
     BlogListViewController *blogListViewController = [[BlogListViewController alloc] init];
     UINavigationController *blogListNavigationController = [[UINavigationController alloc] initWithRootViewController:blogListViewController];
     blogListNavigationController.navigationBar.translucent = NO;
-    blogListNavigationController.tabBarItem.image = [UIImage imageNamed:@"blavatar-wporg"];
+    blogListNavigationController.tabBarItem.image = [UIImage imageNamed:@"icon-tab-blogs"];
     blogListViewController.title = @"My Blogs";
-    tabBarController.viewControllers = [NSArray arrayWithObjects:readerNavigationController, notificationsNavigationController, blogListNavigationController, nil];
+    tabBarController.viewControllers = [NSArray arrayWithObjects:blogListNavigationController, readerNavigationController, notificationsNavigationController, nil];
 
     return tabBarController;
 }
