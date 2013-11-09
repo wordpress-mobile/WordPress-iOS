@@ -192,7 +192,7 @@ CGFloat const JetpackSignInButtonHeight = 41.0;
         _signInButton = [[WPNUXMainButton alloc] init];
         NSString *title = _initialSignIn ? NSLocalizedString(@"Sign In", nil) : NSLocalizedString(@"Save", nil);
         [_signInButton setTitle:title forState:UIControlStateNormal];
-        [_signInButton addTarget:self action:@selector(save:) forControlEvents:UIControlEventTouchUpInside];
+        [_signInButton addTarget:self action:@selector(saveAction:) forControlEvents:UIControlEventTouchUpInside];
         [self.view addSubview:_signInButton];
         _signInButton.enabled = NO;
     }
@@ -295,7 +295,8 @@ CGFloat const JetpackSignInButtonHeight = 41.0;
 }
 
 
-- (void)save:(id)sender {
+- (void)saveAction:(id)sender {
+    
     [self dismissKeyboard];
     [SVProgressHUD show];
 	
@@ -323,7 +324,7 @@ CGFloat const JetpackSignInButtonHeight = 41.0;
     if (textField == _usernameText) {
         [_passwordText becomeFirstResponder];
     } else if (textField == _passwordText) {
-        [self save:nil];
+        [self saveAction:nil];
     }
     
 	return YES;
@@ -499,7 +500,7 @@ CGFloat const JetpackSignInButtonHeight = 41.0;
     self.username = username;
     self.password = password;
 
-    [self save:nil];
+    [self saveAction:nil];
 }
 
 @end
