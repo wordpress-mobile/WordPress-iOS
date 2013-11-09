@@ -30,8 +30,8 @@
     
     UIImageView *_icon;
     UILabel *_description;
-    UITextField *_usernameText;
-    UITextField *_passwordText;
+    WPWalkthroughTextField *_usernameText;
+    WPWalkthroughTextField *_passwordText;
     WPNUXMainButton *_signInButton;
     WPNUXMainButton *_installJetbackButton;
     UIButton *_moreInformationButton;
@@ -183,6 +183,7 @@ CGFloat const JetpackSignInButtonHeight = 41.0;
         _passwordText.delegate = self;
         _passwordText.secureTextEntry = YES;
         _passwordText.text = _password;
+        _passwordText.showTopLineSeparator = YES;
         [self.view addSubview:_passwordText];
     }
     

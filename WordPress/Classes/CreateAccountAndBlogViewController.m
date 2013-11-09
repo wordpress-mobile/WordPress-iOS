@@ -34,9 +34,9 @@
     UIImageView *_page1Icon;
     UILabel *_page1Title;
     UILabel *_page1TOSLabel;
-    UITextField *_page1EmailText;
-    UITextField *_page1UsernameText;
-    UITextField *_page1PasswordText;
+    WPWalkthroughTextField *_page1EmailText;
+    WPWalkthroughTextField *_page1UsernameText;
+    WPWalkthroughTextField *_page1PasswordText;
     WPNUXPrimaryButton *_page1NextButton;
     
     // Page 2
@@ -44,9 +44,9 @@
     UILabel *_page2Title;
     UILabel *_page2TOSLabel;
     UILabel *_page2WordPressComLabel;
-    UITextField *_page2SiteTitleText;
-    UITextField *_page2SiteAddressText;
-    UITextField *_page2SiteLanguageText;
+    WPWalkthroughTextField *_page2SiteTitleText;
+    WPWalkthroughTextField *_page2SiteAddressText;
+    WPWalkthroughTextField *_page2SiteLanguageText;
     UIImageView *_page2SiteLanguageDropdownImage;
     WPNUXPrimaryButton *_page2NextButton;
     WPNUXPrimaryButton *_page2PreviousButton;
@@ -361,6 +361,7 @@ CGFloat const CreateAccountAndBlogKeyboardOffset = 132.0;
         _page1UsernameText.delegate = self;
         _page1UsernameText.autocorrectionType = UITextAutocorrectionTypeNo;
         _page1UsernameText.autocapitalizationType = UITextAutocapitalizationTypeNone;
+        _page1UsernameText.showTopLineSeparator = YES;
         [_scrollView addSubview:_page1UsernameText];
     }
     
@@ -375,6 +376,7 @@ CGFloat const CreateAccountAndBlogKeyboardOffset = 132.0;
         _page1PasswordText.delegate = self;
         _page1PasswordText.autocorrectionType = UITextAutocorrectionTypeNo;
         _page1PasswordText.autocapitalizationType = UITextAutocapitalizationTypeNone;
+        _page1PasswordText.showTopLineSeparator = YES;
         [_scrollView addSubview:_page1PasswordText];
     }
     
@@ -524,6 +526,7 @@ CGFloat const CreateAccountAndBlogKeyboardOffset = 132.0;
         _page2SiteAddressText.delegate = self;
         _page2SiteAddressText.autocorrectionType = UITextAutocorrectionTypeNo;
         _page2SiteAddressText.autocapitalizationType = UITextAutocapitalizationTypeNone;
+        _page2SiteAddressText.showTopLineSeparator = YES;
         [_scrollView addSubview:_page2SiteAddressText];
         
         // add .wordpress.com label to textfield
@@ -553,6 +556,7 @@ CGFloat const CreateAccountAndBlogKeyboardOffset = 132.0;
         _page2SiteLanguageText.autocapitalizationType = UITextAutocapitalizationTypeNone;
         _page2SiteLanguageText.enabled = NO;
         _page2SiteLanguageText.text = [_currentLanguage objectForKey:@"name"];
+        _page2SiteLanguageText.showTopLineSeparator = YES;
         [_scrollView addSubview:_page2SiteLanguageText];
     }
     

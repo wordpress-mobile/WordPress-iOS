@@ -19,8 +19,27 @@
         self.textInsets = UIEdgeInsetsMake(7, 10, 7, 10);
         self.layer.cornerRadius = 1.0;
         self.clipsToBounds = YES;
+        self.showTopLineSeparator = NO;
     }
     return self;
+}
+
+- (void)drawRect:(CGRect)rect {
+    
+    // draw top border
+    
+    if (_showTopLineSeparator) {
+        
+        CGContextRef context = UIGraphicsGetCurrentContext();
+        
+        UIBezierPath *path = [UIBezierPath bezierPath];
+        [path moveToPoint:CGPointMake(CGRectGetMinX(rect) + _textInsets.left, CGRectGetMinY(rect))];
+        [path addLineToPoint:CGPointMake(CGRectGetMaxX(rect), CGRectGetMinY(rect))];
+        [path setLineWidth:[[UIScreen mainScreen] scale] / 2.0];
+        CGContextAddPath(context, path.CGPath);
+        CGContextSetStrokeColorWithColor(context, [UIColor colorWithWhite:0.87 alpha:1.0].CGColor);
+        CGContextStrokePath(context);
+    }
 }
 
 // placeholder position

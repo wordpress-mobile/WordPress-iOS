@@ -46,9 +46,9 @@
     
     // Page 2
     UIImageView *_page2Icon;
-    UITextField *_usernameText;
-    UITextField *_passwordText;
-    UITextField *_siteUrlText;
+    WPWalkthroughTextField *_usernameText;
+    WPWalkthroughTextField *_passwordText;
+    WPWalkthroughTextField *_siteUrlText;
     WPNUXMainButton *_signInButton;
     
     CGFloat _viewWidth;
@@ -575,6 +575,7 @@ CGFloat const GeneralWalkthroughiOS7StatusBarOffset = 20.0;
         _passwordText.font = [WPNUXUtility textFieldFont];
         _passwordText.delegate = self;
         _passwordText.secureTextEntry = YES;
+        _passwordText.showTopLineSeparator = YES;
         [_scrollView addSubview:_passwordText];
     }
     
@@ -590,6 +591,7 @@ CGFloat const GeneralWalkthroughiOS7StatusBarOffset = 20.0;
         _siteUrlText.returnKeyType = UIReturnKeyGo;
         _siteUrlText.autocorrectionType = UITextAutocorrectionTypeNo;
         _siteUrlText.autocapitalizationType = UITextAutocapitalizationTypeNone;
+        _siteUrlText.showTopLineSeparator = YES;
         [_scrollView addSubview:_siteUrlText];
     }
     

@@ -11,5 +11,6 @@
 @interface WPWalkthroughTextField : UITextField
 
 @property (nonatomic) UIEdgeInsets textInsets;
+@property (nonatomic) BOOL showTopLineSeparator;
 
 @end
