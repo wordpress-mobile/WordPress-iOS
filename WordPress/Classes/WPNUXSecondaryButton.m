@@ -49,15 +49,11 @@
 
 - (void)configureButton
 {
-    UIImage *mainImage = [[UIImage imageNamed:@"btn-secondary"] resizableImageWithCapInsets:UIEdgeInsetsMake(0, 4, 0, 4)];
-    UIImage *tappedImage = [[UIImage imageNamed:@"btn-secondary-tap"] resizableImageWithCapInsets:UIEdgeInsetsMake(0, 4, 0, 4)];
     self.titleLabel.font = [UIFont fontWithName:@"OpenSans" size:13.0];
     self.titleLabel.minimumScaleFactor = 10.0/15.0;
     [self setTitleEdgeInsets:UIEdgeInsetsMake(0, 15.0, 0, 15.0)];
-    [self setBackgroundImage:mainImage forState:UIControlStateNormal];
-    [self setBackgroundImage:tappedImage forState:UIControlStateHighlighted];
     [self setTitleColor:[UIColor colorWithRed:1.0 green:1.0 blue:1.0 alpha:1.0] forState:UIControlStateNormal];
-    [self setTitleColor:[UIColor colorWithRed:1.0 green:1.0 blue:1.0 alpha:0.6] forState:UIControlStateHighlighted];
+    [self setTitleColor:[UIColor colorWithRed:1.0 green:1.0 blue:1.0 alpha:0.4] forState:UIControlStateHighlighted];
 }
 
 
