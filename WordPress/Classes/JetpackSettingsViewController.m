@@ -162,7 +162,7 @@ CGFloat const JetpackSignInButtonHeight = 41.0;
     
     // Add Username
     if (_usernameText == nil) {
-        _usernameText = [[WPWalkthroughTextField alloc] init];
+        _usernameText = [[WPWalkthroughTextField alloc] initWithLeftViewImage:[UIImage imageNamed:@"icon-username-field"]];
         _usernameText.backgroundColor = [UIColor whiteColor];
         _usernameText.placeholder = NSLocalizedString(@"WordPress.com username", @"");
         _usernameText.font = [WPNUXUtility textFieldFont];
@@ -176,7 +176,7 @@ CGFloat const JetpackSignInButtonHeight = 41.0;
     
     // Add Password
     if (_passwordText == nil) {
-        _passwordText = [[WPWalkthroughTextField alloc] init];
+        _passwordText = [[WPWalkthroughTextField alloc] initWithLeftViewImage:[UIImage imageNamed:@"icon-password-field"]];
         _passwordText.backgroundColor = [UIColor whiteColor];
         _passwordText.placeholder = NSLocalizedString(@"WordPress.com password", @"");
         _passwordText.font = [WPNUXUtility textFieldFont];
