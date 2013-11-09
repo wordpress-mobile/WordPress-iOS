@@ -69,6 +69,11 @@ typedef enum {
         cell.textLabel.text = NSLocalizedString(@"Pages", nil);
     } else if (indexPath.row == BlogDetailsRowComments) {
         cell.textLabel.text = NSLocalizedString(@"Comments", nil);
+        int numberOfPendingComments = [self.blog numberOfPendingComments];
+        if (numberOfPendingComments > 0) {
+            cell.detailTextLabel.text = [NSString stringWithFormat:@"%d", numberOfPendingComments];
+        }
+
     } else if (indexPath.row == BlogDetailsRowStats) {
         cell.textLabel.text = NSLocalizedString(@"Stats", nil);
     } else if (indexPath.row == BlogDetailsRowViewSite) {
