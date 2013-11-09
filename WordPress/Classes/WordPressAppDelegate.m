@@ -13,7 +13,6 @@
 #import "Media.h"
 #import "CameraPlusPickerManager.h"
 #import "PanelNavigationController.h"
-#import "MP6SidebarViewController.h"
 #import "UIDevice+WordPressIdentifier.h"
 #import "WordPressComApi.h"
 #import "PostsViewController.h"
@@ -214,11 +213,11 @@ int ddLogLevel = LOG_LEVEL_INFO;
     readerNavigationController.tabBarItem.image = [UIImage imageNamed:@"icon-tab-reader"];
     readerPostsViewController.title = @"Reader";
     
-    NotificationsViewController *notificationsViewController = [[NotificationsViewController alloc] init];
-    UINavigationController *notificationsNavigationController = [[UINavigationController alloc] initWithRootViewController:notificationsViewController];
+    self.notificationsViewController = [[NotificationsViewController alloc] init];
+    UINavigationController *notificationsNavigationController = [[UINavigationController alloc] initWithRootViewController:self.notificationsViewController];
     notificationsNavigationController.navigationBar.translucent = NO;
     notificationsNavigationController.tabBarItem.image = [UIImage imageNamed:@"icon-tab-notifications"];
-    notificationsViewController.title = @"Notifications";
+    self.notificationsViewController.title = @"Notifications";
     
     BlogListViewController *blogListViewController = [[BlogListViewController alloc] init];
     UINavigationController *blogListNavigationController = [[UINavigationController alloc] initWithRootViewController:blogListViewController];
@@ -1206,19 +1205,18 @@ int ddLogLevel = LOG_LEVEL_INFO;
 }
 
 - (void)openNotificationScreenWithOptions:(NSDictionary *)remoteNotif {
-    if ([remoteNotif objectForKey:@"type"]) { //new social PNs
-        DDLogInfo(@"Received new notification: %@", remoteNotif);
-        
-        if( self.panelNavigationController )
-            [self.panelNavigationController showNotificationsView:YES];
-        
-    } else if ([remoteNotif objectForKey:@"blog_id"] && [remoteNotif objectForKey:@"comment_id"]) {
-        DDLogInfo(@"Received notification: %@", remoteNotif);
-        MP6SidebarViewController *sidebar = (MP6SidebarViewController *)self.panelNavigationController.masterViewController;
-        [sidebar showCommentWithId:[[remoteNotif objectForKey:@"comment_id"] numericValue] blogId:[[remoteNotif objectForKey:@"blog_id"] numericValue]];
-    } else {
-        DDLogWarn(@"Got unsupported notification: %@", remoteNotif);
-    }
+    // Show the notifications tab
+    NSInteger notificationsTabIndex = [[self.tabBarController viewControllers] indexOfObject:self.notificationsViewController.navigationController];
+    [self.tabBarController setSelectedIndex:notificationsTabIndex];
+    DDLogInfo(@"Received new notification: %@", remoteNotif);
+
+    // TODO: Open comment view here
+//    if ([remoteNotif objectForKey:@"blog_id"] && [remoteNotif objectForKey:@"comment_id"]) {
+//        MP6SidebarViewController *sidebar = (MP6SidebarViewController *)self.panelNavigationController.masterViewController;
+//        [sidebar showCommentWithId:[[remoteNotif objectForKey:@"comment_id"] numericValue] blogId:[[remoteNotif objectForKey:@"blog_id"] numericValue]];
+//    } else if ([remoteNotif objectForKey:@"type"] == nil) {
+//        DDLogWarn(@"Got unsupported notification: %@", remoteNotif);
+//    }
 }
 
 #pragma mark -

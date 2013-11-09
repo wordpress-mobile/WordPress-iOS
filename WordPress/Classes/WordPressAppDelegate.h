@@ -10,6 +10,7 @@
 
 
 @class AutosaveManager;
+@class NotificationsViewController;
 
 @interface WordPressAppDelegate : NSObject <UIApplicationDelegate, UIAlertViewDelegate> {
 	Blog *currentBlog;
@@ -56,6 +57,7 @@
 @property (nonatomic, strong, readonly) NSPersistentStoreCoordinator *persistentStoreCoordinator;
 @property (nonatomic, strong) PanelNavigationController *panelNavigationController;
 @property (nonatomic, strong) UITabBarController *tabBarController;
+@property (nonatomic, strong) NotificationsViewController *notificationsViewController;
 @property (strong, nonatomic) DDFileLogger *fileLogger;
 
 
