@@ -230,6 +230,15 @@ NSString *const WPReaderViewControllerDisplayedNativeFriendFinder = @"DisplayedN
 
 #pragma mark - Instance Methods
 
+- (void)setTitle:(NSString *)title {
+    [super setTitle:title];
+    
+    // Reset the tab bar title; this isn't a great solution, but works
+    NSInteger tabIndex = [self.tabBarController.viewControllers indexOfObject:self.navigationController];
+    UITabBarItem *tabItem = [[[self.tabBarController tabBar] items] objectAtIndex:tabIndex];
+    tabItem.title = NSLocalizedString(@"Reader", @"Description of the Reader tab");
+}
+
 - (void)configureTableHeader {
 	if ([self.resultsController.fetchedObjects count] == 0) {
 		self.tableView.tableHeaderView = nil;
@@ -797,7 +806,7 @@ NSString *const WPReaderViewControllerDisplayedNativeFriendFinder = @"DisplayedN
 	ReaderPost *post = [self.resultsController.fetchedObjects objectAtIndex:indexPath.row];
 	
 	ReaderPostDetailViewController *controller = [[ReaderPostDetailViewController alloc] initWithPost:post];
-    [self.panelNavigationController pushViewController:controller animated:YES];
+    [self.navigationController pushViewController:controller animated:YES];
     
     [WPMobileStats trackEventForWPCom:StatsEventReaderOpenedArticleDetails];
     [WPMobileStats pingWPComStatsEndpoint:@"details_page"];

@@ -32,6 +32,9 @@
 #import "UIColor+Helpers.h"
 #import <Security/Security.h>
 #import "SupportViewController.h"
+#import "ReaderPostsViewController.h"
+#import "NotificationsViewController.h"
+#import "BlogListViewController.h"
 
 @interface WordPressAppDelegate (Private) <CrashlyticsDelegate>
 
@@ -202,6 +205,31 @@ int ddLogLevel = LOG_LEVEL_INFO;
     [Crashlytics setObjectValue:@([Blog countWithContext:[self managedObjectContext]]) forKey:@"number_of_blogs"];
 }
 
+- (UITabBarController *)createTabBarController {
+    UITabBarController *tabBarController = [[UITabBarController alloc] init];
+    
+    ReaderPostsViewController *readerPostsViewController = [[ReaderPostsViewController alloc] init];
+    UINavigationController *readerNavigationController = [[UINavigationController alloc] initWithRootViewController:readerPostsViewController];
+    readerNavigationController.navigationBar.translucent = NO;
+    readerNavigationController.tabBarItem.image = [UIImage imageNamed:@"blavatar-wporg"];
+    readerPostsViewController.title = @"Reader";
+    
+    NotificationsViewController *notificationsViewController = [[NotificationsViewController alloc] init];
+    UINavigationController *notificationsNavigationController = [[UINavigationController alloc] initWithRootViewController:notificationsViewController];
+    notificationsNavigationController.navigationBar.translucent = NO;
+    notificationsNavigationController.tabBarItem.image = [UIImage imageNamed:@"blavatar-wporg"];
+    notificationsViewController.title = @"Notifications";
+    
+    BlogListViewController *blogListViewController = [[BlogListViewController alloc] init];
+    UINavigationController *blogListNavigationController = [[UINavigationController alloc] initWithRootViewController:blogListViewController];
+    blogListNavigationController.navigationBar.translucent = NO;
+    blogListNavigationController.tabBarItem.image = [UIImage imageNamed:@"blavatar-wporg"];
+    blogListViewController.title = @"My Blogs";
+    tabBarController.viewControllers = [NSArray arrayWithObjects:readerNavigationController, notificationsNavigationController, blogListNavigationController, nil];
+
+    return tabBarController;
+}
+
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
     UIDevice *device = [UIDevice currentDevice];
     NSInteger crashCount = [[NSUserDefaults standardUserDefaults] integerForKey:@"crashCount"];
@@ -276,14 +304,12 @@ int ddLogLevel = LOG_LEVEL_INFO;
     [self setupPocket];
     [self setupSingleSignOn];
 
-    MP6SidebarViewController *sidebarViewController = [[MP6SidebarViewController alloc] init];
-    
     CGRect bounds = [[UIScreen mainScreen] bounds];
     [window setFrame:bounds];
     [window setBounds:bounds]; // for good measure.
-    panelNavigationController = [[PanelNavigationController alloc] initWithDetailController:nil masterViewController:sidebarViewController];
-    window.rootViewController = panelNavigationController;
+    
     window.backgroundColor = [UIColor blackColor];
+    window.rootViewController = [self createTabBarController];
 
 	//listener for XML-RPC errors
 	//in the future we could put the errors message in a dedicated screen that users can bring to front when samething went wrong, and can take a look at the error msg.

@@ -55,6 +55,7 @@
 @property (nonatomic, strong, readonly) NSManagedObjectModel *managedObjectModel;
 @property (nonatomic, strong, readonly) NSPersistentStoreCoordinator *persistentStoreCoordinator;
 @property (nonatomic, strong) PanelNavigationController *panelNavigationController;
+@property (nonatomic, strong) UITabBarController *tabBarController;
 @property (strong, nonatomic) DDFileLogger *fileLogger;
 
 
