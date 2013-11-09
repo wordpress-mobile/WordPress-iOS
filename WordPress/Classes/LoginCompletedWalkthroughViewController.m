@@ -157,9 +157,7 @@ CGFloat const LoginCompeltedWalkthroughSwipeToContinueTopOffset = 14.0;
     grayOverlay.dismissCompletionBlock = ^(WPWalkthroughOverlayView * overlayView){
         [self dismiss];
     };
-    
-    self.showsExtraWalkthroughPages = YES;
-    
+        
     if (self.showsExtraWalkthroughPages) {
         
         grayOverlay.overlayMode = WPWalkthroughGrayOverlayViewOverlayModeTwoButtonMode;
