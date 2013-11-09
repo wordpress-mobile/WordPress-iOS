@@ -139,10 +139,6 @@ CGFloat const SidebarViewControllerStatusBarViewHeight = 20.0;
     
     if (IS_IPHONE && _showingWelcomeScreen) {
         _showingWelcomeScreen = NO;
-        static dispatch_once_t sidebarTeaseToken;
-        dispatch_once(&sidebarTeaseToken, ^{
-            [self.panelNavigationController teaseSidebar];
-        });
     }
 
     static dispatch_once_t onceToken;
