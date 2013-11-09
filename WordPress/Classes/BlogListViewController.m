@@ -16,6 +16,7 @@ CGFloat const blavatarImageSize = 50.f;
 
 @interface BlogListViewController ()
 @property (nonatomic, strong) NSFetchedResultsController *resultsController;
+@property (nonatomic, strong) UIBarButtonItem *settingsButton;
 
 @end
 
@@ -33,11 +34,12 @@ CGFloat const blavatarImageSize = 50.f;
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-    
-    self.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:NSLocalizedString(@"Settings", nil)
-                                                                             style:UIBarButtonItemStylePlain
-                                                                            target:self
-                                                                            action:@selector(showSettings:)];
+    self.navigationItem.leftBarButtonItem = self.editButtonItem;
+    self.settingsButton = [[UIBarButtonItem alloc] initWithTitle:NSLocalizedString(@"Settings", nil)
+                                                           style:UIBarButtonItemStylePlain
+                                                          target:self
+                                                          action:@selector(showSettings:)];
+    self.navigationItem.rightBarButtonItem = self.settingsButton;
     
     [[NSNotificationCenter defaultCenter] addObserverForName:WordPressComApiDidLoginNotification object:nil queue:nil usingBlock:^(NSNotification *note) {
         [self.tableView reloadSections:[NSIndexSet indexSetWithIndex:0] withRowAnimation:UITableViewRowAnimationFade];
@@ -59,6 +61,9 @@ CGFloat const blavatarImageSize = 50.f;
 
 - (void)viewWillAppear:(BOOL)animated {
     [super viewWillAppear:animated];
+    
+    self.editButtonItem.enabled = ([[self.resultsController fetchedObjects] count] > 0); // Disable if we have no blogs.
+
     self.resultsController.delegate = self;
     [self.resultsController performFetch:nil];
     [self.tableView reloadData];
@@ -67,12 +72,6 @@ CGFloat const blavatarImageSize = 50.f;
 - (void)viewWillDisappear:(BOOL)animated {
     [super viewWillDisappear:animated];
     self.resultsController.delegate = nil;
-}
-
-- (void)didReceiveMemoryWarning
-{
-    [super didReceiveMemoryWarning];
-    // Dispose of any resources that can be recreated.
 }
 
 
@@ -100,8 +99,14 @@ CGFloat const blavatarImageSize = 50.f;
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
-    // Number of blogs plus an extra row for 'Add a Site'
-    return [[self.resultsController fetchedObjects] count] + 1;
+    // Number of blogs
+    NSInteger numRows = [[self.resultsController fetchedObjects] count];
+    
+    // Plus an extra row for 'Add a Site' (when not editing)
+    if (![tableView isEditing])
+        numRows += 1;
+    
+    return numRows;
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
@@ -118,44 +123,46 @@ CGFloat const blavatarImageSize = 50.f;
     return cell;
 }
 
-/*
-// Override to support conditional editing of the table view.
-- (BOOL)tableView:(UITableView *)tableView canEditRowAtIndexPath:(NSIndexPath *)indexPath
-{
-    // Return NO if you do not want the specified item to be editable.
-    return YES;
+- (NSString *)tableView:(UITableView *)tableView titleForDeleteConfirmationButtonForRowAtIndexPath:(NSIndexPath *)indexPath {
+    return NSLocalizedString(@"Remove", @"Button label when removing a blog");
 }
-*/
 
-/*
-// Override to support editing the table view.
-- (void)tableView:(UITableView *)tableView commitEditingStyle:(UITableViewCellEditingStyle)editingStyle forRowAtIndexPath:(NSIndexPath *)indexPath
-{
+- (BOOL)tableView:(UITableView *)tableView canEditRowAtIndexPath:(NSIndexPath *)indexPath {
+    return indexPath.row != [self rowForAddSite];
+}
+
+- (void)setEditing:(BOOL)editing animated:(BOOL)animated {
+    [super setEditing:editing animated:animated];
+    
+    // And the "Add a Site" row too
+    NSArray *rowsToChange = [NSArray arrayWithObject:[NSIndexPath indexPathForRow:[self rowForAddSite] inSection:0]];
+    
+    UITableViewRowAnimation rowAnimation = animated ? UITableViewRowAnimationFade : UITableViewRowAnimationNone;
+    [self.tableView beginUpdates];
+    if (editing) {
+        [self.tableView deleteRowsAtIndexPaths:rowsToChange withRowAnimation:rowAnimation];
+        [self.navigationItem setRightBarButtonItem:nil animated:animated];
+    } else {
+        [self.tableView insertRowsAtIndexPaths:rowsToChange withRowAnimation:rowAnimation];
+        [self.navigationItem setRightBarButtonItem:self.settingsButton animated:animated];
+    }
+    [self.tableView endUpdates];
+}
+
+
+- (void)tableView:(UITableView *)tableView commitEditingStyle:(UITableViewCellEditingStyle)editingStyle forRowAtIndexPath:(NSIndexPath *)indexPath {
     if (editingStyle == UITableViewCellEditingStyleDelete) {
-        // Delete the row from the data source
-        [tableView deleteRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationFade];
-    }   
-    else if (editingStyle == UITableViewCellEditingStyleInsert) {
-        // Create a new instance of the appropriate class, insert it into the array, and add a new row to the table view
-    }   
+        [WPMobileStats trackEventForWPCom:StatsEventSettingsRemovedBlog];
+        
+        Blog *blog = [self.resultsController objectAtIndexPath:[NSIndexPath indexPathForRow:indexPath.row inSection:0]];
+        [blog remove];
+        
+        if ([[self.resultsController fetchedObjects] count] == 0) {
+            [self setEditing:NO];
+            self.editButtonItem.enabled = NO;
+        }
+    }
 }
-*/
-
-/*
-// Override to support rearranging the table view.
-- (void)tableView:(UITableView *)tableView moveRowAtIndexPath:(NSIndexPath *)fromIndexPath toIndexPath:(NSIndexPath *)toIndexPath
-{
-}
-*/
-
-/*
-// Override to support conditional rearranging of the table view.
-- (BOOL)tableView:(UITableView *)tableView canMoveRowAtIndexPath:(NSIndexPath *)indexPath
-{
-    // Return NO if you do not want the item to be re-orderable.
-    return YES;
-}
-*/
 
 - (NSInteger)rowForAddSite {
     return [[self.resultsController fetchedObjects] count];
