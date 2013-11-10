@@ -7,6 +7,7 @@
 //
 
 #import "PostSettingsSelectionViewController.h"
+#import "WPStyleGuide.h"
 
 @interface PostSettingsSelectionViewController ()
 
@@ -57,6 +58,11 @@
         }
     }
     return self;
+}
+
+- (void)viewDidLoad {
+    [super viewDidLoad];
+    [WPStyleGuide configureColorsForView:self.view andTableView:self.tableView];
 }
 
 #pragma mark -
