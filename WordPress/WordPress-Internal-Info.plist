@@ -5,36 +5,31 @@
 	<key>CFBundleDevelopmentRegion</key>
 	<string>en</string>
 	<key>CFBundleDisplayName</key>
-	<string>${PRODUCT_NAME} α</string>
+	<string>${PRODUCT_NAME}</string>
 	<key>CFBundleExecutable</key>
 	<string>${EXECUTABLE_NAME}</string>
-	<key>CFBundleIconFile</key>
-	<string>Icon-dev.png</string>
-	<key>CFBundleIconFiles</key>
-	<array>
-		<string>Icon-dev.png</string>
-		<string>Icon-dev@2x.png</string>
-		<string>Icon-dev-72.png</string>
-		<string>Icon-dev-72@2x.png</string>
-		<string>Icon-Small.png</string>
-		<string>Icon-Small-50.png</string>
-		<string>Icon-Small@2x.png</string>
-	</array>
 	<key>CFBundleIdentifier</key>
-	<string>org.wordpress</string>
+	<string>org.wordpress.internal</string>
 	<key>CFBundleInfoDictionaryVersion</key>
 	<string>6.0</string>
 	<key>CFBundleName</key>
 	<string>${PRODUCT_NAME}</string>
 	<key>CFBundlePackageType</key>
 	<string>APPL</string>
+	<key>CFBundleShortVersionString</key>
+	<string>3.8.4</string>
+	<key>CFBundleSignature</key>
+	<string>????</string>
 	<key>CFBundleURLTypes</key>
 	<array>
 		<dict>
+			<key>CFBundleTypeRole</key>
+			<string>Editor</string>
 			<key>CFBundleURLName</key>
 			<string>org.wordpress</string>
 			<key>CFBundleURLSchemes</key>
 			<array>
+				<string>wordpress-oauth-v2</string>
 				<string>wordpress</string>
 				<string>fb249643311490</string>
 				<string>pocketapp12013</string>
@@ -51,6 +46,19 @@
 	<string>MainWindow</string>
 	<key>NSMainNibFile~ipad</key>
 	<string>MainWindow-iPad</string>
+	<key>UIAppFonts</key>
+	<array>
+		<string>OpenSans-Light.ttf</string>
+		<string>OpenSans-Regular.ttf</string>
+		<string>OpenSans-Bold.ttf</string>
+		<string>OpenSans-Italic.ttf</string>
+		<string>OpenSans-BoldItalic.ttf</string>
+		<string>OpenSans-LightItalic.ttf</string>
+	</array>
+	<key>UIBackgroundModes</key>
+	<array>
+		<string>remote-notification</string>
+	</array>
 	<key>UIPrerenderedIcon</key>
 	<true/>
 	<key>UIStatusBarStyle</key>
@@ -62,5 +70,7 @@
 		<string>UIInterfaceOrientationLandscapeLeft</string>
 		<string>UIInterfaceOrientationLandscapeRight</string>
 	</array>
+	<key>UIViewControllerBasedStatusBarAppearance</key>
+	<false/>
 </dict>
 </plist>
