@@ -14,6 +14,7 @@
 #import "CommentsViewController.h"
 #import "StatsWebViewController.h"
 #import "WPWebViewController.h"
+#import "WPTableViewCell.h"
 
 typedef enum {
     BlogDetailsRowPosts = 0,
@@ -35,7 +36,7 @@ typedef enum {
 @synthesize blog = _blog;
 
 - (id)initWithStyle:(UITableViewStyle)style {
-    self = [super initWithStyle:style];
+    self = [super initWithStyle:UITableViewStyleGrouped];
     if (self) {
         // Custom initialization
     }
@@ -44,6 +45,14 @@ typedef enum {
 
 - (void)viewDidLoad {
     [super viewDidLoad];
+    
+    if (IS_IPHONE) {
+        UIEdgeInsets tableInset = [self.tableView contentInset];
+        tableInset.top = -1;
+        self.tableView.contentInset = tableInset;
+    }
+    
+    [WPStyleGuide configureColorsForView:self.view andTableView:self.tableView];
 }
 
 - (void)setBlog:(Blog *)blog {
@@ -90,7 +99,7 @@ typedef enum {
     UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier];
 
     if (cell == nil) {
-        cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:CellIdentifier];
+        cell = [[WPTableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:CellIdentifier];
         [cell setAccessoryType:UITableViewCellAccessoryDisclosureIndicator];
     }
     
@@ -147,6 +156,19 @@ typedef enum {
     }
     
 }
+
+- (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
+    return 60;
+}
+
+- (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section {
+    // No top margin on iPhone
+    if (IS_IPHONE)
+        return 1;
+    
+    return 40;
+}
+
 
 #pragma mark - Private methods
 - (void)showViewSiteForBlog:(Blog *)blog {

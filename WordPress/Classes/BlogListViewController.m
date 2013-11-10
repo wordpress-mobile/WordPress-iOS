@@ -13,6 +13,7 @@
 #import "SettingsViewController.h"
 #import "WelcomeViewController.h"
 #import "BlogDetailsViewController.h"
+#import "WPTableViewCell.h"
 
 CGFloat const blavatarImageSize = 50.f;
 
@@ -50,9 +51,13 @@ CGFloat const blavatarImageSize = 50.f;
         [self.tableView reloadSections:[NSIndexSet indexSetWithIndex:0] withRowAnimation:UITableViewRowAnimationFade];
     }];
 
-    UIEdgeInsets tableInset = [self.tableView contentInset];
-    tableInset.top = -1;
-    self.tableView.contentInset = tableInset;
+    if (IS_IPHONE) {
+        UIEdgeInsets tableInset = [self.tableView contentInset];
+        tableInset.top = -1;
+        self.tableView.contentInset = tableInset;
+    }
+    
+    [WPStyleGuide configureColorsForView:self.view andTableView:self.tableView];
     
     // Uncomment the following line to preserve selection between presentations.
     // self.clearsSelectionOnViewWillAppear = NO;
@@ -116,7 +121,7 @@ CGFloat const blavatarImageSize = 50.f;
     NSString *cellIdentifier = @"BlogCell";
     UITableViewCell *cell = [self.tableView dequeueReusableCellWithIdentifier:cellIdentifier];
     if (cell == nil) {
-        cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleSubtitle reuseIdentifier:cellIdentifier];
+        cell = [[WPTableViewCell alloc] initWithStyle:UITableViewCellStyleSubtitle reuseIdentifier:cellIdentifier];
     }
     
     [WPStyleGuide configureTableViewCell:cell];
@@ -207,7 +212,11 @@ CGFloat const blavatarImageSize = 50.f;
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section {
-    return 1;
+    // No top margin on iPhone
+    if (IS_IPHONE)
+        return 1;
+    
+    return 40;
 }
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
@@ -228,6 +237,10 @@ CGFloat const blavatarImageSize = 50.f;
         welcomeViewController.title = NSLocalizedString(@"Add a Site", nil);
         [self.navigationController pushViewController:welcomeViewController animated:YES];
     }
+}
+
+- (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
+    return 60;
 }
 
 
