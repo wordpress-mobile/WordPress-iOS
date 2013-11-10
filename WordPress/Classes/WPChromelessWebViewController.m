@@ -7,7 +7,6 @@
 #import "WPChromelessWebViewController.h"
 #import "WordPressAppDelegate.h"
 #import "WPWebViewController.h"
-#import "PanelNavigationConstants.h"
 
 @interface WPChromelessWebViewController ()
 @property (nonatomic, strong) WPWebView *webView;
@@ -94,7 +93,7 @@
         // If so check to see if its displaying the same url that was just clicked. 
         // If so just pop ourself off the stack.
         UIViewController *prevController = nil;
-        NSArray *controllers = [self.panelNavigationController viewControllers];
+        NSArray *controllers = [self.navigationController viewControllers];
         NSInteger len = [controllers count]; 
         if(len > 0) {
             for (NSInteger i = len; i > 0; i--) {

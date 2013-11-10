@@ -518,9 +518,6 @@ NSTimeInterval const WPTableViewControllerRefreshTimeout = 300; // 5 minutes
 
 - (void)scrollViewWillBeginDragging:(UIScrollView *)scrollView {
     _isScrolling = YES;
-    if (self.panelNavigationController) {
-        [self.panelNavigationController viewControllerWantsToBeFullyVisible:self];
-    }
     if (self.swipeActionsEnabled) {
         [self removeSwipeView:YES];
     }
@@ -546,7 +543,7 @@ NSTimeInterval const WPTableViewControllerRefreshTimeout = 300; // 5 minutes
                 navController.modalPresentationStyle = UIModalPresentationFormSheet;
                 navController.modalTransitionStyle = UIModalTransitionStyleCrossDissolve;
             }
-            [self.panelNavigationController presentViewController:navController animated:YES completion:nil];
+            [self.navigationController presentViewController:navController animated:YES completion:nil];
 
 			break;
 		}
@@ -586,7 +583,7 @@ NSTimeInterval const WPTableViewControllerRefreshTimeout = 300; // 5 minutes
                     navController.modalPresentationStyle = UIModalPresentationFormSheet;
                     navController.modalTransitionStyle = UIModalTransitionStyleCrossDissolve;
                 }
-                [self.panelNavigationController presentViewController:navController animated:YES completion:nil];
+                [self.navigationController presentViewController:navController animated:YES completion:nil];
             }
 			break;
 		default:
@@ -723,7 +720,7 @@ NSTimeInterval const WPTableViewControllerRefreshTimeout = 300; // 5 minutes
 		navController.modalPresentationStyle = UIModalPresentationFormSheet;
 	}
 	
-    [self.panelNavigationController presentViewController:navController animated:YES completion:nil];
+    [self.navigationController presentViewController:navController animated:YES completion:nil];
 }
 
 #pragma mark - Swipe gestures

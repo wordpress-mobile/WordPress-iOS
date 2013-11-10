@@ -17,7 +17,6 @@
 #import "ReaderPost.h"
 #import "WordPressComApi.h"
 #import "WordPressAppDelegate.h"
-#import "PanelNavigationConstants.h"
 #import "NSString+XMLExtensions.h"
 #import "ReaderReblogFormView.h"
 #import "WPFriendFinderViewController.h"
@@ -29,6 +28,8 @@
 #import "NSString+Helpers.h"
 #import "WPPopoverBackgroundView.h"
 #import "IOS7CorrectedTextView.h"
+
+#define IPAD_DETAIL_WIDTH 448.0f
 
 static CGFloat const ScrollingFastVelocityThreshold = 30.f;
 NSString *const WPReaderViewControllerDisplayedNativeFriendFinder = @"DisplayedNativeFriendFinder";
@@ -176,14 +177,11 @@ NSString *const WPReaderViewControllerDisplayedNativeFriendFinder = @"DisplayedN
 	
     [self performSelector:@selector(showFriendFinderNudgeView:) withObject:self afterDelay:3.0];
     
-	self.panelNavigationController.delegate = self;
-	
 	self.title = [[ReaderPost currentTopic] objectForKey:@"title"];
     [self loadImagesForVisibleRows];
 	
 	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(handleKeyboardDidShow:) name:UIKeyboardWillShowNotification object:nil];
 	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(handleKeyboardWillHide:) name:UIKeyboardWillHideNotification object:nil];
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(sidebarOpened) name:SidebarOpenedNotification object:nil];
 }
 
 - (void)viewDidAppear:(BOOL)animated {
@@ -198,7 +196,6 @@ NSString *const WPReaderViewControllerDisplayedNativeFriendFinder = @"DisplayedN
 - (void)viewWillDisappear:(BOOL)animated {
     [super viewWillDisappear:animated];
 	
-    self.panelNavigationController.delegate = nil;
 	[[NSNotificationCenter defaultCenter] removeObserver:self];
 }
 
@@ -254,10 +251,6 @@ NSString *const WPReaderViewControllerDisplayedNativeFriendFinder = @"DisplayedN
 	paddingView.backgroundColor = [WPStyleGuide itsEverywhereGrey];
 ;
 	self.tableView.tableHeaderView = paddingView;
-}
-
-- (void)sidebarOpened {
-    [self dismissPopover];
 }
 
 - (void)handleTopicsButtonTapped:(id)sender {

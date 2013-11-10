@@ -738,7 +738,6 @@ CGFloat const LoginCompeltedWalkthroughSwipeToContinueTopOffset = 14.0;
         _isDismissing = YES;
         self.parentViewController.modalTransitionStyle = UIModalTransitionStyleCoverVertical;
         [self.parentViewController dismissViewControllerAnimated:YES completion:nil];
-        [[WordPressAppDelegate sharedWordPressApplicationDelegate].panelNavigationController teaseSidebar];
     }
 }
 

@@ -4,7 +4,6 @@
 #import "Constants.h"
 #import "Blog.h"
 #import "Reachability.h"
-#import "PanelNavigationController.h"
 #import "Constants.h"
 #import "DDFileLogger.h"
 
@@ -41,7 +40,6 @@
     
     // Push notifications
     NSDictionary *lastNotificationInfo;
-    PanelNavigationController *panelNavigationController;
 
 }
 
@@ -55,7 +53,6 @@
 @property (nonatomic, strong, readonly) NSManagedObjectContext *managedObjectContext;
 @property (nonatomic, strong, readonly) NSManagedObjectModel *managedObjectModel;
 @property (nonatomic, strong, readonly) NSPersistentStoreCoordinator *persistentStoreCoordinator;
-@property (nonatomic, strong) PanelNavigationController *panelNavigationController;
 @property (nonatomic, strong) UITabBarController *tabBarController;
 @property (nonatomic, strong) NotificationsViewController *notificationsViewController;
 @property (strong, nonatomic) DDFileLogger *fileLogger;
@@ -75,7 +72,6 @@
 - (void)showNotificationErrorAlert:(NSNotification *)notification;
 - (BOOL)isWPcomAuthenticated;
 - (void)checkWPcomAuthentication;
-- (void)showContentDetailViewController:(UIViewController *)viewController;
 - (void)registerForPushNotifications;
 - (void)unregisterApnsToken;
 - (void)openNotificationScreenWithOptions:(NSDictionary *)remoteNotif;

@@ -71,16 +71,12 @@ CGFloat const CommentsSectionHeaderHeight = 24.0;
     WPFLogMethod();
 
 	[super viewWillAppear:animated];
-    
-    self.panelNavigationController.delegate = self;
 }
 
 - (void)viewWillDisappear:(BOOL)animated {
     WPFLogMethod();
     
-    [super viewWillDisappear:animated];
-    
-    self.panelNavigationController.delegate = nil;
+    [super viewWillDisappear:animated];    
 }
 
 

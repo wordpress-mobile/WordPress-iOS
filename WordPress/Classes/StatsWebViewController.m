@@ -151,7 +151,7 @@ static NSString *_lastAuthedName = nil;
         navController.navigationBar.translucent = NO;
         navController.modalTransitionStyle = UIModalTransitionStyleCrossDissolve;
         navController.modalPresentationStyle = UIModalPresentationFormSheet;
-        [self.panelNavigationController presentViewController:navController animated:YES completion:nil];
+        [self.navigationController presentViewController:navController animated:YES completion:nil];
     } else {
         JetpackSettingsViewController *controller = [[JetpackSettingsViewController alloc] initWithBlog:blog];
         controller.ignoreNavigationController = YES;

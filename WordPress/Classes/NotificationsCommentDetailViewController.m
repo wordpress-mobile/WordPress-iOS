@@ -776,7 +776,7 @@ NS_ENUM(NSUInteger, NotifcationCommentCellType){
 #pragma mark - UIKeyboard notifications
 
 - (void)onShowKeyboard:(NSNotification *)notification {
-    self.panelNavigationController.navigationController.navigationBarHidden = YES;
+    self.navigationController.navigationBarHidden = YES;
     
     CGFloat verticalDelta = [self keyboardVerticalOverlapChangeFromNotification:notification];
     CGFloat maxVerticalSpace = self.view.frame.size.height + verticalDelta;
@@ -809,7 +809,7 @@ NS_ENUM(NSUInteger, NotifcationCommentCellType){
 }
 
 - (void)onHideKeyboard:(NSNotification *)notification {
-    self.panelNavigationController.navigationController.navigationBarHidden = NO;
+    self.navigationController.navigationBarHidden = NO;
     
     // remove the reply bar
     [self.replyNavigationBar removeFromSuperview];

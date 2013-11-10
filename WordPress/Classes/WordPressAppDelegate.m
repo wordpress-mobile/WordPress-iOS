@@ -12,7 +12,6 @@
 #import "Blog.h"
 #import "Media.h"
 #import "CameraPlusPickerManager.h"
-#import "PanelNavigationController.h"
 #import "UIDevice+WordPressIdentifier.h"
 #import "WordPressComApi.h"
 #import "PostsViewController.h"
@@ -62,7 +61,6 @@ int ddLogLevel = LOG_LEVEL_INFO;
 @synthesize navigationController, alertRunning, isWPcomAuthenticated;
 @synthesize isUploadingPost;
 @synthesize connectionAvailable, wpcomAvailable, currentBlogAvailable, wpcomReachability, internetReachability, currentBlogReachability;
-@synthesize panelNavigationController;
 
 #pragma mark -
 #pragma mark Class Methods
@@ -527,14 +525,6 @@ int ddLogLevel = LOG_LEVEL_INFO;
 		cleanedErrorMsg = NSLocalizedString(@"The app can't recognize the server response. Please, check the configuration of your blog.", @"");
 	
 	[self showAlertWithTitle:NSLocalizedString(@"Error", @"Generic popup title for any type of error.") message:cleanedErrorMsg];
-}
-
-- (void)showContentDetailViewController:(UIViewController *)viewController {
-    if (viewController) {
-        [panelNavigationController pushViewController:viewController animated:YES];
-    } else {
-        [panelNavigationController popToRootViewControllerAnimated:YES];
-    }
 }
 
 - (void)useDefaultUserAgent {
@@ -1075,6 +1065,11 @@ int ddLogLevel = LOG_LEVEL_INFO;
 	[self toggleExtraDebuggingIfNeeded];
 }
 
+- (void)showNotificationsTab {
+    NSInteger notificationsTabIndex = [[self.tabBarController viewControllers] indexOfObject:self.notificationsViewController.navigationController];
+    [self.tabBarController setSelectedIndex:notificationsTabIndex];
+}
+
 
 #pragma mark - Push Notification delegate
 
@@ -1205,10 +1200,8 @@ int ddLogLevel = LOG_LEVEL_INFO;
 }
 
 - (void)openNotificationScreenWithOptions:(NSDictionary *)remoteNotif {
-    // Show the notifications tab
-    NSInteger notificationsTabIndex = [[self.tabBarController viewControllers] indexOfObject:self.notificationsViewController.navigationController];
-    [self.tabBarController setSelectedIndex:notificationsTabIndex];
     DDLogInfo(@"Received new notification: %@", remoteNotif);
+    [self showNotificationsTab];
 
     // TODO: Open comment view here
 //    if ([remoteNotif objectForKey:@"blog_id"] && [remoteNotif objectForKey:@"comment_id"]) {
@@ -1284,8 +1277,7 @@ int ddLogLevel = LOG_LEVEL_INFO;
         }
     } else if (alertView.tag == kNotificationNewSocial) {
         if (buttonIndex == 1) {
-            if( self.panelNavigationController )
-                [self.panelNavigationController showNotificationsView:YES];
+            [self showNotificationsTab];
             lastNotificationInfo = nil;
         }
 	} else {
@@ -1300,7 +1292,7 @@ int ddLogLevel = LOG_LEVEL_INFO;
                     aNavigationController.modalPresentationStyle = UIModalPresentationFormSheet;
                 }
                 
-                UIViewController *presenter = self.panelNavigationController;
+                UIViewController *presenter = self.tabBarController;
                 if (presenter.presentedViewController) {
                     presenter = presenter.presentedViewController;
                 }

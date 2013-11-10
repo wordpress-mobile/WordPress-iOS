@@ -58,7 +58,6 @@ NSString * const NotificationsLastSyncDateKey = @"NotificationsLastSyncDate";
     
     [WPStyleGuide configureColorsForView:self.view andTableView:self.tableView];
     
-    self.panelNavigationController.delegate = self;
     self.infiniteScrollEnabled = YES;
     [self.tableView registerClass:[NewNotificationsTableViewCell class] forCellReuseIdentifier:NotificationsTableViewNoteCellIdentifier];
 }

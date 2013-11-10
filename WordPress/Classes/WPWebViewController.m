@@ -8,7 +8,6 @@
 
 #import "WPWebViewController.h"
 #import "WordPressAppDelegate.h"
-#import "PanelNavigationConstants.h"
 #import "ReachabilityUtils.h"
 #import "WPActivityDefaults.h"
 #import "NSString+Helpers.h"
@@ -662,7 +661,7 @@
         [controller setMessageBody:body isHTML:NO];
         
         if (controller) {
-            [self.panelNavigationController presentViewController:controller animated:YES completion:nil];
+            [self.navigationController presentViewController:controller animated:YES completion:nil];
         }
         [self setMFMailFieldAsFirstResponder:controller.view mfMailField:@"MFRecipientTextField"];
     } else if ( buttonIndex == 2 ) {
