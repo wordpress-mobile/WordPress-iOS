@@ -19,7 +19,7 @@ pod 'NSLogger-CocoaLumberjack-connector', '~>1.3'
 pod 'google-plus-ios-sdk', '1.3.0'
 pod 'MGImageUtilities', :git => 'git://github.com/wordpress-mobile/MGImageUtilities.git'
 pod 'Quantcast-Measure', '~> 1.2.10'
-pod 'CocoaLumberjack', '~>1.6.2'
+pod 'CocoaLumberjack', '1.6.2'
 pod 'NSLogger-CocoaLumberjack-connector', '~>1.3'
 
 target :WordPressTest, :exclusive => true do

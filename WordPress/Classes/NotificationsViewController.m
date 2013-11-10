@@ -76,9 +76,13 @@ NSString * const NotificationsLastSyncDateKey = @"NotificationsLastSyncDate";
     }
     
     _isPushingViewController = NO;
-    // If table is at the top, simulate a pull to refresh
-    BOOL simulatePullToRefresh = (self.tableView.contentOffset.y == 0);
-    [self syncItemsWithUserInteraction:simulatePullToRefresh];
+    
+    // If table is at the top (i.e. freshly opened), do some extra work
+    if (self.tableView.contentOffset.y == 0) {
+        [self pruneOldNotes];
+    }
+
+    [self syncItems];
     [self refreshUnreadNotes];
 }
 
@@ -88,10 +92,6 @@ NSString * const NotificationsLastSyncDateKey = @"NotificationsLastSyncDate";
         [self pruneOldNotes];
 }
 
-- (UIColor *)backgroundColorForRefreshHeaderView
-{
-    return [WPStyleGuide itsEverywhereGrey];
-}
 
 #pragma mark - Custom methods
 
@@ -140,7 +140,7 @@ NSString * const NotificationsLastSyncDateKey = @"NotificationsLastSyncDate";
         [self.navigationController popToRootViewControllerAnimated:YES];
     [self.tableView scrollRectToVisible:CGRectMake(0, 0, 1, 1) animated:YES];
     if (![self isSyncing]) {
-        [self syncItemsWithUserInteraction:NO];
+        [self syncItems];
     }
 }
 
@@ -233,10 +233,12 @@ NSString * const NotificationsLastSyncDateKey = @"NotificationsLastSyncDate";
     cell.note = [self.resultsController objectAtIndexPath:indexPath];
 }
 
-- (void)syncItemsWithUserInteraction:(BOOL)userInteraction success:(void (^)())success failure:(void (^)(NSError *error))failure {
-    if (userInteraction) {
-        [self pruneOldNotes];
-    }
+- (void)syncItemsViaUserInteractionWithSuccess:(void (^)())success failure:(void (^)(NSError *))failure {
+    [self pruneOldNotes];
+    [self syncItemsWithSuccess:success failure:failure];
+}
+
+- (void)syncItemsWithSuccess:(void (^)())success failure:(void (^)(NSError *error))failure {
     NSNumber *timestamp;
     NSArray *notes = [self.resultsController fetchedObjects];
     if ([notes count] > 0) {
