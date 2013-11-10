@@ -445,8 +445,6 @@ NSString *const WPReaderViewControllerDisplayedNativeFriendFinder = @"DisplayedN
 #pragma mark - UIScrollView Delegate Methods
 
 - (void)scrollViewDidScroll:(UIScrollView *)scrollView {
-    [super scrollViewDidScroll:scrollView];
-
     CGFloat offset = self.tableView.contentOffset.y;
     // We just take a diff from the last known offset, as the approximation is good enough
     CGFloat velocity = fabsf(offset - _lastOffset);
