@@ -18,4 +18,6 @@
 - (void)promptForPassword;
 - (NSString *)noResultsText;
 
+extern CGFloat const WPTableViewTopMargin;
+
 @end

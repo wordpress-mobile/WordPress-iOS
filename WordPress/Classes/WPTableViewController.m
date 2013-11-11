@@ -17,6 +17,7 @@
 #import "SupportViewController.h"
 
 NSTimeInterval const WPTableViewControllerRefreshTimeout = 300; // 5 minutes
+CGFloat const WPTableViewTopMargin = 40;
 
 @interface WPTableViewController ()
 
@@ -104,6 +105,13 @@ NSTimeInterval const WPTableViewControllerRefreshTimeout = 300; // 5 minutes
     [self.tableView addObserver:self forKeyPath:@"contentOffset" options:NSKeyValueObservingOptionNew|NSKeyValueObservingOptionOld context:nil];
     
     [self configureNoResultsView];
+    
+    // Remove one-pixel gap resulting from a top-aligned grouped table view
+    if (IS_IPHONE) {
+        UIEdgeInsets tableInset = [self.tableView contentInset];
+        tableInset.top = -1;
+        self.tableView.contentInset = tableInset;
+    }
 }
 
 - (void)viewDidUnload
@@ -331,11 +339,13 @@ NSTimeInterval const WPTableViewControllerRefreshTimeout = 300; // 5 minutes
 - (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section {
     id <NSFetchedResultsSectionInfo> sectionInfo = nil;
     sectionInfo = [[self.resultsController sections] objectAtIndex:section];
+
     // Don't show section headers if there are no named sections
-    // [sectionInfo name] is sometimes nil and sometimes and empty string (#!?) so we check the length
-    if ([[self.resultsController sections] count] <= 1 && [[sectionInfo name] length] == 0) {
-        return 0.f;
+    NSString *sectionTitle = [self tableView:tableView titleForHeaderInSection:section];
+    if ([[self.resultsController sections] count] <= 1 && [sectionTitle length] == 0) {
+        return IS_IPHONE ? 1 : WPTableViewTopMargin;
     }
+
     return kSectionHeaderHight;
 }
 

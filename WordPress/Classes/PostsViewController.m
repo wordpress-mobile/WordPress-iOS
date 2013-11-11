@@ -167,11 +167,6 @@
     return nil;
 }
 
-- (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section
-{
-    return 0.0;
-}
-
 - (void)configureCell:(NewPostTableViewCell *)cell atIndexPath:(NSIndexPath *)indexPath {    
     Post *apost = (Post*) [self.resultsController objectAtIndexPath:indexPath];
     cell.post = apost;

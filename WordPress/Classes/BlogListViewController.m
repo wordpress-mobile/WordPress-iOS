@@ -51,6 +51,7 @@ CGFloat const blavatarImageSize = 50.f;
         [self.tableView reloadSections:[NSIndexSet indexSetWithIndex:0] withRowAnimation:UITableViewRowAnimationFade];
     }];
 
+    // Remove one-pixel gap resulting from a top-aligned grouped table view
     if (IS_IPHONE) {
         UIEdgeInsets tableInset = [self.tableView contentInset];
         tableInset.top = -1;
