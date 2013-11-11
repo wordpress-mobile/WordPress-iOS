@@ -246,7 +246,7 @@ CGFloat const EditPostViewControllerTextViewOffset = 10.0;
     // the main context via NSFetchedResultsController
     if (IS_IOS7) {
         [self.apost.managedObjectContext performBlock:^{
-            [self.apost.managedObjectContext refreshObject:self.apost mergeChanges:NO];
+            [self.apost.managedObjectContext refreshObject:self.apost mergeChanges:YES];
         }];
     }
 
