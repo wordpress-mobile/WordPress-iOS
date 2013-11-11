@@ -240,7 +240,7 @@ CGFloat const blavatarImageSize = 50.f;
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
-    return 60;
+    return 54;
 }
 
 
