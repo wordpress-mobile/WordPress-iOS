@@ -63,6 +63,7 @@
  Downloads an image at the specified URL
 
  If `size` is smaller than the `maxSize` property, the larger one will be downloaded and resized
+ If `size.height` is zero its assumed the image width is known and height should be calculated after the image is downloaded.
 
  @param url the URL for the image.
  @param size what size you are planning to display the image.
@@ -70,6 +71,7 @@
  @param isPrivate if the image is hosted on a private blog. photon will be skipped for private blogs. 
 */
 - (void)fetchImageForURL:(NSURL *)url withSize:(CGSize)size indexPath:(NSIndexPath *)indexPath isPrivate:(BOOL)isPrivate;
+
 
 /**
  Invalidates stored index paths.
@@ -93,5 +95,16 @@
  @param indexPath the indexPath passed in fetchImageForURL:withSize:indexPath:.
 */
 - (void)tableImageSource:(WPTableImageSource *)tableImageSource imageReady:(UIImage *)image forIndexPath:(NSIndexPath *)indexPath;
+
+@optional
+
+/**
+ Sent if the requested image download fails
+ 
+ @param tableImageSource the image source sending the message.
+ @param indexPath the indexPath passed in fetchImageForURL:withSize:indexPath:.
+ @param error the error, if any.
+ */
+- (void)tableImageSource:(WPTableImageSource *)tableImageSource imageFailedforIndexPath:(NSIndexPath *)indexPath error:(NSError *)error;
 
 @end
