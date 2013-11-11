@@ -64,6 +64,15 @@ NSTimeInterval const WPTableViewControllerRefreshTimeout = 300; // 5 minutes
 @synthesize swipeCell = _swipeCell;
 @synthesize noResultsView;
 
+- (id)initWithStyle:(UITableViewStyle)style
+{
+    self = [super initWithStyle:UITableViewStyleGrouped];
+    if (self) {
+        // Custom initialization
+    }
+    return self;
+}
+
 - (void)dealloc
 {
     if([self.tableView observationInfo])
@@ -76,18 +85,13 @@ NSTimeInterval const WPTableViewControllerRefreshTimeout = 300; // 5 minutes
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-	
-	self.tableView.delegate = self;
-	self.tableView.dataSource = self;
-	self.tableView.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
 
     UIRefreshControl *refreshControl = [[UIRefreshControl alloc] init];
     [refreshControl addTarget:self action:@selector(refresh) forControlEvents:UIControlEventValueChanged];
     self.refreshControl = refreshControl;
 
     self.tableView.allowsSelectionDuringEditing = YES;
-    self.tableView.backgroundColor = TABLE_VIEW_BACKGROUND_COLOR;
-    self.tableView.separatorColor = [UIColor colorWithRed:204.0f/255.0f green:204.0f/255.0f blue:204.0f/255.0f alpha:1.0f];
+    [WPStyleGuide configureColorsForView:self.view andTableView:self.tableView];
     
     if (self.swipeActionsEnabled) {
         [self enableSwipeGestureRecognizer];
@@ -159,7 +163,6 @@ NSTimeInterval const WPTableViewControllerRefreshTimeout = 300; // 5 minutes
 {
     return [super shouldAutorotateToInterfaceOrientation:interfaceOrientation];
 }
-
 
 - (void)setEditing:(BOOL)editing animated:(BOOL)animated {
     [self removeSwipeView:NO];

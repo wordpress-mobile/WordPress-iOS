@@ -300,6 +300,8 @@
 		46FB5C70182EB27700A70A90 /* icon-tab-reader@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 46FB5C6C182EB27700A70A90 /* icon-tab-reader@2x.png */; };
 		46FB5C73182EC59E00A70A90 /* BlogDetailsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 46FB5C72182EC59E00A70A90 /* BlogDetailsViewController.m */; };
 		46FB5C74182EC59E00A70A90 /* BlogDetailsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 46FB5C72182EC59E00A70A90 /* BlogDetailsViewController.m */; };
+		46FB5C77182F71BA00A70A90 /* WPTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 46FB5C76182F71BA00A70A90 /* WPTableViewCell.m */; };
+		46FB5C78182F71BA00A70A90 /* WPTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 46FB5C76182F71BA00A70A90 /* WPTableViewCell.m */; };
 		5D119DA3176FBE040073D83A /* UIImageView+AFNetworkingExtra.m in Sources */ = {isa = PBXBuildFile; fileRef = 5D119DA2176FBE040073D83A /* UIImageView+AFNetworkingExtra.m */; };
 		5D1392A7157D4D92007D51B8 /* StatsWebViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 5D1392A6157D4D92007D51B8 /* StatsWebViewController.m */; };
 		5D15F4AF15B8C407001B14EA /* toolbarItalicHighlighted.png in Resources */ = {isa = PBXBuildFile; fileRef = 5D15F49715B8C407001B14EA /* toolbarItalicHighlighted.png */; };
@@ -2256,6 +2258,8 @@
 		46FB5C6C182EB27700A70A90 /* icon-tab-reader@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "icon-tab-reader@2x.png"; sourceTree = "<group>"; };
 		46FB5C71182EC59E00A70A90 /* BlogDetailsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BlogDetailsViewController.h; sourceTree = "<group>"; };
 		46FB5C72182EC59E00A70A90 /* BlogDetailsViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BlogDetailsViewController.m; sourceTree = "<group>"; };
+		46FB5C75182F71BA00A70A90 /* WPTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WPTableViewCell.h; sourceTree = "<group>"; };
+		46FB5C76182F71BA00A70A90 /* WPTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WPTableViewCell.m; sourceTree = "<group>"; };
 		5D119DA1176FBE040073D83A /* UIImageView+AFNetworkingExtra.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIImageView+AFNetworkingExtra.h"; sourceTree = "<group>"; };
 		5D119DA2176FBE040073D83A /* UIImageView+AFNetworkingExtra.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIImageView+AFNetworkingExtra.m"; sourceTree = "<group>"; };
 		5D1392A5157D4D92007D51B8 /* StatsWebViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = StatsWebViewController.h; sourceTree = "<group>"; };
@@ -3880,6 +3884,8 @@
 				CC1D802A165830AB002A542F /* NotificationsTableViewCell.m */,
 				379DA04F166E938D001A43CC /* NotificationsFollowTableViewCell.h */,
 				379DA050166E938E001A43CC /* NotificationsFollowTableViewCell.m */,
+				46FB5C75182F71BA00A70A90 /* WPTableViewCell.h */,
+				46FB5C76182F71BA00A70A90 /* WPTableViewCell.m */,
 			);
 			name = Cells;
 			sourceTree = "<group>";
@@ -6929,6 +6935,7 @@
 				85AD6AEC173CCF9E002CB896 /* WPNUXPrimaryButton.m in Sources */,
 				85AD6AEF173CCFDC002CB896 /* WPNUXSecondaryButton.m in Sources */,
 				85AD6B1E17405889002CB896 /* WPNUXUtility.m in Sources */,
+				46FB5C77182F71BA00A70A90 /* WPTableViewCell.m in Sources */,
 				85B6F74F1742DA1E00CE7F3A /* WPNUXMainButton.m in Sources */,
 				85B6F7521742DAE800CE7F3A /* WPNUXBackButton.m in Sources */,
 				85A1B6751742E7EF00BA5E35 /* WPMobileStats.m in Sources */,
@@ -7126,6 +7133,7 @@
 				930C6325182BD86300976C21 /* WPNUXPrimaryButton.m in Sources */,
 				930C6326182BD86300976C21 /* WPNUXSecondaryButton.m in Sources */,
 				930C6327182BD86300976C21 /* WPNUXUtility.m in Sources */,
+				46FB5C78182F71BA00A70A90 /* WPTableViewCell.m in Sources */,
 				930C6328182BD86300976C21 /* WPNUXMainButton.m in Sources */,
 				930C6329182BD86300976C21 /* WPNUXBackButton.m in Sources */,
 				930C632A182BD86300976C21 /* WPMobileStats.m in Sources */,
