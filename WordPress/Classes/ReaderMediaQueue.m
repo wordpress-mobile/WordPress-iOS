@@ -107,7 +107,6 @@ typedef void (^ReaderMediaViewFailureBlock)(ReaderMediaView *readerMediaView, NS
                                                                        isPrivate:isPrivate
                                                                          success:success
                                                                          failure:failure];
-    
     if ([self.activeQueue count] < self.batchSize) {
         [self addToActiveQueue:item];
     } else {
@@ -128,6 +127,11 @@ typedef void (^ReaderMediaViewFailureBlock)(ReaderMediaView *readerMediaView, NS
     [self.holdingQueue addObject:item];
 }
 
+- (void)abort {
+    [self.imageSource invalidateIndexPaths];
+    [self.holdingQueue removeAllObjects];
+    [self.activeQueue removeAllObjects];
+}
 
 #pragma mark - WPTableImageSourceDelegate Methods
 
@@ -141,6 +145,10 @@ typedef void (^ReaderMediaViewFailureBlock)(ReaderMediaView *readerMediaView, NS
               imageReady:(UIImage *)image
             forIndexPath:(NSIndexPath *)indexPath {
     self.counter++;
+    
+    if (indexPath.row >= [self.activeQueue count]) {
+        return;
+    }
     
     ReaderMediaQueueItem *item = [self.activeQueue objectAtIndex:indexPath.row];
     item.image = image;

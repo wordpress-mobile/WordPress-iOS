@@ -34,4 +34,6 @@
              success:(void (^)(ReaderMediaView *))success
              failure:(void (^)(ReaderMediaView *, NSError *))failure;
 
+- (void)abort;
+
 @end
