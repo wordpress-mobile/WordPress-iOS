@@ -162,32 +162,6 @@ CGFloat const EditPostViewControllerTextViewOffset = 10.0;
     }
     textView.inputAccessoryView = editorToolbar;
 
-    if (!IS_IOS7) {
-        if (!self.postSettingsViewController) {
-            self.postSettingsViewController = [[PostSettingsViewController alloc] initWithPost:self.apost];
-            self.postSettingsViewController.postDetailViewController = self;
-            [self addChildViewController:self.postSettingsViewController];
-        }
-        
-        if (!self.postPreviewViewController) {
-            self.postPreviewViewController = [[PostPreviewViewController alloc] initWithPost:self.apost];
-            self.postPreviewViewController.postDetailViewController = self;
-            [self addChildViewController:self.postPreviewViewController];
-        }
-        
-        if (!self.postMediaViewController) {
-            self.postMediaViewController = [[PostMediaViewController alloc] initWithPost:self.apost];
-            self.postMediaViewController.postDetailViewController = self;
-            [self addChildViewController:self.postMediaViewController];
-        }
-        
-        self.postSettingsViewController.view.frame = editView.frame;
-        self.postMediaViewController.view.frame = editView.frame;
-        self.postPreviewViewController.view.frame = editView.frame;
-    }
-    
-    self.title = [self editorTitle];
-
 	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(keyboardWillShow:) name:UIKeyboardWillShowNotification object:nil];
 	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(keyboardWillHide:) name:UIKeyboardWillHideNotification object:nil];
 	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(deviceDidRotate:) name:@"UIDeviceOrientationDidChangeNotification" object:nil];
@@ -267,6 +241,13 @@ CGFloat const EditPostViewControllerTextViewOffset = 10.0;
         self.navigationItem.title = [self editorTitle];
     }
 
+    // On return from other view controllers, refresh the post for any changes
+    // that may have been made on other contexts. EG removing a media item from
+    // the main context via NSFetchedResultsController
+    if (IS_IOS7) {
+        [self.apost.managedObjectContext refreshObject:self.apost mergeChanges:NO];
+    }
+
 	[self refreshButtons];
 	
     textView.frame = self.normalTextFrame;
@@ -290,15 +271,6 @@ CGFloat const EditPostViewControllerTextViewOffset = 10.0;
     
 	[titleTextField resignFirstResponder];
 	[textView resignFirstResponder];
-}
-
-- (void)didMoveToParentViewController:(UIViewController *)parent {
-    // On return from other view controllers, refresh the post for any changes
-    // that may have been made on other contexts. EG removing a media item from
-    // the main context via NSFetchedResultsController
-    if (self == [(UINavigationController *)parent topViewController]) {
-        [self.apost.managedObjectContext refreshObject:self.apost mergeChanges:NO];
-    }
 }
 
 - (NSString *)statsPrefix
@@ -642,9 +614,38 @@ CGFloat const EditPostViewControllerTextViewOffset = 10.0;
 		else
 			textView.text = self.apost.content;
     }
+    
+    if (!IS_IOS7) {
+        [self setupForiOS6];
+    }
 
     [self refreshButtons];
 }
+
+- (void)setupForiOS6 {
+    if (!self.postSettingsViewController) {
+        self.postSettingsViewController = [[PostSettingsViewController alloc] initWithPost:self.apost];
+        self.postSettingsViewController.postDetailViewController = self;
+        [self addChildViewController:self.postSettingsViewController];
+    }
+    
+    if (!self.postPreviewViewController) {
+        self.postPreviewViewController = [[PostPreviewViewController alloc] initWithPost:self.apost];
+        self.postPreviewViewController.postDetailViewController = self;
+        [self addChildViewController:self.postPreviewViewController];
+    }
+    
+    if (!self.postMediaViewController) {
+        self.postMediaViewController = [[PostMediaViewController alloc] initWithPost:self.apost];
+        self.postMediaViewController.postDetailViewController = self;
+        [self addChildViewController:self.postMediaViewController];
+    }
+    
+    self.postSettingsViewController.view.frame = editView.frame;
+    self.postMediaViewController.view.frame = editView.frame;
+    self.postPreviewViewController.view.frame = editView.frame;
+}
+
 
 - (void)populateSelectionsControllerWithCategories {
     WPFLogMethod();
