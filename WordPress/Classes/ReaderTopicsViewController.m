@@ -228,7 +228,7 @@
 	}
     
 	NSDictionary *dict = [arr objectAtIndex:indexPath.row];
-	cell.textLabel.text = [dict objectForKey:@"title"];
+	cell.textLabel.text = [[dict objectForKey:@"title"] capitalizedString];
 	cell.accessoryType = UITableViewCellAccessoryNone;
 	if([[_currentTopic objectForKey:@"endpoint"] isEqualToString:[dict objectForKey:@"endpoint"]]) {
 		cell.accessoryType = UITableViewCellAccessoryCheckmark;
