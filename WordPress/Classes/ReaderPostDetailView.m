@@ -60,6 +60,8 @@
 - (void)dealloc
 {
     _textContentView.delegate = nil;
+    _mediaQueue.delegate = nil;
+    [_mediaQueue abort];
     [[NSNotificationCenter defaultCenter] removeObserver:self];
 }
 
@@ -639,6 +641,10 @@
 #pragma mark ReaderMediaQueueDelegate methods
 
 - (void)readerMediaQueue:(ReaderMediaQueue *)mediaQueue didLoadBatch:(NSArray *)batch {
+    // Avoid redrawing when not visible.
+    if ([self window] == nil) {
+        return;
+    }
     BOOL frameChanged = NO;
     
     for (NSInteger i = 0; i < [batch count]; i++) {
