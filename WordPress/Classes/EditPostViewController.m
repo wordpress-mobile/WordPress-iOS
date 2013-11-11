@@ -75,7 +75,6 @@ NSString *const EditPostViewControllerAutosaveDidFailNotification = @"EditPostVi
 #pragma mark LifeCycle Methods
 
 CGFloat const EditPostViewControllerStandardOffset = 15.0;
-CGFloat const EditPostViewControllerTextViewOffset = 10.0;
 
 - (void)dealloc {
     _failedMediaAlertView.delegate = nil;
@@ -135,6 +134,8 @@ CGFloat const EditPostViewControllerTextViewOffset = 10.0;
         separatorFrame.size.width = CGRectGetWidth(self.view.bounds) - EditPostViewControllerStandardOffset;
         separatorView.frame = separatorFrame;
         separatorView.backgroundColor = [WPStyleGuide readGrey];
+        
+        textView.textContainerInset = UIEdgeInsetsMake(0.0f, 10.0f, 0.0f, 10.0f);
     }
     
     if (editorToolbar == nil) {
@@ -483,7 +484,6 @@ CGFloat const EditPostViewControllerTextViewOffset = 10.0;
     if (IS_IPAD) {
         y = 143;
         if (IS_IOS7) {
-            x = EditPostViewControllerTextViewOffset;
             y = CGRectGetMaxY(separatorView.frame);
         }
         CGFloat height = self.toolbar.frame.origin.y - y;
@@ -496,7 +496,6 @@ CGFloat const EditPostViewControllerTextViewOffset = 10.0;
         y = 136.f;
         if (IS_IOS7) {
             // On IOS7 we get rid of the Tags and Categories fields, so place the textview right under the title
-            x = EditPostViewControllerTextViewOffset;
             y = CGRectGetMaxY(separatorView.frame);
         }
         CGFloat height = self.toolbar.frame.origin.y - y;
