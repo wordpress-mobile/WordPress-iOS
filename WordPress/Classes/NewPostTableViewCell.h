@@ -7,9 +7,10 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "WPTableViewCell.h"
 
 @class AbstractPost;
-@interface NewPostTableViewCell : UITableViewCell
+@interface NewPostTableViewCell : WPTableViewCell
 
 @property (readwrite, weak) AbstractPost *post;
 

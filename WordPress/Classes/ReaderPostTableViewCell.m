@@ -58,6 +58,9 @@
 	// Do the math. We can't trust the cell's contentView's frame because
 	// its not updated at a useful time during rotation.
 	CGFloat contentWidth = width - 20.0f; // 10px padding on either side.
+    
+    // Margins (needs more work)
+    contentWidth = contentWidth * 0.8f;
 
 	// Are we showing an image? What size should it be?
 	if(post.featuredImageURL) {

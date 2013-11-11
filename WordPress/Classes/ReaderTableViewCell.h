@@ -9,8 +9,9 @@
 #import <UIKit/UIKit.h>
 #import "UIImageView+Gravatar.h"
 #import "WordPressAppDelegate.h"
+#import "WPTableViewCell.h"
 
-@interface ReaderTableViewCell : UITableViewCell
+@interface ReaderTableViewCell : WPTableViewCell
 
 @property (nonatomic, weak) UIViewController *parentController;
 @property (nonatomic, strong) UIImageView *cellImageView;
