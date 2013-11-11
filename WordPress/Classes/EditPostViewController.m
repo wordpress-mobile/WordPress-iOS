@@ -111,6 +111,7 @@ CGFloat const EditPostViewControllerTextViewOffset = 10.0;
     
     [_revisionContext performBlock:^{
         self.apost = [self.apost createRevision];
+        [[ContextManager sharedInstance] saveDerivedContext:_revisionContext];
         dispatch_async(dispatch_get_main_queue(), ^{
             [self refreshUIForCurrentPost];
         });
@@ -289,6 +290,15 @@ CGFloat const EditPostViewControllerTextViewOffset = 10.0;
     
 	[titleTextField resignFirstResponder];
 	[textView resignFirstResponder];
+}
+
+- (void)didMoveToParentViewController:(UIViewController *)parent {
+    // On return from other view controllers, refresh the post for any changes
+    // that may have been made on other contexts. EG removing a media item from
+    // the main context via NSFetchedResultsController
+    if (self == [(UINavigationController *)parent topViewController]) {
+        [self.apost.managedObjectContext refreshObject:self.apost mergeChanges:NO];
+    }
 }
 
 - (NSString *)statsPrefix
@@ -740,7 +750,8 @@ CGFloat const EditPostViewControllerTextViewOffset = 10.0;
     }
 #endif
     [self.apost.original deleteRevision];
-
+    [[ContextManager sharedInstance] saveDerivedContext:_revisionContext];
+    
 	if (self.editMode == EditPostViewControllerModeNewPost) {
         [self.apost.original remove];
     }
@@ -832,7 +843,7 @@ CGFloat const EditPostViewControllerTextViewOffset = 10.0;
         }
     }
     
-    [self.apost save];
+    [[ContextManager sharedInstance] saveDerivedContext:_revisionContext];
 }
 
 - (BOOL)canAutosaveRemotely {

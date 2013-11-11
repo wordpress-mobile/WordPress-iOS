@@ -189,20 +189,6 @@
 	[super viewWillAppear:animated];
 }
 
-- (void)viewDidUnload {
-    [self removeNotifications];
-    self.table = nil;
-    self.addMediaButton = nil;
-    self.spinner = nil;
-    self.messageLabel = nil;
-    self.bottomToolbar = nil;
-    self.addPopover = nil;
-    self.customSizeAlert = nil;
-    self.currentActionSheet = nil;
-    
-	[super viewDidUnload];
-}
-
 - (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation
 {
     return [super shouldAutorotateToInterfaceOrientation:interfaceOrientation];
@@ -353,21 +339,16 @@
 	[tableView deselectRowAtIndexPath:indexPath animated:YES];
 }
 
--(void)tableView:(UITableView*)tableView willBeginEditingRowAtIndexPath:(NSIndexPath *)indexPath {
-}
-
 - (void)tableView:(UITableView *)tableView commitEditingStyle:(UITableViewCellEditingStyle)editingStyle forRowAtIndexPath:(NSIndexPath *)indexPath {
-	// If row is deleted, remove it from the list.
 	if (editingStyle == UITableViewCellEditingStyleDelete)
 	{
         [[NSNotificationCenter defaultCenter] postNotificationName:@"ShouldRemoveMedia" object:[self.resultsController objectAtIndexPath:indexPath]];
         Media *media = [self.resultsController objectAtIndexPath:indexPath];
         [media remove];
-//        [media save];
 	}
 }
 
--(NSString *)tableView:(UITableView*)tableView titleForDeleteConfirmationButtonForRowAtIndexPath:(NSIndexPath *)indexPath {
+- (NSString *)tableView:(UITableView*)tableView titleForDeleteConfirmationButtonForRowAtIndexPath:(NSIndexPath *)indexPath {
 	return NSLocalizedString(@"Remove", @"");
 }
 
@@ -1458,9 +1439,6 @@
         if (!isPickingFeaturedImage) {
             [[NSNotificationCenter defaultCenter] postNotificationName:@"ShouldInsertMediaBelow" object:imageMedia];
         }
-        else {
-            
-        }
         [imageMedia save];
     } failure:^(NSError *error) {
         if (error.domain == NSURLErrorDomain && error.code == NSURLErrorCancelled) {
@@ -1601,7 +1579,6 @@
         return;
     }
     [[NSNotificationCenter defaultCenter] postNotificationName:@"ShouldInsertMediaBelow" object:media];
-    [media save];
 	self.isAddingMedia = NO;
 }
 

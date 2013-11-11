@@ -39,13 +39,9 @@
 @dynamic remoteStatusNumber;
 
 + (Media *)newMediaForPost:(AbstractPost *)post {
-    Media *media = [[Media alloc] initWithEntity:[NSEntityDescription entityForName:@"Media"
-                                                          inManagedObjectContext:[post managedObjectContext]]
-               insertIntoManagedObjectContext:[post managedObjectContext]];
-    
+    Media *media = [NSEntityDescription insertNewObjectForEntityForName:@"Media" inManagedObjectContext:post.managedObjectContext];
     media.blog = post.blog;
     media.posts = [NSMutableSet setWithObject:post];
-    
     return media;
 }
 
@@ -96,6 +92,7 @@
 - (NSString *)remoteStatusText {
     return [Media titleForRemoteStatus:self.remoteStatusNumber];
 }
+
 - (void)remove {
     [self cancelUpload];
     NSError *error = nil;
@@ -103,8 +100,10 @@
     
     [self.managedObjectContext performBlockAndWait:^{
         [self.managedObjectContext deleteObject:self];
+        [self.managedObjectContext save:nil];
     }];
 }
+
 
 - (void)save {
     [self.managedObjectContext performBlock:^{
