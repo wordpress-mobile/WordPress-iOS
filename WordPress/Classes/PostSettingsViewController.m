@@ -182,33 +182,17 @@
     [tableView addGestureRecognizer:gestureRecognizer];
 }
 
-- (void)viewDidUnload {
-    [super viewDidUnload];
-    [[NSNotificationCenter defaultCenter] removeObserver:self];
-
-    DDLogInfo(@"%@ %@", self, NSStringFromSelector(_cmd));
-    [locationManager stopUpdatingLocation];
-    locationManager.delegate = nil;
-    locationManager = nil;
-    
-    mapView = nil;
-    
-    [reverseGeocoder cancelGeocode];
-    reverseGeocoder = nil;
-    
-    visibilityTitleLabel = nil;
-    passwordTextField = nil;
-    featuredImageView = nil;
-    featuredImageTableViewCell = nil;
-    featuredImageLabel = nil;
-    featuredImageLabel = nil;
-    postFormatTableViewCell = nil;
-
-}
-
 - (void)viewWillAppear:(BOOL)animated {
     [super viewWillAppear:animated];
     [self reloadData];
+}
+
+- (void)viewWillDisappear:(BOOL)animated {
+    [super viewWillDisappear:animated];
+    
+    [self.apost.managedObjectContext performBlock:^{
+        [self.apost.managedObjectContext save:nil];
+    }];
 }
 
 - (void)didReceiveMemoryWarning {

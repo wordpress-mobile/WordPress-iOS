@@ -245,7 +245,9 @@ CGFloat const EditPostViewControllerTextViewOffset = 10.0;
     // that may have been made on other contexts. EG removing a media item from
     // the main context via NSFetchedResultsController
     if (IS_IOS7) {
-        [self.apost.managedObjectContext refreshObject:self.apost mergeChanges:NO];
+        [self.apost.managedObjectContext performBlock:^{
+            [self.apost.managedObjectContext refreshObject:self.apost mergeChanges:NO];
+        }];
     }
 
 	[self refreshButtons];
