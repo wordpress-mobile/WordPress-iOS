@@ -65,7 +65,6 @@ CGFloat const CommentViewUnapproveButtonTag = 701;
 {
     [super viewDidLoad];
     
-    self.view.backgroundColor = [WPStyleGuide itsEverywhereGrey];
     self.authorNameLabel.font = [WPStyleGuide postTitleFont];
     self.authorSiteButton.titleLabel.font = [WPStyleGuide subtitleFont];
     [self.authorSiteButton setTitleColor:[WPStyleGuide newKidOnTheBlockBlue] forState:UIControlStateNormal];

@@ -9,6 +9,7 @@
 #import <UIKit/UIKit.h>
 #import <DTCoreText/DTCoreText.h>
 #import "FollowButton.h"
+#import "WPTableViewCell.h"
 
 extern const CGFloat NoteCommentCellHeight;
 
@@ -20,7 +21,7 @@ extern const CGFloat NoteCommentCellHeight;
 
 @end
 
-@interface NoteCommentCell : UITableViewCell
+@interface NoteCommentCell : WPTableViewCell
 @property BOOL parentComment;
 @property (nonatomic, strong) FollowButton *followButton;
 @property (nonatomic, strong) NSURL *profileURL;

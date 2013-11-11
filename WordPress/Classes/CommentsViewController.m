@@ -148,8 +148,20 @@ CGFloat const CommentsSectionHeaderHeight = 24.0;
     return comment;
 }
 
+- (NSString *)tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section {
+    // Don't show a section title if there's only one section
+    if ([tableView numberOfSections] <= 1)
+        return nil;
+    
+    return [super tableView:tableView titleForHeaderInSection:section];
+}
+
 - (UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section
 {
+    // Don't show a section title if there's only one section
+    if ([tableView numberOfSections] <= 1)
+        return nil;
+    
     id <NSFetchedResultsSectionInfo> sectionInfo = [[self.resultsController sections] objectAtIndex:section];
     NSString *title = [Comment titleForStatus:[sectionInfo name]];
     
