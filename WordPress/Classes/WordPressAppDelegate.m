@@ -223,6 +223,8 @@ int ddLogLevel = LOG_LEVEL_INFO;
     blogListNavigationController.tabBarItem.image = [UIImage imageNamed:@"icon-tab-blogs"];
     blogListViewController.title = @"My Blogs";
     tabBarController.viewControllers = [NSArray arrayWithObjects:blogListNavigationController, readerNavigationController, notificationsNavigationController, nil];
+    
+    [tabBarController setSelectedViewController:readerNavigationController];
 
     return tabBarController;
 }
