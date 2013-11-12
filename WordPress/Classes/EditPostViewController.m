@@ -796,6 +796,7 @@ CGFloat const EditPostViewControllerTextViewOffset = 10.0;
     __block AbstractPost *post = self.apost.original;
     [[ContextManager sharedInstance] saveDerivedContext:_revisionContext withCompletionBlock:^{
         Post *mainContextPost = (Post *)[[[ContextManager sharedInstance] mainContext] existingObjectWithID:post.objectID error:nil];
+        mainContextPost.isFeaturedImageChanged = post.isFeaturedImageChanged;
         
         if (upload) {
             NSString *postTitle = post.postTitle;
