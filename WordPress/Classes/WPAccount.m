@@ -79,7 +79,10 @@ NSString * const WPAccountDefaultWordPressComAccountChangedNotification = @"WPAc
 
 + (void)removeDefaultWordPressComAccount {
     WPAccount *defaultAccount = __defaultDotcomAccount;
-    [defaultAccount.managedObjectContext deleteObject:defaultAccount];
+    [defaultAccount.managedObjectContext performBlock:^{
+        [defaultAccount.managedObjectContext deleteObject:defaultAccount];
+        [defaultAccount.managedObjectContext save:nil];
+    }];
     __defaultDotcomAccount = nil;
 }
 

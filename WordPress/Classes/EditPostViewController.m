@@ -599,7 +599,7 @@ CGFloat const EditPostViewControllerTextViewOffset = 10.0;
     self.navigationItem.title = [self editorTitle];
 
     titleTextField.text = self.apost.postTitle;
-    if (self.post) {
+    if (self.post && !IS_IOS7) {
         tagsTextField.text = self.post.tags;
         [categoriesButton setTitle:[NSString decodeXMLCharactersIn:[self.post categoriesText]] forState:UIControlStateNormal];
         [categoriesButton.titleLabel setFont:[UIFont systemFontOfSize:16.0f]];
