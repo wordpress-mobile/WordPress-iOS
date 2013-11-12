@@ -139,6 +139,11 @@ CGFloat const JetpackSignInButtonHeight = 41.0;
     [self layoutControls];
 }
 
+- (void)loadView {
+    
+    self.view = [[UIView alloc] initWithFrame:self.presentingViewController.view.bounds];
+}
+
 - (void)addControls {
     
     // Add Logo
@@ -190,6 +195,7 @@ CGFloat const JetpackSignInButtonHeight = 41.0;
     // Add Sign In Button
     if (_signInButton == nil) {
         _signInButton = [[WPNUXMainButton alloc] init];
+        [_signInButton setColor:[UIColor colorWithRed:116/255.0f green:143/255.0f blue:54/255.0f alpha:1.0]];
         NSString *title = _initialSignIn ? NSLocalizedString(@"Sign In", nil) : NSLocalizedString(@"Save", nil);
         [_signInButton setTitle:title forState:UIControlStateNormal];
         [_signInButton addTarget:self action:@selector(saveAction:) forControlEvents:UIControlEventTouchUpInside];
@@ -200,6 +206,7 @@ CGFloat const JetpackSignInButtonHeight = 41.0;
     // Add Download Button
     if (_installJetbackButton == nil) {
         _installJetbackButton = [[WPNUXMainButton alloc] init];
+        [_installJetbackButton setColor:[UIColor colorWithRed:116/255.0f green:143/255.0f blue:54/255.0f alpha:1.0]];
         [_installJetbackButton setTitle:NSLocalizedString(@"Install Jetpack", @"") forState:UIControlStateNormal];
         [_installJetbackButton addTarget:self action:@selector(openInstallJetpackURL) forControlEvents:UIControlEventTouchUpInside];
         [self.view addSubview:_installJetbackButton];
