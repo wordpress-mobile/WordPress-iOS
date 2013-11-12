@@ -394,7 +394,7 @@ CGFloat const AddUsersBlogBottomBackgroundHeight = 64;
     Blog *blog = [_account findOrCreateBlogFromDictionary:blogInfo withContext:context];
     blog.geolocationEnabled = YES;
 
-//    [blog syncBlogWithSuccess:nil failure:nil];
+    [blog syncBlogWithSuccess:nil failure:nil];
 }
 
 - (void)toggleButtons
