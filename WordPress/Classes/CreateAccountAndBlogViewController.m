@@ -1009,7 +1009,7 @@ CGFloat const CreateAccountAndBlogKeyboardOffset = 132.0;
 
 - (void)clickedPage1NextButton
 {
-    [WPMobileStats trackEventForSelfHostedAndWPCom:StatsEventNUXCreateAccountClickedPage1Next];
+    [WPMobileStats trackEventForSelfHostedAndWPCom:StatsEventNUXCreateAccountClickedAccountPageNext];
     
     [self.view endEditing:YES];
     
@@ -1028,7 +1028,7 @@ CGFloat const CreateAccountAndBlogKeyboardOffset = 132.0;
 
 - (void)clickedPage2NextButton
 {
-    [WPMobileStats trackEventForSelfHostedAndWPCom:StatsEventNUXCreateAccountClickedPage2Next];
+    [WPMobileStats trackEventForSelfHostedAndWPCom:StatsEventNUXCreateAccountClickedSitePageNext];
 
     [self.view endEditing:YES];
     
@@ -1052,7 +1052,7 @@ CGFloat const CreateAccountAndBlogKeyboardOffset = 132.0;
 
 - (void)clickedPage2PreviousButton
 {
-    [WPMobileStats trackEventForSelfHostedAndWPCom:StatsEventNUXCreateAccountClickedPage2Previous];
+    [WPMobileStats trackEventForSelfHostedAndWPCom:StatsEventNUXCreateAccountClickedSitePagePrevious];
 
     [self.view endEditing:YES];
     [self moveToPage:1];
@@ -1065,7 +1065,7 @@ CGFloat const CreateAccountAndBlogKeyboardOffset = 132.0;
 
 - (void)clickedPage3PreviousButton
 {
-    [WPMobileStats trackEventForSelfHostedAndWPCom:StatsEventNUXCreateAccountClickedPage3Previous];
+    [WPMobileStats trackEventForSelfHostedAndWPCom:StatsEventNUXCreateAccountClickedReviewPagePrevious];
     
     [self moveToPage:2];
 }

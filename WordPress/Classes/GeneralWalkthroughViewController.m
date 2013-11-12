@@ -663,7 +663,7 @@ CGFloat const GeneralWalkthroughiOS7StatusBarOffset = 20.0;
     // We do this so we don't keep flagging events if the user goes back and forth on pages
     if (pageViewed == 2 && !_viewedPage2) {
         _viewedPage2 = YES;
-        [WPMobileStats trackEventForSelfHostedAndWPCom:StatsEventNUXFirstWalkthroughViewedPage2];
+        [WPMobileStats trackEventForSelfHostedAndWPCom:StatsEventNUXFirstWalkthroughViewedSignInPage];
     }
 }
 

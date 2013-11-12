@@ -526,13 +526,13 @@ CGFloat const LoginCompeltedWalkthroughSwipeToContinueTopOffset = 14.0;
     // We do this so we don't keep flagging events if the user goes back and forth on pages
     if (pageViewed == 2 && !_viewedPage2) {
         _viewedPage2 = YES;
-        [WPMobileStats trackEventForSelfHostedAndWPCom:StatsEventNUXSecondWalkthroughViewedPage2];
+        [WPMobileStats trackEventForSelfHostedAndWPCom:StatsEventNUXSecondWalkthroughViewedReaderPage];
     } else if (pageViewed == 3 && !_viewedPage3) {
         _viewedPage3 = YES;
-        [WPMobileStats trackEventForSelfHostedAndWPCom:StatsEventNUXSecondWalkthroughViewedPage3];
+        [WPMobileStats trackEventForSelfHostedAndWPCom:StatsEventNUXSecondWalkthroughViewedNotificationPage];
     } else if (pageViewed == 4 && !_viewedPage4) {
         _viewedPage4 = YES;
-        [WPMobileStats trackEventForSelfHostedAndWPCom:StatsEventNUXSecondWalkthroughViewedPage4];
+        [WPMobileStats trackEventForSelfHostedAndWPCom:StatsEventNUXSecondWalkthroughViewedGetStartedPage];
     }
 }
 

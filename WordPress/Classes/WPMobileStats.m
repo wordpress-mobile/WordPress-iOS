@@ -181,8 +181,7 @@ NSString *const StatsEventWelcomeViewControllerClickedCreateWordpressDotComBlog 
 
 // NUX First Walkthrough 
 NSString *const StatsEventNUXFirstWalkthroughOpened = @"NUX - First Walkthrough - Opened";
-NSString *const StatsEventNUXFirstWalkthroughViewedPage2 = @"NUX - First Walkthrough - Viewed Page 2";
-NSString *const StatsEventNUXFirstWalkthroughViewedPage3 = @"NUX - First Walkthrough - Viewed Page 3";
+NSString *const StatsEventNUXFirstWalkthroughViewedSignInPage = @"NUX - First Walkthrough - Viewed Sign in Page";
 NSString *const StatsEventNUXFirstWalkthroughClickedSkipToCreateAccount = @"NUX - First Walkthrough - Skipped to Create Account";
 NSString *const StatsEventNUXFirstWalkthroughClickedSkipToSignIn = @"NUX - First Walkthrough - Skipped to Sign In";
 NSString *const StatsEventNUXFirstWalkthroughClickedInfo = @"NUX - First Walkthrough - Clicked Info";
@@ -202,19 +201,19 @@ NSString *const StatsEventNUXFirstWalkthroughUserSkippedConnectingToJetpack = @"
 NSString *const StatsEventNUXCreateAccountOpened = @"NUX - Create Account - Opened";
 NSString *const StatsEventNUXCreateAccountClickedCancel = @"NUX - Create Account - Clicked Cancel";
 NSString *const StatsEventNUXCreateAccountClickedHelp = @"NUX - Create Account - Clicked Help";
-NSString *const StatsEventNUXCreateAccountClickedPage1Next = @"NUX - Create Account - Clicked Page 1 Next";
-NSString *const StatsEventNUXCreateAccountClickedPage2Next = @"NUX - Create Account - Clicked Page 2 Next";
-NSString *const StatsEventNUXCreateAccountClickedPage2Previous = @"NUX - Create Account - Clicked Page 2 Previous";
+NSString *const StatsEventNUXCreateAccountClickedAccountPageNext = @"NUX - Create Account - Clicked Account Page Next";
+NSString *const StatsEventNUXCreateAccountClickedSitePageNext = @"NUX - Create Account - Clicked Site Page Next";
+NSString *const StatsEventNUXCreateAccountClickedSitePagePrevious = @"NUX - Create Account - Clicked Site Page Previous";
 NSString *const StatsEventNUXCreateAccountCreatedAccount = @"NUX - Create Account - Created Account";
-NSString *const StatsEventNUXCreateAccountClickedPage3Previous = @"NUX - Create Account - Clicked Page 3 Previous";
+NSString *const StatsEventNUXCreateAccountClickedReviewPagePrevious = @"NUX - Create Account - Clicked Review Page Previous";
 NSString *const StatsEventNUXCreateAccountClickedViewLanguages = @"NUX - Create Account - Viewed Languages";
 NSString *const StatsEventNUXCreateAccountChangedDefaultURL = @"NUX - Create Account - Changed Default URL";
 
 // NUX Second Walkthrough
 NSString *const StatsEventNUXSecondWalkthroughOpened = @"NUX - Second Walkthrough - Opened";
-NSString *const StatsEventNUXSecondWalkthroughViewedPage2 = @"NUX - Second Walkthrough - Viewed Page 2";
-NSString *const StatsEventNUXSecondWalkthroughViewedPage3 = @"NUX - Second Walkthrough - Viewed Page 3";
-NSString *const StatsEventNUXSecondWalkthroughViewedPage4 = @"NUX - Second Walkthrough - Viewed Page 4";
+NSString *const StatsEventNUXSecondWalkthroughViewedReaderPage = @"NUX - Second Walkthrough - Viewed Reader Page";
+NSString *const StatsEventNUXSecondWalkthroughViewedNotificationPage = @"NUX - Second Walkthrough - Viewed Notification Page";
+NSString *const StatsEventNUXSecondWalkthroughViewedGetStartedPage = @"NUX - Second Walkthrough - Viewed Get Started Page";
 NSString *const StatsEventNUXSecondWalkthroughClickedStartUsingApp = @"NUX - Second Walkthrough - Clicked Start Using App";
 NSString *const StatsEventNUXSecondWalkthroughClickedStartUsingAppOnFinalPage = @"NUX - Second Walkthrough - Clicked Start Using App on Final Page";
 
