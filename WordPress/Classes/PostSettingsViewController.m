@@ -1267,6 +1267,9 @@
                 if ([publishNowButton respondsToSelector:@selector(setTintColor:)]) {
                     publishNowButton.tintColor = postDetailViewController.toolbar.tintColor;
                 }
+                NSDictionary *titleTextAttributes = @{UITextAttributeTextColor: [UIColor whiteColor], UITextAttributeTextShadowColor:[UIColor blackColor]};
+                [publishNowButton setTitleTextAttributes:titleTextAttributes forState:UIControlStateNormal];
+                [publishNowButton setTitleTextAttributes:titleTextAttributes forState:UIControlStateSelected];
                 [publishNowButton addTarget:self action:@selector(removeDate) forControlEvents:UIControlEventValueChanged];
                 [fakeController.view addSubview:publishNowButton];
                 CGRect frame = picker.frame;
