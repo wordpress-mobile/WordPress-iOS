@@ -81,7 +81,7 @@
 
 + (UIColor *)tosLabelColor
 {
-    return [UIColor colorWithRed:255.0 green:255.0 blue:255.0 alpha:0.3];
+    return [self descriptionTextColor];
 }
 
 + (UIColor *)jetpackBackgroundColor
