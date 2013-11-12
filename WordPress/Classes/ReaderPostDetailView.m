@@ -641,10 +641,6 @@
 #pragma mark ReaderMediaQueueDelegate methods
 
 - (void)readerMediaQueue:(ReaderMediaQueue *)mediaQueue didLoadBatch:(NSArray *)batch {
-    // Avoid redrawing when not visible.
-    if ([self window] == nil) {
-        return;
-    }
     BOOL frameChanged = NO;
     
     for (NSInteger i = 0; i < [batch count]; i++) {
