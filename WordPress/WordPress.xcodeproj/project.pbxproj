@@ -999,6 +999,8 @@
 		E233414E182DB69500A4CC40 /* btn-back-chevron.png in Resources */ = {isa = PBXBuildFile; fileRef = E233414C182DB69500A4CC40 /* btn-back-chevron.png */; };
 		E2334151182DB97000A4CC40 /* icon-jetpack.png in Resources */ = {isa = PBXBuildFile; fileRef = E233414F182DB97000A4CC40 /* icon-jetpack.png */; };
 		E2334152182DB97000A4CC40 /* icon-jetpack@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = E2334150182DB97000A4CC40 /* icon-jetpack@2x.png */; };
+		E2586BD31832F31D004B5B67 /* icon-site-field@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = E2586BD11832F31D004B5B67 /* icon-site-field@2x.png */; };
+		E2586BD41832F31D004B5B67 /* icon-site-field.png in Resources */ = {isa = PBXBuildFile; fileRef = E2586BD21832F31D004B5B67 /* icon-site-field.png */; };
 		EC4696FF0EA75D460040EE8E /* PagesViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = EC4696FE0EA75D460040EE8E /* PagesViewController.m */; };
 		FD21397F13128C5300099582 /* libiconv.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = FD21397E13128C5300099582 /* libiconv.dylib */; };
 		FD22C2B716CD2B20002BA030 /* navbar_settings.png in Resources */ = {isa = PBXBuildFile; fileRef = FD22C2B516CD2B20002BA030 /* navbar_settings.png */; };
@@ -2251,6 +2253,8 @@
 		E233414C182DB69500A4CC40 /* btn-back-chevron.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "btn-back-chevron.png"; path = "Resources/Images/btn-back-chevron.png"; sourceTree = "<group>"; };
 		E233414F182DB97000A4CC40 /* icon-jetpack.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "icon-jetpack.png"; path = "Resources/Images/icon-jetpack.png"; sourceTree = "<group>"; };
 		E2334150182DB97000A4CC40 /* icon-jetpack@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "icon-jetpack@2x.png"; path = "Resources/Images/icon-jetpack@2x.png"; sourceTree = "<group>"; };
+		E2586BD11832F31D004B5B67 /* icon-site-field@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "icon-site-field@2x.png"; sourceTree = "<group>"; };
+		E2586BD21832F31D004B5B67 /* icon-site-field.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "icon-site-field.png"; sourceTree = "<group>"; };
 		EBC24772E5CD4036B5AFD803 /* Pods.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = Pods.xcconfig; path = ../Pods/Pods.xcconfig; sourceTree = SOURCE_ROOT; };
 		EC4696FD0EA75D460040EE8E /* PagesViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PagesViewController.h; sourceTree = "<group>"; };
 		EC4696FE0EA75D460040EE8E /* PagesViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PagesViewController.m; sourceTree = "<group>"; };
@@ -3297,6 +3301,8 @@
 				E232E5FF182EA15A00792CA0 /* icon-username-field.png */,
 				E232E601182EA16200792CA0 /* icon-password-field.png */,
 				E232E602182EA16200792CA0 /* icon-password-field@2x.png */,
+				E2586BD11832F31D004B5B67 /* icon-site-field@2x.png */,
+				E2586BD21832F31D004B5B67 /* icon-site-field.png */,
 				E232E605182EA1C400792CA0 /* icon-url-field.png */,
 				E232E606182EA1C400792CA0 /* icon-url-field@2x.png */,
 				E232E609182EA2BE00792CA0 /* icon-email-field.png */,
@@ -4454,6 +4460,7 @@
 				30FB89CA1407DB46003BBEC5 /* toolbarBlockquote.png in Resources */,
 				30FB8AA9140C0735003BBEC5 /* keyboardButtonHighlighted.png in Resources */,
 				30FB8ABD140C46C1003BBEC5 /* keyboardButtonHighlighted@2x.png in Resources */,
+				E2586BD31832F31D004B5B67 /* icon-site-field@2x.png in Resources */,
 				30FB8AD9140D1455003BBEC5 /* toolbarLink.png in Resources */,
 				30FB8ADB140D1455003BBEC5 /* toolbarLink@2x.png in Resources */,
 				30FB8AFA140D1808003BBEC5 /* toolbarItalic.png in Resources */,
@@ -4915,6 +4922,7 @@
 				85D80558171630B30075EEAC /* DotCom-Languages.plist in Resources */,
 				858DE41217303BB4000AC628 /* OpenSans-Light.ttf in Resources */,
 				858DE41317303BB4000AC628 /* OpenSans-Regular.ttf in Resources */,
+				E2586BD41832F31D004B5B67 /* icon-site-field.png in Resources */,
 				853FAC4E17CF1F35008A2F74 /* transparent-point.png in Resources */,
 				E14D65BB17E084BC007E3EA4 /* reader-postaction-like-blue.png in Resources */,
 				5D358D6517723DB500739AA4 /* OpenSans-Bold.ttf in Resources */,

@@ -505,7 +505,7 @@ CGFloat const CreateAccountAndBlogKeyboardOffset = 132.0;
     
     // Add Site Title
     if (_page2SiteTitleText == nil) {
-        _page2SiteTitleText = [[WPWalkthroughTextField alloc] initWithLeftViewImage:[UIImage imageNamed:@"icon-username-field"]];
+        _page2SiteTitleText = [[WPWalkthroughTextField alloc] initWithLeftViewImage:[UIImage imageNamed:@"icon-site-field"]];
         _page2SiteTitleText.backgroundColor = [UIColor whiteColor];
         _page2SiteTitleText.placeholder = NSLocalizedString(@"Site Title", @"NUX Create Account Page 2 Site Title Placeholder");
         _page2SiteTitleText.font = [WPNUXUtility textFieldFont];
