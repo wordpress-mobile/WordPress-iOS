@@ -18,12 +18,8 @@
 @dynamic blog;
 
 + (Category *)newCategoryForBlog:(Blog *)blog {
-    Category *category = [[Category alloc] initWithEntity:[NSEntityDescription entityForName:@"Category"
-                                                          inManagedObjectContext:[blog managedObjectContext]]
-               insertIntoManagedObjectContext:[blog managedObjectContext]];
-    
+    Category *category = [NSEntityDescription insertNewObjectForEntityForName:@"Category" inManagedObjectContext:blog.managedObjectContext];
     category.blog = blog;
-    
     return category;
 }
 

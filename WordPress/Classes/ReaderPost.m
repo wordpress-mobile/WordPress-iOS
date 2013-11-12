@@ -76,17 +76,20 @@ NSString *const ReaderExtrasArrayKey = @"ReaderExtrasArrayKey";
     [[NSUserDefaults standardUserDefaults] removeObjectForKey:ReaderExtrasArrayKey];
 	[NSUserDefaults resetStandardUserDefaults];
 	
-	NSManagedObjectContext *context = [[ContextManager sharedInstance] mainContext];
-	NSFetchRequest *request = [NSFetchRequest fetchRequestWithEntityName:@"ReaderPost"];
-    request.includesPropertyValues = NO;
-    NSError *error;
-    NSArray *posts = [context executeFetchRequest:request error:&error];
-    if (posts) {
-        for (ReaderPost *post in posts) {
-            [context deleteObject:post];
+	NSManagedObjectContext *context = [[ContextManager sharedInstance] newDerivedContext];
+    [context performBlock:^{
+        NSFetchRequest *request = [NSFetchRequest fetchRequestWithEntityName:@"ReaderPost"];
+        request.includesPropertyValues = NO;
+        NSError *error;
+        NSArray *posts = [context executeFetchRequest:request error:&error];
+        if (posts) {
+            for (ReaderPost *post in posts) {
+                NSLog(@"Deleting %@", post.objectID);
+                [context deleteObject:post];
+            }
         }
-    }
-    [context save:&error];
+        [[ContextManager sharedInstance] saveDerivedContext:context];
+    }];
 }
 
 
