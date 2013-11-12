@@ -255,6 +255,7 @@ CGFloat const blavatarImageViewSize = 50.f;
 - (UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section {
     WPTableViewSectionHeaderView *header = [[WPTableViewSectionHeaderView alloc] initWithFrame:CGRectMake(0, 0, CGRectGetWidth(self.view.bounds), 0)];
     header.title = [self titleForHeaderInSection:section];
+    header.leftMarginPercent = 0;
     return header;
 }
 
