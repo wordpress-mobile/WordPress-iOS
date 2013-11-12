@@ -265,6 +265,10 @@
     cell.detailTextLabel.font = [self tableviewSubtitleFont];
     cell.textLabel.textColor = [self whisperGrey];
     cell.detailTextLabel.textColor = [self whisperGrey];
+    if ([cell isKindOfClass:[UITableViewTextFieldCell class]]) {
+        UITableViewTextFieldCell *tfcell = (UITableViewTextFieldCell *)cell;
+        [tfcell.textField setTextColor:[self whisperGrey]];
+    }
 }
 
 + (void)configureTableViewTextCell:(UITableViewTextFieldCell *)cell

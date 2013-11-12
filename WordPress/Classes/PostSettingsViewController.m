@@ -503,6 +503,10 @@
             
                 visibilityLabel.text = [self titleForVisibility];
 				
+                if (!IS_IOS7) {
+                    [visibilityTitleLabel setHighlightedTextColor:[UIColor whiteColor]];
+                    [visibilityLabel setHighlightedTextColor:[UIColor whiteColor]];
+                }
 				return visibilityTableViewCell;
 				break;
 			case 2:
@@ -566,8 +570,13 @@
                             break;
                         }
                     }
+                    activityCell.selectionStyle = UITableViewCellSelectionStyleBlue;
                 }
                 [WPStyleGuide configureTableViewActionCell:activityCell];
+                if (!IS_IOS7) {
+                    [activityCell.textLabel setHighlightedTextColor:[UIColor whiteColor]];
+                    [activityCell.detailTextLabel setHighlightedTextColor:[UIColor whiteColor]];
+                }
                 [activityCell.textLabel setText:NSLocalizedString(@"Set Featured Image", @"")];
                 return activityCell;
             } else {
@@ -598,6 +607,10 @@
                             }
                         }
                         [activityCell.textLabel setText: NSLocalizedString(@"Remove Featured Image", "Remove featured image from post")];
+                        if (!IS_IOS7) {
+                            [activityCell.textLabel setHighlightedTextColor:[UIColor whiteColor]];
+                            [activityCell.detailTextLabel setHighlightedTextColor:[UIColor whiteColor]];
+                        }
                         [WPStyleGuide configureTableViewActionCell:activityCell];
                         return activityCell;
                         break;
