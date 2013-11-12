@@ -51,7 +51,7 @@
 
 + (UIColor *)bottomPanelLineColor
 {
-    return [UIColor colorWithRed:17.0/255.0 green:17.0/255.0 blue:17.0/255.0 alpha:0.95];
+    return [UIColor colorWithRed:43/255.0f green:153/255.0f blue:193/255.0f alpha:1.0f];
 }
 
 + (UIColor *)descriptionTextColor
@@ -61,7 +61,7 @@
 
 + (UIColor *)bottomPanelBackgroundColor
 {
-    return [UIColor colorWithRed:42.0/255.0 green:42.0/255.0 blue:42.0/255.0 alpha:1.0];
+    return [self backgroundColor];
 }
 
 + (UIColor *)swipeToContinueTextColor

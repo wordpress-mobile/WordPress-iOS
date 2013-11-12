@@ -171,10 +171,9 @@ CGFloat const AddUsersBlogBottomBackgroundHeight = 64;
     bottomPanel.frame = CGRectMake(0, CGRectGetMaxY(self.tableView.frame), _viewWidth, AddUsersBlogBottomBackgroundHeight);
     [self.view addSubview:bottomPanel];
     
-    UIView *bottomPanelLine = [[UIView alloc] init];
-    bottomPanelLine.backgroundColor = [UIColor colorWithRed:17.0/255.0 green:17.0/255.0 blue:17.0/255.0 alpha:0.95];
-    bottomPanelLine.frame = CGRectMake(0, CGRectGetMinY(bottomPanel.frame), _viewWidth, 1);
-    [self.view addSubview:bottomPanel];
+    UIView *bottomPanelLine = [[UIView alloc] initWithFrame:CGRectMake(0, 0, _viewWidth, 1)];
+    bottomPanelLine.backgroundColor = [WPNUXUtility bottomPanelLineColor];
+    [bottomPanel addSubview:bottomPanelLine];
     
     _selectAllButton = [[WPNUXSecondaryButton alloc] init];
     [_selectAllButton setTitle:NSLocalizedString(@"Select All", nil) forState:UIControlStateNormal];
