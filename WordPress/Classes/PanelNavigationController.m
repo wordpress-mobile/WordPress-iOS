@@ -321,7 +321,13 @@ CGFloat const PanelNavigationControllerStatusBarViewHeight = 20.0;
     // Set the detail view's new width due to the rotation on the iPad if wide panels are expected.
     if (IS_IPAD && [self viewControllerExpectsWidePanel:self.detailViewController]) {
         CGRect frm = self.detailViewContainer.frame;
-        BOOL isPortrait = UIDeviceOrientationIsPortrait([UIDevice currentDevice].orientation);
+        UIDeviceOrientation orientation = [[UIDevice currentDevice] orientation];
+        if (orientation == UIDeviceOrientationUnknown
+            || orientation == UIDeviceOrientationFaceUp
+            || orientation == UIDeviceOrientationFaceDown) {
+            return;
+        }
+        BOOL isPortrait = UIDeviceOrientationIsPortrait(orientation);
         frm.size.width =  isPortrait ? IPAD_WIDE_PANEL_WIDTH_PORTRAIT : IPAD_WIDE_PANEL_WIDTH_LANDSCAPE;
         self.detailViewContainer.frame = frm;
     }

@@ -975,6 +975,7 @@ CGFloat const CreateAccountAndBlogKeyboardOffset = 132.0;
     [WPMobileStats trackEventForSelfHostedAndWPCom:StatsEventNUXCreateAccountClickedHelp];
     SupportViewController *supportViewController = [[SupportViewController alloc] init];
     [self.navigationController pushViewController:supportViewController animated:YES];
+    [self.navigationController setNavigationBarHidden:NO animated:YES];
 }
 
 - (void)clickedCancelButton

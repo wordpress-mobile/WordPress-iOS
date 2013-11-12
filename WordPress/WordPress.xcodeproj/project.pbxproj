@@ -481,12 +481,6 @@
 		5D97C2F315CAF8D8009B44DD /* UINavigationController+KeyboardFix.m in Sources */ = {isa = PBXBuildFile; fileRef = 5D97C2F215CAF8D8009B44DD /* UINavigationController+KeyboardFix.m */; };
 		5D9832EC15A77F0700A5E783 /* toolbar_bg.png in Resources */ = {isa = PBXBuildFile; fileRef = 5D9832EA15A77ED900A5E783 /* toolbar_bg.png */; };
 		5D9832ED15A77F0700A5E783 /* toolbar_bg@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 5D9832EB15A77EEF00A5E783 /* toolbar_bg@2x.png */; };
-		5D9832F015A78AB400A5E783 /* UINavigationBar+Styled.m in Sources */ = {isa = PBXBuildFile; fileRef = 5D9832EF15A78AB400A5E783 /* UINavigationBar+Styled.m */; };
-		5D9832F315A78CCB00A5E783 /* UIToolbar+Styled.m in Sources */ = {isa = PBXBuildFile; fileRef = 5D9832F215A78CCA00A5E783 /* UIToolbar+Styled.m */; };
-		5D9832F815A790FE00A5E783 /* navbar_shadow.png in Resources */ = {isa = PBXBuildFile; fileRef = 5D9832F415A7908D00A5E783 /* navbar_shadow.png */; };
-		5D9832F915A790FE00A5E783 /* navbar_shadow@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 5D9832F515A790A400A5E783 /* navbar_shadow@2x.png */; };
-		5D9832FA15A790FE00A5E783 /* toolbar_shadow.png in Resources */ = {isa = PBXBuildFile; fileRef = 5D9832F615A790BA00A5E783 /* toolbar_shadow.png */; };
-		5D9832FB15A790FE00A5E783 /* toolbar_shadow@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 5D9832F715A790E500A5E783 /* toolbar_shadow@2x.png */; };
 		5DA1FDB915AB5F72005DC38E /* toolbar_flag_lite.png in Resources */ = {isa = PBXBuildFile; fileRef = 5DA1FDB515AB5F70005DC38E /* toolbar_flag_lite.png */; };
 		5DA1FDBA15AB5F72005DC38E /* toolbar_flag_lite@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 5DA1FDB615AB5F71005DC38E /* toolbar_flag_lite@2x.png */; };
 		5DA1FDBB15AB5F72005DC38E /* toolbar_write_lite.png in Resources */ = {isa = PBXBuildFile; fileRef = 5DA1FDB715AB5F71005DC38E /* toolbar_write_lite.png */; };
@@ -935,6 +929,7 @@
 		E1A386CA14DB05F700954CF8 /* CoreMedia.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E1A386C914DB05F700954CF8 /* CoreMedia.framework */; };
 		E1A386CB14DB063800954CF8 /* MediaPlayer.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 83FB4D3E122C38F700DB9506 /* MediaPlayer.framework */; };
 		E1AB07AD1578D34300D6AD64 /* SettingsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = E1AB07AC1578D34300D6AD64 /* SettingsViewController.m */; };
+		E1AC282D18282423004D394C /* SFHFKeychainUtils.m in Sources */ = {isa = PBXBuildFile; fileRef = 292CECFF1027259000BD407D /* SFHFKeychainUtils.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
 		E1B4A9E112FC8B1000EB3F67 /* EGORefreshTableHeaderView.m in Sources */ = {isa = PBXBuildFile; fileRef = E1B4A9E012FC8B1000EB3F67 /* EGORefreshTableHeaderView.m */; };
 		E1B4A9E412FC8B2500EB3F67 /* blueArrow.png in Resources */ = {isa = PBXBuildFile; fileRef = E1B4A9E212FC8B2500EB3F67 /* blueArrow.png */; };
 		E1B4A9E512FC8B2500EB3F67 /* blueArrow@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = E1B4A9E312FC8B2500EB3F67 /* blueArrow@2x.png */; };
@@ -1039,6 +1034,8 @@
 		2906F80F110CDA8900169D56 /* EditCommentViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EditCommentViewController.h; sourceTree = "<group>"; };
 		2906F810110CDA8900169D56 /* EditCommentViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EditCommentViewController.m; sourceTree = "<group>"; };
 		2906F811110CDA8900169D56 /* EditCommentViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = EditCommentViewController.xib; path = Resources/EditCommentViewController.xib; sourceTree = "<group>"; };
+		292CECFE1027259000BD407D /* SFHFKeychainUtils.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SFHFKeychainUtils.h; sourceTree = "<group>"; };
+		292CECFF1027259000BD407D /* SFHFKeychainUtils.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SFHFKeychainUtils.m; sourceTree = "<group>"; };
 		296526FC105810E100597FA3 /* NSString+Helpers.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSString+Helpers.h"; sourceTree = "<group>"; };
 		296526FD105810E100597FA3 /* NSString+Helpers.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSString+Helpers.m"; sourceTree = "<group>"; };
 		296890770FE971DC00770264 /* Security.framework */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = wrapper.framework; name = Security.framework; path = System/Library/Frameworks/Security.framework; sourceTree = SDKROOT; };
@@ -1543,14 +1540,6 @@
 		5D97C2F215CAF8D8009B44DD /* UINavigationController+KeyboardFix.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UINavigationController+KeyboardFix.m"; sourceTree = "<group>"; };
 		5D9832EA15A77ED900A5E783 /* toolbar_bg.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = toolbar_bg.png; path = Resources/Images/toolbar_bg.png; sourceTree = "<group>"; };
 		5D9832EB15A77EEF00A5E783 /* toolbar_bg@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "toolbar_bg@2x.png"; path = "Resources/Images/toolbar_bg@2x.png"; sourceTree = "<group>"; };
-		5D9832EE15A78AB400A5E783 /* UINavigationBar+Styled.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UINavigationBar+Styled.h"; sourceTree = "<group>"; };
-		5D9832EF15A78AB400A5E783 /* UINavigationBar+Styled.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UINavigationBar+Styled.m"; sourceTree = "<group>"; };
-		5D9832F115A78CCA00A5E783 /* UIToolbar+Styled.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIToolbar+Styled.h"; sourceTree = "<group>"; };
-		5D9832F215A78CCA00A5E783 /* UIToolbar+Styled.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIToolbar+Styled.m"; sourceTree = "<group>"; };
-		5D9832F415A7908D00A5E783 /* navbar_shadow.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = navbar_shadow.png; path = Resources/Images/navbar_shadow.png; sourceTree = "<group>"; };
-		5D9832F515A790A400A5E783 /* navbar_shadow@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "navbar_shadow@2x.png"; path = "Resources/Images/navbar_shadow@2x.png"; sourceTree = "<group>"; };
-		5D9832F615A790BA00A5E783 /* toolbar_shadow.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = toolbar_shadow.png; path = Resources/Images/toolbar_shadow.png; sourceTree = "<group>"; };
-		5D9832F715A790E500A5E783 /* toolbar_shadow@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "toolbar_shadow@2x.png"; path = "Resources/Images/toolbar_shadow@2x.png"; sourceTree = "<group>"; };
 		5DA1FDB515AB5F70005DC38E /* toolbar_flag_lite.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = toolbar_flag_lite.png; path = Resources/Images/toolbar_flag_lite.png; sourceTree = "<group>"; };
 		5DA1FDB615AB5F71005DC38E /* toolbar_flag_lite@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "toolbar_flag_lite@2x.png"; path = "Resources/Images/toolbar_flag_lite@2x.png"; sourceTree = "<group>"; };
 		5DA1FDB715AB5F71005DC38E /* toolbar_write_lite.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = toolbar_write_lite.png; path = Resources/Images/toolbar_write_lite.png; sourceTree = "<group>"; };
@@ -2185,8 +2174,6 @@
 		E1D0D82616D3D19200E33F4C /* PocketAPITypes.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PocketAPITypes.h; sourceTree = "<group>"; };
 		E1D0D84516D3D2EA00E33F4C /* PocketActivity.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PocketActivity.h; sourceTree = "<group>"; };
 		E1D0D84616D3D2EA00E33F4C /* PocketActivity.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PocketActivity.m; sourceTree = "<group>"; };
-		E1D0D84816D3D62100E33F4C /* SFHFKeychainUtils.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SFHFKeychainUtils.h; sourceTree = "<group>"; };
-		E1D0D84916D3D62100E33F4C /* SFHFKeychainUtils.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SFHFKeychainUtils.m; sourceTree = "<group>"; };
 		E1D552CC12E77BD80032C680 /* tabPointer.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = tabPointer.png; path = Resources/Images/tabPointer.png; sourceTree = "<group>"; };
 		E1D552CD12E77BD80032C680 /* tabPointer@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "tabPointer@2x.png"; path = "Resources/Images/tabPointer@2x.png"; sourceTree = "<group>"; };
 		E1D91455134A853D0089019C /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/Localizable.strings; sourceTree = "<group>"; };
@@ -2583,8 +2570,6 @@
 				30E9685015AE713A0047DD84 /* navbar_primary_button_bg_landscape_active@2x.png */,
 				371C162815A3A3F800BC653C /* navbar_read.png */,
 				371C162915A3A3F800BC653C /* navbar_read@2x.png */,
-				5D9832F415A7908D00A5E783 /* navbar_shadow.png */,
-				5D9832F515A790A400A5E783 /* navbar_shadow@2x.png */,
 			);
 			name = "Navigation Bar";
 			sourceTree = "<group>";
@@ -3576,8 +3561,6 @@
 				3032EA741757EE6700F1F861 /* toolbar_reblog@2x.png */,
 				3032EA711757EE6700F1F861 /* toolbar_reblog_active.png */,
 				3032EA721757EE6700F1F861 /* toolbar_reblog_active@2x.png */,
-				5D9832F615A790BA00A5E783 /* toolbar_shadow.png */,
-				5D9832F715A790E500A5E783 /* toolbar_shadow@2x.png */,
 				93069F5A17625C28000C966D /* UIButtonBarActionBlack.png */,
 				93069F5B17625C28000C966D /* UIButtonBarActionBlack@2x.png */,
 				93069F5C17625C28000C966D /* UIButtonBarActionSmallBlack.png */,
@@ -3629,6 +3612,8 @@
 				E1523EB216D3B2EE002C5A36 /* Sharing */,
 				30AF6CFE13C230CC00A29C00 /* About */,
 				3768BEED13041E3F00E7C9A9 /* Beta */,
+				292CECFE1027259000BD407D /* SFHFKeychainUtils.h */,
+				292CECFF1027259000BD407D /* SFHFKeychainUtils.m */,
 				A0E293EF0E21027E00C6919C /* WPAddCategoryViewController.h */,
 				A0E293F00E21027E00C6919C /* WPAddCategoryViewController.m */,
 				7059CD1F0F332B6500A0660B /* WPCategoryTree.h */,
@@ -3753,14 +3738,10 @@
 				834CAE9E122D56B1003DDF49 /* UIImage+RoundedCorner.m */,
 				E1F80823146420B000726BC7 /* UIImageView+Gravatar.h */,
 				E1F80824146420B000726BC7 /* UIImageView+Gravatar.m */,
-				5D9832EE15A78AB400A5E783 /* UINavigationBar+Styled.h */,
-				5D9832EF15A78AB400A5E783 /* UINavigationBar+Styled.m */,
 				5D97C2F115CAF8D8009B44DD /* UINavigationController+KeyboardFix.h */,
 				5D97C2F215CAF8D8009B44DD /* UINavigationController+KeyboardFix.m */,
 				5DC3A44B1610B9BC00A890BE /* UINavigationController+Rotation.h */,
 				5DC3A44C1610B9BC00A890BE /* UINavigationController+Rotation.m */,
-				5D9832F115A78CCA00A5E783 /* UIToolbar+Styled.h */,
-				5D9832F215A78CCA00A5E783 /* UIToolbar+Styled.m */,
 				FD75DDAB15B021C70043F12C /* UIViewController+Rotation.h */,
 				FD75DDAC15B021C80043F12C /* UIViewController+Rotation.m */,
 				E1745A9815AF49C000A3F7C5 /* UIViewController+Styled.h */,
@@ -4111,8 +4092,6 @@
 		E1D0D81E16D3D19200E33F4C /* PocketAPI */ = {
 			isa = PBXGroup;
 			children = (
-				E1D0D84816D3D62100E33F4C /* SFHFKeychainUtils.h */,
-				E1D0D84916D3D62100E33F4C /* SFHFKeychainUtils.m */,
 				E1D0D81F16D3D19200E33F4C /* PocketAPI+NSOperation.h */,
 				E1D0D82016D3D19200E33F4C /* PocketAPI.h */,
 				E1D0D82116D3D19200E33F4C /* PocketAPI.m */,
@@ -4554,10 +4533,6 @@
 				5D86498615A6459C00A64FB0 /* welcome_bg_pattern@2x.png in Resources */,
 				5D9832EC15A77F0700A5E783 /* toolbar_bg.png in Resources */,
 				5D9832ED15A77F0700A5E783 /* toolbar_bg@2x.png in Resources */,
-				5D9832F815A790FE00A5E783 /* navbar_shadow.png in Resources */,
-				5D9832F915A790FE00A5E783 /* navbar_shadow@2x.png in Resources */,
-				5D9832FA15A790FE00A5E783 /* toolbar_shadow.png in Resources */,
-				5D9832FB15A790FE00A5E783 /* toolbar_shadow@2x.png in Resources */,
 				8599658B17DA9438005F84EB /* icon-info-message@2x.png in Resources */,
 				85A69D0217C530FE0061E254 /* OpenSans-BoldItalic.ttf in Resources */,
 				37363A3915AB0DE000D3A6B4 /* cell_gradient_bg.png in Resources */,
@@ -5152,8 +5127,6 @@
 				5D2B80D11592447200161F6E /* QuickPhotoButtonView.m in Sources */,
 				852F4E8C17BED193005ED539 /* PostSettingsSelectionViewController.m in Sources */,
 				CC6B3BE715A33E16005A4523 /* WPFriendFinderNudgeView.m in Sources */,
-				5D9832F015A78AB400A5E783 /* UINavigationBar+Styled.m in Sources */,
-				5D9832F315A78CCB00A5E783 /* UIToolbar+Styled.m in Sources */,
 				E1745A9A15AF49C000A3F7C5 /* UIViewController+Styled.m in Sources */,
 				E1745AA715AF4E5900A3F7C5 /* UIBarButtonItem+Styled.m in Sources */,
 				FD75DDAD15B021C80043F12C /* UIViewController+Rotation.m in Sources */,
@@ -5258,6 +5231,7 @@
 				E1D95EB817A28F5E00A3E9F3 /* WPActivityDefaults.m in Sources */,
 				E1ECF7DF17A7CEE600535A05 /* ViewAdminButton.m in Sources */,
 				857F55B817CEA2B200E154E1 /* WPKeyboardToolbarWithoutGradient.m in Sources */,
+				E1AC282D18282423004D394C /* SFHFKeychainUtils.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
