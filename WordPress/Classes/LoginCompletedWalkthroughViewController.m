@@ -64,7 +64,7 @@
 
 NSUInteger const LoginCompletedWalkthroughStandardOffset = 16;
 CGFloat const LoginCompletedWalkthroughIconVerticalOffset = 85;
-CGFloat const LoginCompletedWalkthroughMaxTextWidth = 289.0;
+CGFloat const LoginCompletedWalkthroughMaxTextWidth = 265.0;
 CGFloat const LoginCompletedWalkthroughBottomBackgroundHeight = 64.0;
 CGFloat const LoginCompeltedWalkthroughSwipeToContinueTopOffset = 14.0;
 
