@@ -553,8 +553,6 @@
 		7F3E105513498200008CF73D /* UISegmentBarBlackButtonHighlighted.png in Resources */ = {isa = PBXBuildFile; fileRef = 7F3E105113498200008CF73D /* UISegmentBarBlackButtonHighlighted.png */; };
 		7F3E105613498200008CF73D /* UISegmentBarBlackButtonHighlighted@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 7F3E105213498200008CF73D /* UISegmentBarBlackButtonHighlighted@2x.png */; };
 		83043E55126FA31400EC9953 /* MessageUI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 83043E54126FA31400EC9953 /* MessageUI.framework */; };
-		8320B5D611FCA41200607422 /* UITableViewSwitchCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 8320B5D511FCA41200607422 /* UITableViewSwitchCell.m */; };
-		8320B5D911FCA50400607422 /* UITableViewSwitchCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 8320B5D811FCA50400607422 /* UITableViewSwitchCell.xib */; };
 		8333FE0E11FF6EF200A495C1 /* EditSiteViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 8333FE0D11FF6EF200A495C1 /* EditSiteViewController.xib */; };
 		83418AAA11C9FA6E00ACF00C /* Comment.m in Sources */ = {isa = PBXBuildFile; fileRef = 83418AA911C9FA6E00ACF00C /* Comment.m */; };
 		834CAE7C122D528A003DDF49 /* UIImage+Resize.m in Sources */ = {isa = PBXBuildFile; fileRef = 834CAE7B122D528A003DDF49 /* UIImage+Resize.m */; };
@@ -818,7 +816,6 @@
 		930C5FEA182BD86300976C21 /* logo_wpcom@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 8370D11C11FA4CD5009D650F /* logo_wpcom@2x.png */; };
 		930C5FEB182BD86300976C21 /* logo_wpcom.png in Resources */ = {isa = PBXBuildFile; fileRef = 8370D11D11FA4CD5009D650F /* logo_wpcom.png */; };
 		930C5FEC182BD86300976C21 /* AddSiteViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 8370D1BC11FA6295009D650F /* AddSiteViewController.xib */; };
-		930C5FED182BD86300976C21 /* UITableViewSwitchCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 8320B5D811FCA50400607422 /* UITableViewSwitchCell.xib */; };
 		930C5FEE182BD86300976C21 /* EditSiteViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 8333FE0D11FF6EF200A495C1 /* EditSiteViewController.xib */; };
 		930C5FEF182BD86300976C21 /* icon-menu-viewadmin.png in Resources */ = {isa = PBXBuildFile; fileRef = 8599658117DA903B005F84EB /* icon-menu-viewadmin.png */; };
 		930C5FF0182BD86300976C21 /* WebSignupViewController-iPad.xib in Resources */ = {isa = PBXBuildFile; fileRef = 8362C1031201E7CE00599347 /* WebSignupViewController-iPad.xib */; };
@@ -1499,7 +1496,6 @@
 		930C62AD182BD86300976C21 /* UITableViewActivityCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 8370D10911FA499A009D650F /* UITableViewActivityCell.m */; };
 		930C62AE182BD86300976C21 /* SupportViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 93027BB71758332300483FFD /* SupportViewController.m */; };
 		930C62AF182BD86300976C21 /* AddSiteViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 8370D1BB11FA6295009D650F /* AddSiteViewController.m */; };
-		930C62B0182BD86300976C21 /* UITableViewSwitchCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 8320B5D511FCA41200607422 /* UITableViewSwitchCell.m */; };
 		930C62B1182BD86300976C21 /* EditSiteViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 83FEFC7411FF6C5A0078B462 /* EditSiteViewController.m */; };
 		930C62B2182BD86300976C21 /* Post.m in Sources */ = {isa = PBXBuildFile; fileRef = 838C672D1210C3C300B09CA3 /* Post.m */; };
 		930C62B3182BD86300976C21 /* PostMediaViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 8383178612270E980047B476 /* PostMediaViewController.m */; };
@@ -2553,9 +2549,6 @@
 		7F3E105113498200008CF73D /* UISegmentBarBlackButtonHighlighted.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = UISegmentBarBlackButtonHighlighted.png; path = Resources/Images/UISegmentBarBlackButtonHighlighted.png; sourceTree = "<group>"; };
 		7F3E105213498200008CF73D /* UISegmentBarBlackButtonHighlighted@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "UISegmentBarBlackButtonHighlighted@2x.png"; path = "Resources/Images/UISegmentBarBlackButtonHighlighted@2x.png"; sourceTree = "<group>"; };
 		83043E54126FA31400EC9953 /* MessageUI.framework */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = wrapper.framework; name = MessageUI.framework; path = System/Library/Frameworks/MessageUI.framework; sourceTree = SDKROOT; };
-		8320B5D411FCA41200607422 /* UITableViewSwitchCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UITableViewSwitchCell.h; sourceTree = "<group>"; };
-		8320B5D511FCA41200607422 /* UITableViewSwitchCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = UITableViewSwitchCell.m; sourceTree = "<group>"; };
-		8320B5D811FCA50400607422 /* UITableViewSwitchCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = UITableViewSwitchCell.xib; path = Resources/UITableViewSwitchCell.xib; sourceTree = "<group>"; };
 		8333FE0D11FF6EF200A495C1 /* EditSiteViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = EditSiteViewController.xib; path = Resources/EditSiteViewController.xib; sourceTree = "<group>"; };
 		833AF259114575A50016DE8F /* PostAnnotation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PostAnnotation.h; sourceTree = "<group>"; };
 		833AF25A114575A50016DE8F /* PostAnnotation.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PostAnnotation.m; sourceTree = "<group>"; };
@@ -3874,8 +3867,6 @@
 				031663060FFB151A0045D052 /* PostTableViewCell.m */,
 				8370D10811FA499A009D650F /* UITableViewActivityCell.h */,
 				8370D10911FA499A009D650F /* UITableViewActivityCell.m */,
-				8320B5D411FCA41200607422 /* UITableViewSwitchCell.h */,
-				8320B5D511FCA41200607422 /* UITableViewSwitchCell.m */,
 				375D090B133B94C3000CC9CD /* BlogsTableViewCell.h */,
 				375D090C133B94C3000CC9CD /* BlogsTableViewCell.m */,
 				E14B2B741368127900CC3C4F /* UITableViewTextFieldCell.h */,
@@ -3894,7 +3885,6 @@
 			isa = PBXGroup;
 			children = (
 				8370D10B11FA4A1B009D650F /* UITableViewActivityCell.xib */,
-				8320B5D811FCA50400607422 /* UITableViewSwitchCell.xib */,
 			);
 			name = Cells;
 			sourceTree = "<group>";
@@ -5268,7 +5258,6 @@
 				8370D12111FA4CD5009D650F /* logo_wpcom.png in Resources */,
 				46FB5C67182EAFD500A70A90 /* icon-tab-notifications.png in Resources */,
 				8370D1BE11FA6295009D650F /* AddSiteViewController.xib in Resources */,
-				8320B5D911FCA50400607422 /* UITableViewSwitchCell.xib in Resources */,
 				8333FE0E11FF6EF200A495C1 /* EditSiteViewController.xib in Resources */,
 				8599658517DA903B005F84EB /* icon-menu-viewadmin.png in Resources */,
 				8362C1041201E7CE00599347 /* WebSignupViewController-iPad.xib in Resources */,
@@ -5992,7 +5981,6 @@
 				930C5FEB182BD86300976C21 /* logo_wpcom.png in Resources */,
 				46FB5C68182EAFD500A70A90 /* icon-tab-notifications.png in Resources */,
 				930C5FEC182BD86300976C21 /* AddSiteViewController.xib in Resources */,
-				930C5FED182BD86300976C21 /* UITableViewSwitchCell.xib in Resources */,
 				930C5FEE182BD86300976C21 /* EditSiteViewController.xib in Resources */,
 				930C5FEF182BD86300976C21 /* icon-menu-viewadmin.png in Resources */,
 				930C5FF0182BD86300976C21 /* WebSignupViewController-iPad.xib in Resources */,
@@ -6819,7 +6807,6 @@
 				8370D10A11FA499A009D650F /* UITableViewActivityCell.m in Sources */,
 				93C486501810442200A24725 /* SupportViewController.m in Sources */,
 				8370D1BD11FA6295009D650F /* AddSiteViewController.m in Sources */,
-				8320B5D611FCA41200607422 /* UITableViewSwitchCell.m in Sources */,
 				83FEFC7611FF6C5A0078B462 /* EditSiteViewController.m in Sources */,
 				838C672E1210C3C300B09CA3 /* Post.m in Sources */,
 				8383178812270E980047B476 /* PostMediaViewController.m in Sources */,
@@ -7017,7 +7004,6 @@
 				930C62AD182BD86300976C21 /* UITableViewActivityCell.m in Sources */,
 				930C62AE182BD86300976C21 /* SupportViewController.m in Sources */,
 				930C62AF182BD86300976C21 /* AddSiteViewController.m in Sources */,
-				930C62B0182BD86300976C21 /* UITableViewSwitchCell.m in Sources */,
 				930C62B1182BD86300976C21 /* EditSiteViewController.m in Sources */,
 				930C62B2182BD86300976C21 /* Post.m in Sources */,
 				930C62B3182BD86300976C21 /* PostMediaViewController.m in Sources */,

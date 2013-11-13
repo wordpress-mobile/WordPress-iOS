@@ -266,39 +266,30 @@
         }				        
     } else if(indexPath.section == 1) {
         if(indexPath.row == 0) {
-            if(switchCell == nil) {
-                NSArray *topLevelObjects = [[NSBundle mainBundle] loadNibNamed:@"UITableViewSwitchCell" owner:nil options:nil];
-                for(id currentObject in topLevelObjects)
-                {
-                    if([currentObject isKindOfClass:[UITableViewSwitchCell class]])
-                    {
-                        switchCell = (UITableViewSwitchCell *)currentObject;
-                        break;
-                    }
-                }
+            UITableViewCell *geotaggingCell = [tableView dequeueReusableCellWithIdentifier:@"GeotaggingCell"];
+            if(geotaggingCell == nil) {
+                geotaggingCell = [[WPTableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:@"GeotaggingCell"];
+                geotaggingCell.accessoryView = [[UISwitch alloc] init];
             }
-            switchCell.textLabel.text = NSLocalizedString(@"Geotagging", @"Enables geotagging in blog settings (short label)");
-            switchCell.selectionStyle = UITableViewCellSelectionStyleNone;
-            switchCell.cellSwitch.on = self.geolocationEnabled;
-            [switchCell.cellSwitch addTarget:self action:@selector(toggleGeolocation:) forControlEvents:UIControlEventValueChanged];
-            [WPStyleGuide configureTableViewCell:switchCell];
-            return switchCell;
+            UISwitch *geotaggingSwitch = (UISwitch *)geotaggingCell.accessoryView;
+            geotaggingCell.textLabel.text = NSLocalizedString(@"Geotagging", @"Enables geotagging in blog settings (short label)");
+            geotaggingCell.selectionStyle = UITableViewCellSelectionStyleNone;
+            geotaggingSwitch.on = self.geolocationEnabled;
+            [geotaggingSwitch addTarget:self action:@selector(toggleGeolocation:) forControlEvents:UIControlEventValueChanged];
+            [WPStyleGuide configureTableViewCell:geotaggingCell];
+            return geotaggingCell;
         } else if(indexPath.row == 1) {
-            if(switchCellPushNotifications == nil) {
-                NSArray *topLevelObjects = [[NSBundle mainBundle] loadNibNamed:@"UITableViewSwitchCell" owner:nil options:nil];
-                for(id currentObject in topLevelObjects)
-                {
-                    if([currentObject isKindOfClass:[UITableViewSwitchCell class]])
-                    {
-                        switchCellPushNotifications = (UITableViewSwitchCell *)currentObject;
-                        break;
-                    }
-                }
+            UITableViewCell *pushCell = [tableView dequeueReusableCellWithIdentifier:@"PushCell"];
+            if(pushCell == nil) {
+                pushCell = [[WPTableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:@"PushCell"];
+                pushCell.accessoryView = [[UISwitch alloc] init];
             }
-            switchCellPushNotifications.textLabel.text = NSLocalizedString(@"Push Notifications", @"");
-            switchCellPushNotifications.selectionStyle = UITableViewCellSelectionStyleNone;
-            switchCellPushNotifications.cellSwitch.on = [self getBlogPushNotificationsSetting];
-            return switchCellPushNotifications;
+            UISwitch *pushSwitch = (UISwitch *)pushCell.accessoryView;
+            pushCell.textLabel.text = NSLocalizedString(@"Push Notifications", @"");
+            pushCell.selectionStyle = UITableViewCellSelectionStyleNone;
+            pushSwitch.on = [self getBlogPushNotificationsSetting];
+            [WPStyleGuide configureTableViewCell:pushCell];
+            return pushCell;
         }
 	} else if(indexPath.section == 2) {
         
@@ -461,7 +452,8 @@
 
 
 - (void)toggleGeolocation:(id)sender {
-    self.geolocationEnabled = switchCell.cellSwitch.on;
+    UISwitch *geolocationSwitch = (UISwitch *)sender;
+    self.geolocationEnabled = geolocationSwitch.on;
 }
 
 
@@ -676,35 +668,6 @@
     if (blog) {
         blog.geolocationEnabled = self.geolocationEnabled;
         [blog dataSave];
-        
-        if(switchCellPushNotifications){
-            BOOL muted = ! switchCellPushNotifications.cellSwitch.on;
-            if (_notificationPreferences) {
-                NSMutableDictionary *mutedBlogsDictionary = [[_notificationPreferences objectForKey:@"muted_blogs"] mutableCopy];
-                NSMutableArray *mutedBlogsArray = [[mutedBlogsDictionary objectForKey:@"value"] mutableCopy];
-                NSMutableDictionary *updatedPreference = nil;
-                int i=0;
-                BOOL hasMatch = NO;
-                NSNumber *blogID = [blog isWPcom] ? blog.blogID : [blog jetpackBlogID];
-                for ( ; i < [mutedBlogsArray count]; i++) {
-                    updatedPreference = [[mutedBlogsArray objectAtIndex:i] mutableCopy];
-                    NSString *currentblogID = [updatedPreference objectForKey:@"blog_id"];
-                    if( [blogID intValue] == [currentblogID intValue]  ) {
-                        [updatedPreference setValue:[NSNumber numberWithBool:muted] forKey:@"value"];
-                        hasMatch = YES;
-                        break;
-                    }
-                }
-                
-                if(hasMatch){
-                    [mutedBlogsArray setObject:updatedPreference atIndexedSubscript:i];
-                    [mutedBlogsDictionary setValue:mutedBlogsArray forKey:@"value"];
-                    [_notificationPreferences setValue:mutedBlogsDictionary forKey:@"muted_blogs"];
-                    [[NSUserDefaults standardUserDefaults] setValue:_notificationPreferences forKey:@"notification_preferences"];
-                    [[WordPressComApi sharedApi] saveNotificationSettings:nil failure:nil];
-                }
-            }
-        }
 	}
 	if(blog == nil || blog.username == nil) {
 		[self validateFields];
