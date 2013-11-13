@@ -966,8 +966,13 @@ NSString *const WPReaderViewControllerDisplayedNativeFriendFinder = @"DisplayedN
         self.friendFinderNudgeView.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleBottomMargin;
         [self.navigationController.view addSubview:self.friendFinderNudgeView];
         
+        CGSize tabBarSize = CGSizeZero;
+        if ([self tabBarController]) {
+            tabBarSize = [[[self tabBarController] tabBar] bounds].size;
+        }
+        
         buttonFrame = self.friendFinderNudgeView.frame;
-        buttonFrame.origin.y = self.view.frame.size.height - buttonFrame.size.height;
+        buttonFrame.origin.y = self.navigationController.view.frame.size.height - buttonFrame.size.height - tabBarSize.height;
         
         [self.friendFinderNudgeView.cancelButton addTarget:self action:@selector(hideFriendFinderNudgeView:) forControlEvents:UIControlEventTouchUpInside];
         [self.friendFinderNudgeView.confirmButton addTarget:self action:@selector(openFriendFinder:) forControlEvents:UIControlEventTouchUpInside];
