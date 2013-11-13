@@ -47,6 +47,7 @@ const NSUInteger NoteKeepCount = 20;
 @dynamic unread;
 @dynamic icon;
 @dynamic noteID;
+@dynamic account;
 @synthesize commentText = _commentText, noteData = _noteData;
 
 
@@ -112,19 +113,6 @@ const NSUInteger NoteKeepCount = 20;
     [context save:&error];
 }
 
-+ (void)removeAllNotesWithContext:(NSManagedObjectContext *)context {
-    NSFetchRequest *request = [NSFetchRequest fetchRequestWithEntityName:@"Note"];
-    request.includesPropertyValues = NO;
-    NSError *error;
-    NSArray *notes = [context executeFetchRequest:request error:&error];
-    if (notes) {
-        for (Note *note in notes) {
-            [context deleteObject:note];
-        }
-    }
-    [context save:&error];
-}
-
 + (void)getNewNotificationswithContext:(NSManagedObjectContext *)context success:(void (^)(BOOL hasNewNotes))success failure:(void (^)(NSError *error))failure {
     NSNumber *timestamp = [self lastNoteTimestampWithContext:context];
 
@@ -161,6 +149,8 @@ const NSUInteger NoteKeepCount = 20;
 
 + (void)createOrUpdateNoteWithData:(NSDictionary *)noteData withManagedObjectContext:(NSManagedObjectContext *)context {
     
+    WPAccount *account = (WPAccount *)[context objectWithID:[WPAccount defaultWordPressComAccount].objectID];
+    
     NSFetchRequest *request = [NSFetchRequest fetchRequestWithEntityName:@"Note"];
     request.predicate = [NSPredicate predicateWithFormat:@"noteID = %@", [noteData objectForKey:@"id"]];
     request.sortDescriptors = @[[NSSortDescriptor sortDescriptorWithKey:@"timestamp" ascending:NO]];
@@ -180,6 +170,7 @@ const NSUInteger NoteKeepCount = 20;
                                                      inManagedObjectContext:context];
         
         note.noteID = [noteData objectForKey:@"id"];
+        note.account = account;
     }
     
     [note syncAttributes:noteData];

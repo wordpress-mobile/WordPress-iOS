@@ -237,9 +237,6 @@ NSString *const WordPressComApiErrorMessageKey = @"WordPressComApiErrorMessageKe
     self.password = nil;
     [self clearAuthorizationHeader];
 
-    // Remove all notes
-    [Note removeAllNotesWithContext:[[ContextManager sharedInstance] mainContext]];
-
     [self clearWpcomCookies];
 
     // Notify the world

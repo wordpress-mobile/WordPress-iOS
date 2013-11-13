@@ -8,7 +8,7 @@
 
 #import <Foundation/Foundation.h>
 #import <CoreData/CoreData.h>
-
+#import "WPAccount.h"
 
 @interface Note : NSManagedObject
 
@@ -21,6 +21,7 @@
 @property (nonatomic, retain) NSString * noteID;
 @property (nonatomic, strong, readonly) NSString *commentText;
 @property (nonatomic, strong, readonly) NSDictionary *noteData;
+@property (nonatomic, retain) WPAccount *account;
 
 - (BOOL)isComment;
 - (BOOL)isLike;
@@ -43,7 +44,6 @@
  @param context The context which contains the notes to delete.
  */
 + (void)pruneOldNotesBefore:(NSNumber *)timestamp withContext:(NSManagedObjectContext *)context;
-+ (void)removeAllNotesWithContext:(NSManagedObjectContext *)context;
 + (void)getNewNotificationswithContext:(NSManagedObjectContext *)context success:(void (^)(BOOL hasNewNotes))success failure:(void (^)(NSError *error))failure;
 
 @end
