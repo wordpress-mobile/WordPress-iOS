@@ -126,11 +126,6 @@
     [[NSNotificationCenter defaultCenter] removeObserver:self];
 }
 
-- (UIColor *)backgroundColorForRefreshHeaderView
-{
-    return [WPStyleGuide itsEverywhereGrey];
-}
-
 - (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation {
     WordPressAppDelegate *delegate = (WordPressAppDelegate*)[[UIApplication sharedApplication] delegate];
 
@@ -248,7 +243,7 @@
 		} else {
 			[[NSNotificationCenter defaultCenter] postNotificationName:kXML_RPC_ERROR_OCCURS object:error userInfo:errInfo];
 		}
-        [self syncItemsWithUserInteraction:NO];
+        [self syncItems];
         if(IS_IPAD && self.postReaderViewController) {
             if(self.postReaderViewController.apost == post) {
                 //push an the W logo on the right. 
@@ -368,13 +363,13 @@
     return @"remoteStatusNumber";
 }
 
-- (void)syncItemsWithUserInteraction:(BOOL)userInteraction success:(void (^)())success failure:(void (^)(NSError *))failure {
+- (void)syncItemsViaUserInteractionWithSuccess:(void (^)())success failure:(void (^)(NSError *))failure {
     // If triggered by a pull to refresh, sync categories, post formats, ...
-    if (userInteraction) {
-        [self.blog syncBlogPostsWithSuccess:success failure:failure];
-    } else {
-        [self.blog syncPostsWithSuccess:success failure:failure loadMore:NO];
-    }
+    [self.blog syncBlogPostsWithSuccess:success failure:failure];
+}
+
+- (void)syncItemsWithSuccess:(void (^)())success failure:(void (^)(NSError *))failure {
+    [self.blog syncPostsWithSuccess:success failure:failure loadMore:NO];
 }
 
 - (UITableViewCell *)newCell {
