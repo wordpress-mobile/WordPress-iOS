@@ -1070,6 +1070,7 @@ CGFloat const EditPostViewControllerTextViewOffset = 10.0;
     _linkHelperAlertView.secondTextField.keyboardAppearance = UIKeyboardAppearanceAlert;
     _linkHelperAlertView.firstTextField.keyboardType = UIKeyboardTypeDefault;
     _linkHelperAlertView.secondTextField.keyboardType = UIKeyboardTypeURL;
+    _linkHelperAlertView.secondTextField.autocorrectionType = UITextAutocorrectionTypeNo;
 
     __block UITextView *editorTextView = textView;
     __block id fles = self;
