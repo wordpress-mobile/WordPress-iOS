@@ -73,7 +73,6 @@
     BOOL _page1FieldsValid;
     BOOL _page2FieldsValid;
 
-    BOOL _hasViewAppeared;
     BOOL _keyboardVisible;
     BOOL _savedOriginalPositionsOfStickyControls;
     CGFloat _infoButtonOriginalX;
@@ -140,6 +139,9 @@ CGFloat const CreateAccountAndBlogKeyboardOffset = 132.0;
 {
     [super viewWillAppear:animated];
     [self.navigationController setNavigationBarHidden:YES animated:animated];
+    
+    [self moveStickyControlsForContentOffset:_scrollView.contentOffset];
+    [self updateCancelButton:_scrollView.contentOffset];
 }
 
 - (void)viewDidAppear:(BOOL)animated
@@ -147,16 +149,6 @@ CGFloat const CreateAccountAndBlogKeyboardOffset = 132.0;
     [super viewDidAppear:animated];
 
     [self layoutScrollview];
-
-    if (_hasViewAppeared) {
-        // This is for the case when the user pulls up the select language view on page 2 and returns to this view. When that
-        // happens the sticky controls on the top won't be in the correct place, so in order to set them up we
-        // 'page' to the current content offset in the _scrollView to ensure that the cancel button and help button
-        // are in the correct place6
-        [self moveStickyControlsForContentOffset:_scrollView.contentOffset];
-    }
-    
-    _hasViewAppeared = YES;
 }
 
 - (NSUInteger)supportedInterfaceOrientations {
@@ -1087,6 +1079,7 @@ CGFloat const CreateAccountAndBlogKeyboardOffset = 132.0;
     
     [_cancelButton setTitle:buttonTitle forState:UIControlStateNormal];
     [_cancelButton sizeToFit];
+    
 }
 
 - (void)moveStickyControlsForContentOffset:(CGPoint)contentOffset
