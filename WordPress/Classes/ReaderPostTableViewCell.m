@@ -17,9 +17,9 @@
 #import "WPAvatarSource.h"
 #import "ReaderButton.h"
 
-#define RPTVCVerticalPadding 10.0f
-#define MetaViewHeightWithButtons 101.0f
-#define MetaViewHeightSansButtons 52.0f
+const CGFloat RPTVCVerticalPadding = 10.0f;
+const CGFloat RPTVCMetaViewHeightWithButtons = 101.0f;
+const CGFloat RPTVCMetaViewHeightSansButtons = 52.0f;
 
 @interface ReaderPostTableViewCell()
 
@@ -78,9 +78,9 @@
 
 	// Size of the meta view
 	if ([post isWPCom]) {
-		desiredHeight += MetaViewHeightWithButtons;
+		desiredHeight += RPTVCMetaViewHeightWithButtons;
 	} else {
-		desiredHeight += MetaViewHeightSansButtons;
+		desiredHeight += RPTVCMetaViewHeightSansButtons;
 	}
 	
 	// bottom padding
@@ -282,7 +282,7 @@
 	// position the meta view and its subviews
     _byView.frame = CGRectMake(0.0f, 0.0f, contentWidth, 52.0f);
     
-	height = [self.post isWPCom] ? MetaViewHeightWithButtons : MetaViewHeightSansButtons;
+	height = [self.post isWPCom] ? RPTVCMetaViewHeightWithButtons : RPTVCMetaViewHeightSansButtons;
 	_metaView.frame = CGRectMake(0.0f, nextY, contentWidth, height);
 	
 	CGFloat w = ceilf(_metaView.frame.size.width / 2.0f);
