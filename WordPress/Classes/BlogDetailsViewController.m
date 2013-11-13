@@ -55,6 +55,10 @@ typedef enum {
     [WPStyleGuide configureColorsForView:self.view andTableView:self.tableView];
 }
 
+- (void)viewWillAppear:(BOOL)animated {
+    [self.tableView reloadData];
+}
+
 - (void)setBlog:(Blog *)blog {
     _blog = blog;
     self.title = blog.blogName;
