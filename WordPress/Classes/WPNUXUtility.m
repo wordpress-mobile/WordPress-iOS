@@ -120,4 +120,21 @@
     }
 }
 
++ (NSAttributedString *)titleAttributedString:(NSString *)text {
+    
+    if (!(text.length > 0)) {
+        return nil;
+    }
+    
+    NSMutableParagraphStyle *paragraphStyle = [[NSMutableParagraphStyle alloc] init];
+    paragraphStyle.lineHeightMultiple = 0.85;
+    paragraphStyle.lineBreakMode = NSLineBreakByWordWrapping;
+    paragraphStyle.alignment = NSTextAlignmentCenter;
+    NSDictionary *attributes = @{NSFontAttributeName: [WPNUXUtility titleFont],
+                                 NSForegroundColorAttributeName: [UIColor whiteColor],
+                                 NSParagraphStyleAttributeName: paragraphStyle};
+    
+    return [[NSAttributedString alloc] initWithString:text attributes:attributes];
+}
+
 @end
