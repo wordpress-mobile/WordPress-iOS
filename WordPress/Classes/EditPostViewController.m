@@ -75,6 +75,7 @@ NSString *const EditPostViewControllerAutosaveDidFailNotification = @"EditPostVi
 #pragma mark LifeCycle Methods
 
 CGFloat const EditPostViewControllerStandardOffset = 15.0;
+CGFloat const EditPostViewControllerTextViewOffset = 10.0;
 
 - (void)dealloc {
     _failedMediaAlertView.delegate = nil;
@@ -135,7 +136,7 @@ CGFloat const EditPostViewControllerStandardOffset = 15.0;
         separatorView.frame = separatorFrame;
         separatorView.backgroundColor = [WPStyleGuide readGrey];
         
-        textView.textContainerInset = UIEdgeInsetsMake(0.0f, 10.0f, 0.0f, 10.0f);
+        textView.textContainerInset = UIEdgeInsetsMake(0.0f, EditPostViewControllerTextViewOffset, 0.0f, EditPostViewControllerTextViewOffset);
     }
     
     if (editorToolbar == nil) {
