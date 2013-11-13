@@ -20,6 +20,7 @@ pod 'MGImageUtilities', :git => 'git://github.com/wordpress-mobile/MGImageUtilit
 pod 'Quantcast-Measure', '~> 1.2.10'
 pod 'CocoaLumberjack', '~>1.6.2'
 pod 'NSLogger-CocoaLumberjack-connector', '~>1.3'
+pod 'CrashlyticsLumberjack', '~>1.0.0'
 
 target :WordPressTest, :exclusive => true do
   pod 'OHHTTPStubs', '1.1.1'
