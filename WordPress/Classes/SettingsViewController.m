@@ -20,8 +20,6 @@
     - Video API
     - Video Quality
     - Video Content
- - Sounds 
-    - Mute Sounds
  - Info
     - Version
     - About
@@ -55,7 +53,6 @@ typedef enum {
     SettingsSectionWpcom,
     SettingsSectionNotifications,
     SettingsSectionMedia,
-    SettingsSectionSounds,
     SettingsSectionInfo,
     
     SettingsSectionCount
@@ -70,7 +67,6 @@ typedef enum {
 - (UITableViewCell *)cellForIndexPath:(NSIndexPath *)indexPath;
 - (void)checkCloseButton;
 - (void)setupMedia;
-- (void)handleMuteSoundsChanged:(id)sender;
 - (void)maskImageView:(UIImageView *)imageView corner:(UIRectCorner)corner;
 
 @end
@@ -206,20 +202,6 @@ typedef enum {
     }
 }
 
-
-- (void)handleMuteSoundsChanged:(id)sender {
-    UISwitch *aSwitch = (UISwitch *)sender;
-    
-    if (aSwitch.on) {
-        [WPMobileStats trackEventForWPCom:StatsEventSettingsEnabledSounds];
-    } else {
-        [WPMobileStats trackEventForWPCom:StatsEventSettingsDisabledSounds];
-    }
-
-    [[NSUserDefaults standardUserDefaults] setBool:!(aSwitch.on) forKey:kSettingsMuteSoundsKey];
-    [NSUserDefaults resetStandardUserDefaults];
-}
-
 - (void)maskImageView:(UIImageView *)imageView corner:(UIRectCorner)corner {
     if (IS_IOS7) {
         // We don't want this effect in iOS7
@@ -262,10 +244,7 @@ typedef enum {
                 return 1;
             else
                 return 0;
-            
-        case SettingsSectionSounds :
-            return 1;
-            
+
         case SettingsSectionInfo:
             return 3;
             
@@ -313,9 +292,6 @@ typedef enum {
             return NSLocalizedString(@"Notifications", @"");
         else
             return nil;
-        
-    } else if (section == SettingsSectionSounds) {
-        return NSLocalizedString(@"Sounds", @"Title label for the sounds section in the app settings.");
         
     } else if (section == SettingsSectionInfo) {
         return NSLocalizedString(@"App Info", @"Title label for the application information section in the app settings");
@@ -387,15 +363,6 @@ typedef enum {
         NSArray *titles = [dict objectForKey:@"Titles"];
         cell.detailTextLabel.text = [titles objectAtIndex:index];
         
-    } else if(indexPath.section == SettingsSectionSounds) {
-        cell.selectionStyle = UITableViewCellSelectionStyleNone;
-        cell.accessoryType = UITableViewCellAccessoryNone;
-        cell.textLabel.text = NSLocalizedString(@"Enable Sounds", @"Title for the setting to enable in-app sounds");
-        UISwitch *aSwitch = [[UISwitch alloc] initWithFrame:CGRectZero]; // Frame is ignored.
-        [aSwitch addTarget:self action:@selector(handleMuteSoundsChanged:) forControlEvents:UIControlEventValueChanged];
-        aSwitch.on = ![[NSUserDefaults standardUserDefaults] boolForKey:kSettingsMuteSoundsKey];
-        cell.accessoryView = aSwitch;
-
     } else if (indexPath.section == SettingsSectionNotifications) {
         if ([[WordPressComApi sharedApi] hasCredentials] && nil != [[NSUserDefaults standardUserDefaults] objectForKey:kApnsDeviceTokenPrefKey]) {
             cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
@@ -447,10 +414,6 @@ typedef enum {
         case SettingsSectionMedia:
             cellIdentifier = @"Media";
             cellStyle = UITableViewCellStyleValue1;
-            break;
-        
-        case SettingsSectionSounds:
-            cellIdentifier = @"Sounds";
             break;
             
         case SettingsSectionInfo:
@@ -577,8 +540,6 @@ typedef enum {
         
         NotificationSettingsViewController *notificationSettingsViewController = [[NotificationSettingsViewController alloc] initWithStyle:UITableViewStyleGrouped];
         [self.navigationController pushViewController:notificationSettingsViewController animated:YES];
-    } else if (indexPath.section == SettingsSectionSounds) {
-        // nothing to do.
         
     } else if (indexPath.section == SettingsSectionInfo) {
         if (indexPath.row == 1) {
