@@ -419,7 +419,7 @@ NSString *const WPReaderViewControllerDisplayedNativeFriendFinder = @"DisplayedN
 
         if (post.featuredImageURL) {
             NSURL *imageURL = post.featuredImageURL;
-            imageSize = cell.cellImageView.bounds.size;
+            imageSize = cell.cellImageView.frame.size;
             image = [_featuredImageSource imageForURL:imageURL withSize:imageSize];
             if (image) {
                 [cell setFeaturedImage:image];

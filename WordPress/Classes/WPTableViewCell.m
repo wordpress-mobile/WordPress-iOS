@@ -8,14 +8,14 @@
 
 #import "WPTableViewCell.h"
 
-CGFloat const TableViewCellMarginPercentage = 0.2;
+CGFloat const WPTableViewCellMarginPercentage = 0.2;
 
 @implementation WPTableViewCell
 
 - (void)setFrame:(CGRect)frame {
     // On iPad, add a margin around tables
     if (IS_IPAD) {
-        CGFloat inset = self.superview.frame.size.width * TableViewCellMarginPercentage;
+        CGFloat inset = ceilf(self.superview.frame.size.width * WPTableViewCellMarginPercentage);
         frame.origin.x = inset;
         frame.size.width = self.superview.frame.size.width - 2 * inset;
     }

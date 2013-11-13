@@ -8,6 +8,8 @@
 
 #import <UIKit/UIKit.h>
 
+extern CGFloat const WPTableViewCellMarginPercentage;
+
 @interface WPTableViewCell : UITableViewCell
 
 @end
