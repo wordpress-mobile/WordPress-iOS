@@ -18,6 +18,7 @@
 #import "ReaderButton.h"
 
 const CGFloat RPTVCVerticalPadding = 10.0f;
+const CGFloat RPTVCHorizontalPadding = 10.0f;
 const CGFloat RPTVCMetaViewHeightWithButtons = 101.0f;
 const CGFloat RPTVCMetaViewHeightSansButtons = 52.0f;
 
@@ -60,7 +61,7 @@ const CGFloat RPTVCMetaViewHeightSansButtons = 52.0f;
         contentWidth = contentWidth * (1 - WPTableViewCellMarginPercentage * 2);
     }
 
-	contentWidth -= 20.0f; // 10px cell padding (both sides)
+	contentWidth -= RPTVCHorizontalPadding * 2;
     
 	// Are we showing an image? What size should it be?
 	if(post.featuredImageURL) {
@@ -254,29 +255,30 @@ const CGFloat RPTVCMetaViewHeightSansButtons = 52.0f;
 - (void)layoutSubviews {
 	[super layoutSubviews];
     
-	CGFloat contentWidth = self.frame.size.width - 20;
+	CGFloat contentWidth = self.frame.size.width - RPTVCHorizontalPadding * 2;
+    CGFloat innerContentWidth = contentWidth - RPTVCHorizontalPadding * 2;
 	CGFloat vpadding = RPTVCVerticalPadding;
 	CGFloat nextY = vpadding;
 	CGFloat height = 0.0f;
     
-    CGRect frame = CGRectMake(10.0f, 0.0f, contentWidth, self.frame.size.height - 10);
+    CGRect frame = CGRectMake(RPTVCHorizontalPadding, 0.0f, contentWidth, self.frame.size.height - RPTVCVerticalPadding);
     _containerView.frame = frame;
 
 	// Are we showing an image? What size should it be?
 	if(_showImage) {
 		height = ceilf(contentWidth * 0.66f);
-		self.cellImageView.frame = CGRectMake(10.0f, nextY, contentWidth - 20, height);
+		self.cellImageView.frame = CGRectMake(RPTVCHorizontalPadding, nextY, innerContentWidth, height);
 		nextY += height;
     }
     
 	// Position the title
 	height = ceil([_titleLabel suggestedSizeForWidth:contentWidth].height);
-	_titleLabel.frame = CGRectMake(10.0f, nextY, contentWidth - 20, height);
+	_titleLabel.frame = CGRectMake(RPTVCHorizontalPadding, nextY, innerContentWidth, height);
 	nextY += height + vpadding;
 
 	// Position the snippet
 	height = ceil([_snippetLabel suggestedSizeForWidth:contentWidth].height);
-	_snippetLabel.frame = CGRectMake(10.0f, nextY, contentWidth - 20, height);
+	_snippetLabel.frame = CGRectMake(RPTVCHorizontalPadding, nextY, innerContentWidth, height);
 	nextY += ceilf(height + vpadding);
 
 	// position the meta view and its subviews
@@ -290,11 +292,9 @@ const CGFloat RPTVCMetaViewHeightSansButtons = 52.0f;
     _reblogButton.frame = CGRectMake(w + 1.0f, 53.0f, w - 1.f, 48.0f);
     _bylineLabel.frame = CGRectMake(47.0f, 8.0f, contentWidth - 57.0f, 36.0f);
     
-    _sideBorderView.frame = CGRectMake(9.f, 0.f, self.frame.size.width - 18.f, self.frame.size.height - 8.f);
-    
-    // Ensure container's height is accurate
-    frame.size.height = nextY + height;
-    _containerView.frame = frame;
+    CGFloat sideBorderX = RPTVCHorizontalPadding - 1; // Just to the left of the container
+    CGFloat sideBorderHeight = self.frame.size.height - RPTVCVerticalPadding + 1.f; // Just below it
+    _sideBorderView.frame = CGRectMake(sideBorderX, 1.f, self.frame.size.width - sideBorderX*2, sideBorderHeight);
 }
 
 - (void)prepareForReuse {
