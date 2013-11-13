@@ -15,6 +15,7 @@
 #import "UIImageView+Gravatar.h"
 #import "WPAccount.h"
 #import "SupportViewController.h"
+#import "WPStyleGuide.h"
 
 @interface AddUsersBlogsViewController() <CreateWPComBlogViewControllerDelegate>
 
@@ -193,6 +194,7 @@
         footerText.textAlignment = NSTextAlignmentCenter;
         footerText.backgroundColor = [UIColor clearColor];
         footerText.textColor = [UIColor darkGrayColor];
+        footerText.font = [WPStyleGuide regularTextFont];
         footerText.text = NSLocalizedString(@"Loading blogs...", @"");
         [footerView addSubview:footerText];
     }
@@ -201,6 +203,7 @@
             UILabel *footerText = [[UILabel alloc] initWithFrame:CGRectMake(110, 0, 200, 20)];
             footerText.backgroundColor = [UIColor clearColor];
             footerText.textColor = [UIColor darkGrayColor];
+            footerText.font = [WPStyleGuide regularTextFont];
             footerText.text = NSLocalizedString(@"No blogs found.", @"");
             [footerView addSubview:footerText];
         } else {
@@ -383,16 +386,39 @@
                         return [title1 localizedCaseInsensitiveCompare:title2];
                     }];
                     
-                    if(usersBlogs.count > 1) {
-                        [self hideNoBlogsView];
-                        [self.tableView reloadData];
-                    } else {
-                        [selectedBlogs removeAllObjects];
-                        for(NSDictionary *blog in usersBlogs) {
-                            [selectedBlogs addObject:[blog valueForKey:@"blogid"]];
+                    
+                    // remove blogs which have alreay been added
+                    NSFetchRequest *fetchRequest = [[NSFetchRequest alloc] init];
+                    NSManagedObjectContext *moc = [[WordPressAppDelegate sharedWordPressApplicationDelegate] managedObjectContext];
+                    [fetchRequest setEntity:[NSEntityDescription entityForName:@"Blog" inManagedObjectContext:moc]];
+                    [fetchRequest setSortDescriptors:[NSArray arrayWithObject:[NSSortDescriptor sortDescriptorWithKey:@"blogName" ascending:YES]]];
+                    
+                    NSArray *currentUserBlogs = [moc executeFetchRequest:fetchRequest error:nil];
+                    NSMutableSet *currentBlogIDs = [NSMutableSet new];
+                    for (Blog *blog in currentUserBlogs) {
+                        if ([blog.account isEqual:[WPAccount defaultWordPressComAccount]]) {
+                            [currentBlogIDs addObject:blog.blogID];
                         }
-                        [self saveSelectedBlogs];
                     }
+                    
+                    NSMutableArray *newBlogs = [NSMutableArray array];
+                    for(NSDictionary *blog in usersBlogs) {
+                        
+                        NSNumber *blogID = [(NSString *)[blog valueForKey:@"blogid"] numericValue];
+                        if (![currentBlogIDs containsObject:blogID]) {
+                            [newBlogs addObject:blog];
+                        }
+                    }
+                    usersBlogs = newBlogs;
+                    
+                    if(usersBlogs.count > 0) {
+                        [self hideNoBlogsView];
+                    } else {
+                        [self showNoBlogsView];
+                    }
+                    
+                    [self.tableView reloadData];
+
                 } else {
                     
                     // User blogs count == 0.  Prompt the user to create a blog.
@@ -437,10 +463,8 @@
         label.backgroundColor = [UIColor clearColor];
         label.numberOfLines = 0;
         label.lineBreakMode = NSLineBreakByWordWrapping;
-        label.font = [UIFont fontWithName:@"Georgia" size:16.0f];
-        label.shadowOffset = CGSizeMake(0.0f, 1.0f);
+        label.font = [WPStyleGuide regularTextFont];
         label.textColor = textColor;
-        label.shadowColor = [UIColor whiteColor];
         label.textAlignment = NSTextAlignmentCenter;
 
         if ([[WPAccount defaultWordPressComAccount] username]) {
@@ -449,7 +473,7 @@
             label.text = NSLocalizedString(@"You do not seem to have any blogs.", @"");
         }
 
-        label.frame = CGRectMake(0.0, 0.0, width, 38.0);
+        label.frame = CGRectMake(0.0, 0.0, width, 50.0);
         [self.noblogsView addSubview:label];
         
         if ([[WPAccount defaultWordPressComAccount] username]) {            
@@ -460,17 +484,28 @@
 
             UIButton *button = [UIButton buttonWithType:UIButtonTypeCustom];
             button.frame = CGRectMake(x, y, width, height);
-            button.titleLabel.font = [UIFont fontWithName:@"Helvetica-Bold" size:15.0];
-            [button setTitleColor:textColor forState:UIControlStateNormal];
-            [button setTitleShadowColor:[UIColor whiteColor] forState:UIControlStateNormal];
-            button.titleLabel.shadowOffset = CGSizeMake(0.0f, 1.0f);
-            [button setImage:[UIImage imageNamed:@"welcome_button_asterisk.png"] forState:UIControlStateNormal];
-            [button setContentEdgeInsets:UIEdgeInsetsMake(0.0f, 15.0f, 0.0f, 0.0f)];
-            [button setTitleEdgeInsets:UIEdgeInsetsMake(0.0f, 10.0f, 0.0f, 0.0f)];
-            [button setContentHorizontalAlignment:UIControlContentHorizontalAlignmentLeft];
-            [button setBackgroundImage:[UIImage imageNamed:@"welcome_button_bg_full"] forState:UIControlStateNormal];
-            [button setBackgroundImage:[UIImage imageNamed:@"welcome_button_bg_full_highlighted.png"] forState:UIControlStateHighlighted];
             [button setTitle:NSLocalizedString(@"Create WordPress.com Blog", @"") forState:UIControlStateNormal];
+            
+            if (IS_IOS7) {
+                
+                button.titleLabel.font = [WPStyleGuide postTitleFont];
+                [button setTitleColor:[WPStyleGuide newKidOnTheBlockBlue] forState:UIControlStateNormal];
+                [button setTitleColor:[[WPStyleGuide newKidOnTheBlockBlue] colorWithAlphaComponent:0.5] forState:UIControlStateHighlighted];
+                
+            } else {
+                
+                button.titleLabel.font = [UIFont fontWithName:@"Helvetica-Bold" size:15.0];
+                [button setTitleColor:textColor forState:UIControlStateNormal];
+                [button setTitleShadowColor:[UIColor whiteColor] forState:UIControlStateNormal];
+                button.titleLabel.shadowOffset = CGSizeMake(0.0f, 1.0f);
+                [button setImage:[UIImage imageNamed:@"welcome_button_asterisk.png"] forState:UIControlStateNormal];
+                [button setContentEdgeInsets:UIEdgeInsetsMake(0.0f, 15.0f, 0.0f, 0.0f)];
+                [button setTitleEdgeInsets:UIEdgeInsetsMake(0.0f, 10.0f, 0.0f, 0.0f)];
+                [button setContentHorizontalAlignment:UIControlContentHorizontalAlignmentLeft];
+                [button setBackgroundImage:[UIImage imageNamed:@"welcome_button_bg_full"] forState:UIControlStateNormal];
+                [button setBackgroundImage:[UIImage imageNamed:@"welcome_button_bg_full_highlighted.png"] forState:UIControlStateHighlighted];
+            }
+            
             [button addTarget:self action:@selector(handleCreateBlogTapped:) forControlEvents:UIControlEventTouchUpInside];
 
             [self.noblogsView addSubview:button];
