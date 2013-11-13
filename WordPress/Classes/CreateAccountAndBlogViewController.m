@@ -50,7 +50,6 @@
     WPWalkthroughTextField *_page2SiteLanguageText;
     UIImageView *_page2SiteLanguageDropdownImage;
     WPNUXPrimaryButton *_page2NextButton;
-    WPNUXPrimaryButton *_page2PreviousButton;
     
     // Page 3
     UIImageView *_page3Icon;
@@ -61,7 +60,6 @@
     UILabel *_page3SiteAddressLabel;
     UILabel *_page3SiteLanguageLabel;
     WPNUXPrimaryButton *_page3NextButton;
-    WPNUXPrimaryButton *_page3PreviousButton;
     UIImageView *_page3FirstLineSeparator;
     UIImageView *_page3SecondLineSeparator;
     UIImageView *_page3ThirdLineSeparator;
@@ -128,7 +126,6 @@ CGFloat const CreateAccountAndBlogKeyboardOffset = 132.0;
     [self addPage1Controls];
     [self addPage2Controls];
     [self addPage3Controls];
-    [self equalizePreviousAndNextButtonWidths];
     [self layoutPage1Controls];
     [self layoutPage2Controls];
     [self layoutPage3Controls];
@@ -281,6 +278,7 @@ CGFloat const CreateAccountAndBlogKeyboardOffset = 132.0;
     NSUInteger pageViewed = ceil(scrollView.contentOffset.x/_viewWidth) + 1;
     [self flagPageViewed:pageViewed];
     [self moveStickyControlsForContentOffset:scrollView.contentOffset];
+    [self updateCancelButton:scrollView.contentOffset];
 }
 
 #pragma mark - Private Methods
@@ -325,9 +323,7 @@ CGFloat const CreateAccountAndBlogKeyboardOffset = 132.0;
     // Add Cancel Button
     if (_cancelButton == nil) {
         _cancelButton = [[WPNUXBackButton alloc] init];
-        [_cancelButton setTitle:NSLocalizedString(@"Cancel", nil) forState:UIControlStateNormal];
         [_cancelButton addTarget:self action:@selector(clickedCancelButton) forControlEvents:UIControlEventTouchUpInside];
-        [_cancelButton sizeToFit];
         [_scrollView addSubview:_cancelButton];
     }
     
@@ -599,15 +595,6 @@ CGFloat const CreateAccountAndBlogKeyboardOffset = 132.0;
         [_page2NextButton sizeToFit];
         [_scrollView addSubview:_page2NextButton];
     }
-
-    // Add Previous Button
-    if (_page2PreviousButton == nil) {
-        _page2PreviousButton = [[WPNUXPrimaryButton alloc] init];
-        [_page2PreviousButton setTitle:NSLocalizedString(@"Previous", nil) forState:UIControlStateNormal];
-        [_page2PreviousButton addTarget:self action:@selector(clickedPage2PreviousButton) forControlEvents:UIControlEventTouchUpInside];
-        [_page2PreviousButton sizeToFit];
-        [_scrollView addSubview:_page2PreviousButton];
-    }
 }
 
 - (void)layoutPage2Controls
@@ -660,15 +647,10 @@ CGFloat const CreateAccountAndBlogKeyboardOffset = 132.0;
     x = CGRectGetMaxX(_page2SiteLanguageText.frame) - CGRectGetWidth(_page2SiteLanguageDropdownImage.frame) - CreateAccountAndBlogStandardOffset;
     y = CGRectGetMinY(_page2SiteLanguageText.frame) + (CGRectGetHeight(_page2SiteLanguageText.frame) - CGRectGetHeight(_page2SiteLanguageDropdownImage.frame))/2.0;
     _page2SiteLanguageDropdownImage.frame = CGRectIntegral(CGRectMake(x, y, CGRectGetWidth(_page2SiteLanguageDropdownImage.frame), CGRectGetHeight(_page2SiteLanguageDropdownImage.frame)));
-    
-    // Layout Previous Button
-    x = (_viewWidth - CGRectGetWidth(_page2PreviousButton.frame) - CGRectGetWidth(_page2NextButton.frame) - CreateAccountAndBlogStandardOffset)/2.0;
-    x = [self adjustX:x forPage:currentPage];
-    y = CGRectGetMaxY(_page2SiteLanguageText.frame) + CreateAccountAndBlogStandardOffset;
-    _page2PreviousButton.frame = CGRectIntegral(CGRectMake(x, y, CGRectGetWidth(_page2PreviousButton.frame), CGRectGetHeight(_page2PreviousButton.frame)));
-    
+
     // Layout Next Button
-    x = CGRectGetMaxX(_page2PreviousButton.frame) + CreateAccountAndBlogStandardOffset;
+    x = (_viewWidth - CGRectGetWidth(_page2NextButton.frame))/2.0;
+    x = [self adjustX:x forPage:currentPage];
     y = CGRectGetMaxY(_page2SiteLanguageText.frame) + CreateAccountAndBlogStandardOffset;
     _page2NextButton.frame = CGRectIntegral(CGRectMake(x, y, CGRectGetWidth(_page2NextButton.frame), CGRectGetHeight(_page2NextButton.frame)));
     
@@ -685,7 +667,7 @@ CGFloat const CreateAccountAndBlogKeyboardOffset = 132.0;
     y = CGRectGetMaxY(_page2NextButton.frame) + 0.5*CreateAccountAndBlogStandardOffset;
     _page2TOSLabel.frame = CGRectIntegral(CGRectMake(x, y, TOSLabelSize.width, TOSLabelSize.height));
     
-    NSArray *controls = @[_page2Icon, _page2Title, _page2SiteTitleText, _page2SiteAddressText, _page2SiteLanguageText, _page2SiteLanguageDropdownImage, _page2TOSLabel, _page2PreviousButton, _page2NextButton];
+    NSArray *controls = @[_page2Icon, _page2Title, _page2SiteTitleText, _page2SiteAddressText, _page2SiteLanguageText, _page2SiteLanguageDropdownImage, _page2TOSLabel, _page2NextButton];
     [WPNUXUtility centerViews:controls withStartingView:_page2Icon andEndingView:_page2TOSLabel forHeight:_viewHeight];
 }
 
@@ -816,15 +798,6 @@ CGFloat const CreateAccountAndBlogKeyboardOffset = 132.0;
         [_page3NextButton sizeToFit];
         [_scrollView addSubview:_page3NextButton];
     }
-    
-    // Add Previous Button
-    if (_page3PreviousButton == nil) {
-        _page3PreviousButton = [[WPNUXPrimaryButton alloc] init];
-        [_page3PreviousButton setTitle:NSLocalizedString(@"Previous", nil) forState:UIControlStateNormal];
-        [_page3PreviousButton addTarget:self action:@selector(clickedPage3PreviousButton) forControlEvents:UIControlEventTouchUpInside];
-        [_page3PreviousButton sizeToFit];
-        [_scrollView addSubview:_page3PreviousButton];
-    }
 }
 
 - (void)layoutPage3Controls
@@ -920,35 +893,14 @@ CGFloat const CreateAccountAndBlogKeyboardOffset = 132.0;
     y = CGRectGetMaxY(_page3SiteLanguageLabel.frame) + 0.5*CreateAccountAndBlogStandardOffset;
     _page3SixthLineSeparator.frame = CGRectMake(x, y, lineSeparatorWidth, lineSeparatorHeight);
     
-    // Layout Previous Button
-    x = (_viewWidth - CGRectGetWidth(_page3PreviousButton.frame) - CGRectGetWidth(_page3NextButton.frame) - CreateAccountAndBlogStandardOffset)/2.0;
-    x = [self adjustX:x forPage:currentPage];
-    y = CGRectGetMaxY(_page3SixthLineSeparator.frame) + CreateAccountAndBlogStandardOffset;
-    _page3PreviousButton.frame = CGRectIntegral(CGRectMake(x, y, CGRectGetWidth(_page3PreviousButton.frame), CGRectGetHeight(_page3NextButton.frame)));
-    
     // Layout Next Button
-    x = CGRectGetMaxX(_page3PreviousButton.frame) + CreateAccountAndBlogStandardOffset;
+    x = (_viewWidth - CGRectGetWidth(_page3NextButton.frame))/2.0;
+    x = [self adjustX:x forPage:currentPage];
     y = CGRectGetMaxY(_page3SixthLineSeparator.frame) + CreateAccountAndBlogStandardOffset;
     _page3NextButton.frame = CGRectIntegral(CGRectMake(x, y, CGRectGetWidth(_page3NextButton.frame), CGRectGetHeight(_page3NextButton.frame)));
     
-    NSArray *controls = @[_page3Icon, _page3Title, _page3FirstLineSeparator, _page3EmailLabel, _page3SecondLineSeparator, _page3UsernameLabel, _page3ThirdLineSeparator, _page3SiteTitleLabel, _page3FourthLineSeparator, _page3SiteAddressLabel, _page3FifthLineSeparator, _page3SiteLanguageLabel, _page3SixthLineSeparator, _page3PreviousButton, _page3NextButton];
+    NSArray *controls = @[_page3Icon, _page3Title, _page3FirstLineSeparator, _page3EmailLabel, _page3SecondLineSeparator, _page3UsernameLabel, _page3ThirdLineSeparator, _page3SiteTitleLabel, _page3FourthLineSeparator, _page3SiteAddressLabel, _page3FifthLineSeparator, _page3SiteLanguageLabel, _page3SixthLineSeparator, _page3NextButton];
     [WPNUXUtility centerViews:controls withStartingView:_page3Icon andEndingView:_page3NextButton forHeight:_viewHeight];
-}
-
-- (void)equalizePreviousAndNextButtonWidths
-{
-    // Ensure Buttons are same width as the sizeToFit command will generate slightly different widths and we want to make the
-    // all the previous/next buttons appear uniform.
-    
-    CGFloat nextButtonWidth = CGRectGetWidth(_page2NextButton.frame);
-    CGFloat previousButtonWidth = CGRectGetWidth(_page2PreviousButton.frame);
-    CGFloat biggerWidth = nextButtonWidth > previousButtonWidth ? nextButtonWidth : previousButtonWidth;
-    NSArray *controls = @[_page1NextButton, _page2PreviousButton, _page2NextButton, _page3PreviousButton, _page3NextButton];
-    for (UIControl *control in controls) {
-        CGRect frame = control.frame;
-        frame.size.width = biggerWidth;
-        control.frame = frame;
-    }
 }
 
 - (void)updatePage3Labels
@@ -972,8 +924,15 @@ CGFloat const CreateAccountAndBlogKeyboardOffset = 132.0;
 
 - (void)clickedCancelButton
 {
-    [WPMobileStats trackEventForSelfHostedAndWPCom:StatsEventNUXCreateAccountClickedCancel];
-    [self.navigationController popViewControllerAnimated:YES];
+    
+    if (_scrollView.contentOffset.x >= 2 * _scrollView.frame.size.width) {
+        [self clickedPage3PreviousButton];
+    } else if (_scrollView.contentOffset.x >= 1 * _scrollView.frame.size.width) {
+        [self clickedPage2PreviousButton];
+    } else {
+        [WPMobileStats trackEventForSelfHostedAndWPCom:StatsEventNUXCreateAccountClickedCancel];
+        [self.navigationController popViewControllerAnimated:YES];
+    }
 }
 
 - (void)moveToPage:(NSUInteger)page
@@ -992,7 +951,6 @@ CGFloat const CreateAccountAndBlogKeyboardOffset = 132.0;
     } else {
         BOOL clickedPage1Next = CGRectContainsPoint(_page1NextButton.frame, touchPoint) && _page1NextButton.enabled;
         BOOL clickedPage2Next = CGRectContainsPoint(_page2NextButton.frame, touchPoint) && _page2NextButton.enabled;
-        BOOL clickedPage2Previous = CGRectContainsPoint(_page2PreviousButton.frame, touchPoint);
 
         if (_keyboardVisible) {
             // When the keyboard is displayed, the normal button events don't fire off properly as
@@ -1002,9 +960,7 @@ CGFloat const CreateAccountAndBlogKeyboardOffset = 132.0;
                 [self clickedPage1NextButton];
             } else if(clickedPage2Next) {
                 [self clickedPage2NextButton];
-            } else if (clickedPage2Previous) {
-                [self clickedPage2PreviousButton];
-            }            
+            }
         }
         
         [self.view endEditing:YES];
@@ -1112,6 +1068,27 @@ CGFloat const CreateAccountAndBlogKeyboardOffset = 132.0;
     _currentPage = page;
 }
 
+- (void)updateCancelButton:(CGPoint)contentOffset {
+    
+    NSString *buttonTitle;
+    
+    if (contentOffset.x >= 2 * _scrollView.frame.size.width) {
+        
+        buttonTitle = NSLocalizedString(@"Back", nil);
+        
+    } else if (contentOffset.x >= 1 * _scrollView.frame.size.width) {
+        
+        buttonTitle = NSLocalizedString(@"Back", nil);
+        
+    } else {
+        
+        buttonTitle = NSLocalizedString(@"Cancel", nil);
+    }
+    
+    [_cancelButton setTitle:buttonTitle forState:UIControlStateNormal];
+    [_cancelButton sizeToFit];
+}
+
 - (void)moveStickyControlsForContentOffset:(CGPoint)contentOffset
 {
     if (contentOffset.x < 0)
@@ -1193,7 +1170,7 @@ CGFloat const CreateAccountAndBlogKeyboardOffset = 132.0;
     if (page == 1) {
         return @[_page1Title, _page1UsernameText, _page1EmailText, _page1PasswordText, _page1NextButton];
     } else if (page == 2) {
-        return @[_page2Title, _page2SiteTitleText, _page2SiteAddressText, _page2SiteLanguageText, _page2SiteLanguageDropdownImage, _page2NextButton, _page2PreviousButton];
+        return @[_page2Title, _page2SiteTitleText, _page2SiteAddressText, _page2SiteLanguageText, _page2SiteLanguageDropdownImage, _page2NextButton];
     } else {
         return nil;
     }
