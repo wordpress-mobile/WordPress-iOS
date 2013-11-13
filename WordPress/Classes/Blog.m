@@ -349,21 +349,23 @@
 #pragma mark -
 #pragma mark Synchronization
 
-- (NSArray *)syncedPostsWithEntityName:(NSString *)entityName withContext:(NSManagedObjectContext*)context {
-    NSFetchRequest *request = [[NSFetchRequest alloc] init];
-    [request setEntity:[NSEntityDescription entityForName:entityName inManagedObjectContext:context]];
-    NSPredicate *predicate = [NSPredicate predicateWithFormat:@"(remoteStatusNumber = %@) AND (postID != NULL) AND (original == NULL) AND (blog = %@)",
-							  [NSNumber numberWithInt:AbstractPostRemoteStatusSync], self]; 
-    [request setPredicate:predicate];
-    NSSortDescriptor *sortDescriptor = [[NSSortDescriptor alloc] initWithKey:@"date_created_gmt" ascending:YES];
-    [request setSortDescriptors:[NSArray arrayWithObject:sortDescriptor]];
-    
-    NSError *error = nil;
-    NSArray *array = [context executeFetchRequest:request error:&error];
-    if (array == nil) {
-        array = [NSArray array];
-    }
-    return array;
+- (NSUInteger)countForSyncedPostsWithEntityName:(NSString *)entityName {
+    __block NSUInteger count = 0;
+    [self.managedObjectContext performBlockAndWait:^{
+        NSFetchRequest *request = [[NSFetchRequest alloc] init];
+        [request setEntity:[NSEntityDescription entityForName:entityName inManagedObjectContext:self.managedObjectContext]];
+        NSPredicate *predicate = [NSPredicate predicateWithFormat:@"(remoteStatusNumber = %@) AND (postID != NULL) AND (original == NULL) AND (blog = %@)",
+                                  [NSNumber numberWithInt:AbstractPostRemoteStatusSync], self];
+        [request setPredicate:predicate];
+        NSSortDescriptor *sortDescriptor = [[NSSortDescriptor alloc] initWithKey:@"date_created_gmt" ascending:YES];
+        [request setSortDescriptors:[NSArray arrayWithObject:sortDescriptor]];
+        request.includesSubentities = NO;
+        request.resultType = NSCountResultType;
+        
+        NSError *error = nil;
+        count = [self.managedObjectContext countForFetchRequest:request error:&error];
+    }];
+    return count;
 }
 
 - (void)syncPostsWithSuccess:(void (^)())success failure:(void (^)(NSError *error))failure loadMore:(BOOL)more {
@@ -746,9 +748,9 @@
 }
 
 - (WPXMLRPCRequestOperation *)operationForPagesWithSuccess:(void (^)())success failure:(void (^)(NSError *error))failure loadMore:(BOOL)more {
-    int num;
-	
-    int syncCount = [[self syncedPostsWithEntityName:@"Page" withContext:self.managedObjectContext] count];
+    NSUInteger num = 0;
+    NSUInteger syncCount = [self countForSyncedPostsWithEntityName:@"Page"];
+    
     // Don't load more than 20 pages if we aren't at the end of the table,
     // even if they were previously donwloaded
     // 
