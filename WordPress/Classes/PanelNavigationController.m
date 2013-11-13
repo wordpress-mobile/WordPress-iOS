@@ -18,7 +18,6 @@
 #import "Constants.h"
 
 #define MENU_BUTTON_WIDTH 38.0f
-#import "SoundUtil.h"
 
 #pragma mark -
 
@@ -895,8 +894,6 @@ CGFloat const PanelNavigationControllerStatusBarViewHeight = 20.0;
 }
 
 - (void)showSidebarAnimated:(BOOL)animated {
-    [SoundUtil playSwipeSound];
-    
     [[NSNotificationCenter defaultCenter] postNotificationName:SidebarOpenedNotification object:nil];
 
     [UIView animateWithDuration:OPEN_SLIDE_DURATION(animated) delay:0 options:0 | UIViewAnimationOptionLayoutSubviews | UIViewAnimationOptionBeginFromCurrentState animations:^{
@@ -916,8 +913,6 @@ CGFloat const PanelNavigationControllerStatusBarViewHeight = 20.0;
 }
 
 - (void)showSidebarWithVelocity:(CGFloat)velocity {
-    [SoundUtil playSwipeSound];
-
     [[NSNotificationCenter defaultCenter] postNotificationName:SidebarOpenedNotification object:nil];
     
     [self disableDetailView];
@@ -944,20 +939,12 @@ CGFloat const PanelNavigationControllerStatusBarViewHeight = 20.0;
         // posts editor, we won't have a blue bar sitting at the top.
         self.statusBarBackgroundView.backgroundColor = [UIColor clearColor];
     }];
-    
-    if(IS_IPHONE && !self.presentedViewController) {
-        [SoundUtil playSwipeSound];
-    }
 }
 
 - (void)closeSidebarWithVelocity:(CGFloat)velocity {
     _panned = NO;
     [self enableDetailView];
     [self setStackOffset:(DETAIL_LEDGE_OFFSET - DETAIL_OFFSET) withVelocity:velocity];
-    
-    if(IS_IPHONE) {
-        [SoundUtil playSwipeSound];
-    }
 }
 
 - (void)toggleSidebar {

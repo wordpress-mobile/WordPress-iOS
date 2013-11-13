@@ -9,7 +9,6 @@
 #import "WPWebAppViewController.h"
 #import "WordPressAppDelegate.h"
 #import "ReachabilityUtils.h"
-#import "SoundUtil.h"
 
 @implementation WPWebAppViewController {
     BOOL _pullToRefreshEnabled;
@@ -134,19 +133,8 @@
     CGPoint newValue = [[change objectForKey:NSKeyValueChangeNewKey] CGPointValue];
     CGPoint oldValue = [[change objectForKey:NSKeyValueChangeOldKey] CGPointValue];
     
-    if (newValue.y > oldValue.y && newValue.y > -65.0f) {
-        didPlayPullSound = NO;
-    }
-    
-    if(newValue.y == oldValue.y) return;
-    
-    if(newValue.y <= -65.0f && newValue.y < oldValue.y && ![self.webView isLoading] && !didPlayPullSound  && !didTriggerRefresh) {
-        DDLogVerbose(@"Play Pull Sound:  %f, %f, %i, %i", newValue.y, oldValue.y, [self.webView isLoading], didPlayPullSound);
-
-        // triggered
-        [SoundUtil playPullSound];
-        didPlayPullSound = YES;
-    }
+    if(newValue.y == oldValue.y)
+        return;
 }
 
 #pragma mark - Hybrid Helper Methods
@@ -239,9 +227,6 @@
 {
     self.lastWebViewRefreshDate = [NSDate date];
     [_refreshHeaderView egoRefreshScrollViewDataSourceDidFinishedLoading:(UIScrollView * )_refreshHeaderView.superview];
-    if([self isViewLoaded] && self.view.window && didTriggerRefresh){
-        [SoundUtil playRollupSound];
-    }
     didTriggerRefresh = NO;
 }
 
@@ -290,9 +275,6 @@
 - (void)hideRefreshingState {
     self.lastWebViewRefreshDate = [NSDate date];
     [_refreshHeaderView egoRefreshScrollViewDataSourceDidFinishedLoading:self.scrollView];
-    if([self isViewLoaded] && self.view.window && didTriggerRefresh){
-        [SoundUtil playRollupSound];
-    }
     didTriggerRefresh = NO;
 }
 

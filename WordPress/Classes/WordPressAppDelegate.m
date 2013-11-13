@@ -19,7 +19,6 @@
 #import "PostsViewController.h"
 #import "CommentsViewController.h"
 #import "StatsWebViewController.h"
-#import "SoundUtil.h"
 #import "WordPressComApiCredentials.h"
 #import "PocketAPI.h"
 #import "WPMobileStats.h"
@@ -1182,7 +1181,6 @@ int ddLogLevel = LOG_LEVEL_INFO;
         case UIApplicationStateActive:
             [[WordPressComApi sharedApi] checkForNewUnseenNotifications];
             [[WordPressComApi sharedApi] syncPushNotificationInfo];
-            [SoundUtil playNotificationSound];
             break;
             
         case UIApplicationStateInactive:

@@ -13,7 +13,6 @@
 #import "EditSiteViewController.h"
 #import "ReachabilityUtils.h"
 #import "WPWebViewController.h"
-#import "SoundUtil.h"
 #import "WPInfoView.h"
 #import "SupportViewController.h"
 
@@ -53,7 +52,6 @@ NSTimeInterval const WPTableViewControllerRefreshTimeout = 300; // 5 minutes
     BOOL didPromptForCredentials;
     BOOL _isSyncing;
     BOOL _isLoadingMore;
-    BOOL didPlayPullSound;
     BOOL didTriggerRefresh;
     CGPoint savedScrollOffset;
 }
@@ -191,18 +189,8 @@ NSTimeInterval const WPTableViewControllerRefreshTimeout = 300; // 5 minutes
     CGPoint newValue = [[change objectForKey:NSKeyValueChangeNewKey] CGPointValue];
     CGPoint oldValue = [[change objectForKey:NSKeyValueChangeOldKey] CGPointValue];
     
-    if (newValue.y > oldValue.y && newValue.y > -65.0f) {
-        didPlayPullSound = NO;
-    }
-    
-    if(newValue.y == oldValue.y) return;
-
-    if(newValue.y <= -65.0f && newValue.y < oldValue.y && ![self isSyncing] && !didPlayPullSound && !didTriggerRefresh) {
-        // triggered
-        [SoundUtil playPullSound];
-        didPlayPullSound = YES;
-    }
-    
+    if(newValue.y == oldValue.y)
+        return;
 }
 
 - (UIColor *)backgroundColorForRefreshHeaderView
@@ -632,9 +620,6 @@ NSTimeInterval const WPTableViewControllerRefreshTimeout = 300; // 5 minutes
 
 - (void)hideRefreshHeader {
     [_refreshHeaderView egoRefreshScrollViewDataSourceDidFinishedLoading:self.tableView];
-    if ([self isViewLoaded] && self.tableView.window && didTriggerRefresh) {
-        [SoundUtil playRollupSound];
-    }
     didTriggerRefresh = NO;
 }
 
