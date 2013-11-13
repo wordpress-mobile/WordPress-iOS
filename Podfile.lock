@@ -1,6 +1,8 @@
 PODS:
   - AFNetworking (1.2.0)
   - CocoaLumberjack (1.6.2)
+  - CrashlyticsLumberjack (1.0.0):
+    - CocoaLumberjack
   - CTidy (0.3.0)
   - DTCoreText (1.6.5):
     - DTFoundation/Core (~> 1.5.1)
@@ -36,6 +38,7 @@ PODS:
 DEPENDENCIES:
   - AFNetworking (= 1.2.0)
   - CocoaLumberjack (~> 1.6.2)
+  - CrashlyticsLumberjack (~> 1.0.0)
   - CTidy (from `git://github.com/wordpress-mobile/CTidy.git`)
   - DTCoreText (= 1.6.5)
   - google-plus-ios-sdk (= 1.3.0)
@@ -68,6 +71,7 @@ EXTERNAL SOURCES:
 SPEC CHECKSUMS:
   AFNetworking: 3cbae45f61a9f995cdbd56bd571223910d7f4e44
   CocoaLumberjack: 2619775f386bbec1e870eddb5040f870c68726b1
+  CrashlyticsLumberjack: 3a1647407e3c980545175e7a56d073c58beeab03
   CTidy: 6a35875a96dd441822e620732c1113be19769067
   DTCoreText: 8798221d6da3bc079be24e808f152910c6f5e264
   DTFoundation: 86e59f373c7a9b9f859f8a9c1debf072979eebec

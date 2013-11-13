@@ -24,6 +24,12 @@
 #define COCOAPODS_VERSION_MINOR_CocoaLumberjack 6
 #define COCOAPODS_VERSION_PATCH_CocoaLumberjack 2
 
+// CrashlyticsLumberjack
+#define COCOAPODS_POD_AVAILABLE_CrashlyticsLumberjack
+#define COCOAPODS_VERSION_MAJOR_CrashlyticsLumberjack 1
+#define COCOAPODS_VERSION_MINOR_CrashlyticsLumberjack 0
+#define COCOAPODS_VERSION_PATCH_CrashlyticsLumberjack 0
+
 // DTCoreText
 #define COCOAPODS_POD_AVAILABLE_DTCoreText
 #define COCOAPODS_VERSION_MAJOR_DTCoreText 1
