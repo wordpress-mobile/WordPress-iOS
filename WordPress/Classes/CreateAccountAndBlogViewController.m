@@ -155,7 +155,7 @@ CGFloat const CreateAccountAndBlogKeyboardOffset = 132.0;
         // happens the sticky controls on the top won't be in the correct place, so in order to set them up we
         // 'page' to the current content offset in the _scrollView to ensure that the cancel button and help button
         // are in the correct place6
-        [self moveStickyControlsForContentOffset:CGPointMake(_scrollView.contentOffset.x, 0)];
+        [self moveStickyControlsForContentOffset:_scrollView.contentOffset];
     }
     
     _hasViewAppeared = YES;
@@ -424,13 +424,13 @@ CGFloat const CreateAccountAndBlogKeyboardOffset = 132.0;
     
     // Layout Help Button
     UIImage *helpButtonImage = [UIImage imageNamed:@"btn-help"];
-    x = _viewWidth - helpButtonImage.size.width;
-    y = [self topButtonYOrigin];
+    x = _viewWidth - helpButtonImage.size.width - CreateAccountAndBlogStandardOffset;
+    y = CreateAccountAndBlogStandardOffset;
     _helpButton.frame = CGRectMake(x, y, helpButtonImage.size.width, helpButtonImage.size.height);
     
     // Layout Cancel Button
     x = 0;
-    y = [self topButtonYOrigin];
+    y = CreateAccountAndBlogStandardOffset;
     _cancelButton.frame = CGRectMake(x, y, CGRectGetWidth(_cancelButton.frame), CGRectGetHeight(_cancelButton.frame));
         
     // Layout the controls starting out from y of 0, then offset them once the height of the controls
@@ -488,6 +488,8 @@ CGFloat const CreateAccountAndBlogKeyboardOffset = 132.0;
     
     NSArray *controls = @[_page1Icon, _page1Title, _page1EmailText, _page1UsernameText, _page1PasswordText, _page1TOSLabel, _page1NextButton];
     [WPNUXUtility centerViews:controls withStartingView:_page1Icon andEndingView:_page1TOSLabel forHeight:_viewHeight];
+    
+    [self savePositionsOfStickyControls];
 }
 
 - (void)addPage2Controls
@@ -1093,10 +1095,10 @@ CGFloat const CreateAccountAndBlogKeyboardOffset = 132.0;
     
     if ([self respondsToSelector:@selector(topLayoutGuide)])
     {
-        return [[self topLayoutGuide] length];
+        return [[self topLayoutGuide] length] + 0.5 * CreateAccountAndBlogStandardOffset;
     } else
     {
-        return 0;
+        return CreateAccountAndBlogStandardOffset;
     }
 }
 
