@@ -60,9 +60,12 @@ const CGFloat RPTVCMetaViewHeightSansButtons = 52.0f;
     if (IS_IPAD) {
         contentWidth = contentWidth * (1 - WPTableViewCellMarginPercentage * 2);
     }
-
-	contentWidth -= RPTVCHorizontalPadding * 2;
     
+    // iPhone has extra padding around each cell
+    if (IS_IPHONE) {
+        contentWidth -= RPTVCHorizontalPadding * 2;
+    }
+
 	// Are we showing an image? What size should it be?
 	if(post.featuredImageURL) {
 		CGFloat height = ceilf((contentWidth * 0.66f));
@@ -255,13 +258,14 @@ const CGFloat RPTVCMetaViewHeightSansButtons = 52.0f;
 - (void)layoutSubviews {
 	[super layoutSubviews];
     
-	CGFloat contentWidth = self.frame.size.width - RPTVCHorizontalPadding * 2;
+    CGFloat leftPadding = IS_IPHONE ? RPTVCHorizontalPadding : 0;
+	CGFloat contentWidth = self.frame.size.width - leftPadding * 2;
     CGFloat innerContentWidth = contentWidth - RPTVCHorizontalPadding * 2;
 	CGFloat vpadding = RPTVCVerticalPadding;
 	CGFloat nextY = vpadding;
 	CGFloat height = 0.0f;
     
-    CGRect frame = CGRectMake(RPTVCHorizontalPadding, 0.0f, contentWidth, self.frame.size.height - RPTVCVerticalPadding);
+    CGRect frame = CGRectMake(leftPadding, 0.0f, contentWidth, self.frame.size.height - RPTVCVerticalPadding);
     _containerView.frame = frame;
 
 	// Are we showing an image? What size should it be?
