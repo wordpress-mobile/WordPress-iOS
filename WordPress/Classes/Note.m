@@ -51,19 +51,15 @@ const NSUInteger NoteKeepCount = 20;
 @synthesize commentText = _commentText, noteData = _noteData;
 
 
-+ (BOOL)syncNotesWithResponse:(NSArray *)notesData withManagedObjectContext:(NSManagedObjectContext *)context {
-    
-    [notesData enumerateObjectsUsingBlock:^(id noteData, NSUInteger idx, BOOL *stop) {
-        [self createOrUpdateNoteWithData:noteData withManagedObjectContext:context];
++ (void)syncNotesWithResponse:(NSArray *)notesData {
+    NSManagedObjectContext *context = [[ContextManager sharedInstance] backgroundContext];
+    [context performBlock:^{
+        [notesData enumerateObjectsUsingBlock:^(id noteData, NSUInteger idx, BOOL *stop) {
+            [self createOrUpdateNoteWithData:noteData withManagedObjectContext:context];
+        }];
+        
+        [[ContextManager sharedInstance] saveBackgroundContext];
     }];
-    
-    NSError *error;
-    if(![context save:&error]){
-        DDLogError(@"Failed to sync notes: %@", error);
-        return NO;
-    } else {
-        return YES;
-    }
 }
 
 + (void)refreshUnreadNotesWithContext:(NSManagedObjectContext *)context {
@@ -148,9 +144,8 @@ const NSUInteger NoteKeepCount = 20;
 }
 
 + (void)createOrUpdateNoteWithData:(NSDictionary *)noteData withManagedObjectContext:(NSManagedObjectContext *)context {
-    
     WPAccount *account = (WPAccount *)[context objectWithID:[WPAccount defaultWordPressComAccount].objectID];
-    
+
     NSFetchRequest *request = [NSFetchRequest fetchRequestWithEntityName:@"Note"];
     request.predicate = [NSPredicate predicateWithFormat:@"noteID = %@", [noteData objectForKey:@"id"]];
     request.sortDescriptors = @[[NSSortDescriptor sortDescriptorWithKey:@"timestamp" ascending:NO]];
@@ -174,7 +169,6 @@ const NSUInteger NoteKeepCount = 20;
     }
     
     [note syncAttributes:noteData];
-
 }
 
 - (void)syncAttributes:(NSDictionary *)noteData {

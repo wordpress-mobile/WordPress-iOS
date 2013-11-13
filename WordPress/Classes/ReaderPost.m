@@ -113,7 +113,7 @@ NSString *const ReaderExtrasArrayKey = @"ReaderExtrasArrayKey";
         return;
     }
     
-    NSManagedObjectContext *backgroundMOC = [[ContextManager sharedInstance] newDerivedContext];
+    NSManagedObjectContext *backgroundMOC = [[ContextManager sharedInstance] backgroundContext];
     [backgroundMOC performBlock:^{
         for (NSDictionary *postData in arr) {
             if (![postData isKindOfClass:[NSDictionary class]]) {
@@ -122,14 +122,17 @@ NSString *const ReaderExtrasArrayKey = @"ReaderExtrasArrayKey";
             [self createOrUpdateWithDictionary:postData forEndpoint:endpoint withContext:backgroundMOC];
         }
         
-        [[ContextManager sharedInstance] saveDerivedContext:backgroundMOC withCompletionBlock:success];
+        [[ContextManager sharedInstance] saveBackgroundContext];
+        if (success) {
+            dispatch_async(dispatch_get_main_queue(), success);
+        }
     }];
 }
 
 
 + (void)deletePostsSyncedEarlierThan:(NSDate *)syncedDate {
     WPFLogMethod();
-    NSManagedObjectContext *context = [[ContextManager sharedInstance] newDerivedContext];
+    NSManagedObjectContext *context = [[ContextManager sharedInstance] backgroundContext];
     [context performBlock:^{
         NSFetchRequest *request = [[NSFetchRequest alloc] init];
         [request setEntity:[NSEntityDescription entityForName:@"ReaderPost" inManagedObjectContext:context]];
@@ -146,7 +149,7 @@ NSString *const ReaderExtrasArrayKey = @"ReaderExtrasArrayKey";
                 [context deleteObject:post];
             }
         }
-        [[ContextManager sharedInstance] saveDerivedContext:context];
+        [[ContextManager sharedInstance] saveBackgroundContext];
     }];
 }
 

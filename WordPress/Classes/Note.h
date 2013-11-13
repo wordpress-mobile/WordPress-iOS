@@ -33,7 +33,7 @@
 - (void)updateAttributes:(NSDictionary *)data;
 - (NSDictionary *)getNoteData;
 
-+ (BOOL)syncNotesWithResponse:(NSArray *)notesData withManagedObjectContext:(NSManagedObjectContext *)context;
++ (void)syncNotesWithResponse:(NSArray *)notesData;
 + (void)refreshUnreadNotesWithContext:(NSManagedObjectContext *)context;
 
 /**

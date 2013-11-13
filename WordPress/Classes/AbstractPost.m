@@ -72,13 +72,12 @@
 }
 
 + (void)mergeNewPosts:(NSArray *)newObjects forBlog:(Blog *)blog {
-    NSManagedObjectContext *derived = [[ContextManager sharedInstance] newDerivedContext];
-    
-    [derived performBlock:^{
+    NSManagedObjectContext *backgroundContext = [[ContextManager sharedInstance] backgroundContext];
+    [backgroundContext performBlock:^{
         NSMutableArray *objectsToKeep = [NSMutableArray array];
-        Blog *contextBlog = (Blog *)[derived existingObjectWithID:blog.objectID error:nil];
+        Blog *contextBlog = (Blog *)[backgroundContext existingObjectWithID:blog.objectID error:nil];
         
-        NSArray *existingObjects = [self existingPostsForBlog:contextBlog inContext:derived];
+        NSArray *existingObjects = [self existingPostsForBlog:contextBlog inContext:backgroundContext];
         for (NSDictionary *newPost in newObjects) {
             NSNumber *postID = [[newPost objectForKey:[self remoteUniqueIdentifier]] numericValue];
             AbstractPost *post;
@@ -116,13 +115,12 @@
                     }
                 } else {
                     DDLogInfo(@"Deleting %@: %@", NSStringFromClass(self), post);
-                    [derived deleteObject:post];
+                    [backgroundContext deleteObject:post];
                 }
             }
         }
         
-        [[ContextManager sharedInstance] saveDerivedContext:derived];
-        
+        [[ContextManager sharedInstance] saveBackgroundContext];
     }];
 }
 

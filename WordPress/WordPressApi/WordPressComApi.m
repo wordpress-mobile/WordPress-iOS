@@ -643,9 +643,7 @@ NSString *const WordPressComApiErrorMessageKey = @"WordPressComApiErrorMessageKe
     // TODO: Check for unread notifications and notify with the number of unread notifications
 
     [self getPath:@"notifications/" parameters:requestParameters success:^(AFHTTPRequestOperation *operation, id responseObject){
-        // save the notes
-        NSManagedObjectContext *context = [[ContextManager sharedInstance] newDerivedContext];
-        [Note syncNotesWithResponse:[responseObject objectForKey:@"notes"] withManagedObjectContext:context];
+        [Note syncNotesWithResponse:[responseObject objectForKey:@"notes"]];
         if (success != nil ) success( operation, responseObject );
         
     } failure:^(AFHTTPRequestOperation *operation, NSError *error) {

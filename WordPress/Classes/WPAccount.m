@@ -80,11 +80,11 @@ NSString * const WPAccountDefaultWordPressComAccountChangedNotification = @"WPAc
 
 + (void)removeDefaultWordPressComAccount {
     WPAccount *defaultAccount = __defaultDotcomAccount;
-    NSManagedObjectContext *derived = [[ContextManager sharedInstance] newDerivedContext];
+    NSManagedObjectContext *derived = [[ContextManager sharedInstance] backgroundContext];
     [derived performBlock:^{
         WPAccount *account = (WPAccount *)[derived objectWithID:defaultAccount.objectID];
         [derived deleteObject:account];
-        [[ContextManager sharedInstance] saveDerivedContext:derived];
+        [[ContextManager sharedInstance] saveBackgroundContext];
     }];
     __defaultDotcomAccount = nil;
 }
@@ -116,7 +116,7 @@ NSString * const WPAccountDefaultWordPressComAccountChangedNotification = @"WPAc
     [request setIncludesPendingChanges:YES];
     
     __block WPAccount *account;
-    NSManagedObjectContext *context = [[ContextManager sharedInstance] newDerivedContext];
+    NSManagedObjectContext *context = [[ContextManager sharedInstance] backgroundContext];
     [context performBlockAndWait:^{
         NSArray *results = [context executeFetchRequest:request error:nil];
         if ([results count] > 0) {
@@ -128,7 +128,7 @@ NSString * const WPAccountDefaultWordPressComAccountChangedNotification = @"WPAc
         }
         account.password = password;
         
-        [[ContextManager sharedInstance] saveDerivedContext:context];
+        [[ContextManager sharedInstance] saveBackgroundContext];
     }];
     return account;
 }

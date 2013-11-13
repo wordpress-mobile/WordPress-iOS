@@ -535,8 +535,7 @@
 - (void)saveSelectedBlogs {
     [[NSUserDefaults standardUserDefaults] setBool:YES forKey:@"refreshCommentsRequired"];
 	
-    NSManagedObjectContext *backgroundMOC = [[ContextManager sharedInstance] newDerivedContext];
-    
+    NSManagedObjectContext *backgroundMOC = [[ContextManager sharedInstance] backgroundContext];
     [backgroundMOC performBlock:^{
         for (NSDictionary *blog in usersBlogs) {
             if([selectedBlogs containsObject:[blog valueForKey:@"blogid"]]) {
@@ -544,7 +543,7 @@
             }
         }
         
-        [[ContextManager sharedInstance] saveDerivedContext:backgroundMOC];
+        [[ContextManager sharedInstance] saveBackgroundContext];
         
         dispatch_async(dispatch_get_main_queue(), ^{
             [self.navigationController popToRootViewControllerAnimated:YES];

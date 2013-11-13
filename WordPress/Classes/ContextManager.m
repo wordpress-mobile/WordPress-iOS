@@ -53,9 +53,9 @@ static ContextManager *instance;
     }
     
     _mainContext = [[NSManagedObjectContext alloc] initWithConcurrencyType:NSMainQueueConcurrencyType];
-    _mainContext.parentContext = self.backgroundContext;
+    _mainContext.persistentStoreCoordinator = [self persistentStoreCoordinator];
     
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(saveBackingStore) name:NSManagedObjectContextDidSaveNotification object:_mainContext];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(mergeChangesIntoBackgroundContext:) name:NSManagedObjectContextDidSaveNotification object:_mainContext];
     
     return _mainContext;
 }
@@ -68,18 +68,22 @@ static ContextManager *instance;
     _backgroundContext.persistentStoreCoordinator = [self persistentStoreCoordinator];
     _backgroundContext.mergePolicy = NSMergeByPropertyObjectTrumpMergePolicy;
     
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(mergeChangesToMainContext:) name:NSManagedObjectContextDidSaveNotification object:_backgroundContext];
+    
     return _backgroundContext;
 }
 
-- (void)saveBackingStore {
+- (void)mergeChangesToMainContext:(NSNotification *)notification {
+    [self.mainContext performBlock:^{
+        DDLogVerbose(@"Merging changes into main context");
+        [self.mainContext mergeChangesFromContextDidSaveNotification:notification];
+    }];
+}
+
+- (void)mergeChangesIntoBackgroundContext:(NSNotification *)notification {
     [self.backgroundContext performBlock:^{
-        DDLogInfo(@"Saving the background writer context -- persisting.");
-        NSError *error;
-        if (![self.backgroundContext save:&error]) {
-            @throw [NSException exceptionWithName:@"Unresolved Core Data Save Error"
-                                           reason:@"Unresolved Core Data Save Error"
-                                         userInfo:[error userInfo]];
-        }
+        DDLogVerbose(@"Merging changes into background context");
+        [self.backgroundContext mergeChangesFromContextDidSaveNotification:notification];
     }];
 }
 
@@ -91,13 +95,10 @@ static ContextManager *instance;
 
 - (void)saveDerivedContext:(NSManagedObjectContext *)context withCompletionBlock:(void (^)())completionBlock {
     [context performBlock:^{
-        __block NSError *error;
-        
-        DDLogInfo(@"Saving a derived context %@", context);
-        [context obtainPermanentIDsForObjects:context.insertedObjects.allObjects error:nil];
+        NSError *error;
         if (![context save:&error]) {
-            @throw [NSException exceptionWithName:@"Unresolved Core Data Save Error"
-                                           reason:@"Unresolved Core Data Save Error"
+            @throw [NSException exceptionWithName:@"Unresolved Core Data save error"
+                                           reason:@"Unresolved Core Data save error - derived context"
                                          userInfo:[error userInfo]];
         }
         
@@ -105,14 +106,29 @@ static ContextManager *instance;
             dispatch_async(dispatch_get_main_queue(), completionBlock);
         }
         
-        [self.mainContext performBlock:^{
-            DDLogInfo(@"Save main context");
-            if (![self.mainContext save:&error]) {
-                @throw [NSException exceptionWithName:@"Unresolved Core Data Save Error"
-                                               reason:@"Unresolved Core Data Save Error"
-                                             userInfo:[error userInfo]];
-            }
-        }];
+        [self saveMainContext];
+    }];
+}
+
+- (void)saveBackgroundContext {
+    [self.backgroundContext performBlock:^{
+        NSError *error;
+        if (![self.backgroundContext save:&error]) {
+            @throw [NSException exceptionWithName:@"Unresolved Core Data save error"
+                                           reason:@"Unresolved Core Data save error"
+                                         userInfo:[error userInfo]];
+        }
+    }];
+}
+
+- (void)saveMainContext {
+    [self.mainContext performBlock:^{
+        NSError *error;
+        if (![self.mainContext save:&error]) {
+            @throw [NSException exceptionWithName:@"Unresolved Core Data save error"
+                                           reason:@"Unresolved Core Data save error"
+                                         userInfo:[error userInfo]];
+        }
     }];
 }
 
