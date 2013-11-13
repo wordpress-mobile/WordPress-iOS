@@ -204,6 +204,7 @@ int ddLogLevel = LOG_LEVEL_INFO;
 
 - (UITabBarController *)createTabBarController {
     UITabBarController *tabBarController = [[UITabBarController alloc] init];
+    tabBarController.tabBar.translucent = NO;
     
     ReaderPostsViewController *readerPostsViewController = [[ReaderPostsViewController alloc] init];
     UINavigationController *readerNavigationController = [[UINavigationController alloc] initWithRootViewController:readerPostsViewController];

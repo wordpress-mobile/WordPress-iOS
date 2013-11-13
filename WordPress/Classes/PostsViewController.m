@@ -255,7 +255,7 @@
     EditPostViewController *editPostViewController = [[EditPostViewController alloc] initWithPost:[apost createRevision]];
     UINavigationController *navController = [[UINavigationController alloc] initWithRootViewController:editPostViewController];
     navController.modalPresentationStyle = UIModalPresentationCurrentContext;
-    [self.navigationController presentViewController:navController animated:YES completion:nil];
+    [self.view.window.rootViewController presentViewController:navController animated:YES completion:nil];
 }
 
 // For iPad
