@@ -236,6 +236,9 @@ NSString *const WPReaderViewControllerDisplayedNativeFriendFinder = @"DisplayedN
 }
 
 - (void)configureTableHeader {
+    if (IS_IPAD)
+        return;
+    
 	if ([self.resultsController.fetchedObjects count] == 0) {
 		self.tableView.tableHeaderView = nil;
 		return;
