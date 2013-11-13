@@ -338,13 +338,9 @@ CGFloat const CreateAccountAndBlogKeyboardOffset = 132.0;
     // Add Title
     if (_page1Title == nil) {
         _page1Title = [[UILabel alloc] init];
-        _page1Title.textAlignment = NSTextAlignmentCenter;
-        _page1Title.text = NSLocalizedString(@"Create an account on WordPress.com", @"NUX Create Account Page 1 Title");
+        _page1Title.attributedText = [WPNUXUtility titleAttributedString:NSLocalizedString(@"Create an account on WordPress.com", @"NUX Create Account Page 1 Title")];
         _page1Title.numberOfLines = 0;
         _page1Title.backgroundColor = [UIColor clearColor];
-        _page1Title.font = [WPNUXUtility titleFont];
-        _page1Title.textColor = [UIColor whiteColor];
-        _page1Title.lineBreakMode = NSLineBreakByWordWrapping;
         [_scrollView addSubview:_page1Title];
     }
     
@@ -504,13 +500,9 @@ CGFloat const CreateAccountAndBlogKeyboardOffset = 132.0;
     // Add Title
     if (_page2Title == nil) {
         _page2Title = [[UILabel alloc] init];
-        _page2Title.textAlignment = NSTextAlignmentCenter;
-        _page2Title.text = NSLocalizedString(@"Create your first WordPress.com site", @"NUX Create Account Page 2 Title");
+        _page2Title.attributedText = [WPNUXUtility titleAttributedString:NSLocalizedString(@"Create your first WordPress.com site", @"NUX Create Account Page 2 Title")];
         _page2Title.numberOfLines = 0;
         _page2Title.backgroundColor = [UIColor clearColor];
-        _page2Title.font = [WPNUXUtility titleFont];
-        _page2Title.textColor = [UIColor whiteColor];
-        _page2Title.lineBreakMode = NSLineBreakByWordWrapping;
         [_scrollView addSubview:_page2Title];
     }
     
@@ -705,13 +697,9 @@ CGFloat const CreateAccountAndBlogKeyboardOffset = 132.0;
     // Add Title
     if (_page3Title == nil) {
         _page3Title = [[UILabel alloc] init];
-        _page3Title.textAlignment = NSTextAlignmentCenter;
-        _page3Title.text = NSLocalizedString(@"Review your information", @"NUX Create Account Page 3 Title");
+        _page3Title.attributedText = [WPNUXUtility titleAttributedString:NSLocalizedString(@"Review your information", @"NUX Create Account Page 3 Title")];
         _page3Title.numberOfLines = 0;
         _page3Title.backgroundColor = [UIColor clearColor];
-        _page3Title.font = [WPNUXUtility titleFont];
-        _page3Title.textColor = [UIColor whiteColor];
-        _page3Title.lineBreakMode = NSLineBreakByWordWrapping;
         [_scrollView addSubview:_page3Title];
     }
 

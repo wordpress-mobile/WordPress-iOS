@@ -443,12 +443,8 @@ CGFloat const GeneralWalkthroughiOS7StatusBarOffset = 20.0;
     if (_page1Title == nil) {
         _page1Title = [[UILabel alloc] init];
         _page1Title.backgroundColor = [UIColor clearColor];
-        _page1Title.textAlignment = NSTextAlignmentCenter;
         _page1Title.numberOfLines = 0;
-        _page1Title.lineBreakMode = NSLineBreakByWordWrapping;
-        _page1Title.font = [WPNUXUtility titleFont];        
-        _page1Title.text = NSLocalizedString(@"Welcome to WordPress", @"NUX First Walkthrough Page 1 Title");
-        _page1Title.textColor = [UIColor whiteColor];
+        _page1Title.attributedText = [WPNUXUtility titleAttributedString:NSLocalizedString(@"Welcome to WordPress", @"NUX First Walkthrough Page 1 Title")];
         [_scrollView addSubview:_page1Title];
     }
     

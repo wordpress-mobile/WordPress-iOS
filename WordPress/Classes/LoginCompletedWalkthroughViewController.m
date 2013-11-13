@@ -224,12 +224,8 @@ CGFloat const LoginCompeltedWalkthroughSwipeToContinueTopOffset = 14.0;
     if (_page1Title == nil) {
         _page1Title = [[UILabel alloc] init];
         _page1Title.backgroundColor = [UIColor clearColor];
-        _page1Title.textAlignment = NSTextAlignmentCenter;
         _page1Title.numberOfLines = 0;
-        _page1Title.lineBreakMode = NSLineBreakByWordWrapping;
-        _page1Title.font = [WPNUXUtility titleFont];
-        _page1Title.text = NSLocalizedString(@"Track your site's statistics", @"NUX Second Walkthrough Page 1 Title");
-        _page1Title.textColor = [UIColor whiteColor];
+        _page1Title.attributedText = [WPNUXUtility titleAttributedString:NSLocalizedString(@"Track your site's statistics", @"NUX Second Walkthrough Page 1 Title")];
         [_scrollView addSubview:_page1Title];
     }
     
@@ -346,12 +342,8 @@ CGFloat const LoginCompeltedWalkthroughSwipeToContinueTopOffset = 14.0;
     if (_page2Title == nil) {
         _page2Title = [[UILabel alloc] init];
         _page2Title.backgroundColor = [UIColor clearColor];
-        _page2Title.textAlignment = NSTextAlignmentCenter;
         _page2Title.numberOfLines = 0;
-        _page2Title.lineBreakMode = NSLineBreakByWordWrapping;
-        _page2Title.font = [WPNUXUtility titleFont];
-        _page2Title.text = NSLocalizedString(@"Explore the WordPress.com Reader", @"NUX Second Walkthrough Page 2 Title");
-        _page2Title.textColor = [UIColor whiteColor];
+        _page2Title.attributedText = [WPNUXUtility titleAttributedString:NSLocalizedString(@"Explore the WordPress.com Reader", @"NUX Second Walkthrough Page 2 Title")];
         [_scrollView addSubview:_page2Title];
     }
     
@@ -414,12 +406,8 @@ CGFloat const LoginCompeltedWalkthroughSwipeToContinueTopOffset = 14.0;
     if (_page3Title == nil) {
         _page3Title = [[UILabel alloc] init];
         _page3Title.backgroundColor = [UIColor clearColor];
-        _page3Title.textAlignment = NSTextAlignmentCenter;
         _page3Title.numberOfLines = 0;
-        _page3Title.lineBreakMode = NSLineBreakByWordWrapping;
-        _page3Title.font = [WPNUXUtility titleFont];
-        _page3Title.text = NSLocalizedString(@"Get real-time comment notifications", @"NUX Second Walkthrough Page 3 Title");
-        _page3Title.textColor = [UIColor whiteColor];
+        _page3Title.attributedText = [WPNUXUtility titleAttributedString:NSLocalizedString(@"Get real-time comment notifications", @"NUX Second Walkthrough Page 3 Title")];
         [_scrollView addSubview:_page3Title];
     }
     
@@ -482,12 +470,8 @@ CGFloat const LoginCompeltedWalkthroughSwipeToContinueTopOffset = 14.0;
     if (_page4Title == nil) {
         _page4Title = [[UILabel alloc] init];
         _page4Title.backgroundColor = [UIColor clearColor];
-        _page4Title.textAlignment = NSTextAlignmentCenter;
         _page4Title.numberOfLines = 0;
-        _page4Title.lineBreakMode = NSLineBreakByWordWrapping;
-        _page4Title.font = [WPNUXUtility titleFont];
-        _page4Title.text = NSLocalizedString(@"Get started!", @"NUX Second Walkthrough Page 4 Title");
-        _page4Title.textColor = [UIColor whiteColor];
+        _page4Title.attributedText = [WPNUXUtility titleAttributedString: NSLocalizedString(@"Get started!", @"NUX Second Walkthrough Page 4 Title")];
         [_scrollView addSubview:_page4Title];
     }
 }
