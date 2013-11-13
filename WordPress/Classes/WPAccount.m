@@ -65,7 +65,8 @@ NSString * const WPAccountDefaultWordPressComAccountChangedNotification = @"WPAc
 
 + (void)setDefaultWordPressComAccount:(WPAccount *)account {
     NSAssert(account.isWpcom, @"account should be a wordpress.com account");
-    __defaultDotcomAccount = account;
+    // Make sure the account is on the main context
+    __defaultDotcomAccount = (WPAccount *)[[[ContextManager sharedInstance] mainContext] existingObjectWithID:account.objectID error:nil];
     // When the account object hasn't been saved yet, its objectID is temporary
     // If we store a reference to that objectID it will be invalid the next time we launch
     if ([[account objectID] isTemporaryID]) {
@@ -79,9 +80,11 @@ NSString * const WPAccountDefaultWordPressComAccountChangedNotification = @"WPAc
 
 + (void)removeDefaultWordPressComAccount {
     WPAccount *defaultAccount = __defaultDotcomAccount;
-    [defaultAccount.managedObjectContext performBlock:^{
-        [defaultAccount.managedObjectContext deleteObject:defaultAccount];
-        [defaultAccount.managedObjectContext save:nil];
+    NSManagedObjectContext *derived = [[ContextManager sharedInstance] newDerivedContext];
+    [derived performBlock:^{
+        WPAccount *account = (WPAccount *)[derived objectWithID:defaultAccount.objectID];
+        [derived deleteObject:account];
+        [[ContextManager sharedInstance] saveDerivedContext:derived];
     }];
     __defaultDotcomAccount = nil;
 }
@@ -111,17 +114,22 @@ NSString * const WPAccountDefaultWordPressComAccountChangedNotification = @"WPAc
     NSFetchRequest *request = [NSFetchRequest fetchRequestWithEntityName:@"Account"];
     [request setPredicate:[NSPredicate predicateWithFormat:@"xmlrpc like %@ AND username like %@", xmlrpc, username]];
     [request setIncludesPendingChanges:YES];
-    NSManagedObjectContext *context = [[ContextManager sharedInstance] mainContext];
-    NSArray *results = [context executeFetchRequest:request error:nil];
-    WPAccount *account = nil;
-    if ([results count] > 0) {
-        account = [results objectAtIndex:0];
-    } else {
-        account = [NSEntityDescription insertNewObjectForEntityForName:@"Account" inManagedObjectContext:context];
-        account.xmlrpc = xmlrpc;
-        account.username = username;
-    }
-    account.password = password;
+    
+    __block WPAccount *account;
+    NSManagedObjectContext *context = [[ContextManager sharedInstance] newDerivedContext];
+    [context performBlockAndWait:^{
+        NSArray *results = [context executeFetchRequest:request error:nil];
+        if ([results count] > 0) {
+            account = [results objectAtIndex:0];
+        } else {
+            account = [NSEntityDescription insertNewObjectForEntityForName:@"Account" inManagedObjectContext:context];
+            account.xmlrpc = xmlrpc;
+            account.username = username;
+        }
+        account.password = password;
+        
+        [[ContextManager sharedInstance] saveDerivedContext:context];
+    }];
     return account;
 }
 

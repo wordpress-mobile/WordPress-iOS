@@ -847,7 +847,6 @@ CGFloat const SidebarViewControllerStatusBarViewHeight = 20.0;
 {
     void (^wpcomNotificationBlock)(NSNotification *) = ^(NSNotification *note) {
         NSIndexPath *selectedIndexPath = [self.tableView indexPathForSelectedRow];
-        [self.tableView reloadData];
         if (selectedIndexPath == nil || ([WPAccount defaultWordPressComAccount] == nil && [self isSettingsSection:selectedIndexPath.section])) {
             [self selectFirstAvailableItem];
         }

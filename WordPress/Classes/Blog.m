@@ -255,7 +255,9 @@
 }
 
 - (void)awakeFromFetch {
-    [self reachability];
+    if (!self.isDeleted) {
+        [self reachability];
+    }
 }
 
 - (void)dataSave {
