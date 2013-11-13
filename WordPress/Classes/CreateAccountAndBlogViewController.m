@@ -132,13 +132,10 @@ CGFloat const CreateAccountAndBlogKeyboardOffset = 132.0;
     [self layoutPage2Controls];
     [self layoutPage3Controls];
     
-    if (!IS_IPAD) {
-        // We don't need to shift the controls up on the iPad as there's enough space.
-        [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(keyboardWillShow:) name:UIKeyboardWillShowNotification object:nil];
-        [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(keyboardWillHide:) name:UIKeyboardWillHideNotification object:nil];
-        [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(keyboardDidShow) name:UIKeyboardDidShowNotification object:nil];
-        [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(keyboardDidHide) name:UIKeyboardDidHideNotification object:nil];
-    }
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(keyboardWillShow:) name:UIKeyboardWillShowNotification object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(keyboardWillHide:) name:UIKeyboardWillHideNotification object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(keyboardDidShow) name:UIKeyboardDidShowNotification object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(keyboardDidHide) name:UIKeyboardDidHideNotification object:nil];
 }
 
 - (void)viewWillAppear:(BOOL)animated
@@ -152,8 +149,7 @@ CGFloat const CreateAccountAndBlogKeyboardOffset = 132.0;
     [super viewDidAppear:animated];
 
     [self layoutScrollview];
-    [self savePositionsOfStickyControls];
-    
+
     if (_hasViewAppeared) {
         // This is for the case when the user pulls up the select language view on page 2 and returns to this view. When that
         // happens the sticky controls on the top won't be in the correct place, so in order to set them up we
@@ -170,6 +166,23 @@ CGFloat const CreateAccountAndBlogKeyboardOffset = 132.0;
         return UIInterfaceOrientationMaskPortrait;
     
     return UIInterfaceOrientationMaskAll;
+}
+
+// Necessary to fix content inset of scroll view
+- (void) viewWillLayoutSubviews {
+    
+    if ([super respondsToSelector:@selector(topLayoutGuide)])
+    {
+        CGFloat topBarOffset = self.parentViewController.topLayoutGuide.length;
+        CGFloat bottomBarOffset = self.parentViewController.bottomLayoutGuide.length;
+        UIEdgeInsets newInsets = UIEdgeInsetsMake(topBarOffset, 0, bottomBarOffset, 0);
+        
+        _scrollView.contentInset = newInsets;
+        _scrollView.scrollIndicatorInsets = newInsets;
+    } else
+    {
+        [super viewWillLayoutSubviews];
+    }
 }
 
 #pragma mark - UITextField Delegate methods
@@ -412,12 +425,12 @@ CGFloat const CreateAccountAndBlogKeyboardOffset = 132.0;
     // Layout Help Button
     UIImage *helpButtonImage = [UIImage imageNamed:@"btn-help"];
     x = _viewWidth - helpButtonImage.size.width;
-    y = 0;
+    y = [self topButtonYOrigin];
     _helpButton.frame = CGRectMake(x, y, helpButtonImage.size.width, helpButtonImage.size.height);
     
     // Layout Cancel Button
     x = 0;
-    y = 0;
+    y = [self topButtonYOrigin];
     _cancelButton.frame = CGRectMake(x, y, CGRectGetWidth(_cancelButton.frame), CGRectGetHeight(_cancelButton.frame));
         
     // Layout the controls starting out from y of 0, then offset them once the height of the controls
@@ -952,6 +965,7 @@ CGFloat const CreateAccountAndBlogKeyboardOffset = 132.0;
     [WPMobileStats trackEventForSelfHostedAndWPCom:StatsEventNUXCreateAccountClickedHelp];
     SupportViewController *supportViewController = [[SupportViewController alloc] init];
     [self.navigationController pushViewController:supportViewController animated:YES];
+    [self.navigationController setNavigationBarHidden:NO animated:YES];
 }
 
 - (void)clickedCancelButton
@@ -1075,6 +1089,17 @@ CGFloat const CreateAccountAndBlogKeyboardOffset = 132.0;
     }
 }
 
+- (CGFloat)topButtonYOrigin {
+    
+    if ([self respondsToSelector:@selector(topLayoutGuide)])
+    {
+        return [[self topLayoutGuide] length];
+    } else
+    {
+        return 0;
+    }
+}
+
 - (CGFloat)adjustX:(CGFloat)x forPage:(NSUInteger)page
 {
     return (x + _viewWidth*(page-1));
@@ -1092,10 +1117,12 @@ CGFloat const CreateAccountAndBlogKeyboardOffset = 132.0;
     
     CGRect cancelButtonFrame = _cancelButton.frame;
     cancelButtonFrame.origin.x = _cancelButtonOriginalX + contentOffset.x;
+    cancelButtonFrame.origin.y = [self topButtonYOrigin];
     _cancelButton.frame =  cancelButtonFrame;
     
     CGRect infoButtonFrame = _helpButton.frame;
     infoButtonFrame.origin.x = _infoButtonOriginalX + contentOffset.x;
+    infoButtonFrame.origin.y = [self topButtonYOrigin];
     _helpButton.frame = infoButtonFrame;
 }
 
@@ -1104,10 +1131,18 @@ CGFloat const CreateAccountAndBlogKeyboardOffset = 132.0;
     NSDictionary *keyboardInfo = notification.userInfo;
     CGFloat animationDuration = [[keyboardInfo objectForKey:UIKeyboardAnimationDurationUserInfoKey] floatValue];
     CGRect keyboardFrame = [[keyboardInfo objectForKey:UIKeyboardFrameEndUserInfoKey] CGRectValue];
+    keyboardFrame = [self.view convertRect:keyboardFrame fromView:nil];
+    
     if (_currentPage == 1) {
         _keyboardOffset = (CGRectGetMaxY(_page1NextButton.frame) - CGRectGetMinY(keyboardFrame)) + CGRectGetHeight(_page1NextButton.frame);
     } else {
         _keyboardOffset = (CGRectGetMaxY(_page2NextButton.frame) - CGRectGetMinY(keyboardFrame)) + CGRectGetHeight(_page2NextButton.frame);
+    }
+    
+    // make sure keyboard offset is greater than 0, otherwise do not move controls
+    if (_keyboardOffset < 0) {
+        _keyboardOffset = 0;
+        return;
     }
 
     [UIView animateWithDuration:animationDuration animations:^{

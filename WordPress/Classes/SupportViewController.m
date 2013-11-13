@@ -14,6 +14,8 @@
 
 @interface SupportViewController ()
 
+@property (nonatomic, assign) BOOL feedbackEnabled;
+
 @end
 
 @implementation SupportViewController
@@ -31,6 +33,7 @@ typedef NS_ENUM(NSInteger, SettingsViewControllerSections)
     self = [super initWithStyle:UITableViewStyleGrouped];
     if (self) {
         self.title = NSLocalizedString(@"Support", @"");
+        self.feedbackEnabled = YES;
     }
 
     return self;
@@ -39,8 +42,13 @@ typedef NS_ENUM(NSInteger, SettingsViewControllerSections)
 {
     [super viewDidLoad];
     
+    NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
+    self.feedbackEnabled = [defaults boolForKey:kWPUserDefaultsFeedbackEnabled];
+    
     [WPStyleGuide configureColorsForView:self.view andTableView:self.tableView];
     
+    [self.navigationController setNavigationBarHidden:NO animated:YES];
+
     if([self.navigationController.viewControllers count] == 1) {
         self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:NSLocalizedString(@"Close", @"") style:[WPStyleGuide barButtonStyleForBordered] target:self action:@selector(dismiss)];
     }
@@ -63,6 +71,10 @@ typedef NS_ENUM(NSInteger, SettingsViewControllerSections)
 {
     if (section == SettingsSectionFAQForums || section == SettingsSectionActivityLog)
         return 2;
+    
+    if (section == SettingsSectionFeedback) {
+        return self.feedbackEnabled ? 1 : 0;
+    }
 
     return 1;
 }

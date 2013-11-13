@@ -588,11 +588,14 @@ CGFloat const EditPostViewControllerTextViewOffset = 10.0;
     [self.navigationItem.rightBarButtonItem setEnabled:updateEnabled];
 
     // Seems to be a bug with UIBarButtonItem respecting the UIControlStateDisabled text color
-    if (updateEnabled) {
-        [self.navigationItem.rightBarButtonItem setTitleTextAttributes:@{UITextAttributeFont: [WPStyleGuide regularTextFont], UITextAttributeTextColor : [UIColor whiteColor]} forState:UIControlStateNormal];
+    NSDictionary *titleTextAttributes;
+    UIColor *color = updateEnabled ? [UIColor whiteColor] : [UIColor lightGrayColor];
+    if (IS_IOS7) {
+        titleTextAttributes = @{UITextAttributeFont: [WPStyleGuide regularTextFont], UITextAttributeTextColor : color};
     } else {
-        [self.navigationItem.rightBarButtonItem setTitleTextAttributes:@{UITextAttributeFont: [WPStyleGuide regularTextFont], UITextAttributeTextColor : [UIColor lightGrayColor]}  forState:UIControlStateNormal];
+        titleTextAttributes = @{UITextAttributeTextColor : color};
     }
+    [self.navigationItem.rightBarButtonItem setTitleTextAttributes:titleTextAttributes forState:UIControlStateNormal];
 }
 
 - (void)refreshUIForCurrentPost {
@@ -1070,6 +1073,7 @@ CGFloat const EditPostViewControllerTextViewOffset = 10.0;
     _linkHelperAlertView.secondTextField.keyboardAppearance = UIKeyboardAppearanceAlert;
     _linkHelperAlertView.firstTextField.keyboardType = UIKeyboardTypeDefault;
     _linkHelperAlertView.secondTextField.keyboardType = UIKeyboardTypeURL;
+    _linkHelperAlertView.secondTextField.autocorrectionType = UITextAutocorrectionTypeNo;
 
     __block UITextView *editorTextView = textView;
     __block id fles = self;

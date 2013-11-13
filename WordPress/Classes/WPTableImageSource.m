@@ -57,17 +57,43 @@
 {
     NSAssert(url!=nil, @"url shouldn't be nil");
     NSAssert(!CGSizeEqualToSize(size, CGSizeZero), @"size shouldn't be zero");
-
+    
     // Failsafe
-    if (url == nil || size.width == 0 || size.height == 0) {
+    if (url == nil || size.width == 0) {
         return;
     }
-
+    
+    // If the requested size has a 0 height, it means we know the desired width only.
+    // Make the request with a 0 height and we'll update later once the image is loaded and
+    // we can find its width/height ratio.
+    CGSize requestSize;
+    if (size.height == 0) {
+        requestSize = CGSizeMake(MAX(size.width, _maxSize.width), size.height);
+    } else {
+        requestSize = CGSizeMake(MAX(size.width, _maxSize.width), MAX(size.height, _maxSize.height));
+    }
+    
     NSDictionary *receiver = @{@"size": NSStringFromCGSize(size), @"indexPath": indexPath, @"date": [NSDate date]};
-    CGSize requestSize = CGSizeMake(MAX(size.width, _maxSize.width), MAX(size.height, _maxSize.height));
     void (^successBlock)(UIImage *) = ^(UIImage *image) {
+        NSDictionary *_receiver = receiver;
+        CGSize receiverSize = size;
+        if (size.height == 0) {
+            CGFloat ratio = image.size.width / image.size.height;
+            CGFloat height = round(size.width / ratio);
+            receiverSize = CGSizeMake(size.width, height);
+            
+            NSMutableDictionary *dict = [_receiver mutableCopy];
+            [dict setObject:NSStringFromCGSize(receiverSize) forKey:@"size"];
+            _receiver = dict;
+        }
+        
         [self setCachedImage:image forURL:url withSize:_maxSize];
-        [self processImage:image forURL:url receiver:receiver];
+        [self processImage:image forURL:url receiver:_receiver];
+    };
+    
+    void (^failureBlock)(NSError *) = ^(NSError *error) {
+        DDLogError(@"Failed getting image %@: %@", url, error);
+        [self handleImageDownloadFailedForReceiver:receiver error:error];
     };
     
     if (!isPrivate) {
@@ -76,9 +102,7 @@
     
     [[WPImageSource sharedSource] downloadImageForURL:url
                                           withSuccess:successBlock
-                                              failure:^(NSError *error) {
-                                              DDLogError(@"Failed getting image %@: %@", url, error);
-                                          }];
+                                              failure:failureBlock];
 }
 
 - (void)invalidateIndexPaths
@@ -88,6 +112,20 @@
 
 #pragma mark - Private methods
 
+- (void)handleImageDownloadFailedForReceiver:(NSDictionary *)receiver error:(NSError *)error {
+    if (self.delegate && [self.delegate respondsToSelector:@selector(tableImageSource:imageFailedforIndexPath:error:)]) {
+        dispatch_sync(dispatch_get_main_queue(), ^{
+            if (_lastInvalidationOfIndexPaths
+                && [_lastInvalidationOfIndexPaths compare:receiver[@"date"]] == NSOrderedDescending) {
+                // This index path has been invalidated, don't call the delegate
+                return;
+            }
+            NSIndexPath *indexPath = [receiver objectForKey:@"indexPath"];
+            [self.delegate tableImageSource:self imageFailedforIndexPath:indexPath error:error];
+        });
+    }
+}
+
 /**
  Processes a downloaded image
  
@@ -96,7 +134,12 @@
 - (void)processImage:(UIImage *)image forURL:(NSURL *)url receiver:(NSDictionary *)receiver
 {
     dispatch_async(_processingQueue, ^{
-        CGSize size = CGSizeFromString(receiver[@"size"]);
+        CGSize size;
+        if ([receiver objectForKey:@"size"]){
+            size = CGSizeFromString(receiver[@"size"]);
+        } else {
+            size = image.size;
+        }
 
         UIImage *resizedImage = [self cachedImageForURL:url withSize:size];
         if (!resizedImage) {
@@ -182,7 +225,11 @@
 
     // For some reason, Photon rejects resizing mshots
     if ([urlString rangeOfString:@"/mshots/"].location != NSNotFound) {
-        urlString = [urlString stringByAppendingFormat:@"?w=%i&h=%i", width, height];
+        if (height == 0) {
+            urlString = [urlString stringByAppendingFormat:@"?w=%i", width];
+        } else {
+            urlString = [urlString stringByAppendingFormat:@"?w=%i&h=%i", width, height];
+        }
         return [NSURL URLWithString:urlString];
     }
 
@@ -191,8 +238,14 @@
     if (imgpressRange.location != NSNotFound) {
         urlString = [urlString substringToIndex:imgpressRange.location];
     }
-
-    return [NSURL URLWithString:[NSString stringWithFormat:@"https://i0.wp.com/%@?resize=%i,%i", urlString, width, height]];
+    
+    if (height == 0) {
+        url = [NSURL URLWithString:[NSString stringWithFormat:@"https://i0.wp.com/%@?w=%i", urlString, width]];
+    } else {
+        url = [NSURL URLWithString:[NSString stringWithFormat:@"https://i0.wp.com/%@?resize=%i,%i", urlString, width, height]];
+    }
+    
+    return url;
 }
 
 @end

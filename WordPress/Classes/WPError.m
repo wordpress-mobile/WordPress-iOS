@@ -11,6 +11,7 @@
 #import "WordPressComApi.h"
 #import "WPcomLoginViewController.h"
 #import "WPAccount.h"
+#import "NSString+XMLExtensions.h"
 
 @implementation WPError
 
@@ -76,6 +77,7 @@
     
     if (message == nil) {
         message = [error localizedDescription];
+        message = [NSString decodeXMLCharactersIn:message];
     }
     
     if (title == nil) {

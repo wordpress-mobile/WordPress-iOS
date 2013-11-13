@@ -255,7 +255,15 @@ NSString *const StatsEventAddBlogsClickedAddSelected = @"Add Blogs - Clicked Add
 + (void)initializeStats
 {
     [Mixpanel sharedInstanceWithToken:[WordPressComApiCredentials mixpanelAPIToken]];
+
+    // Tracking session count will help us isolate users who just installed the app
+    NSUInteger sessionCount = [[[NSUserDefaults standardUserDefaults] objectForKey:@"session_count"] intValue];
+    sessionCount++;
+    [[NSUserDefaults standardUserDefaults] setObject:@(sessionCount) forKey:@"session_count"];
+    [[NSUserDefaults standardUserDefaults] synchronize];
+
     NSDictionary *properties = @{
+                                 @"session_count": @(sessionCount),
                                  @"connected_to_dotcom": @([[WordPressComApi sharedApi] hasCredentials]),
                                  @"number_of_blogs" : @([Blog countWithContext:[[WordPressAppDelegate sharedWordPressApplicationDelegate] managedObjectContext]]) };
     [[Mixpanel sharedInstance] registerSuperProperties:properties];
