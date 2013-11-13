@@ -57,7 +57,7 @@ typedef enum {
     SettingsSectionCount
 } SettingsSection;
 
-CGFloat const blavatarImageViewSize = 50.f;
+CGFloat const blavatarImageViewSize = 48.f;
 
 @interface SettingsViewController () <NSFetchedResultsControllerDelegate, UIActionSheetDelegate, WPcomLoginViewControllerDelegate>
 
