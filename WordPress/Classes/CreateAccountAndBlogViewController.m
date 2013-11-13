@@ -21,6 +21,7 @@
 #import "SelectWPComLanguageViewController.h"
 #import "WPNUXUtility.h"
 #import "WPWebViewController.h"
+#import "WPStyleGuide.h"
 
 @interface CreateAccountAndBlogViewController ()<
     UIScrollViewDelegate,
@@ -541,8 +542,7 @@ CGFloat const CreateAccountAndBlogKeyboardOffset = 132.0;
         _page2WordPressComLabel.text = @".wordpress.com";
         _page2WordPressComLabel.textAlignment = NSTextAlignmentCenter;
         _page2WordPressComLabel.font = [WPNUXUtility descriptionTextFont];
-        _page2WordPressComLabel.textColor = [UIColor whiteColor];
-        _page2WordPressComLabel.backgroundColor = [WPNUXUtility backgroundColor];
+        _page2WordPressComLabel.textColor = [WPStyleGuide allTAllShadeGrey];
         [_page2WordPressComLabel sizeToFit];
         
         UIEdgeInsets siteAddressTextInsets = [(WPWalkthroughTextField *)_page2SiteAddressText textInsets];
@@ -648,7 +648,7 @@ CGFloat const CreateAccountAndBlogKeyboardOffset = 132.0;
     CGSize wordPressComLabelSize = _page2WordPressComLabel.frame.size;
     wordPressComLabelSize.height = _page2SiteAddressText.frame.size.height - 10;
     wordPressComLabelSize.width += 10;
-    _page2WordPressComLabel.frame = CGRectMake(_page2SiteAddressText.frame.size.width - wordPressComLabelSize.width - 5, (_page2SiteAddressText.frame.size.height - wordPressComLabelSize.height) / 2, wordPressComLabelSize.width, wordPressComLabelSize.height);
+    _page2WordPressComLabel.frame = CGRectMake(_page2SiteAddressText.frame.size.width - wordPressComLabelSize.width - 5, (_page2SiteAddressText.frame.size.height - wordPressComLabelSize.height) / 2 - 1, wordPressComLabelSize.width, wordPressComLabelSize.height);
 
     // Layout Site Language
     x = (_viewWidth - CreateAccountAndBlogTextFieldWidth)/2.0;
