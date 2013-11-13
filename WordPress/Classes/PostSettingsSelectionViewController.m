@@ -8,6 +8,7 @@
 
 #import "PostSettingsSelectionViewController.h"
 #import "WPStyleGuide.h"
+#import "NSString+XMLExtensions.h"
 
 @interface PostSettingsSelectionViewController ()
 
@@ -89,7 +90,7 @@
     }
     cell.accessoryType = UITableViewCellAccessoryNone;
     
-    cell.textLabel.text = [self.titles objectAtIndex:indexPath.row];
+    cell.textLabel.text = [NSString decodeXMLCharactersIn:[self.titles objectAtIndex:indexPath.row]];
     
     NSString *val = [self.values objectAtIndex:indexPath.row];
     if ([self.currentValue isEqual:val]) {
