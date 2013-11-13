@@ -22,9 +22,6 @@
 - (void)dealloc {
     WPFLogMethod();
 
-    if(_pullToRefreshEnabled)
-        [self.scrollView removeObserver:self forKeyPath:@"contentOffset"];
-
     [self.webView stopLoading];
     self.webView.delegate = nil;
     self.webBridge.delegate = nil;
@@ -83,7 +80,6 @@
     [super viewDidUnload];
 
     if (_pullToRefreshEnabled) {
-        [self.scrollView removeObserver:self forKeyPath:@"contentOffset"];
         _pullToRefreshEnabled = NO;
     }
 
@@ -123,18 +119,6 @@
     
     return scrollView;
     
-}
-
-
-- (void)observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary *)change context:(void *)context {
-    if(![keyPath isEqualToString:@"contentOffset"])
-        return;
-    
-    CGPoint newValue = [[change objectForKey:NSKeyValueChangeNewKey] CGPointValue];
-    CGPoint oldValue = [[change objectForKey:NSKeyValueChangeOldKey] CGPointValue];
-    
-    if(newValue.y == oldValue.y)
-        return;
 }
 
 #pragma mark - Hybrid Helper Methods
@@ -217,7 +201,6 @@
 	//  update the last update date
 	[_refreshHeaderView refreshLastUpdatedDate];
     if (!_pullToRefreshEnabled) {
-        [self.scrollView addObserver:self forKeyPath:@"contentOffset" options:NSKeyValueObservingOptionNew|NSKeyValueObservingOptionOld context:nil];
         _pullToRefreshEnabled = YES;
     }
 }

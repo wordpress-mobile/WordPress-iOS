@@ -66,9 +66,6 @@ NSTimeInterval const WPTableViewControllerRefreshTimeout = 300; // 5 minutes
 
 - (void)dealloc
 {
-    if([self.tableView observationInfo])
-        [self.tableView removeObserver:self forKeyPath:@"contentOffset"];
-
     _resultsController.delegate = nil;
     editSiteViewController.delegate = nil;
 }
@@ -104,17 +101,12 @@ NSTimeInterval const WPTableViewControllerRefreshTimeout = 300; // 5 minutes
     if (self.infiniteScrollEnabled) {
         [self enableInfiniteScrolling];
     }
-    
-    [self.tableView addObserver:self forKeyPath:@"contentOffset" options:NSKeyValueObservingOptionNew|NSKeyValueObservingOptionOld context:nil];
-    
+
     [self configureNoResultsView];
 }
 
 - (void)viewDidUnload
 {
-    if([self.tableView observationInfo])
-        [self.tableView removeObserver:self forKeyPath:@"contentOffset"];
-    
     [super viewDidUnload];
 
 	self.tableView.delegate = nil;
@@ -179,18 +171,6 @@ NSTimeInterval const WPTableViewControllerRefreshTimeout = 300; // 5 minutes
     [self removeSwipeView:NO];
     [super setEditing:editing animated:animated];
     _refreshHeaderView.hidden = editing;
-}
-
-
-- (void)observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary *)change context:(void *)context {
-    if(![keyPath isEqualToString:@"contentOffset"])
-        return;
-    
-    CGPoint newValue = [[change objectForKey:NSKeyValueChangeNewKey] CGPointValue];
-    CGPoint oldValue = [[change objectForKey:NSKeyValueChangeOldKey] CGPointValue];
-    
-    if(newValue.y == oldValue.y)
-        return;
 }
 
 - (UIColor *)backgroundColorForRefreshHeaderView
