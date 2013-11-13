@@ -960,15 +960,14 @@ NSString *const WPReaderViewControllerDisplayedNativeFriendFinder = @"DisplayedN
         [userDefaults setBool:YES forKey:WPReaderViewControllerDisplayedNativeFriendFinder];
         [userDefaults synchronize];
         
-        CGRect buttonFrame = CGRectMake(0,self.view.frame.size.height,self.view.frame.size.width, 0.f);
+        CGRect buttonFrame = CGRectMake(0,self.navigationController.view.frame.size.height,self.view.frame.size.width, 0.f);
         WPFriendFinderNudgeView *nudgeView = [[WPFriendFinderNudgeView alloc] initWithFrame:buttonFrame];
         self.friendFinderNudgeView = nudgeView;
-        self.friendFinderNudgeView.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleTopMargin;
-        [self.view addSubview:self.friendFinderNudgeView];
+        self.friendFinderNudgeView.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleBottomMargin;
+        [self.navigationController.view addSubview:self.friendFinderNudgeView];
         
         buttonFrame = self.friendFinderNudgeView.frame;
-        CGRect viewFrame = self.view.frame;
-        buttonFrame.origin.y = viewFrame.size.height - buttonFrame.size.height + 1.f;
+        buttonFrame.origin.y = self.view.frame.size.height - buttonFrame.size.height;
         
         [self.friendFinderNudgeView.cancelButton addTarget:self action:@selector(hideFriendFinderNudgeView:) forControlEvents:UIControlEventTouchUpInside];
         [self.friendFinderNudgeView.confirmButton addTarget:self action:@selector(openFriendFinder:) forControlEvents:UIControlEventTouchUpInside];
