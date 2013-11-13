@@ -189,7 +189,7 @@ NSUInteger const CreateBlogBlogUrlFieldTag = 1;
             cell = _blogTitleCell;
         } else if (indexPath.row == 2) {
             if (_localeCell == nil) {
-                _localeCell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleValue1
+                _localeCell = [[WPTableViewCell alloc] initWithStyle:UITableViewCellStyleValue1
                                                      reuseIdentifier:@"LocaleCell"];
             }
             _localeCell.textLabel.text = @"Language";
@@ -199,7 +199,7 @@ NSUInteger const CreateBlogBlogUrlFieldTag = 1;
             cell = _localeCell;
         } else if (indexPath.row == 3) {
             if (_blogVisibilityCell == nil) {
-                _blogVisibilityCell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleValue1
+                _blogVisibilityCell = [[WPTableViewCell alloc] initWithStyle:UITableViewCellStyleValue1
                                                              reuseIdentifier:@"VisibilityCell"];
             }
             _blogVisibilityCell.textLabel.text = @"Blog Visibility";
