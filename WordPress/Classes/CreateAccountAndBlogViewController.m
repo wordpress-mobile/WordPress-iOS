@@ -7,6 +7,7 @@
 //
 
 #import "CreateAccountAndBlogViewController.h"
+#import <EmailChecker/EmailChecker.h>
 #import <SVProgressHUD/SVProgressHUD.h>
 #import <QuartzCore/QuartzCore.h>
 #import "SupportViewController.h"
@@ -258,6 +259,16 @@ CGFloat const CreateAccountAndBlogKeyboardOffset = 132.0;
 
 - (BOOL)textFieldShouldEndEditing:(UITextField *)textField
 {
+    if (textField == _page1EmailText) {
+        // check email validity
+        NSString *suggestedEmail = [EmailChecker suggestDomainCorrection: _page1EmailText.text];
+        if (![suggestedEmail isEqualToString:_page1EmailText.text]) {
+            NSString *message = NSLocalizedString(@"Did you mean: ",
+                                        @"Warning message to inform the user he may mispelled his email address");
+            message = [message stringByAppendingString:suggestedEmail];
+            [SVProgressHUD showErrorWithStatus:message];
+        }
+    }
     _page1NextButton.enabled = [self page1FieldsFilled];
     _page2NextButton.enabled = [self page2FieldsFilled];
     return YES;
