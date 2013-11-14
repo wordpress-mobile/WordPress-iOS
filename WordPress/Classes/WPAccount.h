@@ -22,6 +22,8 @@ extern NSString * const WPAccountDefaultWordPressComAccountChangedNotification;
 @property (nonatomic, readonly, retain) NSString *xmlrpc;
 @property (nonatomic, readonly, retain) NSString *username;
 @property (nonatomic, readonly) BOOL isWpcom;
+@property (nonatomic, retain) NSString *email;
+@property (nonatomic, retain) NSNumber *primaryBlogID;
 @property (nonatomic, retain) NSSet *blogs;
 @property (nonatomic, retain) NSSet *jetpackBlogs;
 
