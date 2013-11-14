@@ -842,6 +842,7 @@ NSString *const WPReaderViewControllerDisplayedNativeFriendFinder = @"DisplayedN
 	[self.tableView setContentOffset:CGPointMake(0, 0) animated:NO];
 	[self resetResultsController];
 	[self.tableView reloadData];
+    [self syncItems];
 	
     [self configureTableHeader];
 	
