@@ -54,8 +54,28 @@ const NSUInteger NoteKeepCount = 20;
 + (void)syncNotesWithResponse:(NSArray *)notesData {
     NSManagedObjectContext *context = [[ContextManager sharedInstance] backgroundContext];
     [context performBlock:^{
-        [notesData enumerateObjectsUsingBlock:^(id noteData, NSUInteger idx, BOOL *stop) {
-            [self createOrUpdateNoteWithData:noteData withManagedObjectContext:context];
+        NSFetchRequest *request = [NSFetchRequest fetchRequestWithEntityName:@"Note"];
+        NSError *error;
+        NSArray *existingNotes = [context executeFetchRequest:request error:&error];
+        if (error){
+            DDLogError(@"Error finding notes: %@", error);
+            return;
+        }
+        
+        WPAccount *account = (WPAccount *)[context objectWithID:[WPAccount defaultWordPressComAccount].objectID];
+        [notesData enumerateObjectsUsingBlock:^(NSDictionary *noteData, NSUInteger idx, BOOL *stop) {
+            NSNumber *noteID = [noteData objectForKey:@"id"];
+            NSArray *results = [existingNotes filteredArrayUsingPredicate:[NSPredicate predicateWithFormat:@"noteID == %@", noteID]];
+            
+            Note *note;
+            if ([results count] != 0) {
+                note = results[0];
+            } else {
+                note = [NSEntityDescription insertNewObjectForEntityForName:NSStringFromClass(self) inManagedObjectContext:context];
+                note.noteID = [noteData objectForKey:@"id"];
+                note.account = account;
+            }
+            [note syncAttributes:noteData];
         }];
         
         [[ContextManager sharedInstance] saveContext:context];
@@ -141,34 +161,6 @@ const NSUInteger NoteKeepCount = 20;
 
 - (NSDictionary *)getNoteData {
     return self.noteData;
-}
-
-+ (void)createOrUpdateNoteWithData:(NSDictionary *)noteData withManagedObjectContext:(NSManagedObjectContext *)context {
-    WPAccount *account = (WPAccount *)[context objectWithID:[WPAccount defaultWordPressComAccount].objectID];
-
-    NSFetchRequest *request = [NSFetchRequest fetchRequestWithEntityName:@"Note"];
-    request.predicate = [NSPredicate predicateWithFormat:@"noteID = %@", [noteData objectForKey:@"id"]];
-    request.sortDescriptors = @[[NSSortDescriptor sortDescriptorWithKey:@"timestamp" ascending:NO]];
-    request.fetchLimit = 1;
-    
-    NSError *error;
-    NSArray *results = [context executeFetchRequest:request error:&error];
-    if(error != nil){
-        DDLogError(@"Error finding note: %@", error);
-        return;
-    }
-    Note *note;
-    if ([results count] > 0) { // find a note so just update it
-        note = (Note *)[results objectAtIndex:0];
-    } else {
-        note = (Note *)[NSEntityDescription insertNewObjectForEntityForName:@"Note"
-                                                     inManagedObjectContext:context];
-        
-        note.noteID = [noteData objectForKey:@"id"];
-        note.account = account;
-    }
-    
-    [note syncAttributes:noteData];
 }
 
 - (void)syncAttributes:(NSDictionary *)noteData {
