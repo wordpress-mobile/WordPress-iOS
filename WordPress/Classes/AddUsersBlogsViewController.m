@@ -31,6 +31,7 @@
 @implementation AddUsersBlogsViewController {
     UIAlertView *failureAlertView;
     BOOL _hideSignInButton;
+    BOOL _allUsersBlogsAdded;
     WPAccount *_account;
 }
 
@@ -362,6 +363,7 @@
         WPAccount *account = [WPAccount defaultWordPressComAccount];
         username = account.username;
         password = account.password;
+        _allUsersBlogsAdded = NO;
     } else {
         xmlrpc = [NSURL URLWithString:_url];
         username = self.username;
@@ -414,6 +416,7 @@
                     if(usersBlogs.count > 0) {
                         [self hideNoBlogsView];
                     } else {
+                        _allUsersBlogsAdded = YES;
                         [self showNoBlogsView];
                     }
                     
@@ -468,7 +471,8 @@
         label.textAlignment = NSTextAlignmentCenter;
 
         if ([[WPAccount defaultWordPressComAccount] username]) {
-            label.text = NSLocalizedString(@"You do not seem to have any blogs. Would you like to create one now?", @"");
+            NSString *text = _allUsersBlogsAdded ? NSLocalizedString(@"All of your existing blogs have been added.", @"") : NSLocalizedString(@"You do not seem to have any blogs. Would you like to create one now?", @"");
+            label.text = text;
         } else {
             label.text = NSLocalizedString(@"You do not seem to have any blogs.", @"");
         }
