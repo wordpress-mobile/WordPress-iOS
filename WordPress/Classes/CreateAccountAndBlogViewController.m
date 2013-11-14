@@ -76,6 +76,7 @@
 
     BOOL _keyboardVisible;
     BOOL _savedOriginalPositionsOfStickyControls;
+    BOOL _shouldCorrectEmail;
     CGFloat _infoButtonOriginalX;
     CGFloat _cancelButtonOriginalX;
     CGFloat _keyboardOffset;
@@ -106,6 +107,7 @@ CGFloat const CreateAccountAndBlogKeyboardOffset = 132.0;
     self = [super init];
     if (self) {
         _currentPage = 1;
+        _shouldCorrectEmail = YES;
         _operationQueue = [[NSOperationQueue alloc] init];
         _currentLanguage = [WPComLanguages currentLanguage];
     }
@@ -262,11 +264,9 @@ CGFloat const CreateAccountAndBlogKeyboardOffset = 132.0;
     if (textField == _page1EmailText) {
         // check email validity
         NSString *suggestedEmail = [EmailChecker suggestDomainCorrection: _page1EmailText.text];
-        if (![suggestedEmail isEqualToString:_page1EmailText.text]) {
-            NSString *message = NSLocalizedString(@"Did you mean: ",
-                                        @"Warning message to inform the user he may mispelled his email address");
-            message = [message stringByAppendingString:suggestedEmail];
-            [SVProgressHUD showErrorWithStatus:message];
+        if (![suggestedEmail isEqualToString:_page1EmailText.text] && _shouldCorrectEmail) {
+            textField.text = suggestedEmail;
+            _shouldCorrectEmail = NO;
         }
     }
     _page1NextButton.enabled = [self page1FieldsFilled];
