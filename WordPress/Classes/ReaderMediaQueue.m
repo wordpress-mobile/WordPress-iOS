@@ -127,7 +127,7 @@ typedef void (^ReaderMediaViewFailureBlock)(ReaderMediaView *readerMediaView, NS
     [self.holdingQueue addObject:item];
 }
 
-- (void)abort {
+- (void)discardQueuedItems {
     [self.imageSource invalidateIndexPaths];
     [self.holdingQueue removeAllObjects];
     [self.activeQueue removeAllObjects];
@@ -145,10 +145,6 @@ typedef void (^ReaderMediaViewFailureBlock)(ReaderMediaView *readerMediaView, NS
               imageReady:(UIImage *)image
             forIndexPath:(NSIndexPath *)indexPath {
     self.counter++;
-    
-    if (indexPath.row >= [self.activeQueue count]) {
-        return;
-    }
     
     ReaderMediaQueueItem *item = [self.activeQueue objectAtIndex:indexPath.row];
     item.image = image;
