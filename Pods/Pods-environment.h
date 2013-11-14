@@ -48,6 +48,12 @@
 #define COCOAPODS_VERSION_MINOR_DTFoundation_UIKit 5
 #define COCOAPODS_VERSION_PATCH_DTFoundation_UIKit 4
 
+// EmailChecker
+#define COCOAPODS_POD_AVAILABLE_EmailChecker
+#define COCOAPODS_VERSION_MAJOR_EmailChecker 0
+#define COCOAPODS_VERSION_MINOR_EmailChecker 1
+#define COCOAPODS_VERSION_PATCH_EmailChecker 0
+
 // JSONKit
 #define COCOAPODS_POD_AVAILABLE_JSONKit
 // This library does not follow semantic-versioning,
