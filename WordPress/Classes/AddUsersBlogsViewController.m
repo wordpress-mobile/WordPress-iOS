@@ -230,7 +230,7 @@
         cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:CellIdentifier];
     }
     
-    cell.backgroundColor = [UIColor clearColor];
+    cell.backgroundColor = [UIColor whiteColor];
 	
 	switch (indexPath.section) {
 		case 0:
@@ -352,8 +352,7 @@
             [weakSelf refreshBlogs];
         }];
         hasCompletedGetUsersBlogs = YES; 
-        [self.tableView reloadData];
-        return;
+        [self.tableView reloadSections:[NSIndexSet indexSetWithIndex:0] withRowAnimation:UITableViewRowAnimationAutomatic];        return;
     }
     
     NSURL *xmlrpc;
@@ -420,14 +419,12 @@
                         [self showNoBlogsView];
                     }
                     
-                    [self.tableView reloadData];
-
+                    [self.tableView reloadSections:[NSIndexSet indexSetWithIndex:0] withRowAnimation:UITableViewRowAnimationAutomatic];
                 } else {
                     
                     // User blogs count == 0.  Prompt the user to create a blog.
                     [self showNoBlogsView];
-                    [self.tableView reloadData];
-                    
+                    [self.tableView reloadSections:[NSIndexSet indexSetWithIndex:0] withRowAnimation:UITableViewRowAnimationAutomatic];                    
                 }
             } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
                 DDLogError(@"Failed getting user blogs: %@", [error localizedDescription]);
@@ -521,7 +518,7 @@
     self.noblogsView.alpha = 0.0;
     self.noblogsView.hidden = NO;
     _hideSignInButton = YES;
-    [self.tableView reloadData];
+    [self.tableView reloadSections:[NSIndexSet indexSetWithIndex:0] withRowAnimation:UITableViewRowAnimationAutomatic];
     
     [UIView animateWithDuration:0.3f animations:^{
         self.noblogsView.alpha = 1.0f;
