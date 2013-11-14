@@ -168,6 +168,14 @@ NSString *const WPReaderViewControllerDisplayedNativeFriendFinder = @"DisplayedN
         [WPMobileStats logQuantcastEvent:@"newdash.freshly"];
         [WPMobileStats logQuantcastEvent:@"mobile.freshly"];
     }
+    
+    // Sync content as soon as login occurs
+    [[NSNotificationCenter defaultCenter] addObserverForName:WordPressComApiDidLoginNotification
+                                                      object:nil
+                                                       queue:nil
+                                                  usingBlock:^(NSNotification *notification){
+                                                      [self syncItems];
+                                                  }];
 }
 
 
