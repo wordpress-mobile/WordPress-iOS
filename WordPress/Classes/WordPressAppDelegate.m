@@ -233,11 +233,11 @@ int ddLogLevel = LOG_LEVEL_INFO;
     UITabBarController *tabBarController = [[UITabBarController alloc] init];
     tabBarController.tabBar.translucent = NO;
     
-    ReaderPostsViewController *readerPostsViewController = [[ReaderPostsViewController alloc] init];
-    UINavigationController *readerNavigationController = [[UINavigationController alloc] initWithRootViewController:readerPostsViewController];
+    self.readerPostsViewController = [[ReaderPostsViewController alloc] init];
+    UINavigationController *readerNavigationController = [[UINavigationController alloc] initWithRootViewController:self.readerPostsViewController];
     readerNavigationController.navigationBar.translucent = NO;
     readerNavigationController.tabBarItem.image = [UIImage imageNamed:@"icon-tab-reader"];
-    readerPostsViewController.title = @"Reader";
+    self.readerPostsViewController.title = @"Reader";
     
     self.notificationsViewController = [[NotificationsViewController alloc] init];
     UINavigationController *notificationsNavigationController = [[UINavigationController alloc] initWithRootViewController:self.notificationsViewController];
