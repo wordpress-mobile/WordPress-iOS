@@ -169,7 +169,7 @@ NSString *const WPReaderViewControllerDisplayedNativeFriendFinder = @"DisplayedN
         [WPMobileStats logQuantcastEvent:@"mobile.freshly"];
     }
     
-    // Sync content as soon as login occurs
+    // Sync content as soon as login or creation occurs
     [[NSNotificationCenter defaultCenter] addObserverForName:WordPressComApiDidLoginNotification
                                                       object:nil
                                                        queue:nil
@@ -192,7 +192,11 @@ NSString *const WPReaderViewControllerDisplayedNativeFriendFinder = @"DisplayedN
 }
 
 - (void)viewDidAppear:(BOOL)animated {
-    [super viewDidAppear:animated];
+    // WPTableViewController's viewDidAppear triggers a sync, but only do it if authenticated
+    // (this prevents an attempted sync when the app launches for the first time before authenticating)
+    if ([[WordPressAppDelegate sharedWordPressApplicationDelegate] isWPcomAuthenticated]) {
+        [super viewDidAppear:animated];
+    }
 
     NSIndexPath *selectedIndexPath = [self.tableView indexPathForSelectedRow];
     if (selectedIndexPath) {
