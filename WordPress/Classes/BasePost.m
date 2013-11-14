@@ -76,9 +76,7 @@
 }
 
 - (void)save {
-    [self.managedObjectContext performBlock:^{
-        [self.managedObjectContext save:nil];
-    }];
+    [[ContextManager sharedInstance] saveContext:self.managedObjectContext];
 }
 
 - (NSString *)statusTitle {

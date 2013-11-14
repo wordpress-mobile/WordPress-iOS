@@ -58,7 +58,7 @@ const NSUInteger NoteKeepCount = 20;
             [self createOrUpdateNoteWithData:noteData withManagedObjectContext:context];
         }];
         
-        [[ContextManager sharedInstance] saveBackgroundContext];
+        [[ContextManager sharedInstance] saveContext:context];
     }];
 }
 

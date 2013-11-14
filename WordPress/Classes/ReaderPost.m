@@ -122,7 +122,7 @@ NSString *const ReaderExtrasArrayKey = @"ReaderExtrasArrayKey";
             [self createOrUpdateWithDictionary:postData forEndpoint:endpoint withContext:backgroundMOC];
         }
         
-        [[ContextManager sharedInstance] saveBackgroundContext];
+        [[ContextManager sharedInstance] saveContext:backgroundMOC];
         if (success) {
             dispatch_async(dispatch_get_main_queue(), success);
         }
@@ -149,7 +149,7 @@ NSString *const ReaderExtrasArrayKey = @"ReaderExtrasArrayKey";
                 [context deleteObject:post];
             }
         }
-        [[ContextManager sharedInstance] saveBackgroundContext];
+        [[ContextManager sharedInstance] saveContext:context];
     }];
 }
 

@@ -376,7 +376,7 @@ CGFloat const AddUsersBlogBottomBackgroundHeight = 64;
             }
         }
         
-        [[ContextManager sharedInstance] saveBackgroundContext];
+        [[ContextManager sharedInstance] saveContext:context];
         
         dispatch_async(dispatch_get_main_queue(), ^{
             if (self.blogAdditionCompleted) {
@@ -394,6 +394,7 @@ CGFloat const AddUsersBlogBottomBackgroundHeight = 64;
     Blog *blog = [_account findOrCreateBlogFromDictionary:blogInfo withContext:context];
     blog.geolocationEnabled = YES;
 
+    [context obtainPermanentIDsForObjects:@[blog] error:nil];
     [blog syncBlogWithSuccess:nil failure:nil];
 }
 

@@ -27,7 +27,6 @@ NSString *const EditPostViewControllerAutosaveDidFailNotification = @"EditPostVi
 
 @property (nonatomic, strong) WPAlertView *linkHelperAlertView;
 @property (nonatomic, assign) BOOL hasChangesToAutosave;
-@property (nonatomic, strong) NSManagedObjectContext *revisionContext;
 
 @end
 
@@ -106,12 +105,12 @@ CGFloat const EditPostViewControllerTextViewOffset = 10.0;
     WPFLogMethod();
     [super viewDidLoad];
     
-    _revisionContext = [[ContextManager sharedInstance] newDerivedContext];
-    self.apost = (AbstractPost *)[_revisionContext existingObjectWithID:self.apost.objectID error:nil];
+    NSManagedObjectContext *context = [[ContextManager sharedInstance] mainContext];
+    self.apost = (AbstractPost *)[context objectWithID:self.apost.objectID];
     
-    [_revisionContext performBlock:^{
+    [self.apost.managedObjectContext performBlock:^{
         self.apost = [self.apost createRevision];
-        [[ContextManager sharedInstance] saveDerivedContext:_revisionContext];
+        [self.apost save];
         dispatch_async(dispatch_get_main_queue(), ^{
             [self refreshUIForCurrentPost];
         });
@@ -753,7 +752,6 @@ CGFloat const EditPostViewControllerTextViewOffset = 10.0;
     }
 #endif
     [self.apost.original deleteRevision];
-    [[ContextManager sharedInstance] saveDerivedContext:_revisionContext];
     
 	if (self.editMode == EditPostViewControllerModeNewPost) {
         [self.apost.original remove];
@@ -792,21 +790,17 @@ CGFloat const EditPostViewControllerTextViewOffset = 10.0;
 
     [self.apost.original applyRevision];
     [self.apost.original deleteRevision];
+    [self.apost.original save];
     
-    __block AbstractPost *post = self.apost.original;
-    [[ContextManager sharedInstance] saveDerivedContext:_revisionContext withCompletionBlock:^{
-        Post *mainContextPost = (Post *)[[[ContextManager sharedInstance] mainContext] existingObjectWithID:post.objectID error:nil];
-        mainContextPost.isFeaturedImageChanged = post.isFeaturedImageChanged;
-        
-        if (upload) {
-            NSString *postTitle = post.postTitle;
-            [mainContextPost uploadWithSuccess:^{
-                DDLogInfo(@"post uploaded: %@", postTitle);
-            } failure:^(NSError *error) {
-                DDLogError(@"post failed: %@", [error localizedDescription]);
-            }];
-        }
-    }];
+    if (upload) {
+        NSString *postTitle = self.apost.original.postTitle;
+        [self.apost.original uploadWithSuccess:^{
+            DDLogInfo(@"post uploaded: %@", postTitle);
+        } failure:^(NSError *error) {
+            DDLogError(@"post failed: %@", [error localizedDescription]);
+        }];
+    }
+    
     
     [self dismissEditView];
 }
@@ -847,7 +841,7 @@ CGFloat const EditPostViewControllerTextViewOffset = 10.0;
         }
     }
     
-    [[ContextManager sharedInstance] saveDerivedContext:_revisionContext];
+    [self.apost save];
 }
 
 - (BOOL)canAutosaveRemotely {

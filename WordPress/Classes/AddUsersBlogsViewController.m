@@ -543,7 +543,7 @@
             }
         }
         
-        [[ContextManager sharedInstance] saveBackgroundContext];
+        [[ContextManager sharedInstance] saveContext:backgroundMOC];
         
         dispatch_async(dispatch_get_main_queue(), ^{
             [self.navigationController popToRootViewControllerAnimated:YES];

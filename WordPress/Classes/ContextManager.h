@@ -74,11 +74,10 @@
 - (void)saveDerivedContext:(NSManagedObjectContext *)context withCompletionBlock:(void (^)())completionBlock;
 
 /**
- Save the background/main contexts respectively.
+ Save one of the background/main.
  
  Convenience for error handling.
  */
-- (void)saveBackgroundContext;
-- (void)saveMainContext;
+- (void)saveContext:(NSManagedObjectContext *)context;
 
 @end

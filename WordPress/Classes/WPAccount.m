@@ -80,11 +80,11 @@ NSString * const WPAccountDefaultWordPressComAccountChangedNotification = @"WPAc
 
 + (void)removeDefaultWordPressComAccount {
     WPAccount *defaultAccount = __defaultDotcomAccount;
-    NSManagedObjectContext *derived = [[ContextManager sharedInstance] backgroundContext];
-    [derived performBlock:^{
-        WPAccount *account = (WPAccount *)[derived objectWithID:defaultAccount.objectID];
-        [derived deleteObject:account];
-        [[ContextManager sharedInstance] saveBackgroundContext];
+    NSManagedObjectContext *backgroundMOC = [[ContextManager sharedInstance] backgroundContext];
+    [backgroundMOC performBlock:^{
+        WPAccount *account = (WPAccount *)[backgroundMOC objectWithID:defaultAccount.objectID];
+        [backgroundMOC deleteObject:account];
+        [[ContextManager sharedInstance] saveContext:backgroundMOC];
     }];
     __defaultDotcomAccount = nil;
 }
@@ -102,7 +102,11 @@ NSString * const WPAccountDefaultWordPressComAccountChangedNotification = @"WPAc
 #pragma mark - Account creation
 
 + (WPAccount *)createOrUpdateWordPressComAccountWithUsername:(NSString *)username andPassword:(NSString *)password {
-    WPAccount *account = [self createOrUpdateSelfHostedAccountWithXmlrpc:DotcomXmlrpcKey username:username andPassword:password];
+    return [WPAccount createOrUpdateWordPressComAccountWithUsername:username andPassword:password withContext:[[ContextManager sharedInstance] backgroundContext]];
+}
+
++ (WPAccount *)createOrUpdateWordPressComAccountWithUsername:(NSString *)username andPassword:(NSString *)password withContext:(NSManagedObjectContext *)context {
+    WPAccount *account = [self createOrUpdateSelfHostedAccountWithXmlrpc:DotcomXmlrpcKey username:username andPassword:password withContext:context];
     account.isWpcom = YES;
     if (__defaultDotcomAccount == nil) {
         [self setDefaultWordPressComAccount:account];
@@ -111,12 +115,15 @@ NSString * const WPAccountDefaultWordPressComAccountChangedNotification = @"WPAc
 }
 
 + (WPAccount *)createOrUpdateSelfHostedAccountWithXmlrpc:(NSString *)xmlrpc username:(NSString *)username andPassword:(NSString *)password {
+    return [WPAccount createOrUpdateSelfHostedAccountWithXmlrpc:xmlrpc username:username andPassword:password withContext:[[ContextManager sharedInstance] backgroundContext]];
+}
+
++ (WPAccount *)createOrUpdateSelfHostedAccountWithXmlrpc:(NSString *)xmlrpc username:(NSString *)username andPassword:(NSString *)password withContext:(NSManagedObjectContext *)context {
     NSFetchRequest *request = [NSFetchRequest fetchRequestWithEntityName:@"Account"];
     [request setPredicate:[NSPredicate predicateWithFormat:@"xmlrpc like %@ AND username like %@", xmlrpc, username]];
     [request setIncludesPendingChanges:YES];
     
     __block WPAccount *account;
-    NSManagedObjectContext *context = [[ContextManager sharedInstance] backgroundContext];
     [context performBlockAndWait:^{
         NSArray *results = [context executeFetchRequest:request error:nil];
         if ([results count] > 0) {
@@ -128,7 +135,7 @@ NSString * const WPAccountDefaultWordPressComAccountChangedNotification = @"WPAc
         }
         account.password = password;
         
-        [[ContextManager sharedInstance] saveBackgroundContext];
+        [[ContextManager sharedInstance] saveContext:context];
     }];
     return account;
 }

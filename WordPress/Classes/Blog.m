@@ -261,9 +261,7 @@
 }
 
 - (void)dataSave {
-    [self.managedObjectContext performBlock:^{
-        [self.managedObjectContext save:nil];
-    }];
+    [[ContextManager sharedInstance] saveContext:self.managedObjectContext];
 }
 
 - (void)remove {
@@ -351,17 +349,16 @@
 
 - (NSUInteger)countForSyncedPostsWithEntityName:(NSString *)entityName {
     __block NSUInteger count = 0;
+    NSFetchRequest *request = [NSFetchRequest fetchRequestWithEntityName:entityName];
+    NSPredicate *predicate = [NSPredicate predicateWithFormat:@"(remoteStatusNumber = %@) AND (postID != NULL) AND (original == NULL) AND (blog = %@)",
+                              [NSNumber numberWithInt:AbstractPostRemoteStatusSync], self];
+    [request setPredicate:predicate];
+    NSSortDescriptor *sortDescriptor = [[NSSortDescriptor alloc] initWithKey:@"date_created_gmt" ascending:YES];
+    [request setSortDescriptors:[NSArray arrayWithObject:sortDescriptor]];
+    request.includesSubentities = NO;
+    request.resultType = NSCountResultType;
+    
     [self.managedObjectContext performBlockAndWait:^{
-        NSFetchRequest *request = [[NSFetchRequest alloc] init];
-        [request setEntity:[NSEntityDescription entityForName:entityName inManagedObjectContext:self.managedObjectContext]];
-        NSPredicate *predicate = [NSPredicate predicateWithFormat:@"(remoteStatusNumber = %@) AND (postID != NULL) AND (original == NULL) AND (blog = %@)",
-                                  [NSNumber numberWithInt:AbstractPostRemoteStatusSync], self];
-        [request setPredicate:predicate];
-        NSSortDescriptor *sortDescriptor = [[NSSortDescriptor alloc] initWithKey:@"date_created_gmt" ascending:YES];
-        [request setSortDescriptors:[NSArray arrayWithObject:sortDescriptor]];
-        request.includesSubentities = NO;
-        request.resultType = NSCountResultType;
-        
         NSError *error = nil;
         count = [self.managedObjectContext countForFetchRequest:request error:&error];
     }];

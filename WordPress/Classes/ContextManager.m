@@ -65,8 +65,10 @@ static ContextManager *instance;
         return _backgroundContext;
     }
     _backgroundContext = [[NSManagedObjectContext alloc] initWithConcurrencyType:NSPrivateQueueConcurrencyType];
-    _backgroundContext.persistentStoreCoordinator = [self persistentStoreCoordinator];
-    _backgroundContext.mergePolicy = NSMergeByPropertyObjectTrumpMergePolicy;
+    [_backgroundContext performBlockAndWait:^{
+        _backgroundContext.persistentStoreCoordinator = [self persistentStoreCoordinator];
+        _backgroundContext.mergePolicy = NSMergeByPropertyObjectTrumpMergePolicy;
+    }];
     
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(mergeChangesToMainContext:) name:NSManagedObjectContextDidSaveNotification object:_backgroundContext];
     
@@ -106,25 +108,18 @@ static ContextManager *instance;
             dispatch_async(dispatch_get_main_queue(), completionBlock);
         }
         
-        [self saveMainContext];
+        [self saveContext:self.mainContext];
     }];
 }
 
-- (void)saveBackgroundContext {
-    [self.backgroundContext performBlock:^{
+- (void)saveContext:(NSManagedObjectContext *)context {
+    [context performBlockAndWait:^{
         NSError *error;
-        if (![self.backgroundContext save:&error]) {
-            @throw [NSException exceptionWithName:@"Unresolved Core Data save error"
-                                           reason:@"Unresolved Core Data save error"
-                                         userInfo:[error userInfo]];
+        if (![self.backgroundContext obtainPermanentIDsForObjects:context.insertedObjects.allObjects error:&error]) {
+            DDLogError(@"Error obtaining permanent object IDs for %@, %@", context.insertedObjects.allObjects, error);
         }
-    }];
-}
-
-- (void)saveMainContext {
-    [self.mainContext performBlock:^{
-        NSError *error;
-        if (![self.mainContext save:&error]) {
+        
+        if (![context save:&error]) {
             @throw [NSException exceptionWithName:@"Unresolved Core Data save error"
                                            reason:@"Unresolved Core Data save error"
                                          userInfo:[error userInfo]];

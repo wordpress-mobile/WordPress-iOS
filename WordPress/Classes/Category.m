@@ -124,7 +124,7 @@
                 }
             }
         }
-        [[ContextManager sharedInstance] saveBackgroundContext];
+        [[ContextManager sharedInstance] saveContext:backgroundMOC];
     }];
 }
 

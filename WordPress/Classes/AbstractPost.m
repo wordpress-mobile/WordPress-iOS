@@ -53,7 +53,7 @@
     AbstractPost *post = [self newPostForBlog:blog];
     post.remoteStatus = AbstractPostRemoteStatusLocal;
     post.status = @"publish";
-    [blog.managedObjectContext obtainPermanentIDsForObjects:@[post] error:nil];
+    [post save];
     return post;
 }
 
@@ -62,12 +62,16 @@
     existingFetch.predicate = [NSPredicate predicateWithFormat:@"(remoteStatusNumber = %@) AND (postID != NULL) AND (original == NULL) AND (blog == %@)",
                                [NSNumber numberWithInt:AbstractPostRemoteStatusSync], blog];
     
-    NSError *error;
-    NSArray *existing = [context executeFetchRequest:existingFetch error:&error];
-    if (error) {
-        DDLogError(@"Failed to fetch existing posts: %@", error);
-        existing = nil;
-    }
+    __block NSArray *existing = nil;
+    [context performBlockAndWait:^{
+        NSError *error;
+        existing = [context executeFetchRequest:existingFetch error:&error];
+        if (error) {
+            DDLogError(@"Failed to fetch existing posts: %@", error);
+            existing = nil;
+        }
+    }];
+
     return existing;
 }
 
@@ -120,7 +124,7 @@
             }
         }
         
-        [[ContextManager sharedInstance] saveBackgroundContext];
+        [[ContextManager sharedInstance] saveContext:backgroundContext];
     }];
 }
 
