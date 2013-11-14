@@ -107,7 +107,6 @@ typedef void (^ReaderMediaViewFailureBlock)(ReaderMediaView *readerMediaView, NS
                                                                        isPrivate:isPrivate
                                                                          success:success
                                                                          failure:failure];
-    
     if ([self.activeQueue count] < self.batchSize) {
         [self addToActiveQueue:item];
     } else {
@@ -128,6 +127,11 @@ typedef void (^ReaderMediaViewFailureBlock)(ReaderMediaView *readerMediaView, NS
     [self.holdingQueue addObject:item];
 }
 
+- (void)discardQueuedItems {
+    [self.imageSource invalidateIndexPaths];
+    [self.holdingQueue removeAllObjects];
+    [self.activeQueue removeAllObjects];
+}
 
 #pragma mark - WPTableImageSourceDelegate Methods
 
