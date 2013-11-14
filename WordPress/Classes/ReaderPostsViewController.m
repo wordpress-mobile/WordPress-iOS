@@ -361,7 +361,7 @@ NSString *const WPReaderViewControllerDisplayedNativeFriendFinder = @"DisplayedN
 
 
 - (void)handleKeyboardWillHide:(NSNotification *)notification {
-    UIView *view = self.view.superview;
+    UIView *view = self.view;
 	CGRect frame = view.frame;
 	CGRect keyFrame = [[[notification userInfo] objectForKey:UIKeyboardFrameEndUserInfoKey] CGRectValue];
 	
