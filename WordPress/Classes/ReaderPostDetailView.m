@@ -61,7 +61,7 @@
 {
     _textContentView.delegate = nil;
     _mediaQueue.delegate = nil;
-    [_mediaQueue abort];
+    [_mediaQueue discardQueuedItems];
     [[NSNotificationCenter defaultCenter] removeObserver:self];
 }
 
