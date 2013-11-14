@@ -33,6 +33,7 @@
 #import "ReaderPostsViewController.h"
 #import "NotificationsViewController.h"
 #import "BlogListViewController.h"
+#import "GeneralWalkthroughViewController.h"
 
 @interface WordPressAppDelegate (Private) <CrashlyticsDelegate>
 
@@ -202,6 +203,32 @@ int ddLogLevel = LOG_LEVEL_INFO;
     [Crashlytics setObjectValue:@([Blog countWithContext:[self managedObjectContext]]) forKey:@"number_of_blogs"];
 }
 
+- (BOOL)noBlogsAndNoWordPressDotComAccount {
+    NSFetchRequest *fetchRequest = [[NSFetchRequest alloc] init];
+    NSManagedObjectContext *moc = [[WordPressAppDelegate sharedWordPressApplicationDelegate] managedObjectContext];
+    [fetchRequest setEntity:[NSEntityDescription entityForName:@"Blog" inManagedObjectContext:moc]];
+    
+    NSError *error = nil;
+    NSArray *blogs = [moc executeFetchRequest:fetchRequest error:&error];
+
+    return [blogs count] == 0 && ![WPAccount defaultWordPressComAccount];
+}
+
+- (void)showWelcomeScreenIfNeeded {
+    if ([self noBlogsAndNoWordPressDotComAccount]) {
+        [WordPressAppDelegate wipeAllKeychainItems];
+        
+        GeneralWalkthroughViewController *welcomeViewController = [[GeneralWalkthroughViewController alloc] init];
+        
+        UINavigationController *aNavigationController = [[UINavigationController alloc] initWithRootViewController:welcomeViewController];
+        aNavigationController.navigationBar.translucent = NO;
+        aNavigationController.modalTransitionStyle = UIModalTransitionStyleCrossDissolve;
+        aNavigationController.modalPresentationStyle = UIModalPresentationFormSheet;
+        
+        [window.rootViewController presentViewController:aNavigationController animated:YES completion:nil];
+    }
+}
+
 - (UITabBarController *)createTabBarController {
     UITabBarController *tabBarController = [[UITabBarController alloc] init];
     tabBarController.tabBar.translucent = NO;
@@ -310,6 +337,7 @@ int ddLogLevel = LOG_LEVEL_INFO;
     
     window.backgroundColor = [UIColor blackColor];
     window.rootViewController = [self createTabBarController];
+    [self showWelcomeScreenIfNeeded];
 
 	//listener for XML-RPC errors
 	//in the future we could put the errors message in a dedicated screen that users can bring to front when samething went wrong, and can take a look at the error msg.
@@ -323,6 +351,7 @@ int ddLogLevel = LOG_LEVEL_INFO;
 
 
 	[window makeKeyAndVisible];
+    
 
 	[self registerForPushNotifications];
     
