@@ -62,11 +62,6 @@ CGFloat const CommentsSectionHeaderHeight = 24.0;
     self.tableView.tableFooterView = [[UIView alloc] initWithFrame:CGRectZero];
 }
 
-- (UIColor *)backgroundColorForRefreshHeaderView
-{
-    return [WPStyleGuide itsEverywhereGrey];
-}
-
 - (void)viewWillAppear:(BOOL)animated {
     WPFLogMethod();
 
@@ -145,7 +140,7 @@ CGFloat const CommentsSectionHeaderHeight = 24.0;
                 [self willChangeValueForKey:@"wantedCommentId"];
                 _wantedCommentId = wantedCommentId;
                 [self didChangeValueForKey:@"wantedCommentId"];
-                [self syncItemsWithUserInteraction:NO];
+                [self syncItems];
             }
         }
     }
@@ -228,7 +223,7 @@ CGFloat const CommentsSectionHeaderHeight = 24.0;
     return cell;
 }
 
-- (void)syncItemsWithUserInteraction:(BOOL)userInteraction success:(void (^)())success failure:(void (^)(NSError *))failure {
+- (void)syncItemsWithSuccess:(void (^)())success failure:(void (^)(NSError *))failure {
     [self.blog syncCommentsWithSuccess:success failure:failure];
 }
 

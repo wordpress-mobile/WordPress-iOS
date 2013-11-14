@@ -149,7 +149,17 @@
     id supportsFeaturedImages = [self.post.blog getOptionValue:@"post_thumbnail"];
     if (supportsFeaturedImages != nil) {
         blogSupportsFeaturedImage = [supportsFeaturedImages boolValue];
-        if (blogSupportsFeaturedImage && self.post.post_thumbnail != nil) {
+        
+        if (blogSupportsFeaturedImage && [self.post.media count] > 0) {
+            for (Media *media in self.post.media) {
+                NSInteger status = [media.remoteStatusNumber integerValue];
+                if ([media.mediaType isEqualToString:@"featured"] && (status == MediaRemoteStatusPushing || status == MediaRemoteStatusProcessing)){
+                    [self showFeaturedImageUploader:nil];
+                }
+            }
+        }
+        
+        if (!isUploadingFeaturedImage && (blogSupportsFeaturedImage && self.post.post_thumbnail != nil)) {
             // Download the current featured image
             [featuredImageView setHidden:YES];
             [featuredImageLabel setText:NSLocalizedString(@"Loading Featured Image", @"Loading featured image in post settings")];
@@ -487,6 +497,10 @@
             
                 visibilityLabel.text = [self titleForVisibility];
 				
+                if (!IS_IOS7) {
+                    [visibilityTitleLabel setHighlightedTextColor:[UIColor whiteColor]];
+                    [visibilityLabel setHighlightedTextColor:[UIColor whiteColor]];
+                }
 				return visibilityTableViewCell;
 				break;
 			case 2:
@@ -550,8 +564,13 @@
                             break;
                         }
                     }
+                    activityCell.selectionStyle = UITableViewCellSelectionStyleBlue;
                 }
                 [WPStyleGuide configureTableViewActionCell:activityCell];
+                if (!IS_IOS7) {
+                    [activityCell.textLabel setHighlightedTextColor:[UIColor whiteColor]];
+                    [activityCell.detailTextLabel setHighlightedTextColor:[UIColor whiteColor]];
+                }
                 [activityCell.textLabel setText:NSLocalizedString(@"Set Featured Image", @"")];
                 return activityCell;
             } else {
@@ -582,6 +601,10 @@
                             }
                         }
                         [activityCell.textLabel setText: NSLocalizedString(@"Remove Featured Image", "Remove featured image from post")];
+                        if (!IS_IOS7) {
+                            [activityCell.textLabel setHighlightedTextColor:[UIColor whiteColor]];
+                            [activityCell.detailTextLabel setHighlightedTextColor:[UIColor whiteColor]];
+                        }
                         [WPStyleGuide configureTableViewActionCell:activityCell];
                         return activityCell;
                         break;
@@ -1238,6 +1261,9 @@
                 if ([publishNowButton respondsToSelector:@selector(setTintColor:)]) {
                     publishNowButton.tintColor = postDetailViewController.toolbar.tintColor;
                 }
+                NSDictionary *titleTextAttributes = @{UITextAttributeTextColor: [UIColor whiteColor], UITextAttributeTextShadowColor:[UIColor blackColor]};
+                [publishNowButton setTitleTextAttributes:titleTextAttributes forState:UIControlStateNormal];
+                [publishNowButton setTitleTextAttributes:titleTextAttributes forState:UIControlStateSelected];
                 [publishNowButton addTarget:self action:@selector(removeDate) forControlEvents:UIControlEventValueChanged];
                 [fakeController.view addSubview:publishNowButton];
                 CGRect frame = picker.frame;
