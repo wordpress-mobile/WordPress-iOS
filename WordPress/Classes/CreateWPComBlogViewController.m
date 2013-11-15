@@ -184,7 +184,6 @@ NSUInteger const CreateBlogBlogUrlFieldTag = 1;
             _blogTitleCell.textLabel.text = NSLocalizedString(@"Site Title", @"Label for site title field in create an account process");
             _blogTitleTextField = _blogTitleCell.textField;
             _blogTitleTextField.placeholder = NSLocalizedString(@"My Site", @"Placeholder for site title field in create an account process");
-            _blogTitleTextField.leftView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, IS_IOS7 ? 10 : 5, 1)];
             _blogTitleTextField.leftViewMode = UITextFieldViewModeAlways;
             _blogTitleTextField.delegate = self;
             [self styleTextFieldCell:_blogTitleCell];

@@ -166,9 +166,8 @@ NSTimeInterval const ReaderPostDetailViewControllerRefreshTimeout = 300; // 5 mi
         [toolbar setBackgroundImage:nil forToolbarPosition:UIToolbarPositionBottom barMetrics:UIBarMetricsDefault];
         [toolbar setTintColor:[UIColor colorWithHexString:@"F1F1F1"]];
     }
-	
-	if (IS_IPAD)
-        [self.panelNavigationController setToolbarHidden:NO forViewController:self animated:NO];
+
+	[self.navigationController setToolbarHidden:NO animated:animated];
 
     [self.post addObserver:self forKeyPath:@"isReblogged" options:NSKeyValueObservingOptionNew context:@"reblogging"];
 
@@ -203,7 +202,7 @@ NSTimeInterval const ReaderPostDetailViewControllerRefreshTimeout = 300; // 5 mi
     self.panelNavigationController.delegate = nil;
     self.navigationController.navigationBar.translucent = NO;
     self.navigationController.toolbar.translucent = NO;
-	[self.navigationController setToolbarHidden:YES animated:YES];
+	[self.navigationController setToolbarHidden:YES animated:animated];
 }
 
 

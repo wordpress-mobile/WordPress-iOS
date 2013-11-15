@@ -60,6 +60,8 @@
 - (void)dealloc
 {
     _textContentView.delegate = nil;
+    _mediaQueue.delegate = nil;
+    [_mediaQueue discardQueuedItems];
     [[NSNotificationCenter defaultCenter] removeObserver:self];
 }
 
