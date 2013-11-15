@@ -175,7 +175,7 @@ CGFloat const CommentViewUnapproveButtonTag = 701;
     [super updateViewConstraints];
     [self.view removeConstraint:_authorSiteHeightConstraint];
     if ([[self.authorSiteButton titleForState:UIControlStateNormal] length] == 0) {
-        _authorSiteHeightConstraint = [NSLayoutConstraint constraintWithItem:self.authorSiteButton attribute:NSLayoutAttributeHeight relatedBy:NSLayoutRelationEqual toItem:nil attribute:0 multiplier:0.0 constant:8];
+        _authorSiteHeightConstraint = [NSLayoutConstraint constraintWithItem:self.authorSiteButton attribute:NSLayoutAttributeHeight relatedBy:NSLayoutRelationEqual toItem:nil attribute:0 multiplier:0.0 constant:0];
         [self.view addConstraint:_authorSiteHeightConstraint];
     }
 }
