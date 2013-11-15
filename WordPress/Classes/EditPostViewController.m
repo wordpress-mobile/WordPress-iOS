@@ -1137,6 +1137,7 @@ CGFloat const EditPostViewControllerTextViewOffset = 10.0;
         
         [delegate setAlertRunning:NO];
         [fles setLinkHelperAlertView:nil];
+        [fles refreshTextView];
     };
     
     _linkHelperAlertView.alpha = 0.0;
@@ -1573,6 +1574,22 @@ CGFloat const EditPostViewControllerTextViewOffset = 10.0;
     _hasChangesToAutosave = YES;
     [self autosaveContent];
     [self incrementCharactersChangedForAutosaveBy:MAX(replacement.length, originalRange.length)];
+    [self refreshTextView];
+}
+
+// In some situations on iOS7, inserting text while `scrollEnabled = NO` results in
+// the last line(s) of text on the text view not appearing. This is a workaround
+// to get the UITextView to redraw after inserting text but without affecting the
+// scrollOffset.
+- (void)refreshTextView {
+    if (!IS_IOS7) {
+        return;
+    }
+    dispatch_async(dispatch_get_main_queue(), ^{
+        textView.scrollEnabled = NO;
+        [textView setTextAlignment:textView.textAlignment];
+        textView.scrollEnabled = YES;
+    });
 }
 
 - (void)keyboardToolbarButtonItemPressed:(WPKeyboardToolbarButtonItem *)buttonItem {
