@@ -109,12 +109,6 @@
 #define COCOAPODS_VERSION_MINOR_Reachability 0
 #define COCOAPODS_VERSION_PATCH_Reachability 0
 
-// SFHFKeychainUtils
-#define COCOAPODS_POD_AVAILABLE_SFHFKeychainUtils
-#define COCOAPODS_VERSION_MAJOR_SFHFKeychainUtils 0
-#define COCOAPODS_VERSION_MINOR_SFHFKeychainUtils 0
-#define COCOAPODS_VERSION_PATCH_SFHFKeychainUtils 1
-
 // SVProgressHUD
 #define COCOAPODS_POD_AVAILABLE_SVProgressHUD
 #define COCOAPODS_VERSION_MAJOR_SVProgressHUD 0

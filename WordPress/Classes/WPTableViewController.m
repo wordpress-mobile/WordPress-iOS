@@ -8,18 +8,16 @@
 
 #import "WPTableViewController.h"
 #import "WPTableViewControllerSubclass.h"
-#import "EGORefreshTableHeaderView.h" 
 #import "WordPressAppDelegate.h"
 #import "EditSiteViewController.h"
 #import "ReachabilityUtils.h"
 #import "WPWebViewController.h"
-#import "SoundUtil.h"
 #import "WPInfoView.h"
 #import "SupportViewController.h"
 
 NSTimeInterval const WPTableViewControllerRefreshTimeout = 300; // 5 minutes
 
-@interface WPTableViewController () <EGORefreshTableHeaderDelegate>
+@interface WPTableViewController ()
 
 @property (nonatomic, strong) NSFetchedResultsController *resultsController;
 @property (nonatomic) BOOL swipeActionsEnabled;
@@ -40,7 +38,6 @@ NSTimeInterval const WPTableViewControllerRefreshTimeout = 300; // 5 minutes
 @end
 
 @implementation WPTableViewController {
-    EGORefreshTableHeaderView *_refreshHeaderView;
     EditSiteViewController *editSiteViewController;
     UIView *noResultsView;
     NSIndexPath *_indexPathSelectedBeforeUpdates;
@@ -53,7 +50,6 @@ NSTimeInterval const WPTableViewControllerRefreshTimeout = 300; // 5 minutes
     BOOL didPromptForCredentials;
     BOOL _isSyncing;
     BOOL _isLoadingMore;
-    BOOL didPlayPullSound;
     BOOL didTriggerRefresh;
     CGPoint savedScrollOffset;
 }
@@ -68,9 +64,6 @@ NSTimeInterval const WPTableViewControllerRefreshTimeout = 300; // 5 minutes
 
 - (void)dealloc
 {
-    if([self.tableView observationInfo])
-        [self.tableView removeObserver:self forKeyPath:@"contentOffset"];
-
     _resultsController.delegate = nil;
     editSiteViewController.delegate = nil;
 }
@@ -79,21 +72,13 @@ NSTimeInterval const WPTableViewControllerRefreshTimeout = 300; // 5 minutes
 {
     [super viewDidLoad];
 	
-	self.tableView = [[UITableView alloc] initWithFrame:self.view.bounds];
 	self.tableView.delegate = self;
 	self.tableView.dataSource = self;
 	self.tableView.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
-	[self.view addSubview:self.tableView];
-    
-    if (_refreshHeaderView == nil) {
-		_refreshHeaderView = [[EGORefreshTableHeaderView alloc] initWithFrame:CGRectMake(0.0f, 0.0f - self.tableView.bounds.size.height, self.tableView.frame.size.width, self.tableView.bounds.size.height)];
-		_refreshHeaderView.delegate = self;
-        _refreshHeaderView.backgroundColor = [self backgroundColorForRefreshHeaderView];
-		[self.tableView addSubview:_refreshHeaderView];
-    }
-	
-	//  update the last update date
-	[_refreshHeaderView refreshLastUpdatedDate];
+
+    UIRefreshControl *refreshControl = [[UIRefreshControl alloc] init];
+    [refreshControl addTarget:self action:@selector(refresh) forControlEvents:UIControlEventValueChanged];
+    self.refreshControl = refreshControl;
 
     self.tableView.allowsSelectionDuringEditing = YES;
     self.tableView.backgroundColor = TABLE_VIEW_BACKGROUND_COLOR;
@@ -106,23 +91,17 @@ NSTimeInterval const WPTableViewControllerRefreshTimeout = 300; // 5 minutes
     if (self.infiniteScrollEnabled) {
         [self enableInfiniteScrolling];
     }
-    
-    [self.tableView addObserver:self forKeyPath:@"contentOffset" options:NSKeyValueObservingOptionNew|NSKeyValueObservingOptionOld context:nil];
-    
+
     [self configureNoResultsView];
 }
 
 - (void)viewDidUnload
 {
-    if([self.tableView observationInfo])
-        [self.tableView removeObserver:self forKeyPath:@"contentOffset"];
-    
     [super viewDidUnload];
 
 	self.tableView.delegate = nil;
 	self.tableView.dataSource = nil;
 	self.tableView =  nil;
-     _refreshHeaderView = nil;
     
     if (self.swipeActionsEnabled) {
         [self disableSwipeGestureRecognizer];
@@ -154,13 +133,8 @@ NSTimeInterval const WPTableViewControllerRefreshTimeout = 300; // 5 minutes
     }
     NSDate *lastSynced = [self lastSyncDate];
     if (lastSynced == nil || ABS([lastSynced timeIntervalSinceNow]) > WPTableViewControllerRefreshTimeout) {
-        // If table is at the original scroll position, simulate a pull to refresh
-        if (self.tableView.contentOffset.y == 0) {
-            [self simulatePullToRefresh];
-        } else {
-        // Otherwise, just update in the background
-            [self syncItemsWithUserInteraction:NO];
-        }
+        // Update in the background
+        [self syncItems];
     }
 }
 
@@ -180,34 +154,6 @@ NSTimeInterval const WPTableViewControllerRefreshTimeout = 300; // 5 minutes
 - (void)setEditing:(BOOL)editing animated:(BOOL)animated {
     [self removeSwipeView:NO];
     [super setEditing:editing animated:animated];
-    _refreshHeaderView.hidden = editing;
-}
-
-
-- (void)observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary *)change context:(void *)context {
-    if(![keyPath isEqualToString:@"contentOffset"])
-        return;
-    
-    CGPoint newValue = [[change objectForKey:NSKeyValueChangeNewKey] CGPointValue];
-    CGPoint oldValue = [[change objectForKey:NSKeyValueChangeOldKey] CGPointValue];
-    
-    if (newValue.y > oldValue.y && newValue.y > -65.0f) {
-        didPlayPullSound = NO;
-    }
-    
-    if(newValue.y == oldValue.y) return;
-
-    if(newValue.y <= -65.0f && newValue.y < oldValue.y && ![self isSyncing] && !didPlayPullSound && !didTriggerRefresh) {
-        // triggered
-        [SoundUtil playPullSound];
-        didPlayPullSound = YES;
-    }
-    
-}
-
-- (UIColor *)backgroundColorForRefreshHeaderView
-{
-    return _refreshHeaderView.backgroundColor;
 }
 
 - (NSString *)noResultsText
@@ -228,9 +174,7 @@ NSTimeInterval const WPTableViewControllerRefreshTimeout = 300; // 5 minutes
     self.resultsController = nil;
     [self.tableView reloadData];
     WordPressAppDelegate *appDelegate = [WordPressAppDelegate sharedWordPressApplicationDelegate];
-    if ( appDelegate.connectionAvailable == YES && [self.resultsController.fetchedObjects count] == 0 && ![self isSyncing] ) {
-        [self simulatePullToRefresh];
-    } else {
+    if (!(appDelegate.connectionAvailable == YES && [self.resultsController.fetchedObjects count] == 0 && ![self isSyncing])) {
         [self configureNoResultsView];
     }
 }
@@ -487,34 +431,17 @@ NSTimeInterval const WPTableViewControllerRefreshTimeout = 300; // 5 minutes
     }
 }
 
-#pragma mark - EGORefreshTableHeaderDelegate Methods
+#pragma mark - UIRefreshControl Methods
 
-- (void)egoRefreshTableHeaderDidTriggerRefresh:(EGORefreshTableHeaderView *)view{
+- (void)refresh {
     didTriggerRefresh = YES;
-	[self syncItemsWithUserInteraction:YES];
+	[self syncItemsViaUserInteraction];
     [noResultsView removeFromSuperview];
 }
 
-- (BOOL)egoRefreshTableHeaderDataSourceIsLoading:(EGORefreshTableHeaderView *)view{
-	return [self isSyncing]; // should return if data source model is reloading
-}
-
-- (NSDate*)egoRefreshTableHeaderDataSourceLastUpdated:(EGORefreshTableHeaderView *)view{
-	return [self lastSyncDate]; // should return date data source was last changed
-}
 
 #pragma mark -
 #pragma mark UIScrollViewDelegate Methods
-
-- (void)scrollViewDidScroll:(UIScrollView *)scrollView{
-	if (!self.editing)
-        [_refreshHeaderView egoRefreshScrollViewDidScroll:scrollView];
-}
-
-- (void)scrollViewDidEndDragging:(UIScrollView *)scrollView willDecelerate:(BOOL)decelerate{
-	if (!self.editing)
-		[_refreshHeaderView egoRefreshScrollViewDidEndDragging:scrollView];
-}
 
 - (void)scrollViewWillBeginDragging:(UIScrollView *)scrollView {
     _isScrolling = YES;
@@ -631,10 +558,7 @@ NSTimeInterval const WPTableViewControllerRefreshTimeout = 300; // 5 minutes
 }
 
 - (void)hideRefreshHeader {
-    [_refreshHeaderView egoRefreshScrollViewDataSourceDidFinishedLoading:self.tableView];
-    if ([self isViewLoaded] && self.tableView.window && didTriggerRefresh) {
-        [SoundUtil playRollupSound];
-    }
+    [self.refreshControl endRefreshing];
     didTriggerRefresh = NO;
 }
 
@@ -642,22 +566,21 @@ NSTimeInterval const WPTableViewControllerRefreshTimeout = 300; // 5 minutes
     [self dismissViewControllerAnimated:YES completion:nil];
 }
 
-- (void)simulatePullToRefresh {
-    if(!_refreshHeaderView) return;
-    
-    CGPoint offset = self.tableView.contentOffset;
-    offset.y = - 65.0f;
-    [self.tableView setContentOffset:offset];
-    [_refreshHeaderView egoRefreshScrollViewDidEndDragging:self.tableView];
+- (void)syncItems {
+    [self syncItemsViaUserInteraction:NO];
 }
 
-- (void)syncItemsWithUserInteraction:(BOOL)userInteraction {
+- (void)syncItemsViaUserInteraction {
+    [self syncItemsViaUserInteraction:YES];
+}
+
+- (void)syncItemsViaUserInteraction:(BOOL)userInteraction {
     if ([self isSyncing]) {
         return;
     }
 
     _isSyncing = YES;
-    [self syncItemsWithUserInteraction:userInteraction success:^{
+    [self syncItemsWithSuccess:^{
         [self hideRefreshHeader];
         _isSyncing = NO;
         [self configureNoResultsView];
@@ -933,8 +856,13 @@ NSTimeInterval const WPTableViewControllerRefreshTimeout = 300; // 5 minutes
     AssertSubclassMethod();
 }
 
-- (void)syncItemsWithUserInteraction:(BOOL)userInteraction success:(void (^)())success failure:(void (^)(NSError *))failure {
+- (void)syncItemsWithSuccess:(void (^)())success failure:(void (^)(NSError *))failure {
     AssertSubclassMethod();
+}
+
+- (void)syncItemsViaUserInteractionWithSuccess:(void (^)())success failure:(void (^)(NSError *error))failure {
+    // By default, sync items the same way. Subclasses can override if they need different behavior.
+    [self syncItemsWithSuccess:success failure:failure];
 }
 
 - (BOOL)isSyncing {

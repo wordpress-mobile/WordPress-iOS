@@ -18,7 +18,6 @@
 #import "CommentsViewController.h"
 #import "StatsWebViewController.h"
 #import "WPWebViewController.h"
-#import "SoundUtil.h"
 #import "WordPressComApi.h"
 #import "WPAccount.h"
 #import "QuickPhotoViewController.h"
@@ -660,9 +659,6 @@ CGFloat const SidebarViewControllerStatusBarViewHeight = 20.0;
             [webViewController setWpLoginURL:[NSURL URLWithString:blog.loginUrl]];
         }
         [self.panelNavigationController setDetailViewController:webViewController closingSidebar:closingSidebar animated:YES];
-    }
-    if (IS_IPAD) {
-        [SoundUtil playSwipeSound];
     }
     return;
 }
