@@ -143,27 +143,30 @@ NSString * const WPAccountDefaultWordPressComAccountChangedNotification = @"WPAc
 #pragma mark - Blog creation
 
 - (Blog *)findOrCreateBlogFromDictionary:(NSDictionary *)blogInfo withContext:(NSManagedObjectContext*)context {
-    WPAccount *contextAccount = (WPAccount *)[context existingObjectWithID:self.objectID error:nil];
-    
     NSString *blogUrl = [[blogInfo objectForKey:@"url"] stringByReplacingOccurrencesOfString:@"http://" withString:@""];
-	if([blogUrl hasSuffix:@"/"])
+	if ([blogUrl hasSuffix:@"/"]) {
 		blogUrl = [blogUrl substringToIndex:blogUrl.length-1];
-    
+    }
 	blogUrl = [blogUrl stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceCharacterSet]];
 
-    NSSet *foundBlogs = [contextAccount.blogs filteredSetUsingPredicate:[NSPredicate predicateWithFormat:@"url like %@", blogUrl]];
-    if ([foundBlogs count]) {
-        return [foundBlogs anyObject];
-    }
-
-    Blog *blog = [NSEntityDescription insertNewObjectForEntityForName:NSStringFromClass([Blog class]) inManagedObjectContext:context];
-    blog.account = contextAccount;
-    blog.url = blogUrl;
-    blog.blogID = [NSNumber numberWithInt:[[blogInfo objectForKey:@"blogid"] intValue]];
-    blog.blogName = [[blogInfo objectForKey:@"blogName"] stringByDecodingXMLCharacters];
-    blog.xmlrpc = [blogInfo objectForKey:@"xmlrpc"];
-    blog.isAdmin = [NSNumber numberWithInt:[[blogInfo objectForKey:@"isAdmin"] intValue]];
-
+    __block Blog *blog;
+    [context performBlockAndWait:^{
+        WPAccount *contextAccount = (WPAccount *)[context existingObjectWithID:self.objectID error:nil];
+        NSSet *foundBlogs = [contextAccount.blogs filteredSetUsingPredicate:[NSPredicate predicateWithFormat:@"url like %@", blogUrl]];
+        if ([foundBlogs count]) {
+            blog = [foundBlogs anyObject];
+            return;
+        }
+        
+        blog = [NSEntityDescription insertNewObjectForEntityForName:NSStringFromClass([Blog class]) inManagedObjectContext:context];
+        blog.account = contextAccount;
+        blog.url = blogUrl;
+        blog.blogID = [NSNumber numberWithInt:[[blogInfo objectForKey:@"blogid"] intValue]];
+        blog.blogName = [[blogInfo objectForKey:@"blogName"] stringByDecodingXMLCharacters];
+        blog.xmlrpc = [blogInfo objectForKey:@"xmlrpc"];
+        blog.isAdmin = [NSNumber numberWithInt:[[blogInfo objectForKey:@"isAdmin"] intValue]];
+    }];
+    
     return blog;
 }
 
