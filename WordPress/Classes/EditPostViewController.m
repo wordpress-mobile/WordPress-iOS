@@ -105,15 +105,10 @@ CGFloat const EditPostViewControllerTextViewOffset = 10.0;
     WPFLogMethod();
     [super viewDidLoad];
     
-    NSManagedObjectContext *context = [[ContextManager sharedInstance] mainContext];
-    self.apost = (AbstractPost *)[context objectWithID:self.apost.objectID];
-    
     [self.apost.managedObjectContext performBlock:^{
         self.apost = [self.apost createRevision];
         [self.apost save];
-        dispatch_async(dispatch_get_main_queue(), ^{
-            [self refreshUIForCurrentPost];
-        });
+        [self refreshUIForCurrentPost];
     }];
    
 #if USE_AUTOSAVES
@@ -173,7 +168,7 @@ CGFloat const EditPostViewControllerTextViewOffset = 10.0;
 
     currentView = editView;
 	writeButton.enabled = NO;
-    attachmentButton.enabled = [self shouldEnableMediaTab];
+    attachmentButton.enabled = NO;
 	
 	if (![self.postMediaViewController isDeviceSupportVideo] && !IS_IOS7){
 		// No video icon for older devices.
@@ -183,12 +178,8 @@ CGFloat const EditPostViewControllerTextViewOffset = 10.0;
 		[toolbarItems removeObjectAtIndex:5];
 		[self.toolbar setItems:toolbarItems];
 	}
-	
-	if (self.post && self.post.geolocation != nil && self.post.blog.geolocationEnabled) {
-		self.hasLocation.enabled = YES;
-	} else {
-		self.hasLocation.enabled = NO;
-	}
+
+    self.hasLocation.enabled = NO;
     
     if (_autosavingIndicatorView == nil) {
         _autosavingIndicatorView = [[AutosavingIndicatorView alloc] initWithFrame:CGRectZero];
@@ -240,15 +231,6 @@ CGFloat const EditPostViewControllerTextViewOffset = 10.0;
     if (IS_IOS7) {
         self.title = [self editorTitle];
         self.navigationItem.title = [self editorTitle];
-    }
-
-    // On return from other view controllers, refresh the post for any changes
-    // that may have been made on other contexts. EG removing a media item from
-    // the main context via NSFetchedResultsController
-    if (IS_IOS7) {
-        [self.apost.managedObjectContext performBlock:^{
-            [self.apost.managedObjectContext refreshObject:self.apost mergeChanges:YES];
-        }];
     }
 
 	[self refreshButtons];
@@ -317,10 +299,6 @@ CGFloat const EditPostViewControllerTextViewOffset = 10.0;
     } else {
         return nil;
     }
-}
-
-- (void)setPost:(Post *)aPost {
-    self.apost = aPost;
 }
 
 - (void)switchToView:(UIView *)newView {
@@ -597,6 +575,12 @@ CGFloat const EditPostViewControllerTextViewOffset = 10.0;
 - (void)refreshUIForCurrentPost {
     self.navigationItem.title = [self editorTitle];
 
+    if (self.post && self.post.geolocation != nil && self.post.blog.geolocationEnabled) {
+		self.hasLocation.enabled = YES;
+	}
+    
+    attachmentButton.enabled = [self shouldEnableMediaTab];
+    
     titleTextField.text = self.apost.postTitle;
     if (self.post && !IS_IOS7) {
         tagsTextField.text = self.post.tags;
@@ -790,7 +774,6 @@ CGFloat const EditPostViewControllerTextViewOffset = 10.0;
 
     [self.apost.original applyRevision];
     [self.apost.original deleteRevision];
-    [self.apost.original save];
     
     if (upload) {
         NSString *postTitle = self.apost.original.postTitle;
