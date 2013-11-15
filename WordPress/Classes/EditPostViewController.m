@@ -1587,7 +1587,7 @@ CGFloat const EditPostViewControllerTextViewOffset = 10.0;
     }
     dispatch_async(dispatch_get_main_queue(), ^{
         textView.scrollEnabled = NO;
-        [textView setTextAlignment:textView.textAlignment];
+        [textView setNeedsDisplay];
         textView.scrollEnabled = YES;
     });
 }
