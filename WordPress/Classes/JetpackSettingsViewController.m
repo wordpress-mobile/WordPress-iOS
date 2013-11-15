@@ -140,8 +140,7 @@ CGFloat const JetpackSignInButtonHeight = 41.0;
 }
 
 - (void)loadView {
-    
-    self.view = [[UIView alloc] initWithFrame:self.presentingViewController.view.bounds];
+    [super loadView];
 }
 
 - (void)addControls {
@@ -274,8 +273,8 @@ CGFloat const JetpackSignInButtonHeight = 41.0;
     _moreInformationButton.hidden = hasJetpack;
     
     // Layout Skip Button
-    x = CGRectGetWidth(self.view.frame) - CGRectGetWidth(_skipButton.frame) - JetpackStandardOffset;
-    y = CGRectGetHeight(self.view.frame) - JetpackStandardOffset - CGRectGetHeight(_skipButton.frame);
+    x = _viewWidth - CGRectGetWidth(_skipButton.frame) - JetpackStandardOffset;
+    y = _viewHeight - JetpackStandardOffset - CGRectGetHeight(_skipButton.frame);
     _skipButton.frame = CGRectMake(x, y, CGRectGetWidth(_skipButton.frame), CGRectGetHeight(_skipButton.frame));
     
     NSArray *viewsToCenter;
@@ -288,7 +287,7 @@ CGFloat const JetpackSignInButtonHeight = 41.0;
         endingView = _moreInformationButton;
     }
     
-    [WPNUXUtility centerViews:viewsToCenter withStartingView:_icon andEndingView:endingView forHeight:(self.view.frame.size.height - 88)];
+    [WPNUXUtility centerViews:viewsToCenter withStartingView:_icon andEndingView:endingView forHeight:(_viewHeight - 88)];
 }
 
 
