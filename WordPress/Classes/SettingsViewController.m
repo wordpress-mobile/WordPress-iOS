@@ -20,8 +20,6 @@
     - Video API
     - Video Quality
     - Video Content
- - Sounds 
-    - Mute Sounds
  - Info
     - Version
     - About
@@ -51,12 +49,11 @@
 typedef enum {
     SettingsSectionWpcom = 0,
     SettingsSectionMedia,
-    SettingsSectionSounds,
     SettingsSectionInfo,
     SettingsSectionCount
 } SettingsSection;
 
-CGFloat const blavatarImageViewSize = 50.f;
+CGFloat const blavatarImageViewSize = 43.f;
 
 @interface SettingsViewController () <UIActionSheetDelegate, WPcomLoginViewControllerDelegate>
 
@@ -66,7 +63,6 @@ CGFloat const blavatarImageViewSize = 50.f;
 - (void)configureCell:(UITableViewCell *)cell atIndexPath:(NSIndexPath *)indexPath;
 - (UITableViewCell *)cellForIndexPath:(NSIndexPath *)indexPath;
 - (void)setupMedia;
-- (void)handleMuteSoundsChanged:(id)sender;
 - (void)maskImageView:(UIImageView *)imageView corner:(UIRectCorner)corner;
 
 @end
@@ -169,19 +165,6 @@ CGFloat const blavatarImageViewSize = 50.f;
     [self dismissViewControllerAnimated:YES completion:nil];
 }
 
-- (void)handleMuteSoundsChanged:(id)sender {
-    UISwitch *aSwitch = (UISwitch *)sender;
-    
-    if (aSwitch.on) {
-        [WPMobileStats trackEventForWPCom:StatsEventSettingsEnabledSounds];
-    } else {
-        [WPMobileStats trackEventForWPCom:StatsEventSettingsDisabledSounds];
-    }
-
-    [[NSUserDefaults standardUserDefaults] setBool:!(aSwitch.on) forKey:kSettingsMuteSoundsKey];
-    [NSUserDefaults resetStandardUserDefaults];
-}
-
 - (void)maskImageView:(UIImageView *)imageView corner:(UIRectCorner)corner {
     if (IS_IOS7) {
         // We don't want this effect in iOS7
@@ -240,10 +223,7 @@ CGFloat const blavatarImageViewSize = 50.f;
 
         case SettingsSectionMedia:
             return [mediaSettingsArray count];
-			         
-        case SettingsSectionSounds :
-            return 1;
-            
+
         case SettingsSectionInfo:
             return 3;
             
@@ -270,10 +250,7 @@ CGFloat const blavatarImageViewSize = 50.f;
 
     } else if (section == SettingsSectionMedia) {
         return NSLocalizedString(@"Media", @"Title label for the media settings section in the app settings");
-
-    } else if (section == SettingsSectionSounds) {
-        return NSLocalizedString(@"Sounds", @"Title label for the sounds section in the app settings.");
-        
+		
     } else if (section == SettingsSectionInfo) {
         return NSLocalizedString(@"App Info", @"Title label for the application information section in the app settings");
     }
@@ -323,16 +300,6 @@ CGFloat const blavatarImageViewSize = 50.f;
         
         NSArray *titles = [dict objectForKey:@"Titles"];
         cell.detailTextLabel.text = [titles objectAtIndex:index];
-        
-    } else if (indexPath.section == SettingsSectionSounds) {
-        cell.selectionStyle = UITableViewCellSelectionStyleNone;
-        cell.accessoryType = UITableViewCellAccessoryNone;
-        cell.textLabel.text = NSLocalizedString(@"Enable Sounds", @"Title for the setting to enable in-app sounds");
-        UISwitch *aSwitch = [[UISwitch alloc] initWithFrame:CGRectZero]; // Frame is ignored.
-        [aSwitch addTarget:self action:@selector(handleMuteSoundsChanged:) forControlEvents:UIControlEventValueChanged];
-        aSwitch.on = ![[NSUserDefaults standardUserDefaults] boolForKey:kSettingsMuteSoundsKey];
-        cell.accessoryView = aSwitch;
-
     } else if (indexPath.section == SettingsSectionInfo) {
         if (indexPath.row == 0) {
             // App Version
@@ -373,10 +340,6 @@ CGFloat const blavatarImageViewSize = 50.f;
         case SettingsSectionMedia:
             cellIdentifier = @"Media";
             cellStyle = UITableViewCellStyleValue1;
-            break;
-        
-        case SettingsSectionSounds:
-            cellIdentifier = @"Sounds";
             break;
             
         case SettingsSectionInfo:
@@ -463,10 +426,7 @@ CGFloat const blavatarImageViewSize = 50.f;
         NSDictionary *dict = [mediaSettingsArray objectAtIndex:indexPath.row];
         SettingsPageViewController *controller = [[SettingsPageViewController alloc] initWithDictionary:dict];
         [self.navigationController pushViewController:controller animated:YES];
-    
-    } else if (indexPath.section == SettingsSectionSounds) {
-        // nothing to do.
-        
+
     } else if (indexPath.section == SettingsSectionInfo) {
         if (indexPath.row == 1) {
             [WPMobileStats trackEventForWPCom:StatsEventSettingsClickedAbout];

@@ -183,8 +183,8 @@ NSString *const WPReaderViewControllerDisplayedNativeFriendFinder = @"DisplayedN
 	[super viewWillAppear:animated];
 	
     [self performSelector:@selector(showFriendFinderNudgeView:) withObject:self afterDelay:3.0];
-    
-	self.title = [[ReaderPost currentTopic] objectForKey:@"title"];
+    	
+	self.title = [[[ReaderPost currentTopic] objectForKey:@"title"] capitalizedString];
     [self loadImagesForVisibleRows];
 	
 	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(handleKeyboardDidShow:) name:UIKeyboardWillShowNotification object:nil];

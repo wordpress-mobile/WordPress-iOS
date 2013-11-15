@@ -262,15 +262,31 @@
 + (void)configureTableViewCell:(UITableViewCell *)cell
 {
     cell.textLabel.font = [self tableviewTextFont];
+    [cell.textLabel sizeToFit];
+
     cell.detailTextLabel.font = [self tableviewSubtitleFont];
+    [cell.detailTextLabel sizeToFit];
+    
     cell.textLabel.textColor = [self whisperGrey];
     cell.detailTextLabel.textColor = [self whisperGrey];
+    if ([cell isKindOfClass:[UITableViewTextFieldCell class]]) {
+        UITableViewTextFieldCell *tfcell = (UITableViewTextFieldCell *)cell;
+        [tfcell.textField setTextColor:[self whisperGrey]];
+    }
 }
 
 + (void)configureTableViewTextCell:(UITableViewTextFieldCell *)cell
 {
     [self configureTableViewCell:cell];
-    cell.textField.font = [self tableviewTextFont];
+    cell.textField.font = [self tableviewSubtitleFont];
+    
+    if (cell.textField.enabled) {
+        cell.textField.textColor = [self whisperGrey];
+        cell.textField.textAlignment = NSTextAlignmentLeft;
+    } else {
+        cell.textField.textColor = [self allTAllShadeGrey];
+        cell.textField.textAlignment = NSTextAlignmentRight;
+    }
 }
 
 + (void)configureColorsForView:(UIView *)view andTableView:(UITableView *)tableView

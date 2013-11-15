@@ -12,7 +12,6 @@
 #import "EditSiteViewController.h"
 #import "ReachabilityUtils.h"
 #import "WPWebViewController.h"
-#import "SoundUtil.h"
 #import "WPInfoView.h"
 #import "SupportViewController.h"
 
@@ -52,7 +51,6 @@ CGFloat const WPTableViewTopMargin = 40;
     BOOL didPromptForCredentials;
     BOOL _isSyncing;
     BOOL _isLoadingMore;
-    BOOL didPlayPullSound;
     BOOL didTriggerRefresh;
     CGPoint savedScrollOffset;
 }
@@ -76,9 +74,6 @@ CGFloat const WPTableViewTopMargin = 40;
 
 - (void)dealloc
 {
-    if([self.tableView observationInfo])
-        [self.tableView removeObserver:self forKeyPath:@"contentOffset"];
-
     _resultsController.delegate = nil;
     editSiteViewController.delegate = nil;
 }
@@ -101,9 +96,7 @@ CGFloat const WPTableViewTopMargin = 40;
     if (self.infiniteScrollEnabled) {
         [self enableInfiniteScrolling];
     }
-    
-    [self.tableView addObserver:self forKeyPath:@"contentOffset" options:NSKeyValueObservingOptionNew|NSKeyValueObservingOptionOld context:nil];
-    
+
     [self configureNoResultsView];
     
     // Remove one-pixel gap resulting from a top-aligned grouped table view
@@ -116,9 +109,6 @@ CGFloat const WPTableViewTopMargin = 40;
 
 - (void)viewDidUnload
 {
-    if([self.tableView observationInfo])
-        [self.tableView removeObserver:self forKeyPath:@"contentOffset"];
-    
     [super viewDidUnload];
 
 	self.tableView.delegate = nil;
@@ -175,28 +165,6 @@ CGFloat const WPTableViewTopMargin = 40;
 - (void)setEditing:(BOOL)editing animated:(BOOL)animated {
     [self removeSwipeView:NO];
     [super setEditing:editing animated:animated];
-}
-
-
-- (void)observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary *)change context:(void *)context {
-    if(![keyPath isEqualToString:@"contentOffset"])
-        return;
-    
-    CGPoint newValue = [[change objectForKey:NSKeyValueChangeNewKey] CGPointValue];
-    CGPoint oldValue = [[change objectForKey:NSKeyValueChangeOldKey] CGPointValue];
-    
-    if (newValue.y > oldValue.y && newValue.y > -65.0f) {
-        didPlayPullSound = NO;
-    }
-    
-    if(newValue.y == oldValue.y) return;
-
-    if(newValue.y <= -65.0f && newValue.y < oldValue.y && ![self isSyncing] && !didPlayPullSound && !didTriggerRefresh) {
-        // triggered
-        [SoundUtil playPullSound];
-        didPlayPullSound = YES;
-    }
-    
 }
 
 - (NSString *)noResultsText
@@ -601,9 +569,6 @@ CGFloat const WPTableViewTopMargin = 40;
 
 - (void)hideRefreshHeader {
     [self.refreshControl endRefreshing];
-    if ([self isViewLoaded] && self.tableView.window && didTriggerRefresh) {
-        [SoundUtil playRollupSound];
-    }
     didTriggerRefresh = NO;
 }
 

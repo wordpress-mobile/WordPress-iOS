@@ -684,8 +684,11 @@ NSString *const ReaderExtrasArrayKey = @"ReaderExtrasArrayKey";
 }
 
 - (NSURL *)featuredImageURL {
-    // FIXME: NSURL fails if the URL contains spaces.
-    return [NSURL URLWithString:self.featuredImage];
+    if (self.featuredImage) {
+        return [NSURL URLWithString:self.featuredImage];
+    }
+
+    return nil;
 }
 
 - (NSString *)featuredImageForWidth:(NSUInteger)width height:(NSUInteger)height {
@@ -699,11 +702,7 @@ NSString *const ReaderExtrasArrayKey = @"ReaderExtrasArrayKey";
 }
 
 - (BOOL)containsVideoPress:(NSString *)str {
-    NSError *error;
-
-    NSRegularExpression *regex = [NSRegularExpression regularExpressionWithPattern:@"<div[\\S\\s]+?<div.*class=\"videopress-placeholder[\\s\\S]*?</noscript>" options:NSRegularExpressionCaseInsensitive error:&error];
-    NSRange match = [regex rangeOfFirstMatchInString:str options:NSRegularExpressionCaseInsensitive range:NSMakeRange(0, [str length])];
-    return (match.location != NSNotFound);
+    return [str rangeOfString:@"class=\"videopress-placeholder"].location != NSNotFound;
 }
 
 - (NSString *)formatVideoPress:(NSString *)str {
