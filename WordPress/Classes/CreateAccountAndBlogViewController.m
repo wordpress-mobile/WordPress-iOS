@@ -1076,15 +1076,10 @@ CGFloat const CreateAccountAndBlogKeyboardOffset = 132.0;
     NSString *buttonTitle;
     
     if (contentOffset.x >= 2 * _scrollView.frame.size.width) {
-        
         buttonTitle = NSLocalizedString(@"Back", nil);
-        
     } else if (contentOffset.x >= 1 * _scrollView.frame.size.width) {
-        
         buttonTitle = NSLocalizedString(@"Back", nil);
-        
     } else {
-        
         buttonTitle = NSLocalizedString(@"Cancel", nil);
     }
     
