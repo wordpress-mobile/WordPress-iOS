@@ -497,7 +497,7 @@ CGFloat const GeneralWalkthroughiOS7StatusBarOffset = 20.0;
 
     UIImage *infoButtonImage = [UIImage imageNamed:@"btn-about"];
     y = 0;
-    if (IS_IOS7 && UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPhone) {
+    if (IS_IOS7 && IS_IPHONE) {
         y = GeneralWalkthroughiOS7StatusBarOffset;
     }
     _page1InfoButton.frame = CGRectMake(0, y, infoButtonImage.size.width, infoButtonImage.size.height);
