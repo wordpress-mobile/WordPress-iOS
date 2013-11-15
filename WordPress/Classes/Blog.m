@@ -350,7 +350,7 @@
 - (NSUInteger)countForSyncedPostsWithEntityName:(NSString *)entityName {
     __block NSUInteger count = 0;
     NSFetchRequest *request = [NSFetchRequest fetchRequestWithEntityName:entityName];
-    NSPredicate *predicate = [NSPredicate predicateWithFormat:@"(remoteStatusNumber = %@) AND (postID != NULL) AND (original == NULL) AND (blog = %@)",
+    NSPredicate *predicate = [NSPredicate predicateWithFormat:@"(remoteStatusNumber == %@) AND (postID != NULL) AND (original == NULL) AND (blog == %@)",
                               [NSNumber numberWithInt:AbstractPostRemoteStatusSync], self];
     [request setPredicate:predicate];
     NSSortDescriptor *sortDescriptor = [[NSSortDescriptor alloc] initWithKey:@"date_created_gmt" ascending:YES];

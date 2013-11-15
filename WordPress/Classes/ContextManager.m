@@ -113,9 +113,9 @@ static ContextManager *instance;
 }
 
 - (void)saveContext:(NSManagedObjectContext *)context {
-    [context performBlockAndWait:^{
+    [context performBlock:^{
         NSError *error;
-        if (![self.backgroundContext obtainPermanentIDsForObjects:context.insertedObjects.allObjects error:&error]) {
+        if (![context obtainPermanentIDsForObjects:context.insertedObjects.allObjects error:&error]) {
             DDLogError(@"Error obtaining permanent object IDs for %@, %@", context.insertedObjects.allObjects, error);
         }
         
