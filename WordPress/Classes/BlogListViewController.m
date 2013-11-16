@@ -165,9 +165,14 @@ CGFloat const blavatarImageSize = 50.f;
         Blog *blog = [self.resultsController objectAtIndexPath:[NSIndexPath indexPathForRow:indexPath.row inSection:0]];
         [blog remove];
         
-        if ([[self.resultsController fetchedObjects] count] == 0) {
-            [self setEditing:NO];
-            self.editButtonItem.enabled = NO;
+        // Count won't be updated yet; if this is the last site (count 1), exit editing mode
+        if ([[self.resultsController fetchedObjects] count] == 1) {
+            // Update the UI in the next run loop after the resultsController has updated
+            // (otherwise row insertion/deletion logic won't work)
+            dispatch_async(dispatch_get_main_queue(), ^{
+                self.editButtonItem.enabled = NO;
+                [self setEditing:NO animated:YES];
+            });
         }
     }
 }
