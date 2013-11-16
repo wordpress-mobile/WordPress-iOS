@@ -139,6 +139,8 @@ CGFloat const JetpackSignInButtonHeight = 41.0;
     [self layoutControls];
 }
 
+// This resolves a crash due to JetpackSettingsViewController previously using a .xib.
+// Source: http://stackoverflow.com/questions/17708292/not-key-value-coding-compliant-error-from-deleted-xib
 - (void)loadView {
     [super loadView];
 }
