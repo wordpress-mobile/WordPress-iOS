@@ -154,7 +154,7 @@ static NSString *_lastAuthedName = nil;
         [self.navigationController presentViewController:navController animated:YES completion:nil];
     } else {
         JetpackSettingsViewController *controller = [[JetpackSettingsViewController alloc] initWithBlog:blog];
-        controller.ignoreNavigationController = YES;
+        controller.initialSignIn = NO;
         __weak JetpackSettingsViewController *safeController = controller;
         [controller setCompletionBlock:^(BOOL didAuthenticate) {
             if (didAuthenticate) {

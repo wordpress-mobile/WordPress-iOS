@@ -10,4 +10,6 @@
 
 @interface WPNUXMainButton : UIButton
 
+- (void)setColor:(UIColor *)color;
+
 @end
