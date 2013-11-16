@@ -21,7 +21,7 @@
 #import "WordPressComApi.h"
 #import "WPAccount.h"
 #import "QuickPhotoViewController.h"
-#import "GeneralWalkthroughViewController.h"
+#import "LoginViewController.h"
 
 @interface MP6SidebarViewController () <UITableViewDataSource, UITableViewDelegate, NSFetchedResultsControllerDelegate, UIActionSheetDelegate> {
     Blog *_currentlyOpenedBlog;
@@ -777,7 +777,7 @@ CGFloat const SidebarViewControllerStatusBarViewHeight = 20.0;
         
         _showingWelcomeScreen = YES;
         
-        GeneralWalkthroughViewController *welcomeViewController = [[GeneralWalkthroughViewController alloc] init];
+        LoginViewController *welcomeViewController = [[LoginViewController alloc] init];
         
         UINavigationController *aNavigationController = [[UINavigationController alloc] initWithRootViewController:welcomeViewController];
         aNavigationController.navigationBar.translucent = NO;

@@ -39,7 +39,7 @@
 #import "SettingsPageViewController.h"
 #import "NotificationSettingsViewController.h"
 #import "Blog+Jetpack.h"
-#import "GeneralWalkthroughViewController.h"
+#import "LoginViewController.h"
 #import "SupportViewController.h"
 #import "WPAccount.h"
 #import "WPTableViewSectionHeaderView.h"
@@ -186,7 +186,7 @@ CGFloat const blavatarImageViewSize = 43.f;
 
         [WordPressAppDelegate wipeAllKeychainItems];
 
-        GeneralWalkthroughViewController *walkthroughViewController = [[GeneralWalkthroughViewController alloc] init];
+        LoginViewController *walkthroughViewController = [[LoginViewController alloc] init];
         self.navigationController.navigationBar.hidden = YES;
         [self.navigationController pushViewController:walkthroughViewController animated:YES];
     } else {

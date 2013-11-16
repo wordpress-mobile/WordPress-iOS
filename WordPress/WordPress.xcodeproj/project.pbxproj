@@ -663,7 +663,7 @@
 		857F55D217CEC5E100E154E1 /* doneButton-ios7@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 857F55CA17CEC5E100E154E1 /* doneButton-ios7@2x.png */; };
 		857F961517D950AB0071D9D1 /* WPTableViewSectionHeaderView.m in Sources */ = {isa = PBXBuildFile; fileRef = 857F961417D950AB0071D9D1 /* WPTableViewSectionHeaderView.m */; };
 		857F961817D95F530071D9D1 /* WPTableViewSectionFooterView.m in Sources */ = {isa = PBXBuildFile; fileRef = 857F961717D95F530071D9D1 /* WPTableViewSectionFooterView.m */; };
-		858DE40F1730384F000AC628 /* GeneralWalkthroughViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 858DE40E1730384F000AC628 /* GeneralWalkthroughViewController.m */; };
+		858DE40F1730384F000AC628 /* LoginViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 858DE40E1730384F000AC628 /* LoginViewController.m */; };
 		858DE41217303BB4000AC628 /* OpenSans-Light.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 858DE41017303BB4000AC628 /* OpenSans-Light.ttf */; };
 		858DE41317303BB4000AC628 /* OpenSans-Regular.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 858DE41117303BB4000AC628 /* OpenSans-Regular.ttf */; };
 		8597439E17D6D956009DCDCA /* toggleButtonMain-ios7.png in Resources */ = {isa = PBXBuildFile; fileRef = 8597439617D6D956009DCDCA /* toggleButtonMain-ios7.png */; };
@@ -958,7 +958,6 @@
 		E22257EE1829C15B00F76926 /* textPushDetailIcon.png in Resources */ = {isa = PBXBuildFile; fileRef = E22257EC1829C15B00F76926 /* textPushDetailIcon.png */; };
 		E22257EF1829C15B00F76926 /* textPushDetailIcon@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = E22257ED1829C15B00F76926 /* textPushDetailIcon@2x.png */; };
 		E232E5FE182E9E8600792CA0 /* icon-username-field@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = E232E5FD182E9E8600792CA0 /* icon-username-field@2x.png */; };
-		E232E600182EA15A00792CA0 /* icon-username-field.png in Resources */ = {isa = PBXBuildFile; fileRef = E232E5FF182EA15A00792CA0 /* icon-username-field.png */; };
 		E232E603182EA16200792CA0 /* icon-password-field.png in Resources */ = {isa = PBXBuildFile; fileRef = E232E601182EA16200792CA0 /* icon-password-field.png */; };
 		E232E604182EA16200792CA0 /* icon-password-field@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = E232E602182EA16200792CA0 /* icon-password-field@2x.png */; };
 		E232E607182EA1C400792CA0 /* icon-url-field.png in Resources */ = {isa = PBXBuildFile; fileRef = E232E605182EA1C400792CA0 /* icon-url-field.png */; };
@@ -1767,8 +1766,8 @@
 		857F961417D950AB0071D9D1 /* WPTableViewSectionHeaderView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WPTableViewSectionHeaderView.m; sourceTree = "<group>"; };
 		857F961617D95F530071D9D1 /* WPTableViewSectionFooterView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WPTableViewSectionFooterView.h; sourceTree = "<group>"; };
 		857F961717D95F530071D9D1 /* WPTableViewSectionFooterView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WPTableViewSectionFooterView.m; sourceTree = "<group>"; };
-		858DE40D1730384F000AC628 /* GeneralWalkthroughViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GeneralWalkthroughViewController.h; sourceTree = "<group>"; };
-		858DE40E1730384F000AC628 /* GeneralWalkthroughViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GeneralWalkthroughViewController.m; sourceTree = "<group>"; };
+		858DE40D1730384F000AC628 /* LoginViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LoginViewController.h; sourceTree = "<group>"; };
+		858DE40E1730384F000AC628 /* LoginViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LoginViewController.m; sourceTree = "<group>"; };
 		858DE41017303BB4000AC628 /* OpenSans-Light.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "OpenSans-Light.ttf"; sourceTree = "<group>"; };
 		858DE41117303BB4000AC628 /* OpenSans-Regular.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "OpenSans-Regular.ttf"; sourceTree = "<group>"; };
 		8597439617D6D956009DCDCA /* toggleButtonMain-ios7.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "toggleButtonMain-ios7.png"; sourceTree = "<group>"; };
@@ -2966,8 +2965,8 @@
 				85D08A7017342ECE00E2BBCA /* AddUsersBlogCell.m */,
 				85EC44D21739826A00686604 /* CreateAccountAndBlogViewController.h */,
 				85EC44D31739826A00686604 /* CreateAccountAndBlogViewController.m */,
-				858DE40D1730384F000AC628 /* GeneralWalkthroughViewController.h */,
-				858DE40E1730384F000AC628 /* GeneralWalkthroughViewController.m */,
+				858DE40D1730384F000AC628 /* LoginViewController.h */,
+				858DE40E1730384F000AC628 /* LoginViewController.m */,
 				85E1058F1731D066001071A3 /* LoginCompletedWalkthroughViewController.h */,
 				85E105901731D066001071A3 /* LoginCompletedWalkthroughViewController.m */,
 				85D08A5C17332C4A00E2BBCA /* NewAddUsersBlogViewController.h */,
@@ -3458,7 +3457,6 @@
 				FD22C2B616CD2B20002BA030 /* navbar_settings@2x.png */,
 				E15051CC16CA8E4900D3DDDC /* logo_jetpack.png */,
 				E15051CD16CA8E4900D3DDDC /* logo_jetpack@2x.png */,
-				3716E40216729B960035F8C4 /* action_icon_followed.png */,
 				3716E40316729B960035F8C4 /* action_icon_followed@2x.png */,
 				3716E40416729B960035F8C4 /* action_icon_replied.png */,
 				3716E40516729B960035F8C4 /* action_icon_replied@2x.png */,
@@ -3657,8 +3655,6 @@
 				5D7BEA2F17749FFD00423E7F /* wporg_blavatar@2x.png */,
 				374CB16315B9907600DD0EBC /* WPpregressHUDBackground.png */,
 				374CB16415B9907600DD0EBC /* WPpregressHUDBackground@2x.png */,
-				E12A08E116C9706200E3DDF6 /* clouds_header.png */,
-				E12A08E216C9706200E3DDF6 /* clouds_header@2x.png */,
 				E15051CC16CA8E4900D3DDDC /* logo_jetpack.png */,
 				E15051CD16CA8E4900D3DDDC /* logo_jetpack@2x.png */,
 				FD22C2B516CD2B20002BA030 /* navbar_settings.png */,
@@ -4912,7 +4908,6 @@
 				5D7BEA3617749FFD00423E7F /* wporg_blavatar.png in Resources */,
 				5D7BEA3717749FFD00423E7F /* wporg_blavatar@2x.png in Resources */,
 				5D7BEA3A1774A02400423E7F /* cell-separator.png in Resources */,
-				85ED989D17DFA93800090D0B /* AppIcon57x57@2x.png in Resources */,
 				E233414A182DB62900A4CC40 /* btn-back-chevron-tapped@2x.png in Resources */,
 				85325A3717BB0DF8008E87D1 /* icon-menu-reader-active@2x.png in Resources */,
 				5D7BEA3B1774A02400423E7F /* cell-separator@2x.png in Resources */,
@@ -5236,7 +5231,7 @@
 				8525398B171761D9003F6B32 /* WPComLanguages.m in Sources */,
 				85149741171E13DF00B87F3F /* WPAsyncBlockOperation.m in Sources */,
 				85149747171E671000B87F3F /* SelectWPComBlogVisibilityViewController.m in Sources */,
-				858DE40F1730384F000AC628 /* GeneralWalkthroughViewController.m in Sources */,
+				858DE40F1730384F000AC628 /* LoginViewController.m in Sources */,
 				85C720B11730CEFA00460645 /* WPWalkthroughTextField.m in Sources */,
 				85E105861731A597001071A3 /* WPWalkthroughOverlayView.m in Sources */,
 				85E105911731D066001071A3 /* LoginCompletedWalkthroughViewController.m in Sources */,

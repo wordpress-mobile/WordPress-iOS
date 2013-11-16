@@ -10,7 +10,7 @@
 #import <WPXMLRPC/WPXMLRPC.h>
 #import <QuartzCore/QuartzCore.h>
 #import "UIView+FormSheetHelpers.h"
-#import "GeneralWalkthroughViewController.h"
+#import "LoginViewController.h"
 #import "CreateAccountAndBlogViewController.h"
 #import "NewAddUsersBlogViewController.h"
 #import "AboutViewController.h"
@@ -30,7 +30,7 @@
 #import "WPNUXUtility.h"
 #import "WPAccount.h"
 
-@interface GeneralWalkthroughViewController () <
+@interface LoginViewController () <
     UIScrollViewDelegate,
     UITextFieldDelegate> {
         
@@ -60,7 +60,7 @@
 
 @end
 
-@implementation GeneralWalkthroughViewController
+@implementation LoginViewController
 
 CGFloat const GeneralWalkthroughIconVerticalOffset = 77;
 CGFloat const GeneralWalkthroughStandardOffset = 16;
