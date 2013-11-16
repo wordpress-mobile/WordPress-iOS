@@ -36,7 +36,6 @@
         
     // Views
     UIView *_mainView;
-    UIView *_bottomPanel;
     WPNUXSecondaryButton *_skipToCreateAccount;
     WPNUXSecondaryButton *_toggleSignInForm;
     UIButton *_infoButton;
@@ -49,7 +48,6 @@
     // Measurements
     CGFloat _viewWidth;
     CGFloat _viewHeight;
-    CGFloat _heightFromBottomPanel;
     CGFloat _keyboardOffset;
     
     BOOL _userIsDotCom;
@@ -65,9 +63,7 @@
 
 CGFloat const GeneralWalkthroughIconVerticalOffset = 77;
 CGFloat const GeneralWalkthroughStandardOffset = 16;
-CGFloat const GeneralWalkthroughBottomBackgroundHeight = 64;
 CGFloat const GeneralWalkthroughMaxTextWidth = 289.0;
-CGFloat const GeneralWalkthroughSwipeToContinueTopOffset = 14.0;
 CGFloat const GeneralWalkthroughTextFieldWidth = 320.0;
 CGFloat const GeneralWalkthroughTextFieldHeight = 44.0;
 CGFloat const GeneralWalkthroughSignInButtonWidth = 289.0;
@@ -476,7 +472,7 @@ CGFloat const GeneralWalkthroughiOS7StatusBarOffset = 20.0;
     // Layout Skip to Create Account Button
     x = GeneralWalkthroughStandardOffset;
     x = (_viewWidth - CGRectGetWidth(_skipToCreateAccount.frame))/2.0;
-    y = CGRectGetMinY(_bottomPanel.frame) + GeneralWalkthroughStandardOffset;
+    y = CGRectGetMaxY(_mainView.frame) - GeneralWalkthroughStandardOffset - 33;
     _skipToCreateAccount.frame = CGRectMake(x, y, CGRectGetWidth(_skipToCreateAccount.frame), 33);
     
     // Layout Toggle Button
