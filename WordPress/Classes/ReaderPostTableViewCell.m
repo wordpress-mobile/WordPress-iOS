@@ -23,10 +23,11 @@ const CGFloat RPTVCMetaViewHeightWithButtons = 101.0f;
 const CGFloat RPTVCMetaViewHeightSansButtons = 52.0f;
 
 // Control buttons (Like, Reblog, ...)
-const NSUInteger RPTVCControlButtonCount = 2;
 const CGFloat RPTVCControlButtonHeight = 48.0f;
+const CGFloat RPTVCControlButtonWidth = 48.0f;
 const CGFloat RPTVCControlButtonVerticalPadding = 4.0f;
-const CGFloat RPTVCControlButtonBorderSize = 1.0f;
+const CGFloat RPTVCControlButtonSpacing = 12.0f;
+const CGFloat RPTVCControlButtonBorderSize = 0.0f;
 
 @interface ReaderPostTableViewCell()
 
@@ -43,6 +44,7 @@ const CGFloat RPTVCControlButtonBorderSize = 1.0f;
 @property (nonatomic, strong) UIView *controlView;
 @property (nonatomic, strong) UIButton *likeButton;
 @property (nonatomic, strong) UIButton *reblogButton;
+@property (nonatomic, strong) UIButton *commentButton;
 
 @property (nonatomic, assign) BOOL showImage;
 
@@ -211,11 +213,10 @@ const CGFloat RPTVCControlButtonBorderSize = 1.0f;
 	[_containerView addSubview:_snippetLabel];
 }
 
-
 - (void)buildMetaContent {
 	self.metaView = [[UIView alloc] init];
 	_metaView.autoresizingMask = UIViewAutoresizingFlexibleWidth;
-	_metaView.backgroundColor = [UIColor colorWithWhite:0.95703125f alpha:1.f];
+	_metaView.backgroundColor = [UIColor clearColor];
 	[_containerView addSubview:_metaView];
 
 	self.byView = [[UIView alloc] init];
@@ -253,6 +254,13 @@ const CGFloat RPTVCControlButtonBorderSize = 1.0f;
 	[_reblogButton setImage:[UIImage imageNamed:@"reader-postaction-reblog-blue"] forState:UIControlStateNormal];
 	[_reblogButton setImage:[UIImage imageNamed:@"reader-postaction-reblog-done"] forState:UIControlStateSelected];
 	[_metaView addSubview:_reblogButton];
+    
+    self.commentButton = [ReaderButton buttonWithType:UIButtonTypeCustom];
+	_commentButton.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleLeftMargin;
+	_commentButton.backgroundColor = [UIColor whiteColor];
+	[_commentButton setImage:[UIImage imageNamed:@"reader-postaction-comment-blue"] forState:UIControlStateNormal];
+	[_commentButton setImage:[UIImage imageNamed:@"reader-postaction-comment-active"] forState:UIControlStateSelected];
+	[_metaView addSubview:_commentButton];
 }
 
 - (void)layoutSubviews {
@@ -291,10 +299,23 @@ const CGFloat RPTVCControlButtonBorderSize = 1.0f;
 	height = [self.post isWPCom] ? RPTVCMetaViewHeightWithButtons : RPTVCMetaViewHeightSansButtons;
 	_metaView.frame = CGRectMake(0.0f, nextY, contentWidth, height);
 	
-	CGFloat buttonWidth = ceilf(_metaView.frame.size.width / RPTVCControlButtonCount);
+    BOOL commentsOpen = [[self.post commentsOpen] boolValue];
+	CGFloat buttonWidth = RPTVCControlButtonWidth - RPTVCControlButtonBorderSize;
+    CGFloat buttonX = _metaView.frame.size.width - RPTVCControlButtonWidth;
     CGFloat buttonY = RPTVCControlButtonHeight + RPTVCControlButtonVerticalPadding;
-    _likeButton.frame = CGRectMake(0.0f, buttonY, buttonWidth, RPTVCControlButtonHeight);
-    _reblogButton.frame = CGRectMake(buttonWidth + RPTVCControlButtonBorderSize, buttonY, buttonWidth - RPTVCControlButtonBorderSize, RPTVCControlButtonHeight);
+    
+    // Button order from right-to-left: Like, [Comment], Reblog,
+    _likeButton.frame = CGRectMake(buttonX, buttonY, buttonWidth, RPTVCControlButtonHeight);
+    buttonX -= buttonWidth + RPTVCControlButtonBorderSize;
+    
+    if (commentsOpen) {
+        self.commentButton.hidden = NO;
+        self.commentButton.frame = CGRectMake(buttonX, buttonY, buttonWidth, RPTVCControlButtonHeight);
+        buttonX -= buttonWidth + RPTVCControlButtonBorderSize;
+    } else {
+        self.commentButton.hidden = YES;
+    }
+    _reblogButton.frame = CGRectMake(buttonX, buttonY, buttonWidth - RPTVCControlButtonBorderSize, RPTVCControlButtonHeight);
     
     _bylineLabel.frame = CGRectMake(47.0f, 8.0f, contentWidth - 57.0f, 36.0f);
     
