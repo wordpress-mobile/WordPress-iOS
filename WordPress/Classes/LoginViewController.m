@@ -38,7 +38,7 @@
     UIView *_mainView;
     WPNUXSecondaryButton *_skipToCreateAccount;
     WPNUXSecondaryButton *_toggleSignInForm;
-    UIButton *_infoButton;
+    UIButton *_helpButton;
     UIImageView *_icon;
     WPWalkthroughTextField *_usernameText;
     WPWalkthroughTextField *_passwordText;
@@ -246,7 +246,7 @@ CGFloat const GeneralWalkthroughiOS7StatusBarOffset = 20.0;
 
 #pragma mark - Button Press Methods
 
-- (void)clickedInfoButton:(id)sender
+- (void)helpButtonAction:(id)sender
 {
     [WPMobileStats trackEventForSelfHostedAndWPCom:StatsEventNUXFirstWalkthroughClickedInfo];
 
@@ -276,11 +276,11 @@ CGFloat const GeneralWalkthroughiOS7StatusBarOffset = 20.0;
 
     // The info button is a little hard to hit so this adds a little buffer around it
     CGPoint touchPoint = [tapGestureRecognizer locationInView:self.view];
-    CGFloat x = CGRectGetMaxX(_infoButton.frame) + 10;
-    CGFloat y = CGRectGetMaxY(_infoButton.frame) + 10;
+    CGFloat x = CGRectGetMaxX(_helpButton.frame) + 10;
+    CGFloat y = CGRectGetMaxY(_helpButton.frame) + 10;
     CGRect infoButtonRect = CGRectMake(0, 0, x, y);
     if (CGRectContainsPoint(infoButtonRect, touchPoint)) {
-        [self clickedInfoButton:nil];
+        [self helpButtonAction:nil];
     }
 }
 
@@ -353,12 +353,12 @@ CGFloat const GeneralWalkthroughiOS7StatusBarOffset = 20.0;
     
     // Add Info button
     UIImage *infoButtonImage = [UIImage imageNamed:@"btn-help"];
-    if (_infoButton == nil) {
-        _infoButton = [UIButton buttonWithType:UIButtonTypeCustom];
-        [_infoButton setImage:infoButtonImage forState:UIControlStateNormal];
-        _infoButton.frame = CGRectMake(GeneralWalkthroughStandardOffset, GeneralWalkthroughStandardOffset, infoButtonImage.size.width, infoButtonImage.size.height);
-        [_infoButton addTarget:self action:@selector(clickedInfoButton:) forControlEvents:UIControlEventTouchUpInside];
-        [_mainView addSubview:_infoButton];
+    if (_helpButton == nil) {
+        _helpButton = [UIButton buttonWithType:UIButtonTypeCustom];
+        [_helpButton setImage:infoButtonImage forState:UIControlStateNormal];
+        _helpButton.frame = CGRectMake(GeneralWalkthroughStandardOffset, GeneralWalkthroughStandardOffset, infoButtonImage.size.width, infoButtonImage.size.height);
+        [_helpButton addTarget:self action:@selector(helpButtonAction:) forControlEvents:UIControlEventTouchUpInside];
+        [_mainView addSubview:_helpButton];
     }
     
     // Add Username
@@ -443,7 +443,7 @@ CGFloat const GeneralWalkthroughiOS7StatusBarOffset = 20.0;
     if (IS_IOS7 && IS_IPHONE) {
         y = GeneralWalkthroughiOS7StatusBarOffset;
     }
-    _infoButton.frame = CGRectMake(0, y, infoButtonImage.size.width, infoButtonImage.size.height);
+    _helpButton.frame = CGRectMake(_viewWidth - infoButtonImage.size.width, y, infoButtonImage.size.width, infoButtonImage.size.height);
     
     x = (_viewWidth - CGRectGetWidth(_icon.frame))/2.0;
     y = GeneralWalkthroughIconVerticalOffset;
@@ -885,7 +885,7 @@ CGFloat const GeneralWalkthroughiOS7StatusBarOffset = 20.0;
     
     [UIView animateWithDuration:animationDuration animations:^{
         NSArray *controlsToMove = @[_icon, _usernameText, _passwordText, _siteUrlText, _signInButton];
-        NSArray *controlsToHide = @[_infoButton];
+        NSArray *controlsToHide = @[_helpButton];
         
         for (UIControl *control in controlsToMove) {
             CGRect frame = control.frame;
@@ -905,7 +905,7 @@ CGFloat const GeneralWalkthroughiOS7StatusBarOffset = 20.0;
     CGFloat animationDuration = [[keyboardInfo objectForKey:UIKeyboardAnimationDurationUserInfoKey] floatValue];
     [UIView animateWithDuration:animationDuration animations:^{
         NSArray *controlsToMove = @[_icon, _usernameText, _passwordText, _siteUrlText, _signInButton];
-        NSArray *controlsToHide = @[_infoButton];
+        NSArray *controlsToHide = @[_helpButton];
 
         for (UIControl *control in controlsToMove) {
             CGRect frame = control.frame;
