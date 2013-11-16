@@ -67,7 +67,7 @@ const CGFloat RPTVCMetaViewHeightSansButtons = 52.0f;
     }
 
 	// Are we showing an image? What size should it be?
-	if(post.featuredImageURL) {
+	if (post.featuredImageURL) {
 		CGFloat height = ceilf((contentWidth * 0.66f));
 		desiredHeight += height;
 	}
@@ -147,11 +147,9 @@ const CGFloat RPTVCMetaViewHeightSansButtons = 52.0f;
                      } completion:nil];
 }
 
-
 - (void)setPost:(ReaderPost *)post {
-	if ([post isEqual:_post]) {
+	if ([post isEqual:_post])
 		return;
-	}
 	
 	if (_post) {
 		[_post removeObserver:self forKeyPath:@"isReblogged" context:@"reblogging"];
@@ -161,14 +159,12 @@ const CGFloat RPTVCMetaViewHeightSansButtons = 52.0f;
 	[_post addObserver:self forKeyPath:@"isReblogged" options:NSKeyValueObservingOptionNew context:@"reblogging"];
 }
 
-
 - (void)setHighlighted:(BOOL)highlighted animated:(BOOL)animated {
     BOOL previouslyHighlighted = self.highlighted;
     [super setHighlighted:highlighted animated:animated];
 
-    if (previouslyHighlighted == highlighted) {
+    if (previouslyHighlighted == highlighted)
         return;
-    }
 
     if (highlighted) {
         [self setHighlightedEffect:highlighted animated:animated];
@@ -185,7 +181,6 @@ const CGFloat RPTVCMetaViewHeightSansButtons = 52.0f;
     [super setSelected:selected animated:animated];
     [self setHighlightedEffect:selected animated:animated];
 }
-
 
 - (void)buildPostContent {
 	self.cellImageView.contentMode = UIViewContentModeScaleAspectFill;
@@ -252,7 +247,6 @@ const CGFloat RPTVCMetaViewHeightSansButtons = 52.0f;
 	[_reblogButton setImage:[UIImage imageNamed:@"reader-postaction-reblog-blue"] forState:UIControlStateNormal];
 	[_reblogButton setImage:[UIImage imageNamed:@"reader-postaction-reblog-done"] forState:UIControlStateSelected];
 	[_metaView addSubview:_reblogButton];
-	
 }
 
 - (void)layoutSubviews {
@@ -269,7 +263,7 @@ const CGFloat RPTVCMetaViewHeightSansButtons = 52.0f;
     _containerView.frame = frame;
 
 	// Are we showing an image? What size should it be?
-	if(_showImage) {
+	if (_showImage) {
 		height = ceilf(contentWidth * 0.66f);
 		self.cellImageView.frame = CGRectMake(RPTVCHorizontalPadding, nextY, innerContentWidth, height);
 		nextY += height;
@@ -320,14 +314,11 @@ const CGFloat RPTVCMetaViewHeightSansButtons = 52.0f;
 	[self updateControlBar];
 }
 
-
 - (void)setReblogTarget:(id)target action:(SEL)selector {
 	[_reblogButton addTarget:target action:selector forControlEvents:UIControlEventTouchUpInside];
 }
 
-
 - (void)configureCell:(ReaderPost *)post {
-	
 	self.post = post;
     
     // This will show the placeholder avatar. Do this here instead of prepareForReusue
@@ -362,16 +353,16 @@ const CGFloat RPTVCMetaViewHeightSansButtons = 52.0f;
 	[self updateControlBar];
 }
 
-
 - (void)setAvatar:(UIImage *)avatar {
-    if (_avatarIsSet) {
+    if (_avatarIsSet)
         return;
-    }
+
     static UIImage *wpcomBlavatar;
     static UIImage *wporgBlavatar;
     if (!wpcomBlavatar) {
         wpcomBlavatar = [UIImage imageNamed:@"wpcom_blavatar"];
     }
+    
     if (!wporgBlavatar) {
         wporgBlavatar = [UIImage imageNamed:@"wporg_blavatar"];
     }
@@ -384,12 +375,10 @@ const CGFloat RPTVCMetaViewHeightSansButtons = 52.0f;
     }
 }
 
-
 - (void)setFeaturedImage:(UIImage *)image {
     self.cellImageView.contentMode = UIViewContentModeScaleAspectFill;
     self.cellImageView.image = image;
 }
-
 
 - (void)updateControlBar {
 	if (!_post)
@@ -399,7 +388,6 @@ const CGFloat RPTVCMetaViewHeightSansButtons = 52.0f;
     _reblogButton.selected = _post.isReblogged.boolValue;
 	_reblogButton.userInteractionEnabled = !_reblogButton.selected;
 }
-
 
 - (void)handleLikeButtonTapped:(id)sender {
 
