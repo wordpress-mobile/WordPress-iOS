@@ -392,14 +392,12 @@ const CGFloat RPTVCMetaViewHeightSansButtons = 52.0f;
 
 
 - (void)updateControlBar {
-	if (!_post) return;
+	if (!_post)
+        return;
 	
     _likeButton.selected = _post.isLiked.boolValue;
     _reblogButton.selected = _post.isReblogged.boolValue;
 	_reblogButton.userInteractionEnabled = !_reblogButton.selected;
-
-	NSString *str = ([self.post.likeCount integerValue] > 0) ? [self.post.likeCount stringValue] : nil;
-	[_likeButton setTitle:str forState:UIControlStateNormal];
 }
 
 
