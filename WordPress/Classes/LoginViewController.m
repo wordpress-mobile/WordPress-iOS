@@ -114,13 +114,13 @@ CGFloat const GeneralWalkthroughiOS7StatusBarOffset = 20.0;
         [_passwordText becomeFirstResponder];
     } else if (textField == _passwordText) {
         if (_userIsDotCom) {
-            [self clickedSignIn:nil];
+            [self signInButtonAction:nil];
         } else {
             [_siteUrlText becomeFirstResponder];
         }
     } else if (textField == _siteUrlText) {
         if (_signInButton.enabled) {
-            [self clickedSignIn:nil];
+            [self signInButtonAction:nil];
         }
     }
     
@@ -284,7 +284,7 @@ CGFloat const GeneralWalkthroughiOS7StatusBarOffset = 20.0;
     }
 }
 
-- (void)clickedSignIn:(id)sender
+- (void)signInButtonAction:(id)sender
 {
     [self.view endEditing:YES];
 
