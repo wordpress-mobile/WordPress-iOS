@@ -20,6 +20,7 @@ pod 'MGImageUtilities', :git => 'git://github.com/wordpress-mobile/MGImageUtilit
 pod 'Quantcast-Measure', '~> 1.2.10'
 pod 'CocoaLumberjack', '1.6.2'
 pod 'NSLogger-CocoaLumberjack-connector', '~>1.3'
+pod 'EmailChecker', :podspec => 'https://raw.github.com/wordpress-mobile/EmailChecker/master/ios/EmailChecker.podspec'
 
 target :WordPressTest, :exclusive => true do
   pod 'OHHTTPStubs', '1.1.1'
@@ -84,5 +85,3 @@ post_install do |installer|
     JSONKIT_FLAGS = "-Wno-deprecated-objc-isa-usage -Wno-format -Wno-parentheses"
     add_compiler_flags(installer.project, "JSONKit.m", JSONKIT_FLAGS)
 end
-
-
