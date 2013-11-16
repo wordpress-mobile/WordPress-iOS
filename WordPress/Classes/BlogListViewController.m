@@ -75,6 +75,15 @@ CGFloat const blavatarImageSize = 50.f;
     self.resultsController.delegate = self;
     [self.resultsController performFetch:nil];
     [self.tableView reloadData];
+
+    if ([[self.resultsController fetchedObjects] count] == 1) {
+        static dispatch_once_t onceToken;
+        dispatch_once(&onceToken, ^{
+            NSIndexPath *firstIndexPath = [NSIndexPath indexPathForRow:0 inSection:0];
+            [self.tableView selectRowAtIndexPath:firstIndexPath animated:NO scrollPosition:UITableViewScrollPositionNone];
+            [self tableView:self.tableView didSelectRowAtIndexPath:firstIndexPath];
+        });
+    }
 }
 
 - (void)viewWillDisappear:(BOOL)animated {
