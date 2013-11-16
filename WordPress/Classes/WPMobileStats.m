@@ -209,14 +209,6 @@ NSString *const StatsEventNUXCreateAccountClickedReviewPagePrevious = @"NUX - Cr
 NSString *const StatsEventNUXCreateAccountClickedViewLanguages = @"NUX - Create Account - Viewed Languages";
 NSString *const StatsEventNUXCreateAccountChangedDefaultURL = @"NUX - Create Account - Changed Default URL";
 
-// NUX Second Walkthrough
-NSString *const StatsEventNUXSecondWalkthroughOpened = @"NUX - Second Walkthrough - Opened";
-NSString *const StatsEventNUXSecondWalkthroughViewedReaderPage = @"NUX - Second Walkthrough - Viewed Reader Page";
-NSString *const StatsEventNUXSecondWalkthroughViewedNotificationPage = @"NUX - Second Walkthrough - Viewed Notification Page";
-NSString *const StatsEventNUXSecondWalkthroughViewedGetStartedPage = @"NUX - Second Walkthrough - Viewed Get Started Page";
-NSString *const StatsEventNUXSecondWalkthroughClickedStartUsingApp = @"NUX - Second Walkthrough - Clicked Start Using App";
-NSString *const StatsEventNUXSecondWalkthroughClickedStartUsingAppOnFinalPage = @"NUX - Second Walkthrough - Clicked Start Using App on Final Page";
-
 // Ådd Blogs Screen
 NSString *const StatsEventAddBlogsOpened = @"Add Blogs - Opened";
 NSString *const StatsEventAddBlogsClickedSelectAll = @"Add Blogs - Clicked Select All";
