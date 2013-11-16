@@ -38,6 +38,7 @@
     UIView *_mainView;
     UIView *_bottomPanel;
     WPNUXSecondaryButton *_skipToCreateAccount;
+    WPNUXSecondaryButton *_toggleSignInForm;
     UIButton *_infoButton;
     UIImageView *_icon;
     WPWalkthroughTextField *_usernameText;
@@ -86,6 +87,7 @@ CGFloat const GeneralWalkthroughiOS7StatusBarOffset = 20.0;
     _viewHeight = [self.view formSheetViewHeight];
         
     self.view.backgroundColor = [WPNUXUtility backgroundColor];
+    _userIsDotCom = YES;
 
     [self addMainView];
     [self initializeView];
@@ -115,7 +117,11 @@ CGFloat const GeneralWalkthroughiOS7StatusBarOffset = 20.0;
     if (textField == _usernameText) {
         [_passwordText becomeFirstResponder];
     } else if (textField == _passwordText) {
-        [_siteUrlText becomeFirstResponder];
+        if (_userIsDotCom) {
+            [self clickedSignIn:nil];
+        } else {
+            [_siteUrlText becomeFirstResponder];
+        }
     } else if (textField == _siteUrlText) {
         if (_signInButton.enabled) {
             [self clickedSignIn:nil];
@@ -299,6 +305,27 @@ CGFloat const GeneralWalkthroughiOS7StatusBarOffset = 20.0;
     [self signIn];
 }
 
+- (void)toggleSignInformAction:(id)sender {
+    
+    _userIsDotCom = !_userIsDotCom;
+    
+    // Only animate transition on iOS 7 due to snapshotting API
+    if (IS_IOS7) {
+        UIView *snapshot = [self.view snapshotViewAfterScreenUpdates:NO];
+        [self.view addSubview:snapshot];
+        [self initializeView];
+        
+        [UIView animateWithDuration:0.3
+                         animations:^{
+                             snapshot.alpha = 0.0;
+                         } completion:^(BOOL finished) {
+                             [snapshot removeFromSuperview];
+                         }];
+    } else {
+        [self initializeView];
+    }
+}
+
 #pragma mark - Private Methods
 
 - (void)addMainView
@@ -376,8 +403,11 @@ CGFloat const GeneralWalkthroughiOS7StatusBarOffset = 20.0;
         _siteUrlText.autocorrectionType = UITextAutocorrectionTypeNo;
         _siteUrlText.autocapitalizationType = UITextAutocapitalizationTypeNone;
         _siteUrlText.showTopLineSeparator = YES;
-        [_mainView addSubview:_siteUrlText];
+        // insert URL field below password field to hide when signing into
+        // WP.com account
+        [_mainView insertSubview:_siteUrlText belowSubview:_passwordText];
     }
+    _siteUrlText.enabled = !_userIsDotCom;
     
     // Add Sign In Button
     if (_signInButton == nil) {
@@ -388,12 +418,15 @@ CGFloat const GeneralWalkthroughiOS7StatusBarOffset = 20.0;
         _signInButton.enabled = NO;
     }
     
-    // Bottom Panel
-    if (_bottomPanel == nil) {
-        _bottomPanel = [[UIView alloc] init];
-        _bottomPanel.backgroundColor = [UIColor clearColor];
-        [_mainView addSubview:_bottomPanel];
+    // Add Account type toggle
+    if (_toggleSignInForm == nil) {
+        _toggleSignInForm = [[WPNUXSecondaryButton alloc] init];
+        [_toggleSignInForm addTarget:self action:@selector(toggleSignInformAction:) forControlEvents:UIControlEventTouchUpInside];
+        [_mainView addSubview:_toggleSignInForm];
     }
+    NSString *toggleTitle = _userIsDotCom ? @"Add Self-Hosted Site" : @"Sign in to WordPress.com";
+    [_toggleSignInForm setTitle:toggleTitle forState:UIControlStateNormal];
+    [_toggleSignInForm sizeToFit];
     
     // Add Skip to Create Account Button
     if (_skipToCreateAccount == nil) {
@@ -432,7 +465,7 @@ CGFloat const GeneralWalkthroughiOS7StatusBarOffset = 20.0;
 
     // Layout Site URL
     x = (_viewWidth - GeneralWalkthroughTextFieldWidth)/2.0;
-    y = CGRectGetMaxY(_passwordText.frame) - 1;
+    y = _userIsDotCom ? CGRectGetMaxY(_usernameText.frame) - 1 : CGRectGetMaxY(_passwordText.frame);
     _siteUrlText.frame = CGRectIntegral(CGRectMake(x, y, GeneralWalkthroughTextFieldWidth, GeneralWalkthroughTextFieldHeight));
 
     // Layout Sign in Button
@@ -440,19 +473,21 @@ CGFloat const GeneralWalkthroughiOS7StatusBarOffset = 20.0;
     y = CGRectGetMaxY(_siteUrlText.frame) + GeneralWalkthroughStandardOffset;
     _signInButton.frame = CGRectMake(x, y, GeneralWalkthroughSignInButtonWidth, GeneralWalkthroughSignInButtonHeight);
     
-    // Layout Bottom Panel
-    x = 0;
-    y = _viewHeight - GeneralWalkthroughBottomBackgroundHeight;
-    _bottomPanel.frame = CGRectMake(x, y, _viewWidth, GeneralWalkthroughBottomBackgroundHeight);
-    
     // Layout Skip to Create Account Button
     x = GeneralWalkthroughStandardOffset;
     x = (_viewWidth - CGRectGetWidth(_skipToCreateAccount.frame))/2.0;
     y = CGRectGetMinY(_bottomPanel.frame) + GeneralWalkthroughStandardOffset;
     _skipToCreateAccount.frame = CGRectMake(x, y, CGRectGetWidth(_skipToCreateAccount.frame), 33);
     
+    // Layout Toggle Button
+    x = GeneralWalkthroughStandardOffset;
+    x = (_viewWidth - CGRectGetWidth(_toggleSignInForm.frame))/2.0;
+    y = CGRectGetMinY(_skipToCreateAccount.frame) - 0.5 * GeneralWalkthroughStandardOffset - 33;
+    _toggleSignInForm.frame = CGRectMake(x, y, CGRectGetWidth(_toggleSignInForm.frame), 33);
+    
+    
     NSArray *viewsToCenter = @[_icon, _usernameText, _passwordText, _siteUrlText, _signInButton];
-    [WPNUXUtility centerViews:viewsToCenter withStartingView:_icon andEndingView:_signInButton forHeight:(_viewHeight-_heightFromBottomPanel)];
+    [WPNUXUtility centerViews:viewsToCenter withStartingView:_icon andEndingView:_signInButton forHeight:_viewHeight - (_viewHeight-CGRectGetMinY(_toggleSignInForm.frame))];
 }
 
 - (void)showCompletionWalkthrough
@@ -543,7 +578,7 @@ CGFloat const GeneralWalkthroughiOS7StatusBarOffset = 20.0;
 
 - (BOOL)areFieldsValid
 {
-    if ([self areSelfHostedFieldsFilled]) {
+    if ([self areSelfHostedFieldsFilled] && !_userIsDotCom) {
         return [self isUrlValid];
     } else {
         return [self areDotComFieldsFilled];
@@ -600,7 +635,7 @@ CGFloat const GeneralWalkthroughiOS7StatusBarOffset = 20.0;
     NSString *password = _passwordText.text;
     _dotComSiteUrl = nil;
     
-    if ([self hasUserOnlyEnteredValuesForDotCom]) {
+    if (_userIsDotCom) {
         [WPMobileStats trackEventForSelfHostedAndWPCom:StatsEventNUXFirstWalkthroughSignedInWithoutUrl];
         [self signInForWPComForUsername:username andPassword:password];
         return;
