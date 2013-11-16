@@ -472,7 +472,7 @@ CGFloat const GeneralWalkthroughiOS7StatusBarOffset = 20.0;
     // Layout Skip to Create Account Button
     x = GeneralWalkthroughStandardOffset;
     x = (_viewWidth - CGRectGetWidth(_skipToCreateAccount.frame))/2.0;
-    y = CGRectGetMaxY(_mainView.frame) - GeneralWalkthroughStandardOffset - 33;
+    y = _viewHeight - GeneralWalkthroughStandardOffset - 33;
     _skipToCreateAccount.frame = CGRectMake(x, y, CGRectGetWidth(_skipToCreateAccount.frame), 33);
     
     // Layout Toggle Button
@@ -481,9 +481,8 @@ CGFloat const GeneralWalkthroughiOS7StatusBarOffset = 20.0;
     y = CGRectGetMinY(_skipToCreateAccount.frame) - 0.5 * GeneralWalkthroughStandardOffset - 33;
     _toggleSignInForm.frame = CGRectMake(x, y, CGRectGetWidth(_toggleSignInForm.frame), 33);
     
-    
     NSArray *viewsToCenter = @[_icon, _usernameText, _passwordText, _siteUrlText, _signInButton];
-    [WPNUXUtility centerViews:viewsToCenter withStartingView:_icon andEndingView:_signInButton forHeight:_viewHeight - (_viewHeight-CGRectGetMinY(_toggleSignInForm.frame))];
+    [WPNUXUtility centerViews:viewsToCenter withStartingView:_icon andEndingView:_signInButton forHeight:_viewHeight];
 }
 
 - (void)showCompletionWalkthrough
