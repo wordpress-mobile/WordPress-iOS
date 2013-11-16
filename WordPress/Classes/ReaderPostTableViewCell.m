@@ -22,6 +22,12 @@ const CGFloat RPTVCHorizontalPadding = 10.0f;
 const CGFloat RPTVCMetaViewHeightWithButtons = 101.0f;
 const CGFloat RPTVCMetaViewHeightSansButtons = 52.0f;
 
+// Control buttons (Like, Reblog, ...)
+const NSUInteger RPTVCControlButtonCount = 2;
+const CGFloat RPTVCControlButtonHeight = 48.0f;
+const CGFloat RPTVCControlButtonVerticalPadding = 4.0f;
+const CGFloat RPTVCControlButtonBorderSize = 1.0f;
+
 @interface ReaderPostTableViewCell()
 
 @property (nonatomic, strong) ReaderPost *post;
@@ -285,9 +291,11 @@ const CGFloat RPTVCMetaViewHeightSansButtons = 52.0f;
 	height = [self.post isWPCom] ? RPTVCMetaViewHeightWithButtons : RPTVCMetaViewHeightSansButtons;
 	_metaView.frame = CGRectMake(0.0f, nextY, contentWidth, height);
 	
-	CGFloat w = ceilf(_metaView.frame.size.width / 2.0f);
-    _likeButton.frame = CGRectMake(0.0f, 53.0f, w, 48.0f);
-    _reblogButton.frame = CGRectMake(w + 1.0f, 53.0f, w - 1.f, 48.0f);
+	CGFloat buttonWidth = ceilf(_metaView.frame.size.width / RPTVCControlButtonCount);
+    CGFloat buttonY = RPTVCControlButtonHeight + RPTVCControlButtonVerticalPadding;
+    _likeButton.frame = CGRectMake(0.0f, buttonY, buttonWidth, RPTVCControlButtonHeight);
+    _reblogButton.frame = CGRectMake(buttonWidth + RPTVCControlButtonBorderSize, buttonY, buttonWidth - RPTVCControlButtonBorderSize, RPTVCControlButtonHeight);
+    
     _bylineLabel.frame = CGRectMake(47.0f, 8.0f, contentWidth - 57.0f, 36.0f);
     
     CGFloat sideBorderX = RPTVCHorizontalPadding - 1; // Just to the left of the container
