@@ -12,8 +12,6 @@
 #import "Blog.h"
 #import "Media.h"
 #import "CameraPlusPickerManager.h"
-#import "PanelNavigationController.h"
-#import "MP6SidebarViewController.h"
 #import "UIDevice+WordPressIdentifier.h"
 #import "WordPressComApi.h"
 #import "PostsViewController.h"
@@ -31,6 +29,10 @@
 #import "UIColor+Helpers.h"
 #import <Security/Security.h>
 #import "SupportViewController.h"
+#import "ReaderPostsViewController.h"
+#import "NotificationsViewController.h"
+#import "BlogListViewController.h"
+#import "GeneralWalkthroughViewController.h"
 
 @interface WordPressAppDelegate (Private) <CrashlyticsDelegate>
 
@@ -59,7 +61,6 @@ int ddLogLevel = LOG_LEVEL_INFO;
 @synthesize navigationController, alertRunning, isWPcomAuthenticated;
 @synthesize isUploadingPost;
 @synthesize connectionAvailable, wpcomAvailable, currentBlogAvailable, wpcomReachability, internetReachability, currentBlogReachability;
-@synthesize panelNavigationController;
 
 #pragma mark -
 #pragma mark Class Methods
@@ -253,6 +254,60 @@ int ddLogLevel = LOG_LEVEL_INFO;
     [Crashlytics setObjectValue:@([Blog countWithContext:[self managedObjectContext]]) forKey:@"number_of_blogs"];
 }
 
+- (BOOL)noBlogsAndNoWordPressDotComAccount {
+    NSFetchRequest *fetchRequest = [[NSFetchRequest alloc] init];
+    NSManagedObjectContext *moc = [[WordPressAppDelegate sharedWordPressApplicationDelegate] managedObjectContext];
+    [fetchRequest setEntity:[NSEntityDescription entityForName:@"Blog" inManagedObjectContext:moc]];
+    
+    NSError *error = nil;
+    NSArray *blogs = [moc executeFetchRequest:fetchRequest error:&error];
+
+    return [blogs count] == 0 && ![WPAccount defaultWordPressComAccount];
+}
+
+- (void)showWelcomeScreenIfNeeded {
+    if ([self noBlogsAndNoWordPressDotComAccount]) {
+        [WordPressAppDelegate wipeAllKeychainItems];
+        
+        GeneralWalkthroughViewController *welcomeViewController = [[GeneralWalkthroughViewController alloc] init];
+        
+        UINavigationController *aNavigationController = [[UINavigationController alloc] initWithRootViewController:welcomeViewController];
+        aNavigationController.navigationBar.translucent = NO;
+        aNavigationController.modalTransitionStyle = UIModalTransitionStyleCrossDissolve;
+        aNavigationController.modalPresentationStyle = UIModalPresentationFormSheet;
+        
+        [window.rootViewController presentViewController:aNavigationController animated:YES completion:nil];
+    }
+}
+
+- (UITabBarController *)createTabBarController {
+    UITabBarController *tabBarController = [[UITabBarController alloc] init];
+    tabBarController.tabBar.translucent = NO;
+    
+    self.readerPostsViewController = [[ReaderPostsViewController alloc] init];
+    UINavigationController *readerNavigationController = [[UINavigationController alloc] initWithRootViewController:self.readerPostsViewController];
+    readerNavigationController.navigationBar.translucent = NO;
+    readerNavigationController.tabBarItem.image = [UIImage imageNamed:@"icon-tab-reader"];
+    self.readerPostsViewController.title = @"Reader";
+    
+    self.notificationsViewController = [[NotificationsViewController alloc] init];
+    UINavigationController *notificationsNavigationController = [[UINavigationController alloc] initWithRootViewController:self.notificationsViewController];
+    notificationsNavigationController.navigationBar.translucent = NO;
+    notificationsNavigationController.tabBarItem.image = [UIImage imageNamed:@"icon-tab-notifications"];
+    self.notificationsViewController.title = @"Notifications";
+    
+    BlogListViewController *blogListViewController = [[BlogListViewController alloc] init];
+    UINavigationController *blogListNavigationController = [[UINavigationController alloc] initWithRootViewController:blogListViewController];
+    blogListNavigationController.navigationBar.translucent = NO;
+    blogListNavigationController.tabBarItem.image = [UIImage imageNamed:@"icon-tab-blogs"];
+    blogListViewController.title = @"My Blogs";
+    tabBarController.viewControllers = [NSArray arrayWithObjects:blogListNavigationController, readerNavigationController, notificationsNavigationController, nil];
+    
+    [tabBarController setSelectedViewController:readerNavigationController];
+
+    return tabBarController;
+}
+
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
     UIDevice *device = [UIDevice currentDevice];
     NSInteger crashCount = [[NSUserDefaults standardUserDefaults] integerForKey:@"crashCount"];
@@ -329,14 +384,13 @@ int ddLogLevel = LOG_LEVEL_INFO;
     [self setupPocket];
     [self setupSingleSignOn];
 
-    MP6SidebarViewController *sidebarViewController = [[MP6SidebarViewController alloc] init];
-    
     CGRect bounds = [[UIScreen mainScreen] bounds];
     [window setFrame:bounds];
     [window setBounds:bounds]; // for good measure.
-    panelNavigationController = [[PanelNavigationController alloc] initWithDetailController:nil masterViewController:sidebarViewController];
-    window.rootViewController = panelNavigationController;
+    
     window.backgroundColor = [UIColor blackColor];
+    window.rootViewController = [self createTabBarController];
+    [self showWelcomeScreenIfNeeded];
 
 	//listener for XML-RPC errors
 	//in the future we could put the errors message in a dedicated screen that users can bring to front when samething went wrong, and can take a look at the error msg.
@@ -350,6 +404,7 @@ int ddLogLevel = LOG_LEVEL_INFO;
 
 
 	[window makeKeyAndVisible];
+    
 
 	[self registerForPushNotifications];
 
@@ -559,14 +614,6 @@ int ddLogLevel = LOG_LEVEL_INFO;
 		cleanedErrorMsg = NSLocalizedString(@"The app can't recognize the server response. Please, check the configuration of your blog.", @"");
 	
 	[self showAlertWithTitle:NSLocalizedString(@"Error", @"Generic popup title for any type of error.") message:cleanedErrorMsg];
-}
-
-- (void)showContentDetailViewController:(UIViewController *)viewController {
-    if (viewController) {
-        [panelNavigationController pushViewController:viewController animated:YES];
-    } else {
-        [panelNavigationController popToRootViewControllerAnimated:YES];
-    }
 }
 
 - (void)useDefaultUserAgent {
@@ -1134,6 +1181,11 @@ int ddLogLevel = LOG_LEVEL_INFO;
 	[self toggleExtraDebuggingIfNeeded];
 }
 
+- (void)showNotificationsTab {
+    NSInteger notificationsTabIndex = [[self.tabBarController viewControllers] indexOfObject:self.notificationsViewController.navigationController];
+    [self.tabBarController setSelectedIndex:notificationsTabIndex];
+}
+
 
 #pragma mark - Push Notification delegate
 
@@ -1263,19 +1315,16 @@ int ddLogLevel = LOG_LEVEL_INFO;
 }
 
 - (void)openNotificationScreenWithOptions:(NSDictionary *)remoteNotif {
-    if ([remoteNotif objectForKey:@"type"]) { //new social PNs
-        DDLogInfo(@"Received new notification: %@", remoteNotif);
-        
-        if( self.panelNavigationController )
-            [self.panelNavigationController showNotificationsView:YES];
-        
-    } else if ([remoteNotif objectForKey:@"blog_id"] && [remoteNotif objectForKey:@"comment_id"]) {
-        DDLogInfo(@"Received notification: %@", remoteNotif);
-        MP6SidebarViewController *sidebar = (MP6SidebarViewController *)self.panelNavigationController.masterViewController;
-        [sidebar showCommentWithId:[[remoteNotif objectForKey:@"comment_id"] numericValue] blogId:[[remoteNotif objectForKey:@"blog_id"] numericValue]];
-    } else {
-        DDLogWarn(@"Got unsupported notification: %@", remoteNotif);
-    }
+    DDLogInfo(@"Received new notification: %@", remoteNotif);
+    [self showNotificationsTab];
+
+    // TODO: Open comment view here
+//    if ([remoteNotif objectForKey:@"blog_id"] && [remoteNotif objectForKey:@"comment_id"]) {
+//        MP6SidebarViewController *sidebar = (MP6SidebarViewController *)self.panelNavigationController.masterViewController;
+//        [sidebar showCommentWithId:[[remoteNotif objectForKey:@"comment_id"] numericValue] blogId:[[remoteNotif objectForKey:@"blog_id"] numericValue]];
+//    } else if ([remoteNotif objectForKey:@"type"] == nil) {
+//        DDLogWarn(@"Got unsupported notification: %@", remoteNotif);
+//    }
 }
 
 #pragma mark -
@@ -1343,8 +1392,7 @@ int ddLogLevel = LOG_LEVEL_INFO;
         }
     } else if (alertView.tag == kNotificationNewSocial) {
         if (buttonIndex == 1) {
-            if( self.panelNavigationController )
-                [self.panelNavigationController showNotificationsView:YES];
+            [self showNotificationsTab];
             lastNotificationInfo = nil;
         }
 	} else {
@@ -1359,7 +1407,7 @@ int ddLogLevel = LOG_LEVEL_INFO;
                     aNavigationController.modalPresentationStyle = UIModalPresentationFormSheet;
                 }
                 
-                UIViewController *presenter = self.panelNavigationController;
+                UIViewController *presenter = self.tabBarController;
                 if (presenter.presentedViewController) {
                     presenter = presenter.presentedViewController;
                 }

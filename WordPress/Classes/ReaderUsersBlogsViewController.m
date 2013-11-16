@@ -36,7 +36,7 @@
         // Avoid a weird issue on the iPad with cross dissolves when the keyboard is visible. 
         navController.modalTransitionStyle = UIModalTransitionStyleCrossDissolve;
     }
-    [[[WordPressAppDelegate sharedWordPressApplicationDelegate] panelNavigationController] presentViewController:navController animated:YES completion:nil];
+    [[[WordPressAppDelegate sharedWordPressApplicationDelegate] navigationController] presentViewController:navController animated:YES completion:nil];
 
 	return controller;
 }

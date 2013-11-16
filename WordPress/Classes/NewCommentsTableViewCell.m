@@ -33,7 +33,6 @@ CGFloat const CommentCellAccessoryViewOffset = 25.0;
     self = [super initWithStyle:style reuseIdentifier:reuseIdentifier];
     
     if (self) {
-        self.backgroundColor = [WPStyleGuide itsEverywhereGrey];
         self.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
         
         _gravatarImageView = [[UIImageView alloc] init];

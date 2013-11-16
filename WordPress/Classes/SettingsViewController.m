@@ -47,8 +47,7 @@
 #import "SupportViewController.h"
 
 typedef enum {
-    SettingsSectionBlogs = 0,
-    SettingsSectionWpcom,
+    SettingsSectionWpcom = 0,
     SettingsSectionMedia,
     SettingsSectionInfo,
     SettingsSectionCount
@@ -56,22 +55,19 @@ typedef enum {
 
 CGFloat const blavatarImageViewSize = 43.f;
 
-@interface SettingsViewController () <NSFetchedResultsControllerDelegate, UIActionSheetDelegate, WPcomLoginViewControllerDelegate>
+@interface SettingsViewController () <UIActionSheetDelegate, WPcomLoginViewControllerDelegate>
 
-@property (weak, readonly) NSFetchedResultsController *resultsController;
 @property (nonatomic, strong) NSArray *mediaSettingsArray;
 @property (nonatomic, strong) UIBarButtonItem *doneButton;
 
 - (void)configureCell:(UITableViewCell *)cell atIndexPath:(NSIndexPath *)indexPath;
 - (UITableViewCell *)cellForIndexPath:(NSIndexPath *)indexPath;
-- (void)checkCloseButton;
 - (void)setupMedia;
 - (void)maskImageView:(UIImageView *)imageView corner:(UIRectCorner)corner;
 
 @end
 
 @implementation SettingsViewController {
-    NSFetchedResultsController *_resultsController;
 }
 
 @synthesize mediaSettingsArray;
@@ -84,7 +80,6 @@ CGFloat const blavatarImageViewSize = 43.f;
     [super viewDidLoad];
     
     self.title = NSLocalizedString(@"Settings", @"App Settings");
-    self.navigationItem.leftBarButtonItem = self.editButtonItem;
     self.doneButton = [[UIBarButtonItem alloc] initWithTitle:NSLocalizedString(@"Done", @"") style:[WPStyleGuide barButtonStyleForBordered] target:self action:@selector(dismiss)];
     self.navigationItem.rightBarButtonItem = self.doneButton;
     
@@ -112,15 +107,10 @@ CGFloat const blavatarImageViewSize = 43.f;
     [super viewWillDisappear:animated];
     // Remove the delegate to avoid a core data error that can occur when a new
     // blog is added, and other rows/sections are added as well (e.g. notifications).
-    self.resultsController.delegate = nil;
 }
 
 - (void)viewWillAppear:(BOOL)animated {
     [super viewWillAppear:animated];
-    [self checkCloseButton];
-    self.resultsController.delegate = self; // Restore the delegate.
-    [self.resultsController performFetch:nil];
-    self.editButtonItem.enabled = ([[self.resultsController fetchedObjects] count] > 0); // Disable if we have no blogs.
     [self.tableView reloadData];
 }
 
@@ -175,25 +165,6 @@ CGFloat const blavatarImageViewSize = 43.f;
     [self dismissViewControllerAnimated:YES completion:nil];
 }
 
-- (void)checkCloseButton {
-    if ([[self.resultsController fetchedObjects] count] == 0 && ![[WordPressComApi sharedApi] hasCredentials]) {
-        if (IS_IPAD) {
-            // On the iPad the NUX is displayed as a UIFormSheet which still shows all the sidebar stuff in the background.
-            // As this looks pretty ugly, we'll hide it by putting the loading image view on top of it.
-            PanelNavigationController *panelNavController = (PanelNavigationController *)self.presentingViewController;
-            [panelNavController displayLoadingImageView];
-        }
-
-        [WordPressAppDelegate wipeAllKeychainItems];
-
-        GeneralWalkthroughViewController *walkthroughViewController = [[GeneralWalkthroughViewController alloc] init];
-        self.navigationController.navigationBar.hidden = YES;
-        [self.navigationController pushViewController:walkthroughViewController animated:YES];
-    } else {
-        self.navigationItem.rightBarButtonItem.enabled = YES;
-    }
-}
-
 - (void)maskImageView:(UIImageView *)imageView corner:(UIRectCorner)corner {
     if (IS_IOS7) {
         // We don't want this effect in iOS7
@@ -230,24 +201,10 @@ CGFloat const blavatarImageViewSize = 43.f;
     return [self supportsNotifications] ? 1 : -1;
 }
 
-- (NSInteger)rowForAddSite {
-    return [[self.resultsController fetchedObjects] count];
-}
-
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
     int numWpcomRows = 0;
-    int numBlogRows = 0;
     
     switch (section) {
-        case SettingsSectionBlogs:
-            numBlogRows = [[self.resultsController fetchedObjects] count];
-            
-            // When not editing, an extra row for adding a new site
-            if (![tableView isEditing]) {
-                numBlogRows += 1;
-            }
-            return numBlogRows;
-            
         case SettingsSectionWpcom:
             numWpcomRows = 1;
             if ([[WordPressComApi sharedApi] hasCredentials]) {
@@ -275,16 +232,10 @@ CGFloat const blavatarImageViewSize = 43.f;
     }
 }
 
-- (NSString *)tableView:(UITableView *)tableView titleForDeleteConfirmationButtonForRowAtIndexPath:(NSIndexPath *)indexPath {
-    if (indexPath.section == SettingsSectionBlogs) {
-        return NSLocalizedString(@"Remove", @"Button label when removing a blog");
-    }
-    return nil;
-}
-
 - (UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section {
     WPTableViewSectionHeaderView *header = [[WPTableViewSectionHeaderView alloc] initWithFrame:CGRectMake(0, 0, CGRectGetWidth(self.view.bounds), 0)];
     header.title = [self titleForHeaderInSection:section];
+    header.leftMarginPercent = 0;
     return header;
 }
 
@@ -294,10 +245,7 @@ CGFloat const blavatarImageViewSize = 43.f;
 }
 
 - (NSString *)titleForHeaderInSection:(NSInteger)section {
-    if (section == SettingsSectionBlogs) {
-        return NSLocalizedString(@"Sites", @"Title label for the user sites in the app settings");
-        
-    } else if (section == SettingsSectionWpcom) {
+    if (section == SettingsSectionWpcom) {
         return NSLocalizedString(@"WordPress.com", @"");
 
     } else if (section == SettingsSectionMedia) {
@@ -315,39 +263,8 @@ CGFloat const blavatarImageViewSize = 43.f;
     cell.textLabel.textAlignment = NSTextAlignmentLeft;
     cell.accessoryType = UITableViewCellAccessoryNone;
     cell.accessoryView = nil;
-    if (indexPath.section == SettingsSectionBlogs) {
-        
-        if (indexPath.row < [self rowForAddSite]) {
-            Blog *blog = [self.resultsController objectAtIndexPath:[NSIndexPath indexPathForRow:indexPath.row inSection:0]];
-            if ([blog.blogName length] != 0) {
-                cell.textLabel.text = blog.blogName;
-            } else {
-                cell.textLabel.text = blog.url;
-            }
-            
-            [cell.imageView setImageWithBlavatarUrl:blog.blavatarUrl isWPcom:blog.isWPcom];
-            cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
-            
-            if (indexPath.row == 0) {
-                [self maskImageView:cell.imageView corner:UIRectCornerTopLeft];
-            } else if (indexPath.row == ([self.tableView numberOfRowsInSection:indexPath.section] -1)) {
-                [self maskImageView:cell.imageView corner:UIRectCornerBottomLeft];
-            } else {
-                cell.imageView.layer.mask = NULL;
-            }
-        } else {
-            cell.textLabel.text = NSLocalizedString(@"Add a Site", @"");
-            cell.selectionStyle = UITableViewCellSelectionStyleBlue;
-            cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
-            
-            // To align the label, create and add a blank image
-            UIGraphicsBeginImageContextWithOptions(CGSizeMake(blavatarImageViewSize, blavatarImageViewSize), NO, 0.0);
-            UIImage *blank = UIGraphicsGetImageFromCurrentImageContext();
-            UIGraphicsEndImageContext();
-            [cell.imageView setImage:blank];
-        }
 
-    } else if (indexPath.section == SettingsSectionWpcom) {
+    if (indexPath.section == SettingsSectionWpcom) {
         if ([[WordPressComApi sharedApi] hasCredentials]) {
             if (indexPath.row == 0) {
                 cell.textLabel.text = NSLocalizedString(@"Username", @"");
@@ -410,11 +327,6 @@ CGFloat const blavatarImageViewSize = 43.f;
     UITableViewCellStyle cellStyle = UITableViewCellStyleDefault;
     
     switch (indexPath.section) {
-        case SettingsSectionBlogs:
-            cellIdentifier = @"BlogCell";
-            cellStyle = UITableViewCellStyleSubtitle;
-            break;
-            
         case SettingsSectionWpcom:
             if ([[WordPressComApi sharedApi] hasCredentials] && indexPath.row == 0) {
                 cellIdentifier = @"WpcomUsernameCell";
@@ -466,25 +378,6 @@ CGFloat const blavatarImageViewSize = 43.f;
     return cell;
 }
 
-- (BOOL)tableView:(UITableView *)tableView canEditRowAtIndexPath:(NSIndexPath *)indexPath {
-    // Return NO if you do not want the specified item to be editable.
-    return (indexPath.section == SettingsSectionBlogs);
-}
-
-- (void)tableView:(UITableView *)tableView commitEditingStyle:(UITableViewCellEditingStyle)editingStyle forRowAtIndexPath:(NSIndexPath *)indexPath {
-    if (editingStyle == UITableViewCellEditingStyleDelete) {
-        [WPMobileStats trackEventForWPCom:StatsEventSettingsRemovedBlog];
-        
-        Blog *blog = [self.resultsController objectAtIndexPath:[NSIndexPath indexPathForRow:indexPath.row inSection:0]];
-        [blog remove];
-        
-        if ([[self.resultsController fetchedObjects] count] == 0) {
-            [self setEditing:NO];
-            self.editButtonItem.enabled = NO;
-        }
-    }   
-}
-
 
 #pragma mark - 
 #pragma mark Table view delegate
@@ -492,23 +385,7 @@ CGFloat const blavatarImageViewSize = 43.f;
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
     [tableView deselectRowAtIndexPath:indexPath animated:YES];
     
-    if (indexPath.section == SettingsSectionBlogs) {
-        if (indexPath.row < [self rowForAddSite]) {
-            [WPMobileStats trackEventForWPCom:StatsEventSettingsClickedEditBlog];
-            
-            Blog *blog = [self.resultsController objectAtIndexPath:indexPath];
-
-            EditSiteViewController *editSiteViewController = [[EditSiteViewController alloc] init];
-            editSiteViewController.blog = blog;
-            [self.navigationController pushViewController:editSiteViewController animated:YES];
-        } else {
-            [WPMobileStats trackEventForWPCom:StatsEventSettingsClickedAddBlog];
-            
-            WelcomeViewController *welcomeViewController = [[WelcomeViewController alloc] initWithStyle:UITableViewStyleGrouped];
-            welcomeViewController.title = NSLocalizedString(@"Add a Site", nil);
-            [self.navigationController pushViewController:welcomeViewController animated:YES];
-        }
-    } else if (indexPath.section == SettingsSectionWpcom) {
+    if (indexPath.section == SettingsSectionWpcom) {
         if ([[WordPressComApi sharedApi] hasCredentials]) {
             if (indexPath.row == [self rowForSignOut]) {
                 [WPMobileStats trackEventForWPCom:StatsEventSettingsClickedSignOutOfDotCom];
@@ -564,103 +441,6 @@ CGFloat const blavatarImageViewSize = 43.f;
     }
 }
 
-- (void)setEditing:(BOOL)editing animated:(BOOL)animated {
-    [super setEditing:editing animated:animated];
-
-    // Smoothly animate all sections that can or can't be edited, and deal with the Done button
-    NSIndexSet *indexSetToChange = [NSIndexSet indexSetWithIndexesInRange:NSMakeRange(1, SettingsSectionCount-1)];
-    
-    // And the "Add a Site" row too
-    NSArray *rowsToChange = [NSArray arrayWithObject:[NSIndexPath indexPathForRow:[self rowForAddSite] inSection:SettingsSectionBlogs]];
-    
-    UITableViewRowAnimation rowAnimation = animated ? UITableViewRowAnimationFade : UITableViewRowAnimationNone;
-    [self.tableView beginUpdates];
-    if (editing) {
-        [self.tableView deleteRowsAtIndexPaths:rowsToChange withRowAnimation:rowAnimation];
-        [self.tableView deleteSections:indexSetToChange withRowAnimation:rowAnimation];
-        [self.navigationItem setRightBarButtonItem:nil animated:animated];
-    } else {
-        [self.tableView insertRowsAtIndexPaths:rowsToChange withRowAnimation:rowAnimation];
-        [self.tableView insertSections:indexSetToChange withRowAnimation:rowAnimation];
-        [self.navigationItem setRightBarButtonItem:self.doneButton animated:animated];
-    }
-    [self.tableView endUpdates];
-}
-
-
-#pragma mark -
-#pragma mark NSFetchedResultsController
-
-- (NSFetchedResultsController *)resultsController {
-    if (_resultsController) {
-        return _resultsController;
-    }
-
-    NSFetchRequest *fetchRequest = [[NSFetchRequest alloc] init];
-    NSManagedObjectContext *moc = [[WordPressAppDelegate sharedWordPressApplicationDelegate] managedObjectContext];
-    [fetchRequest setEntity:[NSEntityDescription entityForName:@"Blog" inManagedObjectContext:moc]];
-    [fetchRequest setSortDescriptors:[NSArray arrayWithObject:[NSSortDescriptor sortDescriptorWithKey:@"blogName" ascending:YES]]];
-    
-    // For some reasons, the cache sometimes gets corrupted
-    // Since we don't really use sections we skip the cache here
-    _resultsController = [[NSFetchedResultsController alloc]
-                                                      initWithFetchRequest:fetchRequest
-                                                      managedObjectContext:moc
-                                                      sectionNameKeyPath:nil
-                                                      cacheName:nil];
-    _resultsController.delegate = self;
-
-    NSError *error = nil;
-    if (![_resultsController performFetch:&error]) {
-        DDLogError(@"Couldn't fetch blogs: %@", [error localizedDescription]);
-        _resultsController = nil;
-    }
-    return _resultsController;
-}
-
-- (void)controllerWillChangeContent:(NSFetchedResultsController *)controller {
-    [self.tableView beginUpdates];
-}
-
-- (void)controllerDidChangeContent:(NSFetchedResultsController *)controller {
-    [self.tableView endUpdates];
-    [self checkCloseButton];
-}
-
-- (void)controller:(NSFetchedResultsController *)controller
-   didChangeObject:(id)anObject
-       atIndexPath:(NSIndexPath *)indexPath
-     forChangeType:(NSFetchedResultsChangeType)type
-      newIndexPath:(NSIndexPath *)newIndexPath {
-    
-    if (NSFetchedResultsChangeUpdate == type && newIndexPath != nil) {
-        // Seriously, Apple?
-        // http://developer.apple.com/library/ios/#releasenotes/iPhone/NSFetchedResultsChangeMoveReportedAsNSFetchedResultsChangeUpdate/_index.html
-        type = NSFetchedResultsChangeMove;
-    }
-    
-    switch (type) {
-        case NSFetchedResultsChangeInsert:
-            [self.tableView insertRowsAtIndexPaths:[NSArray arrayWithObject:newIndexPath] withRowAnimation:UITableViewRowAnimationFade];
-            break;
-            
-        case NSFetchedResultsChangeDelete:
-            [self.tableView deleteRowsAtIndexPaths:[NSArray arrayWithObject:indexPath] withRowAnimation:UITableViewRowAnimationFade];
-            break;
-            
-        case NSFetchedResultsChangeUpdate:
-            [self configureCell:[self.tableView cellForRowAtIndexPath:indexPath] atIndexPath:indexPath];
-            break;
-            
-        case NSFetchedResultsChangeMove:
-            [self.tableView deleteRowsAtIndexPaths:[NSArray
-                                                    arrayWithObject:indexPath] withRowAnimation:UITableViewRowAnimationFade];
-            [self.tableView insertRowsAtIndexPaths:[NSArray
-                                                    arrayWithObject:newIndexPath] withRowAnimation:UITableViewRowAnimationFade];
-            break;
-    }
-}
-
 
 #pragma mark - 
 #pragma mark WPComLoginViewControllerDelegate
@@ -670,8 +450,6 @@ CGFloat const blavatarImageViewSize = 43.f;
     AddUsersBlogsViewController *addUsersBlogsView = [[AddUsersBlogsViewController alloc] initWithAccount:[WPAccount defaultWordPressComAccount]];
     addUsersBlogsView.isWPcom = YES;
     [self.navigationController pushViewController:addUsersBlogsView animated:YES];
-
-    [self checkCloseButton];
 }
 
 
@@ -691,7 +469,6 @@ CGFloat const blavatarImageViewSize = 43.f;
         [[WordPressComApi sharedApi] signOut]; //Signout first, then remove the account
 		[WPAccount removeDefaultWordPressComAccount];
         [self.tableView reloadSections:[NSIndexSet indexSetWithIndex:SettingsSectionWpcom] withRowAnimation:UITableViewRowAnimationFade];
-        [self checkCloseButton];
         
         // Remove defaults
         [[NSUserDefaults standardUserDefaults] removeObjectForKey:@"wpcom_users_blogs"];

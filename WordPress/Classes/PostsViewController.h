@@ -4,7 +4,7 @@
 
 @class EditPostViewController;
 
-@interface PostsViewController : WPTableViewController <UIAccelerometerDelegate, NSFetchedResultsControllerDelegate, DetailViewDelegate>
+@interface PostsViewController : WPTableViewController <UIAccelerometerDelegate, NSFetchedResultsControllerDelegate>
 
 @property (nonatomic, strong) PostViewController *postReaderViewController;
 @property (nonatomic, assign) BOOL anyMorePosts;

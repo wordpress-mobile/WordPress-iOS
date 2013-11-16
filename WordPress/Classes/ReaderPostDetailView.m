@@ -20,6 +20,7 @@
 #import "WPWebVideoViewController.h"
 #import "UIImageView+Gravatar.h"
 #import "UILabel+SuggestSize.h"
+#import "ReaderPostsViewController.h"
 #import "ReaderMediaQueue.h"
 
 #define ContentTextViewYOffset -32
@@ -330,6 +331,10 @@
 	return ([[url absoluteString] rangeOfString:@"wp.com/wp-includes/images/smilies"].location != NSNotFound);
 }
 
+- (UINavigationController *)detailNavigationController {
+	return [[[WordPressAppDelegate sharedWordPressApplicationDelegate] readerPostsViewController] navigationController];
+}
+
 
 - (void)handleFollowButtonInteraction:(id)sender {
 	[self setNeedsLayout];
@@ -373,7 +378,7 @@
 - (void)handleAuthorViewTapped:(id)sender {
 	WPWebViewController *controller = [[WPWebViewController alloc] init];
 	[controller setUrl:[NSURL URLWithString:self.post.permaLink]];
-	[[[WordPressAppDelegate sharedWordPressApplicationDelegate] panelNavigationController] pushViewController:controller animated:YES];
+	[[self detailNavigationController] pushViewController:controller animated:YES];
 }
 
 
@@ -398,7 +403,7 @@
 		} else {
 			WPWebViewController *controller = [[WPWebViewController alloc] init];
 			[controller setUrl:((ReaderImageView *)sender).linkURL];
-			[[[WordPressAppDelegate sharedWordPressApplicationDelegate] panelNavigationController] pushViewController:controller animated:YES];
+			[[self detailNavigationController] pushViewController:controller animated:YES];
 		}
 	} else {
 		[WPImageViewController presentAsModalWithImage:imageView.image];
@@ -409,7 +414,7 @@
 - (void)handleLinkTapped:(id)sender {
 	WPWebViewController *controller = [[WPWebViewController alloc] init];
 	[controller setUrl:((DTLinkButton *)sender).URL];
-	[[[WordPressAppDelegate sharedWordPressApplicationDelegate] panelNavigationController] pushViewController:controller animated:YES];
+	[[self detailNavigationController] pushViewController:controller animated:YES];
 }
 
 
@@ -431,7 +436,7 @@
         
 		controller.modalTransitionStyle = UIModalTransitionStyleCrossDissolve;
 		controller.modalPresentationStyle = UIModalPresentationFormSheet;
-        [[[WordPressAppDelegate sharedWordPressApplicationDelegate] panelNavigationController] presentViewController:controller animated:YES completion:nil];
+        [[[WordPressAppDelegate sharedWordPressApplicationDelegate].window rootViewController] presentViewController:controller animated:YES completion:nil];
 		
 	} else {
 		// Should either be an iframe, or an object embed. In either case a src attribute should have been parsed for the contentURL.
@@ -472,7 +477,7 @@
                                                       object:moviePlayer];
         
         // Dismiss the view controller
-        [[[WordPressAppDelegate sharedWordPressApplicationDelegate] panelNavigationController] dismissViewControllerAnimated:YES completion:nil];
+        [[[WordPressAppDelegate sharedWordPressApplicationDelegate].window rootViewController] dismissViewControllerAnimated:YES completion:nil];
     }
 }
 

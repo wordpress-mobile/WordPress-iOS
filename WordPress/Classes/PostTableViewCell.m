@@ -144,7 +144,6 @@ static const float statusLabelMaxWidthPortrait = 100.f;
     [super prepareForReuse];
 	//change back the things that are different about the "more posts/pages/comments" cell so that reuse
 	//does not cause UI strangeness for users
-	self.contentView.backgroundColor = TABLE_VIEW_CELL_BACKGROUND_COLOR;
 	nameLabel.textColor = [UIColor blackColor];
 	dateLabel.textColor = [UIColor lightGrayColor];
 	self.accessoryType = UITableViewCellAccessoryDisclosureIndicator;

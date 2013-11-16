@@ -9,7 +9,7 @@
 #import <UIKit/UIKit.h>
 #import "ReaderPost.h"
 
-@interface ReaderPostDetailViewController : UIViewController<UITableViewDataSource, UITableViewDelegate, DetailViewDelegate>
+@interface ReaderPostDetailViewController : UIViewController<UITableViewDataSource, UITableViewDelegate>
 
 - (id)initWithPost:(ReaderPost *)apost;
 

@@ -7,7 +7,6 @@
 
 #import <UIKit/UIKit.h>
 #import "WordPressAppDelegate.h"
-#import "UITableViewSwitchCell.h"
 #import "UITableViewTextFieldCell.h"
 #import "Blog+Jetpack.h"
 #import "SettingsViewControllerDelegate.h"
@@ -15,8 +14,6 @@
 @interface EditSiteViewController : UIViewController <UITableViewDelegate, UITextFieldDelegate, UIAlertViewDelegate> {
 	IBOutlet UITableView *tableView;
 	UITextField *urlTextField, *usernameTextField, *passwordTextField, *lastTextField;
-    UITableViewSwitchCell *switchCell;
-    UITableViewSwitchCell *switchCellPushNotifications;
     UIBarButtonItem *saveButton;
     Blog *blog;
     NSArray *subsites;
