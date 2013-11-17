@@ -39,6 +39,7 @@ const CGFloat RPTVCControlButtonBorderSize = 0.0f;
 
 @property (nonatomic, strong) UIView *containerView;
 @property (nonatomic, strong) UILabel *titleLabel;
+@property (nonatomic, strong) CALayer *titleBorder;
 @property (nonatomic, strong) UILabel *snippetLabel;
 
 @property (nonatomic, strong) UIView *metaView;
@@ -243,6 +244,10 @@ const CGFloat RPTVCControlButtonBorderSize = 0.0f;
 	_titleLabel.lineBreakMode = NSLineBreakByWordWrapping;
 	_titleLabel.numberOfLines = 0;
 	[_containerView addSubview:_titleLabel];
+    
+    self.titleBorder = [[CALayer alloc] init];
+    _titleBorder.backgroundColor = [[UIColor colorWithHexString:@"f1f1f1"] CGColor];
+    [_containerView.layer addSublayer:_titleBorder];
 	
 	self.snippetLabel = [[UILabel alloc] init];
 	_snippetLabel.autoresizingMask = UIViewAutoresizingFlexibleWidth;
@@ -365,9 +370,13 @@ const CGFloat RPTVCControlButtonBorderSize = 0.0f;
 
 	// Are we showing an image? What size should it be?
 	if (_showImage) {
+        _titleBorder.hidden = YES;
 		height = ceilf(contentWidth * RPTVCMaxImageHeightPercentage);
 		self.cellImageView.frame = CGRectMake(0, nextY, contentWidth, height);
 		nextY += height;
+    } else {
+        _titleBorder.hidden = NO;
+        _titleBorder.frame = CGRectMake(RPTVCHorizontalInnerPadding, nextY, contentWidth - RPTVCHorizontalInnerPadding * 2, RPTVCLineHeight);
     }
     
 	// Position the title
