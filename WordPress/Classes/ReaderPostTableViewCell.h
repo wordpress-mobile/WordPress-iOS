@@ -26,6 +26,7 @@
 @property (nonatomic, strong) UIButton *likeButton;
 @property (nonatomic, strong) UIButton *reblogButton;
 @property (nonatomic, strong) UIButton *commentButton;
+@property (nonatomic, strong) UIButton *timeButton;
 
 extern CGFloat const RPTVCMaxImageHeightPercentage;
 

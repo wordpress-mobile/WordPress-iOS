@@ -40,7 +40,6 @@ const CGFloat RPTVCControlButtonBorderSize = 0.0f;
 @property (nonatomic, strong) UIView *containerView;
 @property (nonatomic, strong) UILabel *titleLabel;
 @property (nonatomic, strong) UILabel *snippetLabel;
-@property (nonatomic, strong) UILabel *timeLabel;
 
 @property (nonatomic, strong) UIView *metaView;
 @property (nonatomic, strong) CALayer *metaBorder;
@@ -310,14 +309,14 @@ const CGFloat RPTVCControlButtonBorderSize = 0.0f;
     _metaBorder.backgroundColor = [[UIColor colorWithHexString:@"f1f1f1"] CGColor];
     [_metaView.layer addSublayer:_metaBorder];
     
-	self.timeLabel = [[UILabel alloc] init];
-	_timeLabel.backgroundColor = [UIColor clearColor];
-	_timeLabel.numberOfLines = 1;
-	_timeLabel.autoresizingMask = UIViewAutoresizingFlexibleWidth;
-	_timeLabel.font = [UIFont fontWithName:@"OpenSans" size:12.0f];
-	_timeLabel.adjustsFontSizeToFitWidth = NO;
-	_timeLabel.textColor = [UIColor colorWithHexString:@"aaa"];
-	[_metaView addSubview:_timeLabel];
+    self.timeButton = [UIButton buttonWithType:UIButtonTypeCustom];
+    _timeButton.contentHorizontalAlignment = UIControlContentHorizontalAlignmentLeft;
+    _timeButton.backgroundColor = [UIColor clearColor];
+    _timeButton.titleLabel.font = [UIFont fontWithName:@"OpenSans" size:12.0f];
+    [_timeButton setTitleEdgeInsets: UIEdgeInsetsMake(0, RPTVCSmallButtonLeftPadding, 0, 0)];
+    [_timeButton setImage:[UIImage imageNamed:@"reader-postaction-time"] forState:UIControlStateNormal];
+    [_timeButton setTitleColor:[UIColor colorWithHexString:@"aaa"] forState:UIControlStateNormal];
+	[_metaView addSubview:_timeButton];
 
 	self.likeButton = [ReaderButton buttonWithType:UIButtonTypeCustom];
 	_likeButton.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleRightMargin;
@@ -417,7 +416,7 @@ const CGFloat RPTVCControlButtonBorderSize = 0.0f;
     _reblogButton.frame = CGRectMake(buttonX, buttonY, buttonWidth - RPTVCControlButtonBorderSize, RPTVCControlButtonHeight);
     
     CGFloat timeWidth = contentWidth - _reblogButton.frame.origin.x;
-    _timeLabel.frame = CGRectMake(RPTVCHorizontalInnerPadding, RPTVCLineHeight, timeWidth, RPTVCControlButtonHeight);
+    _timeButton.frame = CGRectMake(RPTVCHorizontalInnerPadding, RPTVCLineHeight, timeWidth, RPTVCControlButtonHeight);
     
     CGFloat sideBorderX = RPTVCHorizontalOuterPadding - 1; // Just to the left of the container
     CGFloat sideBorderHeight = self.frame.size.height - RPTVCVerticalPadding; // Just below it
@@ -432,7 +431,6 @@ const CGFloat RPTVCControlButtonBorderSize = 0.0f;
 	_bylineLabel.text = nil;
 	_titleLabel.text = nil;
 	_snippetLabel.text = nil;
-    _timeLabel.text = nil;
 
     [self setHighlightedEffect:NO animated:NO];
 }
@@ -455,7 +453,7 @@ const CGFloat RPTVCControlButtonBorderSize = 0.0f;
 	_snippetLabel.text = [ReaderPostTableViewCell prettySummaryForPost:post];
 
     _bylineLabel.text = post.blogName;
-	_timeLabel.text = [post.dateCreated shortString];
+    [_timeButton setTitle:[post.dateCreated shortString] forState:UIControlStateNormal];
 
 	self.showImage = NO;
 	self.cellImageView.hidden = YES;
