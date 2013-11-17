@@ -330,7 +330,7 @@ NSString *const WPReaderViewControllerDisplayedNativeFriendFinder = @"DisplayedN
 
 
 - (void)handleKeyboardDidShow:(NSNotification *)notification {
-    UIView *view = self.view;
+    UIView *view = self.view.superview;
 	CGRect frame = view.frame;
 	CGRect startFrame = [[[notification userInfo] objectForKey:UIKeyboardFrameBeginUserInfoKey] CGRectValue];
 	CGRect endFrame = [[[notification userInfo] objectForKey:UIKeyboardFrameEndUserInfoKey] CGRectValue];
@@ -365,7 +365,7 @@ NSString *const WPReaderViewControllerDisplayedNativeFriendFinder = @"DisplayedN
 
 
 - (void)handleKeyboardWillHide:(NSNotification *)notification {
-    UIView *view = self.view;
+    UIView *view = self.view.superview;
 	CGRect frame = view.frame;
 	CGRect keyFrame = [[[notification userInfo] objectForKey:UIKeyboardFrameEndUserInfoKey] CGRectValue];
 	
@@ -957,6 +957,15 @@ NSString *const WPReaderViewControllerDisplayedNativeFriendFinder = @"DisplayedN
             }];
 }
 
+- (CGSize)tabBarSize {
+    CGSize tabBarSize = CGSizeZero;
+    if ([self tabBarController]) {
+        tabBarSize = [[[self tabBarController] tabBar] bounds].size;
+    }
+
+    return tabBarSize;
+}
+
 
 #pragma mark - Friend Finder Button
 
@@ -979,10 +988,7 @@ NSString *const WPReaderViewControllerDisplayedNativeFriendFinder = @"DisplayedN
         self.friendFinderNudgeView.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleBottomMargin;
         [self.navigationController.view addSubview:self.friendFinderNudgeView];
         
-        CGSize tabBarSize = CGSizeZero;
-        if ([self tabBarController]) {
-            tabBarSize = [[[self tabBarController] tabBar] bounds].size;
-        }
+        CGSize tabBarSize = [self tabBarSize];
         
         buttonFrame = self.friendFinderNudgeView.frame;
         buttonFrame.origin.y = self.navigationController.view.frame.size.height - buttonFrame.size.height - tabBarSize.height;
