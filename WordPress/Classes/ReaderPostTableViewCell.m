@@ -16,6 +16,7 @@
 #import "UILabel+SuggestSize.h"
 #import "WPAvatarSource.h"
 #import "ReaderButton.h"
+#import "NSDate+StringFormatting.h"
 
 const CGFloat RPTVCAuthorPadding = 8.0f;
 const CGFloat RPTVCHorizontalInnerPadding = 12.0f;
@@ -458,7 +459,7 @@ const CGFloat RPTVCControlButtonBorderSize = 0.0f;
 	_snippetLabel.text = [ReaderPostTableViewCell prettySummaryForPost:post];
 
     _bylineLabel.text = post.blogName;
-	_timeLabel.text = [post prettyDateString];
+	_timeLabel.text = [post.dateCreated shortString];
 
 	self.showImage = NO;
 	self.cellImageView.hidden = YES;
