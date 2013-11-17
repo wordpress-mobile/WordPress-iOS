@@ -439,6 +439,21 @@ NSString *const WPReaderViewControllerDisplayedNativeFriendFinder = @"DisplayedN
     }
 }
 
+- (void)followAction:(id)sender {
+    UIButton *followButton = (UIButton *)sender;
+    ReaderPostTableViewCell *cell = [ReaderPostTableViewCell cellForSubview:sender];
+    ReaderPost *post = cell.post;
+
+    followButton.selected = ![post.isFollowing boolValue]; // Set it optimistically
+	[cell setNeedsLayout];
+	[post toggleFollowingWithSuccess:^{
+	} failure:^(NSError *error) {
+		DDLogError(@"Error Following Blog : %@", [error localizedDescription]);
+		[followButton setSelected:[post.isFollowing boolValue]];
+		[cell setNeedsLayout];
+	}];
+}
+
 - (void)commentAction:(id)sender {
     // TODO: allow commenting
 }

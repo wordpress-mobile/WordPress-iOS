@@ -22,7 +22,7 @@ const CGFloat RPTVCAuthorPadding = 8.0f;
 const CGFloat RPTVCHorizontalInnerPadding = 12.0f;
 const CGFloat RPTVCHorizontalOuterPadding = 8.0f;
 const CGFloat RPTVCMetaViewHeight = 52.0f;
-const CGFloat RPTVAuthorViewHeight = 32.0f;
+const CGFloat RPTVCAuthorViewHeight = 32.0f;
 const CGFloat RPTVCVerticalPadding = 18.0f;
 const CGFloat RPTVCAvatarSize = 32.0f;
 const CGFloat RPTVCLineHeight = 1.0f;
@@ -72,7 +72,7 @@ const CGFloat RPTVCControlButtonBorderSize = 0.0f;
     }
 
     desiredHeight += RPTVCAuthorPadding;
-    desiredHeight += RPTVAuthorViewHeight;
+    desiredHeight += RPTVCAuthorViewHeight;
     desiredHeight += RPTVCAuthorPadding;
 
 	// Are we showing an image? What size should it be?
@@ -273,7 +273,7 @@ const CGFloat RPTVCControlButtonBorderSize = 0.0f;
 	_bylineLabel.textColor = [UIColor colorWithHexString:@"333"];
 	[_byView addSubview:_bylineLabel];
     
-    self.followButton = [UIButton buttonWithType:UIButtonTypeCustom];
+    self.followButton = [ReaderButton buttonWithType:UIButtonTypeCustom];
     [_followButton setSelected:[self.post.isFollowing boolValue]];
     _followButton.contentHorizontalAlignment = UIControlContentHorizontalAlignmentLeft;
     _followButton.backgroundColor = [UIColor clearColor];
@@ -288,7 +288,7 @@ const CGFloat RPTVCControlButtonBorderSize = 0.0f;
     [_followButton setTitleColor:[UIColor colorWithHexString:@"aaa"] forState:UIControlStateNormal];
     [_byView addSubview:_followButton];
     
-    self.tagButton = [UIButton buttonWithType:UIButtonTypeCustom];
+    self.tagButton = [ReaderButton buttonWithType:UIButtonTypeCustom];
     _tagButton.contentHorizontalAlignment = UIControlContentHorizontalAlignmentLeft;
     _tagButton.backgroundColor = [UIColor clearColor];
     _tagButton.titleLabel.font = [UIFont fontWithName:@"OpenSans" size:12.0f];
@@ -353,15 +353,16 @@ const CGFloat RPTVCControlButtonBorderSize = 0.0f;
     CGRect frame = CGRectMake(leftPadding, 0, contentWidth, self.frame.size.height - RPTVCVerticalPadding);
     _containerView.frame = frame;
     
-    _byView.frame = CGRectMake(0, 0, contentWidth, RPTVAuthorViewHeight);
+    _byView.frame = CGRectMake(0, 0, contentWidth, RPTVCAuthorViewHeight + RPTVCAuthorPadding * 2);
     CGFloat bylineX = RPTVCAvatarSize + RPTVCAuthorPadding + RPTVCHorizontalInnerPadding;
     _bylineLabel.frame = CGRectMake(bylineX, RPTVCAuthorPadding - 2, contentWidth - bylineX, 18);
     
     CGFloat followX = bylineX - 4; // Fudge factor for image alignment
     CGFloat followY = RPTVCAuthorPadding + _bylineLabel.frame.size.height - 2;
-    _followButton.frame = CGRectMake(followX, followY, contentWidth - bylineX, 18);
+    height = ceil([_followButton.titleLabel suggestedSizeForWidth:innerContentWidth].height);
+    _followButton.frame = CGRectMake(followX, followY, contentWidth - bylineX, height);
 
-    nextY += RPTVAuthorViewHeight + RPTVCAuthorPadding;
+    nextY += RPTVCAuthorViewHeight + RPTVCAuthorPadding;
 
 	// Are we showing an image? What size should it be?
 	if (_showImage) {
@@ -443,10 +444,6 @@ const CGFloat RPTVCControlButtonBorderSize = 0.0f;
 	[self updateControlBar];
 }
 
-- (void)setReblogTarget:(id)target action:(SEL)selector {
-	[_reblogButton addTarget:target action:selector forControlEvents:UIControlEventTouchUpInside];
-}
-
 - (void)configureCell:(ReaderPost *)post {
 	self.post = post;
     
@@ -521,7 +518,6 @@ const CGFloat RPTVCControlButtonBorderSize = 0.0f;
 }
 
 - (void)likeAction:(id)sender {
-
 	[self.post toggleLikedWithSuccess:^{
         if ([self.post.isLiked boolValue]) {
             [WPMobileStats trackEventForWPCom:StatsEventReaderLikedPost];
