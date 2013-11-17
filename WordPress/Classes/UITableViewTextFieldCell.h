@@ -7,6 +7,7 @@
 //
 
 #import <Foundation/Foundation.h>
+#import "WPTableViewCell.h"
 
 @class UITableViewTextFieldCell;
 
@@ -16,7 +17,7 @@
 - (void)cellTextDidChange:(UITableViewTextFieldCell *)cell;
 @end
 
-@interface UITableViewTextFieldCell : UITableViewCell
+@interface UITableViewTextFieldCell : WPTableViewCell
 @property (nonatomic, strong) UITextField *textField;
 @property (nonatomic, assign) BOOL shouldDismissOnReturn;
 @property (nonatomic, assign) id<UITableViewTextFieldCellDelegate> delegate;

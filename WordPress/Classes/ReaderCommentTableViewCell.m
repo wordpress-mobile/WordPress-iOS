@@ -211,8 +211,7 @@
 - (void)handleLinkTapped:(id)sender {
 	WPWebViewController *controller = [[WPWebViewController alloc] init];
 	[controller setUrl:((DTLinkButton *)sender).URL];
-	[[[WordPressAppDelegate sharedWordPressApplicationDelegate] panelNavigationController] pushViewController:controller
-																						   fromViewController:self.parentController
+	[[[WordPressAppDelegate sharedWordPressApplicationDelegate] navigationController] pushViewController:controller
 																									 animated:YES];
 }
 

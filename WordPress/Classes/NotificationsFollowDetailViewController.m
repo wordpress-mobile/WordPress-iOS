@@ -279,7 +279,7 @@
     if (webViewURL) {
         WPWebViewController *webViewController = [[WPWebViewController alloc] init];
         [webViewController setUrl:webViewURL];
-        [self.panelNavigationController pushViewController:webViewController fromViewController:self animated:YES];
+        [self.navigationController pushViewController:webViewController animated:YES];
     }
     
 }
@@ -317,7 +317,7 @@
             } else {
                 [webViewController setUrl:blogURL];
             }
-            [self.panelNavigationController pushViewController:webViewController fromViewController:self animated:YES];
+            [self.navigationController pushViewController:webViewController animated:YES];
         } else {
             [self.tableView deselectRowAtIndexPath:indexPath animated:NO];
         }

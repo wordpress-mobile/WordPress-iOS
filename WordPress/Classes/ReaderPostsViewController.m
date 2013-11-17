@@ -17,7 +17,6 @@
 #import "ReaderPost.h"
 #import "WordPressComApi.h"
 #import "WordPressAppDelegate.h"
-#import "PanelNavigationConstants.h"
 #import "NSString+XMLExtensions.h"
 #import "ReaderReblogFormView.h"
 #import "WPFriendFinderViewController.h"
@@ -29,6 +28,8 @@
 #import "NSString+Helpers.h"
 #import "WPPopoverBackgroundView.h"
 #import "IOS7CorrectedTextView.h"
+
+#define IPAD_DETAIL_WIDTH 448.0f
 
 static CGFloat const ScrollingFastVelocityThreshold = 30.f;
 NSString *const WPReaderViewControllerDisplayedNativeFriendFinder = @"DisplayedNativeFriendFinder";
@@ -167,6 +168,14 @@ NSString *const WPReaderViewControllerDisplayedNativeFriendFinder = @"DisplayedN
         [WPMobileStats logQuantcastEvent:@"newdash.freshly"];
         [WPMobileStats logQuantcastEvent:@"mobile.freshly"];
     }
+    
+    // Sync content as soon as login or creation occurs
+    [[NSNotificationCenter defaultCenter] addObserverForName:WordPressComApiDidLoginNotification
+                                                      object:nil
+                                                       queue:nil
+                                                  usingBlock:^(NSNotification *notification){
+                                                      [self syncItems];
+                                                  }];
 }
 
 
@@ -174,19 +183,20 @@ NSString *const WPReaderViewControllerDisplayedNativeFriendFinder = @"DisplayedN
 	[super viewWillAppear:animated];
 	
     [self performSelector:@selector(showFriendFinderNudgeView:) withObject:self afterDelay:3.0];
-    
-	self.panelNavigationController.delegate = self;
-	
+    	
 	self.title = [[[ReaderPost currentTopic] objectForKey:@"title"] capitalizedString];
     [self loadImagesForVisibleRows];
 	
 	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(handleKeyboardDidShow:) name:UIKeyboardWillShowNotification object:nil];
 	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(handleKeyboardWillHide:) name:UIKeyboardWillHideNotification object:nil];
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(sidebarOpened) name:SidebarOpenedNotification object:nil];
 }
 
 - (void)viewDidAppear:(BOOL)animated {
-    [super viewDidAppear:animated];
+    // WPTableViewController's viewDidAppear triggers a sync, but only do it if authenticated
+    // (this prevents an attempted sync when the app launches for the first time before authenticating)
+    if ([[WordPressAppDelegate sharedWordPressApplicationDelegate] isWPcomAuthenticated]) {
+        [super viewDidAppear:animated];
+    }
 
     NSIndexPath *selectedIndexPath = [self.tableView indexPathForSelectedRow];
     if (selectedIndexPath) {
@@ -197,7 +207,6 @@ NSString *const WPReaderViewControllerDisplayedNativeFriendFinder = @"DisplayedN
 - (void)viewWillDisappear:(BOOL)animated {
     [super viewWillDisappear:animated];
 	
-    self.panelNavigationController.delegate = nil;
 	[[NSNotificationCenter defaultCenter] removeObserver:self];
 }
 
@@ -229,7 +238,19 @@ NSString *const WPReaderViewControllerDisplayedNativeFriendFinder = @"DisplayedN
 
 #pragma mark - Instance Methods
 
+- (void)setTitle:(NSString *)title {
+    [super setTitle:title];
+    
+    // Reset the tab bar title; this isn't a great solution, but works
+    NSInteger tabIndex = [self.tabBarController.viewControllers indexOfObject:self.navigationController];
+    UITabBarItem *tabItem = [[[self.tabBarController tabBar] items] objectAtIndex:tabIndex];
+    tabItem.title = NSLocalizedString(@"Reader", @"Description of the Reader tab");
+}
+
 - (void)configureTableHeader {
+    if (IS_IPAD)
+        return;
+    
 	if ([self.resultsController.fetchedObjects count] == 0) {
 		self.tableView.tableHeaderView = nil;
 		return;
@@ -244,10 +265,6 @@ NSString *const WPReaderViewControllerDisplayedNativeFriendFinder = @"DisplayedN
 	paddingView.backgroundColor = [WPStyleGuide itsEverywhereGrey];
 ;
 	self.tableView.tableHeaderView = paddingView;
-}
-
-- (void)sidebarOpened {
-    [self dismissPopover];
 }
 
 - (void)handleTopicsButtonTapped:(id)sender {
@@ -313,13 +330,14 @@ NSString *const WPReaderViewControllerDisplayedNativeFriendFinder = @"DisplayedN
 
 
 - (void)handleKeyboardDidShow:(NSNotification *)notification {
-	CGRect frame = self.view.frame;
+    UIView *view = self.view;
+	CGRect frame = view.frame;
 	CGRect startFrame = [[[notification userInfo] objectForKey:UIKeyboardFrameBeginUserInfoKey] CGRectValue];
 	CGRect endFrame = [[[notification userInfo] objectForKey:UIKeyboardFrameEndUserInfoKey] CGRectValue];
 	
 	// Figure out the difference between the bottom of this view, and the top of the keyboard.
 	// This should account for any toolbars.
-	CGPoint point = [self.view.window convertPoint:startFrame.origin toView:self.view];
+	CGPoint point = [view.window convertPoint:startFrame.origin toView:view];
 	keyboardOffset = point.y - (frame.origin.y + frame.size.height);
 	
 	// if we're upside down, we need to adjust the origin.
@@ -327,19 +345,19 @@ NSString *const WPReaderViewControllerDisplayedNativeFriendFinder = @"DisplayedN
 		endFrame.origin.y = endFrame.origin.x += MIN(endFrame.size.height, endFrame.size.width);
 	}
 	
-	point = [self.view.window convertPoint:endFrame.origin toView:self.view];
+	point = [view.window convertPoint:endFrame.origin toView:view];
 	frame.size.height = point.y;
 	
 	[UIView animateWithDuration:0.3f delay:0.0f options:UIViewAnimationOptionBeginFromCurrentState animations:^{
-		self.view.frame = frame;
+		view.frame = frame;
 	} completion:^(BOOL finished) {
 		// BUG: When dismissing a modal view, and the keyboard is showing again, the animation can get clobbered in some cases.
 		// When this happens the view is set to the dimensions of its wrapper view, hiding content that should be visible
 		// above the keyboard.
 		// For now use a fallback animation.
-		if (!CGRectEqualToRect(self.view.frame, frame)) {
+		if (!CGRectEqualToRect(view.frame, frame)) {
 			[UIView animateWithDuration:0.3 animations:^{
-				self.view.frame = frame;
+				view.frame = frame;
 			}];
 		}
 	}];
@@ -347,12 +365,13 @@ NSString *const WPReaderViewControllerDisplayedNativeFriendFinder = @"DisplayedN
 
 
 - (void)handleKeyboardWillHide:(NSNotification *)notification {
-	CGRect frame = self.view.frame;
+    UIView *view = self.view;
+	CGRect frame = view.frame;
 	CGRect keyFrame = [[[notification userInfo] objectForKey:UIKeyboardFrameEndUserInfoKey] CGRectValue];
 	
-	CGPoint point = [self.view.window convertPoint:keyFrame.origin toView:self.view];
+	CGPoint point = [view.window convertPoint:keyFrame.origin toView:view];
 	frame.size.height = point.y - (frame.origin.y + keyboardOffset);
-	self.view.frame = frame;
+	view.frame = frame;
 }
 
 
@@ -371,7 +390,7 @@ NSString *const WPReaderViewControllerDisplayedNativeFriendFinder = @"DisplayedN
 	
 	CGFloat y = tableFrame.origin.y + tableFrame.size.height;
 	_readerReblogFormView.frame = CGRectMake(0.0f, y, self.view.bounds.size.width, reblogHeight);
-	[self.view addSubview:_readerReblogFormView];
+	[self.view.superview addSubview:_readerReblogFormView];
 	self.isShowingReblogForm = YES;
 	[_readerReblogFormView.textView becomeFirstResponder];
 }
@@ -417,7 +436,7 @@ NSString *const WPReaderViewControllerDisplayedNativeFriendFinder = @"DisplayedN
 
         if (post.featuredImageURL) {
             NSURL *imageURL = post.featuredImageURL;
-            imageSize = cell.cellImageView.bounds.size;
+            imageSize = cell.cellImageView.frame.size;
             image = [_featuredImageSource imageForURL:imageURL withSize:imageSize];
             if (image) {
                 [cell setFeaturedImage:image];
@@ -794,7 +813,7 @@ NSString *const WPReaderViewControllerDisplayedNativeFriendFinder = @"DisplayedN
 	ReaderPost *post = [self.resultsController.fetchedObjects objectAtIndex:indexPath.row];
 	
 	ReaderPostDetailViewController *controller = [[ReaderPostDetailViewController alloc] initWithPost:post];
-    [self.panelNavigationController pushViewController:controller animated:YES];
+    [self.navigationController pushViewController:controller animated:YES];
     
     [WPMobileStats trackEventForWPCom:StatsEventReaderOpenedArticleDetails];
     [WPMobileStats pingWPComStatsEndpoint:@"details_page"];
@@ -823,6 +842,7 @@ NSString *const WPReaderViewControllerDisplayedNativeFriendFinder = @"DisplayedN
 	[self.tableView setContentOffset:CGPointMake(0, 0) animated:NO];
 	[self resetResultsController];
 	[self.tableView reloadData];
+    [self syncItems];
 	
     [self configureTableHeader];
 	
@@ -953,15 +973,19 @@ NSString *const WPReaderViewControllerDisplayedNativeFriendFinder = @"DisplayedN
         [userDefaults setBool:YES forKey:WPReaderViewControllerDisplayedNativeFriendFinder];
         [userDefaults synchronize];
         
-        CGRect buttonFrame = CGRectMake(0,self.view.frame.size.height,self.view.frame.size.width, 0.f);
+        CGRect buttonFrame = CGRectMake(0,self.navigationController.view.frame.size.height,self.view.frame.size.width, 0.f);
         WPFriendFinderNudgeView *nudgeView = [[WPFriendFinderNudgeView alloc] initWithFrame:buttonFrame];
         self.friendFinderNudgeView = nudgeView;
-        self.friendFinderNudgeView.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleTopMargin;
-        [self.view addSubview:self.friendFinderNudgeView];
+        self.friendFinderNudgeView.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleBottomMargin;
+        [self.navigationController.view addSubview:self.friendFinderNudgeView];
+        
+        CGSize tabBarSize = CGSizeZero;
+        if ([self tabBarController]) {
+            tabBarSize = [[[self tabBarController] tabBar] bounds].size;
+        }
         
         buttonFrame = self.friendFinderNudgeView.frame;
-        CGRect viewFrame = self.view.frame;
-        buttonFrame.origin.y = viewFrame.size.height - buttonFrame.size.height + 1.f;
+        buttonFrame.origin.y = self.navigationController.view.frame.size.height - buttonFrame.size.height - tabBarSize.height;
         
         [self.friendFinderNudgeView.cancelButton addTarget:self action:@selector(hideFriendFinderNudgeView:) forControlEvents:UIControlEventTouchUpInside];
         [self.friendFinderNudgeView.confirmButton addTarget:self action:@selector(openFriendFinder:) forControlEvents:UIControlEventTouchUpInside];
