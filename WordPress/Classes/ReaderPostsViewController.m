@@ -104,29 +104,29 @@ NSString *const WPReaderViewControllerDisplayedNativeFriendFinder = @"DisplayedN
 	// Topics button
 	UIBarButtonItem *button = nil;
     if (IS_IOS7) {
-        UIButton *btn = [UIButton buttonWithType:UIButtonTypeCustom];
-        [btn setImage:[UIImage imageNamed:@"icon-reader-topics"] forState:UIControlStateNormal];
-        [btn setImage:[UIImage imageNamed:@"icon-reader-topics-active"] forState:UIControlStateHighlighted];
+        UIButton *topicsButton = [UIButton buttonWithType:UIButtonTypeCustom];
+        [topicsButton setImage:[UIImage imageNamed:@"icon-reader-topics"] forState:UIControlStateNormal];
+        [topicsButton setImage:[UIImage imageNamed:@"icon-reader-topics-active"] forState:UIControlStateHighlighted];
 
         CGSize imageSize = [UIImage imageNamed:@"icon-reader-topics"].size;
-        btn.frame = CGRectMake(0.0, 0.0, imageSize.width, imageSize.height);
+        topicsButton.frame = CGRectMake(0.0, 0.0, imageSize.width, imageSize.height);
 		
-        [btn addTarget:self action:@selector(topicsAction:) forControlEvents:UIControlEventTouchUpInside];
-        button = [[UIBarButtonItem alloc] initWithCustomView:btn];
+        [topicsButton addTarget:self action:@selector(topicsAction:) forControlEvents:UIControlEventTouchUpInside];
+        button = [[UIBarButtonItem alloc] initWithCustomView:topicsButton];
     } else {
-        UIButton *btn = [UIButton buttonWithType:UIButtonTypeCustom];
-        [btn setImage:[UIImage imageNamed:@"navbar_read"] forState:UIControlStateNormal];
+        UIButton *readButton = [UIButton buttonWithType:UIButtonTypeCustom];
+        [readButton setImage:[UIImage imageNamed:@"navbar_read"] forState:UIControlStateNormal];
         
 		UIImage *backgroundImage = [[UIImage imageNamed:@"navbar_button_bg"] stretchableImageWithLeftCapWidth:4 topCapHeight:0];
-        [btn setBackgroundImage:backgroundImage forState:UIControlStateNormal];
+        [readButton setBackgroundImage:backgroundImage forState:UIControlStateNormal];
 		
         backgroundImage = [[UIImage imageNamed:@"navbar_button_bg_active"] stretchableImageWithLeftCapWidth:4 topCapHeight:0];
-        [btn setBackgroundImage:backgroundImage forState:UIControlStateHighlighted];
+        [readButton setBackgroundImage:backgroundImage forState:UIControlStateHighlighted];
         
-        btn.frame = CGRectMake(0.0f, 0.0f, 44.0f, 30.0f);
+        readButton.frame = CGRectMake(0.0f, 0.0f, 44.0f, 30.0f);
 		
-        [btn addTarget:self action:@selector(topicsAction:) forControlEvents:UIControlEventTouchUpInside];
-        button = [[UIBarButtonItem alloc] initWithCustomView:btn];
+        [readButton addTarget:self action:@selector(topicsAction:) forControlEvents:UIControlEventTouchUpInside];
+        button = [[UIBarButtonItem alloc] initWithCustomView:readButton];
     }
 	
     [button setAccessibilityLabel:NSLocalizedString(@"Topics", @"")];
