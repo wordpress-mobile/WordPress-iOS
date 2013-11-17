@@ -87,10 +87,13 @@ const CGFloat RPTVCControlButtonBorderSize = 0.0f;
 	}
 
     desiredHeight += RPTVCVerticalPadding;
-	desiredHeight += [post.postTitle sizeWithFont:[self postTitleFont] constrainedToSize:CGSizeMake(contentWidth, CGFLOAT_MAX) lineBreakMode:NSLineBreakByWordWrapping].height;
+	desiredHeight += [post.postTitle sizeWithFont:[self titleFont] constrainedToSize:CGSizeMake(contentWidth, CGFLOAT_MAX) lineBreakMode:NSLineBreakByWordWrapping].height;
     desiredHeight += RPTVCVerticalPadding;
 
-	desiredHeight += [post.summary sizeWithFont:[UIFont fontWithName:@"OpenSans" size:13.0f] constrainedToSize:CGSizeMake(contentWidth, CGFLOAT_MAX) lineBreakMode:NSLineBreakByWordWrapping].height;
+    if ([post.summary length] > 0) {
+        NSString *postSummary = [self prettySummaryForPost:post];
+        desiredHeight += [postSummary sizeWithFont:[self summaryFont] constrainedToSize:CGSizeMake(contentWidth, CGFLOAT_MAX) lineBreakMode:NSLineBreakByWordWrapping].height;
+    }
     
 	desiredHeight += RPTVCVerticalPadding * 2;
 
@@ -100,8 +103,22 @@ const CGFloat RPTVCControlButtonBorderSize = 0.0f;
 	return ceil(desiredHeight);
 }
 
-+ (UIFont *)postTitleFont {
++ (NSString *)prettySummaryForPost:(ReaderPost *)post {
+    NSString *prettySummary = [post.summary trim];
+    NSInteger newline = [post.summary rangeOfString:@"\n"].location;
+    
+    if (newline != NSNotFound)
+        prettySummary = [post.summary substringToIndex:newline];
+    
+    return prettySummary;
+}
+
++ (UIFont *)titleFont {
     return [UIFont fontWithName:@"Merriweather-Bold" size:21.0f];
+}
+
++ (UIFont *)summaryFont {
+    return [UIFont fontWithName:@"OpenSans" size:14.0f];
 }
 
 
@@ -200,7 +217,7 @@ const CGFloat RPTVCControlButtonBorderSize = 0.0f;
 	self.titleLabel = [[UILabel alloc] init];
 	_titleLabel.autoresizingMask = UIViewAutoresizingFlexibleWidth;
 	_titleLabel.backgroundColor = [UIColor clearColor];
-	_titleLabel.font = [[self class] postTitleFont];
+	_titleLabel.font = [[self class] titleFont];
 	_titleLabel.textColor = [UIColor colorWithRed:64.0f/255.0f green:64.0f/255.0f blue:64.0f/255.0f alpha:1.0];
 	_titleLabel.lineBreakMode = NSLineBreakByWordWrapping;
 	_titleLabel.numberOfLines = 0;
@@ -209,10 +226,10 @@ const CGFloat RPTVCControlButtonBorderSize = 0.0f;
 	self.snippetLabel = [[UILabel alloc] init];
 	_snippetLabel.autoresizingMask = UIViewAutoresizingFlexibleWidth;
 	_snippetLabel.backgroundColor = [UIColor clearColor];
-	_snippetLabel.font = [UIFont fontWithName:@"OpenSans" size:13.0f];
+	_snippetLabel.font = [[self class] summaryFont];
 	_snippetLabel.textColor = [UIColor colorWithRed:64.0f/255.0f green:64.0f/255.0f blue:64.0f/255.0f alpha:1.0];
-	_snippetLabel.lineBreakMode = NSLineBreakByWordWrapping;
-	_snippetLabel.numberOfLines = 0;
+	_snippetLabel.lineBreakMode = NSLineBreakByTruncatingTail;
+	_snippetLabel.numberOfLines = 4;
 	[_containerView addSubview:_snippetLabel];
     
     self.byView = [[UIView alloc] init];
@@ -299,9 +316,11 @@ const CGFloat RPTVCControlButtonBorderSize = 0.0f;
 	nextY += height + RPTVCVerticalPadding;
 
 	// Position the snippet
-	height = ceil([_snippetLabel suggestedSizeForWidth:contentWidth].height);
-	_snippetLabel.frame = CGRectMake(RPTVCHorizontalInnerPadding, nextY, innerContentWidth, height);
-	nextY += ceilf(height + RPTVCVerticalPadding);
+    if ([self.post.summary length] > 0) {
+        height = ceil([_snippetLabel suggestedSizeForWidth:contentWidth].height);
+        _snippetLabel.frame = CGRectMake(RPTVCHorizontalInnerPadding, nextY, innerContentWidth, height);
+        nextY += ceilf(height + RPTVCVerticalPadding);
+    }
 
 	// position the meta view and its subviews
 	_metaView.frame = CGRectMake(0.0f, nextY, contentWidth, RPTVCMetaViewHeight);
@@ -363,7 +382,7 @@ const CGFloat RPTVCControlButtonBorderSize = 0.0f;
     [self setAvatar:nil];
 
 	_titleLabel.text = [post.postTitle trim];
-	_snippetLabel.text = post.summary;
+	_snippetLabel.text = [[self class] prettySummaryForPost:post];
 
     NSString *onBlog = [NSString stringWithFormat:NSLocalizedString(@"on %@", @"'on <Blog Name>', displayed on reader list for each post"), post.blogName];
 	_bylineLabel.text = [NSString stringWithFormat:@"%@\n%@", [post prettyDateString], onBlog];
@@ -443,6 +462,5 @@ const CGFloat RPTVCControlButtonBorderSize = 0.0f;
 	
 	[self updateControlBar];
 }
-
 
 @end
