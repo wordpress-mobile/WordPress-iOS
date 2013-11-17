@@ -17,11 +17,12 @@
 #import "WPAvatarSource.h"
 #import "ReaderButton.h"
 
-const CGFloat RPTVCVerticalPadding = 8.0f;
-const CGFloat RPTVCHorizontalPadding = 10.0f;
+const CGFloat RPTVCAuthorPadding = 8.0f;
+const CGFloat RPTVCHorizontalInnerPadding = 12.0f;
+const CGFloat RPTVCHorizontalOuterPadding = 8.0f;
 const CGFloat RPTVCMetaViewHeight = 52.0f;
-const CGFloat RPTVAuthorViewHeight = 44.0f;
-const CGFloat RPTVCTitlePadding = 20.0f;
+const CGFloat RPTVAuthorViewHeight = 36.0f;
+const CGFloat RPTVCVerticalPadding = 20.0f;
 
 // Control buttons (Like, Reblog, ...)
 const CGFloat RPTVCControlButtonHeight = 48.0f;
@@ -38,6 +39,7 @@ const CGFloat RPTVCControlButtonBorderSize = 0.0f;
 @property (nonatomic, strong) UILabel *snippetLabel;
 
 @property (nonatomic, strong) UIView *metaView;
+@property (nonatomic, strong) CALayer *metaBorder;
 
 @property (nonatomic, strong) UIView *byView;
 @property (nonatomic, strong) UILabel *bylineLabel;
@@ -62,7 +64,6 @@ const CGFloat RPTVCControlButtonBorderSize = 0.0f;
 
 + (CGFloat)cellHeightForPost:(ReaderPost *)post withWidth:(CGFloat)width {
 	CGFloat desiredHeight = 0.0f;
-	CGFloat vpadding = RPTVCVerticalPadding;
 
     // Margins
     CGFloat contentWidth = width;
@@ -72,8 +73,12 @@ const CGFloat RPTVCControlButtonBorderSize = 0.0f;
     
     // iPhone has extra padding around each cell
     if (IS_IPHONE) {
-        contentWidth -= RPTVCHorizontalPadding * 2;
+        contentWidth -= RPTVCHorizontalOuterPadding * 2;
     }
+
+    desiredHeight += RPTVCAuthorPadding;
+    desiredHeight += RPTVAuthorViewHeight;
+    desiredHeight += RPTVCAuthorPadding;
 
 	// Are we showing an image? What size should it be?
 	if (post.featuredImageURL) {
@@ -81,22 +86,16 @@ const CGFloat RPTVCControlButtonBorderSize = 0.0f;
 		desiredHeight += height;
 	}
 
-	desiredHeight += vpadding;
-    
-    desiredHeight += RPTVAuthorViewHeight;
-
-    desiredHeight += RPTVCTitlePadding;
+    desiredHeight += RPTVCVerticalPadding;
 	desiredHeight += [post.postTitle sizeWithFont:[self postTitleFont] constrainedToSize:CGSizeMake(contentWidth, CGFLOAT_MAX) lineBreakMode:NSLineBreakByWordWrapping].height;
-    desiredHeight += RPTVCTitlePadding;
+    desiredHeight += RPTVCVerticalPadding;
 
 	desiredHeight += [post.summary sizeWithFont:[UIFont fontWithName:@"OpenSans" size:13.0f] constrainedToSize:CGSizeMake(contentWidth, CGFLOAT_MAX) lineBreakMode:NSLineBreakByWordWrapping].height;
-	desiredHeight += vpadding;
+    
+	desiredHeight += RPTVCVerticalPadding * 2;
 
 	// Size of the meta view
     desiredHeight += RPTVCMetaViewHeight;
-	
-	// bottom padding
-	desiredHeight += vpadding;
 
 	return ceil(desiredHeight);
 }
@@ -239,6 +238,10 @@ const CGFloat RPTVCControlButtonBorderSize = 0.0f;
 	_metaView.autoresizingMask = UIViewAutoresizingFlexibleWidth;
 	_metaView.backgroundColor = [UIColor clearColor];
 	[_containerView addSubview:_metaView];
+    
+    self.metaBorder = [[CALayer alloc] init];
+    _metaBorder.backgroundColor = [[UIColor colorWithHexString:@"f1f1f1"] CGColor];
+    [_metaView.layer addSublayer:_metaBorder];
 
 	self.likeButton = [ReaderButton buttonWithType:UIButtonTypeCustom];
 	_likeButton.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleRightMargin;
@@ -270,39 +273,39 @@ const CGFloat RPTVCControlButtonBorderSize = 0.0f;
 - (void)layoutSubviews {
 	[super layoutSubviews];
     
-    CGFloat leftPadding = IS_IPHONE ? RPTVCHorizontalPadding : 0;
+    CGFloat leftPadding = IS_IPHONE ? RPTVCHorizontalOuterPadding : 0;
 	CGFloat contentWidth = self.frame.size.width - leftPadding * 2;
-    CGFloat innerContentWidth = contentWidth - RPTVCHorizontalPadding * 2;
-	CGFloat vpadding = RPTVCVerticalPadding;
-	CGFloat nextY = vpadding;
+    CGFloat innerContentWidth = contentWidth - RPTVCHorizontalInnerPadding * 2;
+	CGFloat nextY = RPTVCAuthorPadding;
 	CGFloat height = 0.0f;
     
     CGRect frame = CGRectMake(leftPadding, 0, contentWidth, self.frame.size.height - RPTVCVerticalPadding);
     _containerView.frame = frame;
     
     _byView.frame = CGRectMake(0, 0, contentWidth, RPTVAuthorViewHeight);
-    nextY += RPTVAuthorViewHeight;
+    nextY += RPTVAuthorViewHeight + RPTVCAuthorPadding;
 
 	// Are we showing an image? What size should it be?
 	if (_showImage) {
 		height = ceilf(contentWidth * 0.66f);
-		self.cellImageView.frame = CGRectMake(RPTVCHorizontalPadding, nextY, innerContentWidth, height);
+		self.cellImageView.frame = CGRectMake(RPTVCHorizontalInnerPadding, nextY, innerContentWidth, height);
 		nextY += height;
     }
     
 	// Position the title
-    nextY += RPTVCTitlePadding;
+    nextY += RPTVCVerticalPadding;
 	height = ceil([_titleLabel suggestedSizeForWidth:contentWidth].height);
-	_titleLabel.frame = CGRectMake(RPTVCHorizontalPadding, nextY, innerContentWidth, height);
-	nextY += height + RPTVCTitlePadding;
+	_titleLabel.frame = CGRectMake(RPTVCHorizontalInnerPadding, nextY, innerContentWidth, height);
+	nextY += height + RPTVCVerticalPadding;
 
 	// Position the snippet
 	height = ceil([_snippetLabel suggestedSizeForWidth:contentWidth].height);
-	_snippetLabel.frame = CGRectMake(RPTVCHorizontalPadding, nextY, innerContentWidth, height);
-	nextY += ceilf(height + vpadding);
+	_snippetLabel.frame = CGRectMake(RPTVCHorizontalInnerPadding, nextY, innerContentWidth, height);
+	nextY += ceilf(height + RPTVCVerticalPadding);
 
 	// position the meta view and its subviews
 	_metaView.frame = CGRectMake(0.0f, nextY, contentWidth, RPTVCMetaViewHeight);
+    _metaBorder.frame = CGRectMake(RPTVCHorizontalInnerPadding, 0, contentWidth - RPTVCHorizontalInnerPadding*2, 1.0);
 	
     BOOL commentsOpen = [[self.post commentsOpen] boolValue];
 	CGFloat buttonWidth = RPTVCControlButtonWidth - RPTVCControlButtonBorderSize;
@@ -324,7 +327,7 @@ const CGFloat RPTVCControlButtonBorderSize = 0.0f;
     
     _bylineLabel.frame = CGRectMake(47.0f, 8.0f, contentWidth - 57.0f, 36.0f);
     
-    CGFloat sideBorderX = RPTVCHorizontalPadding - 1; // Just to the left of the container
+    CGFloat sideBorderX = RPTVCHorizontalOuterPadding - 1; // Just to the left of the container
     CGFloat sideBorderHeight = self.frame.size.height - RPTVCVerticalPadding + 1.f; // Just below it
     _sideBorderView.frame = CGRectMake(sideBorderX, 1.f, self.frame.size.width - sideBorderX*2, sideBorderHeight);
 }
