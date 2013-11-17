@@ -28,7 +28,6 @@
     UIScrollViewDelegate,
     UITextFieldDelegate,
     UIGestureRecognizerDelegate> {
-    UIScrollView *_scrollView;
     
     // Page 1
     WPNUXBackButton *_cancelButton;
@@ -46,15 +45,10 @@
     NSOperationQueue *_operationQueue;
 
     BOOL _keyboardVisible;
-    BOOL _savedOriginalPositionsOfStickyControls;
     BOOL _shouldCorrectEmail;
     BOOL _userDefinedSiteAddress;
-    CGFloat _infoButtonOriginalX;
-    CGFloat _cancelButtonOriginalX;
     CGFloat _keyboardOffset;
     NSString *_defaultSiteUrl;
-    
-    NSUInteger _currentPage;
         
     CGFloat _viewWidth;
     CGFloat _viewHeight;
@@ -72,13 +66,13 @@ CGFloat const CreateAccountAndBlogMaxTextWidth = 289.0;
 CGFloat const CreateAccountAndBlogTextFieldWidth = 320.0;
 CGFloat const CreateAccountAndBlogTextFieldHeight = 44.0;
 CGFloat const CreateAccountAndBlogKeyboardOffset = 132.0;
+CGFloat const CreateAccountAndBlogiOS7StatusBarOffset = 20.0;
 
 
 - (id)init
 {
     self = [super init];
     if (self) {
-        _currentPage = 1;
         _shouldCorrectEmail = YES;
         _operationQueue = [[NSOperationQueue alloc] init];
         _currentLanguage = [WPComLanguages currentLanguage];
@@ -110,16 +104,6 @@ CGFloat const CreateAccountAndBlogKeyboardOffset = 132.0;
 {
     [super viewWillAppear:animated];
     [self.navigationController setNavigationBarHidden:YES animated:animated];
-    
-    [self moveStickyControlsForContentOffset:_scrollView.contentOffset];
-    [self updateCancelButton:_scrollView.contentOffset];
-}
-
-- (void)viewDidAppear:(BOOL)animated
-{
-    [super viewDidAppear:animated];
-
-    [self layoutScrollview];
 }
 
 - (NSUInteger)supportedInterfaceOrientations {
@@ -127,23 +111,6 @@ CGFloat const CreateAccountAndBlogKeyboardOffset = 132.0;
         return UIInterfaceOrientationMaskPortrait;
     
     return UIInterfaceOrientationMaskAll;
-}
-
-// Necessary to fix content inset of scroll view
-- (void) viewWillLayoutSubviews {
-    
-    if ([super respondsToSelector:@selector(topLayoutGuide)])
-    {
-        CGFloat topBarOffset = self.parentViewController.topLayoutGuide.length;
-        CGFloat bottomBarOffset = self.parentViewController.bottomLayoutGuide.length;
-        UIEdgeInsets newInsets = UIEdgeInsetsMake(topBarOffset, 0, bottomBarOffset, 0);
-        
-        _scrollView.contentInset = newInsets;
-        _scrollView.scrollIndicatorInsets = newInsets;
-    } else
-    {
-        [super viewWillLayoutSubviews];
-    }
 }
 
 #pragma mark - UITextField Delegate methods
@@ -233,41 +200,14 @@ CGFloat const CreateAccountAndBlogKeyboardOffset = 132.0;
     return YES;
 }
 
-#pragma mark - UIScrollView Delegate methods
-
-- (void)scrollViewDidScroll:(UIScrollView *)scrollView
-{
-    NSUInteger pageViewed = ceil(scrollView.contentOffset.x/_viewWidth) + 1;
-    [self flagPageViewed:pageViewed];
-    [self moveStickyControlsForContentOffset:scrollView.contentOffset];
-    [self updateCancelButton:scrollView.contentOffset];
-}
-
 #pragma mark - Private Methods
 
 - (void)addScrollview
 {
-    _scrollView = [[UIScrollView alloc] init];
-    CGSize scrollViewSize = _scrollView.contentSize;
-    scrollViewSize.width = _viewWidth * 3;
-    _scrollView.scrollEnabled = NO;
-    _scrollView.frame = self.view.bounds;
-    _scrollView.contentSize = scrollViewSize;
-    _scrollView.pagingEnabled = YES;
-    _scrollView.showsHorizontalScrollIndicator = NO;
-    _scrollView.pagingEnabled = YES;
-    [self.view addSubview:_scrollView];
-    _scrollView.delegate = self;
-    
     UITapGestureRecognizer *gestureRecognizer = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(clickedOnScrollView:)];
     gestureRecognizer.numberOfTapsRequired = 1;
     gestureRecognizer.cancelsTouchesInView = NO;
-    [_scrollView addGestureRecognizer:gestureRecognizer];
-}
-
-- (void)layoutScrollview
-{
-    _scrollView.frame = self.view.bounds;
+    [self.view addGestureRecognizer:gestureRecognizer];
 }
 
 - (void)addPage1Controls
@@ -279,21 +219,23 @@ CGFloat const CreateAccountAndBlogKeyboardOffset = 132.0;
         [_helpButton setImage:helpButtonImage forState:UIControlStateNormal];
         _helpButton.frame = CGRectMake(0, 0, helpButtonImage.size.width, helpButtonImage.size.height);
         [_helpButton addTarget:self action:@selector(clickedHelpButton) forControlEvents:UIControlEventTouchUpInside];
-        [_scrollView addSubview:_helpButton];
+        [self.view addSubview:_helpButton];
     }
     
     // Add Cancel Button
     if (_cancelButton == nil) {
         _cancelButton = [[WPNUXBackButton alloc] init];
+        [_cancelButton setTitle:NSLocalizedString(@"Cancel", nil) forState:UIControlStateNormal];
         [_cancelButton addTarget:self action:@selector(clickedCancelButton) forControlEvents:UIControlEventTouchUpInside];
-        [_scrollView addSubview:_cancelButton];
+        [_cancelButton sizeToFit];
+        [self.view addSubview:_cancelButton];
     }
     
     // Add Icon
     if (_page1Icon == nil) {
         UIImage *icon = [UIImage imageNamed:@"icon-wp"];
         _page1Icon = [[UIImageView alloc] initWithImage:icon];
-        [_scrollView addSubview:_page1Icon];
+        [self.view addSubview:_page1Icon];
     }
     
     // Add Title
@@ -302,7 +244,7 @@ CGFloat const CreateAccountAndBlogKeyboardOffset = 132.0;
         _page1Title.attributedText = [WPNUXUtility titleAttributedString:NSLocalizedString(@"Create an account on WordPress.com", @"NUX Create Account Page 1 Title")];
         _page1Title.numberOfLines = 0;
         _page1Title.backgroundColor = [UIColor clearColor];
-        [_scrollView addSubview:_page1Title];
+        [self.view addSubview:_page1Title];
     }
     
     // Add Email
@@ -316,7 +258,7 @@ CGFloat const CreateAccountAndBlogKeyboardOffset = 132.0;
         _page1EmailText.autocorrectionType = UITextAutocorrectionTypeNo;
         _page1EmailText.autocapitalizationType = UITextAutocapitalizationTypeNone;
         _page1EmailText.keyboardType = UIKeyboardTypeEmailAddress;
-        [_scrollView addSubview:_page1EmailText];
+        [self.view addSubview:_page1EmailText];
     }
     
     // Add Username
@@ -330,7 +272,7 @@ CGFloat const CreateAccountAndBlogKeyboardOffset = 132.0;
         _page1UsernameText.autocorrectionType = UITextAutocorrectionTypeNo;
         _page1UsernameText.autocapitalizationType = UITextAutocapitalizationTypeNone;
         _page1UsernameText.showTopLineSeparator = YES;
-        [_scrollView addSubview:_page1UsernameText];
+        [self.view addSubview:_page1UsernameText];
     }
     
     // Add Password
@@ -345,7 +287,7 @@ CGFloat const CreateAccountAndBlogKeyboardOffset = 132.0;
         _page1PasswordText.autocorrectionType = UITextAutocorrectionTypeNo;
         _page1PasswordText.autocapitalizationType = UITextAutocapitalizationTypeNone;
         _page1PasswordText.showTopLineSeparator = YES;
-        [_scrollView addSubview:_page1PasswordText];
+        [self.view addSubview:_page1PasswordText];
     }
     
     // Add Site Address
@@ -359,7 +301,7 @@ CGFloat const CreateAccountAndBlogKeyboardOffset = 132.0;
         _page2SiteAddressText.autocorrectionType = UITextAutocorrectionTypeNo;
         _page2SiteAddressText.autocapitalizationType = UITextAutocapitalizationTypeNone;
         _page2SiteAddressText.showTopLineSeparator = YES;
-        [_scrollView addSubview:_page2SiteAddressText];
+        [self.view addSubview:_page2SiteAddressText];
         
         // add .wordpress.com label to textfield
         _page2WordPressComLabel = [[UILabel alloc] init];
@@ -385,7 +327,7 @@ CGFloat const CreateAccountAndBlogKeyboardOffset = 132.0;
         _page1TOSLabel.backgroundColor = [UIColor clearColor];
         _page1TOSLabel.font = [WPNUXUtility tosLabelFont];
         _page1TOSLabel.textColor = [WPNUXUtility tosLabelColor];
-        [_scrollView addSubview:_page1TOSLabel];
+        [self.view addSubview:_page1TOSLabel];
         
         UITapGestureRecognizer *gestureRecognizer = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(clickedTOSLabel)];
         gestureRecognizer.numberOfTapsRequired = 1;
@@ -399,24 +341,29 @@ CGFloat const CreateAccountAndBlogKeyboardOffset = 132.0;
         _page1NextButton.enabled = NO;
         [_page1NextButton addTarget:self action:@selector(clickedPage1NextButton) forControlEvents:UIControlEventTouchUpInside];
         [_page1NextButton sizeToFit];
-        [_scrollView addSubview:_page1NextButton];
+        [self.view addSubview:_page1NextButton];
     }
 }
 
 - (void)layoutPage1Controls
 {
     CGFloat x,y;
-    CGFloat currentPage=1;
     
     // Layout Help Button
     UIImage *helpButtonImage = [UIImage imageNamed:@"btn-help"];
     x = _viewWidth - helpButtonImage.size.width - CreateAccountAndBlogStandardOffset;
-    y = CreateAccountAndBlogStandardOffset;
+    y = 0.5 * CreateAccountAndBlogStandardOffset;
+    if (IS_IOS7 && IS_IPHONE) {
+        y += CreateAccountAndBlogiOS7StatusBarOffset;
+    }
     _helpButton.frame = CGRectMake(x, y, helpButtonImage.size.width, helpButtonImage.size.height);
     
     // Layout Cancel Button
     x = 0;
-    y = CreateAccountAndBlogStandardOffset;
+    y = 0.5 * CreateAccountAndBlogStandardOffset;
+    if (IS_IOS7 && IS_IPHONE) {
+        y += CreateAccountAndBlogiOS7StatusBarOffset;
+    }
     _cancelButton.frame = CGRectMake(x, y, CGRectGetWidth(_cancelButton.frame), CGRectGetHeight(_cancelButton.frame));
         
     // Layout the controls starting out from y of 0, then offset them once the height of the controls
@@ -424,38 +371,32 @@ CGFloat const CreateAccountAndBlogKeyboardOffset = 132.0;
     
     // Layout Icon
     x = (_viewWidth - CGRectGetWidth(_page1Icon.frame))/2.0;
-    x = [self adjustX:x forPage:currentPage];
     y = 0;
     _page1Icon.frame = CGRectIntegral(CGRectMake(x, y, CGRectGetWidth(_page1Icon.frame), CGRectGetHeight(_page1Icon.frame)));
     
     // Layout Title
     CGSize titleSize = [_page1Title.text sizeWithFont:_page1Title.font constrainedToSize:CGSizeMake(CreateAccountAndBlogMaxTextWidth, CGFLOAT_MAX) lineBreakMode:NSLineBreakByWordWrapping];
     x = (_viewWidth - titleSize.width)/2.0;
-    x = [self adjustX:x forPage:currentPage];
     y = CGRectGetMaxY(_page1Icon.frame) + CreateAccountAndBlogStandardOffset;
     _page1Title.frame = CGRectIntegral(CGRectMake(x, y, titleSize.width, titleSize.height));
     
     // Layout Email
     x = (_viewWidth - CreateAccountAndBlogTextFieldWidth)/2.0;
-    x = [self adjustX:x forPage:currentPage];
     y = CGRectGetMaxY(_page1Title.frame) + CreateAccountAndBlogStandardOffset;
     _page1EmailText.frame = CGRectIntegral(CGRectMake(x, y, CreateAccountAndBlogTextFieldWidth, CreateAccountAndBlogTextFieldHeight));
 
     // Layout Username
     x = (_viewWidth - CreateAccountAndBlogTextFieldWidth)/2.0;
-    x = [self adjustX:x forPage:currentPage];
     y = CGRectGetMaxY(_page1EmailText.frame) - 1;
     _page1UsernameText.frame = CGRectIntegral(CGRectMake(x, y, CreateAccountAndBlogTextFieldWidth, CreateAccountAndBlogTextFieldHeight));
 
     // Layout Password
     x = (_viewWidth - CreateAccountAndBlogTextFieldWidth)/2.0;
-    x = [self adjustX:x forPage:currentPage];
     y = CGRectGetMaxY(_page1UsernameText.frame) - 1;
     _page1PasswordText.frame = CGRectIntegral(CGRectMake(x, y, CreateAccountAndBlogTextFieldWidth, CreateAccountAndBlogTextFieldHeight));
     
     // Layout Site Address
     x = (_viewWidth - CreateAccountAndBlogTextFieldWidth)/2.0;
-    x = [self adjustX:x forPage:currentPage];
     y = CGRectGetMaxY(_page1PasswordText.frame) - 1;
     _page2SiteAddressText.frame = CGRectIntegral(CGRectMake(x, y, CreateAccountAndBlogTextFieldWidth, CreateAccountAndBlogTextFieldHeight));
     
@@ -468,7 +409,6 @@ CGFloat const CreateAccountAndBlogKeyboardOffset = 132.0;
     
     // Layout Next Button
     x = (_viewWidth - CGRectGetWidth(_page1NextButton.frame))/2.0;
-    x = [self adjustX:x forPage:currentPage];
     y = CGRectGetMaxY(_page2SiteAddressText.frame) + 0.5*CreateAccountAndBlogStandardOffset;
     _page1NextButton.frame = CGRectIntegral(CGRectMake(x, y, CGRectGetWidth(_page1NextButton.frame), CGRectGetHeight(_page1NextButton.frame)));
 
@@ -481,14 +421,11 @@ CGFloat const CreateAccountAndBlogKeyboardOffset = 132.0;
         TOSLabelSize = [_page1TOSLabel.text sizeWithFont:_page1TOSLabel.font constrainedToSize:CGSizeMake(CreateAccountAndBlogMaxTextWidth, CGFLOAT_MAX) lineBreakMode:NSLineBreakByWordWrapping];
     }
     x = (_viewWidth - TOSLabelSize.width)/2.0;
-    x = [self adjustX:x forPage:currentPage];
     y = CGRectGetMaxY(_page1NextButton.frame) + 0.5*CreateAccountAndBlogStandardOffset;
     _page1TOSLabel.frame = CGRectIntegral(CGRectMake(x, y, TOSLabelSize.width, TOSLabelSize.height));
     
     NSArray *controls = @[_page1Icon, _page1Title, _page1EmailText, _page1UsernameText, _page1PasswordText, _page1TOSLabel, _page1NextButton, _page2SiteAddressText];
     [WPNUXUtility centerViews:controls withStartingView:_page1Icon andEndingView:_page1TOSLabel forHeight:_viewHeight];
-    
-    [self savePositionsOfStickyControls];
 }
 
 
@@ -506,14 +443,9 @@ CGFloat const CreateAccountAndBlogKeyboardOffset = 132.0;
     [self.navigationController popViewControllerAnimated:YES];
 }
 
-- (void)moveToPage:(NSUInteger)page
-{
-    [_scrollView setContentOffset:CGPointMake(_viewWidth*(page-1), 0) animated:YES];
-}
-
 - (void)clickedOnScrollView:(UIGestureRecognizer *)gestureRecognizer
 {
-    CGPoint touchPoint = [gestureRecognizer locationInView:_scrollView];
+    CGPoint touchPoint = [gestureRecognizer locationInView:self.view];
     
     BOOL clickedPage1Next = CGRectContainsPoint(_page1NextButton.frame, touchPoint) && _page1NextButton.enabled;
     
@@ -556,15 +488,6 @@ CGFloat const CreateAccountAndBlogKeyboardOffset = 132.0;
     [self.navigationController pushViewController:webViewController animated:NO];
 }
 
-- (void)savePositionsOfStickyControls
-{
-    if (!_savedOriginalPositionsOfStickyControls) {
-        _savedOriginalPositionsOfStickyControls = YES;
-        _infoButtonOriginalX = CGRectGetMinX(_helpButton.frame);
-        _cancelButtonOriginalX = CGRectGetMinX(_cancelButton.frame);
-    }
-}
-
 - (CGFloat)topButtonYOrigin {
     
     if ([self respondsToSelector:@selector(topLayoutGuide)])
@@ -574,49 +497,6 @@ CGFloat const CreateAccountAndBlogKeyboardOffset = 132.0;
     {
         return CreateAccountAndBlogStandardOffset;
     }
-}
-
-- (CGFloat)adjustX:(CGFloat)x forPage:(NSUInteger)page
-{
-    return (x + _viewWidth*(page-1));
-}
-
-- (void)flagPageViewed:(NSUInteger)page
-{
-    _currentPage = page;
-}
-
-- (void)updateCancelButton:(CGPoint)contentOffset {
-    
-    NSString *buttonTitle;
-    
-    if (contentOffset.x >= 2 * _scrollView.frame.size.width) {
-        buttonTitle = NSLocalizedString(@"Back", nil);
-    } else if (contentOffset.x >= 1 * _scrollView.frame.size.width) {
-        buttonTitle = NSLocalizedString(@"Back", nil);
-    } else {
-        buttonTitle = NSLocalizedString(@"Cancel", nil);
-    }
-    
-    [_cancelButton setTitle:buttonTitle forState:UIControlStateNormal];
-    [_cancelButton sizeToFit];
-    
-}
-
-- (void)moveStickyControlsForContentOffset:(CGPoint)contentOffset
-{
-    if (contentOffset.x < 0)
-        return;
-    
-    CGRect cancelButtonFrame = _cancelButton.frame;
-    cancelButtonFrame.origin.x = _cancelButtonOriginalX + contentOffset.x;
-    cancelButtonFrame.origin.y = [self topButtonYOrigin];
-    _cancelButton.frame =  cancelButtonFrame;
-    
-    CGRect infoButtonFrame = _helpButton.frame;
-    infoButtonFrame.origin.x = _infoButtonOriginalX + contentOffset.x;
-    infoButtonFrame.origin.y = [self topButtonYOrigin];
-    _helpButton.frame = infoButtonFrame;
 }
 
 - (void)keyboardWillShow:(NSNotification *)notification
@@ -635,13 +515,13 @@ CGFloat const CreateAccountAndBlogKeyboardOffset = 132.0;
     }
 
     [UIView animateWithDuration:animationDuration animations:^{
-        for (UIControl *control in [self controlsToMoveDuringKeyboardTransition:_currentPage]) {
+        for (UIControl *control in [self controlsToMoveDuringKeyboardTransition]) {
             CGRect frame = control.frame;
             frame.origin.y -= _keyboardOffset;
             control.frame = frame;
         }
         
-        for (UIControl *control in [self controlsToShowOrHideDuringKeyboardTransition:_currentPage]) {
+        for (UIControl *control in [self controlsToShowOrHideDuringKeyboardTransition]) {
             control.alpha = 0.0;
         }
     }];
@@ -653,13 +533,13 @@ CGFloat const CreateAccountAndBlogKeyboardOffset = 132.0;
     CGFloat animationDuration = [[keyboardInfo objectForKey:UIKeyboardAnimationDurationUserInfoKey] floatValue];
     
     [UIView animateWithDuration:animationDuration animations:^{
-        for (UIControl *control in [self controlsToMoveDuringKeyboardTransition:_currentPage]) {
+        for (UIControl *control in [self controlsToMoveDuringKeyboardTransition]) {
             CGRect frame = control.frame;
             frame.origin.y += _keyboardOffset;
             control.frame = frame;
         }
                 
-        for (UIControl *control in [self controlsToShowOrHideDuringKeyboardTransition:_currentPage]) {
+        for (UIControl *control in [self controlsToShowOrHideDuringKeyboardTransition]) {
             control.alpha = 1.0;
         }
     }];
@@ -675,12 +555,12 @@ CGFloat const CreateAccountAndBlogKeyboardOffset = 132.0;
     _keyboardVisible = NO;
 }
 
-- (NSArray *)controlsToMoveDuringKeyboardTransition:(NSUInteger)page
+- (NSArray *)controlsToMoveDuringKeyboardTransition
 {
     return @[_page1Title, _page1UsernameText, _page1EmailText, _page1PasswordText, _page1NextButton, _page2SiteAddressText];
 }
 
-- (NSArray *)controlsToShowOrHideDuringKeyboardTransition:(NSUInteger)page
+- (NSArray *)controlsToShowOrHideDuringKeyboardTransition
 {
     return @[_page1Icon, _helpButton, _cancelButton, _page1TOSLabel];
 }
