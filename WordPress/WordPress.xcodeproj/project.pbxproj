@@ -292,6 +292,7 @@
 		462F4E0A18369F0B0028D2F8 /* BlogDetailsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 462F4E0718369F0B0028D2F8 /* BlogDetailsViewController.m */; };
 		462F4E0B18369F0B0028D2F8 /* BlogListViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 462F4E0918369F0B0028D2F8 /* BlogListViewController.m */; };
 		462F4E0E18369F300028D2F8 /* WPTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 462F4E0D18369F300028D2F8 /* WPTableViewCell.m */; };
+		462F4E10183867AE0028D2F8 /* Merriweather-Bold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 462F4E0F183867AE0028D2F8 /* Merriweather-Bold.ttf */; };
 		5D0077A7182AE9DF00F865DB /* ReaderMediaQueue.m in Sources */ = {isa = PBXBuildFile; fileRef = 5D0077A6182AE9DF00F865DB /* ReaderMediaQueue.m */; };
 		5D119DA3176FBE040073D83A /* UIImageView+AFNetworkingExtra.m in Sources */ = {isa = PBXBuildFile; fileRef = 5D119DA2176FBE040073D83A /* UIImageView+AFNetworkingExtra.m */; };
 		5D1392A7157D4D92007D51B8 /* StatsWebViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 5D1392A6157D4D92007D51B8 /* StatsWebViewController.m */; };
@@ -950,7 +951,6 @@
 		E22257EE1829C15B00F76926 /* textPushDetailIcon.png in Resources */ = {isa = PBXBuildFile; fileRef = E22257EC1829C15B00F76926 /* textPushDetailIcon.png */; };
 		E22257EF1829C15B00F76926 /* textPushDetailIcon@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = E22257ED1829C15B00F76926 /* textPushDetailIcon@2x.png */; };
 		E232E5FE182E9E8600792CA0 /* icon-username-field@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = E232E5FD182E9E8600792CA0 /* icon-username-field@2x.png */; };
-		E232E600182EA15A00792CA0 /* icon-username-field.png in Resources */ = {isa = PBXBuildFile; fileRef = E232E5FF182EA15A00792CA0 /* icon-username-field.png */; };
 		E232E603182EA16200792CA0 /* icon-password-field.png in Resources */ = {isa = PBXBuildFile; fileRef = E232E601182EA16200792CA0 /* icon-password-field.png */; };
 		E232E604182EA16200792CA0 /* icon-password-field@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = E232E602182EA16200792CA0 /* icon-password-field@2x.png */; };
 		E232E607182EA1C400792CA0 /* icon-url-field.png in Resources */ = {isa = PBXBuildFile; fileRef = E232E605182EA1C400792CA0 /* icon-url-field.png */; };
@@ -1309,6 +1309,7 @@
 		462F4E0918369F0B0028D2F8 /* BlogListViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BlogListViewController.m; sourceTree = "<group>"; };
 		462F4E0C18369F300028D2F8 /* WPTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WPTableViewCell.h; sourceTree = "<group>"; };
 		462F4E0D18369F300028D2F8 /* WPTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WPTableViewCell.m; sourceTree = "<group>"; };
+		462F4E0F183867AE0028D2F8 /* Merriweather-Bold.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Merriweather-Bold.ttf"; sourceTree = "<group>"; };
 		5D0077A5182AE9DF00F865DB /* ReaderMediaQueue.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ReaderMediaQueue.h; sourceTree = "<group>"; };
 		5D0077A6182AE9DF00F865DB /* ReaderMediaQueue.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ReaderMediaQueue.m; sourceTree = "<group>"; };
 		5D119DA1176FBE040073D83A /* UIImageView+AFNetworkingExtra.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIImageView+AFNetworkingExtra.h"; sourceTree = "<group>"; };
@@ -3116,6 +3117,7 @@
 		858DE3FF172F9991000AC628 /* Fonts */ = {
 			isa = PBXGroup;
 			children = (
+				462F4E0F183867AE0028D2F8 /* Merriweather-Bold.ttf */,
 				5D358D6417723DB500739AA4 /* OpenSans-Bold.ttf */,
 				858DE41017303BB4000AC628 /* OpenSans-Light.ttf */,
 				858DE41117303BB4000AC628 /* OpenSans-Regular.ttf */,
@@ -3431,7 +3433,6 @@
 				FD22C2B616CD2B20002BA030 /* navbar_settings@2x.png */,
 				E15051CC16CA8E4900D3DDDC /* logo_jetpack.png */,
 				E15051CD16CA8E4900D3DDDC /* logo_jetpack@2x.png */,
-				3716E40216729B960035F8C4 /* action_icon_followed.png */,
 				3716E40316729B960035F8C4 /* action_icon_followed@2x.png */,
 				3716E40416729B960035F8C4 /* action_icon_replied.png */,
 				3716E40516729B960035F8C4 /* action_icon_replied@2x.png */,
@@ -3630,8 +3631,6 @@
 				5D7BEA2F17749FFD00423E7F /* wporg_blavatar@2x.png */,
 				374CB16315B9907600DD0EBC /* WPpregressHUDBackground.png */,
 				374CB16415B9907600DD0EBC /* WPpregressHUDBackground@2x.png */,
-				E12A08E116C9706200E3DDF6 /* clouds_header.png */,
-				E12A08E216C9706200E3DDF6 /* clouds_header@2x.png */,
 				E15051CC16CA8E4900D3DDDC /* logo_jetpack.png */,
 				E15051CD16CA8E4900D3DDDC /* logo_jetpack@2x.png */,
 				FD22C2B516CD2B20002BA030 /* navbar_settings.png */,
@@ -4371,6 +4370,7 @@
 				E177087E13AAC19700EA6C72 /* redo~ipad.png in Resources */,
 				E177087F13AAC19700EA6C72 /* redoDisabled~ipad.png in Resources */,
 				85AC70F017C71B5100985E3B /* comment-default-gravatar-image.png in Resources */,
+				462F4E10183867AE0028D2F8 /* Merriweather-Bold.ttf in Resources */,
 				E177088013AAC19700EA6C72 /* undo~ipad.png in Resources */,
 				E177088113AAC19700EA6C72 /* undoDisabled~ipad.png in Resources */,
 				85325A4417BB0DF8008E87D1 /* icon-menu-pages-active.png in Resources */,
@@ -4866,7 +4866,6 @@
 				5D7BEA3617749FFD00423E7F /* wporg_blavatar.png in Resources */,
 				5D7BEA3717749FFD00423E7F /* wporg_blavatar@2x.png in Resources */,
 				5D7BEA3A1774A02400423E7F /* cell-separator.png in Resources */,
-				85ED989D17DFA93800090D0B /* AppIcon57x57@2x.png in Resources */,
 				E233414A182DB62900A4CC40 /* btn-back-chevron-tapped@2x.png in Resources */,
 				85325A3717BB0DF8008E87D1 /* icon-menu-reader-active@2x.png in Resources */,
 				5D7BEA3B1774A02400423E7F /* cell-separator@2x.png in Resources */,

@@ -21,6 +21,7 @@ const CGFloat RPTVCVerticalPadding = 8.0f;
 const CGFloat RPTVCHorizontalPadding = 10.0f;
 const CGFloat RPTVCMetaViewHeight = 52.0f;
 const CGFloat RPTVAuthorViewHeight = 44.0f;
+const CGFloat RPTVCTitlePadding = 20.0f;
 
 // Control buttons (Like, Reblog, ...)
 const CGFloat RPTVCControlButtonHeight = 48.0f;
@@ -84,8 +85,9 @@ const CGFloat RPTVCControlButtonBorderSize = 0.0f;
     
     desiredHeight += RPTVAuthorViewHeight;
 
-	desiredHeight += [post.postTitle sizeWithFont:[UIFont fontWithName:@"OpenSans-Light" size:20.0f] constrainedToSize:CGSizeMake(contentWidth, CGFLOAT_MAX) lineBreakMode:NSLineBreakByWordWrapping].height;
-	desiredHeight += vpadding;
+    desiredHeight += RPTVCTitlePadding;
+	desiredHeight += [post.postTitle sizeWithFont:[self postTitleFont] constrainedToSize:CGSizeMake(contentWidth, CGFLOAT_MAX) lineBreakMode:NSLineBreakByWordWrapping].height;
+    desiredHeight += RPTVCTitlePadding;
 
 	desiredHeight += [post.summary sizeWithFont:[UIFont fontWithName:@"OpenSans" size:13.0f] constrainedToSize:CGSizeMake(contentWidth, CGFLOAT_MAX) lineBreakMode:NSLineBreakByWordWrapping].height;
 	desiredHeight += vpadding;
@@ -97,6 +99,10 @@ const CGFloat RPTVCControlButtonBorderSize = 0.0f;
 	desiredHeight += vpadding;
 
 	return ceil(desiredHeight);
+}
+
++ (UIFont *)postTitleFont {
+    return [UIFont fontWithName:@"Merriweather-Bold" size:21.0f];
 }
 
 
@@ -195,7 +201,7 @@ const CGFloat RPTVCControlButtonBorderSize = 0.0f;
 	self.titleLabel = [[UILabel alloc] init];
 	_titleLabel.autoresizingMask = UIViewAutoresizingFlexibleWidth;
 	_titleLabel.backgroundColor = [UIColor clearColor];
-	_titleLabel.font = [UIFont fontWithName:@"OpenSans-Light" size:20.0f];
+	_titleLabel.font = [[self class] postTitleFont];
 	_titleLabel.textColor = [UIColor colorWithRed:64.0f/255.0f green:64.0f/255.0f blue:64.0f/255.0f alpha:1.0];
 	_titleLabel.lineBreakMode = NSLineBreakByWordWrapping;
 	_titleLabel.numberOfLines = 0;
@@ -285,9 +291,10 @@ const CGFloat RPTVCControlButtonBorderSize = 0.0f;
     }
     
 	// Position the title
+    nextY += RPTVCTitlePadding;
 	height = ceil([_titleLabel suggestedSizeForWidth:contentWidth].height);
 	_titleLabel.frame = CGRectMake(RPTVCHorizontalPadding, nextY, innerContentWidth, height);
-	nextY += height + vpadding;
+	nextY += height + RPTVCTitlePadding;
 
 	// Position the snippet
 	height = ceil([_snippetLabel suggestedSizeForWidth:contentWidth].height);
