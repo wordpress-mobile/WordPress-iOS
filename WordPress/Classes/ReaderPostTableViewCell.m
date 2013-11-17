@@ -288,7 +288,7 @@ const CGFloat RPTVCControlButtonBorderSize = 0.0f;
 	// Are we showing an image? What size should it be?
 	if (_showImage) {
 		height = ceilf(contentWidth * 0.66f);
-		self.cellImageView.frame = CGRectMake(RPTVCHorizontalInnerPadding, nextY, innerContentWidth, height);
+		self.cellImageView.frame = CGRectMake(0, nextY, contentWidth, height);
 		nextY += height;
     }
     
