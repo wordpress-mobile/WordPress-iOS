@@ -24,11 +24,11 @@ const CGFloat RPTVCMetaViewHeight = 52.0f;
 const CGFloat RPTVAuthorViewHeight = 32.0f;
 const CGFloat RPTVCVerticalPadding = 20.0f;
 const CGFloat RPTVCAvatarSize = 32.0f;
+const CGFloat RPTVCLineHeight = 1.0f;
 
 // Control buttons (Like, Reblog, ...)
 const CGFloat RPTVCControlButtonHeight = 48.0f;
 const CGFloat RPTVCControlButtonWidth = 48.0f;
-const CGFloat RPTVCControlButtonVerticalPadding = 4.0f;
 const CGFloat RPTVCControlButtonSpacing = 12.0f;
 const CGFloat RPTVCControlButtonBorderSize = 0.0f;
 
@@ -356,32 +356,32 @@ const CGFloat RPTVCControlButtonBorderSize = 0.0f;
 
 	// Position the meta view and its subviews
 	_metaView.frame = CGRectMake(0, nextY, contentWidth, RPTVCMetaViewHeight);
-    _metaBorder.frame = CGRectMake(RPTVCHorizontalInnerPadding, 0, contentWidth - RPTVCHorizontalInnerPadding * 2, 1.0);
-    
-    CGFloat timeWidth = contentWidth - RPTVCControlButtonWidth * 3;
-    _timeLabel.frame = CGRectMake(RPTVCHorizontalInnerPadding, RPTVCControlButtonVerticalPadding, timeWidth, RPTVCControlButtonHeight);
-	
+    _metaBorder.frame = CGRectMake(RPTVCHorizontalInnerPadding, 0, contentWidth - RPTVCHorizontalInnerPadding * 2, RPTVCLineHeight);
+
     BOOL commentsOpen = [[self.post commentsOpen] boolValue];
-	CGFloat buttonWidth = RPTVCControlButtonWidth - RPTVCControlButtonBorderSize;
+	CGFloat buttonWidth = RPTVCControlButtonWidth;
     CGFloat buttonX = _metaView.frame.size.width - RPTVCControlButtonWidth;
-    CGFloat buttonY = RPTVCControlButtonVerticalPadding;
+    CGFloat buttonY = RPTVCLineHeight; // Just below the line
     
     // Button order from right-to-left: Like, [Comment], Reblog,
     _likeButton.frame = CGRectMake(buttonX, buttonY, buttonWidth, RPTVCControlButtonHeight);
-    buttonX -= buttonWidth + RPTVCControlButtonBorderSize;
+    buttonX -= buttonWidth + RPTVCControlButtonSpacing;
     
     if (commentsOpen) {
         self.commentButton.hidden = NO;
         self.commentButton.frame = CGRectMake(buttonX, buttonY, buttonWidth, RPTVCControlButtonHeight);
-        buttonX -= buttonWidth + RPTVCControlButtonBorderSize;
+        buttonX -= buttonWidth + RPTVCControlButtonSpacing;
     } else {
         self.commentButton.hidden = YES;
     }
     _reblogButton.frame = CGRectMake(buttonX, buttonY, buttonWidth - RPTVCControlButtonBorderSize, RPTVCControlButtonHeight);
     
+    CGFloat timeWidth = contentWidth - _reblogButton.frame.origin.x;
+    _timeLabel.frame = CGRectMake(RPTVCHorizontalInnerPadding, RPTVCLineHeight, timeWidth, RPTVCControlButtonHeight);
+    
     CGFloat sideBorderX = RPTVCHorizontalOuterPadding - 1; // Just to the left of the container
-    CGFloat sideBorderHeight = self.frame.size.height - RPTVCVerticalPadding + 1.f; // Just below it
-    _sideBorderView.frame = CGRectMake(sideBorderX, 1.f, self.frame.size.width - sideBorderX * 2, sideBorderHeight);
+    CGFloat sideBorderHeight = self.frame.size.height - RPTVCVerticalPadding + 1; // Just below it
+    _sideBorderView.frame = CGRectMake(sideBorderX, 1, self.frame.size.width - sideBorderX * 2, sideBorderHeight);
 }
 
 - (void)prepareForReuse {
