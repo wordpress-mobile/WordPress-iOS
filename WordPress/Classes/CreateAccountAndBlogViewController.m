@@ -25,7 +25,6 @@
 #import "WPStyleGuide.h"
 
 @interface CreateAccountAndBlogViewController ()<
-    UIScrollViewDelegate,
     UITextFieldDelegate,
     UIGestureRecognizerDelegate> {
     
@@ -90,9 +89,7 @@ CGFloat const CreateAccountAndBlogiOS7StatusBarOffset = 20.0;
     _viewHeight = [self.view formSheetViewHeight];
     self.view.backgroundColor = [WPNUXUtility backgroundColor];
         
-    [self addScrollview];
-    [self addPage1Controls];
-    [self layoutPage1Controls];
+    [self initializeView];
     
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(keyboardWillShow:) name:UIKeyboardWillShowNotification object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(keyboardWillHide:) name:UIKeyboardWillHideNotification object:nil];
@@ -125,7 +122,7 @@ CGFloat const CreateAccountAndBlogiOS7StatusBarOffset = 20.0;
         [_siteAddressField becomeFirstResponder];
     } else if (textField == _siteAddressField) {
         if (_createAccountButton.enabled) {
-            [self clickedPage1NextButton];
+            [self createAccountButtonAction];
         }
     }
     return YES;
@@ -139,7 +136,7 @@ CGFloat const CreateAccountAndBlogiOS7StatusBarOffset = 20.0;
     [updatedString replaceCharactersInRange:range withString:string];
 
     if ([fields containsObject:textField]) {
-        [self updatePage1ButtonEnabledStatusFor:textField andUpdatedString:updatedString];
+        [self updateCreateAccountButtonForTextfield:textField andUpdatedString:updatedString];
     }
     
     if ([textField isEqual:_siteAddressField]) {
@@ -154,12 +151,12 @@ CGFloat const CreateAccountAndBlogiOS7StatusBarOffset = 20.0;
         if ([[_siteAddressField.text trim] length] == 0 || !_userDefinedSiteAddress) {
             _siteAddressField.text = _defaultSiteUrl = _usernameField.text;
             _userDefinedSiteAddress = NO;
-            [self updatePage1ButtonEnabledStatusFor:_siteAddressField andUpdatedString:_siteAddressField.text];
+            [self updateCreateAccountButtonForTextfield:_siteAddressField andUpdatedString:_siteAddressField.text];
         }
     }
 }
 
-- (void)updatePage1ButtonEnabledStatusFor:(UITextField *)textField andUpdatedString:(NSString *)updatedString
+- (void)updateCreateAccountButtonForTextfield:(UITextField *)textField andUpdatedString:(NSString *)updatedString
 {
     BOOL isEmailFilled = [self isEmailedFilled];
     BOOL isUsernameFilled = [self isUsernameFilled];
@@ -182,7 +179,7 @@ CGFloat const CreateAccountAndBlogiOS7StatusBarOffset = 20.0;
 
 - (BOOL)textFieldShouldBeginEditing:(UITextField *)textField
 {
-    _createAccountButton.enabled = [self page1FieldsFilled];
+    _createAccountButton.enabled = [self fieldsFilled];
     return YES;
 }
 
@@ -196,21 +193,24 @@ CGFloat const CreateAccountAndBlogiOS7StatusBarOffset = 20.0;
             _shouldCorrectEmail = NO;
         }
     }
-    _createAccountButton.enabled = [self page1FieldsFilled];
+    _createAccountButton.enabled = [self fieldsFilled];
     return YES;
 }
 
 #pragma mark - Private Methods
 
-- (void)addScrollview
+- (void)initializeView
 {
-    UITapGestureRecognizer *gestureRecognizer = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(clickedOnScrollView:)];
+    UITapGestureRecognizer *gestureRecognizer = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(viewWasTapped:)];
     gestureRecognizer.numberOfTapsRequired = 1;
     gestureRecognizer.cancelsTouchesInView = NO;
     [self.view addGestureRecognizer:gestureRecognizer];
+    
+    [self addControls];
+    [self layoutControls];
 }
 
-- (void)addPage1Controls
+- (void)addControls
 {
     // Add Help Button
     UIImage *helpButtonImage = [UIImage imageNamed:@"btn-help"];
@@ -218,7 +218,7 @@ CGFloat const CreateAccountAndBlogiOS7StatusBarOffset = 20.0;
         _helpButton = [UIButton buttonWithType:UIButtonTypeCustom];
         [_helpButton setImage:helpButtonImage forState:UIControlStateNormal];
         _helpButton.frame = CGRectMake(0, 0, helpButtonImage.size.width, helpButtonImage.size.height);
-        [_helpButton addTarget:self action:@selector(clickedHelpButton) forControlEvents:UIControlEventTouchUpInside];
+        [_helpButton addTarget:self action:@selector(helpButtonAction) forControlEvents:UIControlEventTouchUpInside];
         [self.view addSubview:_helpButton];
     }
     
@@ -226,7 +226,7 @@ CGFloat const CreateAccountAndBlogiOS7StatusBarOffset = 20.0;
     if (_cancelButton == nil) {
         _cancelButton = [[WPNUXBackButton alloc] init];
         [_cancelButton setTitle:NSLocalizedString(@"Cancel", nil) forState:UIControlStateNormal];
-        [_cancelButton addTarget:self action:@selector(clickedCancelButton) forControlEvents:UIControlEventTouchUpInside];
+        [_cancelButton addTarget:self action:@selector(cancelButtonAction) forControlEvents:UIControlEventTouchUpInside];
         [_cancelButton sizeToFit];
         [self.view addSubview:_cancelButton];
     }
@@ -329,7 +329,7 @@ CGFloat const CreateAccountAndBlogiOS7StatusBarOffset = 20.0;
         _TOSLabel.textColor = [WPNUXUtility tosLabelColor];
         [self.view addSubview:_TOSLabel];
         
-        UITapGestureRecognizer *gestureRecognizer = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(clickedTOSLabel)];
+        UITapGestureRecognizer *gestureRecognizer = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(TOSLabelWasTapped)];
         gestureRecognizer.numberOfTapsRequired = 1;
         [_TOSLabel addGestureRecognizer:gestureRecognizer];
     }
@@ -339,13 +339,13 @@ CGFloat const CreateAccountAndBlogiOS7StatusBarOffset = 20.0;
         _createAccountButton = [[WPNUXPrimaryButton alloc] init];
         [_createAccountButton setTitle:NSLocalizedString(@"Create Account", nil) forState:UIControlStateNormal];
         _createAccountButton.enabled = NO;
-        [_createAccountButton addTarget:self action:@selector(clickedPage1NextButton) forControlEvents:UIControlEventTouchUpInside];
+        [_createAccountButton addTarget:self action:@selector(createAccountButtonAction) forControlEvents:UIControlEventTouchUpInside];
         [_createAccountButton sizeToFit];
         [self.view addSubview:_createAccountButton];
     }
 }
 
-- (void)layoutPage1Controls
+- (void)layoutControls
 {
     CGFloat x,y;
     
@@ -429,7 +429,7 @@ CGFloat const CreateAccountAndBlogiOS7StatusBarOffset = 20.0;
 }
 
 
-- (void)clickedHelpButton
+- (void)helpButtonAction
 {
     [WPMobileStats trackEventForSelfHostedAndWPCom:StatsEventNUXCreateAccountClickedHelp];
     SupportViewController *supportViewController = [[SupportViewController alloc] init];
@@ -437,13 +437,13 @@ CGFloat const CreateAccountAndBlogiOS7StatusBarOffset = 20.0;
     [self.navigationController setNavigationBarHidden:NO animated:YES];
 }
 
-- (void)clickedCancelButton
+- (void)cancelButtonAction
 {
     [WPMobileStats trackEventForSelfHostedAndWPCom:StatsEventNUXCreateAccountClickedCancel];
     [self.navigationController popViewControllerAnimated:YES];
 }
 
-- (void)clickedOnScrollView:(UIGestureRecognizer *)gestureRecognizer
+- (void)viewWasTapped:(UITapGestureRecognizer *)gestureRecognizer
 {
     CGPoint touchPoint = [gestureRecognizer locationInView:self.view];
     
@@ -454,21 +454,21 @@ CGFloat const CreateAccountAndBlogiOS7StatusBarOffset = 20.0;
         // this gesture recognizer intercepts them. We double check that the user didn't press a button
         // while in this mode and if they did hand off the event.
         if (clickedPage1Next) {
-            [self clickedPage1NextButton];
+            [self createAccountButtonAction];
         }
     }
     
     [self.view endEditing:YES];
 }
 
-- (void)clickedPage1NextButton
+- (void)createAccountButtonAction
 {
     [WPMobileStats trackEventForSelfHostedAndWPCom:StatsEventNUXCreateAccountClickedAccountPageNext];
     
     [self.view endEditing:YES];
     
-    if (![self page1FieldsValid]) {
-        [self showPage1Errors];
+    if (![self fieldsValid]) {
+        [self showAllErrors];
         return;
     } else {
         // Check if user changed default URL and if so track the stat for it.
@@ -480,23 +480,12 @@ CGFloat const CreateAccountAndBlogiOS7StatusBarOffset = 20.0;
     }
 }
 
-- (void)clickedTOSLabel
+- (void)TOSLabelWasTapped
 {
     WPWebViewController *webViewController = [[WPWebViewController alloc] init];
     [webViewController setUrl:[NSURL URLWithString:@"http://en.wordpress.com/tos/"]];
     [self.navigationController setNavigationBarHidden:NO animated:NO];
     [self.navigationController pushViewController:webViewController animated:NO];
-}
-
-- (CGFloat)topButtonYOrigin {
-    
-    if ([self respondsToSelector:@selector(topLayoutGuide)])
-    {
-        return [[self topLayoutGuide] length] + 0.5 * CreateAccountAndBlogStandardOffset;
-    } else
-    {
-        return CreateAccountAndBlogStandardOffset;
-    }
 }
 
 - (void)keyboardWillShow:(NSNotification *)notification
@@ -557,12 +546,12 @@ CGFloat const CreateAccountAndBlogiOS7StatusBarOffset = 20.0;
 
 - (NSArray *)controlsToMoveDuringKeyboardTransition
 {
-    return @[_titleLabel, _usernameField, _emailField, _passwordField, _createAccountButton, _siteAddressField];
+    return @[_usernameField, _emailField, _passwordField, _createAccountButton, _siteAddressField];
 }
 
 - (NSArray *)controlsToShowOrHideDuringKeyboardTransition
 {
-    return @[_icon, _helpButton, _cancelButton, _TOSLabel];
+    return @[_icon, _titleLabel, _helpButton, _cancelButton, _TOSLabel];
 }
 
 - (void)displayRemoteError:(NSError *)error
@@ -571,7 +560,7 @@ CGFloat const CreateAccountAndBlogiOS7StatusBarOffset = 20.0;
     [self showError:errorMessage];
 }
 
-- (BOOL)page1FieldsFilled
+- (BOOL)fieldsFilled
 {
     return [self isEmailedFilled] && [self isUsernameFilled] && [self isPasswordFilled] && [self isSiteAddressFilled];
 }
@@ -601,9 +590,9 @@ CGFloat const CreateAccountAndBlogiOS7StatusBarOffset = 20.0;
     return ([[_siteAddressField.text trim] length] != 0);
 }
 
-- (BOOL)page1FieldsValid
+- (BOOL)fieldsValid
 {
-    return [self page1FieldsFilled] && [self isUsernameUnderFiftyCharacters];
+    return [self fieldsFilled] && [self isUsernameUnderFiftyCharacters];
 }
 
 #warning Implement proper title generation
@@ -612,7 +601,7 @@ CGFloat const CreateAccountAndBlogiOS7StatusBarOffset = 20.0;
     return nil;
 }
 
-- (void)showPage1Errors
+- (void)showAllErrors
 {
     if (![self isUsernameUnderFiftyCharacters]) {
         [self showError:NSLocalizedString(@"Username must be less than fifty characters.", nil)];
