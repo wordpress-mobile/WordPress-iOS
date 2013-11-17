@@ -32,15 +32,15 @@
     // Page 1
     WPNUXBackButton *_cancelButton;
     UIButton *_helpButton;
-    UIImageView *_page1Icon;
-    UILabel *_page1Title;
-    UILabel *_page1TOSLabel;
-    UILabel *_page2WordPressComLabel;
-    WPWalkthroughTextField *_page1EmailText;
-    WPWalkthroughTextField *_page1UsernameText;
-    WPWalkthroughTextField *_page1PasswordText;
-    WPNUXPrimaryButton *_page1NextButton;
-    WPWalkthroughTextField *_page2SiteAddressText;
+    UIImageView *_icon;
+    UILabel *_titleLabel;
+    UILabel *_TOSLabel;
+    UILabel *_siteAddressWPComLabel;
+    WPWalkthroughTextField *_emailField;
+    WPWalkthroughTextField *_usernameField;
+    WPWalkthroughTextField *_passwordField;
+    WPNUXPrimaryButton *_createAccountButton;
+    WPWalkthroughTextField *_siteAddressField;
     
     NSOperationQueue *_operationQueue;
 
@@ -117,14 +117,14 @@ CGFloat const CreateAccountAndBlogiOS7StatusBarOffset = 20.0;
 
 - (BOOL)textFieldShouldReturn:(UITextField *)textField
 {
-    if (textField == _page1EmailText) {
-        [_page1UsernameText becomeFirstResponder];
-    } else if (textField == _page1UsernameText) {
-        [_page1PasswordText becomeFirstResponder];
-    } else if (textField == _page1PasswordText) {
-        [_page2SiteAddressText becomeFirstResponder];
-    } else if (textField == _page2SiteAddressText) {
-        if (_page1NextButton.enabled) {
+    if (textField == _emailField) {
+        [_usernameField becomeFirstResponder];
+    } else if (textField == _usernameField) {
+        [_passwordField becomeFirstResponder];
+    } else if (textField == _passwordField) {
+        [_siteAddressField becomeFirstResponder];
+    } else if (textField == _siteAddressField) {
+        if (_createAccountButton.enabled) {
             [self clickedPage1NextButton];
         }
     }
@@ -133,7 +133,7 @@ CGFloat const CreateAccountAndBlogiOS7StatusBarOffset = 20.0;
 
 - (BOOL)textField:(UITextField *)textField shouldChangeCharactersInRange:(NSRange)range replacementString:(NSString *)string
 {
-    NSArray *fields = @[_page1EmailText, _page1UsernameText, _page1PasswordText, _page2SiteAddressText];
+    NSArray *fields = @[_emailField, _usernameField, _passwordField, _siteAddressField];
     
     NSMutableString *updatedString = [[NSMutableString alloc] initWithString:textField.text];
     [updatedString replaceCharactersInRange:range withString:string];
@@ -142,7 +142,7 @@ CGFloat const CreateAccountAndBlogiOS7StatusBarOffset = 20.0;
         [self updatePage1ButtonEnabledStatusFor:textField andUpdatedString:updatedString];
     }
     
-    if ([textField isEqual:_page2SiteAddressText]) {
+    if ([textField isEqual:_siteAddressField]) {
         _userDefinedSiteAddress = YES;
     }
     return YES;
@@ -150,11 +150,11 @@ CGFloat const CreateAccountAndBlogiOS7StatusBarOffset = 20.0;
 
 - (void)textFieldDidEndEditing:(UITextField *)textField {
     
-    if ([textField isEqual:_page1UsernameText]) {
-        if ([[_page2SiteAddressText.text trim] length] == 0 || !_userDefinedSiteAddress) {
-            _page2SiteAddressText.text = _defaultSiteUrl = _page1UsernameText.text;
+    if ([textField isEqual:_usernameField]) {
+        if ([[_siteAddressField.text trim] length] == 0 || !_userDefinedSiteAddress) {
+            _siteAddressField.text = _defaultSiteUrl = _usernameField.text;
             _userDefinedSiteAddress = NO;
-            [self updatePage1ButtonEnabledStatusFor:_page2SiteAddressText andUpdatedString:_page2SiteAddressText.text];
+            [self updatePage1ButtonEnabledStatusFor:_siteAddressField andUpdatedString:_siteAddressField.text];
         }
     }
 }
@@ -167,36 +167,36 @@ CGFloat const CreateAccountAndBlogiOS7StatusBarOffset = 20.0;
     BOOL isSiteAddressFilled = [self isSiteAddressFilled];
     BOOL updatedStringHasContent = [[updatedString trim] length] != 0;
     
-    if (textField == _page1EmailText) {
+    if (textField == _emailField) {
         isEmailFilled = updatedStringHasContent;
-    } else if (textField == _page1UsernameText) {
+    } else if (textField == _usernameField) {
         isUsernameFilled = updatedStringHasContent;
-    } else if (textField == _page1PasswordText) {
+    } else if (textField == _passwordField) {
         isPasswordFilled = updatedStringHasContent;
-    } else if (textField == _page2SiteAddressText) {
+    } else if (textField == _siteAddressField) {
         isSiteAddressFilled = updatedStringHasContent;
     }
     
-    _page1NextButton.enabled = isEmailFilled && isUsernameFilled && isPasswordFilled && isSiteAddressFilled;
+    _createAccountButton.enabled = isEmailFilled && isUsernameFilled && isPasswordFilled && isSiteAddressFilled;
 }
 
 - (BOOL)textFieldShouldBeginEditing:(UITextField *)textField
 {
-    _page1NextButton.enabled = [self page1FieldsFilled];
+    _createAccountButton.enabled = [self page1FieldsFilled];
     return YES;
 }
 
 - (BOOL)textFieldShouldEndEditing:(UITextField *)textField
 {
-    if (textField == _page1EmailText) {
+    if (textField == _emailField) {
         // check email validity
-        NSString *suggestedEmail = [EmailChecker suggestDomainCorrection: _page1EmailText.text];
-        if (![suggestedEmail isEqualToString:_page1EmailText.text] && _shouldCorrectEmail) {
+        NSString *suggestedEmail = [EmailChecker suggestDomainCorrection: _emailField.text];
+        if (![suggestedEmail isEqualToString:_emailField.text] && _shouldCorrectEmail) {
             textField.text = suggestedEmail;
             _shouldCorrectEmail = NO;
         }
     }
-    _page1NextButton.enabled = [self page1FieldsFilled];
+    _createAccountButton.enabled = [self page1FieldsFilled];
     return YES;
 }
 
@@ -232,116 +232,116 @@ CGFloat const CreateAccountAndBlogiOS7StatusBarOffset = 20.0;
     }
     
     // Add Icon
-    if (_page1Icon == nil) {
+    if (_icon == nil) {
         UIImage *icon = [UIImage imageNamed:@"icon-wp"];
-        _page1Icon = [[UIImageView alloc] initWithImage:icon];
-        [self.view addSubview:_page1Icon];
+        _icon = [[UIImageView alloc] initWithImage:icon];
+        [self.view addSubview:_icon];
     }
     
     // Add Title
-    if (_page1Title == nil) {
-        _page1Title = [[UILabel alloc] init];
-        _page1Title.attributedText = [WPNUXUtility titleAttributedString:NSLocalizedString(@"Create an account on WordPress.com", @"NUX Create Account Page 1 Title")];
-        _page1Title.numberOfLines = 0;
-        _page1Title.backgroundColor = [UIColor clearColor];
-        [self.view addSubview:_page1Title];
+    if (_titleLabel == nil) {
+        _titleLabel = [[UILabel alloc] init];
+        _titleLabel.attributedText = [WPNUXUtility titleAttributedString:NSLocalizedString(@"Create an account on WordPress.com", @"NUX Create Account Page 1 Title")];
+        _titleLabel.numberOfLines = 0;
+        _titleLabel.backgroundColor = [UIColor clearColor];
+        [self.view addSubview:_titleLabel];
     }
     
     // Add Email
-    if (_page1EmailText == nil) {
-        _page1EmailText = [[WPWalkthroughTextField alloc] initWithLeftViewImage:[UIImage imageNamed:@"icon-email-field"]];
-        _page1EmailText.backgroundColor = [UIColor whiteColor];
-        _page1EmailText.placeholder = NSLocalizedString(@"Email Address", @"NUX Create Account Page 1 Email Placeholder");
-        _page1EmailText.font = [WPNUXUtility textFieldFont];
-        _page1EmailText.adjustsFontSizeToFitWidth = YES;
-        _page1EmailText.delegate = self;
-        _page1EmailText.autocorrectionType = UITextAutocorrectionTypeNo;
-        _page1EmailText.autocapitalizationType = UITextAutocapitalizationTypeNone;
-        _page1EmailText.keyboardType = UIKeyboardTypeEmailAddress;
-        [self.view addSubview:_page1EmailText];
+    if (_emailField == nil) {
+        _emailField = [[WPWalkthroughTextField alloc] initWithLeftViewImage:[UIImage imageNamed:@"icon-email-field"]];
+        _emailField.backgroundColor = [UIColor whiteColor];
+        _emailField.placeholder = NSLocalizedString(@"Email Address", @"NUX Create Account Page 1 Email Placeholder");
+        _emailField.font = [WPNUXUtility textFieldFont];
+        _emailField.adjustsFontSizeToFitWidth = YES;
+        _emailField.delegate = self;
+        _emailField.autocorrectionType = UITextAutocorrectionTypeNo;
+        _emailField.autocapitalizationType = UITextAutocapitalizationTypeNone;
+        _emailField.keyboardType = UIKeyboardTypeEmailAddress;
+        [self.view addSubview:_emailField];
     }
     
     // Add Username
-    if (_page1UsernameText == nil) {
-        _page1UsernameText = [[WPWalkthroughTextField alloc] initWithLeftViewImage:[UIImage imageNamed:@"icon-username-field"]];
-        _page1UsernameText.backgroundColor = [UIColor whiteColor];
-        _page1UsernameText.placeholder = NSLocalizedString(@"Username", nil);
-        _page1UsernameText.font = [WPNUXUtility textFieldFont];
-        _page1UsernameText.adjustsFontSizeToFitWidth = YES;
-        _page1UsernameText.delegate = self;
-        _page1UsernameText.autocorrectionType = UITextAutocorrectionTypeNo;
-        _page1UsernameText.autocapitalizationType = UITextAutocapitalizationTypeNone;
-        _page1UsernameText.showTopLineSeparator = YES;
-        [self.view addSubview:_page1UsernameText];
+    if (_usernameField == nil) {
+        _usernameField = [[WPWalkthroughTextField alloc] initWithLeftViewImage:[UIImage imageNamed:@"icon-username-field"]];
+        _usernameField.backgroundColor = [UIColor whiteColor];
+        _usernameField.placeholder = NSLocalizedString(@"Username", nil);
+        _usernameField.font = [WPNUXUtility textFieldFont];
+        _usernameField.adjustsFontSizeToFitWidth = YES;
+        _usernameField.delegate = self;
+        _usernameField.autocorrectionType = UITextAutocorrectionTypeNo;
+        _usernameField.autocapitalizationType = UITextAutocapitalizationTypeNone;
+        _usernameField.showTopLineSeparator = YES;
+        [self.view addSubview:_usernameField];
     }
     
     // Add Password
-    if (_page1PasswordText == nil) {
-        _page1PasswordText = [[WPWalkthroughTextField alloc] initWithLeftViewImage:[UIImage imageNamed:@"icon-password-field"]];
-        _page1PasswordText.secureTextEntry = YES;
-        _page1PasswordText.backgroundColor = [UIColor whiteColor];
-        _page1PasswordText.placeholder = NSLocalizedString(@"Password", nil);
-        _page1PasswordText.font = [WPNUXUtility textFieldFont];
-        _page1PasswordText.adjustsFontSizeToFitWidth = YES;
-        _page1PasswordText.delegate = self;
-        _page1PasswordText.autocorrectionType = UITextAutocorrectionTypeNo;
-        _page1PasswordText.autocapitalizationType = UITextAutocapitalizationTypeNone;
-        _page1PasswordText.showTopLineSeparator = YES;
-        [self.view addSubview:_page1PasswordText];
+    if (_passwordField == nil) {
+        _passwordField = [[WPWalkthroughTextField alloc] initWithLeftViewImage:[UIImage imageNamed:@"icon-password-field"]];
+        _passwordField.secureTextEntry = YES;
+        _passwordField.backgroundColor = [UIColor whiteColor];
+        _passwordField.placeholder = NSLocalizedString(@"Password", nil);
+        _passwordField.font = [WPNUXUtility textFieldFont];
+        _passwordField.adjustsFontSizeToFitWidth = YES;
+        _passwordField.delegate = self;
+        _passwordField.autocorrectionType = UITextAutocorrectionTypeNo;
+        _passwordField.autocapitalizationType = UITextAutocapitalizationTypeNone;
+        _passwordField.showTopLineSeparator = YES;
+        [self.view addSubview:_passwordField];
     }
     
     // Add Site Address
-    if (_page2SiteAddressText == nil) {
-        _page2SiteAddressText = [[WPWalkthroughTextField alloc] initWithLeftViewImage:[UIImage imageNamed:@"icon-url-field"]];
-        _page2SiteAddressText.backgroundColor = [UIColor whiteColor];
-        _page2SiteAddressText.placeholder = NSLocalizedString(@"Site Address (URL)", nil);
-        _page2SiteAddressText.font = [WPNUXUtility textFieldFont];
-        _page2SiteAddressText.adjustsFontSizeToFitWidth = YES;
-        _page2SiteAddressText.delegate = self;
-        _page2SiteAddressText.autocorrectionType = UITextAutocorrectionTypeNo;
-        _page2SiteAddressText.autocapitalizationType = UITextAutocapitalizationTypeNone;
-        _page2SiteAddressText.showTopLineSeparator = YES;
-        [self.view addSubview:_page2SiteAddressText];
+    if (_siteAddressField == nil) {
+        _siteAddressField = [[WPWalkthroughTextField alloc] initWithLeftViewImage:[UIImage imageNamed:@"icon-url-field"]];
+        _siteAddressField.backgroundColor = [UIColor whiteColor];
+        _siteAddressField.placeholder = NSLocalizedString(@"Site Address (URL)", nil);
+        _siteAddressField.font = [WPNUXUtility textFieldFont];
+        _siteAddressField.adjustsFontSizeToFitWidth = YES;
+        _siteAddressField.delegate = self;
+        _siteAddressField.autocorrectionType = UITextAutocorrectionTypeNo;
+        _siteAddressField.autocapitalizationType = UITextAutocapitalizationTypeNone;
+        _siteAddressField.showTopLineSeparator = YES;
+        [self.view addSubview:_siteAddressField];
         
         // add .wordpress.com label to textfield
-        _page2WordPressComLabel = [[UILabel alloc] init];
-        _page2WordPressComLabel.text = @".wordpress.com";
-        _page2WordPressComLabel.textAlignment = NSTextAlignmentCenter;
-        _page2WordPressComLabel.font = [WPNUXUtility descriptionTextFont];
-        _page2WordPressComLabel.textColor = [WPStyleGuide allTAllShadeGrey];
-        [_page2WordPressComLabel sizeToFit];
+        _siteAddressWPComLabel = [[UILabel alloc] init];
+        _siteAddressWPComLabel.text = @".wordpress.com";
+        _siteAddressWPComLabel.textAlignment = NSTextAlignmentCenter;
+        _siteAddressWPComLabel.font = [WPNUXUtility descriptionTextFont];
+        _siteAddressWPComLabel.textColor = [WPStyleGuide allTAllShadeGrey];
+        [_siteAddressWPComLabel sizeToFit];
         
-        UIEdgeInsets siteAddressTextInsets = [(WPWalkthroughTextField *)_page2SiteAddressText textInsets];
-        siteAddressTextInsets.right += _page2WordPressComLabel.frame.size.width + 10;
-        [(WPWalkthroughTextField *)_page2SiteAddressText setTextInsets:siteAddressTextInsets];
-        [_page2SiteAddressText addSubview:_page2WordPressComLabel];
+        UIEdgeInsets siteAddressTextInsets = [(WPWalkthroughTextField *)_siteAddressField textInsets];
+        siteAddressTextInsets.right += _siteAddressWPComLabel.frame.size.width + 10;
+        [(WPWalkthroughTextField *)_siteAddressField setTextInsets:siteAddressTextInsets];
+        [_siteAddressField addSubview:_siteAddressWPComLabel];
     }
     
     // Add Terms of Service Label
-    if (_page1TOSLabel == nil) {
-        _page1TOSLabel = [[UILabel alloc] init];
-        _page1TOSLabel.userInteractionEnabled = YES;
-        _page1TOSLabel.textAlignment = NSTextAlignmentCenter;
-        _page1TOSLabel.text = NSLocalizedString(@"You agree to the fascinating terms of service by pressing the next button.", @"NUX Create Account TOS Label");
-        _page1TOSLabel.numberOfLines = 0;
-        _page1TOSLabel.backgroundColor = [UIColor clearColor];
-        _page1TOSLabel.font = [WPNUXUtility tosLabelFont];
-        _page1TOSLabel.textColor = [WPNUXUtility tosLabelColor];
-        [self.view addSubview:_page1TOSLabel];
+    if (_TOSLabel == nil) {
+        _TOSLabel = [[UILabel alloc] init];
+        _TOSLabel.userInteractionEnabled = YES;
+        _TOSLabel.textAlignment = NSTextAlignmentCenter;
+        _TOSLabel.text = NSLocalizedString(@"You agree to the fascinating terms of service by pressing the next button.", @"NUX Create Account TOS Label");
+        _TOSLabel.numberOfLines = 0;
+        _TOSLabel.backgroundColor = [UIColor clearColor];
+        _TOSLabel.font = [WPNUXUtility tosLabelFont];
+        _TOSLabel.textColor = [WPNUXUtility tosLabelColor];
+        [self.view addSubview:_TOSLabel];
         
         UITapGestureRecognizer *gestureRecognizer = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(clickedTOSLabel)];
         gestureRecognizer.numberOfTapsRequired = 1;
-        [_page1TOSLabel addGestureRecognizer:gestureRecognizer];
+        [_TOSLabel addGestureRecognizer:gestureRecognizer];
     }
     
     // Add Next Button
-    if (_page1NextButton == nil) {
-        _page1NextButton = [[WPNUXPrimaryButton alloc] init];
-        [_page1NextButton setTitle:NSLocalizedString(@"Next", nil) forState:UIControlStateNormal];
-        _page1NextButton.enabled = NO;
-        [_page1NextButton addTarget:self action:@selector(clickedPage1NextButton) forControlEvents:UIControlEventTouchUpInside];
-        [_page1NextButton sizeToFit];
-        [self.view addSubview:_page1NextButton];
+    if (_createAccountButton == nil) {
+        _createAccountButton = [[WPNUXPrimaryButton alloc] init];
+        [_createAccountButton setTitle:NSLocalizedString(@"Create Account", nil) forState:UIControlStateNormal];
+        _createAccountButton.enabled = NO;
+        [_createAccountButton addTarget:self action:@selector(clickedPage1NextButton) forControlEvents:UIControlEventTouchUpInside];
+        [_createAccountButton sizeToFit];
+        [self.view addSubview:_createAccountButton];
     }
 }
 
@@ -370,62 +370,62 @@ CGFloat const CreateAccountAndBlogiOS7StatusBarOffset = 20.0;
     // is accurately calculated we can determine the vertical center and adjust everything accordingly.
     
     // Layout Icon
-    x = (_viewWidth - CGRectGetWidth(_page1Icon.frame))/2.0;
+    x = (_viewWidth - CGRectGetWidth(_icon.frame))/2.0;
     y = 0;
-    _page1Icon.frame = CGRectIntegral(CGRectMake(x, y, CGRectGetWidth(_page1Icon.frame), CGRectGetHeight(_page1Icon.frame)));
+    _icon.frame = CGRectIntegral(CGRectMake(x, y, CGRectGetWidth(_icon.frame), CGRectGetHeight(_icon.frame)));
     
     // Layout Title
-    CGSize titleSize = [_page1Title.text sizeWithFont:_page1Title.font constrainedToSize:CGSizeMake(CreateAccountAndBlogMaxTextWidth, CGFLOAT_MAX) lineBreakMode:NSLineBreakByWordWrapping];
+    CGSize titleSize = [_titleLabel.text sizeWithFont:_titleLabel.font constrainedToSize:CGSizeMake(CreateAccountAndBlogMaxTextWidth, CGFLOAT_MAX) lineBreakMode:NSLineBreakByWordWrapping];
     x = (_viewWidth - titleSize.width)/2.0;
-    y = CGRectGetMaxY(_page1Icon.frame) + CreateAccountAndBlogStandardOffset;
-    _page1Title.frame = CGRectIntegral(CGRectMake(x, y, titleSize.width, titleSize.height));
+    y = CGRectGetMaxY(_icon.frame) + CreateAccountAndBlogStandardOffset;
+    _titleLabel.frame = CGRectIntegral(CGRectMake(x, y, titleSize.width, titleSize.height));
     
     // Layout Email
     x = (_viewWidth - CreateAccountAndBlogTextFieldWidth)/2.0;
-    y = CGRectGetMaxY(_page1Title.frame) + CreateAccountAndBlogStandardOffset;
-    _page1EmailText.frame = CGRectIntegral(CGRectMake(x, y, CreateAccountAndBlogTextFieldWidth, CreateAccountAndBlogTextFieldHeight));
+    y = CGRectGetMaxY(_titleLabel.frame) + CreateAccountAndBlogStandardOffset;
+    _emailField.frame = CGRectIntegral(CGRectMake(x, y, CreateAccountAndBlogTextFieldWidth, CreateAccountAndBlogTextFieldHeight));
 
     // Layout Username
     x = (_viewWidth - CreateAccountAndBlogTextFieldWidth)/2.0;
-    y = CGRectGetMaxY(_page1EmailText.frame) - 1;
-    _page1UsernameText.frame = CGRectIntegral(CGRectMake(x, y, CreateAccountAndBlogTextFieldWidth, CreateAccountAndBlogTextFieldHeight));
+    y = CGRectGetMaxY(_emailField.frame) - 1;
+    _usernameField.frame = CGRectIntegral(CGRectMake(x, y, CreateAccountAndBlogTextFieldWidth, CreateAccountAndBlogTextFieldHeight));
 
     // Layout Password
     x = (_viewWidth - CreateAccountAndBlogTextFieldWidth)/2.0;
-    y = CGRectGetMaxY(_page1UsernameText.frame) - 1;
-    _page1PasswordText.frame = CGRectIntegral(CGRectMake(x, y, CreateAccountAndBlogTextFieldWidth, CreateAccountAndBlogTextFieldHeight));
+    y = CGRectGetMaxY(_usernameField.frame) - 1;
+    _passwordField.frame = CGRectIntegral(CGRectMake(x, y, CreateAccountAndBlogTextFieldWidth, CreateAccountAndBlogTextFieldHeight));
     
     // Layout Site Address
     x = (_viewWidth - CreateAccountAndBlogTextFieldWidth)/2.0;
-    y = CGRectGetMaxY(_page1PasswordText.frame) - 1;
-    _page2SiteAddressText.frame = CGRectIntegral(CGRectMake(x, y, CreateAccountAndBlogTextFieldWidth, CreateAccountAndBlogTextFieldHeight));
+    y = CGRectGetMaxY(_passwordField.frame) - 1;
+    _siteAddressField.frame = CGRectIntegral(CGRectMake(x, y, CreateAccountAndBlogTextFieldWidth, CreateAccountAndBlogTextFieldHeight));
     
     // Layout WordPressCom Label
-    [_page2WordPressComLabel sizeToFit];
-    CGSize wordPressComLabelSize = _page2WordPressComLabel.frame.size;
-    wordPressComLabelSize.height = _page2SiteAddressText.frame.size.height - 10;
+    [_siteAddressWPComLabel sizeToFit];
+    CGSize wordPressComLabelSize = _siteAddressWPComLabel.frame.size;
+    wordPressComLabelSize.height = _siteAddressField.frame.size.height - 10;
     wordPressComLabelSize.width += 10;
-    _page2WordPressComLabel.frame = CGRectMake(_page2SiteAddressText.frame.size.width - wordPressComLabelSize.width - 5, (_page2SiteAddressText.frame.size.height - wordPressComLabelSize.height) / 2 - 1, wordPressComLabelSize.width, wordPressComLabelSize.height);
+    _siteAddressWPComLabel.frame = CGRectMake(_siteAddressField.frame.size.width - wordPressComLabelSize.width - 5, (_siteAddressField.frame.size.height - wordPressComLabelSize.height) / 2 - 1, wordPressComLabelSize.width, wordPressComLabelSize.height);
     
     // Layout Next Button
-    x = (_viewWidth - CGRectGetWidth(_page1NextButton.frame))/2.0;
-    y = CGRectGetMaxY(_page2SiteAddressText.frame) + 0.5*CreateAccountAndBlogStandardOffset;
-    _page1NextButton.frame = CGRectIntegral(CGRectMake(x, y, CGRectGetWidth(_page1NextButton.frame), CGRectGetHeight(_page1NextButton.frame)));
+    x = (_viewWidth - CGRectGetWidth(_createAccountButton.frame))/2.0;
+    y = CGRectGetMaxY(_siteAddressField.frame) + 0.5*CreateAccountAndBlogStandardOffset;
+    _createAccountButton.frame = CGRectIntegral(CGRectMake(x, y, CGRectGetWidth(_createAccountButton.frame), CGRectGetHeight(_createAccountButton.frame)));
 
     // Layout Terms of Service
-    CGFloat TOSSingleLineHeight = [@"WordPress" sizeWithFont:_page1TOSLabel.font].height;
-    CGSize TOSLabelSize = [_page1TOSLabel.text sizeWithFont:_page1TOSLabel.font constrainedToSize:CGSizeMake(CreateAccountAndBlogMaxTextWidth, CGFLOAT_MAX) lineBreakMode:NSLineBreakByWordWrapping];
+    CGFloat TOSSingleLineHeight = [@"WordPress" sizeWithFont:_TOSLabel.font].height;
+    CGSize TOSLabelSize = [_TOSLabel.text sizeWithFont:_TOSLabel.font constrainedToSize:CGSizeMake(CreateAccountAndBlogMaxTextWidth, CGFLOAT_MAX) lineBreakMode:NSLineBreakByWordWrapping];
     // If the terms of service don't fit on two lines, then shrink the font to make sure the entire terms of service is visible.
     if (TOSLabelSize.height > 2*TOSSingleLineHeight) {
-        _page1TOSLabel.font = [WPNUXUtility tosLabelSmallerFont];
-        TOSLabelSize = [_page1TOSLabel.text sizeWithFont:_page1TOSLabel.font constrainedToSize:CGSizeMake(CreateAccountAndBlogMaxTextWidth, CGFLOAT_MAX) lineBreakMode:NSLineBreakByWordWrapping];
+        _TOSLabel.font = [WPNUXUtility tosLabelSmallerFont];
+        TOSLabelSize = [_TOSLabel.text sizeWithFont:_TOSLabel.font constrainedToSize:CGSizeMake(CreateAccountAndBlogMaxTextWidth, CGFLOAT_MAX) lineBreakMode:NSLineBreakByWordWrapping];
     }
     x = (_viewWidth - TOSLabelSize.width)/2.0;
-    y = CGRectGetMaxY(_page1NextButton.frame) + 0.5*CreateAccountAndBlogStandardOffset;
-    _page1TOSLabel.frame = CGRectIntegral(CGRectMake(x, y, TOSLabelSize.width, TOSLabelSize.height));
+    y = CGRectGetMaxY(_createAccountButton.frame) + 0.5*CreateAccountAndBlogStandardOffset;
+    _TOSLabel.frame = CGRectIntegral(CGRectMake(x, y, TOSLabelSize.width, TOSLabelSize.height));
     
-    NSArray *controls = @[_page1Icon, _page1Title, _page1EmailText, _page1UsernameText, _page1PasswordText, _page1TOSLabel, _page1NextButton, _page2SiteAddressText];
-    [WPNUXUtility centerViews:controls withStartingView:_page1Icon andEndingView:_page1TOSLabel forHeight:_viewHeight];
+    NSArray *controls = @[_icon, _titleLabel, _emailField, _usernameField, _passwordField, _TOSLabel, _createAccountButton, _siteAddressField];
+    [WPNUXUtility centerViews:controls withStartingView:_icon andEndingView:_TOSLabel forHeight:_viewHeight];
 }
 
 
@@ -447,7 +447,7 @@ CGFloat const CreateAccountAndBlogiOS7StatusBarOffset = 20.0;
 {
     CGPoint touchPoint = [gestureRecognizer locationInView:self.view];
     
-    BOOL clickedPage1Next = CGRectContainsPoint(_page1NextButton.frame, touchPoint) && _page1NextButton.enabled;
+    BOOL clickedPage1Next = CGRectContainsPoint(_createAccountButton.frame, touchPoint) && _createAccountButton.enabled;
     
     if (_keyboardVisible) {
         // When the keyboard is displayed, the normal button events don't fire off properly as
@@ -472,7 +472,7 @@ CGFloat const CreateAccountAndBlogiOS7StatusBarOffset = 20.0;
         return;
     } else {
         // Check if user changed default URL and if so track the stat for it.
-        if (![_page2SiteAddressText.text isEqualToString:_defaultSiteUrl]) {
+        if (![_siteAddressField.text isEqualToString:_defaultSiteUrl]) {
             [WPMobileStats trackEventForSelfHostedAndWPCom:StatsEventNUXCreateAccountChangedDefaultURL];
         }
         
@@ -506,7 +506,7 @@ CGFloat const CreateAccountAndBlogiOS7StatusBarOffset = 20.0;
     CGRect keyboardFrame = [[keyboardInfo objectForKey:UIKeyboardFrameEndUserInfoKey] CGRectValue];
     keyboardFrame = [self.view convertRect:keyboardFrame fromView:nil];
     
-    _keyboardOffset = (CGRectGetMaxY(_page1NextButton.frame) - CGRectGetMinY(keyboardFrame)) + CGRectGetHeight(_page1NextButton.frame);
+    _keyboardOffset = (CGRectGetMaxY(_createAccountButton.frame) - CGRectGetMinY(keyboardFrame)) + CGRectGetHeight(_createAccountButton.frame);
     
     // make sure keyboard offset is greater than 0, otherwise do not move controls
     if (_keyboardOffset < 0) {
@@ -557,12 +557,12 @@ CGFloat const CreateAccountAndBlogiOS7StatusBarOffset = 20.0;
 
 - (NSArray *)controlsToMoveDuringKeyboardTransition
 {
-    return @[_page1Title, _page1UsernameText, _page1EmailText, _page1PasswordText, _page1NextButton, _page2SiteAddressText];
+    return @[_titleLabel, _usernameField, _emailField, _passwordField, _createAccountButton, _siteAddressField];
 }
 
 - (NSArray *)controlsToShowOrHideDuringKeyboardTransition
 {
-    return @[_page1Icon, _helpButton, _cancelButton, _page1TOSLabel];
+    return @[_icon, _helpButton, _cancelButton, _TOSLabel];
 }
 
 - (void)displayRemoteError:(NSError *)error
@@ -578,27 +578,27 @@ CGFloat const CreateAccountAndBlogiOS7StatusBarOffset = 20.0;
 
 - (BOOL)isEmailedFilled
 {
-    return ([[_page1EmailText.text trim] length] != 0);
+    return ([[_emailField.text trim] length] != 0);
 }
 
 - (BOOL)isUsernameFilled
 {
-    return ([[_page1UsernameText.text trim] length] != 0);
+    return ([[_usernameField.text trim] length] != 0);
 }
 
 - (BOOL)isUsernameUnderFiftyCharacters
 {
-    return [[_page1UsernameText.text trim] length] <= 50;
+    return [[_usernameField.text trim] length] <= 50;
 }
 
 - (BOOL)isPasswordFilled
 {
-    return ([[_page1PasswordText.text trim] length] != 0);
+    return ([[_passwordField.text trim] length] != 0);
 }
 
 - (BOOL)isSiteAddressFilled
 {
-    return ([[_page2SiteAddressText.text trim] length] != 0);
+    return ([[_siteAddressField.text trim] length] != 0);
 }
 
 - (BOOL)page1FieldsValid
@@ -629,7 +629,7 @@ CGFloat const CreateAccountAndBlogiOS7StatusBarOffset = 20.0;
 - (NSString *)getSiteAddressWithoutWordPressDotCom
 {
     NSRegularExpression *dotCom = [NSRegularExpression regularExpressionWithPattern:@"\\.wordpress\\.com/?$" options:NSRegularExpressionCaseInsensitive error:nil];
-    return [dotCom stringByReplacingMatchesInString:_page2SiteAddressText.text options:0 range:NSMakeRange(0, [_page2SiteAddressText.text length]) withTemplate:@""];
+    return [dotCom stringByReplacingMatchesInString:_siteAddressField.text options:0 range:NSMakeRange(0, [_siteAddressField.text length]) withTemplate:@""];
 }
 
 - (void)showError:(NSString *)message
@@ -655,9 +655,9 @@ CGFloat const CreateAccountAndBlogiOS7StatusBarOffset = 20.0;
             [self displayRemoteError:error];
         };
         
-        [[WordPressComApi sharedApi] createWPComAccountWithEmail:_page1EmailText.text
-                                                     andUsername:_page1UsernameText.text
-                                                     andPassword:_page1PasswordText.text
+        [[WordPressComApi sharedApi] createWPComAccountWithEmail:_emailField.text
+                                                     andUsername:_usernameField.text
+                                                     andPassword:_passwordField.text
                                                          success:createUserSuccess
                                                          failure:createUserFailure];
         
@@ -674,8 +674,8 @@ CGFloat const CreateAccountAndBlogiOS7StatusBarOffset = 20.0;
             [self displayRemoteError:error];
         };
         
-        [[WordPressComApi sharedApi] signInWithUsername:_page1UsernameText.text
-                                               password:_page1PasswordText.text
+        [[WordPressComApi sharedApi] signInWithUsername:_usernameField.text
+                                               password:_passwordField.text
                                                 success:signInSuccess
                                                 failure:signInFailure];
     }];
@@ -686,7 +686,7 @@ CGFloat const CreateAccountAndBlogiOS7StatusBarOffset = 20.0;
             [operation didSucceed];
             [SVProgressHUD dismiss];
             if (self.onCreatedUser) {
-                self.onCreatedUser(_page1UsernameText.text, _page1PasswordText.text);
+                self.onCreatedUser(_usernameField.text, _passwordField.text);
             }
         };
         void (^createBlogFailure)(NSError *error) = ^(NSError *error) {
@@ -697,7 +697,7 @@ CGFloat const CreateAccountAndBlogiOS7StatusBarOffset = 20.0;
         
         NSNumber *languageId = [_currentLanguage objectForKey:@"lang_id"];
         [[WordPressComApi sharedApi] createWPComBlogWithUrl:[self getSiteAddressWithoutWordPressDotCom]
-                                               andBlogTitle:[self generateSiteTitleFromUsername:_page1UsernameText.text]
+                                               andBlogTitle:[self generateSiteTitleFromUsername:_usernameField.text]
                                               andLanguageId:languageId
                                           andBlogVisibility:WordPressComApiBlogVisibilityPublic
                                                     success:createBlogSuccess
