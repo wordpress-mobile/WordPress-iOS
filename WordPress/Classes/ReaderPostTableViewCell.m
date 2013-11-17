@@ -22,9 +22,10 @@ const CGFloat RPTVCHorizontalInnerPadding = 12.0f;
 const CGFloat RPTVCHorizontalOuterPadding = 8.0f;
 const CGFloat RPTVCMetaViewHeight = 52.0f;
 const CGFloat RPTVAuthorViewHeight = 32.0f;
-const CGFloat RPTVCVerticalPadding = 20.0f;
+const CGFloat RPTVCVerticalPadding = 18.0f;
 const CGFloat RPTVCAvatarSize = 32.0f;
 const CGFloat RPTVCLineHeight = 1.0f;
+const CGFloat RPTVCSmallButtonLeftPadding = 2; // Follow, tag
 
 // Control buttons (Like, Reblog, ...)
 const CGFloat RPTVCControlButtonHeight = 48.0f;
@@ -40,6 +41,7 @@ const CGFloat RPTVCControlButtonBorderSize = 0.0f;
 @property (nonatomic, strong) UILabel *snippetLabel;
 @property (nonatomic, strong) UILabel *timeLabel;
 @property (nonatomic, strong) UIButton *followButton;
+@property (nonatomic, strong) UIButton *tagButton;
 
 @property (nonatomic, strong) UIView *metaView;
 @property (nonatomic, strong) CALayer *metaBorder;
@@ -89,15 +91,25 @@ const CGFloat RPTVCControlButtonBorderSize = 0.0f;
 		desiredHeight += height;
 	}
 
+    // Title
     desiredHeight += RPTVCVerticalPadding;
 	desiredHeight += [post.postTitle sizeWithFont:[self titleFont] constrainedToSize:CGSizeMake(contentWidth, CGFLOAT_MAX) lineBreakMode:NSLineBreakByWordWrapping].height;
     desiredHeight += RPTVCVerticalPadding;
 
+    // Post summary
     if ([post.summary length] > 0) {
         NSString *postSummary = [self prettySummaryForPost:post];
         desiredHeight += [postSummary sizeWithFont:[self summaryFont] constrainedToSize:CGSizeMake(contentWidth, CGFLOAT_MAX) lineBreakMode:NSLineBreakByWordWrapping].height;
     }
     
+    // Tag
+    NSString *tagName = [self tagNameForPost:post];
+    if ([tagName length] > 0) {
+        desiredHeight += RPTVCVerticalPadding;
+        desiredHeight += [tagName sizeWithFont:[self summaryFont] constrainedToSize:CGSizeMake(contentWidth, CGFLOAT_MAX) lineBreakMode:NSLineBreakByWordWrapping].height;
+    }
+
+    // Padding above and below the line
 	desiredHeight += RPTVCVerticalPadding * 2;
 
 	// Size of the meta view
@@ -115,6 +127,12 @@ const CGFloat RPTVCControlButtonBorderSize = 0.0f;
     
     return prettySummary;
 }
+
++ (NSString *)tagNameForPost:(ReaderPost *)post {
+    // TODO: Get first tag from the post (not currently being stored)
+    return @"Sample Tag";
+}
+
 
 + (UIFont *)titleFont {
     return [UIFont fontWithName:@"Merriweather-Bold" size:21.0f];
@@ -220,7 +238,7 @@ const CGFloat RPTVCControlButtonBorderSize = 0.0f;
 	self.titleLabel = [[UILabel alloc] init];
 	_titleLabel.autoresizingMask = UIViewAutoresizingFlexibleWidth;
 	_titleLabel.backgroundColor = [UIColor clearColor];
-	_titleLabel.font = [[self class] titleFont];
+	_titleLabel.font = [ReaderPostTableViewCell titleFont];
 	_titleLabel.textColor = [UIColor colorWithRed:64.0f/255.0f green:64.0f/255.0f blue:64.0f/255.0f alpha:1.0];
 	_titleLabel.lineBreakMode = NSLineBreakByWordWrapping;
 	_titleLabel.numberOfLines = 0;
@@ -229,7 +247,7 @@ const CGFloat RPTVCControlButtonBorderSize = 0.0f;
 	self.snippetLabel = [[UILabel alloc] init];
 	_snippetLabel.autoresizingMask = UIViewAutoresizingFlexibleWidth;
 	_snippetLabel.backgroundColor = [UIColor clearColor];
-	_snippetLabel.font = [[self class] summaryFont];
+	_snippetLabel.font = [ReaderPostTableViewCell summaryFont];
 	_snippetLabel.textColor = [UIColor colorWithRed:64.0f/255.0f green:64.0f/255.0f blue:64.0f/255.0f alpha:1.0];
 	_snippetLabel.lineBreakMode = NSLineBreakByTruncatingTail;
 	_snippetLabel.numberOfLines = 4;
@@ -256,7 +274,6 @@ const CGFloat RPTVCControlButtonBorderSize = 0.0f;
     
     self.followButton = [UIButton buttonWithType:UIButtonTypeCustom];
     [_followButton setSelected:[self.post.isFollowing boolValue]];
-    //_followButton.layer.cornerRadius = 3.0f;
     _followButton.contentHorizontalAlignment = UIControlContentHorizontalAlignmentLeft;
     _followButton.backgroundColor = [UIColor clearColor];
     _followButton.titleLabel.font = [UIFont fontWithName:@"OpenSans" size:12.0f];
@@ -264,10 +281,22 @@ const CGFloat RPTVCControlButtonBorderSize = 0.0f;
     NSString *followedString = NSLocalizedString(@"Following", @"User is following the blog.");
     [_followButton setTitle:followString forState:UIControlStateNormal];
     [_followButton setTitle:followedString forState:UIControlStateSelected];
+    [_followButton setTitleEdgeInsets: UIEdgeInsetsMake(0, RPTVCSmallButtonLeftPadding, 0, 0)];
     [_followButton setImage:[UIImage imageNamed:@"reader-postaction-follow"] forState:UIControlStateNormal];
     [_followButton setImage:[UIImage imageNamed:@"reader-postaction-following"] forState:UIControlStateSelected];
     [_followButton setTitleColor:[UIColor colorWithHexString:@"aaa"] forState:UIControlStateNormal];
     [_byView addSubview:_followButton];
+    
+    self.tagButton = [UIButton buttonWithType:UIButtonTypeCustom];
+    _tagButton.contentHorizontalAlignment = UIControlContentHorizontalAlignmentLeft;
+    _tagButton.backgroundColor = [UIColor clearColor];
+    _tagButton.titleLabel.font = [UIFont fontWithName:@"OpenSans" size:12.0f];
+    NSString *tagName = [ReaderPostTableViewCell tagNameForPost:self.post];
+    [_tagButton setTitle:tagName forState:UIControlStateNormal];
+    [_tagButton setTitleEdgeInsets: UIEdgeInsetsMake(0, RPTVCSmallButtonLeftPadding, 0, 0)];
+    [_tagButton setImage:[UIImage imageNamed:@"reader-postaction-tag"] forState:UIControlStateNormal];
+    [_tagButton setTitleColor:[UIColor colorWithHexString:@"aaa"] forState:UIControlStateNormal];
+    [_containerView addSubview:_tagButton];
 }
 
 - (void)buildMetaContent {
@@ -354,6 +383,16 @@ const CGFloat RPTVCControlButtonBorderSize = 0.0f;
         nextY += ceilf(height + RPTVCVerticalPadding);
     }
 
+    // Tag
+    if ([_tagButton.titleLabel.text length] > 0) {
+        height = ceil([_tagButton.titleLabel suggestedSizeForWidth:innerContentWidth].height);
+        _tagButton.frame = CGRectMake(RPTVCHorizontalInnerPadding, nextY, innerContentWidth, height);
+        nextY += height + RPTVCVerticalPadding;
+        self.tagButton.hidden = NO;
+    } else {
+        self.tagButton.hidden = YES;
+    }
+
 	// Position the meta view and its subviews
 	_metaView.frame = CGRectMake(0, nextY, contentWidth, RPTVCMetaViewHeight);
     _metaBorder.frame = CGRectMake(RPTVCHorizontalInnerPadding, 0, contentWidth - RPTVCHorizontalInnerPadding * 2, RPTVCLineHeight);
@@ -380,7 +419,7 @@ const CGFloat RPTVCControlButtonBorderSize = 0.0f;
     _timeLabel.frame = CGRectMake(RPTVCHorizontalInnerPadding, RPTVCLineHeight, timeWidth, RPTVCControlButtonHeight);
     
     CGFloat sideBorderX = RPTVCHorizontalOuterPadding - 1; // Just to the left of the container
-    CGFloat sideBorderHeight = self.frame.size.height - RPTVCVerticalPadding + 1; // Just below it
+    CGFloat sideBorderHeight = self.frame.size.height - RPTVCVerticalPadding; // Just below it
     _sideBorderView.frame = CGRectMake(sideBorderX, 1, self.frame.size.width - sideBorderX * 2, sideBorderHeight);
 }
 
@@ -392,6 +431,7 @@ const CGFloat RPTVCControlButtonBorderSize = 0.0f;
 	_bylineLabel.text = nil;
 	_titleLabel.text = nil;
 	_snippetLabel.text = nil;
+    _timeLabel.text = nil;
 
     [self setHighlightedEffect:NO animated:NO];
 }
@@ -415,7 +455,7 @@ const CGFloat RPTVCControlButtonBorderSize = 0.0f;
     [self setAvatar:nil];
 
 	_titleLabel.text = [post.postTitle trim];
-	_snippetLabel.text = [[self class] prettySummaryForPost:post];
+	_snippetLabel.text = [ReaderPostTableViewCell prettySummaryForPost:post];
 
     _bylineLabel.text = post.blogName;
 	_timeLabel.text = [post prettyDateString];

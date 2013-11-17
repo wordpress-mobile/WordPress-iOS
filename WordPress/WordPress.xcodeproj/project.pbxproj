@@ -293,6 +293,8 @@
 		462F4E0B18369F0B0028D2F8 /* BlogListViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 462F4E0918369F0B0028D2F8 /* BlogListViewController.m */; };
 		462F4E0E18369F300028D2F8 /* WPTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 462F4E0D18369F300028D2F8 /* WPTableViewCell.m */; };
 		462F4E10183867AE0028D2F8 /* Merriweather-Bold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 462F4E0F183867AE0028D2F8 /* Merriweather-Bold.ttf */; };
+		46F8714B1838BB4E00BC149B /* reader-postaction-tag.png in Resources */ = {isa = PBXBuildFile; fileRef = 46F871491838BB4E00BC149B /* reader-postaction-tag.png */; };
+		46F8714C1838BB4E00BC149B /* reader-postaction-tag@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 46F8714A1838BB4E00BC149B /* reader-postaction-tag@2x.png */; };
 		5D0077A7182AE9DF00F865DB /* ReaderMediaQueue.m in Sources */ = {isa = PBXBuildFile; fileRef = 5D0077A6182AE9DF00F865DB /* ReaderMediaQueue.m */; };
 		5D119DA3176FBE040073D83A /* UIImageView+AFNetworkingExtra.m in Sources */ = {isa = PBXBuildFile; fileRef = 5D119DA2176FBE040073D83A /* UIImageView+AFNetworkingExtra.m */; };
 		5D1392A7157D4D92007D51B8 /* StatsWebViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 5D1392A6157D4D92007D51B8 /* StatsWebViewController.m */; };
@@ -1310,6 +1312,8 @@
 		462F4E0C18369F300028D2F8 /* WPTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WPTableViewCell.h; sourceTree = "<group>"; };
 		462F4E0D18369F300028D2F8 /* WPTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WPTableViewCell.m; sourceTree = "<group>"; };
 		462F4E0F183867AE0028D2F8 /* Merriweather-Bold.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Merriweather-Bold.ttf"; sourceTree = "<group>"; };
+		46F871491838BB4E00BC149B /* reader-postaction-tag.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "reader-postaction-tag.png"; path = "Resources/Images/reader-postaction-tag.png"; sourceTree = "<group>"; };
+		46F8714A1838BB4E00BC149B /* reader-postaction-tag@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "reader-postaction-tag@2x.png"; path = "Resources/Images/reader-postaction-tag@2x.png"; sourceTree = "<group>"; };
 		5D0077A5182AE9DF00F865DB /* ReaderMediaQueue.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ReaderMediaQueue.h; sourceTree = "<group>"; };
 		5D0077A6182AE9DF00F865DB /* ReaderMediaQueue.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ReaderMediaQueue.m; sourceTree = "<group>"; };
 		5D119DA1176FBE040073D83A /* UIImageView+AFNetworkingExtra.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIImageView+AFNetworkingExtra.h"; sourceTree = "<group>"; };
@@ -3357,6 +3361,8 @@
 			isa = PBXGroup;
 			children = (
 				462F4E0518369B370028D2F8 /* Tabs */,
+				46F871491838BB4E00BC149B /* reader-postaction-tag.png */,
+				46F8714A1838BB4E00BC149B /* reader-postaction-tag@2x.png */,
 				E14D65C117E08617007E3EA4 /* reader-postaction-comment-blue.png */,
 				E14D65C217E08617007E3EA4 /* reader-postaction-comment-blue@2x.png */,
 				E14D65BD17E08524007E3EA4 /* reader-postaction-reblog-blue.png */,
@@ -4518,6 +4524,7 @@
 				462F4E0118369B200028D2F8 /* icon-tab-notifications.png in Resources */,
 				374F18C415A5897500524ED0 /* sidebar_read.png in Resources */,
 				374F18C515A5897500524ED0 /* sidebar_read@2x.png in Resources */,
+				46F8714C1838BB4E00BC149B /* reader-postaction-tag@2x.png in Resources */,
 				85ED54F317CC1A01006564AE /* icon-posts-editor-preview.png in Resources */,
 				374F18C615A5897500524ED0 /* sidebar_settings.png in Resources */,
 				374F18C715A5897500524ED0 /* sidebar_settings@2x.png in Resources */,
@@ -4580,6 +4587,7 @@
 				37B159F415AC7CEB00333C91 /* sidebar_cell_bg@2x.png in Resources */,
 				37B159F515AC7CEB00333C91 /* sidebar_cell_bg.png in Resources */,
 				30E9683C15AE4EB10047DD84 /* sidebar-logo.png in Resources */,
+				46F8714B1838BB4E00BC149B /* reader-postaction-tag.png in Resources */,
 				30E9683D15AE4EB10047DD84 /* sidebar-logo@2x.png in Resources */,
 				30E9684115AE60B20047DD84 /* navbar_add.png in Resources */,
 				E232E603182EA16200792CA0 /* icon-password-field.png in Resources */,
