@@ -44,20 +44,10 @@ NSString *const WPReaderViewControllerDisplayedNativeFriendFinder = @"DisplayedN
     UIPopoverController *_popover;
 }
 
-//@property (nonatomic, strong) NSFetchedResultsController *resultsController;
 @property (nonatomic, strong) ReaderReblogFormView *readerReblogFormView;
 @property (nonatomic, strong) WPFriendFinderNudgeView *friendFinderNudgeView;
 @property (nonatomic, strong) UINavigationBar *navBar;
 @property (nonatomic) BOOL isShowingReblogForm;
-
-- (void)configureTableHeader;
-- (void)fetchBlogsAndPrimaryBlog;
-- (void)handleReblogButtonTapped:(id)sender;
-- (void)showReblogForm;
-- (void)hideReblogForm;
-- (void)onSyncSuccess:(AFHTTPRequestOperation *)operation response:(id)responseObject;
-- (void)handleKeyboardDidShow:(NSNotification *)notification;
-- (void)handleKeyboardWillHide:(NSNotification *)notification;
 
 @end
 
@@ -73,6 +63,7 @@ NSString *const WPReaderViewControllerDisplayedNativeFriendFinder = @"DisplayedN
     [AFImageRequestOperation addAcceptableContentTypes:[NSSet setWithObject:@"image/jpg"]];
 }
 
+
 #pragma mark - Life Cycle methods
 
 - (void)dealloc {
@@ -81,7 +72,6 @@ NSString *const WPReaderViewControllerDisplayedNativeFriendFinder = @"DisplayedN
 	self.readerReblogFormView = nil;
 	self.friendFinderNudgeView = nil;
 }
-
 
 - (id)init {
 	self = [super init];
@@ -93,7 +83,6 @@ NSString *const WPReaderViewControllerDisplayedNativeFriendFinder = @"DisplayedN
 	}
 	return self;
 }
-
 
 - (void)viewDidLoad {
 	[super viewDidLoad];
@@ -122,7 +111,7 @@ NSString *const WPReaderViewControllerDisplayedNativeFriendFinder = @"DisplayedN
         CGSize imageSize = [UIImage imageNamed:@"icon-reader-topics"].size;
         btn.frame = CGRectMake(0.0, 0.0, imageSize.width, imageSize.height);
 		
-        [btn addTarget:self action:@selector(handleTopicsButtonTapped:) forControlEvents:UIControlEventTouchUpInside];
+        [btn addTarget:self action:@selector(topicsAction:) forControlEvents:UIControlEventTouchUpInside];
         button = [[UIBarButtonItem alloc] initWithCustomView:btn];
     } else {
         UIButton *btn = [UIButton buttonWithType:UIButtonTypeCustom];
@@ -136,7 +125,7 @@ NSString *const WPReaderViewControllerDisplayedNativeFriendFinder = @"DisplayedN
         
         btn.frame = CGRectMake(0.0f, 0.0f, 44.0f, 30.0f);
 		
-        [btn addTarget:self action:@selector(handleTopicsButtonTapped:) forControlEvents:UIControlEventTouchUpInside];
+        [btn addTarget:self action:@selector(topicsAction:) forControlEvents:UIControlEventTouchUpInside];
         button = [[UIBarButtonItem alloc] initWithCustomView:btn];
     }
 	
@@ -233,6 +222,7 @@ NSString *const WPReaderViewControllerDisplayedNativeFriendFinder = @"DisplayedN
     [self loadImagesForVisibleRows];
 }
 
+
 #pragma mark - Instance Methods
 
 - (void)setTitle:(NSString *)title {
@@ -264,67 +254,12 @@ NSString *const WPReaderViewControllerDisplayedNativeFriendFinder = @"DisplayedN
 	self.tableView.tableHeaderView = paddingView;
 }
 
-- (void)handleTopicsButtonTapped:(id)sender {
-	ReaderTopicsViewController *controller = [[ReaderTopicsViewController alloc] initWithStyle:UITableViewStyleGrouped];
-	controller.delegate = self;
-    if (IS_IPAD) {
-        if (_popover) {
-            [self dismissPopover];
-            return;
-        }
-        
-        _popover = [[UIPopoverController alloc] initWithContentViewController:controller];
-        _popover.popoverBackgroundViewClass = [WPPopoverBackgroundView class];
-
-        UIBarButtonItem *shareButton;
-        if (IS_IOS7) {
-            // For iOS7 there is an added spacing element inserted before the share button to adjust the position of the button.
-            shareButton = [self.navigationItem.rightBarButtonItems objectAtIndex:1];
-        } else {
-            shareButton = self.navigationItem.rightBarButtonItem;
-        }
-        [_popover presentPopoverFromBarButtonItem:shareButton permittedArrowDirections:UIPopoverArrowDirectionAny animated:YES];
-    } else {
-        UINavigationController *navController = [[UINavigationController alloc] initWithRootViewController:controller];
-        navController.navigationBar.translucent = NO;
-        [self presentViewController:navController animated:YES completion:nil];
-    }
-}
-
 - (void)dismissPopover {
     if (_popover) {
         [_popover dismissPopoverAnimated:YES];
         _popover = nil;
     }
 }
-
-- (void)handleReblogButtonTapped:(id)sender {
-	// Locate the cell this originated from. 
-	UIView *v = (UIView *)sender;
-	while (![v isKindOfClass:[UITableViewCell class]]) {
-		v = (UIView *)v.superview;
-	}
-	
-	NSIndexPath *selectedPath = [self.tableView indexPathForSelectedRow];
-	
-	UITableViewCell *cell = (UITableViewCell *)v;
-	NSIndexPath *path = [self.tableView indexPathForCell:cell];
-	
-	// if not showing form, show the form.
-	if (!selectedPath) {
-		[self.tableView selectRowAtIndexPath:path animated:NO scrollPosition:UITableViewScrollPositionNone];
-		[self showReblogForm];
-		return;
-	}
-	
-	// if showing form && same cell as before, dismiss the form.
-	if ([selectedPath compare:path] == NSOrderedSame) {
-		[self hideReblogForm];
-	} else {
-		[self.tableView selectRowAtIndexPath:path animated:NO scrollPosition:UITableViewScrollPositionNone];
-	}
-}
-
 
 - (void)handleKeyboardDidShow:(NSNotification *)notification {
     UIView *view = self.view.superview;
@@ -437,6 +372,80 @@ NSString *const WPReaderViewControllerDisplayedNativeFriendFinder = @"DisplayedN
     }
 }
 
+
+#pragma mark - Actions
+
+- (void)reblogAction:(id)sender {
+	NSIndexPath *selectedPath = [self.tableView indexPathForSelectedRow];	
+	UITableViewCell *cell = [ReaderPostTableViewCell cellForSubview:sender];
+	NSIndexPath *path = [self.tableView indexPathForCell:cell];
+	
+	// if not showing form, show the form.
+	if (!selectedPath) {
+		[self.tableView selectRowAtIndexPath:path animated:NO scrollPosition:UITableViewScrollPositionNone];
+		[self showReblogForm];
+		return;
+	}
+	
+	// if showing form && same cell as before, dismiss the form.
+	if ([selectedPath compare:path] == NSOrderedSame) {
+		[self hideReblogForm];
+	} else {
+		[self.tableView selectRowAtIndexPath:path animated:NO scrollPosition:UITableViewScrollPositionNone];
+	}
+}
+
+- (void)likeAction:(id)sender {
+    ReaderPostTableViewCell *cell = [ReaderPostTableViewCell cellForSubview:sender];
+    ReaderPost *post = cell.post;
+	[post toggleLikedWithSuccess:^{
+        if ([post.isLiked boolValue]) {
+            [WPMobileStats trackEventForWPCom:StatsEventReaderLikedPost];
+        } else {
+            [WPMobileStats trackEventForWPCom:StatsEventReaderUnlikedPost];
+        }
+	} failure:^(NSError *error) {
+		DDLogError(@"Error Liking Post : %@", [error localizedDescription]);
+		[cell updateControlBar];
+	}];
+	
+	[cell updateControlBar];
+}
+
+- (void)topicsAction:(id)sender {
+	ReaderTopicsViewController *controller = [[ReaderTopicsViewController alloc] initWithStyle:UITableViewStyleGrouped];
+	controller.delegate = self;
+    if (IS_IPAD) {
+        if (_popover) {
+            [self dismissPopover];
+            return;
+        }
+        
+        _popover = [[UIPopoverController alloc] initWithContentViewController:controller];
+        _popover.popoverBackgroundViewClass = [WPPopoverBackgroundView class];
+        
+        UIBarButtonItem *shareButton;
+        if (IS_IOS7) {
+            // For iOS7 there is an added spacing element inserted before the share button to adjust the position of the button.
+            shareButton = [self.navigationItem.rightBarButtonItems objectAtIndex:1];
+        } else {
+            shareButton = self.navigationItem.rightBarButtonItem;
+        }
+        [_popover presentPopoverFromBarButtonItem:shareButton permittedArrowDirections:UIPopoverArrowDirectionAny animated:YES];
+    } else {
+        UINavigationController *navController = [[UINavigationController alloc] initWithRootViewController:controller];
+        navController.navigationBar.translucent = NO;
+        [self presentViewController:navController animated:YES completion:nil];
+    }
+}
+
+- (void)commentAction:(id)sender {
+    // TODO: allow commenting
+}
+
+- (void)tagAction:(id)sender {
+    // TODO: allow browsing directly to a tag
+}
 
 #pragma mark - ReaderTextForm Delegate Methods
 
@@ -567,8 +576,11 @@ NSString *const WPReaderViewControllerDisplayedNativeFriendFinder = @"DisplayedN
     ReaderPostTableViewCell *cell = (ReaderPostTableViewCell *)[self.tableView dequeueReusableCellWithIdentifier:cellIdentifier];
     if (cell == nil) {
         cell = [[ReaderPostTableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:cellIdentifier];
-		cell.parentController = self;
-		[cell setReblogTarget:self action:@selector(handleReblogButtonTapped:)];
+        [cell.reblogButton addTarget:self action:@selector(reblogAction:) forControlEvents:UIControlEventTouchUpInside];
+        [cell.likeButton addTarget:self action:@selector(likeAction:) forControlEvents:UIControlEventTouchUpInside];
+        [cell.followButton addTarget:self action:@selector(followAction:) forControlEvents:UIControlEventTouchUpInside];
+        [cell.commentButton addTarget:self action:@selector(commentAction:) forControlEvents:UIControlEventTouchUpInside];
+        [cell.tagButton addTarget:self action:@selector(tagAction:) forControlEvents:UIControlEventTouchUpInside];
     }
 	return cell;
 }

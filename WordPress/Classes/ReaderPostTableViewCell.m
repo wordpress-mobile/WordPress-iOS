@@ -37,30 +37,18 @@ const CGFloat RPTVCControlButtonBorderSize = 0.0f;
 
 @interface ReaderPostTableViewCell()
 
-@property (nonatomic, strong) ReaderPost *post;
 @property (nonatomic, strong) UIView *containerView;
 @property (nonatomic, strong) UILabel *titleLabel;
 @property (nonatomic, strong) UILabel *snippetLabel;
 @property (nonatomic, strong) UILabel *timeLabel;
-@property (nonatomic, strong) UIButton *followButton;
-@property (nonatomic, strong) UIButton *tagButton;
 
 @property (nonatomic, strong) UIView *metaView;
 @property (nonatomic, strong) CALayer *metaBorder;
-
 @property (nonatomic, strong) UIView *byView;
 @property (nonatomic, strong) UILabel *bylineLabel;
-
 @property (nonatomic, strong) UIView *controlView;
-@property (nonatomic, strong) UIButton *likeButton;
-@property (nonatomic, strong) UIButton *reblogButton;
-@property (nonatomic, strong) UIButton *commentButton;
 
 @property (nonatomic, assign) BOOL showImage;
-
-- (void)buildPostContent;
-- (void)buildMetaContent;
-- (void)handleLikeButtonTapped:(id)sender;
 
 @end
 
@@ -135,13 +123,24 @@ const CGFloat RPTVCControlButtonBorderSize = 0.0f;
     return @"Sample Tag";
 }
 
-
 + (UIFont *)titleFont {
     return [UIFont fontWithName:@"Merriweather-Bold" size:21.0f];
 }
 
 + (UIFont *)summaryFont {
     return [UIFont fontWithName:@"OpenSans" size:14.0f];
+}
+
++ (ReaderPostTableViewCell *)cellForSubview:(UIView *)subview {
+    UIView *view = subview;
+	while (![view isKindOfClass:self]) {
+		view = (UIView *)view.superview;
+	}
+    
+    if (view == subview)
+        return nil;
+    
+    return (ReaderPostTableViewCell *)view;
 }
 
 
@@ -325,7 +324,6 @@ const CGFloat RPTVCControlButtonBorderSize = 0.0f;
 	_likeButton.backgroundColor = [UIColor whiteColor];
 	[_likeButton setImage:[UIImage imageNamed:@"reader-postaction-like-blue"] forState:UIControlStateNormal];
 	[_likeButton setImage:[UIImage imageNamed:@"reader-postaction-like-active"] forState:UIControlStateSelected];
-	[_likeButton addTarget:self action:@selector(handleLikeButtonTapped:) forControlEvents:UIControlEventTouchUpInside];
 	[_metaView addSubview:_likeButton];
 	
 	self.reblogButton = [ReaderButton buttonWithType:UIButtonTypeCustom];
@@ -522,7 +520,7 @@ const CGFloat RPTVCControlButtonBorderSize = 0.0f;
 	_reblogButton.userInteractionEnabled = !_reblogButton.selected;
 }
 
-- (void)handleLikeButtonTapped:(id)sender {
+- (void)likeAction:(id)sender {
 
 	[self.post toggleLikedWithSuccess:^{
         if ([self.post.isLiked boolValue]) {
