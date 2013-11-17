@@ -178,7 +178,6 @@ NSString *const WPReaderViewControllerDisplayedNativeFriendFinder = @"DisplayedN
                                                   }];
 }
 
-
 - (void)viewWillAppear:(BOOL)animated {
 	[super viewWillAppear:animated];
 	
@@ -214,7 +213,6 @@ NSString *const WPReaderViewControllerDisplayedNativeFriendFinder = @"DisplayedN
     return [super shouldAutorotateToInterfaceOrientation:interfaceOrientation];
 }
 
-
 - (void)willRotateToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation duration:(NSTimeInterval)duration {
 	[super willRotateToInterfaceOrientation:toInterfaceOrientation duration:duration];
 
@@ -227,7 +225,6 @@ NSString *const WPReaderViewControllerDisplayedNativeFriendFinder = @"DisplayedN
 		width = UIInterfaceOrientationIsLandscape(toInterfaceOrientation) ? frame.size.height : frame.size.width;
 	}
 }
-
 
 - (void)didRotateFromInterfaceOrientation:(UIInterfaceOrientation)fromInterfaceOrientation {
     [super didRotateFromInterfaceOrientation:fromInterfaceOrientation];
@@ -263,7 +260,7 @@ NSString *const WPReaderViewControllerDisplayedNativeFriendFinder = @"DisplayedN
 	UIView *paddingView = [[UIView alloc] initWithFrame:CGRectMake(0.0f, 0.0f, self.view.frame.size.width, 10.0f)];
 	paddingView.autoresizingMask = UIViewAutoresizingFlexibleWidth;
 	paddingView.backgroundColor = [WPStyleGuide itsEverywhereGrey];
-;
+
 	self.tableView.tableHeaderView = paddingView;
 }
 
@@ -321,7 +318,7 @@ NSString *const WPReaderViewControllerDisplayedNativeFriendFinder = @"DisplayedN
 	}
 	
 	// if showing form && same cell as before, dismiss the form.
-	if([selectedPath compare:path] == NSOrderedSame) {
+	if ([selectedPath compare:path] == NSOrderedSame) {
 		[self hideReblogForm];
 	} else {
 		[self.tableView selectRowAtIndexPath:path animated:NO scrollPosition:UITableViewScrollPositionNone];
@@ -363,7 +360,6 @@ NSString *const WPReaderViewControllerDisplayedNativeFriendFinder = @"DisplayedN
 	}];
 }
 
-
 - (void)handleKeyboardWillHide:(NSNotification *)notification {
     UIView *view = self.view.superview;
 	CGRect frame = view.frame;
@@ -374,11 +370,9 @@ NSString *const WPReaderViewControllerDisplayedNativeFriendFinder = @"DisplayedN
 	view.frame = frame;
 }
 
-
 - (void)showReblogForm {
-	if (_readerReblogFormView.superview != nil) {
+	if (_readerReblogFormView.superview != nil)
 		return;
-	}
 	
 	NSIndexPath *path = [self.tableView indexPathForSelectedRow];
 	_readerReblogFormView.post = (ReaderPost *)[self.resultsController objectAtIndexPath:path];
@@ -395,11 +389,9 @@ NSString *const WPReaderViewControllerDisplayedNativeFriendFinder = @"DisplayedN
 	[_readerReblogFormView.textView becomeFirstResponder];
 }
 
-
 - (void)hideReblogForm {
-	if(_readerReblogFormView.superview == nil) {
+	if (_readerReblogFormView.superview == nil)
 		return;
-	}
 	
 	[self.tableView deselectRowAtIndexPath:[self.tableView indexPathForSelectedRow] animated:NO];
 	
@@ -412,11 +404,9 @@ NSString *const WPReaderViewControllerDisplayedNativeFriendFinder = @"DisplayedN
 	[self.view endEditing:YES];
 }
 
-
 - (void)loadImagesForVisibleRows {
     NSArray *visiblePaths = [self.tableView indexPathsForVisibleRows];
-    for (NSIndexPath *indexPath in visiblePaths)
-    {
+    for (NSIndexPath *indexPath in visiblePaths) {
         ReaderPost *post = (ReaderPost *)[self.resultsController objectAtIndexPath:indexPath];
 
         ReaderPostTableViewCell *cell = (ReaderPostTableViewCell *)[self.tableView cellForRowAtIndexPath:indexPath];
@@ -446,6 +436,7 @@ NSString *const WPReaderViewControllerDisplayedNativeFriendFinder = @"DisplayedN
         }
     }
 }
+
 
 #pragma mark - ReaderTextForm Delegate Methods
 
@@ -479,9 +470,8 @@ NSString *const WPReaderViewControllerDisplayedNativeFriendFinder = @"DisplayedN
     [self loadImagesForVisibleRows];
 
 	NSIndexPath *selectedIndexPath = [self.tableView indexPathForSelectedRow];
-	if (!selectedIndexPath) {
+	if (!selectedIndexPath)
 		return;
-	}
 
 	__block BOOL found = NO;
 	[[self.tableView indexPathsForVisibleRows] enumerateObjectsUsingBlock:^(id obj, NSUInteger idx, BOOL *stop) {
@@ -492,16 +482,10 @@ NSString *const WPReaderViewControllerDisplayedNativeFriendFinder = @"DisplayedN
 		*stop = YES;
 	}];
 	
-	if (found) return;
+	if (found)
+        return;
 	
 	[self hideReblogForm];
-}
-
-
-#pragma mark - DetailView Delegate Methods
-
-- (void)resetView {
-	
 }
 
 
@@ -544,29 +528,23 @@ NSString *const WPReaderViewControllerDisplayedNativeFriendFinder = @"DisplayedN
 	return prompt;
 }
 
-
 - (UIView *)createNoResultsView {	
 	return [WPInfoView WPInfoViewWithTitle:[self noResultsPrompt] message:nil cancelButton:nil];
 }
-
 
 - (NSString *)entityName {
 	return @"ReaderPost";
 }
 
-
 - (NSString *)resultsControllerCacheName {
 	return [ReaderPost currentEndpoint];
 }
-
 
 - (NSDate *)lastSyncDate {
 	return (NSDate *)[[NSUserDefaults standardUserDefaults] objectForKey:ReaderLastSyncDateKey];
 }
 
-
 - (NSFetchRequest *)fetchRequest {
-	
 	NSString *endpoint = [ReaderPost currentEndpoint];
 	
     NSFetchRequest *fetchRequest = [[NSFetchRequest alloc] init];
@@ -580,11 +558,9 @@ NSString *const WPReaderViewControllerDisplayedNativeFriendFinder = @"DisplayedN
 	return fetchRequest;
 }
 
-
 - (NSString *)sectionNameKeyPath {
 	return nil;
 }
-
 
 - (UITableViewCell *)newCell {
     NSString *cellIdentifier = @"ReaderPostCell";
@@ -597,9 +573,9 @@ NSString *const WPReaderViewControllerDisplayedNativeFriendFinder = @"DisplayedN
 	return cell;
 }
 
-
 - (void)configureCell:(UITableViewCell *)aCell atIndexPath:(NSIndexPath *)indexPath {
-	if(!aCell) return;
+	if (!aCell)
+        return;
 
 	ReaderPostTableViewCell *cell = (ReaderPostTableViewCell *)aCell;
 	cell.selectionStyle = UITableViewCellSelectionStyleNone;
@@ -624,9 +600,9 @@ NSString *const WPReaderViewControllerDisplayedNativeFriendFinder = @"DisplayedN
 
 - (void)setImageForPost:(ReaderPost *)post forCell:(ReaderPostTableViewCell *)cell indexPath:(NSIndexPath *)indexPath {
     NSURL *imageURL = post.featuredImageURL;
-    if (!imageURL) {
+    if (!imageURL)
         return;
-    }
+
     CGSize imageSize = cell.cellImageView.bounds.size;
     if (CGSizeEqualToSize(imageSize, CGSizeZero)) {
         imageSize.width = self.tableView.bounds.size.width;
@@ -644,16 +620,14 @@ NSString *const WPReaderViewControllerDisplayedNativeFriendFinder = @"DisplayedN
 	return _hasMoreContent;
 }
 
-
 - (void)syncItemsWithSuccess:(void (^)())success failure:(void (^)(NSError *))failure {
     WPFLogMethod();
     // if needs auth.
-    if([WPCookie hasCookieForURL:[NSURL URLWithString:@"https://wordpress.com"] andUsername:[[WPAccount defaultWordPressComAccount] username]]) {
+    if ([WPCookie hasCookieForURL:[NSURL URLWithString:@"https://wordpress.com"] andUsername:[[WPAccount defaultWordPressComAccount] username]]) {
        [self syncReaderItemsWithSuccess:success failure:failure];
         return;
     }
-    
-    //
+
     [[WordPressAppDelegate sharedWordPressApplicationDelegate] useDefaultUserAgent];
     NSString *username = [[WPAccount defaultWordPressComAccount] username];
     NSString *password = [[WPAccount defaultWordPressComAccount] password];
@@ -681,7 +655,6 @@ NSString *const WPReaderViewControllerDisplayedNativeFriendFinder = @"DisplayedN
     [authRequest start];    
 }
 
-    
 - (void)syncReaderItemsWithSuccess:(void (^)())success failure:(void (^)(NSError *))failure {
     WPFLogMethod();
 	NSString *endpoint = [ReaderPost currentEndpoint];
@@ -705,22 +678,21 @@ NSString *const WPReaderViewControllerDisplayedNativeFriendFinder = @"DisplayedN
     [WPMobileStats pingWPComStatsEndpoint:@"home_page_refresh"];
 }
 
-
 - (void)loadMoreWithSuccess:(void (^)())success failure:(void (^)(NSError *error))failure {
     WPFLogMethod();
-	if ([self.resultsController.fetchedObjects count] == 0) {
+	if ([self.resultsController.fetchedObjects count] == 0)
 		return;
-	}
 	
-	if (_loadingMore) return;
+	if (_loadingMore)
+        return;
+    
 	_loadingMore = YES;
-	
 	
 	ReaderPost *post = self.resultsController.fetchedObjects.lastObject;
 	NSNumber *numberToSync = [NSNumber numberWithInteger:ReaderPostsToSync];
 	NSString *endpoint = [ReaderPost currentEndpoint];
 	id before;
-	if([endpoint isEqualToString:@"freshly-pressed"]) {
+	if ([endpoint isEqualToString:@"freshly-pressed"]) {
 		// freshly-pressed wants an ISO string but the rest want a timestamp.
 		before = [DateUtils isoStringFromDate:post.date_created_gmt];
 	} else {
@@ -749,11 +721,9 @@ NSString *const WPReaderViewControllerDisplayedNativeFriendFinder = @"DisplayedN
     [WPMobileStats logQuantcastEvent:@"mobile.infinite_scroll"];
 }
 
-
 - (UITableViewRowAnimation)tableViewRowAnimation {
 	return UITableViewRowAnimationNone;
 }
-
 
 - (void)onSyncSuccess:(AFHTTPRequestOperation *)operation response:(id)responseObject {
     WPFLogMethod();
@@ -764,7 +734,7 @@ NSString *const WPReaderViewControllerDisplayedNativeFriendFinder = @"DisplayedN
 	NSArray *postsArr = [resp arrayForKey:@"posts"];
 	
 	if (!postsArr) {
-		if(wasLoadingMore) {
+		if (wasLoadingMore) {
 			_hasMoreContent = NO;
 		}
 		return;
@@ -786,7 +756,6 @@ NSString *const WPReaderViewControllerDisplayedNativeFriendFinder = @"DisplayedN
     return [ReaderPostTableViewCell cellHeightForPost:[self.resultsController objectAtIndexPath:indexPath] withWidth:self.tableView.bounds.size.width];
 }
 
-
 - (NSIndexPath *)tableView:(UITableView *)tableView willSelectRowAtIndexPath:(NSIndexPath *)indexPath {
 	if (_readerReblogFormView.superview != nil) {
 		[self hideReblogForm];
@@ -804,7 +773,6 @@ NSString *const WPReaderViewControllerDisplayedNativeFriendFinder = @"DisplayedN
 	return indexPath;
 }
 
-
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
     if (IS_IPAD) {
         [tableView deselectRowAtIndexPath:indexPath animated:YES];
@@ -819,7 +787,6 @@ NSString *const WPReaderViewControllerDisplayedNativeFriendFinder = @"DisplayedN
     [WPMobileStats pingWPComStatsEndpoint:@"details_page"];
 }
 
-
 - (void)tableView:(UITableView *)tableView willDisplayCell:(UITableViewCell *)aCell forRowAtIndexPath:(NSIndexPath *)indexPath {
 	[super tableView:tableView willDisplayCell:aCell forRowAtIndexPath:indexPath];
 
@@ -827,6 +794,7 @@ NSString *const WPReaderViewControllerDisplayedNativeFriendFinder = @"DisplayedN
 	ReaderPost *post = (ReaderPost *)[self.resultsController objectAtIndexPath:indexPath];
     [self setImageForPost:post forCell:cell indexPath:indexPath];
 }
+
 
 #pragma mark - ReaderTopicsDelegate Methods
 
@@ -866,28 +834,24 @@ NSString *const WPReaderViewControllerDisplayedNativeFriendFinder = @"DisplayedN
 
 #pragma mark - Utility
 
-- (BOOL)isCurrentCategoryFreshlyPressed
-{
+- (BOOL)isCurrentCategoryFreshlyPressed {
     return [[self currentCategory] isEqualToString:@"freshly-pressed"];
 }
 
-- (NSString *)currentCategory
-{
+- (NSString *)currentCategory {
     NSDictionary *categoryDetails = [[NSUserDefaults standardUserDefaults] objectForKey:ReaderCurrentTopicKey];
     NSString *category = [categoryDetails stringForKey:@"endpoint"];
     if (category == nil)
         return @"reader/following";
-    else
-        return category;
+    
+    return category;
 }
 
-- (NSDictionary *)categoryPropertyForStats
-{
+- (NSDictionary *)categoryPropertyForStats {
     return @{@"category": [self currentCategory]};
 }
 
 - (void)fetchBlogsAndPrimaryBlog {
-	
 	NSURL *xmlrpc;
     NSString *username, *password;
     WPAccount *account = [WPAccount defaultWordPressComAccount];
@@ -901,7 +865,7 @@ NSString *const WPReaderViewControllerDisplayedNativeFriendFinder = @"DisplayedN
             success:^(AFHTTPRequestOperation *operation, id responseObject) {
                 NSArray *usersBlogs = responseObject;
 				
-                if([usersBlogs count] > 0) {
+                if ([usersBlogs count] > 0) {
 					
                     [usersBlogs enumerateObjectsUsingBlock:^(id obj, NSUInteger idx, BOOL *stop) {
                         NSString *title = [obj valueForKey:@"blogName"];
@@ -969,13 +933,12 @@ NSString *const WPReaderViewControllerDisplayedNativeFriendFinder = @"DisplayedN
 
 #pragma mark - Friend Finder Button
 
-- (BOOL) shouldDisplayfriendFinderNudgeView {
+- (BOOL)shouldDisplayfriendFinderNudgeView {
     NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
     return ![userDefaults boolForKey:WPReaderViewControllerDisplayedNativeFriendFinder] && self.friendFinderNudgeView == nil;
 }
 
-
-- (void) showFriendFinderNudgeView:(id)sender {
+- (void)showFriendFinderNudgeView:(id)sender {
     if ([self shouldDisplayfriendFinderNudgeView]) {
         NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
         
@@ -1002,11 +965,9 @@ NSString *const WPReaderViewControllerDisplayedNativeFriendFinder = @"DisplayedN
     }
 }
 
-
-- (void) hideFriendFinderNudgeView:(id)sender {
-    if (self.friendFinderNudgeView == nil) {
+- (void)hideFriendFinderNudgeView:(id)sender {
+    if (self.friendFinderNudgeView == nil)
         return;
-    }
     
     CGRect buttonFrame = self.friendFinderNudgeView.frame;
     CGRect viewFrame = self.view.frame;
@@ -1018,7 +979,6 @@ NSString *const WPReaderViewControllerDisplayedNativeFriendFinder = @"DisplayedN
         self.friendFinderNudgeView = nil;
     }];
 }
-
 
 - (void)openFriendFinder:(id)sender {
     [self hideFriendFinderNudgeView:sender];
@@ -1039,8 +999,7 @@ NSString *const WPReaderViewControllerDisplayedNativeFriendFinder = @"DisplayedN
 
 #pragma mark - WPTableImageSourceDelegate
 
-- (void)tableImageSource:(WPTableImageSource *)tableImageSource imageReady:(UIImage *)image forIndexPath:(NSIndexPath *)indexPath
-{
+- (void)tableImageSource:(WPTableImageSource *)tableImageSource imageReady:(UIImage *)image forIndexPath:(NSIndexPath *)indexPath {
     if (!_isScrollingFast) {
         ReaderPostTableViewCell *cell = (ReaderPostTableViewCell *)[self.tableView cellForRowAtIndexPath:indexPath];
         [cell setFeaturedImage:image];
