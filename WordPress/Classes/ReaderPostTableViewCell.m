@@ -17,10 +17,10 @@
 #import "WPAvatarSource.h"
 #import "ReaderButton.h"
 
-const CGFloat RPTVCVerticalPadding = 10.0f;
+const CGFloat RPTVCVerticalPadding = 8.0f;
 const CGFloat RPTVCHorizontalPadding = 10.0f;
-const CGFloat RPTVCMetaViewHeightWithButtons = 101.0f;
-const CGFloat RPTVCMetaViewHeightSansButtons = 52.0f;
+const CGFloat RPTVCMetaViewHeight = 52.0f;
+const CGFloat RPTVAuthorViewHeight = 44.0f;
 
 // Control buttons (Like, Reblog, ...)
 const CGFloat RPTVCControlButtonHeight = 48.0f;
@@ -81,6 +81,8 @@ const CGFloat RPTVCControlButtonBorderSize = 0.0f;
 	}
 
 	desiredHeight += vpadding;
+    
+    desiredHeight += RPTVAuthorViewHeight;
 
 	desiredHeight += [post.postTitle sizeWithFont:[UIFont fontWithName:@"OpenSans-Light" size:20.0f] constrainedToSize:CGSizeMake(contentWidth, CGFLOAT_MAX) lineBreakMode:NSLineBreakByWordWrapping].height;
 	desiredHeight += vpadding;
@@ -89,11 +91,7 @@ const CGFloat RPTVCControlButtonBorderSize = 0.0f;
 	desiredHeight += vpadding;
 
 	// Size of the meta view
-	if ([post isWPCom]) {
-		desiredHeight += RPTVCMetaViewHeightWithButtons;
-	} else {
-		desiredHeight += RPTVCMetaViewHeightSansButtons;
-	}
+    desiredHeight += RPTVCMetaViewHeight;
 	
 	// bottom padding
 	desiredHeight += vpadding;
@@ -211,18 +209,11 @@ const CGFloat RPTVCControlButtonBorderSize = 0.0f;
 	_snippetLabel.lineBreakMode = NSLineBreakByWordWrapping;
 	_snippetLabel.numberOfLines = 0;
 	[_containerView addSubview:_snippetLabel];
-}
-
-- (void)buildMetaContent {
-	self.metaView = [[UIView alloc] init];
-	_metaView.autoresizingMask = UIViewAutoresizingFlexibleWidth;
-	_metaView.backgroundColor = [UIColor clearColor];
-	[_containerView addSubview:_metaView];
-
-	self.byView = [[UIView alloc] init];
+    
+    self.byView = [[UIView alloc] init];
 	_byView.autoresizingMask = UIViewAutoresizingFlexibleWidth;
 	_byView.backgroundColor = [UIColor whiteColor];
-	[_metaView addSubview:_byView];
+	[_containerView addSubview:_byView];
 	
 	self.avatarImageView = [[UIImageView alloc] initWithFrame:CGRectMake(10.0f, 10.0f, 32.0f, 32.0f)];
 	[_byView addSubview:_avatarImageView];
@@ -235,6 +226,13 @@ const CGFloat RPTVCControlButtonBorderSize = 0.0f;
 	_bylineLabel.adjustsFontSizeToFitWidth = NO;
 	_bylineLabel.textColor = [UIColor colorWithHexString:@"c0c0c0"];
 	[_byView addSubview:_bylineLabel];
+}
+
+- (void)buildMetaContent {
+	self.metaView = [[UIView alloc] init];
+	_metaView.autoresizingMask = UIViewAutoresizingFlexibleWidth;
+	_metaView.backgroundColor = [UIColor clearColor];
+	[_containerView addSubview:_metaView];
 
 	self.likeButton = [ReaderButton buttonWithType:UIButtonTypeCustom];
 	_likeButton.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleRightMargin;
@@ -273,8 +271,11 @@ const CGFloat RPTVCControlButtonBorderSize = 0.0f;
 	CGFloat nextY = vpadding;
 	CGFloat height = 0.0f;
     
-    CGRect frame = CGRectMake(leftPadding, 0.0f, contentWidth, self.frame.size.height - RPTVCVerticalPadding);
+    CGRect frame = CGRectMake(leftPadding, 0, contentWidth, self.frame.size.height - RPTVCVerticalPadding);
     _containerView.frame = frame;
+    
+    _byView.frame = CGRectMake(0, 0, contentWidth, RPTVAuthorViewHeight);
+    nextY += RPTVAuthorViewHeight;
 
 	// Are we showing an image? What size should it be?
 	if (_showImage) {
@@ -294,15 +295,12 @@ const CGFloat RPTVCControlButtonBorderSize = 0.0f;
 	nextY += ceilf(height + vpadding);
 
 	// position the meta view and its subviews
-    _byView.frame = CGRectMake(0.0f, 0.0f, contentWidth, 52.0f);
-    
-	height = [self.post isWPCom] ? RPTVCMetaViewHeightWithButtons : RPTVCMetaViewHeightSansButtons;
-	_metaView.frame = CGRectMake(0.0f, nextY, contentWidth, height);
+	_metaView.frame = CGRectMake(0.0f, nextY, contentWidth, RPTVCMetaViewHeight);
 	
     BOOL commentsOpen = [[self.post commentsOpen] boolValue];
 	CGFloat buttonWidth = RPTVCControlButtonWidth - RPTVCControlButtonBorderSize;
     CGFloat buttonX = _metaView.frame.size.width - RPTVCControlButtonWidth;
-    CGFloat buttonY = RPTVCControlButtonHeight + RPTVCControlButtonVerticalPadding;
+    CGFloat buttonY = RPTVCControlButtonVerticalPadding;
     
     // Button order from right-to-left: Like, [Comment], Reblog,
     _likeButton.frame = CGRectMake(buttonX, buttonY, buttonWidth, RPTVCControlButtonHeight);
@@ -372,9 +370,11 @@ const CGFloat RPTVCControlButtonBorderSize = 0.0f;
 	if ([self.post isWPCom]) {
 		_likeButton.hidden = NO;
 		_reblogButton.hidden = NO;
+        _commentButton.hidden = NO;
 	} else {
 		_likeButton.hidden = YES;
 		_reblogButton.hidden = YES;
+        _commentButton.hidden = YES;
 	}
 	
 	_reblogButton.userInteractionEnabled = ![post.isReblogged boolValue];
