@@ -27,6 +27,7 @@ const CGFloat RPTVCVerticalPadding = 18.0f;
 const CGFloat RPTVCAvatarSize = 32.0f;
 const CGFloat RPTVCLineHeight = 1.0f;
 const CGFloat RPTVCSmallButtonLeftPadding = 2; // Follow, tag
+const CGFloat RPTVCMaxImageHeightPercentage = 0.59f;
 
 // Control buttons (Like, Reblog, ...)
 const CGFloat RPTVCControlButtonHeight = 48.0f;
@@ -88,7 +89,7 @@ const CGFloat RPTVCControlButtonBorderSize = 0.0f;
 
 	// Are we showing an image? What size should it be?
 	if (post.featuredImageURL) {
-		CGFloat height = ceilf((contentWidth * 0.66f));
+		CGFloat height = ceilf((contentWidth * RPTVCMaxImageHeightPercentage));
 		desiredHeight += height;
 	}
 
@@ -366,7 +367,7 @@ const CGFloat RPTVCControlButtonBorderSize = 0.0f;
 
 	// Are we showing an image? What size should it be?
 	if (_showImage) {
-		height = ceilf(contentWidth * 0.66f);
+		height = ceilf(contentWidth * RPTVCMaxImageHeightPercentage);
 		self.cellImageView.frame = CGRectMake(0, nextY, contentWidth, height);
 		nextY += height;
     }

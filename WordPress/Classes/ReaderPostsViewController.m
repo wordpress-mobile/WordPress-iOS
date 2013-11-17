@@ -105,7 +105,7 @@ NSString *const WPReaderViewControllerDisplayedNativeFriendFinder = @"DisplayedN
         maxWidth = MAX(self.tableView.bounds.size.width, self.tableView.bounds.size.height);
     }
     maxWidth -= 20.f; // Container frame
-    CGFloat maxHeight = maxWidth * 0.66f;
+    CGFloat maxHeight = maxWidth * RPTVCMaxImageHeightPercentage;
     _featuredImageSource = [[WPTableImageSource alloc] initWithMaxSize:CGSizeMake(maxWidth, maxHeight)];
     _featuredImageSource.delegate = self;
 	self.tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
@@ -606,7 +606,7 @@ NSString *const WPReaderViewControllerDisplayedNativeFriendFinder = @"DisplayedN
     CGSize imageSize = cell.cellImageView.bounds.size;
     if (CGSizeEqualToSize(imageSize, CGSizeZero)) {
         imageSize.width = self.tableView.bounds.size.width;
-        imageSize.height = round(imageSize.width * 0.66f);
+        imageSize.height = round(imageSize.width * RPTVCMaxImageHeightPercentage);
     }
     UIImage *image = [_featuredImageSource imageForURL:imageURL withSize:imageSize];
     if (image) {

@@ -20,4 +20,6 @@
 - (void)setFeaturedImage:(UIImage *)image;
 - (void)setAvatar:(UIImage *)avatar;
 
+extern CGFloat const RPTVCMaxImageHeightPercentage;
+
 @end
