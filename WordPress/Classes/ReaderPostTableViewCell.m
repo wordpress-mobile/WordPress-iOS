@@ -21,8 +21,9 @@ const CGFloat RPTVCAuthorPadding = 8.0f;
 const CGFloat RPTVCHorizontalInnerPadding = 12.0f;
 const CGFloat RPTVCHorizontalOuterPadding = 8.0f;
 const CGFloat RPTVCMetaViewHeight = 52.0f;
-const CGFloat RPTVAuthorViewHeight = 36.0f;
+const CGFloat RPTVAuthorViewHeight = 32.0f;
 const CGFloat RPTVCVerticalPadding = 20.0f;
+const CGFloat RPTVCAvatarSize = 32.0f;
 
 // Control buttons (Like, Reblog, ...)
 const CGFloat RPTVCControlButtonHeight = 48.0f;
@@ -37,6 +38,8 @@ const CGFloat RPTVCControlButtonBorderSize = 0.0f;
 @property (nonatomic, strong) UIView *containerView;
 @property (nonatomic, strong) UILabel *titleLabel;
 @property (nonatomic, strong) UILabel *snippetLabel;
+@property (nonatomic, strong) UILabel *timeLabel;
+@property (nonatomic, strong) UIButton *followButton;
 
 @property (nonatomic, strong) UIView *metaView;
 @property (nonatomic, strong) CALayer *metaBorder;
@@ -235,19 +238,36 @@ const CGFloat RPTVCControlButtonBorderSize = 0.0f;
     self.byView = [[UIView alloc] init];
 	_byView.autoresizingMask = UIViewAutoresizingFlexibleWidth;
 	_byView.backgroundColor = [UIColor whiteColor];
+    _byView.userInteractionEnabled = YES;
 	[_containerView addSubview:_byView];
 	
-	self.avatarImageView = [[UIImageView alloc] initWithFrame:CGRectMake(10.0f, 10.0f, 32.0f, 32.0f)];
+    CGRect avatarFrame = CGRectMake(RPTVCHorizontalInnerPadding, RPTVCAuthorPadding, RPTVCAvatarSize, RPTVCAvatarSize);
+	self.avatarImageView = [[UIImageView alloc] initWithFrame:avatarFrame];
 	[_byView addSubview:_avatarImageView];
 	
 	self.bylineLabel = [[UILabel alloc] init];
 	_bylineLabel.backgroundColor = [UIColor clearColor];
-	_bylineLabel.numberOfLines = 2;
+	_bylineLabel.numberOfLines = 1;
 	_bylineLabel.autoresizingMask = UIViewAutoresizingFlexibleWidth;
 	_bylineLabel.font = [UIFont fontWithName:@"OpenSans" size:12.0f];
 	_bylineLabel.adjustsFontSizeToFitWidth = NO;
-	_bylineLabel.textColor = [UIColor colorWithHexString:@"c0c0c0"];
+	_bylineLabel.textColor = [UIColor colorWithHexString:@"333"];
 	[_byView addSubview:_bylineLabel];
+    
+    self.followButton = [UIButton buttonWithType:UIButtonTypeCustom];
+    [_followButton setSelected:[self.post.isFollowing boolValue]];
+    //_followButton.layer.cornerRadius = 3.0f;
+    _followButton.contentHorizontalAlignment = UIControlContentHorizontalAlignmentLeft;
+    _followButton.backgroundColor = [UIColor clearColor];
+    _followButton.titleLabel.font = [UIFont fontWithName:@"OpenSans" size:12.0f];
+    NSString *followString = NSLocalizedString(@"Follow", @"Prompt to follow a blog.");
+    NSString *followedString = NSLocalizedString(@"Following", @"User is following the blog.");
+    [_followButton setTitle:followString forState:UIControlStateNormal];
+    [_followButton setTitle:followedString forState:UIControlStateSelected];
+    [_followButton setImage:[UIImage imageNamed:@"reader-postaction-follow"] forState:UIControlStateNormal];
+    [_followButton setImage:[UIImage imageNamed:@"reader-postaction-following"] forState:UIControlStateSelected];
+    [_followButton setTitleColor:[UIColor colorWithHexString:@"aaa"] forState:UIControlStateNormal];
+    [_byView addSubview:_followButton];
 }
 
 - (void)buildMetaContent {
@@ -259,14 +279,19 @@ const CGFloat RPTVCControlButtonBorderSize = 0.0f;
     self.metaBorder = [[CALayer alloc] init];
     _metaBorder.backgroundColor = [[UIColor colorWithHexString:@"f1f1f1"] CGColor];
     [_metaView.layer addSublayer:_metaBorder];
+    
+	self.timeLabel = [[UILabel alloc] init];
+	_timeLabel.backgroundColor = [UIColor clearColor];
+	_timeLabel.numberOfLines = 1;
+	_timeLabel.autoresizingMask = UIViewAutoresizingFlexibleWidth;
+	_timeLabel.font = [UIFont fontWithName:@"OpenSans" size:12.0f];
+	_timeLabel.adjustsFontSizeToFitWidth = NO;
+	_timeLabel.textColor = [UIColor colorWithHexString:@"aaa"];
+	[_metaView addSubview:_timeLabel];
 
 	self.likeButton = [ReaderButton buttonWithType:UIButtonTypeCustom];
 	_likeButton.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleRightMargin;
 	_likeButton.backgroundColor = [UIColor whiteColor];
-	[_likeButton setTitleEdgeInsets:UIEdgeInsetsMake(0.0f, -5.0f, 0.0f, 0.0f)];
-	[_likeButton.titleLabel setFont:[UIFont fontWithName:@"OpenSans-Bold" size:10.0f]];
-	[_likeButton setTitleColor:[UIColor colorWithRed:84.0f/255.0f green:173.0f/255.0f blue:211.0f/255.0f alpha:1.0f] forState:UIControlStateNormal];
-	[_likeButton setTitleColor:[UIColor colorWithRed:221.0f/255.0f green:118.0f/255.0f blue:43.0f/255.0f alpha:1.0f] forState:UIControlStateSelected];
 	[_likeButton setImage:[UIImage imageNamed:@"reader-postaction-like-blue"] forState:UIControlStateNormal];
 	[_likeButton setImage:[UIImage imageNamed:@"reader-postaction-like-active"] forState:UIControlStateSelected];
 	[_likeButton addTarget:self action:@selector(handleLikeButtonTapped:) forControlEvents:UIControlEventTouchUpInside];
@@ -300,6 +325,13 @@ const CGFloat RPTVCControlButtonBorderSize = 0.0f;
     _containerView.frame = frame;
     
     _byView.frame = CGRectMake(0, 0, contentWidth, RPTVAuthorViewHeight);
+    CGFloat bylineX = RPTVCAvatarSize + RPTVCAuthorPadding + RPTVCHorizontalInnerPadding;
+    _bylineLabel.frame = CGRectMake(bylineX, RPTVCAuthorPadding - 2, contentWidth - bylineX, 18);
+    
+    CGFloat followX = bylineX - 4; // Fudge factor for image alignment
+    CGFloat followY = RPTVCAuthorPadding + _bylineLabel.frame.size.height - 2;
+    _followButton.frame = CGRectMake(followX, followY, contentWidth - bylineX, 18);
+
     nextY += RPTVAuthorViewHeight + RPTVCAuthorPadding;
 
 	// Are we showing an image? What size should it be?
@@ -322,9 +354,12 @@ const CGFloat RPTVCControlButtonBorderSize = 0.0f;
         nextY += ceilf(height + RPTVCVerticalPadding);
     }
 
-	// position the meta view and its subviews
-	_metaView.frame = CGRectMake(0.0f, nextY, contentWidth, RPTVCMetaViewHeight);
-    _metaBorder.frame = CGRectMake(RPTVCHorizontalInnerPadding, 0, contentWidth - RPTVCHorizontalInnerPadding*2, 1.0);
+	// Position the meta view and its subviews
+	_metaView.frame = CGRectMake(0, nextY, contentWidth, RPTVCMetaViewHeight);
+    _metaBorder.frame = CGRectMake(RPTVCHorizontalInnerPadding, 0, contentWidth - RPTVCHorizontalInnerPadding * 2, 1.0);
+    
+    CGFloat timeWidth = contentWidth - RPTVCControlButtonWidth * 3;
+    _timeLabel.frame = CGRectMake(RPTVCHorizontalInnerPadding, RPTVCControlButtonVerticalPadding, timeWidth, RPTVCControlButtonHeight);
 	
     BOOL commentsOpen = [[self.post commentsOpen] boolValue];
 	CGFloat buttonWidth = RPTVCControlButtonWidth - RPTVCControlButtonBorderSize;
@@ -344,11 +379,9 @@ const CGFloat RPTVCControlButtonBorderSize = 0.0f;
     }
     _reblogButton.frame = CGRectMake(buttonX, buttonY, buttonWidth - RPTVCControlButtonBorderSize, RPTVCControlButtonHeight);
     
-    _bylineLabel.frame = CGRectMake(47.0f, 8.0f, contentWidth - 57.0f, 36.0f);
-    
     CGFloat sideBorderX = RPTVCHorizontalOuterPadding - 1; // Just to the left of the container
     CGFloat sideBorderHeight = self.frame.size.height - RPTVCVerticalPadding + 1.f; // Just below it
-    _sideBorderView.frame = CGRectMake(sideBorderX, 1.f, self.frame.size.width - sideBorderX*2, sideBorderHeight);
+    _sideBorderView.frame = CGRectMake(sideBorderX, 1.f, self.frame.size.width - sideBorderX * 2, sideBorderHeight);
 }
 
 - (void)prepareForReuse {
@@ -384,8 +417,8 @@ const CGFloat RPTVCControlButtonBorderSize = 0.0f;
 	_titleLabel.text = [post.postTitle trim];
 	_snippetLabel.text = [[self class] prettySummaryForPost:post];
 
-    NSString *onBlog = [NSString stringWithFormat:NSLocalizedString(@"on %@", @"'on <Blog Name>', displayed on reader list for each post"), post.blogName];
-	_bylineLabel.text = [NSString stringWithFormat:@"%@\n%@", [post prettyDateString], onBlog];
+    _bylineLabel.text = post.blogName;
+	_timeLabel.text = [post prettyDateString];
 
 	self.showImage = NO;
 	self.cellImageView.hidden = YES;
