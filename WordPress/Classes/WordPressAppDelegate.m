@@ -270,7 +270,6 @@ int ddLogLevel = LOG_LEVEL_INFO;
         [WordPressAppDelegate wipeAllKeychainItems];
         
         LoginViewController *welcomeViewController = [[LoginViewController alloc] init];
-        
         UINavigationController *aNavigationController = [[UINavigationController alloc] initWithRootViewController:welcomeViewController];
         aNavigationController.navigationBar.translucent = NO;
         aNavigationController.modalTransitionStyle = UIModalTransitionStyleCrossDissolve;
@@ -282,7 +281,10 @@ int ddLogLevel = LOG_LEVEL_INFO;
 
 - (UITabBarController *)createTabBarController {
     UITabBarController *tabBarController = [[UITabBarController alloc] init];
-    tabBarController.tabBar.translucent = NO;
+    
+    if ([tabBarController.tabBar respondsToSelector:@selector(setTranslucent:)]) {
+        [tabBarController.tabBar setTranslucent:NO];
+    }
     
     self.readerPostsViewController = [[ReaderPostsViewController alloc] init];
     UINavigationController *readerNavigationController = [[UINavigationController alloc] initWithRootViewController:self.readerPostsViewController];
