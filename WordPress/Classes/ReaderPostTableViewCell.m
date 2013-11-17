@@ -83,13 +83,14 @@ const CGFloat RPTVCControlButtonBorderSize = 0.0f;
 
     // Title
     desiredHeight += RPTVCVerticalPadding;
-	desiredHeight += [post.postTitle sizeWithFont:[self titleFont] constrainedToSize:CGSizeMake(contentWidth, CGFLOAT_MAX) lineBreakMode:NSLineBreakByWordWrapping].height;
+    NSAttributedString *postTitle = [self titleAttributedStringForPost:post];
+    desiredHeight += [postTitle boundingRectWithSize:CGSizeMake(contentWidth, CGFLOAT_MAX) options:NSStringDrawingUsesLineFragmentOrigin | NSStringDrawingUsesFontLeading context:nil].size.height;
     desiredHeight += RPTVCVerticalPadding;
 
     // Post summary
     if ([post.summary length] > 0) {
-        NSString *postSummary = [self prettySummaryForPost:post];
-        desiredHeight += [postSummary sizeWithFont:[self summaryFont] constrainedToSize:CGSizeMake(contentWidth, CGFLOAT_MAX) lineBreakMode:NSLineBreakByWordWrapping].height;
+        NSAttributedString *postSummary = [self summaryAttributedStringForPost:post];
+        desiredHeight += [postSummary boundingRectWithSize:CGSizeMake(contentWidth, CGFLOAT_MAX) options:NSStringDrawingUsesLineFragmentOrigin | NSStringDrawingUsesFontLeading context:nil].size.height;
     }
     
     // Tag
@@ -108,14 +109,32 @@ const CGFloat RPTVCControlButtonBorderSize = 0.0f;
 	return ceil(desiredHeight);
 }
 
-+ (NSString *)prettySummaryForPost:(ReaderPost *)post {
-    NSString *prettySummary = [post.summary trim];
++ (NSAttributedString *)titleAttributedStringForPost:(ReaderPost *)post {
+    NSMutableParagraphStyle *style = [[NSMutableParagraphStyle alloc] init];
+    [style setLineHeightMultiple:1.25f];
+    NSDictionary *attributes = @{NSParagraphStyleAttributeName : style,
+                                 NSFontAttributeName : [self titleFont]};
+    NSMutableAttributedString *titleString = [[NSMutableAttributedString alloc] initWithString:[post.postTitle trim]
+                                                                                    attributes:attributes];
+    
+    return titleString;
+}
+
++ (NSAttributedString *)summaryAttributedStringForPost:(ReaderPost *)post {
+    NSString *summary = [post.summary trim];
     NSInteger newline = [post.summary rangeOfString:@"\n"].location;
     
     if (newline != NSNotFound)
-        prettySummary = [post.summary substringToIndex:newline];
-    
-    return prettySummary;
+        summary = [post.summary substringToIndex:newline];
+
+    NSMutableParagraphStyle *style = [[NSMutableParagraphStyle alloc] init];
+    [style setLineHeightMultiple:1.25f];
+    NSDictionary *attributes = @{NSParagraphStyleAttributeName : style,
+                                 NSFontAttributeName : [self summaryFont]};
+    NSMutableAttributedString *attributedSummary = [[NSMutableAttributedString alloc] initWithString:summary
+                                                                                          attributes:attributes];
+
+    return attributedSummary;
 }
 
 + (NSString *)tagNameForPost:(ReaderPost *)post {
@@ -239,8 +258,7 @@ const CGFloat RPTVCControlButtonBorderSize = 0.0f;
 	self.titleLabel = [[UILabel alloc] init];
 	_titleLabel.autoresizingMask = UIViewAutoresizingFlexibleWidth;
 	_titleLabel.backgroundColor = [UIColor clearColor];
-	_titleLabel.font = [ReaderPostTableViewCell titleFont];
-	_titleLabel.textColor = [UIColor colorWithRed:64.0f/255.0f green:64.0f/255.0f blue:64.0f/255.0f alpha:1.0];
+	_titleLabel.textColor = [UIColor colorWithHexString:@"333"];
 	_titleLabel.lineBreakMode = NSLineBreakByWordWrapping;
 	_titleLabel.numberOfLines = 0;
 	[_containerView addSubview:_titleLabel];
@@ -252,8 +270,7 @@ const CGFloat RPTVCControlButtonBorderSize = 0.0f;
 	self.snippetLabel = [[UILabel alloc] init];
 	_snippetLabel.autoresizingMask = UIViewAutoresizingFlexibleWidth;
 	_snippetLabel.backgroundColor = [UIColor clearColor];
-	_snippetLabel.font = [ReaderPostTableViewCell summaryFont];
-	_snippetLabel.textColor = [UIColor colorWithRed:64.0f/255.0f green:64.0f/255.0f blue:64.0f/255.0f alpha:1.0];
+	_snippetLabel.textColor = [UIColor colorWithHexString:@"333"];
 	_snippetLabel.lineBreakMode = NSLineBreakByTruncatingTail;
 	_snippetLabel.numberOfLines = 4;
 	[_containerView addSubview:_snippetLabel];
@@ -458,8 +475,8 @@ const CGFloat RPTVCControlButtonBorderSize = 0.0f;
     // so avatars show up after a cell is created, and not dequeued.
     [self setAvatar:nil];
 
-	_titleLabel.text = [post.postTitle trim];
-	_snippetLabel.text = [ReaderPostTableViewCell prettySummaryForPost:post];
+	_titleLabel.attributedText = [ReaderPostTableViewCell titleAttributedStringForPost:post];
+	_snippetLabel.attributedText = [ReaderPostTableViewCell summaryAttributedStringForPost:post];
 
     _bylineLabel.text = post.blogName;
     [_timeButton setTitle:[post.dateCreated shortString] forState:UIControlStateNormal];
