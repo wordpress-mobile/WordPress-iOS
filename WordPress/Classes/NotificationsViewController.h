@@ -9,7 +9,7 @@
 #import <UIKit/UIKit.h>
 #import "WPTableViewController.h"
 
-@interface NotificationsViewController : WPTableViewController <DetailViewDelegate>
+@interface NotificationsViewController : WPTableViewController
 
 -(void)refreshFromPushNotification;
 

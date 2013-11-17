@@ -16,6 +16,7 @@
 #import "SupportViewController.h"
 
 NSTimeInterval const WPTableViewControllerRefreshTimeout = 300; // 5 minutes
+CGFloat const WPTableViewTopMargin = 40;
 
 @interface WPTableViewController ()
 
@@ -62,6 +63,15 @@ NSTimeInterval const WPTableViewControllerRefreshTimeout = 300; // 5 minutes
 @synthesize swipeCell = _swipeCell;
 @synthesize noResultsView;
 
+- (id)initWithStyle:(UITableViewStyle)style
+{
+    self = [super initWithStyle:UITableViewStyleGrouped];
+    if (self) {
+        // Custom initialization
+    }
+    return self;
+}
+
 - (void)dealloc
 {
     _resultsController.delegate = nil;
@@ -71,18 +81,13 @@ NSTimeInterval const WPTableViewControllerRefreshTimeout = 300; // 5 minutes
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-	
-	self.tableView.delegate = self;
-	self.tableView.dataSource = self;
-	self.tableView.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
 
     UIRefreshControl *refreshControl = [[UIRefreshControl alloc] init];
     [refreshControl addTarget:self action:@selector(refresh) forControlEvents:UIControlEventValueChanged];
     self.refreshControl = refreshControl;
 
     self.tableView.allowsSelectionDuringEditing = YES;
-    self.tableView.backgroundColor = TABLE_VIEW_BACKGROUND_COLOR;
-    self.tableView.separatorColor = [UIColor colorWithRed:204.0f/255.0f green:204.0f/255.0f blue:204.0f/255.0f alpha:1.0f];
+    [WPStyleGuide configureColorsForView:self.view andTableView:self.tableView];
     
     if (self.swipeActionsEnabled) {
         [self enableSwipeGestureRecognizer];
@@ -93,6 +98,13 @@ NSTimeInterval const WPTableViewControllerRefreshTimeout = 300; // 5 minutes
     }
 
     [self configureNoResultsView];
+    
+    // Remove one-pixel gap resulting from a top-aligned grouped table view
+    if (IS_IPHONE) {
+        UIEdgeInsets tableInset = [self.tableView contentInset];
+        tableInset.top = -1;
+        self.tableView.contentInset = tableInset;
+    }
 }
 
 - (void)viewDidUnload
@@ -149,7 +161,6 @@ NSTimeInterval const WPTableViewControllerRefreshTimeout = 300; // 5 minutes
 {
     return [super shouldAutorotateToInterfaceOrientation:interfaceOrientation];
 }
-
 
 - (void)setEditing:(BOOL)editing animated:(BOOL)animated {
     [self removeSwipeView:NO];
@@ -296,11 +307,13 @@ NSTimeInterval const WPTableViewControllerRefreshTimeout = 300; // 5 minutes
 - (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section {
     id <NSFetchedResultsSectionInfo> sectionInfo = nil;
     sectionInfo = [[self.resultsController sections] objectAtIndex:section];
+
     // Don't show section headers if there are no named sections
-    // [sectionInfo name] is sometimes nil and sometimes and empty string (#!?) so we check the length
-    if ([[self.resultsController sections] count] <= 1 && [[sectionInfo name] length] == 0) {
-        return 0.f;
+    NSString *sectionTitle = [self tableView:tableView titleForHeaderInSection:section];
+    if ([[self.resultsController sections] count] <= 1 && [sectionTitle length] == 0) {
+        return IS_IPHONE ? 1 : WPTableViewTopMargin;
     }
+
     return kSectionHeaderHight;
 }
 
@@ -399,7 +412,7 @@ NSTimeInterval const WPTableViewControllerRefreshTimeout = 300; // 5 minutes
         case NSFetchedResultsChangeDelete:
             [self.tableView deleteRowsAtIndexPaths:[NSArray arrayWithObject:indexPath] withRowAnimation:[self tableViewRowAnimation]];
             if ([_indexPathSelectedBeforeUpdates isEqual:indexPath]) {
-                [self.panelNavigationController popToViewController:self animated:YES];
+                [self.navigationController popToViewController:self animated:YES];
             }
             break;
             
@@ -445,9 +458,6 @@ NSTimeInterval const WPTableViewControllerRefreshTimeout = 300; // 5 minutes
 
 - (void)scrollViewWillBeginDragging:(UIScrollView *)scrollView {
     _isScrolling = YES;
-    if (self.panelNavigationController) {
-        [self.panelNavigationController viewControllerWantsToBeFullyVisible:self];
-    }
     if (self.swipeActionsEnabled) {
         [self removeSwipeView:YES];
     }
@@ -473,7 +483,7 @@ NSTimeInterval const WPTableViewControllerRefreshTimeout = 300; // 5 minutes
                 navController.modalPresentationStyle = UIModalPresentationFormSheet;
                 navController.modalTransitionStyle = UIModalTransitionStyleCrossDissolve;
             }
-            [self.panelNavigationController presentViewController:navController animated:YES completion:nil];
+            [self.navigationController presentViewController:navController animated:YES completion:nil];
 
 			break;
 		}
@@ -513,7 +523,7 @@ NSTimeInterval const WPTableViewControllerRefreshTimeout = 300; // 5 minutes
                     navController.modalPresentationStyle = UIModalPresentationFormSheet;
                     navController.modalTransitionStyle = UIModalTransitionStyleCrossDissolve;
                 }
-                [self.panelNavigationController presentViewController:navController animated:YES completion:nil];
+                [self.navigationController presentViewController:navController animated:YES completion:nil];
             }
 			break;
 		default:
@@ -646,7 +656,7 @@ NSTimeInterval const WPTableViewControllerRefreshTimeout = 300; // 5 minutes
 		navController.modalPresentationStyle = UIModalPresentationFormSheet;
 	}
 	
-    [self.panelNavigationController presentViewController:navController animated:YES completion:nil];
+    [self.navigationController presentViewController:navController animated:YES completion:nil];
 }
 
 #pragma mark - Swipe gestures

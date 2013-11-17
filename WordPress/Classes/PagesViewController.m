@@ -42,7 +42,7 @@
     EditPageViewController *editPostViewController = [[EditPageViewController alloc] initWithPost:[apost createRevision]];
     UINavigationController *navController = [[UINavigationController alloc] initWithRootViewController:editPostViewController];
     navController.modalPresentationStyle = UIModalPresentationCurrentContext;
-    [self.panelNavigationController.detailViewController presentViewController:navController animated:YES completion:nil];
+    [self.navigationController presentViewController:navController animated:YES completion:nil];
 }
 
 // For iPad
@@ -62,20 +62,21 @@
     }
     
     self.postReaderViewController = [[PageViewController alloc] initWithPost:page];
-    [self.panelNavigationController.navigationController pushViewController:self.postReaderViewController animated:YES];
+    [self.navigationController pushViewController:self.postReaderViewController animated:YES];
 }
 
 - (void)showAddPostView {
     [WPMobileStats trackEventForWPCom:StatsEventPagesClickedNewPage];
-
-    if (IS_IPAD)
-        [self resetView];
     
     Page *post = [Page newDraftForBlog:self.blog];
     [self editPost:post];
 }
 
 - (NSString *)tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section {
+    // Don't show a section title if there's only one section
+    if ([tableView numberOfSections] <= 1)
+        return nil;
+
     id <NSFetchedResultsSectionInfo> sectionInfo = [[self.resultsController sections] objectAtIndex:section];
     NSString *sectionName = [sectionInfo name];
     

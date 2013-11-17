@@ -17,9 +17,10 @@
 #import "WPAvatarSource.h"
 #import "ReaderButton.h"
 
-#define RPTVCVerticalPadding 10.0f
-#define MetaViewHeightWithButtons 101.0f
-#define MetaViewHeightSansButtons 52.0f
+const CGFloat RPTVCVerticalPadding = 10.0f;
+const CGFloat RPTVCHorizontalPadding = 10.0f;
+const CGFloat RPTVCMetaViewHeightWithButtons = 101.0f;
+const CGFloat RPTVCMetaViewHeightSansButtons = 52.0f;
 
 @interface ReaderPostTableViewCell()
 
@@ -48,16 +49,22 @@
 @implementation ReaderPostTableViewCell {
     BOOL _avatarIsSet;
     UIView *_sideBorderView;
-    UIView *_bottomBorderView;
 }
 
 + (CGFloat)cellHeightForPost:(ReaderPost *)post withWidth:(CGFloat)width {
 	CGFloat desiredHeight = 0.0f;
 	CGFloat vpadding = RPTVCVerticalPadding;
 
-	// Do the math. We can't trust the cell's contentView's frame because
-	// its not updated at a useful time during rotation.
-	CGFloat contentWidth = width - 20.0f; // 10px padding on either side.
+    // Margins
+    CGFloat contentWidth = width;
+    if (IS_IPAD) {
+        contentWidth = contentWidth * (1 - WPTableViewCellMarginPercentage * 2);
+    }
+    
+    // iPhone has extra padding around each cell
+    if (IS_IPHONE) {
+        contentWidth -= RPTVCHorizontalPadding * 2;
+    }
 
 	// Are we showing an image? What size should it be?
 	if(post.featuredImageURL) {
@@ -75,9 +82,9 @@
 
 	// Size of the meta view
 	if ([post isWPCom]) {
-		desiredHeight += MetaViewHeightWithButtons;
+		desiredHeight += RPTVCMetaViewHeightWithButtons;
 	} else {
-		desiredHeight += MetaViewHeightSansButtons;
+		desiredHeight += RPTVCMetaViewHeightSansButtons;
 	}
 	
 	// bottom padding
@@ -99,21 +106,15 @@
     if (self) {
         self.backgroundColor = [UIColor colorWithWhite:0.9453125f alpha:1.f];
         self.contentView.backgroundColor = [WPStyleGuide itsEverywhereGrey];
-		CGRect frame = CGRectMake(10.0f, 0.0f, self.contentView.frame.size.width - 20.0f, self.contentView.frame.size.height - 10.0f);
 
-        _sideBorderView = [[UIView alloc] initWithFrame:CGRectMake(9.f, 0.f, self.contentView.frame.size.width - 18.f, frame.size.height + 3.f)];
-        _sideBorderView.backgroundColor = [UIColor colorWithWhite:0.9296875f alpha:1.f];
+        _sideBorderView = [[UIView alloc] init];
+        _sideBorderView.backgroundColor = [UIColor colorWithWhite:0.9f alpha:1.f];
 		_sideBorderView.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
         [self.contentView addSubview:_sideBorderView];
 
-        _bottomBorderView = [[UIView alloc] initWithFrame:CGRectMake(10.f, CGRectGetMaxY(frame) + 1.f, self.contentView.frame.size.width - 20.f, 2.f)];
-        _bottomBorderView.backgroundColor = [UIColor colorWithWhite:0.90625f alpha:1.f];
-		_bottomBorderView.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleTopMargin;
-        [self.contentView addSubview:_bottomBorderView];
-
-		self.containerView = [[UIView alloc] initWithFrame:frame];
+		self.containerView = [[UIView alloc] init];
 		_containerView.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
-		_containerView.backgroundColor = [UIColor whiteColor];
+        _containerView.backgroundColor = [UIColor whiteColor];
         _containerView.opaque = YES;
 		[self.contentView addSubview:_containerView];
 
@@ -130,7 +131,6 @@
                         options:UIViewAnimationCurveEaseInOut
                      animations:^{
                          _sideBorderView.hidden = highlighted;
-                         _bottomBorderView.hidden = highlighted;
                          self.alpha = highlighted ? .7f : 1.f;
                          if (highlighted) {
                              CGFloat perspective = IS_IPAD ? -0.00005 : -0.0001;
@@ -191,8 +191,7 @@
 	self.cellImageView.contentMode = UIViewContentModeScaleAspectFill;
 	[_containerView addSubview:self.cellImageView];
 
-	CGFloat width = _containerView.frame.size.width - 20.0f;
-	self.titleLabel = [[UILabel alloc] initWithFrame:CGRectMake(10.0, 0.0, width, 44.0f)];
+	self.titleLabel = [[UILabel alloc] init];
 	_titleLabel.autoresizingMask = UIViewAutoresizingFlexibleWidth;
 	_titleLabel.backgroundColor = [UIColor clearColor];
 	_titleLabel.font = [UIFont fontWithName:@"OpenSans-Light" size:20.0f];
@@ -201,7 +200,7 @@
 	_titleLabel.numberOfLines = 0;
 	[_containerView addSubview:_titleLabel];
 	
-	self.snippetLabel = [[UILabel alloc] initWithFrame:CGRectMake(10.0, 0.0, width, 44.0f)];
+	self.snippetLabel = [[UILabel alloc] init];
 	_snippetLabel.autoresizingMask = UIViewAutoresizingFlexibleWidth;
 	_snippetLabel.backgroundColor = [UIColor clearColor];
 	_snippetLabel.font = [UIFont fontWithName:@"OpenSans" size:13.0f];
@@ -213,13 +212,12 @@
 
 
 - (void)buildMetaContent {
-	CGFloat width = _containerView.frame.size.width;
-	self.metaView = [[UIView alloc] initWithFrame:CGRectMake(0.0f, 0.0f, width, 102.0f)];
+	self.metaView = [[UIView alloc] init];
 	_metaView.autoresizingMask = UIViewAutoresizingFlexibleWidth;
 	_metaView.backgroundColor = [UIColor colorWithWhite:0.95703125f alpha:1.f];
 	[_containerView addSubview:_metaView];
 
-	self.byView = [[UIView alloc] initWithFrame:CGRectMake(0.0f, 0.0f, width, 52.0f)];
+	self.byView = [[UIView alloc] init];
 	_byView.autoresizingMask = UIViewAutoresizingFlexibleWidth;
 	_byView.backgroundColor = [UIColor whiteColor];
 	[_metaView addSubview:_byView];
@@ -227,7 +225,7 @@
 	self.avatarImageView = [[UIImageView alloc] initWithFrame:CGRectMake(10.0f, 10.0f, 32.0f, 32.0f)];
 	[_byView addSubview:_avatarImageView];
 	
-	self.bylineLabel = [[UILabel alloc] initWithFrame:CGRectMake(47.0f, 8.0f, width - 57.0f, 36.0f)];
+	self.bylineLabel = [[UILabel alloc] init];
 	_bylineLabel.backgroundColor = [UIColor clearColor];
 	_bylineLabel.numberOfLines = 2;
 	_bylineLabel.autoresizingMask = UIViewAutoresizingFlexibleWidth;
@@ -235,11 +233,8 @@
 	_bylineLabel.adjustsFontSizeToFitWidth = NO;
 	_bylineLabel.textColor = [UIColor colorWithHexString:@"c0c0c0"];
 	[_byView addSubview:_bylineLabel];
-	
-	
-	CGFloat w = width / 2.0f;
+
 	self.likeButton = [ReaderButton buttonWithType:UIButtonTypeCustom];
-	_likeButton.frame = CGRectMake(0.0f, 53.0f, w, 48.0f);
 	_likeButton.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleRightMargin;
 	_likeButton.backgroundColor = [UIColor whiteColor];
 	[_likeButton setTitleEdgeInsets:UIEdgeInsetsMake(0.0f, -5.0f, 0.0f, 0.0f)];
@@ -252,7 +247,6 @@
 	[_metaView addSubview:_likeButton];
 	
 	self.reblogButton = [ReaderButton buttonWithType:UIButtonTypeCustom];
-	_reblogButton.frame = CGRectMake(w + 1.0f, 53.0f, width - w - 1.f, 48.0f);
 	_reblogButton.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleLeftMargin;
 	_reblogButton.backgroundColor = [UIColor whiteColor];
 	[_reblogButton setImage:[UIImage imageNamed:@"reader-postaction-reblog-blue"] forState:UIControlStateNormal];
@@ -263,46 +257,49 @@
 
 - (void)layoutSubviews {
 	[super layoutSubviews];
-
-	CGFloat contentWidth = _containerView.frame.size.width;
-	CGFloat nextY = 0.0f;
+    
+    CGFloat leftPadding = IS_IPHONE ? RPTVCHorizontalPadding : 0;
+	CGFloat contentWidth = self.frame.size.width - leftPadding * 2;
+    CGFloat innerContentWidth = contentWidth - RPTVCHorizontalPadding * 2;
 	CGFloat vpadding = RPTVCVerticalPadding;
+	CGFloat nextY = vpadding;
 	CGFloat height = 0.0f;
+    
+    CGRect frame = CGRectMake(leftPadding, 0.0f, contentWidth, self.frame.size.height - RPTVCVerticalPadding);
+    _containerView.frame = frame;
 
 	// Are we showing an image? What size should it be?
 	if(_showImage) {
 		height = ceilf(contentWidth * 0.66f);
-		self.cellImageView.frame = CGRectMake(0.0f, nextY, contentWidth, height);
-		nextY += height + vpadding;
-	} else {
-		nextY += vpadding;
-	}
-
+		self.cellImageView.frame = CGRectMake(RPTVCHorizontalPadding, nextY, innerContentWidth, height);
+		nextY += height;
+    }
+    
 	// Position the title
 	height = ceil([_titleLabel suggestedSizeForWidth:contentWidth].height);
-	_titleLabel.frame = CGRectMake(10.0f, nextY, contentWidth-20.0f, height);
+	_titleLabel.frame = CGRectMake(RPTVCHorizontalPadding, nextY, innerContentWidth, height);
 	nextY += height + vpadding;
 
 	// Position the snippet
 	height = ceil([_snippetLabel suggestedSizeForWidth:contentWidth].height);
-	_snippetLabel.frame = CGRectMake(10.0f, nextY, contentWidth-20.0f, height);
+	_snippetLabel.frame = CGRectMake(RPTVCHorizontalPadding, nextY, innerContentWidth, height);
 	nextY += ceilf(height + vpadding);
 
-	// position the meta view
-	height = [self.post isWPCom] ? MetaViewHeightWithButtons : MetaViewHeightSansButtons;
+	// position the meta view and its subviews
+    _byView.frame = CGRectMake(0.0f, 0.0f, contentWidth, 52.0f);
+    
+	height = [self.post isWPCom] ? RPTVCMetaViewHeightWithButtons : RPTVCMetaViewHeightSansButtons;
 	_metaView.frame = CGRectMake(0.0f, nextY, contentWidth, height);
 	
-	CGFloat w = ceilf(contentWidth / 2.0f);
-	CGRect frame = _likeButton.frame;
-	frame.size.width = w;
-	_likeButton.frame = frame;
-	
-	frame = _reblogButton.frame;
-	frame.origin.x = w + 1.0f;
-	frame.size.width = w - 1.0f;
-	_reblogButton.frame = frame;
+	CGFloat w = ceilf(_metaView.frame.size.width / 2.0f);
+    _likeButton.frame = CGRectMake(0.0f, 53.0f, w, 48.0f);
+    _reblogButton.frame = CGRectMake(w + 1.0f, 53.0f, w - 1.f, 48.0f);
+    _bylineLabel.frame = CGRectMake(47.0f, 8.0f, contentWidth - 57.0f, 36.0f);
+    
+    CGFloat sideBorderX = RPTVCHorizontalPadding - 1; // Just to the left of the container
+    CGFloat sideBorderHeight = self.frame.size.height - RPTVCVerticalPadding + 1.f; // Just below it
+    _sideBorderView.frame = CGRectMake(sideBorderX, 1.f, self.frame.size.width - sideBorderX*2, sideBorderHeight);
 }
-
 
 - (void)prepareForReuse {
 	[super prepareForReuse];
@@ -350,25 +347,12 @@
 	if (post.featuredImageURL) {
 		self.showImage = YES;
 		self.cellImageView.hidden = NO;
-
-		NSInteger width = ceil(_containerView.frame.size.width);
-        NSInteger height = ceil(width * 0.66f);
-        CGRect imageFrame = self.cellImageView.frame;
-        imageFrame.size.width = width;
-        imageFrame.size.height = height;
-        self.cellImageView.frame = imageFrame;
 	}
 
 	if ([self.post isWPCom]) {
-		CGRect frame = _metaView.frame;
-		frame.size.height = MetaViewHeightWithButtons;
-		_metaView.frame = frame;
 		_likeButton.hidden = NO;
 		_reblogButton.hidden = NO;
 	} else {
-		CGRect frame = _metaView.frame;
-		frame.size.height = MetaViewHeightSansButtons;
-		_metaView.frame = frame;
 		_likeButton.hidden = YES;
 		_reblogButton.hidden = YES;
 	}
