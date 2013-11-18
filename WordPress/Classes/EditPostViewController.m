@@ -1075,6 +1075,10 @@ CGFloat const EditPostViewControllerTextViewOffset = 10.0;
     _linkHelperAlertView.secondTextField.keyboardType = UIKeyboardTypeURL;
     _linkHelperAlertView.secondTextField.autocorrectionType = UITextAutocorrectionTypeNo;
 
+    if (UIDeviceOrientationIsLandscape(self.interfaceOrientation) && IS_IPHONE && !isExternalKeyboard) {
+        [_linkHelperAlertView hideTitleAndDescription:YES];
+    }
+    
     __block UITextView *editorTextView = textView;
     __block id fles = self;
     _linkHelperAlertView.button1CompletionBlock = ^(WPAlertView *overlayView){
@@ -1381,13 +1385,20 @@ CGFloat const EditPostViewControllerTextViewOffset = 10.0;
             frame.size.height = WPKT_HEIGHT_IPAD_LANDSCAPE;
         } else {
             frame.size.height = WPKT_HEIGHT_IPHONE_LANDSCAPE;
+            if (_linkHelperAlertView && !isExternalKeyboard) {
+                [_linkHelperAlertView hideTitleAndDescription:YES];
+            }
         }
+        
     } else {
         if (IS_IPAD) {
             frame.size.height = WPKT_HEIGHT_IPAD_PORTRAIT;
         } else {
             frame.size.height = WPKT_HEIGHT_IPHONE_PORTRAIT;
-        }            
+            if (_linkHelperAlertView) {
+                [_linkHelperAlertView hideTitleAndDescription:NO];
+            }
+        }
     }
     editorToolbar.frame = frame;
 
