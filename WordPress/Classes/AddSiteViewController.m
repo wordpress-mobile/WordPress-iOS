@@ -1,8 +1,11 @@
-//
-//  AddSiteViewController.m
-//  WordPress
-//
-//  Created by Chris Boyd on 7/23/10.
+/*
+ * AddSiteViewController.m
+ *
+ * Copyright (c) 2013 WordPress. All rights reserved.
+ *
+ * Licensed under GNU General Public License 2.0.
+ * Some rights reserved. See license.txt
+ */
 
 #import "AddSiteViewController.h"
 #import "AddUsersBlogsViewController.h"
@@ -12,7 +15,9 @@
 #import <SVProgressHUD/SVProgressHUD.h>
 
 @interface EditSiteViewController (PrivateMethods)
+
 - (void)validationDidFail:(id)wrong;
+
 @end
 
 @implementation AddSiteViewController
@@ -85,8 +90,6 @@ CGSize const AddSiteLogoSize = { 320.0, 70.0 };
     addUsersBlogsView.isWPcom = NO;
     addUsersBlogsView.usersBlogs = subsites;
     addUsersBlogsView.url = xmlrpc;
-    addUsersBlogsView.username = self.username;
-    addUsersBlogsView.password = self.password;
     addUsersBlogsView.geolocationEnabled = self.geolocationEnabled;
     [self.navigationController pushViewController:addUsersBlogsView animated:YES];
 }
