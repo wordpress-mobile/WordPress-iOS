@@ -476,7 +476,8 @@ const CGFloat RPTVCControlButtonBorderSize = 0.0f;
 	_titleLabel.attributedText = [ReaderPostTableViewCell titleAttributedStringForPost:post];
 	_snippetLabel.attributedText = [ReaderPostTableViewCell summaryAttributedStringForPost:post];
 
-    _bylineLabel.text = post.blogName;
+    _bylineLabel.text = [post authorString];
+            
     [_timeButton setTitle:[post.dateCreated shortString] forState:UIControlStateNormal];
 
 	self.showImage = NO;

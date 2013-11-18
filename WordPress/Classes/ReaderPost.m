@@ -668,6 +668,15 @@ NSString *const ReaderExtrasArrayKey = @"ReaderExtrasArrayKey";
 	return @{@"commentID":commentID, @"comment":commentText};
 }
 
+- (NSString *)authorString {
+    if ([self.blogName length] > 0) {
+        return self.blogName;
+    } else if ([self.authorDisplayName length] > 0) {
+        return self.authorDisplayName;
+    } else {
+        return self.author;
+    }
+}
 
 - (NSString *)avatar {
 	return (self.postAvatar == nil) ? self.authorAvatarURL : self.postAvatar;

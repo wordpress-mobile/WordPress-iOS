@@ -133,6 +133,7 @@ extern NSString *const ReaderExtrasArrayKey;
 
 - (NSDictionary *)getStoredComment;
 
+- (NSString *)authorString;
 
 - (NSString *)avatar;
 
