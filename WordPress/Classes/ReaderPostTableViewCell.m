@@ -427,7 +427,7 @@ const CGFloat RPTVCControlButtonBorderSize = 0.0f;
 	_metaView.frame = CGRectMake(0, nextY, contentWidth, RPTVCMetaViewHeight);
     _metaBorder.frame = CGRectMake(RPTVCHorizontalInnerPadding, 0, contentWidth - RPTVCHorizontalInnerPadding * 2, RPTVCBorderHeight);
 
-    BOOL commentsOpen = [[self.post commentsOpen] boolValue];
+    BOOL commentsOpen = [[self.post commentsOpen] boolValue] && [self.post isWPCom];
 	CGFloat buttonWidth = RPTVCControlButtonWidth;
     CGFloat buttonX = _metaView.frame.size.width - RPTVCControlButtonWidth;
     CGFloat buttonY = RPTVCBorderHeight; // Just below the line
