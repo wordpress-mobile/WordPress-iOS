@@ -12,10 +12,11 @@
 
 typedef void(^JetpackSettingsCompletionBlock)(BOOL didAuthenticate);
 
-@interface JetpackSettingsViewController : UITableViewController
+@interface JetpackSettingsViewController : UIViewController
 @property (nonatomic, assign) BOOL canBeSkipped;
-// Always add the buttons to the view. Don't touch the navigation bar
-@property (nonatomic, assign) BOOL ignoreNavigationController;
+// Navigation bar is hidden and all buttons are added into the
+// view on initial sign in
+@property (nonatomic, assign) BOOL initialSignIn;
 @property (nonatomic, copy) JetpackSettingsCompletionBlock completionBlock;
 - (void)setCompletionBlock:(JetpackSettingsCompletionBlock)completionBlock; // Just so Xcode autocompletes the block
 - (id)initWithBlog:(Blog *)blog;

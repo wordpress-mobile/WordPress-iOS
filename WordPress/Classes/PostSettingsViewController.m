@@ -2084,25 +2084,7 @@
     
     
     if (!_isNewCategory) {
-        if (IS_IPAD) {
-            UINavigationController *navController;
-            if (_segmentedTableViewController.navigationController) {
-                navController = _segmentedTableViewController.navigationController;
-            } else {
-                navController = [[UINavigationController alloc] initWithRootViewController:_segmentedTableViewController];
-            }
-            navController.navigationBar.translucent = NO;
-            UIPopoverController *categoriesPopover = [[UIPopoverController alloc] initWithContentViewController:navController];
-            categoriesPopover.popoverBackgroundViewClass = [WPPopoverBackgroundView class];
-            categoriesPopover.delegate = self;
-            CGRect popoverRect = cellFrame;
-            categoriesPopover.popoverContentSize = CGSizeMake(320.0f, 460.0f);
-            [categoriesPopover presentPopoverFromRect:popoverRect inView:self.view permittedArrowDirections:UIPopoverArrowDirectionAny animated:YES];
-            [[CPopoverManager instance] setCurrentPopoverController:categoriesPopover];
-            
-        } else {
-            [self.navigationController pushViewController:_segmentedTableViewController animated:YES];
-        }
+        [self.navigationController pushViewController:_segmentedTableViewController animated:YES];
     }
     
     _isNewCategory = NO;

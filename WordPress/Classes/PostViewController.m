@@ -9,7 +9,6 @@
 #import "PostViewController.h"
 #import "PostPreviewViewController.h"
 #import "NSString+XMLExtensions.h"
-#import "PanelNavigationConstants.h"
 
 @implementation PostViewController {
     NSString *postObserverToken;
@@ -119,7 +118,7 @@
     [super viewDidAppear:animated];
     
     if(IS_IPAD){
-        [self.panelNavigationController setToolbarHidden:NO forViewController:self animated:NO];
+        [self.navigationController setToolbarHidden:NO animated:NO];
     }
 }
 

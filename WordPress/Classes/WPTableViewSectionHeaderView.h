@@ -11,6 +11,7 @@
 @interface WPTableViewSectionHeaderView : UIView
 
 @property (nonatomic, strong) NSString *title;
+@property (nonatomic, assign) CGFloat leftMarginPercent;
 
 + (CGFloat)heightForTitle:(NSString *)title andWidth:(CGFloat)width;
 

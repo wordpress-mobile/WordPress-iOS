@@ -13,7 +13,6 @@
 #import "UIImageView+Gravatar.h"
 #import "WPActivityDefaults.h"
 #import "WPWebViewController.h"
-#import "PanelNavigationConstants.h"
 #import "WordPressAppDelegate.h"
 #import "WordPressComApi.h"
 #import "ReaderComment.h"
@@ -156,8 +155,6 @@ NSTimeInterval const ReaderPostDetailViewControllerRefreshTimeout = 300; // 5 mi
 	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(handleKeyboardDidShow:) name:UIKeyboardWillShowNotification object:nil];
 	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(handleKeyboardWillHide:) name:UIKeyboardWillHideNotification object:nil];
 
-	self.panelNavigationController.delegate = self;
-
 	UIToolbar *toolbar = self.navigationController.toolbar;
     if (IS_IOS7) {
         toolbar.barTintColor = [WPStyleGuide littleEddieGrey];
@@ -167,9 +164,8 @@ NSTimeInterval const ReaderPostDetailViewControllerRefreshTimeout = 300; // 5 mi
         [toolbar setBackgroundImage:nil forToolbarPosition:UIToolbarPositionBottom barMetrics:UIBarMetricsDefault];
         [toolbar setTintColor:[UIColor colorWithHexString:@"F1F1F1"]];
     }
-	
-	if (IS_IPAD)
-        [self.panelNavigationController setToolbarHidden:NO forViewController:self animated:NO];
+
+	[self.navigationController setToolbarHidden:NO animated:animated];
 
     [self.post addObserver:self forKeyPath:@"isReblogged" options:NSKeyValueObservingOptionNew context:@"reblogging"];
 
@@ -201,10 +197,9 @@ NSTimeInterval const ReaderPostDetailViewControllerRefreshTimeout = 300; // 5 mi
 	[[NSNotificationCenter defaultCenter] removeObserver:self];
 	[self.post removeObserver:self forKeyPath:@"isReblogged" context:@"reblogging"];
 	
-    self.panelNavigationController.delegate = nil;
     self.navigationController.navigationBar.translucent = NO;
     self.navigationController.toolbar.translucent = NO;
-	[self.navigationController setToolbarHidden:YES animated:YES];
+	[self.navigationController setToolbarHidden:YES animated:animated];
 }
 
 
@@ -839,7 +834,6 @@ NSTimeInterval const ReaderPostDetailViewControllerRefreshTimeout = 300; // 5 mi
     ReaderCommentTableViewCell *cell = (ReaderCommentTableViewCell *)[self.tableView dequeueReusableCellWithIdentifier:cellIdentifier];
     if (cell == nil) {
         cell = [[ReaderCommentTableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:cellIdentifier];
-		cell.parentController = self;
     }
 	cell.accessoryType = UITableViewCellAccessoryNone;
 	
@@ -923,13 +917,6 @@ NSTimeInterval const ReaderPostDetailViewControllerRefreshTimeout = 300; // 5 mi
 }
 
 #pragma mark - UIScrollView Delegate Methods
-
-- (void)scrollViewWillBeginDragging:(UIScrollView *)scrollView {
-    if (self.panelNavigationController) {
-        [self.panelNavigationController viewControllerWantsToBeFullyVisible:self];
-    }
-}
-
 
 - (void)scrollViewDidScroll:(UIScrollView *)scrollView {
 	if (_isScrollingCommentIntoView){
@@ -1091,7 +1078,7 @@ NSTimeInterval const ReaderPostDetailViewControllerRefreshTimeout = 300; // 5 mi
         [controller setMessageBody:body isHTML:NO];
         
         if (controller)
-            [self.panelNavigationController presentViewController:controller animated:YES completion:nil];
+            [self.navigationController presentViewController:controller animated:YES completion:nil];
 		
         [self setMFMailFieldAsFirstResponder:controller.view mfMailField:@"MFRecipientTextField"];
 		

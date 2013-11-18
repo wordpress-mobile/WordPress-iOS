@@ -34,47 +34,29 @@
     UIScrollViewDelegate,
     UITextFieldDelegate> {
     UIScrollView *_scrollView;
-    UIView *_mainTextureView;
+    UIView *_mainView;
     WPNUXSecondaryButton *_skipToCreateAccount;
-    WPNUXPrimaryButton *_skipToSignIn;
     
     // Page 1
     UIButton *_page1InfoButton;
     UIImageView *_page1Icon;
     UILabel *_page1Title;
-    UILabel *_page1Description;
-    UILabel *_page1SwipeToContinue;
-    UIImageView *_page1TopSeparator;
-    UIImageView *_page1BottomSeparator;
-    UIView *_bottomPanelLine;
     UIView *_bottomPanel;
-    UIView *_bottomPanelTextureView;
-    UIPageControl *_pageControl;
+    WPNUXMainButton *_skipToSignIn;
     
     // Page 2
     UIImageView *_page2Icon;
-    UILabel *_page2Title;
-    UILabel *_page2Description;
-    UIImageView *_page2TopSeparator;
-    UIImageView *_page2BottomSeparator;
-    
-    // Page 3
-    UIImageView *_page3Icon;
-    UITextField *_usernameText;
-    UITextField *_passwordText;
-    UITextField *_siteUrlText;
+    WPWalkthroughTextField *_usernameText;
+    WPWalkthroughTextField *_passwordText;
+    WPWalkthroughTextField *_siteUrlText;
     WPNUXMainButton *_signInButton;
-    UILabel *_createAccountLabel;
     
     CGFloat _viewWidth;
     CGFloat _viewHeight;
     
     CGFloat _bottomPanelOriginalX;
-    CGFloat _bottomPanelTextureOriginalX;
     CGFloat _skipToCreateAccountOriginalX;
-    CGFloat _skipToSignInOriginalX;
-    CGFloat _pageControlOriginalX;
-    CGFloat _heightFromSwipeToContinue;
+    CGFloat _heightFromBottomPanel;
         
     CGFloat _keyboardOffset;
     
@@ -83,7 +65,6 @@
     BOOL _savedOriginalPositionsOfStickyControls;
     BOOL _hasViewAppeared;
     BOOL _viewedPage2;
-    BOOL _viewedPage3;
     NSString *_dotComSiteUrl;
     NSUInteger _currentPage;
     NSArray *_blogs;
@@ -99,11 +80,11 @@ CGFloat const GeneralWalkthroughStandardOffset = 16;
 CGFloat const GeneralWalkthroughBottomBackgroundHeight = 64;
 CGFloat const GeneralWalkthroughMaxTextWidth = 289.0;
 CGFloat const GeneralWalkthroughSwipeToContinueTopOffset = 14.0;
-CGFloat const GeneralWalkthroughTextFieldWidth = 289.0;
-CGFloat const GeneralWalkthroughTextFieldHeight = 40.0;
-CGFloat const GeneralWalkthroughSignInButtonWidth = 160.0;
+CGFloat const GeneralWalkthroughTextFieldWidth = 320.0;
+CGFloat const GeneralWalkthroughTextFieldHeight = 44.0;
+CGFloat const GeneralWalkthroughSignInButtonWidth = 289.0;
 CGFloat const GeneralWalkthroughSignInButtonHeight = 41.0;
-CGFloat const GeneralWalkthroughiOS7StatusBarOffset = 10.0;
+CGFloat const GeneralWalkthroughiOS7StatusBarOffset = 20.0;
 
 - (void)dealloc
 {
@@ -119,11 +100,10 @@ CGFloat const GeneralWalkthroughiOS7StatusBarOffset = 10.0;
         
     self.view.backgroundColor = [WPNUXUtility backgroundColor];
 
-    [self addBackgroundTexture];
+    [self addMainView];
     [self addScrollview];
     [self initializePage1];
     [self initializePage2];
-    [self initializePage3];
     
     if (!IS_IPAD) {
         // We don't need to shift the controls up on the iPad as there's enough space.
@@ -181,30 +161,18 @@ CGFloat const GeneralWalkthroughiOS7StatusBarOffset = 10.0;
     NSUInteger pageViewed = ceil(contentOffset.x/_viewWidth) + 1;
 
     // We only want the sign in, create account and help buttons to drag along until we hit the sign in screen
-    if (pageViewed < 3) {
+    if (pageViewed < 2) {
         // If the user is editing the sign in page and then swipes over, dismiss keyboard
         [self.view endEditing:YES];
-        
-        CGRect skipToCreateAccountFrame = _skipToCreateAccount.frame;
-        skipToCreateAccountFrame.origin.x = _skipToCreateAccountOriginalX + contentOffset.x;
-        _skipToCreateAccount.frame = skipToCreateAccountFrame;
-        
-        CGRect skipToSignInFrame = _skipToSignIn.frame;
-        skipToSignInFrame.origin.x = _skipToSignInOriginalX + contentOffset.x;
-        _skipToSignIn.frame = skipToSignInFrame;
-        
-        CGRect pageControlFrame = _pageControl.frame;
-        pageControlFrame.origin.x = _pageControlOriginalX + contentOffset.x;
-        _pageControl.frame = pageControlFrame;
     }
+    
+    CGRect skipToCreateAccountFrame = _skipToCreateAccount.frame;
+    skipToCreateAccountFrame.origin.x = _skipToCreateAccountOriginalX + contentOffset.x;
+    _skipToCreateAccount.frame = skipToCreateAccountFrame;
     
     CGRect bottomPanelFrame = _bottomPanel.frame;
     bottomPanelFrame.origin.x = _bottomPanelOriginalX + contentOffset.x;
     _bottomPanel.frame = bottomPanelFrame;
-    
-    CGRect bottomPanelTextureFrame = _bottomPanelTextureView.frame;
-    bottomPanelTextureFrame.origin.x = _bottomPanelOriginalX + contentOffset.x;
-    _bottomPanelTextureView.frame = bottomPanelTextureFrame;
 }
 
 #pragma mark - UITextField delegate methods
@@ -261,10 +229,9 @@ CGFloat const GeneralWalkthroughiOS7StatusBarOffset = 10.0;
     overlayView.overlayMode = WPWalkthroughGrayOverlayViewOverlayModeTwoButtonMode;
     overlayView.overlayTitle = NSLocalizedString(@"Sorry, we can't log you in.", nil);
     overlayView.overlayDescription = message;
-    overlayView.footerDescription = [NSLocalizedString(@"tap to dismiss", nil) uppercaseString];
-    overlayView.leftButtonText = NSLocalizedString(@"Need Help?", nil);
-    overlayView.rightButtonText = NSLocalizedString(@"OK", nil);
-    overlayView.singleTapCompletionBlock = ^(WPWalkthroughOverlayView *overlayView){
+    overlayView.secondaryButtonText = NSLocalizedString(@"Need Help?", nil);
+    overlayView.primaryButtonText = NSLocalizedString(@"OK", nil);
+    overlayView.dismissCompletionBlock = ^(WPWalkthroughOverlayView *overlayView){
         [overlayView dismiss];
     };
     return overlayView;
@@ -273,14 +240,14 @@ CGFloat const GeneralWalkthroughiOS7StatusBarOffset = 10.0;
 - (void)displayErrorMessageForXMLRPC:(NSString *)message
 {
     WPWalkthroughOverlayView *overlayView = [self baseLoginErrorOverlayView:message];
-    overlayView.rightButtonText = NSLocalizedString(@"Enable Now", nil);
-    overlayView.button1CompletionBlock = ^(WPWalkthroughOverlayView *overlayView){
+    overlayView.primaryButtonText = NSLocalizedString(@"Enable Now", nil);
+    overlayView.secondaryButtonCompletionBlock = ^(WPWalkthroughOverlayView *overlayView){
         [WPMobileStats trackEventForSelfHostedAndWPCom:StatsEventNUXFirstWalkthroughClickedNeededHelpOnError properties:@{@"error_message": message}];
         
         [overlayView dismiss];
         [self showHelpViewController:NO];
     };
-    overlayView.button2CompletionBlock = ^(WPWalkthroughOverlayView *overlayView){
+    overlayView.primaryButtonCompletionBlock = ^(WPWalkthroughOverlayView *overlayView){
         [WPMobileStats trackEventForSelfHostedAndWPCom:StatsEventNUXFirstWalkthroughClickedEnableXMLRPCServices];
         
         [overlayView dismiss];
@@ -311,7 +278,7 @@ CGFloat const GeneralWalkthroughiOS7StatusBarOffset = 10.0;
 - (void)displayErrorMessageForBadUrl:(NSString *)message
 {
     WPWalkthroughOverlayView *overlayView = [self baseLoginErrorOverlayView:message];
-    overlayView.button1CompletionBlock = ^(WPWalkthroughOverlayView *overlayView){
+    overlayView.secondaryButtonCompletionBlock = ^(WPWalkthroughOverlayView *overlayView){
         [WPMobileStats trackEventForSelfHostedAndWPCom:StatsEventNUXFirstWalkthroughClickedNeededHelpOnError properties:@{@"error_message": message}];
         
         [overlayView dismiss];  
@@ -320,7 +287,7 @@ CGFloat const GeneralWalkthroughiOS7StatusBarOffset = 10.0;
         [self.navigationController setNavigationBarHidden:NO animated:NO];
         [self.navigationController pushViewController:webViewController animated:NO];
     };
-    overlayView.button2CompletionBlock = ^(WPWalkthroughOverlayView *overlayView){
+    overlayView.primaryButtonCompletionBlock = ^(WPWalkthroughOverlayView *overlayView){
         [overlayView dismiss];
     };
     [self.view addSubview:overlayView];
@@ -329,13 +296,13 @@ CGFloat const GeneralWalkthroughiOS7StatusBarOffset = 10.0;
 - (void)displayGenericErrorMessage:(NSString *)message
 {
     WPWalkthroughOverlayView *overlayView = [self baseLoginErrorOverlayView:message];
-    overlayView.button1CompletionBlock = ^(WPWalkthroughOverlayView *overlayView){
+    overlayView.secondaryButtonCompletionBlock = ^(WPWalkthroughOverlayView *overlayView){
         [WPMobileStats trackEventForSelfHostedAndWPCom:StatsEventNUXFirstWalkthroughClickedNeededHelpOnError properties:@{@"error_message": message}];
         
         [overlayView dismiss];
         [self showHelpViewController:NO];
     };
-    overlayView.button2CompletionBlock = ^(WPWalkthroughOverlayView *overlayView){
+    overlayView.primaryButtonCompletionBlock = ^(WPWalkthroughOverlayView *overlayView){
         [overlayView dismiss];
     };
     [self.view addSubview:overlayView];
@@ -364,7 +331,7 @@ CGFloat const GeneralWalkthroughiOS7StatusBarOffset = 10.0;
 {
     [WPMobileStats trackEventForSelfHostedAndWPCom:StatsEventNUXFirstWalkthroughClickedSkipToSignIn];
     [UIView animateWithDuration:0.3 animations:^{
-        _scrollView.contentOffset = CGPointMake(_viewWidth * 2, 0);
+        _scrollView.contentOffset = CGPointMake(_viewWidth, 0);
     } completion:^(BOOL finished){
         [_usernameText becomeFirstResponder];
     }];
@@ -394,7 +361,7 @@ CGFloat const GeneralWalkthroughiOS7StatusBarOffset = 10.0;
 
 - (void)clickedBottomPanel:(UIGestureRecognizer *)gestureRecognizer
 {
-    if (_currentPage == 3) {
+    if (_currentPage == 2) {
         [self clickedCreateAccount:nil];        
     }
 }
@@ -418,19 +385,18 @@ CGFloat const GeneralWalkthroughiOS7StatusBarOffset = 10.0;
 
 #pragma mark - Private Methods
 
-- (void)addBackgroundTexture
+- (void)addMainView
 {
-    _mainTextureView = [[UIView alloc] initWithFrame:self.view.bounds];
-    _mainTextureView.backgroundColor = [UIColor colorWithPatternImage:[UIImage imageNamed:@"ui-texture"]];
-    [self.view addSubview:_mainTextureView];
-    _mainTextureView.userInteractionEnabled = NO;
+    _mainView = [[UIView alloc] initWithFrame:self.view.bounds];
+    [self.view addSubview:_mainView];
+    _mainView.userInteractionEnabled = NO;
 }
 
 - (void)addScrollview
 {
     _scrollView = [[UIScrollView alloc] init];
     CGSize scrollViewSize = _scrollView.contentSize;
-    scrollViewSize.width = _viewWidth * 3;
+    scrollViewSize.width = _viewWidth * 2;
     _scrollView.frame = self.view.bounds;
     _scrollView.contentSize = scrollViewSize;
     _scrollView.pagingEnabled = YES;
@@ -459,11 +425,10 @@ CGFloat const GeneralWalkthroughiOS7StatusBarOffset = 10.0;
 - (void)addPage1Controls
 {
     UIImage *infoButtonImage = [UIImage imageNamed:@"btn-help"];
-    UIImage *infoButtonImageHighlighted = [UIImage imageNamed:@"btn-help-tap"];
+
     if (_page1InfoButton == nil) {
         _page1InfoButton = [UIButton buttonWithType:UIButtonTypeCustom];
         [_page1InfoButton setImage:infoButtonImage forState:UIControlStateNormal];
-        [_page1InfoButton setImage:infoButtonImageHighlighted forState:UIControlStateHighlighted];
         _page1InfoButton.frame = CGRectMake(GeneralWalkthroughStandardOffset, GeneralWalkthroughStandardOffset, infoButtonImage.size.width, infoButtonImage.size.height);
         [_page1InfoButton addTarget:self action:@selector(clickedInfoButton:) forControlEvents:UIControlEventTouchUpInside];
         [_scrollView addSubview:_page1InfoButton];
@@ -479,94 +444,19 @@ CGFloat const GeneralWalkthroughiOS7StatusBarOffset = 10.0;
     if (_page1Title == nil) {
         _page1Title = [[UILabel alloc] init];
         _page1Title.backgroundColor = [UIColor clearColor];
-        _page1Title.textAlignment = NSTextAlignmentCenter;
         _page1Title.numberOfLines = 0;
-        _page1Title.lineBreakMode = NSLineBreakByWordWrapping;
-        _page1Title.font = [WPNUXUtility titleFont];        
-        _page1Title.text = NSLocalizedString(@"Welcome to WordPress", @"NUX First Walkthrough Page 1 Title");
-        _page1Title.shadowColor = [WPNUXUtility textShadowColor];
-        _page1Title.shadowOffset = CGSizeMake(0.0, 1.0);
-        _page1Title.layer.shadowRadius = 2.0;
-        _page1Title.textColor = [UIColor whiteColor];
+        _page1Title.attributedText = [WPNUXUtility titleAttributedString:NSLocalizedString(@"Welcome to WordPress", @"NUX First Walkthrough Page 1 Title")];
         [_scrollView addSubview:_page1Title];
-    }
-    
-    // Add Top Separator
-    if (_page1TopSeparator == nil) {
-        _page1TopSeparator = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"ui-line"]];
-        [_scrollView addSubview:_page1TopSeparator];
-    }
-
-    // Add Description
-    if (_page1Description == nil) {
-        _page1Description = [[UILabel alloc] init];
-        _page1Description.backgroundColor = [UIColor clearColor];
-        _page1Description.textAlignment = NSTextAlignmentCenter;
-        _page1Description.numberOfLines = 0;
-        _page1Description.lineBreakMode = NSLineBreakByWordWrapping;
-        _page1Description.font = [WPNUXUtility descriptionTextFont];
-        _page1Description.text = NSLocalizedString(@"Hold the web in the palm of your hand. Full publishing power in a pint-sized package.", @"NUX First Walkthrough Page 1 Description");
-        _page1Description.shadowColor = [WPNUXUtility textShadowColor];
-        _page1Description.shadowOffset = CGSizeMake(0.0, 1.0);
-        _page1Description.layer.shadowRadius = 2.0;
-        _page1Description.textColor = [WPNUXUtility descriptionTextColor];
-        [_scrollView addSubview:_page1Description];
-    }
-
-    // Add Bottom Separator
-    if (_page1BottomSeparator == nil) {
-        _page1BottomSeparator = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"ui-line"]];
-        [_scrollView addSubview:_page1BottomSeparator];
     }
     
     // Bottom Panel
     if (_bottomPanel == nil) {
         _bottomPanel = [[UIView alloc] init];
-        _bottomPanel.backgroundColor = [WPNUXUtility bottomPanelBackgroundColor];
+        _bottomPanel.backgroundColor = [UIColor clearColor];
         [_scrollView addSubview:_bottomPanel];
         UITapGestureRecognizer *gestureRecognizer = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(clickedBottomPanel:)];
         gestureRecognizer.numberOfTapsRequired = 1;
         [_bottomPanel addGestureRecognizer:gestureRecognizer];
-    }
-    
-    // Bottom Texture View
-    if (_bottomPanelTextureView == nil) {
-        _bottomPanelTextureView = [[UIView alloc] init];
-        _bottomPanelTextureView.backgroundColor = [UIColor colorWithPatternImage:[UIImage imageNamed:@"ui-texture"]];
-        _bottomPanelTextureView.userInteractionEnabled = NO;
-        [_scrollView addSubview:_bottomPanelTextureView];
-    }
-    
-    // Bottom Panel "Black" Line
-    if (_bottomPanelLine == nil) {
-        _bottomPanelLine = [[UIView alloc] init];
-        _bottomPanelLine.backgroundColor = [WPNUXUtility bottomPanelLineColor];
-        [_scrollView addSubview:_bottomPanelLine];
-    }
-        
-    // Add Page Control
-    if (_pageControl == nil) {
-        // The page control adds a bunch of extra space for padding that messes with our calculations.
-        _pageControl = [[UIPageControl alloc] init];
-        [_pageControl addTarget:self action:@selector(pageNumberChanged:) forControlEvents:UIControlEventValueChanged];
-        _pageControl.numberOfPages = 3;
-        [_pageControl sizeToFit];
-        [WPNUXUtility configurePageControlTintColors:_pageControl];
-        [_scrollView addSubview:_pageControl];
-    }
-
-    // Add "SWIPE TO CONTINUE" text
-    if (_page1SwipeToContinue == nil) {
-        _page1SwipeToContinue = [[UILabel alloc] init];
-        [_page1SwipeToContinue setTextColor:[WPNUXUtility swipeToContinueTextColor]];
-        [_page1SwipeToContinue setShadowColor:[WPNUXUtility textShadowColor]];
-        _page1SwipeToContinue.backgroundColor = [UIColor clearColor];
-        _page1SwipeToContinue.textAlignment = NSTextAlignmentCenter;
-        _page1SwipeToContinue.numberOfLines = 1;
-        _page1SwipeToContinue.font = [WPNUXUtility swipeToContinueFont];
-        _page1SwipeToContinue.text = [NSLocalizedString(@"swipe to continue", nil) uppercaseString];
-        [_page1SwipeToContinue sizeToFit];
-        [_scrollView addSubview:_page1SwipeToContinue];
     }
 
     // Add Skip to Create Account Button
@@ -580,7 +470,7 @@ CGFloat const GeneralWalkthroughiOS7StatusBarOffset = 10.0;
         
     // Add Skip to Sign in Button
     if (_skipToSignIn == nil) {
-        _skipToSignIn = [[WPNUXPrimaryButton alloc] init];
+        _skipToSignIn = [[WPNUXMainButton alloc] init];
         [_skipToSignIn setTitle:NSLocalizedString(@"Sign In", nil) forState:UIControlStateNormal];
         [_skipToSignIn addTarget:self action:@selector(clickedSkipToSignIn:) forControlEvents:UIControlEventTouchUpInside];
         [_skipToSignIn sizeToFit];
@@ -607,7 +497,7 @@ CGFloat const GeneralWalkthroughiOS7StatusBarOffset = 10.0;
 
     UIImage *infoButtonImage = [UIImage imageNamed:@"btn-about"];
     y = 0;
-    if (IS_IOS7) {
+    if (IS_IOS7 && IS_IPHONE) {
         y = GeneralWalkthroughiOS7StatusBarOffset;
     }
     _page1InfoButton.frame = CGRectMake(0, y, infoButtonImage.size.width, infoButtonImage.size.height);
@@ -624,73 +514,27 @@ CGFloat const GeneralWalkthroughiOS7StatusBarOffset = 10.0;
     y = CGRectGetMaxY(_page1Icon.frame) + 0.5*GeneralWalkthroughStandardOffset;
     _page1Title.frame = CGRectIntegral(CGRectMake(x, y, titleSize.width, titleSize.height));
     
-    // Layout Top Separator
-    x = GeneralWalkthroughStandardOffset;
+    // Layout Skip to Sign In Button
+    x = (_viewWidth - GeneralWalkthroughSignInButtonWidth) / 2.0;
     x = [self adjustX:x forPage:1];
     y = CGRectGetMaxY(_page1Title.frame) + GeneralWalkthroughStandardOffset;
-    _page1TopSeparator.frame = CGRectMake(x, y, _viewWidth - 2*GeneralWalkthroughStandardOffset, 2);
+    _skipToSignIn.frame = CGRectMake(x, y, GeneralWalkthroughSignInButtonWidth, GeneralWalkthroughSignInButtonHeight);
     
-    // Layout Description
-    CGSize labelSize = [_page1Description.text sizeWithFont:_page1Description.font constrainedToSize:CGSizeMake(GeneralWalkthroughMaxTextWidth, CGFLOAT_MAX) lineBreakMode:NSLineBreakByWordWrapping];
-    x = (_viewWidth - labelSize.width)/2.0;
-    x = [self adjustX:x forPage:1];
-    y = CGRectGetMaxY(_page1TopSeparator.frame) + 0.5*GeneralWalkthroughStandardOffset;
-    _page1Description.frame = CGRectIntegral(CGRectMake(x, y, labelSize.width, labelSize.height));
-    
-    // Layout Bottom Separator
-    x = GeneralWalkthroughStandardOffset;
-    x = [self adjustX:x forPage:1];
-    y = CGRectGetMaxY(_page1Description.frame) + 0.5*GeneralWalkthroughStandardOffset;
-    _page1BottomSeparator.frame = CGRectMake(x, y, _viewWidth - 2*GeneralWalkthroughStandardOffset, 2);
-        
     // Layout Bottom Panel
     x = 0;
     x = [self adjustX:x forPage:1];
     y = _viewHeight - GeneralWalkthroughBottomBackgroundHeight;
     _bottomPanel.frame = CGRectMake(x, y, _viewWidth, GeneralWalkthroughBottomBackgroundHeight);
     
-    // Layout Bottom Panel Gradient View
-    _bottomPanelTextureView.frame = _bottomPanel.frame;
-    
-    // Layout Bottom Panel Line
-    x = 0;
-    y = CGRectGetMinY(_bottomPanel.frame);
-    _bottomPanelLine.frame = CGRectMake(x, y, _viewWidth, 1);
-        
-    // Layout Page Control
-    CGFloat verticalSpaceForPageControl = 15;
-    CGSize pageControlSize = [_pageControl sizeForNumberOfPages:3];
-    x = (_viewWidth - pageControlSize.width)/2.0;
-    if (IS_IPAD) {
-        // UIPageControl seems to add about half it's size in padding on the iPad
-        // TODO : Figure out why this is happening
-        x += pageControlSize.width/2.0;
-    }
-    x = [self adjustX:x forPage:1];
-    y = CGRectGetMinY(_bottomPanel.frame) - GeneralWalkthroughStandardOffset - CGRectGetHeight(_pageControl.frame) + verticalSpaceForPageControl;
-    _pageControl.frame = CGRectIntegral(CGRectMake(x, y, pageControlSize.width, pageControlSize.height));
-
-    // Layout Swipe to Continue
-    x = (_viewWidth - CGRectGetWidth(_page1SwipeToContinue.frame))/2.0;
-    x = [self adjustX:x forPage:1];
-    y = CGRectGetMinY(_pageControl.frame) - GeneralWalkthroughSwipeToContinueTopOffset - CGRectGetHeight(_page1SwipeToContinue.frame) + verticalSpaceForPageControl;
-    _page1SwipeToContinue.frame = CGRectIntegral(CGRectMake(x, y, CGRectGetWidth(_page1SwipeToContinue.frame), CGRectGetHeight(_page1SwipeToContinue.frame)));
-    
     // Layout Skip to Create Account Button
     x = GeneralWalkthroughStandardOffset;
-    x = [self adjustX:x forPage:1];
+    x = (_viewWidth - CGRectGetWidth(_skipToCreateAccount.frame))/2.0;
     y = CGRectGetMinY(_bottomPanel.frame) + GeneralWalkthroughStandardOffset;
-    _skipToCreateAccount.frame = CGRectMake(x, y, CGRectGetWidth(_skipToCreateAccount.frame), CGRectGetHeight(_skipToCreateAccount.frame));
-
-    // Layout Skip to Sign In Button
-    x = _viewWidth - GeneralWalkthroughStandardOffset - CGRectGetWidth(_skipToSignIn.frame);
-    x = [self adjustX:x forPage:1];
-    y = CGRectGetMinY(_skipToCreateAccount.frame);
-    _skipToSignIn.frame = CGRectMake(x, y, CGRectGetWidth(_skipToSignIn.frame), CGRectGetHeight(_skipToSignIn.frame));
+    _skipToCreateAccount.frame = CGRectMake(x, y, CGRectGetWidth(_skipToCreateAccount.frame), 33);
     
-    _heightFromSwipeToContinue = _viewHeight - CGRectGetMinY(_page1SwipeToContinue.frame) - CGRectGetHeight(_page1SwipeToContinue.frame);
-    NSArray *viewsToCenter = @[_page1Icon, _page1Title, _page1TopSeparator, _page1Description, _page1BottomSeparator];
-    [WPNUXUtility centerViews:viewsToCenter withStartingView:_page1Icon andEndingView:_page1BottomSeparator forHeight:(_viewHeight - _heightFromSwipeToContinue)];
+    _heightFromBottomPanel = _viewHeight - CGRectGetMinY(_bottomPanel.frame);
+    NSArray *viewsToCenter = @[_page1Icon, _page1Title, _skipToSignIn];
+    [WPNUXUtility centerViews:viewsToCenter withStartingView:_page1Icon andEndingView:_skipToSignIn forHeight:(_viewHeight - _heightFromBottomPanel)];
 }
 
 - (void)initializePage2
@@ -703,114 +547,15 @@ CGFloat const GeneralWalkthroughiOS7StatusBarOffset = 10.0;
 {
     // Add Icon
     if (_page2Icon == nil) {
-        _page2Icon = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"icon-post"]];
+        _page2Icon = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"icon-wp"]];
         [_scrollView addSubview:_page2Icon];
-    }
-    
-    // Add Title
-    if (_page2Title == nil) {
-        _page2Title = [[UILabel alloc] init];
-        _page2Title.backgroundColor = [UIColor clearColor];
-        _page2Title.textAlignment = NSTextAlignmentCenter;
-        _page2Title.numberOfLines = 0;
-        _page2Title.lineBreakMode = NSLineBreakByWordWrapping;
-        _page2Title.font = [WPNUXUtility titleFont];
-        _page2Title.text = NSLocalizedString(@"Publish whenever inspiration strikes", @"NUX First Walkthrough Page 2 Title");
-        _page2Title.shadowColor = [WPNUXUtility textShadowColor];
-        _page2Title.shadowOffset = CGSizeMake(0.0, 1.0);
-        _page2Title.layer.shadowRadius = 2.0;
-        _page2Title.textColor = [UIColor whiteColor];
-        [_scrollView addSubview:_page2Title];
-    }
-    
-    // Add Top Separator
-    if (_page2TopSeparator == nil) {
-        _page2TopSeparator = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"ui-line"]];
-        [_scrollView addSubview:_page2TopSeparator];
-    }
-    
-    // Add Description
-    if (_page2Description == nil) {
-        _page2Description = [[UILabel alloc] init];
-        _page2Description.backgroundColor = [UIColor clearColor];
-        _page2Description.textAlignment = NSTextAlignmentCenter;
-        _page2Description.numberOfLines = 0;
-        _page2Description.lineBreakMode = NSLineBreakByWordWrapping;
-        _page2Description.font = [WPNUXUtility descriptionTextFont];
-        _page2Description.text = NSLocalizedString(@"Brilliant insight? Hilarious link? Perfect pic? Capture genius as it happens and post in real time.", @"NUX First Walkthrough Page 2 Description");
-        _page2Description.shadowColor = [WPNUXUtility textShadowColor];
-        _page2Description.shadowOffset = CGSizeMake(0.0, 1.0);
-        _page2Description.layer.shadowRadius = 2.0;
-        _page2Description.textColor = [WPNUXUtility descriptionTextColor];
-        [_scrollView addSubview:_page2Description];
-    }
-    
-    // Add Bottom Separator
-    if (_page2BottomSeparator == nil) {
-        _page2BottomSeparator = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"ui-line"]];
-        [_scrollView addSubview:_page2BottomSeparator];
-    }
-}
-
-- (void)layoutPage2Controls
-{
-    CGFloat x,y;
-
-    // Layout Icon
-    x = (_viewWidth - CGRectGetWidth(_page2Icon.frame))/2.0;
-    x = [self adjustX:x forPage:2];
-    y = GeneralWalkthroughIconVerticalOffset ;
-    _page2Icon.frame = CGRectIntegral(CGRectMake(x, y, CGRectGetWidth(_page2Icon.frame), CGRectGetHeight(_page2Icon.frame)));
-
-    // Layout Title
-    CGSize titleSize = [_page2Title.text sizeWithFont:_page2Title.font constrainedToSize:CGSizeMake(GeneralWalkthroughMaxTextWidth, CGFLOAT_MAX) lineBreakMode:NSLineBreakByWordWrapping];
-    x = (_viewWidth - titleSize.width)/2.0;
-    x = [self adjustX:x forPage:2];
-    y = CGRectGetMaxY(_page2Icon.frame) + 0.5*GeneralWalkthroughStandardOffset;
-    _page2Title.frame = CGRectIntegral(CGRectMake(x, y, titleSize.width, titleSize.height));
-
-    // Layout Top Separator
-    x = GeneralWalkthroughStandardOffset;
-    x = [self adjustX:x forPage:2];
-    y = CGRectGetMaxY(_page2Title.frame) + GeneralWalkthroughStandardOffset;
-    _page2TopSeparator.frame = CGRectMake(x, y, _viewWidth - 2*GeneralWalkthroughStandardOffset, 2);
-
-    // Layout Description
-    CGSize labelSize = [_page2Description.text sizeWithFont:_page2Description.font constrainedToSize:CGSizeMake(GeneralWalkthroughMaxTextWidth, CGFLOAT_MAX) lineBreakMode:NSLineBreakByWordWrapping];
-    x = (_viewWidth - labelSize.width)/2.0;
-    x = [self adjustX:x forPage:2];
-    y = CGRectGetMaxY(_page2TopSeparator.frame) + 0.5*GeneralWalkthroughStandardOffset;
-    _page2Description.frame = CGRectIntegral(CGRectMake(x, y, labelSize.width, labelSize.height));
-    
-    // Layout Bottom Separator
-    x = GeneralWalkthroughStandardOffset;
-    x = [self adjustX:x forPage:2];
-    y = CGRectGetMaxY(_page2Description.frame) + 0.5*GeneralWalkthroughStandardOffset;
-    _page2BottomSeparator.frame = CGRectMake(x, y, _viewWidth - 2*GeneralWalkthroughStandardOffset, 2);
-    
-    NSArray *viewsToCenter = @[_page2Icon, _page2Title, _page2TopSeparator, _page2Description, _page2BottomSeparator];
-    [WPNUXUtility centerViews:viewsToCenter withStartingView:_page2Icon andEndingView:_page2BottomSeparator forHeight:(_viewHeight-_heightFromSwipeToContinue)];
-}
-
-- (void)initializePage3
-{
-    [self addPage3Controls];
-    [self layoutPage3Controls];
-}
-
-- (void)addPage3Controls
-{
-    // Add Icon
-    if (_page3Icon == nil) {
-        _page3Icon = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"icon-wp"]];
-        [_scrollView addSubview:_page3Icon];
     }
     
     // Add Username
     if (_usernameText == nil) {
-        _usernameText = [[WPWalkthroughTextField alloc] init];
+        _usernameText = [[WPWalkthroughTextField alloc] initWithLeftViewImage:[UIImage imageNamed:@"icon-username-field"]];
         _usernameText.backgroundColor = [UIColor whiteColor];
-        _usernameText.placeholder = NSLocalizedString(@"Username / Email", @"NUX First Walkthrough Page 3 Username Placeholder");
+        _usernameText.placeholder = NSLocalizedString(@"Username / Email", @"NUX First Walkthrough Page 2 Username Placeholder");
         _usernameText.font = [WPNUXUtility textFieldFont];
         _usernameText.adjustsFontSizeToFitWidth = YES;
         _usernameText.delegate = self;
@@ -821,20 +566,21 @@ CGFloat const GeneralWalkthroughiOS7StatusBarOffset = 10.0;
     
     // Add Password
     if (_passwordText == nil) {
-        _passwordText = [[WPWalkthroughTextField alloc] init];
+        _passwordText = [[WPWalkthroughTextField alloc] initWithLeftViewImage:[UIImage imageNamed:@"icon-password-field"]];
         _passwordText.backgroundColor = [UIColor whiteColor];
         _passwordText.placeholder = NSLocalizedString(@"Password", nil);
         _passwordText.font = [WPNUXUtility textFieldFont];
         _passwordText.delegate = self;
         _passwordText.secureTextEntry = YES;
+        _passwordText.showTopLineSeparator = YES;
         [_scrollView addSubview:_passwordText];
     }
     
     // Add Site Url
     if (_siteUrlText == nil) {
-        _siteUrlText = [[WPWalkthroughTextField alloc] init];
+        _siteUrlText = [[WPWalkthroughTextField alloc] initWithLeftViewImage:[UIImage imageNamed:@"icon-url-field"]];
         _siteUrlText.backgroundColor = [UIColor whiteColor];
-        _siteUrlText.placeholder = NSLocalizedString(@"Site Address (URL)", @"NUX First Walkthrough Page 3 Site Address Placeholder");
+        _siteUrlText.placeholder = NSLocalizedString(@"Site Address (URL)", @"NUX First Walkthrough Page 2 Site Address Placeholder");
         _siteUrlText.font = [WPNUXUtility textFieldFont];
         _siteUrlText.adjustsFontSizeToFitWidth = YES;
         _siteUrlText.delegate = self;
@@ -842,6 +588,7 @@ CGFloat const GeneralWalkthroughiOS7StatusBarOffset = 10.0;
         _siteUrlText.returnKeyType = UIReturnKeyGo;
         _siteUrlText.autocorrectionType = UITextAutocorrectionTypeNo;
         _siteUrlText.autocapitalizationType = UITextAutocapitalizationTypeNone;
+        _siteUrlText.showTopLineSeparator = YES;
         [_scrollView addSubview:_siteUrlText];
     }
     
@@ -853,68 +600,42 @@ CGFloat const GeneralWalkthroughiOS7StatusBarOffset = 10.0;
         [_scrollView addSubview:_signInButton];
         _signInButton.enabled = NO;
     }
-    
-    // Add Create Account Text
-    if (_createAccountLabel == nil) {
-        _createAccountLabel = [[UILabel alloc] init];
-        _createAccountLabel.numberOfLines = 2;
-        _createAccountLabel.lineBreakMode = NSLineBreakByWordWrapping;
-        _createAccountLabel.textAlignment = NSTextAlignmentCenter;
-        _createAccountLabel.backgroundColor = [UIColor clearColor];
-        _createAccountLabel.textColor = [UIColor whiteColor];
-        _createAccountLabel.font = [UIFont fontWithName:@"OpenSans" size:15.0];
-        _createAccountLabel.text = NSLocalizedString(@"Don't have an account? Create one!", @"NUX First Walkthrough Page 3 Create Account Label");
-        _createAccountLabel.shadowColor = [UIColor blackColor];
-        _createAccountLabel.shadowOffset = CGSizeMake(0.0, 1.0);
-        UITapGestureRecognizer *tapGestureRecognizer = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(clickedCreateAccount:)];
-        tapGestureRecognizer.numberOfTapsRequired = 1;
-        _createAccountLabel.userInteractionEnabled = YES;
-        [_createAccountLabel addGestureRecognizer:tapGestureRecognizer];
-        [_scrollView addSubview:_createAccountLabel];
-    }
 }
 
-- (void)layoutPage3Controls
+- (void)layoutPage2Controls
 {
     CGFloat x,y;
-    x = (_viewWidth - CGRectGetWidth(_page3Icon.frame))/2.0;
-    x = [self adjustX:x forPage:3];
+    x = (_viewWidth - CGRectGetWidth(_page2Icon.frame))/2.0;
+    x = [self adjustX:x forPage:2];
     y = GeneralWalkthroughIconVerticalOffset;
-    _page3Icon.frame = CGRectIntegral(CGRectMake(x, y, CGRectGetWidth(_page3Icon.frame), CGRectGetHeight(_page3Icon.frame)));
+    _page2Icon.frame = CGRectIntegral(CGRectMake(x, y, CGRectGetWidth(_page2Icon.frame), CGRectGetHeight(_page2Icon.frame)));
 
     // Layout Username
     x = (_viewWidth - GeneralWalkthroughTextFieldWidth)/2.0;
-    x = [self adjustX:x forPage:3];
-    y = CGRectGetMaxY(_page3Icon.frame) + GeneralWalkthroughStandardOffset;
+    x = [self adjustX:x forPage:2];
+    y = CGRectGetMaxY(_page2Icon.frame) + GeneralWalkthroughStandardOffset;
     _usernameText.frame = CGRectIntegral(CGRectMake(x, y, GeneralWalkthroughTextFieldWidth, GeneralWalkthroughTextFieldHeight));
 
     // Layout Password
     x = (_viewWidth - GeneralWalkthroughTextFieldWidth)/2.0;
-    x = [self adjustX:x forPage:3];
-    y = CGRectGetMaxY(_usernameText.frame) + 0.5*GeneralWalkthroughStandardOffset;
+    x = [self adjustX:x forPage:2];
+    y = CGRectGetMaxY(_usernameText.frame) - 1;
     _passwordText.frame = CGRectIntegral(CGRectMake(x, y, GeneralWalkthroughTextFieldWidth, GeneralWalkthroughTextFieldHeight));
 
     // Layout Site URL
     x = (_viewWidth - GeneralWalkthroughTextFieldWidth)/2.0;
-    x = [self adjustX:x forPage:3];
-    y = CGRectGetMaxY(_passwordText.frame) + 0.5*GeneralWalkthroughStandardOffset;
+    x = [self adjustX:x forPage:2];
+    y = CGRectGetMaxY(_passwordText.frame) - 1;
     _siteUrlText.frame = CGRectIntegral(CGRectMake(x, y, GeneralWalkthroughTextFieldWidth, GeneralWalkthroughTextFieldHeight));
 
     // Layout Sign in Button
     x = (_viewWidth - GeneralWalkthroughSignInButtonWidth) / 2.0;;
-    x = [self adjustX:x forPage:3];
+    x = [self adjustX:x forPage:2];
     y = CGRectGetMaxY(_siteUrlText.frame) + GeneralWalkthroughStandardOffset;
     _signInButton.frame = CGRectMake(x, y, GeneralWalkthroughSignInButtonWidth, GeneralWalkthroughSignInButtonHeight);
-
-    // Layout Create Account Label
-    CGSize createAccountLabelSize = [_createAccountLabel.text sizeWithFont:_createAccountLabel.font constrainedToSize:CGSizeMake(_viewWidth - 2*GeneralWalkthroughStandardOffset, CGFLOAT_MAX) lineBreakMode:NSLineBreakByWordWrapping];
-    x = (_viewWidth - createAccountLabelSize.width)/2.0;
-    x = [self adjustX:x forPage:3];
-    y = CGRectGetMinY(_bottomPanel.frame) + (CGRectGetHeight(_bottomPanel.frame) - createAccountLabelSize.height)/2.0;
-    _createAccountLabel.frame = CGRectIntegral(CGRectMake(x, y, createAccountLabelSize.width, createAccountLabelSize.height));
     
-    NSArray *viewsToCenter = @[_page3Icon, _usernameText, _passwordText, _siteUrlText, _signInButton];
-    [WPNUXUtility centerViews:viewsToCenter withStartingView:_page3Icon andEndingView:_signInButton forHeight:(_viewHeight-_heightFromSwipeToContinue)];
+    NSArray *viewsToCenter = @[_page2Icon, _usernameText, _passwordText, _siteUrlText, _signInButton];
+    [WPNUXUtility centerViews:viewsToCenter withStartingView:_page2Icon andEndingView:_signInButton forHeight:(_viewHeight-_heightFromBottomPanel)];
 }
 
 - (void)savePositionsOfStickyControls
@@ -924,10 +645,7 @@ CGFloat const GeneralWalkthroughiOS7StatusBarOffset = 10.0;
     if (!_savedOriginalPositionsOfStickyControls) {
         _savedOriginalPositionsOfStickyControls = YES;
         _skipToCreateAccountOriginalX = CGRectGetMinX(_skipToCreateAccount.frame);
-        _skipToSignInOriginalX = CGRectGetMinX(_skipToSignIn.frame);
         _bottomPanelOriginalX = CGRectGetMinX(_bottomPanel.frame);
-        _bottomPanelTextureOriginalX = CGRectGetMinX(_bottomPanelTextureView.frame);
-        _pageControlOriginalX = CGRectGetMinX(_pageControl.frame);
     }
 }
 
@@ -939,14 +657,10 @@ CGFloat const GeneralWalkthroughiOS7StatusBarOffset = 10.0;
 - (void)flagPageViewed:(NSUInteger)pageViewed
 {
     _currentPage = pageViewed;
-    _pageControl.currentPage = pageViewed - 1;
     // We do this so we don't keep flagging events if the user goes back and forth on pages
     if (pageViewed == 2 && !_viewedPage2) {
         _viewedPage2 = YES;
-        [WPMobileStats trackEventForSelfHostedAndWPCom:StatsEventNUXFirstWalkthroughViewedPage2];
-    } else if (pageViewed == 3 && !_viewedPage3) {
-        _viewedPage3 = YES;
-        [WPMobileStats trackEventForSelfHostedAndWPCom:StatsEventNUXFirstWalkthroughViewedPage3];
+        [WPMobileStats trackEventForSelfHostedAndWPCom:StatsEventNUXFirstWalkthroughViewedSignInPage];
     }
 }
 
@@ -1234,6 +948,7 @@ CGFloat const GeneralWalkthroughiOS7StatusBarOffset = 10.0;
 }
 
 - (void)displayRemoteError:(NSError *)error {
+    DDLogError(@"%@", error);
     NSString *message = [error localizedDescription];
     if (![[error domain] isEqualToString:WPXMLRPCFaultErrorDomain]) {
         [self displayGenericErrorMessage:message];
@@ -1352,7 +1067,7 @@ CGFloat const GeneralWalkthroughiOS7StatusBarOffset = 10.0;
     _keyboardOffset = (CGRectGetMaxY(_signInButton.frame) - CGRectGetMinY(keyboardFrame)) + CGRectGetHeight(_signInButton.frame);
 
     [UIView animateWithDuration:animationDuration animations:^{
-        NSArray *controlsToMove = @[_page3Icon, _usernameText, _passwordText, _siteUrlText, _signInButton];
+        NSArray *controlsToMove = @[_page2Icon, _usernameText, _passwordText, _siteUrlText, _signInButton];
         
         for (UIControl *control in controlsToMove) {
             CGRect frame = control.frame;
@@ -1367,7 +1082,7 @@ CGFloat const GeneralWalkthroughiOS7StatusBarOffset = 10.0;
     NSDictionary *keyboardInfo = notification.userInfo;
     CGFloat animationDuration = [[keyboardInfo objectForKey:UIKeyboardAnimationDurationUserInfoKey] floatValue];
     [UIView animateWithDuration:animationDuration animations:^{
-        NSArray *controlsToMove = @[_page3Icon, _usernameText, _passwordText, _siteUrlText, _signInButton];
+        NSArray *controlsToMove = @[_page2Icon, _usernameText, _passwordText, _siteUrlText, _signInButton];
         
         for (UIControl *control in controlsToMove) {
             CGRect frame = control.frame;

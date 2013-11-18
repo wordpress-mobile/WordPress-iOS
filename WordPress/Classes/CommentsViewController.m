@@ -66,16 +66,12 @@ CGFloat const CommentsSectionHeaderHeight = 24.0;
     WPFLogMethod();
 
 	[super viewWillAppear:animated];
-    
-    self.panelNavigationController.delegate = self;
 }
 
 - (void)viewWillDisappear:(BOOL)animated {
     WPFLogMethod();
     
-    [super viewWillDisappear:animated];
-    
-    self.panelNavigationController.delegate = nil;
+    [super viewWillDisappear:animated];    
 }
 
 
@@ -120,9 +116,9 @@ CGFloat const CommentsSectionHeaderHeight = 24.0;
         vc.comment = comment;
         [self.tableView selectRowAtIndexPath:indexPath animated:YES scrollPosition:UITableViewScrollPositionNone];
         
-        [self.panelNavigationController pushViewController:vc fromViewController:self animated:YES];
+        [self.navigationController pushViewController:vc animated:YES];
     } else {
-        [self.panelNavigationController popToViewController:self animated:YES];
+        [self.navigationController popToViewController:self animated:YES];
     }
 }
 
@@ -152,8 +148,20 @@ CGFloat const CommentsSectionHeaderHeight = 24.0;
     return comment;
 }
 
+- (NSString *)tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section {
+    // Don't show a section title if there's only one section
+    if ([tableView numberOfSections] <= 1)
+        return nil;
+    
+    return [super tableView:tableView titleForHeaderInSection:section];
+}
+
 - (UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section
 {
+    // Don't show a section title if there's only one section
+    if ([tableView numberOfSections] <= 1)
+        return nil;
+    
     id <NSFetchedResultsSectionInfo> sectionInfo = [[self.resultsController sections] objectAtIndex:section];
     NSString *title = [Comment titleForStatus:[sectionInfo name]];
     
@@ -170,11 +178,6 @@ CGFloat const CommentsSectionHeaderHeight = 24.0;
     [view addSubview:label];
 
     return view;
-}
-
-- (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section
-{
-    return CommentsSectionHeaderHeight;
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {

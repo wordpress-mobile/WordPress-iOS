@@ -58,7 +58,6 @@ NSString * const NotificationsLastSyncDateKey = @"NotificationsLastSyncDate";
     
     [WPStyleGuide configureColorsForView:self.view andTableView:self.tableView];
     
-    self.panelNavigationController.delegate = self;
     self.infiniteScrollEnabled = YES;
     [self.tableView registerClass:[NewNotificationsTableViewCell class] forCellReuseIdentifier:NotificationsTableViewNoteCellIdentifier];
 }
@@ -138,7 +137,7 @@ NSString * const NotificationsLastSyncDateKey = @"NotificationsLastSyncDate";
 
 - (void)refreshFromPushNotification {
     if (IS_IPHONE)
-        [self.panelNavigationController popToRootViewControllerAnimated:YES];
+        [self.navigationController popToRootViewControllerAnimated:YES];
     [self.tableView scrollRectToVisible:CGRectMake(0, 0, 1, 1) animated:YES];
     if (![self isSyncing]) {
         [self syncItems];
@@ -164,11 +163,11 @@ NSString * const NotificationsLastSyncDateKey = @"NotificationsLastSyncDate";
             NotificationsCommentDetailViewController *detailViewController = [[NotificationsCommentDetailViewController alloc] initWithNibName:@"NotificationsCommentDetailViewController" bundle:nil];
             detailViewController.note = note;
             detailViewController.user = self.user;
-            [self.panelNavigationController pushViewController:detailViewController fromViewController:self animated:YES];
+            [self.navigationController pushViewController:detailViewController animated:YES];
         } else {
             NotificationsFollowDetailViewController *detailViewController = [[NotificationsFollowDetailViewController alloc] initWithNibName:@"NotificationsFollowDetailViewController" bundle:nil];
             detailViewController.note = note;
-            [self.panelNavigationController pushViewController:detailViewController fromViewController:self animated:YES];
+            [self.navigationController pushViewController:detailViewController animated:YES];
         }
     } else {
         [self.tableView deselectRowAtIndexPath:indexPath animated:YES];

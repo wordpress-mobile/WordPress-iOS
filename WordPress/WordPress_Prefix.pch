@@ -21,7 +21,6 @@
     #import "NSString+Util.h"
     #import "WPError.h"
     #import "UIColor+Helpers.h"
-    #import "PanelNavigationController.h"
     #import "WPMobileStats.h"
     #import "WPStyleGuide.h"
 

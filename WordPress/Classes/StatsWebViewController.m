@@ -151,10 +151,10 @@ static NSString *_lastAuthedName = nil;
         navController.navigationBar.translucent = NO;
         navController.modalTransitionStyle = UIModalTransitionStyleCrossDissolve;
         navController.modalPresentationStyle = UIModalPresentationFormSheet;
-        [self.panelNavigationController presentViewController:navController animated:YES completion:nil];
+        [self.navigationController presentViewController:navController animated:YES completion:nil];
     } else {
         JetpackSettingsViewController *controller = [[JetpackSettingsViewController alloc] initWithBlog:blog];
-        controller.ignoreNavigationController = YES;
+        controller.initialSignIn = NO;
         __weak JetpackSettingsViewController *safeController = controller;
         [controller setCompletionBlock:^(BOOL didAuthenticate) {
             if (didAuthenticate) {
@@ -420,7 +420,7 @@ static NSString *_lastAuthedName = nil;
             [query rangeOfString:@"no-chrome"].location == NSNotFound) {
             WPWebViewController *webViewController = [[WPWebViewController alloc] init];
             [webViewController setUrl:request.URL];
-            [self.panelNavigationController pushViewController:webViewController fromViewController:self animated:YES];
+            [self.navigationController pushViewController:webViewController animated:YES];
             return NO;
         }
         

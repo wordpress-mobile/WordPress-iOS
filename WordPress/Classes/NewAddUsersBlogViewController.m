@@ -28,7 +28,7 @@
     NSMutableArray *_selectedBlogs;
     WPNUXSecondaryButton *_selectAllButton;
     WPNUXPrimaryButton *_addSelectedButton;
-    UIView *_mainTextureView;
+    UIView *_mainView;
     
     CGFloat _viewWidth;
     CGFloat _viewHeight;
@@ -66,7 +66,7 @@ CGFloat const AddUsersBlogBottomBackgroundHeight = 64;
     _viewWidth = [self.view formSheetViewWidth];
     _viewHeight = [self.view formSheetViewHeight];
     
-    [self addBackgroundTexture];
+    [self addMainView];
     [self addTableView];
     [self addBottomPanel];
 }
@@ -143,12 +143,11 @@ CGFloat const AddUsersBlogBottomBackgroundHeight = 64;
 
 #pragma mark - Private Methods
 
-- (void)addBackgroundTexture
+- (void)addMainView
 {
-    _mainTextureView = [[UIView alloc] initWithFrame:self.view.bounds];
-    _mainTextureView.backgroundColor = [UIColor colorWithPatternImage:[UIImage imageNamed:@"ui-texture"]];
-    [self.view addSubview:_mainTextureView];
-    _mainTextureView.userInteractionEnabled = NO;
+    _mainView = [[UIView alloc] initWithFrame:self.view.bounds];
+    [self.view addSubview:_mainView];
+    _mainView.userInteractionEnabled = NO;
 }
 
 - (void)addTableView
@@ -173,15 +172,9 @@ CGFloat const AddUsersBlogBottomBackgroundHeight = 64;
     bottomPanel.frame = CGRectMake(0, CGRectGetMaxY(self.tableView.frame), _viewWidth, AddUsersBlogBottomBackgroundHeight);
     [self.view addSubview:bottomPanel];
     
-    UIView *bottomPanelLine = [[UIView alloc] init];
-    bottomPanelLine.backgroundColor = [UIColor colorWithRed:17.0/255.0 green:17.0/255.0 blue:17.0/255.0 alpha:0.95];
-    bottomPanelLine.frame = CGRectMake(0, CGRectGetMinY(bottomPanel.frame), _viewWidth, 1);
-    [self.view addSubview:bottomPanel];
-    
-    UIView *bottomPanelTextureView = [[UIView alloc] initWithFrame:bottomPanel.frame];
-    bottomPanelTextureView.backgroundColor = [UIColor colorWithPatternImage:[UIImage imageNamed:@"ui-texture"]];
-    bottomPanelTextureView.userInteractionEnabled = NO;
-    [self.view addSubview:bottomPanelTextureView];
+    UIView *bottomPanelLine = [[UIView alloc] initWithFrame:CGRectMake(0, 0, _viewWidth, 1)];
+    bottomPanelLine.backgroundColor = [WPNUXUtility bottomPanelLineColor];
+    [bottomPanel addSubview:bottomPanelLine];
     
     _selectAllButton = [[WPNUXSecondaryButton alloc] init];
     [_selectAllButton setTitle:NSLocalizedString(@"Select All", nil) forState:UIControlStateNormal];
@@ -241,8 +234,6 @@ CGFloat const AddUsersBlogBottomBackgroundHeight = 64;
     title.lineBreakMode = NSLineBreakByWordWrapping;
     title.font = [UIFont fontWithName:@"OpenSans-Light" size:29.0];
     title.text = NSLocalizedString(@"Select the sites you want to add", nil);
-    title.shadowColor = [WPNUXUtility textShadowColor];
-    title.shadowOffset = CGSizeMake(0.0, 1.0);
     title.textColor = [UIColor whiteColor];
     title.numberOfLines = 0;
     CGSize titleSize = [title.text sizeWithFont:title.font constrainedToSize:CGSizeMake(AddUsersBlogMaxTextWidth, CGFLOAT_MAX) lineBreakMode:NSLineBreakByWordWrapping];

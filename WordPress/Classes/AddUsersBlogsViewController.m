@@ -16,6 +16,7 @@
 #import "WPAccount.h"
 #import "SupportViewController.h"
 #import "ContextManager.h"
+#import "WPTableViewCell.h"
 
 @interface AddUsersBlogsViewController() <CreateWPComBlogViewControllerDelegate>
 
@@ -224,11 +225,9 @@
     
     UITableViewCell *cell = [tv dequeueReusableCellWithIdentifier:CellIdentifier];
     if (cell == nil) {
-        cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:CellIdentifier];
+        cell = [[WPTableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:CellIdentifier];
     }
-    
-    cell.backgroundColor = [UIColor clearColor];
-	
+
 	switch (indexPath.section) {
 		case 0:
         {

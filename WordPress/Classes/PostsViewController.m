@@ -6,7 +6,6 @@
 #import "NewPostTableViewCell.h"
 #import "WordPressAppDelegate.h"
 #import "Reachability.h"
-#import "PanelNavigationConstants.h"
 
 #define TAG_OFFSET 1010
 
@@ -81,7 +80,6 @@
     
     [WPStyleGuide configureColorsForView:self.view andTableView:self.tableView];
     
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(sidebarOpened) name:SidebarOpenedNotification object:nil];
 }
 
 - (void)viewDidAppear:(BOOL)animated
@@ -93,8 +91,6 @@
 
 - (void)viewWillAppear:(BOOL)animated {
 	[super viewWillAppear:animated];
-	
-    self.panelNavigationController.delegate = self;
 
 	if (!IS_IPAD) {
 		// iPhone table views should not appear selected
@@ -108,18 +104,12 @@
             [self showSelectedPost];
 			[self.tableView selectRowAtIndexPath:self.selectedIndexPath animated:NO scrollPosition:UITableViewScrollPositionNone];
 			[self.tableView scrollToRowAtIndexPath:self.selectedIndexPath atScrollPosition:UITableViewScrollPositionTop animated:NO];
-		} else {
-			//There are no content yet, push an the WP logo on the right.  
-			WordPressAppDelegate *delegate = (WordPressAppDelegate*)[[UIApplication sharedApplication] delegate]; 
-			[delegate showContentDetailViewController:nil];
 		}
-        [self.panelNavigationController setToolbarHidden:NO forViewController:self animated:NO];
 	}
 }
 
 - (void)viewWillDisappear:(BOOL)animated {
     [super viewWillDisappear:animated];
-    self.panelNavigationController.delegate = nil;
 }
 
 - (void)dealloc {
@@ -140,9 +130,6 @@
     return StatsPropertyPostsOpened;
 }
 
-- (void)sidebarOpened {
-    self.tableView.editing = NO;
-}
 
 #pragma mark -
 #pragma mark Syncs methods
@@ -178,11 +165,6 @@
 
 - (NSString *)tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section {
     return nil;
-}
-
-- (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section
-{
-    return 0.0;
 }
 
 - (void)configureCell:(NewPostTableViewCell *)cell atIndexPath:(NSIndexPath *)indexPath {    
@@ -246,9 +228,6 @@
         [self syncItems];
         if(IS_IPAD && self.postReaderViewController) {
             if(self.postReaderViewController.apost == post) {
-                //push an the W logo on the right. 
-                WordPressAppDelegate *delegate = (WordPressAppDelegate*)[[UIApplication sharedApplication] delegate];
-                [delegate showContentDetailViewController:nil];
                 self.selectedIndexPath = nil;
             }
         }
@@ -276,7 +255,7 @@
     EditPostViewController *editPostViewController = [[EditPostViewController alloc] initWithPost:apost];
     UINavigationController *navController = [[UINavigationController alloc] initWithRootViewController:editPostViewController];
     navController.modalPresentationStyle = UIModalPresentationCurrentContext;
-    [self.panelNavigationController.detailViewController presentViewController:navController animated:YES completion:nil];
+    [self.view.window.rootViewController presentViewController:navController animated:YES completion:nil];
 }
 
 // For iPad
@@ -296,17 +275,11 @@
         post = nil;
     }
     self.postReaderViewController = [[PostViewController alloc] initWithPost:post];
-    [self.panelNavigationController.navigationController pushViewController:self.postReaderViewController animated:YES];
+    [self.navigationController pushViewController:self.postReaderViewController animated:YES];
 }
 
 - (void)setSelectedIndexPath:(NSIndexPath *)indexPath {
-    if ([selectedIndexPath isEqual:indexPath]) {
-        if (self.panelNavigationController) {
-            [self.panelNavigationController viewControllerWantsToBeFullyVisible:self];
-        }
-    } else {
-        WordPressAppDelegate *delegate = (WordPressAppDelegate*)[[UIApplication sharedApplication] delegate];
-
+    if (![selectedIndexPath isEqual:indexPath]) {
         if (indexPath != nil) {
             @try {
                 [self.resultsController objectAtIndexPath:indexPath];
@@ -315,12 +288,9 @@
             }
             @catch (NSException *exception) {
                 selectedIndexPath = nil;
-                [delegate showContentDetailViewController:nil];
             }
         } else {
             selectedIndexPath = nil;
-            if (IS_IPHONE == NO) //Fixes #1292. popToViewController:animated was called twice
-                [delegate showContentDetailViewController:nil];
         }
     }
 }
