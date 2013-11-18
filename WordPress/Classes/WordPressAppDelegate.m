@@ -32,7 +32,7 @@
 #import "ReaderPostsViewController.h"
 #import "NotificationsViewController.h"
 #import "BlogListViewController.h"
-#import "GeneralWalkthroughViewController.h"
+#import "LoginViewController.h"
 
 @interface WordPressAppDelegate (Private) <CrashlyticsDelegate>
 
@@ -269,8 +269,7 @@ int ddLogLevel = LOG_LEVEL_INFO;
     if ([self noBlogsAndNoWordPressDotComAccount]) {
         [WordPressAppDelegate wipeAllKeychainItems];
         
-        GeneralWalkthroughViewController *welcomeViewController = [[GeneralWalkthroughViewController alloc] init];
-        
+        LoginViewController *welcomeViewController = [[LoginViewController alloc] init];
         UINavigationController *aNavigationController = [[UINavigationController alloc] initWithRootViewController:welcomeViewController];
         aNavigationController.navigationBar.translucent = NO;
         aNavigationController.modalTransitionStyle = UIModalTransitionStyleCrossDissolve;
