@@ -66,7 +66,7 @@ CGFloat const JetpackSignInButtonHeight = 41.0;
         _blog = blog;
 		self.username = _blog.jetpackUsername;
 		self.password = _blog.jetpackPassword;
-        self.initialSignIn = YES;
+        self.showFullScreen = YES;
     }
     return self;
 }
@@ -76,13 +76,17 @@ CGFloat const JetpackSignInButtonHeight = 41.0;
     [[NSNotificationCenter defaultCenter] removeObserver:self];
 }
 
+- (BOOL) hidesBottomBarWhenPushed {
+    return YES;
+}
+
 #pragma mark -
 #pragma mark LifeCycle Methods
 
 - (void)viewWillAppear:(BOOL)animated
 {
     [super viewWillAppear:animated];
-    [self.navigationController setNavigationBarHidden:_initialSignIn animated:animated];
+    [self.navigationController setNavigationBarHidden:_showFullScreen animated:animated];
 }
 
 - (void)viewDidLoad {
@@ -107,16 +111,20 @@ CGFloat const JetpackSignInButtonHeight = 41.0;
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(textFieldDidChangeNotificaitonRecieved:) name:UITextFieldTextDidChangeNotification object:_usernameText];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(textFieldDidChangeNotificaitonRecieved:) name:UITextFieldTextDidChangeNotification object:_passwordText];
     
-    if (_initialSignIn) {
-        if (self.canBeSkipped) {
+    if (self.canBeSkipped) {
+        if (_showFullScreen) {
             _skipButton = [[WPNUXSecondaryButton alloc] init];
             [_skipButton setTitle:NSLocalizedString(@"Skip", @"") forState:UIControlStateNormal];
             [_skipButton addTarget:self action:@selector(skip:) forControlEvents:UIControlEventTouchUpInside];
             [_skipButton sizeToFit];
             [self.view addSubview:_skipButton];
-            
-            self.navigationItem.hidesBackButton = YES;
+        } else {
+            UIBarButtonItem *skipButton = [[UIBarButtonItem alloc] initWithTitle:NSLocalizedString(@"Skip", @"") style:UIBarButtonItemStylePlain target:self action:@selector(skip:)];
+            self.navigationItem.rightBarButtonItem = skipButton;
         }
+        
+        self.navigationItem.hidesBackButton = YES;
+
     }
 
     [self updateMessage];
@@ -197,7 +205,7 @@ CGFloat const JetpackSignInButtonHeight = 41.0;
     if (_signInButton == nil) {
         _signInButton = [[WPNUXMainButton alloc] init];
         [_signInButton setColor:[UIColor colorWithRed:116/255.0f green:143/255.0f blue:54/255.0f alpha:1.0]];
-        NSString *title = _initialSignIn ? NSLocalizedString(@"Sign In", nil) : NSLocalizedString(@"Save", nil);
+        NSString *title = _showFullScreen ? NSLocalizedString(@"Sign In", nil) : NSLocalizedString(@"Save", nil);
         [_signInButton setTitle:title forState:UIControlStateNormal];
         [_signInButton addTarget:self action:@selector(saveAction:) forControlEvents:UIControlEventTouchUpInside];
         [self.view addSubview:_signInButton];
@@ -289,7 +297,7 @@ CGFloat const JetpackSignInButtonHeight = 41.0;
         endingView = _moreInformationButton;
     }
     
-    [WPNUXUtility centerViews:viewsToCenter withStartingView:_icon andEndingView:endingView forHeight:(_viewHeight - 88)];
+    [WPNUXUtility centerViews:viewsToCenter withStartingView:_icon andEndingView:endingView forHeight:(_viewHeight - 100)];
 }
 
 
