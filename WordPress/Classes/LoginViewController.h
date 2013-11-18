@@ -8,6 +8,6 @@
 
 #import <UIKit/UIKit.h>
 
-@interface GeneralWalkthroughViewController : UIViewController
+@interface LoginViewController : UIViewController
 
 @end
