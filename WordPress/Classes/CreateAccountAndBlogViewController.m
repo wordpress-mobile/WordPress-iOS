@@ -396,7 +396,7 @@ CGFloat const CreateAccountAndBlogiOS7StatusBarOffset = 20.0;
     
     // Layout Next Button
     x = (_viewWidth - CGRectGetWidth(_createAccountButton.frame))/2.0;
-    y = CGRectGetMaxY(_siteAddressField.frame) + 0.5*CreateAccountAndBlogStandardOffset;
+    y = CGRectGetMaxY(_siteAddressField.frame) + CreateAccountAndBlogStandardOffset;
     _createAccountButton.frame = CGRectIntegral(CGRectMake(x, y, CGRectGetWidth(_createAccountButton.frame), CGRectGetHeight(_createAccountButton.frame)));
 
     // Layout Terms of Service
@@ -408,7 +408,7 @@ CGFloat const CreateAccountAndBlogiOS7StatusBarOffset = 20.0;
         TOSLabelSize = [_TOSLabel.text sizeWithFont:_TOSLabel.font constrainedToSize:CGSizeMake(CreateAccountAndBlogMaxTextWidth, CGFLOAT_MAX) lineBreakMode:NSLineBreakByWordWrapping];
     }
     x = (_viewWidth - TOSLabelSize.width)/2.0;
-    y = CGRectGetMaxY(_createAccountButton.frame) + 0.5*CreateAccountAndBlogStandardOffset;
+    y = CGRectGetMaxY(_createAccountButton.frame) + CreateAccountAndBlogStandardOffset;
     _TOSLabel.frame = CGRectIntegral(CGRectMake(x, y, TOSLabelSize.width, TOSLabelSize.height));
     
     NSArray *controls = @[_titleLabel, _emailField, _usernameField, _passwordField, _TOSLabel, _createAccountButton, _siteAddressField];
@@ -482,7 +482,7 @@ CGFloat const CreateAccountAndBlogiOS7StatusBarOffset = 20.0;
     CGRect keyboardFrame = [[keyboardInfo objectForKey:UIKeyboardFrameEndUserInfoKey] CGRectValue];
     keyboardFrame = [self.view convertRect:keyboardFrame fromView:nil];
     
-    _keyboardOffset = (CGRectGetMaxY(_createAccountButton.frame) - CGRectGetMinY(keyboardFrame)) + CGRectGetHeight(_createAccountButton.frame);
+    _keyboardOffset = (CGRectGetMaxY(_createAccountButton.frame) - CGRectGetMinY(keyboardFrame)) + 0.5 * CreateAccountAndBlogStandardOffset;
     
     // make sure keyboard offset is greater than 0, otherwise do not move controls
     if (_keyboardOffset < 0) {
@@ -582,10 +582,12 @@ CGFloat const CreateAccountAndBlogiOS7StatusBarOffset = 20.0;
     return [self fieldsFilled] && [self isUsernameUnderFiftyCharacters];
 }
 
-#warning Implement proper title generation
 - (NSString *)generateSiteTitleFromUsername:(NSString *)username {
     
-    return nil;
+    // Currently, we set the title of a new site to the username of the account.
+    // Another possibility would be to name the site "username's blog", which is
+    // why this has been placed in a separate method.
+    return username;
 }
 
 - (void)showAllErrors
