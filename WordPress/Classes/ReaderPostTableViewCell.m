@@ -28,7 +28,7 @@ const CGFloat RPTVCAvatarSize = 32.0f;
 const CGFloat RPTVCBorderHeight = 1.0f;
 const CGFloat RPTVCSmallButtonLeftPadding = 2; // Follow, tag
 const CGFloat RPTVCMaxImageHeightPercentage = 0.59f;
-const CGFloat RPTVCSummaryPaddingOffset = 12.0f; // Summary bounds are calculated to be quite tall; offset them
+const CGFloat RPTVCMaxSummaryHeight = 90.0f;
 const CGFloat RPTVCLineHeightMultiple = 1.15f;
 
 // Control buttons (Like, Reblog, ...)
@@ -94,9 +94,8 @@ const CGFloat RPTVCControlButtonBorderSize = 0.0f;
 
     // Post summary
     if ([post.summary length] > 0) {
-        desiredHeight -= RPTVCSummaryPaddingOffset * 2;
         NSAttributedString *postSummary = [self summaryAttributedStringForPost:post];
-        desiredHeight += [postSummary boundingRectWithSize:CGSizeMake(contentWidth, CGFLOAT_MAX) options:NSStringDrawingUsesLineFragmentOrigin | NSStringDrawingUsesFontLeading context:nil].size.height;
+        desiredHeight += [postSummary boundingRectWithSize:CGSizeMake(contentWidth, RPTVCMaxSummaryHeight) options:NSStringDrawingUsesLineFragmentOrigin | NSStringDrawingUsesFontLeading context:nil].size.height;
         desiredHeight += RPTVCVerticalPadding;
     }
     
@@ -408,15 +407,10 @@ const CGFloat RPTVCControlButtonBorderSize = 0.0f;
 
 	// Position the snippet
     if ([self.post.summary length] > 0) {
-        // Remove some padding on top
-        nextY -= RPTVCSummaryPaddingOffset;
-        
         height = ceil([_snippetLabel suggestedSizeForWidth:innerContentWidth].height);
+        height = MIN(height, RPTVCMaxSummaryHeight);
         _snippetLabel.frame = CGRectMake(RPTVCHorizontalInnerPadding, nextY, innerContentWidth, height);
         nextY += ceilf(height + RPTVCVerticalPadding);
-        
-        // Remove some padding below
-        nextY -= RPTVCSummaryPaddingOffset;
     }
 
     // Tag
