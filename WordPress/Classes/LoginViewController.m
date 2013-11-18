@@ -31,7 +31,6 @@
 #import "WPAccount.h"
 
 @interface LoginViewController () <
-    UIScrollViewDelegate,
     UITextFieldDelegate> {
         
     // Views
