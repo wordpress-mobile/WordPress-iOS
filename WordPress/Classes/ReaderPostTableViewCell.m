@@ -120,7 +120,7 @@ const CGFloat RPTVCControlButtonBorderSize = 0.0f;
                                  NSFontAttributeName : [self titleFont]};
     NSMutableAttributedString *titleString = [[NSMutableAttributedString alloc] initWithString:[post.postTitle trim]
                                                                                     attributes:attributes];
-    
+
     return titleString;
 }
 
@@ -375,10 +375,15 @@ const CGFloat RPTVCControlButtonBorderSize = 0.0f;
     CGFloat bylineX = RPTVCAvatarSize + RPTVCAuthorPadding + RPTVCHorizontalInnerPadding;
     _bylineLabel.frame = CGRectMake(bylineX, RPTVCAuthorPadding - 2, contentWidth - bylineX, 18);
     
-    CGFloat followX = bylineX - 4; // Fudge factor for image alignment
-    CGFloat followY = RPTVCAuthorPadding + _bylineLabel.frame.size.height - 2;
-    height = ceil([_followButton.titleLabel suggestedSizeForWidth:innerContentWidth].height);
-    _followButton.frame = CGRectMake(followX, followY, contentWidth - bylineX, height);
+    if ([self.post isFollowable]) {
+        _followButton.hidden = NO;
+        CGFloat followX = bylineX - 4; // Fudge factor for image alignment
+        CGFloat followY = RPTVCAuthorPadding + _bylineLabel.frame.size.height - 2;
+        height = ceil([_followButton.titleLabel suggestedSizeForWidth:innerContentWidth].height);
+        _followButton.frame = CGRectMake(followX, followY, contentWidth - bylineX, height);
+    } else {
+        _followButton.hidden = YES;
+    }
 
     nextY += RPTVCAuthorViewHeight + RPTVCAuthorPadding;
 

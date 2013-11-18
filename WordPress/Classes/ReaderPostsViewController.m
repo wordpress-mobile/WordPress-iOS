@@ -443,6 +443,9 @@ NSString *const WPReaderViewControllerDisplayedNativeFriendFinder = @"DisplayedN
     UIButton *followButton = (UIButton *)sender;
     ReaderPostTableViewCell *cell = [ReaderPostTableViewCell cellForSubview:sender];
     ReaderPost *post = cell.post;
+    
+    if (![post isFollowable])
+        return;
 
     followButton.selected = ![post.isFollowing boolValue]; // Set it optimistically
 	[cell setNeedsLayout];

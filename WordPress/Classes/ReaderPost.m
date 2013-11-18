@@ -212,6 +212,12 @@ NSString *const ReaderExtrasArrayKey = @"ReaderExtrasArrayKey";
 	NSNumber *blogSiteID = [dict numberForKey:@"site_id"];
 	NSNumber *siteID = [dict numberForKey:@"blog_id"];
 	NSNumber *postID = [dict numberForKey:@"ID"];
+    
+    // Some endpoints (e.g. tags) use different case
+    if (siteID == nil) {
+        siteID = [dict numberForKey:@"site_ID"];
+        blogSiteID = [dict numberForKey:@"site_ID"];
+    }
 
 	// following, likes and topics endpoints
 	if ([dict valueForKey:@"blog_site_id"] != nil) {
@@ -631,6 +637,9 @@ NSString *const ReaderExtrasArrayKey = @"ReaderExtrasArrayKey";
     return [formatter stringFromDate:date];
 }
 
+- (BOOL)isFollowable {
+    return self.siteID != nil;
+}
 
 - (BOOL)isFreshlyPressed {
 	return ([self.endpoint rangeOfString:@"freshly-pressed"].location != NSNotFound)? YES : NO;

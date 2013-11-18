@@ -115,6 +115,7 @@ extern NSString *const ReaderExtrasArrayKey;
 
 - (NSString *)prettyDateString;
 
+- (BOOL)isFollowable;
 
 - (BOOL)isFreshlyPressed;
 
