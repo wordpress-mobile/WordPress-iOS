@@ -69,17 +69,21 @@ CGFloat const blavatarImageSize = 50.f;
 
 - (void)viewWillAppear:(BOOL)animated {
     [super viewWillAppear:animated];
-    
-    self.editButtonItem.enabled = ([[self.resultsController fetchedObjects] count] > 0); // Disable if we have no blogs.
 
     self.resultsController.delegate = self;
     [self.resultsController performFetch:nil];
     [self.tableView reloadData];
+
+    self.editButtonItem.enabled = ([self numSites] > 0);
 }
 
 - (void)viewWillDisappear:(BOOL)animated {
     [super viewWillDisappear:animated];
     self.resultsController.delegate = nil;
+}
+
+- (NSUInteger)numSites {
+    return [[self.resultsController fetchedObjects] count];
 }
 
 
@@ -107,8 +111,7 @@ CGFloat const blavatarImageSize = 50.f;
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
-    // Number of blogs
-    NSInteger numRows = [[self.resultsController fetchedObjects] count];
+    NSInteger numRows = [self numSites];
     
     // Plus an extra row for 'Add a Site' (when not editing)
     if (![tableView isEditing])
@@ -165,15 +168,20 @@ CGFloat const blavatarImageSize = 50.f;
         Blog *blog = [self.resultsController objectAtIndexPath:[NSIndexPath indexPathForRow:indexPath.row inSection:0]];
         [blog remove];
         
-        if ([[self.resultsController fetchedObjects] count] == 0) {
-            [self setEditing:NO];
-            self.editButtonItem.enabled = NO;
+        // Count won't be updated yet; if this is the last site (count 1), exit editing mode
+        if ([self numSites] == 1) {
+            // Update the UI in the next run loop after the resultsController has updated
+            // (otherwise row insertion/deletion logic won't work)
+            dispatch_async(dispatch_get_main_queue(), ^{
+                self.editButtonItem.enabled = NO;
+                [self setEditing:NO animated:YES];
+            });
         }
     }
 }
 
 - (NSInteger)rowForAddSite {
-    return [[self.resultsController fetchedObjects] count];
+    return [self numSites];
 }
 
 - (void)configureCell:(UITableViewCell *)cell atIndexPath:(NSIndexPath *)indexPath {
