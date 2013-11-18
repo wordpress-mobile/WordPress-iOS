@@ -459,7 +459,16 @@ NSString *const WPReaderViewControllerDisplayedNativeFriendFinder = @"DisplayedN
 }
 
 - (void)tagAction:(id)sender {
-    // TODO: allow browsing directly to a tag
+    ReaderPostTableViewCell *cell = [ReaderPostTableViewCell cellForSubview:sender];
+    ReaderPost *post = cell.post;
+
+    NSString *endpoint = [NSString stringWithFormat:@"read/tags/%@/posts", post.primaryTagSlug];
+    NSDictionary *dict = @{@"endpoint" : endpoint,
+                           @"title" : post.primaryTagName};
+    
+	[[NSUserDefaults standardUserDefaults] setObject:dict forKey:ReaderCurrentTopicKey];
+	[[NSUserDefaults standardUserDefaults] synchronize];
+    [self readerTopicChanged];
 }
 
 #pragma mark - ReaderTextForm Delegate Methods
