@@ -914,6 +914,7 @@ NSTimeInterval const WPTableViewControllerRefreshTimeout = 300; // 5 minutes
 }
 
 - (void)resetResultsController {
+    [NSFetchedResultsController deleteCacheWithName:[self resultsControllerCacheName]];
 	_resultsController.delegate = nil;
 	_resultsController = nil;
 }
