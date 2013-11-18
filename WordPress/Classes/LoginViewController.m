@@ -6,7 +6,6 @@
 //  Copyright (c) 2013 WordPress. All rights reserved.
 //
 
-#import <SVProgressHUD/SVProgressHUD.h>
 #import <WPXMLRPC/WPXMLRPC.h>
 #import <QuartzCore/QuartzCore.h>
 #import "UIView+FormSheetHelpers.h"
@@ -408,7 +407,7 @@ CGFloat const GeneralWalkthroughiOS7StatusBarOffset = 20.0;
     if (_signInButton == nil) {
         _signInButton = [[WPNUXMainButton alloc] init];
         [_signInButton setTitle:NSLocalizedString(@"Sign In", nil) forState:UIControlStateNormal];
-        [_signInButton addTarget:self action:@selector(clickedSignIn:) forControlEvents:UIControlEventTouchUpInside];
+        [_signInButton addTarget:self action:@selector(signInButtonAction:) forControlEvents:UIControlEventTouchUpInside];
         [_mainView addSubview:_signInButton];
         _signInButton.enabled = NO;
     }
@@ -506,7 +505,7 @@ CGFloat const GeneralWalkthroughiOS7StatusBarOffset = 20.0;
 
 - (void)showJetpackAuthentication
 {
-    [SVProgressHUD dismiss];
+    [self setAuthenticating:NO];
     JetpackSettingsViewController *jetpackSettingsViewController = [[JetpackSettingsViewController alloc] initWithBlog:_blog];
     jetpackSettingsViewController.canBeSkipped = YES;
     [jetpackSettingsViewController setCompletionBlock:^(BOOL didAuthenticate) {
@@ -621,9 +620,14 @@ CGFloat const GeneralWalkthroughiOS7StatusBarOffset = 20.0;
     [alertView show];
 }
 
+- (void)setAuthenticating:(BOOL)authenticating {
+    _signInButton.enabled = !authenticating;
+    [_signInButton showActivityIndicator:authenticating];
+}
+
 - (void)signIn
 {
-    [SVProgressHUD showWithStatus:NSLocalizedString(@"Authenticating", nil) maskType:SVProgressHUDMaskTypeBlack];
+    [self setAuthenticating:YES];
     
     NSString *username = _usernameText.text;
     NSString *password = _passwordText.text;
@@ -646,7 +650,7 @@ CGFloat const GeneralWalkthroughiOS7StatusBarOffset = 20.0;
         WordPressXMLRPCApi *api = [WordPressXMLRPCApi apiWithXMLRPCEndpoint:xmlRPCURL username:username password:password];
         
         [api getBlogOptionsWithSuccess:^(id options){
-            [SVProgressHUD dismiss];
+            [self setAuthenticating:NO];
             
             if ([options objectForKey:@"wordpress.com"] != nil) {
                 NSDictionary *siteUrl = [options dictionaryForKey:@"home_url"];
@@ -656,7 +660,7 @@ CGFloat const GeneralWalkthroughiOS7StatusBarOffset = 20.0;
                 [self signInForSelfHostedForUsername:username password:password options:options andApi:api];
             }
         } failure:^(NSError *error){
-            [SVProgressHUD dismiss];
+            [self setAuthenticating:NO];
             [self displayRemoteError:error];
         }];
     };
@@ -672,17 +676,17 @@ CGFloat const GeneralWalkthroughiOS7StatusBarOffset = 20.0;
 {
     [WPMobileStats trackEventForSelfHostedAndWPCom:StatsEventNUXFirstWalkthroughSignedInForDotCom];
     
-    [SVProgressHUD showWithStatus:NSLocalizedString(@"Connecting to WordPress.com", nil) maskType:SVProgressHUDMaskTypeBlack];
+    [self setAuthenticating:YES];
     
     void (^loginSuccessBlock)(void) = ^{
-        [SVProgressHUD dismiss];
+        [self setAuthenticating:NO];
         _userIsDotCom = YES;
         [self showAddUsersBlogsForWPCom];
     };
     
     void (^loginFailBlock)(NSError *) = ^(NSError *error){
         // User shouldn't get here because the getOptions call should fail, but in the unlikely case they do throw up an error message.
-        [SVProgressHUD dismiss];
+        [self setAuthenticating:NO];
         DDLogError(@"Login failed with username %@ : %@", username, error);
         [self displayGenericErrorMessage:NSLocalizedString(@"Please try entering your login details again.", nil)];
     };
@@ -698,20 +702,20 @@ CGFloat const GeneralWalkthroughiOS7StatusBarOffset = 20.0;
 {
     [WPMobileStats trackEventForSelfHostedAndWPCom:StatsEventNUXFirstWalkthroughSignedInForSelfHosted];
     
-    [SVProgressHUD showWithStatus:NSLocalizedString(@"Reading blog options", nil) maskType:SVProgressHUDMaskTypeBlack];
+    [self setAuthenticating:YES];
     
     [api getBlogsWithSuccess:^(NSArray *blogs) {
         _blogs = blogs;
         [self handleGetBlogsSuccess:[api.xmlrpc absoluteString]];
     } failure:^(NSError *error) {
-        [SVProgressHUD dismiss];
+        [self setAuthenticating:NO];
         [self displayRemoteError:error];
     }];
 }
 
 - (void)handleGuessXMLRPCURLFailure:(NSError *)error
 {
-    [SVProgressHUD dismiss];
+    [self setAuthenticating:NO];
     if ([error.domain isEqual:NSURLErrorDomain] && error.code == NSURLErrorUserCancelledAuthentication) {
         [self displayRemoteError:nil];
     } else if ([error.domain isEqual:WPXMLRPCErrorDomain] && error.code == WPXMLRPCInvalidInputError) {
@@ -746,7 +750,7 @@ CGFloat const GeneralWalkthroughiOS7StatusBarOffset = 20.0;
         }
         
         if ([_blogs count] > 1 && [[subsite objectForKey:@"blogid"] isEqualToString:@"1"]) {
-            [SVProgressHUD dismiss];
+            [self setAuthenticating:NO];
             [self showAddUsersBlogsForSelfHosted:xmlRPCUrl];
         } else {
             [self createBlogWithXmlRpc:xmlRPCUrl andBlogDetails:subsite];
@@ -853,10 +857,9 @@ CGFloat const GeneralWalkthroughiOS7StatusBarOffset = 20.0;
 
 - (void)synchronizeNewlyAddedBlog
 {
-    [SVProgressHUD setStatus:NSLocalizedString(@"Synchronizing Blog", nil)];
     void (^successBlock)() = ^{
         [[WordPressComApi sharedApi] syncPushNotificationInfo];
-        [SVProgressHUD dismiss];
+        [self setAuthenticating:NO];
         [WPMobileStats trackEventForSelfHostedAndWPCom:StatsEventNUXFirstWalkthroughUserSignedInToBlogWithJetpack];
         if ([_blog hasJetpack]) {
             [self showJetpackAuthentication];
@@ -865,7 +868,7 @@ CGFloat const GeneralWalkthroughiOS7StatusBarOffset = 20.0;
         }
     };
     void (^failureBlock)(NSError*) = ^(NSError * error) {
-        [SVProgressHUD dismiss];
+        [self setAuthenticating:NO];
     };
     [_blog syncBlogWithSuccess:successBlock failure:failureBlock];
 }
