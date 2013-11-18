@@ -211,8 +211,6 @@
 		374F18CD15A5897500524ED0 /* SidebarToolbarButton@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 374F18AB15A5897500524ED0 /* SidebarToolbarButton@2x.png */; };
 		375D090D133B94C3000CC9CD /* BlogsTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 375D090C133B94C3000CC9CD /* BlogsTableViewCell.m */; };
 		375D7EE21355E9B6001C7371 /* paperclip.png in Resources */ = {isa = PBXBuildFile; fileRef = 375D7EE11355E9B6001C7371 /* paperclip.png */; };
-		3768BE87130404FF00E7C9A9 /* BetaUIWindow.m in Sources */ = {isa = PBXBuildFile; fileRef = 3768BE86130404FF00E7C9A9 /* BetaUIWindow.m */; };
-		3768BEF113041E7900E7C9A9 /* BetaFeedbackViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3768BEEF13041E7800E7C9A9 /* BetaFeedbackViewController.m */; };
 		3768BEF213041E7900E7C9A9 /* BetaFeedbackViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 3768BEF013041E7900E7C9A9 /* BetaFeedbackViewController.xib */; };
 		3768F4901340BBD60075B633 /* blavatar-wporg@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 3768F48C1340BBD60075B633 /* blavatar-wporg@2x.png */; };
 		3768F4911340BBD60075B633 /* blavatar-wpcom@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 3768F48D1340BBD60075B633 /* blavatar-wpcom@2x.png */; };
@@ -1218,10 +1216,6 @@
 		375D090B133B94C3000CC9CD /* BlogsTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BlogsTableViewCell.h; sourceTree = "<group>"; };
 		375D090C133B94C3000CC9CD /* BlogsTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BlogsTableViewCell.m; sourceTree = "<group>"; };
 		375D7EE11355E9B6001C7371 /* paperclip.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = paperclip.png; path = Resources/Images/paperclip.png; sourceTree = "<group>"; };
-		3768BE85130404FF00E7C9A9 /* BetaUIWindow.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BetaUIWindow.h; sourceTree = "<group>"; };
-		3768BE86130404FF00E7C9A9 /* BetaUIWindow.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BetaUIWindow.m; sourceTree = "<group>"; };
-		3768BEEE13041E7800E7C9A9 /* BetaFeedbackViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BetaFeedbackViewController.h; sourceTree = "<group>"; };
-		3768BEEF13041E7800E7C9A9 /* BetaFeedbackViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BetaFeedbackViewController.m; sourceTree = "<group>"; };
 		3768BEF013041E7900E7C9A9 /* BetaFeedbackViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = BetaFeedbackViewController.xib; path = Resources/BetaFeedbackViewController.xib; sourceTree = "<group>"; };
 		3768F48C1340BBD60075B633 /* blavatar-wporg@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "blavatar-wporg@2x.png"; path = "Resources/Images/blavatar-wporg@2x.png"; sourceTree = "<group>"; };
 		3768F48D1340BBD60075B633 /* blavatar-wpcom@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "blavatar-wpcom@2x.png"; path = "Resources/Images/blavatar-wpcom@2x.png"; sourceTree = "<group>"; };
@@ -2589,17 +2583,6 @@
 			name = Sidebar;
 			sourceTree = "<group>";
 		};
-		3768BEED13041E3F00E7C9A9 /* Beta */ = {
-			isa = PBXGroup;
-			children = (
-				3768BE85130404FF00E7C9A9 /* BetaUIWindow.h */,
-				3768BE86130404FF00E7C9A9 /* BetaUIWindow.m */,
-				3768BEEE13041E7800E7C9A9 /* BetaFeedbackViewController.h */,
-				3768BEEF13041E7800E7C9A9 /* BetaFeedbackViewController.m */,
-			);
-			name = Beta;
-			sourceTree = "<group>";
-		};
 		3792259E12F6DBCC00F2176A /* Stats */ = {
 			isa = PBXGroup;
 			children = (
@@ -3646,7 +3629,6 @@
 			children = (
 				E1523EB216D3B2EE002C5A36 /* Sharing */,
 				30AF6CFE13C230CC00A29C00 /* About */,
-				3768BEED13041E3F00E7C9A9 /* Beta */,
 				292CECFE1027259000BD407D /* SFHFKeychainUtils.h */,
 				292CECFF1027259000BD407D /* SFHFKeychainUtils.m */,
 				A0E293EF0E21027E00C6919C /* WPAddCategoryViewController.h */,
@@ -5090,9 +5072,7 @@
 				E1C43CA712E4D09E00330262 /* PageViewController.m in Sources */,
 				FD9A948C12FAEA2300438F94 /* DateUtils.m in Sources */,
 				E1B4A9E112FC8B1000EB3F67 /* EGORefreshTableHeaderView.m in Sources */,
-				3768BE87130404FF00E7C9A9 /* BetaUIWindow.m in Sources */,
 				85D2415817D0701A00AF090E /* UIViewController+iOS7StyleChanges.m in Sources */,
-				3768BEF113041E7900E7C9A9 /* BetaFeedbackViewController.m in Sources */,
 				85468F3A17C483F1008AB9C1 /* NewCommentsTableViewCell.m in Sources */,
 				E1D458691309589C00BF0235 /* Coordinate.m in Sources */,
 				E159D1051309AB0D00F498E2 /* MigrateBlogsFromFiles.m in Sources */,
