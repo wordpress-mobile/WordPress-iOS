@@ -6,7 +6,6 @@
 //  Copyright (c) 2012 WordPress. All rights reserved.
 //
 
-#import <SVProgressHUD/SVProgressHUD.h>
 #import "JetpackSettingsViewController.h"
 #import "Blog+Jetpack.h"
 #import "WordPressComApi.h"
@@ -306,13 +305,11 @@ CGFloat const JetpackSignInButtonHeight = 41.0;
 - (void)saveAction:(id)sender {
     
     [self dismissKeyboard];
-    [SVProgressHUD show];
-	
     [self setAuthenticating:YES];
+    
     [_blog validateJetpackUsername:_username
                           password:_password
                            success:^{
-                               [SVProgressHUD dismiss];
                                if (![[WordPressComApi sharedApi] hasCredentials]) {
                                    [[WordPressComApi sharedApi] signInWithUsername:_username password:_password success:nil failure:nil];
                                }
@@ -321,7 +318,6 @@ CGFloat const JetpackSignInButtonHeight = 41.0;
                                    self.completionBlock(YES);
                                }
                            } failure:^(NSError *error) {
-                               [SVProgressHUD dismiss];
                                [self setAuthenticating:NO];
                                [WPError showAlertWithError:error];
                            }];
@@ -404,6 +400,7 @@ CGFloat const JetpackSignInButtonHeight = 41.0;
 - (void)setAuthenticating:(BOOL)authenticating {
     _authenticating = authenticating;
     [self updateSaveButton];
+    [_signInButton showActivityIndicator:authenticating];
 }
 
 - (void)updateSaveButton {
@@ -472,9 +469,7 @@ CGFloat const JetpackSignInButtonHeight = 41.0;
         [self tryLoginWithCurrentWPComCredentials];
         return;
     }
-    [SVProgressHUD showWithStatus:NSLocalizedString(@"Checking for Jetpack...", @"") maskType:SVProgressHUDMaskTypeBlack];
     [_blog syncOptionsWithWithSuccess:^{
-        [SVProgressHUD dismiss];
         if ([_blog hasJetpack]) {
             [self updateMessage];
             double delayInSeconds = 0.1;
@@ -484,7 +479,6 @@ CGFloat const JetpackSignInButtonHeight = 41.0;
             });
         }
     } failure:^(NSError *error) {
-        [SVProgressHUD dismiss];
         [WPError showAlertWithError:error];
     }];
 }
