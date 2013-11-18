@@ -21,13 +21,14 @@
 const CGFloat RPTVCAuthorPadding = 8.0f;
 const CGFloat RPTVCHorizontalInnerPadding = 12.0f;
 const CGFloat RPTVCHorizontalOuterPadding = 8.0f;
-const CGFloat RPTVCMetaViewHeight = 52.0f;
+const CGFloat RPTVCMetaViewHeight = 48.0f;
 const CGFloat RPTVCAuthorViewHeight = 32.0f;
 const CGFloat RPTVCVerticalPadding = 18.0f;
 const CGFloat RPTVCAvatarSize = 32.0f;
 const CGFloat RPTVCLineHeight = 1.0f;
 const CGFloat RPTVCSmallButtonLeftPadding = 2; // Follow, tag
 const CGFloat RPTVCMaxImageHeightPercentage = 0.59f;
+const CGFloat RPTVCMaxSummaryHeight = 100.0f;
 
 // Control buttons (Like, Reblog, ...)
 const CGFloat RPTVCControlButtonHeight = 48.0f;
@@ -80,6 +81,9 @@ const CGFloat RPTVCControlButtonBorderSize = 0.0f;
 		CGFloat height = ceilf((contentWidth * RPTVCMaxImageHeightPercentage));
 		desiredHeight += height;
 	}
+    
+    // Everything but the image has inner padding
+    contentWidth -= RPTVCHorizontalInnerPadding * 2;
 
     // Title
     desiredHeight += RPTVCVerticalPadding;
@@ -91,13 +95,13 @@ const CGFloat RPTVCControlButtonBorderSize = 0.0f;
     if ([post.summary length] > 0) {
         NSAttributedString *postSummary = [self summaryAttributedStringForPost:post];
         desiredHeight += [postSummary boundingRectWithSize:CGSizeMake(contentWidth, CGFLOAT_MAX) options:NSStringDrawingUsesLineFragmentOrigin | NSStringDrawingUsesFontLeading context:nil].size.height;
+        desiredHeight += RPTVCVerticalPadding;
     }
     
     // Tag
-    NSString *tagName = [self tagNameForPost:post];
+    NSString *tagName = post.primaryTagName;
     if ([tagName length] > 0) {
-        desiredHeight += RPTVCVerticalPadding;
-        desiredHeight += [tagName sizeWithFont:[self summaryFont] constrainedToSize:CGSizeMake(contentWidth, CGFLOAT_MAX) lineBreakMode:NSLineBreakByWordWrapping].height;
+        desiredHeight += [tagName sizeWithFont:[self summaryFont] constrainedToSize:CGSizeMake(contentWidth, CGFLOAT_MAX) lineBreakMode:NSLineBreakByClipping].height;
     }
 
     // Padding above and below the line
@@ -135,11 +139,6 @@ const CGFloat RPTVCControlButtonBorderSize = 0.0f;
                                                                                           attributes:attributes];
 
     return attributedSummary;
-}
-
-+ (NSString *)tagNameForPost:(ReaderPost *)post {
-    // TODO: Get first tag from the post (not currently being stored)
-    return @"Sample Tag";
 }
 
 + (UIFont *)titleFont {
@@ -313,8 +312,6 @@ const CGFloat RPTVCControlButtonBorderSize = 0.0f;
     _tagButton.contentHorizontalAlignment = UIControlContentHorizontalAlignmentLeft;
     _tagButton.backgroundColor = [UIColor clearColor];
     _tagButton.titleLabel.font = [UIFont fontWithName:@"OpenSans" size:12.0f];
-    NSString *tagName = [ReaderPostTableViewCell tagNameForPost:self.post];
-    [_tagButton setTitle:tagName forState:UIControlStateNormal];
     [_tagButton setTitleEdgeInsets: UIEdgeInsetsMake(0, RPTVCSmallButtonLeftPadding, 0, 0)];
     [_tagButton setImage:[UIImage imageNamed:@"reader-postaction-tag"] forState:UIControlStateNormal];
     [_tagButton setTitleColor:[UIColor colorWithHexString:@"aaa"] forState:UIControlStateNormal];
@@ -398,19 +395,19 @@ const CGFloat RPTVCControlButtonBorderSize = 0.0f;
     
 	// Position the title
     nextY += RPTVCVerticalPadding;
-	height = ceil([_titleLabel suggestedSizeForWidth:contentWidth].height);
+	height = ceil([_titleLabel suggestedSizeForWidth:innerContentWidth].height);
 	_titleLabel.frame = CGRectMake(RPTVCHorizontalInnerPadding, nextY, innerContentWidth, height);
 	nextY += height + RPTVCVerticalPadding;
 
 	// Position the snippet
     if ([self.post.summary length] > 0) {
-        height = ceil([_snippetLabel suggestedSizeForWidth:contentWidth].height);
+        height = ceil([_snippetLabel suggestedSizeForWidth:innerContentWidth].height);
         _snippetLabel.frame = CGRectMake(RPTVCHorizontalInnerPadding, nextY, innerContentWidth, height);
         nextY += ceilf(height + RPTVCVerticalPadding);
     }
 
     // Tag
-    if ([_tagButton.titleLabel.text length] > 0) {
+    if ([self.post.primaryTagName length] > 0) {
         height = ceil([_tagButton.titleLabel suggestedSizeForWidth:innerContentWidth].height);
         _tagButton.frame = CGRectMake(RPTVCHorizontalInnerPadding, nextY, innerContentWidth, height);
         nextY += height + RPTVCVerticalPadding;
@@ -457,6 +454,7 @@ const CGFloat RPTVCControlButtonBorderSize = 0.0f;
 	_bylineLabel.text = nil;
 	_titleLabel.text = nil;
 	_snippetLabel.text = nil;
+    [_tagButton setTitle:nil forState:UIControlStateNormal];
 
     [self setHighlightedEffect:NO animated:NO];
 }
@@ -489,6 +487,13 @@ const CGFloat RPTVCControlButtonBorderSize = 0.0f;
 		self.showImage = YES;
 		self.cellImageView.hidden = NO;
 	}
+    
+    if ([self.post.primaryTagName length] > 0) {
+        _tagButton.hidden = NO;
+        [_tagButton setTitle:self.post.primaryTagName forState:UIControlStateNormal];
+    } else {
+        _tagButton.hidden = YES;
+    }
 
 	if ([self.post isWPCom]) {
 		_likeButton.hidden = NO;
