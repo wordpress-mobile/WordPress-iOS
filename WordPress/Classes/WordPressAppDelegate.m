@@ -276,7 +276,7 @@ int ddLogLevel = LOG_LEVEL_INFO;
         aNavigationController.modalTransitionStyle = UIModalTransitionStyleCrossDissolve;
         aNavigationController.modalPresentationStyle = UIModalPresentationFormSheet;
         
-        [window.rootViewController presentViewController:aNavigationController animated:YES completion:nil];
+        [window.rootViewController presentViewController:aNavigationController animated:NO completion:nil];
     }
 }
 
