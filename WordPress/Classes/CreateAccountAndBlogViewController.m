@@ -31,7 +31,6 @@
     // Page 1
     WPNUXBackButton *_cancelButton;
     UIButton *_helpButton;
-    UIImageView *_icon;
     UILabel *_titleLabel;
     UILabel *_TOSLabel;
     UILabel *_siteAddressWPComLabel;
@@ -231,13 +230,6 @@ CGFloat const CreateAccountAndBlogiOS7StatusBarOffset = 20.0;
         [self.view addSubview:_cancelButton];
     }
     
-    // Add Icon
-    if (_icon == nil) {
-        UIImage *icon = [UIImage imageNamed:@"icon-wp"];
-        _icon = [[UIImageView alloc] initWithImage:icon];
-        [self.view addSubview:_icon];
-    }
-    
     // Add Title
     if (_titleLabel == nil) {
         _titleLabel = [[UILabel alloc] init];
@@ -369,15 +361,10 @@ CGFloat const CreateAccountAndBlogiOS7StatusBarOffset = 20.0;
     // Layout the controls starting out from y of 0, then offset them once the height of the controls
     // is accurately calculated we can determine the vertical center and adjust everything accordingly.
     
-    // Layout Icon
-    x = (_viewWidth - CGRectGetWidth(_icon.frame))/2.0;
-    y = 0;
-    _icon.frame = CGRectIntegral(CGRectMake(x, y, CGRectGetWidth(_icon.frame), CGRectGetHeight(_icon.frame)));
-    
     // Layout Title
     CGSize titleSize = [_titleLabel.text sizeWithFont:_titleLabel.font constrainedToSize:CGSizeMake(CreateAccountAndBlogMaxTextWidth, CGFLOAT_MAX) lineBreakMode:NSLineBreakByWordWrapping];
     x = (_viewWidth - titleSize.width)/2.0;
-    y = CGRectGetMaxY(_icon.frame) + CreateAccountAndBlogStandardOffset;
+    y = 0;
     _titleLabel.frame = CGRectIntegral(CGRectMake(x, y, titleSize.width, titleSize.height));
     
     // Layout Email
@@ -424,8 +411,8 @@ CGFloat const CreateAccountAndBlogiOS7StatusBarOffset = 20.0;
     y = CGRectGetMaxY(_createAccountButton.frame) + 0.5*CreateAccountAndBlogStandardOffset;
     _TOSLabel.frame = CGRectIntegral(CGRectMake(x, y, TOSLabelSize.width, TOSLabelSize.height));
     
-    NSArray *controls = @[_icon, _titleLabel, _emailField, _usernameField, _passwordField, _TOSLabel, _createAccountButton, _siteAddressField];
-    [WPNUXUtility centerViews:controls withStartingView:_icon andEndingView:_TOSLabel forHeight:_viewHeight];
+    NSArray *controls = @[_titleLabel, _emailField, _usernameField, _passwordField, _TOSLabel, _createAccountButton, _siteAddressField];
+    [WPNUXUtility centerViews:controls withStartingView:_titleLabel andEndingView:_TOSLabel forHeight:_viewHeight];
 }
 
 
@@ -551,7 +538,7 @@ CGFloat const CreateAccountAndBlogiOS7StatusBarOffset = 20.0;
 
 - (NSArray *)controlsToShowOrHideDuringKeyboardTransition
 {
-    return @[_icon, _titleLabel, _helpButton, _cancelButton, _TOSLabel];
+    return @[_titleLabel, _helpButton, _cancelButton, _TOSLabel];
 }
 
 - (void)displayRemoteError:(NSError *)error
