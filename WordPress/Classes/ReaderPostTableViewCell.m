@@ -28,7 +28,7 @@ const CGFloat RPTVCAvatarSize = 32.0f;
 const CGFloat RPTVCBorderHeight = 1.0f;
 const CGFloat RPTVCSmallButtonLeftPadding = 2; // Follow, tag
 const CGFloat RPTVCMaxImageHeightPercentage = 0.59f;
-const CGFloat RPTVCMaxSummaryHeight = 90.0f;
+const CGFloat RPTVCMaxSummaryHeight = 88.0f;
 const CGFloat RPTVCLineHeightMultiple = 1.15f;
 
 // Control buttons (Like, Reblog, ...)
