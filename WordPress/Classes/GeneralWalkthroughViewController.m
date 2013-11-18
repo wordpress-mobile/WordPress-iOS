@@ -948,6 +948,7 @@ CGFloat const GeneralWalkthroughiOS7StatusBarOffset = 20.0;
 }
 
 - (void)displayRemoteError:(NSError *)error {
+    DDLogError(@"%@", error);
     NSString *message = [error localizedDescription];
     if (![[error domain] isEqualToString:WPXMLRPCFaultErrorDomain]) {
         [self displayGenericErrorMessage:message];
