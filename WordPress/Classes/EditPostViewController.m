@@ -257,7 +257,7 @@ CGFloat const EditPostViewControllerTextViewOffset = 10.0;
 
 	[self refreshButtons];
 	
-    textView.frame = self.normalTextFrame;
+    textView.frame = [self normalTextFrame];
     tapToStartWritingLabel.frame = [self textviewPlaceholderFrame];
     [textView setContentOffset:CGPointMake(0, 0)];
 
@@ -1282,6 +1282,27 @@ CGFloat const EditPostViewControllerTextViewOffset = 10.0;
 
 #pragma mark - Positioning & Rotation
 
+- (BOOL)wantsFullScreen {
+    /*
+     "Full screen" mode for:
+     * iPhone Portrait without external keyboard
+     * iPhone Landscape
+     * iPad Landscape without external keyboard
+     
+     Show other fields:
+     * iPhone Portrait with external keyboard
+     * iPad Portrait
+     * iPad Landscape with external keyboard
+     */
+    BOOL isLandscape = UIDeviceOrientationIsLandscape([UIApplication sharedApplication].statusBarOrientation);
+    BOOL yesOrNo = (
+                    (!IS_IPAD && !isExternalKeyboard)                  // iPhone without external keyboard
+                    || (!IS_IPAD && isLandscape && isExternalKeyboard) // iPhone Landscape with external keyboard
+                    || (IS_IPAD && isLandscape && !isExternalKeyboard) // iPad Landscape without external keyboard
+                    );
+    return yesOrNo;
+}
+
 - (void)positionTextView:(NSNotification *)notification {
     // Save time: Uncomment this line when you're debugging UITextView positioning
     // textView.backgroundColor = [UIColor blueColor];
@@ -1294,49 +1315,21 @@ CGFloat const EditPostViewControllerTextViewOffset = 10.0;
 	[UIView setAnimationCurve:curve];
 	[UIView setAnimationDuration:animationDuration];
 
-    CGRect newFrame = self.normalTextFrame;
+    CGRect newFrame = [self normalTextFrame];
 	if(keyboardInfo != nil) {
 		animationDuration = [[keyboardInfo objectForKey:UIKeyboardAnimationDurationUserInfoKey] floatValue];
 		curve = [[keyboardInfo objectForKey:UIKeyboardAnimationCurveUserInfoKey] floatValue];
         [UIView setAnimationCurve:curve];
         [UIView setAnimationDuration:animationDuration];
 
-        BOOL isLandscape = UIDeviceOrientationIsLandscape([UIApplication sharedApplication].statusBarOrientation);
-        BOOL isShowing = ([notification name] == UIKeyboardWillShowNotification);
         CGRect originalKeyboardFrame = [[keyboardInfo objectForKey:UIKeyboardFrameEndUserInfoKey] CGRectValue];
         CGRect keyboardFrame = [self.view convertRect:[self.view.window convertRect:originalKeyboardFrame fromWindow:nil] fromView:nil];
-
-        isExternalKeyboard = keyboardFrame.origin.y + keyboardFrame.size.height > self.view.bounds.size.height;
-        /*
-         "Full screen" mode for:
-         * iPhone Portrait without external keyboard
-         * iPhone Landscape
-         * iPad Landscape without external keyboard
-
-         Show other fields:
-         * iPhone Portrait with external keyboard
-         * iPad Portrait
-         * iPad Landscape with external keyboard
-         */
-        BOOL wantsFullScreen = (
-                                (!IS_IPAD && !isExternalKeyboard)                  // iPhone without external keyboard
-                                || (!IS_IPAD && isLandscape && isExternalKeyboard) // iPhone Landscape with external keyboard
-                                || (IS_IPAD && isLandscape && !isExternalKeyboard) // iPad Landscape without external keyboard
-                                );
-        if (wantsFullScreen && isShowing) {
-            [self.navigationController setNavigationBarHidden:YES animated:YES];;
-        } else {
-            [self.navigationController setNavigationBarHidden:NO animated:YES];
-        }
-        // If we show/hide the navigation bar, the view frame changes so the converted keyboardFrame is not valid anymore
-        keyboardFrame = [self.view convertRect:[self.view.window convertRect:originalKeyboardFrame fromWindow:nil] fromView:nil];
-        // Assing this again since changing the visibility status of navigation bar changes the view frame (#1386)
         
         newFrame = [self normalTextFrame];
 
-        if (isShowing) {
+        if (isShowingKeyboard) {
 
-            if (wantsFullScreen) {
+            if ([self wantsFullScreen]) {
                 // Make the text view expand covering other fields
                 newFrame.origin.x = 0;
                 newFrame.origin.y = 0;
@@ -1644,8 +1637,16 @@ CGFloat const EditPostViewControllerTextViewOffset = 10.0;
 - (void)keyboardWillShow:(NSNotification *)notification {
     WPFLogMethod();
 	isShowingKeyboard = YES;
+    
+    CGRect originalKeyboardFrame = [[[notification userInfo] objectForKey:UIKeyboardFrameEndUserInfoKey] CGRectValue];
+    CGRect keyboardFrame = [self.view convertRect:[self.view.window convertRect:originalKeyboardFrame fromWindow:nil] fromView:nil];
+    isExternalKeyboard = keyboardFrame.origin.y + keyboardFrame.size.height > self.view.bounds.size.height;
+
     if ([textView isFirstResponder] || self.linkHelperAlertView.firstTextField.isFirstResponder || self.linkHelperAlertView.secondTextField.isFirstResponder) {
         [[UIApplication sharedApplication] setStatusBarHidden:YES withAnimation:UIStatusBarAnimationFade];
+        if ([self wantsFullScreen]) {
+            [self.navigationController setNavigationBarHidden:YES animated:YES];
+        }
     }
     if ([textView isFirstResponder]) {
         [self positionTextView:notification];
@@ -1658,6 +1659,8 @@ CGFloat const EditPostViewControllerTextViewOffset = 10.0;
     WPFLogMethod();
 	isShowingKeyboard = NO;
     [[UIApplication sharedApplication] setStatusBarHidden:NO withAnimation:UIStatusBarAnimationFade];
+    [self.navigationController setNavigationBarHidden:NO animated:YES];
+    
     [self positionTextView:notification];
     [self positionAutosaveView:notification];
 }
