@@ -20,9 +20,7 @@
 #import "WPNUXUtility.h"
 #import "WPAccount.h"
 
-@interface NewAddUsersBlogViewController () <
-    UITableViewDelegate,
-    UITableViewDataSource> {
+@interface NewAddUsersBlogViewController () <UITableViewDelegate, UITableViewDataSource> {
     NSArray *_usersBlogs;
     NSMutableArray *_selectedBlogs;
     WPNUXSecondaryButton *_selectAllButton;
@@ -73,7 +71,26 @@ CGFloat const AddUsersBlogBottomBackgroundHeight = 64;
 - (void)viewDidAppear:(BOOL)animated
 {
     [super viewDidAppear:animated];
-    [self refreshBlogs];
+
+    void (^continueBlock)(void) = ^{
+        [self refreshBlogs];
+    };
+
+    if (!self.account.primaryBlogID && self.account.isWpcom) {
+        __weak NewAddUsersBlogViewController *weakSelf = self;
+        [SVProgressHUD showWithStatus:NSLocalizedString(@"Loading sites...", nil) maskType:SVProgressHUDMaskTypeBlack];
+        [[WordPressComApi sharedApi] getPath:@"me" parameters:nil success:^(AFHTTPRequestOperation *operation, id responseObject) {
+            NSDictionary *response = (NSDictionary *)responseObject;
+            weakSelf.account.email = [response stringForKey:@"email"];
+            weakSelf.account.primaryBlogID = [response numberForKey:@"primary_blog"];
+            continueBlock();
+        } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+            DDLogError(@"Error getting /me: %@", error);
+            continueBlock();
+        }];
+    } else {
+        continueBlock();
+    }
 }
 
 - (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation
@@ -294,34 +311,38 @@ CGFloat const AddUsersBlogBottomBackgroundHeight = 64;
 
 - (void)selectAppropriateBlog
 {
-    if (self.siteUrl == nil) {
-        [self selectFirstBlog];
-    } else {
+    __block NSInteger indexOfBlog = -1;
+
+    if (self.siteUrl) {
         // This strips out any leading http:// or https:// making for an easier string match.
         NSString *desiredBlogUrl = [[NSURL URLWithString:self.siteUrl] absoluteString];
         
-        __block BOOL blogFound = NO;
-        __block NSUInteger indexOfBlog;
         [_usersBlogs enumerateObjectsUsingBlock:^(id blogInfo, NSUInteger index, BOOL *stop){
             NSString *blogUrl = [blogInfo objectForKey:@"url"];
             if ([blogUrl rangeOfString:desiredBlogUrl options:NSCaseInsensitiveSearch].location != NSNotFound) {
-                blogFound = YES;
                 [_selectedBlogs addObject:[blogInfo objectForKey:@"blogid"]];
                 indexOfBlog = index;
                 *stop = YES;
             }
         }];
-        
-        if (!blogFound) {
-            [self selectFirstBlog];
-        } else {
-            // Let's make sure the blog we selected is at the top of the list the user sees.
-            NSMutableArray *rearrangedUsersBlogs = [NSMutableArray arrayWithArray:_usersBlogs];
-            NSDictionary *selectedBlogInfo = [rearrangedUsersBlogs objectAtIndex:indexOfBlog];
-            [rearrangedUsersBlogs removeObjectAtIndex:indexOfBlog];
-            [rearrangedUsersBlogs insertObject:selectedBlogInfo atIndex:0];
-            _usersBlogs = rearrangedUsersBlogs;
-        }
+    } else if (self.account.primaryBlogID) {
+        NSString *primaryBlog = [self.account.primaryBlogID stringValue];
+        [_usersBlogs enumerateObjectsUsingBlock:^(id blogInfo, NSUInteger index, BOOL *stop){
+            if ([[blogInfo objectForKey:@"blogid"] isEqualToString:primaryBlog]) {
+                [_selectedBlogs addObject:[blogInfo objectForKey:@"blogid"]];
+                indexOfBlog = index;
+                *stop = YES;
+            }
+        }];
+    }
+
+    if (indexOfBlog >= 0) {
+        // Let's make sure the blog we selected is at the top of the list the user sees.
+        NSMutableArray *rearrangedUsersBlogs = [NSMutableArray arrayWithArray:_usersBlogs];
+        NSDictionary *selectedBlogInfo = [rearrangedUsersBlogs objectAtIndex:indexOfBlog];
+        [rearrangedUsersBlogs removeObjectAtIndex:indexOfBlog];
+        [rearrangedUsersBlogs insertObject:selectedBlogInfo atIndex:0];
+        _usersBlogs = rearrangedUsersBlogs;
     }
 }
 
