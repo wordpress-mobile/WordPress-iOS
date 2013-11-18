@@ -128,7 +128,7 @@ CGFloat const JetpackSignInButtonHeight = 41.0;
     });
 
     UITapGestureRecognizer *tgr = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(dismissKeyboard)];
-    tgr.cancelsTouchesInView = NO;
+    tgr.cancelsTouchesInView = YES;
     [self.view addGestureRecognizer:tgr];
 }
 
