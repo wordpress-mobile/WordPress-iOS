@@ -727,11 +727,19 @@
 - (void)handleKeyboardDidShow:(NSNotification *)notification {    
     CGRect rect = [[notification.userInfo valueForKey:UIKeyboardFrameEndUserInfoKey] CGRectValue];    
     CGRect frame = self.view.frame;
-    if (UIInterfaceOrientationIsLandscape(self.interfaceOrientation)) {
-        frame.size.height -= rect.size.width;
-    } else {
-        frame.size.height -= rect.size.height;
+
+    // Slight hack to account for tab bar; ditch this when we switch to a translucent tab bar
+    CGSize tabBarSize = CGSizeZero;
+    if ([self tabBarController]) {
+        tabBarSize = [[[self tabBarController] tabBar] bounds].size;
     }
+
+    if (UIInterfaceOrientationIsLandscape(self.interfaceOrientation)) {
+        frame.size.height -= rect.size.width - tabBarSize.height;
+    } else {
+        frame.size.height -= rect.size.height - tabBarSize.height;
+    }
+
     self.view.frame = frame;
     
     CGPoint point = [self.tableView convertPoint:self.lastTextField.frame.origin fromView:self.lastTextField];
