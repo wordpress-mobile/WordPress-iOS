@@ -420,8 +420,10 @@ CGFloat const CreateAccountAndBlogiOS7StatusBarOffset = 20.0;
 {
     [WPMobileStats trackEventForSelfHostedAndWPCom:StatsEventNUXCreateAccountClickedHelp];
     SupportViewController *supportViewController = [[SupportViewController alloc] init];
-    [self.navigationController pushViewController:supportViewController animated:YES];
-    [self.navigationController setNavigationBarHidden:NO animated:YES];
+    UINavigationController *nc = [[UINavigationController alloc] initWithRootViewController:supportViewController];
+    nc.navigationBar.translucent = NO;
+    nc.modalPresentationStyle = UIModalPresentationFormSheet;
+    [self.navigationController presentViewController:nc animated:YES completion:nil];
 }
 
 - (void)cancelButtonAction
