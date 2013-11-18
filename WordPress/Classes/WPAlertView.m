@@ -403,4 +403,15 @@ CGFloat const WPAlertViewStandardOffset = 16.0;
      ];
 }
 
+#pragma mark - UITextField Delegate Methods
+
+- (BOOL)textFieldShouldReturn:(UITextField *)textField {
+    if ([textField isEqual:self.firstTextField]) {
+        [self.secondTextField becomeFirstResponder];
+    } else {
+        [self clickedOnButton2];
+    }
+    return NO;
+}
+
 @end

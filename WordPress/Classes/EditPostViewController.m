@@ -1146,7 +1146,9 @@ CGFloat const EditPostViewControllerTextViewOffset = 10.0;
     
     _linkHelperAlertView.alpha = 0.0;
     [self.view addSubview:_linkHelperAlertView];
-
+    if ([infoText length] > 0) {
+        [_linkHelperAlertView.secondTextField becomeFirstResponder];
+    }
     [UIView animateWithDuration:0.2 animations:^{
         _linkHelperAlertView.alpha = 1.0;
     }];

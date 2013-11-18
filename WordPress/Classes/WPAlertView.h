@@ -17,7 +17,7 @@ typedef NS_ENUM(NSUInteger, WPAlertViewOverlayMode) {
     WPAlertViewOverlayModeTwoTextFieldsSideBySideTwoButtonMode
 };
 
-@interface WPAlertView : UIView
+@interface WPAlertView : UIView <UITextFieldDelegate>
 
 @property (nonatomic, strong) NSString *overlayTitle;
 @property (nonatomic, strong) NSString *overlayDescription;
