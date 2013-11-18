@@ -89,12 +89,6 @@
     [super viewDidAppear:animated];
 
     [WPMobileStats flagProperty:[self statsPropertyForViewOpening] forEvent:StatsEventAppClosed];
-    
-    // Scroll to the top of the UItableView to show the newly added post.
-    if (_addingNewPost) {
-        [self.tableView setContentOffset:CGPointZero animated:YES];
-        _addingNewPost = NO;
-    }
 }
 
 - (void)viewWillAppear:(BOOL)animated {
@@ -114,6 +108,13 @@
 			[self.tableView scrollToRowAtIndexPath:self.selectedIndexPath atScrollPosition:UITableViewScrollPositionTop animated:NO];
 		}
 	}
+    
+    // Scroll to the top of the UItableView to show the newly added post.
+    if (_addingNewPost) {
+        [self.tableView setContentOffset:CGPointZero animated:NO];
+        _addingNewPost = NO;
+    }
+
 }
 
 - (void)viewWillDisappear:(BOOL)animated {
