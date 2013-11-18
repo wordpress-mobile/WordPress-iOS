@@ -505,11 +505,6 @@ typedef enum {
         
         Blog *blog = [self.resultsController objectAtIndexPath:[NSIndexPath indexPathForRow:indexPath.row inSection:0]];
         [blog remove];
-        
-        if([[self.resultsController fetchedObjects] count] == 0) {
-            [self setEditing:NO];
-            self.editButtonItem.enabled = NO;
-        }
     }   
 }
 
@@ -633,6 +628,13 @@ typedef enum {
 - (void)controllerDidChangeContent:(NSFetchedResultsController *)controller {
     [self.tableView endUpdates];
     [self checkCloseButton];
+    
+    BOOL hasBlogs = [[controller fetchedObjects] count] > 0;
+    self.editButtonItem.enabled = hasBlogs;
+    
+    if (!hasBlogs) {
+        [self setEditing:NO];
+    }
 }
 
 - (void)controller:(NSFetchedResultsController *)controller
