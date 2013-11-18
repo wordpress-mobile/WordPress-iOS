@@ -23,12 +23,13 @@ const CGFloat RPTVCHorizontalInnerPadding = 12.0f;
 const CGFloat RPTVCHorizontalOuterPadding = 8.0f;
 const CGFloat RPTVCMetaViewHeight = 48.0f;
 const CGFloat RPTVCAuthorViewHeight = 32.0f;
-const CGFloat RPTVCVerticalPadding = 18.0f;
+const CGFloat RPTVCVerticalPadding = 16.0f;
 const CGFloat RPTVCAvatarSize = 32.0f;
-const CGFloat RPTVCLineHeight = 1.0f;
+const CGFloat RPTVCBorderHeight = 1.0f;
 const CGFloat RPTVCSmallButtonLeftPadding = 2; // Follow, tag
 const CGFloat RPTVCMaxImageHeightPercentage = 0.59f;
-const CGFloat RPTVCMaxSummaryHeight = 100.0f;
+const CGFloat RPTVCSummaryPaddingOffset = 12.0f; // Summary bounds are calculated to be quite tall; offset them
+const CGFloat RPTVCLineHeightMultiple = 1.15f;
 
 // Control buttons (Like, Reblog, ...)
 const CGFloat RPTVCControlButtonHeight = 48.0f;
@@ -93,6 +94,7 @@ const CGFloat RPTVCControlButtonBorderSize = 0.0f;
 
     // Post summary
     if ([post.summary length] > 0) {
+        desiredHeight -= RPTVCSummaryPaddingOffset * 2;
         NSAttributedString *postSummary = [self summaryAttributedStringForPost:post];
         desiredHeight += [postSummary boundingRectWithSize:CGSizeMake(contentWidth, CGFLOAT_MAX) options:NSStringDrawingUsesLineFragmentOrigin | NSStringDrawingUsesFontLeading context:nil].size.height;
         desiredHeight += RPTVCVerticalPadding;
@@ -115,7 +117,7 @@ const CGFloat RPTVCControlButtonBorderSize = 0.0f;
 
 + (NSAttributedString *)titleAttributedStringForPost:(ReaderPost *)post {
     NSMutableParagraphStyle *style = [[NSMutableParagraphStyle alloc] init];
-    [style setLineHeightMultiple:1.25f];
+    [style setLineHeightMultiple:RPTVCLineHeightMultiple];
     NSDictionary *attributes = @{NSParagraphStyleAttributeName : style,
                                  NSFontAttributeName : [self titleFont]};
     NSMutableAttributedString *titleString = [[NSMutableAttributedString alloc] initWithString:[post.postTitle trim]
@@ -132,7 +134,7 @@ const CGFloat RPTVCControlButtonBorderSize = 0.0f;
         summary = [post.summary substringToIndex:newline];
 
     NSMutableParagraphStyle *style = [[NSMutableParagraphStyle alloc] init];
-    [style setLineHeightMultiple:1.25f];
+    [style setLineHeightMultiple:RPTVCLineHeightMultiple];
     NSDictionary *attributes = @{NSParagraphStyleAttributeName : style,
                                  NSFontAttributeName : [self summaryFont]};
     NSMutableAttributedString *attributedSummary = [[NSMutableAttributedString alloc] initWithString:summary
@@ -395,7 +397,7 @@ const CGFloat RPTVCControlButtonBorderSize = 0.0f;
 		nextY += height;
     } else {
         _titleBorder.hidden = NO;
-        _titleBorder.frame = CGRectMake(RPTVCHorizontalInnerPadding, nextY, contentWidth - RPTVCHorizontalInnerPadding * 2, RPTVCLineHeight);
+        _titleBorder.frame = CGRectMake(RPTVCHorizontalInnerPadding, nextY, contentWidth - RPTVCHorizontalInnerPadding * 2, RPTVCBorderHeight);
     }
     
 	// Position the title
@@ -406,9 +408,15 @@ const CGFloat RPTVCControlButtonBorderSize = 0.0f;
 
 	// Position the snippet
     if ([self.post.summary length] > 0) {
+        // Remove some padding on top
+        nextY -= RPTVCSummaryPaddingOffset;
+        
         height = ceil([_snippetLabel suggestedSizeForWidth:innerContentWidth].height);
         _snippetLabel.frame = CGRectMake(RPTVCHorizontalInnerPadding, nextY, innerContentWidth, height);
         nextY += ceilf(height + RPTVCVerticalPadding);
+        
+        // Remove some padding below
+        nextY -= RPTVCSummaryPaddingOffset;
     }
 
     // Tag
@@ -423,12 +431,12 @@ const CGFloat RPTVCControlButtonBorderSize = 0.0f;
 
 	// Position the meta view and its subviews
 	_metaView.frame = CGRectMake(0, nextY, contentWidth, RPTVCMetaViewHeight);
-    _metaBorder.frame = CGRectMake(RPTVCHorizontalInnerPadding, 0, contentWidth - RPTVCHorizontalInnerPadding * 2, RPTVCLineHeight);
+    _metaBorder.frame = CGRectMake(RPTVCHorizontalInnerPadding, 0, contentWidth - RPTVCHorizontalInnerPadding * 2, RPTVCBorderHeight);
 
     BOOL commentsOpen = [[self.post commentsOpen] boolValue];
 	CGFloat buttonWidth = RPTVCControlButtonWidth;
     CGFloat buttonX = _metaView.frame.size.width - RPTVCControlButtonWidth;
-    CGFloat buttonY = RPTVCLineHeight; // Just below the line
+    CGFloat buttonY = RPTVCBorderHeight; // Just below the line
     
     // Button order from right-to-left: Like, [Comment], Reblog,
     _likeButton.frame = CGRectMake(buttonX, buttonY, buttonWidth, RPTVCControlButtonHeight);
@@ -444,7 +452,7 @@ const CGFloat RPTVCControlButtonBorderSize = 0.0f;
     _reblogButton.frame = CGRectMake(buttonX, buttonY, buttonWidth - RPTVCControlButtonBorderSize, RPTVCControlButtonHeight);
     
     CGFloat timeWidth = contentWidth - _reblogButton.frame.origin.x;
-    _timeButton.frame = CGRectMake(RPTVCHorizontalInnerPadding, RPTVCLineHeight, timeWidth, RPTVCControlButtonHeight);
+    _timeButton.frame = CGRectMake(RPTVCHorizontalInnerPadding, RPTVCBorderHeight, timeWidth, RPTVCControlButtonHeight);
     
     CGFloat sideBorderX = RPTVCHorizontalOuterPadding - 1; // Just to the left of the container
     CGFloat sideBorderHeight = self.frame.size.height - RPTVCVerticalPadding; // Just below it
