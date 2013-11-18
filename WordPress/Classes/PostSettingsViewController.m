@@ -455,6 +455,13 @@
                     }
                     cell.textLabel.text = NSLocalizedString(@"Categories:", @"Label for the categories field. Should be the same as WP core.");
                     cell.detailTextLabel.text = [NSString decodeXMLCharactersIn:[self.post categoriesText]];
+                    
+                    if ([cell.detailTextLabel.text length] == 0) {
+                        cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
+                    } else {
+                        cell.accessoryType = nil;
+                    }
+                    
                     [WPStyleGuide configureTableViewCell:cell];
                     return cell;
                 }
