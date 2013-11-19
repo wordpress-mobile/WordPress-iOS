@@ -11,6 +11,7 @@
 #import "UIImageView+Gravatar.h"
 #import "WordPressAppDelegate.h"
 #import "WPWebViewController.h"
+#import "NSDate+StringFormatting.h"
 
 #define RCTVCVerticalPadding 5.0f
 #define RCTVCIndentationWidth 10.0f
@@ -197,7 +198,7 @@
 	
 	[self.contentView addSubview:self.cellImageView];
 	
-	_dateLabel.text = [comment shortDate];
+	_dateLabel.text = [comment.dateCreated shortString];
 	_authorLabel.text = comment.author;
 	[self.cellImageView setImageWithURL:[NSURL URLWithString:comment.authorAvatarURL] placeholderImage:[UIImage imageNamed:@"blavatar-wpcom.png"]];
 

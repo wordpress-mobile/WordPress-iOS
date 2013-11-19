@@ -292,6 +292,12 @@
 		462F4E0A18369F0B0028D2F8 /* BlogDetailsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 462F4E0718369F0B0028D2F8 /* BlogDetailsViewController.m */; };
 		462F4E0B18369F0B0028D2F8 /* BlogListViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 462F4E0918369F0B0028D2F8 /* BlogListViewController.m */; };
 		462F4E0E18369F300028D2F8 /* WPTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 462F4E0D18369F300028D2F8 /* WPTableViewCell.m */; };
+		462F4E10183867AE0028D2F8 /* Merriweather-Bold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 462F4E0F183867AE0028D2F8 /* Merriweather-Bold.ttf */; };
+		46F8714B1838BB4E00BC149B /* reader-postaction-tag.png in Resources */ = {isa = PBXBuildFile; fileRef = 46F871491838BB4E00BC149B /* reader-postaction-tag.png */; };
+		46F8714C1838BB4E00BC149B /* reader-postaction-tag@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 46F8714A1838BB4E00BC149B /* reader-postaction-tag@2x.png */; };
+		46F8714F1838C41600BC149B /* NSDate+StringFormatting.m in Sources */ = {isa = PBXBuildFile; fileRef = 46F8714E1838C41600BC149B /* NSDate+StringFormatting.m */; };
+		46F871521839528C00BC149B /* reader-postaction-time.png in Resources */ = {isa = PBXBuildFile; fileRef = 46F871501839528C00BC149B /* reader-postaction-time.png */; };
+		46F871531839528C00BC149B /* reader-postaction-time@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 46F871511839528C00BC149B /* reader-postaction-time@2x.png */; };
 		5D0077A7182AE9DF00F865DB /* ReaderMediaQueue.m in Sources */ = {isa = PBXBuildFile; fileRef = 5D0077A6182AE9DF00F865DB /* ReaderMediaQueue.m */; };
 		5D119DA3176FBE040073D83A /* UIImageView+AFNetworkingExtra.m in Sources */ = {isa = PBXBuildFile; fileRef = 5D119DA2176FBE040073D83A /* UIImageView+AFNetworkingExtra.m */; };
 		5D1392A7157D4D92007D51B8 /* StatsWebViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 5D1392A6157D4D92007D51B8 /* StatsWebViewController.m */; };
@@ -1301,6 +1307,14 @@
 		462F4E0918369F0B0028D2F8 /* BlogListViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BlogListViewController.m; sourceTree = "<group>"; };
 		462F4E0C18369F300028D2F8 /* WPTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WPTableViewCell.h; sourceTree = "<group>"; };
 		462F4E0D18369F300028D2F8 /* WPTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WPTableViewCell.m; sourceTree = "<group>"; };
+		462F4E0F183867AE0028D2F8 /* Merriweather-Bold.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Merriweather-Bold.ttf"; sourceTree = "<group>"; };
+		46F871491838BB4E00BC149B /* reader-postaction-tag.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "reader-postaction-tag.png"; path = "Resources/Images/reader-postaction-tag.png"; sourceTree = "<group>"; };
+		46F8714A1838BB4E00BC149B /* reader-postaction-tag@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "reader-postaction-tag@2x.png"; path = "Resources/Images/reader-postaction-tag@2x.png"; sourceTree = "<group>"; };
+		46F8714D1838C41600BC149B /* NSDate+StringFormatting.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSDate+StringFormatting.h"; sourceTree = "<group>"; };
+		46F8714E1838C41600BC149B /* NSDate+StringFormatting.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSDate+StringFormatting.m"; sourceTree = "<group>"; };
+		46F871501839528C00BC149B /* reader-postaction-time.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "reader-postaction-time.png"; path = "Resources/Images/reader-postaction-time.png"; sourceTree = "<group>"; };
+		46F871511839528C00BC149B /* reader-postaction-time@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "reader-postaction-time@2x.png"; path = "Resources/Images/reader-postaction-time@2x.png"; sourceTree = "<group>"; };
+		46F871551839802100BC149B /* WordPress 13.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = file; path = "WordPress 13.xcdatamodel"; sourceTree = "<group>"; };
 		5D0077A5182AE9DF00F865DB /* ReaderMediaQueue.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ReaderMediaQueue.h; sourceTree = "<group>"; };
 		5D0077A6182AE9DF00F865DB /* ReaderMediaQueue.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ReaderMediaQueue.m; sourceTree = "<group>"; };
 		5D119DA1176FBE040073D83A /* UIImageView+AFNetworkingExtra.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIImageView+AFNetworkingExtra.h"; sourceTree = "<group>"; };
@@ -3100,6 +3114,7 @@
 		858DE3FF172F9991000AC628 /* Fonts */ = {
 			isa = PBXGroup;
 			children = (
+				462F4E0F183867AE0028D2F8 /* Merriweather-Bold.ttf */,
 				5D358D6417723DB500739AA4 /* OpenSans-Bold.ttf */,
 				858DE41017303BB4000AC628 /* OpenSans-Light.ttf */,
 				858DE41117303BB4000AC628 /* OpenSans-Regular.ttf */,
@@ -3333,6 +3348,10 @@
 			isa = PBXGroup;
 			children = (
 				462F4E0518369B370028D2F8 /* Tabs */,
+				46F871501839528C00BC149B /* reader-postaction-time.png */,
+				46F871511839528C00BC149B /* reader-postaction-time@2x.png */,
+				46F871491838BB4E00BC149B /* reader-postaction-tag.png */,
+				46F8714A1838BB4E00BC149B /* reader-postaction-tag@2x.png */,
 				E14D65C117E08617007E3EA4 /* reader-postaction-comment-blue.png */,
 				E14D65C217E08617007E3EA4 /* reader-postaction-comment-blue@2x.png */,
 				E14D65BD17E08524007E3EA4 /* reader-postaction-reblog-blue.png */,
@@ -3765,6 +3784,8 @@
 				5DF59C0A1770AE3A00171208 /* UILabel+SuggestSize.m */,
 				851734411798C64700A30E27 /* NSURL+Util.h */,
 				851734421798C64700A30E27 /* NSURL+Util.m */,
+				46F8714D1838C41600BC149B /* NSDate+StringFormatting.h */,
+				46F8714E1838C41600BC149B /* NSDate+StringFormatting.m */,
 			);
 			name = Categories;
 			sourceTree = "<group>";
@@ -4346,6 +4367,7 @@
 				E177087E13AAC19700EA6C72 /* redo~ipad.png in Resources */,
 				E177087F13AAC19700EA6C72 /* redoDisabled~ipad.png in Resources */,
 				85AC70F017C71B5100985E3B /* comment-default-gravatar-image.png in Resources */,
+				462F4E10183867AE0028D2F8 /* Merriweather-Bold.ttf in Resources */,
 				E177088013AAC19700EA6C72 /* undo~ipad.png in Resources */,
 				E177088113AAC19700EA6C72 /* undoDisabled~ipad.png in Resources */,
 				85325A4417BB0DF8008E87D1 /* icon-menu-pages-active.png in Resources */,
@@ -4429,6 +4451,7 @@
 				857F55CF17CEC5E100E154E1 /* keyboardButtonHighlighted-ios7@2x.png in Resources */,
 				E18165FD14E4428B006CE885 /* loader.html in Resources */,
 				E128566415103A3600406BC9 /* keyboardButtoniPad@2x.png in Resources */,
+				46F871531839528C00BC149B /* reader-postaction-time@2x.png in Resources */,
 				E128566515103A3600406BC9 /* keyboardButtoniPadHighlighted@2x.png in Resources */,
 				30811743151057880028A15E /* Default-Portrait@2x.png in Resources */,
 				30811744151057880028A15E /* Default-Landscape@2x.png in Resources */,
@@ -4493,6 +4516,7 @@
 				462F4E0118369B200028D2F8 /* icon-tab-notifications.png in Resources */,
 				374F18C415A5897500524ED0 /* sidebar_read.png in Resources */,
 				374F18C515A5897500524ED0 /* sidebar_read@2x.png in Resources */,
+				46F8714C1838BB4E00BC149B /* reader-postaction-tag@2x.png in Resources */,
 				85ED54F317CC1A01006564AE /* icon-posts-editor-preview.png in Resources */,
 				374F18C615A5897500524ED0 /* sidebar_settings.png in Resources */,
 				374F18C715A5897500524ED0 /* sidebar_settings@2x.png in Resources */,
@@ -4555,6 +4579,7 @@
 				37B159F415AC7CEB00333C91 /* sidebar_cell_bg@2x.png in Resources */,
 				37B159F515AC7CEB00333C91 /* sidebar_cell_bg.png in Resources */,
 				30E9683C15AE4EB10047DD84 /* sidebar-logo.png in Resources */,
+				46F8714B1838BB4E00BC149B /* reader-postaction-tag.png in Resources */,
 				30E9683D15AE4EB10047DD84 /* sidebar-logo@2x.png in Resources */,
 				30E9684115AE60B20047DD84 /* navbar_add.png in Resources */,
 				E232E603182EA16200792CA0 /* icon-password-field.png in Resources */,
@@ -4651,6 +4676,7 @@
 				5D15F4DD15B8C43E001B14EA /* toolbarBoldHighlighted@2x.png in Resources */,
 				5D15F4DE15B8C43E001B14EA /* toolbarBoldiPad.png in Resources */,
 				5D15F4DF15B8C43E001B14EA /* toolbarBoldiPad@2x.png in Resources */,
+				46F871521839528C00BC149B /* reader-postaction-time.png in Resources */,
 				5D15F4E015B8C43E001B14EA /* toolbarCodeHighlighted.png in Resources */,
 				5D15F4E115B8C43E001B14EA /* toolbarCodeHighlighted@2x.png in Resources */,
 				5D15F4E215B8C43E001B14EA /* toolbarCodeiPad.png in Resources */,
@@ -5037,6 +5063,7 @@
 				031663070FFB151A0045D052 /* PostTableViewCell.m in Sources */,
 				031666AE0FFC3E130045D052 /* CommentTableViewCell.m in Sources */,
 				03958062100D6CFC00850742 /* WPLabel.m in Sources */,
+				46F8714F1838C41600BC149B /* NSDate+StringFormatting.m in Sources */,
 				296526FE105810E100597FA3 /* NSString+Helpers.m in Sources */,
 				2994EEEE10DF0FCD008336A6 /* ReplyToCommentViewController.m in Sources */,
 				2906F812110CDA8900169D56 /* EditCommentViewController.m in Sources */,
@@ -5666,6 +5693,7 @@
 		E125443B12BF5A7200D87A0A /* WordPress.xcdatamodeld */ = {
 			isa = XCVersionGroup;
 			children = (
+				46F871551839802100BC149B /* WordPress 13.xcdatamodel */,
 				5D42A3BB175E686F005CFF05 /* WordPress 12.xcdatamodel */,
 				E17B98E7171FFB450073E30D /* WordPress 11.xcdatamodel */,
 				FDFB011916B1EA1C00F589A8 /* WordPress 10.xcdatamodel */,
@@ -5679,7 +5707,7 @@
 				8350E15911D28B4A00A7B073 /* WordPress.xcdatamodel */,
 				E125443D12BF5A7200D87A0A /* WordPress 2.xcdatamodel */,
 			);
-			currentVersion = 5D42A3BB175E686F005CFF05 /* WordPress 12.xcdatamodel */;
+			currentVersion = 46F871551839802100BC149B /* WordPress 13.xcdatamodel */;
 			name = WordPress.xcdatamodeld;
 			path = Classes/WordPress.xcdatamodeld;
 			sourceTree = "<group>";
