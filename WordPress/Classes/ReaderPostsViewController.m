@@ -238,7 +238,8 @@ NSString *const RPVCDisplayedNativeFriendFinder = @"DisplayedNativeFriendFinder"
 	}
 	
 	point = [view.window convertPoint:endFrame.origin toView:view];
-	frame.size.height = point.y;
+    CGSize tabBarSize = [self tabBarSize];
+	frame.size.height = point.y + tabBarSize.height;
 	
 	[UIView animateWithDuration:0.3f delay:0.0f options:UIViewAnimationOptionBeginFromCurrentState animations:^{
 		view.frame = frame;
