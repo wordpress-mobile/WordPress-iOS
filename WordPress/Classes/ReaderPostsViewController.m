@@ -1026,8 +1026,6 @@ NSString *const WPReaderViewControllerDisplayedNativeFriendFinder = @"DisplayedN
     }
 	
     [self presentViewController:navController animated:YES completion:nil];
-    
-    [controller loadURL:kMobileReaderFFURL];
 }
 
 
