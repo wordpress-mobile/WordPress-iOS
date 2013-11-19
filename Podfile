@@ -6,7 +6,7 @@ pod 'Reachability',	'3.0.0'
 pod 'JSONKit',		  '~> 1.4', :inhibit_warnings => true
 pod 'NSURL+IDN', :podspec => 'https://raw.github.com/koke/NSURL-IDN/master/Podfile'
 pod 'CTidy', :git => 'git://github.com/wordpress-mobile/CTidy.git'
-pod 'DTCoreText',   '1.6.5'
+pod 'DTCoreText',   '1.6.9'
 pod 'UIDeviceIdentifier', '~> 0.1'
 pod 'SVProgressHUD', '~> 0.9'
 pod 'wpxmlrpc', '~> 0.1'

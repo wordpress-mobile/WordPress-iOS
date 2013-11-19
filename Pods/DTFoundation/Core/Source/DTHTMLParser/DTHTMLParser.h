@@ -3,7 +3,7 @@
 //  DTCoreText
 //
 //  Created by Oliver Drobnik on 1/18/12.
-//  Copyright (c) 2012 Drobnik.com. All rights reserved.
+//  Copyright (c) 2012 Cocoanetics. All rights reserved.
 //
 
 
