@@ -5330,7 +5330,6 @@
 				GCC_THUMB_SUPPORT = NO;
 				GCC_TREAT_WARNINGS_AS_ERRORS = NO;
 				INFOPLIST_FILE = Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 6.0;
 				OTHER_CFLAGS = (
 					"-Wno-format-security",
 					"-DDEBUG",
@@ -5366,7 +5365,6 @@
 				GCC_THUMB_SUPPORT = NO;
 				GCC_TREAT_WARNINGS_AS_ERRORS = YES;
 				INFOPLIST_FILE = Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 6.0;
 				OTHER_CFLAGS = (
 					"-Wno-format-security",
 					"-Wno-format",
@@ -5389,7 +5387,6 @@
 				GCC_WARN_ABOUT_RETURN_TYPE = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				HEADER_SEARCH_PATHS = "";
-				IPHONEOS_DEPLOYMENT_TARGET = 6.0;
 				OTHER_CFLAGS = "-Wno-format-security";
 				OTHER_LDFLAGS = (
 					"-lxml2",
@@ -5424,7 +5421,6 @@
 				GCC_THUMB_SUPPORT = NO;
 				GCC_TREAT_WARNINGS_AS_ERRORS = YES;
 				INFOPLIST_FILE = Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 6.0;
 				OTHER_CFLAGS = (
 					"-Wno-format",
 					"-Wno-format-security",
@@ -5447,7 +5443,6 @@
 				GCC_WARN_ABOUT_RETURN_TYPE = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				HEADER_SEARCH_PATHS = "";
-				IPHONEOS_DEPLOYMENT_TARGET = 6.0;
 				OTHER_CFLAGS = "-Wno-format-security";
 				OTHER_LDFLAGS = (
 					"-lxml2",
@@ -5485,7 +5480,6 @@
 				GCC_THUMB_SUPPORT = NO;
 				GCC_TREAT_WARNINGS_AS_ERRORS = YES;
 				INFOPLIST_FILE = "WordPress-Internal-Info.plist";
-				IPHONEOS_DEPLOYMENT_TARGET = 6.0;
 				OTHER_CFLAGS = (
 					"-Wno-format-security",
 					"-Wno-format",
@@ -5535,7 +5529,6 @@
 				GCC_WARN_ABOUT_RETURN_TYPE = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				HEADER_SEARCH_PATHS = "";
-				IPHONEOS_DEPLOYMENT_TARGET = 6.0;
 				ONLY_ACTIVE_ARCH = YES;
 				OTHER_CFLAGS = (
 					"-Wno-format-security",
@@ -5560,7 +5553,6 @@
 				GCC_WARN_ABOUT_RETURN_TYPE = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				HEADER_SEARCH_PATHS = "";
-				IPHONEOS_DEPLOYMENT_TARGET = 6.0;
 				OTHER_CFLAGS = "-Wno-format-security";
 				OTHER_LDFLAGS = (
 					"-lxml2",
