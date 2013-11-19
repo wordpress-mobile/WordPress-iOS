@@ -22,31 +22,43 @@
 #define COCOAPODS_POD_AVAILABLE_CocoaLumberjack
 #define COCOAPODS_VERSION_MAJOR_CocoaLumberjack 1
 #define COCOAPODS_VERSION_MINOR_CocoaLumberjack 6
-#define COCOAPODS_VERSION_PATCH_CocoaLumberjack 2
+#define COCOAPODS_VERSION_PATCH_CocoaLumberjack 3
+
+// CocoaLumberjack/Core
+#define COCOAPODS_POD_AVAILABLE_CocoaLumberjack_Core
+#define COCOAPODS_VERSION_MAJOR_CocoaLumberjack_Core 1
+#define COCOAPODS_VERSION_MINOR_CocoaLumberjack_Core 6
+#define COCOAPODS_VERSION_PATCH_CocoaLumberjack_Core 3
+
+// CocoaLumberjack/Extensions
+#define COCOAPODS_POD_AVAILABLE_CocoaLumberjack_Extensions
+#define COCOAPODS_VERSION_MAJOR_CocoaLumberjack_Extensions 1
+#define COCOAPODS_VERSION_MINOR_CocoaLumberjack_Extensions 6
+#define COCOAPODS_VERSION_PATCH_CocoaLumberjack_Extensions 3
 
 // DTCoreText
 #define COCOAPODS_POD_AVAILABLE_DTCoreText
 #define COCOAPODS_VERSION_MAJOR_DTCoreText 1
 #define COCOAPODS_VERSION_MINOR_DTCoreText 6
-#define COCOAPODS_VERSION_PATCH_DTCoreText 5
+#define COCOAPODS_VERSION_PATCH_DTCoreText 9
 
 // DTFoundation/Core
 #define COCOAPODS_POD_AVAILABLE_DTFoundation_Core
 #define COCOAPODS_VERSION_MAJOR_DTFoundation_Core 1
-#define COCOAPODS_VERSION_MINOR_DTFoundation_Core 5
-#define COCOAPODS_VERSION_PATCH_DTFoundation_Core 4
+#define COCOAPODS_VERSION_MINOR_DTFoundation_Core 6
+#define COCOAPODS_VERSION_PATCH_DTFoundation_Core 0
 
 // DTFoundation/DTHTMLParser
 #define COCOAPODS_POD_AVAILABLE_DTFoundation_DTHTMLParser
 #define COCOAPODS_VERSION_MAJOR_DTFoundation_DTHTMLParser 1
-#define COCOAPODS_VERSION_MINOR_DTFoundation_DTHTMLParser 5
-#define COCOAPODS_VERSION_PATCH_DTFoundation_DTHTMLParser 4
+#define COCOAPODS_VERSION_MINOR_DTFoundation_DTHTMLParser 6
+#define COCOAPODS_VERSION_PATCH_DTFoundation_DTHTMLParser 0
 
 // DTFoundation/UIKit
 #define COCOAPODS_POD_AVAILABLE_DTFoundation_UIKit
 #define COCOAPODS_VERSION_MAJOR_DTFoundation_UIKit 1
-#define COCOAPODS_VERSION_MINOR_DTFoundation_UIKit 5
-#define COCOAPODS_VERSION_PATCH_DTFoundation_UIKit 4
+#define COCOAPODS_VERSION_MINOR_DTFoundation_UIKit 6
+#define COCOAPODS_VERSION_PATCH_DTFoundation_UIKit 0
 
 // EmailChecker
 #define COCOAPODS_POD_AVAILABLE_EmailChecker
@@ -70,8 +82,8 @@
 // Mixpanel
 #define COCOAPODS_POD_AVAILABLE_Mixpanel
 #define COCOAPODS_VERSION_MAJOR_Mixpanel 2
-#define COCOAPODS_VERSION_MINOR_Mixpanel 0
-#define COCOAPODS_VERSION_PATCH_Mixpanel 4
+#define COCOAPODS_VERSION_MINOR_Mixpanel 1
+#define COCOAPODS_VERSION_PATCH_Mixpanel 0
 
 // NSLogger
 #define COCOAPODS_POD_AVAILABLE_NSLogger
@@ -101,13 +113,13 @@
 #define COCOAPODS_POD_AVAILABLE_Quantcast_Measure
 #define COCOAPODS_VERSION_MAJOR_Quantcast_Measure 1
 #define COCOAPODS_VERSION_MINOR_Quantcast_Measure 2
-#define COCOAPODS_VERSION_PATCH_Quantcast_Measure 10
+#define COCOAPODS_VERSION_PATCH_Quantcast_Measure 13
 
 // Quantcast-Measure/Core
 #define COCOAPODS_POD_AVAILABLE_Quantcast_Measure_Core
 #define COCOAPODS_VERSION_MAJOR_Quantcast_Measure_Core 1
 #define COCOAPODS_VERSION_MINOR_Quantcast_Measure_Core 2
-#define COCOAPODS_VERSION_PATCH_Quantcast_Measure_Core 10
+#define COCOAPODS_VERSION_PATCH_Quantcast_Measure_Core 13
 
 // Reachability
 #define COCOAPODS_POD_AVAILABLE_Reachability

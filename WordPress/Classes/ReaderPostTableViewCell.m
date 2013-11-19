@@ -17,6 +17,7 @@
 #import "WPAvatarSource.h"
 #import "ReaderButton.h"
 #import "NSDate+StringFormatting.h"
+#import "UIColor+Helpers.h"
 
 const CGFloat RPTVCAuthorPadding = 8.0f;
 const CGFloat RPTVCHorizontalInnerPadding = 12.0f;
