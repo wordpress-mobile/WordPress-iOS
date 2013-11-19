@@ -42,7 +42,7 @@
 - (void)cleanUnusedMediaFileFromTmpDir;
 - (void)customizeAppearance;
 - (void)toggleExtraDebuggingIfNeeded;
-- (void)handleLogoutOrBlogsChangedNotification:(NSNotification *)notification;
+- (void)handleDefaultAccountChangedNotification:(NSNotification *)notification;
 
 @end
 
@@ -274,7 +274,11 @@ int ddLogLevel = LOG_LEVEL_INFO;
         aNavigationController.navigationBar.translucent = NO;
         aNavigationController.modalTransitionStyle = UIModalTransitionStyleCrossDissolve;
         aNavigationController.modalPresentationStyle = UIModalPresentationFormSheet;
-        
+
+        UIViewController *presenter = window.rootViewController;
+        if (presenter.presentedViewController) {
+            [presenter dismissViewControllerAnimated:NO completion:nil];
+        }
         [window.rootViewController presentViewController:aNavigationController animated:NO completion:nil];
     }
 }
@@ -1144,8 +1148,7 @@ int ddLogLevel = LOG_LEVEL_INFO;
 - (void)toggleExtraDebuggingIfNeeded {
     if (!_listeningForBlogChanges) {
         _listeningForBlogChanges = YES;
-        [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(handleLogoutOrBlogsChangedNotification:) name:BlogChangedNotification object:nil];
-        [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(handleLogoutOrBlogsChangedNotification:) name:WordPressComApiDidLogoutNotification object:nil];
+        [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(handleDefaultAccountChangedNotification:) name:WPAccountDefaultWordPressComAccountChangedNotification object:nil];
     }
     
 	int num_blogs = [Blog countWithContext:[self managedObjectContext]];
@@ -1179,8 +1182,9 @@ int ddLogLevel = LOG_LEVEL_INFO;
 	}
 }
 
-- (void)handleLogoutOrBlogsChangedNotification:(NSNotification *)notification {
+- (void)handleDefaultAccountChangedNotification:(NSNotification *)notification {
 	[self toggleExtraDebuggingIfNeeded];
+    [self showWelcomeScreenIfNeeded];
 }
 
 - (void)showNotificationsTab {
