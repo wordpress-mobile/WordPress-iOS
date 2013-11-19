@@ -7,7 +7,7 @@
 //
 
 /**
- Some convenient functions that can be also achieved if you know JavaScript, but are way more easy to remember like this
+ Some convenient functions that can be also achieved if you know JavaScript, but are way more easy to remember like this.
  */
 
 @interface UIWebView (DTFoundation)

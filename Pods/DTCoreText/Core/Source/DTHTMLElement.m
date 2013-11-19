@@ -16,6 +16,8 @@
 #import "DTStylesheetHTMLElement.h"
 #import "DTTextHTMLElement.h"
 #import "NSString+DTUtilities.h"
+#import "DTColorFunctions.h"
+#import "DTLog.h"
 
 @interface DTHTMLElement ()
 
@@ -117,7 +119,7 @@ NSDictionary *_classesForNames = nil;
 		[tmpDict setObject:_textAttachment forKey:NSAttachmentAttributeName];
 		
 		// remember original paragraphSpacing
-		[tmpDict setObject:[NSNumber numberWithFloat:self.paragraphStyle.paragraphSpacing] forKey:DTAttachmentParagraphSpacingAttribute];
+		[tmpDict setObject:DTNSNumberFromCGFloat(self.paragraphStyle.paragraphSpacing) forKey:DTAttachmentParagraphSpacingAttribute];
 	}
 	
 	CTFontRef font = [_fontDescriptor newMatchingFont];
@@ -263,6 +265,22 @@ NSDictionary *_classesForNames = nil;
 			[tmpDict setObject:_shadows forKey:DTShadowsAttribute];
 		}
 	}
+	
+	if (_letterSpacing)
+	{
+		NSNumber *letterSpacingNum = DTNSNumberFromCGFloat(_letterSpacing);
+		
+#if DTCORETEXT_SUPPORT_NS_ATTRIBUTES
+		if (___useiOS6Attributes)
+		{
+			[tmpDict setObject:letterSpacingNum forKey:NSKernAttributeName];
+		}
+		else
+#endif
+		{
+			[tmpDict setObject:letterSpacingNum forKey:(id)kCTKernAttributeName];
+		}
+	}
 
 	if (_headerLevel)
 	{
@@ -406,7 +424,7 @@ NSDictionary *_classesForNames = nil;
 					if (oneChild.displayStyle == DTHTMLElementDisplayStyleBlock)
 					{
 						// trim off whitespace suffix
-						while ([[tmpString string] hasSuffixCharacterFromSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]])
+						while ([[tmpString string] hasSuffixCharacterFromSet:[NSCharacterSet ignorableWhitespaceCharacterSet]])
 						{
 							[tmpString deleteCharactersInRange:NSMakeRange([tmpString length]-1, 1)];
 						}
@@ -423,10 +441,20 @@ NSDictionary *_classesForNames = nil;
 					if (!oneChild.containsAppleConvertedSpace)
 					{
 						// we already have a white space in the string so far
-						if ([[tmpString string] hasSuffixCharacterFromSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]])
+						if ([[tmpString string] hasSuffixCharacterFromSet:[NSCharacterSet ignorableWhitespaceCharacterSet]])
 						{
-							while ([[nodeString string] hasPrefix:@" "])
+							// following e.g. a BR we don't want a space or NL
+							NSCharacterSet *charactersToIgnore = [NSCharacterSet characterSetWithCharactersInString:@" \n\t"];
+							
+							while ([[nodeString string] hasPrefixCharacterFromSet:charactersToIgnore])
 							{
+								NSString *field = [nodeString attribute:DTFieldAttribute atIndex:0 effectiveRange:NULL];
+								
+								if ([field isEqualToString:DTListPrefixField])
+								{
+									break;
+								}
+								
 								nodeString = [nodeString attributedSubstringFromRange:NSMakeRange(1, [nodeString length]-1)];
 							}
 						}
@@ -466,7 +494,7 @@ NSDictionary *_classesForNames = nil;
 					else
 					{
 						// string is empty, need a new attributed string so that we have the attributes
-						NSDictionary *attributes = [self attributesForAttributedStringRepresentation];
+						attributes = [self attributesForAttributedStringRepresentation];
 						NSAttributedString *attributedString = [[NSAttributedString alloc] initWithString:@"\n" attributes:attributes];
 						[tmpString appendAttributedString:attributedString];
 					}
@@ -742,21 +770,20 @@ NSDictionary *_classesForNames = nil;
 		}
 		else if ([fontSize isCSSLengthValue])
 		{
-			CGFloat fontSizeValue = [fontSize pixelSizeOfCSSMeasureRelativeToCurrentTextSize:_fontDescriptor.pointSize textScale:_textScale];
-			_fontDescriptor.pointSize = fontSizeValue;
+			_fontDescriptor.pointSize = [fontSize pixelSizeOfCSSMeasureRelativeToCurrentTextSize:_currentTextSize textScale:_textScale];
 		}
 	}
 	
 	NSString *color = [styles objectForKey:@"color"];
 	if (color)
 	{
-		self.textColor = [DTColor colorWithHTMLName:color];
+		self.textColor = DTColorCreateWithHTMLName(color);
 	}
 	
 	NSString *bgColor = [styles objectForKey:@"background-color"];
 	if (bgColor)
 	{
-		self.backgroundColor = [DTColor colorWithHTMLName:bgColor];
+		self.backgroundColor = DTColorCreateWithHTMLName(bgColor);
 	}
 	
 	NSString *floatString = [styles objectForKey:@"float"];
@@ -777,19 +804,19 @@ NSDictionary *_classesForNames = nil;
 		}
 	}
 	
-	id fontFamily = [styles objectForKey:@"font-family"];
+	id fontFamilyStyle = [styles objectForKey:@"font-family"];
 	
-	if (fontFamily)
+	if (fontFamilyStyle)
 	{
 		NSArray *fontFamilies;
 		
-		if ([fontFamily isKindOfClass:[NSString class]])
+		if ([fontFamilyStyle isKindOfClass:[NSString class]])
 		{
-			fontFamilies = [NSArray arrayWithObject:fontFamily];
+			fontFamilies = [NSArray arrayWithObject:fontFamilyStyle];
 		}
-		else if ([fontFamily isKindOfClass:[NSArray class]])
+		else if ([fontFamilyStyle isKindOfClass:[NSArray class]])
 		{
-			fontFamilies = fontFamily;
+			fontFamilies = fontFamilyStyle;
 		}
 				
 		BOOL foundFontFamily = NO;
@@ -926,7 +953,6 @@ NSDictionary *_classesForNames = nil;
 		}
 	}
 	
-	
 	NSString *decoration = [[styles objectForKey:@"text-decoration"] lowercaseString];
 	if (decoration)
 	{
@@ -946,11 +972,11 @@ NSDictionary *_classesForNames = nil;
 		}
 		else if ([decoration isEqualToString:@"overline"])
 		{
-			NSLog(@"Note: 'overline' text decoration not supported");
+			DTLogInfo(@"Note: 'overline' text decoration not supported");
 		}
 		else if ([decoration isEqualToString:@"blink"])
 		{
-			NSLog(@"Note: 'blink' text decoration not supported");
+			DTLogInfo(@"Note: 'blink' text decoration not supported");
 		}
 		else if ([decoration isEqualToString:@"inherit"])
 		{
@@ -1020,6 +1046,23 @@ NSDictionary *_classesForNames = nil;
 		}
 	}
 	
+	NSString *letterSpacing = [[styles objectForKey:@"letter-spacing"] lowercaseString];
+	if (letterSpacing)
+	{
+		if ([letterSpacing isEqualToString:@"normal"])
+		{
+			_letterSpacing = 0;
+		}
+		else if ([letterSpacing isEqualToString:@"inherit"])
+		{
+			// no op, we already inherited it
+		}
+		else // interpret as length
+		{
+			_letterSpacing = [letterSpacing pixelSizeOfCSSMeasureRelativeToCurrentTextSize:self.fontDescriptor.pointSize textScale:_textScale];
+		}
+	}
+	
 	// if there is a text attachment we transfer the aligment we got
 	_textAttachment.verticalAlignment = _textAttachmentAlignment;
 	
@@ -1049,7 +1092,7 @@ NSDictionary *_classesForNames = nil;
 		}
 		else // interpret as length
 		{
-			CGFloat lineHeightValue = [lineHeight pixelSizeOfCSSMeasureRelativeToCurrentTextSize:_fontDescriptor.pointSize textScale:_textScale];
+			CGFloat lineHeightValue = [lineHeight pixelSizeOfCSSMeasureRelativeToCurrentTextSize:self.fontDescriptor.pointSize textScale:_textScale];
 			self.paragraphStyle.minimumLineHeight = lineHeightValue;
 			self.paragraphStyle.maximumLineHeight = lineHeightValue;
 		}
@@ -1296,6 +1339,7 @@ NSDictionary *_classesForNames = nil;
 	_underlineStyle = element.underlineStyle;
 	_strikeOut = element.strikeOut;
 	_superscriptStyle = element.superscriptStyle;
+	_letterSpacing = element.letterSpacing;
 	
 	_shadows = [element.shadows copy];
 	
@@ -1307,10 +1351,12 @@ NSDictionary *_classesForNames = nil;
 	_isColorInherited = YES;
 	
 	_preserveNewlines = element.preserveNewlines;
+
+	_currentTextSize = element.currentTextSize;
 	_textScale = element.textScale;
 	
 	// only inherit background-color from inline elements
-	if (element.displayStyle == DTHTMLElementDisplayStyleInline)
+	if (element.displayStyle == DTHTMLElementDisplayStyleInline || element.displayStyle == DTHTMLElementDisplayStyleListItem)
 	{
 		self.backgroundColor = element.backgroundColor;
 	}
@@ -1458,6 +1504,20 @@ NSDictionary *_classesForNames = nil;
 	}
 }
 
+- (void)setCurrentTextSize:(CGFloat)currentTextSize {
+	_currentTextSize = currentTextSize;
+}
+
+- (CGFloat)currentTextSize {
+	CGFloat textSize = _currentTextSize;
+	
+	if ((_currentTextSize == 0) && self.parentElement) {
+		textSize = self.parentElement.currentTextSize;
+	}
+	
+	return textSize;
+}
+
 - (DTHTMLElement *)parentElement
 {
 	return (DTHTMLElement *)self.parentNode;
@@ -1481,6 +1541,7 @@ NSDictionary *_classesForNames = nil;
 @synthesize preserveNewlines = _preserveNewlines;
 @synthesize displayStyle = _displayStyle;
 @synthesize fontVariant = _fontVariant;
+@synthesize currentTextSize = _currentTextSize;
 @synthesize textScale = _textScale;
 @synthesize size = _size;
 @synthesize margins = _margins;

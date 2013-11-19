@@ -161,7 +161,7 @@ NSTimeInterval const ReaderPostDetailViewControllerRefreshTimeout = 300; // 5 mi
         toolbar.translucent = NO;
     } else {
         [toolbar setBackgroundImage:nil forToolbarPosition:UIToolbarPositionBottom barMetrics:UIBarMetricsDefault];
-        [toolbar setTintColor:[UIColor colorWithHexString:@"F1F1F1"]];
+        [toolbar setTintColor:DTColorCreateWithHexString(@"F1F1F1")];
     }
 
 	[self.navigationController setToolbarHidden:NO animated:animated];
@@ -388,7 +388,7 @@ NSTimeInterval const ReaderPostDetailViewControllerRefreshTimeout = 300; // 5 mi
 	
 	flattenComments(self.resultsController.fetchedObjects);
 	if ([_comments count] > 0) {
-		self.tableView.backgroundColor = [UIColor colorWithHexString:@"EFEFEF"];
+		self.tableView.backgroundColor = DTColorCreateWithHexString(@"EFEFEF");
 	}
 	
 	// Cache attributed strings.
