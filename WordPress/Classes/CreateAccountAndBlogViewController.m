@@ -8,7 +8,6 @@
 
 #import "CreateAccountAndBlogViewController.h"
 #import <EmailChecker/EmailChecker.h>
-#import <SVProgressHUD/SVProgressHUD.h>
 #import <QuartzCore/QuartzCore.h>
 #import "SupportViewController.h"
 #import "WordPressComApi.h"
@@ -409,7 +408,7 @@ CGFloat const CreateAccountAndBlogButtonHeight = 41.0;
         TOSLabelSize = [_TOSLabel.text sizeWithFont:_TOSLabel.font constrainedToSize:CGSizeMake(CreateAccountAndBlogMaxTextWidth, CGFLOAT_MAX) lineBreakMode:NSLineBreakByWordWrapping];
     }
     x = (_viewWidth - TOSLabelSize.width)/2.0;
-    y = CGRectGetMaxY(_createAccountButton.frame) + CreateAccountAndBlogStandardOffset;
+    y = CGRectGetMaxY(_createAccountButton.frame) + 0.5 * CreateAccountAndBlogStandardOffset;
     _TOSLabel.frame = CGRectIntegral(CGRectMake(x, y, TOSLabelSize.width, TOSLabelSize.height));
     
     NSArray *controls = @[_titleLabel, _emailField, _usernameField, _passwordField, _TOSLabel, _createAccountButton, _siteAddressField];
@@ -624,6 +623,12 @@ CGFloat const CreateAccountAndBlogButtonHeight = 41.0;
     [self.view addSubview:overlayView];
 }
 
+- (void)setAuthenticating:(BOOL)authenticating
+{
+    _createAccountButton.enabled = !authenticating;
+    [_createAccountButton showActivityIndicator:authenticating];
+}
+
 - (void)createUserAndSite
 {
     WPAsyncBlockOperation *userCreation = [WPAsyncBlockOperation operationWithBlock:^(WPAsyncBlockOperation *operation){
@@ -632,7 +637,7 @@ CGFloat const CreateAccountAndBlogButtonHeight = 41.0;
         };
         void (^createUserFailure)(NSError *) = ^(NSError *error) {
             [operation didFail];
-            [SVProgressHUD dismiss];
+            [self setAuthenticating:NO];
             [self displayRemoteError:error];
         };
         
@@ -651,7 +656,7 @@ CGFloat const CreateAccountAndBlogButtonHeight = 41.0;
             // We've hit a strange failure at this point, the user has been created successfully but for some reason
             // we are unable to sign in and proceed
             [operation didFail];
-            [SVProgressHUD dismiss];
+            [self setAuthenticating:NO];
             [self displayRemoteError:error];
         };
         
@@ -665,13 +670,13 @@ CGFloat const CreateAccountAndBlogButtonHeight = 41.0;
         void (^createBlogSuccess)(id) = ^(id responseObject){
             [WPMobileStats trackEventForSelfHostedAndWPCom:StatsEventNUXCreateAccountCreatedAccount];
             [operation didSucceed];
-            [SVProgressHUD dismiss];
+            [self setAuthenticating:NO];
             if (self.onCreatedUser) {
                 self.onCreatedUser(_usernameField.text, _passwordField.text);
             }
         };
         void (^createBlogFailure)(NSError *error) = ^(NSError *error) {
-            [SVProgressHUD dismiss];
+            [self setAuthenticating:NO];
             [operation didFail];
             [self displayRemoteError:error];
         };
@@ -689,7 +694,7 @@ CGFloat const CreateAccountAndBlogButtonHeight = 41.0;
     [blogCreation addDependency:userSignIn];
     [userSignIn addDependency:userCreation];
     
-    [SVProgressHUD showWithStatus:NSLocalizedString(@"Creating User and Site", nil) maskType:SVProgressHUDMaskTypeBlack];
+    [self setAuthenticating:YES];
     
     [_operationQueue addOperation:userCreation];
     [_operationQueue addOperation:userSignIn];
