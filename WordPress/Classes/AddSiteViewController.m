@@ -158,7 +158,8 @@ CGSize const AddSiteLogoSize = { 320.0, 70.0 };
     JetpackSettingsViewController *jetpackSettingsViewController = [[JetpackSettingsViewController alloc] initWithBlog:self.blog];
     jetpackSettingsViewController.canBeSkipped = YES;
     [jetpackSettingsViewController setCompletionBlock:^(BOOL didAuthenticate) {
-        [self.presentingViewController dismissViewControllerAnimated:YES completion:nil];
+        [self.navigationController setNavigationBarHidden:NO animated:NO];
+        [self.navigationController popToRootViewControllerAnimated:YES];
     }];
     [self.navigationController pushViewController:jetpackSettingsViewController animated:YES];
 }
