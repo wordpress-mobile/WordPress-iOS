@@ -24,7 +24,7 @@
 
 + (UIFont *)titleFont
 {
-    return [UIFont fontWithName:@"OpenSans-Light" size:29];
+    return [UIFont fontWithName:@"OpenSans-Light" size:24];
 }
 
 + (UIFont *)swipeToContinueFont
@@ -127,7 +127,7 @@
     }
     
     NSMutableParagraphStyle *paragraphStyle = [[NSMutableParagraphStyle alloc] init];
-    paragraphStyle.lineHeightMultiple = 0.85;
+    paragraphStyle.lineHeightMultiple = 0.95;
     paragraphStyle.lineBreakMode = NSLineBreakByWordWrapping;
     paragraphStyle.alignment = NSTextAlignmentCenter;
     NSDictionary *attributes = @{NSFontAttributeName: [WPNUXUtility titleFont],

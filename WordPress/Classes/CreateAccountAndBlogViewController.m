@@ -14,7 +14,7 @@
 #import "WordPressComApi.h"
 #import "UIView+FormSheetHelpers.h"
 #import "WPNUXBackButton.h"
-#import "WPNUXPrimaryButton.h"
+#import "WPNUXMainButton.h"
 #import "WPWalkthroughTextField.h"
 #import "WPAsyncBlockOperation.h"
 #import "WPComLanguages.h"
@@ -37,7 +37,7 @@
     WPWalkthroughTextField *_emailField;
     WPWalkthroughTextField *_usernameField;
     WPWalkthroughTextField *_passwordField;
-    WPNUXPrimaryButton *_createAccountButton;
+    WPNUXMainButton *_createAccountButton;
     WPWalkthroughTextField *_siteAddressField;
     
     NSOperationQueue *_operationQueue;
@@ -60,12 +60,13 @@
 
 CGFloat const CreateAccountAndBlogStandardOffset = 16.0;
 CGFloat const CreateAccountAndBlogIconVerticalOffset = 70.0;
-CGFloat const CreateAccountAndBlogMaxTextWidth = 289.0;
+CGFloat const CreateAccountAndBlogMaxTextWidth = 260.0;
 CGFloat const CreateAccountAndBlogTextFieldWidth = 320.0;
 CGFloat const CreateAccountAndBlogTextFieldHeight = 44.0;
 CGFloat const CreateAccountAndBlogKeyboardOffset = 132.0;
 CGFloat const CreateAccountAndBlogiOS7StatusBarOffset = 20.0;
-
+CGFloat const CreateAccountAndBlogButtonWidth = 289.0;
+CGFloat const CreateAccountAndBlogButtonHeight = 41.0;
 
 - (id)init
 {
@@ -314,7 +315,7 @@ CGFloat const CreateAccountAndBlogiOS7StatusBarOffset = 20.0;
         _TOSLabel = [[UILabel alloc] init];
         _TOSLabel.userInteractionEnabled = YES;
         _TOSLabel.textAlignment = NSTextAlignmentCenter;
-        _TOSLabel.text = NSLocalizedString(@"You agree to the fascinating terms of service by pressing the next button.", @"NUX Create Account TOS Label");
+        _TOSLabel.text = NSLocalizedString(@"By creating an account you agree to the fascinating terms of service.", @"NUX Create Account TOS Label");
         _TOSLabel.numberOfLines = 0;
         _TOSLabel.backgroundColor = [UIColor clearColor];
         _TOSLabel.font = [WPNUXUtility tosLabelFont];
@@ -328,7 +329,7 @@ CGFloat const CreateAccountAndBlogiOS7StatusBarOffset = 20.0;
     
     // Add Next Button
     if (_createAccountButton == nil) {
-        _createAccountButton = [[WPNUXPrimaryButton alloc] init];
+        _createAccountButton = [[WPNUXMainButton alloc] init];
         [_createAccountButton setTitle:NSLocalizedString(@"Create Account", nil) forState:UIControlStateNormal];
         _createAccountButton.enabled = NO;
         [_createAccountButton addTarget:self action:@selector(createAccountButtonAction) forControlEvents:UIControlEventTouchUpInside];
@@ -394,10 +395,10 @@ CGFloat const CreateAccountAndBlogiOS7StatusBarOffset = 20.0;
     wordPressComLabelSize.width += 10;
     _siteAddressWPComLabel.frame = CGRectMake(_siteAddressField.frame.size.width - wordPressComLabelSize.width - 5, (_siteAddressField.frame.size.height - wordPressComLabelSize.height) / 2 - 1, wordPressComLabelSize.width, wordPressComLabelSize.height);
     
-    // Layout Next Button
-    x = (_viewWidth - CGRectGetWidth(_createAccountButton.frame))/2.0;
+    // Layout Create Account Button
+    x = (_viewWidth - CreateAccountAndBlogButtonWidth)/2.0;
     y = CGRectGetMaxY(_siteAddressField.frame) + CreateAccountAndBlogStandardOffset;
-    _createAccountButton.frame = CGRectIntegral(CGRectMake(x, y, CGRectGetWidth(_createAccountButton.frame), CGRectGetHeight(_createAccountButton.frame)));
+    _createAccountButton.frame = CGRectIntegral(CGRectMake(x, y, CreateAccountAndBlogButtonWidth, CreateAccountAndBlogButtonHeight));
 
     // Layout Terms of Service
     CGFloat TOSSingleLineHeight = [@"WordPress" sizeWithFont:_TOSLabel.font].height;
