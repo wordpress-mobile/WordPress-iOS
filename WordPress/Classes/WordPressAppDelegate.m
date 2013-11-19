@@ -227,22 +227,18 @@ int ddLogLevel = LOG_LEVEL_INFO;
         [Crashlytics setUserName:[[WPAccount defaultWordPressComAccount] username]];
     }
 
-    void (^wpcomLoggedInBlock)(NSNotification *) = ^(NSNotification *note) {
+    void (^accountChangedBlock)(NSNotification *) = ^(NSNotification *note) {
         [Crashlytics setUserName:[[WPAccount defaultWordPressComAccount] username]];
         [self setCommonCrashlyticsParameters];
     };
-    void (^wpcomLoggedOutBlock)(NSNotification *) = ^(NSNotification *note) {
-        [Crashlytics setUserName:nil];
-        [self setCommonCrashlyticsParameters];
-    };
-    [[NSNotificationCenter defaultCenter] addObserverForName:WordPressComApiDidLoginNotification object:nil queue:nil usingBlock:wpcomLoggedInBlock];
-    [[NSNotificationCenter defaultCenter] addObserverForName:WordPressComApiDidLogoutNotification object:nil queue:nil usingBlock:wpcomLoggedOutBlock];
+    [[NSNotificationCenter defaultCenter] addObserverForName:WPAccountDefaultWordPressComAccountChangedNotification object:nil queue:nil usingBlock:accountChangedBlock];
 }
 
 - (void)setCommonCrashlyticsParameters
 {
-    [Crashlytics setObjectValue:[NSNumber numberWithBool:[[WordPressComApi sharedApi] hasCredentials]] forKey:@"logged_in"];
-    [Crashlytics setObjectValue:@([[WordPressComApi sharedApi] hasCredentials]) forKey:@"connected_to_dotcom"];
+    BOOL loggedIn = [WPAccount defaultWordPressComAccount] != nil;
+    [Crashlytics setObjectValue:@(loggedIn) forKey:@"logged_in"];
+    [Crashlytics setObjectValue:@(loggedIn) forKey:@"connected_to_dotcom"];
     [Crashlytics setObjectValue:@([Blog countWithContext:[self managedObjectContext]]) forKey:@"number_of_blogs"];
 }
 
