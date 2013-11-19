@@ -32,6 +32,7 @@
 #define IPAD_DETAIL_WIDTH 448.0f
 
 static CGFloat const ScrollingFastVelocityThreshold = 30.f;
+static CGFloat const RPVCHeaderHeightPhone = 10.f;
 NSString *const WPReaderViewControllerDisplayedNativeFriendFinder = @"DisplayedNativeFriendFinder";
 
 @interface ReaderPostsViewController ()<ReaderTopicsDelegate, ReaderTextFormDelegate, WPTableImageSourceDelegate> {
@@ -98,8 +99,6 @@ NSString *const WPReaderViewControllerDisplayedNativeFriendFinder = @"DisplayedN
     _featuredImageSource = [[WPTableImageSource alloc] initWithMaxSize:CGSizeMake(maxWidth, maxHeight)];
     _featuredImageSource.delegate = self;
 	self.tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
-	
-	[self configureTableHeader];
 	
 	// Topics button
 	UIBarButtonItem *button = nil;
@@ -215,26 +214,6 @@ NSString *const WPReaderViewControllerDisplayedNativeFriendFinder = @"DisplayedN
     NSInteger tabIndex = [self.tabBarController.viewControllers indexOfObject:self.navigationController];
     UITabBarItem *tabItem = [[[self.tabBarController tabBar] items] objectAtIndex:tabIndex];
     tabItem.title = NSLocalizedString(@"Reader", @"Description of the Reader tab");
-}
-
-- (void)configureTableHeader {
-    if (IS_IPAD)
-        return;
-    
-	if ([self.resultsController.fetchedObjects count] == 0) {
-		self.tableView.tableHeaderView = nil;
-		return;
-	}
-	
-	if (self.tableView.tableHeaderView != nil) {
-		return;
-	}
-	
-	UIView *paddingView = [[UIView alloc] initWithFrame:CGRectMake(0.0f, 0.0f, self.view.frame.size.width, 10.0f)];
-	paddingView.autoresizingMask = UIViewAutoresizingFlexibleWidth;
-	paddingView.backgroundColor = [WPStyleGuide itsEverywhereGrey];
-
-	self.tableView.tableHeaderView = paddingView;
 }
 
 - (void)dismissPopover {
@@ -766,8 +745,6 @@ NSString *const WPReaderViewControllerDisplayedNativeFriendFinder = @"DisplayedN
 	if ([postsArr count] < ReaderPostsToSync && wasLoadingMore) {
 		_hasMoreContent = NO;
 	}
-	
-	[self configureTableHeader];
 }
 
 
@@ -776,6 +753,13 @@ NSString *const WPReaderViewControllerDisplayedNativeFriendFinder = @"DisplayedN
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
     return [ReaderPostTableViewCell cellHeightForPost:[self.resultsController objectAtIndexPath:indexPath] withWidth:self.tableView.bounds.size.width];
+}
+
+- (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section {
+    if (IS_IPHONE)
+        return RPVCHeaderHeightPhone;
+    
+    return [super tableView:tableView heightForHeaderInSection:section];
 }
 
 - (NSIndexPath *)tableView:(UITableView *)tableView willSelectRowAtIndexPath:(NSIndexPath *)indexPath {
@@ -833,8 +817,6 @@ NSString *const WPReaderViewControllerDisplayedNativeFriendFinder = @"DisplayedN
 	[self resetResultsController];
 	[self.tableView reloadData];
     [self syncItems];
-	
-    [self configureTableHeader];
 	
 	self.title = [[ReaderPost currentTopic] stringForKey:@"title"];
 
