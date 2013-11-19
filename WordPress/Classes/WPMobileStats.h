@@ -176,9 +176,7 @@ extern NSString *const StatsEventWelcomeViewControllerClickedCreateWordpressDotC
 
 // NUX Related
 extern NSString *const StatsEventNUXFirstWalkthroughOpened;
-extern NSString *const StatsEventNUXFirstWalkthroughViewedSignInPage;
 extern NSString *const StatsEventNUXFirstWalkthroughClickedSkipToCreateAccount;
-extern NSString *const StatsEventNUXFirstWalkthroughClickedSkipToSignIn;
 extern NSString *const StatsEventNUXFirstWalkthroughClickedInfo;
 extern NSString *const StatsEventNUXFirstWalkthroughClickedCreateAccount;
 extern NSString *const StatsEventNUXFirstWalkthroughSignedInWithoutUrl;

@@ -181,9 +181,7 @@ NSString *const StatsEventWelcomeViewControllerClickedCreateWordpressDotComBlog 
 
 // NUX First Walkthrough 
 NSString *const StatsEventNUXFirstWalkthroughOpened = @"NUX - First Walkthrough - Opened";
-NSString *const StatsEventNUXFirstWalkthroughViewedSignInPage = @"NUX - First Walkthrough - Viewed Sign in Page";
 NSString *const StatsEventNUXFirstWalkthroughClickedSkipToCreateAccount = @"NUX - First Walkthrough - Skipped to Create Account";
-NSString *const StatsEventNUXFirstWalkthroughClickedSkipToSignIn = @"NUX - First Walkthrough - Skipped to Sign In";
 NSString *const StatsEventNUXFirstWalkthroughClickedInfo = @"NUX - First Walkthrough - Clicked Info";
 NSString *const StatsEventNUXFirstWalkthroughClickedCreateAccount = @"NUX - First Walkthrough - Clicked Create Account";
 NSString *const StatsEventNUXFirstWalkthroughSignedInWithoutUrl = @"NUX - First Walkthrough - Signed In Without URL";

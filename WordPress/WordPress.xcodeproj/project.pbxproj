@@ -653,7 +653,7 @@
 		857F55D217CEC5E100E154E1 /* doneButton-ios7@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 857F55CA17CEC5E100E154E1 /* doneButton-ios7@2x.png */; };
 		857F961517D950AB0071D9D1 /* WPTableViewSectionHeaderView.m in Sources */ = {isa = PBXBuildFile; fileRef = 857F961417D950AB0071D9D1 /* WPTableViewSectionHeaderView.m */; };
 		857F961817D95F530071D9D1 /* WPTableViewSectionFooterView.m in Sources */ = {isa = PBXBuildFile; fileRef = 857F961717D95F530071D9D1 /* WPTableViewSectionFooterView.m */; };
-		858DE40F1730384F000AC628 /* GeneralWalkthroughViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 858DE40E1730384F000AC628 /* GeneralWalkthroughViewController.m */; };
+		858DE40F1730384F000AC628 /* LoginViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 858DE40E1730384F000AC628 /* LoginViewController.m */; };
 		858DE41217303BB4000AC628 /* OpenSans-Light.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 858DE41017303BB4000AC628 /* OpenSans-Light.ttf */; };
 		858DE41317303BB4000AC628 /* OpenSans-Regular.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 858DE41117303BB4000AC628 /* OpenSans-Regular.ttf */; };
 		8597439E17D6D956009DCDCA /* toggleButtonMain-ios7.png in Resources */ = {isa = PBXBuildFile; fileRef = 8597439617D6D956009DCDCA /* toggleButtonMain-ios7.png */; };
@@ -1739,8 +1739,8 @@
 		857F961417D950AB0071D9D1 /* WPTableViewSectionHeaderView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WPTableViewSectionHeaderView.m; sourceTree = "<group>"; };
 		857F961617D95F530071D9D1 /* WPTableViewSectionFooterView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WPTableViewSectionFooterView.h; sourceTree = "<group>"; };
 		857F961717D95F530071D9D1 /* WPTableViewSectionFooterView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WPTableViewSectionFooterView.m; sourceTree = "<group>"; };
-		858DE40D1730384F000AC628 /* GeneralWalkthroughViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GeneralWalkthroughViewController.h; sourceTree = "<group>"; };
-		858DE40E1730384F000AC628 /* GeneralWalkthroughViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GeneralWalkthroughViewController.m; sourceTree = "<group>"; };
+		858DE40D1730384F000AC628 /* LoginViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LoginViewController.h; sourceTree = "<group>"; };
+		858DE40E1730384F000AC628 /* LoginViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LoginViewController.m; sourceTree = "<group>"; };
 		858DE41017303BB4000AC628 /* OpenSans-Light.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "OpenSans-Light.ttf"; sourceTree = "<group>"; };
 		858DE41117303BB4000AC628 /* OpenSans-Regular.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "OpenSans-Regular.ttf"; sourceTree = "<group>"; };
 		8597439617D6D956009DCDCA /* toggleButtonMain-ios7.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "toggleButtonMain-ios7.png"; sourceTree = "<group>"; };
@@ -2938,8 +2938,10 @@
 				85D08A7017342ECE00E2BBCA /* AddUsersBlogCell.m */,
 				85EC44D21739826A00686604 /* CreateAccountAndBlogViewController.h */,
 				85EC44D31739826A00686604 /* CreateAccountAndBlogViewController.m */,
-				858DE40D1730384F000AC628 /* GeneralWalkthroughViewController.h */,
-				858DE40E1730384F000AC628 /* GeneralWalkthroughViewController.m */,
+				858DE40D1730384F000AC628 /* LoginViewController.h */,
+				858DE40E1730384F000AC628 /* LoginViewController.m */,
+				85E1058F1731D066001071A3 /* LoginCompletedWalkthroughViewController.h */,
+				85E105901731D066001071A3 /* LoginCompletedWalkthroughViewController.m */,
 				85D08A5C17332C4A00E2BBCA /* NewAddUsersBlogViewController.h */,
 				85D08A5D17332C4A00E2BBCA /* NewAddUsersBlogViewController.m */,
 				85B6F7501742DAE800CE7F3A /* WPNUXBackButton.h */,
@@ -5149,7 +5151,7 @@
 				8525398B171761D9003F6B32 /* WPComLanguages.m in Sources */,
 				85149741171E13DF00B87F3F /* WPAsyncBlockOperation.m in Sources */,
 				85149747171E671000B87F3F /* SelectWPComBlogVisibilityViewController.m in Sources */,
-				858DE40F1730384F000AC628 /* GeneralWalkthroughViewController.m in Sources */,
+				858DE40F1730384F000AC628 /* LoginViewController.m in Sources */,
 				85C720B11730CEFA00460645 /* WPWalkthroughTextField.m in Sources */,
 				85E105861731A597001071A3 /* WPWalkthroughOverlayView.m in Sources */,
 				85D08A5E17332C4A00E2BBCA /* NewAddUsersBlogViewController.m in Sources */,
@@ -5300,14 +5302,13 @@
 				GCC_THUMB_SUPPORT = NO;
 				GCC_TREAT_WARNINGS_AS_ERRORS = NO;
 				INFOPLIST_FILE = Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 6.0;
 				OTHER_CFLAGS = (
 					"-Wno-format-security",
 					"-DDEBUG",
 					"-Wno-format",
 				);
 				PRODUCT_NAME = WordPress;
-				PROVISIONING_PROFILE = "CD4D3C77-5918-4EBF-ADC3-80845C13D204";
+				PROVISIONING_PROFILE = "97EA8561-362F-4163-ABE5-6349C20ADCE7";
 				TARGETED_DEVICE_FAMILY = "1,2";
 				WPCOM_CONFIG = $HOME/.wpcom_app_credentials;
 			};
@@ -5336,7 +5337,6 @@
 				GCC_THUMB_SUPPORT = NO;
 				GCC_TREAT_WARNINGS_AS_ERRORS = YES;
 				INFOPLIST_FILE = Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 6.0;
 				OTHER_CFLAGS = (
 					"-Wno-format-security",
 					"-Wno-format",
@@ -5359,7 +5359,6 @@
 				GCC_WARN_ABOUT_RETURN_TYPE = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				HEADER_SEARCH_PATHS = "";
-				IPHONEOS_DEPLOYMENT_TARGET = 6.0;
 				OTHER_CFLAGS = "-Wno-format-security";
 				OTHER_LDFLAGS = (
 					"-lxml2",
@@ -5394,7 +5393,6 @@
 				GCC_THUMB_SUPPORT = NO;
 				GCC_TREAT_WARNINGS_AS_ERRORS = YES;
 				INFOPLIST_FILE = Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 6.0;
 				OTHER_CFLAGS = (
 					"-Wno-format",
 					"-Wno-format-security",
@@ -5417,7 +5415,6 @@
 				GCC_WARN_ABOUT_RETURN_TYPE = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				HEADER_SEARCH_PATHS = "";
-				IPHONEOS_DEPLOYMENT_TARGET = 6.0;
 				OTHER_CFLAGS = "-Wno-format-security";
 				OTHER_LDFLAGS = (
 					"-lxml2",
@@ -5455,7 +5452,6 @@
 				GCC_THUMB_SUPPORT = NO;
 				GCC_TREAT_WARNINGS_AS_ERRORS = YES;
 				INFOPLIST_FILE = "WordPress-Internal-Info.plist";
-				IPHONEOS_DEPLOYMENT_TARGET = 6.0;
 				OTHER_CFLAGS = (
 					"-Wno-format-security",
 					"-Wno-format",
@@ -5505,7 +5501,6 @@
 				GCC_WARN_ABOUT_RETURN_TYPE = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				HEADER_SEARCH_PATHS = "";
-				IPHONEOS_DEPLOYMENT_TARGET = 6.0;
 				ONLY_ACTIVE_ARCH = YES;
 				OTHER_CFLAGS = (
 					"-Wno-format-security",
@@ -5530,7 +5525,6 @@
 				GCC_WARN_ABOUT_RETURN_TYPE = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				HEADER_SEARCH_PATHS = "";
-				IPHONEOS_DEPLOYMENT_TARGET = 6.0;
 				OTHER_CFLAGS = "-Wno-format-security";
 				OTHER_LDFLAGS = (
 					"-lxml2",

@@ -6,7 +6,7 @@
 //  Copyright (c) 2012 Cocoanetics. All rights reserved.
 //
 
-/** This class deletes large amounts of files asynchronously. You should use the sharedInstance to get an instance. This class automatically starts a background task if the app is suspended so that file deletion can complete. 
+/** This class deletes large amounts of files asynchronously. You should use the sharedInstance to get an instance. On iOS this automatically starts a background task if the app is suspended so that file deletion can complete.
  */
 
 @interface DTAsyncFileDeleter : NSObject

@@ -96,7 +96,7 @@
     self = [super initWithStyle:style reuseIdentifier:reuseIdentifier];
     if (self) {
 		
-		UIColor *color = [UIColor colorWithHexString:@"EFEFEF"];
+		UIColor *color = DTColorCreateWithHexString(@"EFEFEF");
 		CGFloat width = self.frame.size.width;
         self.backgroundColor = color;
 		
@@ -136,7 +136,7 @@
 		
 		UIView *view = [[UIView alloc] initWithFrame:self.bounds];
 		view.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
-		view.backgroundColor = [UIColor colorWithHexString:@"A9E2F3"];
+		view.backgroundColor = DTColorCreateWithHexString(@"A9E2F3");
 		
 		CGRect rect = CGRectMake(0, 0, 1, 1);
 		UIGraphicsBeginImageContext(rect.size);

@@ -7,7 +7,9 @@
 //
 
 
-/** A collection of category extensions for `NSString` dealing with the formatting of numbers in special contexts. */
+/** 
+ A collection of category extensions for `NSString` dealing with the formatting of numbers in special contexts. 
+ */
 
 @interface NSString (DTFormatNumbers)
 

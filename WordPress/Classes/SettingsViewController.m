@@ -39,7 +39,7 @@
 #import "SettingsPageViewController.h"
 #import "NotificationSettingsViewController.h"
 #import "Blog+Jetpack.h"
-#import "GeneralWalkthroughViewController.h"
+#import "LoginViewController.h"
 #import "SupportViewController.h"
 #import "WPAccount.h"
 #import "WPTableViewSectionHeaderView.h"
