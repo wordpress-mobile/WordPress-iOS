@@ -9,6 +9,12 @@
 
 #define TAG_OFFSET 1010
 
+@interface PostsViewController () {
+    BOOL _addingNewPost;
+}
+
+@end
+
 @implementation PostsViewController
 
 @synthesize postReaderViewController;
@@ -34,10 +40,6 @@
 - (void)viewDidLoad {
     DDLogInfo(@"%@ %@", self, NSStringFromSelector(_cmd));
     [super viewDidLoad];
-    
-	// ShouldRefreshPosts
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(updatePostsTableViewAfterPostSaved:) name:@"AsynchronousPostIsPosted" object:nil];
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(updatePostsTableAfterDraftSaved:) name:@"DraftsUpdated" object:nil];
     
     UIBarButtonItem *composeButtonItem  = nil;
     
@@ -92,13 +94,13 @@
 - (void)viewWillAppear:(BOOL)animated {
 	[super viewWillAppear:animated];
 
-	if (!IS_IPAD) {
+	if (IS_IPHONE) {
 		// iPhone table views should not appear selected
 		if ([self.tableView indexPathForSelectedRow]) {
 			[self.tableView scrollToRowAtIndexPath:[self.tableView indexPathForSelectedRow] atScrollPosition:UITableViewScrollPositionMiddle animated:NO];
 			[self.tableView deselectRowAtIndexPath:[self.tableView indexPathForSelectedRow] animated:animated];
 		}
-	} else if (IS_IPAD) {
+	} else {
 		// sometimes, iPad table views should
 		if (self.selectedIndexPath) {
             [self showSelectedPost];
@@ -106,6 +108,13 @@
 			[self.tableView scrollToRowAtIndexPath:self.selectedIndexPath atScrollPosition:UITableViewScrollPositionTop animated:NO];
 		}
 	}
+    
+    // Scroll to the top of the UItableView to show the newly added post.
+    if (_addingNewPost) {
+        [self.tableView setContentOffset:CGPointZero animated:NO];
+        _addingNewPost = NO;
+    }
+
 }
 
 - (void)viewWillDisappear:(BOOL)animated {
@@ -247,6 +256,7 @@
     if (IS_IPAD)
         [self resetView];
     
+    _addingNewPost = YES;
     Post *post = [Post newDraftForBlog:self.blog];
     [self editPost:post];
 }
@@ -367,6 +377,9 @@
     if (type == NSFetchedResultsChangeDelete) {
         if ([indexPath compare:selectedIndexPath] == NSOrderedSame) {
             self.selectedIndexPath = nil;
+        }
+        if (_addingNewPost && NSOrderedSame == [indexPath compare:[NSIndexPath indexPathForRow:0 inSection:0]]) {
+            _addingNewPost = NO;
         }
     }
 }
