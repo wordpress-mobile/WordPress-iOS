@@ -29,11 +29,9 @@
 #import "WPPopoverBackgroundView.h"
 #import "IOS7CorrectedTextView.h"
 
-#define IPAD_DETAIL_WIDTH 448.0f
-
-static CGFloat const ScrollingFastVelocityThreshold = 30.f;
+static CGFloat const RPVCScrollingFastVelocityThreshold = 30.f;
 static CGFloat const RPVCHeaderHeightPhone = 10.f;
-NSString *const WPReaderViewControllerDisplayedNativeFriendFinder = @"DisplayedNativeFriendFinder";
+NSString *const RPVCDisplayedNativeFriendFinder = @"DisplayedNativeFriendFinder";
 
 @interface ReaderPostsViewController ()<ReaderTopicsDelegate, ReaderTextFormDelegate, WPTableImageSourceDelegate> {
 	BOOL _hasMoreContent;
@@ -454,7 +452,7 @@ NSString *const WPReaderViewControllerDisplayedNativeFriendFinder = @"DisplayedN
     CGFloat offset = self.tableView.contentOffset.y;
     // We just take a diff from the last known offset, as the approximation is good enough
     CGFloat velocity = fabsf(offset - _lastOffset);
-    if (velocity > ScrollingFastVelocityThreshold && self.isScrolling) {
+    if (velocity > RPVCScrollingFastVelocityThreshold && self.isScrolling) {
         _isScrollingFast = YES;
     } else {
         _isScrollingFast = NO;
@@ -937,14 +935,14 @@ NSString *const WPReaderViewControllerDisplayedNativeFriendFinder = @"DisplayedN
 
 - (BOOL)shouldDisplayfriendFinderNudgeView {
     NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
-    return ![userDefaults boolForKey:WPReaderViewControllerDisplayedNativeFriendFinder] && self.friendFinderNudgeView == nil;
+    return ![userDefaults boolForKey:RPVCDisplayedNativeFriendFinder] && self.friendFinderNudgeView == nil;
 }
 
 - (void)showFriendFinderNudgeView:(id)sender {
     if ([self shouldDisplayfriendFinderNudgeView]) {
         NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
         
-        [userDefaults setBool:YES forKey:WPReaderViewControllerDisplayedNativeFriendFinder];
+        [userDefaults setBool:YES forKey:RPVCDisplayedNativeFriendFinder];
         [userDefaults synchronize];
         
         CGRect buttonFrame = CGRectMake(0,self.navigationController.view.frame.size.height,self.view.frame.size.width, 0.f);
