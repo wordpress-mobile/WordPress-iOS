@@ -16,33 +16,42 @@
 #import "UILabel+SuggestSize.h"
 #import "WPAvatarSource.h"
 #import "ReaderButton.h"
+#import "NSDate+StringFormatting.h"
+#import "UIColor+Helpers.h"
 
-const CGFloat RPTVCVerticalPadding = 10.0f;
-const CGFloat RPTVCHorizontalPadding = 10.0f;
-const CGFloat RPTVCMetaViewHeightWithButtons = 101.0f;
-const CGFloat RPTVCMetaViewHeightSansButtons = 52.0f;
+const CGFloat RPTVCAuthorPadding = 8.0f;
+const CGFloat RPTVCHorizontalInnerPadding = 12.0f;
+const CGFloat RPTVCHorizontalOuterPadding = 8.0f;
+const CGFloat RPTVCMetaViewHeight = 48.0f;
+const CGFloat RPTVCAuthorViewHeight = 32.0f;
+const CGFloat RPTVCVerticalPadding = 16.0f;
+const CGFloat RPTVCAvatarSize = 32.0f;
+const CGFloat RPTVCBorderHeight = 1.0f;
+const CGFloat RPTVCSmallButtonLeftPadding = 2; // Follow, tag
+const CGFloat RPTVCMaxImageHeightPercentage = 0.59f;
+const CGFloat RPTVCMaxSummaryHeight = 88.0f;
+const CGFloat RPTVCLineHeightMultiple = 1.15f;
+
+// Control buttons (Like, Reblog, ...)
+const CGFloat RPTVCControlButtonHeight = 48.0f;
+const CGFloat RPTVCControlButtonWidth = 48.0f;
+const CGFloat RPTVCControlButtonSpacing = 12.0f;
+const CGFloat RPTVCControlButtonBorderSize = 0.0f;
 
 @interface ReaderPostTableViewCell()
 
-@property (nonatomic, strong) ReaderPost *post;
 @property (nonatomic, strong) UIView *containerView;
 @property (nonatomic, strong) UILabel *titleLabel;
+@property (nonatomic, strong) CALayer *titleBorder;
 @property (nonatomic, strong) UILabel *snippetLabel;
 
 @property (nonatomic, strong) UIView *metaView;
-
+@property (nonatomic, strong) CALayer *metaBorder;
 @property (nonatomic, strong) UIView *byView;
 @property (nonatomic, strong) UILabel *bylineLabel;
-
 @property (nonatomic, strong) UIView *controlView;
-@property (nonatomic, strong) UIButton *likeButton;
-@property (nonatomic, strong) UIButton *reblogButton;
 
 @property (nonatomic, assign) BOOL showImage;
-
-- (void)buildPostContent;
-- (void)buildMetaContent;
-- (void)handleLikeButtonTapped:(id)sender;
 
 @end
 
@@ -53,7 +62,6 @@ const CGFloat RPTVCMetaViewHeightSansButtons = 52.0f;
 
 + (CGFloat)cellHeightForPost:(ReaderPost *)post withWidth:(CGFloat)width {
 	CGFloat desiredHeight = 0.0f;
-	CGFloat vpadding = RPTVCVerticalPadding;
 
     // Margins
     CGFloat contentWidth = width;
@@ -63,34 +71,96 @@ const CGFloat RPTVCMetaViewHeightSansButtons = 52.0f;
     
     // iPhone has extra padding around each cell
     if (IS_IPHONE) {
-        contentWidth -= RPTVCHorizontalPadding * 2;
+        contentWidth -= RPTVCHorizontalOuterPadding * 2;
     }
 
+    desiredHeight += RPTVCAuthorPadding;
+    desiredHeight += RPTVCAuthorViewHeight;
+    desiredHeight += RPTVCAuthorPadding;
+
 	// Are we showing an image? What size should it be?
-	if(post.featuredImageURL) {
-		CGFloat height = ceilf((contentWidth * 0.66f));
+	if (post.featuredImageURL) {
+		CGFloat height = ceilf((contentWidth * RPTVCMaxImageHeightPercentage));
 		desiredHeight += height;
 	}
+    
+    // Everything but the image has inner padding
+    contentWidth -= RPTVCHorizontalInnerPadding * 2;
 
-	desiredHeight += vpadding;
+    // Title
+    desiredHeight += RPTVCVerticalPadding;
+    NSAttributedString *postTitle = [self titleAttributedStringForPost:post];
+    desiredHeight += [postTitle boundingRectWithSize:CGSizeMake(contentWidth, CGFLOAT_MAX) options:NSStringDrawingUsesLineFragmentOrigin | NSStringDrawingUsesFontLeading context:nil].size.height;
+    desiredHeight += RPTVCVerticalPadding;
 
-	desiredHeight += [post.postTitle sizeWithFont:[UIFont fontWithName:@"OpenSans-Light" size:20.0f] constrainedToSize:CGSizeMake(contentWidth, CGFLOAT_MAX) lineBreakMode:NSLineBreakByWordWrapping].height;
-	desiredHeight += vpadding;
+    // Post summary
+    if ([post.summary length] > 0) {
+        NSAttributedString *postSummary = [self summaryAttributedStringForPost:post];
+        desiredHeight += [postSummary boundingRectWithSize:CGSizeMake(contentWidth, RPTVCMaxSummaryHeight) options:NSStringDrawingUsesLineFragmentOrigin | NSStringDrawingUsesFontLeading context:nil].size.height;
+        desiredHeight += RPTVCVerticalPadding;
+    }
+    
+    // Tag
+    NSString *tagName = post.primaryTagName;
+    if ([tagName length] > 0) {
+        desiredHeight += [tagName sizeWithFont:[self summaryFont] constrainedToSize:CGSizeMake(contentWidth, CGFLOAT_MAX) lineBreakMode:NSLineBreakByClipping].height;
+    }
 
-	desiredHeight += [post.summary sizeWithFont:[UIFont fontWithName:@"OpenSans" size:13.0f] constrainedToSize:CGSizeMake(contentWidth, CGFLOAT_MAX) lineBreakMode:NSLineBreakByWordWrapping].height;
-	desiredHeight += vpadding;
+    // Padding above and below the line
+	desiredHeight += RPTVCVerticalPadding * 2;
 
 	// Size of the meta view
-	if ([post isWPCom]) {
-		desiredHeight += RPTVCMetaViewHeightWithButtons;
-	} else {
-		desiredHeight += RPTVCMetaViewHeightSansButtons;
-	}
-	
-	// bottom padding
-	desiredHeight += vpadding;
+    desiredHeight += RPTVCMetaViewHeight;
 
 	return ceil(desiredHeight);
+}
+
++ (NSAttributedString *)titleAttributedStringForPost:(ReaderPost *)post {
+    NSMutableParagraphStyle *style = [[NSMutableParagraphStyle alloc] init];
+    [style setLineHeightMultiple:RPTVCLineHeightMultiple];
+    NSDictionary *attributes = @{NSParagraphStyleAttributeName : style,
+                                 NSFontAttributeName : [self titleFont]};
+    NSMutableAttributedString *titleString = [[NSMutableAttributedString alloc] initWithString:[post.postTitle trim]
+                                                                                    attributes:attributes];
+
+    return titleString;
+}
+
++ (NSAttributedString *)summaryAttributedStringForPost:(ReaderPost *)post {
+    NSString *summary = [post.summary trim];
+    NSInteger newline = [post.summary rangeOfString:@"\n"].location;
+    
+    if (newline != NSNotFound)
+        summary = [post.summary substringToIndex:newline];
+
+    NSMutableParagraphStyle *style = [[NSMutableParagraphStyle alloc] init];
+    [style setLineHeightMultiple:RPTVCLineHeightMultiple];
+    NSDictionary *attributes = @{NSParagraphStyleAttributeName : style,
+                                 NSFontAttributeName : [self summaryFont]};
+    NSMutableAttributedString *attributedSummary = [[NSMutableAttributedString alloc] initWithString:summary
+                                                                                          attributes:attributes];
+
+    return attributedSummary;
+}
+
++ (UIFont *)titleFont {
+    return [UIFont fontWithName:@"Merriweather-Bold" size:21.0f];
+}
+
++ (UIFont *)summaryFont {
+    return [UIFont fontWithName:@"OpenSans" size:14.0f];
+}
+
++ (ReaderPostTableViewCell *)cellForSubview:(UIView *)subview {
+    UIView *view = subview;
+	while (![view isKindOfClass:self]) {
+		view = (UIView *)view.superview;
+	}
+    
+    if (view == subview)
+        return nil;
+    
+    return (ReaderPostTableViewCell *)view;
 }
 
 
@@ -147,11 +217,9 @@ const CGFloat RPTVCMetaViewHeightSansButtons = 52.0f;
                      } completion:nil];
 }
 
-
 - (void)setPost:(ReaderPost *)post {
-	if ([post isEqual:_post]) {
+	if ([post isEqual:_post])
 		return;
-	}
 	
 	if (_post) {
 		[_post removeObserver:self forKeyPath:@"isReblogged" context:@"reblogging"];
@@ -161,14 +229,12 @@ const CGFloat RPTVCMetaViewHeightSansButtons = 52.0f;
 	[_post addObserver:self forKeyPath:@"isReblogged" options:NSKeyValueObservingOptionNew context:@"reblogging"];
 }
 
-
 - (void)setHighlighted:(BOOL)highlighted animated:(BOOL)animated {
     BOOL previouslyHighlighted = self.highlighted;
     [super setHighlighted:highlighted animated:animated];
 
-    if (previouslyHighlighted == highlighted) {
+    if (previouslyHighlighted == highlighted)
         return;
-    }
 
     if (highlighted) {
         [self setHighlightedEffect:highlighted animated:animated];
@@ -186,7 +252,6 @@ const CGFloat RPTVCMetaViewHeightSansButtons = 52.0f;
     [self setHighlightedEffect:selected animated:animated];
 }
 
-
 - (void)buildPostContent {
 	self.cellImageView.contentMode = UIViewContentModeScaleAspectFill;
 	[_containerView addSubview:self.cellImageView];
@@ -194,56 +259,91 @@ const CGFloat RPTVCMetaViewHeightSansButtons = 52.0f;
 	self.titleLabel = [[UILabel alloc] init];
 	_titleLabel.autoresizingMask = UIViewAutoresizingFlexibleWidth;
 	_titleLabel.backgroundColor = [UIColor clearColor];
-	_titleLabel.font = [UIFont fontWithName:@"OpenSans-Light" size:20.0f];
-	_titleLabel.textColor = [UIColor colorWithRed:64.0f/255.0f green:64.0f/255.0f blue:64.0f/255.0f alpha:1.0];
+	_titleLabel.textColor = [UIColor colorWithHexString:@"333"];
 	_titleLabel.lineBreakMode = NSLineBreakByWordWrapping;
 	_titleLabel.numberOfLines = 0;
 	[_containerView addSubview:_titleLabel];
+    
+    self.titleBorder = [[CALayer alloc] init];
+    _titleBorder.backgroundColor = [[UIColor colorWithHexString:@"f1f1f1"] CGColor];
+    [_containerView.layer addSublayer:_titleBorder];
 	
 	self.snippetLabel = [[UILabel alloc] init];
 	_snippetLabel.autoresizingMask = UIViewAutoresizingFlexibleWidth;
 	_snippetLabel.backgroundColor = [UIColor clearColor];
-	_snippetLabel.font = [UIFont fontWithName:@"OpenSans" size:13.0f];
-	_snippetLabel.textColor = [UIColor colorWithRed:64.0f/255.0f green:64.0f/255.0f blue:64.0f/255.0f alpha:1.0];
-	_snippetLabel.lineBreakMode = NSLineBreakByWordWrapping;
-	_snippetLabel.numberOfLines = 0;
+	_snippetLabel.textColor = [UIColor colorWithHexString:@"333"];
+	_snippetLabel.lineBreakMode = NSLineBreakByTruncatingTail;
+	_snippetLabel.numberOfLines = 4;
 	[_containerView addSubview:_snippetLabel];
-}
-
-
-- (void)buildMetaContent {
-	self.metaView = [[UIView alloc] init];
-	_metaView.autoresizingMask = UIViewAutoresizingFlexibleWidth;
-	_metaView.backgroundColor = [UIColor colorWithWhite:0.95703125f alpha:1.f];
-	[_containerView addSubview:_metaView];
-
-	self.byView = [[UIView alloc] init];
+    
+    self.byView = [[UIView alloc] init];
 	_byView.autoresizingMask = UIViewAutoresizingFlexibleWidth;
 	_byView.backgroundColor = [UIColor whiteColor];
-	[_metaView addSubview:_byView];
+    _byView.userInteractionEnabled = YES;
+	[_containerView addSubview:_byView];
 	
-	self.avatarImageView = [[UIImageView alloc] initWithFrame:CGRectMake(10.0f, 10.0f, 32.0f, 32.0f)];
+    CGRect avatarFrame = CGRectMake(RPTVCHorizontalInnerPadding, RPTVCAuthorPadding, RPTVCAvatarSize, RPTVCAvatarSize);
+	self.avatarImageView = [[UIImageView alloc] initWithFrame:avatarFrame];
 	[_byView addSubview:_avatarImageView];
 	
 	self.bylineLabel = [[UILabel alloc] init];
 	_bylineLabel.backgroundColor = [UIColor clearColor];
-	_bylineLabel.numberOfLines = 2;
+	_bylineLabel.numberOfLines = 1;
 	_bylineLabel.autoresizingMask = UIViewAutoresizingFlexibleWidth;
 	_bylineLabel.font = [UIFont fontWithName:@"OpenSans" size:12.0f];
 	_bylineLabel.adjustsFontSizeToFitWidth = NO;
-	_bylineLabel.textColor = [UIColor colorWithHexString:@"c0c0c0"];
+	_bylineLabel.textColor = [UIColor colorWithHexString:@"333"];
 	[_byView addSubview:_bylineLabel];
+    
+    self.followButton = [ReaderButton buttonWithType:UIButtonTypeCustom];
+    [_followButton setSelected:[self.post.isFollowing boolValue]];
+    _followButton.contentHorizontalAlignment = UIControlContentHorizontalAlignmentLeft;
+    _followButton.backgroundColor = [UIColor clearColor];
+    _followButton.titleLabel.font = [UIFont fontWithName:@"OpenSans" size:12.0f];
+    NSString *followString = NSLocalizedString(@"Follow", @"Prompt to follow a blog.");
+    NSString *followedString = NSLocalizedString(@"Following", @"User is following the blog.");
+    [_followButton setTitle:followString forState:UIControlStateNormal];
+    [_followButton setTitle:followedString forState:UIControlStateSelected];
+    [_followButton setTitleEdgeInsets: UIEdgeInsetsMake(0, RPTVCSmallButtonLeftPadding, 0, 0)];
+    [_followButton setImage:[UIImage imageNamed:@"reader-postaction-follow"] forState:UIControlStateNormal];
+    [_followButton setImage:[UIImage imageNamed:@"reader-postaction-following"] forState:UIControlStateSelected];
+    [_followButton setTitleColor:[UIColor colorWithHexString:@"aaa"] forState:UIControlStateNormal];
+    [_byView addSubview:_followButton];
+    
+    self.tagButton = [ReaderButton buttonWithType:UIButtonTypeCustom];
+    _tagButton.contentHorizontalAlignment = UIControlContentHorizontalAlignmentLeft;
+    _tagButton.backgroundColor = [UIColor clearColor];
+    _tagButton.titleLabel.font = [UIFont fontWithName:@"OpenSans" size:12.0f];
+    [_tagButton setTitleEdgeInsets: UIEdgeInsetsMake(0, RPTVCSmallButtonLeftPadding, 0, 0)];
+    [_tagButton setImage:[UIImage imageNamed:@"reader-postaction-tag"] forState:UIControlStateNormal];
+    [_tagButton setTitleColor:[UIColor colorWithHexString:@"aaa"] forState:UIControlStateNormal];
+    [_containerView addSubview:_tagButton];
+}
+
+- (void)buildMetaContent {
+	self.metaView = [[UIView alloc] init];
+	_metaView.autoresizingMask = UIViewAutoresizingFlexibleWidth;
+	_metaView.backgroundColor = [UIColor clearColor];
+	[_containerView addSubview:_metaView];
+    
+    self.metaBorder = [[CALayer alloc] init];
+    _metaBorder.backgroundColor = [[UIColor colorWithHexString:@"f1f1f1"] CGColor];
+    [_metaView.layer addSublayer:_metaBorder];
+    
+    self.timeButton = [UIButton buttonWithType:UIButtonTypeCustom];
+    _timeButton.contentHorizontalAlignment = UIControlContentHorizontalAlignmentLeft;
+    _timeButton.backgroundColor = [UIColor clearColor];
+    _timeButton.titleLabel.font = [UIFont fontWithName:@"OpenSans" size:12.0f];
+    [_timeButton setTitleEdgeInsets: UIEdgeInsetsMake(0, RPTVCSmallButtonLeftPadding, 0, 0)];
+    [_timeButton setImage:[UIImage imageNamed:@"reader-postaction-time"] forState:UIControlStateNormal];
+    [_timeButton setTitleColor:[UIColor colorWithHexString:@"aaa"] forState:UIControlStateNormal];
+	[_metaView addSubview:_timeButton];
 
 	self.likeButton = [ReaderButton buttonWithType:UIButtonTypeCustom];
 	_likeButton.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleRightMargin;
 	_likeButton.backgroundColor = [UIColor whiteColor];
-	[_likeButton setTitleEdgeInsets:UIEdgeInsetsMake(0.0f, -5.0f, 0.0f, 0.0f)];
-	[_likeButton.titleLabel setFont:[UIFont fontWithName:@"OpenSans-Bold" size:10.0f]];
-	[_likeButton setTitleColor:[UIColor colorWithRed:84.0f/255.0f green:173.0f/255.0f blue:211.0f/255.0f alpha:1.0f] forState:UIControlStateNormal];
-	[_likeButton setTitleColor:[UIColor colorWithRed:221.0f/255.0f green:118.0f/255.0f blue:43.0f/255.0f alpha:1.0f] forState:UIControlStateSelected];
 	[_likeButton setImage:[UIImage imageNamed:@"reader-postaction-like-blue"] forState:UIControlStateNormal];
 	[_likeButton setImage:[UIImage imageNamed:@"reader-postaction-like-active"] forState:UIControlStateSelected];
-	[_likeButton addTarget:self action:@selector(handleLikeButtonTapped:) forControlEvents:UIControlEventTouchUpInside];
 	[_metaView addSubview:_likeButton];
 	
 	self.reblogButton = [ReaderButton buttonWithType:UIButtonTypeCustom];
@@ -252,53 +352,106 @@ const CGFloat RPTVCMetaViewHeightSansButtons = 52.0f;
 	[_reblogButton setImage:[UIImage imageNamed:@"reader-postaction-reblog-blue"] forState:UIControlStateNormal];
 	[_reblogButton setImage:[UIImage imageNamed:@"reader-postaction-reblog-done"] forState:UIControlStateSelected];
 	[_metaView addSubview:_reblogButton];
-	
+    
+    self.commentButton = [ReaderButton buttonWithType:UIButtonTypeCustom];
+	_commentButton.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleLeftMargin;
+	_commentButton.backgroundColor = [UIColor whiteColor];
+	[_commentButton setImage:[UIImage imageNamed:@"reader-postaction-comment-blue"] forState:UIControlStateNormal];
+	[_commentButton setImage:[UIImage imageNamed:@"reader-postaction-comment-active"] forState:UIControlStateSelected];
+	[_metaView addSubview:_commentButton];
 }
 
 - (void)layoutSubviews {
 	[super layoutSubviews];
     
-    CGFloat leftPadding = IS_IPHONE ? RPTVCHorizontalPadding : 0;
+    CGFloat leftPadding = IS_IPHONE ? RPTVCHorizontalOuterPadding : 0;
 	CGFloat contentWidth = self.frame.size.width - leftPadding * 2;
-    CGFloat innerContentWidth = contentWidth - RPTVCHorizontalPadding * 2;
-	CGFloat vpadding = RPTVCVerticalPadding;
-	CGFloat nextY = vpadding;
+    CGFloat innerContentWidth = contentWidth - RPTVCHorizontalInnerPadding * 2;
+	CGFloat nextY = RPTVCAuthorPadding;
 	CGFloat height = 0.0f;
     
-    CGRect frame = CGRectMake(leftPadding, 0.0f, contentWidth, self.frame.size.height - RPTVCVerticalPadding);
+    CGRect frame = CGRectMake(leftPadding, 0, contentWidth, self.frame.size.height - RPTVCVerticalPadding);
     _containerView.frame = frame;
+    
+    _byView.frame = CGRectMake(0, 0, contentWidth, RPTVCAuthorViewHeight + RPTVCAuthorPadding * 2);
+    CGFloat bylineX = RPTVCAvatarSize + RPTVCAuthorPadding + RPTVCHorizontalInnerPadding;
+    _bylineLabel.frame = CGRectMake(bylineX, RPTVCAuthorPadding - 2, contentWidth - bylineX, 18);
+    
+    if ([self.post isFollowable]) {
+        _followButton.hidden = NO;
+        CGFloat followX = bylineX - 4; // Fudge factor for image alignment
+        CGFloat followY = RPTVCAuthorPadding + _bylineLabel.frame.size.height - 2;
+        height = ceil([_followButton.titleLabel suggestedSizeForWidth:innerContentWidth].height);
+        _followButton.frame = CGRectMake(followX, followY, contentWidth - bylineX, height);
+    } else {
+        _followButton.hidden = YES;
+    }
+
+    nextY += RPTVCAuthorViewHeight + RPTVCAuthorPadding;
 
 	// Are we showing an image? What size should it be?
-	if(_showImage) {
-		height = ceilf(contentWidth * 0.66f);
-		self.cellImageView.frame = CGRectMake(RPTVCHorizontalPadding, nextY, innerContentWidth, height);
+	if (_showImage) {
+        _titleBorder.hidden = YES;
+		height = ceilf(contentWidth * RPTVCMaxImageHeightPercentage);
+		self.cellImageView.frame = CGRectMake(0, nextY, contentWidth, height);
 		nextY += height;
+    } else {
+        _titleBorder.hidden = NO;
+        _titleBorder.frame = CGRectMake(RPTVCHorizontalInnerPadding, nextY, contentWidth - RPTVCHorizontalInnerPadding * 2, RPTVCBorderHeight);
     }
     
 	// Position the title
-	height = ceil([_titleLabel suggestedSizeForWidth:contentWidth].height);
-	_titleLabel.frame = CGRectMake(RPTVCHorizontalPadding, nextY, innerContentWidth, height);
-	nextY += height + vpadding;
+    nextY += RPTVCVerticalPadding;
+	height = ceil([_titleLabel suggestedSizeForWidth:innerContentWidth].height);
+	_titleLabel.frame = CGRectMake(RPTVCHorizontalInnerPadding, nextY, innerContentWidth, height);
+	nextY += height + RPTVCVerticalPadding;
 
 	// Position the snippet
-	height = ceil([_snippetLabel suggestedSizeForWidth:contentWidth].height);
-	_snippetLabel.frame = CGRectMake(RPTVCHorizontalPadding, nextY, innerContentWidth, height);
-	nextY += ceilf(height + vpadding);
+    if ([self.post.summary length] > 0) {
+        height = ceil([_snippetLabel suggestedSizeForWidth:innerContentWidth].height);
+        height = MIN(height, RPTVCMaxSummaryHeight);
+        _snippetLabel.frame = CGRectMake(RPTVCHorizontalInnerPadding, nextY, innerContentWidth, height);
+        nextY += ceilf(height + RPTVCVerticalPadding);
+    }
 
-	// position the meta view and its subviews
-    _byView.frame = CGRectMake(0.0f, 0.0f, contentWidth, 52.0f);
+    // Tag
+    if ([self.post.primaryTagName length] > 0) {
+        height = ceil([_tagButton.titleLabel suggestedSizeForWidth:innerContentWidth].height);
+        _tagButton.frame = CGRectMake(RPTVCHorizontalInnerPadding, nextY, innerContentWidth, height);
+        nextY += height + RPTVCVerticalPadding;
+        self.tagButton.hidden = NO;
+    } else {
+        self.tagButton.hidden = YES;
+    }
+
+	// Position the meta view and its subviews
+	_metaView.frame = CGRectMake(0, nextY, contentWidth, RPTVCMetaViewHeight);
+    _metaBorder.frame = CGRectMake(RPTVCHorizontalInnerPadding, 0, contentWidth - RPTVCHorizontalInnerPadding * 2, RPTVCBorderHeight);
+
+    BOOL commentsOpen = [[self.post commentsOpen] boolValue] && [self.post isWPCom];
+	CGFloat buttonWidth = RPTVCControlButtonWidth;
+    CGFloat buttonX = _metaView.frame.size.width - RPTVCControlButtonWidth;
+    CGFloat buttonY = RPTVCBorderHeight; // Just below the line
     
-	height = [self.post isWPCom] ? RPTVCMetaViewHeightWithButtons : RPTVCMetaViewHeightSansButtons;
-	_metaView.frame = CGRectMake(0.0f, nextY, contentWidth, height);
-	
-	CGFloat w = ceilf(_metaView.frame.size.width / 2.0f);
-    _likeButton.frame = CGRectMake(0.0f, 53.0f, w, 48.0f);
-    _reblogButton.frame = CGRectMake(w + 1.0f, 53.0f, w - 1.f, 48.0f);
-    _bylineLabel.frame = CGRectMake(47.0f, 8.0f, contentWidth - 57.0f, 36.0f);
+    // Button order from right-to-left: Like, [Comment], Reblog,
+    _likeButton.frame = CGRectMake(buttonX, buttonY, buttonWidth, RPTVCControlButtonHeight);
+    buttonX -= buttonWidth + RPTVCControlButtonSpacing;
     
-    CGFloat sideBorderX = RPTVCHorizontalPadding - 1; // Just to the left of the container
-    CGFloat sideBorderHeight = self.frame.size.height - RPTVCVerticalPadding + 1.f; // Just below it
-    _sideBorderView.frame = CGRectMake(sideBorderX, 1.f, self.frame.size.width - sideBorderX*2, sideBorderHeight);
+    if (commentsOpen) {
+        self.commentButton.hidden = NO;
+        self.commentButton.frame = CGRectMake(buttonX, buttonY, buttonWidth, RPTVCControlButtonHeight);
+        buttonX -= buttonWidth + RPTVCControlButtonSpacing;
+    } else {
+        self.commentButton.hidden = YES;
+    }
+    _reblogButton.frame = CGRectMake(buttonX, buttonY, buttonWidth - RPTVCControlButtonBorderSize, RPTVCControlButtonHeight);
+    
+    CGFloat timeWidth = contentWidth - _reblogButton.frame.origin.x;
+    _timeButton.frame = CGRectMake(RPTVCHorizontalInnerPadding, RPTVCBorderHeight, timeWidth, RPTVCControlButtonHeight);
+    
+    CGFloat sideBorderX = RPTVCHorizontalOuterPadding - 1; // Just to the left of the container
+    CGFloat sideBorderHeight = self.frame.size.height - RPTVCVerticalPadding; // Just below it
+    _sideBorderView.frame = CGRectMake(sideBorderX, 1, self.frame.size.width - sideBorderX * 2, sideBorderHeight);
 }
 
 - (void)prepareForReuse {
@@ -309,6 +462,7 @@ const CGFloat RPTVCMetaViewHeightSansButtons = 52.0f;
 	_bylineLabel.text = nil;
 	_titleLabel.text = nil;
 	_snippetLabel.text = nil;
+    [_tagButton setTitle:nil forState:UIControlStateNormal];
 
     [self setHighlightedEffect:NO animated:NO];
 }
@@ -320,25 +474,19 @@ const CGFloat RPTVCMetaViewHeightSansButtons = 52.0f;
 	[self updateControlBar];
 }
 
-
-- (void)setReblogTarget:(id)target action:(SEL)selector {
-	[_reblogButton addTarget:target action:selector forControlEvents:UIControlEventTouchUpInside];
-}
-
-
 - (void)configureCell:(ReaderPost *)post {
-	
 	self.post = post;
     
     // This will show the placeholder avatar. Do this here instead of prepareForReusue
     // so avatars show up after a cell is created, and not dequeued.
     [self setAvatar:nil];
 
-	_titleLabel.text = [post.postTitle trim];
-	_snippetLabel.text = post.summary;
+	_titleLabel.attributedText = [ReaderPostTableViewCell titleAttributedStringForPost:post];
+	_snippetLabel.attributedText = [ReaderPostTableViewCell summaryAttributedStringForPost:post];
 
-    NSString *onBlog = [NSString stringWithFormat:NSLocalizedString(@"on %@", @"'on <Blog Name>', displayed on reader list for each post"), post.blogName];
-	_bylineLabel.text = [NSString stringWithFormat:@"%@\n%@", [post prettyDateString], onBlog];
+    _bylineLabel.text = [post authorString];
+            
+    [_timeButton setTitle:[post.dateCreated shortString] forState:UIControlStateNormal];
 
 	self.showImage = NO;
 	self.cellImageView.hidden = YES;
@@ -348,13 +496,22 @@ const CGFloat RPTVCMetaViewHeightSansButtons = 52.0f;
 		self.showImage = YES;
 		self.cellImageView.hidden = NO;
 	}
+    
+    if ([self.post.primaryTagName length] > 0) {
+        _tagButton.hidden = NO;
+        [_tagButton setTitle:self.post.primaryTagName forState:UIControlStateNormal];
+    } else {
+        _tagButton.hidden = YES;
+    }
 
 	if ([self.post isWPCom]) {
 		_likeButton.hidden = NO;
 		_reblogButton.hidden = NO;
+        _commentButton.hidden = NO;
 	} else {
 		_likeButton.hidden = YES;
 		_reblogButton.hidden = YES;
+        _commentButton.hidden = YES;
 	}
 	
 	_reblogButton.userInteractionEnabled = ![post.isReblogged boolValue];
@@ -362,16 +519,16 @@ const CGFloat RPTVCMetaViewHeightSansButtons = 52.0f;
 	[self updateControlBar];
 }
 
-
 - (void)setAvatar:(UIImage *)avatar {
-    if (_avatarIsSet) {
+    if (_avatarIsSet)
         return;
-    }
+
     static UIImage *wpcomBlavatar;
     static UIImage *wporgBlavatar;
     if (!wpcomBlavatar) {
         wpcomBlavatar = [UIImage imageNamed:@"wpcom_blavatar"];
     }
+    
     if (!wporgBlavatar) {
         wporgBlavatar = [UIImage imageNamed:@"wporg_blavatar"];
     }
@@ -384,27 +541,21 @@ const CGFloat RPTVCMetaViewHeightSansButtons = 52.0f;
     }
 }
 
-
 - (void)setFeaturedImage:(UIImage *)image {
     self.cellImageView.contentMode = UIViewContentModeScaleAspectFill;
     self.cellImageView.image = image;
 }
 
-
 - (void)updateControlBar {
-	if (!_post) return;
+	if (!_post)
+        return;
 	
     _likeButton.selected = _post.isLiked.boolValue;
     _reblogButton.selected = _post.isReblogged.boolValue;
 	_reblogButton.userInteractionEnabled = !_reblogButton.selected;
-
-	NSString *str = ([self.post.likeCount integerValue] > 0) ? [self.post.likeCount stringValue] : nil;
-	[_likeButton setTitle:str forState:UIControlStateNormal];
 }
 
-
-- (void)handleLikeButtonTapped:(id)sender {
-
+- (void)likeAction:(id)sender {
 	[self.post toggleLikedWithSuccess:^{
         if ([self.post.isLiked boolValue]) {
             [WPMobileStats trackEventForWPCom:StatsEventReaderLikedPost];
@@ -418,6 +569,5 @@ const CGFloat RPTVCMetaViewHeightSansButtons = 52.0f;
 	
 	[self updateControlBar];
 }
-
 
 @end

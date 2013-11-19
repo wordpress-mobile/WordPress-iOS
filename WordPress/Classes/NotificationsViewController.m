@@ -15,6 +15,7 @@
 #import "NewNotificationsTableViewCell.h"
 #import "WPTableViewControllerSubclass.h"
 #import "NotificationSettingsViewController.h"
+#import "WPAccount.h"
 
 NSString * const NotificationsTableViewNoteCellIdentifier = @"NotificationsTableViewCell";
 NSString * const NotificationsLastSyncDateKey = @"NotificationsLastSyncDate";
@@ -267,6 +268,14 @@ NSString * const NotificationsLastSyncDateKey = @"NotificationsLastSyncDate";
 - (BOOL)isSyncing
 {
     return _retrievingNotifications;
+}
+
+- (void)syncItems
+{
+    // Check to see if there is a WordPress.com account before attempting to fetch notifications
+    if ([WPAccount defaultWordPressComAccount]) {
+        [super syncItems];
+    }
 }
 
 - (void)loadMoreWithSuccess:(void (^)())success failure:(void (^)(NSError *))failure {

@@ -52,6 +52,9 @@ NSString *const ReaderExtrasArrayKey = @"ReaderExtrasArrayKey";
 @dynamic summary;
 @dynamic comments;
 @dynamic account;
+@dynamic primaryTagName;
+@dynamic primaryTagSlug;
+@dynamic tags;
 
 + (NSArray *)readerEndpoints {
 	static NSArray *endpoints = nil;
@@ -160,6 +163,12 @@ NSString *const ReaderExtrasArrayKey = @"ReaderExtrasArrayKey";
 	NSNumber *postID = [dict numberForKey:@"ID"];
     
     WPAccount *account = (WPAccount *)[context objectWithID:[WPAccount defaultWordPressComAccount].objectID];
+    
+    // Some endpoints (e.g. tags) use different case
+    if (siteID == nil) {
+        siteID = [dict numberForKey:@"site_ID"];
+        blogSiteID = [dict numberForKey:@"site_ID"];
+    }
 
 	// following, likes and topics endpoints
 	if ([dict valueForKey:@"blog_site_id"] != nil) {
@@ -235,7 +244,6 @@ NSString *const ReaderExtrasArrayKey = @"ReaderExtrasArrayKey";
 	self.dateSynced = [NSDate date];
 }
 
-
 - (void)updateFromRESTDictionary:(NSDictionary *)dict {
 	// REST api.  Freshly Pressed, sites/site/posts
 	
@@ -304,6 +312,16 @@ NSString *const ReaderExtrasArrayKey = @"ReaderExtrasArrayKey";
 	self.blogURL = [NSString stringWithFormat:@"%@://%@/", url.scheme, url.host];
 	
 	self.summary = [self createSummary:self.content makePlainText:YES];
+    
+    NSDictionary *tagsDict = [dict objectForKey:@"tags"];
+    NSArray *tagsList = [NSArray arrayWithArray:[tagsDict allKeys]];
+    self.tags = [tagsList componentsJoinedByString:@", "];
+    
+    if ([tagsDict count] > 0) {
+        NSDictionary *tagDict = [[tagsDict allValues] objectAtIndex:0];
+        self.primaryTagSlug = tagDict[@"slug"];
+        self.primaryTagName = tagDict[@"name"];
+    }
 }
 
 
@@ -376,6 +394,22 @@ NSString *const ReaderExtrasArrayKey = @"ReaderExtrasArrayKey";
 		img = [img stringByDecodingXMLCharacters];
 		self.postAvatar = [self parseImageSrcFromHTML:img];
 	}
+    
+    NSDictionary *tagsDict = [dict objectForKey:@"topics"];
+    
+    if ([tagsDict count] > 0) {
+        NSArray *tagsList = [NSArray arrayWithArray:[tagsDict allValues]];
+        self.tags = [tagsList componentsJoinedByString:@", "];
+    }
+    
+    NSDictionary *primaryTagDict = [dict objectForKey:@"primary_tag"];
+    if ([primaryTagDict isKindOfClass:[NSDictionary class]]) {
+        self.primaryTagName = primaryTagDict[@"name"];
+        self.primaryTagSlug = primaryTagDict[@"slug"];
+    } else if ([tagsDict count] > 0) {
+        self.primaryTagSlug = [[tagsDict allKeys] objectAtIndex:0];
+        self.primaryTagName = [tagsDict objectForKey:self.primaryTagSlug];
+    }
 }
 
 
@@ -559,6 +593,9 @@ NSString *const ReaderExtrasArrayKey = @"ReaderExtrasArrayKey";
     return [formatter stringFromDate:date];
 }
 
+- (BOOL)isFollowable {
+    return self.siteID != nil;
+}
 
 - (BOOL)isFreshlyPressed {
 	return ([self.endpoint rangeOfString:@"freshly-pressed"].location != NSNotFound)? YES : NO;
@@ -596,6 +633,15 @@ NSString *const ReaderExtrasArrayKey = @"ReaderExtrasArrayKey";
 	return @{@"commentID":commentID, @"comment":commentText};
 }
 
+- (NSString *)authorString {
+    if ([self.blogName length] > 0) {
+        return self.blogName;
+    } else if ([self.authorDisplayName length] > 0) {
+        return self.authorDisplayName;
+    } else {
+        return self.author;
+    }
+}
 
 - (NSString *)avatar {
 	return (self.postAvatar == nil) ? self.authorAvatarURL : self.postAvatar;

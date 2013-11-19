@@ -60,7 +60,7 @@
 	{
 		return nil;
 	}
-	for (int i = 1; i < match.numberOfRanges; i++)
+	for (NSUInteger i = 1; i < match.numberOfRanges; i++)
 	{
 		NSRange range = [match rangeAtIndex:i];
 		if (range.location == NSNotFound)
