@@ -181,9 +181,7 @@ NSString *const StatsEventWelcomeViewControllerClickedCreateWordpressDotComBlog 
 
 // NUX First Walkthrough 
 NSString *const StatsEventNUXFirstWalkthroughOpened = @"NUX - First Walkthrough - Opened";
-NSString *const StatsEventNUXFirstWalkthroughViewedSignInPage = @"NUX - First Walkthrough - Viewed Sign in Page";
 NSString *const StatsEventNUXFirstWalkthroughClickedSkipToCreateAccount = @"NUX - First Walkthrough - Skipped to Create Account";
-NSString *const StatsEventNUXFirstWalkthroughClickedSkipToSignIn = @"NUX - First Walkthrough - Skipped to Sign In";
 NSString *const StatsEventNUXFirstWalkthroughClickedInfo = @"NUX - First Walkthrough - Clicked Info";
 NSString *const StatsEventNUXFirstWalkthroughClickedCreateAccount = @"NUX - First Walkthrough - Clicked Create Account";
 NSString *const StatsEventNUXFirstWalkthroughSignedInWithoutUrl = @"NUX - First Walkthrough - Signed In Without URL";
@@ -208,14 +206,6 @@ NSString *const StatsEventNUXCreateAccountCreatedAccount = @"NUX - Create Accoun
 NSString *const StatsEventNUXCreateAccountClickedReviewPagePrevious = @"NUX - Create Account - Clicked Review Page Previous";
 NSString *const StatsEventNUXCreateAccountClickedViewLanguages = @"NUX - Create Account - Viewed Languages";
 NSString *const StatsEventNUXCreateAccountChangedDefaultURL = @"NUX - Create Account - Changed Default URL";
-
-// NUX Second Walkthrough
-NSString *const StatsEventNUXSecondWalkthroughOpened = @"NUX - Second Walkthrough - Opened";
-NSString *const StatsEventNUXSecondWalkthroughViewedReaderPage = @"NUX - Second Walkthrough - Viewed Reader Page";
-NSString *const StatsEventNUXSecondWalkthroughViewedNotificationPage = @"NUX - Second Walkthrough - Viewed Notification Page";
-NSString *const StatsEventNUXSecondWalkthroughViewedGetStartedPage = @"NUX - Second Walkthrough - Viewed Get Started Page";
-NSString *const StatsEventNUXSecondWalkthroughClickedStartUsingApp = @"NUX - Second Walkthrough - Clicked Start Using App";
-NSString *const StatsEventNUXSecondWalkthroughClickedStartUsingAppOnFinalPage = @"NUX - Second Walkthrough - Clicked Start Using App on Final Page";
 
 // Ådd Blogs Screen
 NSString *const StatsEventAddBlogsOpened = @"Add Blogs - Opened";

@@ -62,6 +62,7 @@
  */
 +(NSString*)encodeLabelsList:(NSArray*)inLabelsArrayOrNil;
 
++(id<NSObject>)combineLabels:(id<NSObject>)labels1 withLabels:(id<NSObject>)labels2;
 +(NSString*)urlEncodeString:(NSString*)inString;
 +(NSString*)JSONEncodeString:(NSString*)inString;
 

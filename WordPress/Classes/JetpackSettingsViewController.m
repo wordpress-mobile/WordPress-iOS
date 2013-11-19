@@ -18,7 +18,7 @@
 #import "UIView+FormSheetHelpers.h"
 #import "WPNUXSecondaryButton.h"
 
-@interface JetpackSettingsViewController () <UITextFieldDelegate>
+@interface JetpackSettingsViewController () <UITextFieldDelegate, UIGestureRecognizerDelegate>
 
 @property (nonatomic, strong) NSString *username;
 @property (nonatomic, strong) NSString *password;
@@ -52,8 +52,7 @@ CGFloat const JetpackTextFieldHeight = 44.0;
 CGFloat const JetpackIconVerticalOffset = 77;
 CGFloat const JetpackSignInButtonWidth = 289.0;
 CGFloat const JetpackSignInButtonHeight = 41.0;
-@synthesize username = _username;
-@synthesize password = _password;
+
 
 #define kCheckCredentials NSLocalizedString(@"Verify and Save Credentials", @"");
 #define kCheckingCredentials NSLocalizedString(@"Verifing Credentials", @"");
@@ -72,7 +71,6 @@ CGFloat const JetpackSignInButtonHeight = 41.0;
 }
 
 - (void)dealloc {
-    
     [[NSNotificationCenter defaultCenter] removeObserver:self];
 }
 
@@ -107,9 +105,8 @@ CGFloat const JetpackSignInButtonHeight = 41.0;
         [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(keyboardWillHide:) name:UIKeyboardWillHideNotification object:nil];
     }
 
-    // add observer to detect text field changes
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(textFieldDidChangeNotificaitonRecieved:) name:UITextFieldTextDidChangeNotification object:_usernameText];
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(textFieldDidChangeNotificaitonRecieved:) name:UITextFieldTextDidChangeNotification object:_passwordText];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(textFieldDidChangeNotificationReceived:) name:UITextFieldTextDidChangeNotification object:_usernameText];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(textFieldDidChangeNotificationReceived:) name:UITextFieldTextDidChangeNotification object:_passwordText];
     
     if (self.canBeSkipped) {
         if (_showFullScreen) {
@@ -136,9 +133,10 @@ CGFloat const JetpackSignInButtonHeight = 41.0;
         [self checkForJetpack];
     });
 
-    UITapGestureRecognizer *tgr = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(dismissKeyboard)];
-    tgr.cancelsTouchesInView = NO;
-    [self.view addGestureRecognizer:tgr];
+    UITapGestureRecognizer *dismissKeyboardTapRecognizer = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(dismissKeyboard)];
+    dismissKeyboardTapRecognizer.cancelsTouchesInView = NO;
+    dismissKeyboardTapRecognizer.delegate = self;
+    [self.view addGestureRecognizer:dismissKeyboardTapRecognizer];
 }
 
 - (void)initializeView {
@@ -154,7 +152,6 @@ CGFloat const JetpackSignInButtonHeight = 41.0;
 }
 
 - (void)addControls {
-    
     // Add Logo
     if (_icon == nil) {
         _icon = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"icon-jetpack"]];
@@ -185,6 +182,7 @@ CGFloat const JetpackSignInButtonHeight = 41.0;
         _usernameText.autocorrectionType = UITextAutocorrectionTypeNo;
         _usernameText.autocapitalizationType = UITextAutocapitalizationTypeNone;
         _usernameText.text = _username;
+        _usernameText.clearButtonMode = UITextFieldViewModeWhileEditing;
         [self.view addSubview:_usernameText];
     }
     
@@ -197,6 +195,7 @@ CGFloat const JetpackSignInButtonHeight = 41.0;
         _passwordText.delegate = self;
         _passwordText.secureTextEntry = YES;
         _passwordText.text = _password;
+        _passwordText.clearsOnBeginEditing = YES;
         _passwordText.showTopLineSeparator = YES;
         [self.view addSubview:_passwordText];
     }
@@ -233,7 +232,6 @@ CGFloat const JetpackSignInButtonHeight = 41.0;
 }
 
 - (void)layoutControls {
-    
     CGFloat x,y;
     BOOL hasJetpack = [_blog hasJetpack];
     
@@ -300,19 +298,13 @@ CGFloat const JetpackSignInButtonHeight = 41.0;
     [WPNUXUtility centerViews:viewsToCenter withStartingView:_icon andEndingView:endingView forHeight:(_viewHeight - 100)];
 }
 
-
-#pragma mark -
-#pragma mark Instance Methods
-
 - (void)skip:(id)sender {
     if (self.completionBlock) {
         self.completionBlock(NO);
     }
 }
 
-
 - (void)saveAction:(id)sender {
-    
     [self dismissKeyboard];
     [SVProgressHUD show];
 	
@@ -335,8 +327,9 @@ CGFloat const JetpackSignInButtonHeight = 41.0;
                            }];
 }
 
+#pragma mark - UITextField delegate and Keyboard
+
 - (BOOL)textFieldShouldReturn:(UITextField *)textField {
-    
     if (textField == _usernameText) {
         [_passwordText becomeFirstResponder];
     } else if (textField == _passwordText) {
@@ -346,8 +339,7 @@ CGFloat const JetpackSignInButtonHeight = 41.0;
 	return YES;
 }
 
-- (void)textFieldDidChangeNotificaitonRecieved:(NSNotification *)notification {
-    
+- (void)textFieldDidChangeNotificationReceived:(NSNotification *)notification {
     UITextField *textField = (UITextField *)notification.object;
     
     if([textField isEqual:_usernameText]) {
@@ -359,7 +351,6 @@ CGFloat const JetpackSignInButtonHeight = 41.0;
 }
 
 - (void)keyboardWillShow:(NSNotification *)notification {
-    
     NSDictionary *keyboardInfo = notification.userInfo;
     CGFloat animationDuration = [[keyboardInfo objectForKey:UIKeyboardAnimationDurationUserInfoKey] floatValue];
     CGRect keyboardFrame = [[[notification userInfo] objectForKey:UIKeyboardFrameEndUserInfoKey] CGRectValue];
@@ -383,8 +374,7 @@ CGFloat const JetpackSignInButtonHeight = 41.0;
     }];
 }
 
-- (void)keyboardWillHide:(NSNotification *)notification
-{
+- (void)keyboardWillHide:(NSNotification *)notification {
     NSDictionary *keyboardInfo = notification.userInfo;
     CGFloat animationDuration = [[keyboardInfo objectForKey:UIKeyboardAnimationDurationUserInfoKey] floatValue];
     [UIView animateWithDuration:animationDuration animations:^{
@@ -420,23 +410,22 @@ CGFloat const JetpackSignInButtonHeight = 41.0;
     _signInButton.enabled = [self saveEnabled];
 }
 
-
 - (void)dismissKeyboard {
     [_usernameText resignFirstResponder];
     [_passwordText resignFirstResponder];
 }
 
+#pragma mark - Browser
+
 - (void)openInstallJetpackURL {
-    
     [self openURL:[NSURL URLWithString:[_blog adminUrlWithPath:@"plugin-install.php?tab=plugin-information&plugin=jetpack"]] withUsername:_blog.username password:_blog.password wpLoginURL:[NSURL URLWithString:_blog.loginUrl]];
 }
+
 - (void)openMoreInformationURL {
-    
     [self openURL:[NSURL URLWithString:@"http://ios.wordpress.org/faq/#faq_15"] withUsername:nil password:nil wpLoginURL:nil];
 }
 
 - (void)openURL:(NSURL *)url withUsername:(NSString *)username password:(NSString *)password wpLoginURL:(NSURL *)wpLoginURL {
-    
     WPWebViewController *webViewController = [[WPWebViewController alloc] init];
     [webViewController setUrl:url];
     if (username && password && wpLoginURL) {
@@ -517,6 +506,17 @@ CGFloat const JetpackSignInButtonHeight = 41.0;
     self.password = password;
 
     [self saveAction:nil];
+}
+
+#pragma mark - UIGestureRecognizerDelegate
+
+- (BOOL)gestureRecognizer:(UIGestureRecognizer *)gestureRecognizer shouldReceiveTouch:(UITouch *)touch {
+    BOOL isUsernameField = [touch.view isDescendantOfView:_usernameText];
+    BOOL isSigninButton = [touch.view isDescendantOfView:_signInButton];
+    if (isUsernameField || isSigninButton) {
+        return NO;
+    }
+    return YES;
 }
 
 @end

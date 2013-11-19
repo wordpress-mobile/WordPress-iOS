@@ -7,7 +7,7 @@
 //
 
 /**
- This class providse read/write access to extended file attributes of a file or folder. It wraps the standard xattr Posix functions to do that.
+ This class provides read/write access to extended file attributes of a file or folder. It wraps the standard xattr Posix functions to do that.
  
  Because the file system does not keep track of the data types saved in extended attributes this API so far reads and writes strings.
 */
