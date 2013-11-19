@@ -231,7 +231,7 @@ const CGFloat RPTVCMetaViewHeightSansButtons = 52.0f;
 	_bylineLabel.autoresizingMask = UIViewAutoresizingFlexibleWidth;
 	_bylineLabel.font = [UIFont fontWithName:@"OpenSans" size:12.0f];
 	_bylineLabel.adjustsFontSizeToFitWidth = NO;
-	_bylineLabel.textColor = [UIColor colorWithHexString:@"c0c0c0"];
+	_bylineLabel.textColor = DTColorCreateWithHexString(@"c0c0c0");
 	[_byView addSubview:_bylineLabel];
 
 	self.likeButton = [ReaderButton buttonWithType:UIButtonTypeCustom];
