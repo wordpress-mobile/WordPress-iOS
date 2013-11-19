@@ -290,15 +290,6 @@
                 }
             }];
         }
-        // Is this needed?
-//        dispatch_block_t notify = ^{
-//            [[NSNotificationCenter defaultCenter] postNotificationName:BlogChangedNotification object:nil];
-//        };
-//        if (![NSThread isMainThread]) {
-//            dispatch_async(dispatch_get_main_queue(), notify);
-//        } else {
-//            notify();
-//        }
     }];
 }
 

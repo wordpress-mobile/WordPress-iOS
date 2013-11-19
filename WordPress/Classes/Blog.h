@@ -12,8 +12,6 @@
 
 #import "Reachability.h"
 
-#define BlogChangedNotification @"BlogChangedNotification"
-
 @class WPAccount;
 
 @interface Blog : NSManagedObject

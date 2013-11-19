@@ -36,14 +36,6 @@
 
 @interface WordPressAppDelegate (Private) <CrashlyticsDelegate>
 
-- (void)setAppBadge;
-- (void)checkIfStatsShouldRun;
-- (void)runStats;
-- (void)cleanUnusedMediaFileFromTmpDir;
-- (void)customizeAppearance;
-- (void)toggleExtraDebuggingIfNeeded;
-- (void)handleDefaultAccountChangedNotification:(NSNotification *)notification;
-
 @end
 
 int ddLogLevel = LOG_LEVEL_INFO;
