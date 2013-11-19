@@ -207,15 +207,13 @@ CGFloat const blavatarImageViewSize = 43.f;
     switch (section) {
         case SettingsSectionWpcom:
             numWpcomRows = 1;
-            if ([[WordPressComApi sharedApi] hasCredentials]) {
+
+            // Show a Sign Out row?
+            if ([WPAccount defaultWordPressComAccount]) {
                 // Allow notifications management?
                 if ([self supportsNotifications]) {
                     numWpcomRows += 1;
                 }
-            }
-            
-            // Show a Sign Out row?
-            if ([[WPAccount defaultWordPressComAccount] username]) {
                 numWpcomRows += 1;
             }
             
@@ -265,7 +263,7 @@ CGFloat const blavatarImageViewSize = 43.f;
     cell.accessoryView = nil;
 
     if (indexPath.section == SettingsSectionWpcom) {
-        if ([[WordPressComApi sharedApi] hasCredentials]) {
+        if ([WPAccount defaultWordPressComAccount]) {
             if (indexPath.row == 0) {
                 cell.textLabel.text = NSLocalizedString(@"Username", @"");
                 cell.detailTextLabel.text = [[WPAccount defaultWordPressComAccount] username];
@@ -328,7 +326,7 @@ CGFloat const blavatarImageViewSize = 43.f;
     
     switch (indexPath.section) {
         case SettingsSectionWpcom:
-            if ([[WordPressComApi sharedApi] hasCredentials] && indexPath.row == 0) {
+            if ([WPAccount defaultWordPressComAccount] && indexPath.row == 0) {
                 cellIdentifier = @"WpcomUsernameCell";
                 cellStyle = UITableViewCellStyleValue1;
             } else {
@@ -386,7 +384,7 @@ CGFloat const blavatarImageViewSize = 43.f;
     [tableView deselectRowAtIndexPath:indexPath animated:YES];
     
     if (indexPath.section == SettingsSectionWpcom) {
-        if ([[WordPressComApi sharedApi] hasCredentials]) {
+        if ([WPAccount defaultWordPressComAccount]) {
             if (indexPath.row == [self rowForSignOut]) {
                 [WPMobileStats trackEventForWPCom:StatsEventSettingsClickedSignOutOfDotCom];
 
@@ -466,7 +464,6 @@ CGFloat const blavatarImageViewSize = 43.f;
         [WPMobileStats trackEventForWPCom:StatsEventSettingsSignedOutOfDotCom];
         
         // Sign out
-        [[WordPressComApi sharedApi] signOut]; //Signout first, then remove the account
 		[WPAccount removeDefaultWordPressComAccount];
         [self.tableView reloadSections:[NSIndexSet indexSetWithIndex:SettingsSectionWpcom] withRowAnimation:UITableViewRowAnimationFade];
         

@@ -220,7 +220,7 @@ int ddLogLevel = LOG_LEVEL_INFO;
     [Crashlytics startWithAPIKey:[WordPressComApiCredentials crashlyticsApiKey]];
     [[Crashlytics sharedInstance] setDelegate:self];
 
-    BOOL hasCredentials = [[WordPressComApi sharedApi] hasCredentials];
+    BOOL hasCredentials = ([WPAccount defaultWordPressComAccount] != nil);
     [self setCommonCrashlyticsParameters];
 
     if (hasCredentials && [[WPAccount defaultWordPressComAccount] username] != nil) {
