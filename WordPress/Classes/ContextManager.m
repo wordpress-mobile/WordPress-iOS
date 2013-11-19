@@ -40,38 +40,33 @@ static ContextManager *instance;
 
 - (NSManagedObjectContext *const)newDerivedContext {
     NSManagedObjectContext *derived = [[NSManagedObjectContext alloc] initWithConcurrencyType:NSPrivateQueueConcurrencyType];
-    [derived performBlockAndWait:^{
-        derived.parentContext = self.mainContext;
-    }];
-    
+    derived.parentContext = self.mainContext;
     return derived;
 }
 
 - (NSManagedObjectContext *const)mainContext {
-    if (_mainContext) {
-        return _mainContext;
-    }
-    
-    _mainContext = [[NSManagedObjectContext alloc] initWithConcurrencyType:NSMainQueueConcurrencyType];
-    _mainContext.persistentStoreCoordinator = [self persistentStoreCoordinator];
-    
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(mergeChangesIntoBackgroundContext:) name:NSManagedObjectContextDidSaveNotification object:_mainContext];
-    
+    static dispatch_once_t onceToken;
+    dispatch_once(&onceToken, ^{
+        _mainContext = [[NSManagedObjectContext alloc] initWithConcurrencyType:NSMainQueueConcurrencyType];
+        _mainContext.persistentStoreCoordinator = [self persistentStoreCoordinator];
+        
+        [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(mergeChangesIntoBackgroundContext:) name:NSManagedObjectContextDidSaveNotification object:_mainContext];
+    });
     return _mainContext;
 }
 
 - (NSManagedObjectContext *const)backgroundContext {
-    if (_backgroundContext) {
-        return _backgroundContext;
-    }
-    _backgroundContext = [[NSManagedObjectContext alloc] initWithConcurrencyType:NSPrivateQueueConcurrencyType];
-    [_backgroundContext performBlockAndWait:^{
-        _backgroundContext.persistentStoreCoordinator = [self persistentStoreCoordinator];
-        _backgroundContext.mergePolicy = NSMergeByPropertyObjectTrumpMergePolicy;
-    }];
-    
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(mergeChangesToMainContext:) name:NSManagedObjectContextDidSaveNotification object:_backgroundContext];
-    
+    static dispatch_once_t onceToken;
+    dispatch_once(&onceToken, ^{
+        _backgroundContext = [[NSManagedObjectContext alloc] initWithConcurrencyType:NSPrivateQueueConcurrencyType];
+        [_backgroundContext performBlockAndWait:^{
+            _backgroundContext.persistentStoreCoordinator = [self persistentStoreCoordinator];
+            _backgroundContext.mergePolicy = NSMergeByPropertyObjectTrumpMergePolicy;
+        }];
+        
+        [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(mergeChangesToMainContext:)
+                                                     name:NSManagedObjectContextDidSaveNotification object:_backgroundContext];
+    });
     return _backgroundContext;
 }
 
