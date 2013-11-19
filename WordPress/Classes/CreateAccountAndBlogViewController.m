@@ -362,7 +362,8 @@ CGFloat const CreateAccountAndBlogButtonHeight = 41.0;
     // is accurately calculated we can determine the vertical center and adjust everything accordingly.
     
     // Layout Title
-    CGSize titleSize = [_titleLabel.text sizeWithFont:_titleLabel.font constrainedToSize:CGSizeMake(CreateAccountAndBlogMaxTextWidth, CGFLOAT_MAX) lineBreakMode:NSLineBreakByWordWrapping];
+    CGSize titleSize = [_titleLabel.text boundingRectWithSize:CGSizeMake(CreateAccountAndBlogMaxTextWidth, CGFLOAT_MAX) options:NSStringDrawingUsesLineFragmentOrigin attributes:@{NSFontAttributeName: _titleLabel.font} context:nil].size;
+    
     x = (_viewWidth - titleSize.width)/2.0;
     y = 0;
     _titleLabel.frame = CGRectIntegral(CGRectMake(x, y, titleSize.width, titleSize.height));
@@ -400,12 +401,12 @@ CGFloat const CreateAccountAndBlogButtonHeight = 41.0;
     _createAccountButton.frame = CGRectIntegral(CGRectMake(x, y, CreateAccountAndBlogButtonWidth, CreateAccountAndBlogButtonHeight));
 
     // Layout Terms of Service
-    CGFloat TOSSingleLineHeight = [@"WordPress" sizeWithFont:_TOSLabel.font].height;
-    CGSize TOSLabelSize = [_TOSLabel.text sizeWithFont:_TOSLabel.font constrainedToSize:CGSizeMake(CreateAccountAndBlogMaxTextWidth, CGFLOAT_MAX) lineBreakMode:NSLineBreakByWordWrapping];
+    CGFloat TOSSingleLineHeight = [@"WordPress" sizeWithAttributes:@{NSFontAttributeName: _TOSLabel.font}].height;
+    CGSize TOSLabelSize = [_TOSLabel.text boundingRectWithSize:CGSizeMake(CreateAccountAndBlogMaxTextWidth, CGFLOAT_MAX) options:NSStringDrawingUsesLineFragmentOrigin attributes:@{NSFontAttributeName: _TOSLabel.font} context:nil].size;
     // If the terms of service don't fit on two lines, then shrink the font to make sure the entire terms of service is visible.
     if (TOSLabelSize.height > 2*TOSSingleLineHeight) {
         _TOSLabel.font = [WPNUXUtility tosLabelSmallerFont];
-        TOSLabelSize = [_TOSLabel.text sizeWithFont:_TOSLabel.font constrainedToSize:CGSizeMake(CreateAccountAndBlogMaxTextWidth, CGFLOAT_MAX) lineBreakMode:NSLineBreakByWordWrapping];
+        TOSLabelSize = [_TOSLabel.text boundingRectWithSize:CGSizeMake(CreateAccountAndBlogMaxTextWidth, CGFLOAT_MAX) options:NSStringDrawingUsesLineFragmentOrigin attributes:@{NSFontAttributeName: _TOSLabel.font} context:nil].size;
     }
     x = (_viewWidth - TOSLabelSize.width)/2.0;
     y = CGRectGetMaxY(_createAccountButton.frame) + 0.5 * CreateAccountAndBlogStandardOffset;
@@ -631,6 +632,7 @@ CGFloat const CreateAccountAndBlogButtonHeight = 41.0;
 
 - (void)createUserAndSite
 {
+    
     WPAsyncBlockOperation *userCreation = [WPAsyncBlockOperation operationWithBlock:^(WPAsyncBlockOperation *operation){
         void (^createUserSuccess)(id) = ^(id responseObject){
             [operation didSucceed];
