@@ -9,6 +9,10 @@
 #import <Foundation/Foundation.h>
 #import <CoreData/CoreData.h>
 
+#import <WordPressApi/WordPressApi.h>
+
+#import "WordPressComApi.h"
+
 @class Blog;
 
 extern NSString * const WPAccountDefaultWordPressComAccountChangedNotification;
@@ -75,9 +79,10 @@ extern NSString * const WPAccountDefaultWordPressComAccountChangedNotification;
 
  @param username the WordPress.com account's username
  @param password the WordPress.com account's password
+ @param authToken the OAuth2 token returned by signIntoWordPressDotComWithUsername:password:success:failure:
  @return a WordPress.com `WPAccount` object for the given `username`
  */
-+ (WPAccount *)createOrUpdateWordPressComAccountWithUsername:(NSString *)username andPassword:(NSString *)password;
++ (WPAccount *)createOrUpdateWordPressComAccountWithUsername:(NSString *)username password:(NSString *)password authToken:(NSString *)authToken;
 
 /**
  Creates a new self hosted account or updates the password if there is a matching account
@@ -104,6 +109,22 @@ extern NSString * const WPAccountDefaultWordPressComAccountChangedNotification;
  @return the newly created blog
  */
 - (Blog *)findOrCreateBlogFromDictionary:(NSDictionary *)blogInfo withContext:(NSManagedObjectContext*)context;
+
+- (void)syncBlogsWithSuccess:(void (^)())success failure:(void (^)(NSError *error))failure;
+
+///------------------
+/// @name API Helpers
+///------------------
+
+/**
+ A WordPressComApi object if the account is a WordPress.com account. Otherwise, it returns `nil`
+ */
+@property (nonatomic, readonly) WordPressComApi *restApi;
+
+/**
+ A WordPressXMLRPCApi object configured for the XML-RPC endpoint
+ */
+@property (nonatomic, readonly) WordPressXMLRPCApi *xmlrpcApi;
 
 @end
 

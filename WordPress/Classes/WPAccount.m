@@ -15,6 +15,7 @@
 
 static NSString * const DefaultDotcomAccountDefaultsKey = @"AccountDefaultDotcom";
 static NSString * const DotcomXmlrpcKey = @"https://wordpress.com/xmlrpc.php";
+static NSString * const OauthTokenServiceName = @"public-api.wordpress.com";
 static WPAccount *__defaultDotcomAccount = nil;
 NSString * const WPAccountDefaultWordPressComAccountChangedNotification = @"WPAccountDefaultWordPressComAccountChangedNotification";
 
@@ -22,10 +23,14 @@ NSString * const WPAccountDefaultWordPressComAccountChangedNotification = @"WPAc
 @interface WPAccount ()
 @property (nonatomic, retain) NSString *xmlrpc;
 @property (nonatomic, retain) NSString *username;
+@property (nonatomic, retain) NSString *authToken;
 @property (nonatomic) BOOL isWpcom;
 @end
 
-@implementation WPAccount
+@implementation WPAccount {
+    WordPressComApi *_restApi;
+    WordPressXMLRPCApi *_xmlrpcApi;
+}
 
 @dynamic xmlrpc;
 @dynamic username;
@@ -84,7 +89,9 @@ NSString * const WPAccountDefaultWordPressComAccountChangedNotification = @"WPAc
 - (void)prepareForDeletion {
     // Invoked automatically by the Core Data framework when the receiver is about to be deleted.
     if (__defaultDotcomAccount == self) {
-        [[WordPressComApi sharedApi] cancelAllHTTPOperationsWithMethod:nil path:nil];
+        [[self restApi] cancelAllHTTPOperationsWithMethod:nil path:nil];
+        // FIXME: this is temporary until we move all the cleanup out of WordPressComApi
+        [[self restApi] signOut];
         __defaultDotcomAccount = nil;
         [[NSUserDefaults standardUserDefaults] removeObjectForKey:DefaultDotcomAccountDefaultsKey];
         [[NSNotificationCenter defaultCenter] postNotificationName:WPAccountDefaultWordPressComAccountChangedNotification object:nil];
@@ -93,9 +100,10 @@ NSString * const WPAccountDefaultWordPressComAccountChangedNotification = @"WPAc
 
 #pragma mark - Account creation
 
-+ (WPAccount *)createOrUpdateWordPressComAccountWithUsername:(NSString *)username andPassword:(NSString *)password {
++ (WPAccount *)createOrUpdateWordPressComAccountWithUsername:(NSString *)username password:(NSString *)password authToken:(NSString *)authToken {
     WPAccount *account = [self createOrUpdateSelfHostedAccountWithXmlrpc:DotcomXmlrpcKey username:username andPassword:password];
     account.isWpcom = YES;
+    account.authToken = authToken;
     if (__defaultDotcomAccount == nil) {
         [self setDefaultWordPressComAccount:account];
     }
@@ -156,6 +164,31 @@ NSString * const WPAccountDefaultWordPressComAccountChangedNotification = @"WPAc
     return blog;
 }
 
+- (void)syncBlogsWithSuccess:(void (^)())success failure:(void (^)(NSError *error))failure {
+    [self.xmlrpcApi getBlogsWithSuccess:^(NSArray *blogs) {
+        [self mergeBlogs:blogs withCompletion:success];
+    } failure:failure];
+}
+
+- (void)mergeBlogs:(NSArray *)blogs withCompletion:(void (^)())completion {
+    NSManagedObjectContext *backgroundMOC = [[NSManagedObjectContext alloc] initWithConcurrencyType:NSPrivateQueueConcurrencyType];
+    backgroundMOC.parentContext = self.managedObjectContext;
+
+    NSManagedObjectID *accountID = self.objectID;
+    [backgroundMOC performBlock:^{
+        WPAccount *account = (WPAccount *)[backgroundMOC objectWithID:accountID];
+        for (NSDictionary *blog in blogs) {
+            [account findOrCreateBlogFromDictionary:blog withContext:backgroundMOC];
+        }
+        NSError *error;
+        if (![backgroundMOC save:&error]) {
+            DDLogError(@"Unresolved core data save error: %@", error);
+        }
+
+        dispatch_async(dispatch_get_main_queue(), completion);
+    }];
+}
+
 #pragma mark - Custom accessors
 
 - (NSString *)password {
@@ -169,7 +202,50 @@ NSString * const WPAccountDefaultWordPressComAccountChangedNotification = @"WPAc
                           forServiceName:self.xmlrpc
                           updateExisting:YES
                                    error:nil];
+    } else {
+        [SFHFKeychainUtils deleteItemForUsername:self.username
+                                  andServiceName:self.xmlrpc
+                                           error:nil];
     }
+}
+
+- (NSString *)authToken {
+    return [SFHFKeychainUtils getPasswordForUsername:self.username andServiceName:OauthTokenServiceName error:nil];
+}
+
+- (void)setAuthToken:(NSString *)authToken {
+    if (authToken) {
+        [SFHFKeychainUtils storeUsername:self.username
+                             andPassword:authToken
+                          forServiceName:OauthTokenServiceName
+                          updateExisting:YES
+                                   error:nil];
+    } else {
+        [SFHFKeychainUtils deleteItemForUsername:self.username
+                                  andServiceName:OauthTokenServiceName
+                                           error:nil];
+    }
+}
+
+#pragma mark - API Helpers
+
+- (WordPressComApi *)restApi
+{
+    if (!self.isWpcom) {
+        return nil;
+    }
+
+    if (!_restApi) {
+        _restApi = [[WordPressComApi alloc] initWithOAuthToken:self.authToken];
+    }
+    return _restApi;
+}
+
+- (WordPressXMLRPCApi *)xmlrpcApi {
+    if (!_xmlrpcApi) {
+        _xmlrpcApi = [WordPressXMLRPCApi apiWithXMLRPCEndpoint:[NSURL URLWithString:self.xmlrpc] username:self.username password:self.password];
+    }
+    return _xmlrpcApi;
 }
 
 @end

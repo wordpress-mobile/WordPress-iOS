@@ -19,7 +19,7 @@
 #import "WPNUXPrimaryButton.h"
 #import "WPNUXSecondaryButton.h"
 #import "WPWalkthroughTextField.h"
-#import "WordPressComApi.h"
+#import "WordPressComOAuthClient.h"
 #import "WPWebViewController.h"
 #import "Blog+Jetpack.h"
 #import "LoginCompletedWalkthroughViewController.h"
@@ -29,6 +29,8 @@
 #import "ReachabilityUtils.h"
 #import "WPNUXUtility.h"
 #import "WPAccount.h"
+#import "ReaderPost.h"
+#import "Note.h"
 
 @interface LoginViewController () <
     UITextFieldDelegate> {
@@ -674,24 +676,17 @@ CGFloat const GeneralWalkthroughiOS7StatusBarOffset = 20.0;
     
     [SVProgressHUD showWithStatus:NSLocalizedString(@"Connecting to WordPress.com", nil) maskType:SVProgressHUDMaskTypeBlack];
     
-    void (^loginSuccessBlock)(void) = ^{
-        [SVProgressHUD dismiss];
-        _userIsDotCom = YES;
-        [self showAddUsersBlogsForWPCom];
-    };
-    
-    void (^loginFailBlock)(NSError *) = ^(NSError *error){
-        // User shouldn't get here because the getOptions call should fail, but in the unlikely case they do throw up an error message.
-        [SVProgressHUD dismiss];
-        DDLogError(@"Login failed with username %@ : %@", username, error);
-        [self displayGenericErrorMessage:NSLocalizedString(@"Please try entering your login details again.", nil)];
-    };
-    
-    [[WordPressComApi sharedApi] signInWithUsername:username
-                                           password:password
-                                            success:loginSuccessBlock
-                                            failure:loginFailBlock];
-    
+    WordPressComOAuthClient *client = [WordPressComOAuthClient client];
+    [client authenticateWithUsername:username
+                            password:password
+                             success:^(NSString *authToken) {
+                                 [SVProgressHUD dismiss];
+                                 _userIsDotCom = YES;
+                                 [self createWordPressComAccountForUsername:username password:password authToken:authToken];
+                             } failure:^(NSError *error) {
+                                 [SVProgressHUD dismiss];
+                                 [self displayRemoteError:error];
+                             }];
 }
 
 - (void)signInForSelfHostedForUsername:(NSString *)username password:(NSString *)password options:(NSDictionary *)options andApi:(WordPressXMLRPCApi *)api
@@ -702,11 +697,27 @@ CGFloat const GeneralWalkthroughiOS7StatusBarOffset = 20.0;
     
     [api getBlogsWithSuccess:^(NSArray *blogs) {
         _blogs = blogs;
-        [self handleGetBlogsSuccess:[api.xmlrpc absoluteString]];
+
     } failure:^(NSError *error) {
         [SVProgressHUD dismiss];
         [self displayRemoteError:error];
     }];
+}
+
+- (void)createWordPressComAccountForUsername:(NSString *)username password:(NSString *)password authToken:(NSString *)authToken
+{
+    [SVProgressHUD showWithStatus:NSLocalizedString(@"Getting account information", @"") maskType:SVProgressHUDMaskTypeBlack];
+    WPAccount *account = [WPAccount createOrUpdateWordPressComAccountWithUsername:username password:password authToken:authToken];
+    [account syncBlogsWithSuccess:^{
+        [SVProgressHUD dismiss];
+        [self.navigationController popViewControllerAnimated:NO];
+        [self showCompletionWalkthrough];
+    } failure:^(NSError *error) {
+        [SVProgressHUD dismiss];
+        [self displayRemoteError:error];
+    }];
+    [ReaderPost fetchPostsWithCompletionHandler:nil];
+    [account.restApi getNotificationsSince:nil success:nil failure:nil];
 }
 
 - (void)handleGuessXMLRPCURLFailure:(NSError *)error
@@ -844,7 +855,7 @@ CGFloat const GeneralWalkthroughiOS7StatusBarOffset = 20.0;
 - (WPAccount *)createAccountWithUsername:(NSString *)username andPassword:(NSString *)password isWPCom:(BOOL)isWPCom xmlRPCUrl:(NSString *)xmlRPCUrl {
     WPAccount *account;
     if (isWPCom) {
-        account = [WPAccount createOrUpdateWordPressComAccountWithUsername:username andPassword:password];
+        account = [WPAccount createOrUpdateWordPressComAccountWithUsername:username password:password authToken:nil];
     } else {
         account = [WPAccount createOrUpdateSelfHostedAccountWithXmlrpc:xmlRPCUrl username:username andPassword:password];
     }

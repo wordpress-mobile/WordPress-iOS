@@ -129,7 +129,7 @@ NSString * const BlogJetpackApiPath = @"get-user-blogs/1.0";
 
 - (void)saveJetpackUsername:(NSString *)username andPassword:(NSString *)password {
     NSAssert(![self isWPcom], @"Blog+Jetpack doesn't support WordPress.com blogs");
-    WPAccount *account = [WPAccount createOrUpdateWordPressComAccountWithUsername:username andPassword:password];
+    WPAccount *account = [WPAccount createOrUpdateWordPressComAccountWithUsername:username password:password authToken:nil];
     self.jetpackAccount = account;
 }
 
