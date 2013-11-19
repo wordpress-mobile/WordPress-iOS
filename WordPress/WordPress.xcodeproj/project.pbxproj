@@ -442,12 +442,6 @@
 		5D7BEAB51774A10D00423E7F /* icon-check@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 5D7BEA991774A10D00423E7F /* icon-check@2x.png */; };
 		5D7BEAB61774A10D00423E7F /* icon-notifications.png in Resources */ = {isa = PBXBuildFile; fileRef = 5D7BEA9A1774A10D00423E7F /* icon-notifications.png */; };
 		5D7BEAB71774A10D00423E7F /* icon-notifications@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 5D7BEA9B1774A10D00423E7F /* icon-notifications@2x.png */; };
-		5D7BEAB81774A10D00423E7F /* icon-post.png in Resources */ = {isa = PBXBuildFile; fileRef = 5D7BEA9C1774A10D00423E7F /* icon-post.png */; };
-		5D7BEAB91774A10D00423E7F /* icon-post@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 5D7BEA9D1774A10D00423E7F /* icon-post@2x.png */; };
-		5D7BEABA1774A10D00423E7F /* icon-reader.png in Resources */ = {isa = PBXBuildFile; fileRef = 5D7BEA9E1774A10D00423E7F /* icon-reader.png */; };
-		5D7BEABB1774A10D00423E7F /* icon-reader@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 5D7BEA9F1774A10D00423E7F /* icon-reader@2x.png */; };
-		5D7BEABC1774A10D00423E7F /* icon-stats.png in Resources */ = {isa = PBXBuildFile; fileRef = 5D7BEAA01774A10D00423E7F /* icon-stats.png */; };
-		5D7BEABD1774A10D00423E7F /* icon-stats@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 5D7BEAA11774A10D00423E7F /* icon-stats@2x.png */; };
 		5D7BEABE1774A10D00423E7F /* icon-wp.png in Resources */ = {isa = PBXBuildFile; fileRef = 5D7BEAA21774A10D00423E7F /* icon-wp.png */; };
 		5D7BEABF1774A10D00423E7F /* icon-wp@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 5D7BEAA31774A10D00423E7F /* icon-wp@2x.png */; };
 		5D7BEAC21774A10D00423E7F /* ui-line-dark.png in Resources */ = {isa = PBXBuildFile; fileRef = 5D7BEAA61774A10D00423E7F /* ui-line-dark.png */; };
@@ -704,7 +698,6 @@
 		85D80558171630B30075EEAC /* DotCom-Languages.plist in Resources */ = {isa = PBXBuildFile; fileRef = 85D80557171630B30075EEAC /* DotCom-Languages.plist */; };
 		85D8055D171631F10075EEAC /* SelectWPComLanguageViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 85D8055C171631F10075EEAC /* SelectWPComLanguageViewController.m */; };
 		85E105861731A597001071A3 /* WPWalkthroughOverlayView.m in Sources */ = {isa = PBXBuildFile; fileRef = 85E105851731A597001071A3 /* WPWalkthroughOverlayView.m */; };
-		85E105911731D066001071A3 /* LoginCompletedWalkthroughViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 85E105901731D066001071A3 /* LoginCompletedWalkthroughViewController.m */; };
 		85EC44D11738C24500686604 /* UIView+FormSheetHelpers.m in Sources */ = {isa = PBXBuildFile; fileRef = 85EC44D01738C24500686604 /* UIView+FormSheetHelpers.m */; };
 		85EC44D41739826A00686604 /* CreateAccountAndBlogViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 85EC44D31739826A00686604 /* CreateAccountAndBlogViewController.m */; };
 		85ED54F217CC1A01006564AE /* icon-posts-editor-preview-active.png in Resources */ = {isa = PBXBuildFile; fileRef = 85ED54E617CC1A01006564AE /* icon-posts-editor-preview-active.png */; };
@@ -1487,12 +1480,6 @@
 		5D7BEA991774A10D00423E7F /* icon-check@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "icon-check@2x.png"; path = "Resources/Images/icon-check@2x.png"; sourceTree = "<group>"; };
 		5D7BEA9A1774A10D00423E7F /* icon-notifications.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "icon-notifications.png"; path = "Resources/Images/icon-notifications.png"; sourceTree = "<group>"; };
 		5D7BEA9B1774A10D00423E7F /* icon-notifications@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "icon-notifications@2x.png"; path = "Resources/Images/icon-notifications@2x.png"; sourceTree = "<group>"; };
-		5D7BEA9C1774A10D00423E7F /* icon-post.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "icon-post.png"; path = "Resources/Images/icon-post.png"; sourceTree = "<group>"; };
-		5D7BEA9D1774A10D00423E7F /* icon-post@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "icon-post@2x.png"; path = "Resources/Images/icon-post@2x.png"; sourceTree = "<group>"; };
-		5D7BEA9E1774A10D00423E7F /* icon-reader.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "icon-reader.png"; path = "Resources/Images/icon-reader.png"; sourceTree = "<group>"; };
-		5D7BEA9F1774A10D00423E7F /* icon-reader@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "icon-reader@2x.png"; path = "Resources/Images/icon-reader@2x.png"; sourceTree = "<group>"; };
-		5D7BEAA01774A10D00423E7F /* icon-stats.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "icon-stats.png"; path = "Resources/Images/icon-stats.png"; sourceTree = "<group>"; };
-		5D7BEAA11774A10D00423E7F /* icon-stats@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "icon-stats@2x.png"; path = "Resources/Images/icon-stats@2x.png"; sourceTree = "<group>"; };
 		5D7BEAA21774A10D00423E7F /* icon-wp.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "icon-wp.png"; path = "Resources/Images/icon-wp.png"; sourceTree = "<group>"; };
 		5D7BEAA31774A10D00423E7F /* icon-wp@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "icon-wp@2x.png"; path = "Resources/Images/icon-wp@2x.png"; sourceTree = "<group>"; };
 		5D7BEAA61774A10D00423E7F /* ui-line-dark.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "ui-line-dark.png"; path = "Resources/Images/ui-line-dark.png"; sourceTree = "<group>"; };
@@ -1811,8 +1798,6 @@
 		85D8055C171631F10075EEAC /* SelectWPComLanguageViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SelectWPComLanguageViewController.m; sourceTree = "<group>"; };
 		85E105841731A597001071A3 /* WPWalkthroughOverlayView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WPWalkthroughOverlayView.h; sourceTree = "<group>"; };
 		85E105851731A597001071A3 /* WPWalkthroughOverlayView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WPWalkthroughOverlayView.m; sourceTree = "<group>"; };
-		85E1058F1731D066001071A3 /* LoginCompletedWalkthroughViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LoginCompletedWalkthroughViewController.h; sourceTree = "<group>"; };
-		85E105901731D066001071A3 /* LoginCompletedWalkthroughViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LoginCompletedWalkthroughViewController.m; sourceTree = "<group>"; };
 		85EC44CF1738C24500686604 /* UIView+FormSheetHelpers.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIView+FormSheetHelpers.h"; sourceTree = "<group>"; };
 		85EC44D01738C24500686604 /* UIView+FormSheetHelpers.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIView+FormSheetHelpers.m"; sourceTree = "<group>"; };
 		85EC44D21739826A00686604 /* CreateAccountAndBlogViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CreateAccountAndBlogViewController.h; sourceTree = "<group>"; };
@@ -3222,12 +3207,6 @@
 				E232E60E182EA37F00792CA0 /* icon-language-field@2x.png */,
 				5D7BEA9A1774A10D00423E7F /* icon-notifications.png */,
 				5D7BEA9B1774A10D00423E7F /* icon-notifications@2x.png */,
-				5D7BEA9C1774A10D00423E7F /* icon-post.png */,
-				5D7BEA9D1774A10D00423E7F /* icon-post@2x.png */,
-				5D7BEA9E1774A10D00423E7F /* icon-reader.png */,
-				5D7BEA9F1774A10D00423E7F /* icon-reader@2x.png */,
-				5D7BEAA01774A10D00423E7F /* icon-stats.png */,
-				5D7BEAA11774A10D00423E7F /* icon-stats@2x.png */,
 				5D7BEAA21774A10D00423E7F /* icon-wp.png */,
 				5D7BEAA31774A10D00423E7F /* icon-wp@2x.png */,
 				E22257EC1829C15B00F76926 /* textPushDetailIcon.png */,
@@ -4916,14 +4895,8 @@
 				5D7BEAB51774A10D00423E7F /* icon-check@2x.png in Resources */,
 				5D7BEAB61774A10D00423E7F /* icon-notifications.png in Resources */,
 				5D7BEAB71774A10D00423E7F /* icon-notifications@2x.png in Resources */,
-				5D7BEAB81774A10D00423E7F /* icon-post.png in Resources */,
-				5D7BEAB91774A10D00423E7F /* icon-post@2x.png in Resources */,
-				5D7BEABA1774A10D00423E7F /* icon-reader.png in Resources */,
-				5D7BEABB1774A10D00423E7F /* icon-reader@2x.png in Resources */,
 				8599658617DA903B005F84EB /* icon-menu-viewadmin-active@2x.png in Resources */,
 				E232E608182EA1C400792CA0 /* icon-url-field@2x.png in Resources */,
-				5D7BEABC1774A10D00423E7F /* icon-stats.png in Resources */,
-				5D7BEABD1774A10D00423E7F /* icon-stats@2x.png in Resources */,
 				5D7BEABE1774A10D00423E7F /* icon-wp.png in Resources */,
 				5D7BEABF1774A10D00423E7F /* icon-wp@2x.png in Resources */,
 				85325A2917BB0DF8008E87D1 /* icon-menu-toggle@2x.png in Resources */,
@@ -5181,7 +5154,6 @@
 				858DE40F1730384F000AC628 /* LoginViewController.m in Sources */,
 				85C720B11730CEFA00460645 /* WPWalkthroughTextField.m in Sources */,
 				85E105861731A597001071A3 /* WPWalkthroughOverlayView.m in Sources */,
-				85E105911731D066001071A3 /* LoginCompletedWalkthroughViewController.m in Sources */,
 				85D08A5E17332C4A00E2BBCA /* NewAddUsersBlogViewController.m in Sources */,
 				85D08A7117342ECE00E2BBCA /* AddUsersBlogCell.m in Sources */,
 				85EC44D11738C24500686604 /* UIView+FormSheetHelpers.m in Sources */,

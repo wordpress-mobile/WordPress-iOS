@@ -22,10 +22,8 @@
 #import "WordPressComApi.h"
 #import "WPWebViewController.h"
 #import "Blog+Jetpack.h"
-#import "LoginCompletedWalkthroughViewController.h"
 #import "JetpackSettingsViewController.h"
 #import "WPWalkthroughOverlayView.h"
-#import "LoginCompletedWalkthroughViewController.h"
 #import "ReachabilityUtils.h"
 #import "WPNUXUtility.h"
 #import "WPAccount.h"
@@ -474,11 +472,10 @@ CGFloat const GeneralWalkthroughiOS7StatusBarOffset = 20.0;
     _toggleSignInForm.frame = CGRectMake(x, y, GeneralWalkthroughButtonWidth, GeneralWalkthroughSecondaryButtonHeight);
 }
 
-- (void)showCompletionWalkthrough
+- (void)dismiss
 {
-    LoginCompletedWalkthroughViewController *loginCompletedViewController = [[LoginCompletedWalkthroughViewController alloc] init];
-    loginCompletedViewController.showsExtraWalkthroughPages = _userIsDotCom || _blogConnectedToJetpack;
-    [self.navigationController pushViewController:loginCompletedViewController animated:YES];
+    self.parentViewController.modalTransitionStyle = UIModalTransitionStyleCoverVertical;
+    [self.parentViewController dismissViewControllerAnimated:YES completion:nil];
 }
 
 - (void)showCreateAccountView
@@ -509,7 +506,7 @@ CGFloat const GeneralWalkthroughiOS7StatusBarOffset = 20.0;
         }
         
         [self.navigationController popViewControllerAnimated:NO];
-        [self showCompletionWalkthrough];
+        [self dismiss];
     }];
     [self.navigationController pushViewController:jetpackSettingsViewController animated:YES];
 }
@@ -781,11 +778,11 @@ CGFloat const GeneralWalkthroughiOS7StatusBarOffset = 20.0;
     vc.account = [self createAccountWithUsername:_usernameText.text andPassword:_passwordText.text isWPCom:isWPCom xmlRPCUrl:xmlRPCUrl];
     vc.blogAdditionCompleted = ^(NewAddUsersBlogViewController * viewController){
         [self.navigationController popViewControllerAnimated:NO];
-        [self showCompletionWalkthrough];
+        [self dismiss];
     };
     vc.onNoBlogsLoaded = ^(NewAddUsersBlogViewController *viewController) {
         [self.navigationController popViewControllerAnimated:NO];
-        [self showCompletionWalkthrough];
+        [self dismiss];
     };
     vc.onErrorLoading = ^(NewAddUsersBlogViewController *viewController, NSError *error) {
         DDLogError(@"There was an error loading blogs after sign in");
@@ -851,7 +848,7 @@ CGFloat const GeneralWalkthroughiOS7StatusBarOffset = 20.0;
         if ([_blog hasJetpack]) {
             [self showJetpackAuthentication];
         } else {
-            [self showCompletionWalkthrough];
+            [self dismiss];
         }
     };
     void (^failureBlock)(NSError*) = ^(NSError * error) {
