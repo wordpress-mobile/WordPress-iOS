@@ -202,7 +202,7 @@ CGFloat const CreateAccountAndBlogButtonHeight = 41.0;
 {
     UITapGestureRecognizer *gestureRecognizer = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(viewWasTapped:)];
     gestureRecognizer.numberOfTapsRequired = 1;
-    gestureRecognizer.cancelsTouchesInView = NO;
+    gestureRecognizer.cancelsTouchesInView = YES;
     [self.view addGestureRecognizer:gestureRecognizer];
     
     [self addControls];
@@ -435,19 +435,6 @@ CGFloat const CreateAccountAndBlogButtonHeight = 41.0;
 
 - (void)viewWasTapped:(UITapGestureRecognizer *)gestureRecognizer
 {
-    CGPoint touchPoint = [gestureRecognizer locationInView:self.view];
-    
-    BOOL clickedPage1Next = CGRectContainsPoint(_createAccountButton.frame, touchPoint) && _createAccountButton.enabled;
-    
-    if (_keyboardVisible) {
-        // When the keyboard is displayed, the normal button events don't fire off properly as
-        // this gesture recognizer intercepts them. We double check that the user didn't press a button
-        // while in this mode and if they did hand off the event.
-        if (clickedPage1Next) {
-            [self createAccountButtonAction];
-        }
-    }
-    
     [self.view endEditing:YES];
 }
 
@@ -632,7 +619,6 @@ CGFloat const CreateAccountAndBlogButtonHeight = 41.0;
 
 - (void)createUserAndSite
 {
-    
     WPAsyncBlockOperation *userCreation = [WPAsyncBlockOperation operationWithBlock:^(WPAsyncBlockOperation *operation){
         void (^createUserSuccess)(id) = ^(id responseObject){
             [operation didSucceed];
