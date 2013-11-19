@@ -75,7 +75,7 @@
 	const char *filePath = [_path fileSystemRepresentation];
 	
 	// get size of needed buffer
-	int bufferLength = getxattr(filePath, attrName, NULL, 0, 0, 0);
+	ssize_t bufferLength = getxattr(filePath, attrName, NULL, 0, 0, 0);
 	
 	if (bufferLength<=0)
 	{

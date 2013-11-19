@@ -142,6 +142,8 @@ Most of Quantcast SDK's public methods have an option to provide one or more lab
 
 The `labels:` argument of most Quantcast SDK methods is typed to be an `id` pointer. However, it only accepts either a `NSString` object representing a single label, or a `NSArray` object containing one or more `NSString` objects representing a collection of labels to be applied to the event.
 
+Labels can also be set via the appLabels property.   These labels can be changed at any time and will be automatically combined with the labels passed in any call taking labels.  This can be convenient for those apps who find themselves passing the same labels everywhere. 
+
 While there is no specific constraint on the intended use of the label dimension, it is not recommended that you use it to indicate discrete events; in these cases, use the `logEvent:withLabels:` method described under [Tracking App Events](#tracking-app-events).
 
 #### Geo-Location Measurement ####
@@ -210,6 +212,15 @@ The Quantcast iOS SDK can support secure data uploads using SSL/TLS. In order to
 
 Note that using secure data uploads causes your app to use encryption technology. Various jurisdictions have laws controlling the export of software applications that use encryption. Please review your jurisdiction's laws concerning exporting software that uses encryption before enabling secure data uploads in the Quantcast iOS SDK. 
 
+### Trouble Shooting ###
 
-### License ###
+**Little or No App Traffic Showing Up In App's Profile On Quantcast.com**<br>
+Quantcast updates its website with your app's latest audience measurement data daily. If even after 1 day no data is showing up in your app's profile on quantcast.com, there are several things to check:
+* If you are using the [Detailed SDK Integration](#detailed-sdk-integration) method to integrate, please ensure that you have fully integrated as described above.
+* Check to ensure that your app does not have the `UIApplicationExitsOnSuspend` property set to `YES` in your app's `Info.plist`. For the Quantcast iOS SDK to function correctly, the `UIApplicationExitsOnSuspend` property should be removed from your app's `Info.plist`.
+* The Quantcast SDK does most of its data uploading when your app is transitioned to the background. If during your development and testing workflow in Xcode you regularly end a test run of your app by pressing "stop" within Xcode, your app has not necessarily had a chance to upload usage data. To ensure your app gets a chance to upload usage data to Quantcast while you are testing, be sure to click the Home button on the device being tested in order to put your app into the background and thus trigger a usage data upload to Quantcast.
+
+
+
+## License ##
 This Quantcast Measurement SDK is Copyright 2012 Quantcast Corp. This SDK is licensed under the Quantcast Mobile App Measurement Terms of Service, found at [the Quantcast website here](https://www.quantcast.com/learning-center/quantcast-terms/mobile-app-measurement-tos "Quantcast's Measurement SDK Terms of Service") (the "License"). You may not use this SDK unless (1) you sign up for an account at [Quantcast.com](https://www.quantcast.com "Quantcast.com") and click your agreement to the License and (2) are in compliance with the License. See the License for the specific language governing permissions and limitations under the License.

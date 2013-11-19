@@ -21,10 +21,8 @@
 #import "WordPressComApi.h"
 #import "WPWebViewController.h"
 #import "Blog+Jetpack.h"
-#import "LoginCompletedWalkthroughViewController.h"
 #import "JetpackSettingsViewController.h"
 #import "WPWalkthroughOverlayView.h"
-#import "LoginCompletedWalkthroughViewController.h"
 #import "ReachabilityUtils.h"
 #import "WPNUXUtility.h"
 #import "WPAccount.h"
@@ -65,8 +63,9 @@ CGFloat const GeneralWalkthroughStandardOffset = 16;
 CGFloat const GeneralWalkthroughMaxTextWidth = 289.0;
 CGFloat const GeneralWalkthroughTextFieldWidth = 320.0;
 CGFloat const GeneralWalkthroughTextFieldHeight = 44.0;
-CGFloat const GeneralWalkthroughSignInButtonWidth = 289.0;
-CGFloat const GeneralWalkthroughSignInButtonHeight = 41.0;
+CGFloat const GeneralWalkthroughButtonWidth = 289.0;
+CGFloat const GeneralWalkthroughButtonHeight = 41.0;
+CGFloat const GeneralWalkthroughSecondaryButtonHeight = 33;
 CGFloat const GeneralWalkthroughiOS7StatusBarOffset = 20.0;
 
 - (void)dealloc
@@ -304,21 +303,11 @@ CGFloat const GeneralWalkthroughiOS7StatusBarOffset = 20.0;
     
     _userIsDotCom = !_userIsDotCom;
     
-    // Only animate transition on iOS 7 due to snapshotting API
-    if (IS_IOS7) {
-        UIView *snapshot = [self.view snapshotViewAfterScreenUpdates:NO];
-        [self.view addSubview:snapshot];
-        [self initializeView];
-        
-        [UIView animateWithDuration:0.3
-                         animations:^{
-                             snapshot.alpha = 0.0;
-                         } completion:^(BOOL finished) {
-                             [snapshot removeFromSuperview];
-                         }];
-    } else {
-        [self initializeView];
-    }
+    // Controls are layed out in initializeView. Calling this method in an animation block will animate the controls to their new positions. 
+    [UIView animateWithDuration:0.3
+                     animations:^{
+                         [self initializeView];
+                     }];
 }
 
 #pragma mark - Private Methods
@@ -431,14 +420,12 @@ CGFloat const GeneralWalkthroughiOS7StatusBarOffset = 20.0;
     }
     NSString *toggleTitle = _userIsDotCom ? @"Add Self-Hosted Site" : @"Sign in to WordPress.com";
     [_toggleSignInForm setTitle:toggleTitle forState:UIControlStateNormal];
-    [_toggleSignInForm sizeToFit];
     
     // Add Skip to Create Account Button
     if (_skipToCreateAccount == nil) {
         _skipToCreateAccount = [[WPNUXSecondaryButton alloc] init];
         [_skipToCreateAccount setTitle:NSLocalizedString(@"Create Account", nil) forState:UIControlStateNormal];
         [_skipToCreateAccount addTarget:self action:@selector(clickedSkipToCreate:) forControlEvents:UIControlEventTouchUpInside];
-        [_skipToCreateAccount sizeToFit];
         [_mainView addSubview:_skipToCreateAccount];
     }
 }
@@ -454,8 +441,12 @@ CGFloat const GeneralWalkthroughiOS7StatusBarOffset = 20.0;
     }
     _helpButton.frame = CGRectMake(_viewWidth - infoButtonImage.size.width, y, infoButtonImage.size.width, infoButtonImage.size.height);
     
+    
+    CGFloat heightOfControls = CGRectGetHeight(_icon.frame) + GeneralWalkthroughStandardOffset + (_userIsDotCom ? 2 : 3) * GeneralWalkthroughTextFieldHeight + GeneralWalkthroughStandardOffset + GeneralWalkthroughButtonHeight;
+    CGFloat startingYForCenteredControls = floorf((_viewHeight - 2 * GeneralWalkthroughSecondaryButtonHeight - heightOfControls)/2.0);
+    
     x = (_viewWidth - CGRectGetWidth(_icon.frame))/2.0;
-    y = GeneralWalkthroughIconVerticalOffset;
+    y = startingYForCenteredControls;
     _icon.frame = CGRectIntegral(CGRectMake(x, y, CGRectGetWidth(_icon.frame), CGRectGetHeight(_icon.frame)));
 
     // Layout Username
@@ -474,36 +465,31 @@ CGFloat const GeneralWalkthroughiOS7StatusBarOffset = 20.0;
     _siteUrlText.frame = CGRectIntegral(CGRectMake(x, y, GeneralWalkthroughTextFieldWidth, GeneralWalkthroughTextFieldHeight));
 
     // Layout Sign in Button
-    x = (_viewWidth - GeneralWalkthroughSignInButtonWidth) / 2.0;
+    x = (_viewWidth - GeneralWalkthroughButtonWidth) / 2.0;;
     y = CGRectGetMaxY(_siteUrlText.frame) + GeneralWalkthroughStandardOffset;
-    _signInButton.frame = CGRectMake(x, y, GeneralWalkthroughSignInButtonWidth, GeneralWalkthroughSignInButtonHeight);
+    _signInButton.frame = CGRectMake(x, y, GeneralWalkthroughButtonWidth, GeneralWalkthroughButtonHeight);
     
     // Layout Skip to Create Account Button
     x = GeneralWalkthroughStandardOffset;
-    x = (_viewWidth - CGRectGetWidth(_skipToCreateAccount.frame))/2.0;
-    y = _viewHeight - GeneralWalkthroughStandardOffset - 33;
-    _skipToCreateAccount.frame = CGRectMake(x, y, CGRectGetWidth(_skipToCreateAccount.frame), 33);
-    
-    // Layout Toggle Button
-    x = GeneralWalkthroughStandardOffset;
-    x = (_viewWidth - CGRectGetWidth(_toggleSignInForm.frame))/2.0;
-    y = CGRectGetMinY(_skipToCreateAccount.frame) - 0.5 * GeneralWalkthroughStandardOffset - 33;
-    _toggleSignInForm.frame = CGRectMake(x, y, CGRectGetWidth(_toggleSignInForm.frame), 33);
-    
-    NSArray *viewsToCenter = @[_icon, _usernameText, _passwordText, _siteUrlText, _signInButton];
-    [WPNUXUtility centerViews:viewsToCenter withStartingView:_icon andEndingView:_signInButton forHeight:_viewHeight];
+    x = (_viewWidth - GeneralWalkthroughButtonWidth)/2.0;
+    y = _viewHeight - GeneralWalkthroughStandardOffset - GeneralWalkthroughSecondaryButtonHeight;
+    _skipToCreateAccount.frame = CGRectMake(x, y, GeneralWalkthroughButtonWidth, GeneralWalkthroughSecondaryButtonHeight);
     
     // Layout Status Label
     x =  (_viewWidth - GeneralWalkthroughMaxTextWidth) / 2.0;
     y = CGRectGetMaxY(_signInButton.frame) + 0.5 * GeneralWalkthroughStandardOffset;
     _statusLabel.frame = CGRectMake(x, y, GeneralWalkthroughMaxTextWidth, _statusLabel.font.lineHeight);
+    
+    // Layout Toggle Button
+    x =  (_viewWidth - GeneralWalkthroughMaxTextWidth) / 2.0;
+    y = CGRectGetMinY(_skipToCreateAccount.frame) - 0.5 * GeneralWalkthroughStandardOffset - 33;
+    _toggleSignInForm.frame = CGRectMake(x, y, GeneralWalkthroughMaxTextWidth, 33);
 }
 
-- (void)showCompletionWalkthrough
+- (void)dismiss
 {
-    LoginCompletedWalkthroughViewController *loginCompletedViewController = [[LoginCompletedWalkthroughViewController alloc] init];
-    loginCompletedViewController.showsExtraWalkthroughPages = _userIsDotCom || _blogConnectedToJetpack;
-    [self.navigationController pushViewController:loginCompletedViewController animated:YES];
+    self.parentViewController.modalTransitionStyle = UIModalTransitionStyleCoverVertical;
+    [self.parentViewController dismissViewControllerAnimated:YES completion:nil];
 }
 
 - (void)showCreateAccountView
@@ -534,7 +520,7 @@ CGFloat const GeneralWalkthroughiOS7StatusBarOffset = 20.0;
         }
         
         [self.navigationController popViewControllerAnimated:NO];
-        [self showCompletionWalkthrough];
+        [self dismiss];
     }];
     [self.navigationController pushViewController:jetpackSettingsViewController animated:YES];
 }
@@ -817,11 +803,11 @@ CGFloat const GeneralWalkthroughiOS7StatusBarOffset = 20.0;
     vc.account = [self createAccountWithUsername:_usernameText.text andPassword:_passwordText.text isWPCom:isWPCom xmlRPCUrl:xmlRPCUrl];
     vc.blogAdditionCompleted = ^(NewAddUsersBlogViewController * viewController){
         [self.navigationController popViewControllerAnimated:NO];
-        [self showCompletionWalkthrough];
+        [self dismiss];
     };
     vc.onNoBlogsLoaded = ^(NewAddUsersBlogViewController *viewController) {
         [self.navigationController popViewControllerAnimated:NO];
-        [self showCompletionWalkthrough];
+        [self dismiss];
     };
     vc.onErrorLoading = ^(NewAddUsersBlogViewController *viewController, NSError *error) {
         DDLogError(@"There was an error loading blogs after sign in");
@@ -886,7 +872,7 @@ CGFloat const GeneralWalkthroughiOS7StatusBarOffset = 20.0;
         if ([_blog hasJetpack]) {
             [self showJetpackAuthentication];
         } else {
-            [self showCompletionWalkthrough];
+            [self dismiss];
         }
     };
     void (^failureBlock)(NSError*) = ^(NSError * error) {

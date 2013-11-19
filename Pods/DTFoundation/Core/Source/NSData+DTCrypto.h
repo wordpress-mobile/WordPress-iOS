@@ -7,7 +7,7 @@
 //
 
 /**
- Useful cryptography methods
+ Useful cryptography methods.
  */
 
 @interface NSData (DTCrypto)

@@ -14,6 +14,7 @@
 #import "DTCoreTextFunctions.h"
 #import "NSDictionary+DTCoreText.h"
 #import "DTWeakSupport.h"
+#import "DTLog.h"
 
 @interface DTCoreTextGlyphRun ()
 
@@ -80,10 +81,15 @@
 	}
 }
 
+#ifndef COVERAGE 
+// exclude method from coverage testing
+
 - (NSString *)description
 {
-	return [NSString stringWithFormat:@"<%@ glyphs=%d %@>", [self class], [self numberOfGlyphs], NSStringFromCGRect(_frame)];
+	return [NSString stringWithFormat:@"<%@ glyphs=%ld %@>", [self class], (long)[self numberOfGlyphs], NSStringFromCGRect(_frame)];
 }
+
+#endif
 
 #pragma mark - Drawing
 
@@ -247,7 +253,7 @@
 
 	if (!font)
 	{
-		NSLog(@"CTFont missing on %@", self);
+		DTLogError(@"CTFont missing on %@", self);
 		return NULL;
 	}
 	
@@ -351,7 +357,7 @@
 	{
 		CFRange range = CTRunGetStringRange(_run);
 
-		_stringRange = NSMakeRange(range.location, range.length);
+		_stringRange = NSMakeRange(range.location + _line.stringLocationOffset, range.length);
 	}
 	
 	return _stringRange;
