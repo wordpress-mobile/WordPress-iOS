@@ -443,8 +443,11 @@ NSString *const ReaderExtrasArrayKey = @"ReaderExtrasArrayKey";
 	}
     
     NSDictionary *tagsDict = [dict objectForKey:@"topics"];
-    NSArray *tagsList = [NSArray arrayWithArray:[tagsDict allValues]];
-    self.tags = [tagsList componentsJoinedByString:@", "];
+    
+    if ([tagsDict count] > 0) {
+        NSArray *tagsList = [NSArray arrayWithArray:[tagsDict allValues]];
+        self.tags = [tagsList componentsJoinedByString:@", "];
+    }
     
     NSDictionary *primaryTagDict = [dict objectForKey:@"primary_tag"];
     if ([primaryTagDict isKindOfClass:[NSDictionary class]]) {
