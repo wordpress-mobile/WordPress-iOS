@@ -408,7 +408,7 @@ CGFloat const GeneralWalkthroughiOS7StatusBarOffset = 20.0;
     if (_signInButton == nil) {
         _signInButton = [[WPNUXMainButton alloc] init];
         [_signInButton setTitle:NSLocalizedString(@"Sign In", nil) forState:UIControlStateNormal];
-        [_signInButton addTarget:self action:@selector(clickedSignIn:) forControlEvents:UIControlEventTouchUpInside];
+        [_signInButton addTarget:self action:@selector(signInButtonAction:) forControlEvents:UIControlEventTouchUpInside];
         [_mainView addSubview:_signInButton];
         _signInButton.enabled = NO;
     }
