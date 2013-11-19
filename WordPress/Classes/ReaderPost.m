@@ -442,20 +442,20 @@ NSString *const ReaderExtrasArrayKey = @"ReaderExtrasArrayKey";
 		self.postAvatar = [self parseImageSrcFromHTML:img];
 	}
     
-    NSDictionary *tagsDict = [dict objectForKey:@"topics"];
+    NSDictionary *tagsDict = [dict dictionaryForKey:@"topics"];
     
     if ([tagsDict count] > 0) {
         NSArray *tagsList = [NSArray arrayWithArray:[tagsDict allValues]];
         self.tags = [tagsList componentsJoinedByString:@", "];
     }
     
-    NSDictionary *primaryTagDict = [dict objectForKey:@"primary_tag"];
+    NSDictionary *primaryTagDict = [dict dictionaryForKey:@"primary_tag"];
     if ([primaryTagDict isKindOfClass:[NSDictionary class]]) {
-        self.primaryTagName = primaryTagDict[@"name"];
-        self.primaryTagSlug = primaryTagDict[@"slug"];
+        self.primaryTagSlug = [primaryTagDict stringForKey:@"slug"];
+        self.primaryTagName = [primaryTagDict stringForKey:@"name"];
     } else if ([tagsDict count] > 0) {
         self.primaryTagSlug = [[tagsDict allKeys] objectAtIndex:0];
-        self.primaryTagName = [tagsDict objectForKey:self.primaryTagSlug];
+        self.primaryTagName = [tagsDict stringForKey:self.primaryTagSlug];
     }
 }
 
