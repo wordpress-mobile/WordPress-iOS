@@ -644,8 +644,7 @@ CGFloat const WPTableViewTopMargin = 40;
 	[alertView show];
 	
 	// bad login/pass combination
-	editSiteViewController = [[EditSiteViewController alloc] initWithNibName:nil bundle:nil];
-	editSiteViewController.blog = self.blog;
+	editSiteViewController = [[EditSiteViewController alloc] initWithBlog:self.blog];
 	editSiteViewController.isCancellable = YES;
 	editSiteViewController.delegate = self;
 	UINavigationController *navController = [[UINavigationController alloc] initWithRootViewController:editSiteViewController];
