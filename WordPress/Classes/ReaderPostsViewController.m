@@ -28,7 +28,7 @@
 #import "WPCookie.h"
 #import "NSString+Helpers.h"
 #import "WPPopoverBackgroundView.h"
-#import "iOS7CorrectedTextView.h"
+#import "IOS7CorrectedTextView.h"
 
 static CGFloat const ScrollingFastVelocityThreshold = 30.f;
 NSString *const WPReaderViewControllerDisplayedNativeFriendFinder = @"DisplayedNativeFriendFinder";
@@ -78,6 +78,9 @@ NSString *const WPReaderViewControllerDisplayedNativeFriendFinder = @"DisplayedN
 
 - (void)dealloc {
     _featuredImageSource.delegate = nil;
+    [[NSNotificationCenter defaultCenter] removeObserver:self];
+	self.readerReblogFormView = nil;
+	self.friendFinderNudgeView = nil;
 }
 
 
@@ -88,7 +91,6 @@ NSString *const WPReaderViewControllerDisplayedNativeFriendFinder = @"DisplayedN
 		_hasMoreContent = YES;
 		self.infiniteScrollEnabled = YES;
         self.incrementalLoadingSupported = YES;
-		[self fetchBlogsAndPrimaryBlog];
 	}
 	return self;
 }
@@ -96,6 +98,8 @@ NSString *const WPReaderViewControllerDisplayedNativeFriendFinder = @"DisplayedN
 
 - (void)viewDidLoad {
 	[super viewDidLoad];
+    
+    [self fetchBlogsAndPrimaryBlog];
 
     CGFloat maxWidth = self.tableView.bounds.size.width;
     if (IS_IPHONE) {
@@ -175,11 +179,12 @@ NSString *const WPReaderViewControllerDisplayedNativeFriendFinder = @"DisplayedN
     
 	self.panelNavigationController.delegate = self;
 	
-	self.title = [[[ReaderPost currentTopic] objectForKey:@"title"] capitalizedString];
+	self.title = [[ReaderPost currentTopic] objectForKey:@"title"];
     [self loadImagesForVisibleRows];
 	
 	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(handleKeyboardDidShow:) name:UIKeyboardWillShowNotification object:nil];
 	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(handleKeyboardWillHide:) name:UIKeyboardWillHideNotification object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(sidebarOpened) name:SidebarOpenedNotification object:nil];
 }
 
 - (void)viewDidAppear:(BOOL)animated {
@@ -197,16 +202,6 @@ NSString *const WPReaderViewControllerDisplayedNativeFriendFinder = @"DisplayedN
     self.panelNavigationController.delegate = nil;
 	[[NSNotificationCenter defaultCenter] removeObserver:self];
 }
-
-
-- (void)viewDidUnload {
-	[super viewDidUnload];
-    
-    [[NSNotificationCenter defaultCenter] removeObserver:self];
-	self.readerReblogFormView = nil;
-	self.friendFinderNudgeView = nil;
-}
-
 
 - (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation {
     return [super shouldAutorotateToInterfaceOrientation:interfaceOrientation];
@@ -253,14 +248,16 @@ NSString *const WPReaderViewControllerDisplayedNativeFriendFinder = @"DisplayedN
 	self.tableView.tableHeaderView = paddingView;
 }
 
+- (void)sidebarOpened {
+    [self dismissPopover];
+}
 
 - (void)handleTopicsButtonTapped:(id)sender {
 	ReaderTopicsViewController *controller = [[ReaderTopicsViewController alloc] initWithStyle:UITableViewStyleGrouped];
 	controller.delegate = self;
     if (IS_IPAD) {
         if (_popover) {
-            [_popover dismissPopoverAnimated:YES];
-            _popover = nil;
+            [self dismissPopover];
             return;
         }
         
@@ -282,6 +279,12 @@ NSString *const WPReaderViewControllerDisplayedNativeFriendFinder = @"DisplayedN
     }
 }
 
+- (void)dismissPopover {
+    if (_popover) {
+        [_popover dismissPopoverAnimated:YES];
+        _popover = nil;
+    }
+}
 
 - (void)handleReblogButtonTapped:(id)sender {
 	// Locate the cell this originated from. 
@@ -336,7 +339,7 @@ NSString *const WPReaderViewControllerDisplayedNativeFriendFinder = @"DisplayedN
 		// When this happens the view is set to the dimensions of its wrapper view, hiding content that should be visible
 		// above the keyboard.
 		// For now use a fallback animation.
-		if (CGRectEqualToRect(self.view.frame, frame) == false) {
+		if (!CGRectEqualToRect(self.view.frame, frame)) {
 			[UIView animateWithDuration:0.3 animations:^{
 				self.view.frame = frame;
 			}];
@@ -628,17 +631,17 @@ NSString *const WPReaderViewControllerDisplayedNativeFriendFinder = @"DisplayedN
 
 
 - (void)syncItemsWithUserInteraction:(BOOL)userInteraction success:(void (^)())success failure:(void (^)(NSError *))failure {
-    
+    WPFLogMethod();
     // if needs auth.
-    if([WPCookie hasCookieForURL:[NSURL URLWithString:@"https://wordpress.com"] andUsername:[[WordPressComApi sharedApi] username]]) {
+    if([WPCookie hasCookieForURL:[NSURL URLWithString:@"https://wordpress.com"] andUsername:[[WPAccount defaultWordPressComAccount] username]]) {
        [self syncItemsWithSuccess:success failure:failure];
         return;
     }
     
     //
     [[WordPressAppDelegate sharedWordPressApplicationDelegate] useDefaultUserAgent];
-    NSString *username = [[WordPressComApi sharedApi] username];
-    NSString *password = [[WordPressComApi sharedApi] password];
+    NSString *username = [[WPAccount defaultWordPressComAccount] username];
+    NSString *password = [[WPAccount defaultWordPressComAccount] password];
     NSMutableURLRequest *mRequest = [[NSMutableURLRequest alloc] init];
     NSString *requestBody = [NSString stringWithFormat:@"log=%@&pwd=%@&redirect_to=http://wordpress.com",
                              [username stringByUrlEncoding],
@@ -665,6 +668,7 @@ NSString *const WPReaderViewControllerDisplayedNativeFriendFinder = @"DisplayedN
 
     
 - (void)syncItemsWithSuccess:(void (^)())success failure:(void (^)(NSError *))failure {
+    WPFLogMethod();
 	NSString *endpoint = [ReaderPost currentEndpoint];
 	NSNumber *numberToSync = [NSNumber numberWithInteger:ReaderPostsToSync];
 	NSDictionary *params = @{@"number":numberToSync, @"per_page":numberToSync};
@@ -688,6 +692,7 @@ NSString *const WPReaderViewControllerDisplayedNativeFriendFinder = @"DisplayedN
 
 
 - (void)loadMoreWithSuccess:(void (^)())success failure:(void (^)(NSError *error))failure {
+    WPFLogMethod();
 	if ([self.resultsController.fetchedObjects count] == 0) {
 		return;
 	}
@@ -736,6 +741,7 @@ NSString *const WPReaderViewControllerDisplayedNativeFriendFinder = @"DisplayedN
 
 
 - (void)onSyncSuccess:(AFHTTPRequestOperation *)operation response:(id)responseObject {
+    WPFLogMethod();
 	BOOL wasLoadingMore = _loadingMore;
 	_loadingMore = NO;
 	
@@ -844,7 +850,7 @@ NSString *const WPReaderViewControllerDisplayedNativeFriendFinder = @"DisplayedN
 
 - (void)readerTopicChanged {
 	if (IS_IPAD){
-        [_popover dismissPopoverAnimated:YES];
+        [self dismissPopover];
 	}
 	
 	_loadingMore = NO;
@@ -858,7 +864,7 @@ NSString *const WPReaderViewControllerDisplayedNativeFriendFinder = @"DisplayedN
 	
     [self configureTableHeader];
 	
-	self.title = [[[ReaderPost currentTopic] stringForKey:@"title"] capitalizedString];
+	self.title = [[ReaderPost currentTopic] stringForKey:@"title"];
 
     if ([WordPressAppDelegate sharedWordPressApplicationDelegate].connectionAvailable == YES && ![self isSyncing] ) {
 		[[NSUserDefaults standardUserDefaults] removeObjectForKey:ReaderLastSyncDateKey];

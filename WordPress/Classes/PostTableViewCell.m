@@ -37,7 +37,7 @@ static const float statusLabelMaxWidthPortrait = 100.f;
 
 
 - (void)setSaving:(BOOL)value {
-    [FileLogger log:@"%@ %@", self, NSStringFromSelector(_cmd)];
+    DDLogInfo(@"%@ %@", self, NSStringFromSelector(_cmd));
     saving = value;
 
     if (saving) {
@@ -121,8 +121,6 @@ static const float statusLabelMaxWidthPortrait = 100.f;
     } else {
         expectedStatusLabelWidth = expectedstatusLabelSize.width > statusLabelMaxWidthLandscape ? statusLabelMaxWidthLandscape : expectedstatusLabelSize.width;
     }
-    
-    //NSLog(@"width of status label %f", expectedStatusLabelLength);
     
     CGFloat x = self.frame.size.width - expectedStatusLabelWidth - RIGHT_MARGIN;
     if ( IS_IPHONE )

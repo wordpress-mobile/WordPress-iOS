@@ -10,7 +10,7 @@
 #import "WordPressComApi.h"
 #import "WordPressAppDelegate.h"
 #import "WPToast.h"
-#import "iOS7CorrectedTextView.h"
+#import "IOS7CorrectedTextView.h"
 
 @implementation ReaderCommentFormView
 
@@ -91,7 +91,7 @@
 							   }];
 		
 	} failure:^(AFHTTPRequestOperation *operation, NSError *error) {
-		WPLog(@"Error Commenting from Reader : %@", [error localizedDescription]);
+		DDLogError(@"Error Commenting from Reader : %@", [error localizedDescription]);
 		[self enableForm:YES];
 		[self.activityView stopAnimating];
 		[self.textView becomeFirstResponder];

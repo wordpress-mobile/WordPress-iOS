@@ -189,7 +189,7 @@
 		NSString *str = [NSString stringWithFormat:@"<p> </p>%@", self.post.content];
 		[self updateAttributedString: [[NSAttributedString alloc] initWithHTMLData:[str dataUsingEncoding:NSUTF8StringEncoding]
 																		   options:[WPStyleGuide defaultDTCoreTextOptions]
-																documentAttributes:NULL]];
+																documentAttributes:nil]];
 		[self sendSubviewToBack:_textContentView];
     }
     return self;
@@ -244,6 +244,7 @@
 	if (_titleLabel) {
 		CGRect titleFrame = _titleLabel.frame;
 		titleFrame.size.height = [_titleLabel suggestedSizeForWidth:titleFrame.size.width].height;
+        titleFrame = CGRectIntegral(titleFrame);
 		_titleLabel.frame = titleFrame;
 		
 		CGRect contentFrame = _textContentView.frame;
@@ -326,7 +327,7 @@
 		self.followButton.selected = [self.post.isFollowing boolValue]; // for good measure!
 		[self setNeedsLayout];
 	} failure:^(NSError *error) {
-		WPLog(@"Error Following Blog : %@", [error localizedDescription]);
+		DDLogError(@"Error Following Blog : %@", [error localizedDescription]);
 		[_followButton setSelected:self.post.isFollowing];
 		[self setNeedsLayout];
 		
@@ -461,7 +462,7 @@
 #pragma mark - DTCoreAttributedTextContentView Delegate Methods
 
 - (UIView *)attributedTextContentView:(DTAttributedTextContentView *)attributedTextContentView viewForAttributedString:(NSAttributedString *)string frame:(CGRect)frame {
-	NSDictionary *attributes = [string attributesAtIndex:0 effectiveRange:NULL];
+	NSDictionary *attributes = [string attributesAtIndex:0 effectiveRange:nil];
 	
 	NSURL *URL = [attributes objectForKey:DTLinkAttribute];
 	NSString *identifier = [attributes objectForKey:DTGUIDAttribute];

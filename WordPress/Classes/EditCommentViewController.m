@@ -8,7 +8,7 @@
 
 #import "EditCommentViewController.h"
 #import "CommentViewController.h"
-#import "iOS7CorrectedTextView.h"
+#import "IOS7CorrectedTextView.h"
 
 @interface EditCommentViewController() {
     CGRect _keyboardFrame;
@@ -21,12 +21,12 @@
 @synthesize commentViewController, comment, hasChanges, textViewText, textView, isTransitioning, isEditing;
 
 - (void)dealloc {
-    [FileLogger log:@"%@ %@", self, NSStringFromSelector(_cmd)];
+    DDLogInfo(@"%@ %@", self, NSStringFromSelector(_cmd));
     [[NSNotificationCenter defaultCenter] removeObserver:self];
 }
 
 - (void)viewDidLoad {
-    [FileLogger log:@"%@ %@", self, NSStringFromSelector(_cmd)];
+    DDLogInfo(@"%@ %@", self, NSStringFromSelector(_cmd));
     [super viewDidLoad];
 
     self.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:NSLocalizedString(@"Cancel", nil)

@@ -58,7 +58,7 @@ NSUInteger const CreateBlogBlogUrlFieldTag = 1;
     if (self) {
         _currentLanguage = [WPComLanguages currentLanguage];
         _blogVisibility = WordPressComApiBlogVisibilityPublic;
-        _geolocationEnabled = true;
+        _geolocationEnabled = YES;
     }
     
     return self;
@@ -87,7 +87,7 @@ NSUInteger const CreateBlogBlogUrlFieldTag = 1;
     // or encounters strange behavior as a result of a failed or successful attempt to create an account.
     if (parent == nil) {
         self.delegate = nil;
-        _userPressedBackButton = true;
+        _userPressedBackButton = YES;
     }
 }
 
@@ -170,6 +170,8 @@ NSUInteger const CreateBlogBlogUrlFieldTag = 1;
             _blogUrlTextField = _blogUrlCell.textField;
             _blogUrlTextField.tag = CreateBlogBlogUrlFieldTag;
             _blogUrlTextField.placeholder = NSLocalizedString(@"myblog.wordpress.com", @"");
+            _blogUrlTextField.leftView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, 0, 1)];
+            _blogUrlTextField.leftViewMode = UITextFieldViewModeAlways;
             _blogUrlTextField.keyboardType = UIKeyboardTypeURL;
             _blogUrlTextField.delegate = self;
             [self styleTextFieldCell:_blogUrlCell];
@@ -182,6 +184,8 @@ NSUInteger const CreateBlogBlogUrlFieldTag = 1;
             _blogTitleCell.textLabel.text = NSLocalizedString(@"Site Title", @"Label for site title field in create an account process");
             _blogTitleTextField = _blogTitleCell.textField;
             _blogTitleTextField.placeholder = NSLocalizedString(@"My Site", @"Placeholder for site title field in create an account process");
+            _blogTitleTextField.leftView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, IS_IOS7 ? 10 : 5, 1)];
+            _blogTitleTextField.leftViewMode = UITextFieldViewModeAlways;
             _blogTitleTextField.delegate = self;
             [self styleTextFieldCell:_blogTitleCell];
             cell = _blogTitleCell;
@@ -304,7 +308,7 @@ NSUInteger const CreateBlogBlogUrlFieldTag = 1;
         return;
     }
 
-    _isCreatingBlog = true;
+    _isCreatingBlog = YES;
     [self.tableView reloadData];
     [[WordPressComApi sharedApi] createWPComBlogWithUrl:_blogUrlTextField.text andBlogTitle:_blogTitleTextField.text andLanguageId:[_currentLanguage objectForKey:@"lang_id"] andBlogVisibility:_blogVisibility success:^(id responseObject){
         NSDictionary *blogDetails = [responseObject dictionaryForKey:@"blog_details"];
@@ -312,7 +316,7 @@ NSUInteger const CreateBlogBlogUrlFieldTag = 1;
         [self.delegate createdBlogWithDetails:blogDetails];
     } failure:^(NSError *error){
         if (!_userPressedBackButton) {
-            _isCreatingBlog = false;
+            _isCreatingBlog = NO;
             [self.tableView reloadData];
             [self displayCreationError:error];
         }
@@ -352,11 +356,11 @@ NSUInteger const CreateBlogBlogUrlFieldTag = 1;
     [newBlog setObject:[blogInfo objectForKey:@"blogid"] forKey:@"blogid"];
     [newBlog setObject:[blogInfo objectForKey:@"url"] forKey:@"url"];
     [newBlog setObject:[blogInfo objectForKey:@"xmlrpc"] forKey:@"xmlrpc"];
-    [newBlog setObject:@(true) forKey:@"isAdmin"];
+    [newBlog setObject:@(YES) forKey:@"isAdmin"];
 
     WPAccount *account = [WPAccount defaultWordPressComAccount];
     
-    Blog *blog = [account findOrCreateBlogFromDictionary:newBlog];
+    Blog *blog = [account findOrCreateBlogFromDictionary:newBlog withContext:account.managedObjectContext];
     blog.geolocationEnabled = _geolocationEnabled;
 	[blog dataSave];
     [blog syncBlogWithSuccess:^{

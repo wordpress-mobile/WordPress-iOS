@@ -42,6 +42,11 @@ NSString * const NotificationsLastSyncDateKey = @"NotificationsLastSyncDate";
     return self;
 }
 
+- (NSString *)noResultsText
+{
+    return NSLocalizedString(@"No notifications yet", @"Displayed when the user pulls up the notifications view and they have no items");
+}
+
 - (void)dealloc {
     [[NSNotificationCenter defaultCenter] removeObserver:self];
 }
@@ -67,7 +72,7 @@ NSString * const NotificationsLastSyncDateKey = @"NotificationsLastSyncDate";
     [super viewDidAppear:animated];
 
     if (!_viewHasAppeared) {
-        _viewHasAppeared = true;
+        _viewHasAppeared = YES;
         [WPMobileStats incrementProperty:StatsPropertyNotificationsOpened forEvent:StatsEventAppClosed];
     }
     
@@ -268,16 +273,16 @@ NSString * const NotificationsLastSyncDateKey = @"NotificationsLastSyncDate";
         return;
     }
     
-    _retrievingNotifications = true;
+    _retrievingNotifications = YES;
     
     [self.user getNotificationsBefore:lastNote.timestamp success:^(AFHTTPRequestOperation *operation, id responseObject) {
-        _retrievingNotifications = false;
+        _retrievingNotifications = NO;
                 
         if (success) {
             success();
         }
     } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
-        _retrievingNotifications = false;
+        _retrievingNotifications = NO;
         
         if (failure) {
             failure(error);

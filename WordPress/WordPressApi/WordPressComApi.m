@@ -88,6 +88,7 @@ NSString *const WordPressComApiErrorMessageKey = @"WordPressComApiErrorMessageKe
     static dispatch_once_t oncePredicate;
     dispatch_once(&oncePredicate, ^{
         NSString *username = [[NSUserDefaults standardUserDefaults] objectForKey:@"wpcom_username_preference"];
+        DDLogVerbose(@"Initializing API with username '%@'", username);
         NSString *password = nil;
         NSString *authToken = nil;
         if (username) {
@@ -95,9 +96,19 @@ NSString *const WordPressComApiErrorMessageKey = @"WordPressComApiErrorMessageKe
             password = [SFHFKeychainUtils getPasswordForUsername:username
                                                   andServiceName:kWPcomXMLRPCUrl
                                                            error:&error];
+            if (error) {
+                DDLogError(@"Error getting WordPress.com password: %@", error);
+            } else {
+                DDLogVerbose(@"Found password for API: %@", password ? @"YES" : @"NO");
+            }
             authToken = [SFHFKeychainUtils getPasswordForUsername:username
                                                    andServiceName:WordPressComApiOauthServiceName
-                                                            error:nil];
+                                                            error:&error];
+            if (error) {
+                DDLogError(@"Error getting WordPress.com OAuth token: %@", error);
+            } else {
+                DDLogVerbose(@"Found token for API: %@", authToken ? @"YES" : @"NO");
+            }
         }
         _sharedApi = [[self alloc] initWithBaseURL:[NSURL URLWithString:WordPressComApiClientEndpointURL] ];
         _sharedApi.username = username;
@@ -159,6 +170,7 @@ NSString *const WordPressComApiErrorMessageKey = @"WordPressComApiErrorMessageKe
                 failure(error);
             }
         } else {
+            WPFLog(@"Signed in as %@", self.username);
             [[NSUserDefaults standardUserDefaults] setObject:self.username forKey:@"wpcom_username_preference"];
             [[NSUserDefaults standardUserDefaults] setObject:@"1" forKey:@"wpcom_authenticated_flag"];
             [[NSUserDefaults standardUserDefaults] synchronize];
@@ -206,6 +218,7 @@ NSString *const WordPressComApiErrorMessageKey = @"WordPressComApiErrorMessageKe
 }
 
 - (void)signOut {
+    WPFLogMethod();
     NSError *error = nil;
 
     [SFHFKeychainUtils deleteItemForUsername:self.username andServiceName:@"WordPress.com" error:&error];
@@ -295,12 +308,12 @@ NSString *const WordPressComApiErrorMessageKey = @"WordPressComApiErrorMessageKe
 
 - (void)validateWPComBlogWithUrl:(NSString *)blogUrl andBlogTitle:(NSString *)blogTitle andLanguageId:(NSNumber *)languageId success:(void (^)(id))success failure:(void (^)(NSError *))failure
 {
-    [self createWPComBlogWithUrl:blogUrl andBlogTitle:blogTitle andLanguageId:languageId andBlogVisibility:WordPressComApiBlogVisibilityPublic validate:true success:success failure:failure];
+    [self createWPComBlogWithUrl:blogUrl andBlogTitle:blogTitle andLanguageId:languageId andBlogVisibility:WordPressComApiBlogVisibilityPublic validate:YES success:success failure:failure];
 }
 
 - (void)createWPComBlogWithUrl:(NSString *)blogUrl andBlogTitle:(NSString *)blogTitle andLanguageId:(NSNumber *)languageId andBlogVisibility:(WordPressComApiBlogVisibility)visibility success:(void (^)(id))success failure:(void (^)(NSError *))failure
 {
-    [self createWPComBlogWithUrl:blogUrl andBlogTitle:blogTitle andLanguageId:languageId andBlogVisibility:visibility validate:false success:success failure:failure];
+    [self createWPComBlogWithUrl:blogUrl andBlogTitle:blogTitle andLanguageId:languageId andBlogVisibility:visibility validate:NO success:success failure:failure];
 }
 
 - (void)createWPComBlogWithUrl:(NSString *)blogUrl andBlogTitle:(NSString *)blogTitle andLanguageId:(NSNumber *)languageId andBlogVisibility:(WordPressComApiBlogVisibility)visibility validate:(BOOL)validate success:(void (^)(id))success failure:(void (^)(NSError *))failure

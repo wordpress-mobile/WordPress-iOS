@@ -13,7 +13,7 @@
 
 - (void)alteredViewWillAppear:(BOOL)animated
 {
-    // Since we exchanged implementations, this actually calls UIViewController's viewDidLoad
+    // Since we exchanged implementations, this actually calls UIViewController's ViewWillAppear
     [self alteredViewWillAppear:animated];
     
     if (!IS_IOS7)

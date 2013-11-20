@@ -20,7 +20,8 @@
 #import "NSString+Helpers.h"
 #import "NSURL+Util.h"
 #import "WPToast.h"
-#import "iOS7CorrectedTextView.h"
+#import "IOS7CorrectedTextView.h"
+#import "WPAccount.h"
 
 #define APPROVE_BUTTON_TAG 1
 #define UNAPPROVE_BUTTON_TAG 2
@@ -50,7 +51,6 @@ NS_ENUM(NSUInteger, NotifcationCommentCellType){
 @property NSDictionary *followAction;
 @property NSURL *headerURL;
 @property BOOL hasScrollBackView;
-@property (getter = isWritingReply) BOOL writingReply;
 @property NSCache *contentCache;
 
 @end
@@ -63,7 +63,6 @@ NS_ENUM(NSUInteger, NotifcationCommentCellType){
     if (self) {
         // Custom initialization
         self.title = NSLocalizedString(@"Notification", @"Title for notification detail view");
-        self.writingReply = NO;
         self.hasScrollBackView = NO;
         self.contentCache = [[NSCache alloc] init];
     }
@@ -191,14 +190,7 @@ NS_ENUM(NSUInteger, NotifcationCommentCellType){
             self.postBanner.userInteractionEnabled = YES;
             
         } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
-            BOOL extra_debug_on = getenv("WPDebugXMLRPC") ? YES : NO;
-#ifndef DEBUG
-            NSNumber *extra_debug = [[NSUserDefaults standardUserDefaults] objectForKey:@"extra_debug"];
-            if ([extra_debug boolValue]) extra_debug_on = YES;
-#endif
-            if ( extra_debug_on == YES ) {
-                WPFLog(@"[Rest API] ! %@", [error localizedDescription]);
-            }
+            DDLogVerbose(@"[Rest API] ! %@", [error localizedDescription]);
         }];
     }
 
@@ -220,26 +212,32 @@ NS_ENUM(NSUInteger, NotifcationCommentCellType){
             [indexedButtons setObject:self.approveBarButton forKey:actionType];
             self.approveBarButton.enabled = YES;
             self.approveBarButton.customView.tag = APPROVE_BUTTON_TAG;
+            self.approveBarButton.tag = APPROVE_BUTTON_TAG;
         } else if ([actionType isEqualToString:@"unapprove-comment"]){
             [indexedButtons setObject:self.unapproveBarButton forKey:actionType];
             self.unapproveBarButton.enabled = YES;
             self.unapproveBarButton.customView.tag = UNAPPROVE_BUTTON_TAG;
+            self.unapproveBarButton.tag = UNAPPROVE_BUTTON_TAG;
         } else if ([actionType isEqualToString:@"spam-comment"]){
             [indexedButtons setObject:self.spamBarButton forKey:actionType];
             self.spamBarButton.enabled = YES;
             self.spamBarButton.customView.tag = SPAM_BUTTON_TAG;
+            self.spamBarButton.tag = SPAM_BUTTON_TAG;
         } else if ([actionType isEqualToString:@"unspam-comment"]){
             [indexedButtons setObject:self.spamBarButton forKey:actionType];
             self.spamBarButton.enabled = YES;
             self.spamBarButton.customView.tag = UNSPAM_BUTTON_TAG;
+            self.spamBarButton.tag = UNSPAM_BUTTON_TAG;
         } else if ([actionType isEqualToString:@"trash-comment"]){
             [indexedButtons setObject:self.trashBarButton forKey:actionType];
             self.trashBarButton.enabled = YES;
             self.trashBarButton.customView.tag = TRASH_BUTTON_TAG;
+            self.trashBarButton.tag = TRASH_BUTTON_TAG;
         } else if ([actionType isEqualToString:@"untrash-comment"]){
             [indexedButtons setObject:self.trashBarButton forKey:actionType];
             self.trashBarButton.enabled = YES;
             self.trashBarButton.customView.tag = UNTRASH_BUTTON_TAG;
+            self.trashBarButton.tag = UNTRASH_BUTTON_TAG;
         } else if ([actionType isEqualToString:@"replyto-comment"]){
             [indexedButtons setObject:self.replyBarButton forKey:actionType];
             self.replyBarButton.enabled = YES;
@@ -263,7 +261,7 @@ NS_ENUM(NSUInteger, NotifcationCommentCellType){
     
     self.commentActions = indexedActions;
     
-    NSLog(@"available actions: %@", indexedActions);
+    DDLogVerbose(@"available actions: %@", indexedActions);
     
 }
 
@@ -306,13 +304,12 @@ NS_ENUM(NSUInteger, NotifcationCommentCellType){
 
 - (void)pushToURL:(NSURL *)url {
     if (IS_IPHONE) {
-        self.writingReply = NO;
         [self.replyTextView resignFirstResponder];
     }
     WPWebViewController *webViewController = [[WPWebViewController alloc] initWithNibName:nil bundle:nil];
     if ([url isWordPressDotComUrl]) {
-        [webViewController setUsername:[WordPressComApi sharedApi].username];
-        [webViewController setPassword:[WordPressComApi sharedApi].password];
+        [webViewController setUsername:[[WPAccount defaultWordPressComAccount] username]];
+        [webViewController setPassword:[[WPAccount defaultWordPressComAccount] password]];
         [webViewController setUrl:[url ensureSecureURL]];
     } else {
         [webViewController setUrl:url];        
@@ -395,14 +392,7 @@ NS_ENUM(NSUInteger, NotifcationCommentCellType){
         }
     } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
         button.enabled = YES;
-        BOOL extra_debug_on = getenv("WPDebugXMLRPC") ? YES : NO;
-#ifndef DEBUG
-        NSNumber *extra_debug = [[NSUserDefaults standardUserDefaults] objectForKey:@"extra_debug"];
-        if ([extra_debug boolValue]) extra_debug_on = YES;
-#endif
-        if ( extra_debug_on == YES ) {
-            WPFLog(@"[Rest API] ! %@", [error localizedDescription]);
-        }
+        DDLogVerbose(@"[Rest API] ! %@", [error localizedDescription]);
     }];
   
     /*
@@ -432,7 +422,6 @@ NS_ENUM(NSUInteger, NotifcationCommentCellType){
 }
 
 - (void)cancelReply:(id)sender {
-    self.writingReply = NO;
     [self.replyTextView resignFirstResponder];
 }
 
@@ -451,11 +440,10 @@ NS_ENUM(NSUInteger, NotifcationCommentCellType){
             } failure:nil];
         }
         
-        self.writingReply = NO;
         [self.replyTextView resignFirstResponder];
         self.replyTextView.editable = NO;
         [self.user postPath:replyPath parameters:params success:^(AFHTTPRequestOperation *operation, id responseObject) {
-            NSLog(@"Response: %@", responseObject);
+            DDLogVerbose(@"Response: %@", responseObject);
             [WPToast showToastWithMessage:NSLocalizedString(@"Replied", @"User replied to a comment")
                                  andImage:[UIImage imageNamed:@"action_icon_replied"]];
             self.replyTextView.editable = YES;
@@ -465,18 +453,11 @@ NS_ENUM(NSUInteger, NotifcationCommentCellType){
             [self resetReplyView];
 
         } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
-            NSLog(@"Failure %@", error);
+            DDLogError(@"Failure %@", error);
             self.replyTextView.editable = YES;
             self.replyActivityView.hidden = YES;
             
-            BOOL extra_debug_on = getenv("WPDebugXMLRPC") ? YES : NO;
-#ifndef DEBUG
-            NSNumber *extra_debug = [[NSUserDefaults standardUserDefaults] objectForKey:@"extra_debug"];
-            if ([extra_debug boolValue]) extra_debug_on = YES;
-#endif
-            if ( extra_debug_on == YES ) {
-                WPFLog(@"[Rest API] ! %@", [error localizedDescription]);
-            }
+            DDLogVerbose(@"[Rest API] ! %@", [error localizedDescription]);
         }];
     }
 
@@ -569,14 +550,8 @@ NS_ENUM(NSUInteger, NotifcationCommentCellType){
             
             [self.tableView reloadData];
         } failure:^(AFHTTPRequestOperation *operation, NSError *error){
-            BOOL extra_debug_on = getenv("WPDebugXMLRPC") ? YES : NO;
-#ifndef DEBUG
-            NSNumber *extra_debug = [[NSUserDefaults standardUserDefaults] objectForKey:@"extra_debug"];
-            if ([extra_debug boolValue]) extra_debug_on = YES;
-#endif
-            if ( extra_debug_on == YES ) {
-                WPFLog(@"[Rest API] ! %@", [error localizedDescription]);
-            }
+            DDLogVerbose(@"[Rest API] ! %@", [error localizedDescription]);
+
             [self.tableView reloadData];
         }];
         
@@ -719,7 +694,7 @@ NS_ENUM(NSUInteger, NotifcationCommentCellType){
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
     NoteComment *comment = [self.commentThread objectAtIndex:indexPath.section];
     BOOL mainComment = [self.commentThread lastObject] == comment;
-    CGFloat height;
+    CGFloat height = 0.0;
     switch (indexPath.row) {
         case NotificationCommentCellTypeHeader:
             height = (comment.isLoaded || mainComment) ? (comment.isParentComment) ? NoteCommentCellHeight - 36.0f : NoteCommentCellHeight : NoteCommentLoadingCellHeight;
@@ -781,7 +756,7 @@ NS_ENUM(NSUInteger, NotifcationCommentCellType){
     };
 
     html = [html stringByReplacingHTMLEmoticonsWithEmoji];
-    NSAttributedString *content = [[NSAttributedString alloc] initWithHTMLData:[html dataUsingEncoding:NSUTF8StringEncoding] options:options documentAttributes:NULL];
+    NSAttributedString *content = [[NSAttributedString alloc] initWithHTMLData:[html dataUsingEncoding:NSUTF8StringEncoding] options:options documentAttributes:nil];
     return content;
 }
 
@@ -792,92 +767,79 @@ NS_ENUM(NSUInteger, NotifcationCommentCellType){
 
 #pragma mark - UITextViewDelegate
 
-- (BOOL)textViewShouldBeginEditing:(UITextView *)textView {
-    self.writingReply = YES;
+- (void)textViewDidBeginEditing:(UITextView *)textView {
     self.replyPlaceholder.hidden = YES;
-    return YES;
 }
 
 - (void)textViewDidChange:(UITextView *)textView {
     self.replyPublishBarButton.enabled = [self replyTextViewHasText];
 }
 
+- (void)textViewDidEndEditing:(UITextView *)textView {
+    self.replyPlaceholder.hidden = [self replyTextViewHasText];
+}
+
 #pragma mark - UIKeyboard notifications
 
 - (void)onShowKeyboard:(NSNotification *)notification {
+    self.panelNavigationController.navigationController.navigationBarHidden = YES;
     
+    CGFloat verticalDelta = [self keyboardVerticalOverlapChangeFromNotification:notification];
+    CGFloat maxVerticalSpace = self.view.frame.size.height + verticalDelta;
+    CGRect bannerFrame = self.postBanner.frame;
+    CGRect toolbarFrame = self.toolbar.frame;
+    CGRect tableFrame = self.tableView.frame;
+    CGRect footerFrame = self.tableFooterView.frame;
+    CGRect replyBarFrame = self.replyNavigationBar.frame;
     
-    if (self.isWritingReply) {
-        self.panelNavigationController.navigationController.navigationBarHidden = YES;
-        
-        CGFloat verticalDelta = [self keyboardVerticalOverlapChangeFromNotification:notification];
-        CGFloat maxVerticalSpace = self.view.frame.size.height + verticalDelta;
-        CGRect bannerFrame = self.postBanner.frame;
-        CGRect toolbarFrame = self.toolbar.frame;
-        CGRect tableFrame = self.tableView.frame;
-        CGRect footerFrame = self.tableFooterView.frame;
-        CGRect replyBarFrame = self.replyNavigationBar.frame;
-        
-        [self.view addSubview:self.replyNavigationBar];
-        
-        replyBarFrame.origin.y = 0;
-        replyBarFrame.size.width = self.view.frame.size.width;
-        self.replyNavigationBar.frame = replyBarFrame;
+    [self.view addSubview:self.replyNavigationBar];
 
-        bannerFrame.origin.y = -bannerFrame.size.height;
-        toolbarFrame.origin.y = self.view.bounds.size.height;
-        tableFrame.origin.y = CGRectGetMaxY(replyBarFrame);
-        tableFrame.size.height = maxVerticalSpace - tableFrame.origin.y;
-        footerFrame.size.height = MAX(CGRectGetHeight(tableFrame) * 0.75f, 88.f);
-    
-        [UIView animateWithDuration:0.2f animations:^{
-            self.tableFooterView.frame = footerFrame;
-            self.tableView.tableFooterView = self.tableFooterView;
-            self.tableView.frame = tableFrame;
-            self.postBanner.frame = bannerFrame;
-            self.toolbar.frame = toolbarFrame;
-            [self.tableView scrollRectToVisible:self.tableFooterView.frame animated:NO];
-        }];
+    replyBarFrame.origin.y = 0;
+    replyBarFrame.size.width = self.view.frame.size.width;
+    self.replyNavigationBar.frame = replyBarFrame;
 
-    }
+    bannerFrame.origin.y = -bannerFrame.size.height;
+    toolbarFrame.origin.y = self.view.bounds.size.height;
+    tableFrame.origin.y = CGRectGetMaxY(replyBarFrame);
+    tableFrame.size.height = maxVerticalSpace - tableFrame.origin.y;
+    footerFrame.size.height = MAX(CGRectGetHeight(tableFrame) * 0.75f, 88.f);
+
+    [UIView animateWithDuration:0.2f animations:^{
+        self.tableFooterView.frame = footerFrame;
+        self.tableView.tableFooterView = self.tableFooterView;
+        self.tableView.frame = tableFrame;
+        self.postBanner.frame = bannerFrame;
+        self.toolbar.frame = toolbarFrame;
+        [self.tableView scrollRectToVisible:self.tableFooterView.frame animated:NO];
+    }];
 }
 
 - (void)onHideKeyboard:(NSNotification *)notification {
+    self.panelNavigationController.navigationController.navigationBarHidden = NO;
     
-    if (!self.isWritingReply) {
-        
-        self.panelNavigationController.navigationController.navigationBarHidden = NO;
-        
-        // remove the reply bar
-        [self.replyNavigationBar removeFromSuperview];
-        
-        CGRect bannerFrame = self.postBanner.frame;
-        CGRect toolbarFrame = self.toolbar.frame;
-        CGRect tableFrame = self.tableView.frame;
-        
-        bannerFrame.origin.y = 0;
-        toolbarFrame.origin.y = self.view.bounds.size.height - toolbarFrame.size.height;
-        tableFrame.origin.y = CGRectGetMaxY(bannerFrame);
-        tableFrame.size.height = toolbarFrame.origin.y - tableFrame.origin.y;
-        
-        
-        
-        [UIView animateWithDuration:0.2f animations:^{
-            if (![self replyTextViewHasText]) {
-                self.replyPlaceholder.hidden = NO;
-                CGRect tableFooterFrame = self.tableFooterView.frame;
-                tableFooterFrame.size.height = NotificationsCommentDetailViewControllerReplyTextViewDefaultHeight;
-                self.tableFooterView.frame = tableFooterFrame;
-                self.tableView.tableFooterView = self.tableFooterView;
-            }
-            self.tableView.frame = tableFrame;
-            self.postBanner.frame = bannerFrame;
-            self.toolbar.frame = toolbarFrame;
-        }];
-        
-        
-    }
+    // remove the reply bar
+    [self.replyNavigationBar removeFromSuperview];
+    
+    CGRect bannerFrame = self.postBanner.frame;
+    CGRect toolbarFrame = self.toolbar.frame;
+    CGRect tableFrame = self.tableView.frame;
+    
+    bannerFrame.origin.y = 0;
+    toolbarFrame.origin.y = self.view.bounds.size.height - toolbarFrame.size.height;
+    tableFrame.origin.y = CGRectGetMaxY(bannerFrame);
+    tableFrame.size.height = toolbarFrame.origin.y - tableFrame.origin.y;
 
+    [UIView animateWithDuration:0.2f animations:^{
+        if (![self replyTextViewHasText]) {
+            CGRect tableFooterFrame = self.tableFooterView.frame;
+            tableFooterFrame.size.height = NotificationsCommentDetailViewControllerReplyTextViewDefaultHeight;
+            self.tableFooterView.frame = tableFooterFrame;
+            self.tableView.tableFooterView = self.tableFooterView;
+        }
+        self.tableView.frame = tableFrame;
+        self.postBanner.frame = bannerFrame;
+        self.toolbar.frame = toolbarFrame;
+    }];
 }
 
 - (CGFloat)keyboardVerticalOverlapChangeFromNotification:(NSNotification *)notification {

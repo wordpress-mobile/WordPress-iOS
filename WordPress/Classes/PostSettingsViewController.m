@@ -50,7 +50,7 @@
 #pragma mark Lifecycle Methods
 
 - (void)dealloc {
-    [FileLogger log:@"%@ %@", self, NSStringFromSelector(_cmd)];
+    DDLogInfo(@"%@ %@", self, NSStringFromSelector(_cmd));
 	if (locationManager) {
 		locationManager.delegate = nil;
 		[locationManager stopUpdatingLocation];
@@ -81,7 +81,7 @@
 - (void)viewDidLoad {
     self.title = NSLocalizedString(@"Properties", nil);
     
-    [FileLogger log:@"%@ %@", self, NSStringFromSelector(_cmd)];
+    DDLogInfo(@"%@ %@", self, NSStringFromSelector(_cmd));
     
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(keyboardWillShow:) name:UIKeyboardWillShowNotification object:nil];
 	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(keyboardWillHide:) name:UIKeyboardWillHideNotification object:nil];
@@ -186,7 +186,7 @@
     [super viewDidUnload];
     [[NSNotificationCenter defaultCenter] removeObserver:self];
 
-    [FileLogger log:@"%@ %@", self, NSStringFromSelector(_cmd)];
+    DDLogInfo(@"%@ %@", self, NSStringFromSelector(_cmd));
     [locationManager stopUpdatingLocation];
     locationManager.delegate = nil;
     locationManager = nil;
@@ -212,7 +212,7 @@
 }
 
 - (void)didReceiveMemoryWarning {
-    WPLog(@"%@ %@", self, NSStringFromSelector(_cmd));
+    DDLogWarn(@"%@ %@", self, NSStringFromSelector(_cmd));
     [super didReceiveMemoryWarning];
 }
 
@@ -330,6 +330,7 @@
         self.apost.password = textField.text;
     } else if (textField == tagsTextField) {
         self.post.tags = tagsTextField.text;
+        [postDetailViewController refreshTags];
     }
     [postDetailViewController refreshButtons];
 }
@@ -670,7 +671,7 @@
         }
         case 1:
         {
-            NSLog(@"Reloading map");
+            DDLogVerbose(@"Reloading map");
             if (mapGeotagTableViewCell == nil) {
                 mapGeotagTableViewCell = [[UITableViewCell alloc] initWithFrame:CGRectMake(0, 0, tableView.frame.size.width, 188)];
             }
@@ -793,8 +794,8 @@
                     PostSettingsSelectionViewController *vc = [[PostSettingsSelectionViewController alloc] initWithDictionary:statusDict];
                     __weak PostSettingsSelectionViewController *weakVc = vc;
                     vc.onItemSelected = ^(NSString *status) {
-                        [weakVc dismiss];
                         [self.apost setStatusTitle:status];
+                        [weakVc dismiss];
                         [tableView reloadData];
                     };
                     [self.navigationController pushViewController:vc animated:YES];
@@ -872,8 +873,8 @@
             PostSettingsSelectionViewController *vc = [[PostSettingsSelectionViewController alloc] initWithDictionary:postFormatsDict];
             __weak PostSettingsSelectionViewController *weakVc = vc;
             vc.onItemSelected = ^(NSString *status) {
-                [weakVc dismiss];
                 self.post.postFormatText = status;
+                [weakVc dismiss];
                 [tableView reloadData];
             };
             [self.navigationController pushViewController:vc animated:YES];
@@ -1448,9 +1449,9 @@
 		Coordinate *c = [[Coordinate alloc] initWithCoordinate:coordinate];
 		self.post.geolocation = c;
 		postDetailViewController.hasLocation.enabled = YES;
-        WPLog(@"Added geotag (%+.6f, %+.6f)",
-			  c.latitude,
-			  c.longitude);
+        DDLogInfo(@"Added geotag (%+.6f, %+.6f)",
+                  c.latitude,
+                  c.longitude);
 		[locationManager stopUpdatingLocation];
         [postDetailViewController refreshButtons];
 		[tableView reloadData];
@@ -1479,7 +1480,7 @@
             }
             addressLabel.text = address;
         } else {
-            NSLog(@"Reverse geocoder failed for coordinate (%.6f, %.6f): %@",
+            DDLogError(@"Reverse geocoder failed for coordinate (%.6f, %.6f): %@",
                   c.latitude,
                   c.longitude,
                   [error localizedDescription]);
@@ -1505,17 +1506,11 @@
     _currentImage = image;
     
     //UIImagePickerControllerReferenceURL = "assets-library://asset/asset.JPG?id=1000000050&ext=JPG").
-    NSURL *assetURL = nil;
-    if (&UIImagePickerControllerReferenceURL != NULL) {
-        assetURL = [info objectForKey:UIImagePickerControllerReferenceURL];
-    }
+    NSURL *assetURL = [info objectForKey:UIImagePickerControllerReferenceURL];
     if (assetURL) {
         [self getMetadataFromAssetForURL:assetURL];
     } else {
-        NSDictionary *metadata = nil;
-        if (&UIImagePickerControllerMediaMetadata != NULL) {
-            metadata = [info objectForKey:UIImagePickerControllerMediaMetadata];
-        }
+        NSDictionary *metadata = [info objectForKey:UIImagePickerControllerMediaMetadata];
         if (metadata) {
             NSMutableDictionary *mutableMetadata = [metadata mutableCopy];
             NSDictionary *gpsData = [mutableMetadata objectForKey:@"{GPS}"];
@@ -1555,13 +1550,13 @@
     NSNumber *resizePreference = [NSNumber numberWithInt:-1];
     if([[NSUserDefaults standardUserDefaults] objectForKey:@"media_resize_preference"] != nil)
         resizePreference = [nf numberFromString:[[NSUserDefaults standardUserDefaults] objectForKey:@"media_resize_preference"]];
-    BOOL showResizeActionSheet;
+    BOOL showResizeActionSheet = NO;
     switch ([resizePreference intValue]) {
         case 0:
         {
             // Dispatch async to detal with a rare bug presenting the actionsheet after a memory warning when the
             // view has been recreated.
-            showResizeActionSheet = true;
+            showResizeActionSheet = YES;
             break;
         }
         case 1:
@@ -1587,17 +1582,17 @@
         }
         default:
         {
-            showResizeActionSheet = true;
+            showResizeActionSheet = YES;
             break;
         }
     }
 
-    BOOL isPopoverDisplayed = false;
+    BOOL isPopoverDisplayed = NO;
     if (IS_IPAD) {
         if (thePicker.sourceType == UIImagePickerControllerSourceTypeCamera) {
-            isPopoverDisplayed = false;
+            isPopoverDisplayed = NO;
         } else {
-            isPopoverDisplayed = true;
+            isPopoverDisplayed = YES;
         }
     }
     
@@ -1632,9 +1627,9 @@
 				   resultBlock: ^(ALAsset *myasset) {
 					   ALAssetRepresentation *rep = [myasset defaultRepresentation];
 					   
-					   WPLog(@"getJPEGFromAssetForURL: default asset representation for %@: uti: %@ size: %lld url: %@ orientation: %d scale: %f metadata: %@",
-							 url, [rep UTI], [rep size], [rep url], [rep orientation],
-							 [rep scale], [rep metadata]);
+					   DDLogInfo(@"getJPEGFromAssetForURL: default asset representation for %@: uti: %@ size: %lld url: %@ orientation: %d scale: %f metadata: %@",
+                                 url, [rep UTI], [rep size], [rep url], [rep orientation],
+                                 [rep scale], [rep metadata]);
 					   
 					   Byte *buf = malloc([rep size]);  // will be freed automatically when associated NSData is deallocated
 					   NSError *err = nil;
@@ -1644,7 +1639,7 @@
 						   // Are err and bytes == 0 redundant? Doc says 0 return means
 						   // error occurred which presumably means NSError is returned.
 						   free(buf); // Free up memory so we don't leak.
-						   WPLog(@"error from getBytes: %@", err);
+						   DDLogError(@"error from getBytes: %@", err);
 						   
 						   return;
 					   }
@@ -1652,9 +1647,9 @@
 														  freeWhenDone:YES];  // YES means free malloc'ed buf that backs this when deallocated
 					   
 					   CGImageSourceRef  source ;
-					   source = CGImageSourceCreateWithData((__bridge CFDataRef)imageJPEG, NULL);
+					   source = CGImageSourceCreateWithData((__bridge CFDataRef)imageJPEG, nil);
 					   
-                       NSDictionary *metadata = (NSDictionary *) CFBridgingRelease(CGImageSourceCopyPropertiesAtIndex(source,0,NULL));
+                       NSDictionary *metadata = (NSDictionary *) CFBridgingRelease(CGImageSourceCopyPropertiesAtIndex(source,0,nil));
                        
                        //make the metadata dictionary mutable so we can remove properties to it
                        NSMutableDictionary *metadataAsMutable = [metadata mutableCopy];
@@ -1672,7 +1667,7 @@
 					   CFRelease(source);
 				   }
 				  failureBlock: ^(NSError *err) {
-					  WPLog(@"can't get asset %@: %@", url, err);
+					  DDLogError(@"can't get asset %@: %@", url, err);
 					  _currentImageMetadata = nil;
 				  }];
 }
@@ -1776,16 +1771,16 @@
     
 	if (_currentImageMetadata != nil) {
 		// Write the EXIF data with the image data to disk
-		CGImageSourceRef  source = NULL;
-        CGImageDestinationRef destination = NULL;
+		CGImageSourceRef  source = nil;
+        CGImageDestinationRef destination = nil;
 		BOOL success = NO;
         //this will be the data CGImageDestinationRef will write into
         NSMutableData *dest_data = [NSMutableData data];
         
-		source = CGImageSourceCreateWithData((__bridge CFDataRef)imageData, NULL);
+		source = CGImageSourceCreateWithData((__bridge CFDataRef)imageData, nil);
         if (source) {
             CFStringRef UTI = CGImageSourceGetType(source); //this is the type of image (e.g., public.jpeg)
-            destination = CGImageDestinationCreateWithData((__bridge CFMutableDataRef)dest_data,UTI,1,NULL);
+            destination = CGImageDestinationCreateWithData((__bridge CFMutableDataRef)dest_data,UTI,1,nil);
             
             if(destination) {
                 //add the image contained in the image source to the destination, copying the old metadata
@@ -1795,14 +1790,14 @@
                 //It will return false if something goes wrong
                 success = CGImageDestinationFinalize(destination);
             } else {
-                WPFLog(@"***Could not create image destination ***");
+                DDLogError(@"***Could not create image destination ***");
             }
         } else {
-            WPFLog(@"***Could not create image source ***");
+            DDLogError(@"***Could not create image source ***");
         }
 		
 		if(!success) {
-			WPLog(@"***Could not create data from image destination ***");
+			DDLogError(@"***Could not create data from image destination ***");
 			//write the data without EXIF to disk
 			NSFileManager *fileManager = [NSFileManager defaultManager];
 			[fileManager createFileAtPath:filepath contents:imageData attributes:nil];
@@ -1840,7 +1835,7 @@
     
     [imageMedia uploadWithSuccess:^{
         if ([imageMedia isDeleted]) {
-            NSLog(@"Media deleted while uploading (%@)", imageMedia);
+            DDLogWarn(@"Media deleted while uploading (%@)", imageMedia);
             return;
         }
         [imageMedia save];
@@ -1912,39 +1907,44 @@
         NSString *originalSizeStr = [NSString stringWithFormat:NSLocalizedString(@"Original (%@)", @"Original (width x height)"), [NSString stringWithFormat:@"%ix%i", (int)originalSize.width, (int)originalSize.height]];
         
 		UIActionSheet *resizeActionSheet;
-		//NSLog(@"img dimension: %f x %f ",_currentImage.size.width, _currentImage.size.height );
 		
 		if(_currentImage.size.width > largeSize.width  && _currentImage.size.height > largeSize.height) {
 			resizeActionSheet = [[UIActionSheet alloc] initWithTitle:NSLocalizedString(@"Choose Image Size", @"")
 															delegate:self
-												   cancelButtonTitle:nil
+												   cancelButtonTitle:NSLocalizedString(@"Cancel", nil)
 											  destructiveButtonTitle:nil
 												   otherButtonTitles:resizeSmallStr, resizeMediumStr, resizeLargeStr, originalSizeStr, NSLocalizedString(@"Custom", @""), nil];
 			
 		} else if(_currentImage.size.width > mediumSize.width  && _currentImage.size.height > mediumSize.height) {
 			resizeActionSheet = [[UIActionSheet alloc] initWithTitle:NSLocalizedString(@"Choose Image Size", @"")
 															delegate:self
-												   cancelButtonTitle:nil
+												   cancelButtonTitle:NSLocalizedString(@"Cancel", nil)
 											  destructiveButtonTitle:nil
 												   otherButtonTitles:resizeSmallStr, resizeMediumStr, originalSizeStr, NSLocalizedString(@"Custom", @""), nil];
 			
 		} else if(_currentImage.size.width > smallSize.width  && _currentImage.size.height > smallSize.height) {
 			resizeActionSheet = [[UIActionSheet alloc] initWithTitle:NSLocalizedString(@"Choose Image Size", @"")
 															delegate:self
-												   cancelButtonTitle:nil
+												   cancelButtonTitle:NSLocalizedString(@"Cancel", nil)
 											  destructiveButtonTitle:nil
 												   otherButtonTitles:resizeSmallStr, originalSizeStr, NSLocalizedString(@"Custom", @""), nil];
 			
 		} else {
 			resizeActionSheet = [[UIActionSheet alloc] initWithTitle:NSLocalizedString(@"Choose Image Size", @"")
 															delegate:self
-												   cancelButtonTitle:nil
+												   cancelButtonTitle:NSLocalizedString(@"Cancel", nil)
 											  destructiveButtonTitle:nil
 												   otherButtonTitles: originalSizeStr, NSLocalizedString(@"Custom", @""), nil];
 		}
 		
         resizeActionSheet.tag = TAG_ACTIONSHEET_RESIZE_PHOTO;
-        [resizeActionSheet showInView:self.view];
+        
+        UITableViewCell *featuredImageCell = [tableView cellForRowAtIndexPath:[NSIndexPath indexPathForRow:0 inSection:3]];
+        if (featuredImageCell != nil) {
+            [resizeActionSheet showFromRect:featuredImageCell.frame inView:self.view animated:YES];
+        } else {
+            [resizeActionSheet showInView:self.view];
+        }
 	}
 }
 
@@ -2074,7 +2074,7 @@
     
     
     if (!_isNewCategory) {
-        if (IS_IPAD == YES) {
+        if (IS_IPAD) {
             UINavigationController *navController;
             if (_segmentedTableViewController.navigationController) {
                 navController = _segmentedTableViewController.navigationController;
@@ -2103,7 +2103,7 @@
     WPFLogMethod();
     WPAddCategoryViewController *addCategoryViewController = [[WPAddCategoryViewController alloc] initWithNibName:@"WPAddCategoryViewController" bundle:nil];
     addCategoryViewController.blog = self.post.blog;
-	if (IS_IPAD == YES) {
+	if (IS_IPAD) {
         [_segmentedTableViewController pushViewController:addCategoryViewController animated:YES];
  	} else {
 		UINavigationController *nc = [[UINavigationController alloc] initWithRootViewController:addCategoryViewController];
@@ -2118,9 +2118,8 @@
     }
     
     if (selContext == kSelectionsCategoriesContext) {
-        NSMutableSet *categories = [self.post mutableSetValueForKey:@"categories"];
-        [categories removeAllObjects];
-        [categories addObjectsFromArray:selectedObjects];
+        [self.post.categories removeAllObjects];
+        [self.post.categories addObjectsFromArray:selectedObjects];
         [tableView reloadData];
     }
 }

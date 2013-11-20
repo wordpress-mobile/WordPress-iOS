@@ -6,7 +6,7 @@
 #import "WPPopoverBackgroundView.h"
 #import "WPAddCategoryViewController.h"
 #import "WPAlertView.h"
-#import "iOS7CorrectedTextView.h"
+#import "IOS7CorrectedTextView.h"
 
 NSTimeInterval kAnimationDuration = 0.3f;
 
@@ -30,7 +30,7 @@ NSString *const EditPostViewControllerAutosaveDidFailNotification = @"EditPostVi
 @end
 
 @implementation EditPostViewController {
-    IBOutlet iOS7CorrectedTextView *textView;
+    IBOutlet IOS7CorrectedTextView *textView;
     IBOutlet UITextField *titleTextField;
     IBOutlet UITextField *tagsTextField;
     IBOutlet UILabel *titleLabel;
@@ -235,6 +235,12 @@ CGFloat const EditPostViewControllerTextViewOffset = 10.0;
         [self.toolbar setBackgroundImage:[UIImage imageNamed:@"toolbar_bg"] forToolbarPosition:UIToolbarPositionBottom barMetrics:UIBarMetricsDefault];
     }
     
+    for (UIView *item in self.toolbar.subviews) {
+        if ([item respondsToSelector:@selector(setExclusiveTouch:)]) {
+            [item setExclusiveTouch:YES];
+        }
+    }
+    
     [WPMobileStats trackEventForWPCom:[self formattedStatEventString:StatsEventPostDetailOpenedEditor]];
 }
 
@@ -294,6 +300,15 @@ CGFloat const EditPostViewControllerTextViewOffset = 10.0;
 
 - (NSString *)editorTitle {
     NSString *title = @"";
+    if (self.editMode == EditPostViewControllerModeNewPost) {
+        title = NSLocalizedString(@"New Post", @"Post Editor screen title.");
+    } else {
+        if ([self.apost.postTitle length]) {
+            title = self.apost.postTitle;
+        } else {
+            title = NSLocalizedString(@"Edit Post", @"Post Editor screen title.");
+        }
+    }
     self.navigationItem.backBarButtonItem.title = title;
     return title;
 }
@@ -512,11 +527,11 @@ CGFloat const EditPostViewControllerTextViewOffset = 10.0;
     if (_backupPost) {
         [self.apost.original cloneFrom:_backupPost];
         if (upload) {
-            WPFLog(@"Restoring post backup");
+            DDLogInfo(@"Restoring post backup");
             [self.apost.original uploadWithSuccess:^{
-                WPFLog(@"post uploaded: %@", self.apost.postTitle);
+                DDLogInfo(@"post uploaded: %@", self.apost.postTitle);
             } failure:^(NSError *error) {
-                WPFLog(@"post failed: %@", [error localizedDescription]);
+                DDLogError(@"post failed: %@", [error localizedDescription]);
             }];
             [self deleteBackupPost];
         }
@@ -532,6 +547,10 @@ CGFloat const EditPostViewControllerTextViewOffset = 10.0;
 	[[NSNotificationCenter defaultCenter] removeObserver:self];
 }
 
+- (void)refreshTags
+{
+    tagsTextField.text = self.post.tags;
+}
 
 - (void)refreshButtons {
     
@@ -629,8 +648,8 @@ CGFloat const EditPostViewControllerTextViewOffset = 10.0;
     
     segmentedTableViewController.navigationItem.rightBarButtonItem = createCategoryBarButtonItem;
 	
-    if (isNewCategory != YES) {
-		if (IS_IPAD == YES) {
+    if (!isNewCategory) {
+		if (IS_IPAD) {
             UINavigationController *navController;
             if (segmentedTableViewController.navigationController) {
                 navController = segmentedTableViewController.navigationController;
@@ -648,7 +667,6 @@ CGFloat const EditPostViewControllerTextViewOffset = 10.0;
 			[[CPopoverManager instance] setCurrentPopoverController:popover];
 		
         } else {
-            self.navigationItem.backBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:NSLocalizedString(@"Back", @"") style:UIBarButtonItemStyleBordered target:nil action:nil];
 			self.editMode = EditPostViewControllerModeEditPost;
 			[self.navigationController pushViewController:segmentedTableViewController animated:YES];
 		}
@@ -664,16 +682,13 @@ CGFloat const EditPostViewControllerTextViewOffset = 10.0;
     }
 
     if (selContext == kSelectionsCategoriesContext) {
-        NSLog(@"selected categories: %@", selectedObjects);
-        NSLog(@"post: %@", self.post);
-        NSMutableSet *categories = [self.post mutableSetValueForKey:@"categories"];
-        [categories removeAllObjects];
-        [categories addObjectsFromArray:selectedObjects];
+        [self.post.categories removeAllObjects];
+        [self.post.categories addObjectsFromArray:selectedObjects];
         [categoriesButton setTitle:[NSString decodeXMLCharactersIn:[self.post categoriesText]] forState:UIControlStateNormal];
     }
 
     _hasChangesToAutosave = YES;
-    [self autosaveContent];
+    [self.apost autosave];
 
 	[self refreshButtons];
 }
@@ -693,7 +708,7 @@ CGFloat const EditPostViewControllerTextViewOffset = 10.0;
     WPFLogMethod();
     WPAddCategoryViewController *addCategoryViewController = [[WPAddCategoryViewController alloc] initWithNibName:@"WPAddCategoryViewController" bundle:nil];
     addCategoryViewController.blog = self.post.blog;
-	if (IS_IPAD == YES) {
+	if (IS_IPAD) {
         [segmentedTableViewController pushViewController:addCategoryViewController animated:YES];
  	} else {
 		UINavigationController *nc = [[UINavigationController alloc] initWithRootViewController:addCategoryViewController];
@@ -729,7 +744,7 @@ CGFloat const EditPostViewControllerTextViewOffset = 10.0;
     }
     
     if (_isAutosaving) {
-        WPFLog(@"Canceling all auto save operations as user is about to force a save");
+        DDLogInfo(@"Canceling all auto save operations as user is about to force a save");
         // Cancel all blog network operations since the user tapped the save/publish button
         [self.apost.blog.api cancelAllHTTPOperations];
     }
@@ -753,9 +768,9 @@ CGFloat const EditPostViewControllerTextViewOffset = 10.0;
 	if (upload) {
 		NSString *postTitle = self.apost.postTitle;
         [self.apost.original uploadWithSuccess:^{
-            WPFLog(@"post uploaded: %@", postTitle);
+            DDLogInfo(@"post uploaded: %@", postTitle);
         } failure:^(NSError *error) {
-            WPFLog(@"post failed: %@", [error localizedDescription]);
+            DDLogError(@"post failed: %@", [error localizedDescription]);
         }];
 	} else {
 		[self.apost.original save];
@@ -842,7 +857,7 @@ CGFloat const EditPostViewControllerTextViewOffset = 10.0;
             // If the post has been published or dismissed while autosaving
             // the network request should have been canceled
             // But just in case, don't try updating this post
-            WPFLog(@"!!! Autosave returned after post editor was dismissed");
+            DDLogInfo(@"!!! Autosave returned after post editor was dismissed");
             _isAutosaving = NO;
             [self hideAutosaveIndicatorWithSuccess:YES];
             return;
@@ -1072,6 +1087,9 @@ CGFloat const EditPostViewControllerTextViewOffset = 10.0;
         WordPressAppDelegate *delegate = (WordPressAppDelegate*)[[UIApplication sharedApplication] delegate];
 
         // Insert
+        
+        //Disable scrolling temporarily otherwise inserting text will scroll to the bottom in iOS6 and below.
+        editorTextView.scrollEnabled = NO;
         [overlayView dismiss];
         
         [editorTextView becomeFirstResponder];
@@ -1095,6 +1113,9 @@ CGFloat const EditPostViewControllerTextViewOffset = 10.0;
         NSString *oldText = editorTextView.text;
         NSRange oldRange = editorTextView.selectedRange;
         editorTextView.text = [editorTextView.text stringByReplacingCharactersInRange:range withString:aTagText];
+        
+        //Re-enable scrolling after insertion is complete
+        editorTextView.scrollEnabled = YES;
         
         //reset selection back to nothing
         range.length = 0;
@@ -1132,7 +1153,7 @@ CGFloat const EditPostViewControllerTextViewOffset = 10.0;
 - (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex {
     if (alertView.tag == EditPostViewControllerAlertTagFailedMedia) {
         if (buttonIndex == 1) {
-            WPFLog(@"Saving post even after some media failed to upload");
+            DDLogInfo(@"Saving post even after some media failed to upload");
             [self savePost:YES];
         } else {
             [self switchToMedia];
@@ -1177,7 +1198,7 @@ CGFloat const EditPostViewControllerTextViewOffset = 10.0;
                 if ((![self.apost hasRemote] || _isAutosaved) && [self.apost.status isEqualToString:@"publish"]) {
                     self.apost.status = @"draft";
                 }
-                WPFLog(@"Saving post as a draft after user initially attempted to cancel");
+                DDLogInfo(@"Saving post as a draft after user initially attempted to cancel");
                 [self savePost:YES];
 			}
         }
@@ -1495,7 +1516,7 @@ CGFloat const EditPostViewControllerTextViewOffset = 10.0;
 }
 
 - (void)restoreText:(NSString *)text withRange:(NSRange)range {
-    NSLog(@"restoreText:%@",text);
+    DDLogVerbose(@"restoreText:%@",text);
     NSString *oldText = textView.text;
     NSRange oldRange = textView.selectedRange;
     textView.scrollEnabled = NO;

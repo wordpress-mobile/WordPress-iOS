@@ -1,4 +1,5 @@
-#!/usr/bin/env ruby -wKU
+#!/usr/bin/env ruby
+# encoding: utf-8
 
 # Supported languages:
 # ar,ca,cs,da,de,el,en,en-GB,es,fi,fr,he,hr,hu,id,it,ja,ko,ms,nb,nl,pl,pt,pt-PT,ro,ru,sk,sv,th,tr,uk,vi,zh-Hans,zh-Hant

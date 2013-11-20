@@ -19,5 +19,6 @@
 
 - (void)promptForPassword;
 - (UIColor *)backgroundColorForRefreshHeaderView;
+- (NSString *)noResultsText;
 
 @end

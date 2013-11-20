@@ -75,10 +75,12 @@
 #define QCPARAMETER_VAC               @"vac"
 #define QCPARAMETER_OPTOUT            @"optout"
 #define QCPARAMETER_REASON            @"nsr"
+#define QCPARAMETER_INSTALL           @"inst"
+#define QCPARAMETER_INBACKGROUND      @"inback"
 
 // Latency event
 #define QCPARAMETER_LATENCY           @"latency"
-#define QCPARAMETER_LATENCY_VALUE     @"value"
+#define QCPARAMETER_LATENCY_VALUE     @"latency-value"
 #define QCPARAMETER_LATENCY_UPLID     @"uplid"
 
 // Load event types
@@ -95,13 +97,14 @@
 #define QC_SDKERRORTYPE_HTTPSAUTHCHALLENGE          @"https-auth-challenge"
 #define QC_SDKERRORTYPE_UPLOADFAILURE               @"json-upload-failure"
 #define QC_SDKERRORTYPE_POLICYDOWNLOADFAILURE       @"policy-download-failure"
+#define QC_SDKERRORTYPE_GEOCODERFAILURE             @"geo-coder-failure"
 
 // 
 // Quantcast Measurement SDK
 //
 
-#define QCMEASUREMENT_API_VERSION               @"1_2_7"
-#define QCMEASUREMENT_API_IDENTIFIER            @"iOS_1.2.7"
+#define QCMEASUREMENT_API_VERSION               @"1_2_10"
+#define QCMEASUREMENT_API_IDENTIFIER            @"iOS_1.2.10"
 #define QCMEASUREMENT_CONN_TIMEOUT_SECONDS      60
 
 #ifndef QCMEASUREMENT_UPLOAD_URL
@@ -116,6 +119,7 @@
 #define QCMEASUREMENT_DATABASE_FILENAME         @"qcmeasurement.db"
 #define QCMEASUREMENT_IDENTIFIER_FILENAME       @"qc-identifier.txt"
 #define QCMEASUREMENT_ADIDPREF_FILENAME         @"ad-id-pref.txt"
+#define QCMEASUREMENT_SESSIONID_FILENAME        @"session-id.txt"
 
 #define QCMEASUREMENT_OPTOUT_PASTEBOARD         @"com.quantcast.measurement.optout"
 #define QCMEASUREMENT_OPTOUT_STRING             @"QC-OPT-OUT"
@@ -130,4 +134,10 @@
 #define QCMEASUREMENT_DEFAULT_UPLOAD_EVENT_COUNT 100
 #endif
 
+#ifndef QCMEASUREMENT_DEFAULT_BACKGROUND_UPLOAD_EVENT_COUNT
+#define QCMEASUREMENT_DEFAULT_BACKGROUND_UPLOAD_EVENT_COUNT 4
+#endif
 
+#ifndef QCMEASUREMENT_ENABLE_GEOMEASUREMENT
+#define QCMEASUREMENT_ENABLE_GEOMEASUREMENT 0
+#endif

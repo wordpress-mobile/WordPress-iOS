@@ -56,6 +56,7 @@
 #pragma mark - Event Factory
 
 +(QuantcastEvent*)eventWithSessionID:(NSString*)inSessionID
+                applicationInstallID:(NSString*)inAppInstallID
                      enforcingPolicy:(QuantcastPolicy*)inPolicy;
 
 
@@ -71,14 +72,17 @@
                                              carrier:(CTCarrier*)carrier;
 
 +(QuantcastEvent*)closeSessionEventWithSessionID:(NSString*)inSessionID 
+                            applicationInstallID:(NSString*)inAppInstallID
                                  enforcingPolicy:(QuantcastPolicy*)inPolicy
                                      eventLabels:(id<NSObject>)inEventLabelsOrNil;
 
 +(QuantcastEvent*)pauseSessionEventWithSessionID:(NSString*)inSessionID 
+                            applicationInstallID:(NSString*)inAppInstallID
                                  enforcingPolicy:(QuantcastPolicy*)inPolicy
                                      eventLabels:(id<NSObject>)inEventLabelsOrNil;
 
 +(QuantcastEvent*)resumeSessionEventWithSessionID:(NSString*)inSessionID 
+                             applicationInstallID:(NSString*)inAppInstallID
                                   enforcingPolicy:(QuantcastPolicy*)inPolicy
                                       eventLabels:(id<NSObject>)inEventLabelsOrNil;
 
@@ -86,29 +90,34 @@
 +(QuantcastEvent*)logEventEventWithEventName:(NSString*)inEventName
                                  eventLabels:(id<NSObject>)inEventLabelsOrNil   
                                    sessionID:(NSString*)inSessionID 
+                        applicationInstallID:(NSString*)inAppInstallID
                              enforcingPolicy:(QuantcastPolicy*)inPolicy;
 
 +(QuantcastEvent*)logUploadLatency:(NSUInteger)inLatencyMilliseconds
                        forUploadId:(NSString*)inUploadID
                      withSessionID:(NSString*)inSessionID 
+              applicationInstallID:(NSString*)inAppInstallID
                    enforcingPolicy:(QuantcastPolicy*)inPolicy;
 
 +(QuantcastEvent*)geolocationEventWithCountry:(NSString*)inCountry
-                                     province:(NSString*)inLocality
+                                     province:(NSString*)inProvince
                                          city:(NSString*)inCity
-                                withSessionID:(NSString*)inSessionID 
+                               eventTimestamp:(NSDate*)inTimestamp
+                            appIsInBackground:(BOOL)inIsAppInBackground
+                                withSessionID:(NSString*)inSessionID
+                         applicationInstallID:(NSString*)inAppInstallID
                               enforcingPolicy:(QuantcastPolicy*)inPolicy;
-
-
 
 +(QuantcastEvent*)networkReachabilityEventWithNetworkStatus:(QuantcastNetworkStatus)inNetworkStatus
                                               withSessionID:(NSString*)inSessionID
+                                       applicationInstallID:(NSString*)inAppInstallID
                                             enforcingPolicy:(QuantcastPolicy*)inPolicy;
 
 +(QuantcastEvent*)logSDKError:(NSString*)inSDKErrorType
               withErrorObject:(NSError*)inErrorDescOrNil
                errorParameter:(NSString*)inErrorParametOrNil
                 withSessionID:(NSString*)inSessionID
+         applicationInstallID:(NSString*)inAppInstallID
               enforcingPolicy:(QuantcastPolicy*)inPolicy;
 
 

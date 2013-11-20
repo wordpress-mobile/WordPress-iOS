@@ -27,6 +27,12 @@
     return self;
 }
 
+- (NSString *)noResultsText
+{
+    return NSLocalizedString(@"No pages yet", @"Displayed when the user pulls up the pages view and they have no pages");
+}
+
+
 - (void)syncItemsWithUserInteraction:(BOOL)userInteraction success:(void (^)())success failure:(void (^)(NSError *))failure {
     [self.blog syncPagesWithSuccess:success failure:failure loadMore: NO];
 }
@@ -46,12 +52,12 @@
 
     @try {
         page = [self.resultsController objectAtIndexPath:indexPath];
-        WPLog(@"Selected page at indexPath: (%i,%i)", indexPath.section, indexPath.row);
+        DDLogInfo(@"Selected page at indexPath: (%i,%i)", indexPath.section, indexPath.row);
     }
     @catch (NSException *e) {
-        NSLog(@"Can't select page at indexPath (%i,%i)", indexPath.section, indexPath.row);
-        NSLog(@"sections: %@", self.resultsController.sections);
-        NSLog(@"results: %@", self.resultsController.fetchedObjects);
+        DDLogError(@"Can't select page at indexPath (%i,%i)", indexPath.section, indexPath.row);
+        DDLogError(@"sections: %@", self.resultsController.sections);
+        DDLogError(@"results: %@", self.resultsController.fetchedObjects);
         page = nil;
     }
     
@@ -100,7 +106,7 @@
 - (BOOL)refreshRequired {
 	NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
 	if ([defaults boolForKey:@"refreshPagesRequired"]) { 
-		[defaults setBool:false forKey:@"refreshPagesRequired"];
+		[defaults setBool:NO forKey:@"refreshPagesRequired"];
 		return YES;
 	}
 	

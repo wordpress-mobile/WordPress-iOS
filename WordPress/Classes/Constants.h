@@ -6,6 +6,8 @@
 //
 
 // Blog archive file name
+#import "DDLog.h"
+
 #define BLOG_ARCHIVE_NAME       WordPress_Blogs
 
 // control dimensions
@@ -77,11 +79,7 @@
 
 //R: 35, G: 112, B: 216 | #2370D8 | ΔX: 1378, ΔY: 29 | img
 
-#ifdef DEBUG
-#define WPLog(...) NSLog(__VA_ARGS__)
-#else
 #define WPLog(__unused ...) //NSLog
-#endif
 #define CGRectToString(rect) [NSString stringWithFormat:@"%f,%f:%fx%f", rect.origin.x, rect.origin.y, rect.size.width, rect.size.height]
 #define CGPointToString(point) [NSString stringWithFormat:@"%f,%f", point.x, point.y]
 
@@ -186,3 +184,6 @@ typedef NS_ENUM(NSUInteger, EditPageMode) {
 #define image_medium_size_h 360
 #define image_large_size_w 640
 #define image_large_size_h 480
+
+// User Defaults Keys
+#define kWPUserDefaultsFeedbackEnabled @"wp_feedback_enabled"

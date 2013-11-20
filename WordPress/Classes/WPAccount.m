@@ -11,8 +11,7 @@
 #import "NSString+XMLExtensions.h"
 #import "WordPressAppDelegate.h"
 #import "WordPressComApi.h"
-
-#import <SFHFKeychainUtils/SFHFKeychainUtils.h>
+#import "SFHFKeychainUtils.h"
 
 static NSString * const DefaultDotcomAccountDefaultsKey = @"AccountDefaultDotcom";
 static NSString * const DotcomXmlrpcKey = @"https://wordpress.com/xmlrpc.php";
@@ -79,6 +78,7 @@ NSString * const WPAccountDefaultWordPressComAccountChangedNotification = @"WPAc
 + (void)removeDefaultWordPressComAccount {
     WPAccount *defaultAccount = __defaultDotcomAccount;
     [defaultAccount.managedObjectContext deleteObject:defaultAccount];
+    __defaultDotcomAccount = nil;
 }
 
 - (void)prepareForDeletion {
@@ -122,22 +122,31 @@ NSString * const WPAccountDefaultWordPressComAccountChangedNotification = @"WPAc
 
 #pragma mark - Blog creation
 
-- (Blog *)findOrCreateBlogFromDictionary:(NSDictionary *)blogInfo {
+- (Blog *)findOrCreateBlogFromDictionary:(NSDictionary *)blogInfo withContext:(NSManagedObjectContext*)context {
+    NSError *error;
+    WPAccount *contextAccount = (WPAccount *)[context existingObjectWithID:self.objectID error:&error];
+    if (error) {
+        DDLogError(@"Unable to get WPAccount for context %@: %@", context, error);
+        
+        // If we continue, then on a context save the app will crash: the account relationship cannot be nil
+        #if DEBUG
+        abort();
+        #endif
+    }
+    
     NSString *blogUrl = [[blogInfo objectForKey:@"url"] stringByReplacingOccurrencesOfString:@"http://" withString:@""];
 	if([blogUrl hasSuffix:@"/"])
 		blogUrl = [blogUrl substringToIndex:blogUrl.length-1];
-	blogUrl= [blogUrl stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceCharacterSet]];
+    
+	blogUrl = [blogUrl stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceCharacterSet]];
 
-    NSSet *foundBlogs = [self.blogs filteredSetUsingPredicate:[NSPredicate predicateWithFormat:@"url like %@", blogUrl]];
+    NSSet *foundBlogs = [contextAccount.blogs filteredSetUsingPredicate:[NSPredicate predicateWithFormat:@"url like %@", blogUrl]];
     if ([foundBlogs count]) {
         return [foundBlogs anyObject];
     }
 
-    Blog *blog = [[Blog alloc] initWithEntity:[NSEntityDescription entityForName:@"Blog"
-                                                          inManagedObjectContext:self.managedObjectContext]
-               insertIntoManagedObjectContext:self.managedObjectContext];
-    blog.account = self;
-
+    Blog *blog = [NSEntityDescription insertNewObjectForEntityForName:NSStringFromClass([Blog class]) inManagedObjectContext:context];
+    blog.account = contextAccount;
     blog.url = blogUrl;
     blog.blogID = [NSNumber numberWithInt:[[blogInfo objectForKey:@"blogid"] intValue]];
     blog.blogName = [[blogInfo objectForKey:@"blogName"] stringByDecodingXMLCharacters];

@@ -39,7 +39,7 @@
 }
 
 - (UIView *)attributedTextContentView:(DTAttributedTextContentView *)attributedTextContentView viewForAttributedString:(NSAttributedString *)string frame:(CGRect)frame {
-	NSDictionary *attributes = [string attributesAtIndex:0 effectiveRange:NULL];
+	NSDictionary *attributes = [string attributesAtIndex:0 effectiveRange:nil];
 
 	DTLinkButton *button = [[DTLinkButton alloc] initWithFrame:frame];
 	button.URL = [attributes objectForKey:DTLinkAttribute];

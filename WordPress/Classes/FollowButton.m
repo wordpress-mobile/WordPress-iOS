@@ -21,7 +21,7 @@
 }
 
 + (FollowButton *)buttonFromAction:(NSDictionary *)action withApi:(WordPressComApi *)user {
-    NSLog(@"Follow button for action: %@", action);
+    DDLogVerbose(@"Follow button for action: %@", action);
     NSString *label = [action valueForKeyPath:@"params.blog_title"];
     NSNumber *siteId = [action valueForKeyPath:@"params.blog_id"];
     FollowButtonState state = [[action valueForKeyPath:@"params.is_following"] intValue];
@@ -146,7 +146,7 @@
     frame.size.height = 30.f;
     frame.size.width = buttonWidth;
     self.button.frame = frame;
-    NSLog(@"Resized the button: %@", self.button);
+    DDLogVerbose(@"Resized the button: %@", self.button);
     CGRect viewFrame = self.frame;
     viewFrame.size = frame.size;
     self.frame = viewFrame;

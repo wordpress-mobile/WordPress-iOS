@@ -40,7 +40,7 @@
 
 
 - (void)viewDidLoad {
-	[FileLogger log:@"%@ %@", self, NSStringFromSelector(_cmd)];
+	DDLogInfo(@"%@ %@", self, NSStringFromSelector(_cmd));
 	[super viewDidLoad];
     [self refreshUI];
     
@@ -239,7 +239,7 @@
 }
 
 - (NSString *)formatString:(NSString *)str {
-    NSError *error = NULL;
+    NSError *error = nil;
     NSRegularExpression *linesBetweenTags = [NSRegularExpression regularExpressionWithPattern:@">\\n+<" options:NSRegularExpressionCaseInsensitive error:&error];
     NSRegularExpression *extraLines = [NSRegularExpression regularExpressionWithPattern:@"\\n{3,}" options:NSRegularExpressionCaseInsensitive error:&error];
     
@@ -262,7 +262,7 @@
 
 - (void)showModalEditor {
     if (self.presentedViewController) {
-        NSLog(@"Trying to show modal a second time: bad");
+        DDLogWarn(@"Trying to show modal a second time: bad");
         return;
     }
 	if (self.apost.remoteStatus == AbstractPostRemoteStatusPushing) {
@@ -289,7 +289,7 @@
 
 - (void)showModalPreview {
     if (self.presentedViewController) {
-        NSLog(@"Trying to show modal a second time: bad");
+        DDLogWarn(@"Trying to show modal a second time: bad");
         return;
     }
 

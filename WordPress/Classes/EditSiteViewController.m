@@ -10,7 +10,7 @@
 #import "WordPressComApi.h"
 #import "UIBarButtonItem+Styled.h"
 #import "AFHTTPClient.h"
-#import "HelpViewController.h"
+#import "SupportViewController.h"
 #import "WPWebViewController.h"
 #import "JetpackSettingsViewController.h"
 #import "ReachabilityUtils.h"
@@ -18,6 +18,7 @@
 #import "WPTableViewSectionHeaderView.h"
 #import <WPXMLRPC/WPXMLRPC.h>
 #import <SVProgressHUD/SVProgressHUD.h>
+#import <NSDictionary+SafeExpectations.h>
 
 @interface EditSiteViewController (PrivateMethods)
 
@@ -55,7 +56,7 @@
 
 
 - (void)viewDidLoad {
-    [FileLogger log:@"%@ %@", self, NSStringFromSelector(_cmd)];
+    DDLogInfo(@"%@ %@", self, NSStringFromSelector(_cmd));
     [super viewDidLoad];
     
     if (blog) {
@@ -401,16 +402,15 @@
                 //Domain Error or malformed response
                 [[UIApplication sharedApplication] openURL:[NSURL URLWithString: @"http://ios.wordpress.org/faq/#faq_3"]];
             } else {
-                HelpViewController *helpViewController = [[HelpViewController alloc] init];
-                helpViewController.isBlogSetup = YES;
-                [self.navigationController pushViewController:helpViewController animated:YES];
+                SupportViewController *supportViewController = [[SupportViewController alloc] init];
+                [self.navigationController pushViewController:supportViewController animated:YES];
             }
 			break;
 		}
 		case 1:
             if (alertView.tag == 30){
                 NSString *path = nil;
-                NSError *error = NULL;
+                NSError *error = nil;
                 NSRegularExpression *regex = [NSRegularExpression regularExpressionWithPattern:@"http\\S+writing.php" options:NSRegularExpressionCaseInsensitive error:&error];
                 NSString *msg = [alertView message];
                 NSRange rng = [regex rangeOfFirstMatchInString:msg options:0 range:NSMakeRange(0, [msg length])];
@@ -476,7 +476,7 @@
     if(![urlToValidate hasPrefix:@"http"])
         urlToValidate = [NSString stringWithFormat:@"http://%@", url];
 	
-    NSError *error = NULL;
+    NSError *error = nil;
     
     NSRegularExpression *wplogin = [NSRegularExpression regularExpressionWithPattern:@"/wp-login.php$" options:NSRegularExpressionCaseInsensitive error:&error];
     NSRegularExpression *wpadmin = [NSRegularExpression regularExpressionWithPattern:@"/wp-admin/?$" options:NSRegularExpressionCaseInsensitive error:&error];
@@ -495,11 +495,11 @@
 
     [api getBlogOptionsWithSuccess:^(id options){
         if ([options objectForKey:@"wordpress.com"] != nil) {
-            _isSiteDotCom = true;
+            _isSiteDotCom = YES;
             _blogId = [options stringForKeyPath:@"blog_id.value"];
             [self loginForSiteWithXmlRpcUrl:[NSURL URLWithString:@"https://wordpress.com/xmlrpc.php"]];
         } else {
-            _isSiteDotCom = false;
+            _isSiteDotCom = NO;
             [self loginForSiteWithXmlRpcUrl:xmlRpcURL];
         }
     } failure:^(NSError *failure){
@@ -524,7 +524,7 @@
 - (void)checkURL {
 	NSString *urlToValidate = [self getURLToValidate];
 	
-    [FileLogger log:@"%@ %@ %@", self, NSStringFromSelector(_cmd), urlToValidate];
+    DDLogInfo(@"%@ %@ %@", self, NSStringFromSelector(_cmd), urlToValidate);
     
     [SVProgressHUD showWithStatus:NSLocalizedString(@"Authenticating", @"") maskType:SVProgressHUDMaskTypeBlack];
     [WordPressXMLRPCApi guessXMLRPCURLForSite:urlToValidate success:^(NSURL *xmlrpcURL) {
@@ -535,6 +535,8 @@
             [self validationDidFail:nil];
 		} else if ([error.domain isEqual:WPXMLRPCErrorDomain] && error.code == WPXMLRPCInvalidInputError) {
 			[self validationDidFail:error];
+        } else if ([error.domain isEqual:WordPressXMLRPCApiErrorDomain]) {
+            [self validationDidFail:error];
 		} else if([error.domain isEqual:AFNetworkingErrorDomain]) {
 			NSString *str = [NSString stringWithFormat:NSLocalizedString(@"There was a server error communicating with your site:\n%@\nTap 'Need Help?' to view the FAQ.", @""), [error localizedDescription]];
 			NSDictionary *userInfo = [NSDictionary dictionaryWithObjectsAndKeys:
@@ -578,7 +580,7 @@
             NSError *error = (NSError *)wrong;
 			NSString *message;
 			if ([error code] == 403) {
-				message = NSLocalizedString(@"Please update your credentials and try again.", @"");
+				message = NSLocalizedString(@"Please try entering your login details again.", @"");
 			} else {
 				message = [error localizedDescription];
 			}
@@ -618,7 +620,7 @@
 
 - (void)validateFields {
     self.url = [NSURL IDNEncodedURL:urlTextField.text];
-    NSLog(@"blog url: %@", self.url);
+    DDLogInfo(@"blog url: %@", self.url);
     self.username = usernameTextField.text;
     self.password = passwordTextField.text;
     
@@ -741,9 +743,9 @@
          [usernameTextField.text isEqualToString:@""] ||
          [passwordTextField.text isEqualToString:@""] )
     {
-        hasContent = FALSE;
+        hasContent = NO;
     } else {
-        hasContent = TRUE;
+        hasContent = YES;
     }
     
     self.navigationItem.rightBarButtonItem.enabled = hasContent;

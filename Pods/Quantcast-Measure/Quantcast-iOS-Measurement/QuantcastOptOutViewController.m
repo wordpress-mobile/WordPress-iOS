@@ -32,27 +32,26 @@
 
 @end
 
-@interface QuantcastOptOutViewController ()
-@property (retain,nonatomic) IBOutlet UISwitch* enableMeasurementSwitch;
-@property (retain,nonatomic) IBOutlet UITextView* privacyTextView;
+@interface QuantcastOptOutViewController (){
+    BOOL _originalOptOutStatus;
+    UISwitch* _onOffSwitch;
+}
 @property (retain,nonatomic) QuantcastMeasurement* measurement;
-@property (retain,nonatomic) id<QuantcastOptOutDelegate> delegate;
-
 @end
 
 @implementation QuantcastOptOutViewController
-@synthesize enableMeasurementSwitch;
 @synthesize measurement;
 @synthesize delegate;
 
 -(id)initWithMeasurement:(QuantcastMeasurement*)inMeasurement delegate:(id<QuantcastOptOutDelegate>)inDelegate {
-    self = [super initWithNibName:@"QuantcastOptOutViewController" bundle:nil];
-    
+    self = [super init];
     if ( self ) {
+        self.title = @"About Quantcast";
         self.measurement = inMeasurement;
         self.delegate = inDelegate;
         
         _originalOptOutStatus = self.measurement.isOptedOut;
+        
     }
     
 return self;
@@ -60,28 +59,69 @@ return self;
 
 -(void)dealloc {
     [measurement release];
-    [delegate release];
+    delegate = nil;
     
     [super dealloc];
 }
 
-- (void)viewDidLoad
-{
-    [super viewDidLoad];
-    // Do any additional setup after loading the view from its nib.
+-(void)loadView{
+    self.navigationItem.rightBarButtonItem = [[[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemDone target:self action:@selector(done:)] autorelease];
     
-    self.enableMeasurementSwitch.on = !self.measurement.isOptedOut;
+    UIView* mainView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, 320, 460)];
+    mainView.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
+    mainView.backgroundColor = [UIColor lightGrayColor];
     
-    NSString* textFormat = self.privacyTextView.text;
+    UITextView* aboutText = [[UITextView alloc] initWithFrame:CGRectMake(20, 15, mainView.frame.size.width-40, 300)];
+    aboutText.autoresizingMask =  UIViewAutoresizingFlexibleHeight | UIViewAutoresizingFlexibleWidth;
+    aboutText.backgroundColor = [UIColor clearColor];
+    aboutText.userInteractionEnabled = NO;
     NSString* appName = [[NSBundle mainBundle] objectForInfoDictionaryKey:(NSString *)kCFBundleNameKey];
-
     if ( nil == appName ) {
         appName = @"app's";
     }
+    aboutText.text = [NSString stringWithFormat:@"Quantcast helps us measure the usage of our app so we can better understand our audience.  Quantcast collects anonymous (non-personally identifiable) data from users across apps, such as details of app usage, the number of visits and duration, their device information, city, and settings, to provide this measurement and behavioral advertising.  A full description of Quantcast’s data collection and use practices can be found in its Privacy Policy, and you can opt out below.  Please also review our %@ privacy policy.", appName];
+    aboutText.font = [UIFont systemFontOfSize:14];
+    aboutText.dataDetectorTypes = UIDataDetectorTypeLink;
+    [mainView addSubview:aboutText];
+    [aboutText release];
     
-    self.privacyTextView.text = [NSString stringWithFormat:textFormat,appName];
+    UIView* switchContainer = [[UIView alloc]initWithFrame:CGRectMake(10, 347, mainView.frame.size.width-20, 48)];
+    switchContainer.autoresizingMask = UIViewAutoresizingFlexibleLeftMargin | UIViewAutoresizingFlexibleTopMargin | UIViewAutoresizingFlexibleRightMargin;
+    switchContainer.backgroundColor = [UIColor whiteColor];
+    [switchContainer layer].cornerRadius  = 10.0f;
+    [switchContainer layer].masksToBounds = YES;
+    [switchContainer layer].borderColor = [UIColor grayColor].CGColor;
+    [switchContainer layer].borderWidth = 1;
+    
+    UILabel* allowText = [[UILabel alloc] initWithFrame:CGRectMake(15, 13, 193, 21)];
+    allowText.backgroundColor = [UIColor clearColor];
+    allowText.font = [UIFont boldSystemFontOfSize:18];
+    allowText.text = @"Allow Data Collection";
+    [switchContainer addSubview:allowText];
+    [allowText release];
+    
+    _onOffSwitch = [[UISwitch alloc] initWithFrame:CGRectMake(211, 10, 79, 27)];
+    _onOffSwitch.on = !self.measurement.isOptedOut;
+    [_onOffSwitch addTarget:self action:@selector(optOutStatusChanged:) forControlEvents:UIControlEventValueChanged];
+    [switchContainer addSubview:_onOffSwitch];
+    [_onOffSwitch release];
+    
+    [mainView addSubview:switchContainer];
+    [switchContainer release];
+    
+    UIButton* review = [UIButton buttonWithType:UIButtonTypeRoundedRect];
+    review.frame = CGRectMake(10, 403, mainView.frame.size.width-20, 37);
+    review.autoresizingMask = UIViewAutoresizingFlexibleLeftMargin | UIViewAutoresizingFlexibleTopMargin | UIViewAutoresizingFlexibleRightMargin;
+    [review setTitle:@"Review Quantcast Privacy Policy" forState:UIControlStateNormal];
+    review.titleLabel.font = [UIFont boldSystemFontOfSize:15];
+    [review addTarget:self action:@selector(reviewPrivacyPolicy:) forControlEvents:UIControlEventTouchUpInside];
+    [mainView addSubview:review];
+    
+    
+    self.view = mainView;
+    [mainView release];
+    
 }
-
 
 #pragma clang diagnostic push
 #pragma clang diagnostic ignored "-Wdeprecated-implementations"
@@ -132,9 +172,9 @@ return self;
         [self.delegate quantcastOptOutDialogDidDisappear];
     }
     
-    if ( _originalOptOutStatus != !self.enableMeasurementSwitch.on ) {
+    if ( _originalOptOutStatus != !_onOffSwitch.on ) {
         
-        [self.measurement setOptOutStatus:!self.enableMeasurementSwitch.on];
+        [self.measurement setOptOutStatus:!_onOffSwitch.on];
 
         if ( nil != self.delegate && [self.delegate respondsToSelector:@selector(quantcastOptOutStatusDidChange:)] ) {
             [self.delegate quantcastOptOutStatusDidChange:self.measurement.isOptedOut];
@@ -145,20 +185,29 @@ return self;
 
 #pragma mark - UI Interaction
 
--(IBAction)optOutStatusChanged:(id)inSender {
-    // nothing to do here. actual state change occures are dismissal.
+-(void)optOutStatusChanged:(id)inSender {
+    // nothing to do here. actual state change occures are on dismissal.
     
     
 }
 
--(IBAction)reviewPrivacyPolicy:(id)inSender {
+-(void)reviewPrivacyPolicy:(id)inSender {
     NSURL* qcPrivacyURL = [NSURL URLWithString:@"http://www.quantcast.com/privacy/"];
     
-    [[UIApplication sharedApplication] openURL:qcPrivacyURL];
+    //keep them in app
+    UIViewController* webController = [[[UIViewController alloc] init] autorelease];
+    webController.title = @"Privacy Policy";
+    UIWebView* web = [[UIWebView alloc] initWithFrame:[UIScreen mainScreen].bounds];
+    web.scalesPageToFit = YES;
+    [web loadRequest:[NSURLRequest requestWithURL:qcPrivacyURL]];
+    webController.view = web;
+    [web release];
+    
+    [self.navigationController pushViewController:webController animated:YES];
     
 }
 
--(IBAction)done:(id)inSender {
+-(void)done:(id)inSender {
     
     if ([self respondsToSelector:@selector(dismissViewControllerAnimated:completion:)]) {
         [self dismissViewControllerAnimated:YES completion:NULL];
@@ -168,39 +217,6 @@ return self;
         [self dismissModalViewControllerAnimated:YES];
 #pragma GCC diagnostic warning "-Wdeprecated-declarations"
     }
-}
-
-
-@end
-
-
-@implementation QuantcastRoundedRectView
-
-- (id)initWithFrame:(CGRect)frame;
-{
-    self = [super initWithFrame:frame];
-    if (self) {
-        [self commonInit];
-    }
-    return self;
-}
-
-- (id)initWithCoder:(NSCoder *)aDecoder;
-{
-    self = [super initWithCoder:aDecoder];
-    if (self) {
-        [self commonInit];
-    }
-    return self;
-}
-
-- (void)commonInit;
-{
-    CALayer *layer = self.layer;
-    layer.cornerRadius  = 10.0f;
-    layer.masksToBounds = YES;
-    layer.borderColor = [UIColor grayColor].CGColor;
-    layer.borderWidth = 1;
 }
 
 @end

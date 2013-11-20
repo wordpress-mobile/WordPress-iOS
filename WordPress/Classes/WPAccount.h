@@ -103,7 +103,7 @@ extern NSString * const WPAccountDefaultWordPressComAccountChangedNotification;
  @param blogInfo a dictionary containing `url`, `blogName`, `xmlrpc`, `blogid`, and `isAdmin`; as returned by `wp.getUsersBlogs`
  @return the newly created blog
  */
-- (Blog *)findOrCreateBlogFromDictionary:(NSDictionary *)blogInfo;
+- (Blog *)findOrCreateBlogFromDictionary:(NSDictionary *)blogInfo withContext:(NSManagedObjectContext*)context;
 
 @end
 

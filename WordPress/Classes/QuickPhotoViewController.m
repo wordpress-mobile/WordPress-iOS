@@ -14,7 +14,7 @@
 #import "CameraPlusPickerManager.h"
 #import "WPPopoverBackgroundView.h"
 #import "MP6SidebarViewController.h"
-#import "iOS7CorrectedTextView.h"
+#import "IOS7CorrectedTextView.h"
 
 @interface QuickPhotoViewController () {
     UIPopoverController *popController;
@@ -22,6 +22,7 @@
 }
 
 @property (nonatomic, strong) UIPopoverController *popController;
+@property (nonatomic, weak) IBOutlet UILabel *tapToBeginWritingLabel;
 
 - (void)showPicker;
 - (void)handleKeyboardWillShow:(NSNotification *)notification;
@@ -45,25 +46,28 @@
 
 
 - (void)dealloc {
-    [FileLogger log:@"%@ %@", self, NSStringFromSelector(_cmd)];
+    DDLogInfo(@"%@ %@", self, NSStringFromSelector(_cmd));
     self.photoImageView.delegate = nil;
     self.popController.delegate = nil;
 }
 
 - (void)didReceiveMemoryWarning {
-    [FileLogger log:@"%@ %@", self, NSStringFromSelector(_cmd)];
+    DDLogInfo(@"%@ %@", self, NSStringFromSelector(_cmd));
     [super didReceiveMemoryWarning];
 }
 
 #pragma mark - View lifecycle
 
 - (void)viewDidLoad {
-    [FileLogger log:@"%@ %@", self, NSStringFromSelector(_cmd)];
+    DDLogInfo(@"%@ %@", self, NSStringFromSelector(_cmd));
     [super viewDidLoad];
         
     appDelegate = (WordPressAppDelegate *)[[UIApplication sharedApplication] delegate];
     
     self.titleTextField.placeholder = NSLocalizedString(@"Title (optional)", @"Quick Photo title");
+    self.tapToBeginWritingLabel.text = NSLocalizedString(@"Tap here to begin writing", @"");
+    self.contentTextView.delegate = self;
+    
     [self.blogSelector loadBlogsForType:BlogSelectorButtonTypeQuickPhoto];
     self.blogSelector.delegate = self;
     if (self.startingBlog != nil) {
@@ -104,7 +108,7 @@
 }
 
 - (void)viewDidUnload {
-    [FileLogger log:@"%@ %@", self, NSStringFromSelector(_cmd)];
+    DDLogInfo(@"%@ %@", self, NSStringFromSelector(_cmd));
     [super viewDidUnload];
     [[NSNotificationCenter defaultCenter] removeObserver:self];
     // Release any retained subviews of the main view.
@@ -135,25 +139,12 @@
         return NO;
 }
 
-- (void)willRotateToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation duration:(NSTimeInterval)duration {
-    [super willRotateToInterfaceOrientation:toInterfaceOrientation duration:duration];
-    
-    if (self.popController) {
-        showPickerAfterRotation = YES;
-        [popController dismissPopoverAnimated:NO];
-        self.popController = nil;
-    }
-}
-
 - (void)didRotateFromInterfaceOrientation:(UIInterfaceOrientation)fromInterfaceOrientation {
-    [super didRotateFromInterfaceOrientation:fromInterfaceOrientation];
-    
-    if (showPickerAfterRotation) {
-        showPickerAfterRotation = NO;
-        [self showPicker];
+    if (IS_IPAD && self.popController.isPopoverVisible) {
+        CGRect rect = CGRectMake((self.view.bounds.size.width/2), 1.0f, 1.0f, 1.0f);
+        [self.popController presentPopoverFromRect:rect inView:self.view permittedArrowDirections:UIPopoverArrowDirectionAny animated:YES];
     }
 }
-
 
 #pragma mark -
 #pragma mark Custom methods
@@ -387,6 +378,16 @@
     // On iOS7 Beta 6 the image picker seems to override our preferred setting so we force the status bar color back.
     [[UIApplication sharedApplication] setStatusBarStyle:UIStatusBarStyleLightContent];
     [self dismiss];
+}
+
+#pragma mark - UITextViewDelegate Methods
+
+-(void)textViewDidBeginEditing:(UITextView *)textView {
+    self.tapToBeginWritingLabel.hidden = YES;
+}
+
+-(void)textViewDidEndEditing:(UITextView *)textView {
+    self.tapToBeginWritingLabel.hidden = (textView.text.length > 0);
 }
 
 @end

@@ -163,7 +163,6 @@
 
 
 - (void)handleFriendFinderButtonTapped:(id)sender {
-	NSLog(@"Tapped");
     WPFriendFinderViewController *controller = [[WPFriendFinderViewController alloc] init];
 	[self.navigationController pushViewController:controller animated:YES];
     [controller loadURL:kMobileReaderFFURL];
@@ -229,7 +228,7 @@
 	}
     
 	NSDictionary *dict = [arr objectAtIndex:indexPath.row];
-	cell.textLabel.text = [[dict objectForKey:@"title"] capitalizedString];
+	cell.textLabel.text = [dict objectForKey:@"title"];
 	cell.accessoryType = UITableViewCellAccessoryNone;
 	if([[_currentTopic objectForKey:@"endpoint"] isEqualToString:[dict objectForKey:@"endpoint"]]) {
 		cell.accessoryType = UITableViewCellAccessoryCheckmark;

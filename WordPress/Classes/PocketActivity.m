@@ -57,7 +57,7 @@
         if (completed) {
             [SVProgressHUD showSuccessWithStatus:[NSString stringWithFormat:NSLocalizedString(@"Saved to %@", @""), [self activityTitle]]];
         } else {
-            WPFLog(@"Failed saving to Pocket: %@ err: %@", url, error);
+            DDLogError(@"Failed saving to Pocket: %@ err: %@", url, error);
             [SVProgressHUD showErrorWithStatus:NSLocalizedString(@"Failed", @"")];
         }
 

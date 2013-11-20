@@ -153,7 +153,7 @@ CGFloat const LoginCompeltedWalkthroughSwipeToContinueTopOffset = 14.0;
 - (void)savePositionsOfStickyControls
 {
     if (!_savedOriginalPositionsOfStickyControls) {
-        _savedOriginalPositionsOfStickyControls = true;
+        _savedOriginalPositionsOfStickyControls = YES;
         _skipToAppOriginalX = CGRectGetMinX(_skipToApp.frame);
         _bottomPanelOriginalX = CGRectGetMinX(_bottomPanel.frame);
         _bottomPanelTextureOriginalX = CGRectGetMinX(_bottomPanelTextureView.frame);
@@ -195,7 +195,7 @@ CGFloat const LoginCompeltedWalkthroughSwipeToContinueTopOffset = 14.0;
     scrollViewSize.width = _viewWidth * 4;
     _scrollView.frame = self.view.bounds;
     _scrollView.contentSize = scrollViewSize;
-    _scrollView.pagingEnabled = true;
+    _scrollView.pagingEnabled = YES;
     _scrollView.showsHorizontalScrollIndicator = NO;
     _scrollView.pagingEnabled = YES;
     [self.view addSubview:_scrollView];
@@ -700,13 +700,13 @@ CGFloat const LoginCompeltedWalkthroughSwipeToContinueTopOffset = 14.0;
     
     // We do this so we don't keep flagging events if the user goes back and forth on pages
     if (pageViewed == 2 && !_viewedPage2) {
-        _viewedPage2 = true;
+        _viewedPage2 = YES;
         [WPMobileStats trackEventForSelfHostedAndWPCom:StatsEventNUXSecondWalkthroughViewedPage2];
     } else if (pageViewed == 3 && !_viewedPage3) {
-        _viewedPage3 = true;
+        _viewedPage3 = YES;
         [WPMobileStats trackEventForSelfHostedAndWPCom:StatsEventNUXSecondWalkthroughViewedPage3];
     } else if (pageViewed == 4 && !_viewedPage4) {
-        _viewedPage4 = true;
+        _viewedPage4 = YES;
         [WPMobileStats trackEventForSelfHostedAndWPCom:StatsEventNUXSecondWalkthroughViewedPage4];
     }
 }
@@ -735,7 +735,7 @@ CGFloat const LoginCompeltedWalkthroughSwipeToContinueTopOffset = 14.0;
 - (void)dismiss
 {
     if (!_isDismissing) {
-        _isDismissing = true;
+        _isDismissing = YES;
         self.parentViewController.modalTransitionStyle = UIModalTransitionStyleCoverVertical;
         [self.parentViewController dismissViewControllerAnimated:YES completion:nil];
         [[WordPressAppDelegate sharedWordPressApplicationDelegate].panelNavigationController teaseSidebar];

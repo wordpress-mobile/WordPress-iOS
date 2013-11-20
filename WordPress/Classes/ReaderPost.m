@@ -121,7 +121,7 @@ NSString *const ReaderExtrasArrayKey = @"ReaderExtrasArrayKey";
 
 
 + (NSArray *)fetchPostsForEndpoint:(NSString *)endpoint withContext:(NSManagedObjectContext *)context {
-
+    WPFLogMethod();
 	NSFetchRequest *request = [[NSFetchRequest alloc] init];
     [request setEntity:[NSEntityDescription entityForName:@"ReaderPost" inManagedObjectContext:context]];
 	
@@ -141,15 +141,23 @@ NSString *const ReaderExtrasArrayKey = @"ReaderExtrasArrayKey";
 
 
 + (void)syncPostsFromEndpoint:(NSString *)endpoint withArray:(NSArray *)arr withContext:(NSManagedObjectContext *)context success:(void (^)())success {
+    WPFLogMethod();
     if (![arr isKindOfClass:[NSArray class]] || [arr count] == 0) {
 		if (success) {
 			dispatch_async(dispatch_get_main_queue(), success);
 		}
         return;
     }
-    NSManagedObjectContext *backgroundMoc = [[NSManagedObjectContext alloc] initWithConcurrencyType:NSPrivateQueueConcurrencyType];
-    [backgroundMoc setParentContext:context];
-	
+    
+    // Reuse the same background context for every call. Update the parent context if necessary
+    static NSManagedObjectContext *backgroundMoc;
+    if (backgroundMoc == nil) {
+		backgroundMoc = [[NSManagedObjectContext alloc] initWithConcurrencyType:NSPrivateQueueConcurrencyType];
+    }
+    if (![backgroundMoc.parentContext isEqual:context]) {
+        [backgroundMoc setParentContext:context];
+    }
+
     [backgroundMoc performBlock:^{
         NSError *error;
         for (NSDictionary *postData in arr) {
@@ -157,16 +165,15 @@ NSString *const ReaderExtrasArrayKey = @"ReaderExtrasArrayKey";
                 continue;
             }
             [self createOrUpdateWithDictionary:postData forEndpoint:endpoint withContext:backgroundMoc];
-			
         }
 		
         if(![backgroundMoc save:&error]){
-            WPFLog(@"Failed to sync ReaderPosts: %@", error);
+            DDLogError(@"Failed to sync ReaderPosts: %@", error);
         }
         [context performBlock:^{
             NSError *error;
             if (![context save:&error]) {
-                WPFLog(@"Failed to sync ReaderPosts: %@", error);
+                DDLogError(@"Failed to sync ReaderPosts: %@", error);
             }
         }];
 		
@@ -178,7 +185,7 @@ NSString *const ReaderExtrasArrayKey = @"ReaderExtrasArrayKey";
 
 
 + (void)deletePostsSyncedEarlierThan:(NSDate *)syncedDate withContext:(NSManagedObjectContext *)context {
-
+    WPFLogMethod();
 	NSFetchRequest *request = [[NSFetchRequest alloc] init];
     [request setEntity:[NSEntityDescription entityForName:@"ReaderPost" inManagedObjectContext:context]];
 	
@@ -189,7 +196,7 @@ NSString *const ReaderExtrasArrayKey = @"ReaderExtrasArrayKey";
     NSArray *array = [context executeFetchRequest:request error:&error];
 
     if ([array count]) {
-		WPFLog(@"Deleting %i ReaderPosts synced earlier than: %@ ", [array count], syncedDate);
+		DDLogInfo(@"Deleting %i ReaderPosts synced earlier than: %@ ", [array count], syncedDate);
         for (ReaderPost *post in array) {
             [context deleteObject:post];
         }
@@ -233,7 +240,7 @@ NSString *const ReaderExtrasArrayKey = @"ReaderExtrasArrayKey";
     NSError *error;
     NSArray *results = [context executeFetchRequest:request error:&error];
     if(error != nil){
-        NSLog(@"Error finding ReaderPost: %@", error);
+        DDLogError(@"Error finding ReaderPost: %@", error);
         return;
     }
 	
@@ -601,12 +608,12 @@ NSString *const ReaderExtrasArrayKey = @"ReaderExtrasArrayKey";
 
 
 - (BOOL)isFreshlyPressed {
-	return ([self.endpoint rangeOfString:@"freshly-pressed"].location != NSNotFound)? true : false;
+	return ([self.endpoint rangeOfString:@"freshly-pressed"].location != NSNotFound)? YES : NO;
 }
 
 
 - (BOOL)isBlogsIFollow {
-	return ([self.endpoint rangeOfString:@"reader/following"].location != NSNotFound)? true : false;
+	return ([self.endpoint rangeOfString:@"reader/following"].location != NSNotFound)? YES : NO;
 }
 
 
@@ -677,8 +684,11 @@ NSString *const ReaderExtrasArrayKey = @"ReaderExtrasArrayKey";
 }
 
 - (NSURL *)featuredImageURL {
-    // FIXME: NSURL fails if the URL contains spaces.
-    return [NSURL URLWithString:self.featuredImage];
+    if (self.featuredImage) {
+        return [NSURL URLWithString:self.featuredImage];
+    }
+
+    return nil;
 }
 
 - (NSString *)featuredImageForWidth:(NSUInteger)width height:(NSUInteger)height {
@@ -756,7 +766,7 @@ NSString *const ReaderExtrasArrayKey = @"ReaderExtrasArrayKey";
 				 loadingMore:(BOOL)loadingMore
 					 success:(WordPressComApiRestSuccessResponseBlock)success
 					 failure:(WordPressComApiRestSuccessFailureBlock)failure {
-	
+	WPFLogMethod();
 	[[WordPressComApi sharedApi] getPath:path
 							  parameters:params
 								 success:^(AFHTTPRequestOperation *operation, id responseObject) {
@@ -806,7 +816,7 @@ NSString *const ReaderExtrasArrayKey = @"ReaderExtrasArrayKey";
 					   success:^(AFHTTPRequestOperation *operation, id responseObject) {
 						   NSArray *postsArr = [responseObject arrayForKey:@"posts"];
 						   if(completionHandler){
-							   completionHandler([postsArr count], NULL);
+							   completionHandler([postsArr count], nil);
 						   }
 					   } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
 						   completionHandler(0, error);

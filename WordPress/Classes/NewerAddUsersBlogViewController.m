@@ -40,7 +40,7 @@
     self = [super initWithCoder:aDecoder];
     if (self) {
         _selectedBlogs = [[NSMutableArray alloc] init];
-        _autoAddSingleBlog = true;
+        _autoAddSingleBlog = YES;
     }
     return self;
 }
@@ -187,7 +187,7 @@
             } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
                 [SVProgressHUD dismiss];
                 [self.tableView reloadData];
-                WPFLog(@"Failed getting user blogs: %@", [error localizedDescription]);
+                DDLogError(@"Failed getting user blogs: %@", [error localizedDescription]);
                 if (self.onErrorLoading) {
                     self.onErrorLoading(self, error);
                 }
@@ -223,7 +223,7 @@
     NSError *error;
     [[WordPressAppDelegate sharedWordPressApplicationDelegate].managedObjectContext save:&error];
     if (error != nil) {
-        NSLog(@"Error adding blogs: %@", [error localizedDescription]);
+        DDLogVerbose(@"Error adding blogs: %@", [error localizedDescription]);
     }
     
     if (self.blogAdditionCompleted) {
@@ -233,9 +233,9 @@
 
 - (void)createBlog:(NSDictionary *)blogInfo withAccount:(WPAccount *)account
 {
-    WPLog(@"creating blog: %@", blogInfo);
-    Blog *blog = [account findOrCreateBlogFromDictionary:blogInfo];
-	blog.geolocationEnabled = true;
+    DDLogInfo(@"creating blog: %@", blogInfo);
+    Blog *blog = [account findOrCreateBlogFromDictionary:blogInfo withContext:account.managedObjectContext];
+	blog.geolocationEnabled = YES;
 	[blog dataSave];
     [blog syncBlogWithSuccess:^{
         if( ! [blog isWPcom] )
@@ -254,15 +254,15 @@
         // This strips out any leading http:// or https:// making for an easier string match.
         NSString *desiredBlogUrl = [[NSURL URLWithString:self.siteUrl] absoluteString];
         
-        __block BOOL blogFound = false;
+        __block BOOL blogFound = NO;
         __block NSUInteger indexOfBlog;
         [_usersBlogs enumerateObjectsUsingBlock:^(id blogInfo, NSUInteger index, BOOL *stop){
             NSString *blogUrl = [blogInfo objectForKey:@"url"];
             if ([blogUrl rangeOfString:desiredBlogUrl options:NSCaseInsensitiveSearch].location != NSNotFound) {
-                blogFound = true;
+                blogFound = YES;
                 [_selectedBlogs addObject:[blogInfo objectForKey:@"blogid"]];
                 indexOfBlog = index;
-                stop = true;
+                *stop = YES;
             }
         }];
         

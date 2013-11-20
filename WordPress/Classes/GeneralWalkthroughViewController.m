@@ -12,9 +12,9 @@
 #import "UIView+FormSheetHelpers.h"
 #import "GeneralWalkthroughViewController.h"
 #import "CreateAccountAndBlogViewController.h"
-#import "AddUsersBlogsViewController.h"
 #import "NewAddUsersBlogViewController.h"
 #import "AboutViewController.h"
+#import "SupportViewController.h"
 #import "WPNUXMainButton.h"
 #import "WPNUXPrimaryButton.h"
 #import "WPNUXSecondaryButton.h"
@@ -157,7 +157,7 @@ CGFloat const GeneralWalkthroughiOS7StatusBarOffset = 10.0;
         [self moveStickyControlsForContentOffset:_scrollView.contentOffset];
     }
     
-    _hasViewAppeared = true;    
+    _hasViewAppeared = YES;
 }
 
 - (NSUInteger)supportedInterfaceOrientations {
@@ -346,13 +346,13 @@ CGFloat const GeneralWalkthroughiOS7StatusBarOffset = 10.0;
 - (void)clickedInfoButton:(id)sender
 {
     [WPMobileStats trackEventForSelfHostedAndWPCom:StatsEventNUXFirstWalkthroughClickedInfo];
-    AboutViewController *aboutViewController = [[AboutViewController alloc] init];
-	aboutViewController.modalTransitionStyle = UIModalTransitionStyleFlipHorizontal;
-    UINavigationController *nc = [[UINavigationController alloc] initWithRootViewController:aboutViewController];
+
+    SupportViewController *supportViewController = [[SupportViewController alloc] init];
+    UINavigationController *nc = [[UINavigationController alloc] initWithRootViewController:supportViewController];
     nc.navigationBar.translucent = NO;
     nc.modalPresentationStyle = UIModalPresentationFormSheet;
+    nc.modalTransitionStyle = UIModalTransitionStyleFlipHorizontal;
     [self.navigationController presentViewController:nc animated:YES completion:nil];
-	[self.navigationController setNavigationBarHidden:YES];
 }
 
 - (void)clickedSkipToCreate:(id)sender
@@ -434,7 +434,7 @@ CGFloat const GeneralWalkthroughiOS7StatusBarOffset = 10.0;
     scrollViewSize.width = _viewWidth * 3;
     _scrollView.frame = self.view.bounds;
     _scrollView.contentSize = scrollViewSize;
-    _scrollView.pagingEnabled = true;
+    _scrollView.pagingEnabled = YES;
     _scrollView.showsHorizontalScrollIndicator = NO;
     _scrollView.pagingEnabled = YES;
     [self.view addSubview:_scrollView];
@@ -813,7 +813,7 @@ CGFloat const GeneralWalkthroughiOS7StatusBarOffset = 10.0;
         _usernameText.backgroundColor = [UIColor whiteColor];
         _usernameText.placeholder = NSLocalizedString(@"Username / Email", @"NUX First Walkthrough Page 3 Username Placeholder");
         _usernameText.font = [WPNUXUtility textFieldFont];
-        _usernameText.adjustsFontSizeToFitWidth = true;
+        _usernameText.adjustsFontSizeToFitWidth = YES;
         _usernameText.delegate = self;
         _usernameText.autocorrectionType = UITextAutocorrectionTypeNo;
         _usernameText.autocapitalizationType = UITextAutocapitalizationTypeNone;
@@ -837,7 +837,7 @@ CGFloat const GeneralWalkthroughiOS7StatusBarOffset = 10.0;
         _siteUrlText.backgroundColor = [UIColor whiteColor];
         _siteUrlText.placeholder = NSLocalizedString(@"Site Address (URL)", @"NUX First Walkthrough Page 3 Site Address Placeholder");
         _siteUrlText.font = [WPNUXUtility textFieldFont];
-        _siteUrlText.adjustsFontSizeToFitWidth = true;
+        _siteUrlText.adjustsFontSizeToFitWidth = YES;
         _siteUrlText.delegate = self;
         _siteUrlText.keyboardType = UIKeyboardTypeURL;
         _siteUrlText.returnKeyType = UIReturnKeyGo;
@@ -923,7 +923,7 @@ CGFloat const GeneralWalkthroughiOS7StatusBarOffset = 10.0;
     // The reason we save these positions is because it allows us to drag certain controls along
     // the scrollview as the user moves along the walkthrough.
     if (!_savedOriginalPositionsOfStickyControls) {
-        _savedOriginalPositionsOfStickyControls = true;
+        _savedOriginalPositionsOfStickyControls = YES;
         _skipToCreateAccountOriginalX = CGRectGetMinX(_skipToCreateAccount.frame);
         _skipToSignInOriginalX = CGRectGetMinX(_skipToSignIn.frame);
         _bottomPanelOriginalX = CGRectGetMinX(_bottomPanel.frame);
@@ -943,10 +943,10 @@ CGFloat const GeneralWalkthroughiOS7StatusBarOffset = 10.0;
     _pageControl.currentPage = pageViewed - 1;
     // We do this so we don't keep flagging events if the user goes back and forth on pages
     if (pageViewed == 2 && !_viewedPage2) {
-        _viewedPage2 = true;
+        _viewedPage2 = YES;
         [WPMobileStats trackEventForSelfHostedAndWPCom:StatsEventNUXFirstWalkthroughViewedPage2];
     } else if (pageViewed == 3 && !_viewedPage3) {
-        _viewedPage3 = true;
+        _viewedPage3 = YES;
         [WPMobileStats trackEventForSelfHostedAndWPCom:StatsEventNUXFirstWalkthroughViewedPage3];
     }
 }
@@ -973,7 +973,7 @@ CGFloat const GeneralWalkthroughiOS7StatusBarOffset = 10.0;
     createAccountViewController.onCreatedUser = ^(NSString *username, NSString *password) {
         _usernameText.text = username;
         _passwordText.text = password;
-        _userIsDotCom = true;
+        _userIsDotCom = YES;
         [self.navigationController popViewControllerAnimated:NO];
         [self showAddUsersBlogsForWPCom];
     };
@@ -1002,10 +1002,9 @@ CGFloat const GeneralWalkthroughiOS7StatusBarOffset = 10.0;
 
 - (void)showHelpViewController:(BOOL)animated
 {
-    HelpViewController *helpViewController = [[HelpViewController alloc] init];
-    helpViewController.isBlogSetup = YES;
+    SupportViewController *supportViewController = [[SupportViewController alloc] init];
     [self.navigationController setNavigationBarHidden:NO animated:NO];
-    [self.navigationController pushViewController:helpViewController animated:animated];
+    [self.navigationController pushViewController:supportViewController animated:animated];
 }
 
 - (BOOL)isUrlWPCom:(NSString *)url
@@ -1153,15 +1152,15 @@ CGFloat const GeneralWalkthroughiOS7StatusBarOffset = 10.0;
     
     void (^loginSuccessBlock)(void) = ^{
         [SVProgressHUD dismiss];
-        _userIsDotCom = true;
+        _userIsDotCom = YES;
         [self showAddUsersBlogsForWPCom];
     };
     
     void (^loginFailBlock)(NSError *) = ^(NSError *error){
         // User shouldn't get here because the getOptions call should fail, but in the unlikely case they do throw up an error message.
         [SVProgressHUD dismiss];
-        WPFLog(@"Login failed with username %@ : %@", username, error);
-        [self displayGenericErrorMessage:NSLocalizedString(@"Please update your credentials and try again.", nil)];
+        DDLogError(@"Login failed with username %@ : %@", username, error);
+        [self displayGenericErrorMessage:NSLocalizedString(@"Please try entering your login details again.", nil)];
     };
     
     [[WordPressComApi sharedApi] signInWithUsername:username
@@ -1242,7 +1241,7 @@ CGFloat const GeneralWalkthroughiOS7StatusBarOffset = 10.0;
         return;
     }
     if ([error code] == 403) {
-        message = NSLocalizedString(@"Please update your credentials and try again.", nil);
+        message = NSLocalizedString(@"Please try entering your login details again.", nil);
     }
     
     if ([[message trim] length] == 0) {
@@ -1274,7 +1273,7 @@ CGFloat const GeneralWalkthroughiOS7StatusBarOffset = 10.0;
         [self showCompletionWalkthrough];
     };
     vc.onErrorLoading = ^(NewAddUsersBlogViewController *viewController, NSError *error) {
-        WPFLog(@"There was an error loading blogs after sign in");
+        DDLogError(@"There was an error loading blogs after sign in");
         [self.navigationController popViewControllerAnimated:YES];
         [self displayGenericErrorMessage:[error localizedDescription]];
     };
@@ -1312,7 +1311,7 @@ CGFloat const GeneralWalkthroughiOS7StatusBarOffset = 10.0;
     NSMutableDictionary *newBlog = [NSMutableDictionary dictionaryWithDictionary:blogDetails];
     [newBlog setObject:xmlRPCUrl forKey:@"xmlrpc"];
 
-    _blog = [account findOrCreateBlogFromDictionary:newBlog];
+    _blog = [account findOrCreateBlogFromDictionary:newBlog withContext:account.managedObjectContext];
     [_blog dataSave];
 
 }

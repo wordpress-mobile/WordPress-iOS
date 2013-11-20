@@ -141,7 +141,7 @@
     if(newValue.y == oldValue.y) return;
     
     if(newValue.y <= -65.0f && newValue.y < oldValue.y && ![self.webView isLoading] && !didPlayPullSound  && !didTriggerRefresh) {
-        NSLog(@"Play Pull Sound:  %f, %f, %i, %i", newValue.y, oldValue.y, [self.webView isLoading], didPlayPullSound);
+        DDLogVerbose(@"Play Pull Sound:  %f, %f, %i, %i", newValue.y, oldValue.y, [self.webView isLoading], didPlayPullSound);
 
         // triggered
         [SoundUtil playPullSound];
@@ -170,7 +170,7 @@
 // Just a Hello World for testing integration
 - (void)enableAwesomeness
 {
-    [FileLogger log:@"Awesomeness Enabled"];
+    DDLogInfo(@"Awesomeness Enabled");
 }
 
 - (void)hideWebViewBackgrounds

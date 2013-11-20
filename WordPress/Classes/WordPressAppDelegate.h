@@ -3,10 +3,11 @@
 
 #import "Constants.h"
 #import "Blog.h"
-#import "HelpViewController.h"
 #import "Reachability.h"
 #import "PanelNavigationController.h"
 #import "Constants.h"
+#import "DDFileLogger.h"
+
 
 @class AutosaveManager;
 
@@ -28,7 +29,6 @@
 	NSMutableData *statsData;
 	NSString *postID;
     UITextField *passwordTextField;
-    NSString *oauthCallback;
 	    
 	// Core Data
     NSManagedObjectContext *managedObjectContext_;
@@ -55,6 +55,8 @@
 @property (nonatomic, strong, readonly) NSManagedObjectModel *managedObjectModel;
 @property (nonatomic, strong, readonly) NSPersistentStoreCoordinator *persistentStoreCoordinator;
 @property (nonatomic, strong) PanelNavigationController *panelNavigationController;
+@property (strong, nonatomic) DDFileLogger *fileLogger;
+
 
 //Connection Reachability variables
 @property (nonatomic, strong) Reachability *internetReachability, *wpcomReachability, *currentBlogReachability;

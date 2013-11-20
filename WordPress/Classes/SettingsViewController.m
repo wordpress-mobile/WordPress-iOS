@@ -42,11 +42,14 @@
 #import "NotificationSettingsViewController.h"
 #import "Blog+Jetpack.h"
 #import "GeneralWalkthroughViewController.h"
+#import "SupportViewController.h"
 #import "WPAccount.h"
 #import "WPTableViewSectionHeaderView.h"
 #import "AddUsersBlogsViewController.h"
+#import "SupportViewController.h"
 
 typedef enum {
+
     SettingsSectionBlogs = 0,
     SettingsSectionBlogsAdd,
     SettingsSectionWpcom,
@@ -67,7 +70,6 @@ typedef enum {
 - (UITableViewCell *)cellForIndexPath:(NSIndexPath *)indexPath;
 - (void)checkCloseButton;
 - (void)setupMedia;
-- (void)handleExtraDebugChanged:(id)sender;
 - (void)handleMuteSoundsChanged:(id)sender;
 - (void)maskImageView:(UIImageView *)imageView corner:(UIRectCorner)corner;
 
@@ -116,7 +118,7 @@ typedef enum {
 
 - (void)viewWillDisappear:(BOOL)animated {
     [super viewWillDisappear:animated];
-    // Remove the delegate to avoid a corddata error that can occur when a new
+    // Remove the delegate to avoid a core data error that can occur when a new
     // blog is added, and other rows/sections are added as well (e.g. notifications).
     self.resultsController.delegate = nil;
 }
@@ -205,13 +207,6 @@ typedef enum {
 }
 
 
-- (void)handleExtraDebugChanged:(id)sender {
-    UISwitch *aSwitch = (UISwitch *)sender;
-    [[NSUserDefaults standardUserDefaults] setBool:aSwitch.on forKey:@"extra_debug"];
-    [NSUserDefaults resetStandardUserDefaults];
-}
-
-
 - (void)handleMuteSoundsChanged:(id)sender {
     UISwitch *aSwitch = (UISwitch *)sender;
     
@@ -257,7 +252,7 @@ typedef enum {
             return 1;
             
         case SettingsSectionWpcom:
-            return ([WordPressComApi sharedApi].username && [[WordPressComApi sharedApi] hasCredentials]) ? 2 : 1;
+            return ([[WPAccount defaultWordPressComAccount] username] && [[WordPressComApi sharedApi] hasCredentials]) ? 2 : 1;
             
         case SettingsSectionMedia:
             return [mediaSettingsArray count];
@@ -336,7 +331,12 @@ typedef enum {
     cell.accessoryView = nil;
     if (indexPath.section == SettingsSectionBlogs) {
         Blog *blog = [self.resultsController objectAtIndexPath:[NSIndexPath indexPathForRow:indexPath.row inSection:0]];
-        cell.textLabel.text = blog.blogName;
+        if ([blog.blogName length] != 0) {
+            cell.textLabel.text = blog.blogName;
+        } else {
+            cell.textLabel.text = blog.url;
+        }
+        
         [cell.imageView setImageWithBlavatarUrl:blog.blavatarUrl isWPcom:blog.isWPcom];
         
         if (indexPath.row == 0) {
@@ -357,7 +357,7 @@ typedef enum {
         if ([[WordPressComApi sharedApi] hasCredentials]) {
             if (indexPath.row == 0) {
                 cell.textLabel.text = NSLocalizedString(@"Username:", @"");
-                cell.detailTextLabel.text = [WordPressComApi sharedApi].username;
+                cell.detailTextLabel.text = [[WPAccount defaultWordPressComAccount] username];
                 cell.detailTextLabel.textColor = [UIColor UIColorFromHex:0x888888];
                 cell.selectionStyle = UITableViewCellSelectionStyleNone;
             } else {
@@ -403,6 +403,7 @@ typedef enum {
         }
     } else if (indexPath.section == SettingsSectionInfo) {
         if (indexPath.row == 0) {
+            // App Version
             cell.textLabel.text = NSLocalizedString(@"Version:", @"");
             NSString *appversion = [[[NSBundle mainBundle] infoDictionary] objectForKey:@"CFBundleVersion"];
 #if DEBUG
@@ -411,14 +412,13 @@ typedef enum {
             cell.detailTextLabel.text = appversion;
             cell.selectionStyle = UITableViewCellSelectionStyleNone;
         } else if (indexPath.row == 1) {
+            // About
             cell.textLabel.text = NSLocalizedString(@"About", @"");
             cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
         } else if (indexPath.row == 2) {
-            cell.textLabel.text = NSLocalizedString(@"Extra Debug", @"A lable for the settings switch to enable extra debugging and logging.");
-            UISwitch *aSwitch = [[UISwitch alloc] initWithFrame:CGRectZero]; // Frame is ignored.
-            [aSwitch addTarget:self action:@selector(handleExtraDebugChanged:) forControlEvents:UIControlEventValueChanged];
-            aSwitch.on = [[NSUserDefaults standardUserDefaults] boolForKey:@"extra_debug"];
-            cell.accessoryView = aSwitch;
+                // Settings
+                cell.textLabel.text = NSLocalizedString(@"Support", @"");
+                cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
         }
     }
 }
@@ -477,7 +477,7 @@ typedef enum {
     [WPStyleGuide configureTableViewCell:cell];
     [self configureCell:cell atIndexPath:indexPath];
     
-    BOOL isSignInCell = false;
+    BOOL isSignInCell = NO;
     if (![[WordPressComApi sharedApi] hasCredentials]) {
         isSignInCell = indexPath.section == SettingsSectionWpcom && indexPath.row == 0;
     }
@@ -542,7 +542,7 @@ typedef enum {
 
                 // Present the Sign out ActionSheet
                 NSString *signOutTitle = NSLocalizedString(@"You are logged in as %@", @"");
-                signOutTitle = [NSString stringWithFormat:signOutTitle, [WordPressComApi sharedApi].username];
+                signOutTitle = [NSString stringWithFormat:signOutTitle, [[WPAccount defaultWordPressComAccount] username]];
                 UIActionSheet *actionSheet;
                 actionSheet = [[UIActionSheet alloc] initWithTitle:signOutTitle 
                                                           delegate:self 
@@ -586,6 +586,10 @@ typedef enum {
             
             AboutViewController *aboutViewController = [[AboutViewController alloc] initWithNibName:@"AboutViewController" bundle:nil];
             [self.navigationController pushViewController:aboutViewController animated:YES];
+        } else if (indexPath.row == 2) {
+            // Support Page
+            SupportViewController *supportViewController = [[SupportViewController alloc] init];
+            [self.navigationController pushViewController:supportViewController animated:YES];
         }
     }
 }
@@ -615,7 +619,7 @@ typedef enum {
 
     NSError *error = nil;
     if (![_resultsController performFetch:&error]) {
-        WPFLog(@"Couldn't fetch blogs: %@", [error localizedDescription]);
+        DDLogError(@"Couldn't fetch blogs: %@", [error localizedDescription]);
         _resultsController = nil;
     }
     return _resultsController;
@@ -695,6 +699,11 @@ typedef enum {
 		[WPAccount removeDefaultWordPressComAccount];
         [self.tableView reloadSections:[NSIndexSet indexSetWithIndex:SettingsSectionWpcom] withRowAnimation:UITableViewRowAnimationFade];
         [self checkCloseButton];
+        
+        // Remove defaults
+        [[NSUserDefaults standardUserDefaults] removeObjectForKey:@"wpcom_users_blogs"];
+        [[NSUserDefaults standardUserDefaults] removeObjectForKey:@"wpcom_user_id"];
+        [[NSUserDefaults standardUserDefaults] removeObjectForKey:@"wpcom_users_prefered_blog_id"];
     }
 }
 

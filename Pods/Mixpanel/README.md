@@ -28,6 +28,7 @@ Recursively create groups for any added folders.
 - UIKit.framework
 - SystemConfiguration.framework
 - CoreTelephony.framework
+- AdSupport.framework
 
 And that's it. 
 
@@ -68,7 +69,7 @@ People API. Unlike Mixpanel Engagement, you must explicitly set the distinct ID
 for the current user in Mixpanel People.
 
     Mixpanel *mixpanel = [Mixpanel sharedInstance];
-    [mixpanel.people identify:@"user123"];
+    [mixpanel identify:@"user123"];
     [mixpanel.people set:@"Bought Premium Plan" to:[NSDate date]];
 
 To send your users push notifications through Mixpanel People, register device

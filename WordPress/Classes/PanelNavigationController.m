@@ -220,6 +220,8 @@ CGFloat const PanelNavigationControllerStatusBarViewHeight = 20.0;
     
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(didReceiveNotesNotification:)
 												 name:@"WordPressComUnseenNotes" object:nil];
+    
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(adjustFramesForRotation) name:UIDeviceOrientationDidChangeNotification object:nil];
 }
 
 - (void)viewDidUnload {
@@ -289,7 +291,7 @@ CGFloat const PanelNavigationControllerStatusBarViewHeight = 20.0;
 - (void)willAnimateRotationToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation duration:(NSTimeInterval)duration {
     [super willAnimateRotationToInterfaceOrientation:interfaceOrientation duration:duration];
 
-    [self adjustFramesForRotation];
+//    [self adjustFramesForRotation];
     
 //    if (IS_IPAD)
 //        [self setStackOffset:[self nearestValidOffsetWithVelocity:0] duration:duration];
@@ -319,7 +321,14 @@ CGFloat const PanelNavigationControllerStatusBarViewHeight = 20.0;
     // Set the detail view's new width due to the rotation on the iPad if wide panels are expected.
     if (IS_IPAD && [self viewControllerExpectsWidePanel:self.detailViewController]) {
         CGRect frm = self.detailViewContainer.frame;
-        frm.size.width = IPAD_WIDE_PANEL_WIDTH;
+        UIDeviceOrientation orientation = [[UIDevice currentDevice] orientation];
+        if (orientation == UIDeviceOrientationUnknown
+            || orientation == UIDeviceOrientationFaceUp
+            || orientation == UIDeviceOrientationFaceDown) {
+            return;
+        }
+        BOOL isPortrait = UIDeviceOrientationIsPortrait(orientation);
+        frm.size.width =  isPortrait ? IPAD_WIDE_PANEL_WIDTH_PORTRAIT : IPAD_WIDE_PANEL_WIDTH_LANDSCAPE;
         self.detailViewContainer.frame = frm;
     }
     
@@ -887,6 +896,8 @@ CGFloat const PanelNavigationControllerStatusBarViewHeight = 20.0;
 
 - (void)showSidebarAnimated:(BOOL)animated {
     [SoundUtil playSwipeSound];
+    
+    [[NSNotificationCenter defaultCenter] postNotificationName:SidebarOpenedNotification object:nil];
 
     [UIView animateWithDuration:OPEN_SLIDE_DURATION(animated) delay:0 options:0 | UIViewAnimationOptionLayoutSubviews | UIViewAnimationOptionBeginFromCurrentState animations:^{
         [self setStackOffset:0 duration:0];
@@ -907,6 +918,8 @@ CGFloat const PanelNavigationControllerStatusBarViewHeight = 20.0;
 - (void)showSidebarWithVelocity:(CGFloat)velocity {
     [SoundUtil playSwipeSound];
 
+    [[NSNotificationCenter defaultCenter] postNotificationName:SidebarOpenedNotification object:nil];
+    
     [self disableDetailView];
     [self setStackOffset:0.f withVelocity:velocity];
 }

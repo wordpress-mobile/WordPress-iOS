@@ -22,7 +22,7 @@
 #import "WPNUXUtility.h"
 #import "NewWPWalkthroughOverlayView.h"
 #import "WPWebViewController.h"
-#import "HelpViewController.h"
+#import "SupportViewController.h"
 #import "WPAccount.h"
 #import "Blog.h"
 #import "Blog+Jetpack.h"
@@ -289,10 +289,9 @@
 
 - (void)showHelpViewController:(BOOL)animated
 {
-    HelpViewController *helpViewController = [[HelpViewController alloc] init];
-    helpViewController.isBlogSetup = YES;
+    SupportViewController *supportViewController = [[SupportViewController alloc] init];
     [self.navigationController setNavigationBarHidden:NO animated:NO];
-    [self.navigationController pushViewController:helpViewController animated:animated];
+    [self.navigationController pushViewController:supportViewController animated:animated];
 }
 
 - (BOOL)isUrlWPCom:(NSString *)url
@@ -462,15 +461,15 @@
     
     void (^loginSuccessBlock)(void) = ^{
         [SVProgressHUD dismiss];
-        _userIsDotCom = true;
+        _userIsDotCom = YES;
         [self showAddUsersBlogsForWPCom];
     };
     
     void (^loginFailBlock)(NSError *) = ^(NSError *error){
         // User shouldn't get here because the getOptions call should fail, but in the unlikely case they do throw up an error message.
         [SVProgressHUD dismiss];
-        WPFLog(@"Login failed with username %@ : %@", username, error);
-        [self displayGenericErrorMessage:NSLocalizedString(@"Please update your credentials and try again.", nil)];
+        DDLogError(@"Login failed with username %@ : %@", username, error);
+        [self displayGenericErrorMessage:NSLocalizedString(@"Please try entering your login details again.", nil)];
     };
     
     [[WordPressComApi sharedApi] signInWithUsername:username
@@ -547,7 +546,7 @@
 - (void)displayRemoteError:(NSError *)error {
     NSString *message = [error localizedDescription];
     if ([error code] == 403) {
-        message = NSLocalizedString(@"Please update your credentials and try again.", nil);
+        message = NSLocalizedString(@"Please try entering your login details again.", nil);
     }
     
     if ([[message trim] length] == 0) {
@@ -579,7 +578,7 @@
         [self showCompletionWalkthrough];
     };
     vc.onErrorLoading = ^(NewerAddUsersBlogViewController *viewController, NSError *error) {
-        WPFLog(@"There was an error loading blogs after sign in");
+        DDLogError(@"There was an error loading blogs after sign in");
         [self.navigationController popViewControllerAnimated:YES];
         [self displayGenericErrorMessage:[error localizedDescription]];
     };
@@ -616,7 +615,7 @@
     NSMutableDictionary *newBlog = [NSMutableDictionary dictionaryWithDictionary:blogDetails];
     [newBlog setObject:xmlRPCUrl forKey:@"xmlrpc"];
     
-    _blog = [account findOrCreateBlogFromDictionary:newBlog];
+    _blog = [account findOrCreateBlogFromDictionary:newBlog withContext:account.managedObjectContext];
     [_blog dataSave];
     
 }
@@ -663,7 +662,7 @@
     createAccountViewController.onCreatedUser = ^(NSString *username, NSString *password) {
         self.usernameText.text = username;
         self.passwordText.text = password;
-        _userIsDotCom = true;
+        _userIsDotCom = YES;
         [self.navigationController popViewControllerAnimated:NO];
         [self showAddUsersBlogsForWPCom];
     };

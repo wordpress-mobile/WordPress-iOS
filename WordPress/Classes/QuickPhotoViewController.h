@@ -14,9 +14,9 @@
 
 #define QPVCBlogForQuickPhoto @"blogForQuickPhoto"
 
-@class Blog, iOS7CorrectedTextView;
+@class Blog, IOS7CorrectedTextView;
 @class MP6SidebarViewController;
-@interface QuickPhotoViewController : UIViewController <UIPopoverControllerDelegate, UIImagePickerControllerDelegate, UINavigationControllerDelegate, BlogSelectorButtonDelegate, QuickPicturePreviewViewDelegate> {
+@interface QuickPhotoViewController : UIViewController <UIPopoverControllerDelegate, UIImagePickerControllerDelegate, UINavigationControllerDelegate, BlogSelectorButtonDelegate, QuickPicturePreviewViewDelegate, UITextViewDelegate> {
 	WordPressAppDelegate *appDelegate;
     Post *post;
     CGRect startingFrame;
@@ -28,7 +28,7 @@
 
 @property (nonatomic, strong) IBOutlet QuickPicturePreviewView *photoImageView;
 @property (nonatomic, strong) IBOutlet UITextField *titleTextField;
-@property (nonatomic, strong) IBOutlet iOS7CorrectedTextView *contentTextView;
+@property (nonatomic, strong) IBOutlet IOS7CorrectedTextView *contentTextView;
 @property (nonatomic, strong) IBOutlet BlogSelectorButton *blogSelector;
 @property (nonatomic, strong) UIBarButtonItem *postButtonItem;
 @property (nonatomic, strong) UIImage *photo;

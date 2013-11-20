@@ -15,6 +15,7 @@
 #import "WPWebViewController.h"
 #import "SoundUtil.h"
 #import "WPInfoView.h"
+#import "SupportViewController.h"
 
 NSTimeInterval const WPTableViewControllerRefreshTimeout = 300; // 5 minutes
 
@@ -209,6 +210,13 @@ NSTimeInterval const WPTableViewControllerRefreshTimeout = 300; // 5 minutes
     return _refreshHeaderView.backgroundColor;
 }
 
+- (NSString *)noResultsText
+{
+    NSString *ttl = NSLocalizedString(@"No %@ yet", @"A string format. The '%@' will be replaced by the relevant type of object, posts, pages or comments.");
+	ttl = [NSString stringWithFormat:ttl, [self.title lowercaseString]];
+    return ttl;
+}
+
 #pragma mark - Property accessors
 
 - (void)setBlog:(Blog *)blog {
@@ -313,7 +321,7 @@ NSTimeInterval const WPTableViewControllerRefreshTimeout = 300; // 5 minutes
 }
 
 - (void)tableView:(UITableView *)tableView willDisplayCell:(UITableViewCell *)cell forRowAtIndexPath:(NSIndexPath *)indexPath {
-	if (IS_IPAD == YES) {
+	if (IS_IPAD) {
 		cell.accessoryType = UITableViewCellAccessoryNone;
 	}
 
@@ -399,7 +407,7 @@ NSTimeInterval const WPTableViewControllerRefreshTimeout = 300; // 5 minutes
         
     NSError *error = nil;
     if (![_resultsController performFetch:&error]) {
-        WPFLog(@"%@ couldn't fetch %@: %@", self, [self entityName], [error localizedDescription]);
+        DDLogError(@"%@ couldn't fetch %@: %@", self, [self entityName], [error localizedDescription]);
         _resultsController = nil;
     }
     
@@ -529,11 +537,10 @@ NSTimeInterval const WPTableViewControllerRefreshTimeout = 300; // 5 minutes
 - (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex { 
 	switch(buttonIndex) {
 		case 0: {
-            HelpViewController *helpViewController = [[HelpViewController alloc] init];
-            helpViewController.isBlogSetup = YES;
-            helpViewController.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:NSLocalizedString(@"Cancel", nil) style:UIBarButtonItemStylePlain target:self action:@selector(dismissModal:)];
+            SupportViewController *supportViewController = [[SupportViewController alloc] init];
+
             // Probably should be modal
-            UINavigationController *navController = [[UINavigationController alloc] initWithRootViewController:helpViewController];
+            UINavigationController *navController = [[UINavigationController alloc] initWithRootViewController:supportViewController];
             navController.navigationBar.translucent = NO;
             if (IS_IPAD) {
                 navController.modalPresentationStyle = UIModalPresentationFormSheet;
@@ -615,15 +622,12 @@ NSTimeInterval const WPTableViewControllerRefreshTimeout = 300; // 5 minutes
 }
 
 - (UIView *)createNoResultsView {
-	NSString *ttl = NSLocalizedString(@"No %@ yet", @"A string format. The '%@' will be replaced by the relevant type of object, posts, pages or comments.");
-	ttl = [NSString stringWithFormat:ttl, [self.title lowercaseString]];
-	
 	NSString *msg = @"";
 	if ([self userCanCreateEntity]) {
 		msg = NSLocalizedString(@"Why not create one?", @"A call to action to create a post or page.");
 	}
 	
-	return [WPInfoView WPInfoViewWithTitle:ttl message:msg cancelButton:nil];
+	return [WPInfoView WPInfoViewWithTitle:[self noResultsText] message:msg cancelButton:nil];
 }
 
 - (void)hideRefreshHeader {
@@ -714,7 +718,7 @@ NSTimeInterval const WPTableViewControllerRefreshTimeout = 300; // 5 minutes
 	UINavigationController *navController = [[UINavigationController alloc] initWithRootViewController:editSiteViewController];
     navController.navigationBar.translucent = NO;
 	
-	if(IS_IPAD == YES) {
+	if(IS_IPAD) {
 		navController.modalTransitionStyle = UIModalTransitionStyleCrossDissolve;
 		navController.modalPresentationStyle = UIModalPresentationFormSheet;
 	}
@@ -896,7 +900,7 @@ NSTimeInterval const WPTableViewControllerRefreshTimeout = 300; // 5 minutes
     }
 }
 
-#define AssertSubclassMethod() NSAssert(false, @"You must override %@ in a subclass", NSStringFromSelector(_cmd))
+#define AssertSubclassMethod() NSAssert(NO, @"You must override %@ in a subclass", NSStringFromSelector(_cmd))
 #define AssertNoBlogSubclassMethod() NSAssert(self.blog, @"You must override %@ in a subclass if there is no blog", NSStringFromSelector(_cmd))
 
 #pragma clang diagnostic push

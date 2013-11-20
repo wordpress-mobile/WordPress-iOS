@@ -168,6 +168,16 @@
         [self endBackgroundTaskTracking];
     }];
     
+    if ( UIBackgroundTaskInvalid == _backgroundTask) {
+        if (self.enableLogging) {
+            NSLog(@"QC Measurement: Could not upload  json file '%@' to %@  due to the system giving a UIBackgroundTaskInvalid.", _jsonFilePath, [_request URL] );
+        }
+        
+        [self uploadFailed];
+        [self done];
+        
+        return;
+    }
     
     // isExecuting needs to be KVO compliant
     [self willChangeValueForKey:@"isExecuting"];

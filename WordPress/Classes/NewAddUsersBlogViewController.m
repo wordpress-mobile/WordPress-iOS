@@ -51,7 +51,7 @@ CGFloat const AddUsersBlogBottomBackgroundHeight = 64;
     self = [super init];
     if (self) {
         _selectedBlogs = [[NSMutableArray alloc] init];
-        _autoAddSingleBlog = true;
+        _autoAddSingleBlog = YES;
     }
     return self;
 }
@@ -294,7 +294,7 @@ CGFloat const AddUsersBlogBottomBackgroundHeight = 64;
             } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
                 [SVProgressHUD dismiss];
                 [self.tableView reloadData];
-                WPFLog(@"Failed getting user blogs: %@", [error localizedDescription]);
+                DDLogError(@"Failed getting user blogs: %@", [error localizedDescription]);
                 if (self.onErrorLoading) {
                     self.onErrorLoading(self, error);
                 }
@@ -309,15 +309,15 @@ CGFloat const AddUsersBlogBottomBackgroundHeight = 64;
         // This strips out any leading http:// or https:// making for an easier string match.
         NSString *desiredBlogUrl = [[NSURL URLWithString:self.siteUrl] absoluteString];
         
-        __block BOOL blogFound = false;
+        __block BOOL blogFound = NO;
         __block NSUInteger indexOfBlog;
         [_usersBlogs enumerateObjectsUsingBlock:^(id blogInfo, NSUInteger index, BOOL *stop){
             NSString *blogUrl = [blogInfo objectForKey:@"url"];
             if ([blogUrl rangeOfString:desiredBlogUrl options:NSCaseInsensitiveSearch].location != NSNotFound) {
-                blogFound = true;
+                blogFound = YES;
                 [_selectedBlogs addObject:[blogInfo objectForKey:@"blogid"]];
                 indexOfBlog = index;
-                stop = true;
+                *stop = YES;
             }
         }];
         
@@ -352,6 +352,11 @@ CGFloat const AddUsersBlogBottomBackgroundHeight = 64;
         NSString *title = [obj valueForKey:@"blogName"];
         title = [title stringByDecodingXMLCharacters];
         [obj setValue:title forKey:@"blogName"];
+    }];    
+    _usersBlogs = [_usersBlogs sortedArrayUsingComparator:^(id obj1, id obj2){
+        NSString *title1 = [obj1 valueForKey:@"blogName"];
+        NSString *title2 = [obj2 valueForKey:@"blogName"];
+        return [title1 localizedCaseInsensitiveCompare:title2];
     }];
 }
 
@@ -361,36 +366,39 @@ CGFloat const AddUsersBlogBottomBackgroundHeight = 64;
     [WPMobileStats trackEventForSelfHostedAndWPCom:StatsEventAddBlogsClickedAddSelected properties:properties];
 
     _addSelectedButton.enabled = NO;
-
-    for (NSDictionary *blog in _usersBlogs) {
-		if([_selectedBlogs containsObject:[blog valueForKey:@"blogid"]]) {
-			[self createBlog:blog withAccount:self.account];
-		}
-	}
     
-    NSError *error;
-    [[WordPressAppDelegate sharedWordPressApplicationDelegate].managedObjectContext save:&error];
-    if (error != nil) {
-        NSLog(@"Error adding blogs: %@", [error localizedDescription]);
-    }
-
-    if (self.blogAdditionCompleted) {
-        self.blogAdditionCompleted(self);
-    }
+    NSManagedObjectContext *context = [WordPressAppDelegate sharedWordPressApplicationDelegate].managedObjectContext;
+    NSManagedObjectContext *backgroundMOC = [[NSManagedObjectContext alloc] initWithConcurrencyType:NSPrivateQueueConcurrencyType];
+    backgroundMOC.parentContext = context;
+  
+    [backgroundMOC performBlock:^{
+        for (NSDictionary *blog in _usersBlogs) {
+            if([_selectedBlogs containsObject:[blog valueForKey:@"blogid"]]) {
+                [self createBlog:blog withContext:context];
+            }
+        }
+        NSError *error;
+        if (![backgroundMOC save:&error]) {
+            DDLogError(@"Unresolved core data save error: %@", error);
+        }
+        
+        dispatch_async(dispatch_get_main_queue(), ^{
+            if (self.blogAdditionCompleted) {
+                self.blogAdditionCompleted(self);
+            }
+            [[WordPressComApi sharedApi] syncPushNotificationInfo];
+            [[NSNotificationCenter defaultCenter] postNotificationName:@"BlogsRefreshNotification" object:nil];
+        });
+    }];
 }
 
-- (void)createBlog:(NSDictionary *)blogInfo withAccount:(WPAccount *)account
+- (void)createBlog:(NSDictionary *)blogInfo withContext:(NSManagedObjectContext *)context
 {
-    WPLog(@"creating blog: %@", blogInfo);
-    Blog *blog = [account findOrCreateBlogFromDictionary:blogInfo];
-	blog.geolocationEnabled = true;
-	[blog dataSave];
-    [blog syncBlogWithSuccess:^{
-        if( ! [blog isWPcom] )
-            [[WordPressComApi sharedApi] syncPushNotificationInfo];
-    }
-                      failure:nil];
-	[[NSNotificationCenter defaultCenter] postNotificationName:@"BlogsRefreshNotification" object:nil];
+    DDLogInfo(@"creating blog: %@", blogInfo);
+    Blog *blog = [_account findOrCreateBlogFromDictionary:blogInfo withContext:context];
+    blog.geolocationEnabled = YES;
+
+    [blog syncBlogWithSuccess:nil failure:nil];
 }
 
 - (void)toggleButtons
@@ -399,9 +407,9 @@ CGFloat const AddUsersBlogBottomBackgroundHeight = 64;
     [_addSelectedButton setTitle:[NSString stringWithFormat:@"%@ (%d)", NSLocalizedString(@"Add Selected", nil), [_selectedBlogs count]] forState:UIControlStateNormal];
     _selectAllButton.enabled = [_usersBlogs count] != 0;
     if ([_selectedBlogs count] == [_usersBlogs count]) {
-        [_selectAllButton setTitle:NSLocalizedString(@"Deselect All", nil) forState:UIControlStateNormal];
+        [self setupDeselectAllButton];
     } else {
-        [_selectAllButton setTitle:NSLocalizedString(@"Select All", nil) forState:UIControlStateNormal];
+        [self setupSelectAllButton];
     }
 }
 
@@ -409,9 +417,7 @@ CGFloat const AddUsersBlogBottomBackgroundHeight = 64;
 {
     [WPMobileStats trackEventForSelfHostedAndWPCom:StatsEventAddBlogsClickedSelectAll];
 
-    [_selectAllButton removeTarget:self action:@selector(selectAllBlogs) forControlEvents:UIControlEventTouchUpInside];
-    [_selectAllButton addTarget:self action:@selector(deselectAllBlogs) forControlEvents:UIControlEventTouchUpInside];
-    [_selectAllButton setTitle:NSLocalizedString(@"Deselect All", nil) forState:UIControlStateNormal];
+    [self setupDeselectAllButton];
     
     [_selectedBlogs removeAllObjects];
     for (NSDictionary *blogData in _usersBlogs) {
@@ -427,14 +433,26 @@ CGFloat const AddUsersBlogBottomBackgroundHeight = 64;
 {
     [WPMobileStats trackEventForSelfHostedAndWPCom:StatsEventAddBlogsClickedDeselectAll];
 
-    [_selectAllButton removeTarget:self action:@selector(deselectAllBlogs) forControlEvents:UIControlEventTouchUpInside];
-    [_selectAllButton addTarget:self action:@selector(selectAllBlogs) forControlEvents:UIControlEventTouchUpInside];
-    [_selectAllButton setTitle:NSLocalizedString(@"Select All", nil) forState:UIControlStateNormal];
+    [self setupSelectAllButton];
     
     [_selectedBlogs removeAllObjects];
     
     [self toggleButtons];
     [self.tableView reloadData];
+}
+
+- (void)setupSelectAllButton
+{
+    [_selectAllButton removeTarget:self action:@selector(deselectAllBlogs) forControlEvents:UIControlEventTouchUpInside];
+    [_selectAllButton addTarget:self action:@selector(selectAllBlogs) forControlEvents:UIControlEventTouchUpInside];
+    [_selectAllButton setTitle:NSLocalizedString(@"Select All", nil) forState:UIControlStateNormal];
+}
+
+- (void)setupDeselectAllButton
+{
+    [_selectAllButton removeTarget:self action:@selector(selectAllBlogs) forControlEvents:UIControlEventTouchUpInside];
+    [_selectAllButton addTarget:self action:@selector(deselectAllBlogs) forControlEvents:UIControlEventTouchUpInside];
+    [_selectAllButton setTitle:NSLocalizedString(@"Deselect All", nil) forState:UIControlStateNormal];
 }
 
 - (NSString *)getCellTitleForIndexPath:(NSIndexPath *)indexPath

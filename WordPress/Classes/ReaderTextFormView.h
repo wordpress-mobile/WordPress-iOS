@@ -14,12 +14,12 @@
 
 @protocol ReaderTextFormDelegate;
 
-@class iOS7CorrectedTextView;
+@class IOS7CorrectedTextView;
 
 @interface ReaderTextFormView : UIView <UITextViewDelegate>
 
 @property (nonatomic, weak) id<ReaderTextFormDelegate> delegate;
-@property (nonatomic, strong) iOS7CorrectedTextView *textView;
+@property (nonatomic, strong) IOS7CorrectedTextView *textView;
 @property (nonatomic, strong) UILabel *promptLabel;
 @property (nonatomic, strong) UIImageView *borderImageView;
 @property (nonatomic, strong) UINavigationItem *navigationItem;
@@ -39,6 +39,7 @@
 - (void)updateNavItem;
 - (void)configureNavItem;
 - (void)enableForm:(BOOL)enabled;
+- (BOOL)shouldEnableSendButton;
 
 @end
 

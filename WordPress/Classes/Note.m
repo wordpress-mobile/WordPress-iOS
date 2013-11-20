@@ -58,7 +58,7 @@ const NSUInteger NoteKeepCount = 20;
     
     NSError *error;
     if(![context save:&error]){
-        NSLog(@"Failed to sync notes: %@", error);
+        DDLogError(@"Failed to sync notes: %@", error);
         return NO;
     } else {
         return YES;
@@ -101,14 +101,14 @@ const NSUInteger NoteKeepCount = 20;
     request.sortDescriptors = @[ dateSortDescriptor ];
     NSArray *notes = [context executeFetchRequest:request error:&error];
     if (error) {
-        WPFLog(@"Error pruning old notes: %@", error);
+        DDLogError(@"Error pruning old notes: %@", error);
         return;
     }
     for (Note *note in notes) {
         [context deleteObject:note];
     }
     if(![context save:&error]){
-        WPFLog(@"Failed to save after pruning notes: %@", error);
+        DDLogError(@"Failed to save after pruning notes: %@", error);
     }
     [context save:&error];
 }
@@ -170,7 +170,7 @@ const NSUInteger NoteKeepCount = 20;
     NSError *error;
     NSArray *results = [context executeFetchRequest:request error:&error];
     if(error != nil){
-        NSLog(@"Error finding note: %@", error);
+        DDLogError(@"Error finding note: %@", error);
         return;
     }
     Note *note;

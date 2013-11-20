@@ -6,6 +6,7 @@
 #import "NewPostTableViewCell.h"
 #import "WordPressAppDelegate.h"
 #import "Reachability.h"
+#import "PanelNavigationConstants.h"
 
 #define TAG_OFFSET 1010
 
@@ -26,8 +27,13 @@
     return self;
 }
 
+- (NSString *)noResultsText
+{
+    return NSLocalizedString(@"No posts yet", @"Displayed when the user pulls up the posts view and they have no posts");
+}
+
 - (void)viewDidLoad {
-    [FileLogger log:@"%@ %@", self, NSStringFromSelector(_cmd)];
+    DDLogInfo(@"%@ %@", self, NSStringFromSelector(_cmd));
     [super viewDidLoad];
     
 	// ShouldRefreshPosts
@@ -74,6 +80,8 @@
     self.infiniteScrollEnabled = YES;
     
     [WPStyleGuide configureColorsForView:self.view andTableView:self.tableView];
+    
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(sidebarOpened) name:SidebarOpenedNotification object:nil];
 }
 
 - (void)viewDidAppear:(BOOL)animated
@@ -86,18 +94,15 @@
 - (void)viewWillAppear:(BOOL)animated {
 	[super viewWillAppear:animated];
 	
-	// Force a crash for CrashReporter
-	//NSLog(@"crash time! %@", 1);
-    
     self.panelNavigationController.delegate = self;
 
-	if (IS_IPAD == NO) {
+	if (!IS_IPAD) {
 		// iPhone table views should not appear selected
 		if ([self.tableView indexPathForSelectedRow]) {
 			[self.tableView scrollToRowAtIndexPath:[self.tableView indexPathForSelectedRow] atScrollPosition:UITableViewScrollPositionMiddle animated:NO];
 			[self.tableView deselectRowAtIndexPath:[self.tableView indexPathForSelectedRow] animated:animated];
 		}
-	} else if (IS_IPAD == YES) {
+	} else if (IS_IPAD) {
 		// sometimes, iPad table views should
 		if (self.selectedIndexPath) {
             [self showSelectedPost];
@@ -117,10 +122,7 @@
     self.panelNavigationController.delegate = nil;
 }
 
-- (void)viewDidUnload {
-    [FileLogger log:@"%@ %@", self, NSStringFromSelector(_cmd)];
-	[super viewDidUnload];
-    
+- (void)dealloc {
     [[NSNotificationCenter defaultCenter] removeObserver:self];
 }
 
@@ -141,6 +143,10 @@
 - (NSString *)statsPropertyForViewOpening
 {
     return StatsPropertyPostsOpened;
+}
+
+- (void)sidebarOpened {
+    self.tableView.editing = NO;
 }
 
 #pragma mark -
@@ -226,7 +232,7 @@
 #pragma mark Memory Management
 
 - (void)didReceiveMemoryWarning {
-    WPLog(@"%@ %@", self, NSStringFromSelector(_cmd));
+    DDLogWarn(@"%@ %@", self, NSStringFromSelector(_cmd));
     [super didReceiveMemoryWarning];
 }
 
@@ -255,7 +261,7 @@
 }
 
 - (void)reselect {
-	if (self.selectedIndexPath != NULL) {
+	if (self.selectedIndexPath) {
 		[self.tableView selectRowAtIndexPath:self.selectedIndexPath animated:NO scrollPosition:UITableViewScrollPositionNone];
 		[self tableView:self.tableView didSelectRowAtIndexPath:self.selectedIndexPath];
 	}
@@ -286,12 +292,12 @@
 
     @try {
         post = [self.resultsController objectAtIndexPath:indexPath];
-        WPLog(@"Selected post at indexPath: (%i,%i)", indexPath.section, indexPath.row);
+        DDLogInfo(@"Selected post at indexPath: (%i,%i)", indexPath.section, indexPath.row);
     }
     @catch (NSException *e) {
-        NSLog(@"Can't select post at indexPath (%i,%i)", indexPath.section, indexPath.row);
-        NSLog(@"sections: %@", self.resultsController.sections);
-        NSLog(@"results: %@", self.resultsController.fetchedObjects);
+        DDLogError(@"Can't select post at indexPath (%i,%i)", indexPath.section, indexPath.row);
+        DDLogError(@"sections: %@", self.resultsController.sections);
+        DDLogError(@"results: %@", self.resultsController.fetchedObjects);
         post = nil;
     }
     self.postReaderViewController = [[PostViewController alloc] initWithPost:post];
@@ -339,7 +345,7 @@
 - (BOOL)refreshRequired {
 	NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
 	if ([defaults boolForKey:@"refreshPostsRequired"]) { 
-		[defaults setBool:false forKey:@"refreshPostsRequired"];
+		[defaults setBool:NO forKey:@"refreshPostsRequired"];
 		return YES;
 	}
 	

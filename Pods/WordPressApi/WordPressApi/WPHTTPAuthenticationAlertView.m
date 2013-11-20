@@ -8,6 +8,10 @@
 
 #import "WPHTTPAuthenticationAlertView.h"
 
+@interface WPHTTPAuthenticationAlertView () <UIAlertViewDelegate>
+
+@end
+
 @implementation WPHTTPAuthenticationAlertView {
     NSURLAuthenticationChallenge *_challenge;
     UITextField *usernameField, *passwordField;
@@ -17,13 +21,14 @@
 - (id)initWithChallenge:(NSURLAuthenticationChallenge *)challenge {
     self = [super initWithTitle:nil
                         message:nil
-                       delegate:self
+                       delegate:nil
               cancelButtonTitle:NSLocalizedString(@"Cancel", @"Cancel button label.")
               otherButtonTitles:nil];
 
     if (self) {
         _challenge = challenge;
-
+        self.delegate = self;
+        
         if ([challenge.protectionSpace.authenticationMethod isEqualToString:NSURLAuthenticationMethodServerTrust]) {
             self.alertViewStyle = UIAlertViewStyleDefault;
             self.title = NSLocalizedString(@"Certificate error", @"Popup title for wrong SSL certificate.");
@@ -40,7 +45,8 @@
 }
 
 
--(void)dismissWithClickedButtonIndex:(NSInteger)buttonIndex animated:(BOOL)animated {
+- (void)alertView:(UIAlertView *)alertView didDismissWithButtonIndex:(NSInteger)buttonIndex
+{
     if (buttonIndex == 1) {
         NSURLCredential *credential;
         if ([_challenge.protectionSpace.authenticationMethod isEqualToString:NSURLAuthenticationMethodServerTrust]) {
@@ -56,13 +62,12 @@
             }
             credential = [NSURLCredential credentialWithUser:username password:password persistence:NSURLCredentialPersistencePermanent];
         }
-
+        
         [[NSURLCredentialStorage sharedCredentialStorage] setDefaultCredential:credential forProtectionSpace:[_challenge protectionSpace]];
         [[_challenge sender] useCredential:credential forAuthenticationChallenge:_challenge];
     } else {
         [[_challenge sender] cancelAuthenticationChallenge:_challenge];
     }
-    [super dismissWithClickedButtonIndex:buttonIndex animated:animated];
 }
 
 @end

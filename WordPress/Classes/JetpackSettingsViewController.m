@@ -12,6 +12,7 @@
 #import "UITableViewTextFieldCell.h"
 #import "WordPressComApi.h"
 #import "WPWebViewController.h"
+#import "WPAccount.h"
 
 @interface JetpackSettingsViewController () <UITableViewTextFieldCellDelegate>
 
@@ -106,7 +107,7 @@
                           password:_password
                            success:^{
                                [SVProgressHUD dismiss];
-                               if (![[WordPressComApi sharedApi] username]) {
+                               if (![[WordPressComApi sharedApi] hasCredentials]) {
                                    [[WordPressComApi sharedApi] signInWithUsername:_username password:_password success:nil failure:nil];
                                }
                                [self setAuthenticating:NO];
@@ -339,8 +340,8 @@
 
 - (void)tryLoginWithCurrentWPComCredentials {
     if ([_blog hasJetpack] && !([[_blog jetpackUsername] length] && [[_blog jetpackPassword] length])) {
-        NSString *wpcomUsername = [[WordPressComApi sharedApi] username];
-        NSString *wpcomPassword = [[WordPressComApi sharedApi] password];
+        NSString *wpcomUsername = [[WPAccount defaultWordPressComAccount] username];
+        NSString *wpcomPassword = [[WPAccount defaultWordPressComAccount] password];
         if (wpcomUsername && wpcomPassword) {
             [self tryLoginWithUsername:wpcomUsername andPassword:wpcomPassword];
         }

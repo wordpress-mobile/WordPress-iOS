@@ -41,7 +41,7 @@ CGSize const AddSiteLogoSize = { 320.0, 70.0 };
 }
 
 - (void)validationSuccess:(NSString *)xmlrpc {
-    WPFLog(@"hasSubsites: %@", subsites);
+    DDLogInfo(@"hasSubsites: %@", subsites);
 
     if ([subsites count] > 0) {
         // If the user has entered the URL of a site they own on a MultiSite install, 
@@ -100,7 +100,7 @@ CGSize const AddSiteLogoSize = { 320.0, 70.0 };
     NSMutableDictionary *newBlog = [NSMutableDictionary dictionaryWithDictionary:blogDetails];
     [newBlog setObject:xmlrpc forKey:@"xmlrpc"];
  
-    self.blog = [account findOrCreateBlogFromDictionary:newBlog];
+    self.blog = [account findOrCreateBlogFromDictionary:newBlog withContext:[WordPressAppDelegate sharedWordPressApplicationDelegate].managedObjectContext];
     self.blog.geolocationEnabled = self.geolocationEnabled;
     [self.blog dataSave];
 }
@@ -124,8 +124,8 @@ CGSize const AddSiteLogoSize = { 320.0, 70.0 };
 
 - (void)connectToJetpack
 {
-    NSString *wpcomUsername = [WordPressComApi sharedApi].username;
-    NSString *wpcomPassword = [WordPressComApi sharedApi].password;
+    NSString *wpcomUsername = [[WPAccount defaultWordPressComAccount] username];
+    NSString *wpcomPassword = [[WPAccount defaultWordPressComAccount] password];
     if ((wpcomUsername != nil) && (wpcomPassword != nil)) {
         // Try with a known WordPress.com username first
         [SVProgressHUD showWithStatus:NSLocalizedString(@"Connecting to Jetpack", @"") maskType:SVProgressHUDMaskTypeBlack];

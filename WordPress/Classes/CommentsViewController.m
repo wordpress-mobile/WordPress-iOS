@@ -39,6 +39,11 @@ CGFloat const CommentsSectionHeaderHeight = 24.0;
 	[[NSNotificationCenter defaultCenter] removeObserver:self];
 }
 
+- (NSString *)noResultsText
+{
+    return NSLocalizedString(@"No comments yet", @"Displayed when the user pulls up the comments view and they have no comments");
+}
+
 - (void)viewDidLoad {
     WPFLogMethod();
     
@@ -103,9 +108,9 @@ CGFloat const CommentsSectionHeaderHeight = 24.0;
             comment = [self.resultsController objectAtIndexPath:indexPath];
         }
         @catch (NSException * e) {
-            WPFLog(@"Can't select comment at indexPath: (%i,%i)", indexPath.section, indexPath.row);
-            WPFLog(@"sections: %@", self.resultsController.sections);
-            WPFLog(@"results: %@", self.resultsController.fetchedObjects);
+            DDLogInfo(@"Can't select comment at indexPath: (%i,%i)", indexPath.section, indexPath.row);
+            DDLogInfo(@"sections: %@", self.resultsController.sections);
+            DDLogInfo(@"results: %@", self.resultsController.fetchedObjects);
             comment = nil;
         }
     }

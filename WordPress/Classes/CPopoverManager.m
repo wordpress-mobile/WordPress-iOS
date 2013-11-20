@@ -8,41 +8,38 @@
 
 #import "CPopoverManager.h"
 
-static CPopoverManager *gInstance = NULL;
+static CPopoverManager *gInstance = nil;
 
 @implementation CPopoverManager
 
 + (id)instance
 {
-@synchronized(self)
+    @synchronized(self)
 	{
-	if (gInstance == NULL)
-		{
-		gInstance = [[self alloc] init];
+        if (gInstance == nil) {
+            gInstance = [[self alloc] init];
 		}
 	}
-return(gInstance);
+    return(gInstance);
 }
 
 - (UIPopoverController *)currentPopoverController
 {
-return(currentPopoverController);
+    return(currentPopoverController);
 }
 
 - (void)setCurrentPopoverController:(UIPopoverController *)inCurrentPopoverController
 {
-@synchronized(@"currentPopoverController")
+    @synchronized(@"currentPopoverController")
 	{
-	if (currentPopoverController != inCurrentPopoverController)
-		{
-		if (currentPopoverController != NULL)
+        if (currentPopoverController != inCurrentPopoverController) {
+            if (currentPopoverController)
 			{
-			[currentPopoverController dismissPopoverAnimated:YES];
-			currentPopoverController = NULL;	
+                [currentPopoverController dismissPopoverAnimated:YES];
+                currentPopoverController = nil;
 			}
-		if (inCurrentPopoverController)
-			{
-			currentPopoverController = inCurrentPopoverController;
+            if (inCurrentPopoverController) {
+                currentPopoverController = inCurrentPopoverController;
 			}
 		}
 	}
