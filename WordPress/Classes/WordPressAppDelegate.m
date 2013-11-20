@@ -33,6 +33,7 @@
 #import "NotificationsViewController.h"
 #import "BlogListViewController.h"
 #import "LoginViewController.h"
+#import <CrashlyticsLumberjack/CrashlyticsLogger.h>
 
 @interface WordPressAppDelegate (Private) <CrashlyticsDelegate>
 
@@ -314,8 +315,8 @@ int ddLogLevel = LOG_LEVEL_INFO;
     UIDevice *device = [UIDevice currentDevice];
     NSInteger crashCount = [[NSUserDefaults standardUserDefaults] integerForKey:@"crashCount"];
 
-    [self configureLogging];
     [self configureCrashlytics];
+    [self configureLogging];
 
     NSArray *languages = [[NSUserDefaults standardUserDefaults] objectForKey:@"AppleLanguages"];
     NSString *currentLanguage = [languages objectAtIndex:0];
@@ -843,6 +844,8 @@ int ddLogLevel = LOG_LEVEL_INFO;
     self.fileLogger.rollingFrequency = 60 * 60 * 24; // 24 hour rolling
     self.fileLogger.logFileManager.maximumNumberOfLogFiles = 7;
     [DDLog addLogger:self.fileLogger];
+    
+    [DDLog addLogger:[CrashlyticsLogger sharedInstance]];
     
     BOOL extraDebug = [[NSUserDefaults standardUserDefaults] boolForKey:@"extra_debug"];
     if (extraDebug) {
