@@ -18,6 +18,7 @@
 #import <UIDeviceHardware.h>
 #import "UIDevice+WordPressIdentifier.h"
 #import "NotificationsManager.h"
+#import <WPXMLRPCClient.h>
 
 NSString *const WordPressComApiClientEndpointURL = @"https://public-api.wordpress.com/rest/v1/";
 NSString *const WordPressComApiOauthBaseUrl = @"https://public-api.wordpress.com/oauth2";

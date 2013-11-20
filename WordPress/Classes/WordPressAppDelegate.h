@@ -1,15 +1,15 @@
-#import <UIKit/UIKit.h>
-#import <CoreData/CoreData.h>
+/*
+ * WordPressAppDelegate.h
+ *
+ * Copyright (c) 2013 WordPress. All rights reserved.
+ *
+ * Licensed under GNU General Public License 2.0.
+ * Some rights reserved. See license.txt
+ */
 
-#import "Constants.h"
-#import "Blog.h"
-#import "Reachability.h"
-#import "Constants.h"
-#import "DDFileLogger.h"
 
-
-@class AutosaveManager;
-@class NotificationsViewController;
+@class Reachability;
+@class DDFileLogger;
 @class ReaderPostsViewController;
 
 @interface WordPressAppDelegate : NSObject <UIApplicationDelegate, UIAlertViewDelegate> {
@@ -47,13 +47,11 @@
 @property (nonatomic, getter = isAlertRunning) BOOL alertRunning;
 @property (nonatomic, assign) BOOL isWPcomAuthenticated;
 @property (nonatomic, assign) BOOL isUploadingPost;
-@property (nonatomic, strong) Blog *currentBlog;
 @property (nonatomic, strong) NSString *postID;
 @property (nonatomic, strong, readonly) NSManagedObjectContext *managedObjectContext;
 @property (nonatomic, strong, readonly) NSManagedObjectModel *managedObjectModel;
 @property (nonatomic, strong, readonly) NSPersistentStoreCoordinator *persistentStoreCoordinator;
 @property (nonatomic, strong) UITabBarController *tabBarController;
-@property (nonatomic, strong) NotificationsViewController *notificationsViewController;
 @property (nonatomic, strong) ReaderPostsViewController *readerPostsViewController;
 @property (strong, nonatomic) DDFileLogger *fileLogger;
 
@@ -71,7 +69,6 @@
 - (void)showAlertWithTitle:(NSString *)title message:(NSString *)message;
 - (void)showNotificationErrorAlert:(NSNotification *)notification;
 - (BOOL)isWPcomAuthenticated;
-- (void)checkWPcomAuthentication;
 - (void)useDefaultUserAgent;
 - (void)useAppUserAgent;
 

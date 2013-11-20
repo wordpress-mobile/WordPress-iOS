@@ -14,6 +14,7 @@
 #import "WordPressAppDelegate.h"
 #import "NSString+Helpers.h"
 #import "WPAccount.h"
+#import "Blog.h"
 
 static BOOL hasRecordedAppOpenedEvent = NO;
 

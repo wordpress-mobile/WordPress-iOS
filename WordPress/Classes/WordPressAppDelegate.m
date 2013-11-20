@@ -1,47 +1,43 @@
+/*
+ * WordPressAppDelegate.m
+ *
+ * Copyright (c) 2013 WordPress. All rights reserved.
+ *
+ * Licensed under GNU General Public License 2.0.
+ * Some rights reserved. See license.txt
+ */
+
 #import <UIDeviceIdentifier/UIDeviceHardware.h>
-#import <WordPressApi/WordPressApi.h>
 #import <Crashlytics/Crashlytics.h>
 #import <GooglePlus/GooglePlus.h>
-
 #import "WordPressAppDelegate.h"
 #import "Reachability.h"
 #import "NSString+Helpers.h"
-#import "CPopoverManager.h"
-#import "BetaUIWindow.h"
 #import "MigrateBlogsFromFiles.h"
-#import "Blog.h"
 #import "Media.h"
 #import "CameraPlusPickerManager.h"
 #import "UIDevice+WordPressIdentifier.h"
 #import "WordPressComApi.h"
-#import "PostsViewController.h"
-#import "CommentsViewController.h"
-#import "StatsWebViewController.h"
 #import "WordPressComApiCredentials.h"
 #import "PocketAPI.h"
-#import "WPMobileStats.h"
-#import "WPComLanguages.h"
-#import "DDLog.h"
 #import "DDTTYLogger.h"
 #import "DDASLLogger.h"
 #import "WPAccount.h"
-#import "Note.h"
-#import "UIColor+Helpers.h"
-#import <Security/Security.h>
 #import "SupportViewController.h"
 #import "ReaderPostsViewController.h"
 #import "NotificationsViewController.h"
 #import "BlogListViewController.h"
 #import "LoginViewController.h"
 #import <CrashlyticsLumberjack/CrashlyticsLogger.h>
-
 #import "NotificationsManager.h"
+#import <DDFileLogger.h>
 
 int ddLogLevel = LOG_LEVEL_INFO;
 
 @interface WordPressAppDelegate () <CrashlyticsDelegate>
 
 @property (nonatomic, assign) BOOL listeningForBlogChanges;
+@property (nonatomic, strong) NotificationsViewController *notificationsViewController;
 
 @end
 
@@ -168,7 +164,8 @@ int ddLogLevel = LOG_LEVEL_INFO;
 
 - (void)applicationWillTerminate:(UIApplication *)application {
     DDLogInfo(@"%@ %@", self, NSStringFromSelector(_cmd));
-    [self setAppBadge];
+    
+    [UIApplication sharedApplication].applicationIconBadgeNumber = 0;
     [WPMobileStats endSession];
 }
 
@@ -229,7 +226,7 @@ int ddLogLevel = LOG_LEVEL_INFO;
     [WPMobileStats recordAppOpenedForEvent:StatsEventAppOpened];
     
     // Clear notifications badge and update server
-    [self setAppBadge];
+    [UIApplication sharedApplication].applicationIconBadgeNumber = 0;
     [[WordPressComApi sharedApi] syncPushNotificationInfo];
 }
 
@@ -272,10 +269,6 @@ int ddLogLevel = LOG_LEVEL_INFO;
     [[UIToolbar appearance] setBarTintColor:[WPStyleGuide newKidOnTheBlockBlue]];
     [[UISwitch appearance] setOnTintColor:[WPStyleGuide newKidOnTheBlockBlue]];
     [[UIApplication sharedApplication] setStatusBarStyle:UIStatusBarStyleLightContent];
-}
-
-- (void)setAppBadge {
-    [UIApplication sharedApplication].applicationIconBadgeNumber = 0;
 }
 
 

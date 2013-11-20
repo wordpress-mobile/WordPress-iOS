@@ -13,6 +13,7 @@
 #import "WPAccount.h"
 #import "WordPressComApi.h"
 #import "UIDevice+WordPressIdentifier.h"
+#import <WPXMLRPCClient.h>
 
 @implementation NotificationsManager
 
