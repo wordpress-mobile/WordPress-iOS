@@ -31,6 +31,7 @@
 #import <CrashlyticsLumberjack/CrashlyticsLogger.h>
 #import "NotificationsManager.h"
 #import <DDFileLogger.h>
+#import <AFNetworking/AFNetworking.h>
 
 int ddLogLevel = LOG_LEVEL_INFO;
 
@@ -622,45 +623,42 @@ int ddLogLevel = LOG_LEVEL_INFO;
 	 - num_blogs – number of blogs configured in the WP iPhone app
 	 - device_model - kind of device on which the WP iPhone app is installed
 	 */
-	
-	NSString *deviceModel = [[UIDeviceHardware platform] stringByUrlEncoding];
-	NSString *deviceuuid = [[UIDevice currentDevice] wordpressIdentifier];
 	NSDictionary *info = [[NSBundle mainBundle] infoDictionary];
-	NSString *appversion = [[info objectForKey:@"CFBundleVersion"] stringByUrlEncoding];
 	NSLocale *locale = [NSLocale currentLocale];
-	NSString *language = [[locale objectForKey: NSLocaleIdentifier] stringByUrlEncoding];
-	NSString *osversion = [[[UIDevice currentDevice] systemVersion] stringByUrlEncoding];
-	int num_blogs = [Blog countWithContext:[self managedObjectContext]];
-	NSString *numblogs = [[NSString stringWithFormat:@"%d", num_blogs] stringByUrlEncoding];
-	
-	//handle data coming back
-	statsData = [[NSMutableData alloc] init];
-	
-	NSMutableURLRequest *theRequest=[NSMutableURLRequest requestWithURL:[NSURL URLWithString:@"http://api.wordpress.org/iphoneapp/update-check/1.0/"]
-															cachePolicy:NSURLRequestUseProtocolCachePolicy
-														timeoutInterval:30.0];
-	
-	[theRequest setHTTPMethod:@"POST"];
-	[theRequest addValue:@"application/x-www-form-urlencoded" forHTTPHeaderField: @"Content-Type"];
-	//create the body
-	NSMutableData *postBody = [NSMutableData data];
-	
-	[postBody appendData:[[NSString stringWithFormat:@"device_uuid=%@&app_version=%@&language=%@&os_version=%@&num_blogs=%@&device_model=%@",
-						   deviceuuid,
-						   appversion,
-						   language,
-						   osversion,
-						   numblogs,
-						   deviceModel] dataUsingEncoding:NSUTF8StringEncoding]];
-	
-	//NSString *htmlStr = [[[NSString alloc] initWithData:postBody encoding:NSUTF8StringEncoding] autorelease];
-	[theRequest setHTTPBody:postBody];
-	
-	NSURLConnection *conn = [[NSURLConnection alloc] initWithRequest:theRequest delegate:self];
-	if(conn){
-		// This is just to keep Analyzer from complaining.
-	}
+	NSInteger blogCount = [Blog countWithContext:[self managedObjectContext]];
+    NSDictionary *parameters = @{@"device_uuid": [[UIDevice currentDevice] wordpressIdentifier],
+                                 @"app_version": [[info objectForKey:@"CFBundleVersion"] stringByUrlEncoding],
+                                 @"language": [[locale objectForKey: NSLocaleIdentifier] stringByUrlEncoding],
+                                 @"os_version": [[[UIDevice currentDevice] systemVersion] stringByUrlEncoding],
+                                 @"num_blogs": [[NSString stringWithFormat:@"%d", blogCount] stringByUrlEncoding],
+                                 @"device_model": [[UIDeviceHardware platform] stringByUrlEncoding]};
 
+    AFHTTPClient *client = [[AFHTTPClient alloc] initWithBaseURL:[NSURL URLWithString:@"http://api.wordpress.org/iphoneapp/update-check/1.0/"]];
+    client.parameterEncoding = AFFormURLParameterEncoding;
+    [client postPath:@"" parameters:parameters success:^(AFHTTPRequestOperation *operation, NSData *responseObject) {
+        NSString *statsDataString = [[NSString alloc] initWithData:responseObject encoding:NSUTF8StringEncoding];
+        statsDataString = [[statsDataString componentsSeparatedByCharactersInSet:[NSCharacterSet newlineCharacterSet]] objectAtIndex:0];
+        NSString *appversion = [[[NSBundle mainBundle] infoDictionary] objectForKey:@"CFBundleVersion"];
+        if ([statsDataString compare:appversion options:NSNumericSearch] > 0) {
+            DDLogInfo(@"There's a new version: %@", statsDataString);
+            UIAlertView *alert = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"Update Available", @"Popup title to highlight a new version of the app being available.")
+                                                            message:NSLocalizedString(@"A new version of WordPress for iOS is now available", @"Generic popup message to highlight a new version of the app being available.")
+                                                           delegate:self
+                                                  cancelButtonTitle:NSLocalizedString(@"Dismiss", @"Dismiss button label.")
+                                                  otherButtonTitles:NSLocalizedString(@"Update Now", @"Popup 'update' button to highlight a new version of the app being available. The button takes you to the app store on the device, and should be actionable."), nil];
+            alert.tag = 102;
+            [alert show];
+        }
+    } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+        UIAlertView *errorAlert = [[UIAlertView alloc]
+                                   initWithTitle: [error localizedDescription]
+                                   message: [error localizedFailureReason]
+                                   delegate:nil
+                                   cancelButtonTitle:NSLocalizedString(@"OK", @"OK button label (shown in popups).")
+                                   otherButtonTitles:nil];
+        [errorAlert show];
+    }];
+	
 	NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
 	NSDate *theDate = [NSDate date];
 	[defaults setObject:theDate forKey:@"statsDate"];
@@ -692,37 +690,6 @@ int ddLogLevel = LOG_LEVEL_INFO;
     }];
     
     [operation start];
-}
-
-- (void)connection:(NSURLConnection *)connection didReceiveData:(NSData *)data {
-	[statsData appendData: data];
-}
-
-- (void)connection:(NSURLConnection *)connection didFailWithError: (NSError *)error {
-	UIAlertView *errorAlert = [[UIAlertView alloc]
-							   initWithTitle: [error localizedDescription]
-							   message: [error localizedFailureReason]
-							   delegate:nil
-							   cancelButtonTitle:NSLocalizedString(@"OK", @"OK button label (shown in popups).")
-							   otherButtonTitles:nil];
-	[errorAlert show];
-}
-
-
-- (void) connectionDidFinishLoading: (NSURLConnection*) connection {
-	NSString *statsDataString = [[NSString alloc] initWithData:statsData encoding:NSUTF8StringEncoding];
-    statsDataString = [[statsDataString componentsSeparatedByCharactersInSet:[NSCharacterSet newlineCharacterSet]] objectAtIndex:0];
-	NSString *appversion = [[[NSBundle mainBundle] infoDictionary] objectForKey:@"CFBundleVersion"];
-    if ([statsDataString compare:appversion options:NSNumericSearch] > 0) {
-        DDLogInfo(@"There's a new version: %@", statsDataString);
-        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"Update Available", @"Popup title to highlight a new version of the app being available.")
-                                                        message:NSLocalizedString(@"A new version of WordPress for iOS is now available", @"Generic popup message to highlight a new version of the app being available.")
-                                                       delegate:self
-                                              cancelButtonTitle:NSLocalizedString(@"Dismiss", @"Dismiss button label.")
-                                              otherButtonTitles:NSLocalizedString(@"Update Now", @"Popup 'update' button to highlight a new version of the app being available. The button takes you to the app store on the device, and should be actionable."), nil];
-        alert.tag = 102;
-        [alert show];
-    }
 }
 
 #pragma mark - Push Notification delegate
