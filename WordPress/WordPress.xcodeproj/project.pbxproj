@@ -777,7 +777,6 @@
 		CC669B40167B0AF2009E16F8 /* note-comment-grandparent-footer@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = CC669B3C167B0AF2009E16F8 /* note-comment-grandparent-footer@2x.png */; };
 		CC669B41167B0AF2009E16F8 /* note-comment-parent-footer.png in Resources */ = {isa = PBXBuildFile; fileRef = CC669B3D167B0AF2009E16F8 /* note-comment-parent-footer.png */; };
 		CC669B42167B0AF2009E16F8 /* note-comment-parent-footer@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = CC669B3E167B0AF2009E16F8 /* note-comment-parent-footer@2x.png */; };
-		CC6B3BE715A33E16005A4523 /* WPFriendFinderNudgeView.m in Sources */ = {isa = PBXBuildFile; fileRef = CC6B3BE615A33E16005A4523 /* WPFriendFinderNudgeView.m */; };
 		CC6B3BFD15A35F10005A4523 /* friend_finder_cancel_btn_highlight.png in Resources */ = {isa = PBXBuildFile; fileRef = CC6B3BF915A35F10005A4523 /* friend_finder_cancel_btn_highlight.png */; };
 		CC6B3BFE15A35F10005A4523 /* friend_finder_cancel_btn_highlight@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = CC6B3BFA15A35F10005A4523 /* friend_finder_cancel_btn_highlight@2x.png */; };
 		CC6B3BFF15A35F10005A4523 /* friend_finder_cancel_btn.png in Resources */ = {isa = PBXBuildFile; fileRef = CC6B3BFB15A35F10005A4523 /* friend_finder_cancel_btn.png */; };
@@ -1918,8 +1917,6 @@
 		CC669B3C167B0AF2009E16F8 /* note-comment-grandparent-footer@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "note-comment-grandparent-footer@2x.png"; path = "Resources/Images/note-comment-grandparent-footer@2x.png"; sourceTree = "<group>"; };
 		CC669B3D167B0AF2009E16F8 /* note-comment-parent-footer.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "note-comment-parent-footer.png"; path = "Resources/Images/note-comment-parent-footer.png"; sourceTree = "<group>"; };
 		CC669B3E167B0AF2009E16F8 /* note-comment-parent-footer@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "note-comment-parent-footer@2x.png"; path = "Resources/Images/note-comment-parent-footer@2x.png"; sourceTree = "<group>"; };
-		CC6B3BE515A33E16005A4523 /* WPFriendFinderNudgeView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WPFriendFinderNudgeView.h; sourceTree = "<group>"; };
-		CC6B3BE615A33E16005A4523 /* WPFriendFinderNudgeView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WPFriendFinderNudgeView.m; sourceTree = "<group>"; };
 		CC6B3BF915A35F10005A4523 /* friend_finder_cancel_btn_highlight.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = friend_finder_cancel_btn_highlight.png; path = Resources/Images/friend_finder_cancel_btn_highlight.png; sourceTree = "<group>"; };
 		CC6B3BFA15A35F10005A4523 /* friend_finder_cancel_btn_highlight@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "friend_finder_cancel_btn_highlight@2x.png"; path = "Resources/Images/friend_finder_cancel_btn_highlight@2x.png"; sourceTree = "<group>"; };
 		CC6B3BFB15A35F10005A4523 /* friend_finder_cancel_btn.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = friend_finder_cancel_btn.png; path = Resources/Images/friend_finder_cancel_btn.png; sourceTree = "<group>"; };
@@ -2287,8 +2284,6 @@
 				93740DCA17D8F86700C41B2F /* WPAlertView.m */,
 				93740DCC17D8F87B00C41B2F /* WPAlertView.xib */,
 				93B17EDB17DFD626002B1014 /* WPAlertViewSideBySide.xib */,
-				CC6B3BE515A33E16005A4523 /* WPFriendFinderNudgeView.h */,
-				CC6B3BE615A33E16005A4523 /* WPFriendFinderNudgeView.m */,
 				5D4DE6F1167177560030518D /* WPNoResultsView.h */,
 				5D4DE6F2167177560030518D /* WPNoResultsView.m */,
 				E1CAAE3513F413F00000C58D /* WPKeyboardToolbar.h */,
@@ -5122,7 +5117,6 @@
 				FD4500D11580DF3600F2B0E6 /* UIColor+Helpers.m in Sources */,
 				5D2B80D11592447200161F6E /* QuickPhotoButtonView.m in Sources */,
 				852F4E8C17BED193005ED539 /* PostSettingsSelectionViewController.m in Sources */,
-				CC6B3BE715A33E16005A4523 /* WPFriendFinderNudgeView.m in Sources */,
 				E1745A9A15AF49C000A3F7C5 /* UIViewController+Styled.m in Sources */,
 				E1745AA715AF4E5900A3F7C5 /* UIBarButtonItem+Styled.m in Sources */,
 				FD75DDAD15B021C80043F12C /* UIViewController+Rotation.m in Sources */,

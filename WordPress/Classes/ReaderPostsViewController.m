@@ -20,7 +20,6 @@
 #import "NSString+XMLExtensions.h"
 #import "ReaderReblogFormView.h"
 #import "WPFriendFinderViewController.h"
-#import "WPFriendFinderNudgeView.h"
 #import "WPAccount.h"
 #import "WPTableImageSource.h"
 #import "WPNoResultsView.h"
@@ -44,7 +43,6 @@ NSString *const RPVCDisplayedNativeFriendFinder = @"DisplayedNativeFriendFinder"
 }
 
 @property (nonatomic, strong) ReaderReblogFormView *readerReblogFormView;
-@property (nonatomic, strong) WPFriendFinderNudgeView *friendFinderNudgeView;
 @property (nonatomic, strong) UINavigationBar *navBar;
 @property (nonatomic) BOOL isShowingReblogForm;
 
@@ -69,7 +67,6 @@ NSString *const RPVCDisplayedNativeFriendFinder = @"DisplayedNativeFriendFinder"
     _featuredImageSource.delegate = nil;
     [[NSNotificationCenter defaultCenter] removeObserver:self];
 	self.readerReblogFormView = nil;
-	self.friendFinderNudgeView = nil;
 }
 
 - (id)init {
@@ -166,9 +163,7 @@ NSString *const RPVCDisplayedNativeFriendFinder = @"DisplayedNativeFriendFinder"
 
 - (void)viewWillAppear:(BOOL)animated {
 	[super viewWillAppear:animated];
-	
-    [self performSelector:@selector(showFriendFinderNudgeView:) withObject:self afterDelay:3.0];
-    	
+	   
 	self.title = [[[ReaderPost currentTopic] objectForKey:@"title"] capitalizedString];
     [self loadImagesForVisibleRows];
 	
@@ -956,73 +951,6 @@ NSString *const RPVCDisplayedNativeFriendFinder = @"DisplayedNativeFriendFinder"
 
     return tabBarSize;
 }
-
-
-#pragma mark - Friend Finder Button
-
-- (BOOL)shouldDisplayfriendFinderNudgeView {
-    NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
-    return ![userDefaults boolForKey:RPVCDisplayedNativeFriendFinder] && self.friendFinderNudgeView == nil;
-}
-
-- (void)showFriendFinderNudgeView:(id)sender {
-    if ([self shouldDisplayfriendFinderNudgeView]) {
-        NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
-        
-        [userDefaults setBool:YES forKey:RPVCDisplayedNativeFriendFinder];
-        [userDefaults synchronize];
-        
-        CGRect buttonFrame = CGRectMake(0,self.navigationController.view.frame.size.height,self.view.frame.size.width, 0.f);
-        WPFriendFinderNudgeView *nudgeView = [[WPFriendFinderNudgeView alloc] initWithFrame:buttonFrame];
-        self.friendFinderNudgeView = nudgeView;
-        self.friendFinderNudgeView.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleBottomMargin;
-        [self.navigationController.view addSubview:self.friendFinderNudgeView];
-        
-        CGSize tabBarSize = [self tabBarSize];
-        
-        buttonFrame = self.friendFinderNudgeView.frame;
-        buttonFrame.origin.y = self.navigationController.view.frame.size.height - buttonFrame.size.height - tabBarSize.height;
-        
-        [self.friendFinderNudgeView.cancelButton addTarget:self action:@selector(hideFriendFinderNudgeView:) forControlEvents:UIControlEventTouchUpInside];
-        [self.friendFinderNudgeView.confirmButton addTarget:self action:@selector(openFriendFinder:) forControlEvents:UIControlEventTouchUpInside];
-        
-        [UIView animateWithDuration:0.2 animations:^{
-            self.friendFinderNudgeView.frame = buttonFrame;
-        }];
-    }
-}
-
-- (void)hideFriendFinderNudgeView:(id)sender {
-    if (self.friendFinderNudgeView == nil)
-        return;
-    
-    CGRect buttonFrame = self.friendFinderNudgeView.frame;
-    CGRect viewFrame = self.view.frame;
-    buttonFrame.origin.y = viewFrame.size.height + 1.f;
-    [UIView animateWithDuration:0.1 animations:^{
-        self.friendFinderNudgeView.frame = buttonFrame;
-    } completion:^(BOOL finished) {
-        [self.friendFinderNudgeView removeFromSuperview];
-        self.friendFinderNudgeView = nil;
-    }];
-}
-
-- (void)openFriendFinder:(id)sender {
-    [self hideFriendFinderNudgeView:sender];
-    WPFriendFinderViewController *controller = [[WPFriendFinderViewController alloc] initWithNibName:@"WPWebViewController" bundle:nil];
-	
-    UINavigationController *navController = [[UINavigationController alloc] initWithRootViewController:controller];
-    navController.navigationBar.translucent = NO;
-    if (IS_IPAD) {
-        navController.modalTransitionStyle = UIModalTransitionStyleCrossDissolve;
-		navController.modalPresentationStyle = UIModalPresentationFormSheet;
-    }
-	
-    [self presentViewController:navController animated:YES completion:nil];
-    
-    [controller loadURL:kMobileReaderFFURL];
-}
-
 
 #pragma mark - WPTableImageSourceDelegate
 
