@@ -1,5 +1,7 @@
 xcodeproj 'WordPress/WordPress.xcodeproj'
 
+inhibit_all_warnings!
+
 platform :ios, '7.0'
 pod 'AFNetworking',	'1.2.0'
 pod 'Reachability',	'3.0.0'
