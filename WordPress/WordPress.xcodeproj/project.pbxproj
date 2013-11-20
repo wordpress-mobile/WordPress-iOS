@@ -1315,7 +1315,6 @@
 		46F8714E1838C41600BC149B /* NSDate+StringFormatting.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSDate+StringFormatting.m"; sourceTree = "<group>"; };
 		46F871501839528C00BC149B /* reader-postaction-time.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "reader-postaction-time.png"; path = "Resources/Images/reader-postaction-time.png"; sourceTree = "<group>"; };
 		46F871511839528C00BC149B /* reader-postaction-time@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "reader-postaction-time@2x.png"; path = "Resources/Images/reader-postaction-time@2x.png"; sourceTree = "<group>"; };
-		46F871551839802100BC149B /* WordPress 13.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = file; path = "WordPress 13.xcdatamodel"; sourceTree = "<group>"; };
 		5D0077A5182AE9DF00F865DB /* ReaderMediaQueue.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ReaderMediaQueue.h; sourceTree = "<group>"; };
 		5D0077A6182AE9DF00F865DB /* ReaderMediaQueue.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ReaderMediaQueue.m; sourceTree = "<group>"; };
 		5D119DA1176FBE040073D83A /* UIImageView+AFNetworkingExtra.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIImageView+AFNetworkingExtra.h"; sourceTree = "<group>"; };
@@ -2960,8 +2959,6 @@
 				85EC44D31739826A00686604 /* CreateAccountAndBlogViewController.m */,
 				858DE40D1730384F000AC628 /* LoginViewController.h */,
 				858DE40E1730384F000AC628 /* LoginViewController.m */,
-				85E1058F1731D066001071A3 /* LoginCompletedWalkthroughViewController.h */,
-				85E105901731D066001071A3 /* LoginCompletedWalkthroughViewController.m */,
 				85D08A5C17332C4A00E2BBCA /* NewAddUsersBlogViewController.h */,
 				85D08A5D17332C4A00E2BBCA /* NewAddUsersBlogViewController.m */,
 				85B6F7501742DAE800CE7F3A /* WPNUXBackButton.h */,
@@ -5049,10 +5046,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				371C3682156CD12D007EA03E /* SectionInfo.m in Sources */,
 				C545E0A21811B9880020844C /* ContextManager.m in Sources */,
-				371C3683156CD12D007EA03E /* SidebarSectionHeaderView.m in Sources */,
-				853259FC17BAFA77008E87D1 /* SidebarBadgeView.m in Sources */,
 				1D60589B0D05DD56006BFB54 /* main.m in Sources */,
 				1D3623260D0F684500981E51 /* WordPressAppDelegate.m in Sources */,
 				2F970F740DF92274006BD934 /* PostsViewController.m in Sources */,
