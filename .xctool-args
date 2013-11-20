@@ -1,5 +1,4 @@
 [
 	"-workspace", "WordPress.xcworkspace",
 	"-scheme", "WordPress",
-	"-sdk", "iphonesimulator",
 ]
