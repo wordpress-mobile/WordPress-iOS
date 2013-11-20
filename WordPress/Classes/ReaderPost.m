@@ -62,6 +62,9 @@ NSString *const ReaderExtrasArrayKey = @"ReaderExtrasArrayKey";
 @dynamic storedComment;
 @dynamic summary;
 @dynamic comments;
+@dynamic primaryTagName;
+@dynamic primaryTagSlug;
+@dynamic tags;
 
 + (void)load {
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(handleLogoutNotification:) name:WordPressComApiDidLogoutNotification object:nil];
@@ -121,7 +124,7 @@ NSString *const ReaderExtrasArrayKey = @"ReaderExtrasArrayKey";
 
 
 + (NSArray *)fetchPostsForEndpoint:(NSString *)endpoint withContext:(NSManagedObjectContext *)context {
-
+    WPFLogMethod();
 	NSFetchRequest *request = [[NSFetchRequest alloc] init];
     [request setEntity:[NSEntityDescription entityForName:@"ReaderPost" inManagedObjectContext:context]];
 	
@@ -141,15 +144,23 @@ NSString *const ReaderExtrasArrayKey = @"ReaderExtrasArrayKey";
 
 
 + (void)syncPostsFromEndpoint:(NSString *)endpoint withArray:(NSArray *)arr withContext:(NSManagedObjectContext *)context success:(void (^)())success {
+    WPFLogMethod();
     if (![arr isKindOfClass:[NSArray class]] || [arr count] == 0) {
 		if (success) {
 			dispatch_async(dispatch_get_main_queue(), success);
 		}
         return;
     }
-    NSManagedObjectContext *backgroundMoc = [[NSManagedObjectContext alloc] initWithConcurrencyType:NSPrivateQueueConcurrencyType];
-    [backgroundMoc setParentContext:context];
-	
+    
+    // Reuse the same background context for every call. Update the parent context if necessary
+    static NSManagedObjectContext *backgroundMoc;
+    if (backgroundMoc == nil) {
+		backgroundMoc = [[NSManagedObjectContext alloc] initWithConcurrencyType:NSPrivateQueueConcurrencyType];
+    }
+    if (![backgroundMoc.parentContext isEqual:context]) {
+        [backgroundMoc setParentContext:context];
+    }
+
     [backgroundMoc performBlock:^{
         NSError *error;
         for (NSDictionary *postData in arr) {
@@ -157,16 +168,15 @@ NSString *const ReaderExtrasArrayKey = @"ReaderExtrasArrayKey";
                 continue;
             }
             [self createOrUpdateWithDictionary:postData forEndpoint:endpoint withContext:backgroundMoc];
-			
         }
 		
         if(![backgroundMoc save:&error]){
-            WPFLog(@"Failed to sync ReaderPosts: %@", error);
+            DDLogError(@"Failed to sync ReaderPosts: %@", error);
         }
         [context performBlock:^{
             NSError *error;
             if (![context save:&error]) {
-                WPFLog(@"Failed to sync ReaderPosts: %@", error);
+                DDLogError(@"Failed to sync ReaderPosts: %@", error);
             }
         }];
 		
@@ -178,7 +188,7 @@ NSString *const ReaderExtrasArrayKey = @"ReaderExtrasArrayKey";
 
 
 + (void)deletePostsSyncedEarlierThan:(NSDate *)syncedDate withContext:(NSManagedObjectContext *)context {
-
+    WPFLogMethod();
 	NSFetchRequest *request = [[NSFetchRequest alloc] init];
     [request setEntity:[NSEntityDescription entityForName:@"ReaderPost" inManagedObjectContext:context]];
 	
@@ -189,7 +199,7 @@ NSString *const ReaderExtrasArrayKey = @"ReaderExtrasArrayKey";
     NSArray *array = [context executeFetchRequest:request error:&error];
 
     if ([array count]) {
-		WPFLog(@"Deleting %i ReaderPosts synced earlier than: %@ ", [array count], syncedDate);
+		DDLogInfo(@"Deleting %i ReaderPosts synced earlier than: %@ ", [array count], syncedDate);
         for (ReaderPost *post in array) {
             [context deleteObject:post];
         }
@@ -202,6 +212,12 @@ NSString *const ReaderExtrasArrayKey = @"ReaderExtrasArrayKey";
 	NSNumber *blogSiteID = [dict numberForKey:@"site_id"];
 	NSNumber *siteID = [dict numberForKey:@"blog_id"];
 	NSNumber *postID = [dict numberForKey:@"ID"];
+    
+    // Some endpoints (e.g. tags) use different case
+    if (siteID == nil) {
+        siteID = [dict numberForKey:@"site_ID"];
+        blogSiteID = [dict numberForKey:@"site_ID"];
+    }
 
 	// following, likes and topics endpoints
 	if ([dict valueForKey:@"blog_site_id"] != nil) {
@@ -233,7 +249,7 @@ NSString *const ReaderExtrasArrayKey = @"ReaderExtrasArrayKey";
     NSError *error;
     NSArray *results = [context executeFetchRequest:request error:&error];
     if(error != nil){
-        NSLog(@"Error finding ReaderPost: %@", error);
+        DDLogError(@"Error finding ReaderPost: %@", error);
         return;
     }
 	
@@ -274,7 +290,6 @@ NSString *const ReaderExtrasArrayKey = @"ReaderExtrasArrayKey";
 
 	self.dateSynced = [NSDate date];
 }
-
 
 - (void)updateFromRESTDictionary:(NSDictionary *)dict {
 	// REST api.  Freshly Pressed, sites/site/posts
@@ -344,6 +359,16 @@ NSString *const ReaderExtrasArrayKey = @"ReaderExtrasArrayKey";
 	self.blogURL = [NSString stringWithFormat:@"%@://%@/", url.scheme, url.host];
 	
 	self.summary = [self createSummary:self.content makePlainText:YES];
+    
+    NSDictionary *tagsDict = [dict objectForKey:@"tags"];
+    NSArray *tagsList = [NSArray arrayWithArray:[tagsDict allKeys]];
+    self.tags = [tagsList componentsJoinedByString:@", "];
+    
+    if ([tagsDict count] > 0) {
+        NSDictionary *tagDict = [[tagsDict allValues] objectAtIndex:0];
+        self.primaryTagSlug = tagDict[@"slug"];
+        self.primaryTagName = tagDict[@"name"];
+    }
 }
 
 
@@ -416,6 +441,22 @@ NSString *const ReaderExtrasArrayKey = @"ReaderExtrasArrayKey";
 		img = [img stringByDecodingXMLCharacters];
 		self.postAvatar = [self parseImageSrcFromHTML:img];
 	}
+    
+    NSDictionary *tagsDict = [dict dictionaryForKey:@"topics"];
+    
+    if ([tagsDict count] > 0) {
+        NSArray *tagsList = [NSArray arrayWithArray:[tagsDict allValues]];
+        self.tags = [tagsList componentsJoinedByString:@", "];
+    }
+    
+    NSDictionary *primaryTagDict = [dict objectForKey:@"primary_tag"];
+    if ([primaryTagDict isKindOfClass:[NSDictionary class]]) {
+        self.primaryTagName = primaryTagDict[@"name"];
+        self.primaryTagSlug = primaryTagDict[@"slug"];
+    } else if ([tagsDict count] > 0) {
+        self.primaryTagSlug = [[tagsDict allKeys] objectAtIndex:0];
+        self.primaryTagName = [tagsDict objectForKey:self.primaryTagSlug];
+    }
 }
 
 
@@ -599,6 +640,9 @@ NSString *const ReaderExtrasArrayKey = @"ReaderExtrasArrayKey";
     return [formatter stringFromDate:date];
 }
 
+- (BOOL)isFollowable {
+    return self.siteID != nil;
+}
 
 - (BOOL)isFreshlyPressed {
 	return ([self.endpoint rangeOfString:@"freshly-pressed"].location != NSNotFound)? YES : NO;
@@ -636,6 +680,15 @@ NSString *const ReaderExtrasArrayKey = @"ReaderExtrasArrayKey";
 	return @{@"commentID":commentID, @"comment":commentText};
 }
 
+- (NSString *)authorString {
+    if ([self.blogName length] > 0) {
+        return self.blogName;
+    } else if ([self.authorDisplayName length] > 0) {
+        return self.authorDisplayName;
+    } else {
+        return self.author;
+    }
+}
 
 - (NSString *)avatar {
 	return (self.postAvatar == nil) ? self.authorAvatarURL : self.postAvatar;
@@ -677,8 +730,11 @@ NSString *const ReaderExtrasArrayKey = @"ReaderExtrasArrayKey";
 }
 
 - (NSURL *)featuredImageURL {
-    // FIXME: NSURL fails if the URL contains spaces.
-    return [NSURL URLWithString:self.featuredImage];
+    if (self.featuredImage) {
+        return [NSURL URLWithString:self.featuredImage];
+    }
+
+    return nil;
 }
 
 - (NSString *)featuredImageForWidth:(NSUInteger)width height:(NSUInteger)height {
@@ -692,11 +748,7 @@ NSString *const ReaderExtrasArrayKey = @"ReaderExtrasArrayKey";
 }
 
 - (BOOL)containsVideoPress:(NSString *)str {
-    NSError *error;
-
-    NSRegularExpression *regex = [NSRegularExpression regularExpressionWithPattern:@"<div[\\S\\s]+?<div.*class=\"videopress-placeholder[\\s\\S]*?</noscript>" options:NSRegularExpressionCaseInsensitive error:&error];
-    NSRange match = [regex rangeOfFirstMatchInString:str options:NSRegularExpressionCaseInsensitive range:NSMakeRange(0, [str length])];
-    return (match.location != NSNotFound);
+    return [str rangeOfString:@"class=\"videopress-placeholder"].location != NSNotFound;
 }
 
 - (NSString *)formatVideoPress:(NSString *)str {
@@ -756,7 +808,7 @@ NSString *const ReaderExtrasArrayKey = @"ReaderExtrasArrayKey";
 				 loadingMore:(BOOL)loadingMore
 					 success:(WordPressComApiRestSuccessResponseBlock)success
 					 failure:(WordPressComApiRestSuccessFailureBlock)failure {
-	
+	WPFLogMethod();
 	[[WordPressComApi sharedApi] getPath:path
 							  parameters:params
 								 success:^(AFHTTPRequestOperation *operation, id responseObject) {

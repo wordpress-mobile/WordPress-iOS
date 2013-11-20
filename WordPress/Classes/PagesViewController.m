@@ -27,7 +27,13 @@
     return self;
 }
 
-- (void)syncItemsWithUserInteraction:(BOOL)userInteraction success:(void (^)())success failure:(void (^)(NSError *))failure {
+- (NSString *)noResultsText
+{
+    return NSLocalizedString(@"No pages yet", @"Displayed when the user pulls up the pages view and they have no pages");
+}
+
+
+- (void)syncItemsWithSuccess:(void (^)())success failure:(void (^)(NSError *))failure {
     [self.blog syncPagesWithSuccess:success failure:failure loadMore: NO];
 }
 
@@ -36,7 +42,7 @@
     EditPageViewController *editPostViewController = [[EditPageViewController alloc] initWithPost:[apost createRevision]];
     UINavigationController *navController = [[UINavigationController alloc] initWithRootViewController:editPostViewController];
     navController.modalPresentationStyle = UIModalPresentationCurrentContext;
-    [self.panelNavigationController.detailViewController presentViewController:navController animated:YES completion:nil];
+    [self.navigationController presentViewController:navController animated:YES completion:nil];
 }
 
 // For iPad
@@ -46,30 +52,31 @@
 
     @try {
         page = [self.resultsController objectAtIndexPath:indexPath];
-        WPLog(@"Selected page at indexPath: (%i,%i)", indexPath.section, indexPath.row);
+        DDLogInfo(@"Selected page at indexPath: (%i,%i)", indexPath.section, indexPath.row);
     }
     @catch (NSException *e) {
-        NSLog(@"Can't select page at indexPath (%i,%i)", indexPath.section, indexPath.row);
-        NSLog(@"sections: %@", self.resultsController.sections);
-        NSLog(@"results: %@", self.resultsController.fetchedObjects);
+        DDLogError(@"Can't select page at indexPath (%i,%i)", indexPath.section, indexPath.row);
+        DDLogError(@"sections: %@", self.resultsController.sections);
+        DDLogError(@"results: %@", self.resultsController.fetchedObjects);
         page = nil;
     }
     
     self.postReaderViewController = [[PageViewController alloc] initWithPost:page];
-    [self.panelNavigationController.navigationController pushViewController:self.postReaderViewController animated:YES];
+    [self.navigationController pushViewController:self.postReaderViewController animated:YES];
 }
 
 - (void)showAddPostView {
     [WPMobileStats trackEventForWPCom:StatsEventPagesClickedNewPage];
-
-    if (IS_IPAD)
-        [self resetView];
     
     Page *post = [Page newDraftForBlog:self.blog];
     [self editPost:post];
 }
 
 - (NSString *)tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section {
+    // Don't show a section title if there's only one section
+    if ([tableView numberOfSections] <= 1)
+        return nil;
+
     id <NSFetchedResultsSectionInfo> sectionInfo = [[self.resultsController sections] objectAtIndex:section];
     NSString *sectionName = [sectionInfo name];
     

@@ -41,7 +41,6 @@ CGFloat const AddUsersBlogCellStandardOffset = 16.0;
         _titleLabel.numberOfLines = 0;
         _titleLabel.textColor = [UIColor whiteColor];
         _titleLabel.lineBreakMode = NSLineBreakByWordWrapping;
-        _titleLabel.shadowOffset = CGSizeMake(0.0, 1.0);
         [self addSubview:_titleLabel];
         
         _blavatarImage = [[UIImageView alloc] initWithFrame:CGRectMake(AddUsersBlogCellStandardOffset, 0.5*AddUsersBlogCellStandardOffset, AddUsersBlogCellBlavatarSide, AddUsersBlogCellBlavatarSide)];
@@ -93,14 +92,13 @@ CGFloat const AddUsersBlogCellStandardOffset = 16.0;
     } else {
         _titleLabel.textColor = [UIColor colorWithRed:188.0/255.0 green:221.0/255.0 blue:236.0/255.0 alpha:1.0];
     }
-    _titleLabel.shadowColor = [UIColor colorWithRed:0.0 green:115/255.0 blue:164/255.0 alpha:1.0];
     _titleLabel.frame = CGRectIntegral(CGRectMake(x, y, textSize.width, textSize.height));
     
     // Setup Separators
-    _separator.frame = CGRectMake(AddUsersBlogCellStandardOffset, cellHeight - 2, cellWidth - 2*AddUsersBlogCellStandardOffset, 2);
+    _separator.frame = CGRectMake(AddUsersBlogCellStandardOffset, cellHeight - 2, cellWidth - AddUsersBlogCellStandardOffset, 1);
     
     if (_showTopSeparator) {
-        _topSeparator.frame = CGRectMake(AddUsersBlogCellStandardOffset, 0, cellWidth - 2*AddUsersBlogCellStandardOffset, 2);
+        _topSeparator.frame = CGRectMake(AddUsersBlogCellStandardOffset, 0, cellWidth - AddUsersBlogCellStandardOffset, 1);
     } else {
         _topSeparator.frame = CGRectZero;
     }

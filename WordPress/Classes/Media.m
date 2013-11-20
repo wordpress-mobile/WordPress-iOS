@@ -106,7 +106,7 @@
 - (void)save {
     NSError *error;
     if (![[self managedObjectContext] save:&error]) {
-        WPFLog(@"Unresolved Core Data Save error %@, %@", error, [error userInfo]);
+        DDLogError(@"Unresolved Core Data Save error %@, %@", error, [error userInfo]);
         exit(-1);
     }
 }
@@ -286,7 +286,7 @@
 							  embedWidth, embedHeight, self.remoteURL, self.remoteURL, embedWidth, embedHeight];
 				}
 				
-				NSLog(@"media.html: %@", result);
+				DDLogVerbose(@"media.html: %@", result);
 			}
 		}
 	}

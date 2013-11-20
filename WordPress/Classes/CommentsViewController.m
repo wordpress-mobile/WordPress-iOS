@@ -39,6 +39,11 @@ CGFloat const CommentsSectionHeaderHeight = 24.0;
 	[[NSNotificationCenter defaultCenter] removeObserver:self];
 }
 
+- (NSString *)noResultsText
+{
+    return NSLocalizedString(@"No comments yet", @"Displayed when the user pulls up the comments view and they have no comments");
+}
+
 - (void)viewDidLoad {
     WPFLogMethod();
     
@@ -57,25 +62,16 @@ CGFloat const CommentsSectionHeaderHeight = 24.0;
     self.tableView.tableFooterView = [[UIView alloc] initWithFrame:CGRectZero];
 }
 
-- (UIColor *)backgroundColorForRefreshHeaderView
-{
-    return [WPStyleGuide itsEverywhereGrey];
-}
-
 - (void)viewWillAppear:(BOOL)animated {
     WPFLogMethod();
 
 	[super viewWillAppear:animated];
-    
-    self.panelNavigationController.delegate = self;
 }
 
 - (void)viewWillDisappear:(BOOL)animated {
     WPFLogMethod();
     
-    [super viewWillDisappear:animated];
-    
-    self.panelNavigationController.delegate = nil;
+    [super viewWillDisappear:animated];    
 }
 
 
@@ -103,9 +99,9 @@ CGFloat const CommentsSectionHeaderHeight = 24.0;
             comment = [self.resultsController objectAtIndexPath:indexPath];
         }
         @catch (NSException * e) {
-            WPFLog(@"Can't select comment at indexPath: (%i,%i)", indexPath.section, indexPath.row);
-            WPFLog(@"sections: %@", self.resultsController.sections);
-            WPFLog(@"results: %@", self.resultsController.fetchedObjects);
+            DDLogInfo(@"Can't select comment at indexPath: (%i,%i)", indexPath.section, indexPath.row);
+            DDLogInfo(@"sections: %@", self.resultsController.sections);
+            DDLogInfo(@"results: %@", self.resultsController.fetchedObjects);
             comment = nil;
         }
     }
@@ -120,9 +116,9 @@ CGFloat const CommentsSectionHeaderHeight = 24.0;
         vc.comment = comment;
         [self.tableView selectRowAtIndexPath:indexPath animated:YES scrollPosition:UITableViewScrollPositionNone];
         
-        [self.panelNavigationController pushViewController:vc fromViewController:self animated:YES];
+        [self.navigationController pushViewController:vc animated:YES];
     } else {
-        [self.panelNavigationController popToViewController:self animated:YES];
+        [self.navigationController popToViewController:self animated:YES];
     }
 }
 
@@ -140,7 +136,7 @@ CGFloat const CommentsSectionHeaderHeight = 24.0;
                 [self willChangeValueForKey:@"wantedCommentId"];
                 _wantedCommentId = wantedCommentId;
                 [self didChangeValueForKey:@"wantedCommentId"];
-                [self syncItemsWithUserInteraction:NO];
+                [self syncItems];
             }
         }
     }
@@ -152,8 +148,20 @@ CGFloat const CommentsSectionHeaderHeight = 24.0;
     return comment;
 }
 
+- (NSString *)tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section {
+    // Don't show a section title if there's only one section
+    if ([tableView numberOfSections] <= 1)
+        return nil;
+    
+    return [super tableView:tableView titleForHeaderInSection:section];
+}
+
 - (UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section
 {
+    // Don't show a section title if there's only one section
+    if ([tableView numberOfSections] <= 1)
+        return nil;
+    
     id <NSFetchedResultsSectionInfo> sectionInfo = [[self.resultsController sections] objectAtIndex:section];
     NSString *title = [Comment titleForStatus:[sectionInfo name]];
     
@@ -170,11 +178,6 @@ CGFloat const CommentsSectionHeaderHeight = 24.0;
     [view addSubview:label];
 
     return view;
-}
-
-- (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section
-{
-    return CommentsSectionHeaderHeight;
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
@@ -223,7 +226,7 @@ CGFloat const CommentsSectionHeaderHeight = 24.0;
     return cell;
 }
 
-- (void)syncItemsWithUserInteraction:(BOOL)userInteraction success:(void (^)())success failure:(void (^)(NSError *))failure {
+- (void)syncItemsWithSuccess:(void (^)())success failure:(void (^)(NSError *))failure {
     [self.blog syncCommentsWithSuccess:success failure:failure];
 }
 

@@ -80,17 +80,6 @@
     return self;
 }
 
-/*
-// Only override drawRect: if you perform custom drawing.
-// An empty implementation adversely affects performance during animation.
-- (void)drawRect:(CGRect)rect
-{
-    // Drawing code
-    [FileLogger log:@"%@ %@", self, NSStringFromSelector(_cmd)];
-    [super drawRect:rect];
-}
-*/
-
 #pragma mark -
 #pragma mark Custom methods
 
@@ -167,7 +156,7 @@
 }
 
 - (void)tap {
-    [FileLogger log:@"%@ %@", self, NSStringFromSelector(_cmd)];
+    DDLogInfo(@"%@ %@", self, NSStringFromSelector(_cmd));
     active = ! active;
     
     if (self.delegate) {

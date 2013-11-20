@@ -83,7 +83,7 @@
 	
     NSError *error;
     if(![context save:&error]){
-        NSLog(@"Failed to sync ReaderComments: %@", error);
+        DDLogError(@"Failed to sync ReaderComments: %@", error);
     }
 	
 	// Thread relationships
@@ -108,7 +108,7 @@
 	}];
 	
 	if(![context save:&error]){
-        NSLog(@"Failed to set ReaderComment Relationships: %@", error);
+        DDLogError(@"Failed to set ReaderComment Relationships: %@", error);
     }
 	
 	// Update depths
@@ -124,7 +124,7 @@
 	updateDepth(commentsArr, @0);
 	
     if(![context save:&error]){
-        NSLog(@"Failed to set ReaderComment Depths: %@", error);
+        DDLogError(@"Failed to set ReaderComment Depths: %@", error);
     }
 }
 
@@ -139,7 +139,7 @@
     NSError *error;
     NSArray *results = [context executeFetchRequest:request error:&error];
     if(error != nil){
-        NSLog(@"Error finding ReaderPost: %@", error);
+        DDLogError(@"Error finding ReaderPost: %@", error);
         return;
     }
 
@@ -182,26 +182,6 @@
 
     self.status = [dict objectForKey:@"status"];
     self.type = [dict objectForKey:@"type"];
-
-}
-
-
-- (NSString *)shortDate {
-
-	NSString *str;
-	NSTimeInterval diff = [[NSDate date] timeIntervalSince1970] - [self.dateCreated timeIntervalSince1970];
-
-	if(diff < 60) {
-		str = [NSString stringWithFormat:@"%is", (int)diff];
-	} else if(diff < 3600) {
-		str = [NSString stringWithFormat:@"%im", (int)floor(diff / 60)];
-	} else if (diff < 86400) {
-		str = [NSString stringWithFormat:@"%ih", (int)floor(diff / 3600)];
-	} else {
-		str = [NSString stringWithFormat:@"%id", (int)floor(diff / 86400)];
-	}
-
-	return str;
 
 }
 

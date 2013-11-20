@@ -72,7 +72,7 @@
 }
 
 - (void)viewDidLoad {
-    [FileLogger log:@"%@ %@", self, NSStringFromSelector(_cmd)];
+    DDLogInfo(@"%@ %@", self, NSStringFromSelector(_cmd));
     [super viewDidLoad];
     
     if (IS_IOS7) {
@@ -318,7 +318,7 @@
     if (media.remoteStatus == MediaRemoteStatusFailed) {
         [media uploadWithSuccess:^{
             if (([media isDeleted])) {
-                NSLog(@"Media deleted while uploading (%@)", media);
+                DDLogWarn(@"Media deleted while uploading (%@)", media);
                 return;
             }
             [[NSNotificationCenter defaultCenter] postNotificationName:@"ShouldInsertMediaBelow" object:media];
@@ -382,7 +382,7 @@
 #pragma mark Custom methods
 
 - (void)scaleAndRotateImage:(UIImage *)image {
-	NSLog(@"scaling and rotating image...");
+	DDLogVerbose(@"scaling and rotating image...");
 }
 
 - (IBAction)showVideoPickerActionSheet:(id)sender {
@@ -833,7 +833,6 @@
         NSString *originalSizeStr = [NSString stringWithFormat:NSLocalizedString(@"Original (%@)", @"Original (width x height)"), [NSString stringWithFormat:@"%ix%i", (int)originalSize.width, (int)originalSize.height]];
         
 		UIActionSheet *resizeActionSheet;
-		//NSLog(@"img dimension: %f x %f ",currentImage.size.width, currentImage.size.height );
 		
 		if(currentImage.size.width > largeSize.width  && currentImage.size.height > largeSize.height) {
 			resizeActionSheet = [[UIActionSheet alloc] initWithTitle:NSLocalizedString(@"Choose Image Size", @"") 
@@ -1109,7 +1108,6 @@
             }
 			case 4:
             {
-				//[self useImage:currentImage];
                 [self useImage:[self resizeImage:currentImage toSize:kResizeOriginal]];
 				break;
             }
@@ -1124,7 +1122,9 @@
             [addPopover dismissPopoverAnimated:YES];
             [[CPopoverManager instance] setCurrentPopoverController:nil];
             addPopover = nil;
-            [self showResizeActionSheet];
+            if (showResizeActionSheet) {
+                [self showResizeActionSheet];
+            }
         } else {
             [postDetailViewController.navigationController dismissViewControllerAnimated:YES completion:^{
                 if (showResizeActionSheet) {
@@ -1152,7 +1152,7 @@
 				   resultBlock: ^(ALAsset *myasset) {
 					   ALAssetRepresentation *rep = [myasset defaultRepresentation];
 					   
-					   WPLog(@"getJPEGFromAssetForURL: default asset representation for %@: uti: %@ size: %lld url: %@ orientation: %d scale: %f metadata: %@", 
+					   DDLogInfo(@"getJPEGFromAssetForURL: default asset representation for %@: uti: %@ size: %lld url: %@ orientation: %d scale: %f metadata: %@",
 							 url, [rep UTI], [rep size], [rep url], [rep orientation], 
 							 [rep scale], [rep metadata]);
 					   
@@ -1164,7 +1164,7 @@
 						   // Are err and bytes == 0 redundant? Doc says 0 return means 
 						   // error occurred which presumably means NSError is returned.
 						   free(buf); // Free up memory so we don't leak.
-						   WPLog(@"error from getBytes: %@", err);
+						   DDLogError(@"error from getBytes: %@", err);
 						   
 						   return;
 					   } 
@@ -1192,7 +1192,7 @@
 					   CFRelease(source);
 				   }
 				  failureBlock: ^(NSError *err) {
-					  WPLog(@"can't get asset %@: %@", url, err);
+					  DDLogError(@"can't get asset %@: %@", url, err);
 					  self.currentImageMetadata = nil;
 				  }];
 }
@@ -1406,14 +1406,14 @@
                 //It will return false if something goes wrong
                 success = CGImageDestinationFinalize(destination);
             } else {
-                WPFLog(@"***Could not create image destination ***");
+                DDLogError(@"***Could not create image destination ***");
             }
         } else {
-            WPFLog(@"***Could not create image source ***");
+            DDLogError(@"***Could not create image source ***");
         }
 		
 		if(!success) {
-			WPLog(@"***Could not create data from image destination ***");
+			DDLogInfo(@"***Could not create data from image destination ***");
 			//write the data without EXIF to disk
 			NSFileManager *fileManager = [NSFileManager defaultManager];
 			[fileManager createFileAtPath:filepath contents:imageData attributes:nil];
@@ -1451,7 +1451,7 @@
 
     [imageMedia uploadWithSuccess:^{
         if ([imageMedia isDeleted]) {
-            NSLog(@"Media deleted while uploading (%@)", imageMedia);
+            DDLogWarn(@"Media deleted while uploading (%@)", imageMedia);
             return;
         }
         if (!isPickingFeaturedImage) {
@@ -1550,7 +1550,7 @@
 
 		[videoMedia uploadWithSuccess:^{
             if ([videoMedia isDeleted]) {
-                NSLog(@"Media deleted while uploading (%@)", videoMedia);
+                DDLogWarn(@"Media deleted while uploading (%@)", videoMedia);
                 return;
             }
             [[NSNotificationCenter defaultCenter] postNotificationName:@"ShouldInsertMediaBelow" object:videoMedia];
@@ -1596,7 +1596,7 @@
 - (void)mediaDidUploadSuccessfully:(NSNotification *)notification {
     Media *media = (Media *)[notification object];
     if ((media == nil) || ([media isDeleted])) {
-        NSLog(@"Media deleted while uploading (%@)", media);
+        DDLogWarn(@"Media deleted while uploading (%@)", media);
         return;
     }
     [[NSNotificationCenter defaultCenter] postNotificationName:@"ShouldInsertMediaBelow" object:media];
@@ -1626,7 +1626,7 @@
         self.videoEnabled = enabled;
         self.isCheckingVideoCapability = NO;
     } failure:^(NSError *error) {
-        WPLog(@"checkVideoPressEnabled failed: %@", [error localizedDescription]);
+        DDLogError(@"checkVideoPressEnabled failed: %@", [error localizedDescription]);
         self.videoEnabled = YES;
         self.isCheckingVideoCapability = NO;
     }];
@@ -1662,7 +1662,7 @@
     
     NSError *error = nil;
     if (![resultsController performFetch:&error]) {
-        NSLog(@"Couldn't fetch media");
+        DDLogWarn(@"Couldn't fetch media");
         resultsController = nil;
     }
     

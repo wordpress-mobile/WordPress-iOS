@@ -37,7 +37,7 @@ static const float statusLabelMaxWidthPortrait = 100.f;
 
 
 - (void)setSaving:(BOOL)value {
-    [FileLogger log:@"%@ %@", self, NSStringFromSelector(_cmd)];
+    DDLogInfo(@"%@ %@", self, NSStringFromSelector(_cmd));
     saving = value;
 
     if (saving) {
@@ -122,8 +122,6 @@ static const float statusLabelMaxWidthPortrait = 100.f;
         expectedStatusLabelWidth = expectedstatusLabelSize.width > statusLabelMaxWidthLandscape ? statusLabelMaxWidthLandscape : expectedstatusLabelSize.width;
     }
     
-    //NSLog(@"width of status label %f", expectedStatusLabelLength);
-    
     CGFloat x = self.frame.size.width - expectedStatusLabelWidth - RIGHT_MARGIN;
     if ( IS_IPHONE )
         x = x - 22; //the disclousure size
@@ -146,7 +144,6 @@ static const float statusLabelMaxWidthPortrait = 100.f;
     [super prepareForReuse];
 	//change back the things that are different about the "more posts/pages/comments" cell so that reuse
 	//does not cause UI strangeness for users
-	self.contentView.backgroundColor = TABLE_VIEW_CELL_BACKGROUND_COLOR;
 	nameLabel.textColor = [UIColor blackColor];
 	dateLabel.textColor = [UIColor lightGrayColor];
 	self.accessoryType = UITableViewCellAccessoryDisclosureIndicator;

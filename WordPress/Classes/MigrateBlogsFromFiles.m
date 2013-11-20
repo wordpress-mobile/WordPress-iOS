@@ -20,7 +20,7 @@
     if ([fileManager fileExistsAtPath:blogsArchiveFilePath]) {
         // set method will release, make mutable copy and retain
         NSArray *blogs = [NSKeyedUnarchiver unarchiveObjectWithFile:blogsArchiveFilePath];
-		WPFLog(@"Got blogs list from 2.6: %i blogs", [blogs count]);
+		DDLogInfo(@"Got blogs list from 2.6: %i blogs", [blogs count]);
 		
 		NSError *error = nil;
 		
@@ -40,7 +40,7 @@
 			NSArray *results = [destMOC executeFetchRequest:fetchRequest error:&error];
 			if (results && [results count] > 0) {
 				// Don't duplicate blogs
-				WPFLog(@"! Skipping already imported blog %@", [blogInfo valueForKey:@"blogName"]);
+				DDLogInfo(@"! Skipping already imported blog %@", [blogInfo valueForKey:@"blogName"]);
 				continue;
 			}
 			
@@ -63,9 +63,9 @@
 				[blog setValue:geo forKey:@"geolocationEnabled"];
 			}
 			if ([blog validateForInsert:&error]) {
-				WPFLog(@"* Migrated blog %@", [blog valueForKey:@"blogName"]);
+				DDLogInfo(@"* Migrated blog %@", [blog valueForKey:@"blogName"]);
 			} else {
-				WPFLog(@"! Failed migration for blog %@: %@", [blog valueForKey:@"blogName"], [error localizedDescription]);
+				DDLogInfo(@"! Failed migration for blog %@: %@", [blog valueForKey:@"blogName"], [error localizedDescription]);
 			}
 			
 			
@@ -80,9 +80,9 @@
 				[category setValue:[[categoryInfo valueForKey:@"parentId"] numericValue] forKey:@"parentID"];
 				
 				if ([category validateForInsert:&error]) {
-					WPFLog(@"** Migrated category %@ in blog %@", [category valueForKey:@"categoryName"], [blog valueForKey:@"blogName"]);
+					DDLogInfo(@"** Migrated category %@ in blog %@", [category valueForKey:@"categoryName"], [blog valueForKey:@"blogName"]);
 				} else {
-					WPFLog(@"!! Failed migration for category %@ in blog %@: %@", [category valueForKey:@"categoryName"], [blog valueForKey:@"blogName"], [error localizedDescription]);
+					DDLogInfo(@"!! Failed migration for category %@ in blog %@: %@", [category valueForKey:@"categoryName"], [blog valueForKey:@"blogName"], [error localizedDescription]);
 				}
 			}
 		}
@@ -92,20 +92,20 @@
 }
 
 - (BOOL)beginEntityMapping:(NSEntityMapping *)mapping manager:(NSMigrationManager *)manager error:(NSError **)error {
-	WPFLog(@"%@ %@ (%@ -> %@)", self, NSStringFromSelector(_cmd), [mapping sourceEntityName], [mapping destinationEntityName]);
-	WPFLog(@"beginEntityMapping");
+	DDLogInfo(@"%@ %@ (%@ -> %@)", self, NSStringFromSelector(_cmd), [mapping sourceEntityName], [mapping destinationEntityName]);
+	DDLogInfo(@"beginEntityMapping");
 	NSManagedObjectContext *destMOC = [manager destinationContext];
 
 	return [self forceBlogsMigrationInContext:destMOC error:error];
 }
 
 - (BOOL)endEntityMapping:(NSEntityMapping *)mapping manager:(NSMigrationManager *)manager error:(NSError **)error {
-	WPFLog(@"%@ %@ (%@ -> %@)", self, NSStringFromSelector(_cmd), [mapping sourceEntityName], [mapping destinationEntityName]);
+	DDLogInfo(@"%@ %@ (%@ -> %@)", self, NSStringFromSelector(_cmd), [mapping sourceEntityName], [mapping destinationEntityName]);
 	return YES;
 }
 
 - (BOOL)performCustomValidationForEntityMapping:(NSEntityMapping *)mapping manager:(NSMigrationManager *)manager error:(NSError **)error {
-	WPFLog(@"%@ %@ (%@ -> %@)", self, NSStringFromSelector(_cmd), [mapping sourceEntityName], [mapping destinationEntityName]);
+	DDLogInfo(@"%@ %@ (%@ -> %@)", self, NSStringFromSelector(_cmd), [mapping sourceEntityName], [mapping destinationEntityName]);
 	return YES;
 }
 
@@ -114,7 +114,7 @@
                                             manager:(NSMigrationManager *)manager 
                                               error:(NSError **)error
 {		
-	WPFLog(@"%@ %@ (%@ -> %@)", self, NSStringFromSelector(_cmd), [mapping sourceEntityName], [mapping destinationEntityName]);
+	DDLogInfo(@"%@ %@ (%@ -> %@)", self, NSStringFromSelector(_cmd), [mapping sourceEntityName], [mapping destinationEntityName]);
     return YES;
 }
 
@@ -123,7 +123,7 @@
                                           manager:(NSMigrationManager*)manager 
                                             error:(NSError**)error
 {
-	WPFLog(@"%@ %@ (%@ -> %@)", self, NSStringFromSelector(_cmd), [mapping sourceEntityName], [mapping destinationEntityName]);
+	DDLogInfo(@"%@ %@ (%@ -> %@)", self, NSStringFromSelector(_cmd), [mapping sourceEntityName], [mapping destinationEntityName]);
     return YES;
 }
 

@@ -36,10 +36,7 @@
 - (IBAction)deselectAllBlogs:(id)sender;
 - (void)refreshBlogs;
 - (IBAction)saveSelectedBlogs:(id)sender;
-- (void)createBlog:(NSDictionary *)blogInfo;
 - (void)saveSelectedBlogs;
-- (void)didSaveSelectedBlogsInBackground;
-- (void)signOut;
 - (void)checkAddSelectedButtonStatus;
 
 @end

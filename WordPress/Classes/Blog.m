@@ -114,7 +114,7 @@
     NSString *url = [NSURL IDNDecodedHostname:self.url];
     NSAssert(url != nil, @"Decoded url shouldn't be nil");
     if (url == nil) {
-        WPFLog(@"displayURL: decoded url is nil: %@", self.url);
+        DDLogInfo(@"displayURL: decoded url is nil: %@", self.url);
         return self.url;
     }
     NSError *error = nil;
@@ -275,7 +275,7 @@
     __block NSError *error = nil;
     [context performBlock:^{
         if (![context save:&error]) {
-            WPFLog(@"Unresolved Core Data Save error %@, %@", error, [error userInfo]);
+            DDLogInfo(@"Unresolved Core Data Save error %@, %@", error, [error userInfo]);
             #if DEBUG
             exit(-1);
             #endif
@@ -283,7 +283,7 @@
         if (context.parentContext) {
             [context.parentContext performBlock:^{
                 if (![context.parentContext save:&error]) {
-                    WPFLog(@"Unresolved Core Data Save error %@, %@", error, [error userInfo]);
+                    DDLogInfo(@"Unresolved Core Data Save error %@, %@", error, [error userInfo]);
                     #if DEBUG
                     exit(-1);
                     #endif
@@ -303,7 +303,7 @@
 }
 
 - (void)remove {
-    WPFLog(@"<Blog:%@> remove", self.hostURL);
+    DDLogInfo(@"<Blog:%@> remove", self.hostURL);
     [self.api cancelAllHTTPOperations];
     _reachability.reachableBlock = nil;
     _reachability.unreachableBlock = nil;
@@ -402,7 +402,7 @@
 
 - (void)syncPostsWithSuccess:(void (^)())success failure:(void (^)(NSError *error))failure loadMore:(BOOL)more {
     if (self.isSyncingPosts) {
-        WPLog(@"Already syncing posts. Skip");
+        DDLogWarn(@"Already syncing posts. Skip");
         return;
     }
     self.isSyncingPosts = YES;
@@ -413,7 +413,7 @@
 
 - (void)syncPagesWithSuccess:(void (^)())success failure:(void (^)(NSError *error))failure loadMore:(BOOL)more {
 	if (self.isSyncingPages) {
-        WPLog(@"Already syncing pages. Skip");
+        DDLogWarn(@"Already syncing pages. Skip");
         return;
     }
     self.isSyncingPages = YES;
@@ -441,7 +441,7 @@
 
 - (void)syncCommentsWithSuccess:(void (^)())success failure:(void (^)(NSError *error))failure {
 	if (self.isSyncingComments) {
-        WPLog(@"Already syncing comments. Skip");
+        DDLogWarn(@"Already syncing comments. Skip");
         return;
     }
     self.isSyncingComments = YES;
@@ -463,16 +463,19 @@
     [operations addObject:operation];
     operation = [self operationForCategoriesWithSuccess:nil failure:nil];
     [operations addObject:operation];
+    
     if (!self.isSyncingComments) {
         operation = [self operationForCommentsWithSuccess:nil failure:nil];
         [operations addObject:operation];
         self.isSyncingComments = YES;
     }
+    
     if (!self.isSyncingPosts) {
         operation = [self operationForPostsWithSuccess:nil failure:nil loadMore:NO];
         [operations addObject:operation];
         self.isSyncingPosts = YES;
     }
+    
     if (!self.isSyncingPages) {
         operation = [self operationForPagesWithSuccess:nil failure:nil loadMore:NO];
         [operations addObject:operation];
@@ -480,14 +483,17 @@
     }
 
     AFHTTPRequestOperation *combinedOperation = [self.api combinedHTTPRequestOperationWithOperations:operations success:^(AFHTTPRequestOperation *operation, id responseObject) {
+        DDLogVerbose(@"syncBlogWithSuccess:failure: completed successfully.");
         if (success) {
             success();
         }
     } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+        DDLogError(@"syncBlogWithSuccess:failure: encountered an error: %@", error);
         if (failure) {
             failure(error);
         }
     }];
+    
     [self.api enqueueHTTPRequestOperation:combinedOperation];
 }
 
@@ -525,19 +531,30 @@
                 }
                 if (success) success();
             } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+                DDLogError(@"Error while checking if VideoPress is enabled: %@", error);
+                
                 NSString *errorMessage = [error localizedDescription];
                 
+                // FIXME - This is very fragile checking error messages text
                 if ([errorMessage isEqualToString:@"Parse Error. Please check your XML-RPC endpoint."])
                 {
                     [self setIsActivated:[NSNumber numberWithBool:YES]];
                     [self dataSave];
-                    if (success) success();
+                    if (success) {
+                        success();
+                    }
                 } else if ([errorMessage isEqualToString:@"Site not activated."]) {
-                    if (failure) failure(error);
+                    if (failure) {
+                        failure(error);
+                    }
                 } else if ([errorMessage isEqualToString:@"Blog not found."]) {
-                    if (failure) failure(error);
+                    if (failure) {
+                        failure(error);
+                    }
                 } else {
-                    if (failure) failure(error);
+                    if (failure) {
+                        failure(error);
+                    }
                 }
                 
             }];
@@ -552,14 +569,21 @@
     WPXMLRPCRequest *request = [self.api XMLRPCRequestWithMethod:@"wpcom.getFeatures" parameters:parameters];
     WPXMLRPCRequestOperation *operation = [self.api XMLRPCRequestOperationWithRequest:request success:^(AFHTTPRequestOperation *operation, id responseObject) {
         BOOL videoEnabled = YES;
-        if(([responseObject isKindOfClass:[NSDictionary class]]) && ([responseObject objectForKey:@"videopress_enabled"] != nil))
+        if(([responseObject isKindOfClass:[NSDictionary class]]) && ([responseObject objectForKey:@"videopress_enabled"] != nil)) {
             videoEnabled = [[responseObject objectForKey:@"videopress_enabled"] boolValue];
-        else
+        } else {
             videoEnabled = YES;
+        }
 
-        if (success) success(videoEnabled);
+        if (success) {
+            success(videoEnabled);
+        }
     } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
-        if (failure) failure(error);
+        DDLogError(@"Error while checking if VideoPress is enabled: %@", error);
+        
+        if (failure) {
+            failure(error);
+        }
     }];
     [self.api enqueueXMLRPCRequestOperation:operation];
 }
@@ -600,7 +624,7 @@
             success();
         }
     } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
-        WPFLog(@"Error syncing options: %@", [error localizedDescription]);
+        DDLogError(@"Error syncing options: %@", error);
 
         if (failure) {
             failure(error);
@@ -639,7 +663,7 @@
             success();
         }
     } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
-        WPFLog(@"Error syncing post formats: %@", [error localizedDescription]);
+        DDLogError(@"Error syncing post formats: %@", error);
 
         if (failure) {
             failure(error);
@@ -666,7 +690,7 @@
         }
         [[NSNotificationCenter defaultCenter] postNotificationName:kCommentsChangedNotificationName object:self];
     } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
-        WPFLog(@"Error syncing comments: %@", [error localizedDescription]);
+        DDLogError(@"Error syncing comments: %@", error);
         self.isSyncingComments = NO;
 
         if (failure) {
@@ -690,7 +714,7 @@
             success();
         }
     } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
-        WPFLog(@"Error syncing categories: %@", [error localizedDescription]);
+        DDLogError(@"Error syncing categories: %@", error);
 
         if (failure) {
             failure(error);
@@ -743,7 +767,7 @@
             success();
         }
     } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
-        WPFLog(@"Error syncing posts: %@", [error localizedDescription]);
+        DDLogError(@"Error syncing posts: %@", error);
         self.isSyncingPosts = NO;
 
         if (failure) {
@@ -796,7 +820,7 @@
             success();
         }
     } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
-        WPFLog(@"Error syncing pages: %@", [error localizedDescription]);
+        DDLogError(@"Error syncing pages: %@", error);
         self.isSyncingPages = NO;
 
         if (failure) {
@@ -820,7 +844,7 @@
         if (newCat != nil) {
             [categoriesToKeep addObject:newCat];
         } else {
-            WPFLog(@"-[Category createOrReplaceFromDictionary:forBlog:] returned a nil category: %@", categoryInfo);
+            DDLogInfo(@"-[Category createOrReplaceFromDictionary:forBlog:] returned a nil category: %@", categoryInfo);
         }
     }
 
@@ -828,7 +852,7 @@
 	if (syncedCategories && (syncedCategories.count > 0)) {
 		for (Category *cat in syncedCategories) {
 			if(![categoriesToKeep containsObject:cat]) {
-				WPLog(@"Deleting Category: %@", cat);
+				DDLogInfo(@"Deleting Category: %@", cat);
 				[[self managedObjectContext] deleteObject:cat];
 			}
 		}
@@ -883,8 +907,8 @@
                     }
                 } else {
                     //post is not on the server anymore. delete it.
-                    WPLog(@"Deleting post: %@", post.postTitle);
-                    WPLog(@"%d posts left", [self.posts count]);
+                    DDLogInfo(@"Deleting post: %@", post.postTitle);
+                    DDLogInfo(@"%d posts left", [self.posts count]);
                     [backgroundMOC deleteObject:post];
                 }
             }
@@ -937,7 +961,7 @@
                     }
                 } else {
                     //page is not on the server anymore. delete it.
-                    WPLog(@"Deleting page: %@", page);
+                    DDLogInfo(@"Deleting page: %@", page);
                     [backgroundMOC deleteObject:page];
                 }
             }
@@ -952,28 +976,33 @@
     if ([self isDeleted] || self.managedObjectContext == nil)
         return;
 
-	NSMutableArray *commentsToKeep = [NSMutableArray array];
-    for (NSDictionary *commentInfo in newComments) {
-        Comment *newComment = [Comment createOrReplaceFromDictionary:commentInfo forBlog:self];
-        if (newComment != nil) {
-            [commentsToKeep addObject:newComment];
-        } else {
-            WPFLog(@"-[Comment createOrReplaceFromDictionary:forBlog:] returned a nil comment: %@", commentInfo);
+    NSManagedObjectContext *backgroundMOC = [[NSManagedObjectContext alloc] initWithConcurrencyType:NSPrivateQueueConcurrencyType];
+    backgroundMOC.parentContext = [WordPressAppDelegate sharedWordPressApplicationDelegate].managedObjectContext;
+    
+    [backgroundMOC performBlock:^{
+        NSMutableArray *commentsToKeep = [NSMutableArray array];
+        for (NSDictionary *commentInfo in newComments) {
+            Comment *newComment = [Comment createOrReplaceFromDictionary:commentInfo forBlog:self withContext:backgroundMOC];
+            if (newComment != nil) {
+                [commentsToKeep addObject:newComment];
+            } else {
+                DDLogInfo(@"-[Comment createOrReplaceFromDictionary:forBlog:] returned a nil comment: %@", commentInfo);
+            }
         }
-    }
-
-	NSSet *syncedComments = self.comments;
-    if (syncedComments && (syncedComments.count > 0)) {
-		for (Comment *comment in syncedComments) {
-			// Don't delete unpublished comments
-			if(![commentsToKeep containsObject:comment] && comment.commentID != nil) {
-				WPLog(@"Deleting Comment: %@", comment);
-				[[self managedObjectContext] deleteObject:comment];
-			}
-		}
-    }
-
-    [self dataSave];
+        
+        NSSet *syncedComments = ((Blog *)[backgroundMOC objectWithID:self.objectID]).comments;
+        if (syncedComments && (syncedComments.count > 0)) {
+            for (Comment *comment in syncedComments) {
+                // Don't delete unpublished comments
+                if(![commentsToKeep containsObject:comment] && comment.commentID != nil) {
+                    DDLogInfo(@"Deleting Comment: %@", comment);
+                    [backgroundMOC deleteObject:comment];
+                }
+            }
+        }
+        
+        [self dataSaveWithContext:backgroundMOC];
+    }];
 }
 
 @end

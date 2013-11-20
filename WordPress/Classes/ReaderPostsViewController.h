@@ -7,9 +7,8 @@
 //
 
 #import <UIKit/UIKit.h>
-#import "PanelNavigationController.h"
 #import "WPTableViewController.h"
 
-@interface ReaderPostsViewController : WPTableViewController <DetailViewDelegate>
+@interface ReaderPostsViewController : WPTableViewController
 
 @end

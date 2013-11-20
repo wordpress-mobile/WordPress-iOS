@@ -49,6 +49,9 @@
 }
 
 + (void)load {
+    if (IS_IOS7) {
+        return;
+    }
     if ([self respondsToSelector:@selector(appearance)]) {
         Method origMethod = class_getInstanceMethod(self, @selector(initWithImage:style:target:action:));
         Method newMethod = class_getInstanceMethod(self, @selector(initStyledWithImage:style:target:action:));
@@ -92,13 +95,9 @@
 
     [buttonItem setTitleTextAttributes:
      [NSDictionary dictionaryWithObjectsAndKeys:
-//      [UIColor colorWithRed:150.0/255.0 green:150.0/255.0 blue:150.0/255.0 alpha:1.0],
-      [UIColor UIColorFromHex:0xeeeeee],
+      [UIColor lightGrayColor],
       UITextAttributeTextColor,
-//      [UIColor whiteColor],
-      [UIColor UIColorFromHex:0xbbbbbb],
-      UITextAttributeTextShadowColor,
-      [NSValue valueWithUIOffset:UIOffsetMake(0, 1)],
+      [NSValue valueWithUIOffset:UIOffsetMake(0, 0)],
       UITextAttributeTextShadowOffset,
       nil] forState:UIControlStateDisabled];    
 }

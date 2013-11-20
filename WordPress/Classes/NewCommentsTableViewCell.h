@@ -7,9 +7,10 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "WPTableViewCell.h"
 
 @class Comment;
-@interface NewCommentsTableViewCell : UITableViewCell
+@interface NewCommentsTableViewCell : WPTableViewCell
 
 @property (readwrite, weak) Comment *comment;
 

@@ -50,7 +50,7 @@
 #pragma mark Lifecycle Methods
 
 - (void)dealloc {
-    [FileLogger log:@"%@ %@", self, NSStringFromSelector(_cmd)];
+    DDLogInfo(@"%@ %@", self, NSStringFromSelector(_cmd));
 	if (locationManager) {
 		locationManager.delegate = nil;
 		[locationManager stopUpdatingLocation];
@@ -81,7 +81,7 @@
 - (void)viewDidLoad {
     self.title = NSLocalizedString(@"Properties", nil);
     
-    [FileLogger log:@"%@ %@", self, NSStringFromSelector(_cmd)];
+    DDLogInfo(@"%@ %@", self, NSStringFromSelector(_cmd));
     
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(keyboardWillShow:) name:UIKeyboardWillShowNotification object:nil];
 	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(keyboardWillHide:) name:UIKeyboardWillHideNotification object:nil];
@@ -149,7 +149,17 @@
     id supportsFeaturedImages = [self.post.blog getOptionValue:@"post_thumbnail"];
     if (supportsFeaturedImages != nil) {
         blogSupportsFeaturedImage = [supportsFeaturedImages boolValue];
-        if (blogSupportsFeaturedImage && self.post.post_thumbnail != nil) {
+        
+        if (blogSupportsFeaturedImage && [self.post.media count] > 0) {
+            for (Media *media in self.post.media) {
+                NSInteger status = [media.remoteStatusNumber integerValue];
+                if ([media.mediaType isEqualToString:@"featured"] && (status == MediaRemoteStatusPushing || status == MediaRemoteStatusProcessing)){
+                    [self showFeaturedImageUploader:nil];
+                }
+            }
+        }
+        
+        if (!isUploadingFeaturedImage && (blogSupportsFeaturedImage && self.post.post_thumbnail != nil)) {
             // Download the current featured image
             [featuredImageView setHidden:YES];
             [featuredImageLabel setText:NSLocalizedString(@"Loading Featured Image", @"Loading featured image in post settings")];
@@ -186,7 +196,7 @@
     [super viewDidUnload];
     [[NSNotificationCenter defaultCenter] removeObserver:self];
 
-    [FileLogger log:@"%@ %@", self, NSStringFromSelector(_cmd)];
+    DDLogInfo(@"%@ %@", self, NSStringFromSelector(_cmd));
     [locationManager stopUpdatingLocation];
     locationManager.delegate = nil;
     locationManager = nil;
@@ -212,7 +222,7 @@
 }
 
 - (void)didReceiveMemoryWarning {
-    WPLog(@"%@ %@", self, NSStringFromSelector(_cmd));
+    DDLogWarn(@"%@ %@", self, NSStringFromSelector(_cmd));
     [super didReceiveMemoryWarning];
 }
 
@@ -503,6 +513,10 @@
             
                 visibilityLabel.text = [self titleForVisibility];
 				
+                if (!IS_IOS7) {
+                    [visibilityTitleLabel setHighlightedTextColor:[UIColor whiteColor]];
+                    [visibilityLabel setHighlightedTextColor:[UIColor whiteColor]];
+                }
 				return visibilityTableViewCell;
 				break;
 			case 2:
@@ -566,8 +580,13 @@
                             break;
                         }
                     }
+                    activityCell.selectionStyle = UITableViewCellSelectionStyleBlue;
                 }
                 [WPStyleGuide configureTableViewActionCell:activityCell];
+                if (!IS_IOS7) {
+                    [activityCell.textLabel setHighlightedTextColor:[UIColor whiteColor]];
+                    [activityCell.detailTextLabel setHighlightedTextColor:[UIColor whiteColor]];
+                }
                 [activityCell.textLabel setText:NSLocalizedString(@"Set Featured Image", @"")];
                 return activityCell;
             } else {
@@ -598,6 +617,10 @@
                             }
                         }
                         [activityCell.textLabel setText: NSLocalizedString(@"Remove Featured Image", "Remove featured image from post")];
+                        if (!IS_IOS7) {
+                            [activityCell.textLabel setHighlightedTextColor:[UIColor whiteColor]];
+                            [activityCell.detailTextLabel setHighlightedTextColor:[UIColor whiteColor]];
+                        }
                         [WPStyleGuide configureTableViewActionCell:activityCell];
                         return activityCell;
                         break;
@@ -671,7 +694,7 @@
         }
         case 1:
         {
-            NSLog(@"Reloading map");
+            DDLogVerbose(@"Reloading map");
             if (mapGeotagTableViewCell == nil) {
                 mapGeotagTableViewCell = [[UITableViewCell alloc] initWithFrame:CGRectMake(0, 0, tableView.frame.size.width, 188)];
             }
@@ -1254,6 +1277,9 @@
                 if ([publishNowButton respondsToSelector:@selector(setTintColor:)]) {
                     publishNowButton.tintColor = postDetailViewController.toolbar.tintColor;
                 }
+                NSDictionary *titleTextAttributes = @{UITextAttributeTextColor: [UIColor whiteColor], UITextAttributeTextShadowColor:[UIColor blackColor]};
+                [publishNowButton setTitleTextAttributes:titleTextAttributes forState:UIControlStateNormal];
+                [publishNowButton setTitleTextAttributes:titleTextAttributes forState:UIControlStateSelected];
                 [publishNowButton addTarget:self action:@selector(removeDate) forControlEvents:UIControlEventValueChanged];
                 [fakeController.view addSubview:publishNowButton];
                 CGRect frame = picker.frame;
@@ -1449,9 +1475,9 @@
 		Coordinate *c = [[Coordinate alloc] initWithCoordinate:coordinate];
 		self.post.geolocation = c;
 		postDetailViewController.hasLocation.enabled = YES;
-        WPLog(@"Added geotag (%+.6f, %+.6f)",
-			  c.latitude,
-			  c.longitude);
+        DDLogInfo(@"Added geotag (%+.6f, %+.6f)",
+                  c.latitude,
+                  c.longitude);
 		[locationManager stopUpdatingLocation];
         [postDetailViewController refreshButtons];
 		[tableView reloadData];
@@ -1480,7 +1506,7 @@
             }
             addressLabel.text = address;
         } else {
-            NSLog(@"Reverse geocoder failed for coordinate (%.6f, %.6f): %@",
+            DDLogError(@"Reverse geocoder failed for coordinate (%.6f, %.6f): %@",
                   c.latitude,
                   c.longitude,
                   [error localizedDescription]);
@@ -1627,9 +1653,9 @@
 				   resultBlock: ^(ALAsset *myasset) {
 					   ALAssetRepresentation *rep = [myasset defaultRepresentation];
 					   
-					   WPLog(@"getJPEGFromAssetForURL: default asset representation for %@: uti: %@ size: %lld url: %@ orientation: %d scale: %f metadata: %@",
-							 url, [rep UTI], [rep size], [rep url], [rep orientation],
-							 [rep scale], [rep metadata]);
+					   DDLogInfo(@"getJPEGFromAssetForURL: default asset representation for %@: uti: %@ size: %lld url: %@ orientation: %d scale: %f metadata: %@",
+                                 url, [rep UTI], [rep size], [rep url], [rep orientation],
+                                 [rep scale], [rep metadata]);
 					   
 					   Byte *buf = malloc([rep size]);  // will be freed automatically when associated NSData is deallocated
 					   NSError *err = nil;
@@ -1639,7 +1665,7 @@
 						   // Are err and bytes == 0 redundant? Doc says 0 return means
 						   // error occurred which presumably means NSError is returned.
 						   free(buf); // Free up memory so we don't leak.
-						   WPLog(@"error from getBytes: %@", err);
+						   DDLogError(@"error from getBytes: %@", err);
 						   
 						   return;
 					   }
@@ -1667,7 +1693,7 @@
 					   CFRelease(source);
 				   }
 				  failureBlock: ^(NSError *err) {
-					  WPLog(@"can't get asset %@: %@", url, err);
+					  DDLogError(@"can't get asset %@: %@", url, err);
 					  _currentImageMetadata = nil;
 				  }];
 }
@@ -1790,14 +1816,14 @@
                 //It will return false if something goes wrong
                 success = CGImageDestinationFinalize(destination);
             } else {
-                WPFLog(@"***Could not create image destination ***");
+                DDLogError(@"***Could not create image destination ***");
             }
         } else {
-            WPFLog(@"***Could not create image source ***");
+            DDLogError(@"***Could not create image source ***");
         }
 		
 		if(!success) {
-			WPLog(@"***Could not create data from image destination ***");
+			DDLogError(@"***Could not create data from image destination ***");
 			//write the data without EXIF to disk
 			NSFileManager *fileManager = [NSFileManager defaultManager];
 			[fileManager createFileAtPath:filepath contents:imageData attributes:nil];
@@ -1835,7 +1861,7 @@
     
     [imageMedia uploadWithSuccess:^{
         if ([imageMedia isDeleted]) {
-            NSLog(@"Media deleted while uploading (%@)", imageMedia);
+            DDLogWarn(@"Media deleted while uploading (%@)", imageMedia);
             return;
         }
         [imageMedia save];
@@ -1907,7 +1933,6 @@
         NSString *originalSizeStr = [NSString stringWithFormat:NSLocalizedString(@"Original (%@)", @"Original (width x height)"), [NSString stringWithFormat:@"%ix%i", (int)originalSize.width, (int)originalSize.height]];
         
 		UIActionSheet *resizeActionSheet;
-		//NSLog(@"img dimension: %f x %f ",_currentImage.size.width, _currentImage.size.height );
 		
 		if(_currentImage.size.width > largeSize.width  && _currentImage.size.height > largeSize.height) {
 			resizeActionSheet = [[UIActionSheet alloc] initWithTitle:NSLocalizedString(@"Choose Image Size", @"")
@@ -2075,25 +2100,7 @@
     
     
     if (!_isNewCategory) {
-        if (IS_IPAD) {
-            UINavigationController *navController;
-            if (_segmentedTableViewController.navigationController) {
-                navController = _segmentedTableViewController.navigationController;
-            } else {
-                navController = [[UINavigationController alloc] initWithRootViewController:_segmentedTableViewController];
-            }
-            navController.navigationBar.translucent = NO;
-            UIPopoverController *categoriesPopover = [[UIPopoverController alloc] initWithContentViewController:navController];
-            categoriesPopover.popoverBackgroundViewClass = [WPPopoverBackgroundView class];
-            categoriesPopover.delegate = self;
-            CGRect popoverRect = cellFrame;
-            categoriesPopover.popoverContentSize = CGSizeMake(320.0f, 460.0f);
-            [categoriesPopover presentPopoverFromRect:popoverRect inView:self.view permittedArrowDirections:UIPopoverArrowDirectionAny animated:YES];
-            [[CPopoverManager instance] setCurrentPopoverController:categoriesPopover];
-            
-        } else {
-            [self.navigationController pushViewController:_segmentedTableViewController animated:YES];
-        }
+        [self.navigationController pushViewController:_segmentedTableViewController animated:YES];
     }
     
     _isNewCategory = NO;
@@ -2119,9 +2126,8 @@
     }
     
     if (selContext == kSelectionsCategoriesContext) {
-        NSMutableSet *categories = [self.post mutableSetValueForKey:@"categories"];
-        [categories removeAllObjects];
-        [categories addObjectsFromArray:selectedObjects];
+        [self.post.categories removeAllObjects];
+        [self.post.categories addObjectsFromArray:selectedObjects];
         [tableView reloadData];
     }
 }

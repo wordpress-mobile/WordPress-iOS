@@ -31,8 +31,6 @@ CGFloat const NewPostTableViewCellAccessoryViewOffset = 25.0;
 {
     self = [super initWithStyle:style reuseIdentifier:reuseIdentifier];
     if (self) {
-        self.backgroundColor = [WPStyleGuide itsEverywhereGrey];
-        
         _statusLabel = [[UILabel alloc] init];
         _statusLabel.backgroundColor = [UIColor clearColor];
         _statusLabel.textAlignment = NSTextAlignmentLeft;

@@ -135,6 +135,8 @@ CGFloat const EditPostViewControllerTextViewOffset = 10.0;
         separatorFrame.size.width = CGRectGetWidth(self.view.bounds) - EditPostViewControllerStandardOffset;
         separatorView.frame = separatorFrame;
         separatorView.backgroundColor = [WPStyleGuide readGrey];
+        
+        textView.textContainerInset = UIEdgeInsetsMake(0.0f, EditPostViewControllerTextViewOffset, 0.0f, EditPostViewControllerTextViewOffset);
     }
     
     if (editorToolbar == nil) {
@@ -216,7 +218,7 @@ CGFloat const EditPostViewControllerTextViewOffset = 10.0;
         self.view.backgroundColor = [WPStyleGuide itsEverywhereGrey];
         self.toolbar.translucent = NO;
         self.toolbar.barStyle = UIBarStyleDefault;
-        titleTextField.placeholder = NSLocalizedString(@"Title:", @"Label for the title of the post field. Should be the same as WP core.");
+        titleTextField.placeholder = NSLocalizedString(@"Enter title here", @"Label for the title of the post field. Should be the same as WP core.");
         titleTextField.textColor = [WPStyleGuide littleEddieGrey];
         textView.textColor = [WPStyleGuide littleEddieGrey];
         self.toolbar.barTintColor = [WPStyleGuide littleEddieGrey];
@@ -483,7 +485,6 @@ CGFloat const EditPostViewControllerTextViewOffset = 10.0;
     if (IS_IPAD) {
         y = 143;
         if (IS_IOS7) {
-            x = EditPostViewControllerTextViewOffset;
             y = CGRectGetMaxY(separatorView.frame);
         }
         CGFloat height = self.toolbar.frame.origin.y - y;
@@ -496,7 +497,6 @@ CGFloat const EditPostViewControllerTextViewOffset = 10.0;
         y = 136.f;
         if (IS_IOS7) {
             // On IOS7 we get rid of the Tags and Categories fields, so place the textview right under the title
-            x = EditPostViewControllerTextViewOffset;
             y = CGRectGetMaxY(separatorView.frame);
         }
         CGFloat height = self.toolbar.frame.origin.y - y;
@@ -527,11 +527,11 @@ CGFloat const EditPostViewControllerTextViewOffset = 10.0;
     if (_backupPost) {
         [self.apost.original cloneFrom:_backupPost];
         if (upload) {
-            WPFLog(@"Restoring post backup");
+            DDLogInfo(@"Restoring post backup");
             [self.apost.original uploadWithSuccess:^{
-                WPFLog(@"post uploaded: %@", self.apost.postTitle);
+                DDLogInfo(@"post uploaded: %@", self.apost.postTitle);
             } failure:^(NSError *error) {
-                WPFLog(@"post failed: %@", [error localizedDescription]);
+                DDLogError(@"post failed: %@", [error localizedDescription]);
             }];
             [self deleteBackupPost];
         }
@@ -588,11 +588,14 @@ CGFloat const EditPostViewControllerTextViewOffset = 10.0;
     [self.navigationItem.rightBarButtonItem setEnabled:updateEnabled];
 
     // Seems to be a bug with UIBarButtonItem respecting the UIControlStateDisabled text color
-    if (updateEnabled) {
-        [self.navigationItem.rightBarButtonItem setTitleTextAttributes:@{UITextAttributeFont: [WPStyleGuide regularTextFont], UITextAttributeTextColor : [UIColor whiteColor]} forState:UIControlStateNormal];
+    NSDictionary *titleTextAttributes;
+    UIColor *color = updateEnabled ? [UIColor whiteColor] : [UIColor lightGrayColor];
+    if (IS_IOS7) {
+        titleTextAttributes = @{UITextAttributeFont: [WPStyleGuide regularTextFont], UITextAttributeTextColor : color};
     } else {
-        [self.navigationItem.rightBarButtonItem setTitleTextAttributes:@{UITextAttributeFont: [WPStyleGuide regularTextFont], UITextAttributeTextColor : [UIColor lightGrayColor]}  forState:UIControlStateNormal];
+        titleTextAttributes = @{UITextAttributeTextColor : color};
     }
+    [self.navigationItem.rightBarButtonItem setTitleTextAttributes:titleTextAttributes forState:UIControlStateNormal];
 }
 
 - (void)refreshUIForCurrentPost {
@@ -682,6 +685,8 @@ CGFloat const EditPostViewControllerTextViewOffset = 10.0;
     }
 
     if (selContext == kSelectionsCategoriesContext) {
+        [self.post.categories removeAllObjects];
+        [self.post.categories addObjectsFromArray:selectedObjects];
         [categoriesButton setTitle:[NSString decodeXMLCharactersIn:[self.post categoriesText]] forState:UIControlStateNormal];
     }
 
@@ -742,7 +747,7 @@ CGFloat const EditPostViewControllerTextViewOffset = 10.0;
     }
     
     if (_isAutosaving) {
-        WPFLog(@"Canceling all auto save operations as user is about to force a save");
+        DDLogInfo(@"Canceling all auto save operations as user is about to force a save");
         // Cancel all blog network operations since the user tapped the save/publish button
         [self.apost.blog.api cancelAllHTTPOperations];
     }
@@ -766,9 +771,9 @@ CGFloat const EditPostViewControllerTextViewOffset = 10.0;
 	if (upload) {
 		NSString *postTitle = self.apost.postTitle;
         [self.apost.original uploadWithSuccess:^{
-            WPFLog(@"post uploaded: %@", postTitle);
+            DDLogInfo(@"post uploaded: %@", postTitle);
         } failure:^(NSError *error) {
-            WPFLog(@"post failed: %@", [error localizedDescription]);
+            DDLogError(@"post failed: %@", [error localizedDescription]);
         }];
 	} else {
 		[self.apost.original save];
@@ -855,7 +860,7 @@ CGFloat const EditPostViewControllerTextViewOffset = 10.0;
             // If the post has been published or dismissed while autosaving
             // the network request should have been canceled
             // But just in case, don't try updating this post
-            WPFLog(@"!!! Autosave returned after post editor was dismissed");
+            DDLogInfo(@"!!! Autosave returned after post editor was dismissed");
             _isAutosaving = NO;
             [self hideAutosaveIndicatorWithSuccess:YES];
             return;
@@ -1068,6 +1073,7 @@ CGFloat const EditPostViewControllerTextViewOffset = 10.0;
     _linkHelperAlertView.secondTextField.keyboardAppearance = UIKeyboardAppearanceAlert;
     _linkHelperAlertView.firstTextField.keyboardType = UIKeyboardTypeDefault;
     _linkHelperAlertView.secondTextField.keyboardType = UIKeyboardTypeURL;
+    _linkHelperAlertView.secondTextField.autocorrectionType = UITextAutocorrectionTypeNo;
 
     __block UITextView *editorTextView = textView;
     __block id fles = self;
@@ -1131,6 +1137,7 @@ CGFloat const EditPostViewControllerTextViewOffset = 10.0;
         
         [delegate setAlertRunning:NO];
         [fles setLinkHelperAlertView:nil];
+        [fles refreshTextView];
     };
     
     _linkHelperAlertView.alpha = 0.0;
@@ -1151,7 +1158,7 @@ CGFloat const EditPostViewControllerTextViewOffset = 10.0;
 - (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex {
     if (alertView.tag == EditPostViewControllerAlertTagFailedMedia) {
         if (buttonIndex == 1) {
-            WPFLog(@"Saving post even after some media failed to upload");
+            DDLogInfo(@"Saving post even after some media failed to upload");
             [self savePost:YES];
         } else {
             [self switchToMedia];
@@ -1196,7 +1203,7 @@ CGFloat const EditPostViewControllerTextViewOffset = 10.0;
                 if ((![self.apost hasRemote] || _isAutosaved) && [self.apost.status isEqualToString:@"publish"]) {
                     self.apost.status = @"draft";
                 }
-                WPFLog(@"Saving post as a draft after user initially attempted to cancel");
+                DDLogInfo(@"Saving post as a draft after user initially attempted to cancel");
                 [self savePost:YES];
 			}
         }
@@ -1514,7 +1521,7 @@ CGFloat const EditPostViewControllerTextViewOffset = 10.0;
 }
 
 - (void)restoreText:(NSString *)text withRange:(NSRange)range {
-    NSLog(@"restoreText:%@",text);
+    DDLogVerbose(@"restoreText:%@",text);
     NSString *oldText = textView.text;
     NSRange oldRange = textView.selectedRange;
     textView.scrollEnabled = NO;
@@ -1567,6 +1574,22 @@ CGFloat const EditPostViewControllerTextViewOffset = 10.0;
     _hasChangesToAutosave = YES;
     [self autosaveContent];
     [self incrementCharactersChangedForAutosaveBy:MAX(replacement.length, originalRange.length)];
+    [self refreshTextView];
+}
+
+// In some situations on iOS7, inserting text while `scrollEnabled = NO` results in
+// the last line(s) of text on the text view not appearing. This is a workaround
+// to get the UITextView to redraw after inserting text but without affecting the
+// scrollOffset.
+- (void)refreshTextView {
+    if (!IS_IOS7) {
+        return;
+    }
+    dispatch_async(dispatch_get_main_queue(), ^{
+        textView.scrollEnabled = NO;
+        [textView setNeedsDisplay];
+        textView.scrollEnabled = YES;
+    });
 }
 
 - (void)keyboardToolbarButtonItemPressed:(WPKeyboardToolbarButtonItem *)buttonItem {

@@ -23,7 +23,7 @@
 
 - (void)didReceiveMemoryWarning
 {
-    [FileLogger log:@"%@ %@", self, NSStringFromSelector(_cmd)];
+    DDLogInfo(@"%@ %@", self, NSStringFromSelector(_cmd));
     // Releases the view if it doesn't have a superview.
     [super didReceiveMemoryWarning];
     
@@ -34,17 +34,17 @@
 
 - (void)viewDidLoad
 {
-    [FileLogger log:@"%@ %@", self, NSStringFromSelector(_cmd)];
+    DDLogInfo(@"%@ %@", self, NSStringFromSelector(_cmd));
     NSError *error = nil;
     [[self resultsController] performFetch:&error];
     [super viewDidLoad];
-    NSLog(@"Blog selector delegate: %@", self.tableView.delegate);
-    NSLog(@"Blog selector dataSource: %@", self.tableView.dataSource);
+    DDLogVerbose(@"Blog selector delegate: %@", self.tableView.delegate);
+    DDLogVerbose(@"Blog selector dataSource: %@", self.tableView.dataSource);
 }
 
 - (void)viewDidUnload
 {
-    [FileLogger log:@"%@ %@", self, NSStringFromSelector(_cmd)];
+    DDLogInfo(@"%@ %@", self, NSStringFromSelector(_cmd));
     [super viewDidUnload];
     // Release any retained subviews of the main view.
     // e.g. self.myOutlet = nil;

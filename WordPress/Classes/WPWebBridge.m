@@ -78,7 +78,7 @@
         for (int i = 0; i < 16; i++)
             [hash appendFormat:@"%02X", result[i]];
         token = [hash lowercaseString];
-        [FileLogger log:@"Generating new hybrid token: %@", token];
+        DDLogInfo(@"Generating new hybrid token: %@", token);
         [defaults setValue:token forKey:kHybridTokenSetting];
         [defaults synchronize];
         
@@ -124,7 +124,7 @@
     
     NSString *payload_data = [(NSString *)[params objectForKey:@"payload"] stringByReplacingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
     if (![self.hybridAuthToken isEqualToString:[params objectForKey:@"wpcom-hybrid-auth-token"]]) {
-        WPFLog(@"Invalid hybrid token received %@ (expected: %@)", [params objectForKey:@"wpcom-hybrid-auth-token"], self.hybridAuthToken);
+        DDLogError(@"Invalid hybrid token received %@ (expected: %@)", [params objectForKey:@"wpcom-hybrid-auth-token"], self.hybridAuthToken);
         return;
     }
     
@@ -151,15 +151,15 @@
         if (invocation && [self.delegate respondsToSelector:aSelector]) {
             @try {
                 [invocation invoke];
-                WPFLog(@"Hybrid: %@ %@", self.delegate, methodName);
+                DDLogInfo(@"Hybrid: %@ %@", self.delegate, methodName);
             }
             @catch (NSException *exception) {
-                WPFLog(@"Hybrid exception on %@ %@", self.delegate, methodName);
-                WPFLog(@"%@ %@", [exception name], [exception reason]);
-                WPFLog(@"%@", [[exception callStackSymbols] componentsJoinedByString:@"\n"]);
+                DDLogError(@"Hybrid exception on %@ %@", self.delegate, methodName);
+                DDLogError(@"%@ %@", [exception name], [exception reason]);
+                DDLogError(@"%@", [[exception callStackSymbols] componentsJoinedByString:@"\n"]);
             }
         } else {
-            WPFLog(@"Hybrid controller doesn't know how to run method: %@ %@", self.delegate, methodName);
+            DDLogWarn(@"Hybrid controller doesn't know how to run method: %@ %@", self.delegate, methodName);
         }
         
     }];

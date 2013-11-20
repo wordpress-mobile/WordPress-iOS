@@ -9,7 +9,6 @@
 #import "PostViewController.h"
 #import "PostPreviewViewController.h"
 #import "NSString+XMLExtensions.h"
-#import "PanelNavigationConstants.h"
 
 @implementation PostViewController {
     NSString *postObserverToken;
@@ -40,7 +39,7 @@
 
 
 - (void)viewDidLoad {
-	[FileLogger log:@"%@ %@", self, NSStringFromSelector(_cmd)];
+	DDLogInfo(@"%@ %@", self, NSStringFromSelector(_cmd));
 	[super viewDidLoad];
     [self refreshUI];
     
@@ -119,7 +118,7 @@
     [super viewDidAppear:animated];
     
     if(IS_IPAD){
-        [self.panelNavigationController setToolbarHidden:NO forViewController:self animated:NO];
+        [self.navigationController setToolbarHidden:NO animated:NO];
     }
 }
 
@@ -262,7 +261,7 @@
 
 - (void)showModalEditor {
     if (self.presentedViewController) {
-        NSLog(@"Trying to show modal a second time: bad");
+        DDLogWarn(@"Trying to show modal a second time: bad");
         return;
     }
 	if (self.apost.remoteStatus == AbstractPostRemoteStatusPushing) {
@@ -289,7 +288,7 @@
 
 - (void)showModalPreview {
     if (self.presentedViewController) {
-        NSLog(@"Trying to show modal a second time: bad");
+        DDLogWarn(@"Trying to show modal a second time: bad");
         return;
     }
 

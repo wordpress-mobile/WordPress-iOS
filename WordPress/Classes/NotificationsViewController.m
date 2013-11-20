@@ -15,6 +15,7 @@
 #import "NewNotificationsTableViewCell.h"
 #import "WPTableViewControllerSubclass.h"
 #import "NotificationSettingsViewController.h"
+#import "WPAccount.h"
 
 NSString * const NotificationsTableViewNoteCellIdentifier = @"NotificationsTableViewCell";
 NSString * const NotificationsLastSyncDateKey = @"NotificationsLastSyncDate";
@@ -42,6 +43,11 @@ NSString * const NotificationsLastSyncDateKey = @"NotificationsLastSyncDate";
     return self;
 }
 
+- (NSString *)noResultsText
+{
+    return NSLocalizedString(@"No notifications yet", @"Displayed when the user pulls up the notifications view and they have no items");
+}
+
 - (void)dealloc {
     [[NSNotificationCenter defaultCenter] removeObserver:self];
 }
@@ -53,7 +59,6 @@ NSString * const NotificationsLastSyncDateKey = @"NotificationsLastSyncDate";
     
     [WPStyleGuide configureColorsForView:self.view andTableView:self.tableView];
     
-    self.panelNavigationController.delegate = self;
     self.infiniteScrollEnabled = YES;
     [self.tableView registerClass:[NewNotificationsTableViewCell class] forCellReuseIdentifier:NotificationsTableViewNoteCellIdentifier];
 }
@@ -72,9 +77,13 @@ NSString * const NotificationsLastSyncDateKey = @"NotificationsLastSyncDate";
     }
     
     _isPushingViewController = NO;
-    // If table is at the top, simulate a pull to refresh
-    BOOL simulatePullToRefresh = (self.tableView.contentOffset.y == 0);
-    [self syncItemsWithUserInteraction:simulatePullToRefresh];
+    
+    // If table is at the top (i.e. freshly opened), do some extra work
+    if (self.tableView.contentOffset.y == 0) {
+        [self pruneOldNotes];
+    }
+
+    [self syncItems];
     [self refreshUnreadNotes];
 }
 
@@ -84,10 +93,6 @@ NSString * const NotificationsLastSyncDateKey = @"NotificationsLastSyncDate";
         [self pruneOldNotes];
 }
 
-- (UIColor *)backgroundColorForRefreshHeaderView
-{
-    return [WPStyleGuide itsEverywhereGrey];
-}
 
 #pragma mark - Custom methods
 
@@ -133,10 +138,10 @@ NSString * const NotificationsLastSyncDateKey = @"NotificationsLastSyncDate";
 
 - (void)refreshFromPushNotification {
     if (IS_IPHONE)
-        [self.panelNavigationController popToRootViewControllerAnimated:YES];
+        [self.navigationController popToRootViewControllerAnimated:YES];
     [self.tableView scrollRectToVisible:CGRectMake(0, 0, 1, 1) animated:YES];
     if (![self isSyncing]) {
-        [self syncItemsWithUserInteraction:NO];
+        [self syncItems];
     }
 }
 
@@ -159,11 +164,11 @@ NSString * const NotificationsLastSyncDateKey = @"NotificationsLastSyncDate";
             NotificationsCommentDetailViewController *detailViewController = [[NotificationsCommentDetailViewController alloc] initWithNibName:@"NotificationsCommentDetailViewController" bundle:nil];
             detailViewController.note = note;
             detailViewController.user = self.user;
-            [self.panelNavigationController pushViewController:detailViewController fromViewController:self animated:YES];
+            [self.navigationController pushViewController:detailViewController animated:YES];
         } else {
             NotificationsFollowDetailViewController *detailViewController = [[NotificationsFollowDetailViewController alloc] initWithNibName:@"NotificationsFollowDetailViewController" bundle:nil];
             detailViewController.note = note;
-            [self.panelNavigationController pushViewController:detailViewController fromViewController:self animated:YES];
+            [self.navigationController pushViewController:detailViewController animated:YES];
         }
     } else {
         [self.tableView deselectRowAtIndexPath:indexPath animated:YES];
@@ -229,10 +234,12 @@ NSString * const NotificationsLastSyncDateKey = @"NotificationsLastSyncDate";
     cell.note = [self.resultsController objectAtIndexPath:indexPath];
 }
 
-- (void)syncItemsWithUserInteraction:(BOOL)userInteraction success:(void (^)())success failure:(void (^)(NSError *error))failure {
-    if (userInteraction) {
-        [self pruneOldNotes];
-    }
+- (void)syncItemsViaUserInteractionWithSuccess:(void (^)())success failure:(void (^)(NSError *))failure {
+    [self pruneOldNotes];
+    [self syncItemsWithSuccess:success failure:failure];
+}
+
+- (void)syncItemsWithSuccess:(void (^)())success failure:(void (^)(NSError *error))failure {
     NSNumber *timestamp;
     NSArray *notes = [self.resultsController fetchedObjects];
     if ([notes count] > 0) {
@@ -260,6 +267,14 @@ NSString * const NotificationsLastSyncDateKey = @"NotificationsLastSyncDate";
 - (BOOL)isSyncing
 {
     return _retrievingNotifications;
+}
+
+- (void)syncItems
+{
+    // Check to see if there is a WordPress.com account before attempting to fetch notifications
+    if ([WPAccount defaultWordPressComAccount]) {
+        [super syncItems];
+    }
 }
 
 - (void)loadMoreWithSuccess:(void (^)())success failure:(void (^)(NSError *))failure {

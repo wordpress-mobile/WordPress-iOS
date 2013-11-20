@@ -14,7 +14,7 @@
 
 + (UIFont *)textFieldFont
 {
-    return [UIFont fontWithName:@"OpenSans" size:18.0];
+    return [UIFont fontWithName:@"OpenSans" size:16.0];
 }
 
 + (UIFont *)descriptionTextFont
@@ -24,7 +24,7 @@
 
 + (UIFont *)titleFont
 {
-    return [UIFont fontWithName:@"OpenSans-Light" size:29];
+    return [UIFont fontWithName:@"OpenSans-Light" size:24];
 }
 
 + (UIFont *)swipeToContinueFont
@@ -49,14 +49,9 @@
 
 #pragma mark - Colors
 
-+ (UIColor *)textShadowColor
-{
-    return [UIColor colorWithRed:0.0 green:115.0/255.0 blue:164.0/255.0 alpha:0.5];
-}
-
 + (UIColor *)bottomPanelLineColor
 {
-    return [UIColor colorWithRed:17.0/255.0 green:17.0/255.0 blue:17.0/255.0 alpha:0.95];
+    return [UIColor colorWithRed:43/255.0f green:153/255.0f blue:193/255.0f alpha:1.0f];
 }
 
 + (UIColor *)descriptionTextColor
@@ -66,7 +61,7 @@
 
 + (UIColor *)bottomPanelBackgroundColor
 {
-    return [UIColor colorWithRed:42.0/255.0 green:42.0/255.0 blue:42.0/255.0 alpha:1.0];
+    return [self backgroundColor];
 }
 
 + (UIColor *)swipeToContinueTextColor
@@ -81,12 +76,22 @@
 
 + (UIColor *)backgroundColor
 {
-    return [UIColor colorWithRed:30.0/255.0 green:140.0/255.0 blue:190.0/255.0 alpha:1.0];
+    return [UIColor colorWithRed:46.0/255.0 green:162.0/255.0 blue:204.0/255.0 alpha:1.0];
 }
 
 + (UIColor *)tosLabelColor
 {
-    return [UIColor colorWithRed:255.0 green:255.0 blue:255.0 alpha:0.3];
+    return [self descriptionTextColor];
+}
+
++ (UIColor *)jetpackBackgroundColor
+{
+    return [UIColor colorWithRed:140.0/255.0 green:170.0/255.0 blue:70.0/255.0 alpha:1.0];
+}
+
++ (UIColor *)jetpackDescriptionTextColor
+{
+    return [UIColor colorWithRed:225.0/255.0 green:232.0/255.0 blue:211.0/255.0 alpha:1.0];
 }
 
 #pragma mark - Helper Methods
@@ -108,11 +113,28 @@
 {
     // This only works on iOS6+
     if ([pageControl respondsToSelector:@selector(pageIndicatorTintColor)]) {
-        UIColor *currentPageTintColor = [UIColor colorWithRed:46.0/255.0 green:162.0/255.0 blue:204.0/255.0 alpha:1.0];
+        UIColor *currentPageTintColor =  [UIColor colorWithRed:187.0/255.0 green:221.0/255.0 blue:237.0/255.0 alpha:1.0];
         UIColor *pageIndicatorTintColor = [UIColor colorWithRed:38.0/255.0 green:151.0/255.0 blue:197.0/255.0 alpha:1.0];
         pageControl.pageIndicatorTintColor = pageIndicatorTintColor;
         pageControl.currentPageIndicatorTintColor = currentPageTintColor;
     }
+}
+
++ (NSAttributedString *)titleAttributedString:(NSString *)text {
+    
+    if (!(text.length > 0)) {
+        return nil;
+    }
+    
+    NSMutableParagraphStyle *paragraphStyle = [[NSMutableParagraphStyle alloc] init];
+    paragraphStyle.lineHeightMultiple = 0.95;
+    paragraphStyle.lineBreakMode = NSLineBreakByWordWrapping;
+    paragraphStyle.alignment = NSTextAlignmentCenter;
+    NSDictionary *attributes = @{NSFontAttributeName: [WPNUXUtility titleFont],
+                                 NSForegroundColorAttributeName: [UIColor whiteColor],
+                                 NSParagraphStyleAttributeName: paragraphStyle};
+    
+    return [[NSAttributedString alloc] initWithString:text attributes:attributes];
 }
 
 @end

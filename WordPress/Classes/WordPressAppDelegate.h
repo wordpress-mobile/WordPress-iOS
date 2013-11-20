@@ -3,12 +3,14 @@
 
 #import "Constants.h"
 #import "Blog.h"
-#import "HelpViewController.h"
 #import "Reachability.h"
-#import "PanelNavigationController.h"
 #import "Constants.h"
+#import "DDFileLogger.h"
+
 
 @class AutosaveManager;
+@class NotificationsViewController;
+@class ReaderPostsViewController;
 
 @interface WordPressAppDelegate : NSObject <UIApplicationDelegate, UIAlertViewDelegate> {
 	Blog *currentBlog;
@@ -39,7 +41,6 @@
     
     // Push notifications
     NSDictionary *lastNotificationInfo;
-    PanelNavigationController *panelNavigationController;
 
 }
 
@@ -53,7 +54,11 @@
 @property (nonatomic, strong, readonly) NSManagedObjectContext *managedObjectContext;
 @property (nonatomic, strong, readonly) NSManagedObjectModel *managedObjectModel;
 @property (nonatomic, strong, readonly) NSPersistentStoreCoordinator *persistentStoreCoordinator;
-@property (nonatomic, strong) PanelNavigationController *panelNavigationController;
+@property (nonatomic, strong) UITabBarController *tabBarController;
+@property (nonatomic, strong) NotificationsViewController *notificationsViewController;
+@property (nonatomic, strong) ReaderPostsViewController *readerPostsViewController;
+@property (strong, nonatomic) DDFileLogger *fileLogger;
+
 
 //Connection Reachability variables
 @property (nonatomic, strong) Reachability *internetReachability, *wpcomReachability, *currentBlogReachability;
@@ -69,7 +74,6 @@
 - (void)showNotificationErrorAlert:(NSNotification *)notification;
 - (BOOL)isWPcomAuthenticated;
 - (void)checkWPcomAuthentication;
-- (void)showContentDetailViewController:(UIViewController *)viewController;
 - (void)registerForPushNotifications;
 - (void)unregisterApnsToken;
 - (void)openNotificationScreenWithOptions:(NSDictionary *)remoteNotif;

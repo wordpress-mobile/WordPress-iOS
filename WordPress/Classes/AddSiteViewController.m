@@ -41,7 +41,7 @@ CGSize const AddSiteLogoSize = { 320.0, 70.0 };
 }
 
 - (void)validationSuccess:(NSString *)xmlrpc {
-    WPFLog(@"hasSubsites: %@", subsites);
+    DDLogInfo(@"hasSubsites: %@", subsites);
 
     if ([subsites count] > 0) {
         // If the user has entered the URL of a site they own on a MultiSite install, 
@@ -124,8 +124,8 @@ CGSize const AddSiteLogoSize = { 320.0, 70.0 };
 
 - (void)connectToJetpack
 {
-    NSString *wpcomUsername = [WordPressComApi sharedApi].username;
-    NSString *wpcomPassword = [WordPressComApi sharedApi].password;
+    NSString *wpcomUsername = [[WPAccount defaultWordPressComAccount] username];
+    NSString *wpcomPassword = [[WPAccount defaultWordPressComAccount] password];
     if ((wpcomUsername != nil) && (wpcomPassword != nil)) {
         // Try with a known WordPress.com username first
         [SVProgressHUD showWithStatus:NSLocalizedString(@"Connecting to Jetpack", @"") maskType:SVProgressHUDMaskTypeBlack];
@@ -154,10 +154,13 @@ CGSize const AddSiteLogoSize = { 320.0, 70.0 };
     [SVProgressHUD dismiss];
     JetpackSettingsViewController *jetpackSettingsViewController = [[JetpackSettingsViewController alloc] initWithBlog:self.blog];
     jetpackSettingsViewController.canBeSkipped = YES;
+    jetpackSettingsViewController.showFullScreen = YES;
     [jetpackSettingsViewController setCompletionBlock:^(BOOL didAuthenticate) {
-        [self.presentingViewController dismissViewControllerAnimated:YES completion:nil];
+        [self.navigationController dismissViewControllerAnimated:YES completion:^{
+            [self dismiss];
+        }];
     }];
-    [self.navigationController pushViewController:jetpackSettingsViewController animated:YES];
+    [self.navigationController presentViewController:jetpackSettingsViewController animated:YES completion:nil];
 }
 
 - (BOOL)canEditUsernameAndURL

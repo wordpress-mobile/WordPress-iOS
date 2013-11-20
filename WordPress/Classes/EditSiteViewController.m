@@ -10,7 +10,7 @@
 #import "WordPressComApi.h"
 #import "UIBarButtonItem+Styled.h"
 #import "AFHTTPClient.h"
-#import "HelpViewController.h"
+#import "SupportViewController.h"
 #import "WPWebViewController.h"
 #import "JetpackSettingsViewController.h"
 #import "ReachabilityUtils.h"
@@ -18,6 +18,7 @@
 #import "WPTableViewSectionHeaderView.h"
 #import <WPXMLRPC/WPXMLRPC.h>
 #import <SVProgressHUD/SVProgressHUD.h>
+#import <NSDictionary+SafeExpectations.h>
 
 @interface EditSiteViewController (PrivateMethods)
 
@@ -53,9 +54,8 @@
     failureAlertView.delegate = nil;
 }
 
-
 - (void)viewDidLoad {
-    [FileLogger log:@"%@ %@", self, NSStringFromSelector(_cmd)];
+    DDLogInfo(@"%@ %@", self, NSStringFromSelector(_cmd));
     [super viewDidLoad];
     
     if (blog) {
@@ -96,36 +96,38 @@
                                                                      action:@selector(cancel:)];
         self.navigationItem.leftBarButtonItem = barButton;
     }
-    
+
+    // Create the save button but don't show it until something changes
     saveButton = [[UIBarButtonItem alloc] initWithTitle:NSLocalizedString(@"Save", @"Save button label (saving content, ex: Post, Page, Comment, Category).") style:[WPStyleGuide barButtonStyleForDone] target:self action:@selector(save:)];
-    self.navigationItem.rightBarButtonItem = saveButton;
     
     if (!IS_IPAD) {
-        [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(handleKeyboardDidShow:) name:UIKeyboardDidShowNotification object:nil];
-        [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(handleKeyboardWillHide:) name:UIKeyboardWillHideNotification object:nil];
+        [[NSNotificationCenter defaultCenter] addObserver:self
+                                                 selector:@selector(handleKeyboardDidShow:)
+                                                     name:UIKeyboardDidShowNotification
+                                                   object:nil];
+        
+        [[NSNotificationCenter defaultCenter] addObserver:self
+                                                 selector:@selector(handleKeyboardWillHide:)
+                                                     name:UIKeyboardWillHideNotification
+                                                   object:nil];
     }
     
     UITapGestureRecognizer *tgr = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(handleViewTapped)];
     tgr.cancelsTouchesInView = NO;
     [tableView addGestureRecognizer:tgr];
-
 }
-
 
 - (void)viewDidAppear:(BOOL)animated {
     [super viewDidAppear:animated];
     
     [self refreshTable];
-    [self enableDisableSaveButton];
 }
-
 
 - (void)viewDidUnload {
     [super viewDidUnload];
 
     [[NSNotificationCenter defaultCenter] removeObserver:self];
 }
-
 
 - (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation {
     return [super shouldAutorotateToInterfaceOrientation:interfaceOrientation];
@@ -142,7 +144,6 @@
     return 2;
 }
 
-
 - (NSInteger)tableView:(UITableView *)tv numberOfRowsInSection:(NSInteger)section {
     switch (section) {
 		case 0:
@@ -155,25 +156,25 @@
         case 2:
             return 1;
 	}
+    
 	return 0;
 }
 
-
-- (UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section
-{
+- (UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section {
     WPTableViewSectionHeaderView *header = [[WPTableViewSectionHeaderView alloc] initWithFrame:CGRectMake(0, 0, CGRectGetWidth(self.view.bounds), 0)];
     header.title = [self titleForHeaderInSection:section];
+    
     return header;
 }
 
-- (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section
-{
+- (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section {
     NSString *title = [self titleForHeaderInSection:section];
-    return [WPTableViewSectionHeaderView heightForTitle:title andWidth:CGRectGetWidth(self.view.bounds)];
+    CGFloat height = [WPTableViewSectionHeaderView heightForTitle:title andWidth:CGRectGetWidth(self.view.bounds)];
+    
+    return height;
 }
 
-- (NSString *)titleForHeaderInSection:(NSInteger)section
-{
+- (NSString *)titleForHeaderInSection:(NSInteger)section {
 	NSString *result = nil;
 	switch (section) {
 		case 0:
@@ -184,7 +185,9 @@
             break;
         case 2:
             result = NSLocalizedString(@"Jetpack Stats", @"");
+            break;
 	}
+    
 	return result;
 }
 
@@ -199,112 +202,102 @@
 				urlTextField = self.urlCell.textField;
 				urlTextField.placeholder = NSLocalizedString(@"http://my-site-address (URL)", @"(placeholder) Help the user enter a URL into the field");
                 urlTextField.keyboardType = UIKeyboardTypeURL;
-                [urlTextField addTarget:self action:@selector(enableDisableSaveButton) forControlEvents:UIControlEventEditingChanged];
+                [urlTextField addTarget:self action:@selector(showSaveButton) forControlEvents:UIControlEventEditingChanged];
                 [self configureTextField:urlTextField asPassword:NO];
                 urlTextField.keyboardType = UIKeyboardTypeURL;
-                [WPStyleGuide configureTableViewCell:self.urlCell];
 				if (blog.url != nil) {
 					urlTextField.text = blog.url;
+                    
+                    // Make a margin exception for URLs since they're so long
+                    urlCell.minimumLabelWidth = 30;
                 } else {
                     urlTextField.text = @"";
                 }
-                if ([self canEditUsernameAndURL]) {
-                    urlTextField.enabled = YES;
-                    urlTextField.textColor = [UIColor blackColor];
-                } else {
-                    urlTextField.enabled = NO;
-                    urlTextField.textColor = [UIColor darkGrayColor];
-                }
+                
+                urlTextField.enabled = [self canEditUsernameAndURL];
+                [WPStyleGuide configureTableViewTextCell:self.urlCell];
             }
             
             return self.urlCell;
         }
-        else if(indexPath.row == 1) {
+        else if (indexPath.row == 1) {
             self.usernameCell = (UITableViewTextFieldCell *)[tableView dequeueReusableCellWithIdentifier:@"UsernameCell"];
             if (self.usernameCell == nil) {
                 self.usernameCell = [[UITableViewTextFieldCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:@"UsernameCell"];
 				self.usernameCell.textLabel.text = NSLocalizedString(@"Username", @"Label for entering username in the username field");
 				usernameTextField = self.usernameCell.textField;
 				usernameTextField.placeholder = NSLocalizedString(@"Enter username", @"(placeholder) Help enter WordPress username");
-                [usernameTextField addTarget:self action:@selector(enableDisableSaveButton) forControlEvents:UIControlEventEditingChanged];
+                [usernameTextField addTarget:self action:@selector(showSaveButton) forControlEvents:UIControlEventEditingChanged];
                 [self configureTextField:usernameTextField asPassword:NO];
 				if (blog.username != nil) {
 					usernameTextField.text = blog.username;
                 } else {
                     usernameTextField.text = @"";
                 }
-                if ([self canEditUsernameAndURL]) {
-                    usernameTextField.enabled = YES;
-                    usernameTextField.textColor = [UIColor blackColor];
-                } else {
-                    usernameTextField.enabled = NO;
-                    usernameTextField.textColor = [UIColor darkGrayColor];
-                }
-                [WPStyleGuide configureTableViewCell:self.usernameCell];
+
+                usernameTextField.enabled = [self canEditUsernameAndURL];
+                [WPStyleGuide configureTableViewTextCell:self.usernameCell];
 			}
             
             return self.usernameCell;
         }
-        else if(indexPath.row == 2) {
+        else if (indexPath.row == 2) {
             self.passwordCell = (UITableViewTextFieldCell *)[tableView dequeueReusableCellWithIdentifier:@"PasswordCell"];
             if (self.passwordCell == nil) {
                 self.passwordCell = [[UITableViewTextFieldCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:@"PasswordCell"];
 				self.passwordCell.textLabel.text = NSLocalizedString(@"Password", @"Label for entering password in password field");
 				passwordTextField = self.passwordCell.textField;
 				passwordTextField.placeholder = NSLocalizedString(@"Enter password", @"(placeholder) Help user enter password in password field");
-                [passwordTextField addTarget:self action:@selector(enableDisableSaveButton) forControlEvents:UIControlEventEditingChanged];
+                [passwordTextField addTarget:self action:@selector(showSaveButton) forControlEvents:UIControlEventEditingChanged];
                 [self configureTextField:passwordTextField asPassword:YES];
 				if (password != nil) {
 					passwordTextField.text = password;
                 } else {
                     passwordTextField.text = @"";
                 }
-                [WPStyleGuide configureTableViewCell:self.passwordCell];
+                [WPStyleGuide configureTableViewTextCell:self.passwordCell];
+                
+                // If the other rows can't be edited, it looks better to align the password to the right as well
+                if (![self canEditUsernameAndURL]) {
+                    passwordTextField.textAlignment = NSTextAlignmentRight;
+                }
 			}
+            
             return self.passwordCell;
-        }				        
+        }
     } else if(indexPath.section == 1) {
         if(indexPath.row == 0) {
-            if(switchCell == nil) {
-                NSArray *topLevelObjects = [[NSBundle mainBundle] loadNibNamed:@"UITableViewSwitchCell" owner:nil options:nil];
-                for(id currentObject in topLevelObjects)
-                {
-                    if([currentObject isKindOfClass:[UITableViewSwitchCell class]])
-                    {
-                        switchCell = (UITableViewSwitchCell *)currentObject;
-                        break;
-                    }
-                }
+            UITableViewCell *geotaggingCell = [tableView dequeueReusableCellWithIdentifier:@"GeotaggingCell"];
+            if(geotaggingCell == nil) {
+                geotaggingCell = [[WPTableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:@"GeotaggingCell"];
+                geotaggingCell.accessoryView = [[UISwitch alloc] init];
             }
-            switchCell.textLabel.text = NSLocalizedString(@"Geotagging", @"Enables geotagging in blog settings (short label)");
-            switchCell.selectionStyle = UITableViewCellSelectionStyleNone;
-            switchCell.cellSwitch.on = self.geolocationEnabled;
-            [switchCell.cellSwitch addTarget:self action:@selector(toggleGeolocation:) forControlEvents:UIControlEventValueChanged];
-            [WPStyleGuide configureTableViewCell:switchCell];
-            return switchCell;
+            UISwitch *geotaggingSwitch = (UISwitch *)geotaggingCell.accessoryView;
+            geotaggingCell.textLabel.text = NSLocalizedString(@"Geotagging", @"Enables geotagging in blog settings (short label)");
+            geotaggingCell.selectionStyle = UITableViewCellSelectionStyleNone;
+            geotaggingSwitch.on = self.geolocationEnabled;
+            [geotaggingSwitch addTarget:self action:@selector(toggleGeolocation:) forControlEvents:UIControlEventValueChanged];
+            [WPStyleGuide configureTableViewCell:geotaggingCell];
+            return geotaggingCell;
         } else if(indexPath.row == 1) {
-            if(switchCellPushNotifications == nil) {
-                NSArray *topLevelObjects = [[NSBundle mainBundle] loadNibNamed:@"UITableViewSwitchCell" owner:nil options:nil];
-                for(id currentObject in topLevelObjects)
-                {
-                    if([currentObject isKindOfClass:[UITableViewSwitchCell class]])
-                    {
-                        switchCellPushNotifications = (UITableViewSwitchCell *)currentObject;
-                        break;
-                    }
-                }
+            UITableViewCell *pushCell = [tableView dequeueReusableCellWithIdentifier:@"PushCell"];
+            if(pushCell == nil) {
+                pushCell = [[WPTableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:@"PushCell"];
+                pushCell.accessoryView = [[UISwitch alloc] init];
             }
-            switchCellPushNotifications.textLabel.text = NSLocalizedString(@"Push Notifications", @"");
-            switchCellPushNotifications.selectionStyle = UITableViewCellSelectionStyleNone;
-            switchCellPushNotifications.cellSwitch.on = [self getBlogPushNotificationsSetting];
-            return switchCellPushNotifications;
+            UISwitch *pushSwitch = (UISwitch *)pushCell.accessoryView;
+            pushCell.textLabel.text = NSLocalizedString(@"Push Notifications", @"");
+            pushCell.selectionStyle = UITableViewCellSelectionStyleNone;
+            pushSwitch.on = [self getBlogPushNotificationsSetting];
+            [WPStyleGuide configureTableViewCell:pushCell];
+            return pushCell;
         }
-	} else if(indexPath.section == 2) {
+	} else if (indexPath.section == 2) {
         
         UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:@"Cell"];
-        if(!cell) {
+        if (!cell) {
             cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleValue1 reuseIdentifier:@"Cell"];
-        };
+        }
         cell.textLabel.text = NSLocalizedString(@"Configure", @"");
         if (blog.jetpackUsername) {
             cell.detailTextLabel.text = [NSString stringWithFormat:NSLocalizedString(@"Connected as %@", @"Connected to jetpack as the specified usernaem"), blog.jetpackUsername];
@@ -314,7 +307,7 @@
         cell.selectionStyle = UITableViewCellSelectionStyleNone;
         cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
         cell.selectionStyle = UITableViewCellSelectionStyleBlue;
-        cell.detailTextLabel.textColor = [UIColor UIColorFromHex:0x888888];
+        [WPStyleGuide configureTableViewCell:cell];
         
         return cell;        
     }
@@ -330,8 +323,8 @@
 - (void)tableView:(UITableView *)tv didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
 	UITableViewCell *cell = [tv cellForRowAtIndexPath:indexPath];
 	if (indexPath.section == 0) {
-        for(UIView *subview in cell.subviews) {
-            if(subview.class == [UITextField class]) {
+        for (UIView *subview in cell.subviews) {
+            if (subview.class == [UITextField class]) {
                 [subview becomeFirstResponder];
                 break;
             }
@@ -340,7 +333,9 @@
     [tv deselectRowAtIndexPath:indexPath animated:YES];
     
     if (indexPath.section == 2) {
+        
         JetpackSettingsViewController *controller = [[JetpackSettingsViewController alloc] initWithBlog:blog];
+        controller.showFullScreen = NO;
         [controller setCompletionBlock:^(BOOL didAuthenticate) {
             [self.navigationController popViewControllerAnimated:YES];
         }];
@@ -359,7 +354,6 @@
     lastTextField = textField;
 }
 
-
 - (BOOL)textFieldShouldReturn:(UITextField *)textField {
     if (textField == usernameTextField) {
         [passwordTextField becomeFirstResponder];
@@ -370,7 +364,6 @@
     }
 	return NO;
 }
-
 
 - (BOOL)textField:(UITextField *)textField shouldChangeCharactersInRange:(NSRange)range replacementString:(NSString *)string {
     UITableViewCell *cell = (UITableViewCell *)[textField superview];
@@ -395,15 +388,14 @@
 #pragma mark UIAlertViewDelegate
 
 - (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex { 
-	switch(buttonIndex) {
+	switch (buttonIndex) {
 		case 0: {
             if ( alertView.tag == 20 ) {
                 //Domain Error or malformed response
                 [[UIApplication sharedApplication] openURL:[NSURL URLWithString: @"http://ios.wordpress.org/faq/#faq_3"]];
             } else {
-                HelpViewController *helpViewController = [[HelpViewController alloc] init];
-                helpViewController.isBlogSetup = YES;
-                [self.navigationController pushViewController:helpViewController animated:YES];
+                SupportViewController *supportViewController = [[SupportViewController alloc] init];
+                [self.navigationController pushViewController:supportViewController animated:YES];
             }
 			break;
 		}
@@ -459,21 +451,51 @@
     }
 }
 
-
 - (void)toggleGeolocation:(id)sender {
-    self.geolocationEnabled = switchCell.cellSwitch.on;
+    UISwitch *geolocationSwitch = (UISwitch *)sender;
+    self.geolocationEnabled = geolocationSwitch.on;
 }
 
+- (void)togglePushNotifications:(id)sender {    
+    UISwitch *pushSwitch = (UISwitch *)sender;
+    BOOL muted = !pushSwitch.on;
+    if (_notificationPreferences) {
+        NSMutableDictionary *mutedBlogsDictionary = [[_notificationPreferences objectForKey:@"muted_blogs"] mutableCopy];
+        NSMutableArray *mutedBlogsArray = [[mutedBlogsDictionary objectForKey:@"value"] mutableCopy];
+        NSMutableDictionary *updatedPreference = nil;
+        int i=0;
+        BOOL hasMatch = NO;
+        NSNumber *blogID = [blog isWPcom] ? blog.blogID : [blog jetpackBlogID];
+        for ( ; i < [mutedBlogsArray count]; i++) {
+            updatedPreference = [[mutedBlogsArray objectAtIndex:i] mutableCopy];
+            NSString *currentblogID = [updatedPreference objectForKey:@"blog_id"];
+            if ([blogID intValue] == [currentblogID intValue]) {
+                [updatedPreference setValue:[NSNumber numberWithBool:muted] forKey:@"value"];
+                hasMatch = YES;
+                break;
+            }
+        }
+        
+        if (hasMatch) {
+            [mutedBlogsArray setObject:updatedPreference atIndexedSubscript:i];
+            [mutedBlogsDictionary setValue:mutedBlogsArray forKey:@"value"];
+            [_notificationPreferences setValue:mutedBlogsDictionary forKey:@"muted_blogs"];
+            [[NSUserDefaults standardUserDefaults] setValue:_notificationPreferences forKey:@"notification_preferences"];
+            
+            // Send these settings optimistically since they're low-impact (not ideal but works for now)
+            [[WordPressComApi sharedApi] saveNotificationSettings:nil failure:nil];
+        }
+    }
+}
 
 - (void)refreshTable {
 	[self.tableView reloadData];
 }
 
-
 - (NSString *)getURLToValidate {
     NSString *urlToValidate = self.url;
 	
-    if(![urlToValidate hasPrefix:@"http"])
+    if (![urlToValidate hasPrefix:@"http"])
         urlToValidate = [NSString stringWithFormat:@"http://%@", url];
 	
     NSError *error = nil;
@@ -489,8 +511,7 @@
     return urlToValidate;
 }
 
-- (void)validateXmlprcURL:(NSURL *)xmlRpcURL
-{
+- (void)validateXmlprcURL:(NSURL *)xmlRpcURL {
     WordPressXMLRPCApi *api = [WordPressXMLRPCApi apiWithXMLRPCEndpoint:xmlRpcURL username:usernameTextField.text password:passwordTextField.text];
 
     [api getBlogOptionsWithSuccess:^(id options){
@@ -508,8 +529,7 @@
     }];
 }
 
-- (void)loginForSiteWithXmlRpcUrl:(NSURL *)xmlRpcURL
-{
+- (void)loginForSiteWithXmlRpcUrl:(NSURL *)xmlRpcURL {
     WordPressXMLRPCApi *api = [WordPressXMLRPCApi apiWithXMLRPCEndpoint:xmlRpcURL username:usernameTextField.text password:passwordTextField.text];
     [api getBlogsWithSuccess:^(NSArray *blogs) {
         [SVProgressHUD dismiss];
@@ -524,7 +544,7 @@
 - (void)checkURL {
 	NSString *urlToValidate = [self getURLToValidate];
 	
-    [FileLogger log:@"%@ %@ %@", self, NSStringFromSelector(_cmd), urlToValidate];
+    DDLogInfo(@"%@ %@ %@", self, NSStringFromSelector(_cmd), urlToValidate);
     
     [SVProgressHUD showWithStatus:NSLocalizedString(@"Authenticating", @"") maskType:SVProgressHUDMaskTypeBlack];
     [WordPressXMLRPCApi guessXMLRPCURLForSite:urlToValidate success:^(NSURL *xmlrpcURL) {
@@ -535,6 +555,8 @@
             [self validationDidFail:nil];
 		} else if ([error.domain isEqual:WPXMLRPCErrorDomain] && error.code == WPXMLRPCInvalidInputError) {
 			[self validationDidFail:error];
+        } else if ([error.domain isEqual:WordPressXMLRPCApiErrorDomain]) {
+            [self validationDidFail:error];
 		} else if([error.domain isEqual:AFNetworkingErrorDomain]) {
 			NSString *str = [NSString stringWithFormat:NSLocalizedString(@"There was a server error communicating with your site:\n%@\nTap 'Need Help?' to view the FAQ.", @""), [error localizedDescription]];
 			NSDictionary *userInfo = [NSDictionary dictionaryWithObjectsAndKeys:
@@ -552,7 +574,6 @@
     }];
 }
 
-
 - (void)validationSuccess:(NSString *)xmlrpc {
 	[savingIndicator stopAnimating];
 	[savingIndicator setHidden:YES];
@@ -567,7 +588,6 @@
 
 }
 
-
 - (void)validationDidFail:(id)wrong {
 	[savingIndicator stopAnimating];
 	[savingIndicator setHidden:YES];
@@ -578,7 +598,7 @@
             NSError *error = (NSError *)wrong;
 			NSString *message;
 			if ([error code] == 403) {
-				message = NSLocalizedString(@"Please update your credentials and try again.", @"");
+				message = NSLocalizedString(@"Please try entering your login details again.", @"");
 			} else {
 				message = [error localizedDescription];
 			}
@@ -615,10 +635,9 @@
 	[self.navigationItem setHidesBackButton:NO animated:NO];
 }
 
-
 - (void)validateFields {
     self.url = [NSURL IDNEncodedURL:urlTextField.text];
-    NSLog(@"blog url: %@", self.url);
+    DDLogInfo(@"blog url: %@", self.url);
     self.username = usernameTextField.text;
     self.password = passwordTextField.text;
     
@@ -651,7 +670,6 @@
     }
 }
 
-
 - (void)save:(id)sender {
     [urlTextField resignFirstResponder];
     [usernameTextField resignFirstResponder];
@@ -674,51 +692,20 @@
     if (blog) {
         blog.geolocationEnabled = self.geolocationEnabled;
         [blog dataSave];
-        
-        if(switchCellPushNotifications){
-            BOOL muted = ! switchCellPushNotifications.cellSwitch.on;
-            if (_notificationPreferences) {
-                NSMutableDictionary *mutedBlogsDictionary = [[_notificationPreferences objectForKey:@"muted_blogs"] mutableCopy];
-                NSMutableArray *mutedBlogsArray = [[mutedBlogsDictionary objectForKey:@"value"] mutableCopy];
-                NSMutableDictionary *updatedPreference = nil;
-                int i=0;
-                BOOL hasMatch = NO;
-                NSNumber *blogID = [blog isWPcom] ? blog.blogID : [blog jetpackBlogID];
-                for ( ; i < [mutedBlogsArray count]; i++) {
-                    updatedPreference = [[mutedBlogsArray objectAtIndex:i] mutableCopy];
-                    NSString *currentblogID = [updatedPreference objectForKey:@"blog_id"];
-                    if( [blogID intValue] == [currentblogID intValue]  ) {
-                        [updatedPreference setValue:[NSNumber numberWithBool:muted] forKey:@"value"];
-                        hasMatch = YES;
-                        break;
-                    }
-                }
-                
-                if(hasMatch){
-                    [mutedBlogsArray setObject:updatedPreference atIndexedSubscript:i];
-                    [mutedBlogsDictionary setValue:mutedBlogsArray forKey:@"value"];
-                    [_notificationPreferences setValue:mutedBlogsDictionary forKey:@"muted_blogs"];
-                    [[NSUserDefaults standardUserDefaults] setValue:_notificationPreferences forKey:@"notification_preferences"];
-                    [[WordPressComApi sharedApi] saveNotificationSettings:nil failure:nil];
-                }
-            }
-        }
 	}
-	if(blog == nil || blog.username == nil) {
+    if (blog == nil || blog.username == nil) {
 		[self validateFields];
 	} else {
-		if ([self.startingUser isEqualToString:usernameTextField.text]
-			&& [self.startingPwd isEqualToString:passwordTextField.text]
-			&& [self.startingUrl isEqualToString:urlTextField.text]) {
+		if ([self.startingUser isEqualToString:usernameTextField.text] &&
+            [self.startingPwd isEqualToString:passwordTextField.text] &&
+			[self.startingUrl isEqualToString:urlTextField.text]) {
 			// No need to check if nothing changed
             [self cancel:nil];
-            
 		} else {
 			[self validateFields];
 		}
     }
 }
-
 
 - (IBAction)cancel:(id)sender {
     if (isCancellable) {
@@ -727,29 +714,26 @@
         [self.navigationController popToRootViewControllerAnimated:YES];
     }
     
-    if (self.delegate){
+    if (self.delegate) {
         // If sender is not nil then the user tapped the cancel button.
         BOOL wascancelled = (sender != nil);
         [self.delegate controllerDidDismiss:self cancelled:wascancelled];
     }
 }
 
-- (void)enableDisableSaveButton {
+- (void)showSaveButton {
     BOOL hasContent;
     
-    if ( [urlTextField.text isEqualToString:@""] ||
+    if ([urlTextField.text isEqualToString:@""] ||
          [usernameTextField.text isEqualToString:@""] ||
-         [passwordTextField.text isEqualToString:@""] )
-    {
+         [passwordTextField.text isEqualToString:@""]) {
         hasContent = NO;
     } else {
         hasContent = YES;
     }
     
-    self.navigationItem.rightBarButtonItem.enabled = hasContent;
+    self.navigationItem.rightBarButtonItem = hasContent ? saveButton : nil;
 }
-
-
 
 - (void)reloadNotificationSettings {
     _notificationPreferences = [[[NSUserDefaults standardUserDefaults] objectForKey:@"notification_preferences"] mutableCopy];
@@ -763,9 +747,9 @@
         NSDictionary *mutedBlogsDictionary = [_notificationPreferences objectForKey:@"muted_blogs"];
         NSArray *mutedBlogsArray = [mutedBlogsDictionary objectForKey:@"value"];
         NSNumber *blogID = [blog isWPcom] ? blog.blogID : [blog jetpackBlogID];
-        for(NSDictionary *currentBlog in mutedBlogsArray ){
+        for (NSDictionary *currentBlog in mutedBlogsArray ){
             NSString *currentBlogID = [currentBlog objectForKey:@"blog_id"];
-            if( [blogID intValue] == [currentBlogID intValue]  ) {
+            if ([blogID intValue] == [currentBlogID intValue]) {
                 return ![[currentBlog objectForKey:@"value"] boolValue];
             }
         }
@@ -775,8 +759,7 @@
     }
 }
 
-- (BOOL)canEditUsernameAndURL
-{
+- (BOOL)canEditUsernameAndURL {
     return NO;
 }
 
@@ -786,11 +769,19 @@
 - (void)handleKeyboardDidShow:(NSNotification *)notification {    
     CGRect rect = [[notification.userInfo valueForKey:UIKeyboardFrameEndUserInfoKey] CGRectValue];    
     CGRect frame = self.view.frame;
-    if(UIInterfaceOrientationIsLandscape(self.interfaceOrientation)) {
-        frame.size.height -= rect.size.width;
-    } else {
-        frame.size.height -= rect.size.height;
+
+    // Slight hack to account for tab bar; ditch this when we switch to a translucent tab bar
+    CGSize tabBarSize = CGSizeZero;
+    if ([self tabBarController]) {
+        tabBarSize = [[[self tabBarController] tabBar] bounds].size;
     }
+
+    if (UIInterfaceOrientationIsLandscape(self.interfaceOrientation)) {
+        frame.size.height -= rect.size.width - tabBarSize.height;
+    } else {
+        frame.size.height -= rect.size.height - tabBarSize.height;
+    }
+
     self.view.frame = frame;
     
     CGPoint point = [tableView convertPoint:lastTextField.frame.origin fromView:lastTextField];
@@ -800,11 +791,10 @@
     }
 }
 
-
 - (void)handleKeyboardWillHide:(NSNotification *)notification {
     CGRect rect = [[notification.userInfo valueForKey:UIKeyboardFrameEndUserInfoKey] CGRectValue];
     CGRect frame = self.view.frame;
-    if(UIInterfaceOrientationIsLandscape(self.interfaceOrientation)) {
+    if (UIInterfaceOrientationIsLandscape(self.interfaceOrientation)) {
         frame.size.height += rect.size.width;
     } else {
         frame.size.height += rect.size.height;

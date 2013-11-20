@@ -20,10 +20,12 @@
 #import "WPWebVideoViewController.h"
 #import "UIImageView+Gravatar.h"
 #import "UILabel+SuggestSize.h"
+#import "ReaderPostsViewController.h"
+#import "ReaderMediaQueue.h"
 
 #define ContentTextViewYOffset -32
 
-@interface ReaderPostDetailView()<DTAttributedTextContentViewDelegate> {
+@interface ReaderPostDetailView()<DTAttributedTextContentViewDelegate, ReaderMediaQueueDelegate> {
 	BOOL _relayoutTextFlag;
 }
 
@@ -37,11 +39,12 @@
 @property (nonatomic, strong) UIButton *followButton;
 @property (nonatomic, strong) DTAttributedTextContentView *textContentView;
 @property (nonatomic, strong) NSMutableArray *mediaArray;
+@property (nonatomic, strong) ReaderMediaQueue *mediaQueue;
 @property (nonatomic, weak) id<ReaderPostDetailViewDelegate>delegate;
 
 - (void)_updateLayout;
 - (void)updateAttributedString:(NSAttributedString *)attrString;
-- (void)updateMediaLayout:(ReaderMediaView *)mediaView;
+- (BOOL)updateMediaLayout:(ReaderMediaView *)mediaView;
 - (void)handleAuthorViewTapped:(id)sender;
 - (void)handleImageLinkTapped:(id)sender;
 - (void)handleLinkTapped:(id)sender;
@@ -58,6 +61,8 @@
 - (void)dealloc
 {
     _textContentView.delegate = nil;
+    _mediaQueue.delegate = nil;
+    [_mediaQueue discardQueuedItems];
     [[NSNotificationCenter defaultCenter] removeObserver:self];
 }
 
@@ -69,7 +74,8 @@
 		self.delegate = delegate;
 		
 		self.mediaArray = [NSMutableArray array];
-
+        self.mediaQueue = [[ReaderMediaQueue alloc] initWithDelegate:self];
+        
 		CGFloat width = frame.size.width;
         CGFloat padding = 20.0f;
         CGFloat labelWidth = width - 100.0f;
@@ -101,25 +107,25 @@
 		self.authorLabel = [[UILabel alloc] initWithFrame:CGRectMake(avatarSize + padding + 10.0f, padding, labelWidth, labelHeight)];
 		_authorLabel.autoresizingMask = UIViewAutoresizingFlexibleWidth;
 		_authorLabel.backgroundColor = [UIColor clearColor];
-		_authorLabel.font = [UIFont fontWithName:@"OpenSans" size:13.0f];//[UIFont boldSystemFontOfSize:14.0f];
+		_authorLabel.font = [UIFont fontWithName:@"OpenSans" size:13.0f];
 		_authorLabel.text = (self.post.author != nil) ? self.post.author : self.post.authorDisplayName;
-		_authorLabel.textColor = [UIColor colorWithHexString:@"404040"];
+		_authorLabel.textColor = DTColorCreateWithHexString(@"404040");
 		[_authorView addSubview:_authorLabel];
 		
 		self.dateLabel = [[UILabel alloc] initWithFrame:CGRectMake(avatarSize + padding + 10.0f, padding + labelHeight, labelWidth, labelHeight)];
 		_dateLabel.autoresizingMask = UIViewAutoresizingFlexibleWidth;
 		_dateLabel.backgroundColor = [UIColor clearColor];
-		_dateLabel.font = [UIFont fontWithName:@"OpenSans" size:13.0f];//[UIFont systemFontOfSize:14.0f];
+		_dateLabel.font = [UIFont fontWithName:@"OpenSans" size:13.0f];
 		_dateLabel.text = [NSString stringWithFormat:@"%@ on", [self.post prettyDateString]];
-		_dateLabel.textColor = [UIColor colorWithHexString:@"404040"];//[UIColor colorWithHexString:@"aaaaaa"];
+		_dateLabel.textColor = DTColorCreateWithHexString(@"404040");
 		[_authorView addSubview:_dateLabel];
 		
 		self.blogLabel = [[UILabel alloc] initWithFrame:CGRectMake(avatarSize + padding + 10.0f, padding + labelHeight * 2, labelWidth, labelHeight)];
 		_blogLabel.autoresizingMask = UIViewAutoresizingFlexibleWidth;
 		_blogLabel.backgroundColor = [UIColor clearColor];
-		_blogLabel.font = [UIFont fontWithName:@"OpenSans" size:13.0f];//[UIFont systemFontOfSize:14.0f];
+		_blogLabel.font = [UIFont fontWithName:@"OpenSans" size:13.0f];
 		_blogLabel.text = self.post.blogName;
-		_blogLabel.textColor = [UIColor colorWithHexString:@"278dbc"];
+		_blogLabel.textColor = DTColorCreateWithHexString(@"278dbc");
 		[_authorView addSubview:_blogLabel];
 		
 		CGRect followFrame = _blogLabel.frame;
@@ -198,7 +204,6 @@
 
 - (void)updateAttributedString:(NSAttributedString *)attrString {
 	_textContentView.attributedString = attrString;
-	[self _updateLayout];
 }
 
 
@@ -244,6 +249,7 @@
 	if (_titleLabel) {
 		CGRect titleFrame = _titleLabel.frame;
 		titleFrame.size.height = [_titleLabel suggestedSizeForWidth:titleFrame.size.width].height;
+        titleFrame = CGRectIntegral(titleFrame);
 		_titleLabel.frame = titleFrame;
 		
 		CGRect contentFrame = _textContentView.frame;
@@ -277,8 +283,8 @@
 }
 
 
-- (void)updateMediaLayout:(ReaderMediaView *)imageView {
-
+- (BOOL)updateMediaLayout:(ReaderMediaView *)imageView {
+    BOOL frameChanged = NO;
 	NSURL *url = imageView.contentURL;
 	
 	CGSize originalSize = imageView.frame.size;
@@ -289,16 +295,26 @@
 		viewSize.width *= scale;
 		viewSize.height *= scale;
 	} else {
-		viewSize.width = _textContentView.frame.size.width - (_textContentView.edgeInsets.left + _textContentView.edgeInsets.right);
-		if (imageView.isShowingPlaceholder) {
-			viewSize.height = viewSize.width * 0.66f;
-		} else {
-			viewSize.height = viewSize.height * (_textContentView.frame.size.width / imageView.image.size.width);
-		}
-		
-		viewSize.height += imageView.edgeInsets.top; // account for the top edge inset.
+        CGFloat ratio = viewSize.width / viewSize.height;
+        CGFloat width = _textContentView.frame.size.width;
+        CGFloat availableWidth = _textContentView.frame.size.width - (_textContentView.edgeInsets.left + _textContentView.edgeInsets.right);
+        
+        viewSize.width = availableWidth;
+        
+        if (imageView.isShowingPlaceholder) {
+            viewSize.height = roundf(width / imageView.placeholderRatio);
+        } else {
+            viewSize.height = roundf(width / ratio);
+        }
+
+        viewSize.height += imageView.edgeInsets.top; // account for the top edge inset.
 	}
 
+    // Widths should always match
+    if (viewSize.height != originalSize.height) {
+        frameChanged = YES;
+    }
+    
 	NSPredicate *pred = [NSPredicate predicateWithFormat:@"contentURL == %@", url];
 	
 	// update all attachments that matchin this URL (possibly multiple images with same size)
@@ -306,11 +322,17 @@
 		attachment.originalSize = originalSize;
 		attachment.displaySize = viewSize;
 	}
+    
+    return frameChanged;
 }
 
 
 - (BOOL)isEmoji:(NSURL *)url {
 	return ([[url absoluteString] rangeOfString:@"wp.com/wp-includes/images/smilies"].location != NSNotFound);
+}
+
+- (UINavigationController *)detailNavigationController {
+	return [[[WordPressAppDelegate sharedWordPressApplicationDelegate] readerPostsViewController] navigationController];
 }
 
 
@@ -326,7 +348,7 @@
 		self.followButton.selected = [self.post.isFollowing boolValue]; // for good measure!
 		[self setNeedsLayout];
 	} failure:^(NSError *error) {
-		WPLog(@"Error Following Blog : %@", [error localizedDescription]);
+		DDLogError(@"Error Following Blog : %@", [error localizedDescription]);
 		[_followButton setSelected:self.post.isFollowing];
 		[self setNeedsLayout];
 		
@@ -356,7 +378,7 @@
 - (void)handleAuthorViewTapped:(id)sender {
 	WPWebViewController *controller = [[WPWebViewController alloc] init];
 	[controller setUrl:[NSURL URLWithString:self.post.permaLink]];
-	[[[WordPressAppDelegate sharedWordPressApplicationDelegate] panelNavigationController] pushViewController:controller animated:YES];
+	[[self detailNavigationController] pushViewController:controller animated:YES];
 }
 
 
@@ -381,7 +403,7 @@
 		} else {
 			WPWebViewController *controller = [[WPWebViewController alloc] init];
 			[controller setUrl:((ReaderImageView *)sender).linkURL];
-			[[[WordPressAppDelegate sharedWordPressApplicationDelegate] panelNavigationController] pushViewController:controller animated:YES];
+			[[self detailNavigationController] pushViewController:controller animated:YES];
 		}
 	} else {
 		[WPImageViewController presentAsModalWithImage:imageView.image];
@@ -392,7 +414,7 @@
 - (void)handleLinkTapped:(id)sender {
 	WPWebViewController *controller = [[WPWebViewController alloc] init];
 	[controller setUrl:((DTLinkButton *)sender).URL];
-	[[[WordPressAppDelegate sharedWordPressApplicationDelegate] panelNavigationController] pushViewController:controller animated:YES];
+	[[self detailNavigationController] pushViewController:controller animated:YES];
 }
 
 
@@ -414,7 +436,7 @@
         
 		controller.modalTransitionStyle = UIModalTransitionStyleCrossDissolve;
 		controller.modalPresentationStyle = UIModalPresentationFormSheet;
-        [[[WordPressAppDelegate sharedWordPressApplicationDelegate] panelNavigationController] presentViewController:controller animated:YES completion:nil];
+        [[[WordPressAppDelegate sharedWordPressApplicationDelegate].window rootViewController] presentViewController:controller animated:YES completion:nil];
 		
 	} else {
 		// Should either be an iframe, or an object embed. In either case a src attribute should have been parsed for the contentURL.
@@ -427,15 +449,17 @@
 
 - (void)handleMediaViewLoaded:(ReaderMediaView *)mediaView {
 	
-	[self updateMediaLayout:mediaView];
+	BOOL frameChanged = [self updateMediaLayout:mediaView];
 	
-	// need to reset the layouter because otherwise we get the old framesetter or cached layout frames
-	self.textContentView.layouter = nil;
-	
-	// layout might have changed due to image sizes
-	[self.textContentView relayoutText];
-	
-	[self _updateLayout];
+    if (frameChanged) {
+        // need to reset the layouter because otherwise we get the old framesetter or cached layout frames
+        self.textContentView.layouter = nil;
+
+        // layout might have changed due to image sizes
+        [self.textContentView relayoutText];
+
+        [self _updateLayout];
+    }
 }
 
 
@@ -453,7 +477,7 @@
                                                       object:moviePlayer];
         
         // Dismiss the view controller
-        [[[WordPressAppDelegate sharedWordPressApplicationDelegate] panelNavigationController] dismissViewControllerAnimated:YES completion:nil];
+        [[[WordPressAppDelegate sharedWordPressApplicationDelegate].window rootViewController] dismissViewControllerAnimated:YES completion:nil];
     }
 }
 
@@ -488,7 +512,9 @@
 
 - (UIView *)attributedTextContentView:(DTAttributedTextContentView *)attributedTextContentView viewForAttachment:(DTTextAttachment *)attachment frame:(CGRect)frame {
 	
-	CGFloat width = _textContentView.frame.size.width - (_textContentView.edgeInsets.left + _textContentView.edgeInsets.right);
+    CGFloat width = _textContentView.frame.size.width;
+    CGFloat availableWidth = _textContentView.frame.size.width - (_textContentView.edgeInsets.left + _textContentView.edgeInsets.right);
+
 	// The ReaderImageView view will conform to the width constraints of the _textContentView. We want the image itself to run out to the edges,
 	// so position it offset by the inverse of _textContentView's edgeInsets. Also add top padding so we don't bump into a line of text.
 	// Remeber to add an extra 10px to the frame to preserve aspect ratio.
@@ -504,13 +530,14 @@
 			frame.size.width = MAX(frame.size.width, 1.0f);
 			frame.size.height = MAX(frame.size.height, 1.0f);
 			ReaderImageView *imageView = [[ReaderImageView alloc] initWithFrame:frame];
-			[imageView setImageWithURL:attachment.contentURL
-					  placeholderImage:nil
-							   success:^(ReaderMediaView *readerMediaView) {
-								   [self handleMediaViewLoaded:(ReaderImageView *)readerMediaView];
-							   } failure:^(ReaderMediaView *readerMediaView, NSError *error) {
-								   [self handleMediaViewLoaded:readerMediaView];
-							   }];
+            [_mediaArray addObject:imageView];
+            [self.mediaQueue enqueueMedia:imageView
+                                  withURL:attachment.contentURL
+                         placeholderImage:nil
+                                     size:CGSizeMake(15.0f, 15.0f)
+                                isPrivate:self.post.isPrivate
+                                  success:nil
+                                  failure:nil];
 			return imageView;
 		}
 		
@@ -520,14 +547,20 @@
 		if( [imageAttachment.image isKindOfClass:[UIImage class]] ) {
 			image = imageAttachment.image;
 			
-			frame.size.width = width;
-			frame.size.height = image.size.height * (width / image.size.width);
-			
+            CGFloat ratio = image.size.width / image.size.height;
+            frame.size.width = availableWidth;
+            frame.size.height = roundf(width / ratio);
 		} else {
 			image = [UIImage imageNamed:@"wp_img_placeholder.png"];
 
-			frame.size.width = width;
-			frame.size.height = width * 0.66f;
+			if (frame.size.width > 1.0f && frame.size.height > 1.0f) {
+                CGFloat ratio = frame.size.width / frame.size.height;
+                frame.size.width = availableWidth;
+                frame.size.height = roundf(width / ratio);
+            } else {
+                frame.size.width = availableWidth;
+                frame.size.height = roundf(width * 0.66f);
+            }
 		}
 		
 		// offset the top edge inset keeping the image from bumping the text above it.
@@ -546,16 +579,18 @@
 		} else {
 			imageView.contentMode = UIViewContentModeCenter;
 			imageView.backgroundColor = [UIColor colorWithRed:192.0f/255.0f green:192.0f/255.0f blue:192.0f/255.0f alpha:1.0];
-			[imageView setImageWithURL:attachment.contentURL
-					  placeholderImage:image
-							   success:^(id readerImageView) {
-								   ReaderImageView *imageView = readerImageView;
-								   imageView.contentMode = UIViewContentModeScaleAspectFit;
-								   imageView.backgroundColor = [UIColor clearColor];
-								   [self handleMediaViewLoaded:readerImageView];
-							   } failure:^(id readerImageView, NSError *error) {
-								   [self handleMediaViewLoaded:readerImageView];
-							   }];
+            
+            [self.mediaQueue enqueueMedia:imageView
+                                  withURL:attachment.contentURL
+                         placeholderImage:image
+                                     size:CGSizeMake(width, 0)
+                                isPrivate:self.post.isPrivate
+                                  success:^(ReaderMediaView *readerMediaView) {
+                                      ReaderImageView *imageView = (ReaderImageView *)readerMediaView;
+                                      imageView.contentMode = UIViewContentModeScaleAspectFit;
+                                      imageView.backgroundColor = [UIColor clearColor];
+                                  }
+                                  failure:nil];
 		}
 
 		return imageView;
@@ -576,8 +611,12 @@
 	
 		// make sure we have a reasonable size.
 		if (frame.size.width > width) {
-			frame.size.height = frame.size.height * (width / frame.size.width);
-			frame.size.width = width;
+            if (frame.size.height == 0) {
+                frame.size.height = roundf(frame.size.width * 0.66f);
+            }
+            CGFloat ratio = frame.size.width / frame.size.height;
+            frame.size.width = availableWidth;
+            frame.size.height = roundf(width / ratio);
 		}
 		
 		// offset the top edge inset keeping the image from bumping the text above it.
@@ -596,13 +635,35 @@
 			[self handleMediaViewLoaded:readerVideoView];
 			
 		}];
-		
+        
 		[videoView addTarget:self action:@selector(handleVideoTapped:) forControlEvents:UIControlEventTouchUpInside];
-		
 
 		return videoView;
 	}
 	
+}
+
+#pragma mark ReaderMediaQueueDelegate methods
+
+- (void)readerMediaQueue:(ReaderMediaQueue *)mediaQueue didLoadBatch:(NSArray *)batch {
+    BOOL frameChanged = NO;
+    
+    for (NSInteger i = 0; i < [batch count]; i++) {
+        ReaderMediaView *mediaView = [batch objectAtIndex:i];
+        if ([self updateMediaLayout:mediaView]) {
+            frameChanged = YES;
+        }
+    }
+
+    if (frameChanged) {
+        // need to reset the layouter because otherwise we get the old framesetter or cached layout frames
+        self.textContentView.layouter = nil;
+        
+        // layout might have changed due to image sizes
+        [self.textContentView relayoutText];
+        
+        [self _updateLayout];
+    }
 }
 
 @end

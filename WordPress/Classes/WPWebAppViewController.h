@@ -16,7 +16,6 @@
     EGORefreshTableHeaderView *_refreshHeaderView;
     NSString *hybridAuthToken;
     BOOL shouldEnablePullToRefresh;
-    BOOL didPlayPullSound;
     BOOL didTriggerRefresh;
 }
 

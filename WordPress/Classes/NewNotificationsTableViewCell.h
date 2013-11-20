@@ -7,9 +7,10 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "WPTableViewCell.h"
 
 @class Note;
-@interface NewNotificationsTableViewCell : UITableViewCell
+@interface NewNotificationsTableViewCell : WPTableViewCell
 
 @property (readwrite, weak) Note *note;
 
