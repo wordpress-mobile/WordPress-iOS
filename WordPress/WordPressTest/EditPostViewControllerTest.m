@@ -52,7 +52,7 @@
     _post = nil;
     [[CoreDataTestHelper sharedHelper] reset];
     UIViewController *rvc = [[[[UIApplication sharedApplication] delegate] window] rootViewController];
-    [rvc dismissModalViewControllerAnimated:NO];
+    [rvc dismissViewControllerAnimated:NO completion:nil];
     _controller = nil;
 }
 
