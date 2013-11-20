@@ -10,7 +10,6 @@
 #import <Accounts/Accounts.h>
 #import <Social/Social.h>
 #import "WPFriendFinderViewController.h"
-#import "JSONKit.h"
 #import "WordPressAppDelegate.h"
 #import "UIBarButtonItem+Styled.h"
 #import "ReachabilityUtils.h"
@@ -87,8 +86,10 @@ typedef void (^CancelBlock)();
         [available addObject:@"twitter"];
     }
     
-    
-    [self.webView stringByEvaluatingJavaScriptFromString:[NSString stringWithFormat:@"FriendFinder.enableSources(%@)", [available JSONString]]];
+
+    NSData *jsonData = [NSJSONSerialization dataWithJSONObject:available options:0 error:nil];
+    NSString *json = [[NSString alloc] initWithData:jsonData encoding:NSUTF8StringEncoding];
+    [self.webView stringByEvaluatingJavaScriptFromString:[NSString stringWithFormat:@"FriendFinder.enableSources(%@)", json]];
 }
 
 - (void)authorizeSource:(NSString *)source
@@ -140,7 +141,9 @@ typedef void (^CancelBlock)();
                     
                     // pipe this addresses into the webview
                     dispatch_async(dispatch_get_main_queue(), ^{
-                        [self.webView stringByEvaluatingJavaScriptFromString:[NSString stringWithFormat:@"FriendFinder.findByEmail(%@)", [addresses JSONString]]];
+                        NSData *jsonData = [NSJSONSerialization dataWithJSONObject:addresses options:0 error:nil];
+                        NSString *json = [[NSString alloc] initWithData:jsonData encoding:NSUTF8StringEncoding];
+                        [self.webView stringByEvaluatingJavaScriptFromString:[NSString stringWithFormat:@"FriendFinder.findByEmail(%@)", json]];
                     });
                 } else {
                     dispatch_async(dispatch_get_main_queue(), ^{
@@ -228,11 +231,13 @@ typedef void (^CancelBlock)();
                                                            parameters:nil];
                 request.account = account;
                 [request performRequestWithHandler:^(NSData *responseData, NSHTTPURLResponse *urlResponse, NSError *error) {
-                    NSDictionary *response = [responseData objectFromJSONData];
+                    NSDictionary *response = [NSJSONSerialization JSONObjectWithData:responseData options:0 error:nil];
                     if (response && [response isKindOfClass:[NSDictionary class]]) {
                         NSArray *friends = response[@"data"];
                         dispatch_async(dispatch_get_main_queue(), ^{
-                            [self.webView stringByEvaluatingJavaScriptFromString:[NSString stringWithFormat:@"FriendFinder.findByFacebookID(%@)", [friends JSONString]]];
+                            NSData *jsonData = [NSJSONSerialization dataWithJSONObject:friends options:0 error:nil];
+                            NSString *json = [[NSString alloc] initWithData:jsonData encoding:NSUTF8StringEncoding];
+                            [self.webView stringByEvaluatingJavaScriptFromString:[NSString stringWithFormat:@"FriendFinder.findByFacebookID(%@)", json]];
                         });
                     }
                 }];
