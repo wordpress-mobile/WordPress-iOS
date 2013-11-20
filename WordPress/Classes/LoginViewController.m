@@ -485,7 +485,6 @@ CGFloat const GeneralWalkthroughiOS7StatusBarOffset = 20.0;
         _usernameText.text = username;
         _passwordText.text = password;
         _userIsDotCom = YES;
-        [self.navigationController popViewControllerAnimated:NO];
         [self showAddUsersBlogsForWPCom];
     };
     [self.navigationController pushViewController:createAccountViewController animated:YES];
@@ -504,8 +503,6 @@ CGFloat const GeneralWalkthroughiOS7StatusBarOffset = 20.0;
         } else {
             [WPMobileStats trackEventForSelfHostedAndWPCom:StatsEventNUXFirstWalkthroughUserSkippedConnectingToJetpack];            
         }
-        
-        [self.navigationController popViewControllerAnimated:NO];
         [self dismiss];
     }];
     [self.navigationController pushViewController:jetpackSettingsViewController animated:YES];
@@ -777,11 +774,9 @@ CGFloat const GeneralWalkthroughiOS7StatusBarOffset = 20.0;
     NewAddUsersBlogViewController *vc = [[NewAddUsersBlogViewController alloc] init];
     vc.account = [self createAccountWithUsername:_usernameText.text andPassword:_passwordText.text isWPCom:isWPCom xmlRPCUrl:xmlRPCUrl];
     vc.blogAdditionCompleted = ^(NewAddUsersBlogViewController * viewController){
-        [self.navigationController popViewControllerAnimated:NO];
         [self dismiss];
     };
     vc.onNoBlogsLoaded = ^(NewAddUsersBlogViewController *viewController) {
-        [self.navigationController popViewControllerAnimated:NO];
         [self dismiss];
     };
     vc.onErrorLoading = ^(NewAddUsersBlogViewController *viewController, NSError *error) {
