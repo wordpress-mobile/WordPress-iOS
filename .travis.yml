@@ -1,5 +1,3 @@
 language: objective-c
-install: true
-script: ./test.sh
-workspace: WordPress.xcworkspace
-scheme: WordPress
+xcode_workspace: WordPress.xcworkspace
+xcode_scheme: WordPress
