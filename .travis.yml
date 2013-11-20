@@ -4,3 +4,5 @@ rvm: 1.9.3
 language: objective-c
 xcode_workspace: WordPress.xcworkspace
 xcode_scheme: WordPress
+notifications:
+  email: false
