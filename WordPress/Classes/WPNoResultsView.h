@@ -14,7 +14,7 @@
 @property (nonatomic, copy) UILabel *messageLabel;
 @property (nonatomic, copy) UIView *accessoryView;
 
-+ (WPNoResultsView *)WPInfoViewWithTitle:(NSString *)titleText message:(NSString *)messageText accessoryView:(UIView *)accessoryView;
++ (WPNoResultsView *)noResultsViewWithTitle:(NSString *)titleText message:(NSString *)messageText accessoryView:(UIView *)accessoryView;
 
 - (void)setupWithTitle:(NSString *)titleText message:(NSString *)messageText accessoryView:(UIView *)accessoryView;
 - (void)showInView:(UIView *)view;

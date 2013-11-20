@@ -167,11 +167,25 @@ CGFloat const WPTableViewTopMargin = 40;
     [super setEditing:editing animated:animated];
 }
 
-- (NSString *)noResultsText
+- (NSString *)noResultsTitleText
 {
     NSString *ttl = NSLocalizedString(@"No %@ yet", @"A string format. The '%@' will be replaced by the relevant type of object, posts, pages or comments.");
 	ttl = [NSString stringWithFormat:ttl, [self.title lowercaseString]];
     return ttl;
+}
+
+- (NSString *)noResultsMessageText
+{
+	if ([self userCanCreateEntity]) {
+		return NSLocalizedString(@"Why not create one?", @"A call to action to create a post or page.");
+	} else {
+        return nil;
+    }
+}
+
+- (UIView *)noResultsAccessoryView
+{
+    return nil;
 }
 
 #pragma mark - Property accessors
@@ -559,12 +573,8 @@ CGFloat const WPTableViewTopMargin = 40;
 }
 
 - (UIView *)createNoResultsView {
-	NSString *msg = @"";
-	if ([self userCanCreateEntity]) {
-		msg = NSLocalizedString(@"Why not create one?", @"A call to action to create a post or page.");
-	}
 	
-	return [WPNoResultsView WPInfoViewWithTitle:[self noResultsText] message:msg accessoryView:nil];
+	return [WPNoResultsView noResultsViewWithTitle:[self noResultsTitleText] message:[self noResultsMessageText] accessoryView:[self noResultsAccessoryView]];
 }
 
 - (void)hideRefreshHeader {

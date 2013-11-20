@@ -15,7 +15,7 @@
 #pragma mark -
 #pragma mark Lifecycle Methods
 
-+ (WPNoResultsView *)WPInfoViewWithTitle:(NSString *)titleText message:(NSString *)messageText accessoryView:(UIView *)accessoryView {
++ (WPNoResultsView *)noResultsViewWithTitle:(NSString *)titleText message:(NSString *)messageText accessoryView:(UIView *)accessoryView {
     
     WPNoResultsView *view = [[WPNoResultsView alloc] init];
     [view setupWithTitle:titleText message:messageText accessoryView:accessoryView];
@@ -40,11 +40,13 @@
 
 - (void)setupWithTitle:(NSString *)titleText message:(NSString *)messageText accessoryView:(UIView *)accessoryView {
     
-    CGFloat width = 280.0;
+    CGFloat width = 270.0;
+    
+    [self addSubview:accessoryView];
     
     // setup title label
     _titleLabel = [[UILabel alloc] init];
-    _titleLabel.font = [WPStyleGuide postTitleFont];
+    _titleLabel.font = [UIFont fontWithName:@"OpenSans-Light" size:24];
     _titleLabel.textColor = [WPStyleGuide whisperGrey];
     _titleLabel.textAlignment = NSTextAlignmentCenter;
     _titleLabel.text = titleText;
@@ -62,16 +64,27 @@
     
     
     // Layout views
+    accessoryView.frame = CGRectMake((width - CGRectGetWidth(accessoryView.frame)) / 2, 0, CGRectGetWidth(accessoryView.frame), CGRectGetHeight(accessoryView.frame));
+    
     CGSize titleSize = [_titleLabel.text boundingRectWithSize:CGSizeMake(width, CGFLOAT_MAX) options:NSStringDrawingUsesLineFragmentOrigin attributes:@{NSFontAttributeName: _titleLabel.font} context:nil].size;
-    _titleLabel.frame = CGRectMake(0, 0, width, titleSize.height);
+    _titleLabel.frame = CGRectMake(0, (CGRectGetMaxY(accessoryView.frame) > 0 ? CGRectGetMaxY(accessoryView.frame) + 10.0 : 0) , width, titleSize.height);
     
     CGSize messageSize = [_messageLabel.text boundingRectWithSize:CGSizeMake(width, CGFLOAT_MAX) options:NSStringDrawingUsesLineFragmentOrigin attributes:@{NSFontAttributeName: _messageLabel.font} context:nil].size;
-    _messageLabel.frame = CGRectMake(0, _titleLabel.frame.size.height + 10.0, width, messageSize.height);
+    _messageLabel.frame = CGRectMake(0, CGRectGetMaxY(_titleLabel.frame) + 10.0, width, messageSize.height);
     
     
-    CGRect viewFrame = CGRectMake(0, 0, width, CGRectGetMaxY(_messageLabel.frame));
+    CGRect bottomViewRect;
+    if (messageText.length > 0) {
+        bottomViewRect = _messageLabel.frame;
+    } else if (titleText.length > 0) {
+        bottomViewRect = _titleLabel.frame;
+    } else {
+        bottomViewRect = accessoryView.frame;
+    }
+    
+    CGRect viewFrame = CGRectMake(0, 0, width, CGRectGetMaxY(bottomViewRect));
     self.frame = viewFrame;
-    
+
     if ([self superview]) {
         [self centerInSuperview];
     }

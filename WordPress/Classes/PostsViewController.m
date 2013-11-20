@@ -32,7 +32,7 @@
     return self;
 }
 
-- (NSString *)noResultsText
+- (NSString *)noResultsTitleText
 {
     return NSLocalizedString(@"No posts yet", @"Displayed when the user pulls up the posts view and they have no posts");
 }

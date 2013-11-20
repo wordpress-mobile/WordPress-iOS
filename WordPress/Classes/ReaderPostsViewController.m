@@ -488,8 +488,7 @@ NSString *const RPVCDisplayedNativeFriendFinder = @"DisplayedNativeFriendFinder"
 
 #pragma mark - WPTableViewSublass methods
 
-
-- (NSString *)noResultsPrompt {
+- (NSString *)noResultsTitleText {
 	NSString *prompt; 
 	NSString *endpoint = [ReaderPost currentEndpoint];
 	NSArray *endpoints = [ReaderPost readerEndpoints];
@@ -505,9 +504,9 @@ NSString *const RPVCDisplayedNativeFriendFinder = @"DisplayedNativeFriendFinder"
 	}];
 	
 	switch (idx) {
-		case 1:
+		case 0:
 			// Blogs I follow
-			prompt = NSLocalizedString(@"You are not following any blogs.", @"");
+			prompt = NSLocalizedString(@"You are not following any blogs yet.", @"");
 			break;
 			
 		case 2:
@@ -525,8 +524,35 @@ NSString *const RPVCDisplayedNativeFriendFinder = @"DisplayedNativeFriendFinder"
 	return prompt;
 }
 
-- (UIView *)createNoResultsView {	
-	return [WPNoResultsView WPInfoViewWithTitle:[self noResultsPrompt] message:nil accessoryView:nil];
+
+- (NSString *)noResultsMessageText {
+    NSString *prompt;
+	NSString *endpoint = [ReaderPost currentEndpoint];
+	NSArray *endpoints = [ReaderPost readerEndpoints];
+	NSInteger idx = [endpoints indexOfObjectPassingTest:^BOOL(id obj, NSUInteger idx, BOOL *stop) {
+		BOOL match = NO;
+		
+		if ([endpoint isEqualToString:[obj objectForKey:@"endpoint"]]) {
+			match = YES;
+			*stop = YES;
+		}
+        
+		return match;
+	}];
+	
+	switch (idx) {
+		case 0:
+			// Blogs I follow
+			prompt = NSLocalizedString(@"But don't worry, just tap the icon in the top right to explore and follow blogs. They'll show up right here!", @"");
+			break;
+	}
+	return prompt;
+    
+}
+
+- (UIView *)noResultsAccessoryView {
+    
+    return nil;
 }
 
 - (NSString *)entityName {
@@ -810,7 +836,7 @@ NSString *const RPVCDisplayedNativeFriendFinder = @"DisplayedNativeFriendFinder"
 	
 	_loadingMore = NO;
 	_hasMoreContent = YES;
-	[[(WPNoResultsView *)self.noResultsView titleLabel] setText:[self noResultsPrompt]];
+	[[(WPNoResultsView *)self.noResultsView titleLabel] setText:[self noResultsTitleText]];
 
 	[self.tableView setContentOffset:CGPointMake(0, 0) animated:NO];
 	[self resetResultsController];

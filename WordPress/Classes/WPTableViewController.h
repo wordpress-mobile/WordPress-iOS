@@ -16,7 +16,9 @@
 @property (nonatomic) BOOL incrementalLoadingSupported;
 
 - (void)promptForPassword;
-- (NSString *)noResultsText;
+- (NSString *)noResultsTitleText;
+- (NSString *)noResultsMessageText;
+- (UIView *)noResultsAccessoryView;
 
 extern CGFloat const WPTableViewTopMargin;
 
