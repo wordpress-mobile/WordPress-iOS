@@ -395,7 +395,7 @@ NSString *const ReaderExtrasArrayKey = @"ReaderExtrasArrayKey";
 		self.postAvatar = [self parseImageSrcFromHTML:img];
 	}
     
-    NSDictionary *tagsDict = [dict objectForKey:@"topics"];
+    NSDictionary *tagsDict = [dict dictionaryForKey:@"topics"];
     
     if ([tagsDict count] > 0) {
         NSArray *tagsList = [NSArray arrayWithArray:[tagsDict allValues]];
