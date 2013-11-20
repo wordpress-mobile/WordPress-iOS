@@ -23,7 +23,7 @@
 #import "WPFriendFinderNudgeView.h"
 #import "WPAccount.h"
 #import "WPTableImageSource.h"
-#import "WPInfoView.h"
+#import "WPNoResultsView.h"
 #import "WPCookie.h"
 #import "NSString+Helpers.h"
 #import "WPPopoverBackgroundView.h"
@@ -526,7 +526,7 @@ NSString *const RPVCDisplayedNativeFriendFinder = @"DisplayedNativeFriendFinder"
 }
 
 - (UIView *)createNoResultsView {	
-	return [WPInfoView WPInfoViewWithTitle:[self noResultsPrompt] message:nil cancelButton:nil];
+	return [WPNoResultsView WPInfoViewWithTitle:[self noResultsPrompt] message:nil accessoryView:nil];
 }
 
 - (NSString *)entityName {
@@ -810,7 +810,7 @@ NSString *const RPVCDisplayedNativeFriendFinder = @"DisplayedNativeFriendFinder"
 	
 	_loadingMore = NO;
 	_hasMoreContent = YES;
-	[[(WPInfoView *)self.noResultsView titleLabel] setText:[self noResultsPrompt]];
+	[[(WPNoResultsView *)self.noResultsView titleLabel] setText:[self noResultsPrompt]];
 
 	[self.tableView setContentOffset:CGPointMake(0, 0) animated:NO];
 	[self resetResultsController];

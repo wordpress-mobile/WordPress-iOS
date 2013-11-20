@@ -12,7 +12,7 @@
 #import "EditSiteViewController.h"
 #import "ReachabilityUtils.h"
 #import "WPWebViewController.h"
-#import "WPInfoView.h"
+#import "WPNoResultsView.h"
 #import "SupportViewController.h"
 
 NSTimeInterval const WPTableViewControllerRefreshTimeout = 300; // 5 minutes
@@ -564,7 +564,7 @@ CGFloat const WPTableViewTopMargin = 40;
 		msg = NSLocalizedString(@"Why not create one?", @"A call to action to create a post or page.");
 	}
 	
-	return [WPInfoView WPInfoViewWithTitle:[self noResultsText] message:msg cancelButton:nil];
+	return [WPNoResultsView WPInfoViewWithTitle:[self noResultsText] message:msg accessoryView:nil];
 }
 
 - (void)hideRefreshHeader {
