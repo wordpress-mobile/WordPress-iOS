@@ -28,9 +28,12 @@
 #import "NSString+Helpers.h"
 #import "WPPopoverBackgroundView.h"
 #import "IOS7CorrectedTextView.h"
+#import "readerPostView.h"
 
 static CGFloat const RPVCScrollingFastVelocityThreshold = 30.f;
 static CGFloat const RPVCHeaderHeightPhone = 10.f;
+static CGFloat const RPVCMaxImageHeightPercentage = 0.58f;
+
 NSString *const RPVCDisplayedNativeFriendFinder = @"DisplayedNativeFriendFinder";
 
 @interface ReaderPostsViewController ()<ReaderTopicsDelegate, ReaderTextFormDelegate, WPTableImageSourceDelegate> {
@@ -93,7 +96,7 @@ NSString *const RPVCDisplayedNativeFriendFinder = @"DisplayedNativeFriendFinder"
         maxWidth = MAX(self.tableView.bounds.size.width, self.tableView.bounds.size.height);
     }
     maxWidth -= 20.f; // Container frame
-    CGFloat maxHeight = maxWidth * RPTVCMaxImageHeightPercentage;
+    CGFloat maxHeight = maxWidth * RPVCMaxImageHeightPercentage;
     _featuredImageSource = [[WPTableImageSource alloc] initWithMaxSize:CGSizeMake(maxWidth, maxHeight)];
     _featuredImageSource.delegate = self;
 	self.tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
@@ -307,25 +310,25 @@ NSString *const RPVCDisplayedNativeFriendFinder = @"DisplayedNativeFriendFinder"
 
         ReaderPostTableViewCell *cell = (ReaderPostTableViewCell *)[self.tableView cellForRowAtIndexPath:indexPath];
 
-        UIImage *image = [post cachedAvatarWithSize:cell.avatarImageView.bounds.size];
-        CGSize imageSize = cell.avatarImageView.bounds.size;
+        UIImage *image = [post cachedAvatarWithSize:cell.postView.avatarImageView.bounds.size];
+        CGSize imageSize = cell.postView.avatarImageView.bounds.size;
         if (image) {
-            [cell setAvatar:image];
+            [cell.postView setAvatar:image];
         } else {
             __weak UITableView *tableView = self.tableView;
             [post fetchAvatarWithSize:imageSize success:^(UIImage *image) {
                 if (cell == [tableView cellForRowAtIndexPath:indexPath]) {
-                    [cell setAvatar:image];
+                    [cell.postView setAvatar:image];
                 }
             }];
         }
 
         if (post.featuredImageURL) {
             NSURL *imageURL = post.featuredImageURL;
-            imageSize = cell.cellImageView.frame.size;
+            imageSize = cell.postView.cellImageView.frame.size;
             image = [_featuredImageSource imageForURL:imageURL withSize:imageSize];
             if (image) {
-                [cell setFeaturedImage:image];
+                [cell.postView setFeaturedImage:image];
             } else {
                 [_featuredImageSource fetchImageForURL:imageURL withSize:imageSize indexPath:indexPath isPrivate:post.isPrivate];
             }
@@ -367,10 +370,10 @@ NSString *const RPVCDisplayedNativeFriendFinder = @"DisplayedNativeFriendFinder"
         }
 	} failure:^(NSError *error) {
 		DDLogError(@"Error Liking Post : %@", [error localizedDescription]);
-		[cell updateControlBar];
+		[cell.postView updateControlBar];
 	}];
 	
-	[cell updateControlBar];
+	[cell.postView updateControlBar];
 }
 
 - (void)topicsAction:(id)sender {
@@ -564,11 +567,11 @@ NSString *const RPVCDisplayedNativeFriendFinder = @"DisplayedNativeFriendFinder"
     ReaderPostTableViewCell *cell = (ReaderPostTableViewCell *)[self.tableView dequeueReusableCellWithIdentifier:cellIdentifier];
     if (cell == nil) {
         cell = [[ReaderPostTableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:cellIdentifier];
-        [cell.reblogButton addTarget:self action:@selector(reblogAction:) forControlEvents:UIControlEventTouchUpInside];
-        [cell.likeButton addTarget:self action:@selector(likeAction:) forControlEvents:UIControlEventTouchUpInside];
-        [cell.followButton addTarget:self action:@selector(followAction:) forControlEvents:UIControlEventTouchUpInside];
-        [cell.commentButton addTarget:self action:@selector(commentAction:) forControlEvents:UIControlEventTouchUpInside];
-        [cell.tagButton addTarget:self action:@selector(tagAction:) forControlEvents:UIControlEventTouchUpInside];
+        [cell.postView.reblogButton addTarget:self action:@selector(reblogAction:) forControlEvents:UIControlEventTouchUpInside];
+        [cell.postView.likeButton addTarget:self action:@selector(likeAction:) forControlEvents:UIControlEventTouchUpInside];
+        [cell.postView.followButton addTarget:self action:@selector(followAction:) forControlEvents:UIControlEventTouchUpInside];
+        [cell.postView.commentButton addTarget:self action:@selector(commentAction:) forControlEvents:UIControlEventTouchUpInside];
+        [cell.postView.tagButton addTarget:self action:@selector(tagAction:) forControlEvents:UIControlEventTouchUpInside];
     }
 	return cell;
 }
@@ -585,14 +588,14 @@ NSString *const RPVCDisplayedNativeFriendFinder = @"DisplayedNativeFriendFinder"
 	[cell configureCell:post];
     [self setImageForPost:post forCell:cell indexPath:indexPath];
 
-    CGSize imageSize = cell.avatarImageView.bounds.size;
+    CGSize imageSize = cell.postView.avatarImageView.bounds.size;
     UIImage *image = [post cachedAvatarWithSize:imageSize];
     if (image) {
-        [cell setAvatar:image];
+        [cell.postView setAvatar:image];
     } else if (!self.tableView.isDragging && !self.tableView.isDecelerating) {
         [post fetchAvatarWithSize:imageSize success:^(UIImage *image) {
             if (cell == [self.tableView cellForRowAtIndexPath:indexPath]) {
-                [cell setAvatar:image];
+                [cell.postView setAvatar:image];
             }
         }];
     }
@@ -603,14 +606,14 @@ NSString *const RPVCDisplayedNativeFriendFinder = @"DisplayedNativeFriendFinder"
     if (!imageURL)
         return;
 
-    CGSize imageSize = cell.cellImageView.bounds.size;
+    CGSize imageSize = cell.postView.cellImageView.bounds.size;
     if (CGSizeEqualToSize(imageSize, CGSizeZero)) {
         imageSize.width = self.tableView.bounds.size.width;
-        imageSize.height = round(imageSize.width * RPTVCMaxImageHeightPercentage);
+        imageSize.height = round(imageSize.width * RPVCMaxImageHeightPercentage);
     }
     UIImage *image = [_featuredImageSource imageForURL:imageURL withSize:imageSize];
     if (image) {
-        [cell setFeaturedImage:image];
+        [cell.postView setFeaturedImage:image];
     } else if (!_isScrollingFast) {
         [_featuredImageSource fetchImageForURL:imageURL withSize:imageSize indexPath:indexPath isPrivate:post.isPrivate];
     }
@@ -1003,7 +1006,7 @@ NSString *const RPVCDisplayedNativeFriendFinder = @"DisplayedNativeFriendFinder"
 - (void)tableImageSource:(WPTableImageSource *)tableImageSource imageReady:(UIImage *)image forIndexPath:(NSIndexPath *)indexPath {
     if (!_isScrollingFast) {
         ReaderPostTableViewCell *cell = (ReaderPostTableViewCell *)[self.tableView cellForRowAtIndexPath:indexPath];
-        [cell setFeaturedImage:image];
+        [cell.postView setFeaturedImage:image];
     }
 }
 
