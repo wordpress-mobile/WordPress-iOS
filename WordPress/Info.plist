@@ -54,6 +54,7 @@
 		<string>OpenSans-Italic.ttf</string>
 		<string>OpenSans-BoldItalic.ttf</string>
 		<string>OpenSans-LightItalic.ttf</string>
+		<string>Merriweather-Bold.ttf</string>
 	</array>
 	<key>UIBackgroundModes</key>
 	<array>

@@ -202,14 +202,6 @@ extern NSString *const StatsEventNUXCreateAccountClickedReviewPagePrevious;
 extern NSString *const StatsEventNUXCreateAccountClickedViewLanguages;
 extern NSString *const StatsEventNUXCreateAccountChangedDefaultURL;
 
-// NUX Second Walkthrough
-extern NSString *const StatsEventNUXSecondWalkthroughOpened;
-extern NSString *const StatsEventNUXSecondWalkthroughViewedReaderPage;
-extern NSString *const StatsEventNUXSecondWalkthroughViewedNotificationPage;
-extern NSString *const StatsEventNUXSecondWalkthroughViewedGetStartedPage;
-extern NSString *const StatsEventNUXSecondWalkthroughClickedStartUsingApp;
-extern NSString *const StatsEventNUXSecondWalkthroughClickedStartUsingAppOnFinalPage;
-
 // Add Blogs
 extern NSString *const StatsEventAddBlogsOpened;
 extern NSString *const StatsEventAddBlogsClickedSelectAll;
