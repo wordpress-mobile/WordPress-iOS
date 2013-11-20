@@ -13,14 +13,12 @@
 @class ReaderPostsViewController;
 
 @interface WordPressAppDelegate : NSObject <UIApplicationDelegate, UIAlertViewDelegate> {
-	Blog *currentBlog;
     //Connection Reachability variables
     Reachability *internetReachability;
     Reachability *wpcomReachability;
     Reachability *currentBlogReachability;
     BOOL connectionAvailable, wpcomAvailable, currentBlogAvailable;
 @private
-    IBOutlet UIWindow *window;
     IBOutlet UINavigationController *navigationController;
 
     BOOL alertRunning, passwordAlertRunning;
@@ -44,7 +42,7 @@
 
 }
 
-@property (nonatomic, strong) UIWindow *window;
+@property (nonatomic, strong) IBOutlet UIWindow *window;
 @property (nonatomic, strong) UINavigationController *navigationController;
 @property (nonatomic, getter = isAlertRunning) BOOL alertRunning;
 @property (nonatomic, assign) BOOL isWPcomAuthenticated;
@@ -69,15 +67,14 @@
 
 + (WordPressAppDelegate *)sharedWordPressApplicationDelegate;
 
-+ (void)wipeAllKeychainItems;
+
 - (void)showAlertWithTitle:(NSString *)title message:(NSString *)message;
 - (void)showNotificationErrorAlert:(NSNotification *)notification;
 - (BOOL)isWPcomAuthenticated;
 - (void)checkWPcomAuthentication;
-- (void)registerForPushNotifications;
-- (void)unregisterApnsToken;
-- (void)openNotificationScreenWithOptions:(NSDictionary *)remoteNotif;
 - (void)useDefaultUserAgent;
 - (void)useAppUserAgent;
+
+- (void)showNotificationsTab;
 
 @end
