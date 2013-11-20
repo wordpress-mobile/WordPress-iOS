@@ -625,6 +625,29 @@ CGFloat const CreateAccountAndBlogButtonHeight = 41.0;
         return;
     }
     
+    [self setAuthenticating:YES];
+    
+    // The site must be validated prior to making an account. Without validation,
+    // the situation could exist where a user account is created, but the site creation
+    // fails.
+    WPAsyncBlockOperation *siteValidation = [WPAsyncBlockOperation operationWithBlock:^(WPAsyncBlockOperation *operation) {
+        void (^blogValidationSuccess)(id) = ^(id responseObject) {
+            [operation didSucceed];
+        };
+        void (^blogValidationFailure)(NSError *) = ^(NSError *error) {
+            [operation didFail];
+            [self setAuthenticating:NO];
+            [self displayRemoteError:error];
+        };
+        
+        NSNumber *languageId = [_currentLanguage objectForKey:@"lang_id"];
+        [[WordPressComApi sharedApi] validateWPComBlogWithUrl:[self getSiteAddressWithoutWordPressDotCom]
+                                                 andBlogTitle:[self generateSiteTitleFromUsername:_usernameField.text]
+                                                andLanguageId:languageId
+                                                      success:blogValidationSuccess
+                                                      failure:blogValidationFailure];
+    }];
+    
     WPAsyncBlockOperation *userCreation = [WPAsyncBlockOperation operationWithBlock:^(WPAsyncBlockOperation *operation){
         void (^createUserSuccess)(id) = ^(id responseObject){
             [operation didSucceed];
@@ -687,9 +710,9 @@ CGFloat const CreateAccountAndBlogButtonHeight = 41.0;
     
     [blogCreation addDependency:userSignIn];
     [userSignIn addDependency:userCreation];
+    [userCreation addDependency:siteValidation];
     
-    [self setAuthenticating:YES];
-    
+    [_operationQueue addOperation:siteValidation];
     [_operationQueue addOperation:userCreation];
     [_operationQueue addOperation:userSignIn];
     [_operationQueue addOperation:blogCreation];
