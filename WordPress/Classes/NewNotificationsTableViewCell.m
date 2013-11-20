@@ -195,11 +195,7 @@ CGFloat const NotificationCellDetailTextNumberOfLines = 2;
 {
     NSString *subjectText = [self subjectText:note];
     CGSize size;
-    if (IS_IOS7) {
-        size = [subjectText boundingRectWithSize:CGSizeMake([[self class] textWidth:maxWidth], CGFLOAT_MAX) options:NSStringDrawingUsesLineFragmentOrigin attributes:[self subjectAttributes] context:nil].size;
-    } else {
-        size = [subjectText sizeWithFont:[self subjectFont] constrainedToSize:CGSizeMake([self textWidth:maxWidth], CGFLOAT_MAX) lineBreakMode:NSLineBreakByTruncatingTail];
-    }
+    size = [subjectText boundingRectWithSize:CGSizeMake([[self class] textWidth:maxWidth], CGFLOAT_MAX) options:NSStringDrawingUsesLineFragmentOrigin attributes:[self subjectAttributes] context:nil].size;
     return CGRectMake(CGRectGetMaxX(leftFrame) + NotificationCellStandardOffset, NotificationCellStandardOffset, size.width, size.height);
 }
 
@@ -211,19 +207,15 @@ CGFloat const NotificationCellDetailTextNumberOfLines = 2;
         return CGRectMake(CGRectGetMaxX(leftFrame) + NotificationCellStandardOffset, CGRectGetMaxY(topFrame), 0, 0);
     }
 
-    CGFloat singleLineHeight = [@"W" sizeWithFont:[self detailFont]].height;
+    CGFloat singleLineHeight = [@"W" sizeWithAttributes:@{NSFontAttributeName:[self detailFont]}].height;
     CGSize size;
-    if (IS_IOS7) {
-        size = [detailText boundingRectWithSize:CGSizeMake([[self class] textWidth:maxWidth], singleLineHeight * NotificationCellDetailTextNumberOfLines) options:NSStringDrawingUsesLineFragmentOrigin attributes:[self detailAttributes] context:nil].size;
-    } else {
-        size = [detailText sizeWithFont:[self detailFont] constrainedToSize:CGSizeMake([self textWidth:maxWidth], singleLineHeight * NotificationCellDetailTextNumberOfLines) lineBreakMode:NSLineBreakByTruncatingTail];
-    }
+    size = [detailText boundingRectWithSize:CGSizeMake([[self class] textWidth:maxWidth], singleLineHeight * NotificationCellDetailTextNumberOfLines) options:NSStringDrawingUsesLineFragmentOrigin attributes:[self detailAttributes] context:nil].size;
     return CGRectMake(CGRectGetMaxX(leftFrame) + NotificationCellStandardOffset, CGRectGetMaxY(topFrame), size.width, size.height);
 }
 
 + (CGRect)unreadFrameForMaxWidth:(CGFloat)maxWidth
 {
-    CGSize size = [@"•" sizeWithFont:[self unreadFont]];
+    CGSize size = [@"•" sizeWithAttributes:@{NSFontAttributeName:[self unreadFont]}];
     return CGRectMake(maxWidth - size.width - NotificationCellStandardOffset * 0.5 , NotificationCellStandardOffset * 0.5, size.width, size.height);
 }
 

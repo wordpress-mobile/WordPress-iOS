@@ -99,7 +99,6 @@ NSTimeInterval const ReaderPostDetailViewControllerRefreshTimeout = 300; // 5 mi
 	if(self) {
 		self.post = apost;
 		self.comments = [NSMutableArray array];
-        self.wantsFullScreenLayout = YES;
 	}
 	return self;
 }

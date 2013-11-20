@@ -174,22 +174,21 @@ CGFloat const CommentCellAccessoryViewOffset = 25.0;
 + (CGRect)authorNameFrameForComment:(Comment *)comment leftFrame:(CGRect)leftFrame andMaxWidth:(CGFloat)maxWidth
 {
     NSString *authorName = [self authorNameText:comment];
-    CGSize size = [authorName sizeWithFont:[self authorNameFont] constrainedToSize:CGSizeMake([self textWidth:maxWidth], CGFLOAT_MAX) lineBreakMode:NSLineBreakByWordWrapping];
+    CGSize size = [authorName suggestedSizeWithFont:[self authorNameFont] width:[self textWidth:maxWidth]];
     return CGRectMake(CGRectGetMaxX(leftFrame) + CommentCellStandardOffset, CommentCellStandardOffset, size.width, size.height);
 }
 
 + (CGRect)postTitleFrameForComment:(Comment *)comment topFrame:(CGRect)topFrame leftFrame:(CGRect)leftFrame andMaxWidth:(CGFloat)maxWidth
 {
     NSAttributedString *postTitle = [[self class] postTitleTextForComment:comment];
-    CGSize size = [[postTitle string] sizeWithFont:[self postTitleFont] constrainedToSize:CGSizeMake([self textWidth:maxWidth], CGFLOAT_MAX) lineBreakMode:NSLineBreakByWordWrapping];
+    CGSize size = [[postTitle string] suggestedSizeWithFont:[self postTitleFont] width:[self textWidth:maxWidth]];
     return CGRectMake(CGRectGetMaxX(leftFrame) + CommentCellStandardOffset, CGRectGetMaxY(topFrame), size.width, size.height);
 }
 
 + (CGRect)commentFrameForComment:(Comment *)comment topFrame:(CGRect)topFrame leftFrame:(CGRect)leftFrame andMaxWidth:(CGFloat)maxWidth
 {
     NSString *commentText = [self commentTextForComment:comment];
-    CGSize singeLineHeight = [@"A" sizeWithFont:[self commentTextFont]];
-    CGSize size = [commentText sizeWithFont:[self commentTextFont] constrainedToSize:CGSizeMake([self textWidth:maxWidth], singeLineHeight.height*3) lineBreakMode:NSLineBreakByTruncatingTail];
+    CGSize size = [commentText suggestedSizeWithFont:[self commentTextFont] width:[self textWidth:maxWidth]];
     return CGRectMake(CGRectGetMaxX(leftFrame) + CommentCellStandardOffset, CGRectGetMaxY(topFrame) + CommentCellStandardOffset, size.width, size.height);
 }
 

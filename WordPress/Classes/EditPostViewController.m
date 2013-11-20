@@ -591,9 +591,9 @@ CGFloat const EditPostViewControllerTextViewOffset = 10.0;
     NSDictionary *titleTextAttributes;
     UIColor *color = updateEnabled ? [UIColor whiteColor] : [UIColor lightGrayColor];
     if (IS_IOS7) {
-        titleTextAttributes = @{UITextAttributeFont: [WPStyleGuide regularTextFont], UITextAttributeTextColor : color};
+        titleTextAttributes = @{NSFontAttributeName: [WPStyleGuide regularTextFont], NSForegroundColorAttributeName : color};
     } else {
-        titleTextAttributes = @{UITextAttributeTextColor : color};
+        titleTextAttributes = @{NSForegroundColorAttributeName : color};
     }
     [self.navigationItem.rightBarButtonItem setTitleTextAttributes:titleTextAttributes forState:UIControlStateNormal];
 }

@@ -103,7 +103,8 @@ const CGFloat RPTVCControlButtonBorderSize = 0.0f;
     // Tag
     NSString *tagName = post.primaryTagName;
     if ([tagName length] > 0) {
-        desiredHeight += [tagName sizeWithFont:[self summaryFont] constrainedToSize:CGSizeMake(contentWidth, CGFLOAT_MAX) lineBreakMode:NSLineBreakByClipping].height;
+        CGSize size = [tagName suggestedSizeWithFont:[self summaryFont] width:contentWidth];
+        desiredHeight += size.height;
     }
 
     // Padding above and below the line

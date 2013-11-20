@@ -11,7 +11,6 @@
 #import <Social/Social.h>
 #import "WPFriendFinderViewController.h"
 #import "WordPressAppDelegate.h"
-#import "UIBarButtonItem+Styled.h"
 #import "ReachabilityUtils.h"
 
 typedef void (^DismissBlock)(int buttonIndex);
@@ -44,12 +43,8 @@ typedef void (^CancelBlock)();
     [nc addObserver:self selector:@selector(facebookDidLogIn:) name:kFacebookLoginNotificationName object:nil];
     [nc addObserver:self selector:@selector(facebookDidNotLogIn:) name:kFacebookNoLoginNotificationName object:nil];
     self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemDone
-                                                                                           target:self 
+                                                                                           target:self
                                                                                            action:@selector(dismissFriendFinder:)];
-    if (!IS_IOS7) {
-        [UIBarButtonItem styleButtonAsPrimary:self.navigationItem.rightBarButtonItem];        
-    }
-    
     self.activityView = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleGray];
     self.activityView.autoresizingMask = UIViewAutoresizingFlexibleTopMargin | UIViewAutoresizingFlexibleRightMargin | UIViewAutoresizingFlexibleBottomMargin | UIViewAutoresizingFlexibleLeftMargin;
     CGRect f1 = self.activityView.frame;
