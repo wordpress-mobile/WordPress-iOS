@@ -684,7 +684,7 @@ CGFloat const GeneralWalkthroughiOS7StatusBarOffset = 20.0;
     
     [api getBlogsWithSuccess:^(NSArray *blogs) {
         _blogs = blogs;
-
+        [self handleGetBlogsSuccess:api.xmlrpc.absoluteString];
     } failure:^(NSError *error) {
         [SVProgressHUD dismiss];
         [self displayRemoteError:error];
@@ -697,8 +697,7 @@ CGFloat const GeneralWalkthroughiOS7StatusBarOffset = 20.0;
     WPAccount *account = [WPAccount createOrUpdateWordPressComAccountWithUsername:username password:password authToken:authToken];
     [account syncBlogsWithSuccess:^{
         [SVProgressHUD dismiss];
-        [self.navigationController popViewControllerAnimated:NO];
-        [self showCompletionWalkthrough];
+        [self dismiss];
     } failure:^(NSError *error) {
         [SVProgressHUD dismiss];
         [self displayRemoteError:error];
