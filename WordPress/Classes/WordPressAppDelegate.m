@@ -43,11 +43,6 @@ int ddLogLevel = LOG_LEVEL_INFO;
 
 @property (nonatomic, assign) BOOL listeningForBlogChanges;
 
-// We have this so we can make sure not to send two Application Opened related events. This comes
-// into play when we receive a push notification and the user opens the app in response to that. We
-// don't want to double count the events in Mixpanel so we use this to ensure it doesn't happen.
-@property (nonatomic, assign) BOOL hasRecordedApplicationOpenedEvent;
-
 @end
 
 @implementation WordPressAppDelegate
@@ -96,9 +91,7 @@ int ddLogLevel = LOG_LEVEL_INFO;
     [NotificationsManager registerForPushNotifications];
     NSDictionary *remoteNotif = [launchOptions objectForKey:UIApplicationLaunchOptionsRemoteNotificationKey];
     if (remoteNotif) {
-
-        _hasRecordedApplicationOpenedEvent = YES;
-        [WPMobileStats trackEventForSelfHostedAndWPCom:StatsEventAppOpenedDueToPushNotification];
+        [WPMobileStats recordAppOpenedForEvent:StatsEventAppOpenedDueToPushNotification];
 
         DDLogInfo(@"Launched with a remote notification as parameter:  %@", remoteNotif);
         [self showNotificationsTab];
@@ -183,7 +176,6 @@ int ddLogLevel = LOG_LEVEL_INFO;
     DDLogInfo(@"%@ %@", self, NSStringFromSelector(_cmd));
 
     [WPMobileStats trackEventForWPComWithSavedProperties:StatsEventAppClosed];
-    [self resetStatRelatedVariables];
     [WPMobileStats pauseSession];
     
     //Keep the app alive in the background if we are uploading a post, currently only used for quick photo posts
@@ -234,23 +226,11 @@ int ddLogLevel = LOG_LEVEL_INFO;
 - (void)applicationDidBecomeActive:(UIApplication *)application {
     DDLogInfo(@"%@ %@", self, NSStringFromSelector(_cmd));
     
-    [[NSNotificationCenter defaultCenter] postNotificationName:@"ApplicationDidBecomeActive" object:nil];
-    
-    if (!_hasRecordedApplicationOpenedEvent) {
-        [WPMobileStats trackEventForSelfHostedAndWPCom:StatsEventAppOpened];
-    }
+    [WPMobileStats recordAppOpenedForEvent:StatsEventAppOpened];
     
     // Clear notifications badge and update server
     [self setAppBadge];
     [[WordPressComApi sharedApi] syncPushNotificationInfo];
-}
-
-
-- (void)application:(UIApplication *)application didChangeStatusBarFrame:(CGRect)oldStatusBarFrame {
-	//The guide says: After calling this method, the application also posts a UIApplicationDidChangeStatusBarFrameNotification notification to give interested objects a chance to respond to the change.
-	//but seems that the notification is never sent.
-	//we are using a custom notification
-	[[NSNotificationCenter defaultCenter] postNotificationName:DidChangeStatusBarFrame object:nil];
 }
 
 
@@ -720,14 +700,6 @@ int ddLogLevel = LOG_LEVEL_INFO;
     
     [operation start];
 }
-
-- (void)resetStatRelatedVariables
-{
-    [WPMobileStats clearPropertiesForAllEvents];
-    _hasRecordedApplicationOpenedEvent = NO;
-}
-
-
 
 - (void)connection:(NSURLConnection *)connection didReceiveData:(NSData *)data {
 	[statsData appendData: data];
