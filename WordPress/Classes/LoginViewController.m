@@ -474,6 +474,13 @@ CGFloat const GeneralWalkthroughiOS7StatusBarOffset = 20.0;
 
 - (void)dismiss
 {
+    // Check if there is an active WordPress.com account. If not, switch tab bar
+    // away from Reader to // blog list view
+    if (![WPAccount defaultWordPressComAccount]) {
+        WordPressAppDelegate *delegate = (WordPressAppDelegate *)[[UIApplication sharedApplication] delegate];
+        [delegate showBlogListTab];
+    }
+    
     self.parentViewController.modalTransitionStyle = UIModalTransitionStyleCoverVertical;
     [self.parentViewController dismissViewControllerAnimated:YES completion:nil];
 }

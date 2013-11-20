@@ -11,6 +11,7 @@
 @class AutosaveManager;
 @class NotificationsViewController;
 @class ReaderPostsViewController;
+@class BlogListViewController;
 
 @interface WordPressAppDelegate : NSObject <UIApplicationDelegate, UIAlertViewDelegate> {
 	Blog *currentBlog;
@@ -57,6 +58,7 @@
 @property (nonatomic, strong) UITabBarController *tabBarController;
 @property (nonatomic, strong) NotificationsViewController *notificationsViewController;
 @property (nonatomic, strong) ReaderPostsViewController *readerPostsViewController;
+@property (nonatomic, strong) BlogListViewController *blogListViewController;
 @property (strong, nonatomic) DDFileLogger *fileLogger;
 
 
@@ -79,5 +81,9 @@
 - (void)openNotificationScreenWithOptions:(NSDictionary *)remoteNotif;
 - (void)useDefaultUserAgent;
 - (void)useAppUserAgent;
+
+- (void)showNotificationsTab;
+- (void)showBlogListTab;
+- (void)showReaderTab;
 
 @end

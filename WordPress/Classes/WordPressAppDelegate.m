@@ -299,15 +299,16 @@ int ddLogLevel = LOG_LEVEL_INFO;
     notificationsNavigationController.tabBarItem.image = [UIImage imageNamed:@"icon-tab-notifications"];
     self.notificationsViewController.title = @"Notifications";
     
-    BlogListViewController *blogListViewController = [[BlogListViewController alloc] init];
-    UINavigationController *blogListNavigationController = [[UINavigationController alloc] initWithRootViewController:blogListViewController];
+    self.blogListViewController = [[BlogListViewController alloc] init];
+    UINavigationController *blogListNavigationController = [[UINavigationController alloc] initWithRootViewController:self.blogListViewController];
     blogListNavigationController.navigationBar.translucent = NO;
     blogListNavigationController.tabBarItem.image = [UIImage imageNamed:@"icon-tab-blogs"];
-    blogListViewController.title = @"My Blogs";
+    self.blogListViewController.title = @"My Blogs";
     tabBarController.viewControllers = [NSArray arrayWithObjects:blogListNavigationController, readerNavigationController, notificationsNavigationController, nil];
     
     [tabBarController setSelectedViewController:readerNavigationController];
 
+    self.tabBarController = tabBarController;
     return tabBarController;
 }
 
@@ -1189,6 +1190,14 @@ int ddLogLevel = LOG_LEVEL_INFO;
 - (void)showNotificationsTab {
     NSInteger notificationsTabIndex = [[self.tabBarController viewControllers] indexOfObject:self.notificationsViewController.navigationController];
     [self.tabBarController setSelectedIndex:notificationsTabIndex];
+}
+- (void)showReaderTab {
+    NSInteger readerTabIndex = [[self.tabBarController viewControllers] indexOfObject:self.readerPostsViewController.navigationController];
+    [self.tabBarController setSelectedIndex:readerTabIndex];
+}
+- (void)showBlogListTab {
+    NSInteger blogListTabIndex = [[self.tabBarController viewControllers] indexOfObject:self.blogListViewController.navigationController];
+    [self.tabBarController setSelectedIndex:blogListTabIndex];
 }
 
 
