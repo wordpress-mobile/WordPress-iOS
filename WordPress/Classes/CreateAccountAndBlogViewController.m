@@ -41,6 +41,7 @@
     
     NSOperationQueue *_operationQueue;
 
+    BOOL _authenticating;
     BOOL _keyboardVisible;
     BOOL _shouldCorrectEmail;
     BOOL _userDefinedSiteAddress;
@@ -613,12 +614,17 @@ CGFloat const CreateAccountAndBlogButtonHeight = 41.0;
 
 - (void)setAuthenticating:(BOOL)authenticating
 {
+    _authenticating = authenticating;
     _createAccountButton.enabled = !authenticating;
     [_createAccountButton showActivityIndicator:authenticating];
 }
 
 - (void)createUserAndSite
 {
+    if (_authenticating) {
+        return;
+    }
+    
     WPAsyncBlockOperation *userCreation = [WPAsyncBlockOperation operationWithBlock:^(WPAsyncBlockOperation *operation){
         void (^createUserSuccess)(id) = ^(id responseObject){
             [operation didSucceed];
