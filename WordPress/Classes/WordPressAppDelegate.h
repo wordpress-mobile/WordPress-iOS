@@ -30,11 +30,6 @@
 	NSMutableData *statsData;
 	NSString *postID;
     UITextField *passwordTextField;
-	    
-	// Core Data
-    NSManagedObjectContext *managedObjectContext_;
-    NSManagedObjectModel *managedObjectModel_;
-    NSPersistentStoreCoordinator *persistentStoreCoordinator_;
     
     //Background tasks
     UIBackgroundTaskIdentifier bgTask;
