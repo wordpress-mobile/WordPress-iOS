@@ -11,14 +11,15 @@
 #import "UIImageView+Gravatar.h"
 #import "WordPressComApi.h"
 #import "SettingsViewController.h"
-#import "WelcomeViewController.h"
+#import "LoginViewController.h"
 #import "BlogDetailsViewController.h"
 #import "WPTableViewCell.h"
 #import "WPAccount.h"
+#import "FakePushTransitionAnimator.h"
 
 CGFloat const blavatarImageSize = 50.f;
 
-@interface BlogListViewController ()
+@interface BlogListViewController () <UIViewControllerTransitioningDelegate>
 @property (nonatomic, strong) NSFetchedResultsController *resultsController;
 @property (nonatomic, strong) UIBarButtonItem *settingsButton;
 
@@ -71,6 +72,7 @@ CGFloat const blavatarImageSize = 50.f;
 - (void)viewWillAppear:(BOOL)animated {
     [super viewWillAppear:animated];
 
+    [self.navigationController setNavigationBarHidden:NO animated:animated];
     self.resultsController.delegate = self;
     [self.resultsController performFetch:nil];
     [self.tableView reloadData];
@@ -247,10 +249,18 @@ CGFloat const blavatarImageSize = 50.f;
         [self.navigationController pushViewController:blogDetailsViewController animated:YES];
     } else {
         [WPMobileStats trackEventForWPCom:StatsEventSettingsClickedAddBlog];
-        
-        WelcomeViewController *welcomeViewController = [[WelcomeViewController alloc] initWithStyle:UITableViewStyleGrouped];
-        welcomeViewController.title = NSLocalizedString(@"Add a Site", nil);
-        [self.navigationController pushViewController:welcomeViewController animated:YES];
+
+        LoginViewController *loginViewController = [[LoginViewController alloc] init];
+        if (![WPAccount defaultWordPressComAccount]) {
+            loginViewController.prefersSelfHosted = YES;
+        }
+        loginViewController.dismissBlock = ^{
+            [self dismissViewControllerAnimated:YES completion:nil];
+        };
+        UINavigationController *loginNavigationController = [[UINavigationController alloc] initWithRootViewController:loginViewController];
+        loginNavigationController.transitioningDelegate = self;
+        loginNavigationController.modalTransitionStyle = UIModalPresentationCustom;
+        [self presentViewController:loginNavigationController animated:YES completion:nil];
     }
 }
 
@@ -330,5 +340,17 @@ CGFloat const blavatarImageSize = 50.f;
     }
 }
 
+#pragma mark - UIViewControllerTransitioningDelegate
+
+- (id <UIViewControllerAnimatedTransitioning>)animationControllerForPresentedController:(UIViewController *)presented presentingController:(UIViewController *)presenting sourceController:(UIViewController *)source {
+    FakePushTransitionAnimator *animator = [FakePushTransitionAnimator new];
+    animator.presenting = YES;
+    return animator;
+}
+
+- (id <UIViewControllerAnimatedTransitioning>)animationControllerForDismissedController:(UIViewController *)dismissed {
+    FakePushTransitionAnimator *animator = [FakePushTransitionAnimator new];
+    return animator;
+}
 
 @end

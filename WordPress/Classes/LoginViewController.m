@@ -26,6 +26,7 @@
 #import "WPWalkthroughOverlayView.h"
 #import "ReachabilityUtils.h"
 #import "WPNUXUtility.h"
+#import "WPNUXBackButton.h"
 #import "WPAccount.h"
 #import "ReaderPost.h"
 #import "Note.h"
@@ -43,7 +44,8 @@
     WPWalkthroughTextField *_passwordText;
     WPWalkthroughTextField *_siteUrlText;
     WPNUXMainButton *_signInButton;
-    
+    WPNUXBackButton *_cancelButton;
+
     // Measurements
     CGFloat _viewWidth;
     CGFloat _viewHeight;
@@ -83,7 +85,10 @@ CGFloat const GeneralWalkthroughiOS7StatusBarOffset = 20.0;
     _viewHeight = [self.view formSheetViewHeight];
         
     self.view.backgroundColor = [WPNUXUtility backgroundColor];
-    _userIsDotCom = YES;
+    _userIsDotCom = self.onlyDotComAllowed || !self.prefersSelfHosted;
+    if ([WPAccount defaultWordPressComAccount]) {
+        _userIsDotCom = NO;
+    }
 
     [self addMainView];
     [self initializeView];
@@ -129,13 +134,13 @@ CGFloat const GeneralWalkthroughiOS7StatusBarOffset = 20.0;
 
 - (BOOL)textFieldShouldBeginEditing:(UITextField *)textField
 {
-    _signInButton.enabled = [self areDotComFieldsFilled];
+    _signInButton.enabled = [self isSignInEnabled];
     return YES;
 }
 
 - (BOOL)textFieldShouldEndEditing:(UITextField *)textField
 {
-    _signInButton.enabled = [self areDotComFieldsFilled];
+    _signInButton.enabled = [self isSignInEnabled];
     return YES;
 }
 
@@ -143,6 +148,7 @@ CGFloat const GeneralWalkthroughiOS7StatusBarOffset = 20.0;
 {
     BOOL isUsernameFilled = [self isUsernameFilled];
     BOOL isPasswordFilled = [self isPasswordFilled];
+    BOOL isSiteUrlFilled = [self isSiteUrlFilled];
     
     NSMutableString *updatedString = [[NSMutableString alloc] initWithString:textField.text];
     [updatedString replaceCharactersInRange:range withString:string];
@@ -151,8 +157,10 @@ CGFloat const GeneralWalkthroughiOS7StatusBarOffset = 20.0;
         isUsernameFilled = updatedStringHasContent;
     } else if (textField == _passwordText) {
         isPasswordFilled = updatedStringHasContent;
+    } else if (textField == _siteUrlText) {
+        isSiteUrlFilled = updatedStringHasContent;
     }
-    _signInButton.enabled = isUsernameFilled && isPasswordFilled;
+    _signInButton.enabled = isUsernameFilled && isPasswordFilled && (_userIsDotCom || isSiteUrlFilled);
     
     return YES;
 }
@@ -304,6 +312,12 @@ CGFloat const GeneralWalkthroughiOS7StatusBarOffset = 20.0;
                      }];
 }
 
+- (void)cancelButtonAction:(id)sender {
+    if (self.dismissBlock) {
+        self.dismissBlock();
+    }
+}
+
 #pragma mark - Private Methods
 
 - (void)addMainView
@@ -390,27 +404,41 @@ CGFloat const GeneralWalkthroughiOS7StatusBarOffset = 20.0;
     // Add Sign In Button
     if (_signInButton == nil) {
         _signInButton = [[WPNUXMainButton alloc] init];
-        [_signInButton setTitle:NSLocalizedString(@"Sign In", nil) forState:UIControlStateNormal];
         [_signInButton addTarget:self action:@selector(signInButtonAction:) forControlEvents:UIControlEventTouchUpInside];
         [_mainView addSubview:_signInButton];
         _signInButton.enabled = NO;
     }
-    
-    // Add Account type toggle
-    if (_toggleSignInForm == nil) {
-        _toggleSignInForm = [[WPNUXSecondaryButton alloc] init];
-        [_toggleSignInForm addTarget:self action:@selector(toggleSignInformAction:) forControlEvents:UIControlEventTouchUpInside];
-        [_mainView addSubview:_toggleSignInForm];
+    NSString *signInTitle = _userIsDotCom ? NSLocalizedString(@"Sign In", nil) : NSLocalizedString(@"Add Site", nil);
+    [_signInButton setTitle:signInTitle forState:UIControlStateNormal];
+
+    // Add Cancel Button
+    if (self.dismissBlock && _cancelButton == nil) {
+        _cancelButton = [[WPNUXBackButton alloc] init];
+        [_cancelButton setTitle:NSLocalizedString(@"Cancel", nil) forState:UIControlStateNormal];
+        [_cancelButton addTarget:self action:@selector(cancelButtonAction:) forControlEvents:UIControlEventTouchUpInside];
+        [_cancelButton sizeToFit];
+        [self.view addSubview:_cancelButton];
     }
-    NSString *toggleTitle = _userIsDotCom ? NSLocalizedString(@"Add Self-Hosted Site", nil) : NSLocalizedString(@"Sign in to WordPress.com", nil);
-    [_toggleSignInForm setTitle:toggleTitle forState:UIControlStateNormal];
-    
-    // Add Skip to Create Account Button
-    if (_skipToCreateAccount == nil) {
-        _skipToCreateAccount = [[WPNUXSecondaryButton alloc] init];
-        [_skipToCreateAccount setTitle:NSLocalizedString(@"Create Account", nil) forState:UIControlStateNormal];
-        [_skipToCreateAccount addTarget:self action:@selector(clickedSkipToCreate:) forControlEvents:UIControlEventTouchUpInside];
-        [_mainView addSubview:_skipToCreateAccount];
+
+    if (!self.onlyDotComAllowed && ![WPAccount defaultWordPressComAccount]) {
+        // Add Account type toggle
+        if (_toggleSignInForm == nil) {
+            _toggleSignInForm = [[WPNUXSecondaryButton alloc] init];
+            [_toggleSignInForm addTarget:self action:@selector(toggleSignInformAction:) forControlEvents:UIControlEventTouchUpInside];
+            [_mainView addSubview:_toggleSignInForm];
+        }
+        NSString *toggleTitle = _userIsDotCom ? NSLocalizedString(@"Add Self-Hosted Site", nil) : NSLocalizedString(@"Sign in to WordPress.com", nil);
+        [_toggleSignInForm setTitle:toggleTitle forState:UIControlStateNormal];
+    }
+
+    if (![WPAccount defaultWordPressComAccount]) {
+        // Add Skip to Create Account Button
+        if (_skipToCreateAccount == nil) {
+            _skipToCreateAccount = [[WPNUXSecondaryButton alloc] init];
+            [_skipToCreateAccount setTitle:NSLocalizedString(@"Create Account", nil) forState:UIControlStateNormal];
+            [_skipToCreateAccount addTarget:self action:@selector(clickedSkipToCreate:) forControlEvents:UIControlEventTouchUpInside];
+            [_mainView addSubview:_skipToCreateAccount];
+        }
     }
 }
 
@@ -425,7 +453,14 @@ CGFloat const GeneralWalkthroughiOS7StatusBarOffset = 20.0;
     }
     _helpButton.frame = CGRectMake(_viewWidth - infoButtonImage.size.width, y, infoButtonImage.size.width, infoButtonImage.size.height);
     
-    
+    // Layout Cancel Button
+    x = 0;
+    y = 0.5 * GeneralWalkthroughStandardOffset;
+    if (IS_IOS7 && IS_IPHONE) {
+        y += GeneralWalkthroughiOS7StatusBarOffset;
+    }
+    _cancelButton.frame = CGRectMake(x, y, CGRectGetWidth(_cancelButton.frame), CGRectGetHeight(_cancelButton.frame));
+
     CGFloat heightOfControls = CGRectGetHeight(_icon.frame) + GeneralWalkthroughStandardOffset + (_userIsDotCom ? 2 : 3) * GeneralWalkthroughTextFieldHeight + GeneralWalkthroughStandardOffset + GeneralWalkthroughButtonHeight;
     CGFloat startingYForCenteredControls = floorf((_viewHeight - 2 * GeneralWalkthroughSecondaryButtonHeight - heightOfControls)/2.0);
     
@@ -562,6 +597,20 @@ CGFloat const GeneralWalkthroughiOS7StatusBarOffset = 20.0;
     return [[_passwordText.text trim] length] != 0;
 }
 
+- (BOOL)isSiteUrlFilled
+{
+    return [[_siteUrlText.text trim] length] != 0;
+}
+
+- (BOOL)isSignInEnabled
+{
+    if (_userIsDotCom) {
+        return [self areDotComFieldsFilled];
+    } else {
+        return [self areSelfHostedFieldsFilled];
+    }
+}
+
 - (BOOL)areDotComFieldsFilled
 {
     return [self isUsernameFilled] && [self isPasswordFilled];
@@ -569,17 +618,12 @@ CGFloat const GeneralWalkthroughiOS7StatusBarOffset = 20.0;
 
 - (BOOL)areSelfHostedFieldsFilled
 {
-    return [self areDotComFieldsFilled] && [[_siteUrlText.text trim] length] != 0;
+    return [self areDotComFieldsFilled] && [self isSiteUrlFilled];
 }
 
 - (BOOL)hasUserOnlyEnteredValuesForDotCom
 {
     return [self areDotComFieldsFilled] && ![self areSelfHostedFieldsFilled];
-}
-
-- (BOOL)areFieldsFilled
-{
-    return [[_usernameText.text trim] length] != 0 && [[_passwordText.text trim] length] != 0 && [[_siteUrlText.text trim] length] != 0;
 }
 
 - (BOOL)isUrlValid

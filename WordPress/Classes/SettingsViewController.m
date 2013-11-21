@@ -32,7 +32,6 @@
 #import "WordPressAppDelegate.h"
 #import "EditSiteViewController.h"
 #import "WelcomeViewController.h"
-#import "WPcomLoginViewController.h"
 #import "UIImageView+Gravatar.h"
 #import "WordPressComApi.h"
 #import "AboutViewController.h"
@@ -55,7 +54,7 @@ typedef enum {
 
 CGFloat const blavatarImageViewSize = 43.f;
 
-@interface SettingsViewController () <UIActionSheetDelegate, WPcomLoginViewControllerDelegate>
+@interface SettingsViewController () <UIActionSheetDelegate>
 
 @property (nonatomic, strong) NSArray *mediaSettingsArray;
 @property (nonatomic, strong) UIBarButtonItem *doneButton;
@@ -111,6 +110,7 @@ CGFloat const blavatarImageViewSize = 43.f;
 
 - (void)viewWillAppear:(BOOL)animated {
     [super viewWillAppear:animated];
+    [self.navigationController setNavigationBarHidden:NO animated:animated];
     [self.tableView reloadData];
 }
 
@@ -406,9 +406,12 @@ CGFloat const blavatarImageViewSize = 43.f;
             }
         } else {
             [WPMobileStats trackEventForWPCom:StatsEventSettingsClickedSignIntoDotCom];
-            
-            WPcomLoginViewController *loginViewController = [[WPcomLoginViewController alloc] initWithStyle:UITableViewStyleGrouped];
-            loginViewController.delegate = self;
+
+            LoginViewController *loginViewController = [[LoginViewController alloc] init];
+            loginViewController.onlyDotComAllowed = YES;
+            loginViewController.dismissBlock = ^{
+                [self.navigationController popToViewController:self animated:YES];
+            };
             [self.navigationController pushViewController:loginViewController animated:YES];
         }
         
@@ -438,23 +441,6 @@ CGFloat const blavatarImageViewSize = 43.f;
         }
     }
 }
-
-
-#pragma mark - 
-#pragma mark WPComLoginViewControllerDelegate
-
-- (void)loginController:(WPcomLoginViewController *)loginController didAuthenticateWithAccount:(WPAccount *)account {
-    [self.tableView reloadSections:[NSIndexSet indexSetWithIndex:SettingsSectionWpcom] withRowAnimation:UITableViewRowAnimationFade];
-    AddUsersBlogsViewController *addUsersBlogsView = [[AddUsersBlogsViewController alloc] initWithAccount:[WPAccount defaultWordPressComAccount]];
-    addUsersBlogsView.isWPcom = YES;
-    [self.navigationController pushViewController:addUsersBlogsView animated:YES];
-}
-
-
-- (void)loginControllerDidDismiss:(WPcomLoginViewController *)loginController {
-    [self.navigationController popToRootViewControllerAnimated:YES];
-}
-
 
 #pragma mark -
 #pragma mark Action Sheet Delegate Methods
