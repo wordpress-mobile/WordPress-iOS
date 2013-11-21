@@ -104,9 +104,6 @@ NSString * const WPAccountDefaultWordPressComAccountChangedNotification = @"WPAc
     WPAccount *account = [self createOrUpdateSelfHostedAccountWithXmlrpc:DotcomXmlrpcKey username:username andPassword:password];
     account.isWpcom = YES;
     account.authToken = authToken;
-    if (__defaultDotcomAccount == nil) {
-        [self setDefaultWordPressComAccount:account];
-    }
     return account;
 }
 

@@ -679,6 +679,9 @@ CGFloat const GeneralWalkthroughiOS7StatusBarOffset = 20.0;
 {
     [SVProgressHUD showWithStatus:NSLocalizedString(@"Getting account information", @"") maskType:SVProgressHUDMaskTypeBlack];
     WPAccount *account = [WPAccount createOrUpdateWordPressComAccountWithUsername:username password:password authToken:authToken];
+    if (![WPAccount defaultWordPressComAccount]) {
+        [WPAccount setDefaultWordPressComAccount:account];
+    }
     [account syncBlogsWithSuccess:^{
         [SVProgressHUD dismiss];
         [self dismiss];
@@ -692,7 +695,7 @@ CGFloat const GeneralWalkthroughiOS7StatusBarOffset = 20.0;
 
 - (void)createSelfHostedAccountAndBlogWithUsername:(NSString *)username password:(NSString *)password xmlrpc:(NSString *)xmlrpc options:(NSDictionary *)options
 {
-    WPAccount *account = [self createAccountWithUsername:username andPassword:password isWPCom:NO xmlRPCUrl:xmlrpc];
+    WPAccount *account = [WPAccount createOrUpdateSelfHostedAccountWithXmlrpc:xmlrpc username:username andPassword:password];
     NSString *blogName = [options stringForKeyPath:@"blog_title.value"];
     NSString *url = [options stringForKeyPath:@"home_url.value"];
     NSMutableDictionary *blogDetails = [NSMutableDictionary dictionaryWithObject:xmlrpc forKey:@"xmlrpc"];
@@ -768,24 +771,14 @@ CGFloat const GeneralWalkthroughiOS7StatusBarOffset = 20.0;
 {
     NSParameterAssert(blogDetails != nil);
     
-    WPAccount *account = [self createAccountWithUsername:_usernameText.text andPassword:_passwordText.text isWPCom:NO xmlRPCUrl:xmlRPCUrl];
-    
+    WPAccount *account = [WPAccount createOrUpdateSelfHostedAccountWithXmlrpc:xmlRPCUrl username:_usernameText.text andPassword:_passwordText.text];
+
     NSMutableDictionary *newBlog = [NSMutableDictionary dictionaryWithDictionary:blogDetails];
     [newBlog setObject:xmlRPCUrl forKey:@"xmlrpc"];
 
     _blog = [account findOrCreateBlogFromDictionary:newBlog withContext:account.managedObjectContext];
     [_blog dataSave];
 
-}
-
-- (WPAccount *)createAccountWithUsername:(NSString *)username andPassword:(NSString *)password isWPCom:(BOOL)isWPCom xmlRPCUrl:(NSString *)xmlRPCUrl {
-    WPAccount *account;
-    if (isWPCom) {
-        account = [WPAccount createOrUpdateWordPressComAccountWithUsername:username password:password authToken:nil];
-    } else {
-        account = [WPAccount createOrUpdateSelfHostedAccountWithXmlrpc:xmlRPCUrl username:username andPassword:password];
-    }
-    return account;
 }
 
 - (void)keyboardWillShow:(NSNotification *)notification
