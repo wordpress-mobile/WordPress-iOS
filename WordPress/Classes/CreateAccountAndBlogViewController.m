@@ -23,6 +23,7 @@
 #import "WPNUXUtility.h"
 #import "WPWebViewController.h"
 #import "WPStyleGuide.h"
+#import "UILabel+SuggestSize.h"
 
 @interface CreateAccountAndBlogViewController ()<
     UITextFieldDelegate,
@@ -363,7 +364,7 @@ CGFloat const CreateAccountAndBlogButtonHeight = 41.0;
     // is accurately calculated we can determine the vertical center and adjust everything accordingly.
     
     // Layout Title
-    CGSize titleSize = [_titleLabel.text sizeWithFont:_titleLabel.font constrainedToSize:CGSizeMake(CreateAccountAndBlogMaxTextWidth, CGFLOAT_MAX) lineBreakMode:NSLineBreakByWordWrapping];
+    CGSize titleSize = [_titleLabel suggestedSizeForWidth:CreateAccountAndBlogMaxTextWidth];
     x = (_viewWidth - titleSize.width)/2.0;
     y = 0;
     _titleLabel.frame = CGRectIntegral(CGRectMake(x, y, titleSize.width, titleSize.height));
@@ -401,12 +402,11 @@ CGFloat const CreateAccountAndBlogButtonHeight = 41.0;
     _createAccountButton.frame = CGRectIntegral(CGRectMake(x, y, CreateAccountAndBlogButtonWidth, CreateAccountAndBlogButtonHeight));
 
     // Layout Terms of Service
-    CGFloat TOSSingleLineHeight = [@"WordPress" sizeWithFont:_TOSLabel.font].height;
-    CGSize TOSLabelSize = [_TOSLabel.text sizeWithFont:_TOSLabel.font constrainedToSize:CGSizeMake(CreateAccountAndBlogMaxTextWidth, CGFLOAT_MAX) lineBreakMode:NSLineBreakByWordWrapping];
-    // If the terms of service don't fit on two lines, then shrink the font to make sure the entire terms of service is visible.
+    CGFloat TOSSingleLineHeight = [@"WordPress" sizeWithAttributes:@{NSFontAttributeName:_TOSLabel.font}].height;
+    CGSize TOSLabelSize = [_TOSLabel suggestedSizeForWidth:CreateAccountAndBlogMaxTextWidth];
     if (TOSLabelSize.height > 2*TOSSingleLineHeight) {
         _TOSLabel.font = [WPNUXUtility tosLabelSmallerFont];
-        TOSLabelSize = [_TOSLabel.text sizeWithFont:_TOSLabel.font constrainedToSize:CGSizeMake(CreateAccountAndBlogMaxTextWidth, CGFLOAT_MAX) lineBreakMode:NSLineBreakByWordWrapping];
+        TOSLabelSize = [_TOSLabel suggestedSizeForWidth:CreateAccountAndBlogMaxTextWidth];
     }
     x = (_viewWidth - TOSLabelSize.width)/2.0;
     y = CGRectGetMaxY(_createAccountButton.frame) + CreateAccountAndBlogStandardOffset;

@@ -8,7 +8,6 @@
 
 #import "Note.h"
 #import "NSString+Helpers.h"
-#import "JSONKit.h"
 #import "WordPressComApi.h"
 #import "WordPressAppDelegate.h"
 
@@ -188,8 +187,8 @@ const NSUInteger NoteKeepCount = 20;
 }
 
 - (void)syncAttributes:(NSDictionary *)noteData {
-    self.payload = [noteData JSONData];
-    self.noteData = [self.payload mutableObjectFromJSONData];
+    self.payload = [NSJSONSerialization dataWithJSONObject:noteData options:0 error:nil];
+    self.noteData = [NSJSONSerialization JSONObjectWithData:self.payload options:0 error:nil];
     self.type = [noteData objectForKey:@"type"];
     NSString *subject = [[noteData objectForKey:@"subject"] objectForKey:@"text"];
     if (!subject)
@@ -256,7 +255,7 @@ const NSUInteger NoteKeepCount = 20;
 
 - (id)noteData {
     if (_noteData == nil) {
-        _noteData = [self.payload mutableObjectFromJSONData];
+        _noteData = [NSJSONSerialization JSONObjectWithData:self.payload options:0 error:nil];
     }
     return _noteData;
 }
