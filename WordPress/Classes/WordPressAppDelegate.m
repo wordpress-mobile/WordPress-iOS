@@ -578,7 +578,7 @@ int ddLogLevel = LOG_LEVEL_INFO;
 	BOOL isDir;
 	if (![fileManager fileExistsAtPath:currentDirectoryPath isDirectory:&isDir] || !isDir) {
 		[fileManager createDirectoryAtPath:currentDirectoryPath withIntermediateDirectories:YES attributes:nil error:nil];
-	}
+    }
 	[fileManager changeCurrentDirectoryPath:currentDirectoryPath];
 }
 
