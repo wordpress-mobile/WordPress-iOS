@@ -114,7 +114,7 @@ static const float statusLabelMaxWidthPortrait = 100.f;
 - (void)layoutSubviews {
     [super layoutSubviews];
    
-    CGSize expectedstatusLabelSize = [statusLabel.text sizeWithFont:[UIFont systemFontOfSize:DATE_FONT_SIZE]];   
+    CGSize expectedstatusLabelSize = [statusLabel.text sizeWithAttributes:@{NSFontAttributeName:[UIFont systemFontOfSize:DATE_FONT_SIZE]}];
     CGFloat expectedStatusLabelWidth = 0.f;    
     if ( IS_IPHONE && UIDeviceOrientationIsPortrait([[UIDevice currentDevice] orientation]) ) {
         expectedStatusLabelWidth = expectedstatusLabelSize.width > statusLabelMaxWidthPortrait ? statusLabelMaxWidthPortrait : expectedstatusLabelSize.width;

@@ -1,7 +1,6 @@
 #import "WPAddCategoryViewController.h"
 #import "EditSiteViewController.h"
 #import "WordPressAppDelegate.h"
-#import "UIBarButtonItem+Styled.h"
 
 @implementation WPAddCategoryViewController
 @synthesize blog;

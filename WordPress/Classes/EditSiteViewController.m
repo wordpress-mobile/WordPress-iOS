@@ -8,7 +8,6 @@
 #import "EditSiteViewController.h"
 #import "NSURL+IDN.h"
 #import "WordPressComApi.h"
-#import "UIBarButtonItem+Styled.h"
 #import "AFHTTPClient.h"
 #import "SupportViewController.h"
 #import "WPWebViewController.h"

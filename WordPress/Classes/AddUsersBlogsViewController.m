@@ -12,7 +12,6 @@
 #import "CreateWPComBlogViewController.h"
 #import "NSString+XMLExtensions.h"
 #import "WordPressComApi.h"
-#import "UIBarButtonItem+Styled.h"
 #import "ReachabilityUtils.h"
 #import "UIImageView+Gravatar.h"
 #import "WPAccount.h"
@@ -63,32 +62,27 @@
     if (IS_IOS7) {
         self.toolbar.barTintColor = [WPStyleGuide littleEddieGrey];        
     }
-    
+    NSShadow *shadow = [[NSShadow alloc] init];
     [_buttonSelectAll setTitleTextAttributes:@{
-                                              UITextAttributeFont: [WPStyleGuide regularTextFont],
-                                              UITextAttributeTextColor : [UIColor whiteColor],
-                                              UITextAttributeTextShadowOffset : [NSValue valueWithUIOffset:UIOffsetMake(0, 0)]}
+                                              NSFontAttributeName: [WPStyleGuide regularTextFont],
+                                              NSForegroundColorAttributeName : [UIColor whiteColor],
+                                              NSShadowAttributeName: shadow}
                                    forState:UIControlStateNormal];
 
     [_buttonAddSelected setTitleTextAttributes:@{
-                                              UITextAttributeFont: [WPStyleGuide regularTextFont],
-                                              UITextAttributeTextColor : [UIColor whiteColor],
-                                              UITextAttributeTextShadowOffset : [NSValue valueWithUIOffset:UIOffsetMake(0, 0)]}
+                                              NSFontAttributeName: [WPStyleGuide regularTextFont],
+                                              NSForegroundColorAttributeName : [UIColor whiteColor],
+                                              NSShadowAttributeName: shadow}
                                    forState:UIControlStateNormal];
     [_buttonAddSelected setTitleTextAttributes:@{
-                                                UITextAttributeFont: [WPStyleGuide regularTextFont],
-                                                UITextAttributeTextColor : [UIColor grayColor],
-                                                UITextAttributeTextShadowOffset : [NSValue valueWithUIOffset:UIOffsetMake(0, 0)]}
+                                                NSFontAttributeName: [WPStyleGuide regularTextFont],
+                                                NSForegroundColorAttributeName : [UIColor grayColor],
+                                                NSShadowAttributeName: shadow}
                                      forState:UIControlStateDisabled];
 
     
 	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(cancelAddWPcomBlogs) 
 												 name:@"didCancelWPcomLogin" object:nil];
-    
-    if (!IS_IOS7) {
-        [UIBarButtonItem styleButtonAsPrimary:_buttonAddSelected];
-    }
-    
 }
 
 - (void)viewWillAppear:(BOOL)animated {
@@ -556,9 +550,9 @@
         // iOS 7 Beta 6 doesn't seem to be respecting the title text attributes for UIControlStateDisabled
         // so we have to engage in this hack until apple fixes it.
         [self.buttonAddSelected setTitleTextAttributes:@{
-                                                    UITextAttributeFont: [WPStyleGuide regularTextFont],
-                                                    UITextAttributeTextColor : [WPStyleGuide whisperGrey    ],
-                                                    UITextAttributeTextShadowOffset : [NSValue valueWithUIOffset:UIOffsetMake(0, 0)]}
+                                                    NSFontAttributeName: [WPStyleGuide regularTextFont],
+                                                    NSForegroundColorAttributeName : [WPStyleGuide whisperGrey    ],
+                                                    NSShadowAttributeName: [[NSShadow alloc] init]}
                                          forState:UIControlStateNormal];
 	} else {
 		self.buttonAddSelected.enabled = YES;
@@ -568,9 +562,9 @@
         // iOS 7 Beta 6 doesn't seem to be respecting the title text attributes for UIControlStateDisabled
         // so we have to engage in this hack until apple fixes it.
         [self.buttonAddSelected setTitleTextAttributes:@{
-                                                    UITextAttributeFont: [WPStyleGuide regularTextFont],
-                                                    UITextAttributeTextColor : [UIColor whiteColor],
-                                                    UITextAttributeTextShadowOffset : [NSValue valueWithUIOffset:UIOffsetMake(0, 0)]}
+                                                    NSFontAttributeName: [WPStyleGuide regularTextFont],
+                                                    NSForegroundColorAttributeName : [UIColor whiteColor],
+                                                    NSShadowAttributeName: [[NSShadow alloc] init]}
                                          forState:UIControlStateNormal];
 	}
 	

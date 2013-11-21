@@ -1234,41 +1234,23 @@
         UIViewController *fakeController = [[UIViewController alloc] init];
         
         if (picker.tag == TAG_PICKER_DATE) {
-            fakeController.contentSizeForViewInPopover = CGSizeMake(320.0f, 256.0f);
-            
-            if (IS_IOS7) {
-                UIButton *button = [[UIButton alloc] init];
-                [button addTarget:self action:@selector(removeDate) forControlEvents:UIControlEventTouchUpInside];
-                [button setBackgroundImage:[[UIImage imageNamed:@"keyboardButton-ios7"] stretchableImageWithLeftCapWidth:5.0f topCapHeight:0.0f] forState:UIControlStateNormal];
-                [button setBackgroundImage:[[UIImage imageNamed:@"keyboardButtonHighlighted-ios7"] stretchableImageWithLeftCapWidth:5.0f topCapHeight:0.0f] forState:UIControlStateNormal];
-                [button setTitle:[NSString stringWithFormat:@" %@ ", NSLocalizedString(@"Publish Immediately", @"Post publishing status in the Post Editor/Settings area (compare with WP core translations).")] forState:UIControlStateNormal];            [button sizeToFit];
-                CGPoint buttonCenter = button.center;
-                buttonCenter.x = CGRectGetMidX(picker.frame);
-                button.center = buttonCenter;
-                
-                [fakeController.view addSubview:button];
-                CGRect pickerFrame = picker.frame;
-                pickerFrame.origin.y = CGRectGetMaxY(button.frame);
-                picker.frame = pickerFrame;
-            } else {
-                UISegmentedControl *publishNowButton = [[UISegmentedControl alloc] initWithItems:[NSArray arrayWithObject:NSLocalizedString(@"Publish Immediately", @"Post publishing status in the Post Editor/Settings area (compare with WP core translations).")]];
-                publishNowButton.momentary = YES;
-                publishNowButton.frame = CGRectMake(0.0f, 0.0f, 320.0f, 40.0f);
-                publishNowButton.segmentedControlStyle = UISegmentedControlStyleBar;
-                if ([publishNowButton respondsToSelector:@selector(setTintColor:)]) {
-                    publishNowButton.tintColor = self.postDetailViewController.toolbar.tintColor;
-                }
-                NSDictionary *titleTextAttributes = @{UITextAttributeTextColor: [UIColor whiteColor], UITextAttributeTextShadowColor:[UIColor blackColor]};
-                [publishNowButton setTitleTextAttributes:titleTextAttributes forState:UIControlStateNormal];
-                [publishNowButton setTitleTextAttributes:titleTextAttributes forState:UIControlStateSelected];
-                [publishNowButton addTarget:self action:@selector(removeDate) forControlEvents:UIControlEventValueChanged];
-                [fakeController.view addSubview:publishNowButton];
-                CGRect frame = picker.frame;
-                frame.origin.y = 40.0f;
-                picker.frame = frame;
-            }
+            fakeController.preferredContentSize = CGSizeMake(320.0f, 256.0f);
+
+            UIButton *button = [[UIButton alloc] init];
+            [button addTarget:self action:@selector(removeDate) forControlEvents:UIControlEventTouchUpInside];
+            [button setBackgroundImage:[[UIImage imageNamed:@"keyboardButton-ios7"] stretchableImageWithLeftCapWidth:5.0f topCapHeight:0.0f] forState:UIControlStateNormal];
+            [button setBackgroundImage:[[UIImage imageNamed:@"keyboardButtonHighlighted-ios7"] stretchableImageWithLeftCapWidth:5.0f topCapHeight:0.0f] forState:UIControlStateNormal];
+            [button setTitle:[NSString stringWithFormat:@" %@ ", NSLocalizedString(@"Publish Immediately", @"Post publishing status in the Post Editor/Settings area (compare with WP core translations).")] forState:UIControlStateNormal];            [button sizeToFit];
+            CGPoint buttonCenter = button.center;
+            buttonCenter.x = CGRectGetMidX(picker.frame);
+            button.center = buttonCenter;
+
+            [fakeController.view addSubview:button];
+            CGRect pickerFrame = picker.frame;
+            pickerFrame.origin.y = CGRectGetMaxY(button.frame);
+            picker.frame = pickerFrame;
         } else {
-            fakeController.contentSizeForViewInPopover = CGSizeMake(320.0f, 216.0f);
+            fakeController.preferredContentSize = CGSizeMake(320.0f, 216.0f);
         }
         
         [fakeController.view addSubview:picker];
@@ -1318,88 +1300,32 @@
         [self.actionSheet setBounds:CGRectMake(0.0f, 0.0f, width, height)];
         [self.actionSheet addSubview:pickerWrapperView];
         
-        UISegmentedControl *closeButton;
-        if (IS_IOS7) {
-            UIButton *button = [[UIButton alloc] init];
-            [button addTarget:self action:@selector(hidePicker) forControlEvents:UIControlEventTouchUpInside];
-            [button setBackgroundImage:[[UIImage imageNamed:@"keyboardButton-ios7"] stretchableImageWithLeftCapWidth:5.0f topCapHeight:0.0f] forState:UIControlStateNormal];
-            [button setBackgroundImage:[[UIImage imageNamed:@"keyboardButtonHighlighted-ios7"] stretchableImageWithLeftCapWidth:5.0f topCapHeight:0.0f] forState:UIControlStateNormal];
-            [button setTitle:[NSString stringWithFormat:@" %@ ", NSLocalizedString(@"Done", @"Default main action button for closing/finishing a work flow in the app (used in Comments>Edit, Comment edits and replies, post editor body text, etc, to dismiss keyboard).")] forState:UIControlStateNormal];
-            [button sizeToFit];
-            CGRect frame = button.frame;
-            frame.origin.x = CGRectGetWidth(self.view.frame) - CGRectGetWidth(button.frame) - 10;
-            frame.origin.y = 7;
-            button.frame = frame;
-            [pickerWrapperView addSubview:button];
-        } else {
-            closeButton = [[UISegmentedControl alloc] initWithItems:[NSArray arrayWithObject:NSLocalizedString(@"Done", @"Default main action button for closing/finishing a work flow in the app (used in Comments>Edit, Comment edits and replies, post editor body text, etc, to dismiss keyboard).")]];
-            closeButton.momentary = YES;
-            CGFloat x = self.view.frame.size.width - 60.0f;
-            closeButton.frame = CGRectMake(x, 7.0f, 50.0f, 30.0f);
-            closeButton.segmentedControlStyle = UISegmentedControlStyleBar;
-            if ([closeButton respondsToSelector:@selector(setTintColor:)]) {
-                closeButton.tintColor = [UIColor blackColor];
-            }
-            [closeButton addTarget:self action:@selector(hidePicker) forControlEvents:UIControlEventValueChanged];
-            closeButton.autoresizingMask = UIViewAutoresizingFlexibleLeftMargin;
-            [pickerWrapperView addSubview:closeButton];
-        }
+        UIButton *button = [[UIButton alloc] init];
+        [button addTarget:self action:@selector(hidePicker) forControlEvents:UIControlEventTouchUpInside];
+        [button setBackgroundImage:[[UIImage imageNamed:@"keyboardButton-ios7"] stretchableImageWithLeftCapWidth:5.0f topCapHeight:0.0f] forState:UIControlStateNormal];
+        [button setBackgroundImage:[[UIImage imageNamed:@"keyboardButtonHighlighted-ios7"] stretchableImageWithLeftCapWidth:5.0f topCapHeight:0.0f] forState:UIControlStateNormal];
+        [button setTitle:[NSString stringWithFormat:@" %@ ", NSLocalizedString(@"Done", @"Default main action button for closing/finishing a work flow in the app (used in Comments>Edit, Comment edits and replies, post editor body text, etc, to dismiss keyboard).")] forState:UIControlStateNormal];
+        [button sizeToFit];
+        CGRect frame = button.frame;
+        frame.origin.x = CGRectGetWidth(self.view.frame) - CGRectGetWidth(button.frame) - 10;
+        frame.origin.y = 7;
+        button.frame = frame;
+        [pickerWrapperView addSubview:button];
         
-        UISegmentedControl *publishNowButton = nil;
-        if (IS_IOS7) {
-            UIButton *button = [[UIButton alloc] init];
-            [button setTintColor:[WPStyleGuide newKidOnTheBlockBlue]];
-            [button addTarget:self action:@selector(removeDate) forControlEvents:UIControlEventTouchUpInside];
-            [button setBackgroundImage:[[UIImage imageNamed:@"keyboardButton-ios7"] stretchableImageWithLeftCapWidth:5.0f topCapHeight:0.0f] forState:UIControlStateNormal];
-            [button setBackgroundImage:[[UIImage imageNamed:@"keyboardButtonHighlighted-ios7"] stretchableImageWithLeftCapWidth:5.0f topCapHeight:0.0f] forState:UIControlStateNormal];
-            [button setTitle:[NSString stringWithFormat:@" %@ ", NSLocalizedString(@"Publish Immediately", @"Post publishing status in the Post Editor/Settings area (compare with WP core translations).")] forState:UIControlStateNormal];
-            [button sizeToFit];
-            CGRect frame = button.frame;
-            frame.origin.x = 10;
-            frame.origin.y = 7;
-            button.frame = frame;
-            [pickerWrapperView addSubview:button];
-        } else {
-            if (picker.tag == TAG_PICKER_DATE) {
-                publishNowButton = [[UISegmentedControl alloc] initWithItems:[NSArray arrayWithObject:NSLocalizedString(@"Publish Immediately", @"Post publishing status in the Post Editor/Settings area (compare with WP core translations).")]];
-                publishNowButton.momentary = YES;
-                publishNowButton.frame = CGRectMake(10.0f, 7.0f, 129.0f, 30.0f);
-                publishNowButton.segmentedControlStyle = UISegmentedControlStyleBar;
-                publishNowButton.tintColor = [UIColor blackColor];
-                [publishNowButton addTarget:self action:@selector(removeDate) forControlEvents:UIControlEventValueChanged];
-                [pickerWrapperView addSubview:publishNowButton];
-            }
-        }
-        
-        if (!IS_IOS7) {
-            // Since we're requiring a black tint we do not want to use the custom text colors.
-            NSDictionary *titleTextAttributesForStateNormal = [NSDictionary dictionaryWithObjectsAndKeys:
-                                                               [UIColor whiteColor],
-                                                               UITextAttributeTextColor,
-                                                               [UIColor darkGrayColor],
-                                                               UITextAttributeTextShadowColor,
-                                                               [NSValue valueWithUIOffset:UIOffsetMake(0, 1)],
-                                                               UITextAttributeTextShadowOffset,
-                                                               nil];
-            
-            // The UISegmentControl does not show a pressed state for its button so (for now) use the same
-            // state for normal and highlighted.
-            // It would be nice to refactor this to use a toolbar and buttons instead of a segmented control to get the
-            // correct look and feel.
-            [closeButton setTitleTextAttributes:titleTextAttributesForStateNormal forState:UIControlStateNormal];
-            [closeButton setTitleTextAttributes:titleTextAttributesForStateNormal forState:UIControlStateHighlighted];
-            
-            if (publishNowButton) {
-                [publishNowButton setTitleTextAttributes:titleTextAttributesForStateNormal forState:UIControlStateNormal];
-                [publishNowButton setTitleTextAttributes:titleTextAttributesForStateNormal forState:UIControlStateHighlighted];
-            }
-        }
-        
-        if (IS_IOS7) {
-            [self.actionSheet showInView:self.view];
-        } else {
-            [self.actionSheet showInView:self.postDetailViewController.view];
-        }
+        button = [[UIButton alloc] init];
+        [button setTintColor:[WPStyleGuide newKidOnTheBlockBlue]];
+        [button addTarget:self action:@selector(removeDate) forControlEvents:UIControlEventTouchUpInside];
+        [button setBackgroundImage:[[UIImage imageNamed:@"keyboardButton-ios7"] stretchableImageWithLeftCapWidth:5.0f topCapHeight:0.0f] forState:UIControlStateNormal];
+        [button setBackgroundImage:[[UIImage imageNamed:@"keyboardButtonHighlighted-ios7"] stretchableImageWithLeftCapWidth:5.0f topCapHeight:0.0f] forState:UIControlStateNormal];
+        [button setTitle:[NSString stringWithFormat:@" %@ ", NSLocalizedString(@"Publish Immediately", @"Post publishing status in the Post Editor/Settings area (compare with WP core translations).")] forState:UIControlStateNormal];
+        [button sizeToFit];
+        frame = button.frame;
+        frame.origin.x = 10;
+        frame.origin.y = 7;
+        button.frame = frame;
+        [pickerWrapperView addSubview:button];
+
+        [self.actionSheet showInView:self.view];
         [self.actionSheet setBounds:CGRectMake(0.0f, 0.0f, width, height)]; // Update the bounds again now that its in the view else it won't draw correctly.
     }
 }
