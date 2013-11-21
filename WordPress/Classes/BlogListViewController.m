@@ -14,6 +14,7 @@
 #import "WelcomeViewController.h"
 #import "BlogDetailsViewController.h"
 #import "WPTableViewCell.h"
+#import "WPAccount.h"
 
 CGFloat const blavatarImageSize = 50.f;
 
@@ -175,6 +176,11 @@ CGFloat const blavatarImageSize = 50.f;
             dispatch_async(dispatch_get_main_queue(), ^{
                 self.editButtonItem.enabled = NO;
                 [self setEditing:NO animated:YES];
+
+                // No blogs and  signed out, show NUX
+                if (![WPAccount defaultWordPressComAccount]) {
+                    [[WordPressAppDelegate sharedWordPressApplicationDelegate] showWelcomeScreenIfNeededAnimated:YES];
+                }
             });
         }
     }

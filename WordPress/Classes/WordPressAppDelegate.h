@@ -79,5 +79,6 @@
 - (void)openNotificationScreenWithOptions:(NSDictionary *)remoteNotif;
 - (void)useDefaultUserAgent;
 - (void)useAppUserAgent;
+- (void)showWelcomeScreenIfNeededAnimated:(BOOL)animated;
 
 @end

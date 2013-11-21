@@ -254,7 +254,7 @@ int ddLogLevel = LOG_LEVEL_INFO;
     return [blogs count] == 0 && ![WPAccount defaultWordPressComAccount];
 }
 
-- (void)showWelcomeScreenIfNeeded {
+- (void)showWelcomeScreenIfNeededAnimated:(BOOL)animated {
     if ([self noBlogsAndNoWordPressDotComAccount]) {
         [WordPressAppDelegate wipeAllKeychainItems];
         
@@ -266,9 +266,9 @@ int ddLogLevel = LOG_LEVEL_INFO;
 
         UIViewController *presenter = window.rootViewController;
         if (presenter.presentedViewController) {
-            [presenter dismissViewControllerAnimated:NO completion:nil];
+            [presenter dismissViewControllerAnimated:animated completion:nil];
         }
-        [window.rootViewController presentViewController:aNavigationController animated:NO completion:nil];
+        [window.rootViewController presentViewController:aNavigationController animated:animated completion:nil];
     }
 }
 
@@ -385,7 +385,7 @@ int ddLogLevel = LOG_LEVEL_INFO;
     
     window.backgroundColor = [UIColor blackColor];
     window.rootViewController = [self createTabBarController];
-    [self showWelcomeScreenIfNeeded];
+    [self showWelcomeScreenIfNeededAnimated:NO];
 
 	//listener for XML-RPC errors
 	//in the future we could put the errors message in a dedicated screen that users can bring to front when samething went wrong, and can take a look at the error msg.
@@ -1095,7 +1095,7 @@ int ddLogLevel = LOG_LEVEL_INFO;
 
 - (void)handleDefaultAccountChangedNotification:(NSNotification *)notification {
 	[self toggleExtraDebuggingIfNeeded];
-    [self showWelcomeScreenIfNeeded];
+    [self showWelcomeScreenIfNeededAnimated:NO];
 }
 
 - (void)showNotificationsTab {
