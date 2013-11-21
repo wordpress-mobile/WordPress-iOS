@@ -1,12 +1,12 @@
-//
-//  WPError.h
-//  WordPress
-//
-//  Created by Jorge Bernal on 4/17/12.
-//  Copyright (c) 2012 WordPress. All rights reserved.
-//
+/*
+ * WPError.h
+ *
+ * Copyright (c) 2013 WordPress. All rights reserved.
+ *
+ * Licensed under GNU General Public License 2.0.
+ * Some rights reserved. See license.txt
+ */
 
-#import <Foundation/Foundation.h>
 
 @interface WPError : NSObject
 
