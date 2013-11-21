@@ -34,6 +34,7 @@
 #import "BlogListViewController.h"
 #import "LoginViewController.h"
 #import <CrashlyticsLumberjack/CrashlyticsLogger.h>
+#import <HockeySDK/HockeySDK.h>
 
 @interface WordPressAppDelegate (Private) <CrashlyticsDelegate>
 
@@ -45,6 +46,9 @@
 - (void)toggleExtraDebuggingIfNeeded;
 - (void)handleLogoutOrBlogsChangedNotification:(NSNotification *)notification;
 
+@end
+
+@interface WordPressAppDelegate(PrivateHockeyApp) <BITHockeyManagerDelegate> {}
 @end
 
 int ddLogLevel = LOG_LEVEL_INFO;
@@ -221,6 +225,9 @@ int ddLogLevel = LOG_LEVEL_INFO;
 #if DEBUG
     return;
 #endif
+#ifdef INTERNAL_BUILD
+    return;
+#endif
 
     if ([[WordPressComApiCredentials crashlyticsApiKey] length] == 0) {
         return;
@@ -247,9 +254,17 @@ int ddLogLevel = LOG_LEVEL_INFO;
     [[NSNotificationCenter defaultCenter] addObserverForName:WordPressComApiDidLoginNotification object:nil queue:nil usingBlock:wpcomLoggedInBlock];
     [[NSNotificationCenter defaultCenter] addObserverForName:WordPressComApiDidLogoutNotification object:nil queue:nil usingBlock:wpcomLoggedOutBlock];
 }
+    
+- (void)configureHockeySDK {
+#ifndef INTERNAL_BUILD
+    return;
+#endif
+    [[BITHockeyManager sharedHockeyManager] configureWithIdentifier:@"***REMOVED***"
+                                                           delegate:self];
+    [[BITHockeyManager sharedHockeyManager] startManager];
+}
 
-- (void)setCommonCrashlyticsParameters
-{
+- (void)setCommonCrashlyticsParameters {
     [Crashlytics setObjectValue:[NSNumber numberWithBool:[[WordPressComApi sharedApi] hasCredentials]] forKey:@"logged_in"];
     [Crashlytics setObjectValue:@([[WordPressComApi sharedApi] hasCredentials]) forKey:@"connected_to_dotcom"];
     [Crashlytics setObjectValue:@([Blog countWithContext:[self managedObjectContext]]) forKey:@"number_of_blogs"];
@@ -316,6 +331,7 @@ int ddLogLevel = LOG_LEVEL_INFO;
     NSInteger crashCount = [[NSUserDefaults standardUserDefaults] integerForKey:@"crashCount"];
 
     [self configureCrashlytics];
+    [self configureHockeySDK];
     [self configureLogging];
 
     NSArray *languages = [[NSUserDefaults standardUserDefaults] objectForKey:@"AppleLanguages"];
@@ -845,7 +861,9 @@ int ddLogLevel = LOG_LEVEL_INFO;
     self.fileLogger.logFileManager.maximumNumberOfLogFiles = 7;
     [DDLog addLogger:self.fileLogger];
     
+#ifndef INTERNAL_BUILD
     [DDLog addLogger:[CrashlyticsLogger sharedInstance]];
+#endif
     
     BOOL extraDebug = [[NSUserDefaults standardUserDefaults] boolForKey:@"extra_debug"];
     if (extraDebug) {
