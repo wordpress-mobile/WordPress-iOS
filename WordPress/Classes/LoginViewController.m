@@ -488,7 +488,6 @@ CGFloat const GeneralWalkthroughiOS7StatusBarOffset = 20.0;
         _passwordText.text = password;
         _userIsDotCom = YES;
         [self.navigationController popViewControllerAnimated:NO];
-        [self showAddUsersBlogsForWPCom];
     };
     [self.navigationController pushViewController:createAccountViewController animated:YES];
 }
@@ -642,7 +641,8 @@ CGFloat const GeneralWalkthroughiOS7StatusBarOffset = 20.0;
                 _dotComSiteUrl = [siteUrl objectForKey:@"value"];
                 [self signInForWPComForUsername:username andPassword:password];
             } else {
-                [self signInForSelfHostedForUsername:username password:password options:options andApi:api];
+                NSString *xmlrpc = [xmlRPCURL absoluteString];
+                [self createSelfHostedAccountAndBlogWithUsername:username password:password xmlrpc:xmlrpc options:options];
             }
         } failure:^(NSError *error){
             [SVProgressHUD dismiss];
@@ -676,21 +676,6 @@ CGFloat const GeneralWalkthroughiOS7StatusBarOffset = 20.0;
                              }];
 }
 
-- (void)signInForSelfHostedForUsername:(NSString *)username password:(NSString *)password options:(NSDictionary *)options andApi:(WordPressXMLRPCApi *)api
-{
-    [WPMobileStats trackEventForSelfHostedAndWPCom:StatsEventNUXFirstWalkthroughSignedInForSelfHosted];
-    
-    [SVProgressHUD showWithStatus:NSLocalizedString(@"Reading blog options", nil) maskType:SVProgressHUDMaskTypeBlack];
-    
-    [api getBlogsWithSuccess:^(NSArray *blogs) {
-        _blogs = blogs;
-        [self handleGetBlogsSuccess:api.xmlrpc.absoluteString];
-    } failure:^(NSError *error) {
-        [SVProgressHUD dismiss];
-        [self displayRemoteError:error];
-    }];
-}
-
 - (void)createWordPressComAccountForUsername:(NSString *)username password:(NSString *)password authToken:(NSString *)authToken
 {
     [SVProgressHUD showWithStatus:NSLocalizedString(@"Getting account information", @"") maskType:SVProgressHUDMaskTypeBlack];
@@ -704,6 +689,31 @@ CGFloat const GeneralWalkthroughiOS7StatusBarOffset = 20.0;
     }];
     [ReaderPost fetchPostsWithCompletionHandler:nil];
     [account.restApi getNotificationsSince:nil success:nil failure:nil];
+}
+
+- (void)createSelfHostedAccountAndBlogWithUsername:(NSString *)username password:(NSString *)password xmlrpc:(NSString *)xmlrpc options:(NSDictionary *)options
+{
+    WPAccount *account = [self createAccountWithUsername:username andPassword:password isWPCom:NO xmlRPCUrl:xmlrpc];
+    NSString *blogName = [options stringForKeyPath:@"blog_title.value"];
+    NSString *url = [options stringForKeyPath:@"home_url.value"];
+    NSMutableDictionary *blogDetails = [NSMutableDictionary dictionaryWithObject:xmlrpc forKey:@"xmlrpc"];
+    if (blogName) {
+        [blogDetails setObject:blogName forKey:@"blogName"];
+    }
+    if (url) {
+        [blogDetails setObject:url forKey:@"url"];
+    }
+    _blog = [account findOrCreateBlogFromDictionary:blogDetails withContext:account.managedObjectContext];
+    _blog.options = options;
+    [_blog dataSave];
+    [WPMobileStats trackEventForSelfHostedAndWPCom:StatsEventNUXFirstWalkthroughUserSignedInToBlogWithJetpack];
+    [_blog syncBlogWithSuccess:nil failure:nil];
+
+    if ([_blog hasJetpack]) {
+        [self showJetpackAuthentication];
+    } else {
+        [self dismiss];
+    }
 }
 
 - (void)handleGuessXMLRPCURLFailure:(NSError *)error
@@ -726,32 +736,6 @@ CGFloat const GeneralWalkthroughiOS7StatusBarOffset = 20.0;
                                   nil];
         NSError *err = [NSError errorWithDomain:@"org.wordpress.iphone" code:NSURLErrorBadURL userInfo:userInfo];
         [self displayRemoteError:err];
-    }
-}
-
-- (void)handleGetBlogsSuccess:(NSString *)xmlRPCUrl {
-    if ([_blogs count] > 0) {
-        // If the user has entered the URL of a site they own on a MultiSite install,
-        // assume they want to add that specific site.
-        NSDictionary *subsite = nil;
-        if ([_blogs count] > 1) {
-            subsite = [[_blogs filteredArrayUsingPredicate:[NSPredicate predicateWithFormat:@"xmlrpc = %@", xmlRPCUrl]] lastObject];
-        }
-        
-        if (subsite == nil) {
-            subsite = [_blogs objectAtIndex:0];
-        }
-        
-        if ([_blogs count] > 1 && [[subsite objectForKey:@"blogid"] isEqualToString:@"1"]) {
-            [SVProgressHUD dismiss];
-            [self showAddUsersBlogsForSelfHosted:xmlRPCUrl];
-        } else {
-            [self createBlogWithXmlRpc:xmlRPCUrl andBlogDetails:subsite];
-            [self synchronizeNewlyAddedBlog];
-        }
-    } else {
-        NSError *error = [NSError errorWithDomain:@"WordPress" code:0 userInfo:@{NSLocalizedDescriptionKey: NSLocalizedString(@"Sorry, you credentials were good but you don't seem to have access to any blogs", nil)}];
-        [self displayRemoteError:error];
     }
 }
 
@@ -781,49 +765,6 @@ CGFloat const GeneralWalkthroughiOS7StatusBarOffset = 20.0;
     }
 }
 
-- (NewAddUsersBlogViewController *)addUsersBlogViewController:(NSString *)xmlRPCUrl
-{
-    BOOL isWPCom = (xmlRPCUrl == nil);
-    NewAddUsersBlogViewController *vc = [[NewAddUsersBlogViewController alloc] init];
-    vc.account = [self createAccountWithUsername:_usernameText.text andPassword:_passwordText.text isWPCom:isWPCom xmlRPCUrl:xmlRPCUrl];
-    vc.blogAdditionCompleted = ^(NewAddUsersBlogViewController * viewController){
-        [self.navigationController popViewControllerAnimated:NO];
-        [self dismiss];
-    };
-    vc.onNoBlogsLoaded = ^(NewAddUsersBlogViewController *viewController) {
-        [self.navigationController popViewControllerAnimated:NO];
-        [self dismiss];
-    };
-    vc.onErrorLoading = ^(NewAddUsersBlogViewController *viewController, NSError *error) {
-        DDLogError(@"There was an error loading blogs after sign in");
-        [self.navigationController popViewControllerAnimated:YES];
-        [self displayGenericErrorMessage:[error localizedDescription]];
-    };
-    
-    return vc;
-}
-
-- (void)showAddUsersBlogsForSelfHosted:(NSString *)xmlRPCUrl
-{
-    NewAddUsersBlogViewController *vc = [self addUsersBlogViewController:xmlRPCUrl];
-
-    [self.navigationController pushViewController:vc animated:YES];
-}
-
-- (void)showAddUsersBlogsForWPCom
-{
-    NewAddUsersBlogViewController *vc = [self addUsersBlogViewController:nil];
-
-    NSString *siteUrl = [_siteUrlText.text trim];
-    if ([siteUrl length] != 0) {
-        vc.siteUrl = siteUrl;
-    } else if ([_dotComSiteUrl length] != 0) {
-        vc.siteUrl = _dotComSiteUrl;
-    }
-
-    [self.navigationController pushViewController:vc animated:YES];
-}
-
 - (void)createBlogWithXmlRpc:(NSString *)xmlRPCUrl andBlogDetails:(NSDictionary *)blogDetails
 {
     NSParameterAssert(blogDetails != nil);
@@ -846,25 +787,6 @@ CGFloat const GeneralWalkthroughiOS7StatusBarOffset = 20.0;
         account = [WPAccount createOrUpdateSelfHostedAccountWithXmlrpc:xmlRPCUrl username:username andPassword:password];
     }
     return account;
-}
-
-- (void)synchronizeNewlyAddedBlog
-{
-    [SVProgressHUD setStatus:NSLocalizedString(@"Synchronizing Blog", nil)];
-    void (^successBlock)() = ^{
-        [[WordPressComApi sharedApi] syncPushNotificationInfo];
-        [SVProgressHUD dismiss];
-        [WPMobileStats trackEventForSelfHostedAndWPCom:StatsEventNUXFirstWalkthroughUserSignedInToBlogWithJetpack];
-        if ([_blog hasJetpack]) {
-            [self showJetpackAuthentication];
-        } else {
-            [self dismiss];
-        }
-    };
-    void (^failureBlock)(NSError*) = ^(NSError * error) {
-        [SVProgressHUD dismiss];
-    };
-    [_blog syncBlogWithSuccess:successBlock failure:failureBlock];
 }
 
 - (void)keyboardWillShow:(NSNotification *)notification
