@@ -104,12 +104,6 @@ CGFloat const EditPostViewControllerTextViewOffset = 10.0;
 - (void)viewDidLoad {
     WPFLogMethod();
     [super viewDidLoad];
-    
-    [self.apost.managedObjectContext performBlock:^{
-        self.apost = [self.apost createRevision];
-        [self.apost save];
-        [self refreshUIForCurrentPost];
-    }];
    
 #if USE_AUTOSAVES
     _backupPost = [NSEntityDescription insertNewObjectForEntityForName:[[aPost entity] name] inManagedObjectContext:[aPost managedObjectContext]];
@@ -227,6 +221,10 @@ CGFloat const EditPostViewControllerTextViewOffset = 10.0;
 - (void)viewWillAppear:(BOOL)animated {
     WPFLogMethod();
     [super viewWillAppear:animated];
+    
+    self.apost = [self.apost createRevision];
+    [self.apost save];
+    [self refreshUIForCurrentPost];
 
     if (IS_IOS7) {
         self.title = [self editorTitle];
@@ -247,7 +245,6 @@ CGFloat const EditPostViewControllerTextViewOffset = 10.0;
     animateWiggleIt.fromValue = @0.75f;
     animateWiggleIt.toValue = @1.f;
 	[tapToStartWritingLabel.layer addAnimation:animateWiggleIt forKey:@"placeholderWiggle"];
-
 }
 
 - (void)viewWillDisappear:(BOOL)animated {
