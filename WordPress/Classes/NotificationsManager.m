@@ -133,4 +133,14 @@
     }
 }
 
++ (void)handleNotificationForApplicationLaunch:(NSDictionary *)launchOptions {
+    NSDictionary *remoteNotif = [launchOptions objectForKey:UIApplicationLaunchOptionsRemoteNotificationKey];
+    if (remoteNotif) {
+        [WPMobileStats recordAppOpenedForEvent:StatsEventAppOpenedDueToPushNotification];
+        
+        DDLogInfo(@"Launched with a remote notification as parameter:  %@", remoteNotif);
+        [[WordPressAppDelegate sharedWordPressApplicationDelegate] showNotificationsTab];
+    }
+}
+
 @end

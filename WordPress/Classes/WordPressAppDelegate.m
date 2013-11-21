@@ -95,14 +95,7 @@ int ddLogLevel = LOG_LEVEL_INFO;
 
     // Push notifications
     [NotificationsManager registerForPushNotifications];
-    NSDictionary *remoteNotif = [launchOptions objectForKey:UIApplicationLaunchOptionsRemoteNotificationKey];
-    if (remoteNotif) {
-        [WPMobileStats recordAppOpenedForEvent:StatsEventAppOpenedDueToPushNotification];
-
-        DDLogInfo(@"Launched with a remote notification as parameter:  %@", remoteNotif);
-        [self showNotificationsTab];
-    }
-    
+    [NotificationsManager handleNotificationForApplicationLaunch:launchOptions];
     
 	//listener for XML-RPC errors
 	//in the future we could put the errors message in a dedicated screen that users can bring to front when samething went wrong, and can take a look at the error msg.
