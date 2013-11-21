@@ -66,7 +66,8 @@ CGFloat const WPTableViewSectionFooterViewBottomVerticalPadding = 8.0;
 
 + (CGSize)sizeForTitle:(NSString *)title andWidth:(CGFloat)width
 {
-    return [title sizeWithFont:[WPStyleGuide subtitleFont] constrainedToSize:CGSizeMake(width - 2 * WPTableViewSectionFooterViewStandardOffset, CGFLOAT_MAX) lineBreakMode:NSLineBreakByWordWrapping];
+    CGFloat titleWidth = width - 2 * WPTableViewSectionFooterViewStandardOffset;
+    return [title suggestedSizeWithFont:[WPStyleGuide subtitleFont] width:titleWidth];
 }
 
 

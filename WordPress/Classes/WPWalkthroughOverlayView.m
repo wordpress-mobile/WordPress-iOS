@@ -10,6 +10,7 @@
 #import "WPNUXPrimaryButton.h"
 #import "WPNUXSecondaryButton.h"
 #import "WPNUXUtility.h"
+#import "UILabel+SuggestSize.h"
 
 @interface WPWalkthroughOverlayView() {
     UIImageView *_logo;
@@ -138,20 +139,20 @@ CGFloat const WPWalkthroughGrayOverlayMaxLabelWidth = 289.0;
     _logo.frame = CGRectIntegral(CGRectMake(x, y, CGRectGetWidth(_logo.frame), CGRectGetHeight(_logo.frame)));
     
     // Layout Title
-    CGSize titleSize = [_title.text sizeWithFont:_title.font constrainedToSize:CGSizeMake(WPWalkthroughGrayOverlayMaxLabelWidth, CGFLOAT_MAX) lineBreakMode:NSLineBreakByWordWrapping];
+    CGSize titleSize = [_title suggestedSizeForWidth:WPWalkthroughGrayOverlayMaxLabelWidth];
     x = (_viewWidth - titleSize.width)/2.0;
     y = CGRectGetMaxY(_logo.frame) + 0.5*WPWalkthroughGrayOverlayStandardOffset;
     _title.frame = CGRectIntegral(CGRectMake(x, y, titleSize.width, titleSize.height));
 
     // Layout Description
-    CGSize labelSize = [_description.text sizeWithFont:_description.font constrainedToSize:CGSizeMake(WPWalkthroughGrayOverlayMaxLabelWidth, CGFLOAT_MAX) lineBreakMode:NSLineBreakByWordWrapping];
+    CGSize labelSize = [_description suggestedSizeForWidth:WPWalkthroughGrayOverlayMaxLabelWidth];
     x = (_viewWidth - labelSize.width)/2.0;
     y = CGRectGetMaxY(_title.frame) + 0.5*WPWalkthroughGrayOverlayStandardOffset;
     _description.frame = CGRectIntegral(CGRectMake(x, y, labelSize.width, labelSize.height));
     
 
     // Layout Bottom Label
-    CGSize bottomLabelSize = [_bottomLabel.text sizeWithFont:_bottomLabel.font];
+    CGSize bottomLabelSize = [_bottomLabel.text sizeWithAttributes:@{NSFontAttributeName:_bottomLabel.font}];
     x = (_viewWidth - bottomLabelSize.width)/2.0;
     y = _viewHeight - WPWalkthroughGrayOverlayBottomLabelOffset;
     _bottomLabel.frame = CGRectIntegral(CGRectMake(x, y, bottomLabelSize.width, bottomLabelSize.height));

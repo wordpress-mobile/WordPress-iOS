@@ -36,6 +36,12 @@
 #define COCOAPODS_VERSION_MINOR_CocoaLumberjack_Extensions 6
 #define COCOAPODS_VERSION_PATCH_CocoaLumberjack_Extensions 3
 
+// CrashlyticsLumberjack
+#define COCOAPODS_POD_AVAILABLE_CrashlyticsLumberjack
+#define COCOAPODS_VERSION_MAJOR_CrashlyticsLumberjack 1
+#define COCOAPODS_VERSION_MINOR_CrashlyticsLumberjack 0
+#define COCOAPODS_VERSION_PATCH_CrashlyticsLumberjack 0
+
 // DTCoreText
 #define COCOAPODS_POD_AVAILABLE_DTCoreText
 #define COCOAPODS_VERSION_MAJOR_DTCoreText 1
@@ -65,13 +71,6 @@
 #define COCOAPODS_VERSION_MAJOR_EmailChecker 0
 #define COCOAPODS_VERSION_MINOR_EmailChecker 1
 #define COCOAPODS_VERSION_PATCH_EmailChecker 0
-
-// JSONKit
-#define COCOAPODS_POD_AVAILABLE_JSONKit
-// This library does not follow semantic-versioning,
-// so we were not able to define version macros.
-// Please contact the author.
-// Version: 1.5pre.
 
 // MGImageUtilities
 #define COCOAPODS_POD_AVAILABLE_MGImageUtilities

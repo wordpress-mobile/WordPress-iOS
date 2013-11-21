@@ -90,7 +90,7 @@
         
         NSString *str = NSLocalizedString(@"Post to", @"Lable for the blog selector. Says 'Post to' followed by the blog's icon and its name.");
         UIFont *font = [UIFont fontWithName:@"OpenSans" size:15.0f];
-        CGSize size = [str sizeWithFont:font];
+        CGSize size = [str sizeWithAttributes:@{NSFontAttributeName:font}];
         UILabel *postToLabel = [[UILabel alloc] initWithFrame:CGRectMake(0.0f, 0.0, size.width, frame.size.height)];
         postToLabel.text = str;
         postToLabel.font = font;

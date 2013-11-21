@@ -16,6 +16,7 @@
 #import "WPWalkthroughTextField.h"
 #import "UIView+FormSheetHelpers.h"
 #import "WPNUXSecondaryButton.h"
+#import "UILabel+SuggestSize.h"
 
 @interface JetpackSettingsViewController () <UITextFieldDelegate, UIGestureRecognizerDelegate>
 
@@ -244,7 +245,7 @@ CGFloat const JetpackSignInButtonHeight = 41.0;
     _icon.frame = CGRectIntegral(CGRectMake(x, y, CGRectGetWidth(_icon.frame), CGRectGetHeight(_icon.frame)));
     
     // Layout Description
-    CGSize labelSize = [_description.text sizeWithFont:_description.font constrainedToSize:CGSizeMake(JetpackMaxTextWidth, CGFLOAT_MAX) lineBreakMode:NSLineBreakByWordWrapping];
+    CGSize labelSize = [_description suggestedSizeForWidth:JetpackMaxTextWidth];
     x = (_viewWidth - labelSize.width)/2.0;
     y = CGRectGetMaxY(_icon.frame) + 0.5*JetpackStandardOffset;
     _description.frame = CGRectIntegral(CGRectMake(x, y, labelSize.width, labelSize.height));
