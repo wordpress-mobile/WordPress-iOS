@@ -649,15 +649,7 @@ int ddLogLevel = LOG_LEVEL_INFO;
             alert.tag = 102;
             [alert show];
         }
-    } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
-        UIAlertView *errorAlert = [[UIAlertView alloc]
-                                   initWithTitle: [error localizedDescription]
-                                   message: [error localizedFailureReason]
-                                   delegate:nil
-                                   cancelButtonTitle:NSLocalizedString(@"OK", @"OK button label (shown in popups).")
-                                   otherButtonTitles:nil];
-        [errorAlert show];
-    }];
+    } failure:nil];
 	
 	NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
 	NSDate *theDate = [NSDate date];
