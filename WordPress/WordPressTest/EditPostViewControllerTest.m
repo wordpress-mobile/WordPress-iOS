@@ -31,7 +31,6 @@
                                @"url": @"http://test.blog/",
                                @"xmlrpc": @"http://test.blog/xmlrpc.php",
                                @"blogName": @"A test blog",
-                               @"isAdmin": @YES
                                };
     [[CoreDataTestHelper sharedHelper] registerDefaultContext];
     _account = [WPAccount createOrUpdateSelfHostedAccountWithXmlrpc:blogDict[@"xmlrpc"] username:@"test" andPassword:@"test"];

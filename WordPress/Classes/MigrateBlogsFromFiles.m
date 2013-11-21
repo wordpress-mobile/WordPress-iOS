@@ -51,7 +51,6 @@
 			[blog setValue:blogUrl forKey:@"url"];
 			[blog setValue:[blogInfo valueForKey:@"username"] forKey:@"username"];
 			[blog setValue:[blogInfo valueForKey:@"xmlrpc"] forKey:@"xmlrpc"];
-			[blog setValue:[NSNumber numberWithBool:YES] forKey:@"isAdmin"];
 			if ([[blogInfo valueForKey:@"GeolocationSetting"] isKindOfClass:[NSString class]]) {
 				BOOL geo = [[blogInfo valueForKey:@"GeolocationSetting"] isEqualToString:@"YES"];
 				[blog setValue:[NSNumber numberWithBool:geo] forKey:@"geolocationEnabled"];

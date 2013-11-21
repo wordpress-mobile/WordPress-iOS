@@ -19,7 +19,7 @@
 @property (nonatomic, strong) NSNumber *blogID;
 @property (nonatomic, strong) NSString *blogName, *xmlrpc, *apiKey;
 @property (weak, readonly) NSString *blavatarUrl;
-@property (nonatomic, strong) NSNumber *isAdmin, *hasOlderPosts, *hasOlderPages;
+@property (nonatomic, strong) NSNumber *hasOlderPosts, *hasOlderPages;
 @property (nonatomic, strong) NSSet *posts;
 @property (nonatomic, strong) NSSet *categories;
 @property (nonatomic, strong) NSSet *comments;

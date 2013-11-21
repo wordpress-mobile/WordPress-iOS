@@ -79,9 +79,7 @@
         <attribute name="permaLink" optional="YES" attributeType="String">
             <userInfo/>
         </attribute>
-        <attribute name="post_thumbnail" optional="YES" attributeType="Integer 32" syncable="YES">
-            <userInfo/>
-        </attribute>
+        <attribute name="post_thumbnail" optional="YES" attributeType="Integer 32" syncable="YES"/>
         <attribute name="postID" optional="YES" attributeType="Integer 64" defaultValueString="-1">
             <userInfo/>
         </attribute>
@@ -118,12 +116,7 @@
         <attribute name="hasOlderPosts" transient="YES" attributeType="Boolean" defaultValueString="YES">
             <userInfo/>
         </attribute>
-        <attribute name="isActivated" optional="YES" attributeType="Boolean" syncable="YES">
-            <userInfo/>
-        </attribute>
-        <attribute name="isAdmin" attributeType="Boolean" defaultValueString="NO">
-            <userInfo/>
-        </attribute>
+        <attribute name="isActivated" optional="YES" attributeType="Boolean" syncable="YES"/>
         <attribute name="lastCommentsSync" optional="YES" attributeType="Date">
             <userInfo/>
         </attribute>
@@ -332,18 +325,18 @@
     </entity>
     <fetchRequest name="UnreadNotes" entity="Note" predicateString="unread == 1"/>
     <elements>
-        <element name="AbstractComment" positionX="538" positionY="9" width="128" height="240"/>
-        <element name="Page" positionX="45" positionY="540" width="128" height="60"/>
-        <element name="Media" positionX="9" positionY="27" width="128" height="315"/>
-        <element name="BasePost" positionX="286" positionY="418" width="128" height="240"/>
-        <element name="Blog" positionX="279" positionY="18" width="128" height="420"/>
-        <element name="ReaderComment" positionX="160" positionY="192" width="128" height="120"/>
-        <element name="Post" positionX="520" positionY="504" width="128" height="150"/>
-        <element name="Note" positionX="160" positionY="192" width="128" height="150"/>
-        <element name="Comment" positionX="160" positionY="192" width="128" height="75"/>
-        <element name="ReaderPost" positionX="160" positionY="192" width="128" height="405"/>
-        <element name="Account" positionX="160" positionY="192" width="128" height="120"/>
-        <element name="Category" positionX="558" positionY="315" width="128" height="120"/>
-        <element name="AbstractPost" positionX="160" positionY="192" width="128" height="120"/>
+        <element name="AbstractComment" positionX="0" positionY="0" width="0" height="0"/>
+        <element name="AbstractPost" positionX="0" positionY="0" width="0" height="0"/>
+        <element name="Account" positionX="0" positionY="0" width="0" height="0"/>
+        <element name="BasePost" positionX="0" positionY="0" width="0" height="0"/>
+        <element name="Blog" positionX="0" positionY="0" width="0" height="0"/>
+        <element name="Category" positionX="0" positionY="0" width="0" height="0"/>
+        <element name="Comment" positionX="0" positionY="0" width="0" height="0"/>
+        <element name="Media" positionX="0" positionY="0" width="0" height="0"/>
+        <element name="Note" positionX="0" positionY="0" width="0" height="0"/>
+        <element name="Page" positionX="0" positionY="0" width="0" height="0"/>
+        <element name="Post" positionX="0" positionY="0" width="0" height="0"/>
+        <element name="ReaderComment" positionX="0" positionY="0" width="0" height="0"/>
+        <element name="ReaderPost" positionX="0" positionY="0" width="0" height="0"/>
     </elements>
 </model>

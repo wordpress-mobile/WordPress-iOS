@@ -105,7 +105,7 @@ extern NSString * const WPAccountDefaultWordPressComAccountChangedNotification;
  
  If a there is an existing blog with the same `url`, it is returned as-is.
  
- @param blogInfo a dictionary containing `url`, `blogName`, `xmlrpc`, `blogid`, and `isAdmin`; as returned by `wp.getUsersBlogs`
+ @param blogInfo a dictionary containing `url`, `blogName`, `xmlrpc`, and `blogid`; as returned by `wp.getUsersBlogs`
  @return the newly created blog
  */
 - (Blog *)findOrCreateBlogFromDictionary:(NSDictionary *)blogInfo withContext:(NSManagedObjectContext*)context;

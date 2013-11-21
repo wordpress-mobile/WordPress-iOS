@@ -159,7 +159,6 @@ NSString * const WPAccountDefaultWordPressComAccountChangedNotification = @"WPAc
     blog.blogID = [NSNumber numberWithInt:[[blogInfo objectForKey:@"blogid"] intValue]];
     blog.blogName = [[blogInfo objectForKey:@"blogName"] stringByDecodingXMLCharacters];
     blog.xmlrpc = [blogInfo objectForKey:@"xmlrpc"];
-    blog.isAdmin = [NSNumber numberWithInt:[[blogInfo objectForKey:@"isAdmin"] intValue]];
 
     return blog;
 }
