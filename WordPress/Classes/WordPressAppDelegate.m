@@ -89,9 +89,9 @@ NSInteger const UpdateCheckAlertViewTag = 102;
     [self.window setBounds:bounds]; // for good measure.
     
     self.window.backgroundColor = [UIColor blackColor];
-    self.window.rootViewController = [self createTabBarController];
+    self.window.rootViewController = self.tabBarController;
     [self.window makeKeyAndVisible];
-    
+
     [self showWelcomeScreenIfNeeded];
 
     // Push notifications
@@ -281,11 +281,14 @@ NSInteger const UpdateCheckAlertViewTag = 102;
 
 #pragma mark - Tab bar setup
 
-- (UITabBarController *)createTabBarController {
-    UITabBarController *tabBarController = [[UITabBarController alloc] init];
+- (UITabBarController *)tabBarController {
+    if (_tabBarController) {
+        return _tabBarController;
+    }
+    _tabBarController = [[UITabBarController alloc] init];
     
-    if ([tabBarController.tabBar respondsToSelector:@selector(setTranslucent:)]) {
-        [tabBarController.tabBar setTranslucent:NO];
+    if ([_tabBarController.tabBar respondsToSelector:@selector(setTranslucent:)]) {
+        [_tabBarController.tabBar setTranslucent:NO];
     }
     
     self.readerPostsViewController = [[ReaderPostsViewController alloc] init];
@@ -305,11 +308,11 @@ NSInteger const UpdateCheckAlertViewTag = 102;
     blogListNavigationController.navigationBar.translucent = NO;
     blogListNavigationController.tabBarItem.image = [UIImage imageNamed:@"icon-tab-blogs"];
     blogListViewController.title = @"My Blogs";
-    tabBarController.viewControllers = [NSArray arrayWithObjects:blogListNavigationController, readerNavigationController, notificationsNavigationController, nil];
+    _tabBarController.viewControllers = [NSArray arrayWithObjects:blogListNavigationController, readerNavigationController, notificationsNavigationController, nil];
     
-    [tabBarController setSelectedViewController:readerNavigationController];
+    [_tabBarController setSelectedViewController:readerNavigationController];
     
-    return tabBarController;
+    return _tabBarController;
 }
 
 - (void)showNotificationsTab {

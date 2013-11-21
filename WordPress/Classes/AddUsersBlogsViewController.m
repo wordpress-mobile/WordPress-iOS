@@ -28,7 +28,6 @@
 @end
 
 @implementation AddUsersBlogsViewController {
-    UIAlertView *failureAlertView;
     BOOL _hideSignInButton;
     WPAccount *_account;
 }
@@ -43,7 +42,6 @@
 
 - (void)dealloc {
     [[NSNotificationCenter defaultCenter] removeObserver:self];
-    failureAlertView.delegate = nil;
 }
 
 - (AddUsersBlogsViewController *)initWithAccount:(WPAccount *)account {
@@ -399,15 +397,7 @@
                 [self hideNoBlogsView];
                 hasCompletedGetUsersBlogs = YES; 
                 [self.tableView reloadData];
-                if (failureAlertView == nil) {
-                    failureAlertView = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"Sorry, can't log in", @"")
-                                                                  message:[error localizedDescription]
-                                                                 delegate:self
-                                                        cancelButtonTitle:NSLocalizedString(@"Need Help?", @"")
-                                                        otherButtonTitles:NSLocalizedString(@"OK", @""), nil];
-                    failureAlertView.tag = 1;
-                    [failureAlertView show];
-                }
+                [WPError showAlertWithTitle:NSLocalizedString(@"Sorry, can't log in", @"") message:[error localizedDescription]];
             }];
 }
 
@@ -496,29 +486,6 @@
     CreateWPComBlogViewController *viewController = [[CreateWPComBlogViewController alloc] initWithStyle:UITableViewStyleGrouped];
     viewController.delegate = self;
     [self.navigationController pushViewController:viewController animated:YES];
-}
-
-#pragma mark -
-#pragma mark UIAlertViewDelegate
-
-- (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex {
-    if (buttonIndex == 0) {
-        SupportViewController *supportViewController = [[SupportViewController alloc] init];
-
-        if (IS_IPAD) {
-            [self.navigationController pushViewController:supportViewController animated:YES];
-        } else {
-            UINavigationController *navController = [[UINavigationController alloc] initWithRootViewController:supportViewController];
-            navController.modalPresentationStyle = UIModalPresentationFormSheet;
-            navController.modalTransitionStyle = UIModalTransitionStyleCoverVertical;
-            navController.navigationBar.translucent = NO;
-            [self presentViewController:navController animated:YES completion:nil];
-        }
-    }
-
-    if (failureAlertView == alertView) {
-        failureAlertView = nil;
-    }
 }
 
 - (IBAction)saveSelectedBlogs:(id)sender {

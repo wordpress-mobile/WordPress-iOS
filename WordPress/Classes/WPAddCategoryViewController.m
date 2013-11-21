@@ -106,7 +106,7 @@
     if (!catName ||[catName length] == 0) {
         NSString *title = NSLocalizedString(@"Category title missing.", @"Error popup title to indicate that there was no category title filled in.");
         NSString *message = NSLocalizedString(@"Title for a category is mandatory.", @"Error popup message to indicate that there was no category title filled in.");
-        [WPError showAlertWithTitle:title message:message];
+        [WPError showAlertWithTitle:title message:message withSupportButton:NO];
 
         return;
     }
@@ -114,7 +114,7 @@
     if ([Category existsName:catName forBlog:self.blog withParentId:parentCat.categoryID]) {
         NSString *title = NSLocalizedString(@"Category name already exists.", @"Error popup title to show that a category already exists.");
         NSString *message = NSLocalizedString(@"There is another category with that name.", @"Error popup message to show that a category already exists.");
-        [WPError showAlertWithTitle:title message:message];
+        [WPError showAlertWithTitle:title message:message withSupportButton:NO];
         
         return;
     }

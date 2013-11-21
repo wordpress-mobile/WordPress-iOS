@@ -33,7 +33,11 @@ NSInteger const SupportButtonIndex = 0;
 }
 
 
-+ (void)showAlertWithError:(NSError *)error title:(NSString *)title {
++ (void)showNetworkingAlertWithError:(NSError *)error {
+    [self showNetworkingAlertWithError:error title:nil];
+}
+
++ (void)showNetworkingAlertWithError:(NSError *)error title:(NSString *)title {
     NSString *message = nil;
     NSString *customTitle = nil;
 
@@ -109,26 +113,7 @@ NSInteger const SupportButtonIndex = 0;
     [self showAlertWithTitle:title message:message];
 }
 
-+ (void)showAlertWithError:(NSError *)error {
-    [self showAlertWithError:error title:nil];
-}
-
-+ (void)showAlertWithTitle:(NSString *)title message:(NSString *)message {
-	DDLogInfo(@"Showing alert with title: %@", message);
-    UIAlertView *alert = [[UIAlertView alloc] initWithTitle:title
-                                                    message:message
-                                                   delegate:[WPError internalInstance]
-                                          cancelButtonTitle:NSLocalizedString(@"Need Help?", @"'Need help?' button label, links off to the WP for iOS FAQ.")
-                                          otherButtonTitles:NSLocalizedString(@"OK", @"OK button label."), nil];
-    [alert show];
-}
-
 + (void)showXMLRPCErrorAlert:(NSError *)error {
-    if ([WPError internalInstance].alertShowing) {
-        return;
-    }
-    [WPError internalInstance].alertShowing = YES;
-    
     NSString *cleanedErrorMsg = [error localizedDescription];
     
     //org.wordpress.iphone --> XML-RPC errors
@@ -149,12 +134,33 @@ NSInteger const SupportButtonIndex = 0;
 	[self showAlertWithTitle:NSLocalizedString(@"Error", @"Generic popup title for any type of error.") message:cleanedErrorMsg];
 }
 
++ (void)showAlertWithTitle:(NSString *)title message:(NSString *)message {
+    [self showAlertWithTitle:title message:message withSupportButton:YES];
+}
+
++ (void)showAlertWithTitle:(NSString *)title message:(NSString *)message withSupportButton:(BOOL)showSupport {
+    if ([WPError internalInstance].alertShowing) {
+        return;
+    }
+    [WPError internalInstance].alertShowing = YES;
+    
+    DDLogInfo(@"Showing alert with title: %@", message);
+    UIAlertView *alert = [[UIAlertView alloc] initWithTitle:title
+                                                    message:message
+                                                   delegate:[WPError internalInstance]
+                                          cancelButtonTitle:(showSupport ? NSLocalizedString(@"Need Help?", @"'Need help?' button label, links off to the WP for iOS FAQ.") : nil)
+                                          otherButtonTitles:NSLocalizedString(@"OK", @"OK button label."), nil];
+    [alert show];
+}
+
+
 #pragma mark - UIAlertViewDelegate
 
 - (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex {
     if (buttonIndex == SupportButtonIndex) {
         [SupportViewController showFromTabBar];
     }
+    self.alertShowing = NO;
 }
 
 @end

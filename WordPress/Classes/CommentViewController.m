@@ -510,11 +510,8 @@ CGFloat const CommentViewUnapproveButtonTag = 701;
 }
 
 - (void)showSyncInProgressAlert {
+    [WPError showAlertWithTitle:NSLocalizedString(@"Info", @"Info alert title") message:NSLocalizedString(@"The blog is syncing with the server. Please try later.", @"") withSupportButton:NO];
 	//the blog is using the network connection and cannot be stoped, show a message to the user
-	UIAlertView *blogIsCurrentlyBusy = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"Info", @"Info alert title")
-																  message:NSLocalizedString(@"The blog is syncing with the server. Please try later.", @"")
-																 delegate:nil cancelButtonTitle:NSLocalizedString(@"OK", @"") otherButtonTitles:nil];
-	[blogIsCurrentlyBusy show];
 }
 
 #pragma mark -

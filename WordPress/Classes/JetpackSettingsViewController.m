@@ -324,7 +324,7 @@ CGFloat const JetpackSignInButtonHeight = 41.0;
                            } failure:^(NSError *error) {
                                [SVProgressHUD dismiss];
                                [self setAuthenticating:NO];
-                               [WPError showAlertWithError:error];
+                               [WPError showNetworkingAlertWithError:error];
                            }];
 }
 
@@ -483,7 +483,7 @@ CGFloat const JetpackSignInButtonHeight = 41.0;
         }
     } failure:^(NSError *error) {
         [SVProgressHUD dismiss];
-        [WPError showAlertWithError:error];
+        [WPError showNetworkingAlertWithError:error];
     }];
 }
 

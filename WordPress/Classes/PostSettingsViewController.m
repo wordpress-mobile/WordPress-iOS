@@ -1792,7 +1792,7 @@
         }
         [imageMedia save];
     } failure:^(NSError *error) {
-        [WPError showAlertWithError:error title:NSLocalizedString(@"Upload failed", @"")];
+        [WPError showNetworkingAlertWithError:error title:NSLocalizedString(@"Upload failed", @"")];
     }];
 }
 

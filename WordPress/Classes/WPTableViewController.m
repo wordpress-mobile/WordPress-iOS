@@ -616,14 +616,13 @@ CGFloat const WPTableViewTopMargin = 40;
                 } else if (error.code == 425 && editSiteViewController == nil) {
                     [self promptForPasswordWithMessage:[error localizedDescription]];
                 } else if (userInteraction) {
-                    [WPError showAlertWithError:error title:NSLocalizedString(@"Couldn't sync", @"")];
+                    [WPError showNetworkingAlertWithError:error title:NSLocalizedString(@"Couldn't sync", @"")];
                 }
             } else {
-                [WPError showAlertWithError:error];
+                [WPError showNetworkingAlertWithError:error];
             }
         } else {
-          // For non-blog tables (notifications), just show the error for now
-          [WPError showAlertWithError:error];
+            [WPError showNetworkingAlertWithError:error];
         }
     }];
 }
@@ -636,12 +635,7 @@ CGFloat const WPTableViewTopMargin = 40;
     if (message == nil) {
         message = NSLocalizedString(@"The username or password stored in the app may be out of date. Please re-enter your password in the settings and try again.", @"");
     }
-	UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"Couldn't Connect", @"")
-														message:message
-													   delegate:nil
-											  cancelButtonTitle:nil
-											  otherButtonTitles:NSLocalizedString(@"OK", @""), nil];
-	[alertView show];
+    [WPError showAlertWithTitle:NSLocalizedString(@"Couldn't Connect", @"") message:message];
 	
 	// bad login/pass combination
 	editSiteViewController = [[EditSiteViewController alloc] initWithNibName:nil bundle:nil];

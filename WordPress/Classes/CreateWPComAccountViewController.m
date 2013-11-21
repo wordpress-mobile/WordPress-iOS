@@ -329,8 +329,7 @@ CGSize const CreateAccountHeaderSize = { 320.0, 70.0 };
 - (void)displayCreationErrorMessage:(NSError *)error
 {
     NSString *errorMessage = [error.userInfo objectForKey:WordPressComApiErrorMessageKey];
-    UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"Error", nil) message:errorMessage delegate:nil cancelButtonTitle:NSLocalizedString(@"OK", nil) otherButtonTitles:nil, nil];
-    [alertView show];
+    [WPError showAlertWithTitle:NSLocalizedString(@"Error", nil) message:errorMessage];
 }
 
 - (void)createAccount
