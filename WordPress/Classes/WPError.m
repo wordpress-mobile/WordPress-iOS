@@ -19,6 +19,8 @@ NSInteger const SupportButtonIndex = 0;
 
 @interface WPError () <UIAlertViewDelegate>
 @property (nonatomic, assign) BOOL alertShowing;
+@property (nonatomic, copy) void (^okPressedBlock)();
+
 @end
 
 @implementation WPError
@@ -135,10 +137,14 @@ NSInteger const SupportButtonIndex = 0;
 }
 
 + (void)showAlertWithTitle:(NSString *)title message:(NSString *)message {
-    [self showAlertWithTitle:title message:message withSupportButton:YES];
+    [self showAlertWithTitle:title message:message withSupportButton:YES okPressedBlock:nil];
 }
 
 + (void)showAlertWithTitle:(NSString *)title message:(NSString *)message withSupportButton:(BOOL)showSupport {
+    [self showAlertWithTitle:title message:message withSupportButton:showSupport okPressedBlock:nil];
+}
+
++ (void)showAlertWithTitle:(NSString *)title message:(NSString *)message withSupportButton:(BOOL)showSupport okPressedBlock:(void (^)(UIAlertView *))okBlock {
     if ([WPError internalInstance].alertShowing) {
         return;
     }
@@ -151,16 +157,20 @@ NSInteger const SupportButtonIndex = 0;
                                           cancelButtonTitle:(showSupport ? NSLocalizedString(@"Need Help?", @"'Need help?' button label, links off to the WP for iOS FAQ.") : nil)
                                           otherButtonTitles:NSLocalizedString(@"OK", @"OK button label."), nil];
     [alert show];
+    [WPError internalInstance].okPressedBlock = okBlock;
 }
 
 
 #pragma mark - UIAlertViewDelegate
 
 - (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex {
-    if (buttonIndex == SupportButtonIndex) {
+    if (alertView.cancelButtonIndex == buttonIndex) {
         [SupportViewController showFromTabBar];
+    } else if (_okPressedBlock) {
+        _okPressedBlock(alertView);
+        _okPressedBlock = nil;
     }
-    self.alertShowing = NO;
+    _alertShowing = NO;
 }
 
 @end

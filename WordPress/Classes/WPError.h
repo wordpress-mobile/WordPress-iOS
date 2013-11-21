@@ -68,4 +68,21 @@
  */
 + (void)showAlertWithTitle:(NSString *)title message:(NSString *)message withSupportButton:(BOOL)showSupport;
 
+/**
+ Show a general alert with a custom title and message.
+ Supply a block to execute custom logic when the OK button is pressed
+ 
+ @discussion The buttons provided are localized: "OK" and optionally "Need help?"
+             "Need help?" opens the SupportViewController
+             "OK" simply dismisses the alert.
+ 
+ @param title for the alert
+ @param message for the alert
+ @param showSupport YES shows the Need Help button and NO does not.
+ @param okPressedBlock a block to execute if the OK button is pressed
+ */
++ (void)showAlertWithTitle:(NSString *)title message:(NSString *)message
+         withSupportButton:(BOOL)showSupport okPressedBlock:(void (^)(UIAlertView *alertView))okBlock;
+
+
 @end
