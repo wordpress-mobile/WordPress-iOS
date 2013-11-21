@@ -85,7 +85,21 @@ NSString *const WordPressComApiErrorMessageKey = @"WordPressComApiErrorMessageKe
 }
 
 + (WordPressComApi *)sharedApi {
+    DDLogWarn(@"Called obsolete [WordPressComApi sharedApi]");
     return [[WPAccount defaultWordPressComAccount] restApi];
+}
+
++ (WordPressComApi *)anonymousApi {
+    static WordPressComApi *_anonymousApi = nil;
+    static dispatch_once_t oncePredicate;
+    dispatch_once(&oncePredicate, ^{
+        DDLogVerbose(@"Initializing anonymous API");
+        _anonymousApi = [[self alloc] initWithBaseURL:[NSURL URLWithString:WordPressComApiClientEndpointURL] ];
+        [_anonymousApi registerHTTPOperationClass:[WPJSONRequestOperation class]];
+        [_anonymousApi setDefaultHeader:@"User-Agent" value:[[WordPressAppDelegate sharedWordPressApplicationDelegate] applicationUserAgent]];
+    });
+
+    return _anonymousApi;
 }
 
 - (id)initWithOAuthToken:(NSString *)authToken {

@@ -24,6 +24,9 @@
 #import "WPWebViewController.h"
 #import "WPStyleGuide.h"
 #import "UILabel+SuggestSize.h"
+#import "WPAccount.h"
+#import "Blog.h"
+#import "WordPressComOAuthClient.h"
 
 @interface CreateAccountAndBlogViewController ()<
     UITextFieldDelegate,
@@ -53,6 +56,8 @@
     CGFloat _viewHeight;
     
     NSDictionary *_currentLanguage;
+
+    WPAccount *_account;
 }
 
 @end
@@ -631,66 +636,81 @@ CGFloat const CreateAccountAndBlogButtonHeight = 41.0;
             [operation didSucceed];
         };
         void (^createUserFailure)(NSError *) = ^(NSError *error) {
+            DDLogError(@"Failed creating user: %@", error);
             [operation didFail];
             [SVProgressHUD dismiss];
             [self displayRemoteError:error];
         };
-        
-        [[WordPressComApi sharedApi] createWPComAccountWithEmail:_emailField.text
-                                                     andUsername:_usernameField.text
-                                                     andPassword:_passwordField.text
-                                                         success:createUserSuccess
-                                                         failure:createUserFailure];
-        
+
+        [[WordPressComApi anonymousApi] createWPComAccountWithEmail:_emailField.text
+                                                        andUsername:_usernameField.text
+                                                        andPassword:_passwordField.text
+                                                            success:createUserSuccess
+                                                            failure:createUserFailure];
+
     }];
     WPAsyncBlockOperation *userSignIn = [WPAsyncBlockOperation operationWithBlock:^(WPAsyncBlockOperation *operation){
-        void (^signInSuccess)(void) = ^{
+        void (^signInSuccess)(NSString *authToken) = ^(NSString *authToken){
+            _account = [WPAccount createOrUpdateWordPressComAccountWithUsername:_usernameField.text password:_passwordField.text authToken:authToken];
+            if (![WPAccount defaultWordPressComAccount]) {
+                [WPAccount setDefaultWordPressComAccount:_account];
+            }
             [operation didSucceed];
         };
         void (^signInFailure)(NSError *) = ^(NSError *error) {
+            DDLogError(@"Failed signing in user: %@", error);
             // We've hit a strange failure at this point, the user has been created successfully but for some reason
             // we are unable to sign in and proceed
             [operation didFail];
             [SVProgressHUD dismiss];
             [self displayRemoteError:error];
         };
-        
-        [[WordPressComApi sharedApi] signInWithUsername:_usernameField.text
-                                               password:_passwordField.text
-                                                success:signInSuccess
-                                                failure:signInFailure];
+
+
+        WordPressComOAuthClient *client = [WordPressComOAuthClient client];
+        [client authenticateWithUsername:_usernameField.text
+                                password:_passwordField.text
+                                 success:signInSuccess
+                                 failure:signInFailure];
     }];
-    
+
     WPAsyncBlockOperation *blogCreation = [WPAsyncBlockOperation operationWithBlock:^(WPAsyncBlockOperation *operation){
         void (^createBlogSuccess)(id) = ^(id responseObject){
             [WPMobileStats trackEventForSelfHostedAndWPCom:StatsEventNUXCreateAccountCreatedAccount];
             [operation didSucceed];
-            [SVProgressHUD dismiss];
-            if (self.onCreatedUser) {
-                self.onCreatedUser(_usernameField.text, _passwordField.text);
+
+            NSMutableDictionary *blogOptions = [[responseObject dictionaryForKey:@"blog_details"] mutableCopy];
+            if ([blogOptions objectForKey:@"blogname"]) {
+                [blogOptions setObject:[blogOptions objectForKey:@"blogname"] forKey:@"blogName"];
+                [blogOptions removeObjectForKey:@"blogname"];
             }
+            Blog *blog = [_account findOrCreateBlogFromDictionary:blogOptions withContext:_account.managedObjectContext];
+            [blog dataSave];
+            [blog syncBlogWithSuccess:nil failure:nil];
+            [SVProgressHUD dismiss];
+            [self dismissViewControllerAnimated:YES completion:nil];
         };
         void (^createBlogFailure)(NSError *error) = ^(NSError *error) {
+            DDLogError(@"Failed creating blog: %@", error);
             [SVProgressHUD dismiss];
             [operation didFail];
             [self displayRemoteError:error];
         };
-        
-        NSNumber *languageId = [_currentLanguage objectForKey:@"lang_id"];
-        [[WordPressComApi sharedApi] createWPComBlogWithUrl:[self getSiteAddressWithoutWordPressDotCom]
-                                               andBlogTitle:[self generateSiteTitleFromUsername:_usernameField.text]
-                                              andLanguageId:languageId
-                                          andBlogVisibility:WordPressComApiBlogVisibilityPublic
-                                                    success:createBlogSuccess
-                                                    failure:createBlogFailure];
 
+        NSNumber *languageId = [_currentLanguage objectForKey:@"lang_id"];
+        [[_account restApi] createWPComBlogWithUrl:[self getSiteAddressWithoutWordPressDotCom]
+                                      andBlogTitle:[self generateSiteTitleFromUsername:_usernameField.text]
+                                     andLanguageId:languageId
+                                 andBlogVisibility:WordPressComApiBlogVisibilityPublic
+                                           success:createBlogSuccess
+                                           failure:createBlogFailure];
     }];
-    
+
     [blogCreation addDependency:userSignIn];
     [userSignIn addDependency:userCreation];
-    
+
     [SVProgressHUD showWithStatus:NSLocalizedString(@"Creating User and Site", nil) maskType:SVProgressHUDMaskTypeBlack];
-    
+
     [_operationQueue addOperation:userCreation];
     [_operationQueue addOperation:userSignIn];
     [_operationQueue addOperation:blogCreation];

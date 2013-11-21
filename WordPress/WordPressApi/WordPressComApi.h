@@ -39,6 +39,12 @@ extern NSString *const WordPressComApiErrorMessageKey;
 @property (nonatomic,readonly,strong) NSString *password;
 
 + (WordPressComApi *)sharedApi DEPRECATED_MSG_ATTRIBUTE("Use [[WPAccount defaultWordPressComAccount] restApi] instead");
+/**
+ Returns an API without an associated user
+ 
+ Use this only for things that don't require an account, like signup or logged out reader
+ */
++ (WordPressComApi *)anonymousApi;
 - (id)initWithOAuthToken:(NSString *)authToken;
 
 ///-------------------------

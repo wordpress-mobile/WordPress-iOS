@@ -475,12 +475,6 @@ CGFloat const GeneralWalkthroughiOS7StatusBarOffset = 20.0;
 - (void)showCreateAccountView
 {
     CreateAccountAndBlogViewController *createAccountViewController = [[CreateAccountAndBlogViewController alloc] init];
-    createAccountViewController.onCreatedUser = ^(NSString *username, NSString *password) {
-        _usernameText.text = username;
-        _passwordText.text = password;
-        _userIsDotCom = YES;
-        [self.navigationController popViewControllerAnimated:NO];
-    };
     [self.navigationController pushViewController:createAccountViewController animated:YES];
 }
 
