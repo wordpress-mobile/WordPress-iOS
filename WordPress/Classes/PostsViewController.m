@@ -199,11 +199,10 @@
 - (void)deletePostAtIndexPath:(NSIndexPath *)indexPath{
     Post *post = [self.resultsController objectAtIndexPath:indexPath];
     [post deletePostWithSuccess:nil failure:^(NSError *error) {
-        NSDictionary *errInfo = [NSDictionary dictionaryWithObjectsAndKeys:self.blog, @"currentBlog", nil];
 		if([error code] == 403) {
 			[self promptForPassword];
 		} else {
-			[[NSNotificationCenter defaultCenter] postNotificationName:kXML_RPC_ERROR_OCCURS object:error userInfo:errInfo];
+            [[WordPressAppDelegate sharedWordPressApplicationDelegate] showXMLRPCErrorAlert:error];
 		}
         [self syncItems];
     }];

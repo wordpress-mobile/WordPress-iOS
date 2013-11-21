@@ -96,17 +96,7 @@ int ddLogLevel = LOG_LEVEL_INFO;
     // Push notifications
     [NotificationsManager registerForPushNotifications];
     [NotificationsManager handleNotificationForApplicationLaunch:launchOptions];
-    
-	//listener for XML-RPC errors
-	//in the future we could put the errors message in a dedicated screen that users can bring to front when samething went wrong, and can take a look at the error msg.
-	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(showNotificationErrorAlert:) name:kXML_RPC_ERROR_OCCURS object:nil];
-	
-	// another notification message came from comments --> CommentUploadFailed
-	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(showNotificationErrorAlert:) name:@"CommentUploadFailed" object:nil];
 
-    // another notification message came from WPWebViewController
-	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(showNotificationErrorAlert:) name:@"OpenWebPageFailed" object:nil];
-    
     // Deferred tasks to speed up app launch
     dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_BACKGROUND, 0), ^{
         [self changeCurrentDirectory];
@@ -338,34 +328,28 @@ int ddLogLevel = LOG_LEVEL_INFO;
     [alert show];
 }
 
-- (void)showNotificationErrorAlert:(NSNotification *)notification {
-	NSString *cleanedErrorMsg = nil;
+- (void)showXMLRPCErrorAlert:(NSError *)error {
+	if ([self isAlertRunning]) {
+        return;
+    }
+	self.alertRunning = YES;
+    
+    NSString *cleanedErrorMsg = [error localizedDescription];
+    
+    //org.wordpress.iphone --> XML-RPC errors
+    if ([error.domain isEqualToString:@"org.wordpress.iphone"] && error.code == 401){
+        cleanedErrorMsg = NSLocalizedString(@"Sorry, you cannot access this feature. Please check your User Role on this blog.", @"");
+    }
+    
+    // ignore HTTP auth canceled errors
+    if ([error.domain isEqual:NSURLErrorDomain] && error.code == NSURLErrorUserCancelledAuthentication) {
+        self.alertRunning = NO;
+        return;
+    }
 	
-	if([self isAlertRunning] == YES) return; //another alert is already shown 
-	[self setAlertRunning:YES];
-	
-	if([[notification object] isKindOfClass:[NSError class]]) {
-		
-		NSError *err  = (NSError *)[notification object];
-		cleanedErrorMsg = [err localizedDescription];
-		
-		//org.wordpress.iphone --> XML-RPC errors
-		if ([[err domain] isEqualToString:@"org.wordpress.iphone"]){
-			if([err code] == 401)
-				cleanedErrorMsg = NSLocalizedString(@"Sorry, you cannot access this feature. Please check your User Role on this blog.", @"");
-		}
-        
-        // ignore HTTP auth canceled errors
-        if ([err.domain isEqual:NSURLErrorDomain] && err.code == NSURLErrorUserCancelledAuthentication) {
-            [self setAlertRunning:NO];
-            return;
-        }
-	} else { //the notification obj is a String
-		cleanedErrorMsg  = (NSString *)[notification object];
-	}
-	
-	if([cleanedErrorMsg rangeOfString:@"NSXMLParserErrorDomain"].location != NSNotFound )
+	if ([cleanedErrorMsg rangeOfString:@"NSXMLParserErrorDomain"].location != NSNotFound) {
 		cleanedErrorMsg = NSLocalizedString(@"The app can't recognize the server response. Please, check the configuration of your blog.", @"");
+    }
 	
 	[self showAlertWithTitle:NSLocalizedString(@"Error", @"Generic popup title for any type of error.") message:cleanedErrorMsg];
 }

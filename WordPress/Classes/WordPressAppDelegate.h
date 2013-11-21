@@ -36,7 +36,7 @@
 /// @name Global Alerts
 ///--------------------
 - (void)showAlertWithTitle:(NSString *)title message:(NSString *)message;
-- (void)showNotificationErrorAlert:(NSNotification *)notification;
+- (void)showXMLRPCErrorAlert:(NSError *)error;
 
 
 ///---------------------------

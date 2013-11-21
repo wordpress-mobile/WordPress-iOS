@@ -441,8 +441,9 @@ static NSString *_lastAuthedName = nil;
 
 - (void)webView:(UIWebView *)webView didFailLoadWithError:(NSError *)error {
     DDLogInfo(@"%@ %@: %@", self, NSStringFromSelector(_cmd), error);
-    if ( ([error code] != -999) && [error code] != 102 )
-        [[NSNotificationCenter defaultCenter] postNotificationName:@"OpenWebPageFailed" object:error userInfo:nil];
+    if (([error code] != -999) && [error code] != 102) {
+        [[WordPressAppDelegate sharedWordPressApplicationDelegate] showAlertWithTitle:NSLocalizedString(@"Error", nil) message:error.localizedDescription];
+    }
     // -999: Canceled AJAX request
     // 102:  Frame load interrupted: canceled wp-login redirect to make the POST
 }

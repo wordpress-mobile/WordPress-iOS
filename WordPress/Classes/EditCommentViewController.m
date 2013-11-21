@@ -172,7 +172,7 @@
             // XML-RPC is disabled.
             message = error.localizedDescription;
         }
-		[[NSNotificationCenter defaultCenter] postNotificationName:@"CommentUploadFailed" object:message];
+        [[WordPressAppDelegate sharedWordPressApplicationDelegate] showAlertWithTitle:NSLocalizedString(@"Error", nil) message:message];
     }];
 }
 
