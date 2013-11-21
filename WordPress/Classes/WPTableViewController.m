@@ -467,68 +467,42 @@ CGFloat const WPTableViewTopMargin = 40;
     _isScrolling = NO;
 }
 
-
-#pragma mark -
-#pragma mark UIAlertViewDelegate
-
-- (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex { 
-	switch(buttonIndex) {
-		case 0: {
-            SupportViewController *supportViewController = [[SupportViewController alloc] init];
-
-            // Probably should be modal
-            UINavigationController *navController = [[UINavigationController alloc] initWithRootViewController:supportViewController];
-            navController.navigationBar.translucent = NO;
-            if (IS_IPAD) {
-                navController.modalPresentationStyle = UIModalPresentationFormSheet;
-                navController.modalTransitionStyle = UIModalTransitionStyleCrossDissolve;
-            }
-            [self.navigationController presentViewController:navController animated:YES completion:nil];
-
-			break;
-		}
-		case 1:
-            if (alertView.tag == 30){
-                NSString *path = nil;
-                NSError *error = NULL;
-                NSRegularExpression *regex = [NSRegularExpression regularExpressionWithPattern:@"http\\S+writing.php" options:NSRegularExpressionCaseInsensitive error:&error];
-                NSString *msg = [alertView message];
-                NSRange rng = [regex rangeOfFirstMatchInString:msg options:0 range:NSMakeRange(0, [msg length])];
-                
-                if (rng.location == NSNotFound) {
-                    path = self.blog.url;
-                    if (![path hasPrefix:@"http"]) {
-                        path = [NSString stringWithFormat:@"http://%@", path];
-                    } else if ([self.blog isWPcom] && [path rangeOfString:@"wordpress.com"].location == NSNotFound) {
-                        path = [self.blog.xmlrpc stringByReplacingOccurrencesOfString:@"xmlrpc.php" withString:@""];
-                    }
-                    path = [path stringByReplacingOccurrencesOfString:@"xmlrpc.php" withString:@""];
-                    path = [path stringByAppendingFormat:@"/wp-admin/options-writing.php"];
-                    
-                } else {
-                    path = [msg substringWithRange:rng];
-                }
-                
-                WPWebViewController *webViewController = [[WPWebViewController alloc] init];
-                webViewController.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:NSLocalizedString(@"Cancel", nil) style:UIBarButtonItemStylePlain target:self action:@selector(dismissModal:)];
-                [webViewController setUrl:[NSURL URLWithString:path]];
-                [webViewController setUsername:self.blog.username];
-                [webViewController setPassword:self.blog.password];
-                [webViewController setWpLoginURL:[NSURL URLWithString:self.blog.loginUrl]];
-                webViewController.shouldScrollToBottom = YES;
-                // Probably should be modal.
-                UINavigationController *navController = [[UINavigationController alloc] initWithRootViewController:webViewController];
-                navController.navigationBar.translucent = NO;
-                if (IS_IPAD) {
-                    navController.modalPresentationStyle = UIModalPresentationFormSheet;
-                    navController.modalTransitionStyle = UIModalTransitionStyleCrossDissolve;
-                }
-                [self.navigationController presentViewController:navController animated:YES completion:nil];
-            }
-			break;
-		default:
-			break;
-	}
+- (void)sendUserToXMLOptionsFromAlert:(UIAlertView *)alertView {
+    NSString *path = nil;
+    NSError *error = NULL;
+    NSRegularExpression *regex = [NSRegularExpression regularExpressionWithPattern:@"http\\S+writing.php" options:NSRegularExpressionCaseInsensitive error:&error];
+    NSString *msg = [alertView message];
+    NSRange rng = [regex rangeOfFirstMatchInString:msg options:0 range:NSMakeRange(0, [msg length])];
+    
+    if (rng.location == NSNotFound) {
+        path = self.blog.url;
+        if (![path hasPrefix:@"http"]) {
+            path = [NSString stringWithFormat:@"http://%@", path];
+        } else if ([self.blog isWPcom] && [path rangeOfString:@"wordpress.com"].location == NSNotFound) {
+            path = [self.blog.xmlrpc stringByReplacingOccurrencesOfString:@"xmlrpc.php" withString:@""];
+        }
+        path = [path stringByReplacingOccurrencesOfString:@"xmlrpc.php" withString:@""];
+        path = [path stringByAppendingFormat:@"/wp-admin/options-writing.php"];
+        
+    } else {
+        path = [msg substringWithRange:rng];
+    }
+    
+    WPWebViewController *webViewController = [[WPWebViewController alloc] init];
+    webViewController.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:NSLocalizedString(@"Cancel", nil) style:UIBarButtonItemStylePlain target:self action:@selector(dismissModal:)];
+    [webViewController setUrl:[NSURL URLWithString:path]];
+    [webViewController setUsername:self.blog.username];
+    [webViewController setPassword:self.blog.password];
+    [webViewController setWpLoginURL:[NSURL URLWithString:self.blog.loginUrl]];
+    webViewController.shouldScrollToBottom = YES;
+    // Probably should be modal.
+    UINavigationController *navController = [[UINavigationController alloc] initWithRootViewController:webViewController];
+    navController.navigationBar.translucent = NO;
+    if (IS_IPAD) {
+        navController.modalPresentationStyle = UIModalPresentationFormSheet;
+        navController.modalTransitionStyle = UIModalTransitionStyleCrossDissolve;
+    }
+    [self.navigationController presentViewController:navController animated:YES completion:nil];
 }
 
 #pragma mark - SettingsViewControllerDelegate
@@ -599,17 +573,14 @@ CGFloat const WPTableViewTopMargin = 40;
         _isSyncing = NO;
         [self configureNoResultsView];
         if (self.blog) {
-            if ([error.domain isEqualToString:@"XMLRPC"]) {
-                if (error.code == 405) {
+            if ([error.domain isEqualToString:AFNetworkingErrorDomain]) {
+                NSInteger statusCode = ((NSHTTPURLResponse *)error.userInfo[AFNetworkingOperationFailingURLResponseErrorKey]).statusCode;
+                if (statusCode == 405) {
                     // Prompt to enable XML-RPC using the default message provided from the WordPress site.
-                    UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"Couldn't sync", @"")
-                                                                        message:[error localizedDescription]
-                                                                       delegate:self
-                                                              cancelButtonTitle:NSLocalizedString(@"Need Help?", @"")
-                                                              otherButtonTitles:NSLocalizedString(@"Enable Now", @""), nil];
-
-                    alertView.tag = 30;
-                    [alertView show];
+                    [WPError showAlertWithTitle:NSLocalizedString(@"Couldn't sync", @"") message:[error localizedDescription]
+                              withSupportButton:YES okPressedBlock:^(UIAlertView *alertView){
+                                  [self sendUserToXMLOptionsFromAlert:alertView];
+                    }];
 
                 } else if (error.code == 403 && editSiteViewController == nil) {
                     [self promptForPassword];
