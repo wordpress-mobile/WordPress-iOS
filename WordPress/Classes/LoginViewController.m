@@ -402,7 +402,7 @@ CGFloat const GeneralWalkthroughiOS7StatusBarOffset = 20.0;
         [_toggleSignInForm addTarget:self action:@selector(toggleSignInformAction:) forControlEvents:UIControlEventTouchUpInside];
         [_mainView addSubview:_toggleSignInForm];
     }
-    NSString *toggleTitle = _userIsDotCom ? @"Add Self-Hosted Site" : @"Sign in to WordPress.com";
+    NSString *toggleTitle = _userIsDotCom ? NSLocalizedString(@"Add Self-Hosted Site", nil) : NSLocalizedString(@"Sign in to WordPress.com", nil);
     [_toggleSignInForm setTitle:toggleTitle forState:UIControlStateNormal];
     
     // Add Skip to Create Account Button
