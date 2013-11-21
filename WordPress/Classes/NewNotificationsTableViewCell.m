@@ -194,8 +194,7 @@ CGFloat const NotificationCellDetailTextNumberOfLines = 2;
 + (CGRect)subjectFrameForNotification:(Note *)note leftFrame:(CGRect)leftFrame andMaxWidth:(CGFloat )maxWidth
 {
     NSString *subjectText = [self subjectText:note];
-    CGSize size;
-    size = [subjectText boundingRectWithSize:CGSizeMake([[self class] textWidth:maxWidth], CGFLOAT_MAX) options:NSStringDrawingUsesLineFragmentOrigin attributes:[self subjectAttributes] context:nil].size;
+    CGSize size = [subjectText boundingRectWithSize:CGSizeMake([[self class] textWidth:maxWidth], CGFLOAT_MAX) options:NSStringDrawingUsesLineFragmentOrigin attributes:[self subjectAttributes] context:nil].size;
     return CGRectMake(CGRectGetMaxX(leftFrame) + NotificationCellStandardOffset, NotificationCellStandardOffset, size.width, size.height);
 }
 
