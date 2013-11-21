@@ -506,7 +506,6 @@ CGFloat const GeneralWalkthroughiOS7StatusBarOffset = 20.0;
             [WPMobileStats trackEventForSelfHostedAndWPCom:StatsEventNUXFirstWalkthroughUserSkippedConnectingToJetpack];            
         }
         
-        [self.navigationController popViewControllerAnimated:NO];
         [self dismiss];
     }];
     [self.navigationController pushViewController:jetpackSettingsViewController animated:YES];
