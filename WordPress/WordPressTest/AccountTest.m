@@ -31,13 +31,15 @@
     [[CoreDataTestHelper sharedHelper] reset];
 }
 
-- (void)testNewAccountSetsDefaultAccount
+- (void)testNewAccountDoesntSetDefaultAccount
 {
     STAssertNil([WPAccount defaultWordPressComAccount], nil);
-    WPAccount *_account = [WPAccount createOrUpdateWordPressComAccountWithUsername:@"user" andPassword:@"pass"];
+    WPAccount *_account = [WPAccount createOrUpdateWordPressComAccountWithUsername:@"user" password:@"pass" authToken:@"token"];
+    STAssertNil([WPAccount defaultWordPressComAccount], nil);
+    [WPAccount setDefaultWordPressComAccount:_account];
     STAssertNotNil([WPAccount defaultWordPressComAccount], nil);
     STAssertEqualObjects([WPAccount defaultWordPressComAccount], _account, nil);
-    WPAccount *_account2 = [WPAccount createOrUpdateWordPressComAccountWithUsername:@"user" andPassword:@"pass"];
+    WPAccount *_account2 = [WPAccount createOrUpdateWordPressComAccountWithUsername:@"user" password:@"pass" authToken:@"token"];
     STAssertNotNil(_account2, nil);
     STAssertEqualObjects([WPAccount defaultWordPressComAccount], _account, nil);
 }
