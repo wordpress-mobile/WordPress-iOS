@@ -259,19 +259,12 @@ CGFloat const GeneralWalkthroughiOS7StatusBarOffset = 20.0;
 
 - (void)clickedSkipToCreate:(id)sender
 {
-    [WPMobileStats trackEventForSelfHostedAndWPCom:StatsEventNUXFirstWalkthroughClickedSkipToCreateAccount];
-    [self showCreateAccountView];
-}
-
-- (void)clickedCreateAccount:(UITapGestureRecognizer *)tapGestureRecognizer
-{
     [WPMobileStats trackEventForSelfHostedAndWPCom:StatsEventNUXFirstWalkthroughClickedCreateAccount];
     [self showCreateAccountView];
 }
 
 - (void)clickedBackground:(UITapGestureRecognizer *)tapGestureRecognizer
 {
-    
     [self.view endEditing:YES];
 
     // The info button is a little hard to hit so this adds a little buffer around it
@@ -302,7 +295,6 @@ CGFloat const GeneralWalkthroughiOS7StatusBarOffset = 20.0;
 }
 
 - (void)toggleSignInformAction:(id)sender {
-    
     _userIsDotCom = !_userIsDotCom;
     
     // Controls are layed out in initializeView. Calling this method in an animation block will animate the controls to their new positions. 
@@ -765,20 +757,6 @@ CGFloat const GeneralWalkthroughiOS7StatusBarOffset = 20.0;
             [self displayGenericErrorMessage:message];
         }
     }
-}
-
-- (void)createBlogWithXmlRpc:(NSString *)xmlRPCUrl andBlogDetails:(NSDictionary *)blogDetails
-{
-    NSParameterAssert(blogDetails != nil);
-    
-    WPAccount *account = [WPAccount createOrUpdateSelfHostedAccountWithXmlrpc:xmlRPCUrl username:_usernameText.text andPassword:_passwordText.text];
-
-    NSMutableDictionary *newBlog = [NSMutableDictionary dictionaryWithDictionary:blogDetails];
-    [newBlog setObject:xmlRPCUrl forKey:@"xmlrpc"];
-
-    _blog = [account findOrCreateBlogFromDictionary:newBlog withContext:account.managedObjectContext];
-    [_blog dataSave];
-
 }
 
 - (void)keyboardWillShow:(NSNotification *)notification
