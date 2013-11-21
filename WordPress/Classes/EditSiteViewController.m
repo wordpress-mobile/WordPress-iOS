@@ -34,9 +34,7 @@
 - (BOOL)getBlogPushNotificationsSetting;
 @end
 
-@implementation EditSiteViewController {
-    UIAlertView *failureAlertView;
-}
+@implementation EditSiteViewController
 
 @synthesize password, username, url, geolocationEnabled;
 @synthesize blog, tableView, savingIndicator;
@@ -50,7 +48,6 @@
 
 - (void)dealloc {
     self.delegate = nil;
-    failureAlertView.delegate = nil;
 }
 
 - (void)viewDidLoad {
@@ -78,12 +75,7 @@
             [[WordPressComApi sharedApi] fetchNotificationSettings:^{
                 [self reloadNotificationSettings];
             } failure:^(NSError *error) {
-                UIAlertView *alert = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"Error", @"")
-                                                                message:error.localizedDescription
-                                                               delegate:nil
-                                                      cancelButtonTitle:NSLocalizedString(@"OK", @"OK button label.")
-                                                      otherButtonTitles:nil, nil];
-                [alert show];
+                [WPError showAlertWithTitle:NSLocalizedString(@"Error", @"") message:error.localizedDescription];
             }];
         }
     }
@@ -383,56 +375,6 @@
     return YES;
 }
 
-#pragma mark -
-#pragma mark UIAlertViewDelegate
-
-- (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex { 
-	switch (buttonIndex) {
-		case 0: {
-            if ( alertView.tag == 20 ) {
-                //Domain Error or malformed response
-                [[UIApplication sharedApplication] openURL:[NSURL URLWithString: @"http://ios.wordpress.org/faq/#faq_3"]];
-            } else {
-                SupportViewController *supportViewController = [[SupportViewController alloc] init];
-                [self.navigationController pushViewController:supportViewController animated:YES];
-            }
-			break;
-		}
-		case 1:
-            if (alertView.tag == 30){
-                NSString *path = nil;
-                NSError *error = nil;
-                NSRegularExpression *regex = [NSRegularExpression regularExpressionWithPattern:@"http\\S+writing.php" options:NSRegularExpressionCaseInsensitive error:&error];
-                NSString *msg = [alertView message];
-                NSRange rng = [regex rangeOfFirstMatchInString:msg options:0 range:NSMakeRange(0, [msg length])];
-                
-                if (rng.location == NSNotFound) {
-                    path = [self getURLToValidate];
-                    path = [path stringByReplacingOccurrencesOfString:@"xmlrpc.php" withString:@""];
-                    path = [path stringByAppendingFormat:@"/wp-admin/options-writing.php"];
-                } else {
-                    path = [msg substringWithRange:rng];
-                }
-                
-                WPWebViewController *webViewController = [[WPWebViewController alloc] init];
-                [webViewController setUrl:[NSURL URLWithString:path]];
-                [webViewController setUsername:self.username];
-                [webViewController setPassword:self.password];
-                [webViewController setWpLoginURL:[NSURL URLWithString:blog.loginUrl]];
-                webViewController.shouldScrollToBottom = YES;
-                [self.navigationController pushViewController:webViewController animated:YES];
-            } else {
-                //OK
-            }
-			break;
-		default:
-			break;
-	}
-    if (failureAlertView == alertView) {
-        failureAlertView = nil;
-    }
-}
-
 
 #pragma mark -
 #pragma mark Custom methods
@@ -601,37 +543,45 @@
 			} else {
 				message = [error localizedDescription];
 			}
-
-            if (failureAlertView == nil) {
-                if ([error code] == 405) { // XMLRPC disabled.
-                    failureAlertView = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"Sorry, can't log in", @"")
-                                                                  message:message
-                                                                 delegate:self
-                                                        cancelButtonTitle:NSLocalizedString(@"Need Help?", @"")
-                                                        otherButtonTitles:NSLocalizedString(@"Enable Now", @""), nil];
-
-                    failureAlertView.tag = 30;
-                } else {
-                    failureAlertView = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"Sorry, can't log in", @"")
-                                                           message:message
-                                                          delegate:self
-                                                 cancelButtonTitle:NSLocalizedString(@"Need Help?", @"")
-                                                 otherButtonTitles:NSLocalizedString(@"OK", @""), nil];
-
-                    if ( [error code] == NSURLErrorBadURL ) {
-                        failureAlertView.tag = 20; // take the user to the FAQ page when hit "Need Help"
-                    } else {
-                        failureAlertView.tag = 10;
-                    }
-                }
-
-                [failureAlertView show];
+             // XMLRPC disabled
+            if ([error.userInfo[AFNetworkingOperationFailingURLResponseErrorKey] statusCode] == 405) {
+                [WPError showAlertWithTitle:NSLocalizedString(@"Sorry, can't log in", @"") message:message withSupportButton:YES okPressedBlock:^(UIAlertView *alertView) {
+                    [self openSiteAdminFromAlert:alertView];
+                }];
+                
+            } else {
+                [WPError showAlertWithTitle:NSLocalizedString(@"Sorry, can't log in", @"") message:message];
             }
+            
         }
     }    
 
     saveButton.enabled = YES;
 	[self.navigationItem setHidesBackButton:NO animated:NO];
+}
+
+- (void)openSiteAdminFromAlert:(UIAlertView *)alertView {
+    NSString *path = nil;
+    NSError *error = nil;
+    NSRegularExpression *regex = [NSRegularExpression regularExpressionWithPattern:@"http\\S+writing.php" options:NSRegularExpressionCaseInsensitive error:&error];
+    NSString *msg = [alertView message];
+    NSRange rng = [regex rangeOfFirstMatchInString:msg options:0 range:NSMakeRange(0, [msg length])];
+    
+    if (rng.location == NSNotFound) {
+        path = [self getURLToValidate];
+        path = [path stringByReplacingOccurrencesOfString:@"xmlrpc.php" withString:@""];
+        path = [path stringByAppendingFormat:@"/wp-admin/options-writing.php"];
+    } else {
+        path = [msg substringWithRange:rng];
+    }
+    
+    WPWebViewController *webViewController = [[WPWebViewController alloc] init];
+    [webViewController setUrl:[NSURL URLWithString:path]];
+    [webViewController setUsername:self.username];
+    [webViewController setPassword:self.password];
+    [webViewController setWpLoginURL:[NSURL URLWithString:blog.loginUrl]];
+    webViewController.shouldScrollToBottom = YES;
+    [self.navigationController pushViewController:webViewController animated:YES];
 }
 
 - (void)validateFields {
