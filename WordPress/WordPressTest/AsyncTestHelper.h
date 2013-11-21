@@ -44,10 +44,10 @@ extern const NSTimeInterval AsyncTestCaseDefaultTimeout;
 
 #define ATHEnd() do {\
     ATHWait(); \
-    dispatch_release(ATHSemaphore);\
+    ATHSemaphore = nil;\
 } while (0)
 
 #define ATHEndNeverCalled(timeout) do {\
     ATHNeverCalled(timeout); \
-    dispatch_release(ATHSemaphore);\
+    ATHSemaphore = nil;\
 } while (0)

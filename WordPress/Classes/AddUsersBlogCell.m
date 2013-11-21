@@ -163,8 +163,7 @@ CGFloat const AddUsersBlogCellStandardOffset = 16.0;
 + (CGSize)sizeForText:(NSString *)text
 {
     UIFont *titleFont = [UIFont fontWithName:@"OpenSans" size:15.0];
-    CGSize textSize = [text sizeWithFont:titleFont constrainedToSize:CGSizeMake(AddUsersBlogCellMaxTextWidth, CGFLOAT_MAX) lineBreakMode:NSLineBreakByWordWrapping];
-    return textSize;
+    return [text suggestedSizeWithFont:titleFont width:AddUsersBlogCellMaxTextWidth];
 }
 
 @end

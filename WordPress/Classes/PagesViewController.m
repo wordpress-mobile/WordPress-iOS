@@ -6,7 +6,6 @@
 //
 
 #import "PagesViewController.h"
-#import "PageViewController.h"
 #import "EditPageViewController.h"
 #import "WPTableViewControllerSubclass.h"
 
@@ -43,26 +42,6 @@
     UINavigationController *navController = [[UINavigationController alloc] initWithRootViewController:editPostViewController];
     navController.modalPresentationStyle = UIModalPresentationCurrentContext;
     [self.navigationController presentViewController:navController animated:YES completion:nil];
-}
-
-// For iPad
-- (void)showSelectedPost {
-    Page *page = nil;
-    NSIndexPath *indexPath = self.selectedIndexPath;
-
-    @try {
-        page = [self.resultsController objectAtIndexPath:indexPath];
-        DDLogInfo(@"Selected page at indexPath: (%i,%i)", indexPath.section, indexPath.row);
-    }
-    @catch (NSException *e) {
-        DDLogError(@"Can't select page at indexPath (%i,%i)", indexPath.section, indexPath.row);
-        DDLogError(@"sections: %@", self.resultsController.sections);
-        DDLogError(@"results: %@", self.resultsController.fetchedObjects);
-        page = nil;
-    }
-    
-    self.postReaderViewController = [[PageViewController alloc] initWithPost:page];
-    [self.navigationController pushViewController:self.postReaderViewController animated:YES];
 }
 
 - (void)showAddPostView {

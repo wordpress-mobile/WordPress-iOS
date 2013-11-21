@@ -1,0 +1,8 @@
+# Pin to ruby 1.9, cocoapods is broken in ruby 2.0
+# see https://github.com/travis-ci/travis-ci/issues/1637
+rvm: 1.9.3
+language: objective-c
+xcode_workspace: WordPress.xcworkspace
+xcode_scheme: WordPress
+notifications:
+  email: false

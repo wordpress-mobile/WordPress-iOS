@@ -20,6 +20,7 @@
 #import "WPNUXUtility.h"
 #import "WPAccount.h"
 #import "ContextManager.h"
+#import "UILabel+SuggestSize.h"
 
 @interface NewAddUsersBlogViewController () <
     UITableViewDelegate,
@@ -236,7 +237,7 @@ CGFloat const AddUsersBlogBottomBackgroundHeight = 64;
     title.text = NSLocalizedString(@"Select the sites you want to add", nil);
     title.textColor = [UIColor whiteColor];
     title.numberOfLines = 0;
-    CGSize titleSize = [title.text sizeWithFont:title.font constrainedToSize:CGSizeMake(AddUsersBlogMaxTextWidth, CGFLOAT_MAX) lineBreakMode:NSLineBreakByWordWrapping];
+    CGSize titleSize = [title suggestedSizeForWidth:AddUsersBlogMaxTextWidth];
     x = (_viewWidth - titleSize.width)/2.0;
     y = CGRectGetHeight(headerView.frame) - titleSize.height - AddUsersBlogTitleVerticalOffset;
     title.frame = CGRectMake(x, y, titleSize.width, titleSize.height);
