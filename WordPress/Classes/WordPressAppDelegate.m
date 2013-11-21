@@ -20,8 +20,6 @@
 #import "WordPressComApi.h"
 #import "WordPressComApiCredentials.h"
 #import "PocketAPI.h"
-#import "DDTTYLogger.h"
-#import "DDASLLogger.h"
 #import "WPAccount.h"
 #import "SupportViewController.h"
 #import "ReaderPostsViewController.h"
@@ -33,12 +31,23 @@
 #import <DDFileLogger.h>
 #import <AFNetworking/AFNetworking.h>
 
+#if DEBUG
+#import "DDTTYLogger.h"
+#import "DDASLLogger.h"
+#endif
+
 int ddLogLevel = LOG_LEVEL_INFO;
 
-@interface WordPressAppDelegate () <CrashlyticsDelegate>
+@interface WordPressAppDelegate () <CrashlyticsDelegate, UIAlertViewDelegate>
 
 @property (nonatomic, assign) BOOL listeningForBlogChanges;
 @property (nonatomic, strong) NotificationsViewController *notificationsViewController;
+@property (nonatomic, assign) UIBackgroundTaskIdentifier bgTask;
+@property (strong, nonatomic) DDFileLogger *fileLogger;
+
+@property (nonatomic, strong) NSManagedObjectContext *managedObjectContext;
+@property (nonatomic, strong) NSManagedObjectModel *managedObjectModel;
+@property (nonatomic, strong) NSPersistentStoreCoordinator *persistentStoreCoordinator;
 
 @end
 
@@ -176,28 +185,24 @@ int ddLogLevel = LOG_LEVEL_INFO;
     [WPMobileStats trackEventForWPComWithSavedProperties:StatsEventAppClosed];
     [WPMobileStats pauseSession];
     
-    //Keep the app alive in the background if we are uploading a post, currently only used for quick photo posts
+    // Let the app finish any uploads that are in progress
     UIApplication *app = [UIApplication sharedApplication];
-    if (!isUploadingPost && [app respondsToSelector:@selector(endBackgroundTask:)]) {
-        if (bgTask != UIBackgroundTaskInvalid) {
-            [app endBackgroundTask:bgTask];
-            bgTask = UIBackgroundTaskInvalid;
-        }
+    if (_bgTask != UIBackgroundTaskInvalid) {
+        [app endBackgroundTask:_bgTask];
+        _bgTask = UIBackgroundTaskInvalid;
     }
     
-    if ([app respondsToSelector:@selector(beginBackgroundTaskWithExpirationHandler:)]) {
-        bgTask = [app beginBackgroundTaskWithExpirationHandler:^{
-            // Synchronize the cleanup call on the main thread in case
-            // the task actually finishes at around the same time.
-            dispatch_async(dispatch_get_main_queue(), ^{
-                if (bgTask != UIBackgroundTaskInvalid)
-                {
-                    [app endBackgroundTask:bgTask];
-                    bgTask = UIBackgroundTaskInvalid;
-                }
-            });
-        }];
-    }
+    _bgTask = [app beginBackgroundTaskWithExpirationHandler:^{
+        // Synchronize the cleanup call on the main thread in case
+        // the task actually finishes at around the same time.
+        dispatch_async(dispatch_get_main_queue(), ^{
+            if (_bgTask != UIBackgroundTaskInvalid)
+            {
+                [app endBackgroundTask:_bgTask];
+                _bgTask = UIBackgroundTaskInvalid;
+            }
+        });
+    }];
 
     NSError *error = nil;
     if (![self.managedObjectContext save:&error]) {
@@ -212,13 +217,7 @@ int ddLogLevel = LOG_LEVEL_INFO;
 }
 
 - (void)applicationWillResignActive:(UIApplication *)application {
-    DDLogInfo(@"%@ %@", self, NSStringFromSelector(_cmd));    
-  
-    if (passwordAlertRunning && passwordTextField != nil) {
-        [passwordTextField resignFirstResponder];
-    } else {
-        [[NSNotificationCenter defaultCenter] postNotificationName:@"DismissAlertViewKeyboard" object:nil];
-    }
+    DDLogInfo(@"%@ %@", self, NSStringFromSelector(_cmd));
 }
 
 - (void)applicationDidBecomeActive:(UIApplication *)application {
@@ -229,6 +228,29 @@ int ddLogLevel = LOG_LEVEL_INFO;
     // Clear notifications badge and update server
     [UIApplication sharedApplication].applicationIconBadgeNumber = 0;
     [[WordPressComApi sharedApi] syncPushNotificationInfo];
+}
+
+
+#pragma mark - Push Notification delegate
+
+- (void)application:(UIApplication *)application didRegisterForRemoteNotificationsWithDeviceToken:(NSData *)deviceToken {
+	[NotificationsManager registerDeviceToken:deviceToken];
+}
+
+- (void)application:(UIApplication *)application didFailToRegisterForRemoteNotificationsWithError:(NSError *)error {
+	[NotificationsManager registrationDidFail:error];
+}
+
+- (void)application:(UIApplication *)application didReceiveRemoteNotification:(NSDictionary *)userInfo {
+    WPFLogMethod();
+    
+    [NotificationsManager handleNotification:userInfo forState:application.applicationState completionHandler:nil];
+}
+
+- (void)application:(UIApplication *)application didReceiveRemoteNotification:(NSDictionary *)userInfo fetchCompletionHandler:(void (^)(UIBackgroundFetchResult))completionHandler {
+    WPFLogMethod();
+    
+    [NotificationsManager handleNotification:userInfo forState:[UIApplication sharedApplication].applicationState completionHandler:completionHandler];
 }
 
 
@@ -365,12 +387,10 @@ int ddLogLevel = LOG_LEVEL_INFO;
     } else if (alertView.tag == kNotificationNewComment) {
         if (buttonIndex == 1) {
             [self showNotificationsTab];
-            lastNotificationInfo = nil;
         }
     } else if (alertView.tag == kNotificationNewSocial) {
         if (buttonIndex == 1) {
             [self showNotificationsTab];
-            lastNotificationInfo = nil;
         }
 	} else {
 		//Need Help Alert
@@ -404,48 +424,33 @@ int ddLogLevel = LOG_LEVEL_INFO;
 
 #pragma mark - Core Data stack
 
-/**
- Returns the managed object context for the application.
- If the context doesn't already exist, it is created and bound to the persistent store coordinator for the application.
- */
 - (NSManagedObjectContext *)managedObjectContext {
-    
-    if (managedObjectContext_ != nil) {
-        return managedObjectContext_;
+    if (_managedObjectContext != nil) {
+        return _managedObjectContext;
     }
     
     NSPersistentStoreCoordinator *coordinator = [self persistentStoreCoordinator];
     if (coordinator != nil) {
-        managedObjectContext_ = [[NSManagedObjectContext alloc] initWithConcurrencyType:NSMainQueueConcurrencyType];
-        [managedObjectContext_ setPersistentStoreCoordinator:coordinator];
+        _managedObjectContext = [[NSManagedObjectContext alloc] initWithConcurrencyType:NSMainQueueConcurrencyType];
+        [_managedObjectContext setPersistentStoreCoordinator:coordinator];
     }
-    return managedObjectContext_;
+    return _managedObjectContext;
 }
 
-
-/**
- Returns the managed object model for the application.
- If the model doesn't already exist, it is created from the application's model.
- */
 - (NSManagedObjectModel *)managedObjectModel {
-    
-    if (managedObjectModel_ != nil) {
-        return managedObjectModel_;
+    if (_managedObjectModel != nil) {
+        return _managedObjectModel;
     }
     NSString *modelPath = [[NSBundle mainBundle] pathForResource:@"WordPress" ofType:@"momd"];
     NSURL *modelURL = [NSURL fileURLWithPath:modelPath];
-    managedObjectModel_ = [[NSManagedObjectModel alloc] initWithContentsOfURL:modelURL];    
-    return managedObjectModel_;
+    _managedObjectModel = [[NSManagedObjectModel alloc] initWithContentsOfURL:modelURL];    
+    return _managedObjectModel;
 }
 
-/**
- Returns the persistent store coordinator for the application.
- If the coordinator doesn't already exist, it is created and the application's store added to it.
- */
 - (NSPersistentStoreCoordinator *)persistentStoreCoordinator {
     
-    if (persistentStoreCoordinator_ != nil) {
-        return persistentStoreCoordinator_;
+    if (_persistentStoreCoordinator != nil) {
+        return _persistentStoreCoordinator;
     }
     
     NSURL *storeURL = [NSURL fileURLWithPath: [[self applicationDocumentsDirectory] stringByAppendingPathComponent: @"WordPress.sqlite"]];
@@ -515,8 +520,8 @@ int ddLogLevel = LOG_LEVEL_INFO;
 	
 	DDLogInfo(@"End of debugging migration detection");
 #endif
-    persistentStoreCoordinator_ = [[NSPersistentStoreCoordinator alloc] initWithManagedObjectModel:[self managedObjectModel]];
-    if (![persistentStoreCoordinator_ addPersistentStoreWithType:NSSQLiteStoreType configuration:nil URL:storeURL options:options error:&error]) {
+    _persistentStoreCoordinator = [[NSPersistentStoreCoordinator alloc] initWithManagedObjectModel:[self managedObjectModel]];
+    if (![_persistentStoreCoordinator addPersistentStoreWithType:NSSQLiteStoreType configuration:nil URL:storeURL options:options error:&error]) {
 		DDLogError(@"Error opening the database. %@\nDeleting the file and trying again", error);
 #ifdef CORE_DATA_MIGRATION_DEBUG
 		// Don't delete the database on debug builds
@@ -528,7 +533,7 @@ int ddLogLevel = LOG_LEVEL_INFO;
         [[NSFileManager defaultManager] copyItemAtPath:storeURL.path toPath:[storeURL.path stringByAppendingString:@"~"] error:&error];
         // delete the sqlite file and try again
 		[[NSFileManager defaultManager] removeItemAtPath:storeURL.path error:nil];
-		if (![persistentStoreCoordinator_ addPersistentStoreWithType:NSSQLiteStoreType configuration:nil URL:storeURL options:nil error:&error]) {
+		if (![_persistentStoreCoordinator addPersistentStoreWithType:NSSQLiteStoreType configuration:nil URL:storeURL options:nil error:&error]) {
 			DDLogError(@"Unresolved error %@, %@", error, [error userInfo]);
 			abort();
 		}
@@ -544,7 +549,7 @@ int ddLogLevel = LOG_LEVEL_INFO;
 		NSString *blogsArchiveFilePath = [currentDirectoryPath stringByAppendingPathComponent:@"blogs.archive"];
 		if ([fileManager fileExistsAtPath:blogsArchiveFilePath]) {
 			NSManagedObjectContext *destMOC = [[NSManagedObjectContext alloc] init];
-			[destMOC setPersistentStoreCoordinator:persistentStoreCoordinator_];
+			[destMOC setPersistentStoreCoordinator:_persistentStoreCoordinator];
 
 			MigrateBlogsFromFiles *blogMigrator = [[MigrateBlogsFromFiles alloc] init];
 			[blogMigrator forceBlogsMigrationInContext:destMOC error:&error];
@@ -555,7 +560,7 @@ int ddLogLevel = LOG_LEVEL_INFO;
 		}
 	}
     
-    return persistentStoreCoordinator_;
+    return _persistentStoreCoordinator;
 }
 
 
@@ -563,10 +568,6 @@ int ddLogLevel = LOG_LEVEL_INFO;
 
 - (NSString *)applicationDocumentsDirectory {
     return [NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES) lastObject];
-}
-
-- (NSString *)applicationUserAgent {
-  return [[NSUserDefaults standardUserDefaults] objectForKey:@"UserAgent"];
 }
 
 - (void)changeCurrentDirectory {
@@ -682,28 +683,6 @@ int ddLogLevel = LOG_LEVEL_INFO;
     }];
     
     [operation start];
-}
-
-#pragma mark - Push Notification delegate
-
-- (void)application:(UIApplication *)application didRegisterForRemoteNotificationsWithDeviceToken:(NSData *)deviceToken {
-	[NotificationsManager registerDeviceToken:deviceToken];
-}
-
-- (void)application:(UIApplication *)application didFailToRegisterForRemoteNotificationsWithError:(NSError *)error {
-	[NotificationsManager registrationDidFail:error];
-}
-
-- (void)application:(UIApplication *)application didReceiveRemoteNotification:(NSDictionary *)userInfo {
-    WPFLogMethod();
-    
-    [NotificationsManager handleNotification:userInfo forState:application.applicationState completionHandler:nil];
-}
-
-- (void)application:(UIApplication *)application didReceiveRemoteNotification:(NSDictionary *)userInfo fetchCompletionHandler:(void (^)(UIBackgroundFetchResult))completionHandler {
-    WPFLogMethod();
-    
-    [NotificationsManager handleNotification:userInfo forState:[UIApplication sharedApplication].applicationState completionHandler:completionHandler];
 }
 
 
@@ -849,6 +828,10 @@ int ddLogLevel = LOG_LEVEL_INFO;
     DDLogVerbose(@"User-Agent set to: %@", ua);
 }
 
+- (NSString *)applicationUserAgent {
+    return [[NSUserDefaults standardUserDefaults] objectForKey:@"UserAgent"];
+}
+
 - (void)setupSingleSignOn {
     if ([[WPAccount defaultWordPressComAccount] username]) {
         [[WPComOAuthController sharedController] setWordPressComUsername:[[WPAccount defaultWordPressComAccount] username]];
@@ -865,38 +848,38 @@ int ddLogLevel = LOG_LEVEL_INFO;
     self.connectionAvailable = YES;
     
     // allocate the internet reachability object
-    internetReachability = [Reachability reachabilityForInternetConnection];
+    _internetReachability = [Reachability reachabilityForInternetConnection];
     
-    self.connectionAvailable = [internetReachability isReachable];
+    self.connectionAvailable = [_internetReachability isReachable];
     // set the blocks
-    internetReachability.reachableBlock = ^(Reachability*reach)
+    _internetReachability.reachableBlock = ^(Reachability*reach)
     {
         DDLogInfo(@"Internet connection is back");
         self.connectionAvailable = YES;
     };
-    internetReachability.unreachableBlock = ^(Reachability*reach)
+    _internetReachability.unreachableBlock = ^(Reachability*reach)
     {
         DDLogInfo(@"No internet connection");
         self.connectionAvailable = NO;
     };
     // start the notifier which will cause the reachability object to retain itself!
-    [internetReachability startNotifier];
+    [_internetReachability startNotifier];
     
     // allocate the WP.com reachability object
-    wpcomReachability = [Reachability reachabilityWithHostname:@"wordpress.com"];
+    _wpcomReachability = [Reachability reachabilityWithHostname:@"wordpress.com"];
     // set the blocks
-    wpcomReachability.reachableBlock = ^(Reachability*reach)
+    _wpcomReachability.reachableBlock = ^(Reachability*reach)
     {
         DDLogInfo(@"Connection to WordPress.com is back");
         self.wpcomAvailable = YES;
     };
-    wpcomReachability.unreachableBlock = ^(Reachability*reach)
+    _wpcomReachability.unreachableBlock = ^(Reachability*reach)
     {
         DDLogInfo(@"No connection to WordPress.com");
         self.wpcomAvailable = NO;
     };
     // start the notifier which will cause the reachability object to retain itself!
-    [wpcomReachability startNotifier];
+    [_wpcomReachability startNotifier];
 #pragma clang diagnostic pop
 }
 
@@ -1063,17 +1046,23 @@ int ddLogLevel = LOG_LEVEL_INFO;
     [DDLog addLogger:[DDTTYLogger sharedInstance]];
 #endif
     
-    self.fileLogger = [[DDFileLogger alloc] init];
-    self.fileLogger.rollingFrequency = 60 * 60 * 24; // 24 hour rolling
-    self.fileLogger.logFileManager.maximumNumberOfLogFiles = 7;
-    [DDLog addLogger:self.fileLogger];
-    
     [DDLog addLogger:[CrashlyticsLogger sharedInstance]];
     
     BOOL extraDebug = [[NSUserDefaults standardUserDefaults] boolForKey:@"extra_debug"];
     if (extraDebug) {
         ddLogLevel = LOG_LEVEL_VERBOSE;
     }
+}
+
+- (DDFileLogger *)fileLogger {
+    if (_fileLogger) {
+        return _fileLogger;
+    }
+    _fileLogger = [[DDFileLogger alloc] init];
+    _fileLogger.rollingFrequency = 60 * 60 * 24; // 24 hour rolling
+    _fileLogger.logFileManager.maximumNumberOfLogFiles = 7;
+    [DDLog addLogger:_fileLogger];
+    return _fileLogger;
 }
 
 - (void)toggleExtraDebuggingIfNeeded {
