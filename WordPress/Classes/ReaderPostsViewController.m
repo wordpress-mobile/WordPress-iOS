@@ -8,7 +8,6 @@
 
 #import <DTCoreText/DTCoreText.h>
 #import "DTCoreTextFontDescriptor.h"
-
 #import "WPTableViewControllerSubclass.h"
 #import "ReaderPostsViewController.h"
 #import "ReaderPostTableViewCell.h"
@@ -27,6 +26,7 @@
 #import "NSString+Helpers.h"
 #import "WPPopoverBackgroundView.h"
 #import "IOS7CorrectedTextView.h"
+#import "WPAnimatedBox.h"
 
 static CGFloat const RPVCScrollingFastVelocityThreshold = 30.f;
 static CGFloat const RPVCHeaderHeightPhone = 10.f;
@@ -40,6 +40,7 @@ NSString *const RPVCDisplayedNativeFriendFinder = @"DisplayedNativeFriendFinder"
     BOOL _isScrollingFast;
     CGFloat _lastOffset;
     UIPopoverController *_popover;
+    WPAnimatedBox *animatedBox;
 }
 
 @property (nonatomic, strong) ReaderReblogFormView *readerReblogFormView;
@@ -169,6 +170,10 @@ NSString *const RPVCDisplayedNativeFriendFinder = @"DisplayedNativeFriendFinder"
 	
 	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(handleKeyboardDidShow:) name:UIKeyboardWillShowNotification object:nil];
 	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(handleKeyboardWillHide:) name:UIKeyboardWillHideNotification object:nil];
+    
+    if (self.noResultsView && animatedBox) {
+        [animatedBox prepareAnimation:NO];
+    }
 }
 
 - (void)viewDidAppear:(BOOL)animated {
@@ -182,6 +187,15 @@ NSString *const RPVCDisplayedNativeFriendFinder = @"DisplayedNativeFriendFinder"
     if (selectedIndexPath) {
         [self.tableView deselectRowAtIndexPath:selectedIndexPath animated:YES];
     }
+    
+    // Delay box animation after the view appears
+    double delayInSeconds = 0.3;
+    dispatch_time_t popTime = dispatch_time(DISPATCH_TIME_NOW, (int64_t)(delayInSeconds * NSEC_PER_SEC));
+    dispatch_after(popTime, dispatch_get_main_queue(), ^(void){
+        if (self.noResultsView && animatedBox) {
+            [animatedBox animate];
+        }
+    });
 }
 
 - (void)viewWillDisappear:(BOOL)animated {
@@ -501,7 +515,7 @@ NSString *const RPVCDisplayedNativeFriendFinder = @"DisplayedNativeFriendFinder"
 	switch (idx) {
 		case 0:
 			// Blogs I follow
-			prompt = NSLocalizedString(@"You are not following any blogs yet.", @"");
+			prompt = NSLocalizedString(@"You're not following any blogs yet.", @"");
 			break;
 			
 		case 2:
@@ -546,8 +560,10 @@ NSString *const RPVCDisplayedNativeFriendFinder = @"DisplayedNativeFriendFinder"
 }
 
 - (UIView *)noResultsAccessoryView {
-    
-    return nil;
+    if (!animatedBox) {
+        animatedBox = [WPAnimatedBox new];
+    }
+    return animatedBox;
 }
 
 - (NSString *)entityName {

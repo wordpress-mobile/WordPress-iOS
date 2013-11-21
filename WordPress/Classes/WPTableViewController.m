@@ -132,6 +132,7 @@ CGFloat const WPTableViewTopMargin = 40;
     if ([self.tableView indexPathForSelectedRow]) {
         [self.tableView deselectRowAtIndexPath:[self.tableView indexPathForSelectedRow] animated:YES];
     }
+    [self configureNoResultsView];
 }
 
 - (void)viewDidAppear:(BOOL)animated {
