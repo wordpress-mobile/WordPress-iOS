@@ -20,10 +20,6 @@
 #import "UILabel+SuggestSize.h"
 
 @interface JetpackSettingsViewController () <UITextFieldDelegate, UIGestureRecognizerDelegate>
-
-@property (nonatomic, strong) NSString *username;
-@property (nonatomic, strong) NSString *password;
-
 @end
 
 @implementation JetpackSettingsViewController {
@@ -64,8 +60,6 @@ CGFloat const JetpackSignInButtonHeight = 41.0;
     self = [super init];
     if (self) {
         _blog = blog;
-		self.username = _blog.jetpackUsername;
-		self.password = _blog.jetpackPassword;
         self.showFullScreen = YES;
     }
     return self;
@@ -182,7 +176,7 @@ CGFloat const JetpackSignInButtonHeight = 41.0;
         _usernameText.delegate = self;
         _usernameText.autocorrectionType = UITextAutocorrectionTypeNo;
         _usernameText.autocapitalizationType = UITextAutocapitalizationTypeNone;
-        _usernameText.text = _username;
+        _usernameText.text = _blog.jetpackUsername;
         _usernameText.clearButtonMode = UITextFieldViewModeWhileEditing;
         [self.view addSubview:_usernameText];
     }
@@ -195,7 +189,7 @@ CGFloat const JetpackSignInButtonHeight = 41.0;
         _passwordText.font = [WPNUXUtility textFieldFont];
         _passwordText.delegate = self;
         _passwordText.secureTextEntry = YES;
-        _passwordText.text = _password;
+        _passwordText.text = _blog.jetpackPassword;
         _passwordText.clearsOnBeginEditing = YES;
         _passwordText.showTopLineSeparator = YES;
         [self.view addSubview:_passwordText];
@@ -230,6 +224,7 @@ CGFloat const JetpackSignInButtonHeight = 41.0;
         _moreInformationButton.titleLabel.font = [WPNUXUtility confirmationLabelFont];
         [self.view addSubview:_moreInformationButton];
     }
+    [self updateSaveButton];
 }
 
 - (void)layoutControls {
@@ -310,12 +305,12 @@ CGFloat const JetpackSignInButtonHeight = 41.0;
     [SVProgressHUD show];
 	
     [self setAuthenticating:YES];
-    [_blog validateJetpackUsername:_username
-                          password:_password
+    [_blog validateJetpackUsername:_usernameText.text
+                          password:_passwordText.text
                            success:^{
                                [SVProgressHUD dismiss];
                                if (![[WordPressComApi sharedApi] hasCredentials]) {
-                                   [[WordPressComApi sharedApi] signInWithUsername:_username password:_password success:nil failure:nil];
+                                   [[WordPressComApi sharedApi] signInWithUsername:_usernameText.text password:_passwordText.text success:nil failure:nil];
                                }
                                [self setAuthenticating:NO];
                                if (self.completionBlock) {
@@ -341,13 +336,6 @@ CGFloat const JetpackSignInButtonHeight = 41.0;
 }
 
 - (void)textFieldDidChangeNotificationReceived:(NSNotification *)notification {
-    UITextField *textField = (UITextField *)notification.object;
-    
-    if([textField isEqual:_usernameText]) {
-		self.username = _usernameText.text;
-	} else {
-		self.password = _passwordText.text;
-	}
     [self updateSaveButton];
 }
 
@@ -402,6 +390,8 @@ CGFloat const JetpackSignInButtonHeight = 41.0;
 
 - (void)setAuthenticating:(BOOL)authenticating {
     _authenticating = authenticating;
+    _usernameText.enabled = !authenticating;
+    _passwordText.enabled = !authenticating;
     [self updateSaveButton];
 }
 
@@ -467,7 +457,11 @@ CGFloat const JetpackSignInButtonHeight = 41.0;
 
 - (void)checkForJetpack {
     if ([_blog hasJetpack]) {
-        [self tryLoginWithCurrentWPComCredentials];
+        if (!_blog.jetpackUsername || !_blog.jetpackPassword) {
+            _usernameText.text = [[WPAccount defaultWordPressComAccount] username];
+            _passwordText.text = [[WPAccount defaultWordPressComAccount] password];
+            [self updateSaveButton];
+        }
         return;
     }
     [SVProgressHUD showWithStatus:NSLocalizedString(@"Checking for Jetpack...", @"") maskType:SVProgressHUDMaskTypeBlack];
@@ -475,26 +469,11 @@ CGFloat const JetpackSignInButtonHeight = 41.0;
         [SVProgressHUD dismiss];
         if ([_blog hasJetpack]) {
             [self updateMessage];
-            double delayInSeconds = 0.1;
-            dispatch_time_t popTime = dispatch_time(DISPATCH_TIME_NOW, (int64_t)(delayInSeconds * NSEC_PER_SEC));
-            dispatch_after(popTime, dispatch_get_main_queue(), ^(void){
-                [self tryLoginWithCurrentWPComCredentials];
-            });
         }
     } failure:^(NSError *error) {
         [SVProgressHUD dismiss];
         [WPError showAlertWithError:error];
     }];
-}
-
-- (void)tryLoginWithCurrentWPComCredentials {
-    if ([_blog hasJetpack] && !([[_blog jetpackUsername] length] && [[_blog jetpackPassword] length])) {
-        NSString *wpcomUsername = [[WPAccount defaultWordPressComAccount] username];
-        NSString *wpcomPassword = [[WPAccount defaultWordPressComAccount] password];
-        if (wpcomUsername && wpcomPassword) {
-            [self tryLoginWithUsername:wpcomUsername andPassword:wpcomPassword];
-        }
-    }
 }
 
 - (void)tryLoginWithUsername:(NSString *)username andPassword:(NSString *)password {
@@ -503,9 +482,6 @@ CGFloat const JetpackSignInButtonHeight = 41.0;
     _usernameText.text = username;
     _passwordText.text = password;
 	
-    self.username = username;
-    self.password = password;
-
     [self saveAction:nil];
 }
 
