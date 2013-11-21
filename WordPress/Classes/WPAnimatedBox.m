@@ -14,6 +14,7 @@
     UIImageView *page1;
     UIImageView *page2;
     UIImageView *page3;
+    BOOL isPreparedToAnimate;
 }
 
 @end
@@ -71,6 +72,10 @@ static CGFloat const WPAnimatedBoxAnimationTolerance = 5.0;
 
 - (void)prepareAnimation:(BOOL)animated {
     
+    if (isPreparedToAnimate) {
+        return;
+    }
+    
     [UIView animateWithDuration:animated ? 0.2 : 0.0
                      animations:^{
                          // Transform pages all the way down
@@ -80,9 +85,13 @@ static CGFloat const WPAnimatedBoxAnimationTolerance = 5.0;
                              view.transform = CGAffineTransformMakeTranslation(0, CGRectGetHeight(self.frame) - YOrigin);
                          }
                      }];
+    
+    isPreparedToAnimate = YES;
 }
 
 - (void)animate {
+    
+    isPreparedToAnimate = NO;
     
     [UIView animateWithDuration:1.4 delay:0.1 usingSpringWithDamping:0.5 initialSpringVelocity:0.1 options:UIViewAnimationOptionCurveEaseOut animations:^{
         page1.transform = CGAffineTransformIdentity;
