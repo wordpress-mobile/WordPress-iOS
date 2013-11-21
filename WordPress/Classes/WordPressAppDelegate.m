@@ -37,6 +37,7 @@
 #endif
 
 int ddLogLevel = LOG_LEVEL_INFO;
+NSInteger const UpdateCheckAlertViewTag = 102;
 
 @interface WordPressAppDelegate () <CrashlyticsDelegate, UIAlertViewDelegate>
 
@@ -71,7 +72,7 @@ int ddLogLevel = LOG_LEVEL_INFO;
     // Stats and feedback
     [WPMobileStats initializeStats];
     [[GPPSignIn sharedInstance] setClientID:[WordPressComApiCredentials googlePlusClientId]];
-    [self checkIfStatsShouldRun];
+    [self checkIfStatsShouldSendAndUpdateCheck];
     [self checkIfFeedbackShouldBeEnabled];
     
     // Networking setup
@@ -267,11 +268,11 @@ int ddLogLevel = LOG_LEVEL_INFO;
     [[UINavigationBar appearanceWhenContainedIn:[MFMailComposeViewController class], nil] setBarTintColor:[UIColor whiteColor]];
     [[UINavigationBar appearance] setTintColor:[UIColor whiteColor]];
     [[UINavigationBar appearanceWhenContainedIn:[MFMailComposeViewController class], nil] setTintColor:defaultTintColor];
-    [[UINavigationBar appearance] setTitleTextAttributes:@{UITextAttributeTextColor: [UIColor whiteColor], UITextAttributeFont : [UIFont fontWithName:@"OpenSans-Bold" size:16.0]} ];
+    [[UINavigationBar appearance] setTitleTextAttributes:@{NSForegroundColorAttributeName: [UIColor whiteColor], NSFontAttributeName: [UIFont fontWithName:@"OpenSans-Bold" size:16.0]} ];
     [[UINavigationBar appearance] setBackgroundImage:[UIImage imageNamed:@"transparent-point"] forBarMetrics:UIBarMetricsDefault];
     [[UINavigationBar appearance] setShadowImage:[UIImage imageNamed:@"transparent-point"]];
-    [[UIBarButtonItem appearance] setTitleTextAttributes:@{UITextAttributeFont: [WPStyleGuide regularTextFont], UITextAttributeTextColor : [UIColor whiteColor]} forState:UIControlStateNormal];
-    [[UIBarButtonItem appearance] setTitleTextAttributes:@{UITextAttributeFont: [WPStyleGuide regularTextFont], UITextAttributeTextColor : [UIColor lightGrayColor]} forState:UIControlStateDisabled];
+    [[UIBarButtonItem appearance] setTitleTextAttributes:@{NSFontAttributeName: [WPStyleGuide regularTextFont], NSForegroundColorAttributeName: [UIColor whiteColor]} forState:UIControlStateNormal];
+    [[UIBarButtonItem appearance] setTitleTextAttributes:@{NSFontAttributeName: [WPStyleGuide regularTextFont], NSForegroundColorAttributeName: [UIColor lightGrayColor]} forState:UIControlStateDisabled];
     [[UIToolbar appearance] setBarTintColor:[WPStyleGuide newKidOnTheBlockBlue]];
     [[UISwitch appearance] setOnTintColor:[WPStyleGuide newKidOnTheBlockBlue]];
     [[UIApplication sharedApplication] setStatusBarStyle:UIStatusBarStyleLightContent];
@@ -492,9 +493,9 @@ int ddLogLevel = LOG_LEVEL_INFO;
 
 #pragma mark - Stats and feedback
 
-- (void)checkIfStatsShouldRun {
+- (void)checkIfStatsShouldSendAndUpdateCheck {
     if (NO) { // Switch this to YES to debug stats/update check
-        [self runStats];
+        [self sendStatsAndCheckForAppUpdate];
         return;
     }
 	//check if statsDate exists in user defaults, if not, add it and run stats since this is obviously the first time
@@ -503,7 +504,7 @@ int ddLogLevel = LOG_LEVEL_INFO;
 	if (![defaults objectForKey:@"statsDate"]){
 		NSDate *theDate = [NSDate date];
 		[defaults setObject:theDate forKey:@"statsDate"];
-		[self runStats];
+		[self sendStatsAndCheckForAppUpdate];
 	} else {
 		//if statsDate existed, check if it's 7 days since last stats run, if it is > 7 days, run stats
 		NSDate *statsDate = [defaults objectForKey:@"statsDate"];
@@ -515,12 +516,12 @@ int ddLogLevel = LOG_LEVEL_INFO;
             // WARNING: for some reason, if runStats is called in a background thread
             // NSURLConnection doesn't launch and stats are not sent
             // Don't change this or be really sure it's working
-			[self runStats];
+			[self sendStatsAndCheckForAppUpdate];
 		}
 	}
 }
 
-- (void)runStats {
+- (void)sendStatsAndCheckForAppUpdate {
 	//generate and post the stats data
 	/*
 	 - device_uuid – A unique identifier to the iPhone/iPod that the app is installed on.
