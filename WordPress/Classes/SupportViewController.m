@@ -29,6 +29,23 @@ typedef NS_ENUM(NSInteger, SettingsViewControllerSections)
 };
 
 
++ (void)showFromTabBar {
+    SupportViewController *supportViewController = [[SupportViewController alloc] init];
+    UINavigationController *aNavigationController = [[UINavigationController alloc] initWithRootViewController:supportViewController];
+    aNavigationController.navigationBar.translucent = NO;
+    
+    if (IS_IPAD) {
+        aNavigationController.modalTransitionStyle = UIModalTransitionStyleCrossDissolve;
+        aNavigationController.modalPresentationStyle = UIModalPresentationFormSheet;
+    }
+    
+    UIViewController *presenter = [[WordPressAppDelegate sharedWordPressApplicationDelegate] tabBarController];
+    if (presenter.presentedViewController) {
+        presenter = presenter.presentedViewController;
+    }
+    [presenter presentViewController:aNavigationController animated:YES completion:nil];
+}
+
 - (id)init
 {
     self = [super initWithStyle:UITableViewStyleGrouped];
@@ -39,6 +56,7 @@ typedef NS_ENUM(NSInteger, SettingsViewControllerSections)
 
     return self;
 }
+
 - (void)viewDidLoad
 {
     [super viewDidLoad];

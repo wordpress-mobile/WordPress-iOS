@@ -62,7 +62,7 @@
             // XML-RPC is disabled.
             message = error.localizedDescription;
         }
-        [[WordPressAppDelegate sharedWordPressApplicationDelegate] showAlertWithTitle:NSLocalizedString(@"Error", nil) message:message];
+        [WPError showAlertWithTitle:NSLocalizedString(@"Error", nil) message:message];
     }];
 }
 

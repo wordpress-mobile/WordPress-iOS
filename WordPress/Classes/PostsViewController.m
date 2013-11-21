@@ -106,15 +106,6 @@
     [[NSNotificationCenter defaultCenter] removeObserver:self];
 }
 
-- (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation {
-    WordPressAppDelegate *delegate = (WordPressAppDelegate*)[[UIApplication sharedApplication] delegate];
-
-    if ([delegate isAlertRunning] == YES)
-        return NO;
-    
-    return [super shouldAutorotateToInterfaceOrientation:interfaceOrientation];
-}
-
 - (NSString *)statsPropertyForViewOpening
 {
     return StatsPropertyPostsOpened;
@@ -202,7 +193,7 @@
 		if([error code] == 403) {
 			[self promptForPassword];
 		} else {
-            [[WordPressAppDelegate sharedWordPressApplicationDelegate] showXMLRPCErrorAlert:error];
+            [WPError showXMLRPCErrorAlert:error];
 		}
         [self syncItems];
     }];

@@ -431,10 +431,6 @@
     } else {
         [actionSheet showInView:postDetailViewController.view];
     }
-
-    WordPressAppDelegate *appDelegate = (WordPressAppDelegate*)[[UIApplication sharedApplication] delegate];
-    [appDelegate setAlertRunning:YES];
-	
 }
 
 - (IBAction)showPhotoPickerActionSheet:(id)sender {
@@ -480,10 +476,6 @@
             [actionSheet showInView:postDetailViewController.view];
         }
     }
-    
-    WordPressAppDelegate *appDelegate = (WordPressAppDelegate*)[[UIApplication sharedApplication] delegate];
-    [appDelegate setAlertRunning:YES];
-	
 }
 
 
@@ -594,9 +586,6 @@
         }
 		self.isShowingResizeActionSheet = NO;
 	}
-    
-    WordPressAppDelegate *appDelegate = (WordPressAppDelegate*)[[UIApplication sharedApplication] delegate];
-    [appDelegate setAlertRunning:NO];
     
     self.currentActionSheet = nil;
 }

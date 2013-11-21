@@ -592,7 +592,7 @@
     // -999: Canceled AJAX request
     // 102:  Frame load interrupted: canceled wp-login redirect to make the POST
     if (isLoading && ([error code] != -999) && [error code] != 102) {
-        [[WordPressAppDelegate sharedWordPressApplicationDelegate] showAlertWithTitle:NSLocalizedString(@"Error", nil) message:error.localizedDescription];
+        [WPError showAlertWithTitle:NSLocalizedString(@"Error", nil) message:error.localizedDescription];
     }
     [self setLoading:NO];
 }

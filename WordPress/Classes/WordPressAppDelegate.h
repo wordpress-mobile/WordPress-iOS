@@ -17,7 +17,6 @@
 @property (nonatomic, strong) IBOutlet UIWindow *window;
 @property (nonatomic, strong) UINavigationController *navigationController;
 
-@property (nonatomic, getter = isAlertRunning) BOOL alertRunning;
 @property (nonatomic, assign) BOOL isWPcomAuthenticated;
 @property (nonatomic, strong, readonly) NSManagedObjectContext *managedObjectContext;
 @property (nonatomic, strong, readonly) NSManagedObjectModel *managedObjectModel;
@@ -31,12 +30,6 @@
 
 
 + (WordPressAppDelegate *)sharedWordPressApplicationDelegate;
-
-///--------------------
-/// @name Global Alerts
-///--------------------
-- (void)showAlertWithTitle:(NSString *)title message:(NSString *)message;
-- (void)showXMLRPCErrorAlert:(NSError *)error;
 
 
 ///---------------------------

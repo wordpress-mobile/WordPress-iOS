@@ -104,25 +104,17 @@
     NSString *catName = newCatNameField.text;
     
     if (!catName ||[catName length] == 0) {
-        UIAlertView *alert2 = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"Category title missing.", @"Error popup title to indicate that there was no category title filled in.")
-                                                         message:NSLocalizedString(@"Title for a category is mandatory.", @"Error popup message to indicate that there was no category title filled in.")
-                                                        delegate:self cancelButtonTitle:NSLocalizedString(@"OK", @"") otherButtonTitles:nil];
-        
-        [alert2 show];
-        WordPressAppDelegate *delegate = (WordPressAppDelegate*)[[UIApplication sharedApplication] delegate];
-        [delegate setAlertRunning:YES];
-        
+        NSString *title = NSLocalizedString(@"Category title missing.", @"Error popup title to indicate that there was no category title filled in.");
+        NSString *message = NSLocalizedString(@"Title for a category is mandatory.", @"Error popup message to indicate that there was no category title filled in.");
+        [WPError showAlertWithTitle:title message:message];
+
         return;
     }
     
     if ([Category existsName:catName forBlog:self.blog withParentId:parentCat.categoryID]) {
-        UIAlertView *alert2 = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"Category name already exists.", @"Error popup title to show that a category already exists.")
-                                                         message:NSLocalizedString(@"There is another category with that name.", @"Error popup message to show that a category already exists.")
-                                                        delegate:self cancelButtonTitle:NSLocalizedString(@"OK", @"OK button label.") otherButtonTitles:nil];
-		
-        [alert2 show];
-        WordPressAppDelegate *delegate = (WordPressAppDelegate*)[[UIApplication sharedApplication] delegate];
-        [delegate setAlertRunning:YES];
+        NSString *title = NSLocalizedString(@"Category name already exists.", @"Error popup title to show that a category already exists.");
+        NSString *message = NSLocalizedString(@"There is another category with that name.", @"Error popup message to show that a category already exists.");
+        [WPError showAlertWithTitle:title message:message];
         
         return;
     }
@@ -157,7 +149,7 @@
 			[self.navigationController pushViewController:editSiteViewController animated:YES];
 			
 		} else {
-			[[WordPressAppDelegate sharedWordPressApplicationDelegate] showXMLRPCErrorAlert:error];
+			[WPError showXMLRPCErrorAlert:error];
 		}
     }];
 }
@@ -242,15 +234,6 @@
 - (BOOL)textFieldShouldReturn:(UITextField *)textField {
     [textField resignFirstResponder];
     return YES;
-}
-
-
-#pragma mark -
-#pragma mark UIAlertView Delegate
-
-- (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex {
-    WordPressAppDelegate *delegate = (WordPressAppDelegate*)[[UIApplication sharedApplication] delegate];
-    [delegate setAlertRunning:NO];
 }
 
 @end

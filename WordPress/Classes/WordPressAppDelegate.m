@@ -316,86 +316,15 @@ int ddLogLevel = LOG_LEVEL_INFO;
     [self.tabBarController setSelectedIndex:notificationsTabIndex];
 }
 
+
 #pragma mark - Global Alerts
 
-- (void)showAlertWithTitle:(NSString *)title message:(NSString *)message {
-	DDLogInfo(@"Showing alert with title: %@", message);
-    UIAlertView *alert = [[UIAlertView alloc] initWithTitle:title
-                          message:message
-                          delegate:self
-						cancelButtonTitle:NSLocalizedString(@"Need Help?", @"'Need help?' button label, links off to the WP for iOS FAQ.")
-						otherButtonTitles:NSLocalizedString(@"OK", @"OK button label."), nil];
-    [alert show];
-}
-
-- (void)showXMLRPCErrorAlert:(NSError *)error {
-	if ([self isAlertRunning]) {
-        return;
-    }
-	self.alertRunning = YES;
-    
-    NSString *cleanedErrorMsg = [error localizedDescription];
-    
-    //org.wordpress.iphone --> XML-RPC errors
-    if ([error.domain isEqualToString:@"org.wordpress.iphone"] && error.code == 401){
-        cleanedErrorMsg = NSLocalizedString(@"Sorry, you cannot access this feature. Please check your User Role on this blog.", @"");
-    }
-    
-    // ignore HTTP auth canceled errors
-    if ([error.domain isEqual:NSURLErrorDomain] && error.code == NSURLErrorUserCancelledAuthentication) {
-        self.alertRunning = NO;
-        return;
-    }
-	
-	if ([cleanedErrorMsg rangeOfString:@"NSXMLParserErrorDomain"].location != NSNotFound) {
-		cleanedErrorMsg = NSLocalizedString(@"The app can't recognize the server response. Please, check the configuration of your blog.", @"");
-    }
-	
-	[self showAlertWithTitle:NSLocalizedString(@"Error", @"Generic popup title for any type of error.") message:cleanedErrorMsg];
-}
-
 - (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex {
-	[self setAlertRunning:NO];
-	
     if (alertView.tag == 102) { // Update alert
         if (buttonIndex == 1) {
             [[UIApplication sharedApplication] openURL:[NSURL URLWithString:@"http://itunes.apple.com/us/app/wordpress/id335703880?mt=8&ls=1"]];
         }
-    } else if (alertView.tag == kNotificationNewComment) {
-        if (buttonIndex == 1) {
-            [self showNotificationsTab];
-        }
-    } else if (alertView.tag == kNotificationNewSocial) {
-        if (buttonIndex == 1) {
-            [self showNotificationsTab];
-        }
-	} else {
-		//Need Help Alert
-		switch(buttonIndex) {
-			case 0: {
-				SupportViewController *supportViewController = [[SupportViewController alloc] init];
-                UINavigationController *aNavigationController = [[UINavigationController alloc] initWithRootViewController:supportViewController];
-                aNavigationController.navigationBar.translucent = NO;
-                if (IS_IPAD) {
-                    aNavigationController.modalTransitionStyle = UIModalTransitionStyleCrossDissolve;
-                    aNavigationController.modalPresentationStyle = UIModalPresentationFormSheet;
-                }
-                
-                UIViewController *presenter = self.tabBarController;
-                if (presenter.presentedViewController) {
-                    presenter = presenter.presentedViewController;
-                }
-                [presenter presentViewController:aNavigationController animated:YES completion:nil];
-                
-				break;
-			}
-			case 1:
-				//ok
-				break;
-			default:
-				break;
-		}
-	}
+    }
 }
 
 
@@ -624,7 +553,7 @@ int ddLogLevel = LOG_LEVEL_INFO;
                                                            delegate:self
                                                   cancelButtonTitle:NSLocalizedString(@"Dismiss", @"Dismiss button label.")
                                                   otherButtonTitles:NSLocalizedString(@"Update Now", @"Popup 'update' button to highlight a new version of the app being available. The button takes you to the app store on the device, and should be actionable."), nil];
-            alert.tag = 102;
+            alert.tag = UpdateCheckAlertViewTag;
             [alert show];
         }
     } failure:nil];

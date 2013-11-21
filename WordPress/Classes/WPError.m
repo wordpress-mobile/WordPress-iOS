@@ -12,8 +12,25 @@
 #import "WPcomLoginViewController.h"
 #import "WPAccount.h"
 #import "NSString+XMLExtensions.h"
+#import "SupportViewController.h"
+
+NSInteger const SupportButtonIndex = 0;
+
+@interface WPError () <UIAlertViewDelegate>
+@property (nonatomic, assign) BOOL alertShowing;
+@end
 
 @implementation WPError
+
++ (instancetype)internalInstance {
+    static WPError *instance;
+    static dispatch_once_t onceToken;
+    dispatch_once(&onceToken, ^{
+        instance = [[WPError alloc] init];
+    });
+    return instance;
+}
+
 
 + (void)showAlertWithError:(NSError *)error title:(NSString *)title {
     NSString *message = nil;
@@ -88,11 +105,55 @@
         }
     }
     
-    [[WordPressAppDelegate sharedWordPressApplicationDelegate] showAlertWithTitle:title message:message];
+    [self showAlertWithTitle:title message:message];
 }
 
 + (void)showAlertWithError:(NSError *)error {
     [self showAlertWithError:error title:nil];
+}
+
++ (void)showAlertWithTitle:(NSString *)title message:(NSString *)message {
+	DDLogInfo(@"Showing alert with title: %@", message);
+    UIAlertView *alert = [[UIAlertView alloc] initWithTitle:title
+                                                    message:message
+                                                   delegate:[WPError internalInstance]
+                                          cancelButtonTitle:NSLocalizedString(@"Need Help?", @"'Need help?' button label, links off to the WP for iOS FAQ.")
+                                          otherButtonTitles:NSLocalizedString(@"OK", @"OK button label."), nil];
+    [alert show];
+}
+
++ (void)showXMLRPCErrorAlert:(NSError *)error {
+    if ([WPError internalInstance].alertShowing) {
+        return;
+    }
+    [WPError internalInstance].alertShowing = YES;
+    
+    NSString *cleanedErrorMsg = [error localizedDescription];
+    
+    //org.wordpress.iphone --> XML-RPC errors
+    if ([error.domain isEqualToString:@"org.wordpress.iphone"] && error.code == 401){
+        cleanedErrorMsg = NSLocalizedString(@"Sorry, you cannot access this feature. Please check your User Role on this blog.", @"");
+    }
+    
+    // ignore HTTP auth canceled errors
+    if ([error.domain isEqual:NSURLErrorDomain] && error.code == NSURLErrorUserCancelledAuthentication) {
+        [WPError internalInstance].alertShowing = NO;
+        return;
+    }
+	
+	if ([cleanedErrorMsg rangeOfString:@"NSXMLParserErrorDomain"].location != NSNotFound) {
+		cleanedErrorMsg = NSLocalizedString(@"The app can't recognize the server response. Please, check the configuration of your blog.", @"");
+    }
+	
+	[self showAlertWithTitle:NSLocalizedString(@"Error", @"Generic popup title for any type of error.") message:cleanedErrorMsg];
+}
+
+#pragma mark - UIAlertViewDelegate
+
+- (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex {
+    if (buttonIndex == SupportButtonIndex) {
+        [SupportViewController showFromTabBar];
+    }
 }
 
 @end

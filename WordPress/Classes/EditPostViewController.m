@@ -1018,10 +1018,6 @@ CGFloat const EditPostViewControllerTextViewOffset = 10.0;
     } else {
         [actionSheet showInView:self.view];
     }
-
-    WordPressAppDelegate *appDelegate = (WordPressAppDelegate *)[[UIApplication sharedApplication] delegate];
-    [appDelegate setAlertRunning:YES];
-    
 }
 
 //code to append http:// if protocol part is not there as part of urlText.
@@ -1080,16 +1076,11 @@ CGFloat const EditPostViewControllerTextViewOffset = 10.0;
     _linkHelperAlertView.button1CompletionBlock = ^(WPAlertView *overlayView){
         // Cancel
         [overlayView dismiss];
-        
-        WordPressAppDelegate *delegate = (WordPressAppDelegate*)[[UIApplication sharedApplication] delegate];
-        [delegate setAlertRunning:NO];
         [editorTextView becomeFirstResponder];
         
         [fles setLinkHelperAlertView:nil];
     };
     _linkHelperAlertView.button2CompletionBlock = ^(WPAlertView *overlayView){
-        WordPressAppDelegate *delegate = (WordPressAppDelegate*)[[UIApplication sharedApplication] delegate];
-
         // Insert
         
         //Disable scrolling temporarily otherwise inserting text will scroll to the bottom in iOS6 and below.
@@ -1102,7 +1093,6 @@ CGFloat const EditPostViewControllerTextViewOffset = 10.0;
         UITextField *urlField = overlayView.secondTextField;
 
         if ((urlField.text == nil) || ([urlField.text isEqualToString:@""])) {
-            [delegate setAlertRunning:NO];
             return;
         }
         
@@ -1135,7 +1125,6 @@ CGFloat const EditPostViewControllerTextViewOffset = 10.0;
         [fles autosaveContent];
         [fles incrementCharactersChangedForAutosaveBy:MAX(oldRange.length, aTagText.length)];
         
-        [delegate setAlertRunning:NO];
         [fles setLinkHelperAlertView:nil];
         [fles refreshTextView];
     };
@@ -1208,9 +1197,6 @@ CGFloat const EditPostViewControllerTextViewOffset = 10.0;
 			}
         }
     }
-    
-    WordPressAppDelegate *appDelegate = (WordPressAppDelegate *)[[UIApplication sharedApplication] delegate];
-    [appDelegate setAlertRunning:NO];
 }
 
 #pragma mark - TextView delegate

@@ -11,7 +11,9 @@
 @interface WPError : NSObject
 
 + (void)showAlertWithError:(NSError *)error title:(NSString *)title;
-
 + (void)showAlertWithError:(NSError *)error;
+
++ (void)showAlertWithTitle:(NSString *)title message:(NSString *)message;
++ (void)showXMLRPCErrorAlert:(NSError *)error;
 
 @end

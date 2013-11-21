@@ -163,9 +163,6 @@ CGFloat const CommentViewUnapproveButtonTag = 701;
     }
     
 	_isShowingActionSheet = YES;
-    
-    WordPressAppDelegate *appDelegate = (WordPressAppDelegate*)[[UIApplication sharedApplication] delegate];
-    [appDelegate setAlertRunning:YES];
 }
 
 - (void)updateViewConstraints
@@ -322,9 +319,6 @@ CGFloat const CommentViewUnapproveButtonTag = 701;
         [actionSheet showFromToolbar:self.navigationController.toolbar];
         
         _isShowingActionSheet = YES;
-        
-        WordPressAppDelegate *appDelegate = (WordPressAppDelegate*)[[UIApplication sharedApplication] delegate];
-        [appDelegate setAlertRunning:YES];
     }
 }
 
