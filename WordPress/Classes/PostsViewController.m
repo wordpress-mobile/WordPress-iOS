@@ -218,7 +218,7 @@
 }
 
 - (void)editPost:(AbstractPost *)apost {
-    EditPostViewController *editPostViewController = [[EditPostViewController alloc] initWithPost:[apost createRevision]];
+    EditPostViewController *editPostViewController = [[EditPostViewController alloc] initWithPost:apost];
     UINavigationController *navController = [[UINavigationController alloc] initWithRootViewController:editPostViewController];
     navController.modalPresentationStyle = UIModalPresentationCurrentContext;
     [self.view.window.rootViewController presentViewController:navController animated:YES completion:nil];
@@ -246,14 +246,12 @@
 }
 
 - (NSFetchRequest *)fetchRequest {
-    NSFetchRequest *fetchRequest = [[NSFetchRequest alloc] init];
-    [fetchRequest setEntity:[NSEntityDescription entityForName:[self entityName] inManagedObjectContext:self.blog.managedObjectContext]];
-    [fetchRequest setPredicate:[NSPredicate predicateWithFormat:@"(blog == %@) && (original == nil)", self.blog]];
-    NSSortDescriptor *sortDescriptorLocal = [[NSSortDescriptor alloc] initWithKey:@"remoteStatusNumber" ascending:YES];
-    NSSortDescriptor *sortDescriptorDate = [[NSSortDescriptor alloc] initWithKey:@"date_created_gmt" ascending:NO];
-    NSArray *sortDescriptors = [[NSArray alloc] initWithObjects:sortDescriptorLocal, sortDescriptorDate, nil];
-    [fetchRequest setSortDescriptors:sortDescriptors];
-
+    NSFetchRequest *fetchRequest = [NSFetchRequest fetchRequestWithEntityName:[self entityName]];
+    fetchRequest.predicate = [NSPredicate predicateWithFormat:@"(blog == %@) && (original == nil)", self.blog];
+    NSSortDescriptor *sortDescriptorLocal = [NSSortDescriptor sortDescriptorWithKey:@"remoteStatusNumber" ascending:YES];
+    NSSortDescriptor *sortDescriptorDate = [NSSortDescriptor sortDescriptorWithKey:@"date_created_gmt" ascending:NO];
+    fetchRequest.sortDescriptors = @[sortDescriptorLocal, sortDescriptorDate];
+    fetchRequest.fetchBatchSize = 10;
     return fetchRequest;
 }
 
@@ -271,8 +269,7 @@
 }
 
 - (UITableViewCell *)newCell {
-    // To comply with apple ownership and naming conventions, returned cell should have a retain count > 0, so retain the dequeued cell.
-    NSString *cellIdentifier = @"PostCell";
+    static NSString *const cellIdentifier = @"PostCell";
     UITableViewCell *cell = [self.tableView dequeueReusableCellWithIdentifier:cellIdentifier];
     if (cell == nil) {
         cell = [[NewPostTableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:cellIdentifier];

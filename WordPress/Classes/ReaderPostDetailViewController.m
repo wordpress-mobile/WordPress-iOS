@@ -18,6 +18,7 @@
 #import "ReaderCommentFormView.h"
 #import "ReaderReblogFormView.h"
 #import "IOS7CorrectedTextView.h"
+#import "ContextManager.h"
 
 NSInteger const ReaderCommentsToSync = 100;
 NSTimeInterval const ReaderPostDetailViewControllerRefreshTimeout = 300; // 5 minutes
@@ -654,7 +655,7 @@ NSTimeInterval const ReaderPostDetailViewControllerRefreshTimeout = 300; // 5 mi
 	
 	[ReaderComment syncAndThreadComments:commentsArr
 								 forPost:self.post
-							 withContext:[[WordPressAppDelegate sharedWordPressApplicationDelegate] managedObjectContext]];
+							 withContext:[[ContextManager sharedInstance] mainContext]];
 	
 	[self prepareComments];
 }
@@ -899,7 +900,7 @@ NSTimeInterval const ReaderPostDetailViewControllerRefreshTimeout = 300; // 5 mi
     }
 	
 	NSString *entityName = @"ReaderComment";
-	NSManagedObjectContext *moc = [[WordPressAppDelegate sharedWordPressApplicationDelegate] managedObjectContext];
+	NSManagedObjectContext *moc = [[ContextManager sharedInstance] mainContext];
 	
 	NSFetchRequest *fetchRequest = [[NSFetchRequest alloc] init];
     [fetchRequest setEntity:[NSEntityDescription entityForName:@"ReaderComment" inManagedObjectContext:moc]];

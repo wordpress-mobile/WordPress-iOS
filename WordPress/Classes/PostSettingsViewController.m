@@ -220,6 +220,14 @@
     [self reloadData];
 }
 
+- (void)viewWillDisappear:(BOOL)animated {
+    [super viewWillDisappear:animated];
+    
+    [self.apost.managedObjectContext performBlock:^{
+        [self.apost.managedObjectContext save:nil];
+    }];
+}
+
 - (void)didReceiveMemoryWarning {
     DDLogWarn(@"%@ %@", self, NSStringFromSelector(_cmd));
     [super didReceiveMemoryWarning];
