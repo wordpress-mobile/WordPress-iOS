@@ -177,11 +177,7 @@ CGFloat const WPTableViewTopMargin = 40;
 
 - (NSString *)noResultsMessageText
 {
-	if ([self userCanCreateEntity]) {
-		return NSLocalizedString(@"Why not create one?", @"A call to action to create a post or page.");
-	} else {
-        return nil;
-    }
+	return nil;
 }
 
 - (UIView *)noResultsAccessoryView

@@ -965,6 +965,8 @@
 		E2408597183D8277002EB0EF /* animatedBoxPage3.png in Resources */ = {isa = PBXBuildFile; fileRef = E240858F183D8277002EB0EF /* animatedBoxPage3.png */; };
 		E2408598183D8277002EB0EF /* animatedBoxPage3@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = E2408590183D8277002EB0EF /* animatedBoxPage3@2x.png */; };
 		E240859C183D82AE002EB0EF /* WPAnimatedBox.m in Sources */ = {isa = PBXBuildFile; fileRef = E240859B183D82AE002EB0EF /* WPAnimatedBox.m */; };
+		E24085A0183FDDEC002EB0EF /* penandink.png in Resources */ = {isa = PBXBuildFile; fileRef = E240859E183FDDEC002EB0EF /* penandink.png */; };
+		E24085A1183FDDEC002EB0EF /* penandink@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = E240859F183FDDEC002EB0EF /* penandink@2x.png */; };
 		E2586BD31832F31D004B5B67 /* icon-site-field@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = E2586BD11832F31D004B5B67 /* icon-site-field@2x.png */; };
 		E2586BD41832F31D004B5B67 /* icon-site-field.png in Resources */ = {isa = PBXBuildFile; fileRef = E2586BD21832F31D004B5B67 /* icon-site-field.png */; };
 		EC4696FF0EA75D460040EE8E /* PagesViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = EC4696FE0EA75D460040EE8E /* PagesViewController.m */; };
@@ -2173,6 +2175,8 @@
 		E2408590183D8277002EB0EF /* animatedBoxPage3@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "animatedBoxPage3@2x.png"; path = "Resources/Images/animatedBoxPage3@2x.png"; sourceTree = "<group>"; };
 		E240859A183D82AE002EB0EF /* WPAnimatedBox.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WPAnimatedBox.h; sourceTree = "<group>"; };
 		E240859B183D82AE002EB0EF /* WPAnimatedBox.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WPAnimatedBox.m; sourceTree = "<group>"; };
+		E240859E183FDDEC002EB0EF /* penandink.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = penandink.png; sourceTree = "<group>"; };
+		E240859F183FDDEC002EB0EF /* penandink@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "penandink@2x.png"; sourceTree = "<group>"; };
 		E2586BD11832F31D004B5B67 /* icon-site-field@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "icon-site-field@2x.png"; sourceTree = "<group>"; };
 		E2586BD21832F31D004B5B67 /* icon-site-field.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "icon-site-field.png"; sourceTree = "<group>"; };
 		EBC24772E5CD4036B5AFD803 /* Pods.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = Pods.xcconfig; path = ../Pods/Pods.xcconfig; sourceTree = SOURCE_ROOT; };
@@ -3341,6 +3345,8 @@
 		AC512F790E20D25E00B7DA32 /* Images */ = {
 			isa = PBXGroup;
 			children = (
+				E240859E183FDDEC002EB0EF /* penandink.png */,
+				E240859F183FDDEC002EB0EF /* penandink@2x.png */,
 				E2408599183D828B002EB0EF /* Animated Box */,
 				462F4E0518369B370028D2F8 /* Tabs */,
 				46F871501839528C00BC149B /* reader-postaction-time.png */,
@@ -4493,6 +4499,7 @@
 				93740DC917D8F85600C41B2F /* WPAlertView.h in Resources */,
 				371C163515A3A3F800BC653C /* navbar_read@2x.png in Resources */,
 				CC313AD115A4360800F7B7C6 /* friend_follow_service_icons.png in Resources */,
+				E24085A0183FDDEC002EB0EF /* penandink.png in Resources */,
 				85495F5B17C6FACF00871A7A /* icon-comments-trash.png in Resources */,
 				CC313AD215A4360800F7B7C6 /* friend_follow_service_icons@2x.png in Resources */,
 				5D7C22B615A4FCFE00FCE1C2 /* down_dim.png in Resources */,
@@ -4776,6 +4783,7 @@
 				37F66E0C167F6C900043E8CA /* note_navbar_icon_comment@2x.png in Resources */,
 				37F66E0D167F6C900043E8CA /* note_navbar_icon_follow.png in Resources */,
 				37F66E0E167F6C900043E8CA /* note_navbar_icon_follow@2x.png in Resources */,
+				E24085A1183FDDEC002EB0EF /* penandink@2x.png in Resources */,
 				37F66E0F167F6C900043E8CA /* note_navbar_icon_like.png in Resources */,
 				37F66E10167F6C900043E8CA /* note_navbar_icon_like@2x.png in Resources */,
 				37F66E11167F6C900043E8CA /* note_navbar_icon_reblog.png in Resources */,
@@ -5135,8 +5143,6 @@
 				FD4500D11580DF3600F2B0E6 /* UIColor+Helpers.m in Sources */,
 				5D2B80D11592447200161F6E /* QuickPhotoButtonView.m in Sources */,
 				852F4E8C17BED193005ED539 /* PostSettingsSelectionViewController.m in Sources */,
-				E1745A9A15AF49C000A3F7C5 /* UIViewController+Styled.m in Sources */,
-				E1745AA715AF4E5900A3F7C5 /* UIBarButtonItem+Styled.m in Sources */,
 				FD75DDAD15B021C80043F12C /* UIViewController+Rotation.m in Sources */,
 				5DEB6EF515B471B3004E81F3 /* WPPopoverBackgroundView.m in Sources */,
 				CC0E20AE15B87DA100D3468B /* WPWebBridge.m in Sources */,
