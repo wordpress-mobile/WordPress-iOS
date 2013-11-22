@@ -184,29 +184,6 @@
 	[[NSNotificationCenter defaultCenter] removeObserver:self];
 }
 
-- (void)viewWillAppear:(BOOL)animated {
-	[super viewWillAppear:animated];
-}
-
-- (void)viewDidUnload {
-    [self removeNotifications];
-    self.table = nil;
-    self.addMediaButton = nil;
-    self.spinner = nil;
-    self.messageLabel = nil;
-    self.bottomToolbar = nil;
-    self.addPopover = nil;
-    self.customSizeAlert = nil;
-    self.currentActionSheet = nil;
-    
-	[super viewDidUnload];
-}
-
-- (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation
-{
-    return [super shouldAutorotateToInterfaceOrientation:interfaceOrientation];
-}
-
 - (Post *)post {
     if ([self.apost isKindOfClass:[Post class]]) {
         return (Post *)self.apost;
