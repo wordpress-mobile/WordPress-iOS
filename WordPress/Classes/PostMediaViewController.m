@@ -11,6 +11,7 @@
 #import "Post.h"
 #import <ImageIO/ImageIO.h>
 #import "WPPopoverBackgroundView.h"
+#import "ContextManager.h"
 
 #define TAG_ACTIONSHEET_PHOTO 1
 #define TAG_ACTIONSHEET_VIDEO 2
@@ -329,21 +330,16 @@
 	[tableView deselectRowAtIndexPath:indexPath animated:YES];
 }
 
--(void)tableView:(UITableView*)tableView willBeginEditingRowAtIndexPath:(NSIndexPath *)indexPath {
-}
-
 - (void)tableView:(UITableView *)tableView commitEditingStyle:(UITableViewCellEditingStyle)editingStyle forRowAtIndexPath:(NSIndexPath *)indexPath {
-	// If row is deleted, remove it from the list.
 	if (editingStyle == UITableViewCellEditingStyleDelete)
 	{
         [[NSNotificationCenter defaultCenter] postNotificationName:@"ShouldRemoveMedia" object:[self.resultsController objectAtIndexPath:indexPath]];
         Media *media = [self.resultsController objectAtIndexPath:indexPath];
         [media remove];
-        [media save];
 	}
 }
 
--(NSString *)tableView:(UITableView*)tableView titleForDeleteConfirmationButtonForRowAtIndexPath:(NSIndexPath *)indexPath {
+- (NSString *)tableView:(UITableView*)tableView titleForDeleteConfirmationButtonForRowAtIndexPath:(NSIndexPath *)indexPath {
 	return NSLocalizedString(@"Remove", @"");
 }
 
@@ -1434,9 +1430,6 @@
         if (!isPickingFeaturedImage) {
             [[NSNotificationCenter defaultCenter] postNotificationName:@"ShouldInsertMediaBelow" object:imageMedia];
         }
-        else {
-            
-        }
         [imageMedia save];
     } failure:^(NSError *error) {
         if (error.domain == NSURLErrorDomain && error.code == NSURLErrorCancelled) {
@@ -1577,7 +1570,6 @@
         return;
     }
     [[NSNotificationCenter defaultCenter] postNotificationName:@"ShouldInsertMediaBelow" object:media];
-    [media save];
 	self.isAddingMedia = NO;
 }
 
@@ -1616,26 +1608,23 @@
     if (resultsController != nil) {
         return resultsController;
     }
+
+    NSString *cacheName = [NSString stringWithFormat:@"Media-%@-%@",
+                           self.apost.blog.hostURL,
+                           self.apost.postID];
     
-    WordPressAppDelegate *appDelegate = (WordPressAppDelegate*)[[UIApplication sharedApplication] delegate];
-    NSFetchRequest *fetchRequest = [[NSFetchRequest alloc] init];
-    [fetchRequest setEntity:[NSEntityDescription entityForName:@"Media" inManagedObjectContext:appDelegate.managedObjectContext]];
-    [fetchRequest setPredicate:[NSPredicate predicateWithFormat:@"%@ IN posts AND mediaType != 'featured'", self.apost]];
-    NSSortDescriptor *sortDescriptorDate = [[NSSortDescriptor alloc] initWithKey:@"creationDate" ascending:NO];
-    NSArray *sortDescriptors = [[NSArray alloc] initWithObjects:sortDescriptorDate, nil];
-    [fetchRequest setSortDescriptors:sortDescriptors];
+    [NSFetchedResultsController deleteCacheWithName:cacheName];
+    
+    NSFetchRequest *fetchRequest = [NSFetchRequest fetchRequestWithEntityName:@"Media"];
+    fetchRequest.predicate = [NSPredicate predicateWithFormat:@"%@ IN posts AND mediaType != 'featured'", self.apost];
+    fetchRequest.sortDescriptors = @[[NSSortDescriptor sortDescriptorWithKey:@"creationDate" ascending:NO]];
     
     resultsController = [[NSFetchedResultsController alloc]
                                                       initWithFetchRequest:fetchRequest
-                                                      managedObjectContext:appDelegate.managedObjectContext
+                                                      managedObjectContext:[[ContextManager sharedInstance] mainContext]
                                                       sectionNameKeyPath:nil
-                                                      cacheName:[NSString stringWithFormat:@"Media-%@-%@",
-                                                                 self.apost.blog.hostURL,
-                                                                 self.apost.postID]];
+                                                      cacheName:cacheName];
     resultsController.delegate = self;
-    
-     sortDescriptorDate = nil;
-     sortDescriptors = nil;
     
     NSError *error = nil;
     if (![resultsController performFetch:&error]) {
