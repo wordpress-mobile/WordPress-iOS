@@ -17,6 +17,7 @@
 #import "ReachabilityUtils.h"
 #import "WPAccount.h"
 #import "WPTableViewSectionFooterView.h"
+#import "Blog.h"
 
 @interface CreateWPComBlogViewController () <
     SelectWPComBlogVisibilityViewControllerDelegate,

@@ -14,6 +14,7 @@
 #import "WelcomeViewController.h"
 #import "BlogDetailsViewController.h"
 #import "WPTableViewCell.h"
+#import "Blog.h"
 
 CGFloat const blavatarImageSize = 50.f;
 

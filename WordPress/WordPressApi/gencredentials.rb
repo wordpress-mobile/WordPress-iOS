@@ -70,9 +70,17 @@ EOF
 end
 
 def print_crashlytics(crashlytics)
-    print <<-EOF
+print <<-EOF
 + (NSString *)crashlyticsApiKey {
     return @"#{crashlytics}";
+}
+EOF
+end
+
+def print_hockeyapp(hockeyapp)
+print <<-EOF
++ (NSString *)hockeyappAppId {
+    return @"#{hockeyapp}";
 }
 EOF
 end
@@ -93,7 +101,7 @@ def print_quantcast(quantcast)
 EOF
 end
 
-def print_class(client, secret, pocket, mixpanel_dev, mixpanel_prod, crashlytics, googleplus, quantcast)
+def print_class(client, secret, pocket, mixpanel_dev, mixpanel_prod, crashlytics, hockeyapp, googleplus, quantcast)
   print <<-EOF
 #import "WordPressComApiCredentials.h"
 @implementation WordPressComApiCredentials
@@ -103,6 +111,7 @@ EOF
   print_pocket(pocket)
   print_mixpanel(mixpanel_dev, mixpanel_prod)
   print_crashlytics(crashlytics)
+  print_hockeyapp(hockeyapp)
   print_googleplus(googleplus)
   print_quantcast(quantcast)
   printf("@end\n")
@@ -126,6 +135,7 @@ pocket = nil
 mixpanel_dev = nil
 mixpanel_prod = nil
 crashlytics = nil
+hockeyapp = nil
 googleplus = nil
 quantcast = nil
 File.open(path) do |f|
@@ -143,6 +153,8 @@ File.open(path) do |f|
       mixpanel_prod = v.chomp
     elsif k == "CRASHLYTICS_API_KEY"
       crashlytics = v.chomp
+    elsif k == "HOCKEYAPP_APP_ID"
+      hockeyapp = v.chomp
     elsif k == "GOOGLE_PLUS_CLIENT_ID"
       googleplus = v.chomp
     elsif k == "QUANTCAST_API_KEY"
@@ -163,4 +175,4 @@ if secret.nil?
   exit 3
 end
 
-print_class(client, secret, pocket, mixpanel_dev, mixpanel_prod, crashlytics, googleplus, quantcast)
+print_class(client, secret, pocket, mixpanel_dev, mixpanel_prod, crashlytics, hockeyapp, googleplus, quantcast)
