@@ -1,17 +1,15 @@
-//
-//  WPFriendFinderViewController.h
-//  WordPress
-//
-//  Created by Beau Collins on 5/31/12.
-//  Copyright (c) 2012 WordPress. All rights reserved.
-//
+/*
+ * WPFriendFinderViewController.h
+ *
+ * Copyright (c) 2013 WordPress. All rights reserved.
+ *
+ * Licensed under GNU General Public License 2.0.
+ * Some rights reserved. See license.txt
+ */
 
 #import "WPWebAppViewController.h"
 
 @interface WPFriendFinderViewController : WPWebAppViewController
-
-- (void)authorizeSource:(NSString *)source;
-- (void)configureFriendFinder:(id)config;
 
 @end
 

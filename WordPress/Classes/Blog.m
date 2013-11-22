@@ -485,53 +485,6 @@
     [self.api enqueueHTTPRequestOperation:combinedOperation];    
 }
 
-
-- (void)checkActivationStatusWithSuccess:(void (^)())success failure:(void (^)(NSError *error))failure {
-    WPFLogMethod();
-    WPXMLRPCClient *api = [WPXMLRPCClient clientWithXMLRPCEndpoint:[NSURL URLWithString:[NSString stringWithFormat: @"%@", kWPcomXMLRPCUrl]]];
-    [api callMethod:@"wpcom.getActivationStatus"
-         parameters:[NSArray arrayWithObjects:[self hostURL], nil]
-            success:^(AFHTTPRequestOperation *operation, id responseObject) {
-                NSString *returnData = responseObject;
-                if ([returnData isKindOfClass:[NSString class]]) {
-                    [self.managedObjectContext performBlockAndWait:^{
-                        [self setBlogID:[returnData numericValue]];
-                        [self setIsActivated:[NSNumber numberWithBool:YES]];
-                    }];
-                    [self dataSave];
-                    
-                }
-                if (success) success();
-            } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
-                DDLogError(@"Error while checking if VideoPress is enabled: %@", error);
-                
-                NSString *errorMessage = [error localizedDescription];
-                
-                // FIXME - This is very fragile checking error messages text
-                if ([errorMessage isEqualToString:@"Parse Error. Please check your XML-RPC endpoint."])
-                {
-                    [self setIsActivated:[NSNumber numberWithBool:YES]];
-                    [self dataSave];
-                    if (success) {
-                        success();
-                    }
-                } else if ([errorMessage isEqualToString:@"Site not activated."]) {
-                    if (failure) {
-                        failure(error);
-                    }
-                } else if ([errorMessage isEqualToString:@"Blog not found."]) {
-                    if (failure) {
-                        failure(error);
-                    }
-                } else {
-                    if (failure) {
-                        failure(error);
-                    }
-                }
-                
-            }];
-}
-
 - (void)checkVideoPressEnabledWithSuccess:(void (^)(BOOL enabled))success failure:(void (^)(NSError *error))failure {
     if (!self.isWPcom) {
         if (success) success(YES);

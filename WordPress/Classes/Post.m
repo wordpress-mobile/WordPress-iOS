@@ -209,7 +209,6 @@
 
     // check if post deleted after media upload started
     if (self.content == nil) {
-        [WordPressAppDelegate sharedWordPressApplicationDelegate].isUploadingPost = NO;
         [[NSNotificationCenter defaultCenter] postNotificationName:@"PostUploadCancelled" object:self];
     } else {
         self.content = [NSString stringWithFormat:@"%@\n\n%@", [media html], self.content];
@@ -220,8 +219,6 @@
 }
 
 - (void)mediaUploadFailed:(NSNotification *)notification {
-    [WordPressAppDelegate sharedWordPressApplicationDelegate].isUploadingPost = NO;
-
     UIAlertView *alert = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"Quick Photo Failed", @"")
                                                     message:NSLocalizedString(@"Sorry, the photo upload failed. The post has been saved as a Local Draft.", @"")
                                                    delegate:self
