@@ -7,6 +7,7 @@
 #import "WPAddCategoryViewController.h"
 #import "WPAlertView.h"
 #import "IOS7CorrectedTextView.h"
+#import "ContextManager.h"
 
 NSTimeInterval kAnimationDuration = 0.3f;
 
@@ -94,10 +95,6 @@ CGFloat const EditPostViewControllerTextViewOffset = 10.0;
             self.editMode = EditPostViewControllerModeNewPost;
         } else {
             self.editMode = EditPostViewControllerModeEditPost;
-#if USE_AUTOSAVES
-            _backupPost = [NSEntityDescription insertNewObjectForEntityForName:[[aPost entity] name] inManagedObjectContext:[aPost managedObjectContext]];
-            [_backupPost cloneFrom:aPost];
-#endif
         }
     }
     
@@ -107,6 +104,17 @@ CGFloat const EditPostViewControllerTextViewOffset = 10.0;
 - (void)viewDidLoad {
     WPFLogMethod();
     [super viewDidLoad];
+    
+    [self.apost.managedObjectContext performBlock:^{
+        self.apost = [self.apost createRevision];
+        [self.apost save];
+        [self refreshUIForCurrentPost];
+    }];
+   
+#if USE_AUTOSAVES
+    _backupPost = [NSEntityDescription insertNewObjectForEntityForName:[[aPost entity] name] inManagedObjectContext:[aPost managedObjectContext]];
+    [_backupPost cloneFrom:aPost];
+#endif
     
     titleLabel.text = NSLocalizedString(@"Title:", @"Label for the title of the post field. Should be the same as WP core.");
     tagsLabel.text = NSLocalizedString(@"Tags:", @"Label for the tags field. Should be the same as WP core.");
@@ -150,30 +158,6 @@ CGFloat const EditPostViewControllerTextViewOffset = 10.0;
     }
     textView.inputAccessoryView = editorToolbar;
 
-    if (!self.postSettingsViewController) {
-        self.postSettingsViewController = [[PostSettingsViewController alloc] initWithPost:self.apost];
-        self.postSettingsViewController.postDetailViewController = self;
-        [self addChildViewController:self.postSettingsViewController];
-    }
-
-    if (!self.postPreviewViewController) {
-        self.postPreviewViewController = [[PostPreviewViewController alloc] initWithPost:self.apost];
-        self.postPreviewViewController.postDetailViewController = self;
-        [self addChildViewController:self.postPreviewViewController];
-    }
-
-    if (!self.postMediaViewController) {
-        self.postMediaViewController = [[PostMediaViewController alloc] initWithPost:self.apost];
-        self.postMediaViewController.postDetailViewController = self;
-        [self addChildViewController:self.postMediaViewController];
-    }
-
-    self.postSettingsViewController.view.frame = editView.frame;
-    self.postMediaViewController.view.frame = editView.frame;
-    self.postPreviewViewController.view.frame = editView.frame;
-    
-    self.title = [self editorTitle];
-
 	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(keyboardWillShow:) name:UIKeyboardWillShowNotification object:nil];
 	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(keyboardWillHide:) name:UIKeyboardWillHideNotification object:nil];
 	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(deviceDidRotate:) name:@"UIDeviceOrientationDidChangeNotification" object:nil];
@@ -184,7 +168,7 @@ CGFloat const EditPostViewControllerTextViewOffset = 10.0;
 
     currentView = editView;
 	writeButton.enabled = NO;
-    attachmentButton.enabled = [self shouldEnableMediaTab];
+    attachmentButton.enabled = NO;
 	
 	if (![self.postMediaViewController isDeviceSupportVideo] && !IS_IOS7){
 		// No video icon for older devices.
@@ -194,15 +178,9 @@ CGFloat const EditPostViewControllerTextViewOffset = 10.0;
 		[toolbarItems removeObjectAtIndex:5];
 		[self.toolbar setItems:toolbarItems];
 	}
-	
-	if (self.post && self.post.geolocation != nil && self.post.blog.geolocationEnabled) {
-		self.hasLocation.enabled = YES;
-	} else {
-		self.hasLocation.enabled = NO;
-	}
 
-    [self refreshUIForCurrentPost];
-
+    self.hasLocation.enabled = NO;
+    
     if (_autosavingIndicatorView == nil) {
         _autosavingIndicatorView = [[AutosavingIndicatorView alloc] initWithFrame:CGRectZero];
         _autosavingIndicatorView.hidden = YES;
@@ -321,10 +299,6 @@ CGFloat const EditPostViewControllerTextViewOffset = 10.0;
     } else {
         return nil;
     }
-}
-
-- (void)setPost:(Post *)aPost {
-    self.apost = aPost;
 }
 
 - (void)switchToView:(UIView *)newView {
@@ -601,8 +575,14 @@ CGFloat const EditPostViewControllerTextViewOffset = 10.0;
 - (void)refreshUIForCurrentPost {
     self.navigationItem.title = [self editorTitle];
 
+    if (self.post && self.post.geolocation != nil && self.post.blog.geolocationEnabled) {
+		self.hasLocation.enabled = YES;
+	}
+    
+    attachmentButton.enabled = [self shouldEnableMediaTab];
+    
     titleTextField.text = self.apost.postTitle;
-    if (self.post) {
+    if (self.post && !IS_IOS7) {
         tagsTextField.text = self.post.tags;
         [categoriesButton setTitle:[NSString decodeXMLCharactersIn:[self.post categoriesText]] forState:UIControlStateNormal];
         [categoriesButton.titleLabel setFont:[UIFont systemFontOfSize:16.0f]];
@@ -619,9 +599,38 @@ CGFloat const EditPostViewControllerTextViewOffset = 10.0;
 		else
 			textView.text = self.apost.content;
     }
+    
+    if (!IS_IOS7) {
+        [self setupForiOS6];
+    }
 
     [self refreshButtons];
 }
+
+- (void)setupForiOS6 {
+    if (!self.postSettingsViewController) {
+        self.postSettingsViewController = [[PostSettingsViewController alloc] initWithPost:self.apost];
+        self.postSettingsViewController.postDetailViewController = self;
+        [self addChildViewController:self.postSettingsViewController];
+    }
+    
+    if (!self.postPreviewViewController) {
+        self.postPreviewViewController = [[PostPreviewViewController alloc] initWithPost:self.apost];
+        self.postPreviewViewController.postDetailViewController = self;
+        [self addChildViewController:self.postPreviewViewController];
+    }
+    
+    if (!self.postMediaViewController) {
+        self.postMediaViewController = [[PostMediaViewController alloc] initWithPost:self.apost];
+        self.postMediaViewController.postDetailViewController = self;
+        [self addChildViewController:self.postMediaViewController];
+    }
+    
+    self.postSettingsViewController.view.frame = editView.frame;
+    self.postMediaViewController.view.frame = editView.frame;
+    self.postPreviewViewController.view.frame = editView.frame;
+}
+
 
 - (void)populateSelectionsControllerWithCategories {
     WPFLogMethod();
@@ -691,7 +700,7 @@ CGFloat const EditPostViewControllerTextViewOffset = 10.0;
     }
 
     _hasChangesToAutosave = YES;
-    [self.apost autosave];
+    [self.apost save];
 
 	[self refreshButtons];
 }
@@ -727,12 +736,11 @@ CGFloat const EditPostViewControllerTextViewOffset = 10.0;
     }
 #endif
     [self.apost.original deleteRevision];
+    
+	if (self.editMode == EditPostViewControllerModeNewPost) {
+        [self.apost.original remove];
+    }
 
-	//remove the original post in case of local draft unsaved
-	if(self.editMode == EditPostViewControllerModeNewPost)
-		[self.apost.original deletePostWithSuccess:nil failure:nil]; //we can pass nil because this is a local draft. no remote errors.
-
-	self.apost = nil; // Just in case
     [self dismissEditView];
 }
 
@@ -761,24 +769,22 @@ CGFloat const EditPostViewControllerTextViewOffset = 10.0;
     [WPMobileStats trackEventForWPComWithSavedProperties:[self formattedStatEventString:StatsEventPostDetailClosedEditor]];
     
     [self logSavePostStats];
-    
-    [self autosaveContent];
 
     [self.view endEditing:YES];
 
     [self.apost.original applyRevision];
     [self.apost.original deleteRevision];
-	if (upload) {
-		NSString *postTitle = self.apost.postTitle;
+    
+    if (upload) {
+        NSString *postTitle = self.apost.original.postTitle;
         [self.apost.original uploadWithSuccess:^{
             DDLogInfo(@"post uploaded: %@", postTitle);
         } failure:^(NSError *error) {
             DDLogError(@"post failed: %@", [error localizedDescription]);
         }];
-	} else {
-		[self.apost.original save];
-	}
-
+    }
+    
+    
     [self dismissEditView];
 }
 
@@ -817,8 +823,8 @@ CGFloat const EditPostViewControllerTextViewOffset = 10.0;
             self.apost.password = @"";
         }
     }
-
-    [self.apost autosave];
+    
+    [self.apost save];
 }
 
 - (BOOL)canAutosaveRemotely {
@@ -981,7 +987,7 @@ CGFloat const EditPostViewControllerTextViewOffset = 10.0;
 		return;
 	}
 
-    if (!self.hasChanges) {
+    if (![self hasChanges]) {
         [WPMobileStats trackEventForWPComWithSavedProperties:[self formattedStatEventString:StatsEventPostDetailClosedEditor]];
         [self discard];
         return;
@@ -1058,7 +1064,6 @@ CGFloat const EditPostViewControllerTextViewOffset = 10.0;
     title = [title stringByTrimmingCharactersInSet:charSet];
     
     _linkHelperAlertView.overlayTitle = title;
-//    _linkHelperAlertView.overlayDescription = NS Localized String(@"Enter the URL and link text below.", @"Alert view description for creating a link in the post editor.");
     _linkHelperAlertView.overlayDescription = @"";
     _linkHelperAlertView.footerDescription = [NSLocalizedString(@"tap to dismiss", nil) uppercaseString];
     _linkHelperAlertView.firstTextFieldPlaceholder = NSLocalizedString(@"Text to be linked", @"Popup to aid in creating a Link in the Post Editor.");
@@ -1149,7 +1154,7 @@ CGFloat const EditPostViewControllerTextViewOffset = 10.0;
 }
 
 - (BOOL)hasChanges {
-    return self.apost.hasChanges;
+    return [self.apost hasChanged];
 }
 
 #pragma mark -
@@ -1451,7 +1456,7 @@ CGFloat const EditPostViewControllerTextViewOffset = 10.0;
 	}
     _hasChangesToAutosave = YES;
     [self refreshUIForCurrentPost];
-    [self.apost autosave];
+    [self.apost save];
     [self incrementCharactersChangedForAutosaveBy:content.length];
 }
 
@@ -1487,7 +1492,7 @@ CGFloat const EditPostViewControllerTextViewOffset = 10.0;
 	}
     _hasChangesToAutosave = YES;
     [self refreshUIForCurrentPost];
-    [self.apost autosave];
+    [self.apost save];
     [self incrementCharactersChangedForAutosaveBy:content.length];
 }
 

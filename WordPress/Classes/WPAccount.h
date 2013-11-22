@@ -77,7 +77,16 @@ extern NSString * const WPAccountDefaultWordPressComAccountChangedNotification;
  @param password the WordPress.com account's password
  @return a WordPress.com `WPAccount` object for the given `username`
  */
-+ (WPAccount *)createOrUpdateWordPressComAccountWithUsername:(NSString *)username andPassword:(NSString *)password;
++ (WPAccount *)createOrUpdateWordPressComAccountWithUsername:(NSString *)username
+                                                 andPassword:(NSString *)password
+                                                 withContext:(NSManagedObjectContext *)context;
+
+/**
+ Same as above but defaults to a background context
+ 
+ */
++ (WPAccount *)createOrUpdateWordPressComAccountWithUsername:(NSString *)username
+                                                 andPassword:(NSString *)password;
 
 /**
  Creates a new self hosted account or updates the password if there is a matching account
@@ -89,7 +98,17 @@ extern NSString * const WPAccountDefaultWordPressComAccountChangedNotification;
  @param password the account's password
  @return a `WPAccount` object for the given `xmlrpc` endpoint and `username`
  */
-+ (WPAccount *)createOrUpdateSelfHostedAccountWithXmlrpc:(NSString *)xmlrpc username:(NSString *)username andPassword:(NSString *)password;
++ (WPAccount *)createOrUpdateSelfHostedAccountWithXmlrpc:(NSString *)xmlrpc
+                                                username:(NSString *)username
+                                             andPassword:(NSString *)password
+                                             withContext:(NSManagedObjectContext *)context;
+/**
+ Same as above but defaults to a background context
+ 
+ */
++ (WPAccount *)createOrUpdateSelfHostedAccountWithXmlrpc:(NSString *)xmlrpc
+                                                username:(NSString *)username
+                                             andPassword:(NSString *)password;
 
 ///--------------------
 /// @name Blog creation

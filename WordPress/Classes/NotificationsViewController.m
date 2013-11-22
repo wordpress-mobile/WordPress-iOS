@@ -216,7 +216,8 @@ NSString * const NotificationsLastSyncDateKey = @"NotificationsLastSyncDate";
 - (NSFetchRequest *)fetchRequest {
     NSFetchRequest *fetchRequest = [NSFetchRequest fetchRequestWithEntityName:@"Note"];
     NSSortDescriptor *dateSortDescriptor = [NSSortDescriptor sortDescriptorWithKey:@"timestamp" ascending:NO];
-    fetchRequest.sortDescriptors = @[ dateSortDescriptor ];
+    fetchRequest.sortDescriptors = @[dateSortDescriptor];
+    fetchRequest.fetchBatchSize = 10;
     return fetchRequest;
 }
 
