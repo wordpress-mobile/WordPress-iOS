@@ -139,6 +139,10 @@ CGFloat const blavatarImageSize = 50.f;
 }
 
 - (NSString *)tableView:(UITableView *)tableView titleForDeleteConfirmationButtonForRowAtIndexPath:(NSIndexPath *)indexPath {
+    Blog *blog = [self.resultsController objectAtIndexPath:[NSIndexPath indexPathForRow:indexPath.row inSection:0]];
+    if (blog.isWPcom) {
+        return NSLocalizedString(@"Hide", nil);
+    }
     return NSLocalizedString(@"Remove", @"Button label when removing a blog");
 }
 
@@ -170,7 +174,12 @@ CGFloat const blavatarImageSize = 50.f;
         [WPMobileStats trackEventForWPCom:StatsEventSettingsRemovedBlog];
         
         Blog *blog = [self.resultsController objectAtIndexPath:[NSIndexPath indexPathForRow:indexPath.row inSection:0]];
-        [blog remove];
+        if (blog.isWPcom) {
+            blog.visible = NO;
+            [blog dataSave];
+        } else {
+            [blog remove];
+        }
         
         // Count won't be updated yet; if this is the last site (count 1), exit editing mode
         if ([self numSites] == 1) {
@@ -280,7 +289,7 @@ CGFloat const blavatarImageSize = 50.f;
     NSFetchRequest *fetchRequest = [[NSFetchRequest alloc] init];
     NSManagedObjectContext *moc = [[WordPressAppDelegate sharedWordPressApplicationDelegate] managedObjectContext];
     [fetchRequest setEntity:[NSEntityDescription entityForName:@"Blog" inManagedObjectContext:moc]];
-    [fetchRequest setPredicate:[NSPredicate predicateWithFormat:@"isVisible = YES"]];
+    [fetchRequest setPredicate:[NSPredicate predicateWithFormat:@"visible = YES"]];
     [fetchRequest setSortDescriptors:[NSArray arrayWithObject:[NSSortDescriptor sortDescriptorWithKey:@"blogName" ascending:YES selector:@selector(localizedCaseInsensitiveCompare:)]]];
     
     // For some reasons, the cache sometimes gets corrupted
