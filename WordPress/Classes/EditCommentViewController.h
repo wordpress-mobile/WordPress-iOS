@@ -29,7 +29,6 @@
 - (void)endTextEnteringButtonAction:(id)sender;
 - (void)textViewDidEndEditing:(UITextView *)aTextView;
 - (void)textViewDidBeginEditing:(UITextView *)aTextView;
-- (BOOL)isConnectedToHost;
 - (void)initiateSaveCommentReply:(id)sender;
 - (void)cancelView:(id)sender;
 
