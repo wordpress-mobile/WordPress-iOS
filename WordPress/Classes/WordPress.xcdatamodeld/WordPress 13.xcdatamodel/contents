@@ -117,7 +117,6 @@
             <userInfo/>
         </attribute>
         <attribute name="isActivated" optional="YES" attributeType="Boolean" syncable="YES"/>
-        <attribute name="isVisible" attributeType="Boolean" defaultValueString="YES" syncable="YES"/>
         <attribute name="lastCommentsSync" optional="YES" attributeType="Date">
             <userInfo/>
         </attribute>
@@ -146,6 +145,7 @@
         <attribute name="username" optional="YES" attributeType="String">
             <userInfo/>
         </attribute>
+        <attribute name="visible" attributeType="Boolean" defaultValueString="YES" syncable="YES"/>
         <attribute name="xmlrpc" attributeType="String">
             <userInfo/>
         </attribute>

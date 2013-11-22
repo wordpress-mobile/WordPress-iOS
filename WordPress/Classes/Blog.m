@@ -45,7 +45,7 @@
 @dynamic posts, categories, comments; 
 @dynamic lastPostsSync, lastStatsSync, lastPagesSync, lastCommentsSync, lastUpdateWarning;
 @synthesize isSyncingPosts, isSyncingPages, isSyncingComments;
-@dynamic geolocationEnabled, options, postFormats, isActivated;
+@dynamic geolocationEnabled, options, postFormats, isActivated, visible;
 @dynamic account;
 @dynamic jetpackAccount;
 

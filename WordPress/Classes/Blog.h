@@ -32,8 +32,9 @@
 @property (nonatomic, strong) NSDate *lastStatsSync;
 @property (nonatomic, strong) NSString *lastUpdateWarning;
 @property (nonatomic, assign) BOOL geolocationEnabled;
+@property (nonatomic, assign) BOOL visible;
 @property (nonatomic, weak) NSNumber *isActivated;
-@property (nonatomic, strong) NSDictionary *options; //we can store an NSArray or an NSDictionary as a transformable attribute... 
+@property (nonatomic, strong) NSDictionary *options; //we can store an NSArray or an NSDictionary as a transformable attribute...
 @property (nonatomic, strong) NSDictionary *postFormats;
 @property (nonatomic, strong) WPAccount *account;
 @property (nonatomic, strong) WPAccount *jetpackAccount;
