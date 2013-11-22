@@ -9,6 +9,7 @@
 #import "WPNoResultsView.h"
 #import <QuartzCore/QuartzCore.h>
 #import "WPStyleGuide.h"
+#import "WPNUXUtility.h"
 
 @implementation WPNoResultsView
 
@@ -74,11 +75,10 @@
     
     // Setup title label
     _titleLabel = [[UILabel alloc] init];
-    _titleLabel.font = [UIFont fontWithName:@"OpenSans-Light" size:24];
-    _titleLabel.textColor = [WPStyleGuide whisperGrey];
-    _titleLabel.textAlignment = NSTextAlignmentCenter;
-    _titleLabel.text = titleText;
     _titleLabel.numberOfLines = 0;
+    if (titleText.length > 0) {
+        _titleLabel.attributedText = [[NSAttributedString alloc] initWithString:titleText attributes:[WPNUXUtility titleAttributesWithColor:[WPStyleGuide whisperGrey]]];
+    }
     [self addSubview:_titleLabel];
     
     // Setup message text

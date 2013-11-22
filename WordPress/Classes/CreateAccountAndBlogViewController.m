@@ -235,7 +235,7 @@ CGFloat const CreateAccountAndBlogButtonHeight = 41.0;
     // Add Title
     if (_titleLabel == nil) {
         _titleLabel = [[UILabel alloc] init];
-        _titleLabel.attributedText = [WPNUXUtility titleAttributedString:NSLocalizedString(@"Create an account on WordPress.com", @"NUX Create Account Page 1 Title")];
+        _titleLabel.attributedText = [[NSAttributedString alloc] initWithString:NSLocalizedString(@"Create an account on WordPress.com", @"NUX Create Account Page 1 Title") attributes:[WPNUXUtility titleAttributesWithColor:[UIColor whiteColor]]];
         _titleLabel.numberOfLines = 0;
         _titleLabel.backgroundColor = [UIColor clearColor];
         [self.view addSubview:_titleLabel];
