@@ -1,0 +1,1 @@
+../../HockeySDK/Classes/BITAuthenticator_Private.h
