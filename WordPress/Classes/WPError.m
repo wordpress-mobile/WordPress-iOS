@@ -150,16 +150,16 @@ NSInteger const SupportButtonIndex = 0;
     }
     [WPError internalInstance].alertShowing = YES;
     
-    DDLogInfo(@"Showing alert with title: %@", message);
+    DDLogInfo(@"Showing alert with title: %@ and message %@", title, message);
+    NSString *supportText = showSupport ? NSLocalizedString(@"Need Help?", @"'Need help?' button label, links off to the WP for iOS FAQ.") : nil;
     UIAlertView *alert = [[UIAlertView alloc] initWithTitle:title
                                                     message:message
                                                    delegate:[WPError internalInstance]
-                                          cancelButtonTitle:(showSupport ? NSLocalizedString(@"Need Help?", @"'Need help?' button label, links off to the WP for iOS FAQ.") : nil)
-                                          otherButtonTitles:NSLocalizedString(@"OK", @"OK button label."), nil];
+                                          cancelButtonTitle:supportText
+                                          otherButtonTitles:NSLocalizedString(@"OK", nil), nil];
     [alert show];
     [WPError internalInstance].okPressedBlock = okBlock;
 }
-
 
 #pragma mark - UIAlertViewDelegate
 

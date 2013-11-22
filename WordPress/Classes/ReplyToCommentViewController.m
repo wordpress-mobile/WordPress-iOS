@@ -33,10 +33,7 @@
 		if (IS_IPAD) {
 			[self.textView becomeFirstResponder];
 		}
-		UIAlertView *connectionFailAlert = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"The Reply is Empty", @"")
-                                                                      message:NSLocalizedString(@"Please type a reply to the comment.", @"")
-                                                                     delegate:nil cancelButtonTitle:NSLocalizedString(@"OK", @"") otherButtonTitles:nil];
-        [connectionFailAlert show];
+        [WPError showAlertWithTitle:NSLocalizedString(@"The Reply is Empty", nil) message:NSLocalizedString(@"Please type a reply to the comment.", nil)];
 		return;
 	}
 	

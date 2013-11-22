@@ -135,13 +135,7 @@
 		[self removeProgressIndicator];
 		
 		if ([error code] == 403) {
-
-			UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"Couldn't Connect", @"")
-																message:NSLocalizedString(@"The username or password stored in the app may be out of date. Please re-enter your password in the settings and try again.", @"")
-															   delegate:nil
-													  cancelButtonTitle:nil
-													  otherButtonTitles:NSLocalizedString(@"OK", @""), nil];
-			[alertView show];
+            [WPError showAlertWithTitle:NSLocalizedString(@"Couldn't Connect", @"") message:NSLocalizedString(@"The username or password stored in the app may be out of date. Please re-enter your password in the settings and try again.", @"") withSupportButton:NO];
 			
 			// bad login/pass combination
 			EditSiteViewController *editSiteViewController = [[EditSiteViewController alloc] initWithNibName:nil bundle:nil];

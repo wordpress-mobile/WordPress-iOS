@@ -181,12 +181,7 @@ typedef NS_ENUM(NSInteger, SettingsViewControllerSections)
             MFMailComposeViewController *mailComposeViewController = [self feedbackMailViewController];
             [self presentViewController:mailComposeViewController animated:YES completion:nil];
         } else {
-            UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"Feedback", @"")
-                                                                message:NSLocalizedString(@"Your device is not configured to send e-mail.", @"")
-                                                               delegate:nil
-                                                      cancelButtonTitle:NSLocalizedString(@"OK", @"")
-                                                      otherButtonTitles:nil];
-            [alertView show];
+            [WPError showAlertWithTitle:NSLocalizedString(@"Feedback", nil) message:NSLocalizedString(@"Your device is not configured to send e-mail.", nil)];
         }
     } else if (indexPath.section == SettingsSectionActivityLog && indexPath.row == 1) {
         ActivityLogViewController *activityLogViewController = [[ActivityLogViewController alloc] init];

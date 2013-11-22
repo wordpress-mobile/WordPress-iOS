@@ -119,21 +119,16 @@ static NSString *_lastAuthedName = nil;
 - (void)showAuthFailed {
     DDLogError(@"Auth Failed, showing login screen");
     [self showBlogSettings];
+    NSString *title;
+    NSString *message;
     if ([blog isWPcom]) {
-        UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"Authentication Error", @"")
-                                                            message:NSLocalizedString(@"Invalid username/password. Please update your credentials try again.", @"")
-                                                           delegate:nil
-                                                  cancelButtonTitle:NSLocalizedString(@"OK", @"")
-                                                  otherButtonTitles:nil];
-        [alertView show];
+        title = NSLocalizedString(@"Authentication Error", @"");
+        message = NSLocalizedString(@"Invalid username/password. Please update your credentials try again.", @"");
     } else {
-        UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"Jetpack Sign In", @"")
-                                                            message:NSLocalizedString(@"Unable to sign in to Jetpack. Please update your credentials try again.", @"")
-                                                           delegate:nil
-                                                  cancelButtonTitle:NSLocalizedString(@"OK", @"")
-                                                  otherButtonTitles:nil];
-        [alertView show];
+        title = NSLocalizedString(@"Jetpack Sign In", @"");
+        message = NSLocalizedString(@"Unable to sign in to Jetpack. Please update your credentials try again.", @"");
     }
+    [WPError showAlertWithTitle:title message:message];
 }
 
 

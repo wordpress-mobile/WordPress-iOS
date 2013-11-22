@@ -361,13 +361,7 @@
 			title = NSLocalizedString(@"Could Not Follow Blog", @"Title of prompt. Says a blog could not be followed.");
 			description = NSLocalizedString(@"There was a problem following this blog.", @"Prompts the user there was a problem following a blog.");
 		}
-		
-		UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:title
-															message:description
-														   delegate:nil
-												  cancelButtonTitle:NSLocalizedString(@"OK", @"")
-												  otherButtonTitles:nil];
-		[alertView show];
+		[WPError showAlertWithTitle:title message:description];
 		
 	}];
 	[_followButton setSelected:self.post.isFollowing];

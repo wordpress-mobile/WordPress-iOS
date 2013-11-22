@@ -95,13 +95,9 @@
 		[self enableForm:YES];
 		[self.activityView stopAnimating];
 		[self.textView becomeFirstResponder];
+        
 		// TODO: Failure reason.
-		UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"Comment failed", @"")
-															message:NSLocalizedString(@"There was a problem commenting. Please try again.", @"")
-														   delegate:nil
-												  cancelButtonTitle:NSLocalizedString(@"OK", @"OK")
-												  otherButtonTitles:nil];
-		[alertView show];
+        [WPError showAlertWithTitle:NSLocalizedString(@"Comment failed", nil) message:NSLocalizedString(@"There was a problem commenting. Please try again.", nil)];
 	}];
 }
 

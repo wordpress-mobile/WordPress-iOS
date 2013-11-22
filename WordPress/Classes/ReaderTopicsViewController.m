@@ -152,12 +152,8 @@
 		
 	} failure:^(AFHTTPRequestOperation *operation, NSError *error) {
 		[self.tableView setTableFooterView:nil];
-		UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"Unable to Load Topics", @"")
-															message:NSLocalizedString(@"Sorry. There was a problem loading the topics list.  Please try again later.", @"")
-														   delegate:nil
-												  cancelButtonTitle:NSLocalizedString(@"OK", @"")
-												  otherButtonTitles:nil, nil];
-		[alertView show];
+        
+        [WPError showAlertWithTitle:NSLocalizedString(@"Unable to Load Topics", nil) message:NSLocalizedString(@"Sorry. There was a problem loading the topics list.  Please try again later.", nil)];
 	}];
 }
 

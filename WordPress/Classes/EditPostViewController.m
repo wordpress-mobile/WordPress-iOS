@@ -960,10 +960,7 @@ CGFloat const EditPostViewControllerTextViewOffset = 10.0;
 
 - (void)showMediaInUploadingalert {
 	//the post is using the network connection and cannot be stoped, show a message to the user
-	UIAlertView *blogIsCurrentlyBusy = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"Info", @"Info alert title")
-																  message:NSLocalizedString(@"A Media file is currently uploading. Please try later.", @"")
-																 delegate:nil cancelButtonTitle:NSLocalizedString(@"OK", @"") otherButtonTitles:nil];
-	[blogIsCurrentlyBusy show];
+    [WPError showAlertWithTitle:NSLocalizedString(@"Info", @"Info alert title") message:NSLocalizedString(@"A Media file is currently uploading. Please try later.", @"") withSupportButton:NO];
 }
 
 - (IBAction)cancelView:(id)sender {

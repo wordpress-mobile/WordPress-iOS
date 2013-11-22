@@ -370,8 +370,7 @@ NSUInteger const CreateBlogBlogUrlFieldTag = 1;
 - (void)displayCreationError:(NSError *)error
 {
     NSString *errorMessage = [error.userInfo objectForKey:WordPressComApiErrorMessageKey];
-    UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"Error", nil) message:errorMessage delegate:nil cancelButtonTitle:NSLocalizedString(@"OK", nil) otherButtonTitles:nil, nil];
-    [alertView show];
+    [WPError showAlertWithTitle:NSLocalizedString(@"Error", nil) message:errorMessage];
 }
 
 - (NSString *)textForCurrentBlogVisibility
