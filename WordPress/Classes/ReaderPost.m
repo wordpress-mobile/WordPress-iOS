@@ -14,6 +14,8 @@
 #import "WPAvatarSource.h"
 #import "NSString+Helpers.h"
 #import "WordPressAppDelegate.h"
+#import "ContextManager.h"
+#import "WPAccount.h"
 
 NSInteger const ReaderTopicEndpointIndex = 3;
 NSInteger const ReaderPostSummaryLength = 150;
@@ -22,19 +24,6 @@ NSString *const ReaderLastSyncDateKey = @"ReaderLastSyncDate";
 NSString *const ReaderCurrentTopicKey = @"ReaderCurrentTopicKey";
 NSString *const ReaderTopicsArrayKey = @"ReaderTopicsArrayKey";
 NSString *const ReaderExtrasArrayKey = @"ReaderExtrasArrayKey";
-
-@interface ReaderPost()
-
-+ (void)handleLogoutNotification:(NSNotification *)notification;
-- (void)updateFromDictionary:(NSDictionary *)dict;
-- (void)updateFromRESTDictionary:(NSDictionary *)dict;
-- (void)updateFromReaderDictionary:(NSDictionary *)dict;
-- (NSString *)createSummary:(NSString *)str makePlainText:(BOOL)makePlainText;
-- (NSString *)makePlainText:(NSString *)string;
-- (NSString *)normalizeParagraphs:(NSString *)string;
-- (NSString *)parseImageSrcFromHTML:(NSString *)html;
-
-@end
 
 @implementation ReaderPost
 
@@ -62,35 +51,10 @@ NSString *const ReaderExtrasArrayKey = @"ReaderExtrasArrayKey";
 @dynamic storedComment;
 @dynamic summary;
 @dynamic comments;
+@dynamic account;
 @dynamic primaryTagName;
 @dynamic primaryTagSlug;
 @dynamic tags;
-
-+ (void)load {
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(handleLogoutNotification:) name:WordPressComApiDidLogoutNotification object:nil];
-}
-
-
-+ (void)handleLogoutNotification:(NSNotification *)notification {
-	[[NSUserDefaults standardUserDefaults] removeObjectForKey:ReaderLastSyncDateKey];
-	[[NSUserDefaults standardUserDefaults] removeObjectForKey:ReaderCurrentTopicKey];
-    [[NSUserDefaults standardUserDefaults] removeObjectForKey:ReaderTopicsArrayKey];
-    [[NSUserDefaults standardUserDefaults] removeObjectForKey:ReaderExtrasArrayKey];
-	[NSUserDefaults resetStandardUserDefaults];
-	
-	NSManagedObjectContext *context = [[WordPressAppDelegate sharedWordPressApplicationDelegate] managedObjectContext];
-	NSFetchRequest *request = [NSFetchRequest fetchRequestWithEntityName:@"ReaderPost"];
-    request.includesPropertyValues = NO;
-    NSError *error;
-    NSArray *posts = [context executeFetchRequest:request error:&error];
-    if (posts) {
-        for (ReaderPost *post in posts) {
-            [context deleteObject:post];
-        }
-    }
-    [context save:&error];
-}
-
 
 + (NSArray *)readerEndpoints {
 	static NSArray *endpoints = nil;
@@ -152,59 +116,44 @@ NSString *const ReaderExtrasArrayKey = @"ReaderExtrasArrayKey";
         return;
     }
     
-    // Reuse the same background context for every call. Update the parent context if necessary
-    static NSManagedObjectContext *backgroundMoc;
-    if (backgroundMoc == nil) {
-		backgroundMoc = [[NSManagedObjectContext alloc] initWithConcurrencyType:NSPrivateQueueConcurrencyType];
-    }
-    if (![backgroundMoc.parentContext isEqual:context]) {
-        [backgroundMoc setParentContext:context];
-    }
-
-    [backgroundMoc performBlock:^{
-        NSError *error;
+    NSManagedObjectContext *backgroundMOC = [[ContextManager sharedInstance] backgroundContext];
+    [backgroundMOC performBlock:^{
         for (NSDictionary *postData in arr) {
             if (![postData isKindOfClass:[NSDictionary class]]) {
                 continue;
             }
-            [self createOrUpdateWithDictionary:postData forEndpoint:endpoint withContext:backgroundMoc];
+            [self createOrUpdateWithDictionary:postData forEndpoint:endpoint withContext:backgroundMOC];
         }
-		
-        if(![backgroundMoc save:&error]){
-            DDLogError(@"Failed to sync ReaderPosts: %@", error);
+        
+        [[ContextManager sharedInstance] saveContext:backgroundMOC];
+        if (success) {
+            dispatch_async(dispatch_get_main_queue(), success);
         }
-        [context performBlock:^{
-            NSError *error;
-            if (![context save:&error]) {
-                DDLogError(@"Failed to sync ReaderPosts: %@", error);
-            }
-        }];
-		
-		if (success) {
-			dispatch_async(dispatch_get_main_queue(), success);
-		}
     }];
 }
 
 
-+ (void)deletePostsSyncedEarlierThan:(NSDate *)syncedDate withContext:(NSManagedObjectContext *)context {
++ (void)deletePostsSyncedEarlierThan:(NSDate *)syncedDate {
     WPFLogMethod();
-	NSFetchRequest *request = [[NSFetchRequest alloc] init];
-    [request setEntity:[NSEntityDescription entityForName:@"ReaderPost" inManagedObjectContext:context]];
-	
-	NSPredicate *predicate = [NSPredicate predicateWithFormat:@"(dateSynced < %@)", syncedDate];
-	[request setPredicate:predicate];
-    
-    NSError *error = nil;
-    NSArray *array = [context executeFetchRequest:request error:&error];
-
-    if ([array count]) {
-		DDLogInfo(@"Deleting %i ReaderPosts synced earlier than: %@ ", [array count], syncedDate);
-        for (ReaderPost *post in array) {
-            [context deleteObject:post];
+    NSManagedObjectContext *context = [[ContextManager sharedInstance] backgroundContext];
+    [context performBlock:^{
+        NSFetchRequest *request = [[NSFetchRequest alloc] init];
+        [request setEntity:[NSEntityDescription entityForName:@"ReaderPost" inManagedObjectContext:context]];
+        
+        NSPredicate *predicate = [NSPredicate predicateWithFormat:@"(dateSynced < %@)", syncedDate];
+        [request setPredicate:predicate];
+        
+        NSError *error = nil;
+        NSArray *array = [context executeFetchRequest:request error:&error];
+        
+        if ([array count]) {
+            DDLogInfo(@"Deleting %i ReaderPosts synced earlier than: %@ ", [array count], syncedDate);
+            for (ReaderPost *post in array) {
+                [context deleteObject:post];
+            }
         }
-    }
-    [context save:&error];
+        [[ContextManager sharedInstance] saveContext:context];
+    }];
 }
 
 
@@ -212,6 +161,8 @@ NSString *const ReaderExtrasArrayKey = @"ReaderExtrasArrayKey";
 	NSNumber *blogSiteID = [dict numberForKey:@"site_id"];
 	NSNumber *siteID = [dict numberForKey:@"blog_id"];
 	NSNumber *postID = [dict numberForKey:@"ID"];
+    
+    WPAccount *account = (WPAccount *)[context objectWithID:[WPAccount defaultWordPressComAccount].objectID];
     
     // Some endpoints (e.g. tags) use different case
     if (siteID == nil) {
@@ -265,6 +216,8 @@ NSString *const ReaderExtrasArrayKey = @"ReaderExtrasArrayKey";
 		post.blogSiteID = blogSiteID;
 		post.endpoint = endpoint;
     }
+    
+    post.account = account;
     
     @autoreleasepool {
         [post updateFromDictionary:dict];
@@ -817,7 +770,7 @@ NSString *const ReaderExtrasArrayKey = @"ReaderExtrasArrayKey";
 									 if (postsArr) {									 
 										 [ReaderPost syncPostsFromEndpoint:path
 																 withArray:postsArr
-															   withContext:[[WordPressAppDelegate sharedWordPressApplicationDelegate] managedObjectContext]
+															   withContext:[[ContextManager sharedInstance] mainContext]
 																   success:^{
 																	   if (success) {
 																		   success(operation, responseObject);
@@ -829,7 +782,7 @@ NSString *const ReaderExtrasArrayKey = @"ReaderExtrasArrayKey";
 										 
 										 if (!loadingMore) {
 											 NSTimeInterval interval = - (60 * 60 * 24 * 7); // 7 days.
-											 [ReaderPost deletePostsSyncedEarlierThan:[NSDate dateWithTimeInterval:interval sinceDate:[NSDate date]] withContext:[[WordPressAppDelegate sharedWordPressApplicationDelegate] managedObjectContext]];
+											 [ReaderPost deletePostsSyncedEarlierThan:[NSDate dateWithTimeInterval:interval sinceDate:[NSDate date]]] ;
 										 }
 										 return;
 									 }
