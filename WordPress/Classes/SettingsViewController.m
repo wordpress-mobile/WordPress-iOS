@@ -41,7 +41,6 @@
 #import "SupportViewController.h"
 #import "WPAccount.h"
 #import "WPTableViewSectionHeaderView.h"
-#import "AddUsersBlogsViewController.h"
 #import "SupportViewController.h"
 
 typedef enum {
