@@ -419,37 +419,6 @@ typedef enum {
 	//[self updateToolbar];
 }
 
-
-- (void)handleCommentButtonTapped:(id)sender {
-	if (_readerCommentFormView.window != nil) {
-		[self hideCommentForm];
-		return;
-	}
-	
-	[self showCommentForm];
-}
-
-
-- (void)handleLikeButtonTapped:(id)sender {
-	[self.post toggleLikedWithSuccess:^{
-		
-	} failure:^(NSError *error) {
-		DDLogError(@"Error Liking Post : %@", [error localizedDescription]);
-		[self updateActionBar];
-	}];
-	[self updateActionBar];
-}
-
-- (void)handleReblogButtonTapped:(id)sender {
-	if (_isShowingReblogForm) {
-		[self hideReblogForm];
-		return;
-	}
-	
-	[self showReblogForm];
-}
-
-
 - (void)handleShareButtonTapped:(id)sender {
 	
 	if (self.linkOptionsActionSheet) {
@@ -650,6 +619,71 @@ typedef enum {
 	CGPoint point = [self.view.window convertPoint:keyFrame.origin toView:self.view];
 	frame.size.height = point.y - (frame.origin.y + keyboardOffset);
 	self.view.frame = frame;
+}
+
+
+#pragma mark - ReaderPostView delegate methods
+
+- (void)postView:(ReaderPostView *)postView didReceiveReblogAction:(id)sender {
+	if (_isShowingReblogForm) {
+		[self hideReblogForm];
+		return;
+	}
+	
+	[self showReblogForm];
+}
+
+- (void)postView:(ReaderPostView *)postView didReceiveLikeAction:(id)sender {
+    ReaderPost *post = postView.post;
+	[post toggleLikedWithSuccess:^{
+        if ([post.isLiked boolValue]) {
+            [WPMobileStats trackEventForWPCom:StatsEventReaderLikedPost];
+        } else {
+            [WPMobileStats trackEventForWPCom:StatsEventReaderUnlikedPost];
+        }
+	} failure:^(NSError *error) {
+		DDLogError(@"Error Liking Post : %@", [error localizedDescription]);
+		[postView updateActionButtons];
+	}];
+	
+	[postView updateActionButtons];
+}
+
+- (void)postView:(ReaderPostView *)postView didReceiveFollowAction:(id)sender {
+    UIButton *followButton = (UIButton *)sender;
+    ReaderPost *post = postView.post;
+    
+    if (![post isFollowable])
+        return;
+    
+    followButton.selected = ![post.isFollowing boolValue]; // Set it optimistically
+	[post toggleFollowingWithSuccess:^{
+	} failure:^(NSError *error) {
+		DDLogError(@"Error Following Blog : %@", [error localizedDescription]);
+		[followButton setSelected:[post.isFollowing boolValue]];
+	}];
+}
+
+- (void)postView:(ReaderPostView *)postView didReceiveCommentAction:(id)sender {
+	if (_readerCommentFormView.window != nil) {
+		[self hideCommentForm];
+		return;
+	}
+	
+	[self showCommentForm];
+}
+
+- (void)postView:(ReaderPostView *)postView didReceiveTagAction:(id)sender {
+    // TODO: decide how to browse from the Reader detail view
+//    ReaderPost *post = postView.post;
+//    
+//    NSString *endpoint = [NSString stringWithFormat:@"read/tags/%@/posts", post.primaryTagSlug];
+//    NSDictionary *dict = @{@"endpoint" : endpoint,
+//                           @"title" : post.primaryTagName};
+//    
+//	[[NSUserDefaults standardUserDefaults] setObject:dict forKey:ReaderCurrentTopicKey];
+//	[[NSUserDefaults standardUserDefaults] synchronize];
+//    [self readerTopicChanged];
 }
 
 

@@ -369,10 +369,10 @@ NSString *const RPVCDisplayedNativeFriendFinder = @"DisplayedNativeFriendFinder"
         }
 	} failure:^(NSError *error) {
 		DDLogError(@"Error Liking Post : %@", [error localizedDescription]);
-		[postView updateControlBar];
+		[postView updateActionButtons];
 	}];
 	
-	[postView updateControlBar];
+	[postView updateActionButtons];
 }
 
 - (void)postView:(ReaderPostView *)postView didReceiveFollowAction:(id)sender {

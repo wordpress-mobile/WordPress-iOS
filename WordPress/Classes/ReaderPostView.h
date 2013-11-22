@@ -37,7 +37,7 @@
 - (id)initWithFrame:(CGRect)frame showFullContent:(BOOL)showFullContent;
 - (void)setFeaturedImage:(UIImage *)image;
 - (void)setAvatar:(UIImage *)avatar;
-- (void)updateControlBar;
+- (void)updateActionButtons;
 - (void)reset;
 - (void)configurePost:(ReaderPost *)post;
 - (void)updateLayout;

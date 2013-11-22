@@ -239,7 +239,7 @@ const CGFloat RPVControlButtonBorderSize = 0.0f;
 	
 	_reblogButton.userInteractionEnabled = ![post.isReblogged boolValue];
 	
-	[self updateControlBar];
+	[self updateActionButtons];
 
 }
 
@@ -554,7 +554,7 @@ const CGFloat RPVControlButtonBorderSize = 0.0f;
 #pragma mark - Instance Methods
 
 - (void)observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary *)change context:(void *)context {
-	[self updateControlBar];
+	[self updateActionButtons];
 }
 
 - (void)setAvatar:(UIImage *)avatar {
@@ -584,7 +584,7 @@ const CGFloat RPVControlButtonBorderSize = 0.0f;
     self.cellImageView.image = image;
 }
 
-- (void)updateControlBar {
+- (void)updateActionButtons {
 	if (!_post)
         return;
 	
