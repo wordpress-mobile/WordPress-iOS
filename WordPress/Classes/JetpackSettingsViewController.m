@@ -6,7 +6,6 @@
 //  Copyright (c) 2012 WordPress. All rights reserved.
 //
 
-#import <SVProgressHUD/SVProgressHUD.h>
 #import "JetpackSettingsViewController.h"
 #import "Blog+Jetpack.h"
 #import "WordPressComApi.h"
@@ -129,7 +128,7 @@ CGFloat const JetpackSignInButtonHeight = 41.0;
     });
 
     UITapGestureRecognizer *dismissKeyboardTapRecognizer = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(dismissKeyboard)];
-    dismissKeyboardTapRecognizer.cancelsTouchesInView = NO;
+    dismissKeyboardTapRecognizer.cancelsTouchesInView = YES;
     dismissKeyboardTapRecognizer.delegate = self;
     [self.view addGestureRecognizer:dismissKeyboardTapRecognizer];
 }
@@ -302,13 +301,11 @@ CGFloat const JetpackSignInButtonHeight = 41.0;
 
 - (void)saveAction:(id)sender {
     [self dismissKeyboard];
-    [SVProgressHUD show];
-	
     [self setAuthenticating:YES];
+
     [_blog validateJetpackUsername:_usernameField.text
                           password:_passwordField.text
                            success:^{
-                               [SVProgressHUD dismiss];
                                if (![[WordPressComApi sharedApi] hasCredentials]) {
                                    [[WordPressComApi sharedApi] signInWithUsername:_usernameField.text password:_passwordField.text success:nil failure:nil];
                                }
@@ -317,7 +314,6 @@ CGFloat const JetpackSignInButtonHeight = 41.0;
                                    self.completionBlock(YES);
                                }
                            } failure:^(NSError *error) {
-                               [SVProgressHUD dismiss];
                                [self setAuthenticating:NO];
                                [WPError showAlertWithError:error];
                            }];
@@ -393,6 +389,7 @@ CGFloat const JetpackSignInButtonHeight = 41.0;
     _usernameField.enabled = !authenticating;
     _passwordField.enabled = !authenticating;
     [self updateSaveButton];
+    [_signInButton showActivityIndicator:authenticating];
 }
 
 - (void)updateSaveButton {
@@ -464,14 +461,11 @@ CGFloat const JetpackSignInButtonHeight = 41.0;
         }
         return;
     }
-    [SVProgressHUD showWithStatus:NSLocalizedString(@"Checking for Jetpack...", @"") maskType:SVProgressHUDMaskTypeBlack];
     [_blog syncOptionsWithWithSuccess:^{
-        [SVProgressHUD dismiss];
         if ([_blog hasJetpack]) {
             [self updateMessage];
         }
     } failure:^(NSError *error) {
-        [SVProgressHUD dismiss];
         [WPError showAlertWithError:error];
     }];
 }

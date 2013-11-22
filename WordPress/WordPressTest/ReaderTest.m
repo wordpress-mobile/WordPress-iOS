@@ -105,7 +105,7 @@
 	
 	// See how'd we do.
 	NSLog(@"Starting Count:  %i  First Count:  %i  Second Cound: %i", startingCount, firstCount, secondCount);
-	STAssertEquals(firstCount, secondCount, @"Count's should be equal.");
+	XCTAssertEqual(firstCount, secondCount, @"Count's should be equal.");
 
 }
 
@@ -121,7 +121,7 @@
 		ATHNotify();
 		
 	} failure:^(AFHTTPRequestOperation *operation, NSError *error) {
-		STFail(@"Call to Reader Topics Failed: %@", error);
+		XCTFail(@"Call to Reader Topics Failed: %@", error);
 		ATHNotify();
 	}];
 	ATHEnd();
@@ -135,7 +135,7 @@
 		ATHNotify();
 		
 	} failure:^(AFHTTPRequestOperation *operation, NSError *error) {
-		STFail(@"Call to Reader Comments Failed: %@", error);
+		XCTFail(@"Call to Reader Comments Failed: %@", error);
 		ATHNotify();
 	}];
 	ATHEnd();
@@ -148,7 +148,7 @@
 	NSDictionary *resp = (NSDictionary *)responseObject;
 	NSArray *postsArr = [resp objectForKey:@"posts"];
     if (!postsArr || ![postsArr isKindOfClass:[NSArray class]]) {
-        STFail(@"Posts is not an array");
+        XCTFail(@"Posts is not an array");
         return;
     }
 	NSManagedObjectContext *moc = [[CoreDataTestHelper sharedHelper] managedObjectContext];
@@ -161,10 +161,10 @@
 	NSArray *posts = [ReaderPost fetchPostsForEndpoint:path withContext:moc];
 	
 	if([posts count] == 0) {
-		STFail(@"No posts synced for path : %@", path);
+		XCTFail(@"No posts synced for path : %@", path);
 	}
 	NSLog(@"Syced: %i, Fetched: %i", [postsArr count], [posts count]);
-	STAssertEquals([posts count], [postsArr count], @"Synced posts should equal fetched posts.");
+	XCTAssertEqual([posts count], [postsArr count], @"Synced posts should equal fetched posts.");
 
 }
 
@@ -176,7 +176,7 @@
 		ATHNotify();
 
 	} failure:^(AFHTTPRequestOperation *operation, NSError *error) {
-		STFail(@"Call to %@ Failed: %@", path, error);
+		XCTFail(@"Call to %@ Failed: %@", path, error);
 		ATHNotify();
 	}];
 	ATHEnd();
