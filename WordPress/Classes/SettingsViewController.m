@@ -68,17 +68,12 @@ CGFloat const blavatarImageViewSize = 43.f;
     self.doneButton = [[UIBarButtonItem alloc] initWithTitle:NSLocalizedString(@"Done", @"") style:[WPStyleGuide barButtonStyleForBordered] target:self action:@selector(dismiss)];
     self.navigationItem.rightBarButtonItem = self.doneButton;
     
-    [[NSNotificationCenter defaultCenter] addObserverForName:WordPressComApiDidLoginNotification object:nil queue:nil usingBlock:^(NSNotification *note) {
+    [[NSNotificationCenter defaultCenter] addObserverForName:WPAccountDefaultWordPressComAccountChangedNotification object:nil queue:nil usingBlock:^(NSNotification *note) {
         NSMutableIndexSet *sections = [NSMutableIndexSet indexSet];
         [sections addIndex:SettingsSectionWpcom];
         [self.tableView reloadSections:sections withRowAnimation:UITableViewRowAnimationFade];
     }];
-    [[NSNotificationCenter defaultCenter] addObserverForName:WordPressComApiDidLogoutNotification object:nil queue:nil usingBlock:^(NSNotification *note) {
-        NSMutableIndexSet *sections = [NSMutableIndexSet indexSet];
-        [sections addIndex:SettingsSectionWpcom];
-        [self.tableView reloadSections:sections withRowAnimation:UITableViewRowAnimationFade];
-    }];
-    
+
     [WPStyleGuide configureColorsForView:self.view andTableView:self.tableView];
 }
 
@@ -155,6 +150,9 @@ CGFloat const blavatarImageViewSize = 43.f;
     return nil != [[NSUserDefaults standardUserDefaults] objectForKey:kApnsDeviceTokenPrefKey];
 }
 
+- (BOOL)supportsManageBlogs {
+    return [[[WPAccount defaultWordPressComAccount] blogs] count] > 0;
+}
 
 #pragma mark - Table view data source
 
@@ -164,30 +162,35 @@ CGFloat const blavatarImageViewSize = 43.f;
 
 // The Sign Out row in Wpcom section can change, so identify it dynamically
 - (NSInteger)rowForSignOut {
-    return [self supportsNotifications] ? 2 : 1;
+    NSInteger rowForSignOut = 1;
+    if ([self supportsNotifications]) {
+        rowForSignOut += 1;
+    }
+    if ([self supportsManageBlogs]) {
+        rowForSignOut += 1;
+    }
+    return rowForSignOut;
 }
 
 - (NSInteger)rowForNotifications {
-    return [self supportsNotifications] ? 1 : -1;
+    if ([self supportsNotifications]) {
+        return [self supportsManageBlogs] ? 2 : 1;
+    }
+    return -1;
+}
+
+- (NSInteger)rowForManageBlogs {
+    return [self supportsManageBlogs] ? 1 : -1;
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
-    int numWpcomRows = 0;
-    
     switch (section) {
         case SettingsSectionWpcom:
-            numWpcomRows = 1;
-
-            // Show a Sign Out row?
             if ([WPAccount defaultWordPressComAccount]) {
-                // Allow notifications management?
-                if ([self supportsNotifications]) {
-                    numWpcomRows += 1;
-                }
-                numWpcomRows += 1;
+                return [self rowForSignOut] + 1;
+            } else {
+                return 1;
             }
-            
-            return numWpcomRows;
 
         case SettingsSectionMedia:
             return [self.mediaSettingsArray count];
@@ -239,16 +242,24 @@ CGFloat const blavatarImageViewSize = 43.f;
                 cell.detailTextLabel.text = [[WPAccount defaultWordPressComAccount] username];
                 cell.detailTextLabel.textColor = [UIColor UIColorFromHex:0x888888];
                 cell.selectionStyle = UITableViewCellSelectionStyleNone;
+                cell.accessibilityIdentifier = @"wpcom-username";
+            } else if (indexPath.row == [self rowForManageBlogs]) {
+                cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
+                cell.textLabel.text = NSLocalizedString(@"Manage Blogs", @"");
+                cell.accessibilityIdentifier = @"wpcom-manage-blogs";
             } else if (indexPath.row == [self rowForNotifications]) {
                 cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
                 cell.textLabel.text = NSLocalizedString(@"Manage Notifications", @"");
+                cell.accessibilityIdentifier = @"wpcom-manage-notifications";
             } else {
                 cell.textLabel.textAlignment = NSTextAlignmentCenter;
                 cell.textLabel.text = NSLocalizedString(@"Sign Out", @"Sign out from WordPress.com");
+                cell.accessibilityIdentifier = @"wpcom-sign-out";
             }
         } else {
             cell.textLabel.textAlignment = NSTextAlignmentCenter;
             cell.textLabel.text = NSLocalizedString(@"Sign In", @"Sign in to WordPress.com");
+            cell.accessibilityIdentifier = @"wpcom-sign-in";
             cell.selectionStyle = UITableViewCellSelectionStyleBlue;
         }
         
@@ -369,6 +380,9 @@ CGFloat const blavatarImageViewSize = 43.f;
                                             destructiveButtonTitle:NSLocalizedString(@"Sign Out", @"")otherButtonTitles:nil, nil ];
                 actionSheet.actionSheetStyle = UIActionSheetStyleDefault;
                 [actionSheet showInView:self.view];
+            } else if (indexPath.row == [self rowForManageBlogs]) {
+                UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"Not yet" message:@"Coming soon" delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil];
+                [alertView show];
             } else if (indexPath.row == [self rowForNotifications]) {
                 [WPMobileStats trackEventForWPCom:StatsEventSettingsClickedManageNotifications];
             
