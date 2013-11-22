@@ -117,6 +117,7 @@
             <userInfo/>
         </attribute>
         <attribute name="isActivated" optional="YES" attributeType="Boolean" syncable="YES"/>
+        <attribute name="isVisible" attributeType="Boolean" defaultValueString="YES" syncable="YES"/>
         <attribute name="lastCommentsSync" optional="YES" attributeType="Date">
             <userInfo/>
         </attribute>

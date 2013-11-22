@@ -10,6 +10,7 @@
 #import "AddUsersBlogCell.h"
 #import "WordPressAppDelegate.h"
 #import "WPNUXUtility.h"
+#import "WPAccount.h"
 
 @interface ReaderUsersBlogsViewController ()<UITableViewDataSource, UITableViewDelegate>
 
@@ -17,7 +18,6 @@
 @property (nonatomic, strong) NSArray *blogs;
 @property (nonatomic, strong) NSNumber *primaryBlogId;
 
-- (NSString *)getCellTitleForIndexPath:(NSIndexPath *)indexPath;
 - (void)handleCloseButtonTapped:(id)sender;
 
 @end
@@ -46,7 +46,7 @@
 - (id)init {
 	self = [super init];
 	if (self) {
-		self.blogs = [[NSUserDefaults standardUserDefaults] arrayForKey:@"wpcom_users_blogs"];
+		self.blogs = [[WPAccount defaultWordPressComAccount] visibleBlogs];
 		self.primaryBlogId = [[NSUserDefaults standardUserDefaults] objectForKey:@"wpcom_users_prefered_blog_id"];
 	}
 	return self;
@@ -83,12 +83,11 @@
 
 #pragma mark - Instance Methods
 
-- (NSString *)getCellTitleForIndexPath:(NSIndexPath *)indexPath {
-    NSDictionary *dict = [_blogs objectAtIndex:indexPath.row];
-    if ([[[dict objectForKey:@"blogName"] trim] length] == 0) {
-        return [dict objectForKey:@"url"];
+- (NSString *)getCellTitleForBlog:(Blog *)blog {
+    if ([[blog.blogName trim] length] == 0) {
+        return blog.hostURL;
 	} else {
-        return [dict objectForKey:@"blogName"];
+        return blog.blogName;
 	}
 }
 
@@ -121,17 +120,18 @@
 		cell.isWPCom = YES;
     }
 
-    NSDictionary *dict = [_blogs objectAtIndex:indexPath.row];
+    Blog *blog = [_blogs objectAtIndex:indexPath.row];
     cell.showTopSeparator = ( indexPath.row == 0 ) ? YES : NO;
-    cell.title = [self getCellTitleForIndexPath:indexPath];
-    cell.blavatarUrl = [dict objectForKey:@"url"];
+    cell.title = [self getCellTitleForBlog:blog];
+    cell.blavatarUrl = [blog blavatarUrl];
     
     return cell;
 }
 
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
-    return [AddUsersBlogCell rowHeightWithText:[self getCellTitleForIndexPath:indexPath]];
+    Blog *blog = [_blogs objectAtIndex:indexPath.row];
+    return [AddUsersBlogCell rowHeightWithText:[self getCellTitleForBlog:blog]];
 }
 
 

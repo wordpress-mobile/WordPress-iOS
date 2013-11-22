@@ -28,6 +28,7 @@ extern NSString * const WPAccountDefaultWordPressComAccountChangedNotification;
 @property (nonatomic, readonly) BOOL isWpcom;
 @property (nonatomic, retain) NSSet *blogs;
 @property (nonatomic, retain) NSSet *jetpackBlogs;
+@property (nonatomic, readonly) NSArray *visibleBlogs;
 
 /**
  The account's password
