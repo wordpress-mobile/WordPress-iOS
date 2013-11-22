@@ -659,9 +659,9 @@ NSTimeInterval const ReaderPostDetailViewControllerRefreshTimeout = 300; // 5 mi
 	[self prepareComments];
 }
 
-#warning Unhandled failure for user interaction
+// TODO: Unhandled failure for user interaction
 - (void)onSyncFailure:(AFHTTPRequestOperation *)operation error:(NSError *)error {
-	// TODO: prompt about failure.
+	@throw ([NSException exceptionWithName:@"Method unimplemented" reason:@"onSyncFailure:error: not implemented in ReaderPostDetailViewController" userInfo:nil]);
 }
 
 
