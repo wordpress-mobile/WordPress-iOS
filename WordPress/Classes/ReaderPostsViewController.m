@@ -95,44 +95,21 @@ NSString *const RPVCDisplayedNativeFriendFinder = @"DisplayedNativeFriendFinder"
     _featuredImageSource = [[WPTableImageSource alloc] initWithMaxSize:CGSizeMake(maxWidth, maxHeight)];
     _featuredImageSource.delegate = self;
 	self.tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
-	
-	// Topics button
-	UIBarButtonItem *button = nil;
-    if (IS_IOS7) {
-        UIButton *topicsButton = [UIButton buttonWithType:UIButtonTypeCustom];
-        [topicsButton setImage:[UIImage imageNamed:@"icon-reader-topics"] forState:UIControlStateNormal];
-        [topicsButton setImage:[UIImage imageNamed:@"icon-reader-topics-active"] forState:UIControlStateHighlighted];
 
-        CGSize imageSize = [UIImage imageNamed:@"icon-reader-topics"].size;
-        topicsButton.frame = CGRectMake(0.0, 0.0, imageSize.width, imageSize.height);
-		
-        [topicsButton addTarget:self action:@selector(topicsAction:) forControlEvents:UIControlEventTouchUpInside];
-        button = [[UIBarButtonItem alloc] initWithCustomView:topicsButton];
-    } else {
-        UIButton *readButton = [UIButton buttonWithType:UIButtonTypeCustom];
-        [readButton setImage:[UIImage imageNamed:@"navbar_read"] forState:UIControlStateNormal];
-        
-		UIImage *backgroundImage = [[UIImage imageNamed:@"navbar_button_bg"] stretchableImageWithLeftCapWidth:4 topCapHeight:0];
-        [readButton setBackgroundImage:backgroundImage forState:UIControlStateNormal];
-		
-        backgroundImage = [[UIImage imageNamed:@"navbar_button_bg_active"] stretchableImageWithLeftCapWidth:4 topCapHeight:0];
-        [readButton setBackgroundImage:backgroundImage forState:UIControlStateHighlighted];
-        
-        readButton.frame = CGRectMake(0.0f, 0.0f, 44.0f, 30.0f);
-		
-        [readButton addTarget:self action:@selector(topicsAction:) forControlEvents:UIControlEventTouchUpInside];
-        button = [[UIBarButtonItem alloc] initWithCustomView:readButton];
-    }
-	
-    [button setAccessibilityLabel:NSLocalizedString(@"Topics", @"")];
+	// Topics button
+    UIButton *topicsButton = [UIButton buttonWithType:UIButtonTypeCustom];
+    [topicsButton setImage:[UIImage imageNamed:@"icon-reader-topics"] forState:UIControlStateNormal];
+    [topicsButton setImage:[UIImage imageNamed:@"icon-reader-topics-active"] forState:UIControlStateHighlighted];
+
+    CGSize imageSize = [UIImage imageNamed:@"icon-reader-topics"].size;
+    topicsButton.frame = CGRectMake(0.0, 0.0, imageSize.width, imageSize.height);
     
-    if (IS_IOS7) {
-        [WPStyleGuide setRightBarButtonItemWithCorrectSpacing:button forNavigationItem:self.navigationItem];
-    } else {
-        UIColor *color = [UIColor UIColorFromHex:0x464646];
-        button.tintColor = color;
-        [self.navigationItem setRightBarButtonItem:button animated:YES];
-    }
+    [topicsButton addTarget:self action:@selector(topicsAction:) forControlEvents:UIControlEventTouchUpInside];
+    UIBarButtonItem *button = [[UIBarButtonItem alloc] initWithCustomView:topicsButton];
+
+    [button setAccessibilityLabel:NSLocalizedString(@"Topics", @"")];
+    [WPStyleGuide setRightBarButtonItemWithCorrectSpacing:button forNavigationItem:self.navigationItem];
+
     
 	CGRect frame = CGRectMake(0.0f, self.view.bounds.size.height, self.view.bounds.size.width, [ReaderReblogFormView desiredHeight]);
 	self.readerReblogFormView = [[ReaderReblogFormView alloc] initWithFrame:frame];
@@ -535,28 +512,7 @@ NSString *const RPVCDisplayedNativeFriendFinder = @"DisplayedNativeFriendFinder"
 
 
 - (NSString *)noResultsMessageText {
-    NSString *prompt;
-	NSString *endpoint = [ReaderPost currentEndpoint];
-	NSArray *endpoints = [ReaderPost readerEndpoints];
-	NSInteger idx = [endpoints indexOfObjectPassingTest:^BOOL(id obj, NSUInteger idx, BOOL *stop) {
-		BOOL match = NO;
-		
-		if ([endpoint isEqualToString:[obj objectForKey:@"endpoint"]]) {
-			match = YES;
-			*stop = YES;
-		}
-        
-		return match;
-	}];
-	
-	switch (idx) {
-		case 0:
-			// Blogs I follow
-			prompt = NSLocalizedString(@"But don't worry, just tap the icon in the top right to explore and follow blogs. They'll show up right here!", @"");
-			break;
-	}
-	return prompt;
-    
+	return NSLocalizedString(@"Tap the tag icon to browse posts from popular blogs.", nil);
 }
 
 - (UIView *)noResultsAccessoryView {
