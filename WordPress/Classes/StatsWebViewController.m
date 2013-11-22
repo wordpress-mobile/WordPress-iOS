@@ -138,10 +138,9 @@ static NSString *_lastAuthedName = nil;
     UINavigationController *navController = nil;
     
     if ([blog isWPcom]) {
-        EditSiteViewController *controller = [[EditSiteViewController alloc] initWithNibName:nil bundle:nil];
+        EditSiteViewController *controller = [[EditSiteViewController alloc] initWithBlog:self.blog];
         controller.delegate = self;
         controller.isCancellable = YES;
-        controller.blog = self.blog;
         navController = [[UINavigationController alloc] initWithRootViewController:controller];
         navController.navigationBar.translucent = NO;
         navController.modalTransitionStyle = UIModalTransitionStyleCrossDissolve;

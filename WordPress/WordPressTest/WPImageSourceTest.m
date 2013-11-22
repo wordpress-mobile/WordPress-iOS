@@ -7,12 +7,12 @@
 //
 
 #import <OHHTTPStubs/OHHTTPStubs.h>
-#import <SenTestingKit/SenTestingKit.h>
+#import <XCTest/XCTest.h>
 #import "AsyncTestHelper.h"
 
 #import "WPImageSource.h"
 
-@interface WPImageSourceTest : SenTestCase
+@interface WPImageSourceTest : XCTestCase
 
 @end
 
@@ -50,31 +50,31 @@
                     withSuccess:^(UIImage *image) {
                         ATHNotify();
                     } failure:^(NSError *error) {
-                        STFail(nil);
+                        XCTFail();
                         ATHNotify();
                     }];
     [source downloadImageForURL:url
                     withSuccess:^(UIImage *image) {
                         ATHNotify();
                     } failure:^(NSError *error) {
-                        STFail(nil);
+                        XCTFail();
                         ATHNotify();
                     }];
     ATHWait();
     ATHEnd();
 
-    STAssertEquals(downloadCount, 1, @"it should download the image once");
+    XCTAssertEqual(downloadCount, 1, @"it should download the image once");
 
     ATHStart();
     [source downloadImageForURL:url
                     withSuccess:^(UIImage *image) {
                         ATHNotify();
                     } failure:^(NSError *error) {
-                        STFail(nil);
+                        XCTFail();
                         ATHNotify();
                     }];
     ATHEnd();
-    STAssertEquals(downloadCount, 2, @"it should download the image");
+    XCTAssertEqual(downloadCount, 2, @"it should download the image");
 }
 
 @end

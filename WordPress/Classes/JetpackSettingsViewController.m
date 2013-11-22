@@ -6,7 +6,6 @@
 //  Copyright (c) 2012 WordPress. All rights reserved.
 //
 
-#import <SVProgressHUD/SVProgressHUD.h>
 #import "JetpackSettingsViewController.h"
 #import "Blog+Jetpack.h"
 #import "WordPressComApi.h"
@@ -20,10 +19,6 @@
 #import "UILabel+SuggestSize.h"
 
 @interface JetpackSettingsViewController () <UITextFieldDelegate, UIGestureRecognizerDelegate>
-
-@property (nonatomic, strong) NSString *username;
-@property (nonatomic, strong) NSString *password;
-
 @end
 
 @implementation JetpackSettingsViewController {
@@ -31,8 +26,8 @@
     
     UIImageView *_icon;
     UILabel *_description;
-    WPWalkthroughTextField *_usernameText;
-    WPWalkthroughTextField *_passwordText;
+    WPWalkthroughTextField *_usernameField;
+    WPWalkthroughTextField *_passwordField;
     WPNUXMainButton *_signInButton;
     WPNUXMainButton *_installJetbackButton;
     UIButton *_moreInformationButton;
@@ -64,8 +59,6 @@ CGFloat const JetpackSignInButtonHeight = 41.0;
     self = [super init];
     if (self) {
         _blog = blog;
-		self.username = _blog.jetpackUsername;
-		self.password = _blog.jetpackPassword;
         self.showFullScreen = YES;
     }
     return self;
@@ -106,14 +99,14 @@ CGFloat const JetpackSignInButtonHeight = 41.0;
         [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(keyboardWillHide:) name:UIKeyboardWillHideNotification object:nil];
     }
 
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(textFieldDidChangeNotificationReceived:) name:UITextFieldTextDidChangeNotification object:_usernameText];
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(textFieldDidChangeNotificationReceived:) name:UITextFieldTextDidChangeNotification object:_passwordText];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(textFieldDidChangeNotificationReceived:) name:UITextFieldTextDidChangeNotification object:_usernameField];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(textFieldDidChangeNotificationReceived:) name:UITextFieldTextDidChangeNotification object:_passwordField];
     
     if (self.canBeSkipped) {
         if (_showFullScreen) {
             _skipButton = [[WPNUXSecondaryButton alloc] init];
             [_skipButton setTitle:NSLocalizedString(@"Skip", @"") forState:UIControlStateNormal];
-            [_skipButton addTarget:self action:@selector(skip:) forControlEvents:UIControlEventTouchUpInside];
+            [_skipButton addTarget:self action:@selector(skipAction:) forControlEvents:UIControlEventTouchUpInside];
             [_skipButton sizeToFit];
             [self.view addSubview:_skipButton];
         } else {
@@ -135,7 +128,7 @@ CGFloat const JetpackSignInButtonHeight = 41.0;
     });
 
     UITapGestureRecognizer *dismissKeyboardTapRecognizer = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(dismissKeyboard)];
-    dismissKeyboardTapRecognizer.cancelsTouchesInView = NO;
+    dismissKeyboardTapRecognizer.cancelsTouchesInView = YES;
     dismissKeyboardTapRecognizer.delegate = self;
     [self.view addGestureRecognizer:dismissKeyboardTapRecognizer];
 }
@@ -173,32 +166,32 @@ CGFloat const JetpackSignInButtonHeight = 41.0;
     }
     
     // Add Username
-    if (_usernameText == nil) {
-        _usernameText = [[WPWalkthroughTextField alloc] initWithLeftViewImage:[UIImage imageNamed:@"icon-username-field"]];
-        _usernameText.backgroundColor = [UIColor whiteColor];
-        _usernameText.placeholder = NSLocalizedString(@"WordPress.com username", @"");
-        _usernameText.font = [WPNUXUtility textFieldFont];
-        _usernameText.adjustsFontSizeToFitWidth = YES;
-        _usernameText.delegate = self;
-        _usernameText.autocorrectionType = UITextAutocorrectionTypeNo;
-        _usernameText.autocapitalizationType = UITextAutocapitalizationTypeNone;
-        _usernameText.text = _username;
-        _usernameText.clearButtonMode = UITextFieldViewModeWhileEditing;
-        [self.view addSubview:_usernameText];
+    if (_usernameField == nil) {
+        _usernameField = [[WPWalkthroughTextField alloc] initWithLeftViewImage:[UIImage imageNamed:@"icon-username-field"]];
+        _usernameField.backgroundColor = [UIColor whiteColor];
+        _usernameField.placeholder = NSLocalizedString(@"WordPress.com username", @"");
+        _usernameField.font = [WPNUXUtility textFieldFont];
+        _usernameField.adjustsFontSizeToFitWidth = YES;
+        _usernameField.delegate = self;
+        _usernameField.autocorrectionType = UITextAutocorrectionTypeNo;
+        _usernameField.autocapitalizationType = UITextAutocapitalizationTypeNone;
+        _usernameField.text = _blog.jetpackUsername;
+        _usernameField.clearButtonMode = UITextFieldViewModeWhileEditing;
+        [self.view addSubview:_usernameField];
     }
     
     // Add Password
-    if (_passwordText == nil) {
-        _passwordText = [[WPWalkthroughTextField alloc] initWithLeftViewImage:[UIImage imageNamed:@"icon-password-field"]];
-        _passwordText.backgroundColor = [UIColor whiteColor];
-        _passwordText.placeholder = NSLocalizedString(@"WordPress.com password", @"");
-        _passwordText.font = [WPNUXUtility textFieldFont];
-        _passwordText.delegate = self;
-        _passwordText.secureTextEntry = YES;
-        _passwordText.text = _password;
-        _passwordText.clearsOnBeginEditing = YES;
-        _passwordText.showTopLineSeparator = YES;
-        [self.view addSubview:_passwordText];
+    if (_passwordField == nil) {
+        _passwordField = [[WPWalkthroughTextField alloc] initWithLeftViewImage:[UIImage imageNamed:@"icon-password-field"]];
+        _passwordField.backgroundColor = [UIColor whiteColor];
+        _passwordField.placeholder = NSLocalizedString(@"WordPress.com password", @"");
+        _passwordField.font = [WPNUXUtility textFieldFont];
+        _passwordField.delegate = self;
+        _passwordField.secureTextEntry = YES;
+        _passwordField.text = _blog.jetpackPassword;
+        _passwordField.clearsOnBeginEditing = YES;
+        _passwordField.showTopLineSeparator = YES;
+        [self.view addSubview:_passwordField];
     }
     
     // Add Sign In Button
@@ -230,6 +223,7 @@ CGFloat const JetpackSignInButtonHeight = 41.0;
         _moreInformationButton.titleLabel.font = [WPNUXUtility confirmationLabelFont];
         [self.view addSubview:_moreInformationButton];
     }
+    [self updateSaveButton];
 }
 
 - (void)layoutControls {
@@ -254,18 +248,18 @@ CGFloat const JetpackSignInButtonHeight = 41.0;
     // Layout Username
     x = (_viewWidth - JetpackTextFieldWidth)/2.0;
     y = CGRectGetMaxY(_description.frame) + JetpackStandardOffset;
-    _usernameText.frame = CGRectIntegral(CGRectMake(x, y, JetpackTextFieldWidth, JetpackTextFieldHeight));
-    _usernameText.hidden = !hasJetpack;
+    _usernameField.frame = CGRectIntegral(CGRectMake(x, y, JetpackTextFieldWidth, JetpackTextFieldHeight));
+    _usernameField.hidden = !hasJetpack;
     
     // Layout Password
     x = (_viewWidth - JetpackTextFieldWidth)/2.0;
-    y = CGRectGetMaxY(_usernameText.frame);
-    _passwordText.frame = CGRectIntegral(CGRectMake(x, y, JetpackTextFieldWidth, JetpackTextFieldHeight));
-    _passwordText.hidden = !hasJetpack;
+    y = CGRectGetMaxY(_usernameField.frame);
+    _passwordField.frame = CGRectIntegral(CGRectMake(x, y, JetpackTextFieldWidth, JetpackTextFieldHeight));
+    _passwordField.hidden = !hasJetpack;
     
     // Layout Sign in Button
     x = (_viewWidth - JetpackSignInButtonWidth) / 2.0;;
-    y = CGRectGetMaxY(_passwordText.frame) + JetpackStandardOffset;
+    y = CGRectGetMaxY(_passwordField.frame) + JetpackStandardOffset;
     _signInButton.frame = CGRectMake(x, y, JetpackSignInButtonWidth, JetpackSignInButtonHeight);
     _signInButton.hidden = !hasJetpack;
     
@@ -289,7 +283,7 @@ CGFloat const JetpackSignInButtonHeight = 41.0;
     NSArray *viewsToCenter;
     UIView *endingView;
     if (hasJetpack) {
-        viewsToCenter = @[_icon, _description, _usernameText, _passwordText, _signInButton];
+        viewsToCenter = @[_icon, _description, _usernameField, _passwordField, _signInButton];
         endingView = _signInButton;
     } else {
         viewsToCenter = @[_icon, _description, _installJetbackButton, _moreInformationButton];
@@ -299,7 +293,7 @@ CGFloat const JetpackSignInButtonHeight = 41.0;
     [WPNUXUtility centerViews:viewsToCenter withStartingView:_icon andEndingView:endingView forHeight:(_viewHeight - 100)];
 }
 
-- (void)skip:(id)sender {
+- (void)skipAction:(id)sender {
     if (self.completionBlock) {
         self.completionBlock(NO);
     }
@@ -307,22 +301,19 @@ CGFloat const JetpackSignInButtonHeight = 41.0;
 
 - (void)saveAction:(id)sender {
     [self dismissKeyboard];
-    [SVProgressHUD show];
-	
     [self setAuthenticating:YES];
-    [_blog validateJetpackUsername:_username
-                          password:_password
+
+    [_blog validateJetpackUsername:_usernameField.text
+                          password:_passwordField.text
                            success:^{
-                               [SVProgressHUD dismiss];
                                if (![[WordPressComApi sharedApi] hasCredentials]) {
-                                   [[WordPressComApi sharedApi] signInWithUsername:_username password:_password success:nil failure:nil];
+                                   [[WordPressComApi sharedApi] signInWithUsername:_usernameField.text password:_passwordField.text success:nil failure:nil];
                                }
                                [self setAuthenticating:NO];
                                if (self.completionBlock) {
                                    self.completionBlock(YES);
                                }
                            } failure:^(NSError *error) {
-                               [SVProgressHUD dismiss];
                                [self setAuthenticating:NO];
                                [WPError showNetworkingAlertWithError:error];
                            }];
@@ -331,9 +322,9 @@ CGFloat const JetpackSignInButtonHeight = 41.0;
 #pragma mark - UITextField delegate and Keyboard
 
 - (BOOL)textFieldShouldReturn:(UITextField *)textField {
-    if (textField == _usernameText) {
-        [_passwordText becomeFirstResponder];
-    } else if (textField == _passwordText) {
+    if (textField == _usernameField) {
+        [_passwordField becomeFirstResponder];
+    } else if (textField == _passwordField) {
         [self saveAction:nil];
     }
     
@@ -341,13 +332,6 @@ CGFloat const JetpackSignInButtonHeight = 41.0;
 }
 
 - (void)textFieldDidChangeNotificationReceived:(NSNotification *)notification {
-    UITextField *textField = (UITextField *)notification.object;
-    
-    if([textField isEqual:_usernameText]) {
-		self.username = _usernameText.text;
-	} else {
-		self.password = _passwordText.text;
-	}
     [self updateSaveButton];
 }
 
@@ -360,7 +344,7 @@ CGFloat const JetpackSignInButtonHeight = 41.0;
     _keyboardOffset = (CGRectGetMaxY(_signInButton.frame) - CGRectGetMinY(keyboardFrame)) + CGRectGetHeight(_signInButton.frame);
     
     [UIView animateWithDuration:animationDuration animations:^{
-        NSArray *controlsToMove = @[_usernameText, _passwordText, _signInButton];
+        NSArray *controlsToMove = @[_usernameField, _passwordField, _signInButton];
         NSArray *controlsToHide = @[_icon, _description];
 
         for (UIControl *control in controlsToMove) {
@@ -379,7 +363,7 @@ CGFloat const JetpackSignInButtonHeight = 41.0;
     NSDictionary *keyboardInfo = notification.userInfo;
     CGFloat animationDuration = [[keyboardInfo objectForKey:UIKeyboardAnimationDurationUserInfoKey] floatValue];
     [UIView animateWithDuration:animationDuration animations:^{
-        NSArray *controlsToMove = @[_usernameText, _passwordText, _signInButton];
+        NSArray *controlsToMove = @[_usernameField, _passwordField, _signInButton];
         NSArray *controlsToHide = @[_icon, _description];
 
         for (UIControl *control in controlsToMove) {
@@ -397,12 +381,15 @@ CGFloat const JetpackSignInButtonHeight = 41.0;
 
 
 - (BOOL)saveEnabled {
-    return (!_authenticating && _usernameText.text.length && _passwordText.text.length);
+    return (!_authenticating && _usernameField.text.length && _passwordField.text.length);
 }
 
 - (void)setAuthenticating:(BOOL)authenticating {
     _authenticating = authenticating;
+    _usernameField.enabled = !authenticating;
+    _passwordField.enabled = !authenticating;
     [self updateSaveButton];
+    [_signInButton showActivityIndicator:authenticating];
 }
 
 - (void)updateSaveButton {
@@ -412,8 +399,8 @@ CGFloat const JetpackSignInButtonHeight = 41.0;
 }
 
 - (void)dismissKeyboard {
-    [_usernameText resignFirstResponder];
-    [_passwordText resignFirstResponder];
+    [_usernameField resignFirstResponder];
+    [_passwordField resignFirstResponder];
 }
 
 #pragma mark - Browser
@@ -467,52 +454,35 @@ CGFloat const JetpackSignInButtonHeight = 41.0;
 
 - (void)checkForJetpack {
     if ([_blog hasJetpack]) {
-        [self tryLoginWithCurrentWPComCredentials];
+        if (!_blog.jetpackUsername || !_blog.jetpackPassword) {
+            _usernameField.text = [[WPAccount defaultWordPressComAccount] username];
+            _passwordField.text = [[WPAccount defaultWordPressComAccount] password];
+            [self updateSaveButton];
+        }
         return;
     }
-    [SVProgressHUD showWithStatus:NSLocalizedString(@"Checking for Jetpack...", @"") maskType:SVProgressHUDMaskTypeBlack];
     [_blog syncOptionsWithWithSuccess:^{
-        [SVProgressHUD dismiss];
         if ([_blog hasJetpack]) {
             [self updateMessage];
-            double delayInSeconds = 0.1;
-            dispatch_time_t popTime = dispatch_time(DISPATCH_TIME_NOW, (int64_t)(delayInSeconds * NSEC_PER_SEC));
-            dispatch_after(popTime, dispatch_get_main_queue(), ^(void){
-                [self tryLoginWithCurrentWPComCredentials];
-            });
         }
     } failure:^(NSError *error) {
-        [SVProgressHUD dismiss];
         [WPError showNetworkingAlertWithError:error];
     }];
-}
-
-- (void)tryLoginWithCurrentWPComCredentials {
-    if ([_blog hasJetpack] && !([[_blog jetpackUsername] length] && [[_blog jetpackPassword] length])) {
-        NSString *wpcomUsername = [[WPAccount defaultWordPressComAccount] username];
-        NSString *wpcomPassword = [[WPAccount defaultWordPressComAccount] password];
-        if (wpcomUsername && wpcomPassword) {
-            [self tryLoginWithUsername:wpcomUsername andPassword:wpcomPassword];
-        }
-    }
 }
 
 - (void)tryLoginWithUsername:(NSString *)username andPassword:(NSString *)password {
     NSAssert(username != nil, @"Can't login with a nil username");
     NSAssert(password != nil, @"Can't login with a nil password");
-    _usernameText.text = username;
-    _passwordText.text = password;
+    _usernameField.text = username;
+    _passwordField.text = password;
 	
-    self.username = username;
-    self.password = password;
-
     [self saveAction:nil];
 }
 
 #pragma mark - UIGestureRecognizerDelegate
 
 - (BOOL)gestureRecognizer:(UIGestureRecognizer *)gestureRecognizer shouldReceiveTouch:(UITouch *)touch {
-    BOOL isUsernameField = [touch.view isDescendantOfView:_usernameText];
+    BOOL isUsernameField = [touch.view isDescendantOfView:_usernameField];
     BOOL isSigninButton = [touch.view isDescendantOfView:_signInButton];
     if (isUsernameField || isSigninButton) {
         return NO;
