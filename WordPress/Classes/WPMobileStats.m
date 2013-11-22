@@ -174,11 +174,6 @@ NSString *const StatsEventManageNotificationsDisabledBlogNotifications = @"Manag
 NSString *const StatsEventQuickPhotoOpened = @"Quick Photo - Opened";
 NSString *const StatsEventQuickPhotoPosted = @"Quick Photo - Posted";
 
-// Welcome View Controller
-NSString *const StatsEventWelcomeViewControllerClickedAddSelfHostedBlog = @"Welcome View Controller - Add Self Hosted Blog";
-NSString *const StatsEventWelcomeViewControllerClickedAddWordpressDotComBlog = @"Welcome View Controller - Add Wordpress.com Blog";
-NSString *const StatsEventWelcomeViewControllerClickedCreateWordpressDotComBlog = @"Welcome View Controller - Create Wordpress.com Blog";
-
 // NUX First Walkthrough 
 NSString *const StatsEventNUXFirstWalkthroughOpened = @"NUX - First Walkthrough - Opened";
 NSString *const StatsEventNUXFirstWalkthroughClickedSkipToCreateAccount = @"NUX - First Walkthrough - Skipped to Create Account";

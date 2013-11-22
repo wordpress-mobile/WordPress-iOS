@@ -31,7 +31,6 @@
 #import "SettingsViewController.h"
 #import "WordPressAppDelegate.h"
 #import "EditSiteViewController.h"
-#import "WelcomeViewController.h"
 #import "UIImageView+Gravatar.h"
 #import "WordPressComApi.h"
 #import "AboutViewController.h"
