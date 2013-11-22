@@ -118,8 +118,7 @@ typedef enum {
     if (indexPath.row == BlogDetailsRowEdit) {
         [WPMobileStats trackEventForWPCom:StatsEventSettingsClickedEditBlog];
         
-        EditSiteViewController *editSiteViewController = [[EditSiteViewController alloc] init];
-        editSiteViewController.blog = self.blog;
+        EditSiteViewController *editSiteViewController = [[EditSiteViewController alloc] initWithBlog:self.blog];
         [self.navigationController pushViewController:editSiteViewController animated:YES];
     }
     

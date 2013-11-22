@@ -14,6 +14,9 @@
 #import "WordPressAppDelegate.h"
 #import "NSString+Helpers.h"
 #import "WPAccount.h"
+#import "Blog.h"
+
+static BOOL hasRecordedAppOpenedEvent = NO;
 
 // General
 NSString *const StatsEventAppOpened = @"Application Opened";
@@ -277,6 +280,8 @@ NSString *const StatsEventAddBlogsClickedAddSelected = @"Add Blogs - Clicked Add
 + (void)pauseSession
 {
     [[QuantcastMeasurement sharedInstance] pauseSessionWithLabels:nil];
+    [self clearPropertiesForAllEvents];
+    hasRecordedAppOpenedEvent = NO;
 }
 
 + (void)endSession
@@ -287,6 +292,13 @@ NSString *const StatsEventAddBlogsClickedAddSelected = @"Add Blogs - Clicked Add
 + (void)resumeSession
 {
     [[QuantcastMeasurement sharedInstance] resumeSessionWithLabels:nil];
+}
+
++ (void)recordAppOpenedForEvent:(NSString *)event {
+    if (!hasRecordedAppOpenedEvent) {
+        [self trackEventForSelfHostedAndWPCom:event];
+    }
+    hasRecordedAppOpenedEvent = YES;
 }
 
 + (void)trackEventForSelfHostedAndWPCom:(NSString *)event
