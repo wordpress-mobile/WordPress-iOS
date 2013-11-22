@@ -7,7 +7,6 @@
 #import "Reachability.h"
 #import "NSString+Helpers.h"
 #import "CPopoverManager.h"
-#import "BetaUIWindow.h"
 #import "MigrateBlogsFromFiles.h"
 #import "Blog.h"
 #import "Media.h"

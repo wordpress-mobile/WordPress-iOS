@@ -211,8 +211,6 @@
 		374F18CD15A5897500524ED0 /* SidebarToolbarButton@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 374F18AB15A5897500524ED0 /* SidebarToolbarButton@2x.png */; };
 		375D090D133B94C3000CC9CD /* BlogsTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 375D090C133B94C3000CC9CD /* BlogsTableViewCell.m */; };
 		375D7EE21355E9B6001C7371 /* paperclip.png in Resources */ = {isa = PBXBuildFile; fileRef = 375D7EE11355E9B6001C7371 /* paperclip.png */; };
-		3768BE87130404FF00E7C9A9 /* BetaUIWindow.m in Sources */ = {isa = PBXBuildFile; fileRef = 3768BE86130404FF00E7C9A9 /* BetaUIWindow.m */; };
-		3768BEF113041E7900E7C9A9 /* BetaFeedbackViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3768BEEF13041E7800E7C9A9 /* BetaFeedbackViewController.m */; };
 		3768BEF213041E7900E7C9A9 /* BetaFeedbackViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 3768BEF013041E7900E7C9A9 /* BetaFeedbackViewController.xib */; };
 		3768F4901340BBD60075B633 /* blavatar-wporg@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 3768F48C1340BBD60075B633 /* blavatar-wporg@2x.png */; };
 		3768F4911340BBD60075B633 /* blavatar-wpcom@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 3768F48D1340BBD60075B633 /* blavatar-wpcom@2x.png */; };
@@ -815,10 +813,8 @@
 		E13EB7A5157D230000885780 /* WordPressComApi.m in Sources */ = {isa = PBXBuildFile; fileRef = E13EB7A4157D230000885780 /* WordPressComApi.m */; };
 		E13F23C314FE84600081D9CC /* NSMutableDictionary+Helpers.m in Sources */ = {isa = PBXBuildFile; fileRef = E13F23C214FE84600081D9CC /* NSMutableDictionary+Helpers.m */; };
 		E13FA0CC134BDCBB007DCDD0 /* QuickPhotoViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = E13FA0CB134BDCBB007DCDD0 /* QuickPhotoViewController.xib */; };
-		E13FA0DE134C6D34007DCDD0 /* BlogSelectorButton.m in Sources */ = {isa = PBXBuildFile; fileRef = E13FA0DD134C6D33007DCDD0 /* BlogSelectorButton.m */; };
 		E13FA0F7134C849D007DCDD0 /* downArrow.png in Resources */ = {isa = PBXBuildFile; fileRef = E13FA0F5134C849D007DCDD0 /* downArrow.png */; };
 		E13FA0F8134C849D007DCDD0 /* downArrow@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = E13FA0F6134C849D007DCDD0 /* downArrow@2x.png */; };
-		E13FA0FB134C8DDC007DCDD0 /* BlogSelectorViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = E13FA0FA134C8DDC007DCDD0 /* BlogSelectorViewController.m */; };
 		E1472B9713EFF9FF00987A40 /* left.png in Resources */ = {isa = PBXBuildFile; fileRef = E1472B9313EFF9FF00987A40 /* left.png */; };
 		E1472B9813EFF9FF00987A40 /* left@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = E1472B9413EFF9FF00987A40 /* left@2x.png */; };
 		E1472B9913EFF9FF00987A40 /* right.png in Resources */ = {isa = PBXBuildFile; fileRef = E1472B9513EFF9FF00987A40 /* right.png */; };
@@ -1212,10 +1208,6 @@
 		375D090B133B94C3000CC9CD /* BlogsTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BlogsTableViewCell.h; sourceTree = "<group>"; };
 		375D090C133B94C3000CC9CD /* BlogsTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BlogsTableViewCell.m; sourceTree = "<group>"; };
 		375D7EE11355E9B6001C7371 /* paperclip.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = paperclip.png; path = Resources/Images/paperclip.png; sourceTree = "<group>"; };
-		3768BE85130404FF00E7C9A9 /* BetaUIWindow.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BetaUIWindow.h; sourceTree = "<group>"; };
-		3768BE86130404FF00E7C9A9 /* BetaUIWindow.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BetaUIWindow.m; sourceTree = "<group>"; };
-		3768BEEE13041E7800E7C9A9 /* BetaFeedbackViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BetaFeedbackViewController.h; sourceTree = "<group>"; };
-		3768BEEF13041E7800E7C9A9 /* BetaFeedbackViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BetaFeedbackViewController.m; sourceTree = "<group>"; };
 		3768BEF013041E7900E7C9A9 /* BetaFeedbackViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = BetaFeedbackViewController.xib; path = Resources/BetaFeedbackViewController.xib; sourceTree = "<group>"; };
 		3768F48C1340BBD60075B633 /* blavatar-wporg@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "blavatar-wporg@2x.png"; path = "Resources/Images/blavatar-wporg@2x.png"; sourceTree = "<group>"; };
 		3768F48D1340BBD60075B633 /* blavatar-wpcom@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "blavatar-wpcom@2x.png"; path = "Resources/Images/blavatar-wpcom@2x.png"; sourceTree = "<group>"; };
@@ -1975,12 +1967,8 @@
 		E13F23C114FE84600081D9CC /* NSMutableDictionary+Helpers.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSMutableDictionary+Helpers.h"; sourceTree = "<group>"; };
 		E13F23C214FE84600081D9CC /* NSMutableDictionary+Helpers.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSMutableDictionary+Helpers.m"; sourceTree = "<group>"; };
 		E13FA0CB134BDCBB007DCDD0 /* QuickPhotoViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = QuickPhotoViewController.xib; path = Resources/QuickPhotoViewController.xib; sourceTree = "<group>"; };
-		E13FA0DC134C6D33007DCDD0 /* BlogSelectorButton.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BlogSelectorButton.h; sourceTree = "<group>"; };
-		E13FA0DD134C6D33007DCDD0 /* BlogSelectorButton.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BlogSelectorButton.m; sourceTree = "<group>"; };
 		E13FA0F5134C849D007DCDD0 /* downArrow.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = downArrow.png; path = Resources/Images/downArrow.png; sourceTree = "<group>"; };
 		E13FA0F6134C849D007DCDD0 /* downArrow@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "downArrow@2x.png"; path = "Resources/Images/downArrow@2x.png"; sourceTree = "<group>"; };
-		E13FA0F9134C8DDC007DCDD0 /* BlogSelectorViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BlogSelectorViewController.h; sourceTree = "<group>"; };
-		E13FA0FA134C8DDC007DCDD0 /* BlogSelectorViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BlogSelectorViewController.m; sourceTree = "<group>"; };
 		E1457202135EC85700C7BAD2 /* sv */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = sv; path = sv.lproj/Localizable.strings; sourceTree = "<group>"; };
 		E1472B9313EFF9FF00987A40 /* left.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = left.png; path = Resources/Images/left.png; sourceTree = "<group>"; };
 		E1472B9413EFF9FF00987A40 /* left@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "left@2x.png"; path = "Resources/Images/left@2x.png"; sourceTree = "<group>"; };
@@ -2257,8 +2245,6 @@
 				C58349C41806F95100B64089 /* IOS7CorrectedTextView.m */,
 				E183EC9816B16CCF00C2EB11 /* AutosavingIndicatorView.h */,
 				E183EC9916B16CCF00C2EB11 /* AutosavingIndicatorView.m */,
-				E13FA0DC134C6D33007DCDD0 /* BlogSelectorButton.h */,
-				E13FA0DD134C6D33007DCDD0 /* BlogSelectorButton.m */,
 				031669580FFC81A20045D052 /* CommentsTableViewDelegate.h */,
 				CC669B1D1672C305009E16F8 /* FollowButton.h */,
 				CC669B1E1672C305009E16F8 /* FollowButton.m */,
@@ -2571,17 +2557,6 @@
 				306BAADE15C78C5400F37378 /* SidebarToolbarButtonHighlighted@2x.png */,
 			);
 			name = Sidebar;
-			sourceTree = "<group>";
-		};
-		3768BEED13041E3F00E7C9A9 /* Beta */ = {
-			isa = PBXGroup;
-			children = (
-				3768BE85130404FF00E7C9A9 /* BetaUIWindow.h */,
-				3768BE86130404FF00E7C9A9 /* BetaUIWindow.m */,
-				3768BEEE13041E7800E7C9A9 /* BetaFeedbackViewController.h */,
-				3768BEEF13041E7800E7C9A9 /* BetaFeedbackViewController.m */,
-			);
-			name = Beta;
 			sourceTree = "<group>";
 		};
 		3792259E12F6DBCC00F2176A /* Stats */ = {
@@ -3301,8 +3276,6 @@
 				462F4E0718369F0B0028D2F8 /* BlogDetailsViewController.m */,
 				462F4E0818369F0B0028D2F8 /* BlogListViewController.h */,
 				462F4E0918369F0B0028D2F8 /* BlogListViewController.m */,
-				E13FA0F9134C8DDC007DCDD0 /* BlogSelectorViewController.h */,
-				E13FA0FA134C8DDC007DCDD0 /* BlogSelectorViewController.m */,
 				83610AA711F4AD2C00421116 /* WPcomLoginViewController.h */,
 				83610AA811F4AD2C00421116 /* WPcomLoginViewController.m */,
 				8370D1BA11FA6295009D650F /* AddSiteViewController.h */,
@@ -3625,7 +3598,6 @@
 			children = (
 				E1523EB216D3B2EE002C5A36 /* Sharing */,
 				30AF6CFE13C230CC00A29C00 /* About */,
-				3768BEED13041E3F00E7C9A9 /* Beta */,
 				292CECFE1027259000BD407D /* SFHFKeychainUtils.h */,
 				292CECFF1027259000BD407D /* SFHFKeychainUtils.m */,
 				A0E293EF0E21027E00C6919C /* WPAddCategoryViewController.h */,
@@ -5061,9 +5033,7 @@
 				E125451812BF68F900D87A0A /* Page.m in Sources */,
 				FD9A948C12FAEA2300438F94 /* DateUtils.m in Sources */,
 				E1B4A9E112FC8B1000EB3F67 /* EGORefreshTableHeaderView.m in Sources */,
-				3768BE87130404FF00E7C9A9 /* BetaUIWindow.m in Sources */,
 				85D2415817D0701A00AF090E /* UIViewController+iOS7StyleChanges.m in Sources */,
-				3768BEF113041E7900E7C9A9 /* BetaFeedbackViewController.m in Sources */,
 				85468F3A17C483F1008AB9C1 /* NewCommentsTableViewCell.m in Sources */,
 				E1D458691309589C00BF0235 /* Coordinate.m in Sources */,
 				E159D1051309AB0D00F498E2 /* MigrateBlogsFromFiles.m in Sources */,
@@ -5071,8 +5041,6 @@
 				E18D43E1130BD8E9006155DE /* PostToAbstractPost.m in Sources */,
 				E11930C41312F8A800F34124 /* FakeMigration.m in Sources */,
 				375D090D133B94C3000CC9CD /* BlogsTableViewCell.m in Sources */,
-				E13FA0DE134C6D34007DCDD0 /* BlogSelectorButton.m in Sources */,
-				E13FA0FB134C8DDC007DCDD0 /* BlogSelectorViewController.m in Sources */,
 				850DE06117CD4611003A1057 /* NewNotificationsTableViewCell.m in Sources */,
 				E10A2E9B134E8AD3007643F9 /* PostAnnotation.m in Sources */,
 				E17BE261134F5E4D00165C3D /* QuickPicturePreviewView.m in Sources */,

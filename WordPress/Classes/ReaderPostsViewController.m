@@ -993,8 +993,6 @@ NSString *const RPVCDisplayedNativeFriendFinder = @"DisplayedNativeFriendFinder"
     }
 	
     [self presentViewController:navController animated:YES completion:nil];
-    
-    [controller loadURL:kMobileReaderFFURL];
 }
 
 

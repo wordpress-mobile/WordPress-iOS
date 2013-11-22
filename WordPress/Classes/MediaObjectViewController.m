@@ -66,18 +66,6 @@
     insertButton.tintColor = deleteButton.tintColor;
 }
 
-- (void)viewDidUnload {
-    [super viewDidUnload];
-    
-    self.imageView = nil;
-    self.insertButton = nil;
-    self.deleteButton = nil;
-    self.cancelButton = nil;
-    self.scrollView = nil;
-    self.toolbar = nil;
-    self.currentActionSheet = nil;
-}
-
 - (void)viewWillDisappear:(BOOL)animated {
     [super viewWillDisappear:animated];
     
