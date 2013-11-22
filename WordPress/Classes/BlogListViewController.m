@@ -14,6 +14,7 @@
 #import "WelcomeViewController.h"
 #import "BlogDetailsViewController.h"
 #import "WPTableViewCell.h"
+#import "ContextManager.h"
 #import "Blog.h"
 
 CGFloat const blavatarImageSize = 50.f;
@@ -258,13 +259,13 @@ CGFloat const blavatarImageSize = 50.f;
 #pragma mark NSFetchedResultsController
 
 - (NSFetchedResultsController *)resultsController {
-    if (_resultsController)
+    if (_resultsController) {
         return _resultsController;
+    }
     
-    NSFetchRequest *fetchRequest = [[NSFetchRequest alloc] init];
-    NSManagedObjectContext *moc = [[WordPressAppDelegate sharedWordPressApplicationDelegate] managedObjectContext];
-    [fetchRequest setEntity:[NSEntityDescription entityForName:@"Blog" inManagedObjectContext:moc]];
-    [fetchRequest setSortDescriptors:[NSArray arrayWithObject:[NSSortDescriptor sortDescriptorWithKey:@"blogName" ascending:YES]]];
+    NSManagedObjectContext *moc = [[ContextManager sharedInstance] mainContext];
+    NSFetchRequest *fetchRequest = [NSFetchRequest fetchRequestWithEntityName:@"Blog"];
+    fetchRequest.sortDescriptors = @[[NSSortDescriptor sortDescriptorWithKey:@"blogName" ascending:YES]];
     
     // For some reasons, the cache sometimes gets corrupted
     // Since we don't really use sections we skip the cache here
