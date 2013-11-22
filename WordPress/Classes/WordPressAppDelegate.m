@@ -13,7 +13,6 @@
 #import "WordPressAppDelegate.h"
 #import "Reachability.h"
 #import "NSString+Helpers.h"
-#import "MigrateBlogsFromFiles.h"
 #import "Media.h"
 #import "CameraPlusPickerManager.h"
 #import "UIDevice+WordPressIdentifier.h"
@@ -42,11 +41,8 @@
 int ddLogLevel = LOG_LEVEL_INFO;
 NSInteger const UpdateCheckAlertViewTag = 102;
 
-@interface WordPressAppDelegate(PrivateHockeyApp) <BITHockeyManagerDelegate>
-@end
 
-
-@interface WordPressAppDelegate () <CrashlyticsDelegate, UIAlertViewDelegate>
+@interface WordPressAppDelegate () <CrashlyticsDelegate, UIAlertViewDelegate, BITHockeyManagerDelegate>
 
 @property (nonatomic, assign) BOOL listeningForBlogChanges;
 @property (nonatomic, strong) NotificationsViewController *notificationsViewController;
@@ -415,6 +411,7 @@ NSInteger const UpdateCheckAlertViewTag = 102;
 	}
 }
 
+
 #pragma mark - Application directories
 
 - (NSString *)applicationDocumentsDirectory {
@@ -591,6 +588,16 @@ NSInteger const UpdateCheckAlertViewTag = 102;
     [Crashlytics setObjectValue:@([Blog countWithContext:[[ContextManager sharedInstance] mainContext]]) forKey:@"number_of_blogs"];
 }
 
+- (void)configureHockeySDK {
+#ifndef INTERNAL_BUILD
+    return;
+#endif
+    [[BITHockeyManager sharedHockeyManager] configureWithIdentifier:[WordPressComApiCredentials hockeyappAppId]
+                                                           delegate:self];
+    [[BITHockeyManager sharedHockeyManager].authenticator setIdentificationType:BITAuthenticatorIdentificationTypeDevice];
+    [[BITHockeyManager sharedHockeyManager] startManager];
+    [[BITHockeyManager sharedHockeyManager].authenticator authenticateInstallation];
+}
 
 #pragma mark - Media cleanup
 

@@ -9,7 +9,6 @@
 
 #import "ContextManager.h"
 #import "WordPressComApi.h"
-#import "MigrateBlogsFromFiles.h"
 
 static ContextManager *instance;
 
@@ -228,24 +227,7 @@ static ContextManager *instance;
         // If everything went wrong and we lost the DB, we sign out and simulate a fresh install
         // It's equally annoying, but it's more confusing to stay logged in to the reader having lost all the blogs in the app
         [[WordPressComApi sharedApi] signOut];
-    } else {
-		// If there are no blogs and blogs.archive still exists, force import of blogs
-		NSFileManager *fileManager = [NSFileManager defaultManager];
-		NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
-		NSString *currentDirectoryPath = [[paths objectAtIndex:0] stringByAppendingPathComponent:@"wordpress"];
-		NSString *blogsArchiveFilePath = [currentDirectoryPath stringByAppendingPathComponent:@"blogs.archive"];
-		if ([fileManager fileExistsAtPath:blogsArchiveFilePath]) {
-			NSManagedObjectContext *destMOC = [[NSManagedObjectContext alloc] init];
-			[destMOC setPersistentStoreCoordinator:_persistentStoreCoordinator];
-            
-			MigrateBlogsFromFiles *blogMigrator = [[MigrateBlogsFromFiles alloc] init];
-			[blogMigrator forceBlogsMigrationInContext:destMOC error:&error];
-			if (![destMOC save:&error]) {
-				DDLogError(@"Error saving blogs-only migration: %@", error);
-			}
-			[fileManager removeItemAtPath:blogsArchiveFilePath error:&error];
-		}
-	}
+    }
     
     return _persistentStoreCoordinator;
 }
