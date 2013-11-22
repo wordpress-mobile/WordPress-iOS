@@ -27,6 +27,7 @@
 #import "BlogListViewController.h"
 #import "LoginViewController.h"
 #import <CrashlyticsLumberjack/CrashlyticsLogger.h>
+#import <HockeySDK/HockeySDK.h>
 #import "NotificationsManager.h"
 #import <DDFileLogger.h>
 #import <AFNetworking/AFNetworking.h>
@@ -35,6 +36,9 @@
 #import "DDTTYLogger.h"
 #import "DDASLLogger.h"
 #endif
+
+@interface WordPressAppDelegate(PrivateHockeyApp) <BITHockeyManagerDelegate> {}
+@end
 
 int ddLogLevel = LOG_LEVEL_INFO;
 NSInteger const UpdateCheckAlertViewTag = 102;
@@ -121,6 +125,12 @@ NSInteger const UpdateCheckAlertViewTag = 102;
 
 - (BOOL)application:(UIApplication *)application openURL:(NSURL *)url sourceApplication:(NSString *)sourceApplication annotation:(id)annotation
 {
+    if ([[BITHockeyManager sharedHockeyManager].authenticator handleOpenURL:url
+                                                          sourceApplication:sourceApplication
+                                                                 annotation:annotation]) {
+        return YES;
+    }
+
     if ([[GPPShare sharedInstance] handleURL:url sourceApplication:sourceApplication annotation:annotation]) {
         return YES;
     }
@@ -164,6 +174,17 @@ NSInteger const UpdateCheckAlertViewTag = 102;
     }
 
     return NO;
+}
+    
+- (void)configureHockeySDK {
+#ifndef INTERNAL_BUILD
+    return;
+#endif
+    [[BITHockeyManager sharedHockeyManager] configureWithIdentifier:[WordPressComApiCredentials hockeyappAppId]
+                                                           delegate:self];
+    [[BITHockeyManager sharedHockeyManager].authenticator setIdentificationType:BITAuthenticatorIdentificationTypeDevice];
+    [[BITHockeyManager sharedHockeyManager] startManager];
+    [[BITHockeyManager sharedHockeyManager].authenticator authenticateInstallation];
 }
 
 - (void)applicationWillTerminate:(UIApplication *)application {
@@ -223,7 +244,6 @@ NSInteger const UpdateCheckAlertViewTag = 102;
     [UIApplication sharedApplication].applicationIconBadgeNumber = 0;
     [[WordPressComApi sharedApi] syncPushNotificationInfo];
 }
-
 
 #pragma mark - Push Notification delegate
 
@@ -686,6 +706,9 @@ NSInteger const UpdateCheckAlertViewTag = 102;
 #if DEBUG
     return;
 #endif
+#ifdef INTERNAL_BUILD
+    return;
+#endif
     
     if ([[WordPressComApiCredentials crashlyticsApiKey] length] == 0) {
         return;
@@ -843,7 +866,7 @@ NSInteger const UpdateCheckAlertViewTag = 102;
     
     // allocate the internet reachability object
     _internetReachability = [Reachability reachabilityForInternetConnection];
-    
+
     self.connectionAvailable = [_internetReachability isReachable];
     // set the blocks
     _internetReachability.reachableBlock = ^(Reachability*reach)
@@ -1040,7 +1063,9 @@ NSInteger const UpdateCheckAlertViewTag = 102;
     [DDLog addLogger:[DDTTYLogger sharedInstance]];
 #endif
     
+#ifndef INTERNAL_BUILD
     [DDLog addLogger:[CrashlyticsLogger sharedInstance]];
+#endif
     
     BOOL extraDebug = [[NSUserDefaults standardUserDefaults] boolForKey:@"extra_debug"];
     if (extraDebug) {
