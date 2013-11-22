@@ -45,35 +45,35 @@
     _blog = (Blog *)[[CoreDataTestHelper sharedHelper] insertEntityWithName:@"Blog"];
     _blog.xmlrpc = @"http://test.wordpress.com/xmlrpc.php";
     _blog.url = @"http://test.wordpress.com/";
-    STAssertThrows([_blog hasJetpack], @"WordPress.com blogs don't support Jetpack methods");
-    STAssertThrows([_blog jetpackVersion], @"WordPress.com blogs don't support Jetpack methods");
-    STAssertThrows([_blog jetpackUsername], @"WordPress.com blogs don't support Jetpack methods");
-    STAssertThrows([_blog jetpackPassword], @"WordPress.com blogs don't support Jetpack methods");
-    STAssertThrows([_blog jetpackBlogID], @"WordPress.com blogs don't support Jetpack methods");
-    STAssertThrows([_blog removeJetpackCredentials], @"WordPress.com blogs don't support Jetpack methods");
-    STAssertThrows([_blog validateJetpackUsername:@"test" password:@"test" success:nil failure:nil], @"WordPress.com blogs don't support Jetpack methods");
+    XCTAssertThrows([_blog hasJetpack], @"WordPress.com blogs don't support Jetpack methods");
+    XCTAssertThrows([_blog jetpackVersion], @"WordPress.com blogs don't support Jetpack methods");
+    XCTAssertThrows([_blog jetpackUsername], @"WordPress.com blogs don't support Jetpack methods");
+    XCTAssertThrows([_blog jetpackPassword], @"WordPress.com blogs don't support Jetpack methods");
+    XCTAssertThrows([_blog jetpackBlogID], @"WordPress.com blogs don't support Jetpack methods");
+    XCTAssertThrows([_blog removeJetpackCredentials], @"WordPress.com blogs don't support Jetpack methods");
+    XCTAssertThrows([_blog validateJetpackUsername:@"test" password:@"test" success:nil failure:nil], @"WordPress.com blogs don't support Jetpack methods");
 }
 
 - (void)testHasJetpack {
-    STAssertTrue([_blog hasJetpack], nil);
+    XCTAssertTrue([_blog hasJetpack]);
     _blog.options = nil;
-    STAssertFalse([_blog hasJetpack], nil);
+    XCTAssertFalse([_blog hasJetpack]);
 }
 
 - (void)testJetpackVersion {
-    STAssertEqualObjects([_blog jetpackVersion], @"1.8.2", nil);
+    XCTAssertEqualObjects([_blog jetpackVersion], @"1.8.2");
 }
 
 - (void)testJetpackBlogId {
-    STAssertEqualObjects([_blog jetpackBlogID], @1, nil);
+    XCTAssertEqualObjects([_blog jetpackBlogID], @1);
 }
 
 - (void)testJetpackUsername {
-    STAssertNil([_blog jetpackUsername], nil);
+    XCTAssertNil([_blog jetpackUsername]);
 }
 
 - (void)testJetpackPassword {
-    STAssertNil([_blog jetpackPassword], nil);
+    XCTAssertNil([_blog jetpackPassword]);
 }
 
 - (void)testValidateCredentials {
@@ -93,11 +93,11 @@
 
     ATHStart();
     [_blog validateJetpackUsername:@"test1" password:@"test1" success:^{
-        STFail(@"User test1 shouldn't have access to test.blog");
+        XCTFail(@"User test1 shouldn't have access to test.blog");
         ATHNotify();
     } failure:^(NSError *error) {
-        STAssertEquals(error.domain, BlogJetpackErrorDomain, nil);
-        STAssertEquals(error.code, BlogJetpackErrorCodeNoRecordForBlog, nil);
+        XCTAssertEqual(error.domain, BlogJetpackErrorDomain);
+        XCTAssertEqual(error.code, BlogJetpackErrorCodeNoRecordForBlog);
         ATHNotify();
     }];
     ATHEnd();
@@ -106,7 +106,7 @@
     [_blog validateJetpackUsername:@"test2" password:@"test2" success:^{
         ATHNotify();
     } failure:^(NSError *error) {
-        STFail(@"User test2 should have access to test.blog");
+        XCTFail(@"User test2 should have access to test.blog");
         ATHNotify();
     }];
     ATHEnd();

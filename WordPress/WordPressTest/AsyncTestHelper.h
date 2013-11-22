@@ -7,7 +7,7 @@
 //
 
 #import <Foundation/Foundation.h>
-#import <SenTestingKit/SenTestingKit.h>
+#import <XCTest/XCTest.h>
 
 extern dispatch_semaphore_t ATHSemaphore;
 extern const NSTimeInterval AsyncTestCaseDefaultTimeout;
@@ -28,7 +28,7 @@ extern const NSTimeInterval AsyncTestCaseDefaultTimeout;
     [[NSRunLoop currentRunLoop] runMode:NSDefaultRunLoopMode\
                              beforeDate:[NSDate dateWithTimeIntervalSinceNow:AsyncTestCaseDefaultTimeout]];\
     timedOut = (lockStatus != 0);\
-    STAssertFalse(timedOut, @"Lock timed out");\
+    XCTAssertFalse(timedOut, @"Lock timed out");\
 } while (0)
 
 #define ATHNeverCalled(timeout) do {\
@@ -39,7 +39,7 @@ extern const NSTimeInterval AsyncTestCaseDefaultTimeout;
     [[NSRunLoop currentRunLoop] runMode:NSDefaultRunLoopMode\
                              beforeDate:[NSDate dateWithTimeIntervalSinceNow:timeout]];\
     timedOut = (lockStatus != 0);\
-    STAssertTrue(timedOut, @"Lock timed out");\
+    XCTAssertTrue(timedOut, @"Lock timed out");\
 } while (0)
 
 #define ATHEnd() do {\
