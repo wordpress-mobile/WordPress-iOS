@@ -20,6 +20,10 @@
 #import "NSDate+StringFormatting.h"
 #import "UIColor+Helpers.h"
 #import "WPTableViewCell.h"
+#import "DTTiledLayerWithoutFade.h"
+#import "ReaderMediaView.h"
+#import "ReaderImageView.h"
+#import "ReaderVideoView.h"
 
 const CGFloat RPVAuthorPadding = 8.0f;
 const CGFloat RPVHorizontalInnerPadding = 12.0f;
@@ -44,6 +48,7 @@ const CGFloat RPVControlButtonBorderSize = 0.0f;
 @property (nonatomic, strong) UILabel *titleLabel;
 @property (nonatomic, strong) CALayer *titleBorder;
 @property (nonatomic, strong) UILabel *snippetLabel;
+@property (nonatomic, strong) DTAttributedTextContentView *textContentView;
 
 @property (nonatomic, strong) UIView *metaView;
 @property (nonatomic, strong) CALayer *metaBorder;
@@ -52,6 +57,9 @@ const CGFloat RPVControlButtonBorderSize = 0.0f;
 @property (nonatomic, strong) UIView *controlView;
 
 @property (nonatomic, assign) BOOL showImage;
+@property (nonatomic, assign) BOOL showFullContent;
+@property (nonatomic, strong) NSMutableArray *mediaArray;
+@property (nonatomic, strong) ReaderMediaQueue *mediaQueue;
 
 @end
 
@@ -148,12 +156,15 @@ const CGFloat RPVControlButtonBorderSize = 0.0f;
 
 #pragma mark - Lifecycle Methods
 
-- (id)initWithFrame:(CGRect)frame
-{
+- (id)initWithFrame:(CGRect)frame showFullContent:(BOOL)showFullContent {
     self = [super initWithFrame:frame];
     if (self) {
+        self.mediaArray = [NSMutableArray array];
+        self.mediaQueue = [[ReaderMediaQueue alloc] initWithDelegate:self];
+
         self.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
         self.opaque = YES;
+        self.showFullContent = showFullContent;
 
         self.cellImageView = [[UIImageView alloc] initWithFrame:CGRectMake(0.0f, 0.0f, 44.0f, 44.0f)]; // arbitrary size.
 		_cellImageView.backgroundColor = [WPStyleGuide readGrey];
@@ -166,10 +177,64 @@ const CGFloat RPVControlButtonBorderSize = 0.0f;
     return self;
 }
 
-
-
 - (void)dealloc {
 	self.post = nil;
+}
+
+- (void)configurePost:(ReaderPost *)post {
+    self.post = post;
+    
+    // This will show the placeholder avatar. Do this here instead of prepareForReusue
+    // so avatars show up after a cell is created, and not dequeued.
+    [self setAvatar:nil];
+    
+	_titleLabel.attributedText = [ReaderPostView titleAttributedStringForPost:post];
+    
+    if (self.showFullContent) {
+        NSString *contentString = [NSString stringWithFormat:@"<p> </p>%@", self.post.content];
+        NSData *data = [contentString dataUsingEncoding:NSUTF8StringEncoding];
+		_textContentView.attributedString = [[NSAttributedString alloc] initWithHTMLData:data
+                                                                                 options:[WPStyleGuide defaultDTCoreTextOptions]
+                                                                      documentAttributes:nil];
+        [_textContentView relayoutText];
+    } else {
+        _snippetLabel.attributedText = [ReaderPostView summaryAttributedStringForPost:post];
+    }
+    
+    _bylineLabel.text = [post authorString];
+    
+    [_timeButton setTitle:[post.dateCreated shortString] forState:UIControlStateNormal];
+    
+	self.showImage = NO;
+	self.cellImageView.hidden = YES;
+    self.cellImageView.contentMode = UIViewContentModeCenter;
+    self.cellImageView.image = [UIImage imageNamed:@"wp_img_placeholder"];
+	if (post.featuredImageURL) {
+		self.showImage = YES;
+		self.cellImageView.hidden = NO;
+	}
+    
+    if ([self.post.primaryTagName length] > 0) {
+        _tagButton.hidden = NO;
+        [_tagButton setTitle:self.post.primaryTagName forState:UIControlStateNormal];
+    } else {
+        _tagButton.hidden = YES;
+    }
+    
+	if ([self.post isWPCom]) {
+		_likeButton.hidden = NO;
+		_reblogButton.hidden = NO;
+        _commentButton.hidden = NO;
+	} else {
+		_likeButton.hidden = YES;
+		_reblogButton.hidden = YES;
+        _commentButton.hidden = YES;
+	}
+	
+	_reblogButton.userInteractionEnabled = ![post.isReblogged boolValue];
+	
+	[self updateControlBar];
+
 }
 
 - (void)setPost:(ReaderPost *)post {
@@ -182,6 +247,34 @@ const CGFloat RPVControlButtonBorderSize = 0.0f;
 	
 	_post = post;
 	[_post addObserver:self forKeyPath:@"isReblogged" options:NSKeyValueObservingOptionNew context:@"reblogging"];
+}
+
+- (UIView *)buildContentView {
+    UIView *contentView;
+    
+    if (self.showFullContent) {
+        [DTAttributedTextContentView setLayerClass:[DTTiledLayerWithoutFade class]];
+        
+        // Needs an initial frame
+        self.textContentView = [[DTAttributedTextContentView alloc] initWithFrame:self.frame];
+        _textContentView.delegate = self;
+        _textContentView.autoresizingMask = UIViewAutoresizingFlexibleWidth;
+        _textContentView.backgroundColor = [UIColor whiteColor];
+        _textContentView.edgeInsets = UIEdgeInsetsMake(0.0f, RPVHorizontalInnerPadding, 0.0f, RPVHorizontalInnerPadding);
+        _textContentView.shouldDrawImages = NO;
+        _textContentView.shouldDrawLinks = NO;
+        contentView = _textContentView;
+    } else {
+        self.snippetLabel = [[UILabel alloc] init];
+        _snippetLabel.autoresizingMask = UIViewAutoresizingFlexibleWidth;
+        _snippetLabel.backgroundColor = [UIColor clearColor];
+        _snippetLabel.textColor = [UIColor colorWithHexString:@"333"];
+        _snippetLabel.lineBreakMode = NSLineBreakByTruncatingTail;
+        _snippetLabel.numberOfLines = 4;
+        contentView = _snippetLabel;
+    }
+    
+    return contentView;
 }
 
 - (void)buildPostContent {
@@ -200,13 +293,7 @@ const CGFloat RPVControlButtonBorderSize = 0.0f;
     _titleBorder.backgroundColor = [[UIColor colorWithHexString:@"f1f1f1"] CGColor];
     [self.layer addSublayer:_titleBorder];
 	
-	self.snippetLabel = [[UILabel alloc] init];
-	_snippetLabel.autoresizingMask = UIViewAutoresizingFlexibleWidth;
-	_snippetLabel.backgroundColor = [UIColor clearColor];
-	_snippetLabel.textColor = [UIColor colorWithHexString:@"333"];
-	_snippetLabel.lineBreakMode = NSLineBreakByTruncatingTail;
-	_snippetLabel.numberOfLines = 4;
-	[self addSubview:_snippetLabel];
+	[self addSubview:[self buildContentView]];
     
     self.byView = [[UIView alloc] init];
 	_byView.autoresizingMask = UIViewAutoresizingFlexibleWidth;
@@ -334,12 +421,22 @@ const CGFloat RPVControlButtonBorderSize = 0.0f;
 	_titleLabel.frame = CGRectMake(RPVHorizontalInnerPadding, nextY, innerContentWidth, height);
 	nextY += height + RPVVerticalPadding;
     
-	// Position the snippet
+	// Position the snippet / content
     if ([self.post.summary length] > 0) {
-        height = ceil([_snippetLabel suggestedSizeForWidth:innerContentWidth].height);
-        height = MIN(height, RPVMaxSummaryHeight);
-        _snippetLabel.frame = CGRectMake(RPVHorizontalInnerPadding, nextY, innerContentWidth, height);
-        nextY += ceilf(height + RPVVerticalPadding);
+        if (self.showFullContent) {
+            [self.textContentView relayoutText];
+            height = [self.textContentView suggestedFrameSizeToFitEntireStringConstraintedToWidth:contentWidth].height;
+            CGRect textContainerFrame = _textContentView.frame;
+            textContainerFrame.size.height = height;
+            textContainerFrame.origin.y = nextY;
+            self.textContentView.frame = textContainerFrame;
+            nextY += textContainerFrame.size.height + RPVVerticalPadding;
+        } else {
+            height = ceil([_snippetLabel suggestedSizeForWidth:innerContentWidth].height);
+            height = MIN(height, RPVMaxSummaryHeight);
+            _snippetLabel.frame = CGRectMake(RPVHorizontalInnerPadding, nextY, innerContentWidth, height);
+            nextY += ceilf(height + RPVVerticalPadding);
+        }
     }
     
     // Tag
@@ -375,7 +472,12 @@ const CGFloat RPVControlButtonBorderSize = 0.0f;
     _reblogButton.frame = CGRectMake(buttonX, buttonY, buttonWidth - RPVControlButtonBorderSize, RPVControlButtonHeight);
     
     CGFloat timeWidth = contentWidth - _reblogButton.frame.origin.x;
-    _timeButton.frame = CGRectMake(RPVHorizontalInnerPadding, RPVBorderHeight, timeWidth, RPVControlButtonHeight);    
+    _timeButton.frame = CGRectMake(RPVHorizontalInnerPadding, RPVBorderHeight, timeWidth, RPVControlButtonHeight);
+    
+    // Update own frame
+    CGRect ownFrame = self.frame;
+    ownFrame.size.height = nextY + RPVMetaViewHeight + 1;
+    self.frame = ownFrame;
 }
 
 - (void)reset {
@@ -394,51 +496,6 @@ const CGFloat RPVControlButtonBorderSize = 0.0f;
 #pragma mark - Instance Methods
 
 - (void)observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary *)change context:(void *)context {
-	[self updateControlBar];
-}
-
-- (void)configure:(ReaderPost *)post {
-	self.post = post;
-    
-    // This will show the placeholder avatar. Do this here instead of prepareForReusue
-    // so avatars show up after a cell is created, and not dequeued.
-    [self setAvatar:nil];
-    
-	_titleLabel.attributedText = [ReaderPostView titleAttributedStringForPost:post];
-	_snippetLabel.attributedText = [ReaderPostView summaryAttributedStringForPost:post];
-    
-    _bylineLabel.text = [post authorString];
-    
-    [_timeButton setTitle:[post.dateCreated shortString] forState:UIControlStateNormal];
-    
-	self.showImage = NO;
-	self.cellImageView.hidden = YES;
-    self.cellImageView.contentMode = UIViewContentModeCenter;
-    self.cellImageView.image = [UIImage imageNamed:@"wp_img_placeholder"];
-	if (post.featuredImageURL) {
-		self.showImage = YES;
-		self.cellImageView.hidden = NO;
-	}
-    
-    if ([self.post.primaryTagName length] > 0) {
-        _tagButton.hidden = NO;
-        [_tagButton setTitle:self.post.primaryTagName forState:UIControlStateNormal];
-    } else {
-        _tagButton.hidden = YES;
-    }
-    
-	if ([self.post isWPCom]) {
-		_likeButton.hidden = NO;
-		_reblogButton.hidden = NO;
-        _commentButton.hidden = NO;
-	} else {
-		_likeButton.hidden = YES;
-		_reblogButton.hidden = YES;
-        _commentButton.hidden = YES;
-	}
-	
-	_reblogButton.userInteractionEnabled = ![post.isReblogged boolValue];
-	
 	[self updateControlBar];
 }
 
@@ -477,5 +534,280 @@ const CGFloat RPVControlButtonBorderSize = 0.0f;
     _reblogButton.selected = _post.isReblogged.boolValue;
 	_reblogButton.userInteractionEnabled = !_reblogButton.selected;
 }
+
+- (BOOL)isEmoji:(NSURL *)url {
+	return ([[url absoluteString] rangeOfString:@"wp.com/wp-includes/images/smilies"].location != NSNotFound);
+}
+
+- (void)handleMediaViewLoaded:(ReaderMediaView *)mediaView {
+	
+	BOOL frameChanged = [self updateMediaLayout:mediaView];
+	
+    if (frameChanged) {
+        // need to reset the layouter because otherwise we get the old framesetter or cached layout frames
+        self.textContentView.layouter = nil;
+        
+        // layout might have changed due to image sizes
+        [self.textContentView relayoutText];
+        
+        [self updateLayout];
+    }
+}
+
+- (void)updateLayout {
+	// Size the textContentView
+	CGRect frame = _textContentView.frame;
+	CGFloat height = [_textContentView suggestedFrameSizeToFitEntireStringConstraintedToWidth:frame.size.width].height;
+	frame.size.height = height;
+	_textContentView.frame = frame;
+	
+	frame = self.frame;
+	frame.size.height = height + _textContentView.frame.origin.y + 10.0f; // + bottom padding
+	self.frame = frame;
+	
+	//[self.delegate readerPostDetailViewLayoutChanged];
+}
+
+
+- (BOOL)updateMediaLayout:(ReaderMediaView *)imageView {
+    BOOL frameChanged = NO;
+	NSURL *url = imageView.contentURL;
+	
+	CGSize originalSize = imageView.frame.size;
+	CGSize viewSize = imageView.image.size;
+	
+	if ([self isEmoji:url]) {
+		CGFloat scale = [UIScreen mainScreen].scale;
+		viewSize.width *= scale;
+		viewSize.height *= scale;
+	} else {
+        CGFloat ratio = viewSize.width / viewSize.height;
+        CGFloat width = _textContentView.frame.size.width;
+        CGFloat availableWidth = _textContentView.frame.size.width - (_textContentView.edgeInsets.left + _textContentView.edgeInsets.right);
+        
+        viewSize.width = availableWidth;
+        
+        if (imageView.isShowingPlaceholder) {
+            viewSize.height = roundf(width / imageView.placeholderRatio);
+        } else {
+            viewSize.height = roundf(width / ratio);
+        }
+        
+        viewSize.height += imageView.edgeInsets.top; // account for the top edge inset.
+	}
+    
+    // Widths should always match
+    if (viewSize.height != originalSize.height) {
+        frameChanged = YES;
+    }
+    
+	NSPredicate *pred = [NSPredicate predicateWithFormat:@"contentURL == %@", url];
+	
+	// update all attachments that matchin this URL (possibly multiple images with same size)
+	for (DTTextAttachment *attachment in [self.textContentView.layoutFrame textAttachmentsWithPredicate:pred]) {
+		attachment.originalSize = originalSize;
+		attachment.displaySize = viewSize;
+	}
+    
+    return frameChanged;
+}
+
+
+#pragma mark ReaderMediaQueueDelegate methods
+
+- (void)readerMediaQueue:(ReaderMediaQueue *)mediaQueue didLoadBatch:(NSArray *)batch {
+    BOOL frameChanged = NO;
+    
+    for (NSInteger i = 0; i < [batch count]; i++) {
+        ReaderMediaView *mediaView = [batch objectAtIndex:i];
+        if ([self updateMediaLayout:mediaView]) {
+            frameChanged = YES;
+        }
+    }
+    
+    if (frameChanged) {
+        // need to reset the layouter because otherwise we get the old framesetter or cached layout frames
+        self.textContentView.layouter = nil;
+        
+        // layout might have changed due to image sizes
+        [self.textContentView relayoutText];
+        [self setNeedsLayout];
+        //[self _updateLayout];
+    }
+}
+
+#pragma mark - DTCoreAttributedTextContentView Delegate Methods
+
+- (UIView *)attributedTextContentView:(DTAttributedTextContentView *)attributedTextContentView viewForAttributedString:(NSAttributedString *)string frame:(CGRect)frame {
+	NSDictionary *attributes = [string attributesAtIndex:0 effectiveRange:nil];
+	
+	NSURL *URL = [attributes objectForKey:DTLinkAttribute];
+	NSString *identifier = [attributes objectForKey:DTGUIDAttribute];
+	
+	DTLinkButton *button = [[DTLinkButton alloc] initWithFrame:frame];
+	button.URL = URL;
+	button.minimumHitSize = CGSizeMake(25, 25); // adjusts it's bounds so that button is always large enough
+	button.GUID = identifier;
+	
+	// get image with normal link text
+	UIImage *normalImage = [attributedTextContentView contentImageWithBounds:frame options:DTCoreTextLayoutFrameDrawingDefault];
+	[button setImage:normalImage forState:UIControlStateNormal];
+	
+	// get image for highlighted link text
+	UIImage *highlightImage = [attributedTextContentView contentImageWithBounds:frame options:DTCoreTextLayoutFrameDrawingDrawLinksHighlighted];
+	[button setImage:highlightImage forState:UIControlStateHighlighted];
+	
+	// use normal push action for opening URL
+	[button addTarget:self action:@selector(handleLinkTapped:) forControlEvents:UIControlEventTouchUpInside];
+	
+	return button;
+}
+
+
+- (UIView *)attributedTextContentView:(DTAttributedTextContentView *)attributedTextContentView viewForAttachment:(DTTextAttachment *)attachment frame:(CGRect)frame {
+    
+    if (!attachment.contentURL)
+        return nil;
+    
+    // If it's the same as the featured image, don't display that image again
+//    BOOL sameImage = [[attachment.contentURL absoluteString] rangeOfString: [self.post.featuredImageURL absoluteString]
+//                      ].location != NSNotFound;
+//    if (sameImage) {
+//		ReaderImageView *emptyView = [[ReaderImageView alloc] initWithFrame:CGRectZero];
+//        [self handleMediaViewLoaded:emptyView];
+//        [self setNeedsLayout];
+//        return emptyView;
+//    }
+	
+    CGFloat width = _textContentView.frame.size.width;
+    CGFloat availableWidth = _textContentView.frame.size.width - (_textContentView.edgeInsets.left + _textContentView.edgeInsets.right);
+    
+	// The ReaderImageView view will conform to the width constraints of the _textContentView. We want the image itself to run out to the edges,
+	// so position it offset by the inverse of _textContentView's edgeInsets. Also add top padding so we don't bump into a line of text.
+	// Remeber to add an extra 10px to the frame to preserve aspect ratio.
+	UIEdgeInsets edgeInsets = _textContentView.edgeInsets;
+	edgeInsets.left = 0.0f - edgeInsets.left;
+	edgeInsets.top = 15.0f;
+	edgeInsets.right = 0.0f - edgeInsets.right;
+	edgeInsets.bottom = 0.0f;
+	
+	if ([attachment isKindOfClass:[DTImageTextAttachment class]]) {
+		if ([self isEmoji:attachment.contentURL]) {
+			// minimal frame to suppress drawing context errors with 0 height or width.
+			frame.size.width = MAX(frame.size.width, 1.0f);
+			frame.size.height = MAX(frame.size.height, 1.0f);
+			ReaderImageView *imageView = [[ReaderImageView alloc] initWithFrame:frame];
+            [_mediaArray addObject:imageView];
+            [self.mediaQueue enqueueMedia:imageView
+                                  withURL:attachment.contentURL
+                         placeholderImage:nil
+                                     size:CGSizeMake(15.0f, 15.0f)
+                                isPrivate:self.post.isPrivate
+                                  success:nil
+                                  failure:nil];
+			return imageView;
+		}
+		
+        DTImageTextAttachment *imageAttachment = (DTImageTextAttachment *)attachment;
+		UIImage *image;
+		
+		if( [imageAttachment.image isKindOfClass:[UIImage class]] ) {
+			image = imageAttachment.image;
+			
+            CGFloat ratio = image.size.width / image.size.height;
+            frame.size.width = availableWidth;
+            frame.size.height = roundf(width / ratio);
+		} else {
+			image = [UIImage imageNamed:@"wp_img_placeholder.png"];
+            
+			if (frame.size.width > 1.0f && frame.size.height > 1.0f) {
+                CGFloat ratio = frame.size.width / frame.size.height;
+                frame.size.width = availableWidth;
+                frame.size.height = roundf(width / ratio);
+            } else {
+                frame.size.width = availableWidth;
+                frame.size.height = roundf(width * 0.66f);
+            }
+		}
+		
+		// offset the top edge inset keeping the image from bumping the text above it.
+		frame.size.height += edgeInsets.top;
+		
+		ReaderImageView *imageView = [[ReaderImageView alloc] initWithFrame:frame];
+		imageView.contentMode = UIViewContentModeScaleAspectFit;
+		imageView.edgeInsets = edgeInsets;
+        
+		[_mediaArray addObject:imageView];
+		imageView.linkURL = attachment.hyperLinkURL;
+		[imageView addTarget:self action:@selector(handleImageLinkTapped:) forControlEvents:UIControlEventTouchUpInside];
+		
+		if ([imageAttachment.image isKindOfClass:[UIImage class]]) {
+			[imageView setImage:image];
+		} else {
+			//imageView.contentMode = UIViewContentModeCenter;
+			imageView.backgroundColor = [UIColor colorWithRed:192.0f/255.0f green:192.0f/255.0f blue:192.0f/255.0f alpha:1.0];
+            
+            [self.mediaQueue enqueueMedia:imageView
+                                  withURL:attachment.contentURL
+                         placeholderImage:image
+                                     size:CGSizeMake(width, 0)
+                                isPrivate:self.post.isPrivate
+                                  success:^(ReaderMediaView *readerMediaView) {
+                                      ReaderImageView *imageView = (ReaderImageView *)readerMediaView;
+                                      imageView.contentMode = UIViewContentModeScaleAspectFit;
+                                      imageView.backgroundColor = [UIColor clearColor];
+                                  }
+                                  failure:nil];
+		}
+        
+		return imageView;
+		
+	} else {
+		
+		ReaderVideoContentType videoType;
+		
+		if ([attachment isKindOfClass:[DTVideoTextAttachment class]]) {
+			videoType = ReaderVideoContentTypeVideo;
+		} else if ([attachment isKindOfClass:[DTIframeTextAttachment class]]) {
+			videoType = ReaderVideoContentTypeIFrame;
+		} else if ([attachment isKindOfClass:[DTObjectTextAttachment class]]) {
+			videoType = ReaderVideoContentTypeEmbed;
+		} else {
+			return nil; // Can't handle whatever this is :P
+		}
+        
+		// make sure we have a reasonable size.
+		if (frame.size.width > width) {
+            if (frame.size.height == 0) {
+                frame.size.height = roundf(frame.size.width * 0.66f);
+            }
+            CGFloat ratio = frame.size.width / frame.size.height;
+            frame.size.width = availableWidth;
+            frame.size.height = roundf(width / ratio);
+		}
+		
+		// offset the top edge inset keeping the image from bumping the text above it.
+		frame.size.height += edgeInsets.top;
+        
+		ReaderVideoView *videoView = [[ReaderVideoView alloc] initWithFrame:frame];
+		videoView.contentMode = UIViewContentModeCenter;
+		videoView.backgroundColor = [UIColor colorWithRed:192.0f/255.0f green:192.0f/255.0f blue:192.0f/255.0f alpha:1.0];
+		videoView.edgeInsets = edgeInsets;
+        
+		[_mediaArray addObject:videoView];
+		[videoView setContentURL:attachment.contentURL ofType:videoType success:^(id readerVideoView) {
+			[(ReaderVideoView *)readerVideoView setContentMode:UIViewContentModeScaleAspectFit];
+			[self handleMediaViewLoaded:readerVideoView];
+		} failure:^(id readerVideoView, NSError *error) {
+			[self handleMediaViewLoaded:readerVideoView];
+			
+		}];
+        
+		[videoView addTarget:self action:@selector(handleVideoTapped:) forControlEvents:UIControlEventTouchUpInside];
+        
+		return videoView;
+	}
+}
+
 
 @end

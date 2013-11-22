@@ -28,7 +28,7 @@
 #import "NSString+Helpers.h"
 #import "WPPopoverBackgroundView.h"
 #import "IOS7CorrectedTextView.h"
-#import "readerPostView.h"
+#import "ReaderPostView.h"
 
 static CGFloat const RPVCScrollingFastVelocityThreshold = 30.f;
 static CGFloat const RPVCHeaderHeightPhone = 10.f;
@@ -47,6 +47,7 @@ NSString *const RPVCDisplayedNativeFriendFinder = @"DisplayedNativeFriendFinder"
 }
 
 @property (nonatomic, strong) ReaderReblogFormView *readerReblogFormView;
+@property (nonatomic, strong) ReaderPostDetailViewController *detailController;
 @property (nonatomic, strong) WPFriendFinderNudgeView *friendFinderNudgeView;
 @property (nonatomic, strong) UINavigationBar *navBar;
 @property (nonatomic) BOOL isShowingReblogForm;
@@ -601,17 +602,26 @@ NSString *const RPVCDisplayedNativeFriendFinder = @"DisplayedNativeFriendFinder"
     }
 }
 
-- (void)setImageForPost:(ReaderPost *)post forCell:(ReaderPostTableViewCell *)cell indexPath:(NSIndexPath *)indexPath {
-    NSURL *imageURL = post.featuredImageURL;
+- (UIImage *)imageForURL:(NSURL *)imageURL size:(CGSize)imageSize {
     if (!imageURL)
-        return;
-
-    CGSize imageSize = cell.postView.cellImageView.bounds.size;
+        return nil;
+    
     if (CGSizeEqualToSize(imageSize, CGSizeZero)) {
         imageSize.width = self.tableView.bounds.size.width;
         imageSize.height = round(imageSize.width * RPVCMaxImageHeightPercentage);
     }
-    UIImage *image = [_featuredImageSource imageForURL:imageURL withSize:imageSize];
+    return [_featuredImageSource imageForURL:imageURL withSize:imageSize];
+}
+
+- (void)setImageForPost:(ReaderPost *)post forCell:(ReaderPostTableViewCell *)cell indexPath:(NSIndexPath *)indexPath {
+    NSURL *imageURL = post.featuredImageURL;
+    
+    if (!imageURL)
+        return;
+    
+    CGSize imageSize = cell.postView.cellImageView.bounds.size;
+    UIImage *image = [self imageForURL:imageURL size: imageSize];
+    
     if (image) {
         [cell.postView setFeaturedImage:image];
     } else if (!_isScrollingFast) {
@@ -786,10 +796,15 @@ NSString *const RPVCDisplayedNativeFriendFinder = @"DisplayedNativeFriendFinder"
         [tableView deselectRowAtIndexPath:indexPath animated:YES];
     }
 
+    // Pass the image forward
 	ReaderPost *post = [self.resultsController.fetchedObjects objectAtIndex:indexPath.row];
-	
-	ReaderPostDetailViewController *controller = [[ReaderPostDetailViewController alloc] initWithPost:post];
-    [self.navigationController pushViewController:controller animated:YES];
+    ReaderPostTableViewCell *cell = (ReaderPostTableViewCell *)[self.tableView cellForRowAtIndexPath:indexPath];
+    CGSize imageSize = cell.postView.cellImageView.frame.size;
+    UIImage *image = [_featuredImageSource imageForURL:post.featuredImageURL withSize:imageSize];
+
+	self.detailController = [[ReaderPostDetailViewController alloc] initWithPost:post featuredImage:image];
+    
+    [self.navigationController pushViewController:self.detailController animated:YES];
     
     [WPMobileStats trackEventForWPCom:StatsEventReaderOpenedArticleDetails];
     [WPMobileStats pingWPComStatsEndpoint:@"details_page"];
@@ -1007,6 +1022,13 @@ NSString *const RPVCDisplayedNativeFriendFinder = @"DisplayedNativeFriendFinder"
     if (!_isScrollingFast) {
         ReaderPostTableViewCell *cell = (ReaderPostTableViewCell *)[self.tableView cellForRowAtIndexPath:indexPath];
         [cell.postView setFeaturedImage:image];
+    }
+    
+    ReaderPost *post = [self.resultsController objectAtIndexPath:indexPath];
+    
+    // Update the detail view if it's open and applicable
+    if (post == self.detailController.post) {
+        [self.detailController updateFeaturedImage:image];
     }
 }
 

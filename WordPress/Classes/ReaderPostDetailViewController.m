@@ -17,15 +17,22 @@
 #import "WordPressComApi.h"
 #import "ReaderComment.h"
 #import "ReaderCommentTableViewCell.h"
-#import "ReaderPostDetailView.h"
 #import "ReaderCommentFormView.h"
 #import "ReaderReblogFormView.h"
 #import "IOS7CorrectedTextView.h"
+#import "ReaderPostView.h"
 
 NSInteger const ReaderCommentsToSync = 100;
 NSTimeInterval const ReaderPostDetailViewControllerRefreshTimeout = 300; // 5 minutes
 
-@interface ReaderPostDetailViewController ()<ReaderPostDetailViewDelegate, UIActionSheetDelegate, MFMailComposeViewControllerDelegate, ReaderTextFormDelegate> {
+typedef enum {
+    ReaderDetailContentSection = 0,
+    ReaderDetailCommentsSection,
+    ReaderDetailSectionCount
+} ReaderDetailSection;
+
+
+@interface ReaderPostDetailViewController ()<UIActionSheetDelegate, MFMailComposeViewControllerDelegate, ReaderTextFormDelegate> {
 	BOOL _hasMoreContent;
 	BOOL _loadingMore;
 	CGPoint savedScrollOffset;
@@ -34,10 +41,10 @@ NSTimeInterval const ReaderPostDetailViewControllerRefreshTimeout = 300; // 5 mi
 	BOOL _isSyncing;
 }
 
-@property (nonatomic, strong) ReaderPost *post;
-@property (nonatomic, strong) ReaderPostDetailView *headerView;
+@property (nonatomic, strong) ReaderPostView *postView;
 @property (nonatomic, strong) ReaderCommentFormView *readerCommentFormView;
 @property (nonatomic, strong) ReaderReblogFormView *readerReblogFormView;
+@property (nonatomic, strong) UIImage *featuredImage;
 @property (nonatomic) BOOL infiniteScrollEnabled;
 @property (nonatomic, strong) UITableView *tableView;
 @property (nonatomic, strong) UIActivityIndicatorView *activityFooter;
@@ -52,39 +59,9 @@ NSTimeInterval const ReaderPostDetailViewControllerRefreshTimeout = 300; // 5 mi
 @property (nonatomic) BOOL isShowingCommentForm;
 @property (nonatomic) BOOL isShowingReblogForm;
 
-- (void)buildHeader;
-- (void)buildTopToolbar;
-- (void)buildBottomToolbar;
-- (void)buildForms;
-- (void)prepareComments;
-- (void)showStoredComment;
-- (void)updateToolbar;
-- (BOOL)isReplying;
-- (BOOL)canComment;
-- (void)showCommentForm;
-- (void)hideCommentForm;
-- (void)showReblogForm;
-- (void)hideReblogForm;
-- (void)enableInfiniteScrolling;
-- (void)disableInfiniteScrolling;
-
-- (void)handleCommentButtonTapped:(id)sender;
-- (void)handleLikeButtonTapped:(id)sender;
-- (void)handleReblogButtonTapped:(id)sender;
-- (void)handleShareButtonTapped:(id)sender;
-- (void)handleDismissForm:(id)sender;
-- (BOOL)setMFMailFieldAsFirstResponder:(UIView*)view mfMailField:(NSString*)field;
-
-- (void)syncWithUserInteraction:(BOOL)userInteraction;
-- (void)loadMoreWithSuccess:(void (^)())success failure:(void (^)(NSError *error))failure;
-- (void)handleKeyboardDidShow:(NSNotification *)notification;
-- (void)handleKeyboardWillHide:(NSNotification *)notification;
-
 @end
 
 @implementation ReaderPostDetailViewController
-
-@synthesize post;
 
 #pragma mark - LifeCycle Methods
 
@@ -94,12 +71,14 @@ NSTimeInterval const ReaderPostDetailViewControllerRefreshTimeout = 300; // 5 mi
 }
 
 
-- (id)initWithPost:(ReaderPost *)apost {
+- (id)initWithPost:(ReaderPost *)post featuredImage:(UIImage *)image {
 	self = [super init];
 	if(self) {
-		self.post = apost;
+		self.post = post;
 		self.comments = [NSMutableArray array];
         self.wantsFullScreenLayout = YES;
+        self.featuredImage = image;
+        self.showInlineActionBar = YES;
 	}
 	return self;
 }
@@ -133,8 +112,11 @@ NSTimeInterval const ReaderPostDetailViewControllerRefreshTimeout = 300; // 5 mi
 	
 	[self buildHeader];
 	[self buildTopToolbar];
-	[self buildBottomToolbar];
 	[self buildForms];
+    
+    if (!self.showInlineActionBar) {
+        [self buildActionBar];
+    }
 	
 	[self prepareComments];
 	[self showStoredComment];
@@ -164,11 +146,7 @@ NSTimeInterval const ReaderPostDetailViewControllerRefreshTimeout = 300; // 5 mi
         [toolbar setTintColor:DTColorCreateWithHexString(@"F1F1F1")];
     }
 
-	[self.navigationController setToolbarHidden:NO animated:animated];
-
     [self.post addObserver:self forKeyPath:@"isReblogged" options:NSKeyValueObservingOptionNew context:@"reblogging"];
-
-	[_headerView updateLayout];
 	[self showStoredComment];
 }
 
@@ -195,10 +173,6 @@ NSTimeInterval const ReaderPostDetailViewControllerRefreshTimeout = 300; // 5 mi
 	
 	[[NSNotificationCenter defaultCenter] removeObserver:self];
 	[self.post removeObserver:self forKeyPath:@"isReblogged" context:@"reblogging"];
-	
-    self.navigationController.navigationBar.translucent = NO;
-    self.navigationController.toolbar.translucent = NO;
-	[self.navigationController setToolbarHidden:YES animated:animated];
 }
 
 
@@ -207,7 +181,7 @@ NSTimeInterval const ReaderPostDetailViewControllerRefreshTimeout = 300; // 5 mi
 
 	self.activityFooter = nil;
 	self.tableView = nil;
-	self.headerView = nil;
+	self.postView = nil;
 	self.readerCommentFormView = nil;
 	self.readerReblogFormView = nil;
 	self.commentButton = nil;
@@ -232,7 +206,7 @@ NSTimeInterval const ReaderPostDetailViewControllerRefreshTimeout = 300; // 5 mi
 - (void)didRotateFromInterfaceOrientation:(UIInterfaceOrientation)fromInterfaceOrientation {
 	[super didRotateFromInterfaceOrientation:fromInterfaceOrientation];
 
-	[_headerView updateLayout];
+	[self.postView updateLayout];
 
 	// Make sure a selected comment is visible after rotating.
 	if ([self.tableView indexPathForSelectedRow] != nil && self.isShowingCommentForm) {
@@ -243,15 +217,25 @@ NSTimeInterval const ReaderPostDetailViewControllerRefreshTimeout = 300; // 5 mi
 
 #pragma mark - Instance Methods
 
-- (void)buildHeader{
-	self.headerView = [[ReaderPostDetailView alloc] initWithFrame:CGRectMake(0.0f, 0.0f, self.tableView.frame.size.width, 190.0f) post:self.post delegate:self];
-	_headerView.autoresizingMask = UIViewAutoresizingFlexibleWidth;
-	_headerView.backgroundColor = [UIColor whiteColor];
-	[self.tableView setTableHeaderView:_headerView];
-	
+- (void)updateFeaturedImage: (UIImage *)image {
+    self.featuredImage = image;
+    [self.postView setFeaturedImage:self.featuredImage];
+}
+
+- (void)buildHeader {
+    // The text view in postView needs an initial frame
+    CGFloat postHeight = [ReaderPostView heightForPost:self.post withWidth:self.view.frame.size.width];
+	self.postView = [[ReaderPostView alloc] initWithFrame:CGRectMake(0.0f, 0.0f, self.tableView.frame.size.width, postHeight)
+                                          showFullContent:YES];
+    [self.postView configurePost:self.post];
+    self.postView.backgroundColor = [UIColor whiteColor];
+    if (self.featuredImage) {
+        [self.postView setFeaturedImage: self.featuredImage];
+    }
+
 	UITapGestureRecognizer *tgr = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(handleDismissForm:)];
 	tgr.cancelsTouchesInView = NO;
-	[_headerView addGestureRecognizer:tgr];
+	[self.postView addGestureRecognizer:tgr];
 }
 
 
@@ -284,7 +268,7 @@ NSTimeInterval const ReaderPostDetailViewControllerRefreshTimeout = 300; // 5 mi
 }
 
 
-- (void)buildBottomToolbar {
+- (void)buildActionBar {
 	
 	UIButton *commentBtn = [UIButton buttonWithType:UIButtonTypeCustom];
     if (IS_IOS7) {
@@ -326,7 +310,7 @@ NSTimeInterval const ReaderPostDetailViewControllerRefreshTimeout = 300; // 5 mi
 	[reblogBtn addTarget:self action:@selector(handleReblogButtonTapped:) forControlEvents:UIControlEventTouchUpInside];
 	self.reblogButton = [[UIBarButtonItem alloc] initWithCustomView:reblogBtn];
 	
-	[self updateToolbar];
+	[self updateActionBar];
 }
 
 
@@ -354,11 +338,9 @@ NSTimeInterval const ReaderPostDetailViewControllerRefreshTimeout = 300; // 5 mi
 	}
 }
 
-
 - (BOOL)canComment {
 	return [self.post.commentsOpen boolValue];
 }
-
 
 - (void)prepareComments {
 	self.resultsController = nil;
@@ -401,8 +383,9 @@ NSTimeInterval const ReaderPostDetailViewControllerRefreshTimeout = 300; // 5 mi
 }
 
 
-- (void)updateToolbar {
-	if (!self.post) return;
+- (void)updateActionBar {
+	if (!self.post)
+        return;
 	
 	UIButton *btn = (UIButton *)_likeButton.customView;
 	[btn setSelected:[self.post.isLiked boolValue]];
@@ -427,14 +410,13 @@ NSTimeInterval const ReaderPostDetailViewControllerRefreshTimeout = 300; // 5 mi
 	
 	[items addObject:placeholder];
 	
-	[self setToolbarItems:items animated:YES];
-	
-	self.navigationController.toolbarHidden = NO;
+    // TODO: put these in the title bar instead
+	//[self setToolbarItems:items animated:YES];
 }
 
 
 - (void)observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary *)change context:(void *)context {
-	[self updateToolbar];
+	//[self updateToolbar];
 }
 
 
@@ -453,11 +435,10 @@ NSTimeInterval const ReaderPostDetailViewControllerRefreshTimeout = 300; // 5 mi
 		
 	} failure:^(NSError *error) {
 		DDLogError(@"Error Liking Post : %@", [error localizedDescription]);
-		[self updateToolbar];
+		[self updateActionBar];
 	}];
-	[self updateToolbar];
+	[self updateActionBar];
 }
-
 
 - (void)handleReblogButtonTapped:(id)sender {
 	if (_isShowingReblogForm) {
@@ -555,9 +536,7 @@ NSTimeInterval const ReaderPostDetailViewControllerRefreshTimeout = 300; // 5 mi
 	if (_readerCommentFormView.superview != nil) {
 		return;
 	}
-	
-	[self.navigationController setToolbarHidden:YES animated:NO];
-	
+		
 	NSIndexPath *path = [self.tableView indexPathForSelectedRow];
 	if (path) {
 		_readerCommentFormView.comment = (ReaderComment *)[self.resultsController objectAtIndexPath:path];
@@ -591,15 +570,12 @@ NSTimeInterval const ReaderPostDetailViewControllerRefreshTimeout = 300; // 5 mi
 	[_readerCommentFormView removeFromSuperview];
 	self.isShowingCommentForm = NO;
 	[self.view endEditing:YES];
-	[self.navigationController setToolbarHidden:NO animated:YES];
 }
 
 
 - (void)showReblogForm {
 	[self hideCommentForm];
-	
-	[self.navigationController setToolbarHidden:YES animated:NO];
-	
+
 	if (_readerReblogFormView.superview != nil) {
 		return;
 	}
@@ -631,8 +607,6 @@ NSTimeInterval const ReaderPostDetailViewControllerRefreshTimeout = 300; // 5 mi
 	[_readerReblogFormView removeFromSuperview];
 	self.isShowingReblogForm = NO;
 	[self.view endEditing:YES];
-	
-	[self.navigationController setToolbarHidden:NO animated:YES];
 }
 
 - (void)handleKeyboardDidShow:(NSNotification *)notification {
@@ -670,8 +644,6 @@ NSTimeInterval const ReaderPostDetailViewControllerRefreshTimeout = 300; // 5 mi
 
 
 - (void)handleKeyboardWillHide:(NSNotification *)notification {
-	[self.navigationController setToolbarHidden:YES animated:NO];
-	
 	CGRect frame = self.view.frame;
 	CGRect keyFrame = [[[notification userInfo] objectForKey:UIKeyboardFrameEndUserInfoKey] CGRectValue];
 	
@@ -806,7 +778,11 @@ NSTimeInterval const ReaderPostDetailViewControllerRefreshTimeout = 300; // 5 mi
 #pragma mark - UITableView Delegate Methods
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
-	if (![_comments count]) {
+    if (indexPath.section == ReaderDetailContentSection) {
+        return self.postView.frame.size.height;
+    }
+    
+	if ([_comments count] == 0) {
 		return 0.0f;
 	}
 	
@@ -819,16 +795,31 @@ NSTimeInterval const ReaderPostDetailViewControllerRefreshTimeout = 300; // 5 mi
 
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
+    if (section == ReaderDetailContentSection)
+        return 1;
+
 	return [_comments count];
 }
 
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
-	return 1;
+	return ReaderDetailSectionCount;
 }
 
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
+    if (indexPath.section == ReaderDetailContentSection) {
+        UITableViewCell *postCell = [self.tableView dequeueReusableCellWithIdentifier:@"PostCell"];
+        
+        if (postCell == nil) {
+            postCell = [[UITableViewCell alloc] initWithFrame:self.postView.frame];
+            postCell.selectionStyle = UITableViewCellSelectionStyleNone;
+        }
+        [postCell.contentView addSubview:self.postView];
+        
+        return postCell;
+    }
+    
 	NSString *cellIdentifier = @"ReaderCommentCell";
     ReaderCommentTableViewCell *cell = (ReaderCommentTableViewCell *)[self.tableView dequeueReusableCellWithIdentifier:cellIdentifier];
     if (cell == nil) {
@@ -894,6 +885,10 @@ NSTimeInterval const ReaderPostDetailViewControllerRefreshTimeout = 300; // 5 mi
 
 
 - (void)tableView:(UITableView *)tableView willDisplayCell:(UITableViewCell *)cell forRowAtIndexPath:(NSIndexPath *)indexPath {
+    if (indexPath.section == ReaderDetailContentSection) {
+        return;
+    }
+    
 	if (IS_IPAD) {
 		cell.accessoryType = UITableViewCellAccessoryNone;
 	}
@@ -951,14 +946,6 @@ NSTimeInterval const ReaderPostDetailViewControllerRefreshTimeout = 300; // 5 mi
 
 }
 
-
-#pragma mark - ReaderPostDetailView Delegate Methods
-
-- (void)readerPostDetailViewLayoutChanged {
-	self.tableView.tableHeaderView = _headerView;
-}
-
-
 #pragma mark - ReaderTextForm Delegate Methods
 
 - (void)readerTextFormDidCancel:(ReaderTextFormView *)readerTextForm {
@@ -1012,13 +999,6 @@ NSTimeInterval const ReaderPostDetailViewControllerRefreshTimeout = 300; // 5 mi
 	}
 	[self.post save];
 
-}
-
-
-#pragma mark - DetailView Delegate Methods
-
-- (void)resetView {
-	
 }
 
 

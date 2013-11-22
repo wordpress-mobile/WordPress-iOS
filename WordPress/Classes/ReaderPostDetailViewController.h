@@ -10,7 +10,10 @@
 #import "ReaderPost.h"
 
 @interface ReaderPostDetailViewController : UIViewController<UITableViewDataSource, UITableViewDelegate>
+@property (nonatomic, strong) ReaderPost *post;
+@property (nonatomic, assign) BOOL showInlineActionBar;
 
-- (id)initWithPost:(ReaderPost *)apost;
+- (id)initWithPost:(ReaderPost *)post featuredImage:(UIImage *)image;
+- (void)updateFeaturedImage:(UIImage *)image;
 
 @end

@@ -60,7 +60,7 @@ const CGFloat RPTVCVerticalOuterPadding = 16.0f;
 		self.sideBorderView.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
         [self.contentView addSubview:self.sideBorderView];
 
-        self.postView = [[ReaderPostView alloc] initWithFrame:self.frame];
+        self.postView = [[ReaderPostView alloc] initWithFrame:self.frame showFullContent:NO];
         self.postView.backgroundColor = [UIColor whiteColor];
         self.backgroundColor = [WPStyleGuide itsEverywhereGrey];
 
@@ -97,7 +97,7 @@ const CGFloat RPTVCVerticalOuterPadding = 16.0f;
 		return;
     
     self.postView.post = post;
-	
+
 	if (_post) {
 		[_post removeObserver:self forKeyPath:@"isReblogged" context:@"reblogging"];
 	}
@@ -156,8 +156,7 @@ const CGFloat RPTVCVerticalOuterPadding = 16.0f;
 
 - (void)configureCell:(ReaderPost *)post {
 	self.post = post;
-
-    [self.postView configure:post];
+    [self.postView configurePost:post];
 }
 
 @end
