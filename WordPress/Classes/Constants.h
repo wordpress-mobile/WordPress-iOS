@@ -115,7 +115,6 @@
 #define kMETHOD @"METHOD"
 #define kMETHODARGS @"METHODARGS"
 #define BlavatarLoaded @"BlavatarLoaded"
-#define DidChangeStatusBarFrame @"DidChangeStatusBarFrame"
 #define kCommentsChangedNotificationName @"CommentsChangedNotificationName"
 #define kCameraPlusImagesNotification @"CameraPlusImagesNotification"
 
