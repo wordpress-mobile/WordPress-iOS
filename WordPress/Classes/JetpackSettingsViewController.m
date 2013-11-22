@@ -92,9 +92,6 @@ CGFloat const JetpackSignInButtonHeight = 41.0;
     [super viewDidLoad];
     
     _viewWidth = self.view.frame.size.width;
-    
-    NSLog(@"%@", NSStringFromCGRect(self.view.frame));
-    
     _viewHeight = [self.view formSheetViewHeight];
 
     self.title = NSLocalizedString(@"Jetpack Connect", @"");
