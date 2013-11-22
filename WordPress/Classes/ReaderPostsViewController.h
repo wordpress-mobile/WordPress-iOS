@@ -8,7 +8,8 @@
 
 #import <UIKit/UIKit.h>
 #import "WPTableViewController.h"
+#import "ReaderPostView.h"
 
-@interface ReaderPostsViewController : WPTableViewController
+@interface ReaderPostsViewController : WPTableViewController<ReaderPostViewDelegate>
 
 @end

@@ -28,7 +28,6 @@
 #import "NSString+Helpers.h"
 #import "WPPopoverBackgroundView.h"
 #import "IOS7CorrectedTextView.h"
-#import "ReaderPostView.h"
 
 static CGFloat const RPVCScrollingFastVelocityThreshold = 30.f;
 static CGFloat const RPVCHeaderHeightPhone = 10.f;
@@ -338,10 +337,10 @@ NSString *const RPVCDisplayedNativeFriendFinder = @"DisplayedNativeFriendFinder"
 }
 
 
-#pragma mark - Actions
+#pragma mark - ReaderPostView delegate methods
 
-- (void)reblogAction:(id)sender {
-	NSIndexPath *selectedPath = [self.tableView indexPathForSelectedRow];	
+- (void)postView:(ReaderPostView *)postView didReceiveReblogAction:(id)sender {
+    NSIndexPath *selectedPath = [self.tableView indexPathForSelectedRow];
 	UITableViewCell *cell = [ReaderPostTableViewCell cellForSubview:sender];
 	NSIndexPath *path = [self.tableView indexPathForCell:cell];
 	
@@ -360,9 +359,8 @@ NSString *const RPVCDisplayedNativeFriendFinder = @"DisplayedNativeFriendFinder"
 	}
 }
 
-- (void)likeAction:(id)sender {
-    ReaderPostTableViewCell *cell = [ReaderPostTableViewCell cellForSubview:sender];
-    ReaderPost *post = cell.post;
+- (void)postView:(ReaderPostView *)postView didReceiveLikeAction:(id)sender {
+    ReaderPost *post = postView.post;
 	[post toggleLikedWithSuccess:^{
         if ([post.isLiked boolValue]) {
             [WPMobileStats trackEventForWPCom:StatsEventReaderLikedPost];
@@ -371,11 +369,48 @@ NSString *const RPVCDisplayedNativeFriendFinder = @"DisplayedNativeFriendFinder"
         }
 	} failure:^(NSError *error) {
 		DDLogError(@"Error Liking Post : %@", [error localizedDescription]);
-		[cell.postView updateControlBar];
+		[postView updateControlBar];
 	}];
 	
-	[cell.postView updateControlBar];
+	[postView updateControlBar];
 }
+
+- (void)postView:(ReaderPostView *)postView didReceiveFollowAction:(id)sender {
+    UIButton *followButton = (UIButton *)sender;
+    ReaderPostTableViewCell *cell = [ReaderPostTableViewCell cellForSubview:sender];
+    ReaderPost *post = postView.post;
+    
+    if (![post isFollowable])
+        return;
+
+    followButton.selected = ![post.isFollowing boolValue]; // Set it optimistically
+	[cell setNeedsLayout];
+	[post toggleFollowingWithSuccess:^{
+	} failure:^(NSError *error) {
+		DDLogError(@"Error Following Blog : %@", [error localizedDescription]);
+		[followButton setSelected:[post.isFollowing boolValue]];
+		[cell setNeedsLayout];
+	}];
+}
+
+- (void)postView:(ReaderPostView *)postView didReceiveCommentAction:(id)sender {
+    // TODO: allow commenting
+}
+
+- (void)postView:(ReaderPostView *)postView didReceiveTagAction:(id)sender {
+    ReaderPost *post = postView.post;
+
+    NSString *endpoint = [NSString stringWithFormat:@"read/tags/%@/posts", post.primaryTagSlug];
+    NSDictionary *dict = @{@"endpoint" : endpoint,
+                           @"title" : post.primaryTagName};
+    
+	[[NSUserDefaults standardUserDefaults] setObject:dict forKey:ReaderCurrentTopicKey];
+	[[NSUserDefaults standardUserDefaults] synchronize];
+    [self readerTopicChanged];
+}
+
+
+#pragma mark - Actions
 
 - (void)topicsAction:(id)sender {
 	ReaderTopicsViewController *controller = [[ReaderTopicsViewController alloc] initWithStyle:UITableViewStyleGrouped];
@@ -404,40 +439,6 @@ NSString *const RPVCDisplayedNativeFriendFinder = @"DisplayedNativeFriendFinder"
     }
 }
 
-- (void)followAction:(id)sender {
-    UIButton *followButton = (UIButton *)sender;
-    ReaderPostTableViewCell *cell = [ReaderPostTableViewCell cellForSubview:sender];
-    ReaderPost *post = cell.post;
-    
-    if (![post isFollowable])
-        return;
-
-    followButton.selected = ![post.isFollowing boolValue]; // Set it optimistically
-	[cell setNeedsLayout];
-	[post toggleFollowingWithSuccess:^{
-	} failure:^(NSError *error) {
-		DDLogError(@"Error Following Blog : %@", [error localizedDescription]);
-		[followButton setSelected:[post.isFollowing boolValue]];
-		[cell setNeedsLayout];
-	}];
-}
-
-- (void)commentAction:(id)sender {
-    // TODO: allow commenting
-}
-
-- (void)tagAction:(id)sender {
-    ReaderPostTableViewCell *cell = [ReaderPostTableViewCell cellForSubview:sender];
-    ReaderPost *post = cell.post;
-
-    NSString *endpoint = [NSString stringWithFormat:@"read/tags/%@/posts", post.primaryTagSlug];
-    NSDictionary *dict = @{@"endpoint" : endpoint,
-                           @"title" : post.primaryTagName};
-    
-	[[NSUserDefaults standardUserDefaults] setObject:dict forKey:ReaderCurrentTopicKey];
-	[[NSUserDefaults standardUserDefaults] synchronize];
-    [self readerTopicChanged];
-}
 
 #pragma mark - ReaderTextForm Delegate Methods
 
@@ -491,7 +492,6 @@ NSString *const RPVCDisplayedNativeFriendFinder = @"DisplayedNativeFriendFinder"
 
 
 #pragma mark - WPTableViewSublass methods
-
 
 - (NSString *)noResultsPrompt {
 	NSString *prompt; 
@@ -568,12 +568,8 @@ NSString *const RPVCDisplayedNativeFriendFinder = @"DisplayedNativeFriendFinder"
     ReaderPostTableViewCell *cell = (ReaderPostTableViewCell *)[self.tableView dequeueReusableCellWithIdentifier:cellIdentifier];
     if (cell == nil) {
         cell = [[ReaderPostTableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:cellIdentifier];
-        [cell.postView.reblogButton addTarget:self action:@selector(reblogAction:) forControlEvents:UIControlEventTouchUpInside];
-        [cell.postView.likeButton addTarget:self action:@selector(likeAction:) forControlEvents:UIControlEventTouchUpInside];
-        [cell.postView.followButton addTarget:self action:@selector(followAction:) forControlEvents:UIControlEventTouchUpInside];
-        [cell.postView.commentButton addTarget:self action:@selector(commentAction:) forControlEvents:UIControlEventTouchUpInside];
-        [cell.postView.tagButton addTarget:self action:@selector(tagAction:) forControlEvents:UIControlEventTouchUpInside];
     }
+    
 	return cell;
 }
 
@@ -588,6 +584,8 @@ NSString *const RPVCDisplayedNativeFriendFinder = @"DisplayedNativeFriendFinder"
 	ReaderPost *post = (ReaderPost *)[self.resultsController objectAtIndexPath:indexPath];
 	[cell configureCell:post];
     [self setImageForPost:post forCell:cell indexPath:indexPath];
+    
+    cell.postView.delegate = self;
 
     CGSize imageSize = cell.postView.avatarImageView.bounds.size;
     UIImage *image = [post cachedAvatarWithSize:imageSize];

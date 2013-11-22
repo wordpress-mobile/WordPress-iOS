@@ -48,6 +48,12 @@ const CGFloat RPVControlButtonBorderSize = 0.0f;
 @property (nonatomic, strong) UILabel *titleLabel;
 @property (nonatomic, strong) CALayer *titleBorder;
 @property (nonatomic, strong) UILabel *snippetLabel;
+@property (nonatomic, strong) UIButton *followButton;
+@property (nonatomic, strong) UIButton *tagButton;
+@property (nonatomic, strong) UIButton *likeButton;
+@property (nonatomic, strong) UIButton *reblogButton;
+@property (nonatomic, strong) UIButton *commentButton;
+@property (nonatomic, strong) UIButton *timeButton;
 @property (nonatomic, strong) DTAttributedTextContentView *textContentView;
 
 @property (nonatomic, strong) UIView *metaView;
@@ -327,6 +333,7 @@ const CGFloat RPVControlButtonBorderSize = 0.0f;
     [_followButton setImage:[UIImage imageNamed:@"reader-postaction-follow"] forState:UIControlStateNormal];
     [_followButton setImage:[UIImage imageNamed:@"reader-postaction-following"] forState:UIControlStateSelected];
     [_followButton setTitleColor:[UIColor colorWithHexString:@"aaa"] forState:UIControlStateNormal];
+    [_followButton addTarget:self action:@selector(followAction:) forControlEvents:UIControlEventTouchUpInside];
     [_byView addSubview:_followButton];
     
     self.tagButton = [ReaderButton buttonWithType:UIButtonTypeCustom];
@@ -336,6 +343,7 @@ const CGFloat RPVControlButtonBorderSize = 0.0f;
     [_tagButton setTitleEdgeInsets: UIEdgeInsetsMake(0, RPVSmallButtonLeftPadding, 0, 0)];
     [_tagButton setImage:[UIImage imageNamed:@"reader-postaction-tag"] forState:UIControlStateNormal];
     [_tagButton setTitleColor:[UIColor colorWithHexString:@"aaa"] forState:UIControlStateNormal];
+    [_tagButton addTarget:self action:@selector(tagAction:) forControlEvents:UIControlEventTouchUpInside];
     [self addSubview:_tagButton];
 }
 
@@ -363,6 +371,7 @@ const CGFloat RPVControlButtonBorderSize = 0.0f;
 	_likeButton.backgroundColor = [UIColor whiteColor];
 	[_likeButton setImage:[UIImage imageNamed:@"reader-postaction-like-blue"] forState:UIControlStateNormal];
 	[_likeButton setImage:[UIImage imageNamed:@"reader-postaction-like-active"] forState:UIControlStateSelected];
+    [_likeButton addTarget:self action:@selector(likeAction:) forControlEvents:UIControlEventTouchUpInside];
 	[_metaView addSubview:_likeButton];
 	
 	self.reblogButton = [ReaderButton buttonWithType:UIButtonTypeCustom];
@@ -370,6 +379,7 @@ const CGFloat RPVControlButtonBorderSize = 0.0f;
 	_reblogButton.backgroundColor = [UIColor whiteColor];
 	[_reblogButton setImage:[UIImage imageNamed:@"reader-postaction-reblog-blue"] forState:UIControlStateNormal];
 	[_reblogButton setImage:[UIImage imageNamed:@"reader-postaction-reblog-done"] forState:UIControlStateSelected];
+    [_reblogButton addTarget:self action:@selector(reblogAction:) forControlEvents:UIControlEventTouchUpInside];
 	[_metaView addSubview:_reblogButton];
     
     self.commentButton = [ReaderButton buttonWithType:UIButtonTypeCustom];
@@ -377,6 +387,7 @@ const CGFloat RPVControlButtonBorderSize = 0.0f;
 	_commentButton.backgroundColor = [UIColor whiteColor];
 	[_commentButton setImage:[UIImage imageNamed:@"reader-postaction-comment-blue"] forState:UIControlStateNormal];
 	[_commentButton setImage:[UIImage imageNamed:@"reader-postaction-comment-active"] forState:UIControlStateSelected];
+    [_commentButton addTarget:self action:@selector(commentAction:) forControlEvents:UIControlEventTouchUpInside];
 	[_metaView addSubview:_commentButton];
 }
 
@@ -490,6 +501,53 @@ const CGFloat RPVControlButtonBorderSize = 0.0f;
     
     [_cellImageView cancelImageRequestOperation];
 	_cellImageView.image = nil;
+}
+
+
+#pragma mark - Actions
+
+// Forward the actions to the delegate; do it this way instead of exposing buttons as properties
+// because the view can have dynamically generated buttons (e.g. links)
+- (void)followAction:(id)sender {
+    if ([self.delegate respondsToSelector:@selector(postView:didReceiveFollowAction:)]) {
+        [self.delegate postView:self didReceiveFollowAction:sender];
+    }
+}
+
+- (void)tagAction:(id)sender {
+    if ([self.delegate respondsToSelector:@selector(postView:didReceiveTagAction:)]) {
+        [self.delegate postView:self didReceiveTagAction:sender];
+    }
+}
+
+- (void)reblogAction:(id)sender {
+    if ([self.delegate respondsToSelector:@selector(postView:didReceiveReblogAction:)]) {
+        [self.delegate postView:self didReceiveReblogAction:sender];
+    }
+}
+
+- (void)commentAction:(id)sender {
+    if ([self.delegate respondsToSelector:@selector(postView:didReceiveCommentAction:)]) {
+        [self.delegate postView:self didReceiveCommentAction:sender];
+    }
+}
+
+- (void)likeAction:(id)sender {
+    if ([self.delegate respondsToSelector:@selector(postView:didReceiveLikeAction:)]) {
+        [self.delegate postView:self didReceiveLikeAction:sender];
+    }
+}
+
+- (void)linkAction:(id)sender {
+    if ([self.delegate respondsToSelector:@selector(postView:didReceiveLinkAction:)]) {
+        [self.delegate postView:self didReceiveLinkAction:sender];
+    }
+}
+
+- (void)linkImageAction:(id)sender {
+    if ([self.delegate respondsToSelector:@selector(postView:didReceiveImageLinkAction:)]) {
+        [self.delegate postView:self didReceiveImageLinkAction:sender];
+    }   
 }
 
 
