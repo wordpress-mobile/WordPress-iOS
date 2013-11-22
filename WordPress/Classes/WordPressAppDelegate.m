@@ -1098,6 +1098,7 @@ NSInteger const UpdateCheckAlertViewTag = 102;
 
 - (void)handleDefaultAccountChangedNotification:(NSNotification *)notification {
 	[self toggleExtraDebuggingIfNeeded];
+    [NotificationsManager registerForPushNotifications];
     [self showWelcomeScreenIfNeededAnimated:NO];
 }
 
