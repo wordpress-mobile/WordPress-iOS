@@ -1,10 +1,11 @@
-//
-//  SettingsViewController.m
-//  WordPress
-//
-//  Created by Jorge Bernal on 6/1/12.
-//  Copyright (c) 2012 WordPress. All rights reserved.
-//
+/*
+ * SettingsViewController.m
+ *
+ * Copyright (c) 2013 WordPress. All rights reserved.
+ *
+ * Licensed under GNU General Public License 2.0.
+ * Some rights reserved. See license.txt
+ */
 
 /*
  
@@ -27,11 +28,7 @@
 
  */
 
-#import <QuartzCore/QuartzCore.h>
 #import "SettingsViewController.h"
-#import "WordPressAppDelegate.h"
-#import "EditSiteViewController.h"
-#import "UIImageView+Gravatar.h"
 #import "WordPressComApi.h"
 #import "AboutViewController.h"
 #import "SettingsPageViewController.h"
@@ -41,7 +38,6 @@
 #import "SupportViewController.h"
 #import "WPAccount.h"
 #import "WPTableViewSectionHeaderView.h"
-#import "SupportViewController.h"
 
 typedef enum {
     SettingsSectionWpcom = 0,
@@ -57,21 +53,13 @@ CGFloat const blavatarImageViewSize = 43.f;
 @property (nonatomic, strong) NSArray *mediaSettingsArray;
 @property (nonatomic, strong) UIBarButtonItem *doneButton;
 
-- (void)configureCell:(UITableViewCell *)cell atIndexPath:(NSIndexPath *)indexPath;
-- (UITableViewCell *)cellForIndexPath:(NSIndexPath *)indexPath;
-- (void)setupMedia;
-- (void)maskImageView:(UIImageView *)imageView corner:(UIRectCorner)corner;
-
 @end
 
-@implementation SettingsViewController {
+@implementation SettingsViewController
+
+- (void)dealloc {
+    [[NSNotificationCenter defaultCenter] removeObserver:self];
 }
-
-@synthesize mediaSettingsArray;
-
-#pragma mark -
-#pragma mark LifeCycle Methods
-
 
 - (void)viewDidLoad {
     [super viewDidLoad];
@@ -92,18 +80,6 @@ CGFloat const blavatarImageViewSize = 43.f;
     }];
     
     [WPStyleGuide configureColorsForView:self.view andTableView:self.tableView];
-    [self setupMedia];
-}
-
-- (void)viewDidUnload {
-    [[NSNotificationCenter defaultCenter] removeObserver:self];
-    [super viewDidUnload];
-}
-
-- (void)viewWillDisappear:(BOOL)animated {
-    [super viewWillDisappear:animated];
-    // Remove the delegate to avoid a core data error that can occur when a new
-    // blog is added, and other rows/sections are added as well (e.g. notifications).
 }
 
 - (void)viewWillAppear:(BOOL)animated {
@@ -112,16 +88,12 @@ CGFloat const blavatarImageViewSize = 43.f;
     [self.tableView reloadData];
 }
 
-- (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation {
-    return [super shouldAutorotateToInterfaceOrientation:interfaceOrientation];
-}
+#pragma mark - Custom Getter
 
-
-#pragma mark - 
-#pragma mark Custom methods
-
-- (void)setupMedia {
-    if (mediaSettingsArray) return;
+- (NSArray *)mediaSettingsArray {
+    if (_mediaSettingsArray) {
+        return _mediaSettingsArray;
+    }
     
     // Construct the media data to mimick how it would appear if a settings bundle plist was loaded
     // into an NSDictionary
@@ -156,7 +128,8 @@ CGFloat const blavatarImageViewSize = 43.f;
                                       [NSArray arrayWithObjects:@"0", @"1", nil], @"Values",
                                       NSLocalizedString(@"Set which HTML standard video should conform to when added to a post.", @""), @"Info",
                                       nil];
-    self.mediaSettingsArray = [NSArray arrayWithObjects:imageResizeDict, videoQualityDict, videoContentDict, nil];
+    _mediaSettingsArray = [NSArray arrayWithObjects:imageResizeDict, videoQualityDict, videoContentDict, nil];
+    return _mediaSettingsArray;
 }
 
 - (void)dismiss {
@@ -183,8 +156,7 @@ CGFloat const blavatarImageViewSize = 43.f;
 }
 
 
-#pragma mark - 
-#pragma mark Table view data source
+#pragma mark - Table view data source
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
     return [self.tableView isEditing] ? 1 : SettingsSectionCount;
@@ -218,7 +190,7 @@ CGFloat const blavatarImageViewSize = 43.f;
             return numWpcomRows;
 
         case SettingsSectionMedia:
-            return [mediaSettingsArray count];
+            return [self.mediaSettingsArray count];
 
         case SettingsSectionInfo:
             return 3;
@@ -283,19 +255,19 @@ CGFloat const blavatarImageViewSize = 43.f;
     } else if (indexPath.section == SettingsSectionMedia){
         cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
         
-        NSDictionary *dict = [mediaSettingsArray objectAtIndex:indexPath.row];
-        cell.textLabel.text = [dict objectForKey:@"Title"];
-        NSString *key = [dict objectForKey:@"Key"];
+        NSDictionary *dict = self.mediaSettingsArray[indexPath.row];
+        cell.textLabel.text = dict[@"Title"];
+        NSString *key = dict[@"Key"];
         NSString *currentVal = [[NSUserDefaults standardUserDefaults] objectForKey:key];
         if (currentVal == nil) {
-            currentVal = [dict objectForKey:@"DefaultValue"];
+            currentVal = dict[@"DefaultValue"];
         }
         
         NSArray *values = [dict objectForKey:@"Values"];
         NSInteger index = [values indexOfObject:currentVal];
-        
         NSArray *titles = [dict objectForKey:@"Titles"];
-        cell.detailTextLabel.text = [titles objectAtIndex:index];
+        cell.detailTextLabel.text = titles[index];
+        
     } else if (indexPath.section == SettingsSectionInfo) {
         if (indexPath.row == 0) {
             // App Version
@@ -306,14 +278,16 @@ CGFloat const blavatarImageViewSize = 43.f;
 #endif
             cell.detailTextLabel.text = appversion;
             cell.selectionStyle = UITableViewCellSelectionStyleNone;
+            
         } else if (indexPath.row == 1) {
             // About
             cell.textLabel.text = NSLocalizedString(@"About", @"");
             cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
+            
         } else if (indexPath.row == 2) {
-                // Settings
-                cell.textLabel.text = NSLocalizedString(@"Support", @"");
-                cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
+            // Settings
+            cell.textLabel.text = NSLocalizedString(@"Support", @"");
+            cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
         }
     }
 }
@@ -375,8 +349,7 @@ CGFloat const blavatarImageViewSize = 43.f;
 }
 
 
-#pragma mark - 
-#pragma mark Table view delegate
+#pragma mark - Table view delegate
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
     [tableView deselectRowAtIndexPath:indexPath animated:YES];
@@ -422,7 +395,7 @@ CGFloat const blavatarImageViewSize = 43.f;
             [WPMobileStats trackEventForWPCom:StatsEventSettingsMediaClickedVideoContent];
         }
         
-        NSDictionary *dict = [mediaSettingsArray objectAtIndex:indexPath.row];
+        NSDictionary *dict = [self.mediaSettingsArray objectAtIndex:indexPath.row];
         SettingsPageViewController *controller = [[SettingsPageViewController alloc] initWithDictionary:dict];
         [self.navigationController pushViewController:controller animated:YES];
 

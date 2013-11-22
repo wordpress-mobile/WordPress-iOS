@@ -18,6 +18,8 @@
 #import <UIDeviceHardware.h>
 #import "UIDevice+WordPressIdentifier.h"
 #import "WPAccount.h"
+#import "NotificationsManager.h"
+#import <WPXMLRPCClient.h>
 
 NSString *const WordPressComApiClientEndpointURL = @"https://public-api.wordpress.com/rest/v1/";
 NSString *const WordPressComApiOauthBaseUrl = @"https://public-api.wordpress.com/oauth2";
@@ -161,7 +163,7 @@ NSString *const WordPressComApiErrorMessageKey = @"WordPressComApiErrorMessageKe
             [[NSUserDefaults standardUserDefaults] setObject:@"1" forKey:@"wpcom_authenticated_flag"];
             [[NSUserDefaults standardUserDefaults] synchronize];
             [WordPressAppDelegate sharedWordPressApplicationDelegate].isWPcomAuthenticated = YES;
-            [[WordPressAppDelegate sharedWordPressApplicationDelegate] registerForPushNotifications];
+            [NotificationsManager registerForPushNotifications];
             [[NSNotificationCenter defaultCenter] postNotificationName:WordPressComApiDidLoginNotification object:self.username];
             if (success) success();
         }
@@ -207,7 +209,7 @@ NSString *const WordPressComApiErrorMessageKey = @"WordPressComApiErrorMessageKe
     WPFLogMethod();
     NSError *error = nil;
 
-    [[WordPressAppDelegate sharedWordPressApplicationDelegate] unregisterApnsToken];
+    [NotificationsManager unregisterDeviceToken];
 
     [SFHFKeychainUtils deleteItemForUsername:self.username andServiceName:@"WordPress.com" error:&error];
     [SFHFKeychainUtils deleteItemForUsername:self.username andServiceName:kWPcomXMLRPCUrl error:&error];
@@ -385,7 +387,7 @@ NSString *const WordPressComApiErrorMessageKey = @"WordPressComApiErrorMessageKe
     [self clearWpcomCookies];
     [[NSNotificationCenter defaultCenter] postNotificationName:WordPressComApiDidLogoutNotification object:nil];
     [WordPressAppDelegate sharedWordPressApplicationDelegate].isWPcomAuthenticated = YES;
-    [[WordPressAppDelegate sharedWordPressApplicationDelegate] registerForPushNotifications];
+    [NotificationsManager registerForPushNotifications];
     [[NSNotificationCenter defaultCenter] postNotificationName:WordPressComApiDidLoginNotification object:self.username];
 }
 

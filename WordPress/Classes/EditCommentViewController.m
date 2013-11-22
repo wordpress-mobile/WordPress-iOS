@@ -146,20 +146,6 @@
 #pragma mark -
 #pragma mark Comment Handling Methods
 
-- (BOOL)isConnectedToHost {
-    WordPressAppDelegate  *appDelegate = (WordPressAppDelegate *)[[UIApplication sharedApplication] delegate];
-    if (appDelegate.currentBlogAvailable == NO) {
-        UIAlertView *connectionFailAlert = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"No connection to host.", @"")
-																	  message:NSLocalizedString(@"Operation is not supported now.", @"")
-																	 delegate:nil
-                                                            cancelButtonTitle:NSLocalizedString(@"OK", @"")
-                                                            otherButtonTitles:nil];
-        [connectionFailAlert show];
-        return NO;
-    }
-    return YES;
-}
-
 - (void)initiateSaveCommentReply:(id)sender {
 	[self endTextEnteringButtonAction: sender];
 	if(self.hasChanges == NO) {

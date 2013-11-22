@@ -11,6 +11,7 @@
 #import "WordPressAppDelegate.h"
 #import "WPNUXUtility.h"
 #import "WPAccount.h"
+#import "Blog.h"
 
 @interface ReaderUsersBlogsViewController ()<UITableViewDataSource, UITableViewDelegate>
 

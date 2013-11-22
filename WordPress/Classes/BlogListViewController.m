@@ -14,6 +14,7 @@
 #import "LoginViewController.h"
 #import "BlogDetailsViewController.h"
 #import "WPTableViewCell.h"
+#import "Blog.h"
 #import "WPAccount.h"
 #import "FakePushTransitionAnimator.h"
 

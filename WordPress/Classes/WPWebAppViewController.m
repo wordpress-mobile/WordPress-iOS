@@ -1,10 +1,11 @@
-//
-//  WPWebAppViewController.m
-//  WordPress
-//
-//  Created by Beau Collins on 1/20/12.
-//  Copyright (c) 2012 WordPress. All rights reserved.
-//
+/*
+ * WPWebAppViewController.m
+ *
+ * Copyright (c) 2013 WordPress. All rights reserved.
+ *
+ * Licensed under GNU General Public License 2.0.
+ * Some rights reserved. See license.txt
+ */
 
 #import "WPWebAppViewController.h"
 #import "WordPressAppDelegate.h"
@@ -73,34 +74,6 @@
         [self loadURL:urlToLoad];
     }
 }
-
-
-- (void)viewDidUnload {
-    WPFLogMethod();
-    [super viewDidUnload];
-
-    if (_pullToRefreshEnabled) {
-        _pullToRefreshEnabled = NO;
-    }
-
-    // attempted work around for #1347 to kill UIWebView loading requests
-    if (self.webView.isLoading) {
-        [self.webView stopLoading];
-    }
-    
-    // Release any retained subviews of the main view.
-    // e.g. self.myOutlet = nil;
-    self.webView.delegate = nil;
-    self.webView = nil;
-    
-     _refreshHeaderView = nil;
-}
-
-
-- (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation {
-    return [super shouldAutorotateToInterfaceOrientation:interfaceOrientation];
-}
-
 
 // Find the Webview's UIScrollView backwards compatible
 - (UIScrollView *)scrollView {
