@@ -8,7 +8,6 @@ PODS:
     - CocoaLumberjack/Core
   - CrashlyticsLumberjack (1.0.0):
     - CocoaLumberjack
-  - CTidy (0.3.0)
   - DTCoreText (1.6.9):
     - DTFoundation/Core (~> 1.6.0)
     - DTFoundation/DTHTMLParser (~> 1.6.0)
@@ -46,7 +45,6 @@ DEPENDENCIES:
   - CocoaLumberjack (= 1.6.2)
   - CocoaLumberjack (~> 1.6.2)
   - CrashlyticsLumberjack (~> 1.0.0)
-  - CTidy (from `git://github.com/wordpress-mobile/CTidy.git`)
   - DTCoreText (= 1.6.9)
   - EmailChecker (from `https://raw.github.com/wordpress-mobile/EmailChecker/master/ios/EmailChecker.podspec`)
   - google-plus-ios-sdk (= 1.3.0)
@@ -65,8 +63,6 @@ DEPENDENCIES:
   - wpxmlrpc (~> 0.1)
 
 EXTERNAL SOURCES:
-  CTidy:
-    :git: git://github.com/wordpress-mobile/CTidy.git
   EmailChecker:
     :podspec: https://raw.github.com/wordpress-mobile/EmailChecker/master/ios/EmailChecker.podspec
   MGImageUtilities:
@@ -82,7 +78,6 @@ SPEC CHECKSUMS:
   AFNetworking: 3cbae45f61a9f995cdbd56bd571223910d7f4e44
   CocoaLumberjack: 0af89e0de15835a499fcc6ee5e0b6d396bc95976
   CrashlyticsLumberjack: 3a1647407e3c980545175e7a56d073c58beeab03
-  CTidy: 6a35875a96dd441822e620732c1113be19769067
   DTCoreText: e48c1526945272133b8c935c40da3f3e79836f1b
   DTFoundation: 5bfec187ed495cea33c47dc64e8ee623e8beb353
   EmailChecker: e909e6d113fac7ad5e3c304fabce30fc4a79c80e
