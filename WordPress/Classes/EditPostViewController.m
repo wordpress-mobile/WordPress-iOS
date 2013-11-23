@@ -105,6 +105,11 @@ CGFloat const EditPostViewControllerTextViewOffset = 10.0;
     WPFLogMethod();
     [super viewDidLoad];
     
+    // Using performBlock: with the AbstractPost on the main context:
+    // Prevents a hang on opening this view on slow and fast devices
+    // by deferring the cloning and UI update.
+    // Slower devices have the effect of the content appearing after
+    // a short delay
     [self.apost.managedObjectContext performBlock:^{
         self.apost = [self.apost createRevision];
         [self.apost save];
