@@ -8,8 +8,9 @@
 
 #import <UIKit/UIKit.h>
 #import "ReaderPost.h"
+#import "ReaderPostView.h"
 
-@interface ReaderPostDetailViewController : UIViewController<UITableViewDataSource, UITableViewDelegate>
+@interface ReaderPostDetailViewController : UIViewController<UITableViewDataSource, UITableViewDelegate, ReaderPostViewDelegate>
 @property (nonatomic, strong) ReaderPost *post;
 @property (nonatomic, assign) BOOL showInlineActionBar;
 

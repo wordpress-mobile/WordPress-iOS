@@ -185,6 +185,10 @@ const CGFloat RPVControlButtonBorderSize = 0.0f;
 
 - (void)dealloc {
 	self.post = nil;
+    self.delegate = nil;
+    _textContentView.delegate = nil;
+    _mediaQueue.delegate = nil;
+    [_mediaQueue discardQueuedItems];
 }
 
 - (void)configurePost:(ReaderPost *)post {
@@ -544,10 +548,16 @@ const CGFloat RPVControlButtonBorderSize = 0.0f;
     }
 }
 
-- (void)linkImageAction:(id)sender {
+- (void)imageLinkAction:(id)sender {
     if ([self.delegate respondsToSelector:@selector(postView:didReceiveImageLinkAction:)]) {
         [self.delegate postView:self didReceiveImageLinkAction:sender];
     }   
+}
+
+- (void)videoLinkAction:(id)sender {    
+    if ([self.delegate respondsToSelector:@selector(postView:didReceiveVideoLinkAction:)]) {
+        [self.delegate postView:self didReceiveVideoLinkAction:sender];
+    }
 }
 
 
@@ -716,7 +726,7 @@ const CGFloat RPVControlButtonBorderSize = 0.0f;
 	[button setImage:highlightImage forState:UIControlStateHighlighted];
 	
 	// use normal push action for opening URL
-	[button addTarget:self action:@selector(handleLinkTapped:) forControlEvents:UIControlEventTouchUpInside];
+	[button addTarget:self action:@selector(linkAction:) forControlEvents:UIControlEventTouchUpInside];
 	
 	return button;
 }
@@ -797,7 +807,7 @@ const CGFloat RPVControlButtonBorderSize = 0.0f;
         
 		[_mediaArray addObject:imageView];
 		imageView.linkURL = attachment.hyperLinkURL;
-		[imageView addTarget:self action:@selector(handleImageLinkTapped:) forControlEvents:UIControlEventTouchUpInside];
+		[imageView addTarget:self action:@selector(imageLinkAction:) forControlEvents:UIControlEventTouchUpInside];
 		
 		if ([imageAttachment.image isKindOfClass:[UIImage class]]) {
 			[imageView setImage:image];
@@ -861,7 +871,7 @@ const CGFloat RPVControlButtonBorderSize = 0.0f;
 			
 		}];
         
-		[videoView addTarget:self action:@selector(handleVideoTapped:) forControlEvents:UIControlEventTouchUpInside];
+		[videoView addTarget:self action:@selector(videoLinkAction:) forControlEvents:UIControlEventTouchUpInside];
         
 		return videoView;
 	}

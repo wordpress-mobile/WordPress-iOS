@@ -9,6 +9,7 @@
 #import "ReaderPostDetailViewController.h"
 #import <DTCoreText/DTCoreText.h>
 #import <QuartzCore/QuartzCore.h>
+#import <MediaPlayer/MediaPlayer.h>
 #import <MessageUI/MFMailComposeViewController.h>
 #import "UIImageView+Gravatar.h"
 #import "WPActivityDefaults.h"
@@ -20,7 +21,10 @@
 #import "ReaderCommentFormView.h"
 #import "ReaderReblogFormView.h"
 #import "IOS7CorrectedTextView.h"
-#import "ReaderPostView.h"
+#import "ReaderImageView.h"
+#import "ReaderVideoView.h"
+#import "WPImageViewController.h"
+#import "WPWebVideoViewController.h"
 
 NSInteger const ReaderCommentsToSync = 100;
 NSTimeInterval const ReaderPostDetailViewControllerRefreshTimeout = 300; // 5 minutes
@@ -68,6 +72,7 @@ typedef enum {
 - (void)dealloc {
 	_resultsController.delegate = nil;
     _tableView.delegate = nil;
+    _postView.delegate = nil;
 }
 
 
@@ -227,6 +232,7 @@ typedef enum {
     CGFloat postHeight = [ReaderPostView heightForPost:self.post withWidth:self.view.frame.size.width];
 	self.postView = [[ReaderPostView alloc] initWithFrame:CGRectMake(0.0f, 0.0f, self.tableView.frame.size.width, postHeight)
                                           showFullContent:YES];
+    self.postView.delegate = self;
     [self.postView configurePost:self.post];
     self.postView.backgroundColor = [UIColor whiteColor];
     if (self.featuredImage) {
@@ -621,6 +627,24 @@ typedef enum {
 	self.view.frame = frame;
 }
 
+- (void)moviePlaybackDidFinish:(NSNotification *)notification {
+    // Obtain the reason why the movie playback finished
+    NSNumber *finishReason = [[notification userInfo] objectForKey:MPMoviePlayerPlaybackDidFinishReasonUserInfoKey];
+    
+    // Dismiss the view controller ONLY when the reason is not "playback ended"
+    if ([finishReason intValue] != MPMovieFinishReasonPlaybackEnded) {
+        MPMoviePlayerController *moviePlayer = [notification object];
+        
+        // Remove this class from the observers
+        [[NSNotificationCenter defaultCenter] removeObserver:self
+                                                        name:MPMoviePlayerPlaybackDidFinishNotification
+                                                      object:moviePlayer];
+        
+        // Dismiss the view controller
+        [[[WordPressAppDelegate sharedWordPressApplicationDelegate].window rootViewController] dismissViewControllerAnimated:YES completion:nil];
+    }
+}
+
 
 #pragma mark - ReaderPostView delegate methods
 
@@ -671,6 +695,73 @@ typedef enum {
 	}
 	
 	[self showCommentForm];
+}
+
+- (void)postView:(ReaderPostView *)postView didReceiveLinkAction:(id)sender {
+    WPWebViewController *controller = [[WPWebViewController alloc] init];
+	[controller setUrl:((DTLinkButton *)sender).URL];
+	[self.navigationController pushViewController:controller animated:YES];
+}
+
+- (void)postView:(ReaderPostView *)postView didReceiveImageLinkAction:(id)sender {
+    ReaderImageView *imageView = (ReaderImageView *)sender;
+	
+	if(imageView.linkURL) {
+		NSString *url = [imageView.linkURL absoluteString];
+		
+		BOOL matched = NO;
+		NSArray *types = @[@".png", @".jpg", @".gif", @".jpeg"];
+		for (NSString *type in types) {
+			if (NSNotFound != [url rangeOfString:type].location) {
+				matched = YES;
+				break;
+			}
+		}
+		
+		if (matched) {
+            UIViewController *controller = [[WPImageViewController alloc] initWithImage:imageView.image andURL:imageView.linkURL];
+            controller.modalTransitionStyle = UIModalTransitionStyleCrossDissolve;
+            controller.modalPresentationStyle = UIModalPresentationFullScreen;
+            [self.navigationController presentViewController:controller animated:YES completion:nil];
+
+			//[WPImageViewController presentAsModalWithImage:imageView.image andURL:((ReaderImageView *)sender).linkURL];
+            //			[WPImageViewController presentAsModalWithURL:((ReaderImageView *)sender).linkURL];
+		} else {
+			WPWebViewController *controller = [[WPWebViewController alloc] init];
+			[controller setUrl:((ReaderImageView *)sender).linkURL];
+			[self.navigationController pushViewController:controller animated:YES];
+		}
+	} else {
+		[WPImageViewController presentAsModalWithImage:imageView.image];
+	}
+}
+
+- (void)postView:(ReaderPostView *)postView didReceiveVideoLinkAction:(id)sender {
+    ReaderVideoView *videoView = (ReaderVideoView *)sender;
+	if(videoView.contentType == ReaderVideoContentTypeVideo) {
+
+		MPMoviePlayerViewController *controller = [[MPMoviePlayerViewController alloc] initWithContentURL:videoView.contentURL];
+        // Remove the movie player view controller from the "playback did finish" notification observers
+        [[NSNotificationCenter defaultCenter] removeObserver:controller
+                                                        name:MPMoviePlayerPlaybackDidFinishNotification
+                                                      object:controller.moviePlayer];
+
+        // Register this class as an observer instead
+        [[NSNotificationCenter defaultCenter] addObserver:self
+                                                 selector:@selector(moviePlaybackDidFinish:)
+                                                     name:MPMoviePlayerPlaybackDidFinishNotification
+                                                   object:controller.moviePlayer];
+
+		controller.modalTransitionStyle = UIModalTransitionStyleCrossDissolve;
+		controller.modalPresentationStyle = UIModalPresentationFormSheet;
+        [self.navigationController presentViewController:controller animated:YES completion:nil];
+
+	} else {
+		// Should either be an iframe, or an object embed. In either case a src attribute should have been parsed for the contentURL.
+		// Assume this is content we can show and try to load it.
+		WPWebVideoViewController *controller = [WPWebVideoViewController presentAsModalWithURL:videoView.contentURL];
+		controller.title = (videoView.title != nil) ? videoView.title : @"Video";
+	}
 }
 
 - (void)postView:(ReaderPostView *)postView didReceiveTagAction:(id)sender {
