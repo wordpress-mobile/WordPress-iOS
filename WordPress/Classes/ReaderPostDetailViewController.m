@@ -759,8 +759,13 @@ typedef enum {
 	} else {
 		// Should either be an iframe, or an object embed. In either case a src attribute should have been parsed for the contentURL.
 		// Assume this is content we can show and try to load it.
-		WPWebVideoViewController *controller = [WPWebVideoViewController presentAsModalWithURL:videoView.contentURL];
-		controller.title = (videoView.title != nil) ? videoView.title : @"Video";
+        UIViewController *controller = [[WPWebVideoViewController alloc] initWithURL:videoView.contentURL];
+        UINavigationController *navController = [[UINavigationController alloc] initWithRootViewController:controller];
+        navController.navigationBar.translucent = NO;
+        navController.modalTransitionStyle = UIModalTransitionStyleCrossDissolve;
+        navController.modalPresentationStyle = UIModalPresentationFullScreen;
+		navController.title = (videoView.title != nil) ? videoView.title : @"Video";
+        [self.navigationController presentViewController:navController animated:YES completion:nil];
 	}
 }
 
