@@ -6,8 +6,8 @@
 //  Copyright (c) 2013 WordPress. All rights reserved.
 //
 
-#import <SenTestingKit/SenTestingKit.h>
+#import <XCTest/XCTest.h>
 
-@interface ReaderTest : SenTestCase
+@interface ReaderTest : XCTestCase
 
 @end

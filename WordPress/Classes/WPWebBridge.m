@@ -8,7 +8,6 @@
 
 #import "WPWebBridge.h"
 #import <CommonCrypto/CommonDigest.h>
-#import "JSONKit.h"
 #import "UIDevice+WordPressIdentifier.h"
 
 @implementation WPWebBridge
@@ -128,7 +127,7 @@
         return;
     }
     
-    id payload = [payload_data objectFromJSONString];
+    id payload = [NSJSONSerialization JSONObjectWithData:[payload_data dataUsingEncoding:NSUTF8StringEncoding] options:0 error:nil];
     
     [payload enumerateObjectsUsingBlock:^(id obj, NSUInteger idx, BOOL *stop) {
         NSDictionary *action = (NSDictionary *)obj;

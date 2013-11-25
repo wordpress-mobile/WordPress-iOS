@@ -24,45 +24,6 @@
 @implementation Page
 @dynamic parentID;
 
-+ (Page *)newPageForBlog:(Blog *)blog withContext:(NSManagedObjectContext*)context {
-    Blog *contextBlog = (Blog *)[context objectWithID:blog.objectID];
-    Page *page = [NSEntityDescription insertNewObjectForEntityForName:NSStringFromClass(self.class) inManagedObjectContext:context];
-    page.blog = contextBlog;
-    return page;
-}
-
-+ (Page *)newDraftForBlog:(Blog *)blog {
-    Page *page = [self newPageForBlog:blog withContext:blog.managedObjectContext];
-    page.dateCreated = [NSDate date];
-    page.remoteStatus = AbstractPostRemoteStatusLocal;
-    page.status = @"publish";
-    [page save];
-    
-    return page;
-}
-
-+ (Page *)findWithBlog:(Blog *)blog andPageID:(NSNumber *)pageID withContext:(NSManagedObjectContext*)context {
-    Blog *contextBlog = (Blog *)[context objectWithID:blog.objectID];
-    NSSet *results = [contextBlog.posts filteredSetUsingPredicate:[NSPredicate predicateWithFormat:@"postID == %@", pageID]];
-    
-    if (results && (results.count > 0)) {
-        return [[results allObjects] objectAtIndex:0];
-    }
-    return nil;
-}
-
-+ (Page *)findOrCreateWithBlog:(Blog *)blog andPageID:(NSNumber *)pageID withContext:(NSManagedObjectContext*)context {
-    Page *page = [self findWithBlog:blog andPageID:pageID withContext:context];
-    
-    if (page == nil) {
-        page = [Page newPageForBlog:blog withContext:context];
-        page.postID = pageID;
-        page.remoteStatus = AbstractPostRemoteStatusSync;
-    }
-	
-    return page;
-}
-
 + (NSString *)titleForRemoteStatus:(NSNumber *)remoteStatus {
     if ([remoteStatus intValue] == AbstractPostRemoteStatusSync) {
 		return NSLocalizedString(@"Pages", @"");
@@ -71,7 +32,11 @@
 	}
 }
 
-- (void )updateFromDictionary:(NSDictionary *)postInfo {
++ (NSString *const)remoteUniqueIdentifier {
+    return @"page_id";
+}
+
+- (void)updateFromDictionary:(NSDictionary *)postInfo {
 	self.postTitle      = [postInfo objectForKey:@"title"];
     self.postID         = [[postInfo objectForKey:@"page_id"] numericValue];
     self.content        = [postInfo objectForKey:@"description"];
