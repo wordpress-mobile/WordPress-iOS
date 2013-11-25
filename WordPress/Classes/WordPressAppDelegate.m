@@ -599,6 +599,17 @@ NSInteger const UpdateCheckAlertViewTag = 102;
     [[BITHockeyManager sharedHockeyManager].authenticator authenticateInstallation];
 }
 
+#pragma mark - BITCrashManagerDelegate
+
+- (NSString *)applicationLogForCrashManager:(BITCrashManager *)crashManager {
+    NSString *description = [self getLogFilesContentWithMaxSize:5000]; // 5000 bytes should be enough!
+    if ([description length] == 0) {
+        return nil;
+    } else {
+        return description;
+    }
+}
+
 #pragma mark - Media cleanup
 
 - (void)cleanUnusedMediaFileFromTmpDir {
@@ -927,6 +938,34 @@ NSInteger const UpdateCheckAlertViewTag = 102;
     _fileLogger.logFileManager.maximumNumberOfLogFiles = 7;
     [DDLog addLogger:_fileLogger];
     return _fileLogger;
+}
+
+// get the log content with a maximum byte size
+- (NSString *) getLogFilesContentWithMaxSize:(NSInteger)maxSize {
+    NSMutableString *description = [NSMutableString string];
+    
+    NSArray *sortedLogFileInfos = [[self.fileLogger logFileManager] sortedLogFileInfos];
+    NSInteger count = [sortedLogFileInfos count];
+    
+    // we start from the last one
+    for (NSInteger index = 0; index < count; index++) {
+        DDLogFileInfo *logFileInfo = [sortedLogFileInfos objectAtIndex:index];
+        
+        NSData *logData = [[NSFileManager defaultManager] contentsAtPath:[logFileInfo filePath]];
+        if ([logData length] > 0) {
+            NSString *result = [[NSString alloc] initWithBytes:[logData bytes]
+                                                        length:[logData length]
+                                                      encoding: NSUTF8StringEncoding];
+            
+            [description appendString:result];
+        }
+    }
+    
+    if ([description length] > maxSize) {
+        description = (NSMutableString *)[description substringWithRange:NSMakeRange([description length] - maxSize - 1, maxSize)];
+    }
+    
+    return description;
 }
 
 - (void)toggleExtraDebuggingIfNeeded {
