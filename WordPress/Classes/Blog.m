@@ -624,7 +624,7 @@
             success();
         }
     } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
-        DDLogError(@"Error syncing options: %@", error);
+        DDLogError(@"Error syncing options (%@): %@", operation.request.URL, error);
 
         if (failure) {
             failure(error);
@@ -663,7 +663,7 @@
             success();
         }
     } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
-        DDLogError(@"Error syncing post formats: %@", error);
+        DDLogError(@"Error syncing post formats (%@): %@", operation.request.URL, error);
 
         if (failure) {
             failure(error);
@@ -690,7 +690,7 @@
         }
         [[NSNotificationCenter defaultCenter] postNotificationName:kCommentsChangedNotificationName object:self];
     } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
-        DDLogError(@"Error syncing comments: %@", error);
+        DDLogError(@"Error syncing comments (%@): %@", operation.request.URL, error);
         self.isSyncingComments = NO;
 
         if (failure) {
@@ -714,7 +714,7 @@
             success();
         }
     } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
-        DDLogError(@"Error syncing categories: %@", error);
+        DDLogError(@"Error syncing categories (%@): %@", operation.request.URL, error);
 
         if (failure) {
             failure(error);
@@ -767,7 +767,7 @@
             success();
         }
     } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
-        DDLogError(@"Error syncing posts: %@", error);
+        DDLogError(@"Error syncing posts (%@): %@", operation.request.URL, error);
         self.isSyncingPosts = NO;
 
         if (failure) {
@@ -820,7 +820,7 @@
             success();
         }
     } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
-        DDLogError(@"Error syncing pages: %@", error);
+        DDLogError(@"Error syncing pages (%@): %@", operation.request.URL, error);
         self.isSyncingPages = NO;
 
         if (failure) {
