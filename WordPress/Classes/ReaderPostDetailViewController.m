@@ -128,14 +128,9 @@ typedef enum {
 	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(handleKeyboardWillHide:) name:UIKeyboardWillHideNotification object:nil];
 
 	UIToolbar *toolbar = self.navigationController.toolbar;
-    if (IS_IOS7) {
-        toolbar.barTintColor = [WPStyleGuide littleEddieGrey];
-        toolbar.tintColor = [UIColor whiteColor];
-        toolbar.translucent = NO;
-    } else {
-        [toolbar setBackgroundImage:nil forToolbarPosition:UIToolbarPositionBottom barMetrics:UIBarMetricsDefault];
-        [toolbar setTintColor:DTColorCreateWithHexString(@"F1F1F1")];
-    }
+    toolbar.barTintColor = [WPStyleGuide littleEddieGrey];
+    toolbar.tintColor = [UIColor whiteColor];
+    toolbar.translucent = NO;
 
     [self.post addObserver:self forKeyPath:@"isReblogged" options:NSKeyValueObservingOptionNew context:@"reblogging"];
 	[self showStoredComment];
@@ -222,40 +217,20 @@ typedef enum {
     if (_shareButton)
         return _shareButton;
     
-	// Top Navigation bar and Sharing.
-	if (IS_IOS7) {
-        UIImage *image = [UIImage imageNamed:@"icon-posts-share"];
-        UIButton *button = [[UIButton alloc] initWithFrame:CGRectMake(0, 0, image.size.width, image.size.height)];
-        [button setImage:image forState:UIControlStateNormal];
-        [button addTarget:self action:@selector(handleShareButtonTapped:) forControlEvents:UIControlEventTouchUpInside];
-        _shareButton = [[UIBarButtonItem alloc] initWithCustomView:button];
-	} else {
-		UIButton *btn = [UIButton buttonWithType:UIButtonTypeCustom];
-		
-		[btn setImage:[UIImage imageNamed:@"navbar_actions.png"] forState:UIControlStateNormal];
-		[btn setImage:[UIImage imageNamed:@"navbar_actions.png"] forState:UIControlStateHighlighted];
-		
-		UIImage *backgroundImage = [[UIImage imageNamed:@"navbar_button_bg"] stretchableImageWithLeftCapWidth:4 topCapHeight:0];
-		[btn setBackgroundImage:backgroundImage forState:UIControlStateNormal];
-		
-		backgroundImage = [[UIImage imageNamed:@"navbar_button_bg_active"] stretchableImageWithLeftCapWidth:4 topCapHeight:0];
-		[btn setBackgroundImage:backgroundImage forState:UIControlStateHighlighted];
-		btn.frame = CGRectMake(0.0f, 0.0f, 44.0f, 30.0f);
-		[btn addTarget:self action:@selector(handleShareButtonTapped:) forControlEvents:UIControlEventTouchUpInside];
-		
-		_shareButton = [[UIBarButtonItem alloc] initWithCustomView:btn];
-	}
-	return _shareButton;
+	// Top Navigation bar and Sharing
+    UIImage *image = [UIImage imageNamed:@"icon-posts-share"];
+    UIButton *button = [[UIButton alloc] initWithFrame:CGRectMake(0, 0, image.size.width, image.size.height)];
+    [button setImage:image forState:UIControlStateNormal];
+    [button addTarget:self action:@selector(handleShareButtonTapped:) forControlEvents:UIControlEventTouchUpInside];
+    _shareButton = [[UIBarButtonItem alloc] initWithCustomView:button];
+
+        return _shareButton;
 }
 
 - (void)buildActionBar {
 	UIButton *commentBtn = [UIButton buttonWithType:UIButtonTypeCustom];
-    if (IS_IOS7) {
-        [commentBtn setImage:[UIImage imageNamed:@"reader-postaction-comment"] forState:UIControlStateNormal];
-        [commentBtn setImage:[UIImage imageNamed:@"reader-postaction-comment-active"] forState:UIControlStateHighlighted];
-    } else {
-        [commentBtn setImage:[UIImage imageNamed:@"reader-postaction-comment-blue"] forState:UIControlStateNormal];
-    }
+    [commentBtn setImage:[UIImage imageNamed:@"reader-postaction-comment"] forState:UIControlStateNormal];
+    [commentBtn setImage:[UIImage imageNamed:@"reader-postaction-comment-active"] forState:UIControlStateHighlighted];
 	commentBtn.frame = CGRectMake(0.0f, 0.0f, 40.0f, 40.0f);
 	[commentBtn addTarget:self action:@selector(handleCommentButtonTapped:) forControlEvents:UIControlEventTouchUpInside];
 	self.commentButton = [[UIBarButtonItem alloc] initWithCustomView:commentBtn];
@@ -265,11 +240,7 @@ typedef enum {
 	[likeBtn setTitleEdgeInsets:UIEdgeInsetsMake(0.0f, -5.0f, 0.0f, 0.0f)];
 	[likeBtn setTitleColor:[UIColor colorWithRed:84.0f/255.0f green:173.0f/255.0f blue:211.0f/255.0f alpha:1.0f] forState:UIControlStateNormal];
 	[likeBtn setTitleColor:[UIColor colorWithRed:221.0f/255.0f green:118.0f/255.0f blue:43.0f/255.0f alpha:1.0f] forState:UIControlStateSelected];
-    if (IS_IOS7) {
-        [likeBtn setImage:[UIImage imageNamed:@"reader-postaction-like"] forState:UIControlStateNormal];
-    } else {
-        [likeBtn setImage:[UIImage imageNamed:@"reader-postaction-like-blue"] forState:UIControlStateNormal];
-    }
+    [likeBtn setImage:[UIImage imageNamed:@"reader-postaction-like"] forState:UIControlStateNormal];
     [likeBtn setImage:[UIImage imageNamed:@"reader-postaction-like-active"] forState:UIControlStateSelected];
 	likeBtn.frame = CGRectMake(0.0f, 0.0f, 60.0f, 40.0f);
 	likeBtn.autoresizingMask = UIViewAutoresizingFlexibleLeftMargin | UIViewAutoresizingFlexibleRightMargin;
@@ -277,12 +248,8 @@ typedef enum {
 	self.likeButton = [[UIBarButtonItem alloc] initWithCustomView:likeBtn];
 	
 	UIButton *reblogBtn = [UIButton buttonWithType:UIButtonTypeCustom];
-    if (IS_IOS7) {
-        [reblogBtn setImage:[UIImage imageNamed:@"reader-postaction-reblog"] forState:UIControlStateNormal];
-        [reblogBtn setImage:[UIImage imageNamed:@"reader-postaction-reblog-active"] forState:UIControlStateHighlighted];
-    } else {
-        [reblogBtn setImage:[UIImage imageNamed:@"reader-postaction-reblog-blue"] forState:UIControlStateNormal];
-    }
+    [reblogBtn setImage:[UIImage imageNamed:@"reader-postaction-reblog"] forState:UIControlStateNormal];
+    [reblogBtn setImage:[UIImage imageNamed:@"reader-postaction-reblog-active"] forState:UIControlStateHighlighted];
     [reblogBtn setImage:[UIImage imageNamed:@"reader-postaction-reblog-done"] forState:UIControlStateSelected];
 	reblogBtn.frame = CGRectMake(0.0f, 0.0f, 40.0f, 40.0f);
 	reblogBtn.autoresizingMask = UIViewAutoresizingFlexibleLeftMargin;
