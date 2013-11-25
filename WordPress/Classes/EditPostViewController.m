@@ -734,7 +734,12 @@ CGFloat const EditPostViewControllerTextViewOffset = 10.0;
 }
 
 - (IBAction)saveAction:(id)sender {
-	if( [self isMediaInUploading] ) {
+    if (currentActionSheet.isVisible) {
+        [currentActionSheet dismissWithClickedButtonIndex:-1 animated:YES];
+        currentActionSheet = nil;
+    }
+    
+	if ([self isMediaInUploading] ) {
 		[self showMediaInUploadingalert];
 		return;
 	}
