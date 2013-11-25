@@ -33,6 +33,8 @@
 #import <Security/Security.h>
 #import "SupportViewController.h"
 #import <CrashlyticsLumberjack/CrashlyticsLogger.h>
+#import <CoreTelephony/CTTelephonyNetworkInfo.h>
+#import <CoreTelephony/CTCarrier.h>
 
 @interface WordPressAppDelegate (Private) <CrashlyticsDelegate>
 
@@ -171,38 +173,41 @@ int ddLogLevel = LOG_LEVEL_INFO;
     self.connectionAvailable = YES;
 
     // allocate the internet reachability object
-    internetReachability = [Reachability reachabilityForInternetConnection];
+    self.internetReachability = [Reachability reachabilityForInternetConnection];
     
-    self.connectionAvailable = [internetReachability isReachable];
-    // set the blocks 
-    internetReachability.reachableBlock = ^(Reachability*reach)
-    {  
-        DDLogInfo(@"Internet connection is back");
-        self.connectionAvailable = YES;
+    // set the blocks
+    void (^internetReachabilityBlock)(Reachability *) = ^(Reachability *reach) {
+        NSString *wifi = reach.isReachableViaWiFi ? @"Y" : @"N";
+        NSString *wwan = reach.isReachableViaWWAN ? @"Y" : @"N";
+        
+        DDLogInfo(@"Reachability - Internet - WiFi: %@  WWAN: %@", wifi, wwan);
+        self.connectionAvailable = reach.isReachable;
     };
-    internetReachability.unreachableBlock = ^(Reachability*reach)
-    {
-        DDLogInfo(@"No internet connection");
-        self.connectionAvailable = NO;
-    };
+    self.internetReachability.reachableBlock = internetReachabilityBlock;
+    self.internetReachability.unreachableBlock = internetReachabilityBlock;
+    
     // start the notifier which will cause the reachability object to retain itself!
-    [internetReachability startNotifier];
+    [self.internetReachability startNotifier];
+    self.connectionAvailable = [self.internetReachability isReachable];
     
     // allocate the WP.com reachability object
-    wpcomReachability = [Reachability reachabilityWithHostname:@"wordpress.com"];
-    // set the blocks 
-    wpcomReachability.reachableBlock = ^(Reachability*reach)
-    {  
-        DDLogInfo(@"Connection to WordPress.com is back");
-        self.wpcomAvailable = YES;
+    self.wpcomReachability = [Reachability reachabilityWithHostname:@"wordpress.com"];
+
+    // set the blocks
+    void (^wpcomReachabilityBlock)(Reachability *) = ^(Reachability *reach) {
+        NSString *wifi = reach.isReachableViaWiFi ? @"Y" : @"N";
+        NSString *wwan = reach.isReachableViaWWAN ? @"Y" : @"N";
+        CTTelephonyNetworkInfo *netInfo = [CTTelephonyNetworkInfo new];
+        CTCarrier *carrier = [netInfo subscriberCellularProvider];
+        
+        DDLogInfo(@"Reachability - WordPress.com - WiFi: %@  WWAN: %@  Carrier: %@  Type: %@", wifi, wwan, carrier.carrierName, netInfo.currentRadioAccessTechnology);
+        self.wpcomAvailable = reach.isReachable;
     };
-    wpcomReachability.unreachableBlock = ^(Reachability*reach)
-    {
-        DDLogInfo(@"No connection to WordPress.com");
-        self.wpcomAvailable = NO;
-    };
+    self.wpcomReachability.reachableBlock = wpcomReachabilityBlock;
+    self.wpcomReachability.unreachableBlock = wpcomReachabilityBlock;
+    
     // start the notifier which will cause the reachability object to retain itself!
-    [wpcomReachability startNotifier];
+    [self.wpcomReachability startNotifier];
 #pragma clang diagnostic pop
 }
 
