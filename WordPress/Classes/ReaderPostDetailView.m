@@ -107,25 +107,25 @@
 		self.authorLabel = [[UILabel alloc] initWithFrame:CGRectMake(avatarSize + padding + 10.0f, padding, labelWidth, labelHeight)];
 		_authorLabel.autoresizingMask = UIViewAutoresizingFlexibleWidth;
 		_authorLabel.backgroundColor = [UIColor clearColor];
-		_authorLabel.font = [UIFont fontWithName:@"OpenSans" size:13.0f];//[UIFont boldSystemFontOfSize:14.0f];
+		_authorLabel.font = [UIFont fontWithName:@"OpenSans" size:13.0f];
 		_authorLabel.text = (self.post.author != nil) ? self.post.author : self.post.authorDisplayName;
-		_authorLabel.textColor = [UIColor colorWithHexString:@"404040"];
+		_authorLabel.textColor = DTColorCreateWithHexString(@"404040");
 		[_authorView addSubview:_authorLabel];
 		
 		self.dateLabel = [[UILabel alloc] initWithFrame:CGRectMake(avatarSize + padding + 10.0f, padding + labelHeight, labelWidth, labelHeight)];
 		_dateLabel.autoresizingMask = UIViewAutoresizingFlexibleWidth;
 		_dateLabel.backgroundColor = [UIColor clearColor];
-		_dateLabel.font = [UIFont fontWithName:@"OpenSans" size:13.0f];//[UIFont systemFontOfSize:14.0f];
+		_dateLabel.font = [UIFont fontWithName:@"OpenSans" size:13.0f];
 		_dateLabel.text = [NSString stringWithFormat:@"%@ on", [self.post prettyDateString]];
-		_dateLabel.textColor = [UIColor colorWithHexString:@"404040"];//[UIColor colorWithHexString:@"aaaaaa"];
+		_dateLabel.textColor = DTColorCreateWithHexString(@"404040");
 		[_authorView addSubview:_dateLabel];
 		
 		self.blogLabel = [[UILabel alloc] initWithFrame:CGRectMake(avatarSize + padding + 10.0f, padding + labelHeight * 2, labelWidth, labelHeight)];
 		_blogLabel.autoresizingMask = UIViewAutoresizingFlexibleWidth;
 		_blogLabel.backgroundColor = [UIColor clearColor];
-		_blogLabel.font = [UIFont fontWithName:@"OpenSans" size:13.0f];//[UIFont systemFontOfSize:14.0f];
+		_blogLabel.font = [UIFont fontWithName:@"OpenSans" size:13.0f];
 		_blogLabel.text = self.post.blogName;
-		_blogLabel.textColor = [UIColor colorWithHexString:@"278dbc"];
+		_blogLabel.textColor = DTColorCreateWithHexString(@"278dbc");
 		[_authorView addSubview:_blogLabel];
 		
 		CGRect followFrame = _blogLabel.frame;
@@ -211,12 +211,12 @@
 	[super layoutSubviews];
 	
 	NSString *str = _followButton.currentTitle;
-	CGSize sz = [str sizeWithFont:_followButton.titleLabel.font];
+	CGSize sz = [str sizeWithAttributes:@{NSFontAttributeName:_followButton.titleLabel.font}];
 	[_followButton sizeToFit];
 	sz = _followButton.frame.size;
 	sz.width += 5.0f; // just a little extra width so the text has better padding on the right.
 	
-	CGFloat desiredWidth = [_blogLabel.text sizeWithFont:_blogLabel.font].width;
+	CGFloat desiredWidth = [_blogLabel.text sizeWithAttributes:@{NSFontAttributeName:_blogLabel.font}].width;
 	CGFloat availableWidth = (_authorView.frame.size.width - _blogLabel.frame.origin.x) - 20.0f;
 	availableWidth -= (sz.width + 10.0f);
 

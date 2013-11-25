@@ -7,7 +7,7 @@
 //
 
 /**
- A Progress indicator shaped like a pie chart
+ A Progress indicator shaped like a pie chart.
  */
 
 @interface DTPieProgressIndicator : UIView

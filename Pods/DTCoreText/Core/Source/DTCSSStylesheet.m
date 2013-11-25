@@ -23,6 +23,8 @@ extern unsigned int default_css_len;
 @implementation DTCSSStylesheet
 {
 	NSMutableDictionary *_styles;
+	NSMutableDictionary *_orderedSelectorWeights;
+	NSMutableArray *_orderedSelectors;
 }
 
 #pragma mark Creating Stylesheets
@@ -56,6 +58,8 @@ extern unsigned int default_css_len;
 	if (self)
 	{
 		_styles	= [[NSMutableDictionary alloc] init];
+		_orderedSelectorWeights = [[NSMutableDictionary alloc] init];
+		_orderedSelectors = [[NSMutableArray alloc] init];
 		
 		[self parseStyleBlock:css];
 	}
@@ -70,6 +74,8 @@ extern unsigned int default_css_len;
 	if (self)
 	{
 		_styles	= [[NSMutableDictionary alloc] init];
+		_orderedSelectorWeights = [[NSMutableDictionary alloc] init];
+		_orderedSelectors = [[NSMutableArray alloc] init];
 		
 		[self mergeStylesheet:stylesheet];
 	}
@@ -77,10 +83,14 @@ extern unsigned int default_css_len;
 	return self;
 }
 
+#ifndef COVERAGE
+
 - (NSString *)description
 {
 	return [_styles description];
+	
 }
+#endif
 
 #pragma mark Working with Style Blocks
 
@@ -198,7 +208,7 @@ extern unsigned int default_css_len;
 			{
 				// font-size / line-height
 				
-				fontSize = [oneComponent substringToIndex:slashIndex-1];
+				fontSize = [oneComponent substringToIndex:slashIndex];
 				fontSizeSet = YES;
 				
 				lineHeight = [oneComponent substringFromIndex:slashIndex+1];
@@ -428,11 +438,11 @@ extern unsigned int default_css_len;
 					[ruleDictionary setObject:value forKey:oneKey];
 				}
 				
-			} else if ([value isKindOfClass:[NSArray class]]) {
-				
+			} else if ([value isKindOfClass:[NSArray class]])
+			{
 				NSMutableArray *newVal;
 				
-				for (NSUInteger i = 0; i < [value count]; ++i)
+				for (NSUInteger i = 0; i < [(NSArray*)value count]; ++i)
 				{
 					NSString *s = [value objectAtIndex:i];
 					
@@ -443,21 +453,24 @@ extern unsigned int default_css_len;
 						s = [s stringByReplacingCharactersInRange:rangeOfImportant withString:@""];
 						s = [s stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]];
 						
-						if (!newVal) {
-							
-							if ([value isKindOfClass:[NSMutableArray class]]) {
+						if (!newVal)
+						{
+							if ([value isKindOfClass:[NSMutableArray class]])
+							{
 								newVal = value;
-							} else {
+							} else
+							{
 								newVal = [value mutableCopy];
 							}
 						}
 						
-						newVal[i] = s;
+						// replace the value that had !important with a version without it
+						[newVal replaceObjectAtIndex:i withObject:s];
 					}
 				}
 				
-				if (newVal) {
-					
+				if (newVal)
+				{
 					[ruleDictionary setObject:newVal forKey:oneKey];
 				}
 			}
@@ -498,11 +511,11 @@ extern unsigned int default_css_len;
 			[tmpDict addEntriesFromDictionary:ruleDictionary];
 			
 			// save it
-			[_styles setObject:tmpDict forKey:cleanSelector];
+			[self _addStyles:tmpDict withSelector:cleanSelector];
 		}
 		else
 		{
-			[_styles setObject:ruleDictionary forKey:cleanSelector];
+			[self _addStyles:ruleDictionary withSelector:cleanSelector];
 		}
 	}
 }
@@ -608,7 +621,7 @@ extern unsigned int default_css_len;
 
 - (void)mergeStylesheet:(DTCSSStylesheet *)stylesheet
 {
-	NSArray *otherStylesheetStyleKeys = [[stylesheet styles] allKeys];
+	NSArray *otherStylesheetStyleKeys = stylesheet.orderedSelectors;
 	
 	for (NSString *oneKey in otherStylesheetStyleKeys)
 	{
@@ -625,19 +638,29 @@ extern unsigned int default_css_len;
 				[mutableStyles setObject:mergingStyleString forKey:oneStyleKey];
 			}
 			
-			[_styles setObject:mutableStyles forKey:oneKey];
+			[self _addStyles:mutableStyles withSelector:oneKey];
 		}
 		else
 		{
 			// nothing to worry
-			[_styles setObject:stylesToMerge forKey:oneKey];
+			[self _addStyles:stylesToMerge withSelector:oneKey];
 		}
+	}
+}
+
+- (void)_addStyles:(NSDictionary *)styles withSelector:(NSString *)selector {
+	[_styles setObject:styles forKey:selector];
+	
+	if (![_orderedSelectors containsObject:selector])
+	{
+		[_orderedSelectors addObject:selector];
+		[_orderedSelectorWeights setObject:@([self _weightForSelector:selector]) forKey:selector];
 	}
 }
 
 #pragma mark Accessing Style Information
 
-- (NSDictionary *)mergedStyleDictionaryForElement:(DTHTMLElement *)element matchedSelectors:(NSSet **)matchedSelectors
+- (NSDictionary *)mergedStyleDictionaryForElement:(DTHTMLElement *)element matchedSelectors:(NSSet **)matchedSelectors ignoreInlineStyle:(BOOL)ignoreInlineStyle
 {
 	// We are going to combine all the relevant styles for this tag.
 	// (Note that when styles are applied, the later styles take precedence,
@@ -657,20 +680,59 @@ extern unsigned int default_css_len;
 	NSString *classString = [element.attributes objectForKey:@"class"];
 	NSArray *classes = [classString componentsSeparatedByString:@" "];
 	
-	
-	// Find all classes by walking up the heirarchy and compute possible selector combinations
-	NSArray *ancestorSelectorArrays = [self findAncestorSelectorArraysForElement:element];
-	NSArray *cascadedSelectors = [self computeCascadedSelectorsWithAncestorSelectors:ancestorSelectorArrays];
+	// Cascaded selectors with more than one part are sorted by specificity
+	NSMutableArray *matchingCascadingSelectors = [self matchingComplexCascadingSelectorsForElement:element];
+	[matchingCascadingSelectors sortUsingComparator:^NSComparisonResult(NSString *selector1, NSString *selector2)
+	 {
+		 NSInteger weightForSelector1 = [[_orderedSelectorWeights objectForKey:selector1] integerValue];
+		 NSInteger weightForSelector2 = [[_orderedSelectorWeights objectForKey:selector2] integerValue];
+		 
+		 if (weightForSelector1 == weightForSelector2)
+		 {
+			 weightForSelector1 += [_orderedSelectors indexOfObject:selector1];
+			 weightForSelector2 += [_orderedSelectors indexOfObject:selector2];
+		 }
+		 
+		 if (weightForSelector1 > weightForSelector2)
+		 {
+			 return (NSComparisonResult)NSOrderedDescending;
+		 }
+		 
+		 if (weightForSelector1 < weightForSelector2)
+		 {
+			 return (NSComparisonResult)NSOrderedAscending;
+		 }
+		 
+		 return (NSComparisonResult)NSOrderedSame;
+	 }];
 	
 	NSMutableSet *tmpMatchedSelectors;
 	
 	if (matchedSelectors)
 	{
-		tmpMatchedSelectors = [[NSMutableSet alloc] init];
+		tmpMatchedSelectors = [NSMutableSet set];
 	}
 	
+	// Apply complex cascading selectors first, then apply most specific selectors
+	for (NSString *cascadingSelector in matchingCascadingSelectors)
+	{
+		NSDictionary *byCascadingSelector = [_styles objectForKey:cascadingSelector];
+		[tmpDict addEntriesFromDictionary:byCascadingSelector];
+		[tmpMatchedSelectors addObject:cascadingSelector];
+	}
+	
+	// Applied the parameter element's classes last
 	for (NSString *class in classes)
 	{
+		NSString *classRule = [NSString stringWithFormat:@".%@", class];
+		NSDictionary *byClass = [_styles objectForKey: classRule];
+		
+		if (byClass)
+		{
+			[tmpDict addEntriesFromDictionary:byClass];
+			[tmpMatchedSelectors addObject:class];
+		}
+		
 		NSString *classAndTagRule = [NSString stringWithFormat:@"%@.%@", element.name, class];
 		NSDictionary *byClassAndName = [_styles objectForKey:classAndTagRule];
 		
@@ -678,17 +740,6 @@ extern unsigned int default_css_len;
 		{
 			[tmpDict addEntriesFromDictionary:byClassAndName];
 			[tmpMatchedSelectors addObject:classAndTagRule];
-		}
-	}
-	
-	//This covers the "by class" only case (e.g. .foo)
-	for (NSString *cascadedSelector in cascadedSelectors)
-	{
-		NSDictionary *byCascadedClassName = [_styles objectForKey:cascadedSelector];
-		if (byCascadedClassName)
-		{
-			[tmpDict addEntriesFromDictionary:byCascadedClassName];
-			[tmpMatchedSelectors addObject:cascadedSelector];
 		}
 	}
 	
@@ -702,17 +753,20 @@ extern unsigned int default_css_len;
 		[tmpMatchedSelectors addObject:idRule];
 	}
 	
-	// Get tag's local style attribute
-	NSString *styleString = [element.attributes objectForKey:@"style"];
-	
-	if ([styleString length])
+	if (!ignoreInlineStyle)
 	{
-		NSMutableDictionary *localStyles = [[styleString dictionaryOfCSSStyles] mutableCopy];
+		// Get tag's local style attribute
+		NSString *styleString = [element.attributes objectForKey:@"style"];
 		
-		// need to uncompress because otherwise we might get shorthands and non-shorthands together
-		[self _uncompressShorthands:localStyles];
-		
-		[tmpDict addEntriesFromDictionary:localStyles];
+		if ([styleString length])
+		{
+			NSMutableDictionary *localStyles = [[styleString dictionaryOfCSSStyles] mutableCopy];
+			
+			// need to uncompress because otherwise we might get shorthands and non-shorthands together
+			[self _uncompressShorthands:localStyles];
+			
+			[tmpDict addEntriesFromDictionary:localStyles];
+		}
 	}
 	
 	if ([tmpDict count])
@@ -735,92 +789,132 @@ extern unsigned int default_css_len;
 	return _styles;
 }
 
-- (NSArray *)findAncestorSelectorArraysForElement:(DTHTMLElement *)element
+- (NSArray *)orderedSelectors
 {
-	// Walk up the heirarchy looking for parents with class attributes then compute cascades
-	NSMutableArray *ancestorSelectorArrays = [NSMutableArray array];
-	
-	DTHTMLElement *currentElement = element;
-	while (currentElement != nil)
-	{
-		NSString *currentElementClassString = [currentElement.attributes objectForKey:@"class"];
-		NSArray *currentElementClasses = [currentElementClassString componentsSeparatedByString:@" "];
-		NSString *ancestorId = [currentElement.attributes objectForKey:@"id"];
-		
-		NSMutableArray *selectors = [NSMutableArray array];
-		
-		if (ancestorId && ancestorId.length)
-		{
-			[selectors insertObject:[NSString stringWithFormat:@"#%@", ancestorId] atIndex:0];
-		}
-		
-		for (NSString *class in currentElementClasses)
-		{
-			if (class.length)
-			{
-				[selectors insertObject:[NSString stringWithFormat:@".%@", class] atIndex:0];
-			}
-		}
-		
-		// We add the element's tag name so the computed cascades include things like "div .foo" and "div #bar"
-		[selectors addObject:currentElement.name];
-		
-		if (selectors.count)
-		{
-			[ancestorSelectorArrays insertObject:selectors atIndex:0];
-		}
-		
-		currentElement = currentElement.parentElement;
-	}
-	
-	return ancestorSelectorArrays;
+	return _orderedSelectors;
 }
 
-- (NSArray *)computeCascadedSelectorsWithAncestorSelectors:(NSArray *)ancestorSelectors
+// This looks for cascaded selectors with more than one part to them
+- (NSMutableArray *)matchingComplexCascadingSelectorsForElement:(DTHTMLElement *)element
 {
-	NSMutableArray *cascadedSelectors = [NSMutableArray array];
+	__block NSMutableArray *matchedSelectors = [NSMutableArray array];
 	
-	if (ancestorSelectors.count)
+	for (NSString *selector in _orderedSelectors)
 	{
-		NSArray *outerMostAncestorSelectors = ancestorSelectors[0];
+		NSArray *selectorParts = [selector componentsSeparatedByString:@" "];
 		
-		// Find selector combinations for all ancestors that are leaves of the ancesor the current class array belongs to
-		NSArray *remainingAncessorSelectors = [ancestorSelectors subarrayWithRange:NSMakeRange(1, ancestorSelectors.count - 1)];
-		NSArray *descendantSelectors = [self computeCascadedSelectorsWithAncestorSelectors:remainingAncessorSelectors];
-		// Deduplicate computed selectors from recursive calls
-		descendantSelectors = [[NSOrderedSet orderedSetWithArray:descendantSelectors] array];
-		
-		for (NSString *selector in outerMostAncestorSelectors)
+		// We only process the selector if our selector has more than 1 part to it (e.g. ".foo" would be skipped and ".foo .bar" would not)
+		if (selectorParts.count < 2)
 		{
-			// Although we include tag names (in findAncestorSelectorArraysForElement:) so we can compute their cascades,
-			// we already handle them elsewhere differently from more complex selectors (e.g. id, class, and combinations of all 3)
-			// so don't add them to our list of cascadedSelectors
-			if ([selector hasPrefix:@"."] || [selector hasPrefix:@"#"])
-			{
-				[cascadedSelectors addObject:selector];
-			}
+			continue;
 		}
 		
-		for (NSString *selector in outerMostAncestorSelectors)
-		{
-			for (NSString *descendantSelector in descendantSelectors)
-			{
-				// Profiled this as it's the slowest part of this method.
-				// Using NSMutableString is significantly faster than [NSArray componentsJoinedByString:] or [NSString stringWithFormat:]
-				NSMutableString *combinedSelector = [NSMutableString stringWithString:selector];
-				[combinedSelector appendString:@" "];
-				[combinedSelector appendString:descendantSelector];
-				[cascadedSelectors addObject:combinedSelector];
-			}
-		}
+		DTHTMLElement *nextElement = element;
 		
-		for (NSString *descendantSelector in descendantSelectors)
+		// Walking up the hierarchy so start at the right side of the selector and work to the left
+		// Aside: Manual for loop here is faster than for in with reverseObjectEnumerator
+		for (NSUInteger j = selectorParts.count; j-- > 0;)
 		{
-			[cascadedSelectors addObject:descendantSelector];
+			NSString *selectorPart = [selectorParts objectAtIndex:j];
+			BOOL matched = NO;
+			
+			if (selectorPart.length)
+			{
+				while (nextElement != nil)
+				{
+					DTHTMLElement *currentElement = nextElement;
+					
+					//This must be set to advance here, above all of the breaks, so the loop properly advances.
+					nextElement = currentElement.parentElement;
+
+					if ([selectorPart characterAtIndex:0] == '#')
+					{
+						// If we're at an id and it doesn't match the current element then the style doesn't apply
+						NSString *currentElementId = [currentElement.attributes objectForKey:@"id"];
+						if (currentElementId && [[selectorPart substringFromIndex:1] isEqualToString:currentElementId])
+						{
+							matched = YES;
+							break;
+						}
+					} else if ([selectorPart characterAtIndex:0] == '.')
+					{
+						NSString *currentElementClassesString = [currentElement.attributes objectForKey:@"class"];
+						NSArray *currentElementClasses = [currentElementClassesString componentsSeparatedByString:@" "];
+						for (NSString *currentElementClass in currentElementClasses)
+						{
+							if ([currentElementClass isEqualToString:[selectorPart substringFromIndex:1]])
+							{
+								matched = YES;
+								break;
+							}
+						}
+						
+						if (matched)
+						{
+							break;
+						}
+					} else if ([selectorPart isEqualToString:currentElement.name] && (selectorParts.count > 1))
+					{
+						// This condition depends on the "if (selectorParts.count < 2)" conditional above. If that's removed, we must make sure selectorParts
+						// contains > 1 item for this to be matched (we want the element name alone to be matched last).
+						matched = YES;
+						break;
+					}
+					
+					// break if the right most portion of the selector doesn't match the target element
+					if (!matched && ([currentElement isEqual:element])) {
+						break;
+					}
+				}
+			}
+			
+			if (!matched)
+			{
+				break;
+			}
+			
+			//Only match if we really are on the last part of the selector and all other parts have matched so far
+			if (j == 0)
+			{
+				if (matched && ![matchedSelectors containsObject:selector])
+				{
+					[matchedSelectors addObject:selector];
+				}
+			}
 		}
 	}
 	
-	return cascadedSelectors;
+	return matchedSelectors;
+}
+
+// This computes the specificity for a given selector
+- (NSUInteger)_weightForSelector:(NSString *)selector {
+	if ((selector == nil) || (selector.length == 0))
+	{
+		return 0;
+	}
+	
+	NSUInteger weight = 0;
+	
+	NSArray *selectorParts = [selector componentsSeparatedByString:@" "];
+	for (NSString *selectorPart in selectorParts)
+	{
+		if (selectorPart.length == 0) {
+			continue;
+		}
+		
+		if ([selectorPart characterAtIndex:0] == '#')
+		{
+			weight += 100;
+		} else if ([selectorPart characterAtIndex:0] == '.')
+		{
+			weight += 10;
+		} else {
+			weight += 1;
+		}
+	}
+	
+	return weight;
 }
 
 #pragma mark NSCopying

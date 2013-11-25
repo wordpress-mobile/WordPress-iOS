@@ -57,7 +57,7 @@
 +(BOOL)booleanValueForJSONObject:(id)inJSONObject defaultValue:(BOOL)inDefaultValue;
 +(double)doubleValueForJSONObject:(id)inJSONObject defaultValue:(double)inDefaultValue;
 
-+(QuantcastPolicy*)policyWithAPIKey:(NSString*)inQuantcastAPIKey networkReachability:(id<QuantcastNetworkReachability>)inReachability carrier:(CTCarrier*)carrier enableLogging:(BOOL)inEnableLogging;
++(QuantcastPolicy*)policyWithAPIKey:(NSString*)inQuantcastAPIKey networkPCode:(NSString*)inNetworkPCode networkReachability:(id<QuantcastNetworkReachability>)inReachability carrier:(CTCarrier*)carrier appIsDirectAtChildren:(BOOL)inAppIsDirectedAtChildren enableLogging:(BOOL)inEnableLogging;
 
 #pragma mark - Debugging Support
 @property (assign) BOOL enableLogging;

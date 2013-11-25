@@ -11,6 +11,7 @@
 #import "ActivityLogViewController.h"
 #import <UIDeviceIdentifier/UIDeviceHardware.h>
 #import "WordPressAppDelegate.h"
+#import <DDFileLogger.h>
 
 @interface SupportViewController ()
 
@@ -169,8 +170,6 @@ typedef NS_ENUM(NSInteger, SettingsViewControllerSections)
                                                       otherButtonTitles:nil];
             [alertView show];
         }
-    } else if (indexPath.section == SettingsSectionActivityLog && indexPath.row == 0) {
-        abort();
     } else if (indexPath.section == SettingsSectionActivityLog && indexPath.row == 1) {
         ActivityLogViewController *activityLogViewController = [[ActivityLogViewController alloc] init];
         [self.navigationController pushViewController:activityLogViewController animated:YES];

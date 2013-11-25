@@ -184,8 +184,7 @@
     CGFloat width = availableWidth - CELL_PADDING;
     if (IS_IPHONE) 
          width -= 22;
-    CGSize maximumLabelSize = CGSizeMake(width,COMMENT_LABEL_HEIGHT);
-    CGSize expectedLabelSize = [commentText sizeWithFont:[UIFont systemFontOfSize:COMMENT_FONT_SIZE] constrainedToSize:maximumLabelSize lineBreakMode:NSLineBreakByTruncatingTail];
+    CGSize expectedLabelSize = [commentText suggestedSizeWithFont:[UIFont systemFontOfSize:COMMENT_FONT_SIZE] width:width];
 
     return GRAVATAR_TOP_OFFSET + MIN(expectedLabelSize.height, 60) + CELL_PADDING;
 }

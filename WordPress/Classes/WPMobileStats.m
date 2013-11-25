@@ -14,6 +14,11 @@
 #import "WordPressAppDelegate.h"
 #import "NSString+Helpers.h"
 #import "WPAccount.h"
+#import "ContextManager.h"
+#import "Blog.h"
+
+static BOOL hasRecordedAppOpenedEvent = NO;
+
 
 // General
 NSString *const StatsEventAppOpened = @"Application Opened";
@@ -181,9 +186,7 @@ NSString *const StatsEventWelcomeViewControllerClickedCreateWordpressDotComBlog 
 
 // NUX First Walkthrough 
 NSString *const StatsEventNUXFirstWalkthroughOpened = @"NUX - First Walkthrough - Opened";
-NSString *const StatsEventNUXFirstWalkthroughViewedSignInPage = @"NUX - First Walkthrough - Viewed Sign in Page";
 NSString *const StatsEventNUXFirstWalkthroughClickedSkipToCreateAccount = @"NUX - First Walkthrough - Skipped to Create Account";
-NSString *const StatsEventNUXFirstWalkthroughClickedSkipToSignIn = @"NUX - First Walkthrough - Skipped to Sign In";
 NSString *const StatsEventNUXFirstWalkthroughClickedInfo = @"NUX - First Walkthrough - Clicked Info";
 NSString *const StatsEventNUXFirstWalkthroughClickedCreateAccount = @"NUX - First Walkthrough - Clicked Create Account";
 NSString *const StatsEventNUXFirstWalkthroughSignedInWithoutUrl = @"NUX - First Walkthrough - Signed In Without URL";
@@ -208,14 +211,6 @@ NSString *const StatsEventNUXCreateAccountCreatedAccount = @"NUX - Create Accoun
 NSString *const StatsEventNUXCreateAccountClickedReviewPagePrevious = @"NUX - Create Account - Clicked Review Page Previous";
 NSString *const StatsEventNUXCreateAccountClickedViewLanguages = @"NUX - Create Account - Viewed Languages";
 NSString *const StatsEventNUXCreateAccountChangedDefaultURL = @"NUX - Create Account - Changed Default URL";
-
-// NUX Second Walkthrough
-NSString *const StatsEventNUXSecondWalkthroughOpened = @"NUX - Second Walkthrough - Opened";
-NSString *const StatsEventNUXSecondWalkthroughViewedReaderPage = @"NUX - Second Walkthrough - Viewed Reader Page";
-NSString *const StatsEventNUXSecondWalkthroughViewedNotificationPage = @"NUX - Second Walkthrough - Viewed Notification Page";
-NSString *const StatsEventNUXSecondWalkthroughViewedGetStartedPage = @"NUX - Second Walkthrough - Viewed Get Started Page";
-NSString *const StatsEventNUXSecondWalkthroughClickedStartUsingApp = @"NUX - Second Walkthrough - Clicked Start Using App";
-NSString *const StatsEventNUXSecondWalkthroughClickedStartUsingAppOnFinalPage = @"NUX - Second Walkthrough - Clicked Start Using App on Final Page";
 
 // Ådd Blogs Screen
 NSString *const StatsEventAddBlogsOpened = @"Add Blogs - Opened";
@@ -265,7 +260,7 @@ NSString *const StatsEventAddBlogsClickedAddSelected = @"Add Blogs - Clicked Add
     NSDictionary *properties = @{
                                  @"session_count": @(sessionCount),
                                  @"connected_to_dotcom": @([[WordPressComApi sharedApi] hasCredentials]),
-                                 @"number_of_blogs" : @([Blog countWithContext:[[WordPressAppDelegate sharedWordPressApplicationDelegate] managedObjectContext]]) };
+                                 @"number_of_blogs" : @([Blog countWithContext:[[ContextManager sharedInstance] mainContext]]) };
     [[Mixpanel sharedInstance] registerSuperProperties:properties];
     
     NSString *username = [[WPAccount defaultWordPressComAccount] username];
@@ -287,6 +282,8 @@ NSString *const StatsEventAddBlogsClickedAddSelected = @"Add Blogs - Clicked Add
 + (void)pauseSession
 {
     [[QuantcastMeasurement sharedInstance] pauseSessionWithLabels:nil];
+    [self clearPropertiesForAllEvents];
+    hasRecordedAppOpenedEvent = NO;
 }
 
 + (void)endSession
@@ -297,6 +294,13 @@ NSString *const StatsEventAddBlogsClickedAddSelected = @"Add Blogs - Clicked Add
 + (void)resumeSession
 {
     [[QuantcastMeasurement sharedInstance] resumeSessionWithLabels:nil];
+}
+
++ (void)recordAppOpenedForEvent:(NSString *)event {
+    if (!hasRecordedAppOpenedEvent) {
+        [self trackEventForSelfHostedAndWPCom:event];
+    }
+    hasRecordedAppOpenedEvent = YES;
 }
 
 + (void)trackEventForSelfHostedAndWPCom:(NSString *)event
