@@ -922,6 +922,9 @@ typedef enum {
 }
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
+    if (indexPath.section == ReaderDetailContentSection)
+        return;
+    
 	if (![self canComment]) {
 		[self.tableView deselectRowAtIndexPath:indexPath animated:NO];
 		return;
@@ -944,9 +947,8 @@ typedef enum {
 }
 
 - (void)tableView:(UITableView *)tableView willDisplayCell:(UITableViewCell *)cell forRowAtIndexPath:(NSIndexPath *)indexPath {
-    if (indexPath.section == ReaderDetailContentSection) {
+    if (indexPath.section == ReaderDetailContentSection)
         return;
-    }
     
 	if (IS_IPAD) {
 		cell.accessoryType = UITableViewCellAccessoryNone;
