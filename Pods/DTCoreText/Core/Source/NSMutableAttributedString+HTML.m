@@ -166,6 +166,14 @@
 	{
 		[appendAttributes setObject:lists forKey:DTTextListsAttribute];
 	}
+
+	// transfer foreground color
+	id foregroundColor = [attributes objectForKey:(id)kCTForegroundColorAttributeName];
+	
+	if (foregroundColor)
+	{
+		[appendAttributes setObject:foregroundColor forKey:(id)kCTForegroundColorAttributeName];
+	}
 	
 	NSAttributedString *newlineString = [[NSAttributedString alloc] initWithString:@"\n" attributes:appendAttributes];
 	[self appendAttributedString:newlineString];
@@ -195,10 +203,10 @@
 	
 	// now our mutable index set should contain the ranges where we want to set this
 	
-	[indexesToSetThis enumerateRangesInRange:safeRange options:0 usingBlock:^(NSRange indexRange, BOOL *stop) {
+	[indexesToSetThis enumerateRangesInRange:safeRange options:0 usingBlock:^(NSRange indexRange, BOOL *stopEnumerateRanges) {
 		
 		// for each such range, we need to add this to the attribute
-		[self enumerateAttribute:DTCustomAttributesAttribute inRange:indexRange options:0 usingBlock:^(NSDictionary *dictionary, NSRange effectiveRange, BOOL *stop) {
+		[self enumerateAttribute:DTCustomAttributesAttribute inRange:indexRange options:0 usingBlock:^(NSDictionary *dictionary, NSRange effectiveRange, BOOL *stopEnumerateAttribute) {
 			
 			if (dictionary)
 			{

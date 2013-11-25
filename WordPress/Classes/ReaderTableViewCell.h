@@ -13,7 +13,6 @@
 
 @interface ReaderTableViewCell : WPTableViewCell
 
-@property (nonatomic, weak) UIViewController *parentController;
 @property (nonatomic, strong) UIImageView *cellImageView;
 
 @end

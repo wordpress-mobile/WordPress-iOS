@@ -1,0 +1,1 @@
+../../HockeySDK/Classes/BITHockeyManagerDelegate.h

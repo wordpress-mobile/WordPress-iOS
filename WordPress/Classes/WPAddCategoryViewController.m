@@ -1,7 +1,6 @@
 #import "WPAddCategoryViewController.h"
 #import "EditSiteViewController.h"
 #import "WordPressAppDelegate.h"
-#import "UIBarButtonItem+Styled.h"
 
 @implementation WPAddCategoryViewController
 @synthesize blog;
@@ -153,8 +152,7 @@
 			[alertView show];
 			
 			// bad login/pass combination
-			EditSiteViewController *editSiteViewController = [[EditSiteViewController alloc] initWithNibName:nil bundle:nil];
-			editSiteViewController.blog = self.blog;
+			EditSiteViewController *editSiteViewController = [[EditSiteViewController alloc] initWithBlog:self.blog];
 			[self.navigationController pushViewController:editSiteViewController animated:YES];
 			
 		} else {

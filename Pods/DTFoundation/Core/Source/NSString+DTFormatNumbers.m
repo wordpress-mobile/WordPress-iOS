@@ -15,7 +15,7 @@
 	NSArray *units = [NSArray arrayWithObjects:@"%1.0f Bytes", @"%1.1f KB", @"%1.1f MB", @"%1.1f GB", @"%1.1f TB", nil];
 	
 	long long value = bytes * 10;
-	for (int i=0; i<[units count]; i++)
+	for (NSUInteger i=0; i<[units count]; i++)
 	{
 		if (i > 0)
 		{

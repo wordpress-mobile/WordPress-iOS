@@ -331,7 +331,7 @@ void _processingInstruction (void *context, const xmlChar *target, const xmlChar
 	return _delegate;
 }
 
-- (void)setDelegate:(id <DTHTMLParserDelegate>)delegate;
+- (void)setDelegate:(id <DTHTMLParserDelegate>)delegate
 {
 	_delegate = delegate;
 	

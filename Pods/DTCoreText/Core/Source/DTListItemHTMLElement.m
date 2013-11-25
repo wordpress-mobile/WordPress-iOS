@@ -16,7 +16,8 @@
 	{
 		NSInteger index = -1;
 		
-		for (DTHTMLElement *oneElement in listRoot.childNodes)
+		NSArray *childNodes = [listRoot.childNodes copy];
+ 		for (DTHTMLElement *oneElement in childNodes)
 		{
 			if ([oneElement isKindOfClass:[DTListItemHTMLElement class]])
 			{
@@ -111,6 +112,7 @@
 	
 	// modify paragraph style
 	paragraphStyle.firstLineHeadIndent = self.paragraphStyle.headIndent - _margins.left - _padding.left;;  // first line has prefix and starts at list indent;
+	paragraphStyle.defaultTabInterval = 100;
 	
 	// resets tabs
 	paragraphStyle.tabStops = nil;
@@ -124,12 +126,12 @@
 		}
 		
 		// first tab is to right-align bullet, numbering against
-		CGFloat tabOffset = _margins.left - (CGFloat)5.0; // TODO: change with font size
+		CGFloat tabOffset = paragraphStyle.headIndent - (CGFloat)5.0; // TODO: change with font size
 		[paragraphStyle addTabStopAtPosition:tabOffset alignment:kCTRightTextAlignment];
 	}
 	
 	// second tab is for the beginning of first line after bullet
-	[paragraphStyle addTabStopAtPosition:_margins.left + _padding.left alignment:kCTLeftTextAlignment];
+	[paragraphStyle addTabStopAtPosition:paragraphStyle.headIndent alignment:kCTLeftTextAlignment];
 	
 	NSMutableDictionary *newAttributes = [NSMutableDictionary dictionary];
 	
@@ -275,8 +277,10 @@
 - (NSAttributedString *)attributedString
 {
 	NSMutableAttributedString *tmpString = [[NSMutableAttributedString alloc] init];
-	
-	
+
+	// append child elements
+	NSAttributedString *childrenString = [super attributedString];
+
 	// apend list prefix
 	NSAttributedString *listPrefix = [self _listPrefix];
 	
@@ -284,18 +288,14 @@
 	{
 		[tmpString appendAttributedString:listPrefix];
 		
-		if ([self.childNodes count])
+		// add NL if there is immediately another list prefix following
+		NSString *field = [childrenString attribute:DTFieldAttribute atIndex:0 effectiveRange:NULL];
+		
+		if ([field isEqualToString:DTListPrefixField])
 		{
-			DTHTMLElement *firstchild = [self.childNodes objectAtIndex:0];
-			if (firstchild.displayStyle != DTHTMLElementDisplayStyleInline)
-			{
-				[tmpString appendString:@"\n"];
-			}
+			[tmpString appendEndOfParagraph];
 		}
 	}
-	
-	// append child elements
-	NSAttributedString *childrenString = [super attributedString];
 	
 	if (childrenString)
 	{
