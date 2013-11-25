@@ -1085,7 +1085,7 @@ CGFloat const EditPostViewControllerTextViewOffset = 10.0;
     _linkHelperAlertView.secondTextField.keyboardType = UIKeyboardTypeURL;
     _linkHelperAlertView.secondTextField.autocorrectionType = UITextAutocorrectionTypeNo;
 
-    if (UIDeviceOrientationIsLandscape(self.interfaceOrientation) && IS_IPHONE && !isExternalKeyboard) {
+    if (UIInterfaceOrientationIsLandscape(self.interfaceOrientation) && IS_IPHONE && !isExternalKeyboard) {
         [_linkHelperAlertView hideTitleAndDescription:YES];
     }
     
@@ -1310,7 +1310,7 @@ CGFloat const EditPostViewControllerTextViewOffset = 10.0;
      * iPad Portrait
      * iPad Landscape with external keyboard
      */
-    BOOL isLandscape = UIDeviceOrientationIsLandscape([UIApplication sharedApplication].statusBarOrientation);
+    BOOL isLandscape = UIInterfaceOrientationIsLandscape([UIApplication sharedApplication].statusBarOrientation);
     BOOL yesOrNo = (
                     (!IS_IPAD && !isExternalKeyboard)                  // iPhone without external keyboard
                     || (!IS_IPAD && isLandscape && isExternalKeyboard) // iPhone Landscape with external keyboard
