@@ -111,7 +111,11 @@ const CGFloat RPVControlButtonBorderSize = 0.0f;
     // Tag
     NSString *tagName = post.primaryTagName;
     if ([tagName length] > 0) {
-        desiredHeight += [tagName sizeWithFont:[self summaryFont] constrainedToSize:CGSizeMake(contentWidth, CGFLOAT_MAX) lineBreakMode:NSLineBreakByClipping].height;
+        CGRect tagRect = [tagName boundingRectWithSize:CGSizeMake(contentWidth, CGFLOAT_MAX)
+                                                options:NSStringDrawingUsesLineFragmentOrigin | NSStringDrawingUsesFontLeading
+                                             attributes:@{NSFontAttributeName : [self summaryFont]}
+                                                context:nil];
+        desiredHeight += tagRect.size.height;
     }
     
     // Padding above and below the line
