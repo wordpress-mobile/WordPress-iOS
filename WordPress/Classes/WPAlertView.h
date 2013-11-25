@@ -17,7 +17,7 @@ typedef NS_ENUM(NSUInteger, WPAlertViewOverlayMode) {
     WPAlertViewOverlayModeTwoTextFieldsSideBySideTwoButtonMode
 };
 
-@interface WPAlertView : UIView
+@interface WPAlertView : UIView <UITextFieldDelegate>
 
 @property (nonatomic, strong) NSString *overlayTitle;
 @property (nonatomic, strong) NSString *overlayDescription;
@@ -41,5 +41,14 @@ typedef NS_ENUM(NSUInteger, WPAlertViewOverlayMode) {
 
 - (id)initWithFrame:(CGRect)frame andOverlayMode:(WPAlertViewOverlayMode)overlayMode;
 - (void)dismiss;
+
+/**
+ Hides or shows the title and description fields and updates relevant layout 
+ constraints.  When the title and description are hidden the y offset of the rest
+ of the form is shifted upward.
+ 
+ @param hide `YES` to hide the title and description fields, `NO` to show them.
+ */
+- (void)hideTitleAndDescription:(BOOL)hide;
 
 @end
