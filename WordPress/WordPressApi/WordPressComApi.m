@@ -17,6 +17,9 @@
 #import <AFJSONRequestOperation.h>
 #import <UIDeviceHardware.h>
 #import "UIDevice+WordPressIdentifier.h"
+#import "ContextManager.h"
+#import <WPXMLRPCClient.h>
+
 
 NSString *const WordPressComApiClientEndpointURL = @"https://public-api.wordpress.com/rest/v1/";
 NSString *const WordPressComApiOauthBaseUrl = @"https://public-api.wordpress.com/oauth2";
@@ -175,7 +178,7 @@ NSString *const WordPressComApiErrorMessageKey = @"WordPressComApiErrorMessageKe
             [[NSUserDefaults standardUserDefaults] setObject:@"1" forKey:@"wpcom_authenticated_flag"];
             [[NSUserDefaults standardUserDefaults] synchronize];
             [WordPressAppDelegate sharedWordPressApplicationDelegate].isWPcomAuthenticated = YES;
-            [[WordPressAppDelegate sharedWordPressApplicationDelegate] registerForPushNotifications];
+            // [NotificationsManager registerForPushNotifications];
             [[NSNotificationCenter defaultCenter] postNotificationName:WordPressComApiDidLoginNotification object:self.username];
             if (success) success();
         }
@@ -221,7 +224,7 @@ NSString *const WordPressComApiErrorMessageKey = @"WordPressComApiErrorMessageKe
     WPFLogMethod();
     NSError *error = nil;
 
-    [[WordPressAppDelegate sharedWordPressApplicationDelegate] unregisterApnsToken];
+//    [NotificationsManager unregisterDeviceToken];
 
     [SFHFKeychainUtils deleteItemForUsername:self.username andServiceName:@"WordPress.com" error:&error];
     [SFHFKeychainUtils deleteItemForUsername:self.username andServiceName:kWPcomXMLRPCUrl error:&error];
@@ -236,9 +239,6 @@ NSString *const WordPressComApiErrorMessageKey = @"WordPressComApiErrorMessageKe
     self.username = nil;
     self.password = nil;
     [self clearAuthorizationHeader];
-
-    // Remove all notes
-    [Note removeAllNotesWithContext:[[WordPressAppDelegate sharedWordPressApplicationDelegate] managedObjectContext]];
 
     [self clearWpcomCookies];
 
@@ -399,7 +399,7 @@ NSString *const WordPressComApiErrorMessageKey = @"WordPressComApiErrorMessageKe
     [self clearWpcomCookies];
     [[NSNotificationCenter defaultCenter] postNotificationName:WordPressComApiDidLogoutNotification object:nil];
     [WordPressAppDelegate sharedWordPressApplicationDelegate].isWPcomAuthenticated = YES;
-    [[WordPressAppDelegate sharedWordPressApplicationDelegate] registerForPushNotifications];
+//    [NotificationsManager registerForPushNotifications];
     [[NSNotificationCenter defaultCenter] postNotificationName:WordPressComApiDidLoginNotification object:self.username];
 }
 
@@ -646,9 +646,7 @@ NSString *const WordPressComApiErrorMessageKey = @"WordPressComApiErrorMessageKe
     // TODO: Check for unread notifications and notify with the number of unread notifications
 
     [self getPath:@"notifications/" parameters:requestParameters success:^(AFHTTPRequestOperation *operation, id responseObject){
-        // save the notes
-        NSManagedObjectContext *context = [[WordPressAppDelegate sharedWordPressApplicationDelegate] managedObjectContext];
-        [Note syncNotesWithResponse:[responseObject objectForKey:@"notes"] withManagedObjectContext:context];
+        [Note syncNotesWithResponse:[responseObject objectForKey:@"notes"]];
         if (success != nil ) success( operation, responseObject );
         
     } failure:^(AFHTTPRequestOperation *operation, NSError *error) {

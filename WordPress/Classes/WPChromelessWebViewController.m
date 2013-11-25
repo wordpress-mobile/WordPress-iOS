@@ -43,15 +43,6 @@
     }
 }
 
-
-- (void)viewDidUnload {
-    [super viewDidUnload];
-    
-    webView.delegate = nil;
-    self.webView = nil;
-}
-
-
 #pragma mark -
 #pragma mark Instance Methods
 

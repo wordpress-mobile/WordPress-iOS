@@ -217,6 +217,7 @@ extern NSString *const StatsEventAddBlogsClickedAddSelected;
 + (void)endSession;
 + (void)resumeSession;
 
++ (void)recordAppOpenedForEvent:(NSString *)event;
 + (void)trackEventForSelfHostedAndWPCom:(NSString *)event;
 + (void)trackEventForSelfHostedAndWPCom:(NSString *)event properties:(NSDictionary *)properties;
 + (void)trackEventForSelfHostedAndWPComWithSavedProperties:(NSString *)event;
