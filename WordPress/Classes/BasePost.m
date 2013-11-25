@@ -13,7 +13,6 @@
 @interface BasePost(ProtectedMethods)
 + (NSString *)titleForStatus:(NSString *)status;
 + (NSString *)statusForTitle:(NSString *)title;
-- (void)markRemoteStatusFailed;
 @end
 
 @implementation BasePost
