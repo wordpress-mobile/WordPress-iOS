@@ -73,10 +73,9 @@ typedef enum {
     _postView.delegate = nil;
 }
 
-
 - (id)initWithPost:(ReaderPost *)post featuredImage:(UIImage *)image {
 	self = [super init];
-	if(self) {
+	if (self) {
 		self.post = post;
 		self.comments = [NSMutableArray array];
         self.featuredImage = image;
@@ -119,7 +118,7 @@ typedef enum {
 	[super viewWillAppear:animated];
 	
 	CGSize contentSize = self.tableView.contentSize;
-    if(contentSize.height > _savedScrollOffset.y) {
+    if (contentSize.height > _savedScrollOffset.y) {
         [self.tableView scrollRectToVisible:CGRectMake(_savedScrollOffset.x, _savedScrollOffset.y, 0.0f, 0.0f) animated:NO];
     } else {
         [self.tableView scrollRectToVisible:CGRectMake(0.0f, contentSize.height, 0.0f, 0.0f) animated:NO];
@@ -147,9 +146,8 @@ typedef enum {
 	
     // Do not start auto-sync if connection is down
 	WordPressAppDelegate *appDelegate = [WordPressAppDelegate sharedWordPressApplicationDelegate];
-    if (appDelegate.connectionAvailable == NO) {
+    if (appDelegate.connectionAvailable == NO)
         return;
-    }
 	
     NSDate *lastSynced = [self lastSyncDate];
     if (lastSynced == nil || ABS([lastSynced timeIntervalSinceNow]) > ReaderPostDetailViewControllerRefreshTimeout) {
@@ -182,16 +180,6 @@ typedef enum {
 	self.shareButton = nil;
 	
     [[NSNotificationCenter defaultCenter] removeObserver:self];
-}
-
-
-- (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation {
-    return [super shouldAutorotateToInterfaceOrientation:interfaceOrientation];
-}
-
-
-- (void)willRotateToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation duration:(NSTimeInterval)duration {
-	[super willRotateToInterfaceOrientation:toInterfaceOrientation duration:duration];
 }
 
 - (void)didRotateFromInterfaceOrientation:(UIInterfaceOrientation)fromInterfaceOrientation {
@@ -231,9 +219,8 @@ typedef enum {
 }
 
 - (UIBarButtonItem *)shareButton {
-    if (_shareButton) {
+    if (_shareButton)
         return _shareButton;
-    }
     
 	// Top Navigation bar and Sharing.
 	if (IS_IOS7) {
@@ -306,7 +293,8 @@ typedef enum {
 }
 
 - (void)updateToolbar {
-	if (!self.post) return;
+	if (!self.post)
+        return;
 	
 	UIButton *btn = (UIButton *)_likeButton.customView;
 	[btn setSelected:[self.post.isLiked boolValue]];
@@ -330,9 +318,7 @@ typedef enum {
 	}
 	
 	[items addObject:placeholder];
-	
 	[self setToolbarItems:items animated:YES];
-	
 	self.navigationController.toolbarHidden = NO;
 }
 
@@ -361,15 +347,16 @@ typedef enum {
 }
 
 - (UIActivityIndicatorView *)activityFooter {
-    if (_activityFooter) {
+    if (_activityFooter)
         return _activityFooter;
-    }
+
     CGRect rect = CGRectMake(145.0f, 10.0f, 30.0f, 30.0f);
     _activityFooter = [[UIActivityIndicatorView alloc] initWithFrame:rect];
     _activityFooter.activityIndicatorViewStyle = UIActivityIndicatorViewStyleGray;
     _activityFooter.hidesWhenStopped = YES;
     _activityFooter.autoresizingMask = UIViewAutoresizingFlexibleLeftMargin | UIViewAutoresizingFlexibleRightMargin;
     [_activityFooter stopAnimating];
+    
     return _activityFooter;
 }
 
@@ -400,7 +387,7 @@ typedef enum {
 		
 		for (ReaderComment *comment in comments) {
 			[_comments addObject:comment];
-			if([comment.childComments count] > 0) {
+			if ([comment.childComments count] > 0) {
 				flattenComments([comment.childComments allObjects]);
 			}
 		}
@@ -507,7 +494,7 @@ typedef enum {
 
 	NSUInteger idx = [_comments indexOfObjectPassingTest:^BOOL(id obj, NSUInteger idx, BOOL *stop) {
 		ReaderComment *c = (ReaderComment *)obj;
-		if([c.commentID integerValue] == cid) {
+		if ([c.commentID integerValue] == cid) {
 			return YES;
 		}
 		return NO;
@@ -520,9 +507,8 @@ typedef enum {
 - (void)showCommentForm {
 	[self hideReblogForm];
 	
-	if (_readerCommentFormView.superview != nil) {
+	if (_readerCommentFormView.superview != nil)
 		return;
-	}
 		
 	NSIndexPath *path = [self.tableView indexPathForSelectedRow];
 	if (path) {
@@ -542,9 +528,8 @@ typedef enum {
 }
 
 - (void)hideCommentForm {
-	if(_readerCommentFormView.superview == nil) {
+	if (_readerCommentFormView.superview == nil)
 		return;
-	}
 	
 	_readerCommentFormView.comment = nil;
 	[self.tableView deselectRowAtIndexPath:[self.tableView indexPathForSelectedRow] animated:NO];
@@ -561,9 +546,8 @@ typedef enum {
 - (void)showReblogForm {
 	[self hideCommentForm];
 
-	if (_readerReblogFormView.superview != nil) {
+	if (_readerReblogFormView.superview != nil)
 		return;
-	}
 	
 	CGFloat reblogHeight = [ReaderReblogFormView desiredHeight];
 	CGRect tableFrame = self.tableView.frame;
@@ -578,9 +562,8 @@ typedef enum {
 }
 
 - (void)hideReblogForm {
-	if(_readerReblogFormView.superview == nil) {
+	if (_readerReblogFormView.superview == nil)
 		return;
-	}
 	
 	[self.tableView deselectRowAtIndexPath:[self.tableView indexPathForSelectedRow] animated:NO];
 	
@@ -714,7 +697,7 @@ typedef enum {
 - (void)postView:(ReaderPostView *)postView didReceiveImageLinkAction:(id)sender {
     ReaderImageView *imageView = (ReaderImageView *)sender;
 	
-	if(imageView.linkURL) {
+	if (imageView.linkURL) {
 		NSString *url = [imageView.linkURL absoluteString];
 		
 		BOOL matched = NO;
@@ -746,7 +729,7 @@ typedef enum {
 
 - (void)postView:(ReaderPostView *)postView didReceiveVideoLinkAction:(id)sender {
     ReaderVideoView *videoView = (ReaderVideoView *)sender;
-	if(videoView.contentType == ReaderVideoContentTypeVideo) {
+	if (videoView.contentType == ReaderVideoContentTypeVideo) {
 
 		MPMoviePlayerViewController *controller = [[MPMoviePlayerViewController alloc] initWithContentURL:videoView.contentURL];
         // Remove the movie player view controller from the "playback did finish" notification observers
@@ -797,7 +780,6 @@ typedef enum {
 	return self.post.dateCommentsSynced;
 }
 
-
 - (void)syncWithUserInteraction:(BOOL)userInteraction {
 	if ([self.post.postID integerValue] == 0 ) { // Weird that this should ever happen. 
 		self.post.dateCommentsSynced = [NSDate date];
@@ -817,9 +799,8 @@ typedef enum {
 }
 
 - (void)loadMoreWithSuccess:(void (^)())success failure:(void (^)(NSError *error))failure {
-	if ([self.resultsController.fetchedObjects count] == 0) {
+	if ([self.resultsController.fetchedObjects count] == 0)
 		return;
-	}
 	
 	if (_loadingMore) return;
 	_loadingMore = YES;
@@ -849,7 +830,7 @@ typedef enum {
 		return;
 	}
 	
-	if([commentsArr count] < ([_comments count] + ReaderCommentsToSync)) {
+	if ([commentsArr count] < ([_comments count] + ReaderCommentsToSync)) {
 		_hasMoreContent = NO;
 	}
 	
