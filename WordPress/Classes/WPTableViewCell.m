@@ -21,4 +21,13 @@ CGFloat const WPTableViewFixedWidth = 500;
     [super setFrame:frame];
 }
 
+- (void)layoutSubviews {
+    // Need to set the origin again on iPad (for margins)
+    if (IS_IPAD) {
+        CGRect frame = self.frame;
+        frame.origin.x = (self.superview.frame.size.width - WPTableViewFixedWidth) / 2;
+        self.frame = frame;
+    }
+}
+
 @end

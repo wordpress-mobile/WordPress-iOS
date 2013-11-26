@@ -852,10 +852,12 @@ typedef enum {
 	if ([_comments count] == 0) {
 		return 0.0f;
 	}
+    
+    CGFloat width = IS_IPAD ? WPTableViewFixedWidth : tableView.frame.size.width;
 	
 	ReaderComment *comment = [_comments objectAtIndex:indexPath.row];
 	return [ReaderCommentTableViewCell heightForComment:comment
-												  width:tableView.frame.size.width
+												  width:width
 											 tableStyle:tableView.style
 										  accessoryType:UITableViewCellAccessoryNone];
 }
@@ -1073,6 +1075,8 @@ typedef enum {
                                                              managedObjectContext:moc
                                                                sectionNameKeyPath:nil
                                                                         cacheName:nil];
+    
+    _resultsController.delegate = self;
 	
     NSError *error = nil;
     if (![_resultsController performFetch:&error]) {
@@ -1081,6 +1085,20 @@ typedef enum {
     }
     
     return _resultsController;
+}
+
+- (void)controllerWillChangeContent:(NSFetchedResultsController *)controller {
+}
+
+- (void)controllerDidChangeContent:(NSFetchedResultsController *)controller {
+    [self.tableView reloadData];
+}
+
+- (void)controller:(NSFetchedResultsController *)controller
+   didChangeObject:(id)anObject
+       atIndexPath:(NSIndexPath *)indexPath
+     forChangeType:(NSFetchedResultsChangeType)type
+      newIndexPath:(NSIndexPath *)newIndexPath {
 }
 
 

@@ -11,7 +11,7 @@
 #import "ReaderPost.h"
 #import "ReaderPostView.h"
 
-@interface ReaderPostDetailViewController : UITableViewController<UITableViewDataSource, UITableViewDelegate, ReaderPostViewDelegate>
+@interface ReaderPostDetailViewController : UITableViewController<UITableViewDataSource, UITableViewDelegate, ReaderPostViewDelegate, NSFetchedResultsControllerDelegate>
 @property (nonatomic, strong) ReaderPost *post;
 @property (nonatomic, assign) BOOL showInlineActionBar;
 
