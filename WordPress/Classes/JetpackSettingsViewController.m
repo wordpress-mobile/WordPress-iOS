@@ -85,7 +85,7 @@ CGFloat const JetpackSignInButtonHeight = 41.0;
     WPFLogMethod();
     [super viewDidLoad];
     
-    _viewWidth = [self.view formSheetViewWidth];
+    _viewWidth = self.view.frame.size.width;
     _viewHeight = [self.view formSheetViewHeight];
 
     self.title = NSLocalizedString(@"Jetpack Connect", @"");
@@ -238,47 +238,55 @@ CGFloat const JetpackSignInButtonHeight = 41.0;
     }
     y += JetpackIconVerticalOffset;
     _icon.frame = CGRectIntegral(CGRectMake(x, y, CGRectGetWidth(_icon.frame), CGRectGetHeight(_icon.frame)));
+    _icon.autoresizingMask = UIViewAutoresizingFlexibleLeftMargin | UIViewAutoresizingFlexibleRightMargin;
     
     // Layout Description
     CGSize labelSize = [_description suggestedSizeForWidth:JetpackMaxTextWidth];
     x = (_viewWidth - labelSize.width)/2.0;
     y = CGRectGetMaxY(_icon.frame) + 0.5*JetpackStandardOffset;
     _description.frame = CGRectIntegral(CGRectMake(x, y, labelSize.width, labelSize.height));
+    _description.autoresizingMask = UIViewAutoresizingFlexibleLeftMargin | UIViewAutoresizingFlexibleRightMargin;
     
     // Layout Username
     x = (_viewWidth - JetpackTextFieldWidth)/2.0;
     y = CGRectGetMaxY(_description.frame) + JetpackStandardOffset;
     _usernameField.frame = CGRectIntegral(CGRectMake(x, y, JetpackTextFieldWidth, JetpackTextFieldHeight));
     _usernameField.hidden = !hasJetpack;
-    
+    _usernameField.autoresizingMask = UIViewAutoresizingFlexibleLeftMargin | UIViewAutoresizingFlexibleRightMargin;
+
     // Layout Password
     x = (_viewWidth - JetpackTextFieldWidth)/2.0;
     y = CGRectGetMaxY(_usernameField.frame);
     _passwordField.frame = CGRectIntegral(CGRectMake(x, y, JetpackTextFieldWidth, JetpackTextFieldHeight));
     _passwordField.hidden = !hasJetpack;
+    _passwordField.autoresizingMask = UIViewAutoresizingFlexibleLeftMargin | UIViewAutoresizingFlexibleRightMargin;
     
     // Layout Sign in Button
     x = (_viewWidth - JetpackSignInButtonWidth) / 2.0;;
     y = CGRectGetMaxY(_passwordField.frame) + JetpackStandardOffset;
     _signInButton.frame = CGRectMake(x, y, JetpackSignInButtonWidth, JetpackSignInButtonHeight);
     _signInButton.hidden = !hasJetpack;
+    _signInButton.autoresizingMask = UIViewAutoresizingFlexibleLeftMargin | UIViewAutoresizingFlexibleRightMargin;
     
     // Layout Download Button
     x = (_viewWidth - JetpackSignInButtonWidth)/2.0;
     y = CGRectGetMaxY(_description.frame) + JetpackStandardOffset;
     _installJetbackButton.frame = CGRectIntegral(CGRectMake(x, y, JetpackSignInButtonWidth, JetpackSignInButtonHeight));
     _installJetbackButton.hidden = hasJetpack;
+    _installJetbackButton.autoresizingMask = UIViewAutoresizingFlexibleLeftMargin | UIViewAutoresizingFlexibleRightMargin;
     
     // Layout More Information Button
     x = (_viewWidth - JetpackSignInButtonWidth)/2.0;
     y = CGRectGetMaxY(_installJetbackButton.frame);
     _moreInformationButton.frame = CGRectIntegral(CGRectMake(x, y, JetpackSignInButtonWidth, JetpackSignInButtonHeight));
     _moreInformationButton.hidden = hasJetpack;
+    _moreInformationButton.autoresizingMask = UIViewAutoresizingFlexibleLeftMargin | UIViewAutoresizingFlexibleRightMargin;
     
     // Layout Skip Button
     x = _viewWidth - CGRectGetWidth(_skipButton.frame) - JetpackStandardOffset;
     y = _viewHeight - JetpackStandardOffset - CGRectGetHeight(_skipButton.frame);
     _skipButton.frame = CGRectMake(x, y, CGRectGetWidth(_skipButton.frame), CGRectGetHeight(_skipButton.frame));
+    _skipButton.autoresizingMask = UIViewAutoresizingFlexibleLeftMargin | UIViewAutoresizingFlexibleRightMargin;
     
     NSArray *viewsToCenter;
     UIView *endingView;

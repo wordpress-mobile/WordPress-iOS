@@ -29,8 +29,9 @@
 - (BOOL)isOriginal;
 - (void)cloneFrom:(AbstractPost *)source;
 
-// Autosave for local drafts
-- (void)autosave;
-
++ (AbstractPost *)newDraftForBlog:(Blog *)blog;
++ (NSString *const)remoteUniqueIdentifier;
++ (void)mergeNewPosts:(NSArray *)newObjects forBlog:(Blog *)blog;
+- (void)updateFromDictionary:(NSDictionary *)postInfo;
 
 @end
