@@ -10,6 +10,7 @@
 #import "UIImage+Resize.h"
 #import "NSString+Helpers.h"
 #import "AFHTTPRequestOperation.h"
+#import "ContextManager.h"
 
 @interface Media (PrivateMethods)
 - (void)xmlrpcUploadWithSuccess:(void (^)())success failure:(void (^)(NSError *error))failure ;
@@ -38,13 +39,9 @@
 @dynamic remoteStatusNumber;
 
 + (Media *)newMediaForPost:(AbstractPost *)post {
-    Media *media = [[Media alloc] initWithEntity:[NSEntityDescription entityForName:@"Media"
-                                                          inManagedObjectContext:[post managedObjectContext]]
-               insertIntoManagedObjectContext:[post managedObjectContext]];
-    
+    Media *media = [NSEntityDescription insertNewObjectForEntityForName:@"Media" inManagedObjectContext:post.managedObjectContext];
     media.blog = post.blog;
     media.posts = [NSMutableSet setWithObject:post];
-    
     return media;
 }
 
@@ -100,15 +97,18 @@
     [self cancelUpload];
     NSError *error = nil;
     [[NSFileManager defaultManager] removeItemAtPath:self.localURL error:&error];
-    [[self managedObjectContext] deleteObject:self];
+    
+    [self.managedObjectContext performBlockAndWait:^{
+        [self.managedObjectContext deleteObject:self];
+        [self.managedObjectContext save:nil];
+    }];
 }
 
+
 - (void)save {
-    NSError *error;
-    if (![[self managedObjectContext] save:&error]) {
-        DDLogError(@"Unresolved Core Data Save error %@, %@", error, [error userInfo]);
-        exit(-1);
-    }
+    [self.managedObjectContext performBlock:^{
+        [self.managedObjectContext save:nil];
+    }];
 }
 
 - (void)cancelUpload {

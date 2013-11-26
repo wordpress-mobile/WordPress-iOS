@@ -11,6 +11,7 @@
 #import "ActivityLogViewController.h"
 #import <UIDeviceIdentifier/UIDeviceHardware.h>
 #import "WordPressAppDelegate.h"
+#import <DDFileLogger.h>
 
 @interface SupportViewController ()
 

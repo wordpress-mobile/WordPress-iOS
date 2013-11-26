@@ -14,6 +14,7 @@
 + (NSString *)pocketConsumerKey;
 + (NSString *)mixpanelAPIToken;
 + (NSString *)crashlyticsApiKey;
++ (NSString *)hockeyappAppId;
 + (NSString *)googlePlusClientId;
 + (NSString *)quantcastAPIKey;
 @end

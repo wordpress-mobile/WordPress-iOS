@@ -46,7 +46,7 @@
     [super layoutSubviews];
     CGRect frame;
 
-    CGSize labelSize = [self.textLabel.text sizeWithFont:[UIFont boldSystemFontOfSize:17]];
+    CGSize labelSize = [self.textLabel.text sizeWithAttributes:@{NSFontAttributeName:[UIFont boldSystemFontOfSize:17]}];
     labelSize.width = ceil(labelSize.width/5) * 5; // Round to upper 5
     labelSize.width = MAX(minimumLabelWidth, labelSize.width); // Impose alignment for shorter labels
 

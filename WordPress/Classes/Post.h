@@ -12,9 +12,7 @@
 #import "AbstractPost.h"
 #import "Media.h"
 
-@interface Post :  AbstractPost {
-    WordPressAppDelegate *appDelegate;
-}
+@interface Post :  AbstractPost
 
 ///-------------------------------
 /// @name Specific Post properties
@@ -49,48 +47,7 @@
  */
 - (void)setCategoriesFromNames:(NSArray *)categoryNames;
 
-///---------------------------------
-/// @name Creating and finding posts
-///---------------------------------
-
-/**
- Creates an empty local post associated with blog
- */
-+ (Post *)newDraftForBlog:(Blog *)blog;
-
-/**
- Retrieves the post with the specified `postID` for a given blog
- 
- @returns the specified post. Returns nil if there is no post with that id on the blog
- */
-+ (Post *)findWithBlog:(Blog *)blog andPostID:(NSNumber *)postID withContext:(NSManagedObjectContext*)context;
-
-/**
- Retrieves the post with the specified `postID` for a given blog. If the specified post doesn't exist, a new empty one is created
-
- @returns the specified post.
- */
-+ (Post *)findOrCreateWithBlog:(Blog *)blog andPostID:(NSNumber *)postID withContext:(NSManagedObjectContext*)context;
-
-/**
- Updates the post properties with the results of a XML-RPC call
-
- @param postInfo a dictionary with values returned from wp.getPosts
- */
-- (void)updateFromDictionary:(NSDictionary *)postInfo;
-
-///------------------------
-/// @name Remote management
-///------------------------
-///
-/// The following methods will change the post on the WordPress site
-
-/**
- Uploads a new post or changes to an edited post
- */
-- (void)uploadWithSuccess:(void (^)())success failure:(void (^)(NSError *error))failure;
 
 - (void)getFeaturedImageURLWithSuccess:(void (^)())success failure:(void (^)(NSError *error))failure;
-
 
 @end

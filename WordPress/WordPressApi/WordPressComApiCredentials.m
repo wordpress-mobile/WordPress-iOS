@@ -31,7 +31,11 @@
 + (NSString *)crashlyticsApiKey {
     return @"";
 }
-
+    
++ (NSString *)hockeyappAppId {
+    return @"";
+}
+    
 + (NSString *)googlePlusClientId {
     return @"";
 }
