@@ -116,7 +116,7 @@ extern NSString *const StatsEventPostDetailSettingsClickedUpdateLocation;
 extern NSString *const StatsEventPostDetailSettingsClickedRemoveLocation;
 
 // Pages
-extern NSString *const StatsPropertyPagedOpened;
+extern NSString *const StatsPropertyPagesOpened;
 extern NSString *const StatsEventPagesClickedNewPage;
 
 // Comments
