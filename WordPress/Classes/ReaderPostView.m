@@ -254,13 +254,8 @@ const CGFloat RPVControlButtonBorderSize = 0.0f;
 - (void)setPost:(ReaderPost *)post {
 	if ([post isEqual:_post])
 		return;
-	
-	if (_post) {
-		[_post removeObserver:self forKeyPath:@"isReblogged" context:@"reblogging"];
-	}
-	
+
 	_post = post;
-	[_post addObserver:self forKeyPath:@"isReblogged" options:NSKeyValueObservingOptionNew context:@"reblogging"];
 }
 
 - (UIView *)buildContentView {
@@ -567,10 +562,6 @@ const CGFloat RPVControlButtonBorderSize = 0.0f;
 
 
 #pragma mark - Instance Methods
-
-- (void)observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary *)change context:(void *)context {
-	[self updateActionButtons];
-}
 
 - (void)setAvatar:(UIImage *)avatar {
     if (_avatarIsSet)

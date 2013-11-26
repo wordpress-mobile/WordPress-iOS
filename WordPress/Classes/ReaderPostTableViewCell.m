@@ -97,13 +97,7 @@ const CGFloat RPTVCVerticalOuterPadding = 16.0f;
 		return;
     
     self.postView.post = post;
-
-	if (_post) {
-		[_post removeObserver:self forKeyPath:@"isReblogged" context:@"reblogging"];
-	}
-	
 	_post = post;
-	[_post addObserver:self forKeyPath:@"isReblogged" options:NSKeyValueObservingOptionNew context:@"reblogging"];
 }
 
 - (void)setHighlighted:(BOOL)highlighted animated:(BOOL)animated {
