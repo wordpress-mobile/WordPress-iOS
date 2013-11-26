@@ -12,12 +12,6 @@
 #define COCOAPODS_VERSION_MINOR_AFNetworking 2
 #define COCOAPODS_VERSION_PATCH_AFNetworking 0
 
-// CTidy
-#define COCOAPODS_POD_AVAILABLE_CTidy
-#define COCOAPODS_VERSION_MAJOR_CTidy 0
-#define COCOAPODS_VERSION_MINOR_CTidy 3
-#define COCOAPODS_VERSION_PATCH_CTidy 0
-
 // CocoaLumberjack
 #define COCOAPODS_POD_AVAILABLE_CocoaLumberjack
 #define COCOAPODS_VERSION_MAJOR_CocoaLumberjack 1
@@ -72,12 +66,11 @@
 #define COCOAPODS_VERSION_MINOR_EmailChecker 1
 #define COCOAPODS_VERSION_PATCH_EmailChecker 0
 
-// JSONKit
-#define COCOAPODS_POD_AVAILABLE_JSONKit
-// This library does not follow semantic-versioning,
-// so we were not able to define version macros.
-// Please contact the author.
-// Version: 1.5pre.
+// HockeySDK
+#define COCOAPODS_POD_AVAILABLE_HockeySDK
+#define COCOAPODS_VERSION_MAJOR_HockeySDK 3
+#define COCOAPODS_VERSION_MINOR_HockeySDK 5
+#define COCOAPODS_VERSION_PATCH_HockeySDK 0
 
 // MGImageUtilities
 #define COCOAPODS_POD_AVAILABLE_MGImageUtilities

@@ -138,7 +138,7 @@
 }
 
 - (void)resizeButtonWithMaxWidth:(CGFloat)maxSize {
-    CGSize textSize = [self.label sizeWithFont:[self.button.titleLabel font]];
+    CGSize textSize = [self.label sizeWithAttributes:@{NSFontAttributeName:[self.button.titleLabel font]}];
     CGFloat buttonWidth = textSize.width + 40.0f;
     if (buttonWidth > maxSize)
         buttonWidth = maxSize;

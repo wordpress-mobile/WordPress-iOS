@@ -6,11 +6,11 @@
 //  Copyright (c) 2013 WordPress. All rights reserved.
 //
 
-#import <SenTestingKit/SenTestingKit.h>
+#import <XCTest/XCTest.h>
 #import "CoreDataTestHelper.h"
 #import "WPAccount.h"
 
-@interface AccountTest : SenTestCase
+@interface AccountTest : XCTestCase
 
 @end
 
@@ -33,21 +33,21 @@
 
 - (void)testNewAccountSetsDefaultAccount
 {
-    STAssertNil([WPAccount defaultWordPressComAccount], nil);
+    XCTAssertNil([WPAccount defaultWordPressComAccount]);
     WPAccount *_account = [WPAccount createOrUpdateWordPressComAccountWithUsername:@"user" andPassword:@"pass"];
-    STAssertNotNil([WPAccount defaultWordPressComAccount], nil);
-    STAssertEqualObjects([WPAccount defaultWordPressComAccount], _account, nil);
+    XCTAssertNotNil([WPAccount defaultWordPressComAccount]);
+    XCTAssertEqualObjects([WPAccount defaultWordPressComAccount], _account);
     WPAccount *_account2 = [WPAccount createOrUpdateWordPressComAccountWithUsername:@"user" andPassword:@"pass"];
-    STAssertNotNil(_account2, nil);
-    STAssertEqualObjects([WPAccount defaultWordPressComAccount], _account, nil);
+    XCTAssertNotNil(_account2);
+    XCTAssertEqualObjects([WPAccount defaultWordPressComAccount], _account);
 }
 
 - (void)testNewSelfHostedDoesntSetDefaultAccount
 {
-    STAssertNil([WPAccount defaultWordPressComAccount], nil);
+    XCTAssertNil([WPAccount defaultWordPressComAccount]);
     WPAccount *_account = [WPAccount createOrUpdateSelfHostedAccountWithXmlrpc:@"http://test/xmlprc.php" username:@"user" andPassword:@"pass"];
-    STAssertNotNil(_account, nil);
-    STAssertNil([WPAccount defaultWordPressComAccount], nil);
+    XCTAssertNotNil(_account);
+    XCTAssertNil([WPAccount defaultWordPressComAccount]);
 }
 
 @end

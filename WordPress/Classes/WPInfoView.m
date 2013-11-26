@@ -8,6 +8,7 @@
 
 #import "WPInfoView.h"
 #import <QuartzCore/QuartzCore.h>
+#import "UILabel+SuggestSize.h"
 
 @implementation WPInfoView
 
@@ -62,9 +63,7 @@
     self.messageLabel.text = messageText;
     [self.cancelButton setTitle:cancelText forState:UIControlStateNormal];
 
-    CGSize sz = [messageText sizeWithFont:messageLabel.font
-                        constrainedToSize:CGSizeMake(self.frame.size.width, 999.0f)
-                            lineBreakMode:NSLineBreakByWordWrapping];
+    CGSize sz = [messageLabel suggestedSizeForWidth:self.frame.size.width];
     
     CGRect lfrm = self.messageLabel.frame;
     lfrm.size.height = sz.height;

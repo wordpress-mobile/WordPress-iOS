@@ -12,8 +12,6 @@
 
 @interface WPAlertView() {
     UITapGestureRecognizer *_gestureRecognizer;
-    NSArray *_horizontalConstraints;
-    NSArray *_verticalConstraints;
 }
 
 @property (nonatomic, assign) WPAlertViewOverlayMode overlayMode;
@@ -25,7 +23,7 @@
 @property (nonatomic, weak) IBOutlet UILabel *bottomLabel;
 @property (nonatomic, weak) IBOutlet WPNUXSecondaryButton *leftButton;
 @property (nonatomic, weak) IBOutlet WPNUXPrimaryButton *rightButton;
-@property (nonatomic, weak) IBOutlet NSLayoutConstraint *verticalCenteringConstraint;
+@property (nonatomic, strong) NSLayoutConstraint *originalFirstTextFieldConstraint;
 
 @end
 
@@ -52,9 +50,6 @@ CGFloat const WPAlertViewStandardOffset = 16.0;
     {
         _overlayMode = overlayMode;
         self.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
-        
-        _verticalConstraints = [NSArray array];
-        _horizontalConstraints = [NSArray array];
         
         UIScrollView *scrollView = [[UIScrollView alloc] initWithFrame:frame];
         scrollView.autoresizingMask = UIViewAutoresizingFlexibleHeight | UIViewAutoresizingFlexibleWidth;
@@ -235,6 +230,50 @@ CGFloat const WPAlertViewStandardOffset = 16.0;
     [self.scrollView scrollRectToVisible:rect animated:YES];
 }
 
+
+- (void)hideTitleAndDescription:(BOOL)hide {
+    if (hide == self.titleLabel.hidden) {
+        return;
+    }
+    
+    self.titleLabel.hidden = hide;
+    self.descriptionLabel.hidden = hide;
+
+    NSArray *constraints = self.backgroundView.constraints;
+    if (hide) {
+        
+        for (NSLayoutConstraint *constraint in constraints) {
+            if (constraint.firstAttribute == NSLayoutAttributeTop && [constraint.firstItem isEqual:self.firstTextField] && [constraint.secondItem isKindOfClass:[UIImageView class]]) {
+                self.originalFirstTextFieldConstraint = constraint;
+                break;
+            }
+        }
+        [self.backgroundView removeConstraint:self.originalFirstTextFieldConstraint];
+
+        NSLayoutConstraint *newConstraint = [NSLayoutConstraint constraintWithItem:self.firstTextField
+                                                                         attribute:NSLayoutAttributeTop
+                                                                         relatedBy:NSLayoutRelationEqual
+                                                                            toItem:self.backgroundView
+                                                                         attribute:NSLayoutAttributeTop
+                                                                        multiplier:self.originalFirstTextFieldConstraint.multiplier
+                                                                          constant:self.originalFirstTextFieldConstraint.constant];
+        [self.backgroundView addConstraint:newConstraint];
+        
+    } else {
+        
+        for (NSLayoutConstraint *constraint in constraints) {
+            if (constraint.firstAttribute == NSLayoutAttributeTop && [constraint.firstItem isEqual:self.firstTextField] && [constraint.secondItem isEqual:self.backgroundView]) {
+                [self.backgroundView removeConstraint:constraint];
+                break;
+            }
+        }
+        [self.backgroundView addConstraint:self.originalFirstTextFieldConstraint];
+    }
+    
+    [self setNeedsUpdateConstraints];
+}
+
+
 #pragma mark - IBAction Methods
 
 - (IBAction)clickedOnButton1
@@ -362,6 +401,17 @@ CGFloat const WPAlertViewStandardOffset = 16.0;
                          }
                      }
      ];
+}
+
+#pragma mark - UITextField Delegate Methods
+
+- (BOOL)textFieldShouldReturn:(UITextField *)textField {
+    if ([textField isEqual:self.firstTextField]) {
+        [self.secondTextField becomeFirstResponder];
+    } else {
+        [self clickedOnButton2];
+    }
+    return NO;
 }
 
 @end

@@ -20,10 +20,10 @@
         return;
     
     [self.navigationItem.leftBarButtonItem setTitlePositionAdjustment:UIOffsetMake(-1, 0) forBarMetrics:UIBarMetricsDefault];
-    [self.navigationItem.leftBarButtonItem setTitleTextAttributes:@{UITextAttributeFont: [WPStyleGuide regularTextFont], UITextAttributeTextColor : [UIColor whiteColor]} forState:UIControlStateNormal];
+    [self.navigationItem.leftBarButtonItem setTitleTextAttributes:@{NSFontAttributeName: [WPStyleGuide regularTextFont], NSForegroundColorAttributeName : [UIColor whiteColor]} forState:UIControlStateNormal];
 
     [self.navigationItem.rightBarButtonItem setTitlePositionAdjustment:UIOffsetMake(1, 0) forBarMetrics:UIBarMetricsDefault];
-    [self.navigationItem.rightBarButtonItem setTitleTextAttributes:@{UITextAttributeFont: [WPStyleGuide regularTextFont], UITextAttributeTextColor : [UIColor whiteColor]} forState:UIControlStateNormal];
+    [self.navigationItem.rightBarButtonItem setTitleTextAttributes:@{NSFontAttributeName: [WPStyleGuide regularTextFont], NSForegroundColorAttributeName : [UIColor whiteColor]} forState:UIControlStateNormal];
 }
 
 + (void)load {
