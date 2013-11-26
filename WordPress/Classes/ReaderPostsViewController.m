@@ -105,41 +105,18 @@ NSString *const RPVCDisplayedNativeFriendFinder = @"DisplayedNativeFriendFinder"
 	
 	// Topics button
 	UIBarButtonItem *button = nil;
-    if (IS_IOS7) {
-        UIButton *topicsButton = [UIButton buttonWithType:UIButtonTypeCustom];
-        [topicsButton setImage:[UIImage imageNamed:@"icon-reader-topics"] forState:UIControlStateNormal];
-        [topicsButton setImage:[UIImage imageNamed:@"icon-reader-topics-active"] forState:UIControlStateHighlighted];
+    UIButton *topicsButton = [UIButton buttonWithType:UIButtonTypeCustom];
+    [topicsButton setImage:[UIImage imageNamed:@"icon-reader-topics"] forState:UIControlStateNormal];
+    [topicsButton setImage:[UIImage imageNamed:@"icon-reader-topics-active"] forState:UIControlStateHighlighted];
 
-        CGSize imageSize = [UIImage imageNamed:@"icon-reader-topics"].size;
-        topicsButton.frame = CGRectMake(0.0, 0.0, imageSize.width, imageSize.height);
-		
-        [topicsButton addTarget:self action:@selector(topicsAction:) forControlEvents:UIControlEventTouchUpInside];
-        button = [[UIBarButtonItem alloc] initWithCustomView:topicsButton];
-    } else {
-        UIButton *readButton = [UIButton buttonWithType:UIButtonTypeCustom];
-        [readButton setImage:[UIImage imageNamed:@"navbar_read"] forState:UIControlStateNormal];
-        
-		UIImage *backgroundImage = [[UIImage imageNamed:@"navbar_button_bg"] stretchableImageWithLeftCapWidth:4 topCapHeight:0];
-        [readButton setBackgroundImage:backgroundImage forState:UIControlStateNormal];
-		
-        backgroundImage = [[UIImage imageNamed:@"navbar_button_bg_active"] stretchableImageWithLeftCapWidth:4 topCapHeight:0];
-        [readButton setBackgroundImage:backgroundImage forState:UIControlStateHighlighted];
-        
-        readButton.frame = CGRectMake(0.0f, 0.0f, 44.0f, 30.0f);
-		
-        [readButton addTarget:self action:@selector(topicsAction:) forControlEvents:UIControlEventTouchUpInside];
-        button = [[UIBarButtonItem alloc] initWithCustomView:readButton];
-    }
-	
-    [button setAccessibilityLabel:NSLocalizedString(@"Topics", @"")];
+    CGSize imageSize = [UIImage imageNamed:@"icon-reader-topics"].size;
+    topicsButton.frame = CGRectMake(0.0, 0.0, imageSize.width, imageSize.height);
+    topicsButton.contentEdgeInsets = UIEdgeInsetsMake(0, 16, 0, -16);
     
-    if (IS_IOS7) {
-        [WPStyleGuide setRightBarButtonItemWithCorrectSpacing:button forNavigationItem:self.navigationItem];
-    } else {
-        UIColor *color = [UIColor UIColorFromHex:0x464646];
-        button.tintColor = color;
-        [self.navigationItem setRightBarButtonItem:button animated:YES];
-    }
+    [topicsButton addTarget:self action:@selector(topicsAction:) forControlEvents:UIControlEventTouchUpInside];
+    button = [[UIBarButtonItem alloc] initWithCustomView:topicsButton];
+    [button setAccessibilityLabel:NSLocalizedString(@"Topics", @"")];
+    self.navigationItem.rightBarButtonItem = button;
     
 	CGRect frame = CGRectMake(0.0f, self.view.bounds.size.height, self.view.bounds.size.width, [ReaderReblogFormView desiredHeight]);
 	self.readerReblogFormView = [[ReaderReblogFormView alloc] initWithFrame:frame];
@@ -426,12 +403,7 @@ NSString *const RPVCDisplayedNativeFriendFinder = @"DisplayedNativeFriendFinder"
         _popover.popoverBackgroundViewClass = [WPPopoverBackgroundView class];
         
         UIBarButtonItem *shareButton;
-        if (IS_IOS7) {
-            // For iOS7 there is an added spacing element inserted before the share button to adjust the position of the button.
-            shareButton = [self.navigationItem.rightBarButtonItems objectAtIndex:1];
-        } else {
-            shareButton = self.navigationItem.rightBarButtonItem;
-        }
+        shareButton = self.navigationItem.rightBarButtonItem;
         [_popover presentPopoverFromBarButtonItem:shareButton permittedArrowDirections:UIPopoverArrowDirectionAny animated:YES];
     } else {
         UINavigationController *navController = [[UINavigationController alloc] initWithRootViewController:controller];
