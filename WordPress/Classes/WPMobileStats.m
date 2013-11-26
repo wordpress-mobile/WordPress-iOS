@@ -258,6 +258,7 @@ NSString *const StatsEventAddBlogsClickedAddSelected = @"Add Blogs - Clicked Add
     [[NSUserDefaults standardUserDefaults] synchronize];
 
     NSDictionary *properties = @{
+                                 @"platform": @"iOS",
                                  @"session_count": @(sessionCount),
                                  @"connected_to_dotcom": @([[WordPressComApi sharedApi] hasCredentials]),
                                  @"number_of_blogs" : @([Blog countWithContext:[[ContextManager sharedInstance] mainContext]]) };
