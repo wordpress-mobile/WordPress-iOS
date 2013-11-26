@@ -477,7 +477,7 @@ typedef enum {
 	
 	CGFloat y = tableFrame.origin.y + tableFrame.size.height;
 	_readerCommentFormView.frame = CGRectMake(0.0f, y, self.view.bounds.size.width, formHeight);
-	[self.view addSubview:_readerCommentFormView];
+	[self.view.superview addSubview:_readerCommentFormView];
 	self.isShowingCommentForm = YES;
 	[_readerCommentFormView.textView becomeFirstResponder];
 }
@@ -511,7 +511,7 @@ typedef enum {
 	
 	CGFloat y = tableFrame.origin.y + tableFrame.size.height;
 	_readerReblogFormView.frame = CGRectMake(0.0f, y, self.view.bounds.size.width, reblogHeight);
-	[self.view addSubview:_readerReblogFormView];
+	[self.view.superview addSubview:_readerReblogFormView];
 	self.isShowingReblogForm = YES;
 	[_readerReblogFormView.textView becomeFirstResponder];
 }
@@ -531,46 +531,58 @@ typedef enum {
 	[self.view endEditing:YES];
 }
 
+- (CGSize)tabBarSize {
+    CGSize tabBarSize = CGSizeZero;
+    if ([self tabBarController]) {
+        tabBarSize = [[[self tabBarController] tabBar] bounds].size;
+    }
+    
+    return tabBarSize;
+}
+
 - (void)handleKeyboardDidShow:(NSNotification *)notification {
-	CGRect frame = self.view.frame;
+    UIView *view = self.view.superview;
+	CGRect frame = view.frame;
 	CGRect startFrame = [[[notification userInfo] objectForKey:UIKeyboardFrameBeginUserInfoKey] CGRectValue];
 	CGRect endFrame = [[[notification userInfo] objectForKey:UIKeyboardFrameEndUserInfoKey] CGRectValue];
 	
 	// Figure out the difference between the bottom of this view, and the top of the keyboard.
 	// This should account for any toolbars.
-	CGPoint point = [self.view.window convertPoint:startFrame.origin toView:self.view];
-	_keyboardOffset = point.y - (frame.origin.y + frame.size.height);
+	CGPoint point = [view.window convertPoint:startFrame.origin toView:view];
+	self.keyboardOffset = point.y - (frame.origin.y + frame.size.height);
 	
 	// if we're upside down, we need to adjust the origin.
 	if (endFrame.origin.x == 0 && endFrame.origin.y == 0) {
 		endFrame.origin.y = endFrame.origin.x += MIN(endFrame.size.height, endFrame.size.width);
 	}
 	
-	point = [self.view.window convertPoint:endFrame.origin toView:self.view];
-	frame.size.height = point.y;
+	point = [view.window convertPoint:endFrame.origin toView:view];
+    CGSize tabBarSize = [self tabBarSize];
+	frame.size.height = point.y + tabBarSize.height;
 	
 	[UIView animateWithDuration:0.3f delay:0.0f options:UIViewAnimationOptionBeginFromCurrentState animations:^{
-		self.view.frame = frame;
+		view.frame = frame;
 	} completion:^(BOOL finished) {
 		// BUG: When dismissing a modal view, and the keyboard is showing again, the animation can get clobbered in some cases.
 		// When this happens the view is set to the dimensions of its wrapper view, hiding content that should be visible
 		// above the keyboard.
 		// For now use a fallback animation.
-		if (!CGRectEqualToRect(self.view.frame, frame)) {
+		if (!CGRectEqualToRect(view.frame, frame)) {
 			[UIView animateWithDuration:0.3 animations:^{
-				self.view.frame = frame;
+				view.frame = frame;
 			}];
 		}
 	}];
 }
 
 - (void)handleKeyboardWillHide:(NSNotification *)notification {
-	CGRect frame = self.view.frame;
+    UIView *view = self.view.superview;
+	CGRect frame = view.frame;
 	CGRect keyFrame = [[[notification userInfo] objectForKey:UIKeyboardFrameEndUserInfoKey] CGRectValue];
 	
-	CGPoint point = [self.view.window convertPoint:keyFrame.origin toView:self.view];
-	frame.size.height = point.y - (frame.origin.y + _keyboardOffset);
-	self.view.frame = frame;
+	CGPoint point = [view.window convertPoint:keyFrame.origin toView:view];
+	frame.size.height = point.y - (frame.origin.y + self.keyboardOffset);
+	view.frame = frame;
 }
 
 - (void)moviePlaybackDidFinish:(NSNotification *)notification {
