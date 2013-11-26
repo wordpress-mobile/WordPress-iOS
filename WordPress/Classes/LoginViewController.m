@@ -881,10 +881,10 @@ CGFloat const GeneralWalkthroughiOS7StatusBarOffset = 20.0;
     CGFloat animationDuration = [[keyboardInfo objectForKey:UIKeyboardAnimationDurationUserInfoKey] floatValue];
     CGRect keyboardFrame = [[[notification userInfo] objectForKey:UIKeyboardFrameEndUserInfoKey] CGRectValue];
     keyboardFrame = [self.view convertRect:keyboardFrame fromView:nil];
-    _keyboardOffset = (CGRectGetMaxY(_signInButton.frame) - CGRectGetMinY(keyboardFrame)) + CGRectGetHeight(_signInButton.frame);
+    CGFloat newKeyboardOffset = (CGRectGetMaxY(_signInButton.frame) - CGRectGetMinY(keyboardFrame)) + 0.5 * GeneralWalkthroughStandardOffset;
 
-    if (_keyboardOffset < 0) {
-        _keyboardOffset = 0;
+    if (newKeyboardOffset < 0) {
+        newKeyboardOffset = 0;
         return;
     }
     
@@ -894,13 +894,16 @@ CGFloat const GeneralWalkthroughiOS7StatusBarOffset = 20.0;
         
         for (UIControl *control in controlsToMove) {
             CGRect frame = control.frame;
-            frame.origin.y -= _keyboardOffset;
+            frame.origin.y -= newKeyboardOffset;
             control.frame = frame;
         }
         
         for (UIControl *control in controlsToHide) {
             control.alpha = 0.0;
         }
+    } completion:^(BOOL finished) {
+        
+        _keyboardOffset += newKeyboardOffset;
     }];
 }
 
@@ -908,13 +911,17 @@ CGFloat const GeneralWalkthroughiOS7StatusBarOffset = 20.0;
 {
     NSDictionary *keyboardInfo = notification.userInfo;
     CGFloat animationDuration = [[keyboardInfo objectForKey:UIKeyboardAnimationDurationUserInfoKey] floatValue];
+    
+    CGFloat currentKeyboardOffset = _keyboardOffset;
+    _keyboardOffset = 0;
+
     [UIView animateWithDuration:animationDuration animations:^{
         NSArray *controlsToMove = @[_icon, _usernameText, _passwordText, _siteUrlText, _signInButton, _statusLabel];
         NSArray *controlsToHide = @[_helpButton];
 
         for (UIControl *control in controlsToMove) {
             CGRect frame = control.frame;
-            frame.origin.y += _keyboardOffset;
+            frame.origin.y += currentKeyboardOffset;
             control.frame = frame;
         }
         
