@@ -465,8 +465,8 @@ CGFloat const CreateAccountAndBlogButtonHeight = 41.0;
 {
     WPWebViewController *webViewController = [[WPWebViewController alloc] init];
     [webViewController setUrl:[NSURL URLWithString:@"http://en.wordpress.com/tos/"]];
-    [self.navigationController setNavigationBarHidden:NO animated:NO];
-    [self.navigationController pushViewController:webViewController animated:NO];
+    [self.navigationController pushViewController:webViewController animated:YES];
+    [self.navigationController setNavigationBarHidden:NO animated:YES];
 }
 
 - (void)keyboardWillShow:(NSNotification *)notification
