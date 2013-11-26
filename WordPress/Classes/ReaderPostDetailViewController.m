@@ -129,7 +129,6 @@ typedef enum {
     toolbar.tintColor = [UIColor whiteColor];
     toolbar.translucent = NO;
 
-    [self.post addObserver:self forKeyPath:@"isReblogged" options:NSKeyValueObservingOptionNew context:@"reblogging"];
 	[self showStoredComment];
 }
 
@@ -155,7 +154,6 @@ typedef enum {
     }
 	
 	[[NSNotificationCenter defaultCenter] removeObserver:self];
-	[self.post removeObserver:self forKeyPath:@"isReblogged" context:@"reblogging"];
 }
 
 - (void)viewDidUnload {
@@ -399,13 +397,6 @@ typedef enum {
 	
     // TODO: put these in the title bar instead
 	//[self setToolbarItems:items animated:YES];
-}
-
-
-- (void)observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary *)change context:(void *)context {
-    if ([keyPath isEqualToString:@"isReblogged"]) {
-        [self updateActionBar];
-    }
 }
 
 - (void)handleShareButtonTapped:(id)sender {
