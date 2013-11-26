@@ -44,7 +44,6 @@ typedef enum {
 @property (nonatomic, strong) ReaderReblogFormView *readerReblogFormView;
 @property (nonatomic, strong) UIImage *featuredImage;
 @property (nonatomic) BOOL infiniteScrollEnabled;
-@property (nonatomic, strong) UITableView *tableView;
 @property (nonatomic, strong) UIActivityIndicatorView *activityFooter;
 @property (nonatomic, strong) UIBarButtonItem *commentButton;
 @property (nonatomic, strong) UIBarButtonItem *likeButton;
@@ -69,8 +68,8 @@ typedef enum {
 
 - (void)dealloc {
 	_resultsController.delegate = nil;
-    _tableView.delegate = nil;
-    _postView.delegate = nil;
+    self.tableView.delegate = nil;
+    self.postView.delegate = nil;
 }
 
 - (id)initWithPost:(ReaderPost *)post featuredImage:(UIImage *)image {
@@ -86,12 +85,6 @@ typedef enum {
 
 - (void)viewDidLoad {
 	[super viewDidLoad];
-
-	self.tableView = [[UITableView alloc] initWithFrame:self.view.bounds];
-	_tableView.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
-	_tableView.dataSource = self;
-	_tableView.delegate = self;
-	[self.view addSubview:_tableView];
 	
 	if (self.infiniteScrollEnabled) {
         [self enableInfiniteScrolling];
@@ -100,6 +93,7 @@ typedef enum {
 	self.title = self.post.postTitle;
 	
 	self.tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
+    [self.tableView registerClass:[WPTableViewCell class] forCellReuseIdentifier:@"PostCell"];
 	
 	[self buildHeader];
 	//[self buildTopToolbar];
@@ -165,7 +159,6 @@ typedef enum {
 	[super viewDidUnload];
 
 	self.activityFooter = nil;
-	self.tableView = nil;
 	self.postView = nil;
 	self.readerCommentFormView = nil;
 	self.readerReblogFormView = nil;
@@ -199,8 +192,8 @@ typedef enum {
 - (void)buildHeader {
     // The text view in postView needs an initial frame
     CGFloat postHeight = [ReaderPostView heightForPost:self.post withWidth:self.view.frame.size.width];
-	self.postView = [[ReaderPostView alloc] initWithFrame:CGRectMake(0.0f, 0.0f, self.tableView.frame.size.width, postHeight)
-                                          showFullContent:YES];
+    CGRect postFrame = CGRectMake(0.0f, 0.0f, self.tableView.frame.size.width, postHeight);
+	self.postView = [[ReaderPostView alloc] initWithFrame:postFrame showFullContent:YES];
     self.postView.delegate = self;
     [self.postView configurePost:self.post];
     self.postView.backgroundColor = [UIColor whiteColor];
@@ -875,11 +868,7 @@ typedef enum {
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
     if (indexPath.section == ReaderDetailContentSection) {
         UITableViewCell *postCell = [self.tableView dequeueReusableCellWithIdentifier:@"PostCell"];
-        
-        if (postCell == nil) {
-            postCell = [[UITableViewCell alloc] initWithFrame:self.postView.frame];
-            postCell.selectionStyle = UITableViewCellSelectionStyleNone;
-        }
+        postCell.selectionStyle = UITableViewCellSelectionStyleNone;
         [postCell.contentView addSubview:self.postView];
         
         return postCell;
