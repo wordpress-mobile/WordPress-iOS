@@ -6,14 +6,14 @@
 //  Copyright (c) 2013 WordPress. All rights reserved.
 //
 
-#import <SenTestingKit/SenTestingKit.h>
+#import <XCTest/XCTest.h>
 #import "CoreDataTestHelper.h"
 #import "WPAccount.h"
 #import "Blog.h"
 #import "SFHFKeychainUtils.h"
 #import <NSURL+IDN/NSURL+IDN.h>
 
-@interface AccountMigrationTest : SenTestCase
+@interface AccountMigrationTest : XCTestCase
 
 @end
 
@@ -37,9 +37,9 @@
 - (void)testMigration
 {
     // Set up Default WordPress.com account
-    STAssertNil([[[self model] entitiesByName] objectForKey:@"Account"], nil);
+    XCTAssertNil([[[self model] entitiesByName] objectForKey:@"Account"]);
     [self migrate];
-    STAssertNotNil([[[self model] entitiesByName] objectForKey:@"Account"], nil);
+    XCTAssertNotNil([[[self model] entitiesByName] objectForKey:@"Account"]);
 }
 
 - (void)testWpcomAccountMigrated
@@ -55,12 +55,12 @@
     [self migrate];
 
     NSArray *accounts = [[CoreDataTestHelper sharedHelper] allObjectsForEntityName:@"Account"];
-    STAssertNil([WPAccount defaultWordPressComAccount], nil);
-    STAssertEquals([accounts count], 1u, nil);
+    XCTAssertNil([WPAccount defaultWordPressComAccount]);
+    XCTAssertEqual([accounts count], 1u);
     WPAccount *account = [accounts lastObject];
-    STAssertEquals([[account blogs] count], 1u, nil);
+    XCTAssertEqual([[account blogs] count], 1u);
     Blog *accountBlog = [account.blogs anyObject];
-    STAssertEqualObjects([blog.objectID URIRepresentation], [accountBlog.objectID URIRepresentation], nil);
+    XCTAssertEqualObjects([blog.objectID URIRepresentation], [accountBlog.objectID URIRepresentation]);
 }
 
 - (void)testDefaultWpcomAccountMigrated
@@ -77,12 +77,12 @@
     [self migrate];
 
     NSArray *accounts = [[CoreDataTestHelper sharedHelper] allObjectsForEntityName:@"Account"];
-    STAssertNotNil([WPAccount defaultWordPressComAccount], nil);
-    STAssertEquals([accounts count], 1u, nil);
+    XCTAssertNotNil([WPAccount defaultWordPressComAccount]);
+    XCTAssertEqual([accounts count], 1u);
     WPAccount *account = [accounts lastObject];
-    STAssertEquals([[account blogs] count], 1u, nil);
+    XCTAssertEqual([[account blogs] count], 1u);
     Blog *accountBlog = [account.blogs anyObject];
-    STAssertEqualObjects([blog.objectID URIRepresentation], [accountBlog.objectID URIRepresentation], nil);
+    XCTAssertEqualObjects([blog.objectID URIRepresentation], [accountBlog.objectID URIRepresentation]);
 }
 
 - (void)testSelfHostedAccountMigrated
@@ -98,14 +98,14 @@
     [self migrate];
 
     NSArray *accounts = [[CoreDataTestHelper sharedHelper] allObjectsForEntityName:@"Account"];
-    STAssertNil([WPAccount defaultWordPressComAccount], nil);
-    STAssertEquals([accounts count], 1u, nil);
+    XCTAssertNil([WPAccount defaultWordPressComAccount]);
+    XCTAssertEqual([accounts count], 1u);
     WPAccount *account = [accounts lastObject];
-    STAssertEquals([account.jetpackBlogs count], 0u, nil);
+    XCTAssertEqual([account.jetpackBlogs count], 0u);
     Blog *accountBlog = [account.blogs anyObject];
-    STAssertEqualObjects([blog.objectID URIRepresentation], [accountBlog.objectID URIRepresentation], nil);
-    STAssertEqualObjects(account.username, @"sh-user", nil);
-    STAssertEqualObjects(account.password, @"sh-pass", nil);
+    XCTAssertEqualObjects([blog.objectID URIRepresentation], [accountBlog.objectID URIRepresentation]);
+    XCTAssertEqualObjects(account.username, @"sh-user");
+    XCTAssertEqualObjects(account.password, @"sh-pass");
 }
 
 - (void)testJetpackAccountMigrated
@@ -136,8 +136,8 @@
     [self migrate];
 
     NSArray *accounts = [[CoreDataTestHelper sharedHelper] allObjectsForEntityName:@"Account"];
-    STAssertNil([WPAccount defaultWordPressComAccount], nil);
-    STAssertEquals([accounts count], 2u, nil);
+    XCTAssertNil([WPAccount defaultWordPressComAccount]);
+    XCTAssertEqual([accounts count], 2u);
     __block WPAccount *blogAccount, *jetpackAccount;
     [accounts enumerateObjectsUsingBlock:^(id obj, NSUInteger idx, BOOL *stop) {
         if ([(WPAccount *)obj isWpcom]) {
@@ -148,20 +148,20 @@
     }];
     NSManagedObjectID *blogId = [[[CoreDataTestHelper sharedHelper] persistentStoreCoordinator] managedObjectIDForURIRepresentation:[[blog objectID] URIRepresentation]];
     Blog *migratedBlog = (Blog *)[[[CoreDataTestHelper sharedHelper] managedObjectContext] objectWithID:blogId];
-    STAssertTrue([jetpackAccount.jetpackBlogs containsObject:migratedBlog], nil);
-    STAssertTrue([blogAccount.blogs containsObject:migratedBlog], nil);
-    STAssertEquals(migratedBlog.account, blogAccount, nil);
-    STAssertEquals(migratedBlog.jetpackAccount, jetpackAccount, nil);
+    XCTAssertTrue([jetpackAccount.jetpackBlogs containsObject:migratedBlog]);
+    XCTAssertTrue([blogAccount.blogs containsObject:migratedBlog]);
+    XCTAssertEqual(migratedBlog.account, blogAccount);
+    XCTAssertEqual(migratedBlog.jetpackAccount, jetpackAccount);
 
-    STAssertEqualObjects(blogAccount.username, @"jp-user", nil);
-    STAssertEqualObjects(blogAccount.password, @"jp-pass", nil);
-    STAssertEqualObjects(jetpackAccount.username, @"com-jpuser", nil);
-    STAssertEqualObjects(jetpackAccount.password, @"com-jppass", nil);
+    XCTAssertEqualObjects(blogAccount.username, @"jp-user");
+    XCTAssertEqualObjects(blogAccount.password, @"jp-pass");
+    XCTAssertEqualObjects(jetpackAccount.username, @"com-jpuser");
+    XCTAssertEqualObjects(jetpackAccount.password, @"com-jppass");
 }
 
 - (void)migrate
 {
-    STAssertTrue([[CoreDataTestHelper sharedHelper] migrateToModelName:@"WordPress 12"], nil);
+    XCTAssertTrue([[CoreDataTestHelper sharedHelper] migrateToModelName:@"WordPress 12"]);
     [[CoreDataTestHelper sharedHelper] registerDefaultContext];
 }
 

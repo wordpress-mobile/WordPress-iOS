@@ -8,7 +8,6 @@
 
 #import "CreateAccountAndBlogViewController.h"
 #import <EmailChecker/EmailChecker.h>
-#import <SVProgressHUD/SVProgressHUD.h>
 #import <QuartzCore/QuartzCore.h>
 #import "SupportViewController.h"
 #import "WordPressComApi.h"
@@ -43,6 +42,7 @@
     
     NSOperationQueue *_operationQueue;
 
+    BOOL _authenticating;
     BOOL _keyboardVisible;
     BOOL _shouldCorrectEmail;
     BOOL _userDefinedSiteAddress;
@@ -204,7 +204,7 @@ CGFloat const CreateAccountAndBlogButtonHeight = 41.0;
 {
     UITapGestureRecognizer *gestureRecognizer = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(viewWasTapped:)];
     gestureRecognizer.numberOfTapsRequired = 1;
-    gestureRecognizer.cancelsTouchesInView = NO;
+    gestureRecognizer.cancelsTouchesInView = YES;
     [self.view addGestureRecognizer:gestureRecognizer];
     
     [self addControls];
@@ -403,13 +403,14 @@ CGFloat const CreateAccountAndBlogButtonHeight = 41.0;
 
     // Layout Terms of Service
     CGFloat TOSSingleLineHeight = [@"WordPress" sizeWithAttributes:@{NSFontAttributeName:_TOSLabel.font}].height;
-    CGSize TOSLabelSize = [_TOSLabel suggestedSizeForWidth:CreateAccountAndBlogMaxTextWidth];
+    CGSize TOSLabelSize = [_TOSLabel.text boundingRectWithSize:CGSizeMake(CreateAccountAndBlogMaxTextWidth, CGFLOAT_MAX) options:NSStringDrawingUsesLineFragmentOrigin attributes:@{NSFontAttributeName: _TOSLabel.font} context:nil].size;
+    // If the terms of service don't fit on two lines, then shrink the font to make sure the entire terms of service is visible.
     if (TOSLabelSize.height > 2*TOSSingleLineHeight) {
         _TOSLabel.font = [WPNUXUtility tosLabelSmallerFont];
-        TOSLabelSize = [_TOSLabel suggestedSizeForWidth:CreateAccountAndBlogMaxTextWidth];
+        TOSLabelSize = [_TOSLabel.text boundingRectWithSize:CGSizeMake(CreateAccountAndBlogMaxTextWidth, CGFLOAT_MAX) options:NSStringDrawingUsesLineFragmentOrigin attributes:@{NSFontAttributeName: _TOSLabel.font} context:nil].size;
     }
     x = (_viewWidth - TOSLabelSize.width)/2.0;
-    y = CGRectGetMaxY(_createAccountButton.frame) + CreateAccountAndBlogStandardOffset;
+    y = CGRectGetMaxY(_createAccountButton.frame) + 0.5 * CreateAccountAndBlogStandardOffset;
     _TOSLabel.frame = CGRectIntegral(CGRectMake(x, y, TOSLabelSize.width, TOSLabelSize.height));
     
     NSArray *controls = @[_titleLabel, _emailField, _usernameField, _passwordField, _TOSLabel, _createAccountButton, _siteAddressField];
@@ -435,19 +436,6 @@ CGFloat const CreateAccountAndBlogButtonHeight = 41.0;
 
 - (void)viewWasTapped:(UITapGestureRecognizer *)gestureRecognizer
 {
-    CGPoint touchPoint = [gestureRecognizer locationInView:self.view];
-    
-    BOOL clickedPage1Next = CGRectContainsPoint(_createAccountButton.frame, touchPoint) && _createAccountButton.enabled;
-    
-    if (_keyboardVisible) {
-        // When the keyboard is displayed, the normal button events don't fire off properly as
-        // this gesture recognizer intercepts them. We double check that the user didn't press a button
-        // while in this mode and if they did hand off the event.
-        if (clickedPage1Next) {
-            [self createAccountButtonAction];
-        }
-    }
-    
     [self.view endEditing:YES];
 }
 
@@ -624,15 +612,49 @@ CGFloat const CreateAccountAndBlogButtonHeight = 41.0;
     [self.view addSubview:overlayView];
 }
 
+- (void)setAuthenticating:(BOOL)authenticating
+{
+    _authenticating = authenticating;
+    _createAccountButton.enabled = !authenticating;
+    [_createAccountButton showActivityIndicator:authenticating];
+}
+
 - (void)createUserAndSite
 {
+    if (_authenticating) {
+        return;
+    }
+    
+    [self setAuthenticating:YES];
+    
+    // The site must be validated prior to making an account. Without validation,
+    // the situation could exist where a user account is created, but the site creation
+    // fails.
+    WPAsyncBlockOperation *siteValidation = [WPAsyncBlockOperation operationWithBlock:^(WPAsyncBlockOperation *operation) {
+        void (^blogValidationSuccess)(id) = ^(id responseObject) {
+            [operation didSucceed];
+        };
+        void (^blogValidationFailure)(NSError *) = ^(NSError *error) {
+            [operation didFail];
+            [self setAuthenticating:NO];
+            [self displayRemoteError:error];
+        };
+        
+        NSNumber *languageId = [_currentLanguage objectForKey:@"lang_id"];
+        [[WordPressComApi sharedApi] validateWPComBlogWithUrl:[self getSiteAddressWithoutWordPressDotCom]
+                                                 andBlogTitle:[self generateSiteTitleFromUsername:_usernameField.text]
+                                                andLanguageId:languageId
+                                                      success:blogValidationSuccess
+                                                      failure:blogValidationFailure];
+    }];
+    
     WPAsyncBlockOperation *userCreation = [WPAsyncBlockOperation operationWithBlock:^(WPAsyncBlockOperation *operation){
         void (^createUserSuccess)(id) = ^(id responseObject){
             [operation didSucceed];
         };
         void (^createUserFailure)(NSError *) = ^(NSError *error) {
             [operation didFail];
-            [SVProgressHUD dismiss];
+            [self setAuthenticating:NO];
             [self displayRemoteError:error];
         };
         
@@ -651,7 +673,7 @@ CGFloat const CreateAccountAndBlogButtonHeight = 41.0;
             // We've hit a strange failure at this point, the user has been created successfully but for some reason
             // we are unable to sign in and proceed
             [operation didFail];
-            [SVProgressHUD dismiss];
+            [self setAuthenticating:NO];
             [self displayRemoteError:error];
         };
         
@@ -665,13 +687,13 @@ CGFloat const CreateAccountAndBlogButtonHeight = 41.0;
         void (^createBlogSuccess)(id) = ^(id responseObject){
             [WPMobileStats trackEventForSelfHostedAndWPCom:StatsEventNUXCreateAccountCreatedAccount];
             [operation didSucceed];
-            [SVProgressHUD dismiss];
+            [self setAuthenticating:NO];
             if (self.onCreatedUser) {
                 self.onCreatedUser(_usernameField.text, _passwordField.text);
             }
         };
         void (^createBlogFailure)(NSError *error) = ^(NSError *error) {
-            [SVProgressHUD dismiss];
+            [self setAuthenticating:NO];
             [operation didFail];
             [self displayRemoteError:error];
         };
@@ -688,9 +710,9 @@ CGFloat const CreateAccountAndBlogButtonHeight = 41.0;
     
     [blogCreation addDependency:userSignIn];
     [userSignIn addDependency:userCreation];
+    [userCreation addDependency:siteValidation];
     
-    [SVProgressHUD showWithStatus:NSLocalizedString(@"Creating User and Site", nil) maskType:SVProgressHUDMaskTypeBlack];
-    
+    [_operationQueue addOperation:siteValidation];
     [_operationQueue addOperation:userCreation];
     [_operationQueue addOperation:userSignIn];
     [_operationQueue addOperation:blogCreation];

@@ -7,6 +7,7 @@
 //
 
 #import "Category.h"
+#import "ContextManager.h"
 
 @interface Category(PrivateMethods)
 + (Category *)newCategoryForBlog:(Blog *)blog;
@@ -17,12 +18,8 @@
 @dynamic blog;
 
 + (Category *)newCategoryForBlog:(Blog *)blog {
-    Category *category = [[Category alloc] initWithEntity:[NSEntityDescription entityForName:@"Category"
-                                                          inManagedObjectContext:[blog managedObjectContext]]
-               insertIntoManagedObjectContext:[blog managedObjectContext]];
-    
+    Category *category = [NSEntityDescription insertNewObjectForEntityForName:@"Category" inManagedObjectContext:blog.managedObjectContext];
     category.blog = blog;
-    
     return category;
 }
 
@@ -102,4 +99,33 @@
                      }
                  }];
 }
+
++ (void)mergeNewCategories:(NSArray *)newCategories forBlog:(Blog *)blog {
+    NSManagedObjectContext *backgroundMOC = [[ContextManager sharedInstance] backgroundContext];
+    [backgroundMOC performBlock:^{
+        NSMutableArray *categoriesToKeep = [NSMutableArray array];
+        Blog *contextBlog = (Blog *)[backgroundMOC existingObjectWithID:blog.objectID error:nil];
+        
+        for (NSDictionary *categoryInfo in newCategories) {
+            Category *newCategory = [Category createOrReplaceFromDictionary:categoryInfo forBlog:contextBlog];
+            if (newCategory != nil) {
+                [categoriesToKeep addObject:newCategory];
+            } else {
+                DDLogInfo(@"-[Category createOrReplaceFromDictionary:forBlog:] returned a nil category: %@", categoryInfo);
+            }
+        }
+        
+        NSSet *existingCategories = contextBlog.categories;
+        if (existingCategories && (existingCategories.count > 0)) {
+            for (Category *c in existingCategories) {
+                if (![categoriesToKeep containsObject:c]) {
+                    DDLogInfo(@"Deleting Category: %@", c);
+                    [backgroundMOC deleteObject:c];
+                }
+            }
+        }
+        [[ContextManager sharedInstance] saveContext:backgroundMOC];
+    }];
+}
+
 @end
