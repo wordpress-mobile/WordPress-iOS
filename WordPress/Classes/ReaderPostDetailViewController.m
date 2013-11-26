@@ -25,6 +25,7 @@
 #import "WPWebVideoViewController.h"
 #import "WPWebViewController.h"
 #import "ContextManager.h"
+#import "WPTableViewController.h"
 
 NSInteger const ReaderCommentsToSync = 100;
 NSTimeInterval const ReaderPostDetailViewControllerRefreshTimeout = 300; // 5 minutes
@@ -94,7 +95,9 @@ typedef enum {
 	
 	self.tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
     [self.tableView registerClass:[WPTableViewCell class] forCellReuseIdentifier:@"PostCell"];
-	
+    [WPStyleGuide configureColorsForView:self.view andTableView:self.tableView];
+    self.tableView.backgroundColor = [UIColor whiteColor];
+
 	[self buildHeader];
 	//[self buildTopToolbar];
 	[WPStyleGuide setRightBarButtonItemWithCorrectSpacing:self.shareButton forNavigationItem:self.navigationItem];
@@ -837,6 +840,17 @@ typedef enum {
 
 
 #pragma mark - UITableView Delegate Methods
+
+- (UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section {
+    return [[UIView alloc] initWithFrame:CGRectZero];
+}
+
+- (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section {
+    if (section == 0)
+        return IS_IPHONE ? 1 : WPTableViewTopMargin;
+    
+    return kSectionHeaderHight;
+}
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
     if (indexPath.section == ReaderDetailContentSection) {
