@@ -822,6 +822,26 @@ NSString *const RPVCDisplayedNativeFriendFinder = @"DisplayedNativeFriendFinder"
 }
 
 
+#pragma mark - NSFetchedResultsController overrides
+
+- (void)controllerWillChangeContent:(NSFetchedResultsController *)controller {
+    // Do nothing (prevent superclass from adjusting table view)
+}
+
+- (void)controllerDidChangeContent:(NSFetchedResultsController *)controller {
+    [self.tableView reloadData];
+    [self.noResultsView removeFromSuperview];
+}
+
+- (void)controller:(NSFetchedResultsController *)controller
+   didChangeObject:(id)anObject
+       atIndexPath:(NSIndexPath *)indexPath
+     forChangeType:(NSFetchedResultsChangeType)type
+      newIndexPath:(NSIndexPath *)newIndexPath {
+    // Do nothing (prevent superclass from adjusting table view)
+}
+
+
 #pragma mark - ReaderTopicsDelegate Methods
 
 - (void)readerTopicChanged {
