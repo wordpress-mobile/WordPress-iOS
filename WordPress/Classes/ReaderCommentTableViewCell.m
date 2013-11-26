@@ -14,7 +14,7 @@
 #import "NSDate+StringFormatting.h"
 
 #define RCTVCVerticalPadding 5.0f
-#define RCTVCIndentationWidth 10.0f
+#define RCTVCIndentationWidth 15.0f
 #define RCTVCAuthorLabelHeight 20.0f
 
 @interface ReaderCommentTableViewCell()<DTAttributedTextContentViewDelegate>
@@ -97,7 +97,7 @@
     self = [super initWithStyle:style reuseIdentifier:reuseIdentifier];
     if (self) {
 		CGFloat width = self.frame.size.width;
-        self.backgroundColor = [UIColor whiteColor];
+        self.backgroundColor = [WPStyleGuide itsEverywhereGrey];
 		
 		[self.cellImageView setFrame:CGRectMake(10.0f, 10.0f, 20.0f, 20.0f)];
 		self.cellImageView.autoresizingMask = UIViewAutoresizingFlexibleRightMargin;
@@ -126,8 +126,8 @@
 		_authorLabel.backgroundColor = [UIColor clearColor];
 		[self.contentView addSubview:_authorLabel];
 		
-		UIImageView *separatorImageView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"cell-separator"]];
-		separatorImageView.frame = CGRectMake(0.0f, 0.0f, width, 2.0f);
+		UIImageView *separatorImageView = [[UIImageView alloc] initWithFrame:CGRectMake(self.indentationWidth, 0.0f, width - self.indentationWidth, 1.0f)];
+		separatorImageView.backgroundColor = [UIColor colorWithHexString:@"e5e5e5"];
 		separatorImageView.autoresizingMask = UIViewAutoresizingFlexibleWidth;
 		[self.contentView addSubview:separatorImageView];
 		
@@ -135,21 +135,7 @@
 		
 		UIView *view = [[UIView alloc] initWithFrame:self.frame];
 		view.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
-		view.backgroundColor = DTColorCreateWithHexString(@"A9E2F3");
-		
-		CGRect rect = CGRectMake(0, 0, 1, 1);
-		UIGraphicsBeginImageContext(rect.size);
-		CGContextRef context = UIGraphicsGetCurrentContext();
-		CGContextSetFillColorWithColor(context, [[UIColor whiteColor] CGColor]);
-		CGContextFillRect(context, rect);
-		UIImage *img = UIGraphicsGetImageFromCurrentImageContext();
-		UIGraphicsEndImageContext();
-		
-		UIView *colorView = [[UIImageView alloc] initWithImage:img];
-		colorView.frame = CGRectMake(0.0f, 0.0f, width, 2.0f);
-		colorView.autoresizingMask = UIViewAutoresizingFlexibleWidth;
-
-		[view addSubview:colorView];
+		view.backgroundColor = DTColorCreateWithHexString(@"e5e5e5");
 
 		[self setSelectedBackgroundView:view];
     }
