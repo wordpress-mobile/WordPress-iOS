@@ -126,7 +126,7 @@ NSString *const StatsEventPostDetailSettingsClickedUpdateLocation = @"Settings -
 NSString *const StatsEventPostDetailSettingsClickedRemoveLocation = @"Settings - Clicked Remove Location";
 
 // Pages
-NSString *const StatsPropertyPagedOpened = @"pages_opened";
+NSString *const StatsPropertyPagesOpened = @"pages_opened";
 NSString *const StatsEventPagesClickedNewPage = @"Pages - Clicked New Page";
 
 // Comments
