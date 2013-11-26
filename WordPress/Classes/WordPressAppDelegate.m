@@ -297,19 +297,19 @@ NSInteger const UpdateCheckAlertViewTag = 102;
     UINavigationController *readerNavigationController = [[UINavigationController alloc] initWithRootViewController:self.readerPostsViewController];
     readerNavigationController.navigationBar.translucent = NO;
     readerNavigationController.tabBarItem.image = [UIImage imageNamed:@"icon-tab-reader"];
-    self.readerPostsViewController.title = @"Reader";
+    self.readerPostsViewController.title = NSLocalizedString(@"Reader", nil);
     
     self.notificationsViewController = [[NotificationsViewController alloc] init];
     UINavigationController *notificationsNavigationController = [[UINavigationController alloc] initWithRootViewController:self.notificationsViewController];
     notificationsNavigationController.navigationBar.translucent = NO;
     notificationsNavigationController.tabBarItem.image = [UIImage imageNamed:@"icon-tab-notifications"];
-    self.notificationsViewController.title = @"Notifications";
+    self.notificationsViewController.title = NSLocalizedString(@"Notifications", @"");
     
     self.blogListViewController = [[BlogListViewController alloc] init];
     UINavigationController *blogListNavigationController = [[UINavigationController alloc] initWithRootViewController:self.blogListViewController];
     blogListNavigationController.navigationBar.translucent = NO;
     blogListNavigationController.tabBarItem.image = [UIImage imageNamed:@"icon-tab-blogs"];
-    self.blogListViewController.title = @"My Blogs";
+    self.blogListViewController.title = NSLocalizedString(@"My Blogs", @"");
     
     _tabBarController.viewControllers = [NSArray arrayWithObjects:blogListNavigationController, readerNavigationController, notificationsNavigationController, nil];
     
