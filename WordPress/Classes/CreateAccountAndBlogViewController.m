@@ -349,18 +349,12 @@ CGFloat const CreateAccountAndBlogButtonHeight = 41.0;
     // Layout Help Button
     UIImage *helpButtonImage = [UIImage imageNamed:@"btn-help"];
     x = viewWidth - helpButtonImage.size.width - CreateAccountAndBlogStandardOffset;
-    y = 0.5 * CreateAccountAndBlogStandardOffset;
-    if (IS_IOS7) {
-        y += CreateAccountAndBlogiOS7StatusBarOffset;
-    }
+    y = 0.5 * CreateAccountAndBlogStandardOffset + CreateAccountAndBlogiOS7StatusBarOffset;
     _helpButton.frame = CGRectMake(x, y, helpButtonImage.size.width, helpButtonImage.size.height);
     
     // Layout Cancel Button
     x = 0;
-    y = 0.5 * CreateAccountAndBlogStandardOffset;
-    if (IS_IOS7) {
-        y += CreateAccountAndBlogiOS7StatusBarOffset;
-    }
+    y = 0.5 * CreateAccountAndBlogStandardOffset + CreateAccountAndBlogiOS7StatusBarOffset;
     _cancelButton.frame = CGRectMake(x, y, CGRectGetWidth(_cancelButton.frame), CGRectGetHeight(_cancelButton.frame));
         
     // Layout the controls starting out from y of 0, then offset them once the height of the controls

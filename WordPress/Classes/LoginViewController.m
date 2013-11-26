@@ -347,6 +347,7 @@ CGFloat const GeneralWalkthroughiOS7StatusBarOffset = 20.0;
         [_helpButton setImage:infoButtonImage forState:UIControlStateNormal];
         _helpButton.frame = CGRectMake(GeneralWalkthroughStandardOffset, GeneralWalkthroughStandardOffset, infoButtonImage.size.width, infoButtonImage.size.height);
         [_helpButton addTarget:self action:@selector(helpButtonAction:) forControlEvents:UIControlEventTouchUpInside];
+        [_helpButton sizeToFit];
         [_mainView addSubview:_helpButton];
     }
     
@@ -440,12 +441,9 @@ CGFloat const GeneralWalkthroughiOS7StatusBarOffset = 20.0;
     CGFloat viewWidth = CGRectGetWidth(self.view.bounds);
     CGFloat viewHeight = CGRectGetHeight(self.view.bounds);
     
-    UIImage *infoButtonImage = [UIImage imageNamed:@"btn-about"];
-    y = 0;
-    if (IS_IOS7 && IS_IPHONE) {
-        y = GeneralWalkthroughiOS7StatusBarOffset;
-    }
-    _helpButton.frame = CGRectMake(viewWidth - infoButtonImage.size.width, y, infoButtonImage.size.width, infoButtonImage.size.height);
+    x = viewWidth - CGRectGetWidth(_helpButton.frame) - GeneralWalkthroughStandardOffset;
+    y = 0.5 * GeneralWalkthroughStandardOffset + GeneralWalkthroughiOS7StatusBarOffset;
+    _helpButton.frame = CGRectMake(x, y, CGRectGetWidth(_helpButton.frame), CGRectGetHeight(_helpButton.frame));
     
     
     CGFloat heightOfControls = CGRectGetHeight(_icon.frame) + GeneralWalkthroughStandardOffset + (_userIsDotCom ? 2 : 3) * GeneralWalkthroughTextFieldHeight + GeneralWalkthroughStandardOffset + GeneralWalkthroughButtonHeight;
