@@ -203,8 +203,12 @@ int ddLogLevel = LOG_LEVEL_INFO;
         if ([netInfo respondsToSelector:@selector(currentRadioAccessTechnology)]) {
             type = [netInfo currentRadioAccessTechnology];
         }
+        NSString *carrierName = nil;
+        if (carrier) {
+            carrierName = [NSString stringWithFormat:@"%@ [%@/%@/%@]", carrier.carrierName, [carrier.isoCountryCode uppercaseString], carrier.mobileCountryCode, carrier.mobileNetworkCode];
+        }
         
-        DDLogInfo(@"Reachability - WordPress.com - WiFi: %@  WWAN: %@  Carrier: %@  Type: %@", wifi, wwan, carrier.carrierName, type);
+        DDLogInfo(@"Reachability - WordPress.com - WiFi: %@  WWAN: %@  Carrier: %@  Type: %@", wifi, wwan, carrierName, type);
         self.wpcomAvailable = reach.isReachable;
     };
     self.wpcomReachability.reachableBlock = wpcomReachabilityBlock;
