@@ -87,6 +87,29 @@
     return count;
 }
 
++ (Blog *)defaultBlog {
+    NSManagedObjectContext *moc = [[ContextManager sharedInstance] mainContext];
+    NSFetchRequest *fetchRequest = [NSFetchRequest fetchRequestWithEntityName:@"Blog"];
+    fetchRequest.sortDescriptors = @[[NSSortDescriptor sortDescriptorWithKey:@"blogName" ascending:YES]];
+    
+    NSFetchedResultsController *resultsController = [[NSFetchedResultsController alloc]
+                                                     initWithFetchRequest:fetchRequest
+                                                     managedObjectContext:moc
+                                                     sectionNameKeyPath:nil
+                                                     cacheName:nil];
+    NSError *error = nil;
+    if (![resultsController performFetch:&error]) {
+        DDLogError(@"Couldn't fetch blogs: %@", [error localizedDescription]);
+        return nil;
+    }
+    
+    if([resultsController.fetchedObjects count] == 0) {
+        return nil;
+    }
+    
+    return [resultsController.fetchedObjects objectAtIndex:0];
+}
+
 - (NSString *)blavatarUrl {
 	if (_blavatarUrl == nil) {
         NSString *hostUrl = [[NSURL URLWithString:self.xmlrpc] host];
