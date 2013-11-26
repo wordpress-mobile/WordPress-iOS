@@ -257,7 +257,6 @@ NSInteger const UpdateCheckAlertViewTag = 102;
         UINavigationController *aNavigationController = [[UINavigationController alloc] initWithRootViewController:welcomeViewController];
         aNavigationController.navigationBar.translucent = NO;
         aNavigationController.modalTransitionStyle = UIModalTransitionStyleCrossDissolve;
-        aNavigationController.modalPresentationStyle = UIModalPresentationFormSheet;
         
         [self.window.rootViewController presentViewController:aNavigationController animated:NO completion:nil];
     }
