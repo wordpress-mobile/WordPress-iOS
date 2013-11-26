@@ -7,31 +7,34 @@
  * Some rights reserved. See license.txt
  */
 
-#import <UIDeviceIdentifier/UIDeviceHardware.h>
+#import <AFNetworking/AFNetworking.h>
 #import <Crashlytics/Crashlytics.h>
+#import <CrashlyticsLumberjack/CrashlyticsLogger.h>
+#import <DDFileLogger.h>
 #import <GooglePlus/GooglePlus.h>
+#import <HockeySDK/HockeySDK.h>
+#import <UIDeviceIdentifier/UIDeviceHardware.h>
+
 #import "WordPressAppDelegate.h"
-#import "Reachability.h"
-#import "NSString+Helpers.h"
-#import "Media.h"
 #import "CameraPlusPickerManager.h"
+#import "ContextManager.h"
+#import "Media.h"
+#import "NotificationsManager.h"
+#import "NSString+Helpers.h"
+#import "PocketAPI.h"
+#import "Post.h"
+#import "Reachability.h"
 #import "UIDevice+WordPressIdentifier.h"
 #import "WordPressComApi.h"
 #import "WordPressComApiCredentials.h"
-#import "PocketAPI.h"
 #import "WPAccount.h"
-#import "SupportViewController.h"
-#import "ContextManager.h"
-#import "ReaderPostsViewController.h"
-#import "NotificationsViewController.h"
+
 #import "BlogListViewController.h"
+#import "EditPostViewController.h"
 #import "LoginViewController.h"
-#import <CrashlyticsLumberjack/CrashlyticsLogger.h>
-#import <HockeySDK/HockeySDK.h>
-#import "NotificationsManager.h"
-#import <DDFileLogger.h>
-#import <AFNetworking/AFNetworking.h>
-#import "ContextManager.h"
+#import "NotificationsViewController.h"
+#import "ReaderPostsViewController.h"
+#import "SupportViewController.h"
 
 #if DEBUG
 #import "DDTTYLogger.h"
@@ -42,7 +45,7 @@ int ddLogLevel = LOG_LEVEL_INFO;
 NSInteger const UpdateCheckAlertViewTag = 102;
 
 
-@interface WordPressAppDelegate () <CrashlyticsDelegate, UIAlertViewDelegate, BITHockeyManagerDelegate>
+@interface WordPressAppDelegate () <UITabBarControllerDelegate, CrashlyticsDelegate, UIAlertViewDelegate, BITHockeyManagerDelegate>
 
 @property (nonatomic, assign) BOOL listeningForBlogChanges;
 @property (nonatomic, strong) NotificationsViewController *notificationsViewController;
@@ -246,8 +249,31 @@ NSInteger const UpdateCheckAlertViewTag = 102;
     [NotificationsManager handleNotification:userInfo forState:[UIApplication sharedApplication].applicationState completionHandler:completionHandler];
 }
 
+#pragma mark - UITabBarControllerDelegate methods.
+
+- (BOOL)tabBarController:(UITabBarController *)tabBarController shouldSelectViewController:(UIViewController *)viewController {
+    if ([tabBarController.viewControllers indexOfObject:viewController] == 3) {
+        [self presentEditPostViewControllerModal];
+        return NO;
+    }
+    return YES;
+}
+
 
 #pragma mark - Custom methods
+
+- (void)presentEditPostViewControllerModal {
+    if ([Blog countWithContext:[[ContextManager sharedInstance] mainContext]] == 0) {
+        // TODO: Prompt to create a blog to post to?
+        return;
+    }
+    Blog *blog = [Blog defaultBlog];
+    Post *post = [Post newDraftForBlog:blog];
+    EditPostViewController *editPostViewController = [[EditPostViewController alloc] initWithPost:post];
+    UINavigationController *navController = [[UINavigationController alloc] initWithRootViewController:editPostViewController];
+    navController.modalPresentationStyle = UIModalPresentationCurrentContext;
+    [self.window.rootViewController presentViewController:navController animated:YES completion:nil];
+}
 
 - (void)showWelcomeScreenIfNeeded {
     if ([self noBlogsAndNoWordPressDotComAccount]) {
@@ -292,6 +318,7 @@ NSInteger const UpdateCheckAlertViewTag = 102;
 
 - (UITabBarController *)tabBarController {
     _tabBarController = [[UITabBarController alloc] init];
+    _tabBarController.delegate = self;
     [_tabBarController.tabBar setTranslucent:NO];
 
     self.readerPostsViewController = [[ReaderPostsViewController alloc] init];
@@ -311,7 +338,13 @@ NSInteger const UpdateCheckAlertViewTag = 102;
     blogListNavigationController.navigationBar.translucent = NO;
     blogListNavigationController.tabBarItem.image = [UIImage imageNamed:@"icon-tab-blogs"];
     blogListViewController.title = @"My Blogs";
-    _tabBarController.viewControllers = [NSArray arrayWithObjects:blogListNavigationController, readerNavigationController, notificationsNavigationController, nil];
+    
+    UINavigationController *postsNavigationController = [[UINavigationController alloc] initWithRootViewController:nil];
+    postsNavigationController.navigationBar.translucent = NO;
+    postsNavigationController.tabBarItem.image = [UIImage imageNamed:@"navbar_add"];
+    postsNavigationController.title = @"Post";
+    
+    _tabBarController.viewControllers = [NSArray arrayWithObjects:blogListNavigationController, readerNavigationController, notificationsNavigationController, postsNavigationController, nil];
     
     [_tabBarController setSelectedViewController:readerNavigationController];
     

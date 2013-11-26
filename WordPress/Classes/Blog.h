@@ -99,5 +99,6 @@
 #pragma mark -
 #pragma mark Class methods
 + (NSInteger)countWithContext:(NSManagedObjectContext *)moc;
++ (Blog *)defaultBlog;
 
 @end
