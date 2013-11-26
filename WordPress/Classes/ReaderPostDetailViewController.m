@@ -96,6 +96,7 @@ typedef enum {
 	self.tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
     [self.tableView registerClass:[WPTableViewCell class] forCellReuseIdentifier:@"PostCell"];
     [WPStyleGuide configureColorsForView:self.view andTableView:self.tableView];
+    self.tableView.backgroundColor = [UIColor whiteColor];
 
 	[self buildHeader];
 	//[self buildTopToolbar];
@@ -356,9 +357,6 @@ typedef enum {
 	};
 	
 	flattenComments(self.resultsController.fetchedObjects);
-	if ([_comments count] > 0) {
-		self.tableView.backgroundColor = DTColorCreateWithHexString(@"EFEFEF");
-	}
 	
 	// Cache attributed strings.
 	dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, NULL), ^{
