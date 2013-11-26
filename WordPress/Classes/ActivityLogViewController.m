@@ -9,6 +9,7 @@
 #import "ActivityLogViewController.h"
 #import "WordPressAppDelegate.h"
 #import "ActivityLogDetailViewController.h"
+#import <DDFileLogger.h>
 
 @interface ActivityLogViewController ()
 {

@@ -1,13 +1,16 @@
-//
-//  WPTableViewController.h
-//  WordPress
-//
-//  Created by Brad Angelcyk on 5/22/12.
-//
+/*
+ * WPTableViewController.h
+ *
+ * Copyright (c) 2013 WordPress. All rights reserved.
+ *
+ * Licensed under GNU General Public License 2.0.
+ * Some rights reserved. See license.txt
+ */
 
-#import <UIKit/UIKit.h>
 #import "Blog.h"
 #import "SettingsViewControllerDelegate.h"
+
+extern CGFloat const WPTableViewTopMargin;
 
 @interface WPTableViewController : UITableViewController <UITableViewDataSource, UITableViewDelegate, NSFetchedResultsControllerDelegate, UIAlertViewDelegate, SettingsViewControllerDelegate>
 
@@ -20,7 +23,5 @@
 - (NSString *)noResultsMessageText;
 - (UIView *)noResultsAccessoryView;
 - (void)configureNoResultsView;
-
-extern CGFloat const WPTableViewTopMargin;
 
 @end

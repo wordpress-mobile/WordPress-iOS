@@ -14,6 +14,11 @@
 #import "WordPressAppDelegate.h"
 #import "NSString+Helpers.h"
 #import "WPAccount.h"
+#import "ContextManager.h"
+#import "Blog.h"
+
+static BOOL hasRecordedAppOpenedEvent = NO;
+
 
 // General
 NSString *const StatsEventAppOpened = @"Application Opened";
@@ -255,7 +260,7 @@ NSString *const StatsEventAddBlogsClickedAddSelected = @"Add Blogs - Clicked Add
     NSDictionary *properties = @{
                                  @"session_count": @(sessionCount),
                                  @"connected_to_dotcom": @([[WordPressComApi sharedApi] hasCredentials]),
-                                 @"number_of_blogs" : @([Blog countWithContext:[[WordPressAppDelegate sharedWordPressApplicationDelegate] managedObjectContext]]) };
+                                 @"number_of_blogs" : @([Blog countWithContext:[[ContextManager sharedInstance] mainContext]]) };
     [[Mixpanel sharedInstance] registerSuperProperties:properties];
     
     NSString *username = [[WPAccount defaultWordPressComAccount] username];
@@ -277,6 +282,8 @@ NSString *const StatsEventAddBlogsClickedAddSelected = @"Add Blogs - Clicked Add
 + (void)pauseSession
 {
     [[QuantcastMeasurement sharedInstance] pauseSessionWithLabels:nil];
+    [self clearPropertiesForAllEvents];
+    hasRecordedAppOpenedEvent = NO;
 }
 
 + (void)endSession
@@ -287,6 +294,13 @@ NSString *const StatsEventAddBlogsClickedAddSelected = @"Add Blogs - Clicked Add
 + (void)resumeSession
 {
     [[QuantcastMeasurement sharedInstance] resumeSessionWithLabels:nil];
+}
+
++ (void)recordAppOpenedForEvent:(NSString *)event {
+    if (!hasRecordedAppOpenedEvent) {
+        [self trackEventForSelfHostedAndWPCom:event];
+    }
+    hasRecordedAppOpenedEvent = YES;
 }
 
 + (void)trackEventForSelfHostedAndWPCom:(NSString *)event

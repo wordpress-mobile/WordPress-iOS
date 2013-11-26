@@ -1,19 +1,19 @@
-//
-//  WPTableViewController.m
-//  WordPress
-//
-//  Created by Brad Angelcyk on 5/22/12.
-//  Copyright (c) 2012 WordPress. All rights reserved.
-//
+/*
+ * WPTableViewController.m
+ *
+ * Copyright (c) 2013 WordPress. All rights reserved.
+ *
+ * Licensed under GNU General Public License 2.0.
+ * Some rights reserved. See license.txt
+ */
 
 #import "WPTableViewController.h"
 #import "WPTableViewControllerSubclass.h"
-#import "WordPressAppDelegate.h"
 #import "EditSiteViewController.h"
-#import "ReachabilityUtils.h"
 #import "WPWebViewController.h"
 #import "WPNoResultsView.h"
 #import "SupportViewController.h"
+#import "ContextManager.h"
 
 NSTimeInterval const WPTableViewControllerRefreshTimeout = 300; // 5 minutes
 CGFloat const WPTableViewTopMargin = 40;
@@ -26,14 +26,6 @@ CGFloat const WPTableViewTopMargin = 40;
 @property (nonatomic, strong, readonly) UIView *swipeView;
 @property (nonatomic, strong) UITableViewCell *swipeCell;
 @property (nonatomic, strong) UIView *noResultsView;
-
-- (void)enableSwipeGestureRecognizer;
-- (void)disableSwipeGestureRecognizer;
-- (void)swipe:(UISwipeGestureRecognizer *)recognizer direction:(UISwipeGestureRecognizerDirection)direction;
-- (void)swipeLeft:(UISwipeGestureRecognizer *)recognizer;
-- (void)swipeRight:(UISwipeGestureRecognizer *)recognizer;
-- (void)dismissModal:(id)sender;
-- (void)hideRefreshHeader;
 
 @end
 
@@ -62,23 +54,12 @@ CGFloat const WPTableViewTopMargin = 40;
 @synthesize swipeCell = _swipeCell;
 @synthesize noResultsView;
 
-- (id)initWithStyle:(UITableViewStyle)style
-{
-    self = [super initWithStyle:UITableViewStyleGrouped];
-    if (self) {
-        // Custom initialization
-    }
-    return self;
-}
-
-- (void)dealloc
-{
+- (void)dealloc {
     _resultsController.delegate = nil;
     editSiteViewController.delegate = nil;
 }
 
-- (void)viewDidLoad
-{
+- (void)viewDidLoad {
     [super viewDidLoad];
 
     UIRefreshControl *refreshControl = [[UIRefreshControl alloc] init];
@@ -104,20 +85,6 @@ CGFloat const WPTableViewTopMargin = 40;
         tableInset.top = -1;
         self.tableView.contentInset = tableInset;
     }
-}
-
-- (void)viewDidUnload
-{
-    [super viewDidUnload];
-
-	self.tableView.delegate = nil;
-	self.tableView.dataSource = nil;
-	self.tableView =  nil;
-    
-    if (self.swipeActionsEnabled) {
-        [self disableSwipeGestureRecognizer];
-    }
-
 }
 
 - (void)viewWillAppear:(BOOL)animated {
@@ -157,11 +124,6 @@ CGFloat const WPTableViewTopMargin = 40;
     }
 }
 
-- (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation
-{
-    return [super shouldAutorotateToInterfaceOrientation:interfaceOrientation];
-}
-
 - (void)setEditing:(BOOL)editing animated:(BOOL)animated {
     [self removeSwipeView:NO];
     [super setEditing:editing animated:animated];
@@ -187,8 +149,9 @@ CGFloat const WPTableViewTopMargin = 40;
 #pragma mark - Property accessors
 
 - (void)setBlog:(Blog *)blog {
-    if (_blog == blog) 
+    if (_blog == blog) {
         return;
+    }
 
     _blog = blog;
 
@@ -201,8 +164,9 @@ CGFloat const WPTableViewTopMargin = 40;
 }
 
 - (void)setSwipeActionsEnabled:(BOOL)swipeActionsEnabled {
-    if (swipeActionsEnabled == _swipeActionsEnabled)
+    if (swipeActionsEnabled == _swipeActionsEnabled) {
         return;
+    }
 
     _swipeActionsEnabled = swipeActionsEnabled;
     if (self.isViewLoaded) {
@@ -237,8 +201,9 @@ CGFloat const WPTableViewTopMargin = 40;
 }
 
 - (void)setInfiniteScrollEnabled:(BOOL)infiniteScrollEnabled {
-    if (infiniteScrollEnabled == _infiniteScrollEnabled)
+    if (infiniteScrollEnabled == _infiniteScrollEnabled) {
         return;
+    }
 
     _infiniteScrollEnabled = infiniteScrollEnabled;
     if (self.isViewLoaded) {
@@ -335,16 +300,14 @@ CGFloat const WPTableViewTopMargin = 40;
     return NO;
 }
 
-- (NSIndexPath *)tableView:(UITableView *)theTableView willSelectRowAtIndexPath:(NSIndexPath *)indexPath
-{
+- (NSIndexPath *)tableView:(UITableView *)theTableView willSelectRowAtIndexPath:(NSIndexPath *)indexPath {
     if (!self.editing) {
         [self removeSwipeView:YES];
     }
     return indexPath;
 }
 
-#pragma mark -
-#pragma mark Fetched results controller
+#pragma mark - Fetched results controller
 
 - (UITableViewRowAnimation)tableViewRowAnimation {
 	return UITableViewRowAnimationFade;
@@ -463,8 +426,7 @@ CGFloat const WPTableViewTopMargin = 40;
 }
 
 
-#pragma mark -
-#pragma mark UIScrollViewDelegate Methods
+#pragma mark - UIScrollViewDelegate Methods
 
 - (void)scrollViewWillBeginDragging:(UIScrollView *)scrollView {
     _isScrolling = YES;
@@ -478,8 +440,7 @@ CGFloat const WPTableViewTopMargin = 40;
 }
 
 
-#pragma mark -
-#pragma mark UIAlertViewDelegate
+#pragma mark - UIAlertViewDelegate
 
 - (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex { 
 	switch(buttonIndex) {
@@ -553,7 +514,9 @@ CGFloat const WPTableViewTopMargin = 40;
 #pragma mark - Private Methods
 
 - (void)configureNoResultsView {
-    if (![self isViewLoaded]) return;
+    if (![self isViewLoaded]) {
+        return;
+    }
     
     [self.noResultsView removeFromSuperview];
     
@@ -650,8 +613,7 @@ CGFloat const WPTableViewTopMargin = 40;
 	[alertView show];
 	
 	// bad login/pass combination
-	editSiteViewController = [[EditSiteViewController alloc] initWithNibName:nil bundle:nil];
-	editSiteViewController.blog = self.blog;
+	editSiteViewController = [[EditSiteViewController alloc] initWithBlog:self.blog];
 	editSiteViewController.isCancellable = YES;
 	editSiteViewController.delegate = self;
 	UINavigationController *navController = [[UINavigationController alloc] initWithRootViewController:editSiteViewController];
@@ -832,14 +794,9 @@ CGFloat const WPTableViewTopMargin = 40;
 }
 
 - (NSManagedObjectContext *)managedObjectContext {
-	if (self.blog) {
-        return self.blog.managedObjectContext;
-    } else {
-        return [[WordPressAppDelegate sharedWordPressApplicationDelegate] managedObjectContext];
-    }
+    return [[ContextManager sharedInstance] mainContext];
 }
 
-#define AssertSubclassMethod() NSAssert(NO, @"You must override %@ in a subclass", NSStringFromSelector(_cmd))
 #define AssertNoBlogSubclassMethod() NSAssert(self.blog, @"You must override %@ in a subclass if there is no blog", NSStringFromSelector(_cmd))
 
 #pragma clang diagnostic push
@@ -853,16 +810,11 @@ CGFloat const WPTableViewTopMargin = 40;
     AssertSubclassMethod();
 }
 
-#pragma clang diagnostic pop
-
 - (NSFetchRequest *)fetchRequest {
     AssertNoBlogSubclassMethod();
-    NSFetchRequest *fetchRequest = [[NSFetchRequest alloc] init];
-    [fetchRequest setEntity:[NSEntityDescription entityForName:[self entityName] inManagedObjectContext:[self managedObjectContext]]];
-    [fetchRequest setPredicate:[NSPredicate predicateWithFormat:@"blog == %@", self.blog]];
-
-    return fetchRequest;
 }
+
+#pragma clang diagnostic pop
 
 - (NSString *)sectionNameKeyPath {
     return nil;
@@ -904,6 +856,7 @@ CGFloat const WPTableViewTopMargin = 40;
 }
 
 - (void)resetResultsController {
+    [NSFetchedResultsController deleteCacheWithName:[self resultsControllerCacheName]];
 	_resultsController.delegate = nil;
 	_resultsController = nil;
 }
