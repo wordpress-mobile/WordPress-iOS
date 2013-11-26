@@ -19,6 +19,7 @@
 #import "Blog.h"
 #import "WPNUXUtility.h"
 #import "WPAccount.h"
+#import "ContextManager.h"
 #import "UILabel+SuggestSize.h"
 
 @interface NewAddUsersBlogViewController () <
@@ -359,20 +360,15 @@ CGFloat const AddUsersBlogBottomBackgroundHeight = 64;
 
     _addSelectedButton.enabled = NO;
     
-    NSManagedObjectContext *context = [WordPressAppDelegate sharedWordPressApplicationDelegate].managedObjectContext;
-    NSManagedObjectContext *backgroundMOC = [[NSManagedObjectContext alloc] initWithConcurrencyType:NSPrivateQueueConcurrencyType];
-    backgroundMOC.parentContext = context;
-  
-    [backgroundMOC performBlock:^{
+    NSManagedObjectContext *context = [[ContextManager sharedInstance] backgroundContext];
+    [context performBlock:^{
         for (NSDictionary *blog in _usersBlogs) {
             if([_selectedBlogs containsObject:[blog valueForKey:@"blogid"]]) {
                 [self createBlog:blog withContext:context];
             }
         }
-        NSError *error;
-        if (![backgroundMOC save:&error]) {
-            DDLogError(@"Unresolved core data save error: %@", error);
-        }
+        
+        [[ContextManager sharedInstance] saveContext:context];
         
         dispatch_async(dispatch_get_main_queue(), ^{
             if (self.blogAdditionCompleted) {
@@ -390,6 +386,7 @@ CGFloat const AddUsersBlogBottomBackgroundHeight = 64;
     Blog *blog = [_account findOrCreateBlogFromDictionary:blogInfo withContext:context];
     blog.geolocationEnabled = YES;
 
+    [context obtainPermanentIDsForObjects:@[blog] error:nil];
     [blog syncBlogWithSuccess:nil failure:nil];
 }
 

@@ -16,6 +16,7 @@
 #import "UIImageView+Gravatar.h"
 #import "WPAccount.h"
 #import "SupportViewController.h"
+#import "ContextManager.h"
 #import "WPTableViewCell.h"
 #import "WordPressAppDelegate.h"
 #import "Blog.h"
@@ -500,9 +501,7 @@
 - (void)saveSelectedBlogs {
     [[NSUserDefaults standardUserDefaults] setBool:YES forKey:@"refreshCommentsRequired"];
 	
-    NSManagedObjectContext *backgroundMOC = [[NSManagedObjectContext alloc] initWithConcurrencyType:NSPrivateQueueConcurrencyType];
-    backgroundMOC.parentContext = [WordPressAppDelegate sharedWordPressApplicationDelegate].managedObjectContext;
-    
+    NSManagedObjectContext *backgroundMOC = [[ContextManager sharedInstance] backgroundContext];
     [backgroundMOC performBlock:^{
         for (NSDictionary *blog in self.usersBlogs) {
             if ([self.selectedBlogs containsObject:[blog valueForKey:@"blogid"]]) {
@@ -510,13 +509,7 @@
             }
         }
         
-        NSError *error;
-        if(![backgroundMOC save:&error]) {
-            WPFLog(@"Core data context save error on adding blogs: %@", error);
-            #if DEBUG
-            exit(-1);
-            #endif
-        }
+        [[ContextManager sharedInstance] saveContext:backgroundMOC];
         
         dispatch_async(dispatch_get_main_queue(), ^{
             [self.navigationController popToRootViewControllerAnimated:YES];
@@ -530,14 +523,8 @@
     
     Blog *blog = [_account findOrCreateBlogFromDictionary:blogInfo withContext:context];
     blog.geolocationEnabled = self.geolocationEnabled;
-    
-    dispatch_async(dispatch_get_main_queue(), ^{
-        [blog syncBlogWithSuccess:^{
-            if( ![blog isWPcom] )
-                [[WordPressComApi sharedApi] syncPushNotificationInfo];
-        }
-                          failure:nil];
-    });
+
+    [blog syncBlogWithSuccess:nil failure:nil];
 }
 
 - (void)checkAddSelectedButtonStatus {
