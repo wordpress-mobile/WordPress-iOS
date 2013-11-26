@@ -495,6 +495,7 @@ const CGFloat RPVControlButtonBorderSize = 0.0f;
     
     // Update own frame
     CGRect ownFrame = self.frame;
+    ownFrame.size.width = contentWidth;
     ownFrame.size.height = nextY + RPVMetaViewHeight + 1;
     self.frame = ownFrame;
 }
