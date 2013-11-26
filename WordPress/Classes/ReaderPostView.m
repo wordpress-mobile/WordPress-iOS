@@ -79,7 +79,7 @@ const CGFloat RPVControlButtonBorderSize = 0.0f;
     // Margins
     CGFloat contentWidth = width;
     if (IS_IPAD) {
-        contentWidth = contentWidth * (1 - WPTableViewCellMarginPercentage * 2);
+        contentWidth = WPTableViewFixedWidth;
     }
     
     desiredHeight += RPVAuthorPadding;

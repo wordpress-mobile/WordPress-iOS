@@ -95,7 +95,7 @@ NSString *const RPVCDisplayedNativeFriendFinder = @"DisplayedNativeFriendFinder"
     if (IS_IPHONE) {
         maxWidth = MAX(self.tableView.bounds.size.width, self.tableView.bounds.size.height);
     } else {
-        maxWidth *= (1 - 2 * WPTableViewCellMarginPercentage);
+        maxWidth = WPTableViewFixedWidth;
     }
 
     CGFloat maxHeight = maxWidth * RPVCMaxImageHeightPercentage;
@@ -592,7 +592,7 @@ NSString *const RPVCDisplayedNativeFriendFinder = @"DisplayedNativeFriendFinder"
     // We know the width, but not the height; let the image loader figure that out
     CGFloat imageWidth = self.tableView.frame.size.width;
     if (IS_IPAD) {
-        imageWidth *= (1 - 2 * WPTableViewCellMarginPercentage);
+        imageWidth = WPTableViewFixedWidth;
     }
     CGSize imageSize = CGSizeMake(imageWidth, 0);
     UIImage *image = [self imageForURL:imageURL size:imageSize];
