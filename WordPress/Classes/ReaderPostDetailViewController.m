@@ -96,7 +96,6 @@ typedef enum {
 	self.tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
     [self.tableView registerClass:[WPTableViewCell class] forCellReuseIdentifier:@"PostCell"];
     [WPStyleGuide configureColorsForView:self.view andTableView:self.tableView];
-    self.tableView.backgroundColor = [UIColor whiteColor];
 
 	[self buildHeader];
 	//[self buildTopToolbar];
@@ -144,6 +143,8 @@ typedef enum {
     if (lastSynced == nil || ABS([lastSynced timeIntervalSinceNow]) > ReaderPostDetailViewControllerRefreshTimeout) {
 		[self syncWithUserInteraction:NO];
     }
+    
+    [self.tableView reloadData];
 }
 
 - (void)viewWillDisappear:(BOOL)animated {

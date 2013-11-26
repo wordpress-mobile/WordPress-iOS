@@ -176,7 +176,7 @@ const CGFloat RPVControlButtonBorderSize = 0.0f;
         self.opaque = YES;
         self.showFullContent = showFullContent;
 
-        self.cellImageView = [[UIImageView alloc] initWithFrame:CGRectMake(0.0f, 0.0f, 44.0f, 44.0f)]; // arbitrary size.
+        self.cellImageView = [[UIImageView alloc] init];
 		_cellImageView.backgroundColor = [WPStyleGuide readGrey];
 		_cellImageView.contentMode = UIViewContentModeScaleAspectFill;
 		_cellImageView.clipsToBounds = YES;
@@ -248,7 +248,6 @@ const CGFloat RPVControlButtonBorderSize = 0.0f;
 	_reblogButton.userInteractionEnabled = ![post.isReblogged boolValue];
 	
 	[self updateActionButtons];
-
 }
 
 - (void)setPost:(ReaderPost *)post {
@@ -396,7 +395,15 @@ const CGFloat RPVControlButtonBorderSize = 0.0f;
 - (void)layoutSubviews {
 	[super layoutSubviews];
     
-	CGFloat contentWidth = self.superview.frame.size.width;
+	CGFloat contentWidth;
+    
+    // On iPad, get the width from the cell instead in order to account for margins
+    if (IS_IPHONE) {
+        contentWidth = self.frame.size.width;
+    } else {
+        contentWidth = self.superview.frame.size.width;
+    }
+    
     CGFloat innerContentWidth = contentWidth - RPVHorizontalInnerPadding * 2;
 	CGFloat nextY = RPVAuthorPadding;
 	CGFloat height = 0.0f;
@@ -490,12 +497,13 @@ const CGFloat RPVControlButtonBorderSize = 0.0f;
     
     // Update own frame
     CGRect ownFrame = self.frame;
-    ownFrame.size.width = contentWidth;
+    
     ownFrame.size.height = nextY + RPVMetaViewHeight + 1;
     self.frame = ownFrame;
 }
 
 - (void)reset {
+    self.post = nil;
     _avatarIsSet = NO;
     
 	_bylineLabel.text = nil;
@@ -790,7 +798,7 @@ const CGFloat RPVControlButtonBorderSize = 0.0f;
                 frame.size.height = roundf(width / ratio);
             } else {
                 frame.size.width = availableWidth;
-                frame.size.height = roundf(width * 0.66f);
+                frame.size.height = roundf(width * RPVMaxImageHeightPercentage);
             }
 		}
 		
