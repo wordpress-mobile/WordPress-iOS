@@ -272,7 +272,6 @@ const CGFloat RPVControlButtonBorderSize = 0.0f;
         // Needs an initial frame
         self.textContentView = [[DTAttributedTextContentView alloc] initWithFrame:self.frame];
         _textContentView.delegate = self;
-        _textContentView.autoresizingMask = UIViewAutoresizingFlexibleWidth;
         _textContentView.backgroundColor = [UIColor whiteColor];
         _textContentView.edgeInsets = UIEdgeInsetsMake(0.0f, RPVHorizontalInnerPadding, 0.0f, RPVHorizontalInnerPadding);
         _textContentView.shouldDrawImages = NO;
@@ -402,7 +401,7 @@ const CGFloat RPVControlButtonBorderSize = 0.0f;
 - (void)layoutSubviews {
 	[super layoutSubviews];
     
-	CGFloat contentWidth = self.frame.size.width;
+	CGFloat contentWidth = self.superview.frame.size.width;
     CGFloat innerContentWidth = contentWidth - RPVHorizontalInnerPadding * 2;
 	CGFloat nextY = RPVAuthorPadding;
 	CGFloat height = 0.0f;
@@ -446,6 +445,7 @@ const CGFloat RPVControlButtonBorderSize = 0.0f;
             [self.textContentView relayoutText];
             height = [self.textContentView suggestedFrameSizeToFitEntireStringConstraintedToWidth:contentWidth].height;
             CGRect textContainerFrame = _textContentView.frame;
+            textContainerFrame.size.width = contentWidth;
             textContainerFrame.size.height = height;
             textContainerFrame.origin.y = nextY;
             self.textContentView.frame = textContainerFrame;
