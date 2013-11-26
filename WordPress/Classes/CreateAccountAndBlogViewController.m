@@ -11,7 +11,6 @@
 #import <QuartzCore/QuartzCore.h>
 #import "SupportViewController.h"
 #import "WordPressComApi.h"
-#import "UIView+FormSheetHelpers.h"
 #import "WPNUXBackButton.h"
 #import "WPNUXMainButton.h"
 #import "WPWalkthroughTextField.h"

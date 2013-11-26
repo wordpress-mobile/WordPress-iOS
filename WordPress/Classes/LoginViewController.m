@@ -8,7 +8,6 @@
 
 #import <WPXMLRPC/WPXMLRPC.h>
 #import <QuartzCore/QuartzCore.h>
-#import "UIView+FormSheetHelpers.h"
 #import "LoginViewController.h"
 #import "CreateAccountAndBlogViewController.h"
 #import "NewAddUsersBlogViewController.h"
