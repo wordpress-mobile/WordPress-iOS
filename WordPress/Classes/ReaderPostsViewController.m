@@ -803,13 +803,14 @@ NSString *const RPVCDisplayedNativeFriendFinder = @"DisplayedNativeFriendFinder"
 	
 	_loadingMore = NO;
 	_hasMoreContent = YES;
-	[[(WPNoResultsView *)self.noResultsView titleLabel] setText:[self noResultsTitleText]];
+	[(WPNoResultsView *)self.noResultsView setTitleText:[self noResultsTitleText]];
 
 	[self.tableView setContentOffset:CGPointMake(0, 0) animated:NO];
 	[self resetResultsController];
 	[self.tableView reloadData];
     [self syncItems];
-	
+	[self configureNoResultsView];
+    
 	self.title = [[ReaderPost currentTopic] stringForKey:@"title"];
 
     if ([WordPressAppDelegate sharedWordPressApplicationDelegate].connectionAvailable == YES && ![self isSyncing] ) {

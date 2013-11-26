@@ -34,7 +34,6 @@ CGFloat const WPTableViewTopMargin = 40;
 - (void)swipeRight:(UISwipeGestureRecognizer *)recognizer;
 - (void)dismissModal:(id)sender;
 - (void)hideRefreshHeader;
-- (void)configureNoResultsView;
 
 @end
 

@@ -11,6 +11,12 @@
 #import "WPStyleGuide.h"
 #import "WPNUXUtility.h"
 
+@interface WPNoResultsView ()
+@property (nonatomic, copy) UILabel *titleLabel;
+@property (nonatomic, copy) UILabel *messageLabel;
+@property (nonatomic, copy) UIView *accessoryView;
+@end
+
 @implementation WPNoResultsView
 
 #pragma mark -
@@ -76,16 +82,14 @@
     // Setup title label
     _titleLabel = [[UILabel alloc] init];
     _titleLabel.numberOfLines = 0;
-    if (titleText.length > 0) {
-        _titleLabel.attributedText = [[NSAttributedString alloc] initWithString:titleText attributes:[WPNUXUtility titleAttributesWithColor:[WPStyleGuide whisperGrey]]];
-    }
+    [self setTitleText:titleText];
     [self addSubview:_titleLabel];
     
     // Setup message text
     _messageLabel = [[UILabel alloc] init];
     _messageLabel.font = [WPStyleGuide regularTextFont];
     _messageLabel.textColor = [WPStyleGuide whisperGrey];
-    _messageLabel.text = messageText;
+    [self setMessageText:messageText];
     _messageLabel.numberOfLines = 0;
     _messageLabel.textAlignment = NSTextAlignmentCenter;
     [self addSubview:_messageLabel];
@@ -94,6 +98,18 @@
     // Register for orientation changes
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(orientationDidChange:) name:UIDeviceOrientationDidChangeNotification object:nil];
     
+    [self setNeedsLayout];
+}
+
+- (void)setTitleText:(NSString *)title {
+    if (title.length > 0) {
+        _titleLabel.attributedText = [[NSAttributedString alloc] initWithString:title attributes:[WPNUXUtility titleAttributesWithColor:[WPStyleGuide whisperGrey]]];
+    }
+    [self setNeedsLayout];
+}
+
+- (void)setMessageText:(NSString *)message {
+    _messageLabel.text = message;
     [self setNeedsLayout];
 }
 

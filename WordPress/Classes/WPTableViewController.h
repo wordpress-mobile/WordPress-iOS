@@ -19,6 +19,7 @@
 - (NSString *)noResultsTitleText;
 - (NSString *)noResultsMessageText;
 - (UIView *)noResultsAccessoryView;
+- (void)configureNoResultsView;
 
 extern CGFloat const WPTableViewTopMargin;
 

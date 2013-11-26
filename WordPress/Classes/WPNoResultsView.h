@@ -8,15 +8,15 @@
 
 #import <UIKit/UIKit.h>
 
-@interface WPNoResultsView : UIView 
-
-@property (nonatomic, copy) UILabel *titleLabel;
-@property (nonatomic, copy) UILabel *messageLabel;
-@property (nonatomic, copy) UIView *accessoryView;
+@interface WPNoResultsView : UIView
 
 + (WPNoResultsView *)noResultsViewWithTitle:(NSString *)titleText message:(NSString *)messageText accessoryView:(UIView *)accessoryView;
 
 - (void)setupWithTitle:(NSString *)titleText message:(NSString *)messageText accessoryView:(UIView *)accessoryView;
 - (void)showInView:(UIView *)view;
 - (void)centerInSuperview;
+
+- (void)setTitleText:(NSString *)title;
+- (void)setMessageText:(NSString *)message;
+
 @end
