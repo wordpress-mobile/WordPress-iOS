@@ -94,8 +94,10 @@ NSString *const RPVCDisplayedNativeFriendFinder = @"DisplayedNativeFriendFinder"
     CGFloat maxWidth = self.tableView.bounds.size.width;
     if (IS_IPHONE) {
         maxWidth = MAX(self.tableView.bounds.size.width, self.tableView.bounds.size.height);
+    } else {
+        maxWidth *= (1 - 2 * WPTableViewCellMarginPercentage);
     }
-    maxWidth -= 20.f; // Container frame
+
     CGFloat maxHeight = maxWidth * RPVCMaxImageHeightPercentage;
     _featuredImageSource = [[WPTableImageSource alloc] initWithMaxSize:CGSizeMake(maxWidth, maxHeight)];
     _featuredImageSource.delegate = self;
@@ -173,7 +175,6 @@ NSString *const RPVCDisplayedNativeFriendFinder = @"DisplayedNativeFriendFinder"
     [self performSelector:@selector(showFriendFinderNudgeView:) withObject:self afterDelay:3.0];
     	
 	self.title = [[[ReaderPost currentTopic] objectForKey:@"title"] capitalizedString];
-    [self loadImagesForVisibleRows];
 	
 	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(handleKeyboardDidShow:) name:UIKeyboardWillShowNotification object:nil];
 	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(handleKeyboardWillHide:) name:UIKeyboardWillHideNotification object:nil];
@@ -456,20 +457,22 @@ NSString *const RPVCDisplayedNativeFriendFinder = @"DisplayedNativeFriendFinder"
 
 - (void)scrollViewDidScroll:(UIScrollView *)scrollView {
     CGFloat offset = self.tableView.contentOffset.y;
+    
+    // Disable fast scrolling detection for now
     // We just take a diff from the last known offset, as the approximation is good enough
-    CGFloat velocity = fabsf(offset - _lastOffset);
-    if (velocity > RPVCScrollingFastVelocityThreshold && self.isScrolling) {
-        _isScrollingFast = YES;
-    } else {
-        _isScrollingFast = NO;
-    }
+//    CGFloat velocity = fabsf(offset - _lastOffset);
+//    if (velocity > RPVCScrollingFastVelocityThreshold && self.isScrolling) {
+//        _isScrollingFast = YES;
+//    } else {
+//        _isScrollingFast = NO;
+//    }
     _lastOffset = offset;
 }
 
 - (void)scrollViewDidEndDecelerating:(UIScrollView *)scrollView {
     [super scrollViewDidEndDecelerating:scrollView];
     _isScrollingFast = NO;
-    [self loadImagesForVisibleRows];
+    //[self loadImagesForVisibleRows];
 
 	NSIndexPath *selectedIndexPath = [self.tableView indexPathForSelectedRow];
 	if (!selectedIndexPath)
@@ -578,6 +581,7 @@ NSString *const RPVCDisplayedNativeFriendFinder = @"DisplayedNativeFriendFinder"
 	cell.accessoryType = UITableViewCellAccessoryNone;
 	
 	ReaderPost *post = (ReaderPost *)[self.resultsController objectAtIndexPath:indexPath];
+
 	[cell configureCell:post];
     [self setImageForPost:post forCell:cell indexPath:indexPath];
     
@@ -613,8 +617,13 @@ NSString *const RPVCDisplayedNativeFriendFinder = @"DisplayedNativeFriendFinder"
     if (!imageURL)
         return;
     
-    CGSize imageSize = cell.postView.cellImageView.bounds.size;
-    UIImage *image = [self imageForURL:imageURL size: imageSize];
+    // We know the width, but not the height; let the image loader figure that out
+    CGFloat imageWidth = self.tableView.frame.size.width;
+    if (IS_IPAD) {
+        imageWidth *= (1 - 2 * WPTableViewCellMarginPercentage);
+    }
+    CGSize imageSize = CGSizeMake(imageWidth, 0);
+    UIImage *image = [self imageForURL:imageURL size:imageSize];
     
     if (image) {
         [cell.postView setFeaturedImage:image];
@@ -757,6 +766,10 @@ NSString *const RPVCDisplayedNativeFriendFinder = @"DisplayedNativeFriendFinder"
 #pragma mark -
 #pragma mark TableView Methods
 
+- (CGFloat)tableView:(UITableView *)tableView estimatedHeightForRowAtIndexPath:(NSIndexPath *)indexPath {
+     return [ReaderPostTableViewCell cellHeightForPost:[self.resultsController objectAtIndexPath:indexPath] withWidth:self.tableView.bounds.size.width];
+}
+
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
     return [ReaderPostTableViewCell cellHeightForPost:[self.resultsController objectAtIndexPath:indexPath] withWidth:self.tableView.bounds.size.width];
 }
@@ -797,7 +810,7 @@ NSString *const RPVCDisplayedNativeFriendFinder = @"DisplayedNativeFriendFinder"
     // Pass the image forward
 	ReaderPost *post = [self.resultsController.fetchedObjects objectAtIndex:indexPath.row];
     ReaderPostTableViewCell *cell = (ReaderPostTableViewCell *)[self.tableView cellForRowAtIndexPath:indexPath];
-    CGSize imageSize = cell.postView.cellImageView.frame.size;
+    CGSize imageSize = cell.postView.cellImageView.image.size;
     UIImage *image = [_featuredImageSource imageForURL:post.featuredImageURL withSize:imageSize];
 
 	self.detailController = [[ReaderPostDetailViewController alloc] initWithPost:post featuredImage:image];
@@ -806,14 +819,6 @@ NSString *const RPVCDisplayedNativeFriendFinder = @"DisplayedNativeFriendFinder"
     
     [WPMobileStats trackEventForWPCom:StatsEventReaderOpenedArticleDetails];
     [WPMobileStats pingWPComStatsEndpoint:@"details_page"];
-}
-
-- (void)tableView:(UITableView *)tableView willDisplayCell:(UITableViewCell *)aCell forRowAtIndexPath:(NSIndexPath *)indexPath {
-	[super tableView:tableView willDisplayCell:aCell forRowAtIndexPath:indexPath];
-
-	ReaderPostTableViewCell *cell = (ReaderPostTableViewCell *)aCell;
-	ReaderPost *post = (ReaderPost *)[self.resultsController objectAtIndexPath:indexPath];
-    [self setImageForPost:post forCell:cell indexPath:indexPath];
 }
 
 
