@@ -48,9 +48,6 @@
     BOOL _userDefinedSiteAddress;
     CGFloat _keyboardOffset;
     NSString *_defaultSiteUrl;
-        
-    CGFloat _viewWidth;
-    CGFloat _viewHeight;
     
     NSDictionary *_currentLanguage;
 }
@@ -86,8 +83,6 @@ CGFloat const CreateAccountAndBlogButtonHeight = 41.0;
     
     [WPMobileStats trackEventForSelfHostedAndWPCom:StatsEventNUXCreateAccountOpened];
     
-    _viewWidth = [self.view formSheetViewWidth];
-    _viewHeight = [self.view formSheetViewHeight];
     self.view.backgroundColor = [WPNUXUtility backgroundColor];
         
     [self initializeView];
@@ -102,6 +97,7 @@ CGFloat const CreateAccountAndBlogButtonHeight = 41.0;
 {
     [super viewWillAppear:animated];
     [self.navigationController setNavigationBarHidden:YES animated:animated];
+    [self layoutControls];
 }
 
 - (NSUInteger)supportedInterfaceOrientations {
@@ -109,6 +105,10 @@ CGFloat const CreateAccountAndBlogButtonHeight = 41.0;
         return UIInterfaceOrientationMaskPortrait;
     
     return UIInterfaceOrientationMaskAll;
+}
+
+- (void)willAnimateRotationToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation duration:(NSTimeInterval)duration {
+    [self layoutControls];
 }
 
 #pragma mark - UITextField Delegate methods
@@ -343,11 +343,14 @@ CGFloat const CreateAccountAndBlogButtonHeight = 41.0;
 {
     CGFloat x,y;
     
+    CGFloat viewWidth = CGRectGetWidth(self.view.bounds);
+    CGFloat viewHeight = CGRectGetHeight(self.view.bounds);
+    
     // Layout Help Button
     UIImage *helpButtonImage = [UIImage imageNamed:@"btn-help"];
-    x = _viewWidth - helpButtonImage.size.width - CreateAccountAndBlogStandardOffset;
+    x = viewWidth - helpButtonImage.size.width - CreateAccountAndBlogStandardOffset;
     y = 0.5 * CreateAccountAndBlogStandardOffset;
-    if (IS_IOS7 && IS_IPHONE) {
+    if (IS_IOS7) {
         y += CreateAccountAndBlogiOS7StatusBarOffset;
     }
     _helpButton.frame = CGRectMake(x, y, helpButtonImage.size.width, helpButtonImage.size.height);
@@ -355,7 +358,7 @@ CGFloat const CreateAccountAndBlogButtonHeight = 41.0;
     // Layout Cancel Button
     x = 0;
     y = 0.5 * CreateAccountAndBlogStandardOffset;
-    if (IS_IOS7 && IS_IPHONE) {
+    if (IS_IOS7) {
         y += CreateAccountAndBlogiOS7StatusBarOffset;
     }
     _cancelButton.frame = CGRectMake(x, y, CGRectGetWidth(_cancelButton.frame), CGRectGetHeight(_cancelButton.frame));
@@ -365,27 +368,27 @@ CGFloat const CreateAccountAndBlogButtonHeight = 41.0;
     
     // Layout Title
     CGSize titleSize = [_titleLabel suggestedSizeForWidth:CreateAccountAndBlogMaxTextWidth];
-    x = (_viewWidth - titleSize.width)/2.0;
+    x = (viewWidth - titleSize.width)/2.0;
     y = 0;
     _titleLabel.frame = CGRectIntegral(CGRectMake(x, y, titleSize.width, titleSize.height));
     
     // Layout Email
-    x = (_viewWidth - CreateAccountAndBlogTextFieldWidth)/2.0;
+    x = (viewWidth - CreateAccountAndBlogTextFieldWidth)/2.0;
     y = CGRectGetMaxY(_titleLabel.frame) + CreateAccountAndBlogStandardOffset;
     _emailField.frame = CGRectIntegral(CGRectMake(x, y, CreateAccountAndBlogTextFieldWidth, CreateAccountAndBlogTextFieldHeight));
 
     // Layout Username
-    x = (_viewWidth - CreateAccountAndBlogTextFieldWidth)/2.0;
+    x = (viewWidth - CreateAccountAndBlogTextFieldWidth)/2.0;
     y = CGRectGetMaxY(_emailField.frame) - 1;
     _usernameField.frame = CGRectIntegral(CGRectMake(x, y, CreateAccountAndBlogTextFieldWidth, CreateAccountAndBlogTextFieldHeight));
 
     // Layout Password
-    x = (_viewWidth - CreateAccountAndBlogTextFieldWidth)/2.0;
+    x = (viewWidth - CreateAccountAndBlogTextFieldWidth)/2.0;
     y = CGRectGetMaxY(_usernameField.frame) - 1;
     _passwordField.frame = CGRectIntegral(CGRectMake(x, y, CreateAccountAndBlogTextFieldWidth, CreateAccountAndBlogTextFieldHeight));
     
     // Layout Site Address
-    x = (_viewWidth - CreateAccountAndBlogTextFieldWidth)/2.0;
+    x = (viewWidth - CreateAccountAndBlogTextFieldWidth)/2.0;
     y = CGRectGetMaxY(_passwordField.frame) - 1;
     _siteAddressField.frame = CGRectIntegral(CGRectMake(x, y, CreateAccountAndBlogTextFieldWidth, CreateAccountAndBlogTextFieldHeight));
     
@@ -397,7 +400,7 @@ CGFloat const CreateAccountAndBlogButtonHeight = 41.0;
     _siteAddressWPComLabel.frame = CGRectMake(_siteAddressField.frame.size.width - wordPressComLabelSize.width - 5, (_siteAddressField.frame.size.height - wordPressComLabelSize.height) / 2 - 1, wordPressComLabelSize.width, wordPressComLabelSize.height);
     
     // Layout Create Account Button
-    x = (_viewWidth - CreateAccountAndBlogButtonWidth)/2.0;
+    x = (viewWidth - CreateAccountAndBlogButtonWidth)/2.0;
     y = CGRectGetMaxY(_siteAddressField.frame) + CreateAccountAndBlogStandardOffset;
     _createAccountButton.frame = CGRectIntegral(CGRectMake(x, y, CreateAccountAndBlogButtonWidth, CreateAccountAndBlogButtonHeight));
 
@@ -409,12 +412,12 @@ CGFloat const CreateAccountAndBlogButtonHeight = 41.0;
         _TOSLabel.font = [WPNUXUtility tosLabelSmallerFont];
         TOSLabelSize = [_TOSLabel.text boundingRectWithSize:CGSizeMake(CreateAccountAndBlogMaxTextWidth, CGFLOAT_MAX) options:NSStringDrawingUsesLineFragmentOrigin attributes:@{NSFontAttributeName: _TOSLabel.font} context:nil].size;
     }
-    x = (_viewWidth - TOSLabelSize.width)/2.0;
+    x = (viewWidth - TOSLabelSize.width)/2.0;
     y = CGRectGetMaxY(_createAccountButton.frame) + 0.5 * CreateAccountAndBlogStandardOffset;
     _TOSLabel.frame = CGRectIntegral(CGRectMake(x, y, TOSLabelSize.width, TOSLabelSize.height));
     
     NSArray *controls = @[_titleLabel, _emailField, _usernameField, _passwordField, _TOSLabel, _createAccountButton, _siteAddressField];
-    [WPNUXUtility centerViews:controls withStartingView:_titleLabel andEndingView:_TOSLabel forHeight:_viewHeight];
+    [WPNUXUtility centerViews:controls withStartingView:_titleLabel andEndingView:_TOSLabel forHeight:viewHeight];
 }
 
 

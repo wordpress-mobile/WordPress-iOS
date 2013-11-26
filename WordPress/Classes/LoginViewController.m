@@ -43,8 +43,6 @@
     UILabel *_statusLabel;
     
     // Measurements
-    CGFloat _viewWidth;
-    CGFloat _viewHeight;
     CGFloat _keyboardOffset;
     
     BOOL _userIsDotCom;
@@ -76,9 +74,6 @@ CGFloat const GeneralWalkthroughiOS7StatusBarOffset = 20.0;
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-    
-    _viewWidth = [self.view formSheetViewWidth];
-    _viewHeight = [self.view formSheetViewHeight];
         
     self.view.backgroundColor = [WPNUXUtility backgroundColor];
     _userIsDotCom = YES;
@@ -96,6 +91,7 @@ CGFloat const GeneralWalkthroughiOS7StatusBarOffset = 20.0;
 {
     [super viewWillAppear:animated];
     [self.navigationController setNavigationBarHidden:YES animated:animated];
+    [self layoutControls];
 }
 
 - (NSUInteger)supportedInterfaceOrientations {
@@ -103,6 +99,11 @@ CGFloat const GeneralWalkthroughiOS7StatusBarOffset = 20.0;
         return UIInterfaceOrientationMaskPortrait;
     
     return UIInterfaceOrientationMaskAll;
+}
+
+- (void)willAnimateRotationToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation duration:(NSTimeInterval)duration {
+    
+    [self layoutControls];
 }
 
 #pragma mark - UITextField delegate methods
@@ -416,6 +417,7 @@ CGFloat const GeneralWalkthroughiOS7StatusBarOffset = 20.0;
     if (_toggleSignInForm == nil) {
         _toggleSignInForm = [[WPNUXSecondaryButton alloc] init];
         [_toggleSignInForm addTarget:self action:@selector(toggleSignInformAction:) forControlEvents:UIControlEventTouchUpInside];
+        _toggleSignInForm.autoresizingMask = UIViewAutoresizingFlexibleLeftMargin | UIViewAutoresizingFlexibleRightMargin | UIViewAutoresizingFlexibleTopMargin;
         [_mainView addSubview:_toggleSignInForm];
     }
     NSString *toggleTitle = _userIsDotCom ? @"Add Self-Hosted Site" : @"Sign in to WordPress.com";
@@ -426,6 +428,7 @@ CGFloat const GeneralWalkthroughiOS7StatusBarOffset = 20.0;
         _skipToCreateAccount = [[WPNUXSecondaryButton alloc] init];
         [_skipToCreateAccount setTitle:NSLocalizedString(@"Create Account", nil) forState:UIControlStateNormal];
         [_skipToCreateAccount addTarget:self action:@selector(clickedSkipToCreate:) forControlEvents:UIControlEventTouchUpInside];
+        _skipToCreateAccount.autoresizingMask = UIViewAutoresizingFlexibleLeftMargin | UIViewAutoresizingFlexibleRightMargin | UIViewAutoresizingFlexibleTopMargin;
         [_mainView addSubview:_skipToCreateAccount];
     }
 }
@@ -434,54 +437,57 @@ CGFloat const GeneralWalkthroughiOS7StatusBarOffset = 20.0;
 {
     CGFloat x,y;
     
+    CGFloat viewWidth = CGRectGetWidth(self.view.bounds);
+    CGFloat viewHeight = CGRectGetHeight(self.view.bounds);
+    
     UIImage *infoButtonImage = [UIImage imageNamed:@"btn-about"];
     y = 0;
     if (IS_IOS7 && IS_IPHONE) {
         y = GeneralWalkthroughiOS7StatusBarOffset;
     }
-    _helpButton.frame = CGRectMake(_viewWidth - infoButtonImage.size.width, y, infoButtonImage.size.width, infoButtonImage.size.height);
+    _helpButton.frame = CGRectMake(viewWidth - infoButtonImage.size.width, y, infoButtonImage.size.width, infoButtonImage.size.height);
     
     
     CGFloat heightOfControls = CGRectGetHeight(_icon.frame) + GeneralWalkthroughStandardOffset + (_userIsDotCom ? 2 : 3) * GeneralWalkthroughTextFieldHeight + GeneralWalkthroughStandardOffset + GeneralWalkthroughButtonHeight;
-    CGFloat startingYForCenteredControls = floorf((_viewHeight - 2 * GeneralWalkthroughSecondaryButtonHeight - heightOfControls)/2.0);
+    CGFloat startingYForCenteredControls = floorf((viewHeight - 2 * GeneralWalkthroughSecondaryButtonHeight - heightOfControls)/2.0);
     
-    x = (_viewWidth - CGRectGetWidth(_icon.frame))/2.0;
+    x = (viewWidth - CGRectGetWidth(_icon.frame))/2.0;
     y = startingYForCenteredControls;
     _icon.frame = CGRectIntegral(CGRectMake(x, y, CGRectGetWidth(_icon.frame), CGRectGetHeight(_icon.frame)));
 
     // Layout Username
-    x = (_viewWidth - GeneralWalkthroughTextFieldWidth)/2.0;
+    x = (viewWidth - GeneralWalkthroughTextFieldWidth)/2.0;
     y = CGRectGetMaxY(_icon.frame) + GeneralWalkthroughStandardOffset;
     _usernameText.frame = CGRectIntegral(CGRectMake(x, y, GeneralWalkthroughTextFieldWidth, GeneralWalkthroughTextFieldHeight));
 
     // Layout Password
-    x = (_viewWidth - GeneralWalkthroughTextFieldWidth)/2.0;
+    x = (viewWidth - GeneralWalkthroughTextFieldWidth)/2.0;
     y = CGRectGetMaxY(_usernameText.frame) - 1;
     _passwordText.frame = CGRectIntegral(CGRectMake(x, y, GeneralWalkthroughTextFieldWidth, GeneralWalkthroughTextFieldHeight));
 
     // Layout Site URL
-    x = (_viewWidth - GeneralWalkthroughTextFieldWidth)/2.0;
+    x = (viewWidth - GeneralWalkthroughTextFieldWidth)/2.0;
     y = _userIsDotCom ? CGRectGetMaxY(_usernameText.frame) - 1 : CGRectGetMaxY(_passwordText.frame);
     _siteUrlText.frame = CGRectIntegral(CGRectMake(x, y, GeneralWalkthroughTextFieldWidth, GeneralWalkthroughTextFieldHeight));
 
     // Layout Sign in Button
-    x = (_viewWidth - GeneralWalkthroughButtonWidth) / 2.0;;
+    x = (viewWidth - GeneralWalkthroughButtonWidth) / 2.0;;
     y = CGRectGetMaxY(_siteUrlText.frame) + GeneralWalkthroughStandardOffset;
     _signInButton.frame = CGRectMake(x, y, GeneralWalkthroughButtonWidth, GeneralWalkthroughButtonHeight);
     
     // Layout Skip to Create Account Button
     x = GeneralWalkthroughStandardOffset;
-    x = (_viewWidth - GeneralWalkthroughButtonWidth)/2.0;
-    y = _viewHeight - GeneralWalkthroughStandardOffset - GeneralWalkthroughSecondaryButtonHeight;
+    x = (viewWidth - GeneralWalkthroughButtonWidth)/2.0;
+    y = viewHeight - GeneralWalkthroughStandardOffset - GeneralWalkthroughSecondaryButtonHeight;
     _skipToCreateAccount.frame = CGRectMake(x, y, GeneralWalkthroughButtonWidth, GeneralWalkthroughSecondaryButtonHeight);
     
     // Layout Status Label
-    x =  (_viewWidth - GeneralWalkthroughMaxTextWidth) / 2.0;
+    x =  (viewWidth - GeneralWalkthroughMaxTextWidth) / 2.0;
     y = CGRectGetMaxY(_signInButton.frame) + 0.5 * GeneralWalkthroughStandardOffset;
     _statusLabel.frame = CGRectMake(x, y, GeneralWalkthroughMaxTextWidth, _statusLabel.font.lineHeight);
     
     // Layout Toggle Button
-    x =  (_viewWidth - GeneralWalkthroughMaxTextWidth) / 2.0;
+    x =  (viewWidth - GeneralWalkthroughMaxTextWidth) / 2.0;
     y = CGRectGetMinY(_skipToCreateAccount.frame) - 0.5 * GeneralWalkthroughStandardOffset - 33;
     _toggleSignInForm.frame = CGRectMake(x, y, GeneralWalkthroughMaxTextWidth, 33);
 }
