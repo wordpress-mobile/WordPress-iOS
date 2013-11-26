@@ -165,8 +165,9 @@
 	
 	// We have to manually update the indentation of the content view? wtf.
 	CGRect frame = self.contentView.frame;
-	frame.origin.x += (self.indentationWidth * self.indentationLevel);
-	frame.size.width -= frame.origin.x;
+    CGFloat indent = self.indentationWidth * self.indentationLevel;
+	frame.origin.x += indent;
+	frame.size.width -= indent;
 	self.contentView.frame = frame;
 	
 	[self.cellImageView setFrame:CGRectMake(10.0f, 10.0f, 20.0f, 20.0f)];
