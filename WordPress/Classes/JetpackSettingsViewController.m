@@ -14,7 +14,6 @@
 #import "WPNUXUtility.h"
 #import "WPNUXMainButton.h"
 #import "WPWalkthroughTextField.h"
-#import "UIView+FormSheetHelpers.h"
 #import "WPNUXSecondaryButton.h"
 #import "UILabel+SuggestSize.h"
 
