@@ -73,15 +73,13 @@ NSString *const WordPressComApiErrorMessageKey = @"WordPressComApiErrorMessageKe
 @interface WordPressComApi ()
 @property (readwrite, nonatomic, strong) NSString *username;
 @property (readwrite, nonatomic, strong) NSString *password;
-@property (nonatomic, strong) NSString *authToken;
+@property (readwrite, nonatomic, strong) NSString *authToken;
 
 - (void)clearWpcomCookies;
 
 @end
 
-@implementation WordPressComApi {
-    NSString *_authToken;
-}
+@implementation WordPressComApi
 
 + (WordPressComApi *)sharedApi {
     static WordPressComApi *_sharedApi = nil;
@@ -244,7 +242,7 @@ NSString *const WordPressComApiErrorMessageKey = @"WordPressComApiErrorMessageKe
 }
 
 - (BOOL)hasCredentials {
-    return _authToken.length > 0;
+    return self.authToken.length > 0;
 }
 
 - (void)invalidateOAuth2Token {
@@ -733,10 +731,6 @@ NSString *const WordPressComApiErrorMessageKey = @"WordPressComApiErrorMessageKe
 /* HACK ENDS */
 
 #pragma mark - Oauth methods
-
-- (NSString *)authToken {
-    return _authToken;
-}
 
 - (void)setAuthToken:(NSString *)authToken {
     _authToken = authToken;

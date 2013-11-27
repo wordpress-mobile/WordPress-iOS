@@ -37,6 +37,7 @@ extern NSString *const WordPressComApiErrorMessageKey;
 @interface WordPressComApi : AFHTTPClient
 @property (nonatomic,readonly,strong) NSString *username;
 @property (nonatomic,readonly,strong) NSString *password;
+@property (nonatomic, readonly, strong) NSString *authToken;
 
 + (WordPressComApi *)sharedApi;
 
@@ -131,7 +132,6 @@ extern NSString *const WordPressComApiErrorMessageKey;
 /// @name OAuth info
 ///-----------------
 
-- (NSString *)authToken;
 + (NSString *)WordPressAppId;
 + (NSString *)WordPressAppSecret;
 
