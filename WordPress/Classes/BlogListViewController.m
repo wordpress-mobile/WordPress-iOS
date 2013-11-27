@@ -233,14 +233,14 @@ CGFloat const blavatarImageSize = 50.f;
 
 - (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section {
     // No top margin on iPhone
-    if (section == [self sectionForAddSite]) {
+    if ([self hasDotComAndSelfHosted]) {
+        return 40.0;
+    } else {
         return 20.0;
     }
-    if (IS_IPHONE && section == 0) {
-        return 36.0;
-    }
-
-    return 40.0;
+}
+- (CGFloat)tableView:(UITableView *)tableView heightForFooterInSection:(NSInteger)section {
+    return 1.0;
 }
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
