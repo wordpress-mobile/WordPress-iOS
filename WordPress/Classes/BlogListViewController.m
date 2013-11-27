@@ -17,12 +17,11 @@
 #import "ContextManager.h"
 #import "Blog.h"
 #import "WPAccount.h"
-#import "FakePushTransitionAnimator.h"
 #import "ManageBlogsViewController.h"
 
 CGFloat const blavatarImageSize = 50.f;
 
-@interface BlogListViewController () <UIViewControllerTransitioningDelegate>
+@interface BlogListViewController ()
 @property (nonatomic, strong) NSFetchedResultsController *resultsController;
 @property (nonatomic, strong) UIBarButtonItem *settingsButton;
 
@@ -259,14 +258,13 @@ CGFloat const blavatarImageSize = 50.f;
 
         LoginViewController *loginViewController = [[LoginViewController alloc] init];
         if (![WPAccount defaultWordPressComAccount]) {
+            
             loginViewController.prefersSelfHosted = YES;
         }
         loginViewController.dismissBlock = ^{
             [self dismissViewControllerAnimated:YES completion:nil];
         };
         UINavigationController *loginNavigationController = [[UINavigationController alloc] initWithRootViewController:loginViewController];
-        loginNavigationController.transitioningDelegate = self;
-        loginNavigationController.modalTransitionStyle = UIModalPresentationCustom;
         [self presentViewController:loginNavigationController animated:YES completion:nil];
     }
 }
@@ -381,19 +379,6 @@ CGFloat const blavatarImageSize = 50.f;
         return [NSString stringWithFormat:NSLocalizedString(@"%@'s blogs", @"Section header for WordPress.com blogs"), [[WPAccount defaultWordPressComAccount] username]];
     }
     return NSLocalizedString(@"Self Hosted", @"Section header for self hosted blogs");
-}
-
-#pragma mark - UIViewControllerTransitioningDelegate
-
-- (id <UIViewControllerAnimatedTransitioning>)animationControllerForPresentedController:(UIViewController *)presented presentingController:(UIViewController *)presenting sourceController:(UIViewController *)source {
-    FakePushTransitionAnimator *animator = [FakePushTransitionAnimator new];
-    animator.presenting = YES;
-    return animator;
-}
-
-- (id <UIViewControllerAnimatedTransitioning>)animationControllerForDismissedController:(UIViewController *)dismissed {
-    FakePushTransitionAnimator *animator = [FakePushTransitionAnimator new];
-    return animator;
 }
 
 @end

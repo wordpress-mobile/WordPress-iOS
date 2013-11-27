@@ -42,7 +42,7 @@
     WPWalkthroughTextField *_passwordText;
     WPWalkthroughTextField *_siteUrlText;
     WPNUXMainButton *_signInButton;
-    WPNUXBackButton *_cancelButton;
+    WPNUXSecondaryButton *_cancelButton;
 
     UILabel *_statusLabel;
     
@@ -413,7 +413,7 @@ CGFloat const GeneralWalkthroughiOS7StatusBarOffset = 20.0;
 
     // Add Cancel Button
     if (self.dismissBlock && _cancelButton == nil) {
-        _cancelButton = [[WPNUXBackButton alloc] init];
+        _cancelButton = [[WPNUXSecondaryButton alloc] init];
         [_cancelButton setTitle:NSLocalizedString(@"Cancel", nil) forState:UIControlStateNormal];
         [_cancelButton addTarget:self action:@selector(cancelButtonAction:) forControlEvents:UIControlEventTouchUpInside];
         [_cancelButton sizeToFit];
