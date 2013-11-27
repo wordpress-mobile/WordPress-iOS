@@ -239,7 +239,11 @@ CGFloat const blavatarImageSize = 50.f;
     }
 }
 - (CGFloat)tableView:(UITableView *)tableView heightForFooterInSection:(NSInteger)section {
-    return 1.0;
+    if (section == [self sectionForAddSite]) {
+        return UITableViewAutomaticDimension;
+    } else {
+        return 1.0;        
+    }
 }
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
