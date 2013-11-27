@@ -19,6 +19,7 @@
 @implementation PagesViewController
 
 - (void)viewDidLoad {
+    [super viewDidLoad];
     self.title = NSLocalizedString(@"Pages", @"");
 }
 
