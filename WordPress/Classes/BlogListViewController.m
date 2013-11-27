@@ -97,8 +97,6 @@ CGFloat const blavatarImageSize = 50.f;
     SettingsViewController *settingsViewController = [[SettingsViewController alloc] initWithStyle:UITableViewStyleGrouped];
     UINavigationController *aNavigationController = [[UINavigationController alloc] initWithRootViewController:settingsViewController];
     aNavigationController.navigationBar.translucent = NO;
-    if (IS_IPAD)
-        aNavigationController.modalTransitionStyle = UIModalTransitionStyleCrossDissolve;
     aNavigationController.modalPresentationStyle = UIModalPresentationFormSheet;
     
     [self.navigationController presentViewController:aNavigationController animated:YES completion:nil];
