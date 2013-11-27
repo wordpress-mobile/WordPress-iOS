@@ -13,6 +13,7 @@
 static NSString * const CellIdentifier = @"ManageBlogsCell";
 
 @implementation ManageBlogsViewController {
+    WPAccount *_account;
     NSArray *_blogs;
     UIActivityIndicatorView *_activityIndicator;
 }
