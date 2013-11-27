@@ -169,6 +169,8 @@ NSString *const RPVCDisplayedNativeFriendFinder = @"DisplayedNativeFriendFinder"
     if (selectedIndexPath) {
         [self.tableView deselectRowAtIndexPath:selectedIndexPath animated:YES];
     }
+    
+    //[self resizeTableViewForImagePreloading];
 }
 
 - (void)viewWillDisappear:(BOOL)animated {
@@ -179,6 +181,7 @@ NSString *const RPVCDisplayedNativeFriendFinder = @"DisplayedNativeFriendFinder"
 
 - (void)didRotateFromInterfaceOrientation:(UIInterfaceOrientation)fromInterfaceOrientation {
     [super didRotateFromInterfaceOrientation:fromInterfaceOrientation];
+    //[self resizeTableViewForImagePreloading];
 }
 
 
@@ -186,14 +189,14 @@ NSString *const RPVCDisplayedNativeFriendFinder = @"DisplayedNativeFriendFinder"
 
 - (void)resizeTableViewForImagePreloading {
     // Use a trick to preload more images by making the table view longer
-//    CGRect rect = self.tableView.bounds;
-//    rect.origin.y = 0;
-//    rect.size.height = [[UIScreen mainScreen] bounds].size.height + RPVCExtraTableViewHeight;
-//    self.tableView.bounds = rect;
-//    UIEdgeInsets inset = self.tableView.contentInset;
-//    inset.bottom = RPVCExtraTableViewHeight + [self tabBarSize].height;
-//    NSLog(@"Reader new frame height %f inset %f", rect.size.height, inset.bottom);
-//    self.tableView.contentInset = inset;
+    CGRect rect = self.tableView.frame;
+    rect.size.height = [[UIScreen mainScreen] bounds].size.height + RPVCExtraTableViewHeight;
+    self.tableView.frame = rect;
+    UIEdgeInsets inset = self.tableView.contentInset;
+    inset.bottom = RPVCExtraTableViewHeight + [self tabBarSize].height;
+    NSLog(@"Reader new frame height %f inset %f", rect.size.height, inset.bottom);
+    self.tableView.contentInset = inset;
+    [self.tableView layoutIfNeeded];
 }
 
 - (void)setTitle:(NSString *)title {
