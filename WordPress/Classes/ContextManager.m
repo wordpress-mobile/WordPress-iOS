@@ -223,10 +223,6 @@ static ContextManager *instance;
 			DDLogError(@"Unresolved error %@, %@", error, [error userInfo]);
 			abort();
 		}
-        
-        // If everything went wrong and we lost the DB, we sign out and simulate a fresh install
-        // It's equally annoying, but it's more confusing to stay logged in to the reader having lost all the blogs in the app
-        [[WordPressComApi sharedApi] signOut];
     }
     
     return _persistentStoreCoordinator;
