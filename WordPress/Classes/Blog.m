@@ -15,6 +15,7 @@
 #import "NSURL+IDN.h"
 #import "NSString+XMLExtensions.h"
 #import "WPError.h"
+#import "WordPressComApi.h"
 
 @interface Blog (PrivateMethods)
 - (WPXMLRPCRequestOperation *)operationForOptionsWithSuccess:(void (^)())success failure:(void (^)(NSError *error))failure;
@@ -596,6 +597,7 @@
         // Enable compression for wp.com only, as some self hosted have connection issues
         if (self.isWPcom) {
             [_api setDefaultHeader:@"gzip, deflate" value:@"Accept-Encoding"];
+            [_api setAuthorizationHeaderWithToken:[WordPressComApi sharedApi].authToken];
         }
     }
     return _api;
@@ -611,7 +613,7 @@
             return;
 
         self.options = [NSDictionary dictionaryWithDictionary:(NSDictionary *)responseObject];
-        NSString *minimumVersion = @"3.1";
+        NSString *minimumVersion = @"3.5";
         float version = [[self version] floatValue];
         if (version < [minimumVersion floatValue]) {
             if (self.lastUpdateWarning == nil || [self.lastUpdateWarning floatValue] < [minimumVersion floatValue]) {
