@@ -154,7 +154,7 @@ CGFloat const blavatarImageViewSize = 43.f;
 }
 
 - (BOOL)supportsManageBlogs {
-    return [[[WPAccount defaultWordPressComAccount] blogs] count] > 0;
+    return [[[WPAccount defaultWordPressComAccount] blogs] count] > 1;
 }
 
 #pragma mark - Table view data source
