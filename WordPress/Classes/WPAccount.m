@@ -157,13 +157,21 @@ NSString * const WPAccountDefaultWordPressComAccountChangedNotification = @"WPAc
     blog.blogName = [[blogInfo objectForKey:@"blogName"] stringByDecodingXMLCharacters];
     blog.xmlrpc = [blogInfo objectForKey:@"xmlrpc"];
 
+    DDLogInfo(@"Created blog: %@", blog);
+
     return blog;
 }
 
 - (void)syncBlogsWithSuccess:(void (^)())success failure:(void (^)(NSError *error))failure {
+    WPFLogMethod();
     [self.xmlrpcApi getBlogsWithSuccess:^(NSArray *blogs) {
         [self mergeBlogs:blogs withCompletion:success];
-    } failure:failure];
+    } failure:^(NSError *error) {
+        DDLogError(@"Error syncing blogs: %@", error);
+        if (failure) {
+            failure(error);
+        }
+    }];
 }
 
 - (void)mergeBlogs:(NSArray *)blogs withCompletion:(void (^)())completion {
@@ -180,6 +188,10 @@ NSString * const WPAccountDefaultWordPressComAccountChangedNotification = @"WPAc
         if (![backgroundMOC save:&error]) {
             DDLogError(@"Unresolved core data save error: %@", error);
         }
+        NSManagedObjectContext *parentMOC = backgroundMOC.parentContext;
+        [parentMOC performBlockAndWait:^{
+            [parentMOC save:nil];
+        }];
 
         dispatch_async(dispatch_get_main_queue(), completion);
     }];

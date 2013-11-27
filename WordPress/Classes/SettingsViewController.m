@@ -38,6 +38,7 @@
 #import "SupportViewController.h"
 #import "WPAccount.h"
 #import "WPTableViewSectionHeaderView.h"
+#import "ManageBlogsViewController.h"
 
 typedef enum {
     SettingsSectionWpcom = 0,
@@ -381,8 +382,8 @@ CGFloat const blavatarImageViewSize = 43.f;
                 actionSheet.actionSheetStyle = UIActionSheetStyleDefault;
                 [actionSheet showInView:self.view];
             } else if (indexPath.row == [self rowForManageBlogs]) {
-                UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"Not yet" message:@"Coming soon" delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil];
-                [alertView show];
+                ManageBlogsViewController *manageBlogsViewController = [[ManageBlogsViewController alloc] initWithAccount:[WPAccount defaultWordPressComAccount]];
+                [self.navigationController pushViewController:manageBlogsViewController animated:YES];
             } else if (indexPath.row == [self rowForNotifications]) {
                 [WPMobileStats trackEventForWPCom:StatsEventSettingsClickedManageNotifications];
             
