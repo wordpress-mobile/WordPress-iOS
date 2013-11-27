@@ -184,7 +184,7 @@ NSString * const WPBlogDetailsBlogKey = @"WPBlogDetailsBlogKey";
     }
 
     UIViewController *viewController = (UIViewController *)[[controllerClass alloc] init];
-    viewController.restorationIdentifier = [controllerClass description];
+    viewController.restorationIdentifier = NSStringFromClass(controllerClass);
     viewController.restorationClass = controllerClass;
     if ([viewController respondsToSelector:@selector(setBlog:)]) {
         [viewController performSelector:@selector(setBlog:) withObject:self.blog];

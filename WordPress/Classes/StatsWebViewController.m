@@ -15,6 +15,9 @@
 #import "EditSiteViewController.h"
 #import "ReachabilityUtils.h"
 #import "NSString+Helpers.h"
+#import "ContextManager.h"
+
+NSString * const WPStatsWebBlogKey = @"WPStatsWebBlogKey";
 
 @interface StatsWebViewController () <SettingsViewControllerDelegate> {
     BOOL loadStatsWhenViewAppears;
@@ -45,6 +48,28 @@
 
 static NSString *_lastAuthedName = nil;
 
++ (UIViewController *)viewControllerWithRestorationIdentifierPath:(NSArray *)identifierComponents coder:(NSCoder *)coder {
+    NSString *blogID = [coder decodeObjectForKey:WPStatsWebBlogKey];
+    if (!blogID)
+        return nil;
+    
+    NSManagedObjectContext *context = [[ContextManager sharedInstance] mainContext];
+    NSManagedObjectID *objectID = [context.persistentStoreCoordinator managedObjectIDForURIRepresentation:[NSURL URLWithString:blogID]];
+    if (!objectID)
+        return nil;
+    
+    NSError *error = nil;
+    Blog *restoredBlog = (Blog *)[context existingObjectWithID:objectID error:&error];
+    if (error || !restoredBlog) {
+        return nil;
+    }
+    
+    StatsWebViewController *viewController = [[self alloc] init];
+    viewController.blog = restoredBlog;
+    
+    return viewController;
+}
+
 + (void)load {
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(handleLogoutNotification:) name:WordPressComApiDidLogoutNotification object:nil];
 }
@@ -61,6 +86,16 @@ static NSString *_lastAuthedName = nil;
     _lastAuthedName = [str copy];
 }
 
+- (id)init {
+    self = [super init];
+    
+    if (self) {
+        self.restorationIdentifier = NSStringFromClass([self class]);
+        self.restorationClass = [self class];
+    }
+    
+    return self;
+}
 
 - (void)dealloc {
     WPFLogMethod();
@@ -70,6 +105,10 @@ static NSString *_lastAuthedName = nil;
     retryAlertView.delegate = nil;
 }
 
+- (void)encodeRestorableStateWithCoder:(NSCoder *)coder {
+    [coder encodeObject:[[self.blog.objectID URIRepresentation] absoluteString] forKey:WPStatsWebBlogKey];
+    [super encodeRestorableStateWithCoder:coder];
+}
 
 - (void)viewDidLoad {
     [super viewDidLoad];
