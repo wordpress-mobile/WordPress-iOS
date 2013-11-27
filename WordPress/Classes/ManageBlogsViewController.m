@@ -10,7 +10,6 @@
 #import "Blog.h"
 #import "UIImageView+Gravatar.h"
 
-NSString * const HasSeenManageBlogsHintDefaultsKey = @"HasSeenManageBlogsHint";
 static NSString * const CellIdentifier = @"ManageBlogsCell";
 
 @implementation ManageBlogsViewController {
@@ -43,13 +42,6 @@ static NSString * const CellIdentifier = @"ManageBlogsCell";
     [super viewWillAppear:animated];
 
     [self refreshBlogs];
-}
-
-- (void)viewDidAppear:(BOOL)animated {
-    [super viewDidAppear:animated];
-
-    [[NSUserDefaults standardUserDefaults] setBool:YES forKey:HasSeenManageBlogsHintDefaultsKey];
-    [[NSUserDefaults standardUserDefaults] synchronize];
 }
 
 - (void)viewWillDisappear:(BOOL)animated {
