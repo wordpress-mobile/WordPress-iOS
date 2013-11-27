@@ -39,8 +39,6 @@ NSString * const WPBlogDetailsBlogKey = @"WPBlogDetailsBlogKey";
 @synthesize blog = _blog;
 
 + (UIViewController *)viewControllerWithRestorationIdentifierPath:(NSArray *)identifierComponents coder:(NSCoder *)coder {
-    BlogDetailsViewController *viewController = [[self alloc] initWithStyle:UITableViewStyleGrouped];
-    
     NSString *blogID = [coder decodeObjectForKey:WPBlogDetailsBlogKey];
     if (!blogID)
         return nil;
@@ -55,6 +53,8 @@ NSString * const WPBlogDetailsBlogKey = @"WPBlogDetailsBlogKey";
     if (error || !restoredBlog) {
         return nil;
     }
+    
+    BlogDetailsViewController *viewController = [[self alloc] initWithStyle:UITableViewStyleGrouped];
     viewController.blog = restoredBlog;
 
     return viewController;
@@ -184,6 +184,8 @@ NSString * const WPBlogDetailsBlogKey = @"WPBlogDetailsBlogKey";
     }
 
     UIViewController *viewController = (UIViewController *)[[controllerClass alloc] init];
+    viewController.restorationIdentifier = [controllerClass description];
+    viewController.restorationClass = controllerClass;
     if ([viewController respondsToSelector:@selector(setBlog:)]) {
         [viewController performSelector:@selector(setBlog:) withObject:self.blog];
         [self.navigationController pushViewController:viewController animated:YES];
