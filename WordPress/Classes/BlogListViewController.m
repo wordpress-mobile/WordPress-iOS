@@ -312,6 +312,19 @@ CGFloat const blavatarImageSize = 50.f;
 
 - (void)controllerDidChangeContent:(NSFetchedResultsController *)controller {
     [self.tableView endUpdates];
+
+    /*
+     This covers the corner case when the only self hosted blog is removed and
+     there's a WordPress.com account.
+
+     Since we only show the section title if there are multiple blog sections,
+     the section header wouldn't change when the section count changed, and it
+     would still display the wordpress.com header.
+
+     It's not a big deal but it wouldn't be consistent with future appearances
+     of the same view.
+     */
+    [self.tableView reloadSections:[NSIndexSet indexSetWithIndex:0] withRowAnimation:UITableViewRowAnimationFade];
 }
 
 - (void)controller:(NSFetchedResultsController *)controller
