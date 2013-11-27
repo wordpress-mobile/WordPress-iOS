@@ -54,13 +54,13 @@
         [self.view addSubview:topToolbar];
 	}
     
-    if (IS_IOS7) {
-        self.toolbar.translucent = NO;
-        self.toolbar.barTintColor = [WPStyleGuide littleEddieGrey];
-        self.toolbar.tintColor = [UIColor whiteColor];
-        self.leftSpacer.width = 1.0;
-        self.rightSpacer.width = -8.0;
-    }
+    
+    self.toolbar.translucent = NO;
+    self.toolbar.barTintColor = [WPStyleGuide littleEddieGrey];
+    self.toolbar.tintColor = [UIColor whiteColor];
+    self.leftSpacer.width = 1.0;
+    self.rightSpacer.width = -8.0;
+    
     deleteButton.tintColor = [UIColor whiteColor];
     cancelButton.tintColor = deleteButton.tintColor;
     insertButton.tintColor = deleteButton.tintColor;

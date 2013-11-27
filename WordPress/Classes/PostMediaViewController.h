@@ -27,17 +27,9 @@ static inline double radians(double degrees) {
     return degrees * M_PI / 180;
 }
 
-@interface PostMediaViewController : UIViewController <UINavigationControllerDelegate, UIImagePickerControllerDelegate, UIActionSheetDelegate, UIPopoverControllerDelegate, NSFetchedResultsControllerDelegate, UITextFieldDelegate> {
-	EditPostViewController *__weak postDetailViewController;
+@interface PostMediaViewController : UITableViewController <UINavigationControllerDelegate, UIImagePickerControllerDelegate, UIActionSheetDelegate, UIPopoverControllerDelegate, NSFetchedResultsControllerDelegate, UITextFieldDelegate> {
 	UIImagePickerController *picker;
-	
-	IBOutlet UITableView *table;
-	IBOutlet UIBarButtonItem *addMediaButton;
-	IBOutlet UIActivityIndicatorView *spinner;
-	IBOutlet UILabel *messageLabel;
-	IBOutlet UIToolbar *bottomToolbar;
-	IBOutlet UIPopoverController *addPopover;
-	
+    
 	BOOL hasPhotos, hasVideos, isAddingMedia, isShowingMediaPickerActionSheet, isShowingChangeOrientationActionSheet, isShowingCustomSizeAlert;
 	BOOL isLibraryMedia, didChangeOrientationDuringRecord, isShowingResizeActionSheet, videoEnabled, isCheckingVideoCapability, isPickingFeaturedImage;
 	NSString *postID, *blogURL, *videoPressCheckBlogURL, *uniqueID;
@@ -54,18 +46,12 @@ static inline double radians(double degrees) {
     UIActionSheet *currentActionSheet;
 }
 
-@property (nonatomic, strong) IBOutlet UITableView *table;
-@property (nonatomic, strong) IBOutlet UIBarButtonItem *addMediaButton;
-@property (nonatomic, strong) IBOutlet UIActivityIndicatorView *spinner;
-@property (nonatomic, strong) IBOutlet UILabel *messageLabel;
-@property (nonatomic, strong) IBOutlet UIToolbar *bottomToolbar;
 @property (nonatomic, strong) IBOutlet UIPopoverController *addPopover;
 @property (nonatomic, assign) BOOL hasPhotos, hasVideos, isAddingMedia, isShowingMediaPickerActionSheet, isShowingChangeOrientationActionSheet, isShowingCustomSizeAlert;
 @property (nonatomic, assign) BOOL isLibraryMedia, didChangeOrientationDuringRecord, isShowingResizeActionSheet, videoEnabled, isCheckingVideoCapability;
 @property (nonatomic, strong) NSString *postID, *blogURL, *videoPressCheckBlogURL, *uniqueID;
 @property (nonatomic, strong) Media *currentUpload;
 @property (nonatomic, strong) NSMutableArray *photos, *videos;
-@property (nonatomic, weak) EditPostViewController *postDetailViewController;
 @property (nonatomic, assign) MediaOrientation currentOrientation;
 @property (nonatomic, strong) UIImage *currentImage;
 @property (nonatomic, strong) NSDictionary *currentImageMetadata;
@@ -77,11 +63,7 @@ static inline double radians(double degrees) {
 @property (nonatomic, strong) NSString *statsPrefix;
 
 - (id)initWithPost:(AbstractPost *)aPost;
-
 - (void)scaleAndRotateImage:(UIImage *)image;
-- (IBAction)showVideoPickerActionSheet:(id)sender;
-- (IBAction)showPhotoPickerActionSheet:(id)sender;
-- (IBAction)showPhotoPickerActionSheet:(id)sender fromRect:(CGRect)rect isFeaturedImage:(BOOL)featuredImage;
 - (void)pickPhotoFromCamera:(id)sender;
 - (void)pickVideoFromCamera:(id)sender;
 - (MediaOrientation)interpretOrientation:(UIDeviceOrientation)theOrientation;
