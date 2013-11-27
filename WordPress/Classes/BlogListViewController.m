@@ -14,6 +14,7 @@
 #import "LoginViewController.h"
 #import "BlogDetailsViewController.h"
 #import "WPTableViewCell.h"
+#import "ContextManager.h"
 #import "Blog.h"
 #import "WPAccount.h"
 #import "FakePushTransitionAnimator.h"
@@ -301,12 +302,12 @@ CGFloat const blavatarImageSize = 50.f;
 #pragma mark NSFetchedResultsController
 
 - (NSFetchedResultsController *)resultsController {
-    if (_resultsController)
+    if (_resultsController) {
         return _resultsController;
+    }
     
-    NSFetchRequest *fetchRequest = [[NSFetchRequest alloc] init];
-    NSManagedObjectContext *moc = [[WordPressAppDelegate sharedWordPressApplicationDelegate] managedObjectContext];
-    [fetchRequest setEntity:[NSEntityDescription entityForName:@"Blog" inManagedObjectContext:moc]];
+    NSManagedObjectContext *moc = [[ContextManager sharedInstance] mainContext];
+    NSFetchRequest *fetchRequest = [NSFetchRequest fetchRequestWithEntityName:@"Blog"];
     [fetchRequest setPredicate:[NSPredicate predicateWithFormat:@"visible = YES"]];
     [fetchRequest setSortDescriptors:[NSArray arrayWithObject:[NSSortDescriptor sortDescriptorWithKey:@"blogName" ascending:YES selector:@selector(localizedCaseInsensitiveCompare:)]]];
     

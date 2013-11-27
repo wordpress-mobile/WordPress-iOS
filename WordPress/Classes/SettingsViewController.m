@@ -39,6 +39,8 @@
 #import "WPAccount.h"
 #import "WPTableViewSectionHeaderView.h"
 #import "ManageBlogsViewController.h"
+#import "SupportViewController.h"
+#import "ContextManager.h"
 
 typedef enum {
     SettingsSectionWpcom = 0,
