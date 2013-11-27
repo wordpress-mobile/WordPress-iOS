@@ -119,11 +119,11 @@ NSString *const StatsPropertyPostDetailSettingsClickedStatus = @"settings_clicke
 NSString *const StatsPropertyPostDetailSettingsClickedVisibility = @"settings_clicked_visibility";
 NSString *const StatsPropertyPostDetailSettingsClickedScheduleFor = @"settings_clicked_schedule_for";
 NSString *const StatsPropertyPostDetailSettingsClickedPostFormat = @"settings_clicked_post_format";
-NSString *const StatsEventPostDetailSettingsClickedSetFeaturedImage = @"Settings - Clicked Set Featured Image";
-NSString *const StatsEventPostDetailSettingsClickedRemoveFeaturedImage = @"Settings - Clicked Remove Featured Image";
-NSString *const StatsEventPostDetailSettingsClickedAddLocation = @"Settings - Clicked Add Location";
-NSString *const StatsEventPostDetailSettingsClickedUpdateLocation = @"Settings - Clicked Update Location";
-NSString *const StatsEventPostDetailSettingsClickedRemoveLocation = @"Settings - Clicked Remove Location";
+NSString *const StatsPropertyPostDetailSettingsClickedSetFeaturedImage = @"settings_clicked_set_featured_image";
+NSString *const StatsPropertyPostDetailSettingsClickedRemoveFeaturedImage = @"settings_clicked_remove_featured_image";
+NSString *const StatsPropertyPostDetailSettingsClickedAddLocation = @"settings_clicked_add_location";
+NSString *const StatsPropertyPostDetailSettingsClickedUpdateLocation = @"settings_clicked_update_location";
+NSString *const StatsPropertyPostDetailSettingsClickedRemoveLocation = @"settings_clicked_remove_location";
 
 // Pages
 NSString *const StatsPropertyPagesOpened = @"pages_opened";
