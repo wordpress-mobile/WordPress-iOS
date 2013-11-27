@@ -167,7 +167,6 @@
     self.featuredImageLabel.font = [WPStyleGuide tableviewTextFont];
     self.featuredImageLabel.textColor = [WPStyleGuide whisperGrey];
 
-    
     // Check if blog supports featured images
     id supportsFeaturedImages = [self.post.blog getOptionValue:@"post_thumbnail"];
     if (supportsFeaturedImages) {
@@ -188,8 +187,9 @@
             [self.featuredImageLabel setText:NSLocalizedString(@"Loading Featured Image", @"Loading featured image in post settings")];
             [self.featuredImageLabel setHidden:NO];
             [self.featuredImageSpinner setHidden:NO];
-            if (!self.featuredImageSpinner.isAnimating)
+            if (!self.featuredImageSpinner.isAnimating) {
                 [self.featuredImageSpinner startAnimating];
+            }
             [self.tableView reloadData];
             
             [self.post getFeaturedImageURLWithSuccess:^{
@@ -323,7 +323,6 @@
 
 - (void)datePickerChanged {
     self.apost.dateCreated = self.datePickerView.date;
-	[self.postDetailViewController refreshButtons];
     [self.tableView reloadData];
 }
 
@@ -334,9 +333,7 @@
         self.apost.password = textField.text;
     } else if (textField == self.tagsTextField) {
         self.post.tags = self.tagsTextField.text;
-        [self.postDetailViewController refreshTags];
     }
-    [self.postDetailViewController refreshButtons];
 }
 
 - (BOOL)textFieldShouldReturn:(UITextField *)textField {
@@ -568,10 +565,8 @@
                 UITableViewActivityCell *activityCell = (UITableViewActivityCell *)[self.tableView dequeueReusableCellWithIdentifier:@"CustomCell"];
                 if (activityCell == nil) {
                     NSArray *topLevelObjects = [[NSBundle mainBundle] loadNibNamed:@"UITableViewActivityCell" owner:nil options:nil];
-                    for(id currentObject in topLevelObjects)
-                    {
-                        if([currentObject isKindOfClass:[UITableViewActivityCell class]])
-                        {
+                    for(id currentObject in topLevelObjects) {
+                        if([currentObject isKindOfClass:[UITableViewActivityCell class]]) {
                             activityCell = (UITableViewActivityCell *)currentObject;
                             break;
                         }
@@ -579,10 +574,6 @@
                     activityCell.selectionStyle = UITableViewCellSelectionStyleBlue;
                 }
                 [WPStyleGuide configureTableViewActionCell:activityCell];
-                if (!IS_IOS7) {
-                    [activityCell.textLabel setHighlightedTextColor:[UIColor whiteColor]];
-                    [activityCell.detailTextLabel setHighlightedTextColor:[UIColor whiteColor]];
-                }
                 [activityCell.textLabel setText:NSLocalizedString(@"Set Featured Image", @"")];
                 return activityCell;
             } else {
@@ -603,20 +594,14 @@
                         UITableViewActivityCell *activityCell = (UITableViewActivityCell *)[self.tableView dequeueReusableCellWithIdentifier:@"CustomCell"];
                         if (activityCell == nil) {
                             NSArray *topLevelObjects = [[NSBundle mainBundle] loadNibNamed:@"UITableViewActivityCell" owner:nil options:nil];
-                            for(id currentObject in topLevelObjects)
-                            {
-                                if([currentObject isKindOfClass:[UITableViewActivityCell class]])
-                                {
+                            for(id currentObject in topLevelObjects) {
+                                if([currentObject isKindOfClass:[UITableViewActivityCell class]]) {
                                     activityCell = (UITableViewActivityCell *)currentObject;
                                     break;
                                 }
                             }
                         }
                         [activityCell.textLabel setText: NSLocalizedString(@"Remove Featured Image", "Remove featured image from post")];
-                        if (!IS_IOS7) {
-                            [activityCell.textLabel setHighlightedTextColor:[UIColor whiteColor]];
-                            [activityCell.detailTextLabel setHighlightedTextColor:[UIColor whiteColor]];
-                        }
                         [WPStyleGuide configureTableViewActionCell:activityCell];
                         return activityCell;
                         break;
@@ -730,9 +715,7 @@
             self.coordinateLabel.text = [NSString stringWithFormat:@"%i°%i' %@, %i°%i' %@",
                                     latD, latM, latDir,
                                     lonD, lonM, lonDir];
-            //				coordinateLabel.text = [NSString stringWithFormat:@"%.6f, %.6f",
-            //										self.post.geolocation.latitude,
-            //										self.post.geolocation.longitude];
+
             self.coordinateLabel.font = [WPStyleGuide regularTextFont];
             self.coordinateLabel.textColor = [WPStyleGuide allTAllShadeGrey];
             
@@ -904,11 +887,7 @@
                     case 0:
                         if (!self.post.post_thumbnail) {
                             [WPMobileStats trackEventForWPCom:[self formattedStatEventString:StatsEventPostDetailSettingsClickedSetFeaturedImage]];
-                            if (IS_IOS7) {
-                                [self showPhotoPickerForRect:cell.frame];
-                            } else {
-                                [self.postDetailViewController.postMediaViewController showPhotoPickerActionSheet:cell fromRect:cell.frame isFeaturedImage:YES];                                
-                            }
+                            [self showPhotoPickerForRect:cell.frame];
                         }
                         break;
                     case 1:
@@ -973,8 +952,6 @@
                 [self.locationManager stopUpdatingLocation];
             }
             self.post.geolocation = nil;
-            self.postDetailViewController.hasLocation.enabled = NO;
-            [self.postDetailViewController refreshButtons];
             break;
     }
     [self.tableView reloadData];
@@ -1003,7 +980,6 @@
         }
         [self.featuredImageView setImage:[UIImage imageWithContentsOfFile:media.localURL]];
     }
-    [self.postDetailViewController refreshButtons];
     [self.tableView reloadData];
 }
 
@@ -1034,7 +1010,6 @@
         if (buttonIndex == 0) {
             [self.featuredImageTableViewCell setSelectionStyle:UITableViewCellSelectionStyleBlue];
             self.post.post_thumbnail = nil;
-            [self.postDetailViewController refreshButtons];
             [self.tableView reloadData];
         }
     }
@@ -1227,7 +1202,6 @@
     } else if (aPickerView.tag == TAG_PICKER_FORMAT) {
         self.post.postFormatText = [self.formatsList objectAtIndex:row];
     }
-	[self.postDetailViewController refreshButtons];
     [self.tableView reloadData];
 }
 
@@ -1399,12 +1373,10 @@
 #endif
 		Coordinate *c = [[Coordinate alloc] initWithCoordinate:coordinate];
 		self.post.geolocation = c;
-		self.postDetailViewController.hasLocation.enabled = YES;
         DDLogInfo(@"Added geotag (%+.6f, %+.6f)",
                   c.latitude,
                   c.longitude);
 		[self.locationManager stopUpdatingLocation];
-        [self.postDetailViewController refreshButtons];
 		[self.tableView reloadData];
 		
 		[self geocodeCoordinate:c.coordinate];
@@ -1996,25 +1968,15 @@
                                          andDelegate:self];
     
     _segmentedTableViewController.title = NSLocalizedString(@"Categories", @"");
-    UIBarButtonItem *createCategoryBarButtonItem;
-
-    if (IS_IOS7) {
-        UIImage *image = [UIImage imageNamed:@"icon-posts-add"];
-        UIButton *button = [[UIButton alloc] initWithFrame:CGRectMake(0, 0, image.size.width, image.size.height)];
-        [button setImage:image forState:UIControlStateNormal];
-        [button addTarget:self action:@selector(showAddNewCategoryView:) forControlEvents:UIControlEventTouchUpInside];
-        createCategoryBarButtonItem = [[UIBarButtonItem alloc] initWithCustomView:button];
-    } else {
-        createCategoryBarButtonItem = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"navbar_add"]
-                                                                       style:[WPStyleGuide barButtonStyleForBordered]
-                                                                      target:self
-                                                                      action:@selector(showAddNewCategoryView:)];
-    }
-
+    
+    UIImage *image = [UIImage imageNamed:@"icon-posts-add"];
+    UIButton *button = [[UIButton alloc] initWithFrame:CGRectMake(0, 0, image.size.width, image.size.height)];
+    [button setImage:image forState:UIControlStateNormal];
+    [button addTarget:self action:@selector(showAddNewCategoryView:) forControlEvents:UIControlEventTouchUpInside];
+    UIBarButtonItem *createCategoryBarButtonItem = [[UIBarButtonItem alloc] initWithCustomView:button];
 
     [WPStyleGuide setRightBarButtonItemWithCorrectSpacing:createCategoryBarButtonItem forNavigationItem:_segmentedTableViewController.navigationItem];
-    
-    
+        
     if (!_isNewCategory) {
         [self.navigationController pushViewController:_segmentedTableViewController animated:YES];
     }
