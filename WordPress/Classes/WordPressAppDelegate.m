@@ -933,9 +933,12 @@ int ddLogLevel = LOG_LEVEL_INFO;
                        isWPcomAuthenticated = YES;
                        DDLogInfo(@"Logged in to WordPress.com as %@", account.username);
                    } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
-                       if ([error.domain isEqualToString:@"XMLRPC"] && error.code == 403) {
+                       if ([error.domain isEqualToString:@"WPXMLRPCFaultError"] ||
+                           ([error.domain isEqualToString:@"XMLRPC"] && error.code == 403)) {
                            isWPcomAuthenticated = NO;
+                           [[WordPressComApi sharedApi] invalidateOAuth2Token];
                        }
+                       
                        DDLogError(@"Error authenticating %@ with WordPress.com: %@", account.username, [error description]);
                    }];
 	} else {

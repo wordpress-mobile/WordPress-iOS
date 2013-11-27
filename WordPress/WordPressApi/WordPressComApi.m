@@ -244,7 +244,11 @@ NSString *const WordPressComApiErrorMessageKey = @"WordPressComApiErrorMessageKe
 }
 
 - (BOOL)hasCredentials {
-    return _authToken != nil;
+    return _authToken.length > 0;
+}
+
+- (void)invalidateOAuth2Token {
+    [self setAuthToken:nil];
 }
 
 - (void)validateWPComAccountWithEmail:(NSString *)email andUsername:(NSString *)username andPassword:(NSString *)password success:(void (^)(id responseObject))success failure:(void (^)(NSError *error))failure
