@@ -44,6 +44,12 @@ static NSString * const CellIdentifier = @"ManageBlogsCell";
     [self refreshBlogs];
 }
 
+- (void)viewWillDisappear:(BOOL)animated {
+    [super viewWillDisappear:animated];
+
+    [self.navigationController setToolbarHidden:YES animated:animated];
+}
+
 - (void)buildToolbar {
     UIBarButtonItem *showAll = [[UIBarButtonItem alloc] initWithTitle:NSLocalizedString(@"Show All", @"Show all blogs (Manage Blogs)") style:UIBarButtonItemStyleBordered target:self action:@selector(showAll:)];
     UIBarButtonItem *separator = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFlexibleSpace target:nil action:nil];
