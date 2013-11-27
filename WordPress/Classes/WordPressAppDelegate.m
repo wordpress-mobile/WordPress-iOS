@@ -60,7 +60,7 @@ NSInteger const UpdateCheckAlertViewTag = 102;
 
 #pragma mark - UIApplicationDelegate
 
-- (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
+- (BOOL)application:(UIApplication *)application willFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
     // Crash reporting, logging, debugging
     [self configureHockeySDK];
     [self configureCrashlytics];
