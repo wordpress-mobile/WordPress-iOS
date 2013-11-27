@@ -32,6 +32,7 @@
 static CGFloat const RPVCScrollingFastVelocityThreshold = 30.f;
 static CGFloat const RPVCHeaderHeightPhone = 10.f;
 static CGFloat const RPVCMaxImageHeightPercentage = 0.58f;
+static CGFloat const RPVCExtraTableViewHeight = 800.f;
 
 NSString *const RPVCDisplayedNativeFriendFinder = @"DisplayedNativeFriendFinder";
 
@@ -102,7 +103,7 @@ NSString *const RPVCDisplayedNativeFriendFinder = @"DisplayedNativeFriendFinder"
     _featuredImageSource = [[WPTableImageSource alloc] initWithMaxSize:CGSizeMake(maxWidth, maxHeight)];
     _featuredImageSource.delegate = self;
 	self.tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
-	
+    
 	// Topics button
 	UIBarButtonItem *button = nil;
     UIButton *topicsButton = [UIButton buttonWithType:UIButtonTypeCustom];
@@ -178,13 +179,22 @@ NSString *const RPVCDisplayedNativeFriendFinder = @"DisplayedNativeFriendFinder"
 
 - (void)didRotateFromInterfaceOrientation:(UIInterfaceOrientation)fromInterfaceOrientation {
     [super didRotateFromInterfaceOrientation:fromInterfaceOrientation];
-    // After rotation, visible images might be scaled up/down
-    // Force them to reload so they're pixel perfect
-    [self loadImagesForVisibleRows];
 }
 
 
 #pragma mark - Instance Methods
+
+- (void)resizeTableViewForImagePreloading {
+    // Use a trick to preload more images by making the table view longer
+//    CGRect rect = self.tableView.bounds;
+//    rect.origin.y = 0;
+//    rect.size.height = [[UIScreen mainScreen] bounds].size.height + RPVCExtraTableViewHeight;
+//    self.tableView.bounds = rect;
+//    UIEdgeInsets inset = self.tableView.contentInset;
+//    inset.bottom = RPVCExtraTableViewHeight + [self tabBarSize].height;
+//    NSLog(@"Reader new frame height %f inset %f", rect.size.height, inset.bottom);
+//    self.tableView.contentInset = inset;
+}
 
 - (void)setTitle:(NSString *)title {
     [super setTitle:title];
@@ -279,39 +289,6 @@ NSString *const RPVCDisplayedNativeFriendFinder = @"DisplayedNativeFriendFinder"
 	[_readerReblogFormView removeFromSuperview];
 	self.isShowingReblogForm = NO;
 	[self.view endEditing:YES];
-}
-
-- (void)loadImagesForVisibleRows {
-    NSArray *visiblePaths = [self.tableView indexPathsForVisibleRows];
-    for (NSIndexPath *indexPath in visiblePaths) {
-        ReaderPost *post = (ReaderPost *)[self.resultsController objectAtIndexPath:indexPath];
-
-        ReaderPostTableViewCell *cell = (ReaderPostTableViewCell *)[self.tableView cellForRowAtIndexPath:indexPath];
-
-        UIImage *image = [post cachedAvatarWithSize:cell.postView.avatarImageView.bounds.size];
-        CGSize imageSize = cell.postView.avatarImageView.bounds.size;
-        if (image) {
-            [cell.postView setAvatar:image];
-        } else {
-            __weak UITableView *tableView = self.tableView;
-            [post fetchAvatarWithSize:imageSize success:^(UIImage *image) {
-                if (cell == [tableView cellForRowAtIndexPath:indexPath]) {
-                    [cell.postView setAvatar:image];
-                }
-            }];
-        }
-
-        if (post.featuredImageURL) {
-            NSURL *imageURL = post.featuredImageURL;
-            imageSize = cell.postView.cellImageView.frame.size;
-            image = [_featuredImageSource imageForURL:imageURL withSize:imageSize];
-            if (image) {
-                [cell.postView setFeaturedImage:image];
-            } else {
-                [_featuredImageSource fetchImageForURL:imageURL withSize:imageSize indexPath:indexPath isPrivate:post.isPrivate];
-            }
-        }
-    }
 }
 
 
@@ -444,7 +421,6 @@ NSString *const RPVCDisplayedNativeFriendFinder = @"DisplayedNativeFriendFinder"
 - (void)scrollViewDidEndDecelerating:(UIScrollView *)scrollView {
     [super scrollViewDidEndDecelerating:scrollView];
     _isScrollingFast = NO;
-    //[self loadImagesForVisibleRows];
 
 	NSIndexPath *selectedIndexPath = [self.tableView indexPathForSelectedRow];
 	if (!selectedIndexPath)
