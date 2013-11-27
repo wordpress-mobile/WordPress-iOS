@@ -324,6 +324,7 @@ CGFloat const blavatarImageSize = 50.f;
                                                     arrayWithObject:newIndexPath] withRowAnimation:UITableViewRowAnimationFade];
             break;
     }
+    [[NSNotificationCenter defaultCenter] postNotificationName:BlogChangedNotification object:nil];
 }
 
 
