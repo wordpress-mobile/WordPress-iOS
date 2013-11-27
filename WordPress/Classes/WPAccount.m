@@ -12,6 +12,8 @@
 #import "WordPressAppDelegate.h"
 #import "WordPressComApi.h"
 #import "SFHFKeychainUtils.h"
+#import "ContextManager.h"
+
 
 static NSString * const DefaultDotcomAccountDefaultsKey = @"AccountDefaultDotcom";
 static NSString * const DotcomXmlrpcKey = @"https://wordpress.com/xmlrpc.php";
@@ -44,7 +46,7 @@ NSString * const WPAccountDefaultWordPressComAccountChangedNotification = @"WPAc
     if (__defaultDotcomAccount) {
         return __defaultDotcomAccount;
     }
-    NSManagedObjectContext *context = [[WordPressAppDelegate sharedWordPressApplicationDelegate] managedObjectContext];
+    NSManagedObjectContext *context = [[ContextManager sharedInstance] mainContext];
 
     NSURL *accountURL = [[NSUserDefaults standardUserDefaults] URLForKey:DefaultDotcomAccountDefaultsKey];
     if (!accountURL) {
@@ -68,7 +70,8 @@ NSString * const WPAccountDefaultWordPressComAccountChangedNotification = @"WPAc
 
 + (void)setDefaultWordPressComAccount:(WPAccount *)account {
     NSAssert(account.isWpcom, @"account should be a wordpress.com account");
-    __defaultDotcomAccount = account;
+    // Make sure the account is on the main context
+    __defaultDotcomAccount = (WPAccount *)[[[ContextManager sharedInstance] mainContext] existingObjectWithID:account.objectID error:nil];
     // When the account object hasn't been saved yet, its objectID is temporary
     // If we store a reference to that objectID it will be invalid the next time we launch
     if ([[account objectID] isTemporaryID]) {
@@ -82,7 +85,12 @@ NSString * const WPAccountDefaultWordPressComAccountChangedNotification = @"WPAc
 
 + (void)removeDefaultWordPressComAccount {
     WPAccount *defaultAccount = __defaultDotcomAccount;
-    [defaultAccount.managedObjectContext deleteObject:defaultAccount];
+    NSManagedObjectContext *backgroundMOC = [[ContextManager sharedInstance] backgroundContext];
+    [backgroundMOC performBlock:^{
+        WPAccount *account = (WPAccount *)[backgroundMOC objectWithID:defaultAccount.objectID];
+        [backgroundMOC deleteObject:account];
+        [[ContextManager sharedInstance] saveContext:backgroundMOC];
+    }];
     __defaultDotcomAccount = nil;
 }
 
@@ -101,64 +109,70 @@ NSString * const WPAccountDefaultWordPressComAccountChangedNotification = @"WPAc
 #pragma mark - Account creation
 
 + (WPAccount *)createOrUpdateWordPressComAccountWithUsername:(NSString *)username password:(NSString *)password authToken:(NSString *)authToken {
-    WPAccount *account = [self createOrUpdateSelfHostedAccountWithXmlrpc:DotcomXmlrpcKey username:username andPassword:password];
+    return [WPAccount createOrUpdateWordPressComAccountWithUsername:username password:password authToken:authToken context:[[ContextManager sharedInstance] backgroundContext]];
+}
+
++ (WPAccount *)createOrUpdateWordPressComAccountWithUsername:(NSString *)username password:(NSString *)password authToken:(NSString *)authToken context:(NSManagedObjectContext *)context {
+    WPAccount *account = [self createOrUpdateSelfHostedAccountWithXmlrpc:DotcomXmlrpcKey username:username andPassword:password withContext:context];
     account.isWpcom = YES;
     account.authToken = authToken;
     return account;
 }
 
 + (WPAccount *)createOrUpdateSelfHostedAccountWithXmlrpc:(NSString *)xmlrpc username:(NSString *)username andPassword:(NSString *)password {
+    return [WPAccount createOrUpdateSelfHostedAccountWithXmlrpc:xmlrpc username:username andPassword:password withContext:[[ContextManager sharedInstance] backgroundContext]];
+}
+
++ (WPAccount *)createOrUpdateSelfHostedAccountWithXmlrpc:(NSString *)xmlrpc username:(NSString *)username andPassword:(NSString *)password withContext:(NSManagedObjectContext *)context {
     NSFetchRequest *request = [NSFetchRequest fetchRequestWithEntityName:@"Account"];
     [request setPredicate:[NSPredicate predicateWithFormat:@"xmlrpc like %@ AND username like %@", xmlrpc, username]];
     [request setIncludesPendingChanges:YES];
-    NSManagedObjectContext *context = [[WordPressAppDelegate sharedWordPressApplicationDelegate] managedObjectContext];
-    NSArray *results = [context executeFetchRequest:request error:nil];
-    WPAccount *account = nil;
-    if ([results count] > 0) {
-        account = [results objectAtIndex:0];
-    } else {
-        account = [NSEntityDescription insertNewObjectForEntityForName:@"Account" inManagedObjectContext:context];
-        account.xmlrpc = xmlrpc;
-        account.username = username;
-    }
-    account.password = password;
+    
+    __block WPAccount *account;
+    [context performBlockAndWait:^{
+        NSArray *results = [context executeFetchRequest:request error:nil];
+        if ([results count] > 0) {
+            account = [results objectAtIndex:0];
+        } else {
+            account = [NSEntityDescription insertNewObjectForEntityForName:@"Account" inManagedObjectContext:context];
+            account.xmlrpc = xmlrpc;
+            account.username = username;
+        }
+        account.password = password;
+        
+        [[ContextManager sharedInstance] saveContext:context];
+    }];
     return account;
 }
 
 #pragma mark - Blog creation
 
 - (Blog *)findOrCreateBlogFromDictionary:(NSDictionary *)blogInfo withContext:(NSManagedObjectContext*)context {
-    NSError *error;
-    WPAccount *contextAccount = (WPAccount *)[context existingObjectWithID:self.objectID error:&error];
-    if (error) {
-        DDLogError(@"Unable to get WPAccount for context %@: %@", context, error);
-        
-        // If we continue, then on a context save the app will crash: the account relationship cannot be nil
-        #if DEBUG
-        abort();
-        #endif
-    }
-    
     NSString *blogUrl = [[blogInfo objectForKey:@"url"] stringByReplacingOccurrencesOfString:@"http://" withString:@""];
-	if([blogUrl hasSuffix:@"/"])
+	if ([blogUrl hasSuffix:@"/"]) {
 		blogUrl = [blogUrl substringToIndex:blogUrl.length-1];
-    
+    }
 	blogUrl = [blogUrl stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceCharacterSet]];
 
-    NSSet *foundBlogs = [contextAccount.blogs filteredSetUsingPredicate:[NSPredicate predicateWithFormat:@"url like %@", blogUrl]];
-    if ([foundBlogs count]) {
-        return [foundBlogs anyObject];
-    }
+    __block Blog *blog;
+    [context performBlockAndWait:^{
+        WPAccount *contextAccount = (WPAccount *)[context existingObjectWithID:self.objectID error:nil];
+        NSSet *foundBlogs = [contextAccount.blogs filteredSetUsingPredicate:[NSPredicate predicateWithFormat:@"url like %@", blogUrl]];
+        if ([foundBlogs count]) {
+            blog = [foundBlogs anyObject];
+            return;
+        }
+        
+        blog = [NSEntityDescription insertNewObjectForEntityForName:NSStringFromClass([Blog class]) inManagedObjectContext:context];
+        blog.account = contextAccount;
+        blog.url = blogUrl;
+        blog.blogID = [NSNumber numberWithInt:[[blogInfo objectForKey:@"blogid"] intValue]];
+        blog.blogName = [[blogInfo objectForKey:@"blogName"] stringByDecodingXMLCharacters];
+        blog.xmlrpc = [blogInfo objectForKey:@"xmlrpc"];
 
-    Blog *blog = [NSEntityDescription insertNewObjectForEntityForName:NSStringFromClass([Blog class]) inManagedObjectContext:context];
-    blog.account = contextAccount;
-    blog.url = blogUrl;
-    blog.blogID = [NSNumber numberWithInt:[[blogInfo objectForKey:@"blogid"] intValue]];
-    blog.blogName = [[blogInfo objectForKey:@"blogName"] stringByDecodingXMLCharacters];
-    blog.xmlrpc = [blogInfo objectForKey:@"xmlrpc"];
-
-    DDLogInfo(@"Created blog: %@", blog);
-
+        DDLogInfo(@"Created blog: %@", blog);
+    }];
+    
     return blog;
 }
 

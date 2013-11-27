@@ -14,6 +14,7 @@
 #import "WordPressComApi.h"
 #import "UIDevice+WordPressIdentifier.h"
 #import <WPXMLRPCClient.h>
+#import "ContextManager.h"
 
 @implementation NotificationsManager
 
@@ -114,7 +115,7 @@
             [[WordPressAppDelegate sharedWordPressApplicationDelegate] showNotificationsTab];
             
             if (completionHandler) {
-                [Note getNewNotificationswithContext:[WordPressAppDelegate sharedWordPressApplicationDelegate].managedObjectContext success:^(BOOL hasNewNotes) {
+                [Note getNewNotificationswithContext:[[ContextManager sharedInstance] mainContext] success:^(BOOL hasNewNotes) {
                     DDLogInfo(@"notification fetch completion handler completed with new notes: %@", hasNewNotes ? @"YES" : @"NO");
                     if (hasNewNotes) {
                         completionHandler(UIBackgroundFetchResultNewData);

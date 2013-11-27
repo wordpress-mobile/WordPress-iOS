@@ -13,6 +13,7 @@
 #import "WPWebViewController.h"
 #import "WPInfoView.h"
 #import "SupportViewController.h"
+#import "ContextManager.h"
 
 NSTimeInterval const WPTableViewControllerRefreshTimeout = 300; // 5 minutes
 CGFloat const WPTableViewTopMargin = 40;
@@ -786,14 +787,9 @@ CGFloat const WPTableViewTopMargin = 40;
 }
 
 - (NSManagedObjectContext *)managedObjectContext {
-	if (self.blog) {
-        return self.blog.managedObjectContext;
-    } else {
-        return [[WordPressAppDelegate sharedWordPressApplicationDelegate] managedObjectContext];
-    }
+    return [[ContextManager sharedInstance] mainContext];
 }
 
-#define AssertSubclassMethod() NSAssert(NO, @"You must override %@ in a subclass", NSStringFromSelector(_cmd))
 #define AssertNoBlogSubclassMethod() NSAssert(self.blog, @"You must override %@ in a subclass if there is no blog", NSStringFromSelector(_cmd))
 
 #pragma clang diagnostic push
@@ -807,16 +803,11 @@ CGFloat const WPTableViewTopMargin = 40;
     AssertSubclassMethod();
 }
 
-#pragma clang diagnostic pop
-
 - (NSFetchRequest *)fetchRequest {
     AssertNoBlogSubclassMethod();
-    NSFetchRequest *fetchRequest = [[NSFetchRequest alloc] init];
-    [fetchRequest setEntity:[NSEntityDescription entityForName:[self entityName] inManagedObjectContext:[self managedObjectContext]]];
-    [fetchRequest setPredicate:[NSPredicate predicateWithFormat:@"blog == %@", self.blog]];
-
-    return fetchRequest;
 }
+
+#pragma clang diagnostic pop
 
 - (NSString *)sectionNameKeyPath {
     return nil;
@@ -858,6 +849,7 @@ CGFloat const WPTableViewTopMargin = 40;
 }
 
 - (void)resetResultsController {
+    [NSFetchedResultsController deleteCacheWithName:[self resultsControllerCacheName]];
 	_resultsController.delegate = nil;
 	_resultsController = nil;
 }
