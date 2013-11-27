@@ -37,6 +37,7 @@ extern NSString *const WordPressComApiErrorMessageKey;
 @interface WordPressComApi : AFHTTPClient
 @property (nonatomic,readonly,strong) NSString *username;
 @property (nonatomic,readonly,strong) NSString *password;
+@property (nonatomic, readonly, strong) NSString *authToken;
 
 + (WordPressComApi *)sharedApi;
 
@@ -49,6 +50,8 @@ extern NSString *const WordPressComApiErrorMessageKey;
 - (void)signInWithToken:(NSString *)token DEPRECATED_ATTRIBUTE;
 - (void)signOut;
 - (BOOL)hasCredentials;
+// Wipe the OAuth2 token
+- (void)invalidateOAuth2Token;
 - (void)validateWPComAccountWithEmail:(NSString *)email andUsername:(NSString *)username andPassword:(NSString *)password success:(void (^)(id responseObject))success failure:(void (^)(NSError *error))failure;
 - (void)createWPComAccountWithEmail:(NSString *)email andUsername:(NSString *)username andPassword:(NSString *)password success:(void (^)(id responseObject))success failure:(void (^)(NSError *error))failure;
 - (void)validateWPComBlogWithUrl:(NSString *)blogUrl andBlogTitle:(NSString *)blogTitle andLanguageId:(NSNumber *)languageId success:(void (^)(id))success failure:(void (^)(NSError *))failure;
@@ -129,7 +132,6 @@ extern NSString *const WordPressComApiErrorMessageKey;
 /// @name OAuth info
 ///-----------------
 
-- (NSString *)authToken;
 + (NSString *)WordPressAppId;
 + (NSString *)WordPressAppSecret;
 
