@@ -252,6 +252,7 @@ NSInteger const UpdateCheckAlertViewTag = 102;
 #pragma mark - UITabBarControllerDelegate methods.
 
 - (BOOL)tabBarController:(UITabBarController *)tabBarController shouldSelectViewController:(UIViewController *)viewController {
+    // Ignore taps on the post tab and instead show the modal.
     if ([tabBarController.viewControllers indexOfObject:viewController] == 3) {
         [self presentEditPostViewControllerModal];
         return NO;
@@ -263,12 +264,7 @@ NSInteger const UpdateCheckAlertViewTag = 102;
 #pragma mark - Custom methods
 
 - (void)presentEditPostViewControllerModal {
-    if ([Blog countWithContext:[[ContextManager sharedInstance] mainContext]] == 0) {
-        // TODO: Prompt to create a blog to post to?
-        return;
-    }
-    Blog *blog = [Blog defaultBlog];
-    Post *post = [Post newDraftForBlog:blog];
+    Post *post = [Post newDraftForBlog:[Blog defaultBlogWithContext:[[ContextManager sharedInstance] mainContext]]];
     EditPostViewController *editPostViewController = [[EditPostViewController alloc] initWithPost:post];
     UINavigationController *navController = [[UINavigationController alloc] initWithRootViewController:editPostViewController];
     navController.modalPresentationStyle = UIModalPresentationCurrentContext;
@@ -317,6 +313,10 @@ NSInteger const UpdateCheckAlertViewTag = 102;
 #pragma mark - Tab bar setup
 
 - (UITabBarController *)tabBarController {
+    if (_tabBarController) {
+        return _tabBarController;
+    }
+    
     _tabBarController = [[UITabBarController alloc] init];
     _tabBarController.delegate = self;
     [_tabBarController.tabBar setTranslucent:NO];
@@ -339,12 +339,13 @@ NSInteger const UpdateCheckAlertViewTag = 102;
     blogListNavigationController.tabBarItem.image = [UIImage imageNamed:@"icon-tab-blogs"];
     blogListViewController.title = @"My Blogs";
     
-    UINavigationController *postsNavigationController = [[UINavigationController alloc] initWithRootViewController:nil];
-    postsNavigationController.navigationBar.translucent = NO;
-    postsNavigationController.tabBarItem.image = [UIImage imageNamed:@"navbar_add"];
-    postsNavigationController.title = @"Post";
-    
-    _tabBarController.viewControllers = [NSArray arrayWithObjects:blogListNavigationController, readerNavigationController, notificationsNavigationController, postsNavigationController, nil];
+    NSMutableArray *marr = [NSMutableArray arrayWithObjects:blogListNavigationController, readerNavigationController, notificationsNavigationController, nil];
+    if ([Blog countWithContext:[[ContextManager sharedInstance] mainContext]] > 0) {
+        UINavigationController *postsNavigationController = [self createPostsPlaceholderNavController];
+        [marr addObject:postsNavigationController];
+    }
+
+    _tabBarController.viewControllers = marr;
     
     [_tabBarController setSelectedViewController:readerNavigationController];
     
@@ -354,6 +355,33 @@ NSInteger const UpdateCheckAlertViewTag = 102;
 - (void)showNotificationsTab {
     NSInteger notificationsTabIndex = [[self.tabBarController viewControllers] indexOfObject:self.notificationsViewController.navigationController];
     [self.tabBarController setSelectedIndex:notificationsTabIndex];
+}
+
+- (void)updateTabBarIfNeeded {
+    if ([Blog countWithContext:[[ContextManager sharedInstance] mainContext]] == 0) {
+        // If no blogs, do not show the post tab.
+        if ([self.tabBarController.viewControllers count] > 3) {
+            NSMutableArray *marr = [self.tabBarController.viewControllers mutableCopy];
+            [marr removeLastObject];
+            [self.tabBarController setViewControllers:marr animated:YES];
+        }
+    } else {
+        // Show the post tab
+        if ([self.tabBarController.viewControllers count] < 4) {
+            UINavigationController *postsNavigationController = [self createPostsPlaceholderNavController];
+            NSMutableArray *marr = [self.tabBarController.viewControllers mutableCopy];
+            [marr addObject:postsNavigationController];
+            [self.tabBarController setViewControllers:marr animated:YES];
+        }
+    }
+}
+
+- (UINavigationController *)createPostsPlaceholderNavController {
+    UINavigationController *navigationController = [[UINavigationController alloc] initWithRootViewController:nil];
+    navigationController.navigationBar.translucent = NO;
+    navigationController.tabBarItem.image = [UIImage imageNamed:@"navbar_add"];
+    navigationController.title = @"Post";
+    return navigationController;
 }
 
 #pragma mark - Global Alerts
@@ -1041,6 +1069,7 @@ NSInteger const UpdateCheckAlertViewTag = 102;
 
 - (void)handleLogoutOrBlogsChangedNotification:(NSNotification *)notification {
 	[self toggleExtraDebuggingIfNeeded];
+    [self updateTabBarIfNeeded];
 }
 
 @end

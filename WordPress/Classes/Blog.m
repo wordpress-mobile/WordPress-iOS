@@ -87,8 +87,7 @@
     return count;
 }
 
-+ (Blog *)defaultBlog {
-    NSManagedObjectContext *moc = [[ContextManager sharedInstance] mainContext];
++ (Blog *)defaultBlogWithContext:(NSManagedObjectContext *)moc {
     NSFetchRequest *fetchRequest = [NSFetchRequest fetchRequestWithEntityName:@"Blog"];
     fetchRequest.sortDescriptors = @[[NSSortDescriptor sortDescriptorWithKey:@"blogName" ascending:YES]];
     
@@ -107,6 +106,9 @@
         return nil;
     }
     
+    // TODO: The default blog is not necessarily the first one in the list.
+    // If there is more than one blog in the app we should return either
+    // the last accessed or the primary.
     return [resultsController.fetchedObjects objectAtIndex:0];
 }
 
