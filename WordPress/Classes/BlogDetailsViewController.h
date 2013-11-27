@@ -10,7 +10,7 @@
 
 @class Blog;
 
-@interface BlogDetailsViewController : UITableViewController {
+@interface BlogDetailsViewController : UITableViewController<UIViewControllerRestoration> {
     
 }
 
