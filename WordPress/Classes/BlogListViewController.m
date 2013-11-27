@@ -17,6 +17,7 @@
 #import "Blog.h"
 #import "WPAccount.h"
 #import "FakePushTransitionAnimator.h"
+#import "ManageBlogsViewController.h"
 
 CGFloat const blavatarImageSize = 50.f;
 
@@ -90,6 +91,22 @@ CGFloat const blavatarImageSize = 50.f;
     return [[self.resultsController fetchedObjects] count];
 }
 
+- (void)showManageBlogsHintIfNeeded {
+    NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
+
+    if ([defaults objectForKey:HasSeenManageBlogsHintDefaultsKey]) {
+        return;
+    }
+
+    UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"Hidden Blogs", nil)
+                                                        message:NSLocalizedString(@"If you want to see this or other hidden blogs in the app, you can do it from Settings > Manage Blogs", nil)
+                                                       delegate:nil
+                                              cancelButtonTitle:NSLocalizedString(@"OK", nil)
+                                              otherButtonTitles:nil];
+    [alertView show];
+    [defaults setBool:YES forKey:HasSeenManageBlogsHintDefaultsKey];
+    [defaults synchronize];
+}
 
 #pragma mark - Actions
 
@@ -177,6 +194,7 @@ CGFloat const blavatarImageSize = 50.f;
         if (blog.isWPcom) {
             blog.visible = NO;
             [blog dataSave];
+            [self showManageBlogsHintIfNeeded];
         } else {
             [blog remove];
         }

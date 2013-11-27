@@ -9,6 +9,8 @@
 #import <UIKit/UIKit.h>
 #import "WPAccount.h"
 
+extern NSString * const HasSeenManageBlogsHintDefaultsKey;
+
 /**
  An interface to manage which blogs are visible for a given account
  */
