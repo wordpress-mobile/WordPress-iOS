@@ -23,27 +23,6 @@
 
 @implementation WPWebVideoViewController
 
-+ (id)presentAsModalWithURL:(NSURL *)url {
-	UIViewController *controller = [[self alloc] initWithURL:url];
-	UINavigationController *navController = [[UINavigationController alloc] initWithRootViewController:controller];
-    navController.navigationBar.translucent = NO;
-	navController.modalTransitionStyle = UIModalTransitionStyleCrossDissolve;
-	navController.modalPresentationStyle = UIModalPresentationFullScreen;
-
-    [[[WordPressAppDelegate sharedWordPressApplicationDelegate] navigationController] presentViewController:navController animated:YES completion:nil];
-	return controller;
-}
-
-
-+ (id)presentAsModalWithHTML:(NSString *)html {
-	UIViewController *controller = [[self alloc] initWithHTML:html];
-	UINavigationController *navController = [[UINavigationController alloc] initWithRootViewController:controller];
-	navController.modalTransitionStyle = UIModalTransitionStyleCrossDissolve;
-	navController.modalPresentationStyle = UIModalPresentationFullScreen;
-    [[[WordPressAppDelegate sharedWordPressApplicationDelegate] navigationController] presentViewController:navController animated:YES completion:nil];
-	return controller;
-}
-
 
 #pragma mark - LifeCycle Methods
 

@@ -14,8 +14,6 @@
 
 @property (nonatomic, weak) id<ReaderUsersBlogsDelegate>delegate;
 
-+ (id)presentAsModalWithDelegate:(id<ReaderUsersBlogsDelegate>)delegate;
-
 @end
 
 @protocol ReaderUsersBlogsDelegate <NSObject>
