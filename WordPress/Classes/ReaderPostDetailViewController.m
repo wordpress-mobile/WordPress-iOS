@@ -661,7 +661,8 @@ typedef enum {
 
 - (void)postView:(ReaderPostView *)postView didReceiveImageLinkAction:(id)sender {
     ReaderImageView *imageView = (ReaderImageView *)sender;
-	
+	UIViewController *controller;
+    
 	if (imageView.linkURL) {
 		NSString *url = [imageView.linkURL absoluteString];
 		
@@ -675,21 +676,19 @@ typedef enum {
 		}
 		
 		if (matched) {
-            UIViewController *controller = [[WPImageViewController alloc] initWithImage:imageView.image andURL:imageView.linkURL];
-            controller.modalTransitionStyle = UIModalTransitionStyleCrossDissolve;
-            controller.modalPresentationStyle = UIModalPresentationFullScreen;
+            controller = [[WPImageViewController alloc] initWithImage:imageView.image andURL:imageView.linkURL];
             [self.navigationController presentViewController:controller animated:YES completion:nil];
-
-			//[WPImageViewController presentAsModalWithImage:imageView.image andURL:((ReaderImageView *)sender).linkURL];
-            //			[WPImageViewController presentAsModalWithURL:((ReaderImageView *)sender).linkURL];
 		} else {
-			WPWebViewController *controller = [[WPWebViewController alloc] init];
-			[controller setUrl:((ReaderImageView *)sender).linkURL];
-			[self.navigationController pushViewController:controller animated:YES];
+            controller = [[WPWebViewController alloc] init];
+			[(WPWebViewController *)controller setUrl:((ReaderImageView *)sender).linkURL];
 		}
 	} else {
-		[WPImageViewController presentAsModalWithImage:imageView.image];
+        controller = [[WPImageViewController alloc] initWithImage:imageView.image];
 	}
+    
+    controller.modalTransitionStyle = UIModalTransitionStyleCrossDissolve;
+    controller.modalPresentationStyle = UIModalPresentationFullScreen;
+    [self.navigationController pushViewController:controller animated:YES];
 }
 
 - (void)postView:(ReaderPostView *)postView didReceiveVideoLinkAction:(id)sender {
