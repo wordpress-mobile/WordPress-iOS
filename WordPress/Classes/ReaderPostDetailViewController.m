@@ -778,7 +778,6 @@ typedef enum {
 						   success:^(AFHTTPRequestOperation *operation, id responseObject) {
 							   [self onSyncSuccess:operation response:responseObject];
 						   } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
-							   [self onSyncFailure:operation error:error];
 						   }];
 }
 
@@ -803,11 +802,6 @@ typedef enum {
 							 withContext:[[ContextManager sharedInstance] mainContext]];
 	
 	[self prepareComments];
-}
-
-// TODO: Unhandled failure for user interaction
-- (void)onSyncFailure:(AFHTTPRequestOperation *)operation error:(NSError *)error {
-	@throw ([NSException exceptionWithName:@"Method unimplemented" reason:@"onSyncFailure:error: not implemented in ReaderPostDetailViewController" userInfo:nil]);
 }
 
 
