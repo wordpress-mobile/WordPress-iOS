@@ -22,7 +22,7 @@
 @property (nonatomic, strong) UITabBarController *tabBarController;
 @property (nonatomic, strong) ReaderPostsViewController *readerPostsViewController;
 @property (nonatomic, strong) BlogListViewController *blogListViewController;
-@property (strong, nonatomic) DDFileLogger *fileLogger;
+@property (strong, nonatomic, readonly) DDFileLogger *fileLogger;
 @property (nonatomic, strong) Reachability *internetReachability, *wpcomReachability;
 @property (nonatomic, assign) BOOL connectionAvailable, wpcomAvailable;
 

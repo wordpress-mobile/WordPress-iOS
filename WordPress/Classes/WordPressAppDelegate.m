@@ -47,6 +47,7 @@ NSInteger const UpdateCheckAlertViewTag = 102;
 @property (nonatomic, assign) BOOL listeningForBlogChanges;
 @property (nonatomic, strong) NotificationsViewController *notificationsViewController;
 @property (nonatomic, assign) UIBackgroundTaskIdentifier bgTask;
+@property (strong, nonatomic) DDFileLogger *fileLogger;
 
 @end
 
