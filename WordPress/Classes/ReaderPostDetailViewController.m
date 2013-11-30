@@ -758,7 +758,6 @@ typedef enum {
 						   success:^(AFHTTPRequestOperation *operation, id responseObject) {
 							   [self onSyncSuccess:operation response:responseObject];
 						   } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
-							   [self onSyncFailure:operation error:error];
 						   }];
 }
 
