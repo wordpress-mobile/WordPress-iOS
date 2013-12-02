@@ -38,7 +38,6 @@
 #import "SupportViewController.h"
 #import "WPAccount.h"
 #import "WPTableViewSectionHeaderView.h"
-#import "ManageBlogsViewController.h"
 #import "SupportViewController.h"
 #import "ContextManager.h"
 
@@ -153,10 +152,6 @@ CGFloat const blavatarImageViewSize = 43.f;
     return nil != [[NSUserDefaults standardUserDefaults] objectForKey:kApnsDeviceTokenPrefKey];
 }
 
-- (BOOL)supportsManageBlogs {
-    return [[[WPAccount defaultWordPressComAccount] blogs] count] > 1;
-}
-
 #pragma mark - Table view data source
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
@@ -169,21 +164,14 @@ CGFloat const blavatarImageViewSize = 43.f;
     if ([self supportsNotifications]) {
         rowForSignOut += 1;
     }
-    if ([self supportsManageBlogs]) {
-        rowForSignOut += 1;
-    }
     return rowForSignOut;
 }
 
 - (NSInteger)rowForNotifications {
     if ([self supportsNotifications]) {
-        return [self supportsManageBlogs] ? 2 : 1;
+        return 1;
     }
     return -1;
-}
-
-- (NSInteger)rowForManageBlogs {
-    return [self supportsManageBlogs] ? 1 : -1;
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
@@ -246,10 +234,6 @@ CGFloat const blavatarImageViewSize = 43.f;
                 cell.detailTextLabel.textColor = [UIColor UIColorFromHex:0x888888];
                 cell.selectionStyle = UITableViewCellSelectionStyleNone;
                 cell.accessibilityIdentifier = @"wpcom-username";
-            } else if (indexPath.row == [self rowForManageBlogs]) {
-                cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
-                cell.textLabel.text = NSLocalizedString(@"Manage Blogs", @"");
-                cell.accessibilityIdentifier = @"wpcom-manage-blogs";
             } else if (indexPath.row == [self rowForNotifications]) {
                 cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
                 cell.textLabel.text = NSLocalizedString(@"Manage Notifications", @"");
@@ -383,9 +367,6 @@ CGFloat const blavatarImageViewSize = 43.f;
                                             destructiveButtonTitle:NSLocalizedString(@"Sign Out", @"")otherButtonTitles:nil, nil ];
                 actionSheet.actionSheetStyle = UIActionSheetStyleDefault;
                 [actionSheet showInView:self.view];
-            } else if (indexPath.row == [self rowForManageBlogs]) {
-                ManageBlogsViewController *manageBlogsViewController = [[ManageBlogsViewController alloc] initWithAccount:[WPAccount defaultWordPressComAccount]];
-                [self.navigationController pushViewController:manageBlogsViewController animated:YES];
             } else if (indexPath.row == [self rowForNotifications]) {
                 [WPMobileStats trackEventForWPCom:StatsEventSettingsClickedManageNotifications];
             
