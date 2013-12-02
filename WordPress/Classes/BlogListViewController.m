@@ -320,8 +320,10 @@ CGFloat const blavatarImageSize = 50.f;
 
     UISwitch *switcher = (UISwitch *)sender;
     Blog *blog = [self.resultsController objectAtIndexPath:[NSIndexPath indexPathForRow:switcher.tag inSection:0]];
-    blog.visible = switcher.on;
-    [blog dataSave];
+    if (switcher.on != blog.visible) {
+        blog.visible = switcher.on;
+        [blog dataSave];
+    }
 }
 
 #pragma mark -
