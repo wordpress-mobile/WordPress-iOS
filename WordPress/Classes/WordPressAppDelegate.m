@@ -64,9 +64,9 @@ NSInteger const UpdateCheckAlertViewTag = 102;
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
     // Crash reporting, logging, debugging
+    [self configureLogging];
     [self configureHockeySDK];
     [self configureCrashlytics];
-    [self configureLogging];
     [self printDebugLaunchInfo];
     [self toggleExtraDebuggingIfNeeded];
     [self removeCredentialsForDebug];
@@ -934,6 +934,8 @@ NSInteger const UpdateCheckAlertViewTag = 102;
     [DDLog addLogger:[CrashlyticsLogger sharedInstance]];
 #endif
     
+    [DDLog addLogger:self.fileLogger];
+    
     BOOL extraDebug = [[NSUserDefaults standardUserDefaults] boolForKey:@"extra_debug"];
     if (extraDebug) {
         ddLogLevel = LOG_LEVEL_VERBOSE;
@@ -947,7 +949,7 @@ NSInteger const UpdateCheckAlertViewTag = 102;
     _fileLogger = [[DDFileLogger alloc] init];
     _fileLogger.rollingFrequency = 60 * 60 * 24; // 24 hour rolling
     _fileLogger.logFileManager.maximumNumberOfLogFiles = 7;
-    [DDLog addLogger:_fileLogger];
+    
     return _fileLogger;
 }
 
