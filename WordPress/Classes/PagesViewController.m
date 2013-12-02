@@ -64,7 +64,7 @@
 
 - (NSString *)statsPropertyForViewOpening
 {
-    return StatsPropertyPagedOpened;
+    return StatsPropertyPagesOpened;
 }
 
 
