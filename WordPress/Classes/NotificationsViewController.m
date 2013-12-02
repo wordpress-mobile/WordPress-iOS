@@ -166,8 +166,7 @@ NSString * const NotificationsLastSyncDateKey = @"NotificationsLastSyncDate";
             detailViewController.user = self.user;
             [self.navigationController pushViewController:detailViewController animated:YES];
         } else {
-            NotificationsFollowDetailViewController *detailViewController = [[NotificationsFollowDetailViewController alloc] initWithNibName:@"NotificationsFollowDetailViewController" bundle:nil];
-            detailViewController.note = note;
+            NotificationsFollowDetailViewController *detailViewController = [[NotificationsFollowDetailViewController alloc] initWithNote:note];
             [self.navigationController pushViewController:detailViewController animated:YES];
         }
     } else {
