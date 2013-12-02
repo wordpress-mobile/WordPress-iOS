@@ -1,7 +1,6 @@
 #import "PostSettingsViewController.h"
 #import "WPSelectionTableViewController.h"
 #import "WordPressAppDelegate.h"
-#import "WPPopoverBackgroundView.h"
 #import "NSString+Helpers.h"
 #import "EditPostViewController_Internal.h"
 #import "PostSettingsSelectionViewController.h"
@@ -1237,7 +1236,6 @@
         
         [fakeController.view addSubview:picker];
         self.popover = [[UIPopoverController alloc] initWithContentViewController:fakeController];
-        self.popover.popoverBackgroundViewClass = [WPPopoverBackgroundView class];
         
         CGRect popoverRect;
         if (picker.tag == TAG_PICKER_STATUS) {
@@ -1911,7 +1909,6 @@
     
     if (IS_IPAD) {
         self.popover = [[UIPopoverController alloc] initWithContentViewController:picker];
-        self.popover.popoverBackgroundViewClass = [WPPopoverBackgroundView class];
         self.popover.delegate = self;
         [self.popover presentPopoverFromRect:frame inView:self.view permittedArrowDirections:UIPopoverArrowDirectionAny animated:YES];
         [[CPopoverManager instance] setCurrentPopoverController:self.popover];
