@@ -221,11 +221,7 @@
 }
 
 - (BOOL)isWPcom {
-    if ([[self getOptionValue:@"wordpress.com"] boolValue]) {
-        return YES;
-    }
-    NSRange range = [self.xmlrpc rangeOfString:@"wordpress.com"];
-	return (range.location != NSNotFound);
+    return self.account.isWpcom;
 }
 
 //WP.COM private blog. 
