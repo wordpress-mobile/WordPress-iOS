@@ -13,6 +13,7 @@
 - (bool)isEmpty;
 - (NSString *)trim;
 - (NSNumber *)numericValue;
+- (CGSize)suggestedSizeWithFont:(UIFont *)font width:(CGFloat)width;
 
 @end
 

@@ -15,6 +15,7 @@
 #import "NotificationsFollowTableViewCell.h"
 #import "WPWebViewController.h"
 #import <QuartzCore/QuartzCore.h>
+#import "WPAccount.h"
 
 @interface NotificationsFollowDetailViewController ()
 
@@ -261,14 +262,7 @@
             }
         } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
             [cell setFollowing: isFollowing];
-            BOOL extra_debug_on = getenv("WPDebugXMLRPC") ? YES : NO;
-#ifndef DEBUG
-            NSNumber *extra_debug = [[NSUserDefaults standardUserDefaults] objectForKey:@"extra_debug"];
-            if ([extra_debug boolValue]) extra_debug_on = YES;
-#endif
-            if ( extra_debug_on == YES ) {
-                WPFLog(@"[Rest API] ! %@", [error localizedDescription]);
-            }
+            DDLogVerbose(@"[Rest API] ! %@", [error localizedDescription]);
         }];
     }   
 }
@@ -285,7 +279,7 @@
     if (webViewURL) {
         WPWebViewController *webViewController = [[WPWebViewController alloc] init];
         [webViewController setUrl:webViewURL];
-        [self.panelNavigationController pushViewController:webViewController fromViewController:self animated:YES];
+        [self.navigationController pushViewController:webViewController animated:YES];
     }
     
 }
@@ -317,13 +311,13 @@
             
             WPWebViewController *webViewController = [[WPWebViewController alloc] init];
             if ([blogURL isWordPressDotComUrl]) {
-                [webViewController setUsername:[WordPressComApi sharedApi].username];
-                [webViewController setPassword:[WordPressComApi sharedApi].password];
+                [webViewController setUsername:[[WPAccount defaultWordPressComAccount] username]];
+                [webViewController setPassword:[[WPAccount defaultWordPressComAccount] password]];
                 [webViewController setUrl:[blogURL ensureSecureURL]];
             } else {
                 [webViewController setUrl:blogURL];
             }
-            [self.panelNavigationController pushViewController:webViewController fromViewController:self animated:YES];
+            [self.navigationController pushViewController:webViewController animated:YES];
         } else {
             [self.tableView deselectRowAtIndexPath:indexPath animated:NO];
         }

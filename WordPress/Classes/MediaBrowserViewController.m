@@ -13,11 +13,9 @@
 #import "Media.h"
 #import "MediaSearchFilterHeaderView.h"
 #import "EditMediaViewController.h"
-#import "WPPopoverBackgroundView.h"
 #import "UIImage+Resize.h"
 #import "WordPressAppDelegate.h"
 #import "WPLoadingView.h"
-#import "PanelNavigationConstants.h"
 #import "WPInfoView.h"
 #import "Post.h"
 #import "CPopoverManager.h"
@@ -152,10 +150,7 @@ static CGFloat const ScrollingVelocityThreshold = 30.0f;
     }
     
     [self refresh];
-    
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(sidebarOpened) name:SidebarOpenedNotification object:nil];
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(sidebarClosed) name:SidebarClosedNotification object:nil];
-    
+   
     [self checkVideoPressEnabled];
 }
 
@@ -1019,10 +1014,6 @@ static CGFloat const ScrollingVelocityThreshold = 30.0f;
         if (IS_IPAD) {
             if (!_addPopover) {
                 _addPopover = [[UIPopoverController alloc] initWithContentViewController:_picker];
-                
-                if ([_addPopover respondsToSelector:@selector(popoverBackgroundViewClass)] && !IS_IOS7) {
-                    _addPopover.popoverBackgroundViewClass = [WPPopoverBackgroundView class];
-                }
             }
             UIBarButtonItem *barButtonItem = IS_IOS7 ? self.navigationItem.rightBarButtonItems[1] : self.navigationItem.rightBarButtonItem;
             [_addPopover presentPopoverFromBarButtonItem:barButtonItem permittedArrowDirections:UIPopoverArrowDirectionAny animated:YES];
@@ -1252,7 +1243,7 @@ static CGFloat const ScrollingVelocityThreshold = 30.0f;
     if (_apost) {
         imageMedia = [Media newMediaForPost:_apost];
     } else {
-        imageMedia = [Media newMediaForBlog:self.blog withContext:self.blog.managedObjectContext];
+        imageMedia = [Media newMediaForBlog:self.blog];
     }
 	NSData *imageData = UIImageJPEGRepresentation(theImage, 0.90);
 	UIImage *imageThumbnail = [self generateThumbnailFromImage:theImage andSize:CGSizeMake(75, 75)];
@@ -1408,7 +1399,7 @@ static CGFloat const ScrollingVelocityThreshold = 30.0f;
 	}
 	
 	if(copySuccess) {
-		videoMedia = [Media newMediaForBlog:self.blog withContext:self.blog.managedObjectContext];
+		videoMedia = [Media newMediaForBlog:self.blog];
 		
 		if(_currentOrientation == kLandscape)
 			videoMedia.orientation = @"landscape";

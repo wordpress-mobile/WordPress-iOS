@@ -7,6 +7,7 @@
 
 #import "Post.h"
 #import "NSMutableDictionary+Helpers.h"
+#import "ContextManager.h"
 
 @interface Post(InternalProperties)
 // We shouldn't need to store this, but if we don't send IDs on edits
@@ -42,52 +43,9 @@
 @dynamic categories;
 @synthesize specialType, featuredImageURL;
 
-+ (Post *)newPostForBlog:(Blog *)blog withContext:(NSManagedObjectContext*)context {
-    Blog *contextBlog = (Blog *)[context objectWithID:blog.objectID];
-    Post *post = [NSEntityDescription insertNewObjectForEntityForName:NSStringFromClass(self.class) inManagedObjectContext:context];
-    post.blog = contextBlog;
-    return post;
++ (NSString *const)remoteUniqueIdentifier {
+    return @"postid";
 }
-
-+ (Post *)newDraftForBlog:(Blog *)blog {
-    Post *post = [self newPostForBlog:blog withContext:blog.managedObjectContext];
-    post.remoteStatus = AbstractPostRemoteStatusLocal;
-    post.status = @"publish";
-    [post save];
-    
-    return post;
-}
-
-+ (Post *)findWithBlog:(Blog *)blog andPostID:(NSNumber *)postID withContext:(NSManagedObjectContext*)context {
-    Blog *contextBlog = (Blog *)[context objectWithID:blog.objectID];
-    NSSet *results = [contextBlog.posts filteredSetUsingPredicate:[NSPredicate predicateWithFormat:@"postID == %@ AND original == NULL",postID]];
-    
-    if (results && (results.count > 0)) {
-        return [[results allObjects] objectAtIndex:0];
-    }
-    return nil;
-}
-
-+ (Post *)findOrCreateWithBlog:(Blog *)blog andPostID:(NSNumber *)postID withContext:(NSManagedObjectContext*)context {
-    Post *post = [self findWithBlog:blog andPostID:postID withContext:context];
-    
-    if (post == nil) {
-        post = [Post newPostForBlog:blog withContext:context];
-        post.postID = postID;
-        post.remoteStatus = AbstractPostRemoteStatusSync;
-    }
-    [post findComments];
-    return post;
-}
-
-- (id)init {
-    if (self = [super init]) {
-        appDelegate = (WordPressAppDelegate *)[[UIApplication sharedApplication] delegate];
-    }
-    
-    return self;
-}
-
 
 - (void)updateFromDictionary:(NSDictionary *)postInfo {
     self.postTitle      = [postInfo objectForKey:@"title"];
@@ -222,21 +180,23 @@
 	}
 }
 
-- (BOOL)hasChanges {
-    if ([super hasChanges]) return YES;
+- (BOOL)hasChanged {
+    if ([super hasChanged]) return YES;
    
-    if ((self.tags != ((Post *)self.original).tags)
-        && (![self.tags isEqual:((Post *)self.original).tags]))
+    Post *original = (Post *)self.original;
+    
+    if ((self.tags != original.tags)
+        && (![self.tags isEqual:original.tags]))
         return YES;
     
-    if ((self.postFormat != ((Post *)self.original).postFormat)
-        && (![self.postFormat isEqual:((Post *)self.original).postFormat]))
+    if ((self.postFormat != original.postFormat)
+        && (![self.postFormat isEqual:original.postFormat]))
         return YES;
 
-    if (![self.categories isEqual:((Post *)self.original).categories]) return YES;
+    if (![self.categories isEqual:original.categories]) return YES;
     
-	if ((self.geolocation != ((Post *)self.original).geolocation)
-		 && (![self.geolocation isEqual:((Post *)self.original).geolocation]) )
+	if ((self.geolocation != original.geolocation)
+		 && (![self.geolocation isEqual:original.geolocation]) )
         return YES;
 
     return NO;
@@ -249,7 +209,6 @@
 
     // check if post deleted after media upload started
     if (self.content == nil) {
-        appDelegate.isUploadingPost = NO;
         [[NSNotificationCenter defaultCenter] postNotificationName:@"PostUploadCancelled" object:self];
     } else {
         self.content = [NSString stringWithFormat:@"%@\n\n%@", [media html], self.content];
@@ -260,8 +219,6 @@
 }
 
 - (void)mediaUploadFailed:(NSNotification *)notification {
-    appDelegate.isUploadingPost = NO;
-
     UIAlertView *alert = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"Quick Photo Failed", @"")
                                                     message:NSLocalizedString(@"Sorry, the photo upload failed. The post has been saved as a Local Draft.", @"")
                                                    delegate:self
@@ -272,9 +229,7 @@
     [[NSNotificationCenter defaultCenter] removeObserver:self];
 }
 
-- (void)uploadWithSuccess:(void (^)())success failure:(void (^)(NSError *error))failure {    
-    [self save];
-    
+- (void)uploadWithSuccess:(void (^)())success failure:(void (^)(NSError *error))failure {
     if ([self hasRemote]) {
         [self editPostWithSuccess:success failure:failure];
     } else {
@@ -436,7 +391,9 @@
         if (failure) {
             NSDictionary *userInfo = [NSDictionary dictionaryWithObject:@"Can't edit a post if it's not in the server" forKey:NSLocalizedDescriptionKey];
             NSError *error = [NSError errorWithDomain:@"org.wordpress.iphone" code:0 userInfo:userInfo];
-            failure(error);
+            dispatch_async(dispatch_get_main_queue(), ^{
+                failure(error);
+            });
         }
         return;
     }
@@ -484,7 +441,9 @@
     }
     [self remove];
     if (!remote && success) {
-        success();
+        dispatch_async(dispatch_get_main_queue(), ^{
+            success();
+        });
     }
 }
 

@@ -1,12 +1,12 @@
-//
-//  WPWebAppViewController.h
-//  WordPress
-//
-//  Created by Beau Collins on 1/20/12.
-//  Copyright (c) 2012 WordPress. All rights reserved.
-//
+/*
+ * WPWebAppViewController.h
+ *
+ * Copyright (c) 2013 WordPress. All rights reserved.
+ *
+ * Licensed under GNU General Public License 2.0.
+ * Some rights reserved. See license.txt
+ */
 
-#import <UIKit/UIKit.h>
 #import "EGORefreshTableHeaderView.h"
 #import "WPWebBridge.h"
 
@@ -16,7 +16,6 @@
     EGORefreshTableHeaderView *_refreshHeaderView;
     NSString *hybridAuthToken;
     BOOL shouldEnablePullToRefresh;
-    BOOL didPlayPullSound;
     BOOL didTriggerRefresh;
 }
 

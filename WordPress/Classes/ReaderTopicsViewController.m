@@ -163,7 +163,6 @@
 
 
 - (void)handleFriendFinderButtonTapped:(id)sender {
-	NSLog(@"Tapped");
     WPFriendFinderViewController *controller = [[WPFriendFinderViewController alloc] init];
 	[self.navigationController pushViewController:controller animated:YES];
     [controller loadURL:kMobileReaderFFURL];

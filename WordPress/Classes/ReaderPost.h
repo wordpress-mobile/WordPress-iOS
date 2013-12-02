@@ -45,6 +45,10 @@ extern NSString *const ReaderExtrasArrayKey;
 @property (nonatomic, strong) NSString *summary;
 @property (nonatomic, strong) NSMutableSet *comments;
 @property (nonatomic, readonly, strong) NSURL *featuredImageURL;
+@property (nonatomic, retain) WPAccount *account;
+@property (nonatomic, strong) NSString *primaryTagName;
+@property (nonatomic, strong) NSString *primaryTagSlug;
+@property (nonatomic, strong) NSString *tags;
 
 /**
  An array of dictionaries representing available REST API endpoints to retrieve posts for the Reader.
@@ -87,7 +91,7 @@ extern NSString *const ReaderExtrasArrayKey;
  @param context The managed object context to query.
  
  */
-+ (void)deletePostsSyncedEarlierThan:(NSDate *)syncedDate withContext:(NSManagedObjectContext *)context;
++ (void)deletePostsSyncedEarlierThan:(NSDate *)syncedDate;
 
 
 /**
@@ -111,6 +115,7 @@ extern NSString *const ReaderExtrasArrayKey;
 
 - (NSString *)prettyDateString;
 
+- (BOOL)isFollowable;
 
 - (BOOL)isFreshlyPressed;
 
@@ -129,6 +134,7 @@ extern NSString *const ReaderExtrasArrayKey;
 
 - (NSDictionary *)getStoredComment;
 
+- (NSString *)authorString;
 
 - (NSString *)avatar;
 

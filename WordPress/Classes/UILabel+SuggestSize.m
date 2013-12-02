@@ -11,16 +11,24 @@
 @implementation UILabel (SuggestSize)
 
 - (CGSize)suggestedSizeForWidth:(CGFloat)width {
-	
-	return [self suggestSizeForString:self.text atWidth:width];
-	
+    if (self.attributedText)
+        return [self suggestSizeForAttributedString:self.attributedText width:width];
+    
+	return [self suggestSizeForString:self.text width:width];
 }
 
+- (CGSize)suggestSizeForAttributedString:(NSAttributedString *)string width:(CGFloat)width {
+    if (!string) {
+        return CGSizeZero;
+    }
+    return [string boundingRectWithSize:CGSizeMake(width, CGFLOAT_MAX) options:NSStringDrawingUsesLineFragmentOrigin | NSStringDrawingUsesFontLeading context:nil].size;
+}
 
-- (CGSize)suggestSizeForString:(NSString *)string atWidth:(CGFloat)width {
-	
-	return [string sizeWithFont:self.font constrainedToSize:CGSizeMake(width, 9999.0f) lineBreakMode:self.lineBreakMode];
-
+- (CGSize)suggestSizeForString:(NSString *)string width:(CGFloat)width {
+    if (!string) {
+        return CGSizeZero;
+    }
+    return [self suggestSizeForAttributedString:[[NSAttributedString alloc] initWithString:string attributes:@{NSFontAttributeName: self.font}] width:width];
 }
 
 @end

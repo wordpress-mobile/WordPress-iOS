@@ -10,7 +10,8 @@
 #import "ReaderTableViewCell.h"
 #import "ReaderComment.h"
 
-@interface ReaderCommentTableViewCell : ReaderTableViewCell
+@interface ReaderCommentTableViewCell : UITableViewCell
+@property (nonatomic, strong) UIImageView *cellImageView;
 
 + (NSAttributedString *)convertHTMLToAttributedString:(NSString *)html withOptions:(NSDictionary *)options;
 

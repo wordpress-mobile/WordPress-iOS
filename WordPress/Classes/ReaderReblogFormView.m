@@ -53,14 +53,11 @@
 - (id)initWithFrame:(CGRect)frame {
     self = [super initWithFrame:frame];
     if (self) {
-        if (IS_IOS7) {
-            self.backgroundColor = [WPStyleGuide littleEddieGrey];
-        }
+        self.backgroundColor = [WPStyleGuide littleEddieGrey];
 		self.requireText = NO;
 		self.promptLabel.text = NSLocalizedString(@"Add your thoughts here... (optional)", @"Placeholder text prompting the user to add a note to the post they are reblogging.");
 		
         NSArray *blogs = [[NSUserDefaults standardUserDefaults] arrayForKey:@"wpcom_users_blogs"];
-        blogs = nil;
         _blogsAvailable = blogs && blogs.count > 0;
         [self setupReblogDestinations:blogs];
         [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(userDefaultsChanged) name:NSUserDefaultsDidChangeNotification object:[NSUserDefaults standardUserDefaults]];
@@ -91,7 +88,7 @@
         
         NSString *str = NSLocalizedString(@"Post to", @"Lable for the blog selector. Says 'Post to' followed by the blog's icon and its name.");
         UIFont *font = [UIFont fontWithName:@"OpenSans" size:15.0f];
-        CGSize size = [str sizeWithFont:font];
+        CGSize size = [str sizeWithAttributes:@{NSFontAttributeName:font}];
         UILabel *postToLabel = [[UILabel alloc] initWithFrame:CGRectMake(0.0f, 0.0, size.width, frame.size.height)];
         postToLabel.text = str;
         postToLabel.font = font;
@@ -202,7 +199,7 @@
         [WPMobileStats trackEventForWPCom:StatsEventReaderReblogged];
 		
 	} failure:^(NSError *error) {
-		WPLog(@"Error Reblogging Post : %@", [error localizedDescription]);
+		DDLogError(@"Error Reblogging Post : %@", [error localizedDescription]);
 		[self enableForm:YES];
 		[self.activityView stopAnimating];
 		[self.textView becomeFirstResponder];

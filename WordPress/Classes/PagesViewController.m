@@ -6,7 +6,6 @@
 //
 
 #import "PagesViewController.h"
-#import "PageViewController.h"
 #import "EditPageViewController.h"
 #import "WPTableViewControllerSubclass.h"
 
@@ -33,49 +32,30 @@
 }
 
 
-- (void)syncItemsWithUserInteraction:(BOOL)userInteraction success:(void (^)())success failure:(void (^)(NSError *))failure {
+- (void)syncItemsWithSuccess:(void (^)())success failure:(void (^)(NSError *))failure {
     [self.blog syncPagesWithSuccess:success failure:failure loadMore: NO];
 }
 
 // For iPhone
 - (void)editPost:(AbstractPost *)apost {
-    EditPageViewController *editPostViewController = [[EditPageViewController alloc] initWithPost:[apost createRevision]];
+    EditPageViewController *editPostViewController = [[EditPageViewController alloc] initWithPost:apost];
     UINavigationController *navController = [[UINavigationController alloc] initWithRootViewController:editPostViewController];
     navController.modalPresentationStyle = UIModalPresentationCurrentContext;
-    [self.panelNavigationController.detailViewController presentViewController:navController animated:YES completion:nil];
-}
-
-// For iPad
-- (void)showSelectedPost {
-    Page *page = nil;
-    NSIndexPath *indexPath = self.selectedIndexPath;
-
-    @try {
-        page = [self.resultsController objectAtIndexPath:indexPath];
-        WPLog(@"Selected page at indexPath: (%i,%i)", indexPath.section, indexPath.row);
-    }
-    @catch (NSException *e) {
-        NSLog(@"Can't select page at indexPath (%i,%i)", indexPath.section, indexPath.row);
-        NSLog(@"sections: %@", self.resultsController.sections);
-        NSLog(@"results: %@", self.resultsController.fetchedObjects);
-        page = nil;
-    }
-    
-    self.postReaderViewController = [[PageViewController alloc] initWithPost:page];
-    [self.panelNavigationController.navigationController pushViewController:self.postReaderViewController animated:YES];
+    [self.navigationController presentViewController:navController animated:YES completion:nil];
 }
 
 - (void)showAddPostView {
     [WPMobileStats trackEventForWPCom:StatsEventPagesClickedNewPage];
-
-    if (IS_IPAD)
-        [self resetView];
     
     Page *post = [Page newDraftForBlog:self.blog];
     [self editPost:post];
 }
 
 - (NSString *)tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section {
+    // Don't show a section title if there's only one section
+    if ([tableView numberOfSections] <= 1)
+        return nil;
+
     id <NSFetchedResultsSectionInfo> sectionInfo = [[self.resultsController sections] objectAtIndex:section];
     NSString *sectionName = [sectionInfo name];
     

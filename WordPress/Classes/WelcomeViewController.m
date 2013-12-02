@@ -48,7 +48,7 @@
 
     [WPStyleGuide configureColorsForView:self.view andTableView:self.tableView];
 
-    [self.tableView registerClass:[UITableViewCell class] forCellReuseIdentifier:@"Cell"];
+    [self.tableView registerClass:[WPTableViewCell class] forCellReuseIdentifier:@"Cell"];
 }
 
 #pragma mark - Table view data source

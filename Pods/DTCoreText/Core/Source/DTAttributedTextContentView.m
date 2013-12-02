@@ -6,13 +6,15 @@
 //  Copyright 2011 Drobnik.com. All rights reserved.
 //
 
-#import "DTAttributedTextContentView.h"
-#import "DTCoreText.h"
-#import "DTDictationPlaceholderTextAttachment.h"
 #import <QuartzCore/QuartzCore.h>
+
+#import "DTCoreText.h"
+#import "DTAttributedTextContentView.h"
+#import "DTDictationPlaceholderTextAttachment.h"
 #import "DTAccessibilityViewProxy.h"
 #import "DTAccessibilityElement.h"
 #import "DTCoreTextLayoutFrameAccessibilityElementGenerator.h"
+#import "DTBlockFunctions.h"
 
 #if !__has_feature(objc_arc)
 #error THIS CODE MUST BE COMPILED WITH ARC ENABLED!
@@ -275,10 +277,10 @@ static Class _layerClassToUseForDTAttributedTextContentView = nil;
 				}
 				
 				// round frame
-				frameForSubview.origin.x = floorf(frameForSubview.origin.x);
-				frameForSubview.origin.y = ceilf(frameForSubview.origin.y);
-				frameForSubview.size.width = roundf(frameForSubview.size.width);
-				frameForSubview.size.height = roundf(frameForSubview.size.height);
+				frameForSubview.origin.x = floor(frameForSubview.origin.x);
+				frameForSubview.origin.y = ceil(frameForSubview.origin.y);
+				frameForSubview.size.width = round(frameForSubview.size.width);
+				frameForSubview.size.height = round(frameForSubview.size.height);
 				
 				if (CGRectGetMinY(frameForSubview)> CGRectGetMaxY(rect) || CGRectGetMaxY(frameForSubview) < CGRectGetMinY(rect))
 				{
@@ -348,8 +350,8 @@ static Class _layerClassToUseForDTAttributedTextContentView = nil;
 					// make sure that the frame height is no less than the line height for hyperlinks
 					if (frameForSubview.size.height < oneLine.frame.size.height)
 					{
-						frameForSubview.origin.y = truncf(oneLine.frame.origin.y);
-						frameForSubview.size.height = ceilf(oneLine.frame.size.height);
+						frameForSubview.origin.y = trunc(oneLine.frame.origin.y);
+						frameForSubview.size.height = ceil(oneLine.frame.size.height);
 					}
 					
 					if (existingLinkView)
@@ -364,8 +366,8 @@ static Class _layerClassToUseForDTAttributedTextContentView = nil;
 						// make sure that the frame height is no less than the line height for hyperlinks
 						if (frameForSubview.size.height < oneLine.frame.size.height)
 						{
-							frameForSubview.origin.y = truncf(oneLine.frame.origin.y);
-							frameForSubview.size.height = ceilf(oneLine.frame.size.height);
+							frameForSubview.origin.y = trunc(oneLine.frame.origin.y);
+							frameForSubview.size.height = ceil(oneLine.frame.size.height);
 						}
 						
 						if (_delegateFlags.delegateSupportsCustomViewsForLinks)
@@ -474,35 +476,32 @@ static Class _layerClassToUseForDTAttributedTextContentView = nil;
 
 - (void)relayoutText
 {
-	if (![NSThread isMainThread])
-	{
-		[self performSelectorOnMainThread:@selector(relayoutText) withObject:nil waitUntilDone:YES];
-		return;
-	}
-	
-    // Make sure we actually have a superview and a previous layout before attempting to relayout the text.
-    if (_layoutFrame && self.superview)
-	{
-        // need new layout frame, layouter can remain because the attributed string is probably the same
-        self.layoutFrame = nil;
-        
-        // remove all links because they might have merged or split
-        [self removeAllCustomViewsForLinks];
-        
-        if (_attributedString)
-        {
-            // triggers new layout
-            CGSize neededSize = [self intrinsicContentSize];
-            
-			CGRect optimalFrame = CGRectMake(self.frame.origin.x, self.frame.origin.y, neededSize.width, neededSize.height);
-			NSDictionary *userInfo = [NSDictionary dictionaryWithObject:[NSValue valueWithCGRect:optimalFrame] forKey:@"OptimalFrame"];
+	DTBlockPerformSyncIfOnMainThreadElseAsync(^{
+
+		// Make sure we actually have a superview and a previous layout before attempting to relayout the text.
+		if (_layoutFrame && self.superview)
+		{
+			// need new layout frame, layouter can remain because the attributed string is probably the same
+			self.layoutFrame = nil;
 			
-			[[NSNotificationCenter defaultCenter] postNotificationName:DTAttributedTextContentViewDidFinishLayoutNotification object:self userInfo:userInfo];
-        }
-		
-		[self setNeedsLayout];
-		[self setNeedsDisplayInRect:self.bounds];
-    }
+			// remove all links because they might have merged or split
+			[self removeAllCustomViewsForLinks];
+			
+			if (_attributedString)
+			{
+				// triggers new layout
+				CGSize neededSize = [self intrinsicContentSize];
+				
+				CGRect optimalFrame = CGRectMake(self.frame.origin.x, self.frame.origin.y, neededSize.width, neededSize.height);
+				NSDictionary *userInfo = [NSDictionary dictionaryWithObject:[NSValue valueWithCGRect:optimalFrame] forKey:@"OptimalFrame"];
+				
+				[[NSNotificationCenter defaultCenter] postNotificationName:DTAttributedTextContentViewDidFinishLayoutNotification object:self userInfo:userInfo];
+			}
+			
+			[self setNeedsLayout];
+			[self setNeedsDisplayInRect:self.bounds];
+		}
+	});
 }
 
 - (void)removeAllCustomViewsForLinks
@@ -604,7 +603,7 @@ static Class _layerClassToUseForDTAttributedTextContentView = nil;
 	}
 	else
 	{
-		rect.size.height = CGFLOAT_OPEN_HEIGHT; // necessary height set as soon as we know it.
+		rect.size.height = CGFLOAT_HEIGHT_UNKNOWN; // necessary height set as soon as we know it.
 	}
 	
 	return rect;
@@ -814,7 +813,7 @@ static Class _layerClassToUseForDTAttributedTextContentView = nil;
 				}
 				else
 				{
-					rect.size.height = CGFLOAT_OPEN_HEIGHT; // necessary height set as soon as we know it.
+					rect.size.height = CGFLOAT_HEIGHT_UNKNOWN; // necessary height set as soon as we know it.
 				}
 				
 				_layoutFrame = [theLayouter layoutFrameWithRect:rect range:NSMakeRange(0, 0)];

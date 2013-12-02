@@ -8,7 +8,8 @@
 
 #import "DTCoreTextFontDescriptor.h"
 #import "DTCoreTextFontCollection.h"
-#import "DTVersion.h"
+#import "DTCompatibility.h"
+#import "DTCoreTextConstants.h"
 
 static NSCache *_fontCache = nil;
 static NSMutableDictionary *_fontOverrides = nil;
@@ -54,7 +55,7 @@ static BOOL _needsChineseFontCascadeFix = NO;
 	_fontOverrides = [[NSMutableDictionary alloc] init];
 	
 	// then - if it exists - we override from the plist
-	NSString *path = [[NSBundle mainBundle] pathForResource:@"DTCoreTextFontOverrides" ofType:@"plist"];
+	NSString *path = [[NSBundle bundleForClass:self] pathForResource:@"DTCoreTextFontOverrides" ofType:@"plist"];
 	NSArray *fileArray = [NSArray arrayWithContentsOfFile:path];
 	
 	for (NSDictionary *oneOverride in fileArray)
@@ -77,17 +78,16 @@ static BOOL _needsChineseFontCascadeFix = NO;
 	
 #if TARGET_OS_IPHONE
 	// workaround for iOS 5.x bug: global font cascade table has incorrect bold font for Chinese characters in Chinese locale
-	
-	
-	DTVersion *version = [DTVersion osVersion];
-	
-	// seems to be fixed in iOS 6
-	if (version.major<6)
+	if (NSFoundationVersionNumber < DTNSFoundationVersionNumber_iOS_6_0)
 	{
 		_needsChineseFontCascadeFix = YES;
 	}
 #endif
-	
+}
+
+// preloads all available system fonts for faster font matching
++ (void)asyncPreloadFontLookupTable
+{
 	// asynchronically load all available fonts into override table
 	[self _createDictionaryOfAllAvailableFontOverrideNamesWithCompletion:^(NSDictionary *dictionary) {
 		
@@ -153,8 +153,36 @@ static BOOL _needsChineseFontCascadeFix = NO;
 
 + (void)setFallbackFontFamily:(NSString *)fontFamily
 {
-	NSParameterAssert(fontFamily);
+	if (!fontFamily)
+	{
+		[NSException raise:DTCoreTextFontDescriptorException format:@"Fallback Font Family cannot be nil"];
+	}
 	
+	// make sure that only valid font families can be registered
+	NSDictionary *attributes = [NSDictionary dictionaryWithObject:fontFamily forKey:(id)kCTFontFamilyNameAttribute];
+	CTFontDescriptorRef fontDesc = CTFontDescriptorCreateWithAttributes((__bridge CFDictionaryRef)(attributes));
+	CTFontRef font = CTFontCreateWithFontDescriptor(fontDesc, 12, NULL);
+
+	BOOL isValid = NO;
+	
+	if (font)
+	{
+		NSString *usedFontFamily = CFBridgingRelease(CTFontCopyFamilyName(font));
+		
+		if ([usedFontFamily isEqualToString:fontFamily])
+		{
+			isValid = YES;
+		}
+		
+		CFRelease(fontDesc);
+		CFRelease(font);
+	}
+	
+	if (!isValid)
+	{
+		[NSException raise:DTCoreTextFontDescriptorException format:@"Fallback Font Family '%@' not registered on the system", fontFamily];
+	}
+
 	_fallbackFontFamily = [fontFamily copy];
 }
 
@@ -285,6 +313,9 @@ static BOOL _needsChineseFontCascadeFix = NO;
 	return self;
 }
 
+#ifndef COVERAGE
+// exclude method from coverage testing
+
 - (NSString *)description
 {
 	NSMutableString *string = [NSMutableString string];
@@ -353,6 +384,8 @@ static BOOL _needsChineseFontCascadeFix = NO;
 	return string;
 }
 
+#endif
+
 - (NSDictionary *)fontAttributes
 {
 	NSMutableDictionary *tmpDict = [NSMutableDictionary dictionary];
@@ -382,8 +415,7 @@ static BOOL _needsChineseFontCascadeFix = NO;
 	}
 	
 	// we need size because that's what makes a font unique, for searching it's ignored anyway
-	[tmpDict setObject:[NSNumber numberWithFloat:_pointSize] forKey:(id)kCTFontSizeAttribute];
-	
+	[tmpDict setObject:DTNSNumberFromCGFloat(_pointSize) forKey:(id)kCTFontSizeAttribute];
 	
 	if (_smallCapsFeature)
 	{
@@ -601,8 +633,12 @@ static BOOL _needsChineseFontCascadeFix = NO;
 	{
 		matchingFont = CTFontCreateWithFontDescriptor(matchingFontDescriptor, _pointSize, NULL);
 		
-		CFRelease(searchingFontDescriptor);
 		CFRelease(matchingFontDescriptor);
+	}
+	
+	if (searchingFontDescriptor)
+	{
+		CFRelease(searchingFontDescriptor);
 	}
 	
 	// check if we indeed got an oblique font if we wanted one
@@ -646,7 +682,55 @@ static BOOL _needsChineseFontCascadeFix = NO;
 
 - (BOOL)isEqual:(id)object
 {
-	return (([object isKindOfClass:[DTCoreTextFontDescriptor class]]) && ([self hash] == [object hash]));
+	if (!object)
+	{
+		return NO;
+	}
+	
+	if (object == self)
+	{
+		return YES;
+	}
+	
+	if (![object isKindOfClass:[DTCoreTextFontDescriptor class]])
+	{
+		return NO;
+	}
+	
+	DTCoreTextFontDescriptor *otherFontDescriptor = object;
+	
+	if (_pointSize != otherFontDescriptor->_pointSize)
+	{
+		return NO;
+	}
+	
+	if (_stylisticClass != otherFontDescriptor->_stylisticClass)
+	{
+		return NO;
+	}
+	
+	if (_stylisticTraits != otherFontDescriptor->_stylisticTraits)
+	{
+		return NO;
+	}
+
+	if (_fontName != otherFontDescriptor->_fontName)
+	{
+		if (![_fontName isEqualToString:_fontName])
+		{
+			return NO;
+		}
+	}
+	
+	if (_fontFamily != otherFontDescriptor->_fontFamily)
+	{
+		if (![_fontFamily isEqualToString:_fontFamily])
+		{
+			return NO;
+		}
+	}
+	
+	return YES;
 }
 
 
@@ -908,7 +992,7 @@ static BOOL _needsChineseFontCascadeFix = NO;
 
 - (void)setPointSize:(CGFloat)pointSize
 {
-	_pointSize = roundf(pointSize);
+	_pointSize = round(pointSize);
 }
 
 @synthesize fontFamily = _fontFamily;

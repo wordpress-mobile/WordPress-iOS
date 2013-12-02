@@ -53,6 +53,7 @@
 @property (assign,nonatomic) NSUInteger backgroundUploadEventCount;
 
 -(void)recordEvent:(QuantcastEvent*)inEvent;
+-(void)recordEventSynchronouslyWithoutUpload:(QuantcastEvent*)inEvent;
 -(NSArray*)recordedEvents;
 
 -(NSUInteger)eventCount;
