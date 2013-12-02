@@ -50,8 +50,10 @@
 
 #pragma mark - Recording Events
 @property (assign,nonatomic) NSUInteger uploadEventCount;
+@property (assign,nonatomic) NSUInteger backgroundUploadEventCount;
 
 -(void)recordEvent:(QuantcastEvent*)inEvent;
+-(void)recordEventSynchronouslyWithoutUpload:(QuantcastEvent*)inEvent;
 -(NSArray*)recordedEvents;
 
 -(NSUInteger)eventCount;

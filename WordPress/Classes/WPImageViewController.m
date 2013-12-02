@@ -28,7 +28,7 @@
 	UIViewController *controller = [[self alloc] initWithImage:image];
 	controller.modalTransitionStyle = UIModalTransitionStyleCrossDissolve;
 	controller.modalPresentationStyle = UIModalPresentationFullScreen;
-    [[[WordPressAppDelegate sharedWordPressApplicationDelegate] panelNavigationController] presentViewController:controller animated:YES completion:nil];
+    [[[WordPressAppDelegate sharedWordPressApplicationDelegate] navigationController] presentViewController:controller animated:YES completion:nil];
 	return controller;
 }
 
@@ -37,7 +37,7 @@
 	UIViewController *controller = [[self alloc] initWithURL:url];
 	controller.modalTransitionStyle = UIModalTransitionStyleCrossDissolve;
 	controller.modalPresentationStyle = UIModalPresentationFullScreen;
-    [[[WordPressAppDelegate sharedWordPressApplicationDelegate] panelNavigationController] presentViewController:controller animated:YES completion:nil];
+    [[[WordPressAppDelegate sharedWordPressApplicationDelegate] navigationController] presentViewController:controller animated:YES completion:nil];
 	return controller;
 }
 
@@ -46,7 +46,7 @@
 	UIViewController *controller = [[self alloc] initWithImage:image andURL:url];
 	controller.modalTransitionStyle = UIModalTransitionStyleCrossDissolve;
 	controller.modalPresentationStyle = UIModalPresentationFullScreen;
-    [[[WordPressAppDelegate sharedWordPressApplicationDelegate] panelNavigationController] presentViewController:controller animated:YES completion:nil];
+    [[[WordPressAppDelegate sharedWordPressApplicationDelegate] navigationController] presentViewController:controller animated:YES completion:nil];
 	return controller;
 }
 
@@ -100,7 +100,6 @@
 	
 	self.imageView = [[UIImageView alloc] initWithFrame:frame];
 	_imageView.userInteractionEnabled = YES;
-    _imageView.autoresizingMask = UIViewAutoresizingFlexibleHeight | UIViewAutoresizingFlexibleWidth;
 	[_scrollView addSubview:_imageView];
 	
 	UITapGestureRecognizer *tgr2 = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(handleImageDoubleTapped:)];
@@ -110,7 +109,7 @@
 	UITapGestureRecognizer *tgr1 = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(handleImageTapped:)];
 	[tgr1 setNumberOfTapsRequired:1];
 	[tgr1 requireGestureRecognizerToFail:tgr2];
-	[_imageView addGestureRecognizer:tgr1];
+    [_scrollView addGestureRecognizer:tgr1];
 	
 	if(self.image != nil) {
 		_imageView.image = self.image;

@@ -177,10 +177,7 @@ extern NSString *const StatsEventWelcomeViewControllerClickedCreateWordpressDotC
 
 // NUX Related
 extern NSString *const StatsEventNUXFirstWalkthroughOpened;
-extern NSString *const StatsEventNUXFirstWalkthroughViewedPage2;
-extern NSString *const StatsEventNUXFirstWalkthroughViewedPage3;
 extern NSString *const StatsEventNUXFirstWalkthroughClickedSkipToCreateAccount;
-extern NSString *const StatsEventNUXFirstWalkthroughClickedSkipToSignIn;
 extern NSString *const StatsEventNUXFirstWalkthroughClickedInfo;
 extern NSString *const StatsEventNUXFirstWalkthroughClickedCreateAccount;
 extern NSString *const StatsEventNUXFirstWalkthroughSignedInWithoutUrl;
@@ -198,21 +195,13 @@ extern NSString *const StatsEventNUXFirstWalkthroughUserSkippedConnectingToJetpa
 extern NSString *const StatsEventNUXCreateAccountOpened;
 extern NSString *const StatsEventNUXCreateAccountClickedCancel;
 extern NSString *const StatsEventNUXCreateAccountClickedHelp;
-extern NSString *const StatsEventNUXCreateAccountClickedPage1Next;
-extern NSString *const StatsEventNUXCreateAccountClickedPage2Next;
-extern NSString *const StatsEventNUXCreateAccountClickedPage2Previous;
+extern NSString *const StatsEventNUXCreateAccountClickedAccountPageNext;
+extern NSString *const StatsEventNUXCreateAccountClickedSitePageNext;
+extern NSString *const StatsEventNUXCreateAccountClickedSitePagePrevious;
 extern NSString *const StatsEventNUXCreateAccountCreatedAccount;
-extern NSString *const StatsEventNUXCreateAccountClickedPage3Previous;
+extern NSString *const StatsEventNUXCreateAccountClickedReviewPagePrevious;
 extern NSString *const StatsEventNUXCreateAccountClickedViewLanguages;
 extern NSString *const StatsEventNUXCreateAccountChangedDefaultURL;
-
-// NUX Second Walkthrough
-extern NSString *const StatsEventNUXSecondWalkthroughOpened;
-extern NSString *const StatsEventNUXSecondWalkthroughViewedPage2;
-extern NSString *const StatsEventNUXSecondWalkthroughViewedPage3;
-extern NSString *const StatsEventNUXSecondWalkthroughViewedPage4;
-extern NSString *const StatsEventNUXSecondWalkthroughClickedStartUsingApp;
-extern NSString *const StatsEventNUXSecondWalkthroughClickedStartUsingAppOnFinalPage;
 
 // Add Blogs
 extern NSString *const StatsEventAddBlogsOpened;
@@ -229,6 +218,7 @@ extern NSString *const StatsEventAddBlogsClickedAddSelected;
 + (void)endSession;
 + (void)resumeSession;
 
++ (void)recordAppOpenedForEvent:(NSString *)event;
 + (void)trackEventForSelfHostedAndWPCom:(NSString *)event;
 + (void)trackEventForSelfHostedAndWPCom:(NSString *)event properties:(NSDictionary *)properties;
 + (void)trackEventForSelfHostedAndWPComWithSavedProperties:(NSString *)event;

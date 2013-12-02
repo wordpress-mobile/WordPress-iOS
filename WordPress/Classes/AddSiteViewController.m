@@ -1,8 +1,11 @@
-//
-//  AddSiteViewController.m
-//  WordPress
-//
-//  Created by Chris Boyd on 7/23/10.
+/*
+ * AddSiteViewController.m
+ *
+ * Copyright (c) 2013 WordPress. All rights reserved.
+ *
+ * Licensed under GNU General Public License 2.0.
+ * Some rights reserved. See license.txt
+ */
 
 #import "AddSiteViewController.h"
 #import "AddUsersBlogsViewController.h"
@@ -10,9 +13,12 @@
 #import "JetpackSettingsViewController.h"
 #import "WPAccount.h"
 #import <SVProgressHUD/SVProgressHUD.h>
+#import "ContextManager.h"
 
 @interface EditSiteViewController (PrivateMethods)
+
 - (void)validationDidFail:(id)wrong;
+
 @end
 
 @implementation AddSiteViewController
@@ -28,10 +34,10 @@ CGSize const AddSiteLogoSize = { 320.0, 70.0 };
     logoImage.frame = CGRectMake(0.0f, 0.0f, AddSiteLogoSize.width, AddSiteLogoSize.height);
     logoImage.autoresizingMask = UIViewAutoresizingFlexibleWidth;
     logoImage.contentMode = UIViewContentModeCenter;
-    tableView.tableHeaderView = logoImage;
+    self.tableView.tableHeaderView = logoImage;
 
-    saveButton = [[UIBarButtonItem alloc] initWithTitle:NSLocalizedString(@"Add", @"Add button to add a site from Settings.") style:[WPStyleGuide barButtonStyleForDone] target:self action:@selector(save:)];
-    self.navigationItem.rightBarButtonItem = saveButton;
+    self.saveButton = [[UIBarButtonItem alloc] initWithTitle:NSLocalizedString(@"Add", @"Add button to add a site from Settings.") style:[WPStyleGuide barButtonStyleForDone] target:self action:@selector(save:)];
+    self.navigationItem.rightBarButtonItem = self.saveButton;
 
     self.navigationItem.title = NSLocalizedString(@"Add Blog", @"");
 }
@@ -41,29 +47,29 @@ CGSize const AddSiteLogoSize = { 320.0, 70.0 };
 }
 
 - (void)validationSuccess:(NSString *)xmlrpc {
-    WPFLog(@"hasSubsites: %@", subsites);
+    DDLogInfo(@"hasSubsites: %@", self.subsites);
 
-    if ([subsites count] > 0) {
+    if ([self.subsites count] > 0) {
         // If the user has entered the URL of a site they own on a MultiSite install, 
         // assume they want to add that specific site.
         NSDictionary *subsite = nil;
-        if ([subsites count] > 1) {
-            if (_blogId) {
-                subsite = [[subsites filteredArrayUsingPredicate:[NSPredicate predicateWithFormat:@"blogid = %@", _blogId]] lastObject];
+        if ([self.subsites count] > 1) {
+            if (self.blogId) {
+                subsite = [[self.subsites filteredArrayUsingPredicate:[NSPredicate predicateWithFormat:@"blogid = %@", self.blogId]] lastObject];
             }
             if (!subsite) {
-                subsite = [[subsites filteredArrayUsingPredicate:[NSPredicate predicateWithFormat:@"xmlrpc = %@", xmlrpc]] lastObject];
+                subsite = [[self.subsites filteredArrayUsingPredicate:[NSPredicate predicateWithFormat:@"xmlrpc = %@", xmlrpc]] lastObject];
             }
         }
         
         if (subsite == nil) {
-            subsite = [subsites objectAtIndex:0];
+            subsite = [self.subsites objectAtIndex:0];
         }
 
-        if ([subsites count] > 1 && [[subsite objectForKey:@"blogid"] isEqualToString:@"1"]) {
+        if ([self.subsites count] > 1 && [[subsite objectForKey:@"blogid"] isEqualToString:@"1"]) {
             [self displayAddUsersBlogsForXmlRpc:xmlrpc];
         } else {
-            if (_isSiteDotCom) {
+            if (self.isSiteDotCom) {
                 xmlrpc = [subsite objectForKey:@"xmlrpc"];
             }
             [self createBlogWithXmlRpc:xmlrpc andBlogDetails:subsite];
@@ -74,19 +80,17 @@ CGSize const AddSiteLogoSize = { 320.0, 70.0 };
         [self validationDidFail:error];
     }
 	[self.navigationItem setHidesBackButton:NO animated:NO];
-    saveButton.enabled = YES;            
+    self.saveButton.enabled = YES;
 }
 
 - (void)displayAddUsersBlogsForXmlRpc:(NSString *)xmlrpc
 {
-    WPAccount *account = [WPAccount createOrUpdateSelfHostedAccountWithXmlrpc:xmlrpc username:self.username andPassword:self.password];
+    WPAccount *account = [WPAccount createOrUpdateSelfHostedAccountWithXmlrpc:xmlrpc username:self.username andPassword:self.password withContext:[[ContextManager sharedInstance] mainContext]];
 
     AddUsersBlogsViewController *addUsersBlogsView = [[AddUsersBlogsViewController alloc] initWithAccount:account];
     addUsersBlogsView.isWPcom = NO;
-    addUsersBlogsView.usersBlogs = subsites;
+    addUsersBlogsView.usersBlogs = self.subsites;
     addUsersBlogsView.url = xmlrpc;
-    addUsersBlogsView.username = self.username;
-    addUsersBlogsView.password = self.password;
     addUsersBlogsView.geolocationEnabled = self.geolocationEnabled;
     [self.navigationController pushViewController:addUsersBlogsView animated:YES];
 }
@@ -95,12 +99,12 @@ CGSize const AddSiteLogoSize = { 320.0, 70.0 };
 {
     NSAssert(blogDetails != nil, nil);
 
-    WPAccount *account = [WPAccount createOrUpdateSelfHostedAccountWithXmlrpc:xmlrpc username:self.username andPassword:self.password];
+    WPAccount *account = [WPAccount createOrUpdateSelfHostedAccountWithXmlrpc:xmlrpc username:self.username andPassword:self.password withContext:[[ContextManager sharedInstance] mainContext]];
 
     NSMutableDictionary *newBlog = [NSMutableDictionary dictionaryWithDictionary:blogDetails];
     [newBlog setObject:xmlrpc forKey:@"xmlrpc"];
  
-    self.blog = [account findOrCreateBlogFromDictionary:newBlog withContext:[WordPressAppDelegate sharedWordPressApplicationDelegate].managedObjectContext];
+    self.blog = [account findOrCreateBlogFromDictionary:newBlog withContext:account.managedObjectContext];
     self.blog.geolocationEnabled = self.geolocationEnabled;
     [self.blog dataSave];
 }
@@ -124,8 +128,8 @@ CGSize const AddSiteLogoSize = { 320.0, 70.0 };
 
 - (void)connectToJetpack
 {
-    NSString *wpcomUsername = [WordPressComApi sharedApi].username;
-    NSString *wpcomPassword = [WordPressComApi sharedApi].password;
+    NSString *wpcomUsername = [[WPAccount defaultWordPressComAccount] username];
+    NSString *wpcomPassword = [[WPAccount defaultWordPressComAccount] password];
     if ((wpcomUsername != nil) && (wpcomPassword != nil)) {
         // Try with a known WordPress.com username first
         [SVProgressHUD showWithStatus:NSLocalizedString(@"Connecting to Jetpack", @"") maskType:SVProgressHUDMaskTypeBlack];
@@ -154,10 +158,13 @@ CGSize const AddSiteLogoSize = { 320.0, 70.0 };
     [SVProgressHUD dismiss];
     JetpackSettingsViewController *jetpackSettingsViewController = [[JetpackSettingsViewController alloc] initWithBlog:self.blog];
     jetpackSettingsViewController.canBeSkipped = YES;
+    jetpackSettingsViewController.showFullScreen = YES;
     [jetpackSettingsViewController setCompletionBlock:^(BOOL didAuthenticate) {
-        [self.presentingViewController dismissViewControllerAnimated:YES completion:nil];
+        [self.navigationController dismissViewControllerAnimated:YES completion:^{
+            [self dismiss];
+        }];
     }];
-    [self.navigationController pushViewController:jetpackSettingsViewController animated:YES];
+    [self.navigationController presentViewController:jetpackSettingsViewController animated:YES completion:nil];
 }
 
 - (BOOL)canEditUsernameAndURL

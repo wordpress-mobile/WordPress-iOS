@@ -33,16 +33,17 @@
                                @"blogName": @"A test blog",
                                @"isAdmin": @YES
                                };
+    [[CoreDataTestHelper sharedHelper] registerDefaultContext];
     _account = [WPAccount createOrUpdateSelfHostedAccountWithXmlrpc:blogDict[@"xmlrpc"] username:@"test" andPassword:@"test"];
-    _blog = [_account findOrCreateBlogFromDictionary:blogDict];
+    _blog = [_account findOrCreateBlogFromDictionary:blogDict withContext:[_account managedObjectContext]];
     _post = [Post newDraftForBlog:_blog];
-    STAssertNoThrow(_controller = [[EditPostViewController alloc] initWithPost:[_post createRevision]], nil);
+    XCTAssertNoThrow(_controller = [[EditPostViewController alloc] initWithPost:[_post createRevision]]);
     UIViewController *rvc = [[[[UIApplication sharedApplication] delegate] window] rootViewController];
-    STAssertNoThrow([rvc presentViewController:_controller animated:NO completion:^{
+    XCTAssertNoThrow([rvc presentViewController:_controller animated:NO completion:^{
         NSLog(@"subviews: %@", [rvc.view subviews]);
-        STAssertNotNil(_controller.view, nil);
-        STAssertNotNil(_controller.view.superview, nil);
-    }], nil);
+        XCTAssertNotNil(_controller.view);
+        XCTAssertNotNil(_controller.view.superview);
+    }]);
 }
 
 - (void)tearDown {
@@ -51,33 +52,33 @@
     _post = nil;
     [[CoreDataTestHelper sharedHelper] reset];
     UIViewController *rvc = [[[[UIApplication sharedApplication] delegate] window] rootViewController];
-    [rvc dismissModalViewControllerAnimated:NO];
+    [rvc dismissViewControllerAnimated:NO completion:nil];
     _controller = nil;
 }
 
 - (void)testPostIsCorrect {
-    STAssertNotNil(_post, nil);
-    STAssertEqualObjects(_post.status, @"publish", nil);
-    STAssertEqualObjects(_blog, _post.blog, nil);
+    XCTAssertNotNil(_post);
+    XCTAssertEqualObjects(_post.status, @"publish");
+    XCTAssertEqualObjects(_blog, _post.blog);
 }
 
 - (void)testViewController {
     UITextField *titleTextField = [self titleTextField];
-    STAssertNotNil(titleTextField, nil);
-    STAssertEqualObjects(titleTextField.accessibilityIdentifier, @"EditorTitleField", nil);
-    STAssertEqualObjects(_post.revision, _controller.apost, nil);
+    XCTAssertNotNil(titleTextField);
+    XCTAssertEqualObjects(titleTextField.accessibilityIdentifier, @"EditorTitleField");
+    XCTAssertEqualObjects(_post.revision, _controller.apost);
 
     [titleTextField typeText:@"Test1"];
-    STAssertEqualObjects(titleTextField.text, @"Test1", nil);
-    STAssertEqualObjects(_post.revision.postTitle, @"Test1", nil);
+    XCTAssertEqualObjects(titleTextField.text, @"Test1");
+    XCTAssertEqualObjects(_post.revision.postTitle, @"Test1");
 
     _post.revision.postTitle = @"Test2";
-    STAssertNoThrow([_controller performSelector:@selector(refreshUIForCurrentPost)], nil);
-    STAssertEqualObjects(titleTextField.text, @"Test2", nil);
+    XCTAssertNoThrow([_controller performSelector:@selector(refreshUIForCurrentPost)]);
+    XCTAssertEqualObjects(titleTextField.text, @"Test2");
 
-    STAssertNoThrow([_controller performSelector:@selector(switchToSettings)], nil);
-    STAssertNoThrow([_controller performSelector:@selector(switchToPreview)], nil);
-    STAssertNoThrow([_controller performSelector:@selector(switchToEdit)], nil);
+    XCTAssertNoThrow([_controller performSelector:@selector(switchToSettings)]);
+    XCTAssertNoThrow([_controller performSelector:@selector(switchToPreview)]);
+    XCTAssertNoThrow([_controller performSelector:@selector(switchToEdit)]);
 }
 
 - (void)testAutosave {
@@ -107,19 +108,27 @@
     }];
     [[NSNotificationCenter defaultCenter] addObserverForName:EditPostViewControllerAutosaveDidFailNotification object:_controller queue:nil usingBlock:^(NSNotification *note) {
         NSError *error = [[note userInfo] objectForKey:@"error"];
-        STFail(@"Autosave failed: %@", error);
+        XCTFail(@"Autosave failed: %@", error);
         ATHNotify();
     }];
     [titleTextField typeText:@"This is a very long title, which should trigger the autosave methods. Just in case... Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nunc est neque, adipiscing vitae euismod ut, elementum nec nibh. In hac habitasse platea dictumst. Mauris eu est lectus, sed elementum nunc. Praesent elit enim, facilisis eu tincidunt imperdiet, iaculis eu elit. In hac habitasse platea dictumst. Pellentesque feugiat elementum nulla, vitae pellentesque urna porttitor quis. Quisque et libero leo. Vestibulum ut erat ut ligula aliquet iaculis. Morbi egestas justo id nunc feugiat viverra vel sed risus. Nunc non ligula erat, eu ullamcorper purus. Nullam vitae erat velit, semper congue nibh. Vestibulum pulvinar mi a justo tincidunt venenatis in nec tortor. Curabitur tortor risus, consequat eget sollicitudin gravida, vestibulum vitae lacus. Aenean ut magna adipiscing mauris iaculis sollicitudin at id nisi."];
     ATHEnd();
-    STAssertEqualObjects(_post.postID, @123, nil);
-    STAssertEqualObjects(_post.status, @"draft", nil);
+    XCTAssertEqualObjects(_post.postID, @123);
+    XCTAssertEqualObjects(_post.status, @"draft");
 }
 
 #pragma mark - Helpers
 
 - (UITextField *)titleTextField {
-    NSArray *views = [[[[[_controller.view subviews] objectAtIndex:0] subviews] objectAtIndex:0] subviews];
+    // For iOS7
+    NSArray *views = [_controller.view subviews];
+    for (UIView *view in views) {
+        if ([view isKindOfClass:[UITextField class]] && [[view accessibilityIdentifier] isEqualToString:@"EditorTitleField"]) {
+            return (UITextField *)view;
+        }
+    }
+    // For iOS6
+    views = [[[[[_controller.view subviews] objectAtIndex:0] subviews] objectAtIndex:0] subviews];
     for (UIView *view in views) {
         if ([view isKindOfClass:[UITextField class]] && [[view accessibilityIdentifier] isEqualToString:@"EditorTitleField"]) {
             return (UITextField *)view;

@@ -16,7 +16,7 @@
 // Requires iOS 4 and Xcode 4.5 or later. 
 //
 // Frameworks required:
-//      SystemConfiguration, Foundation, UIKit, CoreLocation, CoreTelephony
+//      SystemConfiguration, Foundation, UIKit, CoreTelephony
 //
 // Frameworks that should be weak-linked:
 //      AdSupport
@@ -36,11 +36,17 @@
 //      And place the following in your precompiled header:
 //          #define QCMEASUREMENT_USE_SECURE_CONNECTIONS 1
 //
+// Additional frameworks that are required if geo-location measurement is desired:
+//      CoreLocation
+//
+//      And place the following in your precompiled header:
+//          #define QCMEASUREMENT_ENABLE_GEOMEASUREMENT 1
+//
 
 #import <Foundation/Foundation.h>
 #import <CoreLocation/CoreLocation.h>
 #import <SystemConfiguration/SystemConfiguration.h>
-#import "QuantcastNetworkReachability.h"
+
 #import "QuantcastOptOutDelegate.h"
 
 #ifndef __IPHONE_4_0
@@ -54,15 +60,7 @@
  @abstract The main interface with Quantcast's iOS App Measurement SDK
  @discussion
  */
-@interface QuantcastMeasurement : NSObject <CLLocationManagerDelegate,QuantcastNetworkReachability> {
-    SCNetworkReachabilityRef _reachability;
-    
-    NSString* _hashedUserId;
-    
-    BOOL _enableLogging;
-    BOOL _isOptedOut;
-    BOOL _geoLocationEnabled;
-}
+@interface QuantcastMeasurement : NSObject 
 
 /*!
  @method sharedInstance
@@ -86,6 +84,13 @@
  */
 @property (readonly) NSString* appInstallIdentifier;
 
+/*!
+ @property appLabels
+ @abstract Property that contains a static application labels
+ @discussion This property can be set to either an NSString or an NSArray of NSStrings.  When set, the label(s) will be automatically passed to all calls which take labels.  This is a convience property for applications that segment their audience by a fairly static group of labels.   This property can be changed at any time.
+ */
+@property (retain,nonatomic) id<NSObject> appLabels;
+
 #pragma mark - Session Management
 
 /*!
@@ -93,9 +98,19 @@
  */
 
 /*!
- @method beginMeasurementSession:withLabels:
+ @method setupMeasurementSessionWithAPIKey:labels:
+ @abstract Starts a Quantcast Measurement session and all begin, pause, resume and end notifications.
+ @discussion Start a Quantcast Measurement session. Nothing in the Quantcast Measurement API will work until this method (or beginMeasurementSession:withUserIdentifier:labels:) is called. Must be called first, preferably in the UIApplication delegate's application:didFinishLaunchingWithOptions: method.  When using this method, do not call beginMesurement, pauseSession, resumeSession, or endMeasurement.  This method is for convience for those application who do not need to send any labels or whose label will remain constant between across all begin, pause, resume and end calls.
+ @param inQuantcastAPIKey The Quantcast API key that activity for this app should be reported under. Obtain this key from the Quantcast website.
+ @param inUserIdentifierOrNil a user identifier string that is meanigful to the app publisher. This is usually a user login name or anything that identifies the user (different from a device id), but there is no requirement on format of this other than that it is a meaningful user identifier to you. Quantcast will immediately one-way hash this value, thus not recording it in its raw form. You should pass nil to indicate that there is no user identifier available, either at the start of the session or at all.
+ @param inLabelsOrNil Either an NSString object or NSArray object containing one or more NSString objects, each of which are a distinct label to be applied to this event. A label is any arbitrary string that you want to be ascociated with this event, and will create a second dimension in Quantcast Measurement reporting. Nominally, this is a "user class" indicator. For example, you might use one of two labels in your app: one for user who ave not purchased an app upgrade, and one for users who have purchased an upgrade.
+ */
+-(NSString*)setupMeasurementSessionWithAPIKey:(NSString*)inQuantcastAPIKey userIdentifier:(NSString*)userIdentifierOrNil labels:(id<NSObject>)inLabelsOrNil;
+
+/*!
+ @method beginMeasurementSessionWithAPIKey:labels:
  @abstract Starts a Quantcast Measurement session. 
- @discussion Start a Quantcast Measurement session. Nothing in the Quantcast Measurement API will work until this method (or beginMeasurementSession:withUserIdentifier:labels:) is called. Must be called first, preferably in the UIApplication delegate's application:didFinishLaunchingWithOptions: method.
+ @discussion Start a Quantcast Measurement session. This method is NOT required if setupMeasurement is called.  Nothing in the Quantcast Measurement API will work until this method (or beginMeasurementSession:withUserIdentifier:labels:) is called. Must be called first, preferably in the UIApplication delegate's application:didFinishLaunchingWithOptions: method.
  @param inQuantcastAPIKey The Quantcast API key that activity for this app should be reported under. Obtain this key from the Quantcast website.
  @param inLabelsOrNil Either an NSString object or NSArray object containing one or more NSString objects, each of which are a distinct label to be applied to this event. A label is any arbitrary string that you want to be ascociated with this event, and will create a second dimension in Quantcast Measurement reporting. Nominally, this is a "user class" indicator. For example, you might use one of two labels in your app: one for user who ave not purchased an app upgrade, and one for users who have purchased an upgrade.
  */
@@ -104,9 +119,9 @@
 /*!
  @method beginMeasurementSession:withUserIdentifier:labels:
  @abstract Starts a Quantcast Measurement session and records the user identifier that should be used for this session at the same time.
- @discussion Start a Quantcast Measurement session. Nothing in the Quantcast Measurement API will work until this method (or beginMeasurementSession:withLabels:) is called. Must be called first, preferably in the UIApplication delegate's application:didFinishLaunchingWithOptions: method. This form of the method allows you to simultaneously start a session and recurd the user identifier at the same time. If the user identifier is available at the start of the sesion, it is prefered that this method be called rather than consecutive calls to beginMeasurementSession:withLabels: then recordUserIdentifier:.
+ @discussion Start a Quantcast Measurement session. This method is NOT required if setupMeasurement is called. Nothing in the Quantcast Measurement API will work until this method (or beginMeasurementSession:withLabels:) is called. Must be called first, preferably in the UIApplication delegate's application:didFinishLaunchingWithOptions: method. This form of the method allows you to simultaneously start a session and recurd the user identifier at the same time. If the user identifier is available at the start of the sesion, it is prefered that this method be called rather than consecutive calls to beginMeasurementSession:withLabels: then recordUserIdentifier:.
  @param inQuantcastAPIKey The Quantcast API key that activity for this app should be reported under. Obtain this key from the Quantcast website.
- @param inUserIdentifierOrNil a user identifier string that is meanigful to the app publisher. There is no requirement on format of this other than that it is a meaningful user identifier to you. Quantcast will immediately one-way hash this value, thus not recording it in its raw form. You should pass nil to indicate that there is no user identifier available, either at the start of the session or at all.
+ @param inUserIdentifierOrNil a user identifier string that is meanigful to the app publisher. This is usually a user login name or anything that identifies the user (different from a device id), but there is no requirement on format of this other than that it is a meaningful user identifier to you. Quantcast will immediately one-way hash this value, thus not recording it in its raw form. You should pass nil to indicate that there is no user identifier available, either at the start of the session or at all.
  @param inLabelsOrNil  Either an NSString object or NSArray object containing one or more NSString objects, each of which are a distinct label to be applied to this event. A label is any arbitrary string that you want to be ascociated with this event, and will create a second dimension in Quantcast Measurement reporting. Nominally, this is a "user class" indicator. For example, you might use one of two labels in your app: one for user who ave not purchased an app upgrade, and one for users who have purchased an upgrade.
  @result The hashed version of the uer identifier passed on to Quantcast. You do not need to take any action with this. It is only returned for your reference. nil will be returned if the user has opted out or an error occurs.
  */
@@ -116,15 +131,15 @@
 /*!
  @method endMeasurementSessionWithLabels:
  @abstract Ends a Quantcast Measurement session and closes all conections.
- @discussion Returns the Quantcast Measurement SDK to the state it was in prior the the beginMeasurementSession:withLabels: call. Ideally, this method is called from the UIApplication delegate's applicationWillTerminate: method.
+ @discussion Returns the Quantcast Measurement SDK to the state it was in prior the the beginMeasurementSession:withLabels: call. This method can also be used to explicitly end a session started by setupMeasurementSessionWithAPIKey, though it is not required.  Ideally, this method is called from the UIApplication delegate's applicationWillTerminate: method.
  @param inLabelsOrNil  Either an NSString object or NSArray object containing one or more NSString objects, each of which are a distinct label to be applied to this event. A label is any arbitrary string that you want to be ascociated with this event, and will create a second dimension in Quantcast Measurement reporting. Nominally, this is a "user class" indicator. For example, you might use one of two labels in your app: one for user who ave not purchased an app upgrade, and one for users who have purchased an upgrade.
  */
 -(void)endMeasurementSessionWithLabels:(id<NSObject>)inLabelsOrNil;
 
 /*!
  @method pauseSessionWithLabels:
- @abstract Pauses the Quantcast Measurement Session..
- @discussion Temporarily suspends the operations of the Quantcast Measurement API. Ideally, this method is called from the UIApplication delegate's applicationDidEnterBackground: method.
+ @abstract Pauses the Quantcast Measurement Session.
+ @discussion Temporarily suspends the operations of the Quantcast Measurement API. This method is NOT required if setupMeasurement is used. Ideally, this method is called from the UIApplication delegate's applicationDidEnterBackground: method.
  @param inLabelsOrNil  Either an NSString object or NSArray object containing one or more NSString objects, each of which are a distinct label to be applied to this event. A label is any arbitrary string that you want to be ascociated with this event, and will create a second dimension in Quantcast Measurement reporting. Nominally, this is a "user class" indicator. For example, you might use one of two labels in your app: one for user who ave not purchased an app upgrade, and one for users who have purchased an upgrade.
  */
 -(void)pauseSessionWithLabels:(id<NSObject>)inLabelsOrNil;
@@ -132,7 +147,7 @@
 /*!
  @method resumeSessionWithLabels:
  @abstract Resumes the Quantcast Measurement Session.
- @discussion Resumes the operations of the Quantcast Measurement API after it was suspended. Ideally, this method is called from the UIApplication delegate's applicationWillEnterForeground: method.
+ @discussion Resumes the operations of the Quantcast Measurement API after it was suspended. This method is NOT required if setupMeasurement is used. Ideally, this method is called from the UIApplication delegate's applicationWillEnterForeground: method.
  @param inLabelsOrNil  Either an NSString object or NSArray object containing one or more NSString objects, each of which are a distinct label to be applied to this event. A label is any arbitrary string that you want to be ascociated with this event, and will create a second dimension in Quantcast Measurement reporting. Nominally, this is a "user class" indicator. For example, you might use one of two labels in your app: one for user who ave not purchased an app upgrade, and one for users who have purchased an upgrade. 
  */
 -(void)resumeSessionWithLabels:(id<NSObject>)inLabelsOrNil;
@@ -144,10 +159,10 @@
  */
 
 /*!
- @method recordUserIdentifier:
+ @method recordUserIdentifier:withLabels:
  @abstract Records the user identifier that should be used for this session. 
  @discussion This feature is only useful if you implement a similar (hashed) user identifier recording with Quantcast Measurement on other platforms, such as the web. This method only needs to be called once per session, preferably immediately after the session has begun, or when the user identifier has changed (e.g., the user logged out and a new user logged in). Quantcast will use a one-way hash to encode the user identifier and record the results of that one-way hash, not what is passed here. The method will return the results of that one-way hash for your reference. You do not need to take any action on the results.
- @param inUserIdentifierOrNil a user identifier string. There is no requirement on format of this other than that it is a meaningful user identifier to you. Quantcast will immediately one-way hash this value, thus not recording it in its raw form. You should pass nil to indicate that a user has logged out.
+ @param inUserIdentifierOrNil a user identifier string that is meanigful to the app publisher. This is usually a user login name or anything that identifies the user (different from a device id), but there is no requirement on format of this other than that it is a meaningful user identifier to you. Quantcast will immediately one-way hash this value, thus not recording it in its raw form. You should pass nil to indicate that a user has logged out.
  @param inLabelsOrNil  Either an NSString object or NSArray object containing one or more NSString objects, each of which are a distinct label to be applied to this event. A label is any arbitrary string that you want to be ascociated with this event, and will create a second dimension in Quantcast Measurement reporting. Nominally, this is a "user class" indicator. For example, you might use one of two labels in your app: one for user who ave not purchased an app upgrade, and one for users who have purchased an upgrade.
  @result The hashed version of the uer identifier passed on to Quantcast. You do not need to take any action with this. It is only returned for your reference. nil will be returned if the user has opted out or an error occurs.
  */
@@ -165,9 +180,10 @@
 /*!
  @property geoLocationEnabled
  @abstract Property that controls whether geo-location is logged
- @discussion By default, geo-location logging is off (NO). If you wish for Quantcast to provide measurement services pertaining to the user's geo-location, you should enable (set to YES) this property shortly after starting a measurement session. In order to protect user privacy, Quantcast will not log locations any more granular than "city", and will not log device location while your app is in the background. NOTE - Geolocation measurment is only supported on iOS 5 or later. Attempting to set this property to YES on a device running iOS 4.x will have no affect. You do not have to set this property to NO in order to pause geo-location tracking when the app goes into the background, as this is done automatically by the API.
+ @discussion By default, geo-location logging is off (NO). If you wish for Quantcast to provide measurement services pertaining to the user's geo-location, you should enable (set to YES) this property shortly after starting a measurement session. Furthermore, see the notes at the top of this file about which frameworks to add to your project. NOTE - Geolocation measurment is only supported on iOS 5 or later. Attempting to set this property to YES on a device running iOS 4.x will have no affect.
  */
 @property (assign,nonatomic) BOOL geoLocationEnabled;
+
 
 #pragma mark - User Privacy Management
 

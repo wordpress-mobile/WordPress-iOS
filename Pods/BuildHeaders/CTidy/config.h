@@ -1,1 +1,0 @@
-../../CTidy/libtidy/src/config.h

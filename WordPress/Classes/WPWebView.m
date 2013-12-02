@@ -9,7 +9,6 @@
 #import "ReachabilityUtils.h"
 #import "AFHTTPRequestOperation.h"
 #import "WordPressAppDelegate.h"
-#import "SoundUtil.h"
 
 NSString *refreshedWithOutValidRequestNotification = @"refreshedWithOutValidRequestNotification";
 
@@ -99,19 +98,9 @@ NSString *refreshedWithOutValidRequestNotification = @"refreshedWithOutValidRequ
     
     CGPoint newValue = [[change objectForKey:NSKeyValueChangeNewKey] CGPointValue];
     CGPoint oldValue = [[change objectForKey:NSKeyValueChangeOldKey] CGPointValue];
-    
-    if (newValue.y > oldValue.y && newValue.y > -65.0f) {
-        didPlayPullSound = NO;
-    }
-    
-    if(newValue.y == oldValue.y) return;
-    
-    if(newValue.y <= -65.0f && newValue.y < oldValue.y && ![self isLoading] && !didPlayPullSound && !didTriggerRefresh) {
-        // triggered
-        [SoundUtil playPullSound];
-        didPlayPullSound = YES;
-    }
-    
+
+    if(newValue.y == oldValue.y)
+        return;
 }
 
 
@@ -546,9 +535,6 @@ NSString *refreshedWithOutValidRequestNotification = @"refreshedWithOutValidRequ
 - (void)hideRefreshingState {
     self.lastWebViewRefreshDate = [NSDate date];
     [refreshHeaderView egoRefreshScrollViewDataSourceDidFinishedLoading:scrollView];
-    if([self window] && didTriggerRefresh) {
-        [SoundUtil playRollupSound];
-    }
     didTriggerRefresh = NO;
 }
 

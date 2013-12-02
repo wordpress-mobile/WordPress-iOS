@@ -30,6 +30,7 @@ extern NSString *const EditPostViewControllerAutosaveDidFailNotification;
 
 - (BOOL)autosaveRemoteWithSuccess:(void (^)())success failure:(void (^)(NSError *error))failure;
 - (void)refreshButtons;
+- (void)refreshTags;
 - (IBAction)switchToEdit;
 - (IBAction)switchToSettings;
 - (IBAction)switchToMedia;

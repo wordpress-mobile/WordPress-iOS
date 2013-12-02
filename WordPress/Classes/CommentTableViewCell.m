@@ -102,7 +102,6 @@
 //conditional load of author_email if url is empty per ticket #273
     NSString *authorURL = comment.author_url;
 	if ( authorURL == nil || [authorURL isEqualToString:@"http://"] || [authorURL isEqualToString:@""]) {
-		//NSLog(@"authorURL was nill or empty");
 		urlLabel.text = comment.author_email;
 	}else {
 		urlLabel.text = authorURL;
@@ -185,9 +184,8 @@
     CGFloat width = availableWidth - CELL_PADDING;
     if (IS_IPHONE) 
          width -= 22;
-    CGSize maximumLabelSize = CGSizeMake(width,COMMENT_LABEL_HEIGHT);
-    CGSize expectedLabelSize = [commentText sizeWithFont:[UIFont systemFontOfSize:COMMENT_FONT_SIZE] constrainedToSize:maximumLabelSize lineBreakMode:NSLineBreakByTruncatingTail];
-    // WPLog(@"Expected text size: %f", expectedLabelSize.height);
+    CGSize expectedLabelSize = [commentText suggestedSizeWithFont:[UIFont systemFontOfSize:COMMENT_FONT_SIZE] width:width];
+
     return GRAVATAR_TOP_OFFSET + MIN(expectedLabelSize.height, 60) + CELL_PADDING;
 }
 

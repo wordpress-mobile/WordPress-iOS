@@ -11,6 +11,7 @@
 #import "UIImageView+Gravatar.h"
 #import "WordPressAppDelegate.h"
 #import "WPWebViewController.h"
+#import "NSDate+StringFormatting.h"
 
 #define RCTVCVerticalPadding 5.0f
 #define RCTVCIndentationWidth 10.0f
@@ -96,7 +97,7 @@
     self = [super initWithStyle:style reuseIdentifier:reuseIdentifier];
     if (self) {
 		
-		UIColor *color = [UIColor colorWithHexString:@"EFEFEF"];
+		UIColor *color = DTColorCreateWithHexString(@"EFEFEF");
 		CGFloat width = self.frame.size.width;
         self.backgroundColor = color;
 		
@@ -136,7 +137,7 @@
 		
 		UIView *view = [[UIView alloc] initWithFrame:self.bounds];
 		view.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
-		view.backgroundColor = [UIColor colorWithHexString:@"A9E2F3"];
+		view.backgroundColor = DTColorCreateWithHexString(@"A9E2F3");
 		
 		CGRect rect = CGRectMake(0, 0, 1, 1);
 		UIGraphicsBeginImageContext(rect.size);
@@ -197,7 +198,7 @@
 	
 	[self.contentView addSubview:self.cellImageView];
 	
-	_dateLabel.text = [comment shortDate];
+	_dateLabel.text = [comment.dateCreated shortString];
 	_authorLabel.text = comment.author;
 	[self.cellImageView setImageWithURL:[NSURL URLWithString:comment.authorAvatarURL] placeholderImage:[UIImage imageNamed:@"blavatar-wpcom.png"]];
 
@@ -211,8 +212,7 @@
 - (void)handleLinkTapped:(id)sender {
 	WPWebViewController *controller = [[WPWebViewController alloc] init];
 	[controller setUrl:((DTLinkButton *)sender).URL];
-	[[[WordPressAppDelegate sharedWordPressApplicationDelegate] panelNavigationController] pushViewController:controller
-																						   fromViewController:self.parentController
+	[[[WordPressAppDelegate sharedWordPressApplicationDelegate] navigationController] pushViewController:controller
 																									 animated:YES];
 }
 

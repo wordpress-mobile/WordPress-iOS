@@ -17,7 +17,7 @@
 	<key>CFBundlePackageType</key>
 	<string>APPL</string>
 	<key>CFBundleShortVersionString</key>
-	<string>3.8.2</string>
+	<string>3.9</string>
 	<key>CFBundleSignature</key>
 	<string>????</string>
 	<key>CFBundleURLTypes</key>
@@ -37,7 +37,7 @@
 		</dict>
 	</array>
 	<key>CFBundleVersion</key>
-	<string>3.8.2</string>
+	<string>3.9</string>
 	<key>LSRequiresIPhoneOS</key>
 	<true/>
 	<key>MinimumOSVersion</key>
@@ -54,6 +54,7 @@
 		<string>OpenSans-Italic.ttf</string>
 		<string>OpenSans-BoldItalic.ttf</string>
 		<string>OpenSans-LightItalic.ttf</string>
+		<string>Merriweather-Bold.ttf</string>
 	</array>
 	<key>UIBackgroundModes</key>
 	<array>

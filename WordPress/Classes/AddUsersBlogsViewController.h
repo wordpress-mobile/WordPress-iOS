@@ -1,45 +1,22 @@
-//
-//  AddUsersBlogsViewController.h
-//  WordPress
-//
-//  Created by Chris Boyd on 7/19/10.
-//
+/*
+ * AddUsersBlogsViewController.h
+ *
+ * Copyright (c) 2013 WordPress. All rights reserved.
+ *
+ * Licensed under GNU General Public License 2.0.
+ * Some rights reserved. See license.txt
+ */
 
-#import <UIKit/UIKit.h>
-#import "WordPressAppDelegate.h"
-#import "Blog.h"
-#import "WPcomLoginViewController.h"
 
 @class WPAccount;
 
-@interface AddUsersBlogsViewController : UIViewController <UITableViewDelegate> {
-	WordPressAppDelegate *appDelegate;
-	BOOL hasCompletedGetUsersBlogs, isWPcom;
-	NSArray *usersBlogs;
-	NSMutableArray *selectedBlogs;
-	IBOutlet UITableView *tableView;
-	IBOutlet UIBarButtonItem *buttonAddSelected, *buttonSelectAll, *topAddSelectedButton;
-}
+@interface AddUsersBlogsViewController : UIViewController
 
-@property (nonatomic, assign) BOOL hideBackButton;
-@property (nonatomic, assign) BOOL hasCompletedGetUsersBlogs, isWPcom;
 @property (nonatomic, strong) NSArray *usersBlogs;
-@property (nonatomic, strong) NSMutableArray *selectedBlogs;
-@property (nonatomic, strong) NSString *username, *url, *password;
-@property (nonatomic, strong) IBOutlet UITableView *tableView;
-@property (nonatomic, strong) IBOutlet UIBarButtonItem *buttonAddSelected, *buttonSelectAll, *topAddSelectedButton;
+@property (nonatomic, assign) BOOL isWPcom;
+@property (nonatomic, strong) NSString *url;
 @property (nonatomic, assign) BOOL geolocationEnabled;
 
 - (AddUsersBlogsViewController *)initWithAccount:(WPAccount *)account;
-
-- (IBAction)selectAllBlogs:(id)sender;
-- (IBAction)deselectAllBlogs:(id)sender;
-- (void)refreshBlogs;
-- (IBAction)saveSelectedBlogs:(id)sender;
-- (void)createBlog:(NSDictionary *)blogInfo;
-- (void)saveSelectedBlogs;
-- (void)didSaveSelectedBlogsInBackground;
-- (void)signOut;
-- (void)checkAddSelectedButtonStatus;
 
 @end

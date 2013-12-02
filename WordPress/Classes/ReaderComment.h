@@ -62,6 +62,4 @@
 + (void)createOrUpdateWithDictionary:(NSDictionary *)dict forPost:(ReaderPost *)post withContext:(NSManagedObjectContext *)context;
 
 
-- (NSString *)shortDate;
-
 @end

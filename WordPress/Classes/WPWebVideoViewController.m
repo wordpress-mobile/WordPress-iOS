@@ -30,7 +30,7 @@
 	navController.modalTransitionStyle = UIModalTransitionStyleCrossDissolve;
 	navController.modalPresentationStyle = UIModalPresentationFullScreen;
 
-    [[[WordPressAppDelegate sharedWordPressApplicationDelegate] panelNavigationController] presentViewController:navController animated:YES completion:nil];
+    [[[WordPressAppDelegate sharedWordPressApplicationDelegate] navigationController] presentViewController:navController animated:YES completion:nil];
 	return controller;
 }
 
@@ -40,7 +40,7 @@
 	UINavigationController *navController = [[UINavigationController alloc] initWithRootViewController:controller];
 	navController.modalTransitionStyle = UIModalTransitionStyleCrossDissolve;
 	navController.modalPresentationStyle = UIModalPresentationFullScreen;
-    [[[WordPressAppDelegate sharedWordPressApplicationDelegate] panelNavigationController] presentViewController:navController animated:YES completion:nil];
+    [[[WordPressAppDelegate sharedWordPressApplicationDelegate] navigationController] presentViewController:navController animated:YES completion:nil];
 	return controller;
 }
 

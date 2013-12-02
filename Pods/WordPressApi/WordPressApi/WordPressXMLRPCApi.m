@@ -221,14 +221,14 @@ NSString *const WordPressXMLRPCApiErrorDomain = @"WordPressXMLRPCApiError";
         return failure ? failure(error) : nil;
     }
     [self logExtraInfo: @"Trying the following URL: %@", xmlrpcURL ];
-    [self validateXMLRPCUrl:xmlrpcURL success:^{
+    [self validateXMLRPCUrl:xmlrpcURL success:^(NSURL *validatedXmlrpcURL){
         if (success) {
-            success(xmlrpcURL);
+            success(validatedXmlrpcURL);
         }
     } failure:^(NSError *error){
+        [self logError:error];
         if (([error.domain isEqual:NSURLErrorDomain] && error.code == NSURLErrorUserCancelledAuthentication)
             || ([error.domain isEqual:WordPressXMLRPCApiErrorDomain] && error.code == WordPressXMLRPCApiMobilePluginRedirectedError)) {
-            [self logExtraInfo: [error localizedDescription]];
             if (failure) {
                 failure(error);
             }
@@ -240,12 +240,18 @@ NSString *const WordPressXMLRPCApiErrorDomain = @"WordPressXMLRPCApiError";
         [self logExtraInfo:@"2. Try the given url as an XML-RPC endpoint"];
         xmlrpcURL = [NSURL URLWithString:url];
         [self logExtraInfo: @"Trying the following URL: %@", url];
-        [self validateXMLRPCUrl:xmlrpcURL success:^{
+        [self validateXMLRPCUrl:xmlrpcURL success:^(NSURL *validatedXmlrpcURL){
             if (success) {
-                success(xmlrpcURL);
+                success(validatedXmlrpcURL);
             }
         } failure:^(NSError *error){
-            [self logExtraInfo:[error localizedDescription]];
+            [self logError:error];
+            if ([error.domain isEqual:WordPressXMLRPCApiErrorDomain] && error.code == WordPressXMLRPCApiMobilePluginRedirectedError) {
+                if (failure) {
+                    failure(error);
+                }
+                return;
+            }
             // ---------------------------------------------------
             // 3. Fetch the original url and look for the RSD link
             // ---------------------------------------------------
@@ -327,17 +333,17 @@ NSString *const WordPressXMLRPCApiErrorDomain = @"WordPressXMLRPCApiError";
                                 xmlrpc = parsedEndpoint;
                                 xmlrpcURL = [NSURL URLWithString:xmlrpc];
                                 [self logExtraInfo:@"Bingo! We found the WordPress XML-RPC element: %@", xmlrpcURL];
-                                [self validateXMLRPCUrl:xmlrpcURL success:^{
-                                    if (success) success(xmlrpcURL);
+                                [self validateXMLRPCUrl:xmlrpcURL success:^(NSURL *validatedXmlrpcURL){
+                                    if (success) success(validatedXmlrpcURL);
                                 } failure:^(NSError *error){
-                                    [self logExtraInfo: [error localizedDescription]];
+                                    [self logError:error];
                                     if (failure) failure(error);
                                 }];
                             } else {
                                 if (failure) failure(error);
                             }
                         } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
-                            [self logExtraInfo: [error localizedDescription]];
+                            [self logError:error];
                             if (failure) failure(error);
                         }];
                         NSOperationQueue *queue = [[NSOperationQueue alloc] init];
@@ -349,9 +355,9 @@ NSString *const WordPressXMLRPCApiErrorDomain = @"WordPressXMLRPCApiError";
                     xmlrpc = [rsdURL stringByReplacingOccurrencesOfString:@"?rsd" withString:@""];
                     if (![xmlrpc isEqualToString:rsdURL]) {
                         xmlrpcURL = [NSURL URLWithString:xmlrpc];
-                        [self validateXMLRPCUrl:xmlrpcURL success:^{
+                        [self validateXMLRPCUrl:xmlrpcURL success:^(NSURL *validatedXmlrpcURL){
                             if (success) {
-                                success(xmlrpcURL);
+                                success(validatedXmlrpcURL);
                             }
                         } failure:^(NSError *error){
                             parseBlock();
@@ -364,7 +370,7 @@ NSString *const WordPressXMLRPCApiErrorDomain = @"WordPressXMLRPCApiError";
                         failure(error);
                 }
             } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
-                [self logExtraInfo:@"Can't fetch the original url: %@", [error localizedDescription]];
+                [self logError:error];
                 if (failure) failure(error);
             }];
             NSOperationQueue *queue = [[NSOperationQueue alloc] init];
@@ -384,19 +390,21 @@ NSString *const WordPressXMLRPCApiErrorDomain = @"WordPressXMLRPCApiError";
     } else if ([extra isKindOfClass:[NSDictionary class]]) {
         [result addObject:extra];
     }
-    
+
     return [NSArray arrayWithArray:result];
 }
 
-+ (void)validateXMLRPCUrl:(NSURL *)url success:(void (^)())success failure:(void (^)(NSError *error))failure {
++ (void)validateXMLRPCUrl:(NSURL *)url success:(void (^)(NSURL *validatedXmlrpURL))success failure:(void (^)(NSError *error))failure {
     WPXMLRPCClient *client = [WPXMLRPCClient clientWithXMLRPCEndpoint:url];
     NSURLRequest *request = [client requestWithMethod:@"system.listMethods" parameters:@[]];
     __block BOOL isRedirected = NO;
     AFHTTPRequestOperation *operation = [client HTTPRequestOperationWithRequest:request success:^(AFHTTPRequestOperation *operation, id responseObject) {
         NSArray *methods = responseObject;
         if ([methods isKindOfClass:[NSArray class]] && [methods containsObject:@"wp.getUsersBlogs"]) {
+            NSURL *xmlrpcURL = operation.response.URL;
+            [self logExtraInfo:@"Found XML-RPC endpoint at %@", xmlrpcURL];
             if (success) {
-                success();
+                success(xmlrpcURL);
             }
         } else {
             if (failure) {
@@ -406,7 +414,9 @@ NSString *const WordPressXMLRPCApiErrorDomain = @"WordPressXMLRPCApiError";
         }
     } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
         if (isRedirected) {
-            if (operation.responseString != nil && [operation.responseString rangeOfString:@"<meta name=\"GENERATOR\" content=\"www.dudamobile.com\">"].location != NSNotFound) {
+            if (operation.responseString != nil
+                && ([operation.responseString rangeOfString:@"<meta name=\"GENERATOR\" content=\"www.dudamobile.com\">"].location != NSNotFound
+                 || [operation.responseString rangeOfString:@"dm404Container"].location != NSNotFound)) {
                 error = [NSError errorWithDomain:WordPressXMLRPCApiErrorDomain code:WordPressXMLRPCApiMobilePluginRedirectedError userInfo:@{NSLocalizedDescriptionKey: NSLocalizedStringFromTable(@"You seem to have installed a mobile plugin from DudaMobile which is preventing the app to connect to your blog", @"WordPressApi", nil)}];
             }
         }
@@ -414,9 +424,17 @@ NSString *const WordPressXMLRPCApiErrorDomain = @"WordPressXMLRPCApiError";
             failure(error);
         }
     }];
-    [operation setRedirectResponseBlock:^NSURLRequest *(NSURLConnection *connection, NSURLRequest *request, NSURLResponse *redirectResponse) {
+    [operation setRedirectResponseBlock:^NSURLRequest *(NSURLConnection *connection, NSURLRequest *redirectRequest, NSURLResponse *redirectResponse) {
         isRedirected = YES;
-        return request;
+
+        if (redirectResponse) {
+            [self logExtraInfo:@"Redirected to %@", redirectRequest.URL];
+            NSMutableURLRequest *postRequest = postRequest = [client requestWithMethod:@"system.listMethods" parameters:@[]];
+            [postRequest setURL:redirectRequest.URL];
+            return postRequest;
+        }
+
+        return redirectRequest;
     }];
 
     [client enqueueHTTPRequestOperation:operation];
@@ -438,6 +456,10 @@ NSString *const WordPressXMLRPCApiErrorDomain = @"WordPressXMLRPCApiError";
 	va_start(ap, format);
 	NSString *message = [[NSString alloc] initWithFormat:format arguments:ap];
     NSLog(@"[WordPressApi] < %@", message);
+}
+
++ (void)logError:(NSError *)error {
+    [self logExtraInfo:@"Error: %@", error];
 }
 
 @end

@@ -21,12 +21,12 @@
 @synthesize commentViewController, comment, hasChanges, textViewText, textView, isTransitioning, isEditing;
 
 - (void)dealloc {
-    [FileLogger log:@"%@ %@", self, NSStringFromSelector(_cmd)];
+    DDLogInfo(@"%@ %@", self, NSStringFromSelector(_cmd));
     [[NSNotificationCenter defaultCenter] removeObserver:self];
 }
 
 - (void)viewDidLoad {
-    [FileLogger log:@"%@ %@", self, NSStringFromSelector(_cmd)];
+    DDLogInfo(@"%@ %@", self, NSStringFromSelector(_cmd));
     [super viewDidLoad];
 
     self.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:NSLocalizedString(@"Cancel", nil)
@@ -145,20 +145,6 @@
 
 #pragma mark -
 #pragma mark Comment Handling Methods
-
-- (BOOL)isConnectedToHost {
-    WordPressAppDelegate  *appDelegate = (WordPressAppDelegate *)[[UIApplication sharedApplication] delegate];
-    if (appDelegate.currentBlogAvailable == NO) {
-        UIAlertView *connectionFailAlert = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"No connection to host.", @"")
-																	  message:NSLocalizedString(@"Operation is not supported now.", @"")
-																	 delegate:nil
-                                                            cancelButtonTitle:NSLocalizedString(@"OK", @"")
-                                                            otherButtonTitles:nil];
-        [connectionFailAlert show];
-        return NO;
-    }
-    return YES;
-}
 
 - (void)initiateSaveCommentReply:(id)sender {
 	[self endTextEnteringButtonAction: sender];

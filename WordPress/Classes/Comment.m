@@ -7,6 +7,7 @@
 //
 
 #import "Comment.h"
+#import "ContextManager.h"
 
 @interface Comment (WordPressApi)
 - (NSDictionary *)XMLRPCDictionary;
@@ -25,9 +26,8 @@
 
 #pragma mark - Creating and finding comment objects
 
-+ (Comment *)findWithBlog:(Blog *)blog andCommentID:(NSNumber *)commentID withContext:(NSManagedObjectContext *)context {
-    Blog *contextBlog = (Blog *)[context objectWithID:blog.objectID];
-    NSSet *results = [contextBlog.comments filteredSetUsingPredicate:[NSPredicate predicateWithFormat:@"commentID == %@",commentID]];
++ (Comment *)findWithBlog:(Blog *)blog andCommentID:(NSNumber *)commentID {
+    NSSet *results = [blog.comments filteredSetUsingPredicate:[NSPredicate predicateWithFormat:@"commentID == %@",commentID]];
     
     if (results && (results.count > 0)) {
         return [[results allObjects] objectAtIndex:0];
@@ -35,23 +35,52 @@
     return nil;    
 }
 
-+ (Comment *)createOrReplaceFromDictionary:(NSDictionary *)commentInfo forBlog:(Blog *)blog withContext:(NSManagedObjectContext *)context {
-    Blog *contextBlog = (Blog *)[context objectWithID:blog.objectID];
++ (Comment *)createOrReplaceFromDictionary:(NSDictionary *)commentInfo forBlog:(Blog *)blog {
     if ([commentInfo objectForKey:@"comment_id"] == nil) {
         return nil;
     }
     
-    Comment *comment = [self findWithBlog:contextBlog andCommentID:[[commentInfo objectForKey:@"comment_id"] numericValue] withContext:context];
+    Comment *comment = [self findWithBlog:blog andCommentID:[[commentInfo objectForKey:@"comment_id"] numericValue]];
     
     if (comment == nil) {
-        comment = [Comment newCommentForBlog:contextBlog];
+        comment = [Comment newCommentForBlog:blog];
         comment.isNew = YES;
     }
     
     [comment updateFromDictionary:commentInfo];
-    [comment findPostWithContext:context];
+    [comment findPostWithContext:blog.managedObjectContext];
     
     return comment;
+}
+
++ (void)mergeNewComments:(NSArray *)newComments forBlog:(Blog *)blog {
+    NSManagedObjectContext *backgroundMOC = [[ContextManager sharedInstance] backgroundContext];
+    [backgroundMOC performBlock:^{
+        NSMutableArray *commentsToKeep = [NSMutableArray array];
+        Blog *contextBlog = (Blog *)[backgroundMOC existingObjectWithID:blog.objectID error:nil];
+        
+        for (NSDictionary *commentInfo in newComments) {
+            Comment *newComment = [Comment createOrReplaceFromDictionary:commentInfo forBlog:contextBlog];
+            if (newComment != nil) {
+                [commentsToKeep addObject:newComment];
+            } else {
+                DDLogInfo(@"-[Comment createOrReplaceFromDictionary:forBlog:] returned a nil comment: %@", commentInfo);
+            }
+        }
+        
+        NSSet *existingComments = contextBlog.comments;
+        if (existingComments && (existingComments.count > 0)) {
+            for (Comment *comment in existingComments) {
+                // Don't delete unpublished comments
+                if(![commentsToKeep containsObject:comment] && comment.commentID != nil) {
+                    WPLog(@"Deleting Comment: %@", comment);
+                    [backgroundMOC deleteObject:comment];
+                }
+            }
+        }
+        
+        [[ContextManager sharedInstance] saveContext:backgroundMOC];
+    }];
 }
 
 - (Comment *)newReply {
@@ -102,7 +131,7 @@
 	[self didAccessValueForKey:@"author"];
 	
 	if (authorName == nil || [@"" isEqualToString:authorName]) {
-		authorName = [NSLocalizedString(@"Anonymous", @"the comment has an anonymous author.") capitalizedString];
+		authorName = NSLocalizedString(@"Anonymous", @"the comment has an anonymous author.");
 	}
 	return authorName;
 	
@@ -182,8 +211,10 @@
     if (self.commentID) {
         [self deleteCommentWithSuccess:nil failure:nil];
     }
-    [[self managedObjectContext] deleteObject:self];
-    [self save];
+    [self.managedObjectContext performBlockAndWait:^{
+        [self.managedObjectContext deleteObject:self];
+        [self save];
+    }];
 }
 
 #pragma mark - Private Methods
@@ -216,11 +247,9 @@
 }
 
 - (void)save {
-    NSError *error = nil;
-    if (![[self managedObjectContext] save:&error]) {
-        WPFLog(@"Unresolved Core Data Save error %@, %@", error, [error userInfo]);
-        exit(-1);
-    }
+    [self.managedObjectContext performBlock:^{
+        [self.managedObjectContext save:nil];
+    }];
 }
 
 @end
