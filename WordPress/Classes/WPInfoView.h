@@ -10,9 +10,9 @@
 
 @interface WPInfoView : UIView 
 
-@property (nonatomic, strong) IBOutlet UILabel *titleLabel;
-@property (nonatomic, strong) IBOutlet UILabel *messageLabel;
-@property (nonatomic, strong) IBOutlet UIButton *cancelButton; 
+@property (nonatomic, weak) IBOutlet UILabel *titleLabel;
+@property (nonatomic, weak) IBOutlet UILabel *messageLabel;
+@property (nonatomic, weak) IBOutlet UIButton *cancelButton;
 
 + (WPInfoView *)WPInfoViewWithTitle:(NSString *)titleText message:(NSString *)messageText cancelButton:(NSString *)cancelText;
 
