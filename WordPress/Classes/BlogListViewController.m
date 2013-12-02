@@ -289,10 +289,8 @@ CGFloat const blavatarImageSize = 50.f;
     NSManagedObjectContext *moc = [[ContextManager sharedInstance] mainContext];
     NSFetchRequest *fetchRequest = [NSFetchRequest fetchRequestWithEntityName:@"Blog"];
     [fetchRequest setPredicate:[NSPredicate predicateWithFormat:@"visible = YES"]];
-    [fetchRequest setSortDescriptors:[NSArray arrayWithObject:[NSSortDescriptor sortDescriptorWithKey:@"blogName" ascending:YES selector:@selector(localizedCaseInsensitiveCompare:)]]];
-    
-    // For some reasons, the cache sometimes gets corrupted
-    // Since we don't really use sections we skip the cache here
+    [fetchRequest setSortDescriptors:@[[NSSortDescriptor sortDescriptorWithKey:@"account.isWpcom" ascending:NO], [NSSortDescriptor sortDescriptorWithKey:@"blogName" ascending:YES selector:@selector(localizedCaseInsensitiveCompare:)]]];
+
     _resultsController = [[NSFetchedResultsController alloc]
                           initWithFetchRequest:fetchRequest
                           managedObjectContext:moc
