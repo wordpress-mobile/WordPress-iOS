@@ -21,6 +21,18 @@
 
 @implementation ReaderTest
 
+- (void)setUp
+{
+    [super setUp];
+    [[CoreDataTestHelper sharedHelper] registerDefaultContext];
+}
+
+- (void)tearDown
+{
+    [super tearDown];
+    [[CoreDataTestHelper sharedHelper] reset];
+}
+
 /*
  Data
  */
@@ -93,7 +105,7 @@
 	
 	// See how'd we do.
 	NSLog(@"Starting Count:  %i  First Count:  %i  Second Cound: %i", startingCount, firstCount, secondCount);
-	STAssertEquals(firstCount, secondCount, @"Count's should be equal.");
+	XCTAssertEqual(firstCount, secondCount, @"Count's should be equal.");
 
 }
 
@@ -109,7 +121,7 @@
 		ATHNotify();
 		
 	} failure:^(AFHTTPRequestOperation *operation, NSError *error) {
-		STFail(@"Call to Reader Topics Failed: %@", error);
+		XCTFail(@"Call to Reader Topics Failed: %@", error);
 		ATHNotify();
 	}];
 	ATHEnd();
@@ -123,7 +135,7 @@
 		ATHNotify();
 		
 	} failure:^(AFHTTPRequestOperation *operation, NSError *error) {
-		STFail(@"Call to Reader Comments Failed: %@", error);
+		XCTFail(@"Call to Reader Comments Failed: %@", error);
 		ATHNotify();
 	}];
 	ATHEnd();
@@ -136,94 +148,65 @@
 	NSDictionary *resp = (NSDictionary *)responseObject;
 	NSArray *postsArr = [resp objectForKey:@"posts"];
     if (!postsArr || ![postsArr isKindOfClass:[NSArray class]]) {
-        STFail(@"Posts is not an array");
+        XCTFail(@"Posts is not an array");
         return;
     }
 	NSManagedObjectContext *moc = [[CoreDataTestHelper sharedHelper] managedObjectContext];
-	[ReaderPost syncPostsFromEndpoint:path withArray:postsArr withContext:moc];
+    ATHStart();
+	[ReaderPost syncPostsFromEndpoint:path withArray:postsArr withContext:moc success:^{
+        ATHNotify();
+    }];
+    ATHEnd();
 
 	NSArray *posts = [ReaderPost fetchPostsForEndpoint:path withContext:moc];
 	
 	if([posts count] == 0) {
-		STFail(@"No posts synced for path : %@", path);
+		XCTFail(@"No posts synced for path : %@", path);
 	}
 	NSLog(@"Syced: %i, Fetched: %i", [postsArr count], [posts count]);
-	STAssertEquals([posts count], [postsArr count], @"Synced posts should equal fetched posts.");
+	XCTAssertEqual([posts count], [postsArr count], @"Synced posts should equal fetched posts.");
 
 }
 
+- (void)endpointTestWithPath:(NSString *)path {
+	ATHStart();
+    __block id response = nil;
+	[ReaderPost getPostsFromEndpoint:path withParameters:nil loadingMore:NO success:^(AFHTTPRequestOperation *operation, id responseObject) {
+        response = responseObject;
+		ATHNotify();
+
+	} failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+		XCTFail(@"Call to %@ Failed: %@", path, error);
+		ATHNotify();
+	}];
+	ATHEnd();
+    [self checkResultForPath:path andResponseObject:response];
+}
 
 - (void)testGetPostsFreshlyPressed {
 	
-	ATHStart();
-	NSString *path = [[[ReaderPost readerEndpoints] objectAtIndex:0] objectForKey:@"endpoint"];
-	[ReaderPost getPostsFromEndpoint:path withParameters:nil success:^(AFHTTPRequestOperation *operation, id responseObject) {
-
-		[self checkResultForPath:path andResponseObject:responseObject];
-		ATHNotify();
-		
-	} failure:^(AFHTTPRequestOperation *operation, NSError *error) {
-		STFail(@"Call to Reader Freshly Pressed Failed: %@", error);
-		ATHNotify();
-	}];
-	
-	ATHEnd();
-	
+	NSString *path = [[[ReaderPost readerEndpoints] objectAtIndex:1] objectForKey:@"endpoint"];
+    [self endpointTestWithPath:path];
 }
 
 
 - (void)testGetPostsFollowing {
 	
-	ATHStart();
-	NSString *path = [[[ReaderPost readerEndpoints] objectAtIndex:2] objectForKey:@"endpoint"];
-	[ReaderPost getPostsFromEndpoint:path withParameters:nil success:^(AFHTTPRequestOperation *operation, id responseObject) {
-		
-		[self checkResultForPath:path andResponseObject:responseObject];
-		ATHNotify();
-
-	} failure:^(AFHTTPRequestOperation *operation, NSError *error) {
-		STFail(@"Call to Reader Following Failed: %@", error);
-		ATHNotify();
-	}];
-	ATHEnd();
-	
+	NSString *path = [[[ReaderPost readerEndpoints] objectAtIndex:0] objectForKey:@"endpoint"];
+    [self endpointTestWithPath:path];
 }
 
 
 - (void)testGetPostsLikes {
-	
-	ATHStart();
-	NSString *path = [[[ReaderPost readerEndpoints] objectAtIndex:1] objectForKey:@"endpoint"];
-	[ReaderPost getPostsFromEndpoint:path withParameters:nil success:^(AFHTTPRequestOperation *operation, id responseObject) {
-		
-		[self checkResultForPath:path andResponseObject:responseObject];
-		ATHNotify();
-		
-	} failure:^(AFHTTPRequestOperation *operation, NSError *error) {
-		STFail(@"Call to Reader Liked Failed: %@", error);
-		ATHNotify();
-	}];
-	ATHEnd();
-	
+	NSString *path = [[[ReaderPost readerEndpoints] objectAtIndex:2] objectForKey:@"endpoint"];
+    [self endpointTestWithPath:path];
 }
 
 
 - (void)testGetPostsForTopic {
-	
-	ATHStart();
 	NSString *path = [[[ReaderPost readerEndpoints] objectAtIndex:3] objectForKey:@"endpoint"];
 	path = [NSString stringWithFormat:path, @"1"];
-	[ReaderPost getPostsFromEndpoint:path withParameters:nil success:^(AFHTTPRequestOperation *operation, id responseObject) {
-
-		[self checkResultForPath:path andResponseObject:responseObject];
-		ATHNotify();
-		
-	} failure:^(AFHTTPRequestOperation *operation, NSError *error) {
-		STFail(@"Call to Reader Topic Posts Failed: %@", error);
-		ATHNotify();
-	}];
-	ATHEnd();
-	
+    [self endpointTestWithPath:path];
 }
 
 

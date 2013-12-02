@@ -162,6 +162,8 @@
 														   style:[WPStyleGuide barButtonStyleForDone]
 														  target:self
 														  action:@selector(handleSendButtonTapped:)];
+        
+        self.sendButton.enabled = [self shouldEnableSendButton];
 	}
 	
 	if (!_cancelButton) {
@@ -198,13 +200,17 @@
 	}
 }
 
+- (BOOL)shouldEnableSendButton {
+    return (([_textView.text length] > 0) || !_requireText);
+}
+
 
 #pragma mark - UITextView Delegate Methods
 
 - (void)textViewDidBeginEditing:(UITextView *)textView {
 	_promptLabel.hidden = YES;
 	
-	_sendButton.enabled = (([_textView.text length] > 0) || !_requireText);
+	_sendButton.enabled = [self shouldEnableSendButton];
 	
 	if([_delegate respondsToSelector:@selector(readerTextFormDidBeginEditing:)]) {
 		[_delegate readerTextFormDidBeginEditing:self];
@@ -213,7 +219,7 @@
 
 
 - (void)textViewDidChange:(UITextView *)textView {
-	_sendButton.enabled = (([_textView.text length] > 0) || !_requireText);
+	_sendButton.enabled = [self shouldEnableSendButton];
 	
 	if([_delegate respondsToSelector:@selector(readerTextFormDidChange:)]) {
 		[_delegate readerTextFormDidChange:self];

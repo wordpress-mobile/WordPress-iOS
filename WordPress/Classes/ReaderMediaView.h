@@ -14,11 +14,12 @@
 @property (nonatomic, assign) UIEdgeInsets edgeInsets;
 @property (nonatomic, strong) NSURL *contentURL;
 @property (nonatomic) BOOL isShowingPlaceholder;
+@property (nonatomic) CGFloat placeholderRatio;
 
 - (UIImage *)image;
 - (void)setImage:(UIImage *)image;
 - (NSURL *)contentURL;
-
+- (void)setPlaceholder:(UIImage *)image;
 - (void)setImageWithURL:(NSURL *)url
 	   placeholderImage:(UIImage *)image
 				success:(void (^)(ReaderMediaView *readerMediaView))success

@@ -70,12 +70,16 @@
  @param matchedSelectors The CSS selectors that caused a match
  @returns The merged style dictionary containing only styles which selector matches the element
  */
-- (NSDictionary *)mergedStyleDictionaryForElement:(DTHTMLElement *)element matchedSelectors:(NSSet **)matchedSelectors;
-
+- (NSDictionary *)mergedStyleDictionaryForElement:(DTHTMLElement *)element matchedSelectors:(NSSet **)matchedSelectors ignoreInlineStyle:(BOOL)ignoreInlineStyle;
 
 /**
  Returns a dictionary of the styles of the receiver
  */
 - (NSDictionary *)styles;
+
+/**
+ Returns an ordered (by declaration) set of the selectors for all of the styles.
+ */
+- (NSArray *)orderedSelectors;
 
 @end

@@ -10,7 +10,7 @@
 #import "Theme.h"
 #import "Blog.h"
 #import "WordPressComApi.h"
-#import "WordPressAppDelegate.h"
+#import "ContextManager.h"
 
 static NSDateFormatter *dateFormatter;
 
@@ -78,9 +78,7 @@ static NSDateFormatter *dateFormatter;
     
     [[WordPressComApi sharedApi] fetchThemesForBlogId:blog.blogID.stringValue success:^(AFHTTPRequestOperation *operation, id responseObject) {
         
-        NSManagedObjectContext *backgroundMOC = [[NSManagedObjectContext alloc] initWithConcurrencyType:NSPrivateQueueConcurrencyType];
-        backgroundMOC.parentContext = [WordPressAppDelegate sharedWordPressApplicationDelegate].managedObjectContext;
-        
+        NSManagedObjectContext *backgroundMOC = [[ContextManager sharedInstance] backgroundContext];
         [backgroundMOC performBlock:^{
             NSMutableArray *themesToKeep = [NSMutableArray array];
             for (NSDictionary *t in responseObject[@"themes"]) {
@@ -94,13 +92,8 @@ static NSDateFormatter *dateFormatter;
                     [backgroundMOC deleteObject:t];
                 }
             }
-            NSError *error;
-            if (![backgroundMOC save:&error]) {
-                WPFLog(@"Unresolved core data save in themes %@", error);
-                #if DEBUG
-                exit(-1);
-                #endif
-            }
+            
+            [[ContextManager sharedInstance] saveContext:backgroundMOC];
             
             dateFormatter = nil;
         }];
@@ -118,11 +111,13 @@ static NSDateFormatter *dateFormatter;
 
 + (void)fetchCurrentThemeForBlog:(Blog *)blog success:(void (^)())success failure:(void (^)(NSError *error))failure {
     [[WordPressComApi sharedApi] fetchCurrentThemeForBlogId:blog.blogID.stringValue success:^(AFHTTPRequestOperation *operation, id responseObject) {
-        blog.currentThemeId = responseObject[@"id"];
-        [[WordPressAppDelegate sharedWordPressApplicationDelegate].managedObjectContext save:nil];
-        if (success) {
-            success();
-        }
+        [blog.managedObjectContext performBlock:^{
+            blog.currentThemeId = responseObject[@"id"];
+            [[ContextManager sharedInstance] saveContext:blog.managedObjectContext];
+            if (success) {
+                dispatch_async(dispatch_get_main_queue(), success);
+            }
+        }];
     } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
         if (failure) {
             failure(error);
@@ -132,12 +127,13 @@ static NSDateFormatter *dateFormatter;
 
 - (void)activateThemeWithSuccess:(void (^)())success failure:(void (^)(NSError *error))failure {
     [[WordPressComApi sharedApi] activateThemeForBlogId:self.blog.blogID.stringValue themeId:self.themeId success:^(AFHTTPRequestOperation *operation, id responseObject) {
-        self.blog.currentThemeId = self.themeId;
-        [[WordPressAppDelegate sharedWordPressApplicationDelegate].managedObjectContext save:nil];
-        
-        if (success) {
-            success();
-        }
+        [self.blog.managedObjectContext performBlock:^{
+            self.blog.currentThemeId = self.themeId;
+            [[ContextManager sharedInstance] saveContext:self.blog.managedObjectContext];
+            if (success) {
+                dispatch_async(dispatch_get_main_queue(), success);
+            }
+        }];
     } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
         if (failure) {
             failure(error);

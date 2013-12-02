@@ -59,6 +59,7 @@
     
     if (self) {
         uploadEventCount = QCMEASUREMENT_DEFAULT_UPLOAD_EVENT_COUNT;
+        backgroundUploadEventCount = QCMEASUREMENT_DEFAULT_BACKGROUND_UPLOAD_EVENT_COUNT;
         maxEventRetentionCount = QCMEASUREMENT_DEFAULT_MAX_EVENT_RETENTION_COUNT;
         isDataDumpInprogress = NO;
         
@@ -72,7 +73,7 @@
         
         _opQueue = [[NSOperationQueue alloc] init];
         _opQueue.maxConcurrentOperationCount = 4; // prevent too many events from hitting datbase at once
-        [_opQueue setName:@"com.quantcast.measure.operationsqueue"];
+        [_opQueue setName:@"com.quantcast.measure.operationsqueue.datamanager"];
          
         if ( nil != inPolicy) {
             _policy = [inPolicy retain];
@@ -121,8 +122,6 @@
 
 #pragma mark - Measurement Database Management
 
-#define QCSQL_CREATETABLE_SETTING   @"create table settings ( name varchar not null unique, value varchar not null );"
-#define QCSQL_CREATETABLE_BLACKLIST @"create table blacklist ( parameter varchar not null unique );"
 #define QCSQL_CREATETABLE_EVENTS    @"create table events ( id integer primary key autoincrement, sessionId varchar not null, timestamp integer not null );"
 #define QCSQL_CREATETABLE_EVENT     @"create table event ( eventid integer, name varchar not null, value varchar not null, FOREIGN KEY( eventid ) REFERENCES events ( id ) );"
 #define QCSQL_CREATEINDEX_EVENT     @"create index event_eventid_idx on event (eventid);"
@@ -140,8 +139,6 @@
         
         [inDB beginDatabaseTransaction];
         [inDB executeSQL:@"PRAGMA foreign_keys = ON;"];
-        [inDB executeSQL:QCSQL_CREATETABLE_SETTING];
-        [inDB executeSQL:QCSQL_CREATETABLE_BLACKLIST];
         [inDB executeSQL:QCSQL_CREATETABLE_EVENTS];
         [inDB executeSQL:QCSQL_CREATETABLE_EVENT];
         [inDB executeSQL:QCSQL_CREATEINDEX_EVENT];
@@ -181,6 +178,7 @@
 
 #pragma mark - Recording Events
 @synthesize uploadEventCount;
+@synthesize backgroundUploadEventCount;
 
 -(void)recordEvent:(QuantcastEvent*)inEvent {
     if ( nil != self.policy && (self.policy.isMeasurementBlackedout ) ) {
@@ -188,72 +186,76 @@
     }
     
     [self.opQueue addOperationWithBlock:^{
+        [self recordEventSynchronouslyWithoutUpload:inEvent];
         
-        if ( nil == self.db ) {
-            if (self.enableLogging) {
-                NSLog(@"QC Measurement: Tried to log event %@, but there was no database connection available.", inEvent);
-            }
-            return;
-        }
-            
-        NSUInteger eventCount = 0;
-        
-        NSArray* eventInsertBoundData = [NSArray arrayWithObjects:inEvent.sessionID,[NSString stringWithFormat:@"%qi",(int64_t)[inEvent.timestamp timeIntervalSince1970]],nil];
-        
-        @synchronized( self ) {
-            [self.db beginDatabaseTransaction];
-            
-            [self.db executePreparedQuery:QCSQL_PREPAREDQUERYKEY_INSERTNEWEVENT bindingInsertData:eventInsertBoundData];
-            
-            int64_t eventId = [self.db getLastInsertRowId];
-            
-            for (NSString* param in [inEvent.parameters allKeys]) {
-                
-                if ( nil != self.policy && [self.policy isBlacklistedParameter:param] ) {
-                    continue;
-                }
-                
-                id valueObj = [inEvent.parameters objectForKey:param];
-                
-                NSString* valueStr;
-                
-                if ( [valueObj isKindOfClass:[NSValue class]] ) { 
-                    valueStr = [valueObj stringValue];
-                }
-                else if ( [valueObj isKindOfClass:[NSString class]] ) {
-                    valueStr = (NSString*)valueObj;
-                }
-                else {
-                    valueStr = [valueObj description];
-                }
-                
-                NSArray* paramsInsertBoundData = [NSArray arrayWithObjects:[NSString stringWithFormat:@"%qi",eventId], param, valueStr, nil];
-                
-                [self.db executePreparedQuery:QCSQL_PREPAREDQUERYKEY_INSERTNEWEVENTPARAMS bindingInsertData:paramsInsertBoundData];
-            }
-            
-            [self.db endDatabaseTransaction];
-            
-            eventCount = [self eventCount];
-            
-        }
-            
-        if ( eventCount >= self.uploadEventCount && self.policy.hasUpdatedPolicyBeenDownloaded && !self.isDataDumpInprogress && ([UIApplication sharedApplication].applicationState != UIApplicationStateBackground) ) {
+        NSUInteger eventCount = [self eventCount];
+        if ( self.policy.hasUpdatedPolicyBeenDownloaded && !self.isDataDumpInprogress && ( eventCount >= self.uploadEventCount || ([UIApplication sharedApplication].applicationState == UIApplicationStateBackground && eventCount >= self.backgroundUploadEventCount ) ) ) {
             [self initiateDataUpload];
         }
         else if ( eventCount >= self.maxEventRetentionCount ) {
             // delete the equivalent a upload
-            
             [self trimEventsDatabaseBy:self.uploadEventCount];
-            
         }
-
+        
     } ];
     
  }
 
--(void)initiateDataUpload {
+-(void)recordEventSynchronouslyWithoutUpload:(QuantcastEvent*)inEvent{
+    if ( nil != self.policy && (self.policy.isMeasurementBlackedout ) ) {
+        return;
+    }
+    
+    if ( nil == self.db ) {
+        if (self.enableLogging) {
+            NSLog(@"QC Measurement: Tried to log event %@, but there was no database connection available.", inEvent);
+        }
+        return;
+    }
+    
+    NSArray* eventInsertBoundData = [NSArray arrayWithObjects:inEvent.sessionID,[NSString stringWithFormat:@"%qi",(int64_t)[inEvent.timestamp timeIntervalSince1970]],nil];
+    
+    @synchronized( self ) {
+        [self.db beginDatabaseTransaction];
+        
+        [self.db executePreparedQuery:QCSQL_PREPAREDQUERYKEY_INSERTNEWEVENT bindingInsertData:eventInsertBoundData];
+        
+        int64_t eventId = [self.db getLastInsertRowId];
+        
+        for (NSString* param in [inEvent.parameters allKeys]) {
+            
+            if ( nil != self.policy && [self.policy isBlacklistedParameter:param] ) {
+                continue;
+            }
+            
+            id valueObj = [inEvent.parameters objectForKey:param];
+            
+            NSString* valueStr;
+            
+            if ( [valueObj isKindOfClass:[NSValue class]] ) {
+                valueStr = [valueObj stringValue];
+            }
+            else if ( [valueObj isKindOfClass:[NSString class]] ) {
+                valueStr = (NSString*)valueObj;
+            }
+            else {
+                valueStr = [valueObj description];
+            }
+            
+            NSArray* paramsInsertBoundData = [NSArray arrayWithObjects:[NSString stringWithFormat:@"%qi",eventId], param, valueStr, nil];
+            
+            [self.db executePreparedQuery:QCSQL_PREPAREDQUERYKEY_INSERTNEWEVENTPARAMS bindingInsertData:paramsInsertBoundData];
+        }
+        
+        [self.db endDatabaseTransaction];
+    }
+}
 
+-(void)initiateDataUpload {
+    if ( self.isDataDumpInprogress ) {
+        return;
+    }
+    
     self.isDataDumpInprogress = YES;
     
     [self.opQueue addOperationWithBlock:^{
@@ -270,7 +272,16 @@
                 [[UIApplication sharedApplication] endBackgroundTask:taskToEnd];
             }
         } ];
-        
+
+#ifndef QUANTCAST_UNIT_TEST // beginBackgroundTaskWithExpirationHandler: always returns UIBackgroundTaskInvalid when unit testing
+        if ( UIBackgroundTaskInvalid == backgroundTask ) {
+            if (self.enableLogging ) {
+                  NSLog(@"QC Measurement: Could not start data manager dump due to the system providing a UIBackgroundTaskInvalid");
+            }
+            
+            return;
+        }
+#endif
         
         if (self.enableLogging ) {
             NSLog(@"QC Measurement: Started data manager dump with background task %d", backgroundTask );
@@ -440,7 +451,10 @@
 }
 
 -(void)trimEventsDatabaseBy:(NSUInteger)inEventsToDelete {
-    
+    if ( self.isDataDumpInprogress ) {
+        return;
+    }
+
     self.isDataDumpInprogress = YES;
     
     [self.opQueue addOperationWithBlock:^{

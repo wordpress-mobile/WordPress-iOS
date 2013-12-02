@@ -72,7 +72,6 @@
 	
 	if (cacheResponse)
 	{
-		data = [cacheResponse data];
 		DTLogDebug(@"cache hit for %@", [URL absoluteString]);
 	}
 	else

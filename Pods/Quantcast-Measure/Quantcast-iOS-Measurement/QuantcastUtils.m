@@ -66,7 +66,7 @@
     
     if (![[NSFileManager defaultManager] fileExistsAtPath:cacheDir]) {
         if (![[NSFileManager defaultManager] createDirectoryAtPath:cacheDir withIntermediateDirectories:YES attributes:nil error:nil]){
-            NSLog(@"QC Measurement: Unable to create cache director = %@", cacheDir );
+            NSLog(@"QC Measurement: Unable to create cache directory = %@", cacheDir );
             return nil;
         }
     }
@@ -83,7 +83,7 @@
     
     if (![[NSFileManager defaultManager] fileExistsAtPath:cacheDir]) {
         if (![[NSFileManager defaultManager] createDirectoryAtPath:cacheDir withIntermediateDirectories:YES attributes:nil error:nil]){
-            NSLog(@"QC Measurement: Unable to create cache director = %@", cacheDir );
+            NSLog(@"QC Measurement: Unable to create cache directory = %@", cacheDir );
             return nil;
         }
     }
@@ -99,7 +99,7 @@
     
     if (![[NSFileManager defaultManager] fileExistsAtPath:cacheDir]) {
         if (![[NSFileManager defaultManager] createDirectoryAtPath:cacheDir withIntermediateDirectories:YES attributes:nil error:nil]){
-            NSLog(@"QC Measurement: Unable to create cache director = %@", cacheDir );
+            NSLog(@"QC Measurement: Unable to create cache directory = %@", cacheDir );
             return nil;
         }
     }
@@ -114,7 +114,7 @@
     
     if (![[NSFileManager defaultManager] fileExistsAtPath:cacheDir]) {
         if (![[NSFileManager defaultManager] createDirectoryAtPath:cacheDir withIntermediateDirectories:YES attributes:nil error:nil]){
-            NSLog(@"QC Measurement: Unable to create cache director = %@", cacheDir );
+            NSLog(@"QC Measurement: Unable to create cache directory = %@", cacheDir );
             return nil;
         }
     }
@@ -428,6 +428,32 @@
     return [NSURL URLWithString:newURLStr];
 }
 
++(id<NSObject>)combineLabels:(id<NSObject>)labels1 withLabels:(id<NSObject>)labels2 {
+    if (nil == labels2) {
+        return labels1;
+    }
+    else if (nil == labels1){
+        return labels2;
+    }
+    
+    NSMutableSet* set = [NSMutableSet set];
+    if ( [labels1 isKindOfClass:[NSArray class]] ) {
+        [set addObjectsFromArray:(NSArray*)labels1];
+    }
+    else {
+        [set addObject:labels1];
+    }
+    
+    if ( [labels2 isKindOfClass:[NSArray class]] ) {
+        [set addObjectsFromArray:(NSArray*)labels2];
+    }
+    else {
+        [set addObject:labels2];
+    }
+    
+    return [set allObjects];
+}
+
 
 +(NSString*)encodeLabelsList:(NSArray*)inLabelsArrayOrNil {
     if ( nil == inLabelsArrayOrNil ) {
@@ -468,7 +494,7 @@
 +(NSString*)JSONEncodeString:(NSString*)inString {
 	NSMutableString* s = [NSMutableString stringWithString:inString];
     
-	[s replaceOccurrencesOfString:@"\\" withString:@"\\\\" options:NSCaseInsensitiveSearch range:NSMakeRange(0, [s length])];
+    [s replaceOccurrencesOfString:@"\\" withString:@"\\\\" options:NSCaseInsensitiveSearch range:NSMakeRange(0, [s length])];
 	[s replaceOccurrencesOfString:@"\"" withString:@"\\\"" options:NSCaseInsensitiveSearch range:NSMakeRange(0, [s length])];
 	[s replaceOccurrencesOfString:@"/" withString:@"\\/" options:NSCaseInsensitiveSearch range:NSMakeRange(0, [s length])];
 	[s replaceOccurrencesOfString:@"\n" withString:@"\\n" options:NSCaseInsensitiveSearch range:NSMakeRange(0, [s length])];

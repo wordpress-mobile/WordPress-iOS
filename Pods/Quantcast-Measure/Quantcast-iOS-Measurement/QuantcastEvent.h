@@ -42,7 +42,7 @@
 -(void)putParameter:(NSString*)inParamKey withValue:(id)inValue enforcingPolicy:(QuantcastPolicy*)inPolicyOrNil;
 -(id)getParameter:(NSString*)inParamKey;
 
--(void)putLabels:(id<NSObject>)inLabelsObjectOrNil enforcingPolicy:(QuantcastPolicy*)inPolicyOrNil;
+-(void)putAppLabels:(id<NSObject>)inAppLabelsObjectOrNil networkLabels:(id<NSObject>)inNetworkLabelsObjectOrNil enforcingPolicy:(QuantcastPolicy*)inPolicyOrNil;
 
 #pragma mark - JSON conversion
 
@@ -56,59 +56,80 @@
 #pragma mark - Event Factory
 
 +(QuantcastEvent*)eventWithSessionID:(NSString*)inSessionID
+                applicationInstallID:(NSString*)inAppInstallID
                      enforcingPolicy:(QuantcastPolicy*)inPolicy;
 
 
 +(QuantcastEvent*)openSessionEventWithClientUserHash:(NSString*)inHashedUserIDOrNil
                                     newSessionReason:(NSString*)inReason
-                                       networkStatus:(QuantcastNetworkStatus)inNetworkStatus
+                                      connectionType:(NSString*)connectionType
                                            sessionID:(NSString*)inSessionID
                                      quantcastAPIKey:(NSString*)inQuantcastAPIKey
+                               quantcastNetworkPCode:(NSString*)inQuantcastNetworkPCode
                                     deviceIdentifier:(NSString*)inDeviceID
                                 appInstallIdentifier:(NSString*)inAppInstallID
                                      enforcingPolicy:(QuantcastPolicy*)inPolicy
-                                         eventLabels:(id<NSObject>)inEventLabelsOrNil
-                                             carrier:(CTCarrier*)carrier;
+                                      eventAppLabels:(id<NSObject>)inEventAppLabelsOrNil
+                                  eventNetworkLabels:(id<NSObject>)inEventNetworkLabelsOrNil
+                                             carrier:(CTCarrier*)inCarrier;
 
 +(QuantcastEvent*)closeSessionEventWithSessionID:(NSString*)inSessionID 
+                            applicationInstallID:(NSString*)inAppInstallID
                                  enforcingPolicy:(QuantcastPolicy*)inPolicy
-                                     eventLabels:(id<NSObject>)inEventLabelsOrNil;
+                                  eventAppLabels:(id<NSObject>)inEventAppLabelsOrNil
+                              eventNetworkLabels:(id<NSObject>)inEventNetworkLabelsOrNil;
 
-+(QuantcastEvent*)pauseSessionEventWithSessionID:(NSString*)inSessionID 
++(QuantcastEvent*)pauseSessionEventWithSessionID:(NSString*)inSessionID
+                            applicationInstallID:(NSString*)inAppInstallID
                                  enforcingPolicy:(QuantcastPolicy*)inPolicy
-                                     eventLabels:(id<NSObject>)inEventLabelsOrNil;
+                                  eventAppLabels:(id<NSObject>)inEventAppLabelsOrNil
+                              eventNetworkLabels:(id<NSObject>)inEventNetworkLabelsOrNil;
 
 +(QuantcastEvent*)resumeSessionEventWithSessionID:(NSString*)inSessionID 
+                             applicationInstallID:(NSString*)inAppInstallID
                                   enforcingPolicy:(QuantcastPolicy*)inPolicy
-                                      eventLabels:(id<NSObject>)inEventLabelsOrNil;
+                                   eventAppLabels:(id<NSObject>)inEventAppLabelsOrNil
+                               eventNetworkLabels:(id<NSObject>)inEventNetworkLabelsOrNil;
 
 
 +(QuantcastEvent*)logEventEventWithEventName:(NSString*)inEventName
-                                 eventLabels:(id<NSObject>)inEventLabelsOrNil   
-                                   sessionID:(NSString*)inSessionID 
+                              eventAppLabels:(id<NSObject>)inEventAppLabelsOrNil
+                          eventNetworkLabels:(id<NSObject>)inEventNetworkLabelsOrNil
+                                   sessionID:(NSString*)inSessionID
+                        applicationInstallID:(NSString*)inAppInstallID
                              enforcingPolicy:(QuantcastPolicy*)inPolicy;
+
++(QuantcastEvent*)logNetworkEventEventWithEventName:(NSString*)inEventName
+                                 eventNetworkLabels:(id<NSObject>)inEventNetworkLabelsOrNil
+                                          sessionID:(NSString*)inSessionID
+                               applicationInstallID:(NSString*)inAppInstallID
+                                    enforcingPolicy:(QuantcastPolicy*)inPolicy;
 
 +(QuantcastEvent*)logUploadLatency:(NSUInteger)inLatencyMilliseconds
                        forUploadId:(NSString*)inUploadID
                      withSessionID:(NSString*)inSessionID 
+              applicationInstallID:(NSString*)inAppInstallID
                    enforcingPolicy:(QuantcastPolicy*)inPolicy;
 
 +(QuantcastEvent*)geolocationEventWithCountry:(NSString*)inCountry
-                                     province:(NSString*)inLocality
+                                     province:(NSString*)inProvince
                                          city:(NSString*)inCity
-                                withSessionID:(NSString*)inSessionID 
+                               eventTimestamp:(NSDate*)inTimestamp
+                            appIsInBackground:(BOOL)inIsAppInBackground
+                                withSessionID:(NSString*)inSessionID
+                         applicationInstallID:(NSString*)inAppInstallID
                               enforcingPolicy:(QuantcastPolicy*)inPolicy;
 
-
-
-+(QuantcastEvent*)networkReachabilityEventWithNetworkStatus:(QuantcastNetworkStatus)inNetworkStatus
-                                              withSessionID:(NSString*)inSessionID
-                                            enforcingPolicy:(QuantcastPolicy*)inPolicy;
++(QuantcastEvent*)networkReachabilityEventWithConnectionType:(NSString*)connectionType
+                                               withSessionID:(NSString*)inSessionID
+                                        applicationInstallID:(NSString*)inAppInstallID
+                                             enforcingPolicy:(QuantcastPolicy*)inPolicy;
 
 +(QuantcastEvent*)logSDKError:(NSString*)inSDKErrorType
               withErrorObject:(NSError*)inErrorDescOrNil
                errorParameter:(NSString*)inErrorParametOrNil
                 withSessionID:(NSString*)inSessionID
+         applicationInstallID:(NSString*)inAppInstallID
               enforcingPolicy:(QuantcastPolicy*)inPolicy;
 
 

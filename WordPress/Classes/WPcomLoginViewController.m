@@ -50,7 +50,7 @@
 #pragma mark View lifecycle
 
 - (void)viewDidLoad {
-    [FileLogger log:@"%@ %@", self, NSStringFromSelector(_cmd)];
+    DDLogInfo(@"%@ %@", self, NSStringFromSelector(_cmd));
     [super viewDidLoad];
 
     [WPStyleGuide configureColorsForView:self.view andTableView:self.tableView];
@@ -343,7 +343,6 @@
                                  password:password
                                   success:^{
                                       WPAccount *account = [WPAccount createOrUpdateWordPressComAccountWithUsername:username andPassword:password];
-                                      [WPAccount setDefaultWordPressComAccount:account];
                                       [loginController.tableView reloadRowsAtIndexPaths:[NSArray arrayWithObject:[NSIndexPath indexPathForRow:0 inSection:1]] withRowAnimation:UITableViewRowAnimationNone];
                                       if (loginController.delegate) {
                                           [loginController.delegate loginController:loginController didAuthenticateWithAccount:account];
@@ -352,7 +351,7 @@
                                           [self dismissViewControllerAnimated:YES completion:nil];
                                       }
                                   } failure:^(NSError *error) {
-                                      WPFLog(@"Login failed with username %@: %@", username, error);
+                                      DDLogError(@"Login failed with username %@: %@", username, error);
                                       loginController.footerText = NSLocalizedString(@"Sign in failed. Please try again.", @"");
                                       loginController.buttonText = NSLocalizedString(@"Sign In", @"");
                                       loginController.isSigningIn = NO;

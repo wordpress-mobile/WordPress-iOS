@@ -9,13 +9,12 @@
 
 #import "ThemeBrowserViewController.h"
 #import "Theme.h"
-#import "WordPressAppDelegate.h"
+#import "ContextManager.h"
 #import "ThemeBrowserCell.h"
 #import "ThemeDetailsViewController.h"
 #import "Blog.h"
 #import "WPStyleGuide.h"
 #import "WPInfoView.h"
-#import "PanelNavigationConstants.h"
 
 static NSString *const ThemeCellIdentifier = @"theme";
 static NSString *const SearchFilterCellIdentifier = @"search_filter";
@@ -68,9 +67,6 @@ static NSString *const SearchFilterCellIdentifier = @"search_filter";
     [self.collectionView addSubview:_refreshHeaderView];
     
     [self reloadThemes];
-    
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(sidebarOpened) name:SidebarOpenedNotification object:nil];
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(sidebarClosed) name:SidebarClosedNotification object:nil];
 }
 
 - (void)viewWillAppear:(BOOL)animated {
@@ -83,31 +79,16 @@ static NSString *const SearchFilterCellIdentifier = @"search_filter";
     }
 }
 
-- (void)didReceiveMemoryWarning
-{
+- (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];
     
     self.allThemes = nil;
     self.filteredThemes = nil;
 }
 
-- (void)sidebarOpened {
-    _isSearching = NO;
-    if (_header.isFirstResponder) {
-        [_header resignFirstResponder];
-        _isSearching = YES;
-    }
-}
-
-- (void)sidebarClosed {
-    if (_isSearching) {
-        [_header becomeFirstResponder];
-    }
-}
-
 - (NSFetchedResultsController *)resultsController {
     if (!_resultsController) {
-        NSManagedObjectContext *context = [WordPressAppDelegate sharedWordPressApplicationDelegate].managedObjectContext;
+        NSManagedObjectContext *context = [[ContextManager sharedInstance] mainContext];
         NSFetchRequest *fetchRequest = [NSFetchRequest fetchRequestWithEntityName:NSStringFromClass([Theme class])];
         fetchRequest.predicate = [NSPredicate predicateWithFormat:@"blog == %@", self.blog];
         fetchRequest.sortDescriptors = @[[NSSortDescriptor sortDescriptorWithKey:_currentResultsSort ascending:YES]];

@@ -72,6 +72,7 @@
 	__block NSInteger sequenceNumber = 0;
 	
 	[regex enumerateMatchesInString:baseName options:0 range:NSMakeRange(0, [baseName length]) usingBlock:^(NSTextCheckingResult *match, NSMatchingFlags flags, BOOL *stop){
+		
 		NSRange range = [match rangeAtIndex:1]; // first capture group
 		NSString *substring= [self substringWithRange:range];
 		
@@ -81,7 +82,8 @@
 	
 	NSString *nakedName = [baseName pathByDeletingSequenceNumber];
 	
-	if ([extension isEqualToString:@""]) {
+	if ([extension isEqualToString:@""])
+	{
 		return [nakedName stringByAppendingFormat:@"(%d)", (int)sequenceNumber+1];
 	}
 	
@@ -93,15 +95,16 @@
 	NSString *baseName = [self stringByDeletingPathExtension];
 	
 	NSRegularExpression *regex = [NSRegularExpression regularExpressionWithPattern:@"\\([0-9]+\\)$" options:0 error:NULL];
-	__block NSRange range = NSMakeRange(0, NSNotFound);
+	__block NSRange range = NSMakeRange(NSNotFound, 0);
 	
-	[regex enumerateMatchesInString:baseName options:0 range:NSMakeRange(0, [baseName length]) usingBlock:^(NSTextCheckingResult *match, NSMatchingFlags flags, BOOL *stop){
+	[regex enumerateMatchesInString:baseName options:0 range:NSMakeRange(0, [baseName length]) usingBlock:^(NSTextCheckingResult *match, NSMatchingFlags flags, BOOL *stop) {
+		
 		range = [match range];
 		
 		*stop = YES;
 	}];
 	
-	if (range.length != NSNotFound)
+	if (range.location != NSNotFound)
 	{
 		return [self stringByReplacingCharactersInRange:range withString:@""];
 	}

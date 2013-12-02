@@ -19,10 +19,10 @@
 #pragma mark View lifecycle
 
 - (void)viewDidLoad {
-    [FileLogger log:@"%@ %@", self, NSStringFromSelector(_cmd)];
+    DDLogInfo(@"%@ %@", self, NSStringFromSelector(_cmd));
     [super viewDidLoad];
 	appDelegate = (WordPressAppDelegate *)[[UIApplication sharedApplication] delegate];
-	NSLog(@"media: %@", media);
+	DDLogVerbose(@"media: %@", media);
 	
 	if((media != nil) && ([media.mediaType isEqualToString:@"video"])) {
 		self.navigationItem.title = NSLocalizedString(@"Video", @"");
@@ -64,18 +64,6 @@
     deleteButton.tintColor = [UIColor whiteColor];
     cancelButton.tintColor = deleteButton.tintColor;
     insertButton.tintColor = deleteButton.tintColor;
-}
-
-- (void)viewDidUnload {
-    [super viewDidUnload];
-    
-    self.imageView = nil;
-    self.insertButton = nil;
-    self.deleteButton = nil;
-    self.cancelButton = nil;
-    self.scrollView = nil;
-    self.toolbar = nil;
-    self.currentActionSheet = nil;
 }
 
 - (void)viewWillDisappear:(BOOL)animated {

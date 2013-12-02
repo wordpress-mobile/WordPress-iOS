@@ -19,6 +19,8 @@
 #import "Blog.h"
 #import "WPNUXUtility.h"
 #import "WPAccount.h"
+#import "ContextManager.h"
+#import "UILabel+SuggestSize.h"
 
 @interface NewAddUsersBlogViewController () <
     UITableViewDelegate,
@@ -27,7 +29,7 @@
     NSMutableArray *_selectedBlogs;
     WPNUXSecondaryButton *_selectAllButton;
     WPNUXPrimaryButton *_addSelectedButton;
-    UIView *_mainTextureView;
+    UIView *_mainView;
     
     CGFloat _viewWidth;
     CGFloat _viewHeight;
@@ -65,7 +67,7 @@ CGFloat const AddUsersBlogBottomBackgroundHeight = 64;
     _viewWidth = [self.view formSheetViewWidth];
     _viewHeight = [self.view formSheetViewHeight];
     
-    [self addBackgroundTexture];
+    [self addMainView];
     [self addTableView];
     [self addBottomPanel];
 }
@@ -142,12 +144,11 @@ CGFloat const AddUsersBlogBottomBackgroundHeight = 64;
 
 #pragma mark - Private Methods
 
-- (void)addBackgroundTexture
+- (void)addMainView
 {
-    _mainTextureView = [[UIView alloc] initWithFrame:self.view.bounds];
-    _mainTextureView.backgroundColor = [UIColor colorWithPatternImage:[UIImage imageNamed:@"ui-texture"]];
-    [self.view addSubview:_mainTextureView];
-    _mainTextureView.userInteractionEnabled = NO;
+    _mainView = [[UIView alloc] initWithFrame:self.view.bounds];
+    [self.view addSubview:_mainView];
+    _mainView.userInteractionEnabled = NO;
 }
 
 - (void)addTableView
@@ -172,15 +173,9 @@ CGFloat const AddUsersBlogBottomBackgroundHeight = 64;
     bottomPanel.frame = CGRectMake(0, CGRectGetMaxY(self.tableView.frame), _viewWidth, AddUsersBlogBottomBackgroundHeight);
     [self.view addSubview:bottomPanel];
     
-    UIView *bottomPanelLine = [[UIView alloc] init];
-    bottomPanelLine.backgroundColor = [UIColor colorWithRed:17.0/255.0 green:17.0/255.0 blue:17.0/255.0 alpha:0.95];
-    bottomPanelLine.frame = CGRectMake(0, CGRectGetMinY(bottomPanel.frame), _viewWidth, 1);
-    [self.view addSubview:bottomPanel];
-    
-    UIView *bottomPanelTextureView = [[UIView alloc] initWithFrame:bottomPanel.frame];
-    bottomPanelTextureView.backgroundColor = [UIColor colorWithPatternImage:[UIImage imageNamed:@"ui-texture"]];
-    bottomPanelTextureView.userInteractionEnabled = NO;
-    [self.view addSubview:bottomPanelTextureView];
+    UIView *bottomPanelLine = [[UIView alloc] initWithFrame:CGRectMake(0, 0, _viewWidth, 1)];
+    bottomPanelLine.backgroundColor = [WPNUXUtility bottomPanelLineColor];
+    [bottomPanel addSubview:bottomPanelLine];
     
     _selectAllButton = [[WPNUXSecondaryButton alloc] init];
     [_selectAllButton setTitle:NSLocalizedString(@"Select All", nil) forState:UIControlStateNormal];
@@ -240,11 +235,9 @@ CGFloat const AddUsersBlogBottomBackgroundHeight = 64;
     title.lineBreakMode = NSLineBreakByWordWrapping;
     title.font = [UIFont fontWithName:@"OpenSans-Light" size:29.0];
     title.text = NSLocalizedString(@"Select the sites you want to add", nil);
-    title.shadowColor = [WPNUXUtility textShadowColor];
-    title.shadowOffset = CGSizeMake(0.0, 1.0);
     title.textColor = [UIColor whiteColor];
     title.numberOfLines = 0;
-    CGSize titleSize = [title.text sizeWithFont:title.font constrainedToSize:CGSizeMake(AddUsersBlogMaxTextWidth, CGFLOAT_MAX) lineBreakMode:NSLineBreakByWordWrapping];
+    CGSize titleSize = [title suggestedSizeForWidth:AddUsersBlogMaxTextWidth];
     x = (_viewWidth - titleSize.width)/2.0;
     y = CGRectGetHeight(headerView.frame) - titleSize.height - AddUsersBlogTitleVerticalOffset;
     title.frame = CGRectMake(x, y, titleSize.width, titleSize.height);
@@ -294,7 +287,7 @@ CGFloat const AddUsersBlogBottomBackgroundHeight = 64;
             } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
                 [SVProgressHUD dismiss];
                 [self.tableView reloadData];
-                WPFLog(@"Failed getting user blogs: %@", [error localizedDescription]);
+                DDLogError(@"Failed getting user blogs: %@", [error localizedDescription]);
                 if (self.onErrorLoading) {
                     self.onErrorLoading(self, error);
                 }
@@ -352,6 +345,11 @@ CGFloat const AddUsersBlogBottomBackgroundHeight = 64;
         NSString *title = [obj valueForKey:@"blogName"];
         title = [title stringByDecodingXMLCharacters];
         [obj setValue:title forKey:@"blogName"];
+    }];    
+    _usersBlogs = [_usersBlogs sortedArrayUsingComparator:^(id obj1, id obj2){
+        NSString *title1 = [obj1 valueForKey:@"blogName"];
+        NSString *title2 = [obj2 valueForKey:@"blogName"];
+        return [title1 localizedCaseInsensitiveCompare:title2];
     }];
 }
 
@@ -362,41 +360,34 @@ CGFloat const AddUsersBlogBottomBackgroundHeight = 64;
 
     _addSelectedButton.enabled = NO;
     
-    NSManagedObjectContext *context = [WordPressAppDelegate sharedWordPressApplicationDelegate].managedObjectContext;
-    NSManagedObjectContext *backgroundMOC = [[NSManagedObjectContext alloc] initWithConcurrencyType:NSPrivateQueueConcurrencyType];
-    backgroundMOC.parentContext = context;
-  
-    [backgroundMOC performBlock:^{
+    NSManagedObjectContext *context = [[ContextManager sharedInstance] backgroundContext];
+    [context performBlock:^{
         for (NSDictionary *blog in _usersBlogs) {
             if([_selectedBlogs containsObject:[blog valueForKey:@"blogid"]]) {
-                [self createBlog:blog withAccount:self.account withContext:backgroundMOC];
+                [self createBlog:blog withContext:context];
             }
         }
-        NSError *error;
-        if (![backgroundMOC save:&error]) {
-            WPFLog(@"Error saving context on new blogs added %@", error);
-        }
+        
+        [[ContextManager sharedInstance] saveContext:context];
+        
+        dispatch_async(dispatch_get_main_queue(), ^{
+            if (self.blogAdditionCompleted) {
+                self.blogAdditionCompleted(self);
+            }
+            [[WordPressComApi sharedApi] syncPushNotificationInfo];
+            [[NSNotificationCenter defaultCenter] postNotificationName:@"BlogsRefreshNotification" object:nil];
+        });
     }];
-
-    if (self.blogAdditionCompleted) {
-        self.blogAdditionCompleted(self);
-    }
 }
 
-- (void)createBlog:(NSDictionary *)blogInfo withAccount:(WPAccount *)account withContext:(NSManagedObjectContext*)context
+- (void)createBlog:(NSDictionary *)blogInfo withContext:(NSManagedObjectContext *)context
 {
-    WPLog(@"creating blog: %@", blogInfo);
-    Blog *blog = [account findOrCreateBlogFromDictionary:blogInfo withContext:context];
-	blog.geolocationEnabled = true;
+    DDLogInfo(@"creating blog: %@", blogInfo);
+    Blog *blog = [_account findOrCreateBlogFromDictionary:blogInfo withContext:context];
+    blog.geolocationEnabled = YES;
 
-    dispatch_async(dispatch_get_main_queue(), ^{
-        [blog syncBlogWithSuccess:^{
-            if( ! [blog isWPcom] )
-                [[WordPressComApi sharedApi] syncPushNotificationInfo];
-        }
-                          failure:nil];
-        [[NSNotificationCenter defaultCenter] postNotificationName:@"BlogsRefreshNotification" object:nil];
-    });
+    [context obtainPermanentIDsForObjects:@[blog] error:nil];
+    [blog syncBlogWithSuccess:nil failure:nil];
 }
 
 - (void)toggleButtons
@@ -405,9 +396,9 @@ CGFloat const AddUsersBlogBottomBackgroundHeight = 64;
     [_addSelectedButton setTitle:[NSString stringWithFormat:@"%@ (%d)", NSLocalizedString(@"Add Selected", nil), [_selectedBlogs count]] forState:UIControlStateNormal];
     _selectAllButton.enabled = [_usersBlogs count] != 0;
     if ([_selectedBlogs count] == [_usersBlogs count]) {
-        [_selectAllButton setTitle:NSLocalizedString(@"Deselect All", nil) forState:UIControlStateNormal];
+        [self setupDeselectAllButton];
     } else {
-        [_selectAllButton setTitle:NSLocalizedString(@"Select All", nil) forState:UIControlStateNormal];
+        [self setupSelectAllButton];
     }
 }
 
@@ -415,9 +406,7 @@ CGFloat const AddUsersBlogBottomBackgroundHeight = 64;
 {
     [WPMobileStats trackEventForSelfHostedAndWPCom:StatsEventAddBlogsClickedSelectAll];
 
-    [_selectAllButton removeTarget:self action:@selector(selectAllBlogs) forControlEvents:UIControlEventTouchUpInside];
-    [_selectAllButton addTarget:self action:@selector(deselectAllBlogs) forControlEvents:UIControlEventTouchUpInside];
-    [_selectAllButton setTitle:NSLocalizedString(@"Deselect All", nil) forState:UIControlStateNormal];
+    [self setupDeselectAllButton];
     
     [_selectedBlogs removeAllObjects];
     for (NSDictionary *blogData in _usersBlogs) {
@@ -433,14 +422,26 @@ CGFloat const AddUsersBlogBottomBackgroundHeight = 64;
 {
     [WPMobileStats trackEventForSelfHostedAndWPCom:StatsEventAddBlogsClickedDeselectAll];
 
-    [_selectAllButton removeTarget:self action:@selector(deselectAllBlogs) forControlEvents:UIControlEventTouchUpInside];
-    [_selectAllButton addTarget:self action:@selector(selectAllBlogs) forControlEvents:UIControlEventTouchUpInside];
-    [_selectAllButton setTitle:NSLocalizedString(@"Select All", nil) forState:UIControlStateNormal];
+    [self setupSelectAllButton];
     
     [_selectedBlogs removeAllObjects];
     
     [self toggleButtons];
     [self.tableView reloadData];
+}
+
+- (void)setupSelectAllButton
+{
+    [_selectAllButton removeTarget:self action:@selector(deselectAllBlogs) forControlEvents:UIControlEventTouchUpInside];
+    [_selectAllButton addTarget:self action:@selector(selectAllBlogs) forControlEvents:UIControlEventTouchUpInside];
+    [_selectAllButton setTitle:NSLocalizedString(@"Select All", nil) forState:UIControlStateNormal];
+}
+
+- (void)setupDeselectAllButton
+{
+    [_selectAllButton removeTarget:self action:@selector(selectAllBlogs) forControlEvents:UIControlEventTouchUpInside];
+    [_selectAllButton addTarget:self action:@selector(deselectAllBlogs) forControlEvents:UIControlEventTouchUpInside];
+    [_selectAllButton setTitle:NSLocalizedString(@"Deselect All", nil) forState:UIControlStateNormal];
 }
 
 - (NSString *)getCellTitleForIndexPath:(NSIndexPath *)indexPath

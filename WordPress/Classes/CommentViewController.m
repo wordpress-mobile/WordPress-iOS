@@ -31,11 +31,11 @@
 @property (nonatomic, strong) IBOutlet UILabel *dateLabel;
 @property (nonatomic, strong) IBOutlet UIWebView *commentWebview;
 
-@property (strong, nonatomic) IBOutlet UIBarButtonItem *trashButton;
-@property (strong, nonatomic) IBOutlet UIBarButtonItem *approveButton;
-@property (strong, nonatomic) IBOutlet UIBarButtonItem *spamButton;
-@property (strong, nonatomic) IBOutlet UIBarButtonItem *editButton;
-@property (strong, nonatomic) IBOutlet UIBarButtonItem *replyButton;
+@property (nonatomic, strong) IBOutlet UIBarButtonItem *trashButton;
+@property (nonatomic, strong) IBOutlet UIBarButtonItem *approveButton;
+@property (nonatomic, strong) IBOutlet UIBarButtonItem *spamButton;
+@property (nonatomic, strong) IBOutlet UIBarButtonItem *editButton;
+@property (nonatomic, strong) IBOutlet UIBarButtonItem *replyButton;
 
 @end
 
@@ -65,7 +65,6 @@ CGFloat const CommentViewUnapproveButtonTag = 701;
 {
     [super viewDidLoad];
     
-    self.view.backgroundColor = [WPStyleGuide itsEverywhereGrey];
     self.authorNameLabel.font = [WPStyleGuide postTitleFont];
     self.authorSiteButton.titleLabel.font = [WPStyleGuide subtitleFont];
     [self.authorSiteButton setTitleColor:[WPStyleGuide newKidOnTheBlockBlue] forState:UIControlStateNormal];
@@ -73,7 +72,6 @@ CGFloat const CommentViewUnapproveButtonTag = 701;
     [self.authorEmailButton setTitleColor:[WPStyleGuide newKidOnTheBlockBlue] forState:UIControlStateNormal];
     self.postTitleLabel.font = [WPStyleGuide subtitleFont];
     self.dateLabel.font = [WPStyleGuide subtitleFont];
-    self.commentWebview.backgroundColor = [WPStyleGuide itsEverywhereGrey];
 
     self.navigationController.toolbar.translucent = NO;
     UIBarButtonItem *flexibleSpace = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFlexibleSpace target:nil action:nil];
@@ -227,7 +225,7 @@ CGFloat const CommentViewUnapproveButtonTag = 701;
 		htmlString = [NSString stringWithFormat:@"<html><head></head><body><p>%@</p></body></html>", @"<br />"];
     }
 	else {
-		htmlString = [NSString stringWithFormat:@"<html><head><meta name=\"viewport\" content=\"initial-scale=1, maximum-scale=1\"><style type='text/css'>* { margin:0; padding:0 5px 0 0; } p { color:black; font-family:OpenSans; font-size:16px; line-height: 1.4} b { font-family:OpenSans-Bold } i { font-family:OpenSans-Italic } a { color:#21759b; text-decoration:none; } body { background-color: #eeeeee }</style></head><body><p>%@</p></body></html>", [[self.comment.content trim] stringByReplacingOccurrencesOfString:@"\n" withString:@"<br />"]];
+		htmlString = [NSString stringWithFormat:@"<html><head><meta name=\"viewport\" content=\"initial-scale=1, maximum-scale=1\"><style type='text/css'>* { margin:0; padding:0 5px 0 0; } p { color:black; font-family:OpenSans; font-size:16px; line-height: 1.4} b { font-family:OpenSans-Bold } i { font-family:OpenSans-Italic } a { color:#21759b; text-decoration:none; }</style></head><body><p>%@</p></body></html>", [[self.comment.content trim] stringByReplacingOccurrencesOfString:@"\n" withString:@"<br />"]];
     }
 	self.commentWebview.delegate = self;
 	[self.commentWebview loadHTMLString:htmlString baseURL:nil];
@@ -417,9 +415,7 @@ CGFloat const CommentViewUnapproveButtonTag = 701;
             webViewController.password = blog.password;
         }
         
-        if (self.panelNavigationController) {
-            [self.panelNavigationController pushViewController:webViewController fromViewController:self animated:YES];
-        }
+        [self.navigationController pushViewController:webViewController animated:YES];
 	}
 }
 
@@ -431,7 +427,7 @@ CGFloat const CommentViewUnapproveButtonTag = 701;
     [self.comment removeObserver:self forKeyPath:@"status"];
     [self moderateCommentWithSelector:@selector(remove)];
     if (IS_IPAD) {
-        [self.panelNavigationController popToRootViewControllerAnimated:YES];
+        [self.navigationController popToRootViewControllerAnimated:YES];
     }
 }
 
@@ -453,7 +449,7 @@ CGFloat const CommentViewUnapproveButtonTag = 701;
     [self.comment removeObserver:self forKeyPath:@"status"];
     [self moderateCommentWithSelector:@selector(spam)];
     if (IS_IPAD) {
-        [self.panelNavigationController popToRootViewControllerAnimated:YES];
+        [self.navigationController popToRootViewControllerAnimated:YES];
     }
 }
 

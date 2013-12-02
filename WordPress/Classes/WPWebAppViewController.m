@@ -1,15 +1,15 @@
-//
-//  WPWebAppViewController.m
-//  WordPress
-//
-//  Created by Beau Collins on 1/20/12.
-//  Copyright (c) 2012 WordPress. All rights reserved.
-//
+/*
+ * WPWebAppViewController.m
+ *
+ * Copyright (c) 2013 WordPress. All rights reserved.
+ *
+ * Licensed under GNU General Public License 2.0.
+ * Some rights reserved. See license.txt
+ */
 
 #import "WPWebAppViewController.h"
 #import "WordPressAppDelegate.h"
 #import "ReachabilityUtils.h"
-#import "SoundUtil.h"
 
 @implementation WPWebAppViewController {
     BOOL _pullToRefreshEnabled;
@@ -22,9 +22,6 @@
 
 - (void)dealloc {
     WPFLogMethod();
-
-    if(_pullToRefreshEnabled)
-        [self.scrollView removeObserver:self forKeyPath:@"contentOffset"];
 
     [self.webView stopLoading];
     self.webView.delegate = nil;
@@ -78,35 +75,6 @@
     }
 }
 
-
-- (void)viewDidUnload {
-    WPFLogMethod();
-    [super viewDidUnload];
-
-    if (_pullToRefreshEnabled) {
-        [self.scrollView removeObserver:self forKeyPath:@"contentOffset"];
-        _pullToRefreshEnabled = NO;
-    }
-
-    // attempted work around for #1347 to kill UIWebView loading requests
-    if (self.webView.isLoading) {
-        [self.webView stopLoading];
-    }
-    
-    // Release any retained subviews of the main view.
-    // e.g. self.myOutlet = nil;
-    self.webView.delegate = nil;
-    self.webView = nil;
-    
-     _refreshHeaderView = nil;
-}
-
-
-- (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation {
-    return [super shouldAutorotateToInterfaceOrientation:interfaceOrientation];
-}
-
-
 // Find the Webview's UIScrollView backwards compatible
 - (UIScrollView *)scrollView {
     
@@ -124,29 +92,6 @@
     
     return scrollView;
     
-}
-
-
-- (void)observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary *)change context:(void *)context {
-    if(![keyPath isEqualToString:@"contentOffset"])
-        return;
-    
-    CGPoint newValue = [[change objectForKey:NSKeyValueChangeNewKey] CGPointValue];
-    CGPoint oldValue = [[change objectForKey:NSKeyValueChangeOldKey] CGPointValue];
-    
-    if (newValue.y > oldValue.y && newValue.y > -65.0f) {
-        didPlayPullSound = NO;
-    }
-    
-    if(newValue.y == oldValue.y) return;
-    
-    if(newValue.y <= -65.0f && newValue.y < oldValue.y && ![self.webView isLoading] && !didPlayPullSound  && !didTriggerRefresh) {
-        NSLog(@"Play Pull Sound:  %f, %f, %i, %i", newValue.y, oldValue.y, [self.webView isLoading], didPlayPullSound);
-
-        // triggered
-        [SoundUtil playPullSound];
-        didPlayPullSound = YES;
-    }
 }
 
 #pragma mark - Hybrid Helper Methods
@@ -170,7 +115,7 @@
 // Just a Hello World for testing integration
 - (void)enableAwesomeness
 {
-    [FileLogger log:@"Awesomeness Enabled"];
+    DDLogInfo(@"Awesomeness Enabled");
 }
 
 - (void)hideWebViewBackgrounds
@@ -229,7 +174,6 @@
 	//  update the last update date
 	[_refreshHeaderView refreshLastUpdatedDate];
     if (!_pullToRefreshEnabled) {
-        [self.scrollView addObserver:self forKeyPath:@"contentOffset" options:NSKeyValueObservingOptionNew|NSKeyValueObservingOptionOld context:nil];
         _pullToRefreshEnabled = YES;
     }
 }
@@ -239,9 +183,6 @@
 {
     self.lastWebViewRefreshDate = [NSDate date];
     [_refreshHeaderView egoRefreshScrollViewDataSourceDidFinishedLoading:(UIScrollView * )_refreshHeaderView.superview];
-    if([self isViewLoaded] && self.view.window && didTriggerRefresh){
-        [SoundUtil playRollupSound];
-    }
     didTriggerRefresh = NO;
 }
 
@@ -290,9 +231,6 @@
 - (void)hideRefreshingState {
     self.lastWebViewRefreshDate = [NSDate date];
     [_refreshHeaderView egoRefreshScrollViewDataSourceDidFinishedLoading:self.scrollView];
-    if([self isViewLoaded] && self.view.window && didTriggerRefresh){
-        [SoundUtil playRollupSound];
-    }
     didTriggerRefresh = NO;
 }
 

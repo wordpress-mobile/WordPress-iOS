@@ -3,7 +3,7 @@
 //  DTSmartPhotoView
 //
 //  Created by Stefan Gugarel on 5/11/12.
-//  Copyright (c) 2012 Stefan Gugarel. All rights reserved.
+//  Copyright (c) 2012 Cocoanetics. All rights reserved.
 //
 
 #import "DTWeakSupport.h"

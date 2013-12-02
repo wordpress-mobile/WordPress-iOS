@@ -8,6 +8,7 @@
 
 #import <ImageIO/ImageIO.h>
 #import "DTLazyImageView.h"
+#import "DTLog.h"
 
 static NSCache *_imageCache = nil;
 
@@ -121,8 +122,8 @@ NSString * const DTLazyImageViewDidFinishDownloadNotification = @"DTLazyImageVie
 {
 	const size_t height = CGImageGetHeight(partialImg);
 	CGColorSpaceRef colorSpace = CGColorSpaceCreateDeviceRGB();
-	size_t lFullWidth = lrintf(_fullWidth);
-	size_t lFullHeight = lrintf(_fullHeight);
+	size_t lFullWidth = (size_t)ceil(_fullWidth);
+	size_t lFullHeight = (size_t)ceil(_fullHeight);
 	CGContextRef bmContext = CGBitmapContextCreate(NULL, lFullWidth, lFullHeight, 8, lFullWidth * 4, colorSpace, kCGBitmapByteOrderDefault | kCGImageAlphaPremultipliedFirst);
 	CGColorSpaceRelease(colorSpace);
 	if (!bmContext)
@@ -195,9 +196,7 @@ NSString * const DTLazyImageViewDidFinishDownloadNotification = @"DTLazyImageVie
 	self.image = image;
 	_fullWidth = image.size.width;
 	_fullHeight = image.size.height;
-	
-	self.bounds = CGRectMake(0, 0, _fullWidth, _fullHeight);
-	
+
 	[self _notifyDelegate];
 	
 	static dispatch_once_t predicate;
@@ -215,10 +214,9 @@ NSString * const DTLazyImageViewDidFinishDownloadNotification = @"DTLazyImageVie
 		}
 		else
 		{
-			NSLog(@"Warning, %@ did not get an image for %@", NSStringFromClass([self class]), [_url absoluteString]);
+			DTLogWarning(@"Warning, %@ did not get an image for %@", NSStringFromClass([self class]), [_url absoluteString]);
 		}
 	}
-	
 }
 
 - (void)connection:(NSURLConnection *)connection didReceiveResponse:(NSURLResponse *)response

@@ -6,13 +6,19 @@
 #import "NewPostTableViewCell.h"
 #import "WordPressAppDelegate.h"
 #import "Reachability.h"
+#import "Post.h"
 
 #define TAG_OFFSET 1010
 
+@interface PostsViewController () {
+    BOOL _addingNewPost;
+}
+
+@end
+
 @implementation PostsViewController
 
-@synthesize postReaderViewController;
-@synthesize anyMorePosts, selectedIndexPath, drafts;
+@synthesize anyMorePosts, drafts;
 //@synthesize resultsController;
 
 #pragma mark -
@@ -26,13 +32,14 @@
     return self;
 }
 
+- (NSString *)noResultsText
+{
+    return NSLocalizedString(@"No posts yet", @"Displayed when the user pulls up the posts view and they have no posts");
+}
+
 - (void)viewDidLoad {
-    [FileLogger log:@"%@ %@", self, NSStringFromSelector(_cmd)];
+    DDLogInfo(@"%@ %@", self, NSStringFromSelector(_cmd));
     [super viewDidLoad];
-    
-	// ShouldRefreshPosts
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(updatePostsTableViewAfterPostSaved:) name:@"AsynchronousPostIsPosted" object:nil];
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(updatePostsTableAfterDraftSaved:) name:@"DraftsUpdated" object:nil];
     
     UIBarButtonItem *composeButtonItem  = nil;
     
@@ -59,21 +66,10 @@
 
     [WPStyleGuide setRightBarButtonItemWithCorrectSpacing:composeButtonItem forNavigationItem:self.navigationItem];
     
-    if (IS_IPAD && self.selectedIndexPath && self.postReaderViewController) {
-        @try {
-            self.postReaderViewController.post = [self.resultsController objectAtIndexPath:self.selectedIndexPath];
-            [self.postReaderViewController refreshUI];
-        }
-        @catch (NSException * e) {
-            // In some cases, selectedIndexPath could be pointing to a missing row
-            // This is the case after a failed core data upgrade
-            self.selectedIndexPath = nil;
-        }
-    }
-    
     self.infiniteScrollEnabled = YES;
     
     [WPStyleGuide configureColorsForView:self.view andTableView:self.tableView];
+    
 }
 
 - (void)viewDidAppear:(BOOL)animated
@@ -85,48 +81,29 @@
 
 - (void)viewWillAppear:(BOOL)animated {
 	[super viewWillAppear:animated];
-	
-	// Force a crash for CrashReporter
-	//NSLog(@"crash time! %@", 1);
-    
-    self.panelNavigationController.delegate = self;
 
-	if (!IS_IPAD) {
+	if (IS_IPHONE) {
 		// iPhone table views should not appear selected
 		if ([self.tableView indexPathForSelectedRow]) {
 			[self.tableView scrollToRowAtIndexPath:[self.tableView indexPathForSelectedRow] atScrollPosition:UITableViewScrollPositionMiddle animated:NO];
 			[self.tableView deselectRowAtIndexPath:[self.tableView indexPathForSelectedRow] animated:animated];
 		}
-	} else if (IS_IPAD) {
-		// sometimes, iPad table views should
-		if (self.selectedIndexPath) {
-            [self showSelectedPost];
-			[self.tableView selectRowAtIndexPath:self.selectedIndexPath animated:NO scrollPosition:UITableViewScrollPositionNone];
-			[self.tableView scrollToRowAtIndexPath:self.selectedIndexPath atScrollPosition:UITableViewScrollPositionTop animated:NO];
-		} else {
-			//There are no content yet, push an the WP logo on the right.  
-			WordPressAppDelegate *delegate = (WordPressAppDelegate*)[[UIApplication sharedApplication] delegate]; 
-			[delegate showContentDetailViewController:nil];
-		}
-        [self.panelNavigationController setToolbarHidden:NO forViewController:self animated:NO];
 	}
+    
+    // Scroll to the top of the UItableView to show the newly added post.
+    if (_addingNewPost) {
+        [self.tableView setContentOffset:CGPointZero animated:NO];
+        _addingNewPost = NO;
+    }
+
 }
 
 - (void)viewWillDisappear:(BOOL)animated {
     [super viewWillDisappear:animated];
-    self.panelNavigationController.delegate = nil;
 }
 
-- (void)viewDidUnload {
-    [FileLogger log:@"%@ %@", self, NSStringFromSelector(_cmd)];
-	[super viewDidUnload];
-    
+- (void)dealloc {
     [[NSNotificationCenter defaultCenter] removeObserver:self];
-}
-
-- (UIColor *)backgroundColorForRefreshHeaderView
-{
-    return [WPStyleGuide itsEverywhereGrey];
 }
 
 - (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation {
@@ -142,6 +119,7 @@
 {
     return StatsPropertyPostsOpened;
 }
+
 
 #pragma mark -
 #pragma mark Syncs methods
@@ -162,26 +140,11 @@
     [self.blog syncPostsWithSuccess:success failure:failure loadMore:YES];
 }
 
-#pragma mark - DetailViewDelegate
-
-- (void)resetView {
-    //Reset a few things if extra panels were popped off on the iPad
-    if (self.selectedIndexPath) {
-        [self.tableView deselectRowAtIndexPath: self.selectedIndexPath animated: NO];
-        self.selectedIndexPath = nil;
-    }
-}
-
 #pragma mark -
 #pragma mark TableView delegate
 
 - (NSString *)tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section {
     return nil;
-}
-
-- (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section
-{
-    return 0.0;
 }
 
 - (void)configureCell:(NewPostTableViewCell *)cell atIndexPath:(NSIndexPath *)indexPath {    
@@ -226,7 +189,7 @@
 #pragma mark Memory Management
 
 - (void)didReceiveMemoryWarning {
-    WPLog(@"%@ %@", self, NSStringFromSelector(_cmd));
+    DDLogWarn(@"%@ %@", self, NSStringFromSelector(_cmd));
     [super didReceiveMemoryWarning];
 }
 
@@ -242,91 +205,27 @@
 		} else {
 			[[NSNotificationCenter defaultCenter] postNotificationName:kXML_RPC_ERROR_OCCURS object:error userInfo:errInfo];
 		}
-        [self syncItemsWithUserInteraction:NO];
-        if(IS_IPAD && self.postReaderViewController) {
-            if(self.postReaderViewController.apost == post) {
-                //push an the W logo on the right. 
-                WordPressAppDelegate *delegate = (WordPressAppDelegate*)[[UIApplication sharedApplication] delegate];
-                [delegate showContentDetailViewController:nil];
-                self.selectedIndexPath = nil;
-            }
-        }
+        [self syncItems];
     }];
-}
-
-- (void)reselect {
-	if (self.selectedIndexPath) {
-		[self.tableView selectRowAtIndexPath:self.selectedIndexPath animated:NO scrollPosition:UITableViewScrollPositionNone];
-		[self tableView:self.tableView didSelectRowAtIndexPath:self.selectedIndexPath];
-	}
 }
 
 - (void)showAddPostView {
     [WPMobileStats trackEventForWPCom:StatsEventPostsClickedNewPost];
 
-    if (IS_IPAD)
-        [self resetView];
-    
+    _addingNewPost = YES;
     Post *post = [Post newDraftForBlog:self.blog];
     [self editPost:post];
 }
 
 - (void)editPost:(AbstractPost *)apost {
-    EditPostViewController *editPostViewController = [[EditPostViewController alloc] initWithPost:[apost createRevision]];
+    EditPostViewController *editPostViewController = [[EditPostViewController alloc] initWithPost:apost];
     UINavigationController *navController = [[UINavigationController alloc] initWithRootViewController:editPostViewController];
     navController.modalPresentationStyle = UIModalPresentationCurrentContext;
-    [self.panelNavigationController.detailViewController presentViewController:navController animated:YES completion:nil];
-}
-
-// For iPad
-// Subclassed in PagesViewController
-- (void)showSelectedPost {
-    Post *post = nil;
-    NSIndexPath *indexPath = self.selectedIndexPath;
-
-    @try {
-        post = [self.resultsController objectAtIndexPath:indexPath];
-        WPLog(@"Selected post at indexPath: (%i,%i)", indexPath.section, indexPath.row);
-    }
-    @catch (NSException *e) {
-        NSLog(@"Can't select post at indexPath (%i,%i)", indexPath.section, indexPath.row);
-        NSLog(@"sections: %@", self.resultsController.sections);
-        NSLog(@"results: %@", self.resultsController.fetchedObjects);
-        post = nil;
-    }
-    self.postReaderViewController = [[PostViewController alloc] initWithPost:post];
-    [self.panelNavigationController.navigationController pushViewController:self.postReaderViewController animated:YES];
-}
-
-- (void)setSelectedIndexPath:(NSIndexPath *)indexPath {
-    if ([selectedIndexPath isEqual:indexPath]) {
-        if (self.panelNavigationController) {
-            [self.panelNavigationController viewControllerWantsToBeFullyVisible:self];
-        }
-    } else {
-        WordPressAppDelegate *delegate = (WordPressAppDelegate*)[[UIApplication sharedApplication] delegate];
-
-        if (indexPath != nil) {
-            @try {
-                [self.resultsController objectAtIndexPath:indexPath];
-                selectedIndexPath = indexPath;
-                [self showSelectedPost];
-            }
-            @catch (NSException *exception) {
-                selectedIndexPath = nil;
-                [delegate showContentDetailViewController:nil];
-            }
-        } else {
-            selectedIndexPath = nil;
-            if (IS_IPHONE == NO) //Fixes #1292. popToViewController:animated was called twice
-                [delegate showContentDetailViewController:nil];
-        }
-    }
+    [self.view.window.rootViewController presentViewController:navController animated:YES completion:nil];
 }
 
 - (void)setBlog:(Blog *)blog {
     [super setBlog:blog];
-    self.selectedIndexPath = nil;
 }
 
 #pragma mark -
@@ -347,14 +246,12 @@
 }
 
 - (NSFetchRequest *)fetchRequest {
-    NSFetchRequest *fetchRequest = [[NSFetchRequest alloc] init];
-    [fetchRequest setEntity:[NSEntityDescription entityForName:[self entityName] inManagedObjectContext:self.blog.managedObjectContext]];
-    [fetchRequest setPredicate:[NSPredicate predicateWithFormat:@"(blog == %@) && (original == nil)", self.blog]];
-    NSSortDescriptor *sortDescriptorLocal = [[NSSortDescriptor alloc] initWithKey:@"remoteStatusNumber" ascending:YES];
-    NSSortDescriptor *sortDescriptorDate = [[NSSortDescriptor alloc] initWithKey:@"date_created_gmt" ascending:NO];
-    NSArray *sortDescriptors = [[NSArray alloc] initWithObjects:sortDescriptorLocal, sortDescriptorDate, nil];
-    [fetchRequest setSortDescriptors:sortDescriptors];
-
+    NSFetchRequest *fetchRequest = [NSFetchRequest fetchRequestWithEntityName:[self entityName]];
+    fetchRequest.predicate = [NSPredicate predicateWithFormat:@"(blog == %@) && (original == nil)", self.blog];
+    NSSortDescriptor *sortDescriptorLocal = [NSSortDescriptor sortDescriptorWithKey:@"remoteStatusNumber" ascending:YES];
+    NSSortDescriptor *sortDescriptorDate = [NSSortDescriptor sortDescriptorWithKey:@"date_created_gmt" ascending:NO];
+    fetchRequest.sortDescriptors = @[sortDescriptorLocal, sortDescriptorDate];
+    fetchRequest.fetchBatchSize = 10;
     return fetchRequest;
 }
 
@@ -362,18 +259,17 @@
     return @"remoteStatusNumber";
 }
 
-- (void)syncItemsWithUserInteraction:(BOOL)userInteraction success:(void (^)())success failure:(void (^)(NSError *))failure {
+- (void)syncItemsViaUserInteractionWithSuccess:(void (^)())success failure:(void (^)(NSError *))failure {
     // If triggered by a pull to refresh, sync categories, post formats, ...
-    if (userInteraction) {
-        [self.blog syncBlogPostsWithSuccess:success failure:failure];
-    } else {
-        [self.blog syncPostsWithSuccess:success failure:failure loadMore:NO];
-    }
+    [self.blog syncBlogPostsWithSuccess:success failure:failure];
+}
+
+- (void)syncItemsWithSuccess:(void (^)())success failure:(void (^)(NSError *))failure {
+    [self.blog syncPostsWithSuccess:success failure:failure loadMore:NO];
 }
 
 - (UITableViewCell *)newCell {
-    // To comply with apple ownership and naming conventions, returned cell should have a retain count > 0, so retain the dequeued cell.
-    NSString *cellIdentifier = @"PostCell";
+    static NSString *const cellIdentifier = @"PostCell";
     UITableViewCell *cell = [self.tableView dequeueReusableCellWithIdentifier:cellIdentifier];
     if (cell == nil) {
         cell = [[NewPostTableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:cellIdentifier];
@@ -394,8 +290,8 @@
     [super controller:controller didChangeObject:anObject atIndexPath:indexPath forChangeType:type newIndexPath:newIndexPath];
 
     if (type == NSFetchedResultsChangeDelete) {
-        if ([indexPath compare:selectedIndexPath] == NSOrderedSame) {
-            self.selectedIndexPath = nil;
+        if (_addingNewPost && NSOrderedSame == [indexPath compare:[NSIndexPath indexPathForRow:0 inSection:0]]) {
+            _addingNewPost = NO;
         }
     }
 }

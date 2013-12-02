@@ -23,6 +23,8 @@
 @property (nonatomic, strong) UIButton *blogButton;
 @property (nonatomic, strong) UILabel *blogNameLabel;
 @property (nonatomic, strong) UIImageView *blavatarImageView;
+@property (nonatomic, assign) BOOL blogsAvailable;
+@property (nonatomic, strong) UIView *loadingBlogsView;
 
 - (void)setDestinationBlog:(NSDictionary *)dict;
 - (void)handleBlogButtonTapped:(id)sender;
@@ -51,92 +53,129 @@
 - (id)initWithFrame:(CGRect)frame {
     self = [super initWithFrame:frame];
     if (self) {
-        if (IS_IOS7) {
-            self.backgroundColor = [WPStyleGuide littleEddieGrey];
-        }
+        self.backgroundColor = [WPStyleGuide littleEddieGrey];
 		self.requireText = NO;
 		self.promptLabel.text = NSLocalizedString(@"Add your thoughts here... (optional)", @"Placeholder text prompting the user to add a note to the post they are reblogging.");
 		
-		frame = CGRectMake(10.0f, 10.0, frame.size.width - 20.0f, 20.0f);
-		
-		NSArray *blogs = [[NSUserDefaults standardUserDefaults] arrayForKey:@"wpcom_users_blogs"];
-		if ([blogs count] > 1) {
-		
-			self.blogButton = [UIButton buttonWithType:UIButtonTypeCustom];
-			_blogButton.frame = frame;
-			_blogButton.autoresizingMask = UIViewAutoresizingFlexibleWidth;
-			[_blogButton addTarget:self action:@selector(handleBlogButtonTapped:) forControlEvents:UIControlEventTouchUpInside];
-
-			UIView *buttonView = [[UIView alloc] initWithFrame:CGRectMake(0.0f, 0.0f, frame.size.width, frame.size.height)];
-			buttonView.backgroundColor = [UIColor clearColor];
-			buttonView.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
-			buttonView.userInteractionEnabled = NO;
-			
-			NSString *str = NSLocalizedString(@"Post to", @"Lable for the blog selector. Says 'Post to' followed by the blog's icon and its name.");
-			UIFont *font = [UIFont fontWithName:@"OpenSans" size:15.0f];
-			CGSize size = [str sizeWithFont:font];
-			UILabel *postToLabel = [[UILabel alloc] initWithFrame:CGRectMake(0.0f, 0.0, size.width, frame.size.height)];
-			postToLabel.text = str;
-			postToLabel.font = font;
-			postToLabel.textColor = [UIColor whiteColor];
-			postToLabel.backgroundColor = [UIColor clearColor];
-			[buttonView addSubview:postToLabel];
-
-			self.blavatarImageView = [[UIImageView alloc] initWithFrame:CGRectMake(size.width + 5.0f, 0.0f, 20.0f, 20.0f)];
-			_blavatarImageView.contentMode = UIViewContentModeScaleAspectFit;
-			[buttonView addSubview:_blavatarImageView];
-			
-			CGFloat x = _blavatarImageView.frame.origin.x + 25.0f;
-			self.blogNameLabel = [[UILabel alloc] initWithFrame:CGRectMake(x, 0.0f, frame.size.width - x, frame.size.height)];
-			_blogNameLabel.backgroundColor = [UIColor clearColor];
-			_blogNameLabel.font = font;
-			_blogNameLabel.textColor = [UIColor whiteColor];
-			_blogNameLabel.autoresizingMask = UIViewAutoresizingFlexibleWidth;
-			[buttonView addSubview:_blogNameLabel];
-
-			[_blogButton addSubview:buttonView];
-			[self addSubview:_blogButton];
-			
-			CGFloat offset = _blogButton.frame.origin.y + _blogButton.frame.size.height;
-			
-			frame = self.borderImageView.frame;
-			frame.origin.y += offset;
-			frame.size.height -= offset;
-			self.borderImageView.frame = frame;
-
-			frame = self.textView.frame;
-			frame.origin.y += offset;
-			frame.size.height -= offset;
-			self.textView.frame = frame;
-			
-			frame = self.promptLabel.frame;
-			frame.origin.y += offset;
-			self.promptLabel.frame = frame;
-			
-			frame = self.activityView.frame;
-			frame.origin.y = ((self.textView.frame.origin.y + (self.textView.frame.size.height / 2.0f)) - frame.size.height / 2.0f) ;
-			self.activityView.frame = frame;
-
-			NSNumber *primaryBlogId = [[NSUserDefaults standardUserDefaults] objectForKey:@"wpcom_users_prefered_blog_id"];
-            
-            if (primaryBlogId) {
-                [blogs enumerateObjectsUsingBlock:^(id obj, NSUInteger idx, BOOL *stop) {
-                    if ([[obj numberForKey:@"blogid"] isEqualToNumber:primaryBlogId]) {
-                        [self setDestinationBlog:obj];
-                        *stop = YES;
-                    }
-                }];
-            } else {
-                [self setDestinationBlog:[blogs objectAtIndex:0]];
-            }
-		} else if ([blogs count]) {
-			[self setDestinationBlog:[blogs objectAtIndex:0]];
-		}
+        NSArray *blogs = [[NSUserDefaults standardUserDefaults] arrayForKey:@"wpcom_users_blogs"];
+        _blogsAvailable = blogs && blogs.count > 0;
+        [self setupReblogDestinations:blogs];
+        [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(userDefaultsChanged) name:NSUserDefaultsDidChangeNotification object:[NSUserDefaults standardUserDefaults]];
     }
 	
     return self;
 }
 
+- (void)dealloc {
+    [[NSNotificationCenter defaultCenter] removeObserver:self];
+}
+
+- (void)setupReblogDestinations:(NSArray *)blogs {
+    __block CGRect frame = CGRectZero;
+    __block CGFloat offset = 0;
+    
+    if (blogs.count > 1) {
+        frame = CGRectMake(10.0f, 8.0, self.bounds.size.width - 20.0f, 20.0f);
+        self.blogButton = [UIButton buttonWithType:UIButtonTypeCustom];
+        _blogButton.frame = frame;
+        _blogButton.autoresizingMask = UIViewAutoresizingFlexibleWidth;
+        [_blogButton addTarget:self action:@selector(handleBlogButtonTapped:) forControlEvents:UIControlEventTouchUpInside];
+        
+        UIView *buttonView = [[UIView alloc] initWithFrame:CGRectMake(0.0f, 0.0f, frame.size.width, frame.size.height)];
+        buttonView.backgroundColor = [UIColor clearColor];
+        buttonView.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
+        buttonView.userInteractionEnabled = NO;
+        
+        NSString *str = NSLocalizedString(@"Post to", @"Lable for the blog selector. Says 'Post to' followed by the blog's icon and its name.");
+        UIFont *font = [UIFont fontWithName:@"OpenSans" size:15.0f];
+        CGSize size = [str sizeWithAttributes:@{NSFontAttributeName:font}];
+        UILabel *postToLabel = [[UILabel alloc] initWithFrame:CGRectMake(0.0f, 0.0, size.width, frame.size.height)];
+        postToLabel.text = str;
+        postToLabel.font = font;
+        postToLabel.textColor = [UIColor whiteColor];
+        postToLabel.backgroundColor = [UIColor clearColor];
+        [buttonView addSubview:postToLabel];
+        
+        self.blavatarImageView = [[UIImageView alloc] initWithFrame:CGRectMake(size.width + 5.0f, 0.0f, 20.0f, 20.0f)];
+        _blavatarImageView.contentMode = UIViewContentModeScaleAspectFit;
+        [buttonView addSubview:_blavatarImageView];
+        
+        CGFloat x = _blavatarImageView.frame.origin.x + 25.0f;
+        self.blogNameLabel = [[UILabel alloc] initWithFrame:CGRectMake(x, 0.0f, frame.size.width - x, frame.size.height)];
+        _blogNameLabel.backgroundColor = [UIColor clearColor];
+        _blogNameLabel.font = font;
+        _blogNameLabel.textColor = [UIColor whiteColor];
+        _blogNameLabel.autoresizingMask = UIViewAutoresizingFlexibleWidth;
+        [buttonView addSubview:_blogNameLabel];
+        
+        [_blogButton addSubview:buttonView];
+        [self addSubview:_blogButton];
+        
+        offset = CGRectGetMaxY(_blogButton.frame);
+        
+        NSNumber *primaryBlogId = [[NSUserDefaults standardUserDefaults] objectForKey:@"wpcom_users_prefered_blog_id"];
+        if (primaryBlogId) {
+            [blogs enumerateObjectsUsingBlock:^(id obj, NSUInteger idx, BOOL *stop) {
+                if ([[obj numberForKey:@"blogid"] isEqualToNumber:primaryBlogId]) {
+                    [self setDestinationBlog:obj];
+                    *stop = YES;
+                }
+            }];
+        } else {
+            [self setDestinationBlog:[blogs objectAtIndex:0]];
+        }
+    } else if ([blogs count]) {
+        offset = -CGRectGetMaxY(_loadingBlogsView.frame);
+        [self setDestinationBlog:[blogs objectAtIndex:0]];
+    } else {
+        // No blogs yet, they're probably being loaded
+        _loadingBlogsView = [[UIView alloc] initWithFrame:CGRectMake(10.0f, 8.0f, self.bounds.size.width, 20.0f)];
+        UIActivityIndicatorView *activityIndicator = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleWhite];
+        activityIndicator.frame = CGRectMake(0, 0, activityIndicator.frame.size.width, activityIndicator.frame.size.height);
+        [activityIndicator startAnimating];
+        [_loadingBlogsView addSubview:activityIndicator];
+        
+        UILabel *noBlogsLabel = [[UILabel alloc] initWithFrame:CGRectMake(CGRectGetMaxX(activityIndicator.frame) + 10.0f, 0, _loadingBlogsView.bounds.size.width - CGRectGetMaxX(activityIndicator.frame), _loadingBlogsView.frame.size.height)];
+        noBlogsLabel.text = NSLocalizedString(@"Loading blogs...", @"");
+        noBlogsLabel.backgroundColor = [UIColor clearColor];
+        noBlogsLabel.textColor = [UIColor whiteColor];
+        noBlogsLabel.font = [UIFont fontWithName:@"OpenSans" size:15.0f];
+        [_loadingBlogsView addSubview:noBlogsLabel];
+
+        [self addSubview:_loadingBlogsView];
+        
+        offset = CGRectGetMaxY(_loadingBlogsView.frame);
+    }
+    
+    if (!(_loadingBlogsView && blogs.count > 1)) {
+        [UIView animateWithDuration:0.3f delay:0 options:UIViewAnimationOptionBeginFromCurrentState animations:^{
+            frame = self.borderImageView.frame;
+            frame.origin.y += offset;
+            frame.size.height -= offset;
+            self.borderImageView.frame = frame;
+            
+            frame = self.textView.frame;
+            frame.origin.y += offset;
+            frame.size.height -= offset;
+            self.textView.frame = frame;
+            
+            frame = self.promptLabel.frame;
+            frame.origin.y += offset;
+            self.promptLabel.frame = frame;
+            
+            frame = self.activityView.frame;
+            frame.origin.y = ((self.textView.frame.origin.y + (self.textView.frame.size.height / 2.0f)) - frame.size.height / 2.0f) ;
+            self.activityView.frame = frame;
+        } completion:nil];
+    }
+    
+    if (blogs) {
+        [_loadingBlogsView removeFromSuperview];
+        _loadingBlogsView = nil;
+    }
+    
+    self.sendButton.enabled = [self shouldEnableSendButton];
+}
 
 - (void)handleSendButtonTapped:(id)sender {
 	[super handleSendButtonTapped:sender];
@@ -160,7 +199,7 @@
         [WPMobileStats trackEventForWPCom:StatsEventReaderReblogged];
 		
 	} failure:^(NSError *error) {
-		WPLog(@"Error Reblogging Post : %@", [error localizedDescription]);
+		DDLogError(@"Error Reblogging Post : %@", [error localizedDescription]);
 		[self enableForm:YES];
 		[self.activityView stopAnimating];
 		[self.textView becomeFirstResponder];
@@ -190,6 +229,18 @@
 	[self.sendButton setTitle:NSLocalizedString(@"Reblog", nil)];
 }
 
+- (BOOL)shouldEnableSendButton {
+    BOOL shouldEnable = [super shouldEnableSendButton];
+    return shouldEnable && _blogsAvailable;
+}
+
+- (void)userDefaultsChanged {
+    NSArray *blogs = [[NSUserDefaults standardUserDefaults] arrayForKey:@"wpcom_users_blogs"];
+    if (!_blogsAvailable && blogs != nil && blogs.count > 0) {
+        _blogsAvailable = YES;
+        [self setupReblogDestinations:blogs];
+    }
+}
 
 - (void)setPost:(ReaderPost *)post {
 	if ([post isEqual:_post]) {

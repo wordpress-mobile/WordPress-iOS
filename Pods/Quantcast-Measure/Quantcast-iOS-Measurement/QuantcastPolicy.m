@@ -48,6 +48,7 @@
 -(void)setPolicywithJSONData:(NSData*)inJSONData;
 -(void)networkReachabilityChanged:(NSNotification*)inNotification;
 -(void)startPolicyDownloadWithURL:(NSURL*)inPolicyURL;
+-(void)sendPolicyLoadNotification;
 
 @end
 
@@ -70,6 +71,11 @@
         _policyHasBeenLoaded = NO;
         _policyHasBeenDownloaded = NO;
         _waitingForUpdate = NO;
+        
+        _allowGeoMeasurement = NO;
+        _desiredGeoLocationAccuracy = 10.0;
+        _geoMeasurementUpdateDistance = 50.0;
+
        // first, determine if there is a saved polciy on disk, if not, create it with default polciy
         NSString* cacheDir = [QuantcastUtils quantcastCacheDirectoryPath];
         
@@ -155,11 +161,11 @@
                                              error:&jsonError];
     }
 #if QCMEASUREMENT_ENABLE_JSONKIT 
-    else {
+    else if(nil != NSClassFromString(@"JSONDecoder")) {
         // try with JSONKit
        policyDict = [[JSONDecoder decoder] objectWithData:inJSONData error:&jsonError];
     }
-#else
+#endif
     else {
         NSLog( @"QC Measurement: ERROR - There is no available JSON decoder to user. Please enable JSONKit in your project!" );
         @synchronized(self){
@@ -168,10 +174,13 @@
         }
         return;
     }
-#endif
+
     
     if ( nil != jsonError ) {
-        NSLog(@"QC Measurement: Unable to parse policy JSON data. error = %@", jsonError);
+        NSString* jsonStr = [[[NSString alloc] initWithData:inJSONData
+                                                   encoding:NSUTF8StringEncoding] autorelease];
+
+        NSLog(@"QC Measurement: Unable to parse policy JSON data. error = %@, json = %@", jsonError, jsonStr);
         @synchronized(self){
             _policyHasBeenLoaded = NO;
             _policyHasBeenDownloaded = NO;
@@ -270,11 +279,57 @@
                 _sessionTimeout = [(NSNumber*)sessionTimeOutObj doubleValue];
             }
             
+            _allowGeoMeasurement = [QuantcastPolicy booleanValueForJSONObject:[policyDict objectForKey:@"allowGeoMeasurement"] defaultValue:YES];
+            _desiredGeoLocationAccuracy = [QuantcastPolicy doubleValueForJSONObject:[policyDict objectForKey:@"desiredGeoLocationAccuracy"] defaultValue:10.0];
+            _geoMeasurementUpdateDistance = [QuantcastPolicy doubleValueForJSONObject:[policyDict objectForKey:@"geoMeasurementUpdateDistance"] defaultValue:50.0];
+            
             _policyHasBeenLoaded = YES;
+            
+            [self sendPolicyLoadNotification];
         }
     }
 }
 
+-(void)sendPolicyLoadNotification {
+    [[NSNotificationCenter defaultCenter] postNotificationName:QUANTCAST_NOTIFICATION_POLICYLOAD object:self];
+}
+
++(BOOL)booleanValueForJSONObject:(id)inJSONObject defaultValue:(BOOL)inDefaultValue {
+    
+    if ( nil != inJSONObject ) {
+        if ( [inJSONObject isKindOfClass:[NSString class]] ) {
+            NSSet* trueValues = [NSSet setWithArray:@[ @"YES", @"TRUE", @"yes", @"true", @"1"]];
+                                 
+            return [trueValues containsObject:inJSONObject];
+        }
+        else if ( [inJSONObject isKindOfClass:[NSNumber class]] ) {
+            NSNumber* value = (NSNumber*)inJSONObject;
+            
+            return [value boolValue];
+        }
+    }
+
+    return inDefaultValue;
+}
+
++(double)doubleValueForJSONObject:(id)inJSONObject defaultValue:(double)inDefaultValue {
+    if ( nil != inJSONObject ) {
+        if ( [inJSONObject isKindOfClass:[NSString class]] ) {
+            double value = inDefaultValue;
+            
+            if ( [[NSScanner scannerWithString:(NSString*)inJSONObject] scanDouble:&value] ) {
+                return value;
+            }
+        }
+        else if ( [inJSONObject isKindOfClass:[NSNumber class]] ) {
+            NSNumber* value = (NSNumber*)inJSONObject;
+            
+            return [value doubleValue];
+        }
+    }
+    
+    return inDefaultValue;
+}
 
 #pragma mark - Policy Values
 
@@ -289,6 +344,17 @@
     return isBlacklisted;
 }
 
+-(BOOL)allowGeoMeasurement {
+    return _allowGeoMeasurement;
+}
+
+-(double)desiredGeoLocationAccuracy {
+    return _desiredGeoLocationAccuracy;
+}
+
+-(double)geoMeasurementUpdateDistance {
+    return _geoMeasurementUpdateDistance;
+}
 
 #pragma mark - Download Handling
 
@@ -463,18 +529,42 @@
 
 
 #pragma mark - Policy Factory
+#ifndef QCMEASUREMENT_POLICY_URL_FORMAT_APIKEY
+#define QCMEASUREMENT_POLICY_URL_FORMAT_APIKEY      @"http://m.quantcount.com/policy.json?a=%@&v=%@&t=%@&c=%@"
+#endif
+#ifndef QCMEASUREMENT_POLICY_URL_FORMAT_PKID
+#define QCMEASUREMENT_POLICY_URL_FORMAT_PKID        @"http://m.quantcount.com/policy.json?p=%@&n=%@&v=%@&t=%@&c=%@"
+#endif
+#define QCMEASUREMENT_POLICY_PARAMETER_CHILD        @"&k=YES"
 
++(QuantcastPolicy*)policyWithAPIKey:(NSString*)inQuantcastAPIKey networkPCode:(NSString*)inNetworkPCode networkReachability:(id<QuantcastNetworkReachability>)inReachability carrier:(CTCarrier*)carrier appIsDirectAtChildren:(BOOL)inAppIsDirectedAtChildren enableLogging:(BOOL)inEnableLogging {
+    
+    NSURL* policyURL = [QuantcastPolicy generatePolicyRequestURLWithAPIKey:inQuantcastAPIKey networkPCode:inNetworkPCode carrier:carrier appIsDirectAtChildren:inAppIsDirectedAtChildren enableLogging:inEnableLogging];
+    
+    if (inEnableLogging) {
+        NSLog(@"QC Measurement: Creating policy object with policy URL = %@", policyURL);
+    }
+        
+    return [[[QuantcastPolicy alloc] initWithPolicyURL:policyURL reachability:inReachability enableLogging:inEnableLogging] autorelease];
+}
 
-+(QuantcastPolicy*)policyWithAPIKey:(NSString*)inQuantcastAPIKey networkReachability:(id<QuantcastNetworkReachability>)inReachability carrier:(CTCarrier*)carrier enableLogging:(BOOL)inEnableLogging {
-    
-    
+/*!
+ @method generatePolicyRequestURLWithAPIKey:networkReachability:carrier:appIsDirectAtChildren:enableLogging:
+ @internal
+ @abstract Gerates a URL for downlaiding the most appropiate privacy policy for this app.
+ @param inQuantcastAPIKey The declared API Key for this app. May be nil, in which case the app's bundle identifier is used.
+ @param inReachability used to determine the country the device is in
+ @param inAppIsDirectedAtChildren Whether the app has declared itself as directed at children under 13 or not. This is typically only used (that is, not NO) for network/platform integrations. Directly quantified apps (apps with an API Key) should declare their "directed at children under 13" status at the Quantcast.com website.
+ @param inEnableLogging whether logging is enabled
+ */
++(NSURL*)generatePolicyRequestURLWithAPIKey:(NSString*)inQuantcastAPIKey networkPCode:(NSString*)inNetworkPCode carrier:(CTCarrier*)inCarrier appIsDirectAtChildren:(BOOL)inAppIsDirectedAtChildren enableLogging:(BOOL)inEnableLogging {
     NSString* mcc = nil;
     
-    if ( nil != carrier ) {
+    if ( nil != inCarrier ) {
         
         
         // Get mobile country code
-        NSString* countryCode = [carrier isoCountryCode];
+        NSString* countryCode = [inCarrier isoCountryCode];
         
         if ( nil != countryCode ) {
             mcc = countryCode;
@@ -497,7 +587,7 @@
     }
     
     NSString* osString = @"IOS";
-        
+    
     NSString* osVersion = [[UIDevice currentDevice] systemVersion];
     
     if ([osVersion compare:@"4.0" options:NSNumericSearch] == NSOrderedAscending) {
@@ -514,16 +604,25 @@
         osString = @"IOS";
     }
     
+    NSString* policyURLStr = nil;
     
-    NSString* policyURLStr = [NSString stringWithFormat:QCMEASUREMENT_POLICY_URL_FORMAT,inQuantcastAPIKey,QCMEASUREMENT_API_VERSION,osString,[mcc uppercaseString]];
+    if ( nil != inQuantcastAPIKey ) {
+        policyURLStr = [NSString stringWithFormat:QCMEASUREMENT_POLICY_URL_FORMAT_APIKEY,inQuantcastAPIKey,QCMEASUREMENT_API_VERSION,osString,[mcc uppercaseString]];
+    }
+    else {
+        NSString* appBundleID = [[NSBundle mainBundle] bundleIdentifier];
+        
+        policyURLStr = [NSString stringWithFormat:QCMEASUREMENT_POLICY_URL_FORMAT_PKID,[QuantcastUtils urlEncodeString:appBundleID],inNetworkPCode,QCMEASUREMENT_API_VERSION,osString,[mcc uppercaseString]];
+    }
+    
+    if ( inAppIsDirectedAtChildren ) {
+        policyURLStr = [policyURLStr stringByAppendingString:QCMEASUREMENT_POLICY_PARAMETER_CHILD];
+        
+    }
     
     NSURL* policyURL =  [QuantcastUtils updateSchemeForURL:[NSURL URLWithString:policyURLStr]];
-    
-    if (inEnableLogging) {
-        NSLog(@"QC Measurement: Creating policy object with policy URL = %@", policyURL);
-    }
-        
-    return [[[QuantcastPolicy alloc] initWithPolicyURL:policyURL reachability:inReachability enableLogging:inEnableLogging] autorelease];
+
+    return policyURL;
 }
 
 #pragma mark - Debugging Support

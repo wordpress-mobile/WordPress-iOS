@@ -7,7 +7,7 @@
 //
 
 
-/** A collection of category extensions for `NSURL` that provide direct access to built-in app capabilites.
+/** A collection of category extensions for `NSURL` that provide direct access to built-in app capabilities.
  
  For example: Open the app store on the page for the app
  
