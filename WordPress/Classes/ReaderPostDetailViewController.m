@@ -363,7 +363,10 @@ typedef enum {
 		for (ReaderComment *comment in _comments) {
 			comment.attributedContent = [ReaderCommentTableViewCell convertHTMLToAttributedString:comment.content withOptions:nil];
 		}
-	   [self.tableView performSelectorOnMainThread:@selector(reloadData) withObject:nil waitUntilDone:NO];
+        __weak ReaderPostDetailViewController *weakSelf = self;
+        dispatch_async(dispatch_get_main_queue(), ^{
+            [weakSelf.tableView reloadData];
+        });
 	});
 }
 
