@@ -28,22 +28,8 @@ static inline double radians(double degrees) {
 }
 
 @interface PostMediaViewController : UITableViewController <UINavigationControllerDelegate, UIImagePickerControllerDelegate, UIActionSheetDelegate, UIPopoverControllerDelegate, NSFetchedResultsControllerDelegate, UITextFieldDelegate> {
-	UIImagePickerController *picker;
-    
-	BOOL hasPhotos, hasVideos, isAddingMedia, isShowingMediaPickerActionSheet, isShowingChangeOrientationActionSheet, isShowingCustomSizeAlert;
-	BOOL isLibraryMedia, didChangeOrientationDuringRecord, isShowingResizeActionSheet, videoEnabled, isCheckingVideoCapability, isPickingFeaturedImage;
-	NSString *postID, *blogURL, *videoPressCheckBlogURL, *uniqueID;
-    Media *currentUpload;
-	
-	NSMutableArray *photos, *videos;
-	MediaOrientation currentOrientation;
-    UIImage *currentImage;
-	NSDictionary *currentImageMetadata;
-	NSMutableDictionary *currentVideo;
+	BOOL isPickingFeaturedImage;
     NSFetchedResultsController *resultsController;
-	
-	//used in customResizeField
-    UIActionSheet *currentActionSheet;
 }
 
 @property (nonatomic, strong) IBOutlet UIPopoverController *addPopover;
