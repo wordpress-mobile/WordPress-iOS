@@ -112,10 +112,10 @@ static NSString *const SearchFilterCellIdentifier = @"search_filter";
 }
 
 - (void)reloadThemes {
-    [_refreshHeaderView beginRefreshing];
     [Theme fetchAndInsertThemesForBlog:self.blog success:^{
         [self refreshCurrentTheme];
         [_header resetSearch];
+        [_refreshHeaderView endRefreshing];
     } failure:^(NSError *error) {
         [WPError showAlertWithError:error];
         [_refreshHeaderView endRefreshing];
@@ -124,8 +124,6 @@ static NSString *const SearchFilterCellIdentifier = @"search_filter";
 
 - (void)refreshCurrentTheme {
     [Theme fetchCurrentThemeForBlog:self.blog success:^{
-        [_refreshHeaderView endRefreshing];
-        
         // Find the blog's theme from the current list of themes
         for (NSUInteger i = 0; i < _filteredThemes.count; i++) {
             Theme *theme = _filteredThemes[i];
@@ -138,7 +136,6 @@ static NSString *const SearchFilterCellIdentifier = @"search_filter";
         
     } failure:^(NSError *error) {
         [WPError showAlertWithError:error];
-        [_refreshHeaderView endRefreshing];
     }];
 }
 

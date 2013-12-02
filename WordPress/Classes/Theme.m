@@ -74,10 +74,8 @@ static NSDateFormatter *dateFormatter;
 
 @implementation Theme (PublicAPI)
 
-+ (void)fetchAndInsertThemesForBlog:(Blog *)blog success:(void (^)())success failure:(void (^)(NSError *error))failure {
-    
++ (void)fetchAndInsertThemesForBlog:(Blog *)blog success:(void (^)())success failure:(void (^)(NSError *error))failure {    
     [[WordPressComApi sharedApi] fetchThemesForBlogId:blog.blogID.stringValue success:^(AFHTTPRequestOperation *operation, id responseObject) {
-        
         NSManagedObjectContext *backgroundMOC = [[ContextManager sharedInstance] backgroundContext];
         [backgroundMOC performBlock:^{
             NSMutableArray *themesToKeep = [NSMutableArray array];
@@ -96,12 +94,12 @@ static NSDateFormatter *dateFormatter;
             [[ContextManager sharedInstance] saveContext:backgroundMOC];
             
             dateFormatter = nil;
+            
+            if (success) {
+                dispatch_async(dispatch_get_main_queue(), success);
+            }
+            
         }];
-        
-        if (success) {
-            success();
-        }
-        
     } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
         if (failure) {
             failure(error);
