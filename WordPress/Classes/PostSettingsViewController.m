@@ -1978,9 +1978,7 @@
 - (void)populateSelectionsControllerWithCategories:(CGRect)cellFrame {
     WPFLogMethod();
     if (_segmentedTableViewController == nil) {
-        _segmentedTableViewController = [[WPSegmentedSelectionTableViewController alloc]
-                                        initWithNibName:@"WPSelectionTableViewController"
-                                        bundle:nil];
+        _segmentedTableViewController = [[WPSegmentedSelectionTableViewController alloc] init];
     }
     
     NSArray *cats = [self.post.blog sortedCategories];
