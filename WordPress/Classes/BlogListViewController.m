@@ -312,17 +312,8 @@ CGFloat const blavatarImageSize = 50.f;
 }
 
 - (void)setEditing:(BOOL)editing animated:(BOOL)animated {
-    [self.tableView beginUpdates];
     [super setEditing:editing animated:animated];
-    [self.tableView reloadSections:[NSIndexSet indexSetWithIndex:[self sectionForAddSite]] withRowAnimation:UITableViewRowAnimationAutomatic];
-    
-    // Reload the .com section
-    NSInteger sectionForDotCom = [self sectionForDotCom];
-    if (sectionForDotCom >= 0) {
-        [self updateFetchRequest];
-        [self.tableView reloadSections:[NSIndexSet indexSetWithIndex:sectionForDotCom] withRowAnimation:UITableViewRowAnimationAutomatic];
-    }
-    [self.tableView endUpdates];
+    [self updateFetchRequest];
 }
 
 - (void)switchDidChange:(id)sender {
@@ -376,6 +367,8 @@ CGFloat const blavatarImageSize = 50.f;
     if (![self.resultsController performFetch:&error]) {
         DDLogError(@"Couldn't fetch blogs: %@", [error localizedDescription]);
     }
+    
+    [self.tableView reloadData];
 }
 
 - (void)controllerWillChangeContent:(NSFetchedResultsController *)controller {
