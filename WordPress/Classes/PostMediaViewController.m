@@ -10,7 +10,6 @@
 #import "EditPostViewController_Internal.h"
 #import "Post.h"
 #import <ImageIO/ImageIO.h>
-#import "WPPopoverBackgroundView.h"
 #import "ContextManager.h"
 
 #define TAG_ACTIONSHEET_PHOTO 1
@@ -712,7 +711,6 @@
 		if(IS_IPAD) {
             if (addPopover == nil) {
                 addPopover = [[UIPopoverController alloc] initWithContentViewController:picker];
-                addPopover.popoverBackgroundViewClass = [WPPopoverBackgroundView class];
                 addPopover.delegate = self;
             }
             if (IS_IOS7) {

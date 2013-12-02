@@ -26,7 +26,6 @@
 #import "WPInfoView.h"
 #import "WPCookie.h"
 #import "NSString+Helpers.h"
-#import "WPPopoverBackgroundView.h"
 #import "IOS7CorrectedTextView.h"
 
 static CGFloat const RPVCScrollingFastVelocityThreshold = 30.f;
@@ -380,10 +379,8 @@ NSString *const RPVCDisplayedNativeFriendFinder = @"DisplayedNativeFriendFinder"
         }
         
         _popover = [[UIPopoverController alloc] initWithContentViewController:controller];
-        _popover.popoverBackgroundViewClass = [WPPopoverBackgroundView class];
         
-        UIBarButtonItem *shareButton;
-        shareButton = self.navigationItem.rightBarButtonItem;
+        UIBarButtonItem *shareButton = self.navigationItem.rightBarButtonItem;
         [_popover presentPopoverFromBarButtonItem:shareButton permittedArrowDirections:UIPopoverArrowDirectionAny animated:YES];
     } else {
         UINavigationController *navController = [[UINavigationController alloc] initWithRootViewController:controller];
@@ -391,7 +388,6 @@ NSString *const RPVCDisplayedNativeFriendFinder = @"DisplayedNativeFriendFinder"
         [self presentViewController:navController animated:YES completion:nil];
     }
 }
-
 
 #pragma mark - ReaderTextForm Delegate Methods
 
