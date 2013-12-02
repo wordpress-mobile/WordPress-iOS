@@ -12,6 +12,7 @@
 #import "PagesViewController.h"
 #import "CommentsViewController.h"
 #import "StatsWebViewController.h"
+#import "ThemeBrowserViewController.h"
 #import "WPWebViewController.h"
 #import "WPTableViewCell.h"
 
@@ -20,6 +21,7 @@ typedef enum {
     BlogDetailsRowPages,
     BlogDetailsRowComments,
     BlogDetailsRowStats,
+    BlogDetailsRowThemes,
     BlogDetailsRowViewSite,
     BlogDetailsRowViewAdmin,
     BlogDetailsRowEdit,
@@ -88,6 +90,8 @@ typedef enum {
 
     } else if (indexPath.row == BlogDetailsRowStats) {
         cell.textLabel.text = NSLocalizedString(@"Stats", nil);
+    } else if (indexPath.row == BlogDetailsRowThemes) {
+        cell.textLabel.text = NSLocalizedString(@"Themes", nil);
     } else if (indexPath.row == BlogDetailsRowViewSite) {
         cell.textLabel.text = NSLocalizedString(@"View Site", nil);
     } else if (indexPath.row == BlogDetailsRowViewAdmin) {
@@ -135,6 +139,9 @@ typedef enum {
     } else if (indexPath.row == BlogDetailsRowStats) {
         [WPMobileStats incrementProperty:StatsPropertySidebarSiteClickedStats forEvent:StatsEventAppClosed];
         controllerClass =  [StatsWebViewController class];
+    } else if (indexPath.row == BlogDetailsRowThemes) {
+        [WPMobileStats incrementProperty:StatsPropertySidebarSiteClickedThemes forEvent:StatsEventAppClosed];
+        controllerClass = [ThemeBrowserViewController class];
     } else if (indexPath.row == BlogDetailsRowViewSite) {
         [self showViewSiteForBlog:self.blog];
     } else if (indexPath.row == BlogDetailsRowViewAdmin) {

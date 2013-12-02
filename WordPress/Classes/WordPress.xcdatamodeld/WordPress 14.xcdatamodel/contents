@@ -109,6 +109,7 @@
         <attribute name="blogName" optional="YES" attributeType="String">
             <userInfo/>
         </attribute>
+        <attribute name="currentThemeId" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="geolocationEnabled" attributeType="Boolean" defaultValueString="NO">
             <userInfo/>
         </attribute>
@@ -338,7 +339,7 @@
         <attribute name="popularityRank" optional="YES" attributeType="Integer 32" defaultValueString="0" syncable="YES"/>
         <attribute name="premium" optional="YES" attributeType="Boolean" syncable="YES"/>
         <attribute name="previewUrl" optional="YES" attributeType="String" syncable="YES"/>
-        <attribute name="screenshortUrl" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="screenshotUrl" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="tags" optional="YES" attributeType="Transformable" syncable="YES"/>
         <attribute name="themeId" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="trendingRank" optional="YES" attributeType="Integer 32" defaultValueString="0" syncable="YES"/>
