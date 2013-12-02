@@ -26,7 +26,6 @@
 #import "WPInfoView.h"
 #import "WPCookie.h"
 #import "NSString+Helpers.h"
-#import "WPPopoverBackgroundView.h"
 #import "IOS7CorrectedTextView.h"
 
 static CGFloat const RPVCScrollingFastVelocityThreshold = 30.f;
@@ -383,7 +382,6 @@ NSString *const RPVCDisplayedNativeFriendFinder = @"DisplayedNativeFriendFinder"
         }
         
         _popover = [[UIPopoverController alloc] initWithContentViewController:controller];
-        _popover.popoverBackgroundViewClass = [WPPopoverBackgroundView class];
         
         UIBarButtonItem *shareButton;
         if (IS_IOS7) {
