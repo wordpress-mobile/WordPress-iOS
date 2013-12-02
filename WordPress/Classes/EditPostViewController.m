@@ -639,9 +639,7 @@ CGFloat const EditPostViewControllerTextViewOffset = 10.0;
 - (void)populateSelectionsControllerWithCategories {
     WPFLogMethod();
     if (segmentedTableViewController == nil) {
-        segmentedTableViewController = [[WPSegmentedSelectionTableViewController alloc]
-                                        initWithNibName:@"WPSelectionTableViewController"
-                                        bundle:nil];
+        segmentedTableViewController = [[WPSegmentedSelectionTableViewController alloc] init];
     }
 	
 	NSArray *cats = [self.post.blog sortedCategories];

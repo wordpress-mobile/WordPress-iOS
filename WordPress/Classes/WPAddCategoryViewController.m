@@ -212,7 +212,7 @@ static void *const kParentCategoriesContext = ((void *)999);
 
 
 - (void)populateSelectionsControllerWithCategories {
-    WPSelectionTableViewController *selectionTableViewController = [[WPSegmentedSelectionTableViewController alloc] initWithNibName:@"WPSelectionTableViewController" bundle:nil];
+    WPSegmentedSelectionTableViewController *selectionTableViewController = [[WPSegmentedSelectionTableViewController alloc] init];
 
     NSArray *selObjs = ((self.parentCategory == nil) ? [NSArray array] : [NSArray arrayWithObject:self.parentCategory]);
     
