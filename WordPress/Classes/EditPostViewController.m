@@ -3,7 +3,6 @@
 #import "Post.h"
 #import "AutosavingIndicatorView.h"
 #import "NSString+XMLExtensions.h"
-#import "WPPopoverBackgroundView.h"
 #import "WPAddCategoryViewController.h"
 #import "WPAlertView.h"
 #import "IOS7CorrectedTextView.h"
@@ -675,7 +674,6 @@ CGFloat const EditPostViewControllerTextViewOffset = 10.0;
             }
             navController.navigationBar.translucent = NO;
  			UIPopoverController *popover = [[UIPopoverController alloc] initWithContentViewController:navController];
-            popover.popoverBackgroundViewClass = [WPPopoverBackgroundView class];
             popover.delegate = self;
 			CGRect popoverRect = [self.view convertRect:[categoriesButton frame] fromView:[categoriesButton superview]];
 			popoverRect.size.width = MIN(popoverRect.size.width, 100.0f); // the text field is actually really big
@@ -750,7 +748,12 @@ CGFloat const EditPostViewControllerTextViewOffset = 10.0;
 }
 
 - (IBAction)saveAction:(id)sender {
-	if( [self isMediaInUploading] ) {
+    if (currentActionSheet.isVisible) {
+        [currentActionSheet dismissWithClickedButtonIndex:-1 animated:YES];
+        currentActionSheet = nil;
+    }
+    
+	if ([self isMediaInUploading] ) {
 		[self showMediaInUploadingalert];
 		return;
 	}

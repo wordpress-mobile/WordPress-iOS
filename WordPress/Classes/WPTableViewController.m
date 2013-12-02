@@ -303,13 +303,7 @@ CGFloat const WPTableViewTopMargin = 40;
 }
 
 - (NSString *)resultsControllerCacheName {
-	NSString *cacheName;
-    if (self.blog) {
-        cacheName = [NSString stringWithFormat:@"%@-%@", [self entityName], [self.blog objectID]];
-    } else {
-        cacheName = [self entityName];
-    }
-	return cacheName;
+    return nil;
 }
 
 - (NSFetchedResultsController *)resultsController {
