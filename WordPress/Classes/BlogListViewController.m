@@ -17,14 +17,12 @@
 #import "ContextManager.h"
 #import "Blog.h"
 #import "WPAccount.h"
-#import "ManageBlogsViewController.h"
 
 CGFloat const blavatarImageSize = 50.f;
 
 @interface BlogListViewController ()
 @property (nonatomic, strong) NSFetchedResultsController *resultsController;
 @property (nonatomic, strong) UIBarButtonItem *settingsButton;
-
 @end
 
 @implementation BlogListViewController
@@ -62,12 +60,8 @@ CGFloat const blavatarImageSize = 50.f;
     }
     
     [WPStyleGuide configureColorsForView:self.view andTableView:self.tableView];
-    
-    // Uncomment the following line to preserve selection between presentations.
-    // self.clearsSelectionOnViewWillAppear = NO;
  
-    // Uncomment the following line to display an Edit button in the navigation bar for this view controller.
-    // self.navigationItem.rightBarButtonItem = self.editButtonItem;
+    self.navigationItem.leftBarButtonItem = self.editButtonItem;
 }
 
 - (void)viewWillAppear:(BOOL)animated {
@@ -117,7 +111,7 @@ CGFloat const blavatarImageSize = 50.f;
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
     if (section == [self sectionForAddSite]) {
-        return 1;
+        return tableView.isEditing ? 0 : 1;
     }
     id<NSFetchedResultsSectionInfo> sectionInfo = [[self.resultsController sections] objectAtIndex:section];
     return sectionInfo.numberOfObjects;
@@ -154,17 +148,20 @@ CGFloat const blavatarImageSize = 50.f;
 }
 
 - (BOOL)tableView:(UITableView *)tableView canEditRowAtIndexPath:(NSIndexPath *)indexPath {
-    if (indexPath.section == [self sectionForAddSite]) {
+    if (indexPath.section == [self sectionForSelfHosted]) {
+        return YES;
+    } else {
         return NO;
     }
+}
 
-
-    id<NSFetchedResultsSectionInfo> sectionInfo = [[self.resultsController sections] objectAtIndex:indexPath.section];
-    if ([[sectionInfo name] isEqualToString:@"0"]) {
-        return YES;
+- (UITableViewCellEditingStyle)tableView:(UITableView *)tableView editingStyleForRowAtIndexPath:(NSIndexPath *)indexPath {
+    
+    if (indexPath.section == [self sectionForSelfHosted] && tableView.editing   ) {
+        return UITableViewCellEditingStyleDelete;
+    } else {
+        return UITableViewCellEditingStyleNone;
     }
-
-    return NO;
 }
 
 - (void)tableView:(UITableView *)tableView commitEditingStyle:(UITableViewCellEditingStyle)editingStyle forRowAtIndexPath:(NSIndexPath *)indexPath {
@@ -201,6 +198,28 @@ CGFloat const blavatarImageSize = 50.f;
     return [self.resultsController.sections count];
 }
 
+- (NSInteger)sectionForDotCom {
+    
+    id<NSFetchedResultsSectionInfo> sectionInfo = [[self.resultsController sections] objectAtIndex:0];
+    if ([[sectionInfo name] isEqualToString:@"1"]) {
+        return 0;
+    } else {
+        return -1;
+    }
+}
+
+- (NSInteger)sectionForSelfHosted {
+    
+    NSInteger sectionsCount = [self.resultsController sections].count;
+    if (sectionsCount > 1) {
+        return 1;
+    } else if (sectionsCount > 0 && [[[[self.resultsController sections] objectAtIndex:0] name] isEqualToString:@"0"]) {
+        return 0;
+    } else {
+        return -1;
+    }
+}
+
 - (void)configureCell:(UITableViewCell *)cell atIndexPath:(NSIndexPath *)indexPath {
     cell.textLabel.textAlignment = NSTextAlignmentLeft;
     cell.accessoryType = UITableViewCellAccessoryNone;
@@ -226,7 +245,21 @@ CGFloat const blavatarImageSize = 50.f;
         }
         
         [cell.imageView setImageWithBlavatarUrl:blog.blavatarUrl isWPcom:blog.isWPcom];
-        cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
+        if ([self.tableView isEditing] && blog.isWPcom) {
+            UISwitch *visibilitySwitch = [UISwitch new];
+            visibilitySwitch.on = blog.visible;
+            visibilitySwitch.tag = indexPath.row;
+            [visibilitySwitch addTarget:self action:@selector(switchDidChange:) forControlEvents:UIControlEventValueChanged];
+            cell.accessoryView = visibilitySwitch;
+            
+            // Make textLabel light gray if blog is not-visible
+            if (!visibilitySwitch.on) {
+                [cell.textLabel setTextColor:[WPStyleGuide readGrey]];
+            }
+            
+        } else {
+            cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
+        }
     }
 }
 
@@ -277,6 +310,27 @@ CGFloat const blavatarImageSize = 50.f;
     return 54;
 }
 
+- (void)setEditing:(BOOL)editing animated:(BOOL)animated {
+    [self.tableView beginUpdates];
+    [super setEditing:editing animated:animated];
+    [self.tableView reloadSections:[NSIndexSet indexSetWithIndex:[self sectionForAddSite]] withRowAnimation:UITableViewRowAnimationAutomatic];
+    
+    // Reload the .com section
+    NSInteger sectionForDotCom = [self sectionForDotCom];
+    if (sectionForDotCom >= 0) {
+        [self updateFetchRequest];
+        [self.tableView reloadSections:[NSIndexSet indexSetWithIndex:sectionForDotCom] withRowAnimation:UITableViewRowAnimationAutomatic];
+    }
+    [self.tableView endUpdates];
+}
+
+- (void)switchDidChange:(id)sender {
+
+    UISwitch *switcher = (UISwitch *)sender;
+    Blog *blog = [self.resultsController objectAtIndexPath:[NSIndexPath indexPathForRow:switcher.tag inSection:0]];
+    blog.visible = switcher.on;
+    [blog dataSave];
+}
 
 #pragma mark -
 #pragma mark NSFetchedResultsController
@@ -288,9 +342,9 @@ CGFloat const blavatarImageSize = 50.f;
     
     NSManagedObjectContext *moc = [[ContextManager sharedInstance] mainContext];
     NSFetchRequest *fetchRequest = [NSFetchRequest fetchRequestWithEntityName:@"Blog"];
-    [fetchRequest setPredicate:[NSPredicate predicateWithFormat:@"visible = YES"]];
     [fetchRequest setSortDescriptors:@[[NSSortDescriptor sortDescriptorWithKey:@"account.isWpcom" ascending:NO], [NSSortDescriptor sortDescriptorWithKey:@"blogName" ascending:YES selector:@selector(localizedCaseInsensitiveCompare:)]]];
-
+    [fetchRequest setPredicate:[self fetchRequestPredicate]];
+    
     _resultsController = [[NSFetchedResultsController alloc]
                           initWithFetchRequest:fetchRequest
                           managedObjectContext:moc
@@ -304,6 +358,23 @@ CGFloat const blavatarImageSize = 50.f;
         _resultsController = nil;
     }
     return _resultsController;
+}
+
+- (NSPredicate *)fetchRequestPredicate {
+    if ([self.tableView isEditing]) {
+        return nil;
+    } else {
+        return [NSPredicate predicateWithFormat:@"visible = YES"];
+    }
+}
+
+- (void)updateFetchRequest {
+    self.resultsController.fetchRequest.predicate = [self fetchRequestPredicate];
+    
+    NSError *error = nil;
+    if (![self.resultsController performFetch:&error]) {
+        DDLogError(@"Couldn't fetch blogs: %@", [error localizedDescription]);
+    }
 }
 
 - (void)controllerWillChangeContent:(NSFetchedResultsController *)controller {
