@@ -1,7 +1,6 @@
 #import "WPAddCategoryViewController.h"
 #import "EditSiteViewController.h"
 #import "WordPressAppDelegate.h"
-#import "UIBarButtonItem+Styled.h"
 
 @implementation WPAddCategoryViewController
 @synthesize blog;
@@ -10,7 +9,7 @@
 #pragma mark LifeCycle Methods
 
 - (void)viewDidLoad {
-    [FileLogger log:@"%@ %@", self, NSStringFromSelector(_cmd)];
+    DDLogInfo(@"%@ %@", self, NSStringFromSelector(_cmd));
 	[super viewDidLoad];
     catTableView.sectionFooterHeight = 0.0;
 
@@ -60,7 +59,7 @@
 }
 
 - (void)didReceiveMemoryWarning {
-    WPLog(@"%@ %@", self, NSStringFromSelector(_cmd));
+    DDLogWarn(@"%@ %@", self, NSStringFromSelector(_cmd));
     [super didReceiveMemoryWarning]; // Releases the view if it doesn't have a superview
     // Release anything that's not essential, such as cached data
 }
@@ -153,8 +152,7 @@
 			[alertView show];
 			
 			// bad login/pass combination
-			EditSiteViewController *editSiteViewController = [[EditSiteViewController alloc] initWithNibName:nil bundle:nil];
-			editSiteViewController.blog = self.blog;
+			EditSiteViewController *editSiteViewController = [[EditSiteViewController alloc] initWithBlog:self.blog];
 			[self.navigationController pushViewController:editSiteViewController animated:YES];
 			
 		} else {

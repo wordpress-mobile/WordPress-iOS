@@ -7,6 +7,7 @@
 
 #import <Foundation/Foundation.h>
 #import "AbstractPost.h"
+#import "WPTableViewCell.h"
 
 #define POST_ROW_HEIGHT         60.0f
 
@@ -23,7 +24,7 @@
 
 #define POST_LOCK_IMAGE         @"lock.png"
 
-@interface PostTableViewCell : UITableViewCell {
+@interface PostTableViewCell : WPTableViewCell {
     AbstractPost *__weak post;
 
     UILabel *nameLabel;

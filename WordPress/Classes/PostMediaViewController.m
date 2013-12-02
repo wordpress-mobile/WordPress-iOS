@@ -10,7 +10,7 @@
 #import "EditPostViewController_Internal.h"
 #import "Post.h"
 #import <ImageIO/ImageIO.h>
-#import "WPPopoverBackgroundView.h"
+#import "ContextManager.h"
 
 #define TAG_ACTIONSHEET_PHOTO 1
 #define TAG_ACTIONSHEET_VIDEO 2
@@ -72,7 +72,7 @@
 }
 
 - (void)viewDidLoad {
-    [FileLogger log:@"%@ %@", self, NSStringFromSelector(_cmd)];
+    DDLogInfo(@"%@ %@", self, NSStringFromSelector(_cmd));
     [super viewDidLoad];
     
     if (IS_IOS7) {
@@ -190,29 +190,6 @@
 	[[NSNotificationCenter defaultCenter] removeObserver:self];
 }
 
-- (void)viewWillAppear:(BOOL)animated {
-	[super viewWillAppear:animated];
-}
-
-- (void)viewDidUnload {
-    [self removeNotifications];
-    self.table = nil;
-    self.addMediaButton = nil;
-    self.spinner = nil;
-    self.messageLabel = nil;
-    self.bottomToolbar = nil;
-    self.addPopover = nil;
-    self.customSizeAlert = nil;
-    self.currentActionSheet = nil;
-    
-	[super viewDidUnload];
-}
-
-- (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation
-{
-    return [super shouldAutorotateToInterfaceOrientation:interfaceOrientation];
-}
-
 - (Post *)post {
     if ([self.apost isKindOfClass:[Post class]]) {
         return (Post *)self.apost;
@@ -324,7 +301,7 @@
     if (media.remoteStatus == MediaRemoteStatusFailed) {
         [media uploadWithSuccess:^{
             if (([media isDeleted])) {
-                NSLog(@"Media deleted while uploading (%@)", media);
+                DDLogWarn(@"Media deleted while uploading (%@)", media);
                 return;
             }
             [[NSNotificationCenter defaultCenter] postNotificationName:@"ShouldInsertMediaBelow" object:media];
@@ -358,21 +335,16 @@
 	[tableView deselectRowAtIndexPath:indexPath animated:YES];
 }
 
--(void)tableView:(UITableView*)tableView willBeginEditingRowAtIndexPath:(NSIndexPath *)indexPath {
-}
-
 - (void)tableView:(UITableView *)tableView commitEditingStyle:(UITableViewCellEditingStyle)editingStyle forRowAtIndexPath:(NSIndexPath *)indexPath {
-	// If row is deleted, remove it from the list.
 	if (editingStyle == UITableViewCellEditingStyleDelete)
 	{
         [[NSNotificationCenter defaultCenter] postNotificationName:@"ShouldRemoveMedia" object:[self.resultsController objectAtIndexPath:indexPath]];
         Media *media = [self.resultsController objectAtIndexPath:indexPath];
         [media remove];
-        [media save];
 	}
 }
 
--(NSString *)tableView:(UITableView*)tableView titleForDeleteConfirmationButtonForRowAtIndexPath:(NSIndexPath *)indexPath {
+- (NSString *)tableView:(UITableView*)tableView titleForDeleteConfirmationButtonForRowAtIndexPath:(NSIndexPath *)indexPath {
 	return NSLocalizedString(@"Remove", @"");
 }
 
@@ -388,7 +360,7 @@
 #pragma mark Custom methods
 
 - (void)scaleAndRotateImage:(UIImage *)image {
-	NSLog(@"scaling and rotating image...");
+	DDLogVerbose(@"scaling and rotating image...");
 }
 
 - (IBAction)showVideoPickerActionSheet:(id)sender {
@@ -745,7 +717,6 @@
 		if(IS_IPAD) {
             if (addPopover == nil) {
                 addPopover = [[UIPopoverController alloc] initWithContentViewController:picker];
-                addPopover.popoverBackgroundViewClass = [WPPopoverBackgroundView class];
                 addPopover.delegate = self;
             }
             if (IS_IOS7) {
@@ -839,7 +810,6 @@
         NSString *originalSizeStr = [NSString stringWithFormat:NSLocalizedString(@"Original (%@)", @"Original (width x height)"), [NSString stringWithFormat:@"%ix%i", (int)originalSize.width, (int)originalSize.height]];
         
 		UIActionSheet *resizeActionSheet;
-		//NSLog(@"img dimension: %f x %f ",currentImage.size.width, currentImage.size.height );
 		
 		if(currentImage.size.width > largeSize.width  && currentImage.size.height > largeSize.height) {
 			resizeActionSheet = [[UIActionSheet alloc] initWithTitle:NSLocalizedString(@"Choose Image Size", @"") 
@@ -1168,7 +1138,7 @@
 				   resultBlock: ^(ALAsset *myasset) {
 					   ALAssetRepresentation *rep = [myasset defaultRepresentation];
 					   
-					   WPLog(@"getJPEGFromAssetForURL: default asset representation for %@: uti: %@ size: %lld url: %@ orientation: %d scale: %f metadata: %@", 
+					   DDLogInfo(@"getJPEGFromAssetForURL: default asset representation for %@: uti: %@ size: %lld url: %@ orientation: %d scale: %f metadata: %@",
 							 url, [rep UTI], [rep size], [rep url], [rep orientation], 
 							 [rep scale], [rep metadata]);
 					   
@@ -1180,7 +1150,7 @@
 						   // Are err and bytes == 0 redundant? Doc says 0 return means 
 						   // error occurred which presumably means NSError is returned.
 						   free(buf); // Free up memory so we don't leak.
-						   WPLog(@"error from getBytes: %@", err);
+						   DDLogError(@"error from getBytes: %@", err);
 						   
 						   return;
 					   } 
@@ -1208,7 +1178,7 @@
 					   CFRelease(source);
 				   }
 				  failureBlock: ^(NSError *err) {
-					  WPLog(@"can't get asset %@: %@", url, err);
+					  DDLogError(@"can't get asset %@: %@", url, err);
 					  self.currentImageMetadata = nil;
 				  }];
 }
@@ -1422,14 +1392,14 @@
                 //It will return false if something goes wrong
                 success = CGImageDestinationFinalize(destination);
             } else {
-                WPFLog(@"***Could not create image destination ***");
+                DDLogError(@"***Could not create image destination ***");
             }
         } else {
-            WPFLog(@"***Could not create image source ***");
+            DDLogError(@"***Could not create image source ***");
         }
 		
 		if(!success) {
-			WPLog(@"***Could not create data from image destination ***");
+			DDLogInfo(@"***Could not create data from image destination ***");
 			//write the data without EXIF to disk
 			NSFileManager *fileManager = [NSFileManager defaultManager];
 			[fileManager createFileAtPath:filepath contents:imageData attributes:nil];
@@ -1467,14 +1437,11 @@
 
     [imageMedia uploadWithSuccess:^{
         if ([imageMedia isDeleted]) {
-            NSLog(@"Media deleted while uploading (%@)", imageMedia);
+            DDLogWarn(@"Media deleted while uploading (%@)", imageMedia);
             return;
         }
         if (!isPickingFeaturedImage) {
             [[NSNotificationCenter defaultCenter] postNotificationName:@"ShouldInsertMediaBelow" object:imageMedia];
-        }
-        else {
-            
         }
         [imageMedia save];
     } failure:^(NSError *error) {
@@ -1566,7 +1533,7 @@
 
 		[videoMedia uploadWithSuccess:^{
             if ([videoMedia isDeleted]) {
-                NSLog(@"Media deleted while uploading (%@)", videoMedia);
+                DDLogWarn(@"Media deleted while uploading (%@)", videoMedia);
                 return;
             }
             [[NSNotificationCenter defaultCenter] postNotificationName:@"ShouldInsertMediaBelow" object:videoMedia];
@@ -1606,11 +1573,10 @@
 - (void)mediaDidUploadSuccessfully:(NSNotification *)notification {
     Media *media = (Media *)[notification object];
     if ((media == nil) || ([media isDeleted])) {
-        NSLog(@"Media deleted while uploading (%@)", media);
+        DDLogWarn(@"Media deleted while uploading (%@)", media);
         return;
     }
     [[NSNotificationCenter defaultCenter] postNotificationName:@"ShouldInsertMediaBelow" object:media];
-    [media save];
 	self.isAddingMedia = NO;
 }
 
@@ -1636,7 +1602,7 @@
         self.videoEnabled = enabled;
         self.isCheckingVideoCapability = NO;
     } failure:^(NSError *error) {
-        WPLog(@"checkVideoPressEnabled failed: %@", [error localizedDescription]);
+        DDLogError(@"checkVideoPressEnabled failed: %@", [error localizedDescription]);
         self.videoEnabled = YES;
         self.isCheckingVideoCapability = NO;
     }];
@@ -1649,30 +1615,27 @@
     if (resultsController != nil) {
         return resultsController;
     }
+
+    NSString *cacheName = [NSString stringWithFormat:@"Media-%@-%@",
+                           self.apost.blog.hostURL,
+                           self.apost.postID];
     
-    WordPressAppDelegate *appDelegate = (WordPressAppDelegate*)[[UIApplication sharedApplication] delegate];
-    NSFetchRequest *fetchRequest = [[NSFetchRequest alloc] init];
-    [fetchRequest setEntity:[NSEntityDescription entityForName:@"Media" inManagedObjectContext:appDelegate.managedObjectContext]];
-    [fetchRequest setPredicate:[NSPredicate predicateWithFormat:@"%@ IN posts AND mediaType != 'featured'", self.apost]];
-    NSSortDescriptor *sortDescriptorDate = [[NSSortDescriptor alloc] initWithKey:@"creationDate" ascending:NO];
-    NSArray *sortDescriptors = [[NSArray alloc] initWithObjects:sortDescriptorDate, nil];
-    [fetchRequest setSortDescriptors:sortDescriptors];
+    [NSFetchedResultsController deleteCacheWithName:cacheName];
+    
+    NSFetchRequest *fetchRequest = [NSFetchRequest fetchRequestWithEntityName:@"Media"];
+    fetchRequest.predicate = [NSPredicate predicateWithFormat:@"%@ IN posts AND mediaType != 'featured'", self.apost];
+    fetchRequest.sortDescriptors = @[[NSSortDescriptor sortDescriptorWithKey:@"creationDate" ascending:NO]];
     
     resultsController = [[NSFetchedResultsController alloc]
                                                       initWithFetchRequest:fetchRequest
-                                                      managedObjectContext:appDelegate.managedObjectContext
+                                                      managedObjectContext:[[ContextManager sharedInstance] mainContext]
                                                       sectionNameKeyPath:nil
-                                                      cacheName:[NSString stringWithFormat:@"Media-%@-%@",
-                                                                 self.apost.blog.hostURL,
-                                                                 self.apost.postID]];
+                                                      cacheName:cacheName];
     resultsController.delegate = self;
-    
-     sortDescriptorDate = nil;
-     sortDescriptors = nil;
     
     NSError *error = nil;
     if (![resultsController performFetch:&error]) {
-        NSLog(@"Couldn't fetch media");
+        DDLogWarn(@"Couldn't fetch media");
         resultsController = nil;
     }
     

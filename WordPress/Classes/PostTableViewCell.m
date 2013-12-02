@@ -37,7 +37,7 @@ static const float statusLabelMaxWidthPortrait = 100.f;
 
 
 - (void)setSaving:(BOOL)value {
-    [FileLogger log:@"%@ %@", self, NSStringFromSelector(_cmd)];
+    DDLogInfo(@"%@ %@", self, NSStringFromSelector(_cmd));
     saving = value;
 
     if (saving) {
@@ -114,15 +114,13 @@ static const float statusLabelMaxWidthPortrait = 100.f;
 - (void)layoutSubviews {
     [super layoutSubviews];
    
-    CGSize expectedstatusLabelSize = [statusLabel.text sizeWithFont:[UIFont systemFontOfSize:DATE_FONT_SIZE]];   
+    CGSize expectedstatusLabelSize = [statusLabel.text sizeWithAttributes:@{NSFontAttributeName:[UIFont systemFontOfSize:DATE_FONT_SIZE]}];
     CGFloat expectedStatusLabelWidth = 0.f;    
     if ( IS_IPHONE && UIDeviceOrientationIsPortrait([[UIDevice currentDevice] orientation]) ) {
         expectedStatusLabelWidth = expectedstatusLabelSize.width > statusLabelMaxWidthPortrait ? statusLabelMaxWidthPortrait : expectedstatusLabelSize.width;
     } else {
         expectedStatusLabelWidth = expectedstatusLabelSize.width > statusLabelMaxWidthLandscape ? statusLabelMaxWidthLandscape : expectedstatusLabelSize.width;
     }
-    
-    //NSLog(@"width of status label %f", expectedStatusLabelLength);
     
     CGFloat x = self.frame.size.width - expectedStatusLabelWidth - RIGHT_MARGIN;
     if ( IS_IPHONE )
@@ -146,7 +144,6 @@ static const float statusLabelMaxWidthPortrait = 100.f;
     [super prepareForReuse];
 	//change back the things that are different about the "more posts/pages/comments" cell so that reuse
 	//does not cause UI strangeness for users
-	self.contentView.backgroundColor = TABLE_VIEW_CELL_BACKGROUND_COLOR;
 	nameLabel.textColor = [UIColor blackColor];
 	dateLabel.textColor = [UIColor lightGrayColor];
 	self.accessoryType = UITableViewCellAccessoryDisclosureIndicator;

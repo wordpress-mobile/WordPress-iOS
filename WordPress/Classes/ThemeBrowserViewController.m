@@ -9,13 +9,12 @@
 
 #import "ThemeBrowserViewController.h"
 #import "Theme.h"
-#import "WordPressAppDelegate.h"
+#import "ContextManager.h"
 #import "ThemeBrowserCell.h"
 #import "ThemeDetailsViewController.h"
 #import "Blog.h"
 #import "WPStyleGuide.h"
 #import "WPInfoView.h"
-#import "PanelNavigationConstants.h"
 
 static NSString *const ThemeCellIdentifier = @"theme";
 static NSString *const SearchFilterCellIdentifier = @"search_filter";
@@ -68,9 +67,6 @@ static NSString *const SearchFilterCellIdentifier = @"search_filter";
     [self.collectionView addSubview:_refreshHeaderView];
     
     [self reloadThemes];
-    
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(sidebarOpened) name:SidebarOpenedNotification object:nil];
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(sidebarClosed) name:SidebarClosedNotification object:nil];
 }
 
 - (void)viewWillAppear:(BOOL)animated {
@@ -83,31 +79,16 @@ static NSString *const SearchFilterCellIdentifier = @"search_filter";
     }
 }
 
-- (void)didReceiveMemoryWarning
-{
+- (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];
     
     self.allThemes = nil;
     self.filteredThemes = nil;
 }
 
-- (void)sidebarOpened {
-    _isSearching = NO;
-    if (_header.isFirstResponder) {
-        [_header resignFirstResponder];
-        _isSearching = YES;
-    }
-}
-
-- (void)sidebarClosed {
-    if (_isSearching) {
-        [_header becomeFirstResponder];
-    }
-}
-
 - (NSFetchedResultsController *)resultsController {
     if (!_resultsController) {
-        NSManagedObjectContext *context = [WordPressAppDelegate sharedWordPressApplicationDelegate].managedObjectContext;
+        NSManagedObjectContext *context = [[ContextManager sharedInstance] mainContext];
         NSFetchRequest *fetchRequest = [NSFetchRequest fetchRequestWithEntityName:NSStringFromClass([Theme class])];
         fetchRequest.predicate = [NSPredicate predicateWithFormat:@"blog == %@", self.blog];
         fetchRequest.sortDescriptors = @[[NSSortDescriptor sortDescriptorWithKey:_currentResultsSort ascending:YES]];
@@ -131,10 +112,10 @@ static NSString *const SearchFilterCellIdentifier = @"search_filter";
 }
 
 - (void)reloadThemes {
-    [_refreshHeaderView beginRefreshing];
     [Theme fetchAndInsertThemesForBlog:self.blog success:^{
         [self refreshCurrentTheme];
         [_header resetSearch];
+        [_refreshHeaderView endRefreshing];
     } failure:^(NSError *error) {
         [WPError showAlertWithError:error];
         [_refreshHeaderView endRefreshing];
@@ -143,8 +124,6 @@ static NSString *const SearchFilterCellIdentifier = @"search_filter";
 
 - (void)refreshCurrentTheme {
     [Theme fetchCurrentThemeForBlog:self.blog success:^{
-        [_refreshHeaderView endRefreshing];
-        
         // Find the blog's theme from the current list of themes
         for (NSUInteger i = 0; i < _filteredThemes.count; i++) {
             Theme *theme = _filteredThemes[i];
@@ -157,7 +136,6 @@ static NSString *const SearchFilterCellIdentifier = @"search_filter";
         
     } failure:^(NSError *error) {
         [WPError showAlertWithError:error];
-        [_refreshHeaderView endRefreshing];
     }];
 }
 

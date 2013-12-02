@@ -10,6 +10,7 @@
 #import "UIImage+Resize.h"
 #import "NSString+Helpers.h"
 #import "AFHTTPRequestOperation.h"
+#import "ContextManager.h"
 
 @interface Media (PrivateMethods)
 
@@ -46,44 +47,55 @@
 @synthesize isUnattached;
 
 + (Media *)newMediaForPost:(AbstractPost *)post {
-    Media *media = [[Media alloc] initWithEntity:[NSEntityDescription entityForName:@"Media"
-                                                          inManagedObjectContext:[post managedObjectContext]]
-               insertIntoManagedObjectContext:[post managedObjectContext]];
-    
+    Media *media = [NSEntityDescription insertNewObjectForEntityForName:@"Media" inManagedObjectContext:post.managedObjectContext];
     media.blog = post.blog;
     media.posts = [NSMutableSet setWithObject:post];
-    media.remoteStatus = MediaRemoteStatusLocal;
     return media;
 }
 
-+ (Media *)newMediaForBlog:(Blog *)blog withContext:(NSManagedObjectContext *)context {
-    Blog *contextBlog = blog;
-    if (blog.managedObjectContext != context) {
-        contextBlog = (Blog *)[context objectWithID:blog.objectID];
-    }
-    
-    Media *media = [NSEntityDescription insertNewObjectForEntityForName:NSStringFromClass(self.class) inManagedObjectContext:context];
-    media.blog = contextBlog;
-    media.mediaID = @([[NSDate date] timeIntervalSince1970]);
-    media.remoteStatus = MediaRemoteStatusLocal;
++ (Media *)newMediaForBlog:(Blog *)blog {
+    Media *media = [NSEntityDescription insertNewObjectForEntityForName:@"Media" inManagedObjectContext:blog.managedObjectContext];
+    media.blog = blog;
     return media;
 }
 
-+ (Media *)createOrReplaceMediaFromJSON:(NSDictionary *)json forBlog:(Blog *)blog withContext:(NSManagedObjectContext *)context {
-    Blog *contextBlog = blog;
-    if (blog.managedObjectContext != context) {
-        contextBlog = (Blog *)[context objectWithID:blog.objectID];
-    }
-    NSSet *existing = [contextBlog.media filteredSetUsingPredicate:[NSPredicate predicateWithFormat:@"mediaID == %@", [json[@"attachment_id"] numericValue]]];
++ (Media *)createOrReplaceMediaFromJSON:(NSDictionary *)json forBlog:(Blog *)blog {
+    NSSet *existing = [blog.media filteredSetUsingPredicate:[NSPredicate predicateWithFormat:@"mediaID == %@", [json[@"attachment_id"] numericValue]]];
     if (existing.count > 0) {
         [existing.allObjects[0] updateFromDictionary:json];
         return existing.allObjects[0];
     }
     
-    Media *media = [NSEntityDescription insertNewObjectForEntityForName:NSStringFromClass(self.class) inManagedObjectContext:context];
+    Media *media = [NSEntityDescription insertNewObjectForEntityForName:NSStringFromClass(self.class) inManagedObjectContext:blog.managedObjectContext];
     [media updateFromDictionary:json];
-    media.blog = contextBlog;
+    media.blog = blog;
     return media;
+}
+
++ (void)mergeNewMedia:(NSArray *)media forBlog:(Blog *)blog {
+    if ([blog isDeleted] || blog.managedObjectContext == nil)
+        return;
+    
+    NSManagedObjectContext *backgroundMOC = [[ContextManager sharedInstance] backgroundContext];
+    [backgroundMOC performBlock:^{
+        Blog *contextBlog = (Blog *)[backgroundMOC objectWithID:blog.objectID];
+        NSMutableArray *mediaToKeep = [NSMutableArray array];
+        for (NSDictionary *item in media) {
+            Media *media = [Media createOrReplaceMediaFromJSON:item forBlog:contextBlog];
+            [mediaToKeep addObject:media];
+        }
+        NSSet *syncedMedia = contextBlog.media;
+        if (syncedMedia && (syncedMedia.count > 0)) {
+            for (Media *m in syncedMedia) {
+                if (![mediaToKeep containsObject:m] && m.remoteURL != nil) {
+                    DDLogVerbose(@"Deleting media %@", m);
+                    [backgroundMOC deleteObject:m];
+                }
+            }
+        }
+        
+        [[ContextManager sharedInstance] saveContext:backgroundMOC];
+    }];
 }
 
 - (void)updateFromDictionary:(NSDictionary*)json {
@@ -213,15 +225,18 @@
     [self cancelUpload];
     NSError *error = nil;
     [[NSFileManager defaultManager] removeItemAtPath:self.localURL error:&error];
-    [[self managedObjectContext] deleteObject:self];
+    
+    [self.managedObjectContext performBlockAndWait:^{
+        [self.managedObjectContext deleteObject:self];
+        [self.managedObjectContext save:nil];
+    }];
 }
 
+
 - (void)save {
-    NSError *error;
-    if (![[self managedObjectContext] save:&error]) {
-        WPFLog(@"Unresolved Core Data Save error %@, %@", error, [error userInfo]);
-        exit(-1);
-    }
+    [self.managedObjectContext performBlock:^{
+        [self.managedObjectContext save:nil];
+    }];
 }
 
 - (BOOL)isUnattached {
@@ -430,7 +445,7 @@
 							  embedWidth, embedHeight, self.remoteURL, self.remoteURL, embedWidth, embedHeight];
 				}
 				
-				NSLog(@"media.html: %@", result);
+				DDLogVerbose(@"media.html: %@", result);
 			}
 		}
 	}

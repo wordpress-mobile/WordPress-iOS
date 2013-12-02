@@ -8,10 +8,10 @@
 
 #import "Note.h"
 #import "NSString+Helpers.h"
-#import "JSONKit.h"
 #import "WordPressComApi.h"
-#import "WordPressAppDelegate.h"
 #import "WPAccount.h"
+#import "ContextManager.h"
+
 
 const NSUInteger NoteKeepCount = 20;
 
@@ -52,24 +52,39 @@ const NSUInteger NoteKeepCount = 20;
 @synthesize commentText = _commentText, noteData = _noteData;
 
 
-+ (BOOL)syncNotesWithResponse:(NSArray *)notesData withManagedObjectContext:(NSManagedObjectContext *)context {
-    
-    [notesData enumerateObjectsUsingBlock:^(id noteData, NSUInteger idx, BOOL *stop) {
-        [self createOrUpdateNoteWithData:noteData withManagedObjectContext:context];
++ (void)syncNotesWithResponse:(NSArray *)notesData {
+    NSManagedObjectContext *context = [[ContextManager sharedInstance] backgroundContext];
+    [context performBlock:^{
+        NSFetchRequest *request = [NSFetchRequest fetchRequestWithEntityName:@"Note"];
+        NSError *error;
+        NSArray *existingNotes = [context executeFetchRequest:request error:&error];
+        if (error){
+            DDLogError(@"Error finding notes: %@", error);
+            return;
+        }
+        
+        WPAccount *account = (WPAccount *)[context objectWithID:[WPAccount defaultWordPressComAccount].objectID];
+        [notesData enumerateObjectsUsingBlock:^(NSDictionary *noteData, NSUInteger idx, BOOL *stop) {
+            NSNumber *noteID = [noteData objectForKey:@"id"];
+            NSArray *results = [existingNotes filteredArrayUsingPredicate:[NSPredicate predicateWithFormat:@"noteID == %@", noteID]];
+            
+            Note *note;
+            if ([results count] != 0) {
+                note = results[0];
+            } else {
+                note = [NSEntityDescription insertNewObjectForEntityForName:NSStringFromClass(self) inManagedObjectContext:context];
+                note.noteID = [noteData objectForKey:@"id"];
+                note.account = account;
+            }
+            [note syncAttributes:noteData];
+        }];
+        
+        [[ContextManager sharedInstance] saveContext:context];
     }];
-    
-    NSError *error;
-    if(![context save:&error]){
-        NSLog(@"Failed to sync notes: %@", error);
-        return NO;
-    } else {
-        return YES;
-    }
 }
 
 + (void)refreshUnreadNotesWithContext:(NSManagedObjectContext *)context {
-    NSManagedObjectModel *model = [[WordPressAppDelegate sharedWordPressApplicationDelegate] managedObjectModel];
-    NSFetchRequest *request = [model fetchRequestTemplateForName:@"UnreadNotes"];
+    NSFetchRequest *request = [[ContextManager sharedInstance].managedObjectModel fetchRequestTemplateForName:@"UnreadNotes"];
     NSError *error = nil;
     NSArray *notes = [context executeFetchRequest:request error:&error];
     if ([notes count] > 0) {
@@ -103,27 +118,14 @@ const NSUInteger NoteKeepCount = 20;
     request.sortDescriptors = @[ dateSortDescriptor ];
     NSArray *notes = [context executeFetchRequest:request error:&error];
     if (error) {
-        WPFLog(@"Error pruning old notes: %@", error);
+        DDLogError(@"Error pruning old notes: %@", error);
         return;
     }
     for (Note *note in notes) {
         [context deleteObject:note];
     }
     if(![context save:&error]){
-        WPFLog(@"Failed to save after pruning notes: %@", error);
-    }
-    [context save:&error];
-}
-
-+ (void)removeAllNotesWithContext:(NSManagedObjectContext *)context {
-    NSFetchRequest *request = [NSFetchRequest fetchRequestWithEntityName:@"Note"];
-    request.includesPropertyValues = NO;
-    NSError *error;
-    NSArray *notes = [context executeFetchRequest:request error:&error];
-    if (notes) {
-        for (Note *note in notes) {
-            [context deleteObject:note];
-        }
+        DDLogError(@"Failed to save after pruning notes: %@", error);
     }
     [context save:&error];
 }
@@ -162,36 +164,9 @@ const NSUInteger NoteKeepCount = 20;
     return self.noteData;
 }
 
-+ (void)createOrUpdateNoteWithData:(NSDictionary *)noteData withManagedObjectContext:(NSManagedObjectContext *)context {
-    
-    NSFetchRequest *request = [NSFetchRequest fetchRequestWithEntityName:@"Note"];
-    request.predicate = [NSPredicate predicateWithFormat:@"noteID = %@", [noteData objectForKey:@"id"]];
-    request.sortDescriptors = @[[NSSortDescriptor sortDescriptorWithKey:@"timestamp" ascending:NO]];
-    request.fetchLimit = 1;
-    
-    NSError *error;
-    NSArray *results = [context executeFetchRequest:request error:&error];
-    if(error != nil){
-        NSLog(@"Error finding note: %@", error);
-        return;
-    }
-    Note *note;
-    if ([results count] > 0) { // find a note so just update it
-        note = (Note *)[results objectAtIndex:0];
-    } else {
-        note = (Note *)[NSEntityDescription insertNewObjectForEntityForName:@"Note"
-                                                     inManagedObjectContext:context];
-        
-        note.noteID = [noteData objectForKey:@"id"];
-    }
-    
-    [note syncAttributes:noteData];
-
-}
-
 - (void)syncAttributes:(NSDictionary *)noteData {
-    self.payload = [noteData JSONData];
-    self.noteData = [self.payload mutableObjectFromJSONData];
+    self.payload = [NSJSONSerialization dataWithJSONObject:noteData options:0 error:nil];
+    self.noteData = [NSJSONSerialization JSONObjectWithData:self.payload options:0 error:nil];
     self.type = [noteData objectForKey:@"type"];
     NSString *subject = [[noteData objectForKey:@"subject"] objectForKey:@"text"];
     if (!subject)
@@ -258,7 +233,7 @@ const NSUInteger NoteKeepCount = 20;
 
 - (id)noteData {
     if (_noteData == nil) {
-        _noteData = [self.payload mutableObjectFromJSONData];
+        _noteData = [NSJSONSerialization JSONObjectWithData:self.payload options:0 error:nil];
     }
     return _noteData;
 }

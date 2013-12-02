@@ -11,6 +11,7 @@
 #import "Blog+Jetpack.h"
 #import "WPAccount.h"
 #import "WordPressAppDelegate.h"
+#import "ContextManager.h"
 
 NSString * const BlogJetpackErrorDomain = @"BlogJetpackError";
 NSString * const BlogJetpackApiBaseUrl = @"https://public-api.wordpress.com/";
@@ -82,7 +83,7 @@ NSString * const BlogJetpackApiPath = @"get-user-blogs/1.0";
                 NSArray *blogs = [responseObject arrayForKeyPath:@"userinfo.blog"];
                 NSNumber *searchID = [self jetpackBlogID];
                 NSString *searchURL = self.url;
-                WPFLog(@"Available wp.com/jetpack blogs for %@: %@", username, blogs);
+                DDLogInfo(@"Available wp.com/jetpack blogs for %@: %@", username, blogs);
                 NSArray *foundBlogs = [blogs filteredArrayUsingPredicate:[NSPredicate predicateWithBlock:^BOOL(id evaluatedObject, NSDictionary *bindings) {
                     BOOL valid = NO;
                     if (searchID && [[evaluatedObject numberForKey:@"id"] isEqualToNumber:searchID]) {
@@ -91,7 +92,7 @@ NSString * const BlogJetpackApiPath = @"get-user-blogs/1.0";
                         valid = YES;
                     }
                     if (valid) {
-                        WPFLog(@"Found blog: %@", evaluatedObject);
+                        DDLogInfo(@"Found blog: %@", evaluatedObject);
                         [self saveJetpackUsername:username andPassword:password];
                     }
                     return valid;
@@ -129,7 +130,7 @@ NSString * const BlogJetpackApiPath = @"get-user-blogs/1.0";
 
 - (void)saveJetpackUsername:(NSString *)username andPassword:(NSString *)password {
     NSAssert(![self isWPcom], @"Blog+Jetpack doesn't support WordPress.com blogs");
-    WPAccount *account = [WPAccount createOrUpdateWordPressComAccountWithUsername:username andPassword:password];
+    WPAccount *account = [WPAccount createOrUpdateWordPressComAccountWithUsername:username andPassword:password withContext:self.managedObjectContext];
     self.jetpackAccount = account;
 }
 

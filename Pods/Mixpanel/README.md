@@ -16,7 +16,7 @@ properties using Mixpanel.
 # Setup #
 Adding Mixpanel to your Xcode project is as easy as:
 
-1. Drag and drop the Mixpanel folder into your project. 
+1. Drag and drop the Mixpanel folder into your project.
 2. Check the "Copy items into destination Group's folder" and select
 Recursively create groups for any added folders.
 
@@ -24,21 +24,25 @@ Recursively create groups for any added folders.
 
 3. Make sure the following Apple frameworks have been added to your project in Targets > Build Phases > Link Binary With Libraries:
 
-- Foundation.framework
-- UIKit.framework
-- SystemConfiguration.framework
+- Accelerate.framework
+- AdSupport.framework
+- CoreGraphics.framework
 - CoreTelephony.framework
+- Foundation.framework
+- QuartzCore.framework
+- SystemConfiguration.framework
+- UIKit.framework
 
-And that's it. 
+And that's it.
 
 ![Project][project]
 
 # Initializing Mixpanel #
 The first thing you need to do is initialize Mixpanel with your project token.
 We recommend doing this in `applicationDidFinishLaunching:` or
-`application:didFinishLaunchingWithOptions` in your Application delegate. 
-	
-	- (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {    
+`application:didFinishLaunchingWithOptions` in your Application delegate.
+
+	- (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
 
 	    // Override point for customization after application launch.
 		[Mixpanel sharedInstanceWithToken:MIXPANEL_TOKEN];
@@ -48,18 +52,18 @@ We recommend doing this in `applicationDidFinishLaunching:` or
 	    [window makeKeyAndVisible];
 	    return YES;
 	}
-	
+
 # Tracking Events #
 After initializing the Mixpanel object, you are ready to track events. This can
 be done with the following code snippet:
 
     Mixpanel *mixpanel = [Mixpanel sharedInstance];
     [mixpanel track:@"Clicked Button"];
-	
+
 If you want to add properties to the event you can do the following:
 
     Mixpanel *mixpanel = [Mixpanel sharedInstance];
-    [mixpanel track:@"Player Create" 
+    [mixpanel track:@"Player Create"
          properties:[NSDictionary dictionaryWithObjectsAndKeys:@"Female", @"Gender", @"Premium", @"Plan", nil]];
 
 # Setting People Properties #
@@ -68,7 +72,7 @@ People API. Unlike Mixpanel Engagement, you must explicitly set the distinct ID
 for the current user in Mixpanel People.
 
     Mixpanel *mixpanel = [Mixpanel sharedInstance];
-    [mixpanel.people identify:@"user123"];
+    [mixpanel identify:@"user123"];
     [mixpanel.people set:@"Bought Premium Plan" to:[NSDate date]];
 
 To send your users push notifications through Mixpanel People, register device

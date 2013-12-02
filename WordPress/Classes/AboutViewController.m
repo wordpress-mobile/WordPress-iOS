@@ -12,8 +12,7 @@
 
 @interface AboutViewController()
 
-@property (nonatomic, strong) IBOutlet UIView *logoView;
-@property (nonatomic, strong) IBOutlet UIView *buttonsView;
+@property (strong, nonatomic) IBOutlet UIScrollView *scrollView;
 @property (nonatomic, strong) IBOutlet UILabel *titleLabel;
 @property (nonatomic, strong) IBOutlet UILabel *versionLabel;
 @property (nonatomic, strong) IBOutlet UILabel *publisherLabel;
@@ -25,15 +24,12 @@
 
 @implementation AboutViewController
 
-@synthesize buttonsView;
-@synthesize logoView;
-
 CGFloat const AboutViewLandscapeButtonsY = -20.0f;
 CGFloat const AboutViewPortraitButtonsY = 90.0f;
 
 // Implement viewDidLoad to do additional setup after loading the view, typically from a nib.
 - (void)viewDidLoad {
-    [FileLogger log:@"%@ %@", self, NSStringFromSelector(_cmd)];
+    DDLogInfo(@"%@ %@", self, NSStringFromSelector(_cmd));
     [super viewDidLoad];
 
     self.navigationItem.title = NSLocalizedString(@"About", @"About this app (information page title)");
@@ -74,6 +70,8 @@ CGFloat const AboutViewPortraitButtonsY = 90.0f;
     [self.privacyPolicyButton setTitle:NSLocalizedString(@"Privacy Policy", nil) forState:UIControlStateNormal];
     self.privacyPolicyButton.titleLabel.font = [WPStyleGuide postTitleFont];
     
+    self.scrollView.contentSize = CGSizeMake(CGRectGetWidth(self.scrollView.frame), CGRectGetMaxY(self.viewWebsiteButton.frame));
+    
     if([self.navigationController.viewControllers count] == 1) {
         self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:NSLocalizedString(@"Close", @"") style:[WPStyleGuide barButtonStyleForBordered] target:self action:@selector(dismiss)];
     }
@@ -83,21 +81,6 @@ CGFloat const AboutViewPortraitButtonsY = 90.0f;
 {
     return [super shouldAutorotateToInterfaceOrientation:interfaceOrientation];
 }
-
-- (void)willRotateToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation duration:(NSTimeInterval)duration {
-    if (IS_IPHONE) {
-        CGRect frame = buttonsView.frame;
-        if (UIInterfaceOrientationIsLandscape(toInterfaceOrientation)) {
-            self.logoView.hidden = YES;
-            frame.origin.y = AboutViewLandscapeButtonsY;
-        } else {
-            self.logoView.hidden = NO;
-            frame.origin.y = AboutViewPortraitButtonsY;
-        }
-        self.buttonsView.frame = frame;
-    }
-}
-
 
 #pragma mark - Custom methods
 

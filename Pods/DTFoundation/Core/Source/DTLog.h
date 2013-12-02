@@ -7,7 +7,7 @@
 //
 
 /**
- Bla bla bla
+ Replacement for `NSLog` which can be configured to output certain log levels at run time.
  */
 
 // block signature called for each log statement

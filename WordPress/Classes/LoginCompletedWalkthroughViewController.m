@@ -13,52 +13,43 @@
 #import "WPWalkthroughOverlayView.h"
 #import "WordPressAppDelegate.h"
 #import "WPNUXUtility.h"
+#import "WPNUXSecondaryButton.h"
 
 @interface LoginCompletedWalkthroughViewController ()<UIScrollViewDelegate> {
     UIScrollView *_scrollView;
-    UIView *_mainTextureView;
-    UILabel *_skipToApp;
+    UIView *_mainView;
+    UIButton *_skipToApp;
     
     // Page 1
     UIImageView *_page1Icon;
     UILabel *_page1Title;
     UILabel *_page1Description;
-    UILabel *_page1SwipeToContinue;
-    UIImageView *_page1TopSeparator;
-    UIImageView *_page1BottomSeparator;
-    UIView *_bottomPanelLine;
+
     UIView *_bottomPanel;
-    UIView *_bottomPanelTextureView;
     UIPageControl *_pageControl;
     
     // Page 2
     UIImageView *_page2Icon;
     UILabel *_page2Title;
     UILabel *_page2Description;
-    UIImageView *_page2TopSeparator;
-    UIImageView *_page2BottomSeparator;
     
     // Page 3
     UIImageView *_page3Icon;
     UILabel *_page3Title;
     UILabel *_page3Description;
-    UIImageView *_page3TopSeparator;
-    UIImageView *_page3BottomSeparator;
     
     // Page 4
     UIImageView *_page4Icon;
     UILabel *_page4Title;
-    UILabel *_page4TapToContinue;
     
     CGFloat _viewWidth;
     CGFloat _viewHeight;
     
     CGFloat _currentPage;
     CGFloat _bottomPanelOriginalX;
-    CGFloat _bottomPanelTextureOriginalX;
     CGFloat _skipToAppOriginalX;
     CGFloat _pageControlOriginalX;
-    CGFloat _heightFromSwipeToContinueToBottom;
+    CGFloat _heightFromPageControlToBottom;
 
     BOOL _savedOriginalPositionsOfStickyControls;
     BOOL _isDismissing;
@@ -73,7 +64,7 @@
 
 NSUInteger const LoginCompletedWalkthroughStandardOffset = 16;
 CGFloat const LoginCompletedWalkthroughIconVerticalOffset = 85;
-CGFloat const LoginCompletedWalkthroughMaxTextWidth = 289.0;
+CGFloat const LoginCompletedWalkthroughMaxTextWidth = 265.0;
 CGFloat const LoginCompletedWalkthroughBottomBackgroundHeight = 64.0;
 CGFloat const LoginCompeltedWalkthroughSwipeToContinueTopOffset = 14.0;
 
@@ -137,10 +128,6 @@ CGFloat const LoginCompeltedWalkthroughSwipeToContinueTopOffset = 14.0;
     bottomPanelFrame.origin.x = _bottomPanelOriginalX + contentOffset.x;
     _bottomPanel.frame = bottomPanelFrame;
     
-    CGRect bottomPanelTextureFrame = _bottomPanelTextureView.frame;
-    bottomPanelTextureFrame.origin.x = _bottomPanelOriginalX + contentOffset.x;
-    _bottomPanelTextureView.frame = bottomPanelTextureFrame;
-    
     CGRect pageControlFrame = _pageControl.frame;
     pageControlFrame.origin.x = _pageControlOriginalX + contentOffset.x;
     _pageControl.frame = pageControlFrame;
@@ -156,7 +143,6 @@ CGFloat const LoginCompeltedWalkthroughSwipeToContinueTopOffset = 14.0;
         _savedOriginalPositionsOfStickyControls = YES;
         _skipToAppOriginalX = CGRectGetMinX(_skipToApp.frame);
         _bottomPanelOriginalX = CGRectGetMinX(_bottomPanel.frame);
-        _bottomPanelTextureOriginalX = CGRectGetMinX(_bottomPanelTextureView.frame);
         _pageControlOriginalX = CGRectGetMinX(_pageControl.frame);
     }
 }
@@ -166,26 +152,33 @@ CGFloat const LoginCompeltedWalkthroughSwipeToContinueTopOffset = 14.0;
     WPWalkthroughOverlayView *grayOverlay = [[WPWalkthroughOverlayView alloc] initWithFrame:CGRectMake(0, 0, _viewWidth, _viewHeight)];
     grayOverlay.overlayTitle = NSLocalizedString(@"Success!", @"NUX Second Walkthrough Success Overlay Title");
     grayOverlay.overlayDescription = NSLocalizedString(@"You have successfully signed into your WordPress account!", @"NUX Second Walkthrough Success Overlay Description");
-    grayOverlay.overlayMode = WPWalkthroughGrayOverlayViewOverlayModeTapToDismiss;
-    grayOverlay.footerDescription = [NSLocalizedString(@"tap to continue", nil) uppercaseString];
     grayOverlay.icon = WPWalkthroughGrayOverlayViewBlueCheckmarkIcon;
     grayOverlay.hideBackgroundView = YES;
-    grayOverlay.singleTapCompletionBlock = ^(WPWalkthroughOverlayView * overlayView){
-        if (!self.showsExtraWalkthroughPages) {
-            [self dismiss];
-        } else {
-            [overlayView dismiss];
-        }
+    grayOverlay.dismissCompletionBlock = ^(WPWalkthroughOverlayView * overlayView){
+        [self dismiss];
     };
+        
+    if (self.showsExtraWalkthroughPages) {
+        
+        grayOverlay.overlayMode = WPWalkthroughGrayOverlayViewOverlayModeTwoButtonMode;
+        grayOverlay.primaryButtonText = NSLocalizedString(@"Get started!", nil);
+        grayOverlay.secondaryButtonText = NSLocalizedString(@"Learn more", nil);
+        grayOverlay.primaryButtonCompletionBlock = ^(WPWalkthroughOverlayView * overlayView){
+            [self dismiss];
+        };
+        grayOverlay.secondaryButtonCompletionBlock = ^(WPWalkthroughOverlayView * overlayView){
+            [overlayView dismiss];
+        };
+    }
+    
     [self.view addSubview:grayOverlay];
 }
 
 - (void)addBackgroundTexture
 {
-    _mainTextureView = [[UIView alloc] initWithFrame:self.view.bounds];
-    _mainTextureView.backgroundColor = [UIColor colorWithPatternImage:[UIImage imageNamed:@"ui-texture"]];
-    [self.view addSubview:_mainTextureView];
-    _mainTextureView.userInteractionEnabled = NO;
+    _mainView = [[UIView alloc] initWithFrame:self.view.bounds];
+    [self.view addSubview:_mainView];
+    _mainView.userInteractionEnabled = NO;
 }
 
 - (void)addScrollview
@@ -231,22 +224,9 @@ CGFloat const LoginCompeltedWalkthroughSwipeToContinueTopOffset = 14.0;
     if (_page1Title == nil) {
         _page1Title = [[UILabel alloc] init];
         _page1Title.backgroundColor = [UIColor clearColor];
-        _page1Title.textAlignment = NSTextAlignmentCenter;
         _page1Title.numberOfLines = 0;
-        _page1Title.lineBreakMode = NSLineBreakByWordWrapping;
-        _page1Title.font = [WPNUXUtility titleFont];
-        _page1Title.text = NSLocalizedString(@"Track your site's statistics", @"NUX Second Walkthrough Page 1 Title");
-        _page1Title.shadowColor = [WPNUXUtility textShadowColor];
-        _page1Title.shadowOffset = CGSizeMake(0.0, 1.0);
-        _page1Title.layer.shadowRadius = 2.0;
-        _page1Title.textColor = [UIColor whiteColor];
+        _page1Title.attributedText = [WPNUXUtility titleAttributedString:NSLocalizedString(@"Track your site's statistics", @"NUX Second Walkthrough Page 1 Title")];
         [_scrollView addSubview:_page1Title];
-    }
-    
-    // Add Top Separator
-    if (_page1TopSeparator == nil) {
-        _page1TopSeparator = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"ui-line"]];
-        [_scrollView addSubview:_page1TopSeparator];
     }
     
     // Add Description
@@ -258,42 +238,18 @@ CGFloat const LoginCompeltedWalkthroughSwipeToContinueTopOffset = 14.0;
         _page1Description.lineBreakMode = NSLineBreakByWordWrapping;
         _page1Description.font = [WPNUXUtility descriptionTextFont];
         _page1Description.text = NSLocalizedString(@"Learn what your visitors respond to so you can give them more of it", @"NUX Second Walkthrough Page 1 Description");
-        _page1Description.shadowOffset = CGSizeMake(0.0, 1.0);
-        _page1Description.shadowColor = [WPNUXUtility textShadowColor];
-        _page1Title.layer.shadowRadius = 2.0;
         _page1Description.textColor = [WPNUXUtility descriptionTextColor];
         [_scrollView addSubview:_page1Description];
-    }
-    
-    // Add Bottom Separator
-    if (_page1BottomSeparator == nil) {
-        _page1BottomSeparator = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"ui-line"]];
-        [_scrollView addSubview:_page1BottomSeparator];
     }
     
     // Bottom Panel
     if (_bottomPanel == nil) {
         _bottomPanel = [[UIView alloc] init];
-        _bottomPanel.backgroundColor = [WPNUXUtility bottomPanelBackgroundColor];
+        _bottomPanel.backgroundColor = [UIColor clearColor];
         [_scrollView addSubview:_bottomPanel];
         UITapGestureRecognizer *gestureRecognizer = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(clickedBottomPanel:)];
         gestureRecognizer.numberOfTapsRequired = 1;
         [_bottomPanel addGestureRecognizer:gestureRecognizer];
-    }
-    
-    // Bottom Texture View
-    if (_bottomPanelTextureView == nil) {
-        _bottomPanelTextureView = [[UIView alloc] init];
-        _bottomPanelTextureView.backgroundColor = [UIColor colorWithPatternImage:[UIImage imageNamed:@"ui-texture"]];
-        _bottomPanelTextureView.userInteractionEnabled = NO;
-        [_scrollView addSubview:_bottomPanelTextureView];
-    }
-    
-    // Bottom Panel "Black" Line
-    if (_bottomPanelLine == nil) {
-        _bottomPanelLine = [[UIView alloc] init];
-        _bottomPanelLine.backgroundColor = [WPNUXUtility bottomPanelLineColor];
-        [_scrollView addSubview:_bottomPanelLine];
     }
     
     // Add Page Control
@@ -306,36 +262,12 @@ CGFloat const LoginCompeltedWalkthroughSwipeToContinueTopOffset = 14.0;
         [_scrollView addSubview:_pageControl];
     }
     
-    // Add "SWIPE TO CONTINUE"
-    if (_page1SwipeToContinue == nil) {
-        _page1SwipeToContinue = [[UILabel alloc] init];
-        [_page1SwipeToContinue setTextColor:[WPNUXUtility swipeToContinueTextColor]];
-        [_page1SwipeToContinue setShadowColor:[WPNUXUtility textShadowColor]];
-        _page1SwipeToContinue.backgroundColor = [UIColor clearColor];
-        _page1SwipeToContinue.textAlignment = NSTextAlignmentCenter;
-        _page1SwipeToContinue.numberOfLines = 1;
-        _page1SwipeToContinue.font = [WPNUXUtility swipeToContinueFont];
-        _page1SwipeToContinue.text = [NSLocalizedString(@"swipe to continue", nil) uppercaseString];
-        [_page1SwipeToContinue sizeToFit];
-        [_scrollView addSubview:_page1SwipeToContinue];
-    }
-    
     // Add Skip to App Button
     if (_skipToApp == nil) {
-        _skipToApp = [[UILabel alloc] init];
-        _skipToApp.numberOfLines = 2;
-        _skipToApp.lineBreakMode = NSLineBreakByWordWrapping;
-        _skipToApp.textAlignment = NSTextAlignmentCenter;
-        _skipToApp.backgroundColor = [UIColor clearColor];
-        _skipToApp.textColor = [UIColor whiteColor];
-        _skipToApp.font = [UIFont fontWithName:@"OpenSans" size:15.0];
-        _skipToApp.text = NSLocalizedString(@"Tap to start using WordPress", @"NUX Second Walkthrough Bottom Skip Label");
-        _skipToApp.shadowColor = [UIColor blackColor];
+        _skipToApp = [[WPNUXSecondaryButton alloc] init];;
+        [_skipToApp setTitle:NSLocalizedString(@"Start using WordPress", @"NUX Second Walkthrough Bottom Skip Label") forState:UIControlStateNormal];
         [_skipToApp sizeToFit];
-        UITapGestureRecognizer *tapGestureRecognizer = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(clickedSkipToApp:)];
-        tapGestureRecognizer.numberOfTapsRequired = 1;
-        _skipToApp.userInteractionEnabled = YES;
-        [_skipToApp addGestureRecognizer:tapGestureRecognizer];
+        [_skipToApp addTarget:self action:@selector(clickedSkipToApp:) forControlEvents:UIControlEventTouchUpInside];
         [_scrollView addSubview:_skipToApp];
     }
 }
@@ -356,24 +288,12 @@ CGFloat const LoginCompeltedWalkthroughSwipeToContinueTopOffset = 14.0;
     y = CGRectGetMaxY(_page1Icon.frame) + 0.5*LoginCompletedWalkthroughStandardOffset;
     _page1Title.frame = CGRectIntegral(CGRectMake(x, y, titleSize.width, titleSize.height));
     
-    // Layout Top Separator
-    x = LoginCompletedWalkthroughStandardOffset;
-    x = [self adjustX:x forPage:1];
-    y = CGRectGetMaxY(_page1Title.frame) + LoginCompletedWalkthroughStandardOffset;
-    _page1TopSeparator.frame = CGRectMake(x, y, _viewWidth - 2*LoginCompletedWalkthroughStandardOffset, 2);
-    
     // Layout Description
     CGSize labelSize = [_page1Description.text sizeWithFont:_page1Description.font constrainedToSize:CGSizeMake(LoginCompletedWalkthroughMaxTextWidth, CGFLOAT_MAX) lineBreakMode:NSLineBreakByWordWrapping];
     x = (_viewWidth - labelSize.width)/2.0;
     x = [self adjustX:x forPage:1];
-    y = CGRectGetMaxY(_page1TopSeparator.frame) + 0.5*LoginCompletedWalkthroughStandardOffset;
+    y = CGRectGetMaxY(_page1Title.frame) + 0.5*LoginCompletedWalkthroughStandardOffset;
     _page1Description.frame = CGRectIntegral(CGRectMake(x, y, labelSize.width, labelSize.height));
-
-    // Layout Bottom Separator
-    x = LoginCompletedWalkthroughStandardOffset;
-    x = [self adjustX:x forPage:1];
-    y = CGRectGetMaxY(_page1Description.frame) + 0.5*LoginCompletedWalkthroughStandardOffset;
-    _page1BottomSeparator.frame = CGRectMake(x, y, _viewWidth - 2*LoginCompletedWalkthroughStandardOffset, 2);
     
     // Layout Bottom Panel
     x = 0;
@@ -381,16 +301,7 @@ CGFloat const LoginCompeltedWalkthroughSwipeToContinueTopOffset = 14.0;
     y = _viewHeight - LoginCompletedWalkthroughBottomBackgroundHeight;
     _bottomPanel.frame = CGRectMake(x, y, _viewWidth, LoginCompletedWalkthroughBottomBackgroundHeight);
     
-    // Layout Bottom Panel Gradient View
-    _bottomPanelTextureView.frame = _bottomPanel.frame;
-        
-    // Layout Bottom Panel Line
-    x = 0;
-    y = CGRectGetMinY(_bottomPanel.frame);
-    _bottomPanelLine.frame = CGRectMake(x, y, _viewWidth, 1);
-    
     // Layout Page Control
-    CGFloat verticalSpaceForPageControl = 15;
     CGSize pageControlSize = [_pageControl sizeForNumberOfPages:4];
     x = (_viewWidth - CGRectGetWidth(_pageControl.frame))/2.0;
     if (IS_IPAD) {
@@ -399,24 +310,18 @@ CGFloat const LoginCompeltedWalkthroughSwipeToContinueTopOffset = 14.0;
         x += pageControlSize.width/2.0;
     }
     x = [self adjustX:x forPage:1];
-    y = CGRectGetMinY(_bottomPanel.frame) - LoginCompletedWalkthroughStandardOffset - CGRectGetHeight(_pageControl.frame) + verticalSpaceForPageControl;
+    y = CGRectGetMinY(_bottomPanel.frame) - LoginCompletedWalkthroughStandardOffset;
     _pageControl.frame = CGRectIntegral(CGRectMake(x, y, pageControlSize.width, pageControlSize.height));
 
-    // Layout Swipe to Continue Label
-    x = (_viewWidth - CGRectGetWidth(_page1SwipeToContinue.frame))/2.0;
-    x = [self adjustX:x forPage:1];
-    y = CGRectGetMinY(_pageControl.frame) - LoginCompeltedWalkthroughSwipeToContinueTopOffset - CGRectGetHeight(_page1SwipeToContinue.frame) + verticalSpaceForPageControl;
-    _page1SwipeToContinue.frame = CGRectIntegral(CGRectMake(x, y, CGRectGetWidth(_page1SwipeToContinue.frame), CGRectGetHeight(_page1SwipeToContinue.frame)));
-
     // Layout Skip and Start Using App
-    CGSize skipToAppLabelSize = [_skipToApp.text sizeWithFont:_skipToApp.font constrainedToSize:CGSizeMake(_viewWidth - 2*LoginCompletedWalkthroughStandardOffset, CGFLOAT_MAX) lineBreakMode:NSLineBreakByWordWrapping];
-    x = (_viewWidth - skipToAppLabelSize.width)/2.0;
-    y = CGRectGetMinY(_bottomPanel.frame) + (CGRectGetHeight(_bottomPanel.frame) - skipToAppLabelSize.height)/2.0;
-    _skipToApp.frame = CGRectIntegral(CGRectMake(x, y, skipToAppLabelSize.width, skipToAppLabelSize.height));
+    CGSize skipToAppSize = _skipToApp.frame.size;
+    x = (_viewWidth - skipToAppSize.width)/2.0;
+    y = CGRectGetMinY(_bottomPanel.frame) + (CGRectGetHeight(_bottomPanel.frame) - skipToAppSize.height)/2.0;
+    _skipToApp.frame = CGRectIntegral(CGRectMake(x, y, skipToAppSize.width, skipToAppSize.height));
     
-    _heightFromSwipeToContinueToBottom = _viewHeight - CGRectGetMinY(_page1SwipeToContinue.frame) - CGRectGetHeight(_page1SwipeToContinue.frame);
-    NSArray *viewsToCenter = @[_page1Icon, _page1Title, _page1TopSeparator, _page1Description, _page1BottomSeparator];
-    [WPNUXUtility centerViews:viewsToCenter withStartingView:_page1Icon andEndingView:_page1BottomSeparator forHeight:(_viewHeight-_heightFromSwipeToContinueToBottom)];
+    _heightFromPageControlToBottom = _viewHeight - CGRectGetMinY(_pageControl.frame) - CGRectGetHeight(_pageControl.frame);
+    NSArray *viewsToCenter = @[_page1Icon, _page1Title, _page1Description];
+    [WPNUXUtility centerViews:viewsToCenter withStartingView:_page1Icon andEndingView:_page1Description forHeight:(_viewHeight-_heightFromPageControlToBottom)];
 }
 
 - (void)initializePage2
@@ -437,22 +342,9 @@ CGFloat const LoginCompeltedWalkthroughSwipeToContinueTopOffset = 14.0;
     if (_page2Title == nil) {
         _page2Title = [[UILabel alloc] init];
         _page2Title.backgroundColor = [UIColor clearColor];
-        _page2Title.textAlignment = NSTextAlignmentCenter;
         _page2Title.numberOfLines = 0;
-        _page2Title.lineBreakMode = NSLineBreakByWordWrapping;
-        _page2Title.font = [WPNUXUtility titleFont];
-        _page2Title.text = NSLocalizedString(@"Explore the WordPress.com Reader", @"NUX Second Walkthrough Page 2 Title");
-        _page2Title.shadowColor = [WPNUXUtility textShadowColor];
-        _page2Title.shadowOffset = CGSizeMake(0.0, 1.0);
-        _page2Title.layer.shadowRadius = 2.0;
-        _page2Title.textColor = [UIColor whiteColor];
+        _page2Title.attributedText = [WPNUXUtility titleAttributedString:NSLocalizedString(@"Explore the WordPress.com Reader", @"NUX Second Walkthrough Page 2 Title")];
         [_scrollView addSubview:_page2Title];
-    }
-    
-    // Add Top Separator
-    if (_page2TopSeparator == nil) {
-        _page2TopSeparator = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"ui-line"]];
-        [_scrollView addSubview:_page2TopSeparator];
     }
     
     // Add Description
@@ -464,17 +356,8 @@ CGFloat const LoginCompeltedWalkthroughSwipeToContinueTopOffset = 14.0;
         _page2Description.lineBreakMode = NSLineBreakByWordWrapping;
         _page2Description.font = [WPNUXUtility descriptionTextFont];
         _page2Description.text = NSLocalizedString(@"Browse the entire WordPress ecosystem. Thousands of topics at the flick of a finger.", @"NUX Second Walkthrough Page 2 Description");
-        _page2Description.shadowOffset = CGSizeMake(0.0, 1.0);
-        _page2Description.shadowColor = [WPNUXUtility textShadowColor];
-        _page2Description.layer.shadowRadius = 2.0;
         _page2Description.textColor = [WPNUXUtility descriptionTextColor];
         [_scrollView addSubview:_page2Description];
-    }
-    
-    // Add Bottom Separator
-    if (_page2BottomSeparator == nil) {
-        _page2BottomSeparator = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"ui-line"]];
-        [_scrollView addSubview:_page2BottomSeparator];
     }
 }
 
@@ -494,27 +377,15 @@ CGFloat const LoginCompeltedWalkthroughSwipeToContinueTopOffset = 14.0;
     y = CGRectGetMaxY(_page2Icon.frame) + 0.5*LoginCompletedWalkthroughStandardOffset;
     _page2Title.frame = CGRectIntegral(CGRectMake(x, y, titleSize.width, titleSize.height));
     
-    // Layout Top Separator
-    x = LoginCompletedWalkthroughStandardOffset;
-    x = [self adjustX:x forPage:2];
-    y = CGRectGetMaxY(_page2Title.frame) + LoginCompletedWalkthroughStandardOffset;
-    _page2TopSeparator.frame = CGRectMake(x, y, _viewWidth - 2*LoginCompletedWalkthroughStandardOffset, 2);
-    
     // Layout Description
     CGSize labelSize = [_page2Description.text sizeWithFont:_page2Description.font constrainedToSize:CGSizeMake(LoginCompletedWalkthroughMaxTextWidth, CGFLOAT_MAX) lineBreakMode:NSLineBreakByWordWrapping];
     x = (_viewWidth - labelSize.width)/2.0;
     x = [self adjustX:x forPage:2];
-    y = CGRectGetMaxY(_page2TopSeparator.frame) + 0.5*LoginCompletedWalkthroughStandardOffset;
+    y = CGRectGetMaxY(_page2Title.frame) + 0.5*LoginCompletedWalkthroughStandardOffset;
     _page2Description.frame = CGRectIntegral(CGRectMake(x, y, labelSize.width, labelSize.height));
-    
-    // Layout Bottom Separator
-    x = LoginCompletedWalkthroughStandardOffset;
-    x = [self adjustX:x forPage:2];
-    y = CGRectGetMaxY(_page2Description.frame) + 0.5*LoginCompletedWalkthroughStandardOffset;
-    _page2BottomSeparator.frame = CGRectMake(x, y, _viewWidth - 2*LoginCompletedWalkthroughStandardOffset, 2);
-    
-    NSArray *viewsToCenter = @[_page2Icon, _page2Title, _page2TopSeparator, _page2Description, _page2BottomSeparator];
-    [WPNUXUtility centerViews:viewsToCenter withStartingView:_page2Icon andEndingView:_page2BottomSeparator forHeight:(_viewHeight-_heightFromSwipeToContinueToBottom)];
+
+    NSArray *viewsToCenter = @[_page2Icon, _page2Title, _page2Description];
+    [WPNUXUtility centerViews:viewsToCenter withStartingView:_page2Icon andEndingView:_page2Description forHeight:(_viewHeight-_heightFromPageControlToBottom)];
 }
 
 - (void)initializePage3
@@ -535,22 +406,9 @@ CGFloat const LoginCompeltedWalkthroughSwipeToContinueTopOffset = 14.0;
     if (_page3Title == nil) {
         _page3Title = [[UILabel alloc] init];
         _page3Title.backgroundColor = [UIColor clearColor];
-        _page3Title.textAlignment = NSTextAlignmentCenter;
         _page3Title.numberOfLines = 0;
-        _page3Title.lineBreakMode = NSLineBreakByWordWrapping;
-        _page3Title.font = [WPNUXUtility titleFont];
-        _page3Title.text = NSLocalizedString(@"Get real-time comment notifications", @"NUX Second Walkthrough Page 3 Title");
-        _page3Title.shadowColor = [WPNUXUtility textShadowColor];
-        _page3Title.shadowOffset = CGSizeMake(0.0, 1.0);
-        _page3Title.layer.shadowRadius = 2.0;
-        _page3Title.textColor = [UIColor whiteColor];
+        _page3Title.attributedText = [WPNUXUtility titleAttributedString:NSLocalizedString(@"Get real-time comment notifications", @"NUX Second Walkthrough Page 3 Title")];
         [_scrollView addSubview:_page3Title];
-    }
-    
-    // Add Top Separator
-    if (_page3TopSeparator == nil) {
-        _page3TopSeparator = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"ui-line"]];
-        [_scrollView addSubview:_page3TopSeparator];
     }
     
     // Add Description
@@ -562,17 +420,8 @@ CGFloat const LoginCompeltedWalkthroughSwipeToContinueTopOffset = 14.0;
         _page3Description.lineBreakMode = NSLineBreakByWordWrapping;
         _page3Description.font = [WPNUXUtility descriptionTextFont];
         _page3Description.text = NSLocalizedString(@"Keep the conversation going with notifications on the go. No need for a desktop to nurture the dialogue.", @"NUX Second Walkthrough Page 3 Description");
-        _page3Description.shadowOffset = CGSizeMake(0.0, 1.0);
-        _page3Description.shadowColor = [WPNUXUtility textShadowColor];
-        _page3Description.layer.shadowRadius = 2.0;
         _page3Description.textColor = [WPNUXUtility descriptionTextColor];
         [_scrollView addSubview:_page3Description];
-    }
-    
-    // Add Bottom Separator
-    if (_page3BottomSeparator == nil) {
-        _page3BottomSeparator = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"ui-line"]];
-        [_scrollView addSubview:_page3BottomSeparator];
     }
 }
 
@@ -592,27 +441,15 @@ CGFloat const LoginCompeltedWalkthroughSwipeToContinueTopOffset = 14.0;
     y = CGRectGetMaxY(_page3Icon.frame) + 0.5*LoginCompletedWalkthroughStandardOffset;
     _page3Title.frame = CGRectIntegral(CGRectMake(x, y, titleSize.width, titleSize.height));
     
-    // Layout Top Separator
-    x = LoginCompletedWalkthroughStandardOffset;
-    x = [self adjustX:x forPage:3];
-    y = CGRectGetMaxY(_page3Title.frame) + LoginCompletedWalkthroughStandardOffset;
-    _page3TopSeparator.frame = CGRectMake(x, y, _viewWidth - 2*LoginCompletedWalkthroughStandardOffset, 2);
-    
     // Layout Description
     CGSize labelSize = [_page3Description.text sizeWithFont:_page3Description.font constrainedToSize:CGSizeMake(LoginCompletedWalkthroughMaxTextWidth, CGFLOAT_MAX) lineBreakMode:NSLineBreakByWordWrapping];
     x = (_viewWidth - labelSize.width)/2.0;
     x = [self adjustX:x forPage:3];
-    y = CGRectGetMaxY(_page3TopSeparator.frame) + 0.5*LoginCompletedWalkthroughStandardOffset;
+    y = CGRectGetMaxY(_page3Title.frame) + 0.5*LoginCompletedWalkthroughStandardOffset;
     _page3Description.frame = CGRectIntegral(CGRectMake(x, y, labelSize.width, labelSize.height));
     
-    // Layout Bottom Separator
-    x = LoginCompletedWalkthroughStandardOffset;
-    x = [self adjustX:x forPage:3];
-    y = CGRectGetMaxY(_page3Description.frame) + 0.5*LoginCompletedWalkthroughStandardOffset;
-    _page3BottomSeparator.frame = CGRectMake(x, y, _viewWidth - 2*LoginCompletedWalkthroughStandardOffset, 2);
-    
-    NSArray *viewsToCenter = @[_page3Icon, _page3Title, _page3TopSeparator, _page3Description, _page3BottomSeparator];
-    [WPNUXUtility centerViews:viewsToCenter withStartingView:_page3Icon andEndingView:_page3BottomSeparator forHeight:(_viewHeight-_heightFromSwipeToContinueToBottom)];
+    NSArray *viewsToCenter = @[_page3Icon, _page3Title, _page3Description];
+    [WPNUXUtility centerViews:viewsToCenter withStartingView:_page3Icon andEndingView:_page3Description forHeight:(_viewHeight-_heightFromPageControlToBottom)];
 }
 
 - (void)initializePage4
@@ -633,30 +470,9 @@ CGFloat const LoginCompeltedWalkthroughSwipeToContinueTopOffset = 14.0;
     if (_page4Title == nil) {
         _page4Title = [[UILabel alloc] init];
         _page4Title.backgroundColor = [UIColor clearColor];
-        _page4Title.textAlignment = NSTextAlignmentCenter;
         _page4Title.numberOfLines = 0;
-        _page4Title.lineBreakMode = NSLineBreakByWordWrapping;
-        _page4Title.font = [WPNUXUtility titleFont];
-        _page4Title.text = NSLocalizedString(@"Get started!", @"NUX Second Walkthrough Page 4 Title");
-        _page4Title.shadowColor = [WPNUXUtility textShadowColor];
-        _page4Title.shadowOffset = CGSizeMake(0.0, 1.0);
-        _page4Title.layer.shadowRadius = 2.0;
-        _page4Title.textColor = [UIColor whiteColor];
+        _page4Title.attributedText = [WPNUXUtility titleAttributedString: NSLocalizedString(@"Get started!", @"NUX Second Walkthrough Page 4 Title")];
         [_scrollView addSubview:_page4Title];
-    }
-    
-    // Add "SWIPE TO CONTINUE"
-    if (_page4TapToContinue == nil) {
-        _page4TapToContinue = [[UILabel alloc] init];
-        [_page4TapToContinue setTextColor:[WPNUXUtility swipeToContinueTextColor]];
-        [_page4TapToContinue setShadowColor:[WPNUXUtility textShadowColor]];
-        _page4TapToContinue.backgroundColor = [UIColor clearColor];
-        _page4TapToContinue.textAlignment = NSTextAlignmentCenter;
-        _page4TapToContinue.numberOfLines = 1;
-        _page4TapToContinue.font = [WPNUXUtility swipeToContinueFont];
-        _page4TapToContinue.text = [NSLocalizedString(@"tap to continue", nil) uppercaseString];
-        [_page4TapToContinue sizeToFit];
-        [_scrollView addSubview:_page4TapToContinue];
     }
 }
 
@@ -677,15 +493,8 @@ CGFloat const LoginCompeltedWalkthroughSwipeToContinueTopOffset = 14.0;
     y = CGRectGetMaxY(_page4Icon.frame) + 0.5*LoginCompletedWalkthroughStandardOffset;
     _page4Title.frame = CGRectIntegral(CGRectMake(x, y, titleSize.width, titleSize.height));
     
-    // Layout Swipe to Continue Label
-    CGFloat verticalSpaceForPageControl = 15;
-    x = (_viewWidth - CGRectGetWidth(_page4TapToContinue.frame))/2.0;
-    x = [self adjustX:x forPage:4];
-    y = CGRectGetMinY(_pageControl.frame) - LoginCompeltedWalkthroughSwipeToContinueTopOffset - CGRectGetHeight(_page4TapToContinue.frame) + verticalSpaceForPageControl;
-    _page4TapToContinue.frame = CGRectIntegral(CGRectMake(x, y, CGRectGetWidth(_page4TapToContinue.frame), CGRectGetHeight(_page4TapToContinue.frame)));
-    
     NSArray *viewsToCenter = @[_page4Icon, _page4Title];
-    [WPNUXUtility centerViews:viewsToCenter withStartingView:_page4Title andEndingView:_page4Title forHeight:(_viewHeight-_heightFromSwipeToContinueToBottom)];
+    [WPNUXUtility centerViews:viewsToCenter withStartingView:_page4Title andEndingView:_page4Title forHeight:(_viewHeight-_heightFromPageControlToBottom)];
 }
 
 - (CGFloat)adjustX:(CGFloat)x forPage:(NSUInteger)page
@@ -701,13 +510,13 @@ CGFloat const LoginCompeltedWalkthroughSwipeToContinueTopOffset = 14.0;
     // We do this so we don't keep flagging events if the user goes back and forth on pages
     if (pageViewed == 2 && !_viewedPage2) {
         _viewedPage2 = YES;
-        [WPMobileStats trackEventForSelfHostedAndWPCom:StatsEventNUXSecondWalkthroughViewedPage2];
+        [WPMobileStats trackEventForSelfHostedAndWPCom:StatsEventNUXSecondWalkthroughViewedReaderPage];
     } else if (pageViewed == 3 && !_viewedPage3) {
         _viewedPage3 = YES;
-        [WPMobileStats trackEventForSelfHostedAndWPCom:StatsEventNUXSecondWalkthroughViewedPage3];
+        [WPMobileStats trackEventForSelfHostedAndWPCom:StatsEventNUXSecondWalkthroughViewedNotificationPage];
     } else if (pageViewed == 4 && !_viewedPage4) {
         _viewedPage4 = YES;
-        [WPMobileStats trackEventForSelfHostedAndWPCom:StatsEventNUXSecondWalkthroughViewedPage4];
+        [WPMobileStats trackEventForSelfHostedAndWPCom:StatsEventNUXSecondWalkthroughViewedGetStartedPage];
     }
 }
 
@@ -738,7 +547,6 @@ CGFloat const LoginCompeltedWalkthroughSwipeToContinueTopOffset = 14.0;
         _isDismissing = YES;
         self.parentViewController.modalTransitionStyle = UIModalTransitionStyleCoverVertical;
         [self.parentViewController dismissViewControllerAnimated:YES completion:nil];
-        [[WordPressAppDelegate sharedWordPressApplicationDelegate].panelNavigationController teaseSidebar];
     }
 }
 

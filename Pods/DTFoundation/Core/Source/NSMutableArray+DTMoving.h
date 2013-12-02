@@ -7,7 +7,7 @@
 //
 
 /**
- Methods that add convient moving methods to `NSMutableArray`
+ Methods that add convenient moving methods to `NSMutableArray`.
  */
 
 @interface NSMutableArray (DTMoving)

@@ -49,21 +49,11 @@
 
 - (void)configureButton
 {
-    UIImage *mainImage = [[UIImage imageNamed:@"btn-secondary"] resizableImageWithCapInsets:UIEdgeInsetsMake(0, 4, 0, 4)];
-    UIImage *tappedImage = [[UIImage imageNamed:@"btn-secondary-tap"] resizableImageWithCapInsets:UIEdgeInsetsMake(0, 4, 0, 4)];
-    self.titleLabel.font = [UIFont fontWithName:@"OpenSans" size:13.0];
+    self.titleLabel.font = [UIFont fontWithName:@"OpenSans" size:15.0];
     self.titleLabel.minimumScaleFactor = 10.0/15.0;
-    self.titleLabel.shadowOffset = CGSizeMake(0.0, 1.0);
     [self setTitleEdgeInsets:UIEdgeInsetsMake(0, 15.0, 0, 15.0)];
-    [self setBackgroundImage:mainImage forState:UIControlStateNormal];
-    [self setBackgroundImage:tappedImage forState:UIControlStateHighlighted];
-    [self setTitleColor:[UIColor colorWithRed:153.0/255.0 green:153.0/255.0 blue:153.0/255.0 alpha:1.0] forState:UIControlStateNormal];
-    [self setTitleColor:[UIColor colorWithRed:153.0/255.0 green:153.0/255.0 blue:153.0/255.0 alpha:0.3] forState:UIControlStateHighlighted];
-    [self setTitleColor:[UIColor colorWithRed:150.0/255.0 green:155.0/255.0 blue:155.0/255.0 alpha:1.0] forState:UIControlStateNormal];
-    [self setTitleShadowColor:[UIColor colorWithRed:0.0 green:0.0 blue:0.0 alpha:0.5] forState:UIControlStateNormal];
-    [self setTitleColor:[UIColor colorWithRed:150.0/255.0 green:150.0/255.0 blue:150.0/255.0 alpha:0.3] forState:UIControlStateHighlighted];
-    [self setTitleShadowColor:[UIColor colorWithRed:0.0 green:0.0 blue:0.0 alpha:0.8] forState:UIControlStateNormal];
-    self.titleLabel.shadowOffset = CGSizeMake(0.0, -1.0);
+    [self setTitleColor:[UIColor colorWithRed:1.0 green:1.0 blue:1.0 alpha:1.0] forState:UIControlStateNormal];
+    [self setTitleColor:[UIColor colorWithRed:1.0 green:1.0 blue:1.0 alpha:0.4] forState:UIControlStateHighlighted];
 }
 
 

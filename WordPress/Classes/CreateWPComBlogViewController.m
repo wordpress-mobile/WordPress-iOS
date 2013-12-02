@@ -11,13 +11,13 @@
 #import "SelectWPComBlogVisibilityViewController.h"
 #import "UITableViewTextFieldCell.h"
 #import "UITableViewActivityCell.h"
-#import "UITableViewSwitchCell.h"
 #import "WordPressComApi.h"
 #import "WPComLanguages.h"
 #import "WordPressAppDelegate.h"
 #import "ReachabilityUtils.h"
 #import "WPAccount.h"
 #import "WPTableViewSectionFooterView.h"
+#import "Blog.h"
 
 @interface CreateWPComBlogViewController () <
     SelectWPComBlogVisibilityViewControllerDelegate,
@@ -25,7 +25,6 @@
         
     UITableViewTextFieldCell *_blogUrlCell;
     UITableViewTextFieldCell *_blogTitleCell;
-    UITableViewSwitchCell *_geolocationEnabledCell;
     UITableViewCell *_blogVisibilityCell;
     UITableViewCell *_localeCell;
     
@@ -184,14 +183,13 @@ NSUInteger const CreateBlogBlogUrlFieldTag = 1;
             _blogTitleCell.textLabel.text = NSLocalizedString(@"Site Title", @"Label for site title field in create an account process");
             _blogTitleTextField = _blogTitleCell.textField;
             _blogTitleTextField.placeholder = NSLocalizedString(@"My Site", @"Placeholder for site title field in create an account process");
-            _blogTitleTextField.leftView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, IS_IOS7 ? 10 : 5, 1)];
             _blogTitleTextField.leftViewMode = UITextFieldViewModeAlways;
             _blogTitleTextField.delegate = self;
             [self styleTextFieldCell:_blogTitleCell];
             cell = _blogTitleCell;
         } else if (indexPath.row == 2) {
             if (_localeCell == nil) {
-                _localeCell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleValue1
+                _localeCell = [[WPTableViewCell alloc] initWithStyle:UITableViewCellStyleValue1
                                                      reuseIdentifier:@"LocaleCell"];
             }
             _localeCell.textLabel.text = @"Language";
@@ -201,7 +199,7 @@ NSUInteger const CreateBlogBlogUrlFieldTag = 1;
             cell = _localeCell;
         } else if (indexPath.row == 3) {
             if (_blogVisibilityCell == nil) {
-                _blogVisibilityCell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleValue1
+                _blogVisibilityCell = [[WPTableViewCell alloc] initWithStyle:UITableViewCellStyleValue1
                                                              reuseIdentifier:@"VisibilityCell"];
             }
             _blogVisibilityCell.textLabel.text = @"Blog Visibility";
@@ -210,23 +208,18 @@ NSUInteger const CreateBlogBlogUrlFieldTag = 1;
             [WPStyleGuide configureTableViewCell:_blogVisibilityCell];
             cell = _blogVisibilityCell;
         } else if (indexPath.row == 4) {
-            if(_geolocationEnabledCell == nil) {
-                NSArray *topLevelObjects = [[NSBundle mainBundle] loadNibNamed:@"UITableViewSwitchCell" owner:nil options:nil];
-                for(id currentObject in topLevelObjects)
-                {
-                    if([currentObject isKindOfClass:[UITableViewSwitchCell class]])
-                    {
-                        _geolocationEnabledCell = (UITableViewSwitchCell *)currentObject;
-                        break;
-                    }
-                }
+            UITableViewCell *geolocationCell = [tableView dequeueReusableCellWithIdentifier:@"GeolocationCell"];
+            if(geolocationCell == nil) {
+                geolocationCell = [[WPTableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:@"GeolocationCell"];
+                geolocationCell.accessoryView = [[UISwitch alloc] init];
             }
-            _geolocationEnabledCell.textLabel.text = NSLocalizedString(@"Geotagging", nil);
-            _geolocationEnabledCell.selectionStyle = UITableViewCellSelectionStyleNone;
-            _geolocationEnabledCell.cellSwitch.on = _geolocationEnabled;
-            [_geolocationEnabledCell.cellSwitch addTarget:self action:@selector(toggleGeolocation:) forControlEvents:UIControlEventValueChanged];
-            [WPStyleGuide configureTableViewCell:_geolocationEnabledCell];
-            cell = _geolocationEnabledCell;
+            UISwitch *geolocationSwitch = (UISwitch *)geolocationCell.accessoryView;
+            geolocationCell.textLabel.text = NSLocalizedString(@"Geotagging", nil);
+            geolocationCell.selectionStyle = UITableViewCellSelectionStyleNone;
+            geolocationSwitch.on = _geolocationEnabled;
+            [geolocationSwitch addTarget:self action:@selector(toggleGeolocation:) forControlEvents:UIControlEventValueChanged];
+            [WPStyleGuide configureTableViewCell:geolocationCell];
+            cell = geolocationCell;
         }
     }
     
@@ -291,7 +284,8 @@ NSUInteger const CreateBlogBlogUrlFieldTag = 1;
 
 - (void)toggleGeolocation:(id)sender
 {
-    _geolocationEnabled = _geolocationEnabledCell.cellSwitch.on;
+    UISwitch *geolocationSwitch = (UISwitch *)sender;
+    _geolocationEnabled = geolocationSwitch.on;
 }
 
 - (void)clickedCreateBlog

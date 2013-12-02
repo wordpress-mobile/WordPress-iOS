@@ -1,5 +1,7 @@
 WordPress for iOS
 
+[![Build Status](https://travis-ci.org/wordpress-mobile/WordPress-iOS.png)](https://travis-ci.org/wordpress-mobile/WordPress-iOS)
+
 ## Resources
 
 ### Developer blog & Handbook

@@ -84,7 +84,7 @@ NSString *CameraPlusExportPhotoMetadataType = @"com.taptaptap.CameraPlus.photoMe
         case CameraPlusPickerModeEdit:
             return @"edit";
         default:
-            NSLog(@"Unsupported CameraPlusPickerMode: %i", aMode);
+            DDLogWarn(@"Unsupported CameraPlusPickerMode: %i", aMode);
             return @"all";
     }
 }
@@ -99,7 +99,7 @@ NSString *CameraPlusExportPhotoMetadataType = @"com.taptaptap.CameraPlus.photoMe
     } else if ([@"edit" isEqualToString:str]) {
         return CameraPlusPickerModeEdit;
     } else {
-        NSLog(@"Unsupported CameraPlusPickerMode: %@", str);
+        DDLogWarn(@"Unsupported CameraPlusPickerMode: %@", str);
         return CameraPlusPickerModeShootAndLightbox;
     }
 }
@@ -152,11 +152,11 @@ NSString *CameraPlusExportPhotoMetadataType = @"com.taptaptap.CameraPlus.photoMe
             [[UIApplication sharedApplication] openURL:url];
             return YES;
         } else {
-            NSLog(@"CameraPlusPickerManager.callbackURLProtocol not set");
+            DDLogWarn(@"CameraPlusPickerManager.callbackURLProtocol not set");
             return NO;
         }
     } else {
-        NSLog(@"CameraPlusPickerManager: Camera+ picker not found on this device");
+        DDLogWarn(@"CameraPlusPickerManager: Camera+ picker not found on this device");
         return NO;
     }
 }

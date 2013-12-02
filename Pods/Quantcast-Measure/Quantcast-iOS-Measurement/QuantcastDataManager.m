@@ -186,72 +186,76 @@
     }
     
     [self.opQueue addOperationWithBlock:^{
+        [self recordEventSynchronouslyWithoutUpload:inEvent];
         
-        if ( nil == self.db ) {
-            if (self.enableLogging) {
-                NSLog(@"QC Measurement: Tried to log event %@, but there was no database connection available.", inEvent);
-            }
-            return;
-        }
-            
-        NSUInteger eventCount = 0;
-        
-        NSArray* eventInsertBoundData = [NSArray arrayWithObjects:inEvent.sessionID,[NSString stringWithFormat:@"%qi",(int64_t)[inEvent.timestamp timeIntervalSince1970]],nil];
-        
-        @synchronized( self ) {
-            [self.db beginDatabaseTransaction];
-            
-            [self.db executePreparedQuery:QCSQL_PREPAREDQUERYKEY_INSERTNEWEVENT bindingInsertData:eventInsertBoundData];
-            
-            int64_t eventId = [self.db getLastInsertRowId];
-            
-            for (NSString* param in [inEvent.parameters allKeys]) {
-                
-                if ( nil != self.policy && [self.policy isBlacklistedParameter:param] ) {
-                    continue;
-                }
-                
-                id valueObj = [inEvent.parameters objectForKey:param];
-                
-                NSString* valueStr;
-                
-                if ( [valueObj isKindOfClass:[NSValue class]] ) { 
-                    valueStr = [valueObj stringValue];
-                }
-                else if ( [valueObj isKindOfClass:[NSString class]] ) {
-                    valueStr = (NSString*)valueObj;
-                }
-                else {
-                    valueStr = [valueObj description];
-                }
-                
-                NSArray* paramsInsertBoundData = [NSArray arrayWithObjects:[NSString stringWithFormat:@"%qi",eventId], param, valueStr, nil];
-                
-                [self.db executePreparedQuery:QCSQL_PREPAREDQUERYKEY_INSERTNEWEVENTPARAMS bindingInsertData:paramsInsertBoundData];
-            }
-            
-            [self.db endDatabaseTransaction];
-            
-            eventCount = [self eventCount];
-            
-        }
-       
+        NSUInteger eventCount = [self eventCount];
         if ( self.policy.hasUpdatedPolicyBeenDownloaded && !self.isDataDumpInprogress && ( eventCount >= self.uploadEventCount || ([UIApplication sharedApplication].applicationState == UIApplicationStateBackground && eventCount >= self.backgroundUploadEventCount ) ) ) {
             [self initiateDataUpload];
         }
         else if ( eventCount >= self.maxEventRetentionCount ) {
             // delete the equivalent a upload
-            
             [self trimEventsDatabaseBy:self.uploadEventCount];
-            
         }
-
+        
     } ];
     
  }
 
--(void)initiateDataUpload {
+-(void)recordEventSynchronouslyWithoutUpload:(QuantcastEvent*)inEvent{
+    if ( nil != self.policy && (self.policy.isMeasurementBlackedout ) ) {
+        return;
+    }
+    
+    if ( nil == self.db ) {
+        if (self.enableLogging) {
+            NSLog(@"QC Measurement: Tried to log event %@, but there was no database connection available.", inEvent);
+        }
+        return;
+    }
+    
+    NSArray* eventInsertBoundData = [NSArray arrayWithObjects:inEvent.sessionID,[NSString stringWithFormat:@"%qi",(int64_t)[inEvent.timestamp timeIntervalSince1970]],nil];
+    
+    @synchronized( self ) {
+        [self.db beginDatabaseTransaction];
+        
+        [self.db executePreparedQuery:QCSQL_PREPAREDQUERYKEY_INSERTNEWEVENT bindingInsertData:eventInsertBoundData];
+        
+        int64_t eventId = [self.db getLastInsertRowId];
+        
+        for (NSString* param in [inEvent.parameters allKeys]) {
+            
+            if ( nil != self.policy && [self.policy isBlacklistedParameter:param] ) {
+                continue;
+            }
+            
+            id valueObj = [inEvent.parameters objectForKey:param];
+            
+            NSString* valueStr;
+            
+            if ( [valueObj isKindOfClass:[NSValue class]] ) {
+                valueStr = [valueObj stringValue];
+            }
+            else if ( [valueObj isKindOfClass:[NSString class]] ) {
+                valueStr = (NSString*)valueObj;
+            }
+            else {
+                valueStr = [valueObj description];
+            }
+            
+            NSArray* paramsInsertBoundData = [NSArray arrayWithObjects:[NSString stringWithFormat:@"%qi",eventId], param, valueStr, nil];
+            
+            [self.db executePreparedQuery:QCSQL_PREPAREDQUERYKEY_INSERTNEWEVENTPARAMS bindingInsertData:paramsInsertBoundData];
+        }
+        
+        [self.db endDatabaseTransaction];
+    }
+}
 
+-(void)initiateDataUpload {
+    if ( self.isDataDumpInprogress ) {
+        return;
+    }
+    
     self.isDataDumpInprogress = YES;
     
     [self.opQueue addOperationWithBlock:^{
@@ -447,7 +451,10 @@
 }
 
 -(void)trimEventsDatabaseBy:(NSUInteger)inEventsToDelete {
-    
+    if ( self.isDataDumpInprogress ) {
+        return;
+    }
+
     self.isDataDumpInprogress = YES;
     
     [self.opQueue addOperationWithBlock:^{
