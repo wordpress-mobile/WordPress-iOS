@@ -317,21 +317,22 @@ NSString * const WPNotificationsNavigationRestorationID = @"WPNotificationsNavig
     readerNavigationController.navigationBar.translucent = NO;
     readerNavigationController.tabBarItem.image = [UIImage imageNamed:@"icon-tab-reader"];
     readerNavigationController.restorationIdentifier = WPReaderNavigationRestorationID;
-    self.readerPostsViewController.title = @"Reader";
+    self.readerPostsViewController.title = NSLocalizedString(@"Reader", nil);
     
     self.notificationsViewController = [[NotificationsViewController alloc] init];
     UINavigationController *notificationsNavigationController = [[UINavigationController alloc] initWithRootViewController:self.notificationsViewController];
     notificationsNavigationController.navigationBar.translucent = NO;
     notificationsNavigationController.tabBarItem.image = [UIImage imageNamed:@"icon-tab-notifications"];
     notificationsNavigationController.restorationIdentifier = WPNotificationsNavigationRestorationID;
-    self.notificationsViewController.title = @"Notifications";
+    self.notificationsViewController.title = NSLocalizedString(@"Notifications", @"");
     
-    BlogListViewController *blogListViewController = [[BlogListViewController alloc] init];
-    UINavigationController *blogListNavigationController = [[UINavigationController alloc] initWithRootViewController:blogListViewController];
+    self.blogListViewController = [[BlogListViewController alloc] init];
+    UINavigationController *blogListNavigationController = [[UINavigationController alloc] initWithRootViewController:self.blogListViewController];
     blogListNavigationController.navigationBar.translucent = NO;
     blogListNavigationController.tabBarItem.image = [UIImage imageNamed:@"icon-tab-blogs"];
     blogListNavigationController.restorationIdentifier = WPBlogListNavigationRestorationID;
-    blogListViewController.title = @"My Blogs";
+    self.blogListViewController.title = NSLocalizedString(@"My Blogs", @"");
+    
     _tabBarController.viewControllers = [NSArray arrayWithObjects:blogListNavigationController, readerNavigationController, notificationsNavigationController, nil];
     
     [_tabBarController setSelectedViewController:readerNavigationController];
@@ -703,6 +704,14 @@ NSString * const WPNotificationsNavigationRestorationID = @"WPNotificationsNavig
                        ];
     NSDictionary *dictionary = [[NSDictionary alloc] initWithObjectsAndKeys: appUA, @"UserAgent", defaultUA, @"DefaultUserAgent", appUA, @"AppUserAgent", nil];
     [[NSUserDefaults standardUserDefaults] registerDefaults:dictionary];
+}
+- (void)showReaderTab {
+    NSInteger readerTabIndex = [[self.tabBarController viewControllers] indexOfObject:self.readerPostsViewController.navigationController];
+    [self.tabBarController setSelectedIndex:readerTabIndex];
+}
+- (void)showBlogListTab {
+    NSInteger blogListTabIndex = [[self.tabBarController viewControllers] indexOfObject:self.blogListViewController.navigationController];
+    [self.tabBarController setSelectedIndex:blogListTabIndex];
 }
 
 - (void)useDefaultUserAgent {
