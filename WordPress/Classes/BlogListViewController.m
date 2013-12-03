@@ -24,7 +24,7 @@ NSString * const WPBlogListRestorationID = @"WPBlogListID";
 @interface BlogListViewController ()
 @property (nonatomic, strong) NSFetchedResultsController *resultsController;
 @property (nonatomic, strong) UIBarButtonItem *settingsButton;
-@property (nonatomic) BOOL controllerDidDeleteSection;
+@property (nonatomic) BOOL sectionDeletedByController;
 @end
 
 @implementation BlogListViewController
@@ -422,7 +422,7 @@ NSString * const WPBlogListRestorationID = @"WPBlogListID";
 - (void)controllerDidChangeContent:(NSFetchedResultsController *)controller {
     [self.tableView endUpdates];
 
-    if (self.controllerDidDeleteSection) {
+    if (self.sectionDeletedByController) {
         /*
          This covers the corner case when the only self hosted blog is removed and
          there's a WordPress.com account.
@@ -436,7 +436,7 @@ NSString * const WPBlogListRestorationID = @"WPBlogListID";
          */
         
         [self.tableView reloadSections:[NSIndexSet indexSetWithIndex:0] withRowAnimation:UITableViewRowAnimationFade];
-        self.controllerDidDeleteSection = NO;
+        self.sectionDeletedByController = NO;
     }
 }
 
@@ -482,7 +482,7 @@ NSString * const WPBlogListRestorationID = @"WPBlogListID";
 
         case NSFetchedResultsChangeDelete:
             [self.tableView deleteSections:[NSIndexSet indexSetWithIndex:sectionIndex] withRowAnimation:UITableViewRowAnimationFade];
-            self.controllerDidDeleteSection = YES;
+            self.sectionDeletedByController = YES;
             break;
 
         default:
