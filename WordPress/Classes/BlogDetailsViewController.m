@@ -16,6 +16,7 @@
 #import "MediaBrowserViewController.h"
 #import "WPWebViewController.h"
 #import "WPTableViewCell.h"
+#import "ContextManager.h"
 
 typedef enum {
     BlogDetailsRowPosts = 0,
@@ -30,6 +31,9 @@ typedef enum {
     BlogDetailsRowCount
 } BlogDetailsRow;
 
+NSString * const WPBlogDetailsRestorationID = @"WPBlogDetailsID";
+NSString * const WPBlogDetailsBlogKey = @"WPBlogDetailsBlogKey";
+
 
 @interface BlogDetailsViewController ()
 
@@ -38,12 +42,40 @@ typedef enum {
 @implementation BlogDetailsViewController
 @synthesize blog = _blog;
 
++ (UIViewController *)viewControllerWithRestorationIdentifierPath:(NSArray *)identifierComponents coder:(NSCoder *)coder {
+    NSString *blogID = [coder decodeObjectForKey:WPBlogDetailsBlogKey];
+    if (!blogID)
+        return nil;
+    
+    NSManagedObjectContext *context = [[ContextManager sharedInstance] mainContext];
+    NSManagedObjectID *objectID = [context.persistentStoreCoordinator managedObjectIDForURIRepresentation:[NSURL URLWithString:blogID]];
+    if (!objectID)
+        return nil;
+    
+    NSError *error = nil;
+    Blog *restoredBlog = (Blog *)[context existingObjectWithID:objectID error:&error];
+    if (error || !restoredBlog) {
+        return nil;
+    }
+    
+    BlogDetailsViewController *viewController = [[self alloc] initWithStyle:UITableViewStyleGrouped];
+    viewController.blog = restoredBlog;
+
+    return viewController;
+}
+
 - (id)initWithStyle:(UITableViewStyle)style {
     self = [super initWithStyle:UITableViewStyleGrouped];
     if (self) {
-        // Custom initialization
+        self.restorationIdentifier = WPBlogDetailsRestorationID;
+        self.restorationClass = [self class];
     }
     return self;
+}
+
+- (void)encodeRestorableStateWithCoder:(NSCoder *)coder {
+    [coder encodeObject:[[self.blog.objectID URIRepresentation] absoluteString] forKey:WPBlogDetailsBlogKey];
+    [super encodeRestorableStateWithCoder:coder];
 }
 
 - (void)viewDidLoad {
@@ -166,6 +198,8 @@ typedef enum {
     }
 
     UIViewController *viewController = (UIViewController *)[[controllerClass alloc] init];
+    viewController.restorationIdentifier = NSStringFromClass(controllerClass);
+    viewController.restorationClass = controllerClass;
     if ([viewController respondsToSelector:@selector(setBlog:)]) {
         [viewController performSelector:@selector(setBlog:) withObject:self.blog];
         [self.navigationController pushViewController:viewController animated:YES];
