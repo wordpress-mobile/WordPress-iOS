@@ -17,10 +17,12 @@
 #import "ContextManager.h"
 #import "Blog.h"
 
+static NSString *const BlogCellIdentifier = @"BlogCell";
 CGFloat const blavatarImageSize = 50.f;
 NSString * const WPBlogListRestorationID = @"WPBlogListID";
 
 @interface BlogListViewController ()
+
 @property (nonatomic, strong) NSFetchedResultsController *resultsController;
 @property (nonatomic, strong) UIBarButtonItem *settingsButton;
 
@@ -97,6 +99,8 @@ NSString * const WPBlogListRestorationID = @"WPBlogListID";
  
     // Uncomment the following line to display an Edit button in the navigation bar for this view controller.
     // self.navigationItem.rightBarButtonItem = self.editButtonItem;
+    
+    [self.tableView registerClass:[WPTableViewCell class] forCellReuseIdentifier:BlogCellIdentifier];
 }
 
 - (void)viewWillAppear:(BOOL)animated {
@@ -152,11 +156,8 @@ NSString * const WPBlogListRestorationID = @"WPBlogListID";
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    NSString *cellIdentifier = @"BlogCell";
-    UITableViewCell *cell = [self.tableView dequeueReusableCellWithIdentifier:cellIdentifier];
-    if (cell == nil) {
-        cell = [[WPTableViewCell alloc] initWithStyle:UITableViewCellStyleSubtitle reuseIdentifier:cellIdentifier];
-    }
+    
+    UITableViewCell *cell = [self.tableView dequeueReusableCellWithIdentifier:BlogCellIdentifier];
     
     [WPStyleGuide configureTableViewCell:cell];
     [self configureCell:cell atIndexPath:indexPath];
@@ -283,8 +284,7 @@ NSString * const WPBlogListRestorationID = @"WPBlogListID";
 }
 
 
-#pragma mark -
-#pragma mark NSFetchedResultsController
+#pragma mark - NSFetchedResultsController
 
 - (NSFetchedResultsController *)resultsController {
     if (_resultsController) {

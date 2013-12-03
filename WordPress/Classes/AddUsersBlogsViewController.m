@@ -22,6 +22,8 @@
 #import "Blog.h"
 #import "WPcomLoginViewController.h"
 
+static NSString *const CellIdentifier = @"Cell";
+
 @interface AddUsersBlogsViewController () <CreateWPComBlogViewControllerDelegate, UITableViewDelegate>
 
 @property (nonatomic, strong) UIView *noblogsView;
@@ -84,6 +86,8 @@
     
 	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(cancelAddWPcomBlogs) 
 												 name:@"didCancelWPcomLogin" object:nil];
+    
+    [self.tableView registerClass:[WPTableViewCell class] forCellReuseIdentifier:CellIdentifier];
 }
 
 - (void)viewWillAppear:(BOOL)animated {
@@ -192,12 +196,8 @@
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
-    static NSString *CellIdentifier = @"Cell";
-    
+
     UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier];
-    if (cell == nil) {
-        cell = [[WPTableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:CellIdentifier];
-    }
 
     cell.textLabel.textAlignment = NSTextAlignmentLeft;
     

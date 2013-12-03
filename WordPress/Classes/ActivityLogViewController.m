@@ -11,12 +11,13 @@
 #import "ActivityLogDetailViewController.h"
 #import <DDFileLogger.h>
 
+static NSString *const ActivityLogCellIdentifier = @"ActivityLogCell";
+
 @interface ActivityLogViewController ()
-{
-    NSArray *logFiles;
-    NSDateFormatter *dateFormatter;
-    DDFileLogger *fileLogger;
-}
+
+@property (nonatomic, strong) NSDateFormatter *dateFormatter;
+@property (nonatomic, weak) DDFileLogger *fileLogger;
+@property (nonatomic, strong) NSArray *logFiles;
 
 @end
 
@@ -28,12 +29,7 @@
     if (self) {
         // TODO - Replace this call with an injected value, depending on design conventions already in place
         WordPressAppDelegate *delegate = (WordPressAppDelegate *)[[UIApplication sharedApplication] delegate];
-        fileLogger = delegate.fileLogger;
-
-        dateFormatter = [[NSDateFormatter alloc] init];
-        dateFormatter.dateStyle = NSDateFormatterMediumStyle;
-        dateFormatter.doesRelativeDateFormatting = YES;
-        dateFormatter.timeStyle = NSDateFormatterShortStyle;
+        _fileLogger = delegate.fileLogger;
 
         self.title = NSLocalizedString(@"Activity Logs", @"");
 
@@ -41,7 +37,7 @@
                                                                        style:UIBarButtonItemStyleBordered
                                                                       target:nil
                                                                       action:nil];
-        [[self navigationItem] setBackBarButtonItem:backButton];
+        [self.navigationItem setBackBarButtonItem:backButton];
     }
 
     return self;
@@ -53,6 +49,8 @@
 
     [WPStyleGuide configureColorsForView:self.view andTableView:self.tableView];
     [self loadLogFiles];
+    
+    [self.tableView registerClass:[UITableViewCell class] forCellReuseIdentifier:ActivityLogCellIdentifier];
 }
 
 - (void)didReceiveMemoryWarning
@@ -63,7 +61,18 @@
 
 - (void)loadLogFiles
 {
-    logFiles = fileLogger.logFileManager.sortedLogFileInfos;
+    self.logFiles = self.fileLogger.logFileManager.sortedLogFileInfos;
+}
+
+- (NSDateFormatter *)dateFormatter {
+    if (_dateFormatter) {
+        return _dateFormatter;
+    }
+    _dateFormatter = [[NSDateFormatter alloc] init];
+    _dateFormatter.dateStyle = NSDateFormatterMediumStyle;
+    _dateFormatter.doesRelativeDateFormatting = YES;
+    _dateFormatter.timeStyle = NSDateFormatterShortStyle;
+    return _dateFormatter;
 }
 
 #pragma mark - Table view data source
@@ -76,24 +85,17 @@
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
     if (section == 0)
-        return logFiles.count;
+        return self.logFiles.count;
 
     return 1;
 }
 
-- (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
-{
-    static NSString *CellIdentifier = @"ActivityLogCell";
-    UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier];
-
-    if (cell == nil) {
-        cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:CellIdentifier];
-    }
-
+- (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
+    UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:ActivityLogCellIdentifier];
     if (indexPath.section == 0) {
-        DDLogFileInfo *logFileInfo = (DDLogFileInfo *)logFiles[indexPath.row];
+        DDLogFileInfo *logFileInfo = (DDLogFileInfo *)self.logFiles[indexPath.row];
         cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
-        cell.textLabel.text = indexPath.row == 0 ? NSLocalizedString(@"Current", @"") : [dateFormatter stringFromDate:logFileInfo.creationDate];
+        cell.textLabel.text = indexPath.row == 0 ? NSLocalizedString(@"Current", @"") : [self.dateFormatter stringFromDate:logFileInfo.creationDate];
         cell.textLabel.textAlignment = NSTextAlignmentLeft;
         [WPStyleGuide configureTableViewCell:cell];
     } else {
@@ -102,8 +104,6 @@
         cell.textLabel.text = NSLocalizedString(@"Clear Old Activity Logs", @"");
         [WPStyleGuide configureTableViewActionCell:cell];
     }
-
-
     return cell;
 }
 
@@ -132,15 +132,15 @@
     [tableView deselectRowAtIndexPath:indexPath animated:YES];
 
     if (indexPath.section == 0) {
-        DDLogFileInfo *logFileInfo = (DDLogFileInfo *)logFiles[indexPath.row];
+        DDLogFileInfo *logFileInfo = (DDLogFileInfo *)self.logFiles[indexPath.row];
         NSData *logData = [NSData dataWithContentsOfFile:logFileInfo.filePath];
         NSString *logText = [[NSString alloc] initWithData:logData encoding:NSUTF8StringEncoding];
 
         ActivityLogDetailViewController *detailViewController = [[ActivityLogDetailViewController alloc] initWithLog:logText
-                                                                                                       forDateString:[dateFormatter stringFromDate:logFileInfo.creationDate]];
+                                                                                                       forDateString:[self.dateFormatter stringFromDate:logFileInfo.creationDate]];
         [self.navigationController pushViewController:detailViewController animated:YES];
     } else {
-        for (DDLogFileInfo *logFileInfo in logFiles) {
+        for (DDLogFileInfo *logFileInfo in self.logFiles) {
             if (logFileInfo.isArchived)
                 [[NSFileManager defaultManager] removeItemAtPath:logFileInfo.filePath error:nil];
         }
