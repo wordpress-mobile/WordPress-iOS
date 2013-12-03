@@ -17,7 +17,6 @@
 #import "NotificationSettingsViewController.h"
 #import "WPAccount.h"
 
-NSString * const NotificationsTableViewNoteCellIdentifier = @"NotificationsTableViewCell";
 NSString * const NotificationsLastSyncDateKey = @"NotificationsLastSyncDate";
 
 @interface NotificationsViewController () {
@@ -60,7 +59,6 @@ NSString * const NotificationsLastSyncDateKey = @"NotificationsLastSyncDate";
     [WPStyleGuide configureColorsForView:self.view andTableView:self.tableView];
     
     self.infiniteScrollEnabled = YES;
-    [self.tableView registerClass:[NewNotificationsTableViewCell class] forCellReuseIdentifier:NotificationsTableViewNoteCellIdentifier];
 }
 
 - (void)viewWillAppear:(BOOL)animated {
@@ -221,14 +219,8 @@ NSString * const NotificationsLastSyncDateKey = @"NotificationsLastSyncDate";
     return fetchRequest;
 }
 
-- (UITableViewCell *)newCell {
-    NewNotificationsTableViewCell *cell = [self.tableView dequeueReusableCellWithIdentifier:NotificationsTableViewNoteCellIdentifier];
-
-    if (cell == nil) {
-        cell = [[NewNotificationsTableViewCell alloc] initWithStyle:UITableViewCellStyleSubtitle reuseIdentifier:NotificationsTableViewNoteCellIdentifier];
-    }
-    
-    return cell;
+- (Class)cellClass {
+    return [NewNotificationsTableViewCell class];
 }
 
 - (void)configureCell:(NewNotificationsTableViewCell *)cell atIndexPath:(NSIndexPath *)indexPath {
