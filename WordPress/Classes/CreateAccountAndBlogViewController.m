@@ -63,7 +63,7 @@ CGFloat const CreateAccountAndBlogIconVerticalOffset = 70.0;
 CGFloat const CreateAccountAndBlogMaxTextWidth = 260.0;
 CGFloat const CreateAccountAndBlogTextFieldWidth = 320.0;
 CGFloat const CreateAccountAndBlogTextFieldHeight = 44.0;
-CGFloat const CreateAccountAndBlogTextFieldSmallScreenHeight = 38.0;
+CGFloat const CreateAccountAndBlogTextFieldPhoneHeight = 38.0;
 CGFloat const CreateAccountAndBlogKeyboardOffset = 132.0;
 CGFloat const CreateAccountAndBlogiOS7StatusBarOffset = 20.0;
 CGFloat const CreateAccountAndBlogButtonWidth = 289.0;
@@ -381,8 +381,9 @@ CGFloat const CreateAccountAndBlogButtonHeight = 40.0;
     y = 0;
     _titleLabel.frame = CGRectIntegral(CGRectMake(x, y, titleSize.width, titleSize.height));
     
-    BOOL isSmallScreen = !(CGRectGetHeight(self.view.bounds) > 480.0);
-    CGFloat textFieldHeight = isSmallScreen ? CreateAccountAndBlogTextFieldSmallScreenHeight: CreateAccountAndBlogTextFieldHeight;
+    // In order to fit controls ontol all phones, the textField height is smaller on iPhones
+    // versus iPads.
+    CGFloat textFieldHeight = IS_IPAD ? CreateAccountAndBlogTextFieldHeight: CreateAccountAndBlogTextFieldPhoneHeight;
     
     // Layout Email
     x = (viewWidth - CreateAccountAndBlogTextFieldWidth)/2.0;
