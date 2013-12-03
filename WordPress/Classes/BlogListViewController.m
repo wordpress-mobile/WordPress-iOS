@@ -274,7 +274,7 @@ NSString * const WPBlogListRestorationID = @"WPBlogListID";
             UISwitch *visibilitySwitch = [UISwitch new];
             visibilitySwitch.on = blog.visible;
             visibilitySwitch.tag = indexPath.row;
-            [visibilitySwitch addTarget:self action:@selector(switchDidChange:) forControlEvents:UIControlEventValueChanged];
+            [visibilitySwitch addTarget:self action:@selector(visibilitySwitchAction:) forControlEvents:UIControlEventValueChanged];
             cell.accessoryView = visibilitySwitch;
             
             // Make textLabel light gray if blog is not-visible
@@ -354,8 +354,7 @@ NSString * const WPBlogListRestorationID = @"WPBlogListID";
     }];
 }
 
-- (void)switchDidChange:(id)sender {
-
+- (void)visibilitySwitchAction:(id)sender {
     UISwitch *switcher = (UISwitch *)sender;
     Blog *blog = [self.resultsController objectAtIndexPath:[NSIndexPath indexPathForRow:switcher.tag inSection:0]];
     if (switcher.on != blog.visible) {
