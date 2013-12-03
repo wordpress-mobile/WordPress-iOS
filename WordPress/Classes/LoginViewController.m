@@ -683,6 +683,7 @@ CGFloat const GeneralWalkthroughiOS7StatusBarOffset = 20.0;
     _signInButton.enabled = !authenticating;
     _toggleSignInForm.hidden = authenticating;
     _skipToCreateAccount.hidden = authenticating;
+    _cancelButton.enabled = !authenticating;
     [_signInButton showActivityIndicator:authenticating];
 }
 
