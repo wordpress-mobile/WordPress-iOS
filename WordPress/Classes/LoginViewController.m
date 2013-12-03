@@ -266,13 +266,13 @@ CGFloat const GeneralWalkthroughiOS7StatusBarOffset = 20.0;
     [self.navigationController presentViewController:nc animated:YES completion:nil];
 }
 
-- (void)clickedSkipToCreate:(id)sender
+- (void)skipToCreateAction:(id)sender
 {
     [WPMobileStats trackEventForSelfHostedAndWPCom:StatsEventNUXFirstWalkthroughClickedCreateAccount];
     [self showCreateAccountView];
 }
 
-- (void)clickedBackground:(UITapGestureRecognizer *)tapGestureRecognizer
+- (void)backgroundTapGestureAction:(UITapGestureRecognizer *)tapGestureRecognizer
 {
     [self.view endEditing:YES];
 
@@ -328,7 +328,7 @@ CGFloat const GeneralWalkthroughiOS7StatusBarOffset = 20.0;
     _mainView.autoresizingMask = UIViewAutoresizingFlexibleHeight | UIViewAutoresizingFlexibleWidth;
     [self.view addSubview:_mainView];
     
-    UITapGestureRecognizer *gestureRecognizer = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(clickedBackground:)];
+    UITapGestureRecognizer *gestureRecognizer = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(backgroundTapGestureAction:)];
     gestureRecognizer.numberOfTapsRequired = 1;
     gestureRecognizer.cancelsTouchesInView = YES;
     [_mainView addGestureRecognizer:gestureRecognizer];
@@ -461,7 +461,7 @@ CGFloat const GeneralWalkthroughiOS7StatusBarOffset = 20.0;
         if (_skipToCreateAccount == nil) {
             _skipToCreateAccount = [[WPNUXSecondaryButton alloc] init];
             [_skipToCreateAccount setTitle:NSLocalizedString(@"Create Account", nil) forState:UIControlStateNormal];
-            [_skipToCreateAccount addTarget:self action:@selector(clickedSkipToCreate:) forControlEvents:UIControlEventTouchUpInside];
+            [_skipToCreateAccount addTarget:self action:@selector(skipToCreateAction:) forControlEvents:UIControlEventTouchUpInside];
             [_mainView addSubview:_skipToCreateAccount];
         }
     }
