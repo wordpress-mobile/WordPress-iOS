@@ -207,8 +207,7 @@ NSString * const WPBlogListRestorationID = @"WPBlogListID";
             // Update the UI in the next run loop after the resultsController has updated
             // (otherwise row insertion/deletion logic won't work)
             dispatch_async(dispatch_get_main_queue(), ^{
-                self.editButtonItem.enabled = NO;
-                [self setEditing:NO animated:YES];
+                [self setEditing:NO animated:NO];
 
                 // No blogs and  signed out, show NUX
                 if (![WPAccount defaultWordPressComAccount]) {
@@ -330,19 +329,24 @@ NSString * const WPBlogListRestorationID = @"WPBlogListID";
     [super setEditing:editing animated:animated];
     
     // Animate view to editing mode
-    __block UIView *snapshot = [self.view snapshotViewAfterScreenUpdates:NO];
-    snapshot.frame = [self.view convertRect:self.view.frame fromView:self.view.superview];
-    [self.view addSubview:snapshot];
+    __block UIView *snapshot;
+    if (animated) {
+        snapshot = [self.view snapshotViewAfterScreenUpdates:NO];
+        snapshot.frame = [self.view convertRect:self.view.frame fromView:self.view.superview];
+        [self.view addSubview:snapshot];
+    }
     
     // Update results controller to show hidden blogs
     [self updateFetchRequest];
     
-    [UIView animateWithDuration:0.2 animations:^{
-        snapshot.alpha = 0.0;
-    } completion:^(BOOL finished) {
-        [snapshot removeFromSuperview];
-        snapshot = nil;
-    }];
+    if (animated) {
+        [UIView animateWithDuration:0.2 animations:^{
+            snapshot.alpha = 0.0;
+        } completion:^(BOOL finished) {
+            [snapshot removeFromSuperview];
+            snapshot = nil;
+        }];
+    }
 }
 
 - (void)visibilitySwitchAction:(id)sender {
