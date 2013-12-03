@@ -252,7 +252,6 @@ NSString * const WPBlogListRestorationID = @"WPBlogListID";
     if (indexPath.section == [self sectionForAddSite]) {
         cell.textLabel.text = NSLocalizedString(@"Add a Site", @"");
         cell.selectionStyle = UITableViewCellSelectionStyleBlue;
-        cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
 
         // To align the label, create and add a blank image
         UIGraphicsBeginImageContextWithOptions(CGSizeMake(blavatarImageSize, blavatarImageSize), NO, 0.0);
