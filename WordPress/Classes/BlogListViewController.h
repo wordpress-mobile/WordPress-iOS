@@ -8,6 +8,6 @@
 
 #import <UIKit/UIKit.h>
 
-@interface BlogListViewController : UITableViewController <NSFetchedResultsControllerDelegate>
+@interface BlogListViewController : UITableViewController <NSFetchedResultsControllerDelegate, UIDataSourceModelAssociation>
 
 @end

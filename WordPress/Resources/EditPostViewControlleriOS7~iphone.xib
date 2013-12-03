@@ -1,13 +1,12 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="4510" systemVersion="12F37" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="4514" systemVersion="13A598" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none">
     <dependencies>
-        <deployment version="1280" defaultVersion="1536" identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="3742"/>
+        <deployment version="1280" defaultVersion="1792" identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="3747"/>
     </dependencies>
     <objects>
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="EditPostViewController">
             <connections>
-                <outlet property="createCategoryBarButtonItem" destination="372" id="380"/>
                 <outlet property="leftPreviewSpacer" destination="2RR-9R-BKO" id="hpI-Jo-9wq"/>
                 <outlet property="photoButton" destination="296" id="307"/>
                 <outlet property="previewButton" destination="366" id="368"/>
@@ -94,11 +93,6 @@
             <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
             <simulatedStatusBarMetrics key="simulatedStatusBarMetrics"/>
         </view>
-        <barButtonItem systemItem="add" id="372" userLabel="Add cat btn">
-            <connections>
-                <action selector="showAddNewCategoryView:" destination="-1" id="373"/>
-            </connections>
-        </barButtonItem>
     </objects>
     <resources>
         <image name="icon-posts-editor-inspector.png" width="30" height="30"/>

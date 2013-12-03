@@ -18,12 +18,9 @@
 
 @implementation PagesViewController
 
-- (id)init {
-    self = [super init];
-    if(self) {
-        self.title = NSLocalizedString(@"Pages", @"");
-    }
-    return self;
+- (void)viewDidLoad {
+    [super viewDidLoad];
+    self.title = NSLocalizedString(@"Pages", @"");
 }
 
 - (NSString *)noResultsText
