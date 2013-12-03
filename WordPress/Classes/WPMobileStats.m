@@ -119,14 +119,14 @@ NSString *const StatsPropertyPostDetailSettingsClickedStatus = @"settings_clicke
 NSString *const StatsPropertyPostDetailSettingsClickedVisibility = @"settings_clicked_visibility";
 NSString *const StatsPropertyPostDetailSettingsClickedScheduleFor = @"settings_clicked_schedule_for";
 NSString *const StatsPropertyPostDetailSettingsClickedPostFormat = @"settings_clicked_post_format";
-NSString *const StatsEventPostDetailSettingsClickedSetFeaturedImage = @"Settings - Clicked Set Featured Image";
-NSString *const StatsEventPostDetailSettingsClickedRemoveFeaturedImage = @"Settings - Clicked Remove Featured Image";
-NSString *const StatsEventPostDetailSettingsClickedAddLocation = @"Settings - Clicked Add Location";
-NSString *const StatsEventPostDetailSettingsClickedUpdateLocation = @"Settings - Clicked Update Location";
-NSString *const StatsEventPostDetailSettingsClickedRemoveLocation = @"Settings - Clicked Remove Location";
+NSString *const StatsPropertyPostDetailSettingsClickedSetFeaturedImage = @"settings_clicked_set_featured_image";
+NSString *const StatsPropertyPostDetailSettingsClickedRemoveFeaturedImage = @"settings_clicked_remove_featured_image";
+NSString *const StatsPropertyPostDetailSettingsClickedAddLocation = @"settings_clicked_add_location";
+NSString *const StatsPropertyPostDetailSettingsClickedUpdateLocation = @"settings_clicked_update_location";
+NSString *const StatsPropertyPostDetailSettingsClickedRemoveLocation = @"settings_clicked_remove_location";
 
 // Pages
-NSString *const StatsPropertyPagedOpened = @"pages_opened";
+NSString *const StatsPropertyPagesOpened = @"pages_opened";
 NSString *const StatsEventPagesClickedNewPage = @"Pages - Clicked New Page";
 
 // Comments
@@ -252,12 +252,11 @@ NSString *const StatsEventAddBlogsClickedAddSelected = @"Add Blogs - Clicked Add
     [Mixpanel sharedInstanceWithToken:[WordPressComApiCredentials mixpanelAPIToken]];
 
     // Tracking session count will help us isolate users who just installed the app
-    NSUInteger sessionCount = [[[NSUserDefaults standardUserDefaults] objectForKey:@"session_count"] intValue];
+    NSUInteger sessionCount = [[[[Mixpanel sharedInstance] currentSuperProperties] objectForKey:@"session_count"] intValue];
     sessionCount++;
-    [[NSUserDefaults standardUserDefaults] setObject:@(sessionCount) forKey:@"session_count"];
-    [[NSUserDefaults standardUserDefaults] synchronize];
-
+    
     NSDictionary *properties = @{
+                                 @"platform": @"iOS",
                                  @"session_count": @(sessionCount),
                                  @"connected_to_dotcom": @([[WordPressComApi sharedApi] hasCredentials]),
                                  @"number_of_blogs" : @([Blog countWithContext:[[ContextManager sharedInstance] mainContext]]) };
@@ -337,7 +336,7 @@ NSString *const StatsEventAddBlogsClickedAddSelected = @"Add Blogs - Clicked Add
 {
     int x = arc4random();
     NSString *statsURL = [NSString stringWithFormat:@"%@%@%@%@%d" , kMobileReaderURL, @"&template=stats&stats_name=", statName, @"&rnd=", x];
-    NSMutableURLRequest* request = [[NSMutableURLRequest alloc] initWithURL:[NSURL URLWithString:statsURL  ]];
+    NSMutableURLRequest* request = [[NSMutableURLRequest alloc] initWithURL:[NSURL URLWithString:statsURL]];
     WordPressAppDelegate *appDelegate = (WordPressAppDelegate *)[[UIApplication sharedApplication] delegate];
     [request setValue:[appDelegate applicationUserAgent] forHTTPHeaderField:@"User-Agent"];
     @autoreleasepool {
