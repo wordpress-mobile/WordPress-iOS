@@ -18,12 +18,9 @@
 
 @implementation PagesViewController
 
-- (id)init {
-    self = [super init];
-    if(self) {
-        self.title = NSLocalizedString(@"Pages", @"");
-    }
-    return self;
+- (void)viewDidLoad {
+    [super viewDidLoad];
+    self.title = NSLocalizedString(@"Pages", @"");
 }
 
 - (NSString *)noResultsText
@@ -38,7 +35,7 @@
 
 // For iPhone
 - (void)editPost:(AbstractPost *)apost {
-    EditPageViewController *editPostViewController = [[EditPageViewController alloc] initWithPost:[apost createRevision]];
+    EditPageViewController *editPostViewController = [[EditPageViewController alloc] initWithPost:apost];
     UINavigationController *navController = [[UINavigationController alloc] initWithRootViewController:editPostViewController];
     navController.modalPresentationStyle = UIModalPresentationCurrentContext;
     [self.navigationController presentViewController:navController animated:YES completion:nil];
@@ -64,7 +61,7 @@
 
 - (NSString *)statsPropertyForViewOpening
 {
-    return StatsPropertyPagedOpened;
+    return StatsPropertyPagesOpened;
 }
 
 

@@ -13,6 +13,7 @@
 #import "JetpackSettingsViewController.h"
 #import "WPAccount.h"
 #import <SVProgressHUD/SVProgressHUD.h>
+#import "ContextManager.h"
 
 @interface EditSiteViewController (PrivateMethods)
 
@@ -84,7 +85,7 @@ CGSize const AddSiteLogoSize = { 320.0, 70.0 };
 
 - (void)displayAddUsersBlogsForXmlRpc:(NSString *)xmlrpc
 {
-    WPAccount *account = [WPAccount createOrUpdateSelfHostedAccountWithXmlrpc:xmlrpc username:self.username andPassword:self.password];
+    WPAccount *account = [WPAccount createOrUpdateSelfHostedAccountWithXmlrpc:xmlrpc username:self.username andPassword:self.password withContext:[[ContextManager sharedInstance] mainContext]];
 
     AddUsersBlogsViewController *addUsersBlogsView = [[AddUsersBlogsViewController alloc] initWithAccount:account];
     addUsersBlogsView.isWPcom = NO;
@@ -98,12 +99,12 @@ CGSize const AddSiteLogoSize = { 320.0, 70.0 };
 {
     NSAssert(blogDetails != nil, nil);
 
-    WPAccount *account = [WPAccount createOrUpdateSelfHostedAccountWithXmlrpc:xmlrpc username:self.username andPassword:self.password];
+    WPAccount *account = [WPAccount createOrUpdateSelfHostedAccountWithXmlrpc:xmlrpc username:self.username andPassword:self.password withContext:[[ContextManager sharedInstance] mainContext]];
 
     NSMutableDictionary *newBlog = [NSMutableDictionary dictionaryWithDictionary:blogDetails];
     [newBlog setObject:xmlrpc forKey:@"xmlrpc"];
  
-    self.blog = [account findOrCreateBlogFromDictionary:newBlog withContext:[WordPressAppDelegate sharedWordPressApplicationDelegate].managedObjectContext];
+    self.blog = [account findOrCreateBlogFromDictionary:newBlog withContext:account.managedObjectContext];
     self.blog.geolocationEnabled = self.geolocationEnabled;
     [self.blog dataSave];
 }

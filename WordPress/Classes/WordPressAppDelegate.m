@@ -13,7 +13,6 @@
 #import "WordPressAppDelegate.h"
 #import "Reachability.h"
 #import "NSString+Helpers.h"
-#import "MigrateBlogsFromFiles.h"
 #import "Media.h"
 #import "CameraPlusPickerManager.h"
 #import "UIDevice+WordPressIdentifier.h"
@@ -22,6 +21,7 @@
 #import "PocketAPI.h"
 #import "WPAccount.h"
 #import "SupportViewController.h"
+#import "ContextManager.h"
 #import "ReaderPostsViewController.h"
 #import "NotificationsViewController.h"
 #import "BlogListViewController.h"
@@ -31,28 +31,29 @@
 #import "NotificationsManager.h"
 #import <DDFileLogger.h>
 #import <AFNetworking/AFNetworking.h>
+#import "ContextManager.h"
+#import <CoreTelephony/CTTelephonyNetworkInfo.h>
+#import <CoreTelephony/CTCarrier.h>
 
 #if DEBUG
 #import "DDTTYLogger.h"
 #import "DDASLLogger.h"
 #endif
 
-@interface WordPressAppDelegate(PrivateHockeyApp) <BITHockeyManagerDelegate> {}
-@end
-
 int ddLogLevel = LOG_LEVEL_INFO;
 NSInteger const UpdateCheckAlertViewTag = 102;
+NSString * const WPTabBarRestorationID = @"WPTabBarID";
+NSString * const WPBlogListNavigationRestorationID = @"WPBlogListNavigationID";
+NSString * const WPReaderNavigationRestorationID = @"WPReaderNavigationID";
+NSString * const WPNotificationsNavigationRestorationID = @"WPNotificationsNavigationID";
 
-@interface WordPressAppDelegate () <CrashlyticsDelegate, UIAlertViewDelegate>
+
+@interface WordPressAppDelegate () <CrashlyticsDelegate, UIAlertViewDelegate, BITHockeyManagerDelegate>
 
 @property (nonatomic, assign) BOOL listeningForBlogChanges;
 @property (nonatomic, strong) NotificationsViewController *notificationsViewController;
 @property (nonatomic, assign) UIBackgroundTaskIdentifier bgTask;
 @property (strong, nonatomic) DDFileLogger *fileLogger;
-
-@property (nonatomic, strong) NSManagedObjectContext *managedObjectContext;
-@property (nonatomic, strong) NSManagedObjectModel *managedObjectModel;
-@property (nonatomic, strong) NSPersistentStoreCoordinator *persistentStoreCoordinator;
 
 @end
 
@@ -65,10 +66,11 @@ NSInteger const UpdateCheckAlertViewTag = 102;
 
 #pragma mark - UIApplicationDelegate
 
-- (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
+- (BOOL)application:(UIApplication *)application willFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
     // Crash reporting, logging, debugging
-    [self configureCrashlytics];
     [self configureLogging];
+    [self configureHockeySDK];
+    [self configureCrashlytics];
     [self printDebugLaunchInfo];
     [self toggleExtraDebuggingIfNeeded];
     [self removeCredentialsForDebug];
@@ -165,17 +167,6 @@ NSInteger const UpdateCheckAlertViewTag = 102;
 
     return NO;
 }
-    
-- (void)configureHockeySDK {
-#ifndef INTERNAL_BUILD
-    return;
-#endif
-    [[BITHockeyManager sharedHockeyManager] configureWithIdentifier:[WordPressComApiCredentials hockeyappAppId]
-                                                           delegate:self];
-    [[BITHockeyManager sharedHockeyManager].authenticator setIdentificationType:BITAuthenticatorIdentificationTypeDevice];
-    [[BITHockeyManager sharedHockeyManager] startManager];
-    [[BITHockeyManager sharedHockeyManager].authenticator authenticateInstallation];
-}
 
 - (void)applicationWillTerminate:(UIApplication *)application {
     DDLogInfo(@"%@ %@", self, NSStringFromSelector(_cmd));
@@ -208,12 +199,6 @@ NSInteger const UpdateCheckAlertViewTag = 102;
             }
         });
     }];
-
-    NSError *error = nil;
-    if (![self.managedObjectContext save:&error]) {
-        DDLogError(@"Unresolved Core Data Save error %@, %@", error, [error userInfo]);
-        exit(-1);
-    }
 }
 
 - (void)applicationWillEnterForeground:(UIApplication *)application
@@ -234,6 +219,17 @@ NSInteger const UpdateCheckAlertViewTag = 102;
     [UIApplication sharedApplication].applicationIconBadgeNumber = 0;
     [[WordPressComApi sharedApi] syncPushNotificationInfo];
 }
+
+- (BOOL)application:(UIApplication *)application shouldSaveApplicationState:(NSCoder *)coder
+{
+    return YES;
+}
+
+- (BOOL)application:(UIApplication *)application shouldRestoreApplicationState:(NSCoder *)coder
+{
+    return YES;
+}
+
 
 #pragma mark - Push Notification delegate
 
@@ -275,7 +271,7 @@ NSInteger const UpdateCheckAlertViewTag = 102;
 }
 
 - (BOOL)noBlogsAndNoWordPressDotComAccount {
-    NSInteger blogCount = [Blog countWithContext:[WordPressAppDelegate sharedWordPressApplicationDelegate].managedObjectContext];
+    NSInteger blogCount = [Blog countWithContext:[[ContextManager sharedInstance] mainContext]];
     return blogCount == 0 && ![WPAccount defaultWordPressComAccount];
 }
 
@@ -302,31 +298,29 @@ NSInteger const UpdateCheckAlertViewTag = 102;
 #pragma mark - Tab bar setup
 
 - (UITabBarController *)tabBarController {
-    if (_tabBarController) {
-        return _tabBarController;
-    }
     _tabBarController = [[UITabBarController alloc] init];
-    
-    if ([_tabBarController.tabBar respondsToSelector:@selector(setTranslucent:)]) {
-        [_tabBarController.tabBar setTranslucent:NO];
-    }
-    
+    _tabBarController.restorationIdentifier = WPTabBarRestorationID;
+    [_tabBarController.tabBar setTranslucent:NO];
+
     self.readerPostsViewController = [[ReaderPostsViewController alloc] init];
     UINavigationController *readerNavigationController = [[UINavigationController alloc] initWithRootViewController:self.readerPostsViewController];
     readerNavigationController.navigationBar.translucent = NO;
     readerNavigationController.tabBarItem.image = [UIImage imageNamed:@"icon-tab-reader"];
+    readerNavigationController.restorationIdentifier = WPReaderNavigationRestorationID;
     self.readerPostsViewController.title = @"Reader";
     
     self.notificationsViewController = [[NotificationsViewController alloc] init];
     UINavigationController *notificationsNavigationController = [[UINavigationController alloc] initWithRootViewController:self.notificationsViewController];
     notificationsNavigationController.navigationBar.translucent = NO;
     notificationsNavigationController.tabBarItem.image = [UIImage imageNamed:@"icon-tab-notifications"];
+    notificationsNavigationController.restorationIdentifier = WPNotificationsNavigationRestorationID;
     self.notificationsViewController.title = @"Notifications";
     
     BlogListViewController *blogListViewController = [[BlogListViewController alloc] init];
     UINavigationController *blogListNavigationController = [[UINavigationController alloc] initWithRootViewController:blogListViewController];
     blogListNavigationController.navigationBar.translucent = NO;
     blogListNavigationController.tabBarItem.image = [UIImage imageNamed:@"icon-tab-blogs"];
+    blogListNavigationController.restorationIdentifier = WPBlogListNavigationRestorationID;
     blogListViewController.title = @"My Blogs";
     _tabBarController.viewControllers = [NSArray arrayWithObjects:blogListNavigationController, readerNavigationController, notificationsNavigationController, nil];
     
@@ -349,148 +343,6 @@ NSInteger const UpdateCheckAlertViewTag = 102;
             [[UIApplication sharedApplication] openURL:[NSURL URLWithString:@"http://itunes.apple.com/us/app/wordpress/id335703880?mt=8&ls=1"]];
         }
     }
-}
-
-
-#pragma mark - Core Data stack
-
-- (NSManagedObjectContext *)managedObjectContext {
-    if (_managedObjectContext != nil) {
-        return _managedObjectContext;
-    }
-    
-    NSPersistentStoreCoordinator *coordinator = [self persistentStoreCoordinator];
-    if (coordinator != nil) {
-        _managedObjectContext = [[NSManagedObjectContext alloc] initWithConcurrencyType:NSMainQueueConcurrencyType];
-        [_managedObjectContext setPersistentStoreCoordinator:coordinator];
-    }
-    return _managedObjectContext;
-}
-
-- (NSManagedObjectModel *)managedObjectModel {
-    if (_managedObjectModel != nil) {
-        return _managedObjectModel;
-    }
-    NSString *modelPath = [[NSBundle mainBundle] pathForResource:@"WordPress" ofType:@"momd"];
-    NSURL *modelURL = [NSURL fileURLWithPath:modelPath];
-    _managedObjectModel = [[NSManagedObjectModel alloc] initWithContentsOfURL:modelURL];    
-    return _managedObjectModel;
-}
-
-- (NSPersistentStoreCoordinator *)persistentStoreCoordinator {
-    
-    if (_persistentStoreCoordinator != nil) {
-        return _persistentStoreCoordinator;
-    }
-    
-    NSURL *storeURL = [NSURL fileURLWithPath: [[self applicationDocumentsDirectory] stringByAppendingPathComponent: @"WordPress.sqlite"]];
-	
-	// This is important for automatic version migration. Leave it here!
-	NSDictionary *options = [NSDictionary dictionaryWithObjectsAndKeys:
-							 [NSNumber numberWithBool:YES], NSInferMappingModelAutomaticallyOption,
-							 [NSNumber numberWithBool:YES], NSMigratePersistentStoresAutomaticallyOption, nil];
-	
-	NSError *error = nil;
-	
-// The following conditional code is meant to test the detection of mapping model for migrations
-// It should remain disabled unless you are debugging why migrations aren't run
-#if FALSE
-	DDLogInfo(@"Debugging migration detection");
-	NSDictionary *sourceMetadata = [NSPersistentStoreCoordinator metadataForPersistentStoreOfType:NSSQLiteStoreType
-																							  URL:storeURL
-																							error:&error];
-	if (sourceMetadata == nil) {
-		DDLogInfo(@"Can't find source persistent store");
-	} else {
-		DDLogInfo(@"Source store: %@", sourceMetadata);
-	}
-	NSManagedObjectModel *destinationModel = [self managedObjectModel];
-	BOOL pscCompatibile = [destinationModel
-						   isConfiguration:nil
-						   compatibleWithStoreMetadata:sourceMetadata];
-	if (pscCompatibile) {
-		DDLogInfo(@"No migration needed");
-	} else {
-		DDLogInfo(@"Migration needed");
-	}
-	NSManagedObjectModel *sourceModel = [NSManagedObjectModel mergedModelFromBundles:nil forStoreMetadata:sourceMetadata];
-	if (sourceModel != nil) {
-		DDLogInfo(@"source model found");
-	} else {
-		DDLogInfo(@"source model not found");
-	}
-
-	NSMigrationManager *manager = [[NSMigrationManager alloc] initWithSourceModel:sourceModel
-																 destinationModel:destinationModel];
-	NSMappingModel *mappingModel = [NSMappingModel mappingModelFromBundles:[NSArray arrayWithObject:[NSBundle mainBundle]]
-															forSourceModel:sourceModel
-														  destinationModel:destinationModel];
-	if (mappingModel != nil) {
-		DDLogInfo(@"mapping model found");
-	} else {
-		DDLogInfo(@"mapping model not found");
-	}
-
-	if (NO) {
-		BOOL migrates = [manager migrateStoreFromURL:storeURL
-												type:NSSQLiteStoreType
-											 options:nil
-									withMappingModel:mappingModel
-									toDestinationURL:storeURL
-									 destinationType:NSSQLiteStoreType
-								  destinationOptions:nil
-											   error:&error];
-
-		if (migrates) {
-			DDLogInfo(@"migration went OK");
-		} else {
-			DDLogInfo(@"migration failed: %@", [error localizedDescription]);
-		}
-	}
-	
-	DDLogInfo(@"End of debugging migration detection");
-#endif
-    _persistentStoreCoordinator = [[NSPersistentStoreCoordinator alloc] initWithManagedObjectModel:[self managedObjectModel]];
-    if (![_persistentStoreCoordinator addPersistentStoreWithType:NSSQLiteStoreType configuration:nil URL:storeURL options:options error:&error]) {
-		DDLogError(@"Error opening the database. %@\nDeleting the file and trying again", error);
-#ifdef CORE_DATA_MIGRATION_DEBUG
-		// Don't delete the database on debug builds
-		// Makes migration debugging less of a pain
-		abort();
-#endif
-
-        // make a backup of the old database
-        [[NSFileManager defaultManager] copyItemAtPath:storeURL.path toPath:[storeURL.path stringByAppendingString:@"~"] error:&error];
-        // delete the sqlite file and try again
-		[[NSFileManager defaultManager] removeItemAtPath:storeURL.path error:nil];
-		if (![_persistentStoreCoordinator addPersistentStoreWithType:NSSQLiteStoreType configuration:nil URL:storeURL options:nil error:&error]) {
-			DDLogError(@"Unresolved error %@, %@", error, [error userInfo]);
-			abort();
-		}
-
-        // If everything went wrong and we lost the DB, we sign out and simulate a fresh install
-        // It's equally annoying, but it's more confusing to stay logged in to the reader having lost all the blogs in the app
-        [[WordPressComApi sharedApi] signOut];
-    } else {
-		// If there are no blogs and blogs.archive still exists, force import of blogs
-		NSFileManager *fileManager = [NSFileManager defaultManager];
-		NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
-		NSString *currentDirectoryPath = [[paths objectAtIndex:0] stringByAppendingPathComponent:@"wordpress"];
-		NSString *blogsArchiveFilePath = [currentDirectoryPath stringByAppendingPathComponent:@"blogs.archive"];
-		if ([fileManager fileExistsAtPath:blogsArchiveFilePath]) {
-			NSManagedObjectContext *destMOC = [[NSManagedObjectContext alloc] init];
-			[destMOC setPersistentStoreCoordinator:_persistentStoreCoordinator];
-
-			MigrateBlogsFromFiles *blogMigrator = [[MigrateBlogsFromFiles alloc] init];
-			[blogMigrator forceBlogsMigrationInContext:destMOC error:&error];
-			if (![destMOC save:&error]) {
-				DDLogError(@"Error saving blogs-only migration: %@", error);
-			}
-			[fileManager removeItemAtPath:blogsArchiveFilePath error:&error];
-		}
-	}
-    
-    return _persistentStoreCoordinator;
 }
 
 
@@ -556,7 +408,7 @@ NSInteger const UpdateCheckAlertViewTag = 102;
 	 */
 	NSDictionary *info = [[NSBundle mainBundle] infoDictionary];
 	NSLocale *locale = [NSLocale currentLocale];
-	NSInteger blogCount = [Blog countWithContext:[self managedObjectContext]];
+	NSInteger blogCount = [Blog countWithContext:[[ContextManager sharedInstance] mainContext]];
     NSDictionary *parameters = @{@"device_uuid": [[UIDevice currentDevice] wordpressIdentifier],
                                  @"app_version": [[info objectForKey:@"CFBundleVersion"] stringByUrlEncoding],
                                  @"language": [[locale objectForKey: NSLocaleIdentifier] stringByUrlEncoding],
@@ -667,61 +519,83 @@ NSInteger const UpdateCheckAlertViewTag = 102;
 {
     [Crashlytics setObjectValue:[NSNumber numberWithBool:[[WordPressComApi sharedApi] hasCredentials]] forKey:@"logged_in"];
     [Crashlytics setObjectValue:@([[WordPressComApi sharedApi] hasCredentials]) forKey:@"connected_to_dotcom"];
-    [Crashlytics setObjectValue:@([Blog countWithContext:[self managedObjectContext]]) forKey:@"number_of_blogs"];
+    [Crashlytics setObjectValue:@([Blog countWithContext:[[ContextManager sharedInstance] mainContext]]) forKey:@"number_of_blogs"];
 }
 
+- (void)configureHockeySDK {
+#ifndef INTERNAL_BUILD
+    return;
+#endif
+    [[BITHockeyManager sharedHockeyManager] configureWithIdentifier:[WordPressComApiCredentials hockeyappAppId]
+                                                           delegate:self];
+    [[BITHockeyManager sharedHockeyManager].authenticator setIdentificationType:BITAuthenticatorIdentificationTypeDevice];
+    [[BITHockeyManager sharedHockeyManager] startManager];
+    [[BITHockeyManager sharedHockeyManager].authenticator authenticateInstallation];
+}
+
+#pragma mark - BITCrashManagerDelegate
+
+- (NSString *)applicationLogForCrashManager:(BITCrashManager *)crashManager {
+    NSString *description = [self getLogFilesContentWithMaxSize:5000]; // 5000 bytes should be enough!
+    if ([description length] == 0) {
+        return nil;
+    } else {
+        return description;
+    }
+}
 
 #pragma mark - Media cleanup
 
 - (void)cleanUnusedMediaFileFromTmpDir {
     DDLogInfo(@"%@ %@", self, NSStringFromSelector(_cmd));
-    NSMutableArray *mediaToKeep = [NSMutableArray array];
 
-    NSError *error = nil;
-    NSManagedObjectContext *context = [[NSManagedObjectContext alloc] init];
-    [context setUndoManager:nil];
-    [context setPersistentStoreCoordinator:self.persistentStoreCoordinator];
-    NSFetchRequest *fetchRequest = [[NSFetchRequest alloc] init];
-    [fetchRequest setEntity:[NSEntityDescription entityForName:@"Media" inManagedObjectContext:context]];
-    NSPredicate *predicate = [NSPredicate predicateWithFormat:@"ANY posts.blog != NULL AND remoteStatusNumber <> %@", @(MediaRemoteStatusSync)];
-    [fetchRequest setPredicate:predicate];
-    NSArray *mediaObjectsToKeep = [context executeFetchRequest:fetchRequest error:&error];
-    if (error != nil) {
-        DDLogError(@"Error cleaning up tmp files: %@", [error localizedDescription]);
-    }
-    //get a references to media files linked in a post
-    DDLogInfo(@"%i media items to check for cleanup", [mediaObjectsToKeep count]);
-    for (Media *media in mediaObjectsToKeep) {
-        [mediaToKeep addObject:media.localURL];
-    }
-    
-    //searches for jpg files within the app temp file
-    NSFileManager *fileManager = [NSFileManager defaultManager];
-    NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
-    NSString *documentsDirectory = [paths objectAtIndex:0];
-    NSArray *contentsOfDir = [fileManager contentsOfDirectoryAtPath:documentsDirectory error:NULL];
-    
-    NSError *regexpError = NULL;
-    NSRegularExpression *jpeg = [NSRegularExpression regularExpressionWithPattern:@".jpg$" options:NSRegularExpressionCaseInsensitive error:&regexpError];
-    
-    for (NSString *currentPath in contentsOfDir) {
-        if([jpeg numberOfMatchesInString:currentPath options:0 range:NSMakeRange(0, [currentPath length])] > 0) {
-            NSString *filepath = [documentsDirectory stringByAppendingPathComponent:currentPath];
-            
-            BOOL keep = NO;
-            //if the file is not referenced in any post we can delete it
-            for (NSString *currentMediaToKeepPath in mediaToKeep) {
-                if([currentMediaToKeepPath isEqualToString:filepath]) {
-                    keep = YES;
-                    break;
+    NSManagedObjectContext *context = [[ContextManager sharedInstance] backgroundContext];
+    [context performBlock:^{
+        NSError *error;
+        NSMutableArray *mediaToKeep = [NSMutableArray array];
+        
+        NSFetchRequest *fetchRequest = [[NSFetchRequest alloc] init];
+        [fetchRequest setEntity:[NSEntityDescription entityForName:@"Media" inManagedObjectContext:context]];
+        NSPredicate *predicate = [NSPredicate predicateWithFormat:@"ANY posts.blog != NULL AND remoteStatusNumber <> %@", @(MediaRemoteStatusSync)];
+        [fetchRequest setPredicate:predicate];
+        NSArray *mediaObjectsToKeep = [context executeFetchRequest:fetchRequest error:&error];
+        if (error != nil) {
+            DDLogError(@"Error cleaning up tmp files: %@", [error localizedDescription]);
+        }
+        //get a references to media files linked in a post
+        DDLogInfo(@"%i media items to check for cleanup", [mediaObjectsToKeep count]);
+        for (Media *media in mediaObjectsToKeep) {
+            [mediaToKeep addObject:media.localURL];
+        }
+        
+        //searches for jpg files within the app temp file
+        NSFileManager *fileManager = [NSFileManager defaultManager];
+        NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
+        NSString *documentsDirectory = [paths objectAtIndex:0];
+        NSArray *contentsOfDir = [fileManager contentsOfDirectoryAtPath:documentsDirectory error:NULL];
+        
+        NSError *regexpError = NULL;
+        NSRegularExpression *jpeg = [NSRegularExpression regularExpressionWithPattern:@".jpg$" options:NSRegularExpressionCaseInsensitive error:&regexpError];
+        
+        for (NSString *currentPath in contentsOfDir) {
+            if([jpeg numberOfMatchesInString:currentPath options:0 range:NSMakeRange(0, [currentPath length])] > 0) {
+                NSString *filepath = [documentsDirectory stringByAppendingPathComponent:currentPath];
+                
+                BOOL keep = NO;
+                //if the file is not referenced in any post we can delete it
+                for (NSString *currentMediaToKeepPath in mediaToKeep) {
+                    if([currentMediaToKeepPath isEqualToString:filepath]) {
+                        keep = YES;
+                        break;
+                    }
+                }
+                
+                if(keep == NO) {
+                    [fileManager removeItemAtPath:filepath error:NULL];
                 }
             }
-            
-            if(keep == NO) {
-                [fileManager removeItemAtPath:filepath error:NULL];
-            }
         }
-    }
+    }];
 }
 
 
@@ -781,73 +655,82 @@ NSInteger const UpdateCheckAlertViewTag = 102;
     self.connectionAvailable = YES;
     
     // allocate the internet reachability object
-    _internetReachability = [Reachability reachabilityForInternetConnection];
-
-    self.connectionAvailable = [_internetReachability isReachable];
+    self.internetReachability = [Reachability reachabilityForInternetConnection];
+    
     // set the blocks
-    _internetReachability.reachableBlock = ^(Reachability*reach)
-    {
-        DDLogInfo(@"Internet connection is back");
-        self.connectionAvailable = YES;
+    void (^internetReachabilityBlock)(Reachability *) = ^(Reachability *reach) {
+        NSString *wifi = reach.isReachableViaWiFi ? @"Y" : @"N";
+        NSString *wwan = reach.isReachableViaWWAN ? @"Y" : @"N";
+        
+        DDLogInfo(@"Reachability - Internet - WiFi: %@  WWAN: %@", wifi, wwan);
+        self.connectionAvailable = reach.isReachable;
     };
-    _internetReachability.unreachableBlock = ^(Reachability*reach)
-    {
-        DDLogInfo(@"No internet connection");
-        self.connectionAvailable = NO;
-    };
+    self.internetReachability.reachableBlock = internetReachabilityBlock;
+    self.internetReachability.unreachableBlock = internetReachabilityBlock;
+    
     // start the notifier which will cause the reachability object to retain itself!
-    [_internetReachability startNotifier];
+    [self.internetReachability startNotifier];
+    self.connectionAvailable = [self.internetReachability isReachable];
     
     // allocate the WP.com reachability object
-    _wpcomReachability = [Reachability reachabilityWithHostname:@"wordpress.com"];
+    self.wpcomReachability = [Reachability reachabilityWithHostname:@"wordpress.com"];
+
     // set the blocks
-    _wpcomReachability.reachableBlock = ^(Reachability*reach)
-    {
-        DDLogInfo(@"Connection to WordPress.com is back");
-        self.wpcomAvailable = YES;
+    void (^wpcomReachabilityBlock)(Reachability *) = ^(Reachability *reach) {
+        NSString *wifi = reach.isReachableViaWiFi ? @"Y" : @"N";
+        NSString *wwan = reach.isReachableViaWWAN ? @"Y" : @"N";
+        CTTelephonyNetworkInfo *netInfo = [CTTelephonyNetworkInfo new];
+        CTCarrier *carrier = [netInfo subscriberCellularProvider];
+        NSString *type = nil;
+        if ([netInfo respondsToSelector:@selector(currentRadioAccessTechnology)]) {
+            type = [netInfo currentRadioAccessTechnology];
+        }
+        NSString *carrierName = nil;
+        if (carrier) {
+            carrierName = [NSString stringWithFormat:@"%@ [%@/%@/%@]", carrier.carrierName, [carrier.isoCountryCode uppercaseString], carrier.mobileCountryCode, carrier.mobileNetworkCode];
+        }
+        
+        DDLogInfo(@"Reachability - WordPress.com - WiFi: %@  WWAN: %@  Carrier: %@  Type: %@", wifi, wwan, carrierName, type);
+        self.wpcomAvailable = reach.isReachable;
     };
-    _wpcomReachability.unreachableBlock = ^(Reachability*reach)
-    {
-        DDLogInfo(@"No connection to WordPress.com");
-        self.wpcomAvailable = NO;
-    };
+    self.wpcomReachability.reachableBlock = wpcomReachabilityBlock;
+    self.wpcomReachability.unreachableBlock = wpcomReachabilityBlock;
+
     // start the notifier which will cause the reachability object to retain itself!
-    [_wpcomReachability startNotifier];
+    [self.wpcomReachability startNotifier];
 #pragma clang diagnostic pop
 }
 
+// TODO :: Eliminate this check or at least move it to WordPressComApi (or WPAccount)
 - (void)checkWPcomAuthentication {
-    if ([[NSUserDefaults standardUserDefaults] objectForKey:@"wpcom_authenticated_flag"] != nil) {
-        NSString *tempIsAuthenticated = (NSString *)[[NSUserDefaults standardUserDefaults] objectForKey:@"wpcom_authenticated_flag"];
-        if ([tempIsAuthenticated isEqualToString:@"1"]) {
-            self.isWPcomAuthenticated = YES;
-        }
-    }
+    // Temporarily set the is authenticated flag based upon if we have a WP.com OAuth2 token
+    // TODO :: Move this BOOL to a method on the WordPressComApi along with checkWPcomAuthentication
+    BOOL tempIsAuthenticated = [[WordPressComApi sharedApi] authToken].length > 0;
+    self.isWPcomAuthenticated = tempIsAuthenticated;
     
 	NSString *authURL = @"https://wordpress.com/xmlrpc.php";
+
     WPAccount *account = [WPAccount defaultWordPressComAccount];
 	if (account) {
         WPXMLRPCClient *client = [WPXMLRPCClient clientWithXMLRPCEndpoint:[NSURL URLWithString:authURL]];
+        [client setAuthorizationHeaderWithToken:[[WordPressComApi sharedApi] authToken]];
         [client callMethod:@"wp.getUsersBlogs"
                 parameters:[NSArray arrayWithObjects:account.username, account.password, nil]
                    success:^(AFHTTPRequestOperation *operation, id responseObject) {
                        self.isWPcomAuthenticated = YES;
                        DDLogInfo(@"Logged in to WordPress.com as %@", account.username);
                    } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
-                       if ([error.domain isEqualToString:@"XMLRPC"] && error.code == 403) {
+                       if ([error.domain isEqualToString:@"WPXMLRPCFaultError"] ||
+                           ([error.domain isEqualToString:@"XMLRPC"] && error.code == 403)) {
                            self.isWPcomAuthenticated = NO;
+                           [[WordPressComApi sharedApi] invalidateOAuth2Token];
                        }
+                       
                        DDLogError(@"Error authenticating %@ with WordPress.com: %@", account.username, [error description]);
                    }];
 	} else {
 		self.isWPcomAuthenticated = NO;
 	}
-    
-	if (self.isWPcomAuthenticated) {
-		[[NSUserDefaults standardUserDefaults] setObject:@"1" forKey:@"wpcom_authenticated_flag"];
-	} else {
-		[[NSUserDefaults standardUserDefaults] setObject:@"0" forKey:@"wpcom_authenticated_flag"];
-    }
 }
 
 
@@ -983,6 +866,8 @@ NSInteger const UpdateCheckAlertViewTag = 102;
     [DDLog addLogger:[CrashlyticsLogger sharedInstance]];
 #endif
     
+    [DDLog addLogger:self.fileLogger];
+    
     BOOL extraDebug = [[NSUserDefaults standardUserDefaults] boolForKey:@"extra_debug"];
     if (extraDebug) {
         ddLogLevel = LOG_LEVEL_VERBOSE;
@@ -996,8 +881,36 @@ NSInteger const UpdateCheckAlertViewTag = 102;
     _fileLogger = [[DDFileLogger alloc] init];
     _fileLogger.rollingFrequency = 60 * 60 * 24; // 24 hour rolling
     _fileLogger.logFileManager.maximumNumberOfLogFiles = 7;
-    [DDLog addLogger:_fileLogger];
+    
     return _fileLogger;
+}
+
+// get the log content with a maximum byte size
+- (NSString *) getLogFilesContentWithMaxSize:(NSInteger)maxSize {
+    NSMutableString *description = [NSMutableString string];
+    
+    NSArray *sortedLogFileInfos = [[self.fileLogger logFileManager] sortedLogFileInfos];
+    NSInteger count = [sortedLogFileInfos count];
+    
+    // we start from the last one
+    for (NSInteger index = 0; index < count; index++) {
+        DDLogFileInfo *logFileInfo = [sortedLogFileInfos objectAtIndex:index];
+        
+        NSData *logData = [[NSFileManager defaultManager] contentsAtPath:[logFileInfo filePath]];
+        if ([logData length] > 0) {
+            NSString *result = [[NSString alloc] initWithBytes:[logData bytes]
+                                                        length:[logData length]
+                                                      encoding: NSUTF8StringEncoding];
+            
+            [description appendString:result];
+        }
+    }
+    
+    if ([description length] > maxSize) {
+        description = (NSMutableString *)[description substringWithRange:NSMakeRange([description length] - maxSize - 1, maxSize)];
+    }
+    
+    return description;
 }
 
 - (void)toggleExtraDebuggingIfNeeded {
@@ -1007,8 +920,8 @@ NSInteger const UpdateCheckAlertViewTag = 102;
         [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(handleLogoutOrBlogsChangedNotification:) name:WordPressComApiDidLogoutNotification object:nil];
     }
     
-	int num_blogs = [Blog countWithContext:[self managedObjectContext]];
-	BOOL authed = [[[NSUserDefaults standardUserDefaults] objectForKey:@"wpcom_authenticated_flag"] boolValue];
+	int num_blogs = [Blog countWithContext:[[ContextManager sharedInstance] mainContext]];
+	BOOL authed = self.isWPcomAuthenticated;
 	if (num_blogs == 0 && !authed) {
 		// When there are no blogs in the app the settings screen is unavailable.
 		// In this case, enable extra_debugging by default to help troubleshoot any issues.
@@ -1041,6 +954,5 @@ NSInteger const UpdateCheckAlertViewTag = 102;
 - (void)handleLogoutOrBlogsChangedNotification:(NSNotification *)notification {
 	[self toggleExtraDebuggingIfNeeded];
 }
-
 
 @end

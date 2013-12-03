@@ -38,7 +38,7 @@ typedef enum {
 @property (nonatomic) AbstractPostRemoteStatus remoteStatus;
 @property (nonatomic, strong) NSNumber * post_thumbnail;
 
-@property (readonly) BOOL hasChanges;
+@property (readonly) BOOL hasChanged;
 @property (nonatomic, assign) BOOL isFeaturedImageChanged;
 
 - (NSArray *)availableStatuses;

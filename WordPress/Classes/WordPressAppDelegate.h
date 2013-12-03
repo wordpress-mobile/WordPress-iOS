@@ -16,18 +16,12 @@
 
 @property (nonatomic, strong) IBOutlet UIWindow *window;
 @property (nonatomic, strong) UINavigationController *navigationController;
-
 @property (nonatomic, assign) BOOL isWPcomAuthenticated;
-@property (nonatomic, strong, readonly) NSManagedObjectContext *managedObjectContext;
-@property (nonatomic, strong, readonly) NSManagedObjectModel *managedObjectModel;
-@property (nonatomic, strong, readonly) NSPersistentStoreCoordinator *persistentStoreCoordinator;
 @property (nonatomic, strong) UITabBarController *tabBarController;
 @property (nonatomic, strong) ReaderPostsViewController *readerPostsViewController;
 @property (strong, nonatomic, readonly) DDFileLogger *fileLogger;
-
 @property (nonatomic, strong) Reachability *internetReachability, *wpcomReachability;
 @property (nonatomic, assign) BOOL connectionAvailable, wpcomAvailable;
-
 
 + (WordPressAppDelegate *)sharedWordPressApplicationDelegate;
 

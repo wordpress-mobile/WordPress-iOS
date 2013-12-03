@@ -15,21 +15,13 @@
 #import "NSURL+IDN.h"
 #import "NSString+XMLExtensions.h"
 #import "WPError.h"
+#import "ContextManager.h"
+#import "WordPressComApi.h"
 
 @interface Blog (PrivateMethods)
-- (WPXMLRPCRequestOperation *)operationForOptionsWithSuccess:(void (^)())success failure:(void (^)(NSError *error))failure;
-- (WPXMLRPCRequestOperation *)operationForPostFormatsWithSuccess:(void (^)())success failure:(void (^)(NSError *error))failure;
-- (WPXMLRPCRequestOperation *)operationForCommentsWithSuccess:(void (^)())success failure:(void (^)(NSError *error))failure;
-- (WPXMLRPCRequestOperation *)operationForCategoriesWithSuccess:(void (^)())success failure:(void (^)(NSError *error))failure;
-- (WPXMLRPCRequestOperation *)operationForPostsWithSuccess:(void (^)())success failure:(void (^)(NSError *error))failure loadMore:(BOOL)more;
-- (WPXMLRPCRequestOperation *)operationForPagesWithSuccess:(void (^)())success failure:(void (^)(NSError *error))failure loadMore:(BOOL)more;
-
-- (void)mergeCategories:(NSArray *)newCategories;
-- (void)mergeComments:(NSArray *)newComments;
-- (void)mergePages:(NSArray *)newPages;
-- (void)mergePosts:(NSArray *)newPosts;
 
 @property (readwrite, assign) BOOL reachable;
+
 @end
 
 
@@ -264,42 +256,13 @@
 }
 
 - (void)awakeFromFetch {
-    [self reachability];
+    if (!self.isDeleted) {
+        [self reachability];
+    }
 }
 
 - (void)dataSave {
-    [self dataSaveWithContext:self.managedObjectContext];
-}
-
-- (void)dataSaveWithContext:(NSManagedObjectContext*)context {
-    __block NSError *error = nil;
-    [context performBlock:^{
-        if (![context save:&error]) {
-            DDLogInfo(@"Unresolved Core Data Save error %@, %@", error, [error userInfo]);
-            #if DEBUG
-            exit(-1);
-            #endif
-        }
-        if (context.parentContext) {
-            [context.parentContext performBlock:^{
-                if (![context.parentContext save:&error]) {
-                    DDLogInfo(@"Unresolved Core Data Save error %@, %@", error, [error userInfo]);
-                    #if DEBUG
-                    exit(-1);
-                    #endif
-                }
-            }];
-        }
-        // Is this needed?
-//        dispatch_block_t notify = ^{
-//            [[NSNotificationCenter defaultCenter] postNotificationName:BlogChangedNotification object:nil];
-//        };
-//        if (![NSThread isMainThread]) {
-//            dispatch_async(dispatch_get_main_queue(), notify);
-//        } else {
-//            notify();
-//        }
-    }];
+    [[ContextManager sharedInstance] saveContext:self.managedObjectContext];
 }
 
 - (void)remove {
@@ -308,8 +271,10 @@
     _reachability.reachableBlock = nil;
     _reachability.unreachableBlock = nil;
     [_reachability stopNotifier];
-    [[self managedObjectContext] deleteObject:self];
-    [self dataSave];
+    [self.managedObjectContext performBlock:^{
+        [[self managedObjectContext] deleteObject:self];
+        [self dataSave];
+    }];
 }
 
 - (void)setXmlrpc:(NSString *)xmlrpc {
@@ -383,21 +348,22 @@
 #pragma mark -
 #pragma mark Synchronization
 
-- (NSArray *)syncedPostsWithEntityName:(NSString *)entityName withContext:(NSManagedObjectContext*)context {
-    NSFetchRequest *request = [[NSFetchRequest alloc] init];
-    [request setEntity:[NSEntityDescription entityForName:entityName inManagedObjectContext:context]];
-    NSPredicate *predicate = [NSPredicate predicateWithFormat:@"(remoteStatusNumber = %@) AND (postID != NULL) AND (original == NULL) AND (blog = %@)",
-							  [NSNumber numberWithInt:AbstractPostRemoteStatusSync], self]; 
+- (NSUInteger)countForSyncedPostsWithEntityName:(NSString *)entityName {
+    __block NSUInteger count = 0;
+    NSFetchRequest *request = [NSFetchRequest fetchRequestWithEntityName:entityName];
+    NSPredicate *predicate = [NSPredicate predicateWithFormat:@"(remoteStatusNumber == %@) AND (postID != NULL) AND (original == NULL) AND (blog == %@)",
+                              [NSNumber numberWithInt:AbstractPostRemoteStatusSync], self];
     [request setPredicate:predicate];
     NSSortDescriptor *sortDescriptor = [[NSSortDescriptor alloc] initWithKey:@"date_created_gmt" ascending:YES];
     [request setSortDescriptors:[NSArray arrayWithObject:sortDescriptor]];
+    request.includesSubentities = NO;
+    request.resultType = NSCountResultType;
     
-    NSError *error = nil;
-    NSArray *array = [context executeFetchRequest:request error:&error];
-    if (array == nil) {
-        array = [NSArray array];
-    }
-    return array;
+    [self.managedObjectContext performBlockAndWait:^{
+        NSError *error = nil;
+        count = [self.managedObjectContext countForFetchRequest:request error:&error];
+    }];
+    return count;
 }
 
 - (void)syncPostsWithSuccess:(void (^)())success failure:(void (^)(NSError *error))failure loadMore:(BOOL)more {
@@ -432,11 +398,15 @@
 }
 
 - (id)getOptionValue:(NSString *) name {
-	if ( self.options == nil || (self.options.count == 0) ) {
-        return nil;
-    }
-    NSDictionary *currentOption = [self.options objectForKey:name];
-    return [currentOption objectForKey:@"value"];
+    __block id optionValue;
+    [self.managedObjectContext performBlockAndWait:^{
+        if ( self.options == nil || (self.options.count == 0) ) {
+            optionValue = nil;
+        }
+        NSDictionary *currentOption = [self.options objectForKey:name];
+        optionValue = [currentOption objectForKey:@"value"];
+    }];
+	return optionValue;
 }
 
 - (void)syncCommentsWithSuccess:(void (^)())success failure:(void (^)(NSError *error))failure {
@@ -552,6 +522,7 @@
         // Enable compression for wp.com only, as some self hosted have connection issues
         if (self.isWPcom) {
             [_api setDefaultHeader:@"gzip, deflate" value:@"Accept-Encoding"];
+            [_api setAuthorizationHeaderWithToken:[WordPressComApi sharedApi].authToken];
         }
     }
     return _api;
@@ -560,405 +531,240 @@
 #pragma mark -
 
 - (WPXMLRPCRequestOperation *)operationForOptionsWithSuccess:(void (^)())success failure:(void (^)(NSError *error))failure {
-    NSArray *parameters = [self getXMLRPCArgsWithExtra:nil];
-    WPXMLRPCRequest *request = [self.api XMLRPCRequestWithMethod:@"wp.getOptions" parameters:parameters];
-    WPXMLRPCRequestOperation *operation = [self.api XMLRPCRequestOperationWithRequest:request success:^(AFHTTPRequestOperation *operation, id responseObject) {
-        if ([self isDeleted] || self.managedObjectContext == nil)
-            return;
-
-        self.options = [NSDictionary dictionaryWithDictionary:(NSDictionary *)responseObject];
-        NSString *minimumVersion = @"3.1";
-        float version = [[self version] floatValue];
-        if (version < [minimumVersion floatValue]) {
-            if (self.lastUpdateWarning == nil || [self.lastUpdateWarning floatValue] < [minimumVersion floatValue]) {
-                [WPError showAlertWithTitle:NSLocalizedString(@"WordPress version too old", @"")
-                                                                      message:[NSString stringWithFormat:NSLocalizedString(@"The site at %@ uses WordPress %@. We recommend to update to the latest version, or at least %@", @""), [self hostname], [self version], minimumVersion]];
-                self.lastUpdateWarning = minimumVersion;
+    __block WPXMLRPCRequestOperation *operation;
+    [self.managedObjectContext performBlockAndWait:^{
+        NSArray *parameters = [self getXMLRPCArgsWithExtra:nil];
+        WPXMLRPCRequest *request = [self.api XMLRPCRequestWithMethod:@"wp.getOptions" parameters:parameters];
+        operation = [self.api XMLRPCRequestOperationWithRequest:request success:^(AFHTTPRequestOperation *operation, id responseObject) {
+            if ([self isDeleted] || self.managedObjectContext == nil)
+                return;
+            
+            self.options = [NSDictionary dictionaryWithDictionary:(NSDictionary *)responseObject];
+            NSString *minimumVersion = @"3.5";
+            float version = [[self version] floatValue];
+            if (version < [minimumVersion floatValue]) {
+                if (self.lastUpdateWarning == nil || [self.lastUpdateWarning floatValue] < [minimumVersion floatValue]) {
+                    [WPError showAlertWithTitle:NSLocalizedString(@"WordPress version too old", @"")
+                                        message:[NSString stringWithFormat:NSLocalizedString(@"The site at %@ uses WordPress %@. We recommend to update to the latest version, or at least %@", @""), [self hostname], [self version], minimumVersion]];
+                    self.lastUpdateWarning = minimumVersion;
+                }
             }
-        }
-        if (success) {
-            success();
-        }
-    } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
-        DDLogError(@"Error syncing options: %@", error);
-
-        if (failure) {
-            failure(error);
-        }
+            if (success) {
+                success();
+            }
+        } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+            DDLogError(@"Error syncing options: %@", error);
+            
+            if (failure) {
+                failure(error);
+            }
+        }];
     }];
-
     return operation;
 }
 
 - (WPXMLRPCRequestOperation *)operationForPostFormatsWithSuccess:(void (^)())success failure:(void (^)(NSError *error))failure {
-    NSDictionary *dict = [NSDictionary dictionaryWithObject:@"1" forKey:@"show-supported"];
-    NSArray *parameters = [self getXMLRPCArgsWithExtra:dict];
-    
-    WPXMLRPCRequest *request = [self.api XMLRPCRequestWithMethod:@"wp.getPostFormats" parameters:parameters];
-    WPXMLRPCRequestOperation *operation = [self.api XMLRPCRequestOperationWithRequest:request success:^(AFHTTPRequestOperation *operation, id responseObject) {
-        if ([self isDeleted] || self.managedObjectContext == nil)
-            return;
-
-        NSDictionary *respDict = [NSDictionary dictionaryWithDictionary:(NSDictionary *)responseObject];
-        if ([respDict objectForKey:@"supported"] && [[respDict objectForKey:@"supported"] isKindOfClass:[NSArray class]]) {
-            NSMutableArray *supportedKeys = [NSMutableArray arrayWithArray:[respDict objectForKey:@"supported"]];
-            // Standard isn't included in the list of supported formats? Maybe it will be one day?
-            if (![supportedKeys containsObject:@"standard"]) {
-                [supportedKeys addObject:@"standard"];
-            }
+    __block WPXMLRPCRequestOperation *operation;
+    [self.managedObjectContext performBlockAndWait:^{
+        NSDictionary *dict = [NSDictionary dictionaryWithObject:@"1" forKey:@"show-supported"];
+        NSArray *parameters = [self getXMLRPCArgsWithExtra:dict];
+        
+        WPXMLRPCRequest *request = [self.api XMLRPCRequestWithMethod:@"wp.getPostFormats" parameters:parameters];
+        operation = [self.api XMLRPCRequestOperationWithRequest:request success:^(AFHTTPRequestOperation *operation, id responseObject) {
+            if ([self isDeleted] || self.managedObjectContext == nil)
+                return;
             
-            NSDictionary *allFormats = [respDict objectForKey:@"all"];
-            NSMutableArray *supportedValues = [NSMutableArray array];
-            for (NSString *key in supportedKeys) {
-                [supportedValues addObject:[allFormats objectForKey:key]];
+            NSDictionary *respDict = [NSDictionary dictionaryWithDictionary:(NSDictionary *)responseObject];
+            if ([respDict objectForKey:@"supported"] && [[respDict objectForKey:@"supported"] isKindOfClass:[NSArray class]]) {
+                NSMutableArray *supportedKeys = [NSMutableArray arrayWithArray:[respDict objectForKey:@"supported"]];
+                // Standard isn't included in the list of supported formats? Maybe it will be one day?
+                if (![supportedKeys containsObject:@"standard"]) {
+                    [supportedKeys addObject:@"standard"];
+                }
+                
+                NSDictionary *allFormats = [respDict objectForKey:@"all"];
+                NSMutableArray *supportedValues = [NSMutableArray array];
+                for (NSString *key in supportedKeys) {
+                    [supportedValues addObject:[allFormats objectForKey:key]];
+                }
+                respDict = [NSDictionary dictionaryWithObjects:supportedValues forKeys:supportedKeys];
             }
-            respDict = [NSDictionary dictionaryWithObjects:supportedValues forKeys:supportedKeys];
-        }
-        self.postFormats = respDict;
-        if (success) {
-            success();
-        }
-    } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
-        DDLogError(@"Error syncing post formats: %@", error);
-
-        if (failure) {
-            failure(error);
-        }
+            self.postFormats = respDict;
+            if (success) {
+                success();
+            }
+        } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+	        DDLogError(@"Error syncing post formats (%@): %@", operation.request.URL, error);
+            
+            if (failure) {
+                failure(error);
+            }
+        }];
     }];
-    
     return operation;
 }
 
 - (WPXMLRPCRequestOperation *)operationForCommentsWithSuccess:(void (^)())success failure:(void (^)(NSError *error))failure {
-    NSDictionary *requestOptions = [NSDictionary dictionaryWithObject:[NSNumber numberWithInt:100] forKey:@"number"];
-    NSArray *parameters = [self getXMLRPCArgsWithExtra:requestOptions];
-    WPXMLRPCRequest *request = [self.api XMLRPCRequestWithMethod:@"wp.getComments" parameters:parameters];
-    WPXMLRPCRequestOperation *operation = [self.api XMLRPCRequestOperationWithRequest:request success:^(AFHTTPRequestOperation *operation, id responseObject) {
-        if ([self isDeleted] || self.managedObjectContext == nil)
-            return;
-
-        [self mergeComments:responseObject];
-        self.isSyncingComments = NO;
-        self.lastCommentsSync = [NSDate date];
-
-        if (success) {
-            success();
-        }
-        [[NSNotificationCenter defaultCenter] postNotificationName:kCommentsChangedNotificationName object:self];
-    } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
-        DDLogError(@"Error syncing comments: %@", error);
-        self.isSyncingComments = NO;
-
-        if (failure) {
-            failure(error);
-        }
-        [[NSNotificationCenter defaultCenter] postNotificationName:kCommentsChangedNotificationName object:self];
+    __block WPXMLRPCRequestOperation *operation;
+    [self.managedObjectContext performBlockAndWait:^{
+        NSDictionary *requestOptions = [NSDictionary dictionaryWithObject:[NSNumber numberWithInt:100] forKey:@"number"];
+        NSArray *parameters = [self getXMLRPCArgsWithExtra:requestOptions];
+        WPXMLRPCRequest *request = [self.api XMLRPCRequestWithMethod:@"wp.getComments" parameters:parameters];
+        operation = [self.api XMLRPCRequestOperationWithRequest:request success:^(AFHTTPRequestOperation *operation, id responseObject) {
+            if ([self isDeleted] || self.managedObjectContext == nil)
+                return;
+            
+            [Comment mergeNewComments:responseObject forBlog:self];
+            self.isSyncingComments = NO;
+            self.lastCommentsSync = [NSDate date];
+            
+            if (success) {
+                success();
+            }
+            [[NSNotificationCenter defaultCenter] postNotificationName:kCommentsChangedNotificationName object:self];
+        } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+	        DDLogError(@"Error syncing comments (%@): %@", operation.request.URL, error);
+            self.isSyncingComments = NO;
+            
+            if (failure) {
+                failure(error);
+            }
+            [[NSNotificationCenter defaultCenter] postNotificationName:kCommentsChangedNotificationName object:self];
+        }];
     }];
-    
     return operation;
 }
 
 - (WPXMLRPCRequestOperation *)operationForCategoriesWithSuccess:(void (^)())success failure:(void (^)(NSError *error))failure {
-    NSArray *parameters = [self getXMLRPCArgsWithExtra:nil];
-    WPXMLRPCRequest *request = [self.api XMLRPCRequestWithMethod:@"wp.getCategories" parameters:parameters];
-    WPXMLRPCRequestOperation *operation = [self.api XMLRPCRequestOperationWithRequest:request success:^(AFHTTPRequestOperation *operation, id responseObject) {
-        if ([self isDeleted] || self.managedObjectContext == nil)
-            return;
-
-        [self mergeCategories:responseObject];
-        if (success) {
-            success();
-        }
-    } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
-        DDLogError(@"Error syncing categories: %@", error);
-
-        if (failure) {
-            failure(error);
-        }
+    __block WPXMLRPCRequestOperation *operation;
+    [self.managedObjectContext performBlockAndWait:^{
+        NSArray *parameters = [self getXMLRPCArgsWithExtra:nil];
+        WPXMLRPCRequest *request = [self.api XMLRPCRequestWithMethod:@"wp.getCategories" parameters:parameters];
+        operation = [self.api XMLRPCRequestOperationWithRequest:request success:^(AFHTTPRequestOperation *operation, id responseObject) {
+            if ([self isDeleted] || self.managedObjectContext == nil)
+                return;
+            
+            [Category mergeNewCategories:responseObject forBlog:self];
+            
+            if (success) {
+                success();
+            }
+        } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+	        DDLogError(@"Error syncing categories (%@): %@", operation.request.URL, error);
+            
+            if (failure) {
+                failure(error);
+            }
+        }];
     }];
-    
     return operation;    
 }
 
 - (WPXMLRPCRequestOperation *)operationForPostsWithSuccess:(void (^)())success failure:(void (^)(NSError *error))failure loadMore:(BOOL)more {
-    int num;
-
     // Don't load more than 20 posts if we aren't at the end of the table,
     // even if they were previously donwloaded
-    // 
-    // Blogs with long history can get really slow really fast, 
+    //
+    // Blogs with long history can get really slow really fast,
     // with no chance to go back
-    int postBatchSize = 40;
-    if (more) {
-        num = MAX([self.posts count], postBatchSize);
-        if ([self.hasOlderPosts boolValue]) {
-            num += postBatchSize;
-        }
-    } else {
-        num = postBatchSize;
-    }
-
-    NSArray *parameters = [self getXMLRPCArgsWithExtra:[NSNumber numberWithInt:num]];
-    WPXMLRPCRequest *request = [self.api XMLRPCRequestWithMethod:@"metaWeblog.getRecentPosts" parameters:parameters];
-    WPXMLRPCRequestOperation *operation = [self.api XMLRPCRequestOperationWithRequest:request success:^(AFHTTPRequestOperation *operation, id responseObject) {
-        if ([self isDeleted] || self.managedObjectContext == nil)
-            return;
-        
-        NSArray *posts = (NSArray *)responseObject;
-
-        // If we asked for more and we got what we had, there are no more posts to load
-        if (more && ([posts count] <= [self.posts count])) {
-            self.hasOlderPosts = [NSNumber numberWithBool:NO];
-        } else if (!more) {
-            //we should reset the flag otherwise when you refresh this blog you can't get more than 20 posts
-            self.hasOlderPosts = [NSNumber numberWithBool:YES];
-        }
-
-        [self mergePosts:posts];
-
-        self.lastPostsSync = [NSDate date];
-        self.isSyncingPosts = NO;
-
-        if (success) {
-            success();
-        }
-    } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
-        DDLogError(@"Error syncing posts: %@", error);
-        self.isSyncingPosts = NO;
-
-        if (failure) {
-            failure(error);
-        }
-    }];
     
+    NSUInteger postBatchSize = 40;
+    __block WPXMLRPCRequestOperation *operation;
+    [self.managedObjectContext performBlockAndWait:^{
+        NSUInteger postsToRequest = postBatchSize;
+        if (more) {
+            postsToRequest = MAX([self.posts count], postBatchSize);
+            if ([self.hasOlderPosts boolValue]) {
+                postsToRequest += postBatchSize;
+            }
+        }
+        
+        NSArray *parameters = [self getXMLRPCArgsWithExtra:[NSNumber numberWithInt:postsToRequest]];
+        WPXMLRPCRequest *request = [self.api XMLRPCRequestWithMethod:@"metaWeblog.getRecentPosts" parameters:parameters];
+        operation = [self.api XMLRPCRequestOperationWithRequest:request success:^(AFHTTPRequestOperation *operation, id responseObject) {
+            if ([self isDeleted] || self.managedObjectContext == nil)
+                return;
+            
+            NSArray *posts = (NSArray *)responseObject;
+            
+            // If we asked for more and we got what we had, there are no more posts to load
+            if (more && ([posts count] <= [self.posts count])) {
+                self.hasOlderPosts = [NSNumber numberWithBool:NO];
+            } else if (!more) {
+                //we should reset the flag otherwise when you refresh this blog you can't get more than 20 posts
+                self.hasOlderPosts = [NSNumber numberWithBool:YES];
+            }
+            
+            [Post mergeNewPosts:responseObject forBlog:self];
+            
+            self.lastPostsSync = [NSDate date];
+            self.isSyncingPosts = NO;
+            
+            if (success) {
+                success();
+            }
+        } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+	        DDLogError(@"Error syncing posts (%@): %@", operation.request.URL, error);
+            self.isSyncingPosts = NO;
+            
+            if (failure) {
+                failure(error);
+            }
+        }];
+    }];
     return operation;        
 }
 
 - (WPXMLRPCRequestOperation *)operationForPagesWithSuccess:(void (^)())success failure:(void (^)(NSError *error))failure loadMore:(BOOL)more {
-    int num;
-	
-    int syncCount = [[self syncedPostsWithEntityName:@"Page" withContext:self.managedObjectContext] count];
     // Don't load more than 20 pages if we aren't at the end of the table,
     // even if they were previously donwloaded
-    // 
-    // Blogs with long history can get really slow really fast, 
+    //
+    // Blogs with long history can get really slow really fast,
     // with no chance to go back
-    int pageBatchSize = 40;
-    if (more) {
-        num = MAX(syncCount, pageBatchSize);
-        if ([self.hasOlderPages boolValue]) {
-            num += pageBatchSize;
-        }
-    } else {
-        num = pageBatchSize;
-    }
-
-    NSArray *parameters = [self getXMLRPCArgsWithExtra:[NSNumber numberWithInt:num]];
-    WPXMLRPCRequest *request = [self.api XMLRPCRequestWithMethod:@"wp.getPages" parameters:parameters];
-    WPXMLRPCRequestOperation *operation = [self.api XMLRPCRequestOperationWithRequest:request success:^(AFHTTPRequestOperation *operation, id responseObject) {
-        if ([self isDeleted] || self.managedObjectContext == nil)
-            return;
-
-        NSArray *pages = (NSArray *)responseObject;
-
-        // If we asked for more and we got what we had, there are no more pages to load
-        if (more && ([pages count] <= syncCount)) {
-            self.hasOlderPages = [NSNumber numberWithBool:NO];
-        } else if (!more) {
-            //we should reset the flag otherwise when you refresh this blog you can't get more than 20 pages
-            self.hasOlderPages = [NSNumber numberWithBool:YES];
-        }
-
-        [self mergePages:pages];
-        self.lastPagesSync = [NSDate date];
-        self.isSyncingPages = NO;
-        if (success) {
-            success();
-        }
-    } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
-        DDLogError(@"Error syncing pages: %@", error);
-        self.isSyncingPages = NO;
-
-        if (failure) {
-            failure(error);
-        }
-    }];
-
-    return operation;
-}
-
-#pragma mark -
-
-- (void)mergeCategories:(NSArray *)newCategories {
-    // Don't even bother if blog has been deleted while fetching categories
-    if ([self isDeleted] || self.managedObjectContext == nil)
-        return;
-
-	NSMutableArray *categoriesToKeep = [NSMutableArray array];
-    for (NSDictionary *categoryInfo in newCategories) {
-        Category *newCat = [Category createOrReplaceFromDictionary:categoryInfo forBlog:self];
-        if (newCat != nil) {
-            [categoriesToKeep addObject:newCat];
-        } else {
-            DDLogInfo(@"-[Category createOrReplaceFromDictionary:forBlog:] returned a nil category: %@", categoryInfo);
-        }
-    }
-
-	NSSet *syncedCategories = self.categories;
-	if (syncedCategories && (syncedCategories.count > 0)) {
-		for (Category *cat in syncedCategories) {
-			if(![categoriesToKeep containsObject:cat]) {
-				DDLogInfo(@"Deleting Category: %@", cat);
-				[[self managedObjectContext] deleteObject:cat];
-			}
-		}
-    }
-
-    [self dataSave];
-}
-
-- (void)mergePosts:(NSArray *)newPosts {
-    // Don't even bother if blog has been deleted while fetching posts
-    if ([self isDeleted] || self.managedObjectContext == nil)
-        return;
     
-    NSManagedObjectContext *backgroundMOC = [[NSManagedObjectContext alloc] initWithConcurrencyType:NSPrivateQueueConcurrencyType];
-    backgroundMOC.parentContext = [WordPressAppDelegate sharedWordPressApplicationDelegate].managedObjectContext;
-    
-    [backgroundMOC performBlock:^{
-        NSMutableArray *postsToKeep = [NSMutableArray array];
-        for (NSDictionary *postInfo in newPosts) {
-            NSNumber *postID = [[postInfo objectForKey:@"postid"] numericValue];
-            Post *newPost = [Post findOrCreateWithBlog:self andPostID:postID withContext:backgroundMOC];
-            if (newPost.remoteStatus == AbstractPostRemoteStatusSync) {
-                [newPost updateFromDictionary:postInfo];
+    NSUInteger pageBatchSize = 40;
+    __block WPXMLRPCRequestOperation *operation;
+    [self.managedObjectContext performBlockAndWait:^{
+        NSUInteger pagesToRequest = pageBatchSize;
+        NSUInteger syncCount = [self countForSyncedPostsWithEntityName:@"Page"];
+        if (more) {
+            pagesToRequest = MAX(syncCount, pageBatchSize);
+            if ([self.hasOlderPages boolValue]) {
+                pagesToRequest += pageBatchSize;
             }
-            [postsToKeep addObject:newPost];
         }
         
-        NSArray *syncedPosts = [self syncedPostsWithEntityName:@"Post" withContext:backgroundMOC];
-        NSArray *postsToKeepObjectIDs = [postsToKeep valueForKey:@"objectID"];
-        for (Post *post in syncedPosts) {
+        NSArray *parameters = [self getXMLRPCArgsWithExtra:[NSNumber numberWithInt:pagesToRequest]];
+        WPXMLRPCRequest *request = [self.api XMLRPCRequestWithMethod:@"wp.getPages" parameters:parameters];
+        operation = [self.api XMLRPCRequestOperationWithRequest:request success:^(AFHTTPRequestOperation *operation, id responseObject) {
+            if ([self isDeleted] || self.managedObjectContext == nil)
+                return;
             
-            if (![postsToKeepObjectIDs containsObject:post.objectID]) {
-                //the current stored post is not contained "as-is" on the server response
-                
-                if (post.revision) { //edited post before the refresh is finished
-                    //We should check if this post is already available on the blog
-                    BOOL presence = NO;
-                    
-                    for (Post *currentPostToKeep in postsToKeep) {
-                        if([currentPostToKeep.postID isEqualToNumber:post.postID]) {
-                            presence = YES;
-                            break;
-                        }
-                    }
-                    if( presence == YES ) {
-                        //post is on the server (most cases), kept it unchanged
-                    } else {
-                        //post is deleted on the server, make it local, otherwise you can't upload it anymore
-                        post.remoteStatus = AbstractPostRemoteStatusLocal;
-                        post.postID = nil;
-                        post.permaLink = nil;
-                    }
-                } else {
-                    //post is not on the server anymore. delete it.
-                    DDLogInfo(@"Deleting post: %@", post.postTitle);
-                    DDLogInfo(@"%d posts left", [self.posts count]);
-                    [backgroundMOC deleteObject:post];
-                }
+            NSArray *pages = (NSArray *)responseObject;
+            
+            // If we asked for more and we got what we had, there are no more pages to load
+            if (more && ([pages count] <= syncCount)) {
+                self.hasOlderPages = [NSNumber numberWithBool:NO];
+            } else if (!more) {
+                //we should reset the flag otherwise when you refresh this blog you can't get more than 20 pages
+                self.hasOlderPages = [NSNumber numberWithBool:YES];
             }
-        }
-        
-        [self dataSaveWithContext:backgroundMOC];
+            
+            [Page mergeNewPosts:responseObject forBlog:self];
+            self.lastPagesSync = [NSDate date];
+            self.isSyncingPages = NO;
+            if (success) {
+                success();
+            }
+        } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+	        DDLogError(@"Error syncing pages (%@): %@", operation.request.URL, error);
+            self.isSyncingPages = NO;
+            
+            if (failure) {
+                failure(error);
+            }
+        }];
     }];
-}
-
-- (void)mergePages:(NSArray *)newPages {
-    if ([self isDeleted] || self.managedObjectContext == nil)
-        return;
-    
-    NSManagedObjectContext *backgroundMOC = [[NSManagedObjectContext alloc] initWithConcurrencyType:NSPrivateQueueConcurrencyType];
-    backgroundMOC.parentContext = [WordPressAppDelegate sharedWordPressApplicationDelegate].managedObjectContext;
-
-    [backgroundMOC performBlock:^{
-        NSMutableArray *pagesToKeep = [NSMutableArray array];
-        for (NSDictionary *pageInfo in newPages) {
-            NSNumber *pageID = [[pageInfo objectForKey:@"page_id"] numericValue];
-            Page *newPage = [Page findOrCreateWithBlog:self andPageID:pageID withContext:backgroundMOC];
-            if (newPage.remoteStatus == AbstractPostRemoteStatusSync) {
-                [newPage updateFromDictionary:pageInfo];
-            }
-            [pagesToKeep addObject:newPage];
-        }
-
-        NSArray *syncedPages = [self syncedPostsWithEntityName:@"Page" withContext:backgroundMOC];
-        NSArray *pagesToKeepObjectIDs = [pagesToKeep valueForKey:@"objectID"];
-        for (Page *page in syncedPages) {
-            if (![pagesToKeepObjectIDs containsObject:page.objectID]) {
-
-                if (page.revision) { //edited page before the refresh is finished
-                    //We should check if this page is already available on the blog
-                    BOOL presence = NO;
-
-                    for (Page *currentPageToKeep in pagesToKeep) {
-                        if([currentPageToKeep.postID isEqualToNumber:page.postID]) {
-                            presence = YES;
-                            break;
-                        }
-                    }
-                    if( presence == YES ) {
-                        //page is on the server (most cases), kept it unchanged
-                    } else {
-                        //page is deleted on the server, make it local, otherwise you can't upload it anymore
-                        page.remoteStatus = AbstractPostRemoteStatusLocal;
-                        page.postID = nil;
-                        page.permaLink = nil;
-                    }
-                } else {
-                    //page is not on the server anymore. delete it.
-                    DDLogInfo(@"Deleting page: %@", page);
-                    [backgroundMOC deleteObject:page];
-                }
-            }
-        }
-
-        [self dataSaveWithContext:backgroundMOC];
-    }];
-}
-
-- (void)mergeComments:(NSArray *)newComments {
-    // Don't even bother if blog has been deleted while fetching comments
-    if ([self isDeleted] || self.managedObjectContext == nil)
-        return;
-
-    NSManagedObjectContext *backgroundMOC = [[NSManagedObjectContext alloc] initWithConcurrencyType:NSPrivateQueueConcurrencyType];
-    backgroundMOC.parentContext = [WordPressAppDelegate sharedWordPressApplicationDelegate].managedObjectContext;
-    
-    [backgroundMOC performBlock:^{
-        NSMutableArray *commentsToKeep = [NSMutableArray array];
-        for (NSDictionary *commentInfo in newComments) {
-            Comment *newComment = [Comment createOrReplaceFromDictionary:commentInfo forBlog:self withContext:backgroundMOC];
-            if (newComment != nil) {
-                [commentsToKeep addObject:newComment];
-            } else {
-                DDLogInfo(@"-[Comment createOrReplaceFromDictionary:forBlog:] returned a nil comment: %@", commentInfo);
-            }
-        }
-        
-        NSSet *syncedComments = ((Blog *)[backgroundMOC objectWithID:self.objectID]).comments;
-        if (syncedComments && (syncedComments.count > 0)) {
-            for (Comment *comment in syncedComments) {
-                // Don't delete unpublished comments
-                if(![commentsToKeep containsObject:comment] && comment.commentID != nil) {
-                    DDLogInfo(@"Deleting Comment: %@", comment);
-                    [backgroundMOC deleteObject:comment];
-                }
-            }
-        }
-        
-        [self dataSaveWithContext:backgroundMOC];
-    }];
+    return operation;
 }
 
 @end

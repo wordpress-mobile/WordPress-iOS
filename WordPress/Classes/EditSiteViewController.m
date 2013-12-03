@@ -26,6 +26,7 @@
 @property (nonatomic, weak) UITextField *lastTextField;
 @property (nonatomic, strong) UIActivityIndicatorView *savingIndicator;
 @property (nonatomic, strong) NSMutableDictionary *notificationPreferences;
+@property (nonatomic) BOOL isKeyboardVisible;
 
 @end
 
@@ -671,7 +672,12 @@
 
 #pragma mark - Keyboard Related Methods
 
-- (void)handleKeyboardDidShow:(NSNotification *)notification {    
+- (void)handleKeyboardDidShow:(NSNotification *)notification {
+    
+    if (_isKeyboardVisible) {
+        return;
+    }
+    
     CGRect rect = [[notification.userInfo valueForKey:UIKeyboardFrameEndUserInfoKey] CGRectValue];    
     CGRect frame = self.view.frame;
 
@@ -694,6 +700,8 @@
         NSIndexPath *indexPath = [self.tableView indexPathForRowAtPoint:point];
         [self.tableView scrollToRowAtIndexPath:indexPath atScrollPosition:UITableViewScrollPositionMiddle animated:YES];
     }
+    
+    _isKeyboardVisible = YES;
 }
 
 - (void)handleKeyboardWillHide:(NSNotification *)notification {
@@ -708,6 +716,8 @@
     [UIView animateWithDuration:0.3 animations:^{
         self.view.frame = frame;
     }];
+    
+    _isKeyboardVisible = NO;
 }
 
 
