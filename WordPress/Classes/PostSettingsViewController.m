@@ -885,12 +885,12 @@
                 switch (indexPath.row) {
                     case 0:
                         if (!self.post.post_thumbnail) {
-                            [WPMobileStats trackEventForWPCom:[self formattedStatEventString:StatsEventPostDetailSettingsClickedSetFeaturedImage]];
+                            [WPMobileStats trackEventForWPCom:[self formattedStatEventString:StatsPropertyPostDetailSettingsClickedSetFeaturedImage]];
                             [self showPhotoPickerForRect:cell.frame];
                         }
                         break;
                     case 1:
-                        [WPMobileStats trackEventForWPCom:[self formattedStatEventString:StatsEventPostDetailSettingsClickedRemoveFeaturedImage]];
+                        [WPMobileStats flagProperty:StatsPropertyPostDetailSettingsClickedRemoveFeaturedImage forEvent:[self formattedStatEventString:StatsEventPostDetailClosedEditor]];
                         self.actionSheet = [[UIActionSheet alloc] initWithTitle:NSLocalizedString(@"Remove this Featured Image?", @"Prompt when removing a featured image from a post") delegate:self cancelButtonTitle:NSLocalizedString(@"Cancel", "Cancel a prompt") destructiveButtonTitle:NSLocalizedString(@"Remove", @"Remove an image/posts/etc") otherButtonTitles:nil];
                         [self.actionSheet showFromRect:cell.frame inView:self.tableView animated:YES];
                         break;
@@ -933,9 +933,9 @@
 
             if (!self.isUpdatingLocation) {
                 if (self.post.geolocation) {
-                    [WPMobileStats trackEventForWPCom:[self formattedStatEventString:StatsEventPostDetailSettingsClickedUpdateLocation]];
+                    [WPMobileStats flagProperty:StatsPropertyPostDetailSettingsClickedUpdateLocation forEvent:[self formattedStatEventString:StatsEventPostDetailClosedEditor]];
                 } else {
-                    [WPMobileStats trackEventForWPCom:[self formattedStatEventString:StatsEventPostDetailSettingsClickedAddLocation]];
+                    [WPMobileStats flagProperty:StatsPropertyPostDetailSettingsClickedAddLocation forEvent:[self formattedStatEventString:StatsEventPostDetailClosedEditor]];
                 }
                 // Add or replace geotag
                 self.isUpdatingLocation = YES;
@@ -943,7 +943,7 @@
             }
             break;
         case 2:
-            [WPMobileStats trackEventForWPCom:[self formattedStatEventString:StatsEventPostDetailSettingsClickedRemoveLocation]];
+            [WPMobileStats flagProperty:StatsPropertyPostDetailSettingsClickedRemoveLocation forEvent:[self formattedStatEventString:StatsEventPostDetailClosedEditor]];
 
             if (self.isUpdatingLocation) {
                 // Cancel update
