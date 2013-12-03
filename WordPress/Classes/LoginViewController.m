@@ -485,7 +485,7 @@ CGFloat const GeneralWalkthroughiOS7StatusBarOffset = 20.0;
 
     UIImage *infoButtonImage = [UIImage imageNamed:@"btn-about"];
     y = 0;
-    if (IS_IOS7 && IS_IPHONE) {
+    if (IS_IPHONE) {
         y = GeneralWalkthroughiOS7StatusBarOffset;
     }
     _helpButton.frame = CGRectMake(viewWidth - infoButtonImage.size.width, y, infoButtonImage.size.width, infoButtonImage.size.height);
@@ -493,7 +493,7 @@ CGFloat const GeneralWalkthroughiOS7StatusBarOffset = 20.0;
     // Layout Cancel Button
     x = 0;
     y = 0.5 * GeneralWalkthroughStandardOffset;
-    if (IS_IOS7 && IS_IPHONE) {
+    if (IS_IPHONE) {
         y += GeneralWalkthroughiOS7StatusBarOffset;
     }
     _cancelButton.frame = CGRectMake(x, y, CGRectGetWidth(_cancelButton.frame), CGRectGetHeight(_cancelButton.frame));
