@@ -25,14 +25,6 @@
 CGFloat const CommentsStandardOffset = 16.0;
 CGFloat const CommentsSectionHeaderHeight = 24.0;
 
-- (id)init {
-    self = [super init];
-    if(self) {
-        self.title = NSLocalizedString(@"Comments", @"");
-    }
-    return self;
-}
-
 - (void)dealloc {
     WPFLogMethod();
 	[[NSNotificationCenter defaultCenter] removeObserver:self];
@@ -48,6 +40,7 @@ CGFloat const CommentsSectionHeaderHeight = 24.0;
     
     [super viewDidLoad];
     
+    self.title = NSLocalizedString(@"Comments", @"");
     [WPStyleGuide configureColorsForView:self.view andTableView:self.tableView];
     
     self.tableView.accessibilityLabel = @"Comments";       // required for UIAutomation for iOS 4
@@ -203,12 +196,12 @@ CGFloat const CommentsSectionHeaderHeight = 24.0;
 }
 
 - (NSFetchRequest *)fetchRequest {
-    NSFetchRequest *fetchRequest = [super fetchRequest];
-    [fetchRequest setPredicate:[NSPredicate predicateWithFormat:@"(blog == %@ AND status != %@)", self.blog, @"spam"]];
-    NSSortDescriptor *sortDescriptorStatus = [[NSSortDescriptor alloc] initWithKey:@"status" ascending:NO];
-    NSSortDescriptor *sortDescriptorDate = [[NSSortDescriptor alloc] initWithKey:@"dateCreated" ascending:NO];
-    NSArray *sortDescriptors = [[NSArray alloc] initWithObjects:sortDescriptorStatus, sortDescriptorDate, nil];
-    [fetchRequest setSortDescriptors:sortDescriptors];
+    NSFetchRequest *fetchRequest = [NSFetchRequest fetchRequestWithEntityName:[self entityName]];
+    fetchRequest.predicate = [NSPredicate predicateWithFormat:@"(blog == %@ AND status != %@)", self.blog, @"spam"];
+    NSSortDescriptor *sortDescriptorStatus = [NSSortDescriptor sortDescriptorWithKey:@"status" ascending:NO];
+    NSSortDescriptor *sortDescriptorDate = [NSSortDescriptor sortDescriptorWithKey:@"dateCreated" ascending:NO];
+    fetchRequest.sortDescriptors = @[sortDescriptorStatus, sortDescriptorDate];
+    fetchRequest.fetchBatchSize = 10;
     return fetchRequest;
 }
 

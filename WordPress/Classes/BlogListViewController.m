@@ -14,9 +14,11 @@
 #import "WelcomeViewController.h"
 #import "BlogDetailsViewController.h"
 #import "WPTableViewCell.h"
+#import "ContextManager.h"
 #import "Blog.h"
 
 CGFloat const blavatarImageSize = 50.f;
+NSString * const WPBlogListRestorationID = @"WPBlogListID";
 
 @interface BlogListViewController ()
 @property (nonatomic, strong) NSFetchedResultsController *resultsController;
@@ -30,13 +32,42 @@ CGFloat const blavatarImageSize = 50.f;
 {
     self = [super initWithStyle:UITableViewStyleGrouped];
     if (self) {
-        // Custom initialization
+        self.restorationIdentifier = WPBlogListRestorationID;
     }
     return self;
 }
 
-- (void)viewDidLoad
-{
+- (NSString *)modelIdentifierForElementAtIndexPath:(NSIndexPath *)indexPath inView:(UIView *)view {
+    if (!indexPath || !view)
+        return nil;
+    
+    // Preserve objectID
+    NSManagedObject *managedObject = [self.resultsController objectAtIndexPath:indexPath];
+    return [[managedObject.objectID URIRepresentation] absoluteString];
+}
+
+- (NSIndexPath *)indexPathForElementWithModelIdentifier:(NSString *)identifier inView:(UIView *)view {
+    if (!identifier || !view)
+        return nil;
+
+    // Map objectID back to indexPath
+    NSManagedObjectContext *context = [[ContextManager sharedInstance] mainContext];
+    NSManagedObjectID *objectID = [context.persistentStoreCoordinator managedObjectIDForURIRepresentation:[NSURL URLWithString:identifier]];
+    if (!objectID)
+        return nil;
+    
+    NSError *error = nil;
+    NSManagedObject *managedObject = [context existingObjectWithID:objectID error:&error];
+    if (error || !managedObject) {
+        return nil;
+    }
+    
+    NSIndexPath *indexPath = [self.resultsController indexPathForObject:managedObject];
+    
+    return indexPath;
+}
+
+- (void)viewDidLoad {
     [super viewDidLoad];
     self.navigationItem.leftBarButtonItem = self.editButtonItem;
     self.settingsButton = [[UIBarButtonItem alloc] initWithTitle:NSLocalizedString(@"Settings", nil)
@@ -96,8 +127,6 @@ CGFloat const blavatarImageSize = 50.f;
     SettingsViewController *settingsViewController = [[SettingsViewController alloc] initWithStyle:UITableViewStyleGrouped];
     UINavigationController *aNavigationController = [[UINavigationController alloc] initWithRootViewController:settingsViewController];
     aNavigationController.navigationBar.translucent = NO;
-    if (IS_IPAD)
-        aNavigationController.modalTransitionStyle = UIModalTransitionStyleCrossDissolve;
     aNavigationController.modalPresentationStyle = UIModalPresentationFormSheet;
     
     [self.navigationController presentViewController:aNavigationController animated:YES completion:nil];
@@ -258,13 +287,13 @@ CGFloat const blavatarImageSize = 50.f;
 #pragma mark NSFetchedResultsController
 
 - (NSFetchedResultsController *)resultsController {
-    if (_resultsController)
+    if (_resultsController) {
         return _resultsController;
+    }
     
-    NSFetchRequest *fetchRequest = [[NSFetchRequest alloc] init];
-    NSManagedObjectContext *moc = [[WordPressAppDelegate sharedWordPressApplicationDelegate] managedObjectContext];
-    [fetchRequest setEntity:[NSEntityDescription entityForName:@"Blog" inManagedObjectContext:moc]];
-    [fetchRequest setSortDescriptors:[NSArray arrayWithObject:[NSSortDescriptor sortDescriptorWithKey:@"blogName" ascending:YES]]];
+    NSManagedObjectContext *moc = [[ContextManager sharedInstance] mainContext];
+    NSFetchRequest *fetchRequest = [NSFetchRequest fetchRequestWithEntityName:@"Blog"];
+    fetchRequest.sortDescriptors = @[[NSSortDescriptor sortDescriptorWithKey:@"blogName" ascending:YES]];
     
     // For some reasons, the cache sometimes gets corrupted
     // Since we don't really use sections we skip the cache here

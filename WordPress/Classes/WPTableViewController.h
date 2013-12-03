@@ -10,7 +10,7 @@
 #import "Blog.h"
 #import "SettingsViewControllerDelegate.h"
 
-@interface WPTableViewController : UITableViewController <UITableViewDataSource, UITableViewDelegate, NSFetchedResultsControllerDelegate, SettingsViewControllerDelegate>
+@interface WPTableViewController : UITableViewController <UITableViewDataSource, UITableViewDelegate, NSFetchedResultsControllerDelegate, SettingsViewControllerDelegate, UIViewControllerRestoration>
 
 @property (nonatomic, strong) Blog *blog;
 @property (nonatomic, readonly) BOOL isScrolling;

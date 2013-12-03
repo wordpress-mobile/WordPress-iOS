@@ -17,8 +17,9 @@
 #import <AFJSONRequestOperation.h>
 #import <UIDeviceHardware.h>
 #import "UIDevice+WordPressIdentifier.h"
-#import "NotificationsManager.h"
+#import "ContextManager.h"
 #import <WPXMLRPCClient.h>
+
 
 NSString *const WordPressComApiClientEndpointURL = @"https://public-api.wordpress.com/rest/v1/";
 NSString *const WordPressComApiOauthBaseUrl = @"https://public-api.wordpress.com/oauth2";
@@ -75,15 +76,13 @@ NSString *const WordPressComApiErrorMessageKey = @"WordPressComApiErrorMessageKe
 @interface WordPressComApi ()
 @property (readwrite, nonatomic, strong) NSString *username;
 @property (readwrite, nonatomic, strong) NSString *password;
-@property (nonatomic, strong) NSString *authToken;
+@property (readwrite, nonatomic, strong) NSString *authToken;
 
 - (void)clearWpcomCookies;
 
 @end
 
-@implementation WordPressComApi {
-    NSString *_authToken;
-}
+@implementation WordPressComApi
 
 + (WordPressComApi *)sharedApi {
     static WordPressComApi *_sharedApi = nil;
@@ -107,9 +106,9 @@ NSString *const WordPressComApiErrorMessageKey = @"WordPressComApiErrorMessageKe
                                                    andServiceName:WordPressComApiOauthServiceName
                                                             error:&error];
             if (error) {
-                DDLogError(@"Error getting WordPress.com OAuth token: %@", error);
+                DDLogError(@"Error getting WordPress.com OAuth2 token: %@", error);
             } else {
-                DDLogVerbose(@"Found token for API: %@", authToken ? @"YES" : @"NO");
+                DDLogVerbose(@"Found OAuth2 token for API: %@", authToken.length > 0 ? @"YES" : @"NO");
             }
         }
         _sharedApi = [[self alloc] initWithBaseURL:[NSURL URLWithString:WordPressComApiClientEndpointURL] ];
@@ -174,10 +173,9 @@ NSString *const WordPressComApiErrorMessageKey = @"WordPressComApiErrorMessageKe
         } else {
             WPFLog(@"Signed in as %@", self.username);
             [[NSUserDefaults standardUserDefaults] setObject:self.username forKey:@"wpcom_username_preference"];
-            [[NSUserDefaults standardUserDefaults] setObject:@"1" forKey:@"wpcom_authenticated_flag"];
             [[NSUserDefaults standardUserDefaults] synchronize];
             [WordPressAppDelegate sharedWordPressApplicationDelegate].isWPcomAuthenticated = YES;
-            [NotificationsManager registerForPushNotifications];
+            // [NotificationsManager registerForPushNotifications];
             [[NSNotificationCenter defaultCenter] postNotificationName:WordPressComApiDidLoginNotification object:self.username];
             if (success) success();
         }
@@ -223,7 +221,7 @@ NSString *const WordPressComApiErrorMessageKey = @"WordPressComApiErrorMessageKe
     WPFLogMethod();
     NSError *error = nil;
 
-    [NotificationsManager unregisterDeviceToken];
+//    [NotificationsManager unregisterDeviceToken];
 
     [SFHFKeychainUtils deleteItemForUsername:self.username andServiceName:@"WordPress.com" error:&error];
     [SFHFKeychainUtils deleteItemForUsername:self.username andServiceName:kWPcomXMLRPCUrl error:&error];
@@ -232,15 +230,11 @@ NSString *const WordPressComApiErrorMessageKey = @"WordPressComApiErrorMessageKe
     [[NSUserDefaults standardUserDefaults] removeObjectForKey:kApnsDeviceTokenPrefKey]; //Remove the token from Preferences, otherwise the token is never sent to the server on the next login
     [SFHFKeychainUtils deleteItemForUsername:self.username andServiceName:WordPressComApiOauthServiceName error:&error];
     [[NSUserDefaults standardUserDefaults] removeObjectForKey:@"wpcom_username_preference"];
-    [[NSUserDefaults standardUserDefaults] removeObjectForKey:@"wpcom_authenticated_flag"];
     [[NSUserDefaults standardUserDefaults] synchronize];
     self.authToken = nil;
     self.username = nil;
     self.password = nil;
     [self clearAuthorizationHeader];
-
-    // Remove all notes
-    [Note removeAllNotesWithContext:[[WordPressAppDelegate sharedWordPressApplicationDelegate] managedObjectContext]];
 
     [self clearWpcomCookies];
 
@@ -249,7 +243,11 @@ NSString *const WordPressComApiErrorMessageKey = @"WordPressComApiErrorMessageKe
 }
 
 - (BOOL)hasCredentials {
-    return _authToken != nil;
+    return self.authToken.length > 0;
+}
+
+- (void)invalidateOAuth2Token {
+    [self setAuthToken:nil];
 }
 
 - (void)validateWPComAccountWithEmail:(NSString *)email andUsername:(NSString *)username andPassword:(NSString *)password success:(void (^)(id responseObject))success failure:(void (^)(NSError *error))failure
@@ -401,7 +399,7 @@ NSString *const WordPressComApiErrorMessageKey = @"WordPressComApiErrorMessageKe
     [self clearWpcomCookies];
     [[NSNotificationCenter defaultCenter] postNotificationName:WordPressComApiDidLogoutNotification object:nil];
     [WordPressAppDelegate sharedWordPressApplicationDelegate].isWPcomAuthenticated = YES;
-    [NotificationsManager registerForPushNotifications];
+//    [NotificationsManager registerForPushNotifications];
     [[NSNotificationCenter defaultCenter] postNotificationName:WordPressComApiDidLoginNotification object:self.username];
 }
 
@@ -560,9 +558,9 @@ NSString *const WordPressComApiErrorMessageKey = @"WordPressComApiErrorMessageKe
                             ];
     WPXMLRPCRequest *tokenRequest = [api XMLRPCRequestWithMethod:@"wpcom.mobile_push_register_token" parameters:parameters];
     WPXMLRPCRequestOperation *tokenOperation = [api XMLRPCRequestOperationWithRequest:tokenRequest success:^(AFHTTPRequestOperation *operation, id responseObject) {
-        WPFLog(@"Registered token %@" , token);
+        WPFLog(@"Registered APN token %@" , token);
     } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
-        WPFLog(@"Couldn't register token: %@", [error localizedDescription]);
+        WPFLog(@"Couldn't register APN token: %@", [error localizedDescription]);
     }];
     
     [operations addObject:tokenOperation];
@@ -648,9 +646,7 @@ NSString *const WordPressComApiErrorMessageKey = @"WordPressComApiErrorMessageKe
     // TODO: Check for unread notifications and notify with the number of unread notifications
 
     [self getPath:@"notifications/" parameters:requestParameters success:^(AFHTTPRequestOperation *operation, id responseObject){
-        // save the notes
-        NSManagedObjectContext *context = [[WordPressAppDelegate sharedWordPressApplicationDelegate] managedObjectContext];
-        [Note syncNotesWithResponse:[responseObject objectForKey:@"notes"] withManagedObjectContext:context];
+        [Note syncNotesWithResponse:[responseObject objectForKey:@"notes"]];
         if (success != nil ) success( operation, responseObject );
         
     } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
@@ -768,10 +764,6 @@ NSString *const WordPressComApiErrorMessageKey = @"WordPressComApiErrorMessageKe
 /* HACK ENDS */
 
 #pragma mark - Oauth methods
-
-- (NSString *)authToken {
-    return _authToken;
-}
 
 - (void)setAuthToken:(NSString *)authToken {
     _authToken = authToken;
