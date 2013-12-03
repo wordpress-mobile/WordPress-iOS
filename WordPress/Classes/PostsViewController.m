@@ -24,14 +24,6 @@
 #pragma mark -
 #pragma mark View lifecycle
 
-- (id)init {
-    self = [super init];
-    if(self) {
-        self.title = NSLocalizedString(@"Posts", @"");
-    }
-    return self;
-}
-
 - (NSString *)noResultsText
 {
     return NSLocalizedString(@"No posts yet", @"Displayed when the user pulls up the posts view and they have no posts");
@@ -41,6 +33,7 @@
     DDLogInfo(@"%@ %@", self, NSStringFromSelector(_cmd));
     [super viewDidLoad];
     
+    self.title = NSLocalizedString(@"Posts", @"");
     UIBarButtonItem *composeButtonItem  = nil;
     
     if ([self.editButtonItem respondsToSelector:@selector(setTintColor:)]) {
