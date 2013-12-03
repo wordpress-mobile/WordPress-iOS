@@ -53,7 +53,7 @@
     self.toolbar.tintColor = [UIColor whiteColor];
     self.leftSpacer.width = 1.0;
     self.rightSpacer.width = -8.0;
-    
+
     _deleteButton.tintColor = [UIColor whiteColor];
     _cancelButton.tintColor = _deleteButton.tintColor;
     _insertButton.tintColor = _deleteButton.tintColor;
