@@ -153,21 +153,6 @@
 - (void)loadMoreWithSuccess:(void (^)())success failure:(void (^)(NSError *error))failure;
 
 /**
- Configures the secondary view to show when you swipe on a cell
- 
- Subclasses *MUST* implement this method if swipeActionsEnabled is YES
- */
-- (void)configureSwipeView:(UIView *)swipeView forIndexPath:(NSIndexPath *)indexPath;
-
-/**
- Removes the swipe view.
- 
- Subclasses should call this method if one of the swipe actions needs to dismiss the secondary menu
- */
-- (void)removeSwipeView:(BOOL)animated;
-
-
-/**
  Create a custom view to display to the user when there are no results to show.
  
  Optional. If a subclass does not override this method a default view is constructed.

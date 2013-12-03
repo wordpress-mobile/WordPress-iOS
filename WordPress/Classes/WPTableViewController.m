@@ -141,7 +141,6 @@ NSString *const DefaultCellIdentifier = @"DefaultCellIdentifier";
 }
 
 - (void)setEditing:(BOOL)editing animated:(BOOL)animated {
-    [self removeSwipeView:NO];
     [super setEditing:editing animated:animated];
 }
 
@@ -263,13 +262,6 @@ NSString *const DefaultCellIdentifier = @"DefaultCellIdentifier";
 
 - (BOOL)tableView:(UITableView *)tableView shouldIndentWhileEditingRowAtIndexPath:(NSIndexPath *)indexPath {
     return NO;
-}
-
-- (NSIndexPath *)tableView:(UITableView *)theTableView willSelectRowAtIndexPath:(NSIndexPath *)indexPath {
-    if (!self.editing) {
-        [self removeSwipeView:YES];
-    }
-    return indexPath;
 }
 
 #pragma mark - Fetched results controller
