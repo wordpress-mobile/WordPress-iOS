@@ -19,6 +19,7 @@
 #import "WPAccount.h"
 
 CGFloat const blavatarImageSize = 50.f;
+NSString * const WPBlogListRestorationID = @"WPBlogListID";
 
 @interface BlogListViewController ()
 @property (nonatomic, strong) NSFetchedResultsController *resultsController;
@@ -32,13 +33,42 @@ CGFloat const blavatarImageSize = 50.f;
 {
     self = [super initWithStyle:UITableViewStyleGrouped];
     if (self) {
-        // Custom initialization
+        self.restorationIdentifier = WPBlogListRestorationID;
     }
     return self;
 }
 
-- (void)viewDidLoad
-{
+- (NSString *)modelIdentifierForElementAtIndexPath:(NSIndexPath *)indexPath inView:(UIView *)view {
+    if (!indexPath || !view)
+        return nil;
+    
+    // Preserve objectID
+    NSManagedObject *managedObject = [self.resultsController objectAtIndexPath:indexPath];
+    return [[managedObject.objectID URIRepresentation] absoluteString];
+}
+
+- (NSIndexPath *)indexPathForElementWithModelIdentifier:(NSString *)identifier inView:(UIView *)view {
+    if (!identifier || !view)
+        return nil;
+
+    // Map objectID back to indexPath
+    NSManagedObjectContext *context = [[ContextManager sharedInstance] mainContext];
+    NSManagedObjectID *objectID = [context.persistentStoreCoordinator managedObjectIDForURIRepresentation:[NSURL URLWithString:identifier]];
+    if (!objectID)
+        return nil;
+    
+    NSError *error = nil;
+    NSManagedObject *managedObject = [context existingObjectWithID:objectID error:&error];
+    if (error || !managedObject) {
+        return nil;
+    }
+    
+    NSIndexPath *indexPath = [self.resultsController indexPathForObject:managedObject];
+    
+    return indexPath;
+}
+
+- (void)viewDidLoad {
     [super viewDidLoad];
     self.settingsButton = [[UIBarButtonItem alloc] initWithTitle:NSLocalizedString(@"Settings", nil)
                                                            style:UIBarButtonItemStylePlain
