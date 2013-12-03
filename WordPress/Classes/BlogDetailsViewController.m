@@ -13,6 +13,7 @@
 #import "CommentsViewController.h"
 #import "StatsWebViewController.h"
 #import "ThemeBrowserViewController.h"
+#import "MediaBrowserViewController.h"
 #import "WPWebViewController.h"
 #import "WPTableViewCell.h"
 
@@ -22,6 +23,7 @@ typedef enum {
     BlogDetailsRowComments,
     BlogDetailsRowStats,
     BlogDetailsRowThemes,
+    BlogDetailsRowMedia,
     BlogDetailsRowViewSite,
     BlogDetailsRowViewAdmin,
     BlogDetailsRowEdit,
@@ -92,6 +94,8 @@ typedef enum {
         cell.textLabel.text = NSLocalizedString(@"Stats", nil);
     } else if ([self shouldShowThemesOption] && indexPath.row == BlogDetailsRowThemes) {
         cell.textLabel.text = NSLocalizedString(@"Themes", nil);
+    } else if ([self isRowForMedia:indexPath.row]) {
+        cell.textLabel.text = NSLocalizedString(@"Media", nil);
     } else if ([self isRowForViewSite:indexPath.row]) {
         cell.textLabel.text = NSLocalizedString(@"View Site", nil);
     } else if ([self isRowForViewAdmin:indexPath.row]) {
@@ -142,6 +146,9 @@ typedef enum {
     } else if ([self shouldShowThemesOption] && indexPath.row == BlogDetailsRowThemes) {
         [WPMobileStats incrementProperty:StatsPropertySidebarSiteClickedThemes forEvent:StatsEventAppClosed];
         controllerClass = [ThemeBrowserViewController class];
+    } else if ([self isRowForMedia:indexPath.row]) {
+        [WPMobileStats incrementProperty:StatsPropertySidebarSiteClickedMediaLibrary forEvent:StatsEventAppClosed];
+        controllerClass = [MediaBrowserViewController class];
     } else if ([self isRowForViewSite:indexPath.row]) {
         [self showViewSiteForBlog:self.blog];
     } else if ([self isRowForViewAdmin:indexPath.row]) {
@@ -213,6 +220,10 @@ typedef enum {
     
     NSString *dashboardUrl = [blog.xmlrpc stringByReplacingOccurrencesOfString:@"xmlrpc.php" withString:@"wp-admin/"];
     [[UIApplication sharedApplication] openURL:[NSURL URLWithString:dashboardUrl]];
+}
+
+- (BOOL)isRowForMedia:(NSUInteger)index {
+    return index == ([self shouldShowThemesOption] ? BlogDetailsRowMedia : BlogDetailsRowMedia - 1);
 }
 
 - (BOOL)isRowForViewSite:(NSUInteger)index {
