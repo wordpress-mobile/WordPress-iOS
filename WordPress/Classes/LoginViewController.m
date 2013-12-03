@@ -645,11 +645,7 @@ CGFloat const GeneralWalkthroughiOS7StatusBarOffset = 20.0;
 
 - (BOOL)isSignInEnabled
 {
-    if (_userIsDotCom) {
-        return [self areDotComFieldsFilled];
-    } else {
-        return [self areSelfHostedFieldsFilled];
-    }
+    return _userIsDotCom ? [self areDotComFieldsFilled] : [self areSelfHostedFieldsFilled];
 }
 
 - (BOOL)areDotComFieldsFilled
