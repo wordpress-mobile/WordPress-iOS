@@ -121,7 +121,7 @@
 		cell.isWPCom = YES;
     }
 
-    Blog *blog = [_blogs objectAtIndex:indexPath.row];
+    Blog *blog = _blogs[indexPath.row];
     cell.showTopSeparator = ( indexPath.row == 0 ) ? YES : NO;
     cell.title = [self cellTitleForBlog:blog];
     cell.blavatarUrl = [blog blavatarUrl];
@@ -131,7 +131,7 @@
 
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
-    Blog *blog = [_blogs objectAtIndex:indexPath.row];
+    Blog *blog = _blogs[indexPath.row];
     return [AddUsersBlogCell rowHeightWithText:[self cellTitleForBlog:blog]];
 }
 
@@ -139,7 +139,7 @@
 #pragma mark - Table view delegate
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
-    NSDictionary *dict = [_blogs objectAtIndex:indexPath.row];
+    NSDictionary *dict = _blogs[indexPath.row];
 	[self.delegate userDidSelectBlog:dict];
 	
     [self dismissViewControllerAnimated:YES completion:nil];
