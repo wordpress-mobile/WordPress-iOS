@@ -289,19 +289,10 @@ NSString * const WPBlogListRestorationID = @"WPBlogListID";
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section {
-    // No top margin on iPhone
-    if ([self hasDotComAndSelfHosted]) {
-        return 40.0;
-    } else {
-        return 20.0;
-    }
+    return [self hasDotComAndSelfHosted] ? 40.0 : 20.0;
 }
 - (CGFloat)tableView:(UITableView *)tableView heightForFooterInSection:(NSInteger)section {
-    if (section == [self sectionForAddSite]) {
-        return UITableViewAutomaticDimension;
-    } else {
-        return 1.0;        
-    }
+    return section == [self sectionForAddSite] ? UITableViewAutomaticDimension : 1.0;
 }
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
