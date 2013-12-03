@@ -207,7 +207,9 @@ NSString * const WPAccountDefaultWordPressComAccountChangedNotification = @"WPAc
             [parentMOC save:nil];
         }];
 
-        dispatch_async(dispatch_get_main_queue(), completion);
+        if (completion != nil) {
+            dispatch_async(dispatch_get_main_queue(), completion);
+        }
     }];
 }
 
