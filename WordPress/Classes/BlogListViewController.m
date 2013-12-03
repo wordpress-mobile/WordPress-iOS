@@ -341,7 +341,21 @@ NSString * const WPBlogListRestorationID = @"WPBlogListID";
 
 - (void)setEditing:(BOOL)editing animated:(BOOL)animated {
     [super setEditing:editing animated:animated];
+    
+    // Animate view to editing mode
+    __block UIView *snapshot = [self.view snapshotViewAfterScreenUpdates:NO];
+    snapshot.frame = [self.view convertRect:self.view.frame fromView:self.view.superview];
+    [self.view addSubview:snapshot];
+    
+    // Update results controller to show hidden blogs
     [self updateFetchRequest];
+    
+    [UIView animateWithDuration:0.2 animations:^{
+        snapshot.alpha = 0.0;
+    } completion:^(BOOL finished) {
+        [snapshot removeFromSuperview];
+        snapshot = nil;
+    }];
 }
 
 - (void)switchDidChange:(id)sender {
