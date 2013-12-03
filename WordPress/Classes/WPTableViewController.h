@@ -12,7 +12,7 @@
 
 extern CGFloat const WPTableViewTopMargin;
 
-@interface WPTableViewController : UITableViewController <UITableViewDataSource, UITableViewDelegate, NSFetchedResultsControllerDelegate, UIAlertViewDelegate, SettingsViewControllerDelegate>
+@interface WPTableViewController : UITableViewController <UITableViewDataSource, UITableViewDelegate, NSFetchedResultsControllerDelegate, UIAlertViewDelegate, SettingsViewControllerDelegate, UIViewControllerRestoration>
 
 @property (nonatomic, strong) Blog *blog;
 @property (nonatomic, readonly) BOOL isScrolling;
