@@ -63,10 +63,11 @@ CGFloat const CreateAccountAndBlogIconVerticalOffset = 70.0;
 CGFloat const CreateAccountAndBlogMaxTextWidth = 260.0;
 CGFloat const CreateAccountAndBlogTextFieldWidth = 320.0;
 CGFloat const CreateAccountAndBlogTextFieldHeight = 44.0;
+CGFloat const CreateAccountAndBlogTextFieldPhoneHeight = 38.0;
 CGFloat const CreateAccountAndBlogKeyboardOffset = 132.0;
 CGFloat const CreateAccountAndBlogiOS7StatusBarOffset = 20.0;
 CGFloat const CreateAccountAndBlogButtonWidth = 289.0;
-CGFloat const CreateAccountAndBlogButtonHeight = 41.0;
+CGFloat const CreateAccountAndBlogButtonHeight = 40.0;
 
 - (id)init
 {
@@ -380,25 +381,29 @@ CGFloat const CreateAccountAndBlogButtonHeight = 41.0;
     y = 0;
     _titleLabel.frame = CGRectIntegral(CGRectMake(x, y, titleSize.width, titleSize.height));
     
+    // In order to fit controls ontol all phones, the textField height is smaller on iPhones
+    // versus iPads.
+    CGFloat textFieldHeight = IS_IPAD ? CreateAccountAndBlogTextFieldHeight: CreateAccountAndBlogTextFieldPhoneHeight;
+    
     // Layout Email
     x = (viewWidth - CreateAccountAndBlogTextFieldWidth)/2.0;
     y = CGRectGetMaxY(_titleLabel.frame) + CreateAccountAndBlogStandardOffset;
-    _emailField.frame = CGRectIntegral(CGRectMake(x, y, CreateAccountAndBlogTextFieldWidth, CreateAccountAndBlogTextFieldHeight));
+    _emailField.frame = CGRectIntegral(CGRectMake(x, y, CreateAccountAndBlogTextFieldWidth, textFieldHeight));
 
     // Layout Username
     x = (viewWidth - CreateAccountAndBlogTextFieldWidth)/2.0;
     y = CGRectGetMaxY(_emailField.frame) - 1;
-    _usernameField.frame = CGRectIntegral(CGRectMake(x, y, CreateAccountAndBlogTextFieldWidth, CreateAccountAndBlogTextFieldHeight));
+    _usernameField.frame = CGRectIntegral(CGRectMake(x, y, CreateAccountAndBlogTextFieldWidth, textFieldHeight));
 
     // Layout Password
     x = (viewWidth - CreateAccountAndBlogTextFieldWidth)/2.0;
     y = CGRectGetMaxY(_usernameField.frame) - 1;
-    _passwordField.frame = CGRectIntegral(CGRectMake(x, y, CreateAccountAndBlogTextFieldWidth, CreateAccountAndBlogTextFieldHeight));
+    _passwordField.frame = CGRectIntegral(CGRectMake(x, y, CreateAccountAndBlogTextFieldWidth, textFieldHeight));
     
     // Layout Site Address
     x = (viewWidth - CreateAccountAndBlogTextFieldWidth)/2.0;
     y = CGRectGetMaxY(_passwordField.frame) - 1;
-    _siteAddressField.frame = CGRectIntegral(CGRectMake(x, y, CreateAccountAndBlogTextFieldWidth, CreateAccountAndBlogTextFieldHeight));
+    _siteAddressField.frame = CGRectIntegral(CGRectMake(x, y, CreateAccountAndBlogTextFieldWidth, textFieldHeight));
     
     // Layout WordPressCom Label
     [_siteAddressWPComLabel sizeToFit];
@@ -484,24 +489,26 @@ CGFloat const CreateAccountAndBlogButtonHeight = 41.0;
     CGRect keyboardFrame = [[keyboardInfo objectForKey:UIKeyboardFrameEndUserInfoKey] CGRectValue];
     keyboardFrame = [self.view convertRect:keyboardFrame fromView:nil];
     
-    _keyboardOffset = (CGRectGetMaxY(_createAccountButton.frame) - CGRectGetMinY(keyboardFrame)) + 0.5 * CreateAccountAndBlogStandardOffset;
+    CGFloat newKeyboardOffset = (CGRectGetMaxY(_createAccountButton.frame) - CGRectGetMinY(keyboardFrame)) + 0.5 * CreateAccountAndBlogStandardOffset;
     
     // make sure keyboard offset is greater than 0, otherwise do not move controls
-    if (_keyboardOffset < 0) {
-        _keyboardOffset = 0;
+    if (newKeyboardOffset < 0) {
+        newKeyboardOffset = 0;
         return;
     }
 
     [UIView animateWithDuration:animationDuration animations:^{
         for (UIControl *control in [self controlsToMoveDuringKeyboardTransition]) {
             CGRect frame = control.frame;
-            frame.origin.y -= _keyboardOffset;
+            frame.origin.y -= newKeyboardOffset;
             control.frame = frame;
         }
         
         for (UIControl *control in [self controlsToShowOrHideDuringKeyboardTransition]) {
             control.alpha = 0.0;
         }
+    } completion:^(BOOL finished) {
+        _keyboardOffset += newKeyboardOffset;
     }];
 }
 
@@ -510,10 +517,13 @@ CGFloat const CreateAccountAndBlogButtonHeight = 41.0;
     NSDictionary *keyboardInfo = notification.userInfo;
     CGFloat animationDuration = [[keyboardInfo objectForKey:UIKeyboardAnimationDurationUserInfoKey] floatValue];
     
+    CGFloat currentKeyboardOffset = _keyboardOffset;
+    _keyboardOffset = 0;
+    
     [UIView animateWithDuration:animationDuration animations:^{
         for (UIControl *control in [self controlsToMoveDuringKeyboardTransition]) {
             CGRect frame = control.frame;
-            frame.origin.y += _keyboardOffset;
+            frame.origin.y += currentKeyboardOffset;
             control.frame = frame;
         }
                 
