@@ -16,6 +16,8 @@
 #import "WPTableViewCell.h"
 #import "ContextManager.h"
 
+static NSString *const BlogDetailsCellIdentifier = @"BlogDetailsCell";
+
 typedef enum {
     BlogDetailsRowPosts = 0,
     BlogDetailsRowPages,
@@ -84,6 +86,8 @@ NSString * const WPBlogDetailsBlogKey = @"WPBlogDetailsBlogKey";
     }
     
     [WPStyleGuide configureColorsForView:self.view andTableView:self.tableView];
+    
+    [self.tableView registerClass:[WPTableViewCell class] forCellReuseIdentifier:BlogDetailsCellIdentifier];
 }
 
 - (void)viewWillAppear:(BOOL)animated {
@@ -130,14 +134,8 @@ NSString * const WPBlogDetailsBlogKey = @"WPBlogDetailsBlogKey";
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
-    static NSString *CellIdentifier = @"BlogDetailsCell";
-    UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier];
-
-    if (cell == nil) {
-        cell = [[WPTableViewCell alloc] initWithStyle:UITableViewCellStyleValue1 reuseIdentifier:CellIdentifier];
-        [cell setAccessoryType:UITableViewCellAccessoryDisclosureIndicator];
-    }
-    
+    UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:BlogDetailsCellIdentifier];
+    cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
     [self configureCell:cell atIndexPath:indexPath];
     [WPStyleGuide configureTableViewCell:cell];
 
