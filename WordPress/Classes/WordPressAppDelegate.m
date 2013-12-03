@@ -44,6 +44,10 @@
 
 int ddLogLevel = LOG_LEVEL_INFO;
 NSInteger const UpdateCheckAlertViewTag = 102;
+NSString * const WPTabBarRestorationID = @"WPTabBarID";
+NSString * const WPBlogListNavigationRestorationID = @"WPBlogListNavigationID";
+NSString * const WPReaderNavigationRestorationID = @"WPReaderNavigationID";
+NSString * const WPNotificationsNavigationRestorationID = @"WPNotificationsNavigationID";
 
 
 @interface WordPressAppDelegate () <UITabBarControllerDelegate, CrashlyticsDelegate, UIAlertViewDelegate, BITHockeyManagerDelegate>
@@ -64,7 +68,7 @@ NSInteger const UpdateCheckAlertViewTag = 102;
 
 #pragma mark - UIApplicationDelegate
 
-- (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
+- (BOOL)application:(UIApplication *)application willFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
     // Crash reporting, logging, debugging
     [self configureLogging];
     [self configureHockeySDK];
@@ -228,6 +232,17 @@ NSInteger const UpdateCheckAlertViewTag = 102;
     [[WordPressComApi sharedApi] syncPushNotificationInfo];
 }
 
+- (BOOL)application:(UIApplication *)application shouldSaveApplicationState:(NSCoder *)coder
+{
+    return YES;
+}
+
+- (BOOL)application:(UIApplication *)application shouldRestoreApplicationState:(NSCoder *)coder
+{
+    return YES;
+}
+
+
 #pragma mark - Push Notification delegate
 
 - (void)application:(UIApplication *)application didRegisterForRemoteNotificationsWithDeviceToken:(NSData *)deviceToken {
@@ -320,24 +335,28 @@ NSInteger const UpdateCheckAlertViewTag = 102;
     
     _tabBarController = [[UITabBarController alloc] init];
     _tabBarController.delegate = self;
+    _tabBarController.restorationIdentifier = WPTabBarRestorationID;
     [_tabBarController.tabBar setTranslucent:NO];
 
     self.readerPostsViewController = [[ReaderPostsViewController alloc] init];
     UINavigationController *readerNavigationController = [[UINavigationController alloc] initWithRootViewController:self.readerPostsViewController];
     readerNavigationController.navigationBar.translucent = NO;
     readerNavigationController.tabBarItem.image = [UIImage imageNamed:@"icon-tab-reader"];
+    readerNavigationController.restorationIdentifier = WPReaderNavigationRestorationID;
     self.readerPostsViewController.title = @"Reader";
     
     self.notificationsViewController = [[NotificationsViewController alloc] init];
     UINavigationController *notificationsNavigationController = [[UINavigationController alloc] initWithRootViewController:self.notificationsViewController];
     notificationsNavigationController.navigationBar.translucent = NO;
     notificationsNavigationController.tabBarItem.image = [UIImage imageNamed:@"icon-tab-notifications"];
+    notificationsNavigationController.restorationIdentifier = WPNotificationsNavigationRestorationID;
     self.notificationsViewController.title = @"Notifications";
     
     BlogListViewController *blogListViewController = [[BlogListViewController alloc] init];
     UINavigationController *blogListNavigationController = [[UINavigationController alloc] initWithRootViewController:blogListViewController];
     blogListNavigationController.navigationBar.translucent = NO;
     blogListNavigationController.tabBarItem.image = [UIImage imageNamed:@"icon-tab-blogs"];
+    blogListNavigationController.restorationIdentifier = WPBlogListNavigationRestorationID;
     blogListViewController.title = @"My Blogs";
     
     NSMutableArray *marr = [NSMutableArray arrayWithObjects:blogListNavigationController, readerNavigationController, notificationsNavigationController, nil];
