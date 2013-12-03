@@ -10,7 +10,7 @@
 
 #define kSelectedBlogChanged @"kSelectedBlogChanged"
 
-@interface StatsWebViewController : WPChromelessWebViewController <UIAlertViewDelegate> {
+@interface StatsWebViewController : WPChromelessWebViewController <UIAlertViewDelegate, UIViewControllerRestoration> {
     Blog *blog;
     BOOL authed;
 }
