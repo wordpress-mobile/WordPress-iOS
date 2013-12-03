@@ -303,7 +303,7 @@ CGFloat const GeneralWalkthroughiOS7StatusBarOffset = 20.0;
     [self signIn];
 }
 
-- (void)toggleSignInformAction:(id)sender {
+- (void)toggleSignInFormAction:(id)sender {
     _userIsDotCom = !_userIsDotCom;
     
     // Controls are layed out in initializeView. Calling this method in an animation block will animate the controls to their new positions. 
@@ -447,7 +447,7 @@ CGFloat const GeneralWalkthroughiOS7StatusBarOffset = 20.0;
     // Add Account type toggle
     if (_toggleSignInForm == nil) {
         _toggleSignInForm = [[WPNUXSecondaryButton alloc] init];
-        [_toggleSignInForm addTarget:self action:@selector(toggleSignInformAction:) forControlEvents:UIControlEventTouchUpInside];
+        [_toggleSignInForm addTarget:self action:@selector(toggleSignInFormAction:) forControlEvents:UIControlEventTouchUpInside];
         _toggleSignInForm.autoresizingMask = UIViewAutoresizingFlexibleRightMargin | UIViewAutoresizingFlexibleLeftMargin;
         [_mainView addSubview:_toggleSignInForm];
     }
@@ -455,7 +455,7 @@ CGFloat const GeneralWalkthroughiOS7StatusBarOffset = 20.0;
         // Add Account type toggle
         if (_toggleSignInForm == nil) {
             _toggleSignInForm = [[WPNUXSecondaryButton alloc] init];
-            [_toggleSignInForm addTarget:self action:@selector(toggleSignInformAction:) forControlEvents:UIControlEventTouchUpInside];
+            [_toggleSignInForm addTarget:self action:@selector(toggleSignInFormAction:) forControlEvents:UIControlEventTouchUpInside];
             [_mainView addSubview:_toggleSignInForm];
         }
         NSString *toggleTitle = _userIsDotCom ? NSLocalizedString(@"Add Self-Hosted Site", nil) : NSLocalizedString(@"Sign in to WordPress.com", nil);
