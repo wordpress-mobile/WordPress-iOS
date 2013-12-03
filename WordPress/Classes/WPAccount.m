@@ -189,8 +189,7 @@ NSString * const WPAccountDefaultWordPressComAccountChangedNotification = @"WPAc
 }
 
 - (void)mergeBlogs:(NSArray *)blogs withCompletion:(void (^)())completion {
-    NSManagedObjectContext *backgroundMOC = [[NSManagedObjectContext alloc] initWithConcurrencyType:NSPrivateQueueConcurrencyType];
-    backgroundMOC.parentContext = self.managedObjectContext;
+    NSManagedObjectContext *backgroundMOC = [[ContextManager sharedInstance] backgroundContext];
 
     NSManagedObjectID *accountID = self.objectID;
     [backgroundMOC performBlock:^{
@@ -198,15 +197,7 @@ NSString * const WPAccountDefaultWordPressComAccountChangedNotification = @"WPAc
         for (NSDictionary *blog in blogs) {
             [account findOrCreateBlogFromDictionary:blog withContext:backgroundMOC];
         }
-        NSError *error;
-        if (![backgroundMOC save:&error]) {
-            DDLogError(@"Unresolved core data save error: %@", error);
-        }
-        NSManagedObjectContext *parentMOC = backgroundMOC.parentContext;
-        [parentMOC performBlockAndWait:^{
-            [parentMOC save:nil];
-        }];
-
+        [[ContextManager sharedInstance] saveContext:backgroundMOC];
         if (completion != nil) {
             dispatch_async(dispatch_get_main_queue(), completion);
         }
