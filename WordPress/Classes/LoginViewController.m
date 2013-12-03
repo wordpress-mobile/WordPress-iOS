@@ -458,7 +458,12 @@ CGFloat const GeneralWalkthroughiOS7StatusBarOffset = 20.0;
             [_toggleSignInForm addTarget:self action:@selector(toggleSignInFormAction:) forControlEvents:UIControlEventTouchUpInside];
             [_mainView addSubview:_toggleSignInForm];
         }
-        NSString *toggleTitle = _userIsDotCom ? NSLocalizedString(@"Add Self-Hosted Site", nil) : NSLocalizedString(@"Sign in to WordPress.com", nil);
+        NSString *toggleTitle;
+        if (_userIsDotCom) {
+            toggleTitle = NSLocalizedString(@"Add Self-Hosted Site", nil);
+        } else {
+            toggleTitle = NSLocalizedString(@"Sign in to WordPress.com", nil);
+        }
         [_toggleSignInForm setTitle:toggleTitle forState:UIControlStateNormal];
     }
 
