@@ -84,7 +84,7 @@
 
 #pragma mark - Instance Methods
 
-- (NSString *)getCellTitleForBlog:(Blog *)blog {
+- (NSString *)cellTitleForBlog:(Blog *)blog {
     if ([[blog.blogName trim] length] == 0) {
         return blog.hostURL;
 	} else {
@@ -123,7 +123,7 @@
 
     Blog *blog = [_blogs objectAtIndex:indexPath.row];
     cell.showTopSeparator = ( indexPath.row == 0 ) ? YES : NO;
-    cell.title = [self getCellTitleForBlog:blog];
+    cell.title = [self cellTitleForBlog:blog];
     cell.blavatarUrl = [blog blavatarUrl];
     
     return cell;
@@ -132,7 +132,7 @@
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
     Blog *blog = [_blogs objectAtIndex:indexPath.row];
-    return [AddUsersBlogCell rowHeightWithText:[self getCellTitleForBlog:blog]];
+    return [AddUsersBlogCell rowHeightWithText:[self cellTitleForBlog:blog]];
 }
 
 
