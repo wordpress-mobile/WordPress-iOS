@@ -415,7 +415,13 @@ CGFloat const GeneralWalkthroughiOS7StatusBarOffset = 20.0;
         [_mainView addSubview:_signInButton];
         _signInButton.enabled = NO;
     }
-    NSString *signInTitle = _userIsDotCom ? NSLocalizedString(@"Sign In", nil) : NSLocalizedString(@"Add Site", nil);
+    
+    NSString *signInTitle;
+    if (_userIsDotCom) {
+        signInTitle = NSLocalizedString(@"Sign In", nil);
+    } else {
+        signInTitle = NSLocalizedString(@"Add Site", nil);
+    }
     [_signInButton setTitle:signInTitle forState:UIControlStateNormal];
 
     // Add Cancel Button
