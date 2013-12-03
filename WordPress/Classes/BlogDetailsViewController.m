@@ -109,23 +109,29 @@ NSString * const WPBlogDetailsBlogKey = @"WPBlogDetailsBlogKey";
 - (void)configureCell:(UITableViewCell *)cell atIndexPath:(NSIndexPath *)indexPath {
     if (indexPath.row == BlogDetailsRowPosts) {
         cell.textLabel.text = NSLocalizedString(@"Posts", nil);
+        cell.imageView.image = [UIImage imageNamed:@"icon-menu-posts"];
     } else if (indexPath.row == BlogDetailsRowPages) {
         cell.textLabel.text = NSLocalizedString(@"Pages", nil);
+        cell.imageView.image = [UIImage imageNamed:@"icon-menu-pages"];
     } else if (indexPath.row == BlogDetailsRowComments) {
         cell.textLabel.text = NSLocalizedString(@"Comments", nil);
+        cell.imageView.image = [UIImage imageNamed:@"icon-menu-comments"];
         int numberOfPendingComments = [self.blog numberOfPendingComments];
         if (numberOfPendingComments > 0) {
             cell.detailTextLabel.text = [NSString stringWithFormat:@"%d", numberOfPendingComments];
         }
-
     } else if (indexPath.row == BlogDetailsRowStats) {
         cell.textLabel.text = NSLocalizedString(@"Stats", nil);
+        cell.imageView.image = [UIImage imageNamed:@"icon-menu-stats"];
     } else if (indexPath.row == BlogDetailsRowViewSite) {
         cell.textLabel.text = NSLocalizedString(@"View Site", nil);
+        cell.imageView.image = [UIImage imageNamed:@"icon-menu-viewsite"];
     } else if (indexPath.row == BlogDetailsRowViewAdmin) {
         cell.textLabel.text = NSLocalizedString(@"View Admin", nil);
+        cell.imageView.image = [UIImage imageNamed:@"icon-menu-viewadmin"];
     } else if (indexPath.row == BlogDetailsRowEdit) {
         cell.textLabel.text = NSLocalizedString(@"Edit Blog", nil);
+        cell.imageView.image = [UIImage imageNamed:@"icon-menu-settings"];
     }
 }
 
