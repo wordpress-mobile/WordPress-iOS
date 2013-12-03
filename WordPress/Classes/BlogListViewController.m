@@ -177,11 +177,7 @@ NSString * const WPBlogListRestorationID = @"WPBlogListID";
 }
 
 - (BOOL)tableView:(UITableView *)tableView canEditRowAtIndexPath:(NSIndexPath *)indexPath {
-    if (indexPath.section == [self sectionForSelfHosted]) {
-        return YES;
-    } else {
-        return NO;
-    }
+    return indexPath.section == [self sectionForSelfHosted];
 }
 
 - (UITableViewCellEditingStyle)tableView:(UITableView *)tableView editingStyleForRowAtIndexPath:(NSIndexPath *)indexPath {
