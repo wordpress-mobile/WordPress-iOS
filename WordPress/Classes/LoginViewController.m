@@ -893,7 +893,7 @@ CGFloat const GeneralWalkthroughiOS7StatusBarOffset = 20.0;
     CGRect keyboardFrame = [[[notification userInfo] objectForKey:UIKeyboardFrameEndUserInfoKey] CGRectValue];
     keyboardFrame = [self.view convertRect:keyboardFrame fromView:nil];
     CGFloat newKeyboardOffset = (CGRectGetMaxY(_signInButton.frame) - CGRectGetMinY(keyboardFrame)) + 0.5 * GeneralWalkthroughStandardOffset;
-    
+
     if (newKeyboardOffset < 0) {
         newKeyboardOffset = 0;
         return;
@@ -922,7 +922,7 @@ CGFloat const GeneralWalkthroughiOS7StatusBarOffset = 20.0;
     
     CGFloat currentKeyboardOffset = _keyboardOffset;
     _keyboardOffset = 0;
-    
+
     [UIView animateWithDuration:animationDuration animations:^{
         for (UIControl *control in [self controlsToMoveForTextEntry]) {
             CGRect frame = control.frame;
