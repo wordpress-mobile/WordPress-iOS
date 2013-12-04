@@ -39,7 +39,7 @@ NSString *const RPVCDisplayedNativeFriendFinder = @"DisplayedNativeFriendFinder"
     BOOL _isScrollingFast;
     CGFloat _lastOffset;
     UIPopoverController *_popover;
-    WPAnimatedBox *animatedBox;
+    WPAnimatedBox *_animatedBox;
 }
 
 @property (nonatomic, strong) ReaderReblogFormView *readerReblogFormView;
@@ -147,8 +147,8 @@ NSString *const RPVCDisplayedNativeFriendFinder = @"DisplayedNativeFriendFinder"
 	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(handleKeyboardDidShow:) name:UIKeyboardWillShowNotification object:nil];
 	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(handleKeyboardWillHide:) name:UIKeyboardWillHideNotification object:nil];
     
-    if (self.noResultsView && animatedBox) {
-        [animatedBox prepareAnimation:NO];
+    if (self.noResultsView && _animatedBox) {
+        [_animatedBox prepareAnimation:NO];
     }
 }
 
@@ -168,8 +168,8 @@ NSString *const RPVCDisplayedNativeFriendFinder = @"DisplayedNativeFriendFinder"
     double delayInSeconds = 0.3;
     dispatch_time_t popTime = dispatch_time(DISPATCH_TIME_NOW, (int64_t)(delayInSeconds * NSEC_PER_SEC));
     dispatch_after(popTime, dispatch_get_main_queue(), ^(void){
-        if (self.noResultsView && animatedBox) {
-            [animatedBox animate];
+        if (self.noResultsView && _animatedBox) {
+            [_animatedBox animate];
         }
     });
 }
@@ -514,10 +514,10 @@ NSString *const RPVCDisplayedNativeFriendFinder = @"DisplayedNativeFriendFinder"
 }
 
 - (UIView *)noResultsAccessoryView {
-    if (!animatedBox) {
-        animatedBox = [WPAnimatedBox new];
+    if (!_animatedBox) {
+        _animatedBox = [WPAnimatedBox new];
     }
-    return animatedBox;
+    return _animatedBox;
 }
 
 - (NSString *)entityName {
