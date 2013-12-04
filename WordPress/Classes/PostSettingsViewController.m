@@ -23,6 +23,9 @@
 #define TAG_ACTIONSHEET_RESIZE_PHOTO        20
 #define kOFFSET_FOR_KEYBOARD                150.0
 
+static NSString *const LocationServicesCellIdentifier = @"LocationServicesCellIdentifier";
+static NSString *const TableViewActivityCellIdentifier = @"TableViewActivityCellIdentifier";
+
 @interface PostSettingsViewController () <UINavigationControllerDelegate, UIImagePickerControllerDelegate,
                                           UIPopoverControllerDelegate>
 
@@ -108,18 +111,18 @@
 
 - (void)viewDidLoad {
     self.title = NSLocalizedString(@"Properties", nil);
-    
+
     DDLogInfo(@"%@ %@", self, NSStringFromSelector(_cmd));
-    
+
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(keyboardWillShow:) name:UIKeyboardWillShowNotification object:nil];
 	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(keyboardWillHide:) name:UIKeyboardWillHideNotification object:nil];
 	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(showFeaturedImageUploader:) name:@"UploadingFeaturedImage" object:nil];
 	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(featuredImageUploadSucceeded:) name:FeaturedImageUploadSuccessful object:nil];
 	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(featuredImageUploadFailed:) name:FeaturedImageUploadFailed object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(newCategoryCreatedNotificationReceived:) name:WPNewCategoryCreatedAndUpdatedInBlogNotificationName object:nil];
-    
+
     [WPStyleGuide configureColorsForView:self.view andTableView:self.tableView];
-    
+
     self.visibilityTitleLabel.text = NSLocalizedString(@"Visibility", @"The visibility settings of the post. Should be the same as in core WP.");
     self.passwordTextField.placeholder = NSLocalizedString(@"Enter a password", @"");
     NSMutableArray *allStatuses = [NSMutableArray arrayWithArray:[self.apost availableStatuses]];
@@ -129,7 +132,7 @@
     self.formatsList = self.post.blog.sortedPostFormatNames;
 
     self.isShowingKeyboard = NO;
-    
+
     CGRect pickerFrame;
 	if (IS_IPAD) {
 		pickerFrame = CGRectMake(0.0f, 0.0f, 320.0f, 216.0f);
@@ -141,14 +144,14 @@
     self.pickerView.delegate = self;
     self.pickerView.dataSource = self;
     self.pickerView.showsSelectionIndicator = YES;
-        
+
     self.datePickerView = [[UIDatePicker alloc] initWithFrame:self.pickerView.frame];
     self.datePickerView.minuteInterval = 5;
     [self.datePickerView addTarget:self action:@selector(datePickerChanged) forControlEvents:UIControlEventValueChanged];
 
     self.passwordTextField.returnKeyType = UIReturnKeyDone;
 	self.passwordTextField.delegate = self;
-	
+
     // Automatically update the location for a new post
     BOOL isNewPost = (self.apost.remoteStatus == AbstractPostRemoteStatusLocal) && !self.post.geolocation;
     BOOL postAllowsGeotag = self.post && self.post.blog.geolocationEnabled;
@@ -156,12 +159,12 @@
         self.isUpdatingLocation = YES;
         [self.locationManager startUpdatingLocation];
 	}
-    
+
     self.featuredImageView.layer.shadowOffset = CGSizeMake(0.0, 1.0f);
     self.featuredImageView.layer.shadowColor = [[UIColor blackColor] CGColor];
     self.featuredImageView.layer.shadowOpacity = 0.5f;
     self.featuredImageView.layer.shadowRadius = 1.0f;
-    
+
     self.featuredImageLabel.font = [WPStyleGuide tableviewTextFont];
     self.featuredImageLabel.textColor = [WPStyleGuide whisperGrey];
 
@@ -169,7 +172,7 @@
     id supportsFeaturedImages = [self.post.blog getOptionValue:@"post_thumbnail"];
     if (supportsFeaturedImages) {
         self.blogSupportsFeaturedImage = [supportsFeaturedImages boolValue];
-        
+
         if (self.blogSupportsFeaturedImage && [self.post.media count] > 0) {
             for (Media *media in self.post.media) {
                 NSInteger status = [media.remoteStatusNumber integerValue];
@@ -178,7 +181,7 @@
                 }
             }
         }
-        
+
         if (!self.isUploadingFeaturedImage && (self.blogSupportsFeaturedImage && self.post.post_thumbnail != nil)) {
             // Download the current featured image
             [self.featuredImageView setHidden:YES];
@@ -189,7 +192,7 @@
                 [self.featuredImageSpinner startAnimating];
             }
             [self.tableView reloadData];
-            
+
             [self.post getFeaturedImageURLWithSuccess:^{
                 if (self.post.featuredImageURL) {
                     NSURL *imageURL = [[NSURL alloc] initWithString:self.post.featuredImageURL];
@@ -206,14 +209,14 @@
             }];
         }
     }
-    
+
     UITapGestureRecognizer *gestureRecognizer = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(dismissTagsKeyboardIfAppropriate:)];
     gestureRecognizer.cancelsTouchesInView = NO;
     gestureRecognizer.numberOfTapsRequired = 1;
     [self.tableView addGestureRecognizer:gestureRecognizer];
-    
-    [self.tableView registerClass:[WPTableViewCell class] forCellReuseIdentifier:@"locationServicesCell"];
-    [self.tableView registerNib:[UINib nibWithNibName:@"UITableViewActivityCell" bundle:nil] forCellReuseIdentifier:@"UITableViewActivityCell"];
+
+    [self.tableView registerClass:[WPTableViewCell class] forCellReuseIdentifier:LocationServicesCellIdentifier];
+    [self.tableView registerNib:[UINib nibWithNibName:@"UITableViewActivityCell" bundle:nil] forCellReuseIdentifier:TableViewActivityCellIdentifier];
 }
 
 - (void)viewWillAppear:(BOOL)animated {
@@ -223,7 +226,7 @@
 
 - (void)viewWillDisappear:(BOOL)animated {
     [super viewWillDisappear:animated];
-    
+
     [self.apost.managedObjectContext performBlock:^{
         [self.apost.managedObjectContext save:nil];
     }];
@@ -232,7 +235,7 @@
 - (void)didReceiveMemoryWarning {
     DDLogWarn(@"%@ %@", self, NSStringFromSelector(_cmd));
     [super didReceiveMemoryWarning];
-    
+
     self.mapView = nil;
 }
 
@@ -257,51 +260,51 @@
         [self.featuredImageSpinner stopAnimating];
         [self.featuredImageSpinner setHidden:YES];
         [self.featuredImageLabel setHidden:YES];
-        
+
     } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
         // private blog, auth needed.
         if (operation.response.statusCode == 403) {
             if (!self.triedAuthOnce) {
                 self.triedAuthOnce = YES;
-                
+
                 Blog *blog = self.apost.blog;
                 NSString *username = blog.username;
                 NSString *password = blog.password;
-                
+
                 NSMutableURLRequest *mRequest = [[NSMutableURLRequest alloc] init];
                 NSString *requestBody = [NSString stringWithFormat:@"log=%@&pwd=%@&redirect_to=",
                                          [username stringByUrlEncoding],
                                          [password stringByUrlEncoding]];
-                
+
                 [mRequest setURL:[NSURL URLWithString:blog.loginUrl]];
                 [mRequest setHTTPBody:[requestBody dataUsingEncoding:NSUTF8StringEncoding]];
                 [mRequest setValue:[NSString stringWithFormat:@"%d", [requestBody length]] forHTTPHeaderField:@"Content-Length"];
                 [mRequest addValue:@"*/*" forHTTPHeaderField:@"Accept"];
                 [mRequest setHTTPMethod:@"POST"];
-                
+
                 AFHTTPRequestOperation *authOp = [[AFHTTPRequestOperation alloc] initWithRequest:mRequest];
                 [authOp setCompletionBlockWithSuccess:^(AFHTTPRequestOperation *operation, id responseObject) {
                     // Good auth. We should be able to show the image now.
                     [self loadFeaturedImage:imageURL];
-                    
+
                 } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
                     // Rather than duplicate the fail condition, just call the method again and let it fail a second time.
                     [self loadFeaturedImage:imageURL];
-                    
+
                 }];
                 [authOp start];
-                
+
                 return;
-            }    
+            }
         }
-        
+
         // Unable to download the image.
         [self.featuredImageView setHidden:YES];
         [self.featuredImageSpinner stopAnimating];
         [self.featuredImageSpinner setHidden:YES];
         [self.featuredImageLabel setText:NSLocalizedString(@"Could not download Featured Image.", @"Featured image could not be downloaded for display in post settings.")];
     }];
-    
+
     [operation start];
 }
 
@@ -318,7 +321,7 @@
 
 - (void)reloadData {
     self.passwordTextField.text = self.apost.password;
-	
+
     [self.tableView reloadData];
 }
 
@@ -374,20 +377,20 @@
         } else {
             return 3;
         }
-        
+
     } else if (section == 1) {
 		return 3;
-        
+
     } else if (section == 2) {
         return 1;
-        
+
     } else if (section == 3 && self.blogSupportsFeaturedImage) {
         if (self.post.post_thumbnail && !self.isUploadingFeaturedImage) {
             return 2;
         } else {
             return 1;
         }
-        
+
 	} else if ((section == 3 && !self.blogSupportsFeaturedImage) || section == 4) {
 		if (self.post.geolocation) {
 			return 3; // Add/Update | Map | Remove
@@ -404,7 +407,7 @@
         // We only show the status section for Pages
         alteredSection = 1;
     }
-    
+
 	if (alteredSection == 0) {
         return @"";
     } else if (alteredSection == 1) {
@@ -437,7 +440,7 @@
         // We only show the status section for Pages
         section = 1;
     }
-    
+
 	switch (section) {
     case 0:
             switch (indexPath.row) {
@@ -505,9 +508,9 @@
 				}
                 self.passwordTextField.font = [WPStyleGuide tableviewTextFont];
                 self.passwordTextField.textColor = [WPStyleGuide whisperGrey];
-            
+
                 self.visibilityLabel.text = [self titleForVisibility];
-                
+
                 self.visibilityTableViewCell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
 				return self.visibilityTableViewCell;
 				break;
@@ -525,7 +528,7 @@
 					} else {
 						cell.textLabel.text = NSLocalizedString(@"Published on", @"Published on [date]");
 					}
-					
+
 					NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
 					[dateFormatter setDateStyle:NSDateFormatterMediumStyle];
 					[dateFormatter setTimeStyle:NSDateFormatterNoStyle];
@@ -562,7 +565,7 @@
 	case 3:
         if (self.blogSupportsFeaturedImage) {
             if (!self.post.post_thumbnail && !self.isUploadingFeaturedImage) {
-                UITableViewActivityCell *activityCell = (UITableViewActivityCell *)[self.tableView dequeueReusableCellWithIdentifier:@"UITableViewActivityCell" forIndexPath:indexPath];
+                UITableViewActivityCell *activityCell = (UITableViewActivityCell *)[self.tableView dequeueReusableCellWithIdentifier:TableViewActivityCellIdentifier forIndexPath:indexPath];
                 activityCell.selectionStyle = UITableViewCellSelectionStyleBlue;
 
                 [WPStyleGuide configureTableViewActionCell:activityCell];
@@ -572,15 +575,13 @@
                 switch (indexPath.row) {
                     case 0:
                         return self.featuredImageTableViewCell;
-                        break;
                     case 1: {
-                        UITableViewActivityCell *activityCell = (UITableViewActivityCell *)[self.tableView dequeueReusableCellWithIdentifier:@"UITableViewActivityCell" forIndexPath:indexPath];
+                        UITableViewActivityCell *activityCell = (UITableViewActivityCell *)[self.tableView dequeueReusableCellWithIdentifier:TableViewActivityCellIdentifier forIndexPath:indexPath];
                         [activityCell.textLabel setText: NSLocalizedString(@"Remove Featured Image", "Remove featured image from post")];
                         [WPStyleGuide configureTableViewActionCell:activityCell];
                         return activityCell;
-                        break;
                     }
-                        
+
                 }
             }
         } else {
@@ -591,7 +592,7 @@
         return [self getGeolocationCellWithIndexPath:indexPath];
         break;
 	}
-    
+
     return nil;
 }
 
@@ -609,17 +610,17 @@
                     [WPStyleGuide configureTableViewActionCell:cell];
                 }
                 return cell;
-                
+
             } else if(![CLLocationManager locationServicesEnabled] || [self.locationManager location] == nil) {
-                WPTableViewCell *cell = (WPTableViewCell *)[self.tableView dequeueReusableCellWithIdentifier:@"locationServicesCell" forIndexPath:indexPath];
+                WPTableViewCell *cell = (WPTableViewCell *) [self.tableView dequeueReusableCellWithIdentifier:LocationServicesCellIdentifier forIndexPath:indexPath];
                 cell.textLabel.text = NSLocalizedString(@"Please Enable Location Services", @"Prompt the user to enable location services on their device.");
                 cell.textLabel.textAlignment = NSTextAlignmentCenter;
                 [WPStyleGuide configureTableViewActionCell:cell];
 
                 return cell;
-                
+
             } else {
-                UITableViewActivityCell *activityCell = (UITableViewActivityCell *)[self.tableView dequeueReusableCellWithIdentifier:@"UITableViewActivityCell" forIndexPath:indexPath];
+                UITableViewActivityCell *activityCell = (UITableViewActivityCell *)[self.tableView dequeueReusableCellWithIdentifier:TableViewActivityCellIdentifier forIndexPath:indexPath];
                 if (self.isUpdatingLocation) {
                     activityCell.textLabel.text = NSLocalizedString(@"Finding your location...", @"Geo-tagging posts, status message when geolocation is found.");
                     [activityCell.spinner startAnimating];
