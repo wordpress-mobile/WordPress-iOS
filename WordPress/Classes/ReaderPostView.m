@@ -242,7 +242,8 @@ const CGFloat RPVControlButtonBorderSize = 0.0f;
 		_reblogButton.hidden = YES;
         _commentButton.hidden = YES;
 	}
-	
+    
+    [_followButton setSelected:[self.post.isFollowing boolValue]];
 	_reblogButton.userInteractionEnabled = ![post.isReblogged boolValue];
 	
 	[self updateActionButtons];
@@ -320,7 +321,6 @@ const CGFloat RPVControlButtonBorderSize = 0.0f;
 	[_byView addSubview:_bylineLabel];
     
     self.followButton = [ReaderButton buttonWithType:UIButtonTypeCustom];
-    [_followButton setSelected:[self.post.isFollowing boolValue]];
     _followButton.contentHorizontalAlignment = UIControlContentHorizontalAlignmentLeft;
     _followButton.backgroundColor = [UIColor clearColor];
     _followButton.titleLabel.font = [UIFont fontWithName:@"OpenSans" size:12.0f];
@@ -508,6 +508,7 @@ const CGFloat RPVControlButtonBorderSize = 0.0f;
 	_titleLabel.text = nil;
 	_snippetLabel.text = nil;
     [_tagButton setTitle:nil forState:UIControlStateNormal];
+    [_followButton setSelected:NO];
     
     [_cellImageView cancelImageRequestOperation];
 	_cellImageView.image = nil;
