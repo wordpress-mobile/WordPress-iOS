@@ -1,5 +1,5 @@
 //
-//  WPInfoView.m
+//  WPNoResultsView.m
 //  WordPress
 //
 //  Created by Eric Johnson on 8/30/12.
