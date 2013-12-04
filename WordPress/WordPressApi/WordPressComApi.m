@@ -34,6 +34,15 @@ NSString *const WordPressComApiErrorDomain = @"com.wordpress.api";
 NSString *const WordPressComApiErrorCodeKey = @"WordPressComApiErrorCodeKey";
 NSString *const WordPressComApiErrorMessageKey = @"WordPressComApiErrorMessageKey";
 
+#ifdef DEBUG
+NSString *const WordPressComApiPushAppId = @"org.wordpress.appstore.dev";
+#elif
+#ifdef INTERNAL_BUILD
+NSString *const WordPressComApiPushAppId = @"org.wordpress.internal";
+#elif
+NSString *const WordPressComApiPushAppId = @"org.wordpress.appstore";
+#endif
+#endif
 
 #define UnfollowedBlogEvent @"UnfollowedBlogEvent"
 
@@ -467,9 +476,7 @@ NSString *const WordPressComApiErrorMessageKey = @"WordPressComApiErrorMessageKe
                             updatedSettings,
                             token,
                             @"apple",
-#ifdef INTERNAL_BUILD
-                            @"org.wordpress.internal",
-#endif
+                            WordPressComApiPushAppId
                             ];
     WPXMLRPCClient *api = [[WPXMLRPCClient alloc] initWithXMLRPCEndpoint:[NSURL URLWithString:kWPcomXMLRPCUrl]];
     [api setAuthorizationHeaderWithToken:self.authToken];
@@ -497,9 +504,7 @@ NSString *const WordPressComApiErrorMessageKey = @"WordPressComApiErrorMessageKe
                             [self passwordForXmlrpc],
                             token,
                             @"apple",
-#ifdef INTERNAL_BUILD
-                            @"org.wordpress.internal",
-#endif
+                            WordPressComApiPushAppId
                             ];
     
     WPXMLRPCClient *api = [[WPXMLRPCClient alloc] initWithXMLRPCEndpoint:[NSURL URLWithString:kWPcomXMLRPCUrl]];
@@ -532,23 +537,15 @@ NSString *const WordPressComApiErrorMessageKey = @"WordPressComApiErrorMessageKe
     
     [api setAuthorizationHeaderWithToken:self.authToken];
     
-#ifdef DEBUG
-    NSNumber *production = @NO;
-#else
-    NSNumber *production = @YES;
-#endif
-
     NSDictionary *tokenOptions = @{
                                    @"device_family": @"apple",
                                    @"device_model": [UIDeviceHardware platform],
                                    @"device_name": [[UIDevice currentDevice] name],
                                    @"device_uuid": [[UIDevice currentDevice] wordpressIdentifier],
-                                   @"production": production,
+                                   @"production": @YES, // deprecated in favor of app_secret_key
                                    @"app_version": [[[NSBundle mainBundle] infoDictionary] objectForKey:@"CFBundleVersion"],
                                    @"os_version": [[UIDevice currentDevice] systemVersion],
-#ifdef INTERNAL_BUILD
-                                   @"app_secret_key": @"org.wordpress.internal",
-#endif
+                                   @"app_secret_key": WordPressComApiPushAppId,
                                    };
     NSArray *parameters = @[
                             [self usernameForXmlrpc],
@@ -569,9 +566,7 @@ NSString *const WordPressComApiErrorMessageKey = @"WordPressComApiErrorMessageKe
                                     [self passwordForXmlrpc],
                                     token,
                                     @"apple",
-#ifdef INTERNAL_BUILD
-                                    @"org.wordpress.internal",
-#endif
+                                    WordPressComApiPushAppId
                                     ];
     WPXMLRPCRequest *settingsRequest = [api XMLRPCRequestWithMethod:@"wpcom.get_mobile_push_notification_settings" parameters:settingsParameters];
     WPXMLRPCRequestOperation *settingsOperation = [api XMLRPCRequestOperationWithRequest:settingsRequest success:^(AFHTTPRequestOperation *operation, id responseObject) {
