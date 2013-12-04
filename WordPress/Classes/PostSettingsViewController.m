@@ -489,6 +489,7 @@
                 } else {
 					cell.selectionStyle = UITableViewCellSelectionStyleBlue;
                 }
+                cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
 				[WPStyleGuide configureTableViewCell:cell];
 				return cell;
 				break;
@@ -506,11 +507,8 @@
                 self.passwordTextField.textColor = [WPStyleGuide whisperGrey];
             
                 self.visibilityLabel.text = [self titleForVisibility];
-				
-                if (!IS_IOS7) {
-                    [self.visibilityTitleLabel setHighlightedTextColor:[UIColor whiteColor]];
-                    [self.visibilityLabel setHighlightedTextColor:[UIColor whiteColor]];
-                }
+                
+                self.visibilityTableViewCell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
 				return self.visibilityTableViewCell;
 				break;
 			case 2:
@@ -536,6 +534,7 @@
 					cell.textLabel.text = NSLocalizedString(@"Publish   ", @""); //dorky spacing fix
 					cell.detailTextLabel.text = NSLocalizedString(@"Immediately", @"");
 				}
+                cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
                 [WPStyleGuide configureTableViewCell:cell];
                 return cell;
 			}
