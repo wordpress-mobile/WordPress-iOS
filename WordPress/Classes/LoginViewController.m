@@ -273,15 +273,6 @@ CGFloat const GeneralWalkthroughiOS7StatusBarOffset = 20.0;
 - (void)backgroundTapGestureAction:(UITapGestureRecognizer *)tapGestureRecognizer
 {
     [self.view endEditing:YES];
-
-    // The info button is a little hard to hit so this adds a little buffer around it
-    CGPoint touchPoint = [tapGestureRecognizer locationInView:self.view];
-    CGFloat x = CGRectGetMaxX(_helpButton.frame) + 10;
-    CGFloat y = CGRectGetMaxY(_helpButton.frame) + 10;
-    CGRect infoButtonRect = CGRectMake(0, 0, x, y);
-    if (CGRectContainsPoint(infoButtonRect, touchPoint)) {
-        [self helpButtonAction:nil];
-    }
 }
 
 - (void)signInButtonAction:(id)sender
