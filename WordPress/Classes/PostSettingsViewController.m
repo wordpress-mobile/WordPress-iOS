@@ -38,7 +38,7 @@
 @property (nonatomic, strong) WPAlertView *customSizeAlert;
 
 // Post tags, status
-@property (nonatomic, strong) IBOutlet UITableViewCell *visibilityTableViewCell;
+@property (nonatomic, strong) IBOutlet WPTableViewCell *visibilityTableViewCell;
 @property (nonatomic, strong) IBOutlet UILabel *visibilityLabel;
 @property (nonatomic, strong) IBOutlet UILabel *postFormatLabel;
 @property (nonatomic, strong) IBOutlet UITextField *passwordTextField;
@@ -62,7 +62,6 @@
 @property (nonatomic, strong) IBOutlet UITableViewCell *mapGeotagTableViewCell;
 @property (nonatomic, strong) CLLocationManager *locationManager;
 @property (nonatomic, strong) CLGeocoder *reverseGeocoder;
-@property (nonatomic, strong) UITableViewActivityCell *addGeotagTableViewCell;
 @property (nonatomic, strong) UITableViewCell *removeGeotagTableViewCell;
 @property (nonatomic, strong) PostAnnotation *annotation;
 @property (nonatomic, strong) NSString *address;
@@ -72,7 +71,7 @@
 @property (nonatomic, strong) IBOutlet UILabel *visibilityTitleLabel;
 @property (nonatomic, strong) IBOutlet UILabel *featuredImageLabel;
 @property (nonatomic, strong) IBOutlet UIImageView *featuredImageView;
-@property (nonatomic, strong) IBOutlet UITableViewCell *featuredImageTableViewCell;
+@property (nonatomic, strong) IBOutlet UITableViewActivityCell *featuredImageTableViewCell;
 @property (nonatomic, strong) IBOutlet UIActivityIndicatorView *featuredImageSpinner;
 
 @end
@@ -212,6 +211,9 @@
     gestureRecognizer.cancelsTouchesInView = NO;
     gestureRecognizer.numberOfTapsRequired = 1;
     [self.tableView addGestureRecognizer:gestureRecognizer];
+    
+    [self.tableView registerClass:[WPTableViewCell class] forCellReuseIdentifier:@"locationServicesCell"];
+    [self.tableView registerNib:[UINib nibWithNibName:@"UITableViewActivityCell" bundle:nil] forCellReuseIdentifier:@"UITableViewActivityCell"];
 }
 
 - (void)viewWillAppear:(BOOL)animated {
@@ -443,7 +445,7 @@
                     static NSString *CategoriesCellIdentifier = @"CategoriesCell";
                     UITableViewCell *cell = [self.tableView dequeueReusableCellWithIdentifier:CategoriesCellIdentifier];
                     if (cell == nil) {
-                        cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleValue1 reuseIdentifier:CategoriesCellIdentifier];
+                        cell = [[WPTableViewCell alloc] initWithStyle:UITableViewCellStyleValue1 reuseIdentifier:CategoriesCellIdentifier];
                     }
                     cell.textLabel.text = NSLocalizedString(@"Categories:", @"Label for the categories field. Should be the same as WP core.");
                     cell.detailTextLabel.text = [NSString decodeXMLCharactersIn:[self.post categoriesText]];
@@ -472,7 +474,7 @@
                 static NSString *StatusCellIdentifier = @"StatusCell";
                 UITableViewCell *cell = [self.tableView dequeueReusableCellWithIdentifier:StatusCellIdentifier];
                 if (cell == nil) {
-                    cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleValue1 reuseIdentifier:StatusCellIdentifier];
+                    cell = [[WPTableViewCell alloc] initWithStyle:UITableViewCellStyleValue1 reuseIdentifier:StatusCellIdentifier];
                 }
                 cell.textLabel.text = NSLocalizedString(@"Status", @"The status of the post. Should be the same as in core WP.");
                 self.statusLabel = cell.detailTextLabel;
@@ -516,7 +518,7 @@
                 static NSString *PublishedOnCellIdentifier = @"PublishedOnCell";
                 UITableViewCell *cell = [self.tableView dequeueReusableCellWithIdentifier:PublishedOnCellIdentifier];
                 if (cell == nil) {
-                    cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleValue1 reuseIdentifier:PublishedOnCellIdentifier];
+                    cell = [[WPTableViewCell alloc] initWithStyle:UITableViewCellStyleValue1 reuseIdentifier:PublishedOnCellIdentifier];
                 }
                 self.publishOnDateLabel = cell.detailTextLabel;
 				if (self.apost.dateCreated) {
@@ -546,7 +548,7 @@
             static NSString *PostFormatCellIdentifier = @"PostFormatCell";
             UITableViewCell *cell = [self.tableView dequeueReusableCellWithIdentifier:PostFormatCellIdentifier];
             if (cell == nil) {
-                cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleValue1 reuseIdentifier:PostFormatCellIdentifier];
+                cell = [[WPTableViewCell alloc] initWithStyle:UITableViewCellStyleValue1 reuseIdentifier:PostFormatCellIdentifier];
             }
 
             cell.textLabel.text = NSLocalizedString(@"Post Format", @"The post formats available for the post. Should be the same as in core WP.");
@@ -561,45 +563,19 @@
 	case 3:
         if (self.blogSupportsFeaturedImage) {
             if (!self.post.post_thumbnail && !self.isUploadingFeaturedImage) {
-                UITableViewActivityCell *activityCell = (UITableViewActivityCell *)[self.tableView dequeueReusableCellWithIdentifier:@"CustomCell"];
-                if (activityCell == nil) {
-                    NSArray *topLevelObjects = [[NSBundle mainBundle] loadNibNamed:@"UITableViewActivityCell" owner:nil options:nil];
-                    for(id currentObject in topLevelObjects) {
-                        if([currentObject isKindOfClass:[UITableViewActivityCell class]]) {
-                            activityCell = (UITableViewActivityCell *)currentObject;
-                            break;
-                        }
-                    }
-                    activityCell.selectionStyle = UITableViewCellSelectionStyleBlue;
-                }
+                UITableViewActivityCell *activityCell = (UITableViewActivityCell *)[self.tableView dequeueReusableCellWithIdentifier:@"UITableViewActivityCell" forIndexPath:indexPath];
+                activityCell.selectionStyle = UITableViewCellSelectionStyleBlue;
+
                 [WPStyleGuide configureTableViewActionCell:activityCell];
                 [activityCell.textLabel setText:NSLocalizedString(@"Set Featured Image", @"")];
                 return activityCell;
             } else {
                 switch (indexPath.row) {
                     case 0:
-                        if (self.featuredImageTableViewCell == nil) {
-                            NSArray *topLevelObjects = [[NSBundle mainBundle] loadNibNamed:@"UITableViewActivityCell" owner:nil options:nil];
-                            for(id currentObject in topLevelObjects) {
-                                if([currentObject isKindOfClass:[UITableViewActivityCell class]]) {
-                                    self.featuredImageTableViewCell = (UITableViewActivityCell *)currentObject;
-                                    break;
-                                }
-                            }
-                        }
                         return self.featuredImageTableViewCell;
                         break;
                     case 1: {
-                        UITableViewActivityCell *activityCell = (UITableViewActivityCell *)[self.tableView dequeueReusableCellWithIdentifier:@"CustomCell"];
-                        if (activityCell == nil) {
-                            NSArray *topLevelObjects = [[NSBundle mainBundle] loadNibNamed:@"UITableViewActivityCell" owner:nil options:nil];
-                            for(id currentObject in topLevelObjects) {
-                                if([currentObject isKindOfClass:[UITableViewActivityCell class]]) {
-                                    activityCell = (UITableViewActivityCell *)currentObject;
-                                    break;
-                                }
-                            }
-                        }
+                        UITableViewActivityCell *activityCell = (UITableViewActivityCell *)[self.tableView dequeueReusableCellWithIdentifier:@"UITableViewActivityCell" forIndexPath:indexPath];
                         [activityCell.textLabel setText: NSLocalizedString(@"Remove Featured Image", "Remove featured image from post")];
                         [WPStyleGuide configureTableViewActionCell:activityCell];
                         return activityCell;
@@ -628,7 +604,7 @@
             if(!self.post.blog.geolocationEnabled) {
                 UITableViewCell *cell = [self.tableView dequeueReusableCellWithIdentifier:@"GeolocationDisabledCell"];
                 if (!cell) {
-                    cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:@"GeolocationDisabledCell"];
+                    cell = [[WPTableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:@"GeolocationDisabledCell"];
                     cell.textLabel.text = NSLocalizedString(@"Enable Geotagging to Edit", @"Prompt the user to enable geolocation tagging on their blog.");
                     cell.textLabel.textAlignment = NSTextAlignmentCenter;
                     [WPStyleGuide configureTableViewActionCell:cell];
@@ -636,39 +612,28 @@
                 return cell;
                 
             } else if(![CLLocationManager locationServicesEnabled] || [self.locationManager location] == nil) {
-                UITableViewCell *cell = [self.tableView dequeueReusableCellWithIdentifier:@"locationServicesCell"];
-                if (!cell) {
-                    cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:@"locationServicesCell"];
-                    cell.textLabel.text = NSLocalizedString(@"Please Enable Location Services", @"Prompt the user to enable location services on their device.");
-                    cell.textLabel.textAlignment = NSTextAlignmentCenter;
-                    [WPStyleGuide configureTableViewActionCell:cell];
-                }
+                WPTableViewCell *cell = (WPTableViewCell *)[self.tableView dequeueReusableCellWithIdentifier:@"locationServicesCell" forIndexPath:indexPath];
+                cell.textLabel.text = NSLocalizedString(@"Please Enable Location Services", @"Prompt the user to enable location services on their device.");
+                cell.textLabel.textAlignment = NSTextAlignmentCenter;
+                [WPStyleGuide configureTableViewActionCell:cell];
+
                 return cell;
                 
             } else {
-            
-                if (self.addGeotagTableViewCell == nil) {
-                    NSArray *topLevelObjects = [[NSBundle mainBundle] loadNibNamed:@"UITableViewActivityCell" owner:nil options:nil];
-                    for(id currentObject in topLevelObjects) {
-                        if([currentObject isKindOfClass:[UITableViewActivityCell class]]) {
-                            self.addGeotagTableViewCell = (UITableViewActivityCell *)currentObject;
-                            break;
-                        }
-                    }
-                }
+                UITableViewActivityCell *activityCell = (UITableViewActivityCell *)[self.tableView dequeueReusableCellWithIdentifier:@"UITableViewActivityCell" forIndexPath:indexPath];
                 if (self.isUpdatingLocation) {
-                    self.addGeotagTableViewCell.textLabel.text = NSLocalizedString(@"Finding your location...", @"Geo-tagging posts, status message when geolocation is found.");
-                    [self.addGeotagTableViewCell.spinner startAnimating];
+                    activityCell.textLabel.text = NSLocalizedString(@"Finding your location...", @"Geo-tagging posts, status message when geolocation is found.");
+                    [activityCell.spinner startAnimating];
                 } else {
-                    [self.addGeotagTableViewCell.spinner stopAnimating];
+                    [activityCell.spinner stopAnimating];
                     if (self.post.geolocation) {
-                        self.addGeotagTableViewCell.textLabel.text = NSLocalizedString(@"Update Location", @"Gelocation feature to update physical location.");
+                        activityCell.textLabel.text = NSLocalizedString(@"Update Location", @"Gelocation feature to update physical location.");
                     } else {
-                        self.addGeotagTableViewCell.textLabel.text = NSLocalizedString(@"Add Location", @"Geolocation feature to add location.");
+                        activityCell.textLabel.text = NSLocalizedString(@"Add Location", @"Geolocation feature to add location.");
                     }
                 }
-                [WPStyleGuide configureTableViewActionCell:self.addGeotagTableViewCell];
-                return self.addGeotagTableViewCell;
+                [WPStyleGuide configureTableViewActionCell:activityCell];
+                return activityCell;
             }
             break;
         }

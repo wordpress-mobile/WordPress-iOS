@@ -7,9 +7,9 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "WPTableViewCell.h"
 
-
-@interface UITableViewActivityCell : UITableViewCell {
+@interface UITableViewActivityCell : WPTableViewCell {
 	IBOutlet UIActivityIndicatorView *spinner;
 	IBOutlet UILabel *textLabel;
 	IBOutlet UIView *viewForBackground;
