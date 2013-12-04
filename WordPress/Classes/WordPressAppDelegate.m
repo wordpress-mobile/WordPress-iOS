@@ -319,7 +319,7 @@ NSString * const WPNotificationsNavigationRestorationID = @"WPNotificationsNavig
 
 
     // Create a background
-    UIColor *backgroundColor = [WPStyleGuide darkAsNightGrey];
+    UIColor *backgroundColor = [WPStyleGuide bigEddieGrey];
     CGRect rect = CGRectMake(0.0f, 0.0f, 1.0f, 1.0f);
     UIGraphicsBeginImageContext(rect.size);
     CGContextRef context = UIGraphicsGetCurrentContext();
@@ -350,7 +350,7 @@ NSString * const WPNotificationsNavigationRestorationID = @"WPNotificationsNavig
     blogListNavigationController.restorationIdentifier = WPBlogListNavigationRestorationID;
     self.blogListViewController.title = NSLocalizedString(@"My Blogs", @"");
     
-    _tabBarController.viewControllers = [NSArray arrayWithObjects:blogListNavigationController, readerNavigationController, notificationsNavigationController, nil];
+    _tabBarController.viewControllers = [NSArray arrayWithObjects:readerNavigationController, notificationsNavigationController, blogListNavigationController, nil];
     
     [_tabBarController setSelectedViewController:readerNavigationController];
     
