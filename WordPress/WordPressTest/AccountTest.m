@@ -34,10 +34,10 @@
 - (void)testNewAccountSetsDefaultAccount
 {
     XCTAssertNil([WPAccount defaultWordPressComAccount]);
-    WPAccount *_account = [WPAccount createOrUpdateWordPressComAccountWithUsername:@"user" andPassword:@"pass"];
+    WPAccount *_account = [WPAccount createOrUpdateWordPressComAccountWithUsername:@"user" andPassword:@"pass" withContext:[ContextManager sharedInstance].mainContext];
     XCTAssertNotNil([WPAccount defaultWordPressComAccount]);
     XCTAssertEqualObjects([WPAccount defaultWordPressComAccount], _account);
-    WPAccount *_account2 = [WPAccount createOrUpdateWordPressComAccountWithUsername:@"user" andPassword:@"pass"];
+    WPAccount *_account2 = [WPAccount createOrUpdateWordPressComAccountWithUsername:@"user" andPassword:@"pass" withContext:[ContextManager sharedInstance].mainContext];
     XCTAssertNotNil(_account2);
     XCTAssertEqualObjects([WPAccount defaultWordPressComAccount], _account);
 }

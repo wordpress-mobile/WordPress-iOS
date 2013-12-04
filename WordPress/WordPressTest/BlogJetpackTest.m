@@ -17,7 +17,7 @@
 }
 
 - (void)setUp {
-    _blog = (Blog *)[[CoreDataTestHelper sharedHelper] insertEntityWithName:@"Blog"];
+    _blog = (Blog *)[[CoreDataTestHelper sharedHelper] insertEntityIntoMainContextWithName:@"Blog"];
     _blog.xmlrpc = @"http://test.blog/xmlrpc.php";
     _blog.url = @"http://test.blog/";
     _blog.options = @{@"jetpack_version": @{
@@ -41,7 +41,7 @@
 }
 
 - (void)testAssertionsOnWPcom {
-    _blog = (Blog *)[[CoreDataTestHelper sharedHelper] insertEntityWithName:@"Blog"];
+    _blog = (Blog *)[[CoreDataTestHelper sharedHelper] insertEntityIntoMainContextWithName:@"Blog"];
     _blog.xmlrpc = @"http://test.wordpress.com/xmlrpc.php";
     _blog.url = @"http://test.wordpress.com/";
     XCTAssertThrows([_blog hasJetpack], @"WordPress.com blogs don't support Jetpack methods");

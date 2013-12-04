@@ -8,12 +8,13 @@
 
 #import "CoreDataTestHelper.h"
 #import "WordPressAppDelegate.h"
-#import "ContextManager.h"
 #import <objc/runtime.h>
+#import "ContextManager.h"
 
 @interface ContextManager (TestHelper)
 
 @property (nonatomic, strong) NSManagedObjectContext *mainContext;
+@property (nonatomic, strong) NSManagedObjectContext *backgroundContext;
 @property (nonatomic, strong) NSPersistentStoreCoordinator *persistentStoreCoordinator;
 
 + (NSURL *)storeURL;
@@ -38,13 +39,16 @@
     return _sharedHelper;
 }
 
-- (void)unregisterDefaultContext {
+- (void)unregisterDefaultContexts {
+    return;
     [ContextManager sharedInstance].mainContext = nil;
+    [ContextManager sharedInstance].backgroundContext = nil;
 }
 
 - (void)setModelName:(NSString *)modelName {
-    self.managedObjectModel = [self modelWithName:modelName];
+    _managedObjectModel = [self modelWithName:modelName];
     [ContextManager sharedInstance].mainContext = nil;
+    [ContextManager sharedInstance].backgroundContext = nil;
     [ContextManager sharedInstance].persistentStoreCoordinator = nil;
 }
 
@@ -98,39 +102,58 @@
     return [[NSManagedObjectModel alloc] initWithContentsOfURL:modelURL];
 }
 
-- (NSManagedObject *)insertEntityWithName:(NSString *)entityName {
-    return [NSEntityDescription insertNewObjectForEntityForName:entityName inManagedObjectContext:[[ContextManager sharedInstance] mainContext]];
+- (NSManagedObject *)insertEntityIntoMainContextWithName:(NSString *)entityName {
+    return [NSEntityDescription insertNewObjectForEntityForName:entityName inManagedObjectContext:[ContextManager sharedInstance].mainContext];
 }
 
-- (NSArray *)allObjectsForEntityName:(NSString *)entityName
+- (NSManagedObject *)insertEntityIntoBackgroundContextWithName:(NSString *)entityName {
+    return [NSEntityDescription insertNewObjectForEntityForName:entityName inManagedObjectContext:[ContextManager sharedInstance].backgroundContext];
+}
+
+- (NSArray *)allObjectsInMainContextForEntityName:(NSString *)entityName
 {
     NSFetchRequest *request = [NSFetchRequest fetchRequestWithEntityName:entityName];
-    return [[[ContextManager sharedInstance] mainContext] executeFetchRequest:request error:nil];
+    return [[ContextManager sharedInstance].mainContext executeFetchRequest:request error:nil];
+}
+
+- (NSArray *)allObjectsInBackgroundContextForEntityName:(NSString *)entityName {
+    NSFetchRequest *request = [NSFetchRequest fetchRequestWithEntityName:entityName];
+    return [[ContextManager sharedInstance].backgroundContext executeFetchRequest:request error:nil];
 }
 
 - (void)reset {
-    [self unregisterDefaultContext];
+    [[ContextManager sharedInstance].mainContext reset];
+    [[ContextManager sharedInstance].backgroundContext reset];
+    [self unregisterDefaultContexts];
+    return;
     
-    NSManagedObjectContext *context = [[ContextManager sharedInstance] mainContext];
-    [[NSFileManager defaultManager] removeItemAtURL:[ContextManager storeURL] error:nil];
-    if (!context) {
-        return;
-    }
-    
-    NSPersistentStoreCoordinator *psc = [ContextManager sharedInstance].persistentStoreCoordinator;
-    
-    [context lock];
-    [context reset];
-    if (psc) {
-        for (NSPersistentStore *store in [psc persistentStores]) {
-            [[ContextManager sharedInstance].persistentStoreCoordinator removePersistentStore:store error:nil];
-        }
-        NSPersistentStore *store = [psc addPersistentStoreWithType:NSSQLiteStoreType configuration:nil URL:[ContextManager storeURL] options:nil error:nil];
-        NSAssert(store != nil, @"Should be able to add store");
-    }
-    [context unlock];
+//    dispatch_semaphore_t semaphore = dispatch_semaphore_create(0);
+//    [_testBackgroundContext performBlock:^{
+//        [_testBackgroundContext reset];
+//        [self resetPersistentStore];
+//        dispatch_semaphore_signal(semaphore);
+//    }];
+//    dispatch_semaphore_wait(semaphore, DISPATCH_TIME_FOREVER);
+//    _testBackgroundContext = nil;
 }
 
+- (void)resetPersistentStore {
+//    [_lock lock];
+//    
+//    [[NSFileManager defaultManager] removeItemAtURL:[ContextManager storeURL] error:nil];
+//    NSPersistentStoreCoordinator *psc = [ContextManager sharedInstance].persistentStoreCoordinator;
+//    for (NSPersistentStore *store in [psc persistentStores]) {
+//        [psc removePersistentStore:store error:nil];
+//    }
+//    NSError *error;
+//    NSPersistentStore *store = [psc addPersistentStoreWithType:NSInMemoryStoreType configuration:nil URL:[ContextManager storeURL] options:nil error:&error];
+//    if (store == nil) {
+//        NSLog(@"saffs");
+//    }
+//    NSAssert(store != nil, @"Should be able to add store");
+//    
+//    [_lock unlock];
+}
 
 - (NSManagedObjectModel *)managedObjectModel {
     if (!_managedObjectModel) {
@@ -144,14 +167,14 @@
 
 @implementation ContextManager (TestHelper)
 
-@dynamic mainContext;
+@dynamic mainContext, backgroundContext;
 
 static void *const testPSCKey = "testPSCKey";
 
 + (void)load {
     NSPersistentStoreCoordinator *psc = [[NSPersistentStoreCoordinator alloc] initWithManagedObjectModel:[[ContextManager sharedInstance] managedObjectModel]];
     NSError *error;
-    NSPersistentStore *store = [psc addPersistentStoreWithType:NSSQLiteStoreType configuration:nil URL:[ContextManager storeURL] options:nil error:&error];
+    NSPersistentStore *store = [psc addPersistentStoreWithType:NSInMemoryStoreType configuration:nil URL:[ContextManager storeURL] options:nil error:&error];
     NSAssert(store != nil, @"Can't initialize core data storage");
     objc_setAssociatedObject([ContextManager sharedInstance], testPSCKey, psc, OBJC_ASSOCIATION_RETAIN);
 }
