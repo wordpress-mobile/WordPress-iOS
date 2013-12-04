@@ -221,8 +221,6 @@ const CGFloat RPVControlButtonBorderSize = 0.0f;
     
 	self.showImage = NO;
 	self.cellImageView.hidden = YES;
-    self.cellImageView.contentMode = UIViewContentModeCenter;
-    self.cellImageView.image = [UIImage imageNamed:@"wp_img_placeholder"];
 	if (post.featuredImageURL) {
 		self.showImage = YES;
 		self.cellImageView.hidden = NO;
@@ -783,15 +781,13 @@ const CGFloat RPVControlButtonBorderSize = 0.0f;
         DTImageTextAttachment *imageAttachment = (DTImageTextAttachment *)attachment;
 		UIImage *image;
 		
-		if( [imageAttachment.image isKindOfClass:[UIImage class]] ) {
+		if ([imageAttachment.image isKindOfClass:[UIImage class]]) {
 			image = imageAttachment.image;
 			
             CGFloat ratio = image.size.width / image.size.height;
             frame.size.width = availableWidth;
             frame.size.height = roundf(width / ratio);
-		} else {
-			image = [UIImage imageNamed:@"wp_img_placeholder.png"];
-            
+		} else {            
 			if (frame.size.width > 1.0f && frame.size.height > 1.0f) {
                 CGFloat ratio = frame.size.width / frame.size.height;
                 frame.size.width = availableWidth;
@@ -816,7 +812,6 @@ const CGFloat RPVControlButtonBorderSize = 0.0f;
 		if ([imageAttachment.image isKindOfClass:[UIImage class]]) {
 			[imageView setImage:image];
 		} else {
-			//imageView.contentMode = UIViewContentModeCenter;
 			imageView.backgroundColor = [UIColor colorWithRed:192.0f/255.0f green:192.0f/255.0f blue:192.0f/255.0f alpha:1.0];
             
             [self.mediaQueue enqueueMedia:imageView
