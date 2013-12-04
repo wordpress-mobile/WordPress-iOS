@@ -19,7 +19,7 @@
 - (void)setUp
 {
     [super setUp];
-    [[CoreDataTestHelper sharedHelper] registerDefaultContext];
+
     // The default account is cached before we get a chance to replace the delegate's context
     [WPAccount removeDefaultWordPressComAccount];
 }

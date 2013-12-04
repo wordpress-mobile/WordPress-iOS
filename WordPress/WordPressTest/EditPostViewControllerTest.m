@@ -33,7 +33,7 @@
                                @"blogName": @"A test blog",
                                @"isAdmin": @YES
                                };
-    [[CoreDataTestHelper sharedHelper] registerDefaultContext];
+
     _account = [WPAccount createOrUpdateSelfHostedAccountWithXmlrpc:blogDict[@"xmlrpc"] username:@"test" andPassword:@"test"];
     _blog = [_account findOrCreateBlogFromDictionary:blogDict withContext:[_account managedObjectContext]];
     _post = [Post newDraftForBlog:_blog];
