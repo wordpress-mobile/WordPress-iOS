@@ -36,6 +36,7 @@ const CGFloat RPVSmallButtonLeftPadding = 2; // Follow, tag
 const CGFloat RPVMaxImageHeightPercentage = 0.59f;
 const CGFloat RPVMaxSummaryHeight = 88.0f;
 const CGFloat RPVLineHeightMultiple = 1.15f;
+const CGFloat RPVFollowButtonWidth = 100.0f;
 
 // Control buttons (Like, Reblog, ...)
 const CGFloat RPVControlButtonHeight = 48.0f;
@@ -415,7 +416,7 @@ const CGFloat RPVControlButtonBorderSize = 0.0f;
         CGFloat followX = bylineX - 4; // Fudge factor for image alignment
         CGFloat followY = RPVAuthorPadding + _bylineLabel.frame.size.height - 2;
         height = ceil([_followButton.titleLabel suggestedSizeForWidth:innerContentWidth].height);
-        _followButton.frame = CGRectMake(followX, followY, contentWidth - bylineX, height);
+        _followButton.frame = CGRectMake(followX, followY, RPVFollowButtonWidth, height);
     } else {
         _followButton.hidden = YES;
     }
