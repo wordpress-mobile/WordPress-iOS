@@ -34,7 +34,7 @@
                                @"isAdmin": @YES
                                };
 
-    _account = [WPAccount createOrUpdateSelfHostedAccountWithXmlrpc:blogDict[@"xmlrpc"] username:@"test" andPassword:@"test"];
+    _account = [WPAccount createOrUpdateSelfHostedAccountWithXmlrpc:blogDict[@"xmlrpc"] username:@"test" andPassword:@"test" withContext:[ContextManager sharedInstance].mainContext];
     _blog = [_account findOrCreateBlogFromDictionary:blogDict withContext:[_account managedObjectContext]];
     _post = [Post newDraftForBlog:_blog];
     XCTAssertNoThrow(_controller = [[EditPostViewController alloc] initWithPost:[_post createRevision]]);
@@ -75,10 +75,6 @@
     _post.revision.postTitle = @"Test2";
     XCTAssertNoThrow([_controller performSelector:@selector(refreshUIForCurrentPost)]);
     XCTAssertEqualObjects(titleTextField.text, @"Test2");
-
-    XCTAssertNoThrow([_controller performSelector:@selector(switchToSettings)]);
-    XCTAssertNoThrow([_controller performSelector:@selector(switchToPreview)]);
-    XCTAssertNoThrow([_controller performSelector:@selector(switchToEdit)]);
 }
 
 - (void)testAutosave {
@@ -122,13 +118,6 @@
 - (UITextField *)titleTextField {
     // For iOS7
     NSArray *views = [_controller.view subviews];
-    for (UIView *view in views) {
-        if ([view isKindOfClass:[UITextField class]] && [[view accessibilityIdentifier] isEqualToString:@"EditorTitleField"]) {
-            return (UITextField *)view;
-        }
-    }
-    // For iOS6
-    views = [[[[[_controller.view subviews] objectAtIndex:0] subviews] objectAtIndex:0] subviews];
     for (UIView *view in views) {
         if ([view isKindOfClass:[UITextField class]] && [[view accessibilityIdentifier] isEqualToString:@"EditorTitleField"]) {
             return (UITextField *)view;

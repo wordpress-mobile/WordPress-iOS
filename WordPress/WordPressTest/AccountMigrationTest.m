@@ -44,7 +44,7 @@
 
 - (void)testWpcomAccountMigrated
 {
-    Blog *blog = (Blog *)[[CoreDataTestHelper sharedHelper] insertEntityWithName:@"Blog"];
+    Blog *blog = (Blog *)[[CoreDataTestHelper sharedHelper] insertEntityIntoMainContextWithName:@"Blog"];
     blog.xmlrpc = @"http://test.wordpress.com/xmlrpc.php";
     blog.url = @"http://test.wordpress.com/";
     [blog setValue:@"com-user" forKey:@"username"];
@@ -54,7 +54,7 @@
 
     [self migrate];
 
-    NSArray *accounts = [[CoreDataTestHelper sharedHelper] allObjectsForEntityName:@"Account"];
+    NSArray *accounts = [[CoreDataTestHelper sharedHelper] allObjectsInMainContextForEntityName:@"Account"];
     XCTAssertNil([WPAccount defaultWordPressComAccount]);
     XCTAssertEqual([accounts count], 1u);
     WPAccount *account = [accounts lastObject];
@@ -65,7 +65,7 @@
 
 - (void)testDefaultWpcomAccountMigrated
 {
-    Blog *blog = (Blog *)[[CoreDataTestHelper sharedHelper] insertEntityWithName:@"Blog"];
+    Blog *blog = (Blog *)[[CoreDataTestHelper sharedHelper] insertEntityIntoMainContextWithName:@"Blog"];
     blog.xmlrpc = @"http://test.wordpress.com/xmlrpc.php";
     blog.url = @"http://test.wordpress.com/";
     [blog setValue:@"comd-user" forKey:@"username"];
@@ -76,7 +76,7 @@
 
     [self migrate];
 
-    NSArray *accounts = [[CoreDataTestHelper sharedHelper] allObjectsForEntityName:@"Account"];
+    NSArray *accounts = [[CoreDataTestHelper sharedHelper] allObjectsInMainContextForEntityName:@"Account"];
     XCTAssertNotNil([WPAccount defaultWordPressComAccount]);
     XCTAssertEqual([accounts count], 1u);
     WPAccount *account = [accounts lastObject];
@@ -87,7 +87,7 @@
 
 - (void)testSelfHostedAccountMigrated
 {
-    Blog *blog = (Blog *)[[CoreDataTestHelper sharedHelper] insertEntityWithName:@"Blog"];
+    Blog *blog = (Blog *)[[CoreDataTestHelper sharedHelper] insertEntityIntoMainContextWithName:@"Blog"];
     blog.xmlrpc = @"http://test.blog/xmlrpc.php";
     blog.url = @"http://test.blog/";
     [blog setValue:@"sh-user" forKey:@"username"];
@@ -97,7 +97,7 @@
 
     [self migrate];
 
-    NSArray *accounts = [[CoreDataTestHelper sharedHelper] allObjectsForEntityName:@"Account"];
+    NSArray *accounts = [[CoreDataTestHelper sharedHelper] allObjectsInMainContextForEntityName:@"Account"];
     XCTAssertNil([WPAccount defaultWordPressComAccount]);
     XCTAssertEqual([accounts count], 1u);
     WPAccount *account = [accounts lastObject];
@@ -110,7 +110,7 @@
 
 - (void)testJetpackAccountMigrated
 {
-    Blog *blog = (Blog *)[[CoreDataTestHelper sharedHelper] insertEntityWithName:@"Blog"];
+    Blog *blog = (Blog *)[[CoreDataTestHelper sharedHelper] insertEntityIntoMainContextWithName:@"Blog"];
     blog.xmlrpc = @"http://test.blog/xmlrpc.php";
     blog.url = @"http://test.blog/";
     blog.options = @{@"jetpack_version": @{
@@ -135,7 +135,7 @@
 
     [self migrate];
 
-    NSArray *accounts = [[CoreDataTestHelper sharedHelper] allObjectsForEntityName:@"Account"];
+    NSArray *accounts = [[CoreDataTestHelper sharedHelper] allObjectsInMainContextForEntityName:@"Account"];
     XCTAssertNil([WPAccount defaultWordPressComAccount]);
     XCTAssertEqual([accounts count], 2u);
     __block WPAccount *blogAccount, *jetpackAccount;

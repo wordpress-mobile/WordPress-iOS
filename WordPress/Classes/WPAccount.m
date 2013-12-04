@@ -80,6 +80,9 @@ NSString * const WPAccountDefaultWordPressComAccountChangedNotification = @"WPAc
 
 + (void)removeDefaultWordPressComAccount {
     WPAccount *defaultAccount = __defaultDotcomAccount;
+    if (!defaultAccount) {
+        return;
+    }
     NSManagedObjectContext *backgroundMOC = [[ContextManager sharedInstance] backgroundContext];
     [backgroundMOC performBlock:^{
         WPAccount *account = (WPAccount *)[backgroundMOC objectWithID:defaultAccount.objectID];

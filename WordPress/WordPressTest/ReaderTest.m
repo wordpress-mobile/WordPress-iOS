@@ -67,7 +67,7 @@
 	};
 	
 	NSError *error;
-	NSManagedObjectContext *moc = [[CoreDataTestHelper sharedHelper] managedObjectContext];
+	NSManagedObjectContext *moc = [[ContextManager sharedInstance] mainContext];
 	NSString *endpoint = @"freshly-pressed";
 
 	// Check the count before we do anything.
