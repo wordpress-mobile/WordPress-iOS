@@ -11,21 +11,22 @@
 #import "UIView+FormSheetHelpers.h"
 #import "LoginViewController.h"
 #import "CreateAccountAndBlogViewController.h"
-#import "NewAddUsersBlogViewController.h"
 #import "AboutViewController.h"
 #import "SupportViewController.h"
 #import "WPNUXMainButton.h"
 #import "WPNUXPrimaryButton.h"
 #import "WPNUXSecondaryButton.h"
 #import "WPWalkthroughTextField.h"
-#import "WordPressComApi.h"
+#import "WordPressComOAuthClient.h"
 #import "WPWebViewController.h"
 #import "Blog+Jetpack.h"
 #import "JetpackSettingsViewController.h"
 #import "WPWalkthroughOverlayView.h"
 #import "ReachabilityUtils.h"
 #import "WPNUXUtility.h"
+#import "WPNUXBackButton.h"
 #import "WPAccount.h"
+#import "Note.h"
 
 @interface LoginViewController () <
     UITextFieldDelegate> {
@@ -40,6 +41,8 @@
     WPWalkthroughTextField *_passwordText;
     WPWalkthroughTextField *_siteUrlText;
     WPNUXMainButton *_signInButton;
+    WPNUXSecondaryButton *_cancelButton;
+
     UILabel *_statusLabel;
     
     // Measurements
@@ -82,7 +85,10 @@ CGFloat const GeneralWalkthroughiOS7StatusBarOffset = 20.0;
     _viewHeight = [self.view formSheetViewHeight];
         
     self.view.backgroundColor = [WPNUXUtility backgroundColor];
-    _userIsDotCom = YES;
+    _userIsDotCom = self.onlyDotComAllowed || !self.prefersSelfHosted;
+    if ([WPAccount defaultWordPressComAccount]) {
+        _userIsDotCom = NO;
+    }
 
     [self addMainView];
     [self initializeView];
@@ -128,13 +134,13 @@ CGFloat const GeneralWalkthroughiOS7StatusBarOffset = 20.0;
 
 - (BOOL)textFieldShouldBeginEditing:(UITextField *)textField
 {
-    _signInButton.enabled = [self areDotComFieldsFilled];
+    _signInButton.enabled = [self isSignInEnabled];
     return YES;
 }
 
 - (BOOL)textFieldShouldEndEditing:(UITextField *)textField
 {
-    _signInButton.enabled = [self areDotComFieldsFilled];
+    _signInButton.enabled = [self isSignInEnabled];
     return YES;
 }
 
@@ -142,6 +148,7 @@ CGFloat const GeneralWalkthroughiOS7StatusBarOffset = 20.0;
 {
     BOOL isUsernameFilled = [self isUsernameFilled];
     BOOL isPasswordFilled = [self isPasswordFilled];
+    BOOL isSiteUrlFilled = [self isSiteUrlFilled];
     
     NSMutableString *updatedString = [[NSMutableString alloc] initWithString:textField.text];
     [updatedString replaceCharactersInRange:range withString:string];
@@ -150,8 +157,10 @@ CGFloat const GeneralWalkthroughiOS7StatusBarOffset = 20.0;
         isUsernameFilled = updatedStringHasContent;
     } else if (textField == _passwordText) {
         isPasswordFilled = updatedStringHasContent;
+    } else if (textField == _siteUrlText) {
+        isSiteUrlFilled = updatedStringHasContent;
     }
-    _signInButton.enabled = isUsernameFilled && isPasswordFilled;
+    _signInButton.enabled = isUsernameFilled && isPasswordFilled && (_userIsDotCom || isSiteUrlFilled);
     
     return YES;
 }
@@ -256,21 +265,14 @@ CGFloat const GeneralWalkthroughiOS7StatusBarOffset = 20.0;
     [self.navigationController presentViewController:nc animated:YES completion:nil];
 }
 
-- (void)clickedSkipToCreate:(id)sender
-{
-    [WPMobileStats trackEventForSelfHostedAndWPCom:StatsEventNUXFirstWalkthroughClickedSkipToCreateAccount];
-    [self showCreateAccountView];
-}
-
-- (void)clickedCreateAccount:(UITapGestureRecognizer *)tapGestureRecognizer
+- (void)skipToCreateAction:(id)sender
 {
     [WPMobileStats trackEventForSelfHostedAndWPCom:StatsEventNUXFirstWalkthroughClickedCreateAccount];
     [self showCreateAccountView];
 }
 
-- (void)clickedBackground:(UITapGestureRecognizer *)tapGestureRecognizer
+- (void)backgroundTapGestureAction:(UITapGestureRecognizer *)tapGestureRecognizer
 {
-    
     [self.view endEditing:YES];
 
     // The info button is a little hard to hit so this adds a little buffer around it
@@ -300,8 +302,7 @@ CGFloat const GeneralWalkthroughiOS7StatusBarOffset = 20.0;
     [self signIn];
 }
 
-- (void)toggleSignInformAction:(id)sender {
-    
+- (void)toggleSignInFormAction:(id)sender {
     _userIsDotCom = !_userIsDotCom;
     
     // Controls are layed out in initializeView. Calling this method in an animation block will animate the controls to their new positions. 
@@ -309,6 +310,12 @@ CGFloat const GeneralWalkthroughiOS7StatusBarOffset = 20.0;
                      animations:^{
                          [self initializeView];
                      }];
+}
+
+- (void)cancelButtonAction:(id)sender {
+    if (self.dismissBlock) {
+        self.dismissBlock();
+    }
 }
 
 #pragma mark - Private Methods
@@ -320,7 +327,7 @@ CGFloat const GeneralWalkthroughiOS7StatusBarOffset = 20.0;
     _mainView.autoresizingMask = UIViewAutoresizingFlexibleHeight | UIViewAutoresizingFlexibleWidth;
     [self.view addSubview:_mainView];
     
-    UITapGestureRecognizer *gestureRecognizer = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(clickedBackground:)];
+    UITapGestureRecognizer *gestureRecognizer = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(backgroundTapGestureAction:)];
     gestureRecognizer.numberOfTapsRequired = 1;
     gestureRecognizer.cancelsTouchesInView = YES;
     [_mainView addGestureRecognizer:gestureRecognizer];
@@ -402,13 +409,29 @@ CGFloat const GeneralWalkthroughiOS7StatusBarOffset = 20.0;
     // Add Sign In Button
     if (_signInButton == nil) {
         _signInButton = [[WPNUXMainButton alloc] init];
-        [_signInButton setTitle:NSLocalizedString(@"Sign In", nil) forState:UIControlStateNormal];
         [_signInButton addTarget:self action:@selector(signInButtonAction:) forControlEvents:UIControlEventTouchUpInside];
         _signInButton.autoresizingMask = UIViewAutoresizingFlexibleRightMargin | UIViewAutoresizingFlexibleLeftMargin;
         [_mainView addSubview:_signInButton];
         _signInButton.enabled = NO;
     }
     
+    NSString *signInTitle;
+    if (_userIsDotCom) {
+        signInTitle = NSLocalizedString(@"Sign In", nil);
+    } else {
+        signInTitle = NSLocalizedString(@"Add Site", nil);
+    }
+    [_signInButton setTitle:signInTitle forState:UIControlStateNormal];
+
+    // Add Cancel Button
+    if (self.dismissBlock && _cancelButton == nil) {
+        _cancelButton = [[WPNUXSecondaryButton alloc] init];
+        [_cancelButton setTitle:NSLocalizedString(@"Cancel", nil) forState:UIControlStateNormal];
+        [_cancelButton addTarget:self action:@selector(cancelButtonAction:) forControlEvents:UIControlEventTouchUpInside];
+        [_cancelButton sizeToFit];
+        [self.view addSubview:_cancelButton];
+    }
+
     // Add status label
     if (_statusLabel == nil) {
         _statusLabel = [[UILabel alloc] init];
@@ -423,20 +446,34 @@ CGFloat const GeneralWalkthroughiOS7StatusBarOffset = 20.0;
     // Add Account type toggle
     if (_toggleSignInForm == nil) {
         _toggleSignInForm = [[WPNUXSecondaryButton alloc] init];
-        [_toggleSignInForm addTarget:self action:@selector(toggleSignInformAction:) forControlEvents:UIControlEventTouchUpInside];
+        [_toggleSignInForm addTarget:self action:@selector(toggleSignInFormAction:) forControlEvents:UIControlEventTouchUpInside];
         _toggleSignInForm.autoresizingMask = UIViewAutoresizingFlexibleRightMargin | UIViewAutoresizingFlexibleLeftMargin;
         [_mainView addSubview:_toggleSignInForm];
     }
-    NSString *toggleTitle = _userIsDotCom ? @"Add Self-Hosted Site" : @"Sign in to WordPress.com";
-    [_toggleSignInForm setTitle:toggleTitle forState:UIControlStateNormal];
-    
-    // Add Skip to Create Account Button
-    if (_skipToCreateAccount == nil) {
-        _skipToCreateAccount = [[WPNUXSecondaryButton alloc] init];
-        [_skipToCreateAccount setTitle:NSLocalizedString(@"Create Account", nil) forState:UIControlStateNormal];
-        [_skipToCreateAccount addTarget:self action:@selector(clickedSkipToCreate:) forControlEvents:UIControlEventTouchUpInside];
-        _skipToCreateAccount.autoresizingMask = UIViewAutoresizingFlexibleRightMargin | UIViewAutoresizingFlexibleLeftMargin;
-        [_mainView addSubview:_skipToCreateAccount];
+    if (!self.onlyDotComAllowed && ![WPAccount defaultWordPressComAccount]) {
+        // Add Account type toggle
+        if (_toggleSignInForm == nil) {
+            _toggleSignInForm = [[WPNUXSecondaryButton alloc] init];
+            [_toggleSignInForm addTarget:self action:@selector(toggleSignInFormAction:) forControlEvents:UIControlEventTouchUpInside];
+            [_mainView addSubview:_toggleSignInForm];
+        }
+        NSString *toggleTitle;
+        if (_userIsDotCom) {
+            toggleTitle = NSLocalizedString(@"Add Self-Hosted Site", nil);
+        } else {
+            toggleTitle = NSLocalizedString(@"Sign in to WordPress.com", nil);
+        }
+        [_toggleSignInForm setTitle:toggleTitle forState:UIControlStateNormal];
+    }
+
+    if (![WPAccount defaultWordPressComAccount]) {
+        // Add Skip to Create Account Button
+        if (_skipToCreateAccount == nil) {
+            _skipToCreateAccount = [[WPNUXSecondaryButton alloc] init];
+            [_skipToCreateAccount setTitle:NSLocalizedString(@"Create Account", nil) forState:UIControlStateNormal];
+            [_skipToCreateAccount addTarget:self action:@selector(skipToCreateAction:) forControlEvents:UIControlEventTouchUpInside];
+            [_mainView addSubview:_skipToCreateAccount];
+        }
     }
 }
 
@@ -447,12 +484,19 @@ CGFloat const GeneralWalkthroughiOS7StatusBarOffset = 20.0;
 
     UIImage *infoButtonImage = [UIImage imageNamed:@"btn-about"];
     y = 0;
-    if (IS_IOS7 && IS_IPHONE) {
+    if (IS_IPHONE) {
         y = GeneralWalkthroughiOS7StatusBarOffset;
     }
     _helpButton.frame = CGRectMake(viewWidth - infoButtonImage.size.width, y, infoButtonImage.size.width, infoButtonImage.size.height);
     
-    
+    // Layout Cancel Button
+    x = viewWidth - CGRectGetWidth(_cancelButton.frame);
+    y = 0.5 * GeneralWalkthroughStandardOffset;
+    if (IS_IPHONE) {
+        y += GeneralWalkthroughiOS7StatusBarOffset;
+    }
+    _cancelButton.frame = CGRectMake(x, y, CGRectGetWidth(_cancelButton.frame), CGRectGetHeight(_cancelButton.frame));
+
     CGFloat heightOfControls = CGRectGetHeight(_icon.frame) + GeneralWalkthroughStandardOffset + (_userIsDotCom ? 2 : 3) * GeneralWalkthroughTextFieldHeight + GeneralWalkthroughStandardOffset + GeneralWalkthroughButtonHeight;
     CGFloat startingYForCenteredControls = floorf((_viewHeight - 2 * GeneralWalkthroughSecondaryButtonHeight - heightOfControls)/2.0);
     
@@ -513,12 +557,6 @@ CGFloat const GeneralWalkthroughiOS7StatusBarOffset = 20.0;
 - (void)showCreateAccountView
 {
     CreateAccountAndBlogViewController *createAccountViewController = [[CreateAccountAndBlogViewController alloc] init];
-    createAccountViewController.onCreatedUser = ^(NSString *username, NSString *password) {
-        _usernameText.text = username;
-        _passwordText.text = password;
-        _userIsDotCom = YES;
-        [self showAddUsersBlogsForWPCom];
-    };
     [self.navigationController pushViewController:createAccountViewController animated:YES];
 }
 
@@ -535,6 +573,7 @@ CGFloat const GeneralWalkthroughiOS7StatusBarOffset = 20.0;
         } else {
             [WPMobileStats trackEventForSelfHostedAndWPCom:StatsEventNUXFirstWalkthroughUserSkippedConnectingToJetpack];            
         }
+
         [self dismiss];
     }];
     [self.navigationController pushViewController:jetpackSettingsViewController animated:YES];
@@ -605,6 +644,16 @@ CGFloat const GeneralWalkthroughiOS7StatusBarOffset = 20.0;
     return [[_passwordText.text trim] length] != 0;
 }
 
+- (BOOL)isSiteUrlFilled
+{
+    return [[_siteUrlText.text trim] length] != 0;
+}
+
+- (BOOL)isSignInEnabled
+{
+    return _userIsDotCom ? [self areDotComFieldsFilled] : [self areSelfHostedFieldsFilled];
+}
+
 - (BOOL)areDotComFieldsFilled
 {
     return [self isUsernameFilled] && [self isPasswordFilled];
@@ -612,17 +661,12 @@ CGFloat const GeneralWalkthroughiOS7StatusBarOffset = 20.0;
 
 - (BOOL)areSelfHostedFieldsFilled
 {
-    return [self areDotComFieldsFilled] && [[_siteUrlText.text trim] length] != 0;
+    return [self areDotComFieldsFilled] && [self isSiteUrlFilled];
 }
 
 - (BOOL)hasUserOnlyEnteredValuesForDotCom
 {
     return [self areDotComFieldsFilled] && ![self areSelfHostedFieldsFilled];
-}
-
-- (BOOL)areFieldsFilled
-{
-    return [[_usernameText.text trim] length] != 0 && [[_passwordText.text trim] length] != 0 && [[_siteUrlText.text trim] length] != 0;
 }
 
 - (BOOL)isUrlValid
@@ -645,6 +689,7 @@ CGFloat const GeneralWalkthroughiOS7StatusBarOffset = 20.0;
     _signInButton.enabled = !authenticating;
     _toggleSignInForm.hidden = authenticating;
     _skipToCreateAccount.hidden = authenticating;
+    _cancelButton.enabled = !authenticating;
     [_signInButton showActivityIndicator:authenticating];
 }
 
@@ -680,7 +725,8 @@ CGFloat const GeneralWalkthroughiOS7StatusBarOffset = 20.0;
                 _dotComSiteUrl = [siteUrl objectForKey:@"value"];
                 [self signInForWPComForUsername:username andPassword:password];
             } else {
-                [self signInForSelfHostedForUsername:username password:password options:options andApi:api];
+                NSString *xmlrpc = [xmlRPCURL absoluteString];
+                [self createSelfHostedAccountAndBlogWithUsername:username password:password xmlrpc:xmlrpc options:options];
             }
         } failure:^(NSError *error){
             [self setAuthenticating:NO withStatusMessage:nil];
@@ -701,39 +747,59 @@ CGFloat const GeneralWalkthroughiOS7StatusBarOffset = 20.0;
     
     [self setAuthenticating:YES withStatusMessage:NSLocalizedString(@"Connecting to WordPress.com", nil)];
     
-    void (^loginSuccessBlock)(void) = ^{
-        [self setAuthenticating:NO withStatusMessage:nil];
-        _userIsDotCom = YES;
-        [self showAddUsersBlogsForWPCom];
-    };
-    
-    void (^loginFailBlock)(NSError *) = ^(NSError *error){
-        // User shouldn't get here because the getOptions call should fail, but in the unlikely case they do throw up an error message.
-        [self setAuthenticating:NO withStatusMessage:nil];
-        DDLogError(@"Login failed with username %@ : %@", username, error);
-        [self displayGenericErrorMessage:NSLocalizedString(@"Please try entering your login details again.", nil)];
-    };
-    
-    [[WordPressComApi sharedApi] signInWithUsername:username
-                                           password:password
-                                            success:loginSuccessBlock
-                                            failure:loginFailBlock];
-    
+    WordPressComOAuthClient *client = [WordPressComOAuthClient client];
+    [client authenticateWithUsername:username
+                            password:password
+                             success:^(NSString *authToken) {
+                                 [self setAuthenticating:NO withStatusMessage:nil];
+                                 _userIsDotCom = YES;
+                                 [self createWordPressComAccountForUsername:username password:password authToken:authToken];
+                             } failure:^(NSError *error) {
+                                 [self setAuthenticating:NO withStatusMessage:nil];
+                                 [self displayRemoteError:error];
+                             }];
 }
 
-- (void)signInForSelfHostedForUsername:(NSString *)username password:(NSString *)password options:(NSDictionary *)options andApi:(WordPressXMLRPCApi *)api
+- (void)createWordPressComAccountForUsername:(NSString *)username password:(NSString *)password authToken:(NSString *)authToken
 {
-    [WPMobileStats trackEventForSelfHostedAndWPCom:StatsEventNUXFirstWalkthroughSignedInForSelfHosted];
-    
-    [self setAuthenticating:YES withStatusMessage:NSLocalizedString(@"Reading blog options", nil)];
-    
-    [api getBlogsWithSuccess:^(NSArray *blogs) {
-        _blogs = blogs;
-        [self handleGetBlogsSuccess:[api.xmlrpc absoluteString]];
+    [self setAuthenticating:YES withStatusMessage:NSLocalizedString(@"Getting account information", nil)];
+    WPAccount *account = [WPAccount createOrUpdateWordPressComAccountWithUsername:username password:password authToken:authToken];
+    if (![WPAccount defaultWordPressComAccount]) {
+        [WPAccount setDefaultWordPressComAccount:account];
+    }
+    [account syncBlogsWithSuccess:^{
+        [self setAuthenticating:NO withStatusMessage:nil];
+        [self dismiss];
     } failure:^(NSError *error) {
         [self setAuthenticating:NO withStatusMessage:nil];
         [self displayRemoteError:error];
     }];
+    [account.restApi getNotificationsSince:nil success:nil failure:nil];
+}
+
+- (void)createSelfHostedAccountAndBlogWithUsername:(NSString *)username password:(NSString *)password xmlrpc:(NSString *)xmlrpc options:(NSDictionary *)options
+{
+    WPAccount *account = [WPAccount createOrUpdateSelfHostedAccountWithXmlrpc:xmlrpc username:username andPassword:password];
+    NSString *blogName = [options stringForKeyPath:@"blog_title.value"];
+    NSString *url = [options stringForKeyPath:@"home_url.value"];
+    NSMutableDictionary *blogDetails = [NSMutableDictionary dictionaryWithObject:xmlrpc forKey:@"xmlrpc"];
+    if (blogName) {
+        [blogDetails setObject:blogName forKey:@"blogName"];
+    }
+    if (url) {
+        [blogDetails setObject:url forKey:@"url"];
+    }
+    _blog = [account findOrCreateBlogFromDictionary:blogDetails withContext:account.managedObjectContext];
+    _blog.options = options;
+    [_blog dataSave];
+    [WPMobileStats trackEventForSelfHostedAndWPCom:StatsEventNUXFirstWalkthroughUserSignedInToBlogWithJetpack];
+    [_blog syncBlogWithSuccess:nil failure:nil];
+
+    if ([_blog hasJetpack]) {
+        [self showJetpackAuthentication];
+    } else {
+        [self dismiss];
+    }
 }
 
 - (void)handleGuessXMLRPCURLFailure:(NSError *)error
@@ -756,32 +822,6 @@ CGFloat const GeneralWalkthroughiOS7StatusBarOffset = 20.0;
                                   nil];
         NSError *err = [NSError errorWithDomain:@"org.wordpress.iphone" code:NSURLErrorBadURL userInfo:userInfo];
         [self displayRemoteError:err];
-    }
-}
-
-- (void)handleGetBlogsSuccess:(NSString *)xmlRPCUrl {
-    if ([_blogs count] > 0) {
-        // If the user has entered the URL of a site they own on a MultiSite install,
-        // assume they want to add that specific site.
-        NSDictionary *subsite = nil;
-        if ([_blogs count] > 1) {
-            subsite = [[_blogs filteredArrayUsingPredicate:[NSPredicate predicateWithFormat:@"xmlrpc = %@", xmlRPCUrl]] lastObject];
-        }
-        
-        if (subsite == nil) {
-            subsite = [_blogs objectAtIndex:0];
-        }
-        
-        if ([_blogs count] > 1 && [[subsite objectForKey:@"blogid"] isEqualToString:@"1"]) {
-            [self setAuthenticating:NO withStatusMessage:nil];
-            [self showAddUsersBlogsForSelfHosted:xmlRPCUrl];
-        } else {
-            [self createBlogWithXmlRpc:xmlRPCUrl andBlogDetails:subsite];
-            [self synchronizeNewlyAddedBlog];
-        }
-    } else {
-        NSError *error = [NSError errorWithDomain:@"WordPress" code:0 userInfo:@{NSLocalizedDescriptionKey: NSLocalizedString(@"Sorry, you credentials were good but you don't seem to have access to any blogs", nil)}];
-        [self displayRemoteError:error];
     }
 }
 
@@ -809,88 +849,6 @@ CGFloat const GeneralWalkthroughiOS7StatusBarOffset = 20.0;
             [self displayGenericErrorMessage:message];
         }
     }
-}
-
-- (NewAddUsersBlogViewController *)addUsersBlogViewController:(NSString *)xmlRPCUrl
-{
-    BOOL isWPCom = (xmlRPCUrl == nil);
-    NewAddUsersBlogViewController *vc = [[NewAddUsersBlogViewController alloc] init];
-    vc.account = [self createAccountWithUsername:_usernameText.text andPassword:_passwordText.text isWPCom:isWPCom xmlRPCUrl:xmlRPCUrl];
-    vc.blogAdditionCompleted = ^(NewAddUsersBlogViewController * viewController){
-        [self dismiss];
-    };
-    vc.onNoBlogsLoaded = ^(NewAddUsersBlogViewController *viewController) {
-        [self dismiss];
-    };
-    vc.onErrorLoading = ^(NewAddUsersBlogViewController *viewController, NSError *error) {
-        DDLogError(@"There was an error loading blogs after sign in");
-        [self.navigationController popViewControllerAnimated:YES];
-        [self displayGenericErrorMessage:[error localizedDescription]];
-    };
-    
-    return vc;
-}
-
-- (void)showAddUsersBlogsForSelfHosted:(NSString *)xmlRPCUrl
-{
-    NewAddUsersBlogViewController *vc = [self addUsersBlogViewController:xmlRPCUrl];
-
-    [self.navigationController pushViewController:vc animated:YES];
-}
-
-- (void)showAddUsersBlogsForWPCom
-{
-    NewAddUsersBlogViewController *vc = [self addUsersBlogViewController:nil];
-
-    NSString *siteUrl = [_siteUrlText.text trim];
-    if ([siteUrl length] != 0) {
-        vc.siteUrl = siteUrl;
-    } else if ([_dotComSiteUrl length] != 0) {
-        vc.siteUrl = _dotComSiteUrl;
-    }
-
-    [self.navigationController pushViewController:vc animated:YES];
-}
-
-- (void)createBlogWithXmlRpc:(NSString *)xmlRPCUrl andBlogDetails:(NSDictionary *)blogDetails
-{
-    NSParameterAssert(blogDetails != nil);
-    
-    WPAccount *account = [self createAccountWithUsername:_usernameText.text andPassword:_passwordText.text isWPCom:NO xmlRPCUrl:xmlRPCUrl];
-    
-    NSMutableDictionary *newBlog = [NSMutableDictionary dictionaryWithDictionary:blogDetails];
-    [newBlog setObject:xmlRPCUrl forKey:@"xmlrpc"];
-
-    _blog = [account findOrCreateBlogFromDictionary:newBlog withContext:account.managedObjectContext];
-    [_blog.managedObjectContext obtainPermanentIDsForObjects:@[_blog] error:nil];
-    [_blog dataSave];
-}
-
-- (WPAccount *)createAccountWithUsername:(NSString *)username andPassword:(NSString *)password isWPCom:(BOOL)isWPCom xmlRPCUrl:(NSString *)xmlRPCUrl {
-    WPAccount *account;
-    if (isWPCom) {
-        account = [WPAccount createOrUpdateWordPressComAccountWithUsername:username andPassword:password];
-    } else {
-        account = [WPAccount createOrUpdateSelfHostedAccountWithXmlrpc:xmlRPCUrl username:username andPassword:password];
-    }
-    return account;
-}
-
-- (void)synchronizeNewlyAddedBlog
-{
-    void (^successBlock)() = ^{
-        [[WordPressComApi sharedApi] syncPushNotificationInfo];
-        [self setAuthenticating:NO withStatusMessage:nil];
-        [WPMobileStats trackEventForSelfHostedAndWPCom:StatsEventNUXFirstWalkthroughUserSignedInToBlogWithJetpack];
-        if ([_blog hasJetpack]) {
-            [self showJetpackAuthentication];
-        } else {
-            [self dismiss];
-        }
-    };
-    void (^failureBlock)(NSError*) = ^(NSError * error) {
-        [self setAuthenticating:NO withStatusMessage:nil];    };
-    [_blog syncBlogWithSuccess:successBlock failure:failureBlock];
 }
 
 - (void)keyboardWillShow:(NSNotification *)notification
