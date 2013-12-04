@@ -74,7 +74,7 @@ static NSString *const TableViewActivityCellIdentifier = @"TableViewActivityCell
 @property (nonatomic, strong) IBOutlet UILabel *visibilityTitleLabel;
 @property (nonatomic, strong) IBOutlet UILabel *featuredImageLabel;
 @property (nonatomic, strong) IBOutlet UIImageView *featuredImageView;
-@property (nonatomic, strong) IBOutlet UITableViewActivityCell *featuredImageTableViewCell;
+@property (nonatomic, strong) IBOutlet WPTableViewActivityCell *featuredImageTableViewCell;
 @property (nonatomic, strong) IBOutlet UIActivityIndicatorView *featuredImageSpinner;
 
 @end
@@ -216,7 +216,7 @@ static NSString *const TableViewActivityCellIdentifier = @"TableViewActivityCell
     [self.tableView addGestureRecognizer:gestureRecognizer];
 
     [self.tableView registerClass:[WPTableViewCell class] forCellReuseIdentifier:LocationServicesCellIdentifier];
-    [self.tableView registerNib:[UINib nibWithNibName:@"UITableViewActivityCell" bundle:nil] forCellReuseIdentifier:TableViewActivityCellIdentifier];
+    [self.tableView registerNib:[UINib nibWithNibName:@"WPTableViewActivityCell" bundle:nil] forCellReuseIdentifier:TableViewActivityCellIdentifier];
 }
 
 - (void)viewWillAppear:(BOOL)animated {
@@ -565,7 +565,7 @@ static NSString *const TableViewActivityCellIdentifier = @"TableViewActivityCell
 	case 3:
         if (self.blogSupportsFeaturedImage) {
             if (!self.post.post_thumbnail && !self.isUploadingFeaturedImage) {
-                UITableViewActivityCell *activityCell = (UITableViewActivityCell *)[self.tableView dequeueReusableCellWithIdentifier:TableViewActivityCellIdentifier forIndexPath:indexPath];
+                WPTableViewActivityCell *activityCell = (WPTableViewActivityCell *)[self.tableView dequeueReusableCellWithIdentifier:TableViewActivityCellIdentifier forIndexPath:indexPath];
                 activityCell.selectionStyle = UITableViewCellSelectionStyleBlue;
 
                 [WPStyleGuide configureTableViewActionCell:activityCell];
@@ -576,7 +576,7 @@ static NSString *const TableViewActivityCellIdentifier = @"TableViewActivityCell
                     case 0:
                         return self.featuredImageTableViewCell;
                     case 1: {
-                        UITableViewActivityCell *activityCell = (UITableViewActivityCell *)[self.tableView dequeueReusableCellWithIdentifier:TableViewActivityCellIdentifier forIndexPath:indexPath];
+                        WPTableViewActivityCell *activityCell = (WPTableViewActivityCell *)[self.tableView dequeueReusableCellWithIdentifier:TableViewActivityCellIdentifier forIndexPath:indexPath];
                         [activityCell.textLabel setText: NSLocalizedString(@"Remove Featured Image", "Remove featured image from post")];
                         [WPStyleGuide configureTableViewActionCell:activityCell];
                         return activityCell;
@@ -620,7 +620,7 @@ static NSString *const TableViewActivityCellIdentifier = @"TableViewActivityCell
                 return cell;
 
             } else {
-                UITableViewActivityCell *activityCell = (UITableViewActivityCell *)[self.tableView dequeueReusableCellWithIdentifier:TableViewActivityCellIdentifier forIndexPath:indexPath];
+                WPTableViewActivityCell *activityCell = (WPTableViewActivityCell *)[self.tableView dequeueReusableCellWithIdentifier:TableViewActivityCellIdentifier forIndexPath:indexPath];
                 if (self.isUpdatingLocation) {
                     activityCell.textLabel.text = NSLocalizedString(@"Finding your location...", @"Geo-tagging posts, status message when geolocation is found.");
                     [activityCell.spinner startAnimating];

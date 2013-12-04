@@ -1,15 +1,15 @@
 //
-//  UITableViewActivityCell.m
+//  WPTableViewActivityCell.m
 //  WordPress
 //
 //  Created by Chris Boyd on 7/23/10.
 //  Copyright 2010 WordPress. All rights reserved.
 //
 
-#import "UITableViewActivityCell.h"
+#import "WPTableViewActivityCell.h"
 
 
-@implementation UITableViewActivityCell
+@implementation WPTableViewActivityCell
 @synthesize textLabel, spinner, viewForBackground;
 
 - (id)initWithStyle:(UITableViewCellStyle)style reuseIdentifier:(NSString *)reuseIdentifier {
