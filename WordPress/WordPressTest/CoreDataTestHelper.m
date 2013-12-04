@@ -8,18 +8,25 @@
 
 #import "CoreDataTestHelper.h"
 #import "WordPressAppDelegate.h"
+#import "ContextManager.h"
+#import <objc/runtime.h>
 
-@interface WordPressAppDelegate (CoreDataTestHelper)
-@property (nonatomic, strong) NSManagedObjectContext *managedObjectContext;
-@property (nonatomic, strong) NSManagedObjectModel *managedObjectModel;
+@interface ContextManager (TestHelper)
+
+@property (nonatomic, strong) NSManagedObjectContext *mainContext;
 @property (nonatomic, strong) NSPersistentStoreCoordinator *persistentStoreCoordinator;
+
++ (NSURL *)storeURL;
+
 @end
 
-@implementation CoreDataTestHelper {
-    NSManagedObjectContext *_context;
-    NSManagedObjectModel *_model;
-    NSPersistentStoreCoordinator *_coordinator;
-}
+@interface CoreDataTestHelper ()
+
+@property (nonatomic, strong) NSManagedObjectModel *managedObjectModel;
+
+@end
+
+@implementation CoreDataTestHelper
 
 + (id)sharedHelper {
     static CoreDataTestHelper *_sharedHelper = nil;
@@ -31,29 +38,20 @@
     return _sharedHelper;
 }
 
-- (void)registerDefaultContext {
-    WordPressAppDelegate *appDelegate = [WordPressAppDelegate sharedWordPressApplicationDelegate];
-    appDelegate.managedObjectContext = [self managedObjectContext];
-    appDelegate.persistentStoreCoordinator = [self persistentStoreCoordinator];
-    appDelegate.managedObjectModel = [[self persistentStoreCoordinator] managedObjectModel];
-}
-
 - (void)unregisterDefaultContext {
-    WordPressAppDelegate *appDelegate = [WordPressAppDelegate sharedWordPressApplicationDelegate];
-    appDelegate.managedObjectContext = nil;
-    appDelegate.persistentStoreCoordinator = nil;
-    appDelegate.managedObjectModel = nil;
+    [ContextManager sharedInstance].mainContext = nil;
 }
 
 - (void)setModelName:(NSString *)modelName {
-    _model = [self modelWithName:modelName];
-    _context = nil;
-    _coordinator = nil;
+    self.managedObjectModel = [self modelWithName:modelName];
+    [ContextManager sharedInstance].mainContext = nil;
+    [ContextManager sharedInstance].persistentStoreCoordinator = nil;
 }
 
 - (BOOL)migrateToModelName:(NSString *)modelName {
     NSManagedObjectModel *destinationModel = [self modelWithName:modelName];
-    NSDictionary *sourceMetadata = [_coordinator metadataForPersistentStore:_coordinator.persistentStores[0]];
+    NSPersistentStoreCoordinator *psc = [ContextManager sharedInstance].persistentStoreCoordinator;
+    NSDictionary *sourceMetadata = [psc metadataForPersistentStore:psc.persistentStores[0]];
     BOOL pscCompatible = [destinationModel isConfiguration:nil compatibleWithStoreMetadata:sourceMetadata];
     if (pscCompatible) {
         // Models are compatible, no migration needed
@@ -75,7 +73,7 @@
 
     NSError *error;
     NSURL *destinationURL = [NSURL fileURLWithPath:[[NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES) lastObject] stringByAppendingPathComponent: @"WordPressTestMigrated.sqlite"]];
-    BOOL migrated = [manager migrateStoreFromURL:[self storeURL]
+    BOOL migrated = [manager migrateStoreFromURL:[ContextManager storeURL]
                                    type:NSSQLiteStoreType
                                 options:nil
                        withMappingModel:mappingModel
@@ -88,8 +86,8 @@
         return NO;
     }
 
-    [[NSFileManager defaultManager] removeItemAtURL:[self storeURL] error:nil];
-    [[NSFileManager defaultManager] moveItemAtURL:destinationURL toURL:[self storeURL] error:nil];
+    [[NSFileManager defaultManager] removeItemAtURL:[ContextManager storeURL] error:nil];
+    [[NSFileManager defaultManager] moveItemAtURL:destinationURL toURL:[ContextManager storeURL] error:nil];
 
     [self setModelName:modelName];
     return migrated;
@@ -101,62 +99,73 @@
 }
 
 - (NSManagedObject *)insertEntityWithName:(NSString *)entityName {
-    return [NSEntityDescription insertNewObjectForEntityForName:entityName inManagedObjectContext:_context];
+    return [NSEntityDescription insertNewObjectForEntityForName:entityName inManagedObjectContext:[[ContextManager sharedInstance] mainContext]];
 }
 
 - (NSArray *)allObjectsForEntityName:(NSString *)entityName
 {
     NSFetchRequest *request = [NSFetchRequest fetchRequestWithEntityName:entityName];
-    return [[self managedObjectContext] executeFetchRequest:request error:nil];
+    return [[[ContextManager sharedInstance] mainContext] executeFetchRequest:request error:nil];
 }
 
 - (void)reset {
     [self unregisterDefaultContext];
-    [[NSFileManager defaultManager] removeItemAtURL:[self storeURL] error:nil];
-    if (!_context) {
+    
+    NSManagedObjectContext *context = [[ContextManager sharedInstance] mainContext];
+    [[NSFileManager defaultManager] removeItemAtURL:[ContextManager storeURL] error:nil];
+    if (!context) {
         return;
     }
-    [_context lock];
-    [_context reset];
-    if (_coordinator) {
-        for (NSPersistentStore *store in [_coordinator persistentStores]) {
-            [_coordinator removePersistentStore:store error:nil];
+    
+    NSPersistentStoreCoordinator *psc = [ContextManager sharedInstance].persistentStoreCoordinator;
+    
+    [context lock];
+    [context reset];
+    if (psc) {
+        for (NSPersistentStore *store in [psc persistentStores]) {
+            [[ContextManager sharedInstance].persistentStoreCoordinator removePersistentStore:store error:nil];
         }
-        NSPersistentStore *store = [_coordinator addPersistentStoreWithType:NSSQLiteStoreType configuration:nil URL:[self storeURL] options:nil error:nil];
+        NSPersistentStore *store = [psc addPersistentStoreWithType:NSSQLiteStoreType configuration:nil URL:[ContextManager storeURL] options:nil error:nil];
         NSAssert(store != nil, @"Should be able to add store");
     }
-    [_context unlock];
+    [context unlock];
 }
 
-- (NSManagedObjectContext *)managedObjectContext {
-    if (!_context) {
-        _context = [[NSManagedObjectContext alloc] initWithConcurrencyType:NSMainQueueConcurrencyType];
-        [_context setPersistentStoreCoordinator:[self persistentStoreCoordinator]];
-    }
-    return _context;
-}
 
 - (NSManagedObjectModel *)managedObjectModel {
-    if (!_model) {
+    if (!_managedObjectModel) {
         NSURL *modelURL = [NSURL fileURLWithPath:[[NSBundle mainBundle] pathForResource:@"WordPress" ofType:@"momd"]];
-        _model = [[NSManagedObjectModel alloc] initWithContentsOfURL:modelURL];
+        _managedObjectModel = [[NSManagedObjectModel alloc] initWithContentsOfURL:modelURL];
     }
-    return _model;
+    return _managedObjectModel;
+}
+
+@end
+
+@implementation ContextManager (TestHelper)
+
+@dynamic mainContext;
+
+static void *const testPSCKey = "testPSCKey";
+
++ (void)load {
+    NSPersistentStoreCoordinator *psc = [[NSPersistentStoreCoordinator alloc] initWithManagedObjectModel:[[ContextManager sharedInstance] managedObjectModel]];
+    NSError *error;
+    NSPersistentStore *store = [psc addPersistentStoreWithType:NSSQLiteStoreType configuration:nil URL:[ContextManager storeURL] options:nil error:&error];
+    NSAssert(store != nil, @"Can't initialize core data storage");
+    objc_setAssociatedObject([ContextManager sharedInstance], testPSCKey, psc, OBJC_ASSOCIATION_RETAIN);
 }
 
 - (NSPersistentStoreCoordinator *)persistentStoreCoordinator {
-    if (!_coordinator) {
-        _coordinator = [[NSPersistentStoreCoordinator alloc] initWithManagedObjectModel:[self managedObjectModel]];
-
-        NSError *error;
-        NSPersistentStore *store = [_coordinator addPersistentStoreWithType:NSSQLiteStoreType configuration:nil URL:[self storeURL] options:nil error:&error];
-        NSAssert(store != nil, @"Can't initialize core data storage");
-    }
-    return _coordinator;
+    return objc_getAssociatedObject(self, testPSCKey);
 }
 
-- (NSURL *)storeURL {
-    return [NSURL fileURLWithPath:[[NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES) lastObject] stringByAppendingPathComponent: @"WordPressTest.sqlite"]];
+- (void)setPersistentStoreCoordinator:(NSPersistentStoreCoordinator *)persistentStoreCoordinator {
+    objc_setAssociatedObject(self, testPSCKey, persistentStoreCoordinator, OBJC_ASSOCIATION_RETAIN);
+}
+
++ (NSURL *)storeURL {
+    return [NSURL fileURLWithPath:[[NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES) lastObject] stringByAppendingPathComponent:@"WordPressTest.sqlite"]];
 }
 
 @end

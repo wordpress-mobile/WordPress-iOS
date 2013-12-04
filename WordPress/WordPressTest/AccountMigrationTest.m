@@ -23,7 +23,7 @@
 {
     [[CoreDataTestHelper sharedHelper] setModelName:@"WordPress 11"];
     [[CoreDataTestHelper sharedHelper] reset];
-    [[CoreDataTestHelper sharedHelper] registerDefaultContext];
+    
     [WPAccount removeDefaultWordPressComAccount];
     NSString *appDomain = [[NSBundle mainBundle] bundleIdentifier];
     [[NSUserDefaults standardUserDefaults] removePersistentDomainForName:appDomain];
@@ -162,7 +162,6 @@
 - (void)migrate
 {
     XCTAssertTrue([[CoreDataTestHelper sharedHelper] migrateToModelName:@"WordPress 12"]);
-    [[CoreDataTestHelper sharedHelper] registerDefaultContext];
 }
 
 - (NSManagedObjectModel *)model

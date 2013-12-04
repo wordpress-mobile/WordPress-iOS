@@ -24,7 +24,6 @@
 - (void)setUp
 {
     [super setUp];
-    [[CoreDataTestHelper sharedHelper] registerDefaultContext];
 }
 
 - (void)tearDown
