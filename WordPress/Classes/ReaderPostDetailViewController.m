@@ -8,6 +8,7 @@
  */
 
 #import "ReaderPostDetailViewController.h"
+#import "ReaderPostsViewController.h"
 #import <DTCoreText/DTCoreText.h>
 #import <QuartzCore/QuartzCore.h>
 #import <MediaPlayer/MediaPlayer.h>
@@ -727,16 +728,17 @@ typedef enum {
 }
 
 - (void)postView:(ReaderPostView *)postView didReceiveTagAction:(id)sender {
-    // TODO: decide how to browse from the Reader detail view
-//    ReaderPost *post = postView.post;
-//    
-//    NSString *endpoint = [NSString stringWithFormat:@"read/tags/%@/posts", post.primaryTagSlug];
-//    NSDictionary *dict = @{@"endpoint" : endpoint,
-//                           @"title" : post.primaryTagName};
-//    
-//	[[NSUserDefaults standardUserDefaults] setObject:dict forKey:ReaderCurrentTopicKey];
-//	[[NSUserDefaults standardUserDefaults] synchronize];
-//    [self readerTopicChanged];
+    ReaderPost *post = postView.post;
+    
+    NSString *endpoint = [NSString stringWithFormat:@"read/tags/%@/posts", post.primaryTagSlug];
+    NSDictionary *dict = @{@"endpoint" : endpoint,
+                           @"title" : post.primaryTagName};
+    
+	[[NSUserDefaults standardUserDefaults] setObject:dict forKey:ReaderCurrentTopicKey];
+	[[NSUserDefaults standardUserDefaults] synchronize];
+    
+    [self.navigationController popViewControllerAnimated:YES];
+    [[NSNotificationCenter defaultCenter] postNotificationName:ReaderTopicDidChangeNotification object:self];
 }
 
 
