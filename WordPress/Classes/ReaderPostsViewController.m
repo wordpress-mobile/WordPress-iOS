@@ -33,9 +33,10 @@ static CGFloat const RPVCHeaderHeightPhone = 10.f;
 static CGFloat const RPVCMaxImageHeightPercentage = 0.58f;
 static CGFloat const RPVCExtraTableViewHeightPercentage = 2.0f;
 
-NSString *const RPVCDisplayedNativeFriendFinder = @"DisplayedNativeFriendFinder";
+NSString * const ReaderTopicDidChangeNotification = @"ReaderTopicDidChangeNotification";
+NSString * const RPVCDisplayedNativeFriendFinder = @"DisplayedNativeFriendFinder";
 
-@interface ReaderPostsViewController ()<ReaderTopicsDelegate, ReaderTextFormDelegate, WPTableImageSourceDelegate> {
+@interface ReaderPostsViewController ()<ReaderTextFormDelegate, WPTableImageSourceDelegate> {
 	BOOL _hasMoreContent;
 	BOOL _loadingMore;
     WPTableImageSource *_featuredImageSource;
@@ -82,6 +83,10 @@ NSString *const RPVCDisplayedNativeFriendFinder = @"DisplayedNativeFriendFinder"
 		_hasMoreContent = YES;
 		self.infiniteScrollEnabled = YES;
         self.incrementalLoadingSupported = YES;
+        
+        [[NSNotificationCenter defaultCenter] addObserverForName:ReaderTopicDidChangeNotification object:nil queue:nil usingBlock:^(NSNotification *note) {
+            [self readerTopicDidChange];
+        }];
 	}
 	return self;
 }
@@ -379,7 +384,7 @@ NSString *const RPVCDisplayedNativeFriendFinder = @"DisplayedNativeFriendFinder"
     
 	[[NSUserDefaults standardUserDefaults] setObject:dict forKey:ReaderCurrentTopicKey];
 	[[NSUserDefaults standardUserDefaults] synchronize];
-    [self readerTopicChanged];
+    [self readerTopicDidChange];
 }
 
 
@@ -387,7 +392,6 @@ NSString *const RPVCDisplayedNativeFriendFinder = @"DisplayedNativeFriendFinder"
 
 - (void)topicsAction:(id)sender {
 	ReaderTopicsViewController *controller = [[ReaderTopicsViewController alloc] initWithStyle:UITableViewStyleGrouped];
-	controller.delegate = self;
     if (IS_IPAD) {
         if (_popover) {
             [self dismissPopover];
@@ -807,7 +811,7 @@ NSString *const RPVCDisplayedNativeFriendFinder = @"DisplayedNativeFriendFinder"
 
 #pragma mark - ReaderTopicsDelegate Methods
 
-- (void)readerTopicChanged {
+- (void)readerTopicDidChange {
 	if (IS_IPAD){
         [self dismissPopover];
 	}
