@@ -76,7 +76,7 @@
     
     [self addSubview:accessoryView];
     
-    // Stup Accessory View
+    // Setup Accessory View
     _accessoryView = accessoryView;
     
     // Setup title label
