@@ -31,7 +31,7 @@
 static CGFloat const RPVCScrollingFastVelocityThreshold = 30.f;
 static CGFloat const RPVCHeaderHeightPhone = 10.f;
 static CGFloat const RPVCMaxImageHeightPercentage = 0.58f;
-static CGFloat const RPVCExtraTableViewHeight = 800.f;
+static CGFloat const RPVCExtraTableViewHeightPercentage = 2.0f;
 
 NSString *const RPVCDisplayedNativeFriendFinder = @"DisplayedNativeFriendFinder";
 
@@ -169,7 +169,7 @@ NSString *const RPVCDisplayedNativeFriendFinder = @"DisplayedNativeFriendFinder"
         [self.tableView deselectRowAtIndexPath:selectedIndexPath animated:YES];
     }
     
-    //[self resizeTableViewForImagePreloading];
+    [self resizeTableViewForImagePreloading];
 }
 
 - (void)viewWillDisappear:(BOOL)animated {
@@ -178,23 +178,35 @@ NSString *const RPVCDisplayedNativeFriendFinder = @"DisplayedNativeFriendFinder"
 	[[NSNotificationCenter defaultCenter] removeObserver:self];
 }
 
+- (void)willAnimateRotationToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation duration:(NSTimeInterval)duration {
+    [super willAnimateRotationToInterfaceOrientation:toInterfaceOrientation duration:duration];
+}
+
 - (void)didRotateFromInterfaceOrientation:(UIInterfaceOrientation)fromInterfaceOrientation {
     [super didRotateFromInterfaceOrientation:fromInterfaceOrientation];
-    //[self resizeTableViewForImagePreloading];
+    [self resizeTableViewForImagePreloading];
 }
 
 
 #pragma mark - Instance Methods
 
 - (void)resizeTableViewForImagePreloading {
-    // Use a trick to preload more images by making the table view longer
+    // Use a little trick to preload more images by making the table view longer
     CGRect rect = self.tableView.frame;
-    rect.size.height = [[UIScreen mainScreen] bounds].size.height + RPVCExtraTableViewHeight;
+    CGFloat navigationHeight = self.navigationController.view.frame.size.height;
+    CGFloat extraHeight = navigationHeight * RPVCExtraTableViewHeightPercentage;
+    rect.size.height = navigationHeight + extraHeight;
     self.tableView.frame = rect;
-    UIEdgeInsets inset = self.tableView.contentInset;
-    inset.bottom = RPVCExtraTableViewHeight + [self tabBarSize].height;
-    NSLog(@"Reader new frame height %f inset %f", rect.size.height, inset.bottom);
-    self.tableView.contentInset = inset;
+    
+    // Move insets up to compensate
+    UIEdgeInsets insets = self.tableView.contentInset;
+    insets.bottom = extraHeight + [self tabBarSize].height;
+    self.tableView.contentInset = insets;
+    
+    // Adjust the scroll insets as well
+    UIEdgeInsets scrollInsets = self.tableView.scrollIndicatorInsets;
+    scrollInsets.bottom = insets.bottom;
+    self.tableView.scrollIndicatorInsets = scrollInsets;
     [self.tableView layoutIfNeeded];
 }
 
