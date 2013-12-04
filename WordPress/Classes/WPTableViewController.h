@@ -19,6 +19,9 @@ extern CGFloat const WPTableViewTopMargin;
 @property (nonatomic) BOOL incrementalLoadingSupported;
 
 - (void)promptForPassword;
-- (NSString *)noResultsText;
+- (NSString *)noResultsTitleText;
+- (NSString *)noResultsMessageText;
+- (UIView *)noResultsAccessoryView;
+- (void)configureNoResultsView;
 
 @end
