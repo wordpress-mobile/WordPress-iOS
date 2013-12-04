@@ -41,7 +41,6 @@ NSString * const RPVCDisplayedNativeFriendFinder = @"DisplayedNativeFriendFinder
 	BOOL _loadingMore;
     WPTableImageSource *_featuredImageSource;
 	CGFloat keyboardOffset;
-    BOOL _isScrollingFast;
     CGFloat _lastOffset;
     UIPopoverController *_popover;
 }
@@ -419,23 +418,8 @@ NSString * const RPVCDisplayedNativeFriendFinder = @"DisplayedNativeFriendFinder
 
 #pragma mark - UIScrollView Delegate Methods
 
-- (void)scrollViewDidScroll:(UIScrollView *)scrollView {
-    CGFloat offset = self.tableView.contentOffset.y;
-    
-    // Disable fast scrolling detection for now
-    // We just take a diff from the last known offset, as the approximation is good enough
-//    CGFloat velocity = fabsf(offset - _lastOffset);
-//    if (velocity > RPVCScrollingFastVelocityThreshold && self.isScrolling) {
-//        _isScrollingFast = YES;
-//    } else {
-//        _isScrollingFast = NO;
-//    }
-    _lastOffset = offset;
-}
-
 - (void)scrollViewDidEndDecelerating:(UIScrollView *)scrollView {
     [super scrollViewDidEndDecelerating:scrollView];
-    _isScrollingFast = NO;
 
 	NSIndexPath *selectedIndexPath = [self.tableView indexPathForSelectedRow];
 	if (!selectedIndexPath)
@@ -590,7 +574,7 @@ NSString * const RPVCDisplayedNativeFriendFinder = @"DisplayedNativeFriendFinder
     
     if (image) {
         [cell.postView setFeaturedImage:image];
-    } else if (!_isScrollingFast) {
+    } else {
         [_featuredImageSource fetchImageForURL:imageURL withSize:imageSize indexPath:indexPath isPrivate:post.isPrivate];
     }
 }
@@ -1003,10 +987,8 @@ NSString * const RPVCDisplayedNativeFriendFinder = @"DisplayedNativeFriendFinder
 #pragma mark - WPTableImageSourceDelegate
 
 - (void)tableImageSource:(WPTableImageSource *)tableImageSource imageReady:(UIImage *)image forIndexPath:(NSIndexPath *)indexPath {
-    if (!_isScrollingFast) {
-        ReaderPostTableViewCell *cell = (ReaderPostTableViewCell *)[self.tableView cellForRowAtIndexPath:indexPath];
-        [cell.postView setFeaturedImage:image];
-    }
+    ReaderPostTableViewCell *cell = (ReaderPostTableViewCell *)[self.tableView cellForRowAtIndexPath:indexPath];
+    [cell.postView setFeaturedImage:image];
     
     ReaderPost *post = [self.resultsController objectAtIndexPath:indexPath];
     
