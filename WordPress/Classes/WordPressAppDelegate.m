@@ -32,6 +32,7 @@
 #import <DDFileLogger.h>
 #import <AFNetworking/AFNetworking.h>
 #import "ContextManager.h"
+#import "ReaderPost.h"
 #import <CoreTelephony/CTTelephonyNetworkInfo.h>
 #import <CoreTelephony/CTCarrier.h>
 
@@ -1041,6 +1042,10 @@ NSString * const WPNotificationsNavigationRestorationID = @"WPNotificationsNavig
 	[self toggleExtraDebuggingIfNeeded];
     [NotificationsManager registerForPushNotifications];
     [self showWelcomeScreenIfNeededAnimated:NO];
+    // If the notification object is not nil, then it's a login
+    if (notification.object) {
+        [ReaderPost fetchPostsWithCompletionHandler:nil];
+    }
 }
 
 @end

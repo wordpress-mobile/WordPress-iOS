@@ -26,7 +26,6 @@
 #import "WPNUXUtility.h"
 #import "WPNUXBackButton.h"
 #import "WPAccount.h"
-#import "ReaderPost.h"
 #import "Note.h"
 
 @interface LoginViewController () <
@@ -768,7 +767,6 @@ CGFloat const GeneralWalkthroughiOS7StatusBarOffset = 20.0;
         [self setAuthenticating:NO withStatusMessage:nil];
         [self displayRemoteError:error];
     }];
-    [ReaderPost fetchPostsWithCompletionHandler:nil];
     [account.restApi getNotificationsSince:nil success:nil failure:nil];
 }
 
