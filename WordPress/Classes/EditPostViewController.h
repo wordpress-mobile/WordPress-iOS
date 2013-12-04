@@ -18,4 +18,5 @@ typedef NS_ENUM(NSUInteger, EditPostViewControllerMode) {
 @property(nonatomic, strong) NSString *statsPrefix;
 
 - (id)initWithPost:(AbstractPost *)aPost;
+
 @end

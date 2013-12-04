@@ -15,6 +15,7 @@
 #import "SelectWPComLanguageViewController.h"
 #import "WPAsyncBlockOperation.h"
 #import "WPTableViewSectionFooterView.h"
+#import "WPAccount.h"
 
 @interface CreateWPComAccountViewController () <
     UITextFieldDelegate> {
@@ -440,6 +441,8 @@ CGSize const CreateAccountHeaderSize = { 320.0, 70.0 };
         void (^createBlogSuccess)(id) = ^(id responseObject){
             [operation didSucceed];
             if (self.delegate != nil) {
+                WPAccount *account = [WPAccount createOrUpdateWordPressComAccountWithUsername:_usernameTextField.text andPassword:_passwordTextField.text];
+                [WPAccount setDefaultWordPressComAccount:account];
                 [self.delegate createdAndSignedInAccountWithUserName:_usernameTextField.text];
             }
         };
