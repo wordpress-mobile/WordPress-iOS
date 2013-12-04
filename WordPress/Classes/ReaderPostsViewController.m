@@ -280,7 +280,10 @@ NSString *const RPVCDisplayedNativeFriendFinder = @"DisplayedNativeFriendFinder"
 	
 	CGFloat reblogHeight = [ReaderReblogFormView desiredHeight];
 	CGRect tableFrame = self.tableView.frame;
-	tableFrame.size.height = self.tableView.frame.size.height - reblogHeight;
+    CGRect superviewFrame = self.view.superview.frame;
+    
+    // The table's frame is artifically tall due to resizeTableViewForImagePreloading, so effectively undo that
+	tableFrame.size.height = superviewFrame.size.height - tableFrame.origin.y - reblogHeight - [self tabBarSize].height;
 	self.tableView.frame = tableFrame;
 	
 	CGFloat y = tableFrame.origin.y + tableFrame.size.height;
@@ -300,6 +303,7 @@ NSString *const RPVCDisplayedNativeFriendFinder = @"DisplayedNativeFriendFinder"
 	tableFrame.size.height = self.tableView.frame.size.height + _readerReblogFormView.frame.size.height;
 	
 	self.tableView.frame = tableFrame;
+    [self resizeTableViewForImagePreloading];
 	[_readerReblogFormView removeFromSuperview];
 	self.isShowingReblogForm = NO;
 	[self.view endEditing:YES];
