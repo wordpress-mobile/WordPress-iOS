@@ -169,11 +169,6 @@ extern NSString *const StatsEventManageNotificationsDisabledBlogNotifications;
 extern NSString *const StatsEventQuickPhotoOpened;
 extern NSString *const StatsEventQuickPhotoPosted;
 
-// Welcome View Controller
-extern NSString *const StatsEventWelcomeViewControllerClickedAddSelfHostedBlog;
-extern NSString *const StatsEventWelcomeViewControllerClickedAddWordpressDotComBlog;
-extern NSString *const StatsEventWelcomeViewControllerClickedCreateWordpressDotComBlog;
-
 // NUX Related
 extern NSString *const StatsEventNUXFirstWalkthroughOpened;
 extern NSString *const StatsEventNUXFirstWalkthroughClickedSkipToCreateAccount;
