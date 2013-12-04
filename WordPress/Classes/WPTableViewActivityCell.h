@@ -1,15 +1,16 @@
-//
-//  UITableViewActivityCell.h
-//  WordPress
-//
-//  Created by Chris Boyd on 7/23/10.
-//  Copyright 2010 WordPress. All rights reserved.
-//
+/*
+ * WPTableViewActivityCell.h
+ *
+ * Copyright (c) 2013 WordPress. All rights reserved.
+ *
+ * Licensed under GNU General Public License 2.0.
+ * Some rights reserved. See license.txt
+ */
 
 #import <UIKit/UIKit.h>
 #import "WPTableViewCell.h"
 
-@interface UITableViewActivityCell : WPTableViewCell {
+@interface WPTableViewActivityCell : WPTableViewCell {
 	IBOutlet UIActivityIndicatorView *spinner;
 	IBOutlet UILabel *textLabel;
 	IBOutlet UIView *viewForBackground;

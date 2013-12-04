@@ -9,7 +9,7 @@
 #import "CreateWPComAccountViewController.h"
 #import "WordPressComApi.h"
 #import "ReachabilityUtils.h"
-#import "UITableViewActivityCell.h"
+#import "WPTableViewActivityCell.h"
 #import "UITableViewTextFieldCell.h"
 #import "WPComLanguages.h"
 #import "SelectWPComLanguageViewController.h"
@@ -132,13 +132,13 @@ CGSize const CreateAccountHeaderSize = { 320.0, 70.0 };
 	UITableViewCell *cell = nil;
     
 	if(indexPath.section == 1) {
-        UITableViewActivityCell *activityCell = nil;
+        WPTableViewActivityCell *activityCell = nil;
         NSArray *topLevelObjects = [[NSBundle mainBundle] loadNibNamed:@"UITableViewActivityCell" owner:nil options:nil];
 		for(id currentObject in topLevelObjects)
 		{
-			if([currentObject isKindOfClass:[UITableViewActivityCell class]])
+			if([currentObject isKindOfClass:[WPTableViewActivityCell class]])
 			{
-				activityCell = (UITableViewActivityCell *)currentObject;
+				activityCell = (WPTableViewActivityCell *)currentObject;
 				break;
 			}
 		}

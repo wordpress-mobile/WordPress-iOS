@@ -10,7 +10,7 @@
 #import "SelectWPComLanguageViewController.h"
 #import "SelectWPComBlogVisibilityViewController.h"
 #import "UITableViewTextFieldCell.h"
-#import "UITableViewActivityCell.h"
+#import "WPTableViewActivityCell.h"
 #import "WordPressComApi.h"
 #import "WPComLanguages.h"
 #import "WordPressAppDelegate.h"
@@ -130,13 +130,13 @@ NSUInteger const CreateBlogBlogUrlFieldTag = 1;
     UITableViewCell *cell = nil;
     
 	if(indexPath.section == 1) {
-        UITableViewActivityCell *activityCell = nil;
+        WPTableViewActivityCell *activityCell = nil;
         NSArray *topLevelObjects = [[NSBundle mainBundle] loadNibNamed:@"UITableViewActivityCell" owner:nil options:nil];
 		for(id currentObject in topLevelObjects)
 		{
-			if([currentObject isKindOfClass:[UITableViewActivityCell class]])
+			if([currentObject isKindOfClass:[WPTableViewActivityCell class]])
 			{
-				activityCell = (UITableViewActivityCell *)currentObject;
+				activityCell = (WPTableViewActivityCell *)currentObject;
 				break;
 			}
 		}
