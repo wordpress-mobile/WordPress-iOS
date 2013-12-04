@@ -348,7 +348,7 @@ NSString * const WPNotificationsNavigationRestorationID = @"WPNotificationsNavig
     blogListNavigationController.navigationBar.translucent = NO;
     blogListNavigationController.tabBarItem.image = [UIImage imageNamed:@"icon-tab-blogs"];
     blogListNavigationController.restorationIdentifier = WPBlogListNavigationRestorationID;
-    self.blogListViewController.title = NSLocalizedString(@"My Blogs", @"");
+    self.blogListViewController.title = NSLocalizedString(@"Me", @"");
     
     _tabBarController.viewControllers = [NSArray arrayWithObjects:readerNavigationController, notificationsNavigationController, blogListNavigationController, nil];
     
