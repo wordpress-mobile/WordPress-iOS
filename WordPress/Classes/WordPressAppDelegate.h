@@ -28,6 +28,8 @@
 
 + (WordPressAppDelegate *)sharedWordPressApplicationDelegate;
 
+- (void)showWelcomeScreenIfNeededAnimated:(BOOL)animated;
+
 ///--------------------
 /// @name Global Alerts
 ///--------------------
