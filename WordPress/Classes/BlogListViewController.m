@@ -135,6 +135,7 @@ NSString * const WPBlogListRestorationID = @"WPBlogListID";
 #pragma mark - Table view data source
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
+    // Adding an extra section for "Add Site"
     return [self.resultsController.sections count] + 1;
 }
 
