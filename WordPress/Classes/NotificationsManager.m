@@ -19,8 +19,7 @@
 @implementation NotificationsManager
 
 + (void)registerForPushNotifications {
-    WordPressAppDelegate *appDelegate = [WordPressAppDelegate sharedWordPressApplicationDelegate];
-    if (appDelegate.isWPcomAuthenticated) {
+    if ([WPAccount defaultWordPressComAccount]) {
         [[UIApplication sharedApplication]
          registerForRemoteNotificationTypes:(UIRemoteNotificationTypeBadge |
                                              UIRemoteNotificationTypeSound |
