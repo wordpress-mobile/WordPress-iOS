@@ -636,8 +636,6 @@ const CGFloat RPVControlButtonBorderSize = 0.0f;
 	frame = self.frame;
 	frame.size.height = height + _textContentView.frame.origin.y + 10.0f; // + bottom padding
 	self.frame = frame;
-	
-	//[self.delegate readerPostDetailViewLayoutChanged];
 }
 
 
@@ -704,7 +702,6 @@ const CGFloat RPVControlButtonBorderSize = 0.0f;
         // layout might have changed due to image sizes
         [self.textContentView relayoutText];
         [self setNeedsLayout];
-        //[self _updateLayout];
     }
 }
 
@@ -740,17 +737,7 @@ const CGFloat RPVControlButtonBorderSize = 0.0f;
     
     if (!attachment.contentURL)
         return nil;
-    
-    // If it's the same as the featured image, don't display that image again
-//    BOOL sameImage = [[attachment.contentURL absoluteString] rangeOfString: [self.post.featuredImageURL absoluteString]
-//                      ].location != NSNotFound;
-//    if (sameImage) {
-//		ReaderImageView *emptyView = [[ReaderImageView alloc] initWithFrame:CGRectZero];
-//        [self handleMediaViewLoaded:emptyView];
-//        [self setNeedsLayout];
-//        return emptyView;
-//    }
-	
+
     CGFloat width = _textContentView.frame.size.width;
     CGFloat availableWidth = _textContentView.frame.size.width - (_textContentView.edgeInsets.left + _textContentView.edgeInsets.right);
     
