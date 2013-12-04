@@ -109,14 +109,14 @@ extern NSString *const StatsPropertyPostDetailSettingsClickedStatus;
 extern NSString *const StatsPropertyPostDetailSettingsClickedVisibility;
 extern NSString *const StatsPropertyPostDetailSettingsClickedScheduleFor;
 extern NSString *const StatsPropertyPostDetailSettingsClickedPostFormat;
-extern NSString *const StatsEventPostDetailSettingsClickedSetFeaturedImage;
-extern NSString *const StatsEventPostDetailSettingsClickedRemoveFeaturedImage;
-extern NSString *const StatsEventPostDetailSettingsClickedAddLocation;
-extern NSString *const StatsEventPostDetailSettingsClickedUpdateLocation;
-extern NSString *const StatsEventPostDetailSettingsClickedRemoveLocation;
+extern NSString *const StatsPropertyPostDetailSettingsClickedSetFeaturedImage;
+extern NSString *const StatsPropertyPostDetailSettingsClickedRemoveFeaturedImage;
+extern NSString *const StatsPropertyPostDetailSettingsClickedAddLocation;
+extern NSString *const StatsPropertyPostDetailSettingsClickedUpdateLocation;
+extern NSString *const StatsPropertyPostDetailSettingsClickedRemoveLocation;
 
 // Pages
-extern NSString *const StatsPropertyPagedOpened;
+extern NSString *const StatsPropertyPagesOpened;
 extern NSString *const StatsEventPagesClickedNewPage;
 
 // Comments
@@ -168,11 +168,6 @@ extern NSString *const StatsEventManageNotificationsDisabledBlogNotifications;
 // Quick Photo
 extern NSString *const StatsEventQuickPhotoOpened;
 extern NSString *const StatsEventQuickPhotoPosted;
-
-// Welcome View Controller
-extern NSString *const StatsEventWelcomeViewControllerClickedAddSelfHostedBlog;
-extern NSString *const StatsEventWelcomeViewControllerClickedAddWordpressDotComBlog;
-extern NSString *const StatsEventWelcomeViewControllerClickedCreateWordpressDotComBlog;
 
 // NUX Related
 extern NSString *const StatsEventNUXFirstWalkthroughOpened;

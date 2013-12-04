@@ -17,6 +17,7 @@
 
 NSTimeInterval const WPTableViewControllerRefreshTimeout = 300; // 5 minutes
 CGFloat const WPTableViewTopMargin = 40;
+NSString * const WPBlogRestorationKey = @"WPBlogRestorationKey";
 
 @interface WPTableViewController ()
 
@@ -54,9 +55,47 @@ CGFloat const WPTableViewTopMargin = 40;
 @synthesize swipeCell = _swipeCell;
 @synthesize noResultsView;
 
++ (UIViewController *)viewControllerWithRestorationIdentifierPath:(NSArray *)identifierComponents coder:(NSCoder *)coder {
+    NSString *blogID = [coder decodeObjectForKey:WPBlogRestorationKey];
+    if (!blogID)
+        return nil;
+    
+    NSManagedObjectContext *context = [[ContextManager sharedInstance] mainContext];
+    NSManagedObjectID *objectID = [context.persistentStoreCoordinator managedObjectIDForURIRepresentation:[NSURL URLWithString:blogID]];
+    if (!objectID)
+        return nil;
+    
+    NSError *error = nil;
+    Blog *restoredBlog = (Blog *)[context existingObjectWithID:objectID error:&error];
+    if (error || !restoredBlog) {
+        return nil;
+    }
+    
+    WPTableViewController *viewController = [[self alloc] initWithStyle:UITableViewStyleGrouped];
+    viewController.blog = restoredBlog;
+    
+    return viewController;
+}
+
+- (id)initWithStyle:(UITableViewStyle)style {
+    self = [super initWithStyle:style];
+    
+    if (self) {
+        self.restorationIdentifier = NSStringFromClass([self class]);
+        self.restorationClass = [self class];
+    }
+    
+    return self;
+}
+
 - (void)dealloc {
     _resultsController.delegate = nil;
     editSiteViewController.delegate = nil;
+}
+
+- (void)encodeRestorableStateWithCoder:(NSCoder *)coder {
+    [coder encodeObject:[[self.blog.objectID URIRepresentation] absoluteString] forKey:WPBlogRestorationKey];
+    [super encodeRestorableStateWithCoder:coder];
 }
 
 - (void)viewDidLoad {
@@ -303,13 +342,7 @@ CGFloat const WPTableViewTopMargin = 40;
 }
 
 - (NSString *)resultsControllerCacheName {
-	NSString *cacheName;
-    if (self.blog) {
-        cacheName = [NSString stringWithFormat:@"%@-%@", [self entityName], [self.blog objectID]];
-    } else {
-        cacheName = [self entityName];
-    }
-	return cacheName;
+    return nil;
 }
 
 - (NSFetchedResultsController *)resultsController {

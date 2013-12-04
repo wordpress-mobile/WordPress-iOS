@@ -32,13 +32,21 @@ typedef NS_ENUM(NSUInteger, WordPressComApiBlogVisibility) {
 extern NSString *const WordPressComApiErrorDomain;
 extern NSString *const WordPressComApiErrorCodeKey;
 extern NSString *const WordPressComApiErrorMessageKey;
-
+extern NSString *const WordPressComApiPushAppId;
 
 @interface WordPressComApi : AFHTTPClient
 @property (nonatomic,readonly,strong) NSString *username;
 @property (nonatomic,readonly,strong) NSString *password;
+@property (nonatomic, readonly, strong) NSString *authToken;
 
-+ (WordPressComApi *)sharedApi;
++ (WordPressComApi *)sharedApi DEPRECATED_MSG_ATTRIBUTE("Use [[WPAccount defaultWordPressComAccount] restApi] instead");
+/**
+ Returns an API without an associated user
+ 
+ Use this only for things that don't require an account, like signup or logged out reader
+ */
++ (WordPressComApi *)anonymousApi;
+- (id)initWithOAuthToken:(NSString *)authToken;
 
 ///-------------------------
 /// @name Account management
@@ -49,6 +57,8 @@ extern NSString *const WordPressComApiErrorMessageKey;
 - (void)signInWithToken:(NSString *)token DEPRECATED_ATTRIBUTE;
 - (void)signOut;
 - (BOOL)hasCredentials;
+// Wipe the OAuth2 token
+- (void)invalidateOAuth2Token;
 - (void)validateWPComAccountWithEmail:(NSString *)email andUsername:(NSString *)username andPassword:(NSString *)password success:(void (^)(id responseObject))success failure:(void (^)(NSError *error))failure;
 - (void)createWPComAccountWithEmail:(NSString *)email andUsername:(NSString *)username andPassword:(NSString *)password success:(void (^)(id responseObject))success failure:(void (^)(NSError *error))failure;
 - (void)validateWPComBlogWithUrl:(NSString *)blogUrl andBlogTitle:(NSString *)blogTitle andLanguageId:(NSNumber *)languageId success:(void (^)(id))success failure:(void (^)(NSError *))failure;
@@ -129,7 +139,6 @@ extern NSString *const WordPressComApiErrorMessageKey;
 /// @name OAuth info
 ///-----------------
 
-- (NSString *)authToken;
 + (NSString *)WordPressAppId;
 + (NSString *)WordPressAppSecret;
 

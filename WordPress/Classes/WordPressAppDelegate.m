@@ -32,6 +32,9 @@
 #import <DDFileLogger.h>
 #import <AFNetworking/AFNetworking.h>
 #import "ContextManager.h"
+#import "ReaderPost.h"
+#import <CoreTelephony/CTTelephonyNetworkInfo.h>
+#import <CoreTelephony/CTCarrier.h>
 
 #if DEBUG
 #import "DDTTYLogger.h"
@@ -40,6 +43,10 @@
 
 int ddLogLevel = LOG_LEVEL_INFO;
 NSInteger const UpdateCheckAlertViewTag = 102;
+NSString * const WPTabBarRestorationID = @"WPTabBarID";
+NSString * const WPBlogListNavigationRestorationID = @"WPBlogListNavigationID";
+NSString * const WPReaderNavigationRestorationID = @"WPReaderNavigationID";
+NSString * const WPNotificationsNavigationRestorationID = @"WPNotificationsNavigationID";
 
 
 @interface WordPressAppDelegate () <CrashlyticsDelegate, UIAlertViewDelegate, BITHockeyManagerDelegate>
@@ -60,11 +67,11 @@ NSInteger const UpdateCheckAlertViewTag = 102;
 
 #pragma mark - UIApplicationDelegate
 
-- (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
+- (BOOL)application:(UIApplication *)application willFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
     // Crash reporting, logging, debugging
+    [self configureLogging];
     [self configureHockeySDK];
     [self configureCrashlytics];
-    [self configureLogging];
     [self printDebugLaunchInfo];
     [self toggleExtraDebuggingIfNeeded];
     [self removeCredentialsForDebug];
@@ -92,7 +99,7 @@ NSInteger const UpdateCheckAlertViewTag = 102;
     self.window.rootViewController = self.tabBarController;
     [self.window makeKeyAndVisible];
     
-    [self showWelcomeScreenIfNeeded];
+    [self showWelcomeScreenIfNeededAnimated:NO];
 
     // Push notifications
     [NotificationsManager registerForPushNotifications];
@@ -224,6 +231,17 @@ NSInteger const UpdateCheckAlertViewTag = 102;
     [[WordPressComApi sharedApi] syncPushNotificationInfo];
 }
 
+- (BOOL)application:(UIApplication *)application shouldSaveApplicationState:(NSCoder *)coder
+{
+    return YES;
+}
+
+- (BOOL)application:(UIApplication *)application shouldRestoreApplicationState:(NSCoder *)coder
+{
+    return YES;
+}
+
+
 #pragma mark - Push Notification delegate
 
 - (void)application:(UIApplication *)application didRegisterForRemoteNotificationsWithDeviceToken:(NSData *)deviceToken {
@@ -249,7 +267,7 @@ NSInteger const UpdateCheckAlertViewTag = 102;
 
 #pragma mark - Custom methods
 
-- (void)showWelcomeScreenIfNeeded {
+- (void)showWelcomeScreenIfNeededAnimated:(BOOL)animated {
     if ([self noBlogsAndNoWordPressDotComAccount]) {
         [WordPressAppDelegate wipeAllKeychainItems];
         
@@ -257,6 +275,11 @@ NSInteger const UpdateCheckAlertViewTag = 102;
         UINavigationController *aNavigationController = [[UINavigationController alloc] initWithRootViewController:welcomeViewController];
         aNavigationController.navigationBar.translucent = NO;
         aNavigationController.modalTransitionStyle = UIModalTransitionStyleCrossDissolve;
+
+        UIViewController *presenter = self.window.rootViewController;
+        if (presenter.presentedViewController) {
+            [presenter dismissViewControllerAnimated:animated completion:nil];
+        }
         
         [self.window.rootViewController presentViewController:aNavigationController animated:NO completion:nil];
     }
@@ -291,25 +314,30 @@ NSInteger const UpdateCheckAlertViewTag = 102;
 
 - (UITabBarController *)tabBarController {
     _tabBarController = [[UITabBarController alloc] init];
+    _tabBarController.restorationIdentifier = WPTabBarRestorationID;
     [_tabBarController.tabBar setTranslucent:NO];
 
     self.readerPostsViewController = [[ReaderPostsViewController alloc] init];
     UINavigationController *readerNavigationController = [[UINavigationController alloc] initWithRootViewController:self.readerPostsViewController];
     readerNavigationController.navigationBar.translucent = NO;
     readerNavigationController.tabBarItem.image = [UIImage imageNamed:@"icon-tab-reader"];
-    self.readerPostsViewController.title = @"Reader";
+    readerNavigationController.restorationIdentifier = WPReaderNavigationRestorationID;
+    self.readerPostsViewController.title = NSLocalizedString(@"Reader", nil);
     
     self.notificationsViewController = [[NotificationsViewController alloc] init];
     UINavigationController *notificationsNavigationController = [[UINavigationController alloc] initWithRootViewController:self.notificationsViewController];
     notificationsNavigationController.navigationBar.translucent = NO;
     notificationsNavigationController.tabBarItem.image = [UIImage imageNamed:@"icon-tab-notifications"];
-    self.notificationsViewController.title = @"Notifications";
+    notificationsNavigationController.restorationIdentifier = WPNotificationsNavigationRestorationID;
+    self.notificationsViewController.title = NSLocalizedString(@"Notifications", @"");
     
-    BlogListViewController *blogListViewController = [[BlogListViewController alloc] init];
-    UINavigationController *blogListNavigationController = [[UINavigationController alloc] initWithRootViewController:blogListViewController];
+    self.blogListViewController = [[BlogListViewController alloc] init];
+    UINavigationController *blogListNavigationController = [[UINavigationController alloc] initWithRootViewController:self.blogListViewController];
     blogListNavigationController.navigationBar.translucent = NO;
     blogListNavigationController.tabBarItem.image = [UIImage imageNamed:@"icon-tab-blogs"];
-    blogListViewController.title = @"My Blogs";
+    blogListNavigationController.restorationIdentifier = WPBlogListNavigationRestorationID;
+    self.blogListViewController.title = NSLocalizedString(@"My Blogs", @"");
+    
     _tabBarController.viewControllers = [NSArray arrayWithObjects:blogListNavigationController, readerNavigationController, notificationsNavigationController, nil];
     
     [_tabBarController setSelectedViewController:readerNavigationController];
@@ -550,23 +578,18 @@ NSInteger const UpdateCheckAlertViewTag = 102;
     [Crashlytics startWithAPIKey:[WordPressComApiCredentials crashlyticsApiKey]];
     [[Crashlytics sharedInstance] setDelegate:self];
     
-    BOOL hasCredentials = [[WordPressComApi sharedApi] hasCredentials];
+    BOOL hasCredentials = ([WPAccount defaultWordPressComAccount] != nil);
     [self setCommonCrashlyticsParameters];
     
     if (hasCredentials && [[WPAccount defaultWordPressComAccount] username] != nil) {
         [Crashlytics setUserName:[[WPAccount defaultWordPressComAccount] username]];
     }
     
-    void (^wpcomLoggedInBlock)(NSNotification *) = ^(NSNotification *note) {
+    void (^accountChangedBlock)(NSNotification *) = ^(NSNotification *note) {
         [Crashlytics setUserName:[[WPAccount defaultWordPressComAccount] username]];
         [self setCommonCrashlyticsParameters];
     };
-    void (^wpcomLoggedOutBlock)(NSNotification *) = ^(NSNotification *note) {
-        [Crashlytics setUserName:nil];
-        [self setCommonCrashlyticsParameters];
-    };
-    [[NSNotificationCenter defaultCenter] addObserverForName:WordPressComApiDidLoginNotification object:nil queue:nil usingBlock:wpcomLoggedInBlock];
-    [[NSNotificationCenter defaultCenter] addObserverForName:WordPressComApiDidLogoutNotification object:nil queue:nil usingBlock:wpcomLoggedOutBlock];
+    [[NSNotificationCenter defaultCenter] addObserverForName:WPAccountDefaultWordPressComAccountChangedNotification object:nil queue:nil usingBlock:accountChangedBlock];
 }
 
 - (void)crashlytics:(Crashlytics *)crashlytics didDetectCrashDuringPreviousExecution:(id<CLSCrashReport>)crash
@@ -582,8 +605,9 @@ NSInteger const UpdateCheckAlertViewTag = 102;
 
 - (void)setCommonCrashlyticsParameters
 {
-    [Crashlytics setObjectValue:[NSNumber numberWithBool:[[WordPressComApi sharedApi] hasCredentials]] forKey:@"logged_in"];
-    [Crashlytics setObjectValue:@([[WordPressComApi sharedApi] hasCredentials]) forKey:@"connected_to_dotcom"];
+    BOOL loggedIn = [WPAccount defaultWordPressComAccount] != nil;
+    [Crashlytics setObjectValue:@(loggedIn) forKey:@"logged_in"];
+    [Crashlytics setObjectValue:@(loggedIn) forKey:@"connected_to_dotcom"];
     [Crashlytics setObjectValue:@([Blog countWithContext:[[ContextManager sharedInstance] mainContext]]) forKey:@"number_of_blogs"];
 }
 
@@ -682,6 +706,14 @@ NSInteger const UpdateCheckAlertViewTag = 102;
     NSDictionary *dictionary = [[NSDictionary alloc] initWithObjectsAndKeys: appUA, @"UserAgent", defaultUA, @"DefaultUserAgent", appUA, @"AppUserAgent", nil];
     [[NSUserDefaults standardUserDefaults] registerDefaults:dictionary];
 }
+- (void)showReaderTab {
+    NSInteger readerTabIndex = [[self.tabBarController viewControllers] indexOfObject:self.readerPostsViewController.navigationController];
+    [self.tabBarController setSelectedIndex:readerTabIndex];
+}
+- (void)showBlogListTab {
+    NSInteger blogListTabIndex = [[self.tabBarController viewControllers] indexOfObject:self.blogListViewController.navigationController];
+    [self.tabBarController setSelectedIndex:blogListTabIndex];
+}
 
 - (void)useDefaultUserAgent {
     NSString *ua = [[NSUserDefaults standardUserDefaults] stringForKey:@"DefaultUserAgent"];
@@ -720,73 +752,82 @@ NSInteger const UpdateCheckAlertViewTag = 102;
     self.connectionAvailable = YES;
     
     // allocate the internet reachability object
-    _internetReachability = [Reachability reachabilityForInternetConnection];
-
-    self.connectionAvailable = [_internetReachability isReachable];
+    self.internetReachability = [Reachability reachabilityForInternetConnection];
+    
     // set the blocks
-    _internetReachability.reachableBlock = ^(Reachability*reach)
-    {
-        DDLogInfo(@"Internet connection is back");
-        self.connectionAvailable = YES;
+    void (^internetReachabilityBlock)(Reachability *) = ^(Reachability *reach) {
+        NSString *wifi = reach.isReachableViaWiFi ? @"Y" : @"N";
+        NSString *wwan = reach.isReachableViaWWAN ? @"Y" : @"N";
+        
+        DDLogInfo(@"Reachability - Internet - WiFi: %@  WWAN: %@", wifi, wwan);
+        self.connectionAvailable = reach.isReachable;
     };
-    _internetReachability.unreachableBlock = ^(Reachability*reach)
-    {
-        DDLogInfo(@"No internet connection");
-        self.connectionAvailable = NO;
-    };
+    self.internetReachability.reachableBlock = internetReachabilityBlock;
+    self.internetReachability.unreachableBlock = internetReachabilityBlock;
+    
     // start the notifier which will cause the reachability object to retain itself!
-    [_internetReachability startNotifier];
+    [self.internetReachability startNotifier];
+    self.connectionAvailable = [self.internetReachability isReachable];
     
     // allocate the WP.com reachability object
-    _wpcomReachability = [Reachability reachabilityWithHostname:@"wordpress.com"];
+    self.wpcomReachability = [Reachability reachabilityWithHostname:@"wordpress.com"];
+
     // set the blocks
-    _wpcomReachability.reachableBlock = ^(Reachability*reach)
-    {
-        DDLogInfo(@"Connection to WordPress.com is back");
-        self.wpcomAvailable = YES;
+    void (^wpcomReachabilityBlock)(Reachability *) = ^(Reachability *reach) {
+        NSString *wifi = reach.isReachableViaWiFi ? @"Y" : @"N";
+        NSString *wwan = reach.isReachableViaWWAN ? @"Y" : @"N";
+        CTTelephonyNetworkInfo *netInfo = [CTTelephonyNetworkInfo new];
+        CTCarrier *carrier = [netInfo subscriberCellularProvider];
+        NSString *type = nil;
+        if ([netInfo respondsToSelector:@selector(currentRadioAccessTechnology)]) {
+            type = [netInfo currentRadioAccessTechnology];
+        }
+        NSString *carrierName = nil;
+        if (carrier) {
+            carrierName = [NSString stringWithFormat:@"%@ [%@/%@/%@]", carrier.carrierName, [carrier.isoCountryCode uppercaseString], carrier.mobileCountryCode, carrier.mobileNetworkCode];
+        }
+        
+        DDLogInfo(@"Reachability - WordPress.com - WiFi: %@  WWAN: %@  Carrier: %@  Type: %@", wifi, wwan, carrierName, type);
+        self.wpcomAvailable = reach.isReachable;
     };
-    _wpcomReachability.unreachableBlock = ^(Reachability*reach)
-    {
-        DDLogInfo(@"No connection to WordPress.com");
-        self.wpcomAvailable = NO;
-    };
+    self.wpcomReachability.reachableBlock = wpcomReachabilityBlock;
+    self.wpcomReachability.unreachableBlock = wpcomReachabilityBlock;
+
     // start the notifier which will cause the reachability object to retain itself!
-    [_wpcomReachability startNotifier];
+    [self.wpcomReachability startNotifier];
 #pragma clang diagnostic pop
 }
 
+// TODO :: Eliminate this check or at least move it to WordPressComApi (or WPAccount)
 - (void)checkWPcomAuthentication {
-    if ([[NSUserDefaults standardUserDefaults] objectForKey:@"wpcom_authenticated_flag"] != nil) {
-        NSString *tempIsAuthenticated = (NSString *)[[NSUserDefaults standardUserDefaults] objectForKey:@"wpcom_authenticated_flag"];
-        if ([tempIsAuthenticated isEqualToString:@"1"]) {
-            self.isWPcomAuthenticated = YES;
-        }
-    }
+    // Temporarily set the is authenticated flag based upon if we have a WP.com OAuth2 token
+    // TODO :: Move this BOOL to a method on the WordPressComApi along with checkWPcomAuthentication
+    BOOL tempIsAuthenticated = [[WordPressComApi sharedApi] authToken].length > 0;
+    self.isWPcomAuthenticated = tempIsAuthenticated;
     
 	NSString *authURL = @"https://wordpress.com/xmlrpc.php";
+
     WPAccount *account = [WPAccount defaultWordPressComAccount];
 	if (account) {
         WPXMLRPCClient *client = [WPXMLRPCClient clientWithXMLRPCEndpoint:[NSURL URLWithString:authURL]];
+        [client setAuthorizationHeaderWithToken:[[WordPressComApi sharedApi] authToken]];
         [client callMethod:@"wp.getUsersBlogs"
                 parameters:[NSArray arrayWithObjects:account.username, account.password, nil]
                    success:^(AFHTTPRequestOperation *operation, id responseObject) {
                        self.isWPcomAuthenticated = YES;
                        DDLogInfo(@"Logged in to WordPress.com as %@", account.username);
                    } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
-                       if ([error.domain isEqualToString:@"XMLRPC"] && error.code == 403) {
+                       if ([error.domain isEqualToString:@"WPXMLRPCFaultError"] ||
+                           ([error.domain isEqualToString:@"XMLRPC"] && error.code == 403)) {
                            self.isWPcomAuthenticated = NO;
+                           [[WordPressComApi sharedApi] invalidateOAuth2Token];
                        }
+                       
                        DDLogError(@"Error authenticating %@ with WordPress.com: %@", account.username, [error description]);
                    }];
 	} else {
 		self.isWPcomAuthenticated = NO;
 	}
-    
-	if (self.isWPcomAuthenticated) {
-		[[NSUserDefaults standardUserDefaults] setObject:@"1" forKey:@"wpcom_authenticated_flag"];
-	} else {
-		[[NSUserDefaults standardUserDefaults] setObject:@"0" forKey:@"wpcom_authenticated_flag"];
-    }
 }
 
 
@@ -922,6 +963,8 @@ NSInteger const UpdateCheckAlertViewTag = 102;
     [DDLog addLogger:[CrashlyticsLogger sharedInstance]];
 #endif
     
+    [DDLog addLogger:self.fileLogger];
+    
     BOOL extraDebug = [[NSUserDefaults standardUserDefaults] boolForKey:@"extra_debug"];
     if (extraDebug) {
         ddLogLevel = LOG_LEVEL_VERBOSE;
@@ -935,7 +978,7 @@ NSInteger const UpdateCheckAlertViewTag = 102;
     _fileLogger = [[DDFileLogger alloc] init];
     _fileLogger.rollingFrequency = 60 * 60 * 24; // 24 hour rolling
     _fileLogger.logFileManager.maximumNumberOfLogFiles = 7;
-    [DDLog addLogger:_fileLogger];
+    
     return _fileLogger;
 }
 
@@ -970,12 +1013,11 @@ NSInteger const UpdateCheckAlertViewTag = 102;
 - (void)toggleExtraDebuggingIfNeeded {
     if (!_listeningForBlogChanges) {
         _listeningForBlogChanges = YES;
-        [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(handleLogoutOrBlogsChangedNotification:) name:BlogChangedNotification object:nil];
-        [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(handleLogoutOrBlogsChangedNotification:) name:WordPressComApiDidLogoutNotification object:nil];
+        [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(handleDefaultAccountChangedNotification:) name:WPAccountDefaultWordPressComAccountChangedNotification object:nil];
     }
     
 	int num_blogs = [Blog countWithContext:[[ContextManager sharedInstance] mainContext]];
-	BOOL authed = [[[NSUserDefaults standardUserDefaults] objectForKey:@"wpcom_authenticated_flag"] boolValue];
+	BOOL authed = self.isWPcomAuthenticated;
 	if (num_blogs == 0 && !authed) {
 		// When there are no blogs in the app the settings screen is unavailable.
 		// In this case, enable extra_debugging by default to help troubleshoot any issues.
@@ -1005,8 +1047,14 @@ NSInteger const UpdateCheckAlertViewTag = 102;
 	}
 }
 
-- (void)handleLogoutOrBlogsChangedNotification:(NSNotification *)notification {
+- (void)handleDefaultAccountChangedNotification:(NSNotification *)notification {
 	[self toggleExtraDebuggingIfNeeded];
+    [NotificationsManager registerForPushNotifications];
+    [self showWelcomeScreenIfNeededAnimated:NO];
+    // If the notification object is not nil, then it's a login
+    if (notification.object) {
+        [ReaderPost fetchPostsWithCompletionHandler:nil];
+    }
 }
 
 @end
