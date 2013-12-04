@@ -317,6 +317,18 @@ NSString * const WPNotificationsNavigationRestorationID = @"WPNotificationsNavig
     _tabBarController.restorationIdentifier = WPTabBarRestorationID;
     [_tabBarController.tabBar setTranslucent:NO];
 
+
+    // Create a background
+    UIColor *backgroundColor = [WPStyleGuide bigEddieGrey];
+    CGRect rect = CGRectMake(0.0f, 0.0f, 1.0f, 1.0f);
+    UIGraphicsBeginImageContext(rect.size);
+    CGContextRef context = UIGraphicsGetCurrentContext();
+    CGContextSetFillColorWithColor(context, [backgroundColor CGColor]);
+    CGContextFillRect(context, rect);
+    UIImage *tabBackgroundImage = UIGraphicsGetImageFromCurrentImageContext();
+    UIGraphicsEndImageContext();
+    _tabBarController.tabBar.backgroundImage = tabBackgroundImage;
+    
     self.readerPostsViewController = [[ReaderPostsViewController alloc] init];
     UINavigationController *readerNavigationController = [[UINavigationController alloc] initWithRootViewController:self.readerPostsViewController];
     readerNavigationController.navigationBar.translucent = NO;
@@ -336,9 +348,9 @@ NSString * const WPNotificationsNavigationRestorationID = @"WPNotificationsNavig
     blogListNavigationController.navigationBar.translucent = NO;
     blogListNavigationController.tabBarItem.image = [UIImage imageNamed:@"icon-tab-blogs"];
     blogListNavigationController.restorationIdentifier = WPBlogListNavigationRestorationID;
-    self.blogListViewController.title = NSLocalizedString(@"My Blogs", @"");
+    self.blogListViewController.title = NSLocalizedString(@"Me", @"");
     
-    _tabBarController.viewControllers = [NSArray arrayWithObjects:blogListNavigationController, readerNavigationController, notificationsNavigationController, nil];
+    _tabBarController.viewControllers = [NSArray arrayWithObjects:readerNavigationController, notificationsNavigationController, blogListNavigationController, nil];
     
     [_tabBarController setSelectedViewController:readerNavigationController];
     
