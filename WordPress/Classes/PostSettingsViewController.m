@@ -447,7 +447,7 @@
                     if (cell == nil) {
                         cell = [[WPTableViewCell alloc] initWithStyle:UITableViewCellStyleValue1 reuseIdentifier:CategoriesCellIdentifier];
                     }
-                    cell.textLabel.text = NSLocalizedString(@"Categories:", @"Label for the categories field. Should be the same as WP core.");
+                    cell.textLabel.text = NSLocalizedString(@"Categories", @"Label for the categories field. Should be the same as WP core.");
                     cell.detailTextLabel.text = [NSString decodeXMLCharactersIn:[self.post categoriesText]];
                     [WPStyleGuide configureTableViewCell:cell];
                     return cell;
@@ -459,7 +459,7 @@
                     if (cell == nil) {
                         cell = [[UITableViewTextFieldCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:TagsCellIdentifier];
                     }
-                    cell.textLabel.text = NSLocalizedString(@"Tags:", @"Label for the tags field. Should be the same as WP core.");
+                    cell.textLabel.text = NSLocalizedString(@"Tags", @"Label for the tags field. Should be the same as WP core.");
                     cell.textField.text = self.post.tags;
                     cell.textField.placeholder = NSLocalizedString(@"Separate tags with commas", @"Placeholder text for the tags field. Should be the same as WP core.");
                     cell.textField.delegate = self;
