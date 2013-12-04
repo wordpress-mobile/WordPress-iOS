@@ -99,7 +99,6 @@ typedef enum {
     self.tableView.backgroundColor = [UIColor whiteColor];
 
 	[self buildHeader];
-	//[self buildTopToolbar];
 	[WPStyleGuide setRightBarButtonItemWithCorrectSpacing:self.shareButton forNavigationItem:self.navigationItem];
 	[self buildForms];
     
@@ -397,7 +396,7 @@ typedef enum {
 	
 	[items addObject:placeholder];
 	
-    // TODO: put these in the title bar instead
+    // Could put these in the title bar instead. We're preserving this code for now pending design decisions.
 	//[self setToolbarItems:items animated:YES];
 }
 
