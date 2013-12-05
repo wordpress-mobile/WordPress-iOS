@@ -28,9 +28,10 @@
 
     ATHStart();
     
-    [WPAccount createOrUpdateWordPressComAccountWithUsername:@"test" password:@"test" authToken:@"token" context:[ContextManager sharedInstance].mainContext];
+    WPAccount *account = [WPAccount createOrUpdateWordPressComAccountWithUsername:@"test" password:@"test" authToken:@"token" context:[ContextManager sharedInstance].mainContext];
     
     ATHEnd();
+    [WPAccount setDefaultWordPressComAccount:account];
 }
 
 - (void)tearDown

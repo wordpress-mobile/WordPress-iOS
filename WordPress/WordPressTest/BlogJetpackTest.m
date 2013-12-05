@@ -11,6 +11,7 @@
 #import "CoreDataTestHelper.h"
 #import "AsyncTestHelper.h"
 #import "Blog+Jetpack.h"
+#import "WPAccount.h"
 
 @implementation BlogJetpackTest {
     Blog *_blog;
@@ -40,10 +41,14 @@
     [OHHTTPStubs removeAllRequestHandlers];
 }
 
-- (void)testAssertionsOnWPcom {
-    _blog = (Blog *)[[CoreDataTestHelper sharedHelper] insertEntityIntoMainContextWithName:@"Blog"];
+- (void)testAssertionsOnWPcom {    
+    WPAccount *account = [WPAccount createOrUpdateWordPressComAccountWithUsername:@"test" password:@"test" authToken:@"token"];
+    _blog = (Blog *)[[CoreDataTestHelper sharedHelper] insertEntityIntoBackgroundContextWithName:@"Blog"];
     _blog.xmlrpc = @"http://test.wordpress.com/xmlrpc.php";
     _blog.url = @"http://test.wordpress.com/";
+    _blog.account = account;
+
+    
     XCTAssertThrows([_blog hasJetpack], @"WordPress.com blogs don't support Jetpack methods");
     XCTAssertThrows([_blog jetpackVersion], @"WordPress.com blogs don't support Jetpack methods");
     XCTAssertThrows([_blog jetpackUsername], @"WordPress.com blogs don't support Jetpack methods");
