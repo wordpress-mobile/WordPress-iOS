@@ -235,6 +235,10 @@ NSString * const NotificationsLastSyncDateKey = @"NotificationsLastSyncDate";
     cell.note = [self.resultsController objectAtIndexPath:indexPath];
 }
 
+- (BOOL)userCanRefresh {
+    return self.user != nil;
+}
+
 - (void)syncItemsViaUserInteractionWithSuccess:(void (^)())success failure:(void (^)(NSError *))failure {
     [self pruneOldNotes];
     [self syncItemsWithSuccess:success failure:failure];

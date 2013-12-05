@@ -453,11 +453,20 @@ NSString * const WPBlogRestorationKey = @"WPBlogRestorationKey";
 #pragma mark - UIRefreshControl Methods
 
 - (void)refresh {
+    
+    if (![self userCanRefresh]) {
+        [self.refreshControl endRefreshing];
+        return;
+    }
+    
     didTriggerRefresh = YES;
 	[self syncItemsViaUserInteraction];
     [noResultsView removeFromSuperview];
 }
 
+- (BOOL)userCanRefresh {
+    return YES;
+}
 
 #pragma mark - UIScrollViewDelegate Methods
 
