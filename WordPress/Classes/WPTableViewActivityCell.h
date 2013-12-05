@@ -11,9 +11,6 @@
 #import "WPTableViewCell.h"
 
 @interface WPTableViewActivityCell : WPTableViewCell {
-	IBOutlet UIActivityIndicatorView *spinner;
-	IBOutlet UILabel *textLabel;
-	IBOutlet UIView *viewForBackground;
 }
 
 @property (nonatomic, strong) IBOutlet UIActivityIndicatorView *spinner;

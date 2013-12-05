@@ -1,33 +1,16 @@
-//
-//  WPTableViewActivityCell.m
-//  WordPress
-//
-//  Created by Chris Boyd on 7/23/10.
-//  Copyright 2010 WordPress. All rights reserved.
-//
+/*
+ * WPTableViewActivityCell.m
+ *
+ * Copyright (c) 2013 WordPress. All rights reserved.
+ *
+ * Licensed under GNU General Public License 2.0.
+ * Some rights reserved. See license.txt
+ */
 
 #import "WPTableViewActivityCell.h"
 
 
 @implementation WPTableViewActivityCell
-@synthesize textLabel, spinner, viewForBackground;
-
-- (id)initWithStyle:(UITableViewCellStyle)style reuseIdentifier:(NSString *)reuseIdentifier {
-    if ((self = [super initWithStyle:style reuseIdentifier:reuseIdentifier])) {
-        // Initialization code
-    }
-    return self;
-}
-
-
-- (void)setSelected:(BOOL)selected animated:(BOOL)animated {
-
-    [super setSelected:selected animated:animated];
-
-    // Configure the view for the selected state
-}
-
-
 
 
 @end
