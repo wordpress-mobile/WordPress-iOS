@@ -91,6 +91,9 @@ static ContextManager *instance;
 - (void)saveDerivedContext:(NSManagedObjectContext *)context withCompletionBlock:(void (^)())completionBlock {
     [context performBlock:^{
         NSError *error;
+        if (![context obtainPermanentIDsForObjects:context.insertedObjects.allObjects error:&error]) {
+            DDLogError(@"Error obtaining permanent object IDs for %@, %@", context.insertedObjects.allObjects, error);
+        }
         if (![context save:&error]) {
             @throw [NSException exceptionWithName:@"Unresolved Core Data save error"
                                            reason:@"Unresolved Core Data save error - derived context"
@@ -113,6 +116,7 @@ static ContextManager *instance;
         }
         
         if (![context save:&error]) {
+            DDLogError(@"Unresolved core data error\n%@:", error);
             @throw [NSException exceptionWithName:@"Unresolved Core Data save error"
                                            reason:@"Unresolved Core Data save error"
                                          userInfo:[error userInfo]];

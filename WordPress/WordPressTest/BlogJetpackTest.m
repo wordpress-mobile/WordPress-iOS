@@ -12,12 +12,22 @@
 #import "AsyncTestHelper.h"
 #import "Blog+Jetpack.h"
 #import "WPAccount.h"
+#import "ContextManager.h"
 
-@implementation BlogJetpackTest {
-    Blog *_blog;
-}
+@interface BlogJetpackTest ()
+
+@property (nonatomic, strong) WPAccount *account;
+@property (nonatomic, strong) Blog *blog;
+
+@end
+
+@implementation BlogJetpackTest
 
 - (void)setUp {
+    ATHStart();
+    _account = [WPAccount createOrUpdateSelfHostedAccountWithXmlrpc:@"http://blog1.com/xmlrpc.php" username:@"admin" andPassword:@"password!" withContext:[ContextManager sharedInstance].mainContext];
+    ATHEnd();
+    
     _blog = (Blog *)[[CoreDataTestHelper sharedHelper] insertEntityIntoMainContextWithName:@"Blog"];
     _blog.xmlrpc = @"http://test.blog/xmlrpc.php";
     _blog.url = @"http://test.blog/";
@@ -32,22 +42,25 @@
                               @"readonly": @YES,
                               },
                       };
-    [_blog removeJetpackCredentials];
+    _blog.account = _account;
 }
 
 - (void)tearDown {
     _blog = nil;
-    [[CoreDataTestHelper sharedHelper] reset];
     [OHHTTPStubs removeAllRequestHandlers];
+    
+    [[CoreDataTestHelper sharedHelper] reset];
 }
 
-- (void)testAssertionsOnWPcom {    
-    WPAccount *account = [WPAccount createOrUpdateWordPressComAccountWithUsername:@"test" password:@"test" authToken:@"token"];
-    _blog = (Blog *)[[CoreDataTestHelper sharedHelper] insertEntityIntoBackgroundContextWithName:@"Blog"];
+- (void)testAssertionsOnWPcom {
+    ATHStart();
+    WPAccount *wpComAccount = [WPAccount createOrUpdateWordPressComAccountWithUsername:@"user" password:@"pass" authToken:@"token" context:[ContextManager sharedInstance].mainContext];
+    ATHEnd();
+    
+    _blog = (Blog *)[[CoreDataTestHelper sharedHelper] insertEntityIntoMainContextWithName:@"Blog"];
     _blog.xmlrpc = @"http://test.wordpress.com/xmlrpc.php";
     _blog.url = @"http://test.wordpress.com/";
-    _blog.account = account;
-
+    _blog.account = wpComAccount;
     
     XCTAssertThrows([_blog hasJetpack], @"WordPress.com blogs don't support Jetpack methods");
     XCTAssertThrows([_blog jetpackVersion], @"WordPress.com blogs don't support Jetpack methods");
