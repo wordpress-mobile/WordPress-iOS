@@ -7,34 +7,37 @@
  * Some rights reserved. See license.txt
  */
 
-#import <UIDeviceIdentifier/UIDeviceHardware.h>
+#import <AFNetworking/AFNetworking.h>
+#import <CoreTelephony/CTTelephonyNetworkInfo.h>
+#import <CoreTelephony/CTCarrier.h>
 #import <Crashlytics/Crashlytics.h>
+#import <CrashlyticsLumberjack/CrashlyticsLogger.h>
+#import <DDFileLogger.h>
 #import <GooglePlus/GooglePlus.h>
+#import <HockeySDK/HockeySDK.h>
+#import <UIDeviceIdentifier/UIDeviceHardware.h>
+
 #import "WordPressAppDelegate.h"
-#import "Reachability.h"
-#import "NSString+Helpers.h"
-#import "Media.h"
 #import "CameraPlusPickerManager.h"
+#import "ContextManager.h"
+#import "Media.h"
+#import "NotificationsManager.h"
+#import "NSString+Helpers.h"
+#import "PocketAPI.h"
+#import "Post.h"
+#import "Reachability.h"
+#import "ReaderPost.h"
 #import "UIDevice+WordPressIdentifier.h"
 #import "WordPressComApi.h"
 #import "WordPressComApiCredentials.h"
-#import "PocketAPI.h"
 #import "WPAccount.h"
-#import "SupportViewController.h"
-#import "ContextManager.h"
-#import "ReaderPostsViewController.h"
-#import "NotificationsViewController.h"
+
 #import "BlogListViewController.h"
+#import "EditPostViewController.h"
 #import "LoginViewController.h"
-#import <CrashlyticsLumberjack/CrashlyticsLogger.h>
-#import <HockeySDK/HockeySDK.h>
-#import "NotificationsManager.h"
-#import <DDFileLogger.h>
-#import <AFNetworking/AFNetworking.h>
-#import "ContextManager.h"
-#import "ReaderPost.h"
-#import <CoreTelephony/CTTelephonyNetworkInfo.h>
-#import <CoreTelephony/CTCarrier.h>
+#import "NotificationsViewController.h"
+#import "ReaderPostsViewController.h"
+#import "SupportViewController.h"
 
 #if DEBUG
 #import "DDTTYLogger.h"
@@ -49,7 +52,7 @@ NSString * const WPReaderNavigationRestorationID = @"WPReaderNavigationID";
 NSString * const WPNotificationsNavigationRestorationID = @"WPNotificationsNavigationID";
 
 
-@interface WordPressAppDelegate () <CrashlyticsDelegate, UIAlertViewDelegate, BITHockeyManagerDelegate>
+@interface WordPressAppDelegate () <UITabBarControllerDelegate, CrashlyticsDelegate, UIAlertViewDelegate, BITHockeyManagerDelegate>
 
 @property (nonatomic, assign) BOOL listeningForBlogChanges;
 @property (nonatomic, strong) NotificationsViewController *notificationsViewController;
@@ -264,25 +267,65 @@ NSString * const WPNotificationsNavigationRestorationID = @"WPNotificationsNavig
     [NotificationsManager handleNotification:userInfo forState:[UIApplication sharedApplication].applicationState completionHandler:completionHandler];
 }
 
+#pragma mark - UITabBarControllerDelegate methods.
+
+- (BOOL)tabBarController:(UITabBarController *)tabBarController shouldSelectViewController:(UIViewController *)viewController {
+    if ([tabBarController.viewControllers indexOfObject:viewController] == 3) {
+        // Ignore taps on the post tab and instead show the modal.
+        if ([Blog countWithContext:[[ContextManager sharedInstance] mainContext]] == 0) {
+            [self showWelcomeScreenAnimated:YES thenEditor:YES];
+        } else {
+            [self showPostTab];
+        }
+        return NO;
+    }
+    return YES;
+}
+
 
 #pragma mark - Custom methods
+
+- (void)showPostTab {
+    UIViewController *presenter = self.window.rootViewController;
+    if (presenter.presentedViewController) {
+        [presenter dismissViewControllerAnimated:NO completion:nil];
+    }
+    
+    EditPostViewController *editPostViewController = [[EditPostViewController alloc] initWithDraftForLastUsedBlog];
+    UINavigationController *navController = [[UINavigationController alloc] initWithRootViewController:editPostViewController];
+    navController.modalPresentationStyle = UIModalPresentationCurrentContext;
+    navController.navigationBar.translucent = NO;
+    [self.window.rootViewController presentViewController:navController animated:YES completion:nil];
+}
 
 - (void)showWelcomeScreenIfNeededAnimated:(BOOL)animated {
     if ([self noBlogsAndNoWordPressDotComAccount]) {
         [WordPressAppDelegate wipeAllKeychainItems];
-        
-        LoginViewController *welcomeViewController = [[LoginViewController alloc] init];
-        UINavigationController *aNavigationController = [[UINavigationController alloc] initWithRootViewController:welcomeViewController];
-        aNavigationController.navigationBar.translucent = NO;
-        aNavigationController.modalTransitionStyle = UIModalTransitionStyleCrossDissolve;
 
         UIViewController *presenter = self.window.rootViewController;
         if (presenter.presentedViewController) {
-            [presenter dismissViewControllerAnimated:animated completion:nil];
+            [presenter dismissViewControllerAnimated:NO completion:nil];
         }
-        
-        [self.window.rootViewController presentViewController:aNavigationController animated:NO completion:nil];
+
+        [self showWelcomeScreenAnimated:animated thenEditor:NO];
     }
+}
+
+- (void)showWelcomeScreenAnimated:(BOOL)animated thenEditor:(BOOL)thenEditor {
+    LoginViewController *loginViewController = [[LoginViewController alloc] init];
+    if (thenEditor) {
+        loginViewController.dismissBlock = ^{
+            [self.window.rootViewController dismissViewControllerAnimated:YES completion:nil];
+        };
+        loginViewController.showEditorAfterAddingSites = YES;
+    }
+    
+    UINavigationController *navigationController = [[UINavigationController alloc] initWithRootViewController:loginViewController];
+    navigationController.navigationBar.translucent = NO;
+    navigationController.modalTransitionStyle = UIModalTransitionStyleCrossDissolve;
+    navigationController.modalPresentationStyle = UIModalPresentationFormSheet;
+
+    [self.window.rootViewController presentViewController:navigationController animated:animated completion:nil];
 }
 
 - (BOOL)noBlogsAndNoWordPressDotComAccount {
@@ -313,7 +356,12 @@ NSString * const WPNotificationsNavigationRestorationID = @"WPNotificationsNavig
 #pragma mark - Tab bar setup
 
 - (UITabBarController *)tabBarController {
+    if (_tabBarController) {
+        return _tabBarController;
+    }
+    
     _tabBarController = [[UITabBarController alloc] init];
+    _tabBarController.delegate = self;
     _tabBarController.restorationIdentifier = WPTabBarRestorationID;
     [_tabBarController.tabBar setTranslucent:NO];
 
@@ -350,8 +398,13 @@ NSString * const WPNotificationsNavigationRestorationID = @"WPNotificationsNavig
     blogListNavigationController.restorationIdentifier = WPBlogListNavigationRestorationID;
     self.blogListViewController.title = NSLocalizedString(@"Me", @"");
     
-    _tabBarController.viewControllers = [NSArray arrayWithObjects:readerNavigationController, notificationsNavigationController, blogListNavigationController, nil];
-    
+    UINavigationController *postsNavigationController = [[UINavigationController alloc] initWithRootViewController:nil];
+    postsNavigationController.navigationBar.translucent = NO;
+    postsNavigationController.tabBarItem.image = [UIImage imageNamed:@"navbar_add"];
+    postsNavigationController.title = NSLocalizedString(@"Post", @"");
+
+    _tabBarController.viewControllers = @[blogListNavigationController, readerNavigationController, notificationsNavigationController, postsNavigationController];
+
     [_tabBarController setSelectedViewController:readerNavigationController];
     
     return _tabBarController;
@@ -1061,6 +1114,7 @@ NSString * const WPNotificationsNavigationRestorationID = @"WPNotificationsNavig
 
 - (void)handleDefaultAccountChangedNotification:(NSNotification *)notification {
 	[self toggleExtraDebuggingIfNeeded];
+
     [NotificationsManager registerForPushNotifications];
     [self showWelcomeScreenIfNeededAnimated:NO];
     // If the notification object is not nil, then it's a login
