@@ -11,7 +11,6 @@
 #import <QuartzCore/QuartzCore.h>
 #import "SupportViewController.h"
 #import "WordPressComApi.h"
-#import "UIView+FormSheetHelpers.h"
 #import "WPNUXBackButton.h"
 #import "WPNUXMainButton.h"
 #import "WPWalkthroughTextField.h"
@@ -51,8 +50,6 @@
     BOOL _userDefinedSiteAddress;
     CGFloat _keyboardOffset;
     NSString *_defaultSiteUrl;
-        
-    CGFloat _viewHeight;
     
     NSDictionary *_currentLanguage;
 
@@ -90,11 +87,7 @@ CGFloat const CreateAccountAndBlogButtonHeight = 40.0;
     [super viewDidLoad];
     
     [WPMobileStats trackEventForSelfHostedAndWPCom:StatsEventNUXCreateAccountOpened];
-    
-    // view height is cached to allow us to center the controls. When viewDidLoad is
-    // called, the view bounds are the size of the screen. On iPad, this view is
-    // most often presented as a formSheet
-    _viewHeight = [self.view formSheetViewHeight];
+
     self.view.backgroundColor = [WPNUXUtility backgroundColor];
         
     [self initializeView];
@@ -109,6 +102,7 @@ CGFloat const CreateAccountAndBlogButtonHeight = 40.0;
 {
     [super viewWillAppear:animated];
     [self.navigationController setNavigationBarHidden:YES animated:animated];
+    [self layoutControls];
 }
 
 - (NSUInteger)supportedInterfaceOrientations {
@@ -116,6 +110,10 @@ CGFloat const CreateAccountAndBlogButtonHeight = 40.0;
         return UIInterfaceOrientationMaskPortrait;
     
     return UIInterfaceOrientationMaskAll;
+}
+
+- (void)willAnimateRotationToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation duration:(NSTimeInterval)duration {
+    [self layoutControls];
 }
 
 #pragma mark - UITextField Delegate methods
@@ -244,7 +242,7 @@ CGFloat const CreateAccountAndBlogButtonHeight = 40.0;
     // Add Title
     if (_titleLabel == nil) {
         _titleLabel = [[UILabel alloc] init];
-        _titleLabel.attributedText = [WPNUXUtility titleAttributedString:NSLocalizedString(@"Create an account on WordPress.com", @"NUX Create Account Page 1 Title")];
+        _titleLabel.attributedText = [[NSAttributedString alloc] initWithString:NSLocalizedString(@"Create an account on WordPress.com", @"NUX Create Account Page 1 Title") attributes:[WPNUXUtility titleAttributesWithColor:[UIColor whiteColor]]];
         _titleLabel.numberOfLines = 0;
         _titleLabel.backgroundColor = [UIColor clearColor];
         _titleLabel.autoresizingMask = UIViewAutoresizingFlexibleRightMargin | UIViewAutoresizingFlexibleLeftMargin;
@@ -358,24 +356,20 @@ CGFloat const CreateAccountAndBlogButtonHeight = 40.0;
 - (void)layoutControls
 {
     CGFloat x,y;
-    CGFloat viewWidth = CGRectGetWidth(self.view.frame);
+    
+    CGFloat viewWidth = CGRectGetWidth(self.view.bounds);
+    CGFloat viewHeight = CGRectGetHeight(self.view.bounds);
     
     // Layout Help Button
     UIImage *helpButtonImage = [UIImage imageNamed:@"btn-help"];
     x = viewWidth - helpButtonImage.size.width - CreateAccountAndBlogStandardOffset;
-    y = 0.5 * CreateAccountAndBlogStandardOffset;
-    if (IS_IOS7 && IS_IPHONE) {
-        y += CreateAccountAndBlogiOS7StatusBarOffset;
-    }
-    _helpButton.frame = CGRectMake(x, y, helpButtonImage.size.width, helpButtonImage.size.height);
+    y = 0.5 * CreateAccountAndBlogStandardOffset + CreateAccountAndBlogiOS7StatusBarOffset;
+    _helpButton.frame = CGRectMake(x, y, helpButtonImage.size.width, CreateAccountAndBlogButtonHeight);
     
     // Layout Cancel Button
     x = 0;
-    y = 0.5 * CreateAccountAndBlogStandardOffset;
-    if (IS_IOS7 && IS_IPHONE) {
-        y += CreateAccountAndBlogiOS7StatusBarOffset;
-    }
-    _cancelButton.frame = CGRectMake(x, y, CGRectGetWidth(_cancelButton.frame), CGRectGetHeight(_cancelButton.frame));
+    y = 0.5 * CreateAccountAndBlogStandardOffset + CreateAccountAndBlogiOS7StatusBarOffset;
+    _cancelButton.frame = CGRectMake(x, y, CGRectGetWidth(_cancelButton.frame), CreateAccountAndBlogButtonHeight);
         
     // Layout the controls starting out from y of 0, then offset them once the height of the controls
     // is accurately calculated we can determine the vertical center and adjust everything accordingly.
@@ -435,7 +429,7 @@ CGFloat const CreateAccountAndBlogButtonHeight = 40.0;
     _TOSLabel.frame = CGRectIntegral(CGRectMake(x, y, TOSLabelSize.width, TOSLabelSize.height));
     
     NSArray *controls = @[_titleLabel, _emailField, _usernameField, _passwordField, _TOSLabel, _createAccountButton, _siteAddressField];
-    [WPNUXUtility centerViews:controls withStartingView:_titleLabel andEndingView:_TOSLabel forHeight:_viewHeight];
+    [WPNUXUtility centerViews:controls withStartingView:_titleLabel andEndingView:_TOSLabel forHeight:viewHeight];
 }
 
 
@@ -483,8 +477,8 @@ CGFloat const CreateAccountAndBlogButtonHeight = 40.0;
 {
     WPWebViewController *webViewController = [[WPWebViewController alloc] init];
     [webViewController setUrl:[NSURL URLWithString:@"http://en.wordpress.com/tos/"]];
-    [self.navigationController setNavigationBarHidden:NO animated:NO];
-    [self.navigationController pushViewController:webViewController animated:NO];
+    [self.navigationController pushViewController:webViewController animated:YES];
+    [self.navigationController setNavigationBarHidden:NO animated:YES];
 }
 
 - (void)keyboardWillShow:(NSNotification *)notification
