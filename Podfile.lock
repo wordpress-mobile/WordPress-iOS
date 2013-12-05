@@ -38,7 +38,7 @@ PODS:
   - WordPressApi (0.0.1):
     - AFNetworking (>= 1.0)
     - wpxmlrpc (~> 0.1)
-  - wpxmlrpc (0.1)
+  - wpxmlrpc (0.2)
 
 DEPENDENCIES:
   - AFNetworking (= 1.2.0)
@@ -60,7 +60,7 @@ DEPENDENCIES:
   - SVProgressHUD (~> 0.9)
   - UIDeviceIdentifier (~> 0.1)
   - WordPressApi (from `https://github.com/koke/WordPressApi.git`)
-  - wpxmlrpc (~> 0.1)
+  - wpxmlrpc (from `https://raw.github.com/wordpress-mobile/wpxmlrpc/master/wpxmlrpc.podspec`)
 
 EXTERNAL SOURCES:
   EmailChecker:
@@ -73,10 +73,12 @@ EXTERNAL SOURCES:
     :podspec: https://raw.github.com/koke/NSURL-IDN/master/Podfile
   WordPressApi:
     :git: https://github.com/koke/WordPressApi.git
+  wpxmlrpc:
+    :podspec: https://raw.github.com/wordpress-mobile/wpxmlrpc/master/wpxmlrpc.podspec
 
 SPEC CHECKSUMS:
   AFNetworking: 3cbae45f61a9f995cdbd56bd571223910d7f4e44
-  CocoaLumberjack: 0af89e0de15835a499fcc6ee5e0b6d396bc95976
+  CocoaLumberjack: d62b2c37c8bdac37094d710bfa978eb6e2fe650e
   CrashlyticsLumberjack: 3a1647407e3c980545175e7a56d073c58beeab03
   DTCoreText: e48c1526945272133b8c935c40da3f3e79836f1b
   DTFoundation: 5bfec187ed495cea33c47dc64e8ee623e8beb353
@@ -95,6 +97,6 @@ SPEC CHECKSUMS:
   SVProgressHUD: 03d4845ec8e64591726428a08236c6a5489d45f8
   UIDeviceIdentifier: 64036321b0f77ff41b4200002f0c138431c00d86
   WordPressApi: 76f9d7752b090197c172e2c5e6fccbffbaf7c336
-  wpxmlrpc: 0b27d4c3734db9470f0dccc3c8d4a6f8e491fd0b
+  wpxmlrpc: 7c3db4b1e1ab6087d6d5cc5d00ee16d8ee4654ea
 
 COCOAPODS: 0.28.0
