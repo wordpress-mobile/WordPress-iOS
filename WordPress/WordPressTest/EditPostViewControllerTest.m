@@ -16,6 +16,7 @@
 #import "EditPostViewController_Internal.h"
 #import "Post.h"
 #import "WPAccount.h"
+#import "ContextManager.h"
 
 @implementation EditPostViewControllerTest {
     EditPostViewController *_controller;

@@ -39,12 +39,6 @@
     return _sharedHelper;
 }
 
-- (void)unregisterDefaultContexts {
-    return;
-    [ContextManager sharedInstance].mainContext = nil;
-    [ContextManager sharedInstance].backgroundContext = nil;
-}
-
 - (void)setModelName:(NSString *)modelName {
     _managedObjectModel = [self modelWithName:modelName];
     [ContextManager sharedInstance].mainContext = nil;
@@ -110,8 +104,7 @@
     return [NSEntityDescription insertNewObjectForEntityForName:entityName inManagedObjectContext:[ContextManager sharedInstance].backgroundContext];
 }
 
-- (NSArray *)allObjectsInMainContextForEntityName:(NSString *)entityName
-{
+- (NSArray *)allObjectsInMainContextForEntityName:(NSString *)entityName {
     NSFetchRequest *request = [NSFetchRequest fetchRequestWithEntityName:entityName];
     return [[ContextManager sharedInstance].mainContext executeFetchRequest:request error:nil];
 }
@@ -122,9 +115,12 @@
 }
 
 - (void)reset {
-    [[ContextManager sharedInstance].mainContext reset];
-    [[ContextManager sharedInstance].backgroundContext reset];
-    [self unregisterDefaultContexts];
+    [ContextManager sharedInstance].mainContext = nil;
+    [ContextManager sharedInstance].backgroundContext = nil;
+    [ContextManager sharedInstance].persistentStoreCoordinator = nil;
+    
+    [[NSFileManager defaultManager] removeItemAtURL:[ContextManager storeURL] error:nil];
+    
     return;
     
 //    dispatch_semaphore_t semaphore = dispatch_semaphore_create(0);
@@ -171,16 +167,20 @@
 
 static void *const testPSCKey = "testPSCKey";
 
-+ (void)load {
-    NSPersistentStoreCoordinator *psc = [[NSPersistentStoreCoordinator alloc] initWithManagedObjectModel:[[ContextManager sharedInstance] managedObjectModel]];
-    NSError *error;
-    NSPersistentStore *store = [psc addPersistentStoreWithType:NSInMemoryStoreType configuration:nil URL:[ContextManager storeURL] options:nil error:&error];
-    NSAssert(store != nil, @"Can't initialize core data storage");
-    objc_setAssociatedObject([ContextManager sharedInstance], testPSCKey, psc, OBJC_ASSOCIATION_RETAIN);
-}
-
 - (NSPersistentStoreCoordinator *)persistentStoreCoordinator {
-    return objc_getAssociatedObject(self, testPSCKey);
+    id psc = objc_getAssociatedObject(self, testPSCKey);
+    if (psc) {
+        return psc;
+    }
+    
+    psc = [[NSPersistentStoreCoordinator alloc] initWithManagedObjectModel:[[ContextManager sharedInstance] managedObjectModel]];
+    NSError *error;
+    NSPersistentStore *store = [psc addPersistentStoreWithType:NSSQLiteStoreType configuration:nil URL:[ContextManager storeURL] options:nil error:&error];
+    NSAssert(store != nil, @"Can't initialize core data storage");
+    
+    objc_setAssociatedObject([ContextManager sharedInstance], testPSCKey, psc, OBJC_ASSOCIATION_RETAIN);
+    
+    return psc;
 }
 
 - (void)setPersistentStoreCoordinator:(NSPersistentStoreCoordinator *)persistentStoreCoordinator {

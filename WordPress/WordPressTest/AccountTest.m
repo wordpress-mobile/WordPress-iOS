@@ -9,6 +9,7 @@
 #import <XCTest/XCTest.h>
 #import "CoreDataTestHelper.h"
 #import "WPAccount.h"
+#import "ContextManager.h"
 
 @interface AccountTest : XCTestCase
 
@@ -21,7 +22,7 @@
     [super setUp];
 
     // The default account is cached before we get a chance to replace the delegate's context
-    [WPAccount removeDefaultWordPressComAccount];
+    [WPAccount removeDefaultWordPressComAccountWithContext:[ContextManager sharedInstance].mainContext];
 }
 
 - (void)tearDown
