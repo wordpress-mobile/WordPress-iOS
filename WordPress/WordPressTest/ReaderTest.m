@@ -13,6 +13,7 @@
 #import "AsyncTestHelper.h"
 #import "ReaderPost.h"
 #import "ContextManager.h"
+#import "WPAccount.h"
 
 @interface ReaderTest()
 
@@ -25,12 +26,17 @@
 - (void)setUp
 {
     [super setUp];
+    
+    // For account relationship on ReaderPost
+    [WPAccount createOrUpdateWordPressComAccountWithUsername:@"test" andPassword:@"pass" withContext:[ContextManager sharedInstance].mainContext];
 }
 
 - (void)tearDown
 {
     [super tearDown];
     [[CoreDataTestHelper sharedHelper] reset];
+    
+    [WPAccount removeDefaultWordPressComAccountWithContext:[ContextManager sharedInstance].mainContext];
 }
 
 /*
@@ -115,7 +121,6 @@
  */
 
 - (void)testGetTopics {
-		
 	ATHStart();
 	[ReaderPost getReaderTopicsWithSuccess:^(AFHTTPRequestOperation *operation, id responseObject) {
 		ATHNotify();
@@ -129,7 +134,6 @@
 
 
 - (void)testGetComments {
-		
 	ATHStart();
 	[ReaderPost getCommentsForPost:7 fromSite:@"en.blog.wordpress.com" withParameters:nil success:^(AFHTTPRequestOperation *operation, id responseObject) {
 		ATHNotify();
@@ -139,12 +143,10 @@
 		ATHNotify();
 	}];
 	ATHEnd();
-	
 }
 
 
 - (void)checkResultForPath:(NSString *)path andResponseObject:(id)responseObject {
-
 	NSDictionary *resp = (NSDictionary *)responseObject;
 	NSArray *postsArr = [resp objectForKey:@"posts"];
     if (!postsArr || ![postsArr isKindOfClass:[NSArray class]]) {
@@ -173,25 +175,23 @@
     __block id response = nil;
 	[ReaderPost getPostsFromEndpoint:path withParameters:nil loadingMore:NO success:^(AFHTTPRequestOperation *operation, id responseObject) {
         response = responseObject;
+        [self checkResultForPath:path andResponseObject:response];
 		ATHNotify();
 
 	} failure:^(AFHTTPRequestOperation *operation, NSError *error) {
 		XCTFail(@"Call to %@ Failed: %@", path, error);
 		ATHNotify();
 	}];
-	ATHEnd();
-    [self checkResultForPath:path andResponseObject:response];
+    ATHEnd();
 }
 
 - (void)testGetPostsFreshlyPressed {
-	
 	NSString *path = [[[ReaderPost readerEndpoints] objectAtIndex:1] objectForKey:@"endpoint"];
     [self endpointTestWithPath:path];
 }
 
 
 - (void)testGetPostsFollowing {
-	
 	NSString *path = [[[ReaderPost readerEndpoints] objectAtIndex:0] objectForKey:@"endpoint"];
     [self endpointTestWithPath:path];
 }
