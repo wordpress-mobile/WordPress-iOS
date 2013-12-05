@@ -63,7 +63,7 @@
     }
     if (_underlineButton == nil) {
         self.underlineButton = [WPKeyboardToolbarButtonItem button];
-        [_underlineButton setImageName:@"toolbarItalic"];
+        [_underlineButton setImageName:@"toolbarUnderline"];
         _underlineButton.frame = CGRectMake(x, 0, _underlineButton.imageView.image.size.width + padding, height);
         x += _underlineButton.frame.size.width + margin;
         _underlineButton.actionTag = @"u";
