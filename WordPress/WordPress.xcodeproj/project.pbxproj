@@ -886,7 +886,6 @@
 		E1B62A8513AA8D7700A6FCA4 /* link.png in Resources */ = {isa = PBXBuildFile; fileRef = E1B62A7F13AA8D7700A6FCA4 /* link.png */; };
 		E1B62A8613AA8D7700A6FCA4 /* link@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = E1B62A8013AA8D7700A6FCA4 /* link@2x.png */; };
 		E1B62A8713AA8D7700A6FCA4 /* link~ipad.png in Resources */ = {isa = PBXBuildFile; fileRef = E1B62A8113AA8D7700A6FCA4 /* link~ipad.png */; };
-		E1CAAE3713F413F00000C58D /* WPKeyboardToolbar.m in Sources */ = {isa = PBXBuildFile; fileRef = E1CAAE3613F413F00000C58D /* WPKeyboardToolbar.m */; };
 		E1CAAE3A13F4142E0000C58D /* WPKeyboardToolbarButtonItem.m in Sources */ = {isa = PBXBuildFile; fileRef = E1CAAE3913F4142E0000C58D /* WPKeyboardToolbarButtonItem.m */; };
 		E1CCFB33175D62500016BD8A /* Crashlytics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E1CCFB32175D624F0016BD8A /* Crashlytics.framework */; };
 		E1D062D4177C685C00644185 /* ReaderButton.m in Sources */ = {isa = PBXBuildFile; fileRef = E1D062D3177C685700644185 /* ReaderButton.m */; };
@@ -2047,8 +2046,6 @@
 		E1B62A8813AAA5FE00A6FCA4 /* keyboardButton.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = keyboardButton.png; path = Resources/Images/keyboardButton.png; sourceTree = "<group>"; };
 		E1B62A8A13AAA96F00A6FCA4 /* keyboardButton@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "keyboardButton@2x.png"; path = "Resources/Images/keyboardButton@2x.png"; sourceTree = "<group>"; };
 		E1C807471696F72E00E545A6 /* WordPress 9.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = "WordPress 9.xcdatamodel"; sourceTree = "<group>"; };
-		E1CAAE3513F413F00000C58D /* WPKeyboardToolbar.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WPKeyboardToolbar.h; sourceTree = "<group>"; };
-		E1CAAE3613F413F00000C58D /* WPKeyboardToolbar.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WPKeyboardToolbar.m; sourceTree = "<group>"; };
 		E1CAAE3813F4142E0000C58D /* WPKeyboardToolbarButtonItem.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WPKeyboardToolbarButtonItem.h; sourceTree = "<group>"; };
 		E1CAAE3913F4142E0000C58D /* WPKeyboardToolbarButtonItem.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WPKeyboardToolbarButtonItem.m; sourceTree = "<group>"; };
 		E1CCFB32175D624F0016BD8A /* Crashlytics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = Crashlytics.framework; sourceTree = "<group>"; };
@@ -2244,8 +2241,6 @@
 				93B17EDB17DFD626002B1014 /* WPAlertViewSideBySide.xib */,
 				5D4DE6F1167177560030518D /* WPNoResultsView.h */,
 				5D4DE6F2167177560030518D /* WPNoResultsView.m */,
-				E1CAAE3513F413F00000C58D /* WPKeyboardToolbar.h */,
-				E1CAAE3613F413F00000C58D /* WPKeyboardToolbar.m */,
 				857F55B317CEA01900E154E1 /* WPKeyboardToolbarBase.h */,
 				857F55B417CEA01A00E154E1 /* WPKeyboardToolbarBase.m */,
 				E1CAAE3813F4142E0000C58D /* WPKeyboardToolbarButtonItem.h */,
@@ -5014,7 +5009,6 @@
 				E14B2B761368127900CC3C4F /* UITableViewTextFieldCell.m in Sources */,
 				E1B62A7B13AA61A100A6FCA4 /* WPWebViewController.m in Sources */,
 				30AF6CFD13C230C600A29C00 /* AboutViewController.m in Sources */,
-				E1CAAE3713F413F00000C58D /* WPKeyboardToolbar.m in Sources */,
 				E1CAAE3A13F4142E0000C58D /* WPKeyboardToolbarButtonItem.m in Sources */,
 				E1F80825146420B000726BC7 /* UIImageView+Gravatar.m in Sources */,
 				CCEF153114C9EA050001176D /* WPWebAppViewController.m in Sources */,
