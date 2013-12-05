@@ -462,7 +462,6 @@ NSString * const WPBlogListRestorationID = @"WPBlogListID";
                                                     arrayWithObject:newIndexPath] withRowAnimation:UITableViewRowAnimationFade];
             break;
     }
-    [[NSNotificationCenter defaultCenter] postNotificationName:BlogChangedNotification object:nil];
 }
 
 - (void)controller:(NSFetchedResultsController *)controller didChangeSection:(id<NSFetchedResultsSectionInfo>)sectionInfo atIndex:(NSUInteger)sectionIndex forChangeType:(NSFetchedResultsChangeType)type {
