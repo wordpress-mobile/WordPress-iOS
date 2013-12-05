@@ -229,9 +229,8 @@ NSString * const WPNotificationsNavigationRestorationID = @"WPNotificationsNavig
     
     [WPMobileStats recordAppOpenedForEvent:StatsEventAppOpened];
     
-    // Clear notifications badge and update server
+    // Clear notifications badge
     [UIApplication sharedApplication].applicationIconBadgeNumber = 0;
-    [[WordPressComApi sharedApi] syncPushNotificationInfo];
 }
 
 - (BOOL)application:(UIApplication *)application shouldSaveApplicationState:(NSCoder *)coder
