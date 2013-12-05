@@ -43,7 +43,7 @@ NSString * const NotificationsLastSyncDateKey = @"NotificationsLastSyncDate";
     return self;
 }
 
-- (NSString *)noResultsText
+- (NSString *)noResultsTitleText
 {
     return NSLocalizedString(@"No notifications yet", @"Displayed when the user pulls up the notifications view and they have no items");
 }

@@ -28,7 +28,7 @@
     [super setUp];
     
     // For account relationship on ReaderPost
-    [WPAccount createOrUpdateWordPressComAccountWithUsername:@"test" andPassword:@"pass" withContext:[ContextManager sharedInstance].mainContext];
+    [WPAccount createOrUpdateWordPressComAccountWithUsername:@"test" password:@"pass" authToken:@"token" context:[ContextManager sharedInstance].mainContext];
 }
 
 - (void)tearDown

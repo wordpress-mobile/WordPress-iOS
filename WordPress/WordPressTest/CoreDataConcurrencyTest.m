@@ -28,7 +28,7 @@
 
     ATHStart();
     
-    [WPAccount createOrUpdateWordPressComAccountWithUsername:@"test" andPassword:@"test" withContext:[ContextManager sharedInstance].mainContext];
+    [WPAccount createOrUpdateWordPressComAccountWithUsername:@"test" password:@"test" authToken:@"token" context:[ContextManager sharedInstance].mainContext];
     
     ATHEnd();
 }

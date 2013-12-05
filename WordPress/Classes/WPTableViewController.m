@@ -11,7 +11,7 @@
 #import "WPTableViewControllerSubclass.h"
 #import "EditSiteViewController.h"
 #import "WPWebViewController.h"
-#import "WPInfoView.h"
+#import "WPNoResultsView.h"
 #import "SupportViewController.h"
 #import "ContextManager.h"
 
@@ -137,6 +137,7 @@ NSString * const WPBlogRestorationKey = @"WPBlogRestorationKey";
     if ([self.tableView indexPathForSelectedRow]) {
         [self.tableView deselectRowAtIndexPath:[self.tableView indexPathForSelectedRow] animated:YES];
     }
+    [self configureNoResultsView];
 }
 
 - (void)viewDidAppear:(BOOL)animated {
@@ -167,11 +168,21 @@ NSString * const WPBlogRestorationKey = @"WPBlogRestorationKey";
     [super setEditing:editing animated:animated];
 }
 
-- (NSString *)noResultsText
+- (NSString *)noResultsTitleText
 {
     NSString *ttl = NSLocalizedString(@"No %@ yet", @"A string format. The '%@' will be replaced by the relevant type of object, posts, pages or comments.");
 	ttl = [NSString stringWithFormat:ttl, [self.title lowercaseString]];
     return ttl;
+}
+
+- (NSString *)noResultsMessageText
+{
+	return nil;
+}
+
+- (UIView *)noResultsAccessoryView
+{
+    return nil;
 }
 
 #pragma mark - Property accessors
@@ -554,12 +565,8 @@ NSString * const WPBlogRestorationKey = @"WPBlogRestorationKey";
 }
 
 - (UIView *)createNoResultsView {
-	NSString *msg = @"";
-	if ([self userCanCreateEntity]) {
-		msg = NSLocalizedString(@"Why not create one?", @"A call to action to create a post or page.");
-	}
 	
-	return [WPInfoView WPInfoViewWithTitle:[self noResultsText] message:msg cancelButton:nil];
+	return [WPNoResultsView noResultsViewWithTitle:[self noResultsTitleText] message:[self noResultsMessageText] accessoryView:[self noResultsAccessoryView]];
 }
 
 - (void)hideRefreshHeader {
