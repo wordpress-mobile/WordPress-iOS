@@ -15,6 +15,7 @@
 @property (nonatomic, copy) UILabel *titleLabel;
 @property (nonatomic, copy) UILabel *messageLabel;
 @property (nonatomic, copy) UIView *accessoryView;
+@property (nonatomic, copy) UIButton *button;
 @end
 
 @implementation WPNoResultsView
@@ -22,10 +23,10 @@
 #pragma mark -
 #pragma mark Lifecycle Methods
 
-+ (WPNoResultsView *)noResultsViewWithTitle:(NSString *)titleText message:(NSString *)messageText accessoryView:(UIView *)accessoryView {
++ (WPNoResultsView *)noResultsViewWithTitle:(NSString *)titleText message:(NSString *)messageText accessoryView:(UIView *)accessoryView buttonTitle:(NSString *)buttonTitle {
     
     WPNoResultsView *view = [[WPNoResultsView alloc] init];
-    [view setupWithTitle:titleText message:messageText accessoryView:accessoryView];
+    [view setupWithTitle:titleText message:messageText accessoryView:accessoryView buttonTitle:buttonTitle];
     
     return view;
 }
@@ -36,6 +37,15 @@
 
 - (void)dealloc {
     [[NSNotificationCenter defaultCenter] removeObserver:self];
+}
+
+- (id<WPNoResultsViewDelegate>)delegate
+{
+    return delegate;
+}
+- (void)setDelegate:(id<WPNoResultsViewDelegate>)newDelegate
+{
+    delegate = newDelegate;
 }
 
 - (void)layoutSubviews {
@@ -51,9 +61,17 @@
     CGSize messageSize = [_messageLabel.text boundingRectWithSize:CGSizeMake(width, CGFLOAT_MAX) options:NSStringDrawingUsesLineFragmentOrigin attributes:@{NSFontAttributeName: _messageLabel.font} context:nil].size;
     _messageLabel.frame = CGRectMake(0, CGRectGetMaxY(_titleLabel.frame) + 10.0, width, messageSize.height);
     
+    [_button sizeToFit];
+    CGSize buttonSize = _button.frame.size;
+    buttonSize.width += 20.0;
+    CGFloat buttonYOrigin = (CGRectGetHeight(_messageLabel.frame) > 0 ? CGRectGetMaxY(_messageLabel.frame) : CGRectGetMaxY(_titleLabel.frame)) + 20.0 ;
+    _button.frame = CGRectMake((width - buttonSize.width) / 2, buttonYOrigin, MIN(buttonSize.width, width), buttonSize.height);
+    
     
     CGRect bottomViewRect;
-    if (_messageLabel.text.length > 0) {
+    if (_button != nil) {
+        bottomViewRect = _button.frame;
+    } else if (_messageLabel.text.length > 0) {
         bottomViewRect = _messageLabel.frame;
     } else if (_titleLabel.text.length > 0) {
         bottomViewRect = _titleLabel.frame;
@@ -72,7 +90,7 @@
 
 #pragma mark Instance Methods
 
-- (void)setupWithTitle:(NSString *)titleText message:(NSString *)messageText accessoryView:(UIView *)accessoryView {
+- (void)setupWithTitle:(NSString *)titleText message:(NSString *)messageText accessoryView:(UIView *)accessoryView buttonTitle:(NSString *)buttonTitle {
     
     [self addSubview:accessoryView];
     
@@ -88,11 +106,38 @@
     // Setup message text
     _messageLabel = [[UILabel alloc] init];
     _messageLabel.font = [WPStyleGuide regularTextFont];
-    _messageLabel.textColor = [WPStyleGuide whisperGrey];
+    _messageLabel.textColor = [WPStyleGuide allTAllShadeGrey];
     [self setMessageText:messageText];
     _messageLabel.numberOfLines = 0;
     _messageLabel.textAlignment = NSTextAlignmentCenter;
     [self addSubview:_messageLabel];
+    
+    // Setup button
+    if (buttonTitle.length > 0) {
+        _button = [UIButton buttonWithType:UIButtonTypeCustom];
+        [_button setTitle:buttonTitle forState:UIControlStateNormal];
+        [_button addTarget:self action:@selector(buttonAction:) forControlEvents:UIControlEventTouchUpInside];
+        [_button setTitleColor:[WPStyleGuide allTAllShadeGrey] forState:UIControlStateNormal];
+        [_button.titleLabel setFont:[WPStyleGuide regularTextFont]];
+        
+        // Generate button background image
+        CGRect fillRect = CGRectMake(0, 0, 11.0, 36.0);
+        UIEdgeInsets capInsets = UIEdgeInsetsMake(4, 4, 4, 4);
+        UIImage *mainImage;
+        
+        UIGraphicsBeginImageContextWithOptions(fillRect.size, NO, [[UIScreen mainScreen] scale]);
+        CGContextRef context = UIGraphicsGetCurrentContext();
+        CGContextSetStrokeColorWithColor(context, [WPStyleGuide allTAllShadeGrey].CGColor);
+        CGContextAddPath(context, [UIBezierPath bezierPathWithRoundedRect:CGRectInset(fillRect, 1, 1) cornerRadius:2.0].CGPath);
+        CGContextStrokePath(context);
+        mainImage = UIGraphicsGetImageFromCurrentImageContext();
+        UIGraphicsEndImageContext();
+        
+        [_button setBackgroundImage:[mainImage resizableImageWithCapInsets:capInsets] forState:UIControlStateNormal];
+        
+        [self addSubview:_button];
+    }
+    
     
     
     // Register for orientation changes
@@ -103,7 +148,7 @@
 
 - (void)setTitleText:(NSString *)title {
     if (title.length > 0) {
-        _titleLabel.attributedText = [[NSAttributedString alloc] initWithString:title attributes:[WPNUXUtility titleAttributesWithColor:[WPStyleGuide whisperGrey]]];
+        _titleLabel.attributedText = [[NSAttributedString alloc] initWithString:title attributes:[WPNUXUtility titleAttributesWithColor:[WPStyleGuide allTAllShadeGrey]]];
     }
     [self setNeedsLayout];
 }
@@ -142,6 +187,13 @@
         _accessoryView.hidden = NO;
     }
     [self setNeedsLayout];
+}
+
+- (void)buttonAction:(id)sender
+{
+    if ([delegate respondsToSelector:@selector(noResultsViewButtonWasTapped:)]) {
+        [delegate noResultsViewButtonWasTapped:self];
+    }
 }
 
 @end
