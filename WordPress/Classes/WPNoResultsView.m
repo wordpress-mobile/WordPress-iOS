@@ -191,8 +191,8 @@
 
 - (void)buttonAction:(id)sender
 {
-    if ([delegate respondsToSelector:@selector(noResultsViewButtonWasTapped:)]) {
-        [delegate noResultsViewButtonWasTapped:self];
+    if ([delegate respondsToSelector:@selector(didTapNoResultsView:)]) {
+        [delegate didTapNoResultsView:self];
     }
 }
 

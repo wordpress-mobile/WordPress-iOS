@@ -12,7 +12,7 @@
 @protocol WPNoResultsViewDelegate <NSObject>
 
 @optional
-- (void)noResultsViewButtonWasTapped:(WPNoResultsView *)noResultsView;
+- (void)didTapNoResultsView:(WPNoResultsView *)noResultsView;
 @end
 
 @interface WPNoResultsView : UIView {
