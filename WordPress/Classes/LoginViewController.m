@@ -66,7 +66,7 @@ CGFloat const GeneralWalkthroughTextFieldHeight = 44.0;
 CGFloat const GeneralWalkthroughButtonWidth = 289.0;
 CGFloat const GeneralWalkthroughButtonHeight = 41.0;
 CGFloat const GeneralWalkthroughSecondaryButtonHeight = 33;
-CGFloat const GeneralWalkthroughiOS7StatusBarOffset = 20.0;
+CGFloat const GeneralWalkthroughStatusBarOffset = 20.0;
 
 - (void)dealloc
 {
@@ -478,12 +478,12 @@ CGFloat const GeneralWalkthroughiOS7StatusBarOffset = 20.0;
     CGFloat viewHeight = CGRectGetHeight(self.view.bounds);
     
     x = viewWidth - CGRectGetWidth(_helpButton.frame) - GeneralWalkthroughStandardOffset;
-    y = 0.5 * GeneralWalkthroughStandardOffset + GeneralWalkthroughiOS7StatusBarOffset;
+    y = 0.5 * GeneralWalkthroughStandardOffset + GeneralWalkthroughStatusBarOffset;
     _helpButton.frame = CGRectMake(x, y, CGRectGetWidth(_helpButton.frame), GeneralWalkthroughButtonHeight);
     
     // Layout Cancel Button
     x = 0;
-    y = 0.5 * GeneralWalkthroughStandardOffset + GeneralWalkthroughiOS7StatusBarOffset;
+    y = 0.5 * GeneralWalkthroughStandardOffset + GeneralWalkthroughStatusBarOffset;
     _cancelButton.frame = CGRectMake(x, y, CGRectGetWidth(_cancelButton.frame), GeneralWalkthroughButtonHeight);
 
     CGFloat heightOfControls = CGRectGetHeight(_icon.frame) + GeneralWalkthroughStandardOffset + (_userIsDotCom ? 2 : 3) * GeneralWalkthroughTextFieldHeight + GeneralWalkthroughStandardOffset + GeneralWalkthroughButtonHeight;
