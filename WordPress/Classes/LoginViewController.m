@@ -76,7 +76,8 @@ CGFloat const GeneralWalkthroughiOS7StatusBarOffset = 20.0;
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-        
+    [self.navigationController setNavigationBarHidden:YES animated:NO];
+    
     self.view.backgroundColor = [WPNUXUtility backgroundColor];
     _userIsDotCom = self.onlyDotComAllowed || !self.prefersSelfHosted;
     if ([WPAccount defaultWordPressComAccount]) {
