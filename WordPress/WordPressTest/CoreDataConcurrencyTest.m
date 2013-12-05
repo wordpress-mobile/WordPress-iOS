@@ -35,7 +35,7 @@
     [super tearDown];
     
     [[CoreDataTestHelper sharedHelper] reset];
-    [WPAccount removeDefaultWordPressComAccount];
+    [WPAccount removeDefaultWordPressComAccountWithContext:[ContextManager sharedInstance].mainContext];
 }
 
 - (void)testObjectExistenceInBackgroundFromMainSave
