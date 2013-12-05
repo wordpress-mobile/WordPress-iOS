@@ -63,12 +63,12 @@ static ContextManager *instance;
     _backgroundContext.mergePolicy = NSMergeByPropertyObjectTrumpMergePolicy;
 
     
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(mergeChangesToMainContext:)
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(mergeChangesIntoMainContext:)
                                                  name:NSManagedObjectContextDidSaveNotification object:_backgroundContext];
     return _backgroundContext;
 }
 
-- (void)mergeChangesToMainContext:(NSNotification *)notification {
+- (void)mergeChangesIntoMainContext:(NSNotification *)notification {
     [self.mainContext performBlock:^{
         DDLogVerbose(@"Merging changes into main context");
         [self.mainContext mergeChangesFromContextDidSaveNotification:notification];
