@@ -79,15 +79,18 @@ NSString * const WPAccountDefaultWordPressComAccountChangedNotification = @"WPAc
 }
 
 + (void)removeDefaultWordPressComAccount {
+    [self removeDefaultWordPressComAccountWithContext:[ContextManager sharedInstance].backgroundContext];
+}
+
++ (void)removeDefaultWordPressComAccountWithContext:(NSManagedObjectContext *)context {
     WPAccount *defaultAccount = __defaultDotcomAccount;
     if (!defaultAccount) {
         return;
     }
-    NSManagedObjectContext *backgroundMOC = [[ContextManager sharedInstance] backgroundContext];
-    [backgroundMOC performBlock:^{
-        WPAccount *account = (WPAccount *)[backgroundMOC objectWithID:defaultAccount.objectID];
-        [backgroundMOC deleteObject:account];
-        [[ContextManager sharedInstance] saveContext:backgroundMOC];
+    [context performBlock:^{
+        WPAccount *account = (WPAccount *)[context objectWithID:defaultAccount.objectID];
+        [context deleteObject:account];
+        [[ContextManager sharedInstance] saveContext:context];
     }];
     __defaultDotcomAccount = nil;
 }

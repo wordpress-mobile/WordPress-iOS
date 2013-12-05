@@ -10,6 +10,7 @@
 #import "Blog.h"
 #import "AsyncTestHelper.h"
 #import "WPAccount.h"
+#import "ContextManager.h"
 #import <objc/runtime.h>
 
 @interface CoreDataConcurrencyTest : XCTestCase
@@ -24,9 +25,7 @@
 - (void)setUp
 {
     [super setUp];
-    // Put setup code here; it will be run once, before the first test case.
-    [[CoreDataTestHelper sharedHelper] registerDefaultContexts];
-    
+
     [WPAccount createOrUpdateWordPressComAccountWithUsername:@"test" andPassword:@"test" withContext:[ContextManager sharedInstance].mainContext];
 }
 

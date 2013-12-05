@@ -12,6 +12,7 @@
 #import "CoreDataTestHelper.h"
 #import "AsyncTestHelper.h"
 #import "ReaderPost.h"
+#import "ContextManager.h"
 
 @interface ReaderTest()
 
