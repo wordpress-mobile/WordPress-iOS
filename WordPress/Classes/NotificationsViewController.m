@@ -20,6 +20,7 @@
 
 NSString * const NotificationsTableViewNoteCellIdentifier = @"NotificationsTableViewCell";
 NSString * const NotificationsLastSyncDateKey = @"NotificationsLastSyncDate";
+NSString * const NotificationsJetpackInformationURL = @"http://jetpack.me/about/";
 
 @interface NotificationsViewController () {
     BOOL _retrievingNotifications;
@@ -81,7 +82,7 @@ NSString * const NotificationsLastSyncDateKey = @"NotificationsLastSyncDate";
 {
     // Show Jetpack information screen
     WPWebViewController *webViewController = [[WPWebViewController alloc] init];
-    [webViewController setUrl:[NSURL URLWithString:@"http://jetpack.me/about/"]];
+    [webViewController setUrl:[NSURL URLWithString:NotificationsJetpackInformationURL]];
     [self.navigationController pushViewController:webViewController animated:YES];
 }
 
