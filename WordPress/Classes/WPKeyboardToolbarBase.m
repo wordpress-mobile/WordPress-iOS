@@ -189,12 +189,13 @@
     }
     _doneButton.frame = doneFrame;
     
-    // Show main view
     CGRect frame = mainView.frame;
     frame.origin.x = -1;
     if (self.frame.size.height < WPKT_HEIGHT_IPHONE_PORTRAIT) {
         frame.origin.y = -1;
         frame.size.height = WPKT_BUTTON_HEIGHT_LANDSCAPE;
+    } else {
+        frame.size.height = WPKT_BUTTON_HEIGHT_PORTRAIT;
     }
     mainView.frame = frame;
     if (mainView.superview == nil) {
