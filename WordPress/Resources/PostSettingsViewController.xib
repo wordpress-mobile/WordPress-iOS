@@ -149,7 +149,7 @@
             </tableViewCellContentView>
             <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
         </tableViewCell>
-        <tableViewCell contentMode="scaleToFill" selectionStyle="blue" indentationWidth="10" id="238" userLabel="Geolocation">
+        <tableViewCell contentMode="scaleToFill" selectionStyle="blue" indentationWidth="10" reuseIdentifier="GeoLocationCellIdentifier" id="238" userLabel="Geolocation" customClass="WPTableViewCell">
             <rect key="frame" x="0.0" y="0.0" width="320" height="188"/>
             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
             <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="238" id="lM6-Rv-GLp">
