@@ -8,7 +8,6 @@
 
 #import <WPXMLRPC/WPXMLRPC.h>
 #import <QuartzCore/QuartzCore.h>
-#import "UIView+FormSheetHelpers.h"
 #import "LoginViewController.h"
 #import "CreateAccountAndBlogViewController.h"
 #import "AboutViewController.h"
@@ -46,7 +45,6 @@
     UILabel *_statusLabel;
     
     // Measurements
-    CGFloat _viewHeight;
     CGFloat _keyboardOffset;
     
     BOOL _userIsDotCom;
@@ -68,7 +66,7 @@ CGFloat const GeneralWalkthroughTextFieldHeight = 44.0;
 CGFloat const GeneralWalkthroughButtonWidth = 289.0;
 CGFloat const GeneralWalkthroughButtonHeight = 41.0;
 CGFloat const GeneralWalkthroughSecondaryButtonHeight = 33;
-CGFloat const GeneralWalkthroughiOS7StatusBarOffset = 20.0;
+CGFloat const GeneralWalkthroughStatusBarOffset = 20.0;
 
 - (void)dealloc
 {
@@ -78,12 +76,8 @@ CGFloat const GeneralWalkthroughiOS7StatusBarOffset = 20.0;
 - (void)viewDidLoad
 {
     [super viewDidLoad];
+    [self.navigationController setNavigationBarHidden:YES animated:NO];
     
-    // view height is cached to allow us to center the controls. When viewDidLoad is
-    // called, the view bounds are the size of the screen. On iPad, this view is
-    // most often presented as a formSheet
-    _viewHeight = [self.view formSheetViewHeight];
-        
     self.view.backgroundColor = [WPNUXUtility backgroundColor];
     _userIsDotCom = self.onlyDotComAllowed || !self.prefersSelfHosted;
     if ([WPAccount defaultWordPressComAccount]) {
@@ -103,6 +97,7 @@ CGFloat const GeneralWalkthroughiOS7StatusBarOffset = 20.0;
 {
     [super viewWillAppear:animated];
     [self.navigationController setNavigationBarHidden:YES animated:animated];
+    [self layoutControls];
 }
 
 - (NSUInteger)supportedInterfaceOrientations {
@@ -110,6 +105,11 @@ CGFloat const GeneralWalkthroughiOS7StatusBarOffset = 20.0;
         return UIInterfaceOrientationMaskPortrait;
     
     return UIInterfaceOrientationMaskAll;
+}
+
+- (void)willAnimateRotationToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation duration:(NSTimeInterval)duration {
+    
+    [self layoutControls];
 }
 
 #pragma mark - UITextField delegate methods
@@ -274,15 +274,6 @@ CGFloat const GeneralWalkthroughiOS7StatusBarOffset = 20.0;
 - (void)backgroundTapGestureAction:(UITapGestureRecognizer *)tapGestureRecognizer
 {
     [self.view endEditing:YES];
-
-    // The info button is a little hard to hit so this adds a little buffer around it
-    CGPoint touchPoint = [tapGestureRecognizer locationInView:self.view];
-    CGFloat x = CGRectGetMaxX(_helpButton.frame) + 10;
-    CGFloat y = CGRectGetMaxY(_helpButton.frame) + 10;
-    CGRect infoButtonRect = CGRectMake(0, 0, x, y);
-    if (CGRectContainsPoint(infoButtonRect, touchPoint)) {
-        [self helpButtonAction:nil];
-    }
 }
 
 - (void)signInButtonAction:(id)sender
@@ -356,6 +347,7 @@ CGFloat const GeneralWalkthroughiOS7StatusBarOffset = 20.0;
         _helpButton.frame = CGRectMake(GeneralWalkthroughStandardOffset, GeneralWalkthroughStandardOffset, infoButtonImage.size.width, infoButtonImage.size.height);
         _helpButton.autoresizingMask = UIViewAutoresizingFlexibleRightMargin | UIViewAutoresizingFlexibleLeftMargin;
         [_helpButton addTarget:self action:@selector(helpButtonAction:) forControlEvents:UIControlEventTouchUpInside];
+        [_helpButton sizeToFit];
         [_mainView addSubview:_helpButton];
     }
     
@@ -447,7 +439,7 @@ CGFloat const GeneralWalkthroughiOS7StatusBarOffset = 20.0;
     if (_toggleSignInForm == nil) {
         _toggleSignInForm = [[WPNUXSecondaryButton alloc] init];
         [_toggleSignInForm addTarget:self action:@selector(toggleSignInFormAction:) forControlEvents:UIControlEventTouchUpInside];
-        _toggleSignInForm.autoresizingMask = UIViewAutoresizingFlexibleRightMargin | UIViewAutoresizingFlexibleLeftMargin;
+        _toggleSignInForm.autoresizingMask = UIViewAutoresizingFlexibleRightMargin | UIViewAutoresizingFlexibleLeftMargin | UIViewAutoresizingFlexibleTopMargin;
         [_mainView addSubview:_toggleSignInForm];
     }
     if (!self.onlyDotComAllowed && ![WPAccount defaultWordPressComAccount]) {
@@ -470,6 +462,7 @@ CGFloat const GeneralWalkthroughiOS7StatusBarOffset = 20.0;
         // Add Skip to Create Account Button
         if (_skipToCreateAccount == nil) {
             _skipToCreateAccount = [[WPNUXSecondaryButton alloc] init];
+            _skipToCreateAccount.autoresizingMask = UIViewAutoresizingFlexibleRightMargin | UIViewAutoresizingFlexibleLeftMargin | UIViewAutoresizingFlexibleTopMargin;
             [_skipToCreateAccount setTitle:NSLocalizedString(@"Create Account", nil) forState:UIControlStateNormal];
             [_skipToCreateAccount addTarget:self action:@selector(skipToCreateAction:) forControlEvents:UIControlEventTouchUpInside];
             [_mainView addSubview:_skipToCreateAccount];
@@ -480,25 +473,23 @@ CGFloat const GeneralWalkthroughiOS7StatusBarOffset = 20.0;
 - (void)layoutControls
 {
     CGFloat x,y;
-    CGFloat viewWidth = CGRectGetWidth(self.view.frame);
-
-    UIImage *infoButtonImage = [UIImage imageNamed:@"btn-about"];
-    y = 0;
-    if (IS_IPHONE) {
-        y = GeneralWalkthroughiOS7StatusBarOffset;
-    }
-    _helpButton.frame = CGRectMake(viewWidth - infoButtonImage.size.width, y, infoButtonImage.size.width, infoButtonImage.size.height);
+    
+    CGFloat viewWidth = CGRectGetWidth(self.view.bounds);
+    CGFloat viewHeight = CGRectGetHeight(self.view.bounds);
+    
+    // Layout Help Button
+    x = viewWidth - CGRectGetWidth(_helpButton.frame) - GeneralWalkthroughStandardOffset;
+    y = 0.5 * GeneralWalkthroughStandardOffset + GeneralWalkthroughStatusBarOffset;
+    _helpButton.frame = CGRectIntegral(CGRectMake(x, y, CGRectGetWidth(_helpButton.frame), GeneralWalkthroughButtonHeight));
     
     // Layout Cancel Button
-    x = viewWidth - CGRectGetWidth(_cancelButton.frame);
-    y = 0.5 * GeneralWalkthroughStandardOffset;
-    if (IS_IPHONE) {
-        y += GeneralWalkthroughiOS7StatusBarOffset;
-    }
-    _cancelButton.frame = CGRectMake(x, y, CGRectGetWidth(_cancelButton.frame), CGRectGetHeight(_cancelButton.frame));
+    x = 0;
+    y = 0.5 * GeneralWalkthroughStandardOffset + GeneralWalkthroughStatusBarOffset;
+    _cancelButton.frame = CGRectIntegral(CGRectMake(x, y, CGRectGetWidth(_cancelButton.frame), GeneralWalkthroughButtonHeight));
 
+    // Calculate total height and starting Y origin of controls
     CGFloat heightOfControls = CGRectGetHeight(_icon.frame) + GeneralWalkthroughStandardOffset + (_userIsDotCom ? 2 : 3) * GeneralWalkthroughTextFieldHeight + GeneralWalkthroughStandardOffset + GeneralWalkthroughButtonHeight;
-    CGFloat startingYForCenteredControls = floorf((_viewHeight - 2 * GeneralWalkthroughSecondaryButtonHeight - heightOfControls)/2.0);
+    CGFloat startingYForCenteredControls = floorf((viewHeight - 2 * GeneralWalkthroughSecondaryButtonHeight - heightOfControls)/2.0);
     
     x = (viewWidth - CGRectGetWidth(_icon.frame))/2.0;
     y = startingYForCenteredControls;
@@ -522,23 +513,23 @@ CGFloat const GeneralWalkthroughiOS7StatusBarOffset = 20.0;
     // Layout Sign in Button
     x = (viewWidth - GeneralWalkthroughButtonWidth) / 2.0;;
     y = CGRectGetMaxY(_siteUrlText.frame) + GeneralWalkthroughStandardOffset;
-    _signInButton.frame = CGRectMake(x, y, GeneralWalkthroughButtonWidth, GeneralWalkthroughButtonHeight);
+    _signInButton.frame = CGRectIntegral(CGRectMake(x, y, GeneralWalkthroughButtonWidth, GeneralWalkthroughButtonHeight));
     
     // Layout Skip to Create Account Button
     x = GeneralWalkthroughStandardOffset;
     x = (viewWidth - GeneralWalkthroughButtonWidth)/2.0;
-    y = _viewHeight - GeneralWalkthroughStandardOffset - GeneralWalkthroughSecondaryButtonHeight;
-    _skipToCreateAccount.frame = CGRectMake(x, y, GeneralWalkthroughButtonWidth, GeneralWalkthroughSecondaryButtonHeight);
+    y = viewHeight - GeneralWalkthroughStandardOffset - GeneralWalkthroughSecondaryButtonHeight;
+    _skipToCreateAccount.frame = CGRectIntegral(CGRectMake(x, y, GeneralWalkthroughButtonWidth, GeneralWalkthroughSecondaryButtonHeight));
     
     // Layout Status Label
     x =  (viewWidth - GeneralWalkthroughMaxTextWidth) / 2.0;
     y = CGRectGetMaxY(_signInButton.frame) + 0.5 * GeneralWalkthroughStandardOffset;
-    _statusLabel.frame = CGRectMake(x, y, GeneralWalkthroughMaxTextWidth, _statusLabel.font.lineHeight);
+    _statusLabel.frame = CGRectIntegral(CGRectMake(x, y, GeneralWalkthroughMaxTextWidth, _statusLabel.font.lineHeight));
     
     // Layout Toggle Button
     x =  (viewWidth - GeneralWalkthroughMaxTextWidth) / 2.0;
     y = CGRectGetMinY(_skipToCreateAccount.frame) - 0.5 * GeneralWalkthroughStandardOffset - 33;
-    _toggleSignInForm.frame = CGRectMake(x, y, GeneralWalkthroughMaxTextWidth, 33);
+    _toggleSignInForm.frame = CGRectIntegral(CGRectMake(x, y, GeneralWalkthroughMaxTextWidth, 33));
 }
 
 - (void)dismiss
