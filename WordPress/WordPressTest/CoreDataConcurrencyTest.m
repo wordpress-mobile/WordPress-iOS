@@ -77,7 +77,9 @@
 
 - (void)testMergeChangesIntoBackgroundContext:(NSNotification *)notification {
     [self testMergeChangesIntoBackgroundContext:notification];
-    ATHNotify();
+    if (ATHSemaphore) {
+        ATHNotify();
+    }
 }
 
 @end
