@@ -43,6 +43,19 @@
     [WPAccount removeDefaultWordPressComAccountWithContext:[ContextManager sharedInstance].mainContext];
 }
 
+- (void)testObjectPermanence {
+    ATHStart();
+    
+    NSManagedObjectContext *backgroundMOC = [[ContextManager sharedInstance] mainContext];
+    Blog *blog = [self createTestBlogWithContext:backgroundMOC];
+    [[ContextManager sharedInstance] saveContext:backgroundMOC];
+    
+    // Wait on the merge to be completed
+    ATHEnd();
+    
+    XCTAssertFalse(blog.objectID.isTemporaryID, @"Object ID should be permanent");
+}
+
 - (void)testObjectExistenceInBackgroundFromMainSave
 {
     ATHStart();
