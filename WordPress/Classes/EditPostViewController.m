@@ -1227,13 +1227,7 @@ CGFloat const EditPostViewControllerTextViewOffset = 10.0;
     NSRange originalRange = range;
     NSString *selection = [textView.text substringWithRange:range];
     NSString *prefix, *suffix;
-    if ([tag isEqualToString:@"ul"] || [tag isEqualToString:@"ol"]) {
-        prefix = [NSString stringWithFormat:@"<%@>\n", tag];
-        suffix = [NSString stringWithFormat:@"\n</%@>\n", tag];
-    } else if ([tag isEqualToString:@"li"]) {
-        prefix = [NSString stringWithFormat:@"\t<%@>", tag];
-        suffix = [NSString stringWithFormat:@"</%@>\n", tag];
-    } else if ([tag isEqualToString:@"more"]) {
+    if ([tag isEqualToString:@"more"]) {
         prefix = @"<!--more-->";
         suffix = @"\n";
     } else if ([tag isEqualToString:@"blockquote"]) {
@@ -1296,20 +1290,14 @@ CGFloat const EditPostViewControllerTextViewOffset = 10.0;
         property = StatsEventPostDetailClickedKeyboardToolbarBoldButton;
     } else if ([actionTag isEqualToString:@"em"]) {
         property = StatsEventPostDetailClickedKeyboardToolbarItalicButton;
+    } else if ([actionTag isEqualToString:@"u"]) {
+        property = StatsEventPostDetailClickedKeyboardToolbarUnderlineButton;
     } else if ([actionTag isEqualToString:@"link"]) {
         property = StatsEventPostDetailClickedKeyboardToolbarLinkButton;
     } else if ([actionTag isEqualToString:@"blockquote"]) {
         property = StatsEventPostDetailClickedKeyboardToolbarBlockquoteButton;
     } else if ([actionTag isEqualToString:@"del"]) {
         property = StatsEventPostDetailClickedKeyboardToolbarDelButton;
-    } else if ([actionTag isEqualToString:@"ul"]) {
-        property = StatsEventPostDetailClickedKeyboardToolbarUnorderedListButton;
-    } else if ([actionTag isEqualToString:@"ol"]) {
-        property = StatsEventPostDetailClickedKeyboardToolbarOrderedListButton;
-    } else if ([actionTag isEqualToString:@"li"]) {
-        property = StatsEventPostDetailClickedKeyboardToolbarListItemButton;
-    } else if ([actionTag isEqualToString:@"code"]) {
-        property = StatsEventPostDetailClickedKeyboardToolbarCodeButton;
     } else if ([actionTag isEqualToString:@"more"]) {
         property = StatsEventPostDetailClickedKeyboardToolbarMoreButton;
     }
