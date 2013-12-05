@@ -19,6 +19,7 @@
 #import "WPWalkthroughTextField.h"
 #import "WordPressComOAuthClient.h"
 #import "WPWebViewController.h"
+#import "EditPostViewController.h"
 #import "Blog+Jetpack.h"
 #import "JetpackSettingsViewController.h"
 #import "WPWalkthroughOverlayView.h"
@@ -543,10 +544,17 @@ CGFloat const GeneralWalkthroughiOS7StatusBarOffset = 20.0;
 
 - (void)dismiss
 {
+    WordPressAppDelegate *delegate = (WordPressAppDelegate *)[[UIApplication sharedApplication] delegate];
+    
+    // If we were invoked from the post tab proceed to the editor. Our work here is done.
+    if (_showEditorAfterAddingSites) {
+        [delegate showPostTab];
+        return;
+    }
+    
     // Check if there is an active WordPress.com account. If not, switch tab bar
     // away from Reader to // blog list view
     if (![WPAccount defaultWordPressComAccount]) {
-        WordPressAppDelegate *delegate = (WordPressAppDelegate *)[[UIApplication sharedApplication] delegate];
         [delegate showBlogListTab];
     }
     

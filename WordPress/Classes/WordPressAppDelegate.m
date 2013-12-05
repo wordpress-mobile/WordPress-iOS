@@ -26,6 +26,7 @@
 #import "PocketAPI.h"
 #import "Post.h"
 #import "Reachability.h"
+#import "ReaderPost.h"
 #import "UIDevice+WordPressIdentifier.h"
 #import "WordPressComApi.h"
 #import "WordPressComApiCredentials.h"
@@ -269,9 +270,13 @@ NSString * const WPNotificationsNavigationRestorationID = @"WPNotificationsNavig
 #pragma mark - UITabBarControllerDelegate methods.
 
 - (BOOL)tabBarController:(UITabBarController *)tabBarController shouldSelectViewController:(UIViewController *)viewController {
-    // Ignore taps on the post tab and instead show the modal.
     if ([tabBarController.viewControllers indexOfObject:viewController] == 3) {
-        [self presentEditPostViewControllerModal];
+        // Ignore taps on the post tab and instead show the modal.
+        if ([Blog countWithContext:[[ContextManager sharedInstance] mainContext]] == 0) {
+            [self showWelcomeScreenAnimated:YES thenEditor:YES];
+        } else {
+            [self showPostTab];
+        }
         return NO;
     }
     return YES;
@@ -280,34 +285,47 @@ NSString * const WPNotificationsNavigationRestorationID = @"WPNotificationsNavig
 
 #pragma mark - Custom methods
 
-<<<<<<< HEAD
-- (void)presentEditPostViewControllerModal {
-    Post *post = [Post newDraftForBlog:[Blog defaultBlogWithContext:[[ContextManager sharedInstance] mainContext]]];
-    EditPostViewController *editPostViewController = [[EditPostViewController alloc] initWithPost:post];
+- (void)showPostTab {
+    UIViewController *presenter = self.window.rootViewController;
+    if (presenter.presentedViewController) {
+        [presenter dismissViewControllerAnimated:NO completion:nil];
+    }
+    
+    EditPostViewController *editPostViewController = [[EditPostViewController alloc] initWithDraftForLastUsedBlog];
     UINavigationController *navController = [[UINavigationController alloc] initWithRootViewController:editPostViewController];
     navController.modalPresentationStyle = UIModalPresentationCurrentContext;
+    navController.navigationBar.translucent = NO;
     [self.window.rootViewController presentViewController:navController animated:YES completion:nil];
 }
 
-- (void)showWelcomeScreenIfNeeded {
-=======
 - (void)showWelcomeScreenIfNeededAnimated:(BOOL)animated {
->>>>>>> d920ad300bab9d6a5cc56ffb6fa48978ef5a1e6d
     if ([self noBlogsAndNoWordPressDotComAccount]) {
         [WordPressAppDelegate wipeAllKeychainItems];
-        
-        LoginViewController *welcomeViewController = [[LoginViewController alloc] init];
-        UINavigationController *aNavigationController = [[UINavigationController alloc] initWithRootViewController:welcomeViewController];
-        aNavigationController.navigationBar.translucent = NO;
-        aNavigationController.modalTransitionStyle = UIModalTransitionStyleCrossDissolve;
-        aNavigationController.modalPresentationStyle = UIModalPresentationFormSheet;
 
         UIViewController *presenter = self.window.rootViewController;
         if (presenter.presentedViewController) {
-            [presenter dismissViewControllerAnimated:animated completion:nil];
+            [presenter dismissViewControllerAnimated:NO completion:nil];
         }
-        [self.window.rootViewController presentViewController:aNavigationController animated:NO completion:nil];
+
+        [self showWelcomeScreenAnimated:animated thenEditor:NO];
     }
+}
+
+- (void)showWelcomeScreenAnimated:(BOOL)animated thenEditor:(BOOL)thenEditor {
+    LoginViewController *loginViewController = [[LoginViewController alloc] init];
+    if (thenEditor) {
+        loginViewController.dismissBlock = ^{
+            [self.window.rootViewController dismissViewControllerAnimated:YES completion:nil];
+        };
+        loginViewController.showEditorAfterAddingSites = YES;
+    }
+    
+    UINavigationController *navigationController = [[UINavigationController alloc] initWithRootViewController:loginViewController];
+    navigationController.navigationBar.translucent = NO;
+    navigationController.modalTransitionStyle = UIModalTransitionStyleCrossDissolve;
+    navigationController.modalPresentationStyle = UIModalPresentationFormSheet;
+
+    [self.window.rootViewController presentViewController:navigationController animated:animated completion:nil];
 }
 
 - (BOOL)noBlogsAndNoWordPressDotComAccount {
@@ -366,21 +384,14 @@ NSString * const WPNotificationsNavigationRestorationID = @"WPNotificationsNavig
     blogListNavigationController.navigationBar.translucent = NO;
     blogListNavigationController.tabBarItem.image = [UIImage imageNamed:@"icon-tab-blogs"];
     blogListNavigationController.restorationIdentifier = WPBlogListNavigationRestorationID;
-<<<<<<< HEAD
-    blogListViewController.title = @"My Blogs";
-    
-    NSMutableArray *marr = [NSMutableArray arrayWithObjects:blogListNavigationController, readerNavigationController, notificationsNavigationController, nil];
-    if ([Blog countWithContext:[[ContextManager sharedInstance] mainContext]] > 0) {
-        UINavigationController *postsNavigationController = [self createPostsPlaceholderNavController];
-        [marr addObject:postsNavigationController];
-    }
-
-    _tabBarController.viewControllers = marr;
-=======
     self.blogListViewController.title = NSLocalizedString(@"My Blogs", @"");
     
-    _tabBarController.viewControllers = [NSArray arrayWithObjects:blogListNavigationController, readerNavigationController, notificationsNavigationController, nil];
->>>>>>> d920ad300bab9d6a5cc56ffb6fa48978ef5a1e6d
+    UINavigationController *postsNavigationController = [[UINavigationController alloc] initWithRootViewController:nil];
+    postsNavigationController.navigationBar.translucent = NO;
+    postsNavigationController.tabBarItem.image = [UIImage imageNamed:@"navbar_add"];
+    postsNavigationController.title = NSLocalizedString(@"Post", @"");
+
+    _tabBarController.viewControllers = @[blogListNavigationController, readerNavigationController, notificationsNavigationController, postsNavigationController];
     
     [_tabBarController setSelectedViewController:readerNavigationController];
     
@@ -390,33 +401,6 @@ NSString * const WPNotificationsNavigationRestorationID = @"WPNotificationsNavig
 - (void)showNotificationsTab {
     NSInteger notificationsTabIndex = [[self.tabBarController viewControllers] indexOfObject:self.notificationsViewController.navigationController];
     [self.tabBarController setSelectedIndex:notificationsTabIndex];
-}
-
-- (void)updateTabBarIfNeeded {
-    if ([Blog countWithContext:[[ContextManager sharedInstance] mainContext]] == 0) {
-        // If no blogs, do not show the post tab.
-        if ([self.tabBarController.viewControllers count] > 3) {
-            NSMutableArray *marr = [self.tabBarController.viewControllers mutableCopy];
-            [marr removeLastObject];
-            [self.tabBarController setViewControllers:marr animated:YES];
-        }
-    } else {
-        // Show the post tab
-        if ([self.tabBarController.viewControllers count] < 4) {
-            UINavigationController *postsNavigationController = [self createPostsPlaceholderNavController];
-            NSMutableArray *marr = [self.tabBarController.viewControllers mutableCopy];
-            [marr addObject:postsNavigationController];
-            [self.tabBarController setViewControllers:marr animated:YES];
-        }
-    }
-}
-
-- (UINavigationController *)createPostsPlaceholderNavController {
-    UINavigationController *navigationController = [[UINavigationController alloc] initWithRootViewController:nil];
-    navigationController.navigationBar.translucent = NO;
-    navigationController.tabBarItem.image = [UIImage imageNamed:@"navbar_add"];
-    navigationController.title = @"Post";
-    return navigationController;
 }
 
 #pragma mark - Global Alerts
@@ -1118,16 +1102,13 @@ NSString * const WPNotificationsNavigationRestorationID = @"WPNotificationsNavig
 
 - (void)handleDefaultAccountChangedNotification:(NSNotification *)notification {
 	[self toggleExtraDebuggingIfNeeded];
-<<<<<<< HEAD
-    [self updateTabBarIfNeeded];
-=======
+
     [NotificationsManager registerForPushNotifications];
     [self showWelcomeScreenIfNeededAnimated:NO];
     // If the notification object is not nil, then it's a login
     if (notification.object) {
         [ReaderPost fetchPostsWithCompletionHandler:nil];
     }
->>>>>>> d920ad300bab9d6a5cc56ffb6fa48978ef5a1e6d
 }
 
 @end
