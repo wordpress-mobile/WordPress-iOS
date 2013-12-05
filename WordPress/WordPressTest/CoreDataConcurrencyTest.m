@@ -98,6 +98,74 @@
     XCTAssertEqualObjects(blog.objectID, mainBlog.objectID, @"Background context objectID and main context object ID differ");
 }
 
+- (void)testCrossContextObjects {
+    NSManagedObjectContext *mainMOC = [[ContextManager sharedInstance] mainContext];
+    NSManagedObjectContext *backgroundMOC = [[ContextManager sharedInstance] backgroundContext];
+    
+    ATHStart();
+    
+    // Create account in background context
+    WPAccount *account = [WPAccount createOrUpdateWordPressComAccountWithUsername:@"test" password:@"test" authToken:@"token"
+                                                                      context:backgroundMOC];
+
+    ATHWait();
+    
+    // Check for existence in the main context
+    WPAccount *mainAccount = (WPAccount *)[mainMOC existingObjectWithID:account.objectID error:nil];
+    XCTAssertNotNil(mainAccount, @"Could not retrieve account created in background context from main context");
+
+    // Create a blog with the main context, add the main context account
+    Blog *blog = (Blog *)[[CoreDataTestHelper sharedHelper] insertEntityIntoMainContextWithName:@"Blog"];
+    blog.xmlrpc = @"http://test.wordpress.com/xmlrpc.php";
+    blog.url = @"http://test.wordpress.com/";
+    blog.account = mainAccount;
+    
+    // Check that the save completes
+    XCTAssertNoThrow([[ContextManager sharedInstance] saveContext:mainMOC], @"Saving should be successful");
+    
+    ATHEnd();
+    
+    XCTAssertFalse(blog.objectID.isTemporaryID, @"Blog object ID should be permanent");
+    Blog *backgroundBlog = (Blog *)[backgroundMOC existingObjectWithID:blog.objectID error:nil];
+
+    XCTAssertNotNil(backgroundBlog, @"Blog should exist in background context");
+}
+
+- (void)testDerivedContext {
+    // Create a new derived context, which the mainContext is the parent
+    ATHStart();
+    NSManagedObjectContext *derived = [[ContextManager sharedInstance] newDerivedContext];
+    __block NSManagedObjectID *blogObjectID;
+    __block Blog *newBlog;
+    [derived performBlock:^{
+        WPAccount *derivedAccount = (WPAccount *)[derived objectWithID:[WPAccount defaultWordPressComAccount].objectID];
+        XCTAssertNoThrow(derivedAccount.username, @"Should be able to access properties from this context");
+        
+        newBlog = [derivedAccount findOrCreateBlogFromDictionary:@{@"xmlrpc": @"http://blog.com/xmlrpc.php", @"url": @"blog.com"} withContext:derived];
+        [[ContextManager sharedInstance] saveDerivedContext:derived withCompletionBlock:^{
+            // object exists in main context after derived's save
+            // don't notify, wait for main's save ATHNotify()
+            
+            Blog *mainContextBlog =  (Blog *)[[ContextManager sharedInstance].mainContext existingObjectWithID:newBlog.objectID error:nil];
+            XCTAssertNotNil(mainContextBlog, @"The new blog should exist in the main (parent) context");
+        }];
+    }];
+    ATHEnd();
+    
+    // Should be accessible in both contexts: main, background
+    blogObjectID = newBlog.objectID;
+    XCTAssertFalse(blogObjectID.isTemporaryID, @"Object should be permanent");
+    
+    // Check the object exists in the parent context: mainContext
+    Blog *existingBlog = (Blog *)[[ContextManager sharedInstance].mainContext existingObjectWithID:blogObjectID error:nil];
+    XCTAssertNotNil(existingBlog, @"Object should exist in parent context");
+    XCTAssertNoThrow(existingBlog.url, @"Object should be accessible");
+    XCTAssertEqualObjects(existingBlog.url, @"blog.com", @"Data should be maintained between contexts");
+}
+
+
+#pragma mark - Helpers
+
 - (Blog *)createTestBlogWithContext:(NSManagedObjectContext *)context {
     WPAccount *account = [WPAccount defaultWordPressComAccount];
     NSDictionary *blogDictionary = @{@"blogid": @(1),

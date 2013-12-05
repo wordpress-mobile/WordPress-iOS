@@ -10,6 +10,7 @@
 #import "CoreDataTestHelper.h"
 #import "WPAccount.h"
 #import "ContextManager.h"
+#import "AsyncTestHelper.h"
 
 @interface AccountTest : XCTestCase
 
@@ -20,9 +21,10 @@
 - (void)setUp
 {
     [super setUp];
-
-    // The default account is cached before we get a chance to replace the delegate's context
-    [WPAccount removeDefaultWordPressComAccountWithContext:[ContextManager sharedInstance].mainContext];
+    
+    // We need to remove the account, but not through core data as the PSCs have changed between
+    // setUp and CoreDataTestHelper reset.
+    [WPAccount removeDefaultWordPressComAccountWithContext:nil];
 }
 
 - (void)tearDown
@@ -35,20 +37,34 @@
 - (void)testNewAccountDoesntSetDefaultAccount
 {
     XCTAssertNil([WPAccount defaultWordPressComAccount]);
+    
+    ATHStart();
     WPAccount *_account = [WPAccount createOrUpdateWordPressComAccountWithUsername:@"user" password:@"pass" authToken:@"token" context:[ContextManager sharedInstance].mainContext];
+    ATHEnd();
+    
     XCTAssertNil([WPAccount defaultWordPressComAccount]);
     [WPAccount setDefaultWordPressComAccount:_account];
+    
     XCTAssertNotNil([WPAccount defaultWordPressComAccount]);
     XCTAssertEqualObjects([WPAccount defaultWordPressComAccount], _account);
+    
+    ATHStart();
     WPAccount *_account2 = [WPAccount createOrUpdateWordPressComAccountWithUsername:@"user" password:@"pass" authToken:@"token" context:[ContextManager sharedInstance].mainContext];
+    ATHEnd();
+    
     XCTAssertNotNil(_account2);
+    
     XCTAssertEqualObjects([WPAccount defaultWordPressComAccount], _account);
 }
 
 - (void)testNewSelfHostedDoesntSetDefaultAccount
 {
     XCTAssertNil([WPAccount defaultWordPressComAccount]);
+    
+    ATHStart();
     WPAccount *_account = [WPAccount createOrUpdateSelfHostedAccountWithXmlrpc:@"http://test/xmlprc.php" username:@"user" andPassword:@"pass"];
+    ATHEnd();
+   
     XCTAssertNotNil(_account);
     XCTAssertNil([WPAccount defaultWordPressComAccount]);
 }

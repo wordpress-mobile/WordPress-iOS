@@ -120,35 +120,7 @@
     [ContextManager sharedInstance].persistentStoreCoordinator = nil;
     
     [[NSFileManager defaultManager] removeItemAtURL:[ContextManager storeURL] error:nil];
-    
     return;
-    
-//    dispatch_semaphore_t semaphore = dispatch_semaphore_create(0);
-//    [_testBackgroundContext performBlock:^{
-//        [_testBackgroundContext reset];
-//        [self resetPersistentStore];
-//        dispatch_semaphore_signal(semaphore);
-//    }];
-//    dispatch_semaphore_wait(semaphore, DISPATCH_TIME_FOREVER);
-//    _testBackgroundContext = nil;
-}
-
-- (void)resetPersistentStore {
-//    [_lock lock];
-//    
-//    [[NSFileManager defaultManager] removeItemAtURL:[ContextManager storeURL] error:nil];
-//    NSPersistentStoreCoordinator *psc = [ContextManager sharedInstance].persistentStoreCoordinator;
-//    for (NSPersistentStore *store in [psc persistentStores]) {
-//        [psc removePersistentStore:store error:nil];
-//    }
-//    NSError *error;
-//    NSPersistentStore *store = [psc addPersistentStoreWithType:NSInMemoryStoreType configuration:nil URL:[ContextManager storeURL] options:nil error:&error];
-//    if (store == nil) {
-//        NSLog(@"saffs");
-//    }
-//    NSAssert(store != nil, @"Should be able to add store");
-//    
-//    [_lock unlock];
 }
 
 - (NSManagedObjectModel *)managedObjectModel {
