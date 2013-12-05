@@ -32,13 +32,15 @@
     [[CoreDataTestHelper sharedHelper] reset];
 }
 
-- (void)testNewAccountSetsDefaultAccount
+- (void)testNewAccountDoesntSetDefaultAccount
 {
     XCTAssertNil([WPAccount defaultWordPressComAccount]);
-    WPAccount *_account = [WPAccount createOrUpdateWordPressComAccountWithUsername:@"user" andPassword:@"pass" withContext:[ContextManager sharedInstance].mainContext];
+    WPAccount *_account = [WPAccount createOrUpdateWordPressComAccountWithUsername:@"user" password:@"pass" authToken:@"token" context:[ContextManager sharedInstance].mainContext];
+    XCTAssertNil([WPAccount defaultWordPressComAccount]);
+    [WPAccount setDefaultWordPressComAccount:_account];
     XCTAssertNotNil([WPAccount defaultWordPressComAccount]);
     XCTAssertEqualObjects([WPAccount defaultWordPressComAccount], _account);
-    WPAccount *_account2 = [WPAccount createOrUpdateWordPressComAccountWithUsername:@"user" andPassword:@"pass" withContext:[ContextManager sharedInstance].mainContext];
+    WPAccount *_account2 = [WPAccount createOrUpdateWordPressComAccountWithUsername:@"user" password:@"pass" authToken:@"token" context:[ContextManager sharedInstance].mainContext];
     XCTAssertNotNil(_account2);
     XCTAssertEqualObjects([WPAccount defaultWordPressComAccount], _account);
 }

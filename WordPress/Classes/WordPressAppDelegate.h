@@ -28,6 +28,8 @@
 
 + (WordPressAppDelegate *)sharedWordPressApplicationDelegate;
 
+- (void)showWelcomeScreenIfNeededAnimated:(BOOL)animated;
+
 ///--------------------
 /// @name Global Alerts
 ///--------------------
@@ -46,9 +48,8 @@
 /// @name Tab bar controls
 ///-----------------------
 - (void)showNotificationsTab;
-
-- (void)showNotificationsTab;
 - (void)showBlogListTab;
 - (void)showReaderTab;
+- (void)showPostTab;
 
 @end
