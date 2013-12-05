@@ -78,7 +78,7 @@ NSString * const NotificationsJetpackInformationURL = @"http://jetpack.me/about/
     }
 }
 
-- (void)noResultsViewButtonWasTapped:(WPNoResultsView *)noResultsView
+- (void)didTapNoResultsView:(WPNoResultsView *)noResultsView
 {
     // Show Jetpack information screen
     WPWebViewController *webViewController = [[WPWebViewController alloc] init];
