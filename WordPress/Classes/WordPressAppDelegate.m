@@ -275,12 +275,12 @@ NSString * const WPNotificationsNavigationRestorationID = @"WPNotificationsNavig
         UINavigationController *aNavigationController = [[UINavigationController alloc] initWithRootViewController:welcomeViewController];
         aNavigationController.navigationBar.translucent = NO;
         aNavigationController.modalTransitionStyle = UIModalTransitionStyleCrossDissolve;
-        aNavigationController.modalPresentationStyle = UIModalPresentationFormSheet;
 
         UIViewController *presenter = self.window.rootViewController;
         if (presenter.presentedViewController) {
             [presenter dismissViewControllerAnimated:animated completion:nil];
         }
+        
         [self.window.rootViewController presentViewController:aNavigationController animated:NO completion:nil];
     }
 }
