@@ -173,7 +173,7 @@ CGFloat const EditPostViewControllerTextViewOffset = 10.0;
     
     if (editorToolbar == nil) {
         CGRect frame = CGRectMake(0, 0, self.view.frame.size.width, WPKT_HEIGHT_PORTRAIT);
-        editorToolbar = [[WPKeyboardToolbarWithoutGradient alloc] initWithFrame:frame];
+        editorToolbar = [[WPKeyboardToolbarBase alloc] initWithFrame:frame];
         editorToolbar.delegate = self;
     }
     textView.inputAccessoryView = editorToolbar;

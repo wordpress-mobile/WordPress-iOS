@@ -634,7 +634,6 @@
 		85495F6817C6FACF00871A7A /* icon-comments-edit-active@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 85495F5817C6FACF00871A7A /* icon-comments-edit-active@2x.png */; };
 		85495F6917C6FACF00871A7A /* icon-comments-edit-active.png in Resources */ = {isa = PBXBuildFile; fileRef = 85495F5917C6FACF00871A7A /* icon-comments-edit-active.png */; };
 		857F55B517CEA01A00E154E1 /* WPKeyboardToolbarBase.m in Sources */ = {isa = PBXBuildFile; fileRef = 857F55B417CEA01A00E154E1 /* WPKeyboardToolbarBase.m */; };
-		857F55B817CEA2B200E154E1 /* WPKeyboardToolbarWithoutGradient.m in Sources */ = {isa = PBXBuildFile; fileRef = 857F55B717CEA2B200E154E1 /* WPKeyboardToolbarWithoutGradient.m */; };
 		857F55CB17CEC5E100E154E1 /* toggleButtonMain-ios7@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 857F55C317CEC5E100E154E1 /* toggleButtonMain-ios7@2x.png */; };
 		857F55CC17CEC5E100E154E1 /* toggleButtonExtended-ios7@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 857F55C417CEC5E100E154E1 /* toggleButtonExtended-ios7@2x.png */; };
 		857F55CD17CEC5E100E154E1 /* keyboardButtoniPadHighlighted-ios7@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 857F55C517CEC5E100E154E1 /* keyboardButtoniPadHighlighted-ios7@2x.png */; };
@@ -1700,8 +1699,6 @@
 		85495F5917C6FACF00871A7A /* icon-comments-edit-active.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "icon-comments-edit-active.png"; sourceTree = "<group>"; };
 		857F55B317CEA01900E154E1 /* WPKeyboardToolbarBase.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WPKeyboardToolbarBase.h; sourceTree = "<group>"; };
 		857F55B417CEA01A00E154E1 /* WPKeyboardToolbarBase.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WPKeyboardToolbarBase.m; sourceTree = "<group>"; };
-		857F55B617CEA2B200E154E1 /* WPKeyboardToolbarWithoutGradient.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WPKeyboardToolbarWithoutGradient.h; sourceTree = "<group>"; };
-		857F55B717CEA2B200E154E1 /* WPKeyboardToolbarWithoutGradient.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WPKeyboardToolbarWithoutGradient.m; sourceTree = "<group>"; };
 		857F55C317CEC5E100E154E1 /* toggleButtonMain-ios7@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "toggleButtonMain-ios7@2x.png"; sourceTree = "<group>"; };
 		857F55C417CEC5E100E154E1 /* toggleButtonExtended-ios7@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "toggleButtonExtended-ios7@2x.png"; sourceTree = "<group>"; };
 		857F55C517CEC5E100E154E1 /* keyboardButtoniPadHighlighted-ios7@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "keyboardButtoniPadHighlighted-ios7@2x.png"; sourceTree = "<group>"; };
@@ -3009,8 +3006,6 @@
 				85495F4717C6D9A500871A7A /* CommentViewController.xib */,
 				850DE05F17CD4611003A1057 /* NewNotificationsTableViewCell.h */,
 				850DE06017CD4611003A1057 /* NewNotificationsTableViewCell.m */,
-				857F55B617CEA2B200E154E1 /* WPKeyboardToolbarWithoutGradient.h */,
-				857F55B717CEA2B200E154E1 /* WPKeyboardToolbarWithoutGradient.m */,
 				85D2415617D0701A00AF090E /* UIViewController+iOS7StyleChanges.h */,
 				85D2415717D0701A00AF090E /* UIViewController+iOS7StyleChanges.m */,
 				857F961317D950AB0071D9D1 /* WPTableViewSectionHeaderView.h */,
@@ -5122,7 +5117,6 @@
 				851734431798C64700A30E27 /* NSURL+Util.m in Sources */,
 				E1D95EB817A28F5E00A3E9F3 /* WPActivityDefaults.m in Sources */,
 				E1ECF7DF17A7CEE600535A05 /* ViewAdminButton.m in Sources */,
-				857F55B817CEA2B200E154E1 /* WPKeyboardToolbarWithoutGradient.m in Sources */,
 				E1AC282D18282423004D394C /* SFHFKeychainUtils.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
