@@ -159,6 +159,11 @@
 }
 
 - (void)setupView {
+    if (IS_IPAD) {
+        self.backgroundColor = [UIColor UIColorFromHex:0xcfd2d6];
+    } else {
+        self.backgroundColor = [UIColor UIColorFromHex:0xd9dbdf];
+    }
     [self buildMainView];
     [self setupDoneButton];
 }
