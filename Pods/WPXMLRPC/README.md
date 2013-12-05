@@ -11,9 +11,9 @@ networking code, and a few additions of our own.
 WordPress XML-RPC uses [CocoaPods](http://cocoapods.org/) for easy
 dependency management.
 
-Until we are ready for a 1.0 release, you can add this to your Podfile:
+Just add this to your Podfile and run `pod install`:
 
-	pod 'WPXMLRPC', :podspec => 'https://raw.github.com/wordpress-mobile/wpxmlrpc/master/WPXMLRPC.podspec'
+	pod 'wpxmlrpc', '~> 0.1'
 
 Another option, if you don't use CocoaPods, is to copy the `WPXMLRPC`
 folder to your project.
