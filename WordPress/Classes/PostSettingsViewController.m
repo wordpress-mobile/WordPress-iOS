@@ -25,6 +25,7 @@
 
 static NSString *const LocationServicesCellIdentifier = @"LocationServicesCellIdentifier";
 static NSString *const TableViewActivityCellIdentifier = @"TableViewActivityCellIdentifier";
+static NSString *const RemoveGeotagCellIdentifier = @"RemoveGeotagCellIdentifier";
 
 @interface PostSettingsViewController () <UINavigationControllerDelegate, UIImagePickerControllerDelegate,
                                           UIPopoverControllerDelegate>
@@ -65,7 +66,6 @@ static NSString *const TableViewActivityCellIdentifier = @"TableViewActivityCell
 @property (nonatomic, strong) IBOutlet UITableViewCell *mapGeotagTableViewCell;
 @property (nonatomic, strong) CLLocationManager *locationManager;
 @property (nonatomic, strong) CLGeocoder *reverseGeocoder;
-@property (nonatomic, strong) UITableViewCell *removeGeotagTableViewCell;
 @property (nonatomic, strong) PostAnnotation *annotation;
 @property (nonatomic, strong) NSString *address;
 @property (nonatomic, assign) BOOL isUpdatingLocation, isUploadingFeaturedImage;
@@ -216,6 +216,7 @@ static NSString *const TableViewActivityCellIdentifier = @"TableViewActivityCell
     [self.tableView addGestureRecognizer:gestureRecognizer];
 
     [self.tableView registerClass:[WPTableViewCell class] forCellReuseIdentifier:LocationServicesCellIdentifier];
+    [self.tableView registerClass:[WPTableViewCell class] forCellReuseIdentifier:RemoveGeotagCellIdentifier];
     [self.tableView registerNib:[UINib nibWithNibName:@"WPTableViewActivityCell" bundle:nil] forCellReuseIdentifier:TableViewActivityCellIdentifier];
 }
 
@@ -452,6 +453,7 @@ static NSString *const TableViewActivityCellIdentifier = @"TableViewActivityCell
                     }
                     cell.textLabel.text = NSLocalizedString(@"Categories", @"Label for the categories field. Should be the same as WP core.");
                     cell.detailTextLabel.text = [NSString decodeXMLCharactersIn:[self.post categoriesText]];
+                    cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
                     [WPStyleGuide configureTableViewCell:cell];
                     return cell;
                 }
@@ -552,8 +554,9 @@ static NSString *const TableViewActivityCellIdentifier = @"TableViewActivityCell
             if (cell == nil) {
                 cell = [[WPTableViewCell alloc] initWithStyle:UITableViewCellStyleValue1 reuseIdentifier:PostFormatCellIdentifier];
             }
-
+            
             cell.textLabel.text = NSLocalizedString(@"Post Format", @"The post formats available for the post. Should be the same as in core WP.");
+            cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
             self.postFormatLabel = cell.detailTextLabel;
 
             if ([self.formatsList count] != 0) {
@@ -585,24 +588,24 @@ static NSString *const TableViewActivityCellIdentifier = @"TableViewActivityCell
                 }
             }
         } else {
-            return [self getGeolocationCellWithIndexPath:indexPath];
+            return [self getGeolocationCellWithIndexPath:indexPath forTableView:aTableView];
         }
         break;
     case 4:
-        return [self getGeolocationCellWithIndexPath:indexPath];
+        return [self getGeolocationCellWithIndexPath:indexPath forTableView:aTableView];
         break;
 	}
 
     return nil;
 }
 
-- (UITableViewCell*)getGeolocationCellWithIndexPath:(NSIndexPath*)indexPath {
+- (UITableViewCell*)getGeolocationCellWithIndexPath:(NSIndexPath*)indexPath forTableView:(UITableView *)tableView {
     switch (indexPath.row) {
         case 0: // Add/update location
         {
             // If location services are disabled at the app level [CLLocationManager locationServicesEnabled] will be true, but the location will be nil.
             if(!self.post.blog.geolocationEnabled) {
-                UITableViewCell *cell = [self.tableView dequeueReusableCellWithIdentifier:@"GeolocationDisabledCell"];
+                UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:@"GeolocationDisabledCell"];
                 if (!cell) {
                     cell = [[WPTableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:@"GeolocationDisabledCell"];
                     cell.textLabel.text = NSLocalizedString(@"Enable Geotagging to Edit", @"Prompt the user to enable geolocation tagging on their blog.");
@@ -612,7 +615,7 @@ static NSString *const TableViewActivityCellIdentifier = @"TableViewActivityCell
                 return cell;
 
             } else if(![CLLocationManager locationServicesEnabled] || [self.locationManager location] == nil) {
-                WPTableViewCell *cell = (WPTableViewCell *) [self.tableView dequeueReusableCellWithIdentifier:LocationServicesCellIdentifier forIndexPath:indexPath];
+                WPTableViewCell *cell = (WPTableViewCell *) [tableView dequeueReusableCellWithIdentifier:LocationServicesCellIdentifier forIndexPath:indexPath];
                 cell.textLabel.text = NSLocalizedString(@"Please Enable Location Services", @"Prompt the user to enable location services on their device.");
                 cell.textLabel.textAlignment = NSTextAlignmentCenter;
                 [WPStyleGuide configureTableViewActionCell:cell];
@@ -620,7 +623,7 @@ static NSString *const TableViewActivityCellIdentifier = @"TableViewActivityCell
                 return cell;
 
             } else {
-                WPTableViewActivityCell *activityCell = (WPTableViewActivityCell *)[self.tableView dequeueReusableCellWithIdentifier:TableViewActivityCellIdentifier forIndexPath:indexPath];
+                WPTableViewActivityCell *activityCell = (WPTableViewActivityCell *)[tableView dequeueReusableCellWithIdentifier:TableViewActivityCellIdentifier forIndexPath:indexPath];
                 if (self.isUpdatingLocation) {
                     activityCell.textLabel.text = NSLocalizedString(@"Finding your location...", @"Geo-tagging posts, status message when geolocation is found.");
                     [activityCell.spinner startAnimating];
@@ -640,9 +643,6 @@ static NSString *const TableViewActivityCellIdentifier = @"TableViewActivityCell
         case 1:
         {
             DDLogVerbose(@"Reloading map");
-            if (self.mapGeotagTableViewCell == nil) {
-                self.mapGeotagTableViewCell = [[UITableViewCell alloc] initWithFrame:CGRectMake(0, 0, self.tableView.frame.size.width, 188)];
-            }
             [self.mapView removeAnnotation:self.annotation];
             self.annotation = [[PostAnnotation alloc] initWithCoordinate:self.post.geolocation.coordinate];
             [self.mapView addAnnotation:self.annotation];
@@ -683,25 +683,18 @@ static NSString *const TableViewActivityCellIdentifier = @"TableViewActivityCell
             self.coordinateLabel.font = [WPStyleGuide regularTextFont];
             self.coordinateLabel.textColor = [WPStyleGuide allTAllShadeGrey];
             
-            [self.mapGeotagTableViewCell addSubview:self.mapView];
-            [self.mapGeotagTableViewCell addSubview:self.addressLabel];
-            [self.mapGeotagTableViewCell addSubview:self.coordinateLabel];
-            
             return self.mapGeotagTableViewCell;
-            break;
         }
         case 2:
         {
-            if (self.removeGeotagTableViewCell == nil) {
-                self.removeGeotagTableViewCell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:@"RemoveGeotag"];
-            }
-            self.removeGeotagTableViewCell.textLabel.text = NSLocalizedString(@"Remove Location", @"Used for Geo-tagging posts by latitude and longitude. Basic form.");
-            self.removeGeotagTableViewCell.textLabel.textAlignment = NSTextAlignmentCenter;
-            [WPStyleGuide configureTableViewActionCell:self.removeGeotagTableViewCell];
-            return self.removeGeotagTableViewCell;
-            break;
+            WPTableViewCell *cell = (WPTableViewCell *)[tableView dequeueReusableCellWithIdentifier:RemoveGeotagCellIdentifier forIndexPath:indexPath];
+            cell.textLabel.text = NSLocalizedString(@"Remove Location", @"Used for Geo-tagging posts by latitude and longitude. Basic form.");
+            cell.textLabel.textAlignment = NSTextAlignmentCenter;
+            [WPStyleGuide configureTableViewActionCell:cell];
+            return cell;
         }
     }
+    
     return nil;
 }
 
