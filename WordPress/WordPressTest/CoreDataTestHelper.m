@@ -115,6 +115,8 @@
 }
 
 - (void)reset {
+    [[ContextManager sharedInstance].mainContext reset];
+    [[ContextManager sharedInstance].backgroundContext reset];
     [ContextManager sharedInstance].mainContext = nil;
     [ContextManager sharedInstance].backgroundContext = nil;
     [ContextManager sharedInstance].persistentStoreCoordinator = nil;
