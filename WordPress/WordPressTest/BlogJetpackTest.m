@@ -54,7 +54,7 @@
 
 - (void)testAssertionsOnWPcom {
     ATHStart();
-    WPAccount *wpComAccount = [WPAccount createOrUpdateWordPressComAccountWithUsername:@"user" password:@"pass" authToken:@"token" context:[ContextManager sharedInstance].mainContext];
+    WPAccount *wpComAccount = [WPAccount createOrUpdateWordPressComAccountWithUsername:@"user" password:@"pass" authToken:nil context:[ContextManager sharedInstance].mainContext];
     ATHEnd();
     
     _blog = (Blog *)[[CoreDataTestHelper sharedHelper] insertEntityIntoMainContextWithName:@"Blog"];
