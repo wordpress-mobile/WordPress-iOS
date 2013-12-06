@@ -8,11 +8,20 @@
 
 #import <UIKit/UIKit.h>
 
+@class WPNoResultsView;
+@protocol WPNoResultsViewDelegate <NSObject>
+
+@optional
+- (void)didTapNoResultsView:(WPNoResultsView *)noResultsView;
+@end
+
 @interface WPNoResultsView : UIView
 
-+ (WPNoResultsView *)noResultsViewWithTitle:(NSString *)titleText message:(NSString *)messageText accessoryView:(UIView *)accessoryView;
+@property (nonatomic, weak) id<WPNoResultsViewDelegate> delegate;
 
-- (void)setupWithTitle:(NSString *)titleText message:(NSString *)messageText accessoryView:(UIView *)accessoryView;
++ (WPNoResultsView *)noResultsViewWithTitle:(NSString *)titleText message:(NSString *)messageText accessoryView:(UIView *)accessoryView buttonTitle:(NSString *)buttonTitle;
+
+- (void)setupWithTitle:(NSString *)titleText message:(NSString *)messageText accessoryView:(UIView *)accessoryView buttonTitle:(NSString *)buttonTitle;
 - (void)showInView:(UIView *)view;
 - (void)centerInSuperview;
 
