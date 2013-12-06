@@ -28,7 +28,7 @@ NSString * const WPBlogRestorationKey = @"WPBlogRestorationKey";
 @property (nonatomic, strong, readonly) UIView *swipeView;
 @property (nonatomic, strong) UITableViewCell *swipeCell;
 @property (nonatomic, strong) UIView *noResultsView;
-@property (nonatomic, strong) UIActivityIndicatorView *noResultsAcitivtyIndicator;
+@property (nonatomic, strong) UIActivityIndicatorView *noResultsActivityIndicator;
 
 @end
 
@@ -570,20 +570,20 @@ NSString * const WPBlogRestorationKey = @"WPBlogRestorationKey";
     }
     
     [self.noResultsView removeFromSuperview];
-    [self.noResultsAcitivtyIndicator stopAnimating];
-    [self.noResultsAcitivtyIndicator removeFromSuperview];
+    [self.noResultsActivityIndicator stopAnimating];
+    [self.noResultsActivityIndicator removeFromSuperview];
     
     if (self.resultsController && [[_resultsController fetchedObjects] count] == 0) {
         if (self.isSyncing) {
             // Show activity indicator view when syncing is occuring
             // and the fetched results controller has no objects
             
-            if (self.noResultsAcitivtyIndicator == nil) {
-                self.noResultsAcitivtyIndicator = [self createNoResultsActivityIndicator];
+            if (self.noResultsActivityIndicator == nil) {
+                self.noResultsActivityIndicator = [self createNoResultsActivityIndicator];
             }
             
-            [self.noResultsAcitivtyIndicator startAnimating];
-            [self.tableView addSubview:self.noResultsAcitivtyIndicator];
+            [self.noResultsActivityIndicator startAnimating];
+            [self.tableView addSubview:self.noResultsActivityIndicator];
         } else {
             // Show no results view if the fetched results controller
             // has no objects and syncing is not happening.
