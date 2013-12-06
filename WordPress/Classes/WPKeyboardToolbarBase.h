@@ -21,11 +21,10 @@
 - (void)keyboardToolbarButtonItemPressed:(WPKeyboardToolbarButtonItem *)buttonItem;
 @end
 
-@interface WPKeyboardToolbarBase : UIView<UIInputViewAudioFeedback> {
-    UIView *mainView, *extendedView;
-}
+@interface WPKeyboardToolbarBase : UIView<UIInputViewAudioFeedback>
 
 @property (nonatomic, weak) id<WPKeyboardToolbarDelegate> delegate;
+@property (nonatomic, strong) UIView *mainView;
 @property (nonatomic, strong) WPKeyboardToolbarButtonItem *boldButton;
 @property (nonatomic, strong) WPKeyboardToolbarButtonItem *italicsButton;
 @property (nonatomic, strong) WPKeyboardToolbarButtonItem *underlineButton;
