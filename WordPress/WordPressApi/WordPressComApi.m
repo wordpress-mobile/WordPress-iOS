@@ -37,10 +37,10 @@ NSString *const WordPressComApiErrorMessageKey = @"WordPressComApiErrorMessageKe
 
 #ifdef DEBUG
 NSString *const WordPressComApiPushAppId = @"org.wordpress.appstore.dev";
-#elif
+#else
 #ifdef INTERNAL_BUILD
 NSString *const WordPressComApiPushAppId = @"org.wordpress.internal";
-#elif
+#else
 NSString *const WordPressComApiPushAppId = @"org.wordpress.appstore";
 #endif
 #endif

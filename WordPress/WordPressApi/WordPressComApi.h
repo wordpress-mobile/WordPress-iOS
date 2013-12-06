@@ -39,7 +39,7 @@ extern NSString *const WordPressComApiPushAppId;
 @property (nonatomic,readonly,strong) NSString *password;
 @property (nonatomic, readonly, strong) NSString *authToken;
 
-+ (WordPressComApi *)sharedApi DEPRECATED_MSG_ATTRIBUTE("Use [[WPAccount defaultWordPressComAccount] restApi] instead");
++ (WordPressComApi *)sharedApi; // DEPRECATED_MSG_ATTRIBUTE("Use [[WPAccount defaultWordPressComAccount] restApi] instead");
 /**
  Returns an API without an associated user
  

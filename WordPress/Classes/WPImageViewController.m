@@ -24,33 +24,6 @@
 @implementation WPImageViewController
 
 
-+ (id)presentAsModalWithImage:(UIImage *)image {
-	UIViewController *controller = [[self alloc] initWithImage:image];
-	controller.modalTransitionStyle = UIModalTransitionStyleCrossDissolve;
-	controller.modalPresentationStyle = UIModalPresentationFullScreen;
-    [[[WordPressAppDelegate sharedWordPressApplicationDelegate] navigationController] presentViewController:controller animated:YES completion:nil];
-	return controller;
-}
-
-
-+ (id)presentAsModalWithURL:(NSURL *)url {
-	UIViewController *controller = [[self alloc] initWithURL:url];
-	controller.modalTransitionStyle = UIModalTransitionStyleCrossDissolve;
-	controller.modalPresentationStyle = UIModalPresentationFullScreen;
-    [[[WordPressAppDelegate sharedWordPressApplicationDelegate] navigationController] presentViewController:controller animated:YES completion:nil];
-	return controller;
-}
-
-
-+ (id)presentAsModalWithImage:(UIImage *)image andURL:(NSURL *)url {
-	UIViewController *controller = [[self alloc] initWithImage:image andURL:url];
-	controller.modalTransitionStyle = UIModalTransitionStyleCrossDissolve;
-	controller.modalPresentationStyle = UIModalPresentationFullScreen;
-    [[[WordPressAppDelegate sharedWordPressApplicationDelegate] navigationController] presentViewController:controller animated:YES completion:nil];
-	return controller;
-}
-
-
 #pragma mark - LifeCycle Methods
 
 - (id)initWithImage:(UIImage *)image {
