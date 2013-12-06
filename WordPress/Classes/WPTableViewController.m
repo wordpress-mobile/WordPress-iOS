@@ -574,17 +574,16 @@ NSString * const WPBlogRestorationKey = @"WPBlogRestorationKey";
     [self.noResultsAcitivtyIndicator removeFromSuperview];
     
     if (self.resultsController && [[_resultsController fetchedObjects] count] == 0) {
-        
         if (self.isSyncing) {
             // Show activity indicator view when syncing is occuring
             // and the fetched results controller has no objects
+            
             if (self.noResultsAcitivtyIndicator == nil) {
                 self.noResultsAcitivtyIndicator = [self createNoResultsActivityIndicator];
             }
             
             [self.noResultsAcitivtyIndicator startAnimating];
             [self.tableView addSubview:self.noResultsAcitivtyIndicator];
-            
         } else {
             // Show no results view if the fetched results controller
             // has no objects and syncing is not happening.
@@ -592,10 +591,8 @@ NSString * const WPBlogRestorationKey = @"WPBlogRestorationKey";
             if (self.noResultsView == nil) {
                 self.noResultsView = [self createNoResultsView];
             }
-            
             [self.tableView addSubviewWithFadeAnimation:self.noResultsView];
         }
-        
     }
 }
 
