@@ -72,6 +72,17 @@ typedef enum {
 	_resultsController.delegate = nil;
     self.tableView.delegate = nil;
     self.postView.delegate = nil;
+    
+    self.activityFooter = nil;
+	self.postView = nil;
+	self.readerCommentFormView = nil;
+	self.readerReblogFormView = nil;
+	self.commentButton = nil;
+	self.likeButton = nil;
+	self.reblogButton = nil;
+	self.shareButton = nil;
+	
+    [[NSNotificationCenter defaultCenter] removeObserver:self];
 }
 
 - (id)initWithPost:(ReaderPost *)post featuredImage:(UIImage *)image {
@@ -156,21 +167,6 @@ typedef enum {
     }
 	
 	[[NSNotificationCenter defaultCenter] removeObserver:self];
-}
-
-- (void)viewDidUnload {
-	[super viewDidUnload];
-
-	self.activityFooter = nil;
-	self.postView = nil;
-	self.readerCommentFormView = nil;
-	self.readerReblogFormView = nil;
-	self.commentButton = nil;
-	self.likeButton = nil;
-	self.reblogButton = nil;
-	self.shareButton = nil;
-	
-    [[NSNotificationCenter defaultCenter] removeObserver:self];
 }
 
 - (void)didRotateFromInterfaceOrientation:(UIInterfaceOrientation)fromInterfaceOrientation {
