@@ -15,11 +15,9 @@
 - (void)didTapNoResultsView:(WPNoResultsView *)noResultsView;
 @end
 
-@interface WPNoResultsView : UIView {
-    id<WPNoResultsViewDelegate> delegate;
-}
+@interface WPNoResultsView : UIView
 
-@property (nonatomic, assign) id<WPNoResultsViewDelegate> delegate;
+@property (nonatomic, weak) id<WPNoResultsViewDelegate> delegate;
 
 + (WPNoResultsView *)noResultsViewWithTitle:(NSString *)titleText message:(NSString *)messageText accessoryView:(UIView *)accessoryView buttonTitle:(NSString *)buttonTitle;
 

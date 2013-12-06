@@ -37,15 +37,7 @@
 
 - (void)dealloc {
     [[NSNotificationCenter defaultCenter] removeObserver:self];
-}
-
-- (id<WPNoResultsViewDelegate>)delegate
-{
-    return delegate;
-}
-- (void)setDelegate:(id<WPNoResultsViewDelegate>)newDelegate
-{
-    delegate = newDelegate;
+    self.delegate = nil;
 }
 
 - (void)layoutSubviews {
@@ -191,8 +183,8 @@
 
 - (void)buttonAction:(id)sender
 {
-    if ([delegate respondsToSelector:@selector(didTapNoResultsView:)]) {
-        [delegate didTapNoResultsView:self];
+    if ([self.delegate respondsToSelector:@selector(didTapNoResultsView:)]) {
+        [self.delegate didTapNoResultsView:self];
     }
 }
 
