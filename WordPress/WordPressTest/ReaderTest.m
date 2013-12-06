@@ -136,7 +136,6 @@
 	ATHEnd();
 }
 
-
 - (void)testGetComments {
 	ATHStart();
 	[ReaderPost getCommentsForPost:7 fromSite:@"en.blog.wordpress.com" withParameters:nil success:^(AFHTTPRequestOperation *operation, id responseObject) {
@@ -149,35 +148,33 @@
 	ATHEnd();
 }
 
-
-- (void)checkResultForPath:(NSString *)path andResponseObject:(id)responseObject {
-	NSDictionary *resp = (NSDictionary *)responseObject;
-	NSArray *postsArr = [resp objectForKey:@"posts"];
-    if (!postsArr || ![postsArr isKindOfClass:[NSArray class]]) {
-        XCTFail(@"Posts is not an array");
-        return;
-    }
-    ATHStart();
-	NSManagedObjectContext *moc = [[ContextManager sharedInstance] backgroundContext];
-    // The sync includes a ATHNotify() via the context merge
-	[ReaderPost syncPostsFromEndpoint:path withArray:postsArr withContext:moc success:nil];
-    ATHEnd();
-
-	NSArray *posts = [ReaderPost fetchPostsForEndpoint:path withContext:moc];
-	
-	if([posts count] == 0) {
-		XCTFail(@"No posts synced for path: %@", path);
-	}
-	NSLog(@"Synced: %i, Fetched: %i", [postsArr count], [posts count]);
-	XCTAssertEqual([posts count], [postsArr count], @"Synced posts should equal fetched posts.");
-}
-
 - (void)endpointTestWithPath:(NSString *)path {
 	ATHStart();
-    __block id response = nil;
 	[ReaderPost getPostsFromEndpoint:path withParameters:nil loadingMore:NO success:^(AFHTTPRequestOperation *operation, id responseObject) {
-        response = responseObject;
-        [self checkResultForPath:path andResponseObject:response];
+        
+        ATHWait();
+        
+        NSDictionary *resp = (NSDictionary *)responseObject;
+        NSArray *postsArr = [resp objectForKey:@"posts"];
+        if (!postsArr || ![postsArr isKindOfClass:[NSArray class]]) {
+            XCTFail(@"Posts is not an array");
+            return;
+        }
+        
+        if ([postsArr count] == 0) {
+            XCTFail(@"There must be posts from this endpoint to continue");
+            return;
+        }
+        
+        NSManagedObjectContext *moc = [[ContextManager sharedInstance] mainContext];
+        NSArray *posts = [ReaderPost fetchPostsForEndpoint:path withContext:moc];
+        
+        if ([posts count] == 0) {
+            XCTFail(@"No posts synced for path: %@", path);
+        }
+        NSLog(@"Synced: %i, Fetched: %i", [postsArr count], [posts count]);
+        XCTAssertEqual([posts count], [postsArr count], @"Synced posts should equal fetched posts.");
+        
 		ATHNotify();
 
 	} failure:^(AFHTTPRequestOperation *operation, NSError *error) {
