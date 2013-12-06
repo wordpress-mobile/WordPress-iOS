@@ -740,7 +740,12 @@ NSString *const ReaderExtrasArrayKey = @"ReaderExtrasArrayKey";
 	
 	NSString *path = @"reader/topics";
 	
-	[[WordPressComApi sharedApi] getPath:path parameters:nil success:success failure:failure];
+    // There should probably be a better check here
+    if ([[WPAccount defaultWordPressComAccount] restApi].authToken) {
+        [[WPAccount defaultWordPressComAccount].restApi getPath:path parameters:nil success:success failure:failure];
+    } else {
+        [[WordPressComApi anonymousApi] getPath:path parameters:nil success:success failure:failure];
+    }
 }
 
 
@@ -752,7 +757,12 @@ NSString *const ReaderExtrasArrayKey = @"ReaderExtrasArrayKey";
 	
 	NSString *path = [NSString stringWithFormat:@"sites/%@/posts/%i/replies", siteID, postID];
 	
-	[[WordPressComApi sharedApi] getPath:path parameters:params success:success failure:failure];
+    if ([[WPAccount defaultWordPressComAccount] restApi].authToken) {
+        [[WordPressComApi anonymousApi] getPath:path parameters:params success:success failure:failure];
+    } else {
+        [[WPAccount defaultWordPressComAccount].restApi getPath:path parameters:params success:success failure:failure];
+    }
+	
 }
 
 
@@ -762,7 +772,15 @@ NSString *const ReaderExtrasArrayKey = @"ReaderExtrasArrayKey";
 					 success:(WordPressComApiRestSuccessResponseBlock)success
 					 failure:(WordPressComApiRestSuccessFailureBlock)failure {
 	WPFLogMethod();
-	[[WordPressComApi sharedApi] getPath:path
+    
+    WordPressComApi *api;
+    if ([[WPAccount defaultWordPressComAccount] restApi].authToken) {
+        api = [[WPAccount defaultWordPressComAccount] restApi];
+    } else {
+        api = [WordPressComApi anonymousApi];
+    }
+    
+	[api getPath:path
 							  parameters:params
 								 success:^(AFHTTPRequestOperation *operation, id responseObject) {
 									 
