@@ -171,7 +171,6 @@
 	}
 	NSLog(@"Syced: %i, Fetched: %i", [postsArr count], [posts count]);
 	XCTAssertEqual([posts count], [postsArr count], @"Synced posts should equal fetched posts.");
-
 }
 
 - (void)endpointTestWithPath:(NSString *)path {

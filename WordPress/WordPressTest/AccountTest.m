@@ -39,7 +39,7 @@
     XCTAssertNil([WPAccount defaultWordPressComAccount]);
     
     ATHStart();
-    WPAccount *_account = [WPAccount createOrUpdateWordPressComAccountWithUsername:@"user" password:@"pass" authToken:@"token" context:[ContextManager sharedInstance].mainContext];
+    WPAccount *_account = [WPAccount createOrUpdateWordPressComAccountWithUsername:@"user" password:@"pass" authToken:nil context:[ContextManager sharedInstance].mainContext];
     ATHEnd();
     
     XCTAssertNil([WPAccount defaultWordPressComAccount]);
@@ -49,7 +49,7 @@
     XCTAssertEqualObjects([WPAccount defaultWordPressComAccount], _account);
     
     ATHStart();
-    WPAccount *_account2 = [WPAccount createOrUpdateWordPressComAccountWithUsername:@"user" password:@"pass" authToken:@"token" context:[ContextManager sharedInstance].mainContext];
+    WPAccount *_account2 = [WPAccount createOrUpdateWordPressComAccountWithUsername:@"user" password:@"pass" authToken:nil context:[ContextManager sharedInstance].mainContext];
     ATHEnd();
     
     XCTAssertNotNil(_account2);
