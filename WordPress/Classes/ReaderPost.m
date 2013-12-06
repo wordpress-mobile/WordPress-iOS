@@ -758,11 +758,10 @@ NSString *const ReaderExtrasArrayKey = @"ReaderExtrasArrayKey";
 	NSString *path = [NSString stringWithFormat:@"sites/%@/posts/%i/replies", siteID, postID];
 	
     if ([[WPAccount defaultWordPressComAccount] restApi].authToken) {
-        [[WordPressComApi anonymousApi] getPath:path parameters:params success:success failure:failure];
+        [[WPAccount defaultWordPressComAccount].restApi getPath:path parameters:params success:nil failure:nil];
     } else {
-        [[WPAccount defaultWordPressComAccount].restApi getPath:path parameters:params success:success failure:failure];
+        [[WordPressComApi anonymousApi] getPath:path parameters:params success:success failure:failure];
     }
-	
 }
 
 

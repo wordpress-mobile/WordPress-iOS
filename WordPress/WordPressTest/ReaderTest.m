@@ -166,9 +166,9 @@
 	NSArray *posts = [ReaderPost fetchPostsForEndpoint:path withContext:moc];
 	
 	if([posts count] == 0) {
-		XCTFail(@"No posts synced for path : %@", path);
+		XCTFail(@"No posts synced for path: %@", path);
 	}
-	NSLog(@"Syced: %i, Fetched: %i", [postsArr count], [posts count]);
+	NSLog(@"Synced: %i, Fetched: %i", [postsArr count], [posts count]);
 	XCTAssertEqual([posts count], [postsArr count], @"Synced posts should equal fetched posts.");
 }
 
