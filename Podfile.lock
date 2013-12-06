@@ -60,7 +60,7 @@ DEPENDENCIES:
   - SVProgressHUD (~> 0.9)
   - UIDeviceIdentifier (~> 0.1)
   - WordPressApi (from `https://github.com/koke/WordPressApi.git`)
-  - wpxmlrpc (from `https://raw.github.com/wordpress-mobile/wpxmlrpc/master/wpxmlrpc.podspec`)
+  - wpxmlrpc (~> 0.2)
 
 EXTERNAL SOURCES:
   EmailChecker:
@@ -73,8 +73,6 @@ EXTERNAL SOURCES:
     :podspec: https://raw.github.com/koke/NSURL-IDN/master/Podfile
   WordPressApi:
     :git: https://github.com/koke/WordPressApi.git
-  wpxmlrpc:
-    :podspec: https://raw.github.com/wordpress-mobile/wpxmlrpc/master/wpxmlrpc.podspec
 
 SPEC CHECKSUMS:
   AFNetworking: 3cbae45f61a9f995cdbd56bd571223910d7f4e44
