@@ -120,8 +120,10 @@ NSString * const WPAccountDefaultWordPressComAccountChangedNotification = @"WPAc
 
 + (WPAccount *)createOrUpdateWordPressComAccountWithUsername:(NSString *)username password:(NSString *)password authToken:(NSString *)authToken context:(NSManagedObjectContext *)context {
     WPAccount *account = [self createOrUpdateSelfHostedAccountWithXmlrpc:DotcomXmlrpcKey username:username andPassword:password withContext:context];
-    account.isWpcom = YES;
-    account.authToken = authToken;
+    [account.managedObjectContext performBlockAndWait:^{
+        account.isWpcom = YES;
+        account.authToken = authToken;
+    }];
     return account;
 }
 
