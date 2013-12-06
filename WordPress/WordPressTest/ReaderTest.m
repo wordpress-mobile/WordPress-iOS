@@ -28,7 +28,10 @@
     [super setUp];
     
     // For account relationship on ReaderPost
-    WPAccount *account = [WPAccount createOrUpdateWordPressComAccountWithUsername:@"test" password:@"pass" authToken:@"token" context:[ContextManager sharedInstance].mainContext];
+    ATHStart();
+    WPAccount *account = [WPAccount createOrUpdateWordPressComAccountWithUsername:@"test" password:@"pass" authToken:nil context:[ContextManager sharedInstance].mainContext];
+    ATHEnd();
+    
     [WPAccount setDefaultWordPressComAccount:account];
 }
 
@@ -37,14 +40,15 @@
     [super tearDown];
     [[CoreDataTestHelper sharedHelper] reset];
     
-    [WPAccount removeDefaultWordPressComAccountWithContext:[ContextManager sharedInstance].mainContext];
+    // Remove cached __defaultDotcomAccount
+    // Do not attempt to remove from core data -- contexts/PSC/PS destroyed above anyways
+    [WPAccount removeDefaultWordPressComAccountWithContext:nil];
 }
 
 /*
  Data
  */
 - (void)testPostsUpdateNotDuplicated {
-	
 	NSDictionary *dict = @{
 		@"ID":@106,
 		@"comment_count":@0,
@@ -111,9 +115,8 @@
 	NSUInteger secondCount = [results count];
 	
 	// See how'd we do.
-	NSLog(@"Starting Count:  %i  First Count:  %i  Second Cound: %i", startingCount, firstCount, secondCount);
+	NSLog(@"Starting Count:  %i  First Count:  %i  Second Count: %i", startingCount, firstCount, secondCount);
 	XCTAssertEqual(firstCount, secondCount, @"Count's should be equal.");
-
 }
 
 
