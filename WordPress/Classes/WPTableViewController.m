@@ -168,6 +168,8 @@ NSString * const WPBlogRestorationKey = @"WPBlogRestorationKey";
     [super setEditing:editing animated:animated];
 }
 
+#pragma mark - No Results View
+
 - (NSString *)noResultsTitleText
 {
     NSString *ttl = NSLocalizedString(@"No %@ yet", @"A string format. The '%@' will be replaced by the relevant type of object, posts, pages or comments.");
@@ -181,6 +183,11 @@ NSString * const WPBlogRestorationKey = @"WPBlogRestorationKey";
 }
 
 - (UIView *)noResultsAccessoryView
+{
+    return nil;
+}
+
+- (NSString *)noResultsButtonText
 {
     return nil;
 }
@@ -453,11 +460,20 @@ NSString * const WPBlogRestorationKey = @"WPBlogRestorationKey";
 #pragma mark - UIRefreshControl Methods
 
 - (void)refresh {
+    
+    if (![self userCanRefresh]) {
+        [self.refreshControl endRefreshing];
+        return;
+    }
+    
     didTriggerRefresh = YES;
 	[self syncItemsViaUserInteraction];
     [noResultsView removeFromSuperview];
 }
 
+- (BOOL)userCanRefresh {
+    return YES;
+}
 
 #pragma mark - UIScrollViewDelegate Methods
 
@@ -566,7 +582,10 @@ NSString * const WPBlogRestorationKey = @"WPBlogRestorationKey";
 
 - (UIView *)createNoResultsView {
 	
-	return [WPNoResultsView noResultsViewWithTitle:[self noResultsTitleText] message:[self noResultsMessageText] accessoryView:[self noResultsAccessoryView]];
+    WPNoResultsView *view = [WPNoResultsView noResultsViewWithTitle:[self noResultsTitleText] message:[self noResultsMessageText] accessoryView:[self noResultsAccessoryView] buttonTitle:[self noResultsButtonText]];
+    view.delegate = self;
+    
+	return view;
 }
 
 - (void)hideRefreshHeader {
