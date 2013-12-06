@@ -1,12 +1,11 @@
 #import "EditPostViewController_Internal.h"
-#import "WPSegmentedSelectionTableViewController.h"
-#import "Post.h"
 #import "AutosavingIndicatorView.h"
+#import "ContextManager.h"
+#import "IOS7CorrectedTextView.h"
 #import "NSString+XMLExtensions.h"
+#import "Post.h"
 #import "WPAddCategoryViewController.h"
 #import "WPAlertView.h"
-#import "IOS7CorrectedTextView.h"
-#import "ContextManager.h"
 
 NSTimeInterval kAnimationDuration = 0.3f;
 
@@ -19,6 +18,7 @@ typedef NS_ENUM(NSInteger, EditPostViewControllerAlertTag) {
     EditPostViewControllerAlertTagFailedMedia,
 };
 
+NSString *const EditPostViewControllerLastUsedBlogURL = @"EditPostViewControllerLastUsedBlogURL";
 NSString *const EditPostViewControllerDidAutosaveNotification = @"EditPostViewControllerDidAutosaveNotification";
 NSString *const EditPostViewControllerAutosaveDidFailNotification = @"EditPostViewControllerAutosaveDidFailNotification";
 
@@ -32,39 +32,23 @@ NSString *const EditPostViewControllerAutosaveDidFailNotification = @"EditPostVi
 @implementation EditPostViewController {
     IBOutlet IOS7CorrectedTextView *textView;
     IBOutlet UITextField *titleTextField;
-    IBOutlet UITextField *tagsTextField;
-    IBOutlet UILabel *titleLabel;
     IBOutlet UILabel *tapToStartWritingLabel;
-	IBOutlet UIView *contentView;
-	IBOutlet UIView *editView;
-	IBOutlet UIBarButtonItem *writeButton;
-	IBOutlet UIBarButtonItem *previewButton;
-	IBOutlet UIBarButtonItem *attachmentButton;
-    IBOutlet UIBarButtonItem *createCategoryBarButtonItem;
-    IBOutlet UIImageView *tabPointer;
-    IBOutlet UILabel *tagsLabel;
-    IBOutlet UILabel *categoriesLabel;
-    IBOutlet UIButton *categoriesButton;
-    
-    // iOS 7
     IBOutlet UIView *separatorView;
+    IBOutlet UIBarButtonItem *previewButton;
     IBOutlet UIBarButtonItem *leftPreviewSpacer;
     IBOutlet UIBarButtonItem *rightPreviewSpacer;
     IBOutlet UIBarButtonItem *rightMediaSpacer;
 
+    UIActionSheet *currentActionSheet;
+    UIAlertView *_failedMediaAlertView;
+    UITextField *__weak currentEditingTextField;
+    AutosavingIndicatorView *_autosavingIndicatorView;
     WPKeyboardToolbarBase *editorToolbar;
-    UIView *currentView;
+
     BOOL isShowingKeyboard;
     BOOL isExternalKeyboard;
-    BOOL isNewCategory;
-    UITextField *__weak currentEditingTextField;
-    WPSegmentedSelectionTableViewController *segmentedTableViewController;
-    UIActionSheet *currentActionSheet;
-
-    UIAlertView *_failedMediaAlertView;
     BOOL _isAutosaved;
     BOOL _isAutosaving;
-    AutosavingIndicatorView *_autosavingIndicatorView;
     NSUInteger _charactersChanged;
     AbstractPost *_backupPost;
 }
@@ -77,32 +61,73 @@ NSString *const EditPostViewControllerAutosaveDidFailNotification = @"EditPostVi
 CGFloat const EditPostViewControllerStandardOffset = 15.0;
 CGFloat const EditPostViewControllerTextViewOffset = 10.0;
 
++ (Blog *)blogForNewDraft {
+    // Try to get the last used blog, if there is one.
+    NSFetchRequest *fetchRequest = [NSFetchRequest fetchRequestWithEntityName:@"Blog"];
+    NSString *url = [[NSUserDefaults standardUserDefaults] stringForKey:EditPostViewControllerLastUsedBlogURL];
+    if (url) {
+        NSPredicate *predicate = [NSPredicate predicateWithFormat:@"url = %@", url];
+        [fetchRequest setPredicate:predicate];
+    }
+    fetchRequest.sortDescriptors = @[[NSSortDescriptor sortDescriptorWithKey:@"blogName" ascending:YES]];
+    NSFetchedResultsController *resultsController = [[NSFetchedResultsController alloc]
+                                                     initWithFetchRequest:fetchRequest
+                                                     managedObjectContext:[[ContextManager sharedInstance] mainContext]
+                                                     sectionNameKeyPath:nil
+                                                     cacheName:nil];
+    NSError *error = nil;
+    if (![resultsController performFetch:&error]) {
+        DDLogError(@"Couldn't fetch blogs: %@", [error localizedDescription]);
+        return nil;
+    }
+    
+    if([resultsController.fetchedObjects count] == 0) {
+        if (url) {
+            // Blog might have been removed from the app. Get the first available.
+            [[NSUserDefaults standardUserDefaults] removeObjectForKey:EditPostViewControllerLastUsedBlogURL];
+            [[NSUserDefaults standardUserDefaults] synchronize];
+            return [self blogForNewDraft];
+        }
+        return nil;
+    }
+    
+    return [resultsController.fetchedObjects objectAtIndex:0];
+}
+
 - (void)dealloc {
     _failedMediaAlertView.delegate = nil;
     [[NSNotificationCenter defaultCenter] removeObserver:self];
 }
 
+- (id)initWithDraftForLastUsedBlog {
+    Blog *blog = [EditPostViewController blogForNewDraft];
+    return [self initWithPost:[Post newDraftForBlog:blog]];
+}
+
 - (id)initWithPost:(AbstractPost *)aPost {
-    if (IS_IOS7) {
-        self = [super initWithNibName:@"EditPostViewControlleriOS7" bundle:nil];
-    } else {
-        self = [super initWithNibName:@"EditPostViewController" bundle:nil];
-    }
+    self = [super initWithNibName:@"EditPostViewControlleriOS7" bundle:nil];
     if (self) {
         self.apost = aPost;
+        [[NSUserDefaults standardUserDefaults] setObject:aPost.blog.url forKey:EditPostViewControllerLastUsedBlogURL];
+        [[NSUserDefaults standardUserDefaults] synchronize];
+        
         if (self.apost.remoteStatus == AbstractPostRemoteStatusLocal) {
             self.editMode = EditPostViewControllerModeNewPost;
         } else {
             self.editMode = EditPostViewControllerModeEditPost;
         }
     }
-    
     return self;
 }
 
 - (void)viewDidLoad {
     WPFLogMethod();
     [super viewDidLoad];
+    
+    self.navigationController.navigationBar.translucent = NO;
+    if(self.navigationController.navigationBarHidden) {
+        [self.navigationController setNavigationBarHidden:NO animated:YES];
+    }
     
     // Using performBlock: with the AbstractPost on the main context:
     // Prevents a hang on opening this view on slow and fast devices
@@ -120,71 +145,45 @@ CGFloat const EditPostViewControllerTextViewOffset = 10.0;
     [_backupPost cloneFrom:aPost];
 #endif
     
-    titleLabel.text = NSLocalizedString(@"Title:", @"Label for the title of the post field. Should be the same as WP core.");
-    tagsLabel.text = NSLocalizedString(@"Tags:", @"Label for the tags field. Should be the same as WP core.");
-    tagsTextField.placeholder = NSLocalizedString(@"Separate tags with commas", @"Placeholder text for the tags field. Should be the same as WP core.");
-    categoriesLabel.text = NSLocalizedString(@"Categories:", @"Label for the categories field. Should be the same as WP core.");
     tapToStartWritingLabel.text = NSLocalizedString(@"Tap here to begin writing", @"Placeholder for the main body text. Should hint at tapping to enter text (not specifying body text).");
 	tapToStartWritingLabel.textAlignment = NSTextAlignmentCenter;
 
-    if (IS_IOS7) {
-        // Setup Line Height
-        NSMutableParagraphStyle *style = [[NSMutableParagraphStyle alloc] init];
-        style.minimumLineHeight = 24;
-        style.maximumLineHeight = 24;
-        textView.typingAttributes = @{ NSParagraphStyleAttributeName: style };
-        
-        // Set title frame
-        CGRect titleFrame = titleTextField.frame;
-        titleFrame.origin.x = EditPostViewControllerStandardOffset;
-        titleFrame.size.width = CGRectGetWidth(self.view.bounds) - 2*EditPostViewControllerStandardOffset;
-        titleTextField.frame = titleFrame;
-        
-        // Set separator frame
-        CGRect separatorFrame = separatorView.frame;
-        separatorFrame.origin.y = CGRectGetMaxY(titleFrame);
-        separatorFrame.origin.x = EditPostViewControllerStandardOffset;
-        separatorFrame.size.width = CGRectGetWidth(self.view.bounds) - EditPostViewControllerStandardOffset;
-        separatorView.frame = separatorFrame;
-        separatorView.backgroundColor = [WPStyleGuide readGrey];
-        
-        textView.textContainerInset = UIEdgeInsetsMake(0.0f, EditPostViewControllerTextViewOffset, 0.0f, EditPostViewControllerTextViewOffset);
-    }
+    // Setup Line Height
+    NSMutableParagraphStyle *style = [[NSMutableParagraphStyle alloc] init];
+    style.minimumLineHeight = 24;
+    style.maximumLineHeight = 24;
+    textView.typingAttributes = @{ NSParagraphStyleAttributeName: style };
+    
+    // Set title frame
+    CGRect titleFrame = titleTextField.frame;
+    titleFrame.origin.x = EditPostViewControllerStandardOffset;
+    titleFrame.size.width = CGRectGetWidth(self.view.bounds) - 2*EditPostViewControllerStandardOffset;
+    titleTextField.frame = titleFrame;
+    
+    // Set separator frame
+    CGRect separatorFrame = separatorView.frame;
+    separatorFrame.origin.y = CGRectGetMaxY(titleFrame);
+    separatorFrame.origin.x = EditPostViewControllerStandardOffset;
+    separatorFrame.size.width = CGRectGetWidth(self.view.bounds) - EditPostViewControllerStandardOffset;
+    separatorView.frame = separatorFrame;
+    separatorView.backgroundColor = [WPStyleGuide readGrey];
+    
+    textView.textContainerInset = UIEdgeInsetsMake(0.0f, EditPostViewControllerTextViewOffset, 0.0f, EditPostViewControllerTextViewOffset);
+
     
     if (editorToolbar == nil) {
         CGRect frame = CGRectMake(0, 0, self.view.frame.size.width, WPKT_HEIGHT_PORTRAIT);
-        if (IS_IOS7) {
-            editorToolbar = [[WPKeyboardToolbarWithoutGradient alloc] initWithFrame:frame];
-        } else {
-            editorToolbar = [[WPKeyboardToolbar alloc] initWithFrame:frame];
-        }
+        editorToolbar = [[WPKeyboardToolbarWithoutGradient alloc] initWithFrame:frame];
         editorToolbar.delegate = self;
     }
     textView.inputAccessoryView = editorToolbar;
 
 	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(keyboardWillShow:) name:UIKeyboardWillShowNotification object:nil];
 	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(keyboardWillHide:) name:UIKeyboardWillHideNotification object:nil];
-	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(deviceDidRotate:) name:@"UIDeviceOrientationDidChangeNotification" object:nil];
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(newCategoryCreatedNotificationReceived:) name:WPNewCategoryCreatedAndUpdatedInBlogNotificationName object:nil];
 	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(insertMediaAbove:) name:@"ShouldInsertMediaAbove" object:nil];
 	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(insertMediaBelow:) name:@"ShouldInsertMediaBelow" object:nil];
 	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(removeMedia:) name:@"ShouldRemoveMedia" object:nil];	
-
-    currentView = editView;
-	writeButton.enabled = NO;
-    attachmentButton.enabled = NO;
 	
-	if (![self.postMediaViewController isDeviceSupportVideo] && !IS_IOS7){
-		// No video icon for older devices.
-        // Don't remove anything for IOS7 as we re-configured the icons in the XIB file.
-		NSMutableArray *toolbarItems = [NSMutableArray arrayWithArray:self.toolbar.items];
-		
-		[toolbarItems removeObjectAtIndex:5];
-		[self.toolbar setItems:toolbarItems];
-	}
-
-    self.hasLocation.enabled = NO;
-    
     if (_autosavingIndicatorView == nil) {
         _autosavingIndicatorView = [[AutosavingIndicatorView alloc] initWithFrame:CGRectZero];
         _autosavingIndicatorView.hidden = YES;
@@ -194,30 +193,19 @@ CGFloat const EditPostViewControllerTextViewOffset = 10.0;
         [self positionAutosaveView:nil];
     }
     
-    if (IS_IOS7) {
-        titleTextField.font = [WPStyleGuide postTitleFont];
-        textView.font = [WPStyleGuide regularTextFont];
-        self.view.backgroundColor = [WPStyleGuide itsEverywhereGrey];
-        self.toolbar.translucent = NO;
-        self.toolbar.barStyle = UIBarStyleDefault;
-        titleTextField.placeholder = NSLocalizedString(@"Enter title here", @"Label for the title of the post field. Should be the same as WP core.");
-        titleTextField.textColor = [WPStyleGuide littleEddieGrey];
-        textView.textColor = [WPStyleGuide littleEddieGrey];
-        self.toolbar.barTintColor = [WPStyleGuide littleEddieGrey];
-        self.navigationController.navigationBar.translucent = NO;
-        leftPreviewSpacer.width = -6.5;
-        rightPreviewSpacer.width = 5.0;
-        rightMediaSpacer.width = -5.0;
-    } else {
-        UIColor *color = [UIColor UIColorFromHex:0x222222];
-        writeButton.tintColor = color;
-        self.settingsButton.tintColor = color;
-        previewButton.tintColor = color;
-        attachmentButton.tintColor = color;
-        self.photoButton.tintColor = color;
-        self.movieButton.tintColor = color;
-        [self.toolbar setBackgroundImage:[UIImage imageNamed:@"toolbar_bg"] forToolbarPosition:UIToolbarPositionBottom barMetrics:UIBarMetricsDefault];
-    }
+    titleTextField.font = [WPStyleGuide postTitleFont];
+    textView.font = [WPStyleGuide regularTextFont];
+    self.view.backgroundColor = [WPStyleGuide itsEverywhereGrey];
+    self.toolbar.translucent = NO;
+    self.toolbar.barStyle = UIBarStyleDefault;
+    titleTextField.placeholder = NSLocalizedString(@"Enter title here", @"Label for the title of the post field. Should be the same as WP core.");
+    titleTextField.textColor = [WPStyleGuide littleEddieGrey];
+    textView.textColor = [WPStyleGuide littleEddieGrey];
+    self.toolbar.barTintColor = [WPStyleGuide littleEddieGrey];
+    self.navigationController.navigationBar.translucent = NO;
+    leftPreviewSpacer.width = -6.5;
+    rightPreviewSpacer.width = 5.0;
+    rightMediaSpacer.width = -5.0;
     
     for (UIView *item in self.toolbar.subviews) {
         if ([item respondsToSelector:@selector(setExclusiveTouch:)]) {
@@ -232,10 +220,8 @@ CGFloat const EditPostViewControllerTextViewOffset = 10.0;
     WPFLogMethod();
     [super viewWillAppear:animated];
 
-    if (IS_IOS7) {
-        self.title = [self editorTitle];
-        self.navigationItem.title = [self editorTitle];
-    }
+    self.title = [self editorTitle];
+    self.navigationItem.title = [self editorTitle];
 
 	[self refreshButtons];
 	
@@ -262,25 +248,19 @@ CGFloat const EditPostViewControllerTextViewOffset = 10.0;
 	[textView resignFirstResponder];
 }
 
-- (NSString *)statsPrefix
-{
-    if (_statsPrefix == nil)
+- (NSString *)statsPrefix {
+    if (_statsPrefix == nil) {
         return @"Post Detail";
-    else
-        return _statsPrefix;
+    }
+    return _statsPrefix;
 }
 
-- (NSString *)formattedStatEventString:(NSString *)event
-{
+- (NSString *)formattedStatEventString:(NSString *)event {
     return [NSString stringWithFormat:@"%@ - %@", self.statsPrefix, event];
 }
 
 #pragma mark -
 #pragma mark Instance Methods
-
-- (BOOL)shouldEnableMediaTab {
-    return ([[self.apost.media filteredSetUsingPredicate:[NSPredicate predicateWithFormat:@"mediaType != 'featured'"]] count] > 0) ;
-}
 
 - (NSString *)editorTitle {
     NSString *title = @"";
@@ -305,97 +285,7 @@ CGFloat const EditPostViewControllerTextViewOffset = 10.0;
     }
 }
 
-- (void)switchToView:(UIView *)newView {
-    if ([newView isEqual:editView]) {
-		writeButton.enabled = NO;
-		self.settingsButton.enabled = YES;
-		previewButton.enabled = YES;
-        attachmentButton.enabled = [self shouldEnableMediaTab];
-        
-    } else if ([newView isEqual:self.postSettingsViewController.view]) {
-		writeButton.enabled = YES;
-		self.settingsButton.enabled = NO;
-		previewButton.enabled = YES;
-        attachmentButton.enabled = [self shouldEnableMediaTab];
-        
-    } else if ([newView isEqual:self.postPreviewViewController.view]) {
-		writeButton.enabled = YES;
-		self.settingsButton.enabled = YES;
-		previewButton.enabled = NO;
-        attachmentButton.enabled = [self shouldEnableMediaTab];
-        
-	} else if ([newView isEqual:self.postMediaViewController.view]) {
-		writeButton.enabled = YES;
-		self.settingsButton.enabled = YES;
-		previewButton.enabled = YES;
-		attachmentButton.enabled = NO;
-	}
-	
-    newView.frame = currentView.frame;
-    [UIView beginAnimations:nil context:nil];
-    [UIView setAnimationDuration:0.2];
-    
-	CGRect pointerFrame = tabPointer.frame;
-    if ([newView isEqual:editView]) {
-		pointerFrame.origin.x = 22;
-    } else if ([newView isEqual:self.postSettingsViewController.view]) {
-		pointerFrame.origin.x = 61;
-    } else if ([newView isEqual:self.postPreviewViewController.view]) {
-		pointerFrame.origin.x = 101;
-	} else if ([newView isEqual:self.postMediaViewController.view]) {
-		if (IS_IPAD) {
-			if ([self.postMediaViewController isDeviceSupportVideo])
-				pointerFrame.origin.x = 646;
-			else
-				pointerFrame.origin.x = 688;
-		}
-		else {
-            pointerFrame.origin.x = [self pointerPositionForAttachmentsTab];
-		}
-	}
-	tabPointer.frame = pointerFrame;
-    [currentView removeFromSuperview];
-    [contentView addSubview:newView];
-    
-    [UIView commitAnimations];
-    
-    currentView = newView;
-}
-
-- (NSInteger)pointerPositionForAttachmentsTab {
-    if (UIInterfaceOrientationIsPortrait(self.interfaceOrientation)) {
-        if ([self.postMediaViewController isDeviceSupportVideo])
-            return 198;
-        else
-            return 240;
-    } else {
-        if ([self.postMediaViewController isDeviceSupportVideo])
-            return 358;
-        else
-            return 400;
-    }
-}
-
-- (IBAction)switchToEdit {
-    if (currentView != editView) {
-        [WPMobileStats flagProperty:StatsPropertyPostDetailClickedEdit forEvent:[self formattedStatEventString:StatsEventPostDetailClosedEditor]];
-        [self switchToView:editView];
-    }
-    self.navigationItem.title = [self editorTitle];
-}
-
-- (IBAction)switchToSettings {
-    if (currentView != self.postSettingsViewController.view) {
-        self.postSettingsViewController.statsPrefix = self.statsPrefix;
-        [WPMobileStats flagProperty:StatsPropertyPostDetailClickedSettings forEvent:[self formattedStatEventString:StatsEventPostDetailClosedEditor]];
-        [self switchToView:self.postSettingsViewController.view];
-    }
-	self.navigationItem.title = NSLocalizedString(@"Properties", nil);
-}
-
-// IOS 7 Version which pushes a view controller instead of "swapping" it
-- (IBAction)showSettings:(id)sender
-{
+- (IBAction)showSettings:(id)sender {
     [WPMobileStats flagProperty:StatsPropertyPostDetailClickedSettings forEvent:[self formattedStatEventString:StatsEventPostDetailClosedEditor]];
     PostSettingsViewController *vc = [[PostSettingsViewController alloc] initWithPost:self.apost];
     vc.statsPrefix = self.statsPrefix;
@@ -404,17 +294,7 @@ CGFloat const EditPostViewControllerTextViewOffset = 10.0;
     [self.navigationController pushViewController:vc animated:YES];
 }
 
-- (IBAction)switchToMedia {
-    if (currentView != self.postMediaViewController.view) {
-        [WPMobileStats flagProperty:StatsPropertyPostDetailClickedMedia forEvent:[self formattedStatEventString:StatsEventPostDetailClosedEditor]];
-        [self switchToView:self.postMediaViewController.view];
-    }
-	self.navigationItem.title = NSLocalizedString(@"Media", @"Post Editor / Media screen title.");
-}
-
-// IOS 7 Version which pushes a view controller instead of "swapping" it
-- (IBAction)showPreview:(id)sender
-{
+- (IBAction)showPreview:(id)sender {
     [WPMobileStats flagProperty:StatsPropertyPostDetailClickedPreview forEvent:[self formattedStatEventString:StatsEventPostDetailClosedEditor]];
 
     PostPreviewViewController *vc = [[PostPreviewViewController alloc] initWithPost:self.apost];
@@ -423,71 +303,23 @@ CGFloat const EditPostViewControllerTextViewOffset = 10.0;
     [self.navigationController pushViewController:vc animated:YES];
 }
 
-- (IBAction)switchToPreview {
-    if (currentView != self.postPreviewViewController.view) {
-        [WPMobileStats flagProperty:StatsPropertyPostDetailClickedPreview forEvent:[self formattedStatEventString:StatsEventPostDetailClosedEditor]];
-        [self switchToView:self.postPreviewViewController.view];
-    }
-	self.navigationItem.title = NSLocalizedString(@"Preview", @"Post Editor / Preview screen title.");
-}
-
-- (IBAction)addVideo:(id)sender {
-    [WPMobileStats flagProperty:StatsPropertyPostDetailClickedAddVideo forEvent:[self formattedStatEventString:StatsEventPostDetailClosedEditor]];
-    [self.postMediaViewController showVideoPickerActionSheet:sender];
-}
-
-- (IBAction)addPhoto:(id)sender {
-    [WPMobileStats flagProperty:StatsPropertyPostDetailClickedAddPhoto forEvent:[self formattedStatEventString:StatsEventPostDetailClosedEditor]];
-    [self.postMediaViewController showPhotoPickerActionSheet:sender];
-}
-
 - (IBAction)showMediaOptions:(id)sender {
     [WPMobileStats flagProperty:StatsPropertyPostDetailClickedMediaOptions forEvent:[self formattedStatEventString:StatsEventPostDetailClosedEditor]];
     PostMediaViewController *vc = [[PostMediaViewController alloc] initWithPost:self.apost];
-    vc.postDetailViewController = self;
     UIBarButtonItem *backButton = [[UIBarButtonItem alloc] initWithTitle:NSLocalizedString(@"Back", @"") style:UIBarButtonItemStyleBordered target:nil action:nil];
     self.navigationItem.backBarButtonItem = backButton;
     
     [self.navigationController pushViewController:vc animated:YES];
 }
 
-- (IBAction)showCategories:(id)sender {
-    [WPMobileStats flagProperty:StatsPropertyPostDetailClickedShowCategories forEvent:[self formattedStatEventString:StatsEventPostDetailClosedEditor]];
-    [textView resignFirstResponder];
-    [currentEditingTextField resignFirstResponder];
-    [self populateSelectionsControllerWithCategories];
-}
-
 - (CGRect)normalTextFrame {
-    CGFloat x = 0.0, y = 0.0;
-    if (IS_IPAD) {
-        y = 143;
-        if (IS_IOS7) {
-            y = CGRectGetMaxY(separatorView.frame);
-        }
-        CGFloat height = self.toolbar.frame.origin.y - y;
-        if ((self.interfaceOrientation == UIDeviceOrientationLandscapeLeft)
-            || (self.interfaceOrientation == UIDeviceOrientationLandscapeRight)) // Landscape
-            return CGRectMake(x, y, self.view.bounds.size.width - 2*x, height);
-        else // Portrait
-            return CGRectMake(x, y, self.view.bounds.size.width - 2*x, height);
-    } else {
-        y = 136.f;
-        if (IS_IOS7) {
-            // On IOS7 we get rid of the Tags and Categories fields, so place the textview right under the title
-            y = CGRectGetMaxY(separatorView.frame);
-        }
-        CGFloat height = self.toolbar.frame.origin.y - y;
-        if ((self.interfaceOrientation == UIDeviceOrientationLandscapeLeft)
-            || (self.interfaceOrientation == UIDeviceOrientationLandscapeRight)) // Landscape
-			return CGRectMake(x, y, self.view.bounds.size.width - 2*x, height);
-		else // Portrait
-			return CGRectMake(x, y, self.view.bounds.size.width - 2*x, height);
-    }
+    CGFloat x = 0.0;
+    CGFloat y = CGRectGetMaxY(separatorView.frame);
+    CGFloat height = self.toolbar.frame.origin.y - y;
+    return CGRectMake(x, y, self.view.bounds.size.width, height);
 }
 
-- (CGRect)textviewPlaceholderFrame
-{
+- (CGRect)textviewPlaceholderFrame {
     return CGRectInset(textView.frame, 7.f, 7.f);
 }
 
@@ -523,11 +355,6 @@ CGFloat const EditPostViewControllerTextViewOffset = 10.0;
     [self dismissViewControllerAnimated:YES completion:nil];
 
 	[[NSNotificationCenter defaultCenter] removeObserver:self];
-}
-
-- (void)refreshTags
-{
-    tagsTextField.text = self.post.tags;
 }
 
 - (void)refreshButtons {
@@ -578,158 +405,22 @@ CGFloat const EditPostViewControllerTextViewOffset = 10.0;
 
 - (void)refreshUIForCurrentPost {
     self.navigationItem.title = [self editorTitle];
-
-    if (self.post && self.post.geolocation != nil && self.post.blog.geolocationEnabled) {
-		self.hasLocation.enabled = YES;
-	}
-    
-    attachmentButton.enabled = [self shouldEnableMediaTab];
     
     titleTextField.text = self.apost.postTitle;
-    if (self.post && !IS_IOS7) {
-        tagsTextField.text = self.post.tags;
-        [categoriesButton setTitle:[NSString decodeXMLCharactersIn:[self.post categoriesText]] forState:UIControlStateNormal];
-        [categoriesButton.titleLabel setFont:[UIFont systemFontOfSize:16.0f]];
-    }
     
     if(self.apost.content == nil || [self.apost.content isEmpty]) {
         tapToStartWritingLabel.hidden = NO;
         textView.text = @"";
-    }
-    else {
+    } else {
         tapToStartWritingLabel.hidden = YES;
-        if ((self.apost.mt_text_more != nil) && ([self.apost.mt_text_more length] > 0))
+        if ((self.apost.mt_text_more != nil) && ([self.apost.mt_text_more length] > 0)) {
 			textView.text = [NSString stringWithFormat:@"%@\n<!--more-->\n%@", self.apost.content, self.apost.mt_text_more];
-		else
-			textView.text = self.apost.content;
-    }
-    
-    if (!IS_IOS7) {
-        [self setupForiOS6];
-    }
-
-    [self refreshButtons];
-}
-
-- (void)setupForiOS6 {
-    if (!self.postSettingsViewController) {
-        self.postSettingsViewController = [[PostSettingsViewController alloc] initWithPost:self.apost];
-        self.postSettingsViewController.postDetailViewController = self;
-        [self addChildViewController:self.postSettingsViewController];
-    }
-    
-    if (!self.postPreviewViewController) {
-        self.postPreviewViewController = [[PostPreviewViewController alloc] initWithPost:self.apost];
-        self.postPreviewViewController.postDetailViewController = self;
-        [self addChildViewController:self.postPreviewViewController];
-    }
-    
-    if (!self.postMediaViewController) {
-        self.postMediaViewController = [[PostMediaViewController alloc] initWithPost:self.apost];
-        self.postMediaViewController.postDetailViewController = self;
-        [self addChildViewController:self.postMediaViewController];
-    }
-    
-    self.postSettingsViewController.view.frame = editView.frame;
-    self.postMediaViewController.view.frame = editView.frame;
-    self.postPreviewViewController.view.frame = editView.frame;
-}
-
-
-- (void)populateSelectionsControllerWithCategories {
-    WPFLogMethod();
-    if (segmentedTableViewController == nil) {
-        segmentedTableViewController = [[WPSegmentedSelectionTableViewController alloc]
-                                        initWithNibName:@"WPSelectionTableViewController"
-                                        bundle:nil];
-    }
-	
-	NSArray *cats = [self.post.blog sortedCategories];
-
-	NSArray *selObject = [self.post.categories allObjects];
-	
-    [segmentedTableViewController populateDataSource:cats    //datasource
-									   havingContext:kSelectionsCategoriesContext
-									 selectedObjects:selObject
-									   selectionType:kCheckbox
-										 andDelegate:self];
-	
-    segmentedTableViewController.title = NSLocalizedString(@"Categories", @"");
-    if ([createCategoryBarButtonItem respondsToSelector:@selector(setTintColor:)]) {
-        createCategoryBarButtonItem = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"navbar_add"]
-                                                                       style:[WPStyleGuide barButtonStyleForBordered]
-                                                                      target:self 
-                                                                      action:@selector(showAddNewCategoryView:)];
-    } 
-    
-    segmentedTableViewController.navigationItem.rightBarButtonItem = createCategoryBarButtonItem;
-	
-    if (!isNewCategory) {
-		if (IS_IPAD) {
-            UINavigationController *navController;
-            if (segmentedTableViewController.navigationController) {
-                navController = segmentedTableViewController.navigationController;
-            } else {
-                navController = [[UINavigationController alloc] initWithRootViewController:segmentedTableViewController];
-            }
-            navController.navigationBar.translucent = NO;
- 			UIPopoverController *popover = [[UIPopoverController alloc] initWithContentViewController:navController];
-            popover.delegate = self;
-			CGRect popoverRect = [self.view convertRect:[categoriesButton frame] fromView:[categoriesButton superview]];
-			popoverRect.size.width = MIN(popoverRect.size.width, 100.0f); // the text field is actually really big
-            popover.popoverContentSize = CGSizeMake(320.0f, 460.0f);
-			[popover presentPopoverFromRect:popoverRect inView:self.view permittedArrowDirections:UIPopoverArrowDirectionAny animated:YES];
-			[[CPopoverManager instance] setCurrentPopoverController:popover];
-		
         } else {
-			self.editMode = EditPostViewControllerModeEditPost;
-			[self.navigationController pushViewController:segmentedTableViewController animated:YES];
-		}
+			textView.text = self.apost.content;
+        }
     }
-	
-	isNewCategory = NO;
-}
-
-- (void)selectionTableViewController:(WPSelectionTableViewController *)selctionController completedSelectionsWithContext:(void *)selContext selectedObjects:(NSArray *)selectedObjects haveChanges:(BOOL)isChanged {
-    WPFLogMethod();
-    if (!isChanged) {
-        return;
-    }
-
-    if (selContext == kSelectionsCategoriesContext) {
-        [self.post.categories removeAllObjects];
-        [self.post.categories addObjectsFromArray:selectedObjects];
-        [categoriesButton setTitle:[NSString decodeXMLCharactersIn:[self.post categoriesText]] forState:UIControlStateNormal];
-    }
-
-    _hasChangesToAutosave = YES;
-    [self.apost save];
-
-	[self refreshButtons];
-}
-
-
-- (void)newCategoryCreatedNotificationReceived:(NSNotification *)notification {
-    WPFLogMethod();
-    if ([segmentedTableViewController curContext] == kSelectionsCategoriesContext) {
-        isNewCategory = YES;
-        [self populateSelectionsControllerWithCategories];
-    }
-}
-
-
-- (IBAction)showAddNewCategoryView:(id)sender
-{
-    WPFLogMethod();
-    WPAddCategoryViewController *addCategoryViewController = [[WPAddCategoryViewController alloc] initWithNibName:@"WPAddCategoryViewController" bundle:nil];
-    addCategoryViewController.blog = self.post.blog;
-	if (IS_IPAD) {
-        [segmentedTableViewController pushViewController:addCategoryViewController animated:YES];
- 	} else {
-		UINavigationController *nc = [[UINavigationController alloc] initWithRootViewController:addCategoryViewController];
-        nc.navigationBar.translucent = NO;
-        [segmentedTableViewController presentViewController:nc animated:YES completion:nil];
-	}
+    
+    [self refreshButtons];
 }
 
 - (void)discard {
@@ -757,6 +448,7 @@ CGFloat const EditPostViewControllerTextViewOffset = 10.0;
 		[self showMediaInUploadingalert];
 		return;
 	}
+    
     if ([self hasFailedMedia]) {
         [self showFailedMediaAlert];
         return;
@@ -792,12 +484,10 @@ CGFloat const EditPostViewControllerTextViewOffset = 10.0;
         }];
     }
     
-    
     [self dismissEditView];
 }
 
-- (void)logSavePostStats
-{
+- (void)logSavePostStats {
     NSString *buttonTitle = self.navigationItem.rightBarButtonItem.title;
     NSString *event;
     if ([buttonTitle isEqualToString:NSLocalizedString(@"Schedule", nil)]) {
@@ -818,10 +508,7 @@ CGFloat const EditPostViewControllerTextViewOffset = 10.0;
 - (void)autosaveContent {
     self.apost.postTitle = titleTextField.text;
     self.navigationItem.title = [self editorTitle];
-    if (!IS_IOS7) {
-        // Tags isn't on the main editor in iOS 7
-        self.post.tags = tagsTextField.text;
-    }
+
     self.apost.content = textView.text;
 	if ([self.apost.content rangeOfString:@"<!--more-->"].location != NSNotFound)
 		self.apost.mt_text_more = @"";
@@ -985,7 +672,6 @@ CGFloat const EditPostViewControllerTextViewOffset = 10.0;
     
     [textView resignFirstResponder];
     [titleTextField resignFirstResponder];
-    [tagsTextField resignFirstResponder];
 	[self.postSettingsViewController endEditingAction:nil];
 #if USE_AUTOSAVES
     [self restoreBackupPost:YES];
@@ -1179,8 +865,6 @@ CGFloat const EditPostViewControllerTextViewOffset = 10.0;
         if (buttonIndex == 1) {
             DDLogInfo(@"Saving post even after some media failed to upload");
             [self savePost:YES];
-        } else {
-            [self switchToMedia];
         }
         _failedMediaAlertView = nil;
     }
@@ -1255,7 +939,7 @@ CGFloat const EditPostViewControllerTextViewOffset = 10.0;
     WPFLogMethod();
 	
 	if([textView.text isEqualToString:@""]) {
-        [editView addSubview:tapToStartWritingLabel];
+        [self.view addSubview:tapToStartWritingLabel];
 	}
 	
     _hasChangesToAutosave = YES;
@@ -1283,9 +967,6 @@ CGFloat const EditPostViewControllerTextViewOffset = 10.0;
     if (textField == titleTextField) {
         self.apost.postTitle = [textField.text stringByReplacingCharactersInRange:range withString:string];
         self.navigationItem.title = [self editorTitle];
-
-    } else if (textField == tagsTextField) {
-        self.post.tags = [tagsTextField.text stringByReplacingCharactersInRange:range withString:string];
     }
 
     _hasChangesToAutosave = YES;
@@ -1358,11 +1039,9 @@ CGFloat const EditPostViewControllerTextViewOffset = 10.0;
             newFrame.size.height = keyboardFrame.origin.y - newFrame.origin.y;
 
             [self.toolbar setHidden:YES];
-            [tabPointer setHidden:YES];
             separatorView.hidden = YES;
         } else {
             [self.toolbar setHidden:NO];
-            [tabPointer setHidden:NO];
             separatorView.hidden = NO;
         }
 	}
@@ -1417,20 +1096,6 @@ CGFloat const EditPostViewControllerTextViewOffset = 10.0;
     }
     editorToolbar.frame = frame;
 
-}
-
-- (void)deviceDidRotate:(NSNotification *)notification {
-    WPFLogMethod();
-    
-    if (IS_IPAD) {
-        return;
-    }
-    
-    if ([currentView isEqual:self.postMediaViewController.view]) {
-        CGRect pointerFrame = tabPointer.frame;
-        pointerFrame.origin.x = [self pointerPositionForAttachmentsTab];
-        tabPointer.frame = pointerFrame;
-    }
 }
 
 #pragma mark - Media management
@@ -1601,9 +1266,6 @@ CGFloat const EditPostViewControllerTextViewOffset = 10.0;
 // to get the UITextView to redraw after inserting text but without affecting the
 // scrollOffset.
 - (void)refreshTextView {
-    if (!IS_IOS7) {
-        return;
-    }
     dispatch_async(dispatch_get_main_queue(), ^{
         textView.scrollEnabled = NO;
         [textView setNeedsDisplay];
@@ -1689,20 +1351,6 @@ CGFloat const EditPostViewControllerTextViewOffset = 10.0;
     
     [self positionTextView:notification];
     [self positionAutosaveView:notification];
-}
-
-#pragma mark -
-#pragma mark UIPopoverController delegate
-
-- (BOOL)popoverControllerShouldDismissPopover:(UIPopoverController *)popoverController {
-    if ((popoverController.contentViewController) && ([popoverController.contentViewController class] == [UINavigationController class])) {
-        UINavigationController *nav = (UINavigationController *)popoverController.contentViewController;
-        if ([nav.viewControllers count] == 2) {
-            WPSegmentedSelectionTableViewController *selController = [nav.viewControllers objectAtIndex:0];
-            [selController popViewControllerAnimated:YES];
-        }
-    }
-    return YES;
 }
 
 #pragma mark -

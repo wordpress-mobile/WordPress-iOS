@@ -25,20 +25,12 @@
 CGFloat const CommentsStandardOffset = 16.0;
 CGFloat const CommentsSectionHeaderHeight = 24.0;
 
-- (id)init {
-    self = [super init];
-    if(self) {
-        self.title = NSLocalizedString(@"Comments", @"");
-    }
-    return self;
-}
-
 - (void)dealloc {
     WPFLogMethod();
 	[[NSNotificationCenter defaultCenter] removeObserver:self];
 }
 
-- (NSString *)noResultsText
+- (NSString *)noResultsTitleText
 {
     return NSLocalizedString(@"No comments yet", @"Displayed when the user pulls up the comments view and they have no comments");
 }
@@ -48,6 +40,7 @@ CGFloat const CommentsSectionHeaderHeight = 24.0;
     
     [super viewDidLoad];
     
+    self.title = NSLocalizedString(@"Comments", @"");
     [WPStyleGuide configureColorsForView:self.view andTableView:self.tableView];
     
     self.tableView.accessibilityLabel = @"Comments";       // required for UIAutomation for iOS 4

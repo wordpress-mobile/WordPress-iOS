@@ -16,9 +16,11 @@
 #import "WPTableViewControllerSubclass.h"
 #import "NotificationSettingsViewController.h"
 #import "WPAccount.h"
+#import "WPWebViewController.h"
 
 NSString * const NotificationsTableViewNoteCellIdentifier = @"NotificationsTableViewCell";
 NSString * const NotificationsLastSyncDateKey = @"NotificationsLastSyncDate";
+NSString * const NotificationsJetpackInformationURL = @"http://jetpack.me/about/";
 
 @interface NotificationsViewController () {
     BOOL _retrievingNotifications;
@@ -43,9 +45,53 @@ NSString * const NotificationsLastSyncDateKey = @"NotificationsLastSyncDate";
     return self;
 }
 
-- (NSString *)noResultsText
+- (NSString *)noResultsTitleText
 {
-    return NSLocalizedString(@"No notifications yet", @"Displayed when the user pulls up the notifications view and they have no items");
+    if ([self showJetpackConnectMessage]) {
+        return NSLocalizedString(@"Connect to Jetpack", @"Displayed in the notifications view when a self-hosted user is not connected to Jetpack");
+    } else {
+        return NSLocalizedString(@"No notifications yet", @"Displayed when the user pulls up the notifications view and they have no items");
+    }
+}
+- (NSString *)noResultsMessageText
+{
+    if ([self showJetpackConnectMessage]) {
+        return NSLocalizedString(@"Jetpack supercharges your self‑hosted WordPress site.", @"Displayed in the notifications view when a self-hosted user is not connected to Jetpack");
+    } else {
+        return nil;
+    }
+}
+- (NSString *)noResultsButtonText
+{
+    if ([self showJetpackConnectMessage]) {
+        return NSLocalizedString(@"Learn more", @"");
+    } else {
+        return nil;
+    }
+}
+- (UIView *)noResultsAccessoryView
+{
+    if ([self showJetpackConnectMessage]) {
+        return [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"icon-jetpack-gray"]];
+    } else {
+        return nil;
+    }
+}
+
+- (void)didTapNoResultsView:(WPNoResultsView *)noResultsView
+{
+    // Show Jetpack information screen
+    WPWebViewController *webViewController = [[WPWebViewController alloc] init];
+    [webViewController setUrl:[NSURL URLWithString:NotificationsJetpackInformationURL]];
+    [self.navigationController pushViewController:webViewController animated:YES];
+}
+
+- (BOOL)showJetpackConnectMessage
+{
+    // self.user == nil. No user implies that the user is using the
+    // app with a self-hosted blog not connected to jetpack
+    return self.user == nil;
+    
 }
 
 - (void)dealloc {
@@ -233,6 +279,10 @@ NSString * const NotificationsLastSyncDateKey = @"NotificationsLastSyncDate";
 
 - (void)configureCell:(NewNotificationsTableViewCell *)cell atIndexPath:(NSIndexPath *)indexPath {
     cell.note = [self.resultsController objectAtIndexPath:indexPath];
+}
+
+- (BOOL)userCanRefresh {
+    return self.user != nil;
 }
 
 - (void)syncItemsViaUserInteractionWithSuccess:(void (^)())success failure:(void (^)(NSError *))failure {

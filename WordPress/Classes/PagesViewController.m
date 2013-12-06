@@ -18,17 +18,14 @@
 
 @implementation PagesViewController
 
-- (id)init {
-    self = [super init];
-    if(self) {
-        self.title = NSLocalizedString(@"Pages", @"");
-    }
-    return self;
+- (void)viewDidLoad {
+    [super viewDidLoad];
+    self.title = NSLocalizedString(@"Pages", @"");
 }
 
-- (NSString *)noResultsText
+- (NSString *)noResultsTitleText
 {
-    return NSLocalizedString(@"No pages yet", @"Displayed when the user pulls up the pages view and they have no pages");
+    return NSLocalizedString(@"You don't have any pages yet.", @"Displayed when the user pulls up the pages view and they have no pages");
 }
 
 
@@ -64,7 +61,7 @@
 
 - (NSString *)statsPropertyForViewOpening
 {
-    return StatsPropertyPagedOpened;
+    return StatsPropertyPagesOpened;
 }
 
 

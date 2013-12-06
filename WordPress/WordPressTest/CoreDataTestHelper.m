@@ -149,6 +149,7 @@
         _coordinator = [[NSPersistentStoreCoordinator alloc] initWithManagedObjectModel:[self managedObjectModel]];
 
         NSError *error;
+        [[NSFileManager defaultManager] removeItemAtURL:[self storeURL] error:nil];
         NSPersistentStore *store = [_coordinator addPersistentStoreWithType:NSSQLiteStoreType configuration:nil URL:[self storeURL] options:nil error:&error];
         NSAssert(store != nil, @"Can't initialize core data storage");
     }
