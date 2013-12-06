@@ -34,9 +34,10 @@
     CGFloat x = 0.0f;
     CGFloat width = IS_IPAD ? WPKT_BUTTON_WIDTH_IPAD : WPKT_BUTTON_WIDTH;
     CGFloat height = IS_IPAD ? WPKT_BUTTON_HEIGHT_IPAD : WPKT_BUTTON_HEIGHT_PORTRAIT;
+    UIColor *highlightColor = [UIColor whiteColor];
     if (_boldButton == nil) {
         self.boldButton = [WPKeyboardToolbarButtonItem button];
-        [_boldButton setImageName:@"icon_format_bold"];
+        [_boldButton setImageName:@"icon_format_bold" withColor:nil highlightColor:highlightColor];
         _boldButton.frame = CGRectMake(x, 0, width, height);
         x += _boldButton.frame.size.width;
         _boldButton.actionTag = @"strong";
@@ -46,7 +47,7 @@
     }
     if (_italicsButton == nil) {
         self.italicsButton = [WPKeyboardToolbarButtonItem button];
-        [_italicsButton setImageName:@"icon_format_italic"];
+        [_italicsButton setImageName:@"icon_format_italic" withColor:nil highlightColor:highlightColor];
         _italicsButton.frame = CGRectMake(x, 0, width, height);
         x += _italicsButton.frame.size.width;
         _italicsButton.actionTag = @"em";
@@ -56,7 +57,7 @@
     }
     if (_underlineButton == nil) {
         self.underlineButton = [WPKeyboardToolbarButtonItem button];
-        [_underlineButton setImageName:@"icon_format_underline"];
+        [_underlineButton setImageName:@"icon_format_underline" withColor:nil highlightColor:highlightColor];
         _underlineButton.frame = CGRectMake(x, 0, width, height);
         x += _underlineButton.frame.size.width;
         _underlineButton.actionTag = @"u";
@@ -66,7 +67,7 @@
     }
     if (_delButton == nil) {
         self.delButton = [WPKeyboardToolbarButtonItem button];
-        [_delButton setImageName:@"icon_format_strikethrough"];
+        [_delButton setImageName:@"icon_format_strikethrough" withColor:nil highlightColor:highlightColor];
         _delButton.frame = CGRectMake(x, 0, width, height);
         x += _delButton.frame.size.width;
         _delButton.actionTag = @"del";
@@ -76,7 +77,7 @@
     }
     if (_linkButton == nil) {
         self.linkButton = [WPKeyboardToolbarButtonItem button];
-        [_linkButton setImageName:@"icon_format_link"];
+        [_linkButton setImageName:@"icon_format_link" withColor:nil highlightColor:highlightColor];
         _linkButton.frame = CGRectMake(x, 0, width, height);
         x += _linkButton.frame.size.width;
         _linkButton.actionTag = @"link";
@@ -86,7 +87,7 @@
     }
     if (_quoteButton == nil) {
         self.quoteButton = [WPKeyboardToolbarButtonItem button];
-        [_quoteButton setImageName:@"icon_format_quote"];
+        [_quoteButton setImageName:@"icon_format_quote" withColor:nil highlightColor:highlightColor];
         _quoteButton.frame = CGRectMake(x, 0, width, height);
 		x += _quoteButton.frame.size.width;
         _quoteButton.actionTag = @"blockquote";
@@ -96,7 +97,7 @@
     }
     if (_moreButton == nil) {
         self.moreButton = [WPKeyboardToolbarButtonItem button];
-        [_moreButton setImageName:@"icon_format_more"];
+        [_moreButton setImageName:@"icon_format_more" withColor:nil highlightColor:highlightColor];
         _moreButton.frame = CGRectMake(x, 0, width, height);
         _moreButton.actionTag = @"more";
         _moreButton.actionName = NSLocalizedString(@"more", @"Adding a More excerpt cut-off in the Post Editor. This string will be used in the Undo message if the last change was adding this formatting.");
@@ -105,7 +106,7 @@
     }
     if (_doneButton == nil && IS_IPHONE) {
         self.doneButton = [WPKeyboardToolbarButtonItem button];
-        [_doneButton setImageName:@"icon_format_keyboard"];
+        [_doneButton setImageName:@"icon_format_keyboard" withColor:[WPStyleGuide newKidOnTheBlockBlue] highlightColor:highlightColor];
         _doneButton.frame = CGRectMake(x, 0, width, height);
         _doneButton.actionTag = @"done";
         _doneButton.exclusiveTouch = YES;
