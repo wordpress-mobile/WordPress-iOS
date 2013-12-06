@@ -9,8 +9,9 @@
 #import <UIKit/UIKit.h>
 #import "ReaderTableViewCell.h"
 #import "ReaderComment.h"
+#import "WPTableViewCell.h"
 
-@interface ReaderCommentTableViewCell : UITableViewCell
+@interface ReaderCommentTableViewCell : WPTableViewCell
 @property (nonatomic, strong) UIImageView *cellImageView;
 
 + (NSAttributedString *)convertHTMLToAttributedString:(NSString *)html withOptions:(NSDictionary *)options;

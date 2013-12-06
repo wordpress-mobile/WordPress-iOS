@@ -7,10 +7,15 @@
  * Some rights reserved. See license.txt
  */
 
-@class ReaderPost;
+#import <UIKit/UIKit.h>
+#import "ReaderPost.h"
+#import "ReaderPostView.h"
 
-@interface ReaderPostDetailViewController : UIViewController<UITableViewDataSource, UITableViewDelegate>
+@interface ReaderPostDetailViewController : UITableViewController<UITableViewDataSource, UITableViewDelegate, ReaderPostViewDelegate, NSFetchedResultsControllerDelegate>
+@property (nonatomic, strong) ReaderPost *post;
+@property (nonatomic, assign) BOOL showInlineActionBar;
 
-- (id)initWithPost:(ReaderPost *)apost;
+- (id)initWithPost:(ReaderPost *)post featuredImage:(UIImage *)image;
+- (void)updateFeaturedImage:(UIImage *)image;
 
 @end
