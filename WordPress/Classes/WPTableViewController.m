@@ -14,6 +14,7 @@
 #import "WPNoResultsView.h"
 #import "SupportViewController.h"
 #import "ContextManager.h"
+#import "UIView+Subviews.h"
 
 NSTimeInterval const WPTableViewControllerRefreshTimeout = 300; // 5 minutes
 CGFloat const WPTableViewTopMargin = 40;
@@ -27,6 +28,7 @@ NSString * const WPBlogRestorationKey = @"WPBlogRestorationKey";
 @property (nonatomic, strong, readonly) UIView *swipeView;
 @property (nonatomic, strong) UITableViewCell *swipeCell;
 @property (nonatomic, strong) UIView *noResultsView;
+@property (nonatomic, strong) UIActivityIndicatorView *noResultsAcitivtyIndicator;
 
 @end
 
@@ -568,15 +570,32 @@ NSString * const WPBlogRestorationKey = @"WPBlogRestorationKey";
     }
     
     [self.noResultsView removeFromSuperview];
+    [self.noResultsAcitivtyIndicator stopAnimating];
+    [self.noResultsAcitivtyIndicator removeFromSuperview];
     
-    if (self.resultsController && [[_resultsController fetchedObjects] count] == 0 && !self.isSyncing) {
-        // Show no results view.
-
-		if (self.noResultsView == nil) {
-			self.noResultsView = [self createNoResultsView];
-		}
-
-        [self.tableView addSubview:self.noResultsView];
+    if (self.resultsController && [[_resultsController fetchedObjects] count] == 0) {
+        
+        if (self.isSyncing) {
+            // Show activity indicator view when syncing is occuring
+            // and the fetched results controller has no objects
+            if (self.noResultsAcitivtyIndicator == nil) {
+                self.noResultsAcitivtyIndicator = [self createNoResultsActivityIndicator];
+            }
+            
+            [self.noResultsAcitivtyIndicator startAnimating];
+            [self.tableView addSubview:self.noResultsAcitivtyIndicator];
+            
+        } else {
+            // Show no results view if the fetched results controller
+            // has no objects and syncing is not happening.
+            
+            if (self.noResultsView == nil) {
+                self.noResultsView = [self createNoResultsView];
+            }
+            
+            [self.tableView addSubviewWithFadeAnimation:self.noResultsView];
+        }
+        
     }
 }
 
@@ -586,6 +605,16 @@ NSString * const WPBlogRestorationKey = @"WPBlogRestorationKey";
     view.delegate = self;
     
 	return view;
+}
+
+- (UIActivityIndicatorView *)createNoResultsActivityIndicator {
+    
+    UIActivityIndicatorView *activityIndicator = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleGray];
+    activityIndicator.hidesWhenStopped = YES;
+    activityIndicator.autoresizingMask = UIViewAutoresizingFlexibleLeftMargin | UIViewAutoresizingFlexibleRightMargin | UIViewAutoresizingFlexibleTopMargin | UIViewAutoresizingFlexibleBottomMargin;
+    activityIndicator.center = [self.tableView convertPoint:self.tableView.center fromView:self.tableView.superview];
+    
+	return activityIndicator;
 }
 
 - (void)hideRefreshHeader {

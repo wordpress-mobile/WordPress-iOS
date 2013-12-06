@@ -953,6 +953,7 @@
 		E2586BD41832F31D004B5B67 /* icon-site-field.png in Resources */ = {isa = PBXBuildFile; fileRef = E2586BD21832F31D004B5B67 /* icon-site-field.png */; };
 		E2AA879D1850F91E00886693 /* icon-jetpack-gray.png in Resources */ = {isa = PBXBuildFile; fileRef = E2AA879B1850F91E00886693 /* icon-jetpack-gray.png */; };
 		E2AA879E1850F91E00886693 /* icon-jetpack-gray@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = E2AA879C1850F91E00886693 /* icon-jetpack-gray@2x.png */; };
+		E2AA87A518523E5300886693 /* UIView+Subviews.m in Sources */ = {isa = PBXBuildFile; fileRef = E2AA87A418523E5300886693 /* UIView+Subviews.m */; };
 		EC4696FF0EA75D460040EE8E /* PagesViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = EC4696FE0EA75D460040EE8E /* PagesViewController.m */; };
 		FD21397F13128C5300099582 /* libiconv.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = FD21397E13128C5300099582 /* libiconv.dylib */; };
 		FD22C2B716CD2B20002BA030 /* navbar_settings.png in Resources */ = {isa = PBXBuildFile; fileRef = FD22C2B516CD2B20002BA030 /* navbar_settings.png */; };
@@ -2134,6 +2135,8 @@
 		E2586BD21832F31D004B5B67 /* icon-site-field.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "icon-site-field.png"; sourceTree = "<group>"; };
 		E2AA879B1850F91E00886693 /* icon-jetpack-gray.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "icon-jetpack-gray.png"; path = "Resources/Images/icon-jetpack-gray.png"; sourceTree = "<group>"; };
 		E2AA879C1850F91E00886693 /* icon-jetpack-gray@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "icon-jetpack-gray@2x.png"; path = "Resources/Images/icon-jetpack-gray@2x.png"; sourceTree = "<group>"; };
+		E2AA87A318523E5300886693 /* UIView+Subviews.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIView+Subviews.h"; sourceTree = "<group>"; };
+		E2AA87A418523E5300886693 /* UIView+Subviews.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIView+Subviews.m"; sourceTree = "<group>"; };
 		EBC24772E5CD4036B5AFD803 /* Pods.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = Pods.xcconfig; path = ../Pods/Pods.xcconfig; sourceTree = SOURCE_ROOT; };
 		EC4696FD0EA75D460040EE8E /* PagesViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PagesViewController.h; sourceTree = "<group>"; };
 		EC4696FE0EA75D460040EE8E /* PagesViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PagesViewController.m; sourceTree = "<group>"; };
@@ -3706,6 +3709,8 @@
 				851734421798C64700A30E27 /* NSURL+Util.m */,
 				46F8714D1838C41600BC149B /* NSDate+StringFormatting.h */,
 				46F8714E1838C41600BC149B /* NSDate+StringFormatting.m */,
+				E2AA87A318523E5300886693 /* UIView+Subviews.h */,
+				E2AA87A418523E5300886693 /* UIView+Subviews.m */,
 			);
 			name = Categories;
 			sourceTree = "<group>";
@@ -4971,6 +4976,7 @@
 				1D60589B0D05DD56006BFB54 /* main.m in Sources */,
 				1D3623260D0F684500981E51 /* WordPressAppDelegate.m in Sources */,
 				2F970F740DF92274006BD934 /* PostsViewController.m in Sources */,
+				E2AA87A518523E5300886693 /* UIView+Subviews.m in Sources */,
 				93C486511810445D00A24725 /* ActivityLogViewController.m in Sources */,
 				ACC156CC0E10E67600D6E1A0 /* EditPostViewController.m in Sources */,
 				ACBAB5FE0E121C7300F38795 /* PostSettingsViewController.m in Sources */,
