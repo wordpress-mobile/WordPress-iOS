@@ -14,10 +14,6 @@
 #import <objc/runtime.h>
 
 @interface CoreDataConcurrencyTest : XCTestCase
-
-@end
-
-@interface ContextManager (Async)
 @end
 
 @implementation CoreDataConcurrencyTest
@@ -199,34 +195,6 @@
                                      @"url": @"http://test.wordpress.com/",
                                      @"xmlrpc": @"http://test.wordpress.com/xmlrpc.php"};
     return [account findOrCreateBlogFromDictionary:blogDictionary withContext:context];
-}
-
-@end
-
-@implementation ContextManager (Async)
-
-+ (void)load {
-    Method originalMainToBg = class_getInstanceMethod([ContextManager class], @selector(mergeChangesIntoBackgroundContext:));
-    Method testMainToBg = class_getInstanceMethod([ContextManager class], @selector(testMergeChangesIntoBackgroundContext:));
-    Method originalBgToMain = class_getInstanceMethod([ContextManager class], @selector(mergeChangesIntoMainContext:));
-    Method testBgToMain = class_getInstanceMethod([ContextManager class], @selector(testMergeChangesIntoMainContext:));
-    
-    method_exchangeImplementations(originalMainToBg, testMainToBg);
-    method_exchangeImplementations(originalBgToMain, testBgToMain);
-}
-
-- (void)testMergeChangesIntoBackgroundContext:(NSNotification *)notification {
-    [self testMergeChangesIntoBackgroundContext:notification];
-    if (ATHSemaphore) {
-        ATHNotify();
-    }
-}
-
-- (void)testMergeChangesIntoMainContext:(NSNotification *)notification {
-    [self testMergeChangesIntoMainContext:notification];
-    if (ATHSemaphore) {
-        ATHNotify();
-    }
 }
 
 @end

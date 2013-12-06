@@ -10,6 +10,7 @@
 #import "WordPressAppDelegate.h"
 #import <objc/runtime.h>
 #import "ContextManager.h"
+#import "AsyncTestHelper.h"
 
 @interface ContextManager (TestHelper)
 
@@ -141,6 +142,8 @@
 
 static void *const testPSCKey = "testPSCKey";
 
+#pragma mark - Override persistent store coordinator
+
 - (NSPersistentStoreCoordinator *)persistentStoreCoordinator {
     id psc = objc_getAssociatedObject(self, testPSCKey);
     if (psc) {
@@ -163,6 +166,37 @@ static void *const testPSCKey = "testPSCKey";
 
 + (NSURL *)storeURL {
     return [NSURL fileURLWithPath:[[NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES) lastObject] stringByAppendingPathComponent:@"WordPressTest.sqlite"]];
+}
+
+
+#pragma mark - Swizzle merge methods 
+
++ (void)load {
+    Method originalMainToBg = class_getInstanceMethod([ContextManager class], @selector(mergeChangesIntoBackgroundContext:));
+    Method testMainToBg = class_getInstanceMethod([ContextManager class], @selector(testMergeChangesIntoBackgroundContext:));
+    Method originalBgToMain = class_getInstanceMethod([ContextManager class], @selector(mergeChangesIntoMainContext:));
+    Method testBgToMain = class_getInstanceMethod([ContextManager class], @selector(testMergeChangesIntoMainContext:));
+    
+    method_exchangeImplementations(originalMainToBg, testMainToBg);
+    method_exchangeImplementations(originalBgToMain, testBgToMain);
+}
+
+- (void)testMergeChangesIntoBackgroundContext:(NSNotification *)notification {
+    [[[ContextManager sharedInstance] backgroundContext] mergeChangesFromContextDidSaveNotification:notification];
+    if (ATHSemaphore) {
+        ATHNotify();
+    } else {
+        NSLog(@"No semaphore present for notify");
+    }
+}
+
+- (void)testMergeChangesIntoMainContext:(NSNotification *)notification {
+    [[[ContextManager sharedInstance] mainContext] mergeChangesFromContextDidSaveNotification:notification];
+    if (ATHSemaphore) {
+        ATHNotify();
+    } else {
+        NSLog(@"No semaphore present for notify for main");
+    }
 }
 
 @end
