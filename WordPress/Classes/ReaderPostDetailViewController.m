@@ -77,10 +77,10 @@ typedef enum {
 - (id)initWithPost:(ReaderPost *)post featuredImage:(UIImage *)image {
 	self = [super init];
 	if (self) {
-		self.post = post;
-		self.comments = [NSMutableArray array];
-        self.featuredImage = image;
-        self.showInlineActionBar = YES;
+		_post = post;
+		_comments = [NSMutableArray array];
+        _featuredImage = image;
+        _showInlineActionBar = YES;
 	}
 	return self;
 }
