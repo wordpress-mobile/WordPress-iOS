@@ -107,7 +107,7 @@ NSString *const ReaderExtrasArrayKey = @"ReaderExtrasArrayKey";
 }
 
 
-+ (void)syncPostsFromEndpoint:(NSString *)endpoint withArray:(NSArray *)arr withContext:(NSManagedObjectContext *)context success:(void (^)())success {
++ (void)syncPostsFromEndpoint:(NSString *)endpoint withArray:(NSArray *)arr success:(void (^)())success {
     WPFLogMethod();
     if (![arr isKindOfClass:[NSArray class]] || [arr count] == 0) {
 		if (success) {
@@ -784,10 +784,9 @@ NSString *const ReaderExtrasArrayKey = @"ReaderExtrasArrayKey";
 								 success:^(AFHTTPRequestOperation *operation, id responseObject) {
 									 
 									 NSArray *postsArr = [responseObject arrayForKey:@"posts"];
-									 if (postsArr) {									 
+									 if (postsArr) {
 										 [ReaderPost syncPostsFromEndpoint:path
 																 withArray:postsArr
-															   withContext:[[ContextManager sharedInstance] mainContext]
 																   success:^{
 																	   if (success) {
 																		   success(operation, responseObject);
