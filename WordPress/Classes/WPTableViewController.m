@@ -14,6 +14,7 @@
 #import "WPNoResultsView.h"
 #import "SupportViewController.h"
 #import "ContextManager.h"
+#import "UIView+Subviews.h"
 
 NSTimeInterval const WPTableViewControllerRefreshTimeout = 300; // 5 minutes
 CGFloat const WPTableViewTopMargin = 40;
@@ -27,6 +28,7 @@ NSString * const WPBlogRestorationKey = @"WPBlogRestorationKey";
 @property (nonatomic, strong, readonly) UIView *swipeView;
 @property (nonatomic, strong) UITableViewCell *swipeCell;
 @property (nonatomic, strong) UIView *noResultsView;
+@property (nonatomic, strong) UIActivityIndicatorView *noResultsActivityIndicator;
 
 @end
 
@@ -168,6 +170,8 @@ NSString * const WPBlogRestorationKey = @"WPBlogRestorationKey";
     [super setEditing:editing animated:animated];
 }
 
+#pragma mark - No Results View
+
 - (NSString *)noResultsTitleText
 {
     NSString *ttl = NSLocalizedString(@"No %@ yet", @"A string format. The '%@' will be replaced by the relevant type of object, posts, pages or comments.");
@@ -181,6 +185,11 @@ NSString * const WPBlogRestorationKey = @"WPBlogRestorationKey";
 }
 
 - (UIView *)noResultsAccessoryView
+{
+    return nil;
+}
+
+- (NSString *)noResultsButtonText
 {
     return nil;
 }
@@ -453,11 +462,20 @@ NSString * const WPBlogRestorationKey = @"WPBlogRestorationKey";
 #pragma mark - UIRefreshControl Methods
 
 - (void)refresh {
+    
+    if (![self userCanRefresh]) {
+        [self.refreshControl endRefreshing];
+        return;
+    }
+    
     didTriggerRefresh = YES;
 	[self syncItemsViaUserInteraction];
     [noResultsView removeFromSuperview];
 }
 
+- (BOOL)userCanRefresh {
+    return YES;
+}
 
 #pragma mark - UIScrollViewDelegate Methods
 
@@ -552,21 +570,48 @@ NSString * const WPBlogRestorationKey = @"WPBlogRestorationKey";
     }
     
     [self.noResultsView removeFromSuperview];
+    [self.noResultsActivityIndicator stopAnimating];
+    [self.noResultsActivityIndicator removeFromSuperview];
     
-    if (self.resultsController && [[_resultsController fetchedObjects] count] == 0 && !self.isSyncing) {
-        // Show no results view.
-
-		if (self.noResultsView == nil) {
-			self.noResultsView = [self createNoResultsView];
-		}
-
-        [self.tableView addSubview:self.noResultsView];
+    if (self.resultsController && [[_resultsController fetchedObjects] count] == 0) {
+        if (self.isSyncing) {
+            // Show activity indicator view when syncing is occuring
+            // and the fetched results controller has no objects
+            
+            if (self.noResultsActivityIndicator == nil) {
+                self.noResultsActivityIndicator = [self createNoResultsActivityIndicator];
+            }
+            
+            [self.noResultsActivityIndicator startAnimating];
+            [self.tableView addSubview:self.noResultsActivityIndicator];
+        } else {
+            // Show no results view if the fetched results controller
+            // has no objects and syncing is not happening.
+            
+            if (self.noResultsView == nil) {
+                self.noResultsView = [self createNoResultsView];
+            }
+            [self.tableView addSubviewWithFadeAnimation:self.noResultsView];
+        }
     }
 }
 
 - (UIView *)createNoResultsView {
 	
-	return [WPNoResultsView noResultsViewWithTitle:[self noResultsTitleText] message:[self noResultsMessageText] accessoryView:[self noResultsAccessoryView]];
+    WPNoResultsView *view = [WPNoResultsView noResultsViewWithTitle:[self noResultsTitleText] message:[self noResultsMessageText] accessoryView:[self noResultsAccessoryView] buttonTitle:[self noResultsButtonText]];
+    view.delegate = self;
+    
+	return view;
+}
+
+- (UIActivityIndicatorView *)createNoResultsActivityIndicator {
+    
+    UIActivityIndicatorView *activityIndicator = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleGray];
+    activityIndicator.hidesWhenStopped = YES;
+    activityIndicator.autoresizingMask = UIViewAutoresizingFlexibleLeftMargin | UIViewAutoresizingFlexibleRightMargin | UIViewAutoresizingFlexibleTopMargin | UIViewAutoresizingFlexibleBottomMargin;
+    activityIndicator.center = [self.tableView convertPoint:self.tableView.center fromView:self.tableView.superview];
+    
+	return activityIndicator;
 }
 
 - (void)hideRefreshHeader {
