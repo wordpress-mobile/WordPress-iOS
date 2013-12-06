@@ -19,8 +19,7 @@
 @implementation NotificationsManager
 
 + (void)registerForPushNotifications {
-    WordPressAppDelegate *appDelegate = [WordPressAppDelegate sharedWordPressApplicationDelegate];
-    if (appDelegate.isWPcomAuthenticated) {
+    if ([WPAccount defaultWordPressComAccount]) {
         [[UIApplication sharedApplication]
          registerForRemoteNotificationTypes:(UIRemoteNotificationTypeBadge |
                                              UIRemoteNotificationTypeSound |
@@ -66,20 +65,13 @@
     NSString *authURL = kNotificationAuthURL;
     WPAccount *account = [WPAccount defaultWordPressComAccount];
 	if (account) {
-#ifdef DEBUG
-        NSNumber *sandbox = [NSNumber numberWithBool:YES];
-#else
-        NSNumber *sandbox = [NSNumber numberWithBool:NO];
-#endif
         NSArray *parameters = @[account.username,
                                 account.password,
                                 token,
                                 [[UIDevice currentDevice] wordpressIdentifier],
                                 @"apple",
-                                sandbox,
-#ifdef INTERNAL_BUILD
-                                @"org.wordpress.internal"
-#endif
+                                @NO, // Sandbox parameter - deprecated
+                                WordPressComApiPushAppId
                                 ];
         
         WPXMLRPCClient *api = [[WPXMLRPCClient alloc] initWithXMLRPCEndpoint:[NSURL URLWithString:authURL]];

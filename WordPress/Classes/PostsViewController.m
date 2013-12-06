@@ -24,23 +24,20 @@
 #pragma mark -
 #pragma mark View lifecycle
 
-- (id)init {
-    self = [super init];
-    if(self) {
-        self.title = NSLocalizedString(@"Posts", @"");
-    }
-    return self;
+- (NSString *)noResultsTitleText
+{
+    return NSLocalizedString(@"You don't have any posts yet.", @"Displayed when the user pulls up the posts view and they have no posts");
 }
 
-- (NSString *)noResultsText
-{
-    return NSLocalizedString(@"No posts yet", @"Displayed when the user pulls up the posts view and they have no posts");
+- (UIView *)noResultsAccessoryView {
+    return [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"penandink"]];
 }
 
 - (void)viewDidLoad {
     DDLogInfo(@"%@ %@", self, NSStringFromSelector(_cmd));
     [super viewDidLoad];
     
+    self.title = NSLocalizedString(@"Posts", @"");
     UIBarButtonItem *composeButtonItem  = nil;
     
     if ([self.editButtonItem respondsToSelector:@selector(setTintColor:)]) {
