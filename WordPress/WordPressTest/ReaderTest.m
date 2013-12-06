@@ -157,11 +157,10 @@
         XCTFail(@"Posts is not an array");
         return;
     }
-	NSManagedObjectContext *moc = [[CoreDataTestHelper sharedHelper] managedObjectContext];
     ATHStart();
-	[ReaderPost syncPostsFromEndpoint:path withArray:postsArr withContext:moc success:^{
-        ATHNotify();
-    }];
+	NSManagedObjectContext *moc = [[ContextManager sharedInstance] backgroundContext];
+    // The sync includes a ATHNotify() via the context merge
+	[ReaderPost syncPostsFromEndpoint:path withArray:postsArr withContext:moc success:nil];
     ATHEnd();
 
 	NSArray *posts = [ReaderPost fetchPostsForEndpoint:path withContext:moc];
