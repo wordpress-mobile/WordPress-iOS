@@ -41,7 +41,10 @@
     
     [[CoreDataTestHelper sharedHelper] reset];
     
-    [WPAccount removeDefaultWordPressComAccountWithContext:[ContextManager sharedInstance].mainContext];
+    // Remove cached __defaultDotcomAccount, no need to remove core data value
+    // Exception occurs if attempted: the persistent stores are swapped in reset
+    // and the contexts are destroyed
+    [WPAccount removeDefaultWordPressComAccountWithContext:nil];
 }
 
 - (void)testObjectPermanence {
@@ -129,6 +132,30 @@
     Blog *backgroundBlog = (Blog *)[backgroundMOC existingObjectWithID:blog.objectID error:nil];
 
     XCTAssertNotNil(backgroundBlog, @"Blog should exist in background context");
+}
+
+- (void)testCrossContextDeletion {
+    NSManagedObjectContext *mainContext = [ContextManager sharedInstance].mainContext;
+    
+    XCTAssertNotNil([WPAccount defaultWordPressComAccount], @"Account should be present");
+    XCTAssertEqualObjects([WPAccount defaultWordPressComAccount].managedObjectContext, [ContextManager sharedInstance].mainContext, @"Account should have been created on main context");
+    
+    ATHStart();
+    NSManagedObjectID *accountID = [WPAccount defaultWordPressComAccount].objectID;
+    [mainContext performBlock:^{
+        [WPAccount removeDefaultWordPressComAccountWithContext:mainContext];
+    }];
+    ATHEnd();
+
+    // Ensure object deleted in background context as well
+    ATHStart();
+    NSManagedObjectContext *backgroundContext = [ContextManager sharedInstance].backgroundContext;
+    [backgroundContext performBlock:^{
+        WPAccount *backgroundAccount = (WPAccount *)[backgroundContext objectWithID:accountID];
+        XCTAssertTrue(backgroundAccount.isDeleted, @"Account should be considered deleted");
+        ATHNotify();
+    }];
+    ATHEnd();
 }
 
 - (void)testDerivedContext {
