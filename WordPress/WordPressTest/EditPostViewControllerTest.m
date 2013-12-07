@@ -23,6 +23,7 @@
     WPAccount *_account;
     Blog *_blog;
     Post *_post;
+    dispatch_semaphore_t postRevisionLock;
 }
 
 - (void)setUp {
@@ -37,17 +38,41 @@
     _account = [WPAccount createOrUpdateSelfHostedAccountWithXmlrpc:blogDict[@"xmlrpc"] username:@"test" andPassword:@"test" withContext:[ContextManager sharedInstance].mainContext];
     _blog = [_account findOrCreateBlogFromDictionary:blogDict withContext:[_account managedObjectContext]];
     _post = [Post newDraftForBlog:_blog];
+    
     XCTAssertNoThrow(_controller = [[EditPostViewController alloc] initWithPost:_post]);
     
-    ATHStart();
+    // Lock to wait for post revision creation
+    postRevisionLock = dispatch_semaphore_create(0);
+    [_post addObserver:self forKeyPath:@"revision" options:NSKeyValueObservingOptionNew context:NULL];
+    
+    // Kick off post revision creation
+    [_controller viewDidLoad];
+    
+    // We need a non-ATHSemaphore here, as ATHNotify() from the app's Reader fetches cause
+    // saves which cause the semaphore to be prematurely signalled
+    // Wait for the post revision to be created
+    long status = 0;
+    NSDate *timeoutDate = [NSDate dateWithTimeIntervalSinceNow:AsyncTestCaseDefaultTimeout];
+    while ((status = dispatch_semaphore_wait(postRevisionLock, DISPATCH_TIME_NOW)) &&
+           [[NSDate date] compare:timeoutDate] == NSOrderedAscending) {
+        [[NSRunLoop currentRunLoop] runMode:NSDefaultRunLoopMode beforeDate:[NSDate distantFuture]];
+    }
+    if (status != 0) {
+        XCTFail(@"Time out occurred waiting for post revision to be created");
+    }
+    
     UIViewController *rvc = [[[[UIApplication sharedApplication] delegate] window] rootViewController];
     XCTAssertNoThrow([rvc presentViewController:_controller animated:NO completion:^{
-    // viewDidLoad creates a new revision asynchronously and saves
         NSLog(@"subviews: %@", [rvc.view subviews]);
         XCTAssertNotNil(_controller.view);
         XCTAssertNotNil(_controller.view.superview);
     }]);
-    ATHEnd();
+}
+
+- (void)observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary *)change context:(void *)context {
+    if (_post.revision) {
+        dispatch_semaphore_signal(postRevisionLock);
+    }
 }
 
 - (void)tearDown {

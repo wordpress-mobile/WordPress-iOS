@@ -107,14 +107,14 @@ CGFloat const EditPostViewControllerTextViewOffset = 10.0;
 - (id)initWithPost:(AbstractPost *)aPost {
     self = [super initWithNibName:@"EditPostViewControlleriOS7" bundle:nil];
     if (self) {
-        self.apost = aPost;
+        _apost = aPost;
         [[NSUserDefaults standardUserDefaults] setObject:aPost.blog.url forKey:EditPostViewControllerLastUsedBlogURL];
         [[NSUserDefaults standardUserDefaults] synchronize];
         
-        if (self.apost.remoteStatus == AbstractPostRemoteStatusLocal) {
-            self.editMode = EditPostViewControllerModeNewPost;
+        if (_apost.remoteStatus == AbstractPostRemoteStatusLocal) {
+            _editMode = EditPostViewControllerModeNewPost;
         } else {
-            self.editMode = EditPostViewControllerModeEditPost;
+            _editMode = EditPostViewControllerModeEditPost;
         }
     }
     return self;
