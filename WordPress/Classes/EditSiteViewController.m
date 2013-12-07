@@ -340,19 +340,30 @@
 }
 
 - (BOOL)textField:(UITextField *)textField shouldChangeCharactersInRange:(NSRange)range replacementString:(NSString *)string {
-    UITableViewCell *cell = (UITableViewCell *)[textField superview];
-    
-    if (NSClassFromString(@"UITableViewCellScrollView")) {
-        // iOS7 introduced a private class in between the normal UITableViewCell and the cell views.
-        cell = (UITableViewCell*)[cell superview];
-    }
-    NSMutableString *result = [NSMutableString stringWithString:textField.text];
-    [result replaceCharactersInRange:range withString:string];
 
-    if ([result length] == 0) {
-        cell.textLabel.textColor = WRONG_FIELD_COLOR;
-    } else {
-        cell.textLabel.textColor = GOOD_FIELD_COLOR;        
+    // Adjust the text color of the containing cell's textLabel if
+    // the entered information is invalid.
+    if ([textField isDescendantOfView:self.tableView]) {
+
+        UITableViewCell *cell = (id)[textField superview];
+        while (![cell.class isSubclassOfClass:[UITableViewCell class]]) {
+            cell = (id)cell.superview;
+            
+            // This is a protection against a textfield not placed withing a
+            // table view cell
+            if ([cell.class isSubclassOfClass:[UITableView class]]) {
+                return YES;
+            }
+        }
+        
+        NSMutableString *result = [NSMutableString stringWithString:textField.text];
+        [result replaceCharactersInRange:range withString:string];
+        
+        if ([result length] == 0) {
+            cell.textLabel.textColor = WRONG_FIELD_COLOR;
+        } else {
+            cell.textLabel.textColor = GOOD_FIELD_COLOR;
+        }
     }
     
     return YES;
