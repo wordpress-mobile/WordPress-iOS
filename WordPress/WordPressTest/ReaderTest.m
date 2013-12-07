@@ -15,12 +15,6 @@
 #import "ContextManager.h"
 #import "WPAccount.h"
 
-@interface ReaderTest()
-
-- (void)checkResultForPath:(NSString *)path andResponseObject:(id)responseObject;
-
-@end
-
 @implementation ReaderTest
 
 - (void)setUp
@@ -152,6 +146,7 @@
 	ATHStart();
 	[ReaderPost getPostsFromEndpoint:path withParameters:nil loadingMore:NO success:^(AFHTTPRequestOperation *operation, id responseObject) {
         
+        // Wait for the core data save & merge
         ATHWait();
         
         NSDictionary *resp = (NSDictionary *)responseObject;
@@ -163,6 +158,9 @@
         
         if ([postsArr count] == 0) {
             XCTFail(@"There must be posts from this endpoint to continue");
+            // Continues the test as the expected core data save & merge does not happen if no posts are present
+            // Prevents a time out from the ATHEnd() below
+            ATHNotify();
             return;
         }
         

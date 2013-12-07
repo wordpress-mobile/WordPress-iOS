@@ -37,13 +37,17 @@
     _account = [WPAccount createOrUpdateSelfHostedAccountWithXmlrpc:blogDict[@"xmlrpc"] username:@"test" andPassword:@"test" withContext:[ContextManager sharedInstance].mainContext];
     _blog = [_account findOrCreateBlogFromDictionary:blogDict withContext:[_account managedObjectContext]];
     _post = [Post newDraftForBlog:_blog];
-    XCTAssertNoThrow(_controller = [[EditPostViewController alloc] initWithPost:[_post createRevision]]);
+    XCTAssertNoThrow(_controller = [[EditPostViewController alloc] initWithPost:_post]);
+    
+    ATHStart();
     UIViewController *rvc = [[[[UIApplication sharedApplication] delegate] window] rootViewController];
     XCTAssertNoThrow([rvc presentViewController:_controller animated:NO completion:^{
+    // viewDidLoad creates a new revision asynchronously and saves
         NSLog(@"subviews: %@", [rvc.view subviews]);
         XCTAssertNotNil(_controller.view);
         XCTAssertNotNil(_controller.view.superview);
     }]);
+    ATHEnd();
 }
 
 - (void)tearDown {
