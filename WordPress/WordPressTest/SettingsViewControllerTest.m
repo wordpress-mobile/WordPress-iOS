@@ -60,7 +60,7 @@
 
     // Sign In
     ATHStart();
-    WPAccount *account = [WPAccount createOrUpdateWordPressComAccountWithUsername:@"jacksparrow" password:@"piratesobrave" authToken:@"sevenseas" context:[ContextManager sharedInstance].mainContext];
+    WPAccount *account = [WPAccount createOrUpdateWordPressComAccountWithUsername:@"jacksparrow" password:@"piratesobrave" authToken:nil context:[ContextManager sharedInstance].mainContext];
     ATHEnd();
     
     [WPAccount setDefaultWordPressComAccount:account];
