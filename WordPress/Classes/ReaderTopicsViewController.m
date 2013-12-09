@@ -59,7 +59,7 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
 	
-	self.title = NSLocalizedString(@"Topics", @"Title of the Reader Topics screen");
+	self.title = NSLocalizedString(@"Browse", @"Title of the Reader Topics screen");
     UIBarButtonItem *cancelButton = [[UIBarButtonItem alloc] initWithTitle:NSLocalizedString(@"Cancel", nil)
                                                                      style:UIBarButtonItemStylePlain
                                                                     target:self
@@ -190,7 +190,7 @@
 			break;
 			
 		default:
-			return NSLocalizedString(@"Topics", @"");
+			return NSLocalizedString(@"Tags", @"Section title for reader tags you can browse");
 			break;
 	}
 }
