@@ -19,11 +19,15 @@
 #import <SVProgressHUD/SVProgressHUD.h>
 #import <NSDictionary+SafeExpectations.h>
 
+static NSString *const TextFieldCellIdentifier = @"TextFieldCellIdentifier";
+static NSString *const GeotaggingCellIdentifier = @"GeotaggingCellIdentifier";
+static NSString *const PushNotificationsCellIdentifier = @"PushNotificationsCellIdentifier";
+static NSString *const JetpackConnectedCellIdentifier = @"JetpackConnectedCellIdentifier";
+
 @interface EditSiteViewController ()
 
 @property (nonatomic, copy) NSString *startingPwd, *startingUser, *startingUrl;
-@property (nonatomic, strong) UITableViewTextFieldCell *urlCell, *usernameCell, *passwordCell;
-@property (nonatomic, weak) UITextField *lastTextField;
+@property (nonatomic, weak) UITextField *lastTextField, *usernameTextField, *passwordTextField, *urlTextField;
 @property (nonatomic, strong) UIActivityIndicatorView *savingIndicator;
 @property (nonatomic, strong) NSMutableDictionary *notificationPreferences;
 @property (nonatomic, strong) UIAlertView *failureAlertView;
@@ -105,6 +109,10 @@
     UITapGestureRecognizer *tgr = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(handleViewTapped)];
     tgr.cancelsTouchesInView = NO;
     [self.tableView addGestureRecognizer:tgr];
+    
+    [self.tableView registerClass:[UITableViewTextFieldCell class] forCellReuseIdentifier:TextFieldCellIdentifier];
+    [self.tableView registerClass:[WPTableViewCell class] forCellReuseIdentifier:GeotaggingCellIdentifier];
+    [self.tableView registerClass:[WPTableViewCell class] forCellReuseIdentifier:PushNotificationsCellIdentifier];
 }
 
 - (void)viewDidAppear:(BOOL)animated {
@@ -165,106 +173,88 @@
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
-    static NSString *const URLCellIdentifer = @"URLCell";
-    static NSString *const UsernameCellIdentifier = @"UsernameCell";
-    static NSString *const PasswordCellIdentifier = @"PasswordCell";
-    
     if ([indexPath section] == 0) {
         if (indexPath.row == 0) {
-            self.urlCell = (UITableViewTextFieldCell *)[tableView dequeueReusableCellWithIdentifier:URLCellIdentifer];
-            if (!self.urlCell) {
-                UITableViewTextFieldCell *urlCell = [[UITableViewTextFieldCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:URLCellIdentifer];
-                self.urlCell = urlCell;
-				self.urlCell.textLabel.text = NSLocalizedString(@"URL", @"");
-				UITextField *urlField = self.urlCell.textField;
-				urlField.placeholder = NSLocalizedString(@"http://my-site-address (URL)", @"(placeholder) Help the user enter a URL into the field");
-                urlField.keyboardType = UIKeyboardTypeURL;
-                [urlField addTarget:self action:@selector(showSaveButton) forControlEvents:UIControlEventEditingChanged];
-                [self configureTextField:urlField asPassword:NO];
-                urlField.keyboardType = UIKeyboardTypeURL;
-				if (self.blog.url != nil) {
-					urlField.text = self.blog.url;
-                    
-                    // Make a margin exception for URLs since they're so long
-                    self.urlCell.minimumLabelWidth = 30;
-                } else {
-                    urlField.text = @"";
-                }
+            UITableViewTextFieldCell *cell = [tableView dequeueReusableCellWithIdentifier:TextFieldCellIdentifier];
+            self.urlTextField = cell.textField;
+            cell.textLabel.text = NSLocalizedString(@"URL", @"");
+            
+            self.urlTextField.placeholder = NSLocalizedString(@"http://my-site-address (URL)", @"(placeholder) Help the user enter a URL into the field");
+            self.urlTextField.keyboardType = UIKeyboardTypeURL;
+            [self.urlTextField addTarget:self action:@selector(showSaveButton) forControlEvents:UIControlEventEditingChanged];
+            [self configureTextField:self.urlTextField asPassword:NO];
+            self.urlTextField.keyboardType = UIKeyboardTypeURL;
+            if (self.blog.url != nil) {
+                self.urlTextField.text = self.blog.url;
                 
-                urlField.enabled = [self canEditUsernameAndURL];
-                [WPStyleGuide configureTableViewTextCell:self.urlCell];
+                // Make a margin exception for URLs since they're so long
+                cell.minimumLabelWidth = 30;
+            } else {
+                self.urlTextField.text = @"";
             }
             
-            return self.urlCell;
+            self.urlTextField.enabled = [self canEditUsernameAndURL];
+            [WPStyleGuide configureTableViewTextCell:cell];
+            
+            
+            return cell;
         }
         else if (indexPath.row == 1) {
-            self.usernameCell = [tableView dequeueReusableCellWithIdentifier:UsernameCellIdentifier];
-            if (self.usernameCell == nil) {
-                self.usernameCell = [[UITableViewTextFieldCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:UsernameCellIdentifier];
-				self.usernameCell.textLabel.text = NSLocalizedString(@"Username", @"Label for entering username in the username field");
-                UITextField *usernameField = self.usernameCell.textField;
-				usernameField = self.usernameCell.textField;
-				usernameField.placeholder = NSLocalizedString(@"Enter username", @"(placeholder) Help enter WordPress username");
-                [usernameField addTarget:self action:@selector(showSaveButton) forControlEvents:UIControlEventEditingChanged];
-                [self configureTextField:usernameField asPassword:NO];
-				if (self.blog.username != nil) {
-					usernameField.text = self.blog.username;
-                } else {
-                    usernameField.text = @"";
-                }
-
-                usernameField.enabled = [self canEditUsernameAndURL];
-                [WPStyleGuide configureTableViewTextCell:self.usernameCell];
-			}
+            UITableViewTextFieldCell *cell = [tableView dequeueReusableCellWithIdentifier:TextFieldCellIdentifier];
             
-            return self.usernameCell;
+            cell.textLabel.text = NSLocalizedString(@"Username", @"Label for entering username in the username field");
+            self.usernameTextField = cell.textField;
+            self.usernameTextField.placeholder = NSLocalizedString(@"Enter username", @"(placeholder) Help enter WordPress username");
+            [self.usernameTextField addTarget:self action:@selector(showSaveButton) forControlEvents:UIControlEventEditingChanged];
+            [self configureTextField:self.usernameTextField asPassword:NO];
+            if (self.blog.username != nil) {
+                self.usernameTextField.text = self.blog.username;
+            } else {
+                self.usernameTextField.text = @"";
+            }
+
+            self.usernameTextField.enabled = [self canEditUsernameAndURL];
+            [WPStyleGuide configureTableViewTextCell:cell];
+            
+            return cell;
         }
         else if (indexPath.row == 2) {
-            self.passwordCell = (UITableViewTextFieldCell *)[tableView dequeueReusableCellWithIdentifier:PasswordCellIdentifier];
-            if (self.passwordCell == nil) {
-                self.passwordCell = [[UITableViewTextFieldCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:PasswordCellIdentifier];
-				self.passwordCell.textLabel.text = NSLocalizedString(@"Password", @"Label for entering password in password field");
-                UITextField *passwordField = self.passwordCell.textField;
-				passwordField = self.passwordCell.textField;
-				passwordField.placeholder = NSLocalizedString(@"Enter password", @"(placeholder) Help user enter password in password field");
-                [passwordField addTarget:self action:@selector(showSaveButton) forControlEvents:UIControlEventEditingChanged];
-                [self configureTextField:passwordField asPassword:YES];
-				if (self.password != nil) {
-					passwordField.text = self.password;
-                } else {
-                    passwordField.text = @"";
-                }
-                [WPStyleGuide configureTableViewTextCell:self.passwordCell];
-                
-                // If the other rows can't be edited, it looks better to align the password to the right as well
-                if (![self canEditUsernameAndURL]) {
-                    passwordField.textAlignment = NSTextAlignmentRight;
-                }
-			}
+            UITableViewTextFieldCell *cell = [tableView dequeueReusableCellWithIdentifier:TextFieldCellIdentifier];
+
+            cell.textLabel.text = NSLocalizedString(@"Password", @"Label for entering password in password field");
+            self.passwordTextField = cell.textField;
+            self.passwordTextField.placeholder = NSLocalizedString(@"Enter password", @"(placeholder) Help user enter password in password field");
+            [self.passwordTextField addTarget:self action:@selector(showSaveButton) forControlEvents:UIControlEventEditingChanged];
+            [self configureTextField:self.passwordTextField asPassword:YES];
+            if (self.password != nil) {
+                self.passwordTextField.text = self.password;
+            } else {
+                self.passwordTextField.text = @"";
+            }
+            [WPStyleGuide configureTableViewTextCell:cell];
             
-            return self.passwordCell;
+            // If the other rows can't be edited, it looks better to align the password to the right as well
+            if (![self canEditUsernameAndURL]) {
+                self.passwordTextField.textAlignment = NSTextAlignmentRight;
+            }
+            
+            return cell;
         }
     } else if(indexPath.section == 1) {
-        if(indexPath.row == 0) {
-            UITableViewCell *geotaggingCell = [tableView dequeueReusableCellWithIdentifier:@"GeotaggingCell"];
-            if(geotaggingCell == nil) {
-                geotaggingCell = [[WPTableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:@"GeotaggingCell"];
-                geotaggingCell.accessoryView = [[UISwitch alloc] init];
-            }
-            UISwitch *geotaggingSwitch = (UISwitch *)geotaggingCell.accessoryView;
+        if (indexPath.row == 0) {
+            UITableViewCell *geotaggingCell = [tableView dequeueReusableCellWithIdentifier:GeotaggingCellIdentifier];
+            UISwitch *geotaggingSwitch = [[UISwitch alloc] init];
             geotaggingCell.textLabel.text = NSLocalizedString(@"Geotagging", @"Enables geotagging in blog settings (short label)");
             geotaggingCell.selectionStyle = UITableViewCellSelectionStyleNone;
             geotaggingSwitch.on = self.geolocationEnabled;
             [geotaggingSwitch addTarget:self action:@selector(toggleGeolocation:) forControlEvents:UIControlEventValueChanged];
+            geotaggingCell.accessoryView = geotaggingSwitch;
             [WPStyleGuide configureTableViewCell:geotaggingCell];
             return geotaggingCell;
+            
         } else if(indexPath.row == 1) {
-            UITableViewCell *pushCell = [tableView dequeueReusableCellWithIdentifier:@"PushCell"];
-            if(pushCell == nil) {
-                pushCell = [[WPTableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:@"PushCell"];
-                pushCell.accessoryView = [[UISwitch alloc] init];
-            }
-            UISwitch *pushSwitch = (UISwitch *)pushCell.accessoryView;
+            UITableViewCell *pushCell = [tableView dequeueReusableCellWithIdentifier:PushNotificationsCellIdentifier];
+            UISwitch *pushSwitch = [[UISwitch alloc] init];
             pushCell.textLabel.text = NSLocalizedString(@"Push Notifications", @"");
             pushCell.selectionStyle = UITableViewCellSelectionStyleNone;
             pushSwitch.on = [self getBlogPushNotificationsSetting];
@@ -272,10 +262,9 @@
             return pushCell;
         }
 	} else if (indexPath.section == 2) {
-        
-        UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:@"Cell"];
+        UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:JetpackConnectedCellIdentifier];
         if (!cell) {
-            cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleValue1 reuseIdentifier:@"Cell"];
+            cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleValue1 reuseIdentifier:JetpackConnectedCellIdentifier];
         }
         cell.textLabel.text = NSLocalizedString(@"Configure", @"");
         if (self.blog.jetpackUsername) {
@@ -329,18 +318,17 @@
 }
 
 - (BOOL)textFieldShouldReturn:(UITextField *)textField {
-    if (textField == self.urlCell.textField) {
-        [self.usernameCell.textField becomeFirstResponder];
-    } else if (textField == self.usernameCell.textField) {
-        [self.passwordCell.textField becomeFirstResponder];
-    } else if (textField == self.passwordCell.textField) {
-        [self.passwordCell.textField resignFirstResponder];
+    if (textField == self.urlTextField) {
+        [self.usernameTextField becomeFirstResponder];
+    } else if (textField == self.usernameTextField) {
+        [self.passwordTextField becomeFirstResponder];
+    } else if (textField == self.passwordTextField) {
+        [self.passwordTextField resignFirstResponder];
     }
 	return NO;
 }
 
 - (BOOL)textField:(UITextField *)textField shouldChangeCharactersInRange:(NSRange)range replacementString:(NSString *)string {
-
     // Adjust the text color of the containing cell's textLabel if
     // the entered information is invalid.
     if ([textField isDescendantOfView:self.tableView]) {
@@ -360,9 +348,9 @@
         [result replaceCharactersInRange:range withString:string];
         
         if ([result length] == 0) {
-            cell.textLabel.textColor = WRONG_FIELD_COLOR;
+            cell.textLabel.textColor = [WPStyleGuide validationErrorRed];
         } else {
-            cell.textLabel.textColor = GOOD_FIELD_COLOR;
+            cell.textLabel.textColor = [WPStyleGuide whisperGrey];
         }
     }
     
@@ -471,7 +459,7 @@
     NSString *urlToValidate = self.url;
 	
     if (![urlToValidate hasPrefix:@"http"]) {
-        urlToValidate = [NSString stringWithFormat:@"http://%@", self.url];
+        urlToValidate = [NSString stringWithFormat:@"http://%@", urlToValidate];
     }
 	
     NSError *error = nil;
@@ -488,7 +476,7 @@
 }
 
 - (void)validateXmlprcURL:(NSURL *)xmlRpcURL {
-    WordPressXMLRPCApi *api = [WordPressXMLRPCApi apiWithXMLRPCEndpoint:xmlRpcURL username:self.usernameCell.textField.text password:self.passwordCell.textField.text];
+    WordPressXMLRPCApi *api = [WordPressXMLRPCApi apiWithXMLRPCEndpoint:xmlRpcURL username:self.usernameTextField.text password:self.passwordTextField.text];
 
     [api getBlogOptionsWithSuccess:^(id options){
         if ([options objectForKey:@"wordpress.com"] != nil) {
@@ -506,7 +494,7 @@
 }
 
 - (void)loginForSiteWithXmlRpcUrl:(NSURL *)xmlRpcURL {
-    WordPressXMLRPCApi *api = [WordPressXMLRPCApi apiWithXMLRPCEndpoint:xmlRpcURL username:self.usernameCell.textField.text password:self.passwordCell.textField.text];
+    WordPressXMLRPCApi *api = [WordPressXMLRPCApi apiWithXMLRPCEndpoint:xmlRpcURL username:self.usernameTextField.text password:self.passwordTextField.text];
     [api getBlogsWithSuccess:^(NSArray *blogs) {
         [SVProgressHUD dismiss];
         self.subsites = blogs;
@@ -606,46 +594,26 @@
     }
 }
 
-- (void)validateFields {
-    self.url = [NSURL IDNEncodedURL:self.urlCell.textField.text];
-    DDLogInfo(@"blog url: %@", self.url);
-    self.username = self.usernameCell.textField.text;
-    self.password = self.passwordCell.textField.text;
-    
-    self.saveButton.enabled = NO;
-	[self.navigationItem setHidesBackButton:YES animated:NO];
-    BOOL validFields = YES;
-    if ([self.urlCell.textField.text isEqualToString:@""]) {
-        validFields = NO;
-        self.urlCell.textLabel.textColor = WRONG_FIELD_COLOR;
-    }
-    if ([self.usernameCell.textField.text isEqualToString:@""]) {
-        validFields = NO;
-        self.usernameCell.textLabel.textColor = WRONG_FIELD_COLOR;
-    }
-    if ([self.passwordCell.textField.text isEqualToString:@""]) {
-        validFields = NO;
-        self.passwordCell.textLabel.textColor = WRONG_FIELD_COLOR;
-    }
-    
-    if (validFields) {
-        if (self.blog) {
-            // If we are editing an existing blog, use the known XML-RPC URL
-            // We don't allow editing URL on existing blogs, so XML-RPC shouldn't change
-            [self validateXmlprcURL:[NSURL URLWithString:self.blog.xmlrpc]];
-        } else {
-            [self checkURL];
-        }
+- (void)validateUrl {
+    if (self.blog) {
+        // If we are editing an existing blog, use the known XML-RPC URL
+        // We don't allow editing URL on existing blogs, so XML-RPC shouldn't change
+        [self validateXmlprcURL:[NSURL URLWithString:self.blog.xmlrpc]];
     } else {
-        [self validationDidFail:nil];
+        [self checkURL];
     }
 }
 
 - (void)save:(id)sender {
-    [self.urlCell.textField resignFirstResponder];
-    [self.usernameCell.textField resignFirstResponder];
-    [self.passwordCell.textField resignFirstResponder];
+    [self.urlTextField resignFirstResponder];
+    [self.usernameTextField resignFirstResponder];
+    [self.passwordTextField resignFirstResponder];
 
+    self.url = [NSURL IDNEncodedURL:self.urlTextField.text];
+    DDLogInfo(@"blog url: %@", self.url);
+    self.username = self.usernameTextField.text;
+    self.password = self.passwordTextField.text;
+    
     if (!self.savingIndicator) {
         self.savingIndicator = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleGray];
         self.savingIndicator.autoresizingMask = UIViewAutoresizingFlexibleLeftMargin | UIViewAutoresizingFlexibleRightMargin;
@@ -665,15 +633,15 @@
         [self.blog dataSave];
 	}
     if (self.blog == nil || self.blog.username == nil) {
-		[self validateFields];
+		[self validateUrl];
 	} else {
-		if ([self.startingUser isEqualToString:self.usernameCell.textField.text] &&
-            [self.startingPwd isEqualToString:self.passwordCell.textField.text] &&
-			[self.startingUrl isEqualToString:self.urlCell.textField.text]) {
+		if ([self.startingUser isEqualToString:self.usernameTextField.text] &&
+            [self.startingPwd isEqualToString:self.passwordTextField.text] &&
+			[self.startingUrl isEqualToString:self.urlTextField.text]) {
 			// No need to check if nothing changed
             [self cancel:nil];
 		} else {
-			[self validateFields];
+			[self validateUrl];
 		}
     }
 }
@@ -695,9 +663,9 @@
 - (void)showSaveButton {
     BOOL hasContent;
     
-    if ([self.urlCell.textField.text isEqualToString:@""] ||
-         [self.usernameCell.textField.text isEqualToString:@""] ||
-         [self.passwordCell.textField.text isEqualToString:@""]) {
+    if ([self.urlTextField.text isEqualToString:@""] ||
+         [self.usernameTextField.text isEqualToString:@""] ||
+         [self.passwordTextField.text isEqualToString:@""]) {
         hasContent = NO;
     } else {
         hasContent = YES;

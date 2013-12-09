@@ -209,13 +209,8 @@ CGFloat const CommentsSectionHeaderHeight = 24.0;
     return @"status";
 }
 
-- (UITableViewCell *)newCell {
-    static NSString *cellIdentifier = @"CommentCell";
-    UITableViewCell *cell = [self.tableView dequeueReusableCellWithIdentifier:cellIdentifier];
-    if (cell == nil) {
-        cell = [[NewCommentsTableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:cellIdentifier];
-    }
-    return cell;
+- (Class)cellClass {
+    return [NewCommentsTableViewCell class];
 }
 
 - (void)syncItemsWithSuccess:(void (^)())success failure:(void (^)(NSError *))failure {
