@@ -11,6 +11,7 @@
 #import "WPToast.h"
 #import "IOS7CorrectedTextView.h"
 #import "ContextManager.h"
+#import "WPAccount.h"
 
 @implementation ReaderCommentFormView
 
@@ -54,7 +55,7 @@
 	}
 	
 	NSDictionary *params = @{@"content":str};
-	[[WordPressComApi sharedApi] postPath:path parameters:params success:^(AFHTTPRequestOperation *operation, id responseObject) {
+	[[[WPAccount defaultWordPressComAccount] restApi] postPath:path parameters:params success:^(AFHTTPRequestOperation *operation, id responseObject) {
 		
 		NSDictionary *params = @{@"number":@100};
 		

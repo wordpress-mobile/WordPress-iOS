@@ -310,8 +310,8 @@ CGFloat const JetpackSignInButtonHeight = 41.0;
     [_blog validateJetpackUsername:_usernameField.text
                           password:_passwordField.text
                            success:^{
-                               if (![[WordPressComApi sharedApi] hasCredentials]) {
-                                   [[WordPressComApi sharedApi] signInWithUsername:_usernameField.text password:_passwordField.text success:nil failure:nil];
+                               if (![[[WPAccount defaultWordPressComAccount] restApi] hasCredentials]) {
+                                   [[[WPAccount defaultWordPressComAccount] restApi] signInWithUsername:_usernameField.text password:_passwordField.text success:nil failure:nil];
                                }
                                [self setAuthenticating:NO];
                                if (self.completionBlock) {

@@ -37,10 +37,10 @@ NSString *const WordPressComApiErrorMessageKey = @"WordPressComApiErrorMessageKe
 
 #ifdef DEBUG
 NSString *const WordPressComApiPushAppId = @"org.wordpress.appstore.dev";
-#elif
+#else
 #ifdef INTERNAL_BUILD
 NSString *const WordPressComApiPushAppId = @"org.wordpress.internal";
-#elif
+#else
 NSString *const WordPressComApiPushAppId = @"org.wordpress.appstore";
 #endif
 #endif
@@ -93,11 +93,6 @@ NSString *const WordPressComApiPushAppId = @"org.wordpress.appstore";
 @end
 
 @implementation WordPressComApi
-
-+ (WordPressComApi *)sharedApi {
-    DDLogWarn(@"Called obsolete [WordPressComApi sharedApi]");
-    return [[WPAccount defaultWordPressComAccount] restApi];
-}
 
 + (WordPressComApi *)anonymousApi {
     static WordPressComApi *_anonymousApi = nil;
@@ -416,7 +411,7 @@ NSString *const WordPressComApiPushAppId = @"org.wordpress.appstore";
     NSString *token = [[NSUserDefaults standardUserDefaults] objectForKey:kApnsDeviceTokenPrefKey];
     if( nil == token ) return; //no apns token available
     
-    if(![[WordPressComApi sharedApi] hasCredentials])
+    if(![[[WPAccount defaultWordPressComAccount] restApi] hasCredentials])
         return;
     
     NSDictionary *notificationPreferences = [[NSUserDefaults standardUserDefaults] objectForKey:@"notification_preferences"];
@@ -483,7 +478,7 @@ NSString *const WordPressComApiPushAppId = @"org.wordpress.appstore";
     NSString *token = [[NSUserDefaults standardUserDefaults] objectForKey:kApnsDeviceTokenPrefKey];
     if( nil == token ) return; //no apns token available
     
-    if(![[WordPressComApi sharedApi] hasCredentials])
+    if(![[[WPAccount defaultWordPressComAccount] restApi] hasCredentials])
         return;
     
     NSArray *parameters = @[[self usernameForXmlrpc],
@@ -512,7 +507,7 @@ NSString *const WordPressComApiPushAppId = @"org.wordpress.appstore";
     NSString *token = [[NSUserDefaults standardUserDefaults] objectForKey:kApnsDeviceTokenPrefKey];
     if( nil == token ) return; //no apns token available
     
-    if(![[WordPressComApi sharedApi] hasCredentials])
+    if(![[[WPAccount defaultWordPressComAccount] restApi] hasCredentials])
         return;
     
     NSString *authURL = kNotificationAuthURL;

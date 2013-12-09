@@ -334,7 +334,7 @@ CGFloat const blavatarImageViewSize = 43.f;
     [self configureCell:cell atIndexPath:indexPath];
     
     BOOL isSignInCell = NO;
-    if (![[WordPressComApi sharedApi] hasCredentials]) {
+    if (![[[WPAccount defaultWordPressComAccount] restApi] hasCredentials]) {
         isSignInCell = indexPath.section == SettingsSectionWpcom && indexPath.row == 0;
     }
     

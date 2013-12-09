@@ -365,7 +365,7 @@ NSString *const StatsEventAddBlogsClickedAddSelected = @"Add Blogs - Clicked Add
 
 - (BOOL)connectedToWordPressDotCom
 {
-    return [[WordPressComApi sharedApi] hasCredentials];
+    return [[[WPAccount defaultWordPressComAccount] restApi] hasCredentials];
 }
 
 - (void)trackEventForSelfHostedAndWPCom:(NSString *)event
