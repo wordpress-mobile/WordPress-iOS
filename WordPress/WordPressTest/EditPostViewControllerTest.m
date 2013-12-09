@@ -24,6 +24,10 @@
     Post *_post;
 }
 
+- (void)dealloc {
+    [[NSNotificationCenter defaultCenter] removeObserver:self];
+}
+
 - (void)setUp {
     [super setUp];
     NSDictionary *blogDict = @{
@@ -102,19 +106,28 @@
     }];
 
     ATHStart();
-    [[NSNotificationCenter defaultCenter] addObserverForName:EditPostViewControllerDidAutosaveNotification object:_controller queue:nil usingBlock:^(NSNotification *note) {
-        ATHNotify();
-    }];
-    [[NSNotificationCenter defaultCenter] addObserverForName:EditPostViewControllerAutosaveDidFailNotification object:_controller queue:nil usingBlock:^(NSNotification *note) {
-        NSError *error = [[note userInfo] objectForKey:@"error"];
-        XCTFail(@"Autosave failed: %@", error);
-        ATHNotify();
-    }];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(controllerDidAutosave:) name:EditPostViewControllerDidAutosaveNotification object:_controller];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(controllerAutosaveDidFail:) name:EditPostViewControllerAutosaveDidFailNotification object:_controller];
+    
     [titleTextField typeText:@"This is a very long title, which should trigger the autosave methods. Just in case... Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nunc est neque, adipiscing vitae euismod ut, elementum nec nibh. In hac habitasse platea dictumst. Mauris eu est lectus, sed elementum nunc. Praesent elit enim, facilisis eu tincidunt imperdiet, iaculis eu elit. In hac habitasse platea dictumst. Pellentesque feugiat elementum nulla, vitae pellentesque urna porttitor quis. Quisque et libero leo. Vestibulum ut erat ut ligula aliquet iaculis. Morbi egestas justo id nunc feugiat viverra vel sed risus. Nunc non ligula erat, eu ullamcorper purus. Nullam vitae erat velit, semper congue nibh. Vestibulum pulvinar mi a justo tincidunt venenatis in nec tortor. Curabitur tortor risus, consequat eget sollicitudin gravida, vestibulum vitae lacus. Aenean ut magna adipiscing mauris iaculis sollicitudin at id nisi."];
     ATHEnd();
     XCTAssertEqualObjects(_post.postID, @123);
     XCTAssertEqualObjects(_post.status, @"draft");
 }
+
+
+#pragma mark - Notifications
+
+- (void)controllerDidAutosave:(NSNotification *)notification {
+    ATHNotify();
+}
+
+- (void)controllerAutosaveDidFail:(NSNotification *)notification {
+    NSError *error = [[notification userInfo] objectForKey:@"error"];
+    XCTFail(@"Autosave failed: %@", error);
+    ATHNotify();
+}
+
 
 #pragma mark - Helpers
 
