@@ -11,6 +11,7 @@
 @class Reachability;
 @class DDFileLogger;
 @class ReaderPostsViewController;
+@class BlogListViewController;
 
 @interface WordPressAppDelegate : NSObject <UIApplicationDelegate>
 
@@ -19,12 +20,12 @@
 @property (nonatomic, assign) BOOL isWPcomAuthenticated;
 @property (nonatomic, strong) UITabBarController *tabBarController;
 @property (nonatomic, strong) ReaderPostsViewController *readerPostsViewController;
+@property (nonatomic, strong) BlogListViewController *blogListViewController;
 @property (strong, nonatomic, readonly) DDFileLogger *fileLogger;
 @property (nonatomic, strong) Reachability *internetReachability, *wpcomReachability;
 @property (nonatomic, assign) BOOL connectionAvailable, wpcomAvailable;
 
 + (WordPressAppDelegate *)sharedWordPressApplicationDelegate;
-
 
 ///---------------------------
 /// @name User agent switching
@@ -37,5 +38,13 @@
 /// @name Tab bar controls
 ///-----------------------
 - (void)showNotificationsTab;
+- (void)showBlogListTab;
+- (void)showReaderTab;
+- (void)showPostTab;
+
+///-----------
+/// @name NUX
+///-----------
+- (void)showWelcomeScreenIfNeededAnimated:(BOOL)animated;
 
 @end

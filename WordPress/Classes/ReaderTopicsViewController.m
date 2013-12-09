@@ -6,6 +6,7 @@
 //  Copyright (c) 2013 WordPress. All rights reserved.
 //
 
+#import "ReaderPostsViewController.h"
 #import "ReaderTopicsViewController.h"
 #import "WordPressComApi.h"
 #import "ReaderPost.h"
@@ -27,7 +28,6 @@
 
 @implementation ReaderTopicsViewController
 
-@synthesize delegate;
 
 #pragma mark - LifeCycle Methods
 
@@ -251,9 +251,7 @@
 	[[NSUserDefaults standardUserDefaults] synchronize];
 	
 	if(![[dict objectForKey:@"endpoint"] isEqualToString:[_currentTopic objectForKey:@"endpoint"]]) {
-		if(self.delegate) {
-			[delegate readerTopicChanged];
-		}
+        [[NSNotificationCenter defaultCenter] postNotificationName:ReaderTopicDidChangeNotification object:self];
 	}
 	
     [self dismissViewControllerAnimated:YES completion:nil];

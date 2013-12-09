@@ -18,6 +18,7 @@ typedef NS_ENUM(NSInteger, EditPostViewControllerAlertTag) {
     EditPostViewControllerAlertTagFailedMedia,
 };
 
+NSString *const EditPostViewControllerLastUsedBlogURL = @"EditPostViewControllerLastUsedBlogURL";
 NSString *const EditPostViewControllerDidAutosaveNotification = @"EditPostViewControllerDidAutosaveNotification";
 NSString *const EditPostViewControllerAutosaveDidFailNotification = @"EditPostViewControllerAutosaveDidFailNotification";
 
@@ -60,15 +61,56 @@ NSString *const EditPostViewControllerAutosaveDidFailNotification = @"EditPostVi
 CGFloat const EditPostViewControllerStandardOffset = 15.0;
 CGFloat const EditPostViewControllerTextViewOffset = 10.0;
 
++ (Blog *)blogForNewDraft {
+    // Try to get the last used blog, if there is one.
+    NSFetchRequest *fetchRequest = [NSFetchRequest fetchRequestWithEntityName:@"Blog"];
+    NSString *url = [[NSUserDefaults standardUserDefaults] stringForKey:EditPostViewControllerLastUsedBlogURL];
+    if (url) {
+        NSPredicate *predicate = [NSPredicate predicateWithFormat:@"url = %@", url];
+        [fetchRequest setPredicate:predicate];
+    }
+    fetchRequest.sortDescriptors = @[[NSSortDescriptor sortDescriptorWithKey:@"blogName" ascending:YES]];
+    NSFetchedResultsController *resultsController = [[NSFetchedResultsController alloc]
+                                                     initWithFetchRequest:fetchRequest
+                                                     managedObjectContext:[[ContextManager sharedInstance] mainContext]
+                                                     sectionNameKeyPath:nil
+                                                     cacheName:nil];
+    NSError *error = nil;
+    if (![resultsController performFetch:&error]) {
+        DDLogError(@"Couldn't fetch blogs: %@", [error localizedDescription]);
+        return nil;
+    }
+    
+    if([resultsController.fetchedObjects count] == 0) {
+        if (url) {
+            // Blog might have been removed from the app. Get the first available.
+            [[NSUserDefaults standardUserDefaults] removeObjectForKey:EditPostViewControllerLastUsedBlogURL];
+            [[NSUserDefaults standardUserDefaults] synchronize];
+            return [self blogForNewDraft];
+        }
+        return nil;
+    }
+    
+    return [resultsController.fetchedObjects objectAtIndex:0];
+}
+
 - (void)dealloc {
     _failedMediaAlertView.delegate = nil;
     [[NSNotificationCenter defaultCenter] removeObserver:self];
+}
+
+- (id)initWithDraftForLastUsedBlog {
+    Blog *blog = [EditPostViewController blogForNewDraft];
+    return [self initWithPost:[Post newDraftForBlog:blog]];
 }
 
 - (id)initWithPost:(AbstractPost *)aPost {
     self = [super initWithNibName:@"EditPostViewControlleriOS7" bundle:nil];
     if (self) {
         self.apost = aPost;
+        [[NSUserDefaults standardUserDefaults] setObject:aPost.blog.url forKey:EditPostViewControllerLastUsedBlogURL];
+        [[NSUserDefaults standardUserDefaults] synchronize];
+        
         if (self.apost.remoteStatus == AbstractPostRemoteStatusLocal) {
             self.editMode = EditPostViewControllerModeNewPost;
         } else {
@@ -81,6 +123,11 @@ CGFloat const EditPostViewControllerTextViewOffset = 10.0;
 - (void)viewDidLoad {
     WPFLogMethod();
     [super viewDidLoad];
+    
+    self.navigationController.navigationBar.translucent = NO;
+    if(self.navigationController.navigationBarHidden) {
+        [self.navigationController setNavigationBarHidden:NO animated:YES];
+    }
     
     // Using performBlock: with the AbstractPost on the main context:
     // Prevents a hang on opening this view on slow and fast devices
