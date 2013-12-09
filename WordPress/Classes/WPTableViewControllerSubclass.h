@@ -34,17 +34,9 @@
  Sync content with the server
  
  Subclasses can call this method if they need to invoke a refresh, but it's not meant to be implemented by subclasses.
- Override syncItemsWithSuccess:failure: instead.
- */
-- (void)syncItems;
-
-/**
- Special case method to invoke syncing via user interaction, which could do extra processing, show errors, etc.
- 
- Subclasses can call this method when the user invokes a refresh, but it's not meant to be implemented by subclasses.
  Override syncItemsViaUserInteraction:success:failure: instead.
  */
-- (void)syncItemsViaUserInteraction;
+- (void)syncItems;
 
 
 /// ----------------------------------------------
@@ -116,20 +108,11 @@
  
  Subclasses *MUST* implement this method
  
- @param userInteraction true if the sync responds to a user action, like pull to refresh
+ @param userInteraction true if the sync is in response to a user action, like pull to refresh
  @param success A block that's executed if the sync was successful
  @param failure A block that's executed if there was any error
  */
-- (void)syncItemsWithSuccess:(void (^)())success failure:(void (^)(NSError *error))failure;
-
-/**
- Performs syncing of items when the user performs an explicit action, such as pulling to refresh.
- By default, simply calls syncItemsWithSuccess:failure: but subclasses can override.
- 
- @param success A block that's executed if the sync was successful
- @param failure A block that's executed if there was any error
- */
-- (void)syncItemsViaUserInteractionWithSuccess:(void (^)())success failure:(void (^)(NSError *error))failure;
+- (void)syncItemsViaUserInteraction:(BOOL)userInteraction success:(void (^)())success failure:(void (^)(NSError *error))failure;
 
 /**
  Returns a boolean indicating if the blog is syncing that type of item right now

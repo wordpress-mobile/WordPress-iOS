@@ -285,12 +285,11 @@ NSString * const NotificationsJetpackInformationURL = @"http://jetpack.me/about/
     return self.user != nil;
 }
 
-- (void)syncItemsViaUserInteractionWithSuccess:(void (^)())success failure:(void (^)(NSError *))failure {
-    [self pruneOldNotes];
-    [self syncItemsWithSuccess:success failure:failure];
-}
-
-- (void)syncItemsWithSuccess:(void (^)())success failure:(void (^)(NSError *error))failure {
+- (void)syncItemsViaUserInteraction:(BOOL)userInteraction success:(void (^)())success failure:(void (^)(NSError *error))failure {
+    if (userInteraction) {
+        [self pruneOldNotes];
+    }
+    
     NSNumber *timestamp;
     NSArray *notes = [self.resultsController fetchedObjects];
     if ([notes count] > 0) {
