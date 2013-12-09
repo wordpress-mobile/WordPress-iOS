@@ -24,9 +24,13 @@
 #pragma mark -
 #pragma mark View lifecycle
 
-- (NSString *)noResultsText
+- (NSString *)noResultsTitleText
 {
-    return NSLocalizedString(@"No posts yet", @"Displayed when the user pulls up the posts view and they have no posts");
+    return NSLocalizedString(@"You don't have any posts yet.", @"Displayed when the user pulls up the posts view and they have no posts");
+}
+
+- (UIView *)noResultsAccessoryView {
+    return [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"penandink"]];
 }
 
 - (void)viewDidLoad {
@@ -251,17 +255,8 @@
     [self.blog syncPostsWithSuccess:success failure:failure loadMore:NO];
 }
 
-- (UITableViewCell *)newCell {
-    static NSString *const cellIdentifier = @"PostCell";
-    UITableViewCell *cell = [self.tableView dequeueReusableCellWithIdentifier:cellIdentifier];
-    if (cell == nil) {
-        cell = [[NewPostTableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:cellIdentifier];
-        if (!IS_IOS7) {
-            UIImageView *imageView = [[UIImageView alloc] initWithImage:[[UIImage imageNamed:@"cell_gradient_bg"] stretchableImageWithLeftCapWidth:0 topCapHeight:1]];
-            [cell setBackgroundView:imageView];
-        }
-    }
-    return cell;
+- (Class)cellClass {
+    return [NewPostTableViewCell class];
 }
 
 - (void)controller:(NSFetchedResultsController *)controller

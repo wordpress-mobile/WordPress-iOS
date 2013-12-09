@@ -213,8 +213,18 @@
 }
 
 
-- (void)handleBlogButtonTapped:(id)sender {
-	[ReaderUsersBlogsViewController presentAsModalWithDelegate:self];
+- (void)handleBlogButtonTapped:(id)sender {    
+    ReaderUsersBlogsViewController *controller = [[ReaderUsersBlogsViewController alloc] init];
+	controller.delegate = self;
+	
+	UINavigationController *navController = [[UINavigationController alloc] initWithRootViewController:controller];
+    navController.navigationBar.translucent = NO;
+	navController.modalPresentationStyle = UIModalPresentationFormSheet;
+    if (!IS_IPAD) {
+        // Avoid a weird issue on the iPad with cross dissolves when the keyboard is visible.
+        navController.modalTransitionStyle = UIModalTransitionStyleCrossDissolve;
+    }
+    [[[WordPressAppDelegate sharedWordPressApplicationDelegate].window rootViewController] presentViewController:navController animated:YES completion:nil];
 }
 
 

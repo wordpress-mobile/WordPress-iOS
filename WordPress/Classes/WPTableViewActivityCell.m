@@ -1,5 +1,5 @@
 /*
- * AddSiteViewController.h
+ * WPTableViewActivityCell.m
  *
  * Copyright (c) 2013 WordPress. All rights reserved.
  *
@@ -7,9 +7,10 @@
  * Some rights reserved. See license.txt
  */
 
-#import <UIKit/UIKit.h>
-#import "EditSiteViewController.h"
+#import "WPTableViewActivityCell.h"
 
-@interface AddSiteViewController : EditSiteViewController
+
+@implementation WPTableViewActivityCell
+
 
 @end
