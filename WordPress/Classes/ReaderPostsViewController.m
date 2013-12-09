@@ -69,8 +69,8 @@ NSString * const RPVCDisplayedNativeFriendFinder = @"DisplayedNativeFriendFinder
 
 - (void)dealloc {
     _featuredImageSource.delegate = nil;
-    [[NSNotificationCenter defaultCenter] removeObserver:self];
 	self.readerReblogFormView = nil;
+    [[NSNotificationCenter defaultCenter] removeObserver:self];
 }
 
 - (id)init {
@@ -81,9 +81,7 @@ NSString * const RPVCDisplayedNativeFriendFinder = @"DisplayedNativeFriendFinder
 		self.infiniteScrollEnabled = YES;
         self.incrementalLoadingSupported = YES;
         
-        [[NSNotificationCenter defaultCenter] addObserverForName:ReaderTopicDidChangeNotification object:nil queue:nil usingBlock:^(NSNotification *note) {
-            [self readerTopicDidChange];
-        }];
+        [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(readerTopicDidChange:) name:ReaderTopicDidChangeNotification object:nil];        
 	}
 	return self;
 }
@@ -388,7 +386,7 @@ NSString * const RPVCDisplayedNativeFriendFinder = @"DisplayedNativeFriendFinder
     
 	[[NSUserDefaults standardUserDefaults] setObject:dict forKey:ReaderCurrentTopicKey];
 	[[NSUserDefaults standardUserDefaults] synchronize];
-    [self readerTopicDidChange];
+    [self readerTopicDidChange:nil];
 }
 
 
@@ -800,9 +798,9 @@ NSString * const RPVCDisplayedNativeFriendFinder = @"DisplayedNativeFriendFinder
 }
 
 
-#pragma mark - ReaderTopicsDelegate Methods
+#pragma mark - Notifications
 
-- (void)readerTopicDidChange {
+- (void)readerTopicDidChange:(NSNotification *)notification {
 	if (IS_IPAD){
         [self dismissPopover];
 	}
