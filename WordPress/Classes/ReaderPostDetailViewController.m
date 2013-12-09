@@ -737,6 +737,16 @@ typedef enum {
     [[NSNotificationCenter defaultCenter] postNotificationName:ReaderTopicDidChangeNotification object:self];
 }
 
+- (void)postView:(ReaderPostView *)postView didReceiveFeaturedImageAction:(id)sender {
+    UITapGestureRecognizer *gesture = (UITapGestureRecognizer *)sender;
+    UIImageView *imageView = (UIImageView *)gesture.view;
+    WPImageViewController *controller = [[WPImageViewController alloc] initWithImage:imageView.image];
+
+    controller.modalTransitionStyle = UIModalTransitionStyleCrossDissolve;
+    controller.modalPresentationStyle = UIModalPresentationFullScreen;
+    [self.navigationController pushViewController:controller animated:YES];
+}
+
 
 #pragma mark - Sync methods
 
