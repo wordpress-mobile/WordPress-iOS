@@ -520,7 +520,8 @@ NSString *const DefaultCellIdentifier = @"DefaultCellIdentifier";
             // in the table view
             if (![self.noResultsView isDescendantOfView:self.tableView]) {
                 [self.tableView addSubviewWithFadeAnimation:self.noResultsView];
-            }        }
+            }
+        }
     }
 }
 
