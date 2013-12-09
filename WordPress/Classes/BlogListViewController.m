@@ -18,10 +18,12 @@
 #import "Blog.h"
 #import "WPAccount.h"
 
+static NSString *const BlogCellIdentifier = @"BlogCell";
 CGFloat const blavatarImageSize = 50.f;
 NSString * const WPBlogListRestorationID = @"WPBlogListID";
 
 @interface BlogListViewController ()
+
 @property (nonatomic, strong) NSFetchedResultsController *resultsController;
 @property (nonatomic, strong) UIBarButtonItem *settingsButton;
 @property (nonatomic) BOOL sectionDeletedByController;
@@ -92,6 +94,8 @@ NSString * const WPBlogListRestorationID = @"WPBlogListID";
     
     [WPStyleGuide configureColorsForView:self.view andTableView:self.tableView];
  
+    [self.tableView registerClass:[WPTableViewCell class] forCellReuseIdentifier:BlogCellIdentifier];
+    
     self.navigationItem.leftBarButtonItem = self.editButtonItem;
 }
 
@@ -149,11 +153,8 @@ NSString * const WPBlogListRestorationID = @"WPBlogListID";
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    NSString *cellIdentifier = @"BlogCell";
-    UITableViewCell *cell = [self.tableView dequeueReusableCellWithIdentifier:cellIdentifier];
-    if (cell == nil) {
-        cell = [[WPTableViewCell alloc] initWithStyle:UITableViewCellStyleSubtitle reuseIdentifier:cellIdentifier];
-    }
+    
+    UITableViewCell *cell = [self.tableView dequeueReusableCellWithIdentifier:BlogCellIdentifier];
     
     [WPStyleGuide configureTableViewCell:cell];
     [self configureCell:cell atIndexPath:indexPath];
@@ -358,8 +359,7 @@ NSString * const WPBlogListRestorationID = @"WPBlogListID";
     }
 }
 
-#pragma mark -
-#pragma mark NSFetchedResultsController
+#pragma mark - NSFetchedResultsController
 
 - (NSFetchedResultsController *)resultsController {
     if (_resultsController) {

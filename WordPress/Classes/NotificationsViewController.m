@@ -18,7 +18,6 @@
 #import "WPAccount.h"
 #import "WPWebViewController.h"
 
-NSString * const NotificationsTableViewNoteCellIdentifier = @"NotificationsTableViewCell";
 NSString * const NotificationsLastSyncDateKey = @"NotificationsLastSyncDate";
 NSString * const NotificationsJetpackInformationURL = @"http://jetpack.me/about/";
 
@@ -106,7 +105,6 @@ NSString * const NotificationsJetpackInformationURL = @"http://jetpack.me/about/
     [WPStyleGuide configureColorsForView:self.view andTableView:self.tableView];
     
     self.infiniteScrollEnabled = YES;
-    [self.tableView registerClass:[NewNotificationsTableViewCell class] forCellReuseIdentifier:NotificationsTableViewNoteCellIdentifier];
 }
 
 - (void)viewWillAppear:(BOOL)animated {
@@ -267,14 +265,8 @@ NSString * const NotificationsJetpackInformationURL = @"http://jetpack.me/about/
     return fetchRequest;
 }
 
-- (UITableViewCell *)newCell {
-    NewNotificationsTableViewCell *cell = [self.tableView dequeueReusableCellWithIdentifier:NotificationsTableViewNoteCellIdentifier];
-
-    if (cell == nil) {
-        cell = [[NewNotificationsTableViewCell alloc] initWithStyle:UITableViewCellStyleSubtitle reuseIdentifier:NotificationsTableViewNoteCellIdentifier];
-    }
-    
-    return cell;
+- (Class)cellClass {
+    return [NewNotificationsTableViewCell class];
 }
 
 - (void)configureCell:(NewNotificationsTableViewCell *)cell atIndexPath:(NSIndexPath *)indexPath {
