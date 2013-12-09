@@ -23,6 +23,7 @@
 - (void)postView:(ReaderPostView *)postView didReceiveLinkAction:(id)sender;
 - (void)postView:(ReaderPostView *)postView didReceiveImageLinkAction:(id)sender;
 - (void)postView:(ReaderPostView *)postView didReceiveVideoLinkAction:(id)sender;
+- (void)postView:(ReaderPostView *)postView didReceiveFeaturedImageAction:(id)sender;
 @end
 
 @interface ReaderPostView : UIView<DTAttributedTextContentViewDelegate, ReaderMediaQueueDelegate> {

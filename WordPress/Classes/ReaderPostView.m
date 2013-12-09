@@ -295,6 +295,13 @@ const CGFloat RPVControlButtonBorderSize = 0.0f;
 
 - (void)buildPostContent {
 	self.cellImageView.contentMode = UIViewContentModeScaleAspectFill;
+    
+    // For the full view, allow the featured image to be tapped
+    if (self.showFullContent) {
+        UITapGestureRecognizer *imageTap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(featuredImageAction:)];
+        self.cellImageView.userInteractionEnabled = YES;
+        [self.cellImageView addGestureRecognizer:imageTap];
+    }
 	[self addSubview:self.cellImageView];
     
 	self.titleLabel = [[UILabel alloc] init];
@@ -528,6 +535,13 @@ const CGFloat RPVControlButtonBorderSize = 0.0f;
 
 // Forward the actions to the delegate; do it this way instead of exposing buttons as properties
 // because the view can have dynamically generated buttons (e.g. links)
+
+- (void)featuredImageAction:(id)sender {
+    if ([self.delegate respondsToSelector:@selector(postView:didReceiveFeaturedImageAction:)]) {
+        [self.delegate postView:self didReceiveFeaturedImageAction:sender];
+    }
+}
+
 - (void)followAction:(id)sender {
     if ([self.delegate respondsToSelector:@selector(postView:didReceiveFollowAction:)]) {
         [self.delegate postView:self didReceiveFollowAction:sender];
