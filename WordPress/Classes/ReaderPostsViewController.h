@@ -8,7 +8,10 @@
 
 #import <UIKit/UIKit.h>
 #import "WPTableViewController.h"
+#import "ReaderPostView.h"
 
-@interface ReaderPostsViewController : WPTableViewController
+extern NSString * const ReaderTopicDidChangeNotification;
+
+@interface ReaderPostsViewController : WPTableViewController<ReaderPostViewDelegate>
 
 @end

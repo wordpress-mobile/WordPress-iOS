@@ -131,7 +131,7 @@ const NSUInteger NoteKeepCount = 20;
 + (void)getNewNotificationswithContext:(NSManagedObjectContext *)context success:(void (^)(BOOL hasNewNotes))success failure:(void (^)(NSError *error))failure {
     NSNumber *timestamp = [self lastNoteTimestampWithContext:context];
 
-    [[WordPressComApi sharedApi] getNotificationsSince:timestamp success:^(AFHTTPRequestOperation *operation, id responseObject) {
+    [[[WPAccount defaultWordPressComAccount] restApi] getNotificationsSince:timestamp success:^(AFHTTPRequestOperation *operation, id responseObject) {
         NSArray *notes = [responseObject arrayForKey:@"notes"];
         if (success) {
             success([notes count] > 0);
