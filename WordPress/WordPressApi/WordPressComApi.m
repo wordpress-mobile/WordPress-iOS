@@ -166,7 +166,7 @@ NSString *const WordPressComApiPushAppId = @"org.wordpress.appstore";
             [[NSUserDefaults standardUserDefaults] synchronize];
             [WordPressAppDelegate sharedWordPressApplicationDelegate].isWPcomAuthenticated = YES;
             // [NotificationsManager registerForPushNotifications];
-            [[NSNotificationCenter defaultCenter] postNotificationName:WordPressComApiDidLoginNotification object:self.username];
+//            [[NSNotificationCenter defaultCenter] postNotificationName:WordPressComApiDidLoginNotification object:self.username];
             if (success) success();
         }
     };
@@ -227,9 +227,6 @@ NSString *const WordPressComApiPushAppId = @"org.wordpress.appstore";
     [self clearAuthorizationHeader];
 
     [self clearWpcomCookies];
-
-    // Notify the world
-    [[NSNotificationCenter defaultCenter] postNotificationName:WordPressComApiDidLogoutNotification object:nil];
 }
 
 - (BOOL)hasCredentials {
