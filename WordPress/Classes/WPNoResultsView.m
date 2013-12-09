@@ -73,7 +73,6 @@
     
     CGRect viewFrame = CGRectMake(0, 0, width, CGRectGetMaxY(bottomViewRect));
     self.frame = viewFrame;
-    self.autoresizingMask = UIViewAutoresizingFlexibleLeftMargin | UIViewAutoresizingFlexibleRightMargin | UIViewAutoresizingFlexibleTopMargin | UIViewAutoresizingFlexibleBottomMargin;
     
     if ([self superview]) {
         [self centerInSuperview];
@@ -156,8 +155,20 @@
 }
 
 - (void)centerInSuperview {
-    // Center in parent
+
+    if (![self superview]) {
+        return;
+    }
+    
+    // Center in superview
     CGRect frame = [self superview].frame;
+    
+    // account for content insets of superview if it is a scrollview
+    if ([self.superview.class isSubclassOfClass:[UIScrollView class]]) {
+        frame.size.height -= [(UIScrollView *)self.superview contentInset].top + [(UIScrollView *)self.superview contentInset].bottom;
+        frame.size.width -=  [(UIScrollView *)self.superview contentInset].left + [(UIScrollView *)self.superview contentInset].right;
+    }
+    
     CGFloat x = (CGRectGetWidth(frame) - CGRectGetWidth(self.frame))/2.0;
     CGFloat y = ((CGRectGetHeight(frame)) - CGRectGetHeight(self.frame))/2.0;
     
