@@ -11,9 +11,10 @@
 #import "WPTableViewControllerSubclass.h"
 #import "EditSiteViewController.h"
 #import "WPWebViewController.h"
-#import "WPInfoView.h"
+#import "WPNoResultsView.h"
 #import "SupportViewController.h"
 #import "ContextManager.h"
+#import "UIView+Subviews.h"
 
 NSTimeInterval const WPTableViewControllerRefreshTimeout = 300; // 5 minutes
 CGFloat const WPTableViewTopMargin = 40;
@@ -38,6 +39,7 @@ NSString *const DefaultCellIdentifier = @"DefaultCellIdentifier";
 @property (nonatomic, assign) BOOL isLoadingMore;
 @property (nonatomic, assign) BOOL didTriggerRefresh;
 @property (nonatomic, assign) CGPoint savedScrollOffset;
+@property (nonatomic, strong) UIActivityIndicatorView *noResultsActivityIndicator;
 
 @end
 
@@ -115,6 +117,7 @@ NSString *const DefaultCellIdentifier = @"DefaultCellIdentifier";
     if ([self.tableView indexPathForSelectedRow]) {
         [self.tableView deselectRowAtIndexPath:[self.tableView indexPathForSelectedRow] animated:YES];
     }
+    [self configureNoResultsView];
 }
 
 - (void)viewDidAppear:(BOOL)animated {
@@ -144,11 +147,28 @@ NSString *const DefaultCellIdentifier = @"DefaultCellIdentifier";
     [super setEditing:editing animated:animated];
 }
 
-- (NSString *)noResultsText
+#pragma mark - No Results View
+
+- (NSString *)noResultsTitleText
 {
     NSString *ttl = NSLocalizedString(@"No %@ yet", @"A string format. The '%@' will be replaced by the relevant type of object, posts, pages or comments.");
 	ttl = [NSString stringWithFormat:ttl, [self.title lowercaseString]];
     return ttl;
+}
+
+- (NSString *)noResultsMessageText
+{
+	return nil;
+}
+
+- (UIView *)noResultsAccessoryView
+{
+    return nil;
+}
+
+- (NSString *)noResultsButtonText
+{
+    return nil;
 }
 
 #pragma mark - Property accessors
@@ -371,11 +391,19 @@ NSString *const DefaultCellIdentifier = @"DefaultCellIdentifier";
 #pragma mark - UIRefreshControl Methods
 
 - (void)refresh {
+    if (![self userCanRefresh]) {
+        [self.refreshControl endRefreshing];
+        return;
+    }
+    
     _didTriggerRefresh = YES;
 	[self syncItemsViaUserInteraction];
     [self.noResultsView removeFromSuperview];
 }
 
+- (BOOL)userCanRefresh {
+    return YES;
+}
 
 #pragma mark - UIScrollViewDelegate Methods
 
@@ -467,25 +495,48 @@ NSString *const DefaultCellIdentifier = @"DefaultCellIdentifier";
     }
     
     [self.noResultsView removeFromSuperview];
+    [self.noResultsActivityIndicator stopAnimating];
+    [self.noResultsActivityIndicator removeFromSuperview];
     
-    if (self.resultsController && [[_resultsController fetchedObjects] count] == 0 && !self.isSyncing) {
-        // Show no results view.
-
-		if (self.noResultsView == nil) {
-			self.noResultsView = [self createNoResultsView];
-		}
-
-        [self.tableView addSubview:self.noResultsView];
+    if (self.resultsController && [[_resultsController fetchedObjects] count] == 0) {
+        if (self.isSyncing) {
+            // Show activity indicator view when syncing is occuring
+            // and the fetched results controller has no objects
+            
+            if (self.noResultsActivityIndicator == nil) {
+                self.noResultsActivityIndicator = [self createNoResultsActivityIndicator];
+            }
+            
+            [self.noResultsActivityIndicator startAnimating];
+            [self.tableView addSubview:self.noResultsActivityIndicator];
+        } else {
+            // Show no results view if the fetched results controller
+            // has no objects and syncing is not happening.
+            
+            if (self.noResultsView == nil) {
+                self.noResultsView = [self createNoResultsView];
+            }
+            [self.tableView addSubviewWithFadeAnimation:self.noResultsView];
+        }
     }
 }
 
 - (UIView *)createNoResultsView {
-	NSString *msg = @"";
-	if ([self userCanCreateEntity]) {
-		msg = NSLocalizedString(@"Why not create one?", @"A call to action to create a post or page.");
-	}
 	
-	return [WPInfoView WPInfoViewWithTitle:[self noResultsText] message:msg cancelButton:nil];
+    WPNoResultsView *view = [WPNoResultsView noResultsViewWithTitle:[self noResultsTitleText] message:[self noResultsMessageText] accessoryView:[self noResultsAccessoryView] buttonTitle:[self noResultsButtonText]];
+    view.delegate = self;
+    
+	return view;
+}
+
+- (UIActivityIndicatorView *)createNoResultsActivityIndicator {
+    
+    UIActivityIndicatorView *activityIndicator = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleGray];
+    activityIndicator.hidesWhenStopped = YES;
+    activityIndicator.autoresizingMask = UIViewAutoresizingFlexibleLeftMargin | UIViewAutoresizingFlexibleRightMargin | UIViewAutoresizingFlexibleTopMargin | UIViewAutoresizingFlexibleBottomMargin;
+    activityIndicator.center = [self.tableView convertPoint:self.tableView.center fromView:self.tableView.superview];
+    
+	return activityIndicator;
 }
 
 - (void)hideRefreshHeader {
