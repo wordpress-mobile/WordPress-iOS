@@ -109,7 +109,8 @@ const CGFloat RPVControlButtonBorderSize = 0.0f;
     }
     
     // Tag
-    NSString *tagName = post.primaryTagName;
+    // TODO: reenable tags once a better browsing experience is implemented
+/*    NSString *tagName = post.primaryTagName;
     if ([tagName length] > 0) {
         CGRect tagRect = [tagName boundingRectWithSize:CGSizeMake(contentWidth, CGFLOAT_MAX)
                                                 options:NSStringDrawingUsesLineFragmentOrigin | NSStringDrawingUsesFontLeading
@@ -117,6 +118,7 @@ const CGFloat RPVControlButtonBorderSize = 0.0f;
                                                 context:nil];
         desiredHeight += tagRect.size.height;
     }
+ */
     
     // Padding above and below the line
 	desiredHeight += RPVVerticalPadding * 2;
@@ -467,7 +469,8 @@ const CGFloat RPVControlButtonBorderSize = 0.0f;
     }
     
     // Tag
-    if ([self.post.primaryTagName length] > 0) {
+    // TODO: reenable tags once a better browsing experience is implemented
+/*    if ([self.post.primaryTagName length] > 0) {
         height = ceil([_tagButton.titleLabel suggestedSizeForWidth:innerContentWidth].height);
         _tagButton.frame = CGRectMake(RPVHorizontalInnerPadding, nextY, innerContentWidth, height);
         nextY += height + RPVVerticalPadding;
@@ -475,6 +478,7 @@ const CGFloat RPVControlButtonBorderSize = 0.0f;
     } else {
         self.tagButton.hidden = YES;
     }
+ */
     
 	// Position the meta view and its subviews
 	_metaView.frame = CGRectMake(0, nextY, contentWidth, RPVMetaViewHeight);

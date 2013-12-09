@@ -117,7 +117,7 @@ NSString * const RPVCDisplayedNativeFriendFinder = @"DisplayedNativeFriendFinder
     
     [topicsButton addTarget:self action:@selector(topicsAction:) forControlEvents:UIControlEventTouchUpInside];
     button = [[UIBarButtonItem alloc] initWithCustomView:topicsButton];
-    [button setAccessibilityLabel:NSLocalizedString(@"Topics", @"")];
+    [button setAccessibilityLabel:NSLocalizedString(@"Browse", @"")];
     self.navigationItem.rightBarButtonItem = button;
     
 	CGRect frame = CGRectMake(0.0f, self.view.bounds.size.height, self.view.bounds.size.width, [ReaderReblogFormView desiredHeight]);
