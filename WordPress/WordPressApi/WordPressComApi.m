@@ -8,7 +8,6 @@
 
 #import "WordPressComApi.h"
 #import "WordPressComApiCredentials.h"
-#import "SFHFKeychainUtils.h"
 #import "WordPressAppDelegate.h"
 #import "Constants.h"
 #import "Note.h"
@@ -24,8 +23,6 @@
 
 NSString *const WordPressComApiClientEndpointURL = @"https://public-api.wordpress.com/rest/v1/";
 NSString *const WordPressComApiOauthBaseUrl = @"https://public-api.wordpress.com/oauth2";
-NSString *const WordPressComApiOauthServiceName = @"public-api.wordpress.com";
-NSString *const WordPressComApiOauthRedirectUrl = @"http://wordpress.com/";
 NSString *const WordPressComApiNotificationFields = @"id,type,unread,body,subject,timestamp";
 NSString *const WordPressComApiUnseenNotesNotification = @"WordPressComUnseenNotes";
 NSString *const WordPressComApiNotesUserInfoKey = @"notes";
@@ -120,113 +117,15 @@ NSString *const WordPressComApiPushAppId = @"org.wordpress.appstore";
 
 #pragma mark - Account management
 
-- (void)signInWithUsername:(NSString *)username password:(NSString *)password success:(void (^)())success failure:(void (^)(NSError *error))failure {
-    NSAssert(username != nil, @"username is nil");
-    NSAssert(password != nil, @"password is nil");
-    if (self.username && ![username isEqualToString:self.username]) {
-        [self signOut]; // Only one account supported for now
-    }
-    self.username = username;
-    self.password = password;
-
-    void (^successBlock)(AFHTTPRequestOperation *,id) = ^(AFHTTPRequestOperation *operation, id responseObject) {
-        /*
-         responseObject should look like:
-         {
-         "access_token": "YOUR_API_TOKEN",
-         "blog_id": "blog id",
-         "blog_url": "blog url",
-         "token_type": "bearer"
-         }
-         */
-        NSString *accessToken;
-        if ([responseObject respondsToSelector:@selector(objectForKey:)]) {
-            accessToken = [responseObject objectForKey:@"access_token"];
-        }
-        if (accessToken == nil) {
-            WPFLog(@"No access token found on OAuth response: %@", responseObject);
-            //FIXME: this error message is crappy. Understand the posible reasons why responseObject is not what we expected and return a proper error
-            NSString *localizedDescription = NSLocalizedString(@"Error authenticating", @"");
-            NSError *error = [NSError errorWithDomain:WordPressComApiErrorDomain code:WordPressComApiErrorNoAccessToken userInfo:@{NSLocalizedDescriptionKey: localizedDescription}];
-            if (failure) {
-                failure(error);
-            }
-            return;
-        }
-        self.authToken = accessToken;
-        NSError *error = nil;
-        [SFHFKeychainUtils storeUsername:self.username andPassword:self.password forServiceName:kWPcomXMLRPCUrl updateExisting:YES error:&error];
-        if (error) {
-            if (failure) {
-                failure(error);
-            }
-        } else {
-            WPFLog(@"Signed in as %@", self.username);
-            [[NSUserDefaults standardUserDefaults] setObject:self.username forKey:@"wpcom_username_preference"];
-            [[NSUserDefaults standardUserDefaults] synchronize];
-            [WordPressAppDelegate sharedWordPressApplicationDelegate].isWPcomAuthenticated = YES;
-            // [NotificationsManager registerForPushNotifications];
-//            [[NSNotificationCenter defaultCenter] postNotificationName:WordPressComApiDidLoginNotification object:self.username];
-            if (success) success();
-        }
-    };
-    AFHTTPClient *client = [AFHTTPClient clientWithBaseURL:[NSURL URLWithString:WordPressComApiOauthBaseUrl]];
-    [client registerHTTPOperationClass:[WPJSONRequestOperation class]];
-    [client setDefaultHeader:@"User-Agent" value:[[WordPressAppDelegate sharedWordPressApplicationDelegate] applicationUserAgent]];
-    NSDictionary *params = @{
-                             @"client_id": [WordPressComApi WordPressAppId],
-                             @"redirect_uri": WordPressComApiOauthRedirectUrl,
-                             @"client_secret": [WordPressComApi WordPressAppSecret],
-                             @"grant_type": @"password",
-                             @"username": username,
-                             @"password": password
-                             };
-
-    [self postPath:@"/oauth2/token"
-        parameters:params
-           success:successBlock
-           failure:^(AFHTTPRequestOperation *operation, NSError *error) {
-               WPFLog(@"Couldn't signin the user: %@", error);
-               self.password = nil;
-               if (operation.response.statusCode != 400) {
-                   [WPError showAlertWithError:error];
-               }
-               if (failure) failure(error);
-             }];
-}
-
-- (void)refreshTokenWithSuccess:(void (^)())success failure:(void (^)(NSError *error))failure {
-    if (self.username == nil || self.password == nil) {
-        WPFLog(@"-[WordPressComApi refreshTokenWithSuccess:failure:] username or password are nil, don't even try");
-        return;
-    }
-    [self signInWithUsername:self.username password:self.password success:success failure:failure];
-}
-
-- (void)signInWithToken:(NSString *)token {
-    self.authToken = token;
-}
-
-- (void)signOut {
+- (void)reset {
     WPFLogMethod();
-    NSError *error = nil;
 
-//    [NotificationsManager unregisterDeviceToken];
-
-    [SFHFKeychainUtils deleteItemForUsername:self.username andServiceName:@"WordPress.com" error:&error];
-    [SFHFKeychainUtils deleteItemForUsername:self.username andServiceName:kWPcomXMLRPCUrl error:&error];
-    
-    [WordPressAppDelegate sharedWordPressApplicationDelegate].isWPcomAuthenticated = NO;
-    [[NSUserDefaults standardUserDefaults] removeObjectForKey:kApnsDeviceTokenPrefKey]; //Remove the token from Preferences, otherwise the token is never sent to the server on the next login
-    [SFHFKeychainUtils deleteItemForUsername:self.username andServiceName:WordPressComApiOauthServiceName error:&error];
-    [[NSUserDefaults standardUserDefaults] removeObjectForKey:@"wpcom_username_preference"];
-    [[NSUserDefaults standardUserDefaults] synchronize];
     self.authToken = nil;
     self.username = nil;
     self.password = nil;
-    [self clearAuthorizationHeader];
-
+ 
     [self clearWpcomCookies];
+    [self clearAuthorizationHeader];
 }
 
 - (BOOL)hasCredentials {
@@ -440,6 +339,8 @@ NSString *const WordPressComApiPushAppId = @"org.wordpress.appstore";
                             @"apple",
                             WordPressComApiPushAppId
                             ];
+    /*
+     * Remove extra api client, remove reference to kWPcomXMLRPCUrl
     WPXMLRPCClient *api = [[WPXMLRPCClient alloc] initWithXMLRPCEndpoint:[NSURL URLWithString:kWPcomXMLRPCUrl]];
     [api setAuthorizationHeaderWithToken:self.authToken];
     //Update supported notifications dictionary
@@ -453,6 +354,7 @@ NSString *const WordPressComApiPushAppId = @"org.wordpress.appstore";
                 if (failure)
                     failure(error);
             }];
+     */
 }
 
 - (void)fetchNotificationSettings:(void (^)())success failure:(void (^)(NSError *error))failure {
@@ -469,6 +371,8 @@ NSString *const WordPressComApiPushAppId = @"org.wordpress.appstore";
                             WordPressComApiPushAppId
                             ];
     
+    /*
+     * Remove extra api client, remove reference to kWPcomXMLRPCUrl
     WPXMLRPCClient *api = [[WPXMLRPCClient alloc] initWithXMLRPCEndpoint:[NSURL URLWithString:kWPcomXMLRPCUrl]];
     [api setAuthorizationHeaderWithToken:self.authToken];
     [api callMethod:@"wpcom.get_mobile_push_notification_settings"
@@ -482,6 +386,7 @@ NSString *const WordPressComApiPushAppId = @"org.wordpress.appstore";
                 if (failure)
                     failure(error);
             }];
+     */
 }
 
 - (void)syncPushNotificationInfo {
@@ -719,26 +624,6 @@ NSString *const WordPressComApiPushAppId = @"org.wordpress.appstore";
     return password;
 }
 /* HACK ENDS */
-
-#pragma mark - Oauth methods
-
-- (void)setAuthToken:(NSString *)authToken {
-    _authToken = authToken;
-    NSError *error;
-    if (_authToken) {
-        [self setAuthorizationHeaderWithToken:authToken];
-        [SFHFKeychainUtils storeUsername:self.username
-                             andPassword:authToken
-                          forServiceName:WordPressComApiOauthServiceName
-                          updateExisting:YES
-                                   error:&error];
-    } else {
-        [self clearAuthorizationHeader];
-        [SFHFKeychainUtils deleteItemForUsername:self.username
-                                  andServiceName:WordPressComApiOauthServiceName
-                                           error:&error];
-    }
-}
 
 - (void)setAuthorizationHeaderWithToken:(NSString *)token {
     [self setDefaultHeader:@"Authorization" value:[NSString stringWithFormat:@"Bearer %@", token]];
