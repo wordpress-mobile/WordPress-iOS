@@ -75,7 +75,7 @@
                                 ];
         
         WPXMLRPCClient *api = [[WPXMLRPCClient alloc] initWithXMLRPCEndpoint:[NSURL URLWithString:authURL]];
-        [api setAuthorizationHeaderWithToken:[[[WPAccount defaultWordPressComAccount] restApi] authToken]];
+        [api setAuthorizationHeaderWithToken:account.authToken];
         [api callMethod:@"wpcom.mobile_push_unregister_token"
              parameters:parameters
                 success:^(AFHTTPRequestOperation *operation, id responseObject) {
