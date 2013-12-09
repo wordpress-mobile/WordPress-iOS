@@ -9,9 +9,6 @@
 #import <AFHTTPClient.h>
 #import <Availability.h>
 
-#define WordPressComApiDidLoginNotification @"WordPressComApiDidLogin"
-#define WordPressComApiDidLogoutNotification @"WordPressComApiDidLogout"
-
 typedef void (^WordPressComApiRestSuccessResponseBlock)(AFHTTPRequestOperation *operation, id responseObject);
 typedef void (^WordPressComApiRestSuccessFailureBlock)(AFHTTPRequestOperation *operation, NSError *error);
 

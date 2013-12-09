@@ -140,11 +140,13 @@ NSString * const RPVCDisplayedNativeFriendFinder = @"DisplayedNativeFriendFinder
     }
     
     // Sync content as soon as login or creation occurs
-    [[NSNotificationCenter defaultCenter] addObserverForName:WordPressComApiDidLoginNotification
+    [[NSNotificationCenter defaultCenter] addObserverForName:WPAccountDefaultWordPressComAccountChangedNotification
                                                       object:nil
                                                        queue:nil
-                                                  usingBlock:^(NSNotification *notification){
-                                                      [self syncItems];
+                                                  usingBlock:^(NSNotification *notification) {
+                                                      if ([WPAccount defaultWordPressComAccount]) {
+                                                          [self syncItems];
+                                                      }
                                                   }];
 }
 
