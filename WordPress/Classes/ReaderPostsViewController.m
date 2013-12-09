@@ -552,20 +552,10 @@ NSString * const RPVCDisplayedNativeFriendFinder = @"DisplayedNativeFriendFinder
 
 	[cell configureCell:post];
     [self setImageForPost:post forCell:cell indexPath:indexPath];
+    [self setAvatarForPost:post forCell:cell indexPath:indexPath];
     
     cell.postView.delegate = self;
 
-    CGSize imageSize = cell.postView.avatarImageView.bounds.size;
-    UIImage *image = [post cachedAvatarWithSize:imageSize];
-    if (image) {
-        [cell.postView setAvatar:image];
-    } else if (!self.tableView.isDragging && !self.tableView.isDecelerating) {
-        [post fetchAvatarWithSize:imageSize success:^(UIImage *image) {
-            if (cell == [self.tableView cellForRowAtIndexPath:indexPath]) {
-                [cell.postView setAvatar:image];
-            }
-        }];
-    }
 }
 
 - (UIImage *)imageForURL:(NSURL *)imageURL size:(CGSize)imageSize {
@@ -577,6 +567,20 @@ NSString * const RPVCDisplayedNativeFriendFinder = @"DisplayedNativeFriendFinder
         imageSize.height = round(imageSize.width * RPVCMaxImageHeightPercentage);
     }
     return [_featuredImageSource imageForURL:imageURL withSize:imageSize];
+}
+
+- (void)setAvatarForPost:(ReaderPost *)post forCell:(ReaderPostTableViewCell *)cell indexPath:(NSIndexPath *)indexPath {
+    CGSize imageSize = cell.postView.avatarImageView.bounds.size;
+    UIImage *image = [post cachedAvatarWithSize:imageSize];
+    if (image) {
+        [cell.postView setAvatar:image];
+    } else if (!self.tableView.isDragging && !self.tableView.isDecelerating) {
+        [post fetchAvatarWithSize:imageSize success:^(UIImage *image) {
+            if (cell == [self.tableView cellForRowAtIndexPath:indexPath]) {
+                [cell.postView setAvatar:image];
+            }
+        }];
+    }
 }
 
 - (void)setImageForPost:(ReaderPost *)post forCell:(ReaderPostTableViewCell *)cell indexPath:(NSIndexPath *)indexPath {
@@ -780,8 +784,9 @@ NSString * const RPVCDisplayedNativeFriendFinder = @"DisplayedNativeFriendFinder
     ReaderPostTableViewCell *cell = (ReaderPostTableViewCell *)[self.tableView cellForRowAtIndexPath:indexPath];
     CGSize imageSize = cell.postView.cellImageView.image.size;
     UIImage *image = [_featuredImageSource imageForURL:post.featuredImageURL withSize:imageSize];
+    UIImage *avatarImage = cell.postView.avatarImageView.image;
 
-	self.detailController = [[ReaderPostDetailViewController alloc] initWithPost:post featuredImage:image];
+	self.detailController = [[ReaderPostDetailViewController alloc] initWithPost:post featuredImage:image avatarImage:avatarImage];
     
     [self.navigationController pushViewController:self.detailController animated:YES];
     
