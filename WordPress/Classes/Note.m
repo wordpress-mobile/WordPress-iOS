@@ -86,7 +86,7 @@ const NSUInteger NoteKeepCount = 20;
     NSError *error = nil;
     NSArray *notes = [context executeFetchRequest:request error:&error];
     if ([notes count] > 0) {
-        [[WordPressComApi sharedApi] refreshNotifications:notes fields:@"id,unread" success:nil failure:nil];
+        [[[WPAccount defaultWordPressComAccount] restApi] refreshNotifications:notes fields:@"id,unread" success:nil failure:nil];
     }
 }
 
@@ -131,7 +131,7 @@ const NSUInteger NoteKeepCount = 20;
 + (void)getNewNotificationswithContext:(NSManagedObjectContext *)context success:(void (^)(BOOL hasNewNotes))success failure:(void (^)(NSError *error))failure {
     NSNumber *timestamp = [self lastNoteTimestampWithContext:context];
 
-    [[WordPressComApi sharedApi] getNotificationsSince:timestamp success:^(AFHTTPRequestOperation *operation, id responseObject) {
+    [[[WPAccount defaultWordPressComAccount] restApi] getNotificationsSince:timestamp success:^(AFHTTPRequestOperation *operation, id responseObject) {
         NSArray *notes = [responseObject arrayForKey:@"notes"];
         if (success) {
             success([notes count] > 0);

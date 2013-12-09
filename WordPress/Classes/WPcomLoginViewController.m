@@ -55,7 +55,7 @@
 
     [WPStyleGuide configureColorsForView:self.view andTableView:self.tableView];
     
-    self.wpComApi = [WordPressComApi sharedApi];
+    self.wpComApi = [[WPAccount defaultWordPressComAccount] restApi];
 	self.footerText = @" ";
 	self.buttonText = NSLocalizedString(@"Sign In", @"");
 	self.navigationItem.title = NSLocalizedString(@"Sign In", @"");

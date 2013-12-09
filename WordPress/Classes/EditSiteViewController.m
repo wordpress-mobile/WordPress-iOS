@@ -70,7 +70,7 @@ static NSString *const JetpackConnectedCellIdentifier = @"JetpackConnectedCellId
         
         _notificationPreferences = [[[NSUserDefaults standardUserDefaults] objectForKey:@"notification_preferences"] mutableCopy];
         if (!_notificationPreferences) {
-            [[WordPressComApi sharedApi] fetchNotificationSettings:^{
+            [[[WPAccount defaultWordPressComAccount] restApi] fetchNotificationSettings:^{
                 [self reloadNotificationSettings];
             } failure:^(NSError *error) {
                 UIAlertView *alert = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"Error", @"")
@@ -135,7 +135,7 @@ static NSString *const JetpackConnectedCellIdentifier = @"JetpackConnectedCellId
 		case 0:
             return 3;	// URL, username, password
 		case 1: // Settings: Geolocation, [ Push Notifications ]
-            if (self.blog && ( [self.blog isWPcom] || [self.blog hasJetpack] ) && [[WordPressComApi sharedApi] hasCredentials] && [[NSUserDefaults standardUserDefaults] objectForKey:kApnsDeviceTokenPrefKey] != nil)
+            if (self.blog && ( [self.blog isWPcom] || [self.blog hasJetpack] ) && [[[WPAccount defaultWordPressComAccount] restApi] hasCredentials] && [[NSUserDefaults standardUserDefaults] objectForKey:kApnsDeviceTokenPrefKey] != nil)
                 return 2;
             else
                 return 1;	
@@ -448,7 +448,7 @@ static NSString *const JetpackConnectedCellIdentifier = @"JetpackConnectedCellId
                 [[NSUserDefaults standardUserDefaults] setValue:_notificationPreferences forKey:@"notification_preferences"];
                 
                 // Send these settings optimistically since they're low-impact (not ideal but works for now)
-                [[WordPressComApi sharedApi] saveNotificationSettings:nil failure:nil];
+                [[[WPAccount defaultWordPressComAccount] restApi] saveNotificationSettings:nil failure:nil];
                 return;
             }
         }

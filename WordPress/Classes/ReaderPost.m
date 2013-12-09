@@ -506,7 +506,7 @@ NSString *const ReaderExtrasArrayKey = @"ReaderExtrasArrayKey";
 		path = [NSString stringWithFormat:@"sites/%@/posts/%@/likes/mine/delete", self.siteID, self.postID];
 	}
 
-	[[WordPressComApi sharedApi] postPath:path parameters:nil success:^(AFHTTPRequestOperation *operation, id responseObject) {
+	[[[WPAccount defaultWordPressComAccount] restApi] postPath:path parameters:nil success:^(AFHTTPRequestOperation *operation, id responseObject) {
 		[self save];
 		
 		if(success) {
@@ -538,7 +538,7 @@ NSString *const ReaderExtrasArrayKey = @"ReaderExtrasArrayKey";
 		path = [NSString stringWithFormat:@"sites/%@/follows/mine/delete", self.siteID];
 	}
 	
-	[[WordPressComApi sharedApi] postPath:path parameters:nil success:^(AFHTTPRequestOperation *operation, id responseObject) {
+	[[[WPAccount defaultWordPressComAccount] restApi] postPath:path parameters:nil success:^(AFHTTPRequestOperation *operation, id responseObject) {
 		[self save];
 		
 		if(success) {
@@ -563,7 +563,7 @@ NSString *const ReaderExtrasArrayKey = @"ReaderExtrasArrayKey";
 	}
 
 	NSString *path = [NSString stringWithFormat:@"sites/%@/posts/%@/reblogs/new", self.siteID, self.postID];
-	[[WordPressComApi sharedApi] postPath:path parameters:params success:^(AFHTTPRequestOperation *operation, id responseObject) {
+	[[[WPAccount defaultWordPressComAccount] restApi] postPath:path parameters:params success:^(AFHTTPRequestOperation *operation, id responseObject) {
 		NSDictionary *dict = (NSDictionary *)responseObject;
 		self.isReblogged = [dict numberForKey:@"is_reblogged"];
 
@@ -740,7 +740,7 @@ NSString *const ReaderExtrasArrayKey = @"ReaderExtrasArrayKey";
 	
 	NSString *path = @"reader/topics";
 	
-	[[WordPressComApi sharedApi] getPath:path parameters:nil success:success failure:failure];
+	[[[WPAccount defaultWordPressComAccount] restApi] getPath:path parameters:nil success:success failure:failure];
 }
 
 
@@ -752,7 +752,7 @@ NSString *const ReaderExtrasArrayKey = @"ReaderExtrasArrayKey";
 	
 	NSString *path = [NSString stringWithFormat:@"sites/%@/posts/%i/replies", siteID, postID];
 	
-	[[WordPressComApi sharedApi] getPath:path parameters:params success:success failure:failure];
+	[[[WPAccount defaultWordPressComAccount] restApi] getPath:path parameters:params success:success failure:failure];
 }
 
 
@@ -762,7 +762,7 @@ NSString *const ReaderExtrasArrayKey = @"ReaderExtrasArrayKey";
 					 success:(WordPressComApiRestSuccessResponseBlock)success
 					 failure:(WordPressComApiRestSuccessFailureBlock)failure {
 	WPFLogMethod();
-	[[WordPressComApi sharedApi] getPath:path
+	[[[WPAccount defaultWordPressComAccount] restApi] getPath:path
 							  parameters:params
 								 success:^(AFHTTPRequestOperation *operation, id responseObject) {
 									 

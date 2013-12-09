@@ -246,7 +246,7 @@
     
     NSUInteger blogID = [[noteDetails objectForKey:@"site_id"] intValue];
     if (blogID) {
-        [[WordPressComApi sharedApi] followBlog:blogID isFollowing:isFollowing success:^(AFHTTPRequestOperation *operation, id responseObject) {
+        [[[WPAccount defaultWordPressComAccount] restApi] followBlog:blogID isFollowing:isFollowing success:^(AFHTTPRequestOperation *operation, id responseObject) {
             NSDictionary *followResponse = (NSDictionary *)responseObject;
             if (followResponse && [[followResponse objectForKey:@"success"] intValue] == 1) {
                 if ([[followResponse objectForKey:@"is_following"] intValue] == 1) {

@@ -43,7 +43,7 @@
     if (![previousToken isEqualToString:myToken]) {
         DDLogInfo(@"Device Token has changed! OLD Value %@, NEW value %@", previousToken, myToken);
         [[NSUserDefaults standardUserDefaults] setObject:myToken forKey:kApnsDeviceTokenPrefKey];
-        [[WordPressComApi sharedApi] syncPushNotificationInfo];
+        [[[WPAccount defaultWordPressComAccount] restApi] syncPushNotificationInfo];
     }
 }
 
@@ -58,7 +58,7 @@
         return;
     }
     
-    if (![[WordPressComApi sharedApi] hasCredentials]) {
+    if (![[[WPAccount defaultWordPressComAccount] restApi] hasCredentials]) {
         return;
     }
     
@@ -75,7 +75,7 @@
                                 ];
         
         WPXMLRPCClient *api = [[WPXMLRPCClient alloc] initWithXMLRPCEndpoint:[NSURL URLWithString:authURL]];
-        [api setAuthorizationHeaderWithToken:[[WordPressComApi sharedApi] authToken]];
+        [api setAuthorizationHeaderWithToken:[[[WPAccount defaultWordPressComAccount] restApi] authToken]];
         [api callMethod:@"wpcom.mobile_push_unregister_token"
              parameters:parameters
                 success:^(AFHTTPRequestOperation *operation, id responseObject) {
@@ -94,8 +94,8 @@
     
     switch (state) {
         case UIApplicationStateActive:
-            [[WordPressComApi sharedApi] checkForNewUnseenNotifications];
-            [[WordPressComApi sharedApi] syncPushNotificationInfo];
+            [[[WPAccount defaultWordPressComAccount] restApi] checkForNewUnseenNotifications];
+            [[[WPAccount defaultWordPressComAccount] restApi] syncPushNotificationInfo];
             break;
             
         case UIApplicationStateInactive:
