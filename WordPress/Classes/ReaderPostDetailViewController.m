@@ -683,7 +683,6 @@ typedef enum {
 		
 		if (matched) {
             controller = [[WPImageViewController alloc] initWithImage:imageView.image andURL:imageView.linkURL];
-            [self.navigationController presentViewController:controller animated:YES completion:nil];
 		} else {
             controller = [[WPWebViewController alloc] init];
 			[(WPWebViewController *)controller setUrl:((ReaderImageView *)sender).linkURL];
