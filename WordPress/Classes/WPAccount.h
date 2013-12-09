@@ -37,6 +37,11 @@ extern NSString * const WPAccountDefaultWordPressComAccountChangedNotification;
  */
 @property (nonatomic, retain) NSString *password;
 
+/**
+ The OAuth2 auth token for WordPress.com accounts
+ */
+@property (nonatomic, readonly) NSString *authToken;
+
 ///------------------------------------
 /// @name Default WordPress.com account
 ///------------------------------------
