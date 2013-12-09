@@ -261,7 +261,7 @@
         // If triggered by a pull to refresh, only sync blog posts
         [self.blog syncPostsWithSuccess:success failure:failure loadMore:NO];
     } else {
-        [self.blog syncPostsOptionsFormatsCategoriesWithSuccess:success failure:failure];
+        [self.blog syncPostsAndMetadataWithSuccess:success failure:failure];
     }
 }
 
