@@ -13,12 +13,15 @@
 #import "WordPressComApi.h"
 #import "SFHFKeychainUtils.h"
 #import "ContextManager.h"
-
+#import <SFHFKeychainUtils.h>
+#import "NotificationsManager.h"
+#import "WordPressComOAuthClient.h"
 
 static NSString * const DefaultDotcomAccountDefaultsKey = @"AccountDefaultDotcom";
-static NSString * const DotcomXmlrpcKey = @"https://wordpress.com/xmlrpc.php";
-static NSString * const OauthTokenServiceName = @"public-api.wordpress.com";
+static NSString * const WordPressDotcomXMLRPCKey = @"https://wordpress.com/xmlrpc.php";
+
 static WPAccount *__defaultDotcomAccount = nil;
+
 NSString * const WPAccountDefaultWordPressComAccountChangedNotification = @"WPAccountDefaultWordPressComAccountChangedNotification";
 
 
@@ -70,6 +73,8 @@ NSString * const WPAccountDefaultWordPressComAccountChangedNotification = @"WPAc
 
 + (void)setDefaultWordPressComAccount:(WPAccount *)account {
     NSAssert(account.isWpcom, @"account should be a wordpress.com account");
+    NSAssert(account.authToken.length > 0, @"Account should have an authToken for WP.com");
+    
     // Make sure the account is on the main context
     __defaultDotcomAccount = (WPAccount *)[[[ContextManager sharedInstance] mainContext] existingObjectWithID:account.objectID error:nil];
     // When the account object hasn't been saved yet, its objectID is temporary
@@ -81,6 +86,10 @@ NSString * const WPAccountDefaultWordPressComAccountChangedNotification = @"WPAc
     [[NSUserDefaults standardUserDefaults] setURL:accountURL forKey:DefaultDotcomAccountDefaultsKey];
     [[NSUserDefaults standardUserDefaults] synchronize];
     [[NSNotificationCenter defaultCenter] postNotificationName:WPAccountDefaultWordPressComAccountChangedNotification object:account];
+    
+    [SFHFKeychainUtils storeUsername:account.username andPassword:account.authToken forServiceName:WordPressComOAuthKeychainServiceName updateExisting:YES error:nil];
+    
+    [NotificationsManager registerForPushNotifications];
 }
 
 + (void)removeDefaultWordPressComAccount {
@@ -98,13 +107,28 @@ NSString * const WPAccountDefaultWordPressComAccountChangedNotification = @"WPAc
     // Invoked automatically by the Core Data framework when the receiver is about to be deleted.
     if (__defaultDotcomAccount == self) {
         [[self restApi] cancelAllHTTPOperationsWithMethod:nil path:nil];
-        // FIXME: this is temporary until we move all the cleanup out of WordPressComApi
-        [[self restApi] signOut];
-        __defaultDotcomAccount = nil;
+        [[self restApi] reset];
+        
+        // Clear keychain entries
+        NSError *error;
+        [SFHFKeychainUtils deleteItemForUsername:self.username andServiceName:@"WordPress.com" error:&error];
+        [SFHFKeychainUtils deleteItemForUsername:self.username andServiceName:WordPressComOAuthKeychainServiceName error:&error];
+        self.password = nil;
+        self.authToken = nil;
+        
+        [WordPressAppDelegate sharedWordPressApplicationDelegate].isWPcomAuthenticated = NO;
+        
+        [[NSUserDefaults standardUserDefaults] removeObjectForKey:@"wpcom_username_preference"];
         [[NSUserDefaults standardUserDefaults] removeObjectForKey:DefaultDotcomAccountDefaultsKey];
+        [[NSUserDefaults standardUserDefaults] synchronize];
+        
         [[NSNotificationCenter defaultCenter] postNotificationName:WPAccountDefaultWordPressComAccountChangedNotification object:nil];
+        [NotificationsManager unregisterDeviceToken];
+        
+        __defaultDotcomAccount = nil;
     }
 }
+
 
 #pragma mark - Account creation
 
@@ -113,7 +137,7 @@ NSString * const WPAccountDefaultWordPressComAccountChangedNotification = @"WPAc
 }
 
 + (WPAccount *)createOrUpdateWordPressComAccountWithUsername:(NSString *)username password:(NSString *)password authToken:(NSString *)authToken context:(NSManagedObjectContext *)context {
-    WPAccount *account = [self createOrUpdateSelfHostedAccountWithXmlrpc:DotcomXmlrpcKey username:username andPassword:password withContext:context];
+    WPAccount *account = [self createOrUpdateSelfHostedAccountWithXmlrpc:WordPressDotcomXMLRPCKey username:username andPassword:password withContext:context];
     account.isWpcom = YES;
     account.authToken = authToken;
     return account;
@@ -225,19 +249,19 @@ NSString * const WPAccountDefaultWordPressComAccountChangedNotification = @"WPAc
 }
 
 - (NSString *)authToken {
-    return [SFHFKeychainUtils getPasswordForUsername:self.username andServiceName:OauthTokenServiceName error:nil];
+    return [SFHFKeychainUtils getPasswordForUsername:self.username andServiceName:WordPressComOAuthKeychainServiceName error:nil];
 }
 
 - (void)setAuthToken:(NSString *)authToken {
     if (authToken) {
         [SFHFKeychainUtils storeUsername:self.username
                              andPassword:authToken
-                          forServiceName:OauthTokenServiceName
+                          forServiceName:WordPressComOAuthKeychainServiceName
                           updateExisting:YES
                                    error:nil];
     } else {
         [SFHFKeychainUtils deleteItemForUsername:self.username
-                                  andServiceName:OauthTokenServiceName
+                                  andServiceName:WordPressComOAuthKeychainServiceName
                                            error:nil];
     }
 }

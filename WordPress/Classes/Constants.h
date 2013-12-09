@@ -43,7 +43,6 @@
 
 #define kStatsEndpointURL		@"https://stats.wordpress.com/api/1.0/"
 #define kJetPackURL             @"http://jetpack.me"
-#define kWPcomXMLRPCUrl         @"https://wordpress.com/xmlrpc.php"
 
 
 #define kDisabledTextColor      [UIColor grayColor]

@@ -44,12 +44,19 @@ extern NSString *const WordPressComApiPushAppId;
 + (WordPressComApi *)anonymousApi;
 - (id)initWithOAuthToken:(NSString *)authToken;
 
+/**
+ Reset the API instance
+ 
+ @discussion Clears authorization headers, cookies, 
+             and sets `authToken`, `username`, and `password` to nil.
+ */
+- (void)reset;
+
 ///-------------------------
 /// @name Account management
 ///-------------------------
 
-- (void)refreshTokenWithSuccess:(void (^)())success failure:(void (^)(NSError *error))failure;
-- (void)signOut;
+
 - (BOOL)hasCredentials;
 
 // Wipe the OAuth2 token
