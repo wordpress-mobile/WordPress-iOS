@@ -48,11 +48,10 @@ extern NSString *const WordPressComApiPushAppId;
 /// @name Account management
 ///-------------------------
 
-- (void)signInWithUsername:(NSString *)username password:(NSString *)password success:(void (^)())success failure:(void (^)(NSError *error))failure;
 - (void)refreshTokenWithSuccess:(void (^)())success failure:(void (^)(NSError *error))failure;
-- (void)signInWithToken:(NSString *)token DEPRECATED_ATTRIBUTE;
 - (void)signOut;
 - (BOOL)hasCredentials;
+
 // Wipe the OAuth2 token
 - (void)invalidateOAuth2Token;
 - (void)validateWPComAccountWithEmail:(NSString *)email andUsername:(NSString *)username andPassword:(NSString *)password success:(void (^)(id responseObject))success failure:(void (^)(NSError *error))failure;
