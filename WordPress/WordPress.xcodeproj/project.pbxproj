@@ -1299,7 +1299,6 @@
 		46F8714E1838C41600BC149B /* NSDate+StringFormatting.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSDate+StringFormatting.m"; sourceTree = "<group>"; };
 		46F871501839528C00BC149B /* reader-postaction-time.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "reader-postaction-time.png"; path = "Resources/Images/reader-postaction-time.png"; sourceTree = "<group>"; };
 		46F871511839528C00BC149B /* reader-postaction-time@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "reader-postaction-time@2x.png"; path = "Resources/Images/reader-postaction-time@2x.png"; sourceTree = "<group>"; };
-		46F871551839802100BC149B /* WordPress 13.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = "WordPress 13.xcdatamodel"; sourceTree = "<group>"; };
 		46F8D7F9183C293200E10A38 /* ReaderPostView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ReaderPostView.h; sourceTree = "<group>"; };
 		46F8D7FA183C293200E10A38 /* ReaderPostView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ReaderPostView.m; sourceTree = "<group>"; };
 		5D0077A5182AE9DF00F865DB /* ReaderMediaQueue.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ReaderMediaQueue.h; sourceTree = "<group>"; };

@@ -375,7 +375,7 @@ NS_ENUM(NSUInteger, NotifcationCommentCellType){
         NSDictionary *response = (NSDictionary *)responseObject;
         if (response) {
             NSArray *noteArray = [NSArray arrayWithObject:_note];
-            [[WordPressComApi sharedApi] refreshNotifications:noteArray fields:nil success:^(AFHTTPRequestOperation *operation, id refreshResponseObject) {
+            [[[WPAccount defaultWordPressComAccount] restApi] refreshNotifications:noteArray fields:nil success:^(AFHTTPRequestOperation *operation, id refreshResponseObject) {
                 [spinner stopAnimating];
                 [self displayNote];
             } failure:^(AFHTTPRequestOperation *operation, NSError *error) {

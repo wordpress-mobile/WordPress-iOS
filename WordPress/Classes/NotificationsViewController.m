@@ -39,7 +39,7 @@ NSString * const NotificationsJetpackInformationURL = @"http://jetpack.me/about/
     self = [super init];
     if (self) {
         self.title = NSLocalizedString(@"Notifications", @"Notifications View Controller title");
-        self.user = [WordPressComApi sharedApi];
+        self.user = [[WPAccount defaultWordPressComAccount] restApi];
     }
     return self;
 }

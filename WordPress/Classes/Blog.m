@@ -518,7 +518,7 @@
         // Enable compression for wp.com only, as some self hosted have connection issues
         if (self.isWPcom) {
             [_api setDefaultHeader:@"gzip, deflate" value:@"Accept-Encoding"];
-            [_api setAuthorizationHeaderWithToken:[WordPressComApi sharedApi].authToken];
+            [_api setAuthorizationHeaderWithToken:[[WPAccount defaultWordPressComAccount] restApi].authToken];
         }
     }
     return _api;
