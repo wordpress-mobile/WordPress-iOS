@@ -12,7 +12,7 @@
 #import "UITableViewTextFieldCell.h"
 #import "WPTableViewActivityCell.h"
 #import "WPAccount.h"
-#import "WordPressComApi.h"
+#import "WordPressComOAuthClient.h"
 #import "ReachabilityUtils.h"
 #import "WPTableViewSectionFooterView.h"
 
@@ -336,25 +336,26 @@
     } else {
         isSigningIn = YES;
         self.footerText = @" ";
-        [[WordPressComApi anonymousApi] signInWithUsername:username
-                                                  password:password
-                                                   success:^{
-                                                       WPAccount *account = [WPAccount createOrUpdateWordPressComAccountWithUsername:username password:password authToken:nil];
-                                                       [WPAccount setDefaultWordPressComAccount:account];
-                                                       [loginController.tableView reloadRowsAtIndexPaths:[NSArray arrayWithObject:[NSIndexPath indexPathForRow:0 inSection:1]] withRowAnimation:UITableViewRowAnimationNone];
-                                                       if (loginController.delegate) {
-                                                           [loginController.delegate loginController:loginController didAuthenticateWithAccount:account];
-                                                       }
-                                                       if (self.dismissWhenFinished) {
-                                                           [self dismissViewControllerAnimated:YES completion:nil];
-                                                       }
-                                                   } failure:^(NSError *error) {
-                                                       DDLogError(@"Login failed with username %@: %@", username, error);
-                                                       loginController.footerText = NSLocalizedString(@"Sign in failed. Please try again.", @"");
-                                                       loginController.buttonText = NSLocalizedString(@"Sign In", @"");
-                                                       loginController.isSigningIn = NO;
-                                                       [loginController.tableView reloadData];
-                                                   }];
+        
+        WordPressComOAuthClient *client = [WordPressComOAuthClient client];
+        [client authenticateWithUsername:username
+                                password:password success:^(NSString *authToken) {
+                                    WPAccount *account = [WPAccount createOrUpdateWordPressComAccountWithUsername:username password:password authToken:authToken];
+                                    [WPAccount setDefaultWordPressComAccount:account];
+                                    [loginController.tableView reloadRowsAtIndexPaths:[NSArray arrayWithObject:[NSIndexPath indexPathForRow:0 inSection:1]] withRowAnimation:UITableViewRowAnimationNone];
+                                    if (loginController.delegate) {
+                                        [loginController.delegate loginController:loginController didAuthenticateWithAccount:account];
+                                    }
+                                    if (self.dismissWhenFinished) {
+                                        [self dismissViewControllerAnimated:YES completion:nil];
+                                    }
+                                } failure:^(NSError *error) {
+                                    DDLogError(@"Login failed with username %@: %@", username, error);
+                                    loginController.footerText = NSLocalizedString(@"Sign in failed. Please try again.", @"");
+                                    loginController.buttonText = NSLocalizedString(@"Sign In", @"");
+                                    loginController.isSigningIn = NO;
+                                    [loginController.tableView reloadData];
+                                }];
     }
     [self.tableView reloadData];
 }
