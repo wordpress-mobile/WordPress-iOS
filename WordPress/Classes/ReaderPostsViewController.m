@@ -191,18 +191,28 @@ NSString * const RPVCDisplayedNativeFriendFinder = @"DisplayedNativeFriendFinder
 	[[NSNotificationCenter defaultCenter] removeObserver:self];
 }
 
+- (void)willAnimateRotationToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation duration:(NSTimeInterval)duration {
+    // Remove the no results view or else the position will abruptly adjust after rotation
+    // due to the table view sizing for image preloading
+    [self.noResultsView removeFromSuperview];
+    
+    [super willAnimateRotationToInterfaceOrientation:toInterfaceOrientation duration:duration];
+}
+
 - (void)didRotateFromInterfaceOrientation:(UIInterfaceOrientation)fromInterfaceOrientation {
     [super didRotateFromInterfaceOrientation:fromInterfaceOrientation];
     [self resizeTableViewForImagePreloading];
+    [self configureNoResultsView];
 }
 
 
 #pragma mark - Instance Methods
 
 - (void)resizeTableViewForImagePreloading {
+    
     // Use a little trick to preload more images by making the table view longer
     CGRect rect = self.tableView.frame;
-    CGFloat navigationHeight = self.navigationController.view.frame.size.height;
+    CGFloat navigationHeight = self.navigationController.view.frame.size.height - self.navigationController.navigationBar.frame.size.height - self.navigationController.navigationBar.frame.origin.y;
     CGFloat extraHeight = navigationHeight * RPVCExtraTableViewHeightPercentage;
     rect.size.height = navigationHeight + extraHeight;
     self.tableView.frame = rect;

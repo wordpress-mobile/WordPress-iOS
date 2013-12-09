@@ -516,7 +516,11 @@ NSString *const DefaultCellIdentifier = @"DefaultCellIdentifier";
             if (self.noResultsView == nil) {
                 self.noResultsView = [self createNoResultsView];
             }
-            [self.tableView addSubviewWithFadeAnimation:self.noResultsView];
+            // only add and animate no results view if it isn't already
+            // in the table view
+            if (![self.noResultsView isDescendantOfView:self.tableView]) {
+                [self.tableView addSubviewWithFadeAnimation:self.noResultsView];
+            }
         }
     }
 }
