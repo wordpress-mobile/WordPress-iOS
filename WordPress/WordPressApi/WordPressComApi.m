@@ -377,22 +377,6 @@ NSString *const WordPressComApiPushAppId = @"org.wordpress.appstore";
     [self postPath:@"sites/new" parameters:params success:successBlock failure:failureBlock];    
 }
 
-
-#pragma mark - Transitional methods
-
-- (void)updateCredentailsFromStore {
-    self.username = [[NSUserDefaults standardUserDefaults] objectForKey:@"wpcom_username_preference"];
-    NSError *error = nil;
-    self.password = [SFHFKeychainUtils getPasswordForUsername:self.username
-                                          andServiceName:kWPcomXMLRPCUrl
-                                                   error:&error];
-    [self clearWpcomCookies];
-    [[NSNotificationCenter defaultCenter] postNotificationName:WordPressComApiDidLogoutNotification object:nil];
-    [WordPressAppDelegate sharedWordPressApplicationDelegate].isWPcomAuthenticated = YES;
-//    [NotificationsManager registerForPushNotifications];
-    [[NSNotificationCenter defaultCenter] postNotificationName:WordPressComApiDidLoginNotification object:self.username];
-}
-
 - (void)clearWpcomCookies {
     NSArray *wpcomCookies = [[NSHTTPCookieStorage sharedHTTPCookieStorage] cookies];
     for (NSHTTPCookie *cookie in wpcomCookies) {
