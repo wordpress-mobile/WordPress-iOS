@@ -258,10 +258,15 @@
 
 - (void)syncItemsViaUserInteraction:(BOOL)userInteraction success:(void (^)())success failure:(void (^)(NSError *))failure {
     if (userInteraction) {
-        // If triggered by a pull to refresh, only sync blog posts
-        [self.blog syncPostsWithSuccess:success failure:failure loadMore:NO];
-    } else {
+        // If triggered by a pull to refresh, sync posts and metadata
         [self.blog syncPostsAndMetadataWithSuccess:success failure:failure];
+    } else {
+        // If blog has no posts, then sync posts including metadata
+        if (self.blog.posts.count == 0) {
+            [self.blog syncPostsAndMetadataWithSuccess:success failure:failure];
+        } else {
+            [self.blog syncPostsWithSuccess:success failure:failure loadMore:NO];
+        }
     }
 }
 
