@@ -165,8 +165,9 @@
     
     // account for content insets of superview if it is a scrollview
     if ([self.superview.class isSubclassOfClass:[UIScrollView class]]) {
-        frame.size.height -= [(UIScrollView *)self.superview contentInset].top + [(UIScrollView *)self.superview contentInset].bottom;
-        frame.size.width -=  [(UIScrollView *)self.superview contentInset].left + [(UIScrollView *)self.superview contentInset].right;
+        UIScrollView *scrollView = (UIScrollView *)self.superview;
+        frame.size.height -= scrollView.contentInset.top + scrollView.contentInset.bottom;
+        frame.size.width -=  scrollView.contentInset.left + scrollView.contentInset.right;
     }
     
     CGFloat x = (CGRectGetWidth(frame) - CGRectGetWidth(self.frame))/2.0;
