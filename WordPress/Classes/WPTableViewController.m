@@ -562,7 +562,7 @@ NSString *const DefaultCellIdentifier = @"DefaultCellIdentifier";
     }
 
     _isSyncing = YES;
-    [self syncItemsWithSuccess:^{
+    [self syncItemsViaUserInteraction:userInteraction success:^{
         [self hideRefreshHeader];
         _isSyncing = NO;
         [self configureNoResultsView];
@@ -690,13 +690,8 @@ NSString *const DefaultCellIdentifier = @"DefaultCellIdentifier";
     AssertSubclassMethod();
 }
 
-- (void)syncItemsWithSuccess:(void (^)())success failure:(void (^)(NSError *))failure {
+- (void)syncItemsViaUserInteraction:(BOOL)userInteraction success:(void (^)())success failure:(void (^)(NSError *))failure {
     AssertSubclassMethod();
-}
-
-- (void)syncItemsViaUserInteractionWithSuccess:(void (^)())success failure:(void (^)(NSError *error))failure {
-    // By default, sync items the same way. Subclasses can override if they need different behavior.
-    [self syncItemsWithSuccess:success failure:failure];
 }
 
 - (BOOL)isSyncing {
