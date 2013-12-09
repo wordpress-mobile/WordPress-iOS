@@ -34,7 +34,6 @@ const CGFloat RPVAvatarSize = 32.0f;
 const CGFloat RPVBorderHeight = 1.0f;
 const CGFloat RPVSmallButtonLeftPadding = 2; // Follow, tag
 const CGFloat RPVMaxImageHeightPercentage = 0.59f;
-const CGFloat RPVMaxSummaryHeight = 88.0f;
 const CGFloat RPVLineHeightMultiple = 1.15f;
 const CGFloat RPVFollowButtonWidth = 100.0f;
 
@@ -105,7 +104,7 @@ const CGFloat RPVControlButtonBorderSize = 0.0f;
     // Post summary
     if ([post.summary length] > 0) {
         NSAttributedString *postSummary = [self summaryAttributedStringForPost:post];
-        desiredHeight += [postSummary boundingRectWithSize:CGSizeMake(contentWidth, RPVMaxSummaryHeight) options:NSStringDrawingUsesLineFragmentOrigin | NSStringDrawingUsesFontLeading context:nil].size.height;
+        desiredHeight += [postSummary boundingRectWithSize:CGSizeMake(contentWidth, CGFLOAT_MAX) options:NSStringDrawingUsesLineFragmentOrigin | NSStringDrawingUsesFontLeading context:nil].size.height;
         desiredHeight += RPVVerticalPadding;
     }
     
@@ -153,6 +152,12 @@ const CGFloat RPVControlButtonBorderSize = 0.0f;
     NSMutableAttributedString *attributedSummary = [[NSMutableAttributedString alloc] initWithString:summary
                                                                                           attributes:attributes];
     
+    NSDictionary *moreContentAttributes = @{NSParagraphStyleAttributeName: style,
+                                            NSFontAttributeName: [self moreContentFont],
+                                            NSForegroundColorAttributeName: [WPStyleGuide baseLighterBlue]};
+    NSAttributedString *moreContent = [[NSAttributedString alloc] initWithString:[@"   " stringByAppendingString:NSLocalizedString(@"more", @"")] attributes:moreContentAttributes];
+    [attributedSummary appendAttributedString:moreContent];
+    
     return attributedSummary;
 }
 
@@ -164,6 +169,9 @@ const CGFloat RPVControlButtonBorderSize = 0.0f;
     return [UIFont fontWithName:@"OpenSans" size:14.0f];
 }
 
++ (UIFont *)moreContentFont {
+    return [UIFont fontWithName:@"OpenSans" size:12.0f];
+}
 
 #pragma mark - Lifecycle Methods
 
@@ -277,7 +285,7 @@ const CGFloat RPVControlButtonBorderSize = 0.0f;
         _snippetLabel.backgroundColor = [UIColor clearColor];
         _snippetLabel.textColor = [UIColor colorWithHexString:@"333"];
         _snippetLabel.lineBreakMode = NSLineBreakByTruncatingTail;
-        _snippetLabel.numberOfLines = 4;
+        _snippetLabel.numberOfLines = 0;
         contentView = _snippetLabel;
     }
     
@@ -453,7 +461,6 @@ const CGFloat RPVControlButtonBorderSize = 0.0f;
             nextY += textContainerFrame.size.height + RPVVerticalPadding;
         } else {
             height = ceil([_snippetLabel suggestedSizeForWidth:innerContentWidth].height);
-            height = MIN(height, RPVMaxSummaryHeight);
             _snippetLabel.frame = CGRectMake(RPVHorizontalInnerPadding, nextY, innerContentWidth, height);
             nextY += ceilf(height + RPVVerticalPadding);
         }
