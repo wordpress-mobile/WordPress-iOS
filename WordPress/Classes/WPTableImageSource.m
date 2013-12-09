@@ -36,6 +36,10 @@
 
 - (UIImage *)imageForURL:(NSURL *)url withSize:(CGSize)size
 {
+    // Force rounding and only cache based on width
+    size.width = ceilf(size.width);
+    size.height = 0;
+    
     UIImage *image = [self cachedImageForURL:url withSize:size];
     if (image) {
         return image;
@@ -180,11 +184,18 @@
 
 - (void)setCachedImage:(UIImage *)image forURL:(NSURL *)url withSize:(CGSize)size
 {
+    // Force rounding and only cache based on width
+    size.width = ceilf(size.width);
+    size.height = 0;
+    
     [_imageCache setObject:image forKey:[self cacheKeyForURL:url withSize:size]];
 }
 
 - (UIImage *)cachedImageForURL:(NSURL *)url withSize:(CGSize)size
 {
+    size.width = ceilf(size.width);
+    size.height = 0;
+    
     return [_imageCache objectForKey:[self cacheKeyForURL:url withSize:size]];
 }
 

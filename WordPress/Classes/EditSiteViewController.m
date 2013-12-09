@@ -31,6 +31,7 @@ static NSString *const JetpackConnectedCellIdentifier = @"JetpackConnectedCellId
 @property (nonatomic, strong) UIActivityIndicatorView *savingIndicator;
 @property (nonatomic, strong) NSMutableDictionary *notificationPreferences;
 @property (nonatomic, strong) UIAlertView *failureAlertView;
+@property (nonatomic) BOOL isKeyboardVisible;
 
 @end
 
@@ -328,19 +329,29 @@ static NSString *const JetpackConnectedCellIdentifier = @"JetpackConnectedCellId
 }
 
 - (BOOL)textField:(UITextField *)textField shouldChangeCharactersInRange:(NSRange)range replacementString:(NSString *)string {
-    UITableViewCell *cell = (UITableViewCell *)[textField superview];
-    
-    if (NSClassFromString(@"UITableViewCellScrollView")) {
-        // iOS7 introduced a private class in between the normal UITableViewCell and the cell views.
-        cell = (UITableViewCell*)[cell superview];
-    }
-    NSMutableString *result = [NSMutableString stringWithString:textField.text];
-    [result replaceCharactersInRange:range withString:string];
+    // Adjust the text color of the containing cell's textLabel if
+    // the entered information is invalid.
+    if ([textField isDescendantOfView:self.tableView]) {
 
-    if ([result length] == 0) {
-        cell.textLabel.textColor = [WPStyleGuide validationErrorRed];
-    } else {
-        cell.textLabel.textColor = [WPStyleGuide whisperGrey];
+        UITableViewCell *cell = (id)[textField superview];
+        while (![cell.class isSubclassOfClass:[UITableViewCell class]]) {
+            cell = (id)cell.superview;
+            
+            // This is a protection against a textfield not placed withing a
+            // table view cell
+            if ([cell.class isSubclassOfClass:[UITableView class]]) {
+                return YES;
+            }
+        }
+        
+        NSMutableString *result = [NSMutableString stringWithString:textField.text];
+        [result replaceCharactersInRange:range withString:string];
+        
+        if ([result length] == 0) {
+            cell.textLabel.textColor = [WPStyleGuide validationErrorRed];
+        } else {
+            cell.textLabel.textColor = [WPStyleGuide whisperGrey];
+        }
     }
     
     return YES;
@@ -691,7 +702,12 @@ static NSString *const JetpackConnectedCellIdentifier = @"JetpackConnectedCellId
 
 #pragma mark - Keyboard Related Methods
 
-- (void)handleKeyboardDidShow:(NSNotification *)notification {    
+- (void)handleKeyboardDidShow:(NSNotification *)notification {
+    
+    if (_isKeyboardVisible) {
+        return;
+    }
+    
     CGRect rect = [[notification.userInfo valueForKey:UIKeyboardFrameEndUserInfoKey] CGRectValue];    
     CGRect frame = self.view.frame;
 
@@ -714,6 +730,8 @@ static NSString *const JetpackConnectedCellIdentifier = @"JetpackConnectedCellId
         NSIndexPath *indexPath = [self.tableView indexPathForRowAtPoint:point];
         [self.tableView scrollToRowAtIndexPath:indexPath atScrollPosition:UITableViewScrollPositionMiddle animated:YES];
     }
+    
+    _isKeyboardVisible = YES;
 }
 
 - (void)handleKeyboardWillHide:(NSNotification *)notification {
@@ -728,6 +746,8 @@ static NSString *const JetpackConnectedCellIdentifier = @"JetpackConnectedCellId
     [UIView animateWithDuration:0.3 animations:^{
         self.view.frame = frame;
     }];
+    
+    _isKeyboardVisible = NO;
 }
 
 
