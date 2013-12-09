@@ -67,6 +67,10 @@ NSString * const WPNotificationsNavigationRestorationID = @"WPNotificationsNavig
     return (WordPressAppDelegate *)[[UIApplication sharedApplication] delegate];
 }
 
+- (void)dealloc {
+    [[NSNotificationCenter defaultCenter] removeObserver:self];
+}
+
 
 #pragma mark - UIApplicationDelegate
 
@@ -624,6 +628,14 @@ NSString * const WPNotificationsNavigationRestorationID = @"WPNotificationsNavig
 }
 
 
+#pragma mark - Notifications
+
+- (void)defaultAccountDidChange:(NSNotification *)notification {
+    [Crashlytics setUserName:[[WPAccount defaultWordPressComAccount] username]];
+    [self setCommonCrashlyticsParameters];
+}
+
+
 #pragma mark - Crash reporting
 
 - (void)configureCrashlytics {
@@ -647,12 +659,8 @@ NSString * const WPNotificationsNavigationRestorationID = @"WPNotificationsNavig
     if (hasCredentials && [[WPAccount defaultWordPressComAccount] username] != nil) {
         [Crashlytics setUserName:[[WPAccount defaultWordPressComAccount] username]];
     }
-    
-    void (^accountChangedBlock)(NSNotification *) = ^(NSNotification *note) {
-        [Crashlytics setUserName:[[WPAccount defaultWordPressComAccount] username]];
-        [self setCommonCrashlyticsParameters];
-    };
-    [[NSNotificationCenter defaultCenter] addObserverForName:WPAccountDefaultWordPressComAccountChangedNotification object:nil queue:nil usingBlock:accountChangedBlock];
+
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(defaultAccountDidChange:) name:WPAccountDefaultWordPressComAccountChangedNotification object:nil];
 }
 
 - (void)crashlytics:(Crashlytics *)crashlytics didDetectCrashDuringPreviousExecution:(id<CLSCrashReport>)crash

@@ -70,11 +70,7 @@ CGFloat const blavatarImageViewSize = 43.f;
     self.doneButton = [[UIBarButtonItem alloc] initWithTitle:NSLocalizedString(@"Done", @"") style:[WPStyleGuide barButtonStyleForBordered] target:self action:@selector(dismiss)];
     self.navigationItem.rightBarButtonItem = self.doneButton;
     
-    [[NSNotificationCenter defaultCenter] addObserverForName:WPAccountDefaultWordPressComAccountChangedNotification object:nil queue:nil usingBlock:^(NSNotification *note) {
-        NSMutableIndexSet *sections = [NSMutableIndexSet indexSet];
-        [sections addIndex:SettingsSectionWpcom];
-        [self.tableView reloadSections:sections withRowAnimation:UITableViewRowAnimationFade];
-    }];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(defaultAccountDidChange:) name:WPAccountDefaultWordPressComAccountChangedNotification object:nil];
 
     [WPStyleGuide configureColorsForView:self.view andTableView:self.tableView];
 }
@@ -84,6 +80,16 @@ CGFloat const blavatarImageViewSize = 43.f;
     [self.navigationController setNavigationBarHidden:NO animated:animated];
     [self.tableView reloadData];
 }
+
+
+#pragma mark - Notifications
+
+- (void)defaultAccountDidChange:(NSNotification *)notification {
+    NSMutableIndexSet *sections = [NSMutableIndexSet indexSet];
+    [sections addIndex:SettingsSectionWpcom];
+    [self.tableView reloadSections:sections withRowAnimation:UITableViewRowAnimationFade];
+}
+
 
 #pragma mark - Custom Getter
 
