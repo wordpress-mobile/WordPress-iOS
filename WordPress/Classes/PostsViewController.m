@@ -256,13 +256,13 @@
     return @"remoteStatusNumber";
 }
 
-- (void)syncItemsViaUserInteractionWithSuccess:(void (^)())success failure:(void (^)(NSError *))failure {
-    // If triggered by a pull to refresh only sync blog posts
-    [self.blog syncPostsWithSuccess:success failure:failure loadMore:NO];
-}
-
-- (void)syncItemsWithSuccess:(void (^)())success failure:(void (^)(NSError *))failure {
-    [self.blog syncPostsOptionsFormatsCategoriesWithSuccess:success failure:failure];
+- (void)syncItemsViaUserInteraction:(BOOL)userInteraction success:(void (^)())success failure:(void (^)(NSError *))failure {
+    if (userInteraction) {
+        // If triggered by a pull to refresh, only sync blog posts
+        [self.blog syncPostsWithSuccess:success failure:failure loadMore:NO];
+    } else {
+        [self.blog syncPostsOptionsFormatsCategoriesWithSuccess:success failure:failure];
+    }
 }
 
 - (UITableViewCell *)newCell {
