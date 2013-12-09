@@ -45,6 +45,7 @@ typedef enum {
 @property (nonatomic, strong) ReaderCommentFormView *readerCommentFormView;
 @property (nonatomic, strong) ReaderReblogFormView *readerReblogFormView;
 @property (nonatomic, strong) UIImage *featuredImage;
+@property (nonatomic, strong) UIImage *avatarImage;
 @property (nonatomic) BOOL infiniteScrollEnabled;
 @property (nonatomic, strong) UIActivityIndicatorView *activityFooter;
 @property (nonatomic, strong) UIBarButtonItem *commentButton;
@@ -85,12 +86,13 @@ typedef enum {
     [[NSNotificationCenter defaultCenter] removeObserver:self];
 }
 
-- (id)initWithPost:(ReaderPost *)post featuredImage:(UIImage *)image {
+- (id)initWithPost:(ReaderPost *)post featuredImage:(UIImage *)image avatarImage:(UIImage *)avatarImage {
 	self = [super init];
 	if (self) {
 		_post = post;
 		_comments = [NSMutableArray array];
         _featuredImage = image;
+        _avatarImage = avatarImage;
         _showInlineActionBar = YES;
 	}
 	return self;
@@ -196,6 +198,11 @@ typedef enum {
     self.postView.delegate = self;
     [self.postView configurePost:self.post];
     self.postView.backgroundColor = [UIColor whiteColor];
+    
+    if (self.avatarImage) {
+        [self.postView setAvatar:self.avatarImage];
+    }
+    
     if (self.featuredImage) {
         [self.postView setFeaturedImage: self.featuredImage];
     }
