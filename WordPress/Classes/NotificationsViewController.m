@@ -291,7 +291,8 @@ NSString * const NotificationsJetpackInformationURL = @"http://jetpack.me/about/
     } else {
         timestamp = nil;
     }
-    [self.user getNotificationsSince:timestamp success:^(AFHTTPRequestOperation *operation, id responseObject) {
+    [self.user fetchNotificationsSince:timestamp success:^(NSArray *notes) {
+        [Note syncNotesWithResponse:notes];
         [self updateSyncDate];
         if (success) {
             success();
@@ -328,9 +329,9 @@ NSString * const NotificationsJetpackInformationURL = @"http://jetpack.me/about/
     
     _retrievingNotifications = YES;
     
-    [self.user getNotificationsBefore:lastNote.timestamp success:^(AFHTTPRequestOperation *operation, id responseObject) {
+    [self.user fetchNotificationsBefore:lastNote.timestamp success:^(NSArray *notes) {
         _retrievingNotifications = NO;
-                
+        [Note syncNotesWithResponse:notes];
         if (success) {
             success();
         }

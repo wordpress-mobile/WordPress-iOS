@@ -466,79 +466,65 @@ NSString *const WordPressComApiPushAppId = @"org.wordpress.appstore";
     }];
 }
 
-- (void)checkNotificationsSuccess:(WordPressComApiRestSuccessResponseBlock)success failure:(WordPressComApiRestSuccessFailureBlock)failure {
-    [self getNotificationsBefore:nil success:success failure:failure];
+- (void)checkNotificationsSuccess:(void (^)(NSArray *notes))success failure:(WordPressComApiRestSuccessFailureBlock)failure {
+    [self fetchNotificationsBefore:nil success:success failure:failure];
 }
 
-- (void)getNotificationsSince:(NSNumber *)timestamp success:(WordPressComApiRestSuccessResponseBlock)success failure:(WordPressComApiRestSuccessFailureBlock)failure {
+- (void)fetchNotificationsSince:(NSNumber *)timestamp
+                        success:(void (^)(NSArray *notes))success
+                        failure:(WordPressComApiRestSuccessFailureBlock)failure {
     NSDictionary *parameters;
     if (timestamp != nil) {
-        parameters = @{ @"since" : timestamp };
+        parameters = @{@"since": timestamp};
     }
-    [self getNotificationsWithParameters:parameters success:success failure:failure];
-    
+    [self fetchNotificationsWithParameters:parameters success:success failure:failure];
 }
 
-- (void)getNotificationsBefore:(NSNumber *)timestamp success:(WordPressComApiRestSuccessResponseBlock)success failure:(WordPressComApiRestSuccessFailureBlock)failure {
+- (void)fetchNotificationsBefore:(NSNumber *)timestamp
+                         success:(void (^)(NSArray *notes))success
+                         failure:(WordPressComApiRestSuccessFailureBlock)failure {
     NSDictionary *parameters;
     if (timestamp != nil) {
-        parameters = @{ @"before" : timestamp };
+        parameters = @{@"before": timestamp};
     }
-    [self getNotificationsWithParameters:parameters success:success failure:failure];
+    [self fetchNotificationsWithParameters:parameters success:success failure:failure];
 }
 
-- (void)getNotificationsWithParameters:(NSDictionary *)parameters success:(WordPressComApiRestSuccessResponseBlock)success failure:(WordPressComApiRestSuccessFailureBlock)failure {
+- (void)fetchNotificationsWithParameters:(NSDictionary *)parameters success:(void (^)(NSArray *notes))success failure:(WordPressComApiRestSuccessFailureBlock)failure {
     NSMutableDictionary *requestParameters = [NSMutableDictionary dictionaryWithDictionary:parameters];
     [requestParameters setObject:WordPressComApiNotificationFields forKey:@"fields"];
     [requestParameters setObject:[NSNumber numberWithInt:20] forKey:@"number"];
     [requestParameters setObject:[NSNumber numberWithInt:20] forKey:@"num_note_items"];
     
-    // TODO: Check for unread notifications and notify with the number of unread notifications
-
     [self getPath:@"notifications/" parameters:requestParameters success:^(AFHTTPRequestOperation *operation, id responseObject){
-//        [Note syncNotesWithResponse:[responseObject objectForKey:@"notes"]];
-        if (success != nil ) success( operation, responseObject );
-        
+        if (success) {
+            success(responseObject[@"notes"]);
+        }
     } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
-        if (failure) failure(operation, error);
+        if (failure) {
+            failure(operation, error);
+        }
     }];
 }
 
-// make notes a list of IDs instead of objects
-- (void)refreshNotifications:(NSArray *)notes fields:(NSString *)fields success:(WordPressComApiRestSuccessResponseBlock)success failure:(WordPressComApiRestSuccessFailureBlock)failure {
-    // No notes? Then there's nothing to sync
-    if ([notes count] == 0) {
+- (void)refreshNotifications:(NSArray *)noteIDs fields:(NSString *)fields success:(void (^)(NSArray *notes))success failure:(WordPressComApiRestSuccessFailureBlock)failure {
+    if ([noteIDs count] == 0) {
         return;
     }
-    NSMutableArray *noteIDs = [[NSMutableArray alloc] initWithCapacity:[notes count]];
-    [notes enumerateObjectsUsingBlock:^(id obj, NSUInteger idx, BOOL *stop) {
-//        [noteIDs addObject:[(Note *)obj noteID]];
-    }];
+
     if (fields == nil) {
         fields = WordPressComApiNotificationFields;
     }
+    
     NSDictionary *params = @{
-        @"fields" : fields,
-        @"ids" : noteIDs
+        @"fields": fields,
+        @"ids": noteIDs
     };
-    // Move out into notifications manager or Note?
-//    NSManagedObjectContext *context = [(Note *)[notes objectAtIndex:0] managedObjectContext];
     [self getPath:@"notifications/" parameters:params success:^(AFHTTPRequestOperation *operation, id response){
-        NSError *error;
-        NSArray *notesData = [response objectForKey:@"notes"];
-        for (int i=0; i < [notes count]; i++) {
-            if ([notesData count] > i) {
-//                Note *note = [notes objectAtIndex:i];
-//                if (![note isDeleted] && [note managedObjectContext]) {
-//                    [note updateAttributes:[notesData objectAtIndex:i]];
-//                }
-            }
+        if (success) {
+            success(response[@"notes"]);
         }
-//        if(![context save:&error]){
-//            NSLog(@"Unable to update note: %@", error);
-//        }
-        if (success != nil) success(operation, response);
-    } failure:failure ];
+    } failure:failure];
 }
 
 - (void)markNoteAsRead:(NSString *)noteID success:(WordPressComApiRestSuccessResponseBlock)success failure:(WordPressComApiRestSuccessFailureBlock)failure {
