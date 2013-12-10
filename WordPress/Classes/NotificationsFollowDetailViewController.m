@@ -16,6 +16,7 @@
 #import "WPWebViewController.h"
 #import <QuartzCore/QuartzCore.h>
 #import "WPAccount.h"
+#import "WPToast.h"
 
 @interface NotificationsFollowDetailViewController ()
 
@@ -260,6 +261,11 @@
             } else {
                 [cell setFollowing:isFollowing];
             }
+            
+            NSString *message = isFollowing ? NSLocalizedString(@"Unfollowed", @"User unfollowed a blog") : NSLocalizedString(@"Followed", @"User followed a blog");
+            NSString *imageName = [NSString stringWithFormat:@"action_icon_%@", (isFollowing) ? @"unfollowed" : @"followed"];
+            [WPToast showToastWithMessage:message andImage:[UIImage imageNamed:imageName]];
+            
         } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
             [cell setFollowing: isFollowing];
             DDLogVerbose(@"[Rest API] ! %@", [error localizedDescription]);

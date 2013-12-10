@@ -8,18 +8,12 @@
 
 #import "WordPressComApi.h"
 #import "WordPressComApiCredentials.h"
-#import "WordPressAppDelegate.h"
-#import "Constants.h"
-#import "Note.h"
 #import "NSString+Helpers.h"
-#import "WPToast.h"
 #import <AFJSONRequestOperation.h>
 #import <UIDeviceHardware.h>
 #import "UIDevice+WordPressIdentifier.h"
-#import "WPAccount.h"
-#import "ContextManager.h"
 #import <WPXMLRPCClient.h>
-
+#import "WordPressAppDelegate.h"
 
 NSString *const WordPressComApiClientEndpointURL = @"https://public-api.wordpress.com/rest/v1/";
 NSString *const WordPressComApiOauthBaseUrl = @"https://public-api.wordpress.com/oauth2";
@@ -317,7 +311,7 @@ NSString *const WordPressComApiPushAppId = @"org.wordpress.appstore";
     if( nil == token )
         return;
     
-    if (![[[WPAccount defaultWordPressComAccount] restApi] hasCredentials])
+    if (![self hasCredentials])
         return;
     
     NSArray *parameters = @[[self usernameForXmlrpc],
@@ -380,7 +374,7 @@ NSString *const WordPressComApiPushAppId = @"org.wordpress.appstore";
         return;
     }
 
-    if (![[[WPAccount defaultWordPressComAccount] restApi] hasCredentials])
+    if (![self hasCredentials])
         return;
     
     NSString *authURL = WordPressComXMLRPCUrl;
@@ -444,7 +438,6 @@ NSString *const WordPressComApiPushAppId = @"org.wordpress.appstore";
     [api enqueueHTTPRequestOperation:combinedOperation];
 }
 
-
 - (void)fetchNewUnseenNotificationsWithSuccess:(void (^)(NSArray *notes))success failure:(void (^)(NSError *error))failure {
     NSDictionary *params = @{@"unread": @"true",
                              @"number": @"20",
@@ -503,7 +496,7 @@ NSString *const WordPressComApiPushAppId = @"org.wordpress.appstore";
     // TODO: Check for unread notifications and notify with the number of unread notifications
 
     [self getPath:@"notifications/" parameters:requestParameters success:^(AFHTTPRequestOperation *operation, id responseObject){
-        [Note syncNotesWithResponse:[responseObject objectForKey:@"notes"]];
+//        [Note syncNotesWithResponse:[responseObject objectForKey:@"notes"]];
         if (success != nil ) success( operation, responseObject );
         
     } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
@@ -511,6 +504,7 @@ NSString *const WordPressComApiPushAppId = @"org.wordpress.appstore";
     }];
 }
 
+// make notes a list of IDs instead of objects
 - (void)refreshNotifications:(NSArray *)notes fields:(NSString *)fields success:(WordPressComApiRestSuccessResponseBlock)success failure:(WordPressComApiRestSuccessFailureBlock)failure {
     // No notes? Then there's nothing to sync
     if ([notes count] == 0) {
@@ -518,7 +512,7 @@ NSString *const WordPressComApiPushAppId = @"org.wordpress.appstore";
     }
     NSMutableArray *noteIDs = [[NSMutableArray alloc] initWithCapacity:[notes count]];
     [notes enumerateObjectsUsingBlock:^(id obj, NSUInteger idx, BOOL *stop) {
-        [noteIDs addObject:[(Note *)obj noteID]];
+//        [noteIDs addObject:[(Note *)obj noteID]];
     }];
     if (fields == nil) {
         fields = WordPressComApiNotificationFields;
@@ -527,21 +521,22 @@ NSString *const WordPressComApiPushAppId = @"org.wordpress.appstore";
         @"fields" : fields,
         @"ids" : noteIDs
     };
-    NSManagedObjectContext *context = [(Note *)[notes objectAtIndex:0] managedObjectContext];
+    // Move out into notifications manager or Note?
+//    NSManagedObjectContext *context = [(Note *)[notes objectAtIndex:0] managedObjectContext];
     [self getPath:@"notifications/" parameters:params success:^(AFHTTPRequestOperation *operation, id response){
         NSError *error;
         NSArray *notesData = [response objectForKey:@"notes"];
         for (int i=0; i < [notes count]; i++) {
             if ([notesData count] > i) {
-                Note *note = [notes objectAtIndex:i];
-                if (![note isDeleted] && [note managedObjectContext]) {
-                    [note updateAttributes:[notesData objectAtIndex:i]];
-                }
+//                Note *note = [notes objectAtIndex:i];
+//                if (![note isDeleted] && [note managedObjectContext]) {
+//                    [note updateAttributes:[notesData objectAtIndex:i]];
+//                }
             }
         }
-        if(![context save:&error]){
-            NSLog(@"Unable to update note: %@", error);
-        }
+//        if(![context save:&error]){
+//            NSLog(@"Unable to update note: %@", error);
+//        }
         if (success != nil) success(operation, response);
     } failure:failure ];
 }
@@ -558,16 +553,11 @@ NSString *const WordPressComApiPushAppId = @"org.wordpress.appstore";
     [self postPath:@"notifications/seen" parameters:@{ @"time" : timestamp } success:success failure:failure];
 }
 
-- (void)followBlog:(NSUInteger)blogID isFollowing:(bool)following success:(WordPressComApiRestSuccessResponseBlock)success failure:(WordPressComApiRestSuccessFailureBlock)failure {
-    
+- (void)followBlog:(NSUInteger)blogID isFollowing:(BOOL)following success:(WordPressComApiRestSuccessResponseBlock)success failure:(WordPressComApiRestSuccessFailureBlock)failure {
     NSString *followPath = [NSString stringWithFormat: @"sites/%d/follows/new", blogID];
-    if (following)
+    if (following) {
         followPath = [followPath stringByReplacingOccurrencesOfString:@"new" withString:@"mine/delete"];
-
-    NSString *message = following ? NSLocalizedString(@"Unfollowed", @"User unfollowed a blog") : NSLocalizedString(@"Followed", @"User followed a blog");
-    NSString *imageName = [NSString stringWithFormat:@"action_icon_%@", (following) ? @"unfollowed" : @"followed"];
-    [WPToast showToastWithMessage:message andImage:[UIImage imageNamed:imageName]];
-    
+    }
     [self postPath:followPath
         parameters:nil
            success:^(AFHTTPRequestOperation *operation, id responseObject){
@@ -577,9 +567,7 @@ NSString *const WordPressComApiPushAppId = @"org.wordpress.appstore";
 }
 
 - (void)moderateComment:(NSUInteger)blogID forCommentID:(NSUInteger)commentID withStatus:(NSString *)commentStatus success:(WordPressComApiRestSuccessResponseBlock)success failure:(WordPressComApiRestSuccessFailureBlock)failure {
-    
     NSString *commentPath = [NSString stringWithFormat: @"sites/%d/comments/%d", blogID, commentID];
-    
     [self postPath:commentPath
         parameters:@{ @"status" : commentStatus }
            success:success
@@ -587,9 +575,7 @@ NSString *const WordPressComApiPushAppId = @"org.wordpress.appstore";
 }
 
 - (void)replyToComment:(NSUInteger)blogID forCommentID:(NSUInteger)commentID withReply:(NSString *)reply success:(WordPressComApiRestSuccessResponseBlock)success failure:(WordPressComApiRestSuccessFailureBlock)failure {
-    
     NSString *replyPath = [NSString stringWithFormat: @"sites/%d/comments/%d/replies/new", blogID, commentID];
-    
     [self postPath:replyPath
         parameters:@{ @"content" : reply }
            success:success
