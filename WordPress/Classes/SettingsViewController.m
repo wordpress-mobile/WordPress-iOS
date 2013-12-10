@@ -40,6 +40,7 @@
 #import "WPTableViewSectionHeaderView.h"
 #import "SupportViewController.h"
 #import "ContextManager.h"
+#import "NotificationsManager.h"
 
 typedef enum {
     SettingsSectionWpcom = 0,
@@ -148,10 +149,6 @@ CGFloat const blavatarImageViewSize = 43.f;
     imageView.layer.mask = maskLayer;
 }
 
-- (BOOL)supportsNotifications {
-    return nil != [[NSUserDefaults standardUserDefaults] objectForKey:kApnsDeviceTokenPrefKey];
-}
-
 #pragma mark - Table view data source
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
@@ -161,14 +158,14 @@ CGFloat const blavatarImageViewSize = 43.f;
 // The Sign Out row in Wpcom section can change, so identify it dynamically
 - (NSInteger)rowForSignOut {
     NSInteger rowForSignOut = 1;
-    if ([self supportsNotifications]) {
+    if ([NotificationsManager deviceRegisteredForPushNotifications]) {
         rowForSignOut += 1;
     }
     return rowForSignOut;
 }
 
 - (NSInteger)rowForNotifications {
-    if ([self supportsNotifications]) {
+    if ([NotificationsManager deviceRegisteredForPushNotifications]) {
         return 1;
     }
     return -1;

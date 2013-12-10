@@ -15,6 +15,7 @@
 #import "ReachabilityUtils.h"
 #import "WPAccount.h"
 #import "WPTableViewSectionHeaderView.h"
+#import "NotificationsManager.h"
 #import <WPXMLRPC/WPXMLRPC.h>
 #import <SVProgressHUD/SVProgressHUD.h>
 #import <NSDictionary+SafeExpectations.h>
@@ -135,7 +136,9 @@ static NSString *const JetpackConnectedCellIdentifier = @"JetpackConnectedCellId
 		case 0:
             return 3;	// URL, username, password
 		case 1: // Settings: Geolocation, [ Push Notifications ]
-            if (self.blog && ( [self.blog isWPcom] || [self.blog hasJetpack] ) && [[[WPAccount defaultWordPressComAccount] restApi] hasCredentials] && [[NSUserDefaults standardUserDefaults] objectForKey:kApnsDeviceTokenPrefKey] != nil)
+            if (self.blog && ( [self.blog isWPcom] || [self.blog hasJetpack] ) &&
+                [[[WPAccount defaultWordPressComAccount] restApi] hasCredentials] &&
+                [NotificationsManager deviceRegisteredForPushNotifications])
                 return 2;
             else
                 return 1;	

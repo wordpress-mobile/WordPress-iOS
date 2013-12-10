@@ -19,7 +19,6 @@
 #define kTextFieldFont          @"Arial"
 #define kTextViewPlaceholder	@"Tap here to begin writing."
 #define kAppStoreURL			@"http://itunes.apple.com/us/app/wordpress/id335703880?mt=8"
-#define kNotificationAuthURL	@"https://wordpress.com/xmlrpc.php"
 
 #define kMobileReaderFakeLoaderURL		@"https://en.wordpress.com/reader/mobile/v2/loader"
 #define kMobileReaderURL		@"https://en.wordpress.com/reader/mobile/v2/?chrome=no"
@@ -145,7 +144,6 @@
 #define kNotificationTypeAchievement @"ac"
 
 #define kSettingsMuteSoundsKey @"settings_mute_sounds"
-#define kApnsDeviceTokenPrefKey  @"apnsDeviceToken"
 
 
 typedef NS_ENUM(NSUInteger, MediaType) {
