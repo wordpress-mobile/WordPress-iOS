@@ -90,8 +90,7 @@ extern NSString *const WordPressComApiPushAppId;
  * seen them using the response's last_seen_time timestamp.
  *
  */
-- (void)fetchNewUnseenNotificationsWithParams:(NSDictionary *)params
-                                      success:(void (^)(NSArray *notes))success
+- (void)fetchNewUnseenNotificationsWithSuccess:(void (^)(NSArray *notes))success
                                       failure:(void (^)(NSError *error))failure;
 
 - (void)checkNotificationsSuccess:(WordPressComApiRestSuccessResponseBlock)success
@@ -122,7 +121,7 @@ extern NSString *const WordPressComApiPushAppId;
                        success:(WordPressComApiRestSuccessResponseBlock)success
                        failure:(WordPressComApiRestSuccessFailureBlock)failure;
 
-- (void)followBlog:(NSUInteger)blogID isFollowing:(bool)following
+- (void)followBlog:(NSUInteger)blogID isFollowing:(BOOL)following
            success:(WordPressComApiRestSuccessResponseBlock)success
            failure:(WordPressComApiRestSuccessFailureBlock)failure;
 
