@@ -46,6 +46,7 @@
 + (UIColor *)readGrey;
 + (UIColor *)itsEverywhereGrey;
 + (UIColor *)darkAsNightGrey;
++ (UIColor *)textFieldPlaceholderGrey;
 + (UIColor *)validationErrorRed;
 
 + (UIColor *)tableViewActionColor;

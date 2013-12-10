@@ -112,6 +112,7 @@ CGFloat const EPTVCTextViewBottomPadding = 50.0f;
     
     [[NSNotificationCenter defaultCenter] removeObserver:self];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(keyboardWillShow:) name:UIKeyboardWillShowNotification object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(keyboardDidShow:) name:UIKeyboardDidShowNotification object:nil];
 	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(keyboardWillHide:) name:UIKeyboardWillHideNotification object:nil];
 	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(insertMediaAbove:) name:@"ShouldInsertMediaAbove" object:nil];
 	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(insertMediaBelow:) name:@"ShouldInsertMediaBelow" object:nil];
@@ -240,8 +241,8 @@ CGFloat const EPTVCTextViewBottomPadding = 50.0f;
         _titleTextField.autoresizingMask = UIViewAutoresizingFlexibleWidth;
         _titleTextField.placeholder = NSLocalizedString(@"Enter title here", @"Label for the title of the post field. Should be the same as WP core.");
         _titleTextField.textColor = [WPStyleGuide littleEddieGrey];
+        _titleTextField.returnKeyType = UIReturnKeyDone;
     }
-    _titleTextField.text = self.post.postTitle;
     [_tableHeaderViewContentView addSubview:_titleTextField];
     
     
@@ -274,7 +275,6 @@ CGFloat const EPTVCTextViewBottomPadding = 50.0f;
         _textView.textColor = [WPStyleGuide littleEddieGrey];
         _textView.textContainerInset = UIEdgeInsetsMake(0.0f, EPTVCTextViewOffset, 0.0f, EPTVCTextViewOffset);
     }
-    _textView.text = self.post.content;
     [_tableHeaderViewContentView addSubview:_textView];
     
     
@@ -301,13 +301,16 @@ CGFloat const EPTVCTextViewBottomPadding = 50.0f;
     
     if (!_tapToStartWritingLabel) {
         frame = _textView.frame;
-        frame.size.height = 44.0f;
+        frame.size.height = 26.0f;
+        frame.origin.x = EPTVCStandardOffset;
+        frame.size.width -= (EPTVCStandardOffset * 2);
         self.tapToStartWritingLabel = [[UILabel alloc] initWithFrame:frame];
         _tapToStartWritingLabel.text = NSLocalizedString(@"Tap here to begin writing", @"Placeholder for the main body text. Should hint at tapping to enter text (not specifying body text).");
-        _tapToStartWritingLabel.textAlignment = NSTextAlignmentCenter;
         _tapToStartWritingLabel.autoresizingMask = UIViewAutoresizingFlexibleWidth;
+        _tapToStartWritingLabel.font = [WPStyleGuide regularTextFont];
+        _tapToStartWritingLabel.textColor = [WPStyleGuide textFieldPlaceholderGrey];
     }
-    
+    [_tableHeaderViewContentView addSubview:_tapToStartWritingLabel];
 }
 
 - (CGFloat)heightForTextView {
@@ -318,6 +321,10 @@ CGFloat const EPTVCTextViewBottomPadding = 50.0f;
     minHeight -= (EPTVCCellHeight + EPTVCTextfieldHeight);
     if (!self.tableView.window) {
         minHeight -= EPTVCToolbarHeight;
+    }
+    
+    if (_isShowingKeyboard) {
+        minHeight -= self.tableView.contentInset.bottom;
     }
     
     CGFloat width = _textView.frame.size.width;
@@ -343,9 +350,16 @@ CGFloat const EPTVCTextViewBottomPadding = 50.0f;
 }
 
 - (void)refreshTableHeaderViewHeight {
-    // Update the height of the post content text view.
+    // Update the height of the post content text view if necessary.
+    CGFloat height = [self heightForTextView];
     CGRect frame = _textView.frame;
-    frame.size.height = [self heightForTextView];
+    
+    // If the height doesn't need to change just bail.
+    if (frame.size.height == height) {
+        return;
+    }
+    
+    frame.size.height = height;
     _textView.frame = frame;
     
     // Update the height of the header view.
@@ -355,6 +369,19 @@ CGFloat const EPTVCTextViewBottomPadding = 50.0f;
     frame.size.height = [self heightForTableHeaderView];
     tableHeaderView.frame = frame;
     self.tableView.tableHeaderView = tableHeaderView;
+    
+    [self scrollCursorIntoViewIfNeeded];
+}
+
+- (void)scrollCursorIntoViewIfNeeded {
+    // Get the cursor position in the textView
+    CGRect rect = [_textView caretRectForPosition:_textView.selectedTextRange.start];
+    
+    // Translate the rect to the tableView
+    rect = [self.tableView convertRect:rect fromView:_textView];
+    
+    // scroll the tableview to show the rect.
+    [self.tableView scrollRectToVisible:rect animated:YES];
 }
 
 #pragma mark - TableView
@@ -513,14 +540,6 @@ CGFloat const EPTVCTextViewBottomPadding = 50.0f;
 ///////////////////////////////////////////////////////////////////////////
 
 #pragma mark - UI Manipulation
-
-
-//- (CGRect)normalTextFrame {
-//    CGFloat x = 0.0;
-//    CGFloat y = CGRectGetMaxY(_separatorView.frame);
-//    CGFloat height = self.navigationController.toolbar.frame.origin.y - y;
-//    return CGRectMake(x, y, self.view.bounds.size.width, height);
-//}
 
 - (void)refreshButtons {
     // Left nav button: Cancel Button
@@ -681,6 +700,8 @@ CGFloat const EPTVCTextViewBottomPadding = 50.0f;
     }
     
     [self.post save];
+    [self refreshTableHeaderViewHeight];
+    [_textView scrollRangeToVisible:[_textView selectedRange]];
 }
 
 #pragma mark - Media State Methods
@@ -955,16 +976,6 @@ CGFloat const EPTVCTextViewBottomPadding = 50.0f;
 
 #pragma mark - Formatting
 
-//- (void)undo {
-//    [_textView.undoManager undo];
-//    [self autosaveContent];
-//}
-//
-//- (void)redo {
-//    [_textView.undoManager redo];
-//    [self autosaveContent];
-//}
-
 - (void)restoreText:(NSString *)text withRange:(NSRange)range {
     DDLogVerbose(@"restoreText:%@",text);
     NSString *oldText = _textView.text;
@@ -1139,6 +1150,10 @@ CGFloat const EPTVCTextViewBottomPadding = 50.0f;
 
 #pragma mark - TextView delegate
 
+- (void)textViewDidBeginEditing:(UITextView *)textView {
+    _tapToStartWritingLabel.hidden = YES;
+}
+
 - (void)textViewDidChange:(UITextView *)aTextView {
     [self autosaveContent];
     [self refreshButtons];
@@ -1147,6 +1162,9 @@ CGFloat const EPTVCTextViewBottomPadding = 50.0f;
 - (void)textViewDidEndEditing:(UITextView *)aTextView {
     [self autosaveContent];
     [self refreshButtons];
+    if ([_textView.text isEqualToString:@""]) {
+        _tapToStartWritingLabel.hidden = NO;
+    }
 }
 
 #pragma mark - TextField delegate
@@ -1190,76 +1208,6 @@ CGFloat const EPTVCTextViewBottomPadding = 50.0f;
     return YES;
 }
 
-//- (BOOL)wantsFullScreen {
-//    /*
-//     "Full screen" mode for:
-//     * iPhone Portrait without external keyboard
-//     * iPhone Landscape
-//     * iPad Landscape without external keyboard
-//     
-//     Show other fields:
-//     * iPhone Portrait with external keyboard
-//     * iPad Portrait
-//     * iPad Landscape with external keyboard
-//     */
-//    BOOL isLandscape = UIInterfaceOrientationIsLandscape([UIApplication sharedApplication].statusBarOrientation);
-//    BOOL yesOrNo = (
-//                    (!IS_IPAD && !_isExternalKeyboard)                  // iPhone without external keyboard
-//                    || (!IS_IPAD && isLandscape && _isExternalKeyboard) // iPhone Landscape with external keyboard
-//                    || (IS_IPAD && isLandscape && !_isExternalKeyboard) // iPad Landscape without external keyboard
-//                    );
-//    return yesOrNo;
-//}
-//
-//- (void)positionTextView:(NSNotification *)notification {
-//    // Save time: Uncomment this line when you're debugging UITextView positioning
-//    // textView.backgroundColor = [UIColor blueColor];
-//    
-//    NSDictionary *keyboardInfo = [notification userInfo];
-//    
-//	CGFloat animationDuration = 0.3;
-//	UIViewAnimationCurve curve = 0.3;
-//	[UIView beginAnimations:nil context:nil];
-//	[UIView setAnimationCurve:curve];
-//	[UIView setAnimationDuration:animationDuration];
-//    
-//    CGRect newFrame = [self normalTextFrame];
-//	if(keyboardInfo != nil) {
-//		animationDuration = [[keyboardInfo objectForKey:UIKeyboardAnimationDurationUserInfoKey] floatValue];
-//		curve = [[keyboardInfo objectForKey:UIKeyboardAnimationCurveUserInfoKey] floatValue];
-//        [UIView setAnimationCurve:curve];
-//        [UIView setAnimationDuration:animationDuration];
-//        
-//        CGRect originalKeyboardFrame = [[keyboardInfo objectForKey:UIKeyboardFrameEndUserInfoKey] CGRectValue];
-//        CGRect keyboardFrame = [self.view convertRect:[self.view.window convertRect:originalKeyboardFrame fromWindow:nil] fromView:nil];
-//        
-//        newFrame = [self normalTextFrame];
-//        
-//        if (_isShowingKeyboard) {
-//            
-//            if ([self wantsFullScreen]) {
-//                // Make the text view expand covering other fields
-//                newFrame.origin.x = 0;
-//                newFrame.origin.y = 0;
-//                newFrame.size.width = self.view.frame.size.width;
-//            }
-//            // Adjust height for keyboard (or format bar on external keyboard)
-//            newFrame.size.height = keyboardFrame.origin.y - newFrame.origin.y;
-//            
-//            [self.navigationController.toolbar setHidden:YES];
-//            _separatorView.hidden = YES;
-//        } else {
-//            [self.navigationController.toolbar setHidden:NO];
-//            _separatorView.hidden = NO;
-//        }
-//	}
-//    
-//    [_textView setFrame:newFrame];
-//	
-//	[UIView commitAnimations];
-//}
-
-
 - (void)willAnimateRotationToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation duration:(NSTimeInterval)duration {
     WPFLogMethod();
     CGRect frame = _editorToolbar.frame;
@@ -1298,17 +1246,16 @@ CGFloat const EPTVCTextViewBottomPadding = 50.0f;
     CGRect keyboardFrame = [self.view convertRect:[self.view.window convertRect:originalKeyboardFrame fromWindow:nil] fromView:nil];
     _isExternalKeyboard = keyboardFrame.origin.y > self.view.frame.size.height;
     
-    if ([_textView isFirstResponder] || _linkHelperAlertView.firstTextField.isFirstResponder || _linkHelperAlertView.secondTextField.isFirstResponder) {
-        if ([self shouldHideToolbarsWhileTyping]) {
-            [[UIApplication sharedApplication] setStatusBarHidden:YES withAnimation:UIStatusBarAnimationFade];
-            [self.navigationController setNavigationBarHidden:YES animated:YES];
-            [self.navigationController setToolbarHidden:YES animated:NO];
-        }
+    if ([self shouldHideToolbarsWhileTyping]) {
+        [[UIApplication sharedApplication] setStatusBarHidden:YES withAnimation:UIStatusBarAnimationFade];
+        [self.navigationController setNavigationBarHidden:YES animated:YES];
+        [self.navigationController setToolbarHidden:YES animated:NO];
     }
-    if ([_textView isFirstResponder]) {
-//        [self positionTextView:notification];
-        _editorToolbar.doneButton.hidden = IS_IPAD && ! _isExternalKeyboard;
-    }
+    _editorToolbar.doneButton.hidden = IS_IPAD && ! _isExternalKeyboard;
+}
+
+- (void)keyboardDidShow:(NSNotification *)notification {
+    [self refreshTableHeaderViewHeight];
 }
 
 - (void)keyboardWillHide:(NSNotification *)notification {
@@ -1317,8 +1264,8 @@ CGFloat const EPTVCTextViewBottomPadding = 50.0f;
     [[UIApplication sharedApplication] setStatusBarHidden:NO withAnimation:UIStatusBarAnimationFade];
     [self.navigationController setNavigationBarHidden:NO animated:YES];
     [self.navigationController setToolbarHidden:NO animated:NO];
-
-//    [self positionTextView:notification];
+    
+    [self refreshTableHeaderViewHeight];
 }
 
 @end
