@@ -204,6 +204,22 @@ NSString *const NotificationsDeviceToken = @"apnsDeviceToken";
     }];
 }
 
++ (void)fetchNotificationSettingsWithSuccess:(void (^)())success failure:(void (^)(NSError *))failure {
+    NSString *token = [[NSUserDefaults standardUserDefaults] objectForKey:NotificationsDeviceToken];
+    [[[WPAccount defaultWordPressComAccount] restApi] fetchNotificationSettingsWithDeviceToken:token success:^(NSDictionary *settings) {
+        [[NSUserDefaults standardUserDefaults] setObject:settings forKey:NotificationsPreferencesKey];
+        DDLogInfo(@"Received notification settings %@", settings);
+        if (success) {
+            success();
+        }
+    } failure:^(NSError *error) {
+        DDLogError(@"Failed to fetch notification settings %@", error.localizedDescription);
+        if (failure) {
+            failure(error);
+        }
+    }];
+}
+
 + (void)syncPushNotificationInfo {
     NSString *token = [[NSUserDefaults standardUserDefaults] objectForKey:NotificationsDeviceToken];
     [[[WPAccount defaultWordPressComAccount] restApi] syncPushNotificationInfoWithDeviceToken:token success:^(NSDictionary *settings) {

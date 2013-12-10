@@ -71,7 +71,7 @@ static NSString *const JetpackConnectedCellIdentifier = @"JetpackConnectedCellId
         
         _notificationPreferences = [[[NSUserDefaults standardUserDefaults] objectForKey:@"notification_preferences"] mutableCopy];
         if (!_notificationPreferences) {
-            [[[WPAccount defaultWordPressComAccount] restApi] fetchNotificationSettings:^{
+            [NotificationsManager fetchNotificationSettingsWithSuccess:^{
                 [self reloadNotificationSettings];
             } failure:^(NSError *error) {
                 UIAlertView *alert = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"Error", @"")
