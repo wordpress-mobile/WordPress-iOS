@@ -643,23 +643,9 @@ const CGFloat RPVControlButtonBorderSize = 0.0f;
         
         // layout might have changed due to image sizes
         [self.textContentView relayoutText];
-        
-        [self updateLayout];
+        [self setNeedsLayout];
     }
 }
-
-- (void)updateLayout {
-	// Size the textContentView
-	CGRect frame = _textContentView.frame;
-	CGFloat height = [_textContentView suggestedFrameSizeToFitEntireStringConstraintedToWidth:frame.size.width].height;
-	frame.size.height = height;
-	_textContentView.frame = frame;
-	
-	frame = self.frame;
-	frame.size.height = height + _textContentView.frame.origin.y + 10.0f; // + bottom padding
-	self.frame = frame;
-}
-
 
 - (BOOL)updateMediaLayout:(ReaderMediaView *)imageView {
     BOOL frameChanged = NO;
@@ -725,6 +711,8 @@ const CGFloat RPVControlButtonBorderSize = 0.0f;
         [self.textContentView relayoutText];
         [self setNeedsLayout];
     }
+    
+    [self.delegate postViewDidLoadAllMedia:self];
 }
 
 #pragma mark - DTCoreAttributedTextContentView Delegate Methods
