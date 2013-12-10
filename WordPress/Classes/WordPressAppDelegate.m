@@ -400,12 +400,11 @@ NSString * const WPNotificationsNavigationRestorationID = @"WPNotificationsNavig
     blogListNavigationController.restorationIdentifier = WPBlogListNavigationRestorationID;
     self.blogListViewController.title = NSLocalizedString(@"Me", @"");
     
-    UINavigationController *postsNavigationController = [[UINavigationController alloc] initWithRootViewController:nil];
-    postsNavigationController.navigationBar.translucent = NO;
-    postsNavigationController.tabBarItem.image = [UIImage imageNamed:@"navbar_add"];
-    postsNavigationController.title = NSLocalizedString(@"Post", @"");
+    UIViewController *postsViewController = [[UIViewController alloc] init];
+    postsViewController.tabBarItem.image = [UIImage imageNamed:@"navbar_add"];
+    postsViewController.title = NSLocalizedString(@"Post", @"");
 
-    _tabBarController.viewControllers = @[blogListNavigationController, readerNavigationController, notificationsNavigationController, postsNavigationController];
+    _tabBarController.viewControllers = @[blogListNavigationController, readerNavigationController, notificationsNavigationController, postsViewController];
 
     [_tabBarController setSelectedViewController:readerNavigationController];
     
