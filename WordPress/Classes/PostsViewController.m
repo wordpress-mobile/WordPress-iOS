@@ -7,7 +7,7 @@
 #import "WordPressAppDelegate.h"
 #import "Reachability.h"
 #import "Post.h"
-
+#import "EditPostTableViewController.h"
 #define TAG_OFFSET 1010
 
 @interface PostsViewController () {
@@ -213,7 +213,8 @@
 }
 
 - (void)editPost:(AbstractPost *)apost {
-    EditPostViewController *editPostViewController = [[EditPostViewController alloc] initWithPost:apost];
+    //EditPostViewController *editPostViewController = [[EditPostViewController alloc] initWithPost:apost];
+    EditPostTableViewController *editPostViewController = [[EditPostTableViewController alloc] initWithPost:apost];
     UINavigationController *navController = [[UINavigationController alloc] initWithRootViewController:editPostViewController];
     navController.modalPresentationStyle = UIModalPresentationCurrentContext;
     [self.view.window.rootViewController presentViewController:navController animated:YES completion:nil];
