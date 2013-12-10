@@ -121,8 +121,8 @@ const CGFloat RPVControlButtonBorderSize = 0.0f;
     }
  */
     
-    // Padding above and below the line
-	desiredHeight += RPVVerticalPadding * 2;
+    // Padding below the line
+	desiredHeight += RPVVerticalPadding;
     
 	// Size of the meta view
     desiredHeight += RPVMetaViewHeight;
@@ -384,7 +384,7 @@ const CGFloat RPVControlButtonBorderSize = 0.0f;
     
 	self.likeButton = [ReaderButton buttonWithType:UIButtonTypeCustom];
 	_likeButton.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleRightMargin;
-	_likeButton.backgroundColor = [UIColor whiteColor];
+	_likeButton.backgroundColor = [UIColor clearColor];
 	[_likeButton setImage:[UIImage imageNamed:@"reader-postaction-like-blue"] forState:UIControlStateNormal];
 	[_likeButton setImage:[UIImage imageNamed:@"reader-postaction-like-active"] forState:UIControlStateSelected];
     [_likeButton addTarget:self action:@selector(likeAction:) forControlEvents:UIControlEventTouchUpInside];
@@ -392,7 +392,7 @@ const CGFloat RPVControlButtonBorderSize = 0.0f;
 	
 	self.reblogButton = [ReaderButton buttonWithType:UIButtonTypeCustom];
 	_reblogButton.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleLeftMargin;
-	_reblogButton.backgroundColor = [UIColor whiteColor];
+	_reblogButton.backgroundColor = [UIColor clearColor];
 	[_reblogButton setImage:[UIImage imageNamed:@"reader-postaction-reblog-blue"] forState:UIControlStateNormal];
 	[_reblogButton setImage:[UIImage imageNamed:@"reader-postaction-reblog-done"] forState:UIControlStateSelected];
     [_reblogButton addTarget:self action:@selector(reblogAction:) forControlEvents:UIControlEventTouchUpInside];
@@ -400,7 +400,7 @@ const CGFloat RPVControlButtonBorderSize = 0.0f;
     
     self.commentButton = [ReaderButton buttonWithType:UIButtonTypeCustom];
 	_commentButton.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleLeftMargin;
-	_commentButton.backgroundColor = [UIColor whiteColor];
+	_commentButton.backgroundColor = [UIColor clearColor];
 	[_commentButton setImage:[UIImage imageNamed:@"reader-postaction-comment-blue"] forState:UIControlStateNormal];
 	[_commentButton setImage:[UIImage imageNamed:@"reader-postaction-comment-active"] forState:UIControlStateSelected];
     [_commentButton addTarget:self action:@selector(commentAction:) forControlEvents:UIControlEventTouchUpInside];
@@ -466,12 +466,11 @@ const CGFloat RPVControlButtonBorderSize = 0.0f;
             textContainerFrame.size.height = height;
             textContainerFrame.origin.y = nextY;
             self.textContentView.frame = textContainerFrame;
-            nextY += textContainerFrame.size.height + RPVVerticalPadding;
         } else {
             height = ceil([_snippetLabel suggestedSizeForWidth:innerContentWidth].height);
             _snippetLabel.frame = CGRectMake(RPVHorizontalInnerPadding, nextY, innerContentWidth, height);
-            nextY += ceilf(height + RPVVerticalPadding);
         }
+        nextY += ceilf(height) + RPVVerticalPadding;
     }
     
     // Tag
@@ -514,7 +513,7 @@ const CGFloat RPVControlButtonBorderSize = 0.0f;
     // Update own frame
     CGRect ownFrame = self.frame;
     
-    ownFrame.size.height = nextY + RPVMetaViewHeight + 1;
+    ownFrame.size.height = nextY + RPVMetaViewHeight - 1;
     self.frame = ownFrame;
 }
 
