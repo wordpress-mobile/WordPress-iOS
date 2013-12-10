@@ -60,6 +60,11 @@
         [button addTarget:self action:@selector(showAddPostView) forControlEvents:UIControlEventTouchUpInside];
         composeButtonItem = [[UIBarButtonItem alloc] initWithCustomView:button];
     }
+    
+    // Account for 1 pixel header height
+    UIEdgeInsets tableInset = [self.tableView contentInset];
+    tableInset.top = -1;
+    self.tableView.contentInset = tableInset;
 
     [WPStyleGuide setRightBarButtonItemWithCorrectSpacing:composeButtonItem forNavigationItem:self.navigationItem];
     
