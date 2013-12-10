@@ -135,6 +135,8 @@ CGFloat const EditPostViewControllerTextViewOffset = 10.0;
         separatorFrame.size.width = CGRectGetWidth(self.view.bounds) - EditPostViewControllerStandardOffset;
         separatorView.frame = separatorFrame;
         separatorView.backgroundColor = [WPStyleGuide readGrey];
+        
+        textView.textContainerInset = UIEdgeInsetsMake(0.0f, EditPostViewControllerTextViewOffset, 0.0f, EditPostViewControllerTextViewOffset);
     }
     
     if (editorToolbar == nil) {
@@ -483,7 +485,6 @@ CGFloat const EditPostViewControllerTextViewOffset = 10.0;
     if (IS_IPAD) {
         y = 143;
         if (IS_IOS7) {
-            x = EditPostViewControllerTextViewOffset;
             y = CGRectGetMaxY(separatorView.frame);
         }
         CGFloat height = self.toolbar.frame.origin.y - y;
@@ -496,7 +497,6 @@ CGFloat const EditPostViewControllerTextViewOffset = 10.0;
         y = 136.f;
         if (IS_IOS7) {
             // On IOS7 we get rid of the Tags and Categories fields, so place the textview right under the title
-            x = EditPostViewControllerTextViewOffset;
             y = CGRectGetMaxY(separatorView.frame);
         }
         CGFloat height = self.toolbar.frame.origin.y - y;
@@ -734,7 +734,12 @@ CGFloat const EditPostViewControllerTextViewOffset = 10.0;
 }
 
 - (IBAction)saveAction:(id)sender {
-	if( [self isMediaInUploading] ) {
+    if (currentActionSheet.isVisible) {
+        [currentActionSheet dismissWithClickedButtonIndex:-1 animated:YES];
+        currentActionSheet = nil;
+    }
+    
+	if ([self isMediaInUploading] ) {
 		[self showMediaInUploadingalert];
 		return;
 	}
@@ -1070,6 +1075,7 @@ CGFloat const EditPostViewControllerTextViewOffset = 10.0;
     _linkHelperAlertView.secondTextField.keyboardAppearance = UIKeyboardAppearanceAlert;
     _linkHelperAlertView.firstTextField.keyboardType = UIKeyboardTypeDefault;
     _linkHelperAlertView.secondTextField.keyboardType = UIKeyboardTypeURL;
+    _linkHelperAlertView.secondTextField.autocorrectionType = UITextAutocorrectionTypeNo;
 
     __block UITextView *editorTextView = textView;
     __block id fles = self;

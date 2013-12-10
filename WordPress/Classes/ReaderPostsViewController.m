@@ -540,11 +540,6 @@ NSString *const WPReaderViewControllerDisplayedNativeFriendFinder = @"DisplayedN
 }
 
 
-- (NSString *)resultsControllerCacheName {
-	return [ReaderPost currentEndpoint];
-}
-
-
 - (NSDate *)lastSyncDate {
 	return (NSDate *)[[NSUserDefaults standardUserDefaults] objectForKey:ReaderLastSyncDateKey];
 }

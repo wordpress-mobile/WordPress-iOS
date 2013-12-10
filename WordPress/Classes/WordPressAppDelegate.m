@@ -33,6 +33,8 @@
 #import <Security/Security.h>
 #import "SupportViewController.h"
 #import <CrashlyticsLumberjack/CrashlyticsLogger.h>
+#import <CoreTelephony/CTTelephonyNetworkInfo.h>
+#import <CoreTelephony/CTCarrier.h>
 
 @interface WordPressAppDelegate (Private) <CrashlyticsDelegate>
 
@@ -171,38 +173,49 @@ int ddLogLevel = LOG_LEVEL_INFO;
     self.connectionAvailable = YES;
 
     // allocate the internet reachability object
-    internetReachability = [Reachability reachabilityForInternetConnection];
+    self.internetReachability = [Reachability reachabilityForInternetConnection];
     
-    self.connectionAvailable = [internetReachability isReachable];
-    // set the blocks 
-    internetReachability.reachableBlock = ^(Reachability*reach)
-    {  
-        DDLogInfo(@"Internet connection is back");
-        self.connectionAvailable = YES;
+    // set the blocks
+    void (^internetReachabilityBlock)(Reachability *) = ^(Reachability *reach) {
+        NSString *wifi = reach.isReachableViaWiFi ? @"Y" : @"N";
+        NSString *wwan = reach.isReachableViaWWAN ? @"Y" : @"N";
+        
+        DDLogInfo(@"Reachability - Internet - WiFi: %@  WWAN: %@", wifi, wwan);
+        self.connectionAvailable = reach.isReachable;
     };
-    internetReachability.unreachableBlock = ^(Reachability*reach)
-    {
-        DDLogInfo(@"No internet connection");
-        self.connectionAvailable = NO;
-    };
+    self.internetReachability.reachableBlock = internetReachabilityBlock;
+    self.internetReachability.unreachableBlock = internetReachabilityBlock;
+    
     // start the notifier which will cause the reachability object to retain itself!
-    [internetReachability startNotifier];
+    [self.internetReachability startNotifier];
+    self.connectionAvailable = [self.internetReachability isReachable];
     
     // allocate the WP.com reachability object
-    wpcomReachability = [Reachability reachabilityWithHostname:@"wordpress.com"];
-    // set the blocks 
-    wpcomReachability.reachableBlock = ^(Reachability*reach)
-    {  
-        DDLogInfo(@"Connection to WordPress.com is back");
-        self.wpcomAvailable = YES;
+    self.wpcomReachability = [Reachability reachabilityWithHostname:@"wordpress.com"];
+
+    // set the blocks
+    void (^wpcomReachabilityBlock)(Reachability *) = ^(Reachability *reach) {
+        NSString *wifi = reach.isReachableViaWiFi ? @"Y" : @"N";
+        NSString *wwan = reach.isReachableViaWWAN ? @"Y" : @"N";
+        CTTelephonyNetworkInfo *netInfo = [CTTelephonyNetworkInfo new];
+        CTCarrier *carrier = [netInfo subscriberCellularProvider];
+        NSString *type = nil;
+        if ([netInfo respondsToSelector:@selector(currentRadioAccessTechnology)]) {
+            type = [netInfo currentRadioAccessTechnology];
+        }
+        NSString *carrierName = nil;
+        if (carrier) {
+            carrierName = [NSString stringWithFormat:@"%@ [%@/%@/%@]", carrier.carrierName, [carrier.isoCountryCode uppercaseString], carrier.mobileCountryCode, carrier.mobileNetworkCode];
+        }
+        
+        DDLogInfo(@"Reachability - WordPress.com - WiFi: %@  WWAN: %@  Carrier: %@  Type: %@", wifi, wwan, carrierName, type);
+        self.wpcomAvailable = reach.isReachable;
     };
-    wpcomReachability.unreachableBlock = ^(Reachability*reach)
-    {
-        DDLogInfo(@"No connection to WordPress.com");
-        self.wpcomAvailable = NO;
-    };
+    self.wpcomReachability.reachableBlock = wpcomReachabilityBlock;
+    self.wpcomReachability.unreachableBlock = wpcomReachabilityBlock;
+    
     // start the notifier which will cause the reachability object to retain itself!
-    [wpcomReachability startNotifier];
+    [self.wpcomReachability startNotifier];
 #pragma clang diagnostic pop
 }
 
@@ -286,11 +299,10 @@ int ddLogLevel = LOG_LEVEL_INFO;
     [WPMobileStats initializeStats];
     [[GPPSignIn sharedInstance] setClientID:[WordPressComApiCredentials googlePlusClientId]];
 
-    if([[NSUserDefaults standardUserDefaults] objectForKey:@"wpcom_authenticated_flag"] != nil) {
-        NSString *tempIsAuthenticated = (NSString *)[[NSUserDefaults standardUserDefaults] objectForKey:@"wpcom_authenticated_flag"];
-        if([tempIsAuthenticated isEqualToString:@"1"])
-            self.isWPcomAuthenticated = YES;
-    }
+    // Temporarily set the is authenticated flag based upon if we have a WP.com OAuth2 token
+    // TODO :: Move this BOOL to a method on the WordPressComApi along with checkWPcomAuthentication
+    BOOL tempIsAuthenticated = [[WordPressComApi sharedApi] authToken].length > 0;
+    self.isWPcomAuthenticated = tempIsAuthenticated;
 
 	// Set current directory for WordPress app
 	NSFileManager *fileManager = [NSFileManager defaultManager];
@@ -907,35 +919,35 @@ int ddLogLevel = LOG_LEVEL_INFO;
     [UIApplication sharedApplication].applicationIconBadgeNumber = 0;
 }
 
+// TODO :: Eliminate this check or at least move it to WordPressComApi (or WPAccount)
 - (void)checkWPcomAuthentication {
 	NSString *authURL = @"https://wordpress.com/xmlrpc.php";
 
     WPAccount *account = [WPAccount defaultWordPressComAccount];
 	if (account) {
         WPXMLRPCClient *client = [WPXMLRPCClient clientWithXMLRPCEndpoint:[NSURL URLWithString:authURL]];
+        [client setAuthorizationHeaderWithToken:[[WordPressComApi sharedApi] authToken]];
         [client callMethod:@"wp.getUsersBlogs"
                 parameters:[NSArray arrayWithObjects:account.username, account.password, nil]
                    success:^(AFHTTPRequestOperation *operation, id responseObject) {
                        isWPcomAuthenticated = YES;
                        DDLogInfo(@"Logged in to WordPress.com as %@", account.username);
                    } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
-                       if ([error.domain isEqualToString:@"XMLRPC"] && error.code == 403) {
+                       if ([error.domain isEqualToString:@"WPXMLRPCFaultError"] ||
+                           ([error.domain isEqualToString:@"XMLRPC"] && error.code == 403)) {
                            isWPcomAuthenticated = NO;
+                           [[WordPressComApi sharedApi] invalidateOAuth2Token];
                        }
+                       
                        DDLogError(@"Error authenticating %@ with WordPress.com: %@", account.username, [error description]);
                    }];
 	} else {
 		isWPcomAuthenticated = NO;
 	}
-
-	if (isWPcomAuthenticated)
-		[[NSUserDefaults standardUserDefaults] setObject:@"1" forKey:@"wpcom_authenticated_flag"];
-	else
-		[[NSUserDefaults standardUserDefaults] setObject:@"0" forKey:@"wpcom_authenticated_flag"];
 }
 
 
-- (void) checkIfStatsShouldRun {
+- (void)checkIfStatsShouldRun {
     if (NO) { // Switch this to YES to debug stats/update check
         [self runStats];
         return;
@@ -1104,7 +1116,7 @@ int ddLogLevel = LOG_LEVEL_INFO;
     }
     
 	int num_blogs = [Blog countWithContext:[self managedObjectContext]];
-	BOOL authed = [[[NSUserDefaults standardUserDefaults] objectForKey:@"wpcom_authenticated_flag"] boolValue];
+	BOOL authed = isWPcomAuthenticated;
 	if (num_blogs == 0 && !authed) {
 		// When there are no blogs in the app the settings screen is unavailable.
 		// In this case, enable extra_debugging by default to help troubleshoot any issues.
