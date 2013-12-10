@@ -213,15 +213,14 @@ CGFloat const EPTVCTextViewBottomPadding = 50.0f;
     // This let's us achieve the layout we want on the iPad without a lot of layout code.
     if (!_tableHeaderViewContentView) {
         if (IS_IPAD) {
-            CGFloat inset = ceilf(CGRectGetWidth(self.tableView.frame) * WPTableViewCellMarginPercentage);
-            x = inset;
-            width = width - (2 * inset);
+            x = (width - WPTableViewFixedWidth) / 2;
+            width = WPTableViewFixedWidth;
         }
         frame = CGRectMake(x, y, width, minHeight);
         self.tableHeaderViewContentView = [[UIView alloc] initWithFrame:frame];
         _tableHeaderViewContentView.backgroundColor = [UIColor whiteColor];
         if (IS_IPAD) {
-            _tableHeaderViewContentView.autoresizingMask = UIViewAutoresizingFlexibleLeftMargin | UIViewAutoresizingFlexibleRightMargin | UIViewAutoresizingFlexibleHeight | UIViewAutoresizingFlexibleWidth;
+            _tableHeaderViewContentView.autoresizingMask = UIViewAutoresizingFlexibleLeftMargin | UIViewAutoresizingFlexibleRightMargin | UIViewAutoresizingFlexibleHeight;
         } else {
             _tableHeaderViewContentView.autoresizingMask = UIViewAutoresizingFlexibleHeight | UIViewAutoresizingFlexibleWidth;
         }
