@@ -23,6 +23,7 @@
 
 NSString *const WordPressComApiClientEndpointURL = @"https://public-api.wordpress.com/rest/v1/";
 NSString *const WordPressComApiOauthBaseUrl = @"https://public-api.wordpress.com/oauth2";
+NSString *const WordPressComXMLRPCUrl = @"http://wordpress.com/xmlrpc.php";
 NSString *const WordPressComApiNotificationFields = @"id,type,unread,body,subject,timestamp";
 NSString *const WordPressComApiUnseenNotesNotification = @"WordPressComUnseenNotes";
 NSString *const WordPressComApiNotesUserInfoKey = @"notes";
@@ -389,14 +390,18 @@ NSString *const WordPressComApiPushAppId = @"org.wordpress.appstore";
      */
 }
 
-- (void)syncPushNotificationInfo {
-    NSString *token = [[NSUserDefaults standardUserDefaults] objectForKey:kApnsDeviceTokenPrefKey];
-    if( nil == token ) return; //no apns token available
+- (void)syncPushNotificationInfoWithDeviceToken:(NSString *)token
+                                        success:(void (^)(NSDictionary *settings))success
+                                        failure:(void (^)(NSError *error))failure {
     
-    if(![[[WPAccount defaultWordPressComAccount] restApi] hasCredentials])
+    if (nil == token) {
+        return;
+    }
+
+    if (![[[WPAccount defaultWordPressComAccount] restApi] hasCredentials])
         return;
     
-    NSString *authURL = kNotificationAuthURL;
+    NSString *authURL = WordPressComXMLRPCUrl;
     
     // Send a multicall for register the token and retrieval of push notification settings
     NSMutableArray *operations = [NSMutableArray arrayWithCapacity:2];
@@ -421,10 +426,11 @@ NSString *const WordPressComApiPushAppId = @"org.wordpress.appstore";
                             tokenOptions
                             ];
     WPXMLRPCRequest *tokenRequest = [api XMLRPCRequestWithMethod:@"wpcom.mobile_push_register_token" parameters:parameters];
-    WPXMLRPCRequestOperation *tokenOperation = [api XMLRPCRequestOperationWithRequest:tokenRequest success:^(AFHTTPRequestOperation *operation, id responseObject) {
-        WPFLog(@"Registered APN token %@" , token);
+    WPXMLRPCRequestOperation *tokenOperation = [api XMLRPCRequestOperationWithRequest:tokenRequest success:^(AFHTTPRequestOperation *op, id response){
     } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
-        WPFLog(@"Couldn't register APN token: %@", [error localizedDescription]);
+        if (failure) {
+            failure(error);
+        }
     }];
     
     [operations addObject:tokenOperation];
@@ -437,16 +443,22 @@ NSString *const WordPressComApiPushAppId = @"org.wordpress.appstore";
                                     ];
     WPXMLRPCRequest *settingsRequest = [api XMLRPCRequestWithMethod:@"wpcom.get_mobile_push_notification_settings" parameters:settingsParameters];
     WPXMLRPCRequestOperation *settingsOperation = [api XMLRPCRequestOperationWithRequest:settingsRequest success:^(AFHTTPRequestOperation *operation, id responseObject) {
-        NSDictionary *supportedNotifications = (NSDictionary *)responseObject;
-        [[NSUserDefaults standardUserDefaults] setObject:supportedNotifications forKey:@"notification_preferences"];
-        WPFLog(@"Notification settings loaded!");
+        if (success) {
+            success(responseObject);
+        }
     } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
-        WPFLog(@"Failed to receive supported notification list: %@", [error localizedDescription]);
+        if (failure) {
+            failure(error);
+        }
     }];
     
     [operations addObject:settingsOperation];
     
-    AFHTTPRequestOperation *combinedOperation = [api combinedHTTPRequestOperationWithOperations:operations success:^(AFHTTPRequestOperation *operation, id responseObject) {} failure:^(AFHTTPRequestOperation *operation, NSError *error) {}];
+    AFHTTPRequestOperation *combinedOperation = [api combinedHTTPRequestOperationWithOperations:operations success:nil failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+        if (failure) {
+            failure(error);
+        }
+    }];
     [api enqueueHTTPRequestOperation:combinedOperation];
 }
 
