@@ -174,7 +174,7 @@ typedef enum {
 - (void)didRotateFromInterfaceOrientation:(UIInterfaceOrientation)fromInterfaceOrientation {
 	[super didRotateFromInterfaceOrientation:fromInterfaceOrientation];
 
-	[self.postView updateLayout];
+    [self.postView setNeedsLayout];
 
 	// Make sure a selected comment is visible after rotating.
 	if ([self.tableView indexPathForSelectedRow] != nil && self.isShowingCommentForm) {
@@ -751,6 +751,11 @@ typedef enum {
     controller.modalTransitionStyle = UIModalTransitionStyleCrossDissolve;
     controller.modalPresentationStyle = UIModalPresentationFullScreen;
     [self.navigationController pushViewController:controller animated:YES];
+}
+
+- (void)postViewDidLoadAllMedia:(ReaderPostView *)postView {
+    [self.postView layoutIfNeeded];
+    [self.tableView reloadData];
 }
 
 

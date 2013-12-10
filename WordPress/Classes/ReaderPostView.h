@@ -24,6 +24,7 @@
 - (void)postView:(ReaderPostView *)postView didReceiveImageLinkAction:(id)sender;
 - (void)postView:(ReaderPostView *)postView didReceiveVideoLinkAction:(id)sender;
 - (void)postView:(ReaderPostView *)postView didReceiveFeaturedImageAction:(id)sender;
+- (void)postViewDidLoadAllMedia:(ReaderPostView *)postView;
 @end
 
 @interface ReaderPostView : UIView<DTAttributedTextContentViewDelegate, ReaderMediaQueueDelegate> {
@@ -42,6 +43,5 @@
 - (void)updateActionButtons;
 - (void)reset;
 - (void)configurePost:(ReaderPost *)post;
-- (void)updateLayout;
 
 @end
