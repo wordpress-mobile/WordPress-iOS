@@ -8,7 +8,7 @@
 
 #import "WPTableViewCell.h"
 
-CGFloat const WPTableViewFixedWidth = 500;
+CGFloat const WPTableViewFixedWidth = 600;
 
 @implementation WPTableViewCell
 
