@@ -143,7 +143,7 @@ const CGFloat RPTVCVerticalOuterPadding = 16.0f;
     CGRect frame = CGRectMake(leftPadding, 0, contentWidth, self.frame.size.height);
     self.postView.frame = frame;
     
-    CGFloat sideBorderX = RPTVCHorizontalOuterPadding - 1; // Just to the left of the container
+    CGFloat sideBorderX = IS_IPHONE ? RPTVCHorizontalOuterPadding - 1 : 0; // Just to the left of the container
     CGFloat sideBorderHeight = self.frame.size.height - RPTVCVerticalOuterPadding; // Just below it
     self.sideBorderView.frame = CGRectMake(sideBorderX, 1, self.frame.size.width - sideBorderX * 2, sideBorderHeight);
 }
