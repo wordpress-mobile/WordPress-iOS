@@ -15,11 +15,6 @@
 @property (nonatomic,readonly,retain) NSFetchedResultsController *resultsController;
 
 /**
- Enables the swipe menu for cells
- */
-@property (nonatomic) BOOL swipeActionsEnabled;
-
-/**
  Enables the infinteScrolling
  */
 @property (nonatomic) BOOL infiniteScrollEnabled;
@@ -34,17 +29,9 @@
  Sync content with the server
  
  Subclasses can call this method if they need to invoke a refresh, but it's not meant to be implemented by subclasses.
- Override syncItemsWithSuccess:failure: instead.
- */
-- (void)syncItems;
-
-/**
- Special case method to invoke syncing via user interaction, which could do extra processing, show errors, etc.
- 
- Subclasses can call this method when the user invokes a refresh, but it's not meant to be implemented by subclasses.
  Override syncItemsViaUserInteraction:success:failure: instead.
  */
-- (void)syncItemsViaUserInteraction;
+- (void)syncItems;
 
 
 /// ----------------------------------------------
@@ -96,13 +83,13 @@
 - (NSString *)sectionNameKeyPath;
 
 /**
- Returns a new (unconfigured) cell for the table view.
+ Returns the class for the cell being used
  
- Optional. If a subclass doesn't implement this method, a UITableViewCell with the default style is used
+ Optional. If a subclass doesn't implement this method, the UITableViewCell
  
- @return a new initialized cell ready to be configured
+ @return the class for the cell to be registered
  */
-- (UITableViewCell *)newCell;
+- (Class)cellClass;
 
 /**
  Configure a table cell for a specific index path
@@ -116,20 +103,11 @@
  
  Subclasses *MUST* implement this method
  
- @param userInteraction true if the sync responds to a user action, like pull to refresh
+ @param userInteraction true if the sync is in response to a user action, like pull to refresh
  @param success A block that's executed if the sync was successful
  @param failure A block that's executed if there was any error
  */
-- (void)syncItemsWithSuccess:(void (^)())success failure:(void (^)(NSError *error))failure;
-
-/**
- Performs syncing of items when the user performs an explicit action, such as pulling to refresh.
- By default, simply calls syncItemsWithSuccess:failure: but subclasses can override.
- 
- @param success A block that's executed if the sync was successful
- @param failure A block that's executed if there was any error
- */
-- (void)syncItemsViaUserInteractionWithSuccess:(void (^)())success failure:(void (^)(NSError *error))failure;
+- (void)syncItemsViaUserInteraction:(BOOL)userInteraction success:(void (^)())success failure:(void (^)(NSError *error))failure;
 
 /**
  Returns a boolean indicating if the blog is syncing that type of item right now
@@ -156,21 +134,6 @@
  @param failure A block that's executed if there was any error
  */
 - (void)loadMoreWithSuccess:(void (^)())success failure:(void (^)(NSError *error))failure;
-
-/**
- Configures the secondary view to show when you swipe on a cell
- 
- Subclasses *MUST* implement this method if swipeActionsEnabled is YES
- */
-- (void)configureSwipeView:(UIView *)swipeView forIndexPath:(NSIndexPath *)indexPath;
-
-/**
- Removes the swipe view.
- 
- Subclasses should call this method if one of the swipe actions needs to dismiss the secondary menu
- */
-- (void)removeSwipeView:(BOOL)animated;
-
 
 /**
  Create a custom view to display to the user when there are no results to show.

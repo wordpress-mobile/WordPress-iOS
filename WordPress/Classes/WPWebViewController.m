@@ -33,6 +33,10 @@
     _statusTimer = nil;
 }
 
+- (BOOL)hidesBottomBarWhenPushed {
+    return YES;
+}
+
 - (NSString *)statsPrefixForShareActions {
     if (_statsPrefixForShareActions == nil) {
         return @"Webview";

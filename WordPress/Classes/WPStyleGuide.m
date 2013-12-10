@@ -202,6 +202,11 @@
 	return [UIColor colorWithRed:16/255.0f green:16/255.0f blue:16/255.0f alpha:1.0f];
 }
 
++ (UIColor *)validationErrorRed
+{
+    return [UIColor colorWithRed:0.7 green:0.0 blue:0.0 alpha:1.0];
+}
+
 + (UIColor *)tableViewActionColor
 {
     return [WPStyleGuide baseLighterBlue];
