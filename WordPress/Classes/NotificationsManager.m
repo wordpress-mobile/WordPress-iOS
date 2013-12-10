@@ -75,10 +75,9 @@ NSString *const NotificationsDeviceToken = @"apnsDeviceToken";
     
     switch (state) {
         case UIApplicationStateActive:
-            [[[WPAccount defaultWordPressComAccount] restApi] checkForNewUnseenNotifications];
             [self syncPushNotificationInfo];
             break;
-            
+    
         case UIApplicationStateInactive:
             [WPMobileStats recordAppOpenedForEvent:StatsEventAppOpenedDueToPushNotification];
             [[WordPressAppDelegate sharedWordPressApplicationDelegate] showNotificationsTab];
