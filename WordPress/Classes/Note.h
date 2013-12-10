@@ -44,6 +44,6 @@
  @param context The context which contains the notes to delete.
  */
 + (void)pruneOldNotesBefore:(NSNumber *)timestamp withContext:(NSManagedObjectContext *)context;
-+ (void)getNewNotificationswithContext:(NSManagedObjectContext *)context success:(void (^)(BOOL hasNewNotes))success failure:(void (^)(NSError *error))failure;
++ (void)fetchNewNotificationsWithSuccess:(void (^)(BOOL hasNewNotes))success failure:(void (^)(NSError *error))failure;
 
 @end

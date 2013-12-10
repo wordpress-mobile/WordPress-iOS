@@ -88,7 +88,7 @@ NSString *const NotificationsDeviceToken = @"apnsDeviceToken";
             [[WordPressAppDelegate sharedWordPressApplicationDelegate] showNotificationsTab];
             
             if (completionHandler) {
-                [Note getNewNotificationswithContext:[[ContextManager sharedInstance] mainContext] success:^(BOOL hasNewNotes) {
+                [Note fetchNewNotificationsWithSuccess:^(BOOL hasNewNotes) {
                     DDLogInfo(@"notification fetch completion handler completed with new notes: %@", hasNewNotes ? @"YES" : @"NO");
                     if (hasNewNotes) {
                         completionHandler(UIBackgroundFetchResultNewData);

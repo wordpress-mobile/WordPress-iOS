@@ -374,8 +374,12 @@ NS_ENUM(NSUInteger, NotifcationCommentCellType){
     [self.user postPath:path parameters:[commentAction valueForKeyPath:@"params.rest_body"] success:^(AFHTTPRequestOperation *operation, id responseObject) {
         NSDictionary *response = (NSDictionary *)responseObject;
         if (response) {
-            NSArray *noteArray = [NSArray arrayWithObject:_note];
-            [[[WPAccount defaultWordPressComAccount] restApi] refreshNotifications:noteArray fields:nil success:^(AFHTTPRequestOperation *operation, id refreshResponseObject) {
+            [[[WPAccount defaultWordPressComAccount] restApi] refreshNotifications:@[_note.noteID] fields:nil success:^(NSArray *notes) {
+                if ([notes count] == 1 && ![_note isDeleted] && _note.managedObjectContext) {
+                    [_note updateAttributes:notes[0]];
+                }
+                
+                [[ContextManager sharedInstance] saveContext:_note.managedObjectContext];
                 [spinner stopAnimating];
                 [self displayNote];
             } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
