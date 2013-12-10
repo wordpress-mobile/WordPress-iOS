@@ -68,7 +68,7 @@ NSString *const DefaultCellIdentifier = @"DefaultCellIdentifier";
 }
 
 - (id)initWithStyle:(UITableViewStyle)style {
-    self = [super initWithStyle:style];
+    self = [super initWithStyle:UITableViewStyleGrouped];
     
     if (self) {
         self.restorationIdentifier = NSStringFromClass([self class]);
