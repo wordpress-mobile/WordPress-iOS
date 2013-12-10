@@ -8,7 +8,7 @@
 
 #import <UIKit/UIKit.h>
 
-@interface WPTableViewSectionFooterView : UIView
+@interface WPTableViewSectionFooterView : UITableViewHeaderFooterView
 
 @property (nonatomic, strong) NSString *title;
 
