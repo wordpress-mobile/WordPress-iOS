@@ -16,6 +16,9 @@
 #import <WPXMLRPCClient.h>
 #import "ContextManager.h"
 
+static NSString *const NotificationsPreferencesKey = @"notification_preferences";
+NSString *const NotificationsDeviceToken = @"apnsDeviceToken";
+
 @implementation NotificationsManager
 
 + (void)registerForPushNotifications {
@@ -31,25 +34,25 @@
 #pragma mark - Device token registration
 
 + (void)registerDeviceToken:(NSData *)deviceToken {
-    NSString *myToken = [[[[deviceToken description]
+    NSString *newToken = [[[[deviceToken description]
                            stringByReplacingOccurrencesOfString: @"<" withString: @""]
                           stringByReplacingOccurrencesOfString: @">" withString: @""]
                          stringByReplacingOccurrencesOfString: @" " withString: @""];
     
-    DDLogInfo(@"Device token received in didRegisterForRemoteNotificationsWithDeviceToken: %@", myToken);
+    DDLogInfo(@"Device token received in didRegisterForRemoteNotificationsWithDeviceToken: %@", newToken);
     
     // Store the token
-    NSString *previousToken = [[NSUserDefaults standardUserDefaults] objectForKey:kApnsDeviceTokenPrefKey];
-    if (![previousToken isEqualToString:myToken]) {
-        DDLogInfo(@"Device Token has changed! OLD Value %@, NEW value %@", previousToken, myToken);
-        [[NSUserDefaults standardUserDefaults] setObject:myToken forKey:kApnsDeviceTokenPrefKey];
         [[[WPAccount defaultWordPressComAccount] restApi] syncPushNotificationInfo];
+    NSString *previousToken = [[NSUserDefaults standardUserDefaults] objectForKey:NotificationsDeviceToken];
+    if (![previousToken isEqualToString:newToken]) {
+        DDLogInfo(@"Device Token has changed! OLD Value %@, NEW value %@", previousToken, newToken);
+        [[NSUserDefaults standardUserDefaults] setObject:newToken forKey:NotificationsDeviceToken];
     }
 }
 
 + (void)registrationDidFail:(NSError *)error {
     DDLogError(@"Failed to register for push notifications: %@", error);
-    [[NSUserDefaults standardUserDefaults] removeObjectForKey:kApnsDeviceTokenPrefKey];
+    [[NSUserDefaults standardUserDefaults] removeObjectForKey:NotificationsDeviceToken];
 }
 
 + (void)unregisterDeviceToken {
@@ -86,6 +89,9 @@
     }
 }
 
++ (BOOL)deviceRegisteredForPushNotifications {
+    return [[NSUserDefaults standardUserDefaults] objectForKey:NotificationsDeviceToken] != nil;
+}
 
 #pragma mark - Notification handling
 

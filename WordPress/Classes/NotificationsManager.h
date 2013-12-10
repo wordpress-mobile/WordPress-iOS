@@ -7,6 +7,10 @@
  * Some rights reserved. See license.txt
  */
 
+/**
+ The persisted device token
+ */
+extern NSString *const NotificationsDeviceToken;
 
 @interface NotificationsManager : NSObject
 
@@ -37,6 +41,18 @@
  Unregister the device from WordPress.com notifications
  */
 + (void)unregisterDeviceToken;
+
+/**
+ Returns whether the device is currently registered for remote notifications
+ 
+ @return YES if the device is registered for WordPress.com notifications
+ @return NO if not
+ */
++ (BOOL)deviceRegisteredForPushNotifications;
+
+///----------------------------
+/// @name Notification Handling
+///----------------------------
 
 /**
  Handle the notification received, and call the completion handler for background work
