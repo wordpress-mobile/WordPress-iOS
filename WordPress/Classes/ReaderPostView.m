@@ -61,6 +61,7 @@ const CGFloat RPVControlButtonBorderSize = 0.0f;
 @property (nonatomic, strong) UIView *byView;
 @property (nonatomic, strong) UILabel *bylineLabel;
 @property (nonatomic, strong) UIView *controlView;
+@property (nonatomic, strong) NSTimer *dateRefreshTimer;
 
 @property (nonatomic, assign) BOOL showImage;
 @property (nonatomic, assign) BOOL showFullContent;
@@ -194,6 +195,9 @@ const CGFloat RPVControlButtonBorderSize = 0.0f;
 
 		[self buildPostContent];
 		[self buildMetaContent];
+        
+        // Update the relative timestamp once per minute
+        self.dateRefreshTimer = [NSTimer scheduledTimerWithTimeInterval:60.0 target:self selector:@selector(refreshDate:) userInfo:nil repeats:YES];
     }
     return self;
 }
@@ -204,6 +208,9 @@ const CGFloat RPVControlButtonBorderSize = 0.0f;
     _textContentView.delegate = nil;
     _mediaQueue.delegate = nil;
     [_mediaQueue discardQueuedItems];
+
+    [self.dateRefreshTimer invalidate];
+    self.dateRefreshTimer = nil;
 }
 
 - (void)configurePost:(ReaderPost *)post {
@@ -227,8 +234,7 @@ const CGFloat RPVControlButtonBorderSize = 0.0f;
     }
     
     _bylineLabel.text = [post authorString];
-    
-    [_timeButton setTitle:[post.dateCreated shortString] forState:UIControlStateNormal];
+    [self refreshDate:nil];
     
 	self.showImage = NO;
 	self.cellImageView.hidden = YES;
@@ -691,6 +697,10 @@ const CGFloat RPVControlButtonBorderSize = 0.0f;
 	}
     
     return frameChanged;
+}
+
+- (void)refreshDate:(NSTimer *)timer {
+    [self.timeButton setTitle:[self.post.dateCreated shortString] forState:UIControlStateNormal];
 }
 
 
