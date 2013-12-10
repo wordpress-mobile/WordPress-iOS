@@ -134,10 +134,6 @@ const NSUInteger NoteKeepCount = 20;
     return timestamp;
 }
 
-- (NSDictionary *)getNoteData {
-    return self.noteData;
-}
-
 - (void)syncAttributes:(NSDictionary *)noteData {
     self.payload = [NSJSONSerialization dataWithJSONObject:noteData options:0 error:nil];
     self.noteData = [NSJSONSerialization JSONObjectWithData:self.payload options:0 error:nil];
@@ -266,6 +262,22 @@ const NSUInteger NoteKeepCount = 20;
     if ([notes count] > 0) {
         [[[WPAccount defaultWordPressComAccount] restApi] refreshNotifications:notes fields:@"id,unread" success:nil failure:nil];
     }
+}
+
+- (void)refreshNoteDataWithSuccess:(void (^)())success failure:(void (^)(NSError *))failure {
+    [[[WPAccount defaultWordPressComAccount] restApi] refreshNotifications:@[self.noteID] fields:nil success:^(NSArray *updatedNotes){
+            if ([updatedNotes count] > 0 && ![self isDeleted] && self.managedObjectContext) {
+                [self updateAttributes:updatedNotes[0]];
+            }
+            [[ContextManager sharedInstance] saveContext:self.managedObjectContext];
+            if (success) {
+                success();
+            }
+        } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+            if (failure) {
+                failure(error);
+            }
+        }];
 }
 
 @end
