@@ -237,7 +237,7 @@ NSString * const NotificationsJetpackInformationURL = @"http://jetpack.me/about/
     if ([note isComment])
         return YES;
     
-    NSDictionary *noteBody = [[note getNoteData] objectForKey:@"body"];
+    NSDictionary *noteBody = [[note noteData] objectForKey:@"body"];
     if (noteBody) {
         NSString *noteTemplate = [noteBody objectForKey:@"template"];
         if ([noteTemplate isEqualToString:@"single-line-list"] || [noteTemplate isEqualToString:@"multi-line-list"])

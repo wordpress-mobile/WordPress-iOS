@@ -49,5 +49,6 @@
 
 + (void)fetchNewNotificationsWithSuccess:(void (^)(BOOL hasNewNotes))success failure:(void (^)(NSError *error))failure;
 + (void)refreshUnreadNotesWithContext:(NSManagedObjectContext *)context;
+- (void)refreshNoteDataWithSuccess:(void (^)())success failure:(void (^)(NSError *error))failure;
 
 @end

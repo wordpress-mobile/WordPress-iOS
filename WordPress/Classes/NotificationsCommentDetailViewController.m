@@ -23,8 +23,6 @@
 #import "IOS7CorrectedTextView.h"
 #import "WPAccount.h"
 
-#import "ContextManager.h"
-
 #define APPROVE_BUTTON_TAG 1
 #define UNAPPROVE_BUTTON_TAG 2
 #define TRASH_BUTTON_TAG 3
@@ -373,18 +371,14 @@ NS_ENUM(NSUInteger, NotifcationCommentCellType){
     [spinner startAnimating];
     
     NSString *path = [NSString stringWithFormat:@"/rest/v1%@", [commentAction valueForKeyPath:@"params.rest_path"]];
+    
     [self.user postPath:path parameters:[commentAction valueForKeyPath:@"params.rest_body"] success:^(AFHTTPRequestOperation *operation, id responseObject) {
         NSDictionary *response = (NSDictionary *)responseObject;
         if (response) {
-            [[[WPAccount defaultWordPressComAccount] restApi] refreshNotifications:@[_note.noteID] fields:nil success:^(NSArray *notes) {
-                if ([notes count] == 1 && ![_note isDeleted] && _note.managedObjectContext) {
-                    [_note updateAttributes:notes[0]];
-                }
-                
-                [[ContextManager sharedInstance] saveContext:_note.managedObjectContext];
+            [_note refreshNoteDataWithSuccess:^{
                 [spinner stopAnimating];
                 [self displayNote];
-            } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+            } failure:^(NSError *error) {
                 [spinner stopAnimating];
                 [self displayNote];
             }];
