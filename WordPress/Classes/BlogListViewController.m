@@ -17,6 +17,7 @@
 #import "ContextManager.h"
 #import "Blog.h"
 #import "WPAccount.h"
+#import "WPTableViewSectionHeaderView.h"
 
 static NSString *const BlogCellIdentifier = @"BlogCell";
 CGFloat const blavatarImageSize = 50.f;
@@ -300,11 +301,20 @@ NSString * const WPBlogListRestorationID = @"WPBlogListID";
     }
 }
 
-- (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section {
-    return [self hasDotComAndSelfHosted] ? 40.0 : 20.0;
-}
 - (CGFloat)tableView:(UITableView *)tableView heightForFooterInSection:(NSInteger)section {
     return section == [self sectionForAddSite] ? UITableViewAutomaticDimension : 1.0;
+}
+
+- (UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section {
+    WPTableViewSectionHeaderView *header = [[WPTableViewSectionHeaderView alloc] initWithFrame:CGRectMake(0, 0, CGRectGetWidth(self.view.bounds), 0)];
+    header.title = [self tableView:self.tableView titleForHeaderInSection:section];
+    header.fixedWidth = 600;
+    return header;
+}
+
+- (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section {
+    NSString *title = [self tableView:self.tableView titleForHeaderInSection:section];
+    return [WPTableViewSectionHeaderView heightForTitle:title andWidth:CGRectGetWidth(self.view.bounds)];
 }
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
