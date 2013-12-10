@@ -18,10 +18,12 @@
 #import "Blog.h"
 #import "WPAccount.h"
 
+static NSString *const BlogCellIdentifier = @"BlogCell";
 CGFloat const blavatarImageSize = 50.f;
 NSString * const WPBlogListRestorationID = @"WPBlogListID";
 
 @interface BlogListViewController ()
+
 @property (nonatomic, strong) NSFetchedResultsController *resultsController;
 @property (nonatomic, strong) UIBarButtonItem *settingsButton;
 @property (nonatomic) BOOL sectionDeletedByController;
@@ -36,6 +38,10 @@ NSString * const WPBlogListRestorationID = @"WPBlogListID";
         self.restorationIdentifier = WPBlogListRestorationID;
     }
     return self;
+}
+
+- (void)dealloc {
+    [[NSNotificationCenter defaultCenter] removeObserver:self];
 }
 
 - (NSString *)modelIdentifierForElementAtIndexPath:(NSIndexPath *)indexPath inView:(UIView *)view {
@@ -76,12 +82,8 @@ NSString * const WPBlogListRestorationID = @"WPBlogListID";
                                                           action:@selector(showSettings:)];
     self.navigationItem.rightBarButtonItem = self.settingsButton;
     
-    [[NSNotificationCenter defaultCenter] addObserverForName:WordPressComApiDidLoginNotification object:nil queue:nil usingBlock:^(NSNotification *note) {
-        [self.tableView reloadSections:[NSIndexSet indexSetWithIndex:0] withRowAnimation:UITableViewRowAnimationFade];
-    }];
-    [[NSNotificationCenter defaultCenter] addObserverForName:WordPressComApiDidLogoutNotification object:nil queue:nil usingBlock:^(NSNotification *note) {
-        [self.tableView reloadSections:[NSIndexSet indexSetWithIndex:0] withRowAnimation:UITableViewRowAnimationFade];
-    }];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(wordPressComApiDidLogin:) name:WordPressComApiDidLoginNotification object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(wordPressComApiDidLogout:) name:WordPressComApiDidLogoutNotification object:nil];
 
     // Remove one-pixel gap resulting from a top-aligned grouped table view
     if (IS_IPHONE) {
@@ -92,6 +94,8 @@ NSString * const WPBlogListRestorationID = @"WPBlogListID";
     
     [WPStyleGuide configureColorsForView:self.view andTableView:self.tableView];
  
+    [self.tableView registerClass:[WPTableViewCell class] forCellReuseIdentifier:BlogCellIdentifier];
+    
     self.navigationItem.leftBarButtonItem = self.editButtonItem;
 }
 
@@ -116,6 +120,18 @@ NSString * const WPBlogListRestorationID = @"WPBlogListID";
 - (BOOL)hasDotComAndSelfHosted {
     return ([[self.resultsController sections] count] > 1);
 }
+
+
+#pragma mark - Notifications
+
+- (void)wordPressComApiDidLogin:(NSNotification *)notification {
+    [self.tableView reloadSections:[NSIndexSet indexSetWithIndex:0] withRowAnimation:UITableViewRowAnimationFade];
+}
+
+- (void)wordPressComApiDidLogout:(NSNotification *)notification {
+    [self.tableView reloadSections:[NSIndexSet indexSetWithIndex:0] withRowAnimation:UITableViewRowAnimationFade];
+}
+
 
 #pragma mark - Actions
 
@@ -149,11 +165,8 @@ NSString * const WPBlogListRestorationID = @"WPBlogListID";
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    NSString *cellIdentifier = @"BlogCell";
-    UITableViewCell *cell = [self.tableView dequeueReusableCellWithIdentifier:cellIdentifier];
-    if (cell == nil) {
-        cell = [[WPTableViewCell alloc] initWithStyle:UITableViewCellStyleSubtitle reuseIdentifier:cellIdentifier];
-    }
+    
+    UITableViewCell *cell = [self.tableView dequeueReusableCellWithIdentifier:BlogCellIdentifier];
     
     [WPStyleGuide configureTableViewCell:cell];
     [self configureCell:cell atIndexPath:indexPath];
@@ -358,8 +371,7 @@ NSString * const WPBlogListRestorationID = @"WPBlogListID";
     }
 }
 
-#pragma mark -
-#pragma mark NSFetchedResultsController
+#pragma mark - NSFetchedResultsController
 
 - (NSFetchedResultsController *)resultsController {
     if (_resultsController) {

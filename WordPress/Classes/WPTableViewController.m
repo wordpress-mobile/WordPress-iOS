@@ -14,46 +14,36 @@
 #import "WPNoResultsView.h"
 #import "SupportViewController.h"
 #import "ContextManager.h"
+#import "UIView+Subviews.h"
 
 NSTimeInterval const WPTableViewControllerRefreshTimeout = 300; // 5 minutes
 CGFloat const WPTableViewTopMargin = 40;
-NSString * const WPBlogRestorationKey = @"WPBlogRestorationKey";
+NSString *const WPBlogRestorationKey = @"WPBlogRestorationKey";
+NSString *const DefaultCellIdentifier = @"DefaultCellIdentifier";
 
 @interface WPTableViewController ()
 
 @property (nonatomic, strong) NSFetchedResultsController *resultsController;
-@property (nonatomic) BOOL swipeActionsEnabled;
 @property (nonatomic) BOOL infiniteScrollEnabled;
 @property (nonatomic, strong, readonly) UIView *swipeView;
 @property (nonatomic, strong) UITableViewCell *swipeCell;
 @property (nonatomic, strong) UIView *noResultsView;
+@property (nonatomic, strong) EditSiteViewController *editSiteViewController;
+@property (nonatomic, strong) NSIndexPath *indexPathSelectedBeforeUpdates;
+@property (nonatomic, strong) NSIndexPath *indexPathSelectedAfterUpdates;
+@property (nonatomic, assign) UISwipeGestureRecognizerDirection swipeDirection;
+@property (nonatomic, strong) UIActivityIndicatorView *activityFooter;
+@property (nonatomic, assign) BOOL animatingRemovalOfModerationSwipeView;
+@property (nonatomic, assign) BOOL didPromptForCredentials;
+@property (nonatomic, assign) BOOL isSyncing;
+@property (nonatomic, assign) BOOL isLoadingMore;
+@property (nonatomic, assign) BOOL didTriggerRefresh;
+@property (nonatomic, assign) CGPoint savedScrollOffset;
+@property (nonatomic, strong) UIActivityIndicatorView *noResultsActivityIndicator;
 
 @end
 
-@implementation WPTableViewController {
-    EditSiteViewController *editSiteViewController;
-    UIView *noResultsView;
-    NSIndexPath *_indexPathSelectedBeforeUpdates;
-    NSIndexPath *_indexPathSelectedAfterUpdates;
-    UISwipeGestureRecognizer *_leftSwipeGestureRecognizer;
-    UISwipeGestureRecognizer *_rightSwipeGestureRecognizer;
-    UISwipeGestureRecognizerDirection _swipeDirection;
-    UIActivityIndicatorView *_activityFooter;
-    BOOL _animatingRemovalOfModerationSwipeView;
-    BOOL didPromptForCredentials;
-    BOOL _isSyncing;
-    BOOL _isLoadingMore;
-    BOOL didTriggerRefresh;
-    CGPoint savedScrollOffset;
-}
-
-@synthesize blog = _blog;
-@synthesize resultsController = _resultsController;
-@synthesize swipeActionsEnabled = _swipeActionsEnabled;
-@synthesize infiniteScrollEnabled = _infiniteScrollEnabled;
-@synthesize swipeView = _swipeView;
-@synthesize swipeCell = _swipeCell;
-@synthesize noResultsView;
+@implementation WPTableViewController
 
 + (UIViewController *)viewControllerWithRestorationIdentifierPath:(NSArray *)identifierComponents coder:(NSCoder *)coder {
     NSString *blogID = [coder decodeObjectForKey:WPBlogRestorationKey];
@@ -90,7 +80,7 @@ NSString * const WPBlogRestorationKey = @"WPBlogRestorationKey";
 
 - (void)dealloc {
     _resultsController.delegate = nil;
-    editSiteViewController.delegate = nil;
+    _editSiteViewController.delegate = nil;
 }
 
 - (void)encodeRestorableStateWithCoder:(NSCoder *)coder {
@@ -107,30 +97,20 @@ NSString * const WPBlogRestorationKey = @"WPBlogRestorationKey";
 
     self.tableView.allowsSelectionDuringEditing = YES;
     [WPStyleGuide configureColorsForView:self.view andTableView:self.tableView];
-    
-    if (self.swipeActionsEnabled) {
-        [self enableSwipeGestureRecognizer];
-    }
+    [self.tableView registerClass:[self cellClass] forCellReuseIdentifier:DefaultCellIdentifier];
 
     if (self.infiniteScrollEnabled) {
         [self enableInfiniteScrolling];
     }
 
     [self configureNoResultsView];
-    
-    // Remove one-pixel gap resulting from a top-aligned grouped table view
-    if (IS_IPHONE) {
-        UIEdgeInsets tableInset = [self.tableView contentInset];
-        tableInset.top = -1;
-        self.tableView.contentInset = tableInset;
-    }
 }
 
 - (void)viewWillAppear:(BOOL)animated {
     [super viewWillAppear:animated];
     CGSize contentSize = self.tableView.contentSize;
-    if(contentSize.height > savedScrollOffset.y) {
-        [self.tableView scrollRectToVisible:CGRectMake(savedScrollOffset.x, savedScrollOffset.y, 0.0, 0.0) animated:NO];
+    if (contentSize.height > _savedScrollOffset.y) {
+        [self.tableView scrollRectToVisible:CGRectMake(_savedScrollOffset.x, _savedScrollOffset.y, 0.0, 0.0) animated:NO];
     } else {
         [self.tableView scrollRectToVisible:CGRectMake(0.0, contentSize.height, 0.0, 0.0) animated:NO];
     }
@@ -146,7 +126,7 @@ NSString * const WPBlogRestorationKey = @"WPBlogRestorationKey";
     if( appDelegate.connectionAvailable == NO ) return; //do not start auto-synch if connection is down
 
     // Don't try to refresh if we just canceled editing credentials
-    if (didPromptForCredentials) {
+    if (_didPromptForCredentials) {
         return;
     }
     NSDate *lastSynced = [self lastSyncDate];
@@ -159,14 +139,15 @@ NSString * const WPBlogRestorationKey = @"WPBlogRestorationKey";
 - (void)viewWillDisappear:(BOOL)animated {
     [super viewWillDisappear:animated];
     if (IS_IPHONE) {
-        savedScrollOffset = self.tableView.contentOffset;
+        _savedScrollOffset = self.tableView.contentOffset;
     }
 }
 
 - (void)setEditing:(BOOL)editing animated:(BOOL)animated {
-    [self removeSwipeView:NO];
     [super setEditing:editing animated:animated];
 }
+
+#pragma mark - No Results View
 
 - (NSString *)noResultsTitleText
 {
@@ -181,6 +162,11 @@ NSString * const WPBlogRestorationKey = @"WPBlogRestorationKey";
 }
 
 - (UIView *)noResultsAccessoryView
+{
+    return nil;
+}
+
+- (NSString *)noResultsButtonText
 {
     return nil;
 }
@@ -202,43 +188,6 @@ NSString * const WPBlogRestorationKey = @"WPBlogRestorationKey";
     }
 }
 
-- (void)setSwipeActionsEnabled:(BOOL)swipeActionsEnabled {
-    if (swipeActionsEnabled == _swipeActionsEnabled) {
-        return;
-    }
-
-    _swipeActionsEnabled = swipeActionsEnabled;
-    if (self.isViewLoaded) {
-        if (_swipeActionsEnabled) {
-            [self enableSwipeGestureRecognizer];
-        } else {
-            [self disableSwipeGestureRecognizer];
-        }
-    }
-}
-
-- (BOOL)swipeActionsEnabled {
-    return _swipeActionsEnabled && !self.editing;
-}
-
-- (UIView *)swipeView {
-    if (_swipeView) {
-        return _swipeView;
-    }
-
-    _swipeView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, self.tableView.bounds.size.width, kCellHeight)];
-    _swipeView.backgroundColor = [UIColor colorWithPatternImage:[UIImage imageNamed:@"background.png"]];
-    
-    UIImage *shadow = [[UIImage imageNamed:@"inner-shadow.png"] stretchableImageWithLeftCapWidth:0 topCapHeight:0];
-    UIImageView *shadowImageView = [[UIImageView alloc] initWithFrame:_swipeView.frame];
-    shadowImageView.alpha = 0.5;
-    shadowImageView.image = shadow;
-    shadowImageView.autoresizingMask = UIViewAutoresizingFlexibleHeight | UIViewAutoresizingFlexibleWidth;
-    [_swipeView insertSubview:shadowImageView atIndex:0];  
-
-    return _swipeView;
-}
-
 - (void)setInfiniteScrollEnabled:(BOOL)infiniteScrollEnabled {
     if (infiniteScrollEnabled == _infiniteScrollEnabled) {
         return;
@@ -252,10 +201,6 @@ NSString * const WPBlogRestorationKey = @"WPBlogRestorationKey";
             [self disableInfiniteScrolling];
         }
     }
-}
-
-- (BOOL)infiniteScrollEnabled {
-    return _infiniteScrollEnabled;
 }
 
 #pragma mark - Table view data source
@@ -276,7 +221,7 @@ NSString * const WPBlogRestorationKey = @"WPBlogRestorationKey";
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
-    UITableViewCell *cell = [self newCell];
+    UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:DefaultCellIdentifier];
 
     if (IS_IPAD || self.tableView.isEditing) {
 		cell.accessoryType = UITableViewCellAccessoryNone;
@@ -337,13 +282,6 @@ NSString * const WPBlogRestorationKey = @"WPBlogRestorationKey";
 
 - (BOOL)tableView:(UITableView *)tableView shouldIndentWhileEditingRowAtIndexPath:(NSIndexPath *)indexPath {
     return NO;
-}
-
-- (NSIndexPath *)tableView:(UITableView *)theTableView willSelectRowAtIndexPath:(NSIndexPath *)indexPath {
-    if (!self.editing) {
-        [self removeSwipeView:YES];
-    }
-    return indexPath;
 }
 
 #pragma mark - Fetched results controller
@@ -453,19 +391,24 @@ NSString * const WPBlogRestorationKey = @"WPBlogRestorationKey";
 #pragma mark - UIRefreshControl Methods
 
 - (void)refresh {
-    didTriggerRefresh = YES;
+    if (![self userCanRefresh]) {
+        [self.refreshControl endRefreshing];
+        return;
+    }
+    
+    _didTriggerRefresh = YES;
 	[self syncItemsViaUserInteraction];
-    [noResultsView removeFromSuperview];
+    [self.noResultsView removeFromSuperview];
 }
 
+- (BOOL)userCanRefresh {
+    return YES;
+}
 
 #pragma mark - UIScrollViewDelegate Methods
 
 - (void)scrollViewWillBeginDragging:(UIScrollView *)scrollView {
     _isScrolling = YES;
-    if (self.swipeActionsEnabled) {
-        [self removeSwipeView:YES];
-    }
 }
 
 - (void)scrollViewDidEndDecelerating:(UIScrollView *)scrollView {
@@ -538,9 +481,9 @@ NSString * const WPBlogRestorationKey = @"WPBlogRestorationKey";
 #pragma mark - SettingsViewControllerDelegate
 
 - (void)controllerDidDismiss:(UIViewController *)controller cancelled:(BOOL)cancelled {
-    if (editSiteViewController == controller) {
-        didPromptForCredentials = cancelled;
-        editSiteViewController = nil;
+    if (self.editSiteViewController == controller) {
+        _didPromptForCredentials = cancelled;
+        self.editSiteViewController = nil;
     }
 }
 
@@ -552,26 +495,57 @@ NSString * const WPBlogRestorationKey = @"WPBlogRestorationKey";
     }
     
     [self.noResultsView removeFromSuperview];
+    [self.noResultsActivityIndicator stopAnimating];
+    [self.noResultsActivityIndicator removeFromSuperview];
     
-    if (self.resultsController && [[_resultsController fetchedObjects] count] == 0 && !self.isSyncing) {
-        // Show no results view.
-
-		if (self.noResultsView == nil) {
-			self.noResultsView = [self createNoResultsView];
-		}
-
-        [self.tableView addSubview:self.noResultsView];
+    if (self.resultsController && [[_resultsController fetchedObjects] count] == 0) {
+        if (self.isSyncing) {
+            // Show activity indicator view when syncing is occuring
+            // and the fetched results controller has no objects
+            
+            if (self.noResultsActivityIndicator == nil) {
+                self.noResultsActivityIndicator = [self createNoResultsActivityIndicator];
+            }
+            
+            [self.noResultsActivityIndicator startAnimating];
+            [self.tableView addSubview:self.noResultsActivityIndicator];
+        } else {
+            // Show no results view if the fetched results controller
+            // has no objects and syncing is not happening.
+            
+            if (self.noResultsView == nil) {
+                self.noResultsView = [self createNoResultsView];
+            }
+            // only add and animate no results view if it isn't already
+            // in the table view
+            if (![self.noResultsView isDescendantOfView:self.tableView]) {
+                [self.tableView addSubviewWithFadeAnimation:self.noResultsView];
+            }
+        }
     }
 }
 
 - (UIView *)createNoResultsView {
 	
-	return [WPNoResultsView noResultsViewWithTitle:[self noResultsTitleText] message:[self noResultsMessageText] accessoryView:[self noResultsAccessoryView]];
+    WPNoResultsView *view = [WPNoResultsView noResultsViewWithTitle:[self noResultsTitleText] message:[self noResultsMessageText] accessoryView:[self noResultsAccessoryView] buttonTitle:[self noResultsButtonText]];
+    view.delegate = self;
+    
+	return view;
+}
+
+- (UIActivityIndicatorView *)createNoResultsActivityIndicator {
+    
+    UIActivityIndicatorView *activityIndicator = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleGray];
+    activityIndicator.hidesWhenStopped = YES;
+    activityIndicator.autoresizingMask = UIViewAutoresizingFlexibleLeftMargin | UIViewAutoresizingFlexibleRightMargin | UIViewAutoresizingFlexibleTopMargin | UIViewAutoresizingFlexibleBottomMargin;
+    activityIndicator.center = [self.tableView convertPoint:self.tableView.center fromView:self.tableView.superview];
+    
+	return activityIndicator;
 }
 
 - (void)hideRefreshHeader {
     [self.refreshControl endRefreshing];
-    didTriggerRefresh = NO;
+    _didTriggerRefresh = NO;
 }
 
 - (void)dismissModal:(id)sender {
@@ -592,7 +566,7 @@ NSString * const WPBlogRestorationKey = @"WPBlogRestorationKey";
     }
 
     _isSyncing = YES;
-    [self syncItemsWithSuccess:^{
+    [self syncItemsViaUserInteraction:userInteraction success:^{
         [self hideRefreshHeader];
         _isSyncing = NO;
         [self configureNoResultsView];
@@ -613,9 +587,9 @@ NSString * const WPBlogRestorationKey = @"WPBlogRestorationKey";
                     alertView.tag = 30;
                     [alertView show];
 
-                } else if (error.code == 403 && editSiteViewController == nil) {
+                } else if (error.code == 403 && self.editSiteViewController == nil) {
                     [self promptForPassword];
-                } else if (error.code == 425 && editSiteViewController == nil) {
+                } else if (error.code == 425 && self.editSiteViewController == nil) {
                     [self promptForPasswordWithMessage:[error localizedDescription]];
                 } else if (userInteraction) {
                     [WPError showAlertWithError:error title:NSLocalizedString(@"Couldn't sync", @"")];
@@ -646,10 +620,10 @@ NSString * const WPBlogRestorationKey = @"WPBlogRestorationKey";
 	[alertView show];
 	
 	// bad login/pass combination
-	editSiteViewController = [[EditSiteViewController alloc] initWithBlog:self.blog];
-	editSiteViewController.isCancellable = YES;
-	editSiteViewController.delegate = self;
-	UINavigationController *navController = [[UINavigationController alloc] initWithRootViewController:editSiteViewController];
+	self.editSiteViewController = [[EditSiteViewController alloc] initWithBlog:self.blog];
+	self.editSiteViewController.isCancellable = YES;
+	self.editSiteViewController.delegate = self;
+	UINavigationController *navController = [[UINavigationController alloc] initWithRootViewController:self.editSiteViewController];
     navController.navigationBar.translucent = NO;
 	
 	if(IS_IPAD) {
@@ -660,143 +634,6 @@ NSString * const WPBlogRestorationKey = @"WPBlogRestorationKey";
     [self.navigationController presentViewController:navController animated:YES completion:nil];
 }
 
-#pragma mark - Swipe gestures
-
-- (void)enableSwipeGestureRecognizer {
-    [self disableSwipeGestureRecognizer]; // Disable any existing gesturerecognizers before initing new ones to avoid leaks.
-    
-    _leftSwipeGestureRecognizer = [[UISwipeGestureRecognizer alloc] initWithTarget:self action:@selector(swipeLeft:)];
-    _leftSwipeGestureRecognizer.direction = UISwipeGestureRecognizerDirectionLeft;
-    [self.tableView addGestureRecognizer:_leftSwipeGestureRecognizer];
-
-    _rightSwipeGestureRecognizer = [[UISwipeGestureRecognizer alloc] initWithTarget:self action:@selector(swipeRight:)];
-    _rightSwipeGestureRecognizer.direction = UISwipeGestureRecognizerDirectionRight;
-    [self.tableView addGestureRecognizer:_rightSwipeGestureRecognizer];
-}
-
-- (void)disableSwipeGestureRecognizer {
-    if (_leftSwipeGestureRecognizer) {
-        [self.tableView removeGestureRecognizer:_leftSwipeGestureRecognizer];
-        _leftSwipeGestureRecognizer = nil;
-    }
-
-    if (_rightSwipeGestureRecognizer) {
-        [self.tableView removeGestureRecognizer:_rightSwipeGestureRecognizer];
-        _rightSwipeGestureRecognizer = nil;
-    }
-}
-
-- (void)removeSwipeView:(BOOL)animated {
-    if (!self.swipeActionsEnabled || !_swipeCell || (self.swipeCell.frame.origin.x == 0 && self.swipeView.superview == nil)) return;
-    
-    if (animated)
-    {
-        _animatingRemovalOfModerationSwipeView = YES;
-        [UIView animateWithDuration:0.2
-                         animations:^{
-                             if (_swipeDirection == UISwipeGestureRecognizerDirectionRight)
-                             {
-                                 self.swipeView.frame = CGRectMake(-self.swipeView.frame.size.width + 5.0,self.swipeView.frame.origin.y, self.swipeView.frame.size.width, self.swipeView.frame.size.height);
-                                 self.swipeCell.frame = CGRectMake(5.0, self.swipeCell.frame.origin.y, self.swipeCell.frame.size.width, self.swipeCell.frame.size.height);
-                             }
-                             else
-                             {
-                                 self.swipeView.frame = CGRectMake(self.swipeView.frame.size.width - 5.0,self.swipeView.frame.origin.y,self.swipeView.frame.size.width, self.swipeView.frame.size.height);
-                                 self.swipeCell.frame = CGRectMake(-5.0, self.swipeCell.frame.origin.y, self.swipeCell.frame.size.width, self.swipeCell.frame.size.height);
-                             }
-                         }
-                         completion:^(BOOL finished) {
-                             [UIView animateWithDuration:0.1
-                                              animations:^{
-                                                  if (_swipeDirection == UISwipeGestureRecognizerDirectionRight)
-                                                  {
-                                                      self.swipeView.frame = CGRectMake(-self.swipeView.frame.size.width + 10.0,self.swipeView.frame.origin.y,self.swipeView.frame.size.width, self.swipeView.frame.size.height);
-                                                      self.swipeCell.frame = CGRectMake(10.0, self.swipeCell.frame.origin.y, self.swipeCell.frame.size.width, self.swipeCell.frame.size.height);
-                                                  }
-                                                  else
-                                                  {
-                                                      self.swipeView.frame = CGRectMake(self.swipeView.frame.size.width - 10.0,self.swipeView.frame.origin.y,self.swipeView.frame.size.width, self.swipeView.frame.size.height);
-                                                      self.swipeCell.frame = CGRectMake(-10.0, self.swipeCell.frame.origin.y, self.swipeCell.frame.size.width, self.swipeCell.frame.size.height);
-                                                  }
-                                              } completion:^(BOOL finished) {
-                                                  [UIView animateWithDuration:0.1
-                                                                   animations:^{
-                                                                       if (_swipeDirection == UISwipeGestureRecognizerDirectionRight)
-                                                                       {
-                                                                           self.swipeView.frame = CGRectMake(-self.swipeView.frame.size.width ,self.swipeView.frame.origin.y,self.swipeView.frame.size.width, self.swipeView.frame.size.height);
-                                                                           self.swipeCell.frame = CGRectMake(0, self.swipeCell.frame.origin.y, self.swipeCell.frame.size.width, self.swipeCell.frame.size.height);
-                                                                       }
-                                                                       else
-                                                                       {
-                                                                           self.swipeView.frame = CGRectMake(self.swipeView.frame.size.width ,self.swipeView.frame.origin.y,self.swipeView.frame.size.width, self.swipeView.frame.size.height);
-                                                                           self.swipeCell.frame = CGRectMake(0, self.swipeCell.frame.origin.y, self.swipeCell.frame.size.width, self.swipeCell.frame.size.height);
-                                                                       }
-                                                                   }
-                                                                   completion:^(BOOL finished) {
-                                                                       _animatingRemovalOfModerationSwipeView = NO;
-                                                                       self.swipeCell = nil;
-                                                                       [_swipeView removeFromSuperview];
-                                                                        _swipeView = nil;
-                                                                   }];
-                                              }];
-                         }];
-    }
-    else
-    {
-        [self.swipeView removeFromSuperview];
-         _swipeView = nil;
-        self.swipeCell.frame = CGRectMake(0,self.swipeCell.frame.origin.y,self.swipeCell.frame.size.width, self.swipeCell.frame.size.height);
-        self.swipeCell = nil;
-    }
-}
-
-- (void)swipe:(UISwipeGestureRecognizer *)recognizer direction:(UISwipeGestureRecognizerDirection)direction
-{
-    if (!self.swipeActionsEnabled) {
-        return;
-    }
-    if (recognizer && recognizer.state == UIGestureRecognizerStateEnded)
-    {
-        if (_animatingRemovalOfModerationSwipeView) return;
-        
-        CGPoint location = [recognizer locationInView:self.tableView];
-        NSIndexPath* indexPath = [self.tableView indexPathForRowAtPoint:location];
-        UITableViewCell* cell = [self.tableView cellForRowAtIndexPath:indexPath];
-        
-        if (cell.frame.origin.x != 0)
-        {
-            [self removeSwipeView:YES];
-            return;
-        }
-        [self removeSwipeView:NO];
-        
-        if (cell != self.swipeCell)
-        {
-            [self configureSwipeView:self.swipeView forIndexPath:indexPath];
-            
-            [self.tableView addSubview:self.swipeView];
-            self.swipeCell = cell;
-            CGRect cellFrame = cell.frame;
-            _swipeDirection = direction;
-            self.swipeView.frame = CGRectMake(direction == UISwipeGestureRecognizerDirectionRight ? -cellFrame.size.width : cellFrame.size.width, cellFrame.origin.y, cellFrame.size.width, cellFrame.size.height);
-            
-            [UIView animateWithDuration:0.2 animations:^{
-                self.swipeView.frame = CGRectMake(0, cellFrame.origin.y, cellFrame.size.width, cellFrame.size.height);
-                cell.frame = CGRectMake(direction == UISwipeGestureRecognizerDirectionRight ? cellFrame.size.width : -cellFrame.size.width, cellFrame.origin.y, cellFrame.size.width, cellFrame.size.height);
-            }];
-        }
-    }
-}
-
-- (void)swipeLeft:(UISwipeGestureRecognizer *)recognizer
-{
-    [self swipe:recognizer direction:UISwipeGestureRecognizerDirectionLeft];
-}
-
-- (void)swipeRight:(UISwipeGestureRecognizer *)recognizer
-{
-    [self swipe:recognizer direction:UISwipeGestureRecognizerDirectionRight];
-}
 
 #pragma mark - Infinite scrolling
 
@@ -857,27 +694,16 @@ NSString * const WPBlogRestorationKey = @"WPBlogRestorationKey";
     AssertSubclassMethod();
 }
 
-- (void)syncItemsWithSuccess:(void (^)())success failure:(void (^)(NSError *))failure {
+- (void)syncItemsViaUserInteraction:(BOOL)userInteraction success:(void (^)())success failure:(void (^)(NSError *))failure {
     AssertSubclassMethod();
-}
-
-- (void)syncItemsViaUserInteractionWithSuccess:(void (^)())success failure:(void (^)(NSError *error))failure {
-    // By default, sync items the same way. Subclasses can override if they need different behavior.
-    [self syncItemsWithSuccess:success failure:failure];
 }
 
 - (BOOL)isSyncing {
     return _isSyncing;
 }
 
-- (UITableViewCell *)newCell {
-    // To comply with apple ownership and naming conventions, returned cell should have a retain count > 0, so retain the dequeued cell.
-    NSString *cellIdentifier = [NSString stringWithFormat:@"_WPTable_%@_Cell", [self entityName]];
-    UITableViewCell *cell = [self.tableView dequeueReusableCellWithIdentifier:cellIdentifier];
-    if (cell == nil) {
-        cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:cellIdentifier];
-    }
-    return cell;
+- (Class)cellClass {
+    return [UITableViewCell class];
 }
 
 - (BOOL)hasMoreContent {

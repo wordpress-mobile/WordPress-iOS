@@ -255,22 +255,22 @@
     return @"remoteStatusNumber";
 }
 
-- (void)syncItemsViaUserInteractionWithSuccess:(void (^)())success failure:(void (^)(NSError *))failure {
-    // If triggered by a pull to refresh, sync categories, post formats, ...
-    [self.blog syncBlogPostsWithSuccess:success failure:failure];
-}
-
-- (void)syncItemsWithSuccess:(void (^)())success failure:(void (^)(NSError *))failure {
-    [self.blog syncPostsWithSuccess:success failure:failure loadMore:NO];
-}
-
-- (UITableViewCell *)newCell {
-    static NSString *const cellIdentifier = @"PostCell";
-    UITableViewCell *cell = [self.tableView dequeueReusableCellWithIdentifier:cellIdentifier];
-    if (cell == nil) {
-        cell = [[NewPostTableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:cellIdentifier];
+- (void)syncItemsViaUserInteraction:(BOOL)userInteraction success:(void (^)())success failure:(void (^)(NSError *))failure {
+    if (userInteraction) {
+        // If triggered by a pull to refresh, sync posts and metadata
+        [self.blog syncPostsAndMetadataWithSuccess:success failure:failure];
+    } else {
+        // If blog has no posts, then sync posts including metadata
+        if (self.blog.posts.count == 0) {
+            [self.blog syncPostsAndMetadataWithSuccess:success failure:failure];
+        } else {
+            [self.blog syncPostsWithSuccess:success failure:failure loadMore:NO];
+        }
     }
-    return cell;
+}
+
+- (Class)cellClass {
+    return [NewPostTableViewCell class];
 }
 
 - (void)controller:(NSFetchedResultsController *)controller
