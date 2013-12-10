@@ -56,37 +56,12 @@ NSString *const NotificationsDeviceToken = @"apnsDeviceToken";
 }
 
 + (void)unregisterDeviceToken {
-    NSString *token = [[NSUserDefaults standardUserDefaults] objectForKey:kApnsDeviceTokenPrefKey];
-    if (nil == token) {
-        return;
-    }
-    
-    if (![[[WPAccount defaultWordPressComAccount] restApi] hasCredentials]) {
-        return;
-    }
-    
-    NSString *authURL = kNotificationAuthURL;
-    WPAccount *account = [WPAccount defaultWordPressComAccount];
-	if (account) {
-        NSArray *parameters = @[account.username,
-                                account.password,
-                                token,
-                                [[UIDevice currentDevice] wordpressIdentifier],
-                                @"apple",
-                                @NO, // Sandbox parameter - deprecated
-                                WordPressComApiPushAppId
-                                ];
-        
-        WPXMLRPCClient *api = [[WPXMLRPCClient alloc] initWithXMLRPCEndpoint:[NSURL URLWithString:authURL]];
-        [api setAuthorizationHeaderWithToken:account.authToken];
-        [api callMethod:@"wpcom.mobile_push_unregister_token"
-             parameters:parameters
-                success:^(AFHTTPRequestOperation *operation, id responseObject) {
-                    DDLogInfo(@"Unregistered token %@", token);
-                } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
-                    DDLogError(@"Couldn't unregister token: %@", [error localizedDescription]);
-                }];
-    }
+    NSString *token = [[NSUserDefaults standardUserDefaults] objectForKey:NotificationsDeviceToken];
+    [[[WPAccount defaultWordPressComAccount] restApi] unregisterForPushNotificationsWithDeviceToken:token success:^{
+        DDLogInfo(@"Unregistered token %@", token);
+    } failure:^(NSError *error){
+        DDLogError(@"Couldn't unregister token: %@", [error localizedDescription]);
+    }];
 }
 
 + (BOOL)deviceRegisteredForPushNotifications {

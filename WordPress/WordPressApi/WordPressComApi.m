@@ -345,10 +345,40 @@ NSString *const WordPressComApiPushAppId = @"org.wordpress.appstore";
             }];
 }
 
+- (void)unregisterForPushNotificationsWithDeviceToken:(NSString *)token
+                                              success:(void (^)())success failure:(void (^)(NSError *error))failure {
+    if (nil == token) {
+        return;
+    }
+
+    NSArray *parameters = @[[self usernameForXmlrpc],
+                            [self passwordForXmlrpc],
+                            token,
+                            @"apple",
+                            @NO, // Sandbox parameter - deprecated
+                            WordPressComApiPushAppId
+                            ];
+    
+    WPXMLRPCClient *api = [[WPXMLRPCClient alloc] initWithXMLRPCEndpoint:[NSURL URLWithString:WordPressComXMLRPCUrl]];
+    [api setAuthorizationHeaderWithToken:self.authToken];
+    [api callMethod:@"wpcom.mobile_push_unregister_token"
+         parameters:parameters
+            success:^(AFHTTPRequestOperation *operation, id responseObject) {
+                DDLogInfo(@"Unregistered token %@", token);
+                if (success) {
+                    success();
+                }
+            } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+                DDLogError(@"Couldn't unregister token: %@", [error localizedDescription]);
+                if (failure) {
+                    failure(error);
+                }
+            }];
+}
+
 - (void)syncPushNotificationInfoWithDeviceToken:(NSString *)token
                                         success:(void (^)(NSDictionary *settings))success
                                         failure:(void (^)(NSError *error))failure {
-    
     if (nil == token) {
         return;
     }
