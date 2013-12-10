@@ -31,10 +31,8 @@
 
 - (void)syncAttributes:(NSDictionary *)data;
 - (void)updateAttributes:(NSDictionary *)data;
-- (NSDictionary *)getNoteData;
 
-+ (void)syncNotesWithResponse:(NSArray *)notesData;
-+ (void)refreshUnreadNotesWithContext:(NSManagedObjectContext *)context;
++ (void)mergeNewNotes:(NSArray *)notesData;
 
 /**
  Remove old notes from Core Data storage
@@ -44,6 +42,12 @@
  @param context The context which contains the notes to delete.
  */
 + (void)pruneOldNotesBefore:(NSNumber *)timestamp withContext:(NSManagedObjectContext *)context;
+
+@end
+
+@interface Note (WordPressComApi)
+
 + (void)fetchNewNotificationsWithSuccess:(void (^)(BOOL hasNewNotes))success failure:(void (^)(NSError *error))failure;
++ (void)refreshUnreadNotesWithContext:(NSManagedObjectContext *)context;
 
 @end

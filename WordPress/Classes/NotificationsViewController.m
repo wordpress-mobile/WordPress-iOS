@@ -292,7 +292,7 @@ NSString * const NotificationsJetpackInformationURL = @"http://jetpack.me/about/
         timestamp = nil;
     }
     [self.user fetchNotificationsSince:timestamp success:^(NSArray *notes) {
-        [Note syncNotesWithResponse:notes];
+        [Note mergeNewNotes:notes];
         [self updateSyncDate];
         if (success) {
             success();
@@ -331,7 +331,7 @@ NSString * const NotificationsJetpackInformationURL = @"http://jetpack.me/about/
     
     [self.user fetchNotificationsBefore:lastNote.timestamp success:^(NSArray *notes) {
         _retrievingNotifications = NO;
-        [Note syncNotesWithResponse:notes];
+        [Note mergeNewNotes:notes];
         if (success) {
             success();
         }
