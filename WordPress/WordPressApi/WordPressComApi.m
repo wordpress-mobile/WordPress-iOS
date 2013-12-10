@@ -286,76 +286,34 @@ NSString *const WordPressComApiPushAppId = @"org.wordpress.appstore";
 
 #pragma mark - Notifications
 
-- (void)saveNotificationSettings:(void (^)())success
+- (void)saveNotificationSettings:(NSDictionary *)settings deviceToken:(NSString *)token
+                         success:(void (^)())success
                          failure:(void (^)(NSError *error))failure {
     
-    NSString *token = [[NSUserDefaults standardUserDefaults] objectForKey:kApnsDeviceTokenPrefKey];
-    if( nil == token ) return; //no apns token available
-    
-    if(![[[WPAccount defaultWordPressComAccount] restApi] hasCredentials])
+    if (nil == token)
         return;
     
-    NSDictionary *notificationPreferences = [[NSUserDefaults standardUserDefaults] objectForKey:@"notification_preferences"];
-    if (!notificationPreferences)
-        return;
-
-    NSMutableArray *notificationPrefArray = [[notificationPreferences allKeys] mutableCopy];
-    if ([notificationPrefArray indexOfObject:@"muted_blogs"] != NSNotFound)
-        [notificationPrefArray removeObjectAtIndex:[notificationPrefArray indexOfObject:@"muted_blogs"]];
-    
-    // Build the dictionary to send in the API call
-    NSMutableDictionary *updatedSettings = [[NSMutableDictionary alloc] init];
-    for (int i = 0; i < [notificationPrefArray count]; i++) {
-        NSDictionary *updatedSetting = [notificationPreferences objectForKey:[notificationPrefArray objectAtIndex:i]];
-        [updatedSettings setValue:[updatedSetting objectForKey:@"value"] forKey:[notificationPrefArray objectAtIndex:i]];
-    }
-
-    //Check and send 'mute_until' value
-    NSMutableDictionary *muteDictionary = [notificationPreferences objectForKey:@"mute_until"];
-    if(muteDictionary != nil  && [muteDictionary objectForKey:@"value"] != nil) {
-        [updatedSettings setValue:[muteDictionary objectForKey:@"value"] forKey:@"mute_until"];
-    } else {
-        [updatedSettings setValue:@"0" forKey:@"mute_until"];
-    }
-    
-    NSArray *blogsArray = [[notificationPreferences objectForKey:@"muted_blogs"] objectForKey:@"value"];
-    NSMutableArray *mutedBlogsArray = [[NSMutableArray alloc] init];
-    for (int i=0; i < [blogsArray count]; i++) {
-        NSDictionary *userBlog = [blogsArray objectAtIndex:i];
-        if ([[userBlog objectForKey:@"value"] intValue] == 1) {
-            [mutedBlogsArray addObject:userBlog];
-        }
-    }
-
-    if ([mutedBlogsArray count] > 0)
-        [updatedSettings setValue:mutedBlogsArray forKey:@"muted_blogs"];
-
-    if ([updatedSettings count] == 0)
-        return;
-
     NSArray *parameters = @[[self usernameForXmlrpc],
                             [self passwordForXmlrpc],
-                            updatedSettings,
+                            settings,
                             token,
                             @"apple",
                             WordPressComApiPushAppId
                             ];
-    /*
-     * Remove extra api client, remove reference to kWPcomXMLRPCUrl
-    WPXMLRPCClient *api = [[WPXMLRPCClient alloc] initWithXMLRPCEndpoint:[NSURL URLWithString:kWPcomXMLRPCUrl]];
+
+    WPXMLRPCClient *api = [[WPXMLRPCClient alloc] initWithXMLRPCEndpoint:[NSURL URLWithString:WordPressComXMLRPCUrl]];
     [api setAuthorizationHeaderWithToken:self.authToken];
-    //Update supported notifications dictionary
     [api callMethod:@"wpcom.set_mobile_push_notification_settings"
          parameters:parameters
             success:^(AFHTTPRequestOperation *operation, id responseObject) {
-                // Hooray!
-                if (success)
+                if (success) {
                     success();
+                }
             } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
-                if (failure)
+                if (failure) {
                     failure(error);
+                }
             }];
-     */
 }
 
 - (void)fetchNotificationSettings:(void (^)())success failure:(void (^)(NSError *error))failure {

@@ -142,6 +142,68 @@ NSString *const NotificationsDeviceToken = @"apnsDeviceToken";
     }
 }
 
+
+#pragma mark - WordPress.com XML RPC API
+
++ (NSDictionary *)notificationSettingsDictionary {
+    if (![[[WPAccount defaultWordPressComAccount] restApi] hasCredentials]) {
+        return nil;
+    }
+    
+    NSDictionary *notificationPreferences = [[NSUserDefaults standardUserDefaults] objectForKey:NotificationsPreferencesKey];
+    if (!notificationPreferences)
+        return nil;
+    
+    NSMutableArray *notificationPrefArray = [[notificationPreferences allKeys] mutableCopy];
+    if ([notificationPrefArray indexOfObject:@"muted_blogs"] != NSNotFound) {
+        [notificationPrefArray removeObjectAtIndex:[notificationPrefArray indexOfObject:@"muted_blogs"]];
+    }
+    
+    // Build the dictionary to send in the API call
+    NSMutableDictionary *updatedSettings = [[NSMutableDictionary alloc] init];
+    for (int i = 0; i < [notificationPrefArray count]; i++) {
+        NSDictionary *updatedSetting = [notificationPreferences objectForKey:[notificationPrefArray objectAtIndex:i]];
+        [updatedSettings setValue:[updatedSetting objectForKey:@"value"] forKey:[notificationPrefArray objectAtIndex:i]];
+    }
+    
+    //Check and send 'mute_until' value
+    NSMutableDictionary *muteDictionary = [notificationPreferences objectForKey:@"mute_until"];
+    if(muteDictionary != nil  && [muteDictionary objectForKey:@"value"] != nil) {
+        [updatedSettings setValue:[muteDictionary objectForKey:@"value"] forKey:@"mute_until"];
+    } else {
+        [updatedSettings setValue:@"0" forKey:@"mute_until"];
+    }
+    
+    NSArray *blogsArray = [[notificationPreferences objectForKey:@"muted_blogs"] objectForKey:@"value"];
+    NSMutableArray *mutedBlogsArray = [[NSMutableArray alloc] init];
+    for (int i=0; i < [blogsArray count]; i++) {
+        NSDictionary *userBlog = [blogsArray objectAtIndex:i];
+        if ([[userBlog objectForKey:@"value"] intValue] == 1) {
+            [mutedBlogsArray addObject:userBlog];
+        }
+    }
+    
+    if ([mutedBlogsArray count] > 0) {
+        [updatedSettings setValue:mutedBlogsArray forKey:@"muted_blogs"];
+    }
+    
+    if ([updatedSettings count] == 0) {
+        return nil;
+    }
+    
+    return updatedSettings;
+}
+
++ (void)saveNotificationSettings {
+    NSDictionary *settings = [NotificationsManager notificationSettingsDictionary];
+    NSString *token = [[NSUserDefaults standardUserDefaults] objectForKey:NotificationsDeviceToken];
+    [[[WPAccount defaultWordPressComAccount] restApi] saveNotificationSettings:settings deviceToken:token success:^{
+        DDLogInfo(@"Notification settings successfully sent to WP.com\n Settings: %@", settings);
+    } failure:^(NSError *error){
+        DDLogError(@"Failed to update notification settings on WP.com %@", error.localizedDescription);
+    }];
+}
+
 + (void)syncPushNotificationInfo {
     NSString *token = [[NSUserDefaults standardUserDefaults] objectForKey:NotificationsDeviceToken];
     [[[WPAccount defaultWordPressComAccount] restApi] syncPushNotificationInfoWithDeviceToken:token success:^(NSDictionary *settings) {

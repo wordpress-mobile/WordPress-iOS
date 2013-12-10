@@ -71,4 +71,13 @@ extern NSString *const NotificationsDeviceToken;
  */
 + (void)handleNotificationForApplicationLaunch:(NSDictionary *)launchOptions;
 
+///--------------------------------------
+/// @name WordPress.com Notifications API
+///--------------------------------------
+
+/**
+ Sends the current settings to WordPress.com
+ */
++ (void)saveNotificationSettings;
+
 @end
