@@ -451,7 +451,7 @@ static NSString *const JetpackConnectedCellIdentifier = @"JetpackConnectedCellId
                 [[NSUserDefaults standardUserDefaults] setValue:_notificationPreferences forKey:@"notification_preferences"];
                 
                 // Send these settings optimistically since they're low-impact (not ideal but works for now)
-                [[[WPAccount defaultWordPressComAccount] restApi] saveNotificationSettings:nil failure:nil];
+                [NotificationsManager saveNotificationSettings];
                 return;
             }
         }

@@ -16,6 +16,7 @@
 #import "DateUtils.h"
 #import "WPTableViewSectionHeaderView.h"
 #import "WPAccount.h"
+#import "NotificationsManager.h"
 
 @interface NotificationSettingsViewController () <EGORefreshTableHeaderDelegate, UIActionSheetDelegate>
 
@@ -252,8 +253,9 @@ BOOL hasChanges;
 
 - (void)viewWillDisappear:(BOOL)animated {
     self.navigationController.toolbarHidden = YES;
-    if (hasChanges)
-        [[[WPAccount defaultWordPressComAccount] restApi] saveNotificationSettings:nil failure:nil];
+    if (hasChanges){
+        [NotificationsManager saveNotificationSettings];
+    }
     [super viewWillDisappear:animated];
 }
 

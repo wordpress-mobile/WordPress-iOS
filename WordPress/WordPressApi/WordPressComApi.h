@@ -71,7 +71,8 @@ extern NSString *const WordPressComApiPushAppId;
 /// @name Notifications
 ///--------------------
 
-- (void)saveNotificationSettings:(void (^)())success
+- (void)saveNotificationSettings:(NSDictionary *)settings
+                     deviceToken:(NSString *)token success:(void (^)())success
                          failure:(void (^)(NSError *error))failure;
 
 - (void)fetchNotificationSettings:(void (^)())success
