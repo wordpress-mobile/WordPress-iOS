@@ -321,6 +321,7 @@ NSString *const ReaderExtrasArrayKey = @"ReaderExtrasArrayKey";
         NSDictionary *tagDict = [[tagsDict allValues] objectAtIndex:0];
         self.primaryTagSlug = tagDict[@"slug"];
         self.primaryTagName = tagDict[@"name"];
+        self.primaryTagName = [self.primaryTagName stringByDecodingXMLCharacters];
     }
 }
 
@@ -406,6 +407,7 @@ NSString *const ReaderExtrasArrayKey = @"ReaderExtrasArrayKey";
     if ([primaryTagDict isKindOfClass:[NSDictionary class]]) {
         self.primaryTagSlug = [primaryTagDict stringForKey:@"slug"];
         self.primaryTagName = [primaryTagDict stringForKey:@"name"];
+        self.primaryTagName = [self.primaryTagName stringByDecodingXMLCharacters];
     } else if ([tagsDict count] > 0) {
         self.primaryTagSlug = [[tagsDict allKeys] objectAtIndex:0];
         self.primaryTagName = [tagsDict stringForKey:self.primaryTagSlug];
