@@ -309,7 +309,7 @@ NSString * const WPBlogListRestorationID = @"WPBlogListID";
     WPTableViewSectionHeaderView *header = [[WPTableViewSectionHeaderView alloc] initWithFrame:CGRectMake(0, 0, CGRectGetWidth(self.view.bounds), 0)];
     header.title = [self tableView:self.tableView titleForHeaderInSection:section];
     if (IS_IPAD) {
-        header.fixedWidth = 600;
+        header.fixedWidth = WPTableViewFixedWidth;
     }
     return header;
 }
