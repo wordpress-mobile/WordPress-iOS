@@ -23,6 +23,8 @@
 #import "IOS7CorrectedTextView.h"
 #import "WPAccount.h"
 
+#import "ContextManager.h"
+
 #define APPROVE_BUTTON_TAG 1
 #define UNAPPROVE_BUTTON_TAG 2
 #define TRASH_BUTTON_TAG 3
