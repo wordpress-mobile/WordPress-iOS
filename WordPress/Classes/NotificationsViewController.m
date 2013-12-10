@@ -27,7 +27,6 @@ NSString * const NotificationsJetpackInformationURL = @"http://jetpack.me/about/
 }
 
 @property (nonatomic, strong) id authListener;
-@property (nonatomic, strong) WordPressComApi *user;
 @property (nonatomic, assign) BOOL isPushingViewController;
 
 @end
@@ -39,7 +38,6 @@ NSString * const NotificationsJetpackInformationURL = @"http://jetpack.me/about/
     self = [super init];
     if (self) {
         self.title = NSLocalizedString(@"Notifications", @"Notifications View Controller title");
-        self.user = [[WPAccount defaultWordPressComAccount] restApi];
     }
     return self;
 }
@@ -85,12 +83,8 @@ NSString * const NotificationsJetpackInformationURL = @"http://jetpack.me/about/
     [self.navigationController pushViewController:webViewController animated:YES];
 }
 
-- (BOOL)showJetpackConnectMessage
-{
-    // self.user == nil. No user implies that the user is using the
-    // app with a self-hosted blog not connected to jetpack
-    return self.user == nil;
-    
+- (BOOL)showJetpackConnectMessage {
+    return [WPAccount defaultWordPressComAccount] != nil;
 }
 
 - (void)dealloc {
@@ -149,7 +143,7 @@ NSString * const NotificationsJetpackInformationURL = @"http://jetpack.me/about/
     NSArray *notes = self.resultsController.fetchedObjects;
     if ([notes count] > 0) {
         Note *note = [notes objectAtIndex:0];
-        [self.user updateNoteLastSeenTime:note.timestamp success:nil failure:nil];
+        [[[WPAccount defaultWordPressComAccount] restApi] updateNoteLastSeenTime:note.timestamp success:nil failure:nil];
     }
 
     NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
@@ -207,7 +201,7 @@ NSString * const NotificationsJetpackInformationURL = @"http://jetpack.me/about/
         if ([note isComment]) {
             NotificationsCommentDetailViewController *detailViewController = [[NotificationsCommentDetailViewController alloc] initWithNibName:@"NotificationsCommentDetailViewController" bundle:nil];
             detailViewController.note = note;
-            detailViewController.user = self.user;
+            detailViewController.user = [[WPAccount defaultWordPressComAccount] restApi];
             [self.navigationController pushViewController:detailViewController animated:YES];
         } else {
             NotificationsFollowDetailViewController *detailViewController = [[NotificationsFollowDetailViewController alloc] initWithNibName:@"NotificationsFollowDetailViewController" bundle:nil];
@@ -225,15 +219,13 @@ NSString * const NotificationsJetpackInformationURL = @"http://jetpack.me/about/
             [self.tableView selectRowAtIndexPath:indexPath animated:NO scrollPosition:UITableViewScrollPositionNone];
         }
         
-        [self.user markNoteAsRead:note.noteID success:^(AFHTTPRequestOperation *operation, id responseObject) {
-        } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+        [note markAsReadWithSuccess:nil failure:^(NSError *error){
             note.unread = [NSNumber numberWithInt:1];
         }];
     }
 }
 
 - (BOOL)noteHasDetailView:(Note *)note {
-    
     if ([note isComment])
         return YES;
     
@@ -274,7 +266,7 @@ NSString * const NotificationsJetpackInformationURL = @"http://jetpack.me/about/
 }
 
 - (BOOL)userCanRefresh {
-    return self.user != nil;
+    return [WPAccount defaultWordPressComAccount] != nil;
 }
 
 - (void)syncItemsViaUserInteractionWithSuccess:(void (^)())success failure:(void (^)(NSError *))failure {
@@ -291,17 +283,13 @@ NSString * const NotificationsJetpackInformationURL = @"http://jetpack.me/about/
     } else {
         timestamp = nil;
     }
-    [self.user fetchNotificationsSince:timestamp success:^(NSArray *notes) {
-        [Note mergeNewNotes:notes];
+    
+    [Note fetchNotificationsSince:timestamp success:^{
         [self updateSyncDate];
         if (success) {
             success();
         }
-    } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
-        if (failure) {
-            failure(error);
-        }
-    }];
+    } failure:failure];
 }
 
 - (BOOL)hasMoreContent {
@@ -329,15 +317,13 @@ NSString * const NotificationsJetpackInformationURL = @"http://jetpack.me/about/
     
     _retrievingNotifications = YES;
     
-    [self.user fetchNotificationsBefore:lastNote.timestamp success:^(NSArray *notes) {
+    [Note fetchNotificationsBefore:lastNote.timestamp success:^{
         _retrievingNotifications = NO;
-        [Note mergeNewNotes:notes];
         if (success) {
             success();
         }
-    } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+    } failure:^(NSError *error) {
         _retrievingNotifications = NO;
-        
         if (failure) {
             failure(error);
         }
