@@ -25,9 +25,6 @@ NSString *const WordPressComApiClientEndpointURL = @"https://public-api.wordpres
 NSString *const WordPressComApiOauthBaseUrl = @"https://public-api.wordpress.com/oauth2";
 NSString *const WordPressComXMLRPCUrl = @"http://wordpress.com/xmlrpc.php";
 NSString *const WordPressComApiNotificationFields = @"id,type,unread,body,subject,timestamp";
-NSString *const WordPressComApiUnseenNotesNotification = @"WordPressComUnseenNotes";
-NSString *const WordPressComApiNotesUserInfoKey = @"notes";
-NSString *const WordPressComApiUnseenNoteCountInfoKey = @"note_count";
 NSString *const WordPressComApiLoginUrl = @"https://wordpress.com/wp-login.php";
 NSString *const WordPressComApiErrorDomain = @"com.wordpress.api";
 NSString *const WordPressComApiErrorCodeKey = @"WordPressComApiErrorCodeKey";
@@ -447,30 +444,32 @@ NSString *const WordPressComApiPushAppId = @"org.wordpress.appstore";
     [api enqueueHTTPRequestOperation:combinedOperation];
 }
 
-- (void)checkForNewUnseenNotifications {
-    NSDictionary *params = @{ @"unread":@"true", @"number":@"20", @"num_note_items":@"20", @"fields" : WordPressComApiNotificationFields };
+
+- (void)fetchNewUnseenNotificationsWithSuccess:(void (^)(NSArray *notes))success failure:(void (^)(NSError *error))failure {
+    NSDictionary *params = @{@"unread": @"true",
+                             @"number": @"20",
+                             @"num_note_items": @"20",
+                             @"fields": WordPressComApiNotificationFields};
     [self getPath:@"notifications" parameters:params success:^(AFHTTPRequestOperation *operation, id responseObject) {
-        NSNumber *last_seen_time = [responseObject objectForKey:@"last_seen_time"];
+        NSNumber *lastSeenTime = [responseObject objectForKey:@"last_seen_time"];
         NSArray *notes = [responseObject objectForKey:@"notes"];
         if ([notes count] > 0) {
             NSMutableArray *unseenNotes = [[NSMutableArray alloc] initWithCapacity:[notes count]];
             [notes enumerateObjectsUsingBlock:^(id noteData, NSUInteger idx, BOOL *stop) {
                 NSNumber *timestamp = [noteData objectForKey:@"timestamp"];
-                if ([timestamp compare:last_seen_time] == NSOrderedDescending) {
+                if ([timestamp compare:lastSeenTime] == NSOrderedDescending) {
                     [unseenNotes addObject:noteData];
                 }
             }];
-            NSNotificationCenter *nc = [NSNotificationCenter defaultCenter];
-            [nc postNotificationName:WordPressComApiUnseenNotesNotification
-                              object:self
-                            userInfo:@{
-                WordPressComApiNotesUserInfoKey : unseenNotes,
-                WordPressComApiUnseenNoteCountInfoKey : [NSNumber numberWithInteger:[unseenNotes count]]
-             }];
+            
+            if (success) {
+                success([NSArray arrayWithArray:unseenNotes]);
+            }
         }
-        
     } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
-        
+        if (failure) {
+            failure(error);
+        }
     }];
 }
 
@@ -497,7 +496,6 @@ NSString *const WordPressComApiPushAppId = @"org.wordpress.appstore";
 
 - (void)getNotificationsWithParameters:(NSDictionary *)parameters success:(WordPressComApiRestSuccessResponseBlock)success failure:(WordPressComApiRestSuccessFailureBlock)failure {
     NSMutableDictionary *requestParameters = [NSMutableDictionary dictionaryWithDictionary:parameters];
-    
     [requestParameters setObject:WordPressComApiNotificationFields forKey:@"fields"];
     [requestParameters setObject:[NSNumber numberWithInt:20] forKey:@"number"];
     [requestParameters setObject:[NSNumber numberWithInt:20] forKey:@"num_note_items"];
@@ -549,20 +547,15 @@ NSString *const WordPressComApiPushAppId = @"org.wordpress.appstore";
 }
 
 - (void)markNoteAsRead:(NSString *)noteID success:(WordPressComApiRestSuccessResponseBlock)success failure:(WordPressComApiRestSuccessFailureBlock)failure {
-    
     NSDictionary *params = @{ @"counts" : @{ noteID : @"1" } };
-    
     [self postPath:@"notifications/read"
                    parameters:params
                       success:success
                       failure:failure];
-    
 }
 
 - (void)updateNoteLastSeenTime:(NSNumber *)timestamp success:(WordPressComApiRestSuccessResponseBlock)success failure:(WordPressComApiRestSuccessFailureBlock)failure {
-    
     [self postPath:@"notifications/seen" parameters:@{ @"time" : timestamp } success:success failure:failure];
-    
 }
 
 - (void)followBlog:(NSUInteger)blogID isFollowing:(bool)following success:(WordPressComApiRestSuccessResponseBlock)success failure:(WordPressComApiRestSuccessFailureBlock)failure {

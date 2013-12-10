@@ -32,8 +32,8 @@ extern NSString *const WordPressComApiErrorMessageKey;
 extern NSString *const WordPressComApiPushAppId;
 
 @interface WordPressComApi : AFHTTPClient
-@property (nonatomic,readonly,strong) NSString *username;
-@property (nonatomic,readonly,strong) NSString *password;
+@property (nonatomic, readonly, strong) NSString *username;
+@property (nonatomic, readonly, strong) NSString *password;
 @property (nonatomic, readonly, strong) NSString *authToken;
 
 /**
@@ -89,9 +89,10 @@ extern NSString *const WordPressComApiPushAppId;
  * Queries the REST Api for unread notes and determines if the user has
  * seen them using the response's last_seen_time timestamp.
  *
- * If we have unseen notes we post a WordPressComApiUnseenNotesNotification
  */
-- (void)checkForNewUnseenNotifications;
+- (void)fetchNewUnseenNotificationsWithParams:(NSDictionary *)params
+                                      success:(void (^)(NSArray *notes))success
+                                      failure:(void (^)(NSError *error))failure;
 
 - (void)checkNotificationsSuccess:(WordPressComApiRestSuccessResponseBlock)success
                           failure:(WordPressComApiRestSuccessFailureBlock)failure;
