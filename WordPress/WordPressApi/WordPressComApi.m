@@ -466,8 +466,8 @@ NSString *const WordPressComApiPushAppId = @"org.wordpress.appstore";
     }];
 }
 
-- (void)checkNotificationsSuccess:(void (^)(NSArray *notes))success failure:(WordPressComApiRestSuccessFailureBlock)failure {
-    [self fetchNotificationsBefore:nil success:success failure:failure];
+- (void)fetchRecentNotificationsWithSuccess:(void (^)(NSArray *))success failure:(WordPressComApiRestSuccessFailureBlock)failure {
+    [self fetchNotificationsWithParameters:nil success:success failure:failure];
 }
 
 - (void)fetchNotificationsSince:(NSNumber *)timestamp
