@@ -80,4 +80,9 @@ extern NSString *const NotificationsDeviceToken;
  */
 + (void)saveNotificationSettings;
 
+/**
+ Fetch the current WordPress.com settings
+ */
++ (void)fetchNotificationSettingsWithSuccess:(void (^)())success failure:(void (^)(NSError *error))failure;
+
 @end

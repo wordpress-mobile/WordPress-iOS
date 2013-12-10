@@ -316,11 +316,11 @@ NSString *const WordPressComApiPushAppId = @"org.wordpress.appstore";
             }];
 }
 
-- (void)fetchNotificationSettings:(void (^)())success failure:(void (^)(NSError *error))failure {
-    NSString *token = [[NSUserDefaults standardUserDefaults] objectForKey:kApnsDeviceTokenPrefKey];
-    if( nil == token ) return; //no apns token available
+- (void)fetchNotificationSettingsWithDeviceToken:(NSString *)token success:(void (^)(NSDictionary *settings))success failure:(void (^)(NSError *error))failure {
+    if( nil == token )
+        return;
     
-    if(![[[WPAccount defaultWordPressComAccount] restApi] hasCredentials])
+    if (![[[WPAccount defaultWordPressComAccount] restApi] hasCredentials])
         return;
     
     NSArray *parameters = @[[self usernameForXmlrpc],
@@ -330,22 +330,19 @@ NSString *const WordPressComApiPushAppId = @"org.wordpress.appstore";
                             WordPressComApiPushAppId
                             ];
     
-    /*
-     * Remove extra api client, remove reference to kWPcomXMLRPCUrl
-    WPXMLRPCClient *api = [[WPXMLRPCClient alloc] initWithXMLRPCEndpoint:[NSURL URLWithString:kWPcomXMLRPCUrl]];
+    WPXMLRPCClient *api = [[WPXMLRPCClient alloc] initWithXMLRPCEndpoint:[NSURL URLWithString:WordPressComXMLRPCUrl]];
     [api setAuthorizationHeaderWithToken:self.authToken];
     [api callMethod:@"wpcom.get_mobile_push_notification_settings"
          parameters:parameters
             success:^(AFHTTPRequestOperation *operation, id responseObject) {
-                NSDictionary *supportedNotifications = (NSDictionary *)responseObject;
-                [[NSUserDefaults standardUserDefaults] setObject:supportedNotifications forKey:@"notification_preferences"];
-                if (success)
-                    success();
+                if (success) {
+                    success(responseObject);
+                }
             } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
-                if (failure)
+                if (failure) {
                     failure(error);
+                }
             }];
-     */
 }
 
 - (void)syncPushNotificationInfoWithDeviceToken:(NSString *)token

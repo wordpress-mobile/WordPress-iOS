@@ -76,10 +76,10 @@ BOOL hasChanges;
 }
 
 - (void)getNotificationSettings {
-    [[[WPAccount defaultWordPressComAccount] restApi] fetchNotificationSettings:^{
-        [self notificationsDidFinishRefreshingWithError: nil];
+    [NotificationsManager fetchNotificationSettingsWithSuccess:^{
+        [self notificationsDidFinishRefreshingWithError:nil];
     } failure:^(NSError *error) {
-        [self notificationsDidFinishRefreshingWithError: error];
+        [self notificationsDidFinishRefreshingWithError:error];
     }];
 }
 
