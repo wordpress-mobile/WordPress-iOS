@@ -42,11 +42,11 @@ NSString *const NotificationsDeviceToken = @"apnsDeviceToken";
     DDLogInfo(@"Device token received in didRegisterForRemoteNotificationsWithDeviceToken: %@", newToken);
     
     // Store the token
-        [[[WPAccount defaultWordPressComAccount] restApi] syncPushNotificationInfo];
     NSString *previousToken = [[NSUserDefaults standardUserDefaults] objectForKey:NotificationsDeviceToken];
     if (![previousToken isEqualToString:newToken]) {
         DDLogInfo(@"Device Token has changed! OLD Value %@, NEW value %@", previousToken, newToken);
         [[NSUserDefaults standardUserDefaults] setObject:newToken forKey:NotificationsDeviceToken];
+        [self syncPushNotificationInfo];
     }
 }
 
@@ -101,7 +101,7 @@ NSString *const NotificationsDeviceToken = @"apnsDeviceToken";
     switch (state) {
         case UIApplicationStateActive:
             [[[WPAccount defaultWordPressComAccount] restApi] checkForNewUnseenNotifications];
-            [[[WPAccount defaultWordPressComAccount] restApi] syncPushNotificationInfo];
+            [self syncPushNotificationInfo];
             break;
             
         case UIApplicationStateInactive:
@@ -140,6 +140,16 @@ NSString *const NotificationsDeviceToken = @"apnsDeviceToken";
         DDLogInfo(@"Launched with a remote notification as parameter:  %@", remoteNotif);
         [[WordPressAppDelegate sharedWordPressApplicationDelegate] showNotificationsTab];
     }
+}
+
++ (void)syncPushNotificationInfo {
+    NSString *token = [[NSUserDefaults standardUserDefaults] objectForKey:NotificationsDeviceToken];
+    [[[WPAccount defaultWordPressComAccount] restApi] syncPushNotificationInfoWithDeviceToken:token success:^(NSDictionary *settings) {
+        [[NSUserDefaults standardUserDefaults] setObject:settings forKey:NotificationsPreferencesKey];
+        DDLogInfo(@"Synched push notification token and received settings %@", settings);
+    } failure:^(NSError *error) {
+        DDLogError(@"Failed to receive supported notification list: %@", [error localizedDescription]);
+    }];
 }
 
 @end

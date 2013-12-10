@@ -77,8 +77,10 @@ extern NSString *const WordPressComApiPushAppId;
 - (void)fetchNotificationSettings:(void (^)())success
                           failure:(void (^)(NSError *error))failure;
 
-- (void)syncPushNotificationInfo;
 
+- (void)syncPushNotificationInfoWithDeviceToken:(NSString *)token
+                                        success:(void (^)(NSDictionary *settings))success
+                                        failure:(void (^)(NSError *error))failure;
 /*
  * Queries the REST Api for unread notes and determines if the user has
  * seen them using the response's last_seen_time timestamp.
