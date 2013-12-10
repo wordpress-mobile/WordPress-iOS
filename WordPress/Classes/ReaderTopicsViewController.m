@@ -12,6 +12,7 @@
 #import "ReaderPost.h"
 #import "WPFriendFinderViewController.h"
 #import "WPTableViewSectionHeaderView.h"
+#import "NSString+XMLExtensions.h"
 
 @interface ReaderTopicsViewController ()
 
@@ -128,6 +129,7 @@
 		
 		for (NSDictionary *dict in arr) {
 			NSString *title = [dict objectForKey:@"cat_name"];
+            title = [title stringByDecodingXMLCharacters];
 			NSString *endpoint = [NSString stringWithFormat:topicEndpoint, [dict stringForKey:@"category_nicename"]];
 			[topics addObject:@{@"title": title, @"endpoint":endpoint}];
 		}
