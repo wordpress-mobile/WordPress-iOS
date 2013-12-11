@@ -281,7 +281,7 @@ CGFloat const EPTVCTextViewBottomPadding = 50.0f;
     // Formatting bar for the textView's inputAccessoryView.
     if (_editorToolbar == nil) {
         frame = CGRectMake(0.0f, 0.0f, CGRectGetWidth(self.view.frame), WPKT_HEIGHT_PORTRAIT);
-        _editorToolbar = [[WPKeyboardToolbarWithoutGradient alloc] initWithFrame:frame];
+        _editorToolbar = [[WPKeyboardToolbarBase alloc] initWithFrame:frame];
         _editorToolbar.delegate = self;
         _textView.inputAccessoryView = _editorToolbar;
     }
@@ -996,13 +996,7 @@ CGFloat const EPTVCTextViewBottomPadding = 50.0f;
     NSRange range = _textView.selectedRange;
     NSString *selection = [_textView.text substringWithRange:range];
     NSString *prefix, *suffix;
-    if ([tag isEqualToString:@"ul"] || [tag isEqualToString:@"ol"]) {
-        prefix = [NSString stringWithFormat:@"<%@>\n", tag];
-        suffix = [NSString stringWithFormat:@"\n</%@>\n", tag];
-    } else if ([tag isEqualToString:@"li"]) {
-        prefix = [NSString stringWithFormat:@"\t<%@>", tag];
-        suffix = [NSString stringWithFormat:@"</%@>\n", tag];
-    } else if ([tag isEqualToString:@"more"]) {
+    if ([tag isEqualToString:@"more"]) {
         prefix = @"<!--more-->";
         suffix = @"\n";
     } else if ([tag isEqualToString:@"blockquote"]) {
@@ -1066,20 +1060,14 @@ CGFloat const EPTVCTextViewBottomPadding = 50.0f;
         property = StatsEventPostDetailClickedKeyboardToolbarBoldButton;
     } else if ([actionTag isEqualToString:@"em"]) {
         property = StatsEventPostDetailClickedKeyboardToolbarItalicButton;
+    } else if ([actionTag isEqualToString:@"u"]) {
+        property = StatsEventPostDetailClickedKeyboardToolbarUnderlineButton;
     } else if ([actionTag isEqualToString:@"link"]) {
         property = StatsEventPostDetailClickedKeyboardToolbarLinkButton;
     } else if ([actionTag isEqualToString:@"blockquote"]) {
         property = StatsEventPostDetailClickedKeyboardToolbarBlockquoteButton;
     } else if ([actionTag isEqualToString:@"del"]) {
         property = StatsEventPostDetailClickedKeyboardToolbarDelButton;
-    } else if ([actionTag isEqualToString:@"ul"]) {
-        property = StatsEventPostDetailClickedKeyboardToolbarUnorderedListButton;
-    } else if ([actionTag isEqualToString:@"ol"]) {
-        property = StatsEventPostDetailClickedKeyboardToolbarOrderedListButton;
-    } else if ([actionTag isEqualToString:@"li"]) {
-        property = StatsEventPostDetailClickedKeyboardToolbarListItemButton;
-    } else if ([actionTag isEqualToString:@"code"]) {
-        property = StatsEventPostDetailClickedKeyboardToolbarCodeButton;
     } else if ([actionTag isEqualToString:@"more"]) {
         property = StatsEventPostDetailClickedKeyboardToolbarMoreButton;
     }
