@@ -10,8 +10,8 @@
 #import "UIImageView+AFNetworking.h"
 #import "NSString+Helpers.h"
 
-NSInteger const BlavatarDefaultSize = 86;
-NSInteger const GravatarDefaultSize = 160;
+NSInteger const BlavatarDefaultSize = 43;
+NSInteger const GravatarDefaultSize = 80;
 
 NSString *const BlavatarBaseUrl = @"http://gravatar.com/blavatar";
 NSString *const GravatarBaseUrl = @"http://gravatar.com/avatar";
@@ -103,8 +103,10 @@ NSString *const GravatarDefault = @"gravatar.png";
     NSInteger size = GravatarDefaultSize;
     if (!CGSizeEqualToSize(self.bounds.size, CGSizeZero)) {
         size = MAX(self.bounds.size.width, self.bounds.size.height);
-        size *= [[UIScreen mainScreen] scale];
     }
+
+    size *= [[UIScreen mainScreen] scale];
+
     return size;
 }
 
@@ -113,8 +115,10 @@ NSString *const GravatarDefault = @"gravatar.png";
     NSInteger size = BlavatarDefaultSize;
     if (!CGSizeEqualToSize(self.bounds.size, CGSizeZero)) {
         size = MAX(self.bounds.size.width, self.bounds.size.height);
-        size *= [[UIScreen mainScreen] scale];
     }
+
+    size *= [[UIScreen mainScreen] scale];
+    
     return size;
 }
 
