@@ -462,8 +462,11 @@ typedef NS_ENUM(NSInteger, EditPostViewControllerAlertTag) {
 }
 
 - (void)refreshUIForCurrentPost {
+    NSManagedObjectContext *context = [[ContextManager sharedInstance] mainContext];
+    NSInteger blogCount = [Blog countWithContext:context];
+    
     // Editor should only allow blog selection if its a new post
-    if (self.editMode == EditPostViewControllerModeEditPost) {
+    if (blogCount <= 1 || self.editMode == EditPostViewControllerModeEditPost) {
         self.navigationItem.title = [self editorTitle];
     } else {
         UIButton *titleButton;
