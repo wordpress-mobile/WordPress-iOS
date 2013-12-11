@@ -23,13 +23,13 @@
     self.title = NSLocalizedString(@"Pages", @"");
 }
 
-- (NSString *)noResultsText
+- (NSString *)noResultsTitleText
 {
-    return NSLocalizedString(@"No pages yet", @"Displayed when the user pulls up the pages view and they have no pages");
+    return NSLocalizedString(@"You don't have any pages yet.", @"Displayed when the user pulls up the pages view and they have no pages");
 }
 
 
-- (void)syncItemsWithSuccess:(void (^)())success failure:(void (^)(NSError *))failure {
+- (void)syncItemsViaUserInteraction:(BOOL)userInteraction success:(void (^)())success failure:(void (^)(NSError *))failure {
     [self.blog syncPagesWithSuccess:success failure:failure loadMore: NO];
 }
 

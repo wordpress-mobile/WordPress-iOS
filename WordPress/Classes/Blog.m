@@ -33,11 +33,11 @@
 }
 
 @dynamic blogID, blogName, url, xmlrpc, apiKey;
-@dynamic isAdmin, hasOlderPosts, hasOlderPages;
+@dynamic hasOlderPosts, hasOlderPages;
 @dynamic posts, categories, comments; 
 @dynamic lastPostsSync, lastStatsSync, lastPagesSync, lastCommentsSync, lastUpdateWarning;
 @synthesize isSyncingPosts, isSyncingPages, isSyncingComments;
-@dynamic geolocationEnabled, options, postFormats, isActivated;
+@dynamic geolocationEnabled, options, postFormats, isActivated, visible;
 @dynamic account;
 @dynamic jetpackAccount;
 
@@ -222,11 +222,7 @@
 }
 
 - (BOOL)isWPcom {
-    if ([[self getOptionValue:@"wordpress.com"] boolValue]) {
-        return YES;
-    }
-    NSRange range = [self.xmlrpc rangeOfString:@"wordpress.com"];
-	return (range.location != NSNotFound);
+    return self.account.isWpcom;
 }
 
 //WP.COM private blog. 
@@ -467,7 +463,7 @@
     [self.api enqueueHTTPRequestOperation:combinedOperation];
 }
 
-- (void)syncBlogPostsWithSuccess:(void (^)())success failure:(void (^)(NSError *error))failure {
+- (void)syncPostsAndMetadataWithSuccess:(void (^)())success failure:(void (^)(NSError *error))failure {
     WPXMLRPCRequestOperation *operation;
     NSMutableArray *operations = [NSMutableArray arrayWithCapacity:4];
     operation = [self operationForOptionsWithSuccess:nil failure:nil];
