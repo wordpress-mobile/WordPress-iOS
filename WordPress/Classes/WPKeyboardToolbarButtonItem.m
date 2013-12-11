@@ -34,21 +34,12 @@
     self = [super initWithFrame:frame];
     if (self) {
         if (IS_IPAD) {
-            if (IS_IOS7) {
-                [self setBackgroundImage:[[UIImage imageNamed:@"keyboardButtoniPad-ios7"] stretchableImageWithLeftCapWidth:10.0f topCapHeight:0.0f] forState:UIControlStateNormal];
-                [self setBackgroundImage:[[UIImage imageNamed:@"keyboardButtoniPadHighlighted-ios7"] stretchableImageWithLeftCapWidth:10.0f topCapHeight:0.0f] forState:UIControlStateHighlighted];
-            } else {
-                [self setBackgroundImage:[[UIImage imageNamed:@"keyboardButtoniPad"] stretchableImageWithLeftCapWidth:10.0f topCapHeight:0.0f] forState:UIControlStateNormal];
-                [self setBackgroundImage:[[UIImage imageNamed:@"keyboardButtoniPadHighlighted"] stretchableImageWithLeftCapWidth:10.0f topCapHeight:0.0f] forState:UIControlStateHighlighted];
-            }
+            [self setBackgroundImage:[[UIImage imageNamed:@"keyboardButtoniPad-ios7"] stretchableImageWithLeftCapWidth:10.0f topCapHeight:0.0f] forState:UIControlStateNormal];
+            [self setBackgroundImage:[[UIImage imageNamed:@"keyboardButtoniPadHighlighted-ios7"] stretchableImageWithLeftCapWidth:10.0f topCapHeight:0.0f] forState:UIControlStateHighlighted];
+ 
         } else {
-            if (IS_IOS7) {
-                [self setBackgroundImage:[[UIImage imageNamed:@"keyboardButton-ios7"] stretchableImageWithLeftCapWidth:5.0f topCapHeight:0.0f] forState:UIControlStateNormal];
-                [self setBackgroundImage:[[UIImage imageNamed:@"keyboardButtonHighlighted-ios7"] stretchableImageWithLeftCapWidth:5.0f topCapHeight:0.0f] forState:UIControlStateHighlighted];
-            } else {
-                [self setBackgroundImage:[[UIImage imageNamed:@"keyboardButton"] stretchableImageWithLeftCapWidth:5.0f topCapHeight:0.0f] forState:UIControlStateNormal];
-                [self setBackgroundImage:[[UIImage imageNamed:@"keyboardButtonHighlighted"] stretchableImageWithLeftCapWidth:5.0f topCapHeight:0.0f] forState:UIControlStateHighlighted];
-            }
+            [self setBackgroundImage:[[UIImage imageNamed:@"keyboardButton-ios7"] stretchableImageWithLeftCapWidth:5.0f topCapHeight:0.0f] forState:UIControlStateNormal];
+            [self setBackgroundImage:[[UIImage imageNamed:@"keyboardButtonHighlighted-ios7"] stretchableImageWithLeftCapWidth:5.0f topCapHeight:0.0f] forState:UIControlStateHighlighted];
         }
         self.autoresizingMask = UIViewAutoresizingFlexibleHeight;
     }

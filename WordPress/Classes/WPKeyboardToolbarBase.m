@@ -198,18 +198,10 @@
 	WPFLogMethod();
     [[UIDevice currentDevice] playInputClick];
 	if (!toggleButton.selected) {
-        if (IS_IOS7) {
-            [toggleButton setBackgroundImage:[UIImage imageNamed:@"toggleButtonExtended-ios7"] forState:UIControlStateNormal];
-        } else {
-            [toggleButton setBackgroundImage:[UIImage imageNamed:@"toggleButtonExtended"] forState:UIControlStateNormal];
-        }
+        [toggleButton setBackgroundImage:[UIImage imageNamed:@"toggleButtonExtended-ios7"] forState:UIControlStateNormal];
 	}
 	else {
-        if (IS_IOS7) {
-            [toggleButton setBackgroundImage:[UIImage imageNamed:@"toggleButtonMain-ios7"] forState:UIControlStateNormal];
-        } else {
-            [toggleButton setBackgroundImage:[UIImage imageNamed:@"toggleButtonMain"] forState:UIControlStateNormal];
-        }
+        [toggleButton setBackgroundImage:[UIImage imageNamed:@"toggleButtonMain-ios7"] forState:UIControlStateNormal];
 	}
     
     toggleButton.selected = !toggleButton.selected;
@@ -222,15 +214,9 @@
         toggleButton.frame = CGRectMake(2, 2, 39, 39);
         toggleButton.adjustsImageWhenHighlighted = NO;
         [toggleButton addTarget:self action:@selector(toggleExtendedView) forControlEvents:UIControlEventTouchDown];
-        if (IS_IOS7) {
-            [toggleButton setBackgroundImage:[UIImage imageNamed:@"toggleButtonMain-ios7"] forState:UIControlStateNormal];
-            [toggleButton setBackgroundImage:[UIImage imageNamed:@"toggleButtonExtended-ios7"] forState:UIControlStateSelected];
-            [toggleButton setBackgroundImage:[UIImage imageNamed:@"toggleButtonMain-ios7"] forState:UIControlStateSelected || UIControlStateHighlighted];
-        } else {
-            [toggleButton setBackgroundImage:[UIImage imageNamed:@"toggleButtonMain"] forState:UIControlStateNormal];
-            [toggleButton setBackgroundImage:[UIImage imageNamed:@"toggleButtonExtended"] forState:UIControlStateSelected];
-            [toggleButton setBackgroundImage:[UIImage imageNamed:@"toggleButtonMain"] forState:UIControlStateSelected || UIControlStateHighlighted];
-        }
+        [toggleButton setBackgroundImage:[UIImage imageNamed:@"toggleButtonMain-ios7"] forState:UIControlStateNormal];
+        [toggleButton setBackgroundImage:[UIImage imageNamed:@"toggleButtonExtended-ios7"] forState:UIControlStateSelected];
+        [toggleButton setBackgroundImage:[UIImage imageNamed:@"toggleButtonMain-ios7"] forState:UIControlStateSelected || UIControlStateHighlighted];
     }
 }
 
@@ -254,13 +240,8 @@
             doneButton.titleLabel.shadowColor = [UIColor darkGrayColor];
             doneButton.titleLabel.shadowOffset = CGSizeMake(0, -1.0);
             doneButton.contentEdgeInsets = UIEdgeInsetsMake(1, 1, 0, 0); // Needed to make the label align
-            if (IS_IOS7) {
-                [doneButton setBackgroundImage:[[UIImage imageNamed:@"doneButton-ios7"] stretchableImageWithLeftCapWidth:6.0f topCapHeight:0.0f] forState:UIControlStateNormal];
-                [doneButton setBackgroundImage:[[UIImage imageNamed:@"doneButtonHighlighted-ios7"] stretchableImageWithLeftCapWidth:6.0f topCapHeight:0.0f] forState:UIControlStateHighlighted];
-            } else {
-                [doneButton setBackgroundImage:[[UIImage imageNamed:@"doneButton"] stretchableImageWithLeftCapWidth:6.0f topCapHeight:0.0f] forState:UIControlStateNormal];
-                [doneButton setBackgroundImage:[[UIImage imageNamed:@"doneButtonHighlighted"] stretchableImageWithLeftCapWidth:6.0f topCapHeight:0.0f] forState:UIControlStateHighlighted];
-            }
+            [doneButton setBackgroundImage:[[UIImage imageNamed:@"doneButton-ios7"] stretchableImageWithLeftCapWidth:6.0f topCapHeight:0.0f] forState:UIControlStateNormal];
+            [doneButton setBackgroundImage:[[UIImage imageNamed:@"doneButtonHighlighted-ios7"] stretchableImageWithLeftCapWidth:6.0f topCapHeight:0.0f] forState:UIControlStateHighlighted];
         }
         [self addSubview:doneButton];
     }

@@ -93,14 +93,12 @@ CGFloat const NotificationCellDetailTextNumberOfLines = 2;
     _subjectLabel.text =  [[self class] subjectText:_note];
     _detailTextLabel.text = [[self class] detailText:note];
     
-    if (IS_IOS7) {
-        if (_subjectLabel.text != nil) {
-            _subjectLabel.attributedText = [[NSAttributedString alloc] initWithString:_subjectLabel.text attributes:[[self class] subjectAttributes]];
-        }
-        
-        if (_detailTextLabel.text != nil) {
-            _detailTextLabel.attributedText = [[NSAttributedString alloc] initWithString:_detailTextLabel.text attributes:[[self class] detailAttributes]];
-        }
+    if (_subjectLabel.text != nil) {
+        _subjectLabel.attributedText = [[NSAttributedString alloc] initWithString:_subjectLabel.text attributes:[[self class] subjectAttributes]];
+    }
+    
+    if (_detailTextLabel.text != nil) {
+        _detailTextLabel.attributedText = [[NSAttributedString alloc] initWithString:_detailTextLabel.text attributes:[[self class] detailAttributes]];
     }
 
     _unreadTextLabel.hidden = [note isRead];
