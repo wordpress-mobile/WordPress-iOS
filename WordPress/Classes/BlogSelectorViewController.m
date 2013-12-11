@@ -141,21 +141,15 @@ static CGFloat const blavatarImageSize = 50.f;
 #pragma mark - Table view data source
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
-    return [self sectionForDotCom] >= 0 ? 2 : 1;
+    return [self.resultsController sections].count;
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
-
     id<NSFetchedResultsSectionInfo> sectionInfo;
     NSInteger numberOfRows = 0;
     if ([self.resultsController sections].count > section) {
         sectionInfo = [[self.resultsController sections] objectAtIndex:section];
         numberOfRows = sectionInfo.numberOfObjects;
-    }
-    
-    if (section == [self sectionForSelfHosted]) {
-        // This is for the "Add a Site" row
-        numberOfRows++;
     }
     
     return numberOfRows;
