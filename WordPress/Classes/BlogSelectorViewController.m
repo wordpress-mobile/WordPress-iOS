@@ -60,13 +60,6 @@ static CGFloat const blavatarImageSize = 50.f;
     
     self.navigationItem.leftBarButtonItem = cancelButtonItem;
     
-    UIBarButtonItem *selectButtonItem = [[UIBarButtonItem alloc] initWithTitle:NSLocalizedString(@"Select", @"")
-                                                                         style:UIBarButtonItemStylePlain
-                                                                        target:self
-                                                                        action:@selector(selectButtonTapped:)];
-    
-    self.navigationItem.rightBarButtonItem = selectButtonItem;
-    
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(wordPressComApiDidLogin:) name:WordPressComApiDidLoginNotification object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(wordPressComApiDidLogout:) name:WordPressComApiDidLogoutNotification object:nil];
 
@@ -75,6 +68,13 @@ static CGFloat const blavatarImageSize = 50.f;
         UIEdgeInsets tableInset = [self.tableView contentInset];
         tableInset.top = -1;
         self.tableView.contentInset = tableInset;
+
+        UIBarButtonItem *selectButtonItem = [[UIBarButtonItem alloc] initWithTitle:NSLocalizedString(@"Select", @"")
+                                                                             style:UIBarButtonItemStylePlain
+                                                                            target:self
+                                                                            action:@selector(selectButtonTapped:)];
+        
+        self.navigationItem.rightBarButtonItem = selectButtonItem;
     }
     
     [WPStyleGuide configureColorsForView:self.view andTableView:self.tableView];
@@ -245,7 +245,7 @@ static CGFloat const blavatarImageSize = 50.f;
     }
 
     if (self.selectedCompletionHandler) {
-        self.selectedCompletionHandler(self.selectedObjectID, NO);
+        self.selectedCompletionHandler(self.selectedObjectID, IS_IPAD ? YES : NO);
     }
 }
 
