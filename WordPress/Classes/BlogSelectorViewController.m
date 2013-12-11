@@ -82,7 +82,12 @@ static CGFloat const blavatarImageSize = 50.f;
     
     [WPStyleGuide configureColorsForView:self.view andTableView:self.tableView];
  
-    [self.tableView registerClass:[WPTableViewCell class] forCellReuseIdentifier:BlogCellIdentifier];
+    // If we're inside of a UIPopoverController, use a standard cell
+    if (self.parentViewController && [self.parentViewController valueForKey:@"_popoverController"]) {
+        [self.tableView registerClass:[UITableViewCell class] forCellReuseIdentifier:BlogCellIdentifier];
+    } else {
+        [self.tableView registerClass:[WPTableViewCell class] forCellReuseIdentifier:BlogCellIdentifier];
+    }
 }
 
 - (void)viewWillAppear:(BOOL)animated {
@@ -136,7 +141,7 @@ static CGFloat const blavatarImageSize = 50.f;
 #pragma mark - Table view data source
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
-    return [self sectionForDotCom] >= 0? 2 : 1;
+    return [self sectionForDotCom] >= 0 ? 2 : 1;
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
