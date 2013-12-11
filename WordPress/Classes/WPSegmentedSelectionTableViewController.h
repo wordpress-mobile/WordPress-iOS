@@ -8,12 +8,6 @@
 #import <UIKit/UIKit.h>
 #import "WPSelectionTableViewController.h"
 
-@interface WPSegmentedSelectionTableViewController : WPSelectionTableViewController {
-    NSMutableDictionary *categoryIndentationLevelsDict;
-    UIColor *rowTextColor;
-}
-
-- (UITableViewCellAccessoryType)accessoryTypeForRowWithIndexPath:(NSIndexPath *)indexPath ofTableView:(UITableView *)tableView;
-- (void)handleNewCategory:(NSNotification *)notification;
+@interface WPSegmentedSelectionTableViewController : WPSelectionTableViewController
 
 @end
