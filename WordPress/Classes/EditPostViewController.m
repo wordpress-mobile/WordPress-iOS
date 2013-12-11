@@ -39,7 +39,7 @@ typedef NS_ENUM(NSInteger, EditPostViewControllerAlertTag) {
 @property (nonatomic, strong) UIAlertView *failedMediaAlertView;
 @property (nonatomic, weak) UITextField *currentEditingTextField;
 @property (nonatomic, weak) AutosavingIndicatorView *autosavingIndicatorView;
-@property (nonatomic, weak) WPKeyboardToolbarWithoutGradient *editorToolbar;
+@property (nonatomic, weak) WPKeyboardToolbarBase *editorToolbar;
 @property (nonatomic, assign) BOOL isShowingKeyboard;
 @property (nonatomic, assign) BOOL isExternalKeyboard;
 @property (nonatomic, assign) BOOL isAutosaved;
@@ -260,7 +260,7 @@ typedef NS_ENUM(NSInteger, EditPostViewControllerAlertTag) {
     }
     
     CGRect frame = CGRectMake(0, 0, self.view.frame.size.width, WPKT_HEIGHT_PORTRAIT);
-    WPKeyboardToolbarWithoutGradient *toolbar = [[WPKeyboardToolbarWithoutGradient alloc] initWithFrame:frame];
+    WPKeyboardToolbarBase *toolbar = [[WPKeyboardToolbarBase alloc] initWithFrame:frame];
     _editorToolbar = toolbar;
     _editorToolbar.delegate = self;
     return _editorToolbar;
