@@ -36,7 +36,7 @@
         self.selectionStyle = UITableViewCellSelectionStyleNone;
         self.accessoryType = UITableViewCellAccessoryNone;
         
-        [self addSubview:self.textField];
+        [self.contentView addSubview:self.textField];
     }
     
     return self;

@@ -31,9 +31,9 @@
 #define UNSPAM_BUTTON_TAG 6
 
 const CGFloat NotificationsCommentDetailViewControllerReplyTextViewDefaultHeight = 64.f;
-NSString * const NotificationsCommentHeaderCellIdentifiter = @"NoteCommentHeaderCell";
-NSString * const NotificationsCommentContentCellIdentifiter = @"NoteCommentContentCell";
-NSString * const NotificationsCommentLoadingCellIdentifiter = @"NoteCommentLoadingCell";
+NSString * const NoteCommentHeaderCellIdentifiter = @"NoteCommentHeaderCell";
+NSString * const NoteCommentContentCellIdentifiter = @"NoteCommentContentCell";
+NSString * const NoteCommentLoadingCellIdentifiter = @"NoteCommentLoadingCell";
 NS_ENUM(NSUInteger, NotifcationCommentCellType){
     NotificationCommentCellTypeHeader,
     NotificationCommentCellTypeContent
@@ -61,7 +61,6 @@ NS_ENUM(NSUInteger, NotifcationCommentCellType){
 {
     self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
     if (self) {
-        // Custom initialization
         self.title = NSLocalizedString(@"Notification", @"Title for notification detail view");
         self.hasScrollBackView = NO;
         self.contentCache = [[NSCache alloc] init];
@@ -97,14 +96,12 @@ NS_ENUM(NSUInteger, NotifcationCommentCellType){
                                target:nil
                                action:nil];
     self.toolbar.items = @[self.approveBarButton, spacer, self.trashBarButton, spacer, self.spamBarButton, spacer, self.replyBarButton];
-
     [self.toolbar setBarTintColor:[WPStyleGuide littleEddieGrey]];
     self.toolbar.translucent = NO;
 
-    [self.tableView registerClass:[NoteCommentCell class]
-           forCellReuseIdentifier:NotificationsCommentHeaderCellIdentifiter];
-    [self.tableView registerClass:[DTAttributedTextCell class]
-           forCellReuseIdentifier:NotificationsCommentContentCellIdentifiter];
+    [self.tableView registerClass:[NoteCommentCell class] forCellReuseIdentifier:NoteCommentHeaderCellIdentifiter];
+    [self.tableView registerClass:[NoteCommentContentCell class] forCellReuseIdentifier:NoteCommentContentCellIdentifiter];
+    [self.tableView registerClass:[NoteCommentLoadingCell class] forCellReuseIdentifier:NoteCommentLoadingCellIdentifiter];
     
     // create the reply field
     CGRect replyFrame = self.tableView.bounds;
@@ -553,52 +550,47 @@ NS_ENUM(NSUInteger, NotifcationCommentCellType){
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
     NoteComment *comment = [self.commentThread objectAtIndex:indexPath.section];
-    BOOL mainComment = comment == [self.commentThread lastObject];
+    BOOL mainComment = (comment == [self.commentThread lastObject]);
+    
     UITableViewCell *cell;
     switch (indexPath.row) {
         case NotificationCommentCellTypeHeader:
         {
             if (comment.isLoaded || mainComment) {
-                NoteCommentCell *headerCell;
-                headerCell = [tableView dequeueReusableCellWithIdentifier:NotificationsCommentHeaderCellIdentifiter];
-                if (headerCell == nil) {
-                    headerCell = [[NoteCommentCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:NotificationsCommentHeaderCellIdentifiter];
-                }
-                if ([comment isParentComment])
+                NoteCommentCell *headerCell = [tableView dequeueReusableCellWithIdentifier:NoteCommentHeaderCellIdentifiter];
+                if ([comment isParentComment]) {
                     [headerCell displayAsParentComment];
+                }
                 headerCell.delegate = self;
                 [self prepareCommentHeaderCell:headerCell forCommment:comment];
                 cell = headerCell;
 
             } else {
-                NoteCommentLoadingCell *loadingCell;
-                loadingCell = [tableView dequeueReusableCellWithIdentifier:NotificationsCommentLoadingCellIdentifiter];
-                if (loadingCell == nil) {
-                    loadingCell = [[NoteCommentLoadingCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:NotificationsCommentLoadingCellIdentifiter];
-                }
+                NoteCommentLoadingCell *loadingCell = [tableView dequeueReusableCellWithIdentifier:NoteCommentLoadingCellIdentifiter];
                 cell = loadingCell;
             }
             break;
         }
         case NotificationCommentCellTypeContent:
         {
-            NoteCommentContentCell *contentCell;
-
-            contentCell = [self.contentCache objectForKey:comment];
-            contentCell.delegate = self;
-            if (contentCell == nil) {
-                contentCell = [[NoteCommentContentCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:NotificationsCommentContentCellIdentifiter];
+            NoteCommentContentCell *contentCell = [tableView dequeueReusableCellWithIdentifier:NoteCommentContentCellIdentifiter];
+            if ([self.contentCache objectForKey:comment]) {
+                contentCell = [self.contentCache objectForKey:comment];
+            } else {
+                [self.contentCache setObject:contentCell forKey:comment];
             }
-            [self.contentCache setObject:contentCell forKey:comment];
+            
+            contentCell.delegate = self;
             NSString *html = [comment.commentData valueForKey:@"content"];
-            if (!html)
+            if (!html) {
                 html = self.note.commentText;
-            if (html != nil) {
+            } else {
                 contentCell.attributedString = [self convertHTMLToAttributedString:html];
                 contentCell.selectionStyle = UITableViewCellSelectionStyleNone;
             }
-            if ([comment isParentComment])
+            if ([comment isParentComment]) {
                 [contentCell displayAsParentComment];
+            }
             cell = contentCell;
             break;
         }

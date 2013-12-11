@@ -10,6 +10,8 @@
 #import "AddUsersBlogCell.h"
 #import "WordPressAppDelegate.h"
 #import "WPNUXUtility.h"
+#import "WPAccount.h"
+#import "Blog.h"
 
 @interface ReaderUsersBlogsViewController ()<UITableViewDataSource, UITableViewDelegate>
 
@@ -17,43 +19,26 @@
 @property (nonatomic, strong) NSArray *blogs;
 @property (nonatomic, strong) NSNumber *primaryBlogId;
 
-- (NSString *)getCellTitleForIndexPath:(NSIndexPath *)indexPath;
 - (void)handleCloseButtonTapped:(id)sender;
 
 @end
 
 @implementation ReaderUsersBlogsViewController
 
-+ (id)presentAsModalWithDelegate:(id<ReaderUsersBlogsDelegate>)delegate {
-	ReaderUsersBlogsViewController *controller = [[ReaderUsersBlogsViewController alloc] init];
-	controller.delegate = delegate;
-	controller.title = NSLocalizedString(@"My Blogs", @"Title of the list of the user's blogs as shown in the reader.");
-	
-	UINavigationController *navController = [[UINavigationController alloc] initWithRootViewController:controller];
-    navController.navigationBar.translucent = NO;
-	navController.modalPresentationStyle = UIModalPresentationFormSheet;
-    if (!IS_IPAD) {
-        // Avoid a weird issue on the iPad with cross dissolves when the keyboard is visible. 
-        navController.modalTransitionStyle = UIModalTransitionStyleCrossDissolve;
-    }
-    [[[WordPressAppDelegate sharedWordPressApplicationDelegate] navigationController] presentViewController:navController animated:YES completion:nil];
-
-	return controller;
-}
-
 #pragma mark - Lifecycle Methods
 
 - (id)init {
 	self = [super init];
 	if (self) {
-		self.blogs = [[NSUserDefaults standardUserDefaults] arrayForKey:@"wpcom_users_blogs"];
+		self.blogs = [[WPAccount defaultWordPressComAccount] visibleBlogs];
 		self.primaryBlogId = [[NSUserDefaults standardUserDefaults] objectForKey:@"wpcom_users_prefered_blog_id"];
 	}
 	return self;
 }
 
 - (void)viewDidLoad {
-	
+    self.title = NSLocalizedString(@"My Blogs", @"Title of the list of the user's blogs as shown in the reader.");
+
 	self.view.backgroundColor = [UIColor colorWithPatternImage:[UIImage imageNamed:@"ui-texture"]];
     self.view.backgroundColor = [WPNUXUtility backgroundColor];
 	
@@ -83,12 +68,11 @@
 
 #pragma mark - Instance Methods
 
-- (NSString *)getCellTitleForIndexPath:(NSIndexPath *)indexPath {
-    NSDictionary *dict = [_blogs objectAtIndex:indexPath.row];
-    if ([[[dict objectForKey:@"blogName"] trim] length] == 0) {
-        return [dict objectForKey:@"url"];
+- (NSString *)cellTitleForBlog:(Blog *)blog {
+    if ([[blog.blogName trim] length] == 0) {
+        return blog.hostURL;
 	} else {
-        return [dict objectForKey:@"blogName"];
+        return blog.blogName;
 	}
 }
 
@@ -121,24 +105,25 @@
 		cell.isWPCom = YES;
     }
 
-    NSDictionary *dict = [_blogs objectAtIndex:indexPath.row];
+    Blog *blog = _blogs[indexPath.row];
     cell.showTopSeparator = ( indexPath.row == 0 ) ? YES : NO;
-    cell.title = [self getCellTitleForIndexPath:indexPath];
-    cell.blavatarUrl = [dict objectForKey:@"url"];
+    cell.title = [self cellTitleForBlog:blog];
+    cell.blavatarUrl = [blog blavatarUrl];
     
     return cell;
 }
 
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
-    return [AddUsersBlogCell rowHeightWithText:[self getCellTitleForIndexPath:indexPath]];
+    Blog *blog = _blogs[indexPath.row];
+    return [AddUsersBlogCell rowHeightWithText:[self cellTitleForBlog:blog]];
 }
 
 
 #pragma mark - Table view delegate
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
-    NSDictionary *dict = [_blogs objectAtIndex:indexPath.row];
+    NSDictionary *dict = _blogs[indexPath.row];
 	[self.delegate userDidSelectBlog:dict];
 	
     [self dismissViewControllerAnimated:YES completion:nil];
