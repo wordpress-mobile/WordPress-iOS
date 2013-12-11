@@ -404,7 +404,30 @@ CGFloat const EditPostViewControllerTextViewOffset = 10.0;
 }
 
 - (void)refreshUIForCurrentPost {
-    self.navigationItem.title = [self editorTitle];
+    // Editor should only allow blog selection if its a new post
+    if (self.editMode == EditPostViewControllerModeEditPost) {
+        self.navigationItem.title = [self editorTitle];
+    } else {
+        UIButton *titleButton;
+        if ([self.navigationItem.titleView isKindOfClass:[UIButton class]]) {
+            titleButton = (UIButton *)self.navigationItem.titleView;
+        } else {
+            titleButton = [UIButton buttonWithType:UIButtonTypeSystem];
+            titleButton.frame = CGRectMake(0, 0, 200, 33);
+            titleButton.titleLabel.numberOfLines = 2;
+            titleButton.titleLabel.textAlignment = NSTextAlignmentCenter;
+            
+            self.navigationItem.titleView = titleButton;
+        }
+        
+        NSMutableAttributedString *titleText = [[NSMutableAttributedString alloc] initWithString:[NSString stringWithFormat:@"%@\n", [self editorTitle]]
+                                                                                      attributes:@{ NSFontAttributeName : [UIFont fontWithName:@"OpenSans-Bold" size:14.0] }];
+        NSMutableAttributedString *titleSubtext = [[NSMutableAttributedString alloc] initWithString:[NSString stringWithFormat:@"%@ %@", self.apost.blog.blogName, @"▼"]
+                                                                                         attributes:@{ NSFontAttributeName : [UIFont fontWithName:@"OpenSans" size:10.0] }];
+        [titleText appendAttributedString:titleSubtext];
+        
+        [titleButton setAttributedTitle:titleText forState:UIControlStateNormal];
+    }
     
     titleTextField.text = self.apost.postTitle;
     
