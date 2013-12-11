@@ -13,6 +13,7 @@
 #import "NSString+XMLExtensions.h"
 #import "Post.h"
 #import "WPTableViewCell.h"
+#import "BlogSelectorViewController.h"
 
 NSString *const EditPostTableViewControllerLastUsedBlogURL = @"EditPostViewControllerLastUsedBlogURL";
 CGFloat const EPTVCTextfieldHeight = 44.0f;
@@ -23,9 +24,10 @@ CGFloat const EPTVCStandardOffset = 15.0;
 CGFloat const EPTVCTextViewOffset = 10.0;
 CGFloat const EPTVCTextViewBottomPadding = 50.0f;
 
-@interface EditPostTableViewController ()
+@interface EditPostTableViewController ()<UIPopoverControllerDelegate>
 
 @property (nonatomic, strong) WPAlertView *linkHelperAlertView;
+@property (nonatomic, strong) UIPopoverController *blogSelectorPopover;
 
 @end
 
@@ -33,6 +35,7 @@ CGFloat const EPTVCTextViewBottomPadding = 50.0f;
 
 + (Blog *)blogForNewDraft {
     // Try to get the last used blog, if there is one.
+    NSManagedObjectContext *context = [[ContextManager sharedInstance] mainContext];
     NSFetchRequest *fetchRequest = [NSFetchRequest fetchRequestWithEntityName:@"Blog"];
     NSString *url = [[NSUserDefaults standardUserDefaults] stringForKey:EditPostTableViewControllerLastUsedBlogURL];
     if (url) {
@@ -40,18 +43,15 @@ CGFloat const EPTVCTextViewBottomPadding = 50.0f;
         [fetchRequest setPredicate:predicate];
     }
     fetchRequest.sortDescriptors = @[[NSSortDescriptor sortDescriptorWithKey:@"blogName" ascending:YES]];
-    NSFetchedResultsController *resultsController = [[NSFetchedResultsController alloc]
-                                                     initWithFetchRequest:fetchRequest
-                                                     managedObjectContext:[[ContextManager sharedInstance] mainContext]
-                                                     sectionNameKeyPath:nil
-                                                     cacheName:nil];
     NSError *error = nil;
-    if (![resultsController performFetch:&error]) {
-        DDLogError(@"Couldn't fetch blogs: %@", [error localizedDescription]);
+    NSArray *results = [context executeFetchRequest:fetchRequest error:&error];
+    
+    if (error) {
+        DDLogError(@"Couldn't fetch blogs: %@", error);
         return nil;
     }
     
-    if([resultsController.fetchedObjects count] == 0) {
+    if([results count] == 0) {
         if (url) {
             // Blog might have been removed from the app. Get the first available.
             [[NSUserDefaults standardUserDefaults] removeObjectForKey:EditPostTableViewControllerLastUsedBlogURL];
@@ -61,10 +61,11 @@ CGFloat const EPTVCTextViewBottomPadding = 50.0f;
         return nil;
     }
     
-    return [resultsController.fetchedObjects objectAtIndex:0];
+    return [results firstObject];
 }
 
 - (void)dealloc {
+    _failedMediaAlertView.delegate = nil;
     [[NSNotificationCenter defaultCenter] removeObserver:self];
 }
 
@@ -168,7 +169,36 @@ CGFloat const EPTVCTextViewBottomPadding = 50.0f;
     }
     self.navigationItem.backBarButtonItem.title = [self editorTitle];
     self.title = [self editorTitle];
-    self.navigationItem.title = [self editorTitle];
+    
+    // Configure the custom title view, or just set the navigationItem title.
+    // Only show the blog selector in the nav title view if we're editing a new post
+    NSManagedObjectContext *context = [[ContextManager sharedInstance] mainContext];
+    NSInteger blogCount = [Blog countWithContext:context];
+
+    if (blogCount <= 1 || self.editMode == EditPostViewControllerModeEditPost) {
+        self.navigationItem.title = [self editorTitle];
+    } else {
+        UIButton *titleButton;
+        if ([self.navigationItem.titleView isKindOfClass:[UIButton class]]) {
+            titleButton = (UIButton *)self.navigationItem.titleView;
+        } else {
+            titleButton = [UIButton buttonWithType:UIButtonTypeSystem];
+            titleButton.frame = CGRectMake(0, 0, 200, 33);
+            titleButton.titleLabel.numberOfLines = 2;
+            titleButton.titleLabel.textAlignment = NSTextAlignmentCenter;
+            [titleButton addTarget:self action:@selector(showBlogSelector:) forControlEvents:UIControlEventTouchUpInside];
+            
+            self.navigationItem.titleView = titleButton;
+        }
+        
+        NSMutableAttributedString *titleText = [[NSMutableAttributedString alloc] initWithString:[NSString stringWithFormat:@"%@\n", [self editorTitle]]
+                                                                                      attributes:@{ NSFontAttributeName : [UIFont fontWithName:@"OpenSans-Bold" size:14.0] }];
+        NSMutableAttributedString *titleSubtext = [[NSMutableAttributedString alloc] initWithString:[NSString stringWithFormat:@"%@ %@", self.post.blog.blogName, @"▼"]
+                                                                                         attributes:@{ NSFontAttributeName : [UIFont fontWithName:@"OpenSans" size:10.0] }];
+        [titleText appendAttributedString:titleSubtext];
+        
+        [titleButton setAttributedTitle:titleText forState:UIControlStateNormal];
+    }
 }
 
 - (void)setupToolbar {
@@ -427,6 +457,61 @@ CGFloat const EPTVCTextViewBottomPadding = 50.0f;
 
 #pragma mark - Actions
 
+- (void)showBlogSelector {
+    if (IS_IPAD && self.blogSelectorPopover.isPopoverVisible) {
+        [self.blogSelectorPopover dismissPopoverAnimated:YES];
+        self.blogSelectorPopover = nil;
+    }
+    
+    void (^dismissHandler)() = ^(void) {
+        if (IS_IPAD) {
+            [self.blogSelectorPopover dismissPopoverAnimated:YES];
+        } else {
+            [self dismissViewControllerAnimated:YES completion:nil];
+        }
+    };
+    
+    void (^selectedCompletion)(NSManagedObjectID *, BOOL) = ^(NSManagedObjectID *selectedObjectID, BOOL finished) {
+        if (finished) {
+            NSManagedObjectContext *context = [[ContextManager sharedInstance] mainContext];
+            Blog *blog = (Blog *)[context objectWithID:selectedObjectID];
+            
+            if (blog) {
+                self.post.blog = blog;
+                [[NSUserDefaults standardUserDefaults] setObject:blog.url forKey:EditPostTableViewControllerLastUsedBlogURL];
+                [[NSUserDefaults standardUserDefaults] synchronize];
+            }
+            
+            [self refreshUIForCurrentPost];
+            dismissHandler();
+        }
+    };
+    
+    BlogSelectorViewController *vc = [[BlogSelectorViewController alloc] initWithSelectedBlogObjectID:self.post.blog.objectID
+                                                                                   selectedCompletion:selectedCompletion
+                                                                                     cancelCompletion:dismissHandler];
+    vc.title = NSLocalizedString(@"My Blogs", @"");
+    UINavigationController *navController = [[UINavigationController alloc] initWithRootViewController:vc];
+    navController.navigationBar.translucent = NO;
+    
+    if (IS_IPAD) {
+        vc.preferredContentSize = CGSizeMake(320.0, 500);
+        
+        CGRect titleRect = self.navigationItem.titleView.frame;
+        titleRect = [self.navigationController.view convertRect:titleRect fromView:self.navigationItem.titleView.superview];
+        
+        self.blogSelectorPopover = [[UIPopoverController alloc] initWithContentViewController:navController];
+        self.blogSelectorPopover.backgroundColor = [WPStyleGuide newKidOnTheBlockBlue];
+        self.blogSelectorPopover.delegate = self;
+        [self.blogSelectorPopover presentPopoverFromRect:titleRect inView:self.navigationController.view permittedArrowDirections:UIPopoverArrowDirectionAny animated:YES];
+    } else {
+        navController.modalPresentationStyle = UIModalPresentationPageSheet;
+        navController.modalTransitionStyle = UIModalTransitionStyleCoverVertical;
+        
+        [self presentViewController:navController animated:YES completion:nil];
+    }
+}
+
 - (void)showSettings {
     [WPMobileStats flagProperty:StatsPropertyPostDetailClickedSettings forEvent:[self formattedStatEventString:StatsEventPostDetailClosedEditor]];
     PostSettingsViewController *vc = [[PostSettingsViewController alloc] initWithPost:self.post];
@@ -582,8 +667,7 @@ CGFloat const EPTVCTextViewBottomPadding = 50.0f;
 }
 
 - (void)refreshUIForCurrentPost {
-    self.title = [self editorTitle];
-    self.navigationItem.title = [self editorTitle];
+    [self setupNavbar];
     
     _titleTextField.text = self.post.postTitle;
     
@@ -1073,6 +1157,17 @@ CGFloat const EPTVCTextViewBottomPadding = 50.0f;
     }
 }
 
+#pragma mark - UIPopoverControllerDelegate methods
+
+- (void)popoverController:(UIPopoverController *)popoverController willRepositionPopoverToRect:(inout CGRect *)rect inView:(inout UIView **)view {
+    if (popoverController == self.blogSelectorPopover) {
+        CGRect titleRect = self.navigationItem.titleView.frame;
+        titleRect = [self.navigationController.view convertRect:titleRect fromView:self.navigationItem.titleView.superview];
+        
+        *view = self.navigationController.view;
+        *rect = titleRect;
+    }
+}
 
 #pragma mark -
 #pragma mark AlertView Delegate Methods
@@ -1087,7 +1182,6 @@ CGFloat const EPTVCTextViewBottomPadding = 50.0f;
     }
     return;
 }
-
 
 #pragma mark -
 #pragma mark ActionSheet Delegate Methods
