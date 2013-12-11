@@ -1244,6 +1244,7 @@ CGFloat const EPTVCTextViewBottomPadding = 50.0f;
 
 - (void)keyboardDidShow:(NSNotification *)notification {
     [self refreshTableHeaderViewHeight];
+    [self scrollCursorIntoViewIfNeeded];
 }
 
 - (void)keyboardWillHide:(NSNotification *)notification {
