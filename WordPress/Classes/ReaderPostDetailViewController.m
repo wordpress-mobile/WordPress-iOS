@@ -45,6 +45,7 @@ typedef enum {
 @property (nonatomic, strong) ReaderCommentFormView *readerCommentFormView;
 @property (nonatomic, strong) ReaderReblogFormView *readerReblogFormView;
 @property (nonatomic, strong) UIImage *featuredImage;
+@property (nonatomic, strong) UIImage *avatarImage;
 @property (nonatomic) BOOL infiniteScrollEnabled;
 @property (nonatomic, strong) UIActivityIndicatorView *activityFooter;
 @property (nonatomic, strong) UIBarButtonItem *commentButton;
@@ -85,12 +86,13 @@ typedef enum {
     [[NSNotificationCenter defaultCenter] removeObserver:self];
 }
 
-- (id)initWithPost:(ReaderPost *)post featuredImage:(UIImage *)image {
+- (id)initWithPost:(ReaderPost *)post featuredImage:(UIImage *)image avatarImage:(UIImage *)avatarImage {
 	self = [super init];
 	if (self) {
 		_post = post;
 		_comments = [NSMutableArray array];
         _featuredImage = image;
+        _avatarImage = avatarImage;
         _showInlineActionBar = YES;
 	}
 	return self;
@@ -173,7 +175,7 @@ typedef enum {
 - (void)didRotateFromInterfaceOrientation:(UIInterfaceOrientation)fromInterfaceOrientation {
 	[super didRotateFromInterfaceOrientation:fromInterfaceOrientation];
 
-	[self.postView updateLayout];
+    [self.postView setNeedsLayout];
 
 	// Make sure a selected comment is visible after rotating.
 	if ([self.tableView indexPathForSelectedRow] != nil && self.isShowingCommentForm) {
@@ -197,6 +199,11 @@ typedef enum {
     self.postView.delegate = self;
     [self.postView configurePost:self.post];
     self.postView.backgroundColor = [UIColor whiteColor];
+    
+    if (self.avatarImage) {
+        [self.postView setAvatar:self.avatarImage];
+    }
+    
     if (self.featuredImage) {
         [self.postView setFeaturedImage: self.featuredImage];
     }
@@ -677,7 +684,6 @@ typedef enum {
 		
 		if (matched) {
             controller = [[WPImageViewController alloc] initWithImage:imageView.image andURL:imageView.linkURL];
-            [self.navigationController presentViewController:controller animated:YES completion:nil];
 		} else {
             controller = [[WPWebViewController alloc] init];
 			[(WPWebViewController *)controller setUrl:((ReaderImageView *)sender).linkURL];
@@ -736,6 +742,21 @@ typedef enum {
     
     [self.navigationController popViewControllerAnimated:YES];
     [[NSNotificationCenter defaultCenter] postNotificationName:ReaderTopicDidChangeNotification object:self];
+}
+
+- (void)postView:(ReaderPostView *)postView didReceiveFeaturedImageAction:(id)sender {
+    UITapGestureRecognizer *gesture = (UITapGestureRecognizer *)sender;
+    UIImageView *imageView = (UIImageView *)gesture.view;
+    WPImageViewController *controller = [[WPImageViewController alloc] initWithImage:imageView.image];
+
+    controller.modalTransitionStyle = UIModalTransitionStyleCrossDissolve;
+    controller.modalPresentationStyle = UIModalPresentationFullScreen;
+    [self.navigationController pushViewController:controller animated:YES];
+}
+
+- (void)postViewDidLoadAllMedia:(ReaderPostView *)postView {
+    [self.postView layoutIfNeeded];
+    [self.tableView reloadData];
 }
 
 
