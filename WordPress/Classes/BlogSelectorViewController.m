@@ -217,10 +217,6 @@ static CGFloat const blavatarImageSize = 50.f;
     NSString *title = [self tableView:self.tableView titleForHeaderInSection:section];
     return [WPTableViewSectionHeaderView heightForTitle:title andWidth:CGRectGetWidth(self.view.bounds)];
 }
-- (CGFloat)tableView:(UITableView *)tableView heightForFooterInSection:(NSInteger)section {
-    // Use the standard dimension on the last section
-    return section == [tableView numberOfSections] - 1 ? UITableViewAutomaticDimension : 0.0;
-}
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
     [tableView deselectRowAtIndexPath:indexPath animated:YES];
