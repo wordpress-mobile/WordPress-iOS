@@ -281,7 +281,8 @@ CGFloat const EPTVCTextViewBottomPadding = 50.0f;
     // Formatting bar for the textView's inputAccessoryView.
     if (_editorToolbar == nil) {
         frame = CGRectMake(0.0f, 0.0f, CGRectGetWidth(self.view.frame), WPKT_HEIGHT_PORTRAIT);
-        _editorToolbar = [[WPKeyboardToolbarBase alloc] initWithFrame:frame];
+        self.editorToolbar = [[WPKeyboardToolbarBase alloc] initWithFrame:frame];
+        _editorToolbar.backgroundColor = [WPStyleGuide itsEverywhereGrey];
         _editorToolbar.delegate = self;
         _textView.inputAccessoryView = _editorToolbar;
     }
