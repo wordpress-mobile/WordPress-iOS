@@ -6,6 +6,7 @@
 #import "Post.h"
 #import "WPAddCategoryViewController.h"
 #import "WPAlertView.h"
+#import "BlogSelectorViewController.h"
 
 NSTimeInterval kAnimationDuration = 0.3f;
 
@@ -63,6 +64,7 @@ CGFloat const EditPostViewControllerTextViewOffset = 10.0;
 
 + (Blog *)blogForNewDraft {
     // Try to get the last used blog, if there is one.
+    NSManagedObjectContext *context = [[ContextManager sharedInstance] mainContext];
     NSFetchRequest *fetchRequest = [NSFetchRequest fetchRequestWithEntityName:@"Blog"];
     NSString *url = [[NSUserDefaults standardUserDefaults] stringForKey:EditPostViewControllerLastUsedBlogURL];
     if (url) {
@@ -70,18 +72,15 @@ CGFloat const EditPostViewControllerTextViewOffset = 10.0;
         [fetchRequest setPredicate:predicate];
     }
     fetchRequest.sortDescriptors = @[[NSSortDescriptor sortDescriptorWithKey:@"blogName" ascending:YES]];
-    NSFetchedResultsController *resultsController = [[NSFetchedResultsController alloc]
-                                                     initWithFetchRequest:fetchRequest
-                                                     managedObjectContext:[[ContextManager sharedInstance] mainContext]
-                                                     sectionNameKeyPath:nil
-                                                     cacheName:nil];
     NSError *error = nil;
-    if (![resultsController performFetch:&error]) {
-        DDLogError(@"Couldn't fetch blogs: %@", [error localizedDescription]);
+    NSArray *results = [context executeFetchRequest:fetchRequest error:&error];
+
+    if (error) {
+        DDLogError(@"Couldn't fetch blogs: %@", error);
         return nil;
     }
     
-    if([resultsController.fetchedObjects count] == 0) {
+    if([results count] == 0) {
         if (url) {
             // Blog might have been removed from the app. Get the first available.
             [[NSUserDefaults standardUserDefaults] removeObjectForKey:EditPostViewControllerLastUsedBlogURL];
@@ -91,7 +90,7 @@ CGFloat const EditPostViewControllerTextViewOffset = 10.0;
         return nil;
     }
     
-    return [resultsController.fetchedObjects objectAtIndex:0];
+    return [results firstObject];
 }
 
 - (void)dealloc {
@@ -285,6 +284,33 @@ CGFloat const EditPostViewControllerTextViewOffset = 10.0;
     }
 }
 
+- (IBAction)showBlogSelector:(id)sender {
+    BlogSelectorViewController *vc = [[BlogSelectorViewController alloc] initWithSelectedBlogObjectID:self.apost.blog.objectID
+                                                                                   selectedCompletion:^(NSManagedObjectID *selectedObjectID, BOOL finished) {
+                                                                                       if (finished) {
+                                                                                           NSManagedObjectContext *context = [[ContextManager sharedInstance] mainContext];
+                                                                                           Blog *blog = (Blog *)[context objectWithID:selectedObjectID];
+                                                                                           
+                                                                                           if (blog) {
+                                                                                               self.apost.blog = blog;
+                                                                                           }
+                                                                                           
+                                                                                           [self refreshUIForCurrentPost];
+                                                                                           [self dismissViewControllerAnimated:YES completion:nil];
+                                                                                       }
+                                                                                   }
+                                                                                     cancelCompletion:^{
+                                                                                         [self dismissViewControllerAnimated:YES completion:nil];
+                                                                                     }];
+    vc.title = NSLocalizedString(@"My Blogs", @"");
+    UINavigationController *navController = [[UINavigationController alloc] initWithRootViewController:vc];
+    navController.navigationBar.translucent = NO;
+    navController.modalPresentationStyle = UIModalPresentationPageSheet;
+    navController.modalTransitionStyle = UIModalTransitionStyleCoverVertical;
+    
+    [self presentViewController:navController animated:YES completion:nil];
+}
+
 - (IBAction)showSettings:(id)sender {
     [WPMobileStats flagProperty:StatsPropertyPostDetailClickedSettings forEvent:[self formattedStatEventString:StatsEventPostDetailClosedEditor]];
     PostSettingsViewController *vc = [[PostSettingsViewController alloc] initWithPost:self.apost];
@@ -416,6 +442,7 @@ CGFloat const EditPostViewControllerTextViewOffset = 10.0;
             titleButton.frame = CGRectMake(0, 0, 200, 33);
             titleButton.titleLabel.numberOfLines = 2;
             titleButton.titleLabel.textAlignment = NSTextAlignmentCenter;
+            [titleButton addTarget:self action:@selector(showBlogSelector:) forControlEvents:UIControlEventTouchUpInside];
             
             self.navigationItem.titleView = titleButton;
         }
