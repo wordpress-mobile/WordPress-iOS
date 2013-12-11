@@ -132,13 +132,11 @@ NS_ENUM(NSUInteger, NotifcationCommentCellType){
     // start fetching the thread
     [self updateCommentThread];
     
-    if (IS_IOS7) {
-        // TODO : Redo this to use auto layout
-        // Need some extra space for status bar
-        CGRect replyBarFrame = self.replyNavigationBar.frame;
-        replyBarFrame.size.height += 20;
-        self.replyNavigationBar.frame = replyBarFrame;
-    }
+    // TODO : Redo this to use auto layout
+    // Need some extra space for status bar
+    CGRect replyBarFrame = self.replyNavigationBar.frame;
+    replyBarFrame.size.height += 20;
+    self.replyNavigationBar.frame = replyBarFrame;
     
 }
 
