@@ -1,7 +1,6 @@
 #import <UIKit/UIKit.h>
 #import <QuartzCore/QuartzCore.h>
-#import "WPKeyboardToolbar.h"
-#import "WPKeyboardToolbarWithoutGradient.h"
+#import "WPKeyboardToolbarBase.h"
 
 #define kSelectionsStatusContext ((void *)1000)
 #define kSelectionsCategoriesContext ((void *)2000)

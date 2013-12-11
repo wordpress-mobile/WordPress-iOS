@@ -53,11 +53,18 @@
     if ([composeButtonItem respondsToSelector:@selector(setTintColor:)]) {
         composeButtonItem.tintColor = [UIColor UIColorFromHex:0x333333];
     }
+
     UIImage *image = [UIImage imageNamed:@"icon-posts-add"];
     UIButton *button = [[UIButton alloc] initWithFrame:CGRectMake(0, 0, image.size.width, image.size.height)];
     [button setImage:image forState:UIControlStateNormal];
     [button addTarget:self action:@selector(showAddPostView) forControlEvents:UIControlEventTouchUpInside];
     composeButtonItem = [[UIBarButtonItem alloc] initWithCustomView:button];
+
+    // Account for 1 pixel header height
+    UIEdgeInsets tableInset = [self.tableView contentInset];
+    tableInset.top = -1;
+    self.tableView.contentInset = tableInset;
+
 
     [WPStyleGuide setRightBarButtonItemWithCorrectSpacing:composeButtonItem forNavigationItem:self.navigationItem];
     
