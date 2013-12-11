@@ -38,7 +38,8 @@ typedef enum {
 } ReaderDetailSection;
 
 
-@interface ReaderPostDetailViewController ()<UIActionSheetDelegate, MFMailComposeViewControllerDelegate, ReaderTextFormDelegate> {
+@interface ReaderPostDetailViewController ()<UIActionSheetDelegate, MFMailComposeViewControllerDelegate, ReaderTextFormDelegate, UIPopoverControllerDelegate> {
+    UIPopoverController *_popover;
 }
 
 @property (nonatomic, strong) ReaderPostView *postView;
@@ -417,7 +418,17 @@ typedef enum {
             return;
         [WPActivityDefaults trackActivityType:activityType withPrefix:@"ReaderDetail"];
     };
-    [self presentViewController:activityViewController animated:YES completion:nil];
+    if (IS_IPAD) {
+        if (_popover) {
+            [self dismissPopover];
+            return;
+        }
+        _popover = [[UIPopoverController alloc] initWithContentViewController:activityViewController];
+        _popover.delegate = self;
+        [_popover presentPopoverFromBarButtonItem:self.shareButton permittedArrowDirections:UIPopoverArrowDirectionAny animated:YES];
+    } else {
+        [self presentViewController:activityViewController animated:YES completion:nil];
+    }
 }
 
 - (void)handleDismissForm:(id)sender {
@@ -536,6 +547,17 @@ typedef enum {
     }
     
     return tabBarSize;
+}
+
+- (void)dismissPopover {
+    if (_popover) {
+        [_popover dismissPopoverAnimated:YES];
+        _popover = nil;
+    }
+}
+
+- (void)popoverControllerDidDismissPopover:(UIPopoverController *)popoverController {
+    _popover = nil;
 }
 
 - (void)handleKeyboardDidShow:(NSNotification *)notification {
