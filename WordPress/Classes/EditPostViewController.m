@@ -310,6 +310,8 @@ typedef NS_ENUM(NSInteger, EditPostViewControllerAlertTag) {
             
             if (blog) {
                 self.apost.blog = blog;
+                [[NSUserDefaults standardUserDefaults] setObject:blog.url forKey:EditPostViewControllerLastUsedBlogURL];
+                [[NSUserDefaults standardUserDefaults] synchronize];
             }
             
             [self refreshUIForCurrentPost];
