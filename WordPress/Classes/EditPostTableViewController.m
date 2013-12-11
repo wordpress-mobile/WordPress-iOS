@@ -370,7 +370,9 @@ CGFloat const EPTVCTextViewBottomPadding = 50.0f;
     tableHeaderView.frame = frame;
     self.tableView.tableHeaderView = tableHeaderView;
     
-    [self scrollCursorIntoViewIfNeeded];
+    if (_isShowingKeyboard) {
+        [self scrollCursorIntoViewIfNeeded];
+    }
 }
 
 - (void)scrollCursorIntoViewIfNeeded {
