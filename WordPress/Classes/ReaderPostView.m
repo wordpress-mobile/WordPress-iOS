@@ -29,13 +29,15 @@ const CGFloat RPVAuthorPadding = 8.0f;
 const CGFloat RPVHorizontalInnerPadding = 12.0f;
 const CGFloat RPVMetaViewHeight = 48.0f;
 const CGFloat RPVAuthorViewHeight = 32.0f;
-const CGFloat RPVVerticalPadding = 16.0f;
+const CGFloat RPVVerticalPadding = 14.0f;
 const CGFloat RPVAvatarSize = 32.0f;
 const CGFloat RPVBorderHeight = 1.0f;
 const CGFloat RPVSmallButtonLeftPadding = 2; // Follow, tag
 const CGFloat RPVMaxImageHeightPercentage = 0.59f;
-const CGFloat RPVLineHeightMultiple = 1.15f;
+const CGFloat RPVMaxSummaryHeight = 88.0f;
+const CGFloat RPVLineHeightMultiple = 1.10f;
 const CGFloat RPVFollowButtonWidth = 100.0f;
+const CGFloat RPVTitlePaddingBottom = 4.0f;
 
 // Control buttons (Like, Reblog, ...)
 const CGFloat RPVControlButtonHeight = 48.0f;
@@ -100,7 +102,7 @@ const CGFloat RPVControlButtonBorderSize = 0.0f;
     desiredHeight += RPVVerticalPadding;
     NSAttributedString *postTitle = [self titleAttributedStringForPost:post];
     desiredHeight += [postTitle boundingRectWithSize:CGSizeMake(contentWidth, CGFLOAT_MAX) options:NSStringDrawingUsesLineFragmentOrigin | NSStringDrawingUsesFontLeading context:nil].size.height;
-    desiredHeight += RPVVerticalPadding;
+    desiredHeight += RPVTitlePaddingBottom;
     
     // Post summary
     if ([post.summary length] > 0) {
@@ -223,8 +225,7 @@ const CGFloat RPVControlButtonBorderSize = 0.0f;
 	_titleLabel.attributedText = [ReaderPostView titleAttributedStringForPost:post];
     
     if (self.showFullContent) {
-        NSString *contentString = [NSString stringWithFormat:@"<p> </p>%@", self.post.content];
-        NSData *data = [contentString dataUsingEncoding:NSUTF8StringEncoding];
+        NSData *data = [self.post.content dataUsingEncoding:NSUTF8StringEncoding];
 		_textContentView.attributedString = [[NSAttributedString alloc] initWithHTMLData:data
                                                                                  options:[WPStyleGuide defaultDTCoreTextOptions]
                                                                       documentAttributes:nil];
@@ -302,6 +303,13 @@ const CGFloat RPVControlButtonBorderSize = 0.0f;
 
 - (void)buildPostContent {
 	self.cellImageView.contentMode = UIViewContentModeScaleAspectFill;
+    
+    // For the full view, allow the featured image to be tapped
+    if (self.showFullContent) {
+        UITapGestureRecognizer *imageTap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(featuredImageAction:)];
+        self.cellImageView.userInteractionEnabled = YES;
+        [self.cellImageView addGestureRecognizer:imageTap];
+    }
 	[self addSubview:self.cellImageView];
     
 	self.titleLabel = [[UILabel alloc] init];
@@ -454,7 +462,7 @@ const CGFloat RPVControlButtonBorderSize = 0.0f;
     nextY += RPVVerticalPadding;
 	height = ceil([_titleLabel suggestedSizeForWidth:innerContentWidth].height);
 	_titleLabel.frame = CGRectMake(RPVHorizontalInnerPadding, nextY, innerContentWidth, height);
-	nextY += height + RPVVerticalPadding;
+	nextY += height + RPVTitlePaddingBottom;
     
 	// Position the snippet / content
     if ([self.post.summary length] > 0) {
@@ -536,6 +544,13 @@ const CGFloat RPVControlButtonBorderSize = 0.0f;
 
 // Forward the actions to the delegate; do it this way instead of exposing buttons as properties
 // because the view can have dynamically generated buttons (e.g. links)
+
+- (void)featuredImageAction:(id)sender {
+    if ([self.delegate respondsToSelector:@selector(postView:didReceiveFeaturedImageAction:)]) {
+        [self.delegate postView:self didReceiveFeaturedImageAction:sender];
+    }
+}
+
 - (void)followAction:(id)sender {
     if ([self.delegate respondsToSelector:@selector(postView:didReceiveFollowAction:)]) {
         [self.delegate postView:self didReceiveFollowAction:sender];
@@ -637,23 +652,9 @@ const CGFloat RPVControlButtonBorderSize = 0.0f;
         
         // layout might have changed due to image sizes
         [self.textContentView relayoutText];
-        
-        [self updateLayout];
+        [self setNeedsLayout];
     }
 }
-
-- (void)updateLayout {
-	// Size the textContentView
-	CGRect frame = _textContentView.frame;
-	CGFloat height = [_textContentView suggestedFrameSizeToFitEntireStringConstraintedToWidth:frame.size.width].height;
-	frame.size.height = height;
-	_textContentView.frame = frame;
-	
-	frame = self.frame;
-	frame.size.height = height + _textContentView.frame.origin.y + 10.0f; // + bottom padding
-	self.frame = frame;
-}
-
 
 - (BOOL)updateMediaLayout:(ReaderMediaView *)imageView {
     BOOL frameChanged = NO;
@@ -723,6 +724,8 @@ const CGFloat RPVControlButtonBorderSize = 0.0f;
         [self.textContentView relayoutText];
         [self setNeedsLayout];
     }
+    
+    [self.delegate postViewDidLoadAllMedia:self];
 }
 
 #pragma mark - DTCoreAttributedTextContentView Delegate Methods

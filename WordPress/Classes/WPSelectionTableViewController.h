@@ -5,26 +5,18 @@ typedef enum _SelectionType {
     kCheckbox
 } WPSelectionType;
 
-@interface WPSelectionTableViewController : UIViewController <UITableViewDataSource, UITableViewDelegate> {
-    IBOutlet UITableView *tableView;
+@interface WPSelectionTableViewController : UIViewController <UITableViewDataSource, UITableViewDelegate>
 
-    NSArray *objects;
-    NSMutableArray *selectionStatusOfObjects, *originalSelObjects;
-    id selectionDelegate;
-    void *curContext;
-
-    int selectionType;
-    BOOL autoReturnInRadioSelectMode;
-}
-
+@property (nonatomic, weak) IBOutlet UITableView *tableView;
 @property (nonatomic, assign) BOOL autoReturnInRadioSelectMode;
 @property (nonatomic, strong) NSArray *objects;
-@property (nonatomic, strong) NSMutableArray *selectionStatusOfObjects;
-@property (nonatomic, strong) NSMutableArray *originalSelObjects;
+@property (nonatomic, strong) NSMutableArray *selectionStatusOfObjects, *originalSelObjects;
+@property (nonatomic, assign) void *curContext;
+@property (nonatomic, assign) NSInteger selectionType;
+@property (nonatomic, weak) id selectionDelegate;
 
 - (void)populateDataSource:(NSArray *)sourceObjects havingContext:(void *)context selectedObjects:(NSArray *)selObjects selectionType:(WPSelectionType)aType andDelegate:(id)delegate;
 
-- (NSArray *)selectedObjects;
 - (void *)curContext;
 - (BOOL)haveChanges;
 - (void)pushViewController:(UIViewController *)viewController animated:(BOOL)animated;
