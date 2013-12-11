@@ -302,24 +302,24 @@ typedef NS_ENUM(NSInteger, EditPostViewControllerAlertTag) {
             [self dismissViewControllerAnimated:YES completion:nil];
         }
     };
+
+    void (^selectedCompletion)(NSManagedObjectID *, BOOL) = ^(NSManagedObjectID *selectedObjectID, BOOL finished) {
+        if (finished) {
+            NSManagedObjectContext *context = [[ContextManager sharedInstance] mainContext];
+            Blog *blog = (Blog *)[context objectWithID:selectedObjectID];
+            
+            if (blog) {
+                self.apost.blog = blog;
+            }
+            
+            [self refreshUIForCurrentPost];
+            dismissHandler();
+        }
+    };
     
     BlogSelectorViewController *vc = [[BlogSelectorViewController alloc] initWithSelectedBlogObjectID:self.apost.blog.objectID
-                                                                                   selectedCompletion:^(NSManagedObjectID *selectedObjectID, BOOL finished) {
-                                                                                       if (finished) {
-                                                                                           NSManagedObjectContext *context = [[ContextManager sharedInstance] mainContext];
-                                                                                           Blog *blog = (Blog *)[context objectWithID:selectedObjectID];
-                                                                                           
-                                                                                           if (blog) {
-                                                                                               self.apost.blog = blog;
-                                                                                           }
-                                                                                           
-                                                                                           [self refreshUIForCurrentPost];
-                                                                                           dismissHandler();
-                                                                                       }
-                                                                                   }
-                                                                                     cancelCompletion:^{
-                                                                                         dismissHandler();
-                                                                                     }];
+                                                                                   selectedCompletion:selectedCompletion
+                                                                                     cancelCompletion:dismissHandler];
     vc.title = NSLocalizedString(@"My Blogs", @"");
     UINavigationController *navController = [[UINavigationController alloc] initWithRootViewController:vc];
     navController.navigationBar.translucent = NO;
