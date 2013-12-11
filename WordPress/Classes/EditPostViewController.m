@@ -23,10 +23,11 @@ NSString *const EditPostViewControllerLastUsedBlogURL = @"EditPostViewController
 NSString *const EditPostViewControllerDidAutosaveNotification = @"EditPostViewControllerDidAutosaveNotification";
 NSString *const EditPostViewControllerAutosaveDidFailNotification = @"EditPostViewControllerAutosaveDidFailNotification";
 
-@interface EditPostViewController ()
+@interface EditPostViewController () <UIPopoverControllerDelegate>
 
 @property (nonatomic, strong) WPAlertView *linkHelperAlertView;
 @property (nonatomic, assign) BOOL hasChangesToAutosave;
+@property (nonatomic, strong) UIPopoverController *blogSelectorPopover;
 
 @end
 
@@ -285,6 +286,19 @@ CGFloat const EditPostViewControllerTextViewOffset = 10.0;
 }
 
 - (IBAction)showBlogSelector:(id)sender {
+    if (IS_IPAD && self.blogSelectorPopover.isPopoverVisible) {
+        [self.blogSelectorPopover dismissPopoverAnimated:YES];
+        self.blogSelectorPopover = nil;
+    }
+    
+    void (^dismissHandler)() = ^(void) {
+        if (IS_IPAD) {
+            [self.blogSelectorPopover dismissPopoverAnimated:YES];
+        } else {
+            [self dismissViewControllerAnimated:YES completion:nil];
+        }
+    };
+    
     BlogSelectorViewController *vc = [[BlogSelectorViewController alloc] initWithSelectedBlogObjectID:self.apost.blog.objectID
                                                                                    selectedCompletion:^(NSManagedObjectID *selectedObjectID, BOOL finished) {
                                                                                        if (finished) {
@@ -296,19 +310,31 @@ CGFloat const EditPostViewControllerTextViewOffset = 10.0;
                                                                                            }
                                                                                            
                                                                                            [self refreshUIForCurrentPost];
-                                                                                           [self dismissViewControllerAnimated:YES completion:nil];
+                                                                                           dismissHandler();
                                                                                        }
                                                                                    }
                                                                                      cancelCompletion:^{
-                                                                                         [self dismissViewControllerAnimated:YES completion:nil];
+                                                                                         dismissHandler();
                                                                                      }];
     vc.title = NSLocalizedString(@"My Blogs", @"");
     UINavigationController *navController = [[UINavigationController alloc] initWithRootViewController:vc];
     navController.navigationBar.translucent = NO;
-    navController.modalPresentationStyle = UIModalPresentationPageSheet;
-    navController.modalTransitionStyle = UIModalTransitionStyleCoverVertical;
     
-    [self presentViewController:navController animated:YES completion:nil];
+    if (IS_IPAD) {
+        vc.preferredContentSize = CGSizeMake(320.0, 500);
+
+        CGRect titleRect = self.navigationItem.titleView.frame;
+        titleRect = [self.navigationController.view convertRect:titleRect fromView:self.navigationItem.titleView.superview];
+        
+        self.blogSelectorPopover = [[UIPopoverController alloc] initWithContentViewController:navController];
+        self.blogSelectorPopover.delegate = self;
+        [self.blogSelectorPopover presentPopoverFromRect:titleRect inView:self.navigationController.view permittedArrowDirections:UIPopoverArrowDirectionAny animated:YES];
+    } else {
+        navController.modalPresentationStyle = UIModalPresentationPageSheet;
+        navController.modalTransitionStyle = UIModalTransitionStyleCoverVertical;
+
+        [self presentViewController:navController animated:YES completion:nil];
+    }
 }
 
 - (IBAction)showSettings:(id)sender {
@@ -1146,6 +1172,18 @@ CGFloat const EditPostViewControllerTextViewOffset = 10.0;
     }
     editorToolbar.frame = frame;
 
+}
+
+#pragma mark - UIPopoverControllerDelegate methods
+
+- (void)popoverController:(UIPopoverController *)popoverController willRepositionPopoverToRect:(inout CGRect *)rect inView:(inout UIView **)view {
+    if (popoverController == self.blogSelectorPopover) {
+        CGRect titleRect = self.navigationItem.titleView.frame;
+        titleRect = [self.navigationController.view convertRect:titleRect fromView:self.navigationItem.titleView.superview];
+        
+        *view = self.navigationController.view;
+        *rect = titleRect;
+    }
 }
 
 #pragma mark - Media management
