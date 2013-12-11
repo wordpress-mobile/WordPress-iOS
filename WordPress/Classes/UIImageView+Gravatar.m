@@ -78,7 +78,7 @@ NSString *const GravatarDefault = @"gravatar.png";
 
 - (NSURL *)gravatarURLForEmail:(NSString *)email
 {
-    return [self gravatarURLForEmail:email withSize:[self sizeForGravatar]];
+    return [self gravatarURLForEmail:email withSize:[self sizeForGravatarDownload]];
 }
 
 - (NSURL *)gravatarURLForEmail:(NSString *)email withSize:(NSInteger)size
@@ -89,7 +89,7 @@ NSString *const GravatarDefault = @"gravatar.png";
 
 - (NSURL *)blavatarURLForHost:(NSString *)host
 {
-    return [self blavatarURLForHost:host withSize:[self sizeForBlavatar]];
+    return [self blavatarURLForHost:host withSize:[self sizeForBlavatarDownload]];
 }
 
 - (NSURL *)blavatarURLForHost:(NSString *)host withSize:(NSInteger)size
@@ -98,7 +98,7 @@ NSString *const GravatarDefault = @"gravatar.png";
     return [NSURL URLWithString:blavatarUrl];
 }
 
-- (NSInteger)sizeForGravatar
+- (NSInteger)sizeForGravatarDownload
 {
     NSInteger size = GravatarDefaultSize;
     if (!CGSizeEqualToSize(self.bounds.size, CGSizeZero)) {
@@ -110,7 +110,7 @@ NSString *const GravatarDefault = @"gravatar.png";
     return size;
 }
 
-- (NSInteger)sizeForBlavatar
+- (NSInteger)sizeForBlavatarDownload
 {
     NSInteger size = BlavatarDefaultSize;
     if (!CGSizeEqualToSize(self.bounds.size, CGSizeZero)) {
