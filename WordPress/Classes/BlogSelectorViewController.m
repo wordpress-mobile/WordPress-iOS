@@ -82,12 +82,7 @@ static CGFloat const blavatarImageSize = 50.f;
     
     [WPStyleGuide configureColorsForView:self.view andTableView:self.tableView];
  
-    // If we're inside of a UIPopoverController, use a standard cell
-    if (self.parentViewController && [self.parentViewController valueForKey:@"_popoverController"]) {
-        [self.tableView registerClass:[UITableViewCell class] forCellReuseIdentifier:BlogCellIdentifier];
-    } else {
-        [self.tableView registerClass:[WPTableViewCell class] forCellReuseIdentifier:BlogCellIdentifier];
-    }
+    [self.tableView registerClass:[WPTableViewCell class] forCellReuseIdentifier:BlogCellIdentifier];
 }
 
 - (void)viewWillAppear:(BOOL)animated {
