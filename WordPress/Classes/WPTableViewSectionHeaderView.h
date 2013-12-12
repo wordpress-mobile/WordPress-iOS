@@ -11,7 +11,11 @@
 @interface WPTableViewSectionHeaderView : UIView
 
 @property (nonatomic, strong) NSString *title;
-@property (nonatomic, assign) CGFloat leftMarginPercent;
+
+// By default, the title is flush left. Setting a fixed
+// width places the title flush left within the specified width.
+// Specified width must be greater than 0.
+@property (nonatomic, assign) CGFloat fixedWidth;
 
 + (CGFloat)heightForTitle:(NSString *)title andWidth:(CGFloat)width;
 

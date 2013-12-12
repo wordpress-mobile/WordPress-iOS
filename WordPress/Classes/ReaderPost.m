@@ -107,7 +107,7 @@ NSString *const ReaderExtrasArrayKey = @"ReaderExtrasArrayKey";
 }
 
 
-+ (void)syncPostsFromEndpoint:(NSString *)endpoint withArray:(NSArray *)arr withContext:(NSManagedObjectContext *)context success:(void (^)())success {
++ (void)syncPostsFromEndpoint:(NSString *)endpoint withArray:(NSArray *)arr success:(void (^)())success {
     WPFLogMethod();
     if (![arr isKindOfClass:[NSArray class]] || [arr count] == 0) {
 		if (success) {
@@ -321,6 +321,7 @@ NSString *const ReaderExtrasArrayKey = @"ReaderExtrasArrayKey";
         NSDictionary *tagDict = [[tagsDict allValues] objectAtIndex:0];
         self.primaryTagSlug = tagDict[@"slug"];
         self.primaryTagName = tagDict[@"name"];
+        self.primaryTagName = [self.primaryTagName stringByDecodingXMLCharacters];
     }
 }
 
@@ -406,6 +407,7 @@ NSString *const ReaderExtrasArrayKey = @"ReaderExtrasArrayKey";
     if ([primaryTagDict isKindOfClass:[NSDictionary class]]) {
         self.primaryTagSlug = [primaryTagDict stringForKey:@"slug"];
         self.primaryTagName = [primaryTagDict stringForKey:@"name"];
+        self.primaryTagName = [self.primaryTagName stringByDecodingXMLCharacters];
     } else if ([tagsDict count] > 0) {
         self.primaryTagSlug = [[tagsDict allKeys] objectAtIndex:0];
         self.primaryTagName = [tagsDict stringForKey:self.primaryTagSlug];
@@ -740,7 +742,12 @@ NSString *const ReaderExtrasArrayKey = @"ReaderExtrasArrayKey";
 	
 	NSString *path = @"reader/topics";
 	
-	[[WordPressComApi sharedApi] getPath:path parameters:nil success:success failure:failure];
+    // There should probably be a better check here
+    if ([[WPAccount defaultWordPressComAccount] restApi].authToken) {
+        [[WPAccount defaultWordPressComAccount].restApi getPath:path parameters:nil success:success failure:failure];
+    } else {
+        [[WordPressComApi anonymousApi] getPath:path parameters:nil success:success failure:failure];
+    }
 }
 
 
@@ -752,7 +759,11 @@ NSString *const ReaderExtrasArrayKey = @"ReaderExtrasArrayKey";
 	
 	NSString *path = [NSString stringWithFormat:@"sites/%@/posts/%i/replies", siteID, postID];
 	
-	[[WordPressComApi sharedApi] getPath:path parameters:params success:success failure:failure];
+    if ([[WPAccount defaultWordPressComAccount] restApi].authToken) {
+        [[WPAccount defaultWordPressComAccount].restApi getPath:path parameters:params success:nil failure:nil];
+    } else {
+        [[WordPressComApi anonymousApi] getPath:path parameters:params success:success failure:failure];
+    }
 }
 
 
@@ -762,15 +773,22 @@ NSString *const ReaderExtrasArrayKey = @"ReaderExtrasArrayKey";
 					 success:(WordPressComApiRestSuccessResponseBlock)success
 					 failure:(WordPressComApiRestSuccessFailureBlock)failure {
 	WPFLogMethod();
-	[[WordPressComApi sharedApi] getPath:path
+    
+    WordPressComApi *api;
+    if ([[WPAccount defaultWordPressComAccount] restApi].authToken) {
+        api = [[WPAccount defaultWordPressComAccount] restApi];
+    } else {
+        api = [WordPressComApi anonymousApi];
+    }
+    
+	[api getPath:path
 							  parameters:params
 								 success:^(AFHTTPRequestOperation *operation, id responseObject) {
 									 
 									 NSArray *postsArr = [responseObject arrayForKey:@"posts"];
-									 if (postsArr) {									 
+									 if (postsArr) {
 										 [ReaderPost syncPostsFromEndpoint:path
 																 withArray:postsArr
-															   withContext:[[ContextManager sharedInstance] mainContext]
 																   success:^{
 																	   if (success) {
 																		   success(operation, responseObject);

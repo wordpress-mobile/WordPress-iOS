@@ -11,33 +11,27 @@
 
 @implementation MediaObjectViewController
 
-@synthesize media, imageView, videoPlayer, deleteButton, insertButton, cancelButton, isDeleting, isInserting, appDelegate, toolbar;
-@synthesize scrollView;
-@synthesize currentActionSheet;
-
-#pragma mark -
-#pragma mark View lifecycle
-
 - (void)viewDidLoad {
     DDLogInfo(@"%@ %@", self, NSStringFromSelector(_cmd));
     [super viewDidLoad];
-	appDelegate = (WordPressAppDelegate *)[[UIApplication sharedApplication] delegate];
-	DDLogVerbose(@"media: %@", media);
+	_appDelegate = (WordPressAppDelegate *)[[UIApplication sharedApplication] delegate];
+	DDLogVerbose(@"media: %@", _media);
 	
-	if((media != nil) && ([media.mediaType isEqualToString:@"video"])) {
+	if((_media != nil) && ([_media.mediaType isEqualToString:@"video"])) {
 		self.navigationItem.title = NSLocalizedString(@"Video", @"");
-		videoPlayer = [[MPMoviePlayerController alloc] initWithContentURL:[NSURL fileURLWithPath:media.localURL]];
-		videoPlayer.view.frame = scrollView.frame;
-		videoPlayer.view.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
-		[self.view insertSubview:videoPlayer.view belowSubview:toolbar];
-		[scrollView removeFromSuperview];
-		[videoPlayer prepareToPlay];
+		MPMoviePlayerController *vp = [[MPMoviePlayerController alloc] initWithContentURL:[NSURL fileURLWithPath:_media.localURL]];
+        _videoPlayer = vp;
+		_videoPlayer.view.frame = _scrollView.frame;
+		_videoPlayer.view.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
+		[self.view insertSubview:_videoPlayer.view belowSubview:_toolbar];
+		[_scrollView removeFromSuperview];
+		[_videoPlayer prepareToPlay];
 	}
-	else if((media != nil) && ([media.mediaType isEqualToString:@"image"])) {
+	else if((_media != nil) && ([_media.mediaType isEqualToString:@"image"])) {
 		self.navigationItem.title = NSLocalizedString(@"Image", @"");
-		imageView.image = [UIImage imageWithContentsOfFile:media.localURL];
-		if((imageView.image == nil) && (media.remoteURL != nil)) {
-            [imageView setImageWithURL:[NSURL URLWithString:media.remoteURL]];
+		_imageView.image = [UIImage imageWithContentsOfFile:_media.localURL];
+		if((_imageView.image == nil) && (_media.remoteURL != nil)) {
+            [_imageView setImageWithURL:[NSURL URLWithString:_media.remoteURL]];
 		}
 	}
 	 
@@ -50,27 +44,26 @@
         UIToolbar *topToolbar = [[UIToolbar alloc] initWithFrame:CGRectMake(0.0f, 0.0f, self.view.frame.size.width, 44.0f)];
         topToolbar.autoresizingMask = UIViewAutoresizingFlexibleBottomMargin | UIViewAutoresizingFlexibleWidth;
         UIBarButtonItem *flex = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFlexibleSpace target:nil action:nil];
-        topToolbar.items = [NSArray arrayWithObjects:flex, cancelButton, nil];
+        topToolbar.items = [NSArray arrayWithObjects:flex, _cancelButton, nil];
         [self.view addSubview:topToolbar];
 	}
-    
-    if (IS_IOS7) {
-        self.toolbar.translucent = NO;
-        self.toolbar.barTintColor = [WPStyleGuide littleEddieGrey];
-        self.toolbar.tintColor = [UIColor whiteColor];
-        self.leftSpacer.width = 1.0;
-        self.rightSpacer.width = -8.0;
-    }
-    deleteButton.tintColor = [UIColor whiteColor];
-    cancelButton.tintColor = deleteButton.tintColor;
-    insertButton.tintColor = deleteButton.tintColor;
+ 
+    self.toolbar.translucent = NO;
+    self.toolbar.barTintColor = [WPStyleGuide littleEddieGrey];
+    self.toolbar.tintColor = [UIColor whiteColor];
+    self.leftSpacer.width = 1.0;
+    self.rightSpacer.width = -8.0;
+
+    _deleteButton.tintColor = [UIColor whiteColor];
+    _cancelButton.tintColor = _deleteButton.tintColor;
+    _insertButton.tintColor = _deleteButton.tintColor;
 }
 
 - (void)viewWillDisappear:(BOOL)animated {
     [super viewWillDisappear:animated];
     
-    if (videoPlayer && !videoPlayer.fullscreen) {
-        [videoPlayer stop];
+    if (_videoPlayer && !_videoPlayer.fullscreen) {
+        [_videoPlayer stop];
     }
 }
 
@@ -83,17 +76,17 @@
 #pragma mark UIScrollView delegate
 
 -(UIView *)viewForZoomingInScrollView:(UIScrollView *)scrollView {
-    return imageView;
+    return _imageView;
 }
 
 - (void)scrollViewDidZoom:(UIScrollView *)pScrollView {
-	CGRect innerFrame = imageView.frame;
+	CGRect innerFrame = _imageView.frame;
 	CGRect scrollerBounds = pScrollView.bounds;
 	
 	if ((innerFrame.size.width < scrollerBounds.size.width) || (innerFrame.size.height < scrollerBounds.size.height))
 	{
-		CGFloat tempx = imageView.center.x - ( scrollerBounds.size.width / 2 );
-		CGFloat tempy = imageView.center.y - ( scrollerBounds.size.height / 2 );
+		CGFloat tempx = _imageView.center.x - ( scrollerBounds.size.width / 2 );
+		CGFloat tempy = _imageView.center.y - ( scrollerBounds.size.height / 2 );
 		CGPoint myScrollViewOffset = CGPointMake( tempx, tempy);
 		
 		pScrollView.contentOffset = myScrollViewOffset;
@@ -121,11 +114,11 @@
 }
 
 - (void)actionSheet:(UIActionSheet *)actionSheet clickedButtonAtIndex:(NSInteger)buttonIndex {
-    if(isDeleting) {
+    if(_isDeleting) {
 		switch (buttonIndex) {
 			case 0:
-				[[NSNotificationCenter defaultCenter] postNotificationName:@"ShouldRemoveMedia" object:media];
-                [media remove];
+				[[NSNotificationCenter defaultCenter] postNotificationName:@"ShouldRemoveMedia" object:_media];
+                [_media remove];
 				if(IS_IPAD)
                     [self dismissViewControllerAnimated:YES completion:nil];
 				else
@@ -135,17 +128,17 @@
 				break;
 		}
 	}
-	else if(isInserting) {
+	else if(_isInserting) {
 		switch (buttonIndex) {
 			case 0:
-				[[NSNotificationCenter defaultCenter] postNotificationName:@"ShouldInsertMediaAbove" object:media];
+				[[NSNotificationCenter defaultCenter] postNotificationName:@"ShouldInsertMediaAbove" object:_media];
 				if(IS_IPAD)
                     [self dismissViewControllerAnimated:YES completion:nil];
 				else
 					[self.navigationController popViewControllerAnimated:YES];
 				break;
 			case 1:
-				[[NSNotificationCenter defaultCenter] postNotificationName:@"ShouldInsertMediaBelow" object:media];
+				[[NSNotificationCenter defaultCenter] postNotificationName:@"ShouldInsertMediaBelow" object:_media];
 				if(IS_IPAD)
                     [self dismissViewControllerAnimated:YES completion:nil];
 				else
@@ -161,12 +154,12 @@
 #pragma mark Custom methods
 
 - (IBAction)deleteObject:(id)sender {
-    if(currentActionSheet) return;
+    if(_currentActionSheet) return;
     
-	isDeleting = YES;
-	isInserting = NO;
+	_isDeleting = YES;
+	_isInserting = NO;
 	
-	NSString *titleString = [NSString stringWithFormat:NSLocalizedString(@"Delete %@?", @""), media.mediaTypeName];
+	NSString *titleString = [NSString stringWithFormat:NSLocalizedString(@"Delete %@?", @""), _media.mediaTypeName];
 	UIActionSheet *deleteActionSheet = [[UIActionSheet alloc] initWithTitle:titleString 
 																   delegate:self 
 														  cancelButtonTitle:NSLocalizedString(@"Cancel", @"") 
@@ -174,7 +167,7 @@
 														  otherButtonTitles:nil];
     
     if (IS_IPAD) {
-        [deleteActionSheet showFromBarButtonItem:deleteButton animated:YES];
+        [deleteActionSheet showFromBarButtonItem:_deleteButton animated:YES];
     } else {
         [deleteActionSheet showInView:self.view];
     }
@@ -182,19 +175,19 @@
 }
 
 - (IBAction)insertObject:(id)sender {
-    if (currentActionSheet) return;
+    if (_currentActionSheet) return;
     
-	isDeleting = NO;
-	isInserting = YES;
+	_isDeleting = NO;
+	_isInserting = YES;
 	
-	NSString *titleString = [NSString stringWithFormat:NSLocalizedString(@"Insert %@:", @""), media.mediaTypeName];
+	NSString *titleString = [NSString stringWithFormat:NSLocalizedString(@"Insert %@:", @""), _media.mediaTypeName];
 	UIActionSheet *insertActionSheet = [[UIActionSheet alloc] initWithTitle:titleString 
 																   delegate:self 
 														  cancelButtonTitle:NSLocalizedString(@"Cancel", @"") 
 													 destructiveButtonTitle:nil
 														  otherButtonTitles:NSLocalizedString(@"Above Content", @""), NSLocalizedString(@"Below Content", @""), nil];
     if (IS_IPAD) {
-        [insertActionSheet showFromBarButtonItem:insertButton animated:YES];
+        [insertActionSheet showFromBarButtonItem:_insertButton animated:YES];
     } else {
         [insertActionSheet showInView:self.view];
     }
