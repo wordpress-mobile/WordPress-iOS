@@ -503,9 +503,8 @@ typedef NS_ENUM(NSInteger, EditPostViewControllerAlertTag) {
     titleButton.titleLabel.textAlignment = NSTextAlignmentCenter;
     [titleButton addTarget:self action:@selector(showBlogSelector:) forControlEvents:UIControlEventTouchUpInside];
     
-    self.navigationItem.titleView = titleButton;
-    
     _titleBarButton = titleButton;
+    self.navigationItem.titleView = _titleBarButton;
 
     return _titleBarButton;
 }
