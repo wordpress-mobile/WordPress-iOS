@@ -10,4 +10,6 @@
 
 @interface InlineComposeToolbarView : UIView
 
+@property (nonatomic, weak) IBOutlet UIView *composerContainerView;
+
 @end
