@@ -227,7 +227,7 @@ CGFloat const EPVCTextViewTopPadding = 7.0f;
     UIBarButtonItem *rightFixedSpacer = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFixedSpace target:nil action:nil];
     UIBarButtonItem *centerFlexSpacer = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFlexibleSpace target:nil action:nil];
     
-    leftFixedSpacer.width = -5.0f;
+    leftFixedSpacer.width = -2.0f;
     rightFixedSpacer.width = -5.0f;
     
     self.toolbarItems = @[leftFixedSpacer, previewButton, centerFlexSpacer, photoButton, rightFixedSpacer];
@@ -455,7 +455,6 @@ CGFloat const EPVCTextViewTopPadding = 7.0f;
     if (indexPath.row == 0) {
         // Settings Cell
         cell.textLabel.text = NSLocalizedString(@"Options", @"Title of the Post Settings tableview cell in the Post Editor. Tapping shows settings and options related to the post being edited.");
-        cell.imageView.image = [UIImage imageNamed:@"icon-menu-settings"];
         cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
     }
     
