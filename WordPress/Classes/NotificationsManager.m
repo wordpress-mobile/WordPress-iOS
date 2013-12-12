@@ -19,6 +19,9 @@
 @implementation NotificationsManager
 
 + (void)registerForPushNotifications {
+#if TARGET_IPHONE_SIMULATOR
+    return;
+#endif
     if ([WPAccount defaultWordPressComAccount]) {
         [[UIApplication sharedApplication]
          registerForRemoteNotificationTypes:(UIRemoteNotificationTypeBadge |
