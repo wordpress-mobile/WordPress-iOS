@@ -17,33 +17,31 @@
 #import <QuartzCore/QuartzCore.h>
 #import "WPAccount.h"
 #import "WPToast.h"
+#import "Note.h"
 
-@interface NotificationsFollowDetailViewController ()
+@interface NotificationsFollowDetailViewController () <UITableViewDelegate, UITableViewDataSource>
 
 @property NSMutableArray *noteData;
 @property BOOL hasFooter;
-
-- (void)followBlog:(id)sender;
+@property (nonatomic, strong) Note *note;
+@property (nonatomic, weak) IBOutlet UITableView *tableView;
+@property (nonatomic, weak) IBOutlet UIView *postTitleView;
+@property (nonatomic, weak) IBOutlet UIImageView *postBlavatar;
+@property (nonatomic, weak) IBOutlet UILabel *postTitleLabel;
+@property (nonatomic, weak) IBOutlet UIButton *postTitleButton;
 
 @end
 
 @implementation NotificationsFollowDetailViewController
 
-- (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
+- (id)initWithNote:(Note *)note
 {
-    self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
+    self = [super init];
     if (self) {
-        // Custom initialization
-        self.title = NSLocalizedString(@"Notification", @"Title for notification detail view");
+        _note = note;
+        self.title = _note.subject;
     }
     return self;
-}
-
-- (void)setNote:(Note *)note {
-    if (note != _note) {
-        _note = note;
-    }
-    self.title = note.subject;
 }
 
 - (void)viewDidLoad

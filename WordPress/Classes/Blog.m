@@ -463,7 +463,7 @@
     [self.api enqueueHTTPRequestOperation:combinedOperation];
 }
 
-- (void)syncBlogPostsWithSuccess:(void (^)())success failure:(void (^)(NSError *error))failure {
+- (void)syncPostsAndMetadataWithSuccess:(void (^)())success failure:(void (^)(NSError *error))failure {
     WPXMLRPCRequestOperation *operation;
     NSMutableArray *operations = [NSMutableArray arrayWithCapacity:4];
     operation = [self operationForOptionsWithSuccess:nil failure:nil];

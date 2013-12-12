@@ -74,6 +74,14 @@ extern NSString * const WPAccountDefaultWordPressComAccountChangedNotification;
 */
 + (void)removeDefaultWordPressComAccount;
 
+/**
+ Removes the default WordPress.com account 
+ on the context of choice
+ 
+ @param context the NSManagedObjectContext
+ */
++ (void)removeDefaultWordPressComAccountWithContext:(NSManagedObjectContext *)context;
+
 ///-----------------------
 /// @name Account creation
 ///-----------------------

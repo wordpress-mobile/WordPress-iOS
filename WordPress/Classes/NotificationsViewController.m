@@ -204,8 +204,7 @@ NSString * const NotificationsJetpackInformationURL = @"http://jetpack.me/about/
             detailViewController.user = [[WPAccount defaultWordPressComAccount] restApi];
             [self.navigationController pushViewController:detailViewController animated:YES];
         } else {
-            NotificationsFollowDetailViewController *detailViewController = [[NotificationsFollowDetailViewController alloc] initWithNibName:@"NotificationsFollowDetailViewController" bundle:nil];
-            detailViewController.note = note;
+            NotificationsFollowDetailViewController *detailViewController = [[NotificationsFollowDetailViewController alloc] initWithNote:note];
             [self.navigationController pushViewController:detailViewController animated:YES];
         }
     } else {
@@ -269,12 +268,11 @@ NSString * const NotificationsJetpackInformationURL = @"http://jetpack.me/about/
     return [WPAccount defaultWordPressComAccount] != nil;
 }
 
-- (void)syncItemsViaUserInteractionWithSuccess:(void (^)())success failure:(void (^)(NSError *))failure {
-    [self pruneOldNotes];
-    [self syncItemsWithSuccess:success failure:failure];
-}
-
-- (void)syncItemsWithSuccess:(void (^)())success failure:(void (^)(NSError *error))failure {
+- (void)syncItemsViaUserInteraction:(BOOL)userInteraction success:(void (^)())success failure:(void (^)(NSError *error))failure {
+    if (userInteraction) {
+        [self pruneOldNotes];
+    }
+    
     NSNumber *timestamp;
     NSArray *notes = [self.resultsController fetchedObjects];
     if ([notes count] > 0) {
