@@ -96,7 +96,7 @@ CGFloat const EPVCTextViewTopPadding = 7.0f;
     [super viewDidLoad];
     
     // For the iPhone, let's let the overscroll background color be white to
-    // match the editor. 
+    // match the editor.
     if (IS_IPAD) {
         self.tableView.backgroundColor = [WPStyleGuide itsEverywhereGrey];
     }
@@ -423,6 +423,9 @@ CGFloat const EPVCTextViewTopPadding = 7.0f;
     
     // Translate the rect to the tableView
     rect = [self.tableView convertRect:rect fromView:_textView];
+    
+    // Add a line of padding to make sure the cursor never dips below the visible bounds
+    rect.size.height += ceil(EPVCTextViewBottomPadding / 2.0);
     
     // scroll the tableview to show the rect.
     [self.tableView scrollRectToVisible:rect animated:YES];
