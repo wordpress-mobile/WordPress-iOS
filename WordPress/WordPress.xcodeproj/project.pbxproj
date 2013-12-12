@@ -13,7 +13,6 @@
 		031663070FFB151A0045D052 /* PostTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 031663060FFB151A0045D052 /* PostTableViewCell.m */; };
 		031666AE0FFC3E130045D052 /* CommentTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 031666AD0FFC3E130045D052 /* CommentTableViewCell.m */; };
 		03958062100D6CFC00850742 /* WPLabel.m in Sources */ = {isa = PBXBuildFile; fileRef = 03958061100D6CFC00850742 /* WPLabel.m */; };
-		03B1E32B113DBDB300BBD1C6 /* EditPostViewController~ipad.xib in Resources */ = {isa = PBXBuildFile; fileRef = 03B1E32A113DBDB300BBD1C6 /* EditPostViewController~ipad.xib */; };
 		03CF21ED0FE9F0C3008AD538 /* NSString+Util.m in Sources */ = {isa = PBXBuildFile; fileRef = 03CF21EC0FE9F0C3008AD538 /* NSString+Util.m */; };
 		03EB54B5100FFB5C004E82CD /* gravatar.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 03EB54B4100FFB5C004E82CD /* gravatar.jpg */; };
 		067D911C15654CE79F0A4A29 /* libPods-WordPressTest.a in Frameworks */ = {isa = PBXBuildFile; fileRef = D4972215061A4C21AD2CD5B8 /* libPods-WordPressTest.a */; };
@@ -584,7 +583,6 @@
 		8524551717DE4DBE00D22F98 /* icon-chevron.png in Resources */ = {isa = PBXBuildFile; fileRef = 8524551517DE4DBE00D22F98 /* icon-chevron.png */; };
 		8524551817DE4DBE00D22F98 /* icon-chevron@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 8524551617DE4DBE00D22F98 /* icon-chevron@2x.png */; };
 		8525398B171761D9003F6B32 /* WPComLanguages.m in Sources */ = {isa = PBXBuildFile; fileRef = 8525398A171761D9003F6B32 /* WPComLanguages.m */; };
-		852F4E8617BDED9C005ED539 /* EditPostViewControlleriOS7~iphone.xib in Resources */ = {isa = PBXBuildFile; fileRef = 852F4E8517BDED9C005ED539 /* EditPostViewControlleriOS7~iphone.xib */; };
 		852F4E8C17BED193005ED539 /* PostSettingsSelectionViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 852F4E8B17BED193005ED539 /* PostSettingsSelectionViewController.m */; };
 		85325A2517BB0DF8008E87D1 /* icon-menu-viewsite@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 853259FD17BB0DF8008E87D1 /* icon-menu-viewsite@2x.png */; };
 		85325A2617BB0DF8008E87D1 /* icon-menu-viewsite.png in Resources */ = {isa = PBXBuildFile; fileRef = 853259FE17BB0DF8008E87D1 /* icon-menu-viewsite.png */; };
@@ -695,7 +693,6 @@
 		85AD6B1E17405889002CB896 /* WPNUXUtility.m in Sources */ = {isa = PBXBuildFile; fileRef = 85AD6B1D17405888002CB896 /* WPNUXUtility.m */; };
 		85B6F74F1742DA1E00CE7F3A /* WPNUXMainButton.m in Sources */ = {isa = PBXBuildFile; fileRef = 85B6F74E1742DA1D00CE7F3A /* WPNUXMainButton.m */; };
 		85B6F7521742DAE800CE7F3A /* WPNUXBackButton.m in Sources */ = {isa = PBXBuildFile; fileRef = 85B6F7511742DAE800CE7F3A /* WPNUXBackButton.m */; };
-		85C4195417C85330004DA0DA /* EditPostViewControlleriOS7~ipad.xib in Resources */ = {isa = PBXBuildFile; fileRef = 85C4195317C85330004DA0DA /* EditPostViewControlleriOS7~ipad.xib */; };
 		85C720B11730CEFA00460645 /* WPWalkthroughTextField.m in Sources */ = {isa = PBXBuildFile; fileRef = 85C720B01730CEFA00460645 /* WPWalkthroughTextField.m */; };
 		85C9172617CECAA6001ECEC3 /* icon-reader-topics-active.png in Resources */ = {isa = PBXBuildFile; fileRef = 85C9172217CECAA6001ECEC3 /* icon-reader-topics-active.png */; };
 		85C9172717CECAA6001ECEC3 /* icon-reader-topics-active@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 85C9172317CECAA6001ECEC3 /* icon-reader-topics-active@2x.png */; };
@@ -748,7 +745,6 @@
 		ACBAB6090E121CF700F38795 /* PostSettingsViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = ACBAB6080E121CF700F38795 /* PostSettingsViewController.xib */; };
 		ACBAB67D0E1247CC00F38795 /* PostPreviewViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = ACBAB67C0E1247CC00F38795 /* PostPreviewViewController.xib */; };
 		ACBAB6860E1247F700F38795 /* PostPreviewViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = ACBAB6850E1247F700F38795 /* PostPreviewViewController.m */; };
-		ACC156BB0E10D73100D6E1A0 /* EditPostViewController~iphone.xib in Resources */ = {isa = PBXBuildFile; fileRef = ACC156BA0E10D73100D6E1A0 /* EditPostViewController~iphone.xib */; };
 		ACC156CC0E10E67600D6E1A0 /* EditPostViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = ACC156CB0E10E67600D6E1A0 /* EditPostViewController.m */; };
 		C533CF350E6D3ADA000C3DE8 /* CommentsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = C533CF340E6D3ADA000C3DE8 /* CommentsViewController.m */; };
 		C545E0A21811B9880020844C /* ContextManager.m in Sources */ = {isa = PBXBuildFile; fileRef = C545E0A11811B9880020844C /* ContextManager.m */; };
@@ -1013,7 +1009,6 @@
 		031669580FFC81A20045D052 /* CommentsTableViewDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CommentsTableViewDelegate.h; sourceTree = "<group>"; };
 		03958060100D6CFC00850742 /* WPLabel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WPLabel.h; sourceTree = "<group>"; };
 		03958061100D6CFC00850742 /* WPLabel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WPLabel.m; sourceTree = "<group>"; };
-		03B1E32A113DBDB300BBD1C6 /* EditPostViewController~ipad.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = "EditPostViewController~ipad.xib"; path = "Resources-iPad/EditPostViewController~ipad.xib"; sourceTree = "<group>"; };
 		03CF21EB0FE9F0C3008AD538 /* NSString+Util.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSString+Util.h"; sourceTree = "<group>"; };
 		03CF21EC0FE9F0C3008AD538 /* NSString+Util.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSString+Util.m"; sourceTree = "<group>"; };
 		03EB54B4100FFB5C004E82CD /* gravatar.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; name = gravatar.jpg; path = Resources/Images/gravatar.jpg; sourceTree = "<group>"; };
@@ -1668,7 +1663,6 @@
 		85253989171761D9003F6B32 /* WPComLanguages.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WPComLanguages.h; sourceTree = "<group>"; };
 		8525398A171761D9003F6B32 /* WPComLanguages.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WPComLanguages.m; sourceTree = "<group>"; };
 		8527B15717CE98C5001CBA2E /* Accelerate.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Accelerate.framework; path = System/Library/Frameworks/Accelerate.framework; sourceTree = SDKROOT; };
-		852F4E8517BDED9C005ED539 /* EditPostViewControlleriOS7~iphone.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = "EditPostViewControlleriOS7~iphone.xib"; path = "Resources/EditPostViewControlleriOS7~iphone.xib"; sourceTree = "<group>"; };
 		852F4E8A17BED193005ED539 /* PostSettingsSelectionViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PostSettingsSelectionViewController.h; sourceTree = "<group>"; };
 		852F4E8B17BED193005ED539 /* PostSettingsSelectionViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PostSettingsSelectionViewController.m; sourceTree = "<group>"; };
 		853259FD17BB0DF8008E87D1 /* icon-menu-viewsite@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "icon-menu-viewsite@2x.png"; sourceTree = "<group>"; };
@@ -1794,7 +1788,6 @@
 		85B6F74E1742DA1D00CE7F3A /* WPNUXMainButton.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WPNUXMainButton.m; sourceTree = "<group>"; };
 		85B6F7501742DAE800CE7F3A /* WPNUXBackButton.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WPNUXBackButton.h; sourceTree = "<group>"; };
 		85B6F7511742DAE800CE7F3A /* WPNUXBackButton.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WPNUXBackButton.m; sourceTree = "<group>"; };
-		85C4195317C85330004DA0DA /* EditPostViewControlleriOS7~ipad.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = "EditPostViewControlleriOS7~ipad.xib"; sourceTree = "<group>"; };
 		85C720AF1730CEFA00460645 /* WPWalkthroughTextField.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WPWalkthroughTextField.h; sourceTree = "<group>"; };
 		85C720B01730CEFA00460645 /* WPWalkthroughTextField.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WPWalkthroughTextField.m; sourceTree = "<group>"; };
 		85C9172217CECAA6001ECEC3 /* icon-reader-topics-active.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "icon-reader-topics-active.png"; sourceTree = "<group>"; };
@@ -1868,7 +1861,6 @@
 		ACBAB67C0E1247CC00F38795 /* PostPreviewViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = PostPreviewViewController.xib; path = Resources/PostPreviewViewController.xib; sourceTree = "<group>"; };
 		ACBAB6840E1247F700F38795 /* PostPreviewViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PostPreviewViewController.h; sourceTree = "<group>"; };
 		ACBAB6850E1247F700F38795 /* PostPreviewViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PostPreviewViewController.m; sourceTree = "<group>"; };
-		ACC156BA0E10D73100D6E1A0 /* EditPostViewController~iphone.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = "EditPostViewController~iphone.xib"; path = "Resources/EditPostViewController~iphone.xib"; sourceTree = "<group>"; };
 		ACC156CA0E10E67600D6E1A0 /* EditPostViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EditPostViewController.h; sourceTree = "<group>"; };
 		ACC156CB0E10E67600D6E1A0 /* EditPostViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EditPostViewController.m; sourceTree = "<group>"; };
 		BB0E95DCE0724D3696D9F222 /* Pods-WordPressTest.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-WordPressTest.xcconfig"; path = "../Pods/Pods-WordPressTest.xcconfig"; sourceTree = SOURCE_ROOT; };
@@ -2915,7 +2907,6 @@
 			isa = PBXGroup;
 			children = (
 				E1497BBF12CCA92F0022BCD9 /* PostViewController-iPad.xib */,
-				03B1E32A113DBDB300BBD1C6 /* EditPostViewController~ipad.xib */,
 			);
 			name = Posts;
 			sourceTree = "<group>";
@@ -3032,7 +3023,6 @@
 				859743A917D6F06E009DCDCA /* icon-posts-share@2x.png */,
 				8599658817DA9438005F84EB /* icon-info-message.png */,
 				8599658917DA9438005F84EB /* icon-info-message@2x.png */,
-				852F4E8517BDED9C005ED539 /* EditPostViewControlleriOS7~iphone.xib */,
 				853FAC4D17CF1F35008A2F74 /* transparent-point.png */,
 				8524551517DE4DBE00D22F98 /* icon-chevron.png */,
 				8524551617DE4DBE00D22F98 /* icon-chevron@2x.png */,
@@ -3165,7 +3155,6 @@
 		85C4195217C85310004DA0DA /* iOS7 */ = {
 			isa = PBXGroup;
 			children = (
-				85C4195317C85330004DA0DA /* EditPostViewControlleriOS7~ipad.xib */,
 			);
 			name = iOS7;
 			sourceTree = "<group>";
@@ -3700,7 +3689,6 @@
 			children = (
 				ACBAB67C0E1247CC00F38795 /* PostPreviewViewController.xib */,
 				ACBAB6080E121CF700F38795 /* PostSettingsViewController.xib */,
-				ACC156BA0E10D73100D6E1A0 /* EditPostViewController~iphone.xib */,
 				E13FA0CB134BDCBB007DCDD0 /* QuickPhotoViewController.xib */,
 			);
 			name = Post;
@@ -4219,7 +4207,6 @@
 			buildActionMask = 2147483647;
 			files = (
 				28AD73600D9D9599002E5188 /* MainWindow.xib in Resources */,
-				ACC156BB0E10D73100D6E1A0 /* EditPostViewController~iphone.xib in Resources */,
 				ACBAB6090E121CF700F38795 /* PostSettingsViewController.xib in Resources */,
 				ACBAB67D0E1247CC00F38795 /* PostPreviewViewController.xib in Resources */,
 				30EEBB971851B0A30099FB6C /* icon_format_link@2x.png in Resources */,
@@ -4231,7 +4218,6 @@
 				A01C55480E25E0D000D411F2 /* defaultPostTemplate.html in Resources */,
 				85325A3C17BB0DF8008E87D1 /* icon-menu-posts-quickphoto.png in Resources */,
 				2FAE97090E33B21600CA8540 /* defaultPostTemplate_old.html in Resources */,
-				852F4E8617BDED9C005ED539 /* EditPostViewControlleriOS7~iphone.xib in Resources */,
 				2FAE970A0E33B21600CA8540 /* license.txt in Resources */,
 				2FAE970C0E33B21600CA8540 /* xhtml1-transitional.dtd in Resources */,
 				2FAE970D0E33B21600CA8540 /* xhtmlValidatorTemplate.xhtml in Resources */,
@@ -4253,7 +4239,6 @@
 				83A646AB112C63E5000999A6 /* help.png in Resources */,
 				837576C511305C67002EAA27 /* hasLocation.png in Resources */,
 				45C73C25113C36F70024D0D2 /* MainWindow-iPad.xib in Resources */,
-				03B1E32B113DBDB300BBD1C6 /* EditPostViewController~ipad.xib in Resources */,
 				4526DC551148072F0090C99D /* Default-Portrait.png in Resources */,
 				4526DC561148072F0090C99D /* Default-Landscape.png in Resources */,
 				8398EE9A11ACE63C000FE6E0 /* WebSignupViewController.xib in Resources */,
@@ -4604,7 +4589,6 @@
 				E2334151182DB97000A4CC40 /* icon-jetpack.png in Resources */,
 				E14F780015AFA17300D4981B /* navbar_primary_button_bg_active.png in Resources */,
 				30F0264815AFAA13006C2163 /* navbar_primary_button_bg.png in Resources */,
-				85C4195417C85330004DA0DA /* EditPostViewControlleriOS7~ipad.xib in Resources */,
 				30F0264A15AFAAA7006C2163 /* navbar_button_bg_active.png in Resources */,
 				30B5532915AFB1AB00077318 /* navbar_back_button_bg_active.png in Resources */,
 				30B5532D15AFBB7000077318 /* toolbar_actions.png in Resources */,
