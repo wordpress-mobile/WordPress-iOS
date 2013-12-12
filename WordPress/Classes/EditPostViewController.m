@@ -95,7 +95,11 @@ CGFloat const EPVCTextViewTopPadding = 7.0f;
     WPFLogMethod();
     [super viewDidLoad];
     
-    self.tableView.backgroundColor = [WPStyleGuide itsEverywhereGrey];
+    // For the iPhone, let's let the overscroll background color be white to
+    // match the editor. 
+    if (IS_IPAD) {
+        self.tableView.backgroundColor = [WPStyleGuide itsEverywhereGrey];
+    }
     self.tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
     
     [self setupNavbar];
