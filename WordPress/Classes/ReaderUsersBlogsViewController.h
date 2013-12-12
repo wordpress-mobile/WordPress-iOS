@@ -8,16 +8,12 @@
 
 #import <UIKit/UIKit.h>
 
-@protocol ReaderUsersBlogsDelegate;
-
-@interface ReaderUsersBlogsViewController : UIViewController
-
-@property (nonatomic, weak) id<ReaderUsersBlogsDelegate>delegate;
-
-@end
+@class Blog;
 
 @protocol ReaderUsersBlogsDelegate <NSObject>
+- (void)userDidSelectBlog:(Blog *)blog;
+@end
 
-- (void)userDidSelectBlog:(NSDictionary *)blog;
-
+@interface ReaderUsersBlogsViewController : UIViewController
+@property (nonatomic, weak) id<ReaderUsersBlogsDelegate>delegate;
 @end
