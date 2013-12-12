@@ -13,6 +13,8 @@
 #import "UITableViewTextFieldCell.h"
 #import "WPAlertView.h"
 
+#define kSelectionsStatusContext ((void *)1000)
+#define kSelectionsCategoriesContext ((void *)2000)
 #define kPasswordFooterSectionHeight        68.0f
 #define kResizePhotoSettingSectionHeight    60.0f
 #define TAG_PICKER_STATUS                   0
