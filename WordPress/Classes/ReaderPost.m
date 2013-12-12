@@ -191,6 +191,19 @@ NSString *const ReaderExtrasArrayKey = @"ReaderExtrasArrayKey";
 		postID = [dict numberForKey:@"feed_item_id"];
 		siteID = [dict numberForKey:@"feed_id"];
 	}
+    
+    // single reader post loaded from wordpress://viewpost handler
+    if ([dict valueForKey:@"meta"]) {
+        NSDictionary *meta_root = [dict objectForKey:@"meta"];
+        NSDictionary *meta_data = [meta_root objectForKey:@"data"];
+        NSDictionary *meta_site = [meta_data objectForKey:@"site"];
+        
+        // hardcode blog_site_id to 1 for now because only WordPress.com and Jetpack blogs will
+        // return from the endpoint anyway. this should be changed to data from the API once the
+        // API returns the data.
+        blogSiteID = @1;
+        siteID = [meta_site numberForKey:@"ID"];
+    };
 
 	NSFetchRequest *request = [NSFetchRequest fetchRequestWithEntityName:@"ReaderPost"];
     request.predicate = [NSPredicate predicateWithFormat:@"(postID = %@) AND (siteID = %@) AND (blogSiteID = %@) AND (endpoint = %@)", postID, siteID, blogSiteID, endpoint];
@@ -284,6 +297,14 @@ NSString *const ReaderExtrasArrayKey = @"ReaderExtrasArrayKey";
 		self.sortDate = [DateUtils dateFromISOString:[dict objectForKey:@"date"]];
 	}
 	
+    if ([dict valueForKey:@"meta"]) {
+        NSDictionary *meta_root = [dict objectForKey:@"meta"];
+        NSDictionary *meta_data = [meta_root objectForKey:@"data"];
+        NSDictionary *meta_site = [meta_data objectForKey:@"site"];
+        
+        self.blogName = [[meta_site stringForKey:@"name"] stringByDecodingXMLCharacters];
+    };
+    
 	NSDictionary *author = [dict objectForKey:@"author"];
 	self.author = [author stringForKey:@"name"];
 	self.authorURL = [author stringForKey:@"URL"];
