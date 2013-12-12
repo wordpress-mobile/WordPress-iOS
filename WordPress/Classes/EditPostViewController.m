@@ -23,6 +23,7 @@ CGFloat const EPVCNavbarHeight = 44.0f;
 CGFloat const EPVCStandardOffset = 15.0;
 CGFloat const EPVCTextViewOffset = 10.0;
 CGFloat const EPVCTextViewBottomPadding = 50.0f;
+CGFloat const EPVCTextViewTopPadding = 7.0f;
 
 @interface EditPostViewController ()<UIPopoverControllerDelegate>
 
@@ -296,7 +297,7 @@ CGFloat const EPVCTextViewBottomPadding = 50.0f;
     // Shows the post body.
     // Height should never be smaller than what is required to display its text.
     if (!_textView) {
-        y = CGRectGetMaxY(_separatorView.frame);
+        y = CGRectGetMaxY(_separatorView.frame) + EPVCTextViewTopPadding;
         CGFloat height = minHeight - EPVCTextfieldHeight;
         width = CGRectGetWidth(_tableHeaderViewContentView.frame);
         // Let x == 0.0f because the textView has its own inset margins.
@@ -381,7 +382,7 @@ CGFloat const EPVCTextViewBottomPadding = 50.0f;
 }
 
 - (CGFloat)heightForTableHeaderView {
-    CGFloat height = CGRectGetMaxY(_separatorView.frame);
+    CGFloat height = _textView.frame.origin.y;
     height += [self heightForTextView];
     return height;
 }
