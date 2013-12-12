@@ -103,7 +103,6 @@ NS_ENUM(NSUInteger, NotifcationCommentCellType){
     [self.tableView registerClass:[NoteCommentContentCell class] forCellReuseIdentifier:NoteCommentContentCellIdentifiter];
     [self.tableView registerClass:[NoteCommentLoadingCell class] forCellReuseIdentifier:NoteCommentLoadingCellIdentifiter];
     
-    
     // create the reply field
     CGRect replyFrame = self.tableView.bounds;
     replyFrame.size.height = 48.f;
@@ -137,7 +136,6 @@ NS_ENUM(NSUInteger, NotifcationCommentCellType){
     CGRect replyBarFrame = self.replyNavigationBar.frame;
     replyBarFrame.size.height += 20;
     self.replyNavigationBar.frame = replyBarFrame;
-    
 }
 
 - (void)displayNote {
@@ -253,7 +251,6 @@ NS_ENUM(NSUInteger, NotifcationCommentCellType){
     self.commentActions = indexedActions;
     
     DDLogVerbose(@"available actions: %@", indexedActions);
-    
 }
 
 - (UIBarButtonItem *)barButtonItemWithImageNamed:(NSString *)image andAction:(SEL)action {
@@ -385,26 +382,6 @@ NS_ENUM(NSUInteger, NotifcationCommentCellType){
         button.enabled = YES;
         DDLogVerbose(@"[Rest API] ! %@", [error localizedDescription]);
     }];
-  
-    /*
-    NSString *toastMessage = @"";
-    if (button.tag == APPROVE_BUTTON_TAG) {
-        toastMessage = NSLocalizedString(@"Approving...", @"");
-    } else if (button.tag == UNAPPROVE_BUTTON_TAG) {
-        toastMessage = NSLocalizedString(@"Unapproving...", @"User replied to a comment");
-    } else if (button.tag == TRASH_BUTTON_TAG){
-        toastMessage = NSLocalizedString(@"Trashing...", @"User replied to a comment");
-    } else if (button.tag == UNTRASH_BUTTON_TAG){
-        toastMessage = NSLocalizedString(@"Untrashing...", @"User replied to a comment");
-    } else if (button.tag == SPAM_BUTTON_TAG){
-        toastMessage = NSLocalizedString(@"Spamming...", @"User replied to a comment");
-    } else if (button.tag == UNSPAM_BUTTON_TAG){
-        toastMessage = NSLocalizedString(@"Unspamming...", @"User replied to a comment");
-    }
-    
-    [WPToast showToastWithMessage:toastMessage
-                         andImage:[UIImage imageNamed:@"action_icon_followed"]];
-     */
 }
 
 - (void)startReply:(id)sender {
@@ -455,7 +432,6 @@ NS_ENUM(NSUInteger, NotifcationCommentCellType){
 }
 
 - (void)resetReplyView {
-
     [UIView animateWithDuration:0.2f animations:^{
         if (![self replyTextViewHasText]) {
             self.replyPlaceholder.hidden = NO;

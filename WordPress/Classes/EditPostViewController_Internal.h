@@ -23,9 +23,9 @@ extern NSString *const EditPostViewControllerAutosaveDidFailNotification;
 @property (nonatomic, strong) AbstractPost *apost;
 @property (readonly) BOOL hasChanges;
 
-@property (nonatomic, strong) IBOutlet UIToolbar *toolbar;
-@property (nonatomic, strong) IBOutlet UIBarButtonItem *photoButton;
-@property (nonatomic, strong) IBOutlet UIBarButtonItem *settingsButton;
+@property (nonatomic, weak) IBOutlet UIToolbar *toolbar;
+@property (nonatomic, weak) IBOutlet UIBarButtonItem *photoButton;
+@property (nonatomic, weak) IBOutlet UIBarButtonItem *settingsButton;
 
 - (BOOL)autosaveRemoteWithSuccess:(void (^)())success failure:(void (^)(NSError *error))failure;
 - (void)refreshButtons;
