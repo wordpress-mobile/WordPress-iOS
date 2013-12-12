@@ -186,7 +186,7 @@ CGFloat const EPVCTextViewBottomPadding = 50.0f;
             titleButton.frame = CGRectMake(0, 0, 200, 33);
             titleButton.titleLabel.numberOfLines = 2;
             titleButton.titleLabel.textAlignment = NSTextAlignmentCenter;
-            [titleButton addTarget:self action:@selector(showBlogSelector:) forControlEvents:UIControlEventTouchUpInside];
+            [titleButton addTarget:self action:@selector(showBlogSelector) forControlEvents:UIControlEventTouchUpInside];
             
             self.navigationItem.titleView = titleButton;
         }
