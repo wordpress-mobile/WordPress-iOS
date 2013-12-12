@@ -348,17 +348,19 @@ CGFloat const EPVCTextViewBottomPadding = 50.0f;
 }
 
 - (CGFloat)heightForTextView {
-    // The minHeight is the height of the table view minus the title text view and settings cell.
+    // The minHeight is the height of the table view minus the title text view
     // We also have to account for the toolbar if the tableView has not yet been
     // added to the app's key window.
     CGFloat minHeight = self.view.frame.size.height;
-    minHeight -= (EPVCCellHeight + EPVCTextfieldHeight);
+    minHeight -= EPVCTextfieldHeight;
     if (!self.tableView.window) {
         minHeight -= EPVCToolbarHeight;
     }
     
     if (_isShowingKeyboard) {
         minHeight -= self.tableView.contentInset.bottom;
+    } else {
+        minHeight -= EPVCCellHeight; // Show the settings cell if the keyboard is not showing.
     }
     
     CGFloat width = _textView.frame.size.width;
