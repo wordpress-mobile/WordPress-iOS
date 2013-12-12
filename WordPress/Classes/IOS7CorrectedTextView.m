@@ -16,12 +16,9 @@
 
 - (CGRect)firstRectForRange:(UITextRange *)range
 {
-    if (IS_IOS7) {
-        CGRect r1= [self caretRectForPosition:[self positionWithinRange:range farthestInDirection:UITextLayoutDirectionRight]];
-        CGRect r2= [self caretRectForPosition:[self positionWithinRange:range farthestInDirection:UITextLayoutDirectionLeft]];
-        return CGRectUnion(r1,r2);
-    }
-    return [super firstRectForRange:range];
+    CGRect r1= [self caretRectForPosition:[self positionWithinRange:range farthestInDirection:UITextLayoutDirectionRight]];
+    CGRect r2= [self caretRectForPosition:[self positionWithinRange:range farthestInDirection:UITextLayoutDirectionLeft]];
+    return CGRectUnion(r1,r2);
 }
 
 - (NSUInteger)characterIndexForPoint:(CGPoint)point
@@ -52,13 +49,10 @@
 
 - (UITextPosition *)closestPositionToPoint:(CGPoint)point
 {
-    if (IS_IOS7) {
-        point.y -= self.font.lineHeight/2;
-        NSUInteger index = [self characterIndexForPoint:point];
-        UITextPosition *pos = [self positionFromPosition:self.beginningOfDocument offset:index];
-        return pos;
-    }
-    return [super closestPositionToPoint:point];
+    point.y -= self.font.lineHeight/2;
+    NSUInteger index = [self characterIndexForPoint:point];
+    UITextPosition *pos = [self positionFromPosition:self.beginningOfDocument offset:index];
+    return pos;
 }
 
 - (void)scrollRangeToVisible:(NSRange)range

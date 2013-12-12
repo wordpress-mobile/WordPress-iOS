@@ -77,11 +77,7 @@ CGFloat const CommentViewUnapproveButtonTag = 701;
     UIBarButtonItem *flexibleSpace = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFlexibleSpace target:nil action:nil];
     [self setToolbarItems:@[_trashButton, flexibleSpace, _approveButton, flexibleSpace, _spamButton, flexibleSpace, _editButton, flexibleSpace, _replyButton] animated:NO];
     
-    if (IS_IOS7) {
-        self.navigationController.toolbar.barTintColor = [WPStyleGuide littleEddieGrey];
-    } else {
-        [self hideWebviewShadowForiOS6];
-    }
+    self.navigationController.toolbar.barTintColor = [WPStyleGuide littleEddieGrey];
 
     UITapGestureRecognizer *gestureRecognizer = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(tappedPostTitle)];
     gestureRecognizer.numberOfTapsRequired = 1;
@@ -258,22 +254,6 @@ CGFloat const CommentViewUnapproveButtonTag = 701;
 - (void)discard {
     _replyToCommentViewController.navigationItem.rightBarButtonItem = nil;
 	[self dismissEditViewController];
-}
-
-- (void)hideWebviewShadowForiOS6
-{
-    // From http://stackoverflow.com/a/4167060
-    for (UIView* subView in [self.commentWebview subviews])
-    {
-        if ([subView isKindOfClass:[UIScrollView class]]) {
-            for (UIView* shadowView in [subView subviews])
-            {
-                if ([shadowView isKindOfClass:[UIImageView class]]) {
-                    [shadowView setHidden:YES];
-                }
-            }
-        }
-    }
 }
 
 
