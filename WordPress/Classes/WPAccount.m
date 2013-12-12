@@ -97,42 +97,42 @@ NSString * const WPAccountDefaultWordPressComAccountChangedNotification = @"WPAc
 }
 
 + (void)removeDefaultWordPressComAccountWithContext:(NSManagedObjectContext *)context {
-    WPAccount *defaultAccount = __defaultDotcomAccount;
-    if (!defaultAccount) {
+    if (!__defaultDotcomAccount) {
         return;
     }
+    
+    [NotificationsManager unregisterDeviceToken];
+    
+    [[NSUserDefaults standardUserDefaults] removeObjectForKey:DefaultDotcomAccountDefaultsKey];
+    NSManagedObjectID *accountObjectID = __defaultDotcomAccount.objectID;
+    __defaultDotcomAccount = nil;
+    
     [context performBlock:^{
-        WPAccount *account = (WPAccount *)[context objectWithID:defaultAccount.objectID];
+        WPAccount *account = (WPAccount *)[context objectWithID:accountObjectID];
         [context deleteObject:account];
         [[ContextManager sharedInstance] saveContext:context];
     }];
-    __defaultDotcomAccount = nil;
 }
 
 - (void)prepareForDeletion {
-    // Invoked automatically by the Core Data framework when the receiver is about to be deleted.
-    if (__defaultDotcomAccount == self) {
-        [[self restApi] cancelAllHTTPOperationsWithMethod:nil path:nil];
-        [[self restApi] reset];
-        
-        // Clear keychain entries
-        NSError *error;
-        [SFHFKeychainUtils deleteItemForUsername:self.username andServiceName:@"WordPress.com" error:&error];
-        [SFHFKeychainUtils deleteItemForUsername:self.username andServiceName:WordPressComOAuthKeychainServiceName error:&error];
-        self.password = nil;
-        self.authToken = nil;
-        
-        [WordPressAppDelegate sharedWordPressApplicationDelegate].isWPcomAuthenticated = NO;
-        
-        [[NSUserDefaults standardUserDefaults] removeObjectForKey:@"wpcom_username_preference"];
-        [[NSUserDefaults standardUserDefaults] removeObjectForKey:DefaultDotcomAccountDefaultsKey];
-        [[NSUserDefaults standardUserDefaults] synchronize];
-        
+    [[self restApi] cancelAllHTTPOperationsWithMethod:nil path:nil];
+    [[self restApi] reset];
+
+    // Clear keychain entries
+    NSError *error;
+    [SFHFKeychainUtils deleteItemForUsername:self.username andServiceName:@"WordPress.com" error:&error];
+    [SFHFKeychainUtils deleteItemForUsername:self.username andServiceName:WordPressComOAuthKeychainServiceName error:&error];
+    self.password = nil;
+    self.authToken = nil;
+
+    [WordPressAppDelegate sharedWordPressApplicationDelegate].isWPcomAuthenticated = NO;
+
+    [[NSUserDefaults standardUserDefaults] removeObjectForKey:@"wpcom_username_preference"];
+    [[NSUserDefaults standardUserDefaults] synchronize];
+
+    dispatch_async(dispatch_get_main_queue(), ^{
         [[NSNotificationCenter defaultCenter] postNotificationName:WPAccountDefaultWordPressComAccountChangedNotification object:nil];
-        [NotificationsManager unregisterDeviceToken];
-        
-        __defaultDotcomAccount = nil;
-    }
+    });
 }
 
 
