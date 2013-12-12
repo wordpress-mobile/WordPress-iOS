@@ -139,21 +139,6 @@ CGFloat const blavatarImageViewSize = 43.f;
     [self dismissViewControllerAnimated:YES completion:nil];
 }
 
-- (void)maskImageView:(UIImageView *)imageView corner:(UIRectCorner)corner {
-    if (IS_IOS7) {
-        // We don't want this effect in iOS7
-        return;
-    }
-    
-    CGRect frame = CGRectMake(0.0, 0.0, 43.0, 43.0);
-    UIBezierPath *path = [UIBezierPath bezierPathWithRoundedRect:frame
-                                               byRoundingCorners:corner cornerRadii:CGSizeMake(7.0f, 7.0f)];
-    CAShapeLayer *maskLayer = [CAShapeLayer layer];
-    maskLayer.frame = frame;
-    maskLayer.path = path.CGPath;
-    imageView.layer.mask = maskLayer;
-}
-
 - (BOOL)supportsNotifications {
     return nil != [[NSUserDefaults standardUserDefaults] objectForKey:kApnsDeviceTokenPrefKey];
 }

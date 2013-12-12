@@ -453,11 +453,7 @@ typedef NS_ENUM(NSInteger, EditPostViewControllerAlertTag) {
     // Seems to be a bug with UIBarButtonItem respecting the UIControlStateDisabled text color
     NSDictionary *titleTextAttributes;
     UIColor *color = updateEnabled ? [UIColor whiteColor] : [UIColor lightGrayColor];
-    if (IS_IOS7) {
-        titleTextAttributes = @{NSFontAttributeName: [WPStyleGuide regularTextFont], NSForegroundColorAttributeName : color};
-    } else {
-        titleTextAttributes = @{NSForegroundColorAttributeName : color};
-    }
+    titleTextAttributes = @{NSFontAttributeName: [WPStyleGuide regularTextFont], NSForegroundColorAttributeName : color};
     [self.navigationItem.rightBarButtonItem setTitleTextAttributes:titleTextAttributes forState:UIControlStateNormal];
 }
 
