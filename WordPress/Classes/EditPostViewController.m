@@ -304,20 +304,18 @@ typedef NS_ENUM(NSInteger, EditPostViewControllerAlertTag) {
         }
     };
 
-    void (^selectedCompletion)(NSManagedObjectID *, BOOL) = ^(NSManagedObjectID *selectedObjectID, BOOL finished) {
-        if (finished) {
-            NSManagedObjectContext *context = [[ContextManager sharedInstance] mainContext];
-            Blog *blog = (Blog *)[context objectWithID:selectedObjectID];
-            
-            if (blog) {
-                self.apost.blog = blog;
-                [[NSUserDefaults standardUserDefaults] setObject:blog.url forKey:EditPostViewControllerLastUsedBlogURL];
-                [[NSUserDefaults standardUserDefaults] synchronize];
-            }
-            
-            [self refreshUIForCurrentPost];
-            dismissHandler();
+    void (^selectedCompletion)(NSManagedObjectID *) = ^(NSManagedObjectID *selectedObjectID) {
+        NSManagedObjectContext *context = [[ContextManager sharedInstance] mainContext];
+        Blog *blog = (Blog *)[context objectWithID:selectedObjectID];
+        
+        if (blog) {
+            self.apost.blog = blog;
+            [[NSUserDefaults standardUserDefaults] setObject:blog.url forKey:EditPostViewControllerLastUsedBlogURL];
+            [[NSUserDefaults standardUserDefaults] synchronize];
         }
+        
+        [self refreshUIForCurrentPost];
+        dismissHandler();
     };
     
     BlogSelectorViewController *vc = [[BlogSelectorViewController alloc] initWithSelectedBlogObjectID:self.apost.blog.objectID
