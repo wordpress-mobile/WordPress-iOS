@@ -274,7 +274,7 @@ CGFloat const EPVCTextViewBottomPadding = 50.0f;
         _titleTextField.autoresizingMask = UIViewAutoresizingFlexibleWidth;
         _titleTextField.placeholder = NSLocalizedString(@"Enter title here", @"Label for the title of the post field. Should be the same as WP core.");
         _titleTextField.textColor = [WPStyleGuide littleEddieGrey];
-        _titleTextField.returnKeyType = UIReturnKeyDone;
+        _titleTextField.returnKeyType = UIReturnKeyNext;
     }
     [_tableHeaderViewContentView addSubview:_titleTextField];
     
@@ -1268,8 +1268,8 @@ CGFloat const EPVCTextViewBottomPadding = 50.0f;
 }
 
 - (BOOL)textFieldShouldReturn:(UITextField *)textField {
-    [textField resignFirstResponder];
-    return YES;
+    [_textView becomeFirstResponder];
+    return NO;
 }
 
 #pragma mark - Positioning & Rotation
