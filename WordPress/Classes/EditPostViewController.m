@@ -78,14 +78,14 @@ CGFloat const EPVCTextViewTopPadding = 7.0f;
 - (id)initWithPost:(AbstractPost *)post {
     self = [self initWithStyle:UITableViewStylePlain];
     if (self) {
-        self.post = post;
+        _post = post;
         [[NSUserDefaults standardUserDefaults] setObject:post.blog.url forKey:EditPostViewControllerLastUsedBlogURL];
         [[NSUserDefaults standardUserDefaults] synchronize];
         
-        if (self.post.remoteStatus == AbstractPostRemoteStatusLocal) {
-            self.editMode = EditPostViewControllerModeNewPost;
+        if (_post.remoteStatus == AbstractPostRemoteStatusLocal) {
+            _editMode = EditPostViewControllerModeNewPost;
         } else {
-            self.editMode = EditPostViewControllerModeEditPost;
+            _editMode = EditPostViewControllerModeEditPost;
         }
     }
     return self;
@@ -676,7 +676,6 @@ CGFloat const EPVCTextViewTopPadding = 7.0f;
     NSDictionary *titleTextAttributes;
     UIColor *color = updateEnabled ? [UIColor whiteColor] : [UIColor lightGrayColor];
     titleTextAttributes = @{NSFontAttributeName: [WPStyleGuide regularTextFont], NSForegroundColorAttributeName : color};
-    
     [self.navigationItem.rightBarButtonItem setTitleTextAttributes:titleTextAttributes forState:UIControlStateNormal];
 }
 
