@@ -1,6 +1,8 @@
 #import "WPSelectionTableViewController.h"
 #import "WordPressAppDelegate.h"
 
+static NSString *const SelectionTableRowCell = @"SelectionTableRowCell";
+
 @interface NSObject (WPSelectionTableViewControllerDelegateCategory)
 
 - (void)selectionTableViewController:(WPSelectionTableViewController *)selctionController completedSelectionsWithContext:(void *)selContext selectedObjects:(NSArray *)selectedObjects haveChanges:(BOOL)isChanged;
@@ -9,30 +11,30 @@
 
 @implementation WPSelectionTableViewController
 
-@synthesize autoReturnInRadioSelectMode;
-@synthesize objects, selectionStatusOfObjects, originalSelObjects;
 
-#pragma mark -
-#pragma mark Lifecycle Methods
-
-- (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil {
-    if (self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil]) {
-        autoReturnInRadioSelectMode = YES;
+- (id)init {
+    if (self = [super init]) {
+        _autoReturnInRadioSelectMode = YES;
     }
-
     return self;
+}
+
+- (void)viewDidLoad {
+    [super viewDidLoad];
+    
+    [self.tableView registerClass:[UITableViewCell class] forCellReuseIdentifier:SelectionTableRowCell];
 }
 
 - (void)viewWillAppear:(BOOL)animated {
     [super viewWillAppear:animated];
-    [tableView reloadData];
+    [self.tableView reloadData];
 }
 
 - (void)viewWillDisappear:(BOOL)animated {
     [super viewWillDisappear:animated];
     
-    if ([selectionDelegate respondsToSelector:@selector(selectionTableViewController:completedSelectionsWithContext:selectedObjects:haveChanges:)]) {
-        [selectionDelegate selectionTableViewController:self completedSelectionsWithContext:curContext selectedObjects:[self selectedObjects] haveChanges:[self haveChanges]];
+    if ([self.selectionDelegate respondsToSelector:@selector(selectionTableViewController:completedSelectionsWithContext:selectedObjects:haveChanges:)]) {
+        [self.selectionDelegate selectionTableViewController:self completedSelectionsWithContext:self.curContext selectedObjects:[self selectedObjects] haveChanges:[self haveChanges]];
     }
     
     if (self.navigationController) {
@@ -48,65 +50,54 @@
     }
 }
 
-- (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation
-{
-    return [super shouldAutorotateToInterfaceOrientation:interfaceOrientation];
-}
-
 - (void)didReceiveMemoryWarning {
     DDLogWarn(@"%@ %@", self, NSStringFromSelector(_cmd));
     [super didReceiveMemoryWarning]; // Releases the view if it doesn't have a superview
     // Release anything that's not essential, such as cached data
 }
 
-#pragma mark -
-#pragma mark Instance Methods
+#pragma mark - Instance Methods
 
 - (CGSize)contentSizeForViewInPopover;
 {
-	return CGSizeMake(320.0, [objects count] * 44.0 + 20.0);
+	return CGSizeMake(320.0, [self.objects count] * 44.0 + 20.0);
 }
 
 - (void)clean {    
-    objects = nil;
-    selectionDelegate = nil;
-    curContext = NULL;
-    originalSelObjects = nil;
-    selectionStatusOfObjects = nil;
-
+    _objects = nil;
+    _selectionDelegate = nil;
+    _curContext = NULL;
+    _originalSelObjects = nil;
+    _selectionStatusOfObjects = nil;
 }
 
 - (void)populateDataSource:(NSArray *)sourceObjects havingContext:(void *)context selectedObjects:(NSArray *)selObjects selectionType:(WPSelectionType)aType andDelegate:(id)delegate {
-    objects = sourceObjects;
-    curContext = context;
-    selectionType = aType;
-    selectionDelegate = delegate;
+    self.objects = sourceObjects;
+    self.curContext = context;
+    self.selectionType = aType;
+    self.selectionDelegate = delegate;
 
-    int i = 0, count = [objects count];
-    selectionStatusOfObjects = [NSMutableArray arrayWithCapacity:count];
+    int i = 0, count = [self.objects count];
+    self.selectionStatusOfObjects = [NSMutableArray arrayWithCapacity:count];
 
     for (i = 0; i < count; i++) {
-        [selectionStatusOfObjects addObject:[NSNumber numberWithBool:[selObjects containsObject:[sourceObjects objectAtIndex:i]]]];
+        [self.selectionStatusOfObjects addObject:[NSNumber numberWithBool:[selObjects containsObject:[sourceObjects objectAtIndex:i]]]];
     }
 
-    originalSelObjects = [selectionStatusOfObjects copy];
+    self.originalSelObjects = [self.selectionStatusOfObjects copy];
 
-    [tableView reloadData];
-}
-
-- (void *)curContext {
-    return curContext;
+    [self.tableView reloadData];
 }
 
 - (NSArray *)selectedObjects {
-    int i = 0, count = [objects count];
+    int i = 0, count = [self.objects count];
     NSMutableArray *selectionObjects = [NSMutableArray arrayWithCapacity:count];
     id curObject = nil;
 
     for (i = 0; i < count; i++) {
-        curObject = [objects objectAtIndex:i];
+        curObject = [self.objects objectAtIndex:i];
 
-        if ([[selectionStatusOfObjects objectAtIndex:i] boolValue] == YES)
+        if ([[self.selectionStatusOfObjects objectAtIndex:i] boolValue] == YES)
             [selectionObjects addObject:curObject];
     }
 
@@ -114,10 +105,10 @@
 }
 
 - (BOOL)haveChanges {
-    int i = 0, count = [objects count];
+    int i = 0, count = [self.objects count];
 
     for (i = 0; i < count; i++) {
-        if (![[selectionStatusOfObjects objectAtIndex:i] isEqual:[originalSelObjects objectAtIndex:i]])
+        if (![[self.selectionStatusOfObjects objectAtIndex:i] isEqual:[self.originalSelObjects objectAtIndex:i]])
             return YES;
     }
 
@@ -125,8 +116,7 @@
 }
 
 
-#pragma mark -
-#pragma mark Modal Wrangling
+#pragma mark - Modal Wrangling
 
 - (void)gotoPreviousScreen {
     [self.navigationController popViewControllerAnimated:YES];
@@ -144,63 +134,53 @@
     }
 }
 
-#pragma mark -
-#pragma mark TableView Methods
+#pragma mark - UITableView Delegate & DataSource
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
     return 1;
 }
 
 - (NSInteger)tableView:(UITableView *)aTableView numberOfRowsInSection:(NSInteger)section {
-    // plus one to because we add a row for "Local Drafts"
-    //
-    return [objects count];
+    return [self.objects count];
 }
 
-- (UITableViewCell *)tableView:(UITableView *)aTableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
-    NSString *selectionTableRowCell = @"selectionTableRowCell";
+- (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
+    UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:SelectionTableRowCell];
+    [cell setAccessoryType:UITableViewCellAccessoryCheckmark];
+    cell.textLabel.text = self.objects[indexPath.row];
 
-    UITableViewCell *cell = [aTableView dequeueReusableCellWithIdentifier:selectionTableRowCell];
-
-    if (cell == nil) {
-        cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:selectionTableRowCell];
-        [cell setAccessoryType:UITableViewCellAccessoryCheckmark];
-    }
-
-    cell.textLabel.text = [objects objectAtIndex:indexPath.row];
-
-    BOOL curStatus = [[selectionStatusOfObjects objectAtIndex:indexPath.row] boolValue];
+    BOOL curStatus = [[self.selectionStatusOfObjects objectAtIndex:indexPath.row] boolValue];
     cell.textLabel.textColor = (curStatus == YES ? [UIColor blueColor] : [UIColor blackColor]);
-    cell.accessoryType = (UITableViewCellAccessoryType)([[selectionStatusOfObjects objectAtIndex:indexPath.row] boolValue] == YES ? UITableViewCellAccessoryCheckmark : UITableViewCellAccessoryNone);
+    cell.accessoryType = (UITableViewCellAccessoryType)([[self.selectionStatusOfObjects objectAtIndex:indexPath.row] boolValue] == YES ? UITableViewCellAccessoryCheckmark : UITableViewCellAccessoryNone);
 
     return cell;
 }
 
 
-- (void)tableView:(UITableView *)aTableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
-    BOOL curStatus = [[selectionStatusOfObjects objectAtIndex:indexPath.row] boolValue];
+- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
+    BOOL curStatus = [[self.selectionStatusOfObjects objectAtIndex:indexPath.row] boolValue];
 
-    if (selectionType == kCheckbox) {
-        [selectionStatusOfObjects replaceObjectAtIndex:indexPath.row withObject:[NSNumber numberWithBool:!curStatus]];
+    if (self.selectionType == kCheckbox) {
+        [self.selectionStatusOfObjects replaceObjectAtIndex:indexPath.row withObject:[NSNumber numberWithBool:!curStatus]];
 
-        [aTableView reloadData];
+        [tableView reloadData];
     } else { //kRadio
         if (curStatus == NO) {
-            int index = [selectionStatusOfObjects indexOfObject:[NSNumber numberWithBool:YES]];
-            [selectionStatusOfObjects replaceObjectAtIndex:indexPath.row withObject:[NSNumber numberWithBool:YES]];
+            NSUInteger index = [self.selectionStatusOfObjects indexOfObject:[NSNumber numberWithBool:YES]];
+            [self.selectionStatusOfObjects replaceObjectAtIndex:indexPath.row withObject:[NSNumber numberWithBool:YES]];
 
-            if (index >= 0 && index <[selectionStatusOfObjects count])
-                [selectionStatusOfObjects replaceObjectAtIndex:index withObject:[NSNumber numberWithBool:NO]];
+            if (index != NSNotFound && index < [self.selectionStatusOfObjects count])
+                [self.selectionStatusOfObjects replaceObjectAtIndex:index withObject:[NSNumber numberWithBool:NO]];
 
-            [aTableView reloadData];
+            [tableView reloadData];
 
-            if (autoReturnInRadioSelectMode) {
+            if (self.autoReturnInRadioSelectMode) {
                 [self performSelector:@selector(gotoPreviousScreen) withObject:nil afterDelay:0.2f inModes:[NSArray arrayWithObject:[[NSRunLoop currentRunLoop] currentMode]]];
             }
         }
     }
 
-    [aTableView deselectRowAtIndexPath:[aTableView indexPathForSelectedRow] animated:YES];
+    [tableView deselectRowAtIndexPath:[tableView indexPathForSelectedRow] animated:YES];
 }
 
 @end

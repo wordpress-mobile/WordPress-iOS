@@ -120,8 +120,8 @@
 {
     return @{
              DTDefaultFontFamily:@"Open Sans",
-             DTDefaultLineHeightMultiplier:@1.5,
-             DTDefaultFontSize:@16,
+             DTDefaultLineHeightMultiplier:@1.4,
+             DTDefaultFontSize:@14,
              DTDefaultTextColor:[WPStyleGuide littleEddieGrey],
              DTDefaultLinkColor:[WPStyleGuide baseLighterBlue],
              DTDefaultLinkHighlightColor:[WPStyleGuide midnightBlue],
@@ -219,36 +219,22 @@
 
 + (UIBarButtonItemStyle)barButtonStyleForDone
 {
-    if (IS_IOS7)
-        return UIBarButtonItemStylePlain;
-    else
-        return UIBarButtonItemStyleDone;
+    return UIBarButtonItemStylePlain;
 }
 
 + (UIBarButtonItemStyle)barButtonStyleForBordered
 {
-    if (IS_IOS7)
-        return UIBarButtonItemStylePlain;
-    else
-        return UIBarButtonItemStyleBordered;
+    return UIBarButtonItemStylePlain;
 }
 
 + (void)setLeftBarButtonItemWithCorrectSpacing:(UIBarButtonItem *)barButtonItem forNavigationItem:(UINavigationItem *)navigationItem
 {
-    if (IS_IOS7) {
-        navigationItem.leftBarButtonItems = @[[self spacerForNavigationBarButtonItems], barButtonItem];
-    } else {
-        navigationItem.leftBarButtonItem = barButtonItem;
-    }
+    navigationItem.leftBarButtonItems = @[[self spacerForNavigationBarButtonItems], barButtonItem];
 }
 
 + (void)setRightBarButtonItemWithCorrectSpacing:(UIBarButtonItem *)barButtonItem forNavigationItem:(UINavigationItem *)navigationItem
 {
-    if (IS_IOS7) {
-        navigationItem.rightBarButtonItems = @[[self spacerForNavigationBarButtonItems], barButtonItem];
-    } else {
-        navigationItem.rightBarButtonItem = barButtonItem;
-    }
+    navigationItem.rightBarButtonItems = @[[self spacerForNavigationBarButtonItems], barButtonItem];
 }
 
 + (UIBarButtonItem *)spacerForNavigationBarButtonItems

@@ -16,9 +16,6 @@
     // Since we exchanged implementations, this actually calls UIViewController's ViewWillAppear
     [self alteredViewWillAppear:animated];
     
-    if (!IS_IOS7)
-        return;
-    
     [self.navigationItem.leftBarButtonItem setTitlePositionAdjustment:UIOffsetMake(-1, 0) forBarMetrics:UIBarMetricsDefault];
     [self.navigationItem.leftBarButtonItem setTitleTextAttributes:@{NSFontAttributeName: [WPStyleGuide regularTextFont], NSForegroundColorAttributeName : [UIColor whiteColor]} forState:UIControlStateNormal];
 

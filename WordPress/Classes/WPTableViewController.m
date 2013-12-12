@@ -68,7 +68,7 @@ NSString *const DefaultCellIdentifier = @"DefaultCellIdentifier";
 }
 
 - (id)initWithStyle:(UITableViewStyle)style {
-    self = [super initWithStyle:style];
+    self = [super initWithStyle:UITableViewStyleGrouped];
     
     if (self) {
         self.restorationIdentifier = NSStringFromClass([self class]);
@@ -516,7 +516,11 @@ NSString *const DefaultCellIdentifier = @"DefaultCellIdentifier";
             if (self.noResultsView == nil) {
                 self.noResultsView = [self createNoResultsView];
             }
-            [self.tableView addSubviewWithFadeAnimation:self.noResultsView];
+            // only add and animate no results view if it isn't already
+            // in the table view
+            if (![self.noResultsView isDescendantOfView:self.tableView]) {
+                [self.tableView addSubviewWithFadeAnimation:self.noResultsView];
+            }
         }
     }
 }
@@ -562,7 +566,7 @@ NSString *const DefaultCellIdentifier = @"DefaultCellIdentifier";
     }
 
     _isSyncing = YES;
-    [self syncItemsWithSuccess:^{
+    [self syncItemsViaUserInteraction:userInteraction success:^{
         [self hideRefreshHeader];
         _isSyncing = NO;
         [self configureNoResultsView];
@@ -690,13 +694,8 @@ NSString *const DefaultCellIdentifier = @"DefaultCellIdentifier";
     AssertSubclassMethod();
 }
 
-- (void)syncItemsWithSuccess:(void (^)())success failure:(void (^)(NSError *))failure {
+- (void)syncItemsViaUserInteraction:(BOOL)userInteraction success:(void (^)())success failure:(void (^)(NSError *))failure {
     AssertSubclassMethod();
-}
-
-- (void)syncItemsViaUserInteractionWithSuccess:(void (^)())success failure:(void (^)(NSError *error))failure {
-    // By default, sync items the same way. Subclasses can override if they need different behavior.
-    [self syncItemsWithSuccess:success failure:failure];
 }
 
 - (BOOL)isSyncing {

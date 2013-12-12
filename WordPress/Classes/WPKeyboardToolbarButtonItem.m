@@ -7,6 +7,7 @@
 //
 
 #import "WPKeyboardToolbarButtonItem.h"
+#import <QuartzCore/QuartzCore.h>
 
 @implementation WPKeyboardToolbarButtonItem
 @synthesize actionTag, actionName;
@@ -16,53 +17,65 @@
     return [WPKeyboardToolbarButtonItem buttonWithType:UIButtonTypeCustom];
 }
 
-- (id)init {
-    self = [super init];
-    if (self) {
-    }
-    return self;
-}
-
-- (id)initWithCoder:(NSCoder *)coder {
-    self = [super initWithCoder:coder];
-    if (self) {
-    }
-    return self;
-}
-
 - (id)initWithFrame:(CGRect)frame {
     self = [super initWithFrame:frame];
     if (self) {
-        if (IS_IPAD) {
-            if (IS_IOS7) {
-                [self setBackgroundImage:[[UIImage imageNamed:@"keyboardButtoniPad-ios7"] stretchableImageWithLeftCapWidth:10.0f topCapHeight:0.0f] forState:UIControlStateNormal];
-                [self setBackgroundImage:[[UIImage imageNamed:@"keyboardButtoniPadHighlighted-ios7"] stretchableImageWithLeftCapWidth:10.0f topCapHeight:0.0f] forState:UIControlStateHighlighted];
-            } else {
-                [self setBackgroundImage:[[UIImage imageNamed:@"keyboardButtoniPad"] stretchableImageWithLeftCapWidth:10.0f topCapHeight:0.0f] forState:UIControlStateNormal];
-                [self setBackgroundImage:[[UIImage imageNamed:@"keyboardButtoniPadHighlighted"] stretchableImageWithLeftCapWidth:10.0f topCapHeight:0.0f] forState:UIControlStateHighlighted];
-            }
-        } else {
-            if (IS_IOS7) {
-                [self setBackgroundImage:[[UIImage imageNamed:@"keyboardButton-ios7"] stretchableImageWithLeftCapWidth:5.0f topCapHeight:0.0f] forState:UIControlStateNormal];
-                [self setBackgroundImage:[[UIImage imageNamed:@"keyboardButtonHighlighted-ios7"] stretchableImageWithLeftCapWidth:5.0f topCapHeight:0.0f] forState:UIControlStateHighlighted];
-            } else {
-                [self setBackgroundImage:[[UIImage imageNamed:@"keyboardButton"] stretchableImageWithLeftCapWidth:5.0f topCapHeight:0.0f] forState:UIControlStateNormal];
-                [self setBackgroundImage:[[UIImage imageNamed:@"keyboardButtonHighlighted"] stretchableImageWithLeftCapWidth:5.0f topCapHeight:0.0f] forState:UIControlStateHighlighted];
-            }
-        }
+        self.backgroundColor = [WPStyleGuide itsEverywhereGrey];
         self.autoresizingMask = UIViewAutoresizingFlexibleHeight;
     }
     return self;
 }
 
 - (void)setImageName:(NSString *)imageName {
-    if (IS_IPAD) {
-        [self setImage:[UIImage imageNamed:[NSString stringWithFormat:@"%@iPad", imageName]] forState:UIControlStateNormal];
-        [self setImage:[UIImage imageNamed:[NSString stringWithFormat:@"%@iPadHighlighted", imageName]] forState:UIControlStateHighlighted];
+    [self setImage:[UIImage imageNamed:[NSString stringWithFormat:@"%@", imageName]] forState:UIControlStateNormal];
+    self.imageView.contentMode = UIViewContentModeCenter;
+}
+
+- (void)setImageName:(NSString *)imageName withColor:(UIColor *)tintColor highlightColor:(UIColor *)highlightColor {
+    UIImage *image = [UIImage imageNamed:[NSString stringWithFormat:@"%@", imageName]];
+    if (tintColor) {
+        image = [self createImage:image withColor:tintColor];
+    }
+    [self setImage:image forState:UIControlStateNormal];
+
+    if (highlightColor) {
+        image = [self createImage:image withColor:highlightColor];
+        [self setImage:image forState:UIControlStateHighlighted];
+    }
+    self.imageView.contentMode = UIViewContentModeCenter;
+}
+
+- (UIImage *)createImage:(UIImage *)image withColor:(UIColor *)color {
+    UIGraphicsBeginImageContextWithOptions(image.size, NO, [[UIScreen mainScreen] scale]);
+    CGContextRef context = UIGraphicsGetCurrentContext();
+    
+    CGContextTranslateCTM(context, 0, image.size.height);
+    CGContextScaleCTM(context, 1.0, -1.0);
+    
+    CGRect rect = CGRectMake(0, 0, image.size.width, image.size.height);
+    
+    // draw alpha-mask
+    CGContextSetBlendMode(context, kCGBlendModeNormal);
+    CGContextDrawImage(context, rect, image.CGImage);
+    
+    // draw tint color, preserving alpha values of original image
+    CGContextSetBlendMode(context, kCGBlendModeSourceIn);
+    [color setFill];
+    CGContextFillRect(context, rect);
+    
+    UIImage *coloredImage = UIGraphicsGetImageFromCurrentImageContext();
+    UIGraphicsEndImageContext();
+    return coloredImage;
+}
+
+- (void)setHighlighted:(BOOL)highlighted {
+    [super setHighlighted:highlighted];
+    if (highlighted) {
+        [self setBackgroundColor:[WPStyleGuide newKidOnTheBlockBlue]];
     } else {
-        [self setImage:[UIImage imageNamed:[NSString stringWithFormat:@"%@", imageName]] forState:UIControlStateNormal];
-        [self setImage:[UIImage imageNamed:[NSString stringWithFormat:@"%@Highlighted", imageName]] forState:UIControlStateHighlighted];        
+        [self setBackgroundColor:[WPStyleGuide itsEverywhereGrey]];
     }
 }
+
 
 @end

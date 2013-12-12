@@ -71,11 +71,7 @@ CGFloat const blavatarImageViewSize = 43.f;
     self.doneButton = [[UIBarButtonItem alloc] initWithTitle:NSLocalizedString(@"Done", @"") style:[WPStyleGuide barButtonStyleForBordered] target:self action:@selector(dismiss)];
     self.navigationItem.rightBarButtonItem = self.doneButton;
     
-    [[NSNotificationCenter defaultCenter] addObserverForName:WPAccountDefaultWordPressComAccountChangedNotification object:nil queue:nil usingBlock:^(NSNotification *note) {
-        NSMutableIndexSet *sections = [NSMutableIndexSet indexSet];
-        [sections addIndex:SettingsSectionWpcom];
-        [self.tableView reloadSections:sections withRowAnimation:UITableViewRowAnimationFade];
-    }];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(defaultAccountDidChange:) name:WPAccountDefaultWordPressComAccountChangedNotification object:nil];
 
     [WPStyleGuide configureColorsForView:self.view andTableView:self.tableView];
 }
@@ -85,6 +81,16 @@ CGFloat const blavatarImageViewSize = 43.f;
     [self.navigationController setNavigationBarHidden:NO animated:animated];
     [self.tableView reloadData];
 }
+
+
+#pragma mark - Notifications
+
+- (void)defaultAccountDidChange:(NSNotification *)notification {
+    NSMutableIndexSet *sections = [NSMutableIndexSet indexSet];
+    [sections addIndex:SettingsSectionWpcom];
+    [self.tableView reloadSections:sections withRowAnimation:UITableViewRowAnimationFade];
+}
+
 
 #pragma mark - Custom Getter
 
@@ -134,20 +140,6 @@ CGFloat const blavatarImageViewSize = 43.f;
     [self dismissViewControllerAnimated:YES completion:nil];
 }
 
-- (void)maskImageView:(UIImageView *)imageView corner:(UIRectCorner)corner {
-    if (IS_IOS7) {
-        // We don't want this effect in iOS7
-        return;
-    }
-    
-    CGRect frame = CGRectMake(0.0, 0.0, 43.0, 43.0);
-    UIBezierPath *path = [UIBezierPath bezierPathWithRoundedRect:frame
-                                               byRoundingCorners:corner cornerRadii:CGSizeMake(7.0f, 7.0f)];
-    CAShapeLayer *maskLayer = [CAShapeLayer layer];
-    maskLayer.frame = frame;
-    maskLayer.path = path.CGPath;
-    imageView.layer.mask = maskLayer;
-}
 
 #pragma mark - Table view data source
 
@@ -194,7 +186,6 @@ CGFloat const blavatarImageViewSize = 43.f;
 - (UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section {
     WPTableViewSectionHeaderView *header = [[WPTableViewSectionHeaderView alloc] initWithFrame:CGRectMake(0, 0, CGRectGetWidth(self.view.bounds), 0)];
     header.title = [self titleForHeaderInSection:section];
-    header.leftMarginPercent = 0;
     return header;
 }
 

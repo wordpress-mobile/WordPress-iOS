@@ -44,32 +44,31 @@ static ContextManager *instance;
 }
 
 - (NSManagedObjectContext *const)mainContext {
-    static dispatch_once_t onceToken;
-    dispatch_once(&onceToken, ^{
-        _mainContext = [[NSManagedObjectContext alloc] initWithConcurrencyType:NSMainQueueConcurrencyType];
-        _mainContext.persistentStoreCoordinator = [self persistentStoreCoordinator];
-        
-        [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(mergeChangesIntoBackgroundContext:) name:NSManagedObjectContextDidSaveNotification object:_mainContext];
-    });
+    if (_mainContext) {
+        return _mainContext;
+    }
+    _mainContext = [[NSManagedObjectContext alloc] initWithConcurrencyType:NSMainQueueConcurrencyType];
+    _mainContext.persistentStoreCoordinator = [self persistentStoreCoordinator];
+    
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(mergeChangesIntoBackgroundContext:) name:NSManagedObjectContextDidSaveNotification object:_mainContext];
     return _mainContext;
 }
 
 - (NSManagedObjectContext *const)backgroundContext {
-    static dispatch_once_t onceToken;
-    dispatch_once(&onceToken, ^{
-        _backgroundContext = [[NSManagedObjectContext alloc] initWithConcurrencyType:NSPrivateQueueConcurrencyType];
-        [_backgroundContext performBlockAndWait:^{
-            _backgroundContext.persistentStoreCoordinator = [self persistentStoreCoordinator];
-            _backgroundContext.mergePolicy = NSMergeByPropertyObjectTrumpMergePolicy;
-        }];
-        
-        [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(mergeChangesToMainContext:)
-                                                     name:NSManagedObjectContextDidSaveNotification object:_backgroundContext];
-    });
+    if (_backgroundContext) {
+        return _backgroundContext;
+    }
+    _backgroundContext = [[NSManagedObjectContext alloc] initWithConcurrencyType:NSPrivateQueueConcurrencyType];
+    _backgroundContext.persistentStoreCoordinator = [self persistentStoreCoordinator];
+    _backgroundContext.mergePolicy = NSMergeByPropertyObjectTrumpMergePolicy;
+
+    
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(mergeChangesIntoMainContext:)
+                                                 name:NSManagedObjectContextDidSaveNotification object:_backgroundContext];
     return _backgroundContext;
 }
 
-- (void)mergeChangesToMainContext:(NSNotification *)notification {
+- (void)mergeChangesIntoMainContext:(NSNotification *)notification {
     [self.mainContext performBlock:^{
         DDLogVerbose(@"Merging changes into main context");
         [self.mainContext mergeChangesFromContextDidSaveNotification:notification];
@@ -92,6 +91,9 @@ static ContextManager *instance;
 - (void)saveDerivedContext:(NSManagedObjectContext *)context withCompletionBlock:(void (^)())completionBlock {
     [context performBlock:^{
         NSError *error;
+        if (![context obtainPermanentIDsForObjects:context.insertedObjects.allObjects error:&error]) {
+            DDLogError(@"Error obtaining permanent object IDs for %@, %@", context.insertedObjects.allObjects, error);
+        }
         if (![context save:&error]) {
             @throw [NSException exceptionWithName:@"Unresolved Core Data save error"
                                            reason:@"Unresolved Core Data save error - derived context"
@@ -114,6 +116,7 @@ static ContextManager *instance;
         }
         
         if (![context save:&error]) {
+            DDLogError(@"Unresolved core data error\n%@:", error);
             @throw [NSException exceptionWithName:@"Unresolved Core Data save error"
                                            reason:@"Unresolved Core Data save error"
                                          userInfo:[error userInfo]];
