@@ -95,6 +95,7 @@ CGFloat const EPVCTextViewBottomPadding = 50.0f;
     [super viewDidLoad];
     
     self.tableView.backgroundColor = [WPStyleGuide itsEverywhereGrey];
+    self.tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
     
     [self setupNavbar];
     [self setupToolbar];
