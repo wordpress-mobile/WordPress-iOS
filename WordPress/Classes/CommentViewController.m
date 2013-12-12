@@ -23,19 +23,19 @@
     NSLayoutConstraint *_authorSiteHeightConstraint;
 }
 
-@property (nonatomic, strong) IBOutlet UIImageView *gravatarImageView;
-@property (nonatomic, strong) IBOutlet UILabel *authorNameLabel;
-@property (nonatomic, strong) IBOutlet UIButton *authorSiteButton;
-@property (nonatomic, strong) IBOutlet UIButton *authorEmailButton;
-@property (nonatomic, strong) IBOutlet UILabel *postTitleLabel;
-@property (nonatomic, strong) IBOutlet UILabel *dateLabel;
-@property (nonatomic, strong) IBOutlet UIWebView *commentWebview;
+@property (nonatomic, weak) IBOutlet UIImageView *gravatarImageView;
+@property (nonatomic, weak) IBOutlet UILabel *authorNameLabel;
+@property (nonatomic, weak) IBOutlet UIButton *authorSiteButton;
+@property (nonatomic, weak) IBOutlet UIButton *authorEmailButton;
+@property (nonatomic, weak) IBOutlet UILabel *postTitleLabel;
+@property (nonatomic, weak) IBOutlet UILabel *dateLabel;
+@property (nonatomic, weak) IBOutlet UIWebView *commentWebview;
 
-@property (nonatomic, strong) IBOutlet UIBarButtonItem *trashButton;
-@property (nonatomic, strong) IBOutlet UIBarButtonItem *approveButton;
-@property (nonatomic, strong) IBOutlet UIBarButtonItem *spamButton;
-@property (nonatomic, strong) IBOutlet UIBarButtonItem *editButton;
-@property (nonatomic, strong) IBOutlet UIBarButtonItem *replyButton;
+@property (nonatomic, weak) IBOutlet UIBarButtonItem *trashButton;
+@property (nonatomic, weak) IBOutlet UIBarButtonItem *approveButton;
+@property (nonatomic, weak) IBOutlet UIBarButtonItem *spamButton;
+@property (nonatomic, weak) IBOutlet UIBarButtonItem *editButton;
+@property (nonatomic, weak) IBOutlet UIBarButtonItem *replyButton;
 
 @end
 
