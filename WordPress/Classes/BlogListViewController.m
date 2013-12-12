@@ -98,6 +98,10 @@ NSString * const WPBlogListRestorationID = @"WPBlogListID";
     [self.tableView registerClass:[WPTableViewCell class] forCellReuseIdentifier:BlogCellIdentifier];
     self.tableView.allowsSelectionDuringEditing = YES;
     self.navigationItem.leftBarButtonItem = self.editButtonItem;
+
+    // Trigger the blog sync when loading the view, which should more or less be once when the app launches
+    // We could do this on the app delegate, but the blogs list feels like a better place for it.
+    [[WPAccount defaultWordPressComAccount] syncBlogsWithSuccess:nil failure:nil];
 }
 
 - (void)viewWillAppear:(BOOL)animated {
