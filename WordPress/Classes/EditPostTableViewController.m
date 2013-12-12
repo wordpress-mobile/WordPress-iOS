@@ -175,7 +175,7 @@ CGFloat const EPTVCTextViewBottomPadding = 50.0f;
     NSManagedObjectContext *context = [[ContextManager sharedInstance] mainContext];
     NSInteger blogCount = [Blog countWithContext:context];
 
-    if (blogCount <= 1 || self.editMode == EditPostViewControllerModeEditPost) {
+    if (blogCount <= 1 || self.editMode == EditPostTableViewControllerModeEditPost) {
         self.navigationItem.title = [self editorTitle];
     } else {
         UIButton *titleButton;
@@ -553,14 +553,14 @@ CGFloat const EPTVCTextViewBottomPadding = 50.0f;
     }
     
 	UIActionSheet *actionSheet;
-	if (![self.post.original.status isEqualToString:@"draft"] && self.editMode != EditPostViewControllerModeNewPost) {
+	if (![self.post.original.status isEqualToString:@"draft"] && self.editMode != EditPostTableViewControllerModeNewPost) {
         // The post is already published in the server or it was intended to be and failed: Discard changes or keep editing
 		actionSheet = [[UIActionSheet alloc] initWithTitle:NSLocalizedString(@"You have unsaved changes.", @"Title of message with options that shown when there are unsaved changes and the author is trying to move away from the post.")
 												  delegate:self
                                          cancelButtonTitle:NSLocalizedString(@"Keep Editing", @"Button shown if there are unsaved changes and the author is trying to move away from the post.")
                                     destructiveButtonTitle:NSLocalizedString(@"Discard", @"Button shown if there are unsaved changes and the author is trying to move away from the post.")
 										 otherButtonTitles:nil];
-    } else if (self.editMode == EditPostViewControllerModeNewPost) {
+    } else if (self.editMode == EditPostTableViewControllerModeNewPost) {
         // The post is a local draft or an autosaved draft: Discard or Save
         actionSheet = [[UIActionSheet alloc] initWithTitle:NSLocalizedString(@"You have unsaved changes.", @"Title of message with options that shown when there are unsaved changes and the author is trying to move away from the post.")
                                                   delegate:self
@@ -593,7 +593,7 @@ CGFloat const EPTVCTextViewBottomPadding = 50.0f;
 
 - (NSString *)editorTitle {
     NSString *title = @"";
-    if (self.editMode == EditPostViewControllerModeNewPost) {
+    if (self.editMode == EditPostTableViewControllerModeNewPost) {
         title = NSLocalizedString(@"New Post", @"Post Editor screen title.");
     } else {
         if ([self.post.postTitle length]) {
@@ -692,7 +692,7 @@ CGFloat const EPTVCTextViewBottomPadding = 50.0f;
 - (void)discardChangesAndDismiss {
     [self.post.original deleteRevision];
     
-	if (self.editMode == EditPostViewControllerModeNewPost) {
+	if (self.editMode == EditPostTableViewControllerModeNewPost) {
         [self.post.original remove];
     }
     
