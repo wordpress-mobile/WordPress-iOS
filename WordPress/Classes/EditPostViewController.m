@@ -36,6 +36,7 @@ typedef NS_ENUM(NSInteger, EditPostViewControllerAlertTag) {
 @property (nonatomic, weak) IBOutlet UIBarButtonItem *leftPreviewSpacer;
 @property (nonatomic, weak) IBOutlet UIBarButtonItem *rightPreviewSpacer;
 @property (nonatomic, weak) IBOutlet UIBarButtonItem *rightMediaSpacer;
+@property (nonatomic, strong) UIButton *titleBarButton;
 @property (nonatomic, strong) UIActionSheet *currentActionSheet;
 @property (nonatomic, strong) UIAlertView *failedMediaAlertView;
 @property (nonatomic, weak) UITextField *currentEditingTextField;
@@ -469,18 +470,7 @@ typedef NS_ENUM(NSInteger, EditPostViewControllerAlertTag) {
     if (blogCount <= 1 || self.editMode == EditPostViewControllerModeEditPost) {
         self.navigationItem.title = [self editorTitle];
     } else {
-        UIButton *titleButton;
-        if ([self.navigationItem.titleView isKindOfClass:[UIButton class]]) {
-            titleButton = (UIButton *)self.navigationItem.titleView;
-        } else {
-            titleButton = [UIButton buttonWithType:UIButtonTypeSystem];
-            titleButton.frame = CGRectMake(0, 0, 200, 33);
-            titleButton.titleLabel.numberOfLines = 2;
-            titleButton.titleLabel.textAlignment = NSTextAlignmentCenter;
-            [titleButton addTarget:self action:@selector(showBlogSelector:) forControlEvents:UIControlEventTouchUpInside];
-            
-            self.navigationItem.titleView = titleButton;
-        }
+        UIButton *titleButton = self.titleBarButton;
         
         NSMutableAttributedString *titleText = [[NSMutableAttributedString alloc] initWithString:[NSString stringWithFormat:@"%@\n", [self editorTitle]]
                                                                                       attributes:@{ NSFontAttributeName : [UIFont fontWithName:@"OpenSans-Bold" size:14.0] }];
@@ -506,6 +496,24 @@ typedef NS_ENUM(NSInteger, EditPostViewControllerAlertTag) {
     }
     
     [self refreshButtons];
+}
+
+- (UIButton *)titleBarButton {
+    if (_titleBarButton) {
+        return _titleBarButton;
+    }
+    
+    UIButton *titleButton = [UIButton buttonWithType:UIButtonTypeSystem];
+    titleButton.frame = CGRectMake(0, 0, 200, 33);
+    titleButton.titleLabel.numberOfLines = 2;
+    titleButton.titleLabel.textAlignment = NSTextAlignmentCenter;
+    [titleButton addTarget:self action:@selector(showBlogSelector:) forControlEvents:UIControlEventTouchUpInside];
+    
+    self.navigationItem.titleView = titleButton;
+    
+    _titleBarButton = titleButton;
+
+    return _titleBarButton;
 }
 
 - (void)discard {
