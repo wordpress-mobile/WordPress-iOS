@@ -11,7 +11,7 @@
 #import "ReaderPost.h"
 #import "ReaderPostView.h"
 
-@interface ReaderPostDetailViewController : UITableViewController<UITableViewDataSource, UITableViewDelegate, ReaderPostViewDelegate, NSFetchedResultsControllerDelegate>
+@interface ReaderPostDetailViewController : UITableViewController<UITableViewDataSource, UITableViewDelegate, WPContentViewDelegate, NSFetchedResultsControllerDelegate>
 @property (nonatomic, strong) ReaderPost *post;
 @property (nonatomic, assign) BOOL showInlineActionBar;
 
