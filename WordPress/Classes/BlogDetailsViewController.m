@@ -266,8 +266,7 @@ NSString * const WPBlogDetailsBlogKey = @"WPBlogDetailsBlogKey";
 }
 
 - (BOOL)shouldShowThemesOption {
-#warning only show themes option when admin
-    return YES;//self.blog.isWPcom && [self.blog.isAdmin isEqualToNumber:@(1)];
+    return self.blog.isWPcom;
 }
 
 /*
