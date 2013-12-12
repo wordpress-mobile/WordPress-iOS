@@ -12,7 +12,7 @@
 
 #define WPKT_BUTTON_WIDTH 40.0f
 #define WPKT_BUTTON_HEIGHT_PORTRAIT 40.0f
-#define WPKT_BUTTON_HEIGHT_LANDSCAPE 34.0f
+#define WPKT_BUTTON_HEIGHT_LANDSCAPE 33.0f
 #define WPKT_BUTTON_WIDTH_IPAD 65.0f
 #define WPKT_BUTTON_HEIGHT_IPAD 65.0f
 
@@ -106,7 +106,7 @@
     }
     if (_doneButton == nil && IS_IPHONE) {
         self.doneButton = [WPKeyboardToolbarButtonItem button];
-        [_doneButton setImageName:@"icon_format_keyboard" withColor:[WPStyleGuide newKidOnTheBlockBlue] highlightColor:highlightColor];
+        [_doneButton setImageName:@"icon_format_keyboard" withColor:nil highlightColor:highlightColor];
         _doneButton.frame = CGRectMake(x, 0, width, height);
         _doneButton.actionTag = @"done";
         _doneButton.exclusiveTouch = YES;

@@ -10,7 +10,7 @@
 #import <QuartzCore/QuartzCore.h>
 #import "WPKeyboardToolbarButtonItem.h"
 
-#define WPKT_HEIGHT_IPHONE_PORTRAIT 42.0f
+#define WPKT_HEIGHT_IPHONE_PORTRAIT 40.0f
 #define WPKT_HEIGHT_IPHONE_LANDSCAPE 33.0f
 #define WPKT_HEIGHT_IPAD_PORTRAIT 65.0f
 #define WPKT_HEIGHT_IPAD_LANDSCAPE 65.0f
