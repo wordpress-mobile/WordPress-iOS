@@ -113,6 +113,8 @@ static NSString *const RemoveGeotagCellIdentifier = @"RemoveGeotagCellIdentifier
 
 - (void)viewDidLoad {
     self.title = NSLocalizedString(@"Options", nil);
+    
+    self.tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
 
     DDLogInfo(@"%@ %@", self, NSStringFromSelector(_cmd));
 
