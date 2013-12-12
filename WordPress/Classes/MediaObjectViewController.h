@@ -11,31 +11,19 @@
 #import "WordPressAppDelegate.h"
 #import "Media.h"
 
-@interface MediaObjectViewController : UIViewController <UIActionSheetDelegate, UIScrollViewDelegate> {
-	WordPressAppDelegate *__weak appDelegate;
-	Media *media;
-	MPMoviePlayerController *videoPlayer;
-	UIImageView *imageView;
-	UIBarButtonItem *deleteButton;
-    UIBarButtonItem *insertButton;
-	UIBarButtonItem *cancelButton; 
-	UIScrollView *scrollView;
-	BOOL isDeleting, isInserting;
-	UIToolbar *toolbar;
-    UIActionSheet *currentActionSheet;
-}
+@interface MediaObjectViewController : UIViewController <UIActionSheetDelegate, UIScrollViewDelegate>
 
 @property (nonatomic, weak) WordPressAppDelegate *appDelegate;
 @property (nonatomic, strong) Media *media;
-@property (nonatomic, strong) IBOutlet MPMoviePlayerController *videoPlayer;
-@property (nonatomic, strong) IBOutlet UIImageView *imageView;
-@property (nonatomic, strong) IBOutlet UIBarButtonItem *deleteButton;
-@property (nonatomic, strong) IBOutlet UIBarButtonItem *insertButton;
-@property (nonatomic, strong) IBOutlet UIBarButtonItem *cancelButton;
-@property (nonatomic, strong) IBOutlet UIBarButtonItem *leftSpacer;
-@property (nonatomic, strong) IBOutlet UIBarButtonItem *rightSpacer;
-@property (nonatomic, strong) IBOutlet UIScrollView *scrollView;
-@property (nonatomic, strong) IBOutlet UIToolbar *toolbar; 
+@property (nonatomic, weak) MPMoviePlayerController *videoPlayer;
+@property (nonatomic, weak) IBOutlet UIImageView *imageView;
+@property (nonatomic, weak) IBOutlet UIBarButtonItem *deleteButton;
+@property (nonatomic, weak) IBOutlet UIBarButtonItem *insertButton;
+@property (nonatomic, weak) IBOutlet UIBarButtonItem *cancelButton;
+@property (nonatomic, weak) IBOutlet UIBarButtonItem *leftSpacer;
+@property (nonatomic, weak) IBOutlet UIBarButtonItem *rightSpacer;
+@property (nonatomic, weak) IBOutlet UIScrollView *scrollView;
+@property (nonatomic, weak) IBOutlet UIToolbar *toolbar;
 @property (nonatomic, assign) BOOL isDeleting, isInserting;
 @property (nonatomic, strong) UIActionSheet *currentActionSheet;
 

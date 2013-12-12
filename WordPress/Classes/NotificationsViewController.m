@@ -18,7 +18,6 @@
 #import "WPAccount.h"
 #import "WPWebViewController.h"
 
-NSString * const NotificationsTableViewNoteCellIdentifier = @"NotificationsTableViewCell";
 NSString * const NotificationsLastSyncDateKey = @"NotificationsLastSyncDate";
 NSString * const NotificationsJetpackInformationURL = @"http://jetpack.me/about/";
 
@@ -106,7 +105,6 @@ NSString * const NotificationsJetpackInformationURL = @"http://jetpack.me/about/
     [WPStyleGuide configureColorsForView:self.view andTableView:self.tableView];
     
     self.infiniteScrollEnabled = YES;
-    [self.tableView registerClass:[NewNotificationsTableViewCell class] forCellReuseIdentifier:NotificationsTableViewNoteCellIdentifier];
 }
 
 - (void)viewWillAppear:(BOOL)animated {
@@ -212,8 +210,7 @@ NSString * const NotificationsJetpackInformationURL = @"http://jetpack.me/about/
             detailViewController.user = self.user;
             [self.navigationController pushViewController:detailViewController animated:YES];
         } else {
-            NotificationsFollowDetailViewController *detailViewController = [[NotificationsFollowDetailViewController alloc] initWithNibName:@"NotificationsFollowDetailViewController" bundle:nil];
-            detailViewController.note = note;
+            NotificationsFollowDetailViewController *detailViewController = [[NotificationsFollowDetailViewController alloc] initWithNote:note];
             [self.navigationController pushViewController:detailViewController animated:YES];
         }
     } else {
@@ -267,14 +264,8 @@ NSString * const NotificationsJetpackInformationURL = @"http://jetpack.me/about/
     return fetchRequest;
 }
 
-- (UITableViewCell *)newCell {
-    NewNotificationsTableViewCell *cell = [self.tableView dequeueReusableCellWithIdentifier:NotificationsTableViewNoteCellIdentifier];
-
-    if (cell == nil) {
-        cell = [[NewNotificationsTableViewCell alloc] initWithStyle:UITableViewCellStyleSubtitle reuseIdentifier:NotificationsTableViewNoteCellIdentifier];
-    }
-    
-    return cell;
+- (Class)cellClass {
+    return [NewNotificationsTableViewCell class];
 }
 
 - (void)configureCell:(NewNotificationsTableViewCell *)cell atIndexPath:(NSIndexPath *)indexPath {
@@ -285,12 +276,11 @@ NSString * const NotificationsJetpackInformationURL = @"http://jetpack.me/about/
     return self.user != nil;
 }
 
-- (void)syncItemsViaUserInteractionWithSuccess:(void (^)())success failure:(void (^)(NSError *))failure {
-    [self pruneOldNotes];
-    [self syncItemsWithSuccess:success failure:failure];
-}
-
-- (void)syncItemsWithSuccess:(void (^)())success failure:(void (^)(NSError *error))failure {
+- (void)syncItemsViaUserInteraction:(BOOL)userInteraction success:(void (^)())success failure:(void (^)(NSError *error))failure {
+    if (userInteraction) {
+        [self pruneOldNotes];
+    }
+    
     NSNumber *timestamp;
     NSArray *notes = [self.resultsController fetchedObjects];
     if ([notes count] > 0) {
