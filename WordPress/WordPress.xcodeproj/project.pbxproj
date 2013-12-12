@@ -478,8 +478,6 @@
 		85495F6817C6FACF00871A7A /* icon-comments-edit-active@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 85495F5817C6FACF00871A7A /* icon-comments-edit-active@2x.png */; };
 		85495F6917C6FACF00871A7A /* icon-comments-edit-active.png in Resources */ = {isa = PBXBuildFile; fileRef = 85495F5917C6FACF00871A7A /* icon-comments-edit-active.png */; };
 		857F55B517CEA01A00E154E1 /* WPKeyboardToolbarBase.m in Sources */ = {isa = PBXBuildFile; fileRef = 857F55B417CEA01A00E154E1 /* WPKeyboardToolbarBase.m */; };
-		857F55CB17CEC5E100E154E1 /* toggleButtonMain-ios7@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 857F55C317CEC5E100E154E1 /* toggleButtonMain-ios7@2x.png */; };
-		857F55CC17CEC5E100E154E1 /* toggleButtonExtended-ios7@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 857F55C417CEC5E100E154E1 /* toggleButtonExtended-ios7@2x.png */; };
 		857F55CD17CEC5E100E154E1 /* keyboardButtoniPadHighlighted-ios7@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 857F55C517CEC5E100E154E1 /* keyboardButtoniPadHighlighted-ios7@2x.png */; };
 		857F55CE17CEC5E100E154E1 /* keyboardButtoniPad-ios7@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 857F55C617CEC5E100E154E1 /* keyboardButtoniPad-ios7@2x.png */; };
 		857F55CF17CEC5E100E154E1 /* keyboardButtonHighlighted-ios7@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 857F55C717CEC5E100E154E1 /* keyboardButtonHighlighted-ios7@2x.png */; };
@@ -491,8 +489,6 @@
 		858DE40F1730384F000AC628 /* LoginViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 858DE40E1730384F000AC628 /* LoginViewController.m */; };
 		858DE41217303BB4000AC628 /* OpenSans-Light.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 858DE41017303BB4000AC628 /* OpenSans-Light.ttf */; };
 		858DE41317303BB4000AC628 /* OpenSans-Regular.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 858DE41117303BB4000AC628 /* OpenSans-Regular.ttf */; };
-		8597439E17D6D956009DCDCA /* toggleButtonMain-ios7.png in Resources */ = {isa = PBXBuildFile; fileRef = 8597439617D6D956009DCDCA /* toggleButtonMain-ios7.png */; };
-		8597439F17D6D956009DCDCA /* toggleButtonExtended-ios7.png in Resources */ = {isa = PBXBuildFile; fileRef = 8597439717D6D956009DCDCA /* toggleButtonExtended-ios7.png */; };
 		859743A017D6D956009DCDCA /* keyboardButtoniPadHighlighted-ios7.png in Resources */ = {isa = PBXBuildFile; fileRef = 8597439817D6D956009DCDCA /* keyboardButtoniPadHighlighted-ios7.png */; };
 		859743A117D6D956009DCDCA /* keyboardButtoniPad-ios7.png in Resources */ = {isa = PBXBuildFile; fileRef = 8597439917D6D956009DCDCA /* keyboardButtoniPad-ios7.png */; };
 		859743A217D6D956009DCDCA /* keyboardButtonHighlighted-ios7.png in Resources */ = {isa = PBXBuildFile; fileRef = 8597439A17D6D956009DCDCA /* keyboardButtonHighlighted-ios7.png */; };
@@ -882,8 +878,6 @@
 		30BC6CB415C1924200A1F4D1 /* welcome_button_bg_full_highlighted@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "welcome_button_bg_full_highlighted@2x.png"; path = "Resources/Images/welcome_button_bg_full_highlighted@2x.png"; sourceTree = "<group>"; };
 		30BC6CB615C1980300A1F4D1 /* welcome_button_add.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = welcome_button_add.png; path = Resources/Images/welcome_button_add.png; sourceTree = "<group>"; };
 		30BC6CB715C1980400A1F4D1 /* welcome_button_add@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "welcome_button_add@2x.png"; path = "Resources/Images/welcome_button_add@2x.png"; sourceTree = "<group>"; };
-		30E9683A15AE4EB10047DD84 /* sidebar-logo.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "sidebar-logo.png"; path = "Resources/Images/sidebar-logo.png"; sourceTree = "<group>"; };
-		30E9683B15AE4EB10047DD84 /* sidebar-logo@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "sidebar-logo@2x.png"; path = "Resources/Images/sidebar-logo@2x.png"; sourceTree = "<group>"; };
 		30E9683F15AE60B10047DD84 /* navbar_add.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = navbar_add.png; path = Resources/Images/navbar_add.png; sourceTree = "<group>"; };
 		30E9684015AE60B20047DD84 /* navbar_add@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "navbar_add@2x.png"; path = "Resources/Images/navbar_add@2x.png"; sourceTree = "<group>"; };
 		30E9684F15AE713A0047DD84 /* navbar_primary_button_bg_landscape_active.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = navbar_primary_button_bg_landscape_active.png; path = Resources/Images/navbar_primary_button_bg_landscape_active.png; sourceTree = "<group>"; };
@@ -949,8 +943,6 @@
 		372AD15316682BA100F21BC1 /* NotificationsFollowDetailViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; lineEnding = 0; path = NotificationsFollowDetailViewController.m; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objc; };
 		37363A3715AB0DE000D3A6B4 /* cell_gradient_bg.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = cell_gradient_bg.png; path = Resources/Images/cell_gradient_bg.png; sourceTree = "<group>"; };
 		37363A3C15AB105200D3A6B4 /* cell_gradient_bg@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "cell_gradient_bg@2x.png"; path = "Resources/Images/cell_gradient_bg@2x.png"; sourceTree = "<group>"; };
-		37417FAD15BEFA9C0067DFEA /* sidebar_border_bg.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = sidebar_border_bg.png; path = Resources/Images/sidebar_border_bg.png; sourceTree = "<group>"; };
-		37417FAE15BEFA9C0067DFEA /* sidebar_border_bg@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "sidebar_border_bg@2x.png"; path = "Resources/Images/sidebar_border_bg@2x.png"; sourceTree = "<group>"; };
 		374CB15315B85CF300DD0EBC /* settings.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = settings.png; path = Resources/Images/settings.png; sourceTree = "<group>"; };
 		374CB15415B85CF300DD0EBC /* settings@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "settings@2x.png"; path = "Resources/Images/settings@2x.png"; sourceTree = "<group>"; };
 		374CB16115B93C0800DD0EBC /* AudioToolbox.framework */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = wrapper.framework; name = AudioToolbox.framework; path = System/Library/Frameworks/AudioToolbox.framework; sourceTree = SDKROOT; };
@@ -1383,8 +1375,6 @@
 		85495F5917C6FACF00871A7A /* icon-comments-edit-active.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "icon-comments-edit-active.png"; sourceTree = "<group>"; };
 		857F55B317CEA01900E154E1 /* WPKeyboardToolbarBase.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WPKeyboardToolbarBase.h; sourceTree = "<group>"; };
 		857F55B417CEA01A00E154E1 /* WPKeyboardToolbarBase.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WPKeyboardToolbarBase.m; sourceTree = "<group>"; };
-		857F55C317CEC5E100E154E1 /* toggleButtonMain-ios7@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "toggleButtonMain-ios7@2x.png"; sourceTree = "<group>"; };
-		857F55C417CEC5E100E154E1 /* toggleButtonExtended-ios7@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "toggleButtonExtended-ios7@2x.png"; sourceTree = "<group>"; };
 		857F55C517CEC5E100E154E1 /* keyboardButtoniPadHighlighted-ios7@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "keyboardButtoniPadHighlighted-ios7@2x.png"; sourceTree = "<group>"; };
 		857F55C617CEC5E100E154E1 /* keyboardButtoniPad-ios7@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "keyboardButtoniPad-ios7@2x.png"; sourceTree = "<group>"; };
 		857F55C717CEC5E100E154E1 /* keyboardButtonHighlighted-ios7@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "keyboardButtonHighlighted-ios7@2x.png"; sourceTree = "<group>"; };
@@ -1399,8 +1389,6 @@
 		858DE40E1730384F000AC628 /* LoginViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LoginViewController.m; sourceTree = "<group>"; };
 		858DE41017303BB4000AC628 /* OpenSans-Light.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "OpenSans-Light.ttf"; sourceTree = "<group>"; };
 		858DE41117303BB4000AC628 /* OpenSans-Regular.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "OpenSans-Regular.ttf"; sourceTree = "<group>"; };
-		8597439617D6D956009DCDCA /* toggleButtonMain-ios7.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "toggleButtonMain-ios7.png"; sourceTree = "<group>"; };
-		8597439717D6D956009DCDCA /* toggleButtonExtended-ios7.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "toggleButtonExtended-ios7.png"; sourceTree = "<group>"; };
 		8597439817D6D956009DCDCA /* keyboardButtoniPadHighlighted-ios7.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "keyboardButtoniPadHighlighted-ios7.png"; sourceTree = "<group>"; };
 		8597439917D6D956009DCDCA /* keyboardButtoniPad-ios7.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "keyboardButtoniPad-ios7.png"; sourceTree = "<group>"; };
 		8597439A17D6D956009DCDCA /* keyboardButtonHighlighted-ios7.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "keyboardButtonHighlighted-ios7.png"; sourceTree = "<group>"; };
@@ -2551,16 +2539,12 @@
 		857F55C217CEC5D300E154E1 /* Keyboard */ = {
 			isa = PBXGroup;
 			children = (
-				8597439617D6D956009DCDCA /* toggleButtonMain-ios7.png */,
-				8597439717D6D956009DCDCA /* toggleButtonExtended-ios7.png */,
 				8597439817D6D956009DCDCA /* keyboardButtoniPadHighlighted-ios7.png */,
 				8597439917D6D956009DCDCA /* keyboardButtoniPad-ios7.png */,
 				8597439A17D6D956009DCDCA /* keyboardButtonHighlighted-ios7.png */,
 				8597439B17D6D956009DCDCA /* keyboardButton-ios7.png */,
 				8597439C17D6D956009DCDCA /* doneButtonHighlighted-ios7.png */,
 				8597439D17D6D956009DCDCA /* doneButton-ios7.png */,
-				857F55C317CEC5E100E154E1 /* toggleButtonMain-ios7@2x.png */,
-				857F55C417CEC5E100E154E1 /* toggleButtonExtended-ios7@2x.png */,
 				857F55C517CEC5E100E154E1 /* keyboardButtoniPadHighlighted-ios7@2x.png */,
 				857F55C617CEC5E100E154E1 /* keyboardButtoniPad-ios7@2x.png */,
 				857F55C717CEC5E100E154E1 /* keyboardButtonHighlighted-ios7@2x.png */,
@@ -3766,7 +3750,6 @@
 				37245ADC13FC23FF006CDBE3 /* WPWebViewController.xib in Resources */,
 				E2586BD31832F31D004B5B67 /* icon-site-field@2x.png in Resources */,
 				85ED54F417CC1A01006564AE /* icon-posts-editor-preview@2x.png in Resources */,
-				8597439F17D6D956009DCDCA /* toggleButtonExtended-ios7.png in Resources */,
 				85325A3017BB0DF8008E87D1 /* icon-menu-stats-active.png in Resources */,
 				E232E60F182EA37F00792CA0 /* icon-language-field.png in Resources */,
 				30EEBB9F1851B0A30099FB6C /* icon_format_strikethrough@2x.png in Resources */,
@@ -3775,7 +3758,6 @@
 				85325A3E17BB0DF8008E87D1 /* icon-menu-posts-add.png in Resources */,
 				859743A417D6D956009DCDCA /* doneButtonHighlighted-ios7.png in Resources */,
 				8599658417DA903B005F84EB /* icon-menu-viewadmin@2x.png in Resources */,
-				857F55CC17CEC5E100E154E1 /* toggleButtonExtended-ios7@2x.png in Resources */,
 				85ED54FA17CC1A01006564AE /* icon-posts-editor-media@2x.png in Resources */,
 				30EB4CB21423F9D700A27B25 /* read.png in Resources */,
 				30EB4CB31423F9D700A27B25 /* read@2x.png in Resources */,
@@ -3886,9 +3868,7 @@
 				307B242B15AC48BA00F09A35 /* navbar_back_button_bg_active@2x.png in Resources */,
 				307B242C15AC48BA00F09A35 /* navbar_back_button_bg.png in Resources */,
 				307B242D15AC48BA00F09A35 /* navbar_back_button_bg@2x.png in Resources */,
-				30E9683C15AE4EB10047DD84 /* sidebar-logo.png in Resources */,
 				46F8714B1838BB4E00BC149B /* reader-postaction-tag.png in Resources */,
-				30E9683D15AE4EB10047DD84 /* sidebar-logo@2x.png in Resources */,
 				30E9684115AE60B20047DD84 /* navbar_add.png in Resources */,
 				E2AA879D1850F91E00886693 /* icon-jetpack-gray.png in Resources */,
 				E232E603182EA16200792CA0 /* icon-password-field.png in Resources */,
@@ -3946,7 +3926,6 @@
 				85ED54FD17CC1A01006564AE /* icon-posts-editor-inspector-active@2x.png in Resources */,
 				85ED54F817CC1A01006564AE /* icon-posts-editor-inspector.png in Resources */,
 				857F55CE17CEC5E100E154E1 /* keyboardButtoniPad-ios7@2x.png in Resources */,
-				8597439E17D6D956009DCDCA /* toggleButtonMain-ios7.png in Resources */,
 				37DDC4EA165C193000316A36 /* menu_button_divider@2x.png in Resources */,
 				85495F6217C6FACF00871A7A /* icon-comments-flag@2x.png in Resources */,
 				85325A2E17BB0DF8008E87D1 /* icon-menu-stats.png in Resources */,
@@ -4131,7 +4110,6 @@
 				5D7BEA8C1774A0C500423E7F /* btn-secondary-tap.png in Resources */,
 				5D7BEA8D1774A0C500423E7F /* btn-secondary-tap@2x.png in Resources */,
 				5D7BEA8E1774A0C500423E7F /* btn-secondary.png in Resources */,
-				857F55CB17CEC5E100E154E1 /* toggleButtonMain-ios7@2x.png in Resources */,
 				5D7BEA8F1774A0C500423E7F /* btn-secondary@2x.png in Resources */,
 				85325A2617BB0DF8008E87D1 /* icon-menu-viewsite.png in Resources */,
 				5D7BEAAC1774A10D00423E7F /* icon-alert.png in Resources */,
