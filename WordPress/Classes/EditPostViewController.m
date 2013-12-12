@@ -285,6 +285,16 @@ CGFloat const EPVCTextViewTopPadding = 7.0f;
     [_tableHeaderViewContentView addSubview:_titleTextField];
     
     
+    // InputAccessoryView for title textField.
+    if (!_titleToolbar) {
+        frame = CGRectMake(0.0f, 0.0f, CGRectGetWidth(self.view.frame), WPKT_HEIGHT_PORTRAIT);
+        self.titleToolbar = [[WPKeyboardToolbarDone alloc] initWithFrame:frame];
+        _titleToolbar.backgroundColor = [WPStyleGuide itsEverywhereGrey];
+        _titleToolbar.delegate = self;
+        _titleTextField.inputAccessoryView = _titleToolbar;
+    }
+    
+    
     // One pixel separator bewteen title and content text fields.
     if (!_separatorView) {
         y = CGRectGetMaxY(_titleTextField.frame);
@@ -1135,7 +1145,7 @@ CGFloat const EPVCTextViewTopPadding = 7.0f;
     if ([buttonItem.actionTag isEqualToString:@"link"]) {
         [self showLinkView];
     } else if ([buttonItem.actionTag isEqualToString:@"done"]) {
-        [_textView resignFirstResponder];
+        [self.view endEditing:YES];
     } else {
         NSString *oldText = _textView.text;
         NSRange oldRange = _textView.selectedRange;
@@ -1322,6 +1332,7 @@ CGFloat const EPVCTextViewTopPadding = 7.0f;
         }
     }
     _editorToolbar.frame = frame;
+    _titleToolbar.frame = frame; // Frames match, no need to re-calc.
 }
 
 
@@ -1341,7 +1352,6 @@ CGFloat const EPVCTextViewTopPadding = 7.0f;
         [self.navigationController setNavigationBarHidden:YES animated:YES];
         [self.navigationController setToolbarHidden:YES animated:NO];
     }
-    _editorToolbar.doneButton.hidden = IS_IPAD && ! _isExternalKeyboard;
 }
 
 - (void)keyboardDidShow:(NSNotification *)notification {

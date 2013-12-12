@@ -498,6 +498,7 @@
 		5D86498515A6459C00A64FB0 /* welcome_bg_pattern.png in Resources */ = {isa = PBXBuildFile; fileRef = 5D86498315A6459C00A64FB0 /* welcome_bg_pattern.png */; };
 		5D86498615A6459C00A64FB0 /* welcome_bg_pattern@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 5D86498415A6459C00A64FB0 /* welcome_bg_pattern@2x.png */; };
 		5D87E10C15F5120C0012C595 /* SettingsPageViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 5D87E10A15F5120C0012C595 /* SettingsPageViewController.m */; };
+		5D93BA50185A5A4F00CD423A /* WPKeyboardToolbarDone.m in Sources */ = {isa = PBXBuildFile; fileRef = 5D93BA4F185A5A4F00CD423A /* WPKeyboardToolbarDone.m */; };
 		5D97C2F315CAF8D8009B44DD /* UINavigationController+KeyboardFix.m in Sources */ = {isa = PBXBuildFile; fileRef = 5D97C2F215CAF8D8009B44DD /* UINavigationController+KeyboardFix.m */; };
 		5D9832EC15A77F0700A5E783 /* toolbar_bg.png in Resources */ = {isa = PBXBuildFile; fileRef = 5D9832EA15A77ED900A5E783 /* toolbar_bg.png */; };
 		5D9832ED15A77F0700A5E783 /* toolbar_bg@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 5D9832EB15A77EEF00A5E783 /* toolbar_bg@2x.png */; };
@@ -1563,6 +1564,8 @@
 		5D86498415A6459C00A64FB0 /* welcome_bg_pattern@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "welcome_bg_pattern@2x.png"; path = "Resources/Images/welcome_bg_pattern@2x.png"; sourceTree = "<group>"; };
 		5D87E10915F5120C0012C595 /* SettingsPageViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SettingsPageViewController.h; sourceTree = "<group>"; };
 		5D87E10A15F5120C0012C595 /* SettingsPageViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SettingsPageViewController.m; sourceTree = "<group>"; };
+		5D93BA4E185A5A4F00CD423A /* WPKeyboardToolbarDone.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WPKeyboardToolbarDone.h; sourceTree = "<group>"; };
+		5D93BA4F185A5A4F00CD423A /* WPKeyboardToolbarDone.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WPKeyboardToolbarDone.m; sourceTree = "<group>"; };
 		5D97C2F115CAF8D8009B44DD /* UINavigationController+KeyboardFix.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UINavigationController+KeyboardFix.h"; sourceTree = "<group>"; };
 		5D97C2F215CAF8D8009B44DD /* UINavigationController+KeyboardFix.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UINavigationController+KeyboardFix.m"; sourceTree = "<group>"; };
 		5D9832EA15A77ED900A5E783 /* toolbar_bg.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = toolbar_bg.png; path = Resources/Images/toolbar_bg.png; sourceTree = "<group>"; };
@@ -2316,6 +2319,8 @@
 				5D4DE6F2167177560030518D /* WPNoResultsView.m */,
 				857F55B317CEA01900E154E1 /* WPKeyboardToolbarBase.h */,
 				857F55B417CEA01A00E154E1 /* WPKeyboardToolbarBase.m */,
+				5D93BA4E185A5A4F00CD423A /* WPKeyboardToolbarDone.h */,
+				5D93BA4F185A5A4F00CD423A /* WPKeyboardToolbarDone.m */,
 				E1CAAE3813F4142E0000C58D /* WPKeyboardToolbarButtonItem.h */,
 				E1CAAE3913F4142E0000C58D /* WPKeyboardToolbarButtonItem.m */,
 				03958060100D6CFC00850742 /* WPLabel.h */,
@@ -5105,6 +5110,7 @@
 				E2AA87A518523E5300886693 /* UIView+Subviews.m in Sources */,
 				93C486511810445D00A24725 /* ActivityLogViewController.m in Sources */,
 				ACC156CC0E10E67600D6E1A0 /* EditPostViewController.m in Sources */,
+				5D93BA50185A5A4F00CD423A /* WPKeyboardToolbarDone.m in Sources */,
 				ACBAB5FE0E121C7300F38795 /* PostSettingsViewController.m in Sources */,
 				9390B8601858D17200BE43FC /* BlogSelectorViewController.m in Sources */,
 				ACBAB6860E1247F700F38795 /* PostPreviewViewController.m in Sources */,
