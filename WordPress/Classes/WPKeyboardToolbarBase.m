@@ -122,7 +122,7 @@
         CGFloat mainWidth = _moreButton.frame.origin.x + _moreButton.frame.size.width;
         _mainView.frame = CGRectMake(0, 0, mainWidth, height);
         _mainView.autoresizesSubviews = YES;
-        
+
         [_mainView addSubview:_boldButton];
         [_mainView addSubview:_italicsButton];
         [_mainView addSubview:_underlineButton];
