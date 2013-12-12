@@ -8,18 +8,27 @@
 
 #import "CoreDataTestHelper.h"
 #import "WordPressAppDelegate.h"
+#import <objc/runtime.h>
+#import "ContextManager.h"
+#import "AsyncTestHelper.h"
 
-@interface WordPressAppDelegate (CoreDataTestHelper)
-@property (nonatomic, strong) NSManagedObjectContext *managedObjectContext;
-@property (nonatomic, strong) NSManagedObjectModel *managedObjectModel;
+@interface ContextManager (TestHelper)
+
+@property (nonatomic, strong) NSManagedObjectContext *mainContext;
+@property (nonatomic, strong) NSManagedObjectContext *backgroundContext;
 @property (nonatomic, strong) NSPersistentStoreCoordinator *persistentStoreCoordinator;
+
++ (NSURL *)storeURL;
+
 @end
 
-@implementation CoreDataTestHelper {
-    NSManagedObjectContext *_context;
-    NSManagedObjectModel *_model;
-    NSPersistentStoreCoordinator *_coordinator;
-}
+@interface CoreDataTestHelper ()
+
+@property (nonatomic, strong) NSManagedObjectModel *managedObjectModel;
+
+@end
+
+@implementation CoreDataTestHelper
 
 + (id)sharedHelper {
     static CoreDataTestHelper *_sharedHelper = nil;
@@ -31,29 +40,17 @@
     return _sharedHelper;
 }
 
-- (void)registerDefaultContext {
-    WordPressAppDelegate *appDelegate = [WordPressAppDelegate sharedWordPressApplicationDelegate];
-    appDelegate.managedObjectContext = [self managedObjectContext];
-    appDelegate.persistentStoreCoordinator = [self persistentStoreCoordinator];
-    appDelegate.managedObjectModel = [[self persistentStoreCoordinator] managedObjectModel];
-}
-
-- (void)unregisterDefaultContext {
-    WordPressAppDelegate *appDelegate = [WordPressAppDelegate sharedWordPressApplicationDelegate];
-    appDelegate.managedObjectContext = nil;
-    appDelegate.persistentStoreCoordinator = nil;
-    appDelegate.managedObjectModel = nil;
-}
-
 - (void)setModelName:(NSString *)modelName {
-    _model = [self modelWithName:modelName];
-    _context = nil;
-    _coordinator = nil;
+    _managedObjectModel = [self modelWithName:modelName];
+    [ContextManager sharedInstance].mainContext = nil;
+    [ContextManager sharedInstance].backgroundContext = nil;
+    [ContextManager sharedInstance].persistentStoreCoordinator = nil;
 }
 
 - (BOOL)migrateToModelName:(NSString *)modelName {
     NSManagedObjectModel *destinationModel = [self modelWithName:modelName];
-    NSDictionary *sourceMetadata = [_coordinator metadataForPersistentStore:_coordinator.persistentStores[0]];
+    NSPersistentStoreCoordinator *psc = [ContextManager sharedInstance].persistentStoreCoordinator;
+    NSDictionary *sourceMetadata = [psc metadataForPersistentStore:psc.persistentStores[0]];
     BOOL pscCompatible = [destinationModel isConfiguration:nil compatibleWithStoreMetadata:sourceMetadata];
     if (pscCompatible) {
         // Models are compatible, no migration needed
@@ -75,7 +72,7 @@
 
     NSError *error;
     NSURL *destinationURL = [NSURL fileURLWithPath:[[NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES) lastObject] stringByAppendingPathComponent: @"WordPressTestMigrated.sqlite"]];
-    BOOL migrated = [manager migrateStoreFromURL:[self storeURL]
+    BOOL migrated = [manager migrateStoreFromURL:[ContextManager storeURL]
                                    type:NSSQLiteStoreType
                                 options:nil
                        withMappingModel:mappingModel
@@ -88,8 +85,8 @@
         return NO;
     }
 
-    [[NSFileManager defaultManager] removeItemAtURL:[self storeURL] error:nil];
-    [[NSFileManager defaultManager] moveItemAtURL:destinationURL toURL:[self storeURL] error:nil];
+    [[NSFileManager defaultManager] removeItemAtURL:[ContextManager storeURL] error:nil];
+    [[NSFileManager defaultManager] moveItemAtURL:destinationURL toURL:[ContextManager storeURL] error:nil];
 
     [self setModelName:modelName];
     return migrated;
@@ -100,63 +97,106 @@
     return [[NSManagedObjectModel alloc] initWithContentsOfURL:modelURL];
 }
 
-- (NSManagedObject *)insertEntityWithName:(NSString *)entityName {
-    return [NSEntityDescription insertNewObjectForEntityForName:entityName inManagedObjectContext:_context];
+- (NSManagedObject *)insertEntityIntoMainContextWithName:(NSString *)entityName {
+    return [NSEntityDescription insertNewObjectForEntityForName:entityName inManagedObjectContext:[ContextManager sharedInstance].mainContext];
 }
 
-- (NSArray *)allObjectsForEntityName:(NSString *)entityName
-{
+- (NSManagedObject *)insertEntityIntoBackgroundContextWithName:(NSString *)entityName {
+    return [NSEntityDescription insertNewObjectForEntityForName:entityName inManagedObjectContext:[ContextManager sharedInstance].backgroundContext];
+}
+
+- (NSArray *)allObjectsInMainContextForEntityName:(NSString *)entityName {
     NSFetchRequest *request = [NSFetchRequest fetchRequestWithEntityName:entityName];
-    return [[self managedObjectContext] executeFetchRequest:request error:nil];
+    return [[ContextManager sharedInstance].mainContext executeFetchRequest:request error:nil];
+}
+
+- (NSArray *)allObjectsInBackgroundContextForEntityName:(NSString *)entityName {
+    NSFetchRequest *request = [NSFetchRequest fetchRequestWithEntityName:entityName];
+    return [[ContextManager sharedInstance].backgroundContext executeFetchRequest:request error:nil];
 }
 
 - (void)reset {
-    [self unregisterDefaultContext];
-    [[NSFileManager defaultManager] removeItemAtURL:[self storeURL] error:nil];
-    if (!_context) {
-        return;
-    }
-    [_context lock];
-    [_context reset];
-    if (_coordinator) {
-        for (NSPersistentStore *store in [_coordinator persistentStores]) {
-            [_coordinator removePersistentStore:store error:nil];
-        }
-        NSPersistentStore *store = [_coordinator addPersistentStoreWithType:NSSQLiteStoreType configuration:nil URL:[self storeURL] options:nil error:nil];
-        NSAssert(store != nil, @"Should be able to add store");
-    }
-    [_context unlock];
-}
-
-- (NSManagedObjectContext *)managedObjectContext {
-    if (!_context) {
-        _context = [[NSManagedObjectContext alloc] initWithConcurrencyType:NSMainQueueConcurrencyType];
-        [_context setPersistentStoreCoordinator:[self persistentStoreCoordinator]];
-    }
-    return _context;
+    [[ContextManager sharedInstance].mainContext reset];
+    [[ContextManager sharedInstance].backgroundContext reset];
+    [ContextManager sharedInstance].mainContext = nil;
+    [ContextManager sharedInstance].backgroundContext = nil;
+    [ContextManager sharedInstance].persistentStoreCoordinator = nil;
+    
+    [[NSFileManager defaultManager] removeItemAtURL:[ContextManager storeURL] error:nil];
+    return;
 }
 
 - (NSManagedObjectModel *)managedObjectModel {
-    if (!_model) {
+    if (!_managedObjectModel) {
         NSURL *modelURL = [NSURL fileURLWithPath:[[NSBundle mainBundle] pathForResource:@"WordPress" ofType:@"momd"]];
-        _model = [[NSManagedObjectModel alloc] initWithContentsOfURL:modelURL];
+        _managedObjectModel = [[NSManagedObjectModel alloc] initWithContentsOfURL:modelURL];
     }
-    return _model;
+    return _managedObjectModel;
 }
+
+@end
+
+@implementation ContextManager (TestHelper)
+
+@dynamic mainContext, backgroundContext;
+
+static void *const testPSCKey = "testPSCKey";
+
+#pragma mark - Override persistent store coordinator
 
 - (NSPersistentStoreCoordinator *)persistentStoreCoordinator {
-    if (!_coordinator) {
-        _coordinator = [[NSPersistentStoreCoordinator alloc] initWithManagedObjectModel:[self managedObjectModel]];
-
-        NSError *error;
-        NSPersistentStore *store = [_coordinator addPersistentStoreWithType:NSSQLiteStoreType configuration:nil URL:[self storeURL] options:nil error:&error];
-        NSAssert(store != nil, @"Can't initialize core data storage");
+    id psc = objc_getAssociatedObject(self, testPSCKey);
+    if (psc) {
+        return psc;
     }
-    return _coordinator;
+    
+    psc = [[NSPersistentStoreCoordinator alloc] initWithManagedObjectModel:[[ContextManager sharedInstance] managedObjectModel]];
+    NSError *error;
+    NSPersistentStore *store = [psc addPersistentStoreWithType:NSSQLiteStoreType configuration:nil URL:[ContextManager storeURL] options:nil error:&error];
+    NSAssert(store != nil, @"Can't initialize core data storage");
+    
+    objc_setAssociatedObject([ContextManager sharedInstance], testPSCKey, psc, OBJC_ASSOCIATION_RETAIN);
+    
+    return psc;
 }
 
-- (NSURL *)storeURL {
-    return [NSURL fileURLWithPath:[[NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES) lastObject] stringByAppendingPathComponent: @"WordPressTest.sqlite"]];
+- (void)setPersistentStoreCoordinator:(NSPersistentStoreCoordinator *)persistentStoreCoordinator {
+    objc_setAssociatedObject(self, testPSCKey, persistentStoreCoordinator, OBJC_ASSOCIATION_RETAIN);
+}
+
++ (NSURL *)storeURL {
+    return [NSURL fileURLWithPath:[[NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES) lastObject] stringByAppendingPathComponent:@"WordPressTest.sqlite"]];
+}
+
+
+#pragma mark - Swizzle merge methods 
+
++ (void)load {
+    Method originalMainToBg = class_getInstanceMethod([ContextManager class], @selector(mergeChangesIntoBackgroundContext:));
+    Method testMainToBg = class_getInstanceMethod([ContextManager class], @selector(testMergeChangesIntoBackgroundContext:));
+    Method originalBgToMain = class_getInstanceMethod([ContextManager class], @selector(mergeChangesIntoMainContext:));
+    Method testBgToMain = class_getInstanceMethod([ContextManager class], @selector(testMergeChangesIntoMainContext:));
+    
+    method_exchangeImplementations(originalMainToBg, testMainToBg);
+    method_exchangeImplementations(originalBgToMain, testBgToMain);
+}
+
+- (void)testMergeChangesIntoBackgroundContext:(NSNotification *)notification {
+    [[[ContextManager sharedInstance] backgroundContext] mergeChangesFromContextDidSaveNotification:notification];
+    if (ATHSemaphore) {
+        ATHNotify();
+    } else {
+        NSLog(@"No semaphore present for notify");
+    }
+}
+
+- (void)testMergeChangesIntoMainContext:(NSNotification *)notification {
+    [[[ContextManager sharedInstance] mainContext] mergeChangesFromContextDidSaveNotification:notification];
+    if (ATHSemaphore) {
+        ATHNotify();
+    } else {
+        NSLog(@"No semaphore present for notify for main");
+    }
 }
 
 @end

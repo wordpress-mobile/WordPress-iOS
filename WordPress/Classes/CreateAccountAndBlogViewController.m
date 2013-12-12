@@ -11,7 +11,6 @@
 #import <QuartzCore/QuartzCore.h>
 #import "SupportViewController.h"
 #import "WordPressComApi.h"
-#import "UIView+FormSheetHelpers.h"
 #import "WPNUXBackButton.h"
 #import "WPNUXMainButton.h"
 #import "WPWalkthroughTextField.h"
@@ -23,6 +22,9 @@
 #import "WPWebViewController.h"
 #import "WPStyleGuide.h"
 #import "UILabel+SuggestSize.h"
+#import "WPAccount.h"
+#import "Blog.h"
+#import "WordPressComOAuthClient.h"
 
 @interface CreateAccountAndBlogViewController ()<
     UITextFieldDelegate,
@@ -48,10 +50,10 @@
     BOOL _userDefinedSiteAddress;
     CGFloat _keyboardOffset;
     NSString *_defaultSiteUrl;
-        
-    CGFloat _viewHeight;
     
     NSDictionary *_currentLanguage;
+
+    WPAccount *_account;
 }
 
 @end
@@ -63,10 +65,11 @@ CGFloat const CreateAccountAndBlogIconVerticalOffset = 70.0;
 CGFloat const CreateAccountAndBlogMaxTextWidth = 260.0;
 CGFloat const CreateAccountAndBlogTextFieldWidth = 320.0;
 CGFloat const CreateAccountAndBlogTextFieldHeight = 44.0;
+CGFloat const CreateAccountAndBlogTextFieldPhoneHeight = 38.0;
 CGFloat const CreateAccountAndBlogKeyboardOffset = 132.0;
 CGFloat const CreateAccountAndBlogiOS7StatusBarOffset = 20.0;
 CGFloat const CreateAccountAndBlogButtonWidth = 289.0;
-CGFloat const CreateAccountAndBlogButtonHeight = 41.0;
+CGFloat const CreateAccountAndBlogButtonHeight = 40.0;
 
 - (id)init
 {
@@ -84,11 +87,7 @@ CGFloat const CreateAccountAndBlogButtonHeight = 41.0;
     [super viewDidLoad];
     
     [WPMobileStats trackEventForSelfHostedAndWPCom:StatsEventNUXCreateAccountOpened];
-    
-    // view height is cached to allow us to center the controls. When viewDidLoad is
-    // called, the view bounds are the size of the screen. On iPad, this view is
-    // most often presented as a formSheet
-    _viewHeight = [self.view formSheetViewHeight];
+
     self.view.backgroundColor = [WPNUXUtility backgroundColor];
         
     [self initializeView];
@@ -103,6 +102,7 @@ CGFloat const CreateAccountAndBlogButtonHeight = 41.0;
 {
     [super viewWillAppear:animated];
     [self.navigationController setNavigationBarHidden:YES animated:animated];
+    [self layoutControls];
 }
 
 - (NSUInteger)supportedInterfaceOrientations {
@@ -110,6 +110,10 @@ CGFloat const CreateAccountAndBlogButtonHeight = 41.0;
         return UIInterfaceOrientationMaskPortrait;
     
     return UIInterfaceOrientationMaskAll;
+}
+
+- (void)willAnimateRotationToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation duration:(NSTimeInterval)duration {
+    [self layoutControls];
 }
 
 #pragma mark - UITextField Delegate methods
@@ -238,7 +242,7 @@ CGFloat const CreateAccountAndBlogButtonHeight = 41.0;
     // Add Title
     if (_titleLabel == nil) {
         _titleLabel = [[UILabel alloc] init];
-        _titleLabel.attributedText = [WPNUXUtility titleAttributedString:NSLocalizedString(@"Create an account on WordPress.com", @"NUX Create Account Page 1 Title")];
+        _titleLabel.attributedText = [[NSAttributedString alloc] initWithString:NSLocalizedString(@"Create an account on WordPress.com", @"NUX Create Account Page 1 Title") attributes:[WPNUXUtility titleAttributesWithColor:[UIColor whiteColor]]];
         _titleLabel.numberOfLines = 0;
         _titleLabel.backgroundColor = [UIColor clearColor];
         _titleLabel.autoresizingMask = UIViewAutoresizingFlexibleRightMargin | UIViewAutoresizingFlexibleLeftMargin;
@@ -352,24 +356,20 @@ CGFloat const CreateAccountAndBlogButtonHeight = 41.0;
 - (void)layoutControls
 {
     CGFloat x,y;
-    CGFloat viewWidth = CGRectGetWidth(self.view.frame);
+    
+    CGFloat viewWidth = CGRectGetWidth(self.view.bounds);
+    CGFloat viewHeight = CGRectGetHeight(self.view.bounds);
     
     // Layout Help Button
     UIImage *helpButtonImage = [UIImage imageNamed:@"btn-help"];
     x = viewWidth - helpButtonImage.size.width - CreateAccountAndBlogStandardOffset;
-    y = 0.5 * CreateAccountAndBlogStandardOffset;
-    if (IS_IOS7 && IS_IPHONE) {
-        y += CreateAccountAndBlogiOS7StatusBarOffset;
-    }
-    _helpButton.frame = CGRectMake(x, y, helpButtonImage.size.width, helpButtonImage.size.height);
+    y = 0.5 * CreateAccountAndBlogStandardOffset + CreateAccountAndBlogiOS7StatusBarOffset;
+    _helpButton.frame = CGRectMake(x, y, helpButtonImage.size.width, CreateAccountAndBlogButtonHeight);
     
     // Layout Cancel Button
     x = 0;
-    y = 0.5 * CreateAccountAndBlogStandardOffset;
-    if (IS_IOS7 && IS_IPHONE) {
-        y += CreateAccountAndBlogiOS7StatusBarOffset;
-    }
-    _cancelButton.frame = CGRectMake(x, y, CGRectGetWidth(_cancelButton.frame), CGRectGetHeight(_cancelButton.frame));
+    y = 0.5 * CreateAccountAndBlogStandardOffset + CreateAccountAndBlogiOS7StatusBarOffset;
+    _cancelButton.frame = CGRectMake(x, y, CGRectGetWidth(_cancelButton.frame), CreateAccountAndBlogButtonHeight);
         
     // Layout the controls starting out from y of 0, then offset them once the height of the controls
     // is accurately calculated we can determine the vertical center and adjust everything accordingly.
@@ -380,25 +380,29 @@ CGFloat const CreateAccountAndBlogButtonHeight = 41.0;
     y = 0;
     _titleLabel.frame = CGRectIntegral(CGRectMake(x, y, titleSize.width, titleSize.height));
     
+    // In order to fit controls ontol all phones, the textField height is smaller on iPhones
+    // versus iPads.
+    CGFloat textFieldHeight = IS_IPAD ? CreateAccountAndBlogTextFieldHeight: CreateAccountAndBlogTextFieldPhoneHeight;
+    
     // Layout Email
     x = (viewWidth - CreateAccountAndBlogTextFieldWidth)/2.0;
     y = CGRectGetMaxY(_titleLabel.frame) + CreateAccountAndBlogStandardOffset;
-    _emailField.frame = CGRectIntegral(CGRectMake(x, y, CreateAccountAndBlogTextFieldWidth, CreateAccountAndBlogTextFieldHeight));
+    _emailField.frame = CGRectIntegral(CGRectMake(x, y, CreateAccountAndBlogTextFieldWidth, textFieldHeight));
 
     // Layout Username
     x = (viewWidth - CreateAccountAndBlogTextFieldWidth)/2.0;
     y = CGRectGetMaxY(_emailField.frame) - 1;
-    _usernameField.frame = CGRectIntegral(CGRectMake(x, y, CreateAccountAndBlogTextFieldWidth, CreateAccountAndBlogTextFieldHeight));
+    _usernameField.frame = CGRectIntegral(CGRectMake(x, y, CreateAccountAndBlogTextFieldWidth, textFieldHeight));
 
     // Layout Password
     x = (viewWidth - CreateAccountAndBlogTextFieldWidth)/2.0;
     y = CGRectGetMaxY(_usernameField.frame) - 1;
-    _passwordField.frame = CGRectIntegral(CGRectMake(x, y, CreateAccountAndBlogTextFieldWidth, CreateAccountAndBlogTextFieldHeight));
+    _passwordField.frame = CGRectIntegral(CGRectMake(x, y, CreateAccountAndBlogTextFieldWidth, textFieldHeight));
     
     // Layout Site Address
     x = (viewWidth - CreateAccountAndBlogTextFieldWidth)/2.0;
     y = CGRectGetMaxY(_passwordField.frame) - 1;
-    _siteAddressField.frame = CGRectIntegral(CGRectMake(x, y, CreateAccountAndBlogTextFieldWidth, CreateAccountAndBlogTextFieldHeight));
+    _siteAddressField.frame = CGRectIntegral(CGRectMake(x, y, CreateAccountAndBlogTextFieldWidth, textFieldHeight));
     
     // Layout WordPressCom Label
     [_siteAddressWPComLabel sizeToFit];
@@ -425,7 +429,7 @@ CGFloat const CreateAccountAndBlogButtonHeight = 41.0;
     _TOSLabel.frame = CGRectIntegral(CGRectMake(x, y, TOSLabelSize.width, TOSLabelSize.height));
     
     NSArray *controls = @[_titleLabel, _emailField, _usernameField, _passwordField, _TOSLabel, _createAccountButton, _siteAddressField];
-    [WPNUXUtility centerViews:controls withStartingView:_titleLabel andEndingView:_TOSLabel forHeight:_viewHeight];
+    [WPNUXUtility centerViews:controls withStartingView:_titleLabel andEndingView:_TOSLabel forHeight:viewHeight];
 }
 
 
@@ -473,8 +477,8 @@ CGFloat const CreateAccountAndBlogButtonHeight = 41.0;
 {
     WPWebViewController *webViewController = [[WPWebViewController alloc] init];
     [webViewController setUrl:[NSURL URLWithString:@"http://en.wordpress.com/tos/"]];
-    [self.navigationController setNavigationBarHidden:NO animated:NO];
-    [self.navigationController pushViewController:webViewController animated:NO];
+    [self.navigationController pushViewController:webViewController animated:YES];
+    [self.navigationController setNavigationBarHidden:NO animated:YES];
 }
 
 - (void)keyboardWillShow:(NSNotification *)notification
@@ -484,24 +488,26 @@ CGFloat const CreateAccountAndBlogButtonHeight = 41.0;
     CGRect keyboardFrame = [[keyboardInfo objectForKey:UIKeyboardFrameEndUserInfoKey] CGRectValue];
     keyboardFrame = [self.view convertRect:keyboardFrame fromView:nil];
     
-    _keyboardOffset = (CGRectGetMaxY(_createAccountButton.frame) - CGRectGetMinY(keyboardFrame)) + 0.5 * CreateAccountAndBlogStandardOffset;
+    CGFloat newKeyboardOffset = (CGRectGetMaxY(_createAccountButton.frame) - CGRectGetMinY(keyboardFrame)) + 0.5 * CreateAccountAndBlogStandardOffset;
     
     // make sure keyboard offset is greater than 0, otherwise do not move controls
-    if (_keyboardOffset < 0) {
-        _keyboardOffset = 0;
+    if (newKeyboardOffset < 0) {
+        newKeyboardOffset = 0;
         return;
     }
 
     [UIView animateWithDuration:animationDuration animations:^{
         for (UIControl *control in [self controlsToMoveDuringKeyboardTransition]) {
             CGRect frame = control.frame;
-            frame.origin.y -= _keyboardOffset;
+            frame.origin.y -= newKeyboardOffset;
             control.frame = frame;
         }
         
         for (UIControl *control in [self controlsToShowOrHideDuringKeyboardTransition]) {
             control.alpha = 0.0;
         }
+    } completion:^(BOOL finished) {
+        _keyboardOffset += newKeyboardOffset;
     }];
 }
 
@@ -510,10 +516,13 @@ CGFloat const CreateAccountAndBlogButtonHeight = 41.0;
     NSDictionary *keyboardInfo = notification.userInfo;
     CGFloat animationDuration = [[keyboardInfo objectForKey:UIKeyboardAnimationDurationUserInfoKey] floatValue];
     
+    CGFloat currentKeyboardOffset = _keyboardOffset;
+    _keyboardOffset = 0;
+    
     [UIView animateWithDuration:animationDuration animations:^{
         for (UIControl *control in [self controlsToMoveDuringKeyboardTransition]) {
             CGRect frame = control.frame;
-            frame.origin.y += _keyboardOffset;
+            frame.origin.y += currentKeyboardOffset;
             control.frame = frame;
         }
                 
@@ -664,61 +673,76 @@ CGFloat const CreateAccountAndBlogButtonHeight = 41.0;
             [operation didSucceed];
         };
         void (^createUserFailure)(NSError *) = ^(NSError *error) {
+            DDLogError(@"Failed creating user: %@", error);
             [operation didFail];
             [self setAuthenticating:NO];
             [self displayRemoteError:error];
         };
-        
-        [[WordPressComApi sharedApi] createWPComAccountWithEmail:_emailField.text
-                                                     andUsername:_usernameField.text
-                                                     andPassword:_passwordField.text
-                                                         success:createUserSuccess
-                                                         failure:createUserFailure];
-        
+
+        [[WordPressComApi anonymousApi] createWPComAccountWithEmail:_emailField.text
+                                                        andUsername:_usernameField.text
+                                                        andPassword:_passwordField.text
+                                                            success:createUserSuccess
+                                                            failure:createUserFailure];
+
     }];
     WPAsyncBlockOperation *userSignIn = [WPAsyncBlockOperation operationWithBlock:^(WPAsyncBlockOperation *operation){
-        void (^signInSuccess)(void) = ^{
+        void (^signInSuccess)(NSString *authToken) = ^(NSString *authToken){
+            _account = [WPAccount createOrUpdateWordPressComAccountWithUsername:_usernameField.text password:_passwordField.text authToken:authToken];
+            if (![WPAccount defaultWordPressComAccount]) {
+                [WPAccount setDefaultWordPressComAccount:_account];
+            }
             [operation didSucceed];
         };
         void (^signInFailure)(NSError *) = ^(NSError *error) {
+            DDLogError(@"Failed signing in user: %@", error);
             // We've hit a strange failure at this point, the user has been created successfully but for some reason
             // we are unable to sign in and proceed
             [operation didFail];
             [self setAuthenticating:NO];
             [self displayRemoteError:error];
         };
-        
-        [[WordPressComApi sharedApi] signInWithUsername:_usernameField.text
-                                               password:_passwordField.text
-                                                success:signInSuccess
-                                                failure:signInFailure];
+
+
+        WordPressComOAuthClient *client = [WordPressComOAuthClient client];
+        [client authenticateWithUsername:_usernameField.text
+                                password:_passwordField.text
+                                 success:signInSuccess
+                                 failure:signInFailure];
     }];
-    
+
     WPAsyncBlockOperation *blogCreation = [WPAsyncBlockOperation operationWithBlock:^(WPAsyncBlockOperation *operation){
         void (^createBlogSuccess)(id) = ^(id responseObject){
             [WPMobileStats trackEventForSelfHostedAndWPCom:StatsEventNUXCreateAccountCreatedAccount];
             [operation didSucceed];
-            [self setAuthenticating:NO];
-            if (self.onCreatedUser) {
-                self.onCreatedUser(_usernameField.text, _passwordField.text);
+
+            NSMutableDictionary *blogOptions = [[responseObject dictionaryForKey:@"blog_details"] mutableCopy];
+            if ([blogOptions objectForKey:@"blogname"]) {
+                [blogOptions setObject:[blogOptions objectForKey:@"blogname"] forKey:@"blogName"];
+                [blogOptions removeObjectForKey:@"blogname"];
             }
+            Blog *blog = [_account findOrCreateBlogFromDictionary:blogOptions withContext:_account.managedObjectContext];
+            [blog dataSave];
+            [blog syncBlogWithSuccess:nil failure:nil];
+            [self setAuthenticating:NO];
+            [self dismissViewControllerAnimated:YES completion:nil];
         };
         void (^createBlogFailure)(NSError *error) = ^(NSError *error) {
+            DDLogError(@"Failed creating blog: %@", error);
             [self setAuthenticating:NO];
             [operation didFail];
             [self displayRemoteError:error];
         };
-        
-        NSNumber *languageId = [_currentLanguage objectForKey:@"lang_id"];
-        [[WordPressComApi sharedApi] createWPComBlogWithUrl:[self getSiteAddressWithoutWordPressDotCom]
-                                               andBlogTitle:[self generateSiteTitleFromUsername:_usernameField.text]
-                                              andLanguageId:languageId
-                                          andBlogVisibility:WordPressComApiBlogVisibilityPublic
-                                                    success:createBlogSuccess
-                                                    failure:createBlogFailure];
 
+        NSNumber *languageId = [_currentLanguage objectForKey:@"lang_id"];
+        [[_account restApi] createWPComBlogWithUrl:[self getSiteAddressWithoutWordPressDotCom]
+                                      andBlogTitle:[self generateSiteTitleFromUsername:_usernameField.text]
+                                     andLanguageId:languageId
+                                 andBlogVisibility:WordPressComApiBlogVisibilityPublic
+                                           success:createBlogSuccess
+                                           failure:createBlogFailure];
     }];
-    
+
     [blogCreation addDependency:userSignIn];
     [userSignIn addDependency:userCreation];
     [userCreation addDependency:siteValidation];

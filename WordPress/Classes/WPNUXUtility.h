@@ -31,6 +31,6 @@
 
 + (void)centerViews:(NSArray *)controls withStartingView:(UIView *)startingView andEndingView:(UIView *)endingView forHeight:(CGFloat)viewHeight;
 + (void)configurePageControlTintColors:(UIPageControl *)pageControl;
-+ (NSAttributedString *)titleAttributedString:(NSString *)text;
++ (NSDictionary *)titleAttributesWithColor:(UIColor *)color;
 
 @end

@@ -98,13 +98,10 @@ NSString *const StatsPropertyPostDetailClickedAddPhoto = @"clicked_add_photo";
 NSString *const StatsPropertyPostDetailClickedShowCategories = @"clicked_show_categories";
 NSString *const StatsEventPostDetailClickedKeyboardToolbarBoldButton = @"clicked_keyboard_toolbar_bold_button";
 NSString *const StatsEventPostDetailClickedKeyboardToolbarItalicButton = @"clicked_keyboard_toolbar_italic_button";
+NSString *const StatsEventPostDetailClickedKeyboardToolbarUnderlineButton = @"clicked_keyboard_toolbar_underline_button";
 NSString *const StatsEventPostDetailClickedKeyboardToolbarLinkButton = @"clicked_keyboard_toolbar_link_button";
 NSString *const StatsEventPostDetailClickedKeyboardToolbarBlockquoteButton = @"clicked_keyboard_toolbar_blockquote_button";
 NSString *const StatsEventPostDetailClickedKeyboardToolbarDelButton = @"clicked_keyboard_toolbar_del_button";
-NSString *const StatsEventPostDetailClickedKeyboardToolbarUnorderedListButton = @"clicked_keyboard_toolbar_unordered_list_button";
-NSString *const StatsEventPostDetailClickedKeyboardToolbarOrderedListButton = @"clicked_keyboard_toolbar_ordered_list_button";
-NSString *const StatsEventPostDetailClickedKeyboardToolbarListItemButton = @"clicked_keyboard_toolbar_list_item_button";
-NSString *const StatsEventPostDetailClickedKeyboardToolbarCodeButton = @"clicked_keyboard_toolbar_code_button";
 NSString *const StatsEventPostDetailClickedKeyboardToolbarMoreButton = @"clicked_keyboard_toolbar_more_button";
 NSString *const StatsEventPostDetailAddedPhoto = @"Added Photo";
 NSString *const StatsEventPostDetailRemovedPhoto = @"Removed Photo";
@@ -179,11 +176,6 @@ NSString *const StatsEventManageNotificationsDisabledBlogNotifications = @"Manag
 // Quick Photo
 NSString *const StatsEventQuickPhotoOpened = @"Quick Photo - Opened";
 NSString *const StatsEventQuickPhotoPosted = @"Quick Photo - Posted";
-
-// Welcome View Controller
-NSString *const StatsEventWelcomeViewControllerClickedAddSelfHostedBlog = @"Welcome View Controller - Add Self Hosted Blog";
-NSString *const StatsEventWelcomeViewControllerClickedAddWordpressDotComBlog = @"Welcome View Controller - Add Wordpress.com Blog";
-NSString *const StatsEventWelcomeViewControllerClickedCreateWordpressDotComBlog = @"Welcome View Controller - Create Wordpress.com Blog";
 
 // NUX First Walkthrough 
 NSString *const StatsEventNUXFirstWalkthroughOpened = @"NUX - First Walkthrough - Opened";

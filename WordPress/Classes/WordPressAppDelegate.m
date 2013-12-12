@@ -7,33 +7,37 @@
  * Some rights reserved. See license.txt
  */
 
-#import <UIDeviceIdentifier/UIDeviceHardware.h>
+#import <AFNetworking/AFNetworking.h>
+#import <CoreTelephony/CTTelephonyNetworkInfo.h>
+#import <CoreTelephony/CTCarrier.h>
 #import <Crashlytics/Crashlytics.h>
+#import <CrashlyticsLumberjack/CrashlyticsLogger.h>
+#import <DDFileLogger.h>
 #import <GooglePlus/GooglePlus.h>
+#import <HockeySDK/HockeySDK.h>
+#import <UIDeviceIdentifier/UIDeviceHardware.h>
+
 #import "WordPressAppDelegate.h"
-#import "Reachability.h"
-#import "NSString+Helpers.h"
-#import "Media.h"
 #import "CameraPlusPickerManager.h"
+#import "ContextManager.h"
+#import "Media.h"
+#import "NotificationsManager.h"
+#import "NSString+Helpers.h"
+#import "PocketAPI.h"
+#import "Post.h"
+#import "Reachability.h"
+#import "ReaderPost.h"
 #import "UIDevice+WordPressIdentifier.h"
 #import "WordPressComApi.h"
 #import "WordPressComApiCredentials.h"
-#import "PocketAPI.h"
 #import "WPAccount.h"
-#import "SupportViewController.h"
-#import "ContextManager.h"
-#import "ReaderPostsViewController.h"
-#import "NotificationsViewController.h"
+
 #import "BlogListViewController.h"
+#import "EditPostViewController.h"
 #import "LoginViewController.h"
-#import <CrashlyticsLumberjack/CrashlyticsLogger.h>
-#import <HockeySDK/HockeySDK.h>
-#import "NotificationsManager.h"
-#import <DDFileLogger.h>
-#import <AFNetworking/AFNetworking.h>
-#import "ContextManager.h"
-#import <CoreTelephony/CTTelephonyNetworkInfo.h>
-#import <CoreTelephony/CTCarrier.h>
+#import "NotificationsViewController.h"
+#import "ReaderPostsViewController.h"
+#import "SupportViewController.h"
 
 #if DEBUG
 #import "DDTTYLogger.h"
@@ -48,7 +52,7 @@ NSString * const WPReaderNavigationRestorationID = @"WPReaderNavigationID";
 NSString * const WPNotificationsNavigationRestorationID = @"WPNotificationsNavigationID";
 
 
-@interface WordPressAppDelegate () <CrashlyticsDelegate, UIAlertViewDelegate, BITHockeyManagerDelegate>
+@interface WordPressAppDelegate () <UITabBarControllerDelegate, CrashlyticsDelegate, UIAlertViewDelegate, BITHockeyManagerDelegate>
 
 @property (nonatomic, assign) BOOL listeningForBlogChanges;
 @property (nonatomic, strong) NotificationsViewController *notificationsViewController;
@@ -61,6 +65,10 @@ NSString * const WPNotificationsNavigationRestorationID = @"WPNotificationsNavig
 
 + (WordPressAppDelegate *)sharedWordPressApplicationDelegate {
     return (WordPressAppDelegate *)[[UIApplication sharedApplication] delegate];
+}
+
+- (void)dealloc {
+    [[NSNotificationCenter defaultCenter] removeObserver:self];
 }
 
 
@@ -98,7 +106,7 @@ NSString * const WPNotificationsNavigationRestorationID = @"WPNotificationsNavig
     self.window.rootViewController = self.tabBarController;
     [self.window makeKeyAndVisible];
     
-    [self showWelcomeScreenIfNeeded];
+    [self showWelcomeScreenIfNeededAnimated:NO];
 
     // Push notifications
     [NotificationsManager registerForPushNotifications];
@@ -263,21 +271,63 @@ NSString * const WPNotificationsNavigationRestorationID = @"WPNotificationsNavig
     [NotificationsManager handleNotification:userInfo forState:[UIApplication sharedApplication].applicationState completionHandler:completionHandler];
 }
 
+#pragma mark - UITabBarControllerDelegate methods.
+
+- (BOOL)tabBarController:(UITabBarController *)tabBarController shouldSelectViewController:(UIViewController *)viewController {
+    if ([tabBarController.viewControllers indexOfObject:viewController] == 3) {
+        // Ignore taps on the post tab and instead show the modal.
+        if ([Blog countWithContext:[[ContextManager sharedInstance] mainContext]] == 0) {
+            [self showWelcomeScreenAnimated:YES thenEditor:YES];
+        } else {
+            [self showPostTab];
+        }
+        return NO;
+    }
+    return YES;
+}
+
 
 #pragma mark - Custom methods
 
-- (void)showWelcomeScreenIfNeeded {
+- (void)showPostTab {
+    UIViewController *presenter = self.window.rootViewController;
+    if (presenter.presentedViewController) {
+        [presenter dismissViewControllerAnimated:NO completion:nil];
+    }
+    
+    EditPostViewController *editPostViewController = [[EditPostViewController alloc] initWithDraftForLastUsedBlog];
+    UINavigationController *navController = [[UINavigationController alloc] initWithRootViewController:editPostViewController];
+    navController.modalPresentationStyle = UIModalPresentationCurrentContext;
+    navController.navigationBar.translucent = NO;
+    [self.window.rootViewController presentViewController:navController animated:YES completion:nil];
+}
+
+- (void)showWelcomeScreenIfNeededAnimated:(BOOL)animated {
     if ([self noBlogsAndNoWordPressDotComAccount]) {
         [WordPressAppDelegate wipeAllKeychainItems];
-        
-        LoginViewController *welcomeViewController = [[LoginViewController alloc] init];
-        UINavigationController *aNavigationController = [[UINavigationController alloc] initWithRootViewController:welcomeViewController];
-        aNavigationController.navigationBar.translucent = NO;
-        aNavigationController.modalTransitionStyle = UIModalTransitionStyleCrossDissolve;
-        aNavigationController.modalPresentationStyle = UIModalPresentationFormSheet;
-        
-        [self.window.rootViewController presentViewController:aNavigationController animated:NO completion:nil];
+
+        UIViewController *presenter = self.window.rootViewController;
+        if (presenter.presentedViewController) {
+            [presenter dismissViewControllerAnimated:NO completion:nil];
+        }
+
+        [self showWelcomeScreenAnimated:animated thenEditor:NO];
     }
+}
+
+- (void)showWelcomeScreenAnimated:(BOOL)animated thenEditor:(BOOL)thenEditor {
+    LoginViewController *loginViewController = [[LoginViewController alloc] init];
+    if (thenEditor) {
+        loginViewController.dismissBlock = ^{
+            [self.window.rootViewController dismissViewControllerAnimated:YES completion:nil];
+        };
+        loginViewController.showEditorAfterAddingSites = YES;
+    }
+    
+    UINavigationController *navigationController = [[UINavigationController alloc] initWithRootViewController:loginViewController];
+    navigationController.navigationBar.translucent = NO;
+
+    [self.window.rootViewController presentViewController:navigationController animated:animated completion:nil];
 }
 
 - (BOOL)noBlogsAndNoWordPressDotComAccount {
@@ -308,32 +358,54 @@ NSString * const WPNotificationsNavigationRestorationID = @"WPNotificationsNavig
 #pragma mark - Tab bar setup
 
 - (UITabBarController *)tabBarController {
+    if (_tabBarController) {
+        return _tabBarController;
+    }
+    
     _tabBarController = [[UITabBarController alloc] init];
+    _tabBarController.delegate = self;
     _tabBarController.restorationIdentifier = WPTabBarRestorationID;
     [_tabBarController.tabBar setTranslucent:NO];
 
+
+    // Create a background
+    UIColor *backgroundColor = [WPStyleGuide bigEddieGrey];
+    CGRect rect = CGRectMake(0.0f, 0.0f, 1.0f, 1.0f);
+    UIGraphicsBeginImageContext(rect.size);
+    CGContextRef context = UIGraphicsGetCurrentContext();
+    CGContextSetFillColorWithColor(context, [backgroundColor CGColor]);
+    CGContextFillRect(context, rect);
+    UIImage *tabBackgroundImage = UIGraphicsGetImageFromCurrentImageContext();
+    UIGraphicsEndImageContext();
+    _tabBarController.tabBar.backgroundImage = tabBackgroundImage;
+    
     self.readerPostsViewController = [[ReaderPostsViewController alloc] init];
     UINavigationController *readerNavigationController = [[UINavigationController alloc] initWithRootViewController:self.readerPostsViewController];
     readerNavigationController.navigationBar.translucent = NO;
     readerNavigationController.tabBarItem.image = [UIImage imageNamed:@"icon-tab-reader"];
     readerNavigationController.restorationIdentifier = WPReaderNavigationRestorationID;
-    self.readerPostsViewController.title = @"Reader";
+    self.readerPostsViewController.title = NSLocalizedString(@"Reader", nil);
     
     self.notificationsViewController = [[NotificationsViewController alloc] init];
     UINavigationController *notificationsNavigationController = [[UINavigationController alloc] initWithRootViewController:self.notificationsViewController];
     notificationsNavigationController.navigationBar.translucent = NO;
     notificationsNavigationController.tabBarItem.image = [UIImage imageNamed:@"icon-tab-notifications"];
     notificationsNavigationController.restorationIdentifier = WPNotificationsNavigationRestorationID;
-    self.notificationsViewController.title = @"Notifications";
+    self.notificationsViewController.title = NSLocalizedString(@"Notifications", @"");
     
-    BlogListViewController *blogListViewController = [[BlogListViewController alloc] init];
-    UINavigationController *blogListNavigationController = [[UINavigationController alloc] initWithRootViewController:blogListViewController];
+    self.blogListViewController = [[BlogListViewController alloc] init];
+    UINavigationController *blogListNavigationController = [[UINavigationController alloc] initWithRootViewController:self.blogListViewController];
     blogListNavigationController.navigationBar.translucent = NO;
     blogListNavigationController.tabBarItem.image = [UIImage imageNamed:@"icon-tab-blogs"];
     blogListNavigationController.restorationIdentifier = WPBlogListNavigationRestorationID;
-    blogListViewController.title = @"My Blogs";
-    _tabBarController.viewControllers = [NSArray arrayWithObjects:blogListNavigationController, readerNavigationController, notificationsNavigationController, nil];
+    self.blogListViewController.title = NSLocalizedString(@"Me", @"");
     
+    UIViewController *postsViewController = [[UIViewController alloc] init];
+    postsViewController.tabBarItem.image = [UIImage imageNamed:@"navbar_add"];
+    postsViewController.title = NSLocalizedString(@"Post", @"");
+
+    _tabBarController.viewControllers = @[blogListNavigationController, readerNavigationController, notificationsNavigationController, postsViewController];
+
     [_tabBarController setSelectedViewController:readerNavigationController];
     
     return _tabBarController;
@@ -555,6 +627,14 @@ NSString * const WPNotificationsNavigationRestorationID = @"WPNotificationsNavig
 }
 
 
+#pragma mark - Notifications
+
+- (void)defaultAccountDidChange:(NSNotification *)notification {
+    [Crashlytics setUserName:[[WPAccount defaultWordPressComAccount] username]];
+    [self setCommonCrashlyticsParameters];
+}
+
+
 #pragma mark - Crash reporting
 
 - (void)configureCrashlytics {
@@ -572,23 +652,14 @@ NSString * const WPNotificationsNavigationRestorationID = @"WPNotificationsNavig
     [Crashlytics startWithAPIKey:[WordPressComApiCredentials crashlyticsApiKey]];
     [[Crashlytics sharedInstance] setDelegate:self];
     
-    BOOL hasCredentials = [[WordPressComApi sharedApi] hasCredentials];
+    BOOL hasCredentials = ([WPAccount defaultWordPressComAccount] != nil);
     [self setCommonCrashlyticsParameters];
     
     if (hasCredentials && [[WPAccount defaultWordPressComAccount] username] != nil) {
         [Crashlytics setUserName:[[WPAccount defaultWordPressComAccount] username]];
     }
-    
-    void (^wpcomLoggedInBlock)(NSNotification *) = ^(NSNotification *note) {
-        [Crashlytics setUserName:[[WPAccount defaultWordPressComAccount] username]];
-        [self setCommonCrashlyticsParameters];
-    };
-    void (^wpcomLoggedOutBlock)(NSNotification *) = ^(NSNotification *note) {
-        [Crashlytics setUserName:nil];
-        [self setCommonCrashlyticsParameters];
-    };
-    [[NSNotificationCenter defaultCenter] addObserverForName:WordPressComApiDidLoginNotification object:nil queue:nil usingBlock:wpcomLoggedInBlock];
-    [[NSNotificationCenter defaultCenter] addObserverForName:WordPressComApiDidLogoutNotification object:nil queue:nil usingBlock:wpcomLoggedOutBlock];
+
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(defaultAccountDidChange:) name:WPAccountDefaultWordPressComAccountChangedNotification object:nil];
 }
 
 - (void)crashlytics:(Crashlytics *)crashlytics didDetectCrashDuringPreviousExecution:(id<CLSCrashReport>)crash
@@ -604,8 +675,9 @@ NSString * const WPNotificationsNavigationRestorationID = @"WPNotificationsNavig
 
 - (void)setCommonCrashlyticsParameters
 {
-    [Crashlytics setObjectValue:[NSNumber numberWithBool:[[WordPressComApi sharedApi] hasCredentials]] forKey:@"logged_in"];
-    [Crashlytics setObjectValue:@([[WordPressComApi sharedApi] hasCredentials]) forKey:@"connected_to_dotcom"];
+    BOOL loggedIn = [WPAccount defaultWordPressComAccount] != nil;
+    [Crashlytics setObjectValue:@(loggedIn) forKey:@"logged_in"];
+    [Crashlytics setObjectValue:@(loggedIn) forKey:@"connected_to_dotcom"];
     [Crashlytics setObjectValue:@([Blog countWithContext:[[ContextManager sharedInstance] mainContext]]) forKey:@"number_of_blogs"];
 }
 
@@ -703,6 +775,14 @@ NSString * const WPNotificationsNavigationRestorationID = @"WPNotificationsNavig
                        ];
     NSDictionary *dictionary = [[NSDictionary alloc] initWithObjectsAndKeys: appUA, @"UserAgent", defaultUA, @"DefaultUserAgent", appUA, @"AppUserAgent", nil];
     [[NSUserDefaults standardUserDefaults] registerDefaults:dictionary];
+}
+- (void)showReaderTab {
+    NSInteger readerTabIndex = [[self.tabBarController viewControllers] indexOfObject:self.readerPostsViewController.navigationController];
+    [self.tabBarController setSelectedIndex:readerTabIndex];
+}
+- (void)showBlogListTab {
+    NSInteger blogListTabIndex = [[self.tabBarController viewControllers] indexOfObject:self.blogListViewController.navigationController];
+    [self.tabBarController setSelectedIndex:blogListTabIndex];
 }
 
 - (void)useDefaultUserAgent {
@@ -1003,8 +1083,7 @@ NSString * const WPNotificationsNavigationRestorationID = @"WPNotificationsNavig
 - (void)toggleExtraDebuggingIfNeeded {
     if (!_listeningForBlogChanges) {
         _listeningForBlogChanges = YES;
-        [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(handleLogoutOrBlogsChangedNotification:) name:BlogChangedNotification object:nil];
-        [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(handleLogoutOrBlogsChangedNotification:) name:WordPressComApiDidLogoutNotification object:nil];
+        [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(handleDefaultAccountChangedNotification:) name:WPAccountDefaultWordPressComAccountChangedNotification object:nil];
     }
     
 	int num_blogs = [Blog countWithContext:[[ContextManager sharedInstance] mainContext]];
@@ -1038,8 +1117,15 @@ NSString * const WPNotificationsNavigationRestorationID = @"WPNotificationsNavig
 	}
 }
 
-- (void)handleLogoutOrBlogsChangedNotification:(NSNotification *)notification {
+- (void)handleDefaultAccountChangedNotification:(NSNotification *)notification {
 	[self toggleExtraDebuggingIfNeeded];
+
+    [NotificationsManager registerForPushNotifications];
+    [self showWelcomeScreenIfNeededAnimated:NO];
+    // If the notification object is not nil, then it's a login
+    if (notification.object) {
+        [ReaderPost fetchPostsWithCompletionHandler:nil];
+    }
 }
 
 @end

@@ -9,6 +9,10 @@
 #import <Foundation/Foundation.h>
 #import <CoreData/CoreData.h>
 
+#import <WordPressApi/WordPressApi.h>
+
+#import "WordPressComApi.h"
+
 @class Blog;
 
 extern NSString * const WPAccountDefaultWordPressComAccountChangedNotification;
@@ -24,6 +28,7 @@ extern NSString * const WPAccountDefaultWordPressComAccountChangedNotification;
 @property (nonatomic, readonly) BOOL isWpcom;
 @property (nonatomic, retain) NSSet *blogs;
 @property (nonatomic, retain) NSSet *jetpackBlogs;
+@property (nonatomic, readonly) NSArray *visibleBlogs;
 
 /**
  The account's password
@@ -64,6 +69,14 @@ extern NSString * const WPAccountDefaultWordPressComAccountChangedNotification;
 */
 + (void)removeDefaultWordPressComAccount;
 
+/**
+ Removes the default WordPress.com account 
+ on the context of choice
+ 
+ @param context the NSManagedObjectContext
+ */
++ (void)removeDefaultWordPressComAccountWithContext:(NSManagedObjectContext *)context;
+
 ///-----------------------
 /// @name Account creation
 ///-----------------------
@@ -75,18 +88,31 @@ extern NSString * const WPAccountDefaultWordPressComAccountChangedNotification;
 
  @param username the WordPress.com account's username
  @param password the WordPress.com account's password
+ @param authToken the OAuth2 token returned by signIntoWordPressDotComWithUsername:password:success:failure:
+ @param context the NSManagedObjectContext used to create or update the account
  @return a WordPress.com `WPAccount` object for the given `username`
  */
 + (WPAccount *)createOrUpdateWordPressComAccountWithUsername:(NSString *)username
-                                                 andPassword:(NSString *)password
-                                                 withContext:(NSManagedObjectContext *)context;
+                                                    password:(NSString *)password
+                                                   authToken:(NSString *)authToken
+                                                     context:(NSManagedObjectContext *)context;
 
 /**
- Same as above but defaults to a background context
+ Creates a new WordPress.com account or updates the password if there is a matching account
+
+ There can only be one WordPress.com account per username, so if one already exists for the given `username` its password is updated
  
+ Uses a background managed object context.
+
+ @param username the WordPress.com account's username
+ @param password the WordPress.com account's password
+ @param authToken the OAuth2 token returned by signIntoWordPressDotComWithUsername:password:success:failure:
+ @return a WordPress.com `WPAccount` object for the given `username`
+ @see createOrUpdateWordPressComAccountWithUsername:password:authToken:context:
  */
 + (WPAccount *)createOrUpdateWordPressComAccountWithUsername:(NSString *)username
-                                                 andPassword:(NSString *)password;
+                                                    password:(NSString *)password
+                                                   authToken:(NSString *)authToken;
 
 /**
  Creates a new self hosted account or updates the password if there is a matching account
@@ -96,6 +122,7 @@ extern NSString * const WPAccountDefaultWordPressComAccountChangedNotification;
  @param xmlrpc the account XML-RPC endpoint
  @param username the account's username
  @param password the account's password
+ @param context the NSManagedObjectContext used to create or update the account
  @return a `WPAccount` object for the given `xmlrpc` endpoint and `username`
  */
 + (WPAccount *)createOrUpdateSelfHostedAccountWithXmlrpc:(NSString *)xmlrpc
@@ -103,8 +130,16 @@ extern NSString * const WPAccountDefaultWordPressComAccountChangedNotification;
                                              andPassword:(NSString *)password
                                              withContext:(NSManagedObjectContext *)context;
 /**
- Same as above but defaults to a background context
+ Creates a new self hosted account or updates the password if there is a matching account
+
+ There can only be one account per XML-RPC endpoint and username, so if one already exists its password is updated
  
+ Uses a background managed object context.
+
+ @param xmlrpc the account XML-RPC endpoint
+ @param username the account's username
+ @param password the account's password
+ @return a `WPAccount` object for the given `xmlrpc` endpoint and `username`
  */
 + (WPAccount *)createOrUpdateSelfHostedAccountWithXmlrpc:(NSString *)xmlrpc
                                                 username:(NSString *)username
@@ -119,10 +154,26 @@ extern NSString * const WPAccountDefaultWordPressComAccountChangedNotification;
  
  If a there is an existing blog with the same `url`, it is returned as-is.
  
- @param blogInfo a dictionary containing `url`, `blogName`, `xmlrpc`, `blogid`, and `isAdmin`; as returned by `wp.getUsersBlogs`
+ @param blogInfo a dictionary containing `url`, `blogName`, `xmlrpc`, and `blogid`; as returned by `wp.getUsersBlogs`
  @return the newly created blog
  */
 - (Blog *)findOrCreateBlogFromDictionary:(NSDictionary *)blogInfo withContext:(NSManagedObjectContext*)context;
+
+- (void)syncBlogsWithSuccess:(void (^)())success failure:(void (^)(NSError *error))failure;
+
+///------------------
+/// @name API Helpers
+///------------------
+
+/**
+ A WordPressComApi object if the account is a WordPress.com account. Otherwise, it returns `nil`
+ */
+@property (nonatomic, readonly) WordPressComApi *restApi;
+
+/**
+ A WordPressXMLRPCApi object configured for the XML-RPC endpoint
+ */
+@property (nonatomic, readonly) WordPressXMLRPCApi *xmlrpcApi;
 
 @end
 

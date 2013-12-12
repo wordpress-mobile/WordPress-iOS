@@ -14,7 +14,6 @@
 #import "ThemeDetailsViewController.h"
 #import "Blog.h"
 #import "WPStyleGuide.h"
-#import "WPInfoView.h"
 
 static NSString *const ThemeCellIdentifier = @"theme";
 static NSString *const SearchFilterCellIdentifier = @"search_filter";
@@ -26,7 +25,6 @@ static NSString *const SearchFilterCellIdentifier = @"search_filter";
 @property (nonatomic, strong) NSString *currentResultsSort, *currentSearchText;
 @property (nonatomic, strong) NSArray *allThemes, *filteredThemes;
 @property (nonatomic, weak) UIRefreshControl *refreshHeaderView;
-@property (nonatomic, weak) WPInfoView *noThemesView;
 @property (nonatomic, weak) ThemeSearchFilterHeaderView *header;
 @property (nonatomic, strong) Theme *currentTheme;
 @property (nonatomic, assign) BOOL isSearching;
@@ -140,14 +138,15 @@ static NSString *const SearchFilterCellIdentifier = @"search_filter";
 }
 
 - (void)toggleNoThemesView:(BOOL)show {
+#warning WPInfoView no longer exists
     if (!show) {
-        [_noThemesView removeFromSuperview];
+//        [_noThemesView removeFromSuperview];
         return;
     }
-    if (!_noThemesView) {
-        _noThemesView = [WPInfoView WPInfoViewWithTitle:@"No themes to display" message:nil cancelButton:nil];
-    }
-    [self.collectionView addSubview:_noThemesView];
+//    if (!_noThemesView) {
+//        _noThemesView = [WPInfoView WPInfoViewWithTitle:@"No themes to display" message:nil cancelButton:nil];
+//    }
+//    [self.collectionView addSubview:_noThemesView];
 }
 
 - (void)removeCurrentThemeFromList {
@@ -228,7 +227,8 @@ static NSString *const SearchFilterCellIdentifier = @"search_filter";
 }
 
 - (void)viewDidLayoutSubviews {
-    [_noThemesView centerInSuperview];
+#warning WPInfoView no longer exists
+//    [_noThemesView centerInSuperview];
 }
 
 #pragma mark - FetchedResultsController

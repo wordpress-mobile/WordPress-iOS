@@ -10,9 +10,6 @@
 
 @interface WPWebVideoViewController : UIViewController
 
-+ (id)presentAsModalWithURL:(NSURL *)url;
-+ (id)presentAsModalWithHTML:(NSString *)html;
-
 - (id)initWithURL:(NSURL *)url;
 - (id)initWithHTML:(NSString *)html;
 

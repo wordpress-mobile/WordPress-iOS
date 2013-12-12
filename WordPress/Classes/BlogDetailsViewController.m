@@ -17,6 +17,8 @@
 #import "WPTableViewCell.h"
 #import "ContextManager.h"
 
+static NSString *const BlogDetailsCellIdentifier = @"BlogDetailsCell";
+
 typedef enum {
     BlogDetailsRowPosts = 0,
     BlogDetailsRowPages,
@@ -86,6 +88,8 @@ NSString * const WPBlogDetailsBlogKey = @"WPBlogDetailsBlogKey";
     }
     
     [WPStyleGuide configureColorsForView:self.view andTableView:self.tableView];
+    
+    [self.tableView registerClass:[WPTableViewCell class] forCellReuseIdentifier:BlogDetailsCellIdentifier];
 }
 
 - (void)viewWillAppear:(BOOL)animated {
@@ -111,37 +115,37 @@ NSString * const WPBlogDetailsBlogKey = @"WPBlogDetailsBlogKey";
 - (void)configureCell:(UITableViewCell *)cell atIndexPath:(NSIndexPath *)indexPath {
     if (indexPath.row == BlogDetailsRowPosts) {
         cell.textLabel.text = NSLocalizedString(@"Posts", nil);
+        cell.imageView.image = [UIImage imageNamed:@"icon-menu-posts"];
     } else if (indexPath.row == BlogDetailsRowPages) {
         cell.textLabel.text = NSLocalizedString(@"Pages", nil);
+        cell.imageView.image = [UIImage imageNamed:@"icon-menu-pages"];
     } else if (indexPath.row == BlogDetailsRowComments) {
         cell.textLabel.text = NSLocalizedString(@"Comments", nil);
+        cell.imageView.image = [UIImage imageNamed:@"icon-menu-comments"];
         int numberOfPendingComments = [self.blog numberOfPendingComments];
         if (numberOfPendingComments > 0) {
             cell.detailTextLabel.text = [NSString stringWithFormat:@"%d", numberOfPendingComments];
         }
-
     } else if (indexPath.row == BlogDetailsRowStats) {
         cell.textLabel.text = NSLocalizedString(@"Stats", nil);
+        cell.imageView.image = [UIImage imageNamed:@"icon-menu-stats"];
     } else if ([self shouldShowThemesOption] && indexPath.row == BlogDetailsRowThemes) {
         cell.textLabel.text = NSLocalizedString(@"Themes", nil);
     } else if ([self isRowForViewSite:indexPath.row]) {
         cell.textLabel.text = NSLocalizedString(@"View Site", nil);
+        cell.imageView.image = [UIImage imageNamed:@"icon-menu-viewsite"];
     } else if ([self isRowForViewAdmin:indexPath.row]) {
         cell.textLabel.text = NSLocalizedString(@"View Admin", nil);
+        cell.imageView.image = [UIImage imageNamed:@"icon-menu-viewadmin"];
     } else if ([self isRowForEditBlog:indexPath.row]) {
         cell.textLabel.text = NSLocalizedString(@"Edit Blog", nil);
+        cell.imageView.image = [UIImage imageNamed:@"icon-menu-settings"];
     }
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
-    static NSString *CellIdentifier = @"BlogDetailsCell";
-    UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier];
-
-    if (cell == nil) {
-        cell = [[WPTableViewCell alloc] initWithStyle:UITableViewCellStyleValue1 reuseIdentifier:CellIdentifier];
-        [cell setAccessoryType:UITableViewCellAccessoryDisclosureIndicator];
-    }
-    
+    UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:BlogDetailsCellIdentifier];
+    cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
     [self configureCell:cell atIndexPath:indexPath];
     [WPStyleGuide configureTableViewCell:cell];
 
@@ -262,7 +266,8 @@ NSString * const WPBlogDetailsBlogKey = @"WPBlogDetailsBlogKey";
 }
 
 - (BOOL)shouldShowThemesOption {
-    return self.blog.isWPcom && [self.blog.isAdmin isEqualToNumber:@(1)];
+#warning only show themes option when admin
+    return YES;//self.blog.isWPcom && [self.blog.isAdmin isEqualToNumber:@(1)];
 }
 
 /*

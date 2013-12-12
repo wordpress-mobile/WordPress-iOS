@@ -290,7 +290,12 @@
 #pragma mark -
 
 - (NSDate *)parseDateString:(NSString *)dateString withFormat:(NSString *)format {
+    // Set the local to POSIX format so changing date formats on the device doesn't affect the format being passed in
+    // Since we're assuming GMT the timeZone should be set but this currently breaks WordPress for iOS so leaving for now
+    NSLocale *enUSPOSIXLocale = [[NSLocale alloc] initWithLocaleIdentifier:@"en_US_POSIX"];
     NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
+    dateFormatter.locale = enUSPOSIXLocale;
+
     NSDate *result = nil;
     
     [dateFormatter setDateFormat:format];
