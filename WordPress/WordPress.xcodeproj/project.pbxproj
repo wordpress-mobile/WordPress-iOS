@@ -301,8 +301,6 @@
 		5D7BEAC61774A10D00423E7F /* ui-texture.png in Resources */ = {isa = PBXBuildFile; fileRef = 5D7BEAAA1774A10D00423E7F /* ui-texture.png */; };
 		5D7BEAC71774A10D00423E7F /* ui-texture@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 5D7BEAAB1774A10D00423E7F /* ui-texture@2x.png */; };
 		5D7BEAC91774A12800423E7F /* note_comment_table_threaded.png in Resources */ = {isa = PBXBuildFile; fileRef = 5D7BEAC81774A12800423E7F /* note_comment_table_threaded.png */; };
-		5D7C22B615A4FCFE00FCE1C2 /* down_dim.png in Resources */ = {isa = PBXBuildFile; fileRef = 5D7C22B215A4FCC200FCE1C2 /* down_dim.png */; };
-		5D7C22B715A4FCFE00FCE1C2 /* down_dim@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 5D7C22B315A4FCCE00FCE1C2 /* down_dim@2x.png */; };
 		5D7C22B815A4FCFE00FCE1C2 /* up_dim.png in Resources */ = {isa = PBXBuildFile; fileRef = 5D7C22B415A4FCDE00FCE1C2 /* up_dim.png */; };
 		5D7C22B915A4FCFE00FCE1C2 /* up_dim@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 5D7C22B515A4FCE900FCE1C2 /* up_dim@2x.png */; };
 		5D8572BA17611B36004CC20D /* ReaderUsersBlogsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 5D8572B917611B36004CC20D /* ReaderUsersBlogsViewController.m */; };
@@ -568,8 +566,6 @@
 		E131CB5E16CAD659004B0314 /* AsyncTestHelper.m in Sources */ = {isa = PBXBuildFile; fileRef = E131CB5D16CAD659004B0314 /* AsyncTestHelper.m */; };
 		E13EB7A5157D230000885780 /* WordPressComApi.m in Sources */ = {isa = PBXBuildFile; fileRef = E13EB7A4157D230000885780 /* WordPressComApi.m */; };
 		E13F23C314FE84600081D9CC /* NSMutableDictionary+Helpers.m in Sources */ = {isa = PBXBuildFile; fileRef = E13F23C214FE84600081D9CC /* NSMutableDictionary+Helpers.m */; };
-		E13FA0F7134C849D007DCDD0 /* downArrow.png in Resources */ = {isa = PBXBuildFile; fileRef = E13FA0F5134C849D007DCDD0 /* downArrow.png */; };
-		E13FA0F8134C849D007DCDD0 /* downArrow@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = E13FA0F6134C849D007DCDD0 /* downArrow@2x.png */; };
 		E1472B9713EFF9FF00987A40 /* left.png in Resources */ = {isa = PBXBuildFile; fileRef = E1472B9313EFF9FF00987A40 /* left.png */; };
 		E1472B9813EFF9FF00987A40 /* left@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = E1472B9413EFF9FF00987A40 /* left@2x.png */; };
 		E1472B9913EFF9FF00987A40 /* right.png in Resources */ = {isa = PBXBuildFile; fileRef = E1472B9513EFF9FF00987A40 /* right.png */; };
@@ -1077,8 +1073,6 @@
 		5D7BEAAA1774A10D00423E7F /* ui-texture.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "ui-texture.png"; path = "Resources/Images/ui-texture.png"; sourceTree = "<group>"; };
 		5D7BEAAB1774A10D00423E7F /* ui-texture@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "ui-texture@2x.png"; path = "Resources/Images/ui-texture@2x.png"; sourceTree = "<group>"; };
 		5D7BEAC81774A12800423E7F /* note_comment_table_threaded.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = note_comment_table_threaded.png; path = Resources/Images/note_comment_table_threaded.png; sourceTree = "<group>"; };
-		5D7C22B215A4FCC200FCE1C2 /* down_dim.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = down_dim.png; path = Resources/Images/down_dim.png; sourceTree = "<group>"; };
-		5D7C22B315A4FCCE00FCE1C2 /* down_dim@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "down_dim@2x.png"; path = "Resources/Images/down_dim@2x.png"; sourceTree = "<group>"; };
 		5D7C22B415A4FCDE00FCE1C2 /* up_dim.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = up_dim.png; path = Resources/Images/up_dim.png; sourceTree = "<group>"; };
 		5D7C22B515A4FCE900FCE1C2 /* up_dim@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "up_dim@2x.png"; path = "Resources/Images/up_dim@2x.png"; sourceTree = "<group>"; };
 		5D8572B817611B36004CC20D /* ReaderUsersBlogsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ReaderUsersBlogsViewController.h; sourceTree = "<group>"; };
@@ -1451,8 +1445,6 @@
 		E13EB7A4157D230000885780 /* WordPressComApi.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WordPressComApi.m; sourceTree = "<group>"; };
 		E13F23C114FE84600081D9CC /* NSMutableDictionary+Helpers.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSMutableDictionary+Helpers.h"; sourceTree = "<group>"; };
 		E13F23C214FE84600081D9CC /* NSMutableDictionary+Helpers.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSMutableDictionary+Helpers.m"; sourceTree = "<group>"; };
-		E13FA0F5134C849D007DCDD0 /* downArrow.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = downArrow.png; path = Resources/Images/downArrow.png; sourceTree = "<group>"; };
-		E13FA0F6134C849D007DCDD0 /* downArrow@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "downArrow@2x.png"; path = "Resources/Images/downArrow@2x.png"; sourceTree = "<group>"; };
 		E1457202135EC85700C7BAD2 /* sv */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = sv; path = sv.lproj/Localizable.strings; sourceTree = "<group>"; };
 		E1472B9313EFF9FF00987A40 /* left.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = left.png; path = Resources/Images/left.png; sourceTree = "<group>"; };
 		E1472B9413EFF9FF00987A40 /* left@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "left@2x.png"; path = "Resources/Images/left@2x.png"; sourceTree = "<group>"; };
@@ -2655,10 +2647,6 @@
 				3704ACFB13128C9800120911 /* Default@2x.png */,
 				2A7F722A0E71000000E48A1F /* down.png */,
 				6E61861E11C0C465001E755E /* down@2x.png */,
-				5D7C22B215A4FCC200FCE1C2 /* down_dim.png */,
-				5D7C22B315A4FCCE00FCE1C2 /* down_dim@2x.png */,
-				E13FA0F5134C849D007DCDD0 /* downArrow.png */,
-				E13FA0F6134C849D007DCDD0 /* downArrow@2x.png */,
 				5D27716D15A33A6200F4DCAA /* editing */,
 				CC6B3BFB15A35F10005A4523 /* friend_finder_cancel_btn.png */,
 				CC6B3BFC15A35F10005A4523 /* friend_finder_cancel_btn@2x.png */,
@@ -3438,8 +3426,6 @@
 				3768F4931340BBD60075B633 /* blavatar-wpcom.png in Resources */,
 				E1D91456134A853D0089019C /* Localizable.strings in Resources */,
 				E22257EF1829C15B00F76926 /* textPushDetailIcon@2x.png in Resources */,
-				E13FA0F7134C849D007DCDD0 /* downArrow.png in Resources */,
-				E13FA0F8134C849D007DCDD0 /* downArrow@2x.png in Resources */,
 				375D7EE21355E9B6001C7371 /* paperclip.png in Resources */,
 				E2408598183D8277002EB0EF /* animatedBoxPage3@2x.png in Resources */,
 				E11C91D8135771520072A811 /* paperclip@2x.png in Resources */,
@@ -3517,8 +3503,6 @@
 				E24085A0183FDDEC002EB0EF /* penandink.png in Resources */,
 				85495F5B17C6FACF00871A7A /* icon-comments-trash.png in Resources */,
 				CC313AD215A4360800F7B7C6 /* friend_follow_service_icons@2x.png in Resources */,
-				5D7C22B615A4FCFE00FCE1C2 /* down_dim.png in Resources */,
-				5D7C22B715A4FCFE00FCE1C2 /* down_dim@2x.png in Resources */,
 				5D7C22B815A4FCFE00FCE1C2 /* up_dim.png in Resources */,
 				5D7C22B915A4FCFE00FCE1C2 /* up_dim@2x.png in Resources */,
 				85A69D0417C530FE0061E254 /* OpenSans-LightItalic.ttf in Resources */,
