@@ -165,20 +165,6 @@ const NSUInteger NoteKeepCount = 20;
 - (void)syncAttributes:(NSDictionary *)noteData {
     self.payload = [NSJSONSerialization dataWithJSONObject:noteData options:0 error:nil];
     self.noteData = [NSJSONSerialization JSONObjectWithData:self.payload options:0 error:nil];
-    self.type = [noteData objectForKey:@"type"];
-    NSString *subject = [[noteData objectForKey:@"subject"] objectForKey:@"text"];
-    if (!subject)
-        subject = [[noteData objectForKey:@"subject"] objectForKey:@"html"];
-    self.subject = [subject trim];
-    self.icon = [[noteData objectForKey:@"subject"] objectForKey:@"icon"];
-    NSInteger timestamp = [[noteData objectForKey:@"timestamp"] integerValue];
-    self.timestamp = [NSNumber numberWithInteger:timestamp];
-    NSInteger unread = [[noteData objectForKey:@"unread"] integerValue];
-    self.unread = [NSNumber numberWithInteger:unread];
-    [self parseComment];
-}
-
-- (void)updateAttributes:(NSDictionary *)noteData {
     if ([noteData objectForKey:@"type"]) {
         self.type = [noteData objectForKey:@"type"];
     }
