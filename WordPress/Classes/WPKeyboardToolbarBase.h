@@ -24,7 +24,7 @@
 @interface WPKeyboardToolbarBase : UIView<UIInputViewAudioFeedback>
 
 @property (nonatomic, weak) id<WPKeyboardToolbarDelegate> delegate;
-@property (nonatomic, strong) UIView *mainView;
+@property (nonatomic, strong) UIView *formatView;
 @property (nonatomic, strong) WPKeyboardToolbarButtonItem *boldButton;
 @property (nonatomic, strong) WPKeyboardToolbarButtonItem *italicsButton;
 @property (nonatomic, strong) WPKeyboardToolbarButtonItem *underlineButton;
@@ -35,5 +35,6 @@
 @property (nonatomic, strong) WPKeyboardToolbarButtonItem *doneButton;
 
 - (void)setupView;
+- (void)setupFormatView;
 
 @end
