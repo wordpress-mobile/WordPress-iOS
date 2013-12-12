@@ -16,13 +16,13 @@
 #import "BlogSelectorViewController.h"
 
 NSString *const EditPostViewControllerLastUsedBlogURL = @"EditPostViewControllerLastUsedBlogURL";
-CGFloat const EPTVCTextfieldHeight = 44.0f;
-CGFloat const EPTVCCellHeight = 44.0f;
-CGFloat const EPTVCToolbarHeight = 44.0f;
-CGFloat const EPTVCNavbarHeight = 44.0f;
-CGFloat const EPTVCStandardOffset = 15.0;
-CGFloat const EPTVCTextViewOffset = 10.0;
-CGFloat const EPTVCTextViewBottomPadding = 50.0f;
+CGFloat const EPVCTextfieldHeight = 44.0f;
+CGFloat const EPVCCellHeight = 44.0f;
+CGFloat const EPVCToolbarHeight = 44.0f;
+CGFloat const EPVCNavbarHeight = 44.0f;
+CGFloat const EPVCStandardOffset = 15.0;
+CGFloat const EPVCTextViewOffset = 10.0;
+CGFloat const EPVCTextViewBottomPadding = 50.0f;
 
 @interface EditPostViewController ()<UIPopoverControllerDelegate>
 
@@ -228,7 +228,7 @@ CGFloat const EPTVCTextViewBottomPadding = 50.0f;
     CGFloat x = 0.0f;
     CGFloat y = 0.0f;
     CGFloat width = CGRectGetWidth(self.view.bounds);
-    CGFloat minHeight = CGRectGetHeight(self.view.frame) - (EPTVCCellHeight + EPTVCNavbarHeight + EPTVCToolbarHeight);
+    CGFloat minHeight = CGRectGetHeight(self.view.frame) - (EPVCCellHeight + EPVCNavbarHeight + EPVCToolbarHeight);
     CGRect frame = CGRectZero;
     
     // Header View
@@ -262,8 +262,8 @@ CGFloat const EPTVCTextViewBottomPadding = 50.0f;
     // Title TextField.
     // Appears at the top of the Table Header view.
     if (!_titleTextField) {
-        CGFloat textWidth = CGRectGetWidth(_tableHeaderViewContentView.frame) - (2 * EPTVCStandardOffset);
-        frame = CGRectMake(EPTVCStandardOffset, y, textWidth, EPTVCTextfieldHeight);
+        CGFloat textWidth = CGRectGetWidth(_tableHeaderViewContentView.frame) - (2 * EPVCStandardOffset);
+        frame = CGRectMake(EPVCStandardOffset, y, textWidth, EPVCTextfieldHeight);
         self.titleTextField = [[UITextField alloc] initWithFrame:frame];
         _titleTextField.delegate = self;
         _titleTextField.font = [WPStyleGuide postTitleFont];
@@ -279,8 +279,8 @@ CGFloat const EPTVCTextViewBottomPadding = 50.0f;
     // One pixel separator bewteen title and content text fields.
     if (!_separatorView) {
         y = CGRectGetMaxY(_titleTextField.frame);
-        CGFloat separatorWidth = CGRectGetWidth(_tableHeaderViewContentView.frame) - EPTVCStandardOffset;
-        frame = CGRectMake(EPTVCStandardOffset, y, separatorWidth, 1.0);
+        CGFloat separatorWidth = CGRectGetWidth(_tableHeaderViewContentView.frame) - EPVCStandardOffset;
+        frame = CGRectMake(EPVCStandardOffset, y, separatorWidth, 1.0);
         self.separatorView = [[UIView alloc] initWithFrame:frame];
         _separatorView.backgroundColor = [WPStyleGuide readGrey];
         _separatorView.autoresizingMask = UIViewAutoresizingFlexibleWidth;
@@ -293,7 +293,7 @@ CGFloat const EPTVCTextViewBottomPadding = 50.0f;
     // Height should never be smaller than what is required to display its text.
     if (!_textView) {
         y = CGRectGetMaxY(_separatorView.frame);
-        CGFloat height = minHeight - EPTVCTextfieldHeight;
+        CGFloat height = minHeight - EPVCTextfieldHeight;
         width = CGRectGetWidth(_tableHeaderViewContentView.frame);
         // Let x == 0.0f because the textView has its own inset margins.
         frame = CGRectMake(0.0f, y, width, height);
@@ -303,7 +303,7 @@ CGFloat const EPTVCTextViewBottomPadding = 50.0f;
         _textView.typingAttributes = [WPStyleGuide regularTextAttributes];
         _textView.font = [WPStyleGuide regularTextFont];
         _textView.textColor = [WPStyleGuide littleEddieGrey];
-        _textView.textContainerInset = UIEdgeInsetsMake(0.0f, EPTVCTextViewOffset, 0.0f, EPTVCTextViewOffset);
+        _textView.textContainerInset = UIEdgeInsetsMake(0.0f, EPVCTextViewOffset, 0.0f, EPVCTextViewOffset);
     }
     [_tableHeaderViewContentView addSubview:_textView];
     
@@ -321,8 +321,8 @@ CGFloat const EPTVCTextViewBottomPadding = 50.0f;
     // One pixel separator bewteen content and table view cells.
     if (!_cellSeparatorView) {
         y = CGRectGetMaxY(_tableHeaderViewContentView.frame) - 1;
-        CGFloat separatorWidth = CGRectGetWidth(_tableHeaderViewContentView.frame) - EPTVCStandardOffset;
-        frame = CGRectMake(EPTVCStandardOffset, y, separatorWidth, 1.0);
+        CGFloat separatorWidth = CGRectGetWidth(_tableHeaderViewContentView.frame) - EPVCStandardOffset;
+        frame = CGRectMake(EPVCStandardOffset, y, separatorWidth, 1.0);
         self.cellSeparatorView = [[UIView alloc] initWithFrame:frame];
         _cellSeparatorView.backgroundColor = [WPStyleGuide readGrey];
         _cellSeparatorView.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleTopMargin;
@@ -333,8 +333,8 @@ CGFloat const EPTVCTextViewBottomPadding = 50.0f;
     if (!_tapToStartWritingLabel) {
         frame = _textView.frame;
         frame.size.height = 26.0f;
-        frame.origin.x = EPTVCStandardOffset;
-        frame.size.width -= (EPTVCStandardOffset * 2);
+        frame.origin.x = EPVCStandardOffset;
+        frame.size.width -= (EPVCStandardOffset * 2);
         self.tapToStartWritingLabel = [[UILabel alloc] initWithFrame:frame];
         _tapToStartWritingLabel.text = NSLocalizedString(@"Tap here to begin writing", @"Placeholder for the main body text. Should hint at tapping to enter text (not specifying body text).");
         _tapToStartWritingLabel.autoresizingMask = UIViewAutoresizingFlexibleWidth;
@@ -349,9 +349,9 @@ CGFloat const EPTVCTextViewBottomPadding = 50.0f;
     // We also have to account for the toolbar if the tableView has not yet been
     // added to the app's key window.
     CGFloat minHeight = self.view.frame.size.height;
-    minHeight -= (EPTVCCellHeight + EPTVCTextfieldHeight);
+    minHeight -= (EPVCCellHeight + EPVCTextfieldHeight);
     if (!self.tableView.window) {
-        minHeight -= EPTVCToolbarHeight;
+        minHeight -= EPVCToolbarHeight;
     }
     
     if (_isShowingKeyboard) {
@@ -369,7 +369,7 @@ CGFloat const EPTVCTextViewBottomPadding = 50.0f;
     
     
     CGFloat rectHeight = rect.size.height;
-    rectHeight += EPTVCTextViewBottomPadding;
+    rectHeight += EPVCTextViewBottomPadding;
     
     return MAX(ceil(rectHeight), ceil(minHeight));
 }
@@ -420,7 +420,7 @@ CGFloat const EPTVCTextViewBottomPadding = 50.0f;
 #pragma mark - TableView
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
-    return EPTVCCellHeight;
+    return EPVCCellHeight;
 }
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
