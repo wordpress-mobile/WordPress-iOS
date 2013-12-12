@@ -37,6 +37,7 @@
 #import "LoginViewController.h"
 #import "NotificationsViewController.h"
 #import "ReaderPostsViewController.h"
+#import "ReaderPostDetailViewController.h"
 #import "SupportViewController.h"
 
 #if DEBUG
@@ -168,14 +169,50 @@ NSString * const WPNotificationsNavigationRestorationID = @"WPNotificationsNavig
         return YES;
     }
 
-    if (url && [url isKindOfClass:[NSURL class]]) {
+    if (url && [url isKindOfClass:[NSURL class]] && [[url absoluteString] hasPrefix:@"wordpress://"]) {
         NSString *URLString = [url absoluteString];
         DDLogInfo(@"Application launched with URL: %@", URLString);
-        if ([[url absoluteString] hasPrefix:@"wordpress://wpcom_signup_completed"]) {
+
+        if ([URLString rangeOfString:@"wpcom_signup_completed"].length) {
             NSDictionary *params = [[url query] dictionaryFromQueryString];
             DDLogInfo(@"%@", params);
             [[NSNotificationCenter defaultCenter] postNotificationName:@"wpcomSignupNotification" object:nil userInfo:params];
             return YES;
+        } else if ([URLString rangeOfString:@"viewpost"].length) {
+            NSError *error = nil;
+            NSRegularExpression *regex = [NSRegularExpression regularExpressionWithPattern:@"blogId=(.+?)&postId=(.+?)$"
+                                                                                   options:NSRegularExpressionCaseInsensitive
+                                                                                     error:&error];
+            
+            NSArray *matches = [regex matchesInString:URLString options:0 range:NSMakeRange(0, [URLString length])];
+
+            if (matches.count) {
+                NSTextCheckingResult *result = [matches objectAtIndex:0];
+                NSUInteger *blogId = [[URLString substringWithRange:[result rangeAtIndex:1]] integerValue];
+                NSUInteger *postId = [[URLString substringWithRange:[result rangeAtIndex:2]] integerValue];
+
+                NSString *endpoint = [NSString stringWithFormat:@"sites/%i/posts/%i/?meta=site", blogId, postId];
+                
+                NSInteger readerTabIndex = [[self.tabBarController viewControllers] indexOfObject:self.readerPostsViewController.navigationController];
+                [self.tabBarController setSelectedIndex:readerTabIndex];
+                
+                [ReaderPost getPostsFromEndpoint:endpoint
+                                  withParameters:nil
+                                     loadingMore:NO
+                                         success:^(AFHTTPRequestOperation *operation, id responseObject) {
+                                             [ReaderPost createOrUpdateWithDictionary:responseObject
+                                                                          forEndpoint:endpoint
+                                                                          withContext:[[ContextManager sharedInstance] mainContext]];
+                                             NSArray *posts = [ReaderPost fetchPostsForEndpoint:endpoint
+                                                                                    withContext:[[ContextManager sharedInstance] mainContext]];
+
+                                             ReaderPostDetailViewController *controller = [[ReaderPostDetailViewController alloc] initWithPost:[posts objectAtIndex:0]];
+                                             [self.readerPostsViewController.navigationController pushViewController:controller animated:YES];
+                                         }
+                                         failure:nil];
+            }
+        } else {
+            return NO;
         }
     }
 
