@@ -12,6 +12,6 @@
 
 extern NSString * const ReaderTopicDidChangeNotification;
 
-@interface ReaderPostsViewController : WPTableViewController<ReaderPostViewDelegate>
+@interface ReaderPostsViewController : WPTableViewController<WPContentViewDelegate>
 
 @end
