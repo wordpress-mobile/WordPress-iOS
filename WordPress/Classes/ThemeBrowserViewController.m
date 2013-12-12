@@ -138,7 +138,7 @@ static NSString *const SearchFilterCellIdentifier = @"search_filter";
 }
 
 - (void)toggleNoThemesView:(BOOL)show {
-#warning WPInfoView no longer exists
+#warning WPInfoView no longer exists - use noresultsview
     if (!show) {
 //        [_noThemesView removeFromSuperview];
         return;

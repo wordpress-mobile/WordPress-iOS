@@ -201,6 +201,11 @@
 	return [UIColor colorWithRed:16/255.0f green:16/255.0f blue:16/255.0f alpha:1.0f];
 }
 
++ (UIColor *)textFieldPlaceholderGrey
+{
+    return [UIColor colorWithRed:184.0f/255.0f green:184.0f/255.0f blue:184.0f/255.0f alpha:1.0f];
+}
+
 + (UIColor *)validationErrorRed
 {
     return [UIColor colorWithRed:0.7 green:0.0 blue:0.0 alpha:1.0];
