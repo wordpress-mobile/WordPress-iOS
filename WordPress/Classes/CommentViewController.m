@@ -14,6 +14,7 @@
 #import "ReplyToCommentViewController.h"
 #import "EditCommentViewController.h"
 #import "WPWebViewController.h"
+#import "InlineComposeView.h"
 
 @interface CommentViewController () <UIWebViewDelegate, ReplyToCommentViewControllerDelegate, UIActionSheetDelegate, MFMailComposeViewControllerDelegate> {
     ReplyToCommentViewController *_replyToCommentViewController;
@@ -36,6 +37,8 @@
 @property (nonatomic, weak) IBOutlet UIBarButtonItem *spamButton;
 @property (nonatomic, weak) IBOutlet UIBarButtonItem *editButton;
 @property (nonatomic, weak) IBOutlet UIBarButtonItem *replyButton;
+
+@property (nonatomic, strong) InlineComposeView *inlineComposeView;
 
 @end
 
@@ -82,11 +85,14 @@ CGFloat const CommentViewUnapproveButtonTag = 701;
     UITapGestureRecognizer *gestureRecognizer = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(tappedPostTitle)];
     gestureRecognizer.numberOfTapsRequired = 1;
     [self.postTitleLabel addGestureRecognizer:gestureRecognizer];
-    
+
+    self.inlineComposeView = [[InlineComposeView alloc] initWithFrame:CGRectZero];
+    [self.view addSubview:self.inlineComposeView];
     if (self.comment) {
         [self showComment:self.comment];
         [self reachabilityChanged:self.comment.blog.reachable];
     }
+
 }
 
 - (void)viewWillAppear:(BOOL)animated {
@@ -440,6 +446,8 @@ CGFloat const CommentViewUnapproveButtonTag = 701;
 }
 
 - (IBAction)launchReplyToComments {
+    [self.inlineComposeView becomeFirstResponder];
+    return;
 	if(self.commentsViewController.blog.isSyncingComments) {
 		[self showSyncInProgressAlert];
 	} else {

@@ -8,15 +8,61 @@
 
 #import "InlineComposeToolbarView.h"
 
+CGFloat InlineComposeToolbarViewMaxToolbarWidth = 640.f;
+CGFloat InlineComposeToolbarViewMinToolbarWidth = 320.f;
+
+@interface InlineComposeToolbarView ()
+
+@property (nonatomic) CGFloat maxToolbarWidth;
+@property (nonatomic) CGFloat minToolbarWidth;
+
+@end
+
 @implementation InlineComposeToolbarView
 
-- (id)initWithFrame:(CGRect)frame
-{
+- (id)initWithFrame:(CGRect)frame {
     self = [super initWithFrame:frame];
     if (self) {
         // Initialization code
+        _maxToolbarWidth = InlineComposeToolbarViewMaxToolbarWidth;
+        _minToolbarWidth = InlineComposeToolbarViewMinToolbarWidth;
     }
     return self;
+}
+
+- (id)initWithCoder:(NSCoder *)aDecoder {
+    self = [super initWithCoder:aDecoder];
+    if (self) {
+        _maxToolbarWidth = InlineComposeToolbarViewMaxToolbarWidth;
+        _minToolbarWidth = InlineComposeToolbarViewMinToolbarWidth;
+    }
+    return self;
+}
+
+- (void)setMaxToolbarWidth:(CGFloat)maxToolbarWidth {
+    if (maxToolbarWidth == _maxToolbarWidth) {
+        return;
+    }
+
+    _maxToolbarWidth = maxToolbarWidth;
+
+    [self setNeedsLayout];
+}
+
+- (void)layoutSubviews {
+    [super layoutSubviews];
+
+    NSLog(@"Laying out subviews");
+
+    if (!self.composerContainerView) return;
+
+    // constrain frame width and center it
+    CGRect frame = self.composerContainerView.frame;
+    frame.size.width = MAX(MIN(self.maxToolbarWidth, frame.size.width),
+                           self.minToolbarWidth);
+    frame.origin.x = (CGRectGetWidth(self.bounds) - CGRectGetWidth(frame)) * 0.5f;
+
+    self.composerContainerView.frame = frame;
 }
 
 /*
