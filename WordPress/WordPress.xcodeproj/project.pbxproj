@@ -63,8 +63,6 @@
 		30E9685615AE713A0047DD84 /* navbar_primary_button_bg_landscape_active@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 30E9685015AE713A0047DD84 /* navbar_primary_button_bg_landscape_active@2x.png */; };
 		30E9685715AE713A0047DD84 /* navbar_primary_button_bg_landscape.png in Resources */ = {isa = PBXBuildFile; fileRef = 30E9685115AE713A0047DD84 /* navbar_primary_button_bg_landscape.png */; };
 		30E9685815AE713A0047DD84 /* navbar_primary_button_bg_landscape@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 30E9685215AE713A0047DD84 /* navbar_primary_button_bg_landscape@2x.png */; };
-		30E9A08B1417D0E1002E2ACE /* keyboardButtoniPadHighlighted.png in Resources */ = {isa = PBXBuildFile; fileRef = 30E9A0891417D0E1002E2ACE /* keyboardButtoniPadHighlighted.png */; };
-		30E9A08C1417D0E1002E2ACE /* keyboardButtoniPad.png in Resources */ = {isa = PBXBuildFile; fileRef = 30E9A08A1417D0E1002E2ACE /* keyboardButtoniPad.png */; };
 		30EB4CB21423F9D700A27B25 /* read.png in Resources */ = {isa = PBXBuildFile; fileRef = 30EB4CB01423F9D700A27B25 /* read.png */; };
 		30EB4CB31423F9D700A27B25 /* read@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 30EB4CB11423F9D700A27B25 /* read@2x.png */; };
 		30EEBB901851B0A30099FB6C /* icon_format_bold.png in Resources */ = {isa = PBXBuildFile; fileRef = 30EEBB7E1851B0A30099FB6C /* icon_format_bold.png */; };
@@ -87,18 +85,8 @@
 		30EEBBA11851B0A30099FB6C /* icon_format_underline@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 30EEBB8F1851B0A30099FB6C /* icon_format_underline@2x.png */; };
 		30F0264815AFAA13006C2163 /* navbar_primary_button_bg.png in Resources */ = {isa = PBXBuildFile; fileRef = 30F0264715AFAA13006C2163 /* navbar_primary_button_bg.png */; };
 		30F0264A15AFAAA7006C2163 /* navbar_button_bg_active.png in Resources */ = {isa = PBXBuildFile; fileRef = 30F0264915AFAAA7006C2163 /* navbar_button_bg_active.png */; };
-		30FB8AA9140C0735003BBEC5 /* keyboardButtonHighlighted.png in Resources */ = {isa = PBXBuildFile; fileRef = 30FB8AA7140C0735003BBEC5 /* keyboardButtonHighlighted.png */; };
-		30FB8ABD140C46C1003BBEC5 /* keyboardButtonHighlighted@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 30FB8ABC140C46C1003BBEC5 /* keyboardButtonHighlighted@2x.png */; };
-		30FB8B4A140D2B9C003BBEC5 /* doneButton@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 30FB8B48140D2B9C003BBEC5 /* doneButton@2x.png */; };
-		30FB8B4B140D2B9C003BBEC5 /* doneButton.png in Resources */ = {isa = PBXBuildFile; fileRef = 30FB8B49140D2B9C003BBEC5 /* doneButton.png */; };
-		30FB8B6C140D32E5003BBEC5 /* doneButtonHighlighted.png in Resources */ = {isa = PBXBuildFile; fileRef = 30FB8B6A140D32E5003BBEC5 /* doneButtonHighlighted.png */; };
-		30FB8B6D140D32E5003BBEC5 /* doneButtonHighlighted@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 30FB8B6B140D32E5003BBEC5 /* doneButtonHighlighted@2x.png */; };
 		30FB8C8F140D49F6003BBEC5 /* toggleButton@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 30FB8C8D140D49F6003BBEC5 /* toggleButton@2x.png */; };
 		30FB8C90140D49F6003BBEC5 /* toggleButton.png in Resources */ = {isa = PBXBuildFile; fileRef = 30FB8C8E140D49F6003BBEC5 /* toggleButton.png */; };
-		30FB8CB0140D56D7003BBEC5 /* toggleButtonMain.png in Resources */ = {isa = PBXBuildFile; fileRef = 30FB8CAE140D56D7003BBEC5 /* toggleButtonMain.png */; };
-		30FB8CB1140D56D7003BBEC5 /* toggleButtonMain@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 30FB8CAF140D56D7003BBEC5 /* toggleButtonMain@2x.png */; };
-		30FB8D6F140D9F49003BBEC5 /* toggleButtonExtended@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 30FB8D6D140D9F49003BBEC5 /* toggleButtonExtended@2x.png */; };
-		30FB8D70140D9F49003BBEC5 /* toggleButtonExtended.png in Resources */ = {isa = PBXBuildFile; fileRef = 30FB8D6E140D9F49003BBEC5 /* toggleButtonExtended.png */; };
 		3704ACFC13128C9800120911 /* Default.png in Resources */ = {isa = PBXBuildFile; fileRef = 3704ACFA13128C9800120911 /* Default.png */; };
 		3704ACFD13128C9800120911 /* Default@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 3704ACFB13128C9800120911 /* Default@2x.png */; };
 		3707789F1670FBB8002B4EA0 /* note_icon_achievement.png in Resources */ = {isa = PBXBuildFile; fileRef = 370778931670FBB8002B4EA0 /* note_icon_achievement.png */; };
@@ -647,8 +635,6 @@
 		E125443C12BF5A7200D87A0A /* WordPress.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = E125443B12BF5A7200D87A0A /* WordPress.xcdatamodeld */; };
 		E125445612BF5B3900D87A0A /* Category.m in Sources */ = {isa = PBXBuildFile; fileRef = E125445512BF5B3900D87A0A /* Category.m */; };
 		E125451812BF68F900D87A0A /* Page.m in Sources */ = {isa = PBXBuildFile; fileRef = E125451712BF68F900D87A0A /* Page.m */; };
-		E128566415103A3600406BC9 /* keyboardButtoniPad@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = E128566215103A3600406BC9 /* keyboardButtoniPad@2x.png */; };
-		E128566515103A3600406BC9 /* keyboardButtoniPadHighlighted@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = E128566315103A3600406BC9 /* keyboardButtoniPadHighlighted@2x.png */; };
 		E12F95B9155820A40067A653 /* NSObject+BlockObservation.m in Sources */ = {isa = PBXBuildFile; fileRef = E12F95B8155820A40067A653 /* NSObject+BlockObservation.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
 		E131CB5216CACA6B004B0314 /* CoreText.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E131CB5116CACA6B004B0314 /* CoreText.framework */; };
 		E131CB5416CACB05004B0314 /* libxml2.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = E131CB5316CACB05004B0314 /* libxml2.dylib */; };
@@ -688,8 +674,6 @@
 		E16A0C3312E769A10049EA80 /* table_sep@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = E16A0C3112E769A10049EA80 /* table_sep@2x.png */; };
 		E16AB92E14D978240047A2E5 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1D30AB110D05D00D00671497 /* Foundation.framework */; };
 		E16AB93414D978240047A2E5 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = E16AB93214D978240047A2E5 /* InfoPlist.strings */; };
-		E174853016B028BF00D02746 /* keyboardButton@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = E1B62A8A13AAA96F00A6FCA4 /* keyboardButton@2x.png */; };
-		E174853116B028C300D02746 /* keyboardButton.png in Resources */ = {isa = PBXBuildFile; fileRef = E1B62A8813AAA5FE00A6FCA4 /* keyboardButton.png */; };
 		E174F6E6172A73960004F23A /* WPAccount.m in Sources */ = {isa = PBXBuildFile; fileRef = E105E9CE1726955600C0D9E7 /* WPAccount.m */; };
 		E1756E651694A99400D9EC00 /* WordPressComApiCredentials.m in Sources */ = {isa = PBXBuildFile; fileRef = E1756E641694A99400D9EC00 /* WordPressComApiCredentials.m */; };
 		E177087913AAAD5800EA6C72 /* keyboardButton~ipad.png in Resources */ = {isa = PBXBuildFile; fileRef = E177087813AAAD5800EA6C72 /* keyboardButton~ipad.png */; };
@@ -911,8 +895,6 @@
 		30E9685015AE713A0047DD84 /* navbar_primary_button_bg_landscape_active@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "navbar_primary_button_bg_landscape_active@2x.png"; path = "Resources/Images/navbar_primary_button_bg_landscape_active@2x.png"; sourceTree = "<group>"; };
 		30E9685115AE713A0047DD84 /* navbar_primary_button_bg_landscape.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = navbar_primary_button_bg_landscape.png; path = Resources/Images/navbar_primary_button_bg_landscape.png; sourceTree = "<group>"; };
 		30E9685215AE713A0047DD84 /* navbar_primary_button_bg_landscape@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "navbar_primary_button_bg_landscape@2x.png"; path = "Resources/Images/navbar_primary_button_bg_landscape@2x.png"; sourceTree = "<group>"; };
-		30E9A0891417D0E1002E2ACE /* keyboardButtoniPadHighlighted.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = keyboardButtoniPadHighlighted.png; path = Resources/Images/keyboardButtoniPadHighlighted.png; sourceTree = "<group>"; };
-		30E9A08A1417D0E1002E2ACE /* keyboardButtoniPad.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = keyboardButtoniPad.png; path = Resources/Images/keyboardButtoniPad.png; sourceTree = "<group>"; };
 		30EB4CB01423F9D700A27B25 /* read.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = read.png; path = Resources/Images/read.png; sourceTree = "<group>"; };
 		30EB4CB11423F9D700A27B25 /* read@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "read@2x.png"; path = "Resources/Images/read@2x.png"; sourceTree = "<group>"; };
 		30EEBB7E1851B0A30099FB6C /* icon_format_bold.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = icon_format_bold.png; path = Resources/Images/icon_format_bold.png; sourceTree = "<group>"; };
@@ -935,18 +917,8 @@
 		30EEBB8F1851B0A30099FB6C /* icon_format_underline@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "icon_format_underline@2x.png"; path = "Resources/Images/icon_format_underline@2x.png"; sourceTree = "<group>"; };
 		30F0264715AFAA13006C2163 /* navbar_primary_button_bg.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = navbar_primary_button_bg.png; path = Resources/Images/navbar_primary_button_bg.png; sourceTree = "<group>"; };
 		30F0264915AFAAA7006C2163 /* navbar_button_bg_active.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = navbar_button_bg_active.png; path = Resources/Images/navbar_button_bg_active.png; sourceTree = "<group>"; };
-		30FB8AA7140C0735003BBEC5 /* keyboardButtonHighlighted.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = keyboardButtonHighlighted.png; path = Resources/Images/keyboardButtonHighlighted.png; sourceTree = "<group>"; };
-		30FB8ABC140C46C1003BBEC5 /* keyboardButtonHighlighted@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "keyboardButtonHighlighted@2x.png"; path = "Resources/Images/keyboardButtonHighlighted@2x.png"; sourceTree = "<group>"; };
-		30FB8B48140D2B9C003BBEC5 /* doneButton@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "doneButton@2x.png"; path = "Resources/Images/doneButton@2x.png"; sourceTree = "<group>"; };
-		30FB8B49140D2B9C003BBEC5 /* doneButton.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = doneButton.png; path = Resources/Images/doneButton.png; sourceTree = "<group>"; };
-		30FB8B6A140D32E5003BBEC5 /* doneButtonHighlighted.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = doneButtonHighlighted.png; path = Resources/Images/doneButtonHighlighted.png; sourceTree = "<group>"; };
-		30FB8B6B140D32E5003BBEC5 /* doneButtonHighlighted@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "doneButtonHighlighted@2x.png"; path = "Resources/Images/doneButtonHighlighted@2x.png"; sourceTree = "<group>"; };
 		30FB8C8D140D49F6003BBEC5 /* toggleButton@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "toggleButton@2x.png"; path = "Resources/Images/toggleButton@2x.png"; sourceTree = "<group>"; };
 		30FB8C8E140D49F6003BBEC5 /* toggleButton.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = toggleButton.png; path = Resources/Images/toggleButton.png; sourceTree = "<group>"; };
-		30FB8CAE140D56D7003BBEC5 /* toggleButtonMain.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = toggleButtonMain.png; path = Resources/Images/toggleButtonMain.png; sourceTree = "<group>"; };
-		30FB8CAF140D56D7003BBEC5 /* toggleButtonMain@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "toggleButtonMain@2x.png"; path = "Resources/Images/toggleButtonMain@2x.png"; sourceTree = "<group>"; };
-		30FB8D6D140D9F49003BBEC5 /* toggleButtonExtended@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "toggleButtonExtended@2x.png"; path = "Resources/Images/toggleButtonExtended@2x.png"; sourceTree = "<group>"; };
-		30FB8D6E140D9F49003BBEC5 /* toggleButtonExtended.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = toggleButtonExtended.png; path = Resources/Images/toggleButtonExtended.png; sourceTree = "<group>"; };
 		3704ACFA13128C9800120911 /* Default.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Default.png; sourceTree = "<group>"; };
 		3704ACFB13128C9800120911 /* Default@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Default@2x.png"; sourceTree = "<group>"; };
 		370778931670FBB8002B4EA0 /* note_icon_achievement.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = note_icon_achievement.png; path = Resources/Images/note_icon_achievement.png; sourceTree = "<group>"; };
@@ -1642,8 +1614,6 @@
 		E125445512BF5B3900D87A0A /* Category.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Category.m; sourceTree = "<group>"; };
 		E125451612BF68F900D87A0A /* Page.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Page.h; sourceTree = "<group>"; };
 		E125451712BF68F900D87A0A /* Page.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Page.m; sourceTree = "<group>"; };
-		E128566215103A3600406BC9 /* keyboardButtoniPad@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "keyboardButtoniPad@2x.png"; path = "Resources/Images/keyboardButtoniPad@2x.png"; sourceTree = "<group>"; };
-		E128566315103A3600406BC9 /* keyboardButtoniPadHighlighted@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "keyboardButtoniPadHighlighted@2x.png"; path = "Resources/Images/keyboardButtoniPadHighlighted@2x.png"; sourceTree = "<group>"; };
 		E12963A8174654B2002E7744 /* ru */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ru; path = ru.lproj/Localizable.strings; sourceTree = "<group>"; };
 		E12F95A51557C9C20067A653 /* zh-Hant */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "zh-Hant"; path = "zh-Hant.lproj/Localizable.strings"; sourceTree = "<group>"; };
 		E12F95A61557CA210067A653 /* hu */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = hu; path = hu.lproj/Localizable.strings; sourceTree = "<group>"; };
@@ -1763,8 +1733,6 @@
 		E1B62A7F13AA8D7700A6FCA4 /* link.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = link.png; path = Resources/Images/link.png; sourceTree = "<group>"; };
 		E1B62A8013AA8D7700A6FCA4 /* link@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "link@2x.png"; path = "Resources/Images/link@2x.png"; sourceTree = "<group>"; };
 		E1B62A8113AA8D7700A6FCA4 /* link~ipad.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "link~ipad.png"; path = "Resources/Images/link~ipad.png"; sourceTree = "<group>"; };
-		E1B62A8813AAA5FE00A6FCA4 /* keyboardButton.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = keyboardButton.png; path = Resources/Images/keyboardButton.png; sourceTree = "<group>"; };
-		E1B62A8A13AAA96F00A6FCA4 /* keyboardButton@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "keyboardButton@2x.png"; path = "Resources/Images/keyboardButton@2x.png"; sourceTree = "<group>"; };
 		E1C807471696F72E00E545A6 /* WordPress 9.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = "WordPress 9.xcdatamodel"; sourceTree = "<group>"; };
 		E1CAAE3813F4142E0000C58D /* WPKeyboardToolbarButtonItem.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WPKeyboardToolbarButtonItem.h; sourceTree = "<group>"; };
 		E1CAAE3913F4142E0000C58D /* WPKeyboardToolbarButtonItem.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WPKeyboardToolbarButtonItem.m; sourceTree = "<group>"; };
@@ -2350,16 +2318,8 @@
 		5DC1F1E015A25CB900177CD3 /* Keyboard */ = {
 			isa = PBXGroup;
 			children = (
-				30FB8AA7140C0735003BBEC5 /* keyboardButtonHighlighted.png */,
-				30FB8ABC140C46C1003BBEC5 /* keyboardButtonHighlighted@2x.png */,
-				30E9A08A1417D0E1002E2ACE /* keyboardButtoniPad.png */,
-				30E9A0891417D0E1002E2ACE /* keyboardButtoniPadHighlighted.png */,
-				E128566215103A3600406BC9 /* keyboardButtoniPad@2x.png */,
-				E128566315103A3600406BC9 /* keyboardButtoniPadHighlighted@2x.png */,
 				E1F0258813AF588C00E3A76A /* keyboardClose~ipad.png */,
 				E177087813AAAD5800EA6C72 /* keyboardButton~ipad.png */,
-				E1B62A8A13AAA96F00A6FCA4 /* keyboardButton@2x.png */,
-				E1B62A8813AAA5FE00A6FCA4 /* keyboardButton.png */,
 			);
 			name = Keyboard;
 			sourceTree = "<group>";
@@ -2973,10 +2933,6 @@
 				6E461BAD11C0C06100B07942 /* check@2x.png */,
 				3704ACFA13128C9800120911 /* Default.png */,
 				3704ACFB13128C9800120911 /* Default@2x.png */,
-				30FB8B49140D2B9C003BBEC5 /* doneButton.png */,
-				30FB8B48140D2B9C003BBEC5 /* doneButton@2x.png */,
-				30FB8B6A140D32E5003BBEC5 /* doneButtonHighlighted.png */,
-				30FB8B6B140D32E5003BBEC5 /* doneButtonHighlighted@2x.png */,
 				2A7F722A0E71000000E48A1F /* down.png */,
 				6E61861E11C0C465001E755E /* down@2x.png */,
 				5D7C22B215A4FCC200FCE1C2 /* down_dim.png */,
@@ -3087,10 +3043,6 @@
 				377636F115B0360C00C1C5C6 /* tabPointer_black@2x.png */,
 				30FB8C8E140D49F6003BBEC5 /* toggleButton.png */,
 				30FB8C8D140D49F6003BBEC5 /* toggleButton@2x.png */,
-				30FB8D6E140D9F49003BBEC5 /* toggleButtonExtended.png */,
-				30FB8D6D140D9F49003BBEC5 /* toggleButtonExtended@2x.png */,
-				30FB8CAE140D56D7003BBEC5 /* toggleButtonMain.png */,
-				30FB8CAF140D56D7003BBEC5 /* toggleButtonMain@2x.png */,
 				93069F5A17625C28000C966D /* UIButtonBarActionBlack.png */,
 				93069F5B17625C28000C966D /* UIButtonBarActionBlack@2x.png */,
 				93069F5C17625C28000C966D /* UIButtonBarActionSmallBlack.png */,
@@ -3850,24 +3802,13 @@
 				E1472B9913EFF9FF00987A40 /* right.png in Resources */,
 				E1472B9A13EFF9FF00987A40 /* right@2x.png in Resources */,
 				37245ADC13FC23FF006CDBE3 /* WPWebViewController.xib in Resources */,
-				30FB8AA9140C0735003BBEC5 /* keyboardButtonHighlighted.png in Resources */,
-				30FB8ABD140C46C1003BBEC5 /* keyboardButtonHighlighted@2x.png in Resources */,
 				E2586BD31832F31D004B5B67 /* icon-site-field@2x.png in Resources */,
 				85ED54F417CC1A01006564AE /* icon-posts-editor-preview@2x.png in Resources */,
-				30FB8B4A140D2B9C003BBEC5 /* doneButton@2x.png in Resources */,
-				30FB8B4B140D2B9C003BBEC5 /* doneButton.png in Resources */,
 				8597439F17D6D956009DCDCA /* toggleButtonExtended-ios7.png in Resources */,
-				30FB8B6C140D32E5003BBEC5 /* doneButtonHighlighted.png in Resources */,
-				30FB8B6D140D32E5003BBEC5 /* doneButtonHighlighted@2x.png in Resources */,
 				30FB8C8F140D49F6003BBEC5 /* toggleButton@2x.png in Resources */,
 				30FB8C90140D49F6003BBEC5 /* toggleButton.png in Resources */,
 				85325A3017BB0DF8008E87D1 /* icon-menu-stats-active.png in Resources */,
 				E232E60F182EA37F00792CA0 /* icon-language-field.png in Resources */,
-				30FB8CB0140D56D7003BBEC5 /* toggleButtonMain.png in Resources */,
-				30FB8CB1140D56D7003BBEC5 /* toggleButtonMain@2x.png in Resources */,
-				30FB8D6F140D9F49003BBEC5 /* toggleButtonExtended@2x.png in Resources */,
-				30FB8D70140D9F49003BBEC5 /* toggleButtonExtended.png in Resources */,
-				30E5DD58140E7747003FA092 /* toolbarUl@2x.png in Resources */,
 				30EEBB9F1851B0A30099FB6C /* icon_format_strikethrough@2x.png in Resources */,
 				85325A2D17BB0DF8008E87D1 /* icon-menu-stats@2x.png in Resources */,
 				85325A5417BB2337008E87D1 /* icon-posts-add@2x.png in Resources */,
@@ -3875,9 +3816,7 @@
 				859743A417D6D956009DCDCA /* doneButtonHighlighted-ios7.png in Resources */,
 				8599658417DA903B005F84EB /* icon-menu-viewadmin@2x.png in Resources */,
 				857F55CC17CEC5E100E154E1 /* toggleButtonExtended-ios7@2x.png in Resources */,
-				30E9A08B1417D0E1002E2ACE /* keyboardButtoniPadHighlighted.png in Resources */,
 				85ED54FA17CC1A01006564AE /* icon-posts-editor-media@2x.png in Resources */,
-				30E9A08C1417D0E1002E2ACE /* keyboardButtoniPad.png in Resources */,
 				30EB4CB21423F9D700A27B25 /* read.png in Resources */,
 				30EB4CB31423F9D700A27B25 /* read@2x.png in Resources */,
 				30410685144E17AE00E98F07 /* next.png in Resources */,
@@ -3903,9 +3842,7 @@
 				E151045F14E27F9300CE282B /* list@2x.png in Resources */,
 				857F55CF17CEC5E100E154E1 /* keyboardButtonHighlighted-ios7@2x.png in Resources */,
 				E18165FD14E4428B006CE885 /* loader.html in Resources */,
-				E128566415103A3600406BC9 /* keyboardButtoniPad@2x.png in Resources */,
 				46F871531839528C00BC149B /* reader-postaction-time@2x.png in Resources */,
-				E128566515103A3600406BC9 /* keyboardButtoniPadHighlighted@2x.png in Resources */,
 				30811743151057880028A15E /* Default-Portrait@2x.png in Resources */,
 				30EEBB9A1851B0A30099FB6C /* icon_format_more.png in Resources */,
 				30811744151057880028A15E /* Default-Landscape@2x.png in Resources */,
@@ -4154,8 +4091,6 @@
 				30EEBB921851B0A30099FB6C /* icon_format_italic.png in Resources */,
 				8524551717DE4DBE00D22F98 /* icon-chevron.png in Resources */,
 				85325A2A17BB0DF8008E87D1 /* icon-menu-toggle.png in Resources */,
-				E174853016B028BF00D02746 /* keyboardButton@2x.png in Resources */,
-				E174853116B028C300D02746 /* keyboardButton.png in Resources */,
 				FD22C2B716CD2B20002BA030 /* navbar_settings.png in Resources */,
 				FD22C2B816CD2B20002BA030 /* navbar_settings@2x.png in Resources */,
 				85495F6417C6FACF00871A7A /* icon-comments-flag-active@2x.png in Resources */,
