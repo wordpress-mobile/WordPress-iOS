@@ -445,7 +445,7 @@ CGFloat const EPVCTextViewBottomPadding = 50.0f;
     
     if (indexPath.row == 0) {
         // Settings Cell
-        cell.textLabel.text = NSLocalizedString(@"Post Settings", @"Title of the Post Settings tableview cell in the Post Editor. Tapping shows settings and options related to the post being edited.");
+        cell.textLabel.text = NSLocalizedString(@"Options", @"Title of the Post Settings tableview cell in the Post Editor. Tapping shows settings and options related to the post being edited.");
         cell.imageView.image = [UIImage imageNamed:@"icon-menu-settings"];
         cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
     }
