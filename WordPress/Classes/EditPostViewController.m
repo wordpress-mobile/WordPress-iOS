@@ -321,7 +321,7 @@ typedef NS_ENUM(NSInteger, EditPostViewControllerAlertTag) {
     BlogSelectorViewController *vc = [[BlogSelectorViewController alloc] initWithSelectedBlogObjectID:self.apost.blog.objectID
                                                                                    selectedCompletion:selectedCompletion
                                                                                      cancelCompletion:dismissHandler];
-    vc.title = NSLocalizedString(@"My Blogs", @"");
+    vc.title = NSLocalizedString(@"Select Blog", @"");
     UINavigationController *navController = [[UINavigationController alloc] initWithRootViewController:vc];
     navController.navigationBar.translucent = NO;
     
