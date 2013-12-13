@@ -16,7 +16,7 @@
 #import "WPWebViewController.h"
 #import "InlineComposeView.h"
 
-@interface CommentViewController () <UIWebViewDelegate, ReplyToCommentViewControllerDelegate, UIActionSheetDelegate, MFMailComposeViewControllerDelegate> {
+@interface CommentViewController () <UIWebViewDelegate, ReplyToCommentViewControllerDelegate, UIActionSheetDelegate, MFMailComposeViewControllerDelegate, InlineComposeViewDelegate> {
     ReplyToCommentViewController *_replyToCommentViewController;
     EditCommentViewController *_editCommentViewController;
     BOOL _isShowingActionSheet;
@@ -40,6 +40,8 @@
 
 @property (nonatomic, strong) InlineComposeView *inlineComposeView;
 
+@property (nonatomic, strong) Comment *reply;
+
 @end
 
 @implementation CommentViewController
@@ -62,6 +64,10 @@ CGFloat const CommentViewUnapproveButtonTag = 701;
     
 	self.commentWebview.delegate = nil;
     [self.commentWebview stopLoading];
+
+    self.reply = nil;
+    self.inlineComposeView.delegate = nil;
+    self.inlineComposeView = nil;
 }
 
 - (void)viewDidLoad
@@ -87,11 +93,15 @@ CGFloat const CommentViewUnapproveButtonTag = 701;
     [self.postTitleLabel addGestureRecognizer:gestureRecognizer];
 
     self.inlineComposeView = [[InlineComposeView alloc] initWithFrame:CGRectZero];
+    self.inlineComposeView.delegate = self;
+
     [self.view addSubview:self.inlineComposeView];
     if (self.comment) {
         [self showComment:self.comment];
         [self reachabilityChanged:self.comment.blog.reachable];
-    }
+        self.reply = [self.comment restoreReply];
+        self.inlineComposeView.text = self.reply.content;
+   }
 
 }
 
@@ -521,6 +531,51 @@ CGFloat const CommentViewUnapproveButtonTag = 701;
 - (void)closeReplyViewAndSelectTheNewComment {
     [WPMobileStats trackEventForWPCom:StatsEventCommentDetailRepliedToComment];
 	[self dismissEditViewController];
+}
+
+#pragma mark - InlineComposeViewDelegate methods
+
+- (void)composeView:(InlineComposeView *)view didSendText:(NSString *)text {
+    NSLog(@"Attempt to send the text");
+
+    self.reply.content = text;
+    // try to save it
+
+    __block NSError *error;
+    __block NSManagedObjectContext *context = self.reply.managedObjectContext;
+    [context performBlockAndWait:^{
+        [context save:&error];
+    }];
+
+    if (!!error) {
+        DDLogError(@"Could not save draft comment: %@", error);
+        // Should we show an alert here?
+        return;
+    }
+
+    [self.view endEditing:YES];
+    self.inlineComposeView.text = @"";
+    [self.inlineComposeView resignFirstResponder];
+
+    self.reply.status = CommentStatusApproved;
+    [self.reply uploadWithSuccess:^{
+        // Notify of success?
+    } failure:^(NSError *error) {
+        // reset to draft and save
+        self.reply.status = CommentStatusDraft;
+    }];
+}
+
+// when the reply changes, save it to the comment
+- (void)textViewDidChange:(UITextView *)textView {
+    self.reply.content = self.inlineComposeView.text;
+    [self.reply.managedObjectContext performBlockAndWait:^{
+        NSError *error;
+        [self.reply.managedObjectContext save:&error];
+        if (!!error) {
+            DDLogError(@"Could not save reply draft: %@", error);
+        }
+    }];
 }
 
 #pragma mark - Gesture Recognizers
