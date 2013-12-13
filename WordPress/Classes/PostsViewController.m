@@ -38,7 +38,7 @@
     [super viewDidLoad];
     
     self.title = NSLocalizedString(@"Posts", @"");
-    
+
     UIImage *image = [UIImage imageNamed:@"icon-posts-add"];
     UIButton *button = [[UIButton alloc] initWithFrame:CGRectMake(0, 0, image.size.width, image.size.height)];
     [button setImage:image forState:UIControlStateNormal];
@@ -49,7 +49,7 @@
     UIEdgeInsets tableInset = [self.tableView contentInset];
     tableInset.top = -1;
     self.tableView.contentInset = tableInset;
-    
+
     [WPStyleGuide setRightBarButtonItemWithCorrectSpacing:composeButtonItem forNavigationItem:self.navigationItem];
     
     self.infiniteScrollEnabled = YES;

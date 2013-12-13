@@ -1,22 +1,18 @@
-#import <UIKit/UIKit.h>
-#import <QuartzCore/QuartzCore.h>
-#import "WPKeyboardToolbarBase.h"
+//
+//  EditPostTableViewController.h
+//  WordPress
+//
+//  Created by ? on ?
+//  Copyright (c) 2013 WordPress. All rights reserved.
+//
 
-#define kSelectionsStatusContext ((void *)1000)
-#define kSelectionsCategoriesContext ((void *)2000)
+#import <UIKit/UIKit.h>
 
 @class AbstractPost;
 
-typedef NS_ENUM(NSUInteger, EditPostViewControllerMode) {
-	EditPostViewControllerModeNewPost,
-	EditPostViewControllerModeEditPost
-};
+@interface EditPostViewController : UITableViewController
 
-@interface EditPostViewController : UIViewController <UIActionSheetDelegate, UITextFieldDelegate, UITextViewDelegate, UIPopoverControllerDelegate,WPKeyboardToolbarDelegate>
-
-@property(nonatomic, strong) NSString *statsPrefix;
-
-- (id)initWithPost:(AbstractPost *)aPost;
+- (id)initWithPost:(AbstractPost *)post;
 - (id)initWithDraftForLastUsedBlog;
 
 @end
