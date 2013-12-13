@@ -37,6 +37,8 @@ const CGFloat RPVMaxImageHeightPercentage = 0.59f;
 const CGFloat RPVMaxSummaryHeight = 88.0f;
 const CGFloat RPVFollowButtonWidth = 100.0f;
 const CGFloat RPVTitlePaddingBottom = 4.0f;
+const CGFloat RPVSmallButtonLeftPadding = 2; // Follow, tag
+const CGFloat RPVLineHeightMultiple = 1.10f;
 
 // Control buttons (Like, Reblog, ...)
 const CGFloat RPVControlButtonHeight = 48.0f;
@@ -54,8 +56,8 @@ const CGFloat RPVControlButtonBorderSize = 0.0f;
 @property (nonatomic, strong) UILabel *snippetLabel;
 @property (nonatomic, strong) DTAttributedTextContentView *textContentView;
 @property (nonatomic, strong) UILabel *bylineLabel;
-@property (nonatomic, strong) UIView *metaView;
-@property (nonatomic, strong) CALayer *metaBorder;
+@property (nonatomic, strong) UIView *bottomView;
+@property (nonatomic, strong) CALayer *bottomBorder;
 @property (nonatomic, strong) CALayer *titleBorder;
 @property (nonatomic, strong) UIView *byView;
 @property (nonatomic, strong) UIView *controlView;
@@ -163,6 +165,24 @@ const CGFloat RPVControlButtonBorderSize = 0.0f;
 	_bylineLabel.adjustsFontSizeToFitWidth = NO;
 	_bylineLabel.textColor = [UIColor colorWithHexString:@"333"];
 	[_byView addSubview:_bylineLabel];
+    
+    _bottomView = [[UIView alloc] init];
+	_bottomView.autoresizingMask = UIViewAutoresizingFlexibleWidth;
+	_bottomView.backgroundColor = [UIColor clearColor];
+	[self addSubview:_bottomView];
+    
+    _bottomBorder = [[CALayer alloc] init];
+    _bottomBorder.backgroundColor = [[UIColor colorWithHexString:@"f1f1f1"] CGColor];
+    [_bottomView.layer addSublayer:_bottomBorder];
+    
+    _timeButton = [UIButton buttonWithType:UIButtonTypeCustom];
+    _timeButton.contentHorizontalAlignment = UIControlContentHorizontalAlignmentLeft;
+    _timeButton.backgroundColor = [UIColor clearColor];
+    _timeButton.titleLabel.font = [UIFont fontWithName:@"OpenSans" size:12.0f];
+    [_timeButton setTitleEdgeInsets: UIEdgeInsetsMake(0, RPVSmallButtonLeftPadding, 0, 0)];
+    [_timeButton setImage:[UIImage imageNamed:@"reader-postaction-time"] forState:UIControlStateNormal];
+    [_timeButton setTitleColor:[UIColor colorWithHexString:@"aaa"] forState:UIControlStateNormal];
+	[_bottomView addSubview:_timeButton];
 }
 
 - (void)reset {    

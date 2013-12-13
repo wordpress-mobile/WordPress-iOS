@@ -13,9 +13,6 @@
 #import "UILabel+SuggestSize.h"
 #import "NSAttributedString+HTML.h"
 
-const CGFloat RPVSmallButtonLeftPadding = 2; // Follow, tag
-const CGFloat RPVLineHeightMultiple = 1.10f;
-
 @interface ReaderPostView()
 
 @property (nonatomic, assign) BOOL showImage;
@@ -214,8 +211,9 @@ const CGFloat RPVLineHeightMultiple = 1.10f;
         [self.cellImageView addGestureRecognizer:imageTap];
     }
 	[self addSubview:self.cellImageView];
+
     
-    self.followButton = [ReaderButton buttonWithType:UIButtonTypeCustom];
+    _followButton = [ReaderButton buttonWithType:UIButtonTypeCustom];
     _followButton.contentHorizontalAlignment = UIControlContentHorizontalAlignmentLeft;
     _followButton.backgroundColor = [UIColor clearColor];
     _followButton.titleLabel.font = [UIFont fontWithName:@"OpenSans" size:12.0f];
@@ -228,9 +226,9 @@ const CGFloat RPVLineHeightMultiple = 1.10f;
     [_followButton setImage:[UIImage imageNamed:@"reader-postaction-following"] forState:UIControlStateSelected];
     [_followButton setTitleColor:[UIColor colorWithHexString:@"aaa"] forState:UIControlStateNormal];
     [_followButton addTarget:self action:@selector(followAction:) forControlEvents:UIControlEventTouchUpInside];
-    [self.byView addSubview:_followButton];
+    [super.byView addSubview:_followButton];
     
-    self.tagButton = [ReaderButton buttonWithType:UIButtonTypeCustom];
+    _tagButton = [ReaderButton buttonWithType:UIButtonTypeCustom];
     _tagButton.contentHorizontalAlignment = UIControlContentHorizontalAlignmentLeft;
     _tagButton.backgroundColor = [UIColor clearColor];
     _tagButton.titleLabel.font = [UIFont fontWithName:@"OpenSans" size:12.0f];
@@ -240,47 +238,29 @@ const CGFloat RPVLineHeightMultiple = 1.10f;
     [_tagButton addTarget:self action:@selector(tagAction:) forControlEvents:UIControlEventTouchUpInside];
     [self addSubview:_tagButton];
     
-	self.metaView = [[UIView alloc] init];
-	self.metaView.autoresizingMask = UIViewAutoresizingFlexibleWidth;
-	self.metaView.backgroundColor = [UIColor clearColor];
-	[self addSubview:self.metaView];
-    
-    self.metaBorder = [[CALayer alloc] init];
-    self.metaBorder.backgroundColor = [[UIColor colorWithHexString:@"f1f1f1"] CGColor];
-    [self.metaView.layer addSublayer:self.metaBorder];
-    
-    self.timeButton = [UIButton buttonWithType:UIButtonTypeCustom];
-    self.timeButton.contentHorizontalAlignment = UIControlContentHorizontalAlignmentLeft;
-    self.timeButton.backgroundColor = [UIColor clearColor];
-    self.timeButton.titleLabel.font = [UIFont fontWithName:@"OpenSans" size:12.0f];
-    [self.timeButton setTitleEdgeInsets: UIEdgeInsetsMake(0, RPVSmallButtonLeftPadding, 0, 0)];
-    [self.timeButton setImage:[UIImage imageNamed:@"reader-postaction-time"] forState:UIControlStateNormal];
-    [self.timeButton setTitleColor:[UIColor colorWithHexString:@"aaa"] forState:UIControlStateNormal];
-	[self.metaView addSubview:self.timeButton];
-    
-	self.likeButton = [ReaderButton buttonWithType:UIButtonTypeCustom];
+	_likeButton = [ReaderButton buttonWithType:UIButtonTypeCustom];
 	_likeButton.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleRightMargin;
 	_likeButton.backgroundColor = [UIColor clearColor];
 	[_likeButton setImage:[UIImage imageNamed:@"reader-postaction-like-blue"] forState:UIControlStateNormal];
 	[_likeButton setImage:[UIImage imageNamed:@"reader-postaction-like-active"] forState:UIControlStateSelected];
     [_likeButton addTarget:self action:@selector(likeAction:) forControlEvents:UIControlEventTouchUpInside];
-	[self.metaView addSubview:_likeButton];
+	[super.bottomView addSubview:_likeButton];
 	
-	self.reblogButton = [ReaderButton buttonWithType:UIButtonTypeCustom];
+	_reblogButton = [ReaderButton buttonWithType:UIButtonTypeCustom];
 	_reblogButton.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleLeftMargin;
 	_reblogButton.backgroundColor = [UIColor clearColor];
 	[_reblogButton setImage:[UIImage imageNamed:@"reader-postaction-reblog-blue"] forState:UIControlStateNormal];
 	[_reblogButton setImage:[UIImage imageNamed:@"reader-postaction-reblog-done"] forState:UIControlStateSelected];
     [_reblogButton addTarget:self action:@selector(reblogAction:) forControlEvents:UIControlEventTouchUpInside];
-	[self.metaView addSubview:_reblogButton];
+	[super.bottomView addSubview:_reblogButton];
     
-    self.commentButton = [ReaderButton buttonWithType:UIButtonTypeCustom];
+    _commentButton = [ReaderButton buttonWithType:UIButtonTypeCustom];
 	_commentButton.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleLeftMargin;
 	_commentButton.backgroundColor = [UIColor clearColor];
 	[_commentButton setImage:[UIImage imageNamed:@"reader-postaction-comment-blue"] forState:UIControlStateNormal];
 	[_commentButton setImage:[UIImage imageNamed:@"reader-postaction-comment-active"] forState:UIControlStateSelected];
     [_commentButton addTarget:self action:@selector(commentAction:) forControlEvents:UIControlEventTouchUpInside];
-	[self.metaView addSubview:_commentButton];
+	[super.bottomView addSubview:_commentButton];
 }
 
 - (void)layoutSubviews {
@@ -304,13 +284,13 @@ const CGFloat RPVLineHeightMultiple = 1.10f;
     self.bylineLabel.frame = CGRectMake(bylineX, RPVAuthorPadding - 2, contentWidth - bylineX, 18);
     
     if ([self.post isFollowable]) {
-        _followButton.hidden = NO;
+        self.followButton.hidden = NO;
         CGFloat followX = bylineX - 4; // Fudge factor for image alignment
         CGFloat followY = RPVAuthorPadding + self.bylineLabel.frame.size.height - 2;
         height = ceil([self.followButton.titleLabel suggestedSizeForWidth:innerContentWidth].height);
-        _followButton.frame = CGRectMake(followX, followY, RPVFollowButtonWidth, height);
+        self.followButton.frame = CGRectMake(followX, followY, RPVFollowButtonWidth, height);
     } else {
-        _followButton.hidden = YES;
+        self.followButton.hidden = YES;
     }
     
     nextY += RPVAuthorViewHeight + RPVAuthorPadding;
@@ -352,8 +332,8 @@ const CGFloat RPVLineHeightMultiple = 1.10f;
     // Tag
     // TODO: reenable tags once a better browsing experience is implemented
     /*    if ([self.post.primaryTagName length] > 0) {
-     height = ceil([_tagButton.titleLabel suggestedSizeForWidth:innerContentWidth].height);
-     _tagButton.frame = CGRectMake(RPVHorizontalInnerPadding, nextY, innerContentWidth, height);
+     height = ceil([self.tagButton.titleLabel suggestedSizeForWidth:innerContentWidth].height);
+     self.tagButton.frame = CGRectMake(RPVHorizontalInnerPadding, nextY, innerContentWidth, height);
      nextY += height + RPVVerticalPadding;
      self.tagButton.hidden = NO;
      } else {
@@ -362,16 +342,16 @@ const CGFloat RPVLineHeightMultiple = 1.10f;
      */
     
 	// Position the meta view and its subviews
-	self.metaView.frame = CGRectMake(0, nextY, contentWidth, RPVMetaViewHeight);
-    self.metaBorder.frame = CGRectMake(RPVHorizontalInnerPadding, 0, contentWidth - RPVHorizontalInnerPadding * 2, RPVBorderHeight);
+	self.bottomView.frame = CGRectMake(0, nextY, contentWidth, RPVMetaViewHeight);
+    self.bottomBorder.frame = CGRectMake(RPVHorizontalInnerPadding, 0, contentWidth - RPVHorizontalInnerPadding * 2, RPVBorderHeight);
     
     BOOL commentsOpen = [[self.post commentsOpen] boolValue] && [self.post isWPCom];
 	CGFloat buttonWidth = RPVControlButtonWidth;
-    CGFloat buttonX = self.metaView.frame.size.width - RPVControlButtonWidth;
+    CGFloat buttonX = self.bottomView.frame.size.width - RPVControlButtonWidth;
     CGFloat buttonY = RPVBorderHeight; // Just below the line
     
     // Button order from right-to-left: Like, [Comment], Reblog,
-    _likeButton.frame = CGRectMake(buttonX, buttonY, buttonWidth, RPVControlButtonHeight);
+    self.likeButton.frame = CGRectMake(buttonX, buttonY, buttonWidth, RPVControlButtonHeight);
     buttonX -= buttonWidth + RPVControlButtonSpacing;
     
     if (commentsOpen) {
@@ -381,9 +361,9 @@ const CGFloat RPVLineHeightMultiple = 1.10f;
     } else {
         self.commentButton.hidden = YES;
     }
-    _reblogButton.frame = CGRectMake(buttonX, buttonY, buttonWidth - RPVControlButtonBorderSize, RPVControlButtonHeight);
+    self.reblogButton.frame = CGRectMake(buttonX, buttonY, buttonWidth - RPVControlButtonBorderSize, RPVControlButtonHeight);
     
-    CGFloat timeWidth = contentWidth - _reblogButton.frame.origin.x;
+    CGFloat timeWidth = contentWidth - self.reblogButton.frame.origin.x;
     self.timeButton.frame = CGRectMake(RPVHorizontalInnerPadding, RPVBorderHeight, timeWidth, RPVControlButtonHeight);
     
     // Update own frame
@@ -395,15 +375,15 @@ const CGFloat RPVLineHeightMultiple = 1.10f;
 
 - (void)reset {
     [super reset];
-    [_tagButton setTitle:nil forState:UIControlStateNormal];
-    [_followButton setSelected:NO];
+    [self.tagButton setTitle:nil forState:UIControlStateNormal];
+    [self.followButton setSelected:NO];
 }
 
 - (void)updateActionButtons {
     [super updateActionButtons];
-    _likeButton.selected = _post.isLiked.boolValue;
-    _reblogButton.selected = _post.isReblogged.boolValue;
-	_reblogButton.userInteractionEnabled = !_reblogButton.selected;
+    self.likeButton.selected = _post.isLiked.boolValue;
+    self.reblogButton.selected = _post.isReblogged.boolValue;
+	self.reblogButton.userInteractionEnabled = !_reblogButton.selected;
 }
 
 - (void)setAvatar:(UIImage *)avatar {
