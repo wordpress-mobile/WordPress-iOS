@@ -8,7 +8,7 @@
 
 #import "InlineComposeToolbarView.h"
 
-CGFloat InlineComposeToolbarViewMaxToolbarWidth = 640.f;
+CGFloat InlineComposeToolbarViewMaxToolbarWidth = 600.f;
 CGFloat InlineComposeToolbarViewMinToolbarWidth = 320.f;
 
 @interface InlineComposeToolbarView ()
