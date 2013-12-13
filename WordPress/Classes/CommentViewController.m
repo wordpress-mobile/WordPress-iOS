@@ -15,6 +15,12 @@
 #import "EditCommentViewController.h"
 #import "WPWebViewController.h"
 
+CGFloat const CommentViewDeletePromptActionSheetTag = 501;
+CGFloat const CommentViewReplyToCommentViewControllerHasChangesActionSheetTag = 401;
+CGFloat const CommentViewEditCommentViewControllerHasChangesActionSheetTag = 601;
+CGFloat const CommentViewApproveButtonTag = 700;
+CGFloat const CommentViewUnapproveButtonTag = 701;
+
 @interface CommentViewController () <UIWebViewDelegate, ReplyToCommentViewControllerDelegate, UIActionSheetDelegate, MFMailComposeViewControllerDelegate> {
     ReplyToCommentViewController *_replyToCommentViewController;
     EditCommentViewController *_editCommentViewController;
@@ -23,29 +29,15 @@
     NSLayoutConstraint *_authorSiteHeightConstraint;
 }
 
-@property (nonatomic, weak) IBOutlet UIImageView *gravatarImageView;
-@property (nonatomic, weak) IBOutlet UILabel *authorNameLabel;
-@property (nonatomic, weak) IBOutlet UIButton *authorSiteButton;
-@property (nonatomic, weak) IBOutlet UIButton *authorEmailButton;
-@property (nonatomic, weak) IBOutlet UILabel *postTitleLabel;
-@property (nonatomic, weak) IBOutlet UILabel *dateLabel;
-@property (nonatomic, weak) IBOutlet UIWebView *commentWebview;
-
-@property (nonatomic, weak) IBOutlet UIBarButtonItem *trashButton;
-@property (nonatomic, weak) IBOutlet UIBarButtonItem *approveButton;
-@property (nonatomic, weak) IBOutlet UIBarButtonItem *spamButton;
-@property (nonatomic, weak) IBOutlet UIBarButtonItem *editButton;
-@property (nonatomic, weak) IBOutlet UIBarButtonItem *replyButton;
+@property (nonatomic, strong) UIBarButtonItem *trashButton;
+@property (nonatomic, strong) UIBarButtonItem *approveButton;
+@property (nonatomic, strong) UIBarButtonItem *spamButton;
+@property (nonatomic, strong) UIBarButtonItem *editButton;
+@property (nonatomic, strong) UIBarButtonItem *replyButton;
 
 @end
 
 @implementation CommentViewController
-
-CGFloat const CommentViewDeletePromptActionSheetTag = 501;
-CGFloat const CommentViewReplyToCommentViewControllerHasChangesActionSheetTag = 401;
-CGFloat const CommentViewEditCommentViewControllerHasChangesActionSheetTag = 601;
-CGFloat const CommentViewApproveButtonTag = 700;
-CGFloat const CommentViewUnapproveButtonTag = 701;
 
 - (void)dealloc {
     WPFLogMethod();
@@ -57,31 +49,31 @@ CGFloat const CommentViewUnapproveButtonTag = 701;
     }
     [[NSNotificationCenter defaultCenter] removeObserver:self];
     
-	self.commentWebview.delegate = nil;
-    [self.commentWebview stopLoading];
+//	self.commentWebview.delegate = nil;
+//    [self.commentWebview stopLoading];
 }
 
 - (void)viewDidLoad
 {
     [super viewDidLoad];
     
-    self.authorNameLabel.font = [WPStyleGuide postTitleFont];
-    self.authorSiteButton.titleLabel.font = [WPStyleGuide subtitleFont];
-    [self.authorSiteButton setTitleColor:[WPStyleGuide newKidOnTheBlockBlue] forState:UIControlStateNormal];
-    self.authorEmailButton.titleLabel.font = [WPStyleGuide subtitleFont];
-    [self.authorEmailButton setTitleColor:[WPStyleGuide newKidOnTheBlockBlue] forState:UIControlStateNormal];
-    self.postTitleLabel.font = [WPStyleGuide subtitleFont];
-    self.dateLabel.font = [WPStyleGuide subtitleFont];
+//    self.authorNameLabel.font = [WPStyleGuide postTitleFont];
+//    self.authorSiteButton.titleLabel.font = [WPStyleGuide subtitleFont];
+//    [self.authorSiteButton setTitleColor:[WPStyleGuide newKidOnTheBlockBlue] forState:UIControlStateNormal];
+//    self.authorEmailButton.titleLabel.font = [WPStyleGuide subtitleFont];
+//    [self.authorEmailButton setTitleColor:[WPStyleGuide newKidOnTheBlockBlue] forState:UIControlStateNormal];
+//    self.postTitleLabel.font = [WPStyleGuide subtitleFont];
+//    self.dateLabel.font = [WPStyleGuide subtitleFont];
 
     self.navigationController.toolbar.translucent = NO;
-    UIBarButtonItem *flexibleSpace = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFlexibleSpace target:nil action:nil];
-    [self setToolbarItems:@[_trashButton, flexibleSpace, _approveButton, flexibleSpace, _spamButton, flexibleSpace, _editButton, flexibleSpace, _replyButton] animated:NO];
+//    UIBarButtonItem *flexibleSpace = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFlexibleSpace target:nil action:nil];
+//    [self setToolbarItems:@[_trashButton, flexibleSpace, _approveButton, flexibleSpace, _spamButton, flexibleSpace, _editButton, flexibleSpace, _replyButton] animated:NO];
     
     self.navigationController.toolbar.barTintColor = [WPStyleGuide littleEddieGrey];
 
-    UITapGestureRecognizer *gestureRecognizer = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(tappedPostTitle)];
-    gestureRecognizer.numberOfTapsRequired = 1;
-    [self.postTitleLabel addGestureRecognizer:gestureRecognizer];
+//    UITapGestureRecognizer *gestureRecognizer = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(tappedPostTitle)];
+//    gestureRecognizer.numberOfTapsRequired = 1;
+//    [self.postTitleLabel addGestureRecognizer:gestureRecognizer];
     
     if (self.comment) {
         [self showComment:self.comment];
@@ -167,11 +159,11 @@ CGFloat const CommentViewUnapproveButtonTag = 701;
 - (void)updateViewConstraints
 {
     [super updateViewConstraints];
-    [self.view removeConstraint:_authorSiteHeightConstraint];
-    if ([[self.authorSiteButton titleForState:UIControlStateNormal] length] == 0) {
-        _authorSiteHeightConstraint = [NSLayoutConstraint constraintWithItem:self.authorSiteButton attribute:NSLayoutAttributeHeight relatedBy:NSLayoutRelationEqual toItem:nil attribute:0 multiplier:0.0 constant:8];
-        [self.view addConstraint:_authorSiteHeightConstraint];
-    }
+//    [self.view removeConstraint:_authorSiteHeightConstraint];
+//    if ([[self.authorSiteButton titleForState:UIControlStateNormal] length] == 0) {
+//        _authorSiteHeightConstraint = [NSLayoutConstraint constraintWithItem:self.authorSiteButton attribute:NSLayoutAttributeHeight relatedBy:NSLayoutRelationEqual toItem:nil attribute:0 multiplier:0.0 constant:8];
+//        [self.view addConstraint:_authorSiteHeightConstraint];
+//    }
 }
 
 #pragma mark - Private Methods
@@ -185,54 +177,54 @@ CGFloat const CommentViewUnapproveButtonTag = 701;
 {
     self.comment = comment;
     
-    static NSDateFormatter *dateFormatter = nil;
-    if (dateFormatter == nil) {
-        dateFormatter = [[NSDateFormatter alloc] init];
-        [dateFormatter setTimeStyle:NSDateFormatterShortStyle];
-        [dateFormatter setDateStyle:NSDateFormatterLongStyle];
-    }
-    
-    [self.gravatarImageView setImageWithGravatarEmail:[self.comment.author_email trim] fallbackImage:[UIImage imageNamed:@"comment-default-gravatar-image"]];
-    
-    self.authorNameLabel.text = [[self.comment.author stringByDecodingXMLCharacters] trim];
-
-    [self.authorSiteButton setTitle:[self.comment.author_url trim] forState:UIControlStateNormal];
-
-    [self.authorEmailButton setTitle:[self.comment.author_email trim] forState:UIControlStateNormal];
-    UIColor *textColor;
-    if (![MFMailComposeViewController canSendMail]) {
-        textColor = [UIColor blackColor];
-    } else {
-        textColor = [WPStyleGuide newKidOnTheBlockBlue];
-    }
-    [self.authorEmailButton setTitleColor:textColor forState:UIControlStateNormal];
-
-    self.postTitleLabel.attributedText = [self postTitleString];
-    
-    if(self.comment.dateCreated != nil) {
-        self.dateLabel.text = [@"" stringByAppendingString:[dateFormatter stringFromDate:self.comment.dateCreated]];
-    }
-    else {
-        self.dateLabel.text = @"";
-    }
-    
-    NSString *htmlString;
-	if (self.comment.content == nil) {
-		htmlString = [NSString stringWithFormat:@"<html><head></head><body><p>%@</p></body></html>", @"<br />"];
-    }
-	else {
-		htmlString = [NSString stringWithFormat:@"<html><head><meta name=\"viewport\" content=\"initial-scale=1, maximum-scale=1\"><style type='text/css'>* { margin:0; padding:0 5px 0 0; } p { color:black; font-family:OpenSans; font-size:16px; line-height: 1.4} b { font-family:OpenSans-Bold } i { font-family:OpenSans-Italic } a { color:#21759b; text-decoration:none; }</style></head><body><p>%@</p></body></html>", [[self.comment.content trim] stringByReplacingOccurrencesOfString:@"\n" withString:@"<br />"]];
-    }
-	self.commentWebview.delegate = self;
-	[self.commentWebview loadHTMLString:htmlString baseURL:nil];
-    
-    if ([self.comment.status isEqualToString:@"approve"]) {
-        self.approveButton.image = [UIImage imageNamed:@"icon-comments-unapprove"];
-        self.approveButton.tag = CommentViewUnapproveButtonTag;
-    } else {
-        self.approveButton.image = [UIImage imageNamed:@"icon-comments-approve"];
-        self.approveButton.tag = CommentViewApproveButtonTag;
-    }
+//    static NSDateFormatter *dateFormatter = nil;
+//    if (dateFormatter == nil) {
+//        dateFormatter = [[NSDateFormatter alloc] init];
+//        [dateFormatter setTimeStyle:NSDateFormatterShortStyle];
+//        [dateFormatter setDateStyle:NSDateFormatterLongStyle];
+//    }
+//    
+//    [self.gravatarImageView setImageWithGravatarEmail:[self.comment.author_email trim] fallbackImage:[UIImage imageNamed:@"comment-default-gravatar-image"]];
+//    
+//    self.authorNameLabel.text = [[self.comment.author stringByDecodingXMLCharacters] trim];
+//
+//    [self.authorSiteButton setTitle:[self.comment.author_url trim] forState:UIControlStateNormal];
+//
+//    [self.authorEmailButton setTitle:[self.comment.author_email trim] forState:UIControlStateNormal];
+//    UIColor *textColor;
+//    if (![MFMailComposeViewController canSendMail]) {
+//        textColor = [UIColor blackColor];
+//    } else {
+//        textColor = [WPStyleGuide newKidOnTheBlockBlue];
+//    }
+//    [self.authorEmailButton setTitleColor:textColor forState:UIControlStateNormal];
+//
+//    self.postTitleLabel.attributedText = [self postTitleString];
+//    
+//    if(self.comment.dateCreated != nil) {
+//        self.dateLabel.text = [@"" stringByAppendingString:[dateFormatter stringFromDate:self.comment.dateCreated]];
+//    }
+//    else {
+//        self.dateLabel.text = @"";
+//    }
+//    
+//    NSString *htmlString;
+//	if (self.comment.content == nil) {
+//		htmlString = [NSString stringWithFormat:@"<html><head></head><body><p>%@</p></body></html>", @"<br />"];
+//    }
+//	else {
+//		htmlString = [NSString stringWithFormat:@"<html><head><meta name=\"viewport\" content=\"initial-scale=1, maximum-scale=1\"><style type='text/css'>* { margin:0; padding:0 5px 0 0; } p { color:black; font-family:OpenSans; font-size:16px; line-height: 1.4} b { font-family:OpenSans-Bold } i { font-family:OpenSans-Italic } a { color:#21759b; text-decoration:none; }</style></head><body><p>%@</p></body></html>", [[self.comment.content trim] stringByReplacingOccurrencesOfString:@"\n" withString:@"<br />"]];
+//    }
+//	self.commentWebview.delegate = self;
+//	[self.commentWebview loadHTMLString:htmlString baseURL:nil];
+//    
+//    if ([self.comment.status isEqualToString:@"approve"]) {
+//        self.approveButton.image = [UIImage imageNamed:@"icon-comments-unapprove"];
+//        self.approveButton.tag = CommentViewUnapproveButtonTag;
+//    } else {
+//        self.approveButton.image = [UIImage imageNamed:@"icon-comments-approve"];
+//        self.approveButton.tag = CommentViewApproveButtonTag;
+//    }
 }
 
 - (NSAttributedString *)postTitleString
@@ -366,10 +358,10 @@ CGFloat const CommentViewUnapproveButtonTag = 701;
             button.enabled = reachable;
         }
     }
-    if (reachable) {
-        // Load gravatar if it wasn't loaded yet
-        [self.gravatarImageView setImageWithGravatarEmail:[self.comment.author_email trim] fallbackImage:[UIImage imageNamed:@"comment-default-gravatar-image"]];
-    }
+//    if (reachable) {
+//        // Load gravatar if it wasn't loaded yet
+//        [self.gravatarImageView setImageWithGravatarEmail:[self.comment.author_email trim] fallbackImage:[UIImage imageNamed:@"comment-default-gravatar-image"]];
+//    }
 }
 
 
