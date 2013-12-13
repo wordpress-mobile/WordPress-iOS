@@ -17,6 +17,7 @@
 #import "NotificationSettingsViewController.h"
 #import "WPAccount.h"
 #import "WPWebViewController.h"
+#import "Note.h"
 
 NSString * const NotificationsLastSyncDateKey = @"NotificationsLastSyncDate";
 NSString * const NotificationsJetpackInformationURL = @"http://jetpack.me/about/";
@@ -205,9 +206,7 @@ NSString * const NotificationsJetpackInformationURL = @"http://jetpack.me/about/
 
         _isPushingViewController = YES;
         if ([note isComment]) {
-            NotificationsCommentDetailViewController *detailViewController = [[NotificationsCommentDetailViewController alloc] initWithNibName:@"NotificationsCommentDetailViewController" bundle:nil];
-            detailViewController.note = note;
-            detailViewController.user = self.user;
+            NotificationsCommentDetailViewController *detailViewController = [[NotificationsCommentDetailViewController alloc] initWithNote:note];
             [self.navigationController pushViewController:detailViewController animated:YES];
         } else {
             NotificationsFollowDetailViewController *detailViewController = [[NotificationsFollowDetailViewController alloc] initWithNote:note];
