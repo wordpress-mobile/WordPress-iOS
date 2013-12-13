@@ -91,10 +91,6 @@ CGFloat const WPContentCellAccessoryViewOffset = 25.0;
     return CGRectGetMaxY(detailFrame) + WPContentCellStandardOffset;
 }
 
-- (void)runSpinner:(BOOL)value
-{
-}
-
 - (AbstractPost *)post
 {
     return _post;
