@@ -11,12 +11,11 @@
 #import "Blog.h"
 #import "Post.h"
 
-typedef enum {
-	CommentStatusPending,
-	CommentStatusApproved,
-	CommentStatusDisapproved,
-	CommentStatusSpam
-} CommentStatus;
+extern NSString * const CommentStatusPending;
+extern NSString * const CommentStatusApproved;
+extern NSString * const CommentStatusDisapproved;
+extern NSString * const CommentStatusSpam;
+extern NSString * const CommentStatusDraft;
 
 @interface Comment : AbstractComment {
 

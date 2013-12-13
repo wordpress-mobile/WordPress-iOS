@@ -9,6 +9,14 @@
 #import "Comment.h"
 #import "ContextManager.h"
 
+NSString * const CommentStatusPending = @"hold";
+NSString * const CommentStatusApproved = @"approve";
+NSString * const CommentStatusDisapproved = @"trash";
+NSString * const CommentStatusSpam = @"spam";
+
+// draft is used for comments that have been composed but not succesfully uploaded yet
+NSString * const CommentStatusDraft = @"draft";
+
 @interface Comment (WordPressApi)
 - (NSDictionary *)XMLRPCDictionary;
 - (void)updateFromDictionary:(NSDictionary *)commentInfo;
