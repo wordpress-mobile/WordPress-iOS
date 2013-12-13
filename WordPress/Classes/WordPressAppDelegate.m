@@ -211,7 +211,10 @@ NSString * const WPNotificationsNavigationRestorationID = @"WPNotificationsNavig
                                              NSArray *posts = [ReaderPost fetchPostsForEndpoint:endpoint
                                                                                     withContext:[[ContextManager sharedInstance] mainContext]];
 
-                                             ReaderPostDetailViewController *controller = [[ReaderPostDetailViewController alloc] initWithPost:[posts objectAtIndex:0]];
+                                             ReaderPostDetailViewController *controller = [[ReaderPostDetailViewController alloc] initWithPost:[posts objectAtIndex:0]
+                                                                                                                                 featuredImage:nil
+                                                                                                                                   avatarImage:nil];
+                                             
                                              [self.readerPostsViewController.navigationController pushViewController:controller animated:YES];
                                          }
                                          failure:nil];
