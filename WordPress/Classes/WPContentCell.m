@@ -72,6 +72,7 @@ CGFloat const WPContentCellImageWidth = 48.0;
 
 - (void)prepareForReuse{
     [super prepareForReuse];
+    _gravatarImageView.image = nil;
 	self.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
 }
 
@@ -102,7 +103,7 @@ CGFloat const WPContentCellImageWidth = 48.0;
 {
     _contentProvider = contentProvider;
     
-    [_gravatarImageView setImageWithGravatarEmail:[contentProvider gravatarEmailForDisplay] fallbackImage:[UIImage imageNamed:@"comment-default-gravatar-image"]];
+    [self setGravatarImageForContentProvider:contentProvider];
     
     _titleLabel.text = [[self class] titleTextForContentProvider:contentProvider];
     _statusLabel.text = [[self class] statusTextForContentProvider:contentProvider];
@@ -122,6 +123,19 @@ CGFloat const WPContentCellImageWidth = 48.0;
         NSMutableAttributedString *detailText = [[NSMutableAttributedString alloc] initWithString:_detailLabel.text attributes:[[self class] detailAttributes]];
         [detailText addAttribute:NSForegroundColorAttributeName value:[WPStyleGuide readGrey] range:barRange];
         _detailLabel.attributedText = detailText;
+    }
+}
+
+- (void)setGravatarImageForContentProvider:(id<WPContentViewProvider>)contentProvider {
+    
+    if (![[self class] showGravatarImage]) {
+        return;
+    }
+    
+    if ([contentProvider gravatarEmailForDisplay]) {
+        [_gravatarImageView setImageWithGravatarEmail:[contentProvider gravatarEmailForDisplay] fallbackImage:[UIImage imageNamed:@"comment-default-gravatar-image"]];
+    } else {
+        [_gravatarImageView setImageWithBlavatarUrl:[NSString stringWithFormat:@"%@", [contentProvider blavatarURLForDisplay]]];
     }
 }
 

@@ -160,7 +160,7 @@ NSString * const NotificationsJetpackInformationURL = @"http://jetpack.me/about/
 
 - (void)pruneOldNotes {
     NSNumber *pruneBefore;
-    Note *lastVisibleNote = [[[self.tableView visibleCells] lastObject] note];
+    Note *lastVisibleNote = [[[self.tableView visibleCells] lastObject] contentProvider];
     if (lastVisibleNote) {
         pruneBefore = lastVisibleNote.timestamp;
     }
@@ -194,7 +194,7 @@ NSString * const NotificationsJetpackInformationURL = @"http://jetpack.me/about/
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
     Note *note = [self.resultsController objectAtIndexPath:indexPath];
-    return [NewNotificationsTableViewCell rowHeightForNotification:note andMaxWidth:CGRectGetWidth(tableView.bounds)];
+    return [NewNotificationsTableViewCell rowHeightForContentProvider:note andWidth:CGRectGetWidth(tableView.bounds)];
 }
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
@@ -268,7 +268,7 @@ NSString * const NotificationsJetpackInformationURL = @"http://jetpack.me/about/
 }
 
 - (void)configureCell:(NewNotificationsTableViewCell *)cell atIndexPath:(NSIndexPath *)indexPath {
-    cell.note = [self.resultsController objectAtIndexPath:indexPath];
+    cell.contentProvider = [self.resultsController objectAtIndexPath:indexPath];
 }
 
 - (BOOL)userCanRefresh {
