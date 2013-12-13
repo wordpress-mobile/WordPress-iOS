@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="4504" systemVersion="12E55" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="4514" systemVersion="13A603" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none">
     <dependencies>
-        <deployment defaultVersion="1536" identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="3734.1"/>
+        <deployment defaultVersion="1792" identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="3747"/>
     </dependencies>
     <objects>
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="MediaObjectViewController">
@@ -34,21 +34,20 @@
                     <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMinY="YES"/>
                     <items>
                         <barButtonItem style="plain" systemItem="fixedSpace" id="WEd-4j-Mm9"/>
-                        <barButtonItem image="UIButtonBarTrash.png" style="plain" id="27">
-                            <color key="tintColor" white="0.25" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
+                        <barButtonItem image="icon-comments-trash.png" style="plain" id="27">
                             <connections>
                                 <action selector="deleteObject:" destination="-1" id="30"/>
                             </connections>
                         </barButtonItem>
                         <barButtonItem style="plain" systemItem="flexibleSpace" id="12"/>
                         <barButtonItem image="icon-posts-share.png" style="plain" id="11">
-                            <color key="tintColor" white="0.25" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
                             <connections>
                                 <action selector="insertObject:" destination="-1" id="14"/>
                             </connections>
                         </barButtonItem>
                         <barButtonItem style="plain" systemItem="fixedSpace" id="bbN-ev-vFF"/>
                     </items>
+                    <color key="tintColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                 </toolbar>
                 <scrollView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" minimumZoomScale="0.5" maximumZoomScale="4" id="15">
                     <rect key="frame" x="0.0" y="0.0" width="320" height="436"/>
@@ -70,7 +69,7 @@
         </view>
     </objects>
     <resources>
-        <image name="UIButtonBarTrash.png" width="16" height="21"/>
+        <image name="icon-comments-trash.png" width="30" height="30"/>
         <image name="icon-posts-share.png" width="44" height="44"/>
     </resources>
 </document>
