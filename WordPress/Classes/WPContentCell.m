@@ -15,17 +15,17 @@
     AbstractPost __weak *_post;
     UILabel *_statusLabel;
     UILabel *_titleLabel;
-    UILabel *_dateLabel;
+    UILabel *_detailLabel;
 }
 
 @end
 
 @implementation WPContentCell
 
-CGFloat const NewPostTableViewCellStandardOffset = 16.0;
-CGFloat const NewPostTableViewCellTitleAndDateVerticalOffset = 6.0;
-CGFloat const NewPostTableViewCellLabelAndTitleHorizontalOffset = -0.5;
-CGFloat const NewPostTableViewCellAccessoryViewOffset = 25.0;
+CGFloat const WPContentCellStandardOffset = 16.0;
+CGFloat const WPContentCellTitleAndDetailVerticalOffset = 6.0;
+CGFloat const WPContentCellLabelAndTitleHorizontalOffset = -0.5;
+CGFloat const WPContentCellAccessoryViewOffset = 25.0;
 
 - (id)initWithStyle:(UITableViewCellStyle)style reuseIdentifier:(NSString *)reuseIdentifier
 {
@@ -51,15 +51,15 @@ CGFloat const NewPostTableViewCellAccessoryViewOffset = 25.0;
         _titleLabel.textColor = [WPStyleGuide littleEddieGrey];
         [self.contentView addSubview:_titleLabel];
         
-        _dateLabel = [[UILabel alloc] init];
-        _dateLabel.backgroundColor = [UIColor clearColor];
-        _dateLabel.textAlignment = NSTextAlignmentLeft;
-        _dateLabel.numberOfLines = 0;
-        _dateLabel.lineBreakMode = NSLineBreakByWordWrapping;
-        _dateLabel.font = [[self class] dateFont];
-        _dateLabel.shadowOffset = CGSizeMake(0.0, 0.0);
-        _dateLabel.textColor = [WPStyleGuide allTAllShadeGrey];
-        [self.contentView addSubview:_dateLabel];
+        _detailLabel = [[UILabel alloc] init];
+        _detailLabel.backgroundColor = [UIColor clearColor];
+        _detailLabel.textAlignment = NSTextAlignmentLeft;
+        _detailLabel.numberOfLines = 0;
+        _detailLabel.lineBreakMode = NSLineBreakByWordWrapping;
+        _detailLabel.font = [[self class] detailFont];
+        _detailLabel.shadowOffset = CGSizeMake(0.0, 0.0);
+        _detailLabel.textColor = [WPStyleGuide allTAllShadeGrey];
+        [self.contentView addSubview:_detailLabel];
     }
     return self;
 }
@@ -79,16 +79,16 @@ CGFloat const NewPostTableViewCellAccessoryViewOffset = 25.0;
     
     _statusLabel.frame = [[self class] statusLabelFrameForPost:self.post maxWidth:maxWidth];
     _titleLabel.frame = [[self class] titleLabelFrameForPost:self.post previousFrame:_statusLabel.frame maxWidth:maxWidth];
-    _dateLabel.frame = [[self class] dateLabelFrameForPost:self.post previousFrame:_titleLabel.frame maxWidth:maxWidth];
+    _detailLabel.frame = [[self class] detailLabelFrameForPost:self.post previousFrame:_titleLabel.frame maxWidth:maxWidth];
 }
 
 + (CGFloat)rowHeightForPost:(AbstractPost *)post andWidth:(CGFloat)width;
 {
     CGRect statusFrame = [[self class] statusLabelFrameForPost:post maxWidth:width];
     CGRect titleFrame = [[self class] titleLabelFrameForPost:post previousFrame:statusFrame maxWidth:width];
-    CGRect dateFrame = [[self class] dateLabelFrameForPost:post previousFrame:titleFrame maxWidth:width];
+    CGRect detailFrame = [[self class] detailLabelFrameForPost:post previousFrame:titleFrame maxWidth:width];
     
-    return CGRectGetMaxY(dateFrame) + NewPostTableViewCellStandardOffset;
+    return CGRectGetMaxY(detailFrame) + WPContentCellStandardOffset;
 }
 
 - (void)runSpinner:(BOOL)value
@@ -107,7 +107,7 @@ CGFloat const NewPostTableViewCellAccessoryViewOffset = 25.0;
     _titleLabel.text = [[self class] titleText:post];
     _statusLabel.text = [[self class] statusTextForPost:post];
     _statusLabel.textColor = [[self class] statusColorForPost:post];
-    _dateLabel.text = [[self class] dateText:post];
+    _detailLabel.text = [[self class] detailText:post];
     
     if (_titleLabel.text != nil) {
         _titleLabel.attributedText = [[NSAttributedString alloc] initWithString:_titleLabel.text attributes:[[self class] titleAttributes]];
@@ -117,11 +117,11 @@ CGFloat const NewPostTableViewCellAccessoryViewOffset = 25.0;
         _statusLabel.attributedText = [[NSAttributedString alloc] initWithString:_statusLabel.text attributes:[[self class] statusAttributes]];
     }
     
-    if (_dateLabel.text != nil) {
-        NSRange barRange = [_dateLabel.text rangeOfString:@"|"];
-        NSMutableAttributedString *dateText = [[NSMutableAttributedString alloc] initWithString:_dateLabel.text attributes:[[self class] dateAttributes]];
-        [dateText addAttribute:NSForegroundColorAttributeName value:[WPStyleGuide readGrey] range:barRange];
-        _dateLabel.attributedText = dateText;
+    if (_detailLabel.text != nil) {
+        NSRange barRange = [_detailLabel.text rangeOfString:@"|"];
+        NSMutableAttributedString *detailText = [[NSMutableAttributedString alloc] initWithString:_detailLabel.text attributes:[[self class] detailAttributes]];
+        [detailText addAttribute:NSForegroundColorAttributeName value:[WPStyleGuide readGrey] range:barRange];
+        _detailLabel.attributedText = detailText;
     }
 }
 
@@ -203,17 +203,17 @@ CGFloat const NewPostTableViewCellAccessoryViewOffset = 25.0;
     return [title stringByDecodingXMLCharacters];
 }
 
-+ (UIFont *)dateFont
++ (UIFont *)detailFont
 {
     return [WPStyleGuide subtitleFont];
 }
 
-+ (NSDictionary *)dateAttributes
++ (NSDictionary *)detailAttributes
 {
     return [WPStyleGuide subtitleAttributes];
 }
 
-+ (NSString *)dateText:(AbstractPost *)post
++ (NSString *)detailText:(AbstractPost *)post
 {
     static NSDateFormatter *dateFormatter = nil;
     
@@ -231,7 +231,7 @@ CGFloat const NewPostTableViewCellAccessoryViewOffset = 25.0;
 
 + (CGFloat)textWidth:(CGFloat)maxWidth
 {
-    return maxWidth - NewPostTableViewCellStandardOffset - NewPostTableViewCellAccessoryViewOffset;
+    return maxWidth - WPContentCellStandardOffset - WPContentCellAccessoryViewOffset;
 }
 
 + (CGRect)statusLabelFrameForPost:(AbstractPost *)post maxWidth:(CGFloat)maxWidth
@@ -241,12 +241,12 @@ CGFloat const NewPostTableViewCellAccessoryViewOffset = 25.0;
         CGSize size;
         size = [statusText boundingRectWithSize:CGSizeMake([[self class] textWidth:maxWidth], CGFLOAT_MAX) options:NSStringDrawingUsesLineFragmentOrigin attributes:[[self class] statusAttributes] context:nil].size;
         if (IS_RETINA) {
-            return CGRectMake(NewPostTableViewCellStandardOffset + NewPostTableViewCellLabelAndTitleHorizontalOffset, NewPostTableViewCellStandardOffset, size.width, size.height);
+            return CGRectMake(WPContentCellStandardOffset + WPContentCellLabelAndTitleHorizontalOffset, WPContentCellStandardOffset, size.width, size.height);
         } else {
-            return CGRectMake(NewPostTableViewCellStandardOffset, NewPostTableViewCellStandardOffset, size.width, size.height);
+            return CGRectMake(WPContentCellStandardOffset, WPContentCellStandardOffset, size.width, size.height);
         }
     } else {
-        return CGRectMake(0, NewPostTableViewCellStandardOffset, 0, 0);
+        return CGRectMake(0, WPContentCellStandardOffset, 0, 0);
     }
 }
 
@@ -257,27 +257,27 @@ CGFloat const NewPostTableViewCellAccessoryViewOffset = 25.0;
     
     CGFloat offset = 0.0;
     if (!CGSizeEqualToSize(previousFrame.size, CGSizeZero)) {
-        offset = NewPostTableViewCellTitleAndDateVerticalOffset;
+        offset = WPContentCellTitleAndDetailVerticalOffset;
     }
     
     if (IS_RETINA) {
-        return CGRectMake(NewPostTableViewCellStandardOffset + NewPostTableViewCellLabelAndTitleHorizontalOffset, CGRectGetMaxY(previousFrame) + offset, size.width, size.height);
+        return CGRectMake(WPContentCellStandardOffset + WPContentCellLabelAndTitleHorizontalOffset, CGRectGetMaxY(previousFrame) + offset, size.width, size.height);
     } else {
-        return CGRectIntegral(CGRectMake(NewPostTableViewCellStandardOffset, CGRectGetMaxY(previousFrame) + offset, size.width, size.height));
+        return CGRectIntegral(CGRectMake(WPContentCellStandardOffset, CGRectGetMaxY(previousFrame) + offset, size.width, size.height));
     }
 }
 
-+ (CGRect)dateLabelFrameForPost:(AbstractPost *)post previousFrame:(CGRect)previousFrame maxWidth:(CGFloat)maxWidth
++ (CGRect)detailLabelFrameForPost:(AbstractPost *)post previousFrame:(CGRect)previousFrame maxWidth:(CGFloat)maxWidth
 {
     CGSize size;
-    size = [[[self class] dateText:post] boundingRectWithSize:CGSizeMake([[self class] textWidth:maxWidth], CGFLOAT_MAX) options:NSStringDrawingUsesLineFragmentOrigin attributes:[[self class] dateAttributes] context:nil].size;
+    size = [[[self class] detailText:post] boundingRectWithSize:CGSizeMake([[self class] textWidth:maxWidth], CGFLOAT_MAX) options:NSStringDrawingUsesLineFragmentOrigin attributes:[[self class] detailAttributes] context:nil].size;
     
     CGFloat offset = 0.0;
     if (!CGSizeEqualToSize(previousFrame.size, CGSizeZero)) {
-        offset = NewPostTableViewCellTitleAndDateVerticalOffset;
+        offset = WPContentCellTitleAndDetailVerticalOffset;
     }
     
-    return CGRectIntegral(CGRectMake(NewPostTableViewCellStandardOffset, CGRectGetMaxY(previousFrame) + offset, size.width, size.height));
+    return CGRectIntegral(CGRectMake(WPContentCellStandardOffset, CGRectGetMaxY(previousFrame) + offset, size.width, size.height));
 }
 
 @end
