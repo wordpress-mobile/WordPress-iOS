@@ -35,4 +35,8 @@
     return title;
 }
 
+- (void)onNewPostSaved {
+    // Noop.
+}
+
 @end
