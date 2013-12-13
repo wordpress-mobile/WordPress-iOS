@@ -60,8 +60,7 @@ const CGFloat RPTVCVerticalOuterPadding = 16.0f;
 		self.sideBorderView.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
         [self.contentView addSubview:self.sideBorderView];
 
-        self.postView = [[ReaderPostView alloc] initWithFrame:self.frame];
-        self.postView.showFullContent = NO;
+        self.postView = [[ReaderPostView alloc] initWithFrame:self.frame showFullContent:NO];
         self.postView.backgroundColor = [UIColor whiteColor];
         self.backgroundColor = [WPStyleGuide itsEverywhereGrey];
 
