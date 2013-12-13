@@ -24,8 +24,6 @@
 		2906F813110CDA8900169D56 /* EditCommentViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 2906F811110CDA8900169D56 /* EditCommentViewController.xib */; };
 		296526FE105810E100597FA3 /* NSString+Helpers.m in Sources */ = {isa = PBXBuildFile; fileRef = 296526FD105810E100597FA3 /* NSString+Helpers.m */; };
 		296890780FE971DC00770264 /* Security.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 296890770FE971DC00770264 /* Security.framework */; };
-		2994EEEE10DF0FCD008336A6 /* ReplyToCommentViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 2994EEEC10DF0FCD008336A6 /* ReplyToCommentViewController.m */; };
-		2994EEEF10DF0FCD008336A6 /* ReplyToCommentViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 2994EEED10DF0FCD008336A6 /* ReplyToCommentViewController.xib */; };
 		2A7F722B0E71000000E48A1F /* up.png in Resources */ = {isa = PBXBuildFile; fileRef = 2A7F72290E71000000E48A1F /* up.png */; };
 		2A7F722C0E71000000E48A1F /* down.png in Resources */ = {isa = PBXBuildFile; fileRef = 2A7F722A0E71000000E48A1F /* down.png */; };
 		2A8FF7D90E8A32F7001A9A40 /* lock.png in Resources */ = {isa = PBXBuildFile; fileRef = 2A8FF7D80E8A32F7001A9A40 /* lock.png */; };
@@ -785,6 +783,9 @@
 		CC6B3BFE15A35F10005A4523 /* friend_finder_cancel_btn_highlight@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = CC6B3BFA15A35F10005A4523 /* friend_finder_cancel_btn_highlight@2x.png */; };
 		CC6B3BFF15A35F10005A4523 /* friend_finder_cancel_btn.png in Resources */ = {isa = PBXBuildFile; fileRef = CC6B3BFB15A35F10005A4523 /* friend_finder_cancel_btn.png */; };
 		CC6B3C0015A35F10005A4523 /* friend_finder_cancel_btn@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = CC6B3BFC15A35F10005A4523 /* friend_finder_cancel_btn@2x.png */; };
+		CC701658185A7513007B37DB /* InlineComposeToolbarView.m in Sources */ = {isa = PBXBuildFile; fileRef = CC701655185A7513007B37DB /* InlineComposeToolbarView.m */; };
+		CC701659185A7513007B37DB /* InlineComposeView.m in Sources */ = {isa = PBXBuildFile; fileRef = CC701657185A7513007B37DB /* InlineComposeView.m */; };
+		CC70165B185A7536007B37DB /* InlineComposeView.xib in Resources */ = {isa = PBXBuildFile; fileRef = CC70165A185A7536007B37DB /* InlineComposeView.xib */; };
 		CCEF153114C9EA050001176D /* WPWebAppViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = CCEF153014C9EA050001176D /* WPWebAppViewController.m */; };
 		CEBD3EAB0FF1BA3B00C1396E /* Blog.m in Sources */ = {isa = PBXBuildFile; fileRef = CEBD3EAA0FF1BA3B00C1396E /* Blog.m */; };
 		E100C6BB1741473000AE48D8 /* WordPress-11-12.xcmappingmodel in Sources */ = {isa = PBXBuildFile; fileRef = E100C6BA1741472F00AE48D8 /* WordPress-11-12.xcmappingmodel */; };
@@ -1028,9 +1029,6 @@
 		296526FC105810E100597FA3 /* NSString+Helpers.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSString+Helpers.h"; sourceTree = "<group>"; };
 		296526FD105810E100597FA3 /* NSString+Helpers.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSString+Helpers.m"; sourceTree = "<group>"; };
 		296890770FE971DC00770264 /* Security.framework */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = wrapper.framework; name = Security.framework; path = System/Library/Frameworks/Security.framework; sourceTree = SDKROOT; };
-		2994EEEB10DF0FCD008336A6 /* ReplyToCommentViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ReplyToCommentViewController.h; sourceTree = "<group>"; };
-		2994EEEC10DF0FCD008336A6 /* ReplyToCommentViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ReplyToCommentViewController.m; sourceTree = "<group>"; };
-		2994EEED10DF0FCD008336A6 /* ReplyToCommentViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = ReplyToCommentViewController.xib; path = Resources/ReplyToCommentViewController.xib; sourceTree = "<group>"; };
 		29B97316FDCFA39411CA2CEA /* main.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
 		2A7F72290E71000000E48A1F /* up.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = up.png; path = Resources/Images/up.png; sourceTree = "<group>"; };
 		2A7F722A0E71000000E48A1F /* down.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = down.png; path = Resources/Images/down.png; sourceTree = "<group>"; };
@@ -1922,6 +1920,11 @@
 		CC6B3BFA15A35F10005A4523 /* friend_finder_cancel_btn_highlight@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "friend_finder_cancel_btn_highlight@2x.png"; path = "Resources/Images/friend_finder_cancel_btn_highlight@2x.png"; sourceTree = "<group>"; };
 		CC6B3BFB15A35F10005A4523 /* friend_finder_cancel_btn.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = friend_finder_cancel_btn.png; path = Resources/Images/friend_finder_cancel_btn.png; sourceTree = "<group>"; };
 		CC6B3BFC15A35F10005A4523 /* friend_finder_cancel_btn@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "friend_finder_cancel_btn@2x.png"; path = "Resources/Images/friend_finder_cancel_btn@2x.png"; sourceTree = "<group>"; };
+		CC701654185A7513007B37DB /* InlineComposeToolbarView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = InlineComposeToolbarView.h; sourceTree = "<group>"; };
+		CC701655185A7513007B37DB /* InlineComposeToolbarView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = InlineComposeToolbarView.m; sourceTree = "<group>"; };
+		CC701656185A7513007B37DB /* InlineComposeView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = InlineComposeView.h; sourceTree = "<group>"; };
+		CC701657185A7513007B37DB /* InlineComposeView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = InlineComposeView.m; sourceTree = "<group>"; };
+		CC70165A185A7536007B37DB /* InlineComposeView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = InlineComposeView.xib; path = Resources/InlineComposeView.xib; sourceTree = "<group>"; };
 		CCD1921E16850C4900CA3011 /* NoteCommentLoadingCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NoteCommentLoadingCell.h; sourceTree = "<group>"; };
 		CCD1921F16850C4900CA3011 /* NoteCommentLoadingCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NoteCommentLoadingCell.m; sourceTree = "<group>"; };
 		CCEF152F14C9EA050001176D /* WPWebAppViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WPWebAppViewController.h; sourceTree = "<group>"; };
@@ -2268,6 +2271,10 @@
 				031669580FFC81A20045D052 /* CommentsTableViewDelegate.h */,
 				CC669B1D1672C305009E16F8 /* FollowButton.h */,
 				CC669B1E1672C305009E16F8 /* FollowButton.m */,
+				CC701654185A7513007B37DB /* InlineComposeToolbarView.h */,
+				CC701655185A7513007B37DB /* InlineComposeToolbarView.m */,
+				CC701656185A7513007B37DB /* InlineComposeView.h */,
+				CC701657185A7513007B37DB /* InlineComposeView.m */,
 				CC669B241672C335009E16F8 /* NoteCommentPostBanner.h */,
 				CC669B251672C335009E16F8 /* NoteCommentPostBanner.m */,
 				5D2B80CF1592447200161F6E /* QuickPhotoButtonView.h */,
@@ -3698,7 +3705,6 @@
 		C50E78130E71648100991509 /* Comments */ = {
 			isa = PBXGroup;
 			children = (
-				2994EEED10DF0FCD008336A6 /* ReplyToCommentViewController.xib */,
 				2906F811110CDA8900169D56 /* EditCommentViewController.xib */,
 			);
 			name = Comments;
@@ -3709,8 +3715,6 @@
 			children = (
 				C533CF330E6D3ADA000C3DE8 /* CommentsViewController.h */,
 				C533CF340E6D3ADA000C3DE8 /* CommentsViewController.m */,
-				2994EEEB10DF0FCD008336A6 /* ReplyToCommentViewController.h */,
-				2994EEEC10DF0FCD008336A6 /* ReplyToCommentViewController.m */,
 				2906F80F110CDA8900169D56 /* EditCommentViewController.h */,
 				2906F810110CDA8900169D56 /* EditCommentViewController.m */,
 			);
@@ -4033,6 +4037,7 @@
 				A0E293FD0E21037200C6919C /* WPAddCategoryViewController.xib */,
 				ACAC7B690E1F8C0700AC7074 /* WPSelectionTableViewController.xib */,
 				3768BEF013041E7900E7C9A9 /* BetaFeedbackViewController.xib */,
+				CC70165A185A7536007B37DB /* InlineComposeView.xib */,
 			);
 			name = UI;
 			sourceTree = "<group>";
@@ -4162,7 +4167,7 @@
 				ORGANIZATIONNAME = WordPress;
 				TargetAttributes = {
 					1D6058900D05DD3D006BFB54 = {
-						DevelopmentTeam = 99KV9Z6BKV;
+						DevelopmentTeam = PZYM8XX95Q;
 					};
 				};
 			};
@@ -4237,7 +4242,6 @@
 				03EB54B5100FFB5C004E82CD /* gravatar.jpg in Resources */,
 				462F4E0418369B200028D2F8 /* icon-tab-reader@2x.png in Resources */,
 				6EDC0E8F105881A800F68A1D /* iTunesArtwork in Resources */,
-				2994EEEF10DF0FCD008336A6 /* ReplyToCommentViewController.xib in Resources */,
 				2906F813110CDA8900169D56 /* EditCommentViewController.xib in Resources */,
 				83A646AB112C63E5000999A6 /* help.png in Resources */,
 				837576C511305C67002EAA27 /* hasLocation.png in Resources */,
@@ -4549,6 +4553,7 @@
 				E2408595183D8277002EB0EF /* animatedBoxPage2.png in Resources */,
 				37363A4C15AB26CD00D3A6B4 /* navbar_button_bg_landscape_active@2x.png in Resources */,
 				37363A4D15AB26CD00D3A6B4 /* navbar_button_bg_landscape_active.png in Resources */,
+				CC70165B185A7536007B37DB /* InlineComposeView.xib in Resources */,
 				5DA1FDB915AB5F72005DC38E /* toolbar_flag_lite.png in Resources */,
 				5DA1FDBA15AB5F72005DC38E /* toolbar_flag_lite@2x.png in Resources */,
 				5DA1FDBB15AB5F72005DC38E /* toolbar_write_lite.png in Resources */,
@@ -5049,6 +5054,7 @@
 				A0E293F10E21027E00C6919C /* WPAddCategoryViewController.m in Sources */,
 				C59D3D4B0E6410D300AA591D /* NSString+XMLExtensions.m in Sources */,
 				C533CF350E6D3ADA000C3DE8 /* CommentsViewController.m in Sources */,
+				CC701659185A7513007B37DB /* InlineComposeView.m in Sources */,
 				C57A31A4183D2111007745B9 /* NotificationsManager.m in Sources */,
 				C55A90D90E8026CD00E1C9B5 /* WPSegmentedSelectionTableViewController.m in Sources */,
 				EC4696FF0EA75D460040EE8E /* PagesViewController.m in Sources */,
@@ -5058,9 +5064,9 @@
 				031663070FFB151A0045D052 /* PostTableViewCell.m in Sources */,
 				031666AE0FFC3E130045D052 /* CommentTableViewCell.m in Sources */,
 				03958062100D6CFC00850742 /* WPLabel.m in Sources */,
+				CC701658185A7513007B37DB /* InlineComposeToolbarView.m in Sources */,
 				46F8714F1838C41600BC149B /* NSDate+StringFormatting.m in Sources */,
 				296526FE105810E100597FA3 /* NSString+Helpers.m in Sources */,
-				2994EEEE10DF0FCD008336A6 /* ReplyToCommentViewController.m in Sources */,
 				2906F812110CDA8900169D56 /* EditCommentViewController.m in Sources */,
 				45F45B3611614BA50022D394 /* CPopoverManager.m in Sources */,
 				83418AAA11C9FA6E00ACF00C /* Comment.m in Sources */,
@@ -5289,7 +5295,7 @@
 				CLANG_ENABLE_MODULES = NO;
 				CLANG_ENABLE_OBJC_ARC = YES;
 				CLANG_WARN__ARC_BRIDGE_CAST_NONARC = NO;
-				CODE_SIGN_IDENTITY = "";
+				CODE_SIGN_IDENTITY = "iPhone Developer";
 				COPY_PHASE_STRIP = NO;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
@@ -5325,7 +5331,7 @@
 				CLANG_ENABLE_MODULES = NO;
 				CLANG_ENABLE_OBJC_ARC = YES;
 				CLANG_WARN__ARC_BRIDGE_CAST_NONARC = NO;
-				CODE_SIGN_IDENTITY = "";
+				CODE_SIGN_IDENTITY = "iPhone Developer";
 				COPY_PHASE_STRIP = YES;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
@@ -5386,7 +5392,7 @@
 				CLANG_ENABLE_OBJC_ARC = YES;
 				CLANG_WARN__ARC_BRIDGE_CAST_NONARC = NO;
 				CODE_SIGN_ENTITLEMENTS = Entitlements.plist;
-				CODE_SIGN_IDENTITY = "";
+				CODE_SIGN_IDENTITY = "iPhone Developer";
 				COPY_PHASE_STRIP = YES;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
@@ -5442,7 +5448,7 @@
 				CLANG_ENABLE_MODULES = NO;
 				CLANG_ENABLE_OBJC_ARC = YES;
 				CLANG_WARN__ARC_BRIDGE_CAST_NONARC = NO;
-				CODE_SIGN_IDENTITY = "";
+				CODE_SIGN_IDENTITY = "iPhone Developer";
 				COPY_PHASE_STRIP = YES;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
