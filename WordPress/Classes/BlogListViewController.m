@@ -177,8 +177,13 @@ NSString * const WPBlogListRestorationID = @"WPBlogListID";
     
     UITableViewCell *cell = [self.tableView dequeueReusableCellWithIdentifier:BlogCellIdentifier];
     
-    [WPStyleGuide configureTableViewCell:cell];
     [self configureCell:cell atIndexPath:indexPath];
+    
+    if ([indexPath isEqual:[self indexPathForAddSite]]) {
+        [WPStyleGuide configureTableViewActionCell:cell];
+    } else {
+        [WPStyleGuide configureTableViewCell:cell];
+    }
 
     return cell;
 }
@@ -270,12 +275,7 @@ NSString * const WPBlogListRestorationID = @"WPBlogListID";
     if ([indexPath isEqual:[self indexPathForAddSite]]) {
         cell.textLabel.text = NSLocalizedString(@"Add a Site", @"");
         cell.selectionStyle = UITableViewCellSelectionStyleBlue;
-
-        // To align the label, create and add a blank image
-        UIGraphicsBeginImageContextWithOptions(CGSizeMake(blavatarImageSize, blavatarImageSize), NO, 0.0);
-        UIImage *blank = UIGraphicsGetImageFromCurrentImageContext();
-        UIGraphicsEndImageContext();
-        [cell.imageView setImage:blank];
+        cell.textLabel.textAlignment = NSTextAlignmentCenter;
     } else {
 
         Blog *blog = [self.resultsController objectAtIndexPath:indexPath];
@@ -306,18 +306,23 @@ NSString * const WPBlogListRestorationID = @"WPBlogListID";
 }
 
 - (UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section {
-    WPTableViewSectionHeaderView *header = [[WPTableViewSectionHeaderView alloc] initWithFrame:CGRectMake(0, 0, CGRectGetWidth(self.view.bounds), 0)];
-    header.title = [self tableView:self.tableView titleForHeaderInSection:section];
-    if (IS_IPAD) {
-        header.fixedWidth = WPTableViewFixedWidth;
+    NSString *title = [self tableView:self.tableView titleForHeaderInSection:section];
+    if (title.length > 0) {
+        WPTableViewSectionHeaderView *header = [[WPTableViewSectionHeaderView alloc] initWithFrame:CGRectMake(0, 0, CGRectGetWidth(self.view.bounds), 0)];
+        header.title = title;
+        return header;
     }
-    return header;
+    return nil;
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section {
     NSString *title = [self tableView:self.tableView titleForHeaderInSection:section];
-    return [WPTableViewSectionHeaderView heightForTitle:title andWidth:CGRectGetWidth(self.view.bounds)];
+    if (title.length > 0) {
+        return [WPTableViewSectionHeaderView heightForTitle:title andWidth:CGRectGetWidth(self.view.bounds)];
+    }
+    return IS_IPHONE ? 1.0 : 40.0;
 }
+
 - (CGFloat)tableView:(UITableView *)tableView heightForFooterInSection:(NSInteger)section {
     // Use the standard dimension on the last section
     return section == [tableView numberOfSections] - 1 ? UITableViewAutomaticDimension : 0.0;
