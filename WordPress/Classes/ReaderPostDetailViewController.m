@@ -27,6 +27,7 @@
 #import "WPWebViewController.h"
 #import "ContextManager.h"
 #import "WPTableViewController.h"
+#import "InlineComposeView.h"
 
 NSInteger const ReaderCommentsToSync = 100;
 NSTimeInterval const ReaderPostDetailViewControllerRefreshTimeout = 300; // 5 minutes
@@ -63,6 +64,7 @@ typedef enum {
 @property (nonatomic) CGPoint savedScrollOffset;
 @property (nonatomic) CGFloat keyboardOffset;
 @property (nonatomic) BOOL isSyncing;
+@property (nonatomic) InlineComposeView *inlineComposeView;
 
 @end
 
@@ -83,6 +85,9 @@ typedef enum {
 	self.likeButton = nil;
 	self.reblogButton = nil;
 	self.shareButton = nil;
+
+    self.inlineComposeView.delegate = nil;
+    self.inlineComposeView = nil;
 	
     [[NSNotificationCenter defaultCenter] removeObserver:self];
 }
@@ -123,6 +128,9 @@ typedef enum {
 	
 	[self prepareComments];
 	[self showStoredComment];
+
+    self.inlineComposeView = [[InlineComposeView alloc] initWithFrame:CGRectZero];
+    self.tableView.tableHeaderView = self.inlineComposeView;
 }
 
 - (void)viewWillAppear:(BOOL)animated {
@@ -543,8 +551,8 @@ typedef enum {
 	
 	self.tableView.frame = tableFrame;
 	[_readerReblogFormView removeFromSuperview];
-	self.isShowingReblogForm = NO;
 	[self.view endEditing:YES];
+	self.isShowingReblogForm = NO;
 }
 
 - (CGSize)tabBarSize {
@@ -568,6 +576,12 @@ typedef enum {
 }
 
 - (void)handleKeyboardDidShow:(NSNotification *)notification {
+
+    // only for handling reblog form now
+    if (!_isShowingReblogForm) {
+        return;
+    }
+
     UIView *view = self.view.superview;
 	CGRect frame = view.frame;
 	CGRect startFrame = [[[notification userInfo] objectForKey:UIKeyboardFrameBeginUserInfoKey] CGRectValue];
@@ -603,6 +617,12 @@ typedef enum {
 }
 
 - (void)handleKeyboardWillHide:(NSNotification *)notification {
+
+    // only modify view when displaying the reblog form
+    if (!_isShowingReblogForm) {
+        return;
+    }
+
     UIView *view = self.view.superview;
 	CGRect frame = view.frame;
 	CGRect keyFrame = [[[notification userInfo] objectForKey:UIKeyboardFrameEndUserInfoKey] CGRectValue];
@@ -674,12 +694,9 @@ typedef enum {
 }
 
 - (void)postView:(ReaderPostView *)postView didReceiveCommentAction:(id)sender {
-	if (_readerCommentFormView.window != nil) {
-		[self hideCommentForm];
-		return;
-	}
-	
-	[self showCommentForm];
+
+    [self.inlineComposeView toggleComposer];
+
 }
 
 - (void)postView:(ReaderPostView *)postView didReceiveLinkAction:(id)sender {
