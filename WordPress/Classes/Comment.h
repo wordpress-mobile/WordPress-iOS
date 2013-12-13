@@ -11,6 +11,8 @@
 #import "Blog.h"
 #import "Post.h"
 
+extern NSString * const CommentUploadFailedNotification;
+
 extern NSString * const CommentStatusPending;
 extern NSString * const CommentStatusApproved;
 extern NSString * const CommentStatusDisapproved;

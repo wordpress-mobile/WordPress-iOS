@@ -9,6 +9,8 @@
 #import "Comment.h"
 #import "ContextManager.h"
 
+NSString * const CommentUploadFailedNotification = @"CommentUploadFailed";
+
 NSString * const CommentStatusPending = @"hold";
 NSString * const CommentStatusApproved = @"approve";
 NSString * const CommentStatusDisapproved = @"trash";
@@ -216,10 +218,33 @@ NSString * const CommentStatusDraft = @"draft";
         if (success) success();
     };
 
-    if (self.commentID) {
-        [self editCommentWithSuccess:uploadSuccessful failure:failure];
+    __block BOOL editing = !!self.commentID;
+
+    void (^uploadFailure)(NSError *error) = ^(NSError *error){
+        // post the notification
+        NSString *message;
+        if (editing) {
+            NSLocalizedString(@"Sorry, something went wrong editing the comment. Please try again.", @"");
+        } else {
+            NSLocalizedString(@"Sorry, something went wrong posting the comment reply. Please try again.", @"");
+        }
+
+        if (error.code == 405) {
+            // XML-RPC is disabled.
+            message = error.localizedDescription;
+        }
+
+        [[NSNotificationCenter defaultCenter]
+         postNotificationName:CommentUploadFailedNotification
+         object:message];
+
+        if(failure) failure(error);
+    };
+
+    if (editing) {
+        [self editCommentWithSuccess:uploadSuccessful failure:uploadFailure];
     } else {
-        [self postCommentWithSuccess:uploadSuccessful failure:failure];
+        [self postCommentWithSuccess:uploadSuccessful failure:uploadFailure];
 	}
 }
 
