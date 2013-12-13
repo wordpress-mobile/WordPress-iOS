@@ -68,6 +68,19 @@ const CGFloat RPVControlButtonBorderSize = 0.0f;
 @implementation WPContentView {
 }
 
++ (UIFont *)titleFont {
+    return [UIFont fontWithName:@"Merriweather-Bold" size:21.0f];
+}
+
++ (UIFont *)summaryFont {
+    return [UIFont fontWithName:@"OpenSans" size:14.0f];
+}
+
++ (UIFont *)moreContentFont {
+    return [UIFont fontWithName:@"OpenSans" size:12.0f];
+}
+
+
 #pragma mark - Lifecycle Methods
 
 - (id)initWithFrame:(CGRect)frame {

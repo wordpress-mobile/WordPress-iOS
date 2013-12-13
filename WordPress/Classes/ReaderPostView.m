@@ -117,18 +117,6 @@
     return attributedSummary;
 }
 
-+ (UIFont *)titleFont {
-    return [UIFont fontWithName:@"Merriweather-Bold" size:21.0f];
-}
-
-+ (UIFont *)summaryFont {
-    return [UIFont fontWithName:@"OpenSans" size:14.0f];
-}
-
-+ (UIFont *)moreContentFont {
-    return [UIFont fontWithName:@"OpenSans" size:12.0f];
-}
-
 - (id)initWithFrame:(CGRect)frame {
     self = [self initWithFrame:frame showFullContent:NO];
     
