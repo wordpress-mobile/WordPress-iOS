@@ -6,9 +6,15 @@
 
 #import "InlineComposeView.h"
 
+const CGFloat InlineComposeViewMinHeight = 44.f;
+const CGFloat InlineComposeViewMaxHeight = 88.f;
+
 @interface InlineComposeView () <UITextViewDelegate>
 
 @property (nonatomic, weak) IBOutlet UIView *inputAccessoryView;
+@property (nonatomic, weak) IBOutlet UITextView *toolbarTextView;
+@property (nonatomic, weak) IBOutlet UILabel *placeholderLabel;
+@property (nonatomic, weak) IBOutlet UIButton *sendButton;
 @property (nonatomic, strong) UITextView *proxyTextView;
 @property (nonatomic, strong) NSArray *bundle;
 
