@@ -193,6 +193,7 @@ NSString * const WPNotificationsNavigationRestorationID = @"WPNotificationsNavig
 
                 NSString *endpoint = [NSString stringWithFormat:@"sites/%i/posts/%i/?meta=site", blogId, postId];
                 
+                [self.readerPostsViewController.navigationController popToRootViewControllerAnimated:NO];
                 NSInteger readerTabIndex = [[self.tabBarController viewControllers] indexOfObject:self.readerPostsViewController.navigationController];
                 [self.tabBarController setSelectedIndex:readerTabIndex];
                 
