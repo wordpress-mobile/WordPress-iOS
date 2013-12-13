@@ -196,7 +196,8 @@ typedef enum {
     // The text view in postView needs an initial frame
     CGFloat postHeight = [ReaderPostView heightForPost:self.post withWidth:self.view.frame.size.width];
     CGRect postFrame = CGRectMake(0.0f, 0.0f, self.tableView.frame.size.width, postHeight);
-	self.postView = [[ReaderPostView alloc] initWithFrame:postFrame showFullContent:YES];
+	self.postView = [[ReaderPostView alloc] initWithFrame:postFrame];
+    self.postView.showFullContent = YES;
     self.postView.delegate = self;
     [self.postView configurePost:self.post];
     self.postView.backgroundColor = [UIColor whiteColor];
