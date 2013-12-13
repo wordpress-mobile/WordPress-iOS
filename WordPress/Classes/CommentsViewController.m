@@ -11,8 +11,8 @@
 #import "CommentViewController.h"
 #import "WordPressAppDelegate.h"
 #import "ReachabilityUtils.h"
-#import "ReplyToCommentViewController.h"
 #import "UIColor+Helpers.h"
+#import "Comment.h"
 
 @interface CommentsViewController ()
 
