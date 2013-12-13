@@ -209,8 +209,8 @@ CGFloat const EPVCTextViewTopPadding = 7.0f;
     UIBarButtonItem *previewButton = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"icon-posts-editor-preview"] style:UIBarButtonItemStylePlain target:self action:@selector(showPreview)];
     UIBarButtonItem *photoButton = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"icon-posts-editor-media"] style:UIBarButtonItemStylePlain target:self action:@selector(showMediaOptions)];
     
-    previewButton.tintColor = [WPStyleGuide itsEverywhereGrey];
-    photoButton.tintColor = [WPStyleGuide itsEverywhereGrey];
+    previewButton.tintColor = [WPStyleGuide readGrey];
+    photoButton.tintColor = [WPStyleGuide readGrey];
     
     UIBarButtonItem *leftFixedSpacer = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFixedSpace target:nil action:nil];
     UIBarButtonItem *rightFixedSpacer = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFixedSpace target:nil action:nil];
