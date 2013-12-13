@@ -7,6 +7,7 @@
 //
 
 #import "AbstractComment.h"
+#import "NSString+XMLExtensions.h"
 
 
 @implementation AbstractComment
@@ -29,11 +30,11 @@
 #pragma mark - WPContentViewProvider protocol
 
 - (NSString *)titleForDisplay {
-    return nil;
+    return self.postTitle;
 }
 
 - (NSString *)authorForDisplay {
-    return [self.author length] > 0 ? self.author : self.author_email;
+    return [self.author length] > 0 ? [[self.author stringByDecodingXMLCharacters] trim] : [self.author_email trim];
 }
 
 - (NSString *)blogNameForDisplay {
@@ -45,11 +46,11 @@
 }
 
 - (NSString *)contentForDisplay {
-    return self.content;
+    return [self.content stringByDecodingXMLCharacters];
 }
 
 - (NSString *)contentPreviewForDisplay {
-    return self.content;
+    return [self.content stringByDecodingXMLCharacters];
 }
 
 - (NSString *)gravatarEmailForDisplay {
