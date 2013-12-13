@@ -292,7 +292,9 @@ const CGFloat InlineComposeViewMaxHeight = 88.f;
 
 - (void)keyboardDidShow:(NSNotification *)notification {
     self.keyboardView = self.inputAccessoryView.superview;
-    [self.window addGestureRecognizer:self.panGesture];
+    if (self.isDisplayed) {
+        [self.window addGestureRecognizer:self.panGesture];
+    }
 }
 
 #pragma mark UIKeyboardWillHideNotification
