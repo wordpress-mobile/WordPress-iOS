@@ -431,7 +431,7 @@ CGFloat const CommentViewUnapproveButtonTag = 701;
 		[self showSyncInProgressAlert];
 	} else {
         [WPMobileStats trackEventForWPCom:StatsEventCommentDetailClickedReplyToComment];
-        [self.inlineComposeView becomeFirstResponder];
+        [self.inlineComposeView displayComposer];
 	}
 }
 
@@ -503,9 +503,8 @@ CGFloat const CommentViewUnapproveButtonTag = 701;
         return;
     }
 
-    [self.view endEditing:YES];
     self.inlineComposeView.text = @"";
-    [self.inlineComposeView resignFirstResponder];
+    [self.inlineComposeView dismissComposer];
 
     self.reply.status = CommentStatusApproved;
     [self.reply uploadWithSuccess:^{

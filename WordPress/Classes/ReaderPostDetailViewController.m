@@ -64,7 +64,7 @@ typedef enum {
 @property (nonatomic) CGPoint savedScrollOffset;
 @property (nonatomic) CGFloat keyboardOffset;
 @property (nonatomic) BOOL isSyncing;
-@property (nonatomic) InlineComposeView *inlineComposeView;
+@property (nonatomic, strong) InlineComposeView *inlineComposeView;
 
 @end
 
@@ -176,7 +176,9 @@ typedef enum {
 	if (IS_IPHONE) {
         _savedScrollOffset = self.tableView.contentOffset;
     }
-	
+
+    [self.inlineComposeView dismissComposer];
+
     [[NSNotificationCenter defaultCenter] removeObserver:self name:UIKeyboardWillShowNotification object:nil];
 	[[NSNotificationCenter defaultCenter] removeObserver:self name:UIKeyboardWillHideNotification object:nil];
 }
@@ -618,6 +620,12 @@ typedef enum {
 
 - (void)handleKeyboardWillHide:(NSNotification *)notification {
 
+    //deselect the selected comment if there is one
+    NSArray *selection = [self.tableView indexPathsForSelectedRows];
+    if ([selection count] > 0) {
+        [self.tableView deselectRowAtIndexPath:[selection objectAtIndex:0] animated:YES];
+    }
+
     // only modify view when displaying the reblog form
     if (!_isShowingReblogForm) {
         return;
@@ -959,23 +967,19 @@ typedef enum {
 }
 
 - (NSIndexPath *)tableView:(UITableView *)tableView willSelectRowAtIndexPath:(NSIndexPath *)indexPath {
+
+    // if a row is already selected don't allow selection of another
+    if (self.inlineComposeView.isDisplayed) {
+        return nil;
+    }
+
 	if (_readerReblogFormView.window != nil) {
 		[self hideReblogForm];
 		return nil;
 	}
-	
-	if (_readerCommentFormView.window != nil) {
-		UITableViewCell *cell = [tableView cellForRowAtIndexPath:indexPath];
-		if ([cell isSelected]) {
-			[tableView deselectRowAtIndexPath:indexPath animated:NO];
-		}
-		
-		[self hideCommentForm];
-		return nil;
-	}
-	
+
 	if ([self canComment]) {
-		[self showCommentForm];
+		[self.inlineComposeView displayComposer];
 	}
 	
 	return indexPath;
@@ -996,6 +1000,10 @@ typedef enum {
 	} else {
 		[self.tableView scrollToRowAtIndexPath:indexPath atScrollPosition:UITableViewScrollPositionTop animated:YES];
 	}
+}
+
+- (BOOL)tableView:(UITableView *)tableView shouldHighlightRowAtIndexPath:(NSIndexPath *)indexPath {
+    return !self.inlineComposeView.isDisplayed;
 }
 
 - (UITableViewCellEditingStyle)tableView:(UITableView *)tableView editingStyleForRowAtIndexPath:(NSIndexPath *)indexPath {
@@ -1038,6 +1046,12 @@ typedef enum {
 	if (_isScrollingCommentIntoView){
 		self.isScrollingCommentIntoView = NO;
 	}
+}
+
+- (void)scrollViewWillBeginDecelerating:(UIScrollView *)scrollView {
+    NSArray *selectedRows = [self.tableView indexPathsForSelectedRows];
+    [self.tableView deselectRowAtIndexPath:[selectedRows objectAtIndex:0] animated:YES];
+    [self.inlineComposeView dismissComposer];
 }
 
 - (void)scrollViewDidEndDecelerating:(UIScrollView *)scrollView {
