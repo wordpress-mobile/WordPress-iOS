@@ -27,9 +27,7 @@
 @property (nonatomic, weak) IBOutlet UIBarButtonItem *spamBarButton;
 @property (nonatomic, weak) IBOutlet UIBarButtonItem *replyBarButton;
 
-@property (nonatomic, weak) IBOutlet IOS7CorrectedTextView *replyTextView;
 @property (nonatomic, weak) IBOutlet UIImageView *replyBackgroundImageView;
-@property (nonatomic, weak) IBOutlet UIView *tableFooterView;
 @property (nonatomic, weak) IBOutlet UIView *replyActivityView;
 @property (nonatomic, weak) IBOutlet UIImageView *noteImageView;
 
@@ -48,5 +46,6 @@
 @property (nonatomic, weak) IBOutlet UIBarButtonItem *replyCancelBarButton;
 @property (nonatomic, weak) IBOutlet UIBarButtonItem *replyPublishBarButton;
 
+- (IBAction)composeReply:(id)sender;
 
 @end
