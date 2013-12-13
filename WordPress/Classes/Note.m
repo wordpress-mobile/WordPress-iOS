@@ -164,7 +164,7 @@ const NSUInteger NoteKeepCount = 20;
 
 - (void)syncAttributes:(NSDictionary *)noteData {
     self.payload = [NSJSONSerialization dataWithJSONObject:noteData options:0 error:nil];
-    self.noteData = [NSJSONSerialization JSONObjectWithData:self.payload options:0 error:nil];
+    self.noteData = [NSJSONSerialization JSONObjectWithData:self.payload options:NSJSONReadingMutableContainers error:nil];
     if ([noteData objectForKey:@"type"]) {
         self.type = [noteData objectForKey:@"type"];
     }
@@ -217,7 +217,7 @@ const NSUInteger NoteKeepCount = 20;
 
 - (id)noteData {
     if (_noteData == nil) {
-        _noteData = [NSJSONSerialization JSONObjectWithData:self.payload options:0 error:nil];
+        _noteData = [NSJSONSerialization JSONObjectWithData:self.payload options:NSJSONReadingMutableContainers error:nil];
     }
     return _noteData;
 }
