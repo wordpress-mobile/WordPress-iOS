@@ -363,8 +363,6 @@
 		8370D10C11FA4A1B009D650F /* WPTableViewActivityCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 8370D10B11FA4A1B009D650F /* WPTableViewActivityCell.xib */; };
 		8370D11811FA4CCF009D650F /* welcome_bg.png in Resources */ = {isa = PBXBuildFile; fileRef = 8370D11611FA4CCF009D650F /* welcome_bg.png */; };
 		8370D11911FA4CCF009D650F /* welcome_bg@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 8370D11711FA4CCF009D650F /* welcome_bg@2x.png */; };
-		8370D11E11FA4CD5009D650F /* logo_wporg@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 8370D11A11FA4CD5009D650F /* logo_wporg@2x.png */; };
-		8370D11F11FA4CD5009D650F /* logo_wporg.png in Resources */ = {isa = PBXBuildFile; fileRef = 8370D11B11FA4CD5009D650F /* logo_wporg.png */; };
 		8370D12011FA4CD5009D650F /* logo_wpcom@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 8370D11C11FA4CD5009D650F /* logo_wpcom@2x.png */; };
 		8370D12111FA4CD5009D650F /* logo_wpcom.png in Resources */ = {isa = PBXBuildFile; fileRef = 8370D11D11FA4CD5009D650F /* logo_wpcom.png */; };
 		8370D1BE11FA6295009D650F /* AddSiteViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 8370D1BC11FA6295009D650F /* AddSiteViewController.xib */; };
@@ -568,8 +566,6 @@
 		E14D65C817E09664007E3EA4 /* Social.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E14D65C717E09663007E3EA4 /* Social.framework */; };
 		E14F780015AFA17300D4981B /* navbar_primary_button_bg_active.png in Resources */ = {isa = PBXBuildFile; fileRef = E14F77FF15AFA17300D4981B /* navbar_primary_button_bg_active.png */; };
 		E15051CB16CA5DDB00D3DDDC /* Blog+Jetpack.m in Sources */ = {isa = PBXBuildFile; fileRef = E15051CA16CA5DDB00D3DDDC /* Blog+Jetpack.m */; };
-		E15051CE16CA8E4900D3DDDC /* logo_jetpack.png in Resources */ = {isa = PBXBuildFile; fileRef = E15051CC16CA8E4900D3DDDC /* logo_jetpack.png */; };
-		E15051CF16CA8E4900D3DDDC /* logo_jetpack@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = E15051CD16CA8E4900D3DDDC /* logo_jetpack@2x.png */; };
 		E150520C16CAC5C400D3DDDC /* BlogJetpackTest.m in Sources */ = {isa = PBXBuildFile; fileRef = E150520B16CAC5C400D3DDDC /* BlogJetpackTest.m */; };
 		E150520F16CAC75A00D3DDDC /* CoreDataTestHelper.m in Sources */ = {isa = PBXBuildFile; fileRef = E150520E16CAC75A00D3DDDC /* CoreDataTestHelper.m */; };
 		E151045E14E27F9300CE282B /* list.png in Resources */ = {isa = PBXBuildFile; fileRef = E151045C14E27F9300CE282B /* list.png */; };
@@ -1141,8 +1137,6 @@
 		8370D10B11FA4A1B009D650F /* WPTableViewActivityCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = WPTableViewActivityCell.xib; path = Resources/WPTableViewActivityCell.xib; sourceTree = "<group>"; };
 		8370D11611FA4CCF009D650F /* welcome_bg.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = welcome_bg.png; path = Resources/Images/welcome_bg.png; sourceTree = "<group>"; };
 		8370D11711FA4CCF009D650F /* welcome_bg@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "welcome_bg@2x.png"; path = "Resources/Images/welcome_bg@2x.png"; sourceTree = "<group>"; };
-		8370D11A11FA4CD5009D650F /* logo_wporg@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "logo_wporg@2x.png"; path = "Resources/Images/logo_wporg@2x.png"; sourceTree = "<group>"; };
-		8370D11B11FA4CD5009D650F /* logo_wporg.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = logo_wporg.png; path = Resources/Images/logo_wporg.png; sourceTree = "<group>"; };
 		8370D11C11FA4CD5009D650F /* logo_wpcom@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "logo_wpcom@2x.png"; path = "Resources/Images/logo_wpcom@2x.png"; sourceTree = "<group>"; };
 		8370D11D11FA4CD5009D650F /* logo_wpcom.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = logo_wpcom.png; path = Resources/Images/logo_wpcom.png; sourceTree = "<group>"; };
 		8370D1BC11FA6295009D650F /* AddSiteViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = AddSiteViewController.xib; path = Resources/AddSiteViewController.xib; sourceTree = "<group>"; };
@@ -1438,8 +1432,6 @@
 		E14F77FF15AFA17300D4981B /* navbar_primary_button_bg_active.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = navbar_primary_button_bg_active.png; path = Resources/Images/navbar_primary_button_bg_active.png; sourceTree = "<group>"; };
 		E15051C916CA5DDB00D3DDDC /* Blog+Jetpack.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "Blog+Jetpack.h"; sourceTree = "<group>"; };
 		E15051CA16CA5DDB00D3DDDC /* Blog+Jetpack.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "Blog+Jetpack.m"; sourceTree = "<group>"; };
-		E15051CC16CA8E4900D3DDDC /* logo_jetpack.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = logo_jetpack.png; path = Resources/Images/logo_jetpack.png; sourceTree = "<group>"; };
-		E15051CD16CA8E4900D3DDDC /* logo_jetpack@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "logo_jetpack@2x.png"; path = "Resources/Images/logo_jetpack@2x.png"; sourceTree = "<group>"; };
 		E150520A16CAC5C400D3DDDC /* BlogJetpackTest.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BlogJetpackTest.h; sourceTree = "<group>"; };
 		E150520B16CAC5C400D3DDDC /* BlogJetpackTest.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BlogJetpackTest.m; sourceTree = "<group>"; };
 		E150520D16CAC75A00D3DDDC /* CoreDataTestHelper.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CoreDataTestHelper.h; sourceTree = "<group>"; };
@@ -2146,8 +2138,6 @@
 		83610B1311F4B42D00421116 /* logos */ = {
 			isa = PBXGroup;
 			children = (
-				8370D11A11FA4CD5009D650F /* logo_wporg@2x.png */,
-				8370D11B11FA4CD5009D650F /* logo_wporg.png */,
 				8370D11C11FA4CD5009D650F /* logo_wpcom@2x.png */,
 				8370D11D11FA4CD5009D650F /* logo_wpcom.png */,
 			);
@@ -2581,8 +2571,6 @@
 				E1F77434178C282000E70764 /* NNGPlusActivity~iphone.png */,
 				FD22C2B516CD2B20002BA030 /* navbar_settings.png */,
 				FD22C2B616CD2B20002BA030 /* navbar_settings@2x.png */,
-				E15051CC16CA8E4900D3DDDC /* logo_jetpack.png */,
-				E15051CD16CA8E4900D3DDDC /* logo_jetpack@2x.png */,
 				C57FD6B1185A518B009186DA /* action_icon_followed.png */,
 				3716E40316729B960035F8C4 /* action_icon_followed@2x.png */,
 				3716E40416729B960035F8C4 /* action_icon_replied.png */,
@@ -2619,8 +2607,6 @@
 				E151045C14E27F9300CE282B /* list.png */,
 				E151045D14E27F9300CE282B /* list@2x.png */,
 				2A8FF7D80E8A32F7001A9A40 /* lock.png */,
-				E15051CC16CA8E4900D3DDDC /* logo_jetpack.png */,
-				E15051CD16CA8E4900D3DDDC /* logo_jetpack@2x.png */,
 				83610B1311F4B42D00421116 /* logos */,
 				FD22C2B516CD2B20002BA030 /* navbar_settings.png */,
 				FD22C2B616CD2B20002BA030 /* navbar_settings@2x.png */,
@@ -2725,8 +2711,6 @@
 				5D7BEA2F17749FFD00423E7F /* wporg_blavatar@2x.png */,
 				374CB16315B9907600DD0EBC /* WPpregressHUDBackground.png */,
 				374CB16415B9907600DD0EBC /* WPpregressHUDBackground@2x.png */,
-				E15051CC16CA8E4900D3DDDC /* logo_jetpack.png */,
-				E15051CD16CA8E4900D3DDDC /* logo_jetpack@2x.png */,
 				FD22C2B516CD2B20002BA030 /* navbar_settings.png */,
 				FD22C2B616CD2B20002BA030 /* navbar_settings@2x.png */,
 				7F3E104F13498200008CF73D /* UISegmentBarBlackButton.png */,
@@ -3338,8 +3322,6 @@
 				8370D10C11FA4A1B009D650F /* WPTableViewActivityCell.xib in Resources */,
 				8370D11811FA4CCF009D650F /* welcome_bg.png in Resources */,
 				8370D11911FA4CCF009D650F /* welcome_bg@2x.png in Resources */,
-				8370D11E11FA4CD5009D650F /* logo_wporg@2x.png in Resources */,
-				8370D11F11FA4CD5009D650F /* logo_wporg.png in Resources */,
 				8370D12011FA4CD5009D650F /* logo_wpcom@2x.png in Resources */,
 				8370D12111FA4CD5009D650F /* logo_wpcom.png in Resources */,
 				8370D1BE11FA6295009D650F /* AddSiteViewController.xib in Resources */,
@@ -3627,9 +3609,7 @@
 				FD22C2B716CD2B20002BA030 /* navbar_settings.png in Resources */,
 				FD22C2B816CD2B20002BA030 /* navbar_settings@2x.png in Resources */,
 				E2334148182DB3E000A4CC40 /* btn-back-chevron@2x.png in Resources */,
-				E15051CE16CA8E4900D3DDDC /* logo_jetpack.png in Resources */,
 				E233414D182DB69500A4CC40 /* btn-back-chevron-tapped.png in Resources */,
-				E15051CF16CA8E4900D3DDDC /* logo_jetpack@2x.png in Resources */,
 				85D80558171630B30075EEAC /* DotCom-Languages.plist in Resources */,
 				858DE41217303BB4000AC628 /* OpenSans-Light.ttf in Resources */,
 				858DE41317303BB4000AC628 /* OpenSans-Regular.ttf in Resources */,
