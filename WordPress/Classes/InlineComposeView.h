@@ -19,4 +19,10 @@
 @property (nonatomic, strong) NSString *placeholder;
 @property (nonatomic, weak) NSString *text;
 @property (nonatomic, weak) NSAttributedString *attributedText;
+
+- (BOOL)isDisplayed;
+- (void)toggleComposer;
+- (void)dismissComposer;
+- (void)displayComposer;
+
 @end
