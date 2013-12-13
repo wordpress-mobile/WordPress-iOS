@@ -180,6 +180,28 @@ const CGFloat InlineComposeViewMaxHeight = 88.f;
     }
 }
 
+- (void)displayComposer {
+    [self.proxyTextView becomeFirstResponder];
+}
+
+- (void)toggleComposer {
+    if (self.isDisplayed) {
+        [self dismissComposer];
+    } else {
+        [self displayComposer];
+    }
+}
+
+- (void)dismissComposer {
+    [self resignFirstResponder];
+    // resigning first responder doesn't always dismiss they keyboard, so force it
+    [self endEditing:YES];
+}
+
+- (BOOL)isDisplayed {
+    return self.isFirstResponder || self.proxyTextView.isFirstResponder || self.toolbarTextView.isFirstResponder;
+}
+
 #pragma mark - UIGestureRecognizerDelegate
 
 - (BOOL)gestureRecognizer:(UIGestureRecognizer *)gestureRecognizer shouldRecognizeSimultaneouslyWithGestureRecognizer:(UIGestureRecognizer *)otherGestureRecognizer {
