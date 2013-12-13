@@ -143,7 +143,7 @@
 	
 	if(indexPath.section == 1) {
         WPTableViewActivityCell *activityCell = nil;
-        NSArray *topLevelObjects = [[NSBundle mainBundle] loadNibNamed:@"UITableViewActivityCell" owner:nil options:nil];
+        NSArray *topLevelObjects = [[NSBundle mainBundle] loadNibNamed:@"WPTableViewActivityCell" owner:nil options:nil];
 		for(id currentObject in topLevelObjects)
 		{
 			if([currentObject isKindOfClass:[WPTableViewActivityCell class]])
