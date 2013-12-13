@@ -22,6 +22,7 @@
 @implementation WPContentCell
 
 CGFloat const WPContentCellStandardOffset = 10.0;
+CGFloat const WPContentCellStandardiPadOffset = 16.0;
 CGFloat const WPContentCellTitleAndDetailVerticalOffset = 5.0;
 CGFloat const WPContentCellLabelAndTitleHorizontalOffset = -0.5;
 CGFloat const WPContentCellAccessoryViewOffset = 25.0;
@@ -91,11 +92,11 @@ CGFloat const WPContentCellTitleNumberOfLines = 3;
 + (CGFloat)rowHeightForContentProvider:(id<WPContentViewProvider>)contentProvider andWidth:(CGFloat)width;
 {
     CGRect statusFrame = [[self class] statusLabelFrameForContentProvider:contentProvider maxWidth:width];
-    CGRect gravatarGrame = [[self class] gravatarImageViewFrameWithPreviousFrame:statusFrame];
+    CGRect gravatarFrame = [[self class] gravatarImageViewFrameWithPreviousFrame:statusFrame];
     CGRect titleFrame = [[self class] titleLabelFrameForContentProvider:contentProvider previousFrame:statusFrame maxWidth:width];
     CGRect detailFrame = [[self class] detailLabelFrameForContentProvider:contentProvider previousFrame:titleFrame maxWidth:width];
     
-    return MAX(CGRectGetMaxY(gravatarGrame), CGRectGetMaxY(detailFrame)) + WPContentCellStandardOffset;
+    return MAX(CGRectGetMaxY(gravatarFrame), CGRectGetMaxY(detailFrame)) + [[self class] standardOffset];
 }
 
 - (void)setContentProvider:(id<WPContentViewProvider>)contentProvider
@@ -223,15 +224,19 @@ CGFloat const WPContentCellTitleNumberOfLines = 3;
 
 + (CGFloat)textWidth:(CGFloat)maxWidth
 {
-    CGFloat imageWidth = [[self class] showGravatarImage] ? WPContentCellImageWidth + WPContentCellStandardOffset : 0.0;
-    return maxWidth - WPContentCellStandardOffset - WPContentCellAccessoryViewOffset - imageWidth;
+    CGFloat imageWidth = [[self class] showGravatarImage] ? WPContentCellImageWidth + [[self class] standardOffset] : 0.0;
+    return maxWidth - [[self class] standardOffset] - WPContentCellAccessoryViewOffset - imageWidth;
 }
 
 + (CGFloat)textXOrigin {
-    CGFloat x = WPContentCellStandardOffset;
-    x += [[self class] showGravatarImage] ? WPContentCellStandardOffset + WPContentCellImageWidth : 0.0;
+    CGFloat x = [[self class] standardOffset];
+    x += [[self class] showGravatarImage] ? [[self class] standardOffset] + WPContentCellImageWidth : 0.0;
     x += IS_RETINA ? -0.5 : 0.0;
     return x;
+}
+
++ (CGFloat)standardOffset {
+    return IS_IPAD ? WPContentCellStandardiPadOffset : WPContentCellStandardOffset;
 }
 
 + (CGRect)gravatarImageViewFrameWithPreviousFrame:(CGRect)previousFrame {
@@ -241,7 +246,7 @@ CGFloat const WPContentCellTitleNumberOfLines = 3;
         offset = 2 * WPContentCellTitleAndDetailVerticalOffset;
     }
     
-    return [[self class] showGravatarImage] ? CGRectMake(WPContentCellStandardOffset, CGRectGetMaxY(previousFrame) + offset, WPContentCellImageWidth, WPContentCellImageWidth) : CGRectZero;
+    return [[self class] showGravatarImage] ? CGRectMake([[self class] standardOffset], CGRectGetMaxY(previousFrame) + offset, WPContentCellImageWidth, WPContentCellImageWidth) : CGRectZero;
 }
 
 + (CGRect)statusLabelFrameForContentProvider:(id<WPContentViewProvider>)contentProvider maxWidth:(CGFloat)maxWidth
@@ -250,9 +255,9 @@ CGFloat const WPContentCellTitleNumberOfLines = 3;
     if ([statusText length] != 0) {
         CGSize size;
         size = [statusText boundingRectWithSize:CGSizeMake([[self class] textWidth:maxWidth], CGFLOAT_MAX) options:NSStringDrawingUsesLineFragmentOrigin attributes:[[self class] statusAttributes] context:nil].size;
-            return CGRectMake(WPContentCellStandardOffset, WPContentCellStandardOffset, size.width, size.height);
+            return CGRectMake([[self class] standardOffset], [[self class] standardOffset], size.width, size.height);
     } else {
-        return CGRectMake(0, WPContentCellStandardOffset, 0, 0);
+        return CGRectMake(0, [[self class] standardOffset], 0, 0);
     }
 }
 

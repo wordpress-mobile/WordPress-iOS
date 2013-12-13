@@ -194,7 +194,7 @@ NSString * const NotificationsJetpackInformationURL = @"http://jetpack.me/about/
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
     Note *note = [self.resultsController objectAtIndexPath:indexPath];
-    return [NewNotificationsTableViewCell rowHeightForContentProvider:note andWidth:CGRectGetWidth(tableView.bounds)];
+    return [NewNotificationsTableViewCell rowHeightForContentProvider:note andWidth:WPTableViewFixedWidth];
 }
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
