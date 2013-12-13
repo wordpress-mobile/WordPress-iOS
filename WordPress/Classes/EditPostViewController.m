@@ -278,7 +278,10 @@ CGFloat const EPVCTextViewTopPadding = 7.0f;
     if (!_titleToolbar) {
         frame = CGRectMake(0.0f, 0.0f, CGRectGetWidth(self.view.frame), WPKT_HEIGHT_PORTRAIT);
         self.titleToolbar = [[WPKeyboardToolbarDone alloc] initWithFrame:frame];
-        _titleToolbar.backgroundColor = [WPStyleGuide itsEverywhereGrey];
+        _titleToolbar.backgroundColor = [UIColor UIColorFromHex:(0xdcdfe2)];
+        if (IS_IPAD) {
+            _titleToolbar.backgroundColor = [UIColor UIColorFromHex:(0xcfd2d5)];
+        }
         _titleToolbar.delegate = self;
         _titleTextField.inputAccessoryView = _titleToolbar;
     }
@@ -320,7 +323,10 @@ CGFloat const EPVCTextViewTopPadding = 7.0f;
     if (_editorToolbar == nil) {
         frame = CGRectMake(0.0f, 0.0f, CGRectGetWidth(self.view.frame), WPKT_HEIGHT_PORTRAIT);
         self.editorToolbar = [[WPKeyboardToolbarBase alloc] initWithFrame:frame];
-        _editorToolbar.backgroundColor = [WPStyleGuide itsEverywhereGrey];
+        _editorToolbar.backgroundColor = [UIColor UIColorFromHex:(0xdcdfe2)];
+        if (IS_IPAD) {
+            _editorToolbar.backgroundColor = [UIColor UIColorFromHex:(0xcfd2d5)];
+        }
         _editorToolbar.delegate = self;
         _textView.inputAccessoryView = _editorToolbar;
     }

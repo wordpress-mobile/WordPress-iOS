@@ -20,7 +20,11 @@
 - (id)initWithFrame:(CGRect)frame {
     self = [super initWithFrame:frame];
     if (self) {
-        self.backgroundColor = [WPStyleGuide itsEverywhereGrey];
+        if (IS_IPAD) {
+            self.backgroundColor = [UIColor UIColorFromHex:(0xcfd2d5)];
+        } else {
+            self.backgroundColor = [UIColor UIColorFromHex:(0xdcdfe2)];
+        }
         self.autoresizingMask = UIViewAutoresizingFlexibleHeight;
     }
     return self;
@@ -72,8 +76,10 @@
     [super setHighlighted:highlighted];
     if (highlighted) {
         [self setBackgroundColor:[WPStyleGuide newKidOnTheBlockBlue]];
+    } else if (IS_IPAD) {
+        [self setBackgroundColor:[UIColor UIColorFromHex:(0xcfd2d5)]];
     } else {
-        [self setBackgroundColor:[WPStyleGuide itsEverywhereGrey]];
+        [self setBackgroundColor:[UIColor UIColorFromHex:(0xdcdfe2)]];
     }
 }
 
