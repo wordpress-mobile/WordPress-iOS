@@ -283,7 +283,7 @@ const NSUInteger NoteKeepCount = 20;
     return self.commentText;
 }
 
-- (NSString *)avatarUrlForDisplay {
+- (NSString *)gravatarEmailForDisplay {
     return self.icon;
 }
 

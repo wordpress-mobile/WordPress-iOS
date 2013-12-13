@@ -188,7 +188,7 @@
 
 #pragma mark - WPContentViewProvider protocol
 
-- (NSString *)avatarUrlForDisplay {
+- (NSString *)gravatarEmailForDisplay {
     return self.authorAvatarURL;
 }
 

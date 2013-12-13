@@ -206,7 +206,7 @@
     return self.content;
 }
 
-- (NSString *)avatarUrlForDisplay {
+- (NSString *)gravatarEmailForDisplay {
     return nil;
 }
 

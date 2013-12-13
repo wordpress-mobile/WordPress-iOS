@@ -8,8 +8,11 @@
 
 #import "WPContentCell.h"
 #import "WPComLanguages.h"
+#import "UIImageView+Gravatar.h"
+
 
 @interface WPContentCell() {
+    UIImageView *_avatarImageView;
     UILabel *_statusLabel;
     UILabel *_titleLabel;
     UILabel *_detailLabel;
@@ -23,11 +26,16 @@ CGFloat const WPContentCellStandardOffset = 16.0;
 CGFloat const WPContentCellTitleAndDetailVerticalOffset = 6.0;
 CGFloat const WPContentCellLabelAndTitleHorizontalOffset = -0.5;
 CGFloat const WPContentCellAccessoryViewOffset = 25.0;
+CGFloat const WPContentCellImageWidth = 48.0;
 
 - (id)initWithStyle:(UITableViewCellStyle)style reuseIdentifier:(NSString *)reuseIdentifier
 {
     self = [super initWithStyle:style reuseIdentifier:reuseIdentifier];
     if (self) {
+        
+        _avatarImageView = [[UIImageView alloc] init];
+        [self.contentView addSubview:_avatarImageView];
+        
         _statusLabel = [[UILabel alloc] init];
         _statusLabel.backgroundColor = [UIColor clearColor];
         _statusLabel.textAlignment = NSTextAlignmentLeft;
@@ -92,6 +100,8 @@ CGFloat const WPContentCellAccessoryViewOffset = 25.0;
 {
     _contentProvider = contentProvider;
     
+    [_avatarImageView setImageWithGravatarEmail:[contentProvider gravatarEmailForDisplay] fallbackImage:[UIImage imageNamed:@"comment-default-gravatar-image"]];
+    
     _titleLabel.text = [[self class] titleTextForContentProvider:contentProvider];
     _statusLabel.text = [[self class] statusTextForContentProvider:contentProvider];
     _statusLabel.textColor = [[self class] statusColorForContentProvider:contentProvider];
@@ -111,6 +121,10 @@ CGFloat const WPContentCellAccessoryViewOffset = 25.0;
         [detailText addAttribute:NSForegroundColorAttributeName value:[WPStyleGuide readGrey] range:barRange];
         _detailLabel.attributedText = detailText;
     }
+}
+
++ (BOOL)showGravatarImage {
+    return NO;
 }
 
 + (UIFont *)statusFont
@@ -176,7 +190,19 @@ CGFloat const WPContentCellAccessoryViewOffset = 25.0;
 
 + (CGFloat)textWidth:(CGFloat)maxWidth
 {
-    return maxWidth - WPContentCellStandardOffset - WPContentCellAccessoryViewOffset;
+    CGFloat imageWidth = [[self class] showGravatarImage] ? WPContentCellImageWidth + WPContentCellStandardOffset : 0.0;
+    return maxWidth - WPContentCellStandardOffset - WPContentCellAccessoryViewOffset - imageWidth;
+}
+
++ (CGFloat)textXOrigin {
+    CGFloat x = WPContentCellStandardOffset;
+    x += [[self class] showGravatarImage] ? WPContentCellStandardOffset + WPContentCellImageWidth : 0.0;
+    x += IS_RETINA ? -0.5 : 0.0;
+    return x;
+}
+
++ (CGRect)gravatarImageViewFrame {
+    return [[self class] showGravatarImage] ? CGRectMake(WPContentCellStandardOffset, WPContentCellStandardOffset, WPContentCellImageWidth, WPContentCellImageWidth) : CGRectZero;
 }
 
 + (CGRect)statusLabelFrameForContentProvider:(id<WPContentViewProvider>)contentProvider maxWidth:(CGFloat)maxWidth
@@ -185,11 +211,7 @@ CGFloat const WPContentCellAccessoryViewOffset = 25.0;
     if ([statusText length] != 0) {
         CGSize size;
         size = [statusText boundingRectWithSize:CGSizeMake([[self class] textWidth:maxWidth], CGFLOAT_MAX) options:NSStringDrawingUsesLineFragmentOrigin attributes:[[self class] statusAttributes] context:nil].size;
-        if (IS_RETINA) {
-            return CGRectMake(WPContentCellStandardOffset + WPContentCellLabelAndTitleHorizontalOffset, WPContentCellStandardOffset, size.width, size.height);
-        } else {
-            return CGRectMake(WPContentCellStandardOffset, WPContentCellStandardOffset, size.width, size.height);
-        }
+            return CGRectMake([[self class] textXOrigin], WPContentCellStandardOffset, size.width, size.height);
     } else {
         return CGRectMake(0, WPContentCellStandardOffset, 0, 0);
     }
@@ -205,11 +227,7 @@ CGFloat const WPContentCellAccessoryViewOffset = 25.0;
         offset = WPContentCellTitleAndDetailVerticalOffset;
     }
     
-    if (IS_RETINA) {
-        return CGRectMake(WPContentCellStandardOffset + WPContentCellLabelAndTitleHorizontalOffset, CGRectGetMaxY(previousFrame) + offset, size.width, size.height);
-    } else {
-        return CGRectIntegral(CGRectMake(WPContentCellStandardOffset, CGRectGetMaxY(previousFrame) + offset, size.width, size.height));
-    }
+    return CGRectMake([[self class] textXOrigin], CGRectGetMaxY(previousFrame) + offset, size.width, size.height);
 }
 
 + (CGRect)detailLabelFrameForContentProvider:(id<WPContentViewProvider>)contentProvider previousFrame:(CGRect)previousFrame maxWidth:(CGFloat)maxWidth
@@ -222,7 +240,7 @@ CGFloat const WPContentCellAccessoryViewOffset = 25.0;
         offset = WPContentCellTitleAndDetailVerticalOffset;
     }
     
-    return CGRectIntegral(CGRectMake(WPContentCellStandardOffset, CGRectGetMaxY(previousFrame) + offset, size.width, size.height));
+    return CGRectIntegral(CGRectMake([[self class] textXOrigin], CGRectGetMaxY(previousFrame) + offset, size.width, size.height));
 }
 
 @end
