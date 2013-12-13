@@ -27,6 +27,7 @@
 #import "IOS7CorrectedTextView.h"
 #import "WPAnimatedBox.h"
 #import "InlineComposeView.h"
+#import "ReaderCommentPublisher.h"
 
 static CGFloat const RPVCScrollingFastVelocityThreshold = 30.f;
 static CGFloat const RPVCHeaderHeightPhone = 10.f;
@@ -36,7 +37,7 @@ static CGFloat const RPVCExtraTableViewHeightPercentage = 2.0f;
 NSString * const ReaderTopicDidChangeNotification = @"ReaderTopicDidChangeNotification";
 NSString * const RPVCDisplayedNativeFriendFinder = @"DisplayedNativeFriendFinder";
 
-@interface ReaderPostsViewController ()<ReaderTextFormDelegate, WPTableImageSourceDelegate> {
+@interface ReaderPostsViewController ()<ReaderTextFormDelegate, WPTableImageSourceDelegate, ReaderCommentPublisherDelegate> {
 	BOOL _hasMoreContent;
 	BOOL _loadingMore;
     WPTableImageSource *_featuredImageSource;
@@ -51,6 +52,7 @@ NSString * const RPVCDisplayedNativeFriendFinder = @"DisplayedNativeFriendFinder
 @property (nonatomic, strong) UINavigationBar *navBar;
 @property (nonatomic) BOOL isShowingReblogForm;
 @property (nonatomic, strong) InlineComposeView *inlineComposeView;
+@property (nonatomic, strong) ReaderCommentPublisher *commentPublisher;
 
 @end
 
@@ -74,6 +76,7 @@ NSString * const RPVCDisplayedNativeFriendFinder = @"DisplayedNativeFriendFinder
 	self.readerReblogFormView = nil;
     self.inlineComposeView.delegate = nil;
     self.inlineComposeView = nil;
+    self.commentPublisher = nil;
     [[NSNotificationCenter defaultCenter] removeObserver:self];
 }
 
@@ -150,6 +153,13 @@ NSString * const RPVCDisplayedNativeFriendFinder = @"DisplayedNativeFriendFinder
                                                   }];
 
     self.inlineComposeView = [[InlineComposeView alloc] initWithFrame:CGRectZero];
+
+    self.commentPublisher = [[ReaderCommentPublisher alloc]
+                             initWithComposer:self.inlineComposeView
+                             andPost:nil];
+
+    self.commentPublisher.delegate = self;
+
     self.tableView.tableFooterView = self.inlineComposeView;
 }
 
@@ -393,6 +403,7 @@ NSString * const RPVCDisplayedNativeFriendFinder = @"DisplayedNativeFriendFinder
 }
 
 - (void)postView:(ReaderPostView *)postView didReceiveCommentAction:(id)sender {
+    self.commentPublisher.post = postView.post;
     [self.inlineComposeView toggleComposer];
 }
 
@@ -428,6 +439,11 @@ NSString * const RPVCDisplayedNativeFriendFinder = @"DisplayedNativeFriendFinder
         navController.navigationBar.translucent = NO;
         [self presentViewController:navController animated:YES completion:nil];
     }
+}
+
+#pragma mark - ReaderCommentPublisherDelegate Methods
+
+- (void)commentPublisherDidPublishComment:(ReaderCommentPublisher *)publisher {
 }
 
 #pragma mark - ReaderTextForm Delegate Methods
