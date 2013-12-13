@@ -12,7 +12,7 @@
 
 
 @interface WPContentCell() {
-    UIImageView *_avatarImageView;
+    UIImageView *_gravatarImageView;
     UILabel *_statusLabel;
     UILabel *_titleLabel;
     UILabel *_detailLabel;
@@ -33,8 +33,8 @@ CGFloat const WPContentCellImageWidth = 48.0;
     self = [super initWithStyle:style reuseIdentifier:reuseIdentifier];
     if (self) {
         
-        _avatarImageView = [[UIImageView alloc] init];
-        [self.contentView addSubview:_avatarImageView];
+        _gravatarImageView = [[UIImageView alloc] init];
+        [self.contentView addSubview:_gravatarImageView];
         
         _statusLabel = [[UILabel alloc] init];
         _statusLabel.backgroundColor = [UIColor clearColor];
@@ -82,6 +82,7 @@ CGFloat const WPContentCellImageWidth = 48.0;
     
     CGFloat maxWidth = CGRectGetWidth(self.bounds);
     
+    _gravatarImageView.frame = [[self class] gravatarImageViewFrame];
     _statusLabel.frame = [[self class] statusLabelFrameForContentProvider:self.contentProvider maxWidth:maxWidth];
     _titleLabel.frame = [[self class] titleLabelFrameForContentProvider:self.contentProvider previousFrame:_statusLabel.frame maxWidth:maxWidth];
     _detailLabel.frame = [[self class] detailLabelFrameForContentProvider:self.contentProvider previousFrame:_titleLabel.frame maxWidth:maxWidth];
@@ -89,18 +90,19 @@ CGFloat const WPContentCellImageWidth = 48.0;
 
 + (CGFloat)rowHeightForContentProvider:(id<WPContentViewProvider>)contentProvider andWidth:(CGFloat)width;
 {
+    CGRect gravatarGrame = [[self class] gravatarImageViewFrame];
     CGRect statusFrame = [[self class] statusLabelFrameForContentProvider:contentProvider maxWidth:width];
     CGRect titleFrame = [[self class] titleLabelFrameForContentProvider:contentProvider previousFrame:statusFrame maxWidth:width];
     CGRect detailFrame = [[self class] detailLabelFrameForContentProvider:contentProvider previousFrame:titleFrame maxWidth:width];
     
-    return CGRectGetMaxY(detailFrame) + WPContentCellStandardOffset;
+    return MAX(CGRectGetMaxY(gravatarGrame), CGRectGetMaxY(detailFrame)) + WPContentCellStandardOffset;
 }
 
 - (void)setContentProvider:(id<WPContentViewProvider>)contentProvider
 {
     _contentProvider = contentProvider;
     
-    [_avatarImageView setImageWithGravatarEmail:[contentProvider gravatarEmailForDisplay] fallbackImage:[UIImage imageNamed:@"comment-default-gravatar-image"]];
+    [_gravatarImageView setImageWithGravatarEmail:[contentProvider gravatarEmailForDisplay] fallbackImage:[UIImage imageNamed:@"comment-default-gravatar-image"]];
     
     _titleLabel.text = [[self class] titleTextForContentProvider:contentProvider];
     _statusLabel.text = [[self class] statusTextForContentProvider:contentProvider];

@@ -69,7 +69,7 @@ CGFloat const CommentsSectionHeaderHeight = 24.0;
 
 - (void)configureCell:(NewCommentsTableViewCell *)cell atIndexPath:(NSIndexPath *)indexPath {
     Comment *comment = [self.resultsController objectAtIndexPath:indexPath];
-    cell.comment = comment;
+    cell.contentProvider = comment;
 }
 
 #pragma mark - DetailViewDelegate
@@ -174,7 +174,7 @@ CGFloat const CommentsSectionHeaderHeight = 24.0;
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
     Comment *comment = [self.resultsController objectAtIndexPath:indexPath];
-    return [NewCommentsTableViewCell rowHeightForComment:comment andMaxWidth:CGRectGetWidth(self.tableView.bounds)];
+    return [NewCommentsTableViewCell rowHeightForContentProvider:comment andWidth:CGRectGetWidth(self.tableView.bounds)];
 }
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
