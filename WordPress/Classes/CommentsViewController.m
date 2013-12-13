@@ -141,35 +141,7 @@ CGFloat const CommentsSectionHeaderHeight = 24.0;
 }
 
 - (NSString *)tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section {
-    // Don't show a section title if there's only one section
-    if ([tableView numberOfSections] <= 1)
-        return nil;
-    
-    return [super tableView:tableView titleForHeaderInSection:section];
-}
-
-- (UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section
-{
-    // Don't show a section title if there's only one section
-    if ([tableView numberOfSections] <= 1)
-        return nil;
-    
-    id <NSFetchedResultsSectionInfo> sectionInfo = [[self.resultsController sections] objectAtIndex:section];
-    NSString *title = [Comment titleForStatus:[sectionInfo name]];
-    
-    UIView *view = [[UIView alloc] initWithFrame:CGRectMake(0, 0, CGRectGetWidth(self.tableView.frame), CommentsSectionHeaderHeight)];
-    view.backgroundColor = [WPStyleGuide itsEverywhereGrey];
-
-    UILabel *label = [[UILabel alloc] init];
-    label.backgroundColor = [WPStyleGuide itsEverywhereGrey];
-    label.text = [title uppercaseString];
-    label.font = [WPStyleGuide labelFont];
-    [label sizeToFit];
-    CGFloat y = (CGRectGetHeight(view.frame) - CGRectGetHeight(label.frame))/2.0;
-    label.frame = CGRectMake(16, y, CGRectGetWidth(label.frame), CGRectGetHeight(label.frame));
-    [view addSubview:label];
-
-    return view;
+    return nil;
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {

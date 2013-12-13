@@ -42,7 +42,7 @@
 }
 
 - (NSString *)statusForDisplay {
-    return nil;
+    return self.status;
 }
 
 - (NSString *)contentForDisplay {
