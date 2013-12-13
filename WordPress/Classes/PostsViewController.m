@@ -156,7 +156,7 @@
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
     AbstractPost *post = [self.resultsController objectAtIndexPath:indexPath];
-    return [NewPostTableViewCell rowHeightForPost:post andWidth:CGRectGetWidth(self.tableView.bounds)];
+    return [NewPostTableViewCell rowHeightForPost:post andWidth:WPTableViewFixedWidth];
 }
 
 - (BOOL)tableView:(UITableView *)tableView canEditRowAtIndexPath:(NSIndexPath *)indexPath {
