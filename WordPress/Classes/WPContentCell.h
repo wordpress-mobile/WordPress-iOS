@@ -15,7 +15,6 @@
 
 @property (readwrite, weak) AbstractPost *post;
 
-- (void)runSpinner:(BOOL)value;
 + (CGFloat)rowHeightForPost:(AbstractPost *)post andWidth:(CGFloat)width;
 
 @end
