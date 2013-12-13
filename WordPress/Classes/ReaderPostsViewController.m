@@ -26,6 +26,7 @@
 #import "NSString+Helpers.h"
 #import "IOS7CorrectedTextView.h"
 #import "WPAnimatedBox.h"
+#import "InlineComposeView.h"
 
 static CGFloat const RPVCScrollingFastVelocityThreshold = 30.f;
 static CGFloat const RPVCHeaderHeightPhone = 10.f;
@@ -49,6 +50,7 @@ NSString * const RPVCDisplayedNativeFriendFinder = @"DisplayedNativeFriendFinder
 @property (nonatomic, strong) ReaderPostDetailViewController *detailController;
 @property (nonatomic, strong) UINavigationBar *navBar;
 @property (nonatomic) BOOL isShowingReblogForm;
+@property (nonatomic, strong) InlineComposeView *inlineComposeView;
 
 @end
 
@@ -70,6 +72,8 @@ NSString * const RPVCDisplayedNativeFriendFinder = @"DisplayedNativeFriendFinder
 - (void)dealloc {
     _featuredImageSource.delegate = nil;
 	self.readerReblogFormView = nil;
+    self.inlineComposeView.delegate = nil;
+    self.inlineComposeView = nil;
     [[NSNotificationCenter defaultCenter] removeObserver:self];
 }
 
@@ -144,6 +148,9 @@ NSString * const RPVCDisplayedNativeFriendFinder = @"DisplayedNativeFriendFinder
                                                   usingBlock:^(NSNotification *notification){
                                                       [self syncItems];
                                                   }];
+
+    self.inlineComposeView = [[InlineComposeView alloc] initWithFrame:CGRectZero];
+    self.tableView.tableFooterView = self.inlineComposeView;
 }
 
 - (void)viewWillAppear:(BOOL)animated {
@@ -184,8 +191,9 @@ NSString * const RPVCDisplayedNativeFriendFinder = @"DisplayedNativeFriendFinder
 }
 
 - (void)viewWillDisappear:(BOOL)animated {
+    [self.inlineComposeView endEditing:YES];
     [super viewWillDisappear:animated];
-	
+
 	[[NSNotificationCenter defaultCenter] removeObserver:self name:UIKeyboardWillShowNotification object:nil];
 	[[NSNotificationCenter defaultCenter] removeObserver:self name:UIKeyboardWillHideNotification object:nil];
 }
@@ -385,7 +393,7 @@ NSString * const RPVCDisplayedNativeFriendFinder = @"DisplayedNativeFriendFinder
 }
 
 - (void)postView:(ReaderPostView *)postView didReceiveCommentAction:(id)sender {
-    // TODO: allow commenting
+    [self.inlineComposeView toggleComposer];
 }
 
 - (void)postView:(ReaderPostView *)postView didReceiveTagAction:(id)sender {
