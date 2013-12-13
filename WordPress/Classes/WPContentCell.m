@@ -26,6 +26,7 @@ CGFloat const WPContentCellTitleAndDetailVerticalOffset = 6.0;
 CGFloat const WPContentCellLabelAndTitleHorizontalOffset = -0.5;
 CGFloat const WPContentCellAccessoryViewOffset = 25.0;
 CGFloat const WPContentCellImageWidth = 48.0;
+CGFloat const WPContentCellTitleNumberOfLines = 4;
 
 - (id)initWithStyle:(UITableViewCellStyle)style reuseIdentifier:(NSString *)reuseIdentifier
 {
@@ -48,7 +49,7 @@ CGFloat const WPContentCellImageWidth = 48.0;
         _titleLabel = [[UILabel alloc] init];
         _titleLabel.backgroundColor = [UIColor clearColor];
         _titleLabel.textAlignment = NSTextAlignmentLeft;
-        _titleLabel.numberOfLines = 0;
+        _titleLabel.numberOfLines = WPContentCellTitleNumberOfLines;
         _titleLabel.lineBreakMode = NSLineBreakByWordWrapping;
         _titleLabel.font = [[self class] titleFont];
         _titleLabel.shadowOffset = CGSizeMake(0.0, 0.0);
@@ -58,7 +59,6 @@ CGFloat const WPContentCellImageWidth = 48.0;
         _detailLabel = [[UILabel alloc] init];
         _detailLabel.backgroundColor = [UIColor clearColor];
         _detailLabel.textAlignment = NSTextAlignmentLeft;
-        _detailLabel.numberOfLines = 0;
         _detailLabel.lineBreakMode = NSLineBreakByWordWrapping;
         _detailLabel.font = [[self class] detailFont];
         _detailLabel.shadowOffset = CGSizeMake(0.0, 0.0);
@@ -246,7 +246,10 @@ CGFloat const WPContentCellImageWidth = 48.0;
 + (CGRect)titleLabelFrameForContentProvider:(id<WPContentViewProvider>)contentProvider previousFrame:(CGRect)previousFrame maxWidth:(CGFloat)maxWidth
 {
     CGSize size;
-    size = [[[self class] titleAttributedTextForContentProvider:contentProvider].string boundingRectWithSize:CGSizeMake([[self class] textWidth:maxWidth], CGFLOAT_MAX) options:NSStringDrawingUsesLineFragmentOrigin attributes:[[self class] titleAttributes] context:nil].size;
+    NSAttributedString *attributedTitle = [[self class] titleAttributedTextForContentProvider:contentProvider];
+    CGFloat lineHeight = attributedTitle.size.height;
+    size = [attributedTitle.string boundingRectWithSize:CGSizeMake([[self class] textWidth:maxWidth], CGFLOAT_MAX) options:NSStringDrawingUsesLineFragmentOrigin attributes:[[self class] titleAttributes] context:nil].size;
+    size.height = MIN(size.height, lineHeight * WPContentCellTitleNumberOfLines);
     
     CGFloat offset = 0.0;
     if (!CGSizeEqualToSize(previousFrame.size, CGSizeZero)) {
