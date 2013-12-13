@@ -17,7 +17,6 @@
 
 @property (nonatomic, weak) id <InlineComposeViewDelegate> delegate;
 @property (nonatomic, strong) NSString *placeholder;
-@property (nonatomic) NSString *text;
-@property (nonatomic) NSAttributedString *attributedText;
-
+@property (nonatomic, weak) NSString *text;
+@property (nonatomic, weak) NSAttributedString *attributedText;
 @end
