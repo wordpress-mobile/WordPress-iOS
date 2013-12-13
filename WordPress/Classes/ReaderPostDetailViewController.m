@@ -28,6 +28,7 @@
 #import "ContextManager.h"
 #import "WPTableViewController.h"
 #import "InlineComposeView.h"
+#import "ReaderCommentPublisher.h"
 
 NSInteger const ReaderCommentsToSync = 100;
 NSTimeInterval const ReaderPostDetailViewControllerRefreshTimeout = 300; // 5 minutes
@@ -39,7 +40,7 @@ typedef enum {
 } ReaderDetailSection;
 
 
-@interface ReaderPostDetailViewController ()<UIActionSheetDelegate, MFMailComposeViewControllerDelegate, ReaderTextFormDelegate, UIPopoverControllerDelegate> {
+@interface ReaderPostDetailViewController ()<UIActionSheetDelegate, MFMailComposeViewControllerDelegate, ReaderTextFormDelegate, UIPopoverControllerDelegate, ReaderCommentPublisherDelegate> {
     UIPopoverController *_popover;
 }
 
@@ -65,6 +66,7 @@ typedef enum {
 @property (nonatomic) CGFloat keyboardOffset;
 @property (nonatomic) BOOL isSyncing;
 @property (nonatomic, strong) InlineComposeView *inlineComposeView;
+@property (nonatomic, strong) ReaderCommentPublisher *commentPublisher;
 
 @end
 
@@ -86,8 +88,9 @@ typedef enum {
 	self.reblogButton = nil;
 	self.shareButton = nil;
 
-    self.inlineComposeView.delegate = nil;
     self.inlineComposeView = nil;
+    self.commentPublisher.delegate = nil;
+    self.commentPublisher = nil;
 	
     [[NSNotificationCenter defaultCenter] removeObserver:self];
 }
@@ -130,7 +133,15 @@ typedef enum {
 	[self showStoredComment];
 
     self.inlineComposeView = [[InlineComposeView alloc] initWithFrame:CGRectZero];
+
+    // comment composer responds to the inline compose view to publish comments
+    self.commentPublisher = [[ReaderCommentPublisher alloc]
+                             initWithComposer:self.inlineComposeView
+                             andPost:self.post];
+
+    self.commentPublisher.delegate = self;
     self.tableView.tableHeaderView = self.inlineComposeView;
+
 }
 
 - (void)viewWillAppear:(BOOL)animated {
@@ -1077,6 +1088,12 @@ typedef enum {
 	if (!found) {
         [self hideCommentForm];
     }
+}
+
+#pragma mark - ReaderCommentPublisherDelegate methods
+
+- (void)commentPublisherDidPublishComment:(ReaderCommentPublisher *)composer {
+    [self syncWithUserInteraction:NO];
 }
 
 #pragma mark - ReaderTextForm Delegate Methods
