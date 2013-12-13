@@ -56,8 +56,7 @@ CGFloat InlineComposeToolbarViewMinToolbarWidth = 320.f;
 
     // constrain frame width and center it
     CGRect frame = self.composerContainerView.frame;
-    frame.size.width = MAX(MIN(self.maxToolbarWidth, frame.size.width),
-                           self.minToolbarWidth);
+    frame.size.width = MIN(self.maxToolbarWidth, self.bounds.size.width);
     frame.origin.x = (CGRectGetWidth(self.bounds) - CGRectGetWidth(frame)) * 0.5f;
 
     self.composerContainerView.frame = frame;
