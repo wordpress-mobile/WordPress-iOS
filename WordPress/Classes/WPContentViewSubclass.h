@@ -21,6 +21,10 @@
 @property (nonatomic, strong) UIView *controlView;
 @property (nonatomic, strong) UIButton *timeButton;
 
++ (UIFont *)titleFont;
++ (UIFont *)summaryFont;
++ (UIFont *)moreContentFont;
+
 - (void)buildContent;
 - (UIView *)viewForFullContent;
 - (UIView *)viewForContentPreview;
