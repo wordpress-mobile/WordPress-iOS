@@ -25,23 +25,6 @@
 
 @implementation ReaderUsersBlogsViewController
 
-+ (id)presentAsModalWithDelegate:(id<ReaderUsersBlogsDelegate>)delegate {
-	ReaderUsersBlogsViewController *controller = [[ReaderUsersBlogsViewController alloc] init];
-	controller.delegate = delegate;
-	controller.title = NSLocalizedString(@"My Blogs", @"Title of the list of the user's blogs as shown in the reader.");
-	
-	UINavigationController *navController = [[UINavigationController alloc] initWithRootViewController:controller];
-    navController.navigationBar.translucent = NO;
-	navController.modalPresentationStyle = UIModalPresentationFormSheet;
-    if (!IS_IPAD) {
-        // Avoid a weird issue on the iPad with cross dissolves when the keyboard is visible. 
-        navController.modalTransitionStyle = UIModalTransitionStyleCrossDissolve;
-    }
-    [[[WordPressAppDelegate sharedWordPressApplicationDelegate] navigationController] presentViewController:navController animated:YES completion:nil];
-
-	return controller;
-}
-
 #pragma mark - Lifecycle Methods
 
 - (id)init {
@@ -54,7 +37,8 @@
 }
 
 - (void)viewDidLoad {
-	
+    self.title = NSLocalizedString(@"My Blogs", @"Title of the list of the user's blogs as shown in the reader.");
+
 	self.view.backgroundColor = [UIColor colorWithPatternImage:[UIImage imageNamed:@"ui-texture"]];
     self.view.backgroundColor = [WPNUXUtility backgroundColor];
 	
@@ -139,8 +123,8 @@
 #pragma mark - Table view delegate
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
-    NSDictionary *dict = _blogs[indexPath.row];
-	[self.delegate userDidSelectBlog:dict];
+    Blog *blog = _blogs[indexPath.row];
+	[self.delegate userDidSelectBlog:blog];
 	
     [self dismissViewControllerAnimated:YES completion:nil];
 }

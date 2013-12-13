@@ -38,10 +38,10 @@ static CGFloat const WPAnimatedBoxAnimationTolerance = 5.0;
     _page1 = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"animatedBoxPage1"]];
     [_page1 sizeToFit];
     
-    _page2 = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"animatedBox_page2"]];
+    _page2 = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"animatedBoxPage2"]];
     [_page2 sizeToFit];
     
-    _page3 = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"animatedBox_page3"]];
+    _page3 = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"animatedBoxPage3"]];
     [_page3 sizeToFit];
     
     // view's are laid out by pixels for accuracy

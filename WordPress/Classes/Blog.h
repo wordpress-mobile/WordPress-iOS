@@ -83,16 +83,37 @@
 
 #pragma mark -
 #pragma mark Synchronization
+/*! Sync only blog posts, categories, options and post formats.
+ *  Used for instances where comments and pages aren't necessarily needed to be updated.
+ *
+ *  \param success Completion block called if the operation was a success
+ *  \param failure Completion block called if the operation was a failure
+ */
+- (void)syncPostsAndMetadataWithSuccess:(void (^)())success failure:(void (^)(NSError *error))failure;
+
+/*! Sync only blog posts (no metadata lists)
+ *  Used for instances where comments and pages aren't necessarily needed to be updated.
+ *
+ *  \param success  Completion block called if the operation was a success
+ *  \param failure  Completion block called if the operation was a failure
+ *  \param more     If posts already exist then sync an additional batch
+ */
 - (void)syncPostsWithSuccess:(void (^)())success failure:(void (^)(NSError *error))failure loadMore:(BOOL)more;
+
 - (void)syncPagesWithSuccess:(void (^)())success failure:(void (^)(NSError *error))failure loadMore:(BOOL)more;
 - (void)syncCategoriesWithSuccess:(void (^)())success failure:(void (^)(NSError *error))failure;
 - (void)syncOptionsWithWithSuccess:(void (^)())success failure:(void (^)(NSError *error))failure;
 - (void)syncCommentsWithSuccess:(void (^)())success failure:(void (^)(NSError *error))failure;
 - (void)syncPostFormatsWithSuccess:(void (^)())success failure:(void (^)(NSError *error))failure;
+
+/*! Syncs an entire blog include posts, pages, comments, options, post formats and categories.
+ *  Used for instances where the entire blog should be refreshed or initially downloaded.
+ *
+ *  \param success Completion block called if the operation was a success
+ *  \param failure Completion block called if the operation was a failure
+ */
 - (void)syncBlogWithSuccess:(void (^)())success failure:(void (^)(NSError *error))failure;
-// Called when manually refreshing PostsViewController
-// Syncs posts, categories, options, and post formats
-- (void)syncBlogPostsWithSuccess:(void (^)())success failure:(void (^)(NSError *error))failure;
+
 - (void)checkVideoPressEnabledWithSuccess:(void (^)(BOOL enabled))success failure:(void (^)(NSError *error))failure;
 
 #pragma mark -

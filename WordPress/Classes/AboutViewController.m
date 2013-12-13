@@ -12,13 +12,13 @@
 
 @interface AboutViewController()
 
-@property (strong, nonatomic) IBOutlet UIScrollView *scrollView;
-@property (nonatomic, strong) IBOutlet UILabel *titleLabel;
-@property (nonatomic, strong) IBOutlet UILabel *versionLabel;
-@property (nonatomic, strong) IBOutlet UILabel *publisherLabel;
-@property (nonatomic, strong) IBOutlet UIButton *viewWebsiteButton;
-@property (nonatomic, strong) IBOutlet UIButton *tosButton;
-@property (nonatomic, strong) IBOutlet UIButton *privacyPolicyButton;
+@property (weak, nonatomic) IBOutlet UIScrollView *scrollView;
+@property (nonatomic, weak) IBOutlet UILabel *titleLabel;
+@property (nonatomic, weak) IBOutlet UILabel *versionLabel;
+@property (nonatomic, weak) IBOutlet UILabel *publisherLabel;
+@property (nonatomic, weak) IBOutlet UIButton *viewWebsiteButton;
+@property (nonatomic, weak) IBOutlet UIButton *tosButton;
+@property (nonatomic, weak) IBOutlet UIButton *privacyPolicyButton;
 
 @end
 
@@ -50,23 +50,16 @@ CGFloat const AboutViewPortraitButtonsY = 90.0f;
     self.viewWebsiteButton.titleLabel.font = [WPStyleGuide subtitleFont];
     self.viewWebsiteButton.titleLabel.textColor = [WPStyleGuide whisperGrey];
     
-    if (IS_IOS7) {
-        [self.tosButton setBackgroundImage:nil forState:UIControlStateNormal];
-        [self.tosButton setBackgroundImage:nil forState:UIControlStateHighlighted];
-        [self.tosButton setTitleColor:[WPStyleGuide buttonActionColor] forState:UIControlStateNormal];
-    } else {
-        self.tosButton.titleLabel.textColor = [WPStyleGuide whisperGrey];
-    }
+    [self.tosButton setBackgroundImage:nil forState:UIControlStateNormal];
+    [self.tosButton setBackgroundImage:nil forState:UIControlStateHighlighted];
+    [self.tosButton setTitleColor:[WPStyleGuide buttonActionColor] forState:UIControlStateNormal];
     self.tosButton.titleLabel.font = [WPStyleGuide postTitleFont];
     [self.tosButton setTitle:NSLocalizedString(@"Terms of Service", nil) forState:UIControlStateNormal];
     
-    if (IS_IOS7) {
-        [self.privacyPolicyButton setBackgroundImage:nil forState:UIControlStateNormal];
-        [self.privacyPolicyButton setBackgroundImage:nil forState:UIControlStateHighlighted];
-        [self.privacyPolicyButton setTitleColor:[WPStyleGuide buttonActionColor] forState:UIControlStateNormal];
-    } else  {
-        self.privacyPolicyButton.titleLabel.textColor = [WPStyleGuide whisperGrey];
-    }
+    [self.privacyPolicyButton setBackgroundImage:nil forState:UIControlStateNormal];
+    [self.privacyPolicyButton setBackgroundImage:nil forState:UIControlStateHighlighted];
+    [self.privacyPolicyButton setTitleColor:[WPStyleGuide buttonActionColor] forState:UIControlStateNormal];
+
     [self.privacyPolicyButton setTitle:NSLocalizedString(@"Privacy Policy", nil) forState:UIControlStateNormal];
     self.privacyPolicyButton.titleLabel.font = [WPStyleGuide postTitleFont];
     

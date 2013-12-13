@@ -21,7 +21,7 @@
 @property (nonatomic) BOOL hasChanges;
 @property (nonatomic) BOOL isTransitioning;
 @property (nonatomic) BOOL isEditing;
-@property (nonatomic, strong) IBOutlet IOS7CorrectedTextView *textView;
+@property (nonatomic, weak) IBOutlet IOS7CorrectedTextView *textView;
 @property (nonatomic, strong) NSString *textViewText;
 
 - (void)handleKeyboardDidShow:(NSNotification *)notification;
