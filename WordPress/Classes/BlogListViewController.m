@@ -320,7 +320,7 @@ NSString * const WPBlogListRestorationID = @"WPBlogListID";
     if (title.length > 0) {
         return [WPTableViewSectionHeaderView heightForTitle:title andWidth:CGRectGetWidth(self.view.bounds)];
     }
-    return IS_IPHONE ? 1 : 40;
+    return IS_IPHONE ? 1.0 : 40.0;
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForFooterInSection:(NSInteger)section {
