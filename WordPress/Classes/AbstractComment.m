@@ -52,6 +52,9 @@
 - (NSString *)contentPreviewForDisplay {
     return [self.content stringByDecodingXMLCharacters];
 }
+- (NSURL *)blavatarURLForDisplay {
+    return nil;
+}
 
 - (NSString *)gravatarEmailForDisplay {
     return [self.author_email trim];

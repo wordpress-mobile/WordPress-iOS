@@ -15,6 +15,7 @@
 - (NSString *)statusForDisplay;
 - (NSString *)contentForDisplay;
 - (NSString *)contentPreviewForDisplay;
+- (NSURL *)blavatarURLForDisplay;
 - (NSString *)gravatarEmailForDisplay;
 - (NSDate *)dateForDisplay;
 @end
