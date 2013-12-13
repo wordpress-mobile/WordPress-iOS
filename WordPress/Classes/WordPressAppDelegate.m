@@ -409,17 +409,13 @@ NSString * const WPNotificationsNavigationRestorationID = @"WPNotificationsNavig
     [blogListNavigationController.tabBarItem setTitlePositionAdjustment:tabBarTitleOffset];
   
     UIImage *image = [UIImage imageNamed:@"icon-tab-newpost"];
-    if ( IS_IPAD ) {
-        image = [UIImage imageNamed:@"icon-tab-newpost-ipad"];
-    }
     image = [image imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal];
     UIViewController *postsViewController = [[UIViewController alloc] init];
     postsViewController.tabBarItem.image = image;
     postsViewController.tabBarItem.imageInsets = UIEdgeInsetsMake(5.0, 0, -5, 0);
-    if ( IS_IPAD ) {
+    if (IS_IPAD) {
         postsViewController.tabBarItem.imageInsets = UIEdgeInsetsMake(7.0, 0, -7, 0);
     }
-    [postsViewController.tabBarItem setTitlePositionAdjustment:tabBarTitleOffset];
 
     _tabBarController.viewControllers = @[blogListNavigationController, readerNavigationController, notificationsNavigationController, postsViewController];
 
