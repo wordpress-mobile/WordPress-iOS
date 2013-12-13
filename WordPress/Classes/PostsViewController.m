@@ -135,8 +135,8 @@
 
 - (void)configureCell:(NewPostTableViewCell *)cell atIndexPath:(NSIndexPath *)indexPath {    
     Post *apost = (Post*) [self.resultsController objectAtIndexPath:indexPath];
-    cell.post = apost;
-	if (cell.post.remoteStatus == AbstractPostRemoteStatusPushing) {
+    cell.contentProvider = apost;
+	if (apost.remoteStatus == AbstractPostRemoteStatusPushing) {
 		cell.selectionStyle = UITableViewCellSelectionStyleNone;
 	} else {
 		cell.selectionStyle = UITableViewCellSelectionStyleBlue;
@@ -156,7 +156,7 @@
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
     AbstractPost *post = [self.resultsController objectAtIndexPath:indexPath];
-    return [NewPostTableViewCell rowHeightForPost:post andWidth:CGRectGetWidth(self.tableView.bounds)];
+    return [NewPostTableViewCell rowHeightForContentProvider:post andWidth:CGRectGetWidth(self.tableView.bounds)];
 }
 
 - (BOOL)tableView:(UITableView *)tableView canEditRowAtIndexPath:(NSIndexPath *)indexPath {
