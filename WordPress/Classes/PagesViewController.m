@@ -37,8 +37,9 @@
 - (void)editPost:(AbstractPost *)apost {
     EditPageViewController *editPostViewController = [[EditPageViewController alloc] initWithPost:apost];
     UINavigationController *navController = [[UINavigationController alloc] initWithRootViewController:editPostViewController];
+    [navController setToolbarHidden:NO]; // Fixes wrong toolbar icon animation.
     navController.modalPresentationStyle = UIModalPresentationCurrentContext;
-    [self.navigationController presentViewController:navController animated:YES completion:nil];
+    [self.view.window.rootViewController presentViewController:navController animated:YES completion:nil];
 }
 
 - (void)showAddPostView {
