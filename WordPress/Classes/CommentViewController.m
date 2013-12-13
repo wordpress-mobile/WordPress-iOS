@@ -562,6 +562,15 @@ CGFloat const CommentViewUnapproveButtonTag = 701;
         // Notify of success?
     } failure:^(NSError *error) {
         // reset to draft and save
+        NSString *message = NSLocalizedString(@"Sorry, something went wrong posting the comment reply. Please try again.", @"");
+
+        if (error.code == 405) {
+            // XML-RPC is disabled.
+            message = error.localizedDescription;
+        }
+
+        [[NSNotificationCenter defaultCenter] postNotificationName:@"CommentUploadFailed" object:message];
+
         self.reply.status = CommentStatusDraft;
     }];
 }
