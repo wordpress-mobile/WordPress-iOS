@@ -74,16 +74,6 @@ CGFloat const NewNotificationsCellStandardOffset = 16.0;
 
 #pragma mark - Private Methods
 
-+ (NSString *)titleTextForContentProvider:(id<WPContentViewProvider>)contentProvider
-{
-    return [contentProvider titleForDisplay];
-}
-
-+ (NSString *)detailTextForContentProvider:(id<WPContentViewProvider>)contentProvider
-{
-    return [contentProvider contentForDisplay];
-}
-
 + (UIFont *)unreadFont
 {
     return [WPStyleGuide subtitleFont];
