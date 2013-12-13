@@ -177,8 +177,13 @@ NSString * const WPBlogListRestorationID = @"WPBlogListID";
     
     UITableViewCell *cell = [self.tableView dequeueReusableCellWithIdentifier:BlogCellIdentifier];
     
-    [WPStyleGuide configureTableViewCell:cell];
     [self configureCell:cell atIndexPath:indexPath];
+    
+    if ([indexPath isEqual:[self indexPathForAddSite]]) {
+        [WPStyleGuide configureTableViewActionCell:cell];
+    } else {
+        [WPStyleGuide configureTableViewCell:cell];
+    }
 
     return cell;
 }
@@ -270,12 +275,7 @@ NSString * const WPBlogListRestorationID = @"WPBlogListID";
     if ([indexPath isEqual:[self indexPathForAddSite]]) {
         cell.textLabel.text = NSLocalizedString(@"Add a Site", @"");
         cell.selectionStyle = UITableViewCellSelectionStyleBlue;
-
-        // To align the label, create and add a blank image
-        UIGraphicsBeginImageContextWithOptions(CGSizeMake(blavatarImageSize, blavatarImageSize), NO, 0.0);
-        UIImage *blank = UIGraphicsGetImageFromCurrentImageContext();
-        UIGraphicsEndImageContext();
-        [cell.imageView setImage:blank];
+        cell.textLabel.textAlignment = NSTextAlignmentCenter;
     } else {
 
         Blog *blog = [self.resultsController objectAtIndexPath:indexPath];
