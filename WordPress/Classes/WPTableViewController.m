@@ -98,6 +98,11 @@ NSString *const DefaultCellIdentifier = @"DefaultCellIdentifier";
     self.tableView.allowsSelectionDuringEditing = YES;
     [WPStyleGuide configureColorsForView:self.view andTableView:self.tableView];
     [self.tableView registerClass:[self cellClass] forCellReuseIdentifier:DefaultCellIdentifier];
+    
+    // Account for 1 pixel header height
+    UIEdgeInsets tableInset = [self.tableView contentInset];
+    tableInset.top = -1;
+    self.tableView.contentInset = tableInset;
 
     if (self.infiniteScrollEnabled) {
         [self enableInfiniteScrolling];
