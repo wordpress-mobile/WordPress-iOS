@@ -7,6 +7,9 @@
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="InlineComposeView">
             <connections>
                 <outlet property="inputAccessoryView" destination="xQf-WQ-fdT" id="W9x-Hn-KCP"/>
+                <outlet property="placeholderLabel" destination="X94-zo-flx" id="ryJ-AR-Fa9"/>
+                <outlet property="sendButton" destination="sqC-Nr-O7m" id="YRn-Z0-y4u"/>
+                <outlet property="toolbarTextView" destination="BZS-fj-e3Z" id="syK-e2-c2y"/>
             </connections>
         </placeholder>
         <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
@@ -18,23 +21,35 @@
                     <rect key="frame" x="0.0" y="0.0" width="554" height="44"/>
                     <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                     <subviews>
-                        <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" text="Placeholder" id="BZS-fj-e3Z">
+                        <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" id="BZS-fj-e3Z">
                             <rect key="frame" x="5" y="5" width="479" height="33"/>
                             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                             <color key="backgroundColor" red="1" green="1" blue="1" alpha="0.0" colorSpace="calibratedRGB"/>
                             <fontDescription key="fontDescription" type="system" pointSize="14"/>
                             <textInputTraits key="textInputTraits" autocapitalizationType="sentences"/>
+                            <connections>
+                                <outlet property="delegate" destination="-1" id="eYs-n0-Evf"/>
+                            </connections>
                         </textView>
                         <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" id="sqC-Nr-O7m">
                             <rect key="frame" x="492" y="8" width="54" height="28"/>
                             <autoresizingMask key="autoresizingMask" flexibleMinX="YES" flexibleMinY="YES"/>
                             <state key="normal" title="Send"/>
+                            <connections>
+                                <action selector="onSendReply:" destination="-1" eventType="touchUpInside" id="zXg-4M-nGP"/>
+                            </connections>
                         </button>
+                        <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Reply" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="X94-zo-flx">
+                            <rect key="frame" x="10" y="11" width="464" height="21"/>
+                            <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES" flexibleMaxY="YES"/>
+                            <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                            <color key="textColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
+                            <nil key="highlightedColor"/>
+                        </label>
                     </subviews>
                     <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
                 </view>
             </subviews>
-            <color key="backgroundColor" red="1" green="0.0" blue="0.02357372019003634" alpha="1" colorSpace="calibratedRGB"/>
             <connections>
                 <outlet property="composerContainerView" destination="hBK-UR-24O" id="GCy-Ru-HVH"/>
             </connections>

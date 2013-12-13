@@ -34,6 +34,8 @@ const CGFloat InlineComposeViewMaxHeight = 88.f;
 
         _proxyTextView.inputAccessoryView = self.inputAccessoryView;
 
+        self.placeholderLabel.text = NSLocalizedString(@"Reply", @"Placeholder text for inline compose view");
+
         [self addSubview:_proxyTextView];
 
     }
@@ -46,6 +48,40 @@ const CGFloat InlineComposeViewMaxHeight = 88.f;
     self.proxyTextView = nil;
 }
 
+#pragma mark - IBAction
+
+- (IBAction)onSendReply:(id)sender {
+    [self.delegate composeView:self didSendText:self.toolbarTextView.text];
+    self.toolbarTextView.editable = NO;
+    [self.proxyTextView becomeFirstResponder];
+}
+
+#pragma mark - Accessors
+
+- (void)setAttributedText:(NSAttributedString *)attributedText {
+    self.toolbarTextView.attributedText = attributedText;
+}
+
+- (NSAttributedString *)attributedText {
+    return self.toolbarTextView.attributedText;
+}
+
+- (void)setText:(NSString *)text {
+    self.toolbarTextView.text = text;
+}
+
+- (NSString *)text {
+    return self.toolbarTextView.text;
+}
+
+- (void)setPlaceholder:(NSString *)placeholder {
+    self.placeholderLabel.text = placeholder;
+}
+
+- (NSString *)placeholder {
+    return self.placeholderLabel.text;
+}
+
 #pragma mark - UIResponder
 
 - (BOOL)canBecomeFirstResponder {
@@ -56,20 +92,135 @@ const CGFloat InlineComposeViewMaxHeight = 88.f;
     return [self.proxyTextView becomeFirstResponder];
 }
 
+- (BOOL)resignFirstResponder {
+    return [self.proxyTextView resignFirstResponder];
+}
+
 #pragma mark - UITextViewDelegate
+// Forwards all delegate methods to our delegate if the textview is the toolbar text view
+
+- (BOOL)textViewShouldBeginEditing:(UITextView *)textView {
+    if (textView == self.toolbarTextView && [self.delegate respondsToSelector:@selector(textViewShouldBeginEditing:)]) {
+        return [self.delegate textViewShouldBeginEditing:textView];
+    }
+    return YES;
+}
 
 - (void)textViewDidBeginEditing:(UITextView *)textView {
-    // try to make the textview in the toolbar first responder
-    NSLog(@"Window? %@", self.inputAccessoryView);
+    // Focus the input field in the toolbar when we begin editing from the proxy
+    if (textView == self.proxyTextView) {
+        if(self.toolbarTextView.editable)
+            [self.toolbarTextView becomeFirstResponder];
+        self.toolbarTextView.editable = YES;
+    }
+
+    // forward UITextViewDelegate methods of the toolbar textview to our delegate
+    if ([self.delegate respondsToSelector:@selector(textViewDidBeginEditing:)]) {
+        [self.delegate textViewDidBeginEditing:textView];
+    }
 }
 
-/*
-// Only override drawRect: if you perform custom drawing.
-// An empty implementation adversely affects performance during animation.
-- (void)drawRect:(CGRect)rect
-{
-    // Drawing code
+- (BOOL)textViewShouldEndEditing:(UITextView *)textView {
+    if (textView != self.toolbarTextView) return YES;
+
+    if ([self.delegate respondsToSelector:@selector(textViewShouldEndEditing:)]) {
+        return [self.delegate textViewShouldEndEditing:textView];
+    }
+    return YES;
 }
-*/
+
+- (void)textViewDidEndEditing:(UITextView *)textView {
+    if (textView != self.toolbarTextView) return;
+
+    if ([self.delegate respondsToSelector:@selector(textViewDidEndEditing:)]) {
+        [self.delegate textViewDidEndEditing:textView];
+    }
+
+}
+
+- (BOOL)textView:(UITextView *)textView shouldChangeTextInRange:(NSRange)range replacementText:(NSString *)text {
+    if (textView != self.toolbarTextView) return YES;
+
+    if ([self.delegate respondsToSelector:@selector(textView:shouldChangeTextInRange:replacementText:)]) {
+        return [self.delegate textView:textView shouldChangeTextInRange:range replacementText:text];
+    }
+
+    return YES;
+}
+
+- (void)textViewDidChange:(UITextView *)textView {
+    // ignore any changes to the proxy textview, it's not used for text entry
+    if (textView == self.proxyTextView)
+        return;
+
+    // show placeholder if text is empty
+    BOOL empty = [textView.text isEqualToString:@""];
+    self.placeholderLabel.hidden = !empty;
+    self.sendButton.enabled = !empty;
+
+    CGRect frame = self.inputAccessoryView.frame;
+
+    // if there's no text, force it back to min height
+    if (empty) {
+        frame.size.height = InlineComposeViewMinHeight;
+        self.inputAccessoryView.frame = frame;
+        return;
+    }
+
+    // expand placeholder to max height
+    CGSize textSize = self.toolbarTextView.contentSize;
+    CGSize textFrameSize = self.toolbarTextView.frame.size;
+    CGFloat delta = textSize.height - textFrameSize.height;
+
+    // we don't need to change the height
+    if (delta == 0) {
+        return;
+    }
+
+    frame.size.height += delta;
+    // keep the height within the constraints
+    frame.size.height = MIN(frame.size.height, InlineComposeViewMaxHeight);
+    frame.size.height = MAX(frame.size.height, InlineComposeViewMinHeight);
+
+    self.inputAccessoryView.frame = frame;
+
+    [self.toolbarTextView scrollRangeToVisible:self.toolbarTextView.selectedRange];
+
+    // forward UITextFieldDelegate methods to our delegate
+    if ([self.delegate respondsToSelector:@selector(textViewDidChange:)]) {
+        [self.delegate textViewDidChange:textView];
+    }
+
+}
+
+- (void)textViewDidChangeSelection:(UITextView *)textView {
+    if (textView != self.toolbarTextView) return;
+
+    if ([self.delegate respondsToSelector:@selector(textViewDidChangeSelection:)]) {
+        [self.delegate textViewDidChangeSelection:textView];
+    }
+}
+
+- (BOOL)textView:(UITextView *)textView shouldInteractWithTextAttachment:(NSTextAttachment *)textAttachment inRange:(NSRange)characterRange {
+
+    if (self.toolbarTextView != textView) return YES;
+
+    if ([self.delegate respondsToSelector:@selector(textView:shouldInteractWithTextAttachment:inRange:)]) {
+        return [self.delegate textView:textView shouldInteractWithTextAttachment:textAttachment inRange:characterRange];
+    }
+
+    return YES;
+}
+
+- (BOOL)textView:(UITextView *)textView shouldInteractWithURL:(NSURL *)URL inRange:(NSRange)characterRange {
+    if (self.toolbarTextView != textView) return YES;
+
+    if ([self.delegate respondsToSelector:@selector(textView:shouldInteractWithURL:inRange:)]) {
+        return [self.delegate textView:textView shouldInteractWithURL:URL inRange:characterRange];
+    }
+
+    return YES;
+}
+
 
 @end
