@@ -367,4 +367,12 @@
                       }];
 }
 
+
+#pragma mark - WPContentViewProvider protocol
+
+- (NSString *)blogNameForDisplay {
+    return self.blog.blogName;
+}
+
+
 @end

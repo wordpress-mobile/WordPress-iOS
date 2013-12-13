@@ -1364,6 +1364,7 @@
 		462F4E0F183867AE0028D2F8 /* Merriweather-Bold.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Merriweather-Bold.ttf"; sourceTree = "<group>"; };
 		46F8460F185A6E98009D0DA5 /* WPContentView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WPContentView.h; sourceTree = "<group>"; };
 		46F84610185A6E98009D0DA5 /* WPContentView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WPContentView.m; sourceTree = "<group>"; };
+		46F84612185A8B7E009D0DA5 /* WPContentViewProvider.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WPContentViewProvider.h; sourceTree = "<group>"; };
 		46F871491838BB4E00BC149B /* reader-postaction-tag.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "reader-postaction-tag.png"; path = "Resources/Images/reader-postaction-tag.png"; sourceTree = "<group>"; };
 		46F8714A1838BB4E00BC149B /* reader-postaction-tag@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "reader-postaction-tag@2x.png"; path = "Resources/Images/reader-postaction-tag@2x.png"; sourceTree = "<group>"; };
 		46F8714D1838C41600BC149B /* NSDate+StringFormatting.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSDate+StringFormatting.h"; sourceTree = "<group>"; };
@@ -2466,6 +2467,7 @@
 		2F706A870DFB229B00B43086 /* Models */ = {
 			isa = PBXGroup;
 			children = (
+				46F84612185A8B7E009D0DA5 /* WPContentViewProvider.h */,
 				5D42A3D4175E7452005CFF05 /* AbstractComment.h */,
 				5D42A3D5175E7452005CFF05 /* AbstractComment.m */,
 				5D42A3D6175E7452005CFF05 /* AbstractPost.h */,

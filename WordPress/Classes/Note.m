@@ -32,8 +32,10 @@ const NSUInteger NoteKeepCount = 20;
 @end
 
 @interface Note ()
-@property (nonatomic, strong, readwrite) NSDictionary *noteData;
-@property (readwrite, nonatomic, strong) NSString *commentText;
+
+@property (nonatomic, strong) NSDictionary *noteData;
+@property (nonatomic, strong) NSString *commentText;
+@property (nonatomic, strong) NSDate *date;
 
 @end
 
@@ -47,7 +49,9 @@ const NSUInteger NoteKeepCount = 20;
 @dynamic icon;
 @dynamic noteID;
 @dynamic account;
-@synthesize commentText = _commentText, noteData = _noteData;
+@synthesize commentText = _commentText;
+@synthesize noteData = _noteData;
+@synthesize date = _date;
 
 
 + (void)syncNotesWithResponse:(NSArray *)notesData {
@@ -248,6 +252,44 @@ const NSUInteger NoteKeepCount = 20;
         
     }
     
+}
+
+
+#pragma mark - WPContentViewProvider protocol
+
+- (NSString *)titleForDisplay {
+    return self.subject;
+}
+
+- (NSString *)authorForDisplay {
+    // Annoyingly, not directly available; could try to parse from self.subject
+    return nil;
+}
+
+- (NSString *)blogNameForDisplay {
+    return nil;
+}
+
+- (NSString *)contentForDisplay {
+    // Contains a lot of cruft
+    return self.commentText;
+}
+
+- (NSString *)contentPreviewForDisplay {
+    return self.commentText;
+}
+
+- (NSString *)avatarUrlForDisplay {
+    return self.icon;
+}
+
+- (NSDate *)dateForDisplay {
+    if (self.date == nil) {
+        NSTimeInterval timeInterval = [self.timestamp doubleValue];
+        self.date = [NSDate dateWithTimeIntervalSince1970:timeInterval];
+    }
+    
+    return self.date;
 }
 
 @end

@@ -26,4 +26,35 @@
 @dynamic type;
 
 
+#pragma mark - WPContentViewProvider protocol
+
+- (NSString *)titleForDisplay {
+    return nil;
+}
+
+- (NSString *)authorForDisplay {
+    return [self.author length] > 0 ? self.author : self.author_email;
+}
+
+- (NSString *)blogNameForDisplay {
+    return nil;
+}
+
+- (NSString *)contentForDisplay {
+    return self.content;
+}
+
+- (NSString *)contentPreviewForDisplay {
+    return self.content;
+}
+
+- (NSString *)avatarUrlForDisplay {
+    return nil;
+}
+
+- (NSDate *)dateForDisplay {
+    return self.dateCreated;
+}
+
+
 @end
