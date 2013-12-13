@@ -146,7 +146,7 @@ CGFloat const CommentsSectionHeaderHeight = 24.0;
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
     Comment *comment = [self.resultsController objectAtIndexPath:indexPath];
-    return [NewCommentsTableViewCell rowHeightForContentProvider:comment andWidth:CGRectGetWidth(self.tableView.bounds)];
+    return [NewCommentsTableViewCell rowHeightForContentProvider:comment andWidth:WPTableViewFixedWidth];
 }
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
