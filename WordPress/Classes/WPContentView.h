@@ -3,6 +3,7 @@
 //  WordPress
 //
 //  Created by Michael Johnston on 11/19/13.
+//  Moved from ReaderPostView by Eric J.
 //  Copyright (c) 2013 WordPress. All rights reserved.
 //
 
@@ -10,6 +11,7 @@
 #import "ReaderPost.h"
 #import "DTAttributedTextContentView.h"
 #import "ReaderMediaQueue.h"
+#import "WPContentViewProvider.h"
 
 @class WPContentView;
 
@@ -32,16 +34,13 @@
 }
 
 @property (nonatomic, weak) id<WPContentViewDelegate> delegate;
-@property (nonatomic, strong) ReaderPost *post;
+@property (nonatomic, strong) id<WPContentViewProvider> contentProvider;
 @property (nonatomic, strong) UIImageView *cellImageView;
 @property (nonatomic, strong) UIImageView *avatarImageView;
 
-+ (CGFloat)heightForPost:(ReaderPost *)post withWidth:(CGFloat)width;
-- (id)initWithFrame:(CGRect)frame showFullContent:(BOOL)showFullContent;
+- (id)initWithFrame:(CGRect)frame;
 - (void)setFeaturedImage:(UIImage *)image;
-- (void)setAvatar:(UIImage *)avatar;
 - (void)updateActionButtons;
 - (void)reset;
-- (void)configurePost:(ReaderPost *)post;
 
 @end
