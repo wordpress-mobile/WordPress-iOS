@@ -27,6 +27,8 @@ CGFloat const CommentCellImageWidth = 48.0;
 CGFloat const CommentCellImageHeight = 48.0;
 CGFloat const CommentCellStandardOffset = 16.0;
 CGFloat const CommentCellAccessoryViewOffset = 25.0;
+// Comment text is capped at 3 lines
+CGFloat const CommentCellMaxTextHeight = 46.f;
 
 - (id)initWithStyle:(UITableViewCellStyle)style reuseIdentifier:(NSString *)reuseIdentifier
 {
@@ -100,6 +102,7 @@ CGFloat const CommentCellAccessoryViewOffset = 25.0;
     _authorNameLabel.frame = [[self class] authorNameFrameForComment:comment leftFrame:_gravatarImageView.frame andMaxWidth:maxWidth];
     _postTitleLabel.frame = [[self class] postTitleFrameForComment:comment topFrame:_authorNameLabel.frame leftFrame:_gravatarImageView.frame andMaxWidth:maxWidth];
     _commentTextLabel.frame = [[self class] commentFrameForComment:comment topFrame:_postTitleLabel.frame leftFrame:_gravatarImageView.frame andMaxWidth:maxWidth];
+    [_commentTextLabel sizeToFit];
 }
 
 + (CGFloat)rowHeightForComment:(Comment *)comment andMaxWidth:(CGFloat)maxWidth;
@@ -189,7 +192,10 @@ CGFloat const CommentCellAccessoryViewOffset = 25.0;
 {
     NSString *commentText = [self commentTextForComment:comment];
     CGSize size = [commentText suggestedSizeWithFont:[self commentTextFont] width:[self textWidth:maxWidth]];
-    return CGRectMake(CGRectGetMaxX(leftFrame) + CommentCellStandardOffset, CGRectGetMaxY(topFrame) + CommentCellStandardOffset, size.width, size.height);
+    return CGRectMake(CGRectGetMaxX(leftFrame) + CommentCellStandardOffset,
+                      CGRectGetMaxY(topFrame) + CommentCellStandardOffset,
+                      size.width,
+                      MIN(size.height, CommentCellMaxTextHeight));
 }
 
 @end
