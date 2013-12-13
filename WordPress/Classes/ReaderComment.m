@@ -185,4 +185,11 @@
 
 }
 
+
+#pragma mark - WPContentViewProvider protocol
+
+- (NSString *)avatarUrlForDisplay {
+    return self.authorAvatarURL;
+}
+
 @end

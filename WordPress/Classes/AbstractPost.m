@@ -276,4 +276,16 @@
     }
 }
 
+
+#pragma mark - WPContentViewProvider protocol
+
+- (NSString *)blogNameForDisplay {
+    return self.blog.blogName;
+}
+
+- (NSString *)avatarUrlForDisplay {
+    return self.blog.blavatarUrl;
+}
+
+
 @end

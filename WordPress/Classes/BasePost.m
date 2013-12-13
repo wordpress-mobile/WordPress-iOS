@@ -179,5 +179,35 @@
 }
 
 
+#pragma mark - WPContentViewProvider protocol
+
+- (NSString *)titleForDisplay {
+    return self.postTitle;
+}
+
+- (NSString *)authorForDisplay {
+    return self.author;
+}
+
+- (NSString *)blogNameForDisplay {
+    return @"";
+}
+
+- (NSString *)contentForDisplay {
+    return self.content;
+}
+
+- (NSString *)contentPreviewForDisplay {
+    return self.content;
+}
+
+- (NSString *)avatarUrlForDisplay {
+    return nil;
+}
+
+- (NSDate *)dateForDisplay {
+    return [self dateCreated];
+}
+
 
 @end
