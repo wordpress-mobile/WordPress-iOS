@@ -210,6 +210,10 @@
     return nil;
 }
 
+- (NSURL *)blavatarURLForDisplay {
+    return nil;
+}
+
 - (NSDate *)dateForDisplay {
     return [self dateCreated];
 }

@@ -284,7 +284,11 @@ const NSUInteger NoteKeepCount = 20;
 }
 
 - (NSString *)gravatarEmailForDisplay {
-    return self.icon;
+    return nil;
+}
+
+- (NSURL *)blavatarURLForDisplay {
+    return [NSURL URLWithString:self.icon];
 }
 
 - (NSDate *)dateForDisplay {
