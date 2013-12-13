@@ -52,8 +52,8 @@
     return self.content;
 }
 
-- (NSString *)avatarUrlForDisplay {
-    return nil;
+- (NSString *)gravatarEmailForDisplay {
+    return [self.author_email trim];
 }
 
 - (NSDate *)dateForDisplay {

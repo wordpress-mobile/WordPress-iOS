@@ -283,7 +283,7 @@
     return self.blog.blogName;
 }
 
-- (NSString *)avatarUrlForDisplay {
+- (NSString *)gravatarEmailForDisplay {
     return self.blog.blavatarUrl;
 }
 
