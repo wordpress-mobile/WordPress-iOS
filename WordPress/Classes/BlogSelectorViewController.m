@@ -36,7 +36,7 @@ static CGFloat const blavatarImageSize = 50.f;
 - (id)initWithSelectedBlogObjectID:(NSManagedObjectID *)objectID
                 selectedCompletion:(void (^)(NSManagedObjectID *))selected
                   cancelCompletion:(void (^)())cancel {
-    self = [super initWithStyle:UITableViewStylePlain];
+    self = [super initWithStyle:UITableViewStyleGrouped];
     
     if (self) {
         _selectedObjectID = objectID;
@@ -194,9 +194,6 @@ static CGFloat const blavatarImageSize = 50.f;
 - (UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section {
     WPTableViewSectionHeaderView *header = [[WPTableViewSectionHeaderView alloc] initWithFrame:CGRectMake(0, 0, CGRectGetWidth(self.view.bounds), 0)];
     header.title = [self tableView:self.tableView titleForHeaderInSection:section];
-    if (IS_IPAD) {
-        header.fixedWidth = WPTableViewFixedWidth;
-    }
     return header;
 }
 
