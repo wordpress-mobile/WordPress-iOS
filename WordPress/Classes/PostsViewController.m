@@ -2,7 +2,6 @@
 #import "WPTableViewControllerSubclass.h"
 #import "PostsViewController.h"
 #import "EditPostViewController.h"
-#import "PostTableViewCell.h"
 #import "NewPostTableViewCell.h"
 #import "WordPressAppDelegate.h"
 #import "Reachability.h"
