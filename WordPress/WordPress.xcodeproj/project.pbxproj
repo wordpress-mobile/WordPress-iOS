@@ -652,7 +652,6 @@
 		85468F3A17C483F1008AB9C1 /* NewCommentsTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 85468F3917C483F1008AB9C1 /* NewCommentsTableViewCell.m */; };
 		85468F3D17C484AB008AB9C1 /* WPStyleGuide.m in Sources */ = {isa = PBXBuildFile; fileRef = 85468F3C17C484AB008AB9C1 /* WPStyleGuide.m */; };
 		85495F4817C6D9A500871A7A /* CommentViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 85495F4617C6D9A500871A7A /* CommentViewController.m */; };
-		85495F4917C6D9A500871A7A /* CommentViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 85495F4717C6D9A500871A7A /* CommentViewController.xib */; };
 		85495F5A17C6FACF00871A7A /* icon-comments-trash@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 85495F4A17C6FACF00871A7A /* icon-comments-trash@2x.png */; };
 		85495F5B17C6FACF00871A7A /* icon-comments-trash.png in Resources */ = {isa = PBXBuildFile; fileRef = 85495F4B17C6FACF00871A7A /* icon-comments-trash.png */; };
 		85495F5C17C6FACF00871A7A /* icon-comments-trash-active@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 85495F4C17C6FACF00871A7A /* icon-comments-trash-active@2x.png */; };
@@ -1759,7 +1758,6 @@
 		85468F3C17C484AB008AB9C1 /* WPStyleGuide.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WPStyleGuide.m; sourceTree = "<group>"; };
 		85495F4517C6D9A500871A7A /* CommentViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CommentViewController.h; sourceTree = "<group>"; };
 		85495F4617C6D9A500871A7A /* CommentViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CommentViewController.m; sourceTree = "<group>"; };
-		85495F4717C6D9A500871A7A /* CommentViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = CommentViewController.xib; sourceTree = "<group>"; };
 		85495F4A17C6FACF00871A7A /* icon-comments-trash@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "icon-comments-trash@2x.png"; sourceTree = "<group>"; };
 		85495F4B17C6FACF00871A7A /* icon-comments-trash.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "icon-comments-trash.png"; sourceTree = "<group>"; };
 		85495F4C17C6FACF00871A7A /* icon-comments-trash-active@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "icon-comments-trash-active@2x.png"; sourceTree = "<group>"; };
@@ -3091,7 +3089,6 @@
 				85468F3C17C484AB008AB9C1 /* WPStyleGuide.m */,
 				85495F4517C6D9A500871A7A /* CommentViewController.h */,
 				85495F4617C6D9A500871A7A /* CommentViewController.m */,
-				85495F4717C6D9A500871A7A /* CommentViewController.xib */,
 				850DE05F17CD4611003A1057 /* NewNotificationsTableViewCell.h */,
 				850DE06017CD4611003A1057 /* NewNotificationsTableViewCell.m */,
 				85D2415617D0701A00AF090E /* UIViewController+iOS7StyleChanges.h */,
@@ -4852,7 +4849,6 @@
 				3772E3471680D0DE0018D2AB /* note_icon_reblog_highlighted@2x.png in Resources */,
 				3772E3481680D0DE0018D2AB /* note_icon_stats_highlighted.png in Resources */,
 				3772E3491680D0DE0018D2AB /* note_icon_stats_highlighted@2x.png in Resources */,
-				85495F4917C6D9A500871A7A /* CommentViewController.xib in Resources */,
 				3029D83C1859359C00298395 /* icon_format_more_highlighted.png in Resources */,
 				85495F5A17C6FACF00871A7A /* icon-comments-trash@2x.png in Resources */,
 				5D69DBC4165428CA00A2D1F7 /* n.caf in Resources */,
