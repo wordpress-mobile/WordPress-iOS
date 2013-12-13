@@ -21,6 +21,7 @@
 @property (nonatomic, strong) UIButton *likeButton;
 @property (nonatomic, strong) UIButton *reblogButton;
 @property (nonatomic, strong) UIButton *commentButton;
+@property (assign) BOOL showFullContent;
 
 @end
 
@@ -128,12 +129,78 @@
     return [UIFont fontWithName:@"OpenSans" size:12.0f];
 }
 
-
 - (id)initWithFrame:(CGRect)frame {
+    self = [self initWithFrame:frame showFullContent:NO];
+    
+    return self;
+}
+
+- (id)initWithFrame:(CGRect)frame showFullContent:(BOOL)showFullContent {
     self = [super initWithFrame:frame];
     
     if (self) {
+        _showFullContent = showFullContent;
+        UIView *contentView = _showFullContent ? [self viewForFullContent] : [self viewForContentPreview];
+        [self addSubview:contentView];
         
+        super.cellImageView.contentMode = UIViewContentModeScaleAspectFill;
+        
+        // For the full view, allow the featured image to be tapped
+        if (self.showFullContent) {
+            UITapGestureRecognizer *imageTap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(featuredImageAction:)];
+            super.cellImageView.userInteractionEnabled = YES;
+            [super.cellImageView addGestureRecognizer:imageTap];
+        }
+        [self addSubview:super.cellImageView];
+
+        _followButton = [ReaderButton buttonWithType:UIButtonTypeCustom];
+        _followButton.contentHorizontalAlignment = UIControlContentHorizontalAlignmentLeft;
+        _followButton.backgroundColor = [UIColor clearColor];
+        _followButton.titleLabel.font = [UIFont fontWithName:@"OpenSans" size:12.0f];
+        NSString *followString = NSLocalizedString(@"Follow", @"Prompt to follow a blog.");
+        NSString *followedString = NSLocalizedString(@"Following", @"User is following the blog.");
+        [_followButton setTitle:followString forState:UIControlStateNormal];
+        [_followButton setTitle:followedString forState:UIControlStateSelected];
+        [_followButton setTitleEdgeInsets: UIEdgeInsetsMake(0, RPVSmallButtonLeftPadding, 0, 0)];
+        [_followButton setImage:[UIImage imageNamed:@"reader-postaction-follow"] forState:UIControlStateNormal];
+        [_followButton setImage:[UIImage imageNamed:@"reader-postaction-following"] forState:UIControlStateSelected];
+        [_followButton setTitleColor:[UIColor colorWithHexString:@"aaa"] forState:UIControlStateNormal];
+        [_followButton addTarget:self action:@selector(followAction:) forControlEvents:UIControlEventTouchUpInside];
+        [super.byView addSubview:_followButton];
+        
+        _tagButton = [ReaderButton buttonWithType:UIButtonTypeCustom];
+        _tagButton.contentHorizontalAlignment = UIControlContentHorizontalAlignmentLeft;
+        _tagButton.backgroundColor = [UIColor clearColor];
+        _tagButton.titleLabel.font = [UIFont fontWithName:@"OpenSans" size:12.0f];
+        [_tagButton setTitleEdgeInsets: UIEdgeInsetsMake(0, RPVSmallButtonLeftPadding, 0, 0)];
+        [_tagButton setImage:[UIImage imageNamed:@"reader-postaction-tag"] forState:UIControlStateNormal];
+        [_tagButton setTitleColor:[UIColor colorWithHexString:@"aaa"] forState:UIControlStateNormal];
+        [_tagButton addTarget:self action:@selector(tagAction:) forControlEvents:UIControlEventTouchUpInside];
+        [self addSubview:_tagButton];
+        
+        _likeButton = [ReaderButton buttonWithType:UIButtonTypeCustom];
+        _likeButton.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleRightMargin;
+        _likeButton.backgroundColor = [UIColor clearColor];
+        [_likeButton setImage:[UIImage imageNamed:@"reader-postaction-like-blue"] forState:UIControlStateNormal];
+        [_likeButton setImage:[UIImage imageNamed:@"reader-postaction-like-active"] forState:UIControlStateSelected];
+        [_likeButton addTarget:self action:@selector(likeAction:) forControlEvents:UIControlEventTouchUpInside];
+        [super.bottomView addSubview:_likeButton];
+        
+        _reblogButton = [ReaderButton buttonWithType:UIButtonTypeCustom];
+        _reblogButton.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleLeftMargin;
+        _reblogButton.backgroundColor = [UIColor clearColor];
+        [_reblogButton setImage:[UIImage imageNamed:@"reader-postaction-reblog-blue"] forState:UIControlStateNormal];
+        [_reblogButton setImage:[UIImage imageNamed:@"reader-postaction-reblog-done"] forState:UIControlStateSelected];
+        [_reblogButton addTarget:self action:@selector(reblogAction:) forControlEvents:UIControlEventTouchUpInside];
+        [super.bottomView addSubview:_reblogButton];
+        
+        _commentButton = [ReaderButton buttonWithType:UIButtonTypeCustom];
+        _commentButton.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleLeftMargin;
+        _commentButton.backgroundColor = [UIColor clearColor];
+        [_commentButton setImage:[UIImage imageNamed:@"reader-postaction-comment-blue"] forState:UIControlStateNormal];
+        [_commentButton setImage:[UIImage imageNamed:@"reader-postaction-comment-active"] forState:UIControlStateSelected];
+        [_commentButton addTarget:self action:@selector(commentAction:) forControlEvents:UIControlEventTouchUpInside];
+        [super.bottomView addSubview:_commentButton];
     }
     
     return self;
@@ -191,76 +258,6 @@
 	
 	[self updateActionButtons];
 
-}
-
-- (UIView *)buildContentView {
-    return self.showFullContent ? [self viewForFullContent] : [self viewForContentPreview];
-}
-
-- (void)buildContent {
-    [super buildContent];
-    
-    [self addSubview:[self buildContentView]];
-
-    self.cellImageView.contentMode = UIViewContentModeScaleAspectFill;
-    
-    // For the full view, allow the featured image to be tapped
-    if (self.showFullContent) {
-        UITapGestureRecognizer *imageTap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(featuredImageAction:)];
-        self.cellImageView.userInteractionEnabled = YES;
-        [self.cellImageView addGestureRecognizer:imageTap];
-    }
-	[self addSubview:self.cellImageView];
-
-    
-    _followButton = [ReaderButton buttonWithType:UIButtonTypeCustom];
-    _followButton.contentHorizontalAlignment = UIControlContentHorizontalAlignmentLeft;
-    _followButton.backgroundColor = [UIColor clearColor];
-    _followButton.titleLabel.font = [UIFont fontWithName:@"OpenSans" size:12.0f];
-    NSString *followString = NSLocalizedString(@"Follow", @"Prompt to follow a blog.");
-    NSString *followedString = NSLocalizedString(@"Following", @"User is following the blog.");
-    [_followButton setTitle:followString forState:UIControlStateNormal];
-    [_followButton setTitle:followedString forState:UIControlStateSelected];
-    [_followButton setTitleEdgeInsets: UIEdgeInsetsMake(0, RPVSmallButtonLeftPadding, 0, 0)];
-    [_followButton setImage:[UIImage imageNamed:@"reader-postaction-follow"] forState:UIControlStateNormal];
-    [_followButton setImage:[UIImage imageNamed:@"reader-postaction-following"] forState:UIControlStateSelected];
-    [_followButton setTitleColor:[UIColor colorWithHexString:@"aaa"] forState:UIControlStateNormal];
-    [_followButton addTarget:self action:@selector(followAction:) forControlEvents:UIControlEventTouchUpInside];
-    [super.byView addSubview:_followButton];
-    
-    _tagButton = [ReaderButton buttonWithType:UIButtonTypeCustom];
-    _tagButton.contentHorizontalAlignment = UIControlContentHorizontalAlignmentLeft;
-    _tagButton.backgroundColor = [UIColor clearColor];
-    _tagButton.titleLabel.font = [UIFont fontWithName:@"OpenSans" size:12.0f];
-    [_tagButton setTitleEdgeInsets: UIEdgeInsetsMake(0, RPVSmallButtonLeftPadding, 0, 0)];
-    [_tagButton setImage:[UIImage imageNamed:@"reader-postaction-tag"] forState:UIControlStateNormal];
-    [_tagButton setTitleColor:[UIColor colorWithHexString:@"aaa"] forState:UIControlStateNormal];
-    [_tagButton addTarget:self action:@selector(tagAction:) forControlEvents:UIControlEventTouchUpInside];
-    [self addSubview:_tagButton];
-    
-	_likeButton = [ReaderButton buttonWithType:UIButtonTypeCustom];
-	_likeButton.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleRightMargin;
-	_likeButton.backgroundColor = [UIColor clearColor];
-	[_likeButton setImage:[UIImage imageNamed:@"reader-postaction-like-blue"] forState:UIControlStateNormal];
-	[_likeButton setImage:[UIImage imageNamed:@"reader-postaction-like-active"] forState:UIControlStateSelected];
-    [_likeButton addTarget:self action:@selector(likeAction:) forControlEvents:UIControlEventTouchUpInside];
-	[super.bottomView addSubview:_likeButton];
-	
-	_reblogButton = [ReaderButton buttonWithType:UIButtonTypeCustom];
-	_reblogButton.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleLeftMargin;
-	_reblogButton.backgroundColor = [UIColor clearColor];
-	[_reblogButton setImage:[UIImage imageNamed:@"reader-postaction-reblog-blue"] forState:UIControlStateNormal];
-	[_reblogButton setImage:[UIImage imageNamed:@"reader-postaction-reblog-done"] forState:UIControlStateSelected];
-    [_reblogButton addTarget:self action:@selector(reblogAction:) forControlEvents:UIControlEventTouchUpInside];
-	[super.bottomView addSubview:_reblogButton];
-    
-    _commentButton = [ReaderButton buttonWithType:UIButtonTypeCustom];
-	_commentButton.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleLeftMargin;
-	_commentButton.backgroundColor = [UIColor clearColor];
-	[_commentButton setImage:[UIImage imageNamed:@"reader-postaction-comment-blue"] forState:UIControlStateNormal];
-	[_commentButton setImage:[UIImage imageNamed:@"reader-postaction-comment-active"] forState:UIControlStateSelected];
-    [_commentButton addTarget:self action:@selector(commentAction:) forControlEvents:UIControlEventTouchUpInside];
-	[super.bottomView addSubview:_commentButton];
 }
 
 - (void)layoutSubviews {

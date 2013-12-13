@@ -16,9 +16,9 @@
 }
 
 @property (nonatomic, strong) ReaderPost *post;
-@property (assign) BOOL showFullContent;
 
 + (CGFloat)heightForPost:(ReaderPost *)post withWidth:(CGFloat)width;
+- (id)initWithFrame:(CGRect)frame showFullContent:(BOOL)showFullContent;
 - (void)configurePost:(ReaderPost *)post;
 - (void)setAvatar:(UIImage *)avatar;
 

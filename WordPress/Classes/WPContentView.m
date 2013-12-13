@@ -84,7 +84,54 @@ const CGFloat RPVControlButtonBorderSize = 0.0f;
 		_cellImageView.contentMode = UIViewContentModeScaleAspectFill;
 		_cellImageView.clipsToBounds = YES;
 
-        [self buildContent];
+        _titleLabel = [[UILabel alloc] init];
+        _titleLabel.autoresizingMask = UIViewAutoresizingFlexibleWidth;
+        _titleLabel.backgroundColor = [UIColor clearColor];
+        _titleLabel.textColor = [UIColor colorWithHexString:@"333"];
+        _titleLabel.lineBreakMode = NSLineBreakByWordWrapping;
+        _titleLabel.numberOfLines = 0;
+        [self addSubview:_titleLabel];
+        
+        _titleBorder = [[CALayer alloc] init];
+        _titleBorder.backgroundColor = [[UIColor colorWithHexString:@"f1f1f1"] CGColor];
+        [self.layer addSublayer:_titleBorder];
+        
+        _byView = [[UIView alloc] init];
+        _byView.autoresizingMask = UIViewAutoresizingFlexibleWidth;
+        _byView.backgroundColor = [UIColor clearColor];
+        _byView.userInteractionEnabled = YES;
+        [self addSubview:_byView];
+        
+        CGRect avatarFrame = CGRectMake(RPVHorizontalInnerPadding, RPVAuthorPadding, RPVAvatarSize, RPVAvatarSize);
+        _avatarImageView = [[UIImageView alloc] initWithFrame:avatarFrame];
+        [_byView addSubview:_avatarImageView];
+        
+        _bylineLabel = [[UILabel alloc] init];
+        _bylineLabel.backgroundColor = [UIColor clearColor];
+        _bylineLabel.numberOfLines = 1;
+        _bylineLabel.autoresizingMask = UIViewAutoresizingFlexibleWidth;
+        _bylineLabel.font = [UIFont fontWithName:@"OpenSans" size:12.0f];
+        _bylineLabel.adjustsFontSizeToFitWidth = NO;
+        _bylineLabel.textColor = [UIColor colorWithHexString:@"333"];
+        [_byView addSubview:_bylineLabel];
+        
+        _bottomView = [[UIView alloc] init];
+        _bottomView.autoresizingMask = UIViewAutoresizingFlexibleWidth;
+        _bottomView.backgroundColor = [UIColor clearColor];
+        [self addSubview:_bottomView];
+        
+        _bottomBorder = [[CALayer alloc] init];
+        _bottomBorder.backgroundColor = [[UIColor colorWithHexString:@"f1f1f1"] CGColor];
+        [_bottomView.layer addSublayer:_bottomBorder];
+        
+        _timeButton = [UIButton buttonWithType:UIButtonTypeCustom];
+        _timeButton.contentHorizontalAlignment = UIControlContentHorizontalAlignmentLeft;
+        _timeButton.backgroundColor = [UIColor clearColor];
+        _timeButton.titleLabel.font = [UIFont fontWithName:@"OpenSans" size:12.0f];
+        [_timeButton setTitleEdgeInsets: UIEdgeInsetsMake(0, RPVSmallButtonLeftPadding, 0, 0)];
+        [_timeButton setImage:[UIImage imageNamed:@"reader-postaction-time"] forState:UIControlStateNormal];
+        [_timeButton setTitleColor:[UIColor colorWithHexString:@"aaa"] forState:UIControlStateNormal];
+        [_bottomView addSubview:_timeButton];
         
         // Update the relative timestamp once per minute
         _dateRefreshTimer = [NSTimer scheduledTimerWithTimeInterval:60.0 target:self selector:@selector(refreshDate:) userInfo:nil repeats:YES];
@@ -132,57 +179,6 @@ const CGFloat RPVControlButtonBorderSize = 0.0f;
     _snippetLabel.numberOfLines = 0;
     
     return _snippetLabel;
-}
-
-- (void)buildContent {
-	_titleLabel = [[UILabel alloc] init];
-	_titleLabel.autoresizingMask = UIViewAutoresizingFlexibleWidth;
-	_titleLabel.backgroundColor = [UIColor clearColor];
-	_titleLabel.textColor = [UIColor colorWithHexString:@"333"];
-	_titleLabel.lineBreakMode = NSLineBreakByWordWrapping;
-	_titleLabel.numberOfLines = 0;
-	[self addSubview:_titleLabel];
-
-    _titleBorder = [[CALayer alloc] init];
-    _titleBorder.backgroundColor = [[UIColor colorWithHexString:@"f1f1f1"] CGColor];
-    [self.layer addSublayer:_titleBorder];
-
-    _byView = [[UIView alloc] init];
-	_byView.autoresizingMask = UIViewAutoresizingFlexibleWidth;
-	_byView.backgroundColor = [UIColor clearColor];
-    _byView.userInteractionEnabled = YES;
-	[self addSubview:_byView];
-	
-    CGRect avatarFrame = CGRectMake(RPVHorizontalInnerPadding, RPVAuthorPadding, RPVAvatarSize, RPVAvatarSize);
-	_avatarImageView = [[UIImageView alloc] initWithFrame:avatarFrame];
-	[_byView addSubview:_avatarImageView];
-	
-	_bylineLabel = [[UILabel alloc] init];
-	_bylineLabel.backgroundColor = [UIColor clearColor];
-	_bylineLabel.numberOfLines = 1;
-	_bylineLabel.autoresizingMask = UIViewAutoresizingFlexibleWidth;
-	_bylineLabel.font = [UIFont fontWithName:@"OpenSans" size:12.0f];
-	_bylineLabel.adjustsFontSizeToFitWidth = NO;
-	_bylineLabel.textColor = [UIColor colorWithHexString:@"333"];
-	[_byView addSubview:_bylineLabel];
-    
-    _bottomView = [[UIView alloc] init];
-	_bottomView.autoresizingMask = UIViewAutoresizingFlexibleWidth;
-	_bottomView.backgroundColor = [UIColor clearColor];
-	[self addSubview:_bottomView];
-    
-    _bottomBorder = [[CALayer alloc] init];
-    _bottomBorder.backgroundColor = [[UIColor colorWithHexString:@"f1f1f1"] CGColor];
-    [_bottomView.layer addSublayer:_bottomBorder];
-    
-    _timeButton = [UIButton buttonWithType:UIButtonTypeCustom];
-    _timeButton.contentHorizontalAlignment = UIControlContentHorizontalAlignmentLeft;
-    _timeButton.backgroundColor = [UIColor clearColor];
-    _timeButton.titleLabel.font = [UIFont fontWithName:@"OpenSans" size:12.0f];
-    [_timeButton setTitleEdgeInsets: UIEdgeInsetsMake(0, RPVSmallButtonLeftPadding, 0, 0)];
-    [_timeButton setImage:[UIImage imageNamed:@"reader-postaction-time"] forState:UIControlStateNormal];
-    [_timeButton setTitleColor:[UIColor colorWithHexString:@"aaa"] forState:UIControlStateNormal];
-	[_bottomView addSubview:_timeButton];
 }
 
 - (void)reset {    
