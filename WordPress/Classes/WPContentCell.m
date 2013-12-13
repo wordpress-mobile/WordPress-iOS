@@ -9,7 +9,7 @@
 #import "WPContentCell.h"
 #import "WPComLanguages.h"
 #import "UIImageView+Gravatar.h"
-
+#import "NSDate+StringFormatting.h"
 
 @interface WPContentCell() {
     UIImageView *_gravatarImageView;
@@ -17,7 +17,6 @@
     UILabel *_titleLabel;
     UILabel *_detailLabel;
 }
-
 @end
 
 @implementation WPContentCell
@@ -139,6 +138,10 @@ CGFloat const WPContentCellImageWidth = 48.0;
     }
 }
 
++ (BOOL)shortDateString {
+    return YES;
+}
+
 + (BOOL)showGravatarImage {
     return NO;
 }
@@ -190,15 +193,21 @@ CGFloat const WPContentCellImageWidth = 48.0;
 
 + (NSString *)detailTextForContentProvider:(id<WPContentViewProvider>)contentProvider
 {
-    static NSDateFormatter *dateFormatter = nil;
-    
-    if (dateFormatter == nil) {
-        dateFormatter = [[NSDateFormatter alloc] init];
-        [dateFormatter setDateFormat:@"yyyy-MM-dd '|' HH:mm a"];
-    }
     
     NSDate *date = [contentProvider dateForDisplay];
-    return [dateFormatter stringFromDate:date];
+
+    if ([[self class] shortDateString]) {
+        return [date shortString];
+    } else {
+        static NSDateFormatter *dateFormatter = nil;
+        
+        if (dateFormatter == nil) {
+            dateFormatter = [[NSDateFormatter alloc] init];
+            [dateFormatter setDateFormat:@"yyyy-MM-dd '|' HH:mm a"];
+        }
+        
+        return [dateFormatter stringFromDate:date];
+    }
 }
 
 
