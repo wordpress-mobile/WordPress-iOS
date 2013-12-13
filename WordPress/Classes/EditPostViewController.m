@@ -27,6 +27,7 @@ CGFloat const EPVCTextViewTopPadding = 7.0f;
 
 @interface EditPostViewController ()<UIPopoverControllerDelegate>
 
+@property (nonatomic, strong) UIButton *titleBarButton;
 @property (nonatomic, strong) WPAlertView *linkHelperAlertView;
 @property (nonatomic, strong) UIPopoverController *blogSelectorPopover;
 
@@ -184,19 +185,7 @@ CGFloat const EPVCTextViewTopPadding = 7.0f;
     if (blogCount <= 1 || self.editMode == EditPostViewControllerModeEditPost) {
         self.navigationItem.title = [self editorTitle];
     } else {
-        UIButton *titleButton;
-        if ([self.navigationItem.titleView isKindOfClass:[UIButton class]]) {
-            titleButton = (UIButton *)self.navigationItem.titleView;
-        } else {
-            titleButton = [UIButton buttonWithType:UIButtonTypeSystem];
-            titleButton.frame = CGRectMake(0, 0, 200, 33);
-            titleButton.titleLabel.numberOfLines = 2;
-            titleButton.titleLabel.textAlignment = NSTextAlignmentCenter;
-            [titleButton addTarget:self action:@selector(showBlogSelector) forControlEvents:UIControlEventTouchUpInside];
-            
-            self.navigationItem.titleView = titleButton;
-        }
-        
+        UIButton *titleButton = self.titleBarButton;
         NSMutableAttributedString *titleText = [[NSMutableAttributedString alloc] initWithString:[NSString stringWithFormat:@"%@\n", [self editorTitle]]
                                                                                       attributes:@{ NSFontAttributeName : [UIFont fontWithName:@"OpenSans-Bold" size:14.0] }];
         NSMutableAttributedString *titleSubtext = [[NSMutableAttributedString alloc] initWithString:[NSString stringWithFormat:@"%@ %@", self.post.blog.blogName, @"▼"]
@@ -493,29 +482,24 @@ CGFloat const EPVCTextViewTopPadding = 7.0f;
             [self dismissViewControllerAnimated:YES completion:nil];
         }
     };
-    
-    void (^selectedCompletion)(NSManagedObjectID *, BOOL) = ^(NSManagedObjectID *selectedObjectID, BOOL finished) {
-        if (finished) {
-            NSManagedObjectContext *context = [[ContextManager sharedInstance] mainContext];
-            Blog *blog = (Blog *)[context objectWithID:selectedObjectID];
-            
-            if (blog) {
-                self.post.blog = blog;
-                [[NSUserDefaults standardUserDefaults] setObject:blog.url forKey:EditPostViewControllerLastUsedBlogURL];
-                [[NSUserDefaults standardUserDefaults] synchronize];
-            }
-            
-            [self refreshUIForCurrentPost];
-            dismissHandler();
+    void (^selectedCompletion)(NSManagedObjectID *) = ^(NSManagedObjectID *selectedObjectID) {
+        NSManagedObjectContext *context = [[ContextManager sharedInstance] mainContext];
+        Blog *blog = (Blog *)[context objectWithID:selectedObjectID];
+        
+        if (blog) {
+            self.post.blog = blog;
+            [[NSUserDefaults standardUserDefaults] setObject:blog.url forKey:EditPostViewControllerLastUsedBlogURL];
+            [[NSUserDefaults standardUserDefaults] synchronize];
         }
+        
+        [self refreshUIForCurrentPost];
+        dismissHandler();
     };
     
     BlogSelectorViewController *vc = [[BlogSelectorViewController alloc] initWithSelectedBlogObjectID:self.post.blog.objectID
                                                                                    selectedCompletion:selectedCompletion
                                                                                      cancelCompletion:dismissHandler];
-    vc.title = NSLocalizedString(@"My Blogs", @"");
-    UINavigationController *navController = [[UINavigationController alloc] initWithRootViewController:vc];
-    navController.navigationBar.translucent = NO;
+    vc.title = NSLocalizedString(@"Select Blog", @"");
     
     if (IS_IPAD) {
         vc.preferredContentSize = CGSizeMake(320.0, 500);
@@ -523,11 +507,13 @@ CGFloat const EPVCTextViewTopPadding = 7.0f;
         CGRect titleRect = self.navigationItem.titleView.frame;
         titleRect = [self.navigationController.view convertRect:titleRect fromView:self.navigationItem.titleView.superview];
         
-        self.blogSelectorPopover = [[UIPopoverController alloc] initWithContentViewController:navController];
+        self.blogSelectorPopover = [[UIPopoverController alloc] initWithContentViewController:vc];
         self.blogSelectorPopover.backgroundColor = [WPStyleGuide newKidOnTheBlockBlue];
         self.blogSelectorPopover.delegate = self;
         [self.blogSelectorPopover presentPopoverFromRect:titleRect inView:self.navigationController.view permittedArrowDirections:UIPopoverArrowDirectionAny animated:YES];
     } else {
+        UINavigationController *navController = [[UINavigationController alloc] initWithRootViewController:vc];
+        navController.navigationBar.translucent = NO;
         navController.modalPresentationStyle = UIModalPresentationPageSheet;
         navController.modalTransitionStyle = UIModalTransitionStyleCoverVertical;
         
@@ -707,6 +693,23 @@ CGFloat const EPVCTextViewTopPadding = 7.0f;
     
     [self refreshTableHeaderViewHeight];
     [self refreshButtons];
+}
+
+- (UIButton *)titleBarButton {
+    if (_titleBarButton) {
+        return _titleBarButton;
+    }
+    
+    UIButton *titleButton = [UIButton buttonWithType:UIButtonTypeSystem];
+    titleButton.frame = CGRectMake(0, 0, 200, 33);
+    titleButton.titleLabel.numberOfLines = 2;
+    titleButton.titleLabel.textAlignment = NSTextAlignmentCenter;
+    [titleButton addTarget:self action:@selector(showBlogSelector:) forControlEvents:UIControlEventTouchUpInside];
+    
+    _titleBarButton = titleButton;
+    self.navigationItem.titleView = _titleBarButton;
+
+    return _titleBarButton;
 }
 
 # pragma mark - Model State Methods
