@@ -12,13 +12,21 @@
 
 #define WPKT_BUTTON_WIDTH 40.0f
 #define WPKT_BUTTON_HEIGHT_PORTRAIT 40.0f
-#define WPKT_BUTTON_HEIGHT_LANDSCAPE 34.0f
+#define WPKT_BUTTON_HEIGHT_LANDSCAPE 33.0f
 #define WPKT_BUTTON_WIDTH_IPAD 65.0f
 #define WPKT_BUTTON_HEIGHT_IPAD 65.0f
 
 #pragma mark -
 
 @implementation WPKeyboardToolbarBase
+
+- (CGFloat)buttonHeight {
+    return IS_IPAD ? WPKT_BUTTON_HEIGHT_IPAD : WPKT_BUTTON_HEIGHT_PORTRAIT;
+}
+
+- (CGFloat)buttonWidth {
+    return IS_IPAD ? WPKT_BUTTON_WIDTH_IPAD : WPKT_BUTTON_WIDTH;
+}
 
 - (void)buttonAction:(WPKeyboardToolbarButtonItem *)sender {
     WPFLogMethod();
@@ -30,10 +38,10 @@
     }
 }
 
-- (void)buildMainButtons {
+- (void)buildFormatButtons {
     CGFloat x = 0.0f;
-    CGFloat width = IS_IPAD ? WPKT_BUTTON_WIDTH_IPAD : WPKT_BUTTON_WIDTH;
-    CGFloat height = IS_IPAD ? WPKT_BUTTON_HEIGHT_IPAD : WPKT_BUTTON_HEIGHT_PORTRAIT;
+    CGFloat width = [self buttonWidth];
+    CGFloat height = [self buttonHeight];
     UIColor *highlightColor = [UIColor whiteColor];
     if (_boldButton == nil) {
         self.boldButton = [WPKeyboardToolbarButtonItem button];
@@ -104,9 +112,35 @@
         _moreButton.exclusiveTouch = YES;
         [_moreButton addTarget:self action:@selector(buttonAction:) forControlEvents:UIControlEventTouchUpInside];
     }
-    if (_doneButton == nil && IS_IPHONE) {
+}
+
+- (void)setupFormatView {
+    if (_formatView == nil) {
+        CGFloat height = [self buttonHeight];
+        self.formatView = [[UIView alloc] init];
+        [self buildFormatButtons];
+        CGFloat mainWidth = _moreButton.frame.origin.x + _moreButton.frame.size.width;
+        _formatView.frame = CGRectMake(0, 0, mainWidth, height);
+        _formatView.autoresizingMask = UIViewAutoresizingFlexibleHeight;
+        
+        [_formatView addSubview:_boldButton];
+        [_formatView addSubview:_italicsButton];
+        [_formatView addSubview:_underlineButton];
+        [_formatView addSubview:_delButton];
+        [_formatView addSubview:_linkButton];
+        [_formatView addSubview:_quoteButton];
+        [_formatView addSubview:_moreButton];
+    }
+}
+
+- (void)setupDoneButton {
+    if (_doneButton == nil) {
+        CGFloat width = [self buttonWidth];
+        CGFloat height = [self buttonHeight];
+        UIColor *highlightColor = [UIColor whiteColor];
+        CGFloat x = self.frame.size.width - width;
         self.doneButton = [WPKeyboardToolbarButtonItem button];
-        [_doneButton setImageName:@"icon_format_keyboard" withColor:[WPStyleGuide newKidOnTheBlockBlue] highlightColor:highlightColor];
+        [_doneButton setImageName:@"icon_format_keyboard" withColor:nil highlightColor:highlightColor];
         _doneButton.frame = CGRectMake(x, 0, width, height);
         _doneButton.actionTag = @"done";
         _doneButton.exclusiveTouch = YES;
@@ -115,49 +149,37 @@
 }
 
 - (void)setupView {
-    if (_mainView == nil) {
-        CGFloat height = IS_IPAD ? WPKT_BUTTON_HEIGHT_IPAD : WPKT_BUTTON_HEIGHT_PORTRAIT;
-        self.mainView = [[UIView alloc] init];
-        [self buildMainButtons];
-        CGFloat mainWidth = _moreButton.frame.origin.x + _moreButton.frame.size.width;
-        _mainView.frame = CGRectMake(0, 0, mainWidth, height);
-        _mainView.autoresizesSubviews = YES;
-
-        [_mainView addSubview:_boldButton];
-        [_mainView addSubview:_italicsButton];
-        [_mainView addSubview:_underlineButton];
-        [_mainView addSubview:_delButton];
-        [_mainView addSubview:_linkButton];
-        [_mainView addSubview:_quoteButton];
-        [_mainView addSubview:_moreButton];
-    }
+    [self setupFormatView];
+    [self setupDoneButton];
 }
 
 - (void)layoutSubviews {
+    
+    CGRect doneFrame = _doneButton.frame;
+    doneFrame.origin.x = self.frame.size.width - doneFrame.size.width;
     if (IS_IPHONE) {
-        CGRect doneFrame = _doneButton.frame;
-        doneFrame.origin.x = self.frame.size.width - doneFrame.size.width;
         if (self.frame.size.height < WPKT_HEIGHT_IPHONE_PORTRAIT) {
             doneFrame.size.height = WPKT_BUTTON_HEIGHT_LANDSCAPE;
         } else {
             doneFrame.size.height = WPKT_BUTTON_HEIGHT_PORTRAIT;
         }
-        _doneButton.frame = doneFrame;
-        if (_doneButton.superview == nil) {
-            [self addSubview:_doneButton];
-        }
-        
-        CGRect frame = _mainView.frame;
+    }
+    _doneButton.frame = doneFrame;
+    if (_doneButton && _doneButton.superview == nil) {
+        [self addSubview:_doneButton];
+    }
+    
+    if (IS_IPHONE) {
+        CGRect frame = _formatView.frame;
         if (self.frame.size.height < WPKT_HEIGHT_IPHONE_PORTRAIT) {
             frame.size.height = WPKT_BUTTON_HEIGHT_LANDSCAPE;
         } else {
             frame.size.height = WPKT_BUTTON_HEIGHT_PORTRAIT;
         }
-        _mainView.frame = frame;
+        _formatView.frame = frame;
     }
-
-    if (_mainView.superview == nil) {
-        [self addSubview:_mainView];
+    if (_formatView && _formatView.superview == nil) {
+        [self addSubview:_formatView];
     }
 }
 
@@ -188,7 +210,7 @@
 
 #pragma mark - UIInputViewAudioFeedback
 
-- (BOOL) enableInputClicksWhenVisible {
+- (BOOL)enableInputClicksWhenVisible {
     return YES;
 }
 

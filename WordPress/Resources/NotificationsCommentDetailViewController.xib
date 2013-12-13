@@ -10,7 +10,8 @@
                 <outlet property="postBanner" destination="223" id="233"/>
                 <outlet property="replyCancelBarButton" destination="276" id="282"/>
                 <outlet property="replyNavigationBar" destination="269" id="273"/>
-                <outlet property="replyNavigationItem" destination="270" id="272"/>
+                <outlet property="replyNavigationItem" destination="270" id="Ni2-gT-lPc"/>
+                <outlet property="replyPlaceholder" destination="279" id="280"/>
                 <outlet property="replyPublishBarButton" destination="275" id="283"/>
                 <outlet property="tableView" destination="253" id="257"/>
                 <outlet property="toolbar" destination="219" id="252"/>
