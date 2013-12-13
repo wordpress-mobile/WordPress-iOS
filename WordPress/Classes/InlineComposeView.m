@@ -120,30 +120,15 @@ const CGFloat InlineComposeViewMaxHeight = 88.f;
             if (location.y > 0) {
                 // start moving the view
                 keyboardFrame.origin.y += location.y;
-                self.inputAccessoryView.superview.frame = keyboardFrame;
+                keyboardView.frame = keyboardFrame;
             } else if (location.y < 0 && currentY > self.keyboardAnchor){
                 keyboardFrame.origin.y += location.y;
                 keyboardFrame.origin.y = MAX(keyboardFrame.origin.y, self.keyboardAnchor);
-                self.inputAccessoryView.superview.frame = keyboardFrame;
+                keyboardView.frame = keyboardFrame;
             }
 
-            // if we've moved more than 40, just dismiss it
-            if (deltaY > 44.f) {
-                [self.window removeGestureRecognizer:self.panGesture];
-                keyboardFrame.origin.y = CGRectGetMaxY(self.window.frame);
-                [UIView animateKeyframesWithDuration:0.25f
-                                               delay:0.f
-                                             options:UIViewAnimationOptionCurveEaseOut | UIViewAnimationOptionBeginFromCurrentState
-                                          animations:^{
-                                              keyboardView.frame = keyboardFrame;
-                                          }
-                                          completion:^(BOOL finished) {
-                                              keyboardView.hidden = YES;
-                                              [self resignFirstResponder];
-                                              [self endEditing:YES];
-                                          }];
-            }
             break;
+
         case UIGestureRecognizerStateEnded:
         case UIGestureRecognizerStateCancelled: {
             // if we're moving back up
@@ -157,7 +142,9 @@ const CGFloat InlineComposeViewMaxHeight = 88.f;
                 keyboardFrame.origin.y = CGRectGetMaxY(self.window.frame);
             }
 
-            [self.window removeGestureRecognizer:self.panGesture];
+            if (hide) {
+                [self.window removeGestureRecognizer:self.panGesture];
+            }
 
             [UIView animateWithDuration:0.25f
                                   delay:0.f
@@ -295,24 +282,28 @@ const CGFloat InlineComposeViewMaxHeight = 88.f;
     return [self.proxyTextView canResignFirstResponder];
 }
 
-#pragma mark - UIKeyboardDidShowNotification
+#pragma mark - UIKeyboardWillShowNotification
 
 - (void)keyboardWillShow:(NSNotification *)notification {
     self.keyboardView.hidden = NO;
 }
+
+#pragma mark UIKeyboardDidShowNotification
 
 - (void)keyboardDidShow:(NSNotification *)notification {
     self.keyboardView = self.inputAccessoryView.superview;
     [self.window addGestureRecognizer:self.panGesture];
 }
 
-#pragma mark - UIKeyboardWillHideNotification
+#pragma mark UIKeyboardWillHideNotification
 
 - (void)keyboardWillHide:(NSNotification *)notification {
 
     [self.window removeGestureRecognizer:self.panGesture];
 
 }
+
+#pragma mark UIKeyboardDidHideNotification
 
 - (void)keyboardDidHide:(NSNotification *)notification {
     self.keyboardView.hidden = NO;
