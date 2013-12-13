@@ -374,5 +374,13 @@
     return self.blog.blogName;
 }
 
+- (NSString *)statusForDisplay {
+    NSString *status = [[self class] titleForStatus:self.status];
+    if ([status isEqualToString:NSLocalizedString(@"Comments", @"")]) {
+        status = nil;
+    }
+    return status;
+}
+
 
 @end
