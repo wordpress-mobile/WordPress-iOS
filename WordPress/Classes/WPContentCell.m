@@ -21,12 +21,12 @@
 
 @implementation WPContentCell
 
-CGFloat const WPContentCellStandardOffset = 16.0;
-CGFloat const WPContentCellTitleAndDetailVerticalOffset = 6.0;
+CGFloat const WPContentCellStandardOffset = 10.0;
+CGFloat const WPContentCellTitleAndDetailVerticalOffset = 5.0;
 CGFloat const WPContentCellLabelAndTitleHorizontalOffset = -0.5;
 CGFloat const WPContentCellAccessoryViewOffset = 25.0;
-CGFloat const WPContentCellImageWidth = 48.0;
-CGFloat const WPContentCellTitleNumberOfLines = 4;
+CGFloat const WPContentCellImageWidth = 70.0;
+CGFloat const WPContentCellTitleNumberOfLines = 3;
 
 - (id)initWithStyle:(UITableViewCellStyle)style reuseIdentifier:(NSString *)reuseIdentifier
 {
@@ -164,7 +164,7 @@ CGFloat const WPContentCellTitleNumberOfLines = 4;
 
 + (UIFont *)titleFont
 {
-    return [UIFont fontWithName:@"OpenSans" size:18.0];
+    return [UIFont fontWithName:@"OpenSans" size:16.0];
 }
 
 + (NSDictionary *)titleAttributes
