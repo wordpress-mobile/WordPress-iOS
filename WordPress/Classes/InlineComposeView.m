@@ -48,18 +48,54 @@ const CGFloat InlineComposeViewMaxHeight = 88.f;
     self.proxyTextView = nil;
 }
 
+- (void)updatePlaceholderAndSize {
+    UITextView *textView = self.toolbarTextView;
+    // show placeholder if text is empty
+    BOOL empty = [textView.text isEqualToString:@""];
+    self.placeholderLabel.hidden = !empty;
+    self.sendButton.enabled = !empty;
+
+    CGRect frame = self.inputAccessoryView.frame;
+
+    // if there's no text, force it back to min height
+    if (empty) {
+        frame.size.height = InlineComposeViewMinHeight;
+        self.inputAccessoryView.frame = frame;
+        return;
+    }
+
+    // expand placeholder to max height
+    CGSize textSize = self.toolbarTextView.contentSize;
+    CGSize textFrameSize = self.toolbarTextView.frame.size;
+    CGFloat delta = textSize.height - textFrameSize.height;
+
+    // we don't need to change the height
+    if (delta == 0) {
+        return;
+    }
+
+    frame.size.height += delta;
+    // keep the height within the constraints
+    frame.size.height = MIN(frame.size.height, InlineComposeViewMaxHeight);
+    frame.size.height = MAX(frame.size.height, InlineComposeViewMinHeight);
+
+    self.inputAccessoryView.frame = frame;
+
+    [self.toolbarTextView scrollRangeToVisible:self.toolbarTextView.selectedRange];
+
+}
+
 #pragma mark - IBAction
 
 - (IBAction)onSendReply:(id)sender {
     [self.delegate composeView:self didSendText:self.toolbarTextView.text];
-    self.toolbarTextView.editable = NO;
-    [self.proxyTextView becomeFirstResponder];
 }
 
 #pragma mark - Accessors
 
 - (void)setAttributedText:(NSAttributedString *)attributedText {
     self.toolbarTextView.attributedText = attributedText;
+    [self updatePlaceholderAndSize];
 }
 
 - (NSAttributedString *)attributedText {
@@ -68,6 +104,7 @@ const CGFloat InlineComposeViewMaxHeight = 88.f;
 
 - (void)setText:(NSString *)text {
     self.toolbarTextView.text = text;
+    [self updatePlaceholderAndSize];
 }
 
 - (NSString *)text {
@@ -94,6 +131,10 @@ const CGFloat InlineComposeViewMaxHeight = 88.f;
 
 - (BOOL)resignFirstResponder {
     return [self.proxyTextView resignFirstResponder];
+}
+
+- (BOOL)canResignFirstResponder {
+    return [self.proxyTextView canResignFirstResponder];
 }
 
 #pragma mark - UITextViewDelegate
@@ -153,44 +194,12 @@ const CGFloat InlineComposeViewMaxHeight = 88.f;
     if (textView == self.proxyTextView)
         return;
 
-    // show placeholder if text is empty
-    BOOL empty = [textView.text isEqualToString:@""];
-    self.placeholderLabel.hidden = !empty;
-    self.sendButton.enabled = !empty;
-
-    CGRect frame = self.inputAccessoryView.frame;
-
-    // if there's no text, force it back to min height
-    if (empty) {
-        frame.size.height = InlineComposeViewMinHeight;
-        self.inputAccessoryView.frame = frame;
-        return;
-    }
-
-    // expand placeholder to max height
-    CGSize textSize = self.toolbarTextView.contentSize;
-    CGSize textFrameSize = self.toolbarTextView.frame.size;
-    CGFloat delta = textSize.height - textFrameSize.height;
-
-    // we don't need to change the height
-    if (delta == 0) {
-        return;
-    }
-
-    frame.size.height += delta;
-    // keep the height within the constraints
-    frame.size.height = MIN(frame.size.height, InlineComposeViewMaxHeight);
-    frame.size.height = MAX(frame.size.height, InlineComposeViewMinHeight);
-
-    self.inputAccessoryView.frame = frame;
-
-    [self.toolbarTextView scrollRangeToVisible:self.toolbarTextView.selectedRange];
-
     // forward UITextFieldDelegate methods to our delegate
     if ([self.delegate respondsToSelector:@selector(textViewDidChange:)]) {
         [self.delegate textViewDidChange:textView];
     }
 
+    [self updatePlaceholderAndSize];
 }
 
 - (void)textViewDidChangeSelection:(UITextView *)textView {
