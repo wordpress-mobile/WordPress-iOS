@@ -421,7 +421,7 @@ NSString * const WPNotificationsNavigationRestorationID = @"WPNotificationsNavig
     }
     [postsViewController.tabBarItem setTitlePositionAdjustment:tabBarTitleOffset];
 
-    _tabBarController.viewControllers = @[blogListNavigationController, readerNavigationController, notificationsNavigationController, postsViewController];
+    _tabBarController.viewControllers = @[readerNavigationController, notificationsNavigationController, blogListNavigationController, postsViewController];
 
     [_tabBarController setSelectedViewController:readerNavigationController];
     
