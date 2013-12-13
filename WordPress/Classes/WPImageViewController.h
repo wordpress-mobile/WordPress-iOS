@@ -10,10 +10,6 @@
 
 @interface WPImageViewController : UIViewController
 
-+ (id)presentAsModalWithImage:(UIImage *)image;
-+ (id)presentAsModalWithURL:(NSURL *)url;
-+ (id)presentAsModalWithImage:(UIImage *)image andURL:(NSURL *)url;
-
 - (id)initWithImage:(UIImage *)image;
 - (id)initWithURL:(NSURL *)url;
 - (id)initWithImage:(UIImage *)image andURL:(NSURL *)url;

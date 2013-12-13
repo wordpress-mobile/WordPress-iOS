@@ -6,11 +6,13 @@
 //  Copyright (c) 2013 WordPress. All rights reserved.
 //
 
+#import "ReaderPostsViewController.h"
 #import "ReaderTopicsViewController.h"
 #import "WordPressComApi.h"
 #import "ReaderPost.h"
 #import "WPFriendFinderViewController.h"
 #import "WPTableViewSectionHeaderView.h"
+#import "NSString+XMLExtensions.h"
 
 @interface ReaderTopicsViewController ()
 
@@ -27,7 +29,6 @@
 
 @implementation ReaderTopicsViewController
 
-@synthesize delegate;
 
 #pragma mark - LifeCycle Methods
 
@@ -59,7 +60,7 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
 	
-	self.title = NSLocalizedString(@"Topics", @"Title of the Reader Topics screen");
+	self.title = NSLocalizedString(@"Browse", @"Title of the Reader Topics screen");
     UIBarButtonItem *cancelButton = [[UIBarButtonItem alloc] initWithTitle:NSLocalizedString(@"Cancel", nil)
                                                                      style:UIBarButtonItemStylePlain
                                                                     target:self
@@ -128,6 +129,7 @@
 		
 		for (NSDictionary *dict in arr) {
 			NSString *title = [dict objectForKey:@"cat_name"];
+            title = [title stringByDecodingXMLCharacters];
 			NSString *endpoint = [NSString stringWithFormat:topicEndpoint, [dict stringForKey:@"category_nicename"]];
 			[topics addObject:@{@"title": title, @"endpoint":endpoint}];
 		}
@@ -190,7 +192,7 @@
 			break;
 			
 		default:
-			return NSLocalizedString(@"Topics", @"");
+			return NSLocalizedString(@"Tags", @"Section title for reader tags you can browse");
 			break;
 	}
 }
@@ -255,9 +257,7 @@
 	[[NSUserDefaults standardUserDefaults] synchronize];
 	
 	if(![[dict objectForKey:@"endpoint"] isEqualToString:[_currentTopic objectForKey:@"endpoint"]]) {
-		if(self.delegate) {
-			[delegate readerTopicChanged];
-		}
+        [[NSNotificationCenter defaultCenter] postNotificationName:ReaderTopicDidChangeNotification object:self];
 	}
 	
     [self dismissViewControllerAnimated:YES completion:nil];
