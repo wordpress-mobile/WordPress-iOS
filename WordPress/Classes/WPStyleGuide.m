@@ -44,6 +44,13 @@
     return @{NSParagraphStyleAttributeName: paragraphStyle, NSFontAttributeName : [self postTitleFont]};
 }
 
++ (NSDictionary *)postTitleAttributesBold {
+    NSMutableParagraphStyle *paragraphStyle = [[NSMutableParagraphStyle alloc] init];
+    paragraphStyle.minimumLineHeight = 20;
+    paragraphStyle.maximumLineHeight = 20;
+    return @{NSParagraphStyleAttributeName: paragraphStyle, NSFontAttributeName : [self postTitleFontBold]};
+}
+
 + (UIFont *)subtitleFont
 {
     return [UIFont fontWithName:@"OpenSans" size:12.0];

@@ -104,14 +104,10 @@ CGFloat const WPContentCellImageWidth = 48.0;
     
     [self setGravatarImageForContentProvider:contentProvider];
     
-    _titleLabel.text = [[self class] titleTextForContentProvider:contentProvider];
+    _titleLabel.attributedText = [[self class] titleAttributedTextForContentProvider:contentProvider];
     _statusLabel.text = [[self class] statusTextForContentProvider:contentProvider];
     _statusLabel.textColor = [[self class] statusColorForContentProvider:contentProvider];
     _detailLabel.text = [[self class] detailTextForContentProvider:contentProvider];
-    
-    if (_titleLabel.text != nil) {
-        _titleLabel.attributedText = [[NSAttributedString alloc] initWithString:_titleLabel.text attributes:[[self class] titleAttributes]];
-    }
     
     if (_statusLabel.text != nil) {
         _statusLabel.attributedText = [[NSAttributedString alloc] initWithString:_statusLabel.text attributes:[[self class] statusAttributes]];
@@ -176,9 +172,14 @@ CGFloat const WPContentCellImageWidth = 48.0;
     return [WPStyleGuide postTitleAttributes];
 }
 
-+ (NSString *)titleTextForContentProvider:(id<WPContentViewProvider>)contentProvider
++ (NSDictionary *)titleAttributesBold
 {
-    return [contentProvider titleForDisplay];
+    return [WPStyleGuide postTitleAttributesBold];
+}
+
++ (NSAttributedString *)titleAttributedTextForContentProvider:(id<WPContentViewProvider>)contentProvider
+{
+    return [[NSAttributedString alloc] initWithString:[contentProvider titleForDisplay] attributes:[self titleAttributes]];
 }
 
 + (UIFont *)detailFont
@@ -245,7 +246,7 @@ CGFloat const WPContentCellImageWidth = 48.0;
 + (CGRect)titleLabelFrameForContentProvider:(id<WPContentViewProvider>)contentProvider previousFrame:(CGRect)previousFrame maxWidth:(CGFloat)maxWidth
 {
     CGSize size;
-    size = [[[self class] titleTextForContentProvider:contentProvider] boundingRectWithSize:CGSizeMake([[self class] textWidth:maxWidth], CGFLOAT_MAX) options:NSStringDrawingUsesLineFragmentOrigin attributes:[[self class] titleAttributes] context:nil].size;
+    size = [[[self class] titleAttributedTextForContentProvider:contentProvider].string boundingRectWithSize:CGSizeMake([[self class] textWidth:maxWidth], CGFLOAT_MAX) options:NSStringDrawingUsesLineFragmentOrigin attributes:[[self class] titleAttributes] context:nil].size;
     
     CGFloat offset = 0.0;
     if (!CGSizeEqualToSize(previousFrame.size, CGSizeZero)) {

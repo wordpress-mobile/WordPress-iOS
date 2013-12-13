@@ -16,27 +16,22 @@
     return YES;
 }
 
-+ (NSString *)titleTextForContentProvider:(id<WPContentViewProvider>)contentProvider
++ (NSAttributedString *)titleAttributedTextForContentProvider:(id<WPContentViewProvider>)contentProvider
 {
-    Comment *comment = (Comment *)contentProvider;
-    
     // combine author and title
-    NSString *author = [comment authorForDisplay];
-    NSString *postTitle = [comment titleForDisplay];
+    NSString *author = [contentProvider authorForDisplay];
+    NSString *postTitle = [contentProvider titleForDisplay];
     
     if (!(postTitle.length > 0)) {
         postTitle = NSLocalizedString(@"(No Title)", nil);
     }
     postTitle = [NSLocalizedString(@"on ", @"") stringByAppendingString:postTitle];
+    postTitle = [author stringByAppendingString:[NSString stringWithFormat:@" %@: ", postTitle]];
     
-    return [author stringByAppendingString:[NSString stringWithFormat:@" %@", postTitle]];
+    NSMutableAttributedString *attributedPostTitle = [[NSMutableAttributedString alloc] initWithString:postTitle attributes:[[self class] titleAttributesBold]];
+    [attributedPostTitle appendAttributedString:[[NSAttributedString alloc] initWithString:[contentProvider contentForDisplay] attributes:[[self class] titleAttributes]]];
+    return attributedPostTitle;
 }
-
-+ (NSString *)detailTextForContentProvider:(id<WPContentViewProvider>)contentProvider {
-    return [contentProvider contentForDisplay];
-}
-
-
 
 @end
 
