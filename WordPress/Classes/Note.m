@@ -270,6 +270,10 @@ const NSUInteger NoteKeepCount = 20;
     return nil;
 }
 
+- (NSString *)statusForDisplay {
+    return nil;
+}
+
 - (NSString *)contentForDisplay {
     // Contains a lot of cruft
     return self.commentText;

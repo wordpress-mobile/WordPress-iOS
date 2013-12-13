@@ -7,12 +7,9 @@
 //
 
 #import "WPContentCell.h"
-#import "Post.h"
-#import "NSString+XMLExtensions.h"
 #import "WPComLanguages.h"
 
 @interface WPContentCell() {
-    AbstractPost __weak *_post;
     UILabel *_statusLabel;
     UILabel *_titleLabel;
     UILabel *_detailLabel;
@@ -77,33 +74,28 @@ CGFloat const WPContentCellAccessoryViewOffset = 25.0;
     
     CGFloat maxWidth = CGRectGetWidth(self.bounds);
     
-    _statusLabel.frame = [[self class] statusLabelFrameForPost:self.post maxWidth:maxWidth];
-    _titleLabel.frame = [[self class] titleLabelFrameForPost:self.post previousFrame:_statusLabel.frame maxWidth:maxWidth];
-    _detailLabel.frame = [[self class] detailLabelFrameForPost:self.post previousFrame:_titleLabel.frame maxWidth:maxWidth];
+    _statusLabel.frame = [[self class] statusLabelFrameForContentProvider:self.contentProvider maxWidth:maxWidth];
+    _titleLabel.frame = [[self class] titleLabelFrameForContentProvider:self.contentProvider previousFrame:_statusLabel.frame maxWidth:maxWidth];
+    _detailLabel.frame = [[self class] detailLabelFrameForContentProvider:self.contentProvider previousFrame:_titleLabel.frame maxWidth:maxWidth];
 }
 
-+ (CGFloat)rowHeightForPost:(AbstractPost *)post andWidth:(CGFloat)width;
++ (CGFloat)rowHeightForContentProvider:(id<WPContentViewProvider>)contentProvider andWidth:(CGFloat)width;
 {
-    CGRect statusFrame = [[self class] statusLabelFrameForPost:post maxWidth:width];
-    CGRect titleFrame = [[self class] titleLabelFrameForPost:post previousFrame:statusFrame maxWidth:width];
-    CGRect detailFrame = [[self class] detailLabelFrameForPost:post previousFrame:titleFrame maxWidth:width];
+    CGRect statusFrame = [[self class] statusLabelFrameForContentProvider:contentProvider maxWidth:width];
+    CGRect titleFrame = [[self class] titleLabelFrameForContentProvider:contentProvider previousFrame:statusFrame maxWidth:width];
+    CGRect detailFrame = [[self class] detailLabelFrameForContentProvider:contentProvider previousFrame:titleFrame maxWidth:width];
     
     return CGRectGetMaxY(detailFrame) + WPContentCellStandardOffset;
 }
 
-- (AbstractPost *)post
+- (void)setContentProvider:(id<WPContentViewProvider>)contentProvider
 {
-    return _post;
-}
-
-- (void)setPost:(AbstractPost *)post
-{
-    _post = post;
+    _contentProvider = contentProvider;
     
-    _titleLabel.text = [[self class] titleText:post];
-    _statusLabel.text = [[self class] statusTextForPost:post];
-    _statusLabel.textColor = [[self class] statusColorForPost:post];
-    _detailLabel.text = [[self class] detailText:post];
+    _titleLabel.text = [[self class] titleTextForContentProvider:contentProvider];
+    _statusLabel.text = [[self class] statusTextForContentProvider:contentProvider];
+    _statusLabel.textColor = [[self class] statusColorForContentProvider:contentProvider];
+    _detailLabel.text = [[self class] detailTextForContentProvider:contentProvider];
     
     if (_titleLabel.text != nil) {
         _titleLabel.attributedText = [[NSAttributedString alloc] initWithString:_titleLabel.text attributes:[[self class] titleAttributes]];
@@ -131,53 +123,14 @@ CGFloat const WPContentCellAccessoryViewOffset = 25.0;
     return [WPStyleGuide labelAttributes];
 }
 
-+ (NSString *)statusTextForPost:(AbstractPost *)post
++ (NSString *)statusTextForContentProvider:(id<WPContentViewProvider>)contentProvider
 {
-    if (post.remoteStatus == AbstractPostRemoteStatusSync) {
-        if ([post.status isEqualToString:@"pending"]) {
-            return [NSLocalizedString(@"Pending", @"") uppercaseString];
-        } else if ([post.status isEqualToString:@"draft"]) {
-            return [post.statusTitle uppercaseString];
-        } else {
-            return @"";
-        }
-    } else {
-        NSString *statusText = [self addEllipsesIfAppropriate:[AbstractPost titleForRemoteStatus:@((int)post.remoteStatus)]];
-        return [statusText uppercaseString];
-    }
+    return [[contentProvider statusForDisplay] uppercaseString];
 }
 
-+ (NSString *)addEllipsesIfAppropriate:(NSString *)statusText
++ (UIColor *)statusColorForContentProvider:(id<WPContentViewProvider>)contentProvider
 {
-    if ([statusText isEqualToString:NSLocalizedString(@"Uploading", nil)]) {
-        if ([WPComLanguages isRightToLeft]) {
-            return [NSString stringWithFormat:@"…%@", statusText];
-        } else {
-            return [NSString stringWithFormat:@"%@…", statusText];
-        }
-    }
-    return statusText;
-}
-
-+ (UIColor *)statusColorForPost:(AbstractPost *)post
-{
-    if (post.remoteStatus == AbstractPostRemoteStatusSync) {
-        if ([post.status isEqualToString:@"pending"]) {
-            return [UIColor lightGrayColor];
-        } else if ([post.status isEqualToString:@"draft"]) {
-            return [WPStyleGuide jazzyOrange];
-        } else {
-            return [UIColor blackColor];
-        }
-    } else {
-        if (post.remoteStatus == AbstractPostRemoteStatusPushing) {
-            return [WPStyleGuide newKidOnTheBlockBlue];
-        } else if (post.remoteStatus == AbstractPostRemoteStatusFailed) {
-            return [WPStyleGuide fireOrange];
-        } else {
-            return [WPStyleGuide jazzyOrange];
-        }
-    }
+    return [WPStyleGuide jazzyOrange];
 }
 
 + (UIFont *)titleFont
@@ -190,13 +143,9 @@ CGFloat const WPContentCellAccessoryViewOffset = 25.0;
     return [WPStyleGuide postTitleAttributes];
 }
 
-+ (NSString *)titleText:(AbstractPost *)post
++ (NSString *)titleTextForContentProvider:(id<WPContentViewProvider>)contentProvider
 {
-    NSString *title = [[post valueForKey:@"postTitle"] stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceCharacterSet]];
-    if (title == nil || ([title length] == 0)) {
-        title = NSLocalizedString(@"(no title)", @"");
-    }
-    return [title stringByDecodingXMLCharacters];
+    return [contentProvider titleForDisplay];
 }
 
 + (UIFont *)detailFont
@@ -209,7 +158,7 @@ CGFloat const WPContentCellAccessoryViewOffset = 25.0;
     return [WPStyleGuide subtitleAttributes];
 }
 
-+ (NSString *)detailText:(AbstractPost *)post
++ (NSString *)detailTextForContentProvider:(id<WPContentViewProvider>)contentProvider
 {
     static NSDateFormatter *dateFormatter = nil;
     
@@ -218,7 +167,7 @@ CGFloat const WPContentCellAccessoryViewOffset = 25.0;
         [dateFormatter setDateFormat:@"yyyy-MM-dd '|' HH:mm a"];
     }
     
-    NSDate *date = [post valueForKey:@"dateCreated"];
+    NSDate *date = [contentProvider dateForDisplay];
     return [dateFormatter stringFromDate:date];
 }
 
@@ -230,9 +179,9 @@ CGFloat const WPContentCellAccessoryViewOffset = 25.0;
     return maxWidth - WPContentCellStandardOffset - WPContentCellAccessoryViewOffset;
 }
 
-+ (CGRect)statusLabelFrameForPost:(AbstractPost *)post maxWidth:(CGFloat)maxWidth
++ (CGRect)statusLabelFrameForContentProvider:(id<WPContentViewProvider>)contentProvider maxWidth:(CGFloat)maxWidth
 {
-    NSString *statusText = [self statusTextForPost:post];
+    NSString *statusText = [self statusTextForContentProvider:contentProvider];
     if ([statusText length] != 0) {
         CGSize size;
         size = [statusText boundingRectWithSize:CGSizeMake([[self class] textWidth:maxWidth], CGFLOAT_MAX) options:NSStringDrawingUsesLineFragmentOrigin attributes:[[self class] statusAttributes] context:nil].size;
@@ -246,10 +195,10 @@ CGFloat const WPContentCellAccessoryViewOffset = 25.0;
     }
 }
 
-+ (CGRect)titleLabelFrameForPost:(AbstractPost *)post previousFrame:(CGRect)previousFrame maxWidth:(CGFloat)maxWidth
++ (CGRect)titleLabelFrameForContentProvider:(id<WPContentViewProvider>)contentProvider previousFrame:(CGRect)previousFrame maxWidth:(CGFloat)maxWidth
 {
     CGSize size;
-    size = [[[self class] titleText:post] boundingRectWithSize:CGSizeMake([[self class] textWidth:maxWidth], CGFLOAT_MAX) options:NSStringDrawingUsesLineFragmentOrigin attributes:[[self class] titleAttributes] context:nil].size;
+    size = [[[self class] titleTextForContentProvider:contentProvider] boundingRectWithSize:CGSizeMake([[self class] textWidth:maxWidth], CGFLOAT_MAX) options:NSStringDrawingUsesLineFragmentOrigin attributes:[[self class] titleAttributes] context:nil].size;
     
     CGFloat offset = 0.0;
     if (!CGSizeEqualToSize(previousFrame.size, CGSizeZero)) {
@@ -263,10 +212,10 @@ CGFloat const WPContentCellAccessoryViewOffset = 25.0;
     }
 }
 
-+ (CGRect)detailLabelFrameForPost:(AbstractPost *)post previousFrame:(CGRect)previousFrame maxWidth:(CGFloat)maxWidth
++ (CGRect)detailLabelFrameForContentProvider:(id<WPContentViewProvider>)contentProvider previousFrame:(CGRect)previousFrame maxWidth:(CGFloat)maxWidth
 {
     CGSize size;
-    size = [[[self class] detailText:post] boundingRectWithSize:CGSizeMake([[self class] textWidth:maxWidth], CGFLOAT_MAX) options:NSStringDrawingUsesLineFragmentOrigin attributes:[[self class] detailAttributes] context:nil].size;
+    size = [[[self class] detailTextForContentProvider:contentProvider] boundingRectWithSize:CGSizeMake([[self class] textWidth:maxWidth], CGFLOAT_MAX) options:NSStringDrawingUsesLineFragmentOrigin attributes:[[self class] detailAttributes] context:nil].size;
     
     CGFloat offset = 0.0;
     if (!CGSizeEqualToSize(previousFrame.size, CGSizeZero)) {

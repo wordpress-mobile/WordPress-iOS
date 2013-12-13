@@ -12,6 +12,7 @@
 - (NSString *)titleForDisplay;
 - (NSString *)authorForDisplay;
 - (NSString *)blogNameForDisplay;
+- (NSString *)statusForDisplay;
 - (NSString *)contentForDisplay;
 - (NSString *)contentPreviewForDisplay;
 - (NSString *)avatarUrlForDisplay;

@@ -9,12 +9,12 @@
 #import <UIKit/UIKit.h>
 
 #import "WPTableViewCell.h"
+#import "WPContentViewProvider.h"
 
-@class AbstractPost;
 @interface WPContentCell : WPTableViewCell
 
-@property (readwrite, weak) AbstractPost *post;
+@property (nonatomic, strong) id<WPContentViewProvider> contentProvider;
 
-+ (CGFloat)rowHeightForPost:(AbstractPost *)post andWidth:(CGFloat)width;
++ (CGFloat)rowHeightForContentProvider:(id<WPContentViewProvider>)contentProvider andWidth:(CGFloat)width;
 
 @end

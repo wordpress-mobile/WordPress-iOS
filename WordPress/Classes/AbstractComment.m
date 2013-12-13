@@ -40,6 +40,10 @@
     return nil;
 }
 
+- (NSString *)statusForDisplay {
+    return nil;
+}
+
 - (NSString *)contentForDisplay {
     return self.content;
 }
