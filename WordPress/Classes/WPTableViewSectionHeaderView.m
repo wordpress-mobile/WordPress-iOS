@@ -7,6 +7,7 @@
 //
 
 #import "WPTableViewSectionHeaderView.h"
+#import "WPTableViewCell.h"
 
 @interface WPTableViewSectionHeaderView() {
     UILabel *_titleLabel;
@@ -32,6 +33,7 @@ CGFloat const WPTableViewSectionHeaderViewBottomVerticalPadding = 8.0;
         _titleLabel.textColor = [WPStyleGuide whisperGrey];
         _titleLabel.backgroundColor = [UIColor clearColor];
         _titleLabel.shadowOffset = CGSizeMake(0.0, 0.0);
+        _fixedWidth = IS_IPAD ? WPTableViewFixedWidth : 0.0;
         [self addSubview:_titleLabel];
     }
     return self;
