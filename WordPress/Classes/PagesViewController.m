@@ -39,7 +39,7 @@
     UINavigationController *navController = [[UINavigationController alloc] initWithRootViewController:editPostViewController];
     [navController setToolbarHidden:NO]; // Fixes wrong toolbar icon animation.
     navController.modalPresentationStyle = UIModalPresentationCurrentContext;
-    [self.navigationController presentViewController:navController animated:YES completion:nil];
+    [self.view.window.rootViewController presentViewController:navController animated:YES completion:nil];
 }
 
 - (void)showAddPostView {
