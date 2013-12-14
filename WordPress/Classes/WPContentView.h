@@ -19,9 +19,6 @@
 @optional
 - (void)contentView:(WPContentView *)contentView didReceiveFollowAction:(id)sender;
 - (void)contentView:(WPContentView *)contentView didReceiveTagAction:(id)sender;
-- (void)contentView:(WPContentView *)contentView didReceiveLikeAction:(id)sender;
-- (void)contentView:(WPContentView *)contentView didReceiveReblogAction:(id)sender;
-- (void)contentView:(WPContentView *)contentView didReceiveCommentAction:(id)sender;
 - (void)contentView:(WPContentView *)contentView didReceiveLinkAction:(id)sender;
 - (void)contentView:(WPContentView *)contentView didReceiveImageLinkAction:(id)sender;
 - (void)contentView:(WPContentView *)contentView didReceiveVideoLinkAction:(id)sender;
@@ -34,12 +31,14 @@
 }
 
 @property (nonatomic, weak) id<WPContentViewDelegate> delegate;
-@property (nonatomic, strong) id<WPContentViewProvider> contentProvider;
+@property (nonatomic, weak) id<WPContentViewProvider> contentProvider;
 @property (nonatomic, strong) UIImageView *cellImageView;
 @property (nonatomic, strong) UIImageView *avatarImageView;
 
 - (id)initWithFrame:(CGRect)frame;
 - (void)setFeaturedImage:(UIImage *)image;
+- (UIButton *)addActionButtonWithImage:(UIImage *)buttonImage selectedImage:(UIImage *)selectedButtonImage;
+- (void)removeActionButton:(UIButton *)button;
 - (void)updateActionButtons;
 - (void)reset;
 

@@ -31,11 +31,11 @@ CGFloat const CommentViewUnapproveButtonTag = 701;
 }
 
 @property (nonatomic, strong) CommentView *commentView;
-@property (nonatomic, strong) UIBarButtonItem *trashButton;
-@property (nonatomic, strong) UIBarButtonItem *approveButton;
-@property (nonatomic, strong) UIBarButtonItem *spamButton;
-@property (nonatomic, strong) UIBarButtonItem *editButton;
-@property (nonatomic, strong) UIBarButtonItem *replyButton;
+@property (nonatomic, strong) UIButton *trashButton;
+@property (nonatomic, strong) UIButton *approveButton;
+@property (nonatomic, strong) UIButton *spamButton;
+@property (nonatomic, strong) UIButton *editButton;
+@property (nonatomic, strong) UIButton *replyButton;
 
 @end
 
@@ -63,6 +63,19 @@ CGFloat const CommentViewUnapproveButtonTag = 701;
     self.view.backgroundColor = [UIColor whiteColor];
     self.commentView = [[CommentView alloc] initWithFrame:self.view.frame];
     self.commentView.contentProvider = self.comment;
+    
+    self.trashButton = [self.commentView addActionButtonWithImage:[UIImage imageNamed:@"icon-comments-trash"] selectedImage:[UIImage imageNamed:@"icon-comments-trash-active"]];
+    [self.trashButton addTarget:self action:@selector(deleteAction:) forControlEvents:UIControlEventTouchUpInside];
+    
+    self.approveButton = [self.commentView addActionButtonWithImage:[UIImage imageNamed:@"icon-comments-approve"] selectedImage:[UIImage imageNamed:@"icon-comments-approve-active"]];
+    [self.approveButton addTarget:self action:@selector(approveOrUnapproveAction:) forControlEvents:UIControlEventTouchUpInside];
+
+    self.spamButton = [self.commentView addActionButtonWithImage:[UIImage imageNamed:@"icon-comments-flag"] selectedImage:[UIImage imageNamed:@"icon-comments-flag-active"]];
+    [self.spamButton addTarget:self action:@selector(spamAction:) forControlEvents:UIControlEventTouchUpInside];
+    
+    self.editButton = [self.commentView addActionButtonWithImage:[UIImage imageNamed:@"icon-comments-edit"] selectedImage:[UIImage imageNamed:@"icon-comments-edit-active"]];
+    [self.editButton addTarget:self action:@selector(editAction:) forControlEvents:UIControlEventTouchUpInside];
+    
     [self.view addSubview:self.commentView];
     
 //    self.authorNameLabel.font = [WPStyleGuide postTitleFont];
@@ -91,14 +104,10 @@ CGFloat const CommentViewUnapproveButtonTag = 701;
 
 - (void)viewWillAppear:(BOOL)animated {
     [super viewWillAppear:animated];
-    
-    [self.navigationController setToolbarHidden:NO animated:YES];
 }
 
 - (void)viewWillDisappear:(BOOL)animated {
     [super viewWillDisappear:animated];
-    
-    [self.navigationController setToolbarHidden:YES animated:YES];
 }
 
 - (void)setComment:(Comment *)comment {
@@ -257,15 +266,14 @@ CGFloat const CommentViewUnapproveButtonTag = 701;
 }
 
 
-#pragma mark - IBAction Methods
+#pragma mark - Actions
 
-- (IBAction)viewURL{
+- (IBAction)viewURL {
 	NSURL *url = [NSURL URLWithString: [self.comment.author_url trim]];
     [self openInAppWebView:url];
 }
 
-- (IBAction)handleApproveOrUnapproveComment:(id)sender
-{
+- (void)approveOrUnapproveAction:(id)sender {
     UIBarButtonItem *barButton = sender;
     if (barButton.tag == CommentViewApproveButtonTag) {
         [self approveComment];
@@ -274,7 +282,7 @@ CGFloat const CommentViewUnapproveButtonTag = 701;
     }
 }
 
-- (IBAction)sendEmail{
+- (IBAction)sendEmail {
 	if (self.comment.author_email && [MFMailComposeViewController canSendMail]) {
 		MFMailComposeViewController* controller = [[MFMailComposeViewController alloc] init];
 		controller.mailComposeDelegate = self;
@@ -290,7 +298,7 @@ CGFloat const CommentViewUnapproveButtonTag = 701;
     [self openInAppWebView:[NSURL URLWithString:self.comment.link]];
 }
 
-- (IBAction)launchDeleteCommentActionSheet {
+- (void)deleteAction:(id)sender {
     if (!_isShowingActionSheet) {
         UIActionSheet *actionSheet = [[UIActionSheet alloc] initWithTitle:NSLocalizedString(@"Are you sure you want to delete this comment?", @"")
                                                                  delegate:self
@@ -307,6 +315,32 @@ CGFloat const CommentViewUnapproveButtonTag = 701;
         [appDelegate setAlertRunning:YES];
     }
 }
+
+- (void)spamAction:(id)sender {
+    WPFLogMethodParam(NSStringFromSelector(_cmd));
+    [WPMobileStats trackEventForWPCom:StatsEventCommentDetailFlagAsSpam];
+    [self.comment removeObserver:self forKeyPath:@"status"];
+    [self moderateCommentWithSelector:@selector(spam)];
+    if (IS_IPAD) {
+        [self.navigationController popToRootViewControllerAnimated:YES];
+    }
+}
+
+- (void)editAction:(id)sender {
+    WPFLogMethod();
+    [WPMobileStats trackEventForWPCom:StatsEventCommentDetailEditComment];
+	[self showEditCommentViewWithAnimation:YES];
+}
+
+- (void)replyAction:(id)sender {
+	if(self.commentsViewController.blog.isSyncingComments) {
+		[self showSyncInProgressAlert];
+	} else {
+        [WPMobileStats trackEventForWPCom:StatsEventCommentDetailClickedReplyToComment];
+		[self showReplyToCommentViewWithAnimation:YES];
+	}
+}
+
 
 #pragma mark - UIActionSheet Delegate methods
 
@@ -421,31 +455,6 @@ CGFloat const CommentViewUnapproveButtonTag = 701;
     WPFLogMethod();
     [WPMobileStats trackEventForWPCom:StatsEventCommentDetailUnapprove];
     [self moderateCommentWithSelector:@selector(unapprove)];
-}
-
-- (IBAction)spamComment {
-    WPFLogMethodParam(NSStringFromSelector(_cmd));
-    [WPMobileStats trackEventForWPCom:StatsEventCommentDetailFlagAsSpam];
-    [self.comment removeObserver:self forKeyPath:@"status"];
-    [self moderateCommentWithSelector:@selector(spam)];
-    if (IS_IPAD) {
-        [self.navigationController popToRootViewControllerAnimated:YES];
-    }
-}
-
-- (IBAction)launchEditComment {
-    WPFLogMethod();
-    [WPMobileStats trackEventForWPCom:StatsEventCommentDetailEditComment];
-	[self showEditCommentViewWithAnimation:YES];
-}
-
-- (IBAction)launchReplyToComments {
-	if(self.commentsViewController.blog.isSyncingComments) {
-		[self showSyncInProgressAlert];
-	} else {
-        [WPMobileStats trackEventForWPCom:StatsEventCommentDetailClickedReplyToComment];
-		[self showReplyToCommentViewWithAnimation:YES];
-	}
 }
 
 - (void)showReplyToCommentViewWithAnimation:(BOOL)animate {
