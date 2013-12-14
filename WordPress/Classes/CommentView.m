@@ -7,6 +7,8 @@
 //
 
 #import "CommentView.h"
+#import "WPContentViewSubclass.h"
+#import "UIImageView+Gravatar.h"
 
 @implementation CommentView
 
@@ -14,18 +16,14 @@
 {
     self = [super initWithFrame:frame];
     if (self) {
-        // Initialization code
     }
     return self;
 }
 
-/*
-// Only override drawRect: if you perform custom drawing.
-// An empty implementation adversely affects performance during animation.
-- (void)drawRect:(CGRect)rect
-{
-    // Drawing code
+- (void)configureContentView:(id<WPContentViewProvider>)contentProvider {
+    [super configureContentView:contentProvider];
+    
+    [self.avatarImageView setImageWithGravatarEmail:[contentProvider gravatarEmailForDisplay] fallbackImage:[UIImage imageNamed:@"comment-default-gravatar-image"]];
 }
-*/
 
 @end
