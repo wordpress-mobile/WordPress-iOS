@@ -26,6 +26,7 @@
 + (UIFont *)moreContentFont;
 
 - (void)buildContent;
+- (void)configureContentView:(id<WPContentViewProvider>)contentProvider;
 - (UIView *)viewForFullContent;
 - (UIView *)viewForContentPreview;
 - (void)refreshDate;

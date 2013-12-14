@@ -86,12 +86,6 @@ CGFloat const CommentViewUnapproveButtonTag = 701;
 //    self.postTitleLabel.font = [WPStyleGuide subtitleFont];
 //    self.dateLabel.font = [WPStyleGuide subtitleFont];
 
-    self.navigationController.toolbar.translucent = NO;
-//    UIBarButtonItem *flexibleSpace = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFlexibleSpace target:nil action:nil];
-//    [self setToolbarItems:@[_trashButton, flexibleSpace, _approveButton, flexibleSpace, _spamButton, flexibleSpace, _editButton, flexibleSpace, _replyButton] animated:NO];
-    
-    self.navigationController.toolbar.barTintColor = [WPStyleGuide littleEddieGrey];
-
 //    UITapGestureRecognizer *gestureRecognizer = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(tappedPostTitle)];
 //    gestureRecognizer.numberOfTapsRequired = 1;
 //    [self.postTitleLabel addGestureRecognizer:gestureRecognizer];
