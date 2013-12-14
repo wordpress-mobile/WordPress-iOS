@@ -83,31 +83,32 @@ CGFloat const WPContentCellTitleNumberOfLines = 3;
     
     CGFloat maxWidth = CGRectGetWidth(self.bounds);
     
-    _statusLabel.frame = [[self class] statusLabelFrameForContentProvider:self.contentProvider maxWidth:maxWidth];
+    _gravatarImageView.frame = [[self class] gravatarImageViewFrame];
     
-    _gravatarImageView.frame = [[self class] gravatarImageViewFrameWithPreviousFrame:_statusLabel.frame];
-    
-    CGRect titleFrame = [[self class] titleLabelFrameForContentProvider:self.contentProvider previousFrame:_statusLabel.frame maxWidth:maxWidth];
+    CGRect statusFrame = [[self class] statusLabelFrameForContentProvider:self.contentProvider maxWidth:maxWidth];
+    CGRect titleFrame = [[self class] titleLabelFrameForContentProvider:self.contentProvider previousFrame:statusFrame maxWidth:maxWidth];
     CGRect detailFrame = [[self class] detailLabelFrameForContentProvider:self.contentProvider previousFrame:titleFrame maxWidth:maxWidth];
     
     // Center title and detail frame if Gravatar is shown
     if ([[self class] showGravatarImage] && CGRectGetMaxY(detailFrame) < CGRectGetMaxY(_gravatarImageView.frame)) {
-        CGFloat heightOfControls = CGRectGetMaxY(detailFrame) - CGRectGetMinY(titleFrame);
+        CGFloat heightOfControls = CGRectGetMaxY(detailFrame) - CGRectGetMinY(statusFrame);
         CGFloat startingYForCenteredControls = floorf((CGRectGetHeight(_gravatarImageView.frame) - heightOfControls)/2.0) + CGRectGetMinY(_gravatarImageView.frame);
-        CGFloat offsetToCenter = MIN(CGRectGetMinY(titleFrame) - startingYForCenteredControls, 0);
+        CGFloat offsetToCenter = MIN(CGRectGetMinY(statusFrame) - startingYForCenteredControls, 0);
         
+        statusFrame.origin.y -= offsetToCenter;
         titleFrame.origin.y -= offsetToCenter;
         detailFrame.origin.y -= offsetToCenter;
     }
     
+    _statusLabel.frame = statusFrame;
     _titleLabel.frame = titleFrame;
     _detailLabel.frame = detailFrame;
 }
 
 + (CGFloat)rowHeightForContentProvider:(id<WPContentViewProvider>)contentProvider andWidth:(CGFloat)width;
 {
+    CGRect gravatarFrame = [[self class] gravatarImageViewFrame];
     CGRect statusFrame = [[self class] statusLabelFrameForContentProvider:contentProvider maxWidth:width];
-    CGRect gravatarFrame = [[self class] gravatarImageViewFrameWithPreviousFrame:statusFrame];
     CGRect titleFrame = [[self class] titleLabelFrameForContentProvider:contentProvider previousFrame:statusFrame maxWidth:width];
     CGRect detailFrame = [[self class] detailLabelFrameForContentProvider:contentProvider previousFrame:titleFrame maxWidth:width];
     
@@ -127,6 +128,7 @@ CGFloat const WPContentCellTitleNumberOfLines = 3;
     
     if (_statusLabel.text != nil) {
         _statusLabel.attributedText = [[NSAttributedString alloc] initWithString:_statusLabel.text attributes:[[self class] statusAttributes]];
+        _titleLabel.numberOfLines = WPContentCellTitleNumberOfLines - 1;
     }
     
     if (_detailLabel.text != nil) {
@@ -254,16 +256,8 @@ CGFloat const WPContentCellTitleNumberOfLines = 3;
     return IS_IPAD ? WPContentCellStandardiPadOffset : WPContentCellStandardOffset;
 }
 
-+ (CGRect)gravatarImageViewFrameWithPreviousFrame:(CGRect)previousFrame {
-    
-    CGFloat offset = 0.0;
-    if (CGRectGetHeight(previousFrame) > 0) {
-        offset = CGRectGetMaxY(previousFrame) + WPContentCellTitleAndDetailVerticalOffset;
-    } else {
-        offset = WPContentCellStandardOffset;
-    }
-    
-    return [[self class] showGravatarImage] ? CGRectMake([[self class] standardOffset], offset, WPContentCellImageWidth, WPContentCellImageWidth) : CGRectZero;
++ (CGRect)gravatarImageViewFrame {
+    return [[self class] showGravatarImage] ? CGRectMake([[self class] standardOffset], [[self class] standardOffset], WPContentCellImageWidth, WPContentCellImageWidth) : CGRectZero;
 }
 
 + (CGRect)statusLabelFrameForContentProvider:(id<WPContentViewProvider>)contentProvider maxWidth:(CGFloat)maxWidth
@@ -272,7 +266,7 @@ CGFloat const WPContentCellTitleNumberOfLines = 3;
     if ([statusText length] != 0) {
         CGSize size;
         size = [statusText boundingRectWithSize:CGSizeMake([[self class] textWidth:maxWidth], CGFLOAT_MAX) options:NSStringDrawingUsesLineFragmentOrigin attributes:[[self class] statusAttributes] context:nil].size;
-            return CGRectMake([[self class] standardOffset], [[self class] standardOffset], size.width, size.height);
+            return CGRectMake([[self class] textXOrigin], [[self class] standardOffset], size.width, size.height);
     } else {
         return CGRectMake(0, [[self class] standardOffset], 0, 0);
     }
@@ -280,18 +274,20 @@ CGFloat const WPContentCellTitleNumberOfLines = 3;
 
 + (CGRect)titleLabelFrameForContentProvider:(id<WPContentViewProvider>)contentProvider previousFrame:(CGRect)previousFrame maxWidth:(CGFloat)maxWidth
 {
+    BOOL hasStatus = [[self class] statusTextForContentProvider:contentProvider].length > 0;
+    
     CGSize size;
     NSAttributedString *attributedTitle = [[self class] titleAttributedTextForContentProvider:contentProvider];
     CGFloat lineHeight = attributedTitle.size.height;
     size = [attributedTitle.string boundingRectWithSize:CGSizeMake([[self class] textWidth:maxWidth], CGFLOAT_MAX) options:NSStringDrawingUsesLineFragmentOrigin attributes:[[self class] titleAttributes] context:nil].size;
-    size.height = MIN(size.height, lineHeight * WPContentCellTitleNumberOfLines);
+    size.height = ceilf(MIN(size.height, lineHeight * (WPContentCellTitleNumberOfLines - (hasStatus ? 1 : 0))));
     
     CGFloat offset = 0.0;
     if (!CGSizeEqualToSize(previousFrame.size, CGSizeZero)) {
         offset = WPContentCellTitleAndDetailVerticalOffset;
     }
     
-    return CGRectMake([[self class] textXOrigin], CGRectGetMaxY(previousFrame) + offset, size.width, size.height);
+    return CGRectIntegral(CGRectMake([[self class] textXOrigin], CGRectGetMaxY(previousFrame) + offset, size.width, size.height));
 }
 
 + (CGRect)detailLabelFrameForContentProvider:(id<WPContentViewProvider>)contentProvider previousFrame:(CGRect)previousFrame maxWidth:(CGFloat)maxWidth
