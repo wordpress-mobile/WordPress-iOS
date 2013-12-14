@@ -15,7 +15,7 @@
     UIImageView *_gravatarImageView;
     UILabel *_statusLabel;
     UILabel *_titleLabel;
-    UILabel *_detailLabel;
+    UILabel *_dateLabel;
     UIImageView *_dateImageView;
     UIImageView *_unreadView;
 }
@@ -25,7 +25,7 @@
 
 CGFloat const WPContentCellStandardOffset = 10.0;
 CGFloat const WPContentCellStandardiPadOffset = 16.0;
-CGFloat const WPContentCellTitleAndDetailVerticalOffset = 3.0;
+CGFloat const WPContentCellTitleAndDateVerticalOffset = 3.0;
 CGFloat const WPContentCellLabelAndTitleHorizontalOffset = -0.5;
 CGFloat const WPContentCellAccessoryViewOffset = 25.0;
 CGFloat const WPContentCellImageWidth = 70.0;
@@ -61,14 +61,14 @@ CGFloat const WPContentCellDateImageSide = 16.0;
         _titleLabel.textColor = [WPStyleGuide littleEddieGrey];
         [self.contentView addSubview:_titleLabel];
 
-        _detailLabel = [[UILabel alloc] init];
-        _detailLabel.backgroundColor = [UIColor clearColor];
-        _detailLabel.textAlignment = NSTextAlignmentLeft;
-        _detailLabel.lineBreakMode = NSLineBreakByWordWrapping;
-        _detailLabel.font = [[self class] detailFont];
-        _detailLabel.shadowOffset = CGSizeMake(0.0, 0.0);
-        _detailLabel.textColor = [WPStyleGuide allTAllShadeGrey];
-        [self.contentView addSubview:_detailLabel];
+        _dateLabel = [[UILabel alloc] init];
+        _dateLabel.backgroundColor = [UIColor clearColor];
+        _dateLabel.textAlignment = NSTextAlignmentLeft;
+        _dateLabel.lineBreakMode = NSLineBreakByWordWrapping;
+        _dateLabel.font = [[self class] dateFont];
+        _dateLabel.shadowOffset = CGSizeMake(0.0, 0.0);
+        _dateLabel.textColor = [WPStyleGuide allTAllShadeGrey];
+        [self.contentView addSubview:_dateLabel];
         
         _dateImageView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"reader-postaction-time"]];
         [_dateImageView sizeToFit];
@@ -109,26 +109,26 @@ CGFloat const WPContentCellDateImageSide = 16.0;
     
     CGRect statusFrame = [[self class] statusLabelFrameForContentProvider:self.contentProvider maxWidth:maxWidth];
     CGRect titleFrame = [[self class] titleLabelFrameForContentProvider:self.contentProvider previousFrame:statusFrame maxWidth:maxWidth];
-    CGRect detailFrame = [[self class] detailLabelFrameForContentProvider:self.contentProvider previousFrame:titleFrame maxWidth:maxWidth];
+    CGRect dateFrame = [[self class] dateLabelFrameForContentProvider:self.contentProvider previousFrame:titleFrame maxWidth:maxWidth];
     
-    // Center title and detail frame if Gravatar is shown
-    if ([[self class] showGravatarImage] && CGRectGetMaxY(detailFrame) < CGRectGetMaxY(_gravatarImageView.frame)) {
-        CGFloat heightOfControls = CGRectGetMaxY(detailFrame) - CGRectGetMinY(statusFrame);
+    // Center title and date frame if Gravatar is shown
+    if ([[self class] showGravatarImage] && CGRectGetMaxY(dateFrame) < CGRectGetMaxY(_gravatarImageView.frame)) {
+        CGFloat heightOfControls = CGRectGetMaxY(dateFrame) - CGRectGetMinY(statusFrame);
         CGFloat startingYForCenteredControls = floorf((CGRectGetHeight(_gravatarImageView.frame) - heightOfControls)/2.0) + CGRectGetMinY(_gravatarImageView.frame);
         CGFloat offsetToCenter = MIN(CGRectGetMinY(statusFrame) - startingYForCenteredControls, 0);
         
         statusFrame.origin.y -= offsetToCenter;
         titleFrame.origin.y -= offsetToCenter;
-        detailFrame.origin.y -= offsetToCenter;
+        dateFrame.origin.y -= offsetToCenter;
     }
     
     _statusLabel.frame = statusFrame;
     _titleLabel.frame = titleFrame;
-    _detailLabel.frame = detailFrame;
+    _dateLabel.frame = dateFrame;
     _unreadView.frame = [[self class] unreadFrameForHeight:CGRectGetHeight(self.bounds)];
     
     // layout date image
-    _dateImageView.frame = CGRectMake(CGRectGetMinX(detailFrame) - WPContentCellDateImageSide, CGRectGetMidY(detailFrame) - WPContentCellDateImageSide / 2.0, WPContentCellDateImageSide, WPContentCellDateImageSide);
+    _dateImageView.frame = CGRectMake(CGRectGetMinX(dateFrame) - WPContentCellDateImageSide, CGRectGetMidY(dateFrame) - WPContentCellDateImageSide / 2.0, WPContentCellDateImageSide, WPContentCellDateImageSide);
 }
 
 + (CGFloat)rowHeightForContentProvider:(id<WPContentViewProvider>)contentProvider andWidth:(CGFloat)width;
@@ -136,9 +136,9 @@ CGFloat const WPContentCellDateImageSide = 16.0;
     CGRect gravatarFrame = [[self class] gravatarImageViewFrame];
     CGRect statusFrame = [[self class] statusLabelFrameForContentProvider:contentProvider maxWidth:width];
     CGRect titleFrame = [[self class] titleLabelFrameForContentProvider:contentProvider previousFrame:statusFrame maxWidth:width];
-    CGRect detailFrame = [[self class] detailLabelFrameForContentProvider:contentProvider previousFrame:titleFrame maxWidth:width];
+    CGRect dateFrame = [[self class] dateLabelFrameForContentProvider:contentProvider previousFrame:titleFrame maxWidth:width];
     
-    return MAX(CGRectGetMaxY(gravatarFrame), CGRectGetMaxY(detailFrame)) + [[self class] standardOffset];
+    return MAX(CGRectGetMaxY(gravatarFrame), CGRectGetMaxY(dateFrame)) + [[self class] standardOffset];
 }
 
 - (void)setContentProvider:(id<WPContentViewProvider>)contentProvider
@@ -150,18 +150,18 @@ CGFloat const WPContentCellDateImageSide = 16.0;
     _titleLabel.attributedText = [[self class] titleAttributedTextForContentProvider:contentProvider];
     _statusLabel.text = [[self class] statusTextForContentProvider:contentProvider];
     _statusLabel.textColor = [[self class] statusColorForContentProvider:contentProvider];
-    _detailLabel.text = [[self class] detailTextForContentProvider:contentProvider];
+    _dateLabel.text = [[self class] dateTextForContentProvider:contentProvider];
     
     if (_statusLabel.text != nil) {
         _statusLabel.attributedText = [[NSAttributedString alloc] initWithString:_statusLabel.text attributes:[[self class] statusAttributes]];
         _titleLabel.numberOfLines = WPContentCellTitleNumberOfLines - 1;
     }
     
-    if (_detailLabel.text != nil) {
-        NSRange barRange = [_detailLabel.text rangeOfString:@"|"];
-        NSMutableAttributedString *detailText = [[NSMutableAttributedString alloc] initWithString:_detailLabel.text attributes:[[self class] detailAttributes]];
-        [detailText addAttribute:NSForegroundColorAttributeName value:[WPStyleGuide readGrey] range:barRange];
-        _detailLabel.attributedText = detailText;
+    if (_dateLabel.text != nil) {
+        NSRange barRange = [_dateLabel.text rangeOfString:@"|"];
+        NSMutableAttributedString *dateText = [[NSMutableAttributedString alloc] initWithString:_dateLabel.text attributes:[[self class] dateAttributes]];
+        [dateText addAttribute:NSForegroundColorAttributeName value:[WPStyleGuide readGrey] range:barRange];
+        _dateLabel.attributedText = dateText;
     }
     
     if ([contentProvider respondsToSelector:@selector(unreadStatusForDisplay)]) {
@@ -253,17 +253,17 @@ CGFloat const WPContentCellDateImageSide = 16.0;
     return [[NSAttributedString alloc] initWithString:[contentProvider titleForDisplay] attributes:[self titleAttributes]];
 }
 
-+ (UIFont *)detailFont
++ (UIFont *)dateFont
 {
     return [WPStyleGuide subtitleFont];
 }
 
-+ (NSDictionary *)detailAttributes
++ (NSDictionary *)dateAttributes
 {
     return [WPStyleGuide subtitleAttributes];
 }
 
-+ (NSString *)detailTextForContentProvider:(id<WPContentViewProvider>)contentProvider
++ (NSString *)dateTextForContentProvider:(id<WPContentViewProvider>)contentProvider
 {
     
     NSDate *date = [contentProvider dateForDisplay];
@@ -339,14 +339,14 @@ CGFloat const WPContentCellDateImageSide = 16.0;
     return CGRectIntegral(CGRectMake([[self class] textXOrigin], CGRectGetMaxY(previousFrame), size.width, size.height));
 }
 
-+ (CGRect)detailLabelFrameForContentProvider:(id<WPContentViewProvider>)contentProvider previousFrame:(CGRect)previousFrame maxWidth:(CGFloat)maxWidth
++ (CGRect)dateLabelFrameForContentProvider:(id<WPContentViewProvider>)contentProvider previousFrame:(CGRect)previousFrame maxWidth:(CGFloat)maxWidth
 {
     CGSize size;
-    size = [[[self class] detailTextForContentProvider:contentProvider] boundingRectWithSize:CGSizeMake([[self class] textWidth:maxWidth] - WPContentCellDateImageSide, CGFLOAT_MAX) options:NSStringDrawingUsesLineFragmentOrigin attributes:[[self class] detailAttributes] context:nil].size;
+    size = [[[self class] dateTextForContentProvider:contentProvider] boundingRectWithSize:CGSizeMake([[self class] textWidth:maxWidth] - WPContentCellDateImageSide, CGFLOAT_MAX) options:NSStringDrawingUsesLineFragmentOrigin attributes:[[self class] dateAttributes] context:nil].size;
     
     CGFloat offset = 0.0;
     if (!CGSizeEqualToSize(previousFrame.size, CGSizeZero)) {
-        offset = WPContentCellTitleAndDetailVerticalOffset;
+        offset = WPContentCellTitleAndDateVerticalOffset;
     }
     
     return CGRectIntegral(CGRectMake([[self class] textXOrigin] + WPContentCellDateImageSide, CGRectGetMaxY(previousFrame) + offset, size.width, size.height));
