@@ -27,9 +27,9 @@
 + (NSDictionary *)titleAttributes;
 + (NSDictionary *)titleAttributesBold;
 + (NSAttributedString *)titleAttributedTextForContentProvider:(id<WPContentViewProvider>)contentProvider;
-+ (UIFont *)detailFont;
-+ (NSDictionary *)detailAttributes;
-+ (NSString *)detailTextForContentProvider:(id<WPContentViewProvider>)contentProvider;
++ (UIFont *)dateFont;
++ (NSDictionary *)dateAttributes;
++ (NSString *)dateTextForContentProvider:(id<WPContentViewProvider>)contentProvider;
 
 
 @end
