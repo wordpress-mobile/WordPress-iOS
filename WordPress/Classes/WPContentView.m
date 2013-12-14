@@ -273,7 +273,7 @@ const CGFloat RPVControlButtonBorderSize = 0.0f;
     self.textContentView.frame = textContainerFrame;
     
     // Position the meta view and its subviews
-    CGFloat bottomY = self.textContentView.frame.origin.y + self.textContentView.frame.size.height;
+    CGFloat bottomY = self.textContentView.frame.origin.y + self.textContentView.frame.size.height + RPVVerticalPadding;
 	self.bottomView.frame = CGRectMake(0, bottomY, contentWidth, RPVMetaViewHeight);
     self.bottomBorder.frame = CGRectMake(RPVHorizontalInnerPadding, 0, contentWidth - RPVHorizontalInnerPadding * 2, RPVBorderHeight);
     
