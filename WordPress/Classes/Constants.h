@@ -63,7 +63,7 @@
 #define kCellFieldSpacer        14.0
 #define kCellWidth              300.0
 #define kCellHeight             44.0
-#define kSectionHeaderHight     25.0
+#define kSectionHeaderHeight     25.0
 
 #define REFRESH_BUTTON_HEIGHT   50
 
