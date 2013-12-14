@@ -208,6 +208,56 @@ const CGFloat RPVControlButtonBorderSize = 0.0f;
     return NO;
 }
 
+- (void)setContentProvider:(id<WPContentViewProvider>)contentProvider {
+    if (_contentProvider == contentProvider)
+        return;
+    
+    _contentProvider = contentProvider;
+    [self configureContentView:_contentProvider];
+}
+
+- (void)configureContentView:(id<WPContentViewProvider>)contentProvider {    
+    // This will show the placeholder avatar. Do this here instead of prepareForReuse
+    // so avatars show up after a cell is created, and not dequeued.
+    //[self setAvatar:nil];
+    
+//	self.titleLabel.attributedText = [[self class] titleAttributedStringForPost:post];
+    
+//    if (self.showFullContent) {
+//        NSData *data = [self.post.content dataUsingEncoding:NSUTF8StringEncoding];
+//		self.textContentView.attributedString = [[NSAttributedString alloc] initWithHTMLData:data
+//                                                                                     options:[WPStyleGuide defaultDTCoreTextOptions]
+//                                                                          documentAttributes:nil];
+//        [self.textContentView relayoutText];
+//    } else {
+//        self.snippetLabel.attributedText = [[self class] summaryAttributedStringForPost:post];
+//    }
+    
+    self.bylineLabel.text = [contentProvider authorForDisplay];
+    [self refreshDate];
+    
+	self.cellImageView.hidden = YES;
+	
+	[self updateActionButtons];
+    
+}
+
+- (void)layoutSubviews {
+    [super layoutSubviews];
+    
+    CGFloat contentWidth;
+    // On iPad, get the width from the cell instead in order to account for margins
+    if (IS_IPHONE) {
+        contentWidth = self.frame.size.width;
+    } else {
+        contentWidth = self.superview.frame.size.width;
+    }
+
+    self.byView.frame = CGRectMake(0, 0, contentWidth, RPVAuthorViewHeight + RPVAuthorPadding * 2);
+    CGFloat bylineX = RPVAvatarSize + RPVAuthorPadding + RPVHorizontalInnerPadding;
+    self.bylineLabel.frame = CGRectMake(bylineX, RPVAuthorPadding - 2, contentWidth - bylineX, 18);
+}
+
 
 #pragma mark - Actions
 
