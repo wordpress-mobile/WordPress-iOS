@@ -59,7 +59,7 @@ CGFloat const CommentViewUnapproveButtonTag = 701;
 {
     [super viewDidLoad];
     
-    self.view = [[UIView alloc] initWithFrame:CGRectZero];
+    self.view = [[UIScrollView alloc] initWithFrame:CGRectZero];
     self.view.backgroundColor = [UIColor whiteColor];
     self.commentView = [[CommentView alloc] initWithFrame:self.view.frame];
     self.commentView.contentProvider = self.comment;
@@ -102,6 +102,11 @@ CGFloat const CommentViewUnapproveButtonTag = 701;
 
 - (void)viewWillDisappear:(BOOL)animated {
     [super viewWillDisappear:animated];
+}
+
+- (void)viewDidLayoutSubviews {
+    UIScrollView *scrollView = (UIScrollView *)self.view;
+    scrollView.contentSize = self.commentView.frame.size;
 }
 
 - (void)setComment:(Comment *)comment {

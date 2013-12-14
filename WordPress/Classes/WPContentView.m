@@ -210,7 +210,7 @@ const CGFloat RPVControlButtonBorderSize = 0.0f;
 	_cellImageView.image = nil;
 }
 
-- (BOOL)private {
+- (BOOL)privateContent {
     // TODO: figure out how/if this applies to subclasses
     return NO;
 }
@@ -253,7 +253,6 @@ const CGFloat RPVControlButtonBorderSize = 0.0f;
     [super layoutSubviews];
     
     CGFloat contentWidth;
-    CGFloat nextY = 50;
     // On iPad, get the width from the cell instead in order to account for margins
     if (IS_IPHONE) {
         contentWidth = self.frame.size.width;
@@ -265,8 +264,17 @@ const CGFloat RPVControlButtonBorderSize = 0.0f;
     CGFloat bylineX = RPVAvatarSize + RPVAuthorPadding + RPVHorizontalInnerPadding;
     self.bylineLabel.frame = CGRectMake(bylineX, RPVAuthorPadding - 2, contentWidth - bylineX, 18);
     
+    [self.textContentView relayoutText];
+    CGFloat height = [self.textContentView suggestedFrameSizeToFitEntireStringConstraintedToWidth:contentWidth].height;
+    CGRect textContainerFrame = self.textContentView.frame;
+    textContainerFrame.size.width = contentWidth;
+    textContainerFrame.size.height = height;
+    textContainerFrame.origin.y = self.byView.frame.origin.y + self.byView.frame.size.height;
+    self.textContentView.frame = textContainerFrame;
+    
     // Position the meta view and its subviews
-	self.bottomView.frame = CGRectMake(0, nextY, contentWidth, RPVMetaViewHeight);
+    CGFloat bottomY = self.textContentView.frame.origin.y + self.textContentView.frame.size.height;
+	self.bottomView.frame = CGRectMake(0, bottomY, contentWidth, RPVMetaViewHeight);
     self.bottomBorder.frame = CGRectMake(RPVHorizontalInnerPadding, 0, contentWidth - RPVHorizontalInnerPadding * 2, RPVBorderHeight);
     
     // Action buttons
@@ -286,6 +294,11 @@ const CGFloat RPVControlButtonBorderSize = 0.0f;
     
     CGFloat timeWidth = contentWidth - buttonX;
     self.timeButton.frame = CGRectMake(RPVHorizontalInnerPadding, RPVBorderHeight, timeWidth, RPVControlButtonHeight);
+    
+    // Update own frame
+    CGRect ownFrame = self.frame;
+    ownFrame.size.height = self.bottomView.frame.origin.y + self.bottomView.frame.size.height;
+    self.frame = ownFrame;
 }
 
 - (UIButton *)addActionButtonWithImage:(UIImage *)buttonImage selectedImage:(UIImage *)selectedButtonImage {
