@@ -258,7 +258,21 @@ const NSUInteger NoteKeepCount = 20;
 #pragma mark - WPContentViewProvider protocol
 
 - (NSString *)titleForDisplay {
-    return self.subject;
+    NSString *title = [self.subject trim];
+    if (title.length > 0 && [title hasPrefix:@"["]) {
+        // Find location of trailing bracket
+        NSRange statusRange = [title rangeOfString:@"]"];
+        if (statusRange.location != NSNotFound) {
+            title = [title substringFromIndex:statusRange.location + 1];
+            title = [title trim];
+        }
+    }
+    
+    if ([self isComment] && [self commentText].length > 0) {
+        title = [NSString stringWithFormat:@"%@: %@", title, [self commentText]];
+    }
+    
+    return title;
 }
 
 - (NSString *)authorForDisplay {
@@ -270,6 +284,25 @@ const NSUInteger NoteKeepCount = 20;
     return nil;
 }
 
+- (NSString *)statusForDisplay {
+    
+    // This is clearly an error prone method of isolating the status,
+    // but is necessary due to the current API. This should be changed
+    // if/when the API is improved.
+    
+    NSString *status = [self.subject trim];
+    if (status.length > 0 && [status hasPrefix:@"["]) {
+        // Find location of trailing bracket
+        NSRange statusRange = [status rangeOfString:@"]"];
+        if (statusRange.location != NSNotFound) {
+            status = [status substringWithRange:NSMakeRange(1, statusRange.location - 1)];
+        }
+    } else {
+        status = nil;
+    }
+    return status;
+}
+
 - (NSString *)contentForDisplay {
     // Contains a lot of cruft
     return self.commentText;
@@ -279,8 +312,12 @@ const NSUInteger NoteKeepCount = 20;
     return self.commentText;
 }
 
-- (NSString *)avatarUrlForDisplay {
-    return self.icon;
+- (NSString *)gravatarEmailForDisplay {
+    return nil;
+}
+
+- (NSURL *)blavatarURLForDisplay {
+    return [NSURL URLWithString:self.icon];
 }
 
 - (NSDate *)dateForDisplay {
