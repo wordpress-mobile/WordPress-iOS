@@ -21,15 +21,18 @@
     // combine author and title
     NSString *author = [contentProvider authorForDisplay];
     NSString *postTitle = [contentProvider titleForDisplay];
-    
+    NSString *content = [contentProvider contentForDisplay];
     if (!(postTitle.length > 0)) {
         postTitle = NSLocalizedString(@"(No Title)", nil);
     }
-    postTitle = [NSLocalizedString(@"on ", @"") stringByAppendingString:postTitle];
-    postTitle = [author stringByAppendingString:[NSString stringWithFormat:@" %@: ", postTitle]];
     
-    NSMutableAttributedString *attributedPostTitle = [[NSMutableAttributedString alloc] initWithString:postTitle attributes:[[self class] titleAttributesBold]];
-    [attributedPostTitle appendAttributedString:[[NSAttributedString alloc] initWithString:[contentProvider contentForDisplay] attributes:[[self class] titleAttributes]]];
+    NSMutableAttributedString *attributedPostTitle = [[NSMutableAttributedString alloc] initWithString:author attributes:[[self class] titleAttributesBold]];
+    [attributedPostTitle appendAttributedString:[[NSAttributedString alloc] initWithString:NSLocalizedString(@" on ", @"") attributes:[[self class] titleAttributes]]];
+    [attributedPostTitle appendAttributedString:[[NSAttributedString alloc] initWithString:postTitle attributes:[[self class] titleAttributesBold]]];
+    if (content.length > 0) {
+        [attributedPostTitle appendAttributedString:[[NSAttributedString alloc] initWithString:[NSString stringWithFormat:@": %@", content] attributes:[[self class] titleAttributes]]];
+    }
+
     return attributedPostTitle;
 }
 

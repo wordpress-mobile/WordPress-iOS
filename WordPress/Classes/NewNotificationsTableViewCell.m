@@ -7,85 +7,62 @@
 //
 
 #import "NewNotificationsTableViewCell.h"
-#import "Note.h"
-
-
-@interface NewNotificationsTableViewCell() {
-    UILabel *_unreadTextLabel;
-}
-
-@end
-
-CGFloat const NewNotificationsCellStandardOffset = 16.0;
-
 
 @implementation NewNotificationsTableViewCell
-
-- (id)initWithStyle:(UITableViewCellStyle)style reuseIdentifier:(NSString *)reuseIdentifier
-{
-    self = [super initWithStyle:style reuseIdentifier:reuseIdentifier];
-    if (self) {
-        _unreadTextLabel = [[UILabel alloc] init];
-        _unreadTextLabel.backgroundColor = [UIColor clearColor];
-        _unreadTextLabel.textAlignment = NSTextAlignmentLeft;
-        _unreadTextLabel.numberOfLines = 0;
-        _unreadTextLabel.lineBreakMode = NSLineBreakByWordWrapping;
-        _unreadTextLabel.font = [[self class] unreadFont];
-        _unreadTextLabel.shadowOffset = CGSizeMake(0.0, 0.0);
-        _unreadTextLabel.textColor = [WPStyleGuide jazzyOrange];
-        _unreadTextLabel.text = @"•";
-        [self.contentView addSubview:_unreadTextLabel];
-    }
-    return self;
-}
 
 + (BOOL)showGravatarImage {
     return YES;
 }
 
-- (Note *)note {
-    return (Note *)[self contentProvider];
-}
-
-- (void)setContentProvider:(id<WPContentViewProvider>)contentProvider
-{
-    [super setContentProvider:contentProvider];
-    
-    _unreadTextLabel.hidden = [[self note] isRead];
-    if ([self.note isComment]) {
-        self.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
-    } else {
-        self.accessoryType = UITableViewCellAccessoryNone;
-    }
-}
-
-- (void)layoutSubviews
-{
-    [super layoutSubviews];
-    
-    CGFloat maxWidth = CGRectGetWidth(self.bounds);
-    _unreadTextLabel.frame = [[self class] unreadFrameForMaxWidth:maxWidth];
-}
-
-- (void)prepareForReuse {
-    [super prepareForReuse];
-    _unreadTextLabel.hidden = YES;
++ (BOOL)supportsUnreadStatus {
+    return YES;
 }
 
 #pragma mark - Private Methods
 
-+ (UIFont *)unreadFont
++ (NSAttributedString *)titleAttributedTextForContentProvider:(id<WPContentViewProvider>)contentProvider
 {
-    return [WPStyleGuide subtitleFont];
+    // combine author and title
+    NSString *title = [contentProvider titleForDisplay];
+    NSString *content = [contentProvider contentForDisplay];
+    
+    NSMutableAttributedString *attributedPostTitle = [[NSMutableAttributedString alloc] initWithString:title attributes:[[self class] titleAttributes]];
+    
+    // Bold text in quotes. This code should be rewritten when the API is more flexible
+    // and includes out-of-band data
+    NSScanner *scanner = [NSScanner scannerWithString:title];
+    NSString *tmp;
+    
+    while ([scanner isAtEnd] == NO)
+    {
+        [scanner scanUpToString:@"\"" intoString:NULL];
+        [scanner scanString:@"\"" intoString:NULL];
+        [scanner scanUpToString:@"\"" intoString:&tmp];
+        [scanner scanString:@"\"" intoString:NULL];
+        
+        NSRange itemRange = [title rangeOfString:tmp];
+        if (itemRange.location != NSNotFound) {
+            [attributedPostTitle addAttributes:[[self class] titleAttributesBold] range:itemRange];
+        }
+    }
+    
+    // Bold text up until "liked", "commented", or "followed"
+    NSArray *keywords = @[@"liked", @"commented", @"followed"];
+    for (NSString *keyword in keywords) {
+        NSRange keywordRange = [title rangeOfString:keyword];
+        if (keywordRange.location != NSNotFound) {
+            [attributedPostTitle addAttributes:[[self class] titleAttributesBold] range:NSMakeRange(0, keywordRange.location)];
+            break;
+        }
+    }
+    
+
+    if (content.length > 0) {
+        [attributedPostTitle appendAttributedString:[[NSAttributedString alloc] initWithString:@": "]];
+        [attributedPostTitle appendAttributedString:[[NSAttributedString alloc] initWithString:content attributes:[[self class] titleAttributes]]];
+    }
+
+    return attributedPostTitle;
 }
-
-+ (CGRect)unreadFrameForMaxWidth:(CGFloat)maxWidth
-{
-    CGSize size = [@"•" sizeWithAttributes:@{NSFontAttributeName:[self unreadFont]}];
-    return CGRectMake(maxWidth - size.width - NewNotificationsCellStandardOffset * 0.5 , NewNotificationsCellStandardOffset * 0.5, size.width, size.height);
-}
-
-
-
 
 @end
