@@ -325,4 +325,8 @@ const NSUInteger NoteKeepCount = 20;
     return self.date;
 }
 
+- (BOOL)unreadStatusForDisplay {
+    return !self.isRead;
+}
+
 @end

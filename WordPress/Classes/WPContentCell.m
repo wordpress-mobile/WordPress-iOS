@@ -16,6 +16,7 @@
     UILabel *_statusLabel;
     UILabel *_titleLabel;
     UILabel *_detailLabel;
+    UIImageView *_unreadView;
 }
 @end
 
@@ -28,6 +29,7 @@ CGFloat const WPContentCellLabelAndTitleHorizontalOffset = -0.5;
 CGFloat const WPContentCellAccessoryViewOffset = 25.0;
 CGFloat const WPContentCellImageWidth = 70.0;
 CGFloat const WPContentCellTitleNumberOfLines = 3;
+CGFloat const WPContentCellUnreadViewSide = 7.0;
 
 - (id)initWithStyle:(UITableViewCellStyle)style reuseIdentifier:(NSString *)reuseIdentifier
 {
@@ -65,6 +67,20 @@ CGFloat const WPContentCellTitleNumberOfLines = 3;
         _detailLabel.shadowOffset = CGSizeMake(0.0, 0.0);
         _detailLabel.textColor = [WPStyleGuide allTAllShadeGrey];
         [self.contentView addSubview:_detailLabel];
+        
+        if ([[self class] supportsUnreadStatus]) {
+            _unreadView = [[UIImageView alloc] init];
+            
+            // create circular image
+            UIGraphicsBeginImageContextWithOptions(CGSizeMake(WPContentCellUnreadViewSide, WPContentCellUnreadViewSide), NO, 0);
+            CGContextRef context = UIGraphicsGetCurrentContext();
+            CGContextAddPath(context, [[UIBezierPath bezierPathWithOvalInRect:CGRectMake(0, 0, WPContentCellUnreadViewSide, WPContentCellUnreadViewSide)] CGPath]);
+            CGContextSetFillColorWithColor(context, [WPStyleGuide newKidOnTheBlockBlue].CGColor);
+            CGContextFillPath(context);
+            _unreadView.image = UIGraphicsGetImageFromCurrentImageContext();
+            
+            [self.contentView addSubview:_unreadView];
+        }
     }
     return self;
 }
@@ -73,9 +89,9 @@ CGFloat const WPContentCellTitleNumberOfLines = 3;
 - (void)prepareForReuse{
     [super prepareForReuse];
     _gravatarImageView.image = nil;
+    _unreadView.hidden = YES;
 	self.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
 }
-
 
 - (void)layoutSubviews
 {
@@ -103,6 +119,8 @@ CGFloat const WPContentCellTitleNumberOfLines = 3;
     _statusLabel.frame = statusFrame;
     _titleLabel.frame = titleFrame;
     _detailLabel.frame = detailFrame;
+    
+    _unreadView.frame = [[self class] unreadFrameForHeight:CGRectGetHeight(self.bounds)];
 }
 
 + (CGFloat)rowHeightForContentProvider:(id<WPContentViewProvider>)contentProvider andWidth:(CGFloat)width;
@@ -137,6 +155,12 @@ CGFloat const WPContentCellTitleNumberOfLines = 3;
         [detailText addAttribute:NSForegroundColorAttributeName value:[WPStyleGuide readGrey] range:barRange];
         _detailLabel.attributedText = detailText;
     }
+    
+    if ([contentProvider respondsToSelector:@selector(unreadStatusForDisplay)]) {
+        _unreadView.hidden = ![contentProvider unreadStatusForDisplay];
+    } else {
+        _unreadView.hidden = YES;
+    }
 }
 
 - (void)setGravatarImageForContentProvider:(id<WPContentViewProvider>)contentProvider {
@@ -164,6 +188,10 @@ CGFloat const WPContentCellTitleNumberOfLines = 3;
 }
 
 + (BOOL)showGravatarImage {
+    return NO;
+}
+
++ (BOOL)supportsUnreadStatus {
     return NO;
 }
 
@@ -239,16 +267,24 @@ CGFloat const WPContentCellTitleNumberOfLines = 3;
 
 #pragma mark - Private Methods
 
-+ (CGFloat)textWidth:(CGFloat)maxWidth
-{
-    CGFloat imageWidth = [[self class] showGravatarImage] ? WPContentCellImageWidth + [[self class] standardOffset] : 0.0;
-    return maxWidth - [[self class] standardOffset] - WPContentCellAccessoryViewOffset - imageWidth;
++ (CGFloat)textWidth:(CGFloat)maxWidth {
+    CGFloat padding = 0.0;
+    padding += [[self class] textXOrigin];  // left padding
+    padding += [[self class] standardOffset] + WPContentCellAccessoryViewOffset; // right padding
+    return maxWidth - padding;
 }
 
 + (CGFloat)textXOrigin {
     CGFloat x = [[self class] standardOffset];
-    x += [[self class] showGravatarImage] ? [[self class] standardOffset] + WPContentCellImageWidth : 0.0;
+    x += [[self class] showGravatarImage] ? [[self class] gravatarXOrigin] + WPContentCellImageWidth : 0.0;
     x += IS_RETINA ? -0.5 : 0.0;
+    x += ([[self class] supportsUnreadStatus] && ![[self class] showGravatarImage] ? WPContentCellUnreadViewSide + [[self class] standardOffset] : 0.0);
+    return x;
+}
+
++ (CGFloat)gravatarXOrigin {
+    CGFloat x = [[self class] standardOffset];
+    x += ([[self class] supportsUnreadStatus] ? WPContentCellUnreadViewSide + [[self class] standardOffset] : 0.0);
     return x;
 }
 
@@ -257,7 +293,7 @@ CGFloat const WPContentCellTitleNumberOfLines = 3;
 }
 
 + (CGRect)gravatarImageViewFrame {
-    return [[self class] showGravatarImage] ? CGRectMake([[self class] standardOffset], [[self class] standardOffset], WPContentCellImageWidth, WPContentCellImageWidth) : CGRectZero;
+    return [[self class] showGravatarImage] ? CGRectMake([[self class] gravatarXOrigin], [[self class] standardOffset], WPContentCellImageWidth, WPContentCellImageWidth) : CGRectZero;
 }
 
 + (CGRect)statusLabelFrameForContentProvider:(id<WPContentViewProvider>)contentProvider maxWidth:(CGFloat)maxWidth
@@ -301,6 +337,11 @@ CGFloat const WPContentCellTitleNumberOfLines = 3;
     }
     
     return CGRectIntegral(CGRectMake([[self class] textXOrigin], CGRectGetMaxY(previousFrame) + offset, size.width, size.height));
+}
+
++ (CGRect)unreadFrameForHeight:(CGFloat)height {
+    CGFloat side = WPContentCellUnreadViewSide;
+    return CGRectMake([[self class] standardOffset], (height - side) / 2.0 , side, side);
 }
 
 @end
