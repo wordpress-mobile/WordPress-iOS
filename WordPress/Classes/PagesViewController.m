@@ -49,14 +49,7 @@
 }
 
 - (NSString *)tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section {
-    // Don't show a section title if there's only one section
-    if ([tableView numberOfSections] <= 1)
-        return nil;
-
-    id <NSFetchedResultsSectionInfo> sectionInfo = [[self.resultsController sections] objectAtIndex:section];
-    NSString *sectionName = [sectionInfo name];
-    
-    return [Page titleForRemoteStatus:[sectionName numericValue]];
+    return nil;
 }
 
 - (NSString *)statsPropertyForViewOpening

@@ -18,4 +18,6 @@
 - (NSURL *)blavatarURLForDisplay;
 - (NSString *)gravatarEmailForDisplay;
 - (NSDate *)dateForDisplay;
+@optional
+- (BOOL)unreadStatusForDisplay;
 @end

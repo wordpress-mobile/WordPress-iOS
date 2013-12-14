@@ -887,7 +887,7 @@ typedef enum {
     if (section == 0)
         return IS_IPHONE ? 1 : WPTableViewTopMargin;
     
-    return kSectionHeaderHight;
+    return kSectionHeaderHeight;
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {

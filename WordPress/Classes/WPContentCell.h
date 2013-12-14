@@ -15,10 +15,10 @@
 
 @property (nonatomic, strong) id<WPContentViewProvider> contentProvider;
 
-
 + (CGFloat)rowHeightForContentProvider:(id<WPContentViewProvider>)contentProvider andWidth:(CGFloat)width;
 + (BOOL)shortDateString;
 + (BOOL)showGravatarImage;
++ (BOOL)supportsUnreadStatus;
 + (UIFont *)statusFont;
 + (NSDictionary *)statusAttributes;
 + (NSString *)statusTextForContentProvider:(id<WPContentViewProvider>)contentProvider;
@@ -27,9 +27,9 @@
 + (NSDictionary *)titleAttributes;
 + (NSDictionary *)titleAttributesBold;
 + (NSAttributedString *)titleAttributedTextForContentProvider:(id<WPContentViewProvider>)contentProvider;
-+ (UIFont *)detailFont;
-+ (NSDictionary *)detailAttributes;
-+ (NSString *)detailTextForContentProvider:(id<WPContentViewProvider>)contentProvider;
++ (UIFont *)dateFont;
++ (NSDictionary *)dateAttributes;
++ (NSString *)dateTextForContentProvider:(id<WPContentViewProvider>)contentProvider;
 
 
 @end
