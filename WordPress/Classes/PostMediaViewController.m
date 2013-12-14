@@ -208,12 +208,17 @@
 
     cell.selectionStyle = UITableViewCellSelectionStyleBlue;
     if (media.remoteStatus == MediaRemoteStatusPushing) {
-        cell.detailTextLabel.text = [NSString stringWithFormat:NSLocalizedString(@"Uploading: %.1f%%. Tap to cancel.", @""), media.progress * 100.0];
+        CGFloat mediaProgress = media.progress * 100.0;
+        if ([@(mediaProgress) floatValue] < 100.0) {
+            cell.detailTextLabel.text = [NSString stringWithFormat:NSLocalizedString(@"%.1f%%. [Cancel]", @"Uploading message with percentage displayed when an image is uploading, tapping cancels."), mediaProgress];
+        } else {
+            cell.detailTextLabel.text = [NSString stringWithFormat:NSLocalizedString(@"Processing...", @"Uploading message displayed when an image has finished uploading."), mediaProgress];
+        }
     } else if (media.remoteStatus == MediaRemoteStatusProcessing) {
-        cell.detailTextLabel.text = NSLocalizedString(@"Preparing for upload...", @"");
+        cell.detailTextLabel.text = NSLocalizedString(@"Preparing...", @"Uploading message when an image is about to be uploaded.");
         cell.selectionStyle = UITableViewCellSelectionStyleNone;
     } else if (media.remoteStatus == MediaRemoteStatusFailed) {
-        cell.detailTextLabel.text = NSLocalizedString(@"Upload failed - tap to retry.", @"");
+        cell.detailTextLabel.text = NSLocalizedString(@"Upload failed. [Retry]", @"Uploading message when a media upload has failed, tapping retries.");
     } else {
         if ([media.mediaType isEqualToString:@"image"]) {
             cell.detailTextLabel.text = [NSString stringWithFormat:@"%dx%d %@", 
@@ -280,7 +285,7 @@
             if (error.domain == NSURLErrorDomain && error.code == NSURLErrorCancelled) {
                 return;
             }
-            [WPError showAlertWithError:error title:NSLocalizedString(@"Upload failed", @"")];
+            [WPError showAlertWithError:error title:NSLocalizedString(@"Upload failed", @"Error alert when a media upload has failed")];
         }];
     } else if (media.remoteStatus == MediaRemoteStatusPushing) {
         [media cancelUpload];
@@ -662,7 +667,7 @@
 		NSString *resizeSmallStr = [NSString stringWithFormat:NSLocalizedString(@"Small (%@)", @"Small (width x height)"), [NSString stringWithFormat:@"%ix%i", (int)smallSize.width, (int)smallSize.height]];
    		NSString *resizeMediumStr = [NSString stringWithFormat:NSLocalizedString(@"Medium (%@)", @"Medium (width x height)"), [NSString stringWithFormat:@"%ix%i", (int)mediumSize.width, (int)mediumSize.height]];
         NSString *resizeLargeStr = [NSString stringWithFormat:NSLocalizedString(@"Large (%@)", @"Large (width x height)"), [NSString stringWithFormat:@"%ix%i", (int)largeSize.width, (int)largeSize.height]];
-        NSString *originalSizeStr = [NSString stringWithFormat:NSLocalizedString(@"Original (%@)", @"Original (width x height)"), [NSString stringWithFormat:@"%ix%i", (int)originalSize.width, (int)originalSize.height]];
+        NSString *originalSizeStr = [NSString stringWithFormat:NSLocalizedString(@"Original Size (%@)", @"Original Size (width x height)"), [NSString stringWithFormat:@"%ix%i", (int)originalSize.width, (int)originalSize.height]];
         
 		UIActionSheet *resizeActionSheet;
 		
