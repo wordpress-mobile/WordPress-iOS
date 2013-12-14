@@ -469,6 +469,7 @@ static NSString *const RemoveGeotagCellIdentifier = @"RemoveGeotagCellIdentifier
                     cell.textLabel.text = NSLocalizedString(@"Tags", @"Label for the tags field. Should be the same as WP core.");
                     cell.textField.text = self.post.tags;
                     cell.textField.attributedPlaceholder = [[NSAttributedString alloc] initWithString:(NSLocalizedString(@"Comma separated", @"Placeholder text for the tags field. Should be the same as WP core.")) attributes:(@{NSForegroundColorAttributeName: [WPStyleGuide textFieldPlaceholderGrey]})];
+                    cell.textField.returnKeyType = UIReturnKeyDone;
                     cell.textField.delegate = self;
                     self.tagsTextField = cell.textField;
                     [WPStyleGuide configureTableViewTextCell:cell];
