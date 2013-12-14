@@ -39,15 +39,15 @@
 + (NSDictionary *)postTitleAttributes
 {
     NSMutableParagraphStyle *paragraphStyle = [[NSMutableParagraphStyle alloc] init];
-    paragraphStyle.minimumLineHeight = 18;
-    paragraphStyle.maximumLineHeight = 18;
+    paragraphStyle.minimumLineHeight = 19;
+    paragraphStyle.maximumLineHeight = 19;
     return @{NSParagraphStyleAttributeName: paragraphStyle, NSFontAttributeName : [self postTitleFont]};
 }
 
 + (NSDictionary *)postTitleAttributesBold {
     NSMutableParagraphStyle *paragraphStyle = [[NSMutableParagraphStyle alloc] init];
-    paragraphStyle.minimumLineHeight = 18;
-    paragraphStyle.maximumLineHeight = 18;
+    paragraphStyle.minimumLineHeight = 19;
+    paragraphStyle.maximumLineHeight = 19;
     return @{NSParagraphStyleAttributeName: paragraphStyle, NSFontAttributeName : [self postTitleFontBold]};
 }
 
