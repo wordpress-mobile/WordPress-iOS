@@ -17,7 +17,7 @@
 #import "UIImageView+AFNetworkingExtra.h"
 #import "UILabel+SuggestSize.h"
 #import "WPAvatarSource.h"
-#import "ReaderButton.h"
+#import "ContentActionButton.h"
 #import "NSDate+StringFormatting.h"
 #import "UIColor+Helpers.h"
 #import "WPTableViewCell.h"
@@ -51,6 +51,7 @@ const CGFloat RPVControlButtonBorderSize = 0.0f;
 @property (nonatomic, strong) NSTimer *dateRefreshTimer;
 @property (nonatomic, strong) NSMutableArray *mediaArray;
 @property (nonatomic, strong) ReaderMediaQueue *mediaQueue;
+@property (nonatomic, strong) NSMutableArray *actionButtons;
 
 @property (nonatomic, strong) UILabel *titleLabel;
 @property (nonatomic, strong) UILabel *snippetLabel;
@@ -88,6 +89,7 @@ const CGFloat RPVControlButtonBorderSize = 0.0f;
     if (self) {
         _mediaArray = [NSMutableArray array];
         _mediaQueue = [[ReaderMediaQueue alloc] initWithDelegate:self];
+        _actionButtons = [NSMutableArray arrayWithCapacity:4];
 
         self.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
         self.opaque = YES;
@@ -96,6 +98,8 @@ const CGFloat RPVControlButtonBorderSize = 0.0f;
 		_cellImageView.backgroundColor = [WPStyleGuide readGrey];
 		_cellImageView.contentMode = UIViewContentModeScaleAspectFill;
 		_cellImageView.clipsToBounds = YES;
+        _cellImageView.contentMode = UIViewContentModeScaleAspectFill;
+        [self addSubview:_cellImageView];
 
         _titleLabel = [[UILabel alloc] init];
         _titleLabel.autoresizingMask = UIViewAutoresizingFlexibleWidth;
@@ -194,6 +198,9 @@ const CGFloat RPVControlButtonBorderSize = 0.0f;
     return _snippetLabel;
 }
 
+
+#pragma mark - Instance methods
+
 - (void)reset {    
 	_bylineLabel.text = nil;
 	_titleLabel.text = nil;
@@ -216,7 +223,7 @@ const CGFloat RPVControlButtonBorderSize = 0.0f;
     [self configureContentView:_contentProvider];
 }
 
-- (void)configureContentView:(id<WPContentViewProvider>)contentProvider {    
+- (void)configureContentView:(id<WPContentViewProvider>)contentProvider {
     // This will show the placeholder avatar. Do this here instead of prepareForReuse
     // so avatars show up after a cell is created, and not dequeued.
     //[self setAvatar:nil];
@@ -246,6 +253,7 @@ const CGFloat RPVControlButtonBorderSize = 0.0f;
     [super layoutSubviews];
     
     CGFloat contentWidth;
+    CGFloat nextY = 50;
     // On iPad, get the width from the cell instead in order to account for margins
     if (IS_IPHONE) {
         contentWidth = self.frame.size.width;
@@ -256,6 +264,45 @@ const CGFloat RPVControlButtonBorderSize = 0.0f;
     self.byView.frame = CGRectMake(0, 0, contentWidth, RPVAuthorViewHeight + RPVAuthorPadding * 2);
     CGFloat bylineX = RPVAvatarSize + RPVAuthorPadding + RPVHorizontalInnerPadding;
     self.bylineLabel.frame = CGRectMake(bylineX, RPVAuthorPadding - 2, contentWidth - bylineX, 18);
+    
+    // Position the meta view and its subviews
+	self.bottomView.frame = CGRectMake(0, nextY, contentWidth, RPVMetaViewHeight);
+    self.bottomBorder.frame = CGRectMake(RPVHorizontalInnerPadding, 0, contentWidth - RPVHorizontalInnerPadding * 2, RPVBorderHeight);
+    
+    // Action buttons
+    CGFloat buttonWidth = RPVControlButtonWidth;
+    CGFloat buttonX = self.bottomView.frame.size.width - RPVControlButtonWidth;
+    CGFloat buttonY = RPVBorderHeight; // Just below the line
+    NSArray* reversedActionButtons = [[self.actionButtons reverseObjectEnumerator] allObjects];
+    
+    for (UIButton *actionButton in reversedActionButtons) {
+        // Button order from right-to-left, ignoring hidden buttons
+        if (actionButton.hidden)
+            continue;
+        
+        actionButton.frame = CGRectMake(buttonX, buttonY, buttonWidth, RPVControlButtonHeight);
+        buttonX -= buttonWidth + RPVControlButtonSpacing;
+    }
+    
+    CGFloat timeWidth = contentWidth - buttonX;
+    self.timeButton.frame = CGRectMake(RPVHorizontalInnerPadding, RPVBorderHeight, timeWidth, RPVControlButtonHeight);
+}
+
+- (UIButton *)addActionButtonWithImage:(UIImage *)buttonImage selectedImage:(UIImage *)selectedButtonImage {
+    ContentActionButton *button = [ContentActionButton buttonWithType:UIButtonTypeCustom];
+    button.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleLeftMargin;
+    button.backgroundColor = [UIColor clearColor];
+    [button setImage:buttonImage forState:UIControlStateNormal];
+    [button setImage:selectedButtonImage forState:UIControlStateSelected];
+    [self.bottomView addSubview:button];
+    [self.actionButtons addObject:button];
+
+    return button;
+}
+
+- (void)removeActionButton:(UIButton *)button {
+    [button removeFromSuperview];
+    [self.actionButtons removeObject:button];
 }
 
 
@@ -282,24 +329,6 @@ const CGFloat RPVControlButtonBorderSize = 0.0f;
     }
 }
 
-- (void)reblogAction:(id)sender {
-    if ([self.delegate respondsToSelector:@selector(contentView:didReceiveReblogAction:)]) {
-        [self.delegate contentView:self didReceiveReblogAction:sender];
-    }
-}
-
-- (void)commentAction:(id)sender {
-    if ([self.delegate respondsToSelector:@selector(contentView:didReceiveCommentAction:)]) {
-        [self.delegate contentView:self didReceiveCommentAction:sender];
-    }
-}
-
-- (void)likeAction:(id)sender {
-    if ([self.delegate respondsToSelector:@selector(contentView:didReceiveLikeAction:)]) {
-        [self.delegate contentView:self didReceiveLikeAction:sender];
-    }
-}
-
 - (void)linkAction:(id)sender {
     if ([self.delegate respondsToSelector:@selector(contentView:didReceiveLinkAction:)]) {
         [self.delegate contentView:self didReceiveLinkAction:sender];
@@ -319,7 +348,7 @@ const CGFloat RPVControlButtonBorderSize = 0.0f;
 }
 
 
-#pragma mark - Instance Methods
+#pragma mark - Helper methods
 
 - (void)setFeaturedImage:(UIImage *)image {
     self.cellImageView.contentMode = UIViewContentModeScaleAspectFill;
@@ -327,8 +356,7 @@ const CGFloat RPVControlButtonBorderSize = 0.0f;
 }
 
 - (void)updateActionButtons {
-	if (!self.contentProvider)
-        return;	
+    // Implemented by subclasses
 }
 
 - (BOOL)isEmoji:(NSURL *)url {
