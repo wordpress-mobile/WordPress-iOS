@@ -24,7 +24,7 @@
 
 CGFloat const WPContentCellStandardOffset = 10.0;
 CGFloat const WPContentCellStandardiPadOffset = 16.0;
-CGFloat const WPContentCellTitleAndDetailVerticalOffset = 4.0;
+CGFloat const WPContentCellTitleAndDetailVerticalOffset = 3.0;
 CGFloat const WPContentCellLabelAndTitleHorizontalOffset = -0.5;
 CGFloat const WPContentCellAccessoryViewOffset = 25.0;
 CGFloat const WPContentCellImageWidth = 70.0;
@@ -58,7 +58,7 @@ CGFloat const WPContentCellUnreadViewSide = 7.0;
         _titleLabel.shadowOffset = CGSizeMake(0.0, 0.0);
         _titleLabel.textColor = [WPStyleGuide littleEddieGrey];
         [self.contentView addSubview:_titleLabel];
-        
+
         _detailLabel = [[UILabel alloc] init];
         _detailLabel.backgroundColor = [UIColor clearColor];
         _detailLabel.textAlignment = NSTextAlignmentLeft;
@@ -326,14 +326,9 @@ CGFloat const WPContentCellUnreadViewSide = 7.0;
     NSAttributedString *attributedTitle = [[self class] titleAttributedTextForContentProvider:contentProvider];
     CGFloat lineHeight = attributedTitle.size.height;
     size = [attributedTitle.string boundingRectWithSize:CGSizeMake([[self class] textWidth:maxWidth], CGFLOAT_MAX) options:NSStringDrawingUsesLineFragmentOrigin attributes:[[self class] titleAttributes] context:nil].size;
-    size.height = ceilf(MIN(size.height, lineHeight * (WPContentCellTitleNumberOfLines - (hasStatus ? 1 : 0))));
+    size.height = ceilf(MIN(size.height, lineHeight * (WPContentCellTitleNumberOfLines - (hasStatus ? 1 : 0)))) + 1;
     
-    CGFloat offset = 0.0;
-    if (!CGSizeEqualToSize(previousFrame.size, CGSizeZero)) {
-        offset = WPContentCellTitleAndDetailVerticalOffset;
-    }
-    
-    return CGRectIntegral(CGRectMake([[self class] textXOrigin], CGRectGetMaxY(previousFrame) + offset, size.width, size.height));
+    return CGRectIntegral(CGRectMake([[self class] textXOrigin], CGRectGetMaxY(previousFrame), size.width, size.height));
 }
 
 + (CGRect)detailLabelFrameForContentProvider:(id<WPContentViewProvider>)contentProvider previousFrame:(CGRect)previousFrame maxWidth:(CGFloat)maxWidth
