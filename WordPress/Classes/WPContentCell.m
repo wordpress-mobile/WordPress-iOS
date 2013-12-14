@@ -16,6 +16,7 @@
     UILabel *_statusLabel;
     UILabel *_titleLabel;
     UILabel *_detailLabel;
+    UIImageView *_dateImageView;
     UIImageView *_unreadView;
 }
 @end
@@ -30,6 +31,7 @@ CGFloat const WPContentCellAccessoryViewOffset = 25.0;
 CGFloat const WPContentCellImageWidth = 70.0;
 CGFloat const WPContentCellTitleNumberOfLines = 3;
 CGFloat const WPContentCellUnreadViewSide = 7.0;
+CGFloat const WPContentCellDateImageSide = 16.0;
 
 - (id)initWithStyle:(UITableViewCellStyle)style reuseIdentifier:(NSString *)reuseIdentifier
 {
@@ -67,6 +69,10 @@ CGFloat const WPContentCellUnreadViewSide = 7.0;
         _detailLabel.shadowOffset = CGSizeMake(0.0, 0.0);
         _detailLabel.textColor = [WPStyleGuide allTAllShadeGrey];
         [self.contentView addSubview:_detailLabel];
+        
+        _dateImageView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"reader-postaction-time"]];
+        [_dateImageView sizeToFit];
+        [self.contentView addSubview:_dateImageView];
         
         if ([[self class] supportsUnreadStatus]) {
             _unreadView = [[UIImageView alloc] init];
@@ -119,8 +125,10 @@ CGFloat const WPContentCellUnreadViewSide = 7.0;
     _statusLabel.frame = statusFrame;
     _titleLabel.frame = titleFrame;
     _detailLabel.frame = detailFrame;
-    
     _unreadView.frame = [[self class] unreadFrameForHeight:CGRectGetHeight(self.bounds)];
+    
+    // layout date image
+    _dateImageView.frame = CGRectMake(CGRectGetMinX(detailFrame) - WPContentCellDateImageSide, CGRectGetMidY(detailFrame) - WPContentCellDateImageSide / 2.0, WPContentCellDateImageSide, WPContentCellDateImageSide);
 }
 
 + (CGFloat)rowHeightForContentProvider:(id<WPContentViewProvider>)contentProvider andWidth:(CGFloat)width;
@@ -334,14 +342,14 @@ CGFloat const WPContentCellUnreadViewSide = 7.0;
 + (CGRect)detailLabelFrameForContentProvider:(id<WPContentViewProvider>)contentProvider previousFrame:(CGRect)previousFrame maxWidth:(CGFloat)maxWidth
 {
     CGSize size;
-    size = [[[self class] detailTextForContentProvider:contentProvider] boundingRectWithSize:CGSizeMake([[self class] textWidth:maxWidth], CGFLOAT_MAX) options:NSStringDrawingUsesLineFragmentOrigin attributes:[[self class] detailAttributes] context:nil].size;
+    size = [[[self class] detailTextForContentProvider:contentProvider] boundingRectWithSize:CGSizeMake([[self class] textWidth:maxWidth] - WPContentCellDateImageSide, CGFLOAT_MAX) options:NSStringDrawingUsesLineFragmentOrigin attributes:[[self class] detailAttributes] context:nil].size;
     
     CGFloat offset = 0.0;
     if (!CGSizeEqualToSize(previousFrame.size, CGSizeZero)) {
         offset = WPContentCellTitleAndDetailVerticalOffset;
     }
     
-    return CGRectIntegral(CGRectMake([[self class] textXOrigin], CGRectGetMaxY(previousFrame) + offset, size.width, size.height));
+    return CGRectIntegral(CGRectMake([[self class] textXOrigin] + WPContentCellDateImageSide, CGRectGetMaxY(previousFrame) + offset, size.width, size.height));
 }
 
 + (CGRect)unreadFrameForHeight:(CGFloat)height {
