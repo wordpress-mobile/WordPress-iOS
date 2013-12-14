@@ -14,6 +14,7 @@
 #import "ReplyToCommentViewController.h"
 #import "EditCommentViewController.h"
 #import "WPWebViewController.h"
+#import "CommentView.h"
 
 CGFloat const CommentViewDeletePromptActionSheetTag = 501;
 CGFloat const CommentViewReplyToCommentViewControllerHasChangesActionSheetTag = 401;
@@ -29,6 +30,7 @@ CGFloat const CommentViewUnapproveButtonTag = 701;
     NSLayoutConstraint *_authorSiteHeightConstraint;
 }
 
+@property (nonatomic, strong) CommentView *commentView;
 @property (nonatomic, strong) UIBarButtonItem *trashButton;
 @property (nonatomic, strong) UIBarButtonItem *approveButton;
 @property (nonatomic, strong) UIBarButtonItem *spamButton;
@@ -56,6 +58,12 @@ CGFloat const CommentViewUnapproveButtonTag = 701;
 - (void)viewDidLoad
 {
     [super viewDidLoad];
+    
+    self.view = [[UIView alloc] initWithFrame:CGRectZero];
+    self.view.backgroundColor = [UIColor whiteColor];
+    self.commentView = [[CommentView alloc] initWithFrame:self.view.frame];
+    self.commentView.contentProvider = self.comment;
+    [self.view addSubview:self.commentView];
     
 //    self.authorNameLabel.font = [WPStyleGuide postTitleFont];
 //    self.authorSiteButton.titleLabel.font = [WPStyleGuide subtitleFont];

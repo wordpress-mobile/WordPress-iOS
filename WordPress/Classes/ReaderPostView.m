@@ -263,11 +263,8 @@
     CGFloat innerContentWidth = contentWidth - RPVHorizontalInnerPadding * 2;
 	CGFloat nextY = RPVAuthorPadding;
 	CGFloat height = 0.0f;
-    
-    self.byView.frame = CGRectMake(0, 0, contentWidth, RPVAuthorViewHeight + RPVAuthorPadding * 2);
     CGFloat bylineX = RPVAvatarSize + RPVAuthorPadding + RPVHorizontalInnerPadding;
-    self.bylineLabel.frame = CGRectMake(bylineX, RPVAuthorPadding - 2, contentWidth - bylineX, 18);
-    
+
     if ([self.post isFollowable]) {
         self.followButton.hidden = NO;
         CGFloat followX = bylineX - 4; // Fudge factor for image alignment
