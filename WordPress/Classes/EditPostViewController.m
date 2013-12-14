@@ -188,7 +188,7 @@ CGFloat const EPVCTextViewTopPadding = 7.0f;
         UIButton *titleButton = self.titleBarButton;
         NSMutableAttributedString *titleText = [[NSMutableAttributedString alloc] initWithString:[NSString stringWithFormat:@"%@\n", [self editorTitle]]
                                                                                       attributes:@{ NSFontAttributeName : [UIFont fontWithName:@"OpenSans-Bold" size:14.0] }];
-        NSMutableAttributedString *titleSubtext = [[NSMutableAttributedString alloc] initWithString:[NSString stringWithFormat:@"%@ %@", self.post.blog.blogName, @"▼"]
+        NSMutableAttributedString *titleSubtext = [[NSMutableAttributedString alloc] initWithString:self.post.blog.blogName
                                                                                          attributes:@{ NSFontAttributeName : [UIFont fontWithName:@"OpenSans" size:10.0] }];
         [titleText appendAttributedString:titleSubtext];
         
@@ -707,11 +707,15 @@ CGFloat const EPVCTextViewTopPadding = 7.0f;
         return _titleBarButton;
     }
     
+    UIImage *arrowImage = [UIImage imageNamed:@"icon-navbar-dropdown.png"];
     UIButton *titleButton = [UIButton buttonWithType:UIButtonTypeSystem];
     titleButton.frame = CGRectMake(0, 0, 200, 33);
     titleButton.titleLabel.numberOfLines = 2;
     titleButton.titleLabel.textAlignment = NSTextAlignmentCenter;
-    [titleButton addTarget:self action:@selector(showBlogSelector:) forControlEvents:UIControlEventTouchUpInside];
+    [titleButton addTarget:self action:@selector(showBlogSelector) forControlEvents:UIControlEventTouchUpInside];
+    [titleButton setImage:arrowImage forState:UIControlStateNormal];
+    titleButton.imageEdgeInsets = UIEdgeInsetsMake(-10.0, titleButton.frame.size.width - (arrowImage.size.width + 40.0), 0., 0.);
+    titleButton.titleEdgeInsets = UIEdgeInsetsMake(0., -15.0, 0., 0);
     
     _titleBarButton = titleButton;
     self.navigationItem.titleView = _titleBarButton;
