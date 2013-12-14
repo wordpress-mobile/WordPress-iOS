@@ -216,31 +216,16 @@ CGFloat const CommentViewUnapproveButtonTag = 701;
 //    [self.authorEmailButton setTitleColor:textColor forState:UIControlStateNormal];
 //
 //    self.postTitleLabel.attributedText = [self postTitleString];
-//    
-//    if(self.comment.dateCreated != nil) {
-//        self.dateLabel.text = [@"" stringByAppendingString:[dateFormatter stringFromDate:self.comment.dateCreated]];
-//    }
-//    else {
-//        self.dateLabel.text = @"";
-//    }
-//    
-//    NSString *htmlString;
-//	if (self.comment.content == nil) {
-//		htmlString = [NSString stringWithFormat:@"<html><head></head><body><p>%@</p></body></html>", @"<br />"];
-//    }
-//	else {
-//		htmlString = [NSString stringWithFormat:@"<html><head><meta name=\"viewport\" content=\"initial-scale=1, maximum-scale=1\"><style type='text/css'>* { margin:0; padding:0 5px 0 0; } p { color:black; font-family:OpenSans; font-size:16px; line-height: 1.4} b { font-family:OpenSans-Bold } i { font-family:OpenSans-Italic } a { color:#21759b; text-decoration:none; }</style></head><body><p>%@</p></body></html>", [[self.comment.content trim] stringByReplacingOccurrencesOfString:@"\n" withString:@"<br />"]];
-//    }
-//	self.commentWebview.delegate = self;
-//	[self.commentWebview loadHTMLString:htmlString baseURL:nil];
-//    
-//    if ([self.comment.status isEqualToString:@"approve"]) {
-//        self.approveButton.image = [UIImage imageNamed:@"icon-comments-unapprove"];
-//        self.approveButton.tag = CommentViewUnapproveButtonTag;
-//    } else {
-//        self.approveButton.image = [UIImage imageNamed:@"icon-comments-approve"];
-//        self.approveButton.tag = CommentViewApproveButtonTag;
-//    }
+
+    if ([self.comment.status isEqualToString:@"approve"]) {
+        [self.approveButton setImage:[UIImage imageNamed:@"icon-comments-unapprove"] forState:UIControlStateNormal];
+        [self.approveButton setImage:[UIImage imageNamed:@"icon-comments-unapprove-active"] forState:UIControlStateSelected];
+        self.approveButton.tag = CommentViewUnapproveButtonTag;
+    } else {
+        [self.approveButton setImage:[UIImage imageNamed:@"icon-comments-approve"] forState:UIControlStateNormal];
+        [self.approveButton setImage:[UIImage imageNamed:@"icon-comments-approve-active"] forState:UIControlStateSelected];
+        self.approveButton.tag = CommentViewApproveButtonTag;
+    }
 }
 
 - (NSAttributedString *)postTitleString
