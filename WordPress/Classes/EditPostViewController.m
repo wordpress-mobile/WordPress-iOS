@@ -267,8 +267,9 @@ CGFloat const EPVCTextViewTopPadding = 7.0f;
         _titleTextField.font = [WPStyleGuide postTitleFont];
         _titleTextField.textColor = [WPStyleGuide darkAsNightGrey];
         _titleTextField.autoresizingMask = UIViewAutoresizingFlexibleWidth;
-        _titleTextField.placeholder = NSLocalizedString(@"Enter title here", @"Label for the title of the post field. Should be the same as WP core.");
-        _titleTextField.textColor = [WPStyleGuide littleEddieGrey];
+        //_titleTextField.placeholder = NSLocalizedString(@"Enter title here", @"Label for the title of the post field. Should be the same as WP core.");
+        _titleTextField.attributedPlaceholder = [[NSAttributedString alloc] initWithString:(NSLocalizedString(@"Enter title here", @"Label for the title of the post field. Should be the same as WP core.")) attributes:(@{NSForegroundColorAttributeName: [WPStyleGuide textFieldPlaceholderGrey]})];
+        
         _titleTextField.returnKeyType = UIReturnKeyNext;
     }
     [_tableHeaderViewContentView addSubview:_titleTextField];
@@ -313,7 +314,7 @@ CGFloat const EPVCTextViewTopPadding = 7.0f;
         _textView.delegate = self;
         _textView.typingAttributes = [WPStyleGuide regularTextAttributes];
         _textView.font = [WPStyleGuide regularTextFont];
-        _textView.textColor = [WPStyleGuide littleEddieGrey];
+        _textView.textColor = [WPStyleGuide darkAsNightGrey];
         _textView.textContainerInset = UIEdgeInsetsMake(0.0f, EPVCTextViewOffset, 0.0f, EPVCTextViewOffset);
     }
     [_tableHeaderViewContentView addSubview:_textView];
