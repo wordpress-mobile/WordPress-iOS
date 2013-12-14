@@ -285,10 +285,10 @@
     cell.textField.font = [self tableviewSubtitleFont];
     
     if (cell.textField.enabled) {
-        cell.textField.textColor = [self whisperGrey];
+        cell.textField.textColor = [self darkAsNightGrey];
         cell.textField.textAlignment = NSTextAlignmentLeft;
     } else {
-        cell.textField.textColor = [self allTAllShadeGrey];
+        cell.textField.textColor = [self textFieldPlaceholderGrey];
         cell.textField.textAlignment = NSTextAlignmentRight;
     }
 }
