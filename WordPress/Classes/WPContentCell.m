@@ -236,15 +236,15 @@ CGFloat const WPContentCellDateImageSide = 16.0;
 + (NSDictionary *)titleAttributes
 {
     NSMutableParagraphStyle *paragraphStyle = [[NSMutableParagraphStyle alloc] init];
-    paragraphStyle.minimumLineHeight = 19;
-    paragraphStyle.maximumLineHeight = 19;
+    paragraphStyle.minimumLineHeight = 18;
+    paragraphStyle.maximumLineHeight = 18;
     return @{NSParagraphStyleAttributeName: paragraphStyle, NSFontAttributeName : [self titleFont]};}
 
 + (NSDictionary *)titleAttributesBold
 {
     NSMutableParagraphStyle *paragraphStyle = [[NSMutableParagraphStyle alloc] init];
-    paragraphStyle.minimumLineHeight = 19;
-    paragraphStyle.maximumLineHeight = 19;
+    paragraphStyle.minimumLineHeight = 18;
+    paragraphStyle.maximumLineHeight = 18;
     return @{NSParagraphStyleAttributeName: paragraphStyle, NSFontAttributeName : [self titleFontBold]};
 }
 
@@ -336,7 +336,12 @@ CGFloat const WPContentCellDateImageSide = 16.0;
     size = [attributedTitle.string boundingRectWithSize:CGSizeMake([[self class] textWidth:maxWidth], CGFLOAT_MAX) options:NSStringDrawingUsesLineFragmentOrigin attributes:[[self class] titleAttributes] context:nil].size;
     size.height = ceilf(MIN(size.height, lineHeight * (WPContentCellTitleNumberOfLines - (hasStatus ? 1 : 0)))) + 1;
     
-    return CGRectIntegral(CGRectMake([[self class] textXOrigin], CGRectGetMaxY(previousFrame), size.width, size.height));
+    CGFloat offset = -2.0; // Account for line height of title
+    if (!CGSizeEqualToSize(previousFrame.size, CGSizeZero)) {
+        offset += WPContentCellTitleAndDateVerticalOffset;
+    }
+    
+    return CGRectIntegral(CGRectMake([[self class] textXOrigin], CGRectGetMaxY(previousFrame) + offset, size.width, size.height));
 }
 
 + (CGRect)dateLabelFrameForContentProvider:(id<WPContentViewProvider>)contentProvider previousFrame:(CGRect)previousFrame maxWidth:(CGFloat)maxWidth
