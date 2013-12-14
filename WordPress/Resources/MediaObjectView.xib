@@ -29,7 +29,7 @@
             <rect key="frame" x="0.0" y="0.0" width="320" height="480"/>
             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
             <subviews>
-                <toolbar opaque="NO" clearsContextBeforeDrawing="NO" multipleTouchEnabled="YES" contentMode="scaleAspectFit" barStyle="blackTranslucent" id="3">
+                <toolbar clearsContextBeforeDrawing="NO" multipleTouchEnabled="YES" contentMode="scaleAspectFit" barStyle="blackTranslucent" id="3">
                     <rect key="frame" x="0.0" y="436" width="320" height="44"/>
                     <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMinY="YES"/>
                     <items>
@@ -40,12 +40,12 @@
                             </connections>
                         </barButtonItem>
                         <barButtonItem style="plain" systemItem="flexibleSpace" id="12"/>
-                        <barButtonItem image="icon-posts-share.png" style="plain" id="11">
+                        <barButtonItem style="plain" systemItem="fixedSpace" id="bbN-ev-vFF"/>
+                        <barButtonItem image="icon-toolbar-share.png" style="plain" id="11">
                             <connections>
                                 <action selector="insertObject:" destination="-1" id="14"/>
                             </connections>
                         </barButtonItem>
-                        <barButtonItem style="plain" systemItem="fixedSpace" id="bbN-ev-vFF"/>
                     </items>
                     <color key="tintColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                 </toolbar>
@@ -70,6 +70,6 @@
     </objects>
     <resources>
         <image name="icon-comments-trash.png" width="30" height="30"/>
-        <image name="icon-posts-share.png" width="44" height="44"/>
+        <image name="icon-toolbar-share.png" width="30" height="30"/>
     </resources>
 </document>
