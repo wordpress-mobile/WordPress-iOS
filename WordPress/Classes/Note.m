@@ -268,10 +268,6 @@ const NSUInteger NoteKeepCount = 20;
         }
     }
     
-    if ([self isComment] && [self commentText].length > 0) {
-        title = [NSString stringWithFormat:@"%@: %@", title, [self commentText]];
-    }
-    
     return title;
 }
 

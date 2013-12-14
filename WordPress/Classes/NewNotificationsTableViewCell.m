@@ -74,6 +74,20 @@ CGFloat const NewNotificationsCellStandardOffset = 16.0;
 
 #pragma mark - Private Methods
 
++ (NSAttributedString *)titleAttributedTextForContentProvider:(id<WPContentViewProvider>)contentProvider
+{
+    // combine author and title
+    NSString *title = [contentProvider titleForDisplay];
+    NSString *content = [contentProvider contentForDisplay];
+    
+    NSMutableAttributedString *attributedPostTitle = [[NSMutableAttributedString alloc] initWithString:title attributes:[[self class] titleAttributes]];
+    if (content.length > 0) {
+        [attributedPostTitle appendAttributedString:[[NSAttributedString alloc] initWithString:@": "]];
+        [attributedPostTitle appendAttributedString:[[NSAttributedString alloc] initWithString:content attributes:[[self class] titleAttributes]]];
+    }
+    return attributedPostTitle;
+}
+
 + (UIFont *)unreadFont
 {
     return [WPStyleGuide subtitleFont];
