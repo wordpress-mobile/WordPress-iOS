@@ -217,17 +217,27 @@ CGFloat const WPContentCellUnreadViewSide = 7.0;
 
 + (UIFont *)titleFont
 {
-    return [UIFont fontWithName:@"OpenSans" size:16.0];
+    return [UIFont fontWithName:@"OpenSans" size:15.0];
+}
+
++ (UIFont *)titleFontBold
+{
+    return [UIFont fontWithName:@"OpenSans-Bold" size:15.0];
 }
 
 + (NSDictionary *)titleAttributes
 {
-    return [WPStyleGuide postTitleAttributes];
-}
+    NSMutableParagraphStyle *paragraphStyle = [[NSMutableParagraphStyle alloc] init];
+    paragraphStyle.minimumLineHeight = 19;
+    paragraphStyle.maximumLineHeight = 19;
+    return @{NSParagraphStyleAttributeName: paragraphStyle, NSFontAttributeName : [self titleFont]};}
 
 + (NSDictionary *)titleAttributesBold
 {
-    return [WPStyleGuide postTitleAttributesBold];
+    NSMutableParagraphStyle *paragraphStyle = [[NSMutableParagraphStyle alloc] init];
+    paragraphStyle.minimumLineHeight = 19;
+    paragraphStyle.maximumLineHeight = 19;
+    return @{NSParagraphStyleAttributeName: paragraphStyle, NSFontAttributeName : [self titleFontBold]};
 }
 
 + (NSAttributedString *)titleAttributedTextForContentProvider:(id<WPContentViewProvider>)contentProvider
