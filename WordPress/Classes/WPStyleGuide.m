@@ -28,20 +28,27 @@
 
 + (UIFont *)postTitleFont
 {
-    return [UIFont fontWithName:@"OpenSans" size:18.0];
+    return [UIFont fontWithName:@"OpenSans" size:16.0];
 }
 
 + (UIFont *)postTitleFontBold
 {
-    return [UIFont fontWithName:@"OpenSans-Bold" size:18.0];    
+    return [UIFont fontWithName:@"OpenSans-Bold" size:16.0];
 }
 
 + (NSDictionary *)postTitleAttributes
 {
     NSMutableParagraphStyle *paragraphStyle = [[NSMutableParagraphStyle alloc] init];
-    paragraphStyle.minimumLineHeight = 20;
-    paragraphStyle.maximumLineHeight = 20;
+    paragraphStyle.minimumLineHeight = 19;
+    paragraphStyle.maximumLineHeight = 19;
     return @{NSParagraphStyleAttributeName: paragraphStyle, NSFontAttributeName : [self postTitleFont]};
+}
+
++ (NSDictionary *)postTitleAttributesBold {
+    NSMutableParagraphStyle *paragraphStyle = [[NSMutableParagraphStyle alloc] init];
+    paragraphStyle.minimumLineHeight = 19;
+    paragraphStyle.maximumLineHeight = 19;
+    return @{NSParagraphStyleAttributeName: paragraphStyle, NSFontAttributeName : [self postTitleFontBold]};
 }
 
 + (UIFont *)subtitleFont
