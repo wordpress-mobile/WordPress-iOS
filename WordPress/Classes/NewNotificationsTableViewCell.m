@@ -27,10 +27,41 @@
     NSString *content = [contentProvider contentForDisplay];
     
     NSMutableAttributedString *attributedPostTitle = [[NSMutableAttributedString alloc] initWithString:title attributes:[[self class] titleAttributes]];
+    
+    // Bold text in quotes. This code should be rewritten when the API is more flexible
+    // and includes out-of-band data
+    NSScanner *scanner = [NSScanner scannerWithString:title];
+    NSString *tmp;
+    
+    while ([scanner isAtEnd] == NO)
+    {
+        [scanner scanUpToString:@"\"" intoString:NULL];
+        [scanner scanString:@"\"" intoString:NULL];
+        [scanner scanUpToString:@"\"" intoString:&tmp];
+        [scanner scanString:@"\"" intoString:NULL];
+        
+        NSRange itemRange = [title rangeOfString:tmp];
+        if (itemRange.location != NSNotFound) {
+            [attributedPostTitle addAttributes:[[self class] titleAttributesBold] range:itemRange];
+        }
+    }
+    
+    // Bold text up until "liked", "commented", or "followed"
+    NSArray *keywords = @[@"liked", @"commented", @"followed"];
+    for (NSString *keyword in keywords) {
+        NSRange keywordRange = [title rangeOfString:keyword];
+        if (keywordRange.location != NSNotFound) {
+            [attributedPostTitle addAttributes:[[self class] titleAttributesBold] range:NSMakeRange(0, keywordRange.location)];
+            break;
+        }
+    }
+    
+
     if (content.length > 0) {
         [attributedPostTitle appendAttributedString:[[NSAttributedString alloc] initWithString:@": "]];
         [attributedPostTitle appendAttributedString:[[NSAttributedString alloc] initWithString:content attributes:[[self class] titleAttributes]]];
     }
+
     return attributedPostTitle;
 }
 
