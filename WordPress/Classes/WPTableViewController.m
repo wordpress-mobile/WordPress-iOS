@@ -269,16 +269,18 @@ NSString *const DefaultCellIdentifier = @"DefaultCellIdentifier";
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section {
-    id <NSFetchedResultsSectionInfo> sectionInfo = nil;
-    sectionInfo = [[self.resultsController sections] objectAtIndex:section];
-
     // Don't show section headers if there are no named sections
     NSString *sectionTitle = [self tableView:tableView titleForHeaderInSection:section];
     if ([[self.resultsController sections] count] <= 1 && [sectionTitle length] == 0) {
         return IS_IPHONE ? 1 : WPTableViewTopMargin;
     }
 
-    return kSectionHeaderHight;
+    return kSectionHeaderHeight;
+}
+
+- (CGFloat)tableView:(UITableView *)tableView heightForFooterInSection:(NSInteger)section {
+    // remove footer height for all but last section
+    return section == [[self.resultsController sections] count] - 1 ? UITableViewAutomaticDimension : 1.0;
 }
 
 - (UITableViewCellEditingStyle)tableView:(UITableView *)tableView editingStyleForRowAtIndexPath:(NSIndexPath *)indexPath {
