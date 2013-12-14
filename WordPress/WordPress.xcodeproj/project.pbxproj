@@ -742,6 +742,8 @@
 		85ED54FD17CC1A01006564AE /* icon-posts-editor-inspector-active@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 85ED54F117CC1A01006564AE /* icon-posts-editor-inspector-active@2x.png */; };
 		85ED988817DFA00000090D0B /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 85ED988717DFA00000090D0B /* Images.xcassets */; };
 		85ED98AB17DFB17200090D0B /* iTunesArtwork@2x in Resources */ = {isa = PBXBuildFile; fileRef = 85ED98AA17DFB17200090D0B /* iTunesArtwork@2x */; };
+		93598885185C0CF900EB9651 /* icon-navbar-dropdown.png in Resources */ = {isa = PBXBuildFile; fileRef = 93598883185C0CF900EB9651 /* icon-navbar-dropdown.png */; };
+		93598886185C0CF900EB9651 /* icon-navbar-dropdown@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 93598884185C0CF900EB9651 /* icon-navbar-dropdown@2x.png */; };
 		93740DC917D8F85600C41B2F /* WPAlertView.h in Resources */ = {isa = PBXBuildFile; fileRef = 93740DC817D8F85600C41B2F /* WPAlertView.h */; };
 		93740DCB17D8F86700C41B2F /* WPAlertView.m in Sources */ = {isa = PBXBuildFile; fileRef = 93740DCA17D8F86700C41B2F /* WPAlertView.m */; };
 		93740DCD17D8F87B00C41B2F /* WPAlertView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 93740DCC17D8F87B00C41B2F /* WPAlertView.xib */; };
@@ -1879,6 +1881,8 @@
 		93069F5C17625C28000C966D /* UIButtonBarActionSmallBlack.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = UIButtonBarActionSmallBlack.png; sourceTree = "<group>"; };
 		93069F5D17625C28000C966D /* UIButtonBarActionSmallBlack@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "UIButtonBarActionSmallBlack@2x.png"; sourceTree = "<group>"; };
 		930C6374182BD86400976C21 /* WordPress-Internal-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; name = "WordPress-Internal-Info.plist"; path = "/Users/aaron/src/WordPress-iOS-public/WordPress/WordPress-Internal-Info.plist"; sourceTree = "<absolute>"; };
+		93598883185C0CF900EB9651 /* icon-navbar-dropdown.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "icon-navbar-dropdown.png"; sourceTree = "<group>"; };
+		93598884185C0CF900EB9651 /* icon-navbar-dropdown@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "icon-navbar-dropdown@2x.png"; sourceTree = "<group>"; };
 		93740DC817D8F85600C41B2F /* WPAlertView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WPAlertView.h; sourceTree = "<group>"; };
 		93740DCA17D8F86700C41B2F /* WPAlertView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WPAlertView.m; sourceTree = "<group>"; };
 		93740DCC17D8F87B00C41B2F /* WPAlertView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = WPAlertView.xib; sourceTree = "<group>"; };
@@ -3081,6 +3085,8 @@
 				853FAC4D17CF1F35008A2F74 /* transparent-point.png */,
 				8524551517DE4DBE00D22F98 /* icon-chevron.png */,
 				8524551617DE4DBE00D22F98 /* icon-chevron@2x.png */,
+				93598883185C0CF900EB9651 /* icon-navbar-dropdown.png */,
+				93598884185C0CF900EB9651 /* icon-navbar-dropdown@2x.png */,
 			);
 			name = "iOS 7";
 			sourceTree = "<group>";
@@ -4505,6 +4511,7 @@
 				857F55CF17CEC5E100E154E1 /* keyboardButtonHighlighted-ios7@2x.png in Resources */,
 				E18165FD14E4428B006CE885 /* loader.html in Resources */,
 				E128566415103A3600406BC9 /* keyboardButtoniPad@2x.png in Resources */,
+				93598886185C0CF900EB9651 /* icon-navbar-dropdown@2x.png in Resources */,
 				46F871531839528C00BC149B /* reader-postaction-time@2x.png in Resources */,
 				E128566515103A3600406BC9 /* keyboardButtoniPadHighlighted@2x.png in Resources */,
 				30811743151057880028A15E /* Default-Portrait@2x.png in Resources */,
@@ -4712,6 +4719,7 @@
 				5D15F4B315B8C407001B14EA /* toolbarLiHighlighted.png in Resources */,
 				5D15F4B415B8C407001B14EA /* toolbarLiHighlighted@2x.png in Resources */,
 				5D15F4B515B8C407001B14EA /* toolbarLiiPad.png in Resources */,
+				93598885185C0CF900EB9651 /* icon-navbar-dropdown.png in Resources */,
 				5D15F4B615B8C407001B14EA /* toolbarLiiPad@2x.png in Resources */,
 				5D15F4B715B8C407001B14EA /* toolbarLinkHighlighted.png in Resources */,
 				5D15F4B815B8C407001B14EA /* toolbarLinkHighlighted@2x.png in Resources */,
