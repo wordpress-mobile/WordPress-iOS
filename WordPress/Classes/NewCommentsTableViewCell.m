@@ -21,7 +21,7 @@
     // combine author and title
     NSString *author = [contentProvider authorForDisplay];
     NSString *postTitle = [contentProvider titleForDisplay];
-    NSString *content = [contentProvider contentForDisplay];
+    NSString *content = [[contentProvider contentForDisplay] removeNewLines];
     if (!(postTitle.length > 0)) {
         postTitle = NSLocalizedString(@"(No Title)", nil);
     }
