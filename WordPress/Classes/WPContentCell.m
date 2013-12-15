@@ -10,6 +10,7 @@
 #import "WPComLanguages.h"
 #import "UIImageView+Gravatar.h"
 #import "NSDate+StringFormatting.h"
+#import "NSString+Util.h"
 
 @interface WPContentCell() {
     UIImageView *_gravatarImageView;
@@ -250,7 +251,9 @@ CGFloat const WPContentCellDateImageSide = 16.0;
 
 + (NSAttributedString *)titleAttributedTextForContentProvider:(id<WPContentViewProvider>)contentProvider
 {
-    return [[NSAttributedString alloc] initWithString:[contentProvider titleForDisplay] attributes:[self titleAttributes]];
+    // remove new lines from title
+    NSString *titleText = [[contentProvider titleForDisplay] removeNewLines];
+    return [[NSAttributedString alloc] initWithString:titleText attributes:[self titleAttributes]];
 }
 
 + (UIFont *)dateFont
