@@ -40,9 +40,11 @@
         [scanner scanUpToString:@"\"" intoString:&tmp];
         [scanner scanString:@"\"" intoString:NULL];
         
-        NSRange itemRange = [title rangeOfString:tmp];
-        if (itemRange.location != NSNotFound) {
-            [attributedPostTitle addAttributes:[[self class] titleAttributesBold] range:itemRange];
+        if (tmp.length > 0) {
+            NSRange itemRange = [title rangeOfString:tmp];
+            if (itemRange.location != NSNotFound) {
+                [attributedPostTitle addAttributes:[[self class] titleAttributesBold] range:itemRange];
+            }
         }
     }
     
