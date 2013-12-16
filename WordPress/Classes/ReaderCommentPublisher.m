@@ -137,6 +137,8 @@
             return;
         }
 
+        self.composeView.enabled = YES;
+
 		DDLogError(@"Error Commenting from Reader : %@", [error localizedDescription]);
 		// TODO: Failure reason.
 		UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"Comment failed", @"")
