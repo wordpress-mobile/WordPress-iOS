@@ -106,7 +106,9 @@ typedef enum {
 
 - (void)viewDidLoad {
 	[super viewDidLoad];
-	
+
+    self.tableView.keyboardDismissMode = UIScrollViewKeyboardDismissModeInteractive;
+
 	if (self.infiniteScrollEnabled) {
         [self enableInfiniteScrolling];
     }
