@@ -103,24 +103,6 @@ NSString * const CommentStatusDraft = @"draft";
     return reply;
 }
 
-+ (NSArray *)existingPostsForBlog:(Blog *)blog inContext:(NSManagedObjectContext *)context {
-    NSFetchRequest *existingFetch = [NSFetchRequest fetchRequestWithEntityName:NSStringFromClass(self)];
-    existingFetch.predicate = [NSPredicate predicateWithFormat:@"(remoteStatusNumber = %@) AND (postID != NULL) AND (original == NULL) AND (blog == %@)",
-                               [NSNumber numberWithInt:AbstractPostRemoteStatusSync], blog];
-
-    __block NSArray *existing = nil;
-    [context performBlockAndWait:^{
-        NSError *error;
-        existing = [context executeFetchRequest:existingFetch error:&error];
-        if (error) {
-            DDLogError(@"Failed to fetch existing posts: %@", error);
-            existing = nil;
-        }
-    }];
-
-    return existing;
-}
-
 // find a comment who's parent is this comment
 - (Comment *)restoreReply {
     NSFetchRequest *existingReply = [NSFetchRequest fetchRequestWithEntityName:NSStringFromClass([self class])];
