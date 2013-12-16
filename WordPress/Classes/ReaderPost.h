@@ -143,7 +143,6 @@ extern NSString *const ReaderExtrasArrayKey;
 
 - (NSString *)featuredImageForWidth:(NSUInteger)width height:(NSUInteger)height;
 
-
 @end
 
 
