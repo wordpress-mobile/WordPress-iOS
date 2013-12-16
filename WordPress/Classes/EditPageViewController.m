@@ -35,7 +35,7 @@
     return title;
 }
 
-- (void)onNewPostSaved {
+- (void)newPostDidSave {
     // Noop.
 }
 

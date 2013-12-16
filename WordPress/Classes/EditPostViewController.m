@@ -768,7 +768,7 @@ CGFloat const EPVCTextViewTopPadding = 7.0f;
         }];
     }
     
-    [self onNewPostSaved];
+    [self newPostDidSave];
 
     [self dismissEditView];
 }
