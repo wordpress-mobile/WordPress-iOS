@@ -136,21 +136,7 @@ NS_ENUM(NSUInteger, NotifcationCommentCellType){
     replyFrame.size.height = 48.f;
     
     self.replyBackgroundImageView.image = [[UIImage imageNamed:@"note-reply-field"]
-                                           resizableImageWithCapInsets:UIEdgeInsetsMake(6.f, 6.f, 6.f, 6.f)];
-
-    /**
-    NSNotificationCenter *nc = [NSNotificationCenter defaultCenter];
-    [nc addObserver:self
-           selector:@selector(onShowKeyboard:)
-               name:UIKeyboardWillShowNotification
-             object:nil];
-    
-    [nc addObserver:self
-           selector:@selector(onHideKeyboard:)
-               name:UIKeyboardWillHideNotification
-             object:nil];
-     **/
-    
+                                           resizableImageWithCapInsets:UIEdgeInsetsMake(6.f, 6.f, 6.f, 6.f)];    
     self.title = NSLocalizedString(@"Comment", @"Title for detail view of a comment notification");
 
     [self displayNote];
