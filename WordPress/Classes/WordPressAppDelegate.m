@@ -39,6 +39,7 @@
 #import "LoginViewController.h"
 #import "NotificationsViewController.h"
 #import "ReaderPostsViewController.h"
+#import "ReaderPostDetailViewController.h"
 #import "SupportViewController.h"
 
 #if DEBUG
@@ -137,18 +138,20 @@ NSInteger const IndexForMeTab = 0;
 
 - (BOOL)application:(UIApplication *)application openURL:(NSURL *)url sourceApplication:(NSString *)sourceApplication annotation:(id)annotation
 {
+    BOOL returnValue = NO;
+    
     if ([[BITHockeyManager sharedHockeyManager].authenticator handleOpenURL:url
                                                           sourceApplication:sourceApplication
                                                                  annotation:annotation]) {
-        return YES;
+        returnValue = YES;
     }
 
     if ([[GPPShare sharedInstance] handleURL:url sourceApplication:sourceApplication annotation:annotation]) {
-        return YES;
+        returnValue = YES;
     }
 
     if ([[PocketAPI sharedAPI] handleOpenURL:url]) {
-        return YES;
+        returnValue = YES;
     }
 
     if ([[CameraPlusPickerManager sharedManager] shouldHandleURLAsCameraPlusPickerCallback:url]) {
@@ -167,25 +170,40 @@ NSInteger const IndexForMeTab = 0;
         } cancelBlock:^(void) {
             DDLogInfo(@"Camera+ picker canceled");
         }];
-        return YES;
+        returnValue = YES;
     }
 
     if ([WordPressApi handleOpenURL:url]) {
-        return YES;
+        returnValue = YES;
     }
 
-    if (url && [url isKindOfClass:[NSURL class]]) {
+    if (url && [url isKindOfClass:[NSURL class]] && [[url absoluteString] hasPrefix:@"wordpress://"]) {
         NSString *URLString = [url absoluteString];
         DDLogInfo(@"Application launched with URL: %@", URLString);
-        if ([[url absoluteString] hasPrefix:@"wordpress://wpcom_signup_completed"]) {
+
+        if ([URLString rangeOfString:@"wpcom_signup_completed"].length) {
             NSDictionary *params = [[url query] dictionaryFromQueryString];
             DDLogInfo(@"%@", params);
             [[NSNotificationCenter defaultCenter] postNotificationName:@"wpcomSignupNotification" object:nil userInfo:params];
-            return YES;
+            returnValue = YES;
+        } else if ([URLString rangeOfString:@"viewpost"].length) {
+            NSDictionary *params = [[url query] dictionaryFromQueryString];
+            
+            if (params.count) {
+                NSUInteger *blogId = [[params valueForKey:@"blogId"] integerValue];
+                NSUInteger *postId = [[params valueForKey:@"postId"] integerValue];
+                
+                [self.readerPostsViewController.navigationController popToRootViewControllerAnimated:NO];
+                NSInteger readerTabIndex = [[self.tabBarController viewControllers] indexOfObject:self.readerPostsViewController.navigationController];
+                [self.tabBarController setSelectedIndex:readerTabIndex];
+                [self.readerPostsViewController openPost:postId onBlog:blogId];
+                
+                returnValue = YES;
+            }
         }
     }
 
-    return NO;
+    return returnValue;
 }
 
 - (void)applicationWillTerminate:(UIApplication *)application {
@@ -409,6 +427,7 @@ NSInteger const IndexForMeTab = 0;
     }
     
     EditPostViewController *editPostViewController = [[EditPostViewController alloc] initWithDraftForLastUsedBlog];
+    editPostViewController.editorOpenedBy = StatsPropertyPostDetailEditorOpenedOpenedByTabBarButton;
     UINavigationController *navController = [[UINavigationController alloc] initWithRootViewController:editPostViewController];
     navController.modalPresentationStyle = UIModalPresentationCurrentContext;
     navController.navigationBar.translucent = NO;
@@ -450,6 +469,7 @@ NSInteger const IndexForMeTab = 0;
     if ([tabBarController.viewControllers indexOfObject:viewController] == 3) {
         // Ignore taps on the post tab and instead show the modal.
         if ([Blog countWithContext:[[ContextManager sharedInstance] mainContext]] == 0) {
+            [WPMobileStats trackEventForWPCom:StatsEventAccountCreationOpenedFromTabBar];
             [self showWelcomeScreenAnimated:YES thenEditor:YES];
         } else {
             [self showPostTab];
