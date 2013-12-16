@@ -277,6 +277,7 @@ NSString * const WPNotificationsNavigationRestorationID = @"WPNotificationsNavig
     if ([tabBarController.viewControllers indexOfObject:viewController] == 3) {
         // Ignore taps on the post tab and instead show the modal.
         if ([Blog countWithContext:[[ContextManager sharedInstance] mainContext]] == 0) {
+            [WPMobileStats trackEventForWPCom:StatsEventAccountCreationOpenedFromTabBar];
             [self showWelcomeScreenAnimated:YES thenEditor:YES];
         } else {
             [self showPostTab];
@@ -296,6 +297,7 @@ NSString * const WPNotificationsNavigationRestorationID = @"WPNotificationsNavig
     }
     
     EditPostViewController *editPostViewController = [[EditPostViewController alloc] initWithDraftForLastUsedBlog];
+    editPostViewController.editorOpenedBy = StatsPropertyPostDetailEditorOpenedOpenedByTabBarButton;
     UINavigationController *navController = [[UINavigationController alloc] initWithRootViewController:editPostViewController];
     navController.modalPresentationStyle = UIModalPresentationCurrentContext;
     navController.navigationBar.translucent = NO;
