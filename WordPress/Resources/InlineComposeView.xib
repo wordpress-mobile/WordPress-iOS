@@ -52,9 +52,9 @@
                             <autoresizingMask key="autoresizingMask" flexibleMinX="YES" flexibleMinY="YES"/>
                         </activityIndicatorView>
                     </subviews>
+                    <color key="backgroundColor" red="0.93072775139999997" green="0.93072775139999997" blue="0.93072775139999997" alpha="0.94999999999999996" colorSpace="calibratedRGB"/>
                 </view>
             </subviews>
-            <color key="backgroundColor" red="0.93072775135869568" green="0.93072775135869568" blue="0.93072775135869568" alpha="0.95000000000000007" colorSpace="calibratedRGB"/>
             <connections>
                 <outlet property="composerContainerView" destination="hBK-UR-24O" id="GCy-Ru-HVH"/>
             </connections>

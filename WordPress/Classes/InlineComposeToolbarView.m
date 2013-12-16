@@ -84,7 +84,6 @@ CGFloat InlineComposeToolbarViewMinToolbarWidth = 320.f;
 
     self.composerContainerView.frame = frame;
 
-    frame = self.frame;
     frame.size.height = 1.f;
     self.borderLayer.frame = frame;
 
