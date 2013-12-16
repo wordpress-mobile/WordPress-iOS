@@ -15,6 +15,7 @@ const CGFloat InlineComposeViewMaxHeight = 88.f;
 @property (nonatomic, weak) IBOutlet UITextView *toolbarTextView;
 @property (nonatomic, weak) IBOutlet UILabel *placeholderLabel;
 @property (nonatomic, weak) IBOutlet UIButton *sendButton;
+@property (nonatomic, weak) IBOutlet UIActivityIndicatorView *activityIndicatorView;
 @property (nonatomic, strong) UITextView *proxyTextView;
 @property (nonatomic, strong) NSArray *bundle;
 
@@ -125,7 +126,16 @@ const CGFloat InlineComposeViewMaxHeight = 88.f;
         return;
     }
 
+    _enabled = enabled;
+
     self.toolbarTextView.editable = enabled;
+    self.toolbarTextView.alpha = enabled ? 1.f : 0.5f;
+    self.sendButton.hidden = !enabled;
+    if (enabled) {
+        [self.activityIndicatorView stopAnimating];
+    } else {
+        [self.activityIndicatorView startAnimating];
+    }
     [self.proxyTextView becomeFirstResponder];
 }
 
