@@ -14,6 +14,7 @@
 #import "Post.h"
 #import "WPTableViewCell.h"
 #import "BlogSelectorViewController.h"
+#import "WPBlogSelectorButton.h"
 
 NSString *const EditPostViewControllerLastUsedBlogURL = @"EditPostViewControllerLastUsedBlogURL";
 CGFloat const EPVCTextfieldHeight = 44.0f;
@@ -192,11 +193,13 @@ CGFloat const EPVCTextViewTopPadding = 7.0f;
         UIButton *titleButton = self.titleBarButton;
         NSMutableAttributedString *titleText = [[NSMutableAttributedString alloc] initWithString:[NSString stringWithFormat:@"%@\n", [self editorTitle]]
                                                                                       attributes:@{ NSFontAttributeName : [UIFont fontWithName:@"OpenSans-Bold" size:14.0] }];
-        NSMutableAttributedString *titleSubtext = [[NSMutableAttributedString alloc] initWithString:[NSString stringWithFormat:@"%@ %@", self.post.blog.blogName, @"▼"]
+        
+        NSMutableAttributedString *titleSubtext = [[NSMutableAttributedString alloc] initWithString:self.post.blog.blogName
                                                                                          attributes:@{ NSFontAttributeName : [UIFont fontWithName:@"OpenSans" size:10.0] }];
         [titleText appendAttributedString:titleSubtext];
-        
         [titleButton setAttributedTitle:titleText forState:UIControlStateNormal];
+
+        [titleButton sizeToFit];
     }
 }
 
@@ -706,14 +709,18 @@ CGFloat const EPVCTextViewTopPadding = 7.0f;
         return _titleBarButton;
     }
     
-    UIButton *titleButton = [UIButton buttonWithType:UIButtonTypeSystem];
+    UIButton *titleButton = [WPBlogSelectorButton buttonWithType:UIButtonTypeSystem];
     titleButton.frame = CGRectMake(0, 0, 200, 33);
     titleButton.titleLabel.numberOfLines = 2;
     titleButton.titleLabel.textAlignment = NSTextAlignmentCenter;
+    titleButton.autoresizingMask = UIViewAutoresizingFlexibleLeftMargin | UIViewAutoresizingFlexibleRightMargin | UIViewAutoresizingFlexibleTopMargin | UIViewAutoresizingFlexibleBottomMargin;
+    [titleButton setImage:[UIImage imageNamed:@"icon-navbar-dropdown.png"] forState:UIControlStateNormal];
     [titleButton addTarget:self action:@selector(showBlogSelector) forControlEvents:UIControlEventTouchUpInside];
-    
+    [titleButton setImageEdgeInsets:UIEdgeInsetsMake(0, 0, 0, 10)];
+    [titleButton setTitleEdgeInsets:UIEdgeInsetsMake(0, 10, 0, 0)];
+
     _titleBarButton = titleButton;
-    self.navigationItem.titleView = _titleBarButton;
+    self.navigationItem.titleView = titleButton;
 
     return _titleBarButton;
 }
