@@ -425,9 +425,13 @@ NS_ENUM(NSUInteger, NotifcationCommentCellType){
 
 - (void)publishReply:(NSString *)replyText {
     [WPMobileStats trackEventForWPCom:StatsEventNotificationsDetailRepliedToComment];
-    
+
+
     NSDictionary *action = [self.commentActions objectForKey:@"replyto-comment"];
     if (action){
+
+        self.inlineComposeView.enabled = NO;
+
         self.replyActivityView.hidden = NO;
         NSString *approvePath = [NSString stringWithFormat:@"/rest/v1%@", [action valueForKeyPath:@"params.rest_path"]];
         NSString *replyPath = [NSString stringWithFormat:@"%@/replies/new", approvePath];
@@ -442,13 +446,16 @@ NS_ENUM(NSUInteger, NotifcationCommentCellType){
         self.replyTextView.editable = NO;
         [[[WPAccount defaultWordPressComAccount] restApi] postPath:replyPath parameters:params success:^(AFHTTPRequestOperation *operation, id responseObject) {
             DDLogVerbose(@"Response: %@", responseObject);
+            [self.inlineComposeView clearText];
+            self.inlineComposeView.enabled = YES;
+            [self.inlineComposeView dismissComposer];
             [WPToast showToastWithMessage:NSLocalizedString(@"Replied", @"User replied to a comment")
                                  andImage:[UIImage imageNamed:@"action_icon_replied"]];
 
         } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
             DDLogError(@"Failure %@", error);
-            self.inlineComposeView.text = replyText;
-            [self.inlineComposeView becomeFirstResponder];
+            self.inlineComposeView.enabled = YES;
+            [self.inlineComposeView displayComposer];
             DDLogVerbose(@"[Rest API] ! %@", [error localizedDescription]);
         }];
     }
@@ -739,10 +746,6 @@ NS_ENUM(NSUInteger, NotifcationCommentCellType){
 #pragma mark - InlineComposeViewDelegate
 
 - (void)composeView:(InlineComposeView *)view didSendText:(NSString *)text {
-
-    self.inlineComposeView.text = @"";
-    [self.inlineComposeView resignFirstResponder];
-    [self.view endEditing:YES];
 
     [self publishReply:text];
 
