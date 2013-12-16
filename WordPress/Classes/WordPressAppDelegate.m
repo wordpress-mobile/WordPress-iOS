@@ -136,18 +136,20 @@ NSString * const WPNotificationsNavigationRestorationID = @"WPNotificationsNavig
 
 - (BOOL)application:(UIApplication *)application openURL:(NSURL *)url sourceApplication:(NSString *)sourceApplication annotation:(id)annotation
 {
+    BOOL returnValue = NO;
+    
     if ([[BITHockeyManager sharedHockeyManager].authenticator handleOpenURL:url
                                                           sourceApplication:sourceApplication
                                                                  annotation:annotation]) {
-        return YES;
+        returnValue = YES;
     }
 
     if ([[GPPShare sharedInstance] handleURL:url sourceApplication:sourceApplication annotation:annotation]) {
-        return YES;
+        returnValue = YES;
     }
 
     if ([[PocketAPI sharedAPI] handleOpenURL:url]) {
-        return YES;
+        returnValue = YES;
     }
 
     if ([[CameraPlusPickerManager sharedManager] shouldHandleURLAsCameraPlusPickerCallback:url]) {
@@ -166,11 +168,11 @@ NSString * const WPNotificationsNavigationRestorationID = @"WPNotificationsNavig
         } cancelBlock:^(void) {
             DDLogInfo(@"Camera+ picker canceled");
         }];
-        return YES;
+        returnValue = YES;
     }
 
     if ([WordPressApi handleOpenURL:url]) {
-        return YES;
+        returnValue = YES;
     }
 
     if (url && [url isKindOfClass:[NSURL class]] && [[url absoluteString] hasPrefix:@"wordpress://"]) {
@@ -181,7 +183,7 @@ NSString * const WPNotificationsNavigationRestorationID = @"WPNotificationsNavig
             NSDictionary *params = [[url query] dictionaryFromQueryString];
             DDLogInfo(@"%@", params);
             [[NSNotificationCenter defaultCenter] postNotificationName:@"wpcomSignupNotification" object:nil userInfo:params];
-            return YES;
+            returnValue = YES;
         } else if ([URLString rangeOfString:@"viewpost"].length) {
             NSError *error = nil;
             NSRegularExpression *regex = [NSRegularExpression regularExpressionWithPattern:@"blogId=(.+?)&postId=(.+?)$"
@@ -219,12 +221,11 @@ NSString * const WPNotificationsNavigationRestorationID = @"WPNotificationsNavig
                                          }
                                          failure:nil];
             }
-        } else {
-            return NO;
+            returnValue = YES;
         }
     }
 
-    return NO;
+    return returnValue;
 }
 
 - (void)applicationWillTerminate:(UIApplication *)application {
