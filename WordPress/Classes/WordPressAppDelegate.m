@@ -190,30 +190,12 @@ NSString * const WPNotificationsNavigationRestorationID = @"WPNotificationsNavig
             if (params.count) {
                 NSUInteger *blogId = [[params valueForKey:@"blogId"] integerValue];
                 NSUInteger *postId = [[params valueForKey:@"postId"] integerValue];
-                NSString *endpoint = [NSString stringWithFormat:@"sites/%i/posts/%i/?meta=site", blogId, postId];
                 
                 [self.readerPostsViewController.navigationController popToRootViewControllerAnimated:NO];
                 NSInteger readerTabIndex = [[self.tabBarController viewControllers] indexOfObject:self.readerPostsViewController.navigationController];
                 [self.tabBarController setSelectedIndex:readerTabIndex];
+                [self.readerPostsViewController openPost:postId onBlog:blogId];
                 
-                [ReaderPost getPostsFromEndpoint:endpoint
-                                  withParameters:nil
-                                     loadingMore:NO
-                                         success:^(AFHTTPRequestOperation *operation, id responseObject) {
-                                             [ReaderPost createOrUpdateWithDictionary:responseObject
-                                                                          forEndpoint:endpoint
-                                                                          withContext:[[ContextManager sharedInstance] mainContext]];
-                                             NSArray *posts = [ReaderPost fetchPostsForEndpoint:endpoint
-                                                                                    withContext:[[ContextManager sharedInstance] mainContext]];
-
-                                             ReaderPostDetailViewController *controller = [[ReaderPostDetailViewController alloc] initWithPost:[posts objectAtIndex:0]
-                                                                                                                                 featuredImage:nil
-                                                                                                                                   avatarImage:nil];
-                                             
-                                             [self.readerPostsViewController.navigationController pushViewController:controller animated:YES];
-                                         }
-                                         failure:nil];
-
                 returnValue = YES;
             }
         }
