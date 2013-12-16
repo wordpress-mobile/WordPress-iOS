@@ -30,7 +30,7 @@
 #pragma mark - WPContentViewProvider protocol
 
 - (NSString *)titleForDisplay {
-    return self.postTitle;
+    return [self.postTitle stringByDecodingXMLCharacters];
 }
 
 - (NSString *)authorForDisplay {

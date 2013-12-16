@@ -8,6 +8,7 @@
 
 #import "Note.h"
 #import "NSString+Helpers.h"
+#import "NSString+XMLExtensions.h"
 #import "WordPressComApi.h"
 #import "ContextManager.h"
 
@@ -264,6 +265,7 @@ const NSUInteger NoteKeepCount = 20;
         NSRange statusRange = [title rangeOfString:@"]"];
         if (statusRange.location != NSNotFound) {
             title = [title substringFromIndex:statusRange.location + 1];
+            title = [title stringByDecodingXMLCharacters];
             title = [title trim];
         }
     }
