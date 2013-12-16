@@ -23,45 +23,41 @@
                     <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                     <subviews>
                         <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" id="BZS-fj-e3Z">
-                            <rect key="frame" x="5" y="5" width="479" height="33"/>
+                            <rect key="frame" x="5" y="6" width="491" height="33"/>
                             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
-                            <color key="backgroundColor" red="1" green="1" blue="1" alpha="0.0" colorSpace="calibratedRGB"/>
+                            <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
                             <fontDescription key="fontDescription" type="system" pointSize="14"/>
                             <textInputTraits key="textInputTraits" autocapitalizationType="sentences"/>
                             <connections>
                                 <outlet property="delegate" destination="-1" id="eYs-n0-Evf"/>
                             </connections>
                         </textView>
-                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" id="sqC-Nr-O7m">
-                            <rect key="frame" x="510" y="4" width="44" height="36"/>
-                            <autoresizingMask key="autoresizingMask" flexibleMinX="YES" flexibleMinY="YES"/>
-                            <state key="normal" image="icon-reply.png"/>
-                            <connections>
-                                <action selector="onSendReply:" destination="-1" eventType="touchUpInside" id="zXg-4M-nGP"/>
-                            </connections>
-                        </button>
-                        <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Reply" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="X94-zo-flx">
-                            <rect key="frame" x="10" y="11" width="464" height="21"/>
+                        <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Write a reply…" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="X94-zo-flx">
+                            <rect key="frame" x="10" y="12" width="479" height="21"/>
                             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES" flexibleMaxY="YES"/>
                             <fontDescription key="fontDescription" type="system" pointSize="14"/>
                             <color key="textColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
                             <nil key="highlightedColor"/>
                         </label>
+                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" id="sqC-Nr-O7m">
+                            <rect key="frame" x="504" y="5" width="44" height="36"/>
+                            <autoresizingMask key="autoresizingMask" flexibleMinX="YES" flexibleMinY="YES"/>
+                            <state key="normal" title="Reply"/>
+                            <connections>
+                                <action selector="onSendReply:" destination="-1" eventType="touchUpInside" id="zXg-4M-nGP"/>
+                            </connections>
+                        </button>
                         <activityIndicatorView hidden="YES" opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" hidesWhenStopped="YES" style="gray" id="cTT-0u-hzI">
-                            <rect key="frame" x="522" y="12" width="20" height="20"/>
+                            <rect key="frame" x="516" y="13" width="20" height="20"/>
                             <autoresizingMask key="autoresizingMask" flexibleMinX="YES" flexibleMinY="YES"/>
                         </activityIndicatorView>
                     </subviews>
-                    <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
                 </view>
             </subviews>
-            <color key="backgroundColor" red="1" green="1" blue="1" alpha="0.5" colorSpace="calibratedRGB"/>
+            <color key="backgroundColor" red="0.93072775135869568" green="0.93072775135869568" blue="0.93072775135869568" alpha="0.95000000000000007" colorSpace="calibratedRGB"/>
             <connections>
                 <outlet property="composerContainerView" destination="hBK-UR-24O" id="GCy-Ru-HVH"/>
             </connections>
         </view>
     </objects>
-    <resources>
-        <image name="icon-reply.png" width="26" height="24"/>
-    </resources>
 </document>
