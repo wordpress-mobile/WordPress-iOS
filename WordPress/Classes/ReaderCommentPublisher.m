@@ -37,6 +37,57 @@
     self.composeView = nil;
 }
 
+#pragma mark - Accessors
+
+- (void)setComment:(ReaderComment *)comment {
+    if (_comment == comment) {
+        return;
+    }
+
+    _comment = comment;
+
+    // if the comment is nil, clear the composer and bail
+    if (comment == nil) {
+        [self.composeView clearText];
+        return;
+    }
+
+    // try to restore the comment from the post
+    NSDictionary *storedComment = [self.post getStoredComment];
+
+    // if there's no stored comment dismiss it
+    if (storedComment == nil){
+        [self.composeView clearText];
+        return;
+    }
+
+    // if the stored comment's comment id matches the comment id use the text
+    //  @{@"commentID":commentID, @"comment":commentText};
+
+    NSNumber *commentId = [storedComment objectForKey:@"commentID"];
+
+    // if the id's do not match, clear the text
+    if (![commentId isEqualToNumber:comment.commentID]){
+        [self.composeView clearText];
+        return;
+    }
+
+    self.composeView.text = [storedComment objectForKey:@"comment"];
+
+}
+
+- (void)setPost:(ReaderPost *)post {
+    if (_post == post) {
+        return;
+    }
+
+    _post = post;
+
+    // when the post is changed, clear the text
+    // we should store not just replies to comments, but posts as well
+    [self.composeView clearText];
+}
+
 #pragma mark - InlineComposeViewDelegate
 
 - (void)composeView:(InlineComposeView *)view didSendText:(NSString *)text {
@@ -67,14 +118,13 @@
 		return;
 	}
 
-	// [self.activityView startAnimating];
-
-
+    self.composeView.enabled = NO;
 	NSDictionary *params = @{@"content":str};
 
 	[[WordPressComApi sharedApi] postPath:[self pathForContext] parameters:params success:^(AFHTTPRequestOperation *operation, id responseObject) {
 
-        // TODO: build actual comment model
+        [self.composeView clearText];
+        self.composeView.enabled = YES;
         [self.delegate commentPublisherDidPublishComment:self];
 
 	} failure:^(AFHTTPRequestOperation *operation, NSError *error) {
@@ -94,6 +144,22 @@
 		[alertView show];
 	}];
 
+}
+
+#pragma mark - UITextViewDelegate
+
+- (void)textViewDidEndEditing:(UITextView *)textView {
+    // if we have a comment, store the draft in the post, yeah, it's weird
+    // TODO: support storing draft replies for all comments and the post
+    NSString *text = textView.text;
+
+    if ([[text trim] isEqualToString:@""]) {
+        return;
+    }
+
+    if (!!self.comment) {
+        [self.post storeComment:self.comment.commentID comment:textView.text];
+    }
 }
 
 @end
