@@ -6,6 +6,7 @@
     <objects>
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="InlineComposeView">
             <connections>
+                <outlet property="activityIndicatorView" destination="cTT-0u-hzI" id="6SG-iv-Eke"/>
                 <outlet property="inputAccessoryView" destination="xQf-WQ-fdT" id="W9x-Hn-KCP"/>
                 <outlet property="placeholderLabel" destination="X94-zo-flx" id="ryJ-AR-Fa9"/>
                 <outlet property="sendButton" destination="sqC-Nr-O7m" id="YRn-Z0-y4u"/>
@@ -31,10 +32,10 @@
                                 <outlet property="delegate" destination="-1" id="eYs-n0-Evf"/>
                             </connections>
                         </textView>
-                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" id="sqC-Nr-O7m">
-                            <rect key="frame" x="492" y="8" width="54" height="28"/>
+                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" id="sqC-Nr-O7m">
+                            <rect key="frame" x="510" y="4" width="44" height="36"/>
                             <autoresizingMask key="autoresizingMask" flexibleMinX="YES" flexibleMinY="YES"/>
-                            <state key="normal" title="Send"/>
+                            <state key="normal" image="icon-reply.png"/>
                             <connections>
                                 <action selector="onSendReply:" destination="-1" eventType="touchUpInside" id="zXg-4M-nGP"/>
                             </connections>
@@ -46,6 +47,10 @@
                             <color key="textColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
                             <nil key="highlightedColor"/>
                         </label>
+                        <activityIndicatorView hidden="YES" opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" hidesWhenStopped="YES" style="gray" id="cTT-0u-hzI">
+                            <rect key="frame" x="522" y="12" width="20" height="20"/>
+                            <autoresizingMask key="autoresizingMask" flexibleMinX="YES" flexibleMinY="YES"/>
+                        </activityIndicatorView>
                     </subviews>
                     <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
                 </view>
@@ -56,4 +61,7 @@
             </connections>
         </view>
     </objects>
+    <resources>
+        <image name="icon-reply.png" width="26" height="24"/>
+    </resources>
 </document>
