@@ -9,7 +9,7 @@
 const CGFloat InlineComposeViewMinHeight = 44.f;
 const CGFloat InlineComposeViewMaxHeight = 88.f;
 
-@interface InlineComposeView () <UITextViewDelegate, UIGestureRecognizerDelegate>
+@interface InlineComposeView () <UITextViewDelegate>
 
 @property (nonatomic, weak) IBOutlet UIView *inputAccessoryView;
 @property (nonatomic, weak) IBOutlet UITextView *toolbarTextView;
@@ -17,10 +17,6 @@ const CGFloat InlineComposeViewMaxHeight = 88.f;
 @property (nonatomic, weak) IBOutlet UIButton *sendButton;
 @property (nonatomic, strong) UITextView *proxyTextView;
 @property (nonatomic, strong) NSArray *bundle;
-@property (nonatomic, strong) UIPanGestureRecognizer *panGesture;
-@property (nonatomic, weak) UIView *keyboardView;
-
-@property CGFloat keyboardAnchor;
 
 @end
 
@@ -29,20 +25,16 @@ const CGFloat InlineComposeViewMaxHeight = 88.f;
 - (id)initWithFrame:(CGRect)frame {
     self = [super initWithFrame:frame];
     if (self) {
+        _enabled = YES;
+
         // Initialization code
         _bundle = [[NSBundle mainBundle] loadNibNamed:@"InlineComposeView" owner:self options:nil];
 
         _proxyTextView = [[UITextView alloc] initWithFrame:CGRectZero];
-
         _proxyTextView.delegate = self;
-
         _proxyTextView.inputAccessoryView = self.inputAccessoryView;
 
         self.placeholderLabel.text = NSLocalizedString(@"Reply", @"Placeholder text for inline compose view");
-
-        _panGesture = [[UIPanGestureRecognizer alloc] initWithTarget:self action:@selector(onPanned:)];
-        _panGesture.cancelsTouchesInView = NO;
-        _panGesture.delegate = self;
 
         [self addSubview:_proxyTextView];
 
@@ -51,15 +43,10 @@ const CGFloat InlineComposeViewMaxHeight = 88.f;
 }
 
 - (void)dealloc {
-    self.bundle = nil;
     self.proxyTextView.delegate = nil;
     self.proxyTextView = nil;
 
-    [self.panGesture.view removeGestureRecognizer:self.panGesture];
-    self.panGesture.delegate = nil;
-    self.panGesture = nil;
-
-    [[NSNotificationCenter defaultCenter] removeObserver:self];
+    self.bundle = nil;
 }
 
 - (void)updatePlaceholderAndSize {
@@ -99,72 +86,8 @@ const CGFloat InlineComposeViewMaxHeight = 88.f;
 
 }
 
-- (void)onPanned:(UIPanGestureRecognizer *)gesture {
-
-    if (self.keyboardView.hidden) {
-        return;
-    }
-    UIView *keyboardView = self.inputAccessoryView.superview;
-    CGRect keyboardFrame = keyboardView.frame;
-    CGFloat currentY = keyboardFrame.origin.y;
-    CGPoint location = [gesture locationInView:self.inputAccessoryView];
-    CGFloat deltaY = currentY - self.keyboardAnchor;
-    CGPoint velocity = [gesture velocityInView:self];
-
-    switch (gesture.state) {
-        case UIGestureRecognizerStateBegan:
-            self.keyboardAnchor = keyboardFrame.origin.y;
-            break;
-        case UIGestureRecognizerStateChanged:
-
-            if (location.y > 0) {
-                // start moving the view
-                keyboardFrame.origin.y += location.y;
-                keyboardView.frame = keyboardFrame;
-            } else if (location.y < 0 && currentY > self.keyboardAnchor){
-                keyboardFrame.origin.y += location.y;
-                keyboardFrame.origin.y = MAX(keyboardFrame.origin.y, self.keyboardAnchor);
-                keyboardView.frame = keyboardFrame;
-            }
-
-            break;
-
-        case UIGestureRecognizerStateEnded:
-        case UIGestureRecognizerStateCancelled: {
-            // if we're moving back up
-            BOOL hide;
-            if (velocity.y < 0 || deltaY < 44.f) {
-                // revert the keyboard
-                hide = NO;
-                keyboardFrame.origin.y = self.keyboardAnchor;
-            } else {
-                hide = YES;
-                keyboardFrame.origin.y = CGRectGetMaxY(self.window.frame);
-            }
-
-            if (hide) {
-                [self.window removeGestureRecognizer:self.panGesture];
-            }
-
-            [UIView animateWithDuration:0.25f
-                                  delay:0.f
-                                options:UIViewAnimationOptionCurveEaseOut | UIViewAnimationOptionBeginFromCurrentState
-                             animations:^{
-                                        keyboardView.frame = keyboardFrame;
-                                    }
-                             completion:^(BOOL finished) {
-                                    if (hide) {
-                                        keyboardView.hidden = YES;
-                                        [self resignFirstResponder];
-                                        [self endEditing:YES];
-                                    }
-                                    }];
-
-        }
-
-        default:
-            break;
-    }
+- (void)clearText {
+    self.text = @"";
 }
 
 - (void)displayComposer {
@@ -189,47 +112,6 @@ const CGFloat InlineComposeViewMaxHeight = 88.f;
     return self.isFirstResponder || self.proxyTextView.isFirstResponder || self.toolbarTextView.isFirstResponder;
 }
 
-#pragma mark - UIGestureRecognizerDelegate
-
-- (BOOL)gestureRecognizer:(UIGestureRecognizer *)gestureRecognizer shouldRecognizeSimultaneouslyWithGestureRecognizer:(UIGestureRecognizer *)otherGestureRecognizer {
-    return YES;
-}
-
-#pragma mark - UIView
-
-- (void)willMoveToWindow:(UIWindow *)newWindow {
-
-    NSNotificationCenter *nc = [NSNotificationCenter defaultCenter];
-    [nc removeObserver:self];
-
-    if (!newWindow) {
-        return;
-    }
-
-    [nc removeObserver:self];
-
-    [nc addObserver:self
-           selector:@selector(keyboardWillShow:)
-               name:UIKeyboardWillShowNotification
-             object:nil];
-
-    [nc addObserver:self
-           selector:@selector(keyboardDidShow:)
-               name:UIKeyboardDidShowNotification
-             object:nil];
-
-    [nc addObserver:self
-           selector:@selector(keyboardWillHide:)
-               name:UIKeyboardWillHideNotification
-             object:nil];
-
-    [nc addObserver:self
-           selector:@selector(keyboardDidHide:)
-               name:UIKeyboardDidHideNotification
-             object:nil];
-
-}
-
 #pragma mark - IBAction
 
 - (IBAction)onSendReply:(id)sender {
@@ -237,6 +119,15 @@ const CGFloat InlineComposeViewMaxHeight = 88.f;
 }
 
 #pragma mark - Accessors
+
+- (void)setEnabled:(BOOL)enabled {
+    if (enabled == _enabled) {
+        return;
+    }
+
+    self.toolbarTextView.editable = enabled;
+    [self.proxyTextView becomeFirstResponder];
+}
 
 - (void)setAttributedText:(NSAttributedString *)attributedText {
     self.toolbarTextView.attributedText = attributedText;
@@ -282,35 +173,6 @@ const CGFloat InlineComposeViewMaxHeight = 88.f;
     return [self.proxyTextView canResignFirstResponder];
 }
 
-#pragma mark - UIKeyboardWillShowNotification
-
-- (void)keyboardWillShow:(NSNotification *)notification {
-    self.keyboardView.hidden = NO;
-}
-
-#pragma mark UIKeyboardDidShowNotification
-
-- (void)keyboardDidShow:(NSNotification *)notification {
-    self.keyboardView = self.inputAccessoryView.superview;
-    if (self.isDisplayed) {
-        [self.window addGestureRecognizer:self.panGesture];
-    }
-}
-
-#pragma mark UIKeyboardWillHideNotification
-
-- (void)keyboardWillHide:(NSNotification *)notification {
-
-    [self.window removeGestureRecognizer:self.panGesture];
-
-}
-
-#pragma mark UIKeyboardDidHideNotification
-
-- (void)keyboardDidHide:(NSNotification *)notification {
-    self.keyboardView.hidden = NO;
-}
-
 #pragma mark - UITextViewDelegate
 // Forwards all delegate methods to our delegate if the textview is the toolbar text view
 
@@ -330,6 +192,7 @@ const CGFloat InlineComposeViewMaxHeight = 88.f;
     }
 
     // forward UITextViewDelegate methods of the toolbar textview to our delegate
+    [self updatePlaceholderAndSize];
     if ([self.delegate respondsToSelector:@selector(textViewDidBeginEditing:)]) {
         [self.delegate textViewDidBeginEditing:textView];
     }

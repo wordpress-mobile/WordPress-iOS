@@ -19,7 +19,9 @@
 @property (nonatomic, strong) NSString *placeholder;
 @property (nonatomic, weak) NSString *text;
 @property (nonatomic, weak) NSAttributedString *attributedText;
+@property (nonatomic, getter = isEnabled) BOOL enabled;
 
+- (void)clearText;
 - (BOOL)isDisplayed;
 - (void)toggleComposer;
 - (void)dismissComposer;
