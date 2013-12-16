@@ -127,7 +127,6 @@ typedef enum {
     }
 	
 	[self prepareComments];
-	[self showStoredComment];
 
     self.inlineComposeView = [[InlineComposeView alloc] initWithFrame:CGRectZero];
 
@@ -159,7 +158,6 @@ typedef enum {
     toolbar.tintColor = [UIColor whiteColor];
     toolbar.translucent = NO;
 
-	[self showStoredComment];
 }
 
 - (void)viewDidAppear:(BOOL)animated {

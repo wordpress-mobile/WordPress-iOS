@@ -127,6 +127,9 @@
         self.composeView.enabled = YES;
         [self.delegate commentPublisherDidPublishComment:self];
 
+        // clear the draft comment for this post if there is one
+        self.post.storedComment = nil;
+
 	} failure:^(AFHTTPRequestOperation *operation, NSError *error) {
 
         if ([self.delegate respondsToSelector:@selector(commentPublisherDidFailPublishingComment:)]) {
@@ -157,8 +160,9 @@
         return;
     }
 
-    if (!!self.comment) {
+    if (self.comment != nil) {
         [self.post storeComment:self.comment.commentID comment:textView.text];
+        [self.post save];
     }
 }
 
