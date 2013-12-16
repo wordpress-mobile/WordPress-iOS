@@ -291,7 +291,7 @@ CGFloat const WPContentCellDateImageSide = 16.0;
 + (CGFloat)textWidth:(CGFloat)maxWidth {
     CGFloat padding = 0.0;
     padding += [[self class] textXOrigin];  // left padding
-    padding += [[self class] standardOffset] + WPContentCellAccessoryViewOffset; // right padding
+    padding += WPContentCellStandardOffset + WPContentCellAccessoryViewOffset; // right padding
     return maxWidth - padding;
 }
 
@@ -312,12 +312,8 @@ CGFloat const WPContentCellDateImageSide = 16.0;
     return [[self class] contentXOrigin];
 }
 
-+ (CGFloat)standardOffset {
-    return WPContentCellStandardOffset;
-}
-
 + (CGRect)gravatarImageViewFrame {
-    return [[self class] showGravatarImage] ? CGRectMake([[self class] gravatarXOrigin], [[self class] standardOffset], WPContentCellImageWidth, WPContentCellImageWidth) : CGRectZero;
+    return [[self class] showGravatarImage] ? CGRectMake([[self class] gravatarXOrigin], WPContentCellStandardOffset, WPContentCellImageWidth, WPContentCellImageWidth) : CGRectZero;
 }
 
 + (CGRect)statusLabelFrameForContentProvider:(id<WPContentViewProvider>)contentProvider maxWidth:(CGFloat)maxWidth
