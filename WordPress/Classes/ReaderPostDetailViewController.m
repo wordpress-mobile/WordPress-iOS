@@ -55,8 +55,6 @@ typedef enum {
 @property (nonatomic, strong) UIBarButtonItem *shareButton;
 @property (nonatomic, strong) NSMutableArray *comments;
 @property (nonatomic, strong) NSFetchedResultsController *resultsController;
-@property (nonatomic) BOOL isScrollingCommentIntoView;
-@property (nonatomic) BOOL isShowingCommentForm;
 @property (nonatomic) BOOL isShowingReblogForm;
 @property (nonatomic) BOOL hasMoreContent;
 @property (nonatomic) BOOL loadingMore;
@@ -197,7 +195,7 @@ typedef enum {
     [self.postView setNeedsLayout];
 
 	// Make sure a selected comment is visible after rotating.
-	if ([self.tableView indexPathForSelectedRow] != nil && self.isShowingCommentForm) {
+	if ([self.tableView indexPathForSelectedRow] != nil && self.inlineComposeView.isDisplayed) {
 		[self.tableView scrollToNearestSelectedRowAtScrollPosition:UITableViewScrollPositionNone animated:NO];
 	}
 }
@@ -982,19 +980,14 @@ typedef enum {
 
 #pragma mark - UIScrollView Delegate Methods
 
-- (void)scrollViewDidScroll:(UIScrollView *)scrollView {
-	if (_isScrollingCommentIntoView){
-		self.isScrollingCommentIntoView = NO;
-	}
-}
-
-- (void)scrollViewWillBeginDecelerating:(UIScrollView *)scrollView {
+- (void)scrollViewDidEndDecelerating:(UIScrollView *)scrollView {
     NSArray *selectedRows = [self.tableView indexPathsForSelectedRows];
     [self.tableView deselectRowAtIndexPath:[selectedRows objectAtIndex:0] animated:YES];
-    [self.inlineComposeView dismissComposer];
-}
 
-- (void)scrollViewDidEndDecelerating:(UIScrollView *)scrollView {
+    if (self.inlineComposeView.isDisplayed) {
+        [self.inlineComposeView dismissComposer];
+    }
+
 	if (_readerReblogFormView.window) {
 		[self hideReblogForm];
 		return;
