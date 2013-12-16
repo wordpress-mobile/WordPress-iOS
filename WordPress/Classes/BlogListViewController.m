@@ -499,6 +499,18 @@ NSString * const WPBlogListRestorationID = @"WPBlogListID";
 }
 
 - (void)controller:(NSFetchedResultsController *)controller didChangeSection:(id<NSFetchedResultsSectionInfo>)sectionInfo atIndex:(NSUInteger)sectionIndex forChangeType:(NSFetchedResultsChangeType)type {
+    /*
+     The section for self hosted is always present, since it includes the
+     'Add Site' row.
+
+     If we tried to add/remove the section when the results controller changed,
+     it would crash, as the table's data source section count would remain the
+     same.
+     */
+    if (sectionIndex == [self sectionForSelfHosted]) {
+        return;
+    }
+
     switch (type) {
         case NSFetchedResultsChangeInsert:
             [self.tableView insertSections:[NSIndexSet indexSetWithIndex:sectionIndex] withRowAnimation:UITableViewRowAnimationFade];
