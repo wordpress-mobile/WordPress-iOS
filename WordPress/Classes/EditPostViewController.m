@@ -786,7 +786,7 @@ CGFloat const EPVCTextViewTopPadding = 7.0f;
     [self dismissEditView];
 }
 
-- (void)onNewPostSaved {
+- (void)newPostDidSave {
     if (_editMode == EditPostViewControllerModeNewPost) {
         [[WordPressAppDelegate sharedWordPressApplicationDelegate] switchTabToPostsListForPost:self.post];
     }
