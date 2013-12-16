@@ -105,6 +105,7 @@ NSString * const NotificationsJetpackInformationURL = @"http://jetpack.me/about/
     
     [WPStyleGuide configureColorsForView:self.view andTableView:self.tableView];
     
+    self.tableView.separatorInset = UIEdgeInsetsMake(0, 25, 0, 0);
     self.infiniteScrollEnabled = YES;
 }
 
