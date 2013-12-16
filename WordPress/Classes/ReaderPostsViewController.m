@@ -26,6 +26,7 @@
 #import "NSString+Helpers.h"
 #import "IOS7CorrectedTextView.h"
 #import "WPAnimatedBox.h"
+#import "ContextManager.h"
 
 static CGFloat const RPVCScrollingFastVelocityThreshold = 30.f;
 static CGFloat const RPVCHeaderHeightPhone = 10.f;
@@ -420,6 +421,29 @@ NSString * const RPVCDisplayedNativeFriendFinder = @"DisplayedNativeFriendFinder
         navController.navigationBar.translucent = NO;
         [self presentViewController:navController animated:YES completion:nil];
     }
+}
+
+- (void)openPost:(NSUInteger *)postId onBlog:(NSUInteger)blogId {
+    NSString *endpoint = [NSString stringWithFormat:@"sites/%i/posts/%i/?meta=site", blogId, postId];
+    
+    [ReaderPost getPostsFromEndpoint:endpoint
+                      withParameters:nil
+                         loadingMore:NO
+                             success:^(AFHTTPRequestOperation *operation, id responseObject) {
+                                 [ReaderPost createOrUpdateWithDictionary:responseObject
+                                                              forEndpoint:endpoint
+                                                              withContext:[[ContextManager sharedInstance] mainContext]];
+                                 NSArray *posts = [ReaderPost fetchPostsForEndpoint:endpoint
+                                                                        withContext:[[ContextManager sharedInstance] mainContext]];
+                                 
+                                 ReaderPostDetailViewController *controller = [[ReaderPostDetailViewController alloc] initWithPost:[posts objectAtIndex:0]
+                                                                                                                     featuredImage:nil
+                                                                                                                       avatarImage:nil];
+                                 
+                                 [self.navigationController pushViewController:controller animated:YES];
+                             }
+                             failure:nil];
+
 }
 
 #pragma mark - ReaderTextForm Delegate Methods
