@@ -493,25 +493,24 @@ CGFloat const CommentViewUnapproveButtonTag = 701;
 
     __block NSError *error;
     __block NSManagedObjectContext *context = self.reply.managedObjectContext;
+
     [context performBlockAndWait:^{
         [context save:&error];
     }];
 
     if (!!error) {
         DDLogError(@"Could not save draft comment: %@", error);
-        // Should we show an alert here?
-        return;
     }
 
-    self.inlineComposeView.text = @"";
+    [self.inlineComposeView clearText];
     [self.inlineComposeView dismissComposer];
 
     self.reply.status = CommentStatusApproved;
     [self.reply uploadWithSuccess:^{
-        // Notify of success?
     } failure:^(NSError *error) {
-        // reset to draft status
+        // reset to draft status, AppDelegate automatically shows UIAlert when comment fails
         self.reply.status = CommentStatusDraft;
+        DDLogError(@"Could not reply to comment: %@", error);
     }];
 }
 
