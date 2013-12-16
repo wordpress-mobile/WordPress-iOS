@@ -25,13 +25,13 @@
 @implementation WPContentCell
 
 CGFloat const WPContentCellStandardOffset = 10.0;
-CGFloat const WPContentCellStandardiPadOffset = 16.0;
+CGFloat const WPContentCellVerticalPadding = 10.0;
 CGFloat const WPContentCellTitleAndDateVerticalOffset = 3.0;
 CGFloat const WPContentCellLabelAndTitleHorizontalOffset = -0.5;
 CGFloat const WPContentCellAccessoryViewOffset = 25.0;
 CGFloat const WPContentCellImageWidth = 70.0;
 CGFloat const WPContentCellTitleNumberOfLines = 3;
-CGFloat const WPContentCellUnreadViewSide = 7.0;
+CGFloat const WPContentCellUnreadViewSide = 8.0;
 CGFloat const WPContentCellDateImageSide = 16.0;
 
 - (id)initWithStyle:(UITableViewCellStyle)style reuseIdentifier:(NSString *)reuseIdentifier
@@ -129,7 +129,7 @@ CGFloat const WPContentCellDateImageSide = 16.0;
     _unreadView.frame = [[self class] unreadFrameForHeight:CGRectGetHeight(self.bounds)];
     
     // layout date image
-    _dateImageView.frame = CGRectMake(CGRectGetMinX(dateFrame) - WPContentCellDateImageSide, CGRectGetMidY(dateFrame) - WPContentCellDateImageSide / 2.0, WPContentCellDateImageSide, WPContentCellDateImageSide);
+    _dateImageView.frame = CGRectMake(CGRectGetMinX(dateFrame) - WPContentCellDateImageSide - 2, CGRectGetMidY(dateFrame) - WPContentCellDateImageSide / 2.0, WPContentCellDateImageSide, WPContentCellDateImageSide);
 }
 
 + (CGFloat)rowHeightForContentProvider:(id<WPContentViewProvider>)contentProvider andWidth:(CGFloat)width;
@@ -139,7 +139,7 @@ CGFloat const WPContentCellDateImageSide = 16.0;
     CGRect titleFrame = [[self class] titleLabelFrameForContentProvider:contentProvider previousFrame:statusFrame maxWidth:width];
     CGRect dateFrame = [[self class] dateLabelFrameForContentProvider:contentProvider previousFrame:titleFrame maxWidth:width];
     
-    return MAX(CGRectGetMaxY(gravatarFrame), CGRectGetMaxY(dateFrame)) + [[self class] standardOffset];
+    return MAX(CGRectGetMaxY(gravatarFrame), CGRectGetMaxY(dateFrame)) + WPContentCellVerticalPadding;
 }
 
 - (void)setContentProvider:(id<WPContentViewProvider>)contentProvider
@@ -226,12 +226,12 @@ CGFloat const WPContentCellDateImageSide = 16.0;
 
 + (UIFont *)titleFont
 {
-    return [UIFont fontWithName:@"OpenSans" size:15.0];
+    return [UIFont fontWithName:@"OpenSans" size:14.0];
 }
 
 + (UIFont *)titleFontBold
 {
-    return [UIFont fontWithName:@"OpenSans-Bold" size:15.0];
+    return [UIFont fontWithName:@"OpenSans-Bold" size:14.0];
 }
 
 + (NSDictionary *)titleAttributes
@@ -295,22 +295,25 @@ CGFloat const WPContentCellDateImageSide = 16.0;
     return maxWidth - padding;
 }
 
-+ (CGFloat)textXOrigin {
-    CGFloat x = [[self class] standardOffset];
-    x += [[self class] showGravatarImage] ? [[self class] gravatarXOrigin] + WPContentCellImageWidth : 0.0;
++ (CGFloat)contentXOrigin {
+    CGFloat x = 15.0;
+    x += ([[self class] supportsUnreadStatus] ? 10.0 : 0.0);
     x += IS_RETINA ? -0.5 : 0.0;
-    x += ([[self class] supportsUnreadStatus] && ![[self class] showGravatarImage] ? WPContentCellUnreadViewSide + [[self class] standardOffset] : 0.0);
+    return x;
+}
+
++ (CGFloat)textXOrigin {
+    CGFloat x = [[self class] contentXOrigin];
+    x = [[self class] showGravatarImage] ? [[self class] gravatarXOrigin] + WPContentCellImageWidth + WPContentCellStandardOffset : 15.0;
     return x;
 }
 
 + (CGFloat)gravatarXOrigin {
-    CGFloat x = [[self class] standardOffset];
-    x += ([[self class] supportsUnreadStatus] ? WPContentCellUnreadViewSide + [[self class] standardOffset] : 0.0);
-    return x;
+    return [[self class] contentXOrigin];
 }
 
 + (CGFloat)standardOffset {
-    return IS_IPAD ? WPContentCellStandardiPadOffset : WPContentCellStandardOffset;
+    return WPContentCellStandardOffset;
 }
 
 + (CGRect)gravatarImageViewFrame {
@@ -323,9 +326,9 @@ CGFloat const WPContentCellDateImageSide = 16.0;
     if ([statusText length] != 0) {
         CGSize size;
         size = [statusText boundingRectWithSize:CGSizeMake([[self class] textWidth:maxWidth], CGFLOAT_MAX) options:NSStringDrawingUsesLineFragmentOrigin attributes:[[self class] statusAttributes] context:nil].size;
-            return CGRectMake([[self class] textXOrigin], [[self class] standardOffset], size.width, size.height);
+            return CGRectMake([[self class] textXOrigin], WPContentCellVerticalPadding, size.width, size.height);
     } else {
-        return CGRectMake(0, [[self class] standardOffset], 0, 0);
+        return CGRectMake(0, WPContentCellVerticalPadding, 0, 0);
     }
 }
 
@@ -362,7 +365,7 @@ CGFloat const WPContentCellDateImageSide = 16.0;
 
 + (CGRect)unreadFrameForHeight:(CGFloat)height {
     CGFloat side = WPContentCellUnreadViewSide;
-    return CGRectMake([[self class] standardOffset], (height - side) / 2.0 , side, side);
+    return CGRectMake(([[self class] gravatarXOrigin] - side) / 2.0, (height - side) / 2.0 , side, side);
 }
 
 @end
