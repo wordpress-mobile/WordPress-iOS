@@ -803,8 +803,6 @@
 		CC701659185A7513007B37DB /* InlineComposeView.m in Sources */ = {isa = PBXBuildFile; fileRef = CC701657185A7513007B37DB /* InlineComposeView.m */; };
 		CC70165B185A7536007B37DB /* InlineComposeView.xib in Resources */ = {isa = PBXBuildFile; fileRef = CC70165A185A7536007B37DB /* InlineComposeView.xib */; };
 		CC70165E185BB97A007B37DB /* ReaderCommentPublisher.m in Sources */ = {isa = PBXBuildFile; fileRef = CC70165D185BB97A007B37DB /* ReaderCommentPublisher.m */; };
-		CCC3E12D185F6CC900A1DF79 /* icon-reply.png in Resources */ = {isa = PBXBuildFile; fileRef = CCC3E12B185F6CC900A1DF79 /* icon-reply.png */; };
-		CCC3E12E185F6CC900A1DF79 /* icon-reply@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = CCC3E12C185F6CC900A1DF79 /* icon-reply@2x.png */; };
 		CCEF153114C9EA050001176D /* WPWebAppViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = CCEF153014C9EA050001176D /* WPWebAppViewController.m */; };
 		CEBD3EAB0FF1BA3B00C1396E /* Blog.m in Sources */ = {isa = PBXBuildFile; fileRef = CEBD3EAA0FF1BA3B00C1396E /* Blog.m */; };
 		E100C6BB1741473000AE48D8 /* WordPress-11-12.xcmappingmodel in Sources */ = {isa = PBXBuildFile; fileRef = E100C6BA1741472F00AE48D8 /* WordPress-11-12.xcmappingmodel */; };
@@ -1962,8 +1960,6 @@
 		CC70165A185A7536007B37DB /* InlineComposeView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = InlineComposeView.xib; path = Resources/InlineComposeView.xib; sourceTree = "<group>"; };
 		CC70165C185BB97A007B37DB /* ReaderCommentPublisher.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ReaderCommentPublisher.h; sourceTree = "<group>"; };
 		CC70165D185BB97A007B37DB /* ReaderCommentPublisher.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ReaderCommentPublisher.m; sourceTree = "<group>"; };
-		CCC3E12B185F6CC900A1DF79 /* icon-reply.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "icon-reply.png"; sourceTree = "<group>"; };
-		CCC3E12C185F6CC900A1DF79 /* icon-reply@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "icon-reply@2x.png"; sourceTree = "<group>"; };
 		CCD1921E16850C4900CA3011 /* NoteCommentLoadingCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NoteCommentLoadingCell.h; sourceTree = "<group>"; };
 		CCD1921F16850C4900CA3011 /* NoteCommentLoadingCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NoteCommentLoadingCell.m; sourceTree = "<group>"; };
 		CCEF152F14C9EA050001176D /* WPWebAppViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WPWebAppViewController.h; sourceTree = "<group>"; };
@@ -3675,8 +3671,6 @@
 				7F3E105013498200008CF73D /* UISegmentBarBlackButton@2x.png */,
 				7F3E105113498200008CF73D /* UISegmentBarBlackButtonHighlighted.png */,
 				7F3E105213498200008CF73D /* UISegmentBarBlackButtonHighlighted@2x.png */,
-				CCC3E12B185F6CC900A1DF79 /* icon-reply.png */,
-				CCC3E12C185F6CC900A1DF79 /* icon-reply@2x.png */,
 			);
 			name = Images;
 			sourceTree = "<group>";
@@ -4859,7 +4853,6 @@
 				85495F5A17C6FACF00871A7A /* icon-comments-trash@2x.png in Resources */,
 				5D69DBC4165428CA00A2D1F7 /* n.caf in Resources */,
 				857F55D117CEC5E100E154E1 /* doneButtonHighlighted-ios7@2x.png in Resources */,
-				CCC3E12D185F6CC900A1DF79 /* icon-reply.png in Resources */,
 				30EEBB921851B0A30099FB6C /* icon_format_italic.png in Resources */,
 				37A76E5F16A4B435001DBF52 /* sidebar_notifications_highlighted.png in Resources */,
 				37A76E6016A4B435001DBF52 /* sidebar_notifications_highlighted@2x.png in Resources */,
@@ -4998,7 +4991,6 @@
 				30EEBB9B1851B0A30099FB6C /* icon_format_more@2x.png in Resources */,
 				85325A2917BB0DF8008E87D1 /* icon-menu-toggle@2x.png in Resources */,
 				5D7BEAC21774A10D00423E7F /* ui-line-dark.png in Resources */,
-				CCC3E12E185F6CC900A1DF79 /* icon-reply@2x.png in Resources */,
 				E14D65BF17E08524007E3EA4 /* reader-postaction-reblog-blue.png in Resources */,
 				5D7BEAC31774A10D00423E7F /* ui-line-dark@2x.png in Resources */,
 				462F4E0218369B200028D2F8 /* icon-tab-notifications@2x.png in Resources */,

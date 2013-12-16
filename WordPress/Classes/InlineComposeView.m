@@ -5,6 +5,7 @@
 
 
 #import "InlineComposeView.h"
+#import "WPStyleGuide.h"
 
 const CGFloat InlineComposeViewMinHeight = 44.f;
 const CGFloat InlineComposeViewMaxHeight = 88.f;
@@ -35,9 +36,11 @@ const CGFloat InlineComposeViewMaxHeight = 88.f;
         _proxyTextView.delegate = self;
         _proxyTextView.inputAccessoryView = self.inputAccessoryView;
 
-        self.placeholderLabel.text = NSLocalizedString(@"Reply", @"Placeholder text for inline compose view");
+        self.placeholderLabel.text = NSLocalizedString(@"Write a reply…", @"Placeholder text for inline compose view");
 
         [self addSubview:_proxyTextView];
+
+        self.sendButton.tintColor = [WPStyleGuide baseDarkerBlue];
 
     }
     return self;
