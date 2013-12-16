@@ -220,8 +220,9 @@ NSString * const WPNotificationsNavigationRestorationID = @"WPNotificationsNavig
                                              [self.readerPostsViewController.navigationController pushViewController:controller animated:YES];
                                          }
                                          failure:nil];
+
+                returnValue = YES;
             }
-            returnValue = YES;
         }
     }
 
