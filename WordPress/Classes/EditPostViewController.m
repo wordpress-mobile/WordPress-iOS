@@ -774,7 +774,15 @@ CGFloat const EPVCTextViewTopPadding = 7.0f;
         }];
     }
     
+    [self newPostDidSave];
+
     [self dismissEditView];
+}
+
+- (void)onNewPostSaved {
+    if (_editMode == EditPostViewControllerModeNewPost) {
+        [[WordPressAppDelegate sharedWordPressApplicationDelegate] switchTabToPostsListForPost:self.post];
+    }
 }
 
 - (void)logSavePostStats {

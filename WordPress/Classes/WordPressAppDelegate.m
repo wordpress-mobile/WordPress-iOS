@@ -33,6 +33,8 @@
 #import "WPAccount.h"
 
 #import "BlogListViewController.h"
+#import "BlogDetailsViewController.h"
+#import "PostsViewController.h"
 #import "EditPostViewController.h"
 #import "LoginViewController.h"
 #import "NotificationsViewController.h"
@@ -51,7 +53,7 @@ NSString * const WPTabBarRestorationID = @"WPTabBarID";
 NSString * const WPBlogListNavigationRestorationID = @"WPBlogListNavigationID";
 NSString * const WPReaderNavigationRestorationID = @"WPReaderNavigationID";
 NSString * const WPNotificationsNavigationRestorationID = @"WPNotificationsNavigationID";
-
+NSInteger const IndexForMeTab = 0;
 
 @interface WordPressAppDelegate () <UITabBarControllerDelegate, CrashlyticsDelegate, UIAlertViewDelegate, BITHockeyManagerDelegate>
 
@@ -289,39 +291,7 @@ NSString * const WPNotificationsNavigationRestorationID = @"WPNotificationsNavig
     [NotificationsManager handleNotification:userInfo forState:[UIApplication sharedApplication].applicationState completionHandler:completionHandler];
 }
 
-#pragma mark - UITabBarControllerDelegate methods.
-
-- (BOOL)tabBarController:(UITabBarController *)tabBarController shouldSelectViewController:(UIViewController *)viewController {
-    if ([tabBarController.viewControllers indexOfObject:viewController] == 3) {
-        // Ignore taps on the post tab and instead show the modal.
-        if ([Blog countWithContext:[[ContextManager sharedInstance] mainContext]] == 0) {
-            [WPMobileStats trackEventForWPCom:StatsEventAccountCreationOpenedFromTabBar];
-            [self showWelcomeScreenAnimated:YES thenEditor:YES];
-        } else {
-            [self showPostTab];
-        }
-        return NO;
-    }
-    return YES;
-}
-
-
 #pragma mark - Custom methods
-
-- (void)showPostTab {
-    UIViewController *presenter = self.window.rootViewController;
-    if (presenter.presentedViewController) {
-        [presenter dismissViewControllerAnimated:NO completion:nil];
-    }
-    
-    EditPostViewController *editPostViewController = [[EditPostViewController alloc] initWithDraftForLastUsedBlog];
-    editPostViewController.editorOpenedBy = StatsPropertyPostDetailEditorOpenedOpenedByTabBarButton;
-    UINavigationController *navController = [[UINavigationController alloc] initWithRootViewController:editPostViewController];
-    navController.modalPresentationStyle = UIModalPresentationCurrentContext;
-    navController.navigationBar.translucent = NO;
-    [navController setToolbarHidden:NO]; // Make the toolbar visible here to avoid a weird left/right transition when the VC appears.
-    [self.window.rootViewController presentViewController:navController animated:YES completion:nil];
-}
 
 - (void)showWelcomeScreenIfNeededAnimated:(BOOL)animated {
     if ([self noBlogsAndNoWordPressDotComAccount]) {
@@ -375,8 +345,7 @@ NSString * const WPNotificationsNavigationRestorationID = @"WPNotificationsNavig
     [[UIApplication sharedApplication] setStatusBarStyle:UIStatusBarStyleLightContent];
 }
 
-
-#pragma mark - Tab bar setup
+#pragma mark - Tab bar methods
 
 - (UITabBarController *)tabBarController {
     if (_tabBarController) {
@@ -435,6 +404,79 @@ NSString * const WPNotificationsNavigationRestorationID = @"WPNotificationsNavig
 - (void)showNotificationsTab {
     NSInteger notificationsTabIndex = [[self.tabBarController viewControllers] indexOfObject:self.notificationsViewController.navigationController];
     [self.tabBarController setSelectedIndex:notificationsTabIndex];
+}
+
+- (void)showReaderTab {
+    NSInteger readerTabIndex = [[self.tabBarController viewControllers] indexOfObject:self.readerPostsViewController.navigationController];
+    [self.tabBarController setSelectedIndex:readerTabIndex];
+}
+
+- (void)showBlogListTab {
+    NSInteger blogListTabIndex = [[self.tabBarController viewControllers] indexOfObject:self.blogListViewController.navigationController];
+    [self.tabBarController setSelectedIndex:blogListTabIndex];
+}
+
+- (void)showMeTab {
+    [self.tabBarController setSelectedIndex:IndexForMeTab];
+}
+
+- (void)showPostTab {
+    UIViewController *presenter = self.window.rootViewController;
+    if (presenter.presentedViewController) {
+        [presenter dismissViewControllerAnimated:NO completion:nil];
+    }
+    
+    EditPostViewController *editPostViewController = [[EditPostViewController alloc] initWithDraftForLastUsedBlog];
+    editPostViewController.editorOpenedBy = StatsPropertyPostDetailEditorOpenedOpenedByTabBarButton;
+    UINavigationController *navController = [[UINavigationController alloc] initWithRootViewController:editPostViewController];
+    navController.modalPresentationStyle = UIModalPresentationCurrentContext;
+    navController.navigationBar.translucent = NO;
+    [navController setToolbarHidden:NO]; // Make the toolbar visible here to avoid a weird left/right transition when the VC appears.
+    [self.window.rootViewController presentViewController:navController animated:YES completion:nil];
+}
+
+- (void)switchTabToPostsListForPost:(AbstractPost *)post {
+    // Make sure the desired tab is selected.
+    [self showMeTab];
+
+    // Check which VC is showing.
+    UINavigationController *blogListNavController = [self.tabBarController.viewControllers objectAtIndex:IndexForMeTab];
+    UIViewController *topVC = blogListNavController.topViewController;
+    if ([topVC isKindOfClass:[PostsViewController class]]) {
+        Blog *blog = ((PostsViewController *)topVC).blog;
+        if ([post.blog.objectID isEqual:blog.objectID]) {
+            // The desired post view controller is already the top viewController for the tab.
+            // Nothing to see here.  Move along.
+            return;
+        }
+    }
+    
+    // Build and set the navigation heirarchy for the Me tab.
+    BlogListViewController *blogListViewController = [blogListNavController.viewControllers objectAtIndex:0];
+    
+    BlogDetailsViewController *blogDetailsViewController = [[BlogDetailsViewController alloc] init];
+    blogDetailsViewController.blog = post.blog;
+
+    PostsViewController *postsViewController = [[PostsViewController alloc] init];
+    [postsViewController setBlog:post.blog];
+    
+    [blogListNavController setViewControllers:@[blogListViewController, blogDetailsViewController, postsViewController]];
+}
+
+#pragma mark - UITabBarControllerDelegate methods.
+
+- (BOOL)tabBarController:(UITabBarController *)tabBarController shouldSelectViewController:(UIViewController *)viewController {
+    if ([tabBarController.viewControllers indexOfObject:viewController] == 3) {
+        // Ignore taps on the post tab and instead show the modal.
+        if ([Blog countWithContext:[[ContextManager sharedInstance] mainContext]] == 0) {
+            [WPMobileStats trackEventForWPCom:StatsEventAccountCreationOpenedFromTabBar];
+            [self showWelcomeScreenAnimated:YES thenEditor:YES];
+        } else {
+            [self showPostTab];
+        }
+        return NO;
+    }
+    return YES;
 }
 
 #pragma mark - Global Alerts
@@ -796,14 +838,6 @@ NSString * const WPNotificationsNavigationRestorationID = @"WPNotificationsNavig
                        ];
     NSDictionary *dictionary = [[NSDictionary alloc] initWithObjectsAndKeys: appUA, @"UserAgent", defaultUA, @"DefaultUserAgent", appUA, @"AppUserAgent", nil];
     [[NSUserDefaults standardUserDefaults] registerDefaults:dictionary];
-}
-- (void)showReaderTab {
-    NSInteger readerTabIndex = [[self.tabBarController viewControllers] indexOfObject:self.readerPostsViewController.navigationController];
-    [self.tabBarController setSelectedIndex:readerTabIndex];
-}
-- (void)showBlogListTab {
-    NSInteger blogListTabIndex = [[self.tabBarController viewControllers] indexOfObject:self.blogListViewController.navigationController];
-    [self.tabBarController setSelectedIndex:blogListTabIndex];
 }
 
 - (void)useDefaultUserAgent {
