@@ -158,6 +158,17 @@ NS_ENUM(NSUInteger, NotifcationCommentCellType){
     self.replyNavigationItem.title = NSLocalizedString(@"Replying", nil);
     [self.view addSubview:self.replyNavigationBar];
     self.replyNavigationBar.hidden = YES;
+
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(onShowKeyboard:)
+                                                 name:UIKeyboardDidShowNotification
+                                               object:nil];
+
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(onHideKeyboard:)
+                                                 name:UIKeyboardWillHideNotification
+                                               object:nil];
+
 }
 
 - (NSCache *)contentCache {
@@ -738,5 +749,15 @@ NS_ENUM(NSUInteger, NotifcationCommentCellType){
 }
 
 #pragma mark - UIKeyboard notifications
+
+- (void)onShowKeyboard:(NSNotification *)notification {
+    CGRect keyboardRect = [[notification.userInfo objectForKey:UIKeyboardFrameEndUserInfoKey] CGRectValue];
+    self.tableView.contentInset = UIEdgeInsetsMake(0.f, 0.f, CGRectGetHeight(keyboardRect), 0.f);
+}
+
+- (void)onHideKeyboard:(NSNotification *)notification {
+    self.tableView.contentInset = UIEdgeInsetsMake(0.f, 0.f, 0.f, 0.f);
+}
+
 
 @end
