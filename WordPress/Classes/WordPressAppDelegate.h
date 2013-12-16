@@ -50,6 +50,7 @@
 - (void)showNotificationsTab;
 - (void)showBlogListTab;
 - (void)showReaderTab;
+- (void)showMeTab;
 - (void)showPostTab;
 - (void)switchTabToPostsListForPost:(AbstractPost *)post;
 

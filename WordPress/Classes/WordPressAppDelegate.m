@@ -398,6 +398,10 @@ NSInteger const IndexForMeTab = 0;
     [self.tabBarController setSelectedIndex:blogListTabIndex];
 }
 
+- (void)showMeTab {
+    [self.tabBarController setSelectedIndex:IndexForMeTab];
+}
+
 - (void)showPostTab {
     UIViewController *presenter = self.window.rootViewController;
     if (presenter.presentedViewController) {
@@ -414,7 +418,7 @@ NSInteger const IndexForMeTab = 0;
 
 - (void)switchTabToPostsListForPost:(AbstractPost *)post {
     // Make sure the desired tab is selected.
-    [self.tabBarController setSelectedIndex:IndexForMeTab];
+    [self showMeTab];
 
     // Check which VC is showing.
     UINavigationController *blogListNavController = [self.tabBarController.viewControllers objectAtIndex:IndexForMeTab];
