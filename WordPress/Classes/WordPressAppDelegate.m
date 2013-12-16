@@ -185,18 +185,11 @@ NSString * const WPNotificationsNavigationRestorationID = @"WPNotificationsNavig
             [[NSNotificationCenter defaultCenter] postNotificationName:@"wpcomSignupNotification" object:nil userInfo:params];
             returnValue = YES;
         } else if ([URLString rangeOfString:@"viewpost"].length) {
-            NSError *error = nil;
-            NSRegularExpression *regex = [NSRegularExpression regularExpressionWithPattern:@"blogId=(.+?)&postId=(.+?)$"
-                                                                                   options:NSRegularExpressionCaseInsensitive
-                                                                                     error:&error];
+            NSDictionary *params = [[url query] dictionaryFromQueryString];
             
-            NSArray *matches = [regex matchesInString:URLString options:0 range:NSMakeRange(0, [URLString length])];
-
-            if (matches.count) {
-                NSTextCheckingResult *result = [matches objectAtIndex:0];
-                NSUInteger *blogId = [[URLString substringWithRange:[result rangeAtIndex:1]] integerValue];
-                NSUInteger *postId = [[URLString substringWithRange:[result rangeAtIndex:2]] integerValue];
-
+            if (params.count) {
+                NSUInteger *blogId = [[params valueForKey:@"blogId"] integerValue];
+                NSUInteger *postId = [[params valueForKey:@"postId"] integerValue];
                 NSString *endpoint = [NSString stringWithFormat:@"sites/%i/posts/%i/?meta=site", blogId, postId];
                 
                 [self.readerPostsViewController.navigationController popToRootViewControllerAnimated:NO];
