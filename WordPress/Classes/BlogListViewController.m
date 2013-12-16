@@ -271,7 +271,8 @@ NSString * const WPBlogListRestorationID = @"WPBlogListID";
     cell.textLabel.textAlignment = NSTextAlignmentLeft;
     cell.accessoryType = UITableViewCellAccessoryNone;
     cell.accessoryView = nil;
-    
+    cell.imageView.image = nil;
+
     if ([indexPath isEqual:[self indexPathForAddSite]]) {
         cell.textLabel.text = NSLocalizedString(@"Add a Site", @"");
         cell.selectionStyle = UITableViewCellSelectionStyleBlue;
