@@ -363,7 +363,8 @@ NSInteger const IndexForMeTab = 2;
 
 
     // Create a background
-    UIColor *backgroundColor = [WPStyleGuide bigEddieGrey];
+    // (not strictly needed when white, but left here for possible customization)
+    UIColor *backgroundColor = [UIColor whiteColor];
     CGRect rect = CGRectMake(0.0f, 0.0f, 1.0f, 1.0f);
     UIGraphicsBeginImageContext(rect.size);
     CGContextRef context = UIGraphicsGetCurrentContext();
