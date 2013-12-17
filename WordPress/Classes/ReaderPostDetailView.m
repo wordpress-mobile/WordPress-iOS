@@ -24,7 +24,9 @@
 
 #define ContentTextViewYOffset -32
 
-@interface ReaderPostDetailView()<DTAttributedTextContentViewDelegate, ReaderMediaQueueDelegate>
+@interface ReaderPostDetailView()<DTAttributedTextContentViewDelegate, ReaderMediaQueueDelegate> {
+	BOOL _relayoutTextFlag;
+}
 
 @property (nonatomic, strong) ReaderPost *post;
 @property (nonatomic, strong) UIView *authorView;
@@ -225,6 +227,15 @@
 	frame.origin.x = _blogLabel.frame.origin.x + _blogLabel.frame.size.width + 5.0f;
 	frame.size.width = sz.width;
 	_followButton.frame = frame;
+	
+	// The first time layoutSubviews is called our text control will build all its custom attachments. We're
+	// rejecting the attachment frame desired by the text control and substituting our own. Because expected
+	// and actual frames differ, DTCoreText can end up redrawing text on top of the DTLinkButtons. A work
+	// around is to call updateLayout once after all custom attachments are created.
+	if (!_relayoutTextFlag) {
+		_relayoutTextFlag = YES;
+		[self performSelector:@selector(updateLayout) withObject:self afterDelay:.1];
+	}
 }
 
 
