@@ -24,11 +24,7 @@ CGFloat InlineComposeToolbarViewMinToolbarWidth = 320.f;
 - (id)initWithFrame:(CGRect)frame {
     self = [super initWithFrame:frame];
     if (self) {
-        // Initialization code
-        _maxToolbarWidth = InlineComposeToolbarViewMaxToolbarWidth;
-        _minToolbarWidth = InlineComposeToolbarViewMinToolbarWidth;
-        _borderColor = [UIColor colorWithWhite:0.88f alpha:1.f];
-        [self addBorder];
+        [self setDefaulsPropertyValues];
    }
     return self;
 }
@@ -36,12 +32,16 @@ CGFloat InlineComposeToolbarViewMinToolbarWidth = 320.f;
 - (id)initWithCoder:(NSCoder *)aDecoder {
     self = [super initWithCoder:aDecoder];
     if (self) {
-        _maxToolbarWidth = InlineComposeToolbarViewMaxToolbarWidth;
-        _minToolbarWidth = InlineComposeToolbarViewMinToolbarWidth;
-        _borderColor = [UIColor colorWithWhite:0.88f alpha:1.f];
-        [self addBorder];
+        [self setDefaulsPropertyValues];
     }
     return self;
+}
+
+- (void)setDefaulsPropertyValues {
+    _maxToolbarWidth = InlineComposeToolbarViewMaxToolbarWidth;
+    _minToolbarWidth = InlineComposeToolbarViewMinToolbarWidth;
+    _borderColor = [UIColor colorWithWhite:0.88f alpha:1.f];
+    [self addBorder];
 }
 
 - (void)dealloc {
