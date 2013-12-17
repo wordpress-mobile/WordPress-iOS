@@ -71,7 +71,7 @@
 // that is the same size as the one used for the post button.
 - (void)positionPostButton {
     
-    CGRect tabFrame;
+    CGRect tabFrame = CGRectZero;
     CGFloat lastX = 0;
     // Find the right most UITabBarButtonItem
     NSArray *tabBarButtonItems = self.tabBar.subviews;
