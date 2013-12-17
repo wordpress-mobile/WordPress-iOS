@@ -130,14 +130,14 @@
 
 	} failure:^(AFHTTPRequestOperation *operation, NSError *error) {
 
+		DDLogError(@"Error Commenting from Reader : %@", [error localizedDescription]);
+
         if ([self.delegate respondsToSelector:@selector(commentPublisherDidFailPublishingComment:)]) {
             [self.delegate commentPublisherDidPublishComment:self];
-            return;
         }
 
         self.composeView.enabled = YES;
 
-		DDLogError(@"Error Commenting from Reader : %@", [error localizedDescription]);
 		UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"Comment failed", @"")
 															message:NSLocalizedString(@"There was a problem commenting. Please try again.", @"")
 														   delegate:nil
