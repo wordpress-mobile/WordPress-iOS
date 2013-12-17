@@ -167,7 +167,7 @@ CGFloat const CommentsSectionHeaderHeight = 24.0;
     
     // Don't show a section title if there's only one section
     if ([tableView numberOfSections] <= 1) {
-        return 1.0;
+        return IS_IPHONE ? 1 : WPTableViewTopMargin;
     }
     
     NSString *title = [self tableView:self.tableView titleForHeaderInSection:section];
