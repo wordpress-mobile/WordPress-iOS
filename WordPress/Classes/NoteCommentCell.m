@@ -125,7 +125,7 @@ const CGFloat NoteCommentCellHeight = 102.f;
     CGFloat gravatarSize = [self gravatarSize] * [[UIScreen mainScreen] scale];
     NSURL *resizedURL = [NSURL URLWithString:[[avatarURL absoluteString] stringByReplacingOccurrencesOfString:@"s=256" withString:[NSString stringWithFormat:@"s=%d", (int)gravatarSize]]];
     WPFLogMethodParam(resizedURL);
-    [self.imageView setImageWithURL:resizedURL placeholderImage:[UIImage imageNamed:@"gravatar.jpg"]];
+    [self.imageView setImageWithURL:resizedURL placeholderImage:[UIImage imageNamed:@"gravatar"]];
 }
 
 

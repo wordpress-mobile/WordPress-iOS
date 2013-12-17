@@ -200,7 +200,7 @@ CGFloat const CommentViewUnapproveButtonTag = 701;
 //        [dateFormatter setDateStyle:NSDateFormatterLongStyle];
 //    }
 //    
-//    [self.gravatarImageView setImageWithGravatarEmail:[self.comment.author_email trim] fallbackImage:[UIImage imageNamed:@"comment-default-gravatar-image"]];
+//    [self.gravatarImageView setImageWithGravatarEmail:[self.comment.author_email trim] fallbackImage:[UIImage imageNamed:@"gravatar"]];
 //    
 //    self.authorNameLabel.text = [[self.comment.author stringByDecodingXMLCharacters] trim];
 //
@@ -386,7 +386,7 @@ CGFloat const CommentViewUnapproveButtonTag = 701;
     }
 //    if (reachable) {
 //        // Load gravatar if it wasn't loaded yet
-//        [self.gravatarImageView setImageWithGravatarEmail:[self.comment.author_email trim] fallbackImage:[UIImage imageNamed:@"comment-default-gravatar-image"]];
+//        [self.gravatarImageView setImageWithGravatarEmail:[self.comment.author_email trim] fallbackImage:[UIImage imageNamed:@"gravatar"]];
 //    }
 }
 
