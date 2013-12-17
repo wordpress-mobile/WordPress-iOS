@@ -182,15 +182,15 @@ CGFloat const WPContentCellDateImageSide = 16.0;
     }
     
     if ([contentProvider gravatarEmailForDisplay]) {
-        [_gravatarImageView setImageWithGravatarEmail:[contentProvider gravatarEmailForDisplay] fallbackImage:[UIImage imageNamed:@"comment-default-gravatar-image"]];
+        [_gravatarImageView setImageWithGravatarEmail:[contentProvider gravatarEmailForDisplay] fallbackImage:[UIImage imageNamed:@"gravatar"]];
     } else {
         
         NSString *url = [NSString stringWithFormat:@"%@", [contentProvider blavatarURLForDisplay]];
         if (url) {
             url = [url stringByReplacingOccurrencesOfString:@"s=256" withString:[NSString stringWithFormat:@"s=%.0f", WPContentCellImageWidth * [[UIScreen mainScreen] scale]]];
-            [_gravatarImageView setImageWithURL:[NSURL URLWithString:url] placeholderImage:[UIImage imageNamed:@"gravatar.jpg"]];
+            [_gravatarImageView setImageWithURL:[NSURL URLWithString:url] placeholderImage:[UIImage imageNamed:@"gravatar"]];
         } else {
-            [_gravatarImageView setImage:[UIImage imageNamed:@"gravatar.jpg"]];
+            [_gravatarImageView setImage:[UIImage imageNamed:@"gravatar"]];
         }
     }
 }

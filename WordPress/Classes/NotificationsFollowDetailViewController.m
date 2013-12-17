@@ -193,7 +193,7 @@
             
             UIImageView *gravatarImageView = cell.imageView;
             [cell.imageView setImageWithURLRequest:request
-                                  placeholderImage:[UIImage imageNamed:@"gravatar.jpg"]
+                                  placeholderImage:[UIImage imageNamed:@"gravatar"]
                                            success:^(NSURLRequest *request, NSHTTPURLResponse *response, UIImage *image) {
                                                gravatarImageView.image = image;
                                            }

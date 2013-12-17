@@ -26,7 +26,7 @@
 - (void)configureContentView:(id<WPContentViewProvider>)contentProvider {
     [super configureContentView:contentProvider];
     
-    [self.avatarImageView setImageWithGravatarEmail:[contentProvider gravatarEmailForDisplay] fallbackImage:[UIImage imageNamed:@"comment-default-gravatar-image"]];
+    [self.avatarImageView setImageWithGravatarEmail:[contentProvider gravatarEmailForDisplay] fallbackImage:[UIImage imageNamed:@"gravatar"]];
     
     NSString *partialHtml = [contentProvider contentForDisplay];
     NSString *fullHtml;
