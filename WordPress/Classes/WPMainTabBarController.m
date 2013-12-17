@@ -2,7 +2,7 @@
 //  WPMainTabBarController.m
 //  WordPress
 //
-//  Created by Eric on 12/16/13.
+//  Created by Eric Johnson on 12/16/13.
 //  Copyright (c) 2013 WordPress. All rights reserved.
 //
 
@@ -21,8 +21,8 @@
     [super viewDidLoad];
     
     UIImage *image = [UIImage imageNamed:@"icon-tab-newpost"];
-    CGFloat x = self.view.frame.size.width - (image.size.width + 20);
-    CGFloat y = self.view.frame.size.height - (image.size.height + 2);
+    CGFloat x = CGRectGetWidth(self.view.frame) - (image.size.width + 20);
+    CGFloat y = CGRectGetHeight(self.view.frame) - (image.size.height + 2);
     
     self.postButton = [UIButton buttonWithType:UIButtonTypeCustom];
     _postButton.autoresizingMask = UIViewAutoresizingFlexibleTopMargin | UIViewAutoresizingFlexibleRightMargin | UIViewAutoresizingFlexibleLeftMargin;
@@ -65,7 +65,7 @@
 }
 
 
-// Postition the post button over its respective tab.
+// Position the post button over its respective tab.
 // For best alignment the target tab should have an image
 // that is the same size as the one used for the post button.
 - (void)positionPostButton {
@@ -76,7 +76,7 @@
     NSArray *tabBarButtonItems = self.tabBar.subviews;
     for (NSInteger i = 0; i < [tabBarButtonItems count]; i++) {
         UIView *tabBarButton = [tabBarButtonItems objectAtIndex:i];
-        CGFloat x = tabBarButton.frame.origin.x;
+        CGFloat x = CGRectGetMinX(tabBarButton.frame);
         if (x > lastX) {
             lastX = x;
             tabFrame = tabBarButton.frame;
