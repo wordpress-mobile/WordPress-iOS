@@ -191,9 +191,8 @@ CGFloat const EPVCTextViewTopPadding = 7.0f;
         self.navigationItem.title = [self editorTitle];
     } else {
         UIButton *titleButton = self.titleBarButton;
-        NSMutableAttributedString *titleText = [[NSMutableAttributedString alloc] initWithString:[NSString stringWithFormat:@"%@\n", [self editorTitle]]
+        NSMutableAttributedString *titleText = [[NSMutableAttributedString alloc] initWithString:[NSString stringWithFormat:@"     %@ %@\n", [self editorTitle], @"▼"]
                                                                                       attributes:@{ NSFontAttributeName : [UIFont fontWithName:@"OpenSans-Bold" size:14.0] }];
-        
         NSMutableAttributedString *titleSubtext = [[NSMutableAttributedString alloc] initWithString:self.post.blog.blogName
                                                                                          attributes:@{ NSFontAttributeName : [UIFont fontWithName:@"OpenSans" size:10.0] }];
         [titleText appendAttributedString:titleSubtext];
@@ -216,8 +215,8 @@ CGFloat const EPVCTextViewTopPadding = 7.0f;
     UIBarButtonItem *previewButton = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"icon-posts-editor-preview"] style:UIBarButtonItemStylePlain target:self action:@selector(showPreview)];
     UIBarButtonItem *photoButton = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"icon-posts-editor-media"] style:UIBarButtonItemStylePlain target:self action:@selector(showMediaOptions)];
     
-    previewButton.tintColor = [WPStyleGuide itsEverywhereGrey];
-    photoButton.tintColor = [WPStyleGuide itsEverywhereGrey];
+    previewButton.tintColor = [WPStyleGuide readGrey];
+    photoButton.tintColor = [WPStyleGuide readGrey];
     
     UIBarButtonItem *leftFixedSpacer = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFixedSpace target:nil action:nil];
     UIBarButtonItem *rightFixedSpacer = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFixedSpace target:nil action:nil];
@@ -274,8 +273,9 @@ CGFloat const EPVCTextViewTopPadding = 7.0f;
         _titleTextField.font = [WPStyleGuide postTitleFont];
         _titleTextField.textColor = [WPStyleGuide darkAsNightGrey];
         _titleTextField.autoresizingMask = UIViewAutoresizingFlexibleWidth;
-        _titleTextField.placeholder = NSLocalizedString(@"Enter title here", @"Label for the title of the post field. Should be the same as WP core.");
-        _titleTextField.textColor = [WPStyleGuide littleEddieGrey];
+        //_titleTextField.placeholder = NSLocalizedString(@"Enter title here", @"Label for the title of the post field. Should be the same as WP core.");
+        _titleTextField.attributedPlaceholder = [[NSAttributedString alloc] initWithString:(NSLocalizedString(@"Enter title here", @"Label for the title of the post field. Should be the same as WP core.")) attributes:(@{NSForegroundColorAttributeName: [WPStyleGuide textFieldPlaceholderGrey]})];
+        
         _titleTextField.returnKeyType = UIReturnKeyNext;
     }
     [_tableHeaderViewContentView addSubview:_titleTextField];
@@ -285,7 +285,10 @@ CGFloat const EPVCTextViewTopPadding = 7.0f;
     if (!_titleToolbar) {
         frame = CGRectMake(0.0f, 0.0f, CGRectGetWidth(self.view.frame), WPKT_HEIGHT_PORTRAIT);
         self.titleToolbar = [[WPKeyboardToolbarDone alloc] initWithFrame:frame];
-        _titleToolbar.backgroundColor = [WPStyleGuide itsEverywhereGrey];
+        _titleToolbar.backgroundColor = [UIColor UIColorFromHex:(0xdcdfe2)];
+        if (IS_IPAD) {
+            _titleToolbar.backgroundColor = [UIColor UIColorFromHex:(0xcfd2d5)];
+        }
         _titleToolbar.delegate = self;
         _titleTextField.inputAccessoryView = _titleToolbar;
     }
@@ -317,7 +320,7 @@ CGFloat const EPVCTextViewTopPadding = 7.0f;
         _textView.delegate = self;
         _textView.typingAttributes = [WPStyleGuide regularTextAttributes];
         _textView.font = [WPStyleGuide regularTextFont];
-        _textView.textColor = [WPStyleGuide littleEddieGrey];
+        _textView.textColor = [WPStyleGuide darkAsNightGrey];
         _textView.textContainerInset = UIEdgeInsetsMake(0.0f, EPVCTextViewOffset, 0.0f, EPVCTextViewOffset);
     }
     [_tableHeaderViewContentView addSubview:_textView];
@@ -327,7 +330,10 @@ CGFloat const EPVCTextViewTopPadding = 7.0f;
     if (_editorToolbar == nil) {
         frame = CGRectMake(0.0f, 0.0f, CGRectGetWidth(self.view.frame), WPKT_HEIGHT_PORTRAIT);
         self.editorToolbar = [[WPKeyboardToolbarBase alloc] initWithFrame:frame];
-        _editorToolbar.backgroundColor = [WPStyleGuide itsEverywhereGrey];
+        _editorToolbar.backgroundColor = [UIColor UIColorFromHex:(0xdcdfe2)];
+        if (IS_IPAD) {
+            _editorToolbar.backgroundColor = [UIColor UIColorFromHex:(0xcfd2d5)];
+        }
         _editorToolbar.delegate = self;
         _textView.inputAccessoryView = _editorToolbar;
     }

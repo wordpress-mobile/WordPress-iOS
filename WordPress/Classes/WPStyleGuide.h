@@ -52,6 +52,8 @@
 + (UIColor *)tableViewActionColor;
 + (UIColor *)buttonActionColor;
 
++ (UIColor *)keyboardColor;
+
 // Bar Button Styles
 + (UIBarButtonItemStyle)barButtonStyleForDone;
 + (UIBarButtonItemStyle)barButtonStyleForBordered;
