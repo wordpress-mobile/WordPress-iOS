@@ -14,6 +14,7 @@
 #import "EditCommentViewController.h"
 #import "WPWebViewController.h"
 #import "InlineComposeView.h"
+#import "ContextManager.h"
 
 @interface CommentViewController () <UIWebViewDelegate, UIActionSheetDelegate, MFMailComposeViewControllerDelegate, InlineComposeViewDelegate> {
     EditCommentViewController *_editCommentViewController;
@@ -490,25 +491,21 @@ CGFloat const CommentViewUnapproveButtonTag = 701;
     self.reply.content = text;
     // try to save it
 
-    __block NSError *error;
-    __block NSManagedObjectContext *context = self.reply.managedObjectContext;
-
-    [context performBlockAndWait:^{
-        [context save:&error];
-    }];
-
-    if (!!error) {
-        DDLogError(@"Could not save draft comment: %@", error);
-    }
+    [[ContextManager sharedInstance] saveContext:self.reply.managedObjectContext];
 
     [self.inlineComposeView clearText];
     [self.inlineComposeView dismissComposer];
 
     self.reply.status = CommentStatusApproved;
+
+    // upload with success saves the reply with the published status when successfull
     [self.reply uploadWithSuccess:^{
+        // the current modal experience shows success by dismissising the editor
+        // ideally we switch to an optimistic experience
     } failure:^(NSError *error) {
         // reset to draft status, AppDelegate automatically shows UIAlert when comment fails
         self.reply.status = CommentStatusDraft;
+
         DDLogError(@"Could not reply to comment: %@", error);
     }];
 }
@@ -516,13 +513,7 @@ CGFloat const CommentViewUnapproveButtonTag = 701;
 // when the reply changes, save it to the comment
 - (void)textViewDidChange:(UITextView *)textView {
     self.reply.content = self.inlineComposeView.text;
-    [self.reply.managedObjectContext performBlockAndWait:^{
-        NSError *error;
-        [self.reply.managedObjectContext save:&error];
-        if (!!error) {
-            DDLogError(@"Could not save reply draft: %@", error);
-        }
-    }];
+    [[ContextManager sharedInstance] saveContext:self.reply.managedObjectContext];
 }
 
 #pragma mark - Gesture Recognizers
