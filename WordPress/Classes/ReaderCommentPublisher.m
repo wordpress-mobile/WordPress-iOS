@@ -64,7 +64,7 @@
     // if the stored comment's comment id matches the comment id use the text
     //  @{@"commentID":commentID, @"comment":commentText};
 
-    NSNumber *commentId = [storedComment objectForKey:@"commentID"];
+    NSNumber *commentId = storedComment[ReaderPostStoredCommentIDKey];
 
     // if the id's do not match, clear the text
     if (![commentId isEqualToNumber:comment.commentID]){
@@ -72,7 +72,7 @@
         return;
     }
 
-    self.composeView.text = [storedComment objectForKey:@"comment"];
+    self.composeView.text = storedComment[ReaderPostStoredCommentTextKey];
 
 }
 
