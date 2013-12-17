@@ -129,7 +129,10 @@ CGFloat const WPContentCellDateImageSide = 16.0;
     _unreadView.frame = [[self class] unreadFrameForHeight:CGRectGetHeight(self.bounds)];
     
     // layout date image
-    _dateImageView.frame = CGRectMake(CGRectGetMinX(dateFrame) - WPContentCellDateImageSide - 2, CGRectGetMidY(dateFrame) - WPContentCellDateImageSide / 2.0, WPContentCellDateImageSide, WPContentCellDateImageSide);
+    _dateImageView.hidden = !(_dateLabel.text.length > 0);
+    if (!_dateImageView.hidden) {
+        _dateImageView.frame = CGRectMake(CGRectGetMinX(dateFrame) - WPContentCellDateImageSide - 2, CGRectGetMidY(dateFrame) - WPContentCellDateImageSide / 2.0, WPContentCellDateImageSide, WPContentCellDateImageSide);
+    }
 }
 
 + (CGFloat)rowHeightForContentProvider:(id<WPContentViewProvider>)contentProvider andWidth:(CGFloat)width;
