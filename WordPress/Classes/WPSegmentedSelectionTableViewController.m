@@ -9,6 +9,7 @@
 #import "WPCategoryTree.h"
 #import "Category.h"
 #import "NSString+XMLExtensions.h"
+#import "WPTableViewCell.h"
 
 static NSString *const SelectionTableRowCell = @"SelectionTableRowCell";
 
@@ -27,7 +28,7 @@ static NSString *const SelectionTableRowCell = @"SelectionTableRowCell";
 @implementation WPSegmentedSelectionTableViewController
 
 - (id)init {
-    self = [self initWithNibName:@"WPSelectionTableViewController" bundle:nil];
+    self = [super init];
     if (self) {
         self.autoReturnInRadioSelectMode = YES;
         _categoryIndentationLevelsDict = [[NSMutableDictionary alloc] init];
@@ -41,7 +42,7 @@ static NSString *const SelectionTableRowCell = @"SelectionTableRowCell";
     [super viewDidLoad];
     self.view.backgroundColor = [WPStyleGuide itsEverywhereGrey];
     
-    [self.tableView registerClass:[UITableViewCell class] forCellReuseIdentifier:SelectionTableRowCell];
+    [self.tableView registerClass:[WPTableViewCell class] forCellReuseIdentifier:SelectionTableRowCell];
 }
 
 - (void)clean {
