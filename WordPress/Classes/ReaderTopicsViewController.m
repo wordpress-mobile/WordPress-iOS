@@ -76,13 +76,6 @@
     [WPStyleGuide configureColorsForView:self.view andTableView:self.tableView];
 }
 
-- (void)viewWillAppear:(BOOL)animated {
-    [super viewWillAppear:animated];
-    
-    [self refreshIfReady];
-}
-
-
 #pragma mark - Instance Methods
 
 - (NSArray *)fetchDefaultTopics {
@@ -93,14 +86,6 @@
     }];
     return [arr objectsAtIndexes:indexSet];
 }
-
-
-- (void)refreshIfReady {
-	if(([self.topicsArray count] > 0 || self.defaultTopicsArray.count > 0) && [self isViewLoaded]) {
-		[self.tableView reloadData];
-	}
-}
-
 
 - (void)handleCancelButtonTapped:(id)sender {
     [self dismissViewControllerAnimated:YES completion:nil];
@@ -154,8 +139,7 @@
 			self.defaultTopicsArray = [[self fetchDefaultTopics] arrayByAddingObjectsFromArray:extras];
 		}
         
-		[self refreshIfReady];
-		
+		[self.tableView reloadData];
 	} failure:^(AFHTTPRequestOperation *operation, NSError *error) {
 		[self.tableView setTableFooterView:nil];
 		UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"Unable to Load Topics", @"")
