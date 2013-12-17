@@ -1,22 +1,17 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="4510" systemVersion="12F45" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="4514" systemVersion="13A603" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none">
     <dependencies>
         <deployment defaultVersion="1792" identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="3742"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="3747"/>
     </dependencies>
     <objects>
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="NotificationsCommentDetailViewController">
             <connections>
                 <outlet property="postBanner" destination="223" id="233"/>
-                <outlet property="replyActivityView" destination="284" id="286"/>
-                <outlet property="replyBackgroundImageView" destination="266" id="267"/>
                 <outlet property="replyCancelBarButton" destination="276" id="282"/>
                 <outlet property="replyNavigationBar" destination="269" id="273"/>
                 <outlet property="replyNavigationItem" destination="270" id="Ni2-gT-lPc"/>
-                <outlet property="replyPlaceholder" destination="279" id="280"/>
                 <outlet property="replyPublishBarButton" destination="275" id="283"/>
-                <outlet property="replyTextView" destination="259" id="265"/>
-                <outlet property="tableFooterView" destination="262" id="264"/>
                 <outlet property="tableView" destination="253" id="257"/>
                 <outlet property="toolbar" destination="219" id="252"/>
                 <outlet property="view" destination="1" id="258"/>
@@ -27,7 +22,7 @@
             <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
             <subviews>
-                <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" style="plain" separatorStyle="none" rowHeight="44" sectionHeaderHeight="22" sectionFooterHeight="22" id="253">
+                <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" keyboardDismissMode="interactive" style="plain" separatorStyle="none" rowHeight="44" sectionHeaderHeight="22" sectionFooterHeight="22" id="253">
                     <rect key="frame" x="0.0" y="48" width="320" height="476"/>
                     <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                     <color key="backgroundColor" red="0.87058823529999996" green="0.87058823529999996" blue="0.87058823529999996" alpha="1" colorSpace="calibratedRGB"/>
@@ -84,63 +79,13 @@
             <simulatedNavigationBarMetrics key="simulatedTopBarMetrics" prompted="NO"/>
             <simulatedScreenMetrics key="simulatedDestinationMetrics" type="retina4"/>
         </view>
-        <view contentMode="scaleToFill" id="262">
-            <rect key="frame" x="0.0" y="0.0" width="320" height="64"/>
-            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-            <subviews>
-                <imageView userInteractionEnabled="NO" contentMode="scaleToFill" id="266">
-                    <rect key="frame" x="5" y="5" width="310" height="54"/>
-                    <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
-                </imageView>
-                <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" id="259" customClass="IOS7CorrectedTextView">
-                    <rect key="frame" x="10" y="10" width="300" height="44"/>
-                    <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
-                    <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
-                    <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
-                    <fontDescription key="fontDescription" type="system" pointSize="16"/>
-                    <textInputTraits key="textInputTraits" autocapitalizationType="sentences"/>
-                    <connections>
-                        <outlet property="delegate" destination="-1" id="268"/>
-                    </connections>
-                </textView>
-                <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" text="Tap to Reply" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="279">
-                    <rect key="frame" x="15" y="10" width="290" height="44"/>
-                    <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMaxY="YES"/>
-                    <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                    <color key="textColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
-                    <nil key="highlightedColor"/>
-                </label>
-                <view hidden="YES" contentMode="scaleToFill" id="284">
-                    <rect key="frame" x="0.0" y="0.0" width="320" height="64"/>
-                    <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
-                    <subviews>
-                        <activityIndicatorView opaque="NO" contentMode="scaleToFill" animating="YES" style="gray" id="285">
-                            <rect key="frame" x="150" y="24" width="20" height="20"/>
-                            <autoresizingMask key="autoresizingMask" flexibleMinX="YES" flexibleMaxX="YES" flexibleMinY="YES" flexibleMaxY="YES"/>
-                            <color key="color" red="0.1141941236" green="0.1141941236" blue="0.1141941236" alpha="1" colorSpace="calibratedRGB"/>
-                        </activityIndicatorView>
-                    </subviews>
-                    <color key="backgroundColor" red="1" green="1" blue="1" alpha="0.56999999999999995" colorSpace="calibratedRGB"/>
-                </view>
-            </subviews>
-            <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
-            <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
-        </view>
         <navigationBar contentMode="scaleToFill" translucent="NO" id="269">
             <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
             <autoresizingMask key="autoresizingMask" widthSizable="YES"/>
             <items>
                 <navigationItem title="Replying…" id="270">
-                    <barButtonItem key="leftBarButtonItem" systemItem="cancel" id="276">
-                        <connections>
-                            <action selector="cancelReply:" destination="-1" id="278"/>
-                        </connections>
-                    </barButtonItem>
-                    <barButtonItem key="rightBarButtonItem" enabled="NO" title="Reply" style="done" id="275">
-                        <connections>
-                            <action selector="publishReply:" destination="-1" id="277"/>
-                        </connections>
-                    </barButtonItem>
+                    <barButtonItem key="leftBarButtonItem" systemItem="cancel" id="276"/>
+                    <barButtonItem key="rightBarButtonItem" enabled="NO" title="Reply" style="done" id="275"/>
                 </navigationItem>
             </items>
         </navigationBar>

@@ -25,6 +25,7 @@
 #import "NSString+Helpers.h"
 #import "PocketAPI.h"
 #import "Post.h"
+#import "Comment.h"
 #import "Reachability.h"
 #import "ReaderPost.h"
 #import "UIDevice+WordPressIdentifier.h"
@@ -121,7 +122,7 @@ NSInteger const IndexForMeTab = 2;
 	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(showNotificationErrorAlert:) name:kXML_RPC_ERROR_OCCURS object:nil];
 	
 	// another notification message came from comments --> CommentUploadFailed
-	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(showNotificationErrorAlert:) name:@"CommentUploadFailed" object:nil];
+	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(showNotificationErrorAlert:) name:CommentUploadFailedNotification object:nil];
 
     // another notification message came from WPWebViewController
 	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(showNotificationErrorAlert:) name:@"OpenWebPageFailed" object:nil];

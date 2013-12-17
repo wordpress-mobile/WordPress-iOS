@@ -11,9 +11,9 @@
 #import "CommentViewController.h"
 #import "WordPressAppDelegate.h"
 #import "ReachabilityUtils.h"
-#import "ReplyToCommentViewController.h"
 #import "UIColor+Helpers.h"
 #import "WPTableViewSectionHeaderView.h"
+#import "Comment.h"
 
 @interface CommentsViewController ()
 
@@ -200,7 +200,7 @@ CGFloat const CommentsSectionHeaderHeight = 24.0;
 
 - (NSFetchRequest *)fetchRequest {
     NSFetchRequest *fetchRequest = [NSFetchRequest fetchRequestWithEntityName:[self entityName]];
-    fetchRequest.predicate = [NSPredicate predicateWithFormat:@"(blog == %@ AND status != %@)", self.blog, @"spam"];
+    fetchRequest.predicate = [NSPredicate predicateWithFormat:@"(blog == %@ AND status != %@ AND status != %@)", self.blog, CommentStatusSpam, CommentStatusDraft];
     NSSortDescriptor *sortDescriptorStatus = [NSSortDescriptor sortDescriptorWithKey:@"status" ascending:NO];
     NSSortDescriptor *sortDescriptorDate = [NSSortDescriptor sortDescriptorWithKey:@"dateCreated" ascending:NO];
     fetchRequest.sortDescriptors = @[sortDescriptorStatus, sortDescriptorDate];

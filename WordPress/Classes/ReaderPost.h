@@ -18,6 +18,11 @@ extern NSString *const ReaderCurrentTopicKey;
 extern NSString *const ReaderTopicsArrayKey;
 extern NSString *const ReaderExtrasArrayKey;
 
+
+extern NSString * const ReaderPostStoredCommentIDKey;
+extern NSString * const ReaderPostStoredCommentTextKey;
+
+
 @interface ReaderPost : BasePost
 
 @property (nonatomic, strong) NSString *authorAvatarURL;
