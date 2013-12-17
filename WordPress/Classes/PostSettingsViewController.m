@@ -1,5 +1,4 @@
 #import "PostSettingsViewController.h"
-#import "WPSelectionTableViewController.h"
 #import "WordPressAppDelegate.h"
 #import "NSString+Helpers.h"
 #import "EditPostViewController_Internal.h"
