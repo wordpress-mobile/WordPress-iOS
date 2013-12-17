@@ -49,9 +49,7 @@
 		self.topicsArray = arr;
 		
         self.currentTopic = [ReaderPost currentTopic];
-		
-		[self loadTopics];
-	}
+    }
 	
 	return self;
 }
@@ -72,6 +70,8 @@
 																		  target:self
 																		  action:@selector(handleFriendFinderButtonTapped:)];
 	self.navigationItem.leftBarButtonItem = friendFinderButton;
+    
+    [self loadTopics];
 	
     [WPStyleGuide configureColorsForView:self.view andTableView:self.tableView];
 }
@@ -96,7 +96,7 @@
 
 
 - (void)refreshIfReady {
-	if([self.topicsArray count] && [self isViewLoaded]) {
+	if(([self.topicsArray count] > 0 || self.defaultTopicsArray.count > 0) && [self isViewLoaded]) {
 		[self.tableView reloadData];
 	}
 }
@@ -150,9 +150,9 @@
 				[extras addObject:@{@"title": title, @"endpoint":endpoint}];
 			}
             [[NSUserDefaults standardUserDefaults] setObject:extras forKey:ReaderExtrasArrayKey];
+            [[NSUserDefaults standardUserDefaults] synchronize];
 			self.defaultTopicsArray = [[self fetchDefaultTopics] arrayByAddingObjectsFromArray:extras];
 		}
-        [NSUserDefaults resetStandardUserDefaults];
         
 		[self refreshIfReady];
 		
