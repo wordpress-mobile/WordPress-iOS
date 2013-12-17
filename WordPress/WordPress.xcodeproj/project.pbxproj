@@ -768,7 +768,6 @@
 		AC600C0E0E20B80400D663AA /* photos.png in Resources */ = {isa = PBXBuildFile; fileRef = AC600C0A0E20B80400D663AA /* photos.png */; };
 		AC600C0F0E20B80400D663AA /* preview.png in Resources */ = {isa = PBXBuildFile; fileRef = AC600C0B0E20B80400D663AA /* preview.png */; };
 		ACAC79C60E1F50EB00AC7074 /* WPSelectionTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = ACAC79C50E1F50EB00AC7074 /* WPSelectionTableViewController.m */; };
-		ACAC7B6A0E1F8C0700AC7074 /* WPSelectionTableViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = ACAC7B690E1F8C0700AC7074 /* WPSelectionTableViewController.xib */; };
 		ACBAB5FE0E121C7300F38795 /* PostSettingsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = ACBAB5FD0E121C7300F38795 /* PostSettingsViewController.m */; };
 		ACBAB6090E121CF700F38795 /* PostSettingsViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = ACBAB6080E121CF700F38795 /* PostSettingsViewController.xib */; };
 		ACBAB67D0E1247CC00F38795 /* PostPreviewViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = ACBAB67C0E1247CC00F38795 /* PostPreviewViewController.xib */; };
@@ -1914,7 +1913,6 @@
 		AC600C0B0E20B80400D663AA /* preview.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = preview.png; path = Resources/Images/preview.png; sourceTree = "<group>"; };
 		ACAC79C40E1F50EB00AC7074 /* WPSelectionTableViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WPSelectionTableViewController.h; sourceTree = "<group>"; };
 		ACAC79C50E1F50EB00AC7074 /* WPSelectionTableViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WPSelectionTableViewController.m; sourceTree = "<group>"; };
-		ACAC7B690E1F8C0700AC7074 /* WPSelectionTableViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = WPSelectionTableViewController.xib; path = Resources/WPSelectionTableViewController.xib; sourceTree = "<group>"; };
 		ACBAB5FC0E121C7300F38795 /* PostSettingsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PostSettingsViewController.h; sourceTree = "<group>"; };
 		ACBAB5FD0E121C7300F38795 /* PostSettingsViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PostSettingsViewController.m; sourceTree = "<group>"; };
 		ACBAB6080E121CF700F38795 /* PostSettingsViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = PostSettingsViewController.xib; path = Resources/PostSettingsViewController.xib; sourceTree = "<group>"; };
@@ -4134,7 +4132,6 @@
 				28AD735F0D9D9599002E5188 /* MainWindow.xib */,
 				30AF6CF413C2289600A29C00 /* AboutViewController.xib */,
 				A0E293FD0E21037200C6919C /* WPAddCategoryViewController.xib */,
-				ACAC7B690E1F8C0700AC7074 /* WPSelectionTableViewController.xib */,
 				3768BEF013041E7900E7C9A9 /* BetaFeedbackViewController.xib */,
 				CC70165A185A7536007B37DB /* InlineComposeView.xib */,
 			);
@@ -4316,7 +4313,6 @@
 				ACBAB6090E121CF700F38795 /* PostSettingsViewController.xib in Resources */,
 				ACBAB67D0E1247CC00F38795 /* PostPreviewViewController.xib in Resources */,
 				30EEBB971851B0A30099FB6C /* icon_format_link@2x.png in Resources */,
-				ACAC7B6A0E1F8C0700AC7074 /* WPSelectionTableViewController.xib in Resources */,
 				AC600C0C0E20B80400D663AA /* write.png in Resources */,
 				AC600C0E0E20B80400D663AA /* photos.png in Resources */,
 				AC600C0F0E20B80400D663AA /* preview.png in Resources */,
