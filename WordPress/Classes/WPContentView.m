@@ -127,7 +127,7 @@ const CGFloat RPVControlButtonBorderSize = 0.0f;
         _bylineLabel.backgroundColor = [UIColor clearColor];
         _bylineLabel.numberOfLines = 1;
         _bylineLabel.autoresizingMask = UIViewAutoresizingFlexibleWidth;
-        _bylineLabel.font = [UIFont fontWithName:@"OpenSans-Bold" size:12.0f];
+        _bylineLabel.font = [UIFont fontWithName:@"OpenSans" size:12.0f];
         _bylineLabel.adjustsFontSizeToFitWidth = NO;
         _bylineLabel.textColor = [UIColor colorWithHexString:@"333"];
         [_byView addSubview:_bylineLabel];
