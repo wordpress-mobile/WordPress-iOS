@@ -199,8 +199,9 @@ const CGFloat InlineComposeViewMaxHeight = 88.f;
 - (void)textViewDidBeginEditing:(UITextView *)textView {
     // Focus the input field in the toolbar when we begin editing from the proxy
     if (textView == self.proxyTextView) {
-        if(self.toolbarTextView.editable)
+        if(self.toolbarTextView.editable){
             [self.toolbarTextView becomeFirstResponder];
+        }
         self.toolbarTextView.editable = YES;
     }
 
@@ -212,7 +213,10 @@ const CGFloat InlineComposeViewMaxHeight = 88.f;
 }
 
 - (BOOL)textViewShouldEndEditing:(UITextView *)textView {
-    if (textView != self.toolbarTextView) return YES;
+
+    if (textView != self.toolbarTextView){
+        return YES;
+    }
 
     if ([self.delegate respondsToSelector:@selector(textViewShouldEndEditing:)]) {
         return [self.delegate textViewShouldEndEditing:textView];
@@ -221,7 +225,10 @@ const CGFloat InlineComposeViewMaxHeight = 88.f;
 }
 
 - (void)textViewDidEndEditing:(UITextView *)textView {
-    if (textView != self.toolbarTextView) return;
+
+    if (textView != self.toolbarTextView){
+        return;
+    }
 
     if ([self.delegate respondsToSelector:@selector(textViewDidEndEditing:)]) {
         [self.delegate textViewDidEndEditing:textView];
@@ -230,7 +237,10 @@ const CGFloat InlineComposeViewMaxHeight = 88.f;
 }
 
 - (BOOL)textView:(UITextView *)textView shouldChangeTextInRange:(NSRange)range replacementText:(NSString *)text {
-    if (textView != self.toolbarTextView) return YES;
+
+    if (textView != self.toolbarTextView){
+        return YES;
+    }
 
     if ([self.delegate respondsToSelector:@selector(textView:shouldChangeTextInRange:replacementText:)]) {
         return [self.delegate textView:textView shouldChangeTextInRange:range replacementText:text];
@@ -241,8 +251,9 @@ const CGFloat InlineComposeViewMaxHeight = 88.f;
 
 - (void)textViewDidChange:(UITextView *)textView {
     // ignore any changes to the proxy textview, it's not used for text entry
-    if (textView == self.proxyTextView)
+    if (textView == self.proxyTextView){
         return;
+    }
 
     // forward UITextFieldDelegate methods to our delegate
     if ([self.delegate respondsToSelector:@selector(textViewDidChange:)]) {
@@ -253,7 +264,9 @@ const CGFloat InlineComposeViewMaxHeight = 88.f;
 }
 
 - (void)textViewDidChangeSelection:(UITextView *)textView {
-    if (textView != self.toolbarTextView) return;
+    if (textView != self.toolbarTextView){
+        return;
+    }
 
     if ([self.delegate respondsToSelector:@selector(textViewDidChangeSelection:)]) {
         [self.delegate textViewDidChangeSelection:textView];
@@ -262,7 +275,9 @@ const CGFloat InlineComposeViewMaxHeight = 88.f;
 
 - (BOOL)textView:(UITextView *)textView shouldInteractWithTextAttachment:(NSTextAttachment *)textAttachment inRange:(NSRange)characterRange {
 
-    if (self.toolbarTextView != textView) return YES;
+    if (self.toolbarTextView != textView){
+        return YES;
+    }
 
     if ([self.delegate respondsToSelector:@selector(textView:shouldInteractWithTextAttachment:inRange:)]) {
         return [self.delegate textView:textView shouldInteractWithTextAttachment:textAttachment inRange:characterRange];
@@ -272,7 +287,10 @@ const CGFloat InlineComposeViewMaxHeight = 88.f;
 }
 
 - (BOOL)textView:(UITextView *)textView shouldInteractWithURL:(NSURL *)URL inRange:(NSRange)characterRange {
-    if (self.toolbarTextView != textView) return YES;
+
+    if (self.toolbarTextView != textView){
+        return YES;
+    }
 
     if ([self.delegate respondsToSelector:@selector(textView:shouldInteractWithURL:inRange:)]) {
         return [self.delegate textView:textView shouldInteractWithURL:URL inRange:characterRange];
