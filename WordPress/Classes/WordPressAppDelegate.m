@@ -53,7 +53,7 @@ NSString * const WPTabBarRestorationID = @"WPTabBarID";
 NSString * const WPBlogListNavigationRestorationID = @"WPBlogListNavigationID";
 NSString * const WPReaderNavigationRestorationID = @"WPReaderNavigationID";
 NSString * const WPNotificationsNavigationRestorationID = @"WPNotificationsNavigationID";
-NSInteger const IndexForMeTab = 0;
+NSInteger const IndexForMeTab = 2;
 
 @interface WordPressAppDelegate () <UITabBarControllerDelegate, CrashlyticsDelegate, UIAlertViewDelegate, BITHockeyManagerDelegate>
 
@@ -352,6 +352,10 @@ NSInteger const IndexForMeTab = 0;
         return _tabBarController;
     }
     
+    UIOffset tabBarTitleOffset = UIOffsetMake(0, 0);
+    if ( IS_IPHONE ) {
+        tabBarTitleOffset = UIOffsetMake(0, -2);
+    }
     _tabBarController = [[UITabBarController alloc] init];
     _tabBarController.delegate = self;
     _tabBarController.restorationIdentifier = WPTabBarRestorationID;
@@ -376,6 +380,7 @@ NSInteger const IndexForMeTab = 0;
     readerNavigationController.tabBarItem.image = [UIImage imageNamed:@"icon-tab-reader"];
     readerNavigationController.restorationIdentifier = WPReaderNavigationRestorationID;
     self.readerPostsViewController.title = NSLocalizedString(@"Reader", nil);
+    [readerNavigationController.tabBarItem setTitlePositionAdjustment:tabBarTitleOffset];
     
     self.notificationsViewController = [[NotificationsViewController alloc] init];
     UINavigationController *notificationsNavigationController = [[UINavigationController alloc] initWithRootViewController:self.notificationsViewController];
@@ -383,6 +388,7 @@ NSInteger const IndexForMeTab = 0;
     notificationsNavigationController.tabBarItem.image = [UIImage imageNamed:@"icon-tab-notifications"];
     notificationsNavigationController.restorationIdentifier = WPNotificationsNavigationRestorationID;
     self.notificationsViewController.title = NSLocalizedString(@"Notifications", @"");
+    [notificationsNavigationController.tabBarItem setTitlePositionAdjustment:tabBarTitleOffset];
     
     self.blogListViewController = [[BlogListViewController alloc] init];
     UINavigationController *blogListNavigationController = [[UINavigationController alloc] initWithRootViewController:self.blogListViewController];
@@ -390,12 +396,18 @@ NSInteger const IndexForMeTab = 0;
     blogListNavigationController.tabBarItem.image = [UIImage imageNamed:@"icon-tab-blogs"];
     blogListNavigationController.restorationIdentifier = WPBlogListNavigationRestorationID;
     self.blogListViewController.title = NSLocalizedString(@"Me", @"");
-    
+    [blogListNavigationController.tabBarItem setTitlePositionAdjustment:tabBarTitleOffset];
+  
+    UIImage *image = [UIImage imageNamed:@"icon-tab-newpost"];
+    image = [image imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal];
     UIViewController *postsViewController = [[UIViewController alloc] init];
-    postsViewController.tabBarItem.image = [UIImage imageNamed:@"navbar_add"];
-    postsViewController.title = NSLocalizedString(@"Post", @"");
+    postsViewController.tabBarItem.image = image;
+    postsViewController.tabBarItem.imageInsets = UIEdgeInsetsMake(5.0, 0, -5, 0);
+    if (IS_IPAD) {
+        postsViewController.tabBarItem.imageInsets = UIEdgeInsetsMake(7.0, 0, -7, 0);
+    }
 
-    _tabBarController.viewControllers = @[blogListNavigationController, readerNavigationController, notificationsNavigationController, postsViewController];
+    _tabBarController.viewControllers = @[readerNavigationController, notificationsNavigationController, blogListNavigationController, postsViewController];
 
     [_tabBarController setSelectedViewController:readerNavigationController];
     
