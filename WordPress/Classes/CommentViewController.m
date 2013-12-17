@@ -486,7 +486,6 @@ CGFloat const CommentViewUnapproveButtonTag = 701;
 #pragma mark - InlineComposeViewDelegate methods
 
 - (void)composeView:(InlineComposeView *)view didSendText:(NSString *)text {
-    NSLog(@"Attempt to send the text");
 
     self.reply.content = text;
     // try to save it
