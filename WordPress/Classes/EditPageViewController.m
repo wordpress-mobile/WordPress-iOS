@@ -35,8 +35,9 @@
     return title;
 }
 
-- (void)newPostDidSave {
+- (void)didSaveNewPost {
     // Noop.
+    // The superclass triggers a tab switch with this method which we don't want for pages.
 }
 
 @end
