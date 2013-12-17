@@ -34,7 +34,8 @@
     [_postButton addTarget:self action:@selector(postButtonTapped) forControlEvents:UIControlEventTouchUpInside];
     
     // iPad in landscape orientation will end up positioning the post button in the
-    // wrong place until viewDidAppear: is called. Hide the button til then.
+    // wrong place the first time viewWillAppear: is called, but not subsequent times.
+    // This seems to be because the layer transform due to rotation has not yet ben applied.
     _postButton.hidden = YES;
     [self.view addSubview:_postButton];
 }
