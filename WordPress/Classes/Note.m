@@ -265,11 +265,10 @@ const NSUInteger NoteKeepCount = 20;
         NSRange statusRange = [title rangeOfString:@"]"];
         if (statusRange.location != NSNotFound) {
             title = [title substringFromIndex:statusRange.location + 1];
-            title = [title stringByDecodingXMLCharacters];
             title = [title trim];
         }
     }
-    
+    title = [title stringByDecodingXMLCharacters];
     return title;
 }
 
