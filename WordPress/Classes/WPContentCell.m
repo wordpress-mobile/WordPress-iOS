@@ -335,7 +335,7 @@ CGFloat const WPContentCellDateImageSide = 16.0;
     CGSize size;
     NSAttributedString *attributedTitle = [[self class] titleAttributedTextForContentProvider:contentProvider];
     CGFloat lineHeight = attributedTitle.size.height;
-    size = [attributedTitle.string boundingRectWithSize:CGSizeMake([[self class] textWidth:maxWidth], CGFLOAT_MAX) options:NSStringDrawingUsesLineFragmentOrigin attributes:[[self class] titleAttributes] context:nil].size;
+    size = [attributedTitle boundingRectWithSize:CGSizeMake([[self class] textWidth:maxWidth], CGFLOAT_MAX) options:NSStringDrawingUsesLineFragmentOrigin context:nil].size;
     size.height = ceilf(MIN(size.height, lineHeight * (WPContentCellTitleNumberOfLines - (hasStatus ? 1 : 0)))) + 1;
     
     CGFloat offset = -2.0; // Account for line height of title
