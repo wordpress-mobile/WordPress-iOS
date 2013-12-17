@@ -92,8 +92,6 @@
 
 - (void)composeView:(InlineComposeView *)view didSendText:(NSString *)text {
 
-    // TODO: Set an activity indicator and disable form
-    // TODO: Publish the comment
     [self publishComment:text];
 
 }
@@ -140,7 +138,6 @@
         self.composeView.enabled = YES;
 
 		DDLogError(@"Error Commenting from Reader : %@", [error localizedDescription]);
-		// TODO: Failure reason.
 		UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"Comment failed", @"")
 															message:NSLocalizedString(@"There was a problem commenting. Please try again.", @"")
 														   delegate:nil
