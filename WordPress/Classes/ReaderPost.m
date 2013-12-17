@@ -25,6 +25,10 @@ NSString *const ReaderCurrentTopicKey = @"ReaderCurrentTopicKey";
 NSString *const ReaderTopicsArrayKey = @"ReaderTopicsArrayKey";
 NSString *const ReaderExtrasArrayKey = @"ReaderExtrasArrayKey";
 
+// These keys are used in the getStoredComment method
+NSString * const ReaderPostStoredCommentIDKey = @"commentID";
+NSString * const ReaderPostStoredCommentTextKey = @"comment";
+
 @implementation ReaderPost
 
 @dynamic authorAvatarURL;
@@ -632,7 +636,7 @@ NSString *const ReaderExtrasArrayKey = @"ReaderExtrasArrayKey";
 	NSArray *arr = [self.storedComment componentsSeparatedByString:@"|storedcomment|"];
 	NSNumber *commentID = [[arr objectAtIndex:0] numericValue];
 	NSString *commentText = [arr objectAtIndex:1];
-	return @{@"commentID":commentID, @"comment":commentText};
+	return @{ReaderPostStoredCommentIDKey:commentID, ReaderPostStoredCommentTextKey:commentText};
 }
 
 - (NSString *)authorString {
