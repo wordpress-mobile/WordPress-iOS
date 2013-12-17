@@ -74,8 +74,13 @@
 	self.navigationItem.leftBarButtonItem = friendFinderButton;
 	
     [WPStyleGuide configureColorsForView:self.view andTableView:self.tableView];
-	
-	[self refreshIfReady];
+}
+
+- (void)viewWillAppear:(BOOL)animated
+{
+    [super viewWillAppear:animated];
+    
+    [self refreshIfReady];
 }
 
 
