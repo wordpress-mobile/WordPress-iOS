@@ -127,8 +127,8 @@
 {
     return @{
              DTDefaultFontFamily:@"Open Sans",
-             DTDefaultLineHeightMultiplier:@1.4,
-             DTDefaultFontSize:@14,
+             DTDefaultLineHeightMultiplier:(IS_IPAD ? @1.6 : @1.4),
+             DTDefaultFontSize:(IS_IPAD ? @18 : @16),
              DTDefaultTextColor:[WPStyleGuide littleEddieGrey],
              DTDefaultLinkColor:[WPStyleGuide baseLighterBlue],
              DTDefaultLinkHighlightColor:[WPStyleGuide midnightBlue],

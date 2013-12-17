@@ -256,7 +256,7 @@
     if ([self.post isFollowable]) {
         self.followButton.hidden = NO;
         CGFloat followX = bylineX - 4; // Fudge factor for image alignment
-        CGFloat followY = RPVAuthorPadding + self.bylineLabel.frame.size.height - 2;
+        CGFloat followY = RPVAuthorPadding + self.bylineLabel.frame.size.height + 2;
         height = ceil([self.followButton.titleLabel suggestedSizeForWidth:innerContentWidth].height);
         self.followButton.frame = CGRectMake(followX, followY, RPVFollowButtonWidth, height);
     } else {
@@ -280,7 +280,7 @@
     nextY += RPVVerticalPadding;
 	height = ceil([self.titleLabel suggestedSizeForWidth:innerContentWidth].height);
 	self.titleLabel.frame = CGRectMake(RPVHorizontalInnerPadding, nextY, innerContentWidth, height);
-	nextY += height + RPVTitlePaddingBottom;
+	nextY += height + RPVTitlePaddingBottom * (self.showFullContent ? 2.0 : 1.0);
     
 	// Position the snippet / content
     if ([self.post.summary length] > 0) {
