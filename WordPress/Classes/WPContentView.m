@@ -29,16 +29,16 @@
 const CGFloat RPVAuthorPadding = 8.0f;
 const CGFloat RPVHorizontalInnerPadding = 12.0f;
 const CGFloat RPVMetaViewHeight = 48.0f;
-const CGFloat RPVAuthorViewHeight = 32.0f;
+const CGFloat RPVAuthorViewHeight = 40.0f;
 const CGFloat RPVVerticalPadding = 14.0f;
-const CGFloat RPVAvatarSize = 32.0f;
+const CGFloat RPVAvatarSize = 40.0f;
 const CGFloat RPVBorderHeight = 1.0f;
 const CGFloat RPVMaxImageHeightPercentage = 0.59f;
 const CGFloat RPVMaxSummaryHeight = 88.0f;
 const CGFloat RPVFollowButtonWidth = 100.0f;
-const CGFloat RPVTitlePaddingBottom = 4.0f;
+const CGFloat RPVTitlePaddingBottom = 3.0f;
 const CGFloat RPVSmallButtonLeftPadding = 2; // Follow, tag
-const CGFloat RPVLineHeightMultiple = 1.10f;
+const CGFloat RPVLineHeightMultiple = 1.03f;
 
 // Control buttons (Like, Reblog, ...)
 const CGFloat RPVControlButtonHeight = 48.0f;
@@ -70,11 +70,11 @@ const CGFloat RPVControlButtonBorderSize = 0.0f;
 }
 
 + (UIFont *)titleFont {
-    return [UIFont fontWithName:@"Merriweather-Bold" size:21.0f];
+    return (IS_IPAD ? [UIFont fontWithName:@"Merriweather-Bold" size:24.0f] : [UIFont fontWithName:@"Merriweather-Bold" size:19.0f]);
 }
 
 + (UIFont *)summaryFont {
-    return [UIFont fontWithName:@"OpenSans" size:14.0f];
+    return (IS_IPAD ? [UIFont fontWithName:@"OpenSans" size:16.0f] : [UIFont fontWithName:@"OpenSans" size:14.0f]);
 }
 
 + (UIFont *)moreContentFont {
@@ -127,7 +127,7 @@ const CGFloat RPVControlButtonBorderSize = 0.0f;
         _bylineLabel.backgroundColor = [UIColor clearColor];
         _bylineLabel.numberOfLines = 1;
         _bylineLabel.autoresizingMask = UIViewAutoresizingFlexibleWidth;
-        _bylineLabel.font = [UIFont fontWithName:@"OpenSans" size:12.0f];
+        _bylineLabel.font = [UIFont fontWithName:@"OpenSans-Bold" size:12.0f];
         _bylineLabel.adjustsFontSizeToFitWidth = NO;
         _bylineLabel.textColor = [UIColor colorWithHexString:@"333"];
         [_byView addSubview:_bylineLabel];
@@ -262,7 +262,7 @@ const CGFloat RPVControlButtonBorderSize = 0.0f;
 
     self.byView.frame = CGRectMake(0, 0, contentWidth, RPVAuthorViewHeight + RPVAuthorPadding * 2);
     CGFloat bylineX = RPVAvatarSize + RPVAuthorPadding + RPVHorizontalInnerPadding;
-    self.bylineLabel.frame = CGRectMake(bylineX, RPVAuthorPadding - 2, contentWidth - bylineX, 18);
+    self.bylineLabel.frame = CGRectMake(bylineX, RPVAuthorPadding + 2, contentWidth - bylineX, 18);
     
     [self.textContentView relayoutText];
     CGFloat height = [self.textContentView suggestedFrameSizeToFitEntireStringConstraintedToWidth:contentWidth].height;
