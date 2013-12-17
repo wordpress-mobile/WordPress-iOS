@@ -206,9 +206,9 @@ NSString * const CommentStatusDraft = @"draft";
         // post the notification
         NSString *message;
         if (editing) {
-            NSLocalizedString(@"Sorry, something went wrong editing the comment. Please try again.", @"");
+            message = NSLocalizedString(@"Sorry, something went wrong editing the comment. Please try again.", @"");
         } else {
-            NSLocalizedString(@"Sorry, something went wrong posting the comment reply. Please try again.", @"");
+            message = NSLocalizedString(@"Sorry, something went wrong posting the comment reply. Please try again.", @"");
         }
 
         if (error.code == 405) {
