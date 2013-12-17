@@ -38,8 +38,8 @@
     EditPageViewController *editPostViewController = [[EditPageViewController alloc] initWithPost:apost];
     UINavigationController *navController = [[UINavigationController alloc] initWithRootViewController:editPostViewController];
     [navController setToolbarHidden:NO]; // Fixes wrong toolbar icon animation.
-    navController.modalPresentationStyle = UIModalPresentationCurrentContext;
-    [self.view.window.rootViewController presentViewController:navController animated:YES completion:nil];
+    navController.modalPresentationStyle = UIModalPresentationFullScreen;
+    [self.navigationController presentViewController:navController animated:YES completion:nil];
 }
 
 - (void)showAddPostView {
@@ -47,17 +47,6 @@
     
     Page *post = [Page newDraftForBlog:self.blog];
     [self editPost:post];
-}
-
-- (NSString *)tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section {
-    // Don't show a section title if there's only one section
-    if ([tableView numberOfSections] <= 1)
-        return nil;
-
-    id <NSFetchedResultsSectionInfo> sectionInfo = [[self.resultsController sections] objectAtIndex:section];
-    NSString *sectionName = [sectionInfo name];
-    
-    return [Page titleForRemoteStatus:[sectionName numericValue]];
 }
 
 - (NSString *)statsPropertyForViewOpening

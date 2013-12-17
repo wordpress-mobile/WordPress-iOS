@@ -148,7 +148,6 @@ extern NSString * const ReaderPostStoredCommentTextKey;
 
 - (NSString *)featuredImageForWidth:(NSUInteger)width height:(NSUInteger)height;
 
-
 @end
 
 

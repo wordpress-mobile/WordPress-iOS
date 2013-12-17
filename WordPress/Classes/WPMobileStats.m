@@ -110,6 +110,11 @@ NSString *const StatsEventPostDetailClickedUpdate = @"Clicked Update Button";
 NSString *const StatsEventPostDetailClickedPublish = @"Clicked Publish Button";
 NSString *const StatsEventPostDetailOpenedEditor = @"Opened Editor";
 NSString *const StatsEventPostDetailClosedEditor = @"Closed Editor";
+NSString *const StatsPropertyPostDetailEditorOpenedBy = @"opened_by";
+NSString *const StatsPropertyPostDetailEditorOpenedOpenedByPostsView = @"posts_view";
+NSString *const StatsPropertyPostDetailEditorOpenedOpenedByTabBarButton = @"tab_bar_button";
+NSString *const StatsPropertyPostDetailClickedBlogSelector = @"clicked_blog_selector";
+NSString *const StatsPropertyPostDetailHasExternalKeyboard = @"has_external_keybord";
 
 // Post Detail - Settings
 NSString *const StatsPropertyPostDetailSettingsClickedStatus = @"settings_clicked_status";
@@ -193,6 +198,7 @@ NSString *const StatsEventNUXFirstWalkthroughUserSkippedConnectingToJetpack = @"
 
 
 // NUX Create Account
+NSString *const StatsEventAccountCreationOpenedFromTabBar = @"NUX - Create Account Opened From Tab Bar";
 NSString *const StatsEventNUXCreateAccountOpened = @"NUX - Create Account - Opened";
 NSString *const StatsEventNUXCreateAccountClickedCancel = @"NUX - Create Account - Clicked Cancel";
 NSString *const StatsEventNUXCreateAccountClickedHelp = @"NUX - Create Account - Clicked Help";
@@ -357,6 +363,11 @@ NSString *const StatsEventAddBlogsClickedAddSelected = @"Add Blogs - Clicked Add
     [[self sharedInstance] flagProperty:property forEvent:event];
 }
 
++ (void)unflagProperty:(NSString *)property forEvent:(NSString *)event
+{
+    [[self sharedInstance] unflagProperty:property forEvent:event];
+}
+
 #pragma mark - Private Methods
 
 - (BOOL)connectedToWordPressDotCom
@@ -422,6 +433,11 @@ NSString *const StatsEventAddBlogsClickedAddSelected = @"Add Blogs - Clicked Add
 - (void)flagProperty:(NSString *)property forEvent:(NSString *)event
 {
     [self saveProperty:property withValue:@(YES) forEvent:event];
+}
+
+- (void)unflagProperty:(NSString *)property forEvent:(NSString *)event
+{
+    [self saveProperty:property withValue:@(NO) forEvent:event];
 }
 
 - (id)property:(NSString *)property forEvent:(NSString *)event
