@@ -29,9 +29,9 @@
 const CGFloat RPVAuthorPadding = 8.0f;
 const CGFloat RPVHorizontalInnerPadding = 12.0f;
 const CGFloat RPVMetaViewHeight = 48.0f;
-const CGFloat RPVAuthorViewHeight = 40.0f;
+const CGFloat RPVAuthorViewHeight = 32.0f;
 const CGFloat RPVVerticalPadding = 14.0f;
-const CGFloat RPVAvatarSize = 40.0f;
+const CGFloat RPVAvatarSize = 32.0f;
 const CGFloat RPVBorderHeight = 1.0f;
 const CGFloat RPVMaxImageHeightPercentage = 0.59f;
 const CGFloat RPVMaxSummaryHeight = 88.0f;
@@ -262,7 +262,7 @@ const CGFloat RPVControlButtonBorderSize = 0.0f;
 
     self.byView.frame = CGRectMake(0, 0, contentWidth, RPVAuthorViewHeight + RPVAuthorPadding * 2);
     CGFloat bylineX = RPVAvatarSize + RPVAuthorPadding + RPVHorizontalInnerPadding;
-    self.bylineLabel.frame = CGRectMake(bylineX, RPVAuthorPadding + 2, contentWidth - bylineX, 18);
+    self.bylineLabel.frame = CGRectMake(bylineX, RPVAuthorPadding - 2, contentWidth - bylineX, 18);
     
     [self.textContentView relayoutText];
     CGFloat height = [self.textContentView suggestedFrameSizeToFitEntireStringConstraintedToWidth:contentWidth].height;
