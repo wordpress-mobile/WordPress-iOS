@@ -256,7 +256,7 @@
     if ([self.post isFollowable]) {
         self.followButton.hidden = NO;
         CGFloat followX = bylineX - 4; // Fudge factor for image alignment
-        CGFloat followY = RPVAuthorPadding + self.bylineLabel.frame.size.height + 2;
+        CGFloat followY = RPVAuthorPadding + self.bylineLabel.frame.size.height - 2;
         height = ceil([self.followButton.titleLabel suggestedSizeForWidth:innerContentWidth].height);
         self.followButton.frame = CGRectMake(followX, followY, RPVFollowButtonWidth, height);
     } else {
