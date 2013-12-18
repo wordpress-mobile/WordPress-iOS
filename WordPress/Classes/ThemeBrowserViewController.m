@@ -19,7 +19,7 @@
 static NSString *const ThemeCellIdentifier = @"theme";
 static NSString *const SearchFilterCellIdentifier = @"search_filter";
 
-@interface ThemeBrowserViewController () <UICollectionViewDelegate, UICollectionViewDataSource, NSFetchedResultsControllerDelegate>
+@interface ThemeBrowserViewController () <UICollectionViewDelegate, UICollectionViewDataSource, NSFetchedResultsControllerDelegate, UIActionSheetDelegate>
 
 @property (weak, nonatomic) IBOutlet UICollectionView *collectionView;
 @property (nonatomic, strong) NSArray *sortingOptions, *resultSortAttributes; // 'nice' sort names and the corresponding model attributes
@@ -65,6 +65,9 @@ static NSString *const SearchFilterCellIdentifier = @"search_filter";
     [_refreshHeaderView addTarget:self action:@selector(refreshControlTriggered:) forControlEvents:UIControlEventValueChanged];
     _refreshHeaderView.tintColor = [WPStyleGuide whisperGrey];
     [self.collectionView addSubview:_refreshHeaderView];
+    
+    UIBarButtonItem *sortButton = [[UIBarButtonItem alloc] initWithTitle:_sortingOptions[0] style:UIBarButtonItemStylePlain target:self action:@selector(sortPressed)];
+    self.navigationItem.rightBarButtonItem = sortButton;
     
     [self reloadThemes];
 }
@@ -283,6 +286,22 @@ static NSString *const SearchFilterCellIdentifier = @"search_filter";
 - (void)refreshControlTriggered:(UIRefreshControl*)refreshControl {
     if (refreshControl.isRefreshing) {
         [self reloadThemes];
+    }
+}
+
+- (void)sortPressed {
+    UIActionSheet *actionSheet = [[UIActionSheet alloc] initWithTitle:NSLocalizedString(@"Order By", nil) delegate:self cancelButtonTitle:NSLocalizedString(@"Cancel", nil) destructiveButtonTitle:nil otherButtonTitles:
+                                  _sortingOptions[0],
+                                  _sortingOptions[1],
+                                  _sortingOptions[2],
+                                  nil];
+    [actionSheet showFromBarButtonItem:self.navigationItem.rightBarButtonItem animated:YES];
+}
+
+- (void)actionSheet:(UIActionSheet *)actionSheet clickedButtonAtIndex:(NSInteger)buttonIndex {
+    if (buttonIndex < _sortingOptions.count) {
+        [self.navigationItem.rightBarButtonItem setTitle:[actionSheet buttonTitleAtIndex:buttonIndex]];
+        [self selectedSortIndex:buttonIndex];
     }
 }
 
