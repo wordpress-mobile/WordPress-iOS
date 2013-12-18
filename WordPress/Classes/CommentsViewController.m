@@ -11,8 +11,9 @@
 #import "CommentViewController.h"
 #import "WordPressAppDelegate.h"
 #import "ReachabilityUtils.h"
-#import "ReplyToCommentViewController.h"
 #import "UIColor+Helpers.h"
+#import "WPTableViewSectionHeaderView.h"
+#import "Comment.h"
 
 @interface CommentsViewController ()
 
@@ -148,28 +149,30 @@ CGFloat const CommentsSectionHeaderHeight = 24.0;
     return [super tableView:tableView titleForHeaderInSection:section];
 }
 
-- (UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section
-{
+- (UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section {
+    
     // Don't show a section title if there's only one section
-    if ([tableView numberOfSections] <= 1)
+    if ([tableView numberOfSections] <= 1) {
         return nil;
+    }
     
-    id <NSFetchedResultsSectionInfo> sectionInfo = [[self.resultsController sections] objectAtIndex:section];
-    NSString *title = [Comment titleForStatus:[sectionInfo name]];
+    WPTableViewSectionHeaderView *header = [[WPTableViewSectionHeaderView alloc] initWithFrame:CGRectMake(0, 0, CGRectGetWidth(self.view.bounds), 0)];
+    header.title = [self tableView:self.tableView titleForHeaderInSection:section];
+    if (IS_IPAD) {
+        header.fixedWidth = WPTableViewFixedWidth;
+    }
+    return header;
+}
+
+- (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section {
     
-    UIView *view = [[UIView alloc] initWithFrame:CGRectMake(0, 0, CGRectGetWidth(self.tableView.frame), CommentsSectionHeaderHeight)];
-    view.backgroundColor = [WPStyleGuide itsEverywhereGrey];
-
-    UILabel *label = [[UILabel alloc] init];
-    label.backgroundColor = [WPStyleGuide itsEverywhereGrey];
-    label.text = [title uppercaseString];
-    label.font = [WPStyleGuide labelFont];
-    [label sizeToFit];
-    CGFloat y = (CGRectGetHeight(view.frame) - CGRectGetHeight(label.frame))/2.0;
-    label.frame = CGRectMake(16, y, CGRectGetWidth(label.frame), CGRectGetHeight(label.frame));
-    [view addSubview:label];
-
-    return view;
+    // Don't show a section title if there's only one section
+    if ([tableView numberOfSections] <= 1) {
+        return UITableViewAutomaticDimension;
+    }
+    
+    NSString *title = [self tableView:self.tableView titleForHeaderInSection:section];
+    return [WPTableViewSectionHeaderView heightForTitle:title andWidth:CGRectGetWidth(self.view.bounds)];
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
@@ -197,7 +200,7 @@ CGFloat const CommentsSectionHeaderHeight = 24.0;
 
 - (NSFetchRequest *)fetchRequest {
     NSFetchRequest *fetchRequest = [NSFetchRequest fetchRequestWithEntityName:[self entityName]];
-    fetchRequest.predicate = [NSPredicate predicateWithFormat:@"(blog == %@ AND status != %@)", self.blog, @"spam"];
+    fetchRequest.predicate = [NSPredicate predicateWithFormat:@"(blog == %@ AND status != %@ AND status != %@)", self.blog, CommentStatusSpam, CommentStatusDraft];
     NSSortDescriptor *sortDescriptorStatus = [NSSortDescriptor sortDescriptorWithKey:@"status" ascending:NO];
     NSSortDescriptor *sortDescriptorDate = [NSSortDescriptor sortDescriptorWithKey:@"dateCreated" ascending:NO];
     fetchRequest.sortDescriptors = @[sortDescriptorStatus, sortDescriptorDate];

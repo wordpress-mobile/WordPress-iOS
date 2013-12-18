@@ -5,9 +5,8 @@ typedef enum _SelectionType {
     kCheckbox
 } WPSelectionType;
 
-@interface WPSelectionTableViewController : UIViewController <UITableViewDataSource, UITableViewDelegate>
+@interface WPSelectionTableViewController : UITableViewController
 
-@property (nonatomic, weak) IBOutlet UITableView *tableView;
 @property (nonatomic, assign) BOOL autoReturnInRadioSelectMode;
 @property (nonatomic, strong) NSArray *objects;
 @property (nonatomic, strong) NSMutableArray *selectionStatusOfObjects, *originalSelObjects;

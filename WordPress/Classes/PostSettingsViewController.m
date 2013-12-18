@@ -1,5 +1,4 @@
 #import "PostSettingsViewController.h"
-#import "WPSelectionTableViewController.h"
 #import "WordPressAppDelegate.h"
 #import "NSString+Helpers.h"
 #import "EditPostViewController_Internal.h"
@@ -13,6 +12,8 @@
 #import "UITableViewTextFieldCell.h"
 #import "WPAlertView.h"
 
+#define kSelectionsStatusContext ((void *)1000)
+#define kSelectionsCategoriesContext ((void *)2000)
 #define kPasswordFooterSectionHeight        68.0f
 #define kResizePhotoSettingSectionHeight    60.0f
 #define TAG_PICKER_STATUS                   0
@@ -110,7 +111,7 @@ static NSString *const RemoveGeotagCellIdentifier = @"RemoveGeotagCellIdentifier
 }
 
 - (void)viewDidLoad {
-    self.title = NSLocalizedString(@"Properties", nil);
+    self.title = NSLocalizedString(@"Options", nil);
 
     DDLogInfo(@"%@ %@", self, NSStringFromSelector(_cmd));
 
@@ -466,7 +467,8 @@ static NSString *const RemoveGeotagCellIdentifier = @"RemoveGeotagCellIdentifier
                     }
                     cell.textLabel.text = NSLocalizedString(@"Tags", @"Label for the tags field. Should be the same as WP core.");
                     cell.textField.text = self.post.tags;
-                    cell.textField.placeholder = NSLocalizedString(@"Separate tags with commas", @"Placeholder text for the tags field. Should be the same as WP core.");
+                    cell.textField.attributedPlaceholder = [[NSAttributedString alloc] initWithString:(NSLocalizedString(@"Comma separated", @"Placeholder text for the tags field. Should be the same as WP core.")) attributes:(@{NSForegroundColorAttributeName: [WPStyleGuide textFieldPlaceholderGrey]})];
+                    cell.textField.returnKeyType = UIReturnKeyDone;
                     cell.textField.delegate = self;
                     self.tagsTextField = cell.textField;
                     [WPStyleGuide configureTableViewTextCell:cell];
@@ -1209,14 +1211,14 @@ static NSString *const RemoveGeotagCellIdentifier = @"RemoveGeotagCellIdentifier
         popoverRect.size.width = 100.0f;
         [self.popover presentPopoverFromRect:popoverRect inView:self.view permittedArrowDirections:UIPopoverArrowDirectionAny animated:YES];
     } else {
-        CGFloat width = self.postDetailViewController.view.frame.size.width;
+        CGFloat width = self.view.frame.size.width;
         CGFloat height = 0.0;
         
         // Refactor this class to not use UIActionSheets for display. See trac #1509.
         // <rant>Shoehorning a UIPicker inside a UIActionSheet is just madness.</rant>
         // For now, hardcoding height values for the iPhone so we don't get
         // a funky gap at the bottom of the screen on the iPhone 5.
-        if(self.postDetailViewController.view.frame.size.height <= 416.0f) {
+        if(self.view.frame.size.height <= 416.0f) {
             height = 490.0f;
         } else {
             height = 500.0f;

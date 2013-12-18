@@ -700,7 +700,7 @@ const CGFloat RPVControlButtonBorderSize = 0.0f;
 }
 
 - (void)refreshDate:(NSTimer *)timer {
-    [self.timeButton setTitle:[self.post.dateCreated shortString] forState:UIControlStateNormal];
+    [self.timeButton setTitle:[self.post.date_created_gmt shortString] forState:UIControlStateNormal];
 }
 
 
