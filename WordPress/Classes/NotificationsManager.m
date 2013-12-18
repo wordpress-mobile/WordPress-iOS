@@ -65,7 +65,6 @@
         return;
     }
     
-    NSString *authURL = kNotificationAuthURL;
     WPAccount *account = [WPAccount defaultWordPressComAccount];
 	if (account) {
         NSArray *parameters = @[account.username,
@@ -77,7 +76,7 @@
                                 WordPressComApiPushAppId
                                 ];
         
-        WPXMLRPCClient *api = [[WPXMLRPCClient alloc] initWithXMLRPCEndpoint:[NSURL URLWithString:authURL]];
+        WPXMLRPCClient *api = [[WPXMLRPCClient alloc] initWithXMLRPCEndpoint:[NSURL URLWithString:WPComXMLRPCUrl]];
         [api setAuthorizationHeaderWithToken:[[WordPressComApi sharedApi] authToken]];
         [api callMethod:@"wpcom.mobile_push_unregister_token"
              parameters:parameters

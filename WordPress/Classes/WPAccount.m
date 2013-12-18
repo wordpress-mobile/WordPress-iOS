@@ -16,9 +16,9 @@
 
 
 static NSString * const DefaultDotcomAccountDefaultsKey = @"AccountDefaultDotcom";
-static NSString * const DotcomXmlrpcKey = @"https://wordpress.com/xmlrpc.php";
 static NSString * const OauthTokenServiceName = @"public-api.wordpress.com";
 static WPAccount *__defaultDotcomAccount = nil;
+NSString * const WPComXMLRPCUrl = @"https://wordpress.com/xmlrpc.php";
 NSString * const WPAccountDefaultWordPressComAccountChangedNotification = @"WPAccountDefaultWordPressComAccountChangedNotification";
 
 
@@ -119,7 +119,7 @@ NSString * const WPAccountDefaultWordPressComAccountChangedNotification = @"WPAc
 }
 
 + (WPAccount *)createOrUpdateWordPressComAccountWithUsername:(NSString *)username password:(NSString *)password authToken:(NSString *)authToken context:(NSManagedObjectContext *)context {
-    WPAccount *account = [self createOrUpdateSelfHostedAccountWithXmlrpc:DotcomXmlrpcKey username:username andPassword:password withContext:context];
+    WPAccount *account = [self createOrUpdateSelfHostedAccountWithXmlrpc:WPComXMLRPCUrl username:username andPassword:password withContext:context];
     [account.managedObjectContext performBlockAndWait:^{
         account.isWpcom = YES;
         account.authToken = authToken;
