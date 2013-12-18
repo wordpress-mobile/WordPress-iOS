@@ -150,5 +150,3 @@ typedef NS_ENUM(NSUInteger, EditPageMode) {
 
 
 
-// User Defaults Keys
-#define kWPUserDefaultsFeedbackEnabled @"wp_feedback_enabled"
