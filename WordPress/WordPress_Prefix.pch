@@ -15,6 +15,7 @@
     #import <AFNetworking/AFNetworking.h>
     #import <NSObject+SafeExpectations.h>
     #import "NSObject+BlockObservation.h"
+    #import "DDLog.h"
 
 	// Project-specific
     #import "Constants.h"
