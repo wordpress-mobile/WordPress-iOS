@@ -290,10 +290,6 @@ NSString *const DefaultCellIdentifier = @"DefaultCellIdentifier";
 	return UITableViewRowAnimationFade;
 }
 
-- (NSString *)resultsControllerCacheName {
-    return nil;
-}
-
 - (NSFetchedResultsController *)resultsController {
     if (_resultsController != nil) {
         return _resultsController;
@@ -303,7 +299,7 @@ NSString *const DefaultCellIdentifier = @"DefaultCellIdentifier";
     _resultsController = [[NSFetchedResultsController alloc] initWithFetchRequest:[self fetchRequest]
                                                              managedObjectContext:moc
                                                                sectionNameKeyPath:[self sectionNameKeyPath]
-                                                                        cacheName:[self resultsControllerCacheName]];
+                                                                        cacheName:nil];
     _resultsController.delegate = self;
         
     NSError *error = nil;
@@ -715,7 +711,6 @@ NSString *const DefaultCellIdentifier = @"DefaultCellIdentifier";
 }
 
 - (void)resetResultsController {
-    [NSFetchedResultsController deleteCacheWithName:[self resultsControllerCacheName]];
 	_resultsController.delegate = nil;
 	_resultsController = nil;
 }
