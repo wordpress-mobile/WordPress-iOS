@@ -7,6 +7,8 @@
 
 static void *const kParentCategoriesContext = ((void *)999);
 
+NSString *const NewCategoryCreatedAndUpdatedInBlogNotification = @"NewCategoryCreatedAndUpdatedInBlogNotification";
+
 @interface WPAddCategoryViewController ()
 
 @property (nonatomic, strong) Category *parentCategory;
@@ -153,7 +155,7 @@ static void *const kParentCategoriesContext = ((void *)999);
     [Category createCategory:catName parent:self.parentCategory forBlog:self.blog success:^(Category *category) {
         //re-syncs categories this is necessary because the server can change the name of the category!!!
 		[self.blog syncCategoriesWithSuccess:nil failure:nil];
-        [[NSNotificationCenter defaultCenter] postNotificationName:WPNewCategoryCreatedAndUpdatedInBlogNotificationName
+        [[NSNotificationCenter defaultCenter] postNotificationName:NewCategoryCreatedAndUpdatedInBlogNotification
                                                             object:self
                                                           userInfo:[NSDictionary dictionaryWithObject:category forKey:@"category"]];
         [self clearUI];

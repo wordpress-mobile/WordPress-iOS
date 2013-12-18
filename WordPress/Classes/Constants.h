@@ -62,7 +62,6 @@
 #define PictureObjectUploadedNotificationName @"PictureObjectUploadedNotificationName"
 #define VideoSaved @"VideoSavedNotification"
 #define VideoUploadChunk @"VideoUploadChunk"
-#define WPNewCategoryCreatedAndUpdatedInBlogNotificationName @"WPNewCategoryCreatedAndUpdatedInBlog"
 #define kXML_RPC_ERROR_OCCURS @"kXML_RPC_ERROR_OCCURS"
 #define kURL @"URL"
 #define kMETHOD @"METHOD"
