@@ -86,7 +86,6 @@ CGFloat const EPVCTextViewTopPadding = 7.0f;
         
         if (_post.remoteStatus == AbstractPostRemoteStatusLocal) {
             _editMode = EditPostViewControllerModeNewPost;
-            [self syncOptionsIfNecessary:post.blog];
         } else {
             _editMode = EditPostViewControllerModeEditPost;
         }
@@ -506,7 +505,7 @@ CGFloat const EPVCTextViewTopPadding = 7.0f;
             self.post.blog = blog;
             [[NSUserDefaults standardUserDefaults] setObject:blog.url forKey:EditPostViewControllerLastUsedBlogURL];
             [[NSUserDefaults standardUserDefaults] synchronize];
-            [self syncOptionsIfNecessary:blog];
+            [self syncOptionsIfNecessaryForBlog:blog afterBlogChanged:YES];
         }
         
         [self refreshUIForCurrentPost];
@@ -617,13 +616,22 @@ CGFloat const EPVCTextViewTopPadding = 7.0f;
 
 #pragma mark - Instance Methods
 
+- (void)setEditorOpenedBy:(NSString *)editorOpenedBy {
+    if ([_editorOpenedBy isEqualToString:editorOpenedBy]) {
+        return;
+    }
+    _editorOpenedBy = editorOpenedBy;
+    [self syncOptionsIfNecessaryForBlog:_post.blog afterBlogChanged:NO];
+}
+
 /*
  Sync the blog if desired info is missing.
- If the editor is shown from the tab, and the new post's blog has never synced
- then PostSettings will be missing categories and post formats.
+ 
+ Always sync after a blog switch to ensure options are updated. Otherwise, 
+ only sync for new posts when launched from the post tab vs the posts list.
  */
-- (void)syncOptionsIfNecessary:(Blog *)blog {
-    if (!blog.postFormats) {
+- (void)syncOptionsIfNecessaryForBlog:(Blog *)blog afterBlogChanged:(BOOL)blogChanged {
+    if (blogChanged || [self.editorOpenedBy isEqualToString:StatsPropertyPostDetailEditorOpenedOpenedByTabBarButton]) {
         [blog syncBlogWithSuccess:nil failure:nil];
     }
 }
