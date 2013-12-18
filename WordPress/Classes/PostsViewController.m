@@ -45,11 +45,6 @@
     [button addTarget:self action:@selector(showAddPostView) forControlEvents:UIControlEventTouchUpInside];
     UIBarButtonItem *composeButtonItem = [[UIBarButtonItem alloc] initWithCustomView:button];
 
-    // Account for 1 pixel header height
-    UIEdgeInsets tableInset = [self.tableView contentInset];
-    tableInset.top = -1;
-    self.tableView.contentInset = tableInset;
-
     [WPStyleGuide setRightBarButtonItemWithCorrectSpacing:composeButtonItem forNavigationItem:self.navigationItem];
     
     self.infiniteScrollEnabled = YES;
@@ -156,7 +151,7 @@
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
     AbstractPost *post = [self.resultsController objectAtIndexPath:indexPath];
-    return [NewPostTableViewCell rowHeightForPost:post andWidth:CGRectGetWidth(self.tableView.bounds)];
+    return [NewPostTableViewCell rowHeightForPost:post andWidth:WPTableViewFixedWidth];
 }
 
 - (BOOL)tableView:(UITableView *)tableView canEditRowAtIndexPath:(NSIndexPath *)indexPath {
@@ -205,7 +200,9 @@
 
 - (void)editPost:(AbstractPost *)apost {
     EditPostViewController *editPostViewController = [[EditPostViewController alloc] initWithPost:apost];
+    editPostViewController.editorOpenedBy = StatsPropertyPostDetailEditorOpenedOpenedByPostsView;
     UINavigationController *navController = [[UINavigationController alloc] initWithRootViewController:editPostViewController];
+    [navController setToolbarHidden:NO]; // Fixes incorrect toolbar animation.
     navController.modalPresentationStyle = UIModalPresentationCurrentContext;
     [self.view.window.rootViewController presentViewController:navController animated:YES completion:nil];
 }

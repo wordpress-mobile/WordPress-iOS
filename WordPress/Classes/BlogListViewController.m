@@ -177,8 +177,13 @@ NSString * const WPBlogListRestorationID = @"WPBlogListID";
     
     UITableViewCell *cell = [self.tableView dequeueReusableCellWithIdentifier:BlogCellIdentifier];
     
-    [WPStyleGuide configureTableViewCell:cell];
     [self configureCell:cell atIndexPath:indexPath];
+    
+    if ([indexPath isEqual:[self indexPathForAddSite]]) {
+        [WPStyleGuide configureTableViewActionCell:cell];
+    } else {
+        [WPStyleGuide configureTableViewCell:cell];
+    }
 
     return cell;
 }
@@ -266,16 +271,12 @@ NSString * const WPBlogListRestorationID = @"WPBlogListID";
     cell.textLabel.textAlignment = NSTextAlignmentLeft;
     cell.accessoryType = UITableViewCellAccessoryNone;
     cell.accessoryView = nil;
-    
+    cell.imageView.image = nil;
+
     if ([indexPath isEqual:[self indexPathForAddSite]]) {
         cell.textLabel.text = NSLocalizedString(@"Add a Site", @"");
         cell.selectionStyle = UITableViewCellSelectionStyleBlue;
-
-        // To align the label, create and add a blank image
-        UIGraphicsBeginImageContextWithOptions(CGSizeMake(blavatarImageSize, blavatarImageSize), NO, 0.0);
-        UIImage *blank = UIGraphicsGetImageFromCurrentImageContext();
-        UIGraphicsEndImageContext();
-        [cell.imageView setImage:blank];
+        cell.textLabel.textAlignment = NSTextAlignmentCenter;
     } else {
 
         Blog *blog = [self.resultsController objectAtIndexPath:indexPath];
@@ -306,18 +307,23 @@ NSString * const WPBlogListRestorationID = @"WPBlogListID";
 }
 
 - (UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section {
-    WPTableViewSectionHeaderView *header = [[WPTableViewSectionHeaderView alloc] initWithFrame:CGRectMake(0, 0, CGRectGetWidth(self.view.bounds), 0)];
-    header.title = [self tableView:self.tableView titleForHeaderInSection:section];
-    if (IS_IPAD) {
-        header.fixedWidth = WPTableViewFixedWidth;
+    NSString *title = [self tableView:self.tableView titleForHeaderInSection:section];
+    if (title.length > 0) {
+        WPTableViewSectionHeaderView *header = [[WPTableViewSectionHeaderView alloc] initWithFrame:CGRectMake(0, 0, CGRectGetWidth(self.view.bounds), 0)];
+        header.title = title;
+        return header;
     }
-    return header;
+    return nil;
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section {
     NSString *title = [self tableView:self.tableView titleForHeaderInSection:section];
-    return [WPTableViewSectionHeaderView heightForTitle:title andWidth:CGRectGetWidth(self.view.bounds)];
+    if (title.length > 0) {
+        return [WPTableViewSectionHeaderView heightForTitle:title andWidth:CGRectGetWidth(self.view.bounds)];
+    }
+    return IS_IPHONE ? 1.0 : 40.0;
 }
+
 - (CGFloat)tableView:(UITableView *)tableView heightForFooterInSection:(NSInteger)section {
     // Use the standard dimension on the last section
     return section == [tableView numberOfSections] - 1 ? UITableViewAutomaticDimension : 0.0;
@@ -494,6 +500,18 @@ NSString * const WPBlogListRestorationID = @"WPBlogListID";
 }
 
 - (void)controller:(NSFetchedResultsController *)controller didChangeSection:(id<NSFetchedResultsSectionInfo>)sectionInfo atIndex:(NSUInteger)sectionIndex forChangeType:(NSFetchedResultsChangeType)type {
+    /*
+     The section for self hosted is always present, since it includes the
+     'Add Site' row.
+
+     If we tried to add/remove the section when the results controller changed,
+     it would crash, as the table's data source section count would remain the
+     same.
+     */
+    if (sectionIndex == [self sectionForSelfHosted]) {
+        return;
+    }
+
     switch (type) {
         case NSFetchedResultsChangeInsert:
             [self.tableView insertSections:[NSIndexSet indexSetWithIndex:sectionIndex] withRowAnimation:UITableViewRowAnimationFade];

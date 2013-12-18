@@ -224,8 +224,8 @@
     NSInteger row = button.tag;
     
     NSMutableDictionary *selectedNote = [_noteData objectAtIndex:row];
-    NSDictionary *noteAction = [selectedNote objectForKey:@"action"];
-    NSDictionary *noteDetails;
+    NSMutableDictionary *noteAction = [selectedNote objectForKey:@"action"];
+    NSMutableDictionary *noteDetails;
     if ([noteAction isKindOfClass:[NSDictionary class]])
         noteDetails = [noteAction objectForKey:@"params"];
 

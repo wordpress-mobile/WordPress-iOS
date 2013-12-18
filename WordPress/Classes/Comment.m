@@ -9,6 +9,16 @@
 #import "Comment.h"
 #import "ContextManager.h"
 
+NSString * const CommentUploadFailedNotification = @"CommentUploadFailed";
+
+NSString * const CommentStatusPending = @"hold";
+NSString * const CommentStatusApproved = @"approve";
+NSString * const CommentStatusDisapproved = @"trash";
+NSString * const CommentStatusSpam = @"spam";
+
+// draft is used for comments that have been composed but not succesfully uploaded yet
+NSString * const CommentStatusDraft = @"draft";
+
 @interface Comment (WordPressApi)
 - (NSDictionary *)XMLRPCDictionary;
 - (void)updateFromDictionary:(NSDictionary *)commentInfo;
@@ -88,9 +98,39 @@
     reply.postID = self.postID;
     reply.post = self.post;
     reply.parentID = self.commentID;
-    reply.status = @"approve";
+    reply.status = CommentStatusApproved;
     
     return reply;
+}
+
+// find a comment who's parent is this comment
+- (Comment *)restoreReply {
+    NSFetchRequest *existingReply = [NSFetchRequest fetchRequestWithEntityName:NSStringFromClass([self class])];
+    existingReply.predicate = [NSPredicate predicateWithFormat:@"status == %@ AND parentID == %@", CommentStatusDraft, self.commentID];
+    existingReply.fetchLimit = 1;
+
+    __block Comment *reply = nil;
+    NSManagedObjectContext *context = self.managedObjectContext;
+    [context performBlockAndWait:^{
+        NSError *error;
+        NSArray *replies = [context executeFetchRequest:existingReply error:&error];
+        if (error) {
+            DDLogError(@"Failed to fetch reply: %@", error);
+        }
+        if ([replies count] > 0) {
+            reply = [replies objectAtIndex:0];
+        }
+
+    }];
+
+    if (!reply) {
+        reply = [self newReply];
+    }
+
+    reply.status = CommentStatusDraft;
+
+    return reply;
+
 }
 
 #pragma mark - Helper methods
@@ -160,10 +200,33 @@
         if (success) success();
     };
 
-    if (self.commentID) {
-        [self editCommentWithSuccess:uploadSuccessful failure:failure];
+    __block BOOL editing = !!self.commentID;
+
+    void (^uploadFailure)(NSError *error) = ^(NSError *error){
+        // post the notification
+        NSString *message;
+        if (editing) {
+            message = NSLocalizedString(@"Sorry, something went wrong editing the comment. Please try again.", @"");
+        } else {
+            message = NSLocalizedString(@"Sorry, something went wrong posting the comment reply. Please try again.", @"");
+        }
+
+        if (error.code == 405) {
+            // XML-RPC is disabled.
+            message = error.localizedDescription;
+        }
+
+        [[NSNotificationCenter defaultCenter]
+         postNotificationName:CommentUploadFailedNotification
+         object:message];
+
+        if(failure) failure(error);
+    };
+
+    if (editing) {
+        [self editCommentWithSuccess:uploadSuccessful failure:uploadFailure];
     } else {
-        [self postCommentWithSuccess:uploadSuccessful failure:failure];
+        [self postCommentWithSuccess:uploadSuccessful failure:uploadFailure];
 	}
 }
 

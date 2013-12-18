@@ -659,7 +659,7 @@ NSString *const WordPressComApiPushAppId = @"org.wordpress.appstore";
             if ([notesData count] > i) {
                 Note *note = [notes objectAtIndex:i];
                 if (![note isDeleted] && [note managedObjectContext]) {
-                    [note updateAttributes:[notesData objectAtIndex:i]];
+                    [note syncAttributes:[notesData objectAtIndex:i]];
                 }
             }
         }
