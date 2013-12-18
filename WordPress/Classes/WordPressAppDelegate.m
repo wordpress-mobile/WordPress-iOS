@@ -33,7 +33,6 @@
 #import "WordPressComApiCredentials.h"
 #import "WPAccount.h"
 
-#import "WPMainTabBarController.h"
 #import "BlogListViewController.h"
 #import "BlogDetailsViewController.h"
 #import "PostsViewController.h"
@@ -358,7 +357,7 @@ NSInteger const IndexForMeTab = 2;
     if ( IS_IPHONE ) {
         tabBarTitleOffset = UIOffsetMake(0, -2);
     }
-    _tabBarController = [[WPMainTabBarController alloc] init];
+    _tabBarController = [[UITabBarController alloc] init];
     _tabBarController.delegate = self;
     _tabBarController.restorationIdentifier = WPTabBarRestorationID;
     [_tabBarController.tabBar setTranslucent:NO];
