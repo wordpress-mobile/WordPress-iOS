@@ -14,6 +14,7 @@
 #import "ThemeDetailsViewController.h"
 #import "Blog.h"
 #import "WPStyleGuide.h"
+#import "WPNoResultsView.h"
 
 static NSString *const ThemeCellIdentifier = @"theme";
 static NSString *const SearchFilterCellIdentifier = @"search_filter";
@@ -29,6 +30,7 @@ static NSString *const SearchFilterCellIdentifier = @"search_filter";
 @property (nonatomic, strong) Theme *currentTheme;
 @property (nonatomic, assign) BOOL isSearching;
 @property (nonatomic, strong) NSFetchedResultsController *resultsController;
+@property (nonatomic, weak) WPNoResultsView *noThemesView;
 
 @end
 
@@ -138,15 +140,15 @@ static NSString *const SearchFilterCellIdentifier = @"search_filter";
 }
 
 - (void)toggleNoThemesView:(BOOL)show {
-#warning WPInfoView no longer exists - use noresultsview
     if (!show) {
-//        [_noThemesView removeFromSuperview];
+        _noThemesView.hidden = YES;
         return;
     }
-//    if (!_noThemesView) {
-//        _noThemesView = [WPInfoView WPInfoViewWithTitle:@"No themes to display" message:nil cancelButton:nil];
-//    }
-//    [self.collectionView addSubview:_noThemesView];
+    if (!_noThemesView) {
+        _noThemesView = [WPNoResultsView noResultsViewWithTitle:NSLocalizedString(@"No themes to display", nil) message:nil accessoryView:nil buttonTitle:nil];
+        [self.collectionView addSubview:_noThemesView];
+    }
+    _noThemesView.hidden = NO;
 }
 
 - (void)removeCurrentThemeFromList {
@@ -224,11 +226,6 @@ static NSString *const SearchFilterCellIdentifier = @"search_filter";
 - (void)didRotateFromInterfaceOrientation:(UIInterfaceOrientation)fromInterfaceOrientation {
     [self.collectionView performBatchUpdates:nil completion:nil];
     [super didRotateFromInterfaceOrientation:fromInterfaceOrientation];
-}
-
-- (void)viewDidLayoutSubviews {
-#warning WPInfoView no longer exists
-//    [_noThemesView centerInSuperview];
 }
 
 #pragma mark - FetchedResultsController
