@@ -255,7 +255,7 @@ CGFloat const WPContentCellDateImageSide = 16.0;
 + (NSAttributedString *)titleAttributedTextForContentProvider:(id<WPContentViewProvider>)contentProvider
 {
     // remove new lines from title
-    NSString *titleText = [[contentProvider titleForDisplay] removeNewLines];
+    NSString *titleText = [contentProvider titleForDisplay];
     return [[NSAttributedString alloc] initWithString:titleText attributes:[self titleAttributes]];
 }
 

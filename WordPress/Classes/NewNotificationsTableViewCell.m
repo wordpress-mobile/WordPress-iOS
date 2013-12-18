@@ -7,6 +7,7 @@
 //
 
 #import "NewNotificationsTableViewCell.h"
+#import "NSString+HTML.h"
 
 @implementation NewNotificationsTableViewCell
 
@@ -24,7 +25,7 @@
 {
     // combine author and title
     NSString *title = [contentProvider titleForDisplay];
-    NSString *content = [[contentProvider contentForDisplay] removeNewLines];
+    NSString *content = [[contentProvider contentForDisplay] stringByNormalizingWhitespace];
     
     NSMutableAttributedString *attributedPostTitle = [[NSMutableAttributedString alloc] initWithString:title attributes:[[self class] titleAttributes]];
     

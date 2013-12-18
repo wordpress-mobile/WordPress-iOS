@@ -19,10 +19,6 @@
     return [self stringByTrimmingCharactersInSet:set];
 }
 
-- (NSString *)removeNewLines {
-    return [self stringByReplacingOccurrencesOfString:@"\n" withString:@" "];
-}
-
 - (NSNumber *)numericValue {
     return [NSNumber numberWithUnsignedLongLong:[self longLongValue]];
 }
