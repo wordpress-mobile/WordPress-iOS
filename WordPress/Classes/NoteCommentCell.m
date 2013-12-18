@@ -53,8 +53,8 @@ const CGFloat NoteCommentCellHeight = 102.f;
     button.titleLabel.textAlignment = NSTextAlignmentLeft;
     button.titleLabel.lineBreakMode = NSLineBreakByTruncatingTail;
     [button setContentHorizontalAlignment:UIControlContentHorizontalAlignmentLeft];
-    [button setTitleColor:WP_LINK_COLOR forState:UIControlStateNormal];
-    [button setTitleColor:[UIColor UIColorFromHex:0x5F5F5F] forState:UIControlStateHighlighted];
+    [button setTitleColor:[WPStyleGuide baseDarkerBlue] forState:UIControlStateNormal];
+    [button setTitleColor:[WPStyleGuide whisperGrey] forState:UIControlStateHighlighted];
     button.backgroundColor = [UIColor whiteColor];
     button.hidden = YES;
 }
@@ -68,7 +68,7 @@ const CGFloat NoteCommentCellHeight = 102.f;
     self.profileButton.backgroundColor = [UIColor whiteColor];
     self.profileButton.hidden = YES;
     self.emailButton.hidden = YES;
-    [self.profileButton setTitleColor:WP_LINK_COLOR forState:UIControlStateNormal];
+    [self.profileButton setTitleColor:[WPStyleGuide baseDarkerBlue] forState:UIControlStateNormal];
     self.textLabel.text = @"";
     self.imageView.hidden = YES;
     self.imageView.frame = CGRectMake(10.f, 10.f, 92.f, 92.f);
@@ -138,10 +138,10 @@ const CGFloat NoteCommentCellHeight = 102.f;
 
 - (void)displayAsParentComment {
     self.parentComment = YES;
-    self.backgroundView.backgroundColor = COMMENT_PARENT_BACKGROUND_COLOR;
-    self.textLabel.backgroundColor = COMMENT_PARENT_BACKGROUND_COLOR;
-    self.profileButton.backgroundColor = COMMENT_PARENT_BACKGROUND_COLOR;
-    self.emailButton.backgroundColor = COMMENT_PARENT_BACKGROUND_COLOR;
+    self.backgroundView.backgroundColor = [WPStyleGuide readGrey];
+    self.textLabel.backgroundColor = [WPStyleGuide readGrey];
+    self.profileButton.backgroundColor = [WPStyleGuide readGrey];
+    self.emailButton.backgroundColor = [WPStyleGuide readGrey];
     [self.profileButton setTitleColor:[UIColor UIColorFromHex:0x287087] forState:UIControlStateNormal];
 }
 

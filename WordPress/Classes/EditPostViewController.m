@@ -273,7 +273,6 @@ CGFloat const EPVCTextViewTopPadding = 7.0f;
         _titleTextField.font = [WPStyleGuide postTitleFont];
         _titleTextField.textColor = [WPStyleGuide darkAsNightGrey];
         _titleTextField.autoresizingMask = UIViewAutoresizingFlexibleWidth;
-        //_titleTextField.placeholder = NSLocalizedString(@"Enter title here", @"Label for the title of the post field. Should be the same as WP core.");
         _titleTextField.attributedPlaceholder = [[NSAttributedString alloc] initWithString:(NSLocalizedString(@"Enter title here", @"Label for the title of the post field. Should be the same as WP core.")) attributes:(@{NSForegroundColorAttributeName: [WPStyleGuide textFieldPlaceholderGrey]})];
         
         _titleTextField.returnKeyType = UIReturnKeyNext;
