@@ -49,12 +49,15 @@
 #endif
 
 int ddLogLevel = LOG_LEVEL_INFO;
-NSInteger const UpdateCheckAlertViewTag = 102;
-NSString * const WPTabBarRestorationID = @"WPTabBarID";
-NSString * const WPBlogListNavigationRestorationID = @"WPBlogListNavigationID";
-NSString * const WPReaderNavigationRestorationID = @"WPReaderNavigationID";
-NSString * const WPNotificationsNavigationRestorationID = @"WPNotificationsNavigationID";
-NSInteger const IndexForMeTab = 2;
+static NSInteger const UpdateCheckAlertViewTag = 102;
+static NSString * const WPTabBarRestorationID = @"WPTabBarID";
+static NSString * const WPBlogListNavigationRestorationID = @"WPBlogListNavigationID";
+static NSString * const WPReaderNavigationRestorationID = @"WPReaderNavigationID";
+static NSString * const WPNotificationsNavigationRestorationID = @"WPNotificationsNavigationID";
+static NSInteger const IndexForMeTab = 2;
+static NSInteger const NotificationNewComment = 1001;
+static NSInteger const NotificationNewSocial = 1002;
+static NSString *const CameraPlusImagesNotification = @"CameraPlusImagesNotification";
 
 @interface WordPressAppDelegate () <UITabBarControllerDelegate, CrashlyticsDelegate, UIAlertViewDelegate, BITHockeyManagerDelegate>
 
@@ -167,7 +170,7 @@ NSInteger const IndexForMeTab = 2;
             UIImage *image = [images image];
             UIImageWriteToSavedPhotosAlbum(image, nil, nil, nil);
             NSDictionary *userInfo = [NSDictionary dictionaryWithObject:image forKey:@"image"];
-            [[NSNotificationCenter defaultCenter] postNotificationName:kCameraPlusImagesNotification object:nil userInfo:userInfo];
+            [[NSNotificationCenter defaultCenter] postNotificationName:CameraPlusImagesNotification object:nil userInfo:userInfo];
         } cancelBlock:^(void) {
             DDLogInfo(@"Camera+ picker canceled");
         }];
@@ -544,11 +547,11 @@ NSInteger const IndexForMeTab = 2;
         if (buttonIndex == 1) {
             [[UIApplication sharedApplication] openURL:[NSURL URLWithString:@"http://itunes.apple.com/us/app/wordpress/id335703880?mt=8&ls=1"]];
         }
-    } else if (alertView.tag == kNotificationNewComment) {
+    } else if (alertView.tag == NotificationNewComment) {
         if (buttonIndex == 1) {
             [self showNotificationsTab];
         }
-    } else if (alertView.tag == kNotificationNewSocial) {
+    } else if (alertView.tag == NotificationNewSocial) {
         if (buttonIndex == 1) {
             [self showNotificationsTab];
         }
