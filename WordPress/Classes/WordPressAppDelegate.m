@@ -284,13 +284,13 @@ static NSString *const CameraPlusImagesNotification = @"CameraPlusImagesNotifica
 }
 
 - (void)application:(UIApplication *)application didReceiveRemoteNotification:(NSDictionary *)userInfo {
-    WPFLogMethod();
+    DDLogMethod();
     
     [NotificationsManager handleNotification:userInfo forState:application.applicationState completionHandler:nil];
 }
 
 - (void)application:(UIApplication *)application didReceiveRemoteNotification:(NSDictionary *)userInfo fetchCompletionHandler:(void (^)(UIBackgroundFetchResult))completionHandler {
-    WPFLogMethod();
+    DDLogMethod();
     
     [NotificationsManager handleNotification:userInfo forState:[UIApplication sharedApplication].applicationState completionHandler:completionHandler];
 }
@@ -717,7 +717,7 @@ static NSString *const CameraPlusImagesNotification = @"CameraPlusImagesNotifica
 
 - (void)crashlytics:(Crashlytics *)crashlytics didDetectCrashDuringPreviousExecution:(id<CLSCrashReport>)crash
 {
-    WPFLogMethod();
+    DDLogMethod();
     NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
     NSInteger crashCount = [defaults integerForKey:@"crashCount"];
     crashCount += 1;

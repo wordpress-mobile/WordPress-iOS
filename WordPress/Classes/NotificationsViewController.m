@@ -100,7 +100,7 @@ NSString * const NotificationsJetpackInformationURL = @"http://jetpack.me/about/
 
 - (void)viewDidLoad
 {
-    WPFLogMethod();
+    DDLogMethod();
     [super viewDidLoad];
     
     [WPStyleGuide configureColorsForView:self.view andTableView:self.tableView];
@@ -109,7 +109,7 @@ NSString * const NotificationsJetpackInformationURL = @"http://jetpack.me/about/
 }
 
 - (void)viewWillAppear:(BOOL)animated {
-    WPFLogMethod();
+    DDLogMethod();
     [super viewWillAppear:animated];
 }
 

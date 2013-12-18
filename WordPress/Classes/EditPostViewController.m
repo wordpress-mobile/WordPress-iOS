@@ -94,7 +94,7 @@ CGFloat const EPVCTextViewTopPadding = 7.0f;
 }
 
 - (void)viewDidLoad {
-    WPFLogMethod();
+    DDLogMethod();
     [super viewDidLoad];
     
     // For the iPhone, let's let the overscroll background color be white to
@@ -151,7 +151,7 @@ CGFloat const EPVCTextViewTopPadding = 7.0f;
 }
 
 - (void)viewWillDisappear:(BOOL)animated {
-    WPFLogMethod();
+    DDLogMethod();
     [super viewWillDisappear:animated];
     [self.navigationController setToolbarHidden:YES animated:YES];
     
@@ -788,7 +788,7 @@ CGFloat const EPVCTextViewTopPadding = 7.0f;
 }
 
 - (void)savePost:(BOOL)upload {
-    WPFLogMethod();
+    DDLogMethod();
     [WPMobileStats trackEventForWPComWithSavedProperties:[self formattedStatEventString:StatsEventPostDetailClosedEditor]];
     
     [self logSavePostStats];
@@ -1190,7 +1190,7 @@ CGFloat const EPVCTextViewTopPadding = 7.0f;
 #pragma mark - WPKeyboardToolbar Delegate Methods
 
 - (void)keyboardToolbarButtonItemPressed:(WPKeyboardToolbarButtonItem *)buttonItem {
-    WPFLogMethod();
+    DDLogMethod();
     [self logWPKeyboardToolbarButtonStat:buttonItem];
     if ([buttonItem.actionTag isEqualToString:@"link"]) {
         [self showLinkView];
@@ -1359,7 +1359,7 @@ CGFloat const EPVCTextViewTopPadding = 7.0f;
 }
 
 - (void)willAnimateRotationToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation duration:(NSTimeInterval)duration {
-    WPFLogMethod();
+    DDLogMethod();
     CGRect frame = _editorToolbar.frame;
     if (UIDeviceOrientationIsLandscape(interfaceOrientation)) {
         if (IS_IPAD) {
@@ -1390,7 +1390,7 @@ CGFloat const EPVCTextViewTopPadding = 7.0f;
 #pragma mark Keyboard management
 
 - (void)keyboardWillShow:(NSNotification *)notification {
-    WPFLogMethod();
+    DDLogMethod();
 	_isShowingKeyboard = YES;
     
     CGRect originalKeyboardFrame = [[[notification userInfo] objectForKey:UIKeyboardFrameEndUserInfoKey] CGRectValue];
@@ -1416,7 +1416,7 @@ CGFloat const EPVCTextViewTopPadding = 7.0f;
 }
 
 - (void)keyboardWillHide:(NSNotification *)notification {
-    WPFLogMethod();
+    DDLogMethod();
 	_isShowingKeyboard = NO;
     [[UIApplication sharedApplication] setStatusBarHidden:NO withAnimation:UIStatusBarAnimationFade];
     [self.navigationController setNavigationBarHidden:NO animated:YES];

@@ -123,7 +123,7 @@
 #pragma mark - UIWebView Delegate Methods
 
 - (void)webView:(UIWebView *)webView didFailLoadWithError:(NSError *)error {
-    WPFLogMethodParam(error);
+    DDLogMethodParam(error);
 	// TODO: Show a nice content can't be displayed message if there is a problem loading or the content is bogus.
 }
 

@@ -214,7 +214,7 @@ NSString *const WordPressComApiPushAppId = @"org.wordpress.appstore";
 }
 
 - (void)signOut {
-    WPFLogMethod();
+    DDLogMethod();
     NSError *error = nil;
 
 //    [NotificationsManager unregisterDeviceToken];

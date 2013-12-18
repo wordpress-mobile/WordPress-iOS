@@ -110,7 +110,7 @@ NSString *const NewCategoryCreatedAndUpdatedInBlogNotification = @"NewCategoryCr
 }
 
 - (void)dismiss {
-    WPFLogMethod();
+    DDLogMethod();
     if (IS_IPAD) {
         [(WPSelectionTableViewController *)self.parentViewController popViewControllerAnimated:YES];
     } else {

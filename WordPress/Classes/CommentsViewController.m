@@ -27,7 +27,7 @@ CGFloat const CommentsStandardOffset = 16.0;
 CGFloat const CommentsSectionHeaderHeight = 24.0;
 
 - (void)dealloc {
-    WPFLogMethod();
+    DDLogMethod();
 	[[NSNotificationCenter defaultCenter] removeObserver:self];
 }
 
@@ -37,7 +37,7 @@ CGFloat const CommentsSectionHeaderHeight = 24.0;
 }
 
 - (void)viewDidLoad {
-    WPFLogMethod();
+    DDLogMethod();
     
     [super viewDidLoad];
     
@@ -56,13 +56,13 @@ CGFloat const CommentsSectionHeaderHeight = 24.0;
 }
 
 - (void)viewWillAppear:(BOOL)animated {
-    WPFLogMethod();
+    DDLogMethod();
 
 	[super viewWillAppear:animated];
 }
 
 - (void)viewWillDisappear:(BOOL)animated {
-    WPFLogMethod();
+    DDLogMethod();
     
     [super viewWillDisappear:animated];    
 }
@@ -85,7 +85,7 @@ CGFloat const CommentsSectionHeaderHeight = 24.0;
 #pragma mark Action Methods
 
 - (void)showCommentAtIndexPath:(NSIndexPath *)indexPath {
-    WPFLogMethodParam(indexPath);
+    DDLogMethodParam(indexPath);
 	Comment *comment;
     if (indexPath) {
         @try {
