@@ -59,8 +59,8 @@
     if ([post.summary length] > 0) {
         NSAttributedString *postSummary = [self summaryAttributedStringForPost:post];
         desiredHeight += [postSummary boundingRectWithSize:CGSizeMake(contentWidth, CGFLOAT_MAX) options:NSStringDrawingUsesLineFragmentOrigin | NSStringDrawingUsesFontLeading context:nil].size.height;
-        desiredHeight += RPVVerticalPadding;
     }
+    desiredHeight += RPVVerticalPadding;
     
     // Tag
     // TODO: reenable tags once a better browsing experience is implemented
@@ -296,8 +296,9 @@
             height = ceil([self.snippetLabel suggestedSizeForWidth:innerContentWidth].height);
             self.snippetLabel.frame = CGRectMake(RPVHorizontalInnerPadding, nextY, innerContentWidth, height);
         }
-        nextY += ceilf(height) + RPVVerticalPadding;
+        nextY += ceilf(height);
     }
+    nextY += RPVVerticalPadding;
     
     // Tag
     // TODO: reenable tags once a better browsing experience is implemented
