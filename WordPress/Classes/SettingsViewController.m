@@ -40,6 +40,7 @@
 #import "WPTableViewSectionHeaderView.h"
 #import "SupportViewController.h"
 #import "ContextManager.h"
+#import "NotificationsManager.h"
 
 typedef enum {
     SettingsSectionWpcom = 0,
@@ -140,7 +141,7 @@ CGFloat const blavatarImageViewSize = 43.f;
 }
 
 - (BOOL)supportsNotifications {
-    return nil != [[NSUserDefaults standardUserDefaults] objectForKey:kApnsDeviceTokenPrefKey];
+    return nil != [[NSUserDefaults standardUserDefaults] objectForKey:NotificationsDeviceToken];
 }
 
 #pragma mark - Table view data source

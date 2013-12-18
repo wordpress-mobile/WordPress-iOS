@@ -1036,7 +1036,7 @@ static NSString *const CameraPlusImagesNotification = @"CameraPlusImagesNotifica
     DDLogInfo(@"OS:        %@ %@", [device systemName], [device systemVersion]);
     DDLogInfo(@"Language:  %@", currentLanguage);
     DDLogInfo(@"UDID:      %@", [device wordpressIdentifier]);
-    DDLogInfo(@"APN token: %@", [[NSUserDefaults standardUserDefaults] objectForKey:kApnsDeviceTokenPrefKey]);
+    DDLogInfo(@"APN token: %@", [[NSUserDefaults standardUserDefaults] objectForKey:NotificationsDeviceToken]);
     DDLogInfo(@"===========================================================================");
 }
 

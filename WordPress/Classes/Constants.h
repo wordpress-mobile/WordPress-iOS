@@ -6,7 +6,6 @@
 //
 
 // Blog archive file name
-#import "DDLog.h"
 
 #define BLOG_ARCHIVE_NAME       WordPress_Blogs
 
@@ -72,7 +71,6 @@
 #define kCameraPlusImagesNotification @"CameraPlusImagesNotification"
 
 #define kPostsDownloadCount @"postsDownloadCount"
-//#define kPagesDownloadCount @"pagesDownloadCount"
 #define kDraftsBlogIdStr @"localDrafts"
 #define kDraftsHostName @"iPhone"
 
@@ -101,7 +99,6 @@
 #define kNotificationTypeAchievement @"ac"
 
 #define kSettingsMuteSoundsKey @"settings_mute_sounds"
-#define kApnsDeviceTokenPrefKey  @"apnsDeviceToken"
 
 
 

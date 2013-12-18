@@ -19,6 +19,7 @@
 #import "WPAccount.h"
 #import "ContextManager.h"
 #import <WPXMLRPCClient.h>
+#import "NotificationsManager.h"
 
 
 static NSString *const WordPressComApiClientEndpointURL = @"https://public-api.wordpress.com/rest/v1/";
@@ -222,7 +223,7 @@ NSString *const WordPressComApiPushAppId = @"org.wordpress.appstore";
     [SFHFKeychainUtils deleteItemForUsername:self.username andServiceName:WPComXMLRPCUrl error:&error];
     
     [WordPressAppDelegate sharedWordPressApplicationDelegate].isWPcomAuthenticated = NO;
-    [[NSUserDefaults standardUserDefaults] removeObjectForKey:kApnsDeviceTokenPrefKey]; //Remove the token from Preferences, otherwise the token is never sent to the server on the next login
+    [[NSUserDefaults standardUserDefaults] removeObjectForKey:NotificationsDeviceToken]; //Remove the token from Preferences, otherwise the token is never sent to the server on the next login
     [SFHFKeychainUtils deleteItemForUsername:self.username andServiceName:WordPressComApiOauthServiceName error:&error];
     [[NSUserDefaults standardUserDefaults] removeObjectForKey:@"wpcom_username_preference"];
     [[NSUserDefaults standardUserDefaults] synchronize];
@@ -413,7 +414,7 @@ NSString *const WordPressComApiPushAppId = @"org.wordpress.appstore";
 - (void)saveNotificationSettings:(void (^)())success
                          failure:(void (^)(NSError *error))failure {
     
-    NSString *token = [[NSUserDefaults standardUserDefaults] objectForKey:kApnsDeviceTokenPrefKey];
+    NSString *token = [[NSUserDefaults standardUserDefaults] objectForKey:NotificationsDeviceToken];
     if( nil == token ) return; //no apns token available
     
     if(![[WordPressComApi sharedApi] hasCredentials])
@@ -480,7 +481,7 @@ NSString *const WordPressComApiPushAppId = @"org.wordpress.appstore";
 }
 
 - (void)fetchNotificationSettings:(void (^)())success failure:(void (^)(NSError *error))failure {
-    NSString *token = [[NSUserDefaults standardUserDefaults] objectForKey:kApnsDeviceTokenPrefKey];
+    NSString *token = [[NSUserDefaults standardUserDefaults] objectForKey:NotificationsDeviceToken];
     if( nil == token ) return; //no apns token available
     
     if(![[WordPressComApi sharedApi] hasCredentials])
@@ -509,7 +510,7 @@ NSString *const WordPressComApiPushAppId = @"org.wordpress.appstore";
 }
 
 - (void)syncPushNotificationInfo {
-    NSString *token = [[NSUserDefaults standardUserDefaults] objectForKey:kApnsDeviceTokenPrefKey];
+    NSString *token = nil;//[[NSUserDefaults standardUserDefaults] objectForKey:NotificationsDeviceToken];
     if ( nil == token ) return; //no apns token available
     
     if (![[WordPressComApi sharedApi] hasCredentials]) {
