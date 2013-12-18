@@ -22,6 +22,10 @@
 #import "WPToast.h"
 #import "IOS7CorrectedTextView.h"
 #import "WPAccount.h"
+#import "NoteCommentPostBanner.h"
+#import "FollowButton.h"
+#import "Note.h"
+#import "InlineComposeView.h"
 
 #define APPROVE_BUTTON_TAG 1
 #define UNAPPROVE_BUTTON_TAG 2
@@ -39,7 +43,7 @@ NS_ENUM(NSUInteger, NotifcationCommentCellType){
     NotificationCommentCellTypeContent
 };
 
-@interface NotificationsCommentDetailViewController () <NoteCommentCellDelegate, NoteCommentContentCellDelegate>
+@interface NotificationsCommentDetailViewController () <NoteCommentCellDelegate, NoteCommentContentCellDelegate, InlineComposeViewDelegate>
 
 @property NSUInteger followBlogID;
 @property NSDictionary *commentActions;
@@ -51,25 +55,48 @@ NS_ENUM(NSUInteger, NotifcationCommentCellType){
 @property NSDictionary *followAction;
 @property NSURL *headerURL;
 @property BOOL hasScrollBackView;
-@property NSCache *contentCache;
+@property (nonatomic, strong) NSCache *contentCache;
+
+@property (nonatomic, strong) UIBarButtonItem *approveBarButton;
+@property (nonatomic, strong) UIBarButtonItem *unapproveBarButton;
+@property (nonatomic, strong) UIBarButtonItem *trashBarButton;
+@property (nonatomic, strong) UIBarButtonItem *spamBarButton;
+@property (nonatomic, weak) UIBarButtonItem *replyBarButton;
+
+@property (nonatomic, weak) IBOutlet UIToolbar *toolbar;
+@property (nonatomic, weak) IBOutlet IOS7CorrectedTextView *replyTextView;
+@property (nonatomic, weak) IBOutlet UIImageView *replyBackgroundImageView;
+@property (nonatomic, weak) IBOutlet UIView *tableFooterView;
+@property (nonatomic, weak) IBOutlet UIView *replyActivityView;
+@property (nonatomic, weak) IBOutlet NoteCommentPostBanner *postBanner;
+@property (nonatomic, weak) IBOutlet UITableView *tableView;
+@property (nonatomic, strong) FollowButton *followButton;
+@property (nonatomic, strong) Note *note;
+@property (nonatomic, weak) IBOutlet UILabel *replyPlaceholder;
+@property (nonatomic, weak) IBOutlet UINavigationBar *replyNavigationBar;
+@property (nonatomic, weak) IBOutlet UINavigationItem *replyNavigationItem;
+@property (nonatomic, weak) IBOutlet UIBarButtonItem *replyCancelBarButton;
+@property (nonatomic, weak) IBOutlet UIBarButtonItem *replyPublishBarButton;
+
+@property (nonatomic, strong) InlineComposeView *inlineComposeView;
 
 @end
 
 @implementation NotificationsCommentDetailViewController
 
-- (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
-{
-    self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
+- (id)initWithNote:(Note *)note {
+    self = [super init];
     if (self) {
         self.title = NSLocalizedString(@"Notification", @"Title for notification detail view");
-        self.hasScrollBackView = NO;
-        self.contentCache = [[NSCache alloc] init];
+        _hasScrollBackView = NO;
+        _note = note;
     }
     return self;
 }
 
-
 - (void)dealloc {
+    self.inlineComposeView.delegate = nil;
+    self.inlineComposeView = nil;
     [[NSNotificationCenter defaultCenter] removeObserver:self];
 }
 
@@ -83,19 +110,25 @@ NS_ENUM(NSUInteger, NotifcationCommentCellType){
                                                           andAction:@selector(moderateComment:)];
     self.unapproveBarButton = [self barButtonItemWithImageNamed:@"icon-comments-unapprove"
                                                     andAction:@selector(moderateComment:)];
-
     self.trashBarButton = [self barButtonItemWithImageNamed:@"icon-comments-trash"
                                                    andAction:@selector(moderateComment:)];
     self.spamBarButton = [self barButtonItemWithImageNamed:@"icon-comments-flag"
                                                  andAction:@selector(moderateComment:)];
     self.replyBarButton = [self barButtonItemWithImageNamed:@"icon-comments-reply"
                                                   andAction:@selector(startReply:)];
+    
+    _approveBarButton.tintColor = [WPStyleGuide readGrey];
+    _unapproveBarButton.tintColor = [WPStyleGuide readGrey];
+    _trashBarButton.tintColor = [WPStyleGuide readGrey];
+    _spamBarButton.tintColor = [WPStyleGuide readGrey];
+    _replyBarButton.tintColor = [WPStyleGuide readGrey];
 
     UIBarButtonItem *spacer = [[UIBarButtonItem alloc]
                                initWithBarButtonSystemItem:UIBarButtonSystemItemFlexibleSpace
                                target:nil
                                action:nil];
     self.toolbar.items = @[self.approveBarButton, spacer, self.trashBarButton, spacer, self.spamBarButton, spacer, self.replyBarButton];
+    
     [self.toolbar setBarTintColor:[WPStyleGuide littleEddieGrey]];
     self.toolbar.translucent = NO;
 
@@ -108,22 +141,7 @@ NS_ENUM(NSUInteger, NotifcationCommentCellType){
     replyFrame.size.height = 48.f;
     
     self.replyBackgroundImageView.image = [[UIImage imageNamed:@"note-reply-field"]
-                                           resizableImageWithCapInsets:UIEdgeInsetsMake(6.f, 6.f, 6.f, 6.f)];
-    
-    self.tableView.tableFooterView = self.tableFooterView;
-    
-    
-    NSNotificationCenter *nc = [NSNotificationCenter defaultCenter];
-    [nc addObserver:self
-           selector:@selector(onShowKeyboard:)
-               name:UIKeyboardWillShowNotification
-             object:nil];
-    
-    [nc addObserver:self
-           selector:@selector(onHideKeyboard:)
-               name:UIKeyboardWillHideNotification
-             object:nil];
-    
+                                           resizableImageWithCapInsets:UIEdgeInsetsMake(6.f, 6.f, 6.f, 6.f)];    
     self.title = NSLocalizedString(@"Comment", @"Title for detail view of a comment notification");
 
     [self displayNote];
@@ -136,10 +154,36 @@ NS_ENUM(NSUInteger, NotifcationCommentCellType){
     CGRect replyBarFrame = self.replyNavigationBar.frame;
     replyBarFrame.size.height += 20;
     self.replyNavigationBar.frame = replyBarFrame;
+
+
+    self.inlineComposeView = [[InlineComposeView alloc] initWithFrame:CGRectZero];
+    self.inlineComposeView.delegate = self;
+    [self.view addSubview:self.inlineComposeView];
+
+    self.replyNavigationItem.title = NSLocalizedString(@"Replying", nil);
+    [self.view addSubview:self.replyNavigationBar];
+    self.replyNavigationBar.hidden = YES;
+
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(onShowKeyboard:)
+                                                 name:UIKeyboardDidShowNotification
+                                               object:nil];
+
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(onHideKeyboard:)
+                                                 name:UIKeyboardWillHideNotification
+                                               object:nil];
+
+}
+
+- (NSCache *)contentCache {
+    if (!_contentCache) {
+        _contentCache = [[NSCache alloc] init];
+    }
+    return _contentCache;
 }
 
 - (void)displayNote {
-        
     // get the note's actions
     NSArray *actions = [self.note.noteData valueForKeyPath:@"body.actions"];
     NSDictionary *action = [actions objectAtIndex:0];
@@ -152,16 +196,15 @@ NS_ENUM(NSUInteger, NotifcationCommentCellType){
     // pull out the follow action and set up the follow button
     self.followAction = [[items lastObject] valueForKeyPath:@"action"];
     if (self.followAction && ![self.followAction isEqual:@0]) {
-        self.followButton = [FollowButton buttonFromAction:self.followAction withApi:self.user];
+        self.followButton = [FollowButton buttonFromAction:self.followAction withApi:[[WPAccount defaultWordPressComAccount] restApi]];
     }
     
     NSString *postPath = [NSString stringWithFormat:@"sites/%@/posts/%@", [action valueForKeyPath:@"params.site_id"], [action valueForKeyPath:@"params.post_id"]];
     
     // if we don't have post information fetch it from the api
     if (self.post == nil) {
-        [self.user getPath:postPath parameters:nil success:^(AFHTTPRequestOperation *operation, id responseObject) {
+        [[[WPAccount defaultWordPressComAccount] restApi] getPath:postPath parameters:nil success:^(AFHTTPRequestOperation *operation, id responseObject) {
             self.post = responseObject;
-            self.disclosureIndicator.hidden = NO;
             NSString *postTitle = [[self.post valueForKeyPath:@"title"] stringByDecodingXMLCharacters];
             if (!postTitle || [postTitle isEqualToString:@""])
                 postTitle = NSLocalizedString(@"Untitled Post", @"Used when a post has no title");
@@ -191,6 +234,7 @@ NS_ENUM(NSUInteger, NotifcationCommentCellType){
     self.replyBarButton.enabled = NO;
     self.unapproveBarButton.enabled = NO;
 
+    __block BOOL isApproved = NO;
     // figure out the actions available for the note
     NSMutableDictionary *indexedActions = [[NSMutableDictionary alloc] initWithCapacity:[actions count]];
     NSMutableDictionary *indexedButtons = [[NSMutableDictionary alloc] initWithCapacity:[actions count]];
@@ -202,11 +246,13 @@ NS_ENUM(NSUInteger, NotifcationCommentCellType){
             self.approveBarButton.enabled = YES;
             self.approveBarButton.customView.tag = APPROVE_BUTTON_TAG;
             self.approveBarButton.tag = APPROVE_BUTTON_TAG;
+            isApproved = NO;
         } else if ([actionType isEqualToString:@"unapprove-comment"]){
             [indexedButtons setObject:self.unapproveBarButton forKey:actionType];
             self.unapproveBarButton.enabled = YES;
             self.unapproveBarButton.customView.tag = UNAPPROVE_BUTTON_TAG;
             self.unapproveBarButton.tag = UNAPPROVE_BUTTON_TAG;
+            isApproved = YES;
         } else if ([actionType isEqualToString:@"spam-comment"]){
             [indexedButtons setObject:self.spamBarButton forKey:actionType];
             self.spamBarButton.enabled = YES;
@@ -233,18 +279,12 @@ NS_ENUM(NSUInteger, NotifcationCommentCellType){
         }
     }];
     
-    NSMutableArray *buttons = [[NSMutableArray alloc] initWithCapacity:4];
-    NSArray *possibleButtons = @[ @"approve-comment", @"unapprove-comment", @"spam-comment", @"unspam-comment", @"trash-comment", @"untrash-comment", @"replyto-comment"];
     UIBarButtonItem *spacer = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFlexibleSpace target:nil action:nil];
-    [possibleButtons enumerateObjectsUsingBlock:^(id obj, NSUInteger idx, BOOL *stop) {
-        id button = [indexedButtons objectForKey:obj];
-        if (button) {
-            if ([buttons count] > 0) {
-                [buttons addObject:spacer];
-            }
-            [buttons addObject:button];
-        }
-    }];
+    
+    NSMutableArray *buttons = [NSMutableArray arrayWithArray:@[self.approveBarButton, spacer, self.trashBarButton, spacer, self.spamBarButton, spacer, self.replyBarButton]];
+    if (isApproved) {
+        [buttons replaceObjectAtIndex:0 withObject:self.unapproveBarButton];
+    }
     
     [self.toolbar setItems:buttons animated:YES];
     
@@ -292,7 +332,7 @@ NS_ENUM(NSUInteger, NotifcationCommentCellType){
 
 - (void)pushToURL:(NSURL *)url {
     if (IS_IPHONE) {
-        [self.replyTextView resignFirstResponder];
+        [self.inlineComposeView resignFirstResponder];
     }
     WPWebViewController *webViewController = [[WPWebViewController alloc] initWithNibName:nil bundle:nil];
     if ([url isWordPressDotComUrl]) {
@@ -366,11 +406,11 @@ NS_ENUM(NSUInteger, NotifcationCommentCellType){
     [spinner startAnimating];
     
     NSString *path = [NSString stringWithFormat:@"/rest/v1%@", [commentAction valueForKeyPath:@"params.rest_path"]];
-    [self.user postPath:path parameters:[commentAction valueForKeyPath:@"params.rest_body"] success:^(AFHTTPRequestOperation *operation, id responseObject) {
+    [[[WPAccount defaultWordPressComAccount] restApi] postPath:path parameters:[commentAction valueForKeyPath:@"params.rest_body"] success:^(AFHTTPRequestOperation *operation, id responseObject) {
         NSDictionary *response = (NSDictionary *)responseObject;
         if (response) {
             NSArray *noteArray = [NSArray arrayWithObject:_note];
-            [[WordPressComApi sharedApi] refreshNotifications:noteArray fields:nil success:^(AFHTTPRequestOperation *operation, id refreshResponseObject) {
+            [[[WPAccount defaultWordPressComAccount] restApi] refreshNotifications:noteArray fields:nil success:^(AFHTTPRequestOperation *operation, id refreshResponseObject) {
                 [spinner stopAnimating];
                 [self displayNote];
             } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
@@ -384,63 +424,43 @@ NS_ENUM(NSUInteger, NotifcationCommentCellType){
     }];
 }
 
-- (void)startReply:(id)sender {
-    [WPMobileStats trackEventForWPCom:StatsEventNotificationsDetailClickedReplyButton];
-    [self.replyTextView becomeFirstResponder];
-}
 
-- (void)cancelReply:(id)sender {
-    [self.replyTextView resignFirstResponder];
-}
-
-- (void)publishReply:(id)sender {
+- (void)publishReply:(NSString *)replyText {
     [WPMobileStats trackEventForWPCom:StatsEventNotificationsDetailRepliedToComment];
-    
+
+
     NSDictionary *action = [self.commentActions objectForKey:@"replyto-comment"];
     if (action){
+
+        self.inlineComposeView.enabled = NO;
+
         self.replyActivityView.hidden = NO;
         NSString *approvePath = [NSString stringWithFormat:@"/rest/v1%@", [action valueForKeyPath:@"params.rest_path"]];
         NSString *replyPath = [NSString stringWithFormat:@"%@/replies/new", approvePath];
-        NSDictionary *params = @{@"content" : self.replyTextView.text };
+        NSDictionary *params = @{@"content" : replyText };
         if ([[action valueForKeyPath:@"params.approve_parent"] isEqualToNumber:@1]) {
-            [self.user postPath:approvePath parameters:@{@"status" : @"approved"} success:^(AFHTTPRequestOperation *operation, id responseObject) {
+            [[[WPAccount defaultWordPressComAccount] restApi] postPath:approvePath parameters:@{@"status" : @"approved"} success:^(AFHTTPRequestOperation *operation, id responseObject) {
                 [self displayNote];
             } failure:nil];
         }
         
         [self.replyTextView resignFirstResponder];
         self.replyTextView.editable = NO;
-        [self.user postPath:replyPath parameters:params success:^(AFHTTPRequestOperation *operation, id responseObject) {
+        [[[WPAccount defaultWordPressComAccount] restApi] postPath:replyPath parameters:params success:^(AFHTTPRequestOperation *operation, id responseObject) {
             DDLogVerbose(@"Response: %@", responseObject);
+            [self.inlineComposeView clearText];
+            self.inlineComposeView.enabled = YES;
+            [self.inlineComposeView dismissComposer];
             [WPToast showToastWithMessage:NSLocalizedString(@"Replied", @"User replied to a comment")
                                  andImage:[UIImage imageNamed:@"action_icon_replied"]];
-            self.replyTextView.editable = YES;
-            self.replyTextView.text = nil;
-            self.replyActivityView.hidden = YES;
-            self.tableView.tableFooterView = self.tableFooterView;
-            [self resetReplyView];
 
         } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
             DDLogError(@"Failure %@", error);
-            self.replyTextView.editable = YES;
-            self.replyActivityView.hidden = YES;
-            
+            self.inlineComposeView.enabled = YES;
+            [self.inlineComposeView displayComposer];
             DDLogVerbose(@"[Rest API] ! %@", [error localizedDescription]);
         }];
     }
-
-}
-
-- (void)resetReplyView {
-    [UIView animateWithDuration:0.2f animations:^{
-        if (![self replyTextViewHasText]) {
-            self.replyPlaceholder.hidden = NO;
-            CGRect tableFooterFrame = self.tableFooterView.frame;
-            tableFooterFrame.size.height = NotificationsCommentDetailViewControllerReplyTextViewDefaultHeight;
-            self.tableFooterView.frame = tableFooterFrame;
-            self.tableView.tableFooterView = self.tableFooterView;
-        }
-    }];
 
 }
 
@@ -452,6 +472,10 @@ NS_ENUM(NSUInteger, NotifcationCommentCellType){
     [_postBanner setBackgroundColor:[UIColor UIColorFromHex:0xF2F2F2]];
 }
 
+- (IBAction)composeReply:(id)sender {
+    [self.inlineComposeView becomeFirstResponder];
+}
+
 #pragma mark - REST API
 
 - (void)updateCommentThread {
@@ -461,7 +485,7 @@ NS_ENUM(NSUInteger, NotifcationCommentCellType){
     if (comment.needsData) {
         NSString *commentPath = [NSString stringWithFormat:@"sites/%@/comments/%@", self.siteID, comment.commentID];
         comment.loading = YES;
-        [self.user getPath:commentPath parameters:nil success:^(AFHTTPRequestOperation *operation, id responseObject) {
+        [[[WPAccount defaultWordPressComAccount] restApi] getPath:commentPath parameters:nil success:^(AFHTTPRequestOperation *operation, id responseObject) {
             NSUInteger section = [self.commentThread indexOfObject:comment];
             NSIndexPath *commentIndexPath = [NSIndexPath indexPathForRow:0 inSection:section];
             CGFloat oldCommentHeight = [self tableView:self.tableView heightForRowAtIndexPath:commentIndexPath];
@@ -528,8 +552,7 @@ NS_ENUM(NSUInteger, NotifcationCommentCellType){
 - (void)performNoteAction:(NSDictionary *)action success:(WordPressComApiRestSuccessFailureBlock)success failure:(WordPressComApiRestSuccessFailureBlock)failure {
     NSDictionary *params = [action objectForKey:@"params"];
     NSString *path = [NSString stringWithFormat:@"sites/%@/comments/%@", [params objectForKey:@"site_id"], [params objectForKey:@"comment_id"]];
-    [self.user postPath:path parameters:[params objectForKey:@"rest_body"] success:success failure:failure];
-    
+    [[[WPAccount defaultWordPressComAccount] restApi] postPath:path parameters:[params objectForKey:@"rest_body"] success:success failure:failure];
 }
 
 #pragma mark - UITableViewDataSource
@@ -722,107 +745,23 @@ NS_ENUM(NSUInteger, NotifcationCommentCellType){
     return content;
 }
 
-- (BOOL)replyTextViewHasText {
-    NSString *text = self.replyTextView.text;
-    return text != nil && ![text isEqualToString:@""];
-}
+#pragma mark - InlineComposeViewDelegate
 
-#pragma mark - UITextViewDelegate
+- (void)composeView:(InlineComposeView *)view didSendText:(NSString *)text {
 
-- (void)textViewDidBeginEditing:(UITextView *)textView {
-    self.replyPlaceholder.hidden = YES;
-}
+    [self publishReply:text];
 
-- (void)textViewDidChange:(UITextView *)textView {
-    self.replyPublishBarButton.enabled = [self replyTextViewHasText];
-}
-
-- (void)textViewDidEndEditing:(UITextView *)textView {
-    self.replyPlaceholder.hidden = [self replyTextViewHasText];
 }
 
 #pragma mark - UIKeyboard notifications
 
 - (void)onShowKeyboard:(NSNotification *)notification {
-    self.navigationController.navigationBarHidden = YES;
-    
-    CGFloat verticalDelta = [self keyboardVerticalOverlapChangeFromNotification:notification];
-    CGFloat maxVerticalSpace = self.view.frame.size.height + verticalDelta;
-    CGRect bannerFrame = self.postBanner.frame;
-    CGRect toolbarFrame = self.toolbar.frame;
-    CGRect tableFrame = self.tableView.frame;
-    CGRect footerFrame = self.tableFooterView.frame;
-    CGRect replyBarFrame = self.replyNavigationBar.frame;
-    
-    [self.view addSubview:self.replyNavigationBar];
-
-    replyBarFrame.origin.y = 0;
-    replyBarFrame.size.width = self.view.frame.size.width;
-    self.replyNavigationBar.frame = replyBarFrame;
-
-    bannerFrame.origin.y = -bannerFrame.size.height;
-    toolbarFrame.origin.y = self.view.bounds.size.height;
-    tableFrame.origin.y = CGRectGetMaxY(replyBarFrame);
-    tableFrame.size.height = maxVerticalSpace - tableFrame.origin.y;
-    footerFrame.size.height = MAX(CGRectGetHeight(tableFrame) * 0.75f, 88.f);
-
-    [UIView animateWithDuration:0.2f animations:^{
-        self.tableFooterView.frame = footerFrame;
-        self.tableView.tableFooterView = self.tableFooterView;
-        self.tableView.frame = tableFrame;
-        self.postBanner.frame = bannerFrame;
-        self.toolbar.frame = toolbarFrame;
-        [self.tableView scrollRectToVisible:self.tableFooterView.frame animated:NO];
-    }];
+    CGRect keyboardRect = [[notification.userInfo objectForKey:UIKeyboardFrameEndUserInfoKey] CGRectValue];
+    self.tableView.contentInset = UIEdgeInsetsMake(0.f, 0.f, CGRectGetHeight(keyboardRect), 0.f);
 }
 
 - (void)onHideKeyboard:(NSNotification *)notification {
-    self.navigationController.navigationBarHidden = NO;
-    
-    // remove the reply bar
-    [self.replyNavigationBar removeFromSuperview];
-    
-    CGRect bannerFrame = self.postBanner.frame;
-    CGRect toolbarFrame = self.toolbar.frame;
-    CGRect tableFrame = self.tableView.frame;
-    
-    bannerFrame.origin.y = 0;
-    toolbarFrame.origin.y = self.view.bounds.size.height - toolbarFrame.size.height;
-    tableFrame.origin.y = CGRectGetMaxY(bannerFrame);
-    tableFrame.size.height = toolbarFrame.origin.y - tableFrame.origin.y;
-
-    [UIView animateWithDuration:0.2f animations:^{
-        if (![self replyTextViewHasText]) {
-            CGRect tableFooterFrame = self.tableFooterView.frame;
-            tableFooterFrame.size.height = NotificationsCommentDetailViewControllerReplyTextViewDefaultHeight;
-            self.tableFooterView.frame = tableFooterFrame;
-            self.tableView.tableFooterView = self.tableFooterView;
-        }
-        self.tableView.frame = tableFrame;
-        self.postBanner.frame = bannerFrame;
-        self.toolbar.frame = toolbarFrame;
-    }];
-}
-
-- (CGFloat)keyboardVerticalOverlapChangeFromNotification:(NSNotification *)notification {
-    CGRect startFrame = [[notification.userInfo objectForKey:UIKeyboardFrameBeginUserInfoKey] CGRectValue];
-    CGRect endFrame = [[notification.userInfo objectForKey:UIKeyboardFrameEndUserInfoKey] CGRectValue];
-    
-    // adjust for any kind of rotation the view has
-    startFrame = [self.view.superview convertRect:startFrame fromView:nil];
-    endFrame = [self.view.superview convertRect:endFrame fromView:nil];
-    
-    // is the current view obscured at all by the start frame
-    CGRect startOverlapRect = CGRectIntersection(self.view.superview.bounds, startFrame);
-    CGRect endOverlapRect = CGRectIntersection(self.view.superview.bounds, endFrame);
-    
-    
-    // is there a change in x?, keyboard is sliding off due to push/pop animation, don't do anything
-    
-    // starting Y overlap
-    CGFloat startVerticalOverlap = startOverlapRect.size.height;
-    CGFloat endVerticalOverlap = endOverlapRect.size.height;
-    return startVerticalOverlap - endVerticalOverlap;
+    self.tableView.contentInset = UIEdgeInsetsMake(0.f, 0.f, 0.f, 0.f);
 }
 
 
