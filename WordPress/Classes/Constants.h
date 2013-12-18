@@ -113,7 +113,6 @@
 #define kMETHOD @"METHOD"
 #define kMETHODARGS @"METHODARGS"
 #define BlavatarLoaded @"BlavatarLoaded"
-#define kCommentsChangedNotificationName @"CommentsChangedNotificationName"
 #define kCameraPlusImagesNotification @"CameraPlusImagesNotification"
 
 #define kPostsDownloadCount @"postsDownloadCount"
