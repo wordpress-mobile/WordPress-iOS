@@ -624,7 +624,6 @@ static CGFloat const ImageSizeLargeHeight = 480.0f;
             if (success) {
                 success();
             }
-            [[NSNotificationCenter defaultCenter] postNotificationName:kCommentsChangedNotificationName object:self];
         } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
 	        DDLogError(@"Error syncing comments (%@): %@", operation.request.URL, error);
             self.isSyncingComments = NO;
@@ -632,7 +631,6 @@ static CGFloat const ImageSizeLargeHeight = 480.0f;
             if (failure) {
                 failure(error);
             }
-            [[NSNotificationCenter defaultCenter] postNotificationName:kCommentsChangedNotificationName object:self];
         }];
     }];
     return operation;

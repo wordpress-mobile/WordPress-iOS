@@ -453,7 +453,6 @@ CGFloat const CommentViewUnapproveButtonTag = 701;
 
 
 - (void)moderateCommentWithSelector:(SEL)selector {
-    Blog *currentBlog = self.comment.blog;
 #pragma clang diagnostic push
 #pragma clang diagnostic ignored "-Warc-performSelector-leaks"
     [self.comment performSelector:selector];
@@ -461,7 +460,6 @@ CGFloat const CommentViewUnapproveButtonTag = 701;
     if (!IS_IPAD) {
         [self.navigationController popViewControllerAnimated:YES];
     }
-    [[NSNotificationCenter defaultCenter] postNotificationName:kCommentsChangedNotificationName object:currentBlog];
 }
 
 - (void)showSyncInProgressAlert {
