@@ -38,28 +38,12 @@
     [super viewDidLoad];
     
     self.title = NSLocalizedString(@"Posts", @"");
-    UIBarButtonItem *composeButtonItem  = nil;
-    
-    if ([self.editButtonItem respondsToSelector:@selector(setTintColor:)]) {
-        composeButtonItem = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"navbar_add"]
-                                                             style:[WPStyleGuide barButtonStyleForBordered]
-                                                             target:self 
-                                                             action:@selector(showAddPostView)];
-    } else {
-        composeButtonItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemAdd 
-                                                                           target:self 
-                                                                           action:@selector(showAddPostView)];
-    }
-    if ([composeButtonItem respondsToSelector:@selector(setTintColor:)]) {
-        composeButtonItem.tintColor = [UIColor UIColorFromHex:0x333333];
-    }
-    if (IS_IOS7) {
-        UIImage *image = [UIImage imageNamed:@"icon-posts-add"];
-        UIButton *button = [[UIButton alloc] initWithFrame:CGRectMake(0, 0, image.size.width, image.size.height)];
-        [button setImage:image forState:UIControlStateNormal];
-        [button addTarget:self action:@selector(showAddPostView) forControlEvents:UIControlEventTouchUpInside];
-        composeButtonItem = [[UIBarButtonItem alloc] initWithCustomView:button];
-    }
+
+    UIImage *image = [UIImage imageNamed:@"icon-posts-add"];
+    UIButton *button = [[UIButton alloc] initWithFrame:CGRectMake(0, 0, image.size.width, image.size.height)];
+    [button setImage:image forState:UIControlStateNormal];
+    [button addTarget:self action:@selector(showAddPostView) forControlEvents:UIControlEventTouchUpInside];
+    UIBarButtonItem *composeButtonItem = [[UIBarButtonItem alloc] initWithCustomView:button];
 
     [WPStyleGuide setRightBarButtonItemWithCorrectSpacing:composeButtonItem forNavigationItem:self.navigationItem];
     
@@ -158,7 +142,7 @@
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
     AbstractPost *post = [self.resultsController objectAtIndexPath:indexPath];
-    return [NewPostTableViewCell rowHeightForPost:post andWidth:CGRectGetWidth(self.tableView.bounds)];
+    return [NewPostTableViewCell rowHeightForPost:post andWidth:WPTableViewFixedWidth];
 }
 
 - (BOOL)tableView:(UITableView *)tableView canEditRowAtIndexPath:(NSIndexPath *)indexPath {
@@ -206,7 +190,9 @@
 
 - (void)editPost:(AbstractPost *)apost {
     EditPostViewController *editPostViewController = [[EditPostViewController alloc] initWithPost:apost];
+    editPostViewController.editorOpenedBy = StatsPropertyPostDetailEditorOpenedOpenedByPostsView;
     UINavigationController *navController = [[UINavigationController alloc] initWithRootViewController:editPostViewController];
+    [navController setToolbarHidden:NO]; // Fixes incorrect toolbar animation.
     navController.modalPresentationStyle = UIModalPresentationCurrentContext;
     [self.view.window.rootViewController presentViewController:navController animated:YES completion:nil];
 }
@@ -246,13 +232,18 @@
     return @"remoteStatusNumber";
 }
 
-- (void)syncItemsViaUserInteractionWithSuccess:(void (^)())success failure:(void (^)(NSError *))failure {
-    // If triggered by a pull to refresh, sync categories, post formats, ...
-    [self.blog syncBlogPostsWithSuccess:success failure:failure];
-}
-
-- (void)syncItemsWithSuccess:(void (^)())success failure:(void (^)(NSError *))failure {
-    [self.blog syncPostsWithSuccess:success failure:failure loadMore:NO];
+- (void)syncItemsViaUserInteraction:(BOOL)userInteraction success:(void (^)())success failure:(void (^)(NSError *))failure {
+    if (userInteraction) {
+        // If triggered by a pull to refresh, sync posts and metadata
+        [self.blog syncPostsAndMetadataWithSuccess:success failure:failure];
+    } else {
+        // If blog has no posts, then sync posts including metadata
+        if (self.blog.posts.count == 0) {
+            [self.blog syncPostsAndMetadataWithSuccess:success failure:failure];
+        } else {
+            [self.blog syncPostsWithSuccess:success failure:failure loadMore:NO];
+        }
+    }
 }
 
 - (Class)cellClass {

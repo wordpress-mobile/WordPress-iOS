@@ -229,9 +229,7 @@ typedef NS_ENUM(NSInteger, SettingsViewControllerSections)
         [mailComposeViewController addAttachmentData:logData mimeType:@"text/plain" fileName:@"current_log.txt"];
     }
     
-    if (IS_IOS7) {
-        mailComposeViewController.modalPresentationCapturesStatusBarAppearance = NO;
-    }
+    mailComposeViewController.modalPresentationCapturesStatusBarAppearance = NO;
 
     return mailComposeViewController;
 }

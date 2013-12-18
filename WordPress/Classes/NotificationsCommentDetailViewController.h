@@ -7,56 +7,11 @@
 //
 
 #import <UIKit/UIKit.h>
-#import "Note.h"
-#import "WordPressComApi.h"
-#import "NoteCommentPostBanner.h"
-#import "FollowButton.h"
 
-@class IOS7CorrectedTextView;
+@class IOS7CorrectedTextView, Note;
 
 @interface NotificationsCommentDetailViewController : UIViewController <UITableViewDataSource, UITableViewDelegate, UITextViewDelegate>
 
-@property (nonatomic, strong) WordPressComApi *user;
-
-@property (nonatomic, strong) IBOutlet UILabel *authorLabel;
-
-@property (nonatomic, strong) IBOutlet UIToolbar *toolbar;
-
-@property (nonatomic, strong) IBOutlet UIBarButtonItem *approveBarButton;
-@property (nonatomic, strong) IBOutlet UIBarButtonItem *unapproveBarButton;
-@property (nonatomic, strong) IBOutlet UIBarButtonItem *trashBarButton;
-@property (nonatomic, strong) IBOutlet UIBarButtonItem *spamBarButton;
-@property (nonatomic, strong) IBOutlet UIBarButtonItem *replyBarButton;
-
-@property (nonatomic, strong) IBOutlet IOS7CorrectedTextView *replyTextView;
-@property (nonatomic, strong) IBOutlet UIImageView *replyBackgroundImageView;
-@property (nonatomic, strong) IBOutlet UIView *tableFooterView;
-@property (nonatomic, strong) IBOutlet UIView *replyActivityView;
-@property (nonatomic, strong) IBOutlet UIImageView *noteImageView;
-
-@property (nonatomic, strong) IBOutlet NoteCommentPostBanner *postBanner;
-@property (nonatomic, strong) IBOutlet UITableViewCell *disclosureIndicator;
-
-@property (nonatomic, strong) IBOutlet UITableView *tableView;
-
-@property (nonatomic, strong) FollowButton *followButton;
-
-@property (nonatomic, strong) Note *note;
-
-@property (nonatomic, strong) IBOutlet UILabel *replyPlaceholder;
-@property (nonatomic, strong) IBOutlet UINavigationBar *replyNavigationBar;
-@property (nonatomic, strong) IBOutlet UINavigationItem *replyNavigationItem;
-@property (nonatomic, strong) IBOutlet UIBarButtonItem *replyCancelBarButton;
-@property (nonatomic, strong) IBOutlet UIBarButtonItem *replyPublishBarButton;
-
-- (IBAction)moderateComment:(id)sender;
-- (IBAction)cancelReply:(id)sender;
-- (IBAction)publishReply:(id)sender;
-- (IBAction)startReply:(id)sender;
-- (IBAction)highlightHeader:(id)sender;
-- (IBAction)resetHeader:(id)sender;
-
-- (IBAction)visitPostURL:(id)sender;
-- (void)displayNote;
+- (id)initWithNote:(Note *)note;
 
 @end

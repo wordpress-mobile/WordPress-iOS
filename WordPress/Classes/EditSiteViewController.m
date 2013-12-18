@@ -106,6 +106,7 @@ static NSString *const JetpackConnectedCellIdentifier = @"JetpackConnectedCellId
     [self.tableView registerClass:[UITableViewTextFieldCell class] forCellReuseIdentifier:TextFieldCellIdentifier];
     [self.tableView registerClass:[WPTableViewCell class] forCellReuseIdentifier:GeotaggingCellIdentifier];
     [self.tableView registerClass:[WPTableViewCell class] forCellReuseIdentifier:PushNotificationsCellIdentifier];
+    [self.tableView registerClass:[WPTableViewCell class] forCellReuseIdentifier:JetpackConnectedCellIdentifier];
 }
 
 - (void)viewDidAppear:(BOOL)animated {
@@ -256,9 +257,7 @@ static NSString *const JetpackConnectedCellIdentifier = @"JetpackConnectedCellId
         }
 	} else if (indexPath.section == 2) {
         UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:JetpackConnectedCellIdentifier];
-        if (!cell) {
-            cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleValue1 reuseIdentifier:JetpackConnectedCellIdentifier];
-        }
+
         cell.textLabel.text = NSLocalizedString(@"Configure", @"");
         if (self.blog.jetpackUsername) {
             cell.detailTextLabel.text = [NSString stringWithFormat:NSLocalizedString(@"Connected as %@", @"Connected to jetpack as the specified usernaem"), self.blog.jetpackUsername];

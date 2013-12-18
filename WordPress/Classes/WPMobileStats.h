@@ -87,13 +87,10 @@ extern NSString *const StatsPropertyPostDetailClickedAddPhoto;
 extern NSString *const StatsPropertyPostDetailClickedShowCategories;
 extern NSString *const StatsEventPostDetailClickedKeyboardToolbarBoldButton;
 extern NSString *const StatsEventPostDetailClickedKeyboardToolbarItalicButton;
+extern NSString *const StatsEventPostDetailClickedKeyboardToolbarUnderlineButton;
 extern NSString *const StatsEventPostDetailClickedKeyboardToolbarLinkButton;
 extern NSString *const StatsEventPostDetailClickedKeyboardToolbarBlockquoteButton;
 extern NSString *const StatsEventPostDetailClickedKeyboardToolbarDelButton;
-extern NSString *const StatsEventPostDetailClickedKeyboardToolbarUnorderedListButton;
-extern NSString *const StatsEventPostDetailClickedKeyboardToolbarOrderedListButton;
-extern NSString *const StatsEventPostDetailClickedKeyboardToolbarListItemButton;
-extern NSString *const StatsEventPostDetailClickedKeyboardToolbarCodeButton;
 extern NSString *const StatsEventPostDetailClickedKeyboardToolbarMoreButton;
 extern NSString *const StatsEventPostDetailAddedPhoto;
 extern NSString *const StatsEventPostDetailRemovedPhoto;
@@ -103,6 +100,11 @@ extern NSString *const StatsEventPostDetailClickedUpdate;
 extern NSString *const StatsEventPostDetailClickedPublish;
 extern NSString *const StatsEventPostDetailOpenedEditor;
 extern NSString *const StatsEventPostDetailClosedEditor;
+extern NSString *const StatsPropertyPostDetailEditorOpenedBy;
+extern NSString *const StatsPropertyPostDetailEditorOpenedOpenedByPostsView;
+extern NSString *const StatsPropertyPostDetailEditorOpenedOpenedByTabBarButton;
+extern NSString *const StatsPropertyPostDetailClickedBlogSelector;
+extern NSString *const StatsPropertyPostDetailHasExternalKeyboard;
 
 // Post Detail - Settings
 extern NSString *const StatsPropertyPostDetailSettingsClickedStatus;
@@ -186,6 +188,7 @@ extern NSString *const StatsEventNUXFirstWalkthroughUserSkippedConnectingToJetpa
 
 
 // NUX Create Account
+extern NSString *const StatsEventAccountCreationOpenedFromTabBar;
 extern NSString *const StatsEventNUXCreateAccountOpened;
 extern NSString *const StatsEventNUXCreateAccountClickedCancel;
 extern NSString *const StatsEventNUXCreateAccountClickedHelp;
@@ -226,5 +229,6 @@ extern NSString *const StatsEventAddBlogsClickedAddSelected;
 + (void)clearPropertiesForAllEvents;
 + (void)incrementProperty:(NSString *)property forEvent:(NSString *)event;
 + (void)flagProperty:(NSString *)property forEvent:(NSString *)event;
++ (void)unflagProperty:(NSString *)property forEvent:(NSString *)event;
 
 @end

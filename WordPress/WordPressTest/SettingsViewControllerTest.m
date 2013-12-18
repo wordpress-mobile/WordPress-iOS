@@ -12,6 +12,8 @@
 #import "Blog.h"
 #import "Constants.h"
 #import "SettingsViewController.h"
+#import "AsyncTestHelper.h"
+#import "ContextManager.h"
 
 @interface SettingsViewControllerTest : XCTestCase
 
@@ -22,20 +24,24 @@
 - (void)setUp
 {
     [super setUp];
-    // Put setup code here; it will be run once, before the first test case.
-    [[CoreDataTestHelper sharedHelper] registerDefaultContext];
+
+    if ([WPAccount defaultWordPressComAccount]) {
+        ATHStart();
+        [WPAccount removeDefaultWordPressComAccountWithContext:[ContextManager sharedInstance].mainContext];
+        ATHEnd();
+    }
 }
 
 - (void)tearDown
 {
-    // Put teardown code here; it will be run once, after the last test case.
     [super tearDown];
     [[CoreDataTestHelper sharedHelper] reset];
 }
 
 - (void)testWpcomSection
-{
-    [WPAccount removeDefaultWordPressComAccount];
+{    
+    XCTAssertNil([WPAccount defaultWordPressComAccount], @"There should be no default account");
+    
     [[NSUserDefaults standardUserDefaults] removeObjectForKey:kApnsDeviceTokenPrefKey];
     SettingsViewController *controller = [self settingsViewController];
     [self present:controller];
@@ -53,7 +59,10 @@
 
 
     // Sign In
-    WPAccount *account = [WPAccount createOrUpdateWordPressComAccountWithUsername:@"jacksparrow" password:@"piratesobrave" authToken:@"sevenseas"];
+    ATHStart();
+    WPAccount *account = [WPAccount createOrUpdateWordPressComAccountWithUsername:@"jacksparrow" password:@"piratesobrave" authToken:nil context:[ContextManager sharedInstance].mainContext];
+    ATHEnd();
+    
     [WPAccount setDefaultWordPressComAccount:account];
 
     /*
@@ -86,48 +95,48 @@
     cell = [self tableView:table cellForRow:2];
     XCTAssertEqualObjects(@"wpcom-sign-out", cell.accessibilityIdentifier);
 
-    Blog *blog = [account findOrCreateBlogFromDictionary:@{@"url": @"blog1.com"} withContext:account.managedObjectContext];
-    [blog dataSave];
+    ATHStart();
+    Blog *blog = [account findOrCreateBlogFromDictionary:@{@"url": @"blog1.com", @"xmlrpc": @"http://blog1.com/xmlrpc.php"} withContext:account.managedObjectContext];
+    [[ContextManager sharedInstance] saveContext:account.managedObjectContext];
+    ATHEnd();
+    
     [table reloadData];
 
     /*
      Signed In, Notifications enabled, 1 blogs
 
      - Username     jacksparrow
-     - Manage Blogs
      - Manage Notifications
      - Sign Out
      */
-    XCTAssertEqual(4, [table numberOfRowsInSection:0]);
+    XCTAssertEqual(3, [table numberOfRowsInSection:0]);
     cell = [self tableView:table cellForRow:0];
     XCTAssertEqualObjects(@"wpcom-username", cell.accessibilityIdentifier);
     cell = [self tableView:table cellForRow:1];
-    XCTAssertEqualObjects(@"wpcom-manage-blogs", cell.accessibilityIdentifier);
-    cell = [self tableView:table cellForRow:2];
     XCTAssertEqualObjects(@"wpcom-manage-notifications", cell.accessibilityIdentifier);
-    cell = [self tableView:table cellForRow:3];
+    cell = [self tableView:table cellForRow:2];
     XCTAssertEqualObjects(@"wpcom-sign-out", cell.accessibilityIdentifier);
     
-    blog = [account findOrCreateBlogFromDictionary:@{@"url": @"blog2.com"} withContext:account.managedObjectContext];
-    [blog dataSave];
+    ATHStart();
+    blog = [account findOrCreateBlogFromDictionary:@{@"url": @"blog2.com", @"xmlrpc": @"http://blog2.com/xmlrpc.php"} withContext:account.managedObjectContext];
+    [[ContextManager sharedInstance] saveContext:account.managedObjectContext];
+    ATHEnd();
+    
     [table reloadData];
 
     /*
      Signed In, Notifications enabled, 2 blogs
 
      - Username     jacksparrow
-     - Manage Blogs
      - Manage Notifications
      - Sign Out
      */
-    XCTAssertEqual(4, [table numberOfRowsInSection:0]);
+    XCTAssertEqual(3, [table numberOfRowsInSection:0]);
     cell = [self tableView:table cellForRow:0];
     XCTAssertEqualObjects(@"wpcom-username", cell.accessibilityIdentifier);
     cell = [self tableView:table cellForRow:1];
-    XCTAssertEqualObjects(@"wpcom-manage-blogs", cell.accessibilityIdentifier);
-    cell = [self tableView:table cellForRow:2];
     XCTAssertEqualObjects(@"wpcom-manage-notifications", cell.accessibilityIdentifier);
-    cell = [self tableView:table cellForRow:3];
+    cell = [self tableView:table cellForRow:2];
     XCTAssertEqualObjects(@"wpcom-sign-out", cell.accessibilityIdentifier);
 
     [[NSUserDefaults standardUserDefaults] removeObjectForKey:kApnsDeviceTokenPrefKey];
@@ -137,15 +146,12 @@
      Signed In, Notifications disabled, 2 blogs
 
      - Username     jacksparrow
-     - Manage Blogs
      - Sign Out
      */
-    XCTAssertEqual(3, [table numberOfRowsInSection:0]);
+    XCTAssertEqual(2, [table numberOfRowsInSection:0]);
     cell = [self tableView:table cellForRow:0];
     XCTAssertEqualObjects(@"wpcom-username", cell.accessibilityIdentifier);
     cell = [self tableView:table cellForRow:1];
-    XCTAssertEqualObjects(@"wpcom-manage-blogs", cell.accessibilityIdentifier);
-    cell = [self tableView:table cellForRow:2];
     XCTAssertEqualObjects(@"wpcom-sign-out", cell.accessibilityIdentifier);
 }
 

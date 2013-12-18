@@ -59,15 +59,8 @@
 	titleView.autoresizingMask = UIViewAutoresizingFlexibleBottomMargin | UIViewAutoresizingFlexibleTopMargin;
 	
 	self.titleLabel = [[UILabel alloc] initWithFrame:CGRectMake(0.0f, 0.0f, 200.0f, 18.0f)];
-    if (IS_IOS7) {
-        _titleLabel.font = [WPStyleGuide regularTextFontBold];
-        _titleLabel.textColor = [UIColor whiteColor];
-    } else {
-        _titleLabel.font = [UIFont boldSystemFontOfSize:16.0f];
-        _titleLabel.textColor = [UIColor colorWithRed:70.0f/255.0f green:70.0f/255.0f blue:70.0f/255.0f alpha:1.0f];
-        _titleLabel.shadowColor = [UIColor whiteColor];
-        _titleLabel.shadowOffset = CGSizeMake(0.0f, 1.0f);
-    }
+    _titleLabel.font = [WPStyleGuide regularTextFontBold];
+    _titleLabel.textColor = [UIColor whiteColor];
 	_titleLabel.textAlignment = NSTextAlignmentCenter;
 	_titleLabel.text = self.title;
 	_titleLabel.backgroundColor = [UIColor clearColor];
@@ -75,13 +68,8 @@
 	[titleView addSubview:_titleLabel];
 	
 	UILabel *urlLabel = [[UILabel alloc] initWithFrame:CGRectMake(0.0f, 18.0f, 200.0f, 14.0f)];
-    if (IS_IOS7) {
-        urlLabel.font = [WPStyleGuide subtitleFont];
-        urlLabel.textColor = [UIColor whiteColor];
-    } else {
-        urlLabel.font = [UIFont systemFontOfSize:12.0f];
-        urlLabel.textColor = [UIColor grayColor];
-    }
+    urlLabel.font = [WPStyleGuide subtitleFont];
+    urlLabel.textColor = [UIColor whiteColor];
 	urlLabel.textAlignment = NSTextAlignmentCenter;
 	urlLabel.text = [self.url absoluteString];
 	urlLabel.backgroundColor = [UIColor clearColor];

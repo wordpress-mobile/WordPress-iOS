@@ -111,7 +111,7 @@
 		_textContentView.shouldLayoutCustomSubviews = YES;
 		[self.contentView addSubview:_textContentView];
 		
-		self.dateLabel = [[UILabel alloc] initWithFrame:CGRectMake(width - (10.0f + 30.0f), 10.0f, 30.0f, 20.0f)];
+		self.dateLabel = [[UILabel alloc] initWithFrame:CGRectMake(width - (10.0f + 40.0f), 10.0f, 40.0f, 20.0f)];
 		[_dateLabel setFont:[WPStyleGuide subtitleFont]];
 		_dateLabel.textColor = [WPStyleGuide littleEddieGrey];
 		_dateLabel.textAlignment = NSTextAlignmentRight;

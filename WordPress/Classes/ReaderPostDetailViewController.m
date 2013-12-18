@@ -17,7 +17,6 @@
 #import "WordPressAppDelegate.h"
 #import "ReaderComment.h"
 #import "ReaderCommentTableViewCell.h"
-#import "ReaderCommentFormView.h"
 #import "ReaderReblogFormView.h"
 #import "IOS7CorrectedTextView.h"
 #import "ReaderImageView.h"
@@ -27,6 +26,8 @@
 #import "WPWebViewController.h"
 #import "ContextManager.h"
 #import "WPTableViewController.h"
+#import "InlineComposeView.h"
+#import "ReaderCommentPublisher.h"
 
 NSInteger const ReaderCommentsToSync = 100;
 NSTimeInterval const ReaderPostDetailViewControllerRefreshTimeout = 300; // 5 minutes
@@ -38,13 +39,14 @@ typedef enum {
 } ReaderDetailSection;
 
 
-@interface ReaderPostDetailViewController ()<UIActionSheetDelegate, MFMailComposeViewControllerDelegate, ReaderTextFormDelegate> {
+@interface ReaderPostDetailViewController ()<UIActionSheetDelegate, MFMailComposeViewControllerDelegate, ReaderTextFormDelegate, UIPopoverControllerDelegate, ReaderCommentPublisherDelegate> {
+    UIPopoverController *_popover;
 }
 
 @property (nonatomic, strong) ReaderPostView *postView;
-@property (nonatomic, strong) ReaderCommentFormView *readerCommentFormView;
 @property (nonatomic, strong) ReaderReblogFormView *readerReblogFormView;
 @property (nonatomic, strong) UIImage *featuredImage;
+@property (nonatomic, strong) UIImage *avatarImage;
 @property (nonatomic) BOOL infiniteScrollEnabled;
 @property (nonatomic, strong) UIActivityIndicatorView *activityFooter;
 @property (nonatomic, strong) UIBarButtonItem *commentButton;
@@ -53,14 +55,14 @@ typedef enum {
 @property (nonatomic, strong) UIBarButtonItem *shareButton;
 @property (nonatomic, strong) NSMutableArray *comments;
 @property (nonatomic, strong) NSFetchedResultsController *resultsController;
-@property (nonatomic) BOOL isScrollingCommentIntoView;
-@property (nonatomic) BOOL isShowingCommentForm;
 @property (nonatomic) BOOL isShowingReblogForm;
 @property (nonatomic) BOOL hasMoreContent;
 @property (nonatomic) BOOL loadingMore;
 @property (nonatomic) CGPoint savedScrollOffset;
 @property (nonatomic) CGFloat keyboardOffset;
 @property (nonatomic) BOOL isSyncing;
+@property (nonatomic, strong) InlineComposeView *inlineComposeView;
+@property (nonatomic, strong) ReaderCommentPublisher *commentPublisher;
 
 @end
 
@@ -75,22 +77,26 @@ typedef enum {
     
     self.activityFooter = nil;
 	self.postView = nil;
-	self.readerCommentFormView = nil;
 	self.readerReblogFormView = nil;
 	self.commentButton = nil;
 	self.likeButton = nil;
 	self.reblogButton = nil;
 	self.shareButton = nil;
+
+    self.inlineComposeView = nil;
+    self.commentPublisher.delegate = nil;
+    self.commentPublisher = nil;
 	
     [[NSNotificationCenter defaultCenter] removeObserver:self];
 }
 
-- (id)initWithPost:(ReaderPost *)post featuredImage:(UIImage *)image {
+- (id)initWithPost:(ReaderPost *)post featuredImage:(UIImage *)image avatarImage:(UIImage *)avatarImage {
 	self = [super init];
 	if (self) {
 		_post = post;
 		_comments = [NSMutableArray array];
         _featuredImage = image;
+        _avatarImage = avatarImage;
         _showInlineActionBar = YES;
 	}
 	return self;
@@ -98,7 +104,9 @@ typedef enum {
 
 - (void)viewDidLoad {
 	[super viewDidLoad];
-	
+
+    self.tableView.keyboardDismissMode = UIScrollViewKeyboardDismissModeInteractive;
+
 	if (self.infiniteScrollEnabled) {
         [self enableInfiniteScrolling];
     }
@@ -119,7 +127,17 @@ typedef enum {
     }
 	
 	[self prepareComments];
-	[self showStoredComment];
+
+    self.inlineComposeView = [[InlineComposeView alloc] initWithFrame:CGRectZero];
+
+    // comment composer responds to the inline compose view to publish comments
+    self.commentPublisher = [[ReaderCommentPublisher alloc]
+                             initWithComposer:self.inlineComposeView
+                             andPost:self.post];
+
+    self.commentPublisher.delegate = self;
+    self.tableView.tableHeaderView = self.inlineComposeView;
+
 }
 
 - (void)viewWillAppear:(BOOL)animated {
@@ -140,7 +158,6 @@ typedef enum {
     toolbar.tintColor = [UIColor whiteColor];
     toolbar.translucent = NO;
 
-	[self showStoredComment];
 }
 
 - (void)viewDidAppear:(BOOL)animated {
@@ -152,7 +169,7 @@ typedef enum {
         return;
 	
     NSDate *lastSynced = [self lastSyncDate];
-    if (lastSynced == nil || ABS([lastSynced timeIntervalSinceNow]) > ReaderPostDetailViewControllerRefreshTimeout) {
+    if ((lastSynced == nil || ABS([lastSynced timeIntervalSinceNow]) > ReaderPostDetailViewControllerRefreshTimeout) && _post.isWPCom) {
 		[self syncWithUserInteraction:NO];
     }
     
@@ -165,17 +182,20 @@ typedef enum {
 	if (IS_IPHONE) {
         _savedScrollOffset = self.tableView.contentOffset;
     }
-	
-	[[NSNotificationCenter defaultCenter] removeObserver:self];
+
+    [self.inlineComposeView dismissComposer];
+
+    [[NSNotificationCenter defaultCenter] removeObserver:self name:UIKeyboardWillShowNotification object:nil];
+	[[NSNotificationCenter defaultCenter] removeObserver:self name:UIKeyboardWillHideNotification object:nil];
 }
 
 - (void)didRotateFromInterfaceOrientation:(UIInterfaceOrientation)fromInterfaceOrientation {
 	[super didRotateFromInterfaceOrientation:fromInterfaceOrientation];
 
-	[self.postView updateLayout];
+    [self.postView setNeedsLayout];
 
 	// Make sure a selected comment is visible after rotating.
-	if ([self.tableView indexPathForSelectedRow] != nil && self.isShowingCommentForm) {
+	if ([self.tableView indexPathForSelectedRow] != nil && self.inlineComposeView.isDisplayed) {
 		[self.tableView scrollToNearestSelectedRowAtScrollPosition:UITableViewScrollPositionNone animated:NO];
 	}
 }
@@ -196,6 +216,11 @@ typedef enum {
     self.postView.delegate = self;
     [self.postView configurePost:self.post];
     self.postView.backgroundColor = [UIColor whiteColor];
+    
+    if (self.avatarImage) {
+        [self.postView setAvatar:self.avatarImage];
+    }
+    
     if (self.featuredImage) {
         [self.postView setFeaturedImage: self.featuredImage];
     }
@@ -282,18 +307,8 @@ typedef enum {
 }
 
 - (void)buildForms {
-	CGRect frame = CGRectMake(0.0f, self.tableView.frame.origin.y + self.tableView.bounds.size.height, self.view.bounds.size.width, [ReaderCommentFormView desiredHeight]);
-	self.readerCommentFormView = [[ReaderCommentFormView alloc] initWithFrame:frame];
-	_readerCommentFormView.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleTopMargin;
-	_readerCommentFormView.navigationItem = self.navigationItem;
-	_readerCommentFormView.post = self.post;
-	_readerCommentFormView.delegate = self;
-	
-	if (_isShowingCommentForm) {
-		[self showCommentForm];
-	}
-	
-	frame = CGRectMake(0.0f, self.view.bounds.size.height, self.view.bounds.size.width, [ReaderReblogFormView desiredHeight]);
+
+	CGRect frame = CGRectMake(0.0f, self.view.bounds.size.height, self.view.bounds.size.width, [ReaderReblogFormView desiredHeight]);
 	self.readerReblogFormView = [[ReaderReblogFormView alloc] initWithFrame:frame];
 	_readerReblogFormView.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleTopMargin;
 	_readerReblogFormView.navigationItem = self.navigationItem;
@@ -416,87 +431,28 @@ typedef enum {
             return;
         [WPActivityDefaults trackActivityType:activityType withPrefix:@"ReaderDetail"];
     };
-    [self presentViewController:activityViewController animated:YES completion:nil];
+    if (IS_IPAD) {
+        if (_popover) {
+            [self dismissPopover];
+            return;
+        }
+        _popover = [[UIPopoverController alloc] initWithContentViewController:activityViewController];
+        _popover.delegate = self;
+        [_popover presentPopoverFromBarButtonItem:self.shareButton permittedArrowDirections:UIPopoverArrowDirectionAny animated:YES];
+    } else {
+        [self presentViewController:activityViewController animated:YES completion:nil];
+    }
 }
 
 - (void)handleDismissForm:(id)sender {
-	if (_readerCommentFormView.window != nil) {
-		[self hideCommentForm];
-	} else {
-		[self hideReblogForm];
-	}
+    [self hideReblogForm];
 }
 
 - (BOOL)isReplying {
 	return ([self.tableView indexPathForSelectedRow] != nil) ? YES : NO;
 }
 
-- (void)showStoredComment {
-	NSDictionary *storedComment = [self.post getStoredComment];
-	if (!storedComment) {
-		return;
-	}
-	
-	[_readerCommentFormView setText:[storedComment objectForKey:@"comment"]];
-	
-	NSNumber *commentID = [storedComment objectForKey:@"commentID"];
-	NSInteger cid = [commentID integerValue];
-	
-	if (cid == 0) return;
-
-	NSUInteger idx = [_comments indexOfObjectPassingTest:^BOOL(id obj, NSUInteger idx, BOOL *stop) {
-		ReaderComment *c = (ReaderComment *)obj;
-		if ([c.commentID integerValue] == cid) {
-			return YES;
-		}
-		return NO;
-	}];
-	NSIndexPath *path = [NSIndexPath indexPathForRow:idx inSection:0];
-	[self.tableView selectRowAtIndexPath:path animated:NO scrollPosition:UITableViewScrollPositionNone];
-	_readerCommentFormView.comment = [_comments objectAtIndex:idx];
-}
-
-- (void)showCommentForm {
-	[self hideReblogForm];
-	
-	if (_readerCommentFormView.superview != nil)
-		return;
-		
-	NSIndexPath *path = [self.tableView indexPathForSelectedRow];
-	if (path) {
-		_readerCommentFormView.comment = (ReaderComment *)[self.resultsController objectAtIndexPath:path];
-	}
-	
-	CGFloat formHeight = [ReaderCommentFormView desiredHeight];
-	CGRect tableFrame = self.tableView.frame;
-	tableFrame.size.height = self.tableView.frame.size.height - formHeight;
-	self.tableView.frame = tableFrame;
-	
-	CGFloat y = tableFrame.origin.y + tableFrame.size.height;
-	_readerCommentFormView.frame = CGRectMake(0.0f, y, self.view.bounds.size.width, formHeight);
-	[self.view.superview addSubview:_readerCommentFormView];
-	self.isShowingCommentForm = YES;
-	[_readerCommentFormView.textView becomeFirstResponder];
-}
-
-- (void)hideCommentForm {
-	if (_readerCommentFormView.superview == nil)
-		return;
-	
-	_readerCommentFormView.comment = nil;
-	[self.tableView deselectRowAtIndexPath:[self.tableView indexPathForSelectedRow] animated:NO];
-	
-	CGRect tableFrame = self.tableView.frame;
-	tableFrame.size.height = self.tableView.frame.size.height + _readerCommentFormView.frame.size.height;
-	
-	self.tableView.frame = tableFrame;
-	[_readerCommentFormView removeFromSuperview];
-	self.isShowingCommentForm = NO;
-	[self.view endEditing:YES];
-}
-
 - (void)showReblogForm {
-	[self hideCommentForm];
 
 	if (_readerReblogFormView.superview != nil)
 		return;
@@ -524,8 +480,8 @@ typedef enum {
 	
 	self.tableView.frame = tableFrame;
 	[_readerReblogFormView removeFromSuperview];
-	self.isShowingReblogForm = NO;
 	[self.view endEditing:YES];
+	self.isShowingReblogForm = NO;
 }
 
 - (CGSize)tabBarSize {
@@ -537,7 +493,24 @@ typedef enum {
     return tabBarSize;
 }
 
+- (void)dismissPopover {
+    if (_popover) {
+        [_popover dismissPopoverAnimated:YES];
+        _popover = nil;
+    }
+}
+
+- (void)popoverControllerDidDismissPopover:(UIPopoverController *)popoverController {
+    _popover = nil;
+}
+
 - (void)handleKeyboardDidShow:(NSNotification *)notification {
+
+    // only for handling reblog form now
+    if (!_isShowingReblogForm) {
+        return;
+    }
+
     UIView *view = self.view.superview;
 	CGRect frame = view.frame;
 	CGRect startFrame = [[[notification userInfo] objectForKey:UIKeyboardFrameBeginUserInfoKey] CGRectValue];
@@ -573,6 +546,18 @@ typedef enum {
 }
 
 - (void)handleKeyboardWillHide:(NSNotification *)notification {
+
+    //deselect the selected comment if there is one
+    NSArray *selection = [self.tableView indexPathsForSelectedRows];
+    if ([selection count] > 0) {
+        [self.tableView deselectRowAtIndexPath:[selection objectAtIndex:0] animated:YES];
+    }
+
+    // only modify view when displaying the reblog form
+    if (!_isShowingReblogForm) {
+        return;
+    }
+
     UIView *view = self.view.superview;
 	CGRect frame = view.frame;
 	CGRect keyFrame = [[[notification userInfo] objectForKey:UIKeyboardFrameEndUserInfoKey] CGRectValue];
@@ -644,12 +629,10 @@ typedef enum {
 }
 
 - (void)postView:(ReaderPostView *)postView didReceiveCommentAction:(id)sender {
-	if (_readerCommentFormView.window != nil) {
-		[self hideCommentForm];
-		return;
-	}
-	
-	[self showCommentForm];
+
+    self.commentPublisher.comment = nil;
+    [self.inlineComposeView toggleComposer];
+
 }
 
 - (void)postView:(ReaderPostView *)postView didReceiveLinkAction:(id)sender {
@@ -676,7 +659,6 @@ typedef enum {
 		
 		if (matched) {
             controller = [[WPImageViewController alloc] initWithImage:imageView.image andURL:imageView.linkURL];
-            [self.navigationController presentViewController:controller animated:YES completion:nil];
 		} else {
             controller = [[WPWebViewController alloc] init];
 			[(WPWebViewController *)controller setUrl:((ReaderImageView *)sender).linkURL];
@@ -735,6 +717,21 @@ typedef enum {
     
     [self.navigationController popViewControllerAnimated:YES];
     [[NSNotificationCenter defaultCenter] postNotificationName:ReaderTopicDidChangeNotification object:self];
+}
+
+- (void)postView:(ReaderPostView *)postView didReceiveFeaturedImageAction:(id)sender {
+    UITapGestureRecognizer *gesture = (UITapGestureRecognizer *)sender;
+    UIImageView *imageView = (UIImageView *)gesture.view;
+    WPImageViewController *controller = [[WPImageViewController alloc] initWithImage:imageView.image];
+
+    controller.modalTransitionStyle = UIModalTransitionStyleCrossDissolve;
+    controller.modalPresentationStyle = UIModalPresentationFullScreen;
+    [self.navigationController pushViewController:controller animated:YES];
+}
+
+- (void)postViewDidLoadAllMedia:(ReaderPostView *)postView {
+    [self.postView layoutIfNeeded];
+    [self.tableView reloadData];
 }
 
 
@@ -898,23 +895,26 @@ typedef enum {
 }
 
 - (NSIndexPath *)tableView:(UITableView *)tableView willSelectRowAtIndexPath:(NSIndexPath *)indexPath {
+
+    ReaderComment *comment = [_comments objectAtIndex:indexPath.row];
+
+    // if a row is already selected don't allow selection of another
+    if (self.inlineComposeView.isDisplayed) {
+        if (comment == self.commentPublisher.comment) {
+            [self.inlineComposeView toggleComposer];
+        }
+        return nil;
+    }
+
+    self.commentPublisher.comment = comment;
+
 	if (_readerReblogFormView.window != nil) {
 		[self hideReblogForm];
 		return nil;
 	}
-	
-	if (_readerCommentFormView.window != nil) {
-		UITableViewCell *cell = [tableView cellForRowAtIndexPath:indexPath];
-		if ([cell isSelected]) {
-			[tableView deselectRowAtIndexPath:indexPath animated:NO];
-		}
-		
-		[self hideCommentForm];
-		return nil;
-	}
-	
+
 	if ([self canComment]) {
-		[self showCommentForm];
+		[self.inlineComposeView displayComposer];
 	}
 	
 	return indexPath;
@@ -928,13 +928,20 @@ typedef enum {
 		[self.tableView deselectRowAtIndexPath:indexPath animated:NO];
 		return;
 	}
-	
-	_readerCommentFormView.comment = [_comments objectAtIndex:indexPath.row];
-	if (IS_IPAD) {
-		[self.tableView scrollToRowAtIndexPath:indexPath atScrollPosition:UITableViewScrollPositionBottom animated:YES];
-	} else {
-		[self.tableView scrollToRowAtIndexPath:indexPath atScrollPosition:UITableViewScrollPositionTop animated:YES];
-	}
+
+    [self.tableView scrollToNearestSelectedRowAtScrollPosition:UITableViewRowAnimationTop animated:YES];
+}
+
+- (BOOL)tableView:(UITableView *)tableView shouldHighlightRowAtIndexPath:(NSIndexPath *)indexPath {
+
+    // if we selected the already active comment allow highlight
+    // so we can toggle the inline composer
+    ReaderComment *comment = [_comments objectAtIndex:indexPath.row];
+    if (comment == self.commentPublisher.comment) {
+        return YES;
+    }
+
+    return !self.inlineComposeView.isDisplayed;
 }
 
 - (UITableViewCellEditingStyle)tableView:(UITableView *)tableView editingStyleForRowAtIndexPath:(NSIndexPath *)indexPath {
@@ -973,88 +980,36 @@ typedef enum {
 
 #pragma mark - UIScrollView Delegate Methods
 
-- (void)scrollViewDidScroll:(UIScrollView *)scrollView {
-	if (_isScrollingCommentIntoView){
-		self.isScrollingCommentIntoView = NO;
-	}
-}
-
 - (void)scrollViewDidEndDecelerating:(UIScrollView *)scrollView {
+    NSArray *selectedRows = [self.tableView indexPathsForSelectedRows];
+    [self.tableView deselectRowAtIndexPath:[selectedRows objectAtIndex:0] animated:YES];
+
+    if (self.inlineComposeView.isDisplayed) {
+        [self.inlineComposeView dismissComposer];
+    }
+
 	if (_readerReblogFormView.window) {
 		[self hideReblogForm];
 		return;
 	}
-	
-	NSIndexPath *selectedIndexPath = [self.tableView indexPathForSelectedRow];
-	if (!selectedIndexPath) {
-		[self hideCommentForm];
-	}
-	
-	__block BOOL found = NO;
-	[[self.tableView indexPathsForVisibleRows] enumerateObjectsUsingBlock:^(id obj, NSUInteger idx, BOOL *stop) {
-		NSIndexPath *objPath = (NSIndexPath *)obj;
-		if ([objPath compare:selectedIndexPath] == NSOrderedSame) {
-			found = YES;
-		}
-		*stop = YES;
-	}];
-	
-	if (!found) {
-        [self hideCommentForm];
-    }
+}
+
+#pragma mark - ReaderCommentPublisherDelegate methods
+
+- (void)commentPublisherDidPublishComment:(ReaderCommentPublisher *)composer {
+    [self.inlineComposeView dismissComposer];
+    [self syncWithUserInteraction:NO];
 }
 
 #pragma mark - ReaderTextForm Delegate Methods
 
 - (void)readerTextFormDidCancel:(ReaderTextFormView *)readerTextForm {
-	if ([readerTextForm isEqual:_readerCommentFormView]) {
-		[self hideCommentForm];
-	} else {
-		[self hideReblogForm];
-	}
+    [self hideReblogForm];
 }
 
 - (void)readerTextFormDidSend:(ReaderTextFormView *)readerTextForm {
-	if ([readerTextForm isEqual:_readerCommentFormView]) {
-		[self hideCommentForm];
-		self.post.storedComment = nil;
-		[self prepareComments];
-	} else {
-		[self hideReblogForm];
-	}
+    [self hideReblogForm];
 }
-
-- (void)readerTextFormDidChange:(ReaderTextFormView *)readerTextForm {
-	// If we are replying, and scrolled away from the comment, scroll back to it real quick.
-	if ([readerTextForm isEqual:_readerCommentFormView] && [self isReplying] && !_isScrollingCommentIntoView) {
-		NSIndexPath *path = [self.tableView indexPathForSelectedRow];
-		NSArray *paths = [self.tableView indexPathsForVisibleRows];
-		if ([paths count] > 0 && NSOrderedSame != [path compare:[paths objectAtIndex:0]]) {
-			self.isScrollingCommentIntoView = YES;
-			[self.tableView scrollToRowAtIndexPath:path atScrollPosition:UITableViewScrollPositionTop animated:YES];
-		}
-	}
-}
-
-- (void)readerTextFormDidEndEditing:(ReaderTextFormView *)readerTextForm {
-	if (![readerTextForm isEqual:_readerCommentFormView]) {
-		return;
-	}
-	
-	if ([readerTextForm.text length] > 0) {
-		// Save the text
-		NSNumber *commentID = nil;
-		if ([self isReplying]){
-			ReaderComment *comment = [_comments objectAtIndex:[self.tableView indexPathForSelectedRow].row];
-			commentID = comment.commentID;
-		}
-		[self.post storeComment:commentID comment:[readerTextForm text]];
-	} else {
-		self.post.storedComment = nil;
-	}
-	[self.post save];
-}
-
 
 #pragma mark - Fetched results controller
 

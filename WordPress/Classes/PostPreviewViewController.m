@@ -219,21 +219,11 @@
 #pragma mark Webkit View Delegate Methods
 
 - (void)refreshWebView {
-	BOOL edited = [self.postDetailViewController hasChanges];
+	BOOL edited = [self.apost hasChanges];
     loadingView.hidden = NO;
 
 	if (edited) {
-        BOOL autosave = [self.postDetailViewController autosaveRemoteWithSuccess:^{
-            [self showRealPreview];
-        } failure:^(NSError *error) {
-            DDLogInfo(@"Error autosaving post for preview: %@", error);
-            [self showSimplePreview];
-        }];
-
-        // Couldn't autosave: that means the post is already published, and any edits would be publicly saved
-        if (!autosave) {
-            [self showSimplePreview];
-        }
+        [self showSimplePreview];
 	} else {
 		[self showRealPreview];
 	}
