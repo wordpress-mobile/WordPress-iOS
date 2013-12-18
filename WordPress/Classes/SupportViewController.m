@@ -13,6 +13,9 @@
 #import "WordPressAppDelegate.h"
 #import <DDFileLogger.h>
 
+static NSString *const UserDefaultsFeedbackEnabled = @"wp_feedback_enabled";
+static NSString *const FeedbackCheckUrl = @"http://api.wordpress.org/iphoneapp/feedback-check/1.0/";
+
 @interface SupportViewController ()
 
 @property (nonatomic, assign) BOOL feedbackEnabled;
@@ -28,13 +31,38 @@ typedef NS_ENUM(NSInteger, SettingsViewControllerSections)
     SettingsSectionActivityLog,
 };
 
++ (void)checkIfFeedbackShouldBeEnabled {
+    [[NSUserDefaults standardUserDefaults] registerDefaults:@{UserDefaultsFeedbackEnabled: @YES}];
+    NSURL *url = [NSURL URLWithString:FeedbackCheckUrl];
+    NSURLRequest *request = [[NSURLRequest alloc] initWithURL:url];
+    AFJSONRequestOperation *operation = [AFJSONRequestOperation JSONRequestOperationWithRequest:request success:^(NSURLRequest *request, NSHTTPURLResponse *response, id JSON) {
+        DDLogVerbose(@"Feedback response received: %@", JSON);
+        NSNumber *feedbackEnabled = JSON[@"feedback-enabled"];
+        if (feedbackEnabled == nil) {
+            feedbackEnabled = @YES;
+        }
+        
+        NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
+        [defaults setBool:feedbackEnabled.boolValue forKey:UserDefaultsFeedbackEnabled];
+        [defaults synchronize];
+    } failure:^(NSURLRequest *request, NSHTTPURLResponse *response, NSError *error, id JSON) {
+        DDLogError(@"Error received while checking feedback enabled status: %@", error);
+        
+        // Lets be optimistic and turn on feedback by default if this call doesn't work
+        NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
+        [defaults setBool:YES forKey:UserDefaultsFeedbackEnabled];
+        [defaults synchronize];
+    }];
+    
+    [operation start];
+}
 
 - (id)init
 {
     self = [super initWithStyle:UITableViewStyleGrouped];
     if (self) {
         self.title = NSLocalizedString(@"Support", @"");
-        self.feedbackEnabled = YES;
+        _feedbackEnabled = YES;
     }
 
     return self;
@@ -44,7 +72,7 @@ typedef NS_ENUM(NSInteger, SettingsViewControllerSections)
     [super viewDidLoad];
     
     NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
-    self.feedbackEnabled = [defaults boolForKey:kWPUserDefaultsFeedbackEnabled];
+    self.feedbackEnabled = [defaults boolForKey:UserDefaultsFeedbackEnabled];
     
     [WPStyleGuide configureColorsForView:self.view andTableView:self.tableView];
     
