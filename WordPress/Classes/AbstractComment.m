@@ -8,7 +8,8 @@
 
 #import "AbstractComment.h"
 #import "NSString+XMLExtensions.h"
-
+#import "NSString+HTML.h"
+#import "NSString+Helpers.h"
 
 @implementation AbstractComment
 
@@ -50,7 +51,7 @@
 }
 
 - (NSString *)contentPreviewForDisplay {
-    return [self.content stringByDecodingXMLCharacters];
+    return [[[self.content stringByDecodingXMLCharacters] stringByStrippingHTML] stringByNormalizingWhitespace];
 }
 - (NSURL *)blavatarURLForDisplay {
     return nil;
