@@ -505,6 +505,7 @@ CGFloat const EPVCTextViewTopPadding = 7.0f;
             self.post.blog = blog;
             [[NSUserDefaults standardUserDefaults] setObject:blog.url forKey:EditPostViewControllerLastUsedBlogURL];
             [[NSUserDefaults standardUserDefaults] synchronize];
+            [self syncOptionsIfNecessaryForBlog:blog afterBlogChanged:YES];
         }
         
         [self refreshUIForCurrentPost];
@@ -614,6 +615,26 @@ CGFloat const EPVCTextViewTopPadding = 7.0f;
 }
 
 #pragma mark - Instance Methods
+
+- (void)setEditorOpenedBy:(NSString *)editorOpenedBy {
+    if ([_editorOpenedBy isEqualToString:editorOpenedBy]) {
+        return;
+    }
+    _editorOpenedBy = editorOpenedBy;
+    [self syncOptionsIfNecessaryForBlog:_post.blog afterBlogChanged:NO];
+}
+
+/*
+ Sync the blog if desired info is missing.
+ 
+ Always sync after a blog switch to ensure options are updated. Otherwise, 
+ only sync for new posts when launched from the post tab vs the posts list.
+ */
+- (void)syncOptionsIfNecessaryForBlog:(Blog *)blog afterBlogChanged:(BOOL)blogChanged {
+    if (blogChanged || [self.editorOpenedBy isEqualToString:StatsPropertyPostDetailEditorOpenedOpenedByTabBarButton]) {
+        [blog syncBlogWithSuccess:nil failure:nil];
+    }
+}
 
 - (NSString *)editorTitle {
     NSString *title = @"";
