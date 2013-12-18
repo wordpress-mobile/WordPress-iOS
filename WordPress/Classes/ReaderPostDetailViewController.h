@@ -15,7 +15,7 @@
 @property (nonatomic, strong) ReaderPost *post;
 @property (nonatomic, assign) BOOL showInlineActionBar;
 
-- (id)initWithPost:(ReaderPost *)post featuredImage:(UIImage *)image;
+- (id)initWithPost:(ReaderPost *)post featuredImage:(UIImage *)image avatarImage:(UIImage *)avatarImage;
 - (void)updateFeaturedImage:(UIImage *)image;
 
 @end

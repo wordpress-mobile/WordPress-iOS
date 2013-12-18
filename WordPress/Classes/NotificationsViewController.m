@@ -17,6 +17,7 @@
 #import "NotificationSettingsViewController.h"
 #import "WPAccount.h"
 #import "WPWebViewController.h"
+#import "Note.h"
 
 NSString * const NotificationsLastSyncDateKey = @"NotificationsLastSyncDate";
 NSString * const NotificationsJetpackInformationURL = @"http://jetpack.me/about/";
@@ -205,13 +206,10 @@ NSString * const NotificationsJetpackInformationURL = @"http://jetpack.me/about/
 
         _isPushingViewController = YES;
         if ([note isComment]) {
-            NotificationsCommentDetailViewController *detailViewController = [[NotificationsCommentDetailViewController alloc] initWithNibName:@"NotificationsCommentDetailViewController" bundle:nil];
-            detailViewController.note = note;
-            detailViewController.user = self.user;
+            NotificationsCommentDetailViewController *detailViewController = [[NotificationsCommentDetailViewController alloc] initWithNote:note];
             [self.navigationController pushViewController:detailViewController animated:YES];
         } else {
-            NotificationsFollowDetailViewController *detailViewController = [[NotificationsFollowDetailViewController alloc] initWithNibName:@"NotificationsFollowDetailViewController" bundle:nil];
-            detailViewController.note = note;
+            NotificationsFollowDetailViewController *detailViewController = [[NotificationsFollowDetailViewController alloc] initWithNote:note];
             [self.navigationController pushViewController:detailViewController animated:YES];
         }
     } else {
@@ -277,12 +275,11 @@ NSString * const NotificationsJetpackInformationURL = @"http://jetpack.me/about/
     return self.user != nil;
 }
 
-- (void)syncItemsViaUserInteractionWithSuccess:(void (^)())success failure:(void (^)(NSError *))failure {
-    [self pruneOldNotes];
-    [self syncItemsWithSuccess:success failure:failure];
-}
-
-- (void)syncItemsWithSuccess:(void (^)())success failure:(void (^)(NSError *error))failure {
+- (void)syncItemsViaUserInteraction:(BOOL)userInteraction success:(void (^)())success failure:(void (^)(NSError *error))failure {
+    if (userInteraction) {
+        [self pruneOldNotes];
+    }
+    
     NSNumber *timestamp;
     NSArray *notes = [self.resultsController fetchedObjects];
     if ([notes count] > 0) {

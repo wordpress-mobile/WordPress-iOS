@@ -29,14 +29,15 @@ const CGFloat RPVAuthorPadding = 8.0f;
 const CGFloat RPVHorizontalInnerPadding = 12.0f;
 const CGFloat RPVMetaViewHeight = 48.0f;
 const CGFloat RPVAuthorViewHeight = 32.0f;
-const CGFloat RPVVerticalPadding = 16.0f;
+const CGFloat RPVVerticalPadding = 14.0f;
 const CGFloat RPVAvatarSize = 32.0f;
 const CGFloat RPVBorderHeight = 1.0f;
 const CGFloat RPVSmallButtonLeftPadding = 2; // Follow, tag
 const CGFloat RPVMaxImageHeightPercentage = 0.59f;
 const CGFloat RPVMaxSummaryHeight = 88.0f;
-const CGFloat RPVLineHeightMultiple = 1.15f;
+const CGFloat RPVLineHeightMultiple = 1.10f;
 const CGFloat RPVFollowButtonWidth = 100.0f;
+const CGFloat RPVTitlePaddingBottom = 4.0f;
 
 // Control buttons (Like, Reblog, ...)
 const CGFloat RPVControlButtonHeight = 48.0f;
@@ -62,6 +63,7 @@ const CGFloat RPVControlButtonBorderSize = 0.0f;
 @property (nonatomic, strong) UIView *byView;
 @property (nonatomic, strong) UILabel *bylineLabel;
 @property (nonatomic, strong) UIView *controlView;
+@property (nonatomic, strong) NSTimer *dateRefreshTimer;
 
 @property (nonatomic, assign) BOOL showImage;
 @property (nonatomic, assign) BOOL showFullContent;
@@ -100,17 +102,18 @@ const CGFloat RPVControlButtonBorderSize = 0.0f;
     desiredHeight += RPVVerticalPadding;
     NSAttributedString *postTitle = [self titleAttributedStringForPost:post];
     desiredHeight += [postTitle boundingRectWithSize:CGSizeMake(contentWidth, CGFLOAT_MAX) options:NSStringDrawingUsesLineFragmentOrigin | NSStringDrawingUsesFontLeading context:nil].size.height;
-    desiredHeight += RPVVerticalPadding;
+    desiredHeight += RPVTitlePaddingBottom;
     
     // Post summary
     if ([post.summary length] > 0) {
         NSAttributedString *postSummary = [self summaryAttributedStringForPost:post];
-        desiredHeight += [postSummary boundingRectWithSize:CGSizeMake(contentWidth, RPVMaxSummaryHeight) options:NSStringDrawingUsesLineFragmentOrigin | NSStringDrawingUsesFontLeading context:nil].size.height;
+        desiredHeight += [postSummary boundingRectWithSize:CGSizeMake(contentWidth, CGFLOAT_MAX) options:NSStringDrawingUsesLineFragmentOrigin | NSStringDrawingUsesFontLeading context:nil].size.height;
         desiredHeight += RPVVerticalPadding;
     }
     
     // Tag
-    NSString *tagName = post.primaryTagName;
+    // TODO: reenable tags once a better browsing experience is implemented
+/*    NSString *tagName = post.primaryTagName;
     if ([tagName length] > 0) {
         CGRect tagRect = [tagName boundingRectWithSize:CGSizeMake(contentWidth, CGFLOAT_MAX)
                                                 options:NSStringDrawingUsesLineFragmentOrigin | NSStringDrawingUsesFontLeading
@@ -118,9 +121,10 @@ const CGFloat RPVControlButtonBorderSize = 0.0f;
                                                 context:nil];
         desiredHeight += tagRect.size.height;
     }
+ */
     
-    // Padding above and below the line
-	desiredHeight += RPVVerticalPadding * 2;
+    // Padding below the line
+	desiredHeight += RPVVerticalPadding;
     
 	// Size of the meta view
     desiredHeight += RPVMetaViewHeight;
@@ -153,6 +157,12 @@ const CGFloat RPVControlButtonBorderSize = 0.0f;
     NSMutableAttributedString *attributedSummary = [[NSMutableAttributedString alloc] initWithString:summary
                                                                                           attributes:attributes];
     
+    NSDictionary *moreContentAttributes = @{NSParagraphStyleAttributeName: style,
+                                            NSFontAttributeName: [self moreContentFont],
+                                            NSForegroundColorAttributeName: [WPStyleGuide baseLighterBlue]};
+    NSAttributedString *moreContent = [[NSAttributedString alloc] initWithString:[@"   " stringByAppendingString:NSLocalizedString(@"more", @"")] attributes:moreContentAttributes];
+    [attributedSummary appendAttributedString:moreContent];
+    
     return attributedSummary;
 }
 
@@ -164,6 +174,9 @@ const CGFloat RPVControlButtonBorderSize = 0.0f;
     return [UIFont fontWithName:@"OpenSans" size:14.0f];
 }
 
++ (UIFont *)moreContentFont {
+    return [UIFont fontWithName:@"OpenSans" size:12.0f];
+}
 
 #pragma mark - Lifecycle Methods
 
@@ -184,6 +197,9 @@ const CGFloat RPVControlButtonBorderSize = 0.0f;
 
 		[self buildPostContent];
 		[self buildMetaContent];
+        
+        // Update the relative timestamp once per minute
+        self.dateRefreshTimer = [NSTimer scheduledTimerWithTimeInterval:60.0 target:self selector:@selector(refreshDate:) userInfo:nil repeats:YES];
     }
     return self;
 }
@@ -194,6 +210,9 @@ const CGFloat RPVControlButtonBorderSize = 0.0f;
     _textContentView.delegate = nil;
     _mediaQueue.delegate = nil;
     [_mediaQueue discardQueuedItems];
+
+    [self.dateRefreshTimer invalidate];
+    self.dateRefreshTimer = nil;
 }
 
 - (void)configurePost:(ReaderPost *)post {
@@ -206,8 +225,7 @@ const CGFloat RPVControlButtonBorderSize = 0.0f;
 	_titleLabel.attributedText = [ReaderPostView titleAttributedStringForPost:post];
     
     if (self.showFullContent) {
-        NSString *contentString = [NSString stringWithFormat:@"<p> </p>%@", self.post.content];
-        NSData *data = [contentString dataUsingEncoding:NSUTF8StringEncoding];
+        NSData *data = [self.post.content dataUsingEncoding:NSUTF8StringEncoding];
 		_textContentView.attributedString = [[NSAttributedString alloc] initWithHTMLData:data
                                                                                  options:[WPStyleGuide defaultDTCoreTextOptions]
                                                                       documentAttributes:nil];
@@ -217,8 +235,7 @@ const CGFloat RPVControlButtonBorderSize = 0.0f;
     }
     
     _bylineLabel.text = [post authorString];
-    
-    [_timeButton setTitle:[post.dateCreated shortString] forState:UIControlStateNormal];
+    [self refreshDate:nil];
     
 	self.showImage = NO;
 	self.cellImageView.hidden = YES;
@@ -277,7 +294,7 @@ const CGFloat RPVControlButtonBorderSize = 0.0f;
         _snippetLabel.backgroundColor = [UIColor clearColor];
         _snippetLabel.textColor = [UIColor colorWithHexString:@"333"];
         _snippetLabel.lineBreakMode = NSLineBreakByTruncatingTail;
-        _snippetLabel.numberOfLines = 4;
+        _snippetLabel.numberOfLines = 0;
         contentView = _snippetLabel;
     }
     
@@ -286,6 +303,13 @@ const CGFloat RPVControlButtonBorderSize = 0.0f;
 
 - (void)buildPostContent {
 	self.cellImageView.contentMode = UIViewContentModeScaleAspectFill;
+    
+    // For the full view, allow the featured image to be tapped
+    if (self.showFullContent) {
+        UITapGestureRecognizer *imageTap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(featuredImageAction:)];
+        self.cellImageView.userInteractionEnabled = YES;
+        [self.cellImageView addGestureRecognizer:imageTap];
+    }
 	[self addSubview:self.cellImageView];
     
 	self.titleLabel = [[UILabel alloc] init];
@@ -368,7 +392,7 @@ const CGFloat RPVControlButtonBorderSize = 0.0f;
     
 	self.likeButton = [ReaderButton buttonWithType:UIButtonTypeCustom];
 	_likeButton.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleRightMargin;
-	_likeButton.backgroundColor = [UIColor whiteColor];
+	_likeButton.backgroundColor = [UIColor clearColor];
 	[_likeButton setImage:[UIImage imageNamed:@"reader-postaction-like-blue"] forState:UIControlStateNormal];
 	[_likeButton setImage:[UIImage imageNamed:@"reader-postaction-like-active"] forState:UIControlStateSelected];
     [_likeButton addTarget:self action:@selector(likeAction:) forControlEvents:UIControlEventTouchUpInside];
@@ -376,7 +400,7 @@ const CGFloat RPVControlButtonBorderSize = 0.0f;
 	
 	self.reblogButton = [ReaderButton buttonWithType:UIButtonTypeCustom];
 	_reblogButton.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleLeftMargin;
-	_reblogButton.backgroundColor = [UIColor whiteColor];
+	_reblogButton.backgroundColor = [UIColor clearColor];
 	[_reblogButton setImage:[UIImage imageNamed:@"reader-postaction-reblog-blue"] forState:UIControlStateNormal];
 	[_reblogButton setImage:[UIImage imageNamed:@"reader-postaction-reblog-done"] forState:UIControlStateSelected];
     [_reblogButton addTarget:self action:@selector(reblogAction:) forControlEvents:UIControlEventTouchUpInside];
@@ -384,7 +408,7 @@ const CGFloat RPVControlButtonBorderSize = 0.0f;
     
     self.commentButton = [ReaderButton buttonWithType:UIButtonTypeCustom];
 	_commentButton.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleLeftMargin;
-	_commentButton.backgroundColor = [UIColor whiteColor];
+	_commentButton.backgroundColor = [UIColor clearColor];
 	[_commentButton setImage:[UIImage imageNamed:@"reader-postaction-comment-blue"] forState:UIControlStateNormal];
 	[_commentButton setImage:[UIImage imageNamed:@"reader-postaction-comment-active"] forState:UIControlStateSelected];
     [_commentButton addTarget:self action:@selector(commentAction:) forControlEvents:UIControlEventTouchUpInside];
@@ -438,7 +462,7 @@ const CGFloat RPVControlButtonBorderSize = 0.0f;
     nextY += RPVVerticalPadding;
 	height = ceil([_titleLabel suggestedSizeForWidth:innerContentWidth].height);
 	_titleLabel.frame = CGRectMake(RPVHorizontalInnerPadding, nextY, innerContentWidth, height);
-	nextY += height + RPVVerticalPadding;
+	nextY += height + RPVTitlePaddingBottom;
     
 	// Position the snippet / content
     if ([self.post.summary length] > 0) {
@@ -450,17 +474,16 @@ const CGFloat RPVControlButtonBorderSize = 0.0f;
             textContainerFrame.size.height = height;
             textContainerFrame.origin.y = nextY;
             self.textContentView.frame = textContainerFrame;
-            nextY += textContainerFrame.size.height + RPVVerticalPadding;
         } else {
             height = ceil([_snippetLabel suggestedSizeForWidth:innerContentWidth].height);
-            height = MIN(height, RPVMaxSummaryHeight);
             _snippetLabel.frame = CGRectMake(RPVHorizontalInnerPadding, nextY, innerContentWidth, height);
-            nextY += ceilf(height + RPVVerticalPadding);
         }
+        nextY += ceilf(height) + RPVVerticalPadding;
     }
     
     // Tag
-    if ([self.post.primaryTagName length] > 0) {
+    // TODO: reenable tags once a better browsing experience is implemented
+/*    if ([self.post.primaryTagName length] > 0) {
         height = ceil([_tagButton.titleLabel suggestedSizeForWidth:innerContentWidth].height);
         _tagButton.frame = CGRectMake(RPVHorizontalInnerPadding, nextY, innerContentWidth, height);
         nextY += height + RPVVerticalPadding;
@@ -468,6 +491,7 @@ const CGFloat RPVControlButtonBorderSize = 0.0f;
     } else {
         self.tagButton.hidden = YES;
     }
+ */
     
 	// Position the meta view and its subviews
 	_metaView.frame = CGRectMake(0, nextY, contentWidth, RPVMetaViewHeight);
@@ -497,7 +521,7 @@ const CGFloat RPVControlButtonBorderSize = 0.0f;
     // Update own frame
     CGRect ownFrame = self.frame;
     
-    ownFrame.size.height = nextY + RPVMetaViewHeight + 1;
+    ownFrame.size.height = nextY + RPVMetaViewHeight - 1;
     self.frame = ownFrame;
 }
 
@@ -520,6 +544,13 @@ const CGFloat RPVControlButtonBorderSize = 0.0f;
 
 // Forward the actions to the delegate; do it this way instead of exposing buttons as properties
 // because the view can have dynamically generated buttons (e.g. links)
+
+- (void)featuredImageAction:(id)sender {
+    if ([self.delegate respondsToSelector:@selector(postView:didReceiveFeaturedImageAction:)]) {
+        [self.delegate postView:self didReceiveFeaturedImageAction:sender];
+    }
+}
+
 - (void)followAction:(id)sender {
     if ([self.delegate respondsToSelector:@selector(postView:didReceiveFollowAction:)]) {
         [self.delegate postView:self didReceiveFollowAction:sender];
@@ -621,23 +652,9 @@ const CGFloat RPVControlButtonBorderSize = 0.0f;
         
         // layout might have changed due to image sizes
         [self.textContentView relayoutText];
-        
-        [self updateLayout];
+        [self setNeedsLayout];
     }
 }
-
-- (void)updateLayout {
-	// Size the textContentView
-	CGRect frame = _textContentView.frame;
-	CGFloat height = [_textContentView suggestedFrameSizeToFitEntireStringConstraintedToWidth:frame.size.width].height;
-	frame.size.height = height;
-	_textContentView.frame = frame;
-	
-	frame = self.frame;
-	frame.size.height = height + _textContentView.frame.origin.y + 10.0f; // + bottom padding
-	self.frame = frame;
-}
-
 
 - (BOOL)updateMediaLayout:(ReaderMediaView *)imageView {
     BOOL frameChanged = NO;
@@ -682,6 +699,10 @@ const CGFloat RPVControlButtonBorderSize = 0.0f;
     return frameChanged;
 }
 
+- (void)refreshDate:(NSTimer *)timer {
+    [self.timeButton setTitle:[self.post.date_created_gmt shortString] forState:UIControlStateNormal];
+}
+
 
 #pragma mark ReaderMediaQueueDelegate methods
 
@@ -703,6 +724,8 @@ const CGFloat RPVControlButtonBorderSize = 0.0f;
         [self.textContentView relayoutText];
         [self setNeedsLayout];
     }
+    
+    [self.delegate postViewDidLoadAllMedia:self];
 }
 
 #pragma mark - DTCoreAttributedTextContentView Delegate Methods

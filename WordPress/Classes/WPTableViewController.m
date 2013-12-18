@@ -68,7 +68,7 @@ NSString *const DefaultCellIdentifier = @"DefaultCellIdentifier";
 }
 
 - (id)initWithStyle:(UITableViewStyle)style {
-    self = [super initWithStyle:style];
+    self = [super initWithStyle:UITableViewStyleGrouped];
     
     if (self) {
         self.restorationIdentifier = NSStringFromClass([self class]);
@@ -98,6 +98,13 @@ NSString *const DefaultCellIdentifier = @"DefaultCellIdentifier";
     self.tableView.allowsSelectionDuringEditing = YES;
     [WPStyleGuide configureColorsForView:self.view andTableView:self.tableView];
     [self.tableView registerClass:[self cellClass] forCellReuseIdentifier:DefaultCellIdentifier];
+    
+    if (IS_IPHONE) {
+        // Account for 1 pixel header height
+        UIEdgeInsets tableInset = [self.tableView contentInset];
+        tableInset.top = -1;
+        self.tableView.contentInset = tableInset;
+    }
 
     if (self.infiniteScrollEnabled) {
         [self enableInfiniteScrolling];
@@ -491,7 +498,11 @@ NSString *const DefaultCellIdentifier = @"DefaultCellIdentifier";
             if (self.noResultsView == nil) {
                 self.noResultsView = [self createNoResultsView];
             }
-            [self.tableView addSubviewWithFadeAnimation:self.noResultsView];
+            // only add and animate no results view if it isn't already
+            // in the table view
+            if (![self.noResultsView isDescendantOfView:self.tableView]) {
+                [self.tableView addSubviewWithFadeAnimation:self.noResultsView];
+            }
         }
     }
 }
@@ -537,7 +548,7 @@ NSString *const DefaultCellIdentifier = @"DefaultCellIdentifier";
     }
 
     _isSyncing = YES;
-    [self syncItemsWithSuccess:^{
+    [self syncItemsViaUserInteraction:userInteraction success:^{
         [self hideRefreshHeader];
         _isSyncing = NO;
         [self configureNoResultsView];
@@ -656,13 +667,8 @@ NSString *const DefaultCellIdentifier = @"DefaultCellIdentifier";
     AssertSubclassMethod();
 }
 
-- (void)syncItemsWithSuccess:(void (^)())success failure:(void (^)(NSError *))failure {
+- (void)syncItemsViaUserInteraction:(BOOL)userInteraction success:(void (^)())success failure:(void (^)(NSError *))failure {
     AssertSubclassMethod();
-}
-
-- (void)syncItemsViaUserInteractionWithSuccess:(void (^)())success failure:(void (^)(NSError *error))failure {
-    // By default, sync items the same way. Subclasses can override if they need different behavior.
-    [self syncItemsWithSuccess:success failure:failure];
 }
 
 - (BOOL)isSyncing {
