@@ -82,7 +82,7 @@ CGFloat const JetpackSignInButtonHeight = 41.0;
 }
 
 - (void)viewDidLoad {
-    WPFLogMethod();
+    DDLogMethod();
     [super viewDidLoad];
 
     self.title = NSLocalizedString(@"Jetpack Connect", @"");

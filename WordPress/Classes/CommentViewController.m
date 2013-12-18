@@ -52,7 +52,7 @@ CGFloat const CommentViewApproveButtonTag = 700;
 CGFloat const CommentViewUnapproveButtonTag = 701;
 
 - (void)dealloc {
-    WPFLogMethod();
+    DDLogMethod();
     
     [self.comment removeObserver:self forKeyPath:@"status"];
     if (_reachabilityToken) {
@@ -390,7 +390,7 @@ CGFloat const CommentViewUnapproveButtonTag = 701;
 #pragma mark - Comment Moderation Methods
 
 - (void)deleteComment {
-    WPFLogMethod();
+    DDLogMethod();
     [WPMobileStats trackEventForWPCom:StatsEventCommentDetailDelete];
     [self.comment removeObserver:self forKeyPath:@"status"];
     [self moderateCommentWithSelector:@selector(remove)];
@@ -400,19 +400,19 @@ CGFloat const CommentViewUnapproveButtonTag = 701;
 }
 
 - (void)approveComment {
-    WPFLogMethod();
+    DDLogMethod();
     [WPMobileStats trackEventForWPCom:StatsEventCommentDetailApprove];
     [self moderateCommentWithSelector:@selector(approve)];
 }
 
 - (void)unApproveComment {
-    WPFLogMethod();
+    DDLogMethod();
     [WPMobileStats trackEventForWPCom:StatsEventCommentDetailUnapprove];
     [self moderateCommentWithSelector:@selector(unapprove)];
 }
 
 - (IBAction)spamComment {
-    WPFLogMethodParam(NSStringFromSelector(_cmd));
+    DDLogMethodParam(NSStringFromSelector(_cmd));
     [WPMobileStats trackEventForWPCom:StatsEventCommentDetailFlagAsSpam];
     [self.comment removeObserver:self forKeyPath:@"status"];
     [self moderateCommentWithSelector:@selector(spam)];
@@ -422,7 +422,7 @@ CGFloat const CommentViewUnapproveButtonTag = 701;
 }
 
 - (IBAction)launchEditComment {
-    WPFLogMethod();
+    DDLogMethod();
     [WPMobileStats trackEventForWPCom:StatsEventCommentDetailEditComment];
 	[self showEditCommentViewWithAnimation:YES];
 }

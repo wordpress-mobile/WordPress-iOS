@@ -1907,7 +1907,7 @@ static NSString *const RemoveGeotagCellIdentifier = @"RemoveGeotagCellIdentifier
 }
 
 - (void)populateSelectionsControllerWithCategories:(CGRect)cellFrame {
-    WPFLogMethod();
+    DDLogMethod();
     if (_segmentedTableViewController == nil) {
         _segmentedTableViewController = [[WPSegmentedSelectionTableViewController alloc] init];
     }
@@ -1939,7 +1939,7 @@ static NSString *const RemoveGeotagCellIdentifier = @"RemoveGeotagCellIdentifier
 }
 
 - (IBAction)showAddNewCategoryView:(id)sender {
-    WPFLogMethod();
+    DDLogMethod();
     WPAddCategoryViewController *addCategoryViewController = [[WPAddCategoryViewController alloc] initWithBlog:self.post.blog];
 	if (IS_IPAD) {
         [_segmentedTableViewController pushViewController:addCategoryViewController animated:YES];
@@ -1963,7 +1963,7 @@ static NSString *const RemoveGeotagCellIdentifier = @"RemoveGeotagCellIdentifier
 }
 
 - (void)newCategoryCreatedNotificationReceived:(NSNotification *)notification {
-    WPFLogMethod();
+    DDLogMethod();
     if ([_segmentedTableViewController curContext] == kSelectionsCategoriesContext) {
         _isNewCategory = YES;
         [self populateSelectionsControllerWithCategories:CGRectZero];
