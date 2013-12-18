@@ -319,7 +319,7 @@ NS_ENUM(NSUInteger, NotifcationCommentCellType){
     scrollBackView.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleTopMargin;
     //[self.tableView addSubview:scrollBackView];
     self.tableView.backgroundView = [[UIView alloc] initWithFrame:self.tableView.bounds];
-    self.tableView.backgroundView.backgroundColor = COMMENT_PARENT_BACKGROUND_COLOR;
+    self.tableView.backgroundView.backgroundColor = [WPStyleGuide readGrey];
 }
 
 
