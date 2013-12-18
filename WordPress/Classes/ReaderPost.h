@@ -18,6 +18,11 @@ extern NSString *const ReaderCurrentTopicKey;
 extern NSString *const ReaderTopicsArrayKey;
 extern NSString *const ReaderExtrasArrayKey;
 
+
+extern NSString * const ReaderPostStoredCommentIDKey;
+extern NSString * const ReaderPostStoredCommentTextKey;
+
+
 @interface ReaderPost : BasePost
 
 @property (nonatomic, strong) NSString *authorAvatarURL;
@@ -142,7 +147,6 @@ extern NSString *const ReaderExtrasArrayKey;
 - (void)fetchAvatarWithSize:(CGSize)size success:(void (^)(UIImage *image))success;
 
 - (NSString *)featuredImageForWidth:(NSUInteger)width height:(NSUInteger)height;
-
 
 @end
 

@@ -50,13 +50,13 @@
  
     self.toolbar.translucent = NO;
     self.toolbar.barTintColor = [WPStyleGuide littleEddieGrey];
-    self.toolbar.tintColor = [UIColor whiteColor];
+    self.toolbar.tintColor = [WPStyleGuide readGrey];
     self.leftSpacer.width = 1.0;
     self.rightSpacer.width = -8.0;
 
-    _deleteButton.tintColor = [UIColor whiteColor];
-    _cancelButton.tintColor = _deleteButton.tintColor;
-    _insertButton.tintColor = _deleteButton.tintColor;
+    UIColor *buttonColor = [WPStyleGuide readGrey];
+    _cancelButton.tintColor = buttonColor;
+    _insertButton.tintColor = buttonColor;
 }
 
 - (void)viewWillDisappear:(BOOL)animated {

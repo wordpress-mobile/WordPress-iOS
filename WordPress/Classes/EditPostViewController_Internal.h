@@ -50,4 +50,6 @@ typedef NS_ENUM(NSUInteger, EditPostViewControllerMode) {
 
 @property (nonatomic, strong) NSString *statsPrefix;
 
+- (void)didSaveNewPost;
+
 @end

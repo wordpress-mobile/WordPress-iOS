@@ -14,6 +14,7 @@
 #import "Post.h"
 #import "WPTableViewCell.h"
 #import "BlogSelectorViewController.h"
+#import "WPBlogSelectorButton.h"
 
 NSString *const EditPostViewControllerLastUsedBlogURL = @"EditPostViewControllerLastUsedBlogURL";
 CGFloat const EPVCTextfieldHeight = 44.0f;
@@ -27,6 +28,7 @@ CGFloat const EPVCTextViewTopPadding = 7.0f;
 
 @interface EditPostViewController ()<UIPopoverControllerDelegate>
 
+@property (nonatomic, strong) UIButton *titleBarButton;
 @property (nonatomic, strong) WPAlertView *linkHelperAlertView;
 @property (nonatomic, strong) UIPopoverController *blogSelectorPopover;
 
@@ -125,7 +127,11 @@ CGFloat const EPVCTextViewTopPadding = 7.0f;
 	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(insertMediaBelow:) name:@"ShouldInsertMediaBelow" object:nil];
 	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(removeMedia:) name:@"ShouldRemoveMedia" object:nil];
     
-    [WPMobileStats trackEventForWPCom:[self formattedStatEventString:StatsEventPostDetailOpenedEditor]];
+    if (self.editorOpenedBy) {
+        [WPMobileStats trackEventForWPCom:[self formattedStatEventString:StatsEventPostDetailOpenedEditor] properties:@{StatsPropertyPostDetailEditorOpenedBy : self.editorOpenedBy }];
+    } else {
+        [WPMobileStats trackEventForWPCom:[self formattedStatEventString:StatsEventPostDetailOpenedEditor]];
+    }
 }
 
 - (void)viewWillAppear:(BOOL)animated {
@@ -184,26 +190,15 @@ CGFloat const EPVCTextViewTopPadding = 7.0f;
     if (blogCount <= 1 || self.editMode == EditPostViewControllerModeEditPost) {
         self.navigationItem.title = [self editorTitle];
     } else {
-        UIButton *titleButton;
-        if ([self.navigationItem.titleView isKindOfClass:[UIButton class]]) {
-            titleButton = (UIButton *)self.navigationItem.titleView;
-        } else {
-            titleButton = [UIButton buttonWithType:UIButtonTypeSystem];
-            titleButton.frame = CGRectMake(0, 0, 200, 33);
-            titleButton.titleLabel.numberOfLines = 2;
-            titleButton.titleLabel.textAlignment = NSTextAlignmentCenter;
-            [titleButton addTarget:self action:@selector(showBlogSelector) forControlEvents:UIControlEventTouchUpInside];
-            
-            self.navigationItem.titleView = titleButton;
-        }
-        
+        UIButton *titleButton = self.titleBarButton;
         NSMutableAttributedString *titleText = [[NSMutableAttributedString alloc] initWithString:[NSString stringWithFormat:@"%@\n", [self editorTitle]]
                                                                                       attributes:@{ NSFontAttributeName : [UIFont fontWithName:@"OpenSans-Bold" size:14.0] }];
-        NSMutableAttributedString *titleSubtext = [[NSMutableAttributedString alloc] initWithString:[NSString stringWithFormat:@"%@ %@", self.post.blog.blogName, @"▼"]
+        NSMutableAttributedString *titleSubtext = [[NSMutableAttributedString alloc] initWithString:self.post.blog.blogName
                                                                                          attributes:@{ NSFontAttributeName : [UIFont fontWithName:@"OpenSans" size:10.0] }];
         [titleText appendAttributedString:titleSubtext];
-        
         [titleButton setAttributedTitle:titleText forState:UIControlStateNormal];
+
+        [titleButton sizeToFit];
     }
 }
 
@@ -220,8 +215,8 @@ CGFloat const EPVCTextViewTopPadding = 7.0f;
     UIBarButtonItem *previewButton = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"icon-posts-editor-preview"] style:UIBarButtonItemStylePlain target:self action:@selector(showPreview)];
     UIBarButtonItem *photoButton = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"icon-posts-editor-media"] style:UIBarButtonItemStylePlain target:self action:@selector(showMediaOptions)];
     
-    previewButton.tintColor = [WPStyleGuide itsEverywhereGrey];
-    photoButton.tintColor = [WPStyleGuide itsEverywhereGrey];
+    previewButton.tintColor = [WPStyleGuide readGrey];
+    photoButton.tintColor = [WPStyleGuide readGrey];
     
     UIBarButtonItem *leftFixedSpacer = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFixedSpace target:nil action:nil];
     UIBarButtonItem *rightFixedSpacer = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFixedSpace target:nil action:nil];
@@ -278,8 +273,9 @@ CGFloat const EPVCTextViewTopPadding = 7.0f;
         _titleTextField.font = [WPStyleGuide postTitleFont];
         _titleTextField.textColor = [WPStyleGuide darkAsNightGrey];
         _titleTextField.autoresizingMask = UIViewAutoresizingFlexibleWidth;
-        _titleTextField.placeholder = NSLocalizedString(@"Enter title here", @"Label for the title of the post field. Should be the same as WP core.");
-        _titleTextField.textColor = [WPStyleGuide littleEddieGrey];
+        //_titleTextField.placeholder = NSLocalizedString(@"Enter title here", @"Label for the title of the post field. Should be the same as WP core.");
+        _titleTextField.attributedPlaceholder = [[NSAttributedString alloc] initWithString:(NSLocalizedString(@"Enter title here", @"Label for the title of the post field. Should be the same as WP core.")) attributes:(@{NSForegroundColorAttributeName: [WPStyleGuide textFieldPlaceholderGrey]})];
+        
         _titleTextField.returnKeyType = UIReturnKeyNext;
     }
     [_tableHeaderViewContentView addSubview:_titleTextField];
@@ -289,7 +285,10 @@ CGFloat const EPVCTextViewTopPadding = 7.0f;
     if (!_titleToolbar) {
         frame = CGRectMake(0.0f, 0.0f, CGRectGetWidth(self.view.frame), WPKT_HEIGHT_PORTRAIT);
         self.titleToolbar = [[WPKeyboardToolbarDone alloc] initWithFrame:frame];
-        _titleToolbar.backgroundColor = [WPStyleGuide itsEverywhereGrey];
+        _titleToolbar.backgroundColor = [UIColor UIColorFromHex:(0xdcdfe2)];
+        if (IS_IPAD) {
+            _titleToolbar.backgroundColor = [UIColor UIColorFromHex:(0xcfd2d5)];
+        }
         _titleToolbar.delegate = self;
         _titleTextField.inputAccessoryView = _titleToolbar;
     }
@@ -321,7 +320,7 @@ CGFloat const EPVCTextViewTopPadding = 7.0f;
         _textView.delegate = self;
         _textView.typingAttributes = [WPStyleGuide regularTextAttributes];
         _textView.font = [WPStyleGuide regularTextFont];
-        _textView.textColor = [WPStyleGuide littleEddieGrey];
+        _textView.textColor = [WPStyleGuide darkAsNightGrey];
         _textView.textContainerInset = UIEdgeInsetsMake(0.0f, EPVCTextViewOffset, 0.0f, EPVCTextViewOffset);
     }
     [_tableHeaderViewContentView addSubview:_textView];
@@ -331,7 +330,10 @@ CGFloat const EPVCTextViewTopPadding = 7.0f;
     if (_editorToolbar == nil) {
         frame = CGRectMake(0.0f, 0.0f, CGRectGetWidth(self.view.frame), WPKT_HEIGHT_PORTRAIT);
         self.editorToolbar = [[WPKeyboardToolbarBase alloc] initWithFrame:frame];
-        _editorToolbar.backgroundColor = [WPStyleGuide itsEverywhereGrey];
+        _editorToolbar.backgroundColor = [UIColor UIColorFromHex:(0xdcdfe2)];
+        if (IS_IPAD) {
+            _editorToolbar.backgroundColor = [UIColor UIColorFromHex:(0xcfd2d5)];
+        }
         _editorToolbar.delegate = self;
         _textView.inputAccessoryView = _editorToolbar;
     }
@@ -481,6 +483,8 @@ CGFloat const EPVCTextViewTopPadding = 7.0f;
 #pragma mark - Actions
 
 - (void)showBlogSelector {
+    [WPMobileStats incrementProperty:StatsPropertyPostDetailClickedBlogSelector forEvent:[self formattedStatEventString:StatsEventPostDetailClosedEditor]];
+
     if (IS_IPAD && self.blogSelectorPopover.isPopoverVisible) {
         [self.blogSelectorPopover dismissPopoverAnimated:YES];
         self.blogSelectorPopover = nil;
@@ -493,29 +497,25 @@ CGFloat const EPVCTextViewTopPadding = 7.0f;
             [self dismissViewControllerAnimated:YES completion:nil];
         }
     };
-    
-    void (^selectedCompletion)(NSManagedObjectID *, BOOL) = ^(NSManagedObjectID *selectedObjectID, BOOL finished) {
-        if (finished) {
-            NSManagedObjectContext *context = [[ContextManager sharedInstance] mainContext];
-            Blog *blog = (Blog *)[context objectWithID:selectedObjectID];
-            
-            if (blog) {
-                self.post.blog = blog;
-                [[NSUserDefaults standardUserDefaults] setObject:blog.url forKey:EditPostViewControllerLastUsedBlogURL];
-                [[NSUserDefaults standardUserDefaults] synchronize];
-            }
-            
-            [self refreshUIForCurrentPost];
-            dismissHandler();
+    void (^selectedCompletion)(NSManagedObjectID *) = ^(NSManagedObjectID *selectedObjectID) {
+        NSManagedObjectContext *context = [[ContextManager sharedInstance] mainContext];
+        Blog *blog = (Blog *)[context objectWithID:selectedObjectID];
+        
+        if (blog) {
+            self.post.blog = blog;
+            [[NSUserDefaults standardUserDefaults] setObject:blog.url forKey:EditPostViewControllerLastUsedBlogURL];
+            [[NSUserDefaults standardUserDefaults] synchronize];
+            [self syncOptionsIfNecessaryForBlog:blog afterBlogChanged:YES];
         }
+        
+        [self refreshUIForCurrentPost];
+        dismissHandler();
     };
     
     BlogSelectorViewController *vc = [[BlogSelectorViewController alloc] initWithSelectedBlogObjectID:self.post.blog.objectID
                                                                                    selectedCompletion:selectedCompletion
                                                                                      cancelCompletion:dismissHandler];
-    vc.title = NSLocalizedString(@"My Blogs", @"");
-    UINavigationController *navController = [[UINavigationController alloc] initWithRootViewController:vc];
-    navController.navigationBar.translucent = NO;
+    vc.title = NSLocalizedString(@"Select Blog", @"");
     
     if (IS_IPAD) {
         vc.preferredContentSize = CGSizeMake(320.0, 500);
@@ -523,11 +523,13 @@ CGFloat const EPVCTextViewTopPadding = 7.0f;
         CGRect titleRect = self.navigationItem.titleView.frame;
         titleRect = [self.navigationController.view convertRect:titleRect fromView:self.navigationItem.titleView.superview];
         
-        self.blogSelectorPopover = [[UIPopoverController alloc] initWithContentViewController:navController];
+        self.blogSelectorPopover = [[UIPopoverController alloc] initWithContentViewController:vc];
         self.blogSelectorPopover.backgroundColor = [WPStyleGuide newKidOnTheBlockBlue];
         self.blogSelectorPopover.delegate = self;
         [self.blogSelectorPopover presentPopoverFromRect:titleRect inView:self.navigationController.view permittedArrowDirections:UIPopoverArrowDirectionAny animated:YES];
     } else {
+        UINavigationController *navController = [[UINavigationController alloc] initWithRootViewController:vc];
+        navController.navigationBar.translucent = NO;
         navController.modalPresentationStyle = UIModalPresentationPageSheet;
         navController.modalTransitionStyle = UIModalTransitionStyleCoverVertical;
         
@@ -613,6 +615,26 @@ CGFloat const EPVCTextViewTopPadding = 7.0f;
 }
 
 #pragma mark - Instance Methods
+
+- (void)setEditorOpenedBy:(NSString *)editorOpenedBy {
+    if ([_editorOpenedBy isEqualToString:editorOpenedBy]) {
+        return;
+    }
+    _editorOpenedBy = editorOpenedBy;
+    [self syncOptionsIfNecessaryForBlog:_post.blog afterBlogChanged:NO];
+}
+
+/*
+ Sync the blog if desired info is missing.
+ 
+ Always sync after a blog switch to ensure options are updated. Otherwise, 
+ only sync for new posts when launched from the post tab vs the posts list.
+ */
+- (void)syncOptionsIfNecessaryForBlog:(Blog *)blog afterBlogChanged:(BOOL)blogChanged {
+    if (blogChanged || [self.editorOpenedBy isEqualToString:StatsPropertyPostDetailEditorOpenedOpenedByTabBarButton]) {
+        [blog syncBlogWithSuccess:nil failure:nil];
+    }
+}
 
 - (NSString *)editorTitle {
     NSString *title = @"";
@@ -709,6 +731,27 @@ CGFloat const EPVCTextViewTopPadding = 7.0f;
     [self refreshButtons];
 }
 
+- (UIButton *)titleBarButton {
+    if (_titleBarButton) {
+        return _titleBarButton;
+    }
+    
+    UIButton *titleButton = [WPBlogSelectorButton buttonWithType:UIButtonTypeSystem];
+    titleButton.frame = CGRectMake(0, 0, 200, 33);
+    titleButton.titleLabel.numberOfLines = 2;
+    titleButton.titleLabel.textAlignment = NSTextAlignmentCenter;
+    titleButton.autoresizingMask = UIViewAutoresizingFlexibleLeftMargin | UIViewAutoresizingFlexibleRightMargin | UIViewAutoresizingFlexibleTopMargin | UIViewAutoresizingFlexibleBottomMargin;
+    [titleButton setImage:[UIImage imageNamed:@"icon-navbar-dropdown.png"] forState:UIControlStateNormal];
+    [titleButton addTarget:self action:@selector(showBlogSelector) forControlEvents:UIControlEventTouchUpInside];
+    [titleButton setImageEdgeInsets:UIEdgeInsetsMake(0, 0, 0, 10)];
+    [titleButton setTitleEdgeInsets:UIEdgeInsetsMake(0, 10, 0, 0)];
+
+    _titleBarButton = titleButton;
+    self.navigationItem.titleView = titleButton;
+
+    return _titleBarButton;
+}
+
 # pragma mark - Model State Methods
 
 - (void)discardChangesAndDismiss {
@@ -765,7 +808,15 @@ CGFloat const EPVCTextViewTopPadding = 7.0f;
         }];
     }
     
+    [self didSaveNewPost];
+
     [self dismissEditView];
+}
+
+- (void)didSaveNewPost {
+    if (_editMode == EditPostViewControllerModeNewPost) {
+        [[WordPressAppDelegate sharedWordPressApplicationDelegate] switchTabToPostsListForPost:self.post];
+    }
 }
 
 - (void)logSavePostStats {
@@ -1346,6 +1397,12 @@ CGFloat const EPVCTextViewTopPadding = 7.0f;
     CGRect originalKeyboardFrame = [[[notification userInfo] objectForKey:UIKeyboardFrameEndUserInfoKey] CGRectValue];
     CGRect keyboardFrame = [self.view convertRect:[self.view.window convertRect:originalKeyboardFrame fromWindow:nil] fromView:nil];
     _isExternalKeyboard = keyboardFrame.origin.y > self.view.frame.size.height;
+    
+    if (_isExternalKeyboard) {
+        [WPMobileStats flagProperty:StatsPropertyPostDetailHasExternalKeyboard forEvent:[self formattedStatEventString:StatsEventPostDetailClosedEditor]];
+    } else {
+        [WPMobileStats unflagProperty:StatsPropertyPostDetailHasExternalKeyboard forEvent:[self formattedStatEventString:StatsEventPostDetailClosedEditor]];
+    }
     
     if ([self shouldHideToolbarsWhileTyping]) {
         [[UIApplication sharedApplication] setStatusBarHidden:YES withAnimation:UIStatusBarAnimationFade];
