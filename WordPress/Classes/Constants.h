@@ -146,22 +146,6 @@
 #define kApnsDeviceTokenPrefKey  @"apnsDeviceToken"
 
 
-typedef NS_ENUM(NSUInteger, MediaType) {
-	kImage,
-	kVideo
-};
-
-typedef NS_ENUM(NSUInteger, MediaResize) {
-	kResizeSmall,
-	kResizeMedium,
-	kResizeLarge,
-	kResizeOriginal
-};
-
-typedef NS_ENUM(NSUInteger, MediaOrientation) {
-	kPortrait,
-	kLandscape
-};
 
 typedef NS_ENUM(NSUInteger, EditPageMode) {
 	kNewPage,

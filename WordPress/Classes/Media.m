@@ -325,13 +325,13 @@
     
     CGSize newSize;
     switch (size) {
-        case kResizeSmall:
+        case MediaResizeSmall:
 			newSize = smallSize;
             break;
-        case kResizeMedium:
+        case MediaResizeMedium:
             newSize = mediumSize;
             break;
-        case kResizeLarge:
+        case MediaResizeLarge:
             newSize = largeSize;
             break;
         default:
