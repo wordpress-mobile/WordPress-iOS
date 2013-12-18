@@ -21,23 +21,11 @@
 #define kAppStoreURL			@"http://itunes.apple.com/us/app/wordpress/id335703880?mt=8"
 #define kNotificationAuthURL	@"https://wordpress.com/xmlrpc.php"
 
-#define kMobileReaderFakeLoaderURL		@"https://en.wordpress.com/reader/mobile/v2/loader"
-#define kMobileReaderURL		@"https://en.wordpress.com/reader/mobile/v2/?chrome=no"
-#define kMobileReaderFPURL		@"https://en.wordpress.com/reader/mobile/v2/freshly-pressed"
 #define kMobileReaderDetailURL  @"https://en.wordpress.com/reader/mobile/v2/?template=details"
-#define kMobileReaderTopicsURL  @"https://en.wordpress.com/reader/mobile/v2/?template=topics"
 #define kMobileReaderFFURL      @"https://en.wordpress.com/reader/mobile/v2/?template=friendfinder"
-#define kHybridTokenSetting     @"WPWebAppHybridAuthToken"
-#define kAuthorizedHybridHost   @"en.wordpress.com"
-#define kMobileReaderDetailLegacyURL @"https://en.wordpress.com/wp-admin/admin-ajax.php?action=wpcom_load_mobile&template=details&v=2"
 
 #define kNotificationsURL       @"http://wordpress.com/?no-chrome#!/notifications/"
 
-#define kFacebookAppID                   @"249643311490"
-#define kFacebookLoginNotificationName   @"FacebookLogin"
-#define kFacebookNoLoginNotificationName @"FacebookNoLogin"
-#define kFacebookAccessTokenKey          @"FBAccessTokenKey"
-#define kFacebookExpirationDateKey       @"FBExpirationDateKey"
 
 #define kAccessedAddressBookPreference   @"AddressBookAccessGranted"
 
@@ -45,26 +33,9 @@
 #define kJetPackURL             @"http://jetpack.me"
 
 
-#define kDisabledTextColor      [UIColor grayColor]
 
-#define kLabelHeight            20.0
-#define kLabelWidth             90.0
-#define kLabelFont              @"Arial"
 
-#define kProgressIndicatorSize  40.0
-#define kToolbarHeight          40.0
-#define kSegmentedControlHeight 40.0
 
-// table view cell
-#define kCellLeftOffset         4.0
-#define kCellTopOffset          12.0
-#define kCellRightOffset        32.0
-#define kCellFieldSpacer        14.0
-#define kCellWidth              300.0
-#define kCellHeight             44.0
-#define kSectionHeaderHight     25.0
-
-#define REFRESH_BUTTON_HEIGHT   50
 
 
 //R: 35, G: 112, B: 216 | #2370D8 | ΔX: 1378, ΔY: 29 | img
@@ -140,6 +111,7 @@ typedef NS_ENUM(NSUInteger, EditPageMode) {
 	kAutorecoverPage,
 	kRefreshPage
 };
+static NSString *const kMobileReaderURL	= @"https://en.wordpress.com/reader/mobile/v2/?chrome=no";
 
 
 
