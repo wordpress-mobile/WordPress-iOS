@@ -464,6 +464,8 @@ NS_ENUM(NSUInteger, NotifcationCommentCellType){
             comment.commentData = responseObject;
             comment.loading = NO;
             
+            self.commentView.bylineLabel.text = [comment.commentData valueForKeyPath:@"author.name"];
+
             // if we're at the top of the tableview, we'll animate in the new parent
 /*            id parent = [responseObject objectForKey:@"parent"];
             NoteComment *parentComment;
