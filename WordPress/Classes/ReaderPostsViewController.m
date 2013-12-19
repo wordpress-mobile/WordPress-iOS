@@ -89,7 +89,7 @@ NSString * const RPVCDisplayedNativeFriendFinder = @"DisplayedNativeFriendFinder
 		self.infiniteScrollEnabled = YES;
         self.incrementalLoadingSupported = YES;
         
-        [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(readerTopicDidChange:) name:ReaderTopicDidChangeNotification object:nil];        
+        [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(readerTopicDidChange:) name:ReaderTopicDidChangeNotification object:nil];
 	}
 	return self;
 }
@@ -148,12 +148,8 @@ NSString * const RPVCDisplayedNativeFriendFinder = @"DisplayedNativeFriendFinder
     }
     
     // Sync content as soon as login or creation occurs
-    [[NSNotificationCenter defaultCenter] addObserverForName:WordPressComApiDidLoginNotification
-                                                      object:nil
-                                                       queue:nil
-                                                  usingBlock:^(NSNotification *notification){
-                                                      [self syncItems];
-                                                  }];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(didLogin:) name:WordPressComApiDidLoginNotification object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(didLogout:) name:WordPressComApiDidLogoutNotification object:nil];
 
     self.inlineComposeView = [[InlineComposeView alloc] initWithFrame:CGRectZero];
 
@@ -180,11 +176,7 @@ NSString * const RPVCDisplayedNativeFriendFinder = @"DisplayedNativeFriendFinder
 }
 
 - (void)viewDidAppear:(BOOL)animated {
-    // WPTableViewController's viewDidAppear triggers a sync, but only do it if authenticated
-    // (this prevents an attempted sync when the app launches for the first time before authenticating)
-    if ([[WordPressAppDelegate sharedWordPressApplicationDelegate] isWPcomAuthenticated]) {
-        [super viewDidAppear:animated];
-    }
+    [super viewDidAppear:animated];
 
     NSIndexPath *selectedIndexPath = [self.tableView indexPathForSelectedRow];
     if (selectedIndexPath) {
@@ -915,6 +907,15 @@ NSString * const RPVCDisplayedNativeFriendFinder = @"DisplayedNativeFriendFinder
     } else {
         [WPMobileStats trackEventForWPCom:StatsEventReaderSelectedCategory properties:[self categoryPropertyForStats]];
     }
+}
+
+- (void)didLogin:(NSNotification *)notification {
+    [self syncItems];
+}
+
+- (void)didLogout:(NSNotification *)notification {
+    [[NSUserDefaults standardUserDefaults] removeObjectForKey:ReaderLastSyncDateKey];
+    [NSUserDefaults resetStandardUserDefaults];
 }
 
 
