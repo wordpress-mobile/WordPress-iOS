@@ -62,17 +62,6 @@ static CGFloat const WPAnimatedBoxAnimationTolerance = 5.0;
     [self insertSubview:_page3 belowSubview:_page2];
     [self insertSubview:_containerBack belowSubview:_page3];
     
-    // add motion effects
-    UIInterpolatingMotionEffect *page1MotionEffect = [[UIInterpolatingMotionEffect alloc] initWithKeyPath:@"frame.origin.y" type:UIInterpolatingMotionEffectTypeTiltAlongVerticalAxis];
-    page1MotionEffect.minimumRelativeValue = [NSNumber numberWithInt:4];
-    page1MotionEffect.maximumRelativeValue = [NSNumber numberWithInt:-4];
-    [_page1 addMotionEffect:page1MotionEffect];
-    
-    UIInterpolatingMotionEffect *_page3MotionEffect = [[UIInterpolatingMotionEffect alloc] initWithKeyPath:@"frame.origin.y" type:UIInterpolatingMotionEffectTypeTiltAlongVerticalAxis];
-    _page3MotionEffect.minimumRelativeValue = [NSNumber numberWithInt:7];
-    _page3MotionEffect.maximumRelativeValue = [NSNumber numberWithInt:-7];
-    [_page3 addMotionEffect:_page3MotionEffect];
-    
     self.clipsToBounds = YES;
 }
 
