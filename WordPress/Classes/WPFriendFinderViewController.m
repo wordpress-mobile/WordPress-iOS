@@ -13,6 +13,7 @@
 #import "WPFriendFinderViewController.h"
 #import "WordPressAppDelegate.h"
 #import "ReachabilityUtils.h"
+#import "Constants.h"
 
 typedef void (^DismissBlock)(NSInteger buttonIndex);
 typedef void (^CancelBlock)();

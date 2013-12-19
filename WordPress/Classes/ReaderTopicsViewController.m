@@ -13,6 +13,7 @@
 #import "WPFriendFinderViewController.h"
 #import "WPTableViewSectionHeaderView.h"
 #import "NSString+XMLExtensions.h"
+#import "Constants.h"
 
 @interface ReaderTopicsViewController ()
 

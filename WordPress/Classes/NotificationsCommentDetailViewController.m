@@ -117,7 +117,7 @@ NS_ENUM(NSUInteger, NotifcationCommentCellType){
     self.spamBarButton = [self barButtonItemWithImageNamed:@"icon-comments-flag"
                                                  andAction:@selector(moderateComment:)];
     self.replyBarButton = [self barButtonItemWithImageNamed:@"icon-comments-reply"
-                                                  andAction:@selector(startReply:)];
+                                                  andAction:@selector(composeReply:)];
     
     _approveBarButton.tintColor = [WPStyleGuide readGrey];
     _unapproveBarButton.tintColor = [WPStyleGuide readGrey];
@@ -319,7 +319,6 @@ NS_ENUM(NSUInteger, NotifcationCommentCellType){
     frame.origin.y = self.tableView.contentSize.height;
     UIView *scrollBackView = [[UIView alloc] initWithFrame:frame];
     scrollBackView.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleTopMargin;
-    //[self.tableView addSubview:scrollBackView];
     self.tableView.backgroundView = [[UIView alloc] initWithFrame:self.tableView.bounds];
     self.tableView.backgroundView.backgroundColor = [WPStyleGuide readGrey];
 }
@@ -355,27 +354,27 @@ NS_ENUM(NSUInteger, NotifcationCommentCellType){
     UIButton *button = (UIButton *)sender;
     
     UIBarButtonItem *pressedButton = nil;
-    if (button.tag == APPROVE_BUTTON_TAG) {
+    if (button.tag == ApproveButtonTag) {
         [WPMobileStats trackEventForWPCom:StatsEventNotificationsDetailApproveComment];
         commentAction = [self.commentActions objectForKey:@"approve-comment"];
         pressedButton = self.approveBarButton;
-    } else if (button.tag == UNAPPROVE_BUTTON_TAG) {
+    } else if (button.tag == UnapproveButtonTag) {
         [WPMobileStats trackEventForWPCom:StatsEventNotificationsDetailUnapproveComment];
         commentAction = [self.commentActions objectForKey:@"unapprove-comment"];
         pressedButton = self.unapproveBarButton;
-    } else if (button.tag == TRASH_BUTTON_TAG){
+    } else if (button.tag == TrashButtonTag){
         [WPMobileStats trackEventForWPCom:StatsEventNotificationsDetailTrashComment];
         commentAction = [self.commentActions objectForKey:@"trash-comment"];
         pressedButton = self.trashBarButton;
-    } else if (button.tag == UNTRASH_BUTTON_TAG){
+    } else if (button.tag == UntrashButtonTag){
         [WPMobileStats trackEventForWPCom:StatsEventNotificationsDetailUntrashComment];
         commentAction = [self.commentActions objectForKey:@"untrash-comment"];
         pressedButton = self.trashBarButton;
-    } else if (button.tag == SPAM_BUTTON_TAG){
+    } else if (button.tag == SpamButtonTag){
         [WPMobileStats trackEventForWPCom:StatsEventNotificationsDetailFlagCommentAsSpam];
         commentAction = [self.commentActions objectForKey:@"spam-comment"];
         pressedButton = self.spamBarButton;
-    } else if (button.tag == UNSPAM_BUTTON_TAG){
+    } else if (button.tag == UnspamButtonTag){
         [WPMobileStats trackEventForWPCom:StatsEventNotificationsDetailUnflagCommentAsSpam];
         commentAction = [self.commentActions objectForKey:@"unspam-comment"];
         pressedButton = self.spamBarButton;
