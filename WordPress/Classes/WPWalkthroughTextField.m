@@ -77,13 +77,12 @@
     
     self.secureTextEntryToggle.hidden = !self.showSecureTextEntryToggle;
     if (self.showSecureTextEntryToggle) {
-        self.secureTextEntryToggle.frame = CGRectMake(CGRectGetWidth(self.bounds) - CGRectGetWidth(self.secureTextEntryToggle.frame), (CGRectGetHeight(self.bounds) - CGRectGetHeight(self.secureTextEntryToggle.frame)) / 2.0, CGRectGetWidth(self.secureTextEntryToggle.frame), CGRectGetHeight(self.secureTextEntryToggle.frame));
+        self.secureTextEntryToggle.frame = CGRectIntegral(CGRectMake(CGRectGetWidth(self.bounds) - CGRectGetWidth(self.secureTextEntryToggle.frame), (CGRectGetHeight(self.bounds) - CGRectGetHeight(self.secureTextEntryToggle.frame)) / 2.0, CGRectGetWidth(self.secureTextEntryToggle.frame), CGRectGetHeight(self.secureTextEntryToggle.frame)));
         [self bringSubviewToFront:self.secureTextEntryToggle];
     }
 }
 
 - (CGRect)calculateTextRectForBounds:(CGRect)bounds {
-    
     
     CGRect returnRect;
     if (_leftViewImage) {
@@ -97,7 +96,7 @@
         returnRect.size.width -= self.secureTextEntryToggle.frame.size.width;
     }
     
-    return returnRect;
+    return CGRectIntegral(returnRect);
 }
 
 // placeholder position
@@ -116,7 +115,7 @@
 - (CGRect)leftViewRectForBounds:(CGRect)bounds {
     
     if (_leftViewImage) {
-        return CGRectMake(_textInsets.left, (CGRectGetHeight(bounds) - _leftViewImage.size.height) / 2.0, _leftViewImage.size.width, _leftViewImage.size.height);
+        return CGRectIntegral(CGRectMake(_textInsets.left, (CGRectGetHeight(bounds) - _leftViewImage.size.height) / 2.0, _leftViewImage.size.width, _leftViewImage.size.height));
     } else {
         return [super leftViewRectForBounds:bounds];
     }
