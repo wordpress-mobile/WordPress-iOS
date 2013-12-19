@@ -208,7 +208,7 @@ CGFloat const CommentViewUnapproveButtonTag = 701;
 - (void)spamAction:(id)sender {
     WPFLogMethodParam(NSStringFromSelector(_cmd));
     [WPMobileStats trackEventForWPCom:StatsEventCommentDetailFlagAsSpam];
-    [self moderateCommentWithSelector:@selector(spam)];
+    [self.comment spam];
     if (IS_IPAD) {
         [self.navigationController popToRootViewControllerAnimated:YES];
     }
@@ -278,7 +278,7 @@ CGFloat const CommentViewUnapproveButtonTag = 701;
 - (void)deleteComment {
     WPFLogMethod();
     [WPMobileStats trackEventForWPCom:StatsEventCommentDetailDelete];
-    [self moderateCommentWithSelector:@selector(remove)];
+    [self.comment remove];
     if (IS_IPAD) {
         [self.navigationController popToRootViewControllerAnimated:YES];
     }
@@ -287,19 +287,19 @@ CGFloat const CommentViewUnapproveButtonTag = 701;
 - (void)approveComment {
     WPFLogMethod();
     [WPMobileStats trackEventForWPCom:StatsEventCommentDetailApprove];
-    [self moderateCommentWithSelector:@selector(approve)];
+    [self.comment approve];
 }
 
 - (void)unApproveComment {
     WPFLogMethod();
     [WPMobileStats trackEventForWPCom:StatsEventCommentDetailUnapprove];
-    [self moderateCommentWithSelector:@selector(unapprove)];
+    [self.comment unapprove];
 }
 
 - (IBAction)spamComment {
     WPFLogMethodParam(NSStringFromSelector(_cmd));
     [WPMobileStats trackEventForWPCom:StatsEventCommentDetailFlagAsSpam];
-    [self moderateCommentWithSelector:@selector(spam)];
+    [self.comment spam];
     if (IS_IPAD) {
         [self.navigationController popToRootViewControllerAnimated:YES];
     }
@@ -333,19 +333,6 @@ CGFloat const CommentViewUnapproveButtonTag = 701;
     navController.modalTransitionStyle = UIModalTransitionStyleCoverVertical;
     navController.navigationBar.translucent = NO;
     [self presentViewController:navController animated:animate completion:nil];
-}
-
-
-- (void)moderateCommentWithSelector:(SEL)selector {
-    Blog *currentBlog = self.comment.blog;
-#pragma clang diagnostic push
-#pragma clang diagnostic ignored "-Warc-performSelector-leaks"
-    [self.comment performSelector:selector];
-#pragma clang diagnostic pop
-    if (!IS_IPAD) {
-        [self.navigationController popViewControllerAnimated:YES];
-    }
-    [[NSNotificationCenter defaultCenter] postNotificationName:kCommentsChangedNotificationName object:currentBlog];
 }
 
 - (void)showSyncInProgressAlert {
