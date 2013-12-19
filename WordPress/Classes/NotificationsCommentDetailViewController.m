@@ -106,63 +106,63 @@ NS_ENUM(NSUInteger, NotifcationCommentCellType){
     
     [super viewDidLoad];
     
-    self.approveBarButton = [self barButtonItemWithImageNamed:@"icon-comments-approve"
-                                                          andAction:@selector(moderateComment:)];
-    self.unapproveBarButton = [self barButtonItemWithImageNamed:@"icon-comments-unapprove"
-                                                    andAction:@selector(moderateComment:)];
-    self.trashBarButton = [self barButtonItemWithImageNamed:@"icon-comments-trash"
-                                                   andAction:@selector(moderateComment:)];
-    self.spamBarButton = [self barButtonItemWithImageNamed:@"icon-comments-flag"
-                                                 andAction:@selector(moderateComment:)];
-    self.replyBarButton = [self barButtonItemWithImageNamed:@"icon-comments-reply"
-                                                  andAction:@selector(composeReply:)];
-    
-    _approveBarButton.tintColor = [WPStyleGuide readGrey];
-    _unapproveBarButton.tintColor = [WPStyleGuide readGrey];
-    _trashBarButton.tintColor = [WPStyleGuide readGrey];
-    _spamBarButton.tintColor = [WPStyleGuide readGrey];
-    _replyBarButton.tintColor = [WPStyleGuide readGrey];
-
-    UIBarButtonItem *spacer = [[UIBarButtonItem alloc]
-                               initWithBarButtonSystemItem:UIBarButtonSystemItemFlexibleSpace
-                               target:nil
-                               action:nil];
-    self.toolbar.items = @[self.approveBarButton, spacer, self.trashBarButton, spacer, self.spamBarButton, spacer, self.replyBarButton];
-    
-    [self.toolbar setBarTintColor:[WPStyleGuide littleEddieGrey]];
-    self.toolbar.translucent = NO;
-
-    [self.tableView registerClass:[NoteCommentCell class] forCellReuseIdentifier:NoteCommentHeaderCellIdentifiter];
-    [self.tableView registerClass:[NoteCommentContentCell class] forCellReuseIdentifier:NoteCommentContentCellIdentifiter];
-    [self.tableView registerClass:[NoteCommentLoadingCell class] forCellReuseIdentifier:NoteCommentLoadingCellIdentifiter];
-    
-    // create the reply field
-    CGRect replyFrame = self.tableView.bounds;
-    replyFrame.size.height = 48.f;
-    
-    self.replyBackgroundImageView.image = [[UIImage imageNamed:@"note-reply-field"]
-                                           resizableImageWithCapInsets:UIEdgeInsetsMake(6.f, 6.f, 6.f, 6.f)];    
+//    self.approveBarButton = [self barButtonItemWithImageNamed:@"icon-comments-approve"
+//                                                          andAction:@selector(moderateComment:)];
+//    self.unapproveBarButton = [self barButtonItemWithImageNamed:@"icon-comments-unapprove"
+//                                                    andAction:@selector(moderateComment:)];
+//    self.trashBarButton = [self barButtonItemWithImageNamed:@"icon-comments-trash"
+//                                                   andAction:@selector(moderateComment:)];
+//    self.spamBarButton = [self barButtonItemWithImageNamed:@"icon-comments-flag"
+//                                                 andAction:@selector(moderateComment:)];
+//    self.replyBarButton = [self barButtonItemWithImageNamed:@"icon-comments-reply"
+//                                                  andAction:@selector(composeReply:)];
+//    
+//    _approveBarButton.tintColor = [WPStyleGuide readGrey];
+//    _unapproveBarButton.tintColor = [WPStyleGuide readGrey];
+//    _trashBarButton.tintColor = [WPStyleGuide readGrey];
+//    _spamBarButton.tintColor = [WPStyleGuide readGrey];
+//    _replyBarButton.tintColor = [WPStyleGuide readGrey];
+//
+//    UIBarButtonItem *spacer = [[UIBarButtonItem alloc]
+//                               initWithBarButtonSystemItem:UIBarButtonSystemItemFlexibleSpace
+//                               target:nil
+//                               action:nil];
+//    self.toolbar.items = @[self.approveBarButton, spacer, self.trashBarButton, spacer, self.spamBarButton, spacer, self.replyBarButton];
+//    
+//    [self.toolbar setBarTintColor:[WPStyleGuide littleEddieGrey]];
+//    self.toolbar.translucent = NO;
+//
+//    [self.tableView registerClass:[NoteCommentCell class] forCellReuseIdentifier:NoteCommentHeaderCellIdentifiter];
+//    [self.tableView registerClass:[NoteCommentContentCell class] forCellReuseIdentifier:NoteCommentContentCellIdentifiter];
+//    [self.tableView registerClass:[NoteCommentLoadingCell class] forCellReuseIdentifier:NoteCommentLoadingCellIdentifiter];
+//    
+//    // create the reply field
+//    CGRect replyFrame = self.tableView.bounds;
+//    replyFrame.size.height = 48.f;
+//    
+//    self.replyBackgroundImageView.image = [[UIImage imageNamed:@"note-reply-field"]
+//                                           resizableImageWithCapInsets:UIEdgeInsetsMake(6.f, 6.f, 6.f, 6.f)];    
     self.title = NSLocalizedString(@"Comment", @"Title for detail view of a comment notification");
 
     [self displayNote];
     
     // start fetching the thread
     [self updateCommentThread];
-    
-    // TODO : Redo this to use auto layout
-    // Need some extra space for status bar
-    CGRect replyBarFrame = self.replyNavigationBar.frame;
-    replyBarFrame.size.height += 20;
-    self.replyNavigationBar.frame = replyBarFrame;
+//    
+//    // TODO : Redo this to use auto layout
+//    // Need some extra space for status bar
+//    CGRect replyBarFrame = self.replyNavigationBar.frame;
+//    replyBarFrame.size.height += 20;
+//    self.replyNavigationBar.frame = replyBarFrame;
 
 
     self.inlineComposeView = [[InlineComposeView alloc] initWithFrame:CGRectZero];
     self.inlineComposeView.delegate = self;
     [self.view addSubview:self.inlineComposeView];
 
-    self.replyNavigationItem.title = NSLocalizedString(@"Replying", nil);
-    [self.view addSubview:self.replyNavigationBar];
-    self.replyNavigationBar.hidden = YES;
+//    self.replyNavigationItem.title = NSLocalizedString(@"Replying", nil);
+//    [self.view addSubview:self.replyNavigationBar];
+//    self.replyNavigationBar.hidden = YES;
 
     [[NSNotificationCenter defaultCenter] addObserver:self
                                              selector:@selector(onShowKeyboard:)
@@ -238,55 +238,55 @@ NS_ENUM(NSUInteger, NotifcationCommentCellType){
     // figure out the actions available for the note
     NSMutableDictionary *indexedActions = [[NSMutableDictionary alloc] initWithCapacity:[actions count]];
     NSMutableDictionary *indexedButtons = [[NSMutableDictionary alloc] initWithCapacity:[actions count]];
-    [actions enumerateObjectsUsingBlock:^(id obj, NSUInteger idx, BOOL *stop) {
-        NSString *actionType = [obj valueForKey:@"type"];
-        [indexedActions setObject:obj forKey:actionType];
-        if ([actionType isEqualToString:@"approve-comment"]) {
-            [indexedButtons setObject:self.approveBarButton forKey:actionType];
-            self.approveBarButton.enabled = YES;
-            self.approveBarButton.customView.tag = APPROVE_BUTTON_TAG;
-            self.approveBarButton.tag = APPROVE_BUTTON_TAG;
-            isApproved = NO;
-        } else if ([actionType isEqualToString:@"unapprove-comment"]){
-            [indexedButtons setObject:self.unapproveBarButton forKey:actionType];
-            self.unapproveBarButton.enabled = YES;
-            self.unapproveBarButton.customView.tag = UNAPPROVE_BUTTON_TAG;
-            self.unapproveBarButton.tag = UNAPPROVE_BUTTON_TAG;
-            isApproved = YES;
-        } else if ([actionType isEqualToString:@"spam-comment"]){
-            [indexedButtons setObject:self.spamBarButton forKey:actionType];
-            self.spamBarButton.enabled = YES;
-            self.spamBarButton.customView.tag = SPAM_BUTTON_TAG;
-            self.spamBarButton.tag = SPAM_BUTTON_TAG;
-        } else if ([actionType isEqualToString:@"unspam-comment"]){
-            [indexedButtons setObject:self.spamBarButton forKey:actionType];
-            self.spamBarButton.enabled = YES;
-            self.spamBarButton.customView.tag = UNSPAM_BUTTON_TAG;
-            self.spamBarButton.tag = UNSPAM_BUTTON_TAG;
-        } else if ([actionType isEqualToString:@"trash-comment"]){
-            [indexedButtons setObject:self.trashBarButton forKey:actionType];
-            self.trashBarButton.enabled = YES;
-            self.trashBarButton.customView.tag = TRASH_BUTTON_TAG;
-            self.trashBarButton.tag = TRASH_BUTTON_TAG;
-        } else if ([actionType isEqualToString:@"untrash-comment"]){
-            [indexedButtons setObject:self.trashBarButton forKey:actionType];
-            self.trashBarButton.enabled = YES;
-            self.trashBarButton.customView.tag = UNTRASH_BUTTON_TAG;
-            self.trashBarButton.tag = UNTRASH_BUTTON_TAG;
-        } else if ([actionType isEqualToString:@"replyto-comment"]){
-            [indexedButtons setObject:self.replyBarButton forKey:actionType];
-            self.replyBarButton.enabled = YES;
-        }
-    }];
+//    [actions enumerateObjectsUsingBlock:^(id obj, NSUInteger idx, BOOL *stop) {
+//        NSString *actionType = [obj valueForKey:@"type"];
+//        [indexedActions setObject:obj forKey:actionType];
+//        if ([actionType isEqualToString:@"approve-comment"]) {
+//            [indexedButtons setObject:self.approveBarButton forKey:actionType];
+//            self.approveBarButton.enabled = YES;
+//            self.approveBarButton.customView.tag = APPROVE_BUTTON_TAG;
+//            self.approveBarButton.tag = APPROVE_BUTTON_TAG;
+//            isApproved = NO;
+//        } else if ([actionType isEqualToString:@"unapprove-comment"]){
+//            [indexedButtons setObject:self.unapproveBarButton forKey:actionType];
+//            self.unapproveBarButton.enabled = YES;
+//            self.unapproveBarButton.customView.tag = UNAPPROVE_BUTTON_TAG;
+//            self.unapproveBarButton.tag = UNAPPROVE_BUTTON_TAG;
+//            isApproved = YES;
+//        } else if ([actionType isEqualToString:@"spam-comment"]){
+//            [indexedButtons setObject:self.spamBarButton forKey:actionType];
+//            self.spamBarButton.enabled = YES;
+//            self.spamBarButton.customView.tag = SPAM_BUTTON_TAG;
+//            self.spamBarButton.tag = SPAM_BUTTON_TAG;
+//        } else if ([actionType isEqualToString:@"unspam-comment"]){
+//            [indexedButtons setObject:self.spamBarButton forKey:actionType];
+//            self.spamBarButton.enabled = YES;
+//            self.spamBarButton.customView.tag = UNSPAM_BUTTON_TAG;
+//            self.spamBarButton.tag = UNSPAM_BUTTON_TAG;
+//        } else if ([actionType isEqualToString:@"trash-comment"]){
+//            [indexedButtons setObject:self.trashBarButton forKey:actionType];
+//            self.trashBarButton.enabled = YES;
+//            self.trashBarButton.customView.tag = TRASH_BUTTON_TAG;
+//            self.trashBarButton.tag = TRASH_BUTTON_TAG;
+//        } else if ([actionType isEqualToString:@"untrash-comment"]){
+//            [indexedButtons setObject:self.trashBarButton forKey:actionType];
+//            self.trashBarButton.enabled = YES;
+//            self.trashBarButton.customView.tag = UNTRASH_BUTTON_TAG;
+//            self.trashBarButton.tag = UNTRASH_BUTTON_TAG;
+//        } else if ([actionType isEqualToString:@"replyto-comment"]){
+//            [indexedButtons setObject:self.replyBarButton forKey:actionType];
+//            self.replyBarButton.enabled = YES;
+//        }
+//    }];
     
-    UIBarButtonItem *spacer = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFlexibleSpace target:nil action:nil];
-    
-    NSMutableArray *buttons = [NSMutableArray arrayWithArray:@[self.approveBarButton, spacer, self.trashBarButton, spacer, self.spamBarButton, spacer, self.replyBarButton]];
-    if (isApproved) {
-        [buttons replaceObjectAtIndex:0 withObject:self.unapproveBarButton];
-    }
-    
-    [self.toolbar setItems:buttons animated:YES];
+//    UIBarButtonItem *spacer = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFlexibleSpace target:nil action:nil];
+//    
+//    NSMutableArray *buttons = [NSMutableArray arrayWithArray:@[self.approveBarButton, spacer, self.trashBarButton, spacer, self.spamBarButton, spacer, self.replyBarButton]];
+//    if (isApproved) {
+//        [buttons replaceObjectAtIndex:0 withObject:self.unapproveBarButton];
+//    }
+//    
+//    [self.toolbar setItems:buttons animated:YES];
     
     self.commentActions = indexedActions;
     
@@ -306,20 +306,6 @@ NS_ENUM(NSUInteger, NotifcationCommentCellType){
         }
     }
     return nil;
-}
-
-- (void)addScrollBackView {
-    return;
-    if (self.hasScrollBackView) return;
-    self.hasScrollBackView = YES;
-    CGRect frame = self.view.bounds;
-    frame.size.height += 1200.f;
-    frame.origin.y = self.tableView.contentSize.height;
-    UIView *scrollBackView = [[UIView alloc] initWithFrame:frame];
-    scrollBackView.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleTopMargin;
-    //[self.tableView addSubview:scrollBackView];
-    self.tableView.backgroundView = [[UIView alloc] initWithFrame:self.tableView.bounds];
-    self.tableView.backgroundView.backgroundColor = COMMENT_PARENT_BACKGROUND_COLOR;
 }
 
 
@@ -493,7 +479,7 @@ NS_ENUM(NSUInteger, NotifcationCommentCellType){
             comment.loading = NO;
             
             // if we're at the top of the tableview, we'll animate in the new parent
-            id parent = [responseObject objectForKey:@"parent"];
+/*            id parent = [responseObject objectForKey:@"parent"];
             NoteComment *parentComment;
             if (![parent isEqual:@0]) {
                 [self addScrollBackView];
@@ -539,7 +525,7 @@ NS_ENUM(NSUInteger, NotifcationCommentCellType){
                 self.tableView.contentOffset = offset;
             }
             
-            [self.tableView reloadData];
+            [self.tableView reloadData];*/
         } failure:^(AFHTTPRequestOperation *operation, NSError *error){
             DDLogVerbose(@"[Rest API] ! %@", [error localizedDescription]);
 
