@@ -373,7 +373,12 @@ CGFloat const EPVCTextViewTopPadding = 7.0f;
     CGFloat minHeight = self.view.frame.size.height;
     minHeight -= (EPVCTextfieldHeight + EPVCTextViewTopPadding);
     if (self.dismissingBlogPicker) {
-        minHeight -= 20.0f; // For some reason the frame/bounds hight includes the status bar.
+        // For some reason the frame/bounds hight includes the status bar.
+        if (UIInterfaceOrientationIsPortrait([UIApplication sharedApplication].statusBarOrientation)) {
+            minHeight -= [UIApplication sharedApplication].statusBarFrame.size.height;
+        } else {
+            minHeight -= [UIApplication sharedApplication].statusBarFrame.size.width;
+        }
     } else if (!self.tableView.window) {
         minHeight -= EPVCToolbarHeight;
     }
