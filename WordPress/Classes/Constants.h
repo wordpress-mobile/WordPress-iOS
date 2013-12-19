@@ -10,5 +10,3 @@ static NSString *const kMobileReaderDetailURL = @"https://en.wordpress.com/reade
 static NSString *const kMobileReaderFFURL = @"https://en.wordpress.com/reader/mobile/v2/?template=friendfinder";
 
 static NSString *const kXML_RPC_ERROR_OCCURS = @"kXML_RPC_ERROR_OCCURS";
-
-

@@ -128,26 +128,17 @@ NSString *const NewCategoryCreatedAndUpdatedInBlogNotification = @"NewCategoryCr
     NSString *catName = self.createCatNameField.text;
     
     if (!catName ||[catName length] == 0) {
-        UIAlertView *alert2 = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"Category title missing.", @"Error popup title to indicate that there was no category title filled in.")
-                                                         message:NSLocalizedString(@"Title for a category is mandatory.", @"Error popup message to indicate that there was no category title filled in.")
-                                                        delegate:self cancelButtonTitle:NSLocalizedString(@"OK", @"") otherButtonTitles:nil];
-        
-        [alert2 show];
-        WordPressAppDelegate *delegate = (WordPressAppDelegate*)[[UIApplication sharedApplication] delegate];
-        [delegate setAlertRunning:YES];
-        
+        NSString *title = NSLocalizedString(@"Category title missing.", @"Error popup title to indicate that there was no category title filled in.");
+        NSString *message = NSLocalizedString(@"Title for a category is mandatory.", @"Error popup message to indicate that there was no category title filled in.");
+        [WPError showAlertWithTitle:title message:message withSupportButton:NO];
+
         return;
     }
     
     if ([Category existsName:catName forBlog:self.blog withParentId:self.parentCategory.categoryID]) {
-        UIAlertView *alert2 = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"Category name already exists.", @"Error popup title to show that a category already exists.")
-                                                         message:NSLocalizedString(@"There is another category with that name.", @"Error popup message to show that a category already exists.")
-                                                        delegate:self cancelButtonTitle:NSLocalizedString(@"OK", @"OK button label.") otherButtonTitles:nil];
-		
-        [alert2 show];
-        WordPressAppDelegate *delegate = (WordPressAppDelegate*)[[UIApplication sharedApplication] delegate];
-        [delegate setAlertRunning:YES];
-        
+        NSString *title = NSLocalizedString(@"Category name already exists.", @"Error popup title to show that a category already exists.");
+        NSString *message = NSLocalizedString(@"There is another category with that name.", @"Error popup message to show that a category already exists.");
+        [WPError showAlertWithTitle:title message:message withSupportButton:NO];
         return;
     }
     
@@ -167,21 +158,14 @@ NSString *const NewCategoryCreatedAndUpdatedInBlogNotification = @"NewCategoryCr
 		[self removeProgressIndicator];
 		
 		if ([error code] == 403) {
-
-			UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"Couldn't Connect", @"")
-																message:NSLocalizedString(@"The username or password stored in the app may be out of date. Please re-enter your password in the settings and try again.", @"")
-															   delegate:nil
-													  cancelButtonTitle:nil
-													  otherButtonTitles:NSLocalizedString(@"OK", @""), nil];
-			[alertView show];
+            [WPError showAlertWithTitle:NSLocalizedString(@"Couldn't Connect", @"") message:NSLocalizedString(@"The username or password stored in the app may be out of date. Please re-enter your password in the settings and try again.", @"") withSupportButton:NO];
 			
 			// bad login/pass combination
 			EditSiteViewController *editSiteViewController = [[EditSiteViewController alloc] initWithBlog:self.blog];
 			[self.navigationController pushViewController:editSiteViewController animated:YES];
 			
 		} else {
-			NSDictionary *errInfo = [NSDictionary dictionaryWithObjectsAndKeys:self.blog, @"currentBlog", nil];
-			[[NSNotificationCenter defaultCenter] postNotificationName:kXML_RPC_ERROR_OCCURS object:error userInfo:errInfo];
+			[WPError showXMLRPCErrorAlert:error];
 		}
     }];
 }
@@ -263,15 +247,6 @@ NSString *const NewCategoryCreatedAndUpdatedInBlogNotification = @"NewCategoryCr
 - (BOOL)textFieldShouldReturn:(UITextField *)textField {
     [textField resignFirstResponder];
     return YES;
-}
-
-
-#pragma mark -
-#pragma mark UIAlertView Delegate
-
-- (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex {
-    WordPressAppDelegate *delegate = (WordPressAppDelegate*)[[UIApplication sharedApplication] delegate];
-    [delegate setAlertRunning:NO];
 }
 
 @end

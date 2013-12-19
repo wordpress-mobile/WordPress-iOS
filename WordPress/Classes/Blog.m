@@ -547,8 +547,8 @@ static CGFloat const ImageSizeLargeHeight = 480.0f;
             float version = [[self version] floatValue];
             if (version < [minimumVersion floatValue]) {
                 if (self.lastUpdateWarning == nil || [self.lastUpdateWarning floatValue] < [minimumVersion floatValue]) {
-                    [[WordPressAppDelegate sharedWordPressApplicationDelegate] showAlertWithTitle:NSLocalizedString(@"WordPress version too old", @"")
-                                                                                          message:[NSString stringWithFormat:NSLocalizedString(@"The site at %@ uses WordPress %@. We recommend to update to the latest version, or at least %@", @""), [self hostname], [self version], minimumVersion]];
+                    [WPError showAlertWithTitle:NSLocalizedString(@"WordPress version too old", @"")
+                                        message:[NSString stringWithFormat:NSLocalizedString(@"The site at %@ uses WordPress %@. We recommend to update to the latest version, or at least %@", @""), [self hostname], [self version], minimumVersion]];
                     self.lastUpdateWarning = minimumVersion;
                 }
             }
