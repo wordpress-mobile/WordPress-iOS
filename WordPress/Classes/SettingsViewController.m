@@ -29,17 +29,18 @@
  */
 
 #import "SettingsViewController.h"
-#import "WPcomLoginViewController.h"
 #import "WordPressComApi.h"
 #import "AboutViewController.h"
 #import "SettingsPageViewController.h"
 #import "NotificationSettingsViewController.h"
+#import "Blog+Jetpack.h"
+#import "LoginViewController.h"
 #import "SupportViewController.h"
 #import "WPAccount.h"
 #import "WPTableViewSectionHeaderView.h"
-#import "AddUsersBlogsViewController.h"
 #import "SupportViewController.h"
 #import "ContextManager.h"
+#import "NotificationsManager.h"
 
 typedef enum {
     SettingsSectionWpcom = 0,
@@ -50,7 +51,7 @@ typedef enum {
 
 CGFloat const blavatarImageViewSize = 43.f;
 
-@interface SettingsViewController () <UIActionSheetDelegate, WPcomLoginViewControllerDelegate>
+@interface SettingsViewController () <UIActionSheetDelegate>
 
 @property (nonatomic, strong) NSArray *mediaSettingsArray;
 @property (nonatomic, strong) UIBarButtonItem *doneButton;
@@ -70,24 +71,26 @@ CGFloat const blavatarImageViewSize = 43.f;
     self.doneButton = [[UIBarButtonItem alloc] initWithTitle:NSLocalizedString(@"Done", @"") style:[WPStyleGuide barButtonStyleForBordered] target:self action:@selector(dismiss)];
     self.navigationItem.rightBarButtonItem = self.doneButton;
     
-    [[NSNotificationCenter defaultCenter] addObserverForName:WordPressComApiDidLoginNotification object:nil queue:nil usingBlock:^(NSNotification *note) {
-        NSMutableIndexSet *sections = [NSMutableIndexSet indexSet];
-        [sections addIndex:SettingsSectionWpcom];
-        [self.tableView reloadSections:sections withRowAnimation:UITableViewRowAnimationFade];
-    }];
-    [[NSNotificationCenter defaultCenter] addObserverForName:WordPressComApiDidLogoutNotification object:nil queue:nil usingBlock:^(NSNotification *note) {
-        NSMutableIndexSet *sections = [NSMutableIndexSet indexSet];
-        [sections addIndex:SettingsSectionWpcom];
-        [self.tableView reloadSections:sections withRowAnimation:UITableViewRowAnimationFade];
-    }];
-    
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(defaultAccountDidChange:) name:WPAccountDefaultWordPressComAccountChangedNotification object:nil];
+
     [WPStyleGuide configureColorsForView:self.view andTableView:self.tableView];
 }
 
 - (void)viewWillAppear:(BOOL)animated {
     [super viewWillAppear:animated];
+    [self.navigationController setNavigationBarHidden:NO animated:animated];
     [self.tableView reloadData];
 }
+
+
+#pragma mark - Notifications
+
+- (void)defaultAccountDidChange:(NSNotification *)notification {
+    NSMutableIndexSet *sections = [NSMutableIndexSet indexSet];
+    [sections addIndex:SettingsSectionWpcom];
+    [self.tableView reloadSections:sections withRowAnimation:UITableViewRowAnimationFade];
+}
+
 
 #pragma mark - Custom Getter
 
@@ -137,25 +140,9 @@ CGFloat const blavatarImageViewSize = 43.f;
     [self dismissViewControllerAnimated:YES completion:nil];
 }
 
-- (void)maskImageView:(UIImageView *)imageView corner:(UIRectCorner)corner {
-    if (IS_IOS7) {
-        // We don't want this effect in iOS7
-        return;
-    }
-    
-    CGRect frame = CGRectMake(0.0, 0.0, 43.0, 43.0);
-    UIBezierPath *path = [UIBezierPath bezierPathWithRoundedRect:frame
-                                               byRoundingCorners:corner cornerRadii:CGSizeMake(7.0f, 7.0f)];
-    CAShapeLayer *maskLayer = [CAShapeLayer layer];
-    maskLayer.frame = frame;
-    maskLayer.path = path.CGPath;
-    imageView.layer.mask = maskLayer;
-}
-
 - (BOOL)supportsNotifications {
-    return nil != [[NSUserDefaults standardUserDefaults] objectForKey:kApnsDeviceTokenPrefKey];
+    return nil != [[NSUserDefaults standardUserDefaults] objectForKey:NotificationsDeviceToken];
 }
-
 
 #pragma mark - Table view data source
 
@@ -165,32 +152,28 @@ CGFloat const blavatarImageViewSize = 43.f;
 
 // The Sign Out row in Wpcom section can change, so identify it dynamically
 - (NSInteger)rowForSignOut {
-    return [self supportsNotifications] ? 2 : 1;
+    NSInteger rowForSignOut = 1;
+    if ([self supportsNotifications]) {
+        rowForSignOut += 1;
+    }
+    return rowForSignOut;
 }
 
 - (NSInteger)rowForNotifications {
-    return [self supportsNotifications] ? 1 : -1;
+    if ([self supportsNotifications]) {
+        return 1;
+    }
+    return -1;
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
-    int numWpcomRows = 0;
-    
     switch (section) {
         case SettingsSectionWpcom:
-            numWpcomRows = 1;
-            if ([[WordPressComApi sharedApi] hasCredentials]) {
-                // Allow notifications management?
-                if ([self supportsNotifications]) {
-                    numWpcomRows += 1;
-                }
+            if ([WPAccount defaultWordPressComAccount]) {
+                return [self rowForSignOut] + 1;
+            } else {
+                return 1;
             }
-            
-            // Show a Sign Out row?
-            if ([[WPAccount defaultWordPressComAccount] username]) {
-                numWpcomRows += 1;
-            }
-            
-            return numWpcomRows;
 
         case SettingsSectionMedia:
             return [self.mediaSettingsArray count];
@@ -205,8 +188,8 @@ CGFloat const blavatarImageViewSize = 43.f;
 
 - (UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section {
     WPTableViewSectionHeaderView *header = [[WPTableViewSectionHeaderView alloc] initWithFrame:CGRectMake(0, 0, CGRectGetWidth(self.view.bounds), 0)];
+    header.fixedWidth = 0.0;
     header.title = [self titleForHeaderInSection:section];
-    header.leftMarginPercent = 0;
     return header;
 }
 
@@ -236,22 +219,26 @@ CGFloat const blavatarImageViewSize = 43.f;
     cell.accessoryView = nil;
 
     if (indexPath.section == SettingsSectionWpcom) {
-        if ([[WordPressComApi sharedApi] hasCredentials]) {
+        if ([WPAccount defaultWordPressComAccount]) {
             if (indexPath.row == 0) {
                 cell.textLabel.text = NSLocalizedString(@"Username", @"");
                 cell.detailTextLabel.text = [[WPAccount defaultWordPressComAccount] username];
                 cell.detailTextLabel.textColor = [UIColor UIColorFromHex:0x888888];
                 cell.selectionStyle = UITableViewCellSelectionStyleNone;
+                cell.accessibilityIdentifier = @"wpcom-username";
             } else if (indexPath.row == [self rowForNotifications]) {
                 cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
                 cell.textLabel.text = NSLocalizedString(@"Manage Notifications", @"");
+                cell.accessibilityIdentifier = @"wpcom-manage-notifications";
             } else {
                 cell.textLabel.textAlignment = NSTextAlignmentCenter;
                 cell.textLabel.text = NSLocalizedString(@"Sign Out", @"Sign out from WordPress.com");
+                cell.accessibilityIdentifier = @"wpcom-sign-out";
             }
         } else {
             cell.textLabel.textAlignment = NSTextAlignmentCenter;
             cell.textLabel.text = NSLocalizedString(@"Sign In", @"Sign in to WordPress.com");
+            cell.accessibilityIdentifier = @"wpcom-sign-in";
             cell.selectionStyle = UITableViewCellSelectionStyleBlue;
         }
         
@@ -301,7 +288,7 @@ CGFloat const blavatarImageViewSize = 43.f;
     
     switch (indexPath.section) {
         case SettingsSectionWpcom:
-            if ([[WordPressComApi sharedApi] hasCredentials] && indexPath.row == 0) {
+            if ([WPAccount defaultWordPressComAccount] && indexPath.row == 0) {
                 cellIdentifier = @"WpcomUsernameCell";
                 cellStyle = UITableViewCellStyleValue1;
             } else {
@@ -358,7 +345,7 @@ CGFloat const blavatarImageViewSize = 43.f;
     [tableView deselectRowAtIndexPath:indexPath animated:YES];
     
     if (indexPath.section == SettingsSectionWpcom) {
-        if ([[WordPressComApi sharedApi] hasCredentials]) {
+        if ([WPAccount defaultWordPressComAccount]) {
             if (indexPath.row == [self rowForSignOut]) {
                 [WPMobileStats trackEventForWPCom:StatsEventSettingsClickedSignOutOfDotCom];
 
@@ -380,9 +367,12 @@ CGFloat const blavatarImageViewSize = 43.f;
             }
         } else {
             [WPMobileStats trackEventForWPCom:StatsEventSettingsClickedSignIntoDotCom];
-            
-            WPcomLoginViewController *loginViewController = [[WPcomLoginViewController alloc] initWithStyle:UITableViewStyleGrouped];
-            loginViewController.delegate = self;
+
+            LoginViewController *loginViewController = [[LoginViewController alloc] init];
+            loginViewController.onlyDotComAllowed = YES;
+            loginViewController.dismissBlock = ^{
+                [self.navigationController popToViewController:self animated:YES];
+            };
             [self.navigationController pushViewController:loginViewController animated:YES];
         }
         
@@ -413,30 +403,14 @@ CGFloat const blavatarImageViewSize = 43.f;
     }
 }
 
-
-#pragma mark - WPComLoginViewControllerDelegate
-
-- (void)loginController:(WPcomLoginViewController *)loginController didAuthenticateWithAccount:(WPAccount *)account {
-    [self.tableView reloadSections:[NSIndexSet indexSetWithIndex:SettingsSectionWpcom] withRowAnimation:UITableViewRowAnimationFade];
-    AddUsersBlogsViewController *addUsersBlogsView = [[AddUsersBlogsViewController alloc] initWithAccount:[WPAccount defaultWordPressComAccount]];
-    addUsersBlogsView.isWPcom = YES;
-    [self.navigationController pushViewController:addUsersBlogsView animated:YES];
-}
-
-
-- (void)loginControllerDidDismiss:(WPcomLoginViewController *)loginController {
-    [self.navigationController popToRootViewControllerAnimated:YES];
-}
-
-
-#pragma mark - Action Sheet Delegate Methods
+#pragma mark -
+#pragma mark Action Sheet Delegate Methods
 
 - (void)actionSheet:(UIActionSheet *)actionSheet clickedButtonAtIndex:(NSInteger)buttonIndex {
     if (buttonIndex == 0) {
         [WPMobileStats trackEventForWPCom:StatsEventSettingsSignedOutOfDotCom];
         
         // Sign out
-        [[WordPressComApi sharedApi] signOut]; //Signout first, then remove the account
 		[WPAccount removeDefaultWordPressComAccount];
         [self.tableView reloadSections:[NSIndexSet indexSetWithIndex:SettingsSectionWpcom] withRowAnimation:UITableViewRowAnimationFade];
         

@@ -8,18 +8,30 @@
 
 #import "WPTableViewCell.h"
 
-CGFloat const WPTableViewCellMarginPercentage = 0.2;
+CGFloat const WPTableViewFixedWidth = 600;
 
 @implementation WPTableViewCell
 
 - (void)setFrame:(CGRect)frame {
+    CGFloat width = self.superview.frame.size.width;
     // On iPad, add a margin around tables
-    if (IS_IPAD) {
-        CGFloat inset = ceilf(self.superview.frame.size.width * WPTableViewCellMarginPercentage);
-        frame.origin.x = inset;
-        frame.size.width = self.superview.frame.size.width - 2 * inset;
+    if (IS_IPAD && width > WPTableViewFixedWidth) {
+        frame.origin.x = (width - WPTableViewFixedWidth) / 2;
+        frame.size.width = WPTableViewFixedWidth;
     }
     [super setFrame:frame];
+}
+
+- (void)layoutSubviews {
+    [super layoutSubviews];
+    
+    // Need to set the origin again on iPad (for margins)
+    CGFloat width = self.superview.frame.size.width;
+    if (IS_IPAD && width > WPTableViewFixedWidth) {
+        CGRect frame = self.frame;
+        frame.origin.x = (width - WPTableViewFixedWidth) / 2;
+        self.frame = frame;
+    }
 }
 
 @end

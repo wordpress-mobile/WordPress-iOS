@@ -156,7 +156,7 @@
                 _thumbnail.image = [UIImage imageWithData:_media.thumbnail];
             }
         } failure:^(NSError *error) {
-            WPFLog(@"Failed to download thumbnail for media %@: %@", _media.remoteURL, error);
+            DDLogWarn(@"Failed to download thumbnail for media %@: %@", _media.remoteURL, error);
         }];
     }
 }

@@ -9,33 +9,37 @@
 #import "CommentViewController.h"
 #import "UIImageView+Gravatar.h"
 #import "NSString+XMLExtensions.h"
-#import "Comment.h"
 #import "CommentsViewController.h"
-#import "ReplyToCommentViewController.h"
+#import "Comment.h"
 #import "EditCommentViewController.h"
 #import "WPWebViewController.h"
+#import "InlineComposeView.h"
+#import "ContextManager.h"
 
-@interface CommentViewController () <UIWebViewDelegate, ReplyToCommentViewControllerDelegate, UIActionSheetDelegate, MFMailComposeViewControllerDelegate> {
-    ReplyToCommentViewController *_replyToCommentViewController;
+@interface CommentViewController () <UIWebViewDelegate, UIActionSheetDelegate, MFMailComposeViewControllerDelegate, InlineComposeViewDelegate> {
     EditCommentViewController *_editCommentViewController;
     BOOL _isShowingActionSheet;
     AMBlockToken *_reachabilityToken;
     NSLayoutConstraint *_authorSiteHeightConstraint;
 }
 
-@property (nonatomic, strong) IBOutlet UIImageView *gravatarImageView;
-@property (nonatomic, strong) IBOutlet UILabel *authorNameLabel;
-@property (nonatomic, strong) IBOutlet UIButton *authorSiteButton;
-@property (nonatomic, strong) IBOutlet UIButton *authorEmailButton;
-@property (nonatomic, strong) IBOutlet UILabel *postTitleLabel;
-@property (nonatomic, strong) IBOutlet UILabel *dateLabel;
-@property (nonatomic, strong) IBOutlet UIWebView *commentWebview;
+@property (nonatomic, weak) IBOutlet UIImageView *gravatarImageView;
+@property (nonatomic, weak) IBOutlet UILabel *authorNameLabel;
+@property (nonatomic, weak) IBOutlet UIButton *authorSiteButton;
+@property (nonatomic, weak) IBOutlet UIButton *authorEmailButton;
+@property (nonatomic, weak) IBOutlet UILabel *postTitleLabel;
+@property (nonatomic, weak) IBOutlet UILabel *dateLabel;
+@property (nonatomic, weak) IBOutlet UIWebView *commentWebview;
 
-@property (nonatomic, strong) IBOutlet UIBarButtonItem *trashButton;
-@property (nonatomic, strong) IBOutlet UIBarButtonItem *approveButton;
-@property (nonatomic, strong) IBOutlet UIBarButtonItem *spamButton;
-@property (nonatomic, strong) IBOutlet UIBarButtonItem *editButton;
-@property (nonatomic, strong) IBOutlet UIBarButtonItem *replyButton;
+@property (nonatomic, weak) IBOutlet UIBarButtonItem *trashButton;
+@property (nonatomic, weak) IBOutlet UIBarButtonItem *approveButton;
+@property (nonatomic, weak) IBOutlet UIBarButtonItem *spamButton;
+@property (nonatomic, weak) IBOutlet UIBarButtonItem *editButton;
+@property (nonatomic, weak) IBOutlet UIBarButtonItem *replyButton;
+
+@property (nonatomic, strong) InlineComposeView *inlineComposeView;
+
+@property (nonatomic, strong) Comment *reply;
 
 @end
 
@@ -48,7 +52,7 @@ CGFloat const CommentViewApproveButtonTag = 700;
 CGFloat const CommentViewUnapproveButtonTag = 701;
 
 - (void)dealloc {
-    WPFLogMethod();
+    DDLogMethod();
     
     [self.comment removeObserver:self forKeyPath:@"status"];
     if (_reachabilityToken) {
@@ -59,6 +63,10 @@ CGFloat const CommentViewUnapproveButtonTag = 701;
     
 	self.commentWebview.delegate = nil;
     [self.commentWebview stopLoading];
+
+    self.reply = nil;
+    self.inlineComposeView.delegate = nil;
+    self.inlineComposeView = nil;
 }
 
 - (void)viewDidLoad
@@ -77,20 +85,23 @@ CGFloat const CommentViewUnapproveButtonTag = 701;
     UIBarButtonItem *flexibleSpace = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFlexibleSpace target:nil action:nil];
     [self setToolbarItems:@[_trashButton, flexibleSpace, _approveButton, flexibleSpace, _spamButton, flexibleSpace, _editButton, flexibleSpace, _replyButton] animated:NO];
     
-    if (IS_IOS7) {
-        self.navigationController.toolbar.barTintColor = [WPStyleGuide littleEddieGrey];
-    } else {
-        [self hideWebviewShadowForiOS6];
-    }
+    self.navigationController.toolbar.barTintColor = [WPStyleGuide littleEddieGrey];
 
     UITapGestureRecognizer *gestureRecognizer = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(tappedPostTitle)];
     gestureRecognizer.numberOfTapsRequired = 1;
     [self.postTitleLabel addGestureRecognizer:gestureRecognizer];
-    
+
+    self.inlineComposeView = [[InlineComposeView alloc] initWithFrame:CGRectZero];
+    self.inlineComposeView.delegate = self;
+
+    [self.view addSubview:self.inlineComposeView];
     if (self.comment) {
         [self showComment:self.comment];
         [self reachabilityChanged:self.comment.blog.reachable];
-    }
+        self.reply = [self.comment restoreReply];
+        self.inlineComposeView.text = self.reply.content;
+   }
+
 }
 
 - (void)viewWillAppear:(BOOL)animated {
@@ -129,23 +140,12 @@ CGFloat const CommentViewUnapproveButtonTag = 701;
 
 - (void)cancelView:(id)sender {
 	//there are no changes
-	if (!_replyToCommentViewController.hasChanges && !_editCommentViewController.hasChanges) {
+	if (!_editCommentViewController.hasChanges) {
 		[self dismissEditViewController];
-		
-		if(sender == _replyToCommentViewController) {
-			[_replyToCommentViewController.comment remove]; //delete the empty comment
-			_replyToCommentViewController.comment = nil;
-			
-			if (IS_IPAD) { //an half-patch for #790: sometimes the modal view is not disposed when click on cancel.
-                [self dismissViewControllerAnimated:YES completion:nil];
-            }
-			
-		}
-        
+
 		return;
 	}
-	
-	
+
 	UIActionSheet *actionSheet = [[UIActionSheet alloc] initWithTitle:NSLocalizedString(@"You have unsaved changes.", @"")
 															 delegate:self
                                                     cancelButtonTitle:NSLocalizedString(@"Cancel", @"")
@@ -154,18 +154,12 @@ CGFloat const CommentViewUnapproveButtonTag = 701;
 
     actionSheet.actionSheetStyle = UIActionSheetStyleAutomatic;
 
-	if (_replyToCommentViewController.hasChanges) {
-		actionSheet.tag = CommentViewReplyToCommentViewControllerHasChangesActionSheetTag;
-        [actionSheet showInView:_replyToCommentViewController.view];
-    } else if (_editCommentViewController.hasChanges) {
+	if (_editCommentViewController.hasChanges) {
 		actionSheet.tag = CommentViewEditCommentViewControllerHasChangesActionSheetTag;
         [actionSheet showInView:_editCommentViewController.view];
     }
-    
+
 	_isShowingActionSheet = YES;
-    
-    WordPressAppDelegate *appDelegate = (WordPressAppDelegate*)[[UIApplication sharedApplication] delegate];
-    [appDelegate setAlertRunning:YES];
 }
 
 - (void)updateViewConstraints
@@ -256,24 +250,7 @@ CGFloat const CommentViewUnapproveButtonTag = 701;
 }
 
 - (void)discard {
-    _replyToCommentViewController.navigationItem.rightBarButtonItem = nil;
 	[self dismissEditViewController];
-}
-
-- (void)hideWebviewShadowForiOS6
-{
-    // From http://stackoverflow.com/a/4167060
-    for (UIView* subView in [self.commentWebview subviews])
-    {
-        if ([subView isKindOfClass:[UIScrollView class]]) {
-            for (UIView* shadowView in [subView subviews])
-            {
-                if ([shadowView isKindOfClass:[UIImageView class]]) {
-                    [shadowView setHidden:YES];
-                }
-            }
-        }
-    }
 }
 
 
@@ -322,9 +299,6 @@ CGFloat const CommentViewUnapproveButtonTag = 701;
         [actionSheet showFromToolbar:self.navigationController.toolbar];
         
         _isShowingActionSheet = YES;
-        
-        WordPressAppDelegate *appDelegate = (WordPressAppDelegate*)[[UIApplication sharedApplication] delegate];
-        [appDelegate setAlertRunning:YES];
     }
 }
 
@@ -334,8 +308,6 @@ CGFloat const CommentViewUnapproveButtonTag = 701;
 {
     if (actionSheet.tag == CommentViewDeletePromptActionSheetTag) {
         [self processDeletePromptActionSheet:actionSheet didDismissWithButtonIndex:buttonIndex];
-    } else if (actionSheet.tag == CommentViewReplyToCommentViewControllerHasChangesActionSheetTag) {
-        [self processReplyToCommentViewHasChangesActionSheet:actionSheet didDismissWithButtonIndex:buttonIndex];
     } else if (actionSheet.tag == CommentViewEditCommentViewControllerHasChangesActionSheetTag) {
         [self processEditCommentHasChangesActionSheet:actionSheet didDismissWithButtonIndex:buttonIndex];
     }
@@ -350,16 +322,6 @@ CGFloat const CommentViewUnapproveButtonTag = 701;
     }
 }
 
-- (void)processReplyToCommentViewHasChangesActionSheet:(UIActionSheet *)actionSheet didDismissWithButtonIndex:(NSInteger)buttonIndex
-{
-    if (buttonIndex == 0) {
-        if (_replyToCommentViewController.hasChanges) {
-            _replyToCommentViewController.hasChanges = NO;
-            [_replyToCommentViewController.comment remove];
-        }
-        [self discard];
-    }
-}
 
 - (void)processEditCommentHasChangesActionSheet:(UIActionSheet *)actionSheet didDismissWithButtonIndex:(NSInteger)buttonIndex
 {
@@ -422,7 +384,7 @@ CGFloat const CommentViewUnapproveButtonTag = 701;
 #pragma mark - Comment Moderation Methods
 
 - (void)deleteComment {
-    WPFLogMethod();
+    DDLogMethod();
     [WPMobileStats trackEventForWPCom:StatsEventCommentDetailDelete];
     [self.comment removeObserver:self forKeyPath:@"status"];
     [self moderateCommentWithSelector:@selector(remove)];
@@ -432,19 +394,19 @@ CGFloat const CommentViewUnapproveButtonTag = 701;
 }
 
 - (void)approveComment {
-    WPFLogMethod();
+    DDLogMethod();
     [WPMobileStats trackEventForWPCom:StatsEventCommentDetailApprove];
     [self moderateCommentWithSelector:@selector(approve)];
 }
 
 - (void)unApproveComment {
-    WPFLogMethod();
+    DDLogMethod();
     [WPMobileStats trackEventForWPCom:StatsEventCommentDetailUnapprove];
     [self moderateCommentWithSelector:@selector(unapprove)];
 }
 
 - (IBAction)spamComment {
-    WPFLogMethodParam(NSStringFromSelector(_cmd));
+    DDLogMethodParam(NSStringFromSelector(_cmd));
     [WPMobileStats trackEventForWPCom:StatsEventCommentDetailFlagAsSpam];
     [self.comment removeObserver:self forKeyPath:@"status"];
     [self moderateCommentWithSelector:@selector(spam)];
@@ -454,7 +416,7 @@ CGFloat const CommentViewUnapproveButtonTag = 701;
 }
 
 - (IBAction)launchEditComment {
-    WPFLogMethod();
+    DDLogMethod();
     [WPMobileStats trackEventForWPCom:StatsEventCommentDetailEditComment];
 	[self showEditCommentViewWithAnimation:YES];
 }
@@ -464,27 +426,8 @@ CGFloat const CommentViewUnapproveButtonTag = 701;
 		[self showSyncInProgressAlert];
 	} else {
         [WPMobileStats trackEventForWPCom:StatsEventCommentDetailClickedReplyToComment];
-		[self showReplyToCommentViewWithAnimation:YES];
+        [self.inlineComposeView displayComposer];
 	}
-}
-
-- (void)showReplyToCommentViewWithAnimation:(BOOL)animate {
-	if (_replyToCommentViewController) {
-		_replyToCommentViewController.delegate = nil;
-	}
-	
-	_replyToCommentViewController = [[ReplyToCommentViewController alloc]
-                                         initWithNibName:@"ReplyToCommentViewController"
-                                         bundle:nil];
-	_replyToCommentViewController.delegate = self;
-	_replyToCommentViewController.comment = [self.comment newReply];
-	_replyToCommentViewController.title = NSLocalizedString(@"Comment Reply", @"Comment Reply view title");
-	
-    UINavigationController *navController = [[UINavigationController alloc] initWithRootViewController:_replyToCommentViewController];
-    navController.modalPresentationStyle = UIModalPresentationFormSheet;
-    navController.modalTransitionStyle = UIModalTransitionStyleCoverVertical;
-    navController.navigationBar.translucent = NO;
-    [self presentViewController:navController animated:YES completion:nil];
 }
 
 - (void)showEditCommentViewWithAnimation:(BOOL)animate {
@@ -504,7 +447,6 @@ CGFloat const CommentViewUnapproveButtonTag = 701;
 
 
 - (void)moderateCommentWithSelector:(SEL)selector {
-    Blog *currentBlog = self.comment.blog;
 #pragma clang diagnostic push
 #pragma clang diagnostic ignored "-Warc-performSelector-leaks"
     [self.comment performSelector:selector];
@@ -512,15 +454,11 @@ CGFloat const CommentViewUnapproveButtonTag = 701;
     if (!IS_IPAD) {
         [self.navigationController popViewControllerAnimated:YES];
     }
-    [[NSNotificationCenter defaultCenter] postNotificationName:kCommentsChangedNotificationName object:currentBlog];
 }
 
 - (void)showSyncInProgressAlert {
+    [WPError showAlertWithTitle:NSLocalizedString(@"Info", @"Info alert title") message:NSLocalizedString(@"The blog is syncing with the server. Please try later.", @"") withSupportButton:NO];
 	//the blog is using the network connection and cannot be stoped, show a message to the user
-	UIAlertView *blogIsCurrentlyBusy = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"Info", @"Info alert title")
-																  message:NSLocalizedString(@"The blog is syncing with the server. Please try later.", @"")
-																 delegate:nil cancelButtonTitle:NSLocalizedString(@"OK", @"") otherButtonTitles:nil];
-	[blogIsCurrentlyBusy show];
 }
 
 #pragma mark -
@@ -533,6 +471,38 @@ CGFloat const CommentViewUnapproveButtonTag = 701;
 - (void)closeReplyViewAndSelectTheNewComment {
     [WPMobileStats trackEventForWPCom:StatsEventCommentDetailRepliedToComment];
 	[self dismissEditViewController];
+}
+
+#pragma mark - InlineComposeViewDelegate methods
+
+- (void)composeView:(InlineComposeView *)view didSendText:(NSString *)text {
+
+    self.reply.content = text;
+    // try to save it
+
+    [[ContextManager sharedInstance] saveContext:self.reply.managedObjectContext];
+
+    [self.inlineComposeView clearText];
+    [self.inlineComposeView dismissComposer];
+
+    self.reply.status = CommentStatusApproved;
+
+    // upload with success saves the reply with the published status when successfull
+    [self.reply uploadWithSuccess:^{
+        // the current modal experience shows success by dismissising the editor
+        // ideally we switch to an optimistic experience
+    } failure:^(NSError *error) {
+        // reset to draft status, AppDelegate automatically shows UIAlert when comment fails
+        self.reply.status = CommentStatusDraft;
+
+        DDLogError(@"Could not reply to comment: %@", error);
+    }];
+}
+
+// when the reply changes, save it to the comment
+- (void)textViewDidChange:(UITextView *)textView {
+    self.reply.content = self.inlineComposeView.text;
+    [[ContextManager sharedInstance] saveContext:self.reply.managedObjectContext];
 }
 
 #pragma mark - Gesture Recognizers

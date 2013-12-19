@@ -23,13 +23,13 @@
     self.title = NSLocalizedString(@"Pages", @"");
 }
 
-- (NSString *)noResultsText
+- (NSString *)noResultsTitleText
 {
-    return NSLocalizedString(@"No pages yet", @"Displayed when the user pulls up the pages view and they have no pages");
+    return NSLocalizedString(@"You don't have any pages yet.", @"Displayed when the user pulls up the pages view and they have no pages");
 }
 
 
-- (void)syncItemsWithSuccess:(void (^)())success failure:(void (^)(NSError *))failure {
+- (void)syncItemsViaUserInteraction:(BOOL)userInteraction success:(void (^)())success failure:(void (^)(NSError *))failure {
     [self.blog syncPagesWithSuccess:success failure:failure loadMore: NO];
 }
 
@@ -37,7 +37,8 @@
 - (void)editPost:(AbstractPost *)apost {
     EditPageViewController *editPostViewController = [[EditPageViewController alloc] initWithPost:apost];
     UINavigationController *navController = [[UINavigationController alloc] initWithRootViewController:editPostViewController];
-    navController.modalPresentationStyle = UIModalPresentationCurrentContext;
+    [navController setToolbarHidden:NO]; // Fixes wrong toolbar icon animation.
+    navController.modalPresentationStyle = UIModalPresentationFullScreen;
     [self.navigationController presentViewController:navController animated:YES completion:nil];
 }
 
@@ -46,17 +47,6 @@
     
     Page *post = [Page newDraftForBlog:self.blog];
     [self editPost:post];
-}
-
-- (NSString *)tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section {
-    // Don't show a section title if there's only one section
-    if ([tableView numberOfSections] <= 1)
-        return nil;
-
-    id <NSFetchedResultsSectionInfo> sectionInfo = [[self.resultsController sections] objectAtIndex:section];
-    NSString *sectionName = [sectionInfo name];
-    
-    return [Page titleForRemoteStatus:[sectionName numericValue]];
 }
 
 - (NSString *)statsPropertyForViewOpening

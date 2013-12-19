@@ -10,7 +10,7 @@
 #import <WordPressApi/WordPressApi.h>
 
 #import "UITableViewTextFieldCell.h"
-#import "UITableViewActivityCell.h"
+#import "WPTableViewActivityCell.h"
 #import "WPAccount.h"
 #import "WordPressComApi.h"
 #import "ReachabilityUtils.h"
@@ -142,13 +142,13 @@
 	UITableViewCell *cell = nil;
 	
 	if(indexPath.section == 1) {
-        UITableViewActivityCell *activityCell = nil;
-        NSArray *topLevelObjects = [[NSBundle mainBundle] loadNibNamed:@"UITableViewActivityCell" owner:nil options:nil];
+        WPTableViewActivityCell *activityCell = nil;
+        NSArray *topLevelObjects = [[NSBundle mainBundle] loadNibNamed:@"WPTableViewActivityCell" owner:nil options:nil];
 		for(id currentObject in topLevelObjects)
 		{
-			if([currentObject isKindOfClass:[UITableViewActivityCell class]])
+			if([currentObject isKindOfClass:[WPTableViewActivityCell class]])
 			{
-				activityCell = (UITableViewActivityCell *)currentObject;
+				activityCell = (WPTableViewActivityCell *)currentObject;
 				break;
 			}
 		}
@@ -342,7 +342,8 @@
         [self.wpComApi signInWithUsername:username
                                  password:password
                                   success:^{
-                                      WPAccount *account = [WPAccount createOrUpdateWordPressComAccountWithUsername:username andPassword:password];
+                                      WPAccount *account = [WPAccount createOrUpdateWordPressComAccountWithUsername:username password:password authToken:nil];
+                                      [WPAccount setDefaultWordPressComAccount:account];
                                       [loginController.tableView reloadRowsAtIndexPaths:[NSArray arrayWithObject:[NSIndexPath indexPathForRow:0 inSection:1]] withRowAnimation:UITableViewRowAnimationNone];
                                       if (loginController.delegate) {
                                           [loginController.delegate loginController:loginController didAuthenticateWithAccount:account];

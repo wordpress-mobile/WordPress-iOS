@@ -10,12 +10,17 @@
 #import <CoreData/CoreData.h>
 
 @interface CoreDataTestHelper : NSObject
+
 + (id)sharedHelper;
-- (void)registerDefaultContext;
+
+- (void)reset;
+
 - (void)setModelName:(NSString *)modelName;
 - (BOOL)migrateToModelName:(NSString *)modelName;
-- (NSManagedObject *)insertEntityWithName:(NSString *)entityName;
-- (NSArray *)allObjectsForEntityName:(NSString *)entityName;
-- (void)reset;
-- (NSManagedObjectContext *)managedObjectContext;
+
+- (NSManagedObject *)insertEntityIntoMainContextWithName:(NSString *)entityName;
+- (NSManagedObject *)insertEntityIntoBackgroundContextWithName:(NSString *)entityName;
+- (NSArray *)allObjectsInMainContextForEntityName:(NSString *)entityName;
+- (NSArray *)allObjectsInBackgroundContextForEntityName:(NSString *)entityName;
+
 @end

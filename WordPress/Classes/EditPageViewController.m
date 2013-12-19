@@ -25,8 +25,8 @@
     if (self.editMode == EditPostViewControllerModeNewPost) {
         title = NSLocalizedString(@"New Page", @"New Page Editor screen title.");
     } else {
-        if ([self.apost.postTitle length] > 0) {
-            title = self.apost.postTitle;
+        if ([self.post.postTitle length] > 0) {
+            title = self.post.postTitle;
         } else {
             title = NSLocalizedString(@"Edit Page", @"Page Editor screen title.");
         }
@@ -35,18 +35,9 @@
     return title;
 }
 
-// Hides tags/categories fileds by putting text view above them
-- (CGRect)normalTextFrame {
-    if (IS_IOS7) {
-        // iOS 7 Editor already hides tags and categories.
-        return [super normalTextFrame];
-    } else {
-        CGRect frame = [super normalTextFrame];
-        // 93 is the height of Tags+Categories rows
-        frame.origin.y -= 93;
-        frame.size.height += 93;
-        return frame;
-    }
+- (void)didSaveNewPost {
+    // Noop.
+    // The superclass triggers a tab switch with this method which we don't want for pages.
 }
 
 @end

@@ -98,7 +98,7 @@ static NSString *_lastAuthedName = nil;
 }
 
 - (void)dealloc {
-    WPFLogMethod();
+    DDLogMethod();
     if (authRequest && [authRequest isExecuting]) {
         [authRequest cancel];
     }
@@ -158,21 +158,16 @@ static NSString *_lastAuthedName = nil;
 - (void)showAuthFailed {
     DDLogError(@"Auth Failed, showing login screen");
     [self showBlogSettings];
+    NSString *title;
+    NSString *message;
     if ([blog isWPcom]) {
-        UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"Authentication Error", @"")
-                                                            message:NSLocalizedString(@"Invalid username/password. Please update your credentials try again.", @"")
-                                                           delegate:nil
-                                                  cancelButtonTitle:NSLocalizedString(@"OK", @"")
-                                                  otherButtonTitles:nil];
-        [alertView show];
+        title = NSLocalizedString(@"Authentication Error", @"");
+        message = NSLocalizedString(@"Invalid username/password. Please update your credentials try again.", @"");
     } else {
-        UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"Jetpack Sign In", @"")
-                                                            message:NSLocalizedString(@"Unable to sign in to Jetpack. Please update your credentials try again.", @"")
-                                                           delegate:nil
-                                                  cancelButtonTitle:NSLocalizedString(@"OK", @"")
-                                                  otherButtonTitles:nil];
-        [alertView show];
+        title = NSLocalizedString(@"Jetpack Sign In", @"");
+        message = NSLocalizedString(@"Unable to sign in to Jetpack. Please update your credentials try again.", @"");
     }
+    [WPError showAlertWithTitle:title message:message];
 }
 
 
@@ -479,8 +474,9 @@ static NSString *_lastAuthedName = nil;
 
 - (void)webView:(UIWebView *)webView didFailLoadWithError:(NSError *)error {
     DDLogInfo(@"%@ %@: %@", self, NSStringFromSelector(_cmd), error);
-    if ( ([error code] != -999) && [error code] != 102 )
-        [[NSNotificationCenter defaultCenter] postNotificationName:@"OpenWebPageFailed" object:error userInfo:nil];
+    if (([error code] != -999) && [error code] != 102) {
+        [WPError showAlertWithTitle:NSLocalizedString(@"Error", nil) message:error.localizedDescription];
+    }
     // -999: Canceled AJAX request
     // 102:  Frame load interrupted: canceled wp-login redirect to make the POST
 }

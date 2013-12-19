@@ -14,7 +14,7 @@
 #import "NSDate+StringFormatting.h"
 
 #define RCTVCVerticalPadding 5.0f
-#define RCTVCIndentationWidth 10.0f
+#define RCTVCIndentationWidth 15.0f
 #define RCTVCAuthorLabelHeight 20.0f
 
 @interface ReaderCommentTableViewCell()<DTAttributedTextContentViewDelegate>
@@ -96,62 +96,46 @@
 - (id)initWithStyle:(UITableViewCellStyle)style reuseIdentifier:(NSString *)reuseIdentifier {
     self = [super initWithStyle:style reuseIdentifier:reuseIdentifier];
     if (self) {
-		
-		UIColor *color = DTColorCreateWithHexString(@"EFEFEF");
 		CGFloat width = self.frame.size.width;
-        self.backgroundColor = color;
+        self.backgroundColor = [WPStyleGuide itsEverywhereGrey];
 		
 		[self.cellImageView setFrame:CGRectMake(10.0f, 10.0f, 20.0f, 20.0f)];
 		self.cellImageView.autoresizingMask = UIViewAutoresizingFlexibleRightMargin;
 		
 		self.textContentView = [[DTAttributedTextContentView alloc] initWithFrame:CGRectMake(0.0f, 0.0f, self.frame.size.width, 44.0f)];
 		_textContentView.autoresizingMask = UIViewAutoresizingFlexibleWidth;
-		_textContentView.backgroundColor = color;
+		_textContentView.backgroundColor = [UIColor clearColor];
 		_textContentView.edgeInsets = UIEdgeInsetsMake(0.0f, 10.0f, 0.0f, 10.0f);
 		_textContentView.delegate = self;
 		_textContentView.shouldDrawImages = NO;
 		_textContentView.shouldLayoutCustomSubviews = YES;
 		[self.contentView addSubview:_textContentView];
 		
-		self.dateLabel = [[UILabel alloc] initWithFrame:CGRectMake(width - (10.0f + 30.0f), 10.0f, 30.0f, 20.0f)];
+		self.dateLabel = [[UILabel alloc] initWithFrame:CGRectMake(width - (10.0f + 40.0f), 10.0f, 40.0f, 20.0f)];
 		[_dateLabel setFont:[WPStyleGuide subtitleFont]];
 		_dateLabel.textColor = [WPStyleGuide littleEddieGrey];
 		_dateLabel.textAlignment = NSTextAlignmentRight;
 		_dateLabel.autoresizingMask = UIViewAutoresizingFlexibleLeftMargin;
-		_dateLabel.backgroundColor = color;
+		_dateLabel.backgroundColor = [UIColor clearColor];
 		[self.contentView addSubview:_dateLabel];
 		
-		self.authorLabel = [[UILabel alloc] initWithFrame:CGRectMake(40.0f, 10.0f, (_dateLabel.frame.origin.x - 50.0f), 20.0f)];
+		self.authorLabel = [[UILabel alloc] initWithFrame:CGRectMake(10.0f, 10.0f, (_dateLabel.frame.origin.x - 50.0f), 20.0f)];
 		[_authorLabel setFont:[WPStyleGuide subtitleFont]];
 		_authorLabel.textColor = [WPStyleGuide littleEddieGrey];
 		_authorLabel.autoresizingMask = UIViewAutoresizingFlexibleWidth;
-		_authorLabel.backgroundColor = color;
+		_authorLabel.backgroundColor = [UIColor clearColor];
 		[self.contentView addSubview:_authorLabel];
 		
-		UIImageView *separatorImageView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"cell-separator"]];
-		separatorImageView.frame = CGRectMake(0.0f, 0.0f, width, 2.0f);
+		UIImageView *separatorImageView = [[UIImageView alloc] initWithFrame:CGRectMake(self.indentationWidth, 0.0f, width - self.indentationWidth, 1.0f)];
+		separatorImageView.backgroundColor = [UIColor colorWithHexString:@"e5e5e5"];
 		separatorImageView.autoresizingMask = UIViewAutoresizingFlexibleWidth;
 		[self.contentView addSubview:separatorImageView];
 		
 		self.textContentView.frame = CGRectMake(0.0f, _authorLabel.frame.size.height + 10.0f, width, 44.0f);
 		
-		UIView *view = [[UIView alloc] initWithFrame:self.bounds];
+		UIView *view = [[UIView alloc] initWithFrame:self.frame];
 		view.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
-		view.backgroundColor = DTColorCreateWithHexString(@"A9E2F3");
-		
-		CGRect rect = CGRectMake(0, 0, 1, 1);
-		UIGraphicsBeginImageContext(rect.size);
-		CGContextRef context = UIGraphicsGetCurrentContext();
-		CGContextSetFillColorWithColor(context, [color CGColor]);
-		CGContextFillRect(context, rect);
-		UIImage *img = UIGraphicsGetImageFromCurrentImageContext();
-		UIGraphicsEndImageContext();
-		
-		UIView *colorView = [[UIImageView alloc] initWithImage:img];
-		colorView.frame = CGRectMake(0.0f, 0.0f, width, 2.0f);
-		colorView.autoresizingMask = UIViewAutoresizingFlexibleWidth;
-
-		[view addSubview:colorView];
+		view.backgroundColor = DTColorCreateWithHexString(@"e5e5e5");
 
 		[self setSelectedBackgroundView:view];
     }
@@ -165,8 +149,9 @@
 	
 	// We have to manually update the indentation of the content view? wtf.
 	CGRect frame = self.contentView.frame;
-	frame.origin.x += (self.indentationWidth * self.indentationLevel);
-	frame.size.width -= frame.origin.x;
+    CGFloat indent = self.indentationWidth * self.indentationLevel;
+	frame.origin.x += indent;
+	frame.size.width -= indent;
 	self.contentView.frame = frame;
 	
 	[self.cellImageView setFrame:CGRectMake(10.0f, 10.0f, 20.0f, 20.0f)];

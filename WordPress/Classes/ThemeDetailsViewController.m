@@ -236,7 +236,7 @@
     } failure:^(NSError *error) {
         [loading removeFromSuperview];
         
-        [WPError showAlertWithError:error];
+//        [WPError showAlertWithError:error];
     }];
 }
 

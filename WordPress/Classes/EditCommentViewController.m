@@ -51,7 +51,7 @@
 }
 
 - (void)viewWillAppear:(BOOL)animated {
-    WPFLogMethod();
+    DDLogMethod();
 	[super viewWillAppear:animated];
 	
 	self.textView.text = self.comment.content;
@@ -65,7 +65,7 @@
 }
 
 - (void)viewWillDisappear:(BOOL)animated {
-    WPFLogMethod();
+    DDLogMethod();
     [super viewWillDisappear:animated];
 }
 
@@ -167,12 +167,6 @@
         self.textView.editable = YES;
         self.navigationItem.rightBarButtonItem.enabled = YES;
         self.navigationItem.leftBarButtonItem.enabled = YES;
-        NSString *message = NSLocalizedString(@"Sorry, something went wrong editing the comment. Please try again.", @"");
-        if (error.code == 405) {
-            // XML-RPC is disabled.
-            message = error.localizedDescription;
-        }
-		[[NSNotificationCenter defaultCenter] postNotificationName:@"CommentUploadFailed" object:message];
     }];
 }
 

@@ -16,6 +16,7 @@
 #import "WPAccount.h"
 #import "ContextManager.h"
 #import "Blog.h"
+#import "Constants.h"
 
 static BOOL hasRecordedAppOpenedEvent = NO;
 
@@ -99,13 +100,10 @@ NSString *const StatsPropertyPostDetailClickedAddPhoto = @"clicked_add_photo";
 NSString *const StatsPropertyPostDetailClickedShowCategories = @"clicked_show_categories";
 NSString *const StatsEventPostDetailClickedKeyboardToolbarBoldButton = @"clicked_keyboard_toolbar_bold_button";
 NSString *const StatsEventPostDetailClickedKeyboardToolbarItalicButton = @"clicked_keyboard_toolbar_italic_button";
+NSString *const StatsEventPostDetailClickedKeyboardToolbarUnderlineButton = @"clicked_keyboard_toolbar_underline_button";
 NSString *const StatsEventPostDetailClickedKeyboardToolbarLinkButton = @"clicked_keyboard_toolbar_link_button";
 NSString *const StatsEventPostDetailClickedKeyboardToolbarBlockquoteButton = @"clicked_keyboard_toolbar_blockquote_button";
 NSString *const StatsEventPostDetailClickedKeyboardToolbarDelButton = @"clicked_keyboard_toolbar_del_button";
-NSString *const StatsEventPostDetailClickedKeyboardToolbarUnorderedListButton = @"clicked_keyboard_toolbar_unordered_list_button";
-NSString *const StatsEventPostDetailClickedKeyboardToolbarOrderedListButton = @"clicked_keyboard_toolbar_ordered_list_button";
-NSString *const StatsEventPostDetailClickedKeyboardToolbarListItemButton = @"clicked_keyboard_toolbar_list_item_button";
-NSString *const StatsEventPostDetailClickedKeyboardToolbarCodeButton = @"clicked_keyboard_toolbar_code_button";
 NSString *const StatsEventPostDetailClickedKeyboardToolbarMoreButton = @"clicked_keyboard_toolbar_more_button";
 NSString *const StatsEventPostDetailAddedPhoto = @"Added Photo";
 NSString *const StatsEventPostDetailRemovedPhoto = @"Removed Photo";
@@ -115,6 +113,11 @@ NSString *const StatsEventPostDetailClickedUpdate = @"Clicked Update Button";
 NSString *const StatsEventPostDetailClickedPublish = @"Clicked Publish Button";
 NSString *const StatsEventPostDetailOpenedEditor = @"Opened Editor";
 NSString *const StatsEventPostDetailClosedEditor = @"Closed Editor";
+NSString *const StatsPropertyPostDetailEditorOpenedBy = @"opened_by";
+NSString *const StatsPropertyPostDetailEditorOpenedOpenedByPostsView = @"posts_view";
+NSString *const StatsPropertyPostDetailEditorOpenedOpenedByTabBarButton = @"tab_bar_button";
+NSString *const StatsPropertyPostDetailClickedBlogSelector = @"clicked_blog_selector";
+NSString *const StatsPropertyPostDetailHasExternalKeyboard = @"has_external_keybord";
 
 // Post Detail - Settings
 NSString *const StatsPropertyPostDetailSettingsClickedStatus = @"settings_clicked_status";
@@ -181,11 +184,6 @@ NSString *const StatsEventManageNotificationsDisabledBlogNotifications = @"Manag
 NSString *const StatsEventQuickPhotoOpened = @"Quick Photo - Opened";
 NSString *const StatsEventQuickPhotoPosted = @"Quick Photo - Posted";
 
-// Welcome View Controller
-NSString *const StatsEventWelcomeViewControllerClickedAddSelfHostedBlog = @"Welcome View Controller - Add Self Hosted Blog";
-NSString *const StatsEventWelcomeViewControllerClickedAddWordpressDotComBlog = @"Welcome View Controller - Add Wordpress.com Blog";
-NSString *const StatsEventWelcomeViewControllerClickedCreateWordpressDotComBlog = @"Welcome View Controller - Create Wordpress.com Blog";
-
 // NUX First Walkthrough 
 NSString *const StatsEventNUXFirstWalkthroughOpened = @"NUX - First Walkthrough - Opened";
 NSString *const StatsEventNUXFirstWalkthroughClickedSkipToCreateAccount = @"NUX - First Walkthrough - Skipped to Create Account";
@@ -203,6 +201,7 @@ NSString *const StatsEventNUXFirstWalkthroughUserSkippedConnectingToJetpack = @"
 
 
 // NUX Create Account
+NSString *const StatsEventAccountCreationOpenedFromTabBar = @"NUX - Create Account Opened From Tab Bar";
 NSString *const StatsEventNUXCreateAccountOpened = @"NUX - Create Account - Opened";
 NSString *const StatsEventNUXCreateAccountClickedCancel = @"NUX - Create Account - Clicked Cancel";
 NSString *const StatsEventNUXCreateAccountClickedHelp = @"NUX - Create Account - Clicked Help";
@@ -367,6 +366,11 @@ NSString *const StatsEventAddBlogsClickedAddSelected = @"Add Blogs - Clicked Add
     [[self sharedInstance] flagProperty:property forEvent:event];
 }
 
++ (void)unflagProperty:(NSString *)property forEvent:(NSString *)event
+{
+    [[self sharedInstance] unflagProperty:property forEvent:event];
+}
+
 #pragma mark - Private Methods
 
 - (BOOL)connectedToWordPressDotCom
@@ -432,6 +436,11 @@ NSString *const StatsEventAddBlogsClickedAddSelected = @"Add Blogs - Clicked Add
 - (void)flagProperty:(NSString *)property forEvent:(NSString *)event
 {
     [self saveProperty:property withValue:@(YES) forEvent:event];
+}
+
+- (void)unflagProperty:(NSString *)property forEvent:(NSString *)event
+{
+    [self saveProperty:property withValue:@(NO) forEvent:event];
 }
 
 - (id)property:(NSString *)property forEvent:(NSString *)event

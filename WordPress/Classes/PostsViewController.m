@@ -7,6 +7,7 @@
 #import "WordPressAppDelegate.h"
 #import "Reachability.h"
 #import "Post.h"
+#import "Constants.h"
 
 #define TAG_OFFSET 1010
 
@@ -24,9 +25,13 @@
 #pragma mark -
 #pragma mark View lifecycle
 
-- (NSString *)noResultsText
+- (NSString *)noResultsTitleText
 {
-    return NSLocalizedString(@"No posts yet", @"Displayed when the user pulls up the posts view and they have no posts");
+    return NSLocalizedString(@"You don't have any posts yet.", @"Displayed when the user pulls up the posts view and they have no posts");
+}
+
+- (UIView *)noResultsAccessoryView {
+    return [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"penandink"]];
 }
 
 - (void)viewDidLoad {
@@ -34,28 +39,12 @@
     [super viewDidLoad];
     
     self.title = NSLocalizedString(@"Posts", @"");
-    UIBarButtonItem *composeButtonItem  = nil;
-    
-    if ([self.editButtonItem respondsToSelector:@selector(setTintColor:)]) {
-        composeButtonItem = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"navbar_add"]
-                                                             style:[WPStyleGuide barButtonStyleForBordered]
-                                                             target:self 
-                                                             action:@selector(showAddPostView)];
-    } else {
-        composeButtonItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemAdd 
-                                                                           target:self 
-                                                                           action:@selector(showAddPostView)];
-    }
-    if ([composeButtonItem respondsToSelector:@selector(setTintColor:)]) {
-        composeButtonItem.tintColor = [UIColor UIColorFromHex:0x333333];
-    }
-    if (IS_IOS7) {
-        UIImage *image = [UIImage imageNamed:@"icon-posts-add"];
-        UIButton *button = [[UIButton alloc] initWithFrame:CGRectMake(0, 0, image.size.width, image.size.height)];
-        [button setImage:image forState:UIControlStateNormal];
-        [button addTarget:self action:@selector(showAddPostView) forControlEvents:UIControlEventTouchUpInside];
-        composeButtonItem = [[UIBarButtonItem alloc] initWithCustomView:button];
-    }
+
+    UIImage *image = [UIImage imageNamed:@"icon-posts-add"];
+    UIButton *button = [[UIButton alloc] initWithFrame:CGRectMake(0, 0, image.size.width, image.size.height)];
+    [button setImage:image forState:UIControlStateNormal];
+    [button addTarget:self action:@selector(showAddPostView) forControlEvents:UIControlEventTouchUpInside];
+    UIBarButtonItem *composeButtonItem = [[UIBarButtonItem alloc] initWithCustomView:button];
 
     [WPStyleGuide setRightBarButtonItemWithCorrectSpacing:composeButtonItem forNavigationItem:self.navigationItem];
     
@@ -97,15 +86,6 @@
 
 - (void)dealloc {
     [[NSNotificationCenter defaultCenter] removeObserver:self];
-}
-
-- (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation {
-    WordPressAppDelegate *delegate = (WordPressAppDelegate*)[[UIApplication sharedApplication] delegate];
-
-    if ([delegate isAlertRunning] == YES)
-        return NO;
-    
-    return [super shouldAutorotateToInterfaceOrientation:interfaceOrientation];
 }
 
 - (NSString *)statsPropertyForViewOpening
@@ -163,7 +143,7 @@
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
     AbstractPost *post = [self.resultsController objectAtIndexPath:indexPath];
-    return [NewPostTableViewCell rowHeightForPost:post andWidth:CGRectGetWidth(self.tableView.bounds)];
+    return [NewPostTableViewCell rowHeightForPost:post andWidth:WPTableViewFixedWidth];
 }
 
 - (BOOL)tableView:(UITableView *)tableView canEditRowAtIndexPath:(NSIndexPath *)indexPath {
@@ -192,11 +172,10 @@
 - (void)deletePostAtIndexPath:(NSIndexPath *)indexPath{
     Post *post = [self.resultsController objectAtIndexPath:indexPath];
     [post deletePostWithSuccess:nil failure:^(NSError *error) {
-        NSDictionary *errInfo = [NSDictionary dictionaryWithObjectsAndKeys:self.blog, @"currentBlog", nil];
 		if([error code] == 403) {
 			[self promptForPassword];
 		} else {
-			[[NSNotificationCenter defaultCenter] postNotificationName:kXML_RPC_ERROR_OCCURS object:error userInfo:errInfo];
+            [WPError showXMLRPCErrorAlert:error];
 		}
         [self syncItems];
     }];
@@ -212,7 +191,9 @@
 
 - (void)editPost:(AbstractPost *)apost {
     EditPostViewController *editPostViewController = [[EditPostViewController alloc] initWithPost:apost];
+    editPostViewController.editorOpenedBy = StatsPropertyPostDetailEditorOpenedOpenedByPostsView;
     UINavigationController *navController = [[UINavigationController alloc] initWithRootViewController:editPostViewController];
+    [navController setToolbarHidden:NO]; // Fixes incorrect toolbar animation.
     navController.modalPresentationStyle = UIModalPresentationCurrentContext;
     [self.view.window.rootViewController presentViewController:navController animated:YES completion:nil];
 }
@@ -252,26 +233,22 @@
     return @"remoteStatusNumber";
 }
 
-- (void)syncItemsViaUserInteractionWithSuccess:(void (^)())success failure:(void (^)(NSError *))failure {
-    // If triggered by a pull to refresh, sync categories, post formats, ...
-    [self.blog syncBlogPostsWithSuccess:success failure:failure];
-}
-
-- (void)syncItemsWithSuccess:(void (^)())success failure:(void (^)(NSError *))failure {
-    [self.blog syncPostsWithSuccess:success failure:failure loadMore:NO];
-}
-
-- (UITableViewCell *)newCell {
-    static NSString *const cellIdentifier = @"PostCell";
-    UITableViewCell *cell = [self.tableView dequeueReusableCellWithIdentifier:cellIdentifier];
-    if (cell == nil) {
-        cell = [[NewPostTableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:cellIdentifier];
-        if (!IS_IOS7) {
-            UIImageView *imageView = [[UIImageView alloc] initWithImage:[[UIImage imageNamed:@"cell_gradient_bg"] stretchableImageWithLeftCapWidth:0 topCapHeight:1]];
-            [cell setBackgroundView:imageView];
+- (void)syncItemsViaUserInteraction:(BOOL)userInteraction success:(void (^)())success failure:(void (^)(NSError *))failure {
+    if (userInteraction) {
+        // If triggered by a pull to refresh, sync posts and metadata
+        [self.blog syncPostsAndMetadataWithSuccess:success failure:failure];
+    } else {
+        // If blog has no posts, then sync posts including metadata
+        if (self.blog.posts.count == 0) {
+            [self.blog syncPostsAndMetadataWithSuccess:success failure:failure];
+        } else {
+            [self.blog syncPostsWithSuccess:success failure:failure loadMore:NO];
         }
     }
-    return cell;
+}
+
+- (Class)cellClass {
+    return [NewPostTableViewCell class];
 }
 
 - (void)controller:(NSFetchedResultsController *)controller
