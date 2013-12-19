@@ -56,7 +56,6 @@ const CGFloat RPVControlButtonBorderSize = 0.0f;
 @property (nonatomic, strong) UILabel *titleLabel;
 @property (nonatomic, strong) UILabel *snippetLabel;
 @property (nonatomic, strong) DTAttributedTextContentView *textContentView;
-@property (nonatomic, strong) UILabel *bylineLabel;
 @property (nonatomic, strong) UIView *bottomView;
 @property (nonatomic, strong) CALayer *bottomBorder;
 @property (nonatomic, strong) CALayer *titleBorder;
