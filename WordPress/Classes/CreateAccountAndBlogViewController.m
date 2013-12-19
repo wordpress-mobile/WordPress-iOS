@@ -60,7 +60,7 @@
 
 @implementation CreateAccountAndBlogViewController
 
-CGFloat const CreateAccountAndBlogStandardOffset = 16.0;
+CGFloat const CreateAccountAndBlogStandardOffset = 15.0;
 CGFloat const CreateAccountAndBlogIconVerticalOffset = 70.0;
 CGFloat const CreateAccountAndBlogMaxTextWidth = 260.0;
 CGFloat const CreateAccountAndBlogTextFieldWidth = 320.0;
@@ -68,7 +68,7 @@ CGFloat const CreateAccountAndBlogTextFieldHeight = 44.0;
 CGFloat const CreateAccountAndBlogTextFieldPhoneHeight = 38.0;
 CGFloat const CreateAccountAndBlogKeyboardOffset = 132.0;
 CGFloat const CreateAccountAndBlogiOS7StatusBarOffset = 20.0;
-CGFloat const CreateAccountAndBlogButtonWidth = 289.0;
+CGFloat const CreateAccountAndBlogButtonWidth = 290.0;
 CGFloat const CreateAccountAndBlogButtonHeight = 40.0;
 
 - (id)init
@@ -488,7 +488,7 @@ CGFloat const CreateAccountAndBlogButtonHeight = 40.0;
     CGRect keyboardFrame = [[keyboardInfo objectForKey:UIKeyboardFrameEndUserInfoKey] CGRectValue];
     keyboardFrame = [self.view convertRect:keyboardFrame fromView:nil];
     
-    CGFloat newKeyboardOffset = (CGRectGetMaxY(_createAccountButton.frame) - CGRectGetMinY(keyboardFrame)) + 0.5 * CreateAccountAndBlogStandardOffset;
+    CGFloat newKeyboardOffset = (CGRectGetMaxY(_createAccountButton.frame) - CGRectGetMinY(keyboardFrame)) + CreateAccountAndBlogStandardOffset;
     
     // make sure keyboard offset is greater than 0, otherwise do not move controls
     if (newKeyboardOffset < 0) {
