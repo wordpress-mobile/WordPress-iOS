@@ -26,6 +26,7 @@
 #import "FollowButton.h"
 #import "Note.h"
 #import "InlineComposeView.h"
+#import "CommentView.h"
 
 #define APPROVE_BUTTON_TAG 1
 #define UNAPPROVE_BUTTON_TAG 2
@@ -57,11 +58,12 @@ NS_ENUM(NSUInteger, NotifcationCommentCellType){
 @property BOOL hasScrollBackView;
 @property (nonatomic, strong) NSCache *contentCache;
 
-@property (nonatomic, strong) UIBarButtonItem *approveBarButton;
-@property (nonatomic, strong) UIBarButtonItem *unapproveBarButton;
-@property (nonatomic, strong) UIBarButtonItem *trashBarButton;
-@property (nonatomic, strong) UIBarButtonItem *spamBarButton;
+@property (nonatomic, strong) UIButton *approveButton;
+@property (nonatomic, strong) UIButton *trashButton;
+@property (nonatomic, strong) UIButton *spamButton;
 @property (nonatomic, weak) UIBarButtonItem *replyBarButton;
+
+@property (nonatomic, strong) CommentView *commentView;
 
 @property (nonatomic, weak) IBOutlet UIToolbar *toolbar;
 @property (nonatomic, weak) IBOutlet IOS7CorrectedTextView *replyTextView;
@@ -102,9 +104,26 @@ NS_ENUM(NSUInteger, NotifcationCommentCellType){
 
 - (void)viewDidLoad
 {
+    [super viewDidLoad];
     self.commentThread = [[NSMutableArray alloc] initWithCapacity:1];
     
-    [super viewDidLoad];
+    
+    self.view = [[UIScrollView alloc] initWithFrame:CGRectZero];
+    self.view.backgroundColor = [UIColor whiteColor];
+    self.commentView = [[CommentView alloc] initWithFrame:self.view.frame];
+    self.commentView.contentProvider = self.note;
+    
+    self.trashButton = [self.commentView addActionButtonWithImage:[UIImage imageNamed:@"icon-comments-trash"] selectedImage:[UIImage imageNamed:@"icon-comments-trash-active"]];
+    [self.trashButton addTarget:self action:@selector(deleteAction:) forControlEvents:UIControlEventTouchUpInside];
+    
+    self.approveButton = [self.commentView addActionButtonWithImage:[UIImage imageNamed:@"icon-comments-approve"] selectedImage:[UIImage imageNamed:@"icon-comments-approve-active"]];
+    [self.approveButton addTarget:self action:@selector(approveOrUnapproveAction:) forControlEvents:UIControlEventTouchUpInside];
+    
+    self.spamButton = [self.commentView addActionButtonWithImage:[UIImage imageNamed:@"icon-comments-flag"] selectedImage:[UIImage imageNamed:@"icon-comments-flag-active"]];
+    [self.spamButton addTarget:self action:@selector(spamAction:) forControlEvents:UIControlEventTouchUpInside];
+
+    [self.view addSubview:self.commentView];
+
     
 //    self.approveBarButton = [self barButtonItemWithImageNamed:@"icon-comments-approve"
 //                                                          andAction:@selector(moderateComment:)];
@@ -228,11 +247,9 @@ NS_ENUM(NSUInteger, NotifcationCommentCellType){
 
     // disable the buttons until we can determine which ones can be used
     // with this note
-    self.spamBarButton.enabled = NO;
-    self.trashBarButton.enabled = NO;
-    self.approveBarButton.enabled = NO;
-    self.replyBarButton.enabled = NO;
-    self.unapproveBarButton.enabled = NO;
+    self.spamButton.enabled = NO;
+    self.trashButton.enabled = NO;
+    self.approveButton.enabled = NO;
 
     __block BOOL isApproved = NO;
     // figure out the actions available for the note
@@ -309,8 +326,7 @@ NS_ENUM(NSUInteger, NotifcationCommentCellType){
 }
 
 
-#pragma mark - IBAction
-
+#pragma mark - Actions
 
 - (void)visitPostURL:(id)sender {
     [self pushToURL:self.headerURL];
@@ -331,83 +347,53 @@ NS_ENUM(NSUInteger, NotifcationCommentCellType){
     [self.navigationController pushViewController:webViewController animated:YES];
 }
 
-- (IBAction)moderateComment:(id)sender {
-    if (self.commentActions == nil || [self.commentActions count] == 0)
-        return;
-            
-    NSDictionary *commentAction;
-    UIButton *button = (UIButton *)sender;
+- (void)approveOrUnapproveAction:(id)sender {
+    [WPMobileStats trackEventForWPCom:StatsEventNotificationsDetailApproveComment];
+    NSDictionary *commentAction = [self.commentActions objectForKey:@"approve-comment"];
+    [self performCommentAction:commentAction];
     
-    UIBarButtonItem *pressedButton = nil;
-    if (button.tag == APPROVE_BUTTON_TAG) {
-        [WPMobileStats trackEventForWPCom:StatsEventNotificationsDetailApproveComment];
-        commentAction = [self.commentActions objectForKey:@"approve-comment"];
-        pressedButton = self.approveBarButton;
-    } else if (button.tag == UNAPPROVE_BUTTON_TAG) {
-        [WPMobileStats trackEventForWPCom:StatsEventNotificationsDetailUnapproveComment];
-        commentAction = [self.commentActions objectForKey:@"unapprove-comment"];
-        pressedButton = self.unapproveBarButton;
-    } else if (button.tag == TRASH_BUTTON_TAG){
-        [WPMobileStats trackEventForWPCom:StatsEventNotificationsDetailTrashComment];
-        commentAction = [self.commentActions objectForKey:@"trash-comment"];
-        pressedButton = self.trashBarButton;
-    } else if (button.tag == UNTRASH_BUTTON_TAG){
-        [WPMobileStats trackEventForWPCom:StatsEventNotificationsDetailUntrashComment];
-        commentAction = [self.commentActions objectForKey:@"untrash-comment"];
-        pressedButton = self.trashBarButton;
-    } else if (button.tag == SPAM_BUTTON_TAG){
-        [WPMobileStats trackEventForWPCom:StatsEventNotificationsDetailFlagCommentAsSpam];
-        commentAction = [self.commentActions objectForKey:@"spam-comment"];
-        pressedButton = self.spamBarButton;
-    } else if (button.tag == UNSPAM_BUTTON_TAG){
-        [WPMobileStats trackEventForWPCom:StatsEventNotificationsDetailUnflagCommentAsSpam];
-        commentAction = [self.commentActions objectForKey:@"unspam-comment"];
-        pressedButton = self.spamBarButton;
-    }
-    
-    button.enabled = NO;
+    // TODO: unapprove
+//    [WPMobileStats trackEventForWPCom:StatsEventNotificationsDetailUnapproveComment];
+//    commentAction = [self.commentActions objectForKey:@"unapprove-comment"];
+}
 
-    // disable all the buttons
-    self.spamBarButton.enabled = NO;
-    self.trashBarButton.enabled = NO;
-    self.approveBarButton.enabled = NO;
-    self.replyBarButton.enabled = NO;
-    self.unapproveBarButton.enabled = NO;
+- (void)deleteAction:(id)sender {
+    [WPMobileStats trackEventForWPCom:StatsEventNotificationsDetailTrashComment];
+    NSDictionary *commentAction = [self.commentActions objectForKey:@"trash-comment"];
+    [self performCommentAction:commentAction];
     
-    //Replaced the pressed btn with a spinner
-    UIActivityIndicatorView *spinner = [[UIActivityIndicatorView alloc]
-                                        initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleGray];
-    spinner.frame = CGRectMake(0, 0, 30, 30);
-    UIBarButtonItem * barButton = [[UIBarButtonItem alloc] initWithCustomView:spinner];
+    // TODO: undelete
+//    [WPMobileStats trackEventForWPCom:StatsEventNotificationsDetailUntrashComment];
+//    commentAction = [self.commentActions objectForKey:@"untrash-comment"];
+}
 
-    NSArray *toolbarButtons =[self.toolbar items];
-    int indexOfPressedButton = 0;
-    for ( ; indexOfPressedButton <  [toolbarButtons count] ; indexOfPressedButton++) {
-        if( toolbarButtons[indexOfPressedButton] == pressedButton )
-            break;
-    }
-    NSMutableArray *newtoolbarButtons = [NSMutableArray arrayWithArray:toolbarButtons];
-    [newtoolbarButtons setObject:barButton atIndexedSubscript:indexOfPressedButton];
-    [self.toolbar setItems:newtoolbarButtons animated:YES];
-    [spinner startAnimating];
+- (void)spamAction:(id)sender {
+    [WPMobileStats trackEventForWPCom:StatsEventNotificationsDetailFlagCommentAsSpam];
+    NSDictionary *commentAction = [self.commentActions objectForKey:@"spam-comment"];
+    [self performCommentAction:commentAction];
     
+    // TODO: unspam
+//    [WPMobileStats trackEventForWPCom:StatsEventNotificationsDetailUnflagCommentAsSpam];
+//    commentAction = [self.commentActions objectForKey:@"unspam-comment"];
+}
+
+- (void)performCommentAction:(NSDictionary *)commentAction {
     NSString *path = [NSString stringWithFormat:@"/rest/v1%@", [commentAction valueForKeyPath:@"params.rest_path"]];
+
     [[[WPAccount defaultWordPressComAccount] restApi] postPath:path parameters:[commentAction valueForKeyPath:@"params.rest_body"] success:^(AFHTTPRequestOperation *operation, id responseObject) {
         NSDictionary *response = (NSDictionary *)responseObject;
         if (response) {
             NSArray *noteArray = [NSArray arrayWithObject:_note];
             [[[WPAccount defaultWordPressComAccount] restApi] refreshNotifications:noteArray fields:nil success:^(AFHTTPRequestOperation *operation, id refreshResponseObject) {
-                [spinner stopAnimating];
                 [self displayNote];
             } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
-                [spinner stopAnimating];
                 [self displayNote];
             }];
         }
     } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
-        button.enabled = YES;
         DDLogVerbose(@"[Rest API] ! %@", [error localizedDescription]);
     }];
+
 }
 
 
