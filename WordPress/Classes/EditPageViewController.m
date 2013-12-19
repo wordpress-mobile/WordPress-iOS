@@ -25,14 +25,19 @@
     if (self.editMode == EditPostViewControllerModeNewPost) {
         title = NSLocalizedString(@"New Page", @"New Page Editor screen title.");
     } else {
-        if ([self.apost.postTitle length] > 0) {
-            title = self.apost.postTitle;
+        if ([self.post.postTitle length] > 0) {
+            title = self.post.postTitle;
         } else {
             title = NSLocalizedString(@"Edit Page", @"Page Editor screen title.");
         }
     }
     self.navigationItem.backBarButtonItem.title = title;
     return title;
+}
+
+- (void)didSaveNewPost {
+    // Noop.
+    // The superclass triggers a tab switch with this method which we don't want for pages.
 }
 
 @end

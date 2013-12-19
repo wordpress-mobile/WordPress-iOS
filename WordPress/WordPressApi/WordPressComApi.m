@@ -194,7 +194,7 @@ NSString *const WordPressComApiPushAppId = @"org.wordpress.appstore";
                WPFLog(@"Couldn't signin the user: %@", error);
                self.password = nil;
                if (operation.response.statusCode != 400) {
-                   [WPError showAlertWithError:error];
+                   [WPError showNetworkingAlertWithError:error];
                }
                if (failure) failure(error);
              }];
@@ -659,7 +659,7 @@ NSString *const WordPressComApiPushAppId = @"org.wordpress.appstore";
             if ([notesData count] > i) {
                 Note *note = [notes objectAtIndex:i];
                 if (![note isDeleted] && [note managedObjectContext]) {
-                    [note updateAttributes:[notesData objectAtIndex:i]];
+                    [note syncAttributes:[notesData objectAtIndex:i]];
                 }
             }
         }

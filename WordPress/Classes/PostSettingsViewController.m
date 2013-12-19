@@ -1,5 +1,4 @@
 #import "PostSettingsViewController.h"
-#import "WPSelectionTableViewController.h"
 #import "WordPressAppDelegate.h"
 #import "NSString+Helpers.h"
 #import "EditPostViewController_Internal.h"
@@ -13,6 +12,8 @@
 #import "UITableViewTextFieldCell.h"
 #import "WPAlertView.h"
 
+#define kSelectionsStatusContext ((void *)1000)
+#define kSelectionsCategoriesContext ((void *)2000)
 #define kPasswordFooterSectionHeight        68.0f
 #define kResizePhotoSettingSectionHeight    60.0f
 #define TAG_PICKER_STATUS                   0
@@ -110,7 +111,7 @@ static NSString *const RemoveGeotagCellIdentifier = @"RemoveGeotagCellIdentifier
 }
 
 - (void)viewDidLoad {
-    self.title = NSLocalizedString(@"Properties", nil);
+    self.title = NSLocalizedString(@"Options", nil);
 
     DDLogInfo(@"%@ %@", self, NSStringFromSelector(_cmd));
 
@@ -466,7 +467,8 @@ static NSString *const RemoveGeotagCellIdentifier = @"RemoveGeotagCellIdentifier
                     }
                     cell.textLabel.text = NSLocalizedString(@"Tags", @"Label for the tags field. Should be the same as WP core.");
                     cell.textField.text = self.post.tags;
-                    cell.textField.placeholder = NSLocalizedString(@"Separate tags with commas", @"Placeholder text for the tags field. Should be the same as WP core.");
+                    cell.textField.attributedPlaceholder = [[NSAttributedString alloc] initWithString:(NSLocalizedString(@"Comma separated", @"Placeholder text for the tags field. Should be the same as WP core.")) attributes:(@{NSForegroundColorAttributeName: [WPStyleGuide textFieldPlaceholderGrey]})];
+                    cell.textField.returnKeyType = UIReturnKeyDone;
                     cell.textField.delegate = self;
                     self.tagsTextField = cell.textField;
                     [WPStyleGuide configureTableViewTextCell:cell];
@@ -868,24 +870,19 @@ static NSString *const RemoveGeotagCellIdentifier = @"RemoveGeotagCellIdentifier
     switch (indexPath.row) {
         case 0:
             
-            if(!self.post.blog.geolocationEnabled) {
-                UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"Enable Geotagging", @"Title of an alert view stating the user needs to turn on geotagging.")
-                                                                    message:NSLocalizedString(@"Geotagging is turned off. \nTo update this post's location, please enable geotagging in this blog's settings.", @"Message of an alert explaining that geotagging need to be enabled.")
-                                                                   delegate:nil
-                                                          cancelButtonTitle:@"OK"
-                                                          otherButtonTitles:nil, nil];
-                [alertView show];
+            if (!self.post.blog.geolocationEnabled) {
+                [WPError showAlertWithTitle:NSLocalizedString(@"Enable Geotagging", @"Title of an alert view stating the user needs to turn on geotagging.")
+                                    message:NSLocalizedString(@"Geotagging is turned off. \nTo update this post's location, please enable geotagging in this blog's settings.", @"Message of an alert explaining that geotagging need to be enabled.")
+                          withSupportButton:NO];
                 return;
             }
             
             // If location services are disabled at the app level [CLLocationManager locationServicesEnabled] will be true, but the location will be nil.
-            if(![CLLocationManager locationServicesEnabled] || [self.locationManager location] == nil) {
-                UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"Location Unavailable", @"Title of an alert view stating that the user's location is unavailable.")
-                                                                    message:NSLocalizedString(@"Location Services are turned off. \nTo add or update this post's location, please enable Location Services in the Settings app.", @"Message of an alert explaining that location services need to be enabled.")
-                                                                   delegate:nil
-                                                          cancelButtonTitle:@"OK"
-                                                          otherButtonTitles:nil, nil];
-                [alertView show];
+            if (![CLLocationManager locationServicesEnabled] || [self.locationManager location] == nil) {
+                [WPError showAlertWithTitle:NSLocalizedString(@"Location Unavailable", @"Title of an alert view stating that the user's location is unavailable.")
+                                    message:NSLocalizedString(@"Location Services are turned off. \nTo add or update this post's location, please enable Location Services in the Settings app.", @"Message of an alert explaining that location services need to be enabled.")
+                          withSupportButton:NO];
+
                 return;
             }
 
@@ -1209,14 +1206,14 @@ static NSString *const RemoveGeotagCellIdentifier = @"RemoveGeotagCellIdentifier
         popoverRect.size.width = 100.0f;
         [self.popover presentPopoverFromRect:popoverRect inView:self.view permittedArrowDirections:UIPopoverArrowDirectionAny animated:YES];
     } else {
-        CGFloat width = self.postDetailViewController.view.frame.size.width;
+        CGFloat width = self.view.frame.size.width;
         CGFloat height = 0.0;
         
         // Refactor this class to not use UIActionSheets for display. See trac #1509.
         // <rant>Shoehorning a UIPicker inside a UIActionSheet is just madness.</rant>
         // For now, hardcoding height values for the iPhone so we don't get
         // a funky gap at the bottom of the screen on the iPhone 5.
-        if(self.postDetailViewController.view.frame.size.height <= 416.0f) {
+        if(self.view.frame.size.height <= 416.0f) {
             height = 490.0f;
         } else {
             height = 500.0f;
@@ -1719,7 +1716,7 @@ static NSString *const RemoveGeotagCellIdentifier = @"RemoveGeotagCellIdentifier
         }
         [imageMedia save];
     } failure:^(NSError *error) {
-        [WPError showAlertWithError:error title:NSLocalizedString(@"Upload failed", @"")];
+        [WPError showNetworkingAlertWithError:error title:NSLocalizedString(@"Upload failed", @"")];
     }];
 }
 

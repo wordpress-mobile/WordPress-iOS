@@ -123,8 +123,8 @@
 #pragma mark - Table view delegate
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
-    NSDictionary *dict = _blogs[indexPath.row];
-	[self.delegate userDidSelectBlog:dict];
+    Blog *blog = _blogs[indexPath.row];
+	[self.delegate userDidSelectBlog:blog];
 	
     [self dismissViewControllerAnimated:YES completion:nil];
 }

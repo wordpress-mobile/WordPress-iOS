@@ -49,9 +49,7 @@
 		self.topicsArray = arr;
 		
         self.currentTopic = [ReaderPost currentTopic];
-		
-		[self loadTopics];
-	}
+    }
 	
 	return self;
 }
@@ -72,12 +70,11 @@
 																		  target:self
 																		  action:@selector(handleFriendFinderButtonTapped:)];
 	self.navigationItem.leftBarButtonItem = friendFinderButton;
+    
+    [self loadTopics];
 	
     [WPStyleGuide configureColorsForView:self.view andTableView:self.tableView];
-	
-	[self refreshIfReady];
 }
-
 
 #pragma mark - Instance Methods
 
@@ -89,14 +86,6 @@
     }];
     return [arr objectsAtIndexes:indexSet];
 }
-
-
-- (void)refreshIfReady {
-	if([self.topicsArray count] && [self isViewLoaded]) {
-		[self.tableView reloadData];
-	}
-}
-
 
 - (void)handleCancelButtonTapped:(id)sender {
     [self dismissViewControllerAnimated:YES completion:nil];
@@ -146,20 +135,15 @@
 				[extras addObject:@{@"title": title, @"endpoint":endpoint}];
 			}
             [[NSUserDefaults standardUserDefaults] setObject:extras forKey:ReaderExtrasArrayKey];
+            [[NSUserDefaults standardUserDefaults] synchronize];
 			self.defaultTopicsArray = [[self fetchDefaultTopics] arrayByAddingObjectsFromArray:extras];
 		}
-        [NSUserDefaults resetStandardUserDefaults];
         
-		[self refreshIfReady];
-		
+		[self.tableView reloadData];
 	} failure:^(AFHTTPRequestOperation *operation, NSError *error) {
 		[self.tableView setTableFooterView:nil];
-		UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"Unable to Load Topics", @"")
-															message:NSLocalizedString(@"Sorry. There was a problem loading the topics list.  Please try again later.", @"")
-														   delegate:nil
-												  cancelButtonTitle:NSLocalizedString(@"OK", @"")
-												  otherButtonTitles:nil, nil];
-		[alertView show];
+        
+        [WPError showAlertWithTitle:NSLocalizedString(@"Unable to Load Topics", nil) message:NSLocalizedString(@"Sorry. There was a problem loading the topics list.  Please try again later.", nil)];
 	}];
 }
 

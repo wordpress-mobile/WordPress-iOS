@@ -1,5 +1,6 @@
 #import "WPSelectionTableViewController.h"
 #import "WordPressAppDelegate.h"
+#import "WPTableViewCell.h"
 
 static NSString *const SelectionTableRowCell = @"SelectionTableRowCell";
 
@@ -22,7 +23,7 @@ static NSString *const SelectionTableRowCell = @"SelectionTableRowCell";
 - (void)viewDidLoad {
     [super viewDidLoad];
     
-    [self.tableView registerClass:[UITableViewCell class] forCellReuseIdentifier:SelectionTableRowCell];
+    [self.tableView registerClass:[WPTableViewCell class] forCellReuseIdentifier:SelectionTableRowCell];
 }
 
 - (void)viewWillAppear:(BOOL)animated {

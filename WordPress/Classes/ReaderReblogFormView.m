@@ -26,7 +26,6 @@
 @property (nonatomic, assign) BOOL blogsAvailable;
 @property (nonatomic, strong) UIView *loadingBlogsView;
 
-- (void)setDestinationBlog:(NSDictionary *)dict;
 - (void)handleBlogButtonTapped:(id)sender;
 
 @end
@@ -117,16 +116,16 @@
         if (primaryBlogId) {
             [blogs enumerateObjectsUsingBlock:^(id obj, NSUInteger idx, BOOL *stop) {
                 if ([[obj numberForKey:@"blogid"] isEqualToNumber:primaryBlogId]) {
-                    [self setDestinationBlog:obj];
+                    [self configureDestinationBlogFromDictionary:obj];
                     *stop = YES;
                 }
             }];
         } else {
-            [self setDestinationBlog:[blogs objectAtIndex:0]];
+            [self configureDestinationBlogFromDictionary:[blogs objectAtIndex:0]];
         }
     } else if ([blogs count]) {
         offset = -CGRectGetMaxY(_loadingBlogsView.frame);
-        [self setDestinationBlog:[blogs objectAtIndex:0]];
+        [self configureDestinationBlogFromDictionary:[blogs objectAtIndex:0]];
     } else {
         // No blogs yet, they're probably being loaded
         _loadingBlogsView = [[UIView alloc] initWithFrame:CGRectMake(10.0f, 8.0f, self.bounds.size.width, 20.0f)];
@@ -205,12 +204,7 @@
 		[self.textView becomeFirstResponder];
 
 		// TODO: Failure reason.
-		UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"Reblog failed", @"")
-															message:NSLocalizedString(@"There was a problem reblogging. Please try again.", @"")
-														   delegate:nil
-												  cancelButtonTitle:NSLocalizedString(@"OK", @"OK")
-												  otherButtonTitles:nil];
-		[alertView show];
+        [WPError showAlertWithTitle:NSLocalizedString(@"Reblog failed", nil) message:NSLocalizedString(@"There was a problem reblogging. Please try again.", nil)];
 	}];
 
 }
@@ -262,26 +256,36 @@
 	[self updateNavItem];
 }
 
-
-- (void)setDestinationBlog:(NSDictionary *)dict {
-	
-	self.siteId = [dict numberForKey:@"blogid"];
-	self.siteTitle = [dict stringForKey:@"blogName"];
-
-	if (_blogButton) {
-		NSURL *url = [NSURL URLWithString:[dict stringForKey:@"url"]];
+- (void)configureDestinationBlogWithID:(NSNumber *)blogID name:(NSString *)blogName url:(NSString *)urlString {
+	self.siteId = blogID;
+	self.siteTitle = blogName;
+    
+    if (_blogButton) {
+		NSURL *url = [NSURL URLWithString:urlString];
 		[_blavatarImageView setImageWithBlavatarUrl:[url host] isWPcom:YES];
 		_blogNameLabel.text = _siteTitle;
 	}
-
+    
 	[self updateNavItem];
+}
+
+- (void)configureDestinationBlog:(Blog *)blog {
+    [self configureDestinationBlogWithID:blog.blogID name:blog.blogName url:blog.url];
+}
+
+- (void)configureDestinationBlogFromDictionary:(NSDictionary *)dict {
+    NSNumber *siteId = [dict numberForKey:@"blogid"];
+	NSString *siteTitle = [dict stringForKey:@"blogName"];
+    NSString *url = [dict stringForKey:@"url"];
+    
+    [self configureDestinationBlogWithID:siteId name:siteTitle url:url];
 }
 
 
 #pragma mark - ReaderUsersBlog Delegate method
 
-- (void)userDidSelectBlog:(NSDictionary *)blog {
-	[self setDestinationBlog:blog];
+- (void)userDidSelectBlog:(Blog *)blog {
+	[self configureDestinationBlog:blog];
 }
 
 
