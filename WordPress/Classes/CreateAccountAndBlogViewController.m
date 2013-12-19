@@ -661,7 +661,7 @@ CGFloat const CreateAccountAndBlogButtonHeight = 40.0;
         };
         
         NSNumber *languageId = [_currentLanguage objectForKey:@"lang_id"];
-        [[WordPressComApi sharedApi] validateWPComBlogWithUrl:[self getSiteAddressWithoutWordPressDotCom]
+        [[WordPressComApi anonymousApi] validateWPComBlogWithUrl:[self getSiteAddressWithoutWordPressDotCom]
                                                  andBlogTitle:[self generateSiteTitleFromUsername:_usernameField.text]
                                                 andLanguageId:languageId
                                                       success:blogValidationSuccess
