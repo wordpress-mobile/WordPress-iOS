@@ -130,6 +130,7 @@
 
 - (void)secureTextEntryToggleAction:(id)sender {
     [self setSecureTextEntry:!self.isSecureTextEntry];
+    self.text = self.text; // Fixes cursor position after toggling
     [self setNeedsDisplay];
 }
 
