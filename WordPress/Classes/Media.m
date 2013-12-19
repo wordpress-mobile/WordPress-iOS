@@ -12,6 +12,13 @@
 #import "AFHTTPRequestOperation.h"
 #import "ContextManager.h"
 
+NSString *const ImageUploadSuccessfulNotification = @"ImageUploadSuccessful";
+NSString *const ImageUploadFailedNotification = @"ImageUploadFailed";
+NSString *const FeaturedImageUploadSuccessfulNotification = @"FeaturedImageUploadSuccessful";
+NSString *const FeaturedImageUploadFailedNotification = @"FeaturedImageUploadFailed";
+NSString *const VideoUploadSuccessfulNotification = @"VideoUploadSuccessful";
+NSString *const VideoUploadFailedNotification = @"VideoUploadFailed";
+
 @interface Media (PrivateMethods)
 
 - (void)xmlrpcUploadWithSuccess:(void (^)())success failure:(void (^)(NSError *error))failure;
@@ -284,6 +291,11 @@
                 if ([self isDeleted] || self.managedObjectContext == nil)
                     return;
 
+                if ([self.mediaType isEqualToString:@"featured"]) {
+                    [[NSNotificationCenter defaultCenter] postNotificationName:FeaturedImageUploadFailedNotification
+                                                                        object:self];
+                }
+
                 self.remoteStatus = MediaRemoteStatusFailed;
                 _uploadOperation = nil;
                 if (failure) failure(error);
@@ -314,11 +326,15 @@
                 if (success) success();
 
                 if([self.mediaType isEqualToString:@"video"]) {
-                    [[NSNotificationCenter defaultCenter] postNotificationName:VideoUploadSuccessful
+                    [[NSNotificationCenter defaultCenter] postNotificationName:VideoUploadSuccessfulNotification
                                                                         object:self
                                                                       userInfo:response];
                 } else if ([self.mediaType isEqualToString:@"image"]){ 
-                    [[NSNotificationCenter defaultCenter] postNotificationName:ImageUploadSuccessful
+                    [[NSNotificationCenter defaultCenter] postNotificationName:ImageUploadSuccessfulNotification
+                                                                        object:self
+                                                                      userInfo:response];
+                } else if ([self.mediaType isEqualToString:@"featured"]){
+                    [[NSNotificationCenter defaultCenter] postNotificationName:FeaturedImageUploadSuccessfulNotification
                                                                         object:self
                                                                       userInfo:response];
                 }
@@ -484,13 +500,13 @@
     
     CGSize newSize;
     switch (size) {
-        case kResizeSmall:
+        case MediaResizeSmall:
 			newSize = smallSize;
             break;
-        case kResizeMedium:
+        case MediaResizeMedium:
             newSize = mediumSize;
             break;
-        case kResizeLarge:
+        case MediaResizeLarge:
             newSize = largeSize;
             break;
         default:

@@ -1,10 +1,11 @@
-//
-//  WPError.m
-//  WordPress
-//
-//  Created by Jorge Bernal on 4/17/12.
-//  Copyright (c) 2012 WordPress. All rights reserved.
-//
+/*
+ * WPError.m
+ *
+ * Copyright (c) 2013 WordPress. All rights reserved.
+ *
+ * Licensed under GNU General Public License 2.0.
+ * Some rights reserved. See license.txt
+ */
 
 #import "WPError.h"
 #import "WordPressAppDelegate.h"
@@ -12,10 +13,33 @@
 #import "WPcomLoginViewController.h"
 #import "WPAccount.h"
 #import "NSString+XMLExtensions.h"
+#import "SupportViewController.h"
+
+NSInteger const SupportButtonIndex = 0;
+
+@interface WPError () <UIAlertViewDelegate>
+@property (nonatomic, assign) BOOL alertShowing;
+@property (nonatomic, copy) void (^okPressedBlock)();
+
+@end
 
 @implementation WPError
 
-+ (void)showAlertWithError:(NSError *)error title:(NSString *)title {
++ (instancetype)internalInstance {
+    static WPError *instance;
+    static dispatch_once_t onceToken;
+    dispatch_once(&onceToken, ^{
+        instance = [[WPError alloc] init];
+    });
+    return instance;
+}
+
+
++ (void)showNetworkingAlertWithError:(NSError *)error {
+    [self showNetworkingAlertWithError:error title:nil];
+}
+
++ (void)showNetworkingAlertWithError:(NSError *)error title:(NSString *)title {
     NSString *message = nil;
     NSString *customTitle = nil;
 
@@ -65,12 +89,7 @@
     } else if ([error.domain isEqualToString:WordPressComApiErrorDomain]) {
         DDLogError(@"wp.com API error: %@: %@", [error.userInfo objectForKey:WordPressComApiErrorCodeKey], [error localizedDescription]);
         if (error.code == WordPressComApiErrorInvalidToken || error.code == WordPressComApiErrorAuthorizationRequired) {
-            if ([[WPAccount defaultWordPressComAccount] password] == nil) {
-                [WPcomLoginViewController presentLoginScreen];
-            }
-            [[WordPressComApi sharedApi] refreshTokenWithSuccess:nil failure:^(NSError *error) {
-                [WPcomLoginViewController presentLoginScreen];
-            }];
+            [WPcomLoginViewController presentLoginScreen];
             return;
         }
     }
@@ -88,11 +107,65 @@
         }
     }
     
-    [[WordPressAppDelegate sharedWordPressApplicationDelegate] showAlertWithTitle:title message:message];
+    [self showAlertWithTitle:title message:message];
 }
 
-+ (void)showAlertWithError:(NSError *)error {
-    [self showAlertWithError:error title:nil];
++ (void)showXMLRPCErrorAlert:(NSError *)error {
+    NSString *cleanedErrorMsg = [error localizedDescription];
+    
+    //org.wordpress.iphone --> XML-RPC errors
+    if ([error.domain isEqualToString:@"org.wordpress.iphone"] && error.code == 401){
+        cleanedErrorMsg = NSLocalizedString(@"Sorry, you cannot access this feature. Please check your User Role on this blog.", @"");
+    }
+    
+    // ignore HTTP auth canceled errors
+    if ([error.domain isEqual:NSURLErrorDomain] && error.code == NSURLErrorUserCancelledAuthentication) {
+        [WPError internalInstance].alertShowing = NO;
+        return;
+    }
+	
+	if ([cleanedErrorMsg rangeOfString:@"NSXMLParserErrorDomain"].location != NSNotFound) {
+		cleanedErrorMsg = NSLocalizedString(@"The app can't recognize the server response. Please, check the configuration of your blog.", @"");
+    }
+	
+	[self showAlertWithTitle:NSLocalizedString(@"Error", @"Generic popup title for any type of error.") message:cleanedErrorMsg];
+}
+
++ (void)showAlertWithTitle:(NSString *)title message:(NSString *)message {
+    [self showAlertWithTitle:title message:message withSupportButton:YES okPressedBlock:nil];
+}
+
++ (void)showAlertWithTitle:(NSString *)title message:(NSString *)message withSupportButton:(BOOL)showSupport {
+    [self showAlertWithTitle:title message:message withSupportButton:showSupport okPressedBlock:nil];
+}
+
++ (void)showAlertWithTitle:(NSString *)title message:(NSString *)message withSupportButton:(BOOL)showSupport okPressedBlock:(void (^)(UIAlertView *))okBlock {
+    if ([WPError internalInstance].alertShowing) {
+        return;
+    }
+    [WPError internalInstance].alertShowing = YES;
+    
+    DDLogInfo(@"Showing alert with title: %@ and message %@", title, message);
+    NSString *supportText = showSupport ? NSLocalizedString(@"Need Help?", @"'Need help?' button label, links off to the WP for iOS FAQ.") : nil;
+    UIAlertView *alert = [[UIAlertView alloc] initWithTitle:title
+                                                    message:message
+                                                   delegate:[WPError internalInstance]
+                                          cancelButtonTitle:supportText
+                                          otherButtonTitles:NSLocalizedString(@"OK", nil), nil];
+    [alert show];
+    [WPError internalInstance].okPressedBlock = okBlock;
+}
+
+#pragma mark - UIAlertViewDelegate
+
+- (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex {
+    if (alertView.cancelButtonIndex == buttonIndex) {
+        [SupportViewController showFromTabBar];
+    } else if (_okPressedBlock) {
+        _okPressedBlock(alertView);
+        _okPressedBlock = nil;
+    }
+    _alertShowing = NO;
 }
 
 @end

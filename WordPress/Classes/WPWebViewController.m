@@ -13,6 +13,7 @@
 #import "WPActivityDefaults.h"
 #import "NSString+Helpers.h"
 #import "WPCookie.h"
+#import "Constants.h"
 
 @class WPReaderDetailViewController;
 
@@ -31,6 +32,10 @@
         [_webView stopLoading];
     }
     _statusTimer = nil;
+}
+
+- (BOOL)hidesBottomBarWhenPushed {
+    return YES;
 }
 
 - (NSString *)statsPrefixForShareActions {
@@ -503,8 +508,9 @@
     DDLogInfo(@"%@ %@: %@", self, NSStringFromSelector(_cmd), error);
     // -999: Canceled AJAX request
     // 102:  Frame load interrupted: canceled wp-login redirect to make the POST
-    if (self.isLoading && ([error code] != -999) && [error code] != 102)
-        [[NSNotificationCenter defaultCenter] postNotificationName:@"OpenWebPageFailed" object:error userInfo:nil];
+    if (self.isLoading && ([error code] != -999) && [error code] != 102) {
+        [WPError showAlertWithTitle:NSLocalizedString(@"Error", nil) message:error.localizedDescription];
+    }
     [self setLoading:NO];
 }
 

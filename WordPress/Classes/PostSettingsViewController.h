@@ -1,7 +1,7 @@
 #import <UIKit/UIKit.h>
 #import <CoreLocation/CoreLocation.h>
 #import <MapKit/MapKit.h>
-#import "UITableViewActivityCell.h"
+#import "WPTableViewActivityCell.h"
 #import "EditPostViewController.h"
 #import "CPopoverManager.h"
 #import "PostAnnotation.h"

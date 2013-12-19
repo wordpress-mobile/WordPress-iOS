@@ -7,6 +7,7 @@
 //
 
 #import "WPTableViewSectionHeaderView.h"
+#import "WPTableViewCell.h"
 
 @interface WPTableViewSectionHeaderView() {
     UILabel *_titleLabel;
@@ -32,9 +33,8 @@ CGFloat const WPTableViewSectionHeaderViewBottomVerticalPadding = 8.0;
         _titleLabel.textColor = [WPStyleGuide whisperGrey];
         _titleLabel.backgroundColor = [UIColor clearColor];
         _titleLabel.shadowOffset = CGSizeMake(0.0, 0.0);
+        _fixedWidth = IS_IPAD ? WPTableViewFixedWidth : 0.0;
         [self addSubview:_titleLabel];
-        
-        self.leftMarginPercent =  IS_IPAD ? 0.2 : 0;
     }
     return self;
 }
@@ -50,9 +50,9 @@ CGFloat const WPTableViewSectionHeaderViewBottomVerticalPadding = 8.0;
 {
     [super layoutSubviews];
     
-    CGFloat leftMargin = self.superview.frame.size.width * self.leftMarginPercent;
+    CGFloat width = self.fixedWidth > 0 ? self.fixedWidth : CGRectGetWidth(self.superview.frame);
     CGSize titleSize = [[self class] sizeForTitle:_titleLabel.text andWidth:CGRectGetWidth(self.bounds)];
-    _titleLabel.frame = CGRectMake(WPTableViewSectionHeaderViewStandardOffset + leftMargin, WPTableViewSectionHeaderViewTopVerticalPadding, titleSize.width, titleSize.height);
+    _titleLabel.frame = CGRectIntegral(CGRectMake(WPTableViewSectionHeaderViewStandardOffset + (CGRectGetWidth(self.superview.frame) - width) / 2.0, WPTableViewSectionHeaderViewTopVerticalPadding, width, titleSize.height));
 }
 
 + (CGFloat)heightForTitle:(NSString *)title andWidth:(CGFloat)width

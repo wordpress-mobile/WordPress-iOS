@@ -16,11 +16,15 @@
 #import <WPXMLRPCClient.h>
 #import "ContextManager.h"
 
+NSString *const NotificationsDeviceToken = @"apnsDeviceToken";
+
 @implementation NotificationsManager
 
 + (void)registerForPushNotifications {
-    WordPressAppDelegate *appDelegate = [WordPressAppDelegate sharedWordPressApplicationDelegate];
-    if (appDelegate.isWPcomAuthenticated) {
+#if TARGET_IPHONE_SIMULATOR
+    return;
+#endif
+    if ([WPAccount defaultWordPressComAccount]) {
         [[UIApplication sharedApplication]
          registerForRemoteNotificationTypes:(UIRemoteNotificationTypeBadge |
                                              UIRemoteNotificationTypeSound |
@@ -40,21 +44,21 @@
     DDLogInfo(@"Device token received in didRegisterForRemoteNotificationsWithDeviceToken: %@", myToken);
     
     // Store the token
-    NSString *previousToken = [[NSUserDefaults standardUserDefaults] objectForKey:kApnsDeviceTokenPrefKey];
+    NSString *previousToken = [[NSUserDefaults standardUserDefaults] objectForKey:NotificationsDeviceToken];
     if (![previousToken isEqualToString:myToken]) {
         DDLogInfo(@"Device Token has changed! OLD Value %@, NEW value %@", previousToken, myToken);
-        [[NSUserDefaults standardUserDefaults] setObject:myToken forKey:kApnsDeviceTokenPrefKey];
+        [[NSUserDefaults standardUserDefaults] setObject:myToken forKey:NotificationsDeviceToken];
         [[WordPressComApi sharedApi] syncPushNotificationInfo];
     }
 }
 
 + (void)registrationDidFail:(NSError *)error {
     DDLogError(@"Failed to register for push notifications: %@", error);
-    [[NSUserDefaults standardUserDefaults] removeObjectForKey:kApnsDeviceTokenPrefKey];
+    [[NSUserDefaults standardUserDefaults] removeObjectForKey:NotificationsDeviceToken];
 }
 
 + (void)unregisterDeviceToken {
-    NSString *token = [[NSUserDefaults standardUserDefaults] objectForKey:kApnsDeviceTokenPrefKey];
+    NSString *token = [[NSUserDefaults standardUserDefaults] objectForKey:NotificationsDeviceToken];
     if (nil == token) {
         return;
     }
@@ -63,26 +67,18 @@
         return;
     }
     
-    NSString *authURL = kNotificationAuthURL;
     WPAccount *account = [WPAccount defaultWordPressComAccount];
 	if (account) {
-#ifdef DEBUG
-        NSNumber *sandbox = [NSNumber numberWithBool:YES];
-#else
-        NSNumber *sandbox = [NSNumber numberWithBool:NO];
-#endif
         NSArray *parameters = @[account.username,
                                 account.password,
                                 token,
                                 [[UIDevice currentDevice] wordpressIdentifier],
                                 @"apple",
-                                sandbox,
-#ifdef INTERNAL_BUILD
-                                @"org.wordpress.internal"
-#endif
+                                @NO, // Sandbox parameter - deprecated
+                                WordPressComApiPushAppId
                                 ];
         
-        WPXMLRPCClient *api = [[WPXMLRPCClient alloc] initWithXMLRPCEndpoint:[NSURL URLWithString:authURL]];
+        WPXMLRPCClient *api = [[WPXMLRPCClient alloc] initWithXMLRPCEndpoint:[NSURL URLWithString:WPComXMLRPCUrl]];
         [api setAuthorizationHeaderWithToken:[[WordPressComApi sharedApi] authToken]];
         [api callMethod:@"wpcom.mobile_push_unregister_token"
              parameters:parameters

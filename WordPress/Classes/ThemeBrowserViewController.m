@@ -14,7 +14,6 @@
 #import "ThemeDetailsViewController.h"
 #import "Blog.h"
 #import "WPStyleGuide.h"
-#import "WPInfoView.h"
 
 static NSString *const ThemeCellIdentifier = @"theme";
 static NSString *const SearchFilterCellIdentifier = @"search_filter";
@@ -26,7 +25,7 @@ static NSString *const SearchFilterCellIdentifier = @"search_filter";
 @property (nonatomic, strong) NSString *currentResultsSort, *currentSearchText;
 @property (nonatomic, strong) NSArray *allThemes, *filteredThemes;
 @property (nonatomic, weak) UIRefreshControl *refreshHeaderView;
-@property (nonatomic, weak) WPInfoView *noThemesView;
+//@property (nonatomic, weak) WPNoResults *noThemesView;
 @property (nonatomic, weak) ThemeSearchFilterHeaderView *header;
 @property (nonatomic, weak) Theme *currentTheme;
 @property (nonatomic, assign) BOOL isSearching;
@@ -55,10 +54,10 @@ static NSString *const SearchFilterCellIdentifier = @"search_filter";
     
     self.collectionView.dataSource = self;
     self.collectionView.delegate = self;
-    self.collectionView.backgroundColor = TABLE_VIEW_BACKGROUND_COLOR;
+//    self.collectionView.backgroundColor = TABLE_VIEW_BACKGROUND_COLOR;
     [self.collectionView registerClass:[ThemeBrowserCell class] forCellWithReuseIdentifier:ThemeCellIdentifier];
-    [self.collectionView registerClass:[ThemeSearchFilterHeaderView class]
-            forSupplementaryViewOfKind:UICollectionElementKindSectionHeader withReuseIdentifier:SearchFilterCellIdentifier];
+//    [self.collectionView registerClass:[ThemeSearchFilterHeaderView class]
+//            forSupplementaryViewOfKind:UICollectionElementKindSectionHeader withReuseIdentifier:SearchFilterCellIdentifier];
     
     UIRefreshControl *refreshHeaderView = [[UIRefreshControl alloc] initWithFrame:CGRectMake(0.0f, 0.0f - self.collectionView.bounds.size.height, self.collectionView.frame.size.width, self.collectionView.bounds.size.height)];
     _refreshHeaderView = refreshHeaderView;
@@ -117,7 +116,7 @@ static NSString *const SearchFilterCellIdentifier = @"search_filter";
         [_header resetSearch];
         [_refreshHeaderView endRefreshing];
     } failure:^(NSError *error) {
-        [WPError showAlertWithError:error];
+//        [WPError showAlertWithError:error];
         [_refreshHeaderView endRefreshing];
     }];
 }
@@ -135,19 +134,19 @@ static NSString *const SearchFilterCellIdentifier = @"search_filter";
         self.filteredThemes = _allThemes;
         
     } failure:^(NSError *error) {
-        [WPError showAlertWithError:error];
+//        [WPError showAlertWithError:error];
     }];
 }
 
 - (void)toggleNoThemesView:(BOOL)show {
-    if (!show) {
-        [_noThemesView removeFromSuperview];
-        return;
-    }
-    if (!_noThemesView) {
-        _noThemesView = [WPInfoView WPInfoViewWithTitle:@"No themes to display" message:nil cancelButton:nil];
-    }
-    [self.collectionView addSubview:_noThemesView];
+//    if (!show) {
+//        [_noThemesView removeFromSuperview];
+//        return;
+//    }
+//    if (!_noThemesView) {
+//        _noThemesView = [WPInfoView WPInfoViewWithTitle:@"No themes to display" message:nil cancelButton:nil];
+//    }
+//    [self.collectionView addSubview:_noThemesView];
 }
 
 - (void)removeCurrentThemeFromList {
@@ -228,7 +227,7 @@ static NSString *const SearchFilterCellIdentifier = @"search_filter";
 }
 
 - (void)viewDidLayoutSubviews {
-    [_noThemesView centerInSuperview];
+//    [_noThemesView centerInSuperview];
 }
 
 #pragma mark - FetchedResultsController

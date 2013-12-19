@@ -1,29 +1,11 @@
 #import <UIKit/UIKit.h>
-#import "WPSegmentedSelectionTableViewController.h"
-#import "Category.h"
-#import "Blog.h"
 
-#define kParentCategoriesContext ((void *)999)
+extern NSString *const NewCategoryCreatedAndUpdatedInBlogNotification;
 
-@interface WPAddCategoryViewController : UIViewController {
-    IBOutlet UITableView *catTableView;
+@class Blog;
 
-    IBOutlet UITextField *newCatNameField;
-    IBOutlet UITextField *parentCatNameField;
-    IBOutlet UILabel *parentCatNameLabel;
+@interface WPAddCategoryViewController : UIViewController
 
-    IBOutlet UITableViewCell *newCatNameCell;
-    IBOutlet UITableViewCell *parentCatNameCell;
-
-    IBOutlet UIBarButtonItem *saveButtonItem;
-    IBOutlet UIBarButtonItem *cancelButtonItem;
-
-    Category *parentCat;
-}
-@property (nonatomic, strong) Blog *blog;
-
-- (IBAction)cancelAddCategory:(id)sender;
-- (IBAction)saveAddCategory:(id)sender;
-- (void)removeProgressIndicator;
+- (id)initWithBlog:(Blog *)blog;
 
 @end

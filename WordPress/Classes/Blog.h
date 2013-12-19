@@ -12,8 +12,6 @@
 
 #import "Reachability.h"
 
-#define BlogChangedNotification @"BlogChangedNotification"
-
 @class WPAccount;
 
 @interface Blog : NSManagedObject
@@ -21,7 +19,7 @@
 @property (nonatomic, strong) NSNumber *blogID;
 @property (nonatomic, strong) NSString *blogName, *xmlrpc, *apiKey;
 @property (weak, readonly) NSString *blavatarUrl;
-@property (nonatomic, strong) NSNumber *isAdmin, *hasOlderPosts, *hasOlderPages;
+@property (nonatomic, strong) NSNumber *hasOlderPosts, *hasOlderPages;
 @property (nonatomic, strong) NSSet *posts;
 @property (nonatomic, strong) NSSet *categories;
 @property (nonatomic, strong) NSSet *comments;
@@ -37,8 +35,9 @@
 @property (nonatomic, strong) NSDate *lastStatsSync;
 @property (nonatomic, strong) NSString *lastUpdateWarning;
 @property (nonatomic, assign) BOOL geolocationEnabled;
+@property (nonatomic, assign) BOOL visible;
 @property (nonatomic, weak) NSNumber *isActivated;
-@property (nonatomic, strong) NSDictionary *options; //we can store an NSArray or an NSDictionary as a transformable attribute... 
+@property (nonatomic, strong) NSDictionary *options; //we can store an NSArray or an NSDictionary as a transformable attribute...
 @property (nonatomic, strong) NSDictionary *postFormats;
 @property (nonatomic, strong) WPAccount *account;
 @property (nonatomic, strong) WPAccount *jetpackAccount;
@@ -87,17 +86,38 @@
 
 #pragma mark -
 #pragma mark Synchronization
+/*! Sync only blog posts, categories, options and post formats.
+ *  Used for instances where comments and pages aren't necessarily needed to be updated.
+ *
+ *  \param success Completion block called if the operation was a success
+ *  \param failure Completion block called if the operation was a failure
+ */
+- (void)syncPostsAndMetadataWithSuccess:(void (^)())success failure:(void (^)(NSError *error))failure;
+
+/*! Sync only blog posts (no metadata lists)
+ *  Used for instances where comments and pages aren't necessarily needed to be updated.
+ *
+ *  \param success  Completion block called if the operation was a success
+ *  \param failure  Completion block called if the operation was a failure
+ *  \param more     If posts already exist then sync an additional batch
+ */
 - (void)syncPostsWithSuccess:(void (^)())success failure:(void (^)(NSError *error))failure loadMore:(BOOL)more;
+
 - (void)syncPagesWithSuccess:(void (^)())success failure:(void (^)(NSError *error))failure loadMore:(BOOL)more;
 - (void)syncCategoriesWithSuccess:(void (^)())success failure:(void (^)(NSError *error))failure;
 - (void)syncOptionsWithWithSuccess:(void (^)())success failure:(void (^)(NSError *error))failure;
 - (void)syncCommentsWithSuccess:(void (^)())success failure:(void (^)(NSError *error))failure;
 - (void)syncMediaLibraryWithSuccess:(void (^)())success failure:(void (^)(NSError *error))failure;
 - (void)syncPostFormatsWithSuccess:(void (^)())success failure:(void (^)(NSError *error))failure;
+
+/*! Syncs an entire blog include posts, pages, comments, options, post formats and categories.
+ *  Used for instances where the entire blog should be refreshed or initially downloaded.
+ *
+ *  \param success Completion block called if the operation was a success
+ *  \param failure Completion block called if the operation was a failure
+ */
 - (void)syncBlogWithSuccess:(void (^)())success failure:(void (^)(NSError *error))failure;
-// Called when manually refreshing PostsViewController
-// Syncs posts, categories, options, and post formats
-- (void)syncBlogPostsWithSuccess:(void (^)())success failure:(void (^)(NSError *error))failure;
+
 - (void)checkVideoPressEnabledWithSuccess:(void (^)(BOOL enabled))success failure:(void (^)(NSError *error))failure;
 
 #pragma mark -

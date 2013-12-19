@@ -15,9 +15,9 @@
     #import <AFNetworking/AFNetworking.h>
     #import <NSObject+SafeExpectations.h>
     #import "NSObject+BlockObservation.h"
+    #import "DDLog.h"
 
 	// Project-specific
-    #import "Constants.h"
     #import "NSString+Util.h"
     #import "WPError.h"
     #import "UIColor+Helpers.h"
@@ -30,19 +30,14 @@
 #ifndef IS_IPHONE
 #define IS_IPHONE   (!IS_IPAD)
 #endif
-#ifndef IS_IOS7
-#define IS_IOS7 (NSStringFromClass([UIDynamicAnimator class]) != nil)
-#endif
 #ifndef IS_RETINA
 #define IS_RETINA ([[UIScreen mainScreen] respondsToSelector:@selector(scale)] && [[UIScreen mainScreen] scale] == 2)
 #endif
 
 #define AssertSubclassMethod() NSAssert(NO, @"You must override %@ in a subclass", NSStringFromSelector(_cmd))
 
-// WPFLog is deprecated - use DDLogError, Info, Verbose, etc
-#define WPFLog(fmt, ...) DDLogInfo(fmt, ##__VA_ARGS__)
-#define WPFLogMethod() DDLogInfo(@"%@ %@", self, NSStringFromSelector(_cmd));
-#define WPFLogMethodParam(param) DDLogInfo(@"%@ %@%@", self, NSStringFromSelector(_cmd), param);
+#define DDLogMethod() DDLogInfo(@"%@ %@", self, NSStringFromSelector(_cmd));
+#define DDLogMethodParam(param) DDLogInfo(@"%@ %@%@", self, NSStringFromSelector(_cmd), param);
 
 // CocoaLumberjack Default Logging Level
 extern int ddLogLevel;

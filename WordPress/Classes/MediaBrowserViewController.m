@@ -16,7 +16,7 @@
 #import "UIImage+Resize.h"
 #import "WordPressAppDelegate.h"
 #import "WPLoadingView.h"
-#import "WPInfoView.h"
+//#import "WPInfoView.h"
 #import "Post.h"
 #import "CPopoverManager.h"
 #import "WPAlertView.h"
@@ -52,7 +52,7 @@ static CGFloat const ScrollingVelocityThreshold = 30.0f;
 @property (nonatomic, strong) WPLoadingView *loadingView;
 @property (nonatomic, strong) NSDate *startDate, *endDate;
 @property (nonatomic, weak) UIView *firstResponderOnSidebarOpened;
-@property (nonatomic, weak) WPInfoView *noMediaView;
+//@property (nonatomic, weak) WPInfoView *noMediaView;
 @property (nonatomic, assign) BOOL videoPressEnabled, isPickingFeaturedImage, isLibraryMedia, isSelectingMediaForPost;
 @property (nonatomic, strong) NSMutableDictionary *currentVideo;
 @property (nonatomic, strong) UIImage *currentImage;
@@ -124,9 +124,7 @@ static CGFloat const ScrollingVelocityThreshold = 30.0f;
     
     [self.view addSubview:self.multiselectToolbar];
     
-    if (IS_IOS7) {
-        self.multiselectToolbar.barTintColor = [WPStyleGuide littleEddieGrey];
-    }
+    self.multiselectToolbar.barTintColor = [WPStyleGuide littleEddieGrey];
     self.multiselectToolbar.translucent = NO;
     
     self.multiselectToolbar.frame = (CGRect) {
@@ -174,20 +172,12 @@ static CGFloat const ScrollingVelocityThreshold = 30.0f;
     [super viewDidAppear:animated];
     
     UIBarButtonItem *addMediaButton;
-    if (IS_IOS7) {
-        UIImage *image = [UIImage imageNamed:@"icon-posts-add"];
-        UIButton *button = [[UIButton alloc] initWithFrame:CGRectMake(0, 0, image.size.width, image.size.height)];
-        [button setImage:image forState:UIControlStateNormal];
-        [button addTarget:self action:@selector(addMediaButtonPressed:) forControlEvents:UIControlEventTouchUpInside];
-        addMediaButton = [[UIBarButtonItem alloc] initWithCustomView:button];
-    } else {
-        addMediaButton = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"navbar_add"]
-                                                                                  style:[WPStyleGuide barButtonStyleForBordered]
-                                                                                 target:self
-                                                                                 action:@selector(addMediaButtonPressed:)];
-        addMediaButton.tintColor = [UIColor UIColorFromHex:0x333333];
-    }
-    
+    UIImage *image = [UIImage imageNamed:@"icon-posts-add"];
+    UIButton *button = [[UIButton alloc] initWithFrame:CGRectMake(0, 0, image.size.width, image.size.height)];
+    [button setImage:image forState:UIControlStateNormal];
+    [button addTarget:self action:@selector(addMediaButtonPressed:) forControlEvents:UIControlEventTouchUpInside];
+    addMediaButton = [[UIBarButtonItem alloc] initWithCustomView:button];
+
     [WPStyleGuide setRightBarButtonItemWithCorrectSpacing:addMediaButton forNavigationItem:self.navigationItem];
 
     [self applyDateFilterForStartDate:_startDate andEndDate:_endDate];
@@ -244,8 +234,8 @@ static CGFloat const ScrollingVelocityThreshold = 30.0f;
         [_refreshHeaderView endRefreshing];
         [self setUploadButtonEnabled:YES];
     } failure:^(NSError *error) {
-        WPFLog(@"Failed to refresh media library %@", error);
-        [WPError showAlertWithError:error];
+        DDLogError(@"Failed to refresh media library %@", error);
+        [WPError showNetworkingAlertWithError:error];
         if (error.code == 401) {
             [self setUploadButtonEnabled:NO];
         }
@@ -254,11 +244,7 @@ static CGFloat const ScrollingVelocityThreshold = 30.0f;
 }
 
 - (void)setUploadButtonEnabled:(BOOL)enabled {
-    if (IS_IOS7) {
-        ((UIButton*)[self.navigationItem.rightBarButtonItems[1] customView]).enabled = enabled;
-    } else {
-        self.navigationItem.rightBarButtonItem.enabled = enabled;
-    }
+    ((UIButton*)[self.navigationItem.rightBarButtonItems[1] customView]).enabled = enabled;
 }
 
 - (NSFetchedResultsController *)resultsController {
@@ -284,18 +270,18 @@ static CGFloat const ScrollingVelocityThreshold = 30.0f;
 }
 
 - (void)toggleNoMediaView:(BOOL)show {
-    if (!show) {
-        [_noMediaView removeFromSuperview];
-        return;
-    }
-    if (!_noMediaView) {
-        _noMediaView = [WPInfoView WPInfoViewWithTitle:@"No media to display" message:nil cancelButton:nil];
-    }
-    [self.collectionView addSubview:_noMediaView];
+//    if (!show) {
+//        [_noMediaView removeFromSuperview];
+//        return;
+//    }
+//    if (!_noMediaView) {
+//        _noMediaView = [WPInfoView WPInfoViewWithTitle:@"No media to display" message:nil cancelButton:nil];
+//    }
+//    [self.collectionView addSubview:_noMediaView];
 }
 
 - (void)viewDidLayoutSubviews {
-    [_noMediaView centerInSuperview];
+//    [_noMediaView centerInSuperview];
 }
 
 #pragma mark - Setters
@@ -424,13 +410,13 @@ static CGFloat const ScrollingVelocityThreshold = 30.0f;
         [cell.media uploadWithSuccess:^{
             
         } failure:^(NSError *error) {
-            [WPError showAlertWithError:error title:NSLocalizedString(@"Upload failed", @"")];
+            [WPError showAlertWithTitle:NSLocalizedString(@"Upload failed", nil) message:error.localizedDescription];
         }];
     } else if (cell.media.remoteStatus == MediaRemoteStatusProcessing || cell.media.remoteStatus == MediaRemoteStatusPushing) {
         [cell.media cancelUpload];
     } else if (cell.media.remoteStatus == MediaRemoteStatusLocal || cell.media.remoteStatus == MediaRemoteStatusSync) {
         if (_isPickingFeaturedImage) {
-            [[NSNotificationCenter defaultCenter] postNotificationName:FeaturedImageSelected object:cell.media];
+//            [[NSNotificationCenter defaultCenter] postNotificationName:FeaturedImageSelected object:cell.media];
             [self.navigationController popViewControllerAnimated:YES];
         } else if (_isSelectingMediaForPost) {
             [_apost.media addObject:cell.media];
@@ -559,7 +545,7 @@ static CGFloat const ScrollingVelocityThreshold = 30.0f;
             }
             
         } failure:^(NSError *error, NSArray *failures) {
-            WPFLog(@"Failed to delete media %@ with error %@", failures, error);
+            DDLogError(@"Failed to delete media %@ with error %@", failures, error);
             
             for (id subview in self.view.subviews) {
                 if ([subview respondsToSelector:@selector(setUserInteractionEnabled:)]) {
@@ -639,7 +625,7 @@ static CGFloat const ScrollingVelocityThreshold = 30.0f;
         self.videoPressEnabled = enabled;
         //        self.isCheckingVideoCapability = NO;
     } failure:^(NSError *error) {
-        WPLog(@"checkVideoPressEnabled failed: %@", [error localizedDescription]);
+        DDLogWarn(@"checkVideoPressEnabled failed: %@", [error localizedDescription]);
         self.videoPressEnabled = YES;
         //        self.isCheckingVideoCapability = NO;
     }];
@@ -678,7 +664,7 @@ static CGFloat const ScrollingVelocityThreshold = 30.0f;
         _currentActionSheet = addMediaActionSheet;
         
         if (IS_IPAD) {
-            UIBarButtonItem *barButtonItem = IS_IOS7 ? self.navigationItem.rightBarButtonItems[1] : self.navigationItem.rightBarButtonItem;
+            UIBarButtonItem *barButtonItem = self.navigationItem.rightBarButtonItems[1];
             [_currentActionSheet showFromBarButtonItem:barButtonItem animated:YES];
         } else {
             [_currentActionSheet showInView:self.view];
@@ -719,31 +705,31 @@ static CGFloat const ScrollingVelocityThreshold = 30.0f;
         switch (buttonIndex) {
             case 0:
                 if (actionSheet.numberOfButtons == 3)
-                    [self useImage:[self resizeImage:_currentImage toSize:kResizeOriginal]];
+                    [self useImage:[self resizeImage:_currentImage toSize:MediaResizeOriginal]];
                 else
-                    [self useImage:[self resizeImage:_currentImage toSize:kResizeSmall]];
+                    [self useImage:[self resizeImage:_currentImage toSize:MediaResizeSmall]];
                 break;
             case 1:
                 if (actionSheet.numberOfButtons == 3) {
                     [self showCustomSizeAlert];
                 } else if (actionSheet.numberOfButtons == 4)
-                    [self useImage:[self resizeImage:_currentImage toSize:kResizeOriginal]];
+                    [self useImage:[self resizeImage:_currentImage toSize:MediaResizeOriginal]];
                 else
-                    [self useImage:[self resizeImage:_currentImage toSize:kResizeMedium]];
+                    [self useImage:[self resizeImage:_currentImage toSize:MediaResizeMedium]];
                 break;
             case 2:
                 if (actionSheet.numberOfButtons == 4) {
                     [self showCustomSizeAlert];
                 } else if (actionSheet.numberOfButtons == 5)
-                    [self useImage:[self resizeImage:_currentImage toSize:kResizeOriginal]];
+                    [self useImage:[self resizeImage:_currentImage toSize:MediaResizeOriginal]];
                 else
-                    [self useImage:[self resizeImage:_currentImage toSize:kResizeLarge]];
+                    [self useImage:[self resizeImage:_currentImage toSize:MediaResizeLarge]];
                 break;
             case 3:
                 if (actionSheet.numberOfButtons == 5) {
                     [self showCustomSizeAlert];
                 } else
-                    [self useImage:[self resizeImage:_currentImage toSize:kResizeOriginal]];
+                    [self useImage:[self resizeImage:_currentImage toSize:MediaResizeOriginal]];
                 break;
             case 4:
                 [self showCustomSizeAlert];
@@ -819,14 +805,7 @@ static CGFloat const ScrollingVelocityThreshold = 30.0f;
     
     alertView.alpha = 0.0;
     
-    if (IS_IOS7) {
         [self.view addSubview:alertView];
-    } else {
-        alertView.hideBackgroundView = YES;
-        alertView.firstTextField.keyboardAppearance = UIKeyboardAppearanceDefault;
-        alertView.secondTextField.keyboardAppearance = UIKeyboardAppearanceDefault;
-        [self.view addSubview:alertView];
-    }
     
     [UIView animateWithDuration:0.2 animations:^{
         alertView.alpha = 1.0;
@@ -895,12 +874,8 @@ static CGFloat const ScrollingVelocityThreshold = 30.0f;
         
         _resizeActionSheet = resizeActionSheet;
         
-        if (IS_IOS7) {
-            if (IS_IPAD) {
-                [resizeActionSheet showFromBarButtonItem:[self.navigationItem.rightBarButtonItems objectAtIndex:1] animated:YES];
-            } else {
-                [resizeActionSheet showInView:self.view];
-            }
+        if (IS_IPAD) {
+            [resizeActionSheet showFromBarButtonItem:[self.navigationItem.rightBarButtonItems objectAtIndex:1] animated:YES];
         } else {
             [resizeActionSheet showInView:self.view];
         }
@@ -1015,7 +990,7 @@ static CGFloat const ScrollingVelocityThreshold = 30.0f;
             if (!_addPopover) {
                 _addPopover = [[UIPopoverController alloc] initWithContentViewController:_picker];
             }
-            UIBarButtonItem *barButtonItem = IS_IOS7 ? self.navigationItem.rightBarButtonItems[1] : self.navigationItem.rightBarButtonItem;
+            UIBarButtonItem *barButtonItem = self.navigationItem.rightBarButtonItems[1];
             [_addPopover presentPopoverFromBarButtonItem:barButtonItem permittedArrowDirections:UIPopoverArrowDirectionAny animated:YES];
         }
         else {
@@ -1153,23 +1128,23 @@ static CGFloat const ScrollingVelocityThreshold = 30.0f;
             }
 			case 1:
             {
-				[self useImage:[self resizeImage:_currentImage toSize:kResizeSmall]];
+				[self useImage:[self resizeImage:_currentImage toSize:MediaResizeSmall]];
 				break;
             }
 			case 2:
             {
-				[self useImage:[self resizeImage:_currentImage toSize:kResizeMedium]];
+				[self useImage:[self resizeImage:_currentImage toSize:MediaResizeMedium]];
 				break;
             }
 			case 3:
             {
-				[self useImage:[self resizeImage:_currentImage toSize:kResizeLarge]];
+				[self useImage:[self resizeImage:_currentImage toSize:MediaResizeLarge]];
 				break;
             }
 			case 4:
             {
 				//[self useImage:currentImage];
-                [self useImage:[self resizeImage:_currentImage toSize:kResizeOriginal]];
+                [self useImage:[self resizeImage:_currentImage toSize:MediaResizeOriginal]];
 				break;
             }
 			default:
@@ -1276,14 +1251,14 @@ static CGFloat const ScrollingVelocityThreshold = 30.0f;
                 //It will return false if something goes wrong
                 success = CGImageDestinationFinalize(destination);
             } else {
-                WPFLog(@"***Could not create image destination ***");
+                DDLogWarn(@"***Could not create image destination ***");
             }
         } else {
-            WPFLog(@"***Could not create image source ***");
+            DDLogWarn(@"***Could not create image source ***");
         }
 		
 		if(!success) {
-			WPLog(@"***Could not create data from image destination ***");
+            DDLogWarn(@"***Could not create data from image destination ***");
 			//write the data without EXIF to disk
 			NSFileManager *fileManager = [NSFileManager defaultManager];
 			[fileManager createFileAtPath:filepath contents:imageData attributes:nil];
@@ -1301,7 +1276,7 @@ static CGFloat const ScrollingVelocityThreshold = 30.0f;
 		[fileManager createFileAtPath:filepath contents:imageData attributes:nil];
 	}
     
-	if(self.currentOrientation == kLandscape)
+	if(self.currentOrientation == MediaOrientationLandscape)
 		imageMedia.orientation = @"landscape";
 	else
 		imageMedia.orientation = @"portrait";
@@ -1336,17 +1311,8 @@ static CGFloat const ScrollingVelocityThreshold = 30.0f;
             return;
         }
         
-        [WPError showAlertWithError:error title:NSLocalizedString(@"Upload failed", @"")];
+        [WPError showAlertWithTitle:NSLocalizedString(@"Upload failed", nil) message:error.localizedDescription];
     }];
-	
-//	isAddingMedia = NO;
-	
-//    if (!IS_IOS7) {
-//        if (_isPickingFeaturedImage)
-//            [postDetailViewController switchToSettings];
-//        else
-//            [postDetailViewController switchToMedia];
-//    }
 }
 
 
@@ -1401,7 +1367,7 @@ static CGFloat const ScrollingVelocityThreshold = 30.0f;
 	if(copySuccess) {
 		videoMedia = [Media newMediaForBlog:self.blog];
 		
-		if(_currentOrientation == kLandscape)
+		if(_currentOrientation == MediaOrientationLandscape)
 			videoMedia.orientation = @"landscape";
 		else
 			videoMedia.orientation = @"portrait";
@@ -1427,21 +1393,13 @@ static CGFloat const ScrollingVelocityThreshold = 30.0f;
             [[NSNotificationCenter defaultCenter] postNotificationName:@"ShouldInsertMediaBelow" object:videoMedia];
             [videoMedia save];
         } failure:^(NSError *error) {
-            [WPError showAlertWithError:error title:NSLocalizedString(@"Upload failed", @"")];
+            [WPError showAlertWithTitle:NSLocalizedString(@"Upload failed", nil) message:error.localizedDescription];
         }];
 //		isAddingMedia = NO;
 		
 	}
 	else {
-//        if (currentAlert == nil) {
-            UIAlertView *videoAlert = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"Error Copying Video", @"")
-                                                                 message:NSLocalizedString(@"There was an error copying the video for upload. Please try again.", @"")
-                                                                delegate:self
-                                                       cancelButtonTitle:NSLocalizedString(@"OK", @"")
-                                                       otherButtonTitles:nil];
-            [videoAlert show];
-//            currentAlert = videoAlert;
-//        }
+        [WPError showAlertWithTitle:NSLocalizedString(@"Error Copying Video", nil) message:NSLocalizedString(@"There was an error copying the video for upload. Please try again.", nil)];
 	}
 }
 
@@ -1456,7 +1414,7 @@ static CGFloat const ScrollingVelocityThreshold = 30.0f;
 				   resultBlock: ^(ALAsset *myasset) {
 					   ALAssetRepresentation *rep = [myasset defaultRepresentation];
 					   
-					   WPLog(@"getJPEGFromAssetForURL: default asset representation for %@: uti: %@ size: %lld url: %@ orientation: %d scale: %f metadata: %@",
+					   DDLogWarn(@"getJPEGFromAssetForURL: default asset representation for %@: uti: %@ size: %lld url: %@ orientation: %d scale: %f metadata: %@",
 							 url, [rep UTI], [rep size], [rep url], [rep orientation],
 							 [rep scale], [rep metadata]);
 					   
@@ -1468,7 +1426,7 @@ static CGFloat const ScrollingVelocityThreshold = 30.0f;
 						   // Are err and bytes == 0 redundant? Doc says 0 return means
 						   // error occurred which presumably means NSError is returned.
 						   free(buf); // Free up memory so we don't leak.
-						   WPLog(@"error from getBytes: %@", err);
+						   DDLogError(@"error from getBytes: %@", err);
 						   
 						   return;
 					   }
@@ -1496,34 +1454,24 @@ static CGFloat const ScrollingVelocityThreshold = 30.0f;
 					   CFRelease(source);
 				   }
 				  failureBlock: ^(NSError *err) {
-					  WPLog(@"can't get asset %@: %@", url, err);
+					  DDLogError(@"can't get asset %@: %@", url, err);
 					  self.currentImageMetadata = nil;
 				  }];
 }
 
 - (MediaOrientation)interpretOrientation:(UIDeviceOrientation)theOrientation {
-	MediaOrientation result = kPortrait;
+	MediaOrientation result = MediaOrientationPortrait;
 	switch (theOrientation) {
-		case UIDeviceOrientationPortrait:
-			result = kPortrait;
-			break;
-		case UIDeviceOrientationPortraitUpsideDown:
-			result = kPortrait;
-			break;
 		case UIDeviceOrientationLandscapeLeft:
-			result = kLandscape;
-			break;
 		case UIDeviceOrientationLandscapeRight:
-			result = kLandscape;
+			result = MediaOrientationLandscape;
 			break;
+        case UIDeviceOrientationPortraitUpsideDown:
+        case UIDeviceOrientationPortrait:
 		case UIDeviceOrientationFaceUp:
-			result = kPortrait;
-			break;
 		case UIDeviceOrientationFaceDown:
-			result = kPortrait;
-			break;
 		case UIDeviceOrientationUnknown:
-			result = kPortrait;
+			result = MediaOrientationPortrait;
 			break;
 	}
 	
@@ -1579,7 +1527,7 @@ static CGFloat const ScrollingVelocityThreshold = 30.0f;
 	// Resize the image using the selected dimensions
 	UIImage *resizedImage = original;
 	switch (resize) {
-		case kResizeSmall:
+		case MediaResizeSmall:
 			if(_currentImage.size.width > smallSize.width  || _currentImage.size.height > smallSize.height)
 				resizedImage = [original resizedImageWithContentMode:UIViewContentModeScaleAspectFit
 															  bounds:smallSize
@@ -1589,7 +1537,7 @@ static CGFloat const ScrollingVelocityThreshold = 30.0f;
 															  bounds:originalSize
 												interpolationQuality:kCGInterpolationHigh];
 			break;
-		case kResizeMedium:
+		case MediaResizeMedium:
 			if(_currentImage.size.width > mediumSize.width  || _currentImage.size.height > mediumSize.height)
 				resizedImage = [original resizedImageWithContentMode:UIViewContentModeScaleAspectFit
 															  bounds:mediumSize
@@ -1599,7 +1547,7 @@ static CGFloat const ScrollingVelocityThreshold = 30.0f;
 															  bounds:originalSize
 												interpolationQuality:kCGInterpolationHigh];
 			break;
-		case kResizeLarge:
+		case MediaResizeLarge:
 			if(_currentImage.size.width > largeSize.width || _currentImage.size.height > largeSize.height)
 				resizedImage = [original resizedImageWithContentMode:UIViewContentModeScaleAspectFit
 															  bounds:largeSize
@@ -1609,7 +1557,7 @@ static CGFloat const ScrollingVelocityThreshold = 30.0f;
 															  bounds:originalSize
 												interpolationQuality:kCGInterpolationHigh];
 			break;
-		case kResizeOriginal:
+		case MediaResizeOriginal:
 			resizedImage = [original resizedImageWithContentMode:UIViewContentModeScaleAspectFit
 														  bounds:originalSize
 											interpolationQuality:kCGInterpolationHigh];

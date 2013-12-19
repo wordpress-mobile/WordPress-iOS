@@ -8,9 +8,12 @@
 
 #import <UIKit/UIKit.h>
 
-@interface WPKeyboardToolbarButtonItem : UIButton {
-}
+@interface WPKeyboardToolbarButtonItem : UIButton
+
+@property (nonatomic, strong) NSString *actionTag, *actionName;
+
 + (id)button;
 - (void)setImageName:(NSString *)imageName;
-@property (nonatomic, strong) NSString *actionTag, *actionName;
+- (void)setImageName:(NSString *)imageName withColor:(UIColor *)tintColor highlightColor:(UIColor *)highlightColor;
+
 @end

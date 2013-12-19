@@ -13,6 +13,9 @@
 #import "WordPressAppDelegate.h"
 #import <DDFileLogger.h>
 
+static NSString *const UserDefaultsFeedbackEnabled = @"wp_feedback_enabled";
+static NSString *const FeedbackCheckUrl = @"http://api.wordpress.org/iphoneapp/feedback-check/1.0/";
+
 @interface SupportViewController ()
 
 @property (nonatomic, assign) BOOL feedbackEnabled;
@@ -28,23 +31,66 @@ typedef NS_ENUM(NSInteger, SettingsViewControllerSections)
     SettingsSectionActivityLog,
 };
 
++ (void)checkIfFeedbackShouldBeEnabled {
+    [[NSUserDefaults standardUserDefaults] registerDefaults:@{UserDefaultsFeedbackEnabled: @YES}];
+    NSURL *url = [NSURL URLWithString:FeedbackCheckUrl];
+    NSURLRequest *request = [[NSURLRequest alloc] initWithURL:url];
+    AFJSONRequestOperation *operation = [AFJSONRequestOperation JSONRequestOperationWithRequest:request success:^(NSURLRequest *request, NSHTTPURLResponse *response, id JSON) {
+        DDLogVerbose(@"Feedback response received: %@", JSON);
+        NSNumber *feedbackEnabled = JSON[@"feedback-enabled"];
+        if (feedbackEnabled == nil) {
+            feedbackEnabled = @YES;
+        }
+        
+        NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
+        [defaults setBool:feedbackEnabled.boolValue forKey:UserDefaultsFeedbackEnabled];
+        [defaults synchronize];
+    } failure:^(NSURLRequest *request, NSHTTPURLResponse *response, NSError *error, id JSON) {
+        DDLogError(@"Error received while checking feedback enabled status: %@", error);
+        
+        // Lets be optimistic and turn on feedback by default if this call doesn't work
+        NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
+        [defaults setBool:YES forKey:UserDefaultsFeedbackEnabled];
+        [defaults synchronize];
+    }];
+    
+    [operation start];
+}
+
++ (void)showFromTabBar {
+    SupportViewController *supportViewController = [[SupportViewController alloc] init];
+    UINavigationController *aNavigationController = [[UINavigationController alloc] initWithRootViewController:supportViewController];
+    aNavigationController.navigationBar.translucent = NO;
+    
+    if (IS_IPAD) {
+        aNavigationController.modalTransitionStyle = UIModalTransitionStyleCrossDissolve;
+        aNavigationController.modalPresentationStyle = UIModalPresentationFormSheet;
+    }
+    
+    UIViewController *presenter = [[WordPressAppDelegate sharedWordPressApplicationDelegate] tabBarController];
+    if (presenter.presentedViewController) {
+        presenter = presenter.presentedViewController;
+    }
+    [presenter presentViewController:aNavigationController animated:YES completion:nil];
+}
 
 - (id)init
 {
     self = [super initWithStyle:UITableViewStyleGrouped];
     if (self) {
         self.title = NSLocalizedString(@"Support", @"");
-        self.feedbackEnabled = YES;
+        _feedbackEnabled = YES;
     }
 
     return self;
 }
+
 - (void)viewDidLoad
 {
     [super viewDidLoad];
     
     NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
-    self.feedbackEnabled = [defaults boolForKey:kWPUserDefaultsFeedbackEnabled];
+    self.feedbackEnabled = [defaults boolForKey:UserDefaultsFeedbackEnabled];
     
     [WPStyleGuide configureColorsForView:self.view andTableView:self.tableView];
     
@@ -163,12 +209,7 @@ typedef NS_ENUM(NSInteger, SettingsViewControllerSections)
             MFMailComposeViewController *mailComposeViewController = [self feedbackMailViewController];
             [self presentViewController:mailComposeViewController animated:YES completion:nil];
         } else {
-            UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"Feedback", @"")
-                                                                message:NSLocalizedString(@"Your device is not configured to send e-mail.", @"")
-                                                               delegate:nil
-                                                      cancelButtonTitle:NSLocalizedString(@"OK", @"")
-                                                      otherButtonTitles:nil];
-            [alertView show];
+            [WPError showAlertWithTitle:NSLocalizedString(@"Feedback", nil) message:NSLocalizedString(@"Your device is not configured to send e-mail.", nil)];
         }
     } else if (indexPath.section == SettingsSectionActivityLog && indexPath.row == 1) {
         ActivityLogViewController *activityLogViewController = [[ActivityLogViewController alloc] init];
@@ -216,9 +257,7 @@ typedef NS_ENUM(NSInteger, SettingsViewControllerSections)
         [mailComposeViewController addAttachmentData:logData mimeType:@"text/plain" fileName:@"current_log.txt"];
     }
     
-    if (IS_IOS7) {
-        mailComposeViewController.modalPresentationCapturesStatusBarAppearance = NO;
-    }
+    mailComposeViewController.modalPresentationCapturesStatusBarAppearance = NO;
 
     return mailComposeViewController;
 }

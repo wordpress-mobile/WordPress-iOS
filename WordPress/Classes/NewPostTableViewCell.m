@@ -109,21 +109,19 @@ CGFloat const NewPostTableViewCellAccessoryViewOffset = 25.0;
     _statusLabel.textColor = [[self class] statusColorForPost:post];
     _dateLabel.text = [[self class] dateText:post];
     
-    if (IS_IOS7) {
-        if (_titleLabel.text != nil) {
-            _titleLabel.attributedText = [[NSAttributedString alloc] initWithString:_titleLabel.text attributes:[[self class] titleAttributes]];
-        }
-        
-        if (_statusLabel.text != nil) {
-            _statusLabel.attributedText = [[NSAttributedString alloc] initWithString:_statusLabel.text attributes:[[self class] statusAttributes]];
-        }
-        
-        if (_dateLabel.text != nil) {
-            NSRange barRange = [_dateLabel.text rangeOfString:@"|"];
-            NSMutableAttributedString *dateText = [[NSMutableAttributedString alloc] initWithString:_dateLabel.text attributes:[[self class] dateAttributes]];
-            [dateText addAttribute:NSForegroundColorAttributeName value:[WPStyleGuide readGrey] range:barRange];
-            _dateLabel.attributedText = dateText;
-        }
+    if (_titleLabel.text != nil) {
+        _titleLabel.attributedText = [[NSAttributedString alloc] initWithString:_titleLabel.text attributes:[[self class] titleAttributes]];
+    }
+    
+    if (_statusLabel.text != nil) {
+        _statusLabel.attributedText = [[NSAttributedString alloc] initWithString:_statusLabel.text attributes:[[self class] statusAttributes]];
+    }
+    
+    if (_dateLabel.text != nil) {
+        NSRange barRange = [_dateLabel.text rangeOfString:@"|"];
+        NSMutableAttributedString *dateText = [[NSMutableAttributedString alloc] initWithString:_dateLabel.text attributes:[[self class] dateAttributes]];
+        [dateText addAttribute:NSForegroundColorAttributeName value:[WPStyleGuide readGrey] range:barRange];
+        _dateLabel.attributedText = dateText;
     }
 }
 

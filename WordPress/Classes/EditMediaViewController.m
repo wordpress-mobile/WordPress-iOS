@@ -9,8 +9,6 @@
 #import "EditMediaViewController.h"
 #import "Media.h"
 #import "WPImageSource.h"
-#import "WPKeyboardToolbar.h"
-#import "WPKeyboardToolbarWithoutGradient.h"
 #import "WPStyleGuide.h"
 #import "WPLoadingView.h"
 #import <objc/runtime.h>
@@ -31,7 +29,7 @@ static NSUInteger const AlertDiscardChanges = 500;
 
 @end
 
-@interface EditMediaViewController () <WPKeyboardToolbarDelegate, UIGestureRecognizerDelegate, UIAlertViewDelegate, UITextViewDelegate, UITextFieldDelegate>
+@interface EditMediaViewController () <UIGestureRecognizerDelegate, UIAlertViewDelegate, UITextViewDelegate, UITextFieldDelegate>
 
 @property (nonatomic, strong) Media *media;
 @property (nonatomic, assign) BOOL isShowingEditFields;
@@ -198,10 +196,6 @@ static NSUInteger const AlertDiscardChanges = 500;
         CGFloat openedYOffset = isLandscape ? 0 : self.view.bounds.size.height - _editContainerView.frame.size.height;
         CGFloat currentYOffset = _isShowingEditFields ? openedYOffset : closedYOffset;
         CGFloat scrollViewHeight = isLandscape ? self.view.bounds.size.height - _editingBar.frame.size.height : _editContainerView.frame.size.height - _editingBar.frame.size.height;
-        // In iOS 6 viewDidLayoutSubviews is called after the keyboardWillShowNotification
-        if (!IS_IOS7) {
-            scrollViewHeight -= _currentKeyboardHeight;
-        }
         containerSize = CGSizeMake(self.view.bounds.size.width, 370);
         containerOrigin = CGPointMake(0, currentYOffset);
         scrollViewSize = CGSizeMake(containerSize.width, scrollViewHeight);
@@ -397,7 +391,7 @@ static NSUInteger const AlertDiscardChanges = 500;
             _mediaImageview.userInteractionEnabled = YES;
             [[_mediaImageview viewWithTag:1337] removeFromSuperview];
         } failure:^(NSError *error) {
-            WPFLog(@"Failed to download image for %@: %@", _media, error);
+            DDLogWarn(@"Failed to download image for %@: %@", _media, error);
             [[_mediaImageview viewWithTag:1337] removeFromSuperview];
         }];
     }
@@ -408,21 +402,13 @@ static NSUInteger const AlertDiscardChanges = 500;
     self.descriptionTextview.editable = YES;
     
     // Add toolbar for editing
-    CGRect frame = CGRectMake(0, 0, self.view.frame.size.width, WPKT_HEIGHT_PORTRAIT);
-    WPKeyboardToolbarBase *editorToolbar;
-    if (IS_IOS7) {
-        editorToolbar = [[WPKeyboardToolbarWithoutGradient alloc] initDoneWithFrame:frame];
-    } else {
-        editorToolbar = [[WPKeyboardToolbar alloc] initDoneWithFrame:frame];
-        _editContainerView.frame = (CGRect) {
-            .origin = CGPointMake(_editContainerView.frame.origin.x, _editContainerView.frame.origin.y - 90.0f),
-            .size = _editContainerView.frame.size
-        };
-    }
-    editorToolbar.delegate = self;
-    self.titleTextfield.inputAccessoryView = editorToolbar;
-    self.captionTextfield.inputAccessoryView = editorToolbar;
-    self.descriptionTextview.inputAccessoryView = editorToolbar;
+//    CGRect frame = CGRectMake(0, 0, self.view.frame.size.width, WPKT_HEIGHT_PORTRAIT);
+//    WPKeyboardToolbarBase *editorToolbar;
+//    editorToolbar = [[WPKeyboardToolbarWithoutGradient alloc] initDoneWithFrame:frame];
+//    editorToolbar.delegate = self;
+//    self.titleTextfield.inputAccessoryView = editorToolbar;
+//    self.captionTextfield.inputAccessoryView = editorToolbar;
+//    self.descriptionTextview.inputAccessoryView = editorToolbar;
 }
 
 #pragma mark - Keyboard Management
@@ -481,11 +467,11 @@ static NSUInteger const AlertDiscardChanges = 500;
     } completion:nil];
 }
 
-- (void)keyboardToolbarButtonItemPressed:(WPKeyboardToolbarButtonItem *)buttonItem {
-    if ([buttonItem.actionTag isEqualToString:@"done"]) {
-        [[self currentFirstResponder] resignFirstResponder];
-    }
-}
+//- (void)keyboardToolbarButtonItemPressed:(WPKeyboardToolbarButtonItem *)buttonItem {
+//    if ([buttonItem.actionTag isEqualToString:@"done"]) {
+//        [[self currentFirstResponder] resignFirstResponder];
+//    }
+//}
 
 - (UIView *)currentFirstResponder {
     for (UIView *v in _editFieldsContainer.subviews) {
@@ -513,7 +499,7 @@ static NSUInteger const AlertDiscardChanges = 500;
             UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Failed to Save" message:NSLocalizedString(@"This image/video has been deleted on the blog, do you want to re-upload it or discard it?", @"") delegate:self cancelButtonTitle:nil otherButtonTitles:@"Discard", @"Upload", nil];
             [alert show];
         } else {
-            [WPError showAlertWithError:error];
+            [WPError showNetworkingAlertWithError:error];
         }
         [self.loadingView hide];
         [self.loadingView removeFromSuperview];
@@ -580,7 +566,7 @@ static NSUInteger const AlertDiscardChanges = 500;
                     [self.loadingView hide];
                     [self.loadingView removeFromSuperview];
                 }failure:^(NSError *error) {
-                    [WPError showAlertWithError:error];
+                    [WPError showNetworkingAlertWithError:error];
                     [self.loadingView hide];
                     [self.loadingView removeFromSuperview];
                 }];
@@ -697,18 +683,11 @@ static NSUInteger const AlertDiscardChanges = 500;
     self = [super initWithFrame:frame];
     if (self) {
         self.clipsToBounds = YES;
-        
-        if (IS_IOS7) {
-            if (!_toolbar) {
-                _toolbar = [[UIToolbar alloc] initWithFrame:[self bounds]];
-                _toolbar.barTintColor = [UIColor blackColor];
-                [self.layer insertSublayer:_toolbar.layer atIndex:0];
-            }
-        } else {
-            self.backgroundColor = [UIColor blackColor];
-            self.alpha = 0.8;
+        if (!_toolbar) {
+            _toolbar = [[UIToolbar alloc] initWithFrame:[self bounds]];
+            _toolbar.barTintColor = [UIColor blackColor];
+            [self.layer insertSublayer:_toolbar.layer atIndex:0];
         }
-
     }
     return self;
 }

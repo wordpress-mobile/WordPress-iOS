@@ -9,7 +9,7 @@
 #import "CreateWPComAccountViewController.h"
 #import "WordPressComApi.h"
 #import "ReachabilityUtils.h"
-#import "UITableViewActivityCell.h"
+#import "WPTableViewActivityCell.h"
 #import "UITableViewTextFieldCell.h"
 #import "WPComLanguages.h"
 #import "SelectWPComLanguageViewController.h"
@@ -17,49 +17,33 @@
 #import "WPTableViewSectionFooterView.h"
 #import "WPAccount.h"
 
-@interface CreateWPComAccountViewController () <
-    UITextFieldDelegate> {
-        
-    UITableViewTextFieldCell *_usernameCell;
-    UITableViewTextFieldCell *_passwordCell;
-    UITableViewTextFieldCell *_emailCell;
-    UITableViewTextFieldCell *_blogUrlCell;
-    UITableViewCell *_localeCell;
-    
-    UITextField *_usernameTextField;
-    UITextField *_passwordTextField;
-    UITextField *_emailTextField;
-    UITextField *_blogUrlTextField;
-    
-    NSString *_buttonText;
-    NSString *_footerText;
-    
-    BOOL _isCreatingAccount;
-    BOOL _userPressedBackButton;
-    
-    NSDictionary *_currentLanguage;
-        
-    NSOperationQueue *_operationQueue;
-}
+static NSString *const TextFieldCellIdentifier = @"TextCell";
+static NSString *const LocaleCellIdentifier = @"LocaleCell";
+static NSString *const FooterViewIdentifier = @"FooterViewIdentifier";
+CGSize const CreateAccountHeaderSize = { 320.0, 70.0 };
+
+@interface CreateWPComAccountViewController () <UITextFieldDelegate>
+
+@property (nonatomic, weak) UITextField *usernameTextField;
+@property (nonatomic, weak) UITextField *passwordTextField;
+@property (nonatomic, weak) UITextField *emailTextField;
+@property (nonatomic, weak) UITextField *blogUrlTextField;
+@property (nonatomic, strong) NSString *buttonText;
+@property (nonatomic, strong) NSString *footerText;
+@property (nonatomic, assign) BOOL isCreatingAccount;
+@property (nonatomic, assign) BOOL userPressedBackButton;
+@property (nonatomic, strong) NSDictionary *currentLanguage;
+@property (nonatomic, strong) NSOperationQueue *operationQueue;
 
 @end
 
 @implementation CreateWPComAccountViewController
 
-NSUInteger const CreateAccountEmailTextFieldTag = 1;
-NSUInteger const CreateAccountUserNameTextFieldTag = 2;
-NSUInteger const CreateAccountPasswordTextFieldTag = 3;
-NSUInteger const CreateAccountBlogUrlTextFieldTag = 4;
-
-CGSize const CreateAccountHeaderSize = { 320.0, 70.0 };
-
 - (id)initWithStyle:(UITableViewStyle)style
 {
     self = [super initWithStyle:style];
-    
     if (self) {
         _currentLanguage = [WPComLanguages currentLanguage];
-        _operationQueue = [[NSOperationQueue alloc] init];
     }
     
     return self;
@@ -86,10 +70,17 @@ CGSize const CreateAccountHeaderSize = { 320.0, 70.0 };
     logoImage.autoresizingMask = UIViewAutoresizingFlexibleWidth;
     logoImage.contentMode = UIViewContentModeCenter;
     self.tableView.tableHeaderView = logoImage;
+    
+    [self.tableView registerClass:[UITableViewTextFieldCell class] forCellReuseIdentifier:TextFieldCellIdentifier];
+    [self.tableView registerClass:[WPTableViewSectionFooterView class] forHeaderFooterViewReuseIdentifier:FooterViewIdentifier];
 }
 
-- (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation {
-    return [super shouldAutorotateToInterfaceOrientation:interfaceOrientation];
+- (NSOperationQueue *)operationQueue {
+    if (_operationQueue) {
+        return _operationQueue;
+    }
+    _operationQueue = [[NSOperationQueue alloc] init];
+    return _operationQueue;
 }
 
 #pragma mark - Table view data source
@@ -101,24 +92,26 @@ CGSize const CreateAccountHeaderSize = { 320.0, 70.0 };
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
-    if (section == 0)
+    if (section == 0) {
         return 5;
-    else
+    } else {
         return 1;
+    }
 }
 
 - (NSString *)titleForFooterInSection:(NSInteger)section {
-    if(section == 0)
+    if(section == 0) {
 		return _footerText;
-    else
+    } else {
 		return @"";
+    }
 }
 
 - (UIView *)tableView:(UITableView *)tableView viewForFooterInSection:(NSInteger)section
 {
-    WPTableViewSectionFooterView *header = [[WPTableViewSectionFooterView alloc] initWithFrame:CGRectMake(0, 0, CGRectGetWidth(self.view.bounds), 0)];
-    header.title = [self titleForFooterInSection:section];
-    return header;
+    WPTableViewSectionFooterView *footer = [tableView dequeueReusableHeaderFooterViewWithIdentifier:FooterViewIdentifier];
+    footer.title = [self titleForFooterInSection:section];
+    return footer;
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForFooterInSection:(NSInteger)section
@@ -127,23 +120,20 @@ CGSize const CreateAccountHeaderSize = { 320.0, 70.0 };
     return [WPTableViewSectionFooterView heightForTitle:title andWidth:CGRectGetWidth(self.view.bounds)];
 }
 
-- (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
-{
-	UITableViewCell *cell = nil;
-    
-	if(indexPath.section == 1) {
+- (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
+	if (indexPath.section == 1) {
         UITableViewActivityCell *activityCell = nil;
         NSArray *topLevelObjects = [[NSBundle mainBundle] loadNibNamed:@"UITableViewActivityCell" owner:nil options:nil];
 		for(id currentObject in topLevelObjects)
 		{
-			if([currentObject isKindOfClass:[UITableViewActivityCell class]])
+			if([currentObject isKindOfClass:[WPTableViewActivityCell class]])
 			{
-				activityCell = (UITableViewActivityCell *)currentObject;
+				activityCell = (WPTableViewActivityCell *)currentObject;
 				break;
 			}
 		}
         
-        if(_isCreatingAccount) {
+        if (_isCreatingAccount) {
 			[activityCell.spinner startAnimating];
 			_buttonText = NSLocalizedString(@"Creating Account...", @"");
 		} else {
@@ -159,90 +149,74 @@ CGSize const CreateAccountHeaderSize = { 320.0, 70.0 };
         }
         
         [WPStyleGuide configureTableViewActionCell:activityCell];
-		cell = activityCell;
+		return activityCell;
 	} else {
         if (indexPath.row == 0) {
-            if (_emailCell == nil) {
-                _emailCell = [[UITableViewTextFieldCell alloc] initWithStyle:UITableViewCellStyleDefault
-                                                             reuseIdentifier:@"TextCell"];
-            }
-            _emailCell.textLabel.text = NSLocalizedString(@"Email", @"");
-            _emailTextField = _emailCell.textField;
-            _emailTextField.tag = CreateAccountEmailTextFieldTag;
+            UITableViewTextFieldCell *cell = [self.tableView dequeueReusableCellWithIdentifier:TextFieldCellIdentifier];
+            
+            cell.textLabel.text = NSLocalizedString(@"Email", @"");
+            _emailTextField = cell.textField;
             _emailTextField.placeholder = NSLocalizedString(@"user@example.com", @"");
             _emailTextField.keyboardType = UIKeyboardTypeEmailAddress;
             _emailTextField.returnKeyType = UIReturnKeyNext;
             _emailTextField.delegate = self;
-            [WPStyleGuide configureTableViewTextCell:_emailCell];
-            cell = _emailCell;
+            [WPStyleGuide configureTableViewTextCell:cell];
+            return cell;
         }
         else if (indexPath.row == 1) {
-            if (_usernameCell == nil) {
-                _usernameCell = [[UITableViewTextFieldCell alloc] initWithStyle:UITableViewCellStyleDefault
-                                                                reuseIdentifier:@"TextCell"];
-            }
-            _usernameCell.textLabel.text = NSLocalizedString(@"Username", @"Label for username field");
-            _usernameTextField = _usernameCell.textField;
-            _usernameTextField.tag = CreateAccountUserNameTextFieldTag;
+            UITableViewTextFieldCell *cell = [self.tableView dequeueReusableCellWithIdentifier:TextFieldCellIdentifier];
+            
+            cell.textLabel.text = NSLocalizedString(@"Username", @"Label for username field");
+            _usernameTextField = cell.textField;
             _usernameTextField.placeholder = NSLocalizedString(@"Enter username", @"Help user enter username for log in");
             _usernameTextField.keyboardType = UIKeyboardTypeEmailAddress;
             _usernameTextField.returnKeyType = UIReturnKeyNext;
             _usernameTextField.delegate = self;
-            [WPStyleGuide configureTableViewTextCell:_usernameCell];
-            cell = _usernameCell;
+            [WPStyleGuide configureTableViewTextCell:cell];
+            return cell;
         } else if (indexPath.row == 2) {
-            if (_passwordCell == nil) {
-                _passwordCell = [[UITableViewTextFieldCell alloc] initWithStyle:UITableViewCellStyleDefault
-                                                                reuseIdentifier:@"TextCell"];
-            }
-            _passwordCell.textLabel.text = NSLocalizedString(@"Password", @"Label for password field");
-            _passwordTextField = _passwordCell.textField;
-            _passwordTextField.tag = CreateAccountPasswordTextFieldTag;
+            UITableViewTextFieldCell *cell = [self.tableView dequeueReusableCellWithIdentifier:TextFieldCellIdentifier];
+            cell.textLabel.text = NSLocalizedString(@"Password", @"Label for password field");
+            _passwordTextField = cell.textField;
             _passwordTextField.placeholder = NSLocalizedString(@"Enter password", @"Help user enter password for log in");
             _passwordTextField.keyboardType = UIKeyboardTypeDefault;
             _passwordTextField.returnKeyType = UIReturnKeyNext;
             _passwordTextField.secureTextEntry = YES;
             _passwordTextField.delegate = self;
-            [WPStyleGuide configureTableViewTextCell:_passwordCell];
-            
-            cell = _passwordCell;
+            [WPStyleGuide configureTableViewTextCell:cell];
+            return cell;
         } else if (indexPath.row == 3) {
-            if (_blogUrlCell == nil) {
-                _blogUrlCell = [[UITableViewTextFieldCell alloc] initWithStyle:UITableViewCellStyleDefault
-                                                                reuseIdentifier:@"TextCell"];
-            }
-            _blogUrlCell.textLabel.text = NSLocalizedString(@"Site URL", @"Label for Site URL field in the Create a site window");
-            _blogUrlTextField = _blogUrlCell.textField;
-            _blogUrlTextField.tag = CreateAccountBlogUrlTextFieldTag;
+            UITableViewTextFieldCell *cell = [self.tableView dequeueReusableCellWithIdentifier:TextFieldCellIdentifier];
+            cell.textLabel.text = NSLocalizedString(@"Site URL", @"Label for Site URL field in the Create a site window");
+            _blogUrlTextField = cell.textField;
             _blogUrlTextField.placeholder = NSLocalizedString(@"http://(choose-address).wordpress.com", @"Help user enter a URL for their new site");
             _blogUrlTextField.keyboardType = UIKeyboardTypeURL;
             _blogUrlTextField.delegate = self;
-            [WPStyleGuide configureTableViewTextCell:_blogUrlCell];
-            cell = _blogUrlCell;
+            [WPStyleGuide configureTableViewTextCell:cell];
+            return cell;
         } else if (indexPath.row == 4) {
-            if (_localeCell == nil) {
-                _localeCell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleValue1
-                                                     reuseIdentifier:@"LocaleCell"];
+            UITableViewCell *cell = [self.tableView dequeueReusableCellWithIdentifier:LocaleCellIdentifier];
+            if (!cell) {
+                cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleValue1 reuseIdentifier:LocaleCellIdentifier];
             }
-            _localeCell.textLabel.text = @"Language";
-            _localeCell.detailTextLabel.text = [_currentLanguage objectForKey:@"name"];
-            _localeCell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
-            [WPStyleGuide configureTableViewCell:_localeCell];
-            cell = _localeCell;
+            cell.textLabel.text = @"Language";
+            cell.detailTextLabel.text = [_currentLanguage objectForKey:@"name"];
+            cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
+            [WPStyleGuide configureTableViewCell:cell];
+            return cell;
         }
     }
-    
-	return cell;
+    return nil;
 }
 
-#pragma mark -
-#pragma mark Table view delegate
+#pragma mark - Table view delegate
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
     [tableView deselectRowAtIndexPath:indexPath animated:YES];
     
-    if (_isCreatingAccount)
+    if (_isCreatingAccount) {
         return;
+    }
     
     if (indexPath.section == 0) {
         if (indexPath.row == 4) {
@@ -264,18 +238,12 @@ CGSize const CreateAccountHeaderSize = { 320.0, 70.0 };
 - (BOOL)textFieldShouldReturn:(UITextField *)textField {
 	[textField resignFirstResponder];
 	   
-    switch (textField.tag) {
-        case CreateAccountEmailTextFieldTag:
-            [_usernameTextField becomeFirstResponder];
-            break;
-        case CreateAccountUserNameTextFieldTag:
-            [_passwordTextField becomeFirstResponder];
-            break;
-        case CreateAccountPasswordTextFieldTag:
-            [_blogUrlTextField becomeFirstResponder];
-            break;
-        default:
-            break;
+    if (textField == _emailTextField) {
+        [_usernameTextField becomeFirstResponder];
+    } else if (textField == _usernameTextField) {
+        [_passwordTextField becomeFirstResponder];
+    } else if (textField == _passwordTextField) {
+        [_blogUrlTextField becomeFirstResponder];
     }
     
 	return YES;
@@ -290,7 +258,7 @@ CGSize const CreateAccountHeaderSize = { 320.0, 70.0 };
 
 - (BOOL)areInputFieldsFilled
 {
-    return [[_usernameTextField.text trim] length] != 0 && [[_passwordTextField.text trim] length] != 0 && [[_emailTextField.text trim] length] != 0 && [[_blogUrlTextField.text trim] length] != 0;;
+    return [[_usernameTextField.text trim] length] != 0 && [[_passwordTextField.text trim] length] != 0 && [[_emailTextField.text trim] length] != 0 && [[_blogUrlTextField.text trim] length] != 0;
 }
 
 - (BOOL)doesUrlHavePeriod
@@ -330,8 +298,7 @@ CGSize const CreateAccountHeaderSize = { 320.0, 70.0 };
 - (void)displayCreationErrorMessage:(NSError *)error
 {
     NSString *errorMessage = [error.userInfo objectForKey:WordPressComApiErrorMessageKey];
-    UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"Error", nil) message:errorMessage delegate:nil cancelButtonTitle:NSLocalizedString(@"OK", nil) otherButtonTitles:nil, nil];
-    [alertView show];
+    [WPError showAlertWithTitle:NSLocalizedString(@"Error", nil) message:errorMessage];
 }
 
 - (void)createAccount
@@ -362,7 +329,7 @@ CGSize const CreateAccountHeaderSize = { 320.0, 70.0 };
     if (parent == nil) {
         self.delegate = nil;
         _userPressedBackButton = YES;
-        [_operationQueue cancelAllOperations];
+        [self.operationQueue cancelAllOperations];
     }
 }
 
@@ -473,11 +440,11 @@ CGSize const CreateAccountHeaderSize = { 320.0, 70.0 };
     [userCreation addDependency:userValidation];
     [blogValidation addDependency:userValidation];
     
-    [_operationQueue addOperation:userValidation];
-    [_operationQueue addOperation:blogValidation];
-    [_operationQueue addOperation:userCreation];
-    [_operationQueue addOperation:userSignIn];
-    [_operationQueue addOperation:blogCreation];
+    [self.operationQueue addOperation:userValidation];
+    [self.operationQueue addOperation:blogValidation];
+    [self.operationQueue addOperation:userCreation];
+    [self.operationQueue addOperation:userSignIn];
+    [self.operationQueue addOperation:blogCreation];
 }
 
 - (void)processErrorDuringRemoteConnection:(NSError *)error
