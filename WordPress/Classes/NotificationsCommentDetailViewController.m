@@ -27,12 +27,14 @@
 #import "Note.h"
 #import "InlineComposeView.h"
 
-#define APPROVE_BUTTON_TAG 1
-#define UNAPPROVE_BUTTON_TAG 2
-#define TRASH_BUTTON_TAG 3
-#define UNTRASH_BUTTON_TAG 4
-#define SPAM_BUTTON_TAG 5
-#define UNSPAM_BUTTON_TAG 6
+typedef NS_ENUM(NSUInteger, ModerateButtonTag) {
+    ApproveButtonTag = 1,
+    UnapproveButtonTag = 2,
+    TrashButtonTag = 3,
+    UntrashButtonTag = 4,
+    SpamButtonTag = 5,
+    UnspamButtonTag = 6
+};
 
 const CGFloat NotificationsCommentDetailViewControllerReplyTextViewDefaultHeight = 64.f;
 NSString * const NoteCommentHeaderCellIdentifiter = @"NoteCommentHeaderCell";
@@ -115,7 +117,7 @@ NS_ENUM(NSUInteger, NotifcationCommentCellType){
     self.spamBarButton = [self barButtonItemWithImageNamed:@"icon-comments-flag"
                                                  andAction:@selector(moderateComment:)];
     self.replyBarButton = [self barButtonItemWithImageNamed:@"icon-comments-reply"
-                                                  andAction:@selector(startReply:)];
+                                                  andAction:@selector(composeReply:)];
     
     _approveBarButton.tintColor = [WPStyleGuide readGrey];
     _unapproveBarButton.tintColor = [WPStyleGuide readGrey];
@@ -244,35 +246,35 @@ NS_ENUM(NSUInteger, NotifcationCommentCellType){
         if ([actionType isEqualToString:@"approve-comment"]) {
             [indexedButtons setObject:self.approveBarButton forKey:actionType];
             self.approveBarButton.enabled = YES;
-            self.approveBarButton.customView.tag = APPROVE_BUTTON_TAG;
-            self.approveBarButton.tag = APPROVE_BUTTON_TAG;
+            self.approveBarButton.customView.tag = ApproveButtonTag;
+            self.approveBarButton.tag = ApproveButtonTag;
             isApproved = NO;
         } else if ([actionType isEqualToString:@"unapprove-comment"]){
             [indexedButtons setObject:self.unapproveBarButton forKey:actionType];
             self.unapproveBarButton.enabled = YES;
-            self.unapproveBarButton.customView.tag = UNAPPROVE_BUTTON_TAG;
-            self.unapproveBarButton.tag = UNAPPROVE_BUTTON_TAG;
+            self.unapproveBarButton.customView.tag = UnapproveButtonTag;
+            self.unapproveBarButton.tag = UnapproveButtonTag;
             isApproved = YES;
         } else if ([actionType isEqualToString:@"spam-comment"]){
             [indexedButtons setObject:self.spamBarButton forKey:actionType];
             self.spamBarButton.enabled = YES;
-            self.spamBarButton.customView.tag = SPAM_BUTTON_TAG;
-            self.spamBarButton.tag = SPAM_BUTTON_TAG;
+            self.spamBarButton.customView.tag = SpamButtonTag;
+            self.spamBarButton.tag = SpamButtonTag;
         } else if ([actionType isEqualToString:@"unspam-comment"]){
             [indexedButtons setObject:self.spamBarButton forKey:actionType];
             self.spamBarButton.enabled = YES;
-            self.spamBarButton.customView.tag = UNSPAM_BUTTON_TAG;
-            self.spamBarButton.tag = UNSPAM_BUTTON_TAG;
+            self.spamBarButton.customView.tag = UnspamButtonTag;
+            self.spamBarButton.tag = UnspamButtonTag;
         } else if ([actionType isEqualToString:@"trash-comment"]){
             [indexedButtons setObject:self.trashBarButton forKey:actionType];
             self.trashBarButton.enabled = YES;
-            self.trashBarButton.customView.tag = TRASH_BUTTON_TAG;
-            self.trashBarButton.tag = TRASH_BUTTON_TAG;
+            self.trashBarButton.customView.tag = TrashButtonTag;
+            self.trashBarButton.tag = TrashButtonTag;
         } else if ([actionType isEqualToString:@"untrash-comment"]){
             [indexedButtons setObject:self.trashBarButton forKey:actionType];
             self.trashBarButton.enabled = YES;
-            self.trashBarButton.customView.tag = UNTRASH_BUTTON_TAG;
-            self.trashBarButton.tag = UNTRASH_BUTTON_TAG;
+            self.trashBarButton.customView.tag = UntrashButtonTag;
+            self.trashBarButton.tag = UntrashButtonTag;
         } else if ([actionType isEqualToString:@"replyto-comment"]){
             [indexedButtons setObject:self.replyBarButton forKey:actionType];
             self.replyBarButton.enabled = YES;
@@ -317,9 +319,8 @@ NS_ENUM(NSUInteger, NotifcationCommentCellType){
     frame.origin.y = self.tableView.contentSize.height;
     UIView *scrollBackView = [[UIView alloc] initWithFrame:frame];
     scrollBackView.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleTopMargin;
-    //[self.tableView addSubview:scrollBackView];
     self.tableView.backgroundView = [[UIView alloc] initWithFrame:self.tableView.bounds];
-    self.tableView.backgroundView.backgroundColor = COMMENT_PARENT_BACKGROUND_COLOR;
+    self.tableView.backgroundView.backgroundColor = [WPStyleGuide readGrey];
 }
 
 
@@ -353,27 +354,27 @@ NS_ENUM(NSUInteger, NotifcationCommentCellType){
     UIButton *button = (UIButton *)sender;
     
     UIBarButtonItem *pressedButton = nil;
-    if (button.tag == APPROVE_BUTTON_TAG) {
+    if (button.tag == ApproveButtonTag) {
         [WPMobileStats trackEventForWPCom:StatsEventNotificationsDetailApproveComment];
         commentAction = [self.commentActions objectForKey:@"approve-comment"];
         pressedButton = self.approveBarButton;
-    } else if (button.tag == UNAPPROVE_BUTTON_TAG) {
+    } else if (button.tag == UnapproveButtonTag) {
         [WPMobileStats trackEventForWPCom:StatsEventNotificationsDetailUnapproveComment];
         commentAction = [self.commentActions objectForKey:@"unapprove-comment"];
         pressedButton = self.unapproveBarButton;
-    } else if (button.tag == TRASH_BUTTON_TAG){
+    } else if (button.tag == TrashButtonTag){
         [WPMobileStats trackEventForWPCom:StatsEventNotificationsDetailTrashComment];
         commentAction = [self.commentActions objectForKey:@"trash-comment"];
         pressedButton = self.trashBarButton;
-    } else if (button.tag == UNTRASH_BUTTON_TAG){
+    } else if (button.tag == UntrashButtonTag){
         [WPMobileStats trackEventForWPCom:StatsEventNotificationsDetailUntrashComment];
         commentAction = [self.commentActions objectForKey:@"untrash-comment"];
         pressedButton = self.trashBarButton;
-    } else if (button.tag == SPAM_BUTTON_TAG){
+    } else if (button.tag == SpamButtonTag){
         [WPMobileStats trackEventForWPCom:StatsEventNotificationsDetailFlagCommentAsSpam];
         commentAction = [self.commentActions objectForKey:@"spam-comment"];
         pressedButton = self.spamBarButton;
-    } else if (button.tag == UNSPAM_BUTTON_TAG){
+    } else if (button.tag == UnspamButtonTag){
         [WPMobileStats trackEventForWPCom:StatsEventNotificationsDetailUnflagCommentAsSpam];
         commentAction = [self.commentActions objectForKey:@"unspam-comment"];
         pressedButton = self.spamBarButton;

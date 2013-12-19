@@ -16,6 +16,8 @@
 #import <WPXMLRPCClient.h>
 #import "ContextManager.h"
 
+NSString *const NotificationsDeviceToken = @"apnsDeviceToken";
+
 @implementation NotificationsManager
 
 + (void)registerForPushNotifications {
@@ -42,21 +44,21 @@
     DDLogInfo(@"Device token received in didRegisterForRemoteNotificationsWithDeviceToken: %@", myToken);
     
     // Store the token
-    NSString *previousToken = [[NSUserDefaults standardUserDefaults] objectForKey:kApnsDeviceTokenPrefKey];
+    NSString *previousToken = [[NSUserDefaults standardUserDefaults] objectForKey:NotificationsDeviceToken];
     if (![previousToken isEqualToString:myToken]) {
         DDLogInfo(@"Device Token has changed! OLD Value %@, NEW value %@", previousToken, myToken);
-        [[NSUserDefaults standardUserDefaults] setObject:myToken forKey:kApnsDeviceTokenPrefKey];
+        [[NSUserDefaults standardUserDefaults] setObject:myToken forKey:NotificationsDeviceToken];
         [[WordPressComApi sharedApi] syncPushNotificationInfo];
     }
 }
 
 + (void)registrationDidFail:(NSError *)error {
     DDLogError(@"Failed to register for push notifications: %@", error);
-    [[NSUserDefaults standardUserDefaults] removeObjectForKey:kApnsDeviceTokenPrefKey];
+    [[NSUserDefaults standardUserDefaults] removeObjectForKey:NotificationsDeviceToken];
 }
 
 + (void)unregisterDeviceToken {
-    NSString *token = [[NSUserDefaults standardUserDefaults] objectForKey:kApnsDeviceTokenPrefKey];
+    NSString *token = [[NSUserDefaults standardUserDefaults] objectForKey:NotificationsDeviceToken];
     if (nil == token) {
         return;
     }
@@ -65,7 +67,6 @@
         return;
     }
     
-    NSString *authURL = kNotificationAuthURL;
     WPAccount *account = [WPAccount defaultWordPressComAccount];
 	if (account) {
         NSArray *parameters = @[account.username,
@@ -77,7 +78,7 @@
                                 WordPressComApiPushAppId
                                 ];
         
-        WPXMLRPCClient *api = [[WPXMLRPCClient alloc] initWithXMLRPCEndpoint:[NSURL URLWithString:authURL]];
+        WPXMLRPCClient *api = [[WPXMLRPCClient alloc] initWithXMLRPCEndpoint:[NSURL URLWithString:WPComXMLRPCUrl]];
         [api setAuthorizationHeaderWithToken:[[WordPressComApi sharedApi] authToken]];
         [api callMethod:@"wpcom.mobile_push_unregister_token"
              parameters:parameters

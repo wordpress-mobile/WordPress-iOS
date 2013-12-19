@@ -204,12 +204,7 @@
 		[self.textView becomeFirstResponder];
 
 		// TODO: Failure reason.
-		UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"Reblog failed", @"")
-															message:NSLocalizedString(@"There was a problem reblogging. Please try again.", @"")
-														   delegate:nil
-												  cancelButtonTitle:NSLocalizedString(@"OK", @"OK")
-												  otherButtonTitles:nil];
-		[alertView show];
+        [WPError showAlertWithTitle:NSLocalizedString(@"Reblog failed", nil) message:NSLocalizedString(@"There was a problem reblogging. Please try again.", nil)];
 	}];
 
 }

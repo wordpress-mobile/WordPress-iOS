@@ -19,6 +19,13 @@
 #import "ContextManager.h"
 #import "WordPressComApi.h"
 
+static CGFloat const ImageSizeSmallWidth = 240.0f;
+static CGFloat const ImageSizeSmallHeight = 180.0f;
+static CGFloat const ImageSizeMediumWidth = 480.0f;
+static CGFloat const ImageSizeMediumHeight = 360.0f;
+static CGFloat const ImageSizeLargeWidth = 640.0f;
+static CGFloat const ImageSizeLargeHeight = 480.0f;
+
 @interface Blog (PrivateMethods)
 
 @property (readwrite, assign) BOOL reachable;
@@ -234,18 +241,18 @@
     return NO;
 }
 
-- (NSDictionary *) getImageResizeDimensions{
+- (NSDictionary *)getImageResizeDimensions{
     CGSize smallSize, mediumSize, largeSize;
-    int small_size_w =      [[self getOptionValue:@"thumbnail_size_w"] intValue]    > 0 ? [[self getOptionValue:@"thumbnail_size_w"] intValue] : image_small_size_w;
-    int small_size_h =      [[self getOptionValue:@"thumbnail_size_h"] intValue]    > 0 ? [[self getOptionValue:@"thumbnail_size_h"] intValue] : image_small_size_h;
-    int medium_size_w =     [[self getOptionValue:@"medium_size_w"] intValue]       > 0 ? [[self getOptionValue:@"medium_size_w"] intValue] : image_medium_size_w;
-    int medium_size_h =     [[self getOptionValue:@"medium_size_h"] intValue]       > 0 ? [[self getOptionValue:@"medium_size_h"] intValue] : image_medium_size_h;
-    int large_size_w =      [[self getOptionValue:@"large_size_w"] intValue]        > 0 ? [[self getOptionValue:@"large_size_w"] intValue] : image_large_size_w;
-    int large_size_h =      [[self getOptionValue:@"large_size_h"] intValue]        > 0 ? [[self getOptionValue:@"large_size_h"] intValue] : image_large_size_h;
+    NSUInteger smallSizeWidth = [[self getOptionValue:@"thumbnail_size_w"] intValue] > 0 ? [[self getOptionValue:@"thumbnail_size_w"] unsignedIntegerValue] : ImageSizeSmallWidth;
+    NSUInteger smallSizeHeight = [[self getOptionValue:@"thumbnail_size_h"] intValue] > 0 ? [[self getOptionValue:@"thumbnail_size_h"] intValue] : ImageSizeSmallHeight;
+    NSUInteger mediumSizeWidth = [[self getOptionValue:@"medium_size_w"] intValue] > 0 ? [[self getOptionValue:@"medium_size_w"] intValue] : ImageSizeMediumWidth;
+    NSUInteger mediumSizeHeight = [[self getOptionValue:@"medium_size_h"] intValue] > 0 ? [[self getOptionValue:@"medium_size_h"] intValue] : ImageSizeMediumHeight;
+    NSUInteger largeSizeWidth = [[self getOptionValue:@"large_size_w"] intValue] > 0 ? [[self getOptionValue:@"large_size_w"] intValue] : ImageSizeLargeWidth;
+    NSUInteger largeSizeHeight = [[self getOptionValue:@"large_size_h"] intValue] > 0 ? [[self getOptionValue:@"large_size_h"] intValue] : ImageSizeLargeHeight;
     
-    smallSize = CGSizeMake(small_size_w, small_size_h);
-    mediumSize = CGSizeMake(medium_size_w, medium_size_h);
-    largeSize = CGSizeMake(large_size_w, large_size_h);
+    smallSize = CGSizeMake(smallSizeWidth, smallSizeHeight);
+    mediumSize = CGSizeMake(mediumSizeWidth, mediumSizeHeight);
+    largeSize = CGSizeMake(largeSizeWidth, largeSizeHeight);
     
     return [NSDictionary dictionaryWithObjectsAndKeys: [NSValue valueWithCGSize:smallSize], @"smallSize", 
             [NSValue valueWithCGSize:mediumSize], @"mediumSize", 
@@ -542,8 +549,8 @@
             float version = [[self version] floatValue];
             if (version < [minimumVersion floatValue]) {
                 if (self.lastUpdateWarning == nil || [self.lastUpdateWarning floatValue] < [minimumVersion floatValue]) {
-                    [[WordPressAppDelegate sharedWordPressApplicationDelegate] showAlertWithTitle:NSLocalizedString(@"WordPress version too old", @"")
-                                                                                          message:[NSString stringWithFormat:NSLocalizedString(@"The site at %@ uses WordPress %@. We recommend to update to the latest version, or at least %@", @""), [self hostname], [self version], minimumVersion]];
+                    [WPError showAlertWithTitle:NSLocalizedString(@"WordPress version too old", @"")
+                                        message:[NSString stringWithFormat:NSLocalizedString(@"The site at %@ uses WordPress %@. We recommend to update to the latest version, or at least %@", @""), [self hostname], [self version], minimumVersion]];
                     self.lastUpdateWarning = minimumVersion;
                 }
             }
@@ -619,7 +626,6 @@
             if (success) {
                 success();
             }
-            [[NSNotificationCenter defaultCenter] postNotificationName:kCommentsChangedNotificationName object:self];
         } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
 	        DDLogError(@"Error syncing comments (%@): %@", operation.request.URL, error);
             self.isSyncingComments = NO;
@@ -627,7 +633,6 @@
             if (failure) {
                 failure(error);
             }
-            [[NSNotificationCenter defaultCenter] postNotificationName:kCommentsChangedNotificationName object:self];
         }];
     }];
     return operation;

@@ -118,9 +118,8 @@ static NSString *const RemoveGeotagCellIdentifier = @"RemoveGeotagCellIdentifier
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(keyboardWillShow:) name:UIKeyboardWillShowNotification object:nil];
 	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(keyboardWillHide:) name:UIKeyboardWillHideNotification object:nil];
 	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(showFeaturedImageUploader:) name:@"UploadingFeaturedImage" object:nil];
-	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(featuredImageUploadSucceeded:) name:FeaturedImageUploadSuccessful object:nil];
-	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(featuredImageUploadFailed:) name:FeaturedImageUploadFailed object:nil];
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(newCategoryCreatedNotificationReceived:) name:WPNewCategoryCreatedAndUpdatedInBlogNotificationName object:nil];
+	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(featuredImageUploadSucceeded:) name:FeaturedImageUploadSuccessfulNotification object:nil];
+	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(featuredImageUploadFailed:) name:FeaturedImageUploadFailedNotification object:nil];
 
     [WPStyleGuide configureColorsForView:self.view andTableView:self.tableView];
 
@@ -870,24 +869,19 @@ static NSString *const RemoveGeotagCellIdentifier = @"RemoveGeotagCellIdentifier
     switch (indexPath.row) {
         case 0:
             
-            if(!self.post.blog.geolocationEnabled) {
-                UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"Enable Geotagging", @"Title of an alert view stating the user needs to turn on geotagging.")
-                                                                    message:NSLocalizedString(@"Geotagging is turned off. \nTo update this post's location, please enable geotagging in this blog's settings.", @"Message of an alert explaining that geotagging need to be enabled.")
-                                                                   delegate:nil
-                                                          cancelButtonTitle:@"OK"
-                                                          otherButtonTitles:nil, nil];
-                [alertView show];
+            if (!self.post.blog.geolocationEnabled) {
+                [WPError showAlertWithTitle:NSLocalizedString(@"Enable Geotagging", @"Title of an alert view stating the user needs to turn on geotagging.")
+                                    message:NSLocalizedString(@"Geotagging is turned off. \nTo update this post's location, please enable geotagging in this blog's settings.", @"Message of an alert explaining that geotagging need to be enabled.")
+                          withSupportButton:NO];
                 return;
             }
             
             // If location services are disabled at the app level [CLLocationManager locationServicesEnabled] will be true, but the location will be nil.
-            if(![CLLocationManager locationServicesEnabled] || [self.locationManager location] == nil) {
-                UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"Location Unavailable", @"Title of an alert view stating that the user's location is unavailable.")
-                                                                    message:NSLocalizedString(@"Location Services are turned off. \nTo add or update this post's location, please enable Location Services in the Settings app.", @"Message of an alert explaining that location services need to be enabled.")
-                                                                   delegate:nil
-                                                          cancelButtonTitle:@"OK"
-                                                          otherButtonTitles:nil, nil];
-                [alertView show];
+            if (![CLLocationManager locationServicesEnabled] || [self.locationManager location] == nil) {
+                [WPError showAlertWithTitle:NSLocalizedString(@"Location Unavailable", @"Title of an alert view stating that the user's location is unavailable.")
+                                    message:NSLocalizedString(@"Location Services are turned off. \nTo add or update this post's location, please enable Location Services in the Settings app.", @"Message of an alert explaining that location services need to be enabled.")
+                          withSupportButton:NO];
+
                 return;
             }
 
@@ -991,34 +985,34 @@ static NSString *const RemoveGeotagCellIdentifier = @"RemoveGeotagCellIdentifier
     switch (buttonIndex) {
         case 0:
             if (acSheet.numberOfButtons == 2) {
-                [self useImage:[self resizeImage:_currentImage toSize:kResizeOriginal]];
+                [self useImage:[self resizeImage:_currentImage toSize:MediaResizeOriginal]];
             } else {
-                [self useImage:[self resizeImage:_currentImage toSize:kResizeSmall]];
+                [self useImage:[self resizeImage:_currentImage toSize:MediaResizeSmall]];
             }
             break;
         case 1:
             if (acSheet.numberOfButtons == 2) {
                 [self showCustomSizeAlert];
             } else if (acSheet.numberOfButtons == 3) {
-                [self useImage:[self resizeImage:_currentImage toSize:kResizeOriginal]];
+                [self useImage:[self resizeImage:_currentImage toSize:MediaResizeOriginal]];
             } else {
-                [self useImage:[self resizeImage:_currentImage toSize:kResizeMedium]];
+                [self useImage:[self resizeImage:_currentImage toSize:MediaResizeMedium]];
             }
             break;
         case 2:
             if (acSheet.numberOfButtons == 3) {
                 [self showCustomSizeAlert];
             } else if (acSheet.numberOfButtons == 4) {
-                [self useImage:[self resizeImage:_currentImage toSize:kResizeOriginal]];
+                [self useImage:[self resizeImage:_currentImage toSize:MediaResizeOriginal]];
             } else {
-                [self useImage:[self resizeImage:_currentImage toSize:kResizeLarge]];
+                [self useImage:[self resizeImage:_currentImage toSize:MediaResizeLarge]];
             }
             break;
         case 3:
             if (acSheet.numberOfButtons == 4) {
                 [self showCustomSizeAlert];
             } else {
-                [self useImage:[self resizeImage:_currentImage toSize:kResizeOriginal]];
+                [self useImage:[self resizeImage:_currentImage toSize:MediaResizeOriginal]];
             }
             break;
         case 4:
@@ -1442,23 +1436,23 @@ static NSString *const RemoveGeotagCellIdentifier = @"RemoveGeotagCellIdentifier
         }
         case 1:
         {
-            [self useImage:[self resizeImage:_currentImage toSize:kResizeSmall]];
+            [self useImage:[self resizeImage:_currentImage toSize:MediaResizeSmall]];
             break;
         }
         case 2:
         {
-            [self useImage:[self resizeImage:_currentImage toSize:kResizeMedium]];
+            [self useImage:[self resizeImage:_currentImage toSize:MediaResizeMedium]];
             break;
         }
         case 3:
         {
-            [self useImage:[self resizeImage:_currentImage toSize:kResizeLarge]];
+            [self useImage:[self resizeImage:_currentImage toSize:MediaResizeLarge]];
             break;
         }
         case 4:
         {
             //[self useImage:currentImage];
-            [self useImage:[self resizeImage:_currentImage toSize:kResizeOriginal]];
+            [self useImage:[self resizeImage:_currentImage toSize:MediaResizeOriginal]];
             break;
         }
         default:
@@ -1576,7 +1570,7 @@ static NSString *const RemoveGeotagCellIdentifier = @"RemoveGeotagCellIdentifier
 	// Resize the image using the selected dimensions
 	UIImage *resizedImage = original;
 	switch (resize) {
-		case kResizeSmall:
+		case MediaResizeSmall:
 			if(original.size.width > smallSize.width  || original.size.height > smallSize.height) {
 				resizedImage = [original resizedImageWithContentMode:UIViewContentModeScaleAspectFit
 															  bounds:smallSize
@@ -1587,7 +1581,7 @@ static NSString *const RemoveGeotagCellIdentifier = @"RemoveGeotagCellIdentifier
 												interpolationQuality:kCGInterpolationHigh];
             }
 			break;
-		case kResizeMedium:
+		case MediaResizeMedium:
 			if(original.size.width > mediumSize.width  || original.size.height > mediumSize.height) {
 				resizedImage = [original resizedImageWithContentMode:UIViewContentModeScaleAspectFit
 															  bounds:mediumSize
@@ -1598,7 +1592,7 @@ static NSString *const RemoveGeotagCellIdentifier = @"RemoveGeotagCellIdentifier
 												interpolationQuality:kCGInterpolationHigh];
             }
 			break;
-		case kResizeLarge:
+		case MediaResizeLarge:
 			if(original.size.width > largeSize.width || original.size.height > largeSize.height) {
 				resizedImage = [original resizedImageWithContentMode:UIViewContentModeScaleAspectFit
 															  bounds:largeSize
@@ -1609,7 +1603,7 @@ static NSString *const RemoveGeotagCellIdentifier = @"RemoveGeotagCellIdentifier
 												interpolationQuality:kCGInterpolationHigh];
             }
 			break;
-		case kResizeOriginal:
+		case MediaResizeOriginal:
 			resizedImage = [original resizedImageWithContentMode:UIViewContentModeScaleAspectFit
 														  bounds:originalSize
 											interpolationQuality:kCGInterpolationHigh];
@@ -1698,7 +1692,7 @@ static NSString *const RemoveGeotagCellIdentifier = @"RemoveGeotagCellIdentifier
 		[fileManager createFileAtPath:filepath contents:imageData attributes:nil];
 	}
     
-	if([self interpretOrientation] == kLandscape) {
+	if ([self interpretOrientation] == MediaOrientationLandscape) {
 		imageMedia.orientation = @"landscape";
     } else {
 		imageMedia.orientation = @"portrait";
@@ -1721,7 +1715,7 @@ static NSString *const RemoveGeotagCellIdentifier = @"RemoveGeotagCellIdentifier
         }
         [imageMedia save];
     } failure:^(NSError *error) {
-        [WPError showAlertWithError:error title:NSLocalizedString(@"Upload failed", @"")];
+        [WPError showNetworkingAlertWithError:error title:NSLocalizedString(@"Upload failed", @"")];
     }];
 }
 
@@ -1730,28 +1724,28 @@ static NSString *const RemoveGeotagCellIdentifier = @"RemoveGeotagCellIdentifier
 }
 
 - (MediaOrientation)interpretOrientation {
-	MediaOrientation result = kPortrait;
+	MediaOrientation result = MediaOrientationPortrait;
 	switch ([[UIDevice currentDevice] orientation]) {
 		case UIDeviceOrientationPortrait:
-			result = kPortrait;
+			result = MediaOrientationPortrait;
 			break;
 		case UIDeviceOrientationPortraitUpsideDown:
-			result = kPortrait;
+			result = MediaOrientationPortrait;
 			break;
 		case UIDeviceOrientationLandscapeLeft:
-			result = kLandscape;
+			result = MediaOrientationLandscape;
 			break;
 		case UIDeviceOrientationLandscapeRight:
-			result = kLandscape;
+			result = MediaOrientationLandscape;
 			break;
 		case UIDeviceOrientationFaceUp:
-			result = kPortrait;
+			result = MediaOrientationPortrait;
 			break;
 		case UIDeviceOrientationFaceDown:
-			result = kPortrait;
+			result = MediaOrientationPortrait;
 			break;
 		case UIDeviceOrientationUnknown:
-			result = kPortrait;
+			result = MediaOrientationPortrait;
 			break;
 	}
 	
@@ -1908,7 +1902,7 @@ static NSString *const RemoveGeotagCellIdentifier = @"RemoveGeotagCellIdentifier
 }
 
 - (void)populateSelectionsControllerWithCategories:(CGRect)cellFrame {
-    WPFLogMethod();
+    DDLogMethod();
     if (_segmentedTableViewController == nil) {
         _segmentedTableViewController = [[WPSegmentedSelectionTableViewController alloc] init];
     }
@@ -1940,7 +1934,7 @@ static NSString *const RemoveGeotagCellIdentifier = @"RemoveGeotagCellIdentifier
 }
 
 - (IBAction)showAddNewCategoryView:(id)sender {
-    WPFLogMethod();
+    DDLogMethod();
     WPAddCategoryViewController *addCategoryViewController = [[WPAddCategoryViewController alloc] initWithBlog:self.post.blog];
 	if (IS_IPAD) {
         [_segmentedTableViewController pushViewController:addCategoryViewController animated:YES];
@@ -1964,7 +1958,7 @@ static NSString *const RemoveGeotagCellIdentifier = @"RemoveGeotagCellIdentifier
 }
 
 - (void)newCategoryCreatedNotificationReceived:(NSNotification *)notification {
-    WPFLogMethod();
+    DDLogMethod();
     if ([_segmentedTableViewController curContext] == kSelectionsCategoriesContext) {
         _isNewCategory = YES;
         [self populateSelectionsControllerWithCategories:CGRectZero];
