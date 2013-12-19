@@ -30,7 +30,6 @@ static NSString *const JetpackConnectedCellIdentifier = @"JetpackConnectedCellId
 @property (nonatomic, weak) UITextField *lastTextField, *usernameTextField, *passwordTextField, *urlTextField;
 @property (nonatomic, strong) UIActivityIndicatorView *savingIndicator;
 @property (nonatomic, strong) NSMutableDictionary *notificationPreferences;
-@property (nonatomic, strong) UIAlertView *failureAlertView;
 @property (nonatomic) BOOL isKeyboardVisible;
 
 @end
@@ -46,8 +45,7 @@ static NSString *const JetpackConnectedCellIdentifier = @"JetpackConnectedCellId
 }
 
 - (void)dealloc {
-    self.failureAlertView.delegate = nil;
-    [[NSNotificationCenter defaultCenter] removeObserver:self];
+    self.delegate = nil;
 }
 
 - (void)viewDidLoad {
@@ -73,12 +71,7 @@ static NSString *const JetpackConnectedCellIdentifier = @"JetpackConnectedCellId
             [[WordPressComApi sharedApi] fetchNotificationSettings:^{
                 [self reloadNotificationSettings];
             } failure:^(NSError *error) {
-                UIAlertView *alert = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"Error", @"")
-                                                                message:error.localizedDescription
-                                                               delegate:nil
-                                                      cancelButtonTitle:NSLocalizedString(@"OK", @"OK button label.")
-                                                      otherButtonTitles:nil, nil];
-                [alert show];
+                [WPError showAlertWithTitle:NSLocalizedString(@"Error", @"") message:error.localizedDescription];
             }];
         }
     }
@@ -356,56 +349,6 @@ static NSString *const JetpackConnectedCellIdentifier = @"JetpackConnectedCellId
     return YES;
 }
 
-#pragma mark - UIAlertViewDelegate
-
-- (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex { 
-	switch (buttonIndex) {
-		case 0: {
-            if ( alertView.tag == 20 ) {
-                //Domain Error or malformed response
-                [[UIApplication sharedApplication] openURL:[NSURL URLWithString: @"http://ios.wordpress.org/faq/#faq_3"]];
-            } else {
-                SupportViewController *supportViewController = [[SupportViewController alloc] init];
-                [self.navigationController pushViewController:supportViewController animated:YES];
-            }
-			break;
-		}
-		case 1:
-            if (alertView.tag == 30){
-                NSString *path = nil;
-                NSError *error = nil;
-                NSRegularExpression *regex = [NSRegularExpression regularExpressionWithPattern:@"http\\S+writing.php" options:NSRegularExpressionCaseInsensitive error:&error];
-                NSString *msg = [alertView message];
-                NSRange rng = [regex rangeOfFirstMatchInString:msg options:0 range:NSMakeRange(0, [msg length])];
-                
-                if (rng.location == NSNotFound) {
-                    path = [self getURLToValidate];
-                    path = [path stringByReplacingOccurrencesOfString:@"xmlrpc.php" withString:@""];
-                    path = [path stringByAppendingFormat:@"/wp-admin/options-writing.php"];
-                } else {
-                    path = [msg substringWithRange:rng];
-                }
-                
-                WPWebViewController *webViewController = [[WPWebViewController alloc] init];
-                [webViewController setUrl:[NSURL URLWithString:path]];
-                [webViewController setUsername:self.username];
-                [webViewController setPassword:self.password];
-                [webViewController setWpLoginURL:[NSURL URLWithString:self.blog.loginUrl]];
-                webViewController.shouldScrollToBottom = YES;
-                [self.navigationController pushViewController:webViewController animated:YES];
-            } else {
-                //OK
-            }
-			break;
-		default:
-			break;
-	}
-    if (self.failureAlertView == alertView) {
-        self.failureAlertView = nil;
-    }
-}
-
-
 #pragma mark -
 #pragma mark Custom methods
 
@@ -564,33 +507,39 @@ static NSString *const JetpackConnectedCellIdentifier = @"JetpackConnectedCellId
         } else {
             message = [error localizedDescription];
         }
-
-        if (self.failureAlertView == nil) {
-            if ([error code] == 405) { // XMLRPC disabled.
-                self.failureAlertView = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"Sorry, can't log in", @"")
-                                                              message:message
-                                                             delegate:self
-                                                    cancelButtonTitle:NSLocalizedString(@"Need Help?", @"")
-                                                    otherButtonTitles:NSLocalizedString(@"Enable Now", @""), nil];
-
-                self.failureAlertView.tag = 30;
-            } else {
-                self.failureAlertView = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"Sorry, can't log in", @"")
-                                                       message:message
-                                                      delegate:self
-                                             cancelButtonTitle:NSLocalizedString(@"Need Help?", @"")
-                                             otherButtonTitles:NSLocalizedString(@"OK", @""), nil];
-
-                if ( [error code] == NSURLErrorBadURL ) {
-                    self.failureAlertView.tag = 20; // take the user to the FAQ page when hit "Need Help"
-                } else {
-                    self.failureAlertView.tag = 10;
-                }
-            }
-
-            [self.failureAlertView show];
+        if ([error.userInfo[AFNetworkingOperationFailingURLResponseErrorKey] statusCode] == 405) {
+            [WPError showAlertWithTitle:NSLocalizedString(@"Sorry, can't log in", @"") message:message withSupportButton:YES okPressedBlock:^(UIAlertView *alertView) {
+                [self openSiteAdminFromAlert:alertView];
+            }];
+            
+        } else {
+            [WPError showAlertWithTitle:NSLocalizedString(@"Sorry, can't log in", @"") message:message];
         }
     }
+}
+
+- (void)openSiteAdminFromAlert:(UIAlertView *)alertView {
+    NSString *path = nil;
+    NSError *error = nil;
+    NSRegularExpression *regex = [NSRegularExpression regularExpressionWithPattern:@"http\\S+writing.php" options:NSRegularExpressionCaseInsensitive error:&error];
+    NSString *msg = [alertView message];
+    NSRange rng = [regex rangeOfFirstMatchInString:msg options:0 range:NSMakeRange(0, [msg length])];
+    
+    if (rng.location == NSNotFound) {
+        path = [self getURLToValidate];
+        path = [path stringByReplacingOccurrencesOfString:@"xmlrpc.php" withString:@""];
+        path = [path stringByAppendingFormat:@"/wp-admin/options-writing.php"];
+    } else {
+        path = [msg substringWithRange:rng];
+    }
+    
+    WPWebViewController *webViewController = [[WPWebViewController alloc] init];
+    [webViewController setUrl:[NSURL URLWithString:path]];
+    [webViewController setUsername:self.username];
+    [webViewController setPassword:self.password];
+    [webViewController setWpLoginURL:[NSURL URLWithString:self.blog.loginUrl]];
+    webViewController.shouldScrollToBottom = YES;
+    [self.navigationController pushViewController:webViewController animated:YES];
 }
 
 - (void)validateUrl {

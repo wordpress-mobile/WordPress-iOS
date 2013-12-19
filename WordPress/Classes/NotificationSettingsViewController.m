@@ -538,12 +538,7 @@ BOOL hasChanges;
         [self reloadNotificationSettings];
     }
     else {
-        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"Error", @"")
-                                                        message:error.localizedDescription
-                                                       delegate:nil
-                                              cancelButtonTitle:NSLocalizedString(@"OK", @"OK button label.")
-                                              otherButtonTitles:nil, nil];
-        [alert show];
+        [WPError showAlertWithTitle:(NSLocalizedString(@"Error", @"")) message:error.localizedDescription];
     }
 }
 
