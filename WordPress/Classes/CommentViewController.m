@@ -239,11 +239,6 @@ CGFloat const CommentViewUnapproveButtonTag = 701;
 
 #pragma mark - Actions
 
-- (IBAction)viewURL {
-	NSURL *url = [NSURL URLWithString: [self.comment.author_url trim]];
-    [self openInAppWebView:url];
-}
-
 - (void)approveOrUnapproveAction:(id)sender {
     UIBarButtonItem *barButton = sender;
     if (barButton.tag == CommentViewApproveButtonTag) {
@@ -253,7 +248,7 @@ CGFloat const CommentViewUnapproveButtonTag = 701;
     }
 }
 
-- (void)handlePostTitleButtonTapped:(id)sender {
+- (void)postTitleAction:(id)sender {
     [self openInAppWebView:[NSURL URLWithString:self.comment.link]];
 }
 
@@ -385,12 +380,6 @@ CGFloat const CommentViewUnapproveButtonTag = 701;
 - (void)textViewDidChange:(UITextView *)textView {
     self.reply.content = self.inlineComposeView.text;
     [[ContextManager sharedInstance] saveContext:self.reply.managedObjectContext];
-}
-
-#pragma mark - Gesture recognizers
-
-- (void)tappedPostTitle {
-    [self handlePostTitleButtonTapped:nil];
 }
 
 @end
