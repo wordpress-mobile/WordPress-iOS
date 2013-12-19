@@ -506,7 +506,7 @@ NSString *const WordPressComApiPushAppId = @"org.wordpress.appstore";
 }
 
 - (void)syncPushNotificationInfo {
-    NSString *token = nil;//[[NSUserDefaults standardUserDefaults] objectForKey:NotificationsDeviceToken];
+    NSString *token = [[NSUserDefaults standardUserDefaults] objectForKey:NotificationsDeviceToken];
     if ( nil == token ) return; //no apns token available
     
     if (![[WordPressComApi sharedApi] hasCredentials]) {
@@ -538,6 +538,7 @@ NSString *const WordPressComApiPushAppId = @"org.wordpress.appstore";
     WPXMLRPCRequest *tokenRequest = [api XMLRPCRequestWithMethod:@"wpcom.mobile_push_register_token" parameters:parameters];
     WPXMLRPCRequestOperation *tokenOperation = [api XMLRPCRequestOperationWithRequest:tokenRequest success:^(AFHTTPRequestOperation *operation, id responseObject) {
     } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+        DDLogError(@"Token registration failed: %@", error);
     }];
     
     [operations addObject:tokenOperation];
@@ -553,7 +554,7 @@ NSString *const WordPressComApiPushAppId = @"org.wordpress.appstore";
         NSDictionary *supportedNotifications = (NSDictionary *)responseObject;
         [[NSUserDefaults standardUserDefaults] setObject:supportedNotifications forKey:@"notification_preferences"];
     } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
-
+        DDLogError(@"Syncing push notification info failed: %@", error);
     }];
     
     [operations addObject:settingsOperation];
@@ -585,7 +586,7 @@ NSString *const WordPressComApiPushAppId = @"org.wordpress.appstore";
         }
         
     } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
-        
+        DDLogError(@"Checking for unseen notes failed: %@", error);
     }];
 }
 
