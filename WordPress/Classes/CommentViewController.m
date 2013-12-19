@@ -9,12 +9,13 @@
 #import "CommentViewController.h"
 #import "UIImageView+Gravatar.h"
 #import "NSString+XMLExtensions.h"
-#import "Comment.h"
 #import "CommentsViewController.h"
-#import "ReplyToCommentViewController.h"
+#import "Comment.h"
 #import "EditCommentViewController.h"
 #import "WPWebViewController.h"
 #import "CommentView.h"
+#import "InlineComposeView.h"
+#import "ContextManager.h"
 
 CGFloat const CommentViewDeletePromptActionSheetTag = 501;
 CGFloat const CommentViewReplyToCommentViewControllerHasChangesActionSheetTag = 401;
@@ -22,8 +23,7 @@ CGFloat const CommentViewEditCommentViewControllerHasChangesActionSheetTag = 601
 CGFloat const CommentViewApproveButtonTag = 700;
 CGFloat const CommentViewUnapproveButtonTag = 701;
 
-@interface CommentViewController () <UIWebViewDelegate, ReplyToCommentViewControllerDelegate, UIActionSheetDelegate, MFMailComposeViewControllerDelegate> {
-    ReplyToCommentViewController *_replyToCommentViewController;
+@interface CommentViewController () <UIWebViewDelegate, UIActionSheetDelegate, MFMailComposeViewControllerDelegate, InlineComposeViewDelegate> {
     EditCommentViewController *_editCommentViewController;
     BOOL _isShowingActionSheet;
     NSLayoutConstraint *_authorSiteHeightConstraint;
@@ -36,6 +36,10 @@ CGFloat const CommentViewUnapproveButtonTag = 701;
 @property (nonatomic, strong) UIButton *editButton;
 @property (nonatomic, strong) UIButton *replyButton;
 
+@property (nonatomic, strong) InlineComposeView *inlineComposeView;
+
+@property (nonatomic, strong) Comment *reply;
+
 @end
 
 @implementation CommentViewController
@@ -43,6 +47,10 @@ CGFloat const CommentViewUnapproveButtonTag = 701;
 - (void)dealloc {
     WPFLogMethod();
     [[NSNotificationCenter defaultCenter] removeObserver:self];
+
+    self.reply = nil;
+    self.inlineComposeView.delegate = nil;
+    self.inlineComposeView = nil;
 }
 
 - (void)viewDidLoad {
@@ -70,6 +78,16 @@ CGFloat const CommentViewUnapproveButtonTag = 701;
     if (self.comment) {
         [self showComment:self.comment];
     }
+
+    self.inlineComposeView = [[InlineComposeView alloc] initWithFrame:CGRectZero];
+    self.inlineComposeView.delegate = self;
+
+    [self.view addSubview:self.inlineComposeView];
+    if (self.comment) {
+        [self showComment:self.comment];
+        self.reply = [self.comment restoreReply];
+        self.inlineComposeView.text = self.reply.content;
+   }
 }
 
 - (void)viewWillAppear:(BOOL)animated {
@@ -87,23 +105,12 @@ CGFloat const CommentViewUnapproveButtonTag = 701;
 
 - (void)cancelView:(id)sender {
 	//there are no changes
-	if (!_replyToCommentViewController.hasChanges && !_editCommentViewController.hasChanges) {
+	if (!_editCommentViewController.hasChanges) {
 		[self dismissEditViewController];
-		
-		if(sender == _replyToCommentViewController) {
-			[_replyToCommentViewController.comment remove]; //delete the empty comment
-			_replyToCommentViewController.comment = nil;
-			
-			if (IS_IPAD) { //an half-patch for #790: sometimes the modal view is not disposed when click on cancel.
-                [self dismissViewControllerAnimated:YES completion:nil];
-            }
-			
-		}
-        
+
 		return;
 	}
-	
-	
+
 	UIActionSheet *actionSheet = [[UIActionSheet alloc] initWithTitle:NSLocalizedString(@"You have unsaved changes.", @"")
 															 delegate:self
                                                     cancelButtonTitle:NSLocalizedString(@"Cancel", @"")
@@ -112,16 +119,13 @@ CGFloat const CommentViewUnapproveButtonTag = 701;
 
     actionSheet.actionSheetStyle = UIActionSheetStyleAutomatic;
 
-	if (_replyToCommentViewController.hasChanges) {
-		actionSheet.tag = CommentViewReplyToCommentViewControllerHasChangesActionSheetTag;
-        [actionSheet showInView:_replyToCommentViewController.view];
-    } else if (_editCommentViewController.hasChanges) {
+	if (_editCommentViewController.hasChanges) {
 		actionSheet.tag = CommentViewEditCommentViewControllerHasChangesActionSheetTag;
         [actionSheet showInView:_editCommentViewController.view];
     }
-    
+
 	_isShowingActionSheet = YES;
-    
+
     WordPressAppDelegate *appDelegate = (WordPressAppDelegate*)[[UIApplication sharedApplication] delegate];
     [appDelegate setAlertRunning:YES];
 }
@@ -163,7 +167,6 @@ CGFloat const CommentViewUnapproveButtonTag = 701;
 }
 
 - (void)discard {
-    _replyToCommentViewController.navigationItem.rightBarButtonItem = nil;
 	[self dismissEditViewController];
 }
 
@@ -222,23 +225,12 @@ CGFloat const CommentViewUnapproveButtonTag = 701;
 	[self showEditCommentViewWithAnimation:YES];
 }
 
-- (void)replyAction:(id)sender {
-	if(self.commentsViewController.blog.isSyncingComments) {
-		[self showSyncInProgressAlert];
-	} else {
-        [WPMobileStats trackEventForWPCom:StatsEventCommentDetailClickedReplyToComment];
-		[self showReplyToCommentViewWithAnimation:YES];
-	}
-}
-
 
 #pragma mark - UIActionSheet Delegate methods
 
 - (void)actionSheet:(UIActionSheet *)actionSheet didDismissWithButtonIndex:(NSInteger)buttonIndex {
     if (actionSheet.tag == CommentViewDeletePromptActionSheetTag) {
         [self processDeletePromptActionSheet:actionSheet didDismissWithButtonIndex:buttonIndex];
-    } else if (actionSheet.tag == CommentViewReplyToCommentViewControllerHasChangesActionSheetTag) {
-        [self processReplyToCommentViewHasChangesActionSheet:actionSheet didDismissWithButtonIndex:buttonIndex];
     } else if (actionSheet.tag == CommentViewEditCommentViewControllerHasChangesActionSheetTag) {
         [self processEditCommentHasChangesActionSheet:actionSheet didDismissWithButtonIndex:buttonIndex];
     }
@@ -249,16 +241,6 @@ CGFloat const CommentViewUnapproveButtonTag = 701;
 - (void)processDeletePromptActionSheet:(UIActionSheet *)actionSheet didDismissWithButtonIndex:(NSInteger)buttonIndex {
     if (buttonIndex == 0) {
         [self deleteComment];
-    }
-}
-
-- (void)processReplyToCommentViewHasChangesActionSheet:(UIActionSheet *)actionSheet didDismissWithButtonIndex:(NSInteger)buttonIndex {
-    if (buttonIndex == 0) {
-        if (_replyToCommentViewController.hasChanges) {
-            _replyToCommentViewController.hasChanges = NO;
-            [_replyToCommentViewController.comment remove];
-        }
-        [self discard];
     }
 }
 
@@ -320,23 +302,29 @@ CGFloat const CommentViewUnapproveButtonTag = 701;
     [self moderateCommentWithSelector:@selector(unapprove)];
 }
 
-- (void)showReplyToCommentViewWithAnimation:(BOOL)animate {
-	if (_replyToCommentViewController) {
-		_replyToCommentViewController.delegate = nil;
+- (IBAction)spamComment {
+    WPFLogMethodParam(NSStringFromSelector(_cmd));
+    [WPMobileStats trackEventForWPCom:StatsEventCommentDetailFlagAsSpam];
+    [self.comment removeObserver:self forKeyPath:@"status"];
+    [self moderateCommentWithSelector:@selector(spam)];
+    if (IS_IPAD) {
+        [self.navigationController popToRootViewControllerAnimated:YES];
+    }
+}
+
+- (IBAction)launchEditComment {
+    WPFLogMethod();
+    [WPMobileStats trackEventForWPCom:StatsEventCommentDetailEditComment];
+	[self showEditCommentViewWithAnimation:YES];
+}
+
+- (IBAction)launchReplyToComments {
+	if(self.commentsViewController.blog.isSyncingComments) {
+		[self showSyncInProgressAlert];
+	} else {
+        [WPMobileStats trackEventForWPCom:StatsEventCommentDetailClickedReplyToComment];
+        [self.inlineComposeView displayComposer];
 	}
-	
-	_replyToCommentViewController = [[ReplyToCommentViewController alloc]
-                                         initWithNibName:@"ReplyToCommentViewController"
-                                         bundle:nil];
-	_replyToCommentViewController.delegate = self;
-	_replyToCommentViewController.comment = [self.comment newReply];
-	_replyToCommentViewController.title = NSLocalizedString(@"Comment Reply", @"Comment Reply view title");
-	
-    UINavigationController *navController = [[UINavigationController alloc] initWithRootViewController:_replyToCommentViewController];
-    navController.modalPresentationStyle = UIModalPresentationFormSheet;
-    navController.modalTransitionStyle = UIModalTransitionStyleCoverVertical;
-    navController.navigationBar.translucent = NO;
-    [self presentViewController:navController animated:YES completion:nil];
 }
 
 - (void)showEditCommentViewWithAnimation:(BOOL)animate {
@@ -385,6 +373,38 @@ CGFloat const CommentViewUnapproveButtonTag = 701;
 - (void)closeReplyViewAndSelectTheNewComment {
     [WPMobileStats trackEventForWPCom:StatsEventCommentDetailRepliedToComment];
 	[self dismissEditViewController];
+}
+
+#pragma mark - InlineComposeViewDelegate methods
+
+- (void)composeView:(InlineComposeView *)view didSendText:(NSString *)text {
+
+    self.reply.content = text;
+    // try to save it
+
+    [[ContextManager sharedInstance] saveContext:self.reply.managedObjectContext];
+
+    [self.inlineComposeView clearText];
+    [self.inlineComposeView dismissComposer];
+
+    self.reply.status = CommentStatusApproved;
+
+    // upload with success saves the reply with the published status when successfull
+    [self.reply uploadWithSuccess:^{
+        // the current modal experience shows success by dismissising the editor
+        // ideally we switch to an optimistic experience
+    } failure:^(NSError *error) {
+        // reset to draft status, AppDelegate automatically shows UIAlert when comment fails
+        self.reply.status = CommentStatusDraft;
+
+        DDLogError(@"Could not reply to comment: %@", error);
+    }];
+}
+
+// when the reply changes, save it to the comment
+- (void)textViewDidChange:(UITextView *)textView {
+    self.reply.content = self.inlineComposeView.text;
+    [[ContextManager sharedInstance] saveContext:self.reply.managedObjectContext];
 }
 
 #pragma mark - Gesture Recognizers

@@ -229,6 +229,14 @@
     return [WPStyleGuide baseLighterBlue];
 }
 
++ (UIColor *)keyboardColor {
+    if (IS_IPAD) {
+        return [UIColor colorWithRed:207.0f/255.0f green:210.0f/255.0f blue:213.0f/255.0f alpha:1.0];
+    } else {
+        return [UIColor colorWithRed:220.0f/255.0f green:223.0f/255.0f blue:226.0f/255.0f alpha:1.0];
+    }
+}
+
 + (UIBarButtonItemStyle)barButtonStyleForDone
 {
     return UIBarButtonItemStylePlain;
@@ -284,10 +292,10 @@
     cell.textField.font = [self tableviewSubtitleFont];
     
     if (cell.textField.enabled) {
-        cell.textField.textColor = [self whisperGrey];
+        cell.textField.textColor = [self darkAsNightGrey];
         cell.textField.textAlignment = NSTextAlignmentLeft;
     } else {
-        cell.textField.textColor = [self allTAllShadeGrey];
+        cell.textField.textColor = [self textFieldPlaceholderGrey];
         cell.textField.textAlignment = NSTextAlignmentRight;
     }
 }
