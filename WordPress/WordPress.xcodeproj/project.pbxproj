@@ -967,6 +967,8 @@
 		E1F77438178C282000E70764 /* NNGPlusActivity~iphone.png in Resources */ = {isa = PBXBuildFile; fileRef = E1F77434178C282000E70764 /* NNGPlusActivity~iphone.png */; };
 		E1F80825146420B000726BC7 /* UIImageView+Gravatar.m in Sources */ = {isa = PBXBuildFile; fileRef = E1F80824146420B000726BC7 /* UIImageView+Gravatar.m */; };
 		E1FC3DB413C7788700F6B60F /* WPWebViewController~ipad.xib in Resources */ = {isa = PBXBuildFile; fileRef = E1FC3DB313C7788700F6B60F /* WPWebViewController~ipad.xib */; };
+		E2013EA91863689500AB537F /* animatedBoxBack.png in Resources */ = {isa = PBXBuildFile; fileRef = E2013EA71863689500AB537F /* animatedBoxBack.png */; };
+		E2013EAA1863689500AB537F /* animatedBoxBack@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = E2013EA81863689500AB537F /* animatedBoxBack@2x.png */; };
 		E22257EE1829C15B00F76926 /* textPushDetailIcon.png in Resources */ = {isa = PBXBuildFile; fileRef = E22257EC1829C15B00F76926 /* textPushDetailIcon.png */; };
 		E22257EF1829C15B00F76926 /* textPushDetailIcon@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = E22257ED1829C15B00F76926 /* textPushDetailIcon@2x.png */; };
 		E232E5FE182E9E8600792CA0 /* icon-username-field@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = E232E5FD182E9E8600792CA0 /* icon-username-field@2x.png */; };
@@ -2196,6 +2198,8 @@
 		E1F80823146420B000726BC7 /* UIImageView+Gravatar.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIImageView+Gravatar.h"; sourceTree = "<group>"; };
 		E1F80824146420B000726BC7 /* UIImageView+Gravatar.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIImageView+Gravatar.m"; sourceTree = "<group>"; };
 		E1FC3DB313C7788700F6B60F /* WPWebViewController~ipad.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = "WPWebViewController~ipad.xib"; path = "Resources-iPad/WPWebViewController~ipad.xib"; sourceTree = "<group>"; };
+		E2013EA71863689500AB537F /* animatedBoxBack.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = animatedBoxBack.png; path = Resources/Images/animatedBoxBack.png; sourceTree = "<group>"; };
+		E2013EA81863689500AB537F /* animatedBoxBack@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "animatedBoxBack@2x.png"; path = "Resources/Images/animatedBoxBack@2x.png"; sourceTree = "<group>"; };
 		E22257EC1829C15B00F76926 /* textPushDetailIcon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = textPushDetailIcon.png; sourceTree = "<group>"; };
 		E22257ED1829C15B00F76926 /* textPushDetailIcon@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "textPushDetailIcon@2x.png"; sourceTree = "<group>"; };
 		E232E5FD182E9E8600792CA0 /* icon-username-field@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "icon-username-field@2x.png"; path = "Resources/Images/icon-username-field@2x.png"; sourceTree = "<group>"; };
@@ -4188,6 +4192,8 @@
 			children = (
 				E2408589183D8277002EB0EF /* animatedBox.png */,
 				E240858A183D8277002EB0EF /* animatedBox@2x.png */,
+				E2013EA71863689500AB537F /* animatedBoxBack.png */,
+				E2013EA81863689500AB537F /* animatedBoxBack@2x.png */,
 				E240858B183D8277002EB0EF /* animatedBoxPage1.png */,
 				E240858C183D8277002EB0EF /* animatedBoxPage1@2x.png */,
 				E240858D183D8277002EB0EF /* animatedBoxPage2.png */,
@@ -4860,6 +4866,7 @@
 				3716E40D16729B960035F8C4 /* action_icon_unfollowed@2x.png in Resources */,
 				CC669B2916769BAE009E16F8 /* note-reply-field.png in Resources */,
 				CC669B2A16769BAE009E16F8 /* note-reply-field@2x.png in Resources */,
+				E2013EA91863689500AB537F /* animatedBoxBack.png in Resources */,
 				CC669B36167AA523009E16F8 /* note_header_shadow.png in Resources */,
 				CC669B37167AA523009E16F8 /* note_header_shadow@2x.png in Resources */,
 				CC669B3F167B0AF2009E16F8 /* note-comment-grandparent-footer.png in Resources */,
@@ -4899,6 +4906,7 @@
 				3772E3491680D0DE0018D2AB /* note_icon_stats_highlighted@2x.png in Resources */,
 				85495F4917C6D9A500871A7A /* CommentViewController.xib in Resources */,
 				3029D83C1859359C00298395 /* icon_format_more_highlighted.png in Resources */,
+				E2013EAA1863689500AB537F /* animatedBoxBack@2x.png in Resources */,
 				85495F5A17C6FACF00871A7A /* icon-comments-trash@2x.png in Resources */,
 				5D69DBC4165428CA00A2D1F7 /* n.caf in Resources */,
 				857F55D117CEC5E100E154E1 /* doneButtonHighlighted-ios7@2x.png in Resources */,
