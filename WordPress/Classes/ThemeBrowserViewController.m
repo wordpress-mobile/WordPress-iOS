@@ -14,22 +14,23 @@
 #import "ThemeDetailsViewController.h"
 #import "Blog.h"
 #import "WPStyleGuide.h"
+#import "WPNoResultsView.h"
 
 static NSString *const ThemeCellIdentifier = @"theme";
 static NSString *const SearchFilterCellIdentifier = @"search_filter";
 
-@interface ThemeBrowserViewController () <UICollectionViewDelegate, UICollectionViewDataSource, NSFetchedResultsControllerDelegate>
+@interface ThemeBrowserViewController () <UICollectionViewDelegate, UICollectionViewDataSource, NSFetchedResultsControllerDelegate, UIActionSheetDelegate>
 
 @property (weak, nonatomic) IBOutlet UICollectionView *collectionView;
 @property (nonatomic, strong) NSArray *sortingOptions, *resultSortAttributes; // 'nice' sort names and the corresponding model attributes
 @property (nonatomic, strong) NSString *currentResultsSort, *currentSearchText;
 @property (nonatomic, strong) NSArray *allThemes, *filteredThemes;
 @property (nonatomic, weak) UIRefreshControl *refreshHeaderView;
-//@property (nonatomic, weak) WPNoResults *noThemesView;
 @property (nonatomic, weak) ThemeSearchFilterHeaderView *header;
 @property (nonatomic, weak) Theme *currentTheme;
 @property (nonatomic, assign) BOOL isSearching;
 @property (nonatomic, strong) NSFetchedResultsController *resultsController;
+@property (nonatomic, weak) WPNoResultsView *noThemesView;
 
 @end
 
@@ -64,6 +65,9 @@ static NSString *const SearchFilterCellIdentifier = @"search_filter";
     [_refreshHeaderView addTarget:self action:@selector(refreshControlTriggered:) forControlEvents:UIControlEventValueChanged];
     _refreshHeaderView.tintColor = [WPStyleGuide whisperGrey];
     [self.collectionView addSubview:_refreshHeaderView];
+    
+    UIBarButtonItem *sortButton = [[UIBarButtonItem alloc] initWithTitle:_sortingOptions[0] style:UIBarButtonItemStylePlain target:self action:@selector(sortPressed)];
+    self.navigationItem.rightBarButtonItem = sortButton;
     
     [self reloadThemes];
 }
@@ -134,19 +138,20 @@ static NSString *const SearchFilterCellIdentifier = @"search_filter";
         self.filteredThemes = _allThemes;
         
     } failure:^(NSError *error) {
-//        [WPError showAlertWithError:error];
+        [WPError showNetworkingAlertWithError:error];
     }];
 }
 
 - (void)toggleNoThemesView:(BOOL)show {
-//    if (!show) {
-//        [_noThemesView removeFromSuperview];
-//        return;
-//    }
-//    if (!_noThemesView) {
-//        _noThemesView = [WPInfoView WPInfoViewWithTitle:@"No themes to display" message:nil cancelButton:nil];
-//    }
-//    [self.collectionView addSubview:_noThemesView];
+    if (!show) {
+        _noThemesView.hidden = YES;
+        return;
+    }
+    if (!_noThemesView) {
+        _noThemesView = [WPNoResultsView noResultsViewWithTitle:NSLocalizedString(@"No themes to display", nil) message:nil accessoryView:nil buttonTitle:nil];
+        [self.collectionView addSubview:_noThemesView];
+    }
+    _noThemesView.hidden = NO;
 }
 
 - (void)removeCurrentThemeFromList {
@@ -226,9 +231,6 @@ static NSString *const SearchFilterCellIdentifier = @"search_filter";
     [super didRotateFromInterfaceOrientation:fromInterfaceOrientation];
 }
 
-- (void)viewDidLayoutSubviews {
-//    [_noThemesView centerInSuperview];
-}
 
 #pragma mark - FetchedResultsController
 
@@ -236,6 +238,7 @@ static NSString *const SearchFilterCellIdentifier = @"search_filter";
     _allThemes = self.filteredThemes = controller.fetchedObjects;
     [self currentThemeForBlog];
 }
+
 
 #pragma mark - Setters
 
@@ -285,6 +288,22 @@ static NSString *const SearchFilterCellIdentifier = @"search_filter";
 - (void)refreshControlTriggered:(UIRefreshControl*)refreshControl {
     if (refreshControl.isRefreshing) {
         [self reloadThemes];
+    }
+}
+
+- (void)sortPressed {
+    UIActionSheet *actionSheet = [[UIActionSheet alloc] initWithTitle:NSLocalizedString(@"Order By", nil) delegate:self cancelButtonTitle:NSLocalizedString(@"Cancel", nil) destructiveButtonTitle:nil otherButtonTitles:
+                                  _sortingOptions[0],
+                                  _sortingOptions[1],
+                                  _sortingOptions[2],
+                                  nil];
+    [actionSheet showFromBarButtonItem:self.navigationItem.rightBarButtonItem animated:YES];
+}
+
+- (void)actionSheet:(UIActionSheet *)actionSheet clickedButtonAtIndex:(NSInteger)buttonIndex {
+    if (buttonIndex < _sortingOptions.count) {
+        [self.navigationItem.rightBarButtonItem setTitle:[actionSheet buttonTitleAtIndex:buttonIndex]];
+        [self selectedSortIndex:buttonIndex];
     }
 }
 
