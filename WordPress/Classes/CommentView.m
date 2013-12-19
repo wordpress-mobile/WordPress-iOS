@@ -26,7 +26,16 @@
 - (void)configureContentView:(id<WPContentViewProvider>)contentProvider {
     [super configureContentView:contentProvider];
     
-    [self.avatarImageView setImageWithGravatarEmail:[contentProvider gravatarEmailForDisplay] fallbackImage:[UIImage imageNamed:@"gravatar"]];
+    NSString *avatarEmail = [contentProvider gravatarEmailForDisplay];
+    NSURL *avatarURL = [contentProvider avatarURLForDisplay];
+    UIImage *avatarPlaceholderImage = [UIImage imageNamed:@"gravatar"];
+    
+    // Use email if it exists, otherwise a direct URL
+    if (avatarEmail) {
+        [self.avatarImageView setImageWithGravatarEmail:avatarEmail fallbackImage:avatarPlaceholderImage];
+    } else if (avatarURL) {
+        [self.avatarImageView setImageWithURL:avatarURL placeholderImage:avatarPlaceholderImage];
+    }
     
     NSString *partialHtml = [contentProvider contentForDisplay];
     NSString *fullHtml;
