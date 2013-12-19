@@ -7,6 +7,7 @@
 #import "WordPressAppDelegate.h"
 #import "Reachability.h"
 #import "Post.h"
+#import "Constants.h"
 
 #define TAG_OFFSET 1010
 
