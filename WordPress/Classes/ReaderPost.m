@@ -165,9 +165,7 @@ NSString * const ReaderPostStoredCommentTextKey = @"comment";
 	NSNumber *blogSiteID = [dict numberForKey:@"site_id"];
 	NSNumber *siteID = [dict numberForKey:@"blog_id"];
 	NSNumber *postID = [dict numberForKey:@"ID"];
-    
-    WPAccount *account = (WPAccount *)[context objectWithID:[WPAccount defaultWordPressComAccount].objectID];
-    
+
     // Some endpoints (e.g. tags) use different case
     if (siteID == nil) {
         siteID = [dict numberForKey:@"site_ID"];
@@ -234,7 +232,10 @@ NSString * const ReaderPostStoredCommentTextKey = @"comment";
 		post.endpoint = endpoint;
     }
     
-    post.account = account;
+    // Set account on the post, but only if signed in
+    if ([WPAccount defaultWordPressComAccount] != nil) {
+        post.account = (WPAccount *)[context objectWithID:[WPAccount defaultWordPressComAccount].objectID];
+    }
     
     @autoreleasepool {
         [post updateFromDictionary:dict];
