@@ -29,7 +29,7 @@ NSString *const DefaultCellIdentifier = @"DefaultCellIdentifier";
 @property (nonatomic) BOOL infiniteScrollEnabled;
 @property (nonatomic, strong, readonly) UIView *swipeView;
 @property (nonatomic, strong) UITableViewCell *swipeCell;
-@property (nonatomic, strong) UIView *noResultsView;
+@property (nonatomic, strong) WPNoResultsView *noResultsView;
 @property (nonatomic, strong) EditSiteViewController *editSiteViewController;
 @property (nonatomic, strong) NSIndexPath *indexPathSelectedBeforeUpdates;
 @property (nonatomic, strong) NSIndexPath *indexPathSelectedAfterUpdates;
@@ -483,44 +483,45 @@ NSString *const DefaultCellIdentifier = @"DefaultCellIdentifier";
             // Show activity indicator view when syncing is occuring
             // and the fetched results controller has no objects
             
-            if (self.noResultsActivityIndicator == nil) {
-                self.noResultsActivityIndicator = [self createNoResultsActivityIndicator];
-            }
-            
             [self.noResultsActivityIndicator startAnimating];
+            self.noResultsActivityIndicator.center = [self.tableView convertPoint:self.tableView.center fromView:self.tableView.superview];
             [self.tableView addSubview:self.noResultsActivityIndicator];
         } else {
             // Show no results view if the fetched results controller
             // has no objects and syncing is not happening.
             
-            if (self.noResultsView == nil) {
-                self.noResultsView = [self createNoResultsView];
-            }
+            
             // only add and animate no results view if it isn't already
             // in the table view
             if (![self.noResultsView isDescendantOfView:self.tableView]) {
                 [self.tableView addSubviewWithFadeAnimation:self.noResultsView];
+            } else {
+                [self.noResultsView centerInSuperview];
             }
         }
     }
 }
 
-- (UIView *)createNoResultsView {
+- (WPNoResultsView *)noResultsView {
 	
-    WPNoResultsView *view = [WPNoResultsView noResultsViewWithTitle:[self noResultsTitleText] message:[self noResultsMessageText] accessoryView:[self noResultsAccessoryView] buttonTitle:[self noResultsButtonText]];
-    view.delegate = self;
+    if (!_noResultsView) {
+        _noResultsView = [WPNoResultsView noResultsViewWithTitle:[self noResultsTitleText] message:[self noResultsMessageText] accessoryView:[self noResultsAccessoryView] buttonTitle:[self noResultsButtonText]];
+        _noResultsView.delegate = self;
+    }
     
-	return view;
+	return _noResultsView;
 }
 
-- (UIActivityIndicatorView *)createNoResultsActivityIndicator {
+- (UIActivityIndicatorView *)noResultsActivityIndicator {
     
-    UIActivityIndicatorView *activityIndicator = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleGray];
-    activityIndicator.hidesWhenStopped = YES;
-    activityIndicator.autoresizingMask = UIViewAutoresizingFlexibleLeftMargin | UIViewAutoresizingFlexibleRightMargin | UIViewAutoresizingFlexibleTopMargin | UIViewAutoresizingFlexibleBottomMargin;
-    activityIndicator.center = [self.tableView convertPoint:self.tableView.center fromView:self.tableView.superview];
+    if (!_noResultsActivityIndicator) {
+        _noResultsActivityIndicator = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleGray];
+        _noResultsActivityIndicator.hidesWhenStopped = YES;
+        _noResultsActivityIndicator.autoresizingMask = UIViewAutoresizingFlexibleLeftMargin | UIViewAutoresizingFlexibleRightMargin | UIViewAutoresizingFlexibleTopMargin | UIViewAutoresizingFlexibleBottomMargin;
+        _noResultsActivityIndicator.center = [self.tableView convertPoint:self.tableView.center fromView:self.tableView.superview];
+    }
     
-	return activityIndicator;
+	return _noResultsActivityIndicator;
 }
 
 - (void)hideRefreshHeader {
