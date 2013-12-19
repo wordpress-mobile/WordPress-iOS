@@ -79,13 +79,14 @@ NSString * const WPBlogDetailsBlogKey = @"WPBlogDetailsBlogKey";
 - (void)viewDidLoad {
     [super viewDidLoad];
     
+    [WPStyleGuide configureColorsForView:self.view andTableView:self.tableView];
+    
     if (IS_IPHONE) {
+        // Account for 1 pixel header height
         UIEdgeInsets tableInset = [self.tableView contentInset];
         tableInset.top = -1;
         self.tableView.contentInset = tableInset;
     }
-    
-    [WPStyleGuide configureColorsForView:self.view andTableView:self.tableView];
     
     [self.tableView registerClass:[WPTableViewCell class] forCellReuseIdentifier:BlogDetailsCellIdentifier];
 }

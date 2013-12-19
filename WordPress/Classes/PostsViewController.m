@@ -200,7 +200,9 @@
 
 - (void)editPost:(AbstractPost *)apost {
     EditPostViewController *editPostViewController = [[EditPostViewController alloc] initWithPost:apost];
+    editPostViewController.editorOpenedBy = StatsPropertyPostDetailEditorOpenedOpenedByPostsView;
     UINavigationController *navController = [[UINavigationController alloc] initWithRootViewController:editPostViewController];
+    [navController setToolbarHidden:NO]; // Fixes incorrect toolbar animation.
     navController.modalPresentationStyle = UIModalPresentationCurrentContext;
     [self.view.window.rootViewController presentViewController:navController animated:YES completion:nil];
 }

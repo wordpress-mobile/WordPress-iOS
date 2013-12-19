@@ -12,6 +12,7 @@
 @class DDFileLogger;
 @class ReaderPostsViewController;
 @class BlogListViewController;
+@class AbstractPost;
 
 @interface WordPressAppDelegate : NSObject <UIApplicationDelegate>
 
@@ -36,7 +37,6 @@
 - (void)showAlertWithTitle:(NSString *)title message:(NSString *)message;
 - (void)showNotificationErrorAlert:(NSNotification *)notification;
 
-
 ///---------------------------
 /// @name User agent switching
 ///---------------------------
@@ -50,6 +50,8 @@
 - (void)showNotificationsTab;
 - (void)showBlogListTab;
 - (void)showReaderTab;
+- (void)showMeTab;
 - (void)showPostTab;
+- (void)switchTabToPostsListForPost:(AbstractPost *)post;
 
 @end
