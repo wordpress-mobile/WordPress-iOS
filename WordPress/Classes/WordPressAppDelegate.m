@@ -42,6 +42,7 @@
 #import "ReaderPostsViewController.h"
 #import "ReaderPostDetailViewController.h"
 #import "SupportViewController.h"
+#import "Constants.h"
 
 #if DEBUG
 #import "DDTTYLogger.h"
@@ -49,12 +50,15 @@
 #endif
 
 int ddLogLevel = LOG_LEVEL_INFO;
-NSInteger const UpdateCheckAlertViewTag = 102;
-NSString * const WPTabBarRestorationID = @"WPTabBarID";
-NSString * const WPBlogListNavigationRestorationID = @"WPBlogListNavigationID";
-NSString * const WPReaderNavigationRestorationID = @"WPReaderNavigationID";
-NSString * const WPNotificationsNavigationRestorationID = @"WPNotificationsNavigationID";
-NSInteger const IndexForMeTab = 2;
+static NSInteger const UpdateCheckAlertViewTag = 102;
+static NSString * const WPTabBarRestorationID = @"WPTabBarID";
+static NSString * const WPBlogListNavigationRestorationID = @"WPBlogListNavigationID";
+static NSString * const WPReaderNavigationRestorationID = @"WPReaderNavigationID";
+static NSString * const WPNotificationsNavigationRestorationID = @"WPNotificationsNavigationID";
+static NSInteger const IndexForMeTab = 2;
+static NSInteger const NotificationNewComment = 1001;
+static NSInteger const NotificationNewSocial = 1002;
+static NSString *const CameraPlusImagesNotification = @"CameraPlusImagesNotification";
 
 @interface WordPressAppDelegate () <UITabBarControllerDelegate, CrashlyticsDelegate, UIAlertViewDelegate, BITHockeyManagerDelegate>
 
@@ -91,7 +95,7 @@ NSInteger const IndexForMeTab = 2;
     [WPMobileStats initializeStats];
     [[GPPSignIn sharedInstance] setClientID:[WordPressComApiCredentials googlePlusClientId]];
     [self checkIfStatsShouldSendAndUpdateCheck];
-    [self checkIfFeedbackShouldBeEnabled];
+    [SupportViewController checkIfFeedbackShouldBeEnabled];
     
     // Networking setup
     [[AFNetworkActivityIndicatorManager sharedManager] setEnabled:YES];
@@ -157,7 +161,7 @@ NSInteger const IndexForMeTab = 2;
             UIImage *image = [images image];
             UIImageWriteToSavedPhotosAlbum(image, nil, nil, nil);
             NSDictionary *userInfo = [NSDictionary dictionaryWithObject:image forKey:@"image"];
-            [[NSNotificationCenter defaultCenter] postNotificationName:kCameraPlusImagesNotification object:nil userInfo:userInfo];
+            [[NSNotificationCenter defaultCenter] postNotificationName:CameraPlusImagesNotification object:nil userInfo:userInfo];
         } cancelBlock:^(void) {
             DDLogInfo(@"Camera+ picker canceled");
         }];
@@ -271,13 +275,13 @@ NSInteger const IndexForMeTab = 2;
 }
 
 - (void)application:(UIApplication *)application didReceiveRemoteNotification:(NSDictionary *)userInfo {
-    WPFLogMethod();
+    DDLogMethod();
     
     [NotificationsManager handleNotification:userInfo forState:application.applicationState completionHandler:nil];
 }
 
 - (void)application:(UIApplication *)application didReceiveRemoteNotification:(NSDictionary *)userInfo fetchCompletionHandler:(void (^)(UIBackgroundFetchResult))completionHandler {
-    WPFLogMethod();
+    DDLogMethod();
     
     [NotificationsManager handleNotification:userInfo forState:[UIApplication sharedApplication].applicationState completionHandler:completionHandler];
 }
@@ -578,33 +582,6 @@ NSInteger const IndexForMeTab = 2;
 	[defaults synchronize];
 }
 
-- (void)checkIfFeedbackShouldBeEnabled
-{
-    [[NSUserDefaults standardUserDefaults] registerDefaults:@{kWPUserDefaultsFeedbackEnabled: @YES}];
-    NSURL *url = [NSURL URLWithString:@"http://api.wordpress.org/iphoneapp/feedback-check/1.0/"];
-    NSURLRequest *request = [[NSURLRequest alloc] initWithURL:url];
-    AFJSONRequestOperation *operation = [AFJSONRequestOperation JSONRequestOperationWithRequest:request success:^(NSURLRequest *request, NSHTTPURLResponse *response, id JSON) {
-        DDLogVerbose(@"Feedback response received: %@", JSON);
-        NSNumber *feedbackEnabled = JSON[@"feedback-enabled"];
-        if (feedbackEnabled == nil) {
-            feedbackEnabled = @YES;
-        }
-        
-        NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
-        [defaults setBool:feedbackEnabled.boolValue forKey:kWPUserDefaultsFeedbackEnabled];
-        [defaults synchronize];
-    } failure:^(NSURLRequest *request, NSHTTPURLResponse *response, NSError *error, id JSON) {
-        DDLogError(@"Error received while checking feedback enabled status: %@", error);
-
-        // Lets be optimistic and turn on feedback by default if this call doesn't work
-        NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
-        [defaults setBool:YES forKey:kWPUserDefaultsFeedbackEnabled];
-        [defaults synchronize];
-    }];
-    
-    [operation start];
-}
-
 
 #pragma mark - Notifications
 
@@ -643,7 +620,7 @@ NSInteger const IndexForMeTab = 2;
 
 - (void)crashlytics:(Crashlytics *)crashlytics didDetectCrashDuringPreviousExecution:(id<CLSCrashReport>)crash
 {
-    WPFLogMethod();
+    DDLogMethod();
     NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
     NSInteger crashCount = [defaults integerForKey:@"crashCount"];
     crashCount += 1;
@@ -962,7 +939,7 @@ NSInteger const IndexForMeTab = 2;
     DDLogInfo(@"OS:        %@ %@", [device systemName], [device systemVersion]);
     DDLogInfo(@"Language:  %@", currentLanguage);
     DDLogInfo(@"UDID:      %@", [device wordpressIdentifier]);
-    DDLogInfo(@"APN token: %@", [[NSUserDefaults standardUserDefaults] objectForKey:kApnsDeviceTokenPrefKey]);
+    DDLogInfo(@"APN token: %@", [[NSUserDefaults standardUserDefaults] objectForKey:NotificationsDeviceToken]);
     DDLogInfo(@"===========================================================================");
 }
 

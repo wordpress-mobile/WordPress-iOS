@@ -16,6 +16,7 @@
 #import "WPAccount.h"
 #import "ContextManager.h"
 #import "Blog.h"
+#import "Constants.h"
 
 static BOOL hasRecordedAppOpenedEvent = NO;
 

@@ -98,7 +98,7 @@ static NSString *_lastAuthedName = nil;
 }
 
 - (void)dealloc {
-    WPFLogMethod();
+    DDLogMethod();
     if (authRequest && [authRequest isExecuting]) {
         [authRequest cancel];
     }
