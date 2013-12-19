@@ -231,7 +231,7 @@
     } failure:^(NSError *error) {
         [loading removeFromSuperview];
         [self.activateButton setTitle:NSLocalizedString(@"Activate", nil) forState:UIControlStateNormal];
-        [WPError showAlertWithError:error];
+        [WPError showNetworkingAlertWithError:error];
     }];
 }
 
