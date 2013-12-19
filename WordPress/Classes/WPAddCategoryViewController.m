@@ -4,6 +4,7 @@
 #import "WPSegmentedSelectionTableViewController.h"
 #import "Category.h"
 #import "Blog.h"
+#import "Constants.h"
 
 static void *const kParentCategoriesContext = ((void *)999);
 
