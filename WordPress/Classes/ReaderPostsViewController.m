@@ -586,10 +586,6 @@ NSString * const RPVCDisplayedNativeFriendFinder = @"DisplayedNativeFriendFinder
 	return @"ReaderPost";
 }
 
-- (NSString *)resultsControllerCacheName {
-	return [ReaderPost currentEndpoint];
-}
-
 - (NSDate *)lastSyncDate {
 	return (NSDate *)[[NSUserDefaults standardUserDefaults] objectForKey:ReaderLastSyncDateKey];
 }
