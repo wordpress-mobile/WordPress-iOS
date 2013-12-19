@@ -17,6 +17,15 @@
 #import "WPNUXSecondaryButton.h"
 #import "UILabel+SuggestSize.h"
 
+CGFloat const JetpackiOS7StatusBarOffset = 20.0;
+CGFloat const JetpackStandardOffset = 16;
+CGFloat const JetpackTextFieldWidth = 320.0;
+CGFloat const JetpackMaxTextWidth = 289.0;
+CGFloat const JetpackTextFieldHeight = 44.0;
+CGFloat const JetpackIconVerticalOffset = 77;
+CGFloat const JetpackSignInButtonWidth = 289.0;
+CGFloat const JetpackSignInButtonHeight = 41.0;
+
 @interface JetpackSettingsViewController () <UITextFieldDelegate, UIGestureRecognizerDelegate>
 @end
 
@@ -36,19 +45,6 @@
 
     BOOL _authenticating;
 }
-
-CGFloat const JetpackiOS7StatusBarOffset = 20.0;
-CGFloat const JetpackStandardOffset = 16;
-CGFloat const JetpackTextFieldWidth = 320.0;
-CGFloat const JetpackMaxTextWidth = 289.0;
-CGFloat const JetpackTextFieldHeight = 44.0;
-CGFloat const JetpackIconVerticalOffset = 77;
-CGFloat const JetpackSignInButtonWidth = 289.0;
-CGFloat const JetpackSignInButtonHeight = 41.0;
-
-
-#define kCheckCredentials NSLocalizedString(@"Verify and Save Credentials", @"");
-#define kCheckingCredentials NSLocalizedString(@"Verifing Credentials", @"");
 
 - (id)initWithBlog:(Blog *)blog {
 
