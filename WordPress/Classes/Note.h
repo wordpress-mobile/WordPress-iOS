@@ -18,8 +18,8 @@
 @property (nonatomic, retain) NSString *subject;
 @property (nonatomic, retain) NSData *payload;
 @property (nonatomic, retain) NSNumber *unread;
-@property (nonatomic, retain) NSString * icon;
-@property (nonatomic, retain) NSString * noteID;
+@property (nonatomic, retain) NSString *icon;
+@property (nonatomic, retain) NSString *noteID;
 @property (nonatomic, retain) WPAccount *account;
 @property (nonatomic, strong, readonly) NSString *commentText;
 @property (nonatomic, strong, readonly) NSDictionary *noteData;

@@ -53,25 +53,26 @@
     [self.view addSubview:self.themeControlsContainerView];
     
     self.themeName.text = self.theme.name;
-    self.themeName.font = [WPStyleGuide largePostTitleFont];
+    self.themeName.font = [WPStyleGuide postTitleFont];
+    self.themeName.textColor = [WPStyleGuide littleEddieGrey];
     [self.themeName sizeToFit];
+    
+    self.livePreviewButton.titleLabel.font = [WPStyleGuide regularTextFont];
+    self.activateButton.titleLabel.font = self.livePreviewButton.titleLabel.font;
+    self.livePreviewButton.titleLabel.text = NSLocalizedString(@"Live Preview", nil);
+    self.activateButton.titleLabel.text = NSLocalizedString(@"Activate", nil);
+    [self.livePreviewButton setTitleColor:[WPStyleGuide newKidOnTheBlockBlue] forState:UIControlStateNormal];
+    [self.activateButton setTitleColor:[WPStyleGuide newKidOnTheBlockBlue] forState:UIControlStateNormal];
+    [self.livePreviewButton setTitleColor:[WPStyleGuide allTAllShadeGrey] forState:UIControlStateHighlighted];
+    [self.activateButton setTitleColor:[WPStyleGuide allTAllShadeGrey] forState:UIControlStateHighlighted];
     
     if ([self.theme isCurrentTheme]) {
         [self showAsCurrentTheme];
-    } else {
-        self.activateButton.layer.cornerRadius = 4.0f;
-        self.activateButton.titleLabel.font = [WPStyleGuide regularTextFont];
     }
     
     if (self.theme.isPremium) {
         [self showAsPremiumTheme];
     }
-    
-    self.livePreviewButton.titleLabel.font = [WPStyleGuide regularTextFont];
-    self.livePreviewButton.layer.cornerRadius = 4.0f;
-    
-    // Should just be text and no background if iOS7
-    [self.livePreviewButton setBackgroundColor:[WPStyleGuide baseDarkerBlue]];
     
     [self setupInfoView];
     
@@ -107,12 +108,14 @@
 }
 
 - (void)setupInfoView {
-    UIView *infoView = [[UIView alloc] initWithFrame:CGRectMake(IS_IPAD ? 0 : 7, CGRectGetMaxY(_themeControlsView.frame), _themeControlsView.frame.size.width - (IS_IPAD ? 0 : 7), 0)];
+    UIView *infoView = [[UIView alloc] initWithFrame:CGRectMake(IS_IPAD ? 0 : 10, CGRectGetMaxY(_themeControlsView.frame), _themeControlsView.frame.size.width - (IS_IPAD ? 0 : 20), 0)];
     _infoView = infoView;
     
     UILabel *detailsTitle = [[UILabel alloc] initWithFrame:CGRectMake(0, 10, _infoView.frame.size.width, 0)];
     detailsTitle.text = NSLocalizedString(@"Details", @"Title for theme details");
-    detailsTitle.font = [WPStyleGuide postTitleFont];
+    detailsTitle.font = [WPStyleGuide regularTextFontBold];
+    detailsTitle.textColor = [WPStyleGuide littleEddieGrey];
+    detailsTitle.opaque = YES;
     [detailsTitle sizeToFit];
     [_infoView addSubview:detailsTitle];
     
@@ -120,19 +123,23 @@
     detailsText.text = self.theme.details;
     detailsText.numberOfLines = 0;
     detailsText.font = [WPStyleGuide regularTextFont];
+    detailsText.textColor = detailsTitle.textColor;
+    detailsText.opaque = YES;
     [detailsText sizeToFit];
     [_infoView addSubview:detailsText];
     
     UILabel *tagsTitle = [[UILabel alloc] initWithFrame:CGRectMake(0, CGRectGetMaxY(detailsText.frame) + 20, _infoView.frame.size.width, 0)];
     tagsTitle.text = NSLocalizedString(@"Tags", @"Title for theme tags");
     tagsTitle.font = detailsTitle.font;
+    tagsTitle.opaque = YES;
     [tagsTitle sizeToFit];
     [_infoView addSubview:tagsTitle];
     
     UILabel *tags = [[UILabel alloc] initWithFrame:CGRectMake(0, CGRectGetMaxY(tagsTitle.frame), _infoView.frame.size.width, 0)];
     tags.text = [self formattedTags];
     tags.numberOfLines = 0;
-    tags.font = [WPStyleGuide subtitleFont];
+    tags.font = [WPStyleGuide regularTextFont];
+    tags.opaque = YES;
     [tags sizeToFit];
     [_infoView addSubview:tags];
     
@@ -161,29 +168,21 @@
     self.screenshot.image = nil;
 }
 
-- (UILabel*)themeStatusLabelWithText:(NSString*)text {
-    UILabel *label = [[UILabel alloc] init];
-    label.text = text;
-    label.font = [WPStyleGuide regularTextFont];
-    label.textColor = [WPStyleGuide littleEddieGrey];
-    [label sizeToFit];
-    return label;
-}
-
 - (void)showViewSite {
     // Remove activate theme button, and live preview becomes the 'View Site' button
     [self.livePreviewButton setTitle:NSLocalizedString(@"View Site", @"") forState:UIControlStateNormal];
-    CGRect f = self.livePreviewButton.frame;
-    f.size.width = CGRectGetMaxX(self.activateButton.frame) - self.livePreviewButton.frame.origin.x;
-    self.livePreviewButton.frame = f;
+    self.livePreviewButton.center = CGPointMake(self.screenshot.center.x, self.livePreviewButton.center.y);
     self.activateButton.alpha = 0;
 }
 
 - (void)showAsCurrentTheme {
-    UILabel *currentTheme = [self themeStatusLabelWithText:NSLocalizedString(@"Current Theme", @"Denote a theme as the current")];
+    UILabel *currentTheme = [[UILabel alloc] init];
     _currentTheme = currentTheme;
-    _currentTheme.backgroundColor = [UIColor clearColor]; // for iOS 6
+    _currentTheme.text = NSLocalizedString(@"Current Theme", @"Denote a theme as the current");
+    _currentTheme.font = [WPStyleGuide subtitleFont];
+    _currentTheme.textColor = [WPStyleGuide whisperGrey];
     [_currentTheme sizeToFit];
+    
     _currentTheme.frame = (CGRect) {
         .origin = CGPointMake(_themeName.frame.origin.x, CGRectGetMaxY(_themeName.frame)),
         .size = _currentTheme.frame.size
@@ -196,8 +195,6 @@
     };
     
     [self showViewSite];
-    
-    [self.view setNeedsLayout];
 }
 
 - (void)showAsPremiumTheme {
@@ -220,7 +217,7 @@
 }
 
 - (IBAction)activatePressed:(id)sender {
-    __block UIActivityIndicatorView *loading = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleWhite];
+    __block UIActivityIndicatorView *loading = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleGray];
     [loading startAnimating];
     loading.center = CGPointMake(self.activateButton.bounds.size.width/2, self.activateButton.bounds.size.height/2);
     [self.activateButton setTitle:@"" forState:UIControlStateNormal];
@@ -228,15 +225,13 @@
     
     [self.theme activateThemeWithSuccess:^{
         [loading removeFromSuperview];
-        
         [UIView animateWithDuration:0.3 delay:0.2 options:UIViewAnimationOptionBeginFromCurrentState animations:^{
             [self showViewSite];
         } completion:nil];
-        
     } failure:^(NSError *error) {
         [loading removeFromSuperview];
-        
-//        [WPError showAlertWithError:error];
+        [self.activateButton setTitle:NSLocalizedString(@"Activate", nil) forState:UIControlStateNormal];
+        [WPError showNetworkingAlertWithError:error];
     }];
 }
 
