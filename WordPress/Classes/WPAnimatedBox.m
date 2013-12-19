@@ -11,6 +11,7 @@
 @interface WPAnimatedBox () {
     
     UIImageView *_container;
+    UIImageView *_containerBack;
     UIImageView *_page1;
     UIImageView *_page2;
     UIImageView *_page3;
@@ -35,6 +36,9 @@ static CGFloat const WPAnimatedBoxAnimationTolerance = 5.0;
     _container = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"animatedBox"]];
     [_container sizeToFit];
     
+    _containerBack = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"animatedBoxBack"]];
+    [_containerBack sizeToFit];
+    
     _page1 = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"animatedBoxPage1"]];
     [_page1 sizeToFit];
     
@@ -47,6 +51,7 @@ static CGFloat const WPAnimatedBoxAnimationTolerance = 5.0;
     // view's are laid out by pixels for accuracy
     self.frame = CGRectMake(0, 0, WPAnimatedBoxSideLength, WPAnimatedBoxSideLength);
     _container.frame = CGRectMake(0, CGRectGetHeight(self.frame) - CGRectGetHeight(_container.frame), CGRectGetWidth(_container.frame), CGRectGetHeight(_container.frame));
+    _containerBack.frame = CGRectMake(0, CGRectGetHeight(self.frame) - CGRectGetHeight(_containerBack.frame), CGRectGetWidth(_containerBack.frame), CGRectGetHeight(_containerBack.frame));
     _page1.frame = CGRectMake(28, WPAnimatedBoxAnimationTolerance + 11, CGRectGetWidth(_page1.frame), CGRectGetHeight(_page1.frame));
     _page2.frame = CGRectMake(17, WPAnimatedBoxAnimationTolerance + 0, CGRectGetWidth(_page2.frame), CGRectGetHeight(_page2.frame));
     _page3.frame = CGRectMake(2, WPAnimatedBoxAnimationTolerance + 15, CGRectGetWidth(_page3.frame), CGRectGetHeight(_page3.frame));
@@ -55,6 +60,7 @@ static CGFloat const WPAnimatedBoxAnimationTolerance = 5.0;
     [self insertSubview:_page1 belowSubview:_container];
     [self insertSubview:_page2 belowSubview:_page1];
     [self insertSubview:_page3 belowSubview:_page2];
+    [self insertSubview:_containerBack belowSubview:_page3];
     
     // add motion effects
     UIInterpolatingMotionEffect *page1MotionEffect = [[UIInterpolatingMotionEffect alloc] initWithKeyPath:@"frame.origin.y" type:UIInterpolatingMotionEffectTypeTiltAlongVerticalAxis];
