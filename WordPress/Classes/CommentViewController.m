@@ -26,7 +26,6 @@ CGFloat const CommentViewUnapproveButtonTag = 701;
     ReplyToCommentViewController *_replyToCommentViewController;
     EditCommentViewController *_editCommentViewController;
     BOOL _isShowingActionSheet;
-    AMBlockToken *_reachabilityToken;
     NSLayoutConstraint *_authorSiteHeightConstraint;
 }
 
@@ -43,16 +42,7 @@ CGFloat const CommentViewUnapproveButtonTag = 701;
 
 - (void)dealloc {
     WPFLogMethod();
-    
-    [self.comment removeObserver:self forKeyPath:@"status"];
-    if (_reachabilityToken) {
-        [_comment.blog removeObserverWithBlockToken:_reachabilityToken];
-        _reachabilityToken = nil;
-    }
     [[NSNotificationCenter defaultCenter] removeObserver:self];
-    
-//	self.commentWebview.delegate = nil;
-//    [self.commentWebview stopLoading];
 }
 
 - (void)viewDidLoad
@@ -77,22 +67,9 @@ CGFloat const CommentViewUnapproveButtonTag = 701;
     [self.editButton addTarget:self action:@selector(editAction:) forControlEvents:UIControlEventTouchUpInside];
     
     [self.view addSubview:self.commentView];
-    
-//    self.authorNameLabel.font = [WPStyleGuide postTitleFont];
-//    self.authorSiteButton.titleLabel.font = [WPStyleGuide subtitleFont];
-//    [self.authorSiteButton setTitleColor:[WPStyleGuide newKidOnTheBlockBlue] forState:UIControlStateNormal];
-//    self.authorEmailButton.titleLabel.font = [WPStyleGuide subtitleFont];
-//    [self.authorEmailButton setTitleColor:[WPStyleGuide newKidOnTheBlockBlue] forState:UIControlStateNormal];
-//    self.postTitleLabel.font = [WPStyleGuide subtitleFont];
-//    self.dateLabel.font = [WPStyleGuide subtitleFont];
 
-//    UITapGestureRecognizer *gestureRecognizer = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(tappedPostTitle)];
-//    gestureRecognizer.numberOfTapsRequired = 1;
-//    [self.postTitleLabel addGestureRecognizer:gestureRecognizer];
-    
     if (self.comment) {
         [self showComment:self.comment];
-        [self reachabilityChanged:self.comment.blog.reachable];
     }
 }
 
@@ -107,28 +84,6 @@ CGFloat const CommentViewUnapproveButtonTag = 701;
 - (void)viewDidLayoutSubviews {
     UIScrollView *scrollView = (UIScrollView *)self.view;
     scrollView.contentSize = self.commentView.frame.size;
-}
-
-- (void)setComment:(Comment *)comment {
-    if ([_comment isEqual:comment]) {
-        return;
-    }
-    if (_reachabilityToken) {
-        [_comment.blog removeObserverWithBlockToken:_reachabilityToken];
-    }
-    
-    [_comment removeObserver:self forKeyPath:@"status"];
-    [self willChangeValueForKey:@"comment"];
-    _comment = comment;
-    [self didChangeValueForKey:@"comment"];
-    [_comment addObserver:self forKeyPath:@"status" options:0 context:nil];
-    
-    _reachabilityToken = [comment.blog addObserverForKeyPath:@"reachable" task:^(id obj, NSDictionary *change) {
-        Blog *blog = (Blog *)obj;
-        [self reachabilityChanged:blog.reachable];
-    }];
-    
-    [self reachabilityChanged:comment.blog.reachable];
 }
 
 - (void)cancelView:(id)sender {
@@ -172,15 +127,6 @@ CGFloat const CommentViewUnapproveButtonTag = 701;
     [appDelegate setAlertRunning:YES];
 }
 
-- (void)updateViewConstraints
-{
-    [super updateViewConstraints];
-//    [self.view removeConstraint:_authorSiteHeightConstraint];
-//    if ([[self.authorSiteButton titleForState:UIControlStateNormal] length] == 0) {
-//        _authorSiteHeightConstraint = [NSLayoutConstraint constraintWithItem:self.authorSiteButton attribute:NSLayoutAttributeHeight relatedBy:NSLayoutRelationEqual toItem:nil attribute:0 multiplier:0.0 constant:8];
-//        [self.view addConstraint:_authorSiteHeightConstraint];
-//    }
-}
 
 #pragma mark - Private Methods
 
@@ -192,30 +138,6 @@ CGFloat const CommentViewUnapproveButtonTag = 701;
 - (void)showComment:(Comment *)comment
 {
     self.comment = comment;
-    
-//    static NSDateFormatter *dateFormatter = nil;
-//    if (dateFormatter == nil) {
-//        dateFormatter = [[NSDateFormatter alloc] init];
-//        [dateFormatter setTimeStyle:NSDateFormatterShortStyle];
-//        [dateFormatter setDateStyle:NSDateFormatterLongStyle];
-//    }
-//    
-//    [self.gravatarImageView setImageWithGravatarEmail:[self.comment.author_email trim] fallbackImage:[UIImage imageNamed:@"gravatar"]];
-//    
-//    self.authorNameLabel.text = [[self.comment.author stringByDecodingXMLCharacters] trim];
-//
-//    [self.authorSiteButton setTitle:[self.comment.author_url trim] forState:UIControlStateNormal];
-//
-//    [self.authorEmailButton setTitle:[self.comment.author_email trim] forState:UIControlStateNormal];
-//    UIColor *textColor;
-//    if (![MFMailComposeViewController canSendMail]) {
-//        textColor = [UIColor blackColor];
-//    } else {
-//        textColor = [WPStyleGuide newKidOnTheBlockBlue];
-//    }
-//    [self.authorEmailButton setTitleColor:textColor forState:UIControlStateNormal];
-//
-//    self.postTitleLabel.attributedText = [self postTitleString];
 
     if ([self.comment.status isEqualToString:@"approve"]) {
         [self.approveButton setImage:[UIImage imageNamed:@"icon-comments-unapprove"] forState:UIControlStateNormal];
@@ -367,29 +289,6 @@ CGFloat const CommentViewUnapproveButtonTag = 701;
     }
 }
 
-#pragma mark MFMailComposeViewControllerDelegate methods
-
-- (void)mailComposeController:(MFMailComposeViewController*)controller didFinishWithResult:(MFMailComposeResult)result error:(NSError*)error;
-{
-    [self dismissViewControllerAnimated:YES completion:nil];
-}
-
-
-#pragma mark - Reachability
-
-- (void)reachabilityChanged:(BOOL)reachable {
-    for (int i=0; i < [self.navigationController.toolbar.items count]; i++) {
-        if ([self.navigationController.toolbar.items[i] isKindOfClass:[UIBarButtonItem class]]) {
-            UIBarButtonItem *button = self.navigationController.toolbar.items[i];
-            button.enabled = reachable;
-        }
-    }
-//    if (reachable) {
-//        // Load gravatar if it wasn't loaded yet
-//        [self.gravatarImageView setImageWithGravatarEmail:[self.comment.author_email trim] fallbackImage:[UIImage imageNamed:@"gravatar"]];
-//    }
-}
-
 
 #pragma mark UIWebView Delegate Methods
 
@@ -513,14 +412,6 @@ CGFloat const CommentViewUnapproveButtonTag = 701;
 - (void)tappedPostTitle
 {
     [self handlePostTitleButtonTapped:nil];
-}
-
-#pragma mark - KVO
-
-- (void)observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary *)change context:(void *)context {
-    if ([self isViewLoaded]) {
-        [self showComment:self.comment];
-    }
 }
 
 @end
