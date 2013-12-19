@@ -279,12 +279,13 @@ NSString * const NotificationsJetpackInformationURL = @"http://jetpack.me/about/
     
     NSNumber *timestamp;
     NSArray *notes = [self.resultsController fetchedObjects];
-    if ([notes count] > 0) {
+    if (userInteraction == NO && [notes count] > 0) {
         Note *note = [notes objectAtIndex:0];
         timestamp = note.timestamp;
     } else {
         timestamp = nil;
     }
+    
     [self.user getNotificationsSince:timestamp success:^(AFHTTPRequestOperation *operation, id responseObject) {
         [self updateSyncDate];
         if (success) {
