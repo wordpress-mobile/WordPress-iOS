@@ -283,6 +283,7 @@ CGFloat const CreateAccountAndBlogButtonHeight = 40.0;
     if (_passwordField == nil) {
         _passwordField = [[WPWalkthroughTextField alloc] initWithLeftViewImage:[UIImage imageNamed:@"icon-password-field"]];
         _passwordField.secureTextEntry = YES;
+        _passwordField.showSecureTextEntryToggle = YES;
         _passwordField.backgroundColor = [UIColor whiteColor];
         _passwordField.placeholder = NSLocalizedString(@"Password", nil);
         _passwordField.font = [WPNUXUtility textFieldFont];
