@@ -150,8 +150,7 @@ NSString *const WordPressComApiPushAppId = @"org.wordpress.appstore";
             accessToken = [responseObject objectForKey:@"access_token"];
         }
         if (accessToken == nil) {
-            WPFLog(@"No access token found on OAuth response: %@", responseObject);
-            //FIXME: this error message is crappy. Understand the posible reasons why responseObject is not what we expected and return a proper error
+             //FIXME: this error message is crappy. Understand the posible reasons why responseObject is not what we expected and return a proper error
             NSString *localizedDescription = NSLocalizedString(@"Error authenticating", @"");
             NSError *error = [NSError errorWithDomain:WordPressComApiErrorDomain code:WordPressComApiErrorNoAccessToken userInfo:@{NSLocalizedDescriptionKey: localizedDescription}];
             if (failure) {
@@ -167,7 +166,6 @@ NSString *const WordPressComApiPushAppId = @"org.wordpress.appstore";
                 failure(error);
             }
         } else {
-            WPFLog(@"Signed in as %@", self.username);
             [[NSUserDefaults standardUserDefaults] setObject:self.username forKey:@"wpcom_username_preference"];
             [[NSUserDefaults standardUserDefaults] synchronize];
             [WordPressAppDelegate sharedWordPressApplicationDelegate].isWPcomAuthenticated = YES;
@@ -192,7 +190,6 @@ NSString *const WordPressComApiPushAppId = @"org.wordpress.appstore";
         parameters:params
            success:successBlock
            failure:^(AFHTTPRequestOperation *operation, NSError *error) {
-               WPFLog(@"Couldn't signin the user: %@", error);
                self.password = nil;
                if (operation.response.statusCode != 400) {
                    [WPError showAlertWithError:error];
@@ -203,7 +200,6 @@ NSString *const WordPressComApiPushAppId = @"org.wordpress.appstore";
 
 - (void)refreshTokenWithSuccess:(void (^)())success failure:(void (^)(NSError *error))failure {
     if (self.username == nil || self.password == nil) {
-        WPFLog(@"-[WordPressComApi refreshTokenWithSuccess:failure:] username or password are nil, don't even try");
         return;
     }
     [self signInWithUsername:self.username password:self.password success:success failure:failure];
@@ -541,9 +537,7 @@ NSString *const WordPressComApiPushAppId = @"org.wordpress.appstore";
                             ];
     WPXMLRPCRequest *tokenRequest = [api XMLRPCRequestWithMethod:@"wpcom.mobile_push_register_token" parameters:parameters];
     WPXMLRPCRequestOperation *tokenOperation = [api XMLRPCRequestOperationWithRequest:tokenRequest success:^(AFHTTPRequestOperation *operation, id responseObject) {
-        WPFLog(@"Registered APN token %@" , token);
     } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
-        WPFLog(@"Couldn't register APN token: %@", [error localizedDescription]);
     }];
     
     [operations addObject:tokenOperation];
@@ -558,9 +552,8 @@ NSString *const WordPressComApiPushAppId = @"org.wordpress.appstore";
     WPXMLRPCRequestOperation *settingsOperation = [api XMLRPCRequestOperationWithRequest:settingsRequest success:^(AFHTTPRequestOperation *operation, id responseObject) {
         NSDictionary *supportedNotifications = (NSDictionary *)responseObject;
         [[NSUserDefaults standardUserDefaults] setObject:supportedNotifications forKey:@"notification_preferences"];
-        WPFLog(@"Notification settings loaded!");
     } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
-        WPFLog(@"Failed to receive supported notification list: %@", [error localizedDescription]);
+
     }];
     
     [operations addObject:settingsOperation];
