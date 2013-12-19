@@ -936,6 +936,8 @@ typedef enum {
 }
 
 - (BOOL)tableView:(UITableView *)tableView shouldHighlightRowAtIndexPath:(NSIndexPath *)indexPath {
+    if (indexPath.section == ReaderDetailContentSection)
+        return NO;
 
     // if we selected the already active comment allow highlight
     // so we can toggle the inline composer
