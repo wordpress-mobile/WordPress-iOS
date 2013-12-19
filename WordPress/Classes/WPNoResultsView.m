@@ -42,7 +42,8 @@
 
 - (void)layoutSubviews {
     
-    CGFloat width = 270.0;
+    CGFloat width = 250.0;
+    CGFloat messagePadding = 15.0;
     
     // Layout views
     _accessoryView.frame = CGRectMake((width - CGRectGetWidth(_accessoryView.frame)) / 2, 0, CGRectGetWidth(_accessoryView.frame), CGRectGetHeight(_accessoryView.frame));
@@ -51,12 +52,12 @@
     _titleLabel.frame = CGRectMake(0, (CGRectGetMaxY(_accessoryView.frame) > 0 && _accessoryView.hidden != YES ? CGRectGetMaxY(_accessoryView.frame) + 10.0 : 0) , width, titleSize.height);
     
     CGSize messageSize = [_messageLabel.text boundingRectWithSize:CGSizeMake(width, CGFLOAT_MAX) options:NSStringDrawingUsesLineFragmentOrigin attributes:@{NSFontAttributeName: _messageLabel.font} context:nil].size;
-    _messageLabel.frame = CGRectMake(0, CGRectGetMaxY(_titleLabel.frame) + 10.0, width, messageSize.height);
+    _messageLabel.frame = CGRectMake(messagePadding, CGRectGetMaxY(_titleLabel.frame) + 8.0, width - messagePadding, messageSize.height);
     
     [_button sizeToFit];
     CGSize buttonSize = _button.frame.size;
-    buttonSize.width += 20.0;
-    CGFloat buttonYOrigin = (CGRectGetHeight(_messageLabel.frame) > 0 ? CGRectGetMaxY(_messageLabel.frame) : CGRectGetMaxY(_titleLabel.frame)) + 20.0 ;
+    buttonSize.width += 40.0;
+    CGFloat buttonYOrigin = (CGRectGetHeight(_messageLabel.frame) > 0 ? CGRectGetMaxY(_messageLabel.frame) : CGRectGetMaxY(_titleLabel.frame)) + 17.0 ;
     _button.frame = CGRectMake((width - buttonSize.width) / 2, buttonYOrigin, MIN(buttonSize.width, width), buttonSize.height);
     
     
@@ -96,7 +97,7 @@
     
     // Setup message text
     _messageLabel = [[UILabel alloc] init];
-    _messageLabel.font = [WPStyleGuide regularTextFont];
+    _messageLabel.font = [UIFont fontWithName:@"OpenSans" size:14.0];
     _messageLabel.textColor = [WPStyleGuide allTAllShadeGrey];
     [self setMessageText:messageText];
     _messageLabel.numberOfLines = 0;
@@ -139,7 +140,7 @@
 
 - (void)setTitleText:(NSString *)title {
     if (title.length > 0) {
-        _titleLabel.attributedText = [[NSAttributedString alloc] initWithString:title attributes:[WPNUXUtility titleAttributesWithColor:[WPStyleGuide allTAllShadeGrey]]];
+        _titleLabel.attributedText = [[NSAttributedString alloc] initWithString:title attributes:[WPNUXUtility titleAttributesWithColor:[WPStyleGuide whisperGrey]]];
     }
     [self setNeedsLayout];
 }
