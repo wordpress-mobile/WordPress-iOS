@@ -176,11 +176,7 @@ NSString * const RPVCDisplayedNativeFriendFinder = @"DisplayedNativeFriendFinder
 }
 
 - (void)viewDidAppear:(BOOL)animated {
-    // WPTableViewController's viewDidAppear triggers a sync, but only do it if authenticated
-    // (this prevents an attempted sync when the app launches for the first time before authenticating)
-    if ([[WordPressAppDelegate sharedWordPressApplicationDelegate] isWPcomAuthenticated]) {
-        [super viewDidAppear:animated];
-    }
+    [super viewDidAppear:animated];
 
     NSIndexPath *selectedIndexPath = [self.tableView indexPathForSelectedRow];
     if (selectedIndexPath) {
