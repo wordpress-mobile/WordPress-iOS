@@ -88,10 +88,7 @@ NSString * const NotificationsJetpackInformationURL = @"http://jetpack.me/about/
 
 - (BOOL)showJetpackConnectMessage
 {
-    // self.user == nil. No user implies that the user is using the
-    // app with a self-hosted blog not connected to jetpack
-    return self.user == nil;
-    
+    return [WPAccount defaultWordPressComAccount] == nil;
 }
 
 - (void)dealloc {

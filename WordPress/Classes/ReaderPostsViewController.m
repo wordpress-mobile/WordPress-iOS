@@ -1017,11 +1017,17 @@ NSString * const RPVCDisplayedNativeFriendFinder = @"DisplayedNativeFriendFinder
 
 - (void)tableImageSource:(WPTableImageSource *)tableImageSource imageReady:(UIImage *)image forIndexPath:(NSIndexPath *)indexPath {
     ReaderPostTableViewCell *cell = (ReaderPostTableViewCell *)[self.tableView cellForRowAtIndexPath:indexPath];
+    
+    // Don't do anything if the cell is out of view or out of range
+    // (this is a safety check in case the Reader doesn't properly kill image requests when changing topics)
+    if (cell == nil)
+        return;
+
     [cell.postView setFeaturedImage:image];
     
+    // Update the detail view if it's open and applicable
     ReaderPost *post = [self.resultsController objectAtIndexPath:indexPath];
     
-    // Update the detail view if it's open and applicable
     if (post == self.detailController.post) {
         [self.detailController updateFeaturedImage:image];
     }
