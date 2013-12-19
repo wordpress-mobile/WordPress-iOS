@@ -24,9 +24,6 @@ CGFloat const CommentViewApproveButtonTag = 700;
 CGFloat const CommentViewUnapproveButtonTag = 701;
 
 @interface CommentViewController () <UIWebViewDelegate, UIActionSheetDelegate, MFMailComposeViewControllerDelegate, InlineComposeViewDelegate> {
-    EditCommentViewController *_editCommentViewController;
-    BOOL _isShowingActionSheet;
-    NSLayoutConstraint *_authorSiteHeightConstraint;
 }
 
 @property (nonatomic, strong) CommentView *commentView;
@@ -37,6 +34,8 @@ CGFloat const CommentViewUnapproveButtonTag = 701;
 @property (nonatomic, strong) UIButton *replyButton;
 @property (nonatomic, strong) InlineComposeView *inlineComposeView;
 @property (nonatomic, strong) Comment *reply;
+@property (nonatomic, strong) EditCommentViewController *editCommentViewController;
+@property (nonatomic, assign) BOOL isShowingActionSheet;
 
 @end
 
@@ -45,9 +44,9 @@ CGFloat const CommentViewUnapproveButtonTag = 701;
 - (void)dealloc {
     [[NSNotificationCenter defaultCenter] removeObserver:self];
 
-    self.reply = nil;
-    self.inlineComposeView.delegate = nil;
-    self.inlineComposeView = nil;
+    _reply = nil;
+    _inlineComposeView.delegate = nil;
+    _inlineComposeView = nil;
 }
 
 - (void)viewDidLoad {
@@ -98,7 +97,7 @@ CGFloat const CommentViewUnapproveButtonTag = 701;
 
 - (void)cancelView:(id)sender {
 	//there are no changes
-	if (!_editCommentViewController.hasChanges) {
+	if (!self.editCommentViewController.hasChanges) {
 		[self dismissEditViewController];
 
 		return;
@@ -112,12 +111,12 @@ CGFloat const CommentViewUnapproveButtonTag = 701;
 
     actionSheet.actionSheetStyle = UIActionSheetStyleAutomatic;
 
-	if (_editCommentViewController.hasChanges) {
+	if (self.editCommentViewController.hasChanges) {
 		actionSheet.tag = CommentViewEditCommentViewControllerHasChangesActionSheetTag;
-        [actionSheet showInView:_editCommentViewController.view];
+        [actionSheet showInView:self.editCommentViewController.view];
     }
 
-	_isShowingActionSheet = YES;
+	self.isShowingActionSheet = YES;
 
     WordPressAppDelegate *appDelegate = (WordPressAppDelegate*)[[UIApplication sharedApplication] delegate];
     [appDelegate setAlertRunning:YES];
@@ -214,14 +213,14 @@ CGFloat const CommentViewUnapproveButtonTag = 701;
 }
 
 - (void)showEditCommentViewWithAnimation:(BOOL)animate {
-	_editCommentViewController = [[EditCommentViewController alloc]
+	self.editCommentViewController = [[EditCommentViewController alloc]
                                   initWithNibName:@"EditCommentViewController"
                                   bundle:nil];
-	_editCommentViewController.commentViewController = self;
-	_editCommentViewController.comment = self.comment;
-	_editCommentViewController.title = NSLocalizedString(@"Edit Comment", @"");
+	self.editCommentViewController.commentViewController = self;
+	self.editCommentViewController.comment = self.comment;
+	self.editCommentViewController.title = NSLocalizedString(@"Edit Comment", @"");
     
-    UINavigationController *navController = [[UINavigationController alloc] initWithRootViewController:_editCommentViewController];
+    UINavigationController *navController = [[UINavigationController alloc] initWithRootViewController:self.editCommentViewController];
     navController.modalPresentationStyle = UIModalPresentationFormSheet;
     navController.modalTransitionStyle = UIModalTransitionStyleCoverVertical;
     navController.navigationBar.translucent = NO;
@@ -253,7 +252,7 @@ CGFloat const CommentViewUnapproveButtonTag = 701;
 }
 
 - (void)deleteAction:(id)sender {
-    if (!_isShowingActionSheet) {
+    if (!self.isShowingActionSheet) {
         UIActionSheet *actionSheet = [[UIActionSheet alloc] initWithTitle:NSLocalizedString(@"Are you sure you want to delete this comment?", @"")
                                                                  delegate:self
                                                         cancelButtonTitle:NSLocalizedString(@"Cancel", @"")
@@ -263,7 +262,7 @@ CGFloat const CommentViewUnapproveButtonTag = 701;
         actionSheet.actionSheetStyle = UIActionSheetStyleAutomatic;
         [actionSheet showFromToolbar:self.navigationController.toolbar];
         
-        _isShowingActionSheet = YES;
+        self.isShowingActionSheet = YES;
         
         WordPressAppDelegate *appDelegate = (WordPressAppDelegate*)[[UIApplication sharedApplication] delegate];
         [appDelegate setAlertRunning:YES];
@@ -295,7 +294,7 @@ CGFloat const CommentViewUnapproveButtonTag = 701;
         [self processEditCommentHasChangesActionSheet:actionSheet didDismissWithButtonIndex:buttonIndex];
     }
     
-    _isShowingActionSheet = NO;
+    self.isShowingActionSheet = NO;
 }
 
 - (void)processDeletePromptActionSheet:(UIActionSheet *)actionSheet didDismissWithButtonIndex:(NSInteger)buttonIndex {
@@ -306,7 +305,7 @@ CGFloat const CommentViewUnapproveButtonTag = 701;
 
 - (void)processEditCommentHasChangesActionSheet:(UIActionSheet *)actionSheet didDismissWithButtonIndex:(NSInteger)buttonIndex {
     if (buttonIndex == 0) {
-        _editCommentViewController.hasChanges = NO;
+        self.editCommentViewController.hasChanges = NO;
         [self discard];
     }
 }
