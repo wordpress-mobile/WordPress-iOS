@@ -65,7 +65,7 @@
     [super viewDidLoad];
     
     self.tableView.tableHeaderView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, CGRectGetWidth(self.view.bounds), 10)];
-    
+
     self.title = NSLocalizedString(@"Media", nil);
 	
 	self.currentOrientation = [self interpretOrientation:[UIDevice currentDevice].orientation];
@@ -285,7 +285,7 @@
             if (error.domain == NSURLErrorDomain && error.code == NSURLErrorCancelled) {
                 return;
             }
-            [WPError showAlertWithError:error title:NSLocalizedString(@"Upload failed", @"Error alert when a media upload has failed")];
+            [WPError showNetworkingAlertWithError:error title:NSLocalizedString(@"Upload failed", @"")];
         }];
     } else if (media.remoteStatus == MediaRemoteStatusPushing) {
         [media cancelUpload];
@@ -443,9 +443,6 @@
         }
 		self.isShowingResizeActionSheet = NO;
 	}
-    
-    WordPressAppDelegate *appDelegate = (WordPressAppDelegate*)[[UIApplication sharedApplication] delegate];
-    [appDelegate setAlertRunning:NO];
     
     self.currentActionSheet = nil;
 }
@@ -1284,7 +1281,7 @@
             return;
         }
 
-        [WPError showAlertWithError:error title:NSLocalizedString(@"Upload failed", @"")];
+        [WPError showNetworkingAlertWithError:error title:NSLocalizedString(@"Upload failed", @"")];
     }];
 	
 	self.isAddingMedia = NO;
@@ -1368,21 +1365,13 @@
             [[NSNotificationCenter defaultCenter] postNotificationName:@"ShouldInsertMediaBelow" object:videoMedia];
             [videoMedia save];
         } failure:^(NSError *error) {
-            [WPError showAlertWithError:error title:NSLocalizedString(@"Upload failed", @"")];
+            [WPError showNetworkingAlertWithError:error title:NSLocalizedString(@"Upload failed", @"")];
         }];
 		self.isAddingMedia = NO;
 
 	}
 	else {
-        if (currentAlert == nil) {
-            UIAlertView *videoAlert = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"Error Copying Video", @"")
-                                                                 message:NSLocalizedString(@"There was an error copying the video for upload. Please try again.", @"")
-                                                                delegate:self
-                                                       cancelButtonTitle:NSLocalizedString(@"OK", @"")
-                                                       otherButtonTitles:nil];
-            [videoAlert show];
-            currentAlert = videoAlert;
-        }
+        [WPError showAlertWithTitle:NSLocalizedString(@"Error Copying Video", nil) message:NSLocalizedString(@"There was an error copying the video for upload. Please try again.", nil)];
 	}
 }
 
