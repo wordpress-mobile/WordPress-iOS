@@ -115,7 +115,7 @@ NS_ENUM(NSUInteger, NotifcationCommentCellType){
     self.spamBarButton = [self barButtonItemWithImageNamed:@"icon-comments-flag"
                                                  andAction:@selector(moderateComment:)];
     self.replyBarButton = [self barButtonItemWithImageNamed:@"icon-comments-reply"
-                                                  andAction:@selector(startReply:)];
+                                                  andAction:@selector(composeReply:)];
     
     _approveBarButton.tintColor = [WPStyleGuide readGrey];
     _unapproveBarButton.tintColor = [WPStyleGuide readGrey];
