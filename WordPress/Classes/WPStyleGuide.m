@@ -300,4 +300,11 @@
     tableView.separatorColor = [WPStyleGuide readGrey];
 }
 
++ (void)configureColorsForView:(UIView *)view collectionView:(UICollectionView *)collectionView
+{
+    collectionView.backgroundView = nil;
+    collectionView.backgroundColor = [WPStyleGuide itsEverywhereGrey];
+    view.backgroundColor = [WPStyleGuide itsEverywhereGrey];
+}
+
 @end

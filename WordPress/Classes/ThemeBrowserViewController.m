@@ -55,7 +55,7 @@ static NSString *const SearchFilterCellIdentifier = @"search_filter";
     
     self.collectionView.dataSource = self;
     self.collectionView.delegate = self;
-    self.collectionView.backgroundColor = TABLE_VIEW_BACKGROUND_COLOR;
+    [WPStyleGuide configureColorsForView:self.view collectionView:self.collectionView];
     [self.collectionView registerClass:[ThemeBrowserCell class] forCellWithReuseIdentifier:ThemeCellIdentifier];
     [self.collectionView registerClass:[ThemeSearchFilterHeaderView class]
             forSupplementaryViewOfKind:UICollectionElementKindSectionHeader withReuseIdentifier:SearchFilterCellIdentifier];
@@ -120,7 +120,7 @@ static NSString *const SearchFilterCellIdentifier = @"search_filter";
         [_header resetSearch];
         [_refreshHeaderView endRefreshing];
     } failure:^(NSError *error) {
-        [WPError showAlertWithError:error];
+        [WPError showNetworkingAlertWithError:error];
         [_refreshHeaderView endRefreshing];
     }];
 }
@@ -138,7 +138,7 @@ static NSString *const SearchFilterCellIdentifier = @"search_filter";
         self.filteredThemes = _allThemes;
         
     } failure:^(NSError *error) {
-        [WPError showAlertWithError:error];
+        [WPError showNetworkingAlertWithError:error];
     }];
 }
 
