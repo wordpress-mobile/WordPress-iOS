@@ -119,17 +119,7 @@ static NSString *const CameraPlusImagesNotification = @"CameraPlusImagesNotifica
     // Push notifications
     [NotificationsManager registerForPushNotifications];
     [NotificationsManager handleNotificationForApplicationLaunch:launchOptions];
-    
-	//listener for XML-RPC errors
-	//in the future we could put the errors message in a dedicated screen that users can bring to front when samething went wrong, and can take a look at the error msg.
-	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(showNotificationErrorAlert:) name:kXML_RPC_ERROR_OCCURS object:nil];
-	
-	// another notification message came from comments --> CommentUploadFailed
-	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(showNotificationErrorAlert:) name:CommentUploadFailedNotification object:nil];
 
-    // another notification message came from WPWebViewController
-	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(showNotificationErrorAlert:) name:@"OpenWebPageFailed" object:nil];
-    
     // Deferred tasks to speed up app launch
     dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_BACKGROUND, 0), ^{
         [self changeCurrentDirectory];
@@ -497,94 +487,6 @@ static NSString *const CameraPlusImagesNotification = @"CameraPlusImagesNotifica
     return YES;
 }
 
-#pragma mark - Global Alerts
-
-- (void)showAlertWithTitle:(NSString *)title message:(NSString *)message {
-	DDLogInfo(@"Showing alert with title: %@", message);
-    UIAlertView *alert = [[UIAlertView alloc] initWithTitle:title
-                          message:message
-                          delegate:self
-						cancelButtonTitle:NSLocalizedString(@"Need Help?", @"'Need help?' button label, links off to the WP for iOS FAQ.")
-						otherButtonTitles:NSLocalizedString(@"OK", @"OK button label."), nil];
-    [alert show];
-}
-
-- (void)showNotificationErrorAlert:(NSNotification *)notification {
-	NSString *cleanedErrorMsg = nil;
-	
-	if([self isAlertRunning] == YES) return; //another alert is already shown 
-	[self setAlertRunning:YES];
-	
-	if([[notification object] isKindOfClass:[NSError class]]) {
-		
-		NSError *err  = (NSError *)[notification object];
-		cleanedErrorMsg = [err localizedDescription];
-		
-		//org.wordpress.iphone --> XML-RPC errors
-		if ([[err domain] isEqualToString:@"org.wordpress.iphone"]){
-			if([err code] == 401)
-				cleanedErrorMsg = NSLocalizedString(@"Sorry, you cannot access this feature. Please check your User Role on this blog.", @"");
-		}
-        
-        // ignore HTTP auth canceled errors
-        if ([err.domain isEqual:NSURLErrorDomain] && err.code == NSURLErrorUserCancelledAuthentication) {
-            [self setAlertRunning:NO];
-            return;
-        }
-	} else { //the notification obj is a String
-		cleanedErrorMsg  = (NSString *)[notification object];
-	}
-	
-	if([cleanedErrorMsg rangeOfString:@"NSXMLParserErrorDomain"].location != NSNotFound )
-		cleanedErrorMsg = NSLocalizedString(@"The app can't recognize the server response. Please, check the configuration of your blog.", @"");
-	
-	[self showAlertWithTitle:NSLocalizedString(@"Error", @"Generic popup title for any type of error.") message:cleanedErrorMsg];
-}
-
-- (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex {
-	[self setAlertRunning:NO];
-	
-    if (alertView.tag == 102) { // Update alert
-        if (buttonIndex == 1) {
-            [[UIApplication sharedApplication] openURL:[NSURL URLWithString:@"http://itunes.apple.com/us/app/wordpress/id335703880?mt=8&ls=1"]];
-        }
-    } else if (alertView.tag == NotificationNewComment) {
-        if (buttonIndex == 1) {
-            [self showNotificationsTab];
-        }
-    } else if (alertView.tag == NotificationNewSocial) {
-        if (buttonIndex == 1) {
-            [self showNotificationsTab];
-        }
-	} else {
-		//Need Help Alert
-		switch(buttonIndex) {
-			case 0: {
-				SupportViewController *supportViewController = [[SupportViewController alloc] init];
-                UINavigationController *aNavigationController = [[UINavigationController alloc] initWithRootViewController:supportViewController];
-                aNavigationController.navigationBar.translucent = NO;
-                if (IS_IPAD) {
-                    aNavigationController.modalTransitionStyle = UIModalTransitionStyleCrossDissolve;
-                    aNavigationController.modalPresentationStyle = UIModalPresentationFormSheet;
-                }
-                
-                UIViewController *presenter = self.tabBarController;
-                if (presenter.presentedViewController) {
-                    presenter = presenter.presentedViewController;
-                }
-                [presenter presentViewController:aNavigationController animated:YES completion:nil];
-                
-				break;
-			}
-			case 1:
-				//ok
-				break;
-			default:
-				break;
-		}
-	}
-}
-
 
 #pragma mark - Application directories
 
@@ -669,7 +571,7 @@ static NSString *const CameraPlusImagesNotification = @"CameraPlusImagesNotifica
                                                            delegate:self
                                                   cancelButtonTitle:NSLocalizedString(@"Dismiss", @"Dismiss button label.")
                                                   otherButtonTitles:NSLocalizedString(@"Update Now", @"Popup 'update' button to highlight a new version of the app being available. The button takes you to the app store on the device, and should be actionable."), nil];
-            alert.tag = 102;
+            alert.tag = UpdateCheckAlertViewTag;
             [alert show];
         }
     } failure:nil];

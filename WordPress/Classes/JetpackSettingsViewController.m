@@ -315,7 +315,7 @@ CGFloat const JetpackSignInButtonHeight = 41.0;
                                }
                            } failure:^(NSError *error) {
                                [self setAuthenticating:NO];
-                               [WPError showAlertWithError:error];
+                               [WPError showNetworkingAlertWithError:error];
                            }];
 }
 
@@ -466,7 +466,7 @@ CGFloat const JetpackSignInButtonHeight = 41.0;
             [self updateMessage];
         }
     } failure:^(NSError *error) {
-        [WPError showAlertWithError:error];
+        [WPError showNetworkingAlertWithError:error];
     }];
 }
 

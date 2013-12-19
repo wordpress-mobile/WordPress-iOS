@@ -617,10 +617,6 @@ CGFloat const EPVCTextViewTopPadding = 7.0f;
     } else {
         [actionSheet showInView:self.view];
     }
-    
-    WordPressAppDelegate *appDelegate = (WordPressAppDelegate *)[[UIApplication sharedApplication] delegate];
-    [appDelegate setAlertRunning:YES];
-    
 }
 
 #pragma mark - Instance Methods
@@ -744,7 +740,6 @@ CGFloat const EPVCTextViewTopPadding = 7.0f;
     if (_titleBarButton) {
         return _titleBarButton;
     }
-    
     UIButton *titleButton = [WPBlogSelectorButton buttonWithType:UIButtonTypeSystem];
     titleButton.frame = CGRectMake(0, 0, 200, 33);
     titleButton.titleLabel.numberOfLines = 2;
@@ -757,7 +752,7 @@ CGFloat const EPVCTextViewTopPadding = 7.0f;
 
     _titleBarButton = titleButton;
     self.navigationItem.titleView = titleButton;
-
+    
     return _titleBarButton;
 }
 
@@ -766,7 +761,7 @@ CGFloat const EPVCTextViewTopPadding = 7.0f;
 - (void)discardChangesAndDismiss {
     [self.post.original deleteRevision];
     
-	if (self.editMode == EditPostViewControllerModeNewPost) {
+    if (self.editMode == EditPostViewControllerModeNewPost) {
         [self.post.original remove];
     }
     
@@ -983,15 +978,11 @@ CGFloat const EPVCTextViewTopPadding = 7.0f;
         // Cancel
         [overlayView dismiss];
         
-        WordPressAppDelegate *delegate = (WordPressAppDelegate*)[[UIApplication sharedApplication] delegate];
-        [delegate setAlertRunning:NO];
         [editorTextView becomeFirstResponder];
         
         [fles setLinkHelperAlertView:nil];
     };
     _linkHelperAlertView.button2CompletionBlock = ^(WPAlertView *overlayView){
-        WordPressAppDelegate *delegate = (WordPressAppDelegate*)[[UIApplication sharedApplication] delegate];
-        
         // Insert
         
         //Disable scrolling temporarily otherwise inserting text will scroll to the bottom in iOS6 and below.
@@ -1004,7 +995,6 @@ CGFloat const EPVCTextViewTopPadding = 7.0f;
         UITextField *urlField = overlayView.secondTextField;
         
         if ((urlField.text == nil) || ([urlField.text isEqualToString:@""])) {
-            [delegate setAlertRunning:NO];
             return;
         }
         
@@ -1034,8 +1024,7 @@ CGFloat const EPVCTextViewTopPadding = 7.0f;
         [editorTextView.undoManager setActionName:@"link"];
         
         [fles autosaveContent];
-        
-        [delegate setAlertRunning:NO];
+
         [fles setLinkHelperAlertView:nil];
         [fles refreshTextView];
     };
@@ -1303,9 +1292,6 @@ CGFloat const EPVCTextViewTopPadding = 7.0f;
 			}
         }
     }
-    
-    WordPressAppDelegate *appDelegate = (WordPressAppDelegate *)[[UIApplication sharedApplication] delegate];
-    [appDelegate setAlertRunning:NO];
 }
 
 #pragma mark - TextView delegate

@@ -192,7 +192,7 @@ NSString *const WordPressComApiPushAppId = @"org.wordpress.appstore";
            failure:^(AFHTTPRequestOperation *operation, NSError *error) {
                self.password = nil;
                if (operation.response.statusCode != 400) {
-                   [WPError showAlertWithError:error];
+                   [WPError showNetworkingAlertWithError:error];
                }
                if (failure) failure(error);
              }];

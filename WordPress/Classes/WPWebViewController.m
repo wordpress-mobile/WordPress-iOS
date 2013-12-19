@@ -508,8 +508,9 @@
     DDLogInfo(@"%@ %@: %@", self, NSStringFromSelector(_cmd), error);
     // -999: Canceled AJAX request
     // 102:  Frame load interrupted: canceled wp-login redirect to make the POST
-    if (self.isLoading && ([error code] != -999) && [error code] != 102)
-        [[NSNotificationCenter defaultCenter] postNotificationName:@"OpenWebPageFailed" object:error userInfo:nil];
+    if (self.isLoading && ([error code] != -999) && [error code] != 102) {
+        [WPError showAlertWithTitle:NSLocalizedString(@"Error", nil) message:error.localizedDescription];
+    }
     [self setLoading:NO];
 }
 

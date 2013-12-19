@@ -88,15 +88,6 @@
     [[NSNotificationCenter defaultCenter] removeObserver:self];
 }
 
-- (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation {
-    WordPressAppDelegate *delegate = (WordPressAppDelegate*)[[UIApplication sharedApplication] delegate];
-
-    if ([delegate isAlertRunning] == YES)
-        return NO;
-    
-    return [super shouldAutorotateToInterfaceOrientation:interfaceOrientation];
-}
-
 - (NSString *)statsPropertyForViewOpening
 {
     return StatsPropertyPostsOpened;
@@ -181,11 +172,10 @@
 - (void)deletePostAtIndexPath:(NSIndexPath *)indexPath{
     Post *post = [self.resultsController objectAtIndexPath:indexPath];
     [post deletePostWithSuccess:nil failure:^(NSError *error) {
-        NSDictionary *errInfo = [NSDictionary dictionaryWithObjectsAndKeys:self.blog, @"currentBlog", nil];
 		if([error code] == 403) {
 			[self promptForPassword];
 		} else {
-			[[NSNotificationCenter defaultCenter] postNotificationName:kXML_RPC_ERROR_OCCURS object:error userInfo:errInfo];
+            [WPError showXMLRPCErrorAlert:error];
 		}
         [self syncItems];
     }];

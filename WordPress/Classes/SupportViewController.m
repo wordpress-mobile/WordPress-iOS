@@ -57,6 +57,23 @@ typedef NS_ENUM(NSInteger, SettingsViewControllerSections)
     [operation start];
 }
 
++ (void)showFromTabBar {
+    SupportViewController *supportViewController = [[SupportViewController alloc] init];
+    UINavigationController *aNavigationController = [[UINavigationController alloc] initWithRootViewController:supportViewController];
+    aNavigationController.navigationBar.translucent = NO;
+    
+    if (IS_IPAD) {
+        aNavigationController.modalTransitionStyle = UIModalTransitionStyleCrossDissolve;
+        aNavigationController.modalPresentationStyle = UIModalPresentationFormSheet;
+    }
+    
+    UIViewController *presenter = [[WordPressAppDelegate sharedWordPressApplicationDelegate] tabBarController];
+    if (presenter.presentedViewController) {
+        presenter = presenter.presentedViewController;
+    }
+    [presenter presentViewController:aNavigationController animated:YES completion:nil];
+}
+
 - (id)init
 {
     self = [super initWithStyle:UITableViewStyleGrouped];
@@ -67,6 +84,7 @@ typedef NS_ENUM(NSInteger, SettingsViewControllerSections)
 
     return self;
 }
+
 - (void)viewDidLoad
 {
     [super viewDidLoad];
@@ -191,12 +209,7 @@ typedef NS_ENUM(NSInteger, SettingsViewControllerSections)
             MFMailComposeViewController *mailComposeViewController = [self feedbackMailViewController];
             [self presentViewController:mailComposeViewController animated:YES completion:nil];
         } else {
-            UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"Feedback", @"")
-                                                                message:NSLocalizedString(@"Your device is not configured to send e-mail.", @"")
-                                                               delegate:nil
-                                                      cancelButtonTitle:NSLocalizedString(@"OK", @"")
-                                                      otherButtonTitles:nil];
-            [alertView show];
+            [WPError showAlertWithTitle:NSLocalizedString(@"Feedback", nil) message:NSLocalizedString(@"Your device is not configured to send e-mail.", nil)];
         }
     } else if (indexPath.section == SettingsSectionActivityLog && indexPath.row == 1) {
         ActivityLogViewController *activityLogViewController = [[ActivityLogViewController alloc] init];
