@@ -89,7 +89,7 @@ NSString * const RPVCDisplayedNativeFriendFinder = @"DisplayedNativeFriendFinder
 		self.infiniteScrollEnabled = YES;
         self.incrementalLoadingSupported = YES;
         
-        [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(readerTopicDidChange:) name:ReaderTopicDidChangeNotification object:nil];        
+        [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(readerTopicDidChange:) name:ReaderTopicDidChangeNotification object:nil];
 	}
 	return self;
 }
@@ -154,6 +154,7 @@ NSString * const RPVCDisplayedNativeFriendFinder = @"DisplayedNativeFriendFinder
                                                   usingBlock:^(NSNotification *notification){
                                                       [self syncItems];
                                                   }];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(didLogout:) name:WordPressComApiDidLogoutNotification object:nil];
 
     self.inlineComposeView = [[InlineComposeView alloc] initWithFrame:CGRectZero];
 
@@ -915,6 +916,11 @@ NSString * const RPVCDisplayedNativeFriendFinder = @"DisplayedNativeFriendFinder
     } else {
         [WPMobileStats trackEventForWPCom:StatsEventReaderSelectedCategory properties:[self categoryPropertyForStats]];
     }
+}
+
+- (void)didLogout:(NSNotification *)notification {
+    [[NSUserDefaults standardUserDefaults] removeObjectForKey:ReaderLastSyncDateKey];
+    [NSUserDefaults resetStandardUserDefaults];
 }
 
 
