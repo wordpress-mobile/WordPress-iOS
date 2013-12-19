@@ -18,9 +18,31 @@ typedef NS_ENUM(NSUInteger, MediaRemoteStatus) {
     MediaRemoteStatusProcessing, // Intermediate status before uploading
 };
 
-@interface Media :  NSManagedObject  
-{
-}
+typedef NS_ENUM(NSUInteger, MediaType) {
+	MediaTypeImage,
+	MediaTypeVideo
+};
+
+typedef NS_ENUM(NSUInteger, MediaResize) {
+	MediaResizeSmall,
+	MediaResizeMedium,
+	MediaResizeLarge,
+	MediaResizeOriginal
+};
+
+typedef NS_ENUM(NSUInteger, MediaOrientation) {
+	MediaOrientationPortrait,
+	MediaOrientationLandscape
+};
+
+extern NSString *const ImageUploadSuccessfulNotification;
+extern NSString *const ImageUploadFailedNotification;
+extern NSString *const FeaturedImageUploadSuccessfulNotification;
+extern NSString *const FeaturedImageUploadFailedNotification;
+extern NSString *const VideoUploadSuccessfulNotification;
+extern NSString *const VideoUploadFailedNotification;
+
+@interface Media :  NSManagedObject
 
 @property (nonatomic, strong) NSNumber * mediaID;
 @property (nonatomic, strong) NSString * mediaType;

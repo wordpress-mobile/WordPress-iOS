@@ -29,8 +29,9 @@
 #import "InlineComposeView.h"
 #import "ReaderCommentPublisher.h"
 
-NSInteger const ReaderCommentsToSync = 100;
-NSTimeInterval const ReaderPostDetailViewControllerRefreshTimeout = 300; // 5 minutes
+static NSInteger const ReaderCommentsToSync = 100;
+static NSTimeInterval const ReaderPostDetailViewControllerRefreshTimeout = 300; // 5 minutes
+static CGFloat const SectionHeaderHeight = 25.0f;
 
 typedef enum {
     ReaderDetailContentSection = 0,
@@ -837,10 +838,11 @@ typedef enum {
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section {
-    if (section == 0)
+    if (section == 0) {
         return IS_IPHONE ? 1 : WPTableViewTopMargin;
+    }
     
-    return kSectionHeaderHight;
+    return SectionHeaderHeight;
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
@@ -862,8 +864,9 @@ typedef enum {
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
-    if (section == ReaderDetailContentSection)
+    if (section == ReaderDetailContentSection) {
         return 1;
+    }
 
 	return [_comments count];
 }
@@ -933,6 +936,8 @@ typedef enum {
 }
 
 - (BOOL)tableView:(UITableView *)tableView shouldHighlightRowAtIndexPath:(NSIndexPath *)indexPath {
+    if (indexPath.section == ReaderDetailContentSection)
+        return NO;
 
     // if we selected the already active comment allow highlight
     // so we can toggle the inline composer

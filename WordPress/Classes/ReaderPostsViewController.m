@@ -586,10 +586,6 @@ NSString * const RPVCDisplayedNativeFriendFinder = @"DisplayedNativeFriendFinder
 	return @"ReaderPost";
 }
 
-- (NSString *)resultsControllerCacheName {
-	return [ReaderPost currentEndpoint];
-}
-
 - (NSDate *)lastSyncDate {
 	return (NSDate *)[[NSUserDefaults standardUserDefaults] objectForKey:ReaderLastSyncDateKey];
 }
@@ -681,7 +677,7 @@ NSString * const RPVCDisplayedNativeFriendFinder = @"DisplayedNativeFriendFinder
 }
 
 - (void)syncItemsViaUserInteraction:(BOOL)userInteraction success:(void (^)())success failure:(void (^)(NSError *))failure {
-    WPFLogMethod();
+    DDLogMethod();
     // if needs auth.
     if ([WPCookie hasCookieForURL:[NSURL URLWithString:@"https://wordpress.com"] andUsername:[[WPAccount defaultWordPressComAccount] username]]) {
        [self syncReaderItemsWithSuccess:success failure:failure];
@@ -716,7 +712,7 @@ NSString * const RPVCDisplayedNativeFriendFinder = @"DisplayedNativeFriendFinder
 }
 
 - (void)syncReaderItemsWithSuccess:(void (^)())success failure:(void (^)(NSError *))failure {
-    WPFLogMethod();
+    DDLogMethod();
 	NSString *endpoint = [ReaderPost currentEndpoint];
 	NSNumber *numberToSync = [NSNumber numberWithInteger:ReaderPostsToSync];
 	NSDictionary *params = @{@"number":numberToSync, @"per_page":numberToSync};
@@ -739,7 +735,7 @@ NSString * const RPVCDisplayedNativeFriendFinder = @"DisplayedNativeFriendFinder
 }
 
 - (void)loadMoreWithSuccess:(void (^)())success failure:(void (^)(NSError *error))failure {
-    WPFLogMethod();
+    DDLogMethod();
 	if ([self.resultsController.fetchedObjects count] == 0)
 		return;
 	
@@ -786,7 +782,7 @@ NSString * const RPVCDisplayedNativeFriendFinder = @"DisplayedNativeFriendFinder
 }
 
 - (void)onSyncSuccess:(AFHTTPRequestOperation *)operation response:(id)responseObject {
-    WPFLogMethod();
+    DDLogMethod();
 	BOOL wasLoadingMore = _loadingMore;
 	_loadingMore = NO;
 	
@@ -1022,11 +1018,17 @@ NSString * const RPVCDisplayedNativeFriendFinder = @"DisplayedNativeFriendFinder
 
 - (void)tableImageSource:(WPTableImageSource *)tableImageSource imageReady:(UIImage *)image forIndexPath:(NSIndexPath *)indexPath {
     ReaderPostTableViewCell *cell = (ReaderPostTableViewCell *)[self.tableView cellForRowAtIndexPath:indexPath];
+    
+    // Don't do anything if the cell is out of view or out of range
+    // (this is a safety check in case the Reader doesn't properly kill image requests when changing topics)
+    if (cell == nil)
+        return;
+
     [cell.postView setFeaturedImage:image];
     
+    // Update the detail view if it's open and applicable
     ReaderPost *post = [self.resultsController objectAtIndexPath:indexPath];
     
-    // Update the detail view if it's open and applicable
     if (post == self.detailController.post) {
         [self.detailController updateFeaturedImage:image];
     }

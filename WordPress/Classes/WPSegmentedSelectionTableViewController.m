@@ -10,6 +10,7 @@
 #import "Category.h"
 #import "NSString+XMLExtensions.h"
 #import "WPTableViewCell.h"
+#import "WPAddCategoryViewController.h"
 
 static NSString *const SelectionTableRowCell = @"SelectionTableRowCell";
 
@@ -32,7 +33,7 @@ static NSString *const SelectionTableRowCell = @"SelectionTableRowCell";
     if (self) {
         self.autoReturnInRadioSelectMode = YES;
         _categoryIndentationLevelsDict = [[NSMutableDictionary alloc] init];
-        [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(handleNewCategory:) name:WPNewCategoryCreatedAndUpdatedInBlogNotificationName object:nil];
+        [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(handleNewCategory:) name:NewCategoryCreatedAndUpdatedInBlogNotification object:nil];
     }
     return self;
 }

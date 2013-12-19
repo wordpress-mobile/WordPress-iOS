@@ -92,7 +92,7 @@ NSString * const ReaderPostStoredCommentTextKey = @"comment";
 
 
 + (NSArray *)fetchPostsForEndpoint:(NSString *)endpoint withContext:(NSManagedObjectContext *)context {
-    WPFLogMethod();
+    DDLogMethod();
 	NSFetchRequest *request = [[NSFetchRequest alloc] init];
     [request setEntity:[NSEntityDescription entityForName:@"ReaderPost" inManagedObjectContext:context]];
 	
@@ -112,7 +112,7 @@ NSString * const ReaderPostStoredCommentTextKey = @"comment";
 
 
 + (void)syncPostsFromEndpoint:(NSString *)endpoint withArray:(NSArray *)arr success:(void (^)())success {
-    WPFLogMethod();
+    DDLogMethod();
     if (![arr isKindOfClass:[NSArray class]] || [arr count] == 0) {
 		if (success) {
 			dispatch_async(dispatch_get_main_queue(), success);
@@ -138,7 +138,7 @@ NSString * const ReaderPostStoredCommentTextKey = @"comment";
 
 
 + (void)deletePostsSyncedEarlierThan:(NSDate *)syncedDate {
-    WPFLogMethod();
+    DDLogMethod();
     NSManagedObjectContext *context = [[ContextManager sharedInstance] backgroundContext];
     [context performBlock:^{
         NSFetchRequest *request = [[NSFetchRequest alloc] init];
@@ -165,9 +165,7 @@ NSString * const ReaderPostStoredCommentTextKey = @"comment";
 	NSNumber *blogSiteID = [dict numberForKey:@"site_id"];
 	NSNumber *siteID = [dict numberForKey:@"blog_id"];
 	NSNumber *postID = [dict numberForKey:@"ID"];
-    
-    WPAccount *account = (WPAccount *)[context objectWithID:[WPAccount defaultWordPressComAccount].objectID];
-    
+
     // Some endpoints (e.g. tags) use different case
     if (siteID == nil) {
         siteID = [dict numberForKey:@"site_ID"];
@@ -234,7 +232,10 @@ NSString * const ReaderPostStoredCommentTextKey = @"comment";
 		post.endpoint = endpoint;
     }
     
-    post.account = account;
+    // Set account on the post, but only if signed in
+    if ([WPAccount defaultWordPressComAccount] != nil) {
+        post.account = (WPAccount *)[context objectWithID:[WPAccount defaultWordPressComAccount].objectID];
+    }
     
     @autoreleasepool {
         [post updateFromDictionary:dict];
@@ -797,7 +798,7 @@ NSString * const ReaderPostStoredCommentTextKey = @"comment";
 				 loadingMore:(BOOL)loadingMore
 					 success:(WordPressComApiRestSuccessResponseBlock)success
 					 failure:(WordPressComApiRestSuccessFailureBlock)failure {
-	WPFLogMethod();
+	DDLogMethod();
     
     WordPressComApi *api;
     if ([[WPAccount defaultWordPressComAccount] restApi].authToken) {

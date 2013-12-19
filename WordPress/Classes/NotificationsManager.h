@@ -8,6 +8,8 @@
  */
 
 
+extern NSString *const NotificationsDeviceToken;
+
 @interface NotificationsManager : NSObject
 
 ///--------------------------------
