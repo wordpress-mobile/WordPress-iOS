@@ -75,14 +75,10 @@ CGFloat const CommentViewUnapproveButtonTag = 701;
     
     [self.view addSubview:self.commentView];
 
-    if (self.comment) {
-        [self showComment:self.comment];
-    }
-
     self.inlineComposeView = [[InlineComposeView alloc] initWithFrame:CGRectZero];
     self.inlineComposeView.delegate = self;
-
     [self.view addSubview:self.inlineComposeView];
+
     if (self.comment) {
         [self showComment:self.comment];
         self.reply = [self.comment restoreReply];
@@ -212,7 +208,6 @@ CGFloat const CommentViewUnapproveButtonTag = 701;
 - (void)spamAction:(id)sender {
     WPFLogMethodParam(NSStringFromSelector(_cmd));
     [WPMobileStats trackEventForWPCom:StatsEventCommentDetailFlagAsSpam];
-    [self.comment removeObserver:self forKeyPath:@"status"];
     [self moderateCommentWithSelector:@selector(spam)];
     if (IS_IPAD) {
         [self.navigationController popToRootViewControllerAnimated:YES];
@@ -283,7 +278,6 @@ CGFloat const CommentViewUnapproveButtonTag = 701;
 - (void)deleteComment {
     WPFLogMethod();
     [WPMobileStats trackEventForWPCom:StatsEventCommentDetailDelete];
-    [self.comment removeObserver:self forKeyPath:@"status"];
     [self moderateCommentWithSelector:@selector(remove)];
     if (IS_IPAD) {
         [self.navigationController popToRootViewControllerAnimated:YES];
@@ -305,7 +299,6 @@ CGFloat const CommentViewUnapproveButtonTag = 701;
 - (IBAction)spamComment {
     WPFLogMethodParam(NSStringFromSelector(_cmd));
     [WPMobileStats trackEventForWPCom:StatsEventCommentDetailFlagAsSpam];
-    [self.comment removeObserver:self forKeyPath:@"status"];
     [self moderateCommentWithSelector:@selector(spam)];
     if (IS_IPAD) {
         [self.navigationController popToRootViewControllerAnimated:YES];
