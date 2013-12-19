@@ -45,8 +45,7 @@ CGFloat const CommentViewUnapproveButtonTag = 701;
     [[NSNotificationCenter defaultCenter] removeObserver:self];
 }
 
-- (void)viewDidLoad
-{
+- (void)viewDidLoad {
     [super viewDidLoad];
     
     self.view = [[UIScrollView alloc] initWithFrame:CGRectZero];
@@ -130,13 +129,11 @@ CGFloat const CommentViewUnapproveButtonTag = 701;
 
 #pragma mark - Private Methods
 
-- (void)dismissEditViewController;
-{
+- (void)dismissEditViewController; {
     [self dismissViewControllerAnimated:YES completion:nil];
 }
 
-- (void)showComment:(Comment *)comment
-{
+- (void)showComment:(Comment *)comment {
     self.comment = comment;
 
     if ([self.comment.status isEqualToString:@"approve"]) {
@@ -150,8 +147,7 @@ CGFloat const CommentViewUnapproveButtonTag = 701;
     }
 }
 
-- (NSAttributedString *)postTitleString
-{
+- (NSAttributedString *)postTitleString {
     NSString *postTitle;
     if (self.comment.postTitle != nil) {
         postTitle = [[self.comment.postTitle stringByDecodingXMLCharacters] trim];
@@ -186,18 +182,6 @@ CGFloat const CommentViewUnapproveButtonTag = 701;
     } else {
         [self unApproveComment];
     }
-}
-
-- (IBAction)sendEmail {
-	if (self.comment.author_email && [MFMailComposeViewController canSendMail]) {
-		MFMailComposeViewController* controller = [[MFMailComposeViewController alloc] init];
-		controller.mailComposeDelegate = self;
-		NSArray *recipient = [[NSArray alloc] initWithObjects:[self.comment.author_email trim], nil];
-		[controller setToRecipients: recipient];
-		[controller setSubject:[NSString stringWithFormat:NSLocalizedString(@"Re: %@", @""), self.comment.postTitle]];
-		[controller setMessageBody:[NSString stringWithFormat:NSLocalizedString(@"Hi %@,", @""), self.comment.author] isHTML:NO];
-        [self presentViewController:controller animated:YES completion:nil];
-	}
 }
 
 - (void)handlePostTitleButtonTapped:(id)sender {
@@ -250,8 +234,7 @@ CGFloat const CommentViewUnapproveButtonTag = 701;
 
 #pragma mark - UIActionSheet Delegate methods
 
-- (void)actionSheet:(UIActionSheet *)actionSheet didDismissWithButtonIndex:(NSInteger)buttonIndex
-{
+- (void)actionSheet:(UIActionSheet *)actionSheet didDismissWithButtonIndex:(NSInteger)buttonIndex {
     if (actionSheet.tag == CommentViewDeletePromptActionSheetTag) {
         [self processDeletePromptActionSheet:actionSheet didDismissWithButtonIndex:buttonIndex];
     } else if (actionSheet.tag == CommentViewReplyToCommentViewControllerHasChangesActionSheetTag) {
@@ -263,15 +246,13 @@ CGFloat const CommentViewUnapproveButtonTag = 701;
     _isShowingActionSheet = NO;
 }
 
-- (void)processDeletePromptActionSheet:(UIActionSheet *)actionSheet didDismissWithButtonIndex:(NSInteger)buttonIndex
-{
+- (void)processDeletePromptActionSheet:(UIActionSheet *)actionSheet didDismissWithButtonIndex:(NSInteger)buttonIndex {
     if (buttonIndex == 0) {
         [self deleteComment];
     }
 }
 
-- (void)processReplyToCommentViewHasChangesActionSheet:(UIActionSheet *)actionSheet didDismissWithButtonIndex:(NSInteger)buttonIndex
-{
+- (void)processReplyToCommentViewHasChangesActionSheet:(UIActionSheet *)actionSheet didDismissWithButtonIndex:(NSInteger)buttonIndex {
     if (buttonIndex == 0) {
         if (_replyToCommentViewController.hasChanges) {
             _replyToCommentViewController.hasChanges = NO;
@@ -281,8 +262,7 @@ CGFloat const CommentViewUnapproveButtonTag = 701;
     }
 }
 
-- (void)processEditCommentHasChangesActionSheet:(UIActionSheet *)actionSheet didDismissWithButtonIndex:(NSInteger)buttonIndex
-{
+- (void)processEditCommentHasChangesActionSheet:(UIActionSheet *)actionSheet didDismissWithButtonIndex:(NSInteger)buttonIndex {
     if (buttonIndex == 0) {
         _editCommentViewController.hasChanges = NO;
         [self discard];
