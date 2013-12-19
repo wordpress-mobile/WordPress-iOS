@@ -35,9 +35,7 @@ CGFloat const CommentViewUnapproveButtonTag = 701;
 @property (nonatomic, strong) UIButton *spamButton;
 @property (nonatomic, strong) UIButton *editButton;
 @property (nonatomic, strong) UIButton *replyButton;
-
 @property (nonatomic, strong) InlineComposeView *inlineComposeView;
-
 @property (nonatomic, strong) Comment *reply;
 
 @end
@@ -45,7 +43,6 @@ CGFloat const CommentViewUnapproveButtonTag = 701;
 @implementation CommentViewController
 
 - (void)dealloc {
-    WPFLogMethod();
     [[NSNotificationCenter defaultCenter] removeObserver:self];
 
     self.reply = nil;
@@ -127,7 +124,7 @@ CGFloat const CommentViewUnapproveButtonTag = 701;
 }
 
 
-#pragma mark - Private Methods
+#pragma mark - Instance methods
 
 - (void)dismissEditViewController; {
     [self dismissViewControllerAnimated:YES completion:nil];
@@ -149,6 +146,7 @@ CGFloat const CommentViewUnapproveButtonTag = 701;
 
 - (NSAttributedString *)postTitleString {
     NSString *postTitle;
+    
     if (self.comment.postTitle != nil) {
         postTitle = [[self.comment.postTitle stringByDecodingXMLCharacters] trim];
     } else {
@@ -159,11 +157,83 @@ CGFloat const CommentViewUnapproveButtonTag = 701;
     NSRange titleRange = [combinedString rangeOfString:postTitle];
     NSMutableAttributedString *attributedString = [[NSMutableAttributedString alloc] initWithString:combinedString];
     [attributedString addAttribute:NSForegroundColorAttributeName value:[WPStyleGuide newKidOnTheBlockBlue] range:titleRange];
+    
     return attributedString;
 }
 
 - (void)discard {
 	[self dismissEditViewController];
+}
+
+
+#pragma mark - Comment moderation
+
+- (void)deleteComment {
+    WPFLogMethod();
+    [WPMobileStats trackEventForWPCom:StatsEventCommentDetailDelete];
+    [self.comment remove];
+    if (IS_IPAD) {
+        [self.navigationController popToRootViewControllerAnimated:YES];
+    }
+}
+
+- (void)approveComment {
+    WPFLogMethod();
+    [WPMobileStats trackEventForWPCom:StatsEventCommentDetailApprove];
+    [self.comment approve];
+}
+
+- (void)unApproveComment {
+    WPFLogMethod();
+    [WPMobileStats trackEventForWPCom:StatsEventCommentDetailUnapprove];
+    [self.comment unapprove];
+}
+
+- (IBAction)spamComment {
+    WPFLogMethodParam(NSStringFromSelector(_cmd));
+    [WPMobileStats trackEventForWPCom:StatsEventCommentDetailFlagAsSpam];
+    [self.comment spam];
+    if (IS_IPAD) {
+        [self.navigationController popToRootViewControllerAnimated:YES];
+    }
+}
+
+- (IBAction)launchEditComment {
+    WPFLogMethod();
+    [WPMobileStats trackEventForWPCom:StatsEventCommentDetailEditComment];
+	[self showEditCommentViewWithAnimation:YES];
+}
+
+- (IBAction)launchReplyToComments {
+	if (self.commentsViewController.blog.isSyncingComments) {
+		[self showSyncInProgressAlert];
+	} else {
+        [WPMobileStats trackEventForWPCom:StatsEventCommentDetailClickedReplyToComment];
+        [self.inlineComposeView displayComposer];
+	}
+}
+
+- (void)showEditCommentViewWithAnimation:(BOOL)animate {
+	_editCommentViewController = [[EditCommentViewController alloc]
+                                  initWithNibName:@"EditCommentViewController"
+                                  bundle:nil];
+	_editCommentViewController.commentViewController = self;
+	_editCommentViewController.comment = self.comment;
+	_editCommentViewController.title = NSLocalizedString(@"Edit Comment", @"");
+    
+    UINavigationController *navController = [[UINavigationController alloc] initWithRootViewController:_editCommentViewController];
+    navController.modalPresentationStyle = UIModalPresentationFormSheet;
+    navController.modalTransitionStyle = UIModalTransitionStyleCoverVertical;
+    navController.navigationBar.translucent = NO;
+    [self presentViewController:navController animated:animate completion:nil];
+}
+
+- (void)showSyncInProgressAlert {
+	//the blog is using the network connection and cannot be stoped, show a message to the user
+	UIAlertView *blogIsCurrentlyBusy = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"Info", @"Info alert title")
+																  message:NSLocalizedString(@"The blog is syncing with the server. Please try later.", @"")
+																 delegate:nil cancelButtonTitle:NSLocalizedString(@"OK", @"") otherButtonTitles:nil];
+	[blogIsCurrentlyBusy show];
 }
 
 
@@ -221,7 +291,7 @@ CGFloat const CommentViewUnapproveButtonTag = 701;
 }
 
 
-#pragma mark - UIActionSheet Delegate methods
+#pragma mark - UIActionSheet delegate methods
 
 - (void)actionSheet:(UIActionSheet *)actionSheet didDismissWithButtonIndex:(NSInteger)buttonIndex {
     if (actionSheet.tag == CommentViewDeletePromptActionSheetTag) {
@@ -247,7 +317,7 @@ CGFloat const CommentViewUnapproveButtonTag = 701;
 }
 
 
-#pragma mark UIWebView Delegate Methods
+#pragma mark UIWebView delegate methods
 
 - (BOOL)webView:(UIWebView *)inWeb shouldStartLoadWithRequest:(NSURLRequest *)inRequest navigationType:(UIWebViewNavigationType)inType {
 	if (inType == UIWebViewNavigationTypeLinkClicked) {
@@ -273,78 +343,8 @@ CGFloat const CommentViewUnapproveButtonTag = 701;
 	}
 }
 
-#pragma mark - Comment Moderation Methods
 
-- (void)deleteComment {
-    WPFLogMethod();
-    [WPMobileStats trackEventForWPCom:StatsEventCommentDetailDelete];
-    [self.comment remove];
-    if (IS_IPAD) {
-        [self.navigationController popToRootViewControllerAnimated:YES];
-    }
-}
-
-- (void)approveComment {
-    WPFLogMethod();
-    [WPMobileStats trackEventForWPCom:StatsEventCommentDetailApprove];
-    [self.comment approve];
-}
-
-- (void)unApproveComment {
-    WPFLogMethod();
-    [WPMobileStats trackEventForWPCom:StatsEventCommentDetailUnapprove];
-    [self.comment unapprove];
-}
-
-- (IBAction)spamComment {
-    WPFLogMethodParam(NSStringFromSelector(_cmd));
-    [WPMobileStats trackEventForWPCom:StatsEventCommentDetailFlagAsSpam];
-    [self.comment spam];
-    if (IS_IPAD) {
-        [self.navigationController popToRootViewControllerAnimated:YES];
-    }
-}
-
-- (IBAction)launchEditComment {
-    WPFLogMethod();
-    [WPMobileStats trackEventForWPCom:StatsEventCommentDetailEditComment];
-	[self showEditCommentViewWithAnimation:YES];
-}
-
-- (IBAction)launchReplyToComments {
-	if(self.commentsViewController.blog.isSyncingComments) {
-		[self showSyncInProgressAlert];
-	} else {
-        [WPMobileStats trackEventForWPCom:StatsEventCommentDetailClickedReplyToComment];
-        [self.inlineComposeView displayComposer];
-	}
-}
-
-- (void)showEditCommentViewWithAnimation:(BOOL)animate {
-	_editCommentViewController = [[EditCommentViewController alloc]
-                                      initWithNibName:@"EditCommentViewController"
-                                      bundle:nil];
-	_editCommentViewController.commentViewController = self;
-	_editCommentViewController.comment = self.comment;
-	_editCommentViewController.title = NSLocalizedString(@"Edit Comment", @"");
-    
-    UINavigationController *navController = [[UINavigationController alloc] initWithRootViewController:_editCommentViewController];
-    navController.modalPresentationStyle = UIModalPresentationFormSheet;
-    navController.modalTransitionStyle = UIModalTransitionStyleCoverVertical;
-    navController.navigationBar.translucent = NO;
-    [self presentViewController:navController animated:animate completion:nil];
-}
-
-- (void)showSyncInProgressAlert {
-	//the blog is using the network connection and cannot be stoped, show a message to the user
-	UIAlertView *blogIsCurrentlyBusy = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"Info", @"Info alert title")
-																  message:NSLocalizedString(@"The blog is syncing with the server. Please try later.", @"")
-																 delegate:nil cancelButtonTitle:NSLocalizedString(@"OK", @"") otherButtonTitles:nil];
-	[blogIsCurrentlyBusy show];
-}
-
-#pragma mark -
-#pragma mark ReplyToCommentViewControllerDelegate Methods
+#pragma mark - ReplyToCommentViewControllerDelegate methods
 
 - (void)cancelReplyToCommentViewController:(id)sender {
 	[self cancelView:sender];
@@ -387,10 +387,9 @@ CGFloat const CommentViewUnapproveButtonTag = 701;
     [[ContextManager sharedInstance] saveContext:self.reply.managedObjectContext];
 }
 
-#pragma mark - Gesture Recognizers
+#pragma mark - Gesture recognizers
 
-- (void)tappedPostTitle
-{
+- (void)tappedPostTitle {
     [self handlePostTitleButtonTapped:nil];
 }
 
