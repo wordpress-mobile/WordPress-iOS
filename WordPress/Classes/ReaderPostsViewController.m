@@ -148,12 +148,7 @@ NSString * const RPVCDisplayedNativeFriendFinder = @"DisplayedNativeFriendFinder
     }
     
     // Sync content as soon as login or creation occurs
-    [[NSNotificationCenter defaultCenter] addObserverForName:WordPressComApiDidLoginNotification
-                                                      object:nil
-                                                       queue:nil
-                                                  usingBlock:^(NSNotification *notification){
-                                                      [self syncItems];
-                                                  }];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(didLogin:) name:WordPressComApiDidLoginNotification object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(didLogout:) name:WordPressComApiDidLogoutNotification object:nil];
 
     self.inlineComposeView = [[InlineComposeView alloc] initWithFrame:CGRectZero];
@@ -916,6 +911,10 @@ NSString * const RPVCDisplayedNativeFriendFinder = @"DisplayedNativeFriendFinder
     } else {
         [WPMobileStats trackEventForWPCom:StatsEventReaderSelectedCategory properties:[self categoryPropertyForStats]];
     }
+}
+
+- (void)didLogin:(NSNotification *)notification {
+    [self syncItems];
 }
 
 - (void)didLogout:(NSNotification *)notification {
