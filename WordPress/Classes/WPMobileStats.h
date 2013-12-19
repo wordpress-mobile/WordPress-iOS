@@ -36,8 +36,9 @@ extern NSString *const StatsEventReaderPublishedComment;
 extern NSString *const StatsEventReaderReblogged;
 extern NSString *const StatsEventReaderLikedPost;
 extern NSString *const StatsEventReaderUnlikedPost;
-
-
+extern NSString *const StatsPropertyReaderOpenedFromExternalURL;
+extern NSString *const StatsPropertyReaderOpenedFromExternalURLCount;
+extern NSString *const StatsEventReaderOpenedFromExternalSource;
 
 // Reader Detail
 extern NSString *const StatsPropertyReaderDetailClickedPrevious;
@@ -230,5 +231,7 @@ extern NSString *const StatsEventAddBlogsClickedAddSelected;
 + (void)incrementProperty:(NSString *)property forEvent:(NSString *)event;
 + (void)flagProperty:(NSString *)property forEvent:(NSString *)event;
 + (void)unflagProperty:(NSString *)property forEvent:(NSString *)event;
++ (void)flagSuperProperty:(NSString *)property;
++ (void)incrementSuperProperty:(NSString *)property;
 
 @end
