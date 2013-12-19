@@ -176,7 +176,7 @@ CGFloat const WPContentCellDateImageSide = 16.0;
 }
 
 - (void)setGravatarImageForContentProvider:(id<WPContentViewProvider>)contentProvider {
-    
+
     if (![[self class] showGravatarImage]) {
         return;
     }
@@ -185,7 +185,7 @@ CGFloat const WPContentCellDateImageSide = 16.0;
         [_gravatarImageView setImageWithGravatarEmail:[contentProvider gravatarEmailForDisplay] fallbackImage:[UIImage imageNamed:@"gravatar"]];
     } else {
         
-        NSString *url = [NSString stringWithFormat:@"%@", [contentProvider blavatarURLForDisplay]];
+        NSString *url = [NSString stringWithFormat:@"%@", [contentProvider avatarURLForDisplay]];
         if (url) {
             url = [url stringByReplacingOccurrencesOfString:@"s=256" withString:[NSString stringWithFormat:@"s=%.0f", WPContentCellImageWidth * [[UIScreen mainScreen] scale]]];
             [_gravatarImageView setImageWithURL:[NSURL URLWithString:url] placeholderImage:[UIImage imageNamed:@"gravatar"]];

@@ -210,7 +210,7 @@
     return nil;
 }
 
-- (NSURL *)blavatarURLForDisplay {
+- (NSURL *)avatarURLForDisplay {
     return nil;
 }
 

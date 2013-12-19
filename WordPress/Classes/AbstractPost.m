@@ -283,7 +283,7 @@
     return self.blog.blogName;
 }
 
-- (NSURL *)blavatarURLForDisplay {
+- (NSURL *)avatarURLForDisplay {
     return [NSURL URLWithString:self.blog.blavatarUrl];
 }
 

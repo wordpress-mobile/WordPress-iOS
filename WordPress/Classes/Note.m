@@ -313,7 +313,7 @@ const NSUInteger NoteKeepCount = 20;
     return nil;
 }
 
-- (NSURL *)blavatarURLForDisplay {
+- (NSURL *)avatarURLForDisplay {
     return [NSURL URLWithString:self.icon];
 }
 
