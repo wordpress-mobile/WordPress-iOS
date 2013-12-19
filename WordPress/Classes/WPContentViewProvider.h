@@ -15,7 +15,7 @@
 - (NSString *)statusForDisplay;
 - (NSString *)contentForDisplay;
 - (NSString *)contentPreviewForDisplay;
-- (NSURL *)blavatarURLForDisplay;
+- (NSURL *)avatarURLForDisplay; // Some providers use a hardcoded URL or blavatar URL
 - (NSString *)gravatarEmailForDisplay;
 - (NSDate *)dateForDisplay;
 @optional

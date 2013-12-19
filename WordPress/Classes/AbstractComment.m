@@ -53,7 +53,8 @@
 - (NSString *)contentPreviewForDisplay {
     return [[[self.content stringByDecodingXMLCharacters] stringByStrippingHTML] stringByNormalizingWhitespace];
 }
-- (NSURL *)blavatarURLForDisplay {
+
+- (NSURL *)avatarURLForDisplay {
     return nil;
 }
 

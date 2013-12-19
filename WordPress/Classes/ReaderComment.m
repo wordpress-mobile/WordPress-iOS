@@ -188,7 +188,7 @@
 
 #pragma mark - WPContentViewProvider protocol
 
-- (NSURL *)blavatarURLForDisplay {
+- (NSURL *)avatarURLForDisplay {
     return [NSURL URLWithString:self.authorAvatarURL];
 }
 
