@@ -27,12 +27,14 @@
 #import "Note.h"
 #import "InlineComposeView.h"
 
-#define APPROVE_BUTTON_TAG 1
-#define UNAPPROVE_BUTTON_TAG 2
-#define TRASH_BUTTON_TAG 3
-#define UNTRASH_BUTTON_TAG 4
-#define SPAM_BUTTON_TAG 5
-#define UNSPAM_BUTTON_TAG 6
+typedef NS_ENUM(NSUInteger, ModerateButtonTag) {
+    ApproveButtonTag = 1,
+    UnapproveButtonTag = 2,
+    TrashButtonTag = 3,
+    UntrashButtonTag = 4,
+    SpamButtonTag = 5,
+    UnspamButtonTag = 6
+};
 
 const CGFloat NotificationsCommentDetailViewControllerReplyTextViewDefaultHeight = 64.f;
 NSString * const NoteCommentHeaderCellIdentifiter = @"NoteCommentHeaderCell";
@@ -244,35 +246,35 @@ NS_ENUM(NSUInteger, NotifcationCommentCellType){
         if ([actionType isEqualToString:@"approve-comment"]) {
             [indexedButtons setObject:self.approveBarButton forKey:actionType];
             self.approveBarButton.enabled = YES;
-            self.approveBarButton.customView.tag = APPROVE_BUTTON_TAG;
-            self.approveBarButton.tag = APPROVE_BUTTON_TAG;
+            self.approveBarButton.customView.tag = ApproveButtonTag;
+            self.approveBarButton.tag = ApproveButtonTag;
             isApproved = NO;
         } else if ([actionType isEqualToString:@"unapprove-comment"]){
             [indexedButtons setObject:self.unapproveBarButton forKey:actionType];
             self.unapproveBarButton.enabled = YES;
-            self.unapproveBarButton.customView.tag = UNAPPROVE_BUTTON_TAG;
-            self.unapproveBarButton.tag = UNAPPROVE_BUTTON_TAG;
+            self.unapproveBarButton.customView.tag = UnapproveButtonTag;
+            self.unapproveBarButton.tag = UnapproveButtonTag;
             isApproved = YES;
         } else if ([actionType isEqualToString:@"spam-comment"]){
             [indexedButtons setObject:self.spamBarButton forKey:actionType];
             self.spamBarButton.enabled = YES;
-            self.spamBarButton.customView.tag = SPAM_BUTTON_TAG;
-            self.spamBarButton.tag = SPAM_BUTTON_TAG;
+            self.spamBarButton.customView.tag = SpamButtonTag;
+            self.spamBarButton.tag = SpamButtonTag;
         } else if ([actionType isEqualToString:@"unspam-comment"]){
             [indexedButtons setObject:self.spamBarButton forKey:actionType];
             self.spamBarButton.enabled = YES;
-            self.spamBarButton.customView.tag = UNSPAM_BUTTON_TAG;
-            self.spamBarButton.tag = UNSPAM_BUTTON_TAG;
+            self.spamBarButton.customView.tag = UnspamButtonTag;
+            self.spamBarButton.tag = UnspamButtonTag;
         } else if ([actionType isEqualToString:@"trash-comment"]){
             [indexedButtons setObject:self.trashBarButton forKey:actionType];
             self.trashBarButton.enabled = YES;
-            self.trashBarButton.customView.tag = TRASH_BUTTON_TAG;
-            self.trashBarButton.tag = TRASH_BUTTON_TAG;
+            self.trashBarButton.customView.tag = TrashButtonTag;
+            self.trashBarButton.tag = TrashButtonTag;
         } else if ([actionType isEqualToString:@"untrash-comment"]){
             [indexedButtons setObject:self.trashBarButton forKey:actionType];
             self.trashBarButton.enabled = YES;
-            self.trashBarButton.customView.tag = UNTRASH_BUTTON_TAG;
-            self.trashBarButton.tag = UNTRASH_BUTTON_TAG;
+            self.trashBarButton.customView.tag = UntrashButtonTag;
+            self.trashBarButton.tag = UntrashButtonTag;
         } else if ([actionType isEqualToString:@"replyto-comment"]){
             [indexedButtons setObject:self.replyBarButton forKey:actionType];
             self.replyBarButton.enabled = YES;
