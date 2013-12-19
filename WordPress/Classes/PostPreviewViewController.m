@@ -151,7 +151,7 @@
 }
 
 - (void)showSimplePreviewWithMessage:(NSString *)message {
-    WPFLogMethod();
+    DDLogMethod();
     NSString *previewPageHTML = [self buildSimplePreview];
     if (message) {
         previewPageHTML = [previewPageHTML stringByReplacingOccurrencesOfString:@"<div class=\"page\">" withString:[NSString stringWithFormat:@"<div class=\"page\"><p>%@</p>", message]];
@@ -230,18 +230,18 @@
 }
 
 - (void)webViewDidStartLoad:(UIWebView *)webView {
-    WPFLogMethod();
+    DDLogMethod();
     loadingView.hidden = NO;
 }
 
 - (void)webViewDidFinishLoad:(UIWebView *)awebView {
-    WPFLogMethod();
+    DDLogMethod();
     loadingView.hidden = YES;
 }
 
 - (void)webView:(UIWebView *)webView didFailLoadWithError:(NSError *)error
 {
-    WPFLogMethodParam(error);
+    DDLogMethodParam(error);
     loadingView.hidden = YES;
 }
 

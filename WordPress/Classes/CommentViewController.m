@@ -52,7 +52,7 @@ CGFloat const CommentViewApproveButtonTag = 700;
 CGFloat const CommentViewUnapproveButtonTag = 701;
 
 - (void)dealloc {
-    WPFLogMethod();
+    DDLogMethod();
     
     [self.comment removeObserver:self forKeyPath:@"status"];
     if (_reachabilityToken) {
@@ -384,7 +384,7 @@ CGFloat const CommentViewUnapproveButtonTag = 701;
 #pragma mark - Comment Moderation Methods
 
 - (void)deleteComment {
-    WPFLogMethod();
+    DDLogMethod();
     [WPMobileStats trackEventForWPCom:StatsEventCommentDetailDelete];
     [self.comment removeObserver:self forKeyPath:@"status"];
     [self moderateCommentWithSelector:@selector(remove)];
@@ -394,19 +394,19 @@ CGFloat const CommentViewUnapproveButtonTag = 701;
 }
 
 - (void)approveComment {
-    WPFLogMethod();
+    DDLogMethod();
     [WPMobileStats trackEventForWPCom:StatsEventCommentDetailApprove];
     [self moderateCommentWithSelector:@selector(approve)];
 }
 
 - (void)unApproveComment {
-    WPFLogMethod();
+    DDLogMethod();
     [WPMobileStats trackEventForWPCom:StatsEventCommentDetailUnapprove];
     [self moderateCommentWithSelector:@selector(unapprove)];
 }
 
 - (IBAction)spamComment {
-    WPFLogMethodParam(NSStringFromSelector(_cmd));
+    DDLogMethodParam(NSStringFromSelector(_cmd));
     [WPMobileStats trackEventForWPCom:StatsEventCommentDetailFlagAsSpam];
     [self.comment removeObserver:self forKeyPath:@"status"];
     [self moderateCommentWithSelector:@selector(spam)];
@@ -416,7 +416,7 @@ CGFloat const CommentViewUnapproveButtonTag = 701;
 }
 
 - (IBAction)launchEditComment {
-    WPFLogMethod();
+    DDLogMethod();
     [WPMobileStats trackEventForWPCom:StatsEventCommentDetailEditComment];
 	[self showEditCommentViewWithAnimation:YES];
 }
@@ -447,7 +447,6 @@ CGFloat const CommentViewUnapproveButtonTag = 701;
 
 
 - (void)moderateCommentWithSelector:(SEL)selector {
-    Blog *currentBlog = self.comment.blog;
 #pragma clang diagnostic push
 #pragma clang diagnostic ignored "-Warc-performSelector-leaks"
     [self.comment performSelector:selector];
@@ -455,7 +454,6 @@ CGFloat const CommentViewUnapproveButtonTag = 701;
     if (!IS_IPAD) {
         [self.navigationController popViewControllerAnimated:YES];
     }
-    [[NSNotificationCenter defaultCenter] postNotificationName:kCommentsChangedNotificationName object:currentBlog];
 }
 
 - (void)showSyncInProgressAlert {

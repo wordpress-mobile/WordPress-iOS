@@ -29,7 +29,7 @@
 }
 
 - (void)buttonAction:(WPKeyboardToolbarButtonItem *)sender {
-    WPFLogMethod();
+    DDLogMethod();
     if (![sender.actionTag isEqualToString:@"done"]) {
         [[UIDevice currentDevice] playInputClick];
     }

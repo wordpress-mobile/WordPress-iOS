@@ -4,8 +4,11 @@
 #import "WPSegmentedSelectionTableViewController.h"
 #import "Category.h"
 #import "Blog.h"
+#import "Constants.h"
 
 static void *const kParentCategoriesContext = ((void *)999);
+
+NSString *const NewCategoryCreatedAndUpdatedInBlogNotification = @"NewCategoryCreatedAndUpdatedInBlogNotification";
 
 @interface WPAddCategoryViewController ()
 
@@ -108,7 +111,7 @@ static void *const kParentCategoriesContext = ((void *)999);
 }
 
 - (void)dismiss {
-    WPFLogMethod();
+    DDLogMethod();
     if (IS_IPAD) {
         [(WPSelectionTableViewController *)self.parentViewController popViewControllerAnimated:YES];
     } else {
@@ -144,7 +147,7 @@ static void *const kParentCategoriesContext = ((void *)999);
     [Category createCategory:catName parent:self.parentCategory forBlog:self.blog success:^(Category *category) {
         //re-syncs categories this is necessary because the server can change the name of the category!!!
 		[self.blog syncCategoriesWithSuccess:nil failure:nil];
-        [[NSNotificationCenter defaultCenter] postNotificationName:WPNewCategoryCreatedAndUpdatedInBlogNotificationName
+        [[NSNotificationCenter defaultCenter] postNotificationName:NewCategoryCreatedAndUpdatedInBlogNotification
                                                             object:self
                                                           userInfo:[NSDictionary dictionaryWithObject:category forKey:@"category"]];
         [self clearUI];

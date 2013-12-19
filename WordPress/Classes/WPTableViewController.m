@@ -18,6 +18,8 @@
 
 NSTimeInterval const WPTableViewControllerRefreshTimeout = 300; // 5 minutes
 CGFloat const WPTableViewTopMargin = 40;
+CGFloat const CellHeight = 44.0;
+static CGFloat const SectionHeaderHeight = 25.0;
 NSString *const WPBlogRestorationKey = @"WPBlogRestorationKey";
 NSString *const DefaultCellIdentifier = @"DefaultCellIdentifier";
 
@@ -267,7 +269,7 @@ NSString *const DefaultCellIdentifier = @"DefaultCellIdentifier";
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
-    return kCellHeight;
+    return CellHeight;
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section {
@@ -280,7 +282,7 @@ NSString *const DefaultCellIdentifier = @"DefaultCellIdentifier";
         return IS_IPHONE ? 1 : WPTableViewTopMargin;
     }
 
-    return kSectionHeaderHight;
+    return SectionHeaderHeight;
 }
 
 - (UITableViewCellEditingStyle)tableView:(UITableView *)tableView editingStyleForRowAtIndexPath:(NSIndexPath *)indexPath {
