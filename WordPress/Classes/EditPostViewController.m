@@ -31,6 +31,7 @@ CGFloat const EPVCTextViewTopPadding = 7.0f;
 @property (nonatomic, strong) UIButton *titleBarButton;
 @property (nonatomic, strong) WPAlertView *linkHelperAlertView;
 @property (nonatomic, strong) UIPopoverController *blogSelectorPopover;
+@property (nonatomic) BOOL dismissingBlogPicker;
 
 @end
 
@@ -371,7 +372,14 @@ CGFloat const EPVCTextViewTopPadding = 7.0f;
     // added to the app's key window.
     CGFloat minHeight = self.view.frame.size.height;
     minHeight -= (EPVCTextfieldHeight + EPVCTextViewTopPadding);
-    if (!self.tableView.window) {
+    if (self.dismissingBlogPicker) {
+        // For some reason the frame/bounds hight includes the status bar.
+        if (UIInterfaceOrientationIsPortrait([UIApplication sharedApplication].statusBarOrientation)) {
+            minHeight -= [UIApplication sharedApplication].statusBarFrame.size.height;
+        } else {
+            minHeight -= [UIApplication sharedApplication].statusBarFrame.size.width;
+        }
+    } else if (!self.tableView.window) {
         minHeight -= EPVCToolbarHeight;
     }
     
@@ -494,7 +502,9 @@ CGFloat const EPVCTextViewTopPadding = 7.0f;
         if (IS_IPAD) {
             [self.blogSelectorPopover dismissPopoverAnimated:YES];
         } else {
+            self.dismissingBlogPicker = YES;
             [self dismissViewControllerAnimated:YES completion:nil];
+            self.dismissingBlogPicker = NO;
         }
     };
     void (^selectedCompletion)(NSManagedObjectID *) = ^(NSManagedObjectID *selectedObjectID) {
