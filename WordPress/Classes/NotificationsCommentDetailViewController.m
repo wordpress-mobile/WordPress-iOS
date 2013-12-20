@@ -29,14 +29,6 @@
 #import "CommentView.h"
 
 const CGFloat NotificationsCommentDetailViewControllerReplyTextViewDefaultHeight = 64.f;
-NSString * const NoteCommentHeaderCellIdentifiter = @"NoteCommentHeaderCell";
-NSString * const NoteCommentContentCellIdentifiter = @"NoteCommentContentCell";
-NSString * const NoteCommentLoadingCellIdentifiter = @"NoteCommentLoadingCell";
-
-NS_ENUM(NSUInteger, NotifcationCommentCellType) {
-    NotificationCommentCellTypeHeader,
-    NotificationCommentCellTypeContent
-};
 
 @interface NotificationsCommentDetailViewController () <NoteCommentCellDelegate, NoteCommentContentCellDelegate, InlineComposeViewDelegate, WPContentViewDelegate>
 
@@ -50,7 +42,6 @@ NS_ENUM(NSUInteger, NotifcationCommentCellType) {
 @property NSDictionary *followAction;
 @property NSURL *headerURL;
 @property BOOL hasScrollBackView;
-@property (nonatomic, strong) NSCache *contentCache;
 
 @property (nonatomic, strong) UIButton *approveButton;
 @property (nonatomic, strong) UIButton *trashButton;
@@ -59,13 +50,9 @@ NS_ENUM(NSUInteger, NotifcationCommentCellType) {
 
 @property (nonatomic, strong) CommentView *commentView;
 
-@property (nonatomic, weak) IBOutlet UIToolbar *toolbar;
 @property (nonatomic, weak) IBOutlet IOS7CorrectedTextView *replyTextView;
-@property (nonatomic, weak) IBOutlet UIImageView *replyBackgroundImageView;
-@property (nonatomic, weak) IBOutlet UIView *tableFooterView;
 @property (nonatomic, weak) IBOutlet UIView *replyActivityView;
 @property (nonatomic, weak) IBOutlet NoteCommentPostBanner *postBanner;
-@property (nonatomic, weak) IBOutlet UITableView *tableView;
 @property (nonatomic, strong) FollowButton *followButton;
 @property (nonatomic, strong) Note *note;
 @property (nonatomic, weak) IBOutlet UILabel *replyPlaceholder;
@@ -91,8 +78,8 @@ NS_ENUM(NSUInteger, NotifcationCommentCellType) {
 }
 
 - (void)dealloc {
-    self.inlineComposeView.delegate = nil;
-    self.inlineComposeView = nil;
+    _inlineComposeView.delegate = nil;
+    _inlineComposeView = nil;
     [[NSNotificationCenter defaultCenter] removeObserver:self];
 }
 
@@ -144,13 +131,6 @@ NS_ENUM(NSUInteger, NotifcationCommentCellType) {
                                                  name:UIKeyboardWillHideNotification
                                                object:nil];
 
-}
-
-- (NSCache *)contentCache {
-    if (!_contentCache) {
-        _contentCache = [[NSCache alloc] init];
-    }
-    return _contentCache;
 }
 
 - (void)displayNote {
@@ -228,11 +208,6 @@ NS_ENUM(NSUInteger, NotifcationCommentCellType) {
     }];
 
     self.commentActions = indexedActions;
-}
-
-- (UIBarButtonItem *)barButtonItemWithImageNamed:(NSString *)image andAction:(SEL)action {
-    UIBarButtonItem *item = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:image] style:UIBarButtonItemStylePlain target:self action:action];
-    return item;
 }
 
 - (NSDictionary *)getActionByType:(NSString *)type {
@@ -337,14 +312,12 @@ NS_ENUM(NSUInteger, NotifcationCommentCellType) {
 
 }
 
-
 - (void)publishReply:(NSString *)replyText {
     [WPMobileStats trackEventForWPCom:StatsEventNotificationsDetailRepliedToComment];
 
-
     NSDictionary *action = [self.commentActions objectForKey:@"replyto-comment"];
-    if (action){
-
+    
+    if (action) {
         self.inlineComposeView.enabled = NO;
 
         self.replyActivityView.hidden = NO;
@@ -396,9 +369,6 @@ NS_ENUM(NSUInteger, NotifcationCommentCellType) {
         NSString *commentPath = [NSString stringWithFormat:@"sites/%@/comments/%@", self.siteID, comment.commentID];
         comment.loading = YES;
         [[[WPAccount defaultWordPressComAccount] restApi] getPath:commentPath parameters:nil success:^(AFHTTPRequestOperation *operation, id responseObject) {
-            NSUInteger section = [self.commentThread indexOfObject:comment];
-            NSIndexPath *commentIndexPath = [NSIndexPath indexPathForRow:0 inSection:section];
-            CGFloat oldCommentHeight = [self tableView:self.tableView heightForRowAtIndexPath:commentIndexPath];
             comment.commentData = responseObject;
             comment.loading = NO;
 
@@ -406,58 +376,8 @@ NS_ENUM(NSUInteger, NotifcationCommentCellType) {
             NSString *authorLink = [comment.commentData valueForKeyPath:@"author.URL"];
             [self.commentView setAuthorDisplayName:author authorLink:authorLink];
 
-            // if we're at the top of the tableview, we'll animate in the new parent
-/*            id parent = [responseObject objectForKey:@"parent"];
-            NoteComment *parentComment;
-            if (![parent isEqual:@0]) {
-                [self addScrollBackView];
-                parentComment = [[NoteComment alloc] initWithCommentID:[parent valueForKey:@"ID"]];
-                parentComment.isParentComment = YES;
-            }
-            
-            CGPoint offset = self.tableView.contentOffset;
-            
-            // TODO: fix ux for loading parents
-            // if it's the main content and no parent, reload return
-            // if there's a parent insert the parent item
-            // reload the table and fix the offset
-            // if it's the main item, scroll down to show the first loader
-            
-            if (offset.y <= 0.f && section == [self.commentThread count] - 1) {
-
-                if (parentComment) {
-                    [self.commentThread insertObject:parentComment atIndex:0];
-                    // animate
-                    [self.tableView beginUpdates];
-                    [self.tableView insertSections:[NSIndexSet indexSetWithIndex:0] withRowAnimation:UITableViewRowAnimationTop];
-                    [self.tableView endUpdates];
-                }
-
-            } else {
-                
-                // reload and fix the offset
-                NSIndexPath *contentIndexPath = [NSIndexPath indexPathForRow:NotificationCommentCellTypeContent inSection:commentIndexPath.section];
-                // combine both row heights of the new section
-                CGFloat newCommentHeight = [self tableView:self.tableView heightForRowAtIndexPath:commentIndexPath] + [self tableView:self.tableView heightForRowAtIndexPath:contentIndexPath];
-                CGFloat offsetFix = newCommentHeight - oldCommentHeight;
-                if (parentComment) {
-                    // height for new section
-                    NSIndexPath *parentIndexPath = [NSIndexPath indexPathForRow:0 inSection:0];
-                    [self.commentThread insertObject:parentComment atIndex:0];
-                    offsetFix += [self tableView:self.tableView heightForRowAtIndexPath:parentIndexPath] + [self tableView:self.tableView heightForFooterInSection:0];
-                    
-                }
-                [self.tableView reloadData];
-                CGPoint offset = self.tableView.contentOffset;
-                offset.y += offsetFix;
-                self.tableView.contentOffset = offset;
-            }
-            
-            [self.tableView reloadData];*/
         } failure:^(AFHTTPRequestOperation *operation, NSError *error){
             DDLogVerbose(@"[Rest API] ! %@", [error localizedDescription]);
-
-            [self.tableView reloadData];
         }];
         
     }
@@ -469,202 +389,11 @@ NS_ENUM(NSUInteger, NotifcationCommentCellType) {
     [[[WPAccount defaultWordPressComAccount] restApi] postPath:path parameters:[params objectForKey:@"rest_body"] success:success failure:failure];
 }
 
-#pragma mark - UITableViewDataSource
-
-- (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
-    return [self.commentThread count];
-} 
-
-- (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
-    NoteComment *comment = [self.commentThread objectAtIndex:section];
-    BOOL mainComment = [self.commentThread lastObject] == comment;
-    if (!comment.isLoaded && !mainComment) {
-        return 1;
-    } else {
-        return 2;
-    }
-}
-
-- (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
-    NoteComment *comment = [self.commentThread objectAtIndex:indexPath.section];
-    BOOL mainComment = (comment == [self.commentThread lastObject]);
-    
-    UITableViewCell *cell;
-    switch (indexPath.row) {
-        case NotificationCommentCellTypeHeader:
-        {
-            if (comment.isLoaded || mainComment) {
-                NoteCommentCell *headerCell = [tableView dequeueReusableCellWithIdentifier:NoteCommentHeaderCellIdentifiter];
-                if ([comment isParentComment]) {
-                    [headerCell displayAsParentComment];
-                }
-                headerCell.delegate = self;
-                [self prepareCommentHeaderCell:headerCell forCommment:comment];
-                cell = headerCell;
-
-            } else {
-                NoteCommentLoadingCell *loadingCell = [tableView dequeueReusableCellWithIdentifier:NoteCommentLoadingCellIdentifiter];
-                cell = loadingCell;
-            }
-            break;
-        }
-        case NotificationCommentCellTypeContent:
-        {
-            NoteCommentContentCell *contentCell = [tableView dequeueReusableCellWithIdentifier:NoteCommentContentCellIdentifiter];
-            if ([self.contentCache objectForKey:comment]) {
-                contentCell = [self.contentCache objectForKey:comment];
-            } else {
-                [self.contentCache setObject:contentCell forKey:comment];
-            }
-            
-            contentCell.delegate = self;
-            NSString *html = [comment.commentData valueForKey:@"content"];
-            if (!html) {
-                html = self.note.commentText;
-            } else {
-                contentCell.attributedString = [self convertHTMLToAttributedString:html];
-                contentCell.selectionStyle = UITableViewCellSelectionStyleNone;
-            }
-            if ([comment isParentComment]) {
-                [contentCell displayAsParentComment];
-            }
-            cell = contentCell;
-            break;
-        }
-    }
-    return cell;
-}
-
-- (void)prepareCommentHeaderCell:(NoteCommentCell *)cell forCommment:(NoteComment *)comment {
-    BOOL mainComment = comment == [self.commentThread lastObject];
-    if (mainComment) {
-        cell.avatarURL = [NSURL URLWithString:self.note.icon];
-        cell.followButton = self.followButton;
-        cell.imageView.hidden = NO;
-
-    } else if (comment.isLoaded){
-        cell.avatarURL = [NSURL URLWithString:[comment.commentData valueForKeyPath:@"author.avatar_URL"]];
-        cell.followButton = nil;
-        cell.imageView.hidden = NO;
-    }
-    if (comment.isLoaded) {
-        cell.textLabel.text = [comment.commentData valueForKeyPath:@"author.name"];
-        cell.detailTextLabel.text = [comment.commentData valueForKeyPath:@"author.ID"];
-        NSString *authorURL = [comment.commentData valueForKeyPath:@"author.URL"];
-        cell.profileURL = [NSURL URLWithString:authorURL];
-    }
-}
-
-#pragma mark - UITableViewDelegate
-
-- (CGFloat)tableView:(UITableView *)tableView heightForFooterInSection:(NSInteger)section {
-    if (section == [self.commentThread count]-1) {
-        return 0;
-    } else {
-        return 30.f;
-    }
-}
-
-- (UIView*)tableView:(UITableView *)tableView viewForFooterInSection:(NSInteger)section {
-    if (section == [self.commentThread count]-1) {
-        return nil;
-    } else {
-        NSString *imageName;
-        if (section == [self.commentThread count]-2) {
-           // white
-            imageName = @"note-comment-parent-footer";
-        } else {
-            imageName = @"note-comment-grandparent-footer";
-        }
-        UIEdgeInsets insets = UIEdgeInsetsMake(0.f, 68.f, 19.f, 0.f);
-        UIImage *image = [[UIImage imageNamed:imageName] resizableImageWithCapInsets:insets];
-        return [[UIImageView alloc] initWithImage:image];
-    }
-}
-
-- (void)tableView:(UITableView *)tableView willDisplayCell:(UITableViewCell *)cell forRowAtIndexPath:(NSIndexPath *)indexPath {
-    NoteComment *comment = [self.commentThread objectAtIndex:indexPath.section];
-    if (comment.needsData) {
-        [self updateCommentThread];
-    }
-}
-
-// the height of the comments
-- (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
-    NoteComment *comment = [self.commentThread objectAtIndex:indexPath.section];
-    BOOL mainComment = [self.commentThread lastObject] == comment;
-    CGFloat height = 0.0;
-    switch (indexPath.row) {
-        case NotificationCommentCellTypeHeader:
-            height = (comment.isLoaded || mainComment) ? (comment.isParentComment) ? NoteCommentCellHeight - 36.0f : NoteCommentCellHeight : NoteCommentLoadingCellHeight;
-            break;
-        case NotificationCommentCellTypeContent:
-        {
-            CGFloat minHeight = 0.f;
-            if (mainComment) {
-                minHeight = CGRectGetHeight(tableView.bounds) - CGRectGetHeight(tableView.tableFooterView.bounds) - NoteCommentCellHeight;
-            }
-            NSString *content = [comment.commentData stringForKey:@"content"];
-            if (content) {
-                NSAttributedString *attributedContent = [self convertHTMLToAttributedString:content];
-                CGFloat textHeight = [self
-                                      heightForCellWithTextContent:attributedContent
-                                      constrainedToWidth:CGRectGetWidth(tableView.bounds)];
-                height = MAX(minHeight, textHeight);
-            } else {
-                height = minHeight;
-            }
-            break;
-        }
-    }
-    return height;
-}
-
-- (CGFloat)heightForCellWithTextContent:(NSAttributedString *)textContent constrainedToWidth:(CGFloat)width {
-    DTAttributedTextContentView *textContentView;
-    [DTAttributedTextContentView setLayerClass:[CATiledLayer class]];
-    textContentView = [[DTAttributedTextContentView alloc] initWithFrame:CGRectMake(0.f, 0.f, width, 0.f)];
-    textContentView.autoresizingMask = UIViewAutoresizingFlexibleWidth;
-    textContentView.edgeInsets = UIEdgeInsetsMake(10.f, 10.f, 20.f, 10.f);
-    textContentView.attributedString = textContent;
-    CGSize size = [textContentView suggestedFrameSizeToFitEntireStringConstraintedToWidth:width];
-    return size.height;
-}
-
-
-#pragma mark - NoteCommentCellDelegate
-
-- (void)commentCell:(NoteCommentCell *)cell didTapURL:(NSURL *)url {
-    [self pushToURL:url];
-}
-
-
-- (void)didReceiveMemoryWarning
-{
-    [super didReceiveMemoryWarning];
-    // Dispose of any resources that can be recreated.
-}
-
-#pragma mark - Text Formatting
-
-- (NSAttributedString *)convertHTMLToAttributedString:(NSString *)html {
-    NSAssert(html != nil, @"Can't convert nil to AttributedString");
-    NSDictionary *options = @{
-    DTDefaultFontFamily : @"Helvetica",
-    NSTextSizeMultiplierDocumentOption : [NSNumber numberWithFloat:1.3]
-    };
-
-    html = [html stringByReplacingHTMLEmoticonsWithEmoji];
-    NSAttributedString *content = [[NSAttributedString alloc] initWithHTMLData:[html dataUsingEncoding:NSUTF8StringEncoding] options:options documentAttributes:nil];
-    return content;
-}
 
 #pragma mark - InlineComposeViewDelegate
 
 - (void)composeView:(InlineComposeView *)view didSendText:(NSString *)text {
-
     [self publishReply:text];
-
 }
 
 
@@ -681,11 +410,13 @@ NS_ENUM(NSUInteger, NotifcationCommentCellType) {
 
 - (void)onShowKeyboard:(NSNotification *)notification {
     CGRect keyboardRect = [[notification.userInfo objectForKey:UIKeyboardFrameEndUserInfoKey] CGRectValue];
-    self.tableView.contentInset = UIEdgeInsetsMake(0.f, 0.f, CGRectGetHeight(keyboardRect), 0.f);
+    UIScrollView *scrollView = (UIScrollView *)self.view;
+    scrollView.contentInset = UIEdgeInsetsMake(0.f, 0.f, CGRectGetHeight(keyboardRect), 0.f);
 }
 
 - (void)onHideKeyboard:(NSNotification *)notification {
-    self.tableView.contentInset = UIEdgeInsetsMake(0.f, 0.f, 0.f, 0.f);
+    UIScrollView *scrollView = (UIScrollView *)self.view;
+    scrollView.contentInset = UIEdgeInsetsMake(0.f, 0.f, 0.f, 0.f);
 }
 
 
