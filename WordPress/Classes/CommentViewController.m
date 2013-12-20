@@ -38,6 +38,7 @@ CGFloat const CommentViewUnapproveButtonTag = 701;
 @property (nonatomic, strong) Comment *reply;
 @property (nonatomic, strong) EditCommentViewController *editCommentViewController;
 @property (nonatomic, assign) BOOL isShowingActionSheet;
+@property (nonatomic, assign) BOOL transientReply;
 
 @end
 
@@ -90,8 +91,6 @@ CGFloat const CommentViewUnapproveButtonTag = 701;
 
     if (self.comment) {
         [self showComment:self.comment];
-        self.reply = [self.comment restoreReply];
-        self.inlineComposeView.text = self.reply.content;
    }
 }
 
@@ -101,6 +100,13 @@ CGFloat const CommentViewUnapproveButtonTag = 701;
 
 - (void)viewWillDisappear:(BOOL)animated {
     [super viewWillDisappear:animated];
+    
+    // Get rid of any transient reply if popping the view
+    // (ideally transient replies should be handled more cleanly)
+    if ([self isMovingFromParentViewController] && self.transientReply) {
+        [self.reply remove];
+        self.reply = nil;
+    }
 }
 
 - (void)cancelView:(id)sender {
@@ -246,6 +252,9 @@ CGFloat const CommentViewUnapproveButtonTag = 701;
 		[self showSyncInProgressAlert];
 	} else {
         [WPMobileStats trackEventForWPCom:StatsEventCommentDetailClickedReplyToComment];
+        self.reply = [self.comment restoreReply];
+        self.transientReply = YES;
+        self.inlineComposeView.text = self.reply.content;
         [self.inlineComposeView displayComposer];
 	}
 }
@@ -308,17 +317,6 @@ CGFloat const CommentViewUnapproveButtonTag = 701;
 	//the blog is using the network connection and cannot be stoped, show a message to the user
 }
 
-#pragma mark - ReplyToCommentViewControllerDelegate Methods
-
-- (void)cancelReplyToCommentViewController:(id)sender {
-	[self cancelView:sender];
-}
-
-- (void)closeReplyViewAndSelectTheNewComment {
-    [WPMobileStats trackEventForWPCom:StatsEventCommentDetailRepliedToComment];
-	[self dismissEditViewController];
-}
-
 
 #pragma mark - InlineComposeViewDelegate methods
 
@@ -333,6 +331,7 @@ CGFloat const CommentViewUnapproveButtonTag = 701;
     [self.inlineComposeView dismissComposer];
 
     self.reply.status = CommentStatusApproved;
+    self.transientReply = NO;
 
     // upload with success saves the reply with the published status when successfull
     [self.reply uploadWithSuccess:^{
