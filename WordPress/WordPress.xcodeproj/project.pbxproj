@@ -793,8 +793,6 @@
 		C5834B2F1810412100B64089 /* DateRangePickerView.m in Sources */ = {isa = PBXBuildFile; fileRef = C5834B2C1810412100B64089 /* DateRangePickerView.m */; };
 		C5834B301810412100B64089 /* WPLoadingView.m in Sources */ = {isa = PBXBuildFile; fileRef = C5834B2E1810412100B64089 /* WPLoadingView.m */; };
 		C5834B331810413D00B64089 /* InputViewButton.m in Sources */ = {isa = PBXBuildFile; fileRef = C5834B321810413D00B64089 /* InputViewButton.m */; };
-		C5834B72181042E100B64089 /* create_gallery_icon.png in Resources */ = {isa = PBXBuildFile; fileRef = C5834B5A181042E100B64089 /* create_gallery_icon.png */; };
-		C5834B73181042E100B64089 /* create_gallery_icon@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = C5834B5B181042E100B64089 /* create_gallery_icon@2x.png */; };
 		C5834B74181042E100B64089 /* date_picker_selected.png in Resources */ = {isa = PBXBuildFile; fileRef = C5834B5C181042E100B64089 /* date_picker_selected.png */; };
 		C5834B75181042E100B64089 /* date_picker_selected@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = C5834B5D181042E100B64089 /* date_picker_selected@2x.png */; };
 		C5834B76181042E100B64089 /* date_picker_unselected.png in Resources */ = {isa = PBXBuildFile; fileRef = C5834B5E181042E100B64089 /* date_picker_unselected.png */; };
@@ -1994,7 +1992,7 @@
 		C52FC490184D4C5800E4968F /* WordPress.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = WordPress.xcdatamodel; sourceTree = "<group>"; };
 		C52FC492184D4E1600E4968F /* ThemeDetailsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ThemeDetailsViewController.h; sourceTree = "<group>"; };
 		C52FC493184D4E1600E4968F /* ThemeDetailsViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ThemeDetailsViewController.m; sourceTree = "<group>"; };
-		C52FC495184D4FCE00E4968F /* WordPress 15.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = file; path = "WordPress 15.xcdatamodel"; sourceTree = "<group>"; };
+		C52FC495184D4FCE00E4968F /* WordPress 15.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = "WordPress 15.xcdatamodel"; sourceTree = "<group>"; };
 		C533CF330E6D3ADA000C3DE8 /* CommentsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CommentsViewController.h; sourceTree = "<group>"; };
 		C533CF340E6D3ADA000C3DE8 /* CommentsViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CommentsViewController.m; sourceTree = "<group>"; };
 		C545E0A01811B9880020844C /* ContextManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ContextManager.h; sourceTree = "<group>"; };
@@ -2023,8 +2021,6 @@
 		C5834B2E1810412100B64089 /* WPLoadingView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WPLoadingView.m; sourceTree = "<group>"; };
 		C5834B311810413D00B64089 /* InputViewButton.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = InputViewButton.h; sourceTree = "<group>"; };
 		C5834B321810413D00B64089 /* InputViewButton.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = InputViewButton.m; sourceTree = "<group>"; };
-		C5834B5A181042E100B64089 /* create_gallery_icon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = create_gallery_icon.png; path = Resources/Images/create_gallery_icon.png; sourceTree = "<group>"; };
-		C5834B5B181042E100B64089 /* create_gallery_icon@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "create_gallery_icon@2x.png"; path = "Resources/Images/create_gallery_icon@2x.png"; sourceTree = "<group>"; };
 		C5834B5C181042E100B64089 /* date_picker_selected.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = date_picker_selected.png; path = Resources/Images/date_picker_selected.png; sourceTree = "<group>"; };
 		C5834B5D181042E100B64089 /* date_picker_selected@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "date_picker_selected@2x.png"; path = "Resources/Images/date_picker_selected@2x.png"; sourceTree = "<group>"; };
 		C5834B5E181042E100B64089 /* date_picker_unselected.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = date_picker_unselected.png; path = Resources/Images/date_picker_unselected.png; sourceTree = "<group>"; };
@@ -2265,7 +2261,6 @@
 		E1B62A8113AA8D7700A6FCA4 /* link~ipad.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "link~ipad.png"; path = "Resources/Images/link~ipad.png"; sourceTree = "<group>"; };
 		E1B62A8813AAA5FE00A6FCA4 /* keyboardButton.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = keyboardButton.png; path = Resources/Images/keyboardButton.png; sourceTree = "<group>"; };
 		E1B62A8A13AAA96F00A6FCA4 /* keyboardButton@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "keyboardButton@2x.png"; path = "Resources/Images/keyboardButton@2x.png"; sourceTree = "<group>"; };
-		E1C807471696F72E00E545A6 /* WordPress 9.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = "WordPress 9.xcdatamodel"; sourceTree = "<group>"; };
 		E1CAAE3813F4142E0000C58D /* WPKeyboardToolbarButtonItem.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WPKeyboardToolbarButtonItem.h; sourceTree = "<group>"; };
 		E1CAAE3913F4142E0000C58D /* WPKeyboardToolbarButtonItem.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WPKeyboardToolbarButtonItem.m; sourceTree = "<group>"; };
 		E1CCFB32175D624F0016BD8A /* Crashlytics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = Crashlytics.framework; sourceTree = "<group>"; };
@@ -3539,10 +3534,6 @@
 		AC512F790E20D25E00B7DA32 /* Images */ = {
 			isa = PBXGroup;
 			children = (
-				C5834B901810522300B64089 /* uploading_spin_blue.png */,
-				C5834B911810522300B64089 /* uploading_spin_blue@2x.png */,
-				C5834B921810522300B64089 /* uploading_spin_red.png */,
-				C5834B931810522300B64089 /* uploading_spin_red@2x.png */,
 				E2013EAB18637B6B00AB537F /* icon-secure-text-visible.png */,
 				E2013EAC18637B6B00AB537F /* icon-secure-text-visible@2x.png */,
 				E2013EAD18637B6B00AB537F /* icon-secure-text.png */,
@@ -3993,8 +3984,10 @@
 		C5834B4D1810426300B64089 /* Media */ = {
 			isa = PBXGroup;
 			children = (
-				C5834B5A181042E100B64089 /* create_gallery_icon.png */,
-				C5834B5B181042E100B64089 /* create_gallery_icon@2x.png */,
+				C5834B901810522300B64089 /* uploading_spin_blue.png */,
+				C5834B911810522300B64089 /* uploading_spin_blue@2x.png */,
+				C5834B921810522300B64089 /* uploading_spin_red.png */,
+				C5834B931810522300B64089 /* uploading_spin_red@2x.png */,
 				C5834B5C181042E100B64089 /* date_picker_selected.png */,
 				C5834B5D181042E100B64089 /* date_picker_selected@2x.png */,
 				C5834B5E181042E100B64089 /* date_picker_unselected.png */,
@@ -4918,7 +4911,6 @@
 				30E9685815AE713A0047DD84 /* navbar_primary_button_bg_landscape@2x.png in Resources */,
 				E2AA879E1850F91E00886693 /* icon-jetpack-gray@2x.png in Resources */,
 				3001AB4215AEE56C00A9F8F3 /* toolbar_swipe_trash@2x.png in Resources */,
-				C5834B72181042E100B64089 /* create_gallery_icon.png in Resources */,
 				3001AB4615AEF05500A9F8F3 /* toolbar_swipe_approve.png in Resources */,
 				3001AB4715AEF05500A9F8F3 /* toolbar_swipe_approve@2x.png in Resources */,
 				C5834B76181042E100B64089 /* date_picker_unselected.png in Resources */,
