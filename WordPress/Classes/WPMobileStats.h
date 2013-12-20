@@ -226,7 +226,17 @@ extern NSString *const StatsEventAddBlogsClickedAddSelected;
 + (void)pingWPComStatsEndpoint:(NSString *)statName;
 + (void)logQuantcastEvent:(NSString *)quantcast;
 
-// Property Related
+/*
+    Mixpanel has both properties and super properties which should be used differently depending on the
+    circumstance. A property in general can be attached to any event, so for example an event with
+    the title "Opened from External Source" can have a property "external_source" which identifies the
+    source of the event. Properties are useful to attach to events because they allow us to drill down
+    into certain events with more detail. Super properties are different from properties in that super
+    properties are attached to *every* event that gets sent up to Mixpanel. Things that you might
+    use as super properties are perhaps certain things that you want to track across events that may
+    help you determine certain patterns in the app. For example 'number_of_blogs' is a super property
+    attached to every single event.
+ */
 + (void)clearPropertiesForAllEvents;
 + (void)incrementProperty:(NSString *)property forEvent:(NSString *)event;
 + (void)flagProperty:(NSString *)property forEvent:(NSString *)event;
