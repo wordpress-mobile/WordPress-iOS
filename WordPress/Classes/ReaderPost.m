@@ -331,6 +331,7 @@ NSString * const ReaderPostStoredCommentTextKey = @"comment";
 	self.likeCount = [dict numberForKey:@"like_count"];
 	self.permaLink = [dict stringForKey:@"URL"];
 	self.postTitle = [[[dict stringForKey:@"title"] stringByDecodingXMLCharacters] trim];
+    self.postTitle = [self.postTitle stringByStrippingHTML];
 	
 	self.isLiked = [dict numberForKey:@"i_like"];
 	
@@ -393,6 +394,7 @@ NSString * const ReaderPostStoredCommentTextKey = @"comment";
 	self.likeCount = [dict numberForKey:@"post_like_count"];
 	self.permaLink = [dict stringForKey:@"post_permalink"];
 	self.postTitle = [[[dict stringForKey:@"post_title"] stringByDecodingXMLCharacters] trim];
+    self.postTitle = [self.postTitle stringByStrippingHTML];
 	
     // blog_public is either a 1 or a -1.
     NSInteger isPublic = [[dict numberForKey:@"blog_public"] integerValue];
