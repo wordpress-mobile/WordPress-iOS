@@ -143,6 +143,7 @@ NSString * const BlogJetpackApiPath = @"get-user-blogs/1.0";
                                  // If there is no WP.com account on the device, make this the default
                                  if ([WPAccount defaultWordPressComAccount] == nil) {
                                      [WPAccount setDefaultWordPressComAccount:account];
+                                     [self dataSave];
                                      
                                      // Sadly we don't care if this succeeds or not
                                      [account syncBlogsWithSuccess:nil failure:nil];
