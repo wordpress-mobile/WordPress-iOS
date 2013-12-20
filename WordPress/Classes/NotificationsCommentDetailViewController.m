@@ -203,7 +203,6 @@ NS_ENUM(NSUInteger, NotifcationCommentCellType) {
     self.approveButton.enabled = NO;
     self.replyButton.enabled = NO;
 
-    __block BOOL isApproved = NO;
     // figure out the actions available for the note
     NSMutableDictionary *indexedActions = [[NSMutableDictionary alloc] initWithCapacity:[actions count]];
     [actions enumerateObjectsUsingBlock:^(id obj, NSUInteger idx, BOOL *stop) {
@@ -211,10 +210,10 @@ NS_ENUM(NSUInteger, NotifcationCommentCellType) {
         [indexedActions setObject:obj forKey:actionType];
         if ([actionType isEqualToString:@"approve-comment"]) {
             self.approveButton.enabled = YES;
-            isApproved = NO;
+            [self updateApproveButton:YES];
         } else if ([actionType isEqualToString:@"unapprove-comment"]) {
             self.approveButton.enabled = YES;
-            isApproved = YES;
+            [self updateApproveButton:NO];
         } else if ([actionType isEqualToString:@"spam-comment"]) {
             self.spamButton.enabled = YES;
         } else if ([actionType isEqualToString:@"unspam-comment"]) {
@@ -246,6 +245,16 @@ NS_ENUM(NSUInteger, NotifcationCommentCellType) {
     return nil;
 }
 
+- (void)updateApproveButton:(BOOL)canBeApproved {
+    if (canBeApproved) {
+        [self.approveButton setImage:[UIImage imageNamed:@"icon-comments-approve"] forState:UIControlStateNormal];
+        [self.approveButton setImage:[UIImage imageNamed:@"icon-comments-approve-active"] forState:UIControlStateSelected];
+    } else {
+        [self.approveButton setImage:[UIImage imageNamed:@"icon-comments-unapprove"] forState:UIControlStateNormal];
+        [self.approveButton setImage:[UIImage imageNamed:@"icon-comments-unapprove-active"] forState:UIControlStateSelected];
+    }
+}
+
 
 #pragma mark - Actions
 
@@ -269,13 +278,20 @@ NS_ENUM(NSUInteger, NotifcationCommentCellType) {
 }
 
 - (void)approveOrUnapproveAction:(id)sender {
-    [WPMobileStats trackEventForWPCom:StatsEventNotificationsDetailApproveComment];
-    NSDictionary *commentAction = [self.commentActions objectForKey:@"approve-comment"];
-    [self performCommentAction:commentAction];
-    
-    // TODO: unapprove
-//    [WPMobileStats trackEventForWPCom:StatsEventNotificationsDetailUnapproveComment];
-//    commentAction = [self.commentActions objectForKey:@"unapprove-comment"];
+    NSDictionary *approveAction = [self.commentActions objectForKey:@"approve-comment"];
+    NSDictionary *unapproveAction = [self.commentActions objectForKey:@"unapprove-comment"];
+
+    if (approveAction) {
+        // Pressed approve, so flip button optimistically to unapprove
+        [self updateApproveButton:NO];
+        [WPMobileStats trackEventForWPCom:StatsEventNotificationsDetailApproveComment];
+        [self performCommentAction:approveAction];
+    } else if (unapproveAction) {
+        // Pressed unapprove, so flip button optimistically to approve
+        [self updateApproveButton:YES];
+        [WPMobileStats trackEventForWPCom:StatsEventNotificationsDetailUnapproveComment];
+        [self performCommentAction:unapproveAction];
+    }
 }
 
 - (void)deleteAction:(id)sender {
@@ -389,7 +405,7 @@ NS_ENUM(NSUInteger, NotifcationCommentCellType) {
             NSString *author = [comment.commentData valueForKeyPath:@"author.name"];
             NSString *authorLink = [comment.commentData valueForKeyPath:@"author.URL"];
             [self.commentView setAuthorDisplayName:author authorLink:authorLink];
-            
+
             // if we're at the top of the tableview, we'll animate in the new parent
 /*            id parent = [responseObject objectForKey:@"parent"];
             NoteComment *parentComment;
