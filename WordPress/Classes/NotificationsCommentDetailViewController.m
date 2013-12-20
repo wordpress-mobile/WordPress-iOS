@@ -258,23 +258,29 @@ const CGFloat NotificationsCommentDetailViewControllerReplyTextViewDefaultHeight
 }
 
 - (void)deleteAction:(id)sender {
-    [WPMobileStats trackEventForWPCom:StatsEventNotificationsDetailTrashComment];
-    NSDictionary *commentAction = [self.commentActions objectForKey:@"trash-comment"];
-    [self performCommentAction:commentAction];
+    NSDictionary *trashAction = [self.commentActions objectForKey:@"trash-comment"];
+    NSDictionary *untrashAction = [self.commentActions objectForKey:@"untrash-comment"];
     
-    // TODO: undelete
-//    [WPMobileStats trackEventForWPCom:StatsEventNotificationsDetailUntrashComment];
-//    commentAction = [self.commentActions objectForKey:@"untrash-comment"];
+    if (trashAction) {
+        [WPMobileStats trackEventForWPCom:StatsEventNotificationsDetailTrashComment];
+        [self performCommentAction:trashAction];
+    } else if (untrashAction) {
+        [WPMobileStats trackEventForWPCom:StatsEventNotificationsDetailUntrashComment];
+        [self performCommentAction:untrashAction];
+    }
 }
 
 - (void)spamAction:(id)sender {
-    [WPMobileStats trackEventForWPCom:StatsEventNotificationsDetailFlagCommentAsSpam];
-    NSDictionary *commentAction = [self.commentActions objectForKey:@"spam-comment"];
-    [self performCommentAction:commentAction];
+    NSDictionary *spamAction = [self.commentActions objectForKey:@"spam-comment"];
+    NSDictionary *unspamAction = [self.commentActions objectForKey:@"unspam-comment"];
     
-    // TODO: unspam
-//    [WPMobileStats trackEventForWPCom:StatsEventNotificationsDetailUnflagCommentAsSpam];
-//    commentAction = [self.commentActions objectForKey:@"unspam-comment"];
+    if (spamAction) {
+        [WPMobileStats trackEventForWPCom:StatsEventNotificationsDetailFlagCommentAsSpam];
+        [self performCommentAction:spamAction];
+    } else if (unspamAction) {
+        [WPMobileStats trackEventForWPCom:StatsEventNotificationsDetailUnflagCommentAsSpam];
+        [self performCommentAction:unspamAction];
+    }
 }
 
 - (void)replyAction:(id)sender {
