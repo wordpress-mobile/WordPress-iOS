@@ -55,7 +55,7 @@ NS_ENUM(NSUInteger, NotifcationCommentCellType) {
 @property (nonatomic, strong) UIButton *approveButton;
 @property (nonatomic, strong) UIButton *trashButton;
 @property (nonatomic, strong) UIButton *spamButton;
-@property (nonatomic, weak) UIBarButtonItem *replyBarButton;
+@property (nonatomic, strong) UIButton *replyButton;
 
 @property (nonatomic, strong) CommentView *commentView;
 
@@ -115,6 +115,9 @@ NS_ENUM(NSUInteger, NotifcationCommentCellType) {
     
     self.spamButton = [self.commentView addActionButtonWithImage:[UIImage imageNamed:@"icon-comments-flag"] selectedImage:[UIImage imageNamed:@"icon-comments-flag-active"]];
     [self.spamButton addTarget:self action:@selector(spamAction:) forControlEvents:UIControlEventTouchUpInside];
+
+    self.replyButton = [self.commentView addActionButtonWithImage:[UIImage imageNamed:@"reader-postaction-comment-blue"] selectedImage:[UIImage imageNamed:@"reader-postaction-comment-active"]];
+    [self.replyButton addTarget:self action:@selector(replyAction:) forControlEvents:UIControlEventTouchUpInside];
 
     [self.view addSubview:self.commentView];
 
@@ -244,6 +247,7 @@ NS_ENUM(NSUInteger, NotifcationCommentCellType) {
     self.spamButton.enabled = NO;
     self.trashButton.enabled = NO;
     self.approveButton.enabled = NO;
+    self.replyButton.enabled = NO;
 
     __block BOOL isApproved = NO;
     // figure out the actions available for the note
@@ -266,7 +270,7 @@ NS_ENUM(NSUInteger, NotifcationCommentCellType) {
         } else if ([actionType isEqualToString:@"untrash-comment"]) {
             self.trashButton.enabled = YES;
         } else if ([actionType isEqualToString:@"replyto-comment"]) {
-            //self.replyBarButton.enabled = YES;
+            self.replyButton.enabled = YES;
         }
     }];
 
@@ -340,6 +344,10 @@ NS_ENUM(NSUInteger, NotifcationCommentCellType) {
 //    commentAction = [self.commentActions objectForKey:@"unspam-comment"];
 }
 
+- (void)replyAction:(id)sender {
+    [self.inlineComposeView becomeFirstResponder];
+}
+
 - (void)performCommentAction:(NSDictionary *)commentAction {
     NSString *path = [NSString stringWithFormat:@"/rest/v1%@", [commentAction valueForKeyPath:@"params.rest_path"]];
 
@@ -407,9 +415,6 @@ NS_ENUM(NSUInteger, NotifcationCommentCellType) {
     [_postBanner setBackgroundColor:[UIColor UIColorFromHex:0xF2F2F2]];
 }
 
-- (IBAction)composeReply:(id)sender {
-    [self.inlineComposeView becomeFirstResponder];
-}
 
 #pragma mark - REST API
 
