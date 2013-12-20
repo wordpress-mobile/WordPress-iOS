@@ -132,6 +132,7 @@ NSString * const WPBlogDetailsBlogKey = @"WPBlogDetailsBlogKey";
         cell.imageView.image = [UIImage imageNamed:@"icon-menu-stats"];
     } else if ([self shouldShowThemesOption] && indexPath.row == BlogDetailsRowThemes) {
         cell.textLabel.text = NSLocalizedString(@"Themes", nil);
+        cell.imageView.image = [UIImage imageNamed:@"icon-menu-themes"];
     } else if ([self isRowForViewSite:indexPath.row]) {
         cell.textLabel.text = NSLocalizedString(@"View Site", nil);
         cell.imageView.image = [UIImage imageNamed:@"icon-menu-viewsite"];
