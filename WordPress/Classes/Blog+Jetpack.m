@@ -12,6 +12,7 @@
 #import "WPAccount.h"
 #import "WordPressAppDelegate.h"
 #import "ContextManager.h"
+#import "WordPressComOAuthClient.h"
 
 NSString * const BlogJetpackErrorDomain = @"BlogJetpackError";
 NSString * const BlogJetpackApiBaseUrl = @"https://public-api.wordpress.com/";
@@ -130,8 +131,23 @@ NSString * const BlogJetpackApiPath = @"get-user-blogs/1.0";
 
 - (void)saveJetpackUsername:(NSString *)username andPassword:(NSString *)password {
     NSAssert(![self isWPcom], @"Blog+Jetpack doesn't support WordPress.com blogs");
-    WPAccount *account = [WPAccount createOrUpdateWordPressComAccountWithUsername:username password:password authToken:nil context:self.managedObjectContext];
-    self.jetpackAccount = account;
+    
+    WordPressComOAuthClient *client = [WordPressComOAuthClient client];
+    [client authenticateWithUsername:username
+                            password:password
+                             success:^(NSString *authToken) {
+                                 WPAccount *account = [WPAccount createOrUpdateWordPressComAccountWithUsername:username password:password authToken:authToken context:self.managedObjectContext];
+                                 self.jetpackAccount = account;
+                                 [self dataSave];
+                             } failure:^(NSError *error) {
+                                 DDLogError(@"Error while obtaining OAuth2 token after enabling JetPack: %@", error);
+                                 
+                                 // OAuth2 login failed - we can still create the WPAccount without the token
+                                 // TODO: This is the behavior prior to 3.9 and could get removed
+                                 WPAccount *account = [WPAccount createOrUpdateWordPressComAccountWithUsername:username password:password authToken:nil context:self.managedObjectContext];
+                                 self.jetpackAccount = account;
+                                 [self dataSave];
+                             }];
 }
 
 /*
