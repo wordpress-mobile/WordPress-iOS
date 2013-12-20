@@ -30,7 +30,7 @@ CGFloat const CommentViewUnapproveButtonTag = 701;
 @property (nonatomic, strong) UIButton *trashButton;
 @property (nonatomic, strong) UIButton *approveButton;
 @property (nonatomic, strong) UIButton *spamButton;
-@property (nonatomic, strong) UIButton *editButton;
+@property (nonatomic, strong) UIBarButtonItem *editButton;
 @property (nonatomic, strong) UIButton *replyButton;
 @property (nonatomic, strong) InlineComposeView *inlineComposeView;
 @property (nonatomic, strong) Comment *reply;
@@ -66,8 +66,12 @@ CGFloat const CommentViewUnapproveButtonTag = 701;
     self.spamButton = [self.commentView addActionButtonWithImage:[UIImage imageNamed:@"icon-comments-flag"] selectedImage:[UIImage imageNamed:@"icon-comments-flag-active"]];
     [self.spamButton addTarget:self action:@selector(spamAction:) forControlEvents:UIControlEventTouchUpInside];
     
-    self.editButton = [self.commentView addActionButtonWithImage:[UIImage imageNamed:@"icon-comments-edit"] selectedImage:[UIImage imageNamed:@"icon-comments-edit-active"]];
-    [self.editButton addTarget:self action:@selector(editAction:) forControlEvents:UIControlEventTouchUpInside];
+    
+    self.editButton = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemEdit target:self action:@selector(editAction:)];
+    self.navigationItem.rightBarButtonItem = self.editButton;
+    
+    self.replyButton = [self.commentView addActionButtonWithImage:[UIImage imageNamed:@"reader-postaction-comment-blue"] selectedImage:[UIImage imageNamed:@"reader-postaction-comment-active"]];
+    [self.replyButton addTarget:self action:@selector(replyAction:) forControlEvents:UIControlEventTouchUpInside];
     
     [self.view addSubview:self.commentView];
 
