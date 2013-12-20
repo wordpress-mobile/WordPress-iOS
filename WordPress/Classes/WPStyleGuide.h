@@ -65,5 +65,6 @@
 + (void)configureTableViewCell:(UITableViewCell *)cell;
 + (void)configureTableViewTextCell:(UITableViewTextFieldCell *)cell;
 + (void)configureColorsForView:(UIView *)view andTableView:(UITableView *)tableView;
++ (void)configureColorsForView:(UIView *)view collectionView:(UICollectionView *)collectionView;
 
 @end
