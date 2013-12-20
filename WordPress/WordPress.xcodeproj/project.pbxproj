@@ -855,7 +855,6 @@
 		E1472B9813EFF9FF00987A40 /* left@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = E1472B9413EFF9FF00987A40 /* left@2x.png */; };
 		E1472B9913EFF9FF00987A40 /* right.png in Resources */ = {isa = PBXBuildFile; fileRef = E1472B9513EFF9FF00987A40 /* right.png */; };
 		E1472B9A13EFF9FF00987A40 /* right@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = E1472B9613EFF9FF00987A40 /* right@2x.png */; };
-		E1497BC012CCA92F0022BCD9 /* PostViewController-iPad.xib in Resources */ = {isa = PBXBuildFile; fileRef = E1497BBF12CCA92F0022BCD9 /* PostViewController-iPad.xib */; };
 		E14B2B761368127900CC3C4F /* UITableViewTextFieldCell.m in Sources */ = {isa = PBXBuildFile; fileRef = E14B2B751368127900CC3C4F /* UITableViewTextFieldCell.m */; };
 		E14D65BB17E084BC007E3EA4 /* reader-postaction-like-blue.png in Resources */ = {isa = PBXBuildFile; fileRef = E14D65B917E084BC007E3EA4 /* reader-postaction-like-blue.png */; };
 		E14D65BC17E084BC007E3EA4 /* reader-postaction-like-blue@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = E14D65BA17E084BC007E3EA4 /* reader-postaction-like-blue@2x.png */; };
@@ -2058,7 +2057,6 @@
 		E1472EF915344A2A00D08657 /* WordPress 5.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = "WordPress 5.xcdatamodel"; sourceTree = "<group>"; };
 		E14932B4130427B300154804 /* Coordinate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Coordinate.h; sourceTree = "<group>"; };
 		E14932B5130427B300154804 /* Coordinate.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Coordinate.m; sourceTree = "<group>"; };
-		E1497BBF12CCA92F0022BCD9 /* PostViewController-iPad.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = "PostViewController-iPad.xib"; path = "Resources-iPad/PostViewController-iPad.xib"; sourceTree = "<group>"; };
 		E14B2B741368127900CC3C4F /* UITableViewTextFieldCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UITableViewTextFieldCell.h; sourceTree = "<group>"; };
 		E14B2B751368127900CC3C4F /* UITableViewTextFieldCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = UITableViewTextFieldCell.m; sourceTree = "<group>"; };
 		E14D65B917E084BC007E3EA4 /* reader-postaction-like-blue.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "reader-postaction-like-blue.png"; path = "Resources/Images/reader-postaction-like-blue.png"; sourceTree = "<group>"; };
@@ -2738,7 +2736,6 @@
 			children = (
 				85C4195217C85310004DA0DA /* iOS7 */,
 				83F1FCA7123748EF00069F99 /* Blogs */,
-				83F1FCA6123748E300069F99 /* Posts */,
 				83F1FCA4123748DB00069F99 /* Media */,
 				E1FC3DB313C7788700F6B60F /* WPWebViewController~ipad.xib */,
 				45C73C24113C36F70024D0D2 /* MainWindow-iPad.xib */,
@@ -2999,14 +2996,6 @@
 			children = (
 			);
 			name = Media;
-			sourceTree = "<group>";
-		};
-		83F1FCA6123748E300069F99 /* Posts */ = {
-			isa = PBXGroup;
-			children = (
-				E1497BBF12CCA92F0022BCD9 /* PostViewController-iPad.xib */,
-			);
-			name = Posts;
 			sourceTree = "<group>";
 		};
 		83F1FCA7123748EF00069F99 /* Blogs */ = {
@@ -4406,7 +4395,6 @@
 				857F55D017CEC5E100E154E1 /* keyboardButton-ios7@2x.png in Resources */,
 				83CAD4211235F9F4003DFA20 /* MediaObjectView.xib in Resources */,
 				30EEBB951851B0A30099FB6C /* icon_format_keyboard@2x.png in Resources */,
-				E1497BC012CCA92F0022BCD9 /* PostViewController-iPad.xib in Resources */,
 				30EEBB931851B0A30099FB6C /* icon_format_italic@2x.png in Resources */,
 				E1EE23E512E62864000B2BE6 /* movie.png in Resources */,
 				E1EE23E612E62864000B2BE6 /* movie@2x.png in Resources */,
