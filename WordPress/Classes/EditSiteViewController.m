@@ -371,9 +371,13 @@ static NSString *const JetpackConnectedCellIdentifier = @"JetpackConnectedCellId
 - (void)toggleGeolocation:(id)sender {
     UISwitch *geolocationSwitch = (UISwitch *)sender;
     self.geolocationEnabled = geolocationSwitch.on;
+
+    // Save the change
+    self.blog.geolocationEnabled = self.geolocationEnabled;
+    [self.blog dataSave];
 }
 
-- (void)togglePushNotifications:(id)sender {    
+- (void)togglePushNotifications:(id)sender {
     UISwitch *pushSwitch = (UISwitch *)sender;
     BOOL muted = !pushSwitch.on;
     if (_notificationPreferences) {
