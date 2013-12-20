@@ -62,6 +62,8 @@ const CGFloat RPVControlButtonBorderSize = 0.0f;
 @property (nonatomic, strong) UIView *byView;
 @property (nonatomic, strong) UIView *controlView;
 @property (nonatomic, strong) UIButton *timeButton;
+@property (nonatomic, strong) UILabel *bylineLabel;
+@property (nonatomic, strong) UIButton *byButton;
 
 @end
 
@@ -130,6 +132,14 @@ const CGFloat RPVControlButtonBorderSize = 0.0f;
         _bylineLabel.adjustsFontSizeToFitWidth = NO;
         _bylineLabel.textColor = [UIColor colorWithHexString:@"333"];
         [_byView addSubview:_bylineLabel];
+        
+        _byButton = [UIButton buttonWithType:UIButtonTypeCustom];
+        _byButton.contentHorizontalAlignment = UIControlContentHorizontalAlignmentLeft;
+        _byButton.backgroundColor = [UIColor clearColor];
+        _byButton.titleLabel.font = [UIFont fontWithName:@"OpenSans" size:12.0f];
+        [_byButton addTarget:self action:@selector(authorLinkAction:) forControlEvents:UIControlEventTouchUpInside];
+        [_byButton setTitleColor:[WPStyleGuide buttonActionColor] forState:UIControlStateNormal];
+        [_byView addSubview:_byButton];
         
         _bottomView = [[UIView alloc] init];
         _bottomView.autoresizingMask = UIViewAutoresizingFlexibleWidth;
@@ -222,6 +232,13 @@ const CGFloat RPVControlButtonBorderSize = 0.0f;
     [self configureContentView:_contentProvider];
 }
 
+- (void)setAuthorDisplayName:(NSString *)authorName authorLink:(NSString *)authorLink {
+    self.bylineLabel.text = authorName;
+    [self.byButton setTitle:authorLink forState:UIControlStateNormal];
+    [self.byButton setEnabled:YES];
+    [self.byButton setHidden:NO];
+}
+
 - (void)configureContentView:(id<WPContentViewProvider>)contentProvider {
     // This will show the placeholder avatar. Do this here instead of prepareForReuse
     // so avatars show up after a cell is created, and not dequeued.
@@ -240,6 +257,16 @@ const CGFloat RPVControlButtonBorderSize = 0.0f;
 //    }
     
     self.bylineLabel.text = [contentProvider authorForDisplay];
+    
+    if ([[contentProvider blogNameForDisplay] length] > 0) {
+        [self.byButton setEnabled:YES];
+        [self.byButton setHidden:NO];
+        [self.byButton setTitle:[contentProvider blogNameForDisplay] forState:UIControlStateNormal];
+    } else {
+        [self.byButton setEnabled:NO];
+        [self.byButton setHidden:YES];
+    }
+    
     [self refreshDate];
     
 	self.cellImageView.hidden = YES;
@@ -262,6 +289,7 @@ const CGFloat RPVControlButtonBorderSize = 0.0f;
     self.byView.frame = CGRectMake(0, 0, contentWidth, RPVAuthorViewHeight + RPVAuthorPadding * 2);
     CGFloat bylineX = RPVAvatarSize + RPVAuthorPadding + RPVHorizontalInnerPadding;
     self.bylineLabel.frame = CGRectMake(bylineX, RPVAuthorPadding - 2, contentWidth - bylineX, 18);
+    self.byButton.frame = CGRectMake(bylineX, self.bylineLabel.frame.origin.y + 18, contentWidth - bylineX, 18);
     
     [self.textContentView relayoutText];
     CGFloat height = [self.textContentView suggestedFrameSizeToFitEntireStringConstraintedToWidth:contentWidth].height;
@@ -356,6 +384,12 @@ const CGFloat RPVControlButtonBorderSize = 0.0f;
 - (void)videoLinkAction:(id)sender {    
     if ([self.delegate respondsToSelector:@selector(contentView:didReceiveVideoLinkAction:)]) {
         [self.delegate contentView:self didReceiveVideoLinkAction:sender];
+    }
+}
+
+- (void)authorLinkAction:(id)sender {
+    if ([self.delegate respondsToSelector:@selector(contentView:didReceiveAuthorLinkAction:)]) {
+        [self.delegate contentView:self didReceiveAuthorLinkAction:sender];
     }
 }
 

@@ -434,7 +434,7 @@ NSString * const CommentStatusDraft = @"draft";
 #pragma mark - WPContentViewProvider protocol
 
 - (NSString *)blogNameForDisplay {
-    return self.blog.blogName;
+    return self.author_url;
 }
 
 - (NSString *)statusForDisplay {

@@ -38,7 +38,7 @@ NS_ENUM(NSUInteger, NotifcationCommentCellType) {
     NotificationCommentCellTypeContent
 };
 
-@interface NotificationsCommentDetailViewController () <NoteCommentCellDelegate, NoteCommentContentCellDelegate, InlineComposeViewDelegate>
+@interface NotificationsCommentDetailViewController () <NoteCommentCellDelegate, NoteCommentContentCellDelegate, InlineComposeViewDelegate, WPContentViewDelegate>
 
 @property NSUInteger followBlogID;
 @property NSDictionary *commentActions;
@@ -106,6 +106,7 @@ NS_ENUM(NSUInteger, NotifcationCommentCellType) {
     self.view.backgroundColor = [UIColor whiteColor];
     self.commentView = [[CommentView alloc] initWithFrame:self.view.frame];
     self.commentView.contentProvider = self.note;
+    self.commentView.delegate = self;
     
     self.trashButton = [self.commentView addActionButtonWithImage:[UIImage imageNamed:@"icon-comments-trash"] selectedImage:[UIImage imageNamed:@"icon-comments-trash-active"]];
     [self.trashButton addTarget:self action:@selector(deleteAction:) forControlEvents:UIControlEventTouchUpInside];
@@ -384,9 +385,11 @@ NS_ENUM(NSUInteger, NotifcationCommentCellType) {
             CGFloat oldCommentHeight = [self tableView:self.tableView heightForRowAtIndexPath:commentIndexPath];
             comment.commentData = responseObject;
             comment.loading = NO;
-            
-            self.commentView.bylineLabel.text = [comment.commentData valueForKeyPath:@"author.name"];
 
+            NSString *author = [comment.commentData valueForKeyPath:@"author.name"];
+            NSString *authorLink = [comment.commentData valueForKeyPath:@"author.URL"];
+            [self.commentView setAuthorDisplayName:author authorLink:authorLink];
+            
             // if we're at the top of the tableview, we'll animate in the new parent
 /*            id parent = [responseObject objectForKey:@"parent"];
             NoteComment *parentComment;
@@ -647,6 +650,16 @@ NS_ENUM(NSUInteger, NotifcationCommentCellType) {
     [self publishReply:text];
 
 }
+
+
+#pragma mark - WPContentViewDelegate
+
+- (void)contentView:(WPContentView *)contentView didReceiveAuthorLinkAction:(id)sender {
+    NoteComment *comment = [self.commentThread objectAtIndex:0];
+    NSURL *url = [[NSURL alloc] initWithString:[comment.commentData valueForKeyPath:@"author.URL"]];
+    [self pushToURL:url];
+}
+
 
 #pragma mark - UIKeyboard notifications
 

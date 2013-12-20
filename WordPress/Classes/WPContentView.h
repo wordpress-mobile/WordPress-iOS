@@ -23,6 +23,7 @@
 - (void)contentView:(WPContentView *)contentView didReceiveImageLinkAction:(id)sender;
 - (void)contentView:(WPContentView *)contentView didReceiveVideoLinkAction:(id)sender;
 - (void)contentView:(WPContentView *)contentView didReceiveFeaturedImageAction:(id)sender;
+- (void)contentView:(WPContentView *)contentView didReceiveAuthorLinkAction:(id)sender;
 - (void)postViewDidLoadAllMedia:(WPContentView *)postView;
 @end
 
@@ -34,10 +35,10 @@
 @property (nonatomic, weak) id<WPContentViewProvider> contentProvider;
 @property (nonatomic, strong) UIImageView *cellImageView;
 @property (nonatomic, strong) UIImageView *avatarImageView;
-@property (nonatomic, strong) UILabel *bylineLabel;
 
 - (id)initWithFrame:(CGRect)frame;
 - (void)setFeaturedImage:(UIImage *)image;
+- (void)setAuthorDisplayName:(NSString *)authorName authorLink:(NSString *)authorLink;
 - (UIButton *)addActionButtonWithImage:(UIImage *)buttonImage selectedImage:(UIImage *)selectedButtonImage;
 - (void)removeActionButton:(UIButton *)button;
 - (void)updateActionButtons;
