@@ -188,6 +188,10 @@ static NSString *const CameraPlusImagesNotification = @"CameraPlusImagesNotifica
                 NSUInteger *blogId = [[params valueForKey:@"blogId"] integerValue];
                 NSUInteger *postId = [[params valueForKey:@"postId"] integerValue];
                 
+                [WPMobileStats flagSuperProperty:StatsPropertyReaderOpenedFromExternalURL];
+                [WPMobileStats incrementSuperProperty:StatsPropertyReaderOpenedFromExternalURLCount];
+                [WPMobileStats trackEventForWPCom:StatsEventReaderOpenedFromExternalSource];
+                
                 [self.readerPostsViewController.navigationController popToRootViewControllerAnimated:NO];
                 NSInteger readerTabIndex = [[self.tabBarController viewControllers] indexOfObject:self.readerPostsViewController.navigationController];
                 [self.tabBarController setSelectedIndex:readerTabIndex];
