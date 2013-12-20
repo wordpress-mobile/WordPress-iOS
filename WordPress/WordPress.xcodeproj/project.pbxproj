@@ -831,6 +831,8 @@
 		DDAB1EAD1864089900F4D34D /* theme-browse-current@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = DDAB1EA91864089900F4D34D /* theme-browse-current@2x.png */; };
 		DDAB1EAE1864089900F4D34D /* theme-browse-premium.png in Resources */ = {isa = PBXBuildFile; fileRef = DDAB1EAA1864089900F4D34D /* theme-browse-premium.png */; };
 		DDAB1EAF1864089900F4D34D /* theme-browse-premium@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = DDAB1EAB1864089900F4D34D /* theme-browse-premium@2x.png */; };
+		DDAB1EB21864139C00F4D34D /* icon-themes-sort.png in Resources */ = {isa = PBXBuildFile; fileRef = DDAB1EB01864139C00F4D34D /* icon-themes-sort.png */; };
+		DDAB1EB31864139C00F4D34D /* icon-themes-sort@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = DDAB1EB11864139C00F4D34D /* icon-themes-sort@2x.png */; };
 		E100C6BB1741473000AE48D8 /* WordPress-11-12.xcmappingmodel in Sources */ = {isa = PBXBuildFile; fileRef = E100C6BA1741472F00AE48D8 /* WordPress-11-12.xcmappingmodel */; };
 		E10675C8183F82E900E5CE5C /* SettingsViewControllerTest.m in Sources */ = {isa = PBXBuildFile; fileRef = E10675C7183F82E900E5CE5C /* SettingsViewControllerTest.m */; };
 		E10675CA183FA78E00E5CE5C /* XCTest.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E10675C9183FA78E00E5CE5C /* XCTest.framework */; };
@@ -2032,6 +2034,8 @@
 		DDAB1EA91864089900F4D34D /* theme-browse-current@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "theme-browse-current@2x.png"; path = "Resources/Images/theme-browse-current@2x.png"; sourceTree = "<group>"; };
 		DDAB1EAA1864089900F4D34D /* theme-browse-premium.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "theme-browse-premium.png"; path = "Resources/Images/theme-browse-premium.png"; sourceTree = "<group>"; };
 		DDAB1EAB1864089900F4D34D /* theme-browse-premium@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "theme-browse-premium@2x.png"; path = "Resources/Images/theme-browse-premium@2x.png"; sourceTree = "<group>"; };
+		DDAB1EB01864139C00F4D34D /* icon-themes-sort.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "icon-themes-sort.png"; path = "Resources/Images/icon-themes-sort.png"; sourceTree = "<group>"; };
+		DDAB1EB11864139C00F4D34D /* icon-themes-sort@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "icon-themes-sort@2x.png"; path = "Resources/Images/icon-themes-sort@2x.png"; sourceTree = "<group>"; };
 		E100C6BA1741472F00AE48D8 /* WordPress-11-12.xcmappingmodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcmappingmodel; path = "WordPress-11-12.xcmappingmodel"; sourceTree = "<group>"; };
 		E105E9CD1726955600C0D9E7 /* WPAccount.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WPAccount.h; sourceTree = "<group>"; };
 		E105E9CE1726955600C0D9E7 /* WPAccount.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WPAccount.m; sourceTree = "<group>"; };
@@ -4020,6 +4024,8 @@
 		DDAB1EA71864088000F4D34D /* Themes */ = {
 			isa = PBXGroup;
 			children = (
+				DDAB1EB01864139C00F4D34D /* icon-themes-sort.png */,
+				DDAB1EB11864139C00F4D34D /* icon-themes-sort@2x.png */,
 				DDAB1EA81864089900F4D34D /* theme-browse-current.png */,
 				DDAB1EA91864089900F4D34D /* theme-browse-current@2x.png */,
 				DDAB1EAA1864089900F4D34D /* theme-browse-premium.png */,
@@ -4747,6 +4753,7 @@
 				5D9832EC15A77F0700A5E783 /* toolbar_bg.png in Resources */,
 				5D9832ED15A77F0700A5E783 /* toolbar_bg@2x.png in Resources */,
 				8599658B17DA9438005F84EB /* icon-info-message@2x.png in Resources */,
+				DDAB1EB31864139C00F4D34D /* icon-themes-sort@2x.png in Resources */,
 				85A69D0217C530FE0061E254 /* OpenSans-BoldItalic.ttf in Resources */,
 				37363A3915AB0DE000D3A6B4 /* cell_gradient_bg.png in Resources */,
 				85325A3917BB0DF8008E87D1 /* icon-menu-posts@2x.png in Resources */,
@@ -5050,6 +5057,7 @@
 				85D80558171630B30075EEAC /* DotCom-Languages.plist in Resources */,
 				858DE41217303BB4000AC628 /* OpenSans-Light.ttf in Resources */,
 				858DE41317303BB4000AC628 /* OpenSans-Regular.ttf in Resources */,
+				DDAB1EB21864139C00F4D34D /* icon-themes-sort.png in Resources */,
 				E2586BD41832F31D004B5B67 /* icon-site-field.png in Resources */,
 				853FAC4E17CF1F35008A2F74 /* transparent-point.png in Resources */,
 				3029D8331859359C00298395 /* icon_format_bold_highlighted@2x.png in Resources */,
