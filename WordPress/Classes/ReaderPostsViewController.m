@@ -89,7 +89,7 @@ NSString * const RPVCDisplayedNativeFriendFinder = @"DisplayedNativeFriendFinder
 		self.infiniteScrollEnabled = YES;
         self.incrementalLoadingSupported = YES;
         
-        [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(readerTopicDidChange:) name:ReaderTopicDidChangeNotification object:nil];        
+        [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(readerTopicDidChange:) name:ReaderTopicDidChangeNotification object:nil];
 	}
 	return self;
 }
@@ -148,12 +148,8 @@ NSString * const RPVCDisplayedNativeFriendFinder = @"DisplayedNativeFriendFinder
     }
     
     // Sync content as soon as login or creation occurs
-    [[NSNotificationCenter defaultCenter] addObserverForName:WordPressComApiDidLoginNotification
-                                                      object:nil
-                                                       queue:nil
-                                                  usingBlock:^(NSNotification *notification){
-                                                      [self syncItems];
-                                                  }];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(didLogin:) name:WordPressComApiDidLoginNotification object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(didLogout:) name:WordPressComApiDidLogoutNotification object:nil];
 
     self.inlineComposeView = [[InlineComposeView alloc] initWithFrame:CGRectZero];
 
@@ -180,11 +176,7 @@ NSString * const RPVCDisplayedNativeFriendFinder = @"DisplayedNativeFriendFinder
 }
 
 - (void)viewDidAppear:(BOOL)animated {
-    // WPTableViewController's viewDidAppear triggers a sync, but only do it if authenticated
-    // (this prevents an attempted sync when the app launches for the first time before authenticating)
-    if ([[WordPressAppDelegate sharedWordPressApplicationDelegate] isWPcomAuthenticated]) {
-        [super viewDidAppear:animated];
-    }
+    [super viewDidAppear:animated];
 
     NSIndexPath *selectedIndexPath = [self.tableView indexPathForSelectedRow];
     if (selectedIndexPath) {
@@ -586,10 +578,6 @@ NSString * const RPVCDisplayedNativeFriendFinder = @"DisplayedNativeFriendFinder
 	return @"ReaderPost";
 }
 
-- (NSString *)resultsControllerCacheName {
-	return [ReaderPost currentEndpoint];
-}
-
 - (NSDate *)lastSyncDate {
 	return (NSDate *)[[NSUserDefaults standardUserDefaults] objectForKey:ReaderLastSyncDateKey];
 }
@@ -681,7 +669,7 @@ NSString * const RPVCDisplayedNativeFriendFinder = @"DisplayedNativeFriendFinder
 }
 
 - (void)syncItemsViaUserInteraction:(BOOL)userInteraction success:(void (^)())success failure:(void (^)(NSError *))failure {
-    WPFLogMethod();
+    DDLogMethod();
     // if needs auth.
     if ([WPCookie hasCookieForURL:[NSURL URLWithString:@"https://wordpress.com"] andUsername:[[WPAccount defaultWordPressComAccount] username]]) {
        [self syncReaderItemsWithSuccess:success failure:failure];
@@ -716,7 +704,7 @@ NSString * const RPVCDisplayedNativeFriendFinder = @"DisplayedNativeFriendFinder
 }
 
 - (void)syncReaderItemsWithSuccess:(void (^)())success failure:(void (^)(NSError *))failure {
-    WPFLogMethod();
+    DDLogMethod();
 	NSString *endpoint = [ReaderPost currentEndpoint];
 	NSNumber *numberToSync = [NSNumber numberWithInteger:ReaderPostsToSync];
 	NSDictionary *params = @{@"number":numberToSync, @"per_page":numberToSync};
@@ -739,7 +727,7 @@ NSString * const RPVCDisplayedNativeFriendFinder = @"DisplayedNativeFriendFinder
 }
 
 - (void)loadMoreWithSuccess:(void (^)())success failure:(void (^)(NSError *error))failure {
-    WPFLogMethod();
+    DDLogMethod();
 	if ([self.resultsController.fetchedObjects count] == 0)
 		return;
 	
@@ -786,7 +774,7 @@ NSString * const RPVCDisplayedNativeFriendFinder = @"DisplayedNativeFriendFinder
 }
 
 - (void)onSyncSuccess:(AFHTTPRequestOperation *)operation response:(id)responseObject {
-    WPFLogMethod();
+    DDLogMethod();
 	BOOL wasLoadingMore = _loadingMore;
 	_loadingMore = NO;
 	
@@ -921,6 +909,15 @@ NSString * const RPVCDisplayedNativeFriendFinder = @"DisplayedNativeFriendFinder
     }
 }
 
+- (void)didLogin:(NSNotification *)notification {
+    [self syncItems];
+}
+
+- (void)didLogout:(NSNotification *)notification {
+    [[NSUserDefaults standardUserDefaults] removeObjectForKey:ReaderLastSyncDateKey];
+    [NSUserDefaults resetStandardUserDefaults];
+}
+
 
 #pragma mark - Utility
 
@@ -1022,11 +1019,17 @@ NSString * const RPVCDisplayedNativeFriendFinder = @"DisplayedNativeFriendFinder
 
 - (void)tableImageSource:(WPTableImageSource *)tableImageSource imageReady:(UIImage *)image forIndexPath:(NSIndexPath *)indexPath {
     ReaderPostTableViewCell *cell = (ReaderPostTableViewCell *)[self.tableView cellForRowAtIndexPath:indexPath];
+    
+    // Don't do anything if the cell is out of view or out of range
+    // (this is a safety check in case the Reader doesn't properly kill image requests when changing topics)
+    if (cell == nil)
+        return;
+
     [cell.postView setFeaturedImage:image];
     
+    // Update the detail view if it's open and applicable
     ReaderPost *post = [self.resultsController objectAtIndexPath:indexPath];
     
-    // Update the detail view if it's open and applicable
     if (post == self.detailController.post) {
         [self.detailController updateFeaturedImage:image];
     }

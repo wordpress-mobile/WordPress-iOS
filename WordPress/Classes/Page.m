@@ -173,7 +173,7 @@
 }
 
 - (void)deletePostWithSuccess:(void (^)())success failure:(void (^)(NSError *error))failure {
-    WPFLogMethod();
+    DDLogMethod();
     BOOL remote = [self hasRemote];
     if (remote) {
         NSArray *parameters = [self.blog getXMLRPCArgsWithExtra:self.postID];

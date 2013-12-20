@@ -34,7 +34,7 @@
         [self.textLabel setFont:[WPStyleGuide postTitleFont]];
         
         [self.detailTextLabel setFont:[WPStyleGuide subtitleFont]];
-        [self.detailTextLabel setTextColor:WP_LINK_COLOR];
+        [self.detailTextLabel setTextColor:[WPStyleGuide baseDarkerBlue]];
         [self.detailTextLabel setBackgroundColor:[UIColor clearColor]];
         [self.detailTextLabel setNumberOfLines:1];
         [self.detailTextLabel setAdjustsFontSizeToFitWidth:NO];
