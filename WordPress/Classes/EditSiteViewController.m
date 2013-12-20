@@ -128,9 +128,13 @@ static NSString *const JetpackConnectedCellIdentifier = @"JetpackConnectedCellId
 - (NSInteger)tableView:(UITableView *)tv numberOfRowsInSection:(NSInteger)section {
     switch (section) {
 		case 0:
-            return 3;	// URL, username, password
-		case 1: // Settings: Geolocation, [ Push Notifications ]
-            if (self.blog && ( [self.blog isWPcom] || [self.blog hasJetpack] ) && [[WordPressComApi sharedApi] hasCredentials] && [[NSUserDefaults standardUserDefaults] objectForKey:NotificationsDeviceToken] != nil)
+            // URL, username, [password]
+            if ([self.blog isWPcom])
+                return 2;
+            return 3;
+		case 1:
+            // Settings: Geolocation, [ Push Notifications ]
+            if ([self canTogglePushNotifications])
                 return 2;
             else
                 return 1;	
@@ -366,6 +370,13 @@ static NSString *const JetpackConnectedCellIdentifier = @"JetpackConnectedCellId
     } else {
         textField.returnKeyType = UIReturnKeyNext;
     }
+}
+
+- (BOOL)canTogglePushNotifications {
+    return self.blog &&
+        ([self.blog isWPcom] || [self.blog hasJetpack]) &&
+        [[WordPressComApi sharedApi] hasCredentials] &&
+        [[NSUserDefaults standardUserDefaults] objectForKey:NotificationsDeviceToken] != nil;
 }
 
 - (void)toggleGeolocation:(id)sender {
