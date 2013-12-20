@@ -143,7 +143,7 @@ NSString * const BlogJetpackApiPath = @"get-user-blogs/1.0";
                                  DDLogError(@"Error while obtaining OAuth2 token after enabling JetPack: %@", error);
                                  
                                  // OAuth2 login failed - we can still create the WPAccount without the token
-                                 // This is the behavior prior to 3.9
+                                 // TODO: This is the behavior prior to 3.9 and could get removed
                                  WPAccount *account = [WPAccount createOrUpdateWordPressComAccountWithUsername:username password:password authToken:nil context:self.managedObjectContext];
                                  self.jetpackAccount = account;
                                  [self dataSave];
