@@ -9,18 +9,13 @@
 #import <QuartzCore/QuartzCore.h>
 #import <DTCoreText/DTCoreText.h>
 #import "NotificationsCommentDetailViewController.h"
-#import "UIImageView+AFNetworking.h"
 #import "WordPressAppDelegate.h"
 #import "WPWebViewController.h"
-#import "NoteCommentCell.h"
-#import "NoteCommentLoadingCell.h"
-#import "NoteCommentContentCell.h"
 #import "NoteComment.h"
 #import "NSString+XMLExtensions.h"
 #import "NSString+Helpers.h"
 #import "NSURL+Util.h"
 #import "WPToast.h"
-#import "IOS7CorrectedTextView.h"
 #import "WPAccount.h"
 #import "NoteCommentPostBanner.h"
 #import "FollowButton.h"
@@ -30,7 +25,7 @@
 
 const CGFloat NotificationsCommentDetailViewControllerReplyTextViewDefaultHeight = 64.f;
 
-@interface NotificationsCommentDetailViewController () <NoteCommentCellDelegate, NoteCommentContentCellDelegate, InlineComposeViewDelegate, WPContentViewDelegate>
+@interface NotificationsCommentDetailViewController () <InlineComposeViewDelegate, WPContentViewDelegate>
 
 @property NSUInteger followBlogID;
 @property NSDictionary *commentActions;

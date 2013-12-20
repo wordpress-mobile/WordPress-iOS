@@ -787,10 +787,7 @@
 		CC24E5F51577E16B00A6D5B5 /* Accounts.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CC24E5F41577E16B00A6D5B5 /* Accounts.framework */; settings = {ATTRIBUTES = (Weak, ); }; };
 		CC313AD115A4360800F7B7C6 /* friend_follow_service_icons.png in Resources */ = {isa = PBXBuildFile; fileRef = CC313ACF15A4360800F7B7C6 /* friend_follow_service_icons.png */; };
 		CC313AD215A4360800F7B7C6 /* friend_follow_service_icons@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = CC313AD015A4360800F7B7C6 /* friend_follow_service_icons@2x.png */; };
-		CC5B0F23169B896300AA0291 /* NoteCommentLoadingCell.m in Sources */ = {isa = PBXBuildFile; fileRef = CCD1921F16850C4900CA3011 /* NoteCommentLoadingCell.m */; };
-		CC5B0F27169BDC4000AA0291 /* NoteCommentContentCell.m in Sources */ = {isa = PBXBuildFile; fileRef = CC5B0F26169BDC4000AA0291 /* NoteCommentContentCell.m */; };
 		CC669B1F1672C305009E16F8 /* FollowButton.m in Sources */ = {isa = PBXBuildFile; fileRef = CC669B1E1672C305009E16F8 /* FollowButton.m */; };
-		CC669B231672C328009E16F8 /* NoteCommentCell.m in Sources */ = {isa = PBXBuildFile; fileRef = CC669B221672C328009E16F8 /* NoteCommentCell.m */; };
 		CC669B261672C335009E16F8 /* NoteCommentPostBanner.m in Sources */ = {isa = PBXBuildFile; fileRef = CC669B251672C335009E16F8 /* NoteCommentPostBanner.m */; };
 		CC669B2916769BAE009E16F8 /* note-reply-field.png in Resources */ = {isa = PBXBuildFile; fileRef = CC669B2716769BAE009E16F8 /* note-reply-field.png */; };
 		CC669B2A16769BAE009E16F8 /* note-reply-field@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = CC669B2816769BAE009E16F8 /* note-reply-field@2x.png */; };
@@ -1949,12 +1946,8 @@
 		CC24E5F41577E16B00A6D5B5 /* Accounts.framework */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = wrapper.framework; name = Accounts.framework; path = System/Library/Frameworks/Accounts.framework; sourceTree = SDKROOT; };
 		CC313ACF15A4360800F7B7C6 /* friend_follow_service_icons.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = friend_follow_service_icons.png; path = Resources/Images/friend_follow_service_icons.png; sourceTree = "<group>"; };
 		CC313AD015A4360800F7B7C6 /* friend_follow_service_icons@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "friend_follow_service_icons@2x.png"; path = "Resources/Images/friend_follow_service_icons@2x.png"; sourceTree = "<group>"; };
-		CC5B0F25169BDC4000AA0291 /* NoteCommentContentCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NoteCommentContentCell.h; sourceTree = "<group>"; };
-		CC5B0F26169BDC4000AA0291 /* NoteCommentContentCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NoteCommentContentCell.m; sourceTree = "<group>"; };
 		CC669B1D1672C305009E16F8 /* FollowButton.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FollowButton.h; sourceTree = "<group>"; };
 		CC669B1E1672C305009E16F8 /* FollowButton.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FollowButton.m; sourceTree = "<group>"; };
-		CC669B211672C328009E16F8 /* NoteCommentCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NoteCommentCell.h; sourceTree = "<group>"; };
-		CC669B221672C328009E16F8 /* NoteCommentCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NoteCommentCell.m; sourceTree = "<group>"; };
 		CC669B241672C335009E16F8 /* NoteCommentPostBanner.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NoteCommentPostBanner.h; sourceTree = "<group>"; };
 		CC669B251672C335009E16F8 /* NoteCommentPostBanner.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NoteCommentPostBanner.m; sourceTree = "<group>"; };
 		CC669B2716769BAE009E16F8 /* note-reply-field.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "note-reply-field.png"; path = "Resources/Images/note-reply-field.png"; sourceTree = "<group>"; };
@@ -1978,8 +1971,6 @@
 		CC70165A185A7536007B37DB /* InlineComposeView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = InlineComposeView.xib; path = Resources/InlineComposeView.xib; sourceTree = "<group>"; };
 		CC70165C185BB97A007B37DB /* ReaderCommentPublisher.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ReaderCommentPublisher.h; sourceTree = "<group>"; };
 		CC70165D185BB97A007B37DB /* ReaderCommentPublisher.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ReaderCommentPublisher.m; sourceTree = "<group>"; };
-		CCD1921E16850C4900CA3011 /* NoteCommentLoadingCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NoteCommentLoadingCell.h; sourceTree = "<group>"; };
-		CCD1921F16850C4900CA3011 /* NoteCommentLoadingCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NoteCommentLoadingCell.m; sourceTree = "<group>"; };
 		CCEF152F14C9EA050001176D /* WPWebAppViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WPWebAppViewController.h; sourceTree = "<group>"; };
 		CCEF153014C9EA050001176D /* WPWebAppViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WPWebAppViewController.m; sourceTree = "<group>"; };
 		CEBD3EA90FF1BA3B00C1396E /* Blog.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Blog.h; sourceTree = "<group>"; };
@@ -2921,12 +2912,6 @@
 				E23EEC5D185A72C100F4DE2A /* WPContentCell.m */,
 				462F4E0C18369F300028D2F8 /* WPTableViewCell.h */,
 				462F4E0D18369F300028D2F8 /* WPTableViewCell.m */,
-				CC669B211672C328009E16F8 /* NoteCommentCell.h */,
-				CC669B221672C328009E16F8 /* NoteCommentCell.m */,
-				CCD1921E16850C4900CA3011 /* NoteCommentLoadingCell.h */,
-				CCD1921F16850C4900CA3011 /* NoteCommentLoadingCell.m */,
-				CC5B0F25169BDC4000AA0291 /* NoteCommentContentCell.h */,
-				CC5B0F26169BDC4000AA0291 /* NoteCommentContentCell.m */,
 				8370D10811FA499A009D650F /* WPTableViewActivityCell.h */,
 				8370D10911FA499A009D650F /* WPTableViewActivityCell.m */,
 				375D090B133B94C3000CC9CD /* BlogsTableViewCell.h */,
@@ -5247,7 +5232,6 @@
 				372AD15516682BA100F21BC1 /* NotificationsFollowDetailViewController.m in Sources */,
 				379DA051166E938E001A43CC /* NotificationsFollowTableViewCell.m in Sources */,
 				CC669B1F1672C305009E16F8 /* FollowButton.m in Sources */,
-				CC669B231672C328009E16F8 /* NoteCommentCell.m in Sources */,
 				93740DCB17D8F86700C41B2F /* WPAlertView.m in Sources */,
 				E240859C183D82AE002EB0EF /* WPAnimatedBox.m in Sources */,
 				CC669B261672C335009E16F8 /* NoteCommentPostBanner.m in Sources */,
@@ -5257,8 +5241,6 @@
 				85468F3D17C484AB008AB9C1 /* WPStyleGuide.m in Sources */,
 				E1756E651694A99400D9EC00 /* WordPressComApiCredentials.m in Sources */,
 				5D4DE6F4167177560030518D /* WPNoResultsView.m in Sources */,
-				CC5B0F23169B896300AA0291 /* NoteCommentLoadingCell.m in Sources */,
-				CC5B0F27169BDC4000AA0291 /* NoteCommentContentCell.m in Sources */,
 				8516972C169D42F4006C5DED /* WPToast.m in Sources */,
 				CC098B8416A9ECF800450976 /* CameraPlusPickerManager.m in Sources */,
 				93C4864F181043D700A24725 /* ActivityLogDetailViewController.m in Sources */,
