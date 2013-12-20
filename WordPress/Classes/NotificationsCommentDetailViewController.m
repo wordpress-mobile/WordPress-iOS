@@ -50,16 +50,9 @@ const CGFloat NotificationsCommentDetailViewControllerReplyTextViewDefaultHeight
 
 @property (nonatomic, strong) CommentView *commentView;
 
-@property (nonatomic, weak) IBOutlet IOS7CorrectedTextView *replyTextView;
-@property (nonatomic, weak) IBOutlet UIView *replyActivityView;
 @property (nonatomic, weak) IBOutlet NoteCommentPostBanner *postBanner;
 @property (nonatomic, strong) FollowButton *followButton;
 @property (nonatomic, strong) Note *note;
-@property (nonatomic, weak) IBOutlet UILabel *replyPlaceholder;
-@property (nonatomic, weak) IBOutlet UINavigationBar *replyNavigationBar;
-@property (nonatomic, weak) IBOutlet UINavigationItem *replyNavigationItem;
-@property (nonatomic, weak) IBOutlet UIBarButtonItem *replyCancelBarButton;
-@property (nonatomic, weak) IBOutlet UIBarButtonItem *replyPublishBarButton;
 
 @property (nonatomic, strong) InlineComposeView *inlineComposeView;
 
@@ -320,7 +313,6 @@ const CGFloat NotificationsCommentDetailViewControllerReplyTextViewDefaultHeight
     if (action) {
         self.inlineComposeView.enabled = NO;
 
-        self.replyActivityView.hidden = NO;
         NSString *approvePath = [NSString stringWithFormat:@"/rest/v1%@", [action valueForKeyPath:@"params.rest_path"]];
         NSString *replyPath = [NSString stringWithFormat:@"%@/replies/new", approvePath];
         NSDictionary *params = @{@"content" : replyText };
@@ -330,8 +322,6 @@ const CGFloat NotificationsCommentDetailViewControllerReplyTextViewDefaultHeight
             } failure:nil];
         }
         
-        [self.replyTextView resignFirstResponder];
-        self.replyTextView.editable = NO;
         [[[WPAccount defaultWordPressComAccount] restApi] postPath:replyPath parameters:params success:^(AFHTTPRequestOperation *operation, id responseObject) {
             DDLogVerbose(@"Response: %@", responseObject);
             [self.inlineComposeView clearText];
