@@ -85,9 +85,9 @@ const CGFloat NotificationsCommentDetailViewControllerReplyTextViewDefaultHeight
     self.commentView.delegate = self;
     
     WPFixedWidthScrollView *scrollView = [[WPFixedWidthScrollView alloc] initWithRootView:self.commentView];
-    scrollView.contentInset = UIEdgeInsetsMake(WPTableViewTopMargin, 0, WPTableViewTopMargin, 0);
     scrollView.alwaysBounceVertical = YES;
     if (IS_IPAD) {
+        scrollView.contentInset = UIEdgeInsetsMake(WPTableViewTopMargin, 0, WPTableViewTopMargin, 0);
         scrollView.contentWidth = WPTableViewFixedWidth;
     };
     self.view = scrollView;
