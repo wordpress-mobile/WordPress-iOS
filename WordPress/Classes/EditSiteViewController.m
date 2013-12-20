@@ -253,6 +253,8 @@ static NSString *const JetpackConnectedCellIdentifier = @"JetpackConnectedCellId
             pushCell.textLabel.text = NSLocalizedString(@"Push Notifications", @"");
             pushCell.selectionStyle = UITableViewCellSelectionStyleNone;
             pushSwitch.on = [self getBlogPushNotificationsSetting];
+            [pushSwitch addTarget:self action:@selector(togglePushNotifications:) forControlEvents:UIControlEventValueChanged];
+            pushCell.accessoryView = pushSwitch;
             [WPStyleGuide configureTableViewCell:pushCell];
             return pushCell;
         }
@@ -290,7 +292,7 @@ static NSString *const JetpackConnectedCellIdentifier = @"JetpackConnectedCellId
         }
 	} 
     [tv deselectRowAtIndexPath:indexPath animated:YES];
-    
+
     if (indexPath.section == 2) {
         JetpackSettingsViewController *controller = [[JetpackSettingsViewController alloc] initWithBlog:self.blog];
         controller.showFullScreen = NO;
