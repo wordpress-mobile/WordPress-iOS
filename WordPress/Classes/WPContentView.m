@@ -281,13 +281,7 @@ const CGFloat RPVControlButtonBorderSize = 0.0f;
 - (void)layoutSubviews {
     [super layoutSubviews];
     
-    CGFloat contentWidth;
-    // On iPad, get the width from the cell instead in order to account for margins
-    if (IS_IPHONE) {
-        contentWidth = self.frame.size.width;
-    } else {
-        contentWidth = self.superview.frame.size.width;
-    }
+    CGFloat contentWidth = self.frame.size.width;
 
     self.byView.frame = CGRectMake(0, 0, contentWidth, RPVAuthorViewHeight + RPVAuthorPadding * 2);
     CGFloat bylineX = RPVAvatarSize + RPVAuthorPadding + RPVHorizontalInnerPadding;

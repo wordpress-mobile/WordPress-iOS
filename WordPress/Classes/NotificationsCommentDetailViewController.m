@@ -22,6 +22,9 @@
 #import "Note.h"
 #import "InlineComposeView.h"
 #import "CommentView.h"
+#import "WPFixedWidthScrollView.h"
+#import "WPTableViewCell.h"
+#import "WPTableViewController.h"
 
 const CGFloat NotificationsCommentDetailViewControllerReplyTextViewDefaultHeight = 64.f;
 
@@ -77,11 +80,18 @@ const CGFloat NotificationsCommentDetailViewControllerReplyTextViewDefaultHeight
     self.commentThread = [[NSMutableArray alloc] initWithCapacity:1];
     
     
-    self.view = [[UIScrollView alloc] initWithFrame:CGRectZero];
-    self.view.backgroundColor = [UIColor whiteColor];
     self.commentView = [[CommentView alloc] initWithFrame:self.view.frame];
     self.commentView.contentProvider = self.note;
     self.commentView.delegate = self;
+    
+    WPFixedWidthScrollView *scrollView = [[WPFixedWidthScrollView alloc] initWithRootView:self.commentView];
+    scrollView.contentInset = UIEdgeInsetsMake(WPTableViewTopMargin, 0, WPTableViewTopMargin, 0);
+    scrollView.alwaysBounceVertical = YES;
+    if (IS_IPAD) {
+        scrollView.contentWidth = WPTableViewFixedWidth;
+    };
+    self.view = scrollView;
+    self.view.backgroundColor = [UIColor whiteColor];
     
     self.trashButton = [self.commentView addActionButtonWithImage:[UIImage imageNamed:@"icon-comments-trash"] selectedImage:[UIImage imageNamed:@"icon-comments-trash-active"]];
     [self.trashButton addTarget:self action:@selector(deleteAction:) forControlEvents:UIControlEventTouchUpInside];
