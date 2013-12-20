@@ -23,7 +23,7 @@ CGFloat const CommentViewEditCommentViewControllerHasChangesActionSheetTag = 601
 CGFloat const CommentViewApproveButtonTag = 700;
 CGFloat const CommentViewUnapproveButtonTag = 701;
 
-@interface CommentViewController () <UIWebViewDelegate, UIActionSheetDelegate, MFMailComposeViewControllerDelegate, InlineComposeViewDelegate> {
+@interface CommentViewController () <UIWebViewDelegate, UIActionSheetDelegate, MFMailComposeViewControllerDelegate, InlineComposeViewDelegate, WPContentViewDelegate> {
 }
 
 @property (nonatomic, strong) CommentView *commentView;
@@ -56,6 +56,7 @@ CGFloat const CommentViewUnapproveButtonTag = 701;
     self.view.backgroundColor = [UIColor whiteColor];
     self.commentView = [[CommentView alloc] initWithFrame:self.view.frame];
     self.commentView.contentProvider = self.comment;
+    self.commentView.delegate = self;
     
     self.trashButton = [self.commentView addActionButtonWithImage:[UIImage imageNamed:@"icon-comments-trash"] selectedImage:[UIImage imageNamed:@"icon-comments-trash-active"]];
     [self.trashButton addTarget:self action:@selector(deleteAction:) forControlEvents:UIControlEventTouchUpInside];
@@ -328,6 +329,7 @@ CGFloat const CommentViewUnapproveButtonTag = 701;
 	[self dismissEditViewController];
 }
 
+
 #pragma mark - InlineComposeViewDelegate methods
 
 - (void)composeView:(InlineComposeView *)view didSendText:(NSString *)text {
@@ -358,6 +360,14 @@ CGFloat const CommentViewUnapproveButtonTag = 701;
 - (void)textViewDidChange:(UITextView *)textView {
     self.reply.content = self.inlineComposeView.text;
     [[ContextManager sharedInstance] saveContext:self.reply.managedObjectContext];
+}
+
+
+#pragma mark - WPContentViewDelegate
+
+- (void)contentView:(WPContentView *)contentView didReceiveAuthorLinkAction:(id)sender {
+    NSURL *url = [NSURL URLWithString:self.comment.author_url];
+    [self openInAppWebView:url];
 }
 
 @end
