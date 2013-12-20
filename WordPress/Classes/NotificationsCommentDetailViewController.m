@@ -120,65 +120,18 @@ NS_ENUM(NSUInteger, NotifcationCommentCellType) {
     [self.replyButton addTarget:self action:@selector(replyAction:) forControlEvents:UIControlEventTouchUpInside];
 
     [self.view addSubview:self.commentView];
-
     
-//    self.approveBarButton = [self barButtonItemWithImageNamed:@"icon-comments-approve"
-//                                                          andAction:@selector(moderateComment:)];
-//    self.unapproveBarButton = [self barButtonItemWithImageNamed:@"icon-comments-unapprove"
-//                                                    andAction:@selector(moderateComment:)];
-//    self.trashBarButton = [self barButtonItemWithImageNamed:@"icon-comments-trash"
-//                                                   andAction:@selector(moderateComment:)];
-//    self.spamBarButton = [self barButtonItemWithImageNamed:@"icon-comments-flag"
-//                                                 andAction:@selector(moderateComment:)];
-//    self.replyBarButton = [self barButtonItemWithImageNamed:@"icon-comments-reply"
-//                                                  andAction:@selector(composeReply:)];
-//    
-//    _approveBarButton.tintColor = [WPStyleGuide readGrey];
-//    _unapproveBarButton.tintColor = [WPStyleGuide readGrey];
-//    _trashBarButton.tintColor = [WPStyleGuide readGrey];
-//    _spamBarButton.tintColor = [WPStyleGuide readGrey];
-//    _replyBarButton.tintColor = [WPStyleGuide readGrey];
-//
-//    UIBarButtonItem *spacer = [[UIBarButtonItem alloc]
-//                               initWithBarButtonSystemItem:UIBarButtonSystemItemFlexibleSpace
-//                               target:nil
-//                               action:nil];
-//    self.toolbar.items = @[self.approveBarButton, spacer, self.trashBarButton, spacer, self.spamBarButton, spacer, self.replyBarButton];
-//    
-//    [self.toolbar setBarTintColor:[WPStyleGuide littleEddieGrey]];
-//    self.toolbar.translucent = NO;
-//
-//    [self.tableView registerClass:[NoteCommentCell class] forCellReuseIdentifier:NoteCommentHeaderCellIdentifiter];
-//    [self.tableView registerClass:[NoteCommentContentCell class] forCellReuseIdentifier:NoteCommentContentCellIdentifiter];
-//    [self.tableView registerClass:[NoteCommentLoadingCell class] forCellReuseIdentifier:NoteCommentLoadingCellIdentifiter];
-//    
-//    // create the reply field
-//    CGRect replyFrame = self.tableView.bounds;
-//    replyFrame.size.height = 48.f;
-//    
-//    self.replyBackgroundImageView.image = [[UIImage imageNamed:@"note-reply-field"]
-//                                           resizableImageWithCapInsets:UIEdgeInsetsMake(6.f, 6.f, 6.f, 6.f)];    
     self.title = NSLocalizedString(@"Comment", @"Title for detail view of a comment notification");
 
     [self displayNote];
     
     // start fetching the thread
     [self updateCommentThread];
-//    
-//    // TODO : Redo this to use auto layout
-//    // Need some extra space for status bar
-//    CGRect replyBarFrame = self.replyNavigationBar.frame;
-//    replyBarFrame.size.height += 20;
-//    self.replyNavigationBar.frame = replyBarFrame;
 
 
     self.inlineComposeView = [[InlineComposeView alloc] initWithFrame:CGRectZero];
     self.inlineComposeView.delegate = self;
     [self.view addSubview:self.inlineComposeView];
-
-//    self.replyNavigationItem.title = NSLocalizedString(@"Replying", nil);
-//    [self.view addSubview:self.replyNavigationBar];
-//    self.replyNavigationBar.hidden = YES;
 
     [[NSNotificationCenter defaultCenter] addObserver:self
                                              selector:@selector(onShowKeyboard:)
