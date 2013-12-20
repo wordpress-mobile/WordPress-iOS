@@ -133,9 +133,7 @@ CGFloat const CommentViewUnapproveButtonTag = 701;
     [self dismissViewControllerAnimated:YES completion:nil];
 }
 
-- (void)showComment:(Comment *)comment {
-    self.comment = comment;
-
+- (void)updateApproveButton {
     if ([self.comment.status isEqualToString:@"approve"]) {
         [self.approveButton setImage:[UIImage imageNamed:@"icon-comments-unapprove"] forState:UIControlStateNormal];
         [self.approveButton setImage:[UIImage imageNamed:@"icon-comments-unapprove-active"] forState:UIControlStateSelected];
@@ -145,6 +143,11 @@ CGFloat const CommentViewUnapproveButtonTag = 701;
         [self.approveButton setImage:[UIImage imageNamed:@"icon-comments-approve-active"] forState:UIControlStateSelected];
         self.approveButton.tag = CommentViewApproveButtonTag;
     }
+}
+
+- (void)showComment:(Comment *)comment {
+    self.comment = comment;
+    [self updateApproveButton];
 }
 
 - (NSAttributedString *)postTitleString {
@@ -214,6 +217,7 @@ CGFloat const CommentViewUnapproveButtonTag = 701;
         [WPMobileStats trackEventForWPCom:StatsEventCommentDetailUnapprove];
         [self.comment unapprove];
     }
+    [self updateApproveButton];
 }
 
 - (void)postTitleAction:(id)sender {
