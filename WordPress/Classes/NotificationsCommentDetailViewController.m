@@ -28,18 +28,12 @@
 #import "InlineComposeView.h"
 #import "CommentView.h"
 
-#define APPROVE_BUTTON_TAG 1
-#define UNAPPROVE_BUTTON_TAG 2
-#define TRASH_BUTTON_TAG 3
-#define UNTRASH_BUTTON_TAG 4
-#define SPAM_BUTTON_TAG 5
-#define UNSPAM_BUTTON_TAG 6
-
 const CGFloat NotificationsCommentDetailViewControllerReplyTextViewDefaultHeight = 64.f;
 NSString * const NoteCommentHeaderCellIdentifiter = @"NoteCommentHeaderCell";
 NSString * const NoteCommentContentCellIdentifiter = @"NoteCommentContentCell";
 NSString * const NoteCommentLoadingCellIdentifiter = @"NoteCommentLoadingCell";
-NS_ENUM(NSUInteger, NotifcationCommentCellType){
+
+NS_ENUM(NSUInteger, NotifcationCommentCellType) {
     NotificationCommentCellTypeHeader,
     NotificationCommentCellTypeContent
 };
@@ -254,60 +248,29 @@ NS_ENUM(NSUInteger, NotifcationCommentCellType){
     __block BOOL isApproved = NO;
     // figure out the actions available for the note
     NSMutableDictionary *indexedActions = [[NSMutableDictionary alloc] initWithCapacity:[actions count]];
-    NSMutableDictionary *indexedButtons = [[NSMutableDictionary alloc] initWithCapacity:[actions count]];
-//    [actions enumerateObjectsUsingBlock:^(id obj, NSUInteger idx, BOOL *stop) {
-//        NSString *actionType = [obj valueForKey:@"type"];
-//        [indexedActions setObject:obj forKey:actionType];
-//        if ([actionType isEqualToString:@"approve-comment"]) {
-//            [indexedButtons setObject:self.approveBarButton forKey:actionType];
-//            self.approveBarButton.enabled = YES;
-//            self.approveBarButton.customView.tag = APPROVE_BUTTON_TAG;
-//            self.approveBarButton.tag = APPROVE_BUTTON_TAG;
-//            isApproved = NO;
-//        } else if ([actionType isEqualToString:@"unapprove-comment"]){
-//            [indexedButtons setObject:self.unapproveBarButton forKey:actionType];
-//            self.unapproveBarButton.enabled = YES;
-//            self.unapproveBarButton.customView.tag = UNAPPROVE_BUTTON_TAG;
-//            self.unapproveBarButton.tag = UNAPPROVE_BUTTON_TAG;
-//            isApproved = YES;
-//        } else if ([actionType isEqualToString:@"spam-comment"]){
-//            [indexedButtons setObject:self.spamBarButton forKey:actionType];
-//            self.spamBarButton.enabled = YES;
-//            self.spamBarButton.customView.tag = SPAM_BUTTON_TAG;
-//            self.spamBarButton.tag = SPAM_BUTTON_TAG;
-//        } else if ([actionType isEqualToString:@"unspam-comment"]){
-//            [indexedButtons setObject:self.spamBarButton forKey:actionType];
-//            self.spamBarButton.enabled = YES;
-//            self.spamBarButton.customView.tag = UNSPAM_BUTTON_TAG;
-//            self.spamBarButton.tag = UNSPAM_BUTTON_TAG;
-//        } else if ([actionType isEqualToString:@"trash-comment"]){
-//            [indexedButtons setObject:self.trashBarButton forKey:actionType];
-//            self.trashBarButton.enabled = YES;
-//            self.trashBarButton.customView.tag = TRASH_BUTTON_TAG;
-//            self.trashBarButton.tag = TRASH_BUTTON_TAG;
-//        } else if ([actionType isEqualToString:@"untrash-comment"]){
-//            [indexedButtons setObject:self.trashBarButton forKey:actionType];
-//            self.trashBarButton.enabled = YES;
-//            self.trashBarButton.customView.tag = UNTRASH_BUTTON_TAG;
-//            self.trashBarButton.tag = UNTRASH_BUTTON_TAG;
-//        } else if ([actionType isEqualToString:@"replyto-comment"]){
-//            [indexedButtons setObject:self.replyBarButton forKey:actionType];
-//            self.replyBarButton.enabled = YES;
-//        }
-//    }];
-    
-//    UIBarButtonItem *spacer = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFlexibleSpace target:nil action:nil];
-//    
-//    NSMutableArray *buttons = [NSMutableArray arrayWithArray:@[self.approveBarButton, spacer, self.trashBarButton, spacer, self.spamBarButton, spacer, self.replyBarButton]];
-//    if (isApproved) {
-//        [buttons replaceObjectAtIndex:0 withObject:self.unapproveBarButton];
-//    }
-//    
-//    [self.toolbar setItems:buttons animated:YES];
-    
+    [actions enumerateObjectsUsingBlock:^(id obj, NSUInteger idx, BOOL *stop) {
+        NSString *actionType = [obj valueForKey:@"type"];
+        [indexedActions setObject:obj forKey:actionType];
+        if ([actionType isEqualToString:@"approve-comment"]) {
+            self.approveButton.enabled = YES;
+            isApproved = NO;
+        } else if ([actionType isEqualToString:@"unapprove-comment"]) {
+            self.approveButton.enabled = YES;
+            isApproved = YES;
+        } else if ([actionType isEqualToString:@"spam-comment"]) {
+            self.spamButton.enabled = YES;
+        } else if ([actionType isEqualToString:@"unspam-comment"]) {
+            self.spamButton.enabled = YES;
+        } else if ([actionType isEqualToString:@"trash-comment"]) {
+            self.trashButton.enabled = YES;
+        } else if ([actionType isEqualToString:@"untrash-comment"]) {
+            self.trashButton.enabled = YES;
+        } else if ([actionType isEqualToString:@"replyto-comment"]) {
+            //self.replyBarButton.enabled = YES;
+        }
+    }];
+
     self.commentActions = indexedActions;
-    
-    DDLogVerbose(@"available actions: %@", indexedActions);
 }
 
 - (UIBarButtonItem *)barButtonItemWithImageNamed:(NSString *)image andAction:(SEL)action {
