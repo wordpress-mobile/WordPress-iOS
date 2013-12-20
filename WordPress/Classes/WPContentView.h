@@ -27,7 +27,7 @@
 - (void)postViewDidLoadAllMedia:(WPContentView *)postView;
 @end
 
-@interface WPContentView : UIView<DTAttributedTextContentViewDelegate, ReaderMediaQueueDelegate> {
+@interface WPContentView : UIView <DTAttributedTextContentViewDelegate, ReaderMediaQueueDelegate> {
     
 }
 

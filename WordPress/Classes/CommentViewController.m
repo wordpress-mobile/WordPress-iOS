@@ -16,6 +16,8 @@
 #import "CommentView.h"
 #import "InlineComposeView.h"
 #import "ContextManager.h"
+#import "WPFixedWidthScrollView.h"
+#import "WPTableViewCell.h"
 
 CGFloat const CommentViewDeletePromptActionSheetTag = 501;
 CGFloat const CommentViewReplyToCommentViewControllerHasChangesActionSheetTag = 401;
@@ -52,11 +54,18 @@ CGFloat const CommentViewUnapproveButtonTag = 701;
 - (void)viewDidLoad {
     [super viewDidLoad];
     
-    self.view = [[UIScrollView alloc] initWithFrame:CGRectZero];
-    self.view.backgroundColor = [UIColor whiteColor];
     self.commentView = [[CommentView alloc] initWithFrame:self.view.frame];
     self.commentView.contentProvider = self.comment;
     self.commentView.delegate = self;
+    
+    WPFixedWidthScrollView *scrollView = [[WPFixedWidthScrollView alloc] initWithRootView:self.commentView];
+    scrollView.contentInset = UIEdgeInsetsMake(WPTableViewTopMargin, 0, WPTableViewTopMargin, 0);
+    scrollView.alwaysBounceVertical = YES;
+    if (IS_IPAD) {
+        scrollView.contentWidth = WPTableViewFixedWidth;
+    };
+    self.view = scrollView;
+    self.view.backgroundColor = [UIColor whiteColor];
     
     self.trashButton = [self.commentView addActionButtonWithImage:[UIImage imageNamed:@"icon-comments-trash"] selectedImage:[UIImage imageNamed:@"icon-comments-trash-active"]];
     [self.trashButton addTarget:self action:@selector(deleteAction:) forControlEvents:UIControlEventTouchUpInside];
@@ -92,11 +101,6 @@ CGFloat const CommentViewUnapproveButtonTag = 701;
 
 - (void)viewWillDisappear:(BOOL)animated {
     [super viewWillDisappear:animated];
-}
-
-- (void)viewDidLayoutSubviews {
-    UIScrollView *scrollView = (UIScrollView *)self.view;
-    scrollView.contentSize = self.commentView.frame.size;
 }
 
 - (void)cancelView:(id)sender {
