@@ -171,45 +171,8 @@ CGFloat const CommentViewUnapproveButtonTag = 701;
     WPFLogMethod();
     [WPMobileStats trackEventForWPCom:StatsEventCommentDetailDelete];
     [self.comment remove];
-    if (IS_IPAD) {
-        [self.navigationController popToRootViewControllerAnimated:YES];
-    }
-}
-
-- (void)approveComment {
-    WPFLogMethod();
-    [WPMobileStats trackEventForWPCom:StatsEventCommentDetailApprove];
-    [self.comment approve];
-}
-
-- (void)unApproveComment {
-    WPFLogMethod();
-    [WPMobileStats trackEventForWPCom:StatsEventCommentDetailUnapprove];
-    [self.comment unapprove];
-}
-
-- (IBAction)spamComment {
-    WPFLogMethodParam(NSStringFromSelector(_cmd));
-    [WPMobileStats trackEventForWPCom:StatsEventCommentDetailFlagAsSpam];
-    [self.comment spam];
-    if (IS_IPAD) {
-        [self.navigationController popToRootViewControllerAnimated:YES];
-    }
-}
-
-- (IBAction)launchEditComment {
-    WPFLogMethod();
-    [WPMobileStats trackEventForWPCom:StatsEventCommentDetailEditComment];
-	[self showEditCommentViewWithAnimation:YES];
-}
-
-- (IBAction)launchReplyToComments {
-	if (self.commentsViewController.blog.isSyncingComments) {
-		[self showSyncInProgressAlert];
-	} else {
-        [WPMobileStats trackEventForWPCom:StatsEventCommentDetailClickedReplyToComment];
-        [self.inlineComposeView displayComposer];
-	}
+    
+    // Note: the parent class of CommentsViewController will pop this as a result of NSFetchedResultsChangeDelete
 }
 
 - (void)showEditCommentViewWithAnimation:(BOOL)animate {
@@ -241,9 +204,11 @@ CGFloat const CommentViewUnapproveButtonTag = 701;
 - (void)approveOrUnapproveAction:(id)sender {
     UIBarButtonItem *barButton = sender;
     if (barButton.tag == CommentViewApproveButtonTag) {
-        [self approveComment];
+        [WPMobileStats trackEventForWPCom:StatsEventCommentDetailApprove];
+        [self.comment approve];
     } else {
-        [self unApproveComment];
+        [WPMobileStats trackEventForWPCom:StatsEventCommentDetailUnapprove];
+        [self.comment unapprove];
     }
 }
 
@@ -273,15 +238,21 @@ CGFloat const CommentViewUnapproveButtonTag = 701;
     WPFLogMethodParam(NSStringFromSelector(_cmd));
     [WPMobileStats trackEventForWPCom:StatsEventCommentDetailFlagAsSpam];
     [self.comment spam];
-    if (IS_IPAD) {
-        [self.navigationController popToRootViewControllerAnimated:YES];
-    }
 }
 
 - (void)editAction:(id)sender {
     WPFLogMethod();
     [WPMobileStats trackEventForWPCom:StatsEventCommentDetailEditComment];
 	[self showEditCommentViewWithAnimation:YES];
+}
+
+- (void)replyAction:(id)sender {
+	if (self.commentsViewController.blog.isSyncingComments) {
+		[self showSyncInProgressAlert];
+	} else {
+        [WPMobileStats trackEventForWPCom:StatsEventCommentDetailClickedReplyToComment];
+        [self.inlineComposeView displayComposer];
+	}
 }
 
 
