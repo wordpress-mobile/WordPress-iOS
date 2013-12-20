@@ -63,7 +63,7 @@ NS_ENUM(NSUInteger, NotifcationCommentCellType){
 @property (nonatomic, strong) UIBarButtonItem *unapproveBarButton;
 @property (nonatomic, strong) UIBarButtonItem *trashBarButton;
 @property (nonatomic, strong) UIBarButtonItem *spamBarButton;
-@property (nonatomic, weak) UIBarButtonItem *replyBarButton;
+@property (nonatomic, strong) UIBarButtonItem *replyBarButton;
 
 @property (nonatomic, weak) IBOutlet UIToolbar *toolbar;
 @property (nonatomic, weak) IBOutlet IOS7CorrectedTextView *replyTextView;
