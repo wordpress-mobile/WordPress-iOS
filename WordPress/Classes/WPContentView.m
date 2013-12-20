@@ -155,8 +155,11 @@ const CGFloat RPVControlButtonBorderSize = 0.0f;
         _timeButton.backgroundColor = [UIColor clearColor];
         _timeButton.titleLabel.font = [UIFont fontWithName:@"OpenSans" size:12.0f];
         [_timeButton setTitleEdgeInsets: UIEdgeInsetsMake(0, RPVSmallButtonLeftPadding, 0, 0)];
-        [_timeButton setImage:[UIImage imageNamed:@"reader-postaction-time"] forState:UIControlStateNormal];
-        [_timeButton setTitleColor:[UIColor colorWithHexString:@"aaa"] forState:UIControlStateNormal];
+        
+        // Disable it for now (could be used for permalinks in the future)
+        [_timeButton setImage:[UIImage imageNamed:@"reader-postaction-time"] forState:UIControlStateDisabled];
+        [_timeButton setTitleColor:[UIColor colorWithHexString:@"aaa"] forState:UIControlStateDisabled];
+        [_timeButton setEnabled:NO];
         [_bottomView addSubview:_timeButton];
         
         // Update the relative timestamp once per minute
