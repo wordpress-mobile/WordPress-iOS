@@ -780,7 +780,6 @@
 		C57B7C8E17C558C600A64A3C /* ThemeBrowserViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = C57B7C8C17C558C600A64A3C /* ThemeBrowserViewController.m */; };
 		C57B7CA617C586E600A64A3C /* ThemeBrowserCell.m in Sources */ = {isa = PBXBuildFile; fileRef = C57B7CA517C586E600A64A3C /* ThemeBrowserCell.m */; };
 		C57B7CA917C591D000A64A3C /* ThemeBrowserViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = C57B7CA817C591C800A64A3C /* ThemeBrowserViewController.xib */; };
-		C57B7CAC17C66C0B00A64A3C /* ThemeSearchFilterHeaderView.m in Sources */ = {isa = PBXBuildFile; fileRef = C57B7CAB17C66C0B00A64A3C /* ThemeSearchFilterHeaderView.m */; };
 		C57B7CB017C6ACD400A64A3C /* ThemeDetailsViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = C57B7CAF17C6ACD400A64A3C /* ThemeDetailsViewController.xib */; };
 		C57B7CB117C6AD2100A64A3C /* ThemeDetailsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = C57B7CAE17C6ACC100A64A3C /* ThemeDetailsViewController.m */; };
 		C58349C51806F95100B64089 /* IOS7CorrectedTextView.m in Sources */ = {isa = PBXBuildFile; fileRef = C58349C41806F95100B64089 /* IOS7CorrectedTextView.m */; };
@@ -1958,8 +1957,6 @@
 		C57B7CA417C586E600A64A3C /* ThemeBrowserCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ThemeBrowserCell.h; sourceTree = "<group>"; };
 		C57B7CA517C586E600A64A3C /* ThemeBrowserCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ThemeBrowserCell.m; sourceTree = "<group>"; };
 		C57B7CA817C591C800A64A3C /* ThemeBrowserViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = ThemeBrowserViewController.xib; path = Resources/ThemeBrowserViewController.xib; sourceTree = "<group>"; };
-		C57B7CAA17C66C0B00A64A3C /* ThemeSearchFilterHeaderView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ThemeSearchFilterHeaderView.h; sourceTree = "<group>"; };
-		C57B7CAB17C66C0B00A64A3C /* ThemeSearchFilterHeaderView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ThemeSearchFilterHeaderView.m; sourceTree = "<group>"; };
 		C57B7CAD17C6ACC100A64A3C /* ThemeDetailsViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ThemeDetailsViewController.h; sourceTree = "<group>"; };
 		C57B7CAE17C6ACC100A64A3C /* ThemeDetailsViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ThemeDetailsViewController.m; sourceTree = "<group>"; };
 		C57B7CAF17C6ACD400A64A3C /* ThemeDetailsViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = ThemeDetailsViewController.xib; path = Resources/ThemeDetailsViewController.xib; sourceTree = "<group>"; };
@@ -2410,8 +2407,6 @@
 				03958061100D6CFC00850742 /* WPLabel.m */,
 				5DEB61B2156FCD3400242C35 /* WPWebView.h */,
 				5DEB61B3156FCD3400242C35 /* WPWebView.m */,
-				C57B7CAA17C66C0B00A64A3C /* ThemeSearchFilterHeaderView.h */,
-				C57B7CAB17C66C0B00A64A3C /* ThemeSearchFilterHeaderView.m */,
 				E240859A183D82AE002EB0EF /* WPAnimatedBox.h */,
 				E240859B183D82AE002EB0EF /* WPAnimatedBox.m */,
 				E2E7EB44185FB140004F5E72 /* WPBlogSelectorButton.h */,
@@ -5382,7 +5377,6 @@
 				CC669B3A167AA82A009E16F8 /* NoteComment.m in Sources */,
 				85468F3D17C484AB008AB9C1 /* WPStyleGuide.m in Sources */,
 				E1756E651694A99400D9EC00 /* WordPressComApiCredentials.m in Sources */,
-				C57B7CAC17C66C0B00A64A3C /* ThemeSearchFilterHeaderView.m in Sources */,
 				5D4DE6F4167177560030518D /* WPNoResultsView.m in Sources */,
 				CC5B0F23169B896300AA0291 /* NoteCommentLoadingCell.m in Sources */,
 				CC5B0F27169BDC4000AA0291 /* NoteCommentContentCell.m in Sources */,
