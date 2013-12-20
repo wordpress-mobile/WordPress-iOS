@@ -468,7 +468,7 @@ NSString *const StatsEventAddBlogsClickedAddSelected = @"Add Blogs - Clicked Add
 {
     NSParameterAssert(property != nil);
     NSMutableDictionary *superProperties = [[NSMutableDictionary alloc] initWithDictionary:[Mixpanel sharedInstance].currentSuperProperties];
-    NSUInteger propertyValue = [superProperties[property] intValue];
+    NSUInteger propertyValue = [superProperties[property] integerValue];
     superProperties[property] = @(++propertyValue);
     [[Mixpanel sharedInstance] registerSuperProperties:superProperties];
 }
