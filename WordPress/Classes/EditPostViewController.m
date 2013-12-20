@@ -437,6 +437,11 @@ CGFloat const EPVCTextViewTopPadding = 7.0f;
 }
 
 - (void)scrollCursorIntoViewIfNeeded {
+    if ([_titleTextField isFirstResponder]) {
+        [self.tableView scrollRectToVisible:CGRectZero animated:YES];
+        return;
+    }
+    
     // Get the cursor position in the textView
     CGRect rect = [_textView caretRectForPosition:_textView.selectedTextRange.start];
     
