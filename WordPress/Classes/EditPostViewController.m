@@ -42,10 +42,13 @@ CGFloat const EPVCTextViewTopPadding = 7.0f;
     NSManagedObjectContext *context = [[ContextManager sharedInstance] mainContext];
     NSFetchRequest *fetchRequest = [NSFetchRequest fetchRequestWithEntityName:@"Blog"];
     NSString *url = [[NSUserDefaults standardUserDefaults] stringForKey:EditPostViewControllerLastUsedBlogURL];
+    NSPredicate *predicate;
     if (url) {
-        NSPredicate *predicate = [NSPredicate predicateWithFormat:@"url = %@", url];
-        [fetchRequest setPredicate:predicate];
+        predicate = [NSPredicate predicateWithFormat:@"visible = YES AND url = %@", url];
+    } else {
+        predicate = [NSPredicate predicateWithFormat:@"visible = YES"];
     }
+    [fetchRequest setPredicate:predicate];
     fetchRequest.sortDescriptors = @[[NSSortDescriptor sortDescriptorWithKey:@"blogName" ascending:YES]];
     NSError *error = nil;
     NSArray *results = [context executeFetchRequest:fetchRequest error:&error];
