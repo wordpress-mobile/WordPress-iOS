@@ -82,7 +82,7 @@ CGFloat const JetpackSignInButtonHeight = 41.0;
     [super viewDidLoad];
 
     self.title = NSLocalizedString(@"Jetpack Connect", @"");
-    self.view.backgroundColor = [WPNUXUtility jetpackBackgroundColor];
+    self.view.backgroundColor = [WPStyleGuide itsEverywhereGrey];
     
     [self initializeView];
     
@@ -99,6 +99,7 @@ CGFloat const JetpackSignInButtonHeight = 41.0;
         if (_showFullScreen) {
             _skipButton = [[WPNUXSecondaryButton alloc] init];
             [_skipButton setTitle:NSLocalizedString(@"Skip", @"") forState:UIControlStateNormal];
+            [_skipButton setTitleColor:[WPStyleGuide allTAllShadeGrey] forState:UIControlStateNormal];
             [_skipButton addTarget:self action:@selector(skipAction:) forControlEvents:UIControlEventTouchUpInside];
             [_skipButton sizeToFit];
             [self.view addSubview:_skipButton];
@@ -141,7 +142,7 @@ CGFloat const JetpackSignInButtonHeight = 41.0;
 - (void)addControls {
     // Add Logo
     if (_icon == nil) {
-        _icon = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"icon-jetpack"]];
+        _icon = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"icon-jetpack-gray"]];
         [self.view addSubview:_icon];
     }
     
@@ -154,7 +155,7 @@ CGFloat const JetpackSignInButtonHeight = 41.0;
         _description.lineBreakMode = NSLineBreakByWordWrapping;
         _description.font = [WPNUXUtility descriptionTextFont];
         _description.text = NSLocalizedString(@"Hold the web in the palm of your hand. Full publishing power in a pint-sized package.", @"NUX First Walkthrough Page 1 Description");
-        _description.textColor = [WPNUXUtility jetpackDescriptionTextColor];
+        _description.textColor = [WPStyleGuide allTAllShadeGrey];
         [self.view addSubview:_description];
     }
     
@@ -190,7 +191,6 @@ CGFloat const JetpackSignInButtonHeight = 41.0;
     // Add Sign In Button
     if (_signInButton == nil) {
         _signInButton = [[WPNUXMainButton alloc] init];
-        [_signInButton setColor:[UIColor colorWithRed:116/255.0f green:143/255.0f blue:54/255.0f alpha:1.0]];
         NSString *title = _showFullScreen ? NSLocalizedString(@"Sign In", nil) : NSLocalizedString(@"Save", nil);
         [_signInButton setTitle:title forState:UIControlStateNormal];
         [_signInButton addTarget:self action:@selector(saveAction:) forControlEvents:UIControlEventTouchUpInside];
@@ -201,7 +201,6 @@ CGFloat const JetpackSignInButtonHeight = 41.0;
     // Add Download Button
     if (_installJetbackButton == nil) {
         _installJetbackButton = [[WPNUXMainButton alloc] init];
-        [_installJetbackButton setColor:[UIColor colorWithRed:116/255.0f green:143/255.0f blue:54/255.0f alpha:1.0]];
         [_installJetbackButton setTitle:NSLocalizedString(@"Install Jetpack", @"") forState:UIControlStateNormal];
         [_installJetbackButton addTarget:self action:@selector(openInstallJetpackURL) forControlEvents:UIControlEventTouchUpInside];
         [self.view addSubview:_installJetbackButton];
@@ -212,7 +211,7 @@ CGFloat const JetpackSignInButtonHeight = 41.0;
         _moreInformationButton = [UIButton buttonWithType:UIButtonTypeCustom];
         [_moreInformationButton setTitle:NSLocalizedString(@"More information", @"") forState:UIControlStateNormal];
         [_moreInformationButton addTarget:self action:@selector(openMoreInformationURL) forControlEvents:UIControlEventTouchUpInside];
-        [_moreInformationButton setTitleColor:[WPNUXUtility jetpackDescriptionTextColor] forState:UIControlStateNormal];
+        [_moreInformationButton setTitleColor:[WPStyleGuide allTAllShadeGrey] forState:UIControlStateNormal];
         _moreInformationButton.titleLabel.font = [WPNUXUtility confirmationLabelFont];
         [self.view addSubview:_moreInformationButton];
     }
