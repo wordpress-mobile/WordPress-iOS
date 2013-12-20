@@ -46,13 +46,6 @@
 - (NSManagedObjectContext *)managedObjectContext;
 
 /**
- The name of the cache to use for the NSFetchResultsController. 
- 
- Optiona. Only needed if the subclass is using multiple caches.
- */
-- (NSString *)resultsControllerCacheName;
-
-/**
  Core Data entity name used by NSFetchedResultsController
  
  e.g. Post, Page, Comment, ...

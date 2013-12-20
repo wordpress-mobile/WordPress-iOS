@@ -17,6 +17,15 @@
 #import "WPNUXSecondaryButton.h"
 #import "UILabel+SuggestSize.h"
 
+CGFloat const JetpackiOS7StatusBarOffset = 20.0;
+CGFloat const JetpackStandardOffset = 16;
+CGFloat const JetpackTextFieldWidth = 320.0;
+CGFloat const JetpackMaxTextWidth = 289.0;
+CGFloat const JetpackTextFieldHeight = 44.0;
+CGFloat const JetpackIconVerticalOffset = 77;
+CGFloat const JetpackSignInButtonWidth = 289.0;
+CGFloat const JetpackSignInButtonHeight = 41.0;
+
 @interface JetpackSettingsViewController () <UITextFieldDelegate, UIGestureRecognizerDelegate>
 @end
 
@@ -36,19 +45,6 @@
 
     BOOL _authenticating;
 }
-
-CGFloat const JetpackiOS7StatusBarOffset = 20.0;
-CGFloat const JetpackStandardOffset = 16;
-CGFloat const JetpackTextFieldWidth = 320.0;
-CGFloat const JetpackMaxTextWidth = 289.0;
-CGFloat const JetpackTextFieldHeight = 44.0;
-CGFloat const JetpackIconVerticalOffset = 77;
-CGFloat const JetpackSignInButtonWidth = 289.0;
-CGFloat const JetpackSignInButtonHeight = 41.0;
-
-
-#define kCheckCredentials NSLocalizedString(@"Verify and Save Credentials", @"");
-#define kCheckingCredentials NSLocalizedString(@"Verifing Credentials", @"");
 
 - (id)initWithBlog:(Blog *)blog {
 
@@ -82,7 +78,7 @@ CGFloat const JetpackSignInButtonHeight = 41.0;
 }
 
 - (void)viewDidLoad {
-    WPFLogMethod();
+    DDLogMethod();
     [super viewDidLoad];
 
     self.title = NSLocalizedString(@"Jetpack Connect", @"");
@@ -319,7 +315,7 @@ CGFloat const JetpackSignInButtonHeight = 41.0;
                                }
                            } failure:^(NSError *error) {
                                [self setAuthenticating:NO];
-                               [WPError showAlertWithError:error];
+                               [WPError showNetworkingAlertWithError:error];
                            }];
 }
 
@@ -470,7 +466,7 @@ CGFloat const JetpackSignInButtonHeight = 41.0;
             [self updateMessage];
         }
     } failure:^(NSError *error) {
-        [WPError showAlertWithError:error];
+        [WPError showNetworkingAlertWithError:error];
     }];
 }
 

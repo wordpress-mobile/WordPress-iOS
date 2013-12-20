@@ -60,7 +60,7 @@
 
 @implementation CreateAccountAndBlogViewController
 
-CGFloat const CreateAccountAndBlogStandardOffset = 16.0;
+CGFloat const CreateAccountAndBlogStandardOffset = 15.0;
 CGFloat const CreateAccountAndBlogIconVerticalOffset = 70.0;
 CGFloat const CreateAccountAndBlogMaxTextWidth = 260.0;
 CGFloat const CreateAccountAndBlogTextFieldWidth = 320.0;
@@ -68,7 +68,7 @@ CGFloat const CreateAccountAndBlogTextFieldHeight = 44.0;
 CGFloat const CreateAccountAndBlogTextFieldPhoneHeight = 38.0;
 CGFloat const CreateAccountAndBlogKeyboardOffset = 132.0;
 CGFloat const CreateAccountAndBlogiOS7StatusBarOffset = 20.0;
-CGFloat const CreateAccountAndBlogButtonWidth = 289.0;
+CGFloat const CreateAccountAndBlogButtonWidth = 290.0;
 CGFloat const CreateAccountAndBlogButtonHeight = 40.0;
 
 - (id)init
@@ -283,6 +283,7 @@ CGFloat const CreateAccountAndBlogButtonHeight = 40.0;
     if (_passwordField == nil) {
         _passwordField = [[WPWalkthroughTextField alloc] initWithLeftViewImage:[UIImage imageNamed:@"icon-password-field"]];
         _passwordField.secureTextEntry = YES;
+        _passwordField.showSecureTextEntryToggle = YES;
         _passwordField.backgroundColor = [UIColor whiteColor];
         _passwordField.placeholder = NSLocalizedString(@"Password", nil);
         _passwordField.font = [WPNUXUtility textFieldFont];
@@ -488,7 +489,7 @@ CGFloat const CreateAccountAndBlogButtonHeight = 40.0;
     CGRect keyboardFrame = [[keyboardInfo objectForKey:UIKeyboardFrameEndUserInfoKey] CGRectValue];
     keyboardFrame = [self.view convertRect:keyboardFrame fromView:nil];
     
-    CGFloat newKeyboardOffset = (CGRectGetMaxY(_createAccountButton.frame) - CGRectGetMinY(keyboardFrame)) + 0.5 * CreateAccountAndBlogStandardOffset;
+    CGFloat newKeyboardOffset = (CGRectGetMaxY(_createAccountButton.frame) - CGRectGetMinY(keyboardFrame)) + CreateAccountAndBlogStandardOffset;
     
     // make sure keyboard offset is greater than 0, otherwise do not move controls
     if (newKeyboardOffset < 0) {
@@ -661,7 +662,7 @@ CGFloat const CreateAccountAndBlogButtonHeight = 40.0;
         };
         
         NSNumber *languageId = [_currentLanguage objectForKey:@"lang_id"];
-        [[WordPressComApi sharedApi] validateWPComBlogWithUrl:[self getSiteAddressWithoutWordPressDotCom]
+        [[WordPressComApi anonymousApi] validateWPComBlogWithUrl:[self getSiteAddressWithoutWordPressDotCom]
                                                  andBlogTitle:[self generateSiteTitleFromUsername:_usernameField.text]
                                                 andLanguageId:languageId
                                                       success:blogValidationSuccess

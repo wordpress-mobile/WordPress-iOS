@@ -83,7 +83,7 @@ NSString * const CommentStatusDraft = @"draft";
             for (Comment *comment in existingComments) {
                 // Don't delete unpublished comments
                 if(![commentsToKeep containsObject:comment] && comment.commentID != nil) {
-                    WPLog(@"Deleting Comment: %@", comment);
+                    DDLogInfo(@"Deleting Comment: %@", comment);
                     [backgroundMOC deleteObject:comment];
                 }
             }

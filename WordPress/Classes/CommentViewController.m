@@ -121,9 +121,6 @@ CGFloat const CommentViewUnapproveButtonTag = 701;
     }
 
 	self.isShowingActionSheet = YES;
-
-    WordPressAppDelegate *appDelegate = (WordPressAppDelegate*)[[UIApplication sharedApplication] delegate];
-    [appDelegate setAlertRunning:YES];
 }
 
 
@@ -236,9 +233,6 @@ CGFloat const CommentViewUnapproveButtonTag = 701;
         [actionSheet showFromToolbar:self.navigationController.toolbar];
         
         self.isShowingActionSheet = YES;
-        
-        WordPressAppDelegate *appDelegate = (WordPressAppDelegate*)[[UIApplication sharedApplication] delegate];
-        [appDelegate setAlertRunning:YES];
     }
 }
 
@@ -317,7 +311,87 @@ CGFloat const CommentViewUnapproveButtonTag = 701;
 }
 
 
-#pragma mark - ReplyToCommentViewControllerDelegate methods
+#pragma mark - Comment Moderation Methods
+
+- (void)deleteComment {
+    DDLogMethod();
+    [WPMobileStats trackEventForWPCom:StatsEventCommentDetailDelete];
+    [self.comment removeObserver:self forKeyPath:@"status"];
+    [self moderateCommentWithSelector:@selector(remove)];
+    if (IS_IPAD) {
+        [self.navigationController popToRootViewControllerAnimated:YES];
+    }
+}
+
+- (void)approveComment {
+    DDLogMethod();
+    [WPMobileStats trackEventForWPCom:StatsEventCommentDetailApprove];
+    [self moderateCommentWithSelector:@selector(approve)];
+}
+
+- (void)unApproveComment {
+    DDLogMethod();
+    [WPMobileStats trackEventForWPCom:StatsEventCommentDetailUnapprove];
+    [self moderateCommentWithSelector:@selector(unapprove)];
+}
+
+- (IBAction)spamComment {
+    DDLogMethodParam(NSStringFromSelector(_cmd));
+    [WPMobileStats trackEventForWPCom:StatsEventCommentDetailFlagAsSpam];
+    [self.comment removeObserver:self forKeyPath:@"status"];
+    [self moderateCommentWithSelector:@selector(spam)];
+    if (IS_IPAD) {
+        [self.navigationController popToRootViewControllerAnimated:YES];
+    }
+}
+
+- (IBAction)launchEditComment {
+    DDLogMethod();
+    [WPMobileStats trackEventForWPCom:StatsEventCommentDetailEditComment];
+	[self showEditCommentViewWithAnimation:YES];
+}
+
+- (IBAction)launchReplyToComments {
+	if(self.commentsViewController.blog.isSyncingComments) {
+		[self showSyncInProgressAlert];
+	} else {
+        [WPMobileStats trackEventForWPCom:StatsEventCommentDetailClickedReplyToComment];
+        [self.inlineComposeView displayComposer];
+	}
+}
+
+- (void)showEditCommentViewWithAnimation:(BOOL)animate {
+	_editCommentViewController = [[EditCommentViewController alloc]
+                                      initWithNibName:@"EditCommentViewController"
+                                      bundle:nil];
+	_editCommentViewController.commentViewController = self;
+	_editCommentViewController.comment = self.comment;
+	_editCommentViewController.title = NSLocalizedString(@"Edit Comment", @"");
+    
+    UINavigationController *navController = [[UINavigationController alloc] initWithRootViewController:_editCommentViewController];
+    navController.modalPresentationStyle = UIModalPresentationFormSheet;
+    navController.modalTransitionStyle = UIModalTransitionStyleCoverVertical;
+    navController.navigationBar.translucent = NO;
+    [self presentViewController:navController animated:animate completion:nil];
+}
+
+
+- (void)moderateCommentWithSelector:(SEL)selector {
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Warc-performSelector-leaks"
+    [self.comment performSelector:selector];
+#pragma clang diagnostic pop
+    if (!IS_IPAD) {
+        [self.navigationController popViewControllerAnimated:YES];
+    }
+}
+
+- (void)showSyncInProgressAlert {
+    [WPError showAlertWithTitle:NSLocalizedString(@"Info", @"Info alert title") message:NSLocalizedString(@"The blog is syncing with the server. Please try later.", @"") withSupportButton:NO];
+	//the blog is using the network connection and cannot be stoped, show a message to the user
+}
+
+#pragma mark - ReplyToCommentViewControllerDelegate Methods
 
 - (void)cancelReplyToCommentViewController:(id)sender {
 	[self cancelView:sender];
