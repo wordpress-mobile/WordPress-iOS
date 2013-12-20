@@ -17,20 +17,20 @@
 #import "WPNoResultsView.h"
 
 static NSString *const ThemeCellIdentifier = @"theme";
-static NSString *const SearchFilterCellIdentifier = @"search_filter";
+static NSString *const SearchHeaderIdentifier = @"search_header";
 
-@interface ThemeBrowserViewController () <UICollectionViewDelegate, UICollectionViewDataSource, NSFetchedResultsControllerDelegate, UIActionSheetDelegate>
+@interface ThemeBrowserViewController () <UICollectionViewDelegate, UICollectionViewDataSource, NSFetchedResultsControllerDelegate, UIActionSheetDelegate, UISearchBarDelegate>
 
-@property (weak, nonatomic) IBOutlet UICollectionView *collectionView;
-@property (nonatomic, strong) NSArray *sortingOptions, *resultSortAttributes; // 'nice' sort names and the corresponding model attributes
+@property (nonatomic, weak) IBOutlet UICollectionView *collectionView;
+@property (nonatomic, weak) IBOutlet UISearchBar *searchBar;
+@property (nonatomic, weak) WPNoResultsView *noThemesView;
+@property (nonatomic, weak) UIRefreshControl *refreshHeaderView;
+@property (nonatomic, strong) NSArray *sortingOptions, *resultSortAttributes;
 @property (nonatomic, strong) NSString *currentResultsSort, *currentSearchText;
 @property (nonatomic, strong) NSArray *allThemes, *filteredThemes;
-@property (nonatomic, weak) UIRefreshControl *refreshHeaderView;
-@property (nonatomic, weak) ThemeSearchFilterHeaderView *header;
-@property (nonatomic, weak) Theme *currentTheme;
-@property (nonatomic, assign) BOOL isSearching;
+@property (nonatomic, strong) Theme *currentTheme;
 @property (nonatomic, strong) NSFetchedResultsController *resultsController;
-@property (nonatomic, weak) WPNoResultsView *noThemesView;
+@property (nonatomic, assign) BOOL showingSortOptions;
 
 @end
 
@@ -42,9 +42,9 @@ static NSString *const SearchFilterCellIdentifier = @"search_filter";
         self.title = NSLocalizedString(@"Themes", @"Title for Themes browser");
         _currentResultsSort = @"trendingRank";
         _resultSortAttributes = @[@"trendingRank", @"launchDate", @"popularityRank"];
-        _sortingOptions = @[NSLocalizedString(@"Trending", @"Theme filter"),
-                            NSLocalizedString(@"Newest", @"Theme filter"),
-                            NSLocalizedString(@"Popular", @"Theme filter")];
+        _sortingOptions = @[NSLocalizedString(@"Trending", @"Theme sort, trending themes"),
+                            NSLocalizedString(@"Newest", @"Theme sort, newest themes"),
+                            NSLocalizedString(@"Popular", @"Theme sort, popular themes")];
     }
     return self;
 }
@@ -55,21 +55,22 @@ static NSString *const SearchFilterCellIdentifier = @"search_filter";
     
     self.collectionView.dataSource = self;
     self.collectionView.delegate = self;
-//    self.collectionView.backgroundColor = TABLE_VIEW_BACKGROUND_COLOR;
+    [WPStyleGuide configureColorsForView:self.view collectionView:self.collectionView];
     [self.collectionView registerClass:[ThemeBrowserCell class] forCellWithReuseIdentifier:ThemeCellIdentifier];
-//    [self.collectionView registerClass:[ThemeSearchFilterHeaderView class]
-//            forSupplementaryViewOfKind:UICollectionElementKindSectionHeader withReuseIdentifier:SearchFilterCellIdentifier];
+    [self.collectionView registerClass:[UICollectionReusableView class] forSupplementaryViewOfKind:UICollectionElementKindSectionHeader withReuseIdentifier:SearchHeaderIdentifier];
+    
+    self.searchBar.delegate = self;
     
     UIRefreshControl *refreshHeaderView = [[UIRefreshControl alloc] initWithFrame:CGRectMake(0.0f, 0.0f - self.collectionView.bounds.size.height, self.collectionView.frame.size.width, self.collectionView.bounds.size.height)];
     _refreshHeaderView = refreshHeaderView;
     [_refreshHeaderView addTarget:self action:@selector(refreshControlTriggered:) forControlEvents:UIControlEventValueChanged];
     _refreshHeaderView.tintColor = [WPStyleGuide whisperGrey];
     [self.collectionView addSubview:_refreshHeaderView];
-    
-    UIBarButtonItem *sortButton = [[UIBarButtonItem alloc] initWithTitle:_sortingOptions[0] style:UIBarButtonItemStylePlain target:self action:@selector(sortPressed)];
+   
+    UIBarButtonItem *sortButton = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"icon-themes-sort"] style:UIBarButtonItemStylePlain target:self action:@selector(sortPressed)];
     self.navigationItem.rightBarButtonItem = sortButton;
     
-    [self reloadThemes];
+    [self syncThemesAndCurrentTheme];
 }
 
 - (void)viewWillAppear:(BOOL)animated {
@@ -80,6 +81,13 @@ static NSString *const SearchFilterCellIdentifier = @"search_filter";
         self.filteredThemes = _allThemes;
         [self applyFilterWithSearchText:_currentSearchText];
     }
+}
+
+- (void)viewDidLayoutSubviews {
+    self.searchBar.frame = (CGRect) {
+        .origin = self.searchBar.frame.origin,
+        .size = CGSizeMake(self.view.frame.size.width, self.searchBar.frame.size.height)
+    };
 }
 
 - (void)didReceiveMemoryWarning {
@@ -114,44 +122,31 @@ static NSString *const SearchFilterCellIdentifier = @"search_filter";
     }
 }
 
-- (void)reloadThemes {
+- (void)syncThemesAndCurrentTheme {
     [Theme fetchAndInsertThemesForBlog:self.blog success:^{
-        [self refreshCurrentTheme];
-        [_header resetSearch];
-        [_refreshHeaderView endRefreshing];
-    } failure:^(NSError *error) {
-//        [WPError showAlertWithError:error];
-        [_refreshHeaderView endRefreshing];
-    }];
-}
-
-- (void)refreshCurrentTheme {
-    [Theme fetchCurrentThemeForBlog:self.blog success:^{
-        // Find the blog's theme from the current list of themes
-        for (NSUInteger i = 0; i < _filteredThemes.count; i++) {
-            Theme *theme = _filteredThemes[i];
-            if ([theme.themeId isEqualToString:self.blog.currentThemeId]) {
-                _currentTheme = theme;
-                break;
-            }
-        }
-        self.filteredThemes = _allThemes;
-        
+        [Theme fetchCurrentThemeForBlog:self.blog success:^{
+            [self currentThemeForBlog];
+            [_refreshHeaderView endRefreshing];
+        } failure:^(NSError *error) {
+            [WPError showNetworkingAlertWithError:error];
+            [_refreshHeaderView endRefreshing];
+        }];
     } failure:^(NSError *error) {
         [WPError showNetworkingAlertWithError:error];
+        [_refreshHeaderView endRefreshing];
     }];
 }
 
 - (void)toggleNoThemesView:(BOOL)show {
     if (!show) {
-        _noThemesView.hidden = YES;
+        [_noThemesView removeFromSuperview];
         return;
     }
     if (!_noThemesView) {
-        _noThemesView = [WPNoResultsView noResultsViewWithTitle:NSLocalizedString(@"No themes to display", nil) message:nil accessoryView:nil buttonTitle:nil];
+        WPNoResultsView *noResultsView = [WPNoResultsView noResultsViewWithTitle:NSLocalizedString(@"No themes to display", nil) message:nil accessoryView:nil buttonTitle:nil];
+        _noThemesView = noResultsView;
         [self.collectionView addSubview:_noThemesView];
     }
-    _noThemesView.hidden = NO;
 }
 
 - (void)removeCurrentThemeFromList {
@@ -169,15 +164,11 @@ static NSString *const SearchFilterCellIdentifier = @"search_filter";
 }
 
 - (UICollectionReusableView *)collectionView:(UICollectionView *)collectionView viewForSupplementaryElementOfKind:(NSString *)kind atIndexPath:(NSIndexPath *)indexPath {
-    if ([kind isEqualToString:UICollectionElementKindSectionHeader]) {
-        ThemeSearchFilterHeaderView *header = [collectionView dequeueReusableSupplementaryViewOfKind:kind withReuseIdentifier:SearchFilterCellIdentifier forIndexPath:indexPath];
-        if (!header.delegate) {
-            header.delegate = self;
-        }
-        _header = header;
-        return header;
+    UICollectionReusableView *view = [collectionView dequeueReusableSupplementaryViewOfKind:kind withReuseIdentifier:SearchHeaderIdentifier forIndexPath:indexPath];
+    if (![self.searchBar isDescendantOfView:view]) {
+        [view addSubview:self.searchBar];
     }
-    return nil;
+    return view;
 }
 
 - (UICollectionViewCell *)collectionView:(UICollectionView *)collectionView cellForItemAtIndexPath:(NSIndexPath *)indexPath {
@@ -235,7 +226,8 @@ static NSString *const SearchFilterCellIdentifier = @"search_filter";
 #pragma mark - FetchedResultsController
 
 - (void)controllerDidChangeContent:(NSFetchedResultsController *)controller {
-    _allThemes = self.filteredThemes = controller.fetchedObjects;
+    _allThemes = controller.fetchedObjects;
+    [self applyFilterWithSearchText:_currentSearchText];
     [self currentThemeForBlog];
 }
 
@@ -258,10 +250,17 @@ static NSString *const SearchFilterCellIdentifier = @"search_filter";
     [self.collectionView reloadData];
 }
 
-#pragma mark - ThemeSearchFilterDelegate
-
-- (NSArray *)themeSortingOptions {
-    return _sortingOptions;
+- (void)sortPressed {
+    if (_showingSortOptions) {
+        return;
+    }
+    UIActionSheet *actionSheet = [[UIActionSheet alloc] initWithTitle:NSLocalizedString(@"Order By", nil) delegate:self cancelButtonTitle:NSLocalizedString(@"Cancel", nil) destructiveButtonTitle:nil otherButtonTitles:
+                                  _sortingOptions[0],
+                                  _sortingOptions[1],
+                                  _sortingOptions[2],
+                                  nil];
+    [actionSheet showFromBarButtonItem:self.navigationItem.rightBarButtonItem animated:YES];
+    _showingSortOptions = YES;
 }
 
 - (void)selectedSortIndex:(NSUInteger)sortIndex {
@@ -270,7 +269,7 @@ static NSString *const SearchFilterCellIdentifier = @"search_filter";
 }
 
 - (void)applyFilterWithSearchText:(NSString *)searchText {
-    if (!searchText) {
+    if (!searchText || searchText.length == 0) {
         [self clearSearchFilter];
         return;
     }
@@ -283,28 +282,48 @@ static NSString *const SearchFilterCellIdentifier = @"search_filter";
     _currentSearchText = nil;
 }
 
+
+#pragma mark - UISearchBarDelegate
+
+- (void)searchBarTextDidBeginEditing:(UISearchBar *)searchBar {
+    [searchBar setShowsCancelButton:YES animated:YES];
+}
+
+- (void)searchBarSearchButtonClicked:(UISearchBar *)searchBar {
+    [self applyFilterWithSearchText:searchBar.text];
+    [searchBar setShowsCancelButton:(searchBar.text.length > 0) animated:YES];
+}
+
+- (void)searchBarTextDidEndEditing:(UISearchBar *)searchBar {
+    if (searchBar.text.length == 0) {
+        [searchBar setShowsCancelButton:NO animated:YES];
+        [self clearSearchFilter];
+    }
+}
+
+- (void)searchBarCancelButtonClicked:(UISearchBar *)searchBar {
+    [self clearSearchFilter];
+    searchBar.text = nil;
+    [searchBar setShowsCancelButton:NO animated:YES];
+}
+
+
 #pragma mark - UIRefreshControl
 
 - (void)refreshControlTriggered:(UIRefreshControl*)refreshControl {
     if (refreshControl.isRefreshing) {
-        [self reloadThemes];
+        [self syncThemesAndCurrentTheme];
     }
 }
 
-- (void)sortPressed {
-    UIActionSheet *actionSheet = [[UIActionSheet alloc] initWithTitle:NSLocalizedString(@"Order By", nil) delegate:self cancelButtonTitle:NSLocalizedString(@"Cancel", nil) destructiveButtonTitle:nil otherButtonTitles:
-                                  _sortingOptions[0],
-                                  _sortingOptions[1],
-                                  _sortingOptions[2],
-                                  nil];
-    [actionSheet showFromBarButtonItem:self.navigationItem.rightBarButtonItem animated:YES];
-}
+
+#pragma mark - UIActionSheetDelegate
 
 - (void)actionSheet:(UIActionSheet *)actionSheet clickedButtonAtIndex:(NSInteger)buttonIndex {
     if (buttonIndex < _sortingOptions.count) {
-        [self.navigationItem.rightBarButtonItem setTitle:[actionSheet buttonTitleAtIndex:buttonIndex]];
         [self selectedSortIndex:buttonIndex];
     }
+    _showingSortOptions = NO;
 }
 
 @end

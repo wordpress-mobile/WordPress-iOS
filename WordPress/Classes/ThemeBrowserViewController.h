@@ -7,11 +7,10 @@
  * Some rights reserved. See license.txt
  */
 
-#import "ThemeSearchFilterHeaderView.h"
 
 @class Blog;
 
-@interface ThemeBrowserViewController : UIViewController <ThemeSearchFilterDelegate, UISearchBarDelegate>
+@interface ThemeBrowserViewController : UIViewController
 
 @property (nonatomic, strong) Blog *blog;
 
