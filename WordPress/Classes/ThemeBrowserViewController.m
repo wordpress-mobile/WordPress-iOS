@@ -225,7 +225,8 @@ static NSString *const SearchHeaderIdentifier = @"search_header";
 #pragma mark - FetchedResultsController
 
 - (void)controllerDidChangeContent:(NSFetchedResultsController *)controller {
-    _allThemes = self.filteredThemes = controller.fetchedObjects;
+    _allThemes = controller.fetchedObjects;
+    [self applyFilterWithSearchText:_currentSearchText];
     [self currentThemeForBlog];
 }
 
