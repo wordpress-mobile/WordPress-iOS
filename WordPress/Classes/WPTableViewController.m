@@ -271,9 +271,10 @@ NSString *const DefaultCellIdentifier = @"DefaultCellIdentifier";
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section {
-    // Don't show section headers if there are no named sections
+    // Don't show section headers if there are no named sections, or if this is the first (and has no name)
     NSString *sectionTitle = [self tableView:tableView titleForHeaderInSection:section];
-    if ([[self.resultsController sections] count] <= 1 && [sectionTitle length] == 0) {
+    BOOL firstTitleAndNoName = section == 0 && [sectionTitle length] == 0;
+    if ([[self.resultsController sections] count] <= 1 || firstTitleAndNoName) {
         return IS_IPHONE ? 1 : WPTableViewTopMargin;
     }
 
