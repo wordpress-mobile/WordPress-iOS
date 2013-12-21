@@ -139,6 +139,16 @@ NSString * const BlogJetpackApiPath = @"get-user-blogs/1.0";
                                  WPAccount *account = [WPAccount createOrUpdateWordPressComAccountWithUsername:username password:password authToken:authToken context:self.managedObjectContext];
                                  self.jetpackAccount = account;
                                  [self dataSave];
+
+                                 // If there is no WP.com account on the device, make this the default
+                                 if ([WPAccount defaultWordPressComAccount] == nil) {
+                                     [WPAccount setDefaultWordPressComAccount:account];
+                                     [self dataSave];
+                                     
+                                     // Sadly we don't care if this succeeds or not
+                                     [account syncBlogsWithSuccess:nil failure:nil];
+                                     [account.restApi getNotificationsSince:nil success:nil failure:nil];
+                                 }
                              } failure:^(NSError *error) {
                                  DDLogError(@"Error while obtaining OAuth2 token after enabling JetPack: %@", error);
                                  
