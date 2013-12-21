@@ -82,6 +82,22 @@ static CGFloat const ImageSizeLargeHeight = 480.0f;
 #pragma mark -
 #pragma mark Custom methods
 
++ (NSInteger)countVisibleWithContext:(NSManagedObjectContext *)moc {
+    NSFetchRequest *request = [[NSFetchRequest alloc] init];
+    [request setEntity:[NSEntityDescription entityForName:@"Blog" inManagedObjectContext:moc]];
+    [request setIncludesSubentities:NO];
+    
+    NSPredicate *predicate = [NSPredicate predicateWithFormat:@"visible = %@" argumentArray:@[@(YES)]];
+    [request setPredicate:predicate];
+    
+    NSError *err;
+    NSUInteger count = [moc countForFetchRequest:request error:&err];
+    if(count == NSNotFound) {
+        count = 0;
+    }
+    return count;
+}
+
 + (NSInteger)countWithContext:(NSManagedObjectContext *)moc {
     NSFetchRequest *request = [[NSFetchRequest alloc] init];
     [request setEntity:[NSEntityDescription entityForName:@"Blog" inManagedObjectContext:moc]];
