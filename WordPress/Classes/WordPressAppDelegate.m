@@ -480,7 +480,7 @@ static NSString *const CameraPlusImagesNotification = @"CameraPlusImagesNotifica
 - (BOOL)tabBarController:(UITabBarController *)tabBarController shouldSelectViewController:(UIViewController *)viewController {
     if ([tabBarController.viewControllers indexOfObject:viewController] == 3) {
         // Ignore taps on the post tab and instead show the modal.
-        if ([Blog countWithContext:[[ContextManager sharedInstance] mainContext]] == 0) {
+        if ([Blog countVisibleWithContext:[[ContextManager sharedInstance] mainContext]] == 0) {
             [WPMobileStats trackEventForWPCom:StatsEventAccountCreationOpenedFromTabBar];
             [self showWelcomeScreenAnimated:YES thenEditor:YES];
         } else {
