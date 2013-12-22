@@ -27,7 +27,7 @@
 
 - (NSString *)noResultsTitleText
 {
-    return NSLocalizedString(@"You haven’t created any posts yet", @"Displayed when the user pulls up the posts view and they have no posts");
+    return NSLocalizedString(@"You haven't created any posts yet", @"Displayed when the user pulls up the posts view and they have no posts");
 }
 
 - (NSString *)noResultsMessageText {

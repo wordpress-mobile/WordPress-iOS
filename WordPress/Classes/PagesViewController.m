@@ -25,7 +25,7 @@
 
 - (NSString *)noResultsTitleText
 {
-    return NSLocalizedString(@"You haven’t created any pages yet", @"Displayed when the user pulls up the pages view and they have no pages");
+    return NSLocalizedString(@"You haven't created any pages yet", @"Displayed when the user pulls up the pages view and they have no pages");
 }
 
 - (NSString *)noResultsMessageText {
