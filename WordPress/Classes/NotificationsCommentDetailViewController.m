@@ -57,7 +57,6 @@ NS_ENUM(NSUInteger, NotifcationCommentCellType){
 @property NSDictionary *followAction;
 @property NSURL *headerURL;
 @property BOOL hasScrollBackView;
-@property (nonatomic, strong) NSCache *contentCache;
 
 @property (nonatomic, strong) UIBarButtonItem *approveBarButton;
 @property (nonatomic, strong) UIBarButtonItem *unapproveBarButton;
@@ -176,13 +175,6 @@ NS_ENUM(NSUInteger, NotifcationCommentCellType){
                                                  name:UIKeyboardWillHideNotification
                                                object:nil];
 
-}
-
-- (NSCache *)contentCache {
-    if (!_contentCache) {
-        _contentCache = [[NSCache alloc] init];
-    }
-    return _contentCache;
 }
 
 - (void)displayNote {
