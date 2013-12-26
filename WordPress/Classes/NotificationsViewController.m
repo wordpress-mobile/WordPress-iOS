@@ -56,7 +56,7 @@ NSString * const NotificationsJetpackInformationURL = @"http://jetpack.me/about/
 - (NSString *)noResultsMessageText
 {
     if ([self showJetpackConnectMessage]) {
-        return NSLocalizedString(@"Jetpack supercharges your self‑hosted WordPress site.", @"Displayed in the notifications view when a self-hosted user is not connected to Jetpack");
+        return NSLocalizedString(@"Jetpack supercharges your self-hosted WordPress site.", @"Displayed in the notifications view when a self-hosted user is not connected to Jetpack");
     } else {
         return nil;
     }
@@ -88,10 +88,7 @@ NSString * const NotificationsJetpackInformationURL = @"http://jetpack.me/about/
 
 - (BOOL)showJetpackConnectMessage
 {
-    // self.user == nil. No user implies that the user is using the
-    // app with a self-hosted blog not connected to jetpack
-    return self.user == nil;
-    
+    return [WPAccount defaultWordPressComAccount] == nil;
 }
 
 - (void)dealloc {
@@ -100,7 +97,7 @@ NSString * const NotificationsJetpackInformationURL = @"http://jetpack.me/about/
 
 - (void)viewDidLoad
 {
-    WPFLogMethod();
+    DDLogMethod();
     [super viewDidLoad];
     
     [WPStyleGuide configureColorsForView:self.view andTableView:self.tableView];
@@ -109,7 +106,7 @@ NSString * const NotificationsJetpackInformationURL = @"http://jetpack.me/about/
 }
 
 - (void)viewWillAppear:(BOOL)animated {
-    WPFLogMethod();
+    DDLogMethod();
     [super viewWillAppear:animated];
 }
 
@@ -282,12 +279,13 @@ NSString * const NotificationsJetpackInformationURL = @"http://jetpack.me/about/
     
     NSNumber *timestamp;
     NSArray *notes = [self.resultsController fetchedObjects];
-    if ([notes count] > 0) {
+    if (userInteraction == NO && [notes count] > 0) {
         Note *note = [notes objectAtIndex:0];
         timestamp = note.timestamp;
     } else {
         timestamp = nil;
     }
+    
     [self.user getNotificationsSince:timestamp success:^(AFHTTPRequestOperation *operation, id responseObject) {
         [self updateSyncDate];
         if (success) {

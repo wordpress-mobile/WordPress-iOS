@@ -84,16 +84,6 @@
     return [self descriptionTextColor];
 }
 
-+ (UIColor *)jetpackBackgroundColor
-{
-    return [UIColor colorWithRed:140.0/255.0 green:170.0/255.0 blue:70.0/255.0 alpha:1.0];
-}
-
-+ (UIColor *)jetpackDescriptionTextColor
-{
-    return [UIColor colorWithRed:225.0/255.0 green:232.0/255.0 blue:211.0/255.0 alpha:1.0];
-}
-
 #pragma mark - Helper Methods
 
 + (void)centerViews:(NSArray *)controls withStartingView:(UIView *)startingView andEndingView:(UIView *)endingView forHeight:(CGFloat)viewHeight
@@ -123,7 +113,7 @@
 + (NSDictionary *)titleAttributesWithColor:(UIColor *)color {
     
     NSMutableParagraphStyle *paragraphStyle = [[NSMutableParagraphStyle alloc] init];
-    paragraphStyle.lineHeightMultiple = 0.95;
+    paragraphStyle.lineHeightMultiple = 0.9;
     paragraphStyle.lineBreakMode = NSLineBreakByWordWrapping;
     paragraphStyle.alignment = NSTextAlignmentCenter;
     NSDictionary *attributes = @{NSFontAttributeName: [WPNUXUtility titleFont],

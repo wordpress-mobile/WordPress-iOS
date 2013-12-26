@@ -13,9 +13,15 @@
 #import "WPFriendFinderViewController.h"
 #import "WordPressAppDelegate.h"
 #import "ReachabilityUtils.h"
+#import "Constants.h"
 
 typedef void (^DismissBlock)(NSInteger buttonIndex);
 typedef void (^CancelBlock)();
+
+static NSString *const FacebookAppID = @"249643311490";
+static NSString *const FacebookLoginNotificationName = @"FacebookLogin";
+static NSString *const FacebookNoLoginNotificationName = @"FacebookNoLogin";
+static NSString *const AccessedAddressBookPreference = @"AddressBookAccessGranted";
 
 @interface WPFriendFinderViewController () <UIAlertViewDelegate>
 
@@ -33,8 +39,8 @@ typedef void (^CancelBlock)();
     
     // register for a notification
     NSNotificationCenter *nc = [NSNotificationCenter defaultCenter];
-    [nc addObserver:self selector:@selector(facebookDidLogIn:) name:kFacebookLoginNotificationName object:nil];
-    [nc addObserver:self selector:@selector(facebookDidNotLogIn:) name:kFacebookNoLoginNotificationName object:nil];
+    [nc addObserver:self selector:@selector(facebookDidLogIn:) name:FacebookLoginNotificationName object:nil];
+    [nc addObserver:self selector:@selector(facebookDidNotLogIn:) name:FacebookNoLoginNotificationName object:nil];
     self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemDone
                                                                                            target:self
                                                                                            action:@selector(dismissFriendFinder:)];
@@ -183,7 +189,7 @@ typedef void (^CancelBlock)();
     ACAccountStore *store = [[ACAccountStore alloc] init];
 
     NSDictionary *options = @{
-                              ACFacebookAppIdKey: kFacebookAppID,
+                              ACFacebookAppIdKey: FacebookAppID,
                               ACFacebookPermissionsKey: @[]
                               };
     [store requestAccessToAccountsWithType:[store accountTypeWithAccountTypeIdentifier:ACAccountTypeIdentifierFacebook] options:options completion:^(BOOL granted, NSError *error) {
@@ -219,7 +225,7 @@ typedef void (^CancelBlock)();
 
 - (UIAlertView *)alertWithTitle:(NSString *)title message:(NSString *)message cancelButtonTitle:(NSString *)cancelButtonTitle confirmButtonTitle:(NSString *)confirmButtonTitle dismissBlock:(DismissBlock)dismiss {
     NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
-    if([defaults boolForKey:kAccessedAddressBookPreference] == YES){
+    if([defaults boolForKey:AccessedAddressBookPreference] == YES){
         dismiss(1);
         return nil;
     } else {
@@ -236,7 +242,7 @@ typedef void (^CancelBlock)();
 - (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex {
     if (1 == buttonIndex){
         NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
-        [defaults setBool:YES forKey:kAccessedAddressBookPreference];
+        [defaults setBool:YES forKey:AccessedAddressBookPreference];
         [defaults synchronize];
     }
     if (self.dismissBlock) {

@@ -27,7 +27,7 @@ CGFloat const CommentsStandardOffset = 16.0;
 CGFloat const CommentsSectionHeaderHeight = 24.0;
 
 - (void)dealloc {
-    WPFLogMethod();
+    DDLogMethod();
 	[[NSNotificationCenter defaultCenter] removeObserver:self];
 }
 
@@ -37,7 +37,7 @@ CGFloat const CommentsSectionHeaderHeight = 24.0;
 }
 
 - (void)viewDidLoad {
-    WPFLogMethod();
+    DDLogMethod();
     
     [super viewDidLoad];
     
@@ -56,13 +56,13 @@ CGFloat const CommentsSectionHeaderHeight = 24.0;
 }
 
 - (void)viewWillAppear:(BOOL)animated {
-    WPFLogMethod();
+    DDLogMethod();
 
 	[super viewWillAppear:animated];
 }
 
 - (void)viewWillDisappear:(BOOL)animated {
-    WPFLogMethod();
+    DDLogMethod();
     
     [super viewWillDisappear:animated];    
 }
@@ -85,7 +85,7 @@ CGFloat const CommentsSectionHeaderHeight = 24.0;
 #pragma mark Action Methods
 
 - (void)showCommentAtIndexPath:(NSIndexPath *)indexPath {
-    WPFLogMethodParam(indexPath);
+    DDLogMethodParam(indexPath);
 	Comment *comment;
     if (indexPath) {
         @try {
@@ -146,7 +146,9 @@ CGFloat const CommentsSectionHeaderHeight = 24.0;
     if ([tableView numberOfSections] <= 1)
         return nil;
     
-    return [super tableView:tableView titleForHeaderInSection:section];
+    id <NSFetchedResultsSectionInfo> sectionInfo = [[self.resultsController sections] objectAtIndex:section];
+    NSString *title = [Comment titleForStatus:[sectionInfo name]];
+    return title;
 }
 
 - (UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section {
@@ -158,9 +160,6 @@ CGFloat const CommentsSectionHeaderHeight = 24.0;
     
     WPTableViewSectionHeaderView *header = [[WPTableViewSectionHeaderView alloc] initWithFrame:CGRectMake(0, 0, CGRectGetWidth(self.view.bounds), 0)];
     header.title = [self tableView:self.tableView titleForHeaderInSection:section];
-    if (IS_IPAD) {
-        header.fixedWidth = WPTableViewFixedWidth;
-    }
     return header;
 }
 
@@ -168,7 +167,7 @@ CGFloat const CommentsSectionHeaderHeight = 24.0;
     
     // Don't show a section title if there's only one section
     if ([tableView numberOfSections] <= 1) {
-        return UITableViewAutomaticDimension;
+        return IS_IPHONE ? 1 : WPTableViewTopMargin;
     }
     
     NSString *title = [self tableView:self.tableView titleForHeaderInSection:section];

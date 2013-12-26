@@ -10,6 +10,9 @@
 
 @interface WPWalkthroughTextField ()
 @property (nonatomic, strong) UIImage *leftViewImage;
+@property (nonatomic, strong) UIButton *secureTextEntryToggle;
+@property (nonatomic, strong) UIImage *secureTextEntryImageVisible;
+@property (nonatomic, strong) UIImage *secureTextEntryImageHidden;
 @end
 
 @implementation WPWalkthroughTextField
@@ -23,6 +26,17 @@
         self.layer.cornerRadius = 1.0;
         self.clipsToBounds = YES;
         self.showTopLineSeparator = NO;
+        self.showSecureTextEntryToggle = NO;
+        
+        self.secureTextEntryImageVisible = [UIImage imageNamed:@"icon-secure-text-visible"];
+        self.secureTextEntryImageHidden = [UIImage imageNamed:@"icon-secure-text"];
+        
+        self.secureTextEntryToggle = [UIButton buttonWithType:UIButtonTypeCustom];
+        self.secureTextEntryToggle.frame = CGRectMake(0, 0, 40, 30);
+        [self.secureTextEntryToggle addTarget:self action:@selector(secureTextEntryToggleAction:) forControlEvents:UIControlEventTouchUpInside];
+
+        [self addSubview:self.secureTextEntryToggle];
+        [self updateSecureTextEntryToggleImage];
     }
     return self;
 }
@@ -57,15 +71,32 @@
     }
 }
 
+- (void)layoutSubviews {
+    
+    [super layoutSubviews];
+    
+    self.secureTextEntryToggle.hidden = !self.showSecureTextEntryToggle;
+    if (self.showSecureTextEntryToggle) {
+        self.secureTextEntryToggle.frame = CGRectIntegral(CGRectMake(CGRectGetWidth(self.bounds) - CGRectGetWidth(self.secureTextEntryToggle.frame), (CGRectGetHeight(self.bounds) - CGRectGetHeight(self.secureTextEntryToggle.frame)) / 2.0, CGRectGetWidth(self.secureTextEntryToggle.frame), CGRectGetHeight(self.secureTextEntryToggle.frame)));
+        [self bringSubviewToFront:self.secureTextEntryToggle];
+    }
+}
+
 - (CGRect)calculateTextRectForBounds:(CGRect)bounds {
     
+    CGRect returnRect;
     if (_leftViewImage) {
-        
         CGFloat leftViewWidth = _leftViewImage.size.width;
-        return CGRectMake(leftViewWidth + 2 * _textInsets.left, _textInsets.top, bounds.size.width - leftViewWidth - 2 * _textInsets.left - _textInsets.right, bounds.size.height - _textInsets.top - _textInsets.bottom);
+        returnRect = CGRectMake(leftViewWidth + 2 * _textInsets.left, _textInsets.top, bounds.size.width - leftViewWidth - 2 * _textInsets.left - _textInsets.right, bounds.size.height - _textInsets.top - _textInsets.bottom);
     } else {
-        return CGRectMake(_textInsets.left, _textInsets.top, bounds.size.width - _textInsets.left - _textInsets.right, bounds.size.height - _textInsets.top - _textInsets.bottom);
+        returnRect = CGRectMake(_textInsets.left, _textInsets.top, bounds.size.width - _textInsets.left - _textInsets.right, bounds.size.height - _textInsets.top - _textInsets.bottom);
     }
+    
+    if (self.showSecureTextEntryToggle) {
+        returnRect.size.width -= self.secureTextEntryToggle.frame.size.width;
+    }
+    
+    return CGRectIntegral(returnRect);
 }
 
 // placeholder position
@@ -84,10 +115,28 @@
 - (CGRect)leftViewRectForBounds:(CGRect)bounds {
     
     if (_leftViewImage) {
-        return CGRectMake(_textInsets.left, (CGRectGetHeight(bounds) - _leftViewImage.size.height) / 2.0, _leftViewImage.size.width, _leftViewImage.size.height);
+        return CGRectIntegral(CGRectMake(_textInsets.left, (CGRectGetHeight(bounds) - _leftViewImage.size.height) / 2.0, _leftViewImage.size.width, _leftViewImage.size.height));
     } else {
         return [super leftViewRectForBounds:bounds];
     }
+}
+
+#pragma mark - Secure Text Entry
+
+- (void)setSecureTextEntry:(BOOL)secureTextEntry {
+    [super setSecureTextEntry:secureTextEntry];
+    [self updateSecureTextEntryToggleImage];
+}
+
+- (void)secureTextEntryToggleAction:(id)sender {
+    [self setSecureTextEntry:!self.isSecureTextEntry];
+    self.text = self.text; // Fixes cursor position after toggling
+    [self setNeedsDisplay];
+}
+
+- (void)updateSecureTextEntryToggleImage {
+    UIImage *image = self.isSecureTextEntry ? self.secureTextEntryImageHidden : self.secureTextEntryImageVisible;
+    [self.secureTextEntryToggle setImage:image forState:UIControlStateNormal];
 }
 
 @end

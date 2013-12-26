@@ -33,7 +33,6 @@
 #import "WordPressComApiCredentials.h"
 #import "WPAccount.h"
 
-#import "WPMainTabBarController.h"
 #import "BlogListViewController.h"
 #import "BlogDetailsViewController.h"
 #import "PostsViewController.h"
@@ -43,6 +42,7 @@
 #import "ReaderPostsViewController.h"
 #import "ReaderPostDetailViewController.h"
 #import "SupportViewController.h"
+#import "Constants.h"
 
 #if DEBUG
 #import "DDTTYLogger.h"
@@ -50,12 +50,15 @@
 #endif
 
 int ddLogLevel = LOG_LEVEL_INFO;
-NSInteger const UpdateCheckAlertViewTag = 102;
-NSString * const WPTabBarRestorationID = @"WPTabBarID";
-NSString * const WPBlogListNavigationRestorationID = @"WPBlogListNavigationID";
-NSString * const WPReaderNavigationRestorationID = @"WPReaderNavigationID";
-NSString * const WPNotificationsNavigationRestorationID = @"WPNotificationsNavigationID";
-NSInteger const IndexForMeTab = 2;
+static NSInteger const UpdateCheckAlertViewTag = 102;
+static NSString * const WPTabBarRestorationID = @"WPTabBarID";
+static NSString * const WPBlogListNavigationRestorationID = @"WPBlogListNavigationID";
+static NSString * const WPReaderNavigationRestorationID = @"WPReaderNavigationID";
+static NSString * const WPNotificationsNavigationRestorationID = @"WPNotificationsNavigationID";
+static NSInteger const IndexForMeTab = 2;
+static NSInteger const NotificationNewComment = 1001;
+static NSInteger const NotificationNewSocial = 1002;
+static NSString *const CameraPlusImagesNotification = @"CameraPlusImagesNotification";
 
 @interface WordPressAppDelegate () <UITabBarControllerDelegate, CrashlyticsDelegate, UIAlertViewDelegate, BITHockeyManagerDelegate>
 
@@ -92,7 +95,7 @@ NSInteger const IndexForMeTab = 2;
     [WPMobileStats initializeStats];
     [[GPPSignIn sharedInstance] setClientID:[WordPressComApiCredentials googlePlusClientId]];
     [self checkIfStatsShouldSendAndUpdateCheck];
-    [self checkIfFeedbackShouldBeEnabled];
+    [SupportViewController checkIfFeedbackShouldBeEnabled];
     
     // Networking setup
     [[AFNetworkActivityIndicatorManager sharedManager] setEnabled:YES];
@@ -116,17 +119,7 @@ NSInteger const IndexForMeTab = 2;
     // Push notifications
     [NotificationsManager registerForPushNotifications];
     [NotificationsManager handleNotificationForApplicationLaunch:launchOptions];
-    
-	//listener for XML-RPC errors
-	//in the future we could put the errors message in a dedicated screen that users can bring to front when samething went wrong, and can take a look at the error msg.
-	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(showNotificationErrorAlert:) name:kXML_RPC_ERROR_OCCURS object:nil];
-	
-	// another notification message came from comments --> CommentUploadFailed
-	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(showNotificationErrorAlert:) name:CommentUploadFailedNotification object:nil];
 
-    // another notification message came from WPWebViewController
-	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(showNotificationErrorAlert:) name:@"OpenWebPageFailed" object:nil];
-    
     // Deferred tasks to speed up app launch
     dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_BACKGROUND, 0), ^{
         [self changeCurrentDirectory];
@@ -168,7 +161,7 @@ NSInteger const IndexForMeTab = 2;
             UIImage *image = [images image];
             UIImageWriteToSavedPhotosAlbum(image, nil, nil, nil);
             NSDictionary *userInfo = [NSDictionary dictionaryWithObject:image forKey:@"image"];
-            [[NSNotificationCenter defaultCenter] postNotificationName:kCameraPlusImagesNotification object:nil userInfo:userInfo];
+            [[NSNotificationCenter defaultCenter] postNotificationName:CameraPlusImagesNotification object:nil userInfo:userInfo];
         } cancelBlock:^(void) {
             DDLogInfo(@"Camera+ picker canceled");
         }];
@@ -194,6 +187,10 @@ NSInteger const IndexForMeTab = 2;
             if (params.count) {
                 NSUInteger *blogId = [[params valueForKey:@"blogId"] integerValue];
                 NSUInteger *postId = [[params valueForKey:@"postId"] integerValue];
+                
+                [WPMobileStats flagSuperProperty:StatsPropertyReaderOpenedFromExternalURL];
+                [WPMobileStats incrementSuperProperty:StatsPropertyReaderOpenedFromExternalURLCount];
+                [WPMobileStats trackEventForWPCom:StatsEventReaderOpenedFromExternalSource];
                 
                 [self.readerPostsViewController.navigationController popToRootViewControllerAnimated:NO];
                 NSInteger readerTabIndex = [[self.tabBarController viewControllers] indexOfObject:self.readerPostsViewController.navigationController];
@@ -282,13 +279,13 @@ NSInteger const IndexForMeTab = 2;
 }
 
 - (void)application:(UIApplication *)application didReceiveRemoteNotification:(NSDictionary *)userInfo {
-    WPFLogMethod();
+    DDLogMethod();
     
     [NotificationsManager handleNotification:userInfo forState:application.applicationState completionHandler:nil];
 }
 
 - (void)application:(UIApplication *)application didReceiveRemoteNotification:(NSDictionary *)userInfo fetchCompletionHandler:(void (^)(UIBackgroundFetchResult))completionHandler {
-    WPFLogMethod();
+    DDLogMethod();
     
     [NotificationsManager handleNotification:userInfo forState:[UIApplication sharedApplication].applicationState completionHandler:completionHandler];
 }
@@ -358,7 +355,7 @@ NSInteger const IndexForMeTab = 2;
     if ( IS_IPHONE ) {
         tabBarTitleOffset = UIOffsetMake(0, -2);
     }
-    _tabBarController = [[WPMainTabBarController alloc] init];
+    _tabBarController = [[UITabBarController alloc] init];
     _tabBarController.delegate = self;
     _tabBarController.restorationIdentifier = WPTabBarRestorationID;
     [_tabBarController.tabBar setTranslucent:NO];
@@ -483,7 +480,7 @@ NSInteger const IndexForMeTab = 2;
 - (BOOL)tabBarController:(UITabBarController *)tabBarController shouldSelectViewController:(UIViewController *)viewController {
     if ([tabBarController.viewControllers indexOfObject:viewController] == 3) {
         // Ignore taps on the post tab and instead show the modal.
-        if ([Blog countWithContext:[[ContextManager sharedInstance] mainContext]] == 0) {
+        if ([Blog countVisibleWithContext:[[ContextManager sharedInstance] mainContext]] == 0) {
             [WPMobileStats trackEventForWPCom:StatsEventAccountCreationOpenedFromTabBar];
             [self showWelcomeScreenAnimated:YES thenEditor:YES];
         } else {
@@ -492,94 +489,6 @@ NSInteger const IndexForMeTab = 2;
         return NO;
     }
     return YES;
-}
-
-#pragma mark - Global Alerts
-
-- (void)showAlertWithTitle:(NSString *)title message:(NSString *)message {
-	DDLogInfo(@"Showing alert with title: %@", message);
-    UIAlertView *alert = [[UIAlertView alloc] initWithTitle:title
-                          message:message
-                          delegate:self
-						cancelButtonTitle:NSLocalizedString(@"Need Help?", @"'Need help?' button label, links off to the WP for iOS FAQ.")
-						otherButtonTitles:NSLocalizedString(@"OK", @"OK button label."), nil];
-    [alert show];
-}
-
-- (void)showNotificationErrorAlert:(NSNotification *)notification {
-	NSString *cleanedErrorMsg = nil;
-	
-	if([self isAlertRunning] == YES) return; //another alert is already shown 
-	[self setAlertRunning:YES];
-	
-	if([[notification object] isKindOfClass:[NSError class]]) {
-		
-		NSError *err  = (NSError *)[notification object];
-		cleanedErrorMsg = [err localizedDescription];
-		
-		//org.wordpress.iphone --> XML-RPC errors
-		if ([[err domain] isEqualToString:@"org.wordpress.iphone"]){
-			if([err code] == 401)
-				cleanedErrorMsg = NSLocalizedString(@"Sorry, you cannot access this feature. Please check your User Role on this blog.", @"");
-		}
-        
-        // ignore HTTP auth canceled errors
-        if ([err.domain isEqual:NSURLErrorDomain] && err.code == NSURLErrorUserCancelledAuthentication) {
-            [self setAlertRunning:NO];
-            return;
-        }
-	} else { //the notification obj is a String
-		cleanedErrorMsg  = (NSString *)[notification object];
-	}
-	
-	if([cleanedErrorMsg rangeOfString:@"NSXMLParserErrorDomain"].location != NSNotFound )
-		cleanedErrorMsg = NSLocalizedString(@"The app can't recognize the server response. Please, check the configuration of your blog.", @"");
-	
-	[self showAlertWithTitle:NSLocalizedString(@"Error", @"Generic popup title for any type of error.") message:cleanedErrorMsg];
-}
-
-- (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex {
-	[self setAlertRunning:NO];
-	
-    if (alertView.tag == 102) { // Update alert
-        if (buttonIndex == 1) {
-            [[UIApplication sharedApplication] openURL:[NSURL URLWithString:@"http://itunes.apple.com/us/app/wordpress/id335703880?mt=8&ls=1"]];
-        }
-    } else if (alertView.tag == kNotificationNewComment) {
-        if (buttonIndex == 1) {
-            [self showNotificationsTab];
-        }
-    } else if (alertView.tag == kNotificationNewSocial) {
-        if (buttonIndex == 1) {
-            [self showNotificationsTab];
-        }
-	} else {
-		//Need Help Alert
-		switch(buttonIndex) {
-			case 0: {
-				SupportViewController *supportViewController = [[SupportViewController alloc] init];
-                UINavigationController *aNavigationController = [[UINavigationController alloc] initWithRootViewController:supportViewController];
-                aNavigationController.navigationBar.translucent = NO;
-                if (IS_IPAD) {
-                    aNavigationController.modalTransitionStyle = UIModalTransitionStyleCrossDissolve;
-                    aNavigationController.modalPresentationStyle = UIModalPresentationFormSheet;
-                }
-                
-                UIViewController *presenter = self.tabBarController;
-                if (presenter.presentedViewController) {
-                    presenter = presenter.presentedViewController;
-                }
-                [presenter presentViewController:aNavigationController animated:YES completion:nil];
-                
-				break;
-			}
-			case 1:
-				//ok
-				break;
-			default:
-				break;
-		}
-	}
 }
 
 
@@ -666,7 +575,7 @@ NSInteger const IndexForMeTab = 2;
                                                            delegate:self
                                                   cancelButtonTitle:NSLocalizedString(@"Dismiss", @"Dismiss button label.")
                                                   otherButtonTitles:NSLocalizedString(@"Update Now", @"Popup 'update' button to highlight a new version of the app being available. The button takes you to the app store on the device, and should be actionable."), nil];
-            alert.tag = 102;
+            alert.tag = UpdateCheckAlertViewTag;
             [alert show];
         }
     } failure:nil];
@@ -675,33 +584,6 @@ NSInteger const IndexForMeTab = 2;
 	NSDate *theDate = [NSDate date];
 	[defaults setObject:theDate forKey:@"statsDate"];
 	[defaults synchronize];
-}
-
-- (void)checkIfFeedbackShouldBeEnabled
-{
-    [[NSUserDefaults standardUserDefaults] registerDefaults:@{kWPUserDefaultsFeedbackEnabled: @YES}];
-    NSURL *url = [NSURL URLWithString:@"http://api.wordpress.org/iphoneapp/feedback-check/1.0/"];
-    NSURLRequest *request = [[NSURLRequest alloc] initWithURL:url];
-    AFJSONRequestOperation *operation = [AFJSONRequestOperation JSONRequestOperationWithRequest:request success:^(NSURLRequest *request, NSHTTPURLResponse *response, id JSON) {
-        DDLogVerbose(@"Feedback response received: %@", JSON);
-        NSNumber *feedbackEnabled = JSON[@"feedback-enabled"];
-        if (feedbackEnabled == nil) {
-            feedbackEnabled = @YES;
-        }
-        
-        NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
-        [defaults setBool:feedbackEnabled.boolValue forKey:kWPUserDefaultsFeedbackEnabled];
-        [defaults synchronize];
-    } failure:^(NSURLRequest *request, NSHTTPURLResponse *response, NSError *error, id JSON) {
-        DDLogError(@"Error received while checking feedback enabled status: %@", error);
-
-        // Lets be optimistic and turn on feedback by default if this call doesn't work
-        NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
-        [defaults setBool:YES forKey:kWPUserDefaultsFeedbackEnabled];
-        [defaults synchronize];
-    }];
-    
-    [operation start];
 }
 
 
@@ -742,7 +624,7 @@ NSInteger const IndexForMeTab = 2;
 
 - (void)crashlytics:(Crashlytics *)crashlytics didDetectCrashDuringPreviousExecution:(id<CLSCrashReport>)crash
 {
-    WPFLogMethod();
+    DDLogMethod();
     NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
     NSInteger crashCount = [defaults integerForKey:@"crashCount"];
     crashCount += 1;
@@ -1061,7 +943,7 @@ NSInteger const IndexForMeTab = 2;
     DDLogInfo(@"OS:        %@ %@", [device systemName], [device systemVersion]);
     DDLogInfo(@"Language:  %@", currentLanguage);
     DDLogInfo(@"UDID:      %@", [device wordpressIdentifier]);
-    DDLogInfo(@"APN token: %@", [[NSUserDefaults standardUserDefaults] objectForKey:kApnsDeviceTokenPrefKey]);
+    DDLogInfo(@"APN token: %@", [[NSUserDefaults standardUserDefaults] objectForKey:NotificationsDeviceToken]);
     DDLogInfo(@"===========================================================================");
 }
 

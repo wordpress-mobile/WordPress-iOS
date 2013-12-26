@@ -31,6 +31,7 @@ CGFloat const EPVCTextViewTopPadding = 7.0f;
 @property (nonatomic, strong) UIButton *titleBarButton;
 @property (nonatomic, strong) WPAlertView *linkHelperAlertView;
 @property (nonatomic, strong) UIPopoverController *blogSelectorPopover;
+@property (nonatomic) BOOL dismissingBlogPicker;
 
 @end
 
@@ -41,10 +42,13 @@ CGFloat const EPVCTextViewTopPadding = 7.0f;
     NSManagedObjectContext *context = [[ContextManager sharedInstance] mainContext];
     NSFetchRequest *fetchRequest = [NSFetchRequest fetchRequestWithEntityName:@"Blog"];
     NSString *url = [[NSUserDefaults standardUserDefaults] stringForKey:EditPostViewControllerLastUsedBlogURL];
+    NSPredicate *predicate;
     if (url) {
-        NSPredicate *predicate = [NSPredicate predicateWithFormat:@"url = %@", url];
-        [fetchRequest setPredicate:predicate];
+        predicate = [NSPredicate predicateWithFormat:@"visible = YES AND url = %@", url];
+    } else {
+        predicate = [NSPredicate predicateWithFormat:@"visible = YES"];
     }
+    [fetchRequest setPredicate:predicate];
     fetchRequest.sortDescriptors = @[[NSSortDescriptor sortDescriptorWithKey:@"blogName" ascending:YES]];
     NSError *error = nil;
     NSArray *results = [context executeFetchRequest:fetchRequest error:&error];
@@ -94,7 +98,7 @@ CGFloat const EPVCTextViewTopPadding = 7.0f;
 }
 
 - (void)viewDidLoad {
-    WPFLogMethod();
+    DDLogMethod();
     [super viewDidLoad];
     
     // For the iPhone, let's let the overscroll background color be white to
@@ -151,7 +155,7 @@ CGFloat const EPVCTextViewTopPadding = 7.0f;
 }
 
 - (void)viewWillDisappear:(BOOL)animated {
-    WPFLogMethod();
+    DDLogMethod();
     [super viewWillDisappear:animated];
     [self.navigationController setToolbarHidden:YES animated:YES];
     
@@ -273,7 +277,6 @@ CGFloat const EPVCTextViewTopPadding = 7.0f;
         _titleTextField.font = [WPStyleGuide postTitleFont];
         _titleTextField.textColor = [WPStyleGuide darkAsNightGrey];
         _titleTextField.autoresizingMask = UIViewAutoresizingFlexibleWidth;
-        //_titleTextField.placeholder = NSLocalizedString(@"Enter title here", @"Label for the title of the post field. Should be the same as WP core.");
         _titleTextField.attributedPlaceholder = [[NSAttributedString alloc] initWithString:(NSLocalizedString(@"Enter title here", @"Label for the title of the post field. Should be the same as WP core.")) attributes:(@{NSForegroundColorAttributeName: [WPStyleGuide textFieldPlaceholderGrey]})];
         
         _titleTextField.returnKeyType = UIReturnKeyNext;
@@ -371,7 +374,14 @@ CGFloat const EPVCTextViewTopPadding = 7.0f;
     // added to the app's key window.
     CGFloat minHeight = self.view.frame.size.height;
     minHeight -= (EPVCTextfieldHeight + EPVCTextViewTopPadding);
-    if (!self.tableView.window) {
+    if (self.dismissingBlogPicker) {
+        // For some reason the frame/bounds hight includes the status bar.
+        if (UIInterfaceOrientationIsPortrait([UIApplication sharedApplication].statusBarOrientation)) {
+            minHeight -= [UIApplication sharedApplication].statusBarFrame.size.height;
+        } else {
+            minHeight -= [UIApplication sharedApplication].statusBarFrame.size.width;
+        }
+    } else if (!self.tableView.window) {
         minHeight -= EPVCToolbarHeight;
     }
     
@@ -430,6 +440,11 @@ CGFloat const EPVCTextViewTopPadding = 7.0f;
 }
 
 - (void)scrollCursorIntoViewIfNeeded {
+    if ([_titleTextField isFirstResponder]) {
+        [self.tableView scrollRectToVisible:CGRectZero animated:YES];
+        return;
+    }
+    
     // Get the cursor position in the textView
     CGRect rect = [_textView caretRectForPosition:_textView.selectedTextRange.start];
     
@@ -494,7 +509,9 @@ CGFloat const EPVCTextViewTopPadding = 7.0f;
         if (IS_IPAD) {
             [self.blogSelectorPopover dismissPopoverAnimated:YES];
         } else {
+            self.dismissingBlogPicker = YES;
             [self dismissViewControllerAnimated:YES completion:nil];
+            self.dismissingBlogPicker = NO;
         }
     };
     void (^selectedCompletion)(NSManagedObjectID *) = ^(NSManagedObjectID *selectedObjectID) {
@@ -505,6 +522,7 @@ CGFloat const EPVCTextViewTopPadding = 7.0f;
             self.post.blog = blog;
             [[NSUserDefaults standardUserDefaults] setObject:blog.url forKey:EditPostViewControllerLastUsedBlogURL];
             [[NSUserDefaults standardUserDefaults] synchronize];
+            [self syncOptionsIfNecessaryForBlog:blog afterBlogChanged:YES];
         }
         
         [self refreshUIForCurrentPost];
@@ -607,13 +625,29 @@ CGFloat const EPVCTextViewTopPadding = 7.0f;
     } else {
         [actionSheet showInView:self.view];
     }
-    
-    WordPressAppDelegate *appDelegate = (WordPressAppDelegate *)[[UIApplication sharedApplication] delegate];
-    [appDelegate setAlertRunning:YES];
-    
 }
 
 #pragma mark - Instance Methods
+
+- (void)setEditorOpenedBy:(NSString *)editorOpenedBy {
+    if ([_editorOpenedBy isEqualToString:editorOpenedBy]) {
+        return;
+    }
+    _editorOpenedBy = editorOpenedBy;
+    [self syncOptionsIfNecessaryForBlog:_post.blog afterBlogChanged:NO];
+}
+
+/*
+ Sync the blog if desired info is missing.
+ 
+ Always sync after a blog switch to ensure options are updated. Otherwise, 
+ only sync for new posts when launched from the post tab vs the posts list.
+ */
+- (void)syncOptionsIfNecessaryForBlog:(Blog *)blog afterBlogChanged:(BOOL)blogChanged {
+    if (blogChanged || [self.editorOpenedBy isEqualToString:StatsPropertyPostDetailEditorOpenedOpenedByTabBarButton]) {
+        [blog syncBlogWithSuccess:nil failure:nil];
+    }
+}
 
 - (NSString *)editorTitle {
     NSString *title = @"";
@@ -714,7 +748,6 @@ CGFloat const EPVCTextViewTopPadding = 7.0f;
     if (_titleBarButton) {
         return _titleBarButton;
     }
-    
     UIButton *titleButton = [WPBlogSelectorButton buttonWithType:UIButtonTypeSystem];
     titleButton.frame = CGRectMake(0, 0, 200, 33);
     titleButton.titleLabel.numberOfLines = 2;
@@ -727,7 +760,7 @@ CGFloat const EPVCTextViewTopPadding = 7.0f;
 
     _titleBarButton = titleButton;
     self.navigationItem.titleView = titleButton;
-
+    
     return _titleBarButton;
 }
 
@@ -736,7 +769,7 @@ CGFloat const EPVCTextViewTopPadding = 7.0f;
 - (void)discardChangesAndDismiss {
     [self.post.original deleteRevision];
     
-	if (self.editMode == EditPostViewControllerModeNewPost) {
+    if (self.editMode == EditPostViewControllerModeNewPost) {
         [self.post.original remove];
     }
     
@@ -768,7 +801,7 @@ CGFloat const EPVCTextViewTopPadding = 7.0f;
 }
 
 - (void)savePost:(BOOL)upload {
-    WPFLogMethod();
+    DDLogMethod();
     [WPMobileStats trackEventForWPComWithSavedProperties:[self formattedStatEventString:StatsEventPostDetailClosedEditor]];
     
     [self logSavePostStats];
@@ -953,15 +986,11 @@ CGFloat const EPVCTextViewTopPadding = 7.0f;
         // Cancel
         [overlayView dismiss];
         
-        WordPressAppDelegate *delegate = (WordPressAppDelegate*)[[UIApplication sharedApplication] delegate];
-        [delegate setAlertRunning:NO];
         [editorTextView becomeFirstResponder];
         
         [fles setLinkHelperAlertView:nil];
     };
     _linkHelperAlertView.button2CompletionBlock = ^(WPAlertView *overlayView){
-        WordPressAppDelegate *delegate = (WordPressAppDelegate*)[[UIApplication sharedApplication] delegate];
-        
         // Insert
         
         //Disable scrolling temporarily otherwise inserting text will scroll to the bottom in iOS6 and below.
@@ -974,7 +1003,6 @@ CGFloat const EPVCTextViewTopPadding = 7.0f;
         UITextField *urlField = overlayView.secondTextField;
         
         if ((urlField.text == nil) || ([urlField.text isEqualToString:@""])) {
-            [delegate setAlertRunning:NO];
             return;
         }
         
@@ -1004,8 +1032,7 @@ CGFloat const EPVCTextViewTopPadding = 7.0f;
         [editorTextView.undoManager setActionName:@"link"];
         
         [fles autosaveContent];
-        
-        [delegate setAlertRunning:NO];
+
         [fles setLinkHelperAlertView:nil];
         [fles refreshTextView];
     };
@@ -1170,7 +1197,7 @@ CGFloat const EPVCTextViewTopPadding = 7.0f;
 #pragma mark - WPKeyboardToolbar Delegate Methods
 
 - (void)keyboardToolbarButtonItemPressed:(WPKeyboardToolbarButtonItem *)buttonItem {
-    WPFLogMethod();
+    DDLogMethod();
     [self logWPKeyboardToolbarButtonStat:buttonItem];
     if ([buttonItem.actionTag isEqualToString:@"link"]) {
         [self showLinkView];
@@ -1273,9 +1300,6 @@ CGFloat const EPVCTextViewTopPadding = 7.0f;
 			}
         }
     }
-    
-    WordPressAppDelegate *appDelegate = (WordPressAppDelegate *)[[UIApplication sharedApplication] delegate];
-    [appDelegate setAlertRunning:NO];
 }
 
 #pragma mark - TextView delegate
@@ -1339,7 +1363,7 @@ CGFloat const EPVCTextViewTopPadding = 7.0f;
 }
 
 - (void)willAnimateRotationToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation duration:(NSTimeInterval)duration {
-    WPFLogMethod();
+    DDLogMethod();
     CGRect frame = _editorToolbar.frame;
     if (UIDeviceOrientationIsLandscape(interfaceOrientation)) {
         if (IS_IPAD) {
@@ -1370,7 +1394,7 @@ CGFloat const EPVCTextViewTopPadding = 7.0f;
 #pragma mark Keyboard management
 
 - (void)keyboardWillShow:(NSNotification *)notification {
-    WPFLogMethod();
+    DDLogMethod();
 	_isShowingKeyboard = YES;
     
     CGRect originalKeyboardFrame = [[[notification userInfo] objectForKey:UIKeyboardFrameEndUserInfoKey] CGRectValue];
@@ -1396,7 +1420,7 @@ CGFloat const EPVCTextViewTopPadding = 7.0f;
 }
 
 - (void)keyboardWillHide:(NSNotification *)notification {
-    WPFLogMethod();
+    DDLogMethod();
 	_isShowingKeyboard = NO;
     [[UIApplication sharedApplication] setStatusBarHidden:NO withAnimation:UIStatusBarAnimationFade];
     [self.navigationController setNavigationBarHidden:NO animated:YES];
