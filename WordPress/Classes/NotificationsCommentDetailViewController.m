@@ -581,7 +581,7 @@ NS_ENUM(NSUInteger, NotifcationCommentCellType){
         case NotificationCommentCellTypeHeader:
         {
             if (comment.isLoaded || mainComment) {
-                NoteCommentCell *headerCell = [tableView dequeueReusableCellWithIdentifier:NoteCommentHeaderCellIdentifiter];
+                NoteCommentCell *headerCell = [tableView dequeueReusableCellWithIdentifier:NoteCommentHeaderCellIdentifiter forIndexPath:indexPath];
                 if ([comment isParentComment]) {
                     [headerCell displayAsParentComment];
                 }
@@ -590,20 +590,14 @@ NS_ENUM(NSUInteger, NotifcationCommentCellType){
                 cell = headerCell;
 
             } else {
-                NoteCommentLoadingCell *loadingCell = [tableView dequeueReusableCellWithIdentifier:NoteCommentLoadingCellIdentifiter];
+                NoteCommentLoadingCell *loadingCell = [tableView dequeueReusableCellWithIdentifier:NoteCommentLoadingCellIdentifiter forIndexPath:indexPath];
                 cell = loadingCell;
             }
             break;
         }
         case NotificationCommentCellTypeContent:
         {
-            NoteCommentContentCell *contentCell = [tableView dequeueReusableCellWithIdentifier:NoteCommentContentCellIdentifiter];
-            if ([self.contentCache objectForKey:comment]) {
-                contentCell = [self.contentCache objectForKey:comment];
-            } else {
-                [self.contentCache setObject:contentCell forKey:comment];
-            }
-            
+            NoteCommentContentCell *contentCell = [tableView dequeueReusableCellWithIdentifier:NoteCommentContentCellIdentifiter forIndexPath:indexPath];
             contentCell.delegate = self;
             NSString *html = [comment.commentData valueForKey:@"content"];
             if (!html) {
