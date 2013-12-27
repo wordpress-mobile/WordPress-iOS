@@ -257,12 +257,12 @@ static CGFloat const ImageSizeLargeHeight = 480.0f;
 
 - (NSDictionary *)getImageResizeDimensions{
     CGSize smallSize, mediumSize, largeSize;
-    NSUInteger smallSizeWidth = [[self getOptionValue:@"thumbnail_size_w"] intValue] > 0 ? [[self getOptionValue:@"thumbnail_size_w"] unsignedIntegerValue] : ImageSizeSmallWidth;
-    NSUInteger smallSizeHeight = [[self getOptionValue:@"thumbnail_size_h"] intValue] > 0 ? [[self getOptionValue:@"thumbnail_size_h"] intValue] : ImageSizeSmallHeight;
-    NSUInteger mediumSizeWidth = [[self getOptionValue:@"medium_size_w"] intValue] > 0 ? [[self getOptionValue:@"medium_size_w"] intValue] : ImageSizeMediumWidth;
-    NSUInteger mediumSizeHeight = [[self getOptionValue:@"medium_size_h"] intValue] > 0 ? [[self getOptionValue:@"medium_size_h"] intValue] : ImageSizeMediumHeight;
-    NSUInteger largeSizeWidth = [[self getOptionValue:@"large_size_w"] intValue] > 0 ? [[self getOptionValue:@"large_size_w"] intValue] : ImageSizeLargeWidth;
-    NSUInteger largeSizeHeight = [[self getOptionValue:@"large_size_h"] intValue] > 0 ? [[self getOptionValue:@"large_size_h"] intValue] : ImageSizeLargeHeight;
+    NSUInteger smallSizeWidth = [[self getOptionValue:@"thumbnail_size_w"] integerValue] > 0 ? [[self getOptionValue:@"thumbnail_size_w"] integerValue] : ImageSizeSmallWidth;
+    NSUInteger smallSizeHeight = [[self getOptionValue:@"thumbnail_size_h"] integerValue] > 0 ? [[self getOptionValue:@"thumbnail_size_h"] integerValue] : ImageSizeSmallHeight;
+    NSUInteger mediumSizeWidth = [[self getOptionValue:@"medium_size_w"] integerValue] > 0 ? [[self getOptionValue:@"medium_size_w"] integerValue] : ImageSizeMediumWidth;
+    NSUInteger mediumSizeHeight = [[self getOptionValue:@"medium_size_h"] integerValue] > 0 ? [[self getOptionValue:@"medium_size_h"] integerValue] : ImageSizeMediumHeight;
+    NSUInteger largeSizeWidth = [[self getOptionValue:@"large_size_w"] integerValue] > 0 ? [[self getOptionValue:@"large_size_w"] integerValue] : ImageSizeLargeWidth;
+    NSUInteger largeSizeHeight = [[self getOptionValue:@"large_size_h"] integerValue] > 0 ? [[self getOptionValue:@"large_size_h"] integerValue] : ImageSizeLargeHeight;
     
     smallSize = CGSizeMake(smallSizeWidth, smallSizeHeight);
     mediumSize = CGSizeMake(mediumSizeWidth, mediumSizeHeight);
