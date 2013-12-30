@@ -333,14 +333,8 @@
         if (IS_IPHONE) {
             // Build a spinner button if we don't have one
             if (self.spinnerButton == nil) {
-                UIActivityIndicatorView *spinner = nil;
-                UIActivityIndicatorViewStyle style;
-                if ([[UIToolbar class] respondsToSelector:@selector(appearance)]) {
-                    style = UIActivityIndicatorViewStyleGray;
-                } else {
-                    style = UIActivityIndicatorViewStyleWhite;
-                }
-                spinner = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:style];
+                UIActivityIndicatorView *spinner = [[UIActivityIndicatorView alloc]
+                                                    initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleWhite];
                 UIView *customView = [[UIView alloc] initWithFrame:CGRectMake(10.0f, 0.0f, 32.0f, 32.0f)];
                 [spinner setCenter:customView.center];
                 
