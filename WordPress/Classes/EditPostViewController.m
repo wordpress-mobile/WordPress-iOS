@@ -623,7 +623,7 @@ CGFloat const EPVCTextViewTopPadding = 7.0f;
     if (IS_IPAD) {
         [actionSheet showFromBarButtonItem:self.navigationItem.leftBarButtonItem animated:YES];
     } else {
-        [actionSheet showInView:self.view];
+        [actionSheet showFromToolbar:self.navigationController.toolbar];
     }
 }
 
