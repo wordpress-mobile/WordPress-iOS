@@ -149,6 +149,10 @@ CGFloat const EPVCTextViewTopPadding = 7.0f;
         [self.navigationController setToolbarHidden:NO animated:YES];
     }
     
+    for (UIView *view in self.navigationController.toolbar.subviews) {
+        [view setExclusiveTouch:YES];
+    }
+    
     [self refreshUIForCurrentPost];
     
     [_textView setContentOffset:CGPointMake(0, 0)];
