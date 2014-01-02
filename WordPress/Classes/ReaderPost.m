@@ -748,6 +748,7 @@ NSString * const ReaderPostStoredCommentTextKey = @"comment";
         NSRegularExpression *mp4Regex = [NSRegularExpression regularExpressionWithPattern:@"mp4[\\s\\S]+?mp4" options:NSRegularExpressionCaseInsensitive error:&error];
         NSRange mp4Match = [mp4Regex rangeOfFirstMatchInString:mstr options:NSRegularExpressionCaseInsensitive range:match.range];
         if (mp4Match.location == NSNotFound) {
+            DDLogError(@"%@ failed to match mp4 JSON string while formatting video press markup: %@", self, [mstr substringWithRange:match.range]);
             [mstr replaceCharactersInRange:match.range withString:@""];
             continue;
         }
@@ -757,6 +758,7 @@ NSString * const ReaderPostStoredCommentTextKey = @"comment";
         NSRegularExpression *srcRegex = [NSRegularExpression regularExpressionWithPattern:@"http\\S+mp4" options:NSRegularExpressionCaseInsensitive error:&error];
         NSRange srcMatch = [srcRegex rangeOfFirstMatchInString:mp4 options:NSRegularExpressionCaseInsensitive range:NSMakeRange(0, [mp4 length])];
         if (srcMatch.location == NSNotFound) {
+            DDLogError(@"%@ failed to match mp4 src when formatting video press markup: %@", self, mp4);
             [mstr replaceCharactersInRange:match.range withString:@""];
             continue;
         }
