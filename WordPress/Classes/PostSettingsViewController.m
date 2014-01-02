@@ -339,7 +339,6 @@ static NSString *const RemoveGeotagCellIdentifier = @"RemoveGeotagCellIdentifier
     } else if (textField == self.tagsTextField) {
         self.post.tags = self.tagsTextField.text;
     }
-    
 }
 
 - (BOOL)textFieldShouldReturn:(UITextField *)textField {
