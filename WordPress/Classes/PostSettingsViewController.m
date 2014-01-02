@@ -1286,7 +1286,6 @@ static NSString *const RemoveGeotagCellIdentifier = @"RemoveGeotagCellIdentifier
 
 - (void)keyboardWillHide:(NSNotification *)keyboardInfo {
     self.isShowingKeyboard = NO;
-    [self.navigationController setToolbarHidden:YES]; //temporary
 }
 
 #pragma mark - CLLocationManager
