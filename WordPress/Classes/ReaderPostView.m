@@ -661,30 +661,27 @@ const CGFloat RPVControlButtonBorderSize = 0.0f;
 	NSURL *url = imageView.contentURL;
 	
 	CGSize originalSize = imageView.frame.size;
-	CGSize viewSize = imageView.image.size;
+	CGSize imageSize = imageView.image.size;
 	
 	if ([self isEmoji:url]) {
 		CGFloat scale = [UIScreen mainScreen].scale;
-		viewSize.width *= scale;
-		viewSize.height *= scale;
+		imageSize.width *= scale;
+		imageSize.height *= scale;
 	} else {
-        CGFloat ratio = viewSize.width / viewSize.height;
-        CGFloat width = _textContentView.frame.size.width;
-        CGFloat availableWidth = _textContentView.frame.size.width - (_textContentView.edgeInsets.left + _textContentView.edgeInsets.right);
-        
-        viewSize.width = availableWidth;
-        
-        if (imageView.isShowingPlaceholder) {
-            viewSize.height = roundf(width / imageView.placeholderRatio);
+        if (imageView.image) {
+            CGFloat ratio = imageSize.width / imageSize.height;
+            CGFloat width = _textContentView.frame.size.width;
+            CGFloat availableWidth = _textContentView.frame.size.width - (_textContentView.edgeInsets.left + _textContentView.edgeInsets.right);
+            
+            imageSize.width = availableWidth;
+            imageSize.height = roundf(width / ratio) + imageView.edgeInsets.top;
         } else {
-            viewSize.height = roundf(width / ratio);
+            imageSize = CGSizeMake(0.0f, 0.0f);
         }
-        
-        viewSize.height += imageView.edgeInsets.top; // account for the top edge inset.
 	}
     
     // Widths should always match
-    if (viewSize.height != originalSize.height) {
+    if (imageSize.height != originalSize.height) {
         frameChanged = YES;
     }
     
@@ -693,7 +690,7 @@ const CGFloat RPVControlButtonBorderSize = 0.0f;
 	// update all attachments that matchin this URL (possibly multiple images with same size)
 	for (DTTextAttachment *attachment in [self.textContentView.layoutFrame textAttachmentsWithPredicate:pred]) {
 		attachment.originalSize = originalSize;
-		attachment.displaySize = viewSize;
+		attachment.displaySize = imageSize;
 	}
     
     return frameChanged;
@@ -791,30 +788,23 @@ const CGFloat RPVControlButtonBorderSize = 0.0f;
 		}
 		
         DTImageTextAttachment *imageAttachment = (DTImageTextAttachment *)attachment;
-		UIImage *image;
 		
 		if ([imageAttachment.image isKindOfClass:[UIImage class]]) {
-			image = imageAttachment.image;
+			UIImage *image = imageAttachment.image;
 			
             CGFloat ratio = image.size.width / image.size.height;
             frame.size.width = availableWidth;
             frame.size.height = roundf(width / ratio);
-		} else {            
-			if (frame.size.width > 1.0f && frame.size.height > 1.0f) {
-                CGFloat ratio = frame.size.width / frame.size.height;
-                frame.size.width = availableWidth;
-                frame.size.height = roundf(width / ratio);
-            } else {
-                frame.size.width = availableWidth;
-                frame.size.height = roundf(width * RPVMaxImageHeightPercentage);
-            }
+
+            // offset the top edge inset keeping the image from bumping the text above it.
+            frame.size.height += edgeInsets.top;
+		} else {
+            // minimal frame to suppress drawing context errors with 0 height or width.
+            frame.size.width = 1.0f;
+            frame.size.height = 1.0f;
 		}
-		
-		// offset the top edge inset keeping the image from bumping the text above it.
-		frame.size.height += edgeInsets.top;
-		
+				
 		ReaderImageView *imageView = [[ReaderImageView alloc] initWithFrame:frame];
-		imageView.contentMode = UIViewContentModeScaleAspectFit;
 		imageView.edgeInsets = edgeInsets;
         
 		[_mediaArray addObject:imageView];
@@ -822,20 +812,15 @@ const CGFloat RPVControlButtonBorderSize = 0.0f;
 		[imageView addTarget:self action:@selector(imageLinkAction:) forControlEvents:UIControlEventTouchUpInside];
 		
 		if ([imageAttachment.image isKindOfClass:[UIImage class]]) {
-			[imageView setImage:image];
+			[imageView setImage:imageAttachment.image];
 		} else {
-			imageView.backgroundColor = [UIColor colorWithRed:192.0f/255.0f green:192.0f/255.0f blue:192.0f/255.0f alpha:1.0];
             
             [self.mediaQueue enqueueMedia:imageView
                                   withURL:attachment.contentURL
-                         placeholderImage:image
-                                     size:CGSizeMake(width, 0)
+                         placeholderImage:nil
+                                     size:CGSizeMake(width, 0.0f) // Passing zero for height to get the correct aspect ratio
                                 isPrivate:self.post.isPrivate
-                                  success:^(ReaderMediaView *readerMediaView) {
-                                      ReaderImageView *imageView = (ReaderImageView *)readerMediaView;
-                                      imageView.contentMode = UIViewContentModeScaleAspectFit;
-                                      imageView.backgroundColor = [UIColor clearColor];
-                                  }
+                                  success:nil
                                   failure:nil];
 		}
         
@@ -855,31 +840,19 @@ const CGFloat RPVControlButtonBorderSize = 0.0f;
 			return nil; // Can't handle whatever this is :P
 		}
         
-		// make sure we have a reasonable size.
-		if (frame.size.width > width) {
-            if (frame.size.height == 0) {
-                frame.size.height = roundf(frame.size.width * 0.66f);
-            }
-            CGFloat ratio = frame.size.width / frame.size.height;
-            frame.size.width = availableWidth;
-            frame.size.height = roundf(width / ratio);
-		}
-		
-		// offset the top edge inset keeping the image from bumping the text above it.
-		frame.size.height += edgeInsets.top;
+        // we won't show the vid until we've loaded its thumb.
+        // minimal frame to suppress drawing context errors with 0 height or width.
+        frame.size.width = 1.0f;
+        frame.size.height = 1.0f;
         
 		ReaderVideoView *videoView = [[ReaderVideoView alloc] initWithFrame:frame];
-		videoView.contentMode = UIViewContentModeCenter;
-		videoView.backgroundColor = [UIColor colorWithRed:192.0f/255.0f green:192.0f/255.0f blue:192.0f/255.0f alpha:1.0];
 		videoView.edgeInsets = edgeInsets;
         
 		[_mediaArray addObject:videoView];
 		[videoView setContentURL:attachment.contentURL ofType:videoType success:^(id readerVideoView) {
-			[(ReaderVideoView *)readerVideoView setContentMode:UIViewContentModeScaleAspectFit];
 			[self handleMediaViewLoaded:readerVideoView];
 		} failure:^(id readerVideoView, NSError *error) {
 			[self handleMediaViewLoaded:readerVideoView];
-			
 		}];
         
 		[videoView addTarget:self action:@selector(videoLinkAction:) forControlEvents:UIControlEventTouchUpInside];

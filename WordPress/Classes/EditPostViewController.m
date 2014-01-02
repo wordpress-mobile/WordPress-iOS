@@ -131,14 +131,18 @@ CGFloat const EPVCTextViewTopPadding = 7.0f;
     
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(keyboardWillShow:) name:UIKeyboardWillShowNotification object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(keyboardDidShow:) name:UIKeyboardDidShowNotification object:nil];
-	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(keyboardWillHide:) name:UIKeyboardWillHideNotification object:nil];
-    
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(keyboardWillHide:) name:UIKeyboardWillHideNotification object:nil];
+
     if(self.navigationController.navigationBarHidden) {
         [self.navigationController setNavigationBarHidden:NO animated:YES];
     }
     
     if (self.navigationController.toolbarHidden) {
         [self.navigationController setToolbarHidden:NO animated:YES];
+    }
+    
+    for (UIView *view in self.navigationController.toolbar.subviews) {
+        [view setExclusiveTouch:YES];
     }
     
     [self refreshUIForCurrentPost];
@@ -149,6 +153,12 @@ CGFloat const EPVCTextViewTopPadding = 7.0f;
 - (void)viewWillDisappear:(BOOL)animated {
     DDLogMethod();
     [super viewWillDisappear:animated];
+    
+    [[NSNotificationCenter defaultCenter] removeObserver:self name:UIKeyboardWillShowNotification object:nil];
+    [[NSNotificationCenter defaultCenter] removeObserver:self name:UIKeyboardDidShowNotification object:nil];
+    [[NSNotificationCenter defaultCenter] removeObserver:self name:UIKeyboardWillHideNotification object:nil];
+
+    
     [self.navigationController setToolbarHidden:YES animated:YES];
     
     [[NSNotificationCenter defaultCenter] removeObserver:self name:UIKeyboardWillShowNotification object:nil];

@@ -737,24 +737,39 @@ NSString * const ReaderPostStoredCommentTextKey = @"comment";
 - (NSString *)formatVideoPress:(NSString *)str {
     NSMutableString *mstr = [str mutableCopy];
     NSError *error;
+    
+    // Find instances of VideoPress markup.
     NSRegularExpression *regex = [NSRegularExpression regularExpressionWithPattern:@"<div[\\S\\s]+?<div.*class=\"videopress-placeholder[\\s\\S]*?</noscript>" options:NSRegularExpressionCaseInsensitive error:&error];
     NSArray *matches = [regex matchesInString:mstr options:NSRegularExpressionCaseInsensitive range:NSMakeRange(0, [mstr length])];
     for (NSTextCheckingResult *match in [matches reverseObjectEnumerator]) {
         // compose videopress string
 
-        NSRegularExpression *mregex = [NSRegularExpression regularExpressionWithPattern:@"mp4[\\s\\S]+?mp4" options:NSRegularExpressionCaseInsensitive error:&error];
-        NSRange mmatch = [mregex rangeOfFirstMatchInString:mstr options:NSRegularExpressionCaseInsensitive range:match.range];
-        NSString *mp4 = [mstr substringWithRange:mmatch];
-        NSRegularExpression *sregex = [NSRegularExpression regularExpressionWithPattern:@"http\\S+mp4" options:NSRegularExpressionCaseInsensitive error:&error];
-        NSRange smatch = [sregex rangeOfFirstMatchInString:mp4 options:NSRegularExpressionCaseInsensitive range:NSMakeRange(0, [mp4 length])];
-        NSString *src = [mp4 substringWithRange:smatch];
+        // Find the mp4 in the markup.
+        NSRegularExpression *mp4Regex = [NSRegularExpression regularExpressionWithPattern:@"mp4[\\s\\S]+?mp4" options:NSRegularExpressionCaseInsensitive error:&error];
+        NSRange mp4Match = [mp4Regex rangeOfFirstMatchInString:mstr options:NSRegularExpressionCaseInsensitive range:match.range];
+        if (mp4Match.location == NSNotFound) {
+            DDLogError(@"%@ failed to match mp4 JSON string while formatting video press markup: %@", self, [mstr substringWithRange:match.range]);
+            [mstr replaceCharactersInRange:match.range withString:@""];
+            continue;
+        }
+        NSString *mp4 = [mstr substringWithRange:mp4Match];
+        
+        // Get the mp4 url.
+        NSRegularExpression *srcRegex = [NSRegularExpression regularExpressionWithPattern:@"http\\S+mp4" options:NSRegularExpressionCaseInsensitive error:&error];
+        NSRange srcMatch = [srcRegex rangeOfFirstMatchInString:mp4 options:NSRegularExpressionCaseInsensitive range:NSMakeRange(0, [mp4 length])];
+        if (srcMatch.location == NSNotFound) {
+            DDLogError(@"%@ failed to match mp4 src when formatting video press markup: %@", self, mp4);
+            [mstr replaceCharactersInRange:match.range withString:@""];
+            continue;
+        }
+        NSString *src = [mp4 substringWithRange:srcMatch];
         src = [src stringByReplacingOccurrencesOfString:@"\\/" withString:@"/"];
         
+        // Compose a video tag to replace the default markup.
         NSString *fmt = @"<video src=\"%@\"><source src=\"%@\" type=\"video/mp4\"></video>";
         NSString *vid = [NSString stringWithFormat:fmt, src, src];
         
         [mstr replaceCharactersInRange:match.range withString:vid];
-
     }
 
     return mstr;
