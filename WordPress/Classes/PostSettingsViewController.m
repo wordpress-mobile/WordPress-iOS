@@ -339,6 +339,7 @@ static NSString *const RemoveGeotagCellIdentifier = @"RemoveGeotagCellIdentifier
     } else if (textField == self.tagsTextField) {
         self.post.tags = self.tagsTextField.text;
     }
+    
 }
 
 - (BOOL)textFieldShouldReturn:(UITextField *)textField {
@@ -1286,6 +1287,7 @@ static NSString *const RemoveGeotagCellIdentifier = @"RemoveGeotagCellIdentifier
 
 - (void)keyboardWillHide:(NSNotification *)keyboardInfo {
     self.isShowingKeyboard = NO;
+    [self.navigationController setToolbarHidden:YES]; //temporary
 }
 
 #pragma mark - CLLocationManager
