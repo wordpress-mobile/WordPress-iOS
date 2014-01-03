@@ -521,15 +521,14 @@
         [aWebView stringByEvaluatingJavaScriptFromString:[NSString stringWithFormat:@"Reader2.set_loaded_items(%@);", self.readerAllItems]];
         [aWebView stringByEvaluatingJavaScriptFromString:[NSString stringWithFormat:@"Reader2.show_article_details(%@);", self.detailContent]];
 
-        //Set proper zoom level for content. Require iOS 5.0 or above
+        //Set proper zoom level for content
         CGSize contentSize = aWebView.scrollView.contentSize;
         CGSize viewSize = self.view.bounds.size;
+        float scale = viewSize.width / contentSize.width;
         
-        float rw = viewSize.width / contentSize.width;
-        
-        aWebView.scrollView.minimumZoomScale = rw;
-        aWebView.scrollView.maximumZoomScale = rw;
-        aWebView.scrollView.zoomScale = rw;
+        aWebView.scrollView.minimumZoomScale = scale;
+        aWebView.scrollView.maximumZoomScale = scale;
+        aWebView.scrollView.zoomScale = scale;
         
         if (IS_IPAD) {
             //Make text size bigger for iPad
