@@ -26,7 +26,7 @@ static CGFloat const blavatarImageSize = 50.f;
 @property (nonatomic) BOOL sectionDeletedByController;
 
 @property (nonatomic, strong) NSManagedObjectID *selectedObjectID;
-@property (nonatomic, copy) void (^selectedCompletionHandler)(NSManagedObjectID *selectedObjectID, BOOL finished);
+@property (nonatomic, copy) void (^selectedCompletionHandler)(NSManagedObjectID *selectedObjectID);
 @property (nonatomic, copy) void (^cancelCompletionHandler)(void);
 
 @end
@@ -34,9 +34,9 @@ static CGFloat const blavatarImageSize = 50.f;
 @implementation BlogSelectorViewController
 
 - (id)initWithSelectedBlogObjectID:(NSManagedObjectID *)objectID
-                selectedCompletion:(void (^)(NSManagedObjectID *, BOOL))selected
+                selectedCompletion:(void (^)(NSManagedObjectID *))selected
                   cancelCompletion:(void (^)())cancel {
-    self = [super initWithStyle:UITableViewStylePlain];
+    self = [super initWithStyle:UITableViewStyleGrouped];
     
     if (self) {
         _selectedObjectID = objectID;
@@ -61,21 +61,14 @@ static CGFloat const blavatarImageSize = 50.f;
     self.navigationItem.leftBarButtonItem = cancelButtonItem;
     
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(wordPressComAccountChanged) name:WPAccountDefaultWordPressComAccountChangedNotification object:nil];
-
+    
     // Remove one-pixel gap resulting from a top-aligned grouped table view
     if (IS_IPHONE) {
         UIEdgeInsets tableInset = [self.tableView contentInset];
         tableInset.top = -1;
         self.tableView.contentInset = tableInset;
-
-        UIBarButtonItem *selectButtonItem = [[UIBarButtonItem alloc] initWithTitle:NSLocalizedString(@"Select", @"")
-                                                                             style:UIBarButtonItemStylePlain
-                                                                            target:self
-                                                                            action:@selector(selectButtonTapped:)];
-        
-        self.navigationItem.rightBarButtonItem = selectButtonItem;
     }
-    
+
     [WPStyleGuide configureColorsForView:self.view andTableView:self.tableView];
  
     [self.tableView registerClass:[WPTableViewCell class] forCellReuseIdentifier:BlogCellIdentifier];
@@ -115,12 +108,6 @@ static CGFloat const blavatarImageSize = 50.f;
 - (IBAction)cancelButtonTapped:(id)sender {
     if (self.cancelCompletionHandler) {
         self.cancelCompletionHandler();
-    }
-}
-
-- (IBAction)selectButtonTapped:(id)sender {
-    if (self.selectedCompletionHandler) {
-        self.selectedCompletionHandler(self.selectedObjectID, YES);
     }
 }
 
@@ -200,10 +187,8 @@ static CGFloat const blavatarImageSize = 50.f;
 
 - (UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section {
     WPTableViewSectionHeaderView *header = [[WPTableViewSectionHeaderView alloc] initWithFrame:CGRectMake(0, 0, CGRectGetWidth(self.view.bounds), 0)];
+    header.fixedWidth = 0.0;
     header.title = [self tableView:self.tableView titleForHeaderInSection:section];
-    if (IS_IPAD) {
-        header.fixedWidth = WPTableViewFixedWidth;
-    }
     return header;
 }
 
@@ -238,8 +223,13 @@ static CGFloat const blavatarImageSize = 50.f;
         [tableView reloadRowsAtIndexPaths:@[previousIndexPath] withRowAnimation:UITableViewRowAnimationNone];
     }
 
+    // Fire off the selection after a short delay to let animations complete for selection/deselection
     if (self.selectedCompletionHandler) {
-        self.selectedCompletionHandler(self.selectedObjectID, IS_IPAD ? YES : NO);
+        double delayInSeconds = 0.2;
+        dispatch_time_t popTime = dispatch_time(DISPATCH_TIME_NOW, (int64_t)(delayInSeconds * NSEC_PER_SEC));
+        dispatch_after(popTime, dispatch_get_main_queue(), ^(void){
+            self.selectedCompletionHandler(self.selectedObjectID);
+        });
     }
 }
 

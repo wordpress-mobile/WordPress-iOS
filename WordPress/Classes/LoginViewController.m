@@ -60,11 +60,11 @@
 @implementation LoginViewController
 
 CGFloat const GeneralWalkthroughIconVerticalOffset = 77;
-CGFloat const GeneralWalkthroughStandardOffset = 16;
-CGFloat const GeneralWalkthroughMaxTextWidth = 289.0;
+CGFloat const GeneralWalkthroughStandardOffset = 15;
+CGFloat const GeneralWalkthroughMaxTextWidth = 290.0;
 CGFloat const GeneralWalkthroughTextFieldWidth = 320.0;
 CGFloat const GeneralWalkthroughTextFieldHeight = 44.0;
-CGFloat const GeneralWalkthroughButtonWidth = 289.0;
+CGFloat const GeneralWalkthroughButtonWidth = 290.0;
 CGFloat const GeneralWalkthroughButtonHeight = 41.0;
 CGFloat const GeneralWalkthroughSecondaryButtonHeight = 33;
 CGFloat const GeneralWalkthroughStatusBarOffset = 20.0;
@@ -374,6 +374,7 @@ CGFloat const GeneralWalkthroughStatusBarOffset = 20.0;
         _passwordText.font = [WPNUXUtility textFieldFont];
         _passwordText.delegate = self;
         _passwordText.secureTextEntry = YES;
+        _passwordText.showSecureTextEntryToggle = YES;
         _passwordText.showTopLineSeparator = YES;
         _passwordText.autoresizingMask = UIViewAutoresizingFlexibleRightMargin | UIViewAutoresizingFlexibleLeftMargin;
         [_mainView addSubview:_passwordText];
@@ -676,8 +677,7 @@ CGFloat const GeneralWalkthroughStatusBarOffset = 20.0;
 
 - (void)displayErrorMessages
 {
-    UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"Error", nil) message:NSLocalizedString(@"Please fill out all the fields", nil) delegate:nil cancelButtonTitle:NSLocalizedString(@"OK", nil) otherButtonTitles:nil, nil];
-    [alertView show];
+    [WPError showAlertWithTitle:NSLocalizedString(@"Error", nil) message:NSLocalizedString(@"Please fill out all the fields", nil) withSupportButton:NO];
 }
 
 - (void)setAuthenticating:(BOOL)authenticating withStatusMessage:(NSString *)status {
@@ -856,7 +856,7 @@ CGFloat const GeneralWalkthroughStatusBarOffset = 20.0;
     CGFloat animationDuration = [[keyboardInfo objectForKey:UIKeyboardAnimationDurationUserInfoKey] floatValue];
     CGRect keyboardFrame = [[[notification userInfo] objectForKey:UIKeyboardFrameEndUserInfoKey] CGRectValue];
     keyboardFrame = [self.view convertRect:keyboardFrame fromView:nil];
-    CGFloat newKeyboardOffset = (CGRectGetMaxY(_signInButton.frame) - CGRectGetMinY(keyboardFrame)) + 0.5 * GeneralWalkthroughStandardOffset;
+    CGFloat newKeyboardOffset = (CGRectGetMaxY(_signInButton.frame) - CGRectGetMinY(keyboardFrame)) + GeneralWalkthroughStandardOffset;
 
     if (newKeyboardOffset < 0) {
         newKeyboardOffset = 0;

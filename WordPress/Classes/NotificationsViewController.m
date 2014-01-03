@@ -17,6 +17,7 @@
 #import "NotificationSettingsViewController.h"
 #import "WPAccount.h"
 #import "WPWebViewController.h"
+#import "Note.h"
 
 NSString * const NotificationsLastSyncDateKey = @"NotificationsLastSyncDate";
 NSString * const NotificationsJetpackInformationURL = @"http://jetpack.me/about/";
@@ -53,7 +54,7 @@ NSString * const NotificationsJetpackInformationURL = @"http://jetpack.me/about/
 - (NSString *)noResultsMessageText
 {
     if ([self showJetpackConnectMessage]) {
-        return NSLocalizedString(@"Jetpack supercharges your self‑hosted WordPress site.", @"Displayed in the notifications view when a self-hosted user is not connected to Jetpack");
+        return NSLocalizedString(@"Jetpack supercharges your self-hosted WordPress site.", @"Displayed in the notifications view when a self-hosted user is not connected to Jetpack");
     } else {
         return nil;
     }
@@ -84,7 +85,7 @@ NSString * const NotificationsJetpackInformationURL = @"http://jetpack.me/about/
 }
 
 - (BOOL)showJetpackConnectMessage {
-    return [WPAccount defaultWordPressComAccount] != nil;
+    return [WPAccount defaultWordPressComAccount] == nil;
 }
 
 - (void)dealloc {
@@ -93,7 +94,7 @@ NSString * const NotificationsJetpackInformationURL = @"http://jetpack.me/about/
 
 - (void)viewDidLoad
 {
-    WPFLogMethod();
+    DDLogMethod();
     [super viewDidLoad];
     
     [WPStyleGuide configureColorsForView:self.view andTableView:self.tableView];
@@ -102,7 +103,7 @@ NSString * const NotificationsJetpackInformationURL = @"http://jetpack.me/about/
 }
 
 - (void)viewWillAppear:(BOOL)animated {
-    WPFLogMethod();
+    DDLogMethod();
     [super viewWillAppear:animated];
 }
 
@@ -199,7 +200,7 @@ NSString * const NotificationsJetpackInformationURL = @"http://jetpack.me/about/
 
         _isPushingViewController = YES;
         if ([note isComment]) {
-            NotificationsCommentDetailViewController *detailViewController = [[NotificationsCommentDetailViewController alloc] initWithNibName:@"NotificationsCommentDetailViewController" bundle:nil];
+            NotificationsCommentDetailViewController *detailViewController = [[NotificationsCommentDetailViewController alloc] initWithNote:note];
             detailViewController.note = note;
             detailViewController.user = [[WPAccount defaultWordPressComAccount] restApi];
             [self.navigationController pushViewController:detailViewController animated:YES];
@@ -275,7 +276,7 @@ NSString * const NotificationsJetpackInformationURL = @"http://jetpack.me/about/
     
     NSNumber *timestamp;
     NSArray *notes = [self.resultsController fetchedObjects];
-    if ([notes count] > 0) {
+    if (userInteraction == NO && [notes count] > 0) {
         Note *note = [notes objectAtIndex:0];
         timestamp = note.timestamp;
     } else {

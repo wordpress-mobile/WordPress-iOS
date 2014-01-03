@@ -12,13 +12,13 @@
 
 @interface Note : NSManagedObject
 
-@property (nonatomic, retain) NSNumber * timestamp;
-@property (nonatomic, retain) NSString * type;
-@property (nonatomic, retain) NSString * subject;
-@property (nonatomic, retain) NSData * payload;
+@property (nonatomic, retain) NSNumber *timestamp;
+@property (nonatomic, retain) NSString *type;
+@property (nonatomic, retain) NSString *subject;
+@property (nonatomic, retain) NSData *payload;
 @property (nonatomic, retain) NSNumber *unread;
-@property (nonatomic, retain) NSString * icon;
-@property (nonatomic, retain) NSString * noteID;
+@property (nonatomic, retain) NSString *icon;
+@property (nonatomic, retain) NSString *noteID;
 @property (nonatomic, strong, readonly) NSString *commentText;
 @property (nonatomic, strong, readonly) NSDictionary *noteData;
 @property (nonatomic, retain) WPAccount *account;
@@ -31,6 +31,7 @@
 
 - (void)syncAttributes:(NSDictionary *)data;
 - (void)updateAttributes:(NSDictionary *)data;
+- (NSDictionary *)getNoteData;
 
 + (void)mergeNewNotes:(NSArray *)notesData;
 

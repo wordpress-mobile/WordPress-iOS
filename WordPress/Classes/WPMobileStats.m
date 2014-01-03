@@ -16,6 +16,7 @@
 #import "WPAccount.h"
 #import "ContextManager.h"
 #import "Blog.h"
+#import "Constants.h"
 
 static BOOL hasRecordedAppOpenedEvent = NO;
 
@@ -48,6 +49,9 @@ NSString *const StatsEventReaderPublishedComment = @"Reader - Published Comment"
 NSString *const StatsEventReaderReblogged = @"Reader - Reblogged";
 NSString *const StatsEventReaderLikedPost = @"Reader - Liked Post";
 NSString *const StatsEventReaderUnlikedPost = @"Reader - Unliked Post";
+NSString *const StatsPropertyReaderOpenedFromExternalURL = @"reader_opened_from_external_url";
+NSString *const StatsPropertyReaderOpenedFromExternalURLCount = @"reader_opened_from_external_url_count";
+NSString *const StatsEventReaderOpenedFromExternalSource = @"Reader - Opened From External Source";
 
 // Reader Detail
 NSString *const StatsPropertyReaderDetailClickedPrevious = @"reader_detail_clicked_previous";
@@ -110,6 +114,11 @@ NSString *const StatsEventPostDetailClickedUpdate = @"Clicked Update Button";
 NSString *const StatsEventPostDetailClickedPublish = @"Clicked Publish Button";
 NSString *const StatsEventPostDetailOpenedEditor = @"Opened Editor";
 NSString *const StatsEventPostDetailClosedEditor = @"Closed Editor";
+NSString *const StatsPropertyPostDetailEditorOpenedBy = @"opened_by";
+NSString *const StatsPropertyPostDetailEditorOpenedOpenedByPostsView = @"posts_view";
+NSString *const StatsPropertyPostDetailEditorOpenedOpenedByTabBarButton = @"tab_bar_button";
+NSString *const StatsPropertyPostDetailClickedBlogSelector = @"clicked_blog_selector";
+NSString *const StatsPropertyPostDetailHasExternalKeyboard = @"has_external_keybord";
 
 // Post Detail - Settings
 NSString *const StatsPropertyPostDetailSettingsClickedStatus = @"settings_clicked_status";
@@ -193,6 +202,7 @@ NSString *const StatsEventNUXFirstWalkthroughUserSkippedConnectingToJetpack = @"
 
 
 // NUX Create Account
+NSString *const StatsEventAccountCreationOpenedFromTabBar = @"NUX - Create Account Opened From Tab Bar";
 NSString *const StatsEventNUXCreateAccountOpened = @"NUX - Create Account - Opened";
 NSString *const StatsEventNUXCreateAccountClickedCancel = @"NUX - Create Account - Clicked Cancel";
 NSString *const StatsEventNUXCreateAccountClickedHelp = @"NUX - Create Account - Clicked Help";
@@ -358,6 +368,22 @@ NSString *const StatsEventAddBlogsClickedAddSelected = @"Add Blogs - Clicked Add
     [[self sharedInstance] flagProperty:property forEvent:event];
 }
 
++ (void)unflagProperty:(NSString *)property forEvent:(NSString *)event
+{
+    [[self sharedInstance] unflagProperty:property forEvent:event];
+}
+
++ (void)flagSuperProperty:(NSString *)property
+{
+    [[self sharedInstance] flagSuperProperty:property];
+}
+
++ (void)incrementSuperProperty:(NSString *)property
+{
+    [[self sharedInstance] incrementSuperProperty:property];
+}
+
+
 #pragma mark - Private Methods
 
 - (BOOL)connectedToWordPressDotCom
@@ -423,6 +449,29 @@ NSString *const StatsEventAddBlogsClickedAddSelected = @"Add Blogs - Clicked Add
 - (void)flagProperty:(NSString *)property forEvent:(NSString *)event
 {
     [self saveProperty:property withValue:@(YES) forEvent:event];
+}
+
+- (void)unflagProperty:(NSString *)property forEvent:(NSString *)event
+{
+    [self saveProperty:property withValue:@(NO) forEvent:event];
+}
+
+- (void)flagSuperProperty:(NSString *)property
+{
+    NSParameterAssert(property != nil);
+    NSMutableDictionary *superProperties = [[NSMutableDictionary alloc] initWithDictionary:[Mixpanel sharedInstance].currentSuperProperties];
+    superProperties[property] = @(YES);
+    [[Mixpanel sharedInstance] registerSuperProperties:superProperties];
+}
+
+
+- (void)incrementSuperProperty:(NSString *)property
+{
+    NSParameterAssert(property != nil);
+    NSMutableDictionary *superProperties = [[NSMutableDictionary alloc] initWithDictionary:[Mixpanel sharedInstance].currentSuperProperties];
+    NSUInteger propertyValue = [superProperties[property] integerValue];
+    superProperties[property] = @(++propertyValue);
+    [[Mixpanel sharedInstance] registerSuperProperties:superProperties];
 }
 
 - (id)property:(NSString *)property forEvent:(NSString *)event
