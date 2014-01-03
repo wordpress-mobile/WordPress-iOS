@@ -9,6 +9,8 @@
 #import "WPCategoryTree.h"
 #import "Category.h"
 #import "NSString+XMLExtensions.h"
+#import "WPTableViewCell.h"
+#import "WPAddCategoryViewController.h"
 
 static NSString *const SelectionTableRowCell = @"SelectionTableRowCell";
 
@@ -27,11 +29,11 @@ static NSString *const SelectionTableRowCell = @"SelectionTableRowCell";
 @implementation WPSegmentedSelectionTableViewController
 
 - (id)init {
-    self = [self initWithNibName:@"WPSelectionTableViewController" bundle:nil];
+    self = [super init];
     if (self) {
         self.autoReturnInRadioSelectMode = YES;
         _categoryIndentationLevelsDict = [[NSMutableDictionary alloc] init];
-        [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(handleNewCategory:) name:WPNewCategoryCreatedAndUpdatedInBlogNotificationName object:nil];
+        [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(handleNewCategory:) name:NewCategoryCreatedAndUpdatedInBlogNotification object:nil];
     }
     return self;
 }
@@ -39,9 +41,9 @@ static NSString *const SelectionTableRowCell = @"SelectionTableRowCell";
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-    self.view.backgroundColor = [WPStyleGuide itsEverywhereGrey];
-    
-    [self.tableView registerClass:[UITableViewCell class] forCellReuseIdentifier:SelectionTableRowCell];
+    [WPStyleGuide configureColorsForView:self.view andTableView:self.tableView];
+    self.tableView.tableFooterView = [[UIView alloc] initWithFrame:CGRectZero]; // Hide extra cell separators.
+    [self.tableView registerClass:[WPTableViewCell class] forCellReuseIdentifier:SelectionTableRowCell];
 }
 
 - (void)clean {
@@ -178,23 +180,6 @@ static NSString *const SelectionTableRowCell = @"SelectionTableRowCell";
     }
 
     return (UITableViewCellAccessoryType)([[self.selectionStatusOfObjects objectAtIndex:previousRows] boolValue] == YES ? UITableViewCellAccessoryCheckmark : UITableViewCellAccessoryNone);
-}
-
-- (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
-    CGFloat height = 38.0;
-    return height;
-}
-
-- (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section {
-    CGFloat height = 10.0;
-    [tableView setSectionHeaderHeight:height];
-    return height;
-}
-
-- (CGFloat)tableView:(UITableView *)tableView heightForFooterInSection:(NSInteger)section {
-    CGFloat height = 0.5;
-    [tableView setSectionFooterHeight:height];
-    return height;
 }
 
 @end

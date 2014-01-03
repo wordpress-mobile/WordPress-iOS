@@ -65,7 +65,7 @@
     [super viewDidLoad];
     
     self.tableView.tableHeaderView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, CGRectGetWidth(self.view.bounds), 10)];
-    
+
     self.title = NSLocalizedString(@"Media", nil);
 	
 	self.currentOrientation = [self interpretOrientation:[UIDevice currentDevice].orientation];
@@ -149,10 +149,10 @@
 }
 
 - (void)addNotifications {
-	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(mediaDidUploadSuccessfully:) name:VideoUploadSuccessful object:nil];
-	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(mediaDidUploadSuccessfully:) name:ImageUploadSuccessful object:nil];
-	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(mediaUploadFailed:) name:VideoUploadFailed object:nil];
-	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(mediaUploadFailed:) name:ImageUploadFailed object:nil];
+	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(mediaDidUploadSuccessfully:) name:VideoUploadSuccessfulNotification object:nil];
+	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(mediaDidUploadSuccessfully:) name:ImageUploadSuccessfulNotification object:nil];
+	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(mediaUploadFailed:) name:VideoUploadFailedNotification object:nil];
+	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(mediaUploadFailed:) name:ImageUploadFailedNotification object:nil];
 }
 
 - (void)removeNotifications{
@@ -208,12 +208,17 @@
 
     cell.selectionStyle = UITableViewCellSelectionStyleBlue;
     if (media.remoteStatus == MediaRemoteStatusPushing) {
-        cell.detailTextLabel.text = [NSString stringWithFormat:NSLocalizedString(@"Uploading: %.1f%%. Tap to cancel.", @""), media.progress * 100.0];
+        CGFloat mediaProgress = media.progress * 100.0;
+        if ([@(mediaProgress) floatValue] < 100.0) {
+            cell.detailTextLabel.text = [NSString stringWithFormat:NSLocalizedString(@"%.1f%%. [Cancel]", @"Uploading message with percentage displayed when an image is uploading, tapping cancels."), mediaProgress];
+        } else {
+            cell.detailTextLabel.text = [NSString stringWithFormat:NSLocalizedString(@"Processing...", @"Uploading message displayed when an image has finished uploading."), mediaProgress];
+        }
     } else if (media.remoteStatus == MediaRemoteStatusProcessing) {
-        cell.detailTextLabel.text = NSLocalizedString(@"Preparing for upload...", @"");
+        cell.detailTextLabel.text = NSLocalizedString(@"Preparing...", @"Uploading message when an image is about to be uploaded.");
         cell.selectionStyle = UITableViewCellSelectionStyleNone;
     } else if (media.remoteStatus == MediaRemoteStatusFailed) {
-        cell.detailTextLabel.text = NSLocalizedString(@"Upload failed - tap to retry.", @"");
+        cell.detailTextLabel.text = NSLocalizedString(@"Upload failed. [Retry]", @"Uploading message when a media upload has failed, tapping retries.");
     } else {
         if ([media.mediaType isEqualToString:@"image"]) {
             cell.detailTextLabel.text = [NSString stringWithFormat:@"%dx%d %@", 
@@ -280,7 +285,7 @@
             if (error.domain == NSURLErrorDomain && error.code == NSURLErrorCancelled) {
                 return;
             }
-            [WPError showAlertWithError:error title:NSLocalizedString(@"Upload failed", @"")];
+            [WPError showNetworkingAlertWithError:error title:NSLocalizedString(@"Upload failed", @"")];
         }];
     } else if (media.remoteStatus == MediaRemoteStatusPushing) {
         [media cancelUpload];
@@ -389,13 +394,13 @@
 	else if(_isShowingChangeOrientationActionSheet == YES) {
 		switch (buttonIndex) {
 			case 0:
-				self.currentOrientation = kPortrait;
+				self.currentOrientation = MediaOrientationPortrait;
 				break;
 			case 1:
-				self.currentOrientation = kLandscape;
+				self.currentOrientation = MediaOrientationLandscape;
 				break;
 			default:
-				self.currentOrientation = kPortrait;
+				self.currentOrientation = MediaOrientationPortrait;
 				break;
 		}
 		[self processRecordedVideo];
@@ -405,31 +410,31 @@
             switch (buttonIndex) {
                 case 0:
                     if (actionSheet.numberOfButtons == 3)
-                        [self useImage:[self resizeImage:_currentImage toSize:kResizeOriginal]];
+                        [self useImage:[self resizeImage:_currentImage toSize:MediaResizeOriginal]];
                     else
-                        [self useImage:[self resizeImage:_currentImage toSize:kResizeSmall]];
+                        [self useImage:[self resizeImage:_currentImage toSize:MediaResizeSmall]];
                     break;
                 case 1:
                     if (actionSheet.numberOfButtons == 3)
                         [self showCustomSizeAlert];
                     else if (actionSheet.numberOfButtons == 4)
-                        [self useImage:[self resizeImage:_currentImage toSize:kResizeOriginal]];
+                        [self useImage:[self resizeImage:_currentImage toSize:MediaResizeOriginal]];
                     else
-                        [self useImage:[self resizeImage:_currentImage toSize:kResizeMedium]];
+                        [self useImage:[self resizeImage:_currentImage toSize:MediaResizeMedium]];
                     break;
                 case 2:
                     if (actionSheet.numberOfButtons == 4)
                         [self showCustomSizeAlert];
                     else if (actionSheet.numberOfButtons == 5)
-                        [self useImage:[self resizeImage:_currentImage toSize:kResizeOriginal]];
+                        [self useImage:[self resizeImage:_currentImage toSize:MediaResizeOriginal]];
                     else
-                        [self useImage:[self resizeImage:_currentImage toSize:kResizeLarge]];
+                        [self useImage:[self resizeImage:_currentImage toSize:MediaResizeLarge]];
                     break;
                 case 3:
                     if (actionSheet.numberOfButtons == 5)
                         [self showCustomSizeAlert];
                     else
-                        [self useImage:[self resizeImage:_currentImage toSize:kResizeOriginal]];
+                        [self useImage:[self resizeImage:_currentImage toSize:MediaResizeOriginal]];
                     break;
                 case 4: 
                     [self showCustomSizeAlert]; 
@@ -438,9 +443,6 @@
         }
 		self.isShowingResizeActionSheet = NO;
 	}
-    
-    WordPressAppDelegate *appDelegate = (WordPressAppDelegate*)[[UIApplication sharedApplication] delegate];
-    [appDelegate setAlertRunning:NO];
     
     self.currentActionSheet = nil;
 }
@@ -593,28 +595,28 @@
 }
 
 - (MediaOrientation)interpretOrientation:(UIDeviceOrientation)theOrientation {
-	MediaOrientation result = kPortrait;
+	MediaOrientation result = MediaOrientationPortrait;
 	switch (theOrientation) {
 		case UIDeviceOrientationPortrait:
-			result = kPortrait;
+			result = MediaOrientationPortrait;
 			break;
 		case UIDeviceOrientationPortraitUpsideDown:
-			result = kPortrait;
+			result = MediaOrientationPortrait;
 			break;
 		case UIDeviceOrientationLandscapeLeft:
-			result = kLandscape;
+			result = MediaOrientationLandscape;
 			break;
 		case UIDeviceOrientationLandscapeRight:
-			result = kLandscape;
+			result = MediaOrientationLandscape;
 			break;
 		case UIDeviceOrientationFaceUp:
-			result = kPortrait;
+			result = MediaOrientationPortrait;
 			break;
 		case UIDeviceOrientationFaceDown:
-			result = kPortrait;
+			result = MediaOrientationPortrait;
 			break;
 		case UIDeviceOrientationUnknown:
-			result = kPortrait;
+			result = MediaOrientationPortrait;
 			break;
 	}
 	
@@ -662,7 +664,7 @@
 		NSString *resizeSmallStr = [NSString stringWithFormat:NSLocalizedString(@"Small (%@)", @"Small (width x height)"), [NSString stringWithFormat:@"%ix%i", (int)smallSize.width, (int)smallSize.height]];
    		NSString *resizeMediumStr = [NSString stringWithFormat:NSLocalizedString(@"Medium (%@)", @"Medium (width x height)"), [NSString stringWithFormat:@"%ix%i", (int)mediumSize.width, (int)mediumSize.height]];
         NSString *resizeLargeStr = [NSString stringWithFormat:NSLocalizedString(@"Large (%@)", @"Large (width x height)"), [NSString stringWithFormat:@"%ix%i", (int)largeSize.width, (int)largeSize.height]];
-        NSString *originalSizeStr = [NSString stringWithFormat:NSLocalizedString(@"Original (%@)", @"Original (width x height)"), [NSString stringWithFormat:@"%ix%i", (int)originalSize.width, (int)originalSize.height]];
+        NSString *originalSizeStr = [NSString stringWithFormat:NSLocalizedString(@"Original Size (%@)", @"Original Size (width x height)"), [NSString stringWithFormat:@"%ix%i", (int)originalSize.width, (int)originalSize.height]];
         
 		UIActionSheet *resizeActionSheet;
 		
@@ -907,22 +909,22 @@
             }
 			case 1:
             {
-				[self useImage:[self resizeImage:_currentImage toSize:kResizeSmall]];
+				[self useImage:[self resizeImage:_currentImage toSize:MediaResizeSmall]];
 				break;
             }
 			case 2:
             {
-				[self useImage:[self resizeImage:_currentImage toSize:kResizeMedium]];
+				[self useImage:[self resizeImage:_currentImage toSize:MediaResizeMedium]];
 				break;
             }
 			case 3:
             {
-				[self useImage:[self resizeImage:_currentImage toSize:kResizeLarge]];
+				[self useImage:[self resizeImage:_currentImage toSize:MediaResizeLarge]];
 				break;
             }
 			case 4:
             {
-                [self useImage:[self resizeImage:_currentImage toSize:kResizeOriginal]];
+                [self useImage:[self resizeImage:_currentImage toSize:MediaResizeOriginal]];
 				break;
             }
 			default:
@@ -1124,7 +1126,7 @@
 	// Resize the image using the selected dimensions
 	UIImage *resizedImage = original;
 	switch (resize) {
-		case kResizeSmall:
+		case MediaResizeSmall:
 			if(_currentImage.size.width > smallSize.width  || _currentImage.size.height > smallSize.height)
 				resizedImage = [original resizedImageWithContentMode:UIViewContentModeScaleAspectFit  
 															  bounds:smallSize  
@@ -1134,7 +1136,7 @@
 															  bounds:originalSize  
 												interpolationQuality:kCGInterpolationHigh];
 			break;
-		case kResizeMedium:
+		case MediaResizeMedium:
 			if(_currentImage.size.width > mediumSize.width  || _currentImage.size.height > mediumSize.height)
 				resizedImage = [original resizedImageWithContentMode:UIViewContentModeScaleAspectFit  
 															  bounds:mediumSize  
@@ -1144,7 +1146,7 @@
 															  bounds:originalSize  
 												interpolationQuality:kCGInterpolationHigh];
 			break;
-		case kResizeLarge:
+		case MediaResizeLarge:
 			if(_currentImage.size.width > largeSize.width || _currentImage.size.height > largeSize.height)
 				resizedImage = [original resizedImageWithContentMode:UIViewContentModeScaleAspectFit  
 															  bounds:largeSize  
@@ -1154,7 +1156,7 @@
 															  bounds:originalSize  
 												interpolationQuality:kCGInterpolationHigh];
 			break;
-		case kResizeOriginal:
+		case MediaResizeOriginal:
 			resizedImage = [original resizedImageWithContentMode:UIViewContentModeScaleAspectFit 
 														  bounds:originalSize 
 											interpolationQuality:kCGInterpolationHigh];
@@ -1245,7 +1247,7 @@
 		[fileManager createFileAtPath:filepath contents:imageData attributes:nil];
 	}
 
-	if(_currentOrientation == kLandscape) {
+	if(_currentOrientation == MediaOrientationLandscape) {
 		imageMedia.orientation = @"landscape";
     }else {
 		imageMedia.orientation = @"portrait";
@@ -1279,7 +1281,7 @@
             return;
         }
 
-        [WPError showAlertWithError:error title:NSLocalizedString(@"Upload failed", @"")];
+        [WPError showNetworkingAlertWithError:error title:NSLocalizedString(@"Upload failed", @"")];
     }];
 	
 	self.isAddingMedia = NO;
@@ -1336,7 +1338,7 @@
 	if(copySuccess == YES) {
 		videoMedia = [Media newMediaForPost:self.apost];
 		
-		if(_currentOrientation == kLandscape) {
+		if(_currentOrientation == MediaOrientationLandscape) {
 			videoMedia.orientation = @"landscape";
 		} else {
 			videoMedia.orientation = @"portrait";
@@ -1363,21 +1365,13 @@
             [[NSNotificationCenter defaultCenter] postNotificationName:@"ShouldInsertMediaBelow" object:videoMedia];
             [videoMedia save];
         } failure:^(NSError *error) {
-            [WPError showAlertWithError:error title:NSLocalizedString(@"Upload failed", @"")];
+            [WPError showNetworkingAlertWithError:error title:NSLocalizedString(@"Upload failed", @"")];
         }];
 		self.isAddingMedia = NO;
 
 	}
 	else {
-        if (currentAlert == nil) {
-            UIAlertView *videoAlert = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"Error Copying Video", @"")
-                                                                 message:NSLocalizedString(@"There was an error copying the video for upload. Please try again.", @"")
-                                                                delegate:self
-                                                       cancelButtonTitle:NSLocalizedString(@"OK", @"")
-                                                       otherButtonTitles:nil];
-            [videoAlert show];
-            currentAlert = videoAlert;
-        }
+        [WPError showAlertWithTitle:NSLocalizedString(@"Error Copying Video", nil) message:NSLocalizedString(@"There was an error copying the video for upload. Please try again.", nil)];
 	}
 }
 

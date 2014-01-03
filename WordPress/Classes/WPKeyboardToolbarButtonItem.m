@@ -20,7 +20,7 @@
 - (id)initWithFrame:(CGRect)frame {
     self = [super initWithFrame:frame];
     if (self) {
-        self.backgroundColor = [WPStyleGuide itsEverywhereGrey];
+        self.backgroundColor = [WPStyleGuide keyboardColor];
         self.autoresizingMask = UIViewAutoresizingFlexibleHeight;
     }
     return self;
@@ -73,7 +73,7 @@
     if (highlighted) {
         [self setBackgroundColor:[WPStyleGuide newKidOnTheBlockBlue]];
     } else {
-        [self setBackgroundColor:[WPStyleGuide itsEverywhereGrey]];
+        [self setBackgroundColor:[WPStyleGuide keyboardColor]];
     }
 }
 

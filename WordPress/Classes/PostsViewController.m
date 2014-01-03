@@ -7,6 +7,7 @@
 #import "WordPressAppDelegate.h"
 #import "Reachability.h"
 #import "Post.h"
+#import "Constants.h"
 
 #define TAG_OFFSET 1010
 
@@ -26,11 +27,25 @@
 
 - (NSString *)noResultsTitleText
 {
-    return NSLocalizedString(@"You don't have any posts yet.", @"Displayed when the user pulls up the posts view and they have no posts");
+    return NSLocalizedString(@"You haven't created any posts yet", @"Displayed when the user pulls up the posts view and they have no posts");
+}
+
+- (NSString *)noResultsMessageText {
+    return NSLocalizedString(@"Would you like to create your first post?",  @"Displayed when the user pulls up the posts view and they have no posts");
 }
 
 - (UIView *)noResultsAccessoryView {
     return [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"penandink"]];
+}
+
+- (NSString *)noResultsButtonText
+{
+    return NSLocalizedString(@"Create post", @"");
+}
+
+- (void)didTapNoResultsView:(WPNoResultsView *)noResultsView
+{
+    [self showAddPostView];
 }
 
 - (void)viewDidLoad {
@@ -38,18 +53,13 @@
     [super viewDidLoad];
     
     self.title = NSLocalizedString(@"Posts", @"");
-    
+
     UIImage *image = [UIImage imageNamed:@"icon-posts-add"];
     UIButton *button = [[UIButton alloc] initWithFrame:CGRectMake(0, 0, image.size.width, image.size.height)];
     [button setImage:image forState:UIControlStateNormal];
     [button addTarget:self action:@selector(showAddPostView) forControlEvents:UIControlEventTouchUpInside];
     UIBarButtonItem *composeButtonItem = [[UIBarButtonItem alloc] initWithCustomView:button];
 
-    // Account for 1 pixel header height
-    UIEdgeInsets tableInset = [self.tableView contentInset];
-    tableInset.top = -1;
-    self.tableView.contentInset = tableInset;
-    
     [WPStyleGuide setRightBarButtonItemWithCorrectSpacing:composeButtonItem forNavigationItem:self.navigationItem];
     
     self.infiniteScrollEnabled = YES;
@@ -90,15 +100,6 @@
 
 - (void)dealloc {
     [[NSNotificationCenter defaultCenter] removeObserver:self];
-}
-
-- (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation {
-    WordPressAppDelegate *delegate = (WordPressAppDelegate*)[[UIApplication sharedApplication] delegate];
-
-    if ([delegate isAlertRunning] == YES)
-        return NO;
-    
-    return [super shouldAutorotateToInterfaceOrientation:interfaceOrientation];
 }
 
 - (NSString *)statsPropertyForViewOpening
@@ -156,7 +157,8 @@
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
     AbstractPost *post = [self.resultsController objectAtIndexPath:indexPath];
-    return [NewPostTableViewCell rowHeightForPost:post andWidth:CGRectGetWidth(self.tableView.bounds)];
+    CGFloat width = MIN(WPTableViewFixedWidth, CGRectGetWidth(tableView.frame));
+    return [NewPostTableViewCell rowHeightForPost:post andWidth:width];
 }
 
 - (BOOL)tableView:(UITableView *)tableView canEditRowAtIndexPath:(NSIndexPath *)indexPath {
@@ -185,11 +187,10 @@
 - (void)deletePostAtIndexPath:(NSIndexPath *)indexPath{
     Post *post = [self.resultsController objectAtIndexPath:indexPath];
     [post deletePostWithSuccess:nil failure:^(NSError *error) {
-        NSDictionary *errInfo = [NSDictionary dictionaryWithObjectsAndKeys:self.blog, @"currentBlog", nil];
 		if([error code] == 403) {
 			[self promptForPassword];
 		} else {
-			[[NSNotificationCenter defaultCenter] postNotificationName:kXML_RPC_ERROR_OCCURS object:error userInfo:errInfo];
+            [WPError showXMLRPCErrorAlert:error];
 		}
         [self syncItems];
     }];
@@ -205,7 +206,9 @@
 
 - (void)editPost:(AbstractPost *)apost {
     EditPostViewController *editPostViewController = [[EditPostViewController alloc] initWithPost:apost];
+    editPostViewController.editorOpenedBy = StatsPropertyPostDetailEditorOpenedOpenedByPostsView;
     UINavigationController *navController = [[UINavigationController alloc] initWithRootViewController:editPostViewController];
+    [navController setToolbarHidden:NO]; // Fixes incorrect toolbar animation.
     navController.modalPresentationStyle = UIModalPresentationCurrentContext;
     [self.view.window.rootViewController presentViewController:navController animated:YES completion:nil];
 }

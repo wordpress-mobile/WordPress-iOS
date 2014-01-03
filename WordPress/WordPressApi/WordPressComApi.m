@@ -14,12 +14,14 @@
 #import "UIDevice+WordPressIdentifier.h"
 #import <WPXMLRPCClient.h>
 #import "WordPressAppDelegate.h"
+#import "NotificationsManager.h"
 
-NSString *const WordPressComApiClientEndpointURL = @"https://public-api.wordpress.com/rest/v1/";
-NSString *const WordPressComApiOauthBaseUrl = @"https://public-api.wordpress.com/oauth2";
+static NSString *const WordPressComApiClientEndpointURL = @"https://public-api.wordpress.com/rest/v1/";
+static NSString *const WordPressComApiOauthBaseUrl = @"https://public-api.wordpress.com/oauth2";
 NSString *const WordPressComXMLRPCUrl = @"http://wordpress.com/xmlrpc.php";
 NSString *const WordPressComApiNotificationFields = @"id,type,unread,body,subject,timestamp";
-NSString *const WordPressComApiLoginUrl = @"https://wordpress.com/wp-login.php";
+static NSString *const WordPressComApiLoginUrl = @"https://wordpress.com/wp-login.php";
+static NSString *const WordPressComXMLRPCUrl = @"https://wordpress.com/xmlrpc.php";
 NSString *const WordPressComApiErrorDomain = @"com.wordpress.api";
 NSString *const WordPressComApiErrorCodeKey = @"WordPressComApiErrorCodeKey";
 NSString *const WordPressComApiErrorMessageKey = @"WordPressComApiErrorMessageKey";
@@ -110,7 +112,7 @@ NSString *const WordPressComApiPushAppId = @"org.wordpress.appstore";
 #pragma mark - Account management
 
 - (void)reset {
-    WPFLogMethod();
+    DDLogMethod();
 
     self.authToken = nil;
     self.username = nil;
@@ -381,7 +383,7 @@ NSString *const WordPressComApiPushAppId = @"org.wordpress.appstore";
     
     // Send a multicall for register the token and retrieval of push notification settings
     NSMutableArray *operations = [NSMutableArray arrayWithCapacity:2];
-    WPXMLRPCClient *api = [[WPXMLRPCClient alloc] initWithXMLRPCEndpoint:[NSURL URLWithString:authURL]];
+    WPXMLRPCClient *api = [[WPXMLRPCClient alloc] initWithXMLRPCEndpoint:[NSURL URLWithString:WPComXMLRPCUrl]];
     
     [api setAuthorizationHeaderWithToken:self.authToken];
     

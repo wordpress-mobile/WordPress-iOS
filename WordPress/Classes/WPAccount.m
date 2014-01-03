@@ -209,7 +209,7 @@ NSString * const WPAccountDefaultWordPressComAccountChangedNotification = @"WPAc
 }
 
 - (void)syncBlogsWithSuccess:(void (^)())success failure:(void (^)(NSError *error))failure {
-    WPFLogMethod();
+    DDLogMethod();
     [self.xmlrpcApi getBlogsWithSuccess:^(NSArray *blogs) {
         [self mergeBlogs:blogs withCompletion:success];
     } failure:^(NSError *error) {
