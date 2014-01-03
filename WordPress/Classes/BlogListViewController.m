@@ -82,10 +82,6 @@ NSString * const WPBlogListRestorationID = @"WPBlogListID";
                                                           target:self
                                                           action:@selector(showSettings:)];
     self.navigationItem.rightBarButtonItem = self.settingsButton;
-    
-    [[NSNotificationCenter defaultCenter] addObserverForName:WPAccountDefaultWordPressComAccountChangedNotification object:nil queue:nil usingBlock:^(NSNotification *note) {
-        [self.tableView reloadSections:[NSIndexSet indexSetWithIndex:0] withRowAnimation:UITableViewRowAnimationFade];
-    }];
 
     // Remove one-pixel gap resulting from a top-aligned grouped table view
     if (IS_IPHONE) {
