@@ -196,15 +196,14 @@ NSString * const ReaderPostStoredCommentTextKey = @"comment";
     
     // single reader post loaded from wordpress://viewpost handler
     if ([dict valueForKey:@"meta"]) {
-        NSDictionary *meta_root = [dict objectForKey:@"meta"];
-        NSDictionary *meta_data = [meta_root objectForKey:@"data"];
-        NSDictionary *meta_site = [meta_data objectForKey:@"site"];
-        
-        // hardcode blog_site_id to 1 for now because only WordPress.com and Jetpack blogs will
-        // return from the endpoint anyway. this should be changed to data from the API once the
-        // API returns the data.
-        blogSiteID = @1;
-        siteID = [meta_site numberForKey:@"ID"];
+        NSDictionary *metaSite = [dict objectForKeyPath:@"meta.data.site"];
+        if (metaSite) {
+            // hardcode blog_site_id to 1 for now because only WordPress.com and Jetpack blogs will
+            // return from the endpoint anyway. this should be changed to data from the API once the
+            // API returns the data.
+            blogSiteID = @1;
+            siteID = [metaSite numberForKey:@"ID"];
+        }
     };
 
 	NSFetchRequest *request = [NSFetchRequest fetchRequestWithEntityName:@"ReaderPost"];
