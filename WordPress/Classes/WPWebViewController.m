@@ -56,7 +56,8 @@
     [self setLoading:NO];
     self.backButton.enabled = NO;
     self.forwardButton.enabled = NO;
-
+    self.webView.scalesPageToFit = YES;
+    
     if (IS_IPHONE) {
         if (!self.hidesLinkOptions) {
             [WPStyleGuide setRightBarButtonItemWithCorrectSpacing:self.optionsButton forNavigationItem:self.navigationItem];
@@ -519,8 +520,20 @@
     if (!self.hasLoadedContent && ([aWebView.request.URL.absoluteString rangeOfString:kMobileReaderDetailURL].location == NSNotFound || self.detailContent)) {
         [aWebView stringByEvaluatingJavaScriptFromString:[NSString stringWithFormat:@"Reader2.set_loaded_items(%@);", self.readerAllItems]];
         [aWebView stringByEvaluatingJavaScriptFromString:[NSString stringWithFormat:@"Reader2.show_article_details(%@);", self.detailContent]];
+
+        //Set proper zoom level for content
+        CGSize contentSize = aWebView.scrollView.contentSize;
+        CGSize viewSize = self.view.bounds.size;
+        float scale = viewSize.width / contentSize.width;
+        
+        aWebView.scrollView.minimumZoomScale = scale;
+        aWebView.scrollView.maximumZoomScale = scale;
+        aWebView.scrollView.zoomScale = scale;
         
         if (IS_IPAD) {
+            //Make text size bigger for iPad
+            [aWebView stringByEvaluatingJavaScriptFromString:[NSString stringWithFormat:@"document.getElementsByTagName('body')[0].style.webkitTextSizeAdjust= '%d%%'",130]];
+            
             if(self.navigationController.navigationBarHidden == NO) {
                 self.title = [self getDocumentTitle];
             } else {
