@@ -881,6 +881,14 @@ typedef enum {
         postCell.selectionStyle = UITableViewCellSelectionStyleNone;
         [postCell.contentView addSubview:self.postView];
         
+        // Make the postView matches the width of its cell.
+        // When the postView is first created it matches the width of the tableView
+        // which may or may not be the same width as the cells when we get to this point.
+        // On the iPhone, when viewing in landscape orientation, there can be a 20px difference.
+        CGRect frame = self.postView.frame;
+        frame.size.width = postCell.frame.size.width;
+        self.postView.frame = frame;
+        
         return postCell;
     }
     
