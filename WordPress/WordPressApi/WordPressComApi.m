@@ -213,7 +213,8 @@ NSString *const WordPressComApiPushAppId = @"org.wordpress.appstore";
     DDLogMethod();
     NSError *error = nil;
 
-//    [NotificationsManager unregisterDeviceToken];
+    // FIXME : This needs to be called outside of the WP.com API
+    [NotificationsManager unregisterDeviceToken];
 
     [SFHFKeychainUtils deleteItemForUsername:self.username andServiceName:@"WordPress.com" error:&error];
     [SFHFKeychainUtils deleteItemForUsername:self.username andServiceName:WPComXMLRPCUrl error:&error];
