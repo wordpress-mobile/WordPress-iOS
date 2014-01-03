@@ -202,6 +202,7 @@
     _addingNewPost = YES;
     Post *post = [Post newDraftForBlog:self.blog];
     [self editPost:post];
+    [self setEditing:NO];
 }
 
 - (void)editPost:(AbstractPost *)apost {
