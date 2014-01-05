@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="4510" systemVersion="12F37" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="4514" systemVersion="13B42" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none">
     <dependencies>
-        <deployment defaultVersion="1536" identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="3742"/>
+        <deployment defaultVersion="1792" identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="3747"/>
     </dependencies>
     <objects>
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="MediaBrowserViewController">
@@ -41,20 +41,14 @@
             <color key="backgroundColor" red="0.20939047029702973" green="0.20939047029702973" blue="0.20939047029702973" alpha="1" colorSpace="calibratedRGB"/>
             <items>
                 <barButtonItem style="plain" systemItem="flexibleSpace" id="3Ln-In-cOD"/>
-                <barButtonItem tag="1" style="plain" systemItem="trash" id="FTn-r8-icg">
+                <barButtonItem tag="1" image="UIButtonBarTrash.png" style="plain" id="FTn-r8-icg">
                     <color key="tintColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
                     <connections>
                         <action selector="multiselectDeletePressed:" destination="-1" id="fWb-Pl-ymX"/>
                     </connections>
                 </barButtonItem>
-                <barButtonItem width="10" style="plain" systemItem="fixedSpace" id="Ack-5y-nyc"/>
-                <barButtonItem tag="2" image="create_gallery_icon.png" style="plain" id="4Xz-PG-CJ5">
-                    <connections>
-                        <action selector="multiselectCreateGalleryPressed:" destination="-1" id="zsc-Ua-IBW"/>
-                    </connections>
-                </barButtonItem>
                 <barButtonItem width="10" style="plain" systemItem="fixedSpace" id="80s-pc-nVY"/>
-                <barButtonItem tag="3" image="media_multiselect_deselect.png" style="plain" id="1Zv-qo-nws">
+                <barButtonItem tag="2" image="icon-media-multiselect-deselect.png" style="plain" id="1Zv-qo-nws">
                     <connections>
                         <action selector="multiselectDeselectAllPressed:" destination="-1" id="lDh-7o-J4m"/>
                     </connections>
@@ -71,7 +65,7 @@
         </view>
     </objects>
     <resources>
-        <image name="create_gallery_icon.png" width="25" height="25"/>
-        <image name="media_multiselect_deselect.png" width="23" height="23"/>
+        <image name="UIButtonBarTrash.png" width="16" height="21"/>
+        <image name="icon-media-multiselect-deselect.png" width="20" height="20"/>
     </resources>
 </document>
