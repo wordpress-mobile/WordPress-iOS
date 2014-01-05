@@ -16,7 +16,7 @@
 #import "UIImage+Resize.h"
 #import "WordPressAppDelegate.h"
 #import "WPLoadingView.h"
-//#import "WPInfoView.h"
+#import "WPNoResultsView.h"
 #import "Post.h"
 #import "CPopoverManager.h"
 #import "WPAlertView.h"
@@ -28,7 +28,6 @@
 #define TAG_ACTIONSHEET_VIDEO 2
 
 static NSString *const MediaCellIdentifier = @"media_cell";
-
 static NSUInteger const MultiselectToolbarDeleteTag = 1;
 static NSUInteger const MultiselectToolbarGalleryTag = 2;
 static NSUInteger const MultiselectToolbarDeselectTag = 3;
@@ -52,7 +51,7 @@ static CGFloat const ScrollingVelocityThreshold = 30.0f;
 @property (nonatomic, strong) WPLoadingView *loadingView;
 @property (nonatomic, strong) NSDate *startDate, *endDate;
 @property (nonatomic, weak) UIView *firstResponderOnSidebarOpened;
-//@property (nonatomic, weak) WPInfoView *noMediaView;
+@property (nonatomic, weak) WPNoResultsView *noMediaView;
 @property (nonatomic, assign) BOOL videoPressEnabled, isPickingFeaturedImage, isLibraryMedia, isSelectingMediaForPost;
 @property (nonatomic, strong) NSMutableDictionary *currentVideo;
 @property (nonatomic, strong) UIImage *currentImage;
@@ -270,19 +269,16 @@ static CGFloat const ScrollingVelocityThreshold = 30.0f;
 }
 
 - (void)toggleNoMediaView:(BOOL)show {
-//    if (!show) {
-//        [_noMediaView removeFromSuperview];
-//        return;
-//    }
-//    if (!_noMediaView) {
-//        _noMediaView = [WPInfoView WPInfoViewWithTitle:@"No media to display" message:nil cancelButton:nil];
-//    }
-//    [self.collectionView addSubview:_noMediaView];
+    if (!show) {
+        [_noMediaView removeFromSuperview];
+    }
+    if (!_noMediaView && show) {
+        WPNoResultsView *noMediaView = [WPNoResultsView noResultsViewWithTitle:NSLocalizedString(@"No media yet", nil) message:nil accessoryView:nil buttonTitle:nil];
+        _noMediaView = noMediaView;
+        [self.collectionView addSubview:_noMediaView];
+    }
 }
 
-- (void)viewDidLayoutSubviews {
-//    [_noMediaView centerInSuperview];
-}
 
 #pragma mark - Setters
 
@@ -294,6 +290,7 @@ static CGFloat const ScrollingVelocityThreshold = 30.0f;
     [self toggleNoMediaView:(_filteredMedia.count == 0)];
     [self.collectionView reloadData];
 }
+
 
 #pragma mark - MediaSearchFilterDelegate
 
@@ -631,13 +628,13 @@ static CGFloat const ScrollingVelocityThreshold = 30.0f;
     }];
 }
 
-- (BOOL)isDeviceSupportVideo {
+- (BOOL)deviceSupportsVideo {
 	return (([UIImagePickerController isSourceTypeAvailable:UIImagePickerControllerSourceTypeCamera]) &&
             ([[UIImagePickerController availableMediaTypesForSourceType:UIImagePickerControllerSourceTypeCamera] containsObject:(NSString *)kUTTypeMovie]));
 }
 
-- (BOOL)isDeviceSupportVideoAndVideoPressEnabled{
-	return ([self isDeviceSupportVideo] && self.videoPressEnabled);
+- (BOOL)deviceSupportsVideoAndVideoPressEnabled{
+	return ([self deviceSupportsVideo] && self.videoPressEnabled);
 }
 
 - (IBAction)addMediaButtonPressed:(id)sender {
@@ -651,7 +648,7 @@ static CGFloat const ScrollingVelocityThreshold = 30.0f;
         
         UIActionSheet *addMediaActionSheet;
         if ([UIImagePickerController isSourceTypeAvailable:UIImagePickerControllerSourceTypeCamera]) {
-            if ([self isDeviceSupportVideoAndVideoPressEnabled]) {
+            if ([self deviceSupportsVideoAndVideoPressEnabled]) {
                 addMediaActionSheet = [[UIActionSheet alloc] initWithTitle:@"" delegate:self cancelButtonTitle:NSLocalizedString(@"Cancel", nil) destructiveButtonTitle:nil otherButtonTitles:NSLocalizedString(@"Add Photo From Library", nil), NSLocalizedString(@"Take Photo", nil), NSLocalizedString(@"Add Video from Library", @""), NSLocalizedString(@"Record Video", @""),nil];
                 
             } else {
