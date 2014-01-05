@@ -29,8 +29,7 @@
 
 static NSString *const MediaCellIdentifier = @"media_cell";
 static NSUInteger const MultiselectToolbarDeleteTag = 1;
-static NSUInteger const MultiselectToolbarGalleryTag = 2;
-static NSUInteger const MultiselectToolbarDeselectTag = 3;
+static NSUInteger const MultiselectToolbarDeselectTag = 2;
 
 static CGFloat const ScrollingVelocityThreshold = 30.0f;
 
@@ -126,15 +125,6 @@ static CGFloat const ScrollingVelocityThreshold = 30.0f;
         .origin = CGPointMake(self.multiselectToolbar.frame.origin.x, CGRectGetMaxY(self.collectionView.frame)),
         .size = self.multiselectToolbar.frame.size
     };
-    
-    if (!_apost) {
-        NSMutableArray *toolbarItems = [NSMutableArray arrayWithArray:self.multiselectToolbar.items];
-        NSUInteger index = [toolbarItems indexOfObjectPassingTest:^BOOL(UIBarButtonItem *obj, NSUInteger idx, BOOL *stop) {
-            return obj.tag == MultiselectToolbarGalleryTag;
-        }];
-        [toolbarItems removeObjectAtIndex:index];
-        self.multiselectToolbar.items = [NSArray arrayWithArray:toolbarItems];
-    }
     
     if (![self showAttachedMedia]) {
         self.resultsController.delegate = self;
