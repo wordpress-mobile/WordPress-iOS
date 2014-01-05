@@ -42,10 +42,13 @@ CGFloat const EPVCTextViewTopPadding = 7.0f;
     NSManagedObjectContext *context = [[ContextManager sharedInstance] mainContext];
     NSFetchRequest *fetchRequest = [NSFetchRequest fetchRequestWithEntityName:@"Blog"];
     NSString *url = [[NSUserDefaults standardUserDefaults] stringForKey:EditPostViewControllerLastUsedBlogURL];
+    NSPredicate *predicate;
     if (url) {
-        NSPredicate *predicate = [NSPredicate predicateWithFormat:@"url = %@", url];
-        [fetchRequest setPredicate:predicate];
+        predicate = [NSPredicate predicateWithFormat:@"visible = YES AND url = %@", url];
+    } else {
+        predicate = [NSPredicate predicateWithFormat:@"visible = YES"];
     }
+    [fetchRequest setPredicate:predicate];
     fetchRequest.sortDescriptors = @[[NSSortDescriptor sortDescriptorWithKey:@"blogName" ascending:YES]];
     NSError *error = nil;
     NSArray *results = [context executeFetchRequest:fetchRequest error:&error];
@@ -109,21 +112,9 @@ CGFloat const EPVCTextViewTopPadding = 7.0f;
     [self setupToolbar];
     [self setupTableHeaderView];
     
-    // Using performBlock: with the AbstractPost on the main context:
-    // Prevents a hang on opening this view on slow and fast devices
-    // by deferring the cloning and UI update.
-    // Slower devices have the effect of the content appearing after
-    // a short delay
-    [self.post.managedObjectContext performBlock:^{
-        self.post = [self.post createRevision];
-        [self.post save];
-        [self refreshUIForCurrentPost];
-    }];
+    [self createRevisionOfPost];
     
     [[NSNotificationCenter defaultCenter] removeObserver:self];
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(keyboardWillShow:) name:UIKeyboardWillShowNotification object:nil];
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(keyboardDidShow:) name:UIKeyboardDidShowNotification object:nil];
-	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(keyboardWillHide:) name:UIKeyboardWillHideNotification object:nil];
 	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(insertMediaAbove:) name:@"ShouldInsertMediaAbove" object:nil];
 	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(insertMediaBelow:) name:@"ShouldInsertMediaBelow" object:nil];
 	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(removeMedia:) name:@"ShouldRemoveMedia" object:nil];
@@ -138,12 +129,20 @@ CGFloat const EPVCTextViewTopPadding = 7.0f;
 - (void)viewWillAppear:(BOOL)animated {
     [super viewWillAppear:animated];
     
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(keyboardWillShow:) name:UIKeyboardWillShowNotification object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(keyboardDidShow:) name:UIKeyboardDidShowNotification object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(keyboardWillHide:) name:UIKeyboardWillHideNotification object:nil];
+
     if(self.navigationController.navigationBarHidden) {
         [self.navigationController setNavigationBarHidden:NO animated:YES];
     }
     
     if (self.navigationController.toolbarHidden) {
         [self.navigationController setToolbarHidden:NO animated:YES];
+    }
+    
+    for (UIView *view in self.navigationController.toolbar.subviews) {
+        [view setExclusiveTouch:YES];
     }
     
     [self refreshUIForCurrentPost];
@@ -154,7 +153,17 @@ CGFloat const EPVCTextViewTopPadding = 7.0f;
 - (void)viewWillDisappear:(BOOL)animated {
     DDLogMethod();
     [super viewWillDisappear:animated];
+    
+    [[NSNotificationCenter defaultCenter] removeObserver:self name:UIKeyboardWillShowNotification object:nil];
+    [[NSNotificationCenter defaultCenter] removeObserver:self name:UIKeyboardDidShowNotification object:nil];
+    [[NSNotificationCenter defaultCenter] removeObserver:self name:UIKeyboardWillHideNotification object:nil];
+
+    
     [self.navigationController setToolbarHidden:YES animated:YES];
+    
+    [[NSNotificationCenter defaultCenter] removeObserver:self name:UIKeyboardWillShowNotification object:nil];
+    [[NSNotificationCenter defaultCenter] removeObserver:self name:UIKeyboardDidShowNotification object:nil];
+	[[NSNotificationCenter defaultCenter] removeObserver:self name:UIKeyboardWillHideNotification object:nil];
     
 	[_titleTextField resignFirstResponder];
 	[_textView resignFirstResponder];
@@ -436,6 +445,11 @@ CGFloat const EPVCTextViewTopPadding = 7.0f;
 }
 
 - (void)scrollCursorIntoViewIfNeeded {
+    if ([_titleTextField isFirstResponder]) {
+        [self.tableView scrollRectToVisible:CGRectZero animated:YES];
+        return;
+    }
+    
     // Get the cursor position in the textView
     CGRect rect = [_textView caretRectForPosition:_textView.selectedTextRange.start];
     
@@ -488,6 +502,20 @@ CGFloat const EPVCTextViewTopPadding = 7.0f;
 
 #pragma mark - Actions
 
+- (void)showBlogSelectorPrompt {
+    if (![self hasChanges]) {
+        [self showBlogSelector];
+        return;
+    }
+    UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"Change Site", @"Title of an alert prompting the user that they are about to change the blog they are posting to.")
+                                                        message:NSLocalizedString(@"Choosing a different site will loose edits to site specific content like media and categories. Are you sure?", @"And alert message warning the user they will loose blog specific edits like categories, and media if they change the blog being posted to.")
+                                                       delegate:self
+                                              cancelButtonTitle:NSLocalizedString(@"Cancel",@"")
+                                              otherButtonTitles:NSLocalizedString(@"OK",@""), nil];
+    alertView.tag = EditPostViewControllerAlertTagSwitchBlogs;
+    [alertView show];
+}
+
 - (void)showBlogSelector {
     [WPMobileStats incrementProperty:StatsPropertyPostDetailClickedBlogSelector forEvent:[self formattedStatEventString:StatsEventPostDetailClosedEditor]];
 
@@ -510,7 +538,31 @@ CGFloat const EPVCTextViewTopPadding = 7.0f;
         Blog *blog = (Blog *)[context objectWithID:selectedObjectID];
         
         if (blog) {
-            self.post.blog = blog;
+            AbstractPost *newPost = [[self.post class] newDraftForBlog:blog];
+            AbstractPost *oldPost = self.post;
+            
+            NSString *content = oldPost.content;
+            if ([oldPost.media count] > 0) {
+                for (Media *media in oldPost.media) {
+                    content = [self removeMedia:media fromString:content];
+                }
+            }
+            newPost.content = content;
+            newPost.postTitle = oldPost.postTitle;
+            newPost.password = oldPost.password;
+            newPost.status = oldPost.status;
+            newPost.dateCreated = oldPost.dateCreated;
+            
+            if ([newPost isKindOfClass:[Post class]]) {
+                ((Post *)newPost).tags = ((Post *)oldPost).tags;
+            }
+
+            self.post = newPost;
+            [self createRevisionOfPost];
+            
+            [oldPost.original deleteRevision];
+            [oldPost.original remove];
+
             [[NSUserDefaults standardUserDefaults] setObject:blog.url forKey:EditPostViewControllerLastUsedBlogURL];
             [[NSUserDefaults standardUserDefaults] synchronize];
             [self syncOptionsIfNecessaryForBlog:blog afterBlogChanged:YES];
@@ -614,7 +666,7 @@ CGFloat const EPVCTextViewTopPadding = 7.0f;
     if (IS_IPAD) {
         [actionSheet showFromBarButtonItem:self.navigationItem.leftBarButtonItem animated:YES];
     } else {
-        [actionSheet showInView:self.view];
+        [actionSheet showFromToolbar:self.navigationController.toolbar];
     }
 }
 
@@ -745,7 +797,7 @@ CGFloat const EPVCTextViewTopPadding = 7.0f;
     titleButton.titleLabel.textAlignment = NSTextAlignmentCenter;
     titleButton.autoresizingMask = UIViewAutoresizingFlexibleLeftMargin | UIViewAutoresizingFlexibleRightMargin | UIViewAutoresizingFlexibleTopMargin | UIViewAutoresizingFlexibleBottomMargin;
     [titleButton setImage:[UIImage imageNamed:@"icon-navbar-dropdown.png"] forState:UIControlStateNormal];
-    [titleButton addTarget:self action:@selector(showBlogSelector) forControlEvents:UIControlEventTouchUpInside];
+    [titleButton addTarget:self action:@selector(showBlogSelectorPrompt) forControlEvents:UIControlEventTouchUpInside];
     [titleButton setImageEdgeInsets:UIEdgeInsetsMake(0, 0, 0, 10)];
     [titleButton setTitleEdgeInsets:UIEdgeInsetsMake(0, 10, 0, 0)];
 
@@ -756,6 +808,19 @@ CGFloat const EPVCTextViewTopPadding = 7.0f;
 }
 
 # pragma mark - Model State Methods
+
+- (void)createRevisionOfPost {
+    // Using performBlock: with the AbstractPost on the main context:
+    // Prevents a hang on opening this view on slow and fast devices
+    // by deferring the cloning and UI update.
+    // Slower devices have the effect of the content appearing after
+    // a short delay
+    [self.post.managedObjectContext performBlock:^{
+        self.post = [self.post createRevision];
+        [self.post save];
+        [self refreshUIForCurrentPost];
+    }];
+}
 
 - (void)discardChangesAndDismiss {
     [self.post.original deleteRevision];
@@ -1117,12 +1182,19 @@ CGFloat const EPVCTextViewTopPadding = 7.0f;
     
 	//remove the html string for the media object
 	Media *media = (Media *)[notification object];
-	_textView.text = [_textView.text stringByReplacingOccurrencesOfString:[NSString stringWithFormat:@"<br /><br />%@", media.html] withString:@""];
-	_textView.text = [_textView.text stringByReplacingOccurrencesOfString:[NSString stringWithFormat:@"%@<br /><br />", media.html] withString:@""];
-	_textView.text = [_textView.text stringByReplacingOccurrencesOfString:media.html withString:@""];
+    _textView.text = [self removeMedia:media fromString:_textView.text];
     [self autosaveContent];
     [self refreshUIForCurrentPost];
 }
+
+- (NSString *)removeMedia:(Media *)media fromString:(NSString *)string {
+	string = [string stringByReplacingOccurrencesOfString:[NSString stringWithFormat:@"<br /><br />%@", media.html] withString:@""];
+	string = [string stringByReplacingOccurrencesOfString:[NSString stringWithFormat:@"%@<br /><br />", media.html] withString:@""];
+	string = [string stringByReplacingOccurrencesOfString:media.html withString:@""];
+    
+    return string;
+}
+
 
 #pragma mark - Formatting
 
@@ -1249,6 +1321,10 @@ CGFloat const EPVCTextViewTopPadding = 7.0f;
             [self savePost:YES];
         }
         _failedMediaAlertView = nil;
+    } else if (alertView.tag == EditPostViewControllerAlertTagSwitchBlogs) {
+        if (buttonIndex == 1) {
+            [self showBlogSelector];
+        }
     }
     return;
 }

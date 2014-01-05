@@ -57,13 +57,12 @@ NS_ENUM(NSUInteger, NotifcationCommentCellType){
 @property NSDictionary *followAction;
 @property NSURL *headerURL;
 @property BOOL hasScrollBackView;
-@property (nonatomic, strong) NSCache *contentCache;
 
 @property (nonatomic, strong) UIBarButtonItem *approveBarButton;
 @property (nonatomic, strong) UIBarButtonItem *unapproveBarButton;
 @property (nonatomic, strong) UIBarButtonItem *trashBarButton;
 @property (nonatomic, strong) UIBarButtonItem *spamBarButton;
-@property (nonatomic, weak) UIBarButtonItem *replyBarButton;
+@property (nonatomic, strong) UIBarButtonItem *replyBarButton;
 
 @property (nonatomic, weak) IBOutlet UIToolbar *toolbar;
 @property (nonatomic, weak) IBOutlet IOS7CorrectedTextView *replyTextView;
@@ -176,13 +175,6 @@ NS_ENUM(NSUInteger, NotifcationCommentCellType){
                                                  name:UIKeyboardWillHideNotification
                                                object:nil];
 
-}
-
-- (NSCache *)contentCache {
-    if (!_contentCache) {
-        _contentCache = [[NSCache alloc] init];
-    }
-    return _contentCache;
 }
 
 - (void)displayNote {
@@ -581,7 +573,7 @@ NS_ENUM(NSUInteger, NotifcationCommentCellType){
         case NotificationCommentCellTypeHeader:
         {
             if (comment.isLoaded || mainComment) {
-                NoteCommentCell *headerCell = [tableView dequeueReusableCellWithIdentifier:NoteCommentHeaderCellIdentifiter];
+                NoteCommentCell *headerCell = [tableView dequeueReusableCellWithIdentifier:NoteCommentHeaderCellIdentifiter forIndexPath:indexPath];
                 if ([comment isParentComment]) {
                     [headerCell displayAsParentComment];
                 }
@@ -590,20 +582,14 @@ NS_ENUM(NSUInteger, NotifcationCommentCellType){
                 cell = headerCell;
 
             } else {
-                NoteCommentLoadingCell *loadingCell = [tableView dequeueReusableCellWithIdentifier:NoteCommentLoadingCellIdentifiter];
+                NoteCommentLoadingCell *loadingCell = [tableView dequeueReusableCellWithIdentifier:NoteCommentLoadingCellIdentifiter forIndexPath:indexPath];
                 cell = loadingCell;
             }
             break;
         }
         case NotificationCommentCellTypeContent:
         {
-            NoteCommentContentCell *contentCell = [tableView dequeueReusableCellWithIdentifier:NoteCommentContentCellIdentifiter];
-            if ([self.contentCache objectForKey:comment]) {
-                contentCell = [self.contentCache objectForKey:comment];
-            } else {
-                [self.contentCache setObject:contentCell forKey:comment];
-            }
-            
+            NoteCommentContentCell *contentCell = [tableView dequeueReusableCellWithIdentifier:NoteCommentContentCellIdentifiter forIndexPath:indexPath];
             contentCell.delegate = self;
             NSString *html = [comment.commentData valueForKey:@"content"];
             if (!html) {
