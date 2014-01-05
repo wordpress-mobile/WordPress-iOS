@@ -196,15 +196,14 @@ NSString * const ReaderPostStoredCommentTextKey = @"comment";
     
     // single reader post loaded from wordpress://viewpost handler
     if ([dict valueForKey:@"meta"]) {
-        NSDictionary *meta_root = [dict objectForKey:@"meta"];
-        NSDictionary *meta_data = [meta_root objectForKey:@"data"];
-        NSDictionary *meta_site = [meta_data objectForKey:@"site"];
-        
-        // hardcode blog_site_id to 1 for now because only WordPress.com and Jetpack blogs will
-        // return from the endpoint anyway. this should be changed to data from the API once the
-        // API returns the data.
-        blogSiteID = @1;
-        siteID = [meta_site numberForKey:@"ID"];
+        NSDictionary *metaSite = [dict objectForKeyPath:@"meta.data.site"];
+        if (metaSite) {
+            // hardcode blog_site_id to 1 for now because only WordPress.com and Jetpack blogs will
+            // return from the endpoint anyway. this should be changed to data from the API once the
+            // API returns the data.
+            blogSiteID = @1;
+            siteID = [metaSite numberForKey:@"ID"];
+        }
     };
 
 	NSFetchRequest *request = [NSFetchRequest fetchRequestWithEntityName:@"ReaderPost"];
@@ -331,6 +330,7 @@ NSString * const ReaderPostStoredCommentTextKey = @"comment";
 	self.likeCount = [dict numberForKey:@"like_count"];
 	self.permaLink = [dict stringForKey:@"URL"];
 	self.postTitle = [[[dict stringForKey:@"title"] stringByDecodingXMLCharacters] trim];
+    self.postTitle = [self.postTitle stringByStrippingHTML];
 	
 	self.isLiked = [dict numberForKey:@"i_like"];
 	
@@ -393,6 +393,7 @@ NSString * const ReaderPostStoredCommentTextKey = @"comment";
 	self.likeCount = [dict numberForKey:@"post_like_count"];
 	self.permaLink = [dict stringForKey:@"post_permalink"];
 	self.postTitle = [[[dict stringForKey:@"post_title"] stringByDecodingXMLCharacters] trim];
+    self.postTitle = [self.postTitle stringByStrippingHTML];
 	
     // blog_public is either a 1 or a -1.
     NSInteger isPublic = [[dict numberForKey:@"blog_public"] integerValue];
@@ -735,24 +736,39 @@ NSString * const ReaderPostStoredCommentTextKey = @"comment";
 - (NSString *)formatVideoPress:(NSString *)str {
     NSMutableString *mstr = [str mutableCopy];
     NSError *error;
+    
+    // Find instances of VideoPress markup.
     NSRegularExpression *regex = [NSRegularExpression regularExpressionWithPattern:@"<div[\\S\\s]+?<div.*class=\"videopress-placeholder[\\s\\S]*?</noscript>" options:NSRegularExpressionCaseInsensitive error:&error];
     NSArray *matches = [regex matchesInString:mstr options:NSRegularExpressionCaseInsensitive range:NSMakeRange(0, [mstr length])];
     for (NSTextCheckingResult *match in [matches reverseObjectEnumerator]) {
         // compose videopress string
 
-        NSRegularExpression *mregex = [NSRegularExpression regularExpressionWithPattern:@"mp4[\\s\\S]+?mp4" options:NSRegularExpressionCaseInsensitive error:&error];
-        NSRange mmatch = [mregex rangeOfFirstMatchInString:mstr options:NSRegularExpressionCaseInsensitive range:match.range];
-        NSString *mp4 = [mstr substringWithRange:mmatch];
-        NSRegularExpression *sregex = [NSRegularExpression regularExpressionWithPattern:@"http\\S+mp4" options:NSRegularExpressionCaseInsensitive error:&error];
-        NSRange smatch = [sregex rangeOfFirstMatchInString:mp4 options:NSRegularExpressionCaseInsensitive range:NSMakeRange(0, [mp4 length])];
-        NSString *src = [mp4 substringWithRange:smatch];
+        // Find the mp4 in the markup.
+        NSRegularExpression *mp4Regex = [NSRegularExpression regularExpressionWithPattern:@"mp4[\\s\\S]+?mp4" options:NSRegularExpressionCaseInsensitive error:&error];
+        NSRange mp4Match = [mp4Regex rangeOfFirstMatchInString:mstr options:NSRegularExpressionCaseInsensitive range:match.range];
+        if (mp4Match.location == NSNotFound) {
+            DDLogError(@"%@ failed to match mp4 JSON string while formatting video press markup: %@", self, [mstr substringWithRange:match.range]);
+            [mstr replaceCharactersInRange:match.range withString:@""];
+            continue;
+        }
+        NSString *mp4 = [mstr substringWithRange:mp4Match];
+        
+        // Get the mp4 url.
+        NSRegularExpression *srcRegex = [NSRegularExpression regularExpressionWithPattern:@"http\\S+mp4" options:NSRegularExpressionCaseInsensitive error:&error];
+        NSRange srcMatch = [srcRegex rangeOfFirstMatchInString:mp4 options:NSRegularExpressionCaseInsensitive range:NSMakeRange(0, [mp4 length])];
+        if (srcMatch.location == NSNotFound) {
+            DDLogError(@"%@ failed to match mp4 src when formatting video press markup: %@", self, mp4);
+            [mstr replaceCharactersInRange:match.range withString:@""];
+            continue;
+        }
+        NSString *src = [mp4 substringWithRange:srcMatch];
         src = [src stringByReplacingOccurrencesOfString:@"\\/" withString:@"/"];
         
+        // Compose a video tag to replace the default markup.
         NSString *fmt = @"<video src=\"%@\"><source src=\"%@\" type=\"video/mp4\"></video>";
         NSString *vid = [NSString stringWithFormat:fmt, src, src];
         
         [mstr replaceCharactersInRange:match.range withString:vid];
-
     }
 
     return mstr;

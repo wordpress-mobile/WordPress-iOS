@@ -123,5 +123,6 @@
 #pragma mark -
 #pragma mark Class methods
 + (NSInteger)countWithContext:(NSManagedObjectContext *)moc;
++ (NSInteger)countVisibleWithContext:(NSManagedObjectContext *)moc;
 
 @end
