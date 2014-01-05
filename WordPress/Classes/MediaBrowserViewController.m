@@ -100,11 +100,7 @@ static CGFloat const ScrollingVelocityThreshold = 30.0f;
 {
     [super viewDidLoad];
     
-    if ([self showAttachedMedia]) {
-        self.title = NSLocalizedString(@"Post Media", @"");
-    } else {
-        self.title = NSLocalizedString(@"Media Library", @"");
-    }
+    [self updateTitle];
     
     self.collectionView.dataSource = self;
     self.collectionView.delegate = self;
@@ -199,6 +195,17 @@ static CGFloat const ScrollingVelocityThreshold = 30.0f;
     _selectedMedia = nil;
 }
 
+- (void)updateTitle {
+    if ([self showAttachedMedia]) {
+        self.title = NSLocalizedString(@"Post Media", @"");
+    } else {
+        self.title = NSLocalizedString(@"Media Library", @"");
+    }
+    
+    NSString *count = [NSString stringWithFormat:@" (%d)", _filteredMedia.count];
+    self.title = [self.title stringByAppendingString:count];
+}
+
 - (BOOL)showAttachedMedia {
     return _apost && !_isPickingFeaturedImage && !_isSelectingMediaForPost;
 }
@@ -288,6 +295,8 @@ static CGFloat const ScrollingVelocityThreshold = 30.0f;
     [self applyFilterForSelectedMedia];
     
     [self toggleNoMediaView:(_filteredMedia.count == 0)];
+    
+    [self updateTitle];
     [self.collectionView reloadData];
 }
 
@@ -664,7 +673,7 @@ static CGFloat const ScrollingVelocityThreshold = 30.0f;
             UIBarButtonItem *barButtonItem = self.navigationItem.rightBarButtonItems[1];
             [_currentActionSheet showFromBarButtonItem:barButtonItem animated:YES];
         } else {
-            [_currentActionSheet showInView:self.view];
+            [_currentActionSheet showFromTabBar:[WordPressAppDelegate sharedWordPressApplicationDelegate].tabBarController.tabBar];
         }
     }
 }
