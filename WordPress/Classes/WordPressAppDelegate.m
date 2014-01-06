@@ -188,6 +188,10 @@ static NSString *const CameraPlusImagesNotification = @"CameraPlusImagesNotifica
                 NSUInteger *blogId = [[params valueForKey:@"blogId"] integerValue];
                 NSUInteger *postId = [[params valueForKey:@"postId"] integerValue];
                 
+                [WPMobileStats flagSuperProperty:StatsPropertyReaderOpenedFromExternalURL];
+                [WPMobileStats incrementSuperProperty:StatsPropertyReaderOpenedFromExternalURLCount];
+                [WPMobileStats trackEventForWPCom:StatsEventReaderOpenedFromExternalSource];
+                
                 [self.readerPostsViewController.navigationController popToRootViewControllerAnimated:NO];
                 NSInteger readerTabIndex = [[self.tabBarController viewControllers] indexOfObject:self.readerPostsViewController.navigationController];
                 [self.tabBarController setSelectedIndex:readerTabIndex];
@@ -401,7 +405,8 @@ static NSString *const CameraPlusImagesNotification = @"CameraPlusImagesNotifica
     if (IS_IPAD) {
         postsViewController.tabBarItem.imageInsets = UIEdgeInsetsMake(7.0, 0, -7, 0);
     }
-
+    postsViewController.tabBarItem.accessibilityValue = NSLocalizedString(@"New Post", @"The accessibility value of the post tab.");
+    
     _tabBarController.viewControllers = @[readerNavigationController, notificationsNavigationController, blogListNavigationController, postsViewController];
 
     [_tabBarController setSelectedViewController:readerNavigationController];
@@ -476,7 +481,7 @@ static NSString *const CameraPlusImagesNotification = @"CameraPlusImagesNotifica
 - (BOOL)tabBarController:(UITabBarController *)tabBarController shouldSelectViewController:(UIViewController *)viewController {
     if ([tabBarController.viewControllers indexOfObject:viewController] == 3) {
         // Ignore taps on the post tab and instead show the modal.
-        if ([Blog countWithContext:[[ContextManager sharedInstance] mainContext]] == 0) {
+        if ([Blog countVisibleWithContext:[[ContextManager sharedInstance] mainContext]] == 0) {
             [WPMobileStats trackEventForWPCom:StatsEventAccountCreationOpenedFromTabBar];
             [self showWelcomeScreenAnimated:YES thenEditor:YES];
         } else {
