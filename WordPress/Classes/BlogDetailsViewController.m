@@ -93,6 +93,10 @@ NSString * const WPBlogDetailsBlogKey = @"WPBlogDetailsBlogKey";
     }
     
     [self.tableView registerClass:[WPTableViewCell class] forCellReuseIdentifier:BlogDetailsCellIdentifier];
+    
+    if (!_blog.options) {
+        [_blog syncOptionsWithWithSuccess:nil failure:nil];
+    }
 }
 
 - (void)viewWillAppear:(BOOL)animated {

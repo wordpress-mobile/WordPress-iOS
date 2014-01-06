@@ -11,6 +11,7 @@
 #import "Media.h"
 #import "WPImageSource.h"
 #import "UIImage+Resize.h"
+#import "WPAccount.h"
 
 @interface WPImageSource (Media)
 
@@ -254,9 +255,8 @@
 
 @implementation WPImageSource (Media)
 
-- (void)downloadThumbnailForMedia:(Media*)media success:(void (^)(NSNumber *mediaId))success failure:(void (^)(NSError *))failure {
-    NSURL *thumbnailUrl = [NSURL URLWithString:[media.remoteURL stringByAppendingString:@"?w=145"]];
-    [self downloadImageForURL:thumbnailUrl withSuccess:^(UIImage *image) {
+- (void)downloadThumbnailForMedia:(Media *)media success:(void (^)(NSNumber *mediaId))success failure:(void (^)(NSError *))failure {
+    void (^thumbDownloadedSuccess)(UIImage *) = ^(UIImage *image) {
         dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
             UIImage *thumbnail = image;
             if (thumbnail.size.width > 145 || thumbnail.size.height > 145) {
@@ -268,8 +268,18 @@
                 success(media.mediaID);
             });
         });
-        
-    } failure:failure];
+    };
+    
+    NSString *thumbnailUrl = media.remoteURL;
+    if (media.blog.isWPcom) {
+        thumbnailUrl = [thumbnailUrl stringByAppendingString:@"?w=145"];
+    }
+    
+    if (media.blog.isPrivate) {
+        [self downloadImageForURL:[NSURL URLWithString:thumbnailUrl] authToken:[[[WPAccount defaultWordPressComAccount] restApi] authToken] withSuccess:thumbDownloadedSuccess failure:failure];
+    } else {
+        [self downloadImageForURL:[NSURL URLWithString:thumbnailUrl] withSuccess:thumbDownloadedSuccess failure:failure];
+    }
 }
 
 @end
