@@ -30,8 +30,6 @@
 - (BOOL)isUnread;
 
 - (void)syncAttributes:(NSDictionary *)data;
-- (void)updateAttributes:(NSDictionary *)data;
-- (NSDictionary *)getNoteData;
 
 + (void)mergeNewNotes:(NSArray *)notesData;
 

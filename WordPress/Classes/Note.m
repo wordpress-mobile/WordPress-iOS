@@ -279,7 +279,7 @@ const NSUInteger NoteKeepCount = 20;
 - (void)refreshNoteDataWithSuccess:(void (^)())success failure:(void (^)(NSError *))failure {
     [[[WPAccount defaultWordPressComAccount] restApi] refreshNotifications:@[self.noteID] fields:nil success:^(NSArray *updatedNotes){
             if ([updatedNotes count] > 0 && ![self isDeleted] && self.managedObjectContext) {
-                [self updateAttributes:updatedNotes[0]];
+                [self syncAttributes:updatedNotes[0]];
             }
             [[ContextManager sharedInstance] saveContext:self.managedObjectContext];
             if (success) {

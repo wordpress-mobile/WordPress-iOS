@@ -201,8 +201,6 @@ NSString * const NotificationsJetpackInformationURL = @"http://jetpack.me/about/
         _isPushingViewController = YES;
         if ([note isComment]) {
             NotificationsCommentDetailViewController *detailViewController = [[NotificationsCommentDetailViewController alloc] initWithNote:note];
-            detailViewController.note = note;
-            detailViewController.user = [[WPAccount defaultWordPressComAccount] restApi];
             [self.navigationController pushViewController:detailViewController animated:YES];
         } else {
             NotificationsFollowDetailViewController *detailViewController = [[NotificationsFollowDetailViewController alloc] initWithNote:note];

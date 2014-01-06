@@ -16,7 +16,6 @@
 @class Blog;
 
 extern NSString *const WPAccountDefaultWordPressComAccountChangedNotification;
-extern NSString *const WPComXMLRPCUrl;
 
 @interface WPAccount : NSManagedObject
 
