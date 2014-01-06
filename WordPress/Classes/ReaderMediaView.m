@@ -74,7 +74,6 @@
 - (void)setPlaceholder:(UIImage *)image {
 	_imageView.image = image;
 	self.isShowingPlaceholder = YES;
-    self.placeholderRatio = self.frame.size.width / self.frame.size.height;
 }
 
 
