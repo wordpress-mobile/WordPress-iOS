@@ -24,12 +24,10 @@
 #import <AssetsLibrary/AssetsLibrary.h>
 #import <AVFoundation/AVFoundation.h>
 
-#define TAG_ACTIONSHEET_PHOTO 1
-#define TAG_ACTIONSHEET_VIDEO 2
-
 static NSString *const MediaCellIdentifier = @"media_cell";
 static NSUInteger const MultiselectToolbarDeleteTag = 1;
 static NSUInteger const MultiselectToolbarDeselectTag = 2;
+static NSUInteger const MediaTypeActionSheetVideo = 1;
 
 static CGFloat const ScrollingVelocityThreshold = 30.0f;
 
@@ -45,11 +43,9 @@ static CGFloat const ScrollingVelocityThreshold = 30.0f;
 @property (nonatomic, weak) UIActionSheet *currentActionSheet, *changeOrientationActionSheet, *resizeActionSheet;
 @property (nonatomic, strong) UIImagePickerController *picker;
 @property (nonatomic, strong) UIPopoverController *addPopover;
-@property (nonatomic, assign) BOOL isFilteringByDate;
 @property (nonatomic, strong) NSString *currentSearchText;
+@property (nonatomic, strong) NSDate *currentFilterMonth;
 @property (nonatomic, strong) WPLoadingView *loadingView;
-@property (nonatomic, strong) NSDate *startDate, *endDate;
-@property (nonatomic, weak) UIView *firstResponderOnSidebarOpened;
 @property (nonatomic, weak) WPNoResultsView *noMediaView;
 @property (nonatomic, assign) BOOL videoPressEnabled, isPickingFeaturedImage, isLibraryMedia, isSelectingMediaForPost;
 @property (nonatomic, strong) NSMutableDictionary *currentVideo;
@@ -61,6 +57,7 @@ static CGFloat const ScrollingVelocityThreshold = 30.0f;
 @property (nonatomic, assign) BOOL isScrollingFast;
 @property (nonatomic, strong) NSFetchedResultsController *resultsController;
 @property (nonatomic, assign) BOOL shouldUpdateFromContextChange;
+@property (nonatomic, strong) NSDateFormatter *dateFormatter;
 
 @property (weak, nonatomic) IBOutlet UIToolbar *multiselectToolbar;
 
@@ -165,7 +162,7 @@ static CGFloat const ScrollingVelocityThreshold = 30.0f;
 
     [WPStyleGuide setRightBarButtonItemWithCorrectSpacing:addMediaButton forNavigationItem:self.navigationItem];
 
-    [self applyDateFilterForStartDate:_startDate andEndDate:_endDate];
+    [self applyMonthFilterForMonth:_currentFilterMonth];
     [self applyFilterWithSearchText:_currentSearchText];
 }
 
@@ -207,25 +204,7 @@ static CGFloat const ScrollingVelocityThreshold = 30.0f;
     return nil;
 }
 
-- (void)sidebarOpened {
-    _firstResponderOnSidebarOpened = nil;
-    for (id subview in self.collectionView.subviews) {
-        if ([subview isFirstResponder]) {
-            [subview resignFirstResponder];
-            _firstResponderOnSidebarOpened = subview;
-            return;
-        }
-    }
-}
-
-- (void)sidebarClosed {
-    if (_firstResponderOnSidebarOpened) {
-        [_firstResponderOnSidebarOpened becomeFirstResponder];
-    }
-}
-
 - (void)refresh {
-    [_refreshHeaderView beginRefreshing];
     [self.blog syncMediaLibraryWithSuccess:^{
         [_refreshHeaderView endRefreshing];
         [self setUploadButtonEnabled:YES];
@@ -265,12 +244,22 @@ static CGFloat const ScrollingVelocityThreshold = 30.0f;
     return _loadingView;
 }
 
+- (NSDateFormatter *)dateFormatter {
+    if (_dateFormatter) {
+        return _dateFormatter;
+    }
+    
+    _dateFormatter = [[NSDateFormatter alloc] init];
+    _dateFormatter.locale = [NSLocale currentLocale];
+    return _dateFormatter;
+}
+
 - (void)toggleNoMediaView:(BOOL)show {
     if (!show) {
         [_noMediaView removeFromSuperview];
     }
     if (!_noMediaView && show) {
-        WPNoResultsView *noMediaView = [WPNoResultsView noResultsViewWithTitle:NSLocalizedString(@"No media yet", nil) message:nil accessoryView:nil buttonTitle:nil];
+        WPNoResultsView *noMediaView = [WPNoResultsView noResultsViewWithTitle:NSLocalizedString(@"No media to display", nil) message:nil accessoryView:nil buttonTitle:nil];
         _noMediaView = noMediaView;
         [self.collectionView addSubview:_noMediaView];
     }
@@ -293,27 +282,6 @@ static CGFloat const ScrollingVelocityThreshold = 30.0f;
 
 #pragma mark - MediaSearchFilterDelegate
 
-- (void)setDateFilters:(NSDate *)start andEndDate:(NSDate *)end {
-    _startDate = start;
-    _endDate = end;
-    _isFilteringByDate = (start && end);
-}
-
-- (void)applyDateFilterForStartDate:(NSDate *)start andEndDate:(NSDate *)end {
-    [self setDateFilters:start andEndDate:end];
-    end = [end dateByAddingTimeInterval:(24*3600)-1]; // 'end' at 11:59:59
-    if (start && end) {
-        self.filteredMedia = [_allMedia filteredArrayUsingPredicate:[NSPredicate predicateWithFormat:@"(self.creationDate <= %@) AND (self.creationDate >= %@)", end, start]];
-        _isFilteringByDate = YES;
-    } else {
-        self.filteredMedia = _allMedia;
-        _isFilteringByDate = NO;
-    }
-    if (_currentSearchText) {
-        [self applyFilterWithSearchText:_currentSearchText];
-    }
-}
-
 - (void)applyFilterForSelectedMedia {
     if (_selectedMedia.count > 0) {
         NSMutableArray *mediaToRemove = [NSMutableArray arrayWithArray:_allMedia];
@@ -330,36 +298,71 @@ static CGFloat const ScrollingVelocityThreshold = 30.0f;
         return;
     }
     
-    NSArray *mediaToFilter = _isFilteringByDate ? self.filteredMedia : self.allMedia;
-    
+    NSArray *mediaToFilter = _currentFilterMonth ? _filteredMedia : _allMedia;
     self.filteredMedia = [mediaToFilter filteredArrayUsingPredicate:[NSPredicate predicateWithFormat:@"self.title CONTAINS[cd] %@ OR self.caption CONTAINS[cd] %@ OR self.desc CONTAINS[cd] %@", searchText, searchText, searchText]];
     
     _currentSearchText = searchText;
 }
 
+- (void)applyMonthFilterForMonth:(NSDate *)month {
+    if (!month) {
+        [self clearMonthFilter];
+        return;
+    }
+    NSRange daysInMonth = [[NSCalendar currentCalendar] rangeOfUnit:NSDayCalendarUnit inUnit:NSMonthCalendarUnit forDate:month];
+    NSDate *filterMonthEnd = [month dateByAddingTimeInterval:daysInMonth.length*24*60*60];
+    
+    NSArray *mediaToFilter = _currentSearchText ? _filteredMedia : _allMedia;
+    self.filteredMedia = [mediaToFilter filteredArrayUsingPredicate:[NSPredicate predicateWithFormat:@"(creationDate >= %@) AND (creationDate <= %@)", month, filterMonthEnd]];
+    
+    _currentFilterMonth = month;
+}
+
 - (void)clearSearchFilter {
-    self.filteredMedia = _allMedia;
     _currentSearchText = nil;
-    [self applyDateFilterForStartDate:_startDate andEndDate:_endDate];
+    self.filteredMedia = _allMedia;
+    if (_currentFilterMonth) {
+        [self applyMonthFilterForMonth:_currentFilterMonth];
+    }
 }
 
-- (NSDate *)mediaDateRangeStart {
-    if (_allMedia.count > 0) {
-        return [[_allMedia lastObject] creationDate];
+- (void)clearMonthFilter {
+    _currentFilterMonth = nil;
+    self.filteredMedia = _allMedia;
+    if (_currentSearchText) {
+        [self applyFilterWithSearchText:_currentSearchText];
     }
-    return nil;
 }
 
-- (NSDate *)mediaDateRangeEnd {
-    if (_filteredMedia.count > 0) {
-        NSDate *d = ((Media*)_filteredMedia[0]).creationDate;
-        NSCalendar *c = [NSCalendar currentCalendar];
-        c.timeZone = [NSTimeZone timeZoneWithAbbreviation:@"UTC"];
-        NSDateComponents *components = [c components:NSYearCalendarUnit|NSMonthCalendarUnit|NSDayCalendarUnit fromDate:d];
-        return [c dateFromComponents:components];
+static NSArray *generatedMonthYearsFilters;
+- (NSArray *)possibleMonthsAndYears {
+    if (generatedMonthYearsFilters) {
+        return generatedMonthYearsFilters;
     }
-    return nil;
+    
+    NSMutableOrderedSet *monthsYearsSet = [NSMutableOrderedSet orderedSet];
+    NSArray *monthNames = [self.dateFormatter standaloneMonthSymbols];
+    NSCalendar *calendar = [NSCalendar currentCalendar];
+    [_allMedia enumerateObjectsUsingBlock:^(Media *obj, NSUInteger idx, BOOL *stop) {
+        NSDateComponents *components = [calendar components:NSMonthCalendarUnit|NSYearCalendarUnit fromDate:obj.creationDate];
+        NSString *monthYear = [NSString stringWithFormat:@"%@ %d", monthNames[components.month-1], components.year];
+        [monthsYearsSet addObject:monthYear];
+    }];
+    generatedMonthYearsFilters = monthsYearsSet.array;
+    return generatedMonthYearsFilters;
 }
+
+- (void)clearGeneratedMonthFilters {
+    generatedMonthYearsFilters = nil;
+}
+
+- (void)selectedMonthPickerIndex:(NSInteger)index {
+    self.dateFormatter.dateFormat = @"MMMM yyyy";
+    self.dateFormatter.timeZone = [NSTimeZone timeZoneWithAbbreviation:@"GMT"];
+    NSDate *filterMonthStart = [self.dateFormatter dateFromString:generatedMonthYearsFilters[index]];
+    [self applyMonthFilterForMonth:filterMonthStart];
+}
+
 
 #pragma mark - CollectionViewDelegate/DataSource
 
@@ -602,6 +605,9 @@ static CGFloat const ScrollingVelocityThreshold = 30.0f;
 
 - (void)controller:(NSFetchedResultsController *)controller didChangeObject:(id)anObject atIndexPath:(NSIndexPath *)indexPath forChangeType:(NSFetchedResultsChangeType)type newIndexPath:(NSIndexPath *)newIndexPath {
     _shouldUpdateFromContextChange = (type == NSFetchedResultsChangeDelete || type == NSFetchedResultsChangeInsert || type == NSFetchedResultsChangeMove);
+    if (type == NSFetchedResultsChangeDelete || type == NSFetchedResultsChangeInsert) {
+        [self clearGeneratedMonthFilters];
+    }
 }
 
 - (void)controllerDidChangeContent:(NSFetchedResultsController *)controller {
@@ -687,7 +693,7 @@ static CGFloat const ScrollingVelocityThreshold = 30.0f;
     
     } else if ([buttonTitle isEqualToString:NSLocalizedString(@"Add Video from Library", nil)]) {
        [WPMobileStats flagProperty:StatsPropertyPostDetailClickedAddVideo forEvent:[self formattedStatEventString:StatsEventPostDetailClosedEditor]];
-       actionSheet.tag = TAG_ACTIONSHEET_VIDEO;
+       actionSheet.tag = MediaTypeActionSheetVideo;
        [self pickMediaFromLibrary:actionSheet];
     
     } else if ([buttonTitle isEqualToString:NSLocalizedString(@"Record Video", nil)]) {
@@ -948,7 +954,7 @@ static CGFloat const ScrollingVelocityThreshold = 30.0f;
         _picker.videoQuality = UIImagePickerControllerQualityTypeMedium;
         _isLibraryMedia = YES;
         
-        if ([(UIView *)sender tag] == TAG_ACTIONSHEET_VIDEO) {
+        if ([(UIView *)sender tag] == MediaTypeActionSheetVideo) {
             _picker.mediaTypes = [NSArray arrayWithObject:(NSString *)kUTTypeMovie];
 			_picker.videoQuality = UIImagePickerControllerQualityTypeMedium;
             _picker.modalPresentationStyle = UIModalPresentationCurrentContext;
@@ -1218,12 +1224,11 @@ static CGFloat const ScrollingVelocityThreshold = 30.0f;
     }
 	NSData *imageData = UIImageJPEGRepresentation(theImage, 0.90);
 	UIImage *imageThumbnail = [self generateThumbnailFromImage:theImage andSize:CGSizeMake(75, 75)];
-	NSDateFormatter *formatter = [[NSDateFormatter alloc] init];
-	[formatter setDateFormat:@"yyyyMMdd-HHmmss"];
+	[self.dateFormatter setDateFormat:@"yyyyMMdd-HHmmss"];
     
 	NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
 	NSString *documentsDirectory = [paths objectAtIndex:0];
-	NSString *filename = [NSString stringWithFormat:@"%@.jpg", [formatter stringFromDate:[NSDate date]]];
+	NSString *filename = [NSString stringWithFormat:@"%@.jpg", [self.dateFormatter stringFromDate:[NSDate date]]];
 	NSString *filepath = [documentsDirectory stringByAppendingPathComponent:filename];
     
 	if (self.currentImageMetadata != nil) {
@@ -1262,11 +1267,6 @@ static CGFloat const ScrollingVelocityThreshold = 30.0f;
 			//write it to disk
 			[dest_data writeToFile:filepath atomically:YES];
 		}
-		//cleanup
-//        if (destination)
-//            CFRelease(destination);
-//        if (source)
-//            CFRelease(source);
     } else {
 		NSFileManager *fileManager = [NSFileManager defaultManager];
 		[fileManager createFileAtPath:filepath contents:imageData attributes:nil];
@@ -1344,11 +1344,11 @@ static CGFloat const ScrollingVelocityThreshold = 30.0f;
 	UIImage *videoThumbnail = [self generateThumbnailFromImage:thumbnail andSize:CGSizeMake(75, 75)];
 	
 	// Save to local file
-	NSDateFormatter *formatter = [[NSDateFormatter alloc] init];
-	[formatter setDateFormat:@"yyyyMMdd-HHmmss"];	NSFileManager *fileManager = [NSFileManager defaultManager];
+	[self.dateFormatter setDateFormat:@"yyyyMMdd-HHmmss"];
+    NSFileManager *fileManager = [NSFileManager defaultManager];
 	NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
 	NSString *documentsDirectory = [paths objectAtIndex:0];
-	NSString *filename = [NSString stringWithFormat:@"%@.mov", [formatter stringFromDate:[NSDate date]]];
+	NSString *filename = [NSString stringWithFormat:@"%@.mov", [self.dateFormatter stringFromDate:[NSDate date]]];
 	NSString *filepath = [documentsDirectory stringByAppendingPathComponent:filename];
 	
 	if(videoURL != nil) {
