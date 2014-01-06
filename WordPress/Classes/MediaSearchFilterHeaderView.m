@@ -14,15 +14,29 @@
 
 static CGFloat const DateButtonWidth = 44.0f;
 
-@interface MediaSearchFilterHeaderView () <UISearchBarDelegate, UIPickerViewDataSource, UIPickerViewDelegate, UIPickerViewAccessibilityDelegate>
+@interface MediaSearchFilterHeaderView () <UISearchBarDelegate, UIPickerViewDataSource, UIPickerViewDelegate, UIPickerViewAccessibilityDelegate,
+                                            UIPopoverControllerDelegate>
 
 @property (nonatomic, weak) UISearchBar *searchBar;
 @property (nonatomic, weak) UIButton *filterDatesButton;
 @property (nonatomic, weak) UIPickerView *monthPickerView;
+@property (nonatomic, assign) NSUInteger lastSelectedMonthFilter;
+@property (nonatomic, strong) UIPopoverController *popover;
 
 @end
 
 @implementation MediaSearchFilterHeaderView
+
+- (void)awakeFromNib {
+    _lastSelectedMonthFilter = 0;
+}
+
+- (void)layoutSubviews {
+    if (_popover) {
+        // Re-present for rotation changes
+        [_popover presentPopoverFromRect:_filterDatesButton.frame inView:self permittedArrowDirections:UIPopoverArrowDirectionAny animated:YES];
+    }
+}
 
 - (void)setDelegate:(MediaBrowserViewController *)delegate {
     _delegate = delegate;
@@ -32,13 +46,14 @@ static CGFloat const DateButtonWidth = 44.0f;
 
 - (UIButton *)filterDatesButton {
     UIButton *filterDate = [UIButton buttonWithType:UIButtonTypeCustom];
-    [filterDate setBackgroundColor:[WPStyleGuide allTAllShadeGrey]];
-    [filterDate setImage:[UIImage imageNamed:@"date_picker_unselected"] forState:UIControlStateNormal];
-    
     _filterDatesButton = filterDate;
+    [_filterDatesButton setBackgroundColor:[WPStyleGuide allTAllShadeGrey]];
+    [_filterDatesButton setImage:[UIImage imageNamed:@"date_picker_unselected"] forState:UIControlStateNormal];
     _filterDatesButton.frame = CGRectMake(_searchBar.frame.size.width, 0, DateButtonWidth, 44.0f);
     [_filterDatesButton addTarget:self action:@selector(filterDatesPressed) forControlEvents:UIControlEventTouchUpInside];
     [_filterDatesButton setAutoresizingMask:UIViewAutoresizingFlexibleLeftMargin];
+    _filterDatesButton.accessibilityHint = NSLocalizedString(@"Filters items by month and year with a picker", @"Accessibility hint for month filter button in media browser");
+    _filterDatesButton.accessibilityLabel = NSLocalizedString(@"Filter by month", @"Accessibility label for month filter button in media browser");
     return _filterDatesButton;
 }
 
@@ -57,32 +72,59 @@ static CGFloat const DateButtonWidth = 44.0f;
 
 - (void)filterDatesPressed {
     CGFloat pickerViewHeight = 216.0f;
-    if (_monthPickerView) {
-        [UIView animateWithDuration:0.4 delay:0 options:UIViewAnimationOptionBeginFromCurrentState animations:^{
-            _monthPickerView.frame = (CGRect) {
-                .origin = CGPointMake(0, self.delegate.collectionView.frame.size.height + pickerViewHeight),
-                .size = _monthPickerView.frame.size
-            };
-        } completion:^(BOOL finished) {
+    if (_monthPickerView || _popover) {
+        if (IS_IPAD) {
+            [_popover dismissPopoverAnimated:YES];
             [_monthPickerView removeFromSuperview];
-        }];
+            _popover = nil;
+        } else {
+            [UIView animateWithDuration:0.4 delay:0 options:UIViewAnimationOptionBeginFromCurrentState animations:^{
+                _monthPickerView.frame = (CGRect) {
+                    .origin = CGPointMake(0, self.delegate.collectionView.frame.size.height + pickerViewHeight),
+                    .size = _monthPickerView.frame.size
+                };
+            } completion:^(BOOL finished) {
+                [_monthPickerView removeFromSuperview];
+                _monthPickerView = nil;
+            }];
+        }
         return;
     }
     
-    UIPickerView *pickerView = [[UIPickerView alloc] initWithFrame:CGRectMake(0, self.delegate.collectionView.frame.size.height + pickerViewHeight, self.frame.size.width, pickerViewHeight)];
-    pickerView.delegate = self;
-    pickerView.dataSource = self;
-    pickerView.showsSelectionIndicator = YES;
-    pickerView.backgroundColor = [WPStyleGuide itsEverywhereGrey];
+    UIPickerView *pickerView = [[UIPickerView alloc] initWithFrame:CGRectMake(0, self.delegate.collectionView.frame.size.height + pickerViewHeight, 320.0f, pickerViewHeight)];
     _monthPickerView = pickerView;
-    [self.delegate.collectionView addSubview:_monthPickerView];
+    _monthPickerView.delegate = self;
+    _monthPickerView.dataSource = self;
+    _monthPickerView.showsSelectionIndicator = YES;
+    _monthPickerView.backgroundColor = [WPStyleGuide itsEverywhereGrey];
+    [_monthPickerView selectRow:_lastSelectedMonthFilter inComponent:0 animated:NO];
     
-    [UIView animateWithDuration:0.4 delay:0 options:UIViewAnimationOptionBeginFromCurrentState animations:^{
+    if (IS_IPAD) {
+        UIViewController *popoverContent = [[UIViewController alloc] init];
+        popoverContent.preferredContentSize = CGSizeMake(320.0f, pickerViewHeight);
         _monthPickerView.frame = (CGRect) {
-            .origin = CGPointMake(0, self.delegate.view.frame.size.height - pickerViewHeight),
+            .origin = CGPointZero,
             .size = _monthPickerView.frame.size
         };
-    } completion:nil];
+        [popoverContent.view addSubview:_monthPickerView];
+        _popover = [[UIPopoverController alloc] initWithContentViewController:popoverContent];
+        _popover.delegate = self;
+        [_popover setPopoverContentSize:CGSizeMake(320.0f, _monthPickerView.frame.size.height)];
+        [_popover presentPopoverFromRect:_filterDatesButton.frame inView:self permittedArrowDirections:UIPopoverArrowDirectionAny animated:YES];
+    } else {
+        [self.delegate.collectionView addSubview:_monthPickerView];
+        [UIView animateWithDuration:0.4 delay:0 options:UIViewAnimationOptionBeginFromCurrentState animations:^{
+            _monthPickerView.frame = (CGRect) {
+                .origin = CGPointMake(0, self.delegate.view.frame.size.height - pickerViewHeight),
+                .size = _monthPickerView.frame.size
+            };
+        } completion:nil];
+    }
+}
+
+- (void)popoverControllerDidDismissPopover:(UIPopoverController *)popoverController {
+    _popover = nil;
+    _monthPickerView = nil;
 }
 
 #pragma mark - UISearchBarDelegate
@@ -143,10 +185,13 @@ static CGFloat const DateButtonWidth = 44.0f;
 }
 
 - (void)pickerView:(UIPickerView *)pickerView didSelectRow:(NSInteger)row inComponent:(NSInteger)component {
+    _lastSelectedMonthFilter = row;
     if (row == 0) {
         [self.delegate clearMonthFilter];
+        [_filterDatesButton setImage:[UIImage imageNamed:@"date_picker_unselected"] forState:UIControlStateNormal];
         return;
     }
+    [_filterDatesButton setImage:[UIImage imageNamed:@"date_picker_selected"] forState:UIControlStateNormal];
     [self.delegate selectedMonthPickerIndex:row-1];
 }
 
