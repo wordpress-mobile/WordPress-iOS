@@ -65,8 +65,8 @@
         // We want the refresh button to be borderless, but buttons in navbars want a border.
         // We need to compose the refresh button as a UIButton that is used as the UIBarButtonItem's custom view.
         UIButton *btn = [UIButton buttonWithType:UIButtonTypeCustom];
-        [btn setImage:[UIImage imageNamed:@"sync_dark"] forState:UIControlStateNormal];
-        [btn setImage:[UIImage imageNamed:@"sync_lite"] forState:UIControlStateHighlighted];
+        [btn setImage:[UIImage imageNamed:@"sync_lite"] forState:UIControlStateNormal];
+        [btn setImage:[UIImage imageNamed:@"sync"] forState:UIControlStateHighlighted];
 
         btn.frame = CGRectMake(0.0f, 0.0f, 30.0f, 30.0f);
         btn.autoresizingMask =  UIViewAutoresizingFlexibleHeight;
