@@ -84,7 +84,7 @@ static NSDateFormatter *dateFormatter;
                 [themesToKeep addObject:theme];
             }
             
-            NSSet *existingThemes = ((Blog*)[backgroundMOC objectWithID:blog.objectID]).themes;
+            NSSet *existingThemes = ((Blog *)[backgroundMOC objectWithID:blog.objectID]).themes;
             for (Theme *t in existingThemes) {
                 if (![themesToKeep containsObject:t]) {
                     [backgroundMOC deleteObject:t];
