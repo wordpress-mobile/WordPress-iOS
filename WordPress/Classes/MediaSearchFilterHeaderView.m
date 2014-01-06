@@ -10,18 +10,15 @@
 #import "MediaSearchFilterHeaderView.h"
 #import "MediaBrowserViewController.h"
 #import "WPStyleGuide.h"
-#import "DateRangePickerView.h"
 #import "InputViewButton.h"
-
 
 static CGFloat const DateButtonWidth = 44.0f;
 
-@interface MediaSearchFilterHeaderView () <UISearchBarDelegate>
+@interface MediaSearchFilterHeaderView () <UISearchBarDelegate, UIPickerViewDataSource, UIPickerViewDelegate, UIPickerViewAccessibilityDelegate>
 
 @property (nonatomic, weak) UISearchBar *searchBar;
 @property (nonatomic, weak) UIButton *filterDatesButton;
-@property (nonatomic, weak) DateRangePickerView *dateRangePickerView;
-@property (nonatomic, assign) BOOL isDisplayingDatePicker;
+@property (nonatomic, weak) UIPickerView *monthPickerView;
 
 @end
 
@@ -29,19 +26,16 @@ static CGFloat const DateButtonWidth = 44.0f;
 
 - (void)setDelegate:(MediaBrowserViewController *)delegate {
     _delegate = delegate;
-    
     [_delegate.collectionView addSubview:self.searchBar];
     [_delegate.collectionView addSubview:self.filterDatesButton];
-    [_delegate.collectionView addSubview:self.dateRangePickerView];
-    
 }
 
 - (UIButton *)filterDatesButton {
-    UIButton *sort = [UIButton buttonWithType:UIButtonTypeCustom];
-    [sort setBackgroundColor:[WPStyleGuide allTAllShadeGrey]];
-    [sort setImage:[UIImage imageNamed:@"date_picker_unselected"] forState:UIControlStateNormal];
+    UIButton *filterDate = [UIButton buttonWithType:UIButtonTypeCustom];
+    [filterDate setBackgroundColor:[WPStyleGuide allTAllShadeGrey]];
+    [filterDate setImage:[UIImage imageNamed:@"date_picker_unselected"] forState:UIControlStateNormal];
     
-    _filterDatesButton = sort;
+    _filterDatesButton = filterDate;
     _filterDatesButton.frame = CGRectMake(_searchBar.frame.size.width, 0, DateButtonWidth, 44.0f);
     [_filterDatesButton addTarget:self action:@selector(filterDatesPressed) forControlEvents:UIControlEventTouchUpInside];
     [_filterDatesButton setAutoresizingMask:UIViewAutoresizingFlexibleLeftMargin];
@@ -61,38 +55,34 @@ static CGFloat const DateButtonWidth = 44.0f;
     return _searchBar;
 }
 
-- (DateRangePickerView *)dateRangePickerView {
-    DateRangePickerView *dateRangePickerView = [[DateRangePickerView alloc] initWithFrame:CGRectMake(0, 44.0f, self.bounds.size.width, 44.0f)];
-    [dateRangePickerView setAlpha:0];
-    dateRangePickerView.autoresizingMask = UIViewAutoresizingFlexibleWidth;
-    [dateRangePickerView setDateRangeMin:[_delegate mediaDateRangeStart] andMax:[_delegate mediaDateRangeEnd]];
-    _dateRangePickerView = dateRangePickerView;
-    return _dateRangePickerView;
-}
-
 - (void)filterDatesPressed {
-    [_dateRangePickerView setDateRangeMin:[_delegate mediaDateRangeStart] andMax:[_delegate mediaDateRangeEnd]];
-    if (!_isDisplayingDatePicker) {
-        [UIView animateWithDuration:0.3f animations:^{
-            [_filterDatesButton setImage:[UIImage imageNamed:@"date_picker_selected"] forState:UIControlStateNormal];
-            _dateRangePickerView.alpha = 1;
+    CGFloat pickerViewHeight = 216.0f;
+    if (_monthPickerView) {
+        [UIView animateWithDuration:0.4 delay:0 options:UIViewAnimationOptionBeginFromCurrentState animations:^{
+            _monthPickerView.frame = (CGRect) {
+                .origin = CGPointMake(0, self.delegate.collectionView.frame.size.height + pickerViewHeight),
+                .size = _monthPickerView.frame.size
+            };
         } completion:^(BOOL finished) {
-            _isDisplayingDatePicker = YES;
+            [_monthPickerView removeFromSuperview];
         }];
+        return;
     }
-    else {
-        [UIView animateWithDuration:0.3f animations:^{
-            _dateRangePickerView.alpha = 0;
-            [_filterDatesButton setImage:[UIImage imageNamed:@"date_picker_unselected"] forState:UIControlStateNormal];
-            [_dateRangePickerView.startDate resignFirstResponder];
-            [_dateRangePickerView.endDate resignFirstResponder];
-        } completion:^(BOOL finished) {
-            NSDateFormatter *formatter = [[NSDateFormatter alloc] init];
-            formatter.dateFormat = @"yyyy-MM-dd";
-            [_delegate applyDateFilterForStartDate: [formatter dateFromString:_dateRangePickerView.startDate.titleLabel.text]  andEndDate:[formatter dateFromString:_dateRangePickerView.endDate.titleLabel.text]];
-            _isDisplayingDatePicker = NO;
-        }];
-    }
+    
+    UIPickerView *pickerView = [[UIPickerView alloc] initWithFrame:CGRectMake(0, self.delegate.collectionView.frame.size.height + pickerViewHeight, self.frame.size.width, pickerViewHeight)];
+    pickerView.delegate = self;
+    pickerView.dataSource = self;
+    pickerView.showsSelectionIndicator = YES;
+    pickerView.backgroundColor = [WPStyleGuide itsEverywhereGrey];
+    _monthPickerView = pickerView;
+    [self.delegate.collectionView addSubview:_monthPickerView];
+    
+    [UIView animateWithDuration:0.4 delay:0 options:UIViewAnimationOptionBeginFromCurrentState animations:^{
+        _monthPickerView.frame = (CGRect) {
+            .origin = CGPointMake(0, self.delegate.view.frame.size.height - pickerViewHeight),
+            .size = _monthPickerView.frame.size
+        };
+    } completion:nil];
 }
 
 #pragma mark - UISearchBarDelegate
@@ -132,6 +122,40 @@ static CGFloat const DateButtonWidth = 44.0f;
             }
         }
     }
+}
+
+
+#pragma mark - UIPickerView delegate
+
+- (NSInteger)numberOfComponentsInPickerView:(UIPickerView *)pickerView {
+    return 1;
+}
+
+- (NSInteger)pickerView:(UIPickerView *)pickerView numberOfRowsInComponent:(NSInteger)component {
+    return [self.delegate possibleMonthsAndYears].count + 1;
+}
+
+- (NSString *)pickerView:(UIPickerView *)pickerView titleForRow:(NSInteger)row forComponent:(NSInteger)component {
+    if (row == 0) {
+        return NSLocalizedString(@"All Media Items", nil);
+    }
+    return [self.delegate possibleMonthsAndYears][row-1];
+}
+
+- (void)pickerView:(UIPickerView *)pickerView didSelectRow:(NSInteger)row inComponent:(NSInteger)component {
+    if (row == 0) {
+        [self.delegate clearMonthFilter];
+        return;
+    }
+    [self.delegate selectedMonthPickerIndex:row-1];
+}
+
+- (NSString *)pickerView:(UIPickerView *)pickerView accessibilityLabelForComponent:(NSInteger)component {
+    return NSLocalizedString(@"Month and year to filter media items by", @"Accessibility label for filtering media by month");
+}
+
+- (NSString *)pickerView:(UIPickerView *)pickerView accessibilityHintForComponent:(NSInteger)component {
+    return NSLocalizedString(@"Selecting an option shows media items only from that month and year.", @"Accessibility hint for filtering media by month");
 }
 
 @end

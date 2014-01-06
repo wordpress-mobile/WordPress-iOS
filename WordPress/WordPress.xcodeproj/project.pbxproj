@@ -788,7 +788,6 @@
 		C5834B281810410A00B64089 /* EditMediaViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = C5834B231810410A00B64089 /* EditMediaViewController.xib */; };
 		C5834B291810410A00B64089 /* MediaBrowserViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = C5834B251810410A00B64089 /* MediaBrowserViewController.m */; };
 		C5834B2A1810410A00B64089 /* MediaBrowserViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = C5834B261810410A00B64089 /* MediaBrowserViewController.xib */; };
-		C5834B2F1810412100B64089 /* DateRangePickerView.m in Sources */ = {isa = PBXBuildFile; fileRef = C5834B2C1810412100B64089 /* DateRangePickerView.m */; };
 		C5834B301810412100B64089 /* WPLoadingView.m in Sources */ = {isa = PBXBuildFile; fileRef = C5834B2E1810412100B64089 /* WPLoadingView.m */; };
 		C5834B331810413D00B64089 /* InputViewButton.m in Sources */ = {isa = PBXBuildFile; fileRef = C5834B321810413D00B64089 /* InputViewButton.m */; };
 		C5834B74181042E100B64089 /* date_picker_selected.png in Resources */ = {isa = PBXBuildFile; fileRef = C5834B5C181042E100B64089 /* date_picker_selected.png */; };
@@ -2015,8 +2014,6 @@
 		C5834B241810410A00B64089 /* MediaBrowserViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MediaBrowserViewController.h; sourceTree = "<group>"; };
 		C5834B251810410A00B64089 /* MediaBrowserViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MediaBrowserViewController.m; sourceTree = "<group>"; };
 		C5834B261810410A00B64089 /* MediaBrowserViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = MediaBrowserViewController.xib; sourceTree = "<group>"; };
-		C5834B2B1810412100B64089 /* DateRangePickerView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DateRangePickerView.h; sourceTree = "<group>"; };
-		C5834B2C1810412100B64089 /* DateRangePickerView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DateRangePickerView.m; sourceTree = "<group>"; };
 		C5834B2D1810412100B64089 /* WPLoadingView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WPLoadingView.h; sourceTree = "<group>"; };
 		C5834B2E1810412100B64089 /* WPLoadingView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WPLoadingView.m; sourceTree = "<group>"; };
 		C5834B311810413D00B64089 /* InputViewButton.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = InputViewButton.h; sourceTree = "<group>"; };
@@ -2451,8 +2448,6 @@
 			children = (
 				C5834B311810413D00B64089 /* InputViewButton.h */,
 				C5834B321810413D00B64089 /* InputViewButton.m */,
-				C5834B2B1810412100B64089 /* DateRangePickerView.h */,
-				C5834B2C1810412100B64089 /* DateRangePickerView.m */,
 				C5834B2D1810412100B64089 /* WPLoadingView.h */,
 				C5834B2E1810412100B64089 /* WPLoadingView.m */,
 				C5834B1D181040E500B64089 /* MediaSearchFilterHeaderView.h */,
@@ -5566,7 +5561,6 @@
 				5D42A3E1175E7452005CFF05 /* ReaderComment.m in Sources */,
 				5D42A3E2175E7452005CFF05 /* ReaderPost.m in Sources */,
 				5D42A3F7175E75EE005CFF05 /* ReaderCommentTableViewCell.m in Sources */,
-				C5834B2F1810412100B64089 /* DateRangePickerView.m in Sources */,
 				5D42A3F8175E75EE005CFF05 /* ReaderImageView.m in Sources */,
 				E1D062D4177C685C00644185 /* ReaderButton.m in Sources */,
 				5D0077A7182AE9DF00F865DB /* ReaderMediaQueue.m in Sources */,
