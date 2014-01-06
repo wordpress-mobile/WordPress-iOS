@@ -18,7 +18,6 @@
 
 static NSString *const WordPressComApiClientEndpointURL = @"https://public-api.wordpress.com/rest/v1/";
 static NSString *const WordPressComApiOauthBaseUrl = @"https://public-api.wordpress.com/oauth2";
-NSString *const WordPressComXMLRPCUrl = @"http://wordpress.com/xmlrpc.php";
 NSString *const WordPressComApiNotificationFields = @"id,type,unread,body,subject,timestamp";
 static NSString *const WordPressComApiLoginUrl = @"https://wordpress.com/wp-login.php";
 static NSString *const WordPressComXMLRPCUrl = @"https://wordpress.com/xmlrpc.php";
@@ -378,12 +377,10 @@ NSString *const WordPressComApiPushAppId = @"org.wordpress.appstore";
 
     if (![self hasCredentials])
         return;
-    
-    NSString *authURL = WordPressComXMLRPCUrl;
-    
+        
     // Send a multicall for register the token and retrieval of push notification settings
     NSMutableArray *operations = [NSMutableArray arrayWithCapacity:2];
-    WPXMLRPCClient *api = [[WPXMLRPCClient alloc] initWithXMLRPCEndpoint:[NSURL URLWithString:WPComXMLRPCUrl]];
+    WPXMLRPCClient *api = [[WPXMLRPCClient alloc] initWithXMLRPCEndpoint:[NSURL URLWithString:WordPressComXMLRPCUrl]];
     
     [api setAuthorizationHeaderWithToken:self.authToken];
     
