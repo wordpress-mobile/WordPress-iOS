@@ -14,6 +14,7 @@
 #import <objc/runtime.h>
 #import "UIImage+Resize.h"
 #import <MediaPlayer/MediaPlayer.h>
+#import "WPAccount.h"
 
 @interface BlurView : UIView
 @property (nonatomic, strong) UIToolbar *toolbar;
@@ -137,7 +138,7 @@ static NSUInteger const AlertDiscardChanges = 500;
     _descriptionTextview.contentInset = UIEdgeInsetsMake(0, -4, 0, 0);
     
     [self applyLayoutForMedia];
-    [self applyLayout];
+    self.descriptionTextview.editable = YES;
     
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(keyboardWillShow:) name:UIKeyboardWillShowNotification object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(keyboardWillHide:) name:UIKeyboardWillHideNotification object:nil];
@@ -296,7 +297,6 @@ static NSUInteger const AlertDiscardChanges = 500;
     [self toggleEditBar];
 }
 
-
 - (void)toggleEditBar {
     _isShowingEditFields = !_isShowingEditFields;
     
@@ -309,9 +309,7 @@ static NSUInteger const AlertDiscardChanges = 500;
     } completion:nil];
 }
 
-- (void)applyLayoutForMedia
-{
-    
+- (void)applyLayoutForMedia {
     [self.titleTextfield setText:_media.title];
     [self.titleTextfield setPlaceholder:NSLocalizedString(@"Title", @"")];
     
@@ -383,33 +381,32 @@ static NSUInteger const AlertDiscardChanges = 500;
     [loading startAnimating];
     
     if (_media.remoteURL) {
-        [[WPImageSource sharedSource] downloadImageForURL:[NSURL URLWithString:_media.remoteURL] withSuccess:^(UIImage *image) {
+        void (^mediaDownloadSuccess)(UIImage *image) = ^(UIImage *image) {
             _mediaImageview.contentMode = UIViewContentModeScaleAspectFit;
             _mediaImageview.image = image;
             NSString *localPath = [self saveFullsizeImageToDisk:image imageName:_media.filename];
             _media.localURL = localPath;
             _mediaImageview.userInteractionEnabled = YES;
             [[_mediaImageview viewWithTag:1337] removeFromSuperview];
-        } failure:^(NSError *error) {
+        };
+        
+        // TODO change placeholder to a failure or alert the user somehow.
+        void (^mediaDownloadFailure)(NSError *error) = ^(NSError *error) {
             DDLogWarn(@"Failed to download image for %@: %@", _media, error);
             [[_mediaImageview viewWithTag:1337] removeFromSuperview];
-        }];
+        };
+        
+        if (_media.blog.isPrivate) {
+            [[WPImageSource sharedSource] downloadImageForURL:[NSURL URLWithString:_media.remoteURL]
+                                                    authToken:[[[WPAccount defaultWordPressComAccount] restApi] authToken]
+                                                  withSuccess:mediaDownloadSuccess failure:mediaDownloadFailure];
+        } else {
+            [[WPImageSource sharedSource] downloadImageForURL:[NSURL URLWithString:_media.remoteURL]
+                                                  withSuccess:mediaDownloadSuccess failure:mediaDownloadFailure];
+        }
     }
 }
 
-- (void)applyLayout
-{
-    self.descriptionTextview.editable = YES;
-    
-    // Add toolbar for editing
-//    CGRect frame = CGRectMake(0, 0, self.view.frame.size.width, WPKT_HEIGHT_PORTRAIT);
-//    WPKeyboardToolbarBase *editorToolbar;
-//    editorToolbar = [[WPKeyboardToolbarWithoutGradient alloc] initDoneWithFrame:frame];
-//    editorToolbar.delegate = self;
-//    self.titleTextfield.inputAccessoryView = editorToolbar;
-//    self.captionTextfield.inputAccessoryView = editorToolbar;
-//    self.descriptionTextview.inputAccessoryView = editorToolbar;
-}
 
 #pragma mark - Keyboard Management
 
