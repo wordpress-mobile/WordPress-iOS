@@ -229,7 +229,7 @@
 }
 
 - (IBAction)activatePressed:(id)sender {
-    __block UIActivityIndicatorView *loading = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleGray];
+    __block UIActivityIndicatorView *loading = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleWhite];
     [loading startAnimating];
     loading.center = CGPointMake(self.activateButton.bounds.size.width/2, self.activateButton.bounds.size.height/2);
     [self.activateButton setTitle:@"" forState:UIControlStateNormal];
