@@ -50,21 +50,26 @@
 
     self.view.autoresizingMask = UIViewAutoresizingFlexibleHeight | UIViewAutoresizingFlexibleWidth;
     self.themeControlsContainerView.autoresizingMask = UIViewAutoresizingFlexibleWidth;
+    self.themeControlsContainerView.backgroundColor = [WPStyleGuide itsEverywhereGrey];
     [self.view addSubview:self.themeControlsContainerView];
     
     self.themeName.text = self.theme.name;
-    self.themeName.font = [WPStyleGuide postTitleFont];
+    self.themeName.font = [WPStyleGuide largePostTitleFont];
     self.themeName.textColor = [WPStyleGuide littleEddieGrey];
-    [self.themeName sizeToFit];
+    self.themeName.backgroundColor = [WPStyleGuide itsEverywhereGrey];
+    self.themeName.frame = (CGRect) {
+        .origin =  CGPointMake((IS_IPAD ? 0 : 10.0f), self.themeName.frame.origin.y),
+        .size = self.themeName.frame.size
+    };
     
     self.livePreviewButton.titleLabel.font = [WPStyleGuide regularTextFont];
     self.activateButton.titleLabel.font = self.livePreviewButton.titleLabel.font;
     self.livePreviewButton.titleLabel.text = NSLocalizedString(@"Live Preview", nil);
     self.activateButton.titleLabel.text = NSLocalizedString(@"Activate", nil);
-    [self.livePreviewButton setTitleColor:[WPStyleGuide newKidOnTheBlockBlue] forState:UIControlStateNormal];
-    [self.activateButton setTitleColor:[WPStyleGuide newKidOnTheBlockBlue] forState:UIControlStateNormal];
-    [self.livePreviewButton setTitleColor:[WPStyleGuide allTAllShadeGrey] forState:UIControlStateHighlighted];
-    [self.activateButton setTitleColor:[WPStyleGuide allTAllShadeGrey] forState:UIControlStateHighlighted];
+    [self.livePreviewButton setBackgroundColor:[WPStyleGuide whisperGrey]];
+    [self.activateButton setBackgroundColor:[WPStyleGuide baseDarkerBlue]];
+    self.livePreviewButton.layer.cornerRadius = 3.0f;
+    self.activateButton.layer.cornerRadius = 3.0f;
     
     if ([self.theme isCurrentTheme]) {
         [self showAsCurrentTheme];
@@ -85,7 +90,7 @@
 
 - (void)viewDidLayoutSubviews {
     self.livePreviewButton.frame = (CGRect) {
-        .origin = CGPointMake(_livePreviewButton.frame.origin.x, CGRectGetMaxY(_screenshot.frame) + 7),
+        .origin = CGPointMake(_livePreviewButton.frame.origin.x, CGRectGetMaxY(_screenshot.frame) + 7.0f),
         .size = _livePreviewButton.frame.size
     };
     self.activateButton.frame = (CGRect) {
@@ -94,7 +99,7 @@
     };
     self.themeControlsContainerView.frame = (CGRect) {
         .origin = _themeControlsContainerView.frame.origin,
-        .size = CGSizeMake(_themeControlsContainerView.frame.size.width, CGRectGetMaxY(_livePreviewButton.frame) + 10)
+        .size = CGSizeMake(_themeControlsContainerView.frame.size.width, CGRectGetMaxY(_livePreviewButton.frame) + 10.0f)
     };
     self.infoView.frame = (CGRect) {
         .origin = CGPointMake(_infoView.frame.origin.x, CGRectGetMaxY(_themeControlsContainerView.frame) + 10),
@@ -113,33 +118,38 @@
     
     UILabel *detailsTitle = [[UILabel alloc] initWithFrame:CGRectMake(0, 10, _infoView.frame.size.width, 0)];
     detailsTitle.text = NSLocalizedString(@"Details", @"Title for theme details");
-    detailsTitle.font = [WPStyleGuide regularTextFontBold];
+    detailsTitle.font = [WPStyleGuide postTitleFont];
     detailsTitle.textColor = [WPStyleGuide littleEddieGrey];
     detailsTitle.opaque = YES;
+    detailsTitle.backgroundColor = [UIColor whiteColor];
     [detailsTitle sizeToFit];
     [_infoView addSubview:detailsTitle];
     
-    UILabel *detailsText = [[UILabel alloc] initWithFrame:CGRectMake(0, CGRectGetMaxY(detailsTitle.frame), _infoView.frame.size.width, 0)];
+    UILabel *detailsText = [[UILabel alloc] initWithFrame:CGRectMake(0, CGRectGetMaxY(detailsTitle.frame) + 3.0f, _infoView.frame.size.width, 0)];
     detailsText.text = self.theme.details;
     detailsText.numberOfLines = 0;
     detailsText.font = [WPStyleGuide regularTextFont];
-    detailsText.textColor = detailsTitle.textColor;
+    detailsText.textColor = [WPStyleGuide whisperGrey];
     detailsText.opaque = YES;
+    detailsText.backgroundColor = [UIColor whiteColor];
     [detailsText sizeToFit];
     [_infoView addSubview:detailsText];
     
-    UILabel *tagsTitle = [[UILabel alloc] initWithFrame:CGRectMake(0, CGRectGetMaxY(detailsText.frame) + 20, _infoView.frame.size.width, 0)];
+    UILabel *tagsTitle = [[UILabel alloc] initWithFrame:CGRectMake(0, CGRectGetMaxY(detailsText.frame) + 20.0f, _infoView.frame.size.width, 0)];
     tagsTitle.text = NSLocalizedString(@"Tags", @"Title for theme tags");
     tagsTitle.font = detailsTitle.font;
     tagsTitle.opaque = YES;
+    tagsTitle.backgroundColor = [UIColor whiteColor];
     [tagsTitle sizeToFit];
     [_infoView addSubview:tagsTitle];
     
-    UILabel *tags = [[UILabel alloc] initWithFrame:CGRectMake(0, CGRectGetMaxY(tagsTitle.frame), _infoView.frame.size.width, 0)];
+    UILabel *tags = [[UILabel alloc] initWithFrame:CGRectMake(0, CGRectGetMaxY(tagsTitle.frame) + 3.0f, _infoView.frame.size.width, 0)];
     tags.text = [self formattedTags];
     tags.numberOfLines = 0;
-    tags.font = [WPStyleGuide regularTextFont];
+    tags.font = detailsText.font;
     tags.opaque = YES;
+    tags.backgroundColor = [UIColor whiteColor];
+    tags.textColor = detailsText.textColor;
     [tags sizeToFit];
     [_infoView addSubview:tags];
     
@@ -179,8 +189,10 @@
     UILabel *currentTheme = [[UILabel alloc] init];
     _currentTheme = currentTheme;
     _currentTheme.text = NSLocalizedString(@"Current Theme", @"Denote a theme as the current");
-    _currentTheme.font = [WPStyleGuide subtitleFont];
+    _currentTheme.font = [WPStyleGuide regularTextFont];
     _currentTheme.textColor = [WPStyleGuide whisperGrey];
+    _currentTheme.backgroundColor = [WPStyleGuide itsEverywhereGrey];
+    _currentTheme.opaque = YES;
     [_currentTheme sizeToFit];
     
     _currentTheme.frame = (CGRect) {
@@ -190,7 +202,7 @@
     [self.themeControlsView addSubview:_currentTheme];
     
     self.screenshot.frame = (CGRect) {
-        .origin = CGPointMake(_screenshot.frame.origin.x, CGRectGetMaxY(_currentTheme.frame) + 7),
+        .origin = CGPointMake(_screenshot.frame.origin.x, CGRectGetMaxY(_currentTheme.frame) + 7.0f),
         .size = _screenshot.frame.size
     };
     

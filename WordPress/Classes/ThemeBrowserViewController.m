@@ -107,7 +107,8 @@ static NSString *const SearchHeaderIdentifier = @"search_header";
         _resultsController = [[NSFetchedResultsController alloc] initWithFetchRequest:fetchRequest managedObjectContext:context sectionNameKeyPath:nil cacheName:nil];
         _resultsController.delegate = self;
         [_resultsController performFetch:nil];
-        _allThemes = self.filteredThemes = _resultsController.fetchedObjects;
+        _allThemes = _resultsController.fetchedObjects;
+        self.filteredThemes = _allThemes;
     }
     
     return _resultsController;
@@ -222,13 +223,14 @@ static NSString *const SearchHeaderIdentifier = @"search_header";
     [super didRotateFromInterfaceOrientation:fromInterfaceOrientation];
 }
 
+
 #pragma mark - FetchedResultsController
 
 - (void)controllerDidChangeContent:(NSFetchedResultsController *)controller {
     _allThemes = controller.fetchedObjects;
     [self applyFilterWithSearchText:_currentSearchText];
-    [self currentThemeForBlog];
 }
+
 
 #pragma mark - Setters
 
@@ -237,6 +239,7 @@ static NSString *const SearchHeaderIdentifier = @"search_header";
     
     [self toggleNoThemesView:(_filteredThemes.count == 0 && !_currentTheme)];
     
+    [self currentThemeForBlog];
     [self removeCurrentThemeFromList];
     [self applyCurrentSort];
 }
