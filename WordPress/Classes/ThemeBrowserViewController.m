@@ -269,6 +269,9 @@ static NSString *const SearchHeaderIdentifier = @"search_header";
 }
 
 - (void)applyFilterWithSearchText:(NSString *)searchText {
+    if ([_currentSearchText isEqualToString:searchText]) {
+        return;
+    }
     if (!searchText || searchText.length == 0) {
         [self clearSearchFilter];
         return;
@@ -278,8 +281,11 @@ static NSString *const SearchHeaderIdentifier = @"search_header";
 }
 
 - (void)clearSearchFilter {
-    self.filteredThemes = _allThemes;
-    _currentSearchText = nil;
+    // Avoid unnecessary reload if search text didn't change
+    if (_currentSearchText) {
+        self.filteredThemes = _allThemes;
+        _currentSearchText = nil;
+    }
 }
 
 
@@ -287,11 +293,18 @@ static NSString *const SearchHeaderIdentifier = @"search_header";
 
 - (void)searchBarTextDidBeginEditing:(UISearchBar *)searchBar {
     [searchBar setShowsCancelButton:YES animated:YES];
+    UIButton *cancelTapArea = [UIButton buttonWithType:UIButtonTypeCustom];
+    cancelTapArea.frame = CGRectMake(0, CGRectGetMaxY(searchBar.frame), self.view.frame.size.width, self.view.bounds.size.height - CGRectGetMaxY(searchBar.frame));
+    cancelTapArea.backgroundColor = [UIColor clearColor];
+    [cancelTapArea addTarget:self action:@selector(closeSearch) forControlEvents:UIControlEventTouchUpInside];
+    cancelTapArea.tag = 10;
+    [self.view addSubview:cancelTapArea];
 }
 
 - (void)searchBarSearchButtonClicked:(UISearchBar *)searchBar {
     [self applyFilterWithSearchText:searchBar.text];
     [searchBar setShowsCancelButton:(searchBar.text.length > 0) animated:YES];
+    [self closeSearch];
 }
 
 - (void)searchBarTextDidEndEditing:(UISearchBar *)searchBar {
@@ -305,8 +318,13 @@ static NSString *const SearchHeaderIdentifier = @"search_header";
     [self clearSearchFilter];
     searchBar.text = nil;
     [searchBar setShowsCancelButton:NO animated:YES];
+    [self closeSearch];
 }
 
+- (void)closeSearch {
+    [self.searchBar resignFirstResponder];
+    [[self.view viewWithTag:10] removeFromSuperview];
+}
 
 #pragma mark - UIRefreshControl
 
