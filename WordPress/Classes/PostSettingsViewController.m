@@ -1961,13 +1961,7 @@ static NSString *const RemoveGeotagCellIdentifier = @"RemoveGeotagCellIdentifier
 - (IBAction)showAddNewCategoryView:(id)sender {
     DDLogMethod();
     WPAddCategoryViewController *addCategoryViewController = [[WPAddCategoryViewController alloc] initWithBlog:self.post.blog];
-	if (IS_IPAD) {
-        [_segmentedTableViewController pushViewController:addCategoryViewController animated:YES];
- 	} else {
-		UINavigationController *nc = [[UINavigationController alloc] initWithRootViewController:addCategoryViewController];
-        nc.navigationBar.translucent = NO;
-        [_segmentedTableViewController presentViewController:nc animated:YES completion:nil];
-	}
+    [_segmentedTableViewController pushViewController:addCategoryViewController animated:YES];
 }
 
 - (void)selectionTableViewController:(WPSelectionTableViewController *)selctionController completedSelectionsWithContext:(void *)selContext selectedObjects:(NSArray *)selectedObjects haveChanges:(BOOL)isChanged {
