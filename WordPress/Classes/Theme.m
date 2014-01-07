@@ -67,7 +67,7 @@ static NSDateFormatter *dateFormatter;
 }
 
 - (BOOL)isPremium {
-    return [self.premium isEqualToNumber:@(1)];
+    return [self.premium isEqualToNumber:@1];
 }
 
 @end
