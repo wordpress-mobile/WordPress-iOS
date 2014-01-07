@@ -7,6 +7,10 @@
  * Some rights reserved. See license.txt
  */
 
+/**
+ The persisted device token
+ */
+extern NSString *const NotificationsDeviceToken;
 
 extern NSString *const NotificationsDeviceToken;
 
@@ -41,6 +45,18 @@ extern NSString *const NotificationsDeviceToken;
 + (void)unregisterDeviceToken;
 
 /**
+ Returns whether the device is currently registered for remote notifications
+ 
+ @return YES if the device is registered for WordPress.com notifications
+ @return NO if not
+ */
++ (BOOL)deviceRegisteredForPushNotifications;
+
+///----------------------------
+/// @name Notification Handling
+///----------------------------
+
+/**
  Handle the notification received, and call the completion handler for background work
  
  @param UIApplicationState at the time of receiving the notification
@@ -56,5 +72,19 @@ extern NSString *const NotificationsDeviceToken;
  @param launchOptions The launch options dictionary passed
  */
 + (void)handleNotificationForApplicationLaunch:(NSDictionary *)launchOptions;
+
+///--------------------------------------
+/// @name WordPress.com Notifications API
+///--------------------------------------
+
+/**
+ Sends the current settings to WordPress.com
+ */
++ (void)saveNotificationSettings;
+
+/**
+ Fetch the current WordPress.com settings
+ */
++ (void)fetchNotificationSettingsWithSuccess:(void (^)())success failure:(void (^)(NSError *error))failure;
 
 @end

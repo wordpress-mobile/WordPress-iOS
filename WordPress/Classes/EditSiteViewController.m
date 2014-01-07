@@ -15,6 +15,7 @@
 #import "ReachabilityUtils.h"
 #import "WPAccount.h"
 #import "WPTableViewSectionHeaderView.h"
+#import "NotificationsManager.h"
 #import <WPXMLRPC/WPXMLRPC.h>
 #import <SVProgressHUD/SVProgressHUD.h>
 #import <NSDictionary+SafeExpectations.h>
@@ -69,7 +70,7 @@ static NSString *const JetpackConnectedCellIdentifier = @"JetpackConnectedCellId
         
         _notificationPreferences = [[[NSUserDefaults standardUserDefaults] objectForKey:@"notification_preferences"] mutableCopy];
         if (!_notificationPreferences) {
-            [[WordPressComApi sharedApi] fetchNotificationSettings:^{
+            [NotificationsManager fetchNotificationSettingsWithSuccess:^{
                 [self reloadNotificationSettings];
             } failure:^(NSError *error) {
                 [WPError showAlertWithTitle:NSLocalizedString(@"Error", @"") message:error.localizedDescription];
@@ -375,8 +376,8 @@ static NSString *const JetpackConnectedCellIdentifier = @"JetpackConnectedCellId
 - (BOOL)canTogglePushNotifications {
     return self.blog &&
         ([self.blog isWPcom] || [self.blog hasJetpack]) &&
-        [[WordPressComApi sharedApi] hasCredentials] &&
-        [[NSUserDefaults standardUserDefaults] objectForKey:NotificationsDeviceToken] != nil;
+        [[[WPAccount defaultWordPressComAccount] restApi] hasCredentials] &&
+        [NotificationsManager deviceRegisteredForPushNotifications];
 }
 
 - (void)toggleGeolocation:(id)sender {
@@ -408,7 +409,7 @@ static NSString *const JetpackConnectedCellIdentifier = @"JetpackConnectedCellId
                 [[NSUserDefaults standardUserDefaults] setValue:_notificationPreferences forKey:@"notification_preferences"];
                 
                 // Send these settings optimistically since they're low-impact (not ideal but works for now)
-                [[WordPressComApi sharedApi] saveNotificationSettings:nil failure:nil];
+                [NotificationsManager saveNotificationSettings];
                 return;
             }
         }
