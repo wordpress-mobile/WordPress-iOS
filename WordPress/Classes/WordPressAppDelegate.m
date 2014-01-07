@@ -83,11 +83,13 @@ static NSString *const CameraPlusImagesNotification = @"CameraPlusImagesNotifica
 #pragma mark - UIApplicationDelegate
 
 - (BOOL)application:(UIApplication *)application willFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
+    [WordPressAppDelegate fixKeychainAccess];
+
     // Crash reporting, logging, debugging
     [self configureLogging];
     [self configureHockeySDK];
     [self configureCrashlytics];
-    [self printDebugLaunchInfo];
+    [self printDebugLaunchInfoWithLaunchOptions:launchOptions];
     [self toggleExtraDebuggingIfNeeded];
     [self removeCredentialsForDebug];
 
@@ -106,6 +108,27 @@ static NSString *const CameraPlusImagesNotification = @"CameraPlusImagesNotifica
 
     [self customizeAppearance];
 
+    // Push notifications
+    [NotificationsManager registerForPushNotifications];
+
+    // Deferred tasks to speed up app launch
+    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_BACKGROUND, 0), ^{
+        [self changeCurrentDirectory];
+        [[PocketAPI sharedAPI] setConsumerKey:[WordPressComApiCredentials pocketConsumerKey]];
+        [self cleanUnusedMediaFileFromTmpDir];
+    });
+    
+    return YES;
+}
+
+- (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
+    DDLogVerbose(@"didFinishLaunchingWithOptions state: %d", application.applicationState);
+    
+    // Launched by tapping a notification
+    if (application.applicationState == UIApplicationStateActive) {
+        [NotificationsManager handleNotificationForApplicationLaunch:launchOptions];
+    }
+
     CGRect bounds = [[UIScreen mainScreen] bounds];
     [self.window setFrame:bounds];
     [self.window setBounds:bounds]; // for good measure.
@@ -116,23 +139,10 @@ static NSString *const CameraPlusImagesNotification = @"CameraPlusImagesNotifica
     
     [self showWelcomeScreenIfNeededAnimated:NO];
 
-    // Push notifications
-    [NotificationsManager registerForPushNotifications];
-    [NotificationsManager handleNotificationForApplicationLaunch:launchOptions];
-
-    // Deferred tasks to speed up app launch
-    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_BACKGROUND, 0), ^{
-        [self changeCurrentDirectory];
-        [WordPressAppDelegate fixKeychainAccess];
-        [[PocketAPI sharedAPI] setConsumerKey:[WordPressComApiCredentials pocketConsumerKey]];
-        [self cleanUnusedMediaFileFromTmpDir];
-    });
-    
     return YES;
 }
 
-- (BOOL)application:(UIApplication *)application openURL:(NSURL *)url sourceApplication:(NSString *)sourceApplication annotation:(id)annotation
-{
+- (BOOL)application:(UIApplication *)application openURL:(NSURL *)url sourceApplication:(NSString *)sourceApplication annotation:(id)annotation {
     BOOL returnValue = NO;
     
     if ([[BITHockeyManager sharedHockeyManager].authenticator handleOpenURL:url
@@ -238,8 +248,8 @@ static NSString *const CameraPlusImagesNotification = @"CameraPlusImagesNotifica
     }];
 }
 
-- (void)applicationWillEnterForeground:(UIApplication *)application
-{
+- (void)applicationWillEnterForeground:(UIApplication *)application {
+    DDLogInfo(@"%@ %@", self, NSStringFromSelector(_cmd));
     [WPMobileStats resumeSession];
 }
 
@@ -256,13 +266,11 @@ static NSString *const CameraPlusImagesNotification = @"CameraPlusImagesNotifica
     [UIApplication sharedApplication].applicationIconBadgeNumber = 0;
 }
 
-- (BOOL)application:(UIApplication *)application shouldSaveApplicationState:(NSCoder *)coder
-{
+- (BOOL)application:(UIApplication *)application shouldSaveApplicationState:(NSCoder *)coder {
     return YES;
 }
 
-- (BOOL)application:(UIApplication *)application shouldRestoreApplicationState:(NSCoder *)coder
-{
+- (BOOL)application:(UIApplication *)application shouldRestoreApplicationState:(NSCoder *)coder {
     return YES;
 }
 
@@ -923,7 +931,7 @@ static NSString *const CameraPlusImagesNotification = @"CameraPlusImagesNotifica
 
 #pragma mark - Debugging and logging
 
-- (void)printDebugLaunchInfo {
+- (void)printDebugLaunchInfoWithLaunchOptions:(NSDictionary *)launchOptions {
     UIDevice *device = [UIDevice currentDevice];
     NSInteger crashCount = [[NSUserDefaults standardUserDefaults] integerForKey:@"crashCount"];
     NSArray *languages = [[NSUserDefaults standardUserDefaults] objectForKey:@"AppleLanguages"];
@@ -944,6 +952,7 @@ static NSString *const CameraPlusImagesNotification = @"CameraPlusImagesNotifica
     DDLogInfo(@"Language:  %@", currentLanguage);
     DDLogInfo(@"UDID:      %@", [device wordpressIdentifier]);
     DDLogInfo(@"APN token: %@", [[NSUserDefaults standardUserDefaults] objectForKey:NotificationsDeviceToken]);
+    DDLogInfo(@"Launch options: %@", launchOptions);
     DDLogInfo(@"===========================================================================");
 }
 
