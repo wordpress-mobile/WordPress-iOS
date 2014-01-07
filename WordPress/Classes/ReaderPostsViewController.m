@@ -148,8 +148,7 @@ NSString * const RPVCDisplayedNativeFriendFinder = @"DisplayedNativeFriendFinder
     }
     
     // Sync content as soon as login or creation occurs
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(didLogin:) name:WordPressComApiDidLoginNotification object:nil];
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(didLogout:) name:WordPressComApiDidLogoutNotification object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(didChangeAccount:) name:WPAccountDefaultWordPressComAccountChangedNotification object:nil];
 
     self.inlineComposeView = [[InlineComposeView alloc] initWithFrame:CGRectZero];
 
@@ -909,13 +908,13 @@ NSString * const RPVCDisplayedNativeFriendFinder = @"DisplayedNativeFriendFinder
     }
 }
 
-- (void)didLogin:(NSNotification *)notification {
-    [self syncItems];
-}
-
-- (void)didLogout:(NSNotification *)notification {
-    [[NSUserDefaults standardUserDefaults] removeObjectForKey:ReaderLastSyncDateKey];
-    [NSUserDefaults resetStandardUserDefaults];
+- (void)didChangeAccount:(NSNotification *)notification {
+    if ([WPAccount defaultWordPressComAccount]) {
+        [self syncItems];
+    } else {
+        [[NSUserDefaults standardUserDefaults] removeObjectForKey:ReaderLastSyncDateKey];
+        [NSUserDefaults resetStandardUserDefaults];
+    }
 }
 
 
@@ -962,7 +961,7 @@ NSString * const RPVCDisplayedNativeFriendFinder = @"DisplayedNativeFriendFinder
 				
 				[[NSUserDefaults standardUserDefaults] setObject:usersBlogs forKey:@"wpcom_users_blogs"];
 				
-                [[WordPressComApi sharedApi] getPath:@"me"
+                [[[WPAccount defaultWordPressComAccount] restApi] getPath:@"me"
                                           parameters:nil
                                              success:^(AFHTTPRequestOperation *operation, id responseObject) {
                                                  if ([usersBlogs count] < 1)

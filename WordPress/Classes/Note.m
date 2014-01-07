@@ -50,7 +50,7 @@ const NSUInteger NoteKeepCount = 20;
 @synthesize commentText = _commentText, noteData = _noteData;
 
 
-+ (void)syncNotesWithResponse:(NSArray *)notesData {
++ (void)mergeNewNotes:(NSArray *)notesData {
     NSManagedObjectContext *context = [[ContextManager sharedInstance] backgroundContext];
     [context performBlock:^{
         NSFetchRequest *request = [NSFetchRequest fetchRequestWithEntityName:@"Note"];
@@ -79,15 +79,6 @@ const NSUInteger NoteKeepCount = 20;
         
         [[ContextManager sharedInstance] saveContext:context];
     }];
-}
-
-+ (void)refreshUnreadNotesWithContext:(NSManagedObjectContext *)context {
-    NSFetchRequest *request = [[ContextManager sharedInstance].managedObjectModel fetchRequestTemplateForName:@"UnreadNotes"];
-    NSError *error = nil;
-    NSArray *notes = [context executeFetchRequest:request error:&error];
-    if ([notes count] > 0) {
-        [[WordPressComApi sharedApi] refreshNotifications:notes fields:@"id,unread" success:nil failure:nil];
-    }
 }
 
 + (void)pruneOldNotesBefore:(NSNumber *)timestamp withContext:(NSManagedObjectContext *)context {
@@ -128,21 +119,6 @@ const NSUInteger NoteKeepCount = 20;
     [context save:&error];
 }
 
-+ (void)getNewNotificationswithContext:(NSManagedObjectContext *)context success:(void (^)(BOOL hasNewNotes))success failure:(void (^)(NSError *error))failure {
-    NSNumber *timestamp = [self lastNoteTimestampWithContext:context];
-
-    [[WordPressComApi sharedApi] getNotificationsSince:timestamp success:^(AFHTTPRequestOperation *operation, id responseObject) {
-        NSArray *notes = [responseObject arrayForKey:@"notes"];
-        if (success) {
-            success([notes count] > 0);
-        }
-    } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
-        if (failure) {
-            failure(error);
-        }
-    }];
-}
-
 + (NSNumber *)lastNoteTimestampWithContext:(NSManagedObjectContext *)context {
     NSFetchRequest *request = [NSFetchRequest fetchRequestWithEntityName:@"Note"];
     request.resultType = NSDictionaryResultType;
@@ -156,10 +132,6 @@ const NSUInteger NoteKeepCount = 20;
         timestamp = [note objectForKey:@"timestamp"];
     }
     return timestamp;
-}
-
-- (NSDictionary *)getNoteData {
-    return self.noteData;
 }
 
 - (void)syncAttributes:(NSDictionary *)noteData {
@@ -248,6 +220,88 @@ const NSUInteger NoteKeepCount = 20;
         
     }
     
+}
+
+@end
+
+@implementation Note (WordPressComApi)
+
++ (void)fetchNewNotificationsWithSuccess:(void (^)(BOOL hasNewNotes))success failure:(void (^)(NSError *error))failure {
+    NSNumber *timestamp = [self lastNoteTimestampWithContext:[ContextManager sharedInstance].backgroundContext];
+    
+    [[[WPAccount defaultWordPressComAccount] restApi] fetchNotificationsSince:timestamp success:^(NSArray *notes) {
+        [Note mergeNewNotes:notes];
+        if (success) {
+            success([notes count] > 0);
+        }
+    } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+        if (failure) {
+            failure(error);
+        }
+    }];
+}
+
++ (void)refreshUnreadNotesWithContext:(NSManagedObjectContext *)context {
+    NSFetchRequest *request = [[ContextManager sharedInstance].managedObjectModel fetchRequestTemplateForName:@"UnreadNotes"];
+    NSError *error = nil;
+    NSArray *notes = [context executeFetchRequest:request error:&error];
+    if ([notes count] > 0) {
+        [[[WPAccount defaultWordPressComAccount] restApi] refreshNotifications:notes fields:@"id,unread" success:nil failure:nil];
+    }
+}
+
++ (void)fetchNotificationsBefore:(NSNumber *)timestamp success:(void (^)())success failure:(void (^)(NSError *))failure {
+    [[[WPAccount defaultWordPressComAccount] restApi] fetchNotificationsBefore:timestamp success:^(NSArray *notes) {
+        [self mergeNewNotes:notes];
+        if (success) {
+            success();
+        }
+    } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+        if (failure) {
+            failure(error);
+        }
+    }];
+}
+
++ (void)fetchNotificationsSince:(NSNumber *)timestamp success:(void (^)())success failure:(void (^)(NSError *))failure {
+    [[[WPAccount defaultWordPressComAccount] restApi] fetchNotificationsSince:timestamp success:^(NSArray *notes) {
+        [self mergeNewNotes:notes];
+        if (success) {
+            success();
+        }
+    } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+        if (failure) {
+            failure(error);
+        }
+    }];
+}
+
+- (void)refreshNoteDataWithSuccess:(void (^)())success failure:(void (^)(NSError *))failure {
+    [[[WPAccount defaultWordPressComAccount] restApi] refreshNotifications:@[self.noteID] fields:nil success:^(NSArray *updatedNotes){
+            if ([updatedNotes count] > 0 && ![self isDeleted] && self.managedObjectContext) {
+                [self syncAttributes:updatedNotes[0]];
+            }
+            [[ContextManager sharedInstance] saveContext:self.managedObjectContext];
+            if (success) {
+                success();
+            }
+        } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+            if (failure) {
+                failure(error);
+            }
+        }];
+}
+
+- (void)markAsReadWithSuccess:(void (^)())success failure:(void (^)(NSError *))failure {
+    [[[WPAccount defaultWordPressComAccount] restApi] markNoteAsRead:self.noteID success:^(AFHTTPRequestOperation *operation, id responseObject) {
+        if (success) {
+            success();
+        }
+    } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+        if (failure) {
+            failure(error);
+        }
+    }];
 }
 
 @end
