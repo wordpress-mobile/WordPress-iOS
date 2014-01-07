@@ -319,7 +319,6 @@
 		4526DC551148072F0090C99D /* Default-Portrait.png in Resources */ = {isa = PBXBuildFile; fileRef = 4526DC531148072F0090C99D /* Default-Portrait.png */; };
 		4526DC561148072F0090C99D /* Default-Landscape.png in Resources */ = {isa = PBXBuildFile; fileRef = 4526DC541148072F0090C99D /* Default-Landscape.png */; };
 		45C73C25113C36F70024D0D2 /* MainWindow-iPad.xib in Resources */ = {isa = PBXBuildFile; fileRef = 45C73C24113C36F70024D0D2 /* MainWindow-iPad.xib */; };
-		45F45B3611614BA50022D394 /* CPopoverManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 45F45B3511614BA50022D394 /* CPopoverManager.m */; };
 		462F4DFF18369B200028D2F8 /* icon-tab-blogs.png in Resources */ = {isa = PBXBuildFile; fileRef = 462F4DF918369B1F0028D2F8 /* icon-tab-blogs.png */; };
 		462F4E0018369B200028D2F8 /* icon-tab-blogs@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 462F4DFA18369B1F0028D2F8 /* icon-tab-blogs@2x.png */; };
 		462F4E0118369B200028D2F8 /* icon-tab-notifications.png in Resources */ = {isa = PBXBuildFile; fileRef = 462F4DFB18369B1F0028D2F8 /* icon-tab-notifications.png */; };
@@ -1365,8 +1364,6 @@
 		4526DC541148072F0090C99D /* Default-Landscape.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Default-Landscape.png"; sourceTree = "<group>"; };
 		45B71DE4113EDAA100D0A33C /* Entitlements.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Entitlements.plist; sourceTree = "<group>"; };
 		45C73C24113C36F70024D0D2 /* MainWindow-iPad.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = "MainWindow-iPad.xib"; path = "Resources-iPad/MainWindow-iPad.xib"; sourceTree = "<group>"; };
-		45F45B3411614BA50022D394 /* CPopoverManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CPopoverManager.h; sourceTree = "<group>"; };
-		45F45B3511614BA50022D394 /* CPopoverManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CPopoverManager.m; sourceTree = "<group>"; };
 		462F4DF918369B1F0028D2F8 /* icon-tab-blogs.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "icon-tab-blogs.png"; sourceTree = "<group>"; };
 		462F4DFA18369B1F0028D2F8 /* icon-tab-blogs@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "icon-tab-blogs@2x.png"; sourceTree = "<group>"; };
 		462F4DFB18369B1F0028D2F8 /* icon-tab-notifications.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "icon-tab-notifications.png"; sourceTree = "<group>"; };
@@ -2387,8 +2384,6 @@
 				2F970F970DF929B8006BD934 /* Constants.h */,
 				1D3623240D0F684500981E51 /* WordPressAppDelegate.h */,
 				1D3623250D0F684500981E51 /* WordPressAppDelegate.m */,
-				45F45B3411614BA50022D394 /* CPopoverManager.h */,
-				45F45B3511614BA50022D394 /* CPopoverManager.m */,
 				C545E0A01811B9880020844C /* ContextManager.h */,
 				C545E0A11811B9880020844C /* ContextManager.m */,
 				C57A31A2183D2111007745B9 /* NotificationsManager.h */,
@@ -5193,7 +5188,6 @@
 				46F8714F1838C41600BC149B /* NSDate+StringFormatting.m in Sources */,
 				296526FE105810E100597FA3 /* NSString+Helpers.m in Sources */,
 				2906F812110CDA8900169D56 /* EditCommentViewController.m in Sources */,
-				45F45B3611614BA50022D394 /* CPopoverManager.m in Sources */,
 				83418AAA11C9FA6E00ACF00C /* Comment.m in Sources */,
 				E125443C12BF5A7200D87A0A /* WordPress.xcdatamodeld in Sources */,
 				8350E49611D2C71E00A7B073 /* Media.m in Sources */,

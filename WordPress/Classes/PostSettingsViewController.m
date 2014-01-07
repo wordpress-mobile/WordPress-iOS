@@ -1865,7 +1865,6 @@ static NSString *const RemoveGeotagCellIdentifier = @"RemoveGeotagCellIdentifier
         self.popover = [[UIPopoverController alloc] initWithContentViewController:picker];
         self.popover.delegate = self;
         [self.popover presentPopoverFromRect:frame inView:self.view permittedArrowDirections:UIPopoverArrowDirectionAny animated:YES];
-        [[CPopoverManager instance] setCurrentPopoverController:self.popover];
     } else {
         [self.navigationController presentViewController:picker animated:YES completion:nil];
     }
