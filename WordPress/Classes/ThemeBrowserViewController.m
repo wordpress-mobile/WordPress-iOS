@@ -281,11 +281,8 @@ static NSString *const SearchHeaderIdentifier = @"search_header";
 }
 
 - (void)clearSearchFilter {
-    // Avoid unnecessary reload if search text didn't change
-    if (_currentSearchText) {
-        self.filteredThemes = _allThemes;
-        _currentSearchText = nil;
-    }
+    self.filteredThemes = _allThemes;
+    _currentSearchText = nil;
 }
 
 
