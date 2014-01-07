@@ -28,17 +28,20 @@
 #import "WPTableViewActivityCell.h"
 #import "WPTableViewSectionHeaderView.h"
 
-#define kSelectionsStatusContext ((void *)1000)
 #define kSelectionsCategoriesContext ((void *)2000)
-#define kPasswordFooterSectionHeight        68.0f
-#define kResizePhotoSettingSectionHeight    60.0f
-#define TAG_PICKER_STATUS                   0
-#define TAG_PICKER_VISIBILITY               1
-#define TAG_PICKER_DATE                     2
-#define TAG_PICKER_FORMAT                   3
-#define TAG_ACTIONSHEET_PHOTO               10
-#define TAG_ACTIONSHEET_RESIZE_PHOTO        20
-#define kOFFSET_FOR_KEYBOARD                150.0
+
+typedef enum {
+    PickerTagStatus = 0,
+    PickerTagVisibility,
+    PickerTagDate,
+    PickerTagFormat
+} PickerTag;
+
+typedef enum {
+    ActionSheetTagPhoto = 0,
+    ActionSheetTagResizePhoto
+} ActionSheetTag;
+
 
 static NSString *const LocationServicesCellIdentifier = @"LocationServicesCellIdentifier";
 static NSString *const TableViewActivityCellIdentifier = @"TableViewActivityCellIdentifier";
@@ -822,7 +825,7 @@ static NSString *const RemoveGeotagCellIdentifier = @"RemoveGeotagCellIdentifier
 				case 2:
                     [WPMobileStats flagProperty:StatsPropertyPostDetailSettingsClickedScheduleFor forEvent:[self formattedStatEventString:StatsEventPostDetailClosedEditor]];
 
-					self.datePickerView.tag = TAG_PICKER_DATE;
+					self.datePickerView.tag = PickerTagDate;
 					if (self.apost.dateCreated)
 						self.datePickerView.date = self.apost.dateCreated;
 					else
@@ -976,9 +979,9 @@ static NSString *const RemoveGeotagCellIdentifier = @"RemoveGeotagCellIdentifier
 #pragma mark - UIActionSheetDelegate
 
 - (void)actionSheet:(UIActionSheet *)acSheet didDismissWithButtonIndex:(NSInteger)buttonIndex {
-    if (acSheet.tag == TAG_ACTIONSHEET_PHOTO) {
+    if (acSheet.tag == ActionSheetTagPhoto) {
         [self processPhotoTypeActionSheet:acSheet thatDismissedWithButtonIndex:buttonIndex];
-    } else if (acSheet.tag == TAG_ACTIONSHEET_RESIZE_PHOTO) {
+    } else if (acSheet.tag == ActionSheetTagResizePhoto) {
         [self processPhotoResizeActionSheet:acSheet thatDismissedWithButtonIndex:buttonIndex];
     } else {
         if (buttonIndex == 0) {
@@ -1131,11 +1134,11 @@ static NSString *const RemoveGeotagCellIdentifier = @"RemoveGeotagCellIdentifier
 }
 
 - (NSInteger)pickerView:(UIPickerView *)aPickerView numberOfRowsInComponent:(NSInteger)component {
-    if (aPickerView.tag == TAG_PICKER_STATUS) {
+    if (aPickerView.tag == PickerTagStatus) {
         return [self.statusList count];
-    } else if (aPickerView.tag == TAG_PICKER_VISIBILITY) {
+    } else if (aPickerView.tag == PickerTagVisibility) {
         return [self.visibilityList count];
-    } else if (aPickerView.tag == TAG_PICKER_FORMAT) {
+    } else if (aPickerView.tag == PickerTagFormat) {
         return [self.formatsList count];
     }
     return 0;
@@ -1144,11 +1147,11 @@ static NSString *const RemoveGeotagCellIdentifier = @"RemoveGeotagCellIdentifier
 #pragma mark - UIPickerViewDelegate
 
 - (NSString *)pickerView:(UIPickerView *)aPickerView titleForRow:(NSInteger)row forComponent:(NSInteger)component {
-    if (aPickerView.tag == TAG_PICKER_STATUS) {
+    if (aPickerView.tag == PickerTagStatus) {
         return [self.statusList objectAtIndex:row];
-    } else if (aPickerView.tag == TAG_PICKER_VISIBILITY) {
+    } else if (aPickerView.tag == PickerTagVisibility) {
         return [self.visibilityList objectAtIndex:row];
-    } else if (aPickerView.tag == TAG_PICKER_FORMAT) {
+    } else if (aPickerView.tag == PickerTagFormat) {
         return [self.formatsList objectAtIndex:row];
     }
 
@@ -1156,9 +1159,9 @@ static NSString *const RemoveGeotagCellIdentifier = @"RemoveGeotagCellIdentifier
 }
 
 - (void)pickerView:(UIPickerView *)aPickerView didSelectRow:(NSInteger)row inComponent:(NSInteger)component {
-    if (aPickerView.tag == TAG_PICKER_STATUS) {
+    if (aPickerView.tag == PickerTagStatus) {
         self.apost.statusTitle = [self.statusList objectAtIndex:row];
-    } else if (aPickerView.tag == TAG_PICKER_VISIBILITY) {
+    } else if (aPickerView.tag == PickerTagVisibility) {
         NSString *visibility = [self.visibilityList objectAtIndex:row];
         if ([visibility isEqualToString:NSLocalizedString(@"Private", @"Post privacy status in the Post Editor/Settings area (compare with WP core translations).")]) {
             self.apost.status = @"private";
@@ -1173,7 +1176,7 @@ static NSString *const RemoveGeotagCellIdentifier = @"RemoveGeotagCellIdentifier
                 self.apost.password = nil;
             }
         }
-    } else if (aPickerView.tag == TAG_PICKER_FORMAT) {
+    } else if (aPickerView.tag == PickerTagFormat) {
         self.post.postFormatText = [self.formatsList objectAtIndex:row];
     }
     [self.tableView reloadData];
@@ -1189,7 +1192,7 @@ static NSString *const RemoveGeotagCellIdentifier = @"RemoveGeotagCellIdentifier
     if (IS_IPAD) {
         UIViewController *fakeController = [[UIViewController alloc] init];
         
-        if (picker.tag == TAG_PICKER_DATE) {
+        if (picker.tag == PickerTagDate) {
             fakeController.preferredContentSize = CGSizeMake(320.0f, 256.0f);
 
             UIButton *button = [[UIButton alloc] init];
@@ -1213,11 +1216,11 @@ static NSString *const RemoveGeotagCellIdentifier = @"RemoveGeotagCellIdentifier
         self.popover = [[UIPopoverController alloc] initWithContentViewController:fakeController];
         
         CGRect popoverRect;
-        if (picker.tag == TAG_PICKER_STATUS) {
+        if (picker.tag == PickerTagStatus) {
             popoverRect = [self.view convertRect:self.statusLabel.frame fromView:[self.statusLabel superview]];
-        } else if (picker.tag == TAG_PICKER_VISIBILITY) {
+        } else if (picker.tag == PickerTagVisibility) {
             popoverRect = [self.view convertRect:self.visibilityLabel.frame fromView:[self.visibilityLabel superview]];
-        } else if (picker.tag == TAG_PICKER_FORMAT) {
+        } else if (picker.tag == PickerTagFormat) {
             popoverRect = [self.view convertRect:self.postFormatLabel.frame fromView:[self.postFormatLabel superview]];
         } else {
             popoverRect = [self.view convertRect:self.publishOnDateLabel.frame fromView:[self.publishOnDateLabel superview]];
@@ -1833,7 +1836,7 @@ static NSString *const RemoveGeotagCellIdentifier = @"RemoveGeotagCellIdentifier
 												   otherButtonTitles: originalSizeStr, NSLocalizedString(@"Custom", @""), nil];
 		}
 		
-        resizeActionSheet.tag = TAG_ACTIONSHEET_RESIZE_PHOTO;
+        resizeActionSheet.tag = ActionSheetTagResizePhoto;
         
         UITableViewCell *featuredImageCell = [self.tableView cellForRowAtIndexPath:[NSIndexPath indexPathForRow:0 inSection:3]];
         if (featuredImageCell != nil) {
@@ -1865,7 +1868,7 @@ static NSString *const RemoveGeotagCellIdentifier = @"RemoveGeotagCellIdentifier
 										 cancelButtonTitle:NSLocalizedString(@"Cancel", @"")
 									destructiveButtonTitle:nil
 										 otherButtonTitles:NSLocalizedString(@"Add Photo from Library", @""),NSLocalizedString(@"Take Photo", @""),nil];
-        photoActionSheet.tag = TAG_ACTIONSHEET_PHOTO;
+        photoActionSheet.tag = ActionSheetTagPhoto;
         photoActionSheet.actionSheetStyle = UIActionSheetStyleDefault;
         [photoActionSheet showFromRect:frame inView:self.view animated:YES];
 	}
