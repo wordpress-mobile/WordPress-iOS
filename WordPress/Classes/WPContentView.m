@@ -437,9 +437,9 @@ const CGFloat RPVControlButtonBorderSize = 0.0f;
         CGFloat availableWidth = _textContentView.frame.size.width - (_textContentView.edgeInsets.left + _textContentView.edgeInsets.right);
         
         viewSize.width = availableWidth;
-        
+        CGFloat placeholderRatio = imageView.frame.size.width / imageView.frame.size.height;
         if (imageView.isShowingPlaceholder) {
-            viewSize.height = roundf(width / imageView.placeholderRatio);
+            viewSize.height = roundf(width / placeholderRatio);
         } else {
             viewSize.height = roundf(width / ratio);
         }
