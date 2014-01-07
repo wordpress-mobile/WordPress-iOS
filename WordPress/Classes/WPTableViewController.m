@@ -559,8 +559,8 @@ NSString *const DefaultCellIdentifier = @"DefaultCellIdentifier";
         _isSyncing = NO;
         [self configureNoResultsView];
         if (self.blog) {
-            if ([error.domain isEqualToString:AFNetworkingErrorDomain]) {
-                NSInteger statusCode = ((NSHTTPURLResponse *)error.userInfo[AFNetworkingOperationFailingURLResponseErrorKey]).statusCode;
+            if ([error.domain isEqualToString:WPXMLRPCClientErrorDomain]) {
+                NSInteger statusCode = error.code;
                 if (statusCode == 405) {
                     // Prompt to enable XML-RPC using the default message provided from the WordPress site.
                     [WPError showAlertWithTitle:NSLocalizedString(@"Couldn't sync", @"") message:[error localizedDescription]

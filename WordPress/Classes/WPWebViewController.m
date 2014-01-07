@@ -65,8 +65,8 @@
         // We want the refresh button to be borderless, but buttons in navbars want a border.
         // We need to compose the refresh button as a UIButton that is used as the UIBarButtonItem's custom view.
         UIButton *btn = [UIButton buttonWithType:UIButtonTypeCustom];
-        [btn setImage:[UIImage imageNamed:@"sync_dark"] forState:UIControlStateNormal];
-        [btn setImage:[UIImage imageNamed:@"sync_lite"] forState:UIControlStateHighlighted];
+        [btn setImage:[UIImage imageNamed:@"sync_lite"] forState:UIControlStateNormal];
+        [btn setImage:[UIImage imageNamed:@"sync"] forState:UIControlStateHighlighted];
 
         btn.frame = CGRectMake(0.0f, 0.0f, 30.0f, 30.0f);
         btn.autoresizingMask =  UIViewAutoresizingFlexibleHeight;
@@ -333,14 +333,8 @@
         if (IS_IPHONE) {
             // Build a spinner button if we don't have one
             if (self.spinnerButton == nil) {
-                UIActivityIndicatorView *spinner = nil;
-                UIActivityIndicatorViewStyle style;
-                if ([[UIToolbar class] respondsToSelector:@selector(appearance)]) {
-                    style = UIActivityIndicatorViewStyleGray;
-                } else {
-                    style = UIActivityIndicatorViewStyleWhite;
-                }
-                spinner = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:style];
+                UIActivityIndicatorView *spinner = [[UIActivityIndicatorView alloc]
+                                                    initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleWhite];
                 UIView *customView = [[UIView alloc] initWithFrame:CGRectMake(10.0f, 0.0f, 32.0f, 32.0f)];
                 [spinner setCenter:customView.center];
                 

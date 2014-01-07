@@ -690,7 +690,7 @@ typedef enum {
                                                    object:controller.moviePlayer];
 
 		controller.modalTransitionStyle = UIModalTransitionStyleCrossDissolve;
-		controller.modalPresentationStyle = UIModalPresentationFormSheet;
+		controller.modalPresentationStyle = UIModalPresentationFullScreen;
         [self.navigationController presentViewController:controller animated:YES completion:nil];
 
 	} else {

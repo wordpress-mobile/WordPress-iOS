@@ -18,12 +18,12 @@
 #import "ContextManager.h"
 #import "WordPressComApi.h"
 
-static CGFloat const ImageSizeSmallWidth = 240.0f;
-static CGFloat const ImageSizeSmallHeight = 180.0f;
-static CGFloat const ImageSizeMediumWidth = 480.0f;
-static CGFloat const ImageSizeMediumHeight = 360.0f;
-static CGFloat const ImageSizeLargeWidth = 640.0f;
-static CGFloat const ImageSizeLargeHeight = 480.0f;
+static NSInteger const ImageSizeSmallWidth = 240;
+static NSInteger const ImageSizeSmallHeight = 180;
+static NSInteger const ImageSizeMediumWidth = 480;
+static NSInteger const ImageSizeMediumHeight = 360;
+static NSInteger const ImageSizeLargeWidth = 640;
+static NSInteger const ImageSizeLargeHeight = 480;
 
 @interface Blog (PrivateMethods)
 
@@ -81,6 +81,22 @@ static CGFloat const ImageSizeLargeHeight = 480.0f;
 
 #pragma mark -
 #pragma mark Custom methods
+
++ (NSInteger)countVisibleWithContext:(NSManagedObjectContext *)moc {
+    NSFetchRequest *request = [[NSFetchRequest alloc] init];
+    [request setEntity:[NSEntityDescription entityForName:@"Blog" inManagedObjectContext:moc]];
+    [request setIncludesSubentities:NO];
+    
+    NSPredicate *predicate = [NSPredicate predicateWithFormat:@"visible = %@" argumentArray:@[@(YES)]];
+    [request setPredicate:predicate];
+    
+    NSError *err;
+    NSUInteger count = [moc countForFetchRequest:request error:&err];
+    if(count == NSNotFound) {
+        count = 0;
+    }
+    return count;
+}
 
 + (NSInteger)countWithContext:(NSManagedObjectContext *)moc {
     NSFetchRequest *request = [[NSFetchRequest alloc] init];
@@ -241,12 +257,12 @@ static CGFloat const ImageSizeLargeHeight = 480.0f;
 
 - (NSDictionary *)getImageResizeDimensions{
     CGSize smallSize, mediumSize, largeSize;
-    NSUInteger smallSizeWidth = [[self getOptionValue:@"thumbnail_size_w"] intValue] > 0 ? [[self getOptionValue:@"thumbnail_size_w"] unsignedIntegerValue] : ImageSizeSmallWidth;
-    NSUInteger smallSizeHeight = [[self getOptionValue:@"thumbnail_size_h"] intValue] > 0 ? [[self getOptionValue:@"thumbnail_size_h"] intValue] : ImageSizeSmallHeight;
-    NSUInteger mediumSizeWidth = [[self getOptionValue:@"medium_size_w"] intValue] > 0 ? [[self getOptionValue:@"medium_size_w"] intValue] : ImageSizeMediumWidth;
-    NSUInteger mediumSizeHeight = [[self getOptionValue:@"medium_size_h"] intValue] > 0 ? [[self getOptionValue:@"medium_size_h"] intValue] : ImageSizeMediumHeight;
-    NSUInteger largeSizeWidth = [[self getOptionValue:@"large_size_w"] intValue] > 0 ? [[self getOptionValue:@"large_size_w"] intValue] : ImageSizeLargeWidth;
-    NSUInteger largeSizeHeight = [[self getOptionValue:@"large_size_h"] intValue] > 0 ? [[self getOptionValue:@"large_size_h"] intValue] : ImageSizeLargeHeight;
+    NSInteger smallSizeWidth = [[self getOptionValue:@"thumbnail_size_w"] integerValue] > 0 ? [[self getOptionValue:@"thumbnail_size_w"] integerValue] : ImageSizeSmallWidth;
+    NSInteger smallSizeHeight = [[self getOptionValue:@"thumbnail_size_h"] integerValue] > 0 ? [[self getOptionValue:@"thumbnail_size_h"] integerValue] : ImageSizeSmallHeight;
+    NSInteger mediumSizeWidth = [[self getOptionValue:@"medium_size_w"] integerValue] > 0 ? [[self getOptionValue:@"medium_size_w"] integerValue] : ImageSizeMediumWidth;
+    NSInteger mediumSizeHeight = [[self getOptionValue:@"medium_size_h"] integerValue] > 0 ? [[self getOptionValue:@"medium_size_h"] integerValue] : ImageSizeMediumHeight;
+    NSInteger largeSizeWidth = [[self getOptionValue:@"large_size_w"] integerValue] > 0 ? [[self getOptionValue:@"large_size_w"] integerValue] : ImageSizeLargeWidth;
+    NSInteger largeSizeHeight = [[self getOptionValue:@"large_size_h"] integerValue] > 0 ? [[self getOptionValue:@"large_size_h"] integerValue] : ImageSizeLargeHeight;
     
     smallSize = CGSizeMake(smallSizeWidth, smallSizeHeight);
     mediumSize = CGSizeMake(mediumSizeWidth, mediumSizeHeight);

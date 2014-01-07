@@ -26,11 +26,25 @@
 
 - (NSString *)noResultsTitleText
 {
-    return NSLocalizedString(@"You don't have any posts yet.", @"Displayed when the user pulls up the posts view and they have no posts");
+    return NSLocalizedString(@"You haven't created any posts yet", @"Displayed when the user pulls up the posts view and they have no posts");
+}
+
+- (NSString *)noResultsMessageText {
+    return NSLocalizedString(@"Would you like to create your first post?",  @"Displayed when the user pulls up the posts view and they have no posts");
 }
 
 - (UIView *)noResultsAccessoryView {
     return [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"penandink"]];
+}
+
+- (NSString *)noResultsButtonText
+{
+    return NSLocalizedString(@"Create post", @"");
+}
+
+- (void)didTapNoResultsView:(WPNoResultsView *)noResultsView
+{
+    [self showAddPostView];
 }
 
 - (void)viewDidLoad {
@@ -81,6 +95,7 @@
 
 - (void)viewWillDisappear:(BOOL)animated {
     [super viewWillDisappear:animated];
+    [self setEditing:NO];
 }
 
 - (void)dealloc {
@@ -142,7 +157,7 @@
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
     AbstractPost *post = [self.resultsController objectAtIndexPath:indexPath];
-    CGFloat width = IS_IPAD ? WPTableViewFixedWidth : CGRectGetWidth(tableView.frame);
+    CGFloat width = MIN(WPTableViewFixedWidth, CGRectGetWidth(tableView.frame));
     return [NewPostTableViewCell rowHeightForContentProvider:post andWidth:width];
 }
 
