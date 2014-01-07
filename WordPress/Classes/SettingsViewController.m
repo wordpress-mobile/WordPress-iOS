@@ -140,9 +140,6 @@ CGFloat const blavatarImageViewSize = 43.f;
     [self dismissViewControllerAnimated:YES completion:nil];
 }
 
-- (BOOL)supportsNotifications {
-    return nil != [[NSUserDefaults standardUserDefaults] objectForKey:NotificationsDeviceToken];
-}
 
 #pragma mark - Table view data source
 
@@ -153,14 +150,14 @@ CGFloat const blavatarImageViewSize = 43.f;
 // The Sign Out row in Wpcom section can change, so identify it dynamically
 - (NSInteger)rowForSignOut {
     NSInteger rowForSignOut = 1;
-    if ([self supportsNotifications]) {
+    if ([NotificationsManager deviceRegisteredForPushNotifications]) {
         rowForSignOut += 1;
     }
     return rowForSignOut;
 }
 
 - (NSInteger)rowForNotifications {
-    if ([self supportsNotifications]) {
+    if ([NotificationsManager deviceRegisteredForPushNotifications]) {
         return 1;
     }
     return -1;
@@ -326,7 +323,7 @@ CGFloat const blavatarImageViewSize = 43.f;
     [self configureCell:cell atIndexPath:indexPath];
     
     BOOL isSignInCell = NO;
-    if (![[WordPressComApi sharedApi] hasCredentials]) {
+    if (![[[WPAccount defaultWordPressComAccount] restApi] hasCredentials]) {
         isSignInCell = indexPath.section == SettingsSectionWpcom && indexPath.row == 0;
     }
     
