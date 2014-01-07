@@ -70,6 +70,8 @@
     [self.activateButton setBackgroundColor:[WPStyleGuide baseDarkerBlue]];
     self.livePreviewButton.layer.cornerRadius = 3.0f;
     self.activateButton.layer.cornerRadius = 3.0f;
+    self.livePreviewButton.exclusiveTouch = YES;
+    self.activateButton.exclusiveTouch = YES;
     
     if ([self.theme isCurrentTheme]) {
         [self showAsCurrentTheme];
