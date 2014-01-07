@@ -60,8 +60,7 @@ static CGFloat const blavatarImageSize = 50.f;
     
     self.navigationItem.leftBarButtonItem = cancelButtonItem;
     
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(wordPressComApiDidLogin:) name:WordPressComApiDidLoginNotification object:nil];
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(wordPressComApiDidLogout:) name:WordPressComApiDidLogoutNotification object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(wordPressComAccountChanged) name:WPAccountDefaultWordPressComAccountChangedNotification object:nil];
     
     // Remove one-pixel gap resulting from a top-aligned grouped table view
     if (IS_IPHONE) {
@@ -100,14 +99,9 @@ static CGFloat const blavatarImageSize = 50.f;
 
 #pragma mark - Notifications
 
-- (void)wordPressComApiDidLogin:(NSNotification *)notification {
+- (void)wordPressComAccountChanged {
     [self.tableView reloadSections:[NSIndexSet indexSetWithIndex:0] withRowAnimation:UITableViewRowAnimationFade];
 }
-
-- (void)wordPressComApiDidLogout:(NSNotification *)notification {
-    [self.tableView reloadSections:[NSIndexSet indexSetWithIndex:0] withRowAnimation:UITableViewRowAnimationFade];
-}
-
 
 #pragma mark - Actions
 
