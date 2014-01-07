@@ -399,14 +399,14 @@ NS_ENUM(NSUInteger, NotifcationCommentCellType){
     [spinner startAnimating];
     
     NSString *path = [NSString stringWithFormat:@"/rest/v1%@", [commentAction valueForKeyPath:@"params.rest_path"]];
+    
     [[[WPAccount defaultWordPressComAccount] restApi] postPath:path parameters:[commentAction valueForKeyPath:@"params.rest_body"] success:^(AFHTTPRequestOperation *operation, id responseObject) {
         NSDictionary *response = (NSDictionary *)responseObject;
         if (response) {
-            NSArray *noteArray = [NSArray arrayWithObject:_note];
-            [[[WPAccount defaultWordPressComAccount] restApi] refreshNotifications:noteArray fields:nil success:^(AFHTTPRequestOperation *operation, id refreshResponseObject) {
+            [_note refreshNoteDataWithSuccess:^{
                 [spinner stopAnimating];
                 [self displayNote];
-            } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+            } failure:^(NSError *error) {
                 [spinner stopAnimating];
                 [self displayNote];
             }];

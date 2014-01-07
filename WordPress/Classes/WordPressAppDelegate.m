@@ -252,9 +252,8 @@ static NSString *const CameraPlusImagesNotification = @"CameraPlusImagesNotifica
     
     [WPMobileStats recordAppOpenedForEvent:StatsEventAppOpened];
     
-    // Clear notifications badge and update server
+    // Clear notifications badge
     [UIApplication sharedApplication].applicationIconBadgeNumber = 0;
-    [[WordPressComApi sharedApi] syncPushNotificationInfo];
 }
 
 - (BOOL)application:(UIApplication *)application shouldSaveApplicationState:(NSCoder *)coder
@@ -825,7 +824,7 @@ static NSString *const CameraPlusImagesNotification = @"CameraPlusImagesNotifica
 - (void)checkWPcomAuthentication {
     // Temporarily set the is authenticated flag based upon if we have a WP.com OAuth2 token
     // TODO :: Move this BOOL to a method on the WordPressComApi along with checkWPcomAuthentication
-    BOOL tempIsAuthenticated = [[WordPressComApi sharedApi] authToken].length > 0;
+    BOOL tempIsAuthenticated = [[[WPAccount defaultWordPressComAccount] restApi] authToken].length > 0;
     self.isWPcomAuthenticated = tempIsAuthenticated;
     
 	NSString *authURL = @"https://wordpress.com/xmlrpc.php";
@@ -833,7 +832,7 @@ static NSString *const CameraPlusImagesNotification = @"CameraPlusImagesNotifica
     WPAccount *account = [WPAccount defaultWordPressComAccount];
 	if (account) {
         WPXMLRPCClient *client = [WPXMLRPCClient clientWithXMLRPCEndpoint:[NSURL URLWithString:authURL]];
-        [client setAuthorizationHeaderWithToken:[[WordPressComApi sharedApi] authToken]];
+        [client setAuthorizationHeaderWithToken:[[[WPAccount defaultWordPressComAccount] restApi] authToken]];
         [client callMethod:@"wp.getUsersBlogs"
                 parameters:[NSArray arrayWithObjects:account.username, account.password, nil]
                    success:^(AFHTTPRequestOperation *operation, id responseObject) {
@@ -843,7 +842,7 @@ static NSString *const CameraPlusImagesNotification = @"CameraPlusImagesNotifica
                        if ([error.domain isEqualToString:@"WPXMLRPCFaultError"] ||
                            ([error.domain isEqualToString:@"XMLRPC"] && error.code == 403)) {
                            self.isWPcomAuthenticated = NO;
-                           [[WordPressComApi sharedApi] invalidateOAuth2Token];
+                           [[[WPAccount defaultWordPressComAccount] restApi] invalidateOAuth2Token];
                        }
                        
                        DDLogError(@"Error authenticating %@ with WordPress.com: %@", account.username, [error description]);
