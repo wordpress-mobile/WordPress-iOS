@@ -2755,6 +2755,21 @@
 			name = Tabs;
 			sourceTree = "<group>";
 		};
+		5D1EBF56187C9B95003393F8 /* Categories */ = {
+			isa = PBXGroup;
+			children = (
+				A0E293EF0E21027E00C6919C /* WPAddCategoryViewController.h */,
+				A0E293F00E21027E00C6919C /* WPAddCategoryViewController.m */,
+				7059CD1F0F332B6500A0660B /* WPCategoryTree.h */,
+				7059CD200F332B6500A0660B /* WPCategoryTree.m */,
+				ACAC79C40E1F50EB00AC7074 /* WPSelectionTableViewController.h */,
+				ACAC79C50E1F50EB00AC7074 /* WPSelectionTableViewController.m */,
+				C55A90D70E8026C500E1C9B5 /* WPSegmentedSelectionTableViewController.h */,
+				C55A90D80E8026CD00E1C9B5 /* WPSegmentedSelectionTableViewController.m */,
+			);
+			name = Categories;
+			sourceTree = "<group>";
+		};
 		5D27716D15A33A6200F4DCAA /* editing */ = {
 			isa = PBXGroup;
 			children = (
@@ -3318,6 +3333,7 @@
 		AC3439790E11434600E5D79B /* Post */ = {
 			isa = PBXGroup;
 			children = (
+				5D1EBF56187C9B95003393F8 /* Categories */,
 				9390B85C1858D0A200BE43FC /* BlogSelectorViewController.h */,
 				9390B85E1858D0BF00BE43FC /* BlogSelectorViewController.m */,
 				ACC156CA0E10E67600D6E1A0 /* EditPostViewController.h */,
@@ -3718,14 +3734,6 @@
 				30AF6CFE13C230CC00A29C00 /* About */,
 				292CECFE1027259000BD407D /* SFHFKeychainUtils.h */,
 				292CECFF1027259000BD407D /* SFHFKeychainUtils.m */,
-				A0E293EF0E21027E00C6919C /* WPAddCategoryViewController.h */,
-				A0E293F00E21027E00C6919C /* WPAddCategoryViewController.m */,
-				7059CD1F0F332B6500A0660B /* WPCategoryTree.h */,
-				7059CD200F332B6500A0660B /* WPCategoryTree.m */,
-				ACAC79C40E1F50EB00AC7074 /* WPSelectionTableViewController.h */,
-				ACAC79C50E1F50EB00AC7074 /* WPSelectionTableViewController.m */,
-				C55A90D70E8026C500E1C9B5 /* WPSegmentedSelectionTableViewController.h */,
-				C55A90D80E8026CD00E1C9B5 /* WPSegmentedSelectionTableViewController.m */,
 				FD9A948A12FAEA2300438F94 /* DateUtils.h */,
 				FD9A948B12FAEA2300438F94 /* DateUtils.m */,
 				E1B62A7913AA61A100A6FCA4 /* WPWebViewController.h */,
