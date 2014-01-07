@@ -18,9 +18,9 @@
 }
 
 - (void)getChildrenFromObjects:(NSArray *)collection {
-    int i, count = [collection count];
+    NSUInteger count = [collection count];
 
-    for (i = 0; i < count; i++) {
+    for (NSInteger i = 0; i < count; i++) {
         NSDictionary *category = [collection objectAtIndex:i];
 
         if ([[category valueForKey:@"parentID"] intValue] ==[[parent valueForKey:@"categoryID"] intValue]) {
@@ -34,12 +34,13 @@
 
 - (NSArray *)getAllObjects {
     NSMutableArray *allObjects = [NSMutableArray array];
-    int i, count = [children count];
+    NSUInteger count = [children count];
 
-    if (parent)
+    if (parent) {
         [allObjects addObject:parent];
-
-    for (i = 0; i < count; i++) {
+    }
+    
+    for (NSInteger i = 0; i < count; i++) {
         [allObjects addObjectsFromArray:[[children objectAtIndex:i] getAllObjects]];
     }
 
