@@ -9,8 +9,8 @@
 
 #import "Theme.h"
 #import "Blog.h"
-#import "WordPressComApi.h"
 #import "ContextManager.h"
+#import "WPAccount.h"
 
 static NSDateFormatter *dateFormatter;
 
@@ -75,7 +75,7 @@ static NSDateFormatter *dateFormatter;
 @implementation Theme (PublicAPI)
 
 + (void)fetchAndInsertThemesForBlog:(Blog *)blog success:(void (^)())success failure:(void (^)(NSError *error))failure {    
-    [[WordPressComApi sharedApi] fetchThemesForBlogId:blog.blogID.stringValue success:^(AFHTTPRequestOperation *operation, id responseObject) {
+    [[[WPAccount defaultWordPressComAccount] restApi] fetchThemesForBlogId:blog.blogID.stringValue success:^(AFHTTPRequestOperation *operation, id responseObject) {
         NSManagedObjectContext *backgroundMOC = [[ContextManager sharedInstance] backgroundContext];
         [backgroundMOC performBlock:^{
             NSMutableArray *themesToKeep = [NSMutableArray array];
@@ -108,7 +108,7 @@ static NSDateFormatter *dateFormatter;
 }
 
 + (void)fetchCurrentThemeForBlog:(Blog *)blog success:(void (^)())success failure:(void (^)(NSError *error))failure {
-    [[WordPressComApi sharedApi] fetchCurrentThemeForBlogId:blog.blogID.stringValue success:^(AFHTTPRequestOperation *operation, id responseObject) {
+    [[[WPAccount defaultWordPressComAccount] restApi] fetchCurrentThemeForBlogId:blog.blogID.stringValue success:^(AFHTTPRequestOperation *operation, id responseObject) {
         [blog.managedObjectContext performBlock:^{
             blog.currentThemeId = responseObject[@"id"];
             [[ContextManager sharedInstance] saveContext:blog.managedObjectContext];
@@ -124,7 +124,7 @@ static NSDateFormatter *dateFormatter;
 }
 
 - (void)activateThemeWithSuccess:(void (^)())success failure:(void (^)(NSError *error))failure {
-    [[WordPressComApi sharedApi] activateThemeForBlogId:self.blog.blogID.stringValue themeId:self.themeId success:^(AFHTTPRequestOperation *operation, id responseObject) {
+    [[[WPAccount defaultWordPressComAccount] restApi] activateThemeForBlogId:self.blog.blogID.stringValue themeId:self.themeId success:^(AFHTTPRequestOperation *operation, id responseObject) {
         [self.blog.managedObjectContext performBlock:^{
             self.blog.currentThemeId = self.themeId;
             [[ContextManager sharedInstance] saveContext:self.blog.managedObjectContext];
