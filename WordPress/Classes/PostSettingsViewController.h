@@ -1,23 +1,20 @@
+/*
+ * PostSettingsViewController.h
+ *
+ * Copyright (c) 2013 WordPress. All rights reserved.
+ *
+ * Licensed under GNU General Public License 2.0.
+ * Some rights reserved. See license.txt
+ */
+
 #import <UIKit/UIKit.h>
-#import <CoreLocation/CoreLocation.h>
-#import <MapKit/MapKit.h>
-#import "WPTableViewActivityCell.h"
-#import "PostAnnotation.h"
+#import "AbstractPost.h"
 
-#import "UIImageView+AFNetworking.h"
-#import "EditPostViewController.h"
+@interface PostSettingsViewController : UIViewController <UITableViewDelegate, UITableViewDataSource>
 
-@class EditPostViewController;
-@interface PostSettingsViewController : UIViewController <UITableViewDelegate, UITableViewDataSource, UIPickerViewDelegate, UIPickerViewDataSource, UITextFieldDelegate, CLLocationManagerDelegate, UIActionSheetDelegate>
-
-@property (nonatomic, weak) EditPostViewController *postDetailViewController;
 @property (nonatomic, strong) NSString *statsPrefix;
 
 - (id)initWithPost:(AbstractPost *)aPost;
-
-- (void)reloadData;
 - (void)endEditingAction:(id)sender;
-- (void)featuredImageUploadFailed: (NSNotification *)notificationInfo;
-- (void)featuredImageUploadSucceeded: (NSNotification *)notificationInfo;
-- (void)showFeaturedImageUploader: (NSNotification *)notificationInfo;
+
 @end
