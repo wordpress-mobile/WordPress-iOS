@@ -1,16 +1,32 @@
+/*
+ * PostSettingsViewController.m
+ *
+ * Copyright (c) 2013 WordPress. All rights reserved.
+ *
+ * Licensed under GNU General Public License 2.0.
+ * Some rights reserved. See license.txt
+ */
+
 #import "PostSettingsViewController.h"
-#import "WordPressAppDelegate.h"
-#import "NSString+Helpers.h"
-#import "EditPostViewController_Internal.h"
-#import "PostSettingsSelectionViewController.h"
-#import "NSString+XMLExtensions.h"
+
 #import <ImageIO/ImageIO.h>
-#import "WPSegmentedSelectionTableViewController.h"
-#import "WPAddCategoryViewController.h"
-#import "WPTableViewSectionHeaderView.h"
+#import <CoreLocation/CoreLocation.h>
+#import <MapKit/MapKit.h>
+
+#import "EditPostViewController_Internal.h"
+#import "NSString+XMLExtensions.h"
+#import "NSString+Helpers.h"
 #import "Post.h"
+#import "PostAnnotation.h"
+#import "PostSettingsSelectionViewController.h"
+#import "UIImageView+AFNetworking.h"
 #import "UITableViewTextFieldCell.h"
+#import "WordPressAppDelegate.h"
+#import "WPAddCategoryViewController.h"
 #import "WPAlertView.h"
+#import "WPSegmentedSelectionTableViewController.h"
+#import "WPTableViewActivityCell.h"
+#import "WPTableViewSectionHeaderView.h"
 
 #define kSelectionsStatusContext ((void *)1000)
 #define kSelectionsCategoriesContext ((void *)2000)
@@ -29,7 +45,7 @@ static NSString *const TableViewActivityCellIdentifier = @"TableViewActivityCell
 static NSString *const RemoveGeotagCellIdentifier = @"RemoveGeotagCellIdentifier";
 
 @interface PostSettingsViewController () <UINavigationControllerDelegate, UIImagePickerControllerDelegate,
-                                          UIPopoverControllerDelegate>
+                                          UIPopoverControllerDelegate, UIPickerViewDelegate, UIPickerViewDataSource, UITextFieldDelegate, CLLocationManagerDelegate, UIActionSheetDelegate>
 
 @property (nonatomic, weak) IBOutlet UITableView *tableView;
 @property (nonatomic, assign) BOOL triedAuthOnce;
@@ -77,6 +93,11 @@ static NSString *const RemoveGeotagCellIdentifier = @"RemoveGeotagCellIdentifier
 @property (nonatomic, strong) IBOutlet UIImageView *featuredImageView;
 @property (nonatomic, strong) IBOutlet WPTableViewActivityCell *featuredImageTableViewCell;
 @property (nonatomic, strong) IBOutlet UIActivityIndicatorView *featuredImageSpinner;
+
+- (void)reloadData;
+- (void)featuredImageUploadFailed: (NSNotification *)notificationInfo;
+- (void)featuredImageUploadSucceeded: (NSNotification *)notificationInfo;
+- (void)showFeaturedImageUploader: (NSNotification *)notificationInfo;
 
 @end
 
