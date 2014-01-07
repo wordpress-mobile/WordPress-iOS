@@ -16,6 +16,7 @@
 #import "WPWalkthroughTextField.h"
 #import "WPNUXSecondaryButton.h"
 #import "UILabel+SuggestSize.h"
+#import "WordPressComOAuthClient.h"
 
 CGFloat const JetpackiOS7StatusBarOffset = 20.0;
 CGFloat const JetpackStandardOffset = 16;
@@ -305,6 +306,14 @@ CGFloat const JetpackSignInButtonHeight = 41.0;
     [_blog validateJetpackUsername:_usernameField.text
                           password:_passwordField.text
                            success:^{
+                               if (![[[WPAccount defaultWordPressComAccount] restApi] hasCredentials]) {
+                                   [[WordPressComOAuthClient client] authenticateWithUsername:_usernameField.text password:_passwordField.text success:^(NSString *authToken) {
+                                       WPAccount *account = [WPAccount createOrUpdateWordPressComAccountWithUsername:_usernameField.text password:_passwordField.text authToken:authToken];
+                                       [WPAccount setDefaultWordPressComAccount:account];
+                                   } failure:^(NSError *error) {
+                                       DDLogWarn(@"Unabled to obtain OAuth token for account credentials provided for Jetpack blog. %@", error);
+                                   }];
+                               }
                                [self setAuthenticating:NO];
                                if (self.completionBlock) {
                                    self.completionBlock(YES);
