@@ -10,6 +10,7 @@
 
 #import "Blog+Jetpack.h"
 #import "WPAccount.h"
+#import "Note.h"
 #import "WordPressAppDelegate.h"
 #import "ContextManager.h"
 #import "WordPressComOAuthClient.h"
@@ -147,7 +148,7 @@ NSString * const BlogJetpackApiPath = @"get-user-blogs/1.0";
                                      
                                      // Sadly we don't care if this succeeds or not
                                      [account syncBlogsWithSuccess:nil failure:nil];
-                                     [account.restApi getNotificationsSince:nil success:nil failure:nil];
+                                     [Note fetchNewNotificationsWithSuccess:nil failure:nil];
                                  }
                              } failure:^(NSError *error) {
                                  DDLogError(@"Error while obtaining OAuth2 token after enabling JetPack: %@", error);
