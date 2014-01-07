@@ -28,7 +28,6 @@ static NSString *const MediaCellIdentifier = @"media_cell";
 static NSUInteger const MultiselectToolbarDeleteTag = 1;
 static NSUInteger const MultiselectToolbarDeselectTag = 2;
 static NSUInteger const MediaTypeActionSheetVideo = 1;
-
 static CGFloat const ScrollingVelocityThreshold = 30.0f;
 
 @interface MediaBrowserViewController () <UICollectionViewDataSource, UICollectionViewDelegate, MediaBrowserCellMultiSelectDelegate, UIAlertViewDelegate, UIImagePickerControllerDelegate, UINavigationControllerDelegate, UICollectionViewDelegateFlowLayout, UIScrollViewDelegate, NSFetchedResultsControllerDelegate>
@@ -451,12 +450,6 @@ static NSArray *generatedMonthYearsFilters;
     return isLandscape ? UIEdgeInsetsMake(30, 35, 30, 35) : UIEdgeInsetsMake(7, 10, 7, 10);
 }
 
-- (void)didRotateFromInterfaceOrientation:(UIInterfaceOrientation)fromInterfaceOrientation {
-    // iOS6-only fix: crash on rotate due to internal collectionview indices
-    if (_filteredMedia.count) {
-        [self.collectionView performBatchUpdates:nil completion:nil];
-    }
-}
 
 #pragma mark - MediaCellSelectionDelegate
 
