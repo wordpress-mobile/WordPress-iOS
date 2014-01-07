@@ -49,6 +49,9 @@ NSString *const StatsEventReaderPublishedComment = @"Reader - Published Comment"
 NSString *const StatsEventReaderReblogged = @"Reader - Reblogged";
 NSString *const StatsEventReaderLikedPost = @"Reader - Liked Post";
 NSString *const StatsEventReaderUnlikedPost = @"Reader - Unliked Post";
+NSString *const StatsPropertyReaderOpenedFromExternalURL = @"reader_opened_from_external_url";
+NSString *const StatsPropertyReaderOpenedFromExternalURLCount = @"reader_opened_from_external_url_count";
+NSString *const StatsEventReaderOpenedFromExternalSource = @"Reader - Opened From External Source";
 
 // Reader Detail
 NSString *const StatsPropertyReaderDetailClickedPrevious = @"reader_detail_clicked_previous";
@@ -369,6 +372,17 @@ NSString *const StatsEventAddBlogsClickedAddSelected = @"Add Blogs - Clicked Add
     [[self sharedInstance] unflagProperty:property forEvent:event];
 }
 
++ (void)flagSuperProperty:(NSString *)property
+{
+    [[self sharedInstance] flagSuperProperty:property];
+}
+
++ (void)incrementSuperProperty:(NSString *)property
+{
+    [[self sharedInstance] incrementSuperProperty:property];
+}
+
+
 #pragma mark - Private Methods
 
 - (BOOL)connectedToWordPressDotCom
@@ -439,6 +453,24 @@ NSString *const StatsEventAddBlogsClickedAddSelected = @"Add Blogs - Clicked Add
 - (void)unflagProperty:(NSString *)property forEvent:(NSString *)event
 {
     [self saveProperty:property withValue:@(NO) forEvent:event];
+}
+
+- (void)flagSuperProperty:(NSString *)property
+{
+    NSParameterAssert(property != nil);
+    NSMutableDictionary *superProperties = [[NSMutableDictionary alloc] initWithDictionary:[Mixpanel sharedInstance].currentSuperProperties];
+    superProperties[property] = @(YES);
+    [[Mixpanel sharedInstance] registerSuperProperties:superProperties];
+}
+
+
+- (void)incrementSuperProperty:(NSString *)property
+{
+    NSParameterAssert(property != nil);
+    NSMutableDictionary *superProperties = [[NSMutableDictionary alloc] initWithDictionary:[Mixpanel sharedInstance].currentSuperProperties];
+    NSUInteger propertyValue = [superProperties[property] integerValue];
+    superProperties[property] = @(++propertyValue);
+    [[Mixpanel sharedInstance] registerSuperProperties:superProperties];
 }
 
 - (id)property:(NSString *)property forEvent:(NSString *)event

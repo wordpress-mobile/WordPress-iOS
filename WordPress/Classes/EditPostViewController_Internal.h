@@ -19,6 +19,7 @@ typedef NS_ENUM(NSInteger, EditPostViewControllerAlertTag) {
     EditPostViewControllerAlertTagNone,
     EditPostViewControllerAlertTagLinkHelper,
     EditPostViewControllerAlertTagFailedMedia,
+    EditPostViewControllerAlertTagSwitchBlogs
 };
 
 typedef NS_ENUM(NSUInteger, EditPostViewControllerMode) {

@@ -56,7 +56,7 @@ NSString * const NotificationsJetpackInformationURL = @"http://jetpack.me/about/
 - (NSString *)noResultsMessageText
 {
     if ([self showJetpackConnectMessage]) {
-        return NSLocalizedString(@"Jetpack supercharges your self‑hosted WordPress site.", @"Displayed in the notifications view when a self-hosted user is not connected to Jetpack");
+        return NSLocalizedString(@"Jetpack supercharges your self-hosted WordPress site.", @"Displayed in the notifications view when a self-hosted user is not connected to Jetpack");
     } else {
         return nil;
     }

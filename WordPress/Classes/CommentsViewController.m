@@ -67,6 +67,14 @@ CGFloat const CommentsSectionHeaderHeight = 24.0;
     [super viewWillDisappear:animated];    
 }
 
+- (void)viewDidAppear:(BOOL)animated {
+    [super viewDidAppear:animated];
+    // Returning to the comments list while the reply-to keyboard is visible
+    // messes with the bottom contentInset. Let's reset it just in case.
+    UIEdgeInsets contentInset = self.tableView.contentInset;
+    contentInset.bottom = 0;
+    self.tableView.contentInset = contentInset;
+}
 
 - (void)configureCell:(NewCommentsTableViewCell *)cell atIndexPath:(NSIndexPath *)indexPath {
     Comment *comment = [self.resultsController objectAtIndexPath:indexPath];

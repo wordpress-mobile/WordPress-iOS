@@ -47,7 +47,6 @@ const CGFloat NotificationsCommentDetailViewControllerReplyTextViewDefaultHeight
 @property (nonatomic, strong) UIButton *replyButton;
 
 @property (nonatomic, strong) CommentView *commentView;
-
 @property (nonatomic, weak) IBOutlet NoteCommentPostBanner *postBanner;
 @property (nonatomic, strong) FollowButton *followButton;
 @property (nonatomic, strong) Note *note;
