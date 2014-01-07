@@ -107,7 +107,8 @@ static NSString *const SearchHeaderIdentifier = @"search_header";
         _resultsController = [[NSFetchedResultsController alloc] initWithFetchRequest:fetchRequest managedObjectContext:context sectionNameKeyPath:nil cacheName:nil];
         _resultsController.delegate = self;
         [_resultsController performFetch:nil];
-        _allThemes = self.filteredThemes = _resultsController.fetchedObjects;
+        _allThemes = _resultsController.fetchedObjects;
+        self.filteredThemes = _allThemes;
     }
     
     return _resultsController;
@@ -123,18 +124,17 @@ static NSString *const SearchHeaderIdentifier = @"search_header";
 }
 
 - (void)syncThemesAndCurrentTheme {
+    void (^failureBlock)(NSError *) = ^(NSError *error) {
+        [WPError showNetworkingAlertWithError:error];
+        [_refreshHeaderView endRefreshing];
+    };
     [Theme fetchAndInsertThemesForBlog:self.blog success:^{
         [Theme fetchCurrentThemeForBlog:self.blog success:^{
             [self currentThemeForBlog];
+            [self.collectionView reloadData];
             [_refreshHeaderView endRefreshing];
-        } failure:^(NSError *error) {
-            [WPError showNetworkingAlertWithError:error];
-            [_refreshHeaderView endRefreshing];
-        }];
-    } failure:^(NSError *error) {
-        [WPError showNetworkingAlertWithError:error];
-        [_refreshHeaderView endRefreshing];
-    }];
+        } failure:failureBlock];
+    } failure:failureBlock];
 }
 
 - (void)toggleNoThemesView:(BOOL)show {
@@ -228,7 +228,6 @@ static NSString *const SearchHeaderIdentifier = @"search_header";
 - (void)controllerDidChangeContent:(NSFetchedResultsController *)controller {
     _allThemes = controller.fetchedObjects;
     [self applyFilterWithSearchText:_currentSearchText];
-    [self currentThemeForBlog];
 }
 
 
@@ -239,6 +238,7 @@ static NSString *const SearchHeaderIdentifier = @"search_header";
     
     [self toggleNoThemesView:(_filteredThemes.count == 0 && !_currentTheme)];
     
+    [self currentThemeForBlog];
     [self removeCurrentThemeFromList];
     [self applyCurrentSort];
 }
@@ -269,6 +269,9 @@ static NSString *const SearchHeaderIdentifier = @"search_header";
 }
 
 - (void)applyFilterWithSearchText:(NSString *)searchText {
+    if ([_currentSearchText isEqualToString:searchText]) {
+        return;
+    }
     if (!searchText || searchText.length == 0) {
         [self clearSearchFilter];
         return;
@@ -287,11 +290,18 @@ static NSString *const SearchHeaderIdentifier = @"search_header";
 
 - (void)searchBarTextDidBeginEditing:(UISearchBar *)searchBar {
     [searchBar setShowsCancelButton:YES animated:YES];
+    UIButton *cancelTapArea = [UIButton buttonWithType:UIButtonTypeCustom];
+    cancelTapArea.frame = CGRectMake(0, CGRectGetMaxY(searchBar.frame), self.view.frame.size.width, self.view.bounds.size.height - CGRectGetMaxY(searchBar.frame));
+    cancelTapArea.backgroundColor = [UIColor clearColor];
+    [cancelTapArea addTarget:self action:@selector(closeSearch) forControlEvents:UIControlEventTouchUpInside];
+    cancelTapArea.tag = 10;
+    [self.view addSubview:cancelTapArea];
 }
 
 - (void)searchBarSearchButtonClicked:(UISearchBar *)searchBar {
     [self applyFilterWithSearchText:searchBar.text];
     [searchBar setShowsCancelButton:(searchBar.text.length > 0) animated:YES];
+    [self closeSearch];
 }
 
 - (void)searchBarTextDidEndEditing:(UISearchBar *)searchBar {
@@ -305,8 +315,13 @@ static NSString *const SearchHeaderIdentifier = @"search_header";
     [self clearSearchFilter];
     searchBar.text = nil;
     [searchBar setShowsCancelButton:NO animated:YES];
+    [self closeSearch];
 }
 
+- (void)closeSearch {
+    [self.searchBar resignFirstResponder];
+    [[self.view viewWithTag:10] removeFromSuperview];
+}
 
 #pragma mark - UIRefreshControl
 

@@ -535,7 +535,7 @@ NSString * const ReaderPostStoredCommentTextKey = @"comment";
 		path = [NSString stringWithFormat:@"sites/%@/posts/%@/likes/mine/delete", self.siteID, self.postID];
 	}
 
-	[[WordPressComApi sharedApi] postPath:path parameters:nil success:^(AFHTTPRequestOperation *operation, id responseObject) {
+	[[[WPAccount defaultWordPressComAccount] restApi] postPath:path parameters:nil success:^(AFHTTPRequestOperation *operation, id responseObject) {
 		[self save];
 		
 		if(success) {
@@ -567,7 +567,7 @@ NSString * const ReaderPostStoredCommentTextKey = @"comment";
 		path = [NSString stringWithFormat:@"sites/%@/follows/mine/delete", self.siteID];
 	}
 	
-	[[WordPressComApi sharedApi] postPath:path parameters:nil success:^(AFHTTPRequestOperation *operation, id responseObject) {
+	[[[WPAccount defaultWordPressComAccount] restApi] postPath:path parameters:nil success:^(AFHTTPRequestOperation *operation, id responseObject) {
 		[self save];
 		
 		if(success) {
@@ -592,7 +592,7 @@ NSString * const ReaderPostStoredCommentTextKey = @"comment";
 	}
 
 	NSString *path = [NSString stringWithFormat:@"sites/%@/posts/%@/reblogs/new", self.siteID, self.postID];
-	[[WordPressComApi sharedApi] postPath:path parameters:params success:^(AFHTTPRequestOperation *operation, id responseObject) {
+	[[[WPAccount defaultWordPressComAccount] restApi] postPath:path parameters:params success:^(AFHTTPRequestOperation *operation, id responseObject) {
 		NSDictionary *dict = (NSDictionary *)responseObject;
 		self.isReblogged = [dict numberForKey:@"is_reblogged"];
 
