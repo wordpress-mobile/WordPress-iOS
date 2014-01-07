@@ -28,7 +28,6 @@ NSString * const NotificationsJetpackInformationURL = @"http://jetpack.me/about/
 }
 
 @property (nonatomic, strong) id authListener;
-@property (nonatomic, strong) WordPressComApi *user;
 @property (nonatomic, assign) BOOL isPushingViewController;
 
 @end
@@ -40,7 +39,6 @@ NSString * const NotificationsJetpackInformationURL = @"http://jetpack.me/about/
     self = [super init];
     if (self) {
         self.title = NSLocalizedString(@"Notifications", @"Notifications View Controller title");
-        self.user = [WordPressComApi sharedApi];
     }
     return self;
 }
@@ -86,8 +84,7 @@ NSString * const NotificationsJetpackInformationURL = @"http://jetpack.me/about/
     [self.navigationController pushViewController:webViewController animated:YES];
 }
 
-- (BOOL)showJetpackConnectMessage
-{
+- (BOOL)showJetpackConnectMessage {
     return [WPAccount defaultWordPressComAccount] == nil;
 }
 
@@ -147,7 +144,7 @@ NSString * const NotificationsJetpackInformationURL = @"http://jetpack.me/about/
     NSArray *notes = self.resultsController.fetchedObjects;
     if ([notes count] > 0) {
         Note *note = [notes objectAtIndex:0];
-        [self.user updateNoteLastSeenTime:note.timestamp success:nil failure:nil];
+        [[[WPAccount defaultWordPressComAccount] restApi] updateNoteLastSeenTime:note.timestamp success:nil failure:nil];
     }
 
     NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
@@ -220,19 +217,17 @@ NSString * const NotificationsJetpackInformationURL = @"http://jetpack.me/about/
             [self.tableView selectRowAtIndexPath:indexPath animated:NO scrollPosition:UITableViewScrollPositionNone];
         }
         
-        [self.user markNoteAsRead:note.noteID success:^(AFHTTPRequestOperation *operation, id responseObject) {
-        } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+        [note markAsReadWithSuccess:nil failure:^(NSError *error){
             note.unread = [NSNumber numberWithInt:1];
         }];
     }
 }
 
 - (BOOL)noteHasDetailView:(Note *)note {
-    
     if ([note isComment])
         return YES;
     
-    NSDictionary *noteBody = [[note getNoteData] objectForKey:@"body"];
+    NSDictionary *noteBody = [[note noteData] objectForKey:@"body"];
     if (noteBody) {
         NSString *noteTemplate = [noteBody objectForKey:@"template"];
         if ([noteTemplate isEqualToString:@"single-line-list"] || [noteTemplate isEqualToString:@"multi-line-list"])
@@ -269,7 +264,7 @@ NSString * const NotificationsJetpackInformationURL = @"http://jetpack.me/about/
 }
 
 - (BOOL)userCanRefresh {
-    return self.user != nil;
+    return [WPAccount defaultWordPressComAccount] != nil;
 }
 
 - (void)syncItemsViaUserInteraction:(BOOL)userInteraction success:(void (^)())success failure:(void (^)(NSError *error))failure {
@@ -286,16 +281,12 @@ NSString * const NotificationsJetpackInformationURL = @"http://jetpack.me/about/
         timestamp = nil;
     }
     
-    [self.user getNotificationsSince:timestamp success:^(AFHTTPRequestOperation *operation, id responseObject) {
+    [Note fetchNotificationsSince:timestamp success:^{
         [self updateSyncDate];
         if (success) {
             success();
         }
-    } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
-        if (failure) {
-            failure(error);
-        }
-    }];
+    } failure:failure];
 }
 
 - (BOOL)hasMoreContent {
@@ -323,15 +314,13 @@ NSString * const NotificationsJetpackInformationURL = @"http://jetpack.me/about/
     
     _retrievingNotifications = YES;
     
-    [self.user getNotificationsBefore:lastNote.timestamp success:^(AFHTTPRequestOperation *operation, id responseObject) {
+    [Note fetchNotificationsBefore:lastNote.timestamp success:^{
         _retrievingNotifications = NO;
-                
         if (success) {
             success();
         }
-    } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+    } failure:^(NSError *error) {
         _retrievingNotifications = NO;
-        
         if (failure) {
             failure(error);
         }
