@@ -41,8 +41,8 @@ static NSString *const SelectionTableRowCell = @"SelectionTableRowCell";
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-    self.view.backgroundColor = [WPStyleGuide itsEverywhereGrey];
-    
+    [WPStyleGuide configureColorsForView:self.view andTableView:self.tableView];
+    self.tableView.tableFooterView = [[UIView alloc] initWithFrame:CGRectZero]; // Hide extra cell separators.
     [self.tableView registerClass:[WPTableViewCell class] forCellReuseIdentifier:SelectionTableRowCell];
 }
 
@@ -180,23 +180,6 @@ static NSString *const SelectionTableRowCell = @"SelectionTableRowCell";
     }
 
     return (UITableViewCellAccessoryType)([[self.selectionStatusOfObjects objectAtIndex:previousRows] boolValue] == YES ? UITableViewCellAccessoryCheckmark : UITableViewCellAccessoryNone);
-}
-
-- (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
-    CGFloat height = 38.0;
-    return height;
-}
-
-- (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section {
-    CGFloat height = 10.0;
-    [tableView setSectionHeaderHeight:height];
-    return height;
-}
-
-- (CGFloat)tableView:(UITableView *)tableView heightForFooterInSection:(NSInteger)section {
-    CGFloat height = 0.5;
-    [tableView setSectionFooterHeight:height];
-    return height;
 }
 
 @end

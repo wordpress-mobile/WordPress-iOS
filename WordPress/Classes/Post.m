@@ -181,24 +181,35 @@
 }
 
 - (BOOL)hasChanged {
-    if ([super hasChanged]) return YES;
+    if ([super hasChanged]) {
+        return YES;
+    }
    
     Post *original = (Post *)self.original;
     
     if ((self.tags != original.tags)
-        && (![self.tags isEqual:original.tags]))
+        && (![self.tags isEqual:original.tags])) {
         return YES;
+    }
     
     if ((self.postFormat != original.postFormat)
-        && (![self.postFormat isEqual:original.postFormat]))
+        && (![self.postFormat isEqual:original.postFormat])) {
         return YES;
-
-    if (![self.categories isEqual:original.categories]) return YES;
+    }
+    
+    if (![self.categories isEqual:original.categories]) {
+        return YES;
+    }
     
 	if ((self.geolocation != original.geolocation)
-		 && (![self.geolocation isEqual:original.geolocation]) )
+        && (![self.geolocation isEqual:original.geolocation]) ) {
         return YES;
-
+    }
+    
+    if (![self.featuredImageURL isEqualToString:original.featuredImageURL]) {
+        return YES;
+    }
+    
     return NO;
 }
 

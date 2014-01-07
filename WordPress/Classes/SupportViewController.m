@@ -199,9 +199,7 @@ typedef NS_ENUM(NSInteger, SettingsViewControllerSections)
     [tableView deselectRowAtIndexPath:indexPath animated:YES];
 
     if (indexPath.section == SettingsSectionFAQForums && indexPath.row == 0) {
-        WPWebViewController *webViewController = [[WPWebViewController alloc] init];
-        [webViewController setUrl:[NSURL URLWithString:@"http://ios.wordpress.org/faq"]];
-        [self.navigationController pushViewController:webViewController animated:YES];
+        [[UIApplication sharedApplication] openURL:[NSURL URLWithString:@"http://ios.wordpress.org/faq"]];
     } else if (indexPath.section == SettingsSectionFAQForums && indexPath.row == 1) {
         [[UIApplication sharedApplication] openURL:[NSURL URLWithString:@"http://ios.forums.wordpress.org"]];
     } else if (indexPath.section == SettingsSectionFeedback) {
