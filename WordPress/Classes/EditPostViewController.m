@@ -504,7 +504,7 @@ CGFloat const EPVCTextViewTopPadding = 7.0f;
 #pragma mark - Actions
 
 - (void)showBlogSelectorPrompt {
-    if (![self hasChanges]) {
+    if (![self.post hasSiteSpecificChanges]) {
         [self showBlogSelector];
         return;
     }
