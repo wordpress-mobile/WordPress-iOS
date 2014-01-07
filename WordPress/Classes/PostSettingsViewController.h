@@ -2,10 +2,10 @@
 #import <CoreLocation/CoreLocation.h>
 #import <MapKit/MapKit.h>
 #import "WPTableViewActivityCell.h"
-#import "EditPostViewController.h"
-#import "CPopoverManager.h"
 #import "PostAnnotation.h"
+
 #import "UIImageView+AFNetworking.h"
+#import "EditPostViewController.h"
 
 @class EditPostViewController;
 @interface PostSettingsViewController : UIViewController <UITableViewDelegate, UITableViewDataSource, UIPickerViewDelegate, UIPickerViewDataSource, UITextFieldDelegate, CLLocationManagerDelegate, UIActionSheetDelegate>
