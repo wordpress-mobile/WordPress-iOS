@@ -616,18 +616,20 @@ static NSArray *generatedMonthYearsFilters;
 #pragma mark - Add Media
 
 - (void)checkVideoPressEnabled {
-    //    if(self.isCheckingVideoCapability)
-    //        return;
+    self.videoPressEnabled = self.blog.videoPressEnabled;
     
-    //    self.isCheckingVideoCapability = YES;
-    [self.blog checkVideoPressEnabledWithSuccess:^(BOOL enabled) {
-        self.videoPressEnabled = enabled;
-        //        self.isCheckingVideoCapability = NO;
-    } failure:^(NSError *error) {
-        DDLogWarn(@"checkVideoPressEnabled failed: %@", [error localizedDescription]);
-        self.videoPressEnabled = YES;
-        //        self.isCheckingVideoCapability = NO;
-    }];
+    // Check IFF the blog doesn't already have it enabled
+    // The blog's transient property will last only for an in-memory session
+    if (!self.blog.videoPressEnabled) {
+        [self.blog checkVideoPressEnabledWithSuccess:^(BOOL enabled) {
+            self.videoPressEnabled = enabled;
+            self.blog.videoPressEnabled = enabled;
+        } failure:^(NSError *error) {
+            DDLogWarn(@"checkVideoPressEnabled failed: %@", [error localizedDescription]);
+            self.videoPressEnabled = NO;
+            self.blog.videoPressEnabled = NO;
+        }];
+    }
 }
 
 - (BOOL)deviceSupportsVideo {

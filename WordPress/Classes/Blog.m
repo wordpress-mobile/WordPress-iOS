@@ -45,7 +45,7 @@ static NSInteger const ImageSizeLargeHeight = 480;
 @dynamic posts, categories, comments, themes, media;
 @dynamic currentThemeId;
 @dynamic lastPostsSync, lastStatsSync, lastPagesSync, lastCommentsSync, lastUpdateWarning;
-@synthesize isSyncingPosts, isSyncingPages, isSyncingComments;
+@synthesize isSyncingPosts, isSyncingPages, isSyncingComments, videoPressEnabled;
 @dynamic geolocationEnabled, options, postFormats, isActivated, visible;
 @dynamic account;
 @dynamic jetpackAccount;
