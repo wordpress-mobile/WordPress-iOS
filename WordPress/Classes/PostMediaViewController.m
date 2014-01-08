@@ -337,10 +337,16 @@
 	DDLogVerbose(@"scaling and rotating image...");
 }
 
+- (void)resetStatusBarColor {
+    // On iOS7 Beta 6 the image picker seems to override our preferred setting so we force the status bar color back.
+    [[UIApplication sharedApplication] setStatusBarStyle:UIStatusBarStyleLightContent];
+}
+
 #pragma mark -
 #pragma mark UIPopover Delegate Methods
 
 - (void)popoverControllerDidDismissPopover:(UIPopoverController *)popoverController {
+    [self resetStatusBarColor]; // incase the popover is dismissed after the image picker is presented.
     _addPopover.delegate = nil;
     _addPopover = nil;
 }
@@ -487,6 +493,7 @@
     _picker.navigationBar.translucent = NO;
 	_picker.delegate = self;
 	_picker.allowsEditing = NO;
+    _picker.navigationBar.barStyle = UIBarStyleBlack;
     return _picker;
 }
 
@@ -837,8 +844,7 @@
 }
 
 - (void)imagePickerController:(UIImagePickerController *)thePicker didFinishPickingMediaWithInfo:(NSDictionary *)info {
-    // On iOS7 Beta 6 the image picker seems to override our preferred setting so we force the status bar color back.
-    [[UIApplication sharedApplication] setStatusBarStyle:UIStatusBarStyleLightContent];
+    [self resetStatusBarColor];
 
 	if([[info valueForKey:@"UIImagePickerControllerMediaType"] isEqualToString:@"public.movie"]) {
 		self.currentVideo = [info mutableCopy];

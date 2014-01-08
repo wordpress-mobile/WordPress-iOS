@@ -15,6 +15,8 @@
 #import "NSString+XMLExtensions.h"
 #import "DateUtils.h"
 #import "WPTableViewSectionHeaderView.h"
+#import "WPAccount.h"
+#import "NotificationsManager.h"
 
 @interface NotificationSettingsViewController () <EGORefreshTableHeaderDelegate, UIActionSheetDelegate>
 
@@ -74,10 +76,10 @@ BOOL hasChanges;
 }
 
 - (void)getNotificationSettings {
-    [[WordPressComApi sharedApi] fetchNotificationSettings:^{
-        [self notificationsDidFinishRefreshingWithError: nil];
+    [NotificationsManager fetchNotificationSettingsWithSuccess:^{
+        [self notificationsDidFinishRefreshingWithError:nil];
     } failure:^(NSError *error) {
-        [self notificationsDidFinishRefreshingWithError: error];
+        [self notificationsDidFinishRefreshingWithError:error];
     }];
 }
 
@@ -251,8 +253,9 @@ BOOL hasChanges;
 
 - (void)viewWillDisappear:(BOOL)animated {
     self.navigationController.toolbarHidden = YES;
-    if (hasChanges)
-        [[WordPressComApi sharedApi] saveNotificationSettings:nil failure:nil];
+    if (hasChanges){
+        [NotificationsManager saveNotificationSettings];
+    }
     [super viewWillDisappear:animated];
 }
 
