@@ -70,7 +70,7 @@ static NSString *const RemoveGeotagCellIdentifier = @"RemoveGeotagCellIdentifier
 @property (nonatomic, strong) CLGeocoder *reverseGeocoder;
 @property (nonatomic, strong) PostAnnotation *annotation;
 @property (nonatomic, strong) NSString *address;
-@property (nonatomic, assign) BOOL isUpdatingLocation, isUploadingFeaturedImage;
+@property (nonatomic, assign) BOOL isUpdatingLocation;
 
 // Featured image
 @property (nonatomic, strong) IBOutlet UILabel *visibilityTitleLabel;
@@ -118,9 +118,7 @@ static NSString *const RemoveGeotagCellIdentifier = @"RemoveGeotagCellIdentifier
 
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(keyboardWillShow:) name:UIKeyboardWillShowNotification object:nil];
 	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(keyboardWillHide:) name:UIKeyboardWillHideNotification object:nil];
-	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(showFeaturedImageUploader:) name:@"UploadingFeaturedImage" object:nil];
-	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(featuredImageUploadSucceeded:) name:FeaturedImageUploadSuccessfulNotification object:nil];
-	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(featuredImageUploadFailed:) name:FeaturedImageUploadFailedNotification object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(mediaFeaturedImageSelected:) name:MediaFeaturedImageSelectedNotification object:nil];
 
     [WPStyleGuide configureColorsForView:self.view andTableView:self.tableView];
 
@@ -178,13 +176,13 @@ static NSString *const RemoveGeotagCellIdentifier = @"RemoveGeotagCellIdentifier
             for (Media *media in self.post.media) {
                 NSInteger status = [media.remoteStatusNumber integerValue];
                 if (media.featured && (status == MediaRemoteStatusPushing || status == MediaRemoteStatusProcessing)) {
-                    // TODO Replace with media library support
-                    //[self showFeaturedImageUploader:nil];
+                    MediaBrowserViewController *vc = [[MediaBrowserViewController alloc] initWithPost:self.post selectingFeaturedImage:YES];
+                    [self.navigationController pushViewController:vc animated:YES];
                 }
             }
         }
 
-        if (!self.isUploadingFeaturedImage && (self.blogSupportsFeaturedImage && self.post.post_thumbnail != nil)) {
+        if ((self.blogSupportsFeaturedImage && self.post.post_thumbnail != nil)) {
             // Download the current featured image
             [self.featuredImageView setHidden:YES];
             [self.featuredImageLabel setText:NSLocalizedString(@"Loading Featured Image", @"Loading featured image in post settings")];
@@ -389,7 +387,7 @@ static NSString *const RemoveGeotagCellIdentifier = @"RemoveGeotagCellIdentifier
         return 1;
         
     } else if (section == 3 && self.blogSupportsFeaturedImage) {
-        if (self.post.post_thumbnail && !self.isUploadingFeaturedImage) {
+        if (self.post.post_thumbnail) {
             return 2;
         } else {
             return 1;
@@ -571,7 +569,7 @@ static NSString *const RemoveGeotagCellIdentifier = @"RemoveGeotagCellIdentifier
         }
 	case 3:
         if (self.blogSupportsFeaturedImage) {
-            if (!self.post.post_thumbnail && !self.isUploadingFeaturedImage) {
+            if (!self.post.post_thumbnail) {
                 WPTableViewActivityCell *activityCell = (WPTableViewActivityCell *)[self.tableView dequeueReusableCellWithIdentifier:TableViewActivityCellIdentifier forIndexPath:indexPath];
                 activityCell.selectionStyle = UITableViewCellSelectionStyleBlue;
 
@@ -708,7 +706,7 @@ static NSString *const RemoveGeotagCellIdentifier = @"RemoveGeotagCellIdentifier
 
     } else if (
              (!self.blogSupportsFeaturedImage && (indexPath.section == 3) && (indexPath.row == 1))
-             || (self.blogSupportsFeaturedImage && (self.post.post_thumbnail || self.isUploadingFeaturedImage) && indexPath.section == 3 && indexPath.row == 0)
+             || (self.blogSupportsFeaturedImage && self.post.post_thumbnail && indexPath.section == 3 && indexPath.row == 0)
              || (self.blogSupportsFeaturedImage && (indexPath.section == 4) && (indexPath.row == 1))
                ) {
 		return 188.0f;
@@ -942,8 +940,7 @@ static NSString *const RemoveGeotagCellIdentifier = @"RemoveGeotagCellIdentifier
     if (buttonIndex == 0) {
         [self.featuredImageTableViewCell setSelectionStyle:UITableViewCellSelectionStyleBlue];
         self.post.post_thumbnail = nil;
-#warning potential bug
-//        [self.postDetailViewController refreshButtons];
+        self.post.featuredImageURL = nil;
         [self.tableView reloadData];
     }
 }
@@ -1301,6 +1298,14 @@ static NSString *const RemoveGeotagCellIdentifier = @"RemoveGeotagCellIdentifier
         _isNewCategory = YES;
         [self populateSelectionsControllerWithCategories:CGRectZero];
     }
+}
+
+- (void)mediaFeaturedImageSelected:(NSNotification *)notification {
+    Media *media = notification.object;
+    self.post.post_thumbnail = media.mediaID;
+    self.post.featuredImageURL = media.remoteURL;
+    self.featuredImageView.image = [UIImage imageWithData:media.thumbnail];
+    [self.tableView reloadData];
 }
 
 

@@ -30,6 +30,9 @@ static NSUInteger const MultiselectToolbarDeselectTag = 2;
 static NSUInteger const MediaTypeActionSheetVideo = 1;
 static CGFloat const ScrollingVelocityThreshold = 30.0f;
 
+NSString *const MediaShouldInsertBelowNotification = @"MediaShouldInsertBelowNotification";
+NSString *const MediaFeaturedImageSelectedNotification = @"MediaFeaturedImageSelectedNotification";
+
 @interface MediaBrowserViewController () <UICollectionViewDataSource, UICollectionViewDelegate, MediaBrowserCellMultiSelectDelegate, UIAlertViewDelegate, UIImagePickerControllerDelegate, UINavigationControllerDelegate, UICollectionViewDelegateFlowLayout, UIScrollViewDelegate, NSFetchedResultsControllerDelegate>
 
 @property (nonatomic, strong) AbstractPost *post;
@@ -417,13 +420,11 @@ static NSArray *generatedMonthYearsFilters;
         [cell.media cancelUpload];
     } else if (cell.media.remoteStatus == MediaRemoteStatusLocal || cell.media.remoteStatus == MediaRemoteStatusSync) {
         if (_selectingFeaturedImage) {
-#warning need this? probably, but don't need the upload ones..
-//            [[NSNotificationCenter defaultCenter] postNotificationName:FeaturedImageSelected object:cell.media];
+            [[NSNotificationCenter defaultCenter] postNotificationName:MediaFeaturedImageSelectedNotification object:cell.media];
             [self.navigationController popViewControllerAnimated:YES];
         } else if (_selectingMediaForPost) {
             [self.post.media addObject:cell.media];
-#warning const-ify
-            [[NSNotificationCenter defaultCenter] postNotificationName:@"ShouldInsertMediaBelow" object:cell.media];
+            [[NSNotificationCenter defaultCenter] postNotificationName:MediaShouldInsertBelowNotification object:cell.media];
             [self.navigationController popViewControllerAnimated:YES];
         } else {
             EditMediaViewController *viewMedia = [[EditMediaViewController alloc] initWithMedia:cell.media];
@@ -523,7 +524,6 @@ static NSArray *generatedMonthYearsFilters;
             }
         }
        
-#warning delete immediately, and just let it fail and come back if not successful
         [self.view addSubview:self.loadingView];
         [self.loadingView show];
         
@@ -1222,19 +1222,17 @@ static NSArray *generatedMonthYearsFilters;
 	imageMedia.thumbnail = UIImageJPEGRepresentation(imageThumbnail, 0.90);
 	imageMedia.width = [NSNumber numberWithInt:theImage.size.width];
 	imageMedia.height = [NSNumber numberWithInt:theImage.size.height];
-    if (_selectingFeaturedImage)
-        [[NSNotificationCenter defaultCenter] postNotificationName:@"UploadingFeaturedImage" object:nil];
     
     [imageMedia uploadWithSuccess:^{
         if ([imageMedia isDeleted]) {
             NSLog(@"Media deleted while uploading (%@)", imageMedia);
             return;
         }
-        if (!_selectingFeaturedImage) {
-            [[NSNotificationCenter defaultCenter] postNotificationName:@"ShouldInsertMediaBelow" object:imageMedia];
+        if (_selectingFeaturedImage) {
+            [[NSNotificationCenter defaultCenter] postNotificationName:MediaFeaturedImageSelectedNotification object:imageMedia];
         }
         else {
-            
+            [[NSNotificationCenter defaultCenter] postNotificationName:MediaShouldInsertBelowNotification object:imageMedia];
         }
         [imageMedia save];
     } failure:^(NSError *error) {
@@ -1321,7 +1319,7 @@ static NSArray *generatedMonthYearsFilters;
                 NSLog(@"Media deleted while uploading (%@)", videoMedia);
                 return;
             }
-            [[NSNotificationCenter defaultCenter] postNotificationName:@"ShouldInsertMediaBelow" object:videoMedia];
+            [[NSNotificationCenter defaultCenter] postNotificationName:MediaShouldInsertBelowNotification object:videoMedia];
             [videoMedia save];
         } failure:^(NSError *error) {
             [WPError showAlertWithTitle:NSLocalizedString(@"Upload failed", nil) message:error.localizedDescription];

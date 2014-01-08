@@ -12,13 +12,6 @@
 #import "AFHTTPRequestOperation.h"
 #import "ContextManager.h"
 
-NSString *const ImageUploadSuccessfulNotification = @"ImageUploadSuccessful";
-NSString *const ImageUploadFailedNotification = @"ImageUploadFailed";
-NSString *const FeaturedImageUploadSuccessfulNotification = @"FeaturedImageUploadSuccessful";
-NSString *const FeaturedImageUploadFailedNotification = @"FeaturedImageUploadFailed";
-NSString *const VideoUploadSuccessfulNotification = @"VideoUploadSuccessful";
-NSString *const VideoUploadFailedNotification = @"VideoUploadFailed";
-
 @interface Media (PrivateMethods)
 
 - (void)xmlrpcUploadWithSuccess:(void (^)())success failure:(void (^)(NSError *error))failure;
@@ -342,17 +335,15 @@ NSString *const VideoUploadFailedNotification = @"VideoUploadFailed";
 
         dispatch_async(dispatch_get_main_queue(), ^(void) {
             void (^failureBlock)(AFHTTPRequestOperation *, NSError *) = ^(AFHTTPRequestOperation *operation, NSError *error) {
-                if ([self isDeleted] || self.managedObjectContext == nil)
+                if ([self isDeleted] || self.managedObjectContext == nil) {
                     return;
-
-                if (self.featured) {
-                    [[NSNotificationCenter defaultCenter] postNotificationName:FeaturedImageUploadFailedNotification
-                                                                        object:self];
                 }
 
                 self.remoteStatus = MediaRemoteStatusFailed;
                 _uploadOperation = nil;
-                if (failure) failure(error);
+                if (failure) {
+                    failure(error);
+                }
             };
             AFHTTPRequestOperation *operation = [self.blog.api HTTPRequestOperationWithRequest:request success:^(AFHTTPRequestOperation *operation, id responseObject) {
                 if ([self isDeleted] || self.managedObjectContext == nil)
@@ -377,20 +368,8 @@ NSString *const VideoUploadFailedNotification = @"VideoUploadFailed";
 
                 self.remoteStatus = MediaRemoteStatusSync;
                  _uploadOperation = nil;
-                if (success) success();
-
-                if (self.mediaType == MediaTypeVideo) {
-                    [[NSNotificationCenter defaultCenter] postNotificationName:VideoUploadSuccessfulNotification
-                                                                        object:self
-                                                                      userInfo:response];
-                } else if (self.mediaType == MediaTypeImage) {
-                    [[NSNotificationCenter defaultCenter] postNotificationName:ImageUploadSuccessfulNotification
-                                                                        object:self
-                                                                      userInfo:response];
-                } else if (self.mediaType == MediaTypeFeatured) {
-                    [[NSNotificationCenter defaultCenter] postNotificationName:FeaturedImageUploadSuccessfulNotification
-                                                                        object:self
-                                                                      userInfo:response];
+                if (success) {
+                    success();
                 }
             } failure:failureBlock];
             [operation setUploadProgressBlock:^(NSUInteger bytesWritten, long long totalBytesWritten, long long totalBytesExpectedToWrite) {
