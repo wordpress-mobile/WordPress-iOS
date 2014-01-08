@@ -1427,7 +1427,7 @@ static NSArray *generatedMonthYearsFilters;
 }
 
 - (UIImage *)resizeImage:(UIImage *)original toSize:(MediaResize)resize {
-    NSDictionary *predefDim = [self.post.blog getImageResizeDimensions];
+    NSDictionary *predefDim = [self.blog getImageResizeDimensions];
     CGSize smallSize =  [[predefDim objectForKey: @"smallSize"] CGSizeValue];
     CGSize mediumSize = [[predefDim objectForKey: @"mediumSize"] CGSizeValue];
     CGSize largeSize =  [[predefDim objectForKey: @"largeSize"] CGSizeValue];
@@ -1444,50 +1444,31 @@ static NSArray *generatedMonthYearsFilters;
             break;
     }
     
-    CGSize originalSize = CGSizeMake(_currentImage.size.width, _currentImage.size.height); //The dimensions of the image, taking orientation into account.
+    CGSize originalSize = CGSizeMake(_currentImage.size.width, _currentImage.size.height);
 	
 	// Resize the image using the selected dimensions
 	UIImage *resizedImage = original;
-	switch (resize) {
-		case MediaResizeSmall:
-			if(_currentImage.size.width > smallSize.width  || _currentImage.size.height > smallSize.height)
-				resizedImage = [original resizedImageWithContentMode:UIViewContentModeScaleAspectFit
-															  bounds:smallSize
-												interpolationQuality:kCGInterpolationHigh];
-			else
-				resizedImage = [original resizedImageWithContentMode:UIViewContentModeScaleAspectFit
-															  bounds:originalSize
-												interpolationQuality:kCGInterpolationHigh];
-			break;
-		case MediaResizeMedium:
-			if(_currentImage.size.width > mediumSize.width  || _currentImage.size.height > mediumSize.height)
-				resizedImage = [original resizedImageWithContentMode:UIViewContentModeScaleAspectFit
-															  bounds:mediumSize
-												interpolationQuality:kCGInterpolationHigh];
-			else
-				resizedImage = [original resizedImageWithContentMode:UIViewContentModeScaleAspectFit
-															  bounds:originalSize
-												interpolationQuality:kCGInterpolationHigh];
-			break;
-		case MediaResizeLarge:
-			if(_currentImage.size.width > largeSize.width || _currentImage.size.height > largeSize.height)
-				resizedImage = [original resizedImageWithContentMode:UIViewContentModeScaleAspectFit
-															  bounds:largeSize
-												interpolationQuality:kCGInterpolationHigh];
-			else
-				resizedImage = [original resizedImageWithContentMode:UIViewContentModeScaleAspectFit
-															  bounds:originalSize
-												interpolationQuality:kCGInterpolationHigh];
-			break;
-		case MediaResizeOriginal:
-			resizedImage = [original resizedImageWithContentMode:UIViewContentModeScaleAspectFit
-														  bounds:originalSize
-											interpolationQuality:kCGInterpolationHigh];
-			break;
-	}
+	CGSize resizeToBounds = originalSize;
     
-	
-	return resizedImage;
+    if (resize == MediaResizeSmall &&
+        (_currentImage.size.width > smallSize.width  || _currentImage.size.height > smallSize.height)) {
+        resizeToBounds = smallSize;
+    }
+    else if (resize == MediaResizeMedium &&
+               (_currentImage.size.width > mediumSize.width || _currentImage.size.height > mediumSize.height)) {
+        resizeToBounds = mediumSize;
+    }
+    else if (resize == MediaResizeLarge &&
+               (_currentImage.size.width > largeSize.width || _currentImage.size.height > largeSize.height)) {
+        resizeToBounds = largeSize;
+    }
+    
+    if (!CGSizeEqualToSize(originalSize, resizeToBounds)) {
+        resizedImage = [original resizedImageWithContentMode:UIViewContentModeScaleAspectFit
+                                                      bounds:resizeToBounds
+                                        interpolationQuality:kCGInterpolationHigh];
+    }
+    return resizedImage;
 }
 
 /* Used in Custom Dimensions Resize */
@@ -1498,13 +1479,7 @@ static NSArray *generatedMonthYearsFilters;
 		resizedImage = [original resizedImageWithContentMode:UIViewContentModeScaleAspectFit
 													  bounds:CGSizeMake(width, height)
 										interpolationQuality:kCGInterpolationHigh];
-	} else {
-		//use the original dimension
-		resizedImage = [original resizedImageWithContentMode:UIViewContentModeScaleAspectFit
-													  bounds:CGSizeMake(_currentImage.size.width, _currentImage.size.height)
-										interpolationQuality:kCGInterpolationHigh];
 	}
-	
 	return resizedImage;
 }
 
