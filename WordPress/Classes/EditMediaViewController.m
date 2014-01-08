@@ -35,7 +35,6 @@ static NSUInteger const AlertDiscardChanges = 500;
 @property (nonatomic, strong) Media *media;
 @property (nonatomic, assign) BOOL isShowingEditFields;
 @property (nonatomic, strong) WPLoadingView *loadingView;
-@property (nonatomic, weak) UIImageView *arrow;
 @property (nonatomic, assign) CGFloat currentKeyboardHeight;
 @property (nonatomic, strong) MPMoviePlayerController *videoPlayer;
 
@@ -93,11 +92,8 @@ static NSUInteger const AlertDiscardChanges = 500;
     panRecogniser.delegate = self;
     [_editingBar addGestureRecognizer:panRecogniser];
     
-    UIImageView *arrow = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"icon_white_arrow_up"]];
-    _arrow = arrow;
-    _arrow.center = self.editingBar.center;
-    _arrow.autoresizingMask = UIViewAutoresizingFlexibleLeftMargin | UIViewAutoresizingFlexibleRightMargin;
-    [self.editingBar addSubview:_arrow];
+    UIImageView *dragIndicator = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"icon-media-edit-grab"]];
+    [self.editingBar addSubview:dragIndicator];
     [_editingBar addTarget:self action:@selector(barTapped:) forControlEvents:UIControlEventTouchUpInside];
     self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:NSLocalizedString(@"Save", @"") style:UIBarButtonItemStyleBordered target:self action:@selector(savePressed)];
     
@@ -176,9 +172,7 @@ static NSUInteger const AlertDiscardChanges = 500;
         containerOrigin = CGPointMake(currentXoffset, 0);
         scrollViewSize = CGSizeMake(320 + 10, self.view.bounds.size.height);
         scrollViewOrigin = CGPointMake(_editingBar.frame.size.width - 10, _editingBar.frame.size.width);
-    
-        _arrow.transform = CGAffineTransformMakeRotation(3*M_PI/2);
-        
+        [(UIImageView *)self.editingBar.subviews[0] setTransform:CGAffineTransformMakeRotation(M_PI/2)];
     } else {
         // Editing slides from the bottom
         _editingBar.frame = CGRectMake(0, 0, self.view.bounds.size.width, 44);
@@ -190,7 +184,7 @@ static NSUInteger const AlertDiscardChanges = 500;
         containerOrigin = CGPointMake(0, currentYOffset);
         scrollViewSize = CGSizeMake(containerSize.width, scrollViewHeight);
         scrollViewOrigin = CGPointMake(0, _editingBar.frame.size.height);
-        _arrow.transform = CGAffineTransformMakeRotation(0);
+        [(UIImageView *)self.editingBar.subviews[0] setTransform:CGAffineTransformIdentity];
     }
     
     _editContainerView.frame = (CGRect) {
@@ -202,8 +196,7 @@ static NSUInteger const AlertDiscardChanges = 500;
         .size = scrollViewSize
     };
     
-    _arrow.center = _editingBar.center;
-    
+    [(UIImageView *)self.editingBar.subviews[0] setCenter:_editingBar.center];
 }
 
 - (void)didReceiveMemoryWarning
