@@ -5,23 +5,20 @@
 //  Created by ? on ?
 //  Copyright (c) 2014 WordPress. All rights reserved.
 //
+
 #import "WPAddCategoryViewController.h"
 #import "Blog.h"
+#import "Post.h"
 #import "Category.h"
+#import "CategoriesViewController.h"
 #import "Constants.h"
 #import "EditSiteViewController.h"
 #import "WordPressAppDelegate.h"
-#import "WPSegmentedSelectionTableViewController.h"
 
-static void *const kParentCategoriesContext = ((void *)999);
-
-NSString *const NewCategoryCreatedAndUpdatedInBlogNotification = @"NewCategoryCreatedAndUpdatedInBlogNotification";
-
-@interface WPAddCategoryViewController ()
+@interface WPAddCategoryViewController ()<CategoriesViewControllerDelegate>
 
 @property (nonatomic, strong) Category *parentCategory;
-@property (nonatomic, strong) Blog *blog;
-
+@property (nonatomic, strong) Post *post;
 @property (nonatomic, strong) UITextField *createCatNameField;
 @property (nonatomic, strong) UITextField *parentCatNameField;
 @property (nonatomic, strong) UIBarButtonItem *saveButtonItem;
@@ -30,16 +27,16 @@ NSString *const NewCategoryCreatedAndUpdatedInBlogNotification = @"NewCategoryCr
 
 @implementation WPAddCategoryViewController
 
-- (id)initWithBlog:(Blog *)blog {
+- (id)initWithPost:(Post *)post {
     self = [super initWithStyle:UITableViewStyleGrouped];
     if (self) {
-        _blog = blog;
+        self.post = post;
     }
     return self;
 }
 
 - (void)viewDidLoad {
-    DDLogInfo(@"%@ %@", self, NSStringFromSelector(_cmd));
+    DDLogMethod();
 	[super viewDidLoad];
     
     self.tableView.sectionFooterHeight = 0.0f;
@@ -50,14 +47,12 @@ NSString *const NewCategoryCreatedAndUpdatedInBlogNotification = @"NewCategoryCr
                                                           action:@selector(saveAddCategory:)];
     self.navigationItem.rightBarButtonItem = self.saveButtonItem;
     
-    
     [WPStyleGuide configureColorsForView:self.view andTableView:self.tableView];
 }
 
 - (void)didReceiveMemoryWarning {
     DDLogWarn(@"%@ %@", self, NSStringFromSelector(_cmd));
     [super didReceiveMemoryWarning]; // Releases the view if it doesn't have a superview
-    // Release anything that's not essential, such as cached data
 }
 
 
@@ -70,9 +65,9 @@ NSString *const NewCategoryCreatedAndUpdatedInBlogNotification = @"NewCategoryCr
 }
 
 - (void)addProgressIndicator {
-    UIActivityIndicatorView *aiv = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleGray];
-    UIBarButtonItem *activityButtonItem = [[UIBarButtonItem alloc] initWithCustomView:aiv];
-    [aiv startAnimating];
+    UIActivityIndicatorView *activityView = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleGray];
+    UIBarButtonItem *activityButtonItem = [[UIBarButtonItem alloc] initWithCustomView:activityView];
+    [activityView startAnimating];
     
     self.navigationItem.rightBarButtonItem = activityButtonItem;
 }
@@ -97,7 +92,7 @@ NSString *const NewCategoryCreatedAndUpdatedInBlogNotification = @"NewCategoryCr
         return;
     }
     
-    if ([Category existsName:catName forBlog:self.blog withParentId:self.parentCategory.categoryID]) {
+    if ([Category existsName:catName forBlog:self.post.blog withParentId:self.parentCategory.categoryID]) {
         NSString *title = NSLocalizedString(@"Category name already exists.", @"Error popup title to show that a category already exists.");
         NSString *message = NSLocalizedString(@"There is another category with that name.", @"Error popup message to show that a category already exists.");
         [WPError showAlertWithTitle:title message:message withSupportButton:NO];
@@ -106,12 +101,15 @@ NSString *const NewCategoryCreatedAndUpdatedInBlogNotification = @"NewCategoryCr
     
     [self addProgressIndicator];
     
-    [Category createCategory:catName parent:self.parentCategory forBlog:self.blog success:^(Category *category) {
+    [Category createCategory:catName parent:self.parentCategory forBlog:self.post.blog success:^(Category *category) {
+        // Add the newly created category to the post
+        [self.post.categories addObject:category];
+        [self.post save];
+        
         //re-syncs categories this is necessary because the server can change the name of the category!!!
-		[self.blog syncCategoriesWithSuccess:nil failure:nil];
-        [[NSNotificationCenter defaultCenter] postNotificationName:NewCategoryCreatedAndUpdatedInBlogNotification
-                                                            object:self
-                                                          userInfo:[NSDictionary dictionaryWithObject:category forKey:@"category"]];
+		[self.post.blog syncCategoriesWithSuccess:nil failure:nil];
+
+        // Cleanup and dismiss
         [self clearUI];
         [self removeProgressIndicator];
         [self dismiss];
@@ -123,7 +121,7 @@ NSString *const NewCategoryCreatedAndUpdatedInBlogNotification = @"NewCategoryCr
             [WPError showAlertWithTitle:NSLocalizedString(@"Couldn't Connect", @"") message:NSLocalizedString(@"The username or password stored in the app may be out of date. Please re-enter your password in the settings and try again.", @"") withSupportButton:NO];
 			
 			// bad login/pass combination
-			EditSiteViewController *editSiteViewController = [[EditSiteViewController alloc] initWithBlog:self.blog];
+			EditSiteViewController *editSiteViewController = [[EditSiteViewController alloc] initWithBlog:self.post.blog];
 			[self.navigationController pushViewController:editSiteViewController animated:YES];
 			
 		} else {
@@ -132,49 +130,12 @@ NSString *const NewCategoryCreatedAndUpdatedInBlogNotification = @"NewCategoryCr
     }];
 }
 
-
 #pragma mark - functional methods
 
-- (void)selectionTableViewController:(WPSelectionTableViewController *)selctionController completedSelectionsWithContext:(void *)selContext selectedObjects:(NSArray *)selectedObjects haveChanges:(BOOL)isChanged {
-    if (!isChanged) {
-        [selctionController clean];
-        return;
-    }
-
-    if (selContext == kParentCategoriesContext) {
-        Category *curCat = [selectedObjects lastObject];
-
-        if (self.parentCategory) {
-            self.parentCategory = nil;
-        }
-
-        if (curCat) {
-            self.parentCategory = curCat;
-            self.parentCatNameField.text = curCat.categoryName;
-            [self.tableView reloadData];
-        }
-
-    }
-
-    [selctionController clean];
-}
-
-- (void)populateSelectionsControllerWithCategories {
-    WPSegmentedSelectionTableViewController *selectionTableViewController = [[WPSegmentedSelectionTableViewController alloc] init];
-
-    NSArray *selObjs = ((self.parentCategory == nil) ? [NSArray array] : [NSArray arrayWithObject:self.parentCategory]);
-    
-	NSArray *cats = [self.blog sortedCategories];
-	
-	[selectionTableViewController populateDataSource:cats
-     havingContext:kParentCategoriesContext
-     selectedObjects:selObjs
-     selectionType:kRadio
-     andDelegate:self];
-
-    selectionTableViewController.title = NSLocalizedString(@"Parent Category", @"");
-
-    [self.navigationController pushViewController:selectionTableViewController animated:YES];
+- (void)showParentCategorySelector {
+    CategoriesViewController *controller = [[CategoriesViewController alloc] initWithPost:self.post selectionMode:CategoriesSelectionModeParent];
+    controller.delegate = self;
+    [self.navigationController pushViewController:controller animated:YES];
 }
 
 #pragma mark - tableviewDelegates/datasources
@@ -250,7 +211,7 @@ NSString *const NewCategoryCreatedAndUpdatedInBlogNotification = @"NewCategoryCr
     [tableView deselectRowAtIndexPath:[tableView indexPathForSelectedRow] animated:YES];
 
     if (indexPath.section == 1) {
-        [self populateSelectionsControllerWithCategories];
+        [self showParentCategorySelector];
     }
 }
 
@@ -259,6 +220,13 @@ NSString *const NewCategoryCreatedAndUpdatedInBlogNotification = @"NewCategoryCr
 - (BOOL)textFieldShouldReturn:(UITextField *)textField {
     [textField resignFirstResponder];
     return YES;
+}
+
+#pragma mark - CategoriesViewControllerDelegate methods
+
+- (void)categoriesViewController:(CategoriesViewController *)controller didSelectCategory:(Category *)category {
+    self.parentCategory = category;
+    [self.tableView reloadData];
 }
 
 @end

@@ -33,7 +33,6 @@ static NSString *const SelectionTableRowCell = @"SelectionTableRowCell";
     if (self) {
         self.autoReturnInRadioSelectMode = YES;
         _categoryIndentationLevelsDict = [[NSMutableDictionary alloc] init];
-        [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(handleNewCategory:) name:NewCategoryCreatedAndUpdatedInBlogNotification object:nil];
     }
     return self;
 }

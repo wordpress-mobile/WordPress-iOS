@@ -13,6 +13,7 @@
 #import <CoreLocation/CoreLocation.h>
 #import <MapKit/MapKit.h>
 
+#import "CategoriesViewController.h"
 #import "EditPostViewController_Internal.h"
 #import "NSString+XMLExtensions.h"
 #import "NSString+Helpers.h"
@@ -22,13 +23,10 @@
 #import "UIImageView+AFNetworking.h"
 #import "UITableViewTextFieldCell.h"
 #import "WordPressAppDelegate.h"
-#import "WPAddCategoryViewController.h"
 #import "WPAlertView.h"
-#import "WPSegmentedSelectionTableViewController.h"
 #import "WPTableViewActivityCell.h"
 #import "WPTableViewSectionHeaderView.h"
 
-#define kSelectionsCategoriesContext ((void *)2000)
 
 typedef enum {
     PickerTagStatus = 0,
@@ -57,7 +55,6 @@ static NSString *const RemoveGeotagCellIdentifier = @"RemoveGeotagCellIdentifier
 @property (nonatomic, assign) BOOL isShowingResizeActionSheet;
 @property (nonatomic, assign) BOOL isShowingCustomSizeAlert;
 @property (nonatomic, strong) UIImage *currentImage;
-@property (nonatomic, strong) WPSegmentedSelectionTableViewController *segmentedTableViewController;
 @property (nonatomic, strong) AbstractPost *apost;
 @property (nonatomic, strong) WPAlertView *customSizeAlert;
 
@@ -751,7 +748,7 @@ static NSString *const RemoveGeotagCellIdentifier = @"RemoveGeotagCellIdentifier
         case 0:
             switch (indexPath.row) {
                 case 0:
-                    [self showCategoriesSelectionView:[self.tableView cellForRowAtIndexPath:indexPath].frame];
+                    [self showCategoriesSelection];
                 case 1:
                     break;
             }
@@ -1921,68 +1918,10 @@ static NSString *const RemoveGeotagCellIdentifier = @"RemoveGeotagCellIdentifier
 
 #pragma mark - Categories Related
 
-- (void)showCategoriesSelectionView:(CGRect)cellFrame {
+- (void)showCategoriesSelection {
     [WPMobileStats flagProperty:StatsPropertyPostDetailClickedShowCategories forEvent:[self formattedStatEventString:StatsEventPostDetailClosedEditor]];
-    [self populateSelectionsControllerWithCategories:cellFrame];
+    CategoriesViewController *controller = [[CategoriesViewController alloc] initWithPost:(Post *)self.apost selectionMode:CategoriesSelectionModePost];
+    [self.navigationController pushViewController:controller animated:YES];
 }
-
-- (void)populateSelectionsControllerWithCategories:(CGRect)cellFrame {
-    DDLogMethod();
-    if (_segmentedTableViewController == nil) {
-        _segmentedTableViewController = [[WPSegmentedSelectionTableViewController alloc] init];
-    }
-    
-    NSArray *cats = [self.post.blog sortedCategories];
-    NSArray *selObject = [self.post.categories allObjects];
-    
-    [_segmentedTableViewController populateDataSource:cats    //datasource
-                                       havingContext:kSelectionsCategoriesContext
-                                     selectedObjects:selObject
-                                       selectionType:kCheckbox
-                                         andDelegate:self];
-    
-    _segmentedTableViewController.title = NSLocalizedString(@"Categories", @"");
-    
-    UIImage *image = [UIImage imageNamed:@"icon-posts-add"];
-    UIButton *button = [[UIButton alloc] initWithFrame:CGRectMake(0, 0, image.size.width, image.size.height)];
-    [button setImage:image forState:UIControlStateNormal];
-    [button addTarget:self action:@selector(showAddNewCategoryView:) forControlEvents:UIControlEventTouchUpInside];
-    UIBarButtonItem *createCategoryBarButtonItem = [[UIBarButtonItem alloc] initWithCustomView:button];
-
-    [WPStyleGuide setRightBarButtonItemWithCorrectSpacing:createCategoryBarButtonItem forNavigationItem:_segmentedTableViewController.navigationItem];
-        
-    if (!_isNewCategory) {
-        [self.navigationController pushViewController:_segmentedTableViewController animated:YES];
-    }
-    
-    _isNewCategory = NO;
-}
-
-- (IBAction)showAddNewCategoryView:(id)sender {
-    DDLogMethod();
-    WPAddCategoryViewController *addCategoryViewController = [[WPAddCategoryViewController alloc] initWithBlog:self.post.blog];
-    [_segmentedTableViewController pushViewController:addCategoryViewController animated:YES];
-}
-
-- (void)selectionTableViewController:(WPSelectionTableViewController *)selctionController completedSelectionsWithContext:(void *)selContext selectedObjects:(NSArray *)selectedObjects haveChanges:(BOOL)isChanged {
-    if (!isChanged) {
-        return;
-    }
-    
-    if (selContext == kSelectionsCategoriesContext) {
-        [self.post.categories removeAllObjects];
-        [self.post.categories addObjectsFromArray:selectedObjects];
-        [self.tableView reloadData];
-    }
-}
-
-- (void)newCategoryCreatedNotificationReceived:(NSNotification *)notification {
-    DDLogMethod();
-    if ([_segmentedTableViewController curContext] == kSelectionsCategoriesContext) {
-        _isNewCategory = YES;
-        [self populateSelectionsControllerWithCategories:CGRectZero];
-    }
-}
-
 
 @end
