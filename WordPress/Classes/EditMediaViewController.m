@@ -311,7 +311,7 @@ static NSUInteger const AlertDiscardChanges = 500;
     NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
     [dateFormatter setDateFormat:@"yyyy-MM-dd"];
     NSString *stringFromDate = [dateFormatter stringFromDate:_media.creationDate];
-    self.createdDateLabel.text = [NSLocalizedString(@"Created %@", nil) stringByAppendingString:stringFromDate];
+    self.createdDateLabel.text = [NSLocalizedString(@"Created ", nil) stringByAppendingString:stringFromDate];
     
     if (_media.width > 0 && _media.height > 0) {
         [self.dimensionsLabel setText:[NSString stringWithFormat:@"%@x%@ px", _media.width, _media.height]];

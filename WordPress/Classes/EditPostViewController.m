@@ -15,6 +15,7 @@
 #import "WPTableViewCell.h"
 #import "BlogSelectorViewController.h"
 #import "WPBlogSelectorButton.h"
+#import "WPAlertView.h"
 
 NSString *const EditPostViewControllerLastUsedBlogURL = @"EditPostViewControllerLastUsedBlogURL";
 CGFloat const EPVCTextfieldHeight = 44.0f;
@@ -614,8 +615,8 @@ CGFloat const EPVCTextViewTopPadding = 7.0f;
 
 - (void)showMediaOptions {
     [WPMobileStats flagProperty:StatsPropertyPostDetailClickedMediaOptions forEvent:[self formattedStatEventString:StatsEventPostDetailClosedEditor]];
-    PostMediaViewController *vc = [[PostMediaViewController alloc] initWithPost:self.post];
     self.navigationItem.title = NSLocalizedString(@"Back", nil);
+    MediaBrowserViewController *vc = [[MediaBrowserViewController alloc] initWithPost:self.post];
     [self.navigationController pushViewController:vc animated:YES];
 }
 

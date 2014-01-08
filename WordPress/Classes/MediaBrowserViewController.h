@@ -18,8 +18,8 @@
 @property (nonatomic, strong) Blog *blog;
 @property (weak, nonatomic) IBOutlet UICollectionView *collectionView;
 
-- (id)initWithPost:(AbstractPost*)aPost selectingMediaForPost:(BOOL)isSelectingMediaForPost;
-- (id)initWithPost:(AbstractPost *)aPost;
-- (id)initWithPost:(AbstractPost *)aPost settingFeaturedImage:(BOOL)isSettingFeaturedImage;
+- (id)initWithPost:(AbstractPost *)post;
+- (id)initWithPost:(AbstractPost *)post selectingMediaForPost:(BOOL)selectingMediaForPost;
+- (id)initWithPost:(AbstractPost *)post selectingFeaturedImage:(BOOL)selectingFeaturedImage;
 
 @end
