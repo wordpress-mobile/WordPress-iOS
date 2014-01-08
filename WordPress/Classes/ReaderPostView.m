@@ -218,7 +218,7 @@ const CGFloat RPVControlButtonBorderSize = 0.0f;
 - (void)configurePost:(ReaderPost *)post {
     self.post = post;
     
-    // This will show the placeholder avatar. Do this here instead of prepareForReusue
+    // This will show the placeholder avatar. Do this here instead of prepareForReuse
     // so avatars show up after a cell is created, and not dequeued.
     [self setAvatar:nil];
     
