@@ -222,7 +222,7 @@
         <attribute name="mediaID" optional="YES" attributeType="Integer 32">
             <userInfo/>
         </attribute>
-        <attribute name="mediaType" optional="YES" attributeType="String">
+        <attribute name="mediaTypeString" optional="YES" attributeType="String">
             <userInfo/>
         </attribute>
         <attribute name="orientation" optional="YES" attributeType="String" defaultValueString="portrait">

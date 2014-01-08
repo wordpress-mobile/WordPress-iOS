@@ -177,7 +177,7 @@ static NSString *const RemoveGeotagCellIdentifier = @"RemoveGeotagCellIdentifier
         if (self.blogSupportsFeaturedImage && [self.post.media count] > 0) {
             for (Media *media in self.post.media) {
                 NSInteger status = [media.remoteStatusNumber integerValue];
-                if ([media.mediaType isEqualToString:@"featured"] && (status == MediaRemoteStatusPushing || status == MediaRemoteStatusProcessing)){
+                if (media.featured && (status == MediaRemoteStatusPushing || status == MediaRemoteStatusProcessing)) {
                     // TODO Replace with media library support
                     //[self showFeaturedImageUploader:nil];
                 }
