@@ -33,7 +33,7 @@ static NSUInteger const AlertDiscardChanges = 500;
 @property (nonatomic, strong) WPLoadingView *loadingView;
 @property (nonatomic, assign) CGFloat currentKeyboardHeight;
 @property (nonatomic, strong) MPMoviePlayerController *videoPlayer;
-
+@property (nonatomic, weak) UIActivityIndicatorView *loadingIndicator;
 @property (weak, nonatomic) IBOutlet UIView *editFieldsContainer;
 @property (weak, nonatomic) IBOutlet UIScrollView *editFieldsScrollView;
 @property (weak, nonatomic) IBOutlet UIScrollView *imageScrollView;
@@ -62,8 +62,7 @@ static NSUInteger const AlertDiscardChanges = 500;
 }
 
 - (void)dealloc {
-    [[NSNotificationCenter defaultCenter] removeObserver:self name:UIKeyboardWillHideNotification object:nil];
-    [[NSNotificationCenter defaultCenter] removeObserver:self name:UIKeyboardWillShowNotification object:nil];
+    [[NSNotificationCenter defaultCenter] removeObserver:self];
 }
 
 - (void)viewDidLoad
@@ -133,8 +132,18 @@ static NSUInteger const AlertDiscardChanges = 500;
 - (void)viewWillDisappear:(BOOL)animated {
     [super viewWillDisappear:animated];
     
-    if (_videoPlayer && !_videoPlayer.fullscreen) {
-        [_videoPlayer stop];
+    if (self.videoPlayer && !self.videoPlayer.fullscreen) {
+        [self.videoPlayer stop];
+    }
+}
+
+- (void)viewDidDisappear:(BOOL)animated {
+    [super viewDidDisappear:animated];
+    
+    // Clean up temporary file
+    if (_media.blog.isPrivate && _media.localURL) {
+        [[NSFileManager defaultManager] removeItemAtPath:_media.localURL error:nil];
+        _media.localURL = nil;
     }
 }
 
@@ -309,22 +318,78 @@ static NSUInteger const AlertDiscardChanges = 500;
     _mediaImageview.image = [UIImage imageNamed:[@"media_" stringByAppendingString:_media.mediaTypeString]];
 }
 
+
+#pragma mark - Video player
+
 - (void)setupVideoPlayer {
-    NSURL *videoPath;
-    if (_media.localURL) {
-        videoPath = [NSURL fileURLWithPath:_media.localURL];
+    // Attempt to grab the video with authentication if the blog is private
+    if (self.media.blog.isPrivate && !_media.localURL && _media.remoteURL) {
+        [self showLoadingSpinner];
+        NSMutableURLRequest *request = [NSMutableURLRequest requestWithURL:[NSURL URLWithString:[_media.remoteURL stringByReplacingOccurrencesOfString:@"http://" withString:@"https://"]]];
+        [request addValue:[@"Bearer " stringByAppendingString:[WPAccount defaultWordPressComAccount].restApi.authToken] forHTTPHeaderField:@"Authorization"];
+        AFHTTPRequestOperation *op = [[AFHTTPRequestOperation alloc] initWithRequest:request];
+        [op setCompletionBlockWithSuccess:^(AFHTTPRequestOperation *operation, id responseObject) {
+            NSData *videoData = (NSData *)responseObject;
+            NSFileManager *f = [NSFileManager defaultManager];
+            // Save to a temporary file
+            NSString *path = [NSTemporaryDirectory() stringByAppendingFormat:@"%@.mov", _media.mediaID.stringValue];
+            [f createFileAtPath:path contents:videoData attributes:nil];
+            _media.localURL = path;
+            [self.videoPlayer prepareToPlay];
+        } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+            DDLogError(@"Authenticated media video failed to download: %@", error);
+            [self hideLoadingSpinner];
+            [self showDownloadError];
+        }];
+        [([[AFHTTPClient alloc] initWithBaseURL:[NSURL URLWithString:@""]]) enqueueHTTPRequestOperation:op];
     } else {
-        videoPath = [NSURL URLWithString:_media.remoteURL];
+        [self.videoPlayer prepareToPlay];
+    }
+}
+         
+ - (MPMoviePlayerController *)videoPlayer {
+     if (_videoPlayer) {
+         return _videoPlayer;
+     }
+     
+     NSURL *videoPath;
+     if (_media.localURL) {
+         videoPath = [NSURL fileURLWithPath:_media.localURL];
+     } else {
+         videoPath = [NSURL URLWithString:_media.remoteURL];
+     }
+     _videoPlayer = [[MPMoviePlayerController alloc] initWithContentURL:videoPath];
+     _videoPlayer.view.frame = CGRectMake(0, 0, self.view.bounds.size.width, self.view.bounds.size.height - _editingBar.frame.size.height);
+     _videoPlayer.view.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
+     [self.view insertSubview:self.videoPlayer.view belowSubview:_editContainerView];
+     _videoPlayer.movieSourceType = MPMovieSourceTypeFile;
+     _videoPlayer.shouldAutoplay = NO;
+     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(videoPlayerLoadStateChanged) name:MPMoviePlayerLoadStateDidChangeNotification object:nil];
+     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(videoPlayerPlaybackFinished:) name:MPMoviePlayerPlaybackDidFinishNotification object:nil];
+     return _videoPlayer;
+ }
+
+- (void)videoPlayerLoadStateChanged {
+    [self updateForVideoStateChangeWithError:nil];
+}
+
+- (void)videoPlayerPlaybackFinished:(NSNotification *)notification {
+    [self updateForVideoStateChangeWithError:notification.userInfo[@"error"]];
+}
+
+- (void)updateForVideoStateChangeWithError:(NSError *)error {
+    if (self.videoPlayer.loadState == MPMovieLoadStateStalled || self.videoPlayer.loadState == MPMovieLoadStateUnknown) {
+        if (![self.view viewWithTag:1337]) {
+            [self showLoadingSpinner];
+        }
+    } else {
+        [self hideLoadingSpinner];
     }
     
-    MPMoviePlayerController *videoPlayer = [[MPMoviePlayerController alloc] initWithContentURL:videoPath];
-    _videoPlayer = videoPlayer;
-    _videoPlayer.view.frame = CGRectMake(0, 0, self.view.bounds.size.width, self.view.bounds.size.height - _editingBar.frame.size.height);
-    _videoPlayer.view.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
-    [self.view insertSubview:videoPlayer.view belowSubview:_editContainerView];
-    _videoPlayer.movieSourceType = MPMovieSourceTypeFile;
-    _videoPlayer.shouldAutoplay = NO;
-    [_videoPlayer prepareToPlay];
+    if (error) {
+        [self hideLoadingSpinner];
+        [self showDownloadError];
+    }
 }
 
 - (NSString *)saveFullsizeImageToDisk:(UIImage*)image imageName:(NSString *)imageName {
@@ -338,6 +403,30 @@ static NSUInteger const AlertDiscardChanges = 500;
     return nil;
 }
 
+- (void)showLoadingSpinner {
+    UIActivityIndicatorView *loading = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleWhite];
+    loading.center = self.view.center;
+    loading.autoresizingMask = UIViewAutoresizingFlexibleLeftMargin | UIViewAutoresizingFlexibleRightMargin
+    | UIViewAutoresizingFlexibleTopMargin | UIViewAutoresizingFlexibleBottomMargin;
+    loading.tag = 1337;
+    [_mediaImageview addSubview:loading];
+    [loading startAnimating];
+}
+
+- (void)hideLoadingSpinner {
+    [[_mediaImageview viewWithTag:1337] removeFromSuperview];
+}
+
+- (void)showDownloadError {
+    UILabel *error = [[UILabel alloc] init];
+    error.text = [_media.mediaTypeName stringByAppendingString:NSLocalizedString(@" failed to load", @"Appended on the appropriate media type when it has failed to download")];
+    [error sizeToFit];
+    error.textColor = [UIColor whiteColor];
+    error.backgroundColor = [UIColor clearColor];
+    error.center = CGPointMake(self.view.center.x, _mediaImageview.frame.size.width/2);
+    [self.view addSubview:error];
+}
+
 - (void)loadMediaImage {
     if (_media.localURL && [[NSFileManager defaultManager] fileExistsAtPath:_media.localURL isDirectory:0]) {
         _mediaImageview.contentMode = UIViewContentModeScaleAspectFit;
@@ -346,14 +435,7 @@ static NSUInteger const AlertDiscardChanges = 500;
         return;
     }
     
-    UIActivityIndicatorView *loading = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleWhite];
-    loading.center = self.view.center;
-    loading.autoresizingMask = UIViewAutoresizingFlexibleLeftMargin | UIViewAutoresizingFlexibleRightMargin
-    | UIViewAutoresizingFlexibleTopMargin | UIViewAutoresizingFlexibleBottomMargin;
-    loading.tag = 1337;
-    [_mediaImageview addSubview:loading];
-    [loading startAnimating];
-    
+    [self showLoadingSpinner];
     if (_media.remoteURL) {
         void (^mediaDownloadSuccess)(UIImage *image) = ^(UIImage *image) {
             _mediaImageview.contentMode = UIViewContentModeScaleAspectFit;
@@ -361,13 +443,14 @@ static NSUInteger const AlertDiscardChanges = 500;
             NSString *localPath = [self saveFullsizeImageToDisk:image imageName:_media.filename];
             _media.localURL = localPath;
             _mediaImageview.userInteractionEnabled = YES;
-            [[_mediaImageview viewWithTag:1337] removeFromSuperview];
+            [self hideLoadingSpinner];
         };
         
         // TODO change placeholder to a failure or alert the user somehow.
         void (^mediaDownloadFailure)(NSError *error) = ^(NSError *error) {
             DDLogWarn(@"Failed to download image for %@: %@", _media, error);
-            [[_mediaImageview viewWithTag:1337] removeFromSuperview];
+            [self showDownloadError];
+            [self hideLoadingSpinner];
         };
         
         if (_media.blog.isPrivate) {
