@@ -7,12 +7,10 @@
 //
 #import <UIKit/UIKit.h>
 
-extern NSString *const NewCategoryCreatedAndUpdatedInBlogNotification;
-
-@class Blog;
+@class Post;
 
 @interface WPAddCategoryViewController : UITableViewController
 
-- (id)initWithBlog:(Blog *)blog;
+- (id)initWithPost:(Post *)post;
 
 @end
