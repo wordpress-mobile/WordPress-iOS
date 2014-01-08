@@ -148,13 +148,27 @@
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
     [tableView deselectRowAtIndexPath:indexPath animated:YES];
     
+    NSIndexPath *previousIndexPath;
+    if (self.currentValue) {
+        NSUInteger index = [values indexOfObject:self.currentValue];
+        previousIndexPath = [NSIndexPath indexPathForRow:index inSection:0];
+        
+        if ([previousIndexPath compare:indexPath] == NSOrderedSame) {
+            // Do nothing
+            return;
+        }
+    }
+    
     NSString *val = [values objectAtIndex:indexPath.row];
     [[NSUserDefaults standardUserDefaults] setObject:val forKey:key];
     [NSUserDefaults resetStandardUserDefaults];
     
     self.currentValue = val;
+    [tableView cellForRowAtIndexPath:indexPath].accessoryType = UITableViewCellAccessoryCheckmark;
     
-    [self.tableView reloadData];
+    if (previousIndexPath) {
+        [tableView reloadRowsAtIndexPaths:@[previousIndexPath] withRowAnimation:UITableViewRowAnimationNone];
+    }
 }
 
 @end
