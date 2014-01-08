@@ -934,17 +934,9 @@ static NSArray *generatedMonthYearsFilters;
 			_picker.videoQuality = [self videoQualityPreference];
             _picker.modalPresentationStyle = UIModalPresentationCurrentContext;
         }
-        //            else {
-        //            if (_isPickingFeaturedImage)
-        //                barButton = postDetailViewController.settingsButton;
-        //            else
-        //                barButton = postDetailViewController.photoButton;
-        //            _picker.mediaTypes = [NSArray arrayWithObject:(NSString *)kUTTypeImage];
-        //        }
         
         if (IS_IPAD) {
-            _picker.navigationBar.translucent = NO;
-            _picker.navigationBar.tintColor = [WPStyleGuide littleEddieGrey];
+            _picker.navigationBar.barStyle = UIBarStyleBlack;
             if (!_addPopover) {
                 _addPopover = [[UIPopoverController alloc] initWithContentViewController:_picker];
             }
