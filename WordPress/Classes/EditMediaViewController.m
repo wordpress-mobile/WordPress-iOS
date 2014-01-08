@@ -29,7 +29,7 @@ static NSUInteger const AlertDiscardChanges = 500;
 @interface EditMediaViewController () <UIGestureRecognizerDelegate, UIAlertViewDelegate, UITextViewDelegate, UITextFieldDelegate>
 
 @property (nonatomic, strong) Media *media;
-@property (nonatomic, assign) BOOL isShowingEditFields;
+@property (nonatomic, assign) BOOL showingEditFields;
 @property (nonatomic, strong) WPLoadingView *loadingView;
 @property (nonatomic, assign) CGFloat currentKeyboardHeight;
 @property (nonatomic, strong) MPMoviePlayerController *videoPlayer;
@@ -49,7 +49,6 @@ static NSUInteger const AlertDiscardChanges = 500;
 @property (weak, nonatomic) IBOutlet UILabel *captionLabel;
 @property (weak, nonatomic) IBOutlet UILabel *descriptionLabel;
 
-
 @end
 
 @implementation EditMediaViewController
@@ -62,14 +61,18 @@ static NSUInteger const AlertDiscardChanges = 500;
     return self;
 }
 
+- (void)dealloc {
+    [[NSNotificationCenter defaultCenter] removeObserver:self name:UIKeyboardWillHideNotification object:nil];
+    [[NSNotificationCenter defaultCenter] removeObserver:self name:UIKeyboardWillShowNotification object:nil];
+}
+
 - (void)viewDidLoad
 {
     [super viewDidLoad];
     
-    _isShowingEditFields = NO;
+    _showingEditFields = NO;
     
     self.title = NSLocalizedString(@"Edit Media", nil);
-    
     _editFieldsScrollView.contentSize = CGSizeMake(_editFieldsScrollView.frame.size.width, CGRectGetMaxY(_editFieldsContainer.frame));
     [_editFieldsScrollView addSubview:_editFieldsContainer];
     
@@ -135,8 +138,8 @@ static NSUInteger const AlertDiscardChanges = 500;
     }
 }
 
-- (void)viewDidAppear:(BOOL)animated {
-    [super viewDidAppear:animated];
+- (void)viewWillAppear:(BOOL)animated {
+    [super viewWillAppear:animated];
     
     if (_media.mediaType == MediaTypeImage) {
         [self loadMediaImage];
@@ -159,7 +162,7 @@ static NSUInteger const AlertDiscardChanges = 500;
         _editingBar.frame = CGRectMake(0, 0, 44, self.view.bounds.size.height);
         CGFloat closedXoffset = self.view.bounds.size.width - _editingBar.frame.size.width;
         CGFloat openedXoffset = self.view.bounds.size.width - _editContainerView.frame.size.width;
-        CGFloat currentXoffset = _isShowingEditFields ? openedXoffset : closedXoffset;
+        CGFloat currentXoffset = _showingEditFields ? openedXoffset : closedXoffset;
         containerSize = CGSizeMake(320 + _editingBar.frame.size.width, self.view.bounds.size.height);
         containerOrigin = CGPointMake(currentXoffset, 0);
         scrollViewSize = CGSizeMake(320 + 10, self.view.bounds.size.height);
@@ -170,7 +173,7 @@ static NSUInteger const AlertDiscardChanges = 500;
         _editingBar.frame = CGRectMake(0, 0, self.view.bounds.size.width, 44);
         CGFloat closedYOffset = self.view.bounds.size.height - _editingBar.frame.size.height;
         CGFloat openedYOffset = isLandscape ? 0 : self.view.bounds.size.height - _editContainerView.frame.size.height;
-        CGFloat currentYOffset = _isShowingEditFields ? openedYOffset : closedYOffset;
+        CGFloat currentYOffset = _showingEditFields ? openedYOffset : closedYOffset;
         CGFloat scrollViewHeight = isLandscape ? self.view.bounds.size.height - _editingBar.frame.size.height : _editContainerView.frame.size.height - _editingBar.frame.size.height;
         containerSize = CGSizeMake(self.view.bounds.size.width, 370);
         containerOrigin = CGPointMake(0, currentYOffset);
@@ -197,18 +200,16 @@ static NSUInteger const AlertDiscardChanges = 500;
     // Dispose of any resources that can be recreated.
 }
 
-- (void)dealloc {
-    [[NSNotificationCenter defaultCenter] removeObserver:self name:UIKeyboardWillHideNotification object:nil];
-    [[NSNotificationCenter defaultCenter] removeObserver:self name:UIKeyboardWillShowNotification object:nil];
-}
 
-- (void)imageTapped:(UIGestureRecognizer*)sender {
-    if (_isShowingEditFields) {
+#pragma mark - Image zooming
+
+- (void)imageTapped:(UIGestureRecognizer *)sender {
+    if (_showingEditFields) {
         [self toggleEditBar];
     }
 }
 
-- (void)imageDoubleTapped:(UIGestureRecognizer*)sender {
+- (void)imageDoubleTapped:(UIGestureRecognizer *)sender {
     if (_imageScrollView.zoomScale != 1) {
         [UIView animateWithDuration:0.3 animations:^{
             [_imageScrollView setZoomScale:1];
@@ -220,7 +221,10 @@ static NSUInteger const AlertDiscardChanges = 500;
     }
 }
 
-- (void)editingBarPanned:(UIPanGestureRecognizer*)sender {
+
+#pragma mark - Pannable/Tappable bar
+
+- (void)editingBarPanned:(UIPanGestureRecognizer *)sender {
     BOOL isLandscape = UIInterfaceOrientationIsLandscape([UIApplication sharedApplication].statusBarOrientation);
     CGFloat translation = (IS_IPAD && isLandscape) ? [sender translationInView:self.view].x : [sender translationInView:self.view].y;
     CGFloat maxOffset = (IS_IPAD && isLandscape) ? self.view.frame.size.width - _editingBar.frame.size.width : self.view.frame.size.height - _editingBar.frame.size.height;
@@ -253,12 +257,12 @@ static NSUInteger const AlertDiscardChanges = 500;
             // Toggle editing when within threshold
             if ((currentOrigin + translation) <= (minOffset + threshold) ||
                 (currentOrigin + translation) >= (maxOffset - threshold)) {
-                _isShowingEditFields = !((currentOrigin + translation) <= (minOffset + threshold));
+                _showingEditFields = !((currentOrigin + translation) <= (minOffset + threshold));
 
             // Toggle if we're moving fast enough
             } else {
                 CGFloat velocity = (IS_IPAD && isLandscape) ? [sender velocityInView:self.view].x : [sender velocityInView:self.view].y;
-                _isShowingEditFields = velocity > 10.0f;
+                _showingEditFields = velocity > 10.0f;
             }
             
             [self toggleEditBar];
@@ -272,9 +276,9 @@ static NSUInteger const AlertDiscardChanges = 500;
 }
 
 - (void)toggleEditBar {
-    _isShowingEditFields = !_isShowingEditFields;
+    _showingEditFields = !_showingEditFields;
     
-    if (!_isShowingEditFields) {
+    if (!_showingEditFields) {
         [[self currentFirstResponder] resignFirstResponder];
     }
     
@@ -539,13 +543,16 @@ static NSUInteger const AlertDiscardChanges = 500;
     }
 }
 
+
+#pragma mark - UITextField/View delegates
+
 - (void)textFieldDidBeginEditing:(UITextField *)textField {
     if (!IS_IPAD) {
         _editFieldsScrollView.contentOffset = CGPointMake(0, CGRectGetMinY(textField.frame));
     }
 }
 
--(void)textFieldDidEndEditing:(UITextField *)textField {
+- (void)textFieldDidEndEditing:(UITextField *)textField {
     if (textField == _titleTextfield) {
         _media.title = textField.text;
     } else if (textField == _captionTextfield) {
@@ -566,9 +573,10 @@ static NSUInteger const AlertDiscardChanges = 500;
     }
 }
 
+
 #pragma mark UIScrollView delegate
 
--(UIView *)viewForZoomingInScrollView:(UIScrollView *)scrollView {
+- (UIView *)viewForZoomingInScrollView:(UIScrollView *)scrollView {
     return _mediaImageview;
 }
 
