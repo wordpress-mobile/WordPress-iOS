@@ -145,6 +145,9 @@ NSString *const MediaFeaturedImageSelectedNotification = @"MediaFeaturedImageSel
     if (_currentActionSheet) {
         [_currentActionSheet dismissWithClickedButtonIndex:_currentActionSheet.cancelButtonIndex animated:YES];
     }
+    if (_addPopover) {
+        [_addPopover dismissPopoverAnimated:YES];
+    }
 }
 
 - (void)viewWillAppear:(BOOL)animated {
