@@ -10,10 +10,12 @@
 #import "StatsButtonCell.h"
 #import "WPStyleGuide.h"
 
+static CGFloat const StatsButtonHeight = 30.0f;
+
 @implementation StatsButtonCell
 
 + (CGFloat)heightForRow {
-    return 44.0f;
+    return StatsButtonHeight;
 }
 
 - (id)initWithStyle:(UITableViewCellStyle)style reuseIdentifier:(NSString *)reuseIdentifier
@@ -21,28 +23,56 @@
     self = [super initWithStyle:style reuseIdentifier:reuseIdentifier];
     if (self) {
         self.selectionStyle = UITableViewCellSelectionStyleNone;
+        self.buttons = [NSMutableArray array];
     }
     return self;
 }
 
-- (void)addButtonWithTitle:(NSString *)title target:(id)target action:(SEL)action {
-    UIButton *button = [[UIButton alloc] init];
-    [button setTitle:title forState:UIControlStateNormal];
-    [button setTitleColor:[WPStyleGuide baseDarkerBlue] forState:UIControlStateNormal];
-    [button setTitleColor:[WPStyleGuide allTAllShadeGrey] forState:UIControlStateHighlighted];
+- (void)addButtonWithTitle:(NSString *)title target:(id)target action:(SEL)action section:(StatsSection)section {
+    UIButton *button = [UIButton buttonWithType:UIButtonTypeCustom];
+    [button setTitle:title.uppercaseString forState:UIControlStateNormal];
+    button.titleLabel.font = [WPStyleGuide subtitleFont];
+    [button setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
+    [button setBackgroundColor:[WPStyleGuide allTAllShadeGrey]];
+    [button addTarget:self action:@selector(activateButton:) forControlEvents:UIControlEventTouchUpInside];
     [button addTarget:target action:action forControlEvents:UIControlEventTouchUpInside];
-    [button sizeToFit];
-    UIButton *previousButton = [self.contentView.subviews lastObject];
-    if (previousButton) {
-        button.frame = (CGRect) {
-            .origin = CGPointMake(CGRectGetMaxX(previousButton.frame) + 5.0f, previousButton.frame.origin.y),
-            .size = button.frame.size
+    button.tag = section;
+
+    [self.buttons addObject:button];
+    
+    //layout buttons
+    CGFloat width = self.frame.size.width;
+    CGFloat widthPerButton = width/self.buttons.count;
+    [self.buttons enumerateObjectsUsingBlock:^(UIButton *b, NSUInteger idx, BOOL *stop)
+    {
+        b.frame = (CGRect) {
+            .origin = CGPointMake(widthPerButton*idx, 0),
+            .size = CGSizeMake(widthPerButton, StatsButtonHeight)
         };
-    }
+    }];
+    
+    [self.buttons[0] setBackgroundColor:[WPStyleGuide newKidOnTheBlockBlue]];
     [self.contentView addSubview:button];
 }
 
+- (void)setTodayActive:(BOOL)todayActive {
+    if (todayActive) {
+        [self activateButton:self.buttons[0]];
+    }
+}
+
+- (void)activateButton:(UIButton *)button {
+    [self.buttons enumerateObjectsUsingBlock:^(UIButton *b, NSUInteger idx, BOOL *stop) {
+        if (b == button) {
+            [b setBackgroundColor:[WPStyleGuide newKidOnTheBlockBlue]];
+        } else {
+            [b setBackgroundColor:[WPStyleGuide allTAllShadeGrey]];
+        }
+    }];
+}
+
 - (void)prepareForReuse {
+    self.buttons = [NSMutableArray array];
     [self.contentView.subviews makeObjectsPerformSelector:@selector(removeFromSuperview)];
 }
 

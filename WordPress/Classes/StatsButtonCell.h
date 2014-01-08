@@ -7,12 +7,15 @@
  * Some rights reserved. See license.txt
  */
 
-#import <UIKit/UIKit.h>
+#import "StatsViewController.h"
 
 @interface StatsButtonCell : UITableViewCell
 
+@property (nonatomic, strong) NSMutableArray *buttons;
+
 + (CGFloat)heightForRow;
 
-- (void)addButtonWithTitle:(NSString *)title target:(id)target action:(SEL)action;
+- (void)addButtonWithTitle:(NSString *)title target:(id)target action:(SEL)action section:(StatsSection)section;
+- (void)activateButton:(UIButton *)button;
 
 @end

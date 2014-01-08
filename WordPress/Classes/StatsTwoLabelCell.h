@@ -12,7 +12,8 @@
 @interface StatsTwoLabelCell : UITableViewCell
 
 + (CGFloat)heightForRow;
-- (void)setLeftLabelText:(NSString *)title;
-- (void)setRightLabelText:(NSString *)title;
+
+- (void)setLeft:(NSString *)left right:(NSString *)right;
+- (void)setLeft:(NSString *)left right:(NSString *)right titleCell:(BOOL)titleCell;
 
 @end
