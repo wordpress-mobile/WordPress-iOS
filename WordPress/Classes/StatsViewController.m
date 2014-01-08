@@ -169,6 +169,28 @@ typedef NS_ENUM(NSInteger, TotalFollowersShareRow) {
     } failure:^(NSError *error) {
         
     }];
+    
+    [self.statsApiHelper fetchCountryViewsWithSuccess:^(NSDictionary *views) {
+        [_statModels setObject:views forKey:@(StatsSectionViewsByCountry)];
+        [self.tableView reloadSections:[NSIndexSet indexSetWithIndex:StatsSectionViewsByCountry] withRowAnimation:UITableViewRowAnimationNone];
+    } failure:^(NSError *error) {
+        
+    }];
+    
+    [self.statsApiHelper fetchReferrerWithSuccess:^(NSDictionary *referrers) {
+        [_statModels setObject:referrers forKey:@(StatsSectionReferrers)];
+        [self.tableView reloadSections:[NSIndexSet indexSetWithIndex:StatsSectionReferrers] withRowAnimation:UITableViewRowAnimationNone];
+    } failure:^(NSError *error) {
+        
+    }];
+    
+    [self.statsApiHelper fetchSearchTermsWithSuccess:^(NSDictionary *terms) {
+        [_statModels setObject:terms forKey:@(StatsSectionSearchTerms)];
+        [self.tableView reloadSections:[NSIndexSet indexSetWithIndex:StatsSectionSearchTerms]withRowAnimation:UITableViewRowAnimationNone];
+    } failure:^(NSError *error) {
+        
+    }];
+    
 }
 
 - (BOOL)showingTodayForSection:(StatsSection)section {
@@ -372,7 +394,6 @@ typedef NS_ENUM(NSInteger, TotalFollowersShareRow) {
         }
         case StatsDataRowTitle:
         {
-            //HERE: should be coloured title
             cell = [self.tableView dequeueReusableCellWithIdentifier:TwoLabelCellReuseIdentifier];
             [(StatsTwoLabelCell *)cell setLeft:dataTitleRowLeft right:dataTitleRowRight titleCell:YES];
             break;
