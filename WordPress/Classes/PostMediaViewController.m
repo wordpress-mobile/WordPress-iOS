@@ -227,10 +227,10 @@
     } else if (media.remoteStatus == MediaRemoteStatusFailed) {
         cell.detailTextLabel.text = NSLocalizedString(@"Upload failed. [Retry]", @"Uploading message when a media upload has failed, tapping retries.");
     } else {
-        if ([media.mediaType isEqualToString:@"image"]) {
+        if (media.mediaType == MediaTypeImage) {
             cell.detailTextLabel.text = [NSString stringWithFormat:@"%dx%d %@", 
                                          [media.width intValue], [media.height intValue], filesizeString];        
-        } else if ([media.mediaType isEqualToString:@"video"]) {
+        } else if (media.mediaType == MediaTypeVideo) {
             NSNumber *valueForDisplay = [NSNumber numberWithDouble:[media.length doubleValue]];
             NSNumber *days = [NSNumber numberWithDouble:
                               ([valueForDisplay doubleValue] / 86400)];
@@ -1273,9 +1273,9 @@
 	imageMedia.localURL = filepath;
 	imageMedia.filesize = [NSNumber numberWithInt:(imageData.length/1024)];
     if (isPickingFeaturedImage) {
-        imageMedia.mediaType = @"featured";
+        imageMedia.featured = YES;
     } else {
-        imageMedia.mediaType = @"image";
+        imageMedia.mediaType = MediaTypeImage;
     }
 	imageMedia.thumbnail = UIImageJPEGRepresentation(imageThumbnail, 0.90);
 	imageMedia.width = [NSNumber numberWithInt:theImage.size.width];

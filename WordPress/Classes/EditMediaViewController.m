@@ -59,16 +59,7 @@ static NSUInteger const AlertDiscardChanges = 500;
 
 @implementation EditMediaViewController
 
-- (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
-{
-    self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
-    if (self) {
-        // Custom initialization
-    }
-    return self;
-}
-
-- (id)initWithMedia:(Media*)media {
+- (id)initWithMedia:(Media *)media {
     self = [super init];
     if (self) {
         _media = media;
@@ -82,7 +73,7 @@ static NSUInteger const AlertDiscardChanges = 500;
     
     _isShowingEditFields = NO;
     
-    self.title = @"Edit Media";
+    self.title = NSLocalizedString(@"Edit Media", nil);
     
     _editFieldsScrollView.contentSize = CGSizeMake(_editFieldsScrollView.frame.size.width, CGRectGetMaxY(_editFieldsContainer.frame));
     [_editFieldsScrollView addSubview:_editFieldsContainer];
@@ -131,10 +122,8 @@ static NSUInteger const AlertDiscardChanges = 500;
     self.imageScrollView.delegate = self;
     
     UIColor *color = [UIColor colorWithWhite:1.0f alpha:0.5f];
-    _titleTextfield.attributedPlaceholder = [[NSAttributedString alloc] initWithString:@"Title" attributes:@{NSForegroundColorAttributeName: color}];
-    _captionTextfield.attributedPlaceholder = [[NSAttributedString alloc] initWithString:@"Caption" attributes:@{NSForegroundColorAttributeName: color}];
-    
-    //Align the textview text with all the textfields
+    _titleTextfield.attributedPlaceholder = [[NSAttributedString alloc] initWithString:NSLocalizedString(@"Title", nil) attributes:@{NSForegroundColorAttributeName: color}];
+    _captionTextfield.attributedPlaceholder = [[NSAttributedString alloc] initWithString:NSLocalizedString(@"Caption", nil) attributes:@{NSForegroundColorAttributeName: color}];
     _descriptionTextview.contentInset = UIEdgeInsetsMake(0, -4, 0, 0);
     
     [self applyLayoutForMedia];
@@ -161,7 +150,7 @@ static NSUInteger const AlertDiscardChanges = 500;
 - (void)viewDidAppear:(BOOL)animated {
     [super viewDidAppear:animated];
     
-    if ([_media.mediaType isEqualToString:@"image"]) {
+    if (_media.mediaType == MediaTypeImage) {
         [self loadMediaImage];
     } else {
         [self setupVideoPlayer];
@@ -322,17 +311,13 @@ static NSUInteger const AlertDiscardChanges = 500;
     NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
     [dateFormatter setDateFormat:@"yyyy-MM-dd"];
     NSString *stringFromDate = [dateFormatter stringFromDate:_media.creationDate];
-    [self.createdDateLabel setText: [NSString stringWithFormat:@"Created %@", stringFromDate]];
+    self.createdDateLabel.text = [NSLocalizedString(@"Created %@", nil) stringByAppendingString:stringFromDate];
     
     if (_media.width > 0 && _media.height > 0) {
         [self.dimensionsLabel setText:[NSString stringWithFormat:@"%@x%@ px", _media.width, _media.height]];
     }
 
-    _mediaImageview.image = [UIImage imageNamed:[@"media_" stringByAppendingString:_media.mediaType]];
-    
-    if ([_media.mediaType isEqualToString:@"movie"]) {
-        self.title = NSLocalizedString(@"Video", @"");
-    }
+    _mediaImageview.image = [UIImage imageNamed:[@"media_" stringByAppendingString:_media.mediaTypeString]];
 }
 
 - (void)setupVideoPlayer {
@@ -464,12 +449,6 @@ static NSUInteger const AlertDiscardChanges = 500;
     } completion:nil];
 }
 
-//- (void)keyboardToolbarButtonItemPressed:(WPKeyboardToolbarButtonItem *)buttonItem {
-//    if ([buttonItem.actionTag isEqualToString:@"done"]) {
-//        [[self currentFirstResponder] resignFirstResponder];
-//    }
-//}
-
 - (UIView *)currentFirstResponder {
     for (UIView *v in _editFieldsContainer.subviews) {
         if (v.isFirstResponder) {
@@ -480,7 +459,6 @@ static NSUInteger const AlertDiscardChanges = 500;
 }
 
 - (void)savePressed {
-    
     [self.view addSubview:self.loadingView];
     [self.loadingView show];
     
@@ -493,7 +471,7 @@ static NSUInteger const AlertDiscardChanges = 500;
     __block void (^failure)(NSError*) = ^(NSError *error) {
         if (error.code == 404) {
             // Server-side deleted
-            UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Failed to Save" message:NSLocalizedString(@"This image/video has been deleted on the blog, do you want to re-upload it or discard it?", @"") delegate:self cancelButtonTitle:nil otherButtonTitles:@"Discard", @"Upload", nil];
+            UIAlertView *alert = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"Failed to Save", nil) message:NSLocalizedString(@"This image/video has been deleted on the blog, do you want to re-upload it or discard it?", nil) delegate:self cancelButtonTitle:nil otherButtonTitles:@"Discard", @"Upload", nil];
             [alert show];
         } else {
             [WPError showNetworkingAlertWithError:error];
@@ -534,7 +512,7 @@ static NSUInteger const AlertDiscardChanges = 500;
     }
 
     if (hasDataChanges) {
-        UIAlertView *discardAlert = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"Discard Changes", @"") message:NSLocalizedString(@"Are you sure you would like to discard your changes?", @"") delegate:self cancelButtonTitle:@"Cancel" otherButtonTitles:@"Discard", nil];
+        UIAlertView *discardAlert = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"Discard Changes", nil) message:NSLocalizedString(@"Are you sure you wish to discard your changes?", nil) delegate:self cancelButtonTitle:@"Cancel" otherButtonTitles:@"Discard", nil];
         discardAlert.tag = AlertDiscardChanges;
         [discardAlert show];
     } else {
@@ -549,9 +527,8 @@ static NSUInteger const AlertDiscardChanges = 500;
             [self.navigationController popViewControllerAnimated:YES];
         }
     } else {
-        NSManagedObjectContext *context = _media.managedObjectContext;
         if (buttonIndex == 0) {
-            [context deleteObject:_media];
+            [_media remove];
             [self.navigationController popViewControllerAnimated:YES];
         
         } else if (buttonIndex == 1) {
@@ -562,7 +539,7 @@ static NSUInteger const AlertDiscardChanges = 500;
                     [self.navigationController popViewControllerAnimated:YES];
                     [self.loadingView hide];
                     [self.loadingView removeFromSuperview];
-                }failure:^(NSError *error) {
+                } failure:^(NSError *error) {
                     [WPError showNetworkingAlertWithError:error];
                     [self.loadingView hide];
                     [self.loadingView removeFromSuperview];
@@ -574,13 +551,13 @@ static NSUInteger const AlertDiscardChanges = 500;
                 [self.navigationController popViewControllerAnimated:YES];
             }
         }
-        [context save:nil];
     }
 }
 
 - (void)textFieldDidBeginEditing:(UITextField *)textField {
-    if (!IS_IPAD)
+    if (!IS_IPAD) {
         _editFieldsScrollView.contentOffset = CGPointMake(0, CGRectGetMinY(textField.frame));
+    }
 }
 
 -(void)textFieldDidEndEditing:(UITextField *)textField {

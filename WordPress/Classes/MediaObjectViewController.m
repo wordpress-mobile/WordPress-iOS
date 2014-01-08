@@ -17,8 +17,8 @@
 	_appDelegate = (WordPressAppDelegate *)[[UIApplication sharedApplication] delegate];
 	DDLogVerbose(@"media: %@", _media);
 	
-	if((_media != nil) && ([_media.mediaType isEqualToString:@"video"])) {
-		self.navigationItem.title = NSLocalizedString(@"Video", @"");
+	if ((_media != nil) && (_media.mediaType == MediaTypeVideo)) {
+		self.navigationItem.title = _media.mediaTypeName;
 		MPMoviePlayerController *vp = [[MPMoviePlayerController alloc] initWithContentURL:[NSURL fileURLWithPath:_media.localURL]];
         _videoPlayer = vp;
 		_videoPlayer.view.frame = _scrollView.frame;
@@ -27,10 +27,10 @@
 		[_scrollView removeFromSuperview];
 		[_videoPlayer prepareToPlay];
 	}
-	else if((_media != nil) && ([_media.mediaType isEqualToString:@"image"])) {
-		self.navigationItem.title = NSLocalizedString(@"Image", @"");
+	else if ((_media != nil) && (_media.mediaType == MediaTypeImage)) {
+		self.navigationItem.title = _media.mediaTypeName;
 		_imageView.image = [UIImage imageWithContentsOfFile:_media.localURL];
-		if((_imageView.image == nil) && (_media.remoteURL != nil)) {
+		if ((_imageView.image == nil) && (_media.remoteURL != nil)) {
             [_imageView setImageWithURL:[NSURL URLWithString:_media.remoteURL]];
 		}
 	}
