@@ -33,7 +33,7 @@ static CGFloat const ScrollingVelocityThreshold = 30.0f;
 NSString *const MediaShouldInsertBelowNotification = @"MediaShouldInsertBelowNotification";
 NSString *const MediaFeaturedImageSelectedNotification = @"MediaFeaturedImageSelectedNotification";
 
-@interface MediaBrowserViewController () <UICollectionViewDataSource, UICollectionViewDelegate, MediaBrowserCellMultiSelectDelegate, UIAlertViewDelegate, UIImagePickerControllerDelegate, UINavigationControllerDelegate, UICollectionViewDelegateFlowLayout, UIScrollViewDelegate, NSFetchedResultsControllerDelegate>
+@interface MediaBrowserViewController () <UICollectionViewDataSource, UICollectionViewDelegate, MediaBrowserCellMultiSelectDelegate, UIAlertViewDelegate, UIImagePickerControllerDelegate, UINavigationControllerDelegate, UICollectionViewDelegateFlowLayout, UIScrollViewDelegate, NSFetchedResultsControllerDelegate, WPNoResultsViewDelegate>
 
 @property (nonatomic, strong) AbstractPost *post;
 @property (weak, nonatomic) IBOutlet MediaSearchFilterHeaderView *filterHeaderView;
@@ -123,7 +123,7 @@ NSString *const MediaFeaturedImageSelectedNotification = @"MediaFeaturedImageSel
     UIImage *image = [UIImage imageNamed:@"icon-posts-add"];
     UIButton *button = [[UIButton alloc] initWithFrame:CGRectMake(0, 0, image.size.width, image.size.height)];
     [button setImage:image forState:UIControlStateNormal];
-    [button addTarget:self action:@selector(addMediaButtonPressed:) forControlEvents:UIControlEventTouchUpInside];
+    [button addTarget:self action:@selector(addMediaButtonPressed) forControlEvents:UIControlEventTouchUpInside];
     addMediaButton = [[UIBarButtonItem alloc] initWithCustomView:button];
     
     [WPStyleGuide setRightBarButtonItemWithCorrectSpacing:addMediaButton forNavigationItem:self.navigationItem];
@@ -257,16 +257,22 @@ NSString *const MediaFeaturedImageSelectedNotification = @"MediaFeaturedImageSel
         [_noMediaView removeFromSuperview];
     }
     if (!_noMediaView && show) {
-        NSString *title = NSLocalizedString(@"No media to display", nil);
-        NSString *message;
+        NSString *title = NSLocalizedString(@"No media has been added to your library yet", nil);
         if ([self showAttachedMedia]) {
-            title = NSLocalizedString(@"No media attached yet", nil);
-            message = NSLocalizedString(@"Tap + to add media to your post", nil);
+            title = NSLocalizedString(@"No media has been attached to your post yet", nil);
+        } else if (_currentSearchText) {
+            title = NSLocalizedString(@"No media matches that search", nil);
         }
-        WPNoResultsView *noMediaView = [WPNoResultsView noResultsViewWithTitle:title message:message accessoryView:nil buttonTitle:nil];
+        UIImageView *mediaThumbnail = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"media_image"]];
+        WPNoResultsView *noMediaView = [WPNoResultsView noResultsViewWithTitle:title message:nil accessoryView:mediaThumbnail buttonTitle:NSLocalizedString(@"Add Media", nil)];
         _noMediaView = noMediaView;
+        _noMediaView.delegate = self;
         [self.collectionView addSubview:_noMediaView];
     }
+}
+
+- (void)didTapNoResultsView:(WPNoResultsView *)noResultsView {
+    [self addMediaButtonPressed];
 }
 
 
@@ -303,9 +309,8 @@ NSString *const MediaFeaturedImageSelectedNotification = @"MediaFeaturedImageSel
     }
     
     NSArray *mediaToFilter = _currentFilterMonth ? _filteredMedia : _allMedia;
-    self.filteredMedia = [mediaToFilter filteredArrayUsingPredicate:[NSPredicate predicateWithFormat:@"self.title CONTAINS[cd] %@ OR self.caption CONTAINS[cd] %@ OR self.desc CONTAINS[cd] %@", searchText, searchText, searchText]];
-    
     _currentSearchText = searchText;
+    self.filteredMedia = [mediaToFilter filteredArrayUsingPredicate:[NSPredicate predicateWithFormat:@"self.title CONTAINS[cd] %@ OR self.caption CONTAINS[cd] %@ OR self.desc CONTAINS[cd] %@", searchText, searchText, searchText]];
 }
 
 - (void)applyMonthFilterForMonth:(NSDate *)month {
@@ -317,9 +322,8 @@ NSString *const MediaFeaturedImageSelectedNotification = @"MediaFeaturedImageSel
     NSDate *filterMonthEnd = [month dateByAddingTimeInterval:daysInMonth.length*24*60*60];
     
     NSArray *mediaToFilter = _currentSearchText ? _filteredMedia : _allMedia;
-    self.filteredMedia = [mediaToFilter filteredArrayUsingPredicate:[NSPredicate predicateWithFormat:@"(creationDate >= %@) AND (creationDate <= %@)", month, filterMonthEnd]];
-    
     _currentFilterMonth = month;
+    self.filteredMedia = [mediaToFilter filteredArrayUsingPredicate:[NSPredicate predicateWithFormat:@"(creationDate >= %@) AND (creationDate <= %@)", month, filterMonthEnd]];
 }
 
 - (void)clearSearchFilter {
@@ -637,7 +641,7 @@ static NSArray *generatedMonthYearsFilters;
 	return ([self deviceSupportsVideo] && (self.videoPressEnabled || !self.blog.isWPcom));
 }
 
-- (IBAction)addMediaButtonPressed:(id)sender {
+- (IBAction)addMediaButtonPressed {
     if ([self showAttachedMedia]) {
         MediaBrowserViewController *vc = [[MediaBrowserViewController alloc] initWithPost:self.post selectingMediaForPost:YES];
         [self.navigationController pushViewController:vc animated:YES];
