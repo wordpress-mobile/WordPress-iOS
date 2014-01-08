@@ -9,9 +9,6 @@
 #import <AFHTTPClient.h>
 #import <Availability.h>
 
-#define WordPressComApiDidLoginNotification @"WordPressComApiDidLogin"
-#define WordPressComApiDidLogoutNotification @"WordPressComApiDidLogout"
-
 typedef void (^WordPressComApiRestSuccessResponseBlock)(AFHTTPRequestOperation *operation, id responseObject);
 typedef void (^WordPressComApiRestSuccessFailureBlock)(AFHTTPRequestOperation *operation, NSError *error);
 
@@ -35,11 +32,10 @@ extern NSString *const WordPressComApiErrorMessageKey;
 extern NSString *const WordPressComApiPushAppId;
 
 @interface WordPressComApi : AFHTTPClient
-@property (nonatomic,readonly,strong) NSString *username;
-@property (nonatomic,readonly,strong) NSString *password;
+@property (nonatomic, readonly, strong) NSString *username;
+@property (nonatomic, readonly, strong) NSString *password;
 @property (nonatomic, readonly, strong) NSString *authToken;
 
-+ (WordPressComApi *)sharedApi; // DEPRECATED_MSG_ATTRIBUTE("Use [[WPAccount defaultWordPressComAccount] restApi] instead");
 /**
  Returns an API without an associated user
  
@@ -48,15 +44,21 @@ extern NSString *const WordPressComApiPushAppId;
 + (WordPressComApi *)anonymousApi;
 - (id)initWithOAuthToken:(NSString *)authToken;
 
+/**
+ Reset the API instance
+ 
+ @discussion Clears authorization headers, cookies, 
+             and sets `authToken`, `username`, and `password` to nil.
+ */
+- (void)reset;
+
 ///-------------------------
 /// @name Account management
 ///-------------------------
 
-- (void)signInWithUsername:(NSString *)username password:(NSString *)password success:(void (^)())success failure:(void (^)(NSError *error))failure;
-- (void)refreshTokenWithSuccess:(void (^)())success failure:(void (^)(NSError *error))failure;
-- (void)signInWithToken:(NSString *)token DEPRECATED_ATTRIBUTE;
-- (void)signOut;
+
 - (BOOL)hasCredentials;
+
 // Wipe the OAuth2 token
 - (void)invalidateOAuth2Token;
 - (void)validateWPComAccountWithEmail:(NSString *)email andUsername:(NSString *)username andPassword:(NSString *)password success:(void (^)(id responseObject))success failure:(void (^)(NSError *error))failure;
@@ -64,55 +66,51 @@ extern NSString *const WordPressComApiPushAppId;
 - (void)validateWPComBlogWithUrl:(NSString *)blogUrl andBlogTitle:(NSString *)blogTitle andLanguageId:(NSNumber *)languageId success:(void (^)(id))success failure:(void (^)(NSError *))failure;
 - (void)createWPComBlogWithUrl:(NSString *)blogUrl andBlogTitle:(NSString *)blogTitle andLanguageId:(NSNumber *)languageId andBlogVisibility:(WordPressComApiBlogVisibility)visibility success:(void (^)(id))success failure:(void (^)(NSError *))failure;
 
-///---------------------------
-/// @name Transitional methods
-///---------------------------
-
-/**
- Reloads `self.username` and `self.password` from the defaults dictionary and keychain
- 
- Since WordPressComApi uses tokens now, this shouldn't be necessary and will be removed in the future
- */
-- (void)updateCredentailsFromStore;
 
 ///--------------------
 /// @name Notifications
 ///--------------------
 
-- (void)saveNotificationSettings:(void (^)())success
+- (void)saveNotificationSettings:(NSDictionary *)settings
+                     deviceToken:(NSString *)token success:(void (^)())success
                          failure:(void (^)(NSError *error))failure;
 
-- (void)fetchNotificationSettings:(void (^)())success
-                          failure:(void (^)(NSError *error))failure;
+- (void)fetchNotificationSettingsWithDeviceToken:(NSString *)token
+                                         success:(void (^)(NSDictionary *settings))success
+                                         failure:(void (^)(NSError *error))failure;
 
-- (void)syncPushNotificationInfo;
+- (void)unregisterForPushNotificationsWithDeviceToken:(NSString *)token
+                                              success:(void (^)())success failure:(void (^)(NSError *error))failure;
 
+- (void)syncPushNotificationInfoWithDeviceToken:(NSString *)token
+                                        success:(void (^)(NSDictionary *settings))success
+                                        failure:(void (^)(NSError *error))failure;
 /*
  * Queries the REST Api for unread notes and determines if the user has
  * seen them using the response's last_seen_time timestamp.
  *
- * If we have unseen notes we post a WordPressComApiUnseenNotesNotification
  */
-- (void)checkForNewUnseenNotifications;
+- (void)fetchNewUnseenNotificationsWithSuccess:(void (^)(NSArray *notes))success
+                                      failure:(void (^)(NSError *error))failure;
 
-- (void)checkNotificationsSuccess:(WordPressComApiRestSuccessResponseBlock)success
+- (void)fetchRecentNotificationsWithSuccess:(void (^)(NSArray *notes))success
                           failure:(WordPressComApiRestSuccessFailureBlock)failure;
 
-- (void)getNotificationsBefore:(NSNumber *)timestamp
-                       success:(WordPressComApiRestSuccessResponseBlock)success
+- (void)fetchNotificationsBefore:(NSNumber *)timestamp
+                       success:(void (^)(NSArray *notes))success
                        failure:(WordPressComApiRestSuccessFailureBlock)failure;
 
-- (void)getNotificationsSince:(NSNumber *)timestamp
-                      success:(WordPressComApiRestSuccessResponseBlock)success
+- (void)fetchNotificationsSince:(NSNumber *)timestamp
+                      success:(void (^)(NSArray *notes))success
                       failure:(WordPressComApiRestSuccessFailureBlock)failure;
 
-- (void)getNotificationsWithParameters:(NSDictionary *)parameters
-                               success:(WordPressComApiRestSuccessResponseBlock)success
+- (void)fetchNotificationsWithParameters:(NSDictionary *)parameters
+                               success:(void (^)(NSArray *notes))success
                                failure:(WordPressComApiRestSuccessFailureBlock)failure;
 
-- (void)refreshNotifications:(NSArray *)notes
+- (void)refreshNotifications:(NSArray *)noteIDs
                       fields:(NSString *)fields
-                     success:(WordPressComApiRestSuccessResponseBlock)success
+                     success:(void (^)(NSArray *notes))success
                      failure:(WordPressComApiRestSuccessFailureBlock)failure;
 
 - (void)markNoteAsRead:(NSString *)noteID
@@ -123,9 +121,18 @@ extern NSString *const WordPressComApiPushAppId;
                        success:(WordPressComApiRestSuccessResponseBlock)success
                        failure:(WordPressComApiRestSuccessFailureBlock)failure;
 
-- (void)followBlog:(NSUInteger)blogID isFollowing:(bool)following
+///-------------
+/// @name Reader
+///-------------
+
+- (void)followBlog:(NSUInteger)blogID isFollowing:(BOOL)following
            success:(WordPressComApiRestSuccessResponseBlock)success
            failure:(WordPressComApiRestSuccessFailureBlock)failure;
+
+
+///---------------
+/// @name Comments
+///---------------
 
 - (void)moderateComment:(NSUInteger)blogID forCommentID:(NSUInteger)commentID withStatus:(NSString *)commentStatus
                 success:(WordPressComApiRestSuccessResponseBlock)success

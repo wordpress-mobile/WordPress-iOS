@@ -8,28 +8,17 @@
 
 #import "WordPressComApi.h"
 #import "WordPressComApiCredentials.h"
-#import "SFHFKeychainUtils.h"
-#import "WordPressAppDelegate.h"
-#import "Note.h"
 #import "NSString+Helpers.h"
-#import "WPToast.h"
 #import <AFJSONRequestOperation.h>
 #import <UIDeviceHardware.h>
 #import "UIDevice+WordPressIdentifier.h"
-#import "WPAccount.h"
-#import "ContextManager.h"
 #import <WPXMLRPCClient.h>
+#import "WordPressAppDelegate.h"
 #import "NotificationsManager.h"
-
 
 static NSString *const WordPressComApiClientEndpointURL = @"https://public-api.wordpress.com/rest/v1/";
 static NSString *const WordPressComApiOauthBaseUrl = @"https://public-api.wordpress.com/oauth2";
-static NSString *const WordPressComApiOauthServiceName = @"public-api.wordpress.com";
-static NSString *const WordPressComApiOauthRedirectUrl = @"http://wordpress.com/";
-static NSString *const WordPressComApiNotificationFields = @"id,type,unread,body,subject,timestamp";
-static NSString *const WordPressComApiUnseenNotesNotification = @"WordPressComUnseenNotes";
-static NSString *const WordPressComApiNotesUserInfoKey = @"notes";
-static NSString *const WordPressComApiUnseenNoteCountInfoKey = @"note_count";
+NSString *const WordPressComApiNotificationFields = @"id,type,unread,body,subject,timestamp";
 static NSString *const WordPressComApiLoginUrl = @"https://wordpress.com/wp-login.php";
 static NSString *const WordPressComXMLRPCUrl = @"https://wordpress.com/xmlrpc.php";
 NSString *const WordPressComApiErrorDomain = @"com.wordpress.api";
@@ -95,11 +84,6 @@ NSString *const WordPressComApiPushAppId = @"org.wordpress.appstore";
 
 @implementation WordPressComApi
 
-+ (WordPressComApi *)sharedApi {
-    DDLogWarn(@"Called obsolete [WordPressComApi sharedApi]");
-    return [[WPAccount defaultWordPressComAccount] restApi];
-}
-
 + (WordPressComApi *)anonymousApi {
     static WordPressComApi *_anonymousApi = nil;
     static dispatch_once_t oncePredicate;
@@ -126,112 +110,15 @@ NSString *const WordPressComApiPushAppId = @"org.wordpress.appstore";
 
 #pragma mark - Account management
 
-- (void)signInWithUsername:(NSString *)username password:(NSString *)password success:(void (^)())success failure:(void (^)(NSError *error))failure {
-    NSAssert(username != nil, @"username is nil");
-    NSAssert(password != nil, @"password is nil");
-    if (self.username && ![username isEqualToString:self.username]) {
-        [self signOut]; // Only one account supported for now
-    }
-    self.username = username;
-    self.password = password;
-
-    void (^successBlock)(AFHTTPRequestOperation *,id) = ^(AFHTTPRequestOperation *operation, id responseObject) {
-        /*
-         responseObject should look like:
-         {
-         "access_token": "YOUR_API_TOKEN",
-         "blog_id": "blog id",
-         "blog_url": "blog url",
-         "token_type": "bearer"
-         }
-         */
-        NSString *accessToken;
-        if ([responseObject respondsToSelector:@selector(objectForKey:)]) {
-            accessToken = [responseObject objectForKey:@"access_token"];
-        }
-        if (accessToken == nil) {
-             //FIXME: this error message is crappy. Understand the posible reasons why responseObject is not what we expected and return a proper error
-            NSString *localizedDescription = NSLocalizedString(@"Error authenticating", @"");
-            NSError *error = [NSError errorWithDomain:WordPressComApiErrorDomain code:WordPressComApiErrorNoAccessToken userInfo:@{NSLocalizedDescriptionKey: localizedDescription}];
-            if (failure) {
-                failure(error);
-            }
-            return;
-        }
-        self.authToken = accessToken;
-        NSError *error = nil;
-        [SFHFKeychainUtils storeUsername:self.username andPassword:self.password forServiceName:WPComXMLRPCUrl updateExisting:YES error:&error];
-        if (error) {
-            if (failure) {
-                failure(error);
-            }
-        } else {
-            [[NSUserDefaults standardUserDefaults] setObject:self.username forKey:@"wpcom_username_preference"];
-            [[NSUserDefaults standardUserDefaults] synchronize];
-            [WordPressAppDelegate sharedWordPressApplicationDelegate].isWPcomAuthenticated = YES;
-            // [NotificationsManager registerForPushNotifications];
-            [[NSNotificationCenter defaultCenter] postNotificationName:WordPressComApiDidLoginNotification object:self.username];
-            if (success) success();
-        }
-    };
-    AFHTTPClient *client = [AFHTTPClient clientWithBaseURL:[NSURL URLWithString:WordPressComApiOauthBaseUrl]];
-    [client registerHTTPOperationClass:[WPJSONRequestOperation class]];
-    [client setDefaultHeader:@"User-Agent" value:[[WordPressAppDelegate sharedWordPressApplicationDelegate] applicationUserAgent]];
-    NSDictionary *params = @{
-                             @"client_id": [WordPressComApi WordPressAppId],
-                             @"redirect_uri": WordPressComApiOauthRedirectUrl,
-                             @"client_secret": [WordPressComApi WordPressAppSecret],
-                             @"grant_type": @"password",
-                             @"username": username,
-                             @"password": password
-                             };
-
-    [self postPath:@"/oauth2/token"
-        parameters:params
-           success:successBlock
-           failure:^(AFHTTPRequestOperation *operation, NSError *error) {
-               self.password = nil;
-               if (operation.response.statusCode != 400) {
-                   [WPError showNetworkingAlertWithError:error];
-               }
-               if (failure) failure(error);
-             }];
-}
-
-- (void)refreshTokenWithSuccess:(void (^)())success failure:(void (^)(NSError *error))failure {
-    if (self.username == nil || self.password == nil) {
-        return;
-    }
-    [self signInWithUsername:self.username password:self.password success:success failure:failure];
-}
-
-- (void)signInWithToken:(NSString *)token {
-    self.authToken = token;
-}
-
-- (void)signOut {
+- (void)reset {
     DDLogMethod();
-    NSError *error = nil;
 
-//    [NotificationsManager unregisterDeviceToken];
-
-    [SFHFKeychainUtils deleteItemForUsername:self.username andServiceName:@"WordPress.com" error:&error];
-    [SFHFKeychainUtils deleteItemForUsername:self.username andServiceName:WPComXMLRPCUrl error:&error];
-    
-    [WordPressAppDelegate sharedWordPressApplicationDelegate].isWPcomAuthenticated = NO;
-    [[NSUserDefaults standardUserDefaults] removeObjectForKey:NotificationsDeviceToken]; //Remove the token from Preferences, otherwise the token is never sent to the server on the next login
-    [SFHFKeychainUtils deleteItemForUsername:self.username andServiceName:WordPressComApiOauthServiceName error:&error];
-    [[NSUserDefaults standardUserDefaults] removeObjectForKey:@"wpcom_username_preference"];
-    [[NSUserDefaults standardUserDefaults] synchronize];
     self.authToken = nil;
     self.username = nil;
     self.password = nil;
-    [self clearAuthorizationHeader];
-
+ 
     [self clearWpcomCookies];
-
-    // Notify the world
-    [[NSNotificationCenter defaultCenter] postNotificationName:WordPressComApiDidLogoutNotification object:nil];
+    [self clearAuthorizationHeader];
 }
 
 - (BOOL)hasCredentials {
@@ -379,22 +266,6 @@ NSString *const WordPressComApiPushAppId = @"org.wordpress.appstore";
     [self postPath:@"sites/new" parameters:params success:successBlock failure:failureBlock];    
 }
 
-
-#pragma mark - Transitional methods
-
-- (void)updateCredentailsFromStore {
-    self.username = [[NSUserDefaults standardUserDefaults] objectForKey:@"wpcom_username_preference"];
-    NSError *error = nil;
-    self.password = [SFHFKeychainUtils getPasswordForUsername:self.username
-                                          andServiceName:WPComXMLRPCUrl
-                                                   error:&error];
-    [self clearWpcomCookies];
-    [[NSNotificationCenter defaultCenter] postNotificationName:WordPressComApiDidLogoutNotification object:nil];
-    [WordPressAppDelegate sharedWordPressApplicationDelegate].isWPcomAuthenticated = YES;
-//    [NotificationsManager registerForPushNotifications];
-    [[NSNotificationCenter defaultCenter] postNotificationName:WordPressComApiDidLoginNotification object:self.username];
-}
-
 - (void)clearWpcomCookies {
     NSArray *wpcomCookies = [[NSHTTPCookieStorage sharedHTTPCookieStorage] cookies];
     for (NSHTTPCookie *cookie in wpcomCookies) {
@@ -407,80 +278,41 @@ NSString *const WordPressComApiPushAppId = @"org.wordpress.appstore";
 
 #pragma mark - Notifications
 
-- (void)saveNotificationSettings:(void (^)())success
+- (void)saveNotificationSettings:(NSDictionary *)settings deviceToken:(NSString *)token
+                         success:(void (^)())success
                          failure:(void (^)(NSError *error))failure {
     
-    NSString *token = [[NSUserDefaults standardUserDefaults] objectForKey:NotificationsDeviceToken];
-    if( nil == token ) return; //no apns token available
-    
-    if(![[WordPressComApi sharedApi] hasCredentials])
+    if (nil == token)
         return;
     
-    NSDictionary *notificationPreferences = [[NSUserDefaults standardUserDefaults] objectForKey:@"notification_preferences"];
-    if (!notificationPreferences)
-        return;
-
-    NSMutableArray *notificationPrefArray = [[notificationPreferences allKeys] mutableCopy];
-    if ([notificationPrefArray indexOfObject:@"muted_blogs"] != NSNotFound)
-        [notificationPrefArray removeObjectAtIndex:[notificationPrefArray indexOfObject:@"muted_blogs"]];
-    
-    // Build the dictionary to send in the API call
-    NSMutableDictionary *updatedSettings = [[NSMutableDictionary alloc] init];
-    for (int i = 0; i < [notificationPrefArray count]; i++) {
-        NSDictionary *updatedSetting = [notificationPreferences objectForKey:[notificationPrefArray objectAtIndex:i]];
-        [updatedSettings setValue:[updatedSetting objectForKey:@"value"] forKey:[notificationPrefArray objectAtIndex:i]];
-    }
-
-    //Check and send 'mute_until' value
-    NSMutableDictionary *muteDictionary = [notificationPreferences objectForKey:@"mute_until"];
-    if(muteDictionary != nil  && [muteDictionary objectForKey:@"value"] != nil) {
-        [updatedSettings setValue:[muteDictionary objectForKey:@"value"] forKey:@"mute_until"];
-    } else {
-        [updatedSettings setValue:@"0" forKey:@"mute_until"];
-    }
-    
-    NSArray *blogsArray = [[notificationPreferences objectForKey:@"muted_blogs"] objectForKey:@"value"];
-    NSMutableArray *mutedBlogsArray = [[NSMutableArray alloc] init];
-    for (int i=0; i < [blogsArray count]; i++) {
-        NSDictionary *userBlog = [blogsArray objectAtIndex:i];
-        if ([[userBlog objectForKey:@"value"] intValue] == 1) {
-            [mutedBlogsArray addObject:userBlog];
-        }
-    }
-
-    if ([mutedBlogsArray count] > 0)
-        [updatedSettings setValue:mutedBlogsArray forKey:@"muted_blogs"];
-
-    if ([updatedSettings count] == 0)
-        return;
-
     NSArray *parameters = @[[self usernameForXmlrpc],
                             [self passwordForXmlrpc],
-                            updatedSettings,
+                            settings,
                             token,
                             @"apple",
                             WordPressComApiPushAppId
                             ];
-    WPXMLRPCClient *api = [[WPXMLRPCClient alloc] initWithXMLRPCEndpoint:[NSURL URLWithString:WPComXMLRPCUrl]];
+
+    WPXMLRPCClient *api = [[WPXMLRPCClient alloc] initWithXMLRPCEndpoint:[NSURL URLWithString:WordPressComXMLRPCUrl]];
     [api setAuthorizationHeaderWithToken:self.authToken];
-    //Update supported notifications dictionary
     [api callMethod:@"wpcom.set_mobile_push_notification_settings"
          parameters:parameters
             success:^(AFHTTPRequestOperation *operation, id responseObject) {
-                // Hooray!
-                if (success)
+                if (success) {
                     success();
+                }
             } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
-                if (failure)
+                if (failure) {
                     failure(error);
+                }
             }];
 }
 
-- (void)fetchNotificationSettings:(void (^)())success failure:(void (^)(NSError *error))failure {
-    NSString *token = [[NSUserDefaults standardUserDefaults] objectForKey:NotificationsDeviceToken];
-    if( nil == token ) return; //no apns token available
+- (void)fetchNotificationSettingsWithDeviceToken:(NSString *)token success:(void (^)(NSDictionary *settings))success failure:(void (^)(NSError *error))failure {
+    if( nil == token )
+        return;
     
-    if(![[WordPressComApi sharedApi] hasCredentials])
+    if (![self hasCredentials])
         return;
     
     NSArray *parameters = @[[self usernameForXmlrpc],
@@ -490,32 +322,65 @@ NSString *const WordPressComApiPushAppId = @"org.wordpress.appstore";
                             WordPressComApiPushAppId
                             ];
     
-    WPXMLRPCClient *api = [[WPXMLRPCClient alloc] initWithXMLRPCEndpoint:[NSURL URLWithString:WPComXMLRPCUrl]];
+    WPXMLRPCClient *api = [[WPXMLRPCClient alloc] initWithXMLRPCEndpoint:[NSURL URLWithString:WordPressComXMLRPCUrl]];
     [api setAuthorizationHeaderWithToken:self.authToken];
     [api callMethod:@"wpcom.get_mobile_push_notification_settings"
          parameters:parameters
             success:^(AFHTTPRequestOperation *operation, id responseObject) {
-                NSDictionary *supportedNotifications = (NSDictionary *)responseObject;
-                [[NSUserDefaults standardUserDefaults] setObject:supportedNotifications forKey:@"notification_preferences"];
-                if (success)
-                    success();
+                if (success) {
+                    success(responseObject);
+                }
             } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
-                if (failure)
+                if (failure) {
                     failure(error);
+                }
             }];
 }
 
-- (void)syncPushNotificationInfo {
-    NSString *token = [[NSUserDefaults standardUserDefaults] objectForKey:NotificationsDeviceToken];
-    if ( nil == token ) return; //no apns token available
-    
-    if (![[WordPressComApi sharedApi] hasCredentials]) {
+- (void)unregisterForPushNotificationsWithDeviceToken:(NSString *)token
+                                              success:(void (^)())success failure:(void (^)(NSError *error))failure {
+    if (nil == token) {
         return;
     }
+
+    NSArray *parameters = @[[self usernameForXmlrpc],
+                            [self passwordForXmlrpc],
+                            token,
+                            @"apple",
+                            @NO, // Sandbox parameter - deprecated
+                            WordPressComApiPushAppId
+                            ];
     
+    WPXMLRPCClient *api = [[WPXMLRPCClient alloc] initWithXMLRPCEndpoint:[NSURL URLWithString:WordPressComXMLRPCUrl]];
+    [api setAuthorizationHeaderWithToken:self.authToken];
+    [api callMethod:@"wpcom.mobile_push_unregister_token"
+         parameters:parameters
+            success:^(AFHTTPRequestOperation *operation, id responseObject) {
+                DDLogInfo(@"Unregistered token %@", token);
+                if (success) {
+                    success();
+                }
+            } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+                DDLogError(@"Couldn't unregister token: %@", [error localizedDescription]);
+                if (failure) {
+                    failure(error);
+                }
+            }];
+}
+
+- (void)syncPushNotificationInfoWithDeviceToken:(NSString *)token
+                                        success:(void (^)(NSDictionary *settings))success
+                                        failure:(void (^)(NSError *error))failure {
+    if (nil == token) {
+        return;
+    }
+
+    if (![self hasCredentials])
+        return;
+        
     // Send a multicall for register the token and retrieval of push notification settings
     NSMutableArray *operations = [NSMutableArray arrayWithCapacity:2];
-    WPXMLRPCClient *api = [[WPXMLRPCClient alloc] initWithXMLRPCEndpoint:[NSURL URLWithString:WPComXMLRPCUrl]];
+    WPXMLRPCClient *api = [[WPXMLRPCClient alloc] initWithXMLRPCEndpoint:[NSURL URLWithString:WordPressComXMLRPCUrl]];
     
     [api setAuthorizationHeaderWithToken:self.authToken];
     
@@ -536,9 +401,11 @@ NSString *const WordPressComApiPushAppId = @"org.wordpress.appstore";
                             tokenOptions
                             ];
     WPXMLRPCRequest *tokenRequest = [api XMLRPCRequestWithMethod:@"wpcom.mobile_push_register_token" parameters:parameters];
-    WPXMLRPCRequestOperation *tokenOperation = [api XMLRPCRequestOperationWithRequest:tokenRequest success:^(AFHTTPRequestOperation *operation, id responseObject) {
+    WPXMLRPCRequestOperation *tokenOperation = [api XMLRPCRequestOperationWithRequest:tokenRequest success:^(AFHTTPRequestOperation *op, id response){
     } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
-        DDLogError(@"Token registration failed: %@", error);
+        if (failure) {
+            failure(error);
+        }
     }];
     
     [operations addObject:tokenOperation];
@@ -551,146 +418,131 @@ NSString *const WordPressComApiPushAppId = @"org.wordpress.appstore";
                                     ];
     WPXMLRPCRequest *settingsRequest = [api XMLRPCRequestWithMethod:@"wpcom.get_mobile_push_notification_settings" parameters:settingsParameters];
     WPXMLRPCRequestOperation *settingsOperation = [api XMLRPCRequestOperationWithRequest:settingsRequest success:^(AFHTTPRequestOperation *operation, id responseObject) {
-        NSDictionary *supportedNotifications = (NSDictionary *)responseObject;
-        [[NSUserDefaults standardUserDefaults] setObject:supportedNotifications forKey:@"notification_preferences"];
+        if (success) {
+            success(responseObject);
+        }
     } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
-        DDLogError(@"Syncing push notification info failed: %@", error);
+        if (failure) {
+            failure(error);
+        }
     }];
     
     [operations addObject:settingsOperation];
     
-    AFHTTPRequestOperation *combinedOperation = [api combinedHTTPRequestOperationWithOperations:operations success:^(AFHTTPRequestOperation *operation, id responseObject) {} failure:^(AFHTTPRequestOperation *operation, NSError *error) {}];
+    AFHTTPRequestOperation *combinedOperation = [api combinedHTTPRequestOperationWithOperations:operations success:nil failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+        if (failure) {
+            failure(error);
+        }
+    }];
     [api enqueueHTTPRequestOperation:combinedOperation];
 }
 
-- (void)checkForNewUnseenNotifications {
-    NSDictionary *params = @{ @"unread":@"true", @"number":@"20", @"num_note_items":@"20", @"fields" : WordPressComApiNotificationFields };
+- (void)fetchNewUnseenNotificationsWithSuccess:(void (^)(NSArray *notes))success failure:(void (^)(NSError *error))failure {
+    NSDictionary *params = @{@"unread": @"true",
+                             @"number": @"20",
+                             @"num_note_items": @"20",
+                             @"fields": WordPressComApiNotificationFields};
     [self getPath:@"notifications" parameters:params success:^(AFHTTPRequestOperation *operation, id responseObject) {
-        NSNumber *last_seen_time = [responseObject objectForKey:@"last_seen_time"];
+        NSNumber *lastSeenTime = [responseObject objectForKey:@"last_seen_time"];
         NSArray *notes = [responseObject objectForKey:@"notes"];
         if ([notes count] > 0) {
             NSMutableArray *unseenNotes = [[NSMutableArray alloc] initWithCapacity:[notes count]];
             [notes enumerateObjectsUsingBlock:^(id noteData, NSUInteger idx, BOOL *stop) {
                 NSNumber *timestamp = [noteData objectForKey:@"timestamp"];
-                if ([timestamp compare:last_seen_time] == NSOrderedDescending) {
+                if ([timestamp compare:lastSeenTime] == NSOrderedDescending) {
                     [unseenNotes addObject:noteData];
                 }
             }];
-            NSNotificationCenter *nc = [NSNotificationCenter defaultCenter];
-            [nc postNotificationName:WordPressComApiUnseenNotesNotification
-                              object:self
-                            userInfo:@{
-                WordPressComApiNotesUserInfoKey : unseenNotes,
-                WordPressComApiUnseenNoteCountInfoKey : [NSNumber numberWithInteger:[unseenNotes count]]
-             }];
+            
+            if (success) {
+                success([NSArray arrayWithArray:unseenNotes]);
+            }
         }
-        
     } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
-        DDLogError(@"Checking for unseen notes failed: %@", error);
+        if (failure) {
+            failure(error);
+        }
     }];
 }
 
-- (void)checkNotificationsSuccess:(WordPressComApiRestSuccessResponseBlock)success failure:(WordPressComApiRestSuccessFailureBlock)failure {
-    [self getNotificationsBefore:nil success:success failure:failure];
+- (void)fetchRecentNotificationsWithSuccess:(void (^)(NSArray *))success failure:(WordPressComApiRestSuccessFailureBlock)failure {
+    [self fetchNotificationsWithParameters:nil success:success failure:failure];
 }
 
-- (void)getNotificationsSince:(NSNumber *)timestamp success:(WordPressComApiRestSuccessResponseBlock)success failure:(WordPressComApiRestSuccessFailureBlock)failure {
+- (void)fetchNotificationsSince:(NSNumber *)timestamp
+                        success:(void (^)(NSArray *notes))success
+                        failure:(WordPressComApiRestSuccessFailureBlock)failure {
     NSDictionary *parameters;
     if (timestamp != nil) {
-        parameters = @{ @"since" : timestamp };
+        parameters = @{@"since": timestamp};
     }
-    [self getNotificationsWithParameters:parameters success:success failure:failure];
-    
+    [self fetchNotificationsWithParameters:parameters success:success failure:failure];
 }
 
-- (void)getNotificationsBefore:(NSNumber *)timestamp success:(WordPressComApiRestSuccessResponseBlock)success failure:(WordPressComApiRestSuccessFailureBlock)failure {
+- (void)fetchNotificationsBefore:(NSNumber *)timestamp
+                         success:(void (^)(NSArray *notes))success
+                         failure:(WordPressComApiRestSuccessFailureBlock)failure {
     NSDictionary *parameters;
     if (timestamp != nil) {
-        parameters = @{ @"before" : timestamp };
+        parameters = @{@"before": timestamp};
     }
-    [self getNotificationsWithParameters:parameters success:success failure:failure];
+    [self fetchNotificationsWithParameters:parameters success:success failure:failure];
 }
 
-- (void)getNotificationsWithParameters:(NSDictionary *)parameters success:(WordPressComApiRestSuccessResponseBlock)success failure:(WordPressComApiRestSuccessFailureBlock)failure {
+- (void)fetchNotificationsWithParameters:(NSDictionary *)parameters success:(void (^)(NSArray *notes))success failure:(WordPressComApiRestSuccessFailureBlock)failure {
     NSMutableDictionary *requestParameters = [NSMutableDictionary dictionaryWithDictionary:parameters];
-    
     [requestParameters setObject:WordPressComApiNotificationFields forKey:@"fields"];
     [requestParameters setObject:[NSNumber numberWithInt:20] forKey:@"number"];
     [requestParameters setObject:[NSNumber numberWithInt:20] forKey:@"num_note_items"];
     
-    // TODO: Check for unread notifications and notify with the number of unread notifications
-
     [self getPath:@"notifications/" parameters:requestParameters success:^(AFHTTPRequestOperation *operation, id responseObject){
-        [Note syncNotesWithResponse:[responseObject objectForKey:@"notes"]];
-        if (success != nil ) success( operation, responseObject );
-        
+        if (success) {
+            success(responseObject[@"notes"]);
+        }
     } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
-        if (failure) failure(operation, error);
+        if (failure) {
+            failure(operation, error);
+        }
     }];
 }
 
-- (void)refreshNotifications:(NSArray *)notes fields:(NSString *)fields success:(WordPressComApiRestSuccessResponseBlock)success failure:(WordPressComApiRestSuccessFailureBlock)failure {
-    // No notes? Then there's nothing to sync
-    if ([notes count] == 0) {
+- (void)refreshNotifications:(NSArray *)noteIDs fields:(NSString *)fields success:(void (^)(NSArray *notes))success failure:(WordPressComApiRestSuccessFailureBlock)failure {
+    if ([noteIDs count] == 0) {
         return;
     }
-    NSMutableArray *noteIDs = [[NSMutableArray alloc] initWithCapacity:[notes count]];
-    [notes enumerateObjectsUsingBlock:^(id obj, NSUInteger idx, BOOL *stop) {
-        [noteIDs addObject:[(Note *)obj noteID]];
-    }];
+
     if (fields == nil) {
         fields = WordPressComApiNotificationFields;
     }
+    
     NSDictionary *params = @{
-        @"fields" : fields,
-        @"ids" : noteIDs
+        @"fields": fields,
+        @"ids": noteIDs
     };
-    NSManagedObjectContext *context = [(Note *)[notes objectAtIndex:0] managedObjectContext];
     [self getPath:@"notifications/" parameters:params success:^(AFHTTPRequestOperation *operation, id response){
-        NSError *error;
-        NSArray *notesData = [response objectForKey:@"notes"];
-        for (int i=0; i < [notes count]; i++) {
-            if ([notesData count] > i) {
-                Note *note = [notes objectAtIndex:i];
-                if (![note isDeleted] && [note managedObjectContext]) {
-                    [note syncAttributes:[notesData objectAtIndex:i]];
-                }
-            }
+        if (success) {
+            success(response[@"notes"]);
         }
-        if(![context save:&error]){
-            NSLog(@"Unable to update note: %@", error);
-        }
-        if (success != nil) success(operation, response);
-    } failure:failure ];
+    } failure:failure];
 }
 
 - (void)markNoteAsRead:(NSString *)noteID success:(WordPressComApiRestSuccessResponseBlock)success failure:(WordPressComApiRestSuccessFailureBlock)failure {
-    
     NSDictionary *params = @{ @"counts" : @{ noteID : @"1" } };
-    
     [self postPath:@"notifications/read"
                    parameters:params
                       success:success
                       failure:failure];
-    
 }
 
 - (void)updateNoteLastSeenTime:(NSNumber *)timestamp success:(WordPressComApiRestSuccessResponseBlock)success failure:(WordPressComApiRestSuccessFailureBlock)failure {
-    
     [self postPath:@"notifications/seen" parameters:@{ @"time" : timestamp } success:success failure:failure];
-    
 }
 
-- (void)followBlog:(NSUInteger)blogID isFollowing:(bool)following success:(WordPressComApiRestSuccessResponseBlock)success failure:(WordPressComApiRestSuccessFailureBlock)failure {
-    
+- (void)followBlog:(NSUInteger)blogID isFollowing:(BOOL)following success:(WordPressComApiRestSuccessResponseBlock)success failure:(WordPressComApiRestSuccessFailureBlock)failure {
     NSString *followPath = [NSString stringWithFormat: @"sites/%d/follows/new", blogID];
-    if (following)
+    if (following) {
         followPath = [followPath stringByReplacingOccurrencesOfString:@"new" withString:@"mine/delete"];
-
-    NSString *message = following ? NSLocalizedString(@"Unfollowed", @"User unfollowed a blog") : NSLocalizedString(@"Followed", @"User followed a blog");
-    NSString *imageName = [NSString stringWithFormat:@"action_icon_%@", (following) ? @"unfollowed" : @"followed"];
-    [WPToast showToastWithMessage:message andImage:[UIImage imageNamed:imageName]];
-    
+    }
     [self postPath:followPath
         parameters:nil
            success:^(AFHTTPRequestOperation *operation, id responseObject){
@@ -700,9 +552,7 @@ NSString *const WordPressComApiPushAppId = @"org.wordpress.appstore";
 }
 
 - (void)moderateComment:(NSUInteger)blogID forCommentID:(NSUInteger)commentID withStatus:(NSString *)commentStatus success:(WordPressComApiRestSuccessResponseBlock)success failure:(WordPressComApiRestSuccessFailureBlock)failure {
-    
     NSString *commentPath = [NSString stringWithFormat: @"sites/%d/comments/%d", blogID, commentID];
-    
     [self postPath:commentPath
         parameters:@{ @"status" : commentStatus }
            success:success
@@ -710,9 +560,7 @@ NSString *const WordPressComApiPushAppId = @"org.wordpress.appstore";
 }
 
 - (void)replyToComment:(NSUInteger)blogID forCommentID:(NSUInteger)commentID withReply:(NSString *)reply success:(WordPressComApiRestSuccessResponseBlock)success failure:(WordPressComApiRestSuccessFailureBlock)failure {
-    
     NSString *replyPath = [NSString stringWithFormat: @"sites/%d/comments/%d/replies/new", blogID, commentID];
-    
     [self postPath:replyPath
         parameters:@{ @"content" : reply }
            success:success
@@ -737,26 +585,6 @@ NSString *const WordPressComApiPushAppId = @"org.wordpress.appstore";
     return password;
 }
 /* HACK ENDS */
-
-#pragma mark - Oauth methods
-
-- (void)setAuthToken:(NSString *)authToken {
-    _authToken = authToken;
-    NSError *error;
-    if (_authToken) {
-        [self setAuthorizationHeaderWithToken:authToken];
-        [SFHFKeychainUtils storeUsername:self.username
-                             andPassword:authToken
-                          forServiceName:WordPressComApiOauthServiceName
-                          updateExisting:YES
-                                   error:&error];
-    } else {
-        [self clearAuthorizationHeader];
-        [SFHFKeychainUtils deleteItemForUsername:self.username
-                                  andServiceName:WordPressComApiOauthServiceName
-                                           error:&error];
-    }
-}
 
 - (void)setAuthorizationHeaderWithToken:(NSString *)token {
     [self setDefaultHeader:@"Authorization" value:[NSString stringWithFormat:@"Bearer %@", token]];
