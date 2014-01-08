@@ -19,12 +19,12 @@
 #import "ContextManager.h"
 #import "WordPressComApi.h"
 
-static NSInteger const ImageSizeSmallWidth = 240;
-static NSInteger const ImageSizeSmallHeight = 180;
-static NSInteger const ImageSizeMediumWidth = 480;
-static NSInteger const ImageSizeMediumHeight = 360;
-static NSInteger const ImageSizeLargeWidth = 640;
-static NSInteger const ImageSizeLargeHeight = 480;
+static CGFloat const ImageSizeSmallWidth = 240.0f;
+static CGFloat const ImageSizeSmallHeight = 180.0f;
+static CGFloat const ImageSizeMediumWidth = 480.0f;
+static CGFloat const ImageSizeMediumHeight = 360.0f;
+static CGFloat const ImageSizeLargeWidth = 640.0f;
+static CGFloat const ImageSizeLargeHeight = 480.0f;
 
 @interface Blog (PrivateMethods)
 
@@ -259,21 +259,20 @@ static NSInteger const ImageSizeLargeHeight = 480;
 
 - (NSDictionary *)getImageResizeDimensions{
     CGSize smallSize, mediumSize, largeSize;
-    NSInteger smallSizeWidth = [[self getOptionValue:@"thumbnail_size_w"] integerValue] > 0 ? [[self getOptionValue:@"thumbnail_size_w"] integerValue] : ImageSizeSmallWidth;
-    NSInteger smallSizeHeight = [[self getOptionValue:@"thumbnail_size_h"] integerValue] > 0 ? [[self getOptionValue:@"thumbnail_size_h"] integerValue] : ImageSizeSmallHeight;
-    NSInteger mediumSizeWidth = [[self getOptionValue:@"medium_size_w"] integerValue] > 0 ? [[self getOptionValue:@"medium_size_w"] integerValue] : ImageSizeMediumWidth;
-    NSInteger mediumSizeHeight = [[self getOptionValue:@"medium_size_h"] integerValue] > 0 ? [[self getOptionValue:@"medium_size_h"] integerValue] : ImageSizeMediumHeight;
-    NSInteger largeSizeWidth = [[self getOptionValue:@"large_size_w"] integerValue] > 0 ? [[self getOptionValue:@"large_size_w"] integerValue] : ImageSizeLargeWidth;
-    NSInteger largeSizeHeight = [[self getOptionValue:@"large_size_h"] integerValue] > 0 ? [[self getOptionValue:@"large_size_h"] integerValue] : ImageSizeLargeHeight;
+    CGFloat smallSizeWidth = [[self getOptionValue:@"thumbnail_size_w"] floatValue] > 0 ? [[self getOptionValue:@"thumbnail_size_w"] floatValue] : ImageSizeSmallWidth;
+    CGFloat smallSizeHeight = [[self getOptionValue:@"thumbnail_size_h"] floatValue] > 0 ? [[self getOptionValue:@"thumbnail_size_h"] floatValue] : ImageSizeSmallHeight;
+    CGFloat mediumSizeWidth = [[self getOptionValue:@"medium_size_w"] floatValue] > 0 ? [[self getOptionValue:@"medium_size_w"] floatValue] : ImageSizeMediumWidth;
+    CGFloat mediumSizeHeight = [[self getOptionValue:@"medium_size_h"] floatValue] > 0 ? [[self getOptionValue:@"medium_size_h"] floatValue] : ImageSizeMediumHeight;
+    CGFloat largeSizeWidth = [[self getOptionValue:@"large_size_w"] floatValue] > 0 ? [[self getOptionValue:@"large_size_w"] floatValue] : ImageSizeLargeWidth;
+    CGFloat largeSizeHeight = [[self getOptionValue:@"large_size_h"] floatValue] > 0 ? [[self getOptionValue:@"large_size_h"] floatValue] : ImageSizeLargeHeight;
     
     smallSize = CGSizeMake(smallSizeWidth, smallSizeHeight);
     mediumSize = CGSizeMake(mediumSizeWidth, mediumSizeHeight);
     largeSize = CGSizeMake(largeSizeWidth, largeSizeHeight);
     
-    return [NSDictionary dictionaryWithObjectsAndKeys: [NSValue valueWithCGSize:smallSize], @"smallSize", 
-            [NSValue valueWithCGSize:mediumSize], @"mediumSize", 
-            [NSValue valueWithCGSize:largeSize], @"largeSize", 
-            nil];
+    return @{@"smallSize": [NSValue valueWithCGSize:smallSize],
+             @"mediumSize": [NSValue valueWithCGSize:mediumSize],
+             @"largeSize": [NSValue valueWithCGSize:largeSize]};
 }
 
 - (void)awakeFromFetch {
