@@ -11,6 +11,7 @@
 #import "WPAccount.h"
 
 static NSString * const BlogJetpackKeychainPrefix = @"jetpackblog-";
+static NSString * const WPComXMLRPCUrl = @"https://wordpress.com/xmlrpc.php";
 
 @implementation BlogToJetpackAccount
 
