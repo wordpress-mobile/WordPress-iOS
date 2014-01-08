@@ -8,10 +8,10 @@
 
 @implementation WPCategoryTree
 
-- (id)initWithParent:(id)aParent {
+- (id)initWithParent:(Category *)parent {
     if (self = [super init]) {
-        parent = aParent;
-        children = [[NSMutableArray alloc] init];
+        self.parent = parent;
+        self.children = [NSMutableArray array];
     }
 
     return self;
@@ -21,12 +21,12 @@
     NSUInteger count = [collection count];
 
     for (NSInteger i = 0; i < count; i++) {
-        NSDictionary *category = [collection objectAtIndex:i];
+        Category *category = [collection objectAtIndex:i];
 
-        if ([[category valueForKey:@"parentID"] intValue] ==[[parent valueForKey:@"categoryID"] intValue]) {
+        if ([category.parentID intValue] == [self.parent.categoryID intValue]) {
             WPCategoryTree *child = [[WPCategoryTree alloc] initWithParent:category];
             [child getChildrenFromObjects:collection];
-            [children addObject:child];
+            [self.children addObject:child];
         }
     }
 }
@@ -34,14 +34,14 @@
 
 - (NSArray *)getAllObjects {
     NSMutableArray *allObjects = [NSMutableArray array];
-    NSUInteger count = [children count];
+    NSUInteger count = [self.children count];
 
-    if (parent) {
-        [allObjects addObject:parent];
+    if (self.parent) {
+        [allObjects addObject:self.parent];
     }
     
     for (NSInteger i = 0; i < count; i++) {
-        [allObjects addObjectsFromArray:[[children objectAtIndex:i] getAllObjects]];
+        [allObjects addObjectsFromArray:[[self.children objectAtIndex:i] getAllObjects]];
     }
 
     return allObjects;
