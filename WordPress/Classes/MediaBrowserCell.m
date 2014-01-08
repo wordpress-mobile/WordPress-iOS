@@ -136,20 +136,19 @@
     _title.text = [self titleForMedia];
     
     _thumbnail.image = [UIImage imageNamed:[@"media_" stringByAppendingString:_media.mediaTypeString]];
-    
-    if (_media.mediaType == MediaTypeImage) {
-        if (_media.thumbnail.length > 0) {
+
+    if (_media.thumbnail.length > 0) {
+        @autoreleasepool {
             _thumbnail.image = [UIImage imageWithData:_media.thumbnail];
-            _thumbnail.contentMode = UIViewContentModeScaleAspectFit;
         }
+        _thumbnail.contentMode = UIViewContentModeScaleAspectFit;
     }
     
     [self addUploadStatusObservers];
 }
 
 - (void)loadThumbnail {
-    // TODO: Video thumbnails are not available atm. Download them when they are.
-    // ATM the API sends the full video, not a thumbnail.
+    // TODO: Video thumbnails are not available from the API.
     if (_media.mediaType == MediaTypeImage && _media.remoteURL && _media.thumbnail.length == 0) {
         [[WPImageSource sharedSource] downloadThumbnailForMedia:_media success:^(NSNumber *mediaId){
             if ([mediaId isEqualToNumber:_media.mediaID]) {
