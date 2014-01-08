@@ -48,6 +48,7 @@
 @property (nonatomic, readonly, strong) NSString *password;
 @property (weak, readonly) Reachability *reachability;
 @property (readonly) BOOL reachable;
+@property (nonatomic, assign) BOOL videoPressEnabled;
 
 /**
  URL properties (example: http://wp.koke.me/sub/xmlrpc.php)
