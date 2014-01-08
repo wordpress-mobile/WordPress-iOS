@@ -17,10 +17,14 @@
 #import "StatsButtonCell.h"
 #import "StatsCounterCell.h"
 #import "StatsNoResultsCell.h"
-#import "StatsResultCell.h"
 #import "StatsBarGraphCell.h"
+#import "StatsSummary.h"
+#import "StatsTitleCountItem.h"
+#import "StatsTodayYesterdayButtonCell.h"
+#import "StatsTwoLabelCell.h"
 
-static NSString *const ButtonCellReuseIdentifier = @"ButtonCellReuseIdentifier";
+static NSString *const VisitorsUnitButtonCellReuseIdentifier = @"VisitorsUnitButtonCellReuseIdentifier";
+static NSString *const TodayYesterdayButtonCellReuseIdentifier = @"TodayYesterdayButtonCellReuseIdentifier";
 static NSString *const GraphCellReuseIdentifier = @"GraphCellReuseIdentifier";
 static NSString *const CountCellReuseIdentifier = @"DoubleCountCellReuseIdentifier";
 static NSString *const TwoLabelCellReuseIdentifier = @"TwoLabelCellReuseIdentifier";
@@ -51,12 +55,15 @@ typedef NS_ENUM(NSInteger, TotalFollowersShareRow) {
     TotalFollowersShareRowTotalRows
 };
 
-
-@interface StatsViewController () <UITableViewDataSource, UITableViewDelegate>
+@interface StatsViewController () <UITableViewDataSource, UITableViewDelegate, StatsTodayYesterdayButtonCellDelegate>
 
 @property (nonatomic, weak) Blog *blog;
 @property (nonatomic, strong) StatsApiHelper *statsApiHelper;
 @property (nonatomic, strong) ContextManager *contextManager;
+@property (nonatomic, strong) NSMutableDictionary *statModels;
+@property (nonatomic, strong) NSMutableDictionary *showingToday;
+@property (nonatomic, strong) NSNumberFormatter *numberFormatter;
+
 
 @end
 
@@ -67,16 +74,28 @@ typedef NS_ENUM(NSInteger, TotalFollowersShareRow) {
     [super viewDidLoad];
     
     self.title = NSLocalizedString(@"Stats", nil);
+    self.view.backgroundColor = [WPStyleGuide itsEverywhereGrey];
     
+    self.tableView.backgroundColor = [WPStyleGuide itsEverywhereGrey];
     [self.tableView registerClass:[UITableViewHeaderFooterView class] forHeaderFooterViewReuseIdentifier:StatSectionHeaderViewIdentifier];
-    
-    [self.tableView registerClass:[StatsButtonCell class] forCellReuseIdentifier:ButtonCellReuseIdentifier];
+    [self.tableView registerClass:[StatsButtonCell class] forCellReuseIdentifier:VisitorsUnitButtonCellReuseIdentifier];
+    [self.tableView registerClass:[StatsTodayYesterdayButtonCell class] forCellReuseIdentifier:TodayYesterdayButtonCellReuseIdentifier];
     [self.tableView registerClass:[UITableViewCell class] forCellReuseIdentifier:GraphCellReuseIdentifier];
     [self.tableView registerClass:[StatsCounterCell class] forCellReuseIdentifier:CountCellReuseIdentifier];
     [self.tableView registerClass:[StatsTwoLabelCell class] forCellReuseIdentifier:TwoLabelCellReuseIdentifier];
     [self.tableView registerClass:[StatsNoResultsCell class] forCellReuseIdentifier:NoResultsCellIdentifier];
-    [self.tableView registerClass:[StatsResultCell class] forCellReuseIdentifier:ResultRowCellIdentifier];
+    [self.tableView registerClass:[StatsTwoLabelCell class] forCellReuseIdentifier:ResultRowCellIdentifier];
     [self.tableView registerClass:[StatsBarGraphCell class] forCellReuseIdentifier:GraphCellIdentifier];
+    
+    _statModels = [NSMutableDictionary dictionary];
+    
+    // By default, show data for Today
+    _showingToday = [NSMutableDictionary dictionaryWithObjectsAndKeys:
+                     @(YES), @(StatsSectionTopPosts),
+                     @(YES), @(StatsSectionViewsByCountry),
+                     @(YES), @(StatsSectionSearchTerms),
+                     @(YES), @(StatsSectionClicks),
+                     @(YES), @(StatsSectionReferrers), nil];
 }
 
 - (void)didReceiveMemoryWarning
@@ -111,20 +130,6 @@ typedef NS_ENUM(NSInteger, TotalFollowersShareRow) {
     }
 }
 
-- (void)loadStats {
-    [self.statsApiHelper fetchSummaryWithSuccess:^(NSDictionary *summary) {
-        
-    } failure:^(NSError *error) {
-        
-    }];
-
-    [self.statsApiHelper fetchTopPostsWithSuccess:^(NSDictionary *todayAndYesterdayTopPosts) {
-   
-    } failure:^(NSError *error) {
-        
-    }];
-}
-
 - (void)promptForCredentials {
     if (![self.blog isWPcom]) {
         JetpackSettingsViewController *controller = [[JetpackSettingsViewController alloc] initWithBlog:self.blog];
@@ -143,16 +148,36 @@ typedef NS_ENUM(NSInteger, TotalFollowersShareRow) {
     }
 }
 
-- (NSInteger)numberOfResultsForSection:(StatsSection)section {
-    switch (section) {
-        case StatsSectionTopPosts:
-        case StatsSectionViewsByCountry:
-        case StatsSectionClicks:
-        case StatsSectionReferrers:
-        case StatsSectionSearchTerms:
-        default:
-            return 0;
-    }
+- (void)loadStats {
+    [self.statsApiHelper fetchSummaryWithSuccess:^(StatsSummary *summary) {
+        [_statModels setObject:summary forKey:@(StatsSectionVisitors)];
+        [self.tableView reloadSections:[NSIndexSet indexSetWithIndex:StatsSectionVisitors] withRowAnimation:UITableViewRowAnimationNone];
+    } failure:^(NSError *error) {
+        DDLogError(@"Stats: Error fetching summary %@", error);
+    }];
+
+    [self.statsApiHelper fetchTopPostsWithSuccess:^(NSDictionary *todayAndYesterdayTopPosts) {
+        [_statModels setObject:todayAndYesterdayTopPosts forKey:@(StatsSectionTopPosts)];
+        [self.tableView reloadSections:[NSIndexSet indexSetWithIndex:StatsSectionTopPosts] withRowAnimation:UITableViewRowAnimationNone];
+    } failure:^(NSError *error) {
+        
+    }];
+    
+    [self.statsApiHelper fetchClicksWithSuccess:^(NSDictionary *clicks) {
+        [_statModels setObject:clicks forKey:@(StatsSectionClicks)];
+        [self.tableView reloadSections:[NSIndexSet indexSetWithIndex:StatsSectionClicks] withRowAnimation:UITableViewRowAnimationNone];
+    } failure:^(NSError *error) {
+        
+    }];
+}
+
+- (BOOL)showingTodayForSection:(StatsSection)section {
+    return [_showingToday[@(section)] boolValue];
+}
+
+- (NSArray *)resultsForSection:(StatsSection)section {
+    NSDictionary *data = _statModels[@(section)];
+    return [self showingTodayForSection:section] ? data[@"today"] : data[@"yesterday"];
 }
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
@@ -167,7 +192,7 @@ typedef NS_ENUM(NSInteger, TotalFollowersShareRow) {
             return TotalFollowersShareRowTotalRows;
         default:
         {
-            NSInteger numberOfResults = [self numberOfResultsForSection:section];
+            NSInteger numberOfResults = [self resultsForSection:section].count;
             return numberOfResults ? 2 + numberOfResults : 3;
         }
     }
@@ -202,7 +227,7 @@ typedef NS_ENUM(NSInteger, TotalFollowersShareRow) {
                 case StatsDataRowTitle:
                     return [StatsTwoLabelCell heightForRow];
                 default:
-                    return [self numberOfResultsForSection:StatsSectionTopPosts] > 0 ? [StatsTwoLabelCell heightForRow] : [StatsNoResultsCell heightForRow];
+                    return [self resultsForSection:indexPath.section].count > 0 ? [StatsTwoLabelCell heightForRow] : [StatsNoResultsCell heightForRow];
             }
         default:
             return 0.0f;
@@ -210,45 +235,47 @@ typedef NS_ENUM(NSInteger, TotalFollowersShareRow) {
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
-    
     switch (indexPath.section) {
         case StatsSectionVisitors:
             switch (indexPath.row) {
                 case VisitorRowGraphUnitButton:
                 {
-                    StatsButtonCell *cell = [tableView dequeueReusableCellWithIdentifier:ButtonCellReuseIdentifier];
-                    [cell addButtonWithTitle:NSLocalizedString(@"Day", nil) target:self action:@selector(reloadData)];
-                    [cell addButtonWithTitle:NSLocalizedString(@"Month", nil) target:self action:@selector(reloadData)];
-                    [cell addButtonWithTitle:NSLocalizedString(@"Year", nil) target:self action:@selector(reloadData)];
+                    StatsButtonCell *cell = [tableView dequeueReusableCellWithIdentifier:VisitorsUnitButtonCellReuseIdentifier];
+                    [cell addButtonWithTitle:NSLocalizedString(@"Days", nil) target:self action:@selector(daySelected:) section:indexPath.section];
+                    [cell addButtonWithTitle:NSLocalizedString(@"Months", nil) target:self action:@selector(monthSelected:) section:indexPath.section];
+                    [cell addButtonWithTitle:NSLocalizedString(@"Years", nil) target:self action:@selector(yearSelected:) section:indexPath.section];
                     return cell;
                 }
                 case VisitorRowGraph:
                 {
                     StatsBarGraphCell *cell = [tableView dequeueReusableCellWithIdentifier:GraphCellIdentifier];
-                    cell.backgroundColor = [UIColor magentaColor];
+                    cell.contentView.backgroundColor = [UIColor magentaColor];
                     return cell;
                 }
                 case VisitorRowTodayStats:
                 {
                     StatsCounterCell *cell = [tableView dequeueReusableCellWithIdentifier:CountCellReuseIdentifier];
+                    StatsSummary *summary = _statModels[@(StatsSectionVisitors)];
                     [cell setTitle:NSLocalizedString(@"Today", @"Title for Today cell")];
-                    [cell addCount:@0 withLabel:NSLocalizedString(@"Visitors", @"Visitor label for Today cell")];
-                    [cell addCount:@0 withLabel:NSLocalizedString(@"Views", @"View label for Today cell")];
+                    [cell addCount:summary.visitorCountToday withLabel:NSLocalizedString(@"Visitors", @"Visitor label for Today cell")];
+                    [cell addCount:summary.viewCountToday withLabel:NSLocalizedString(@"Views", @"View label for Today cell")];
                     return cell;
                 }
                 case VisitorRowBestEver:
                 {
                     StatsCounterCell *cell = [tableView dequeueReusableCellWithIdentifier:CountCellReuseIdentifier];
+                    StatsSummary *summary = _statModels[@(StatsSectionVisitors)];
                     [cell setTitle:NSLocalizedString(@"Best Ever", nil)];
-                    [cell addCount:@1337 withLabel:NSLocalizedString(@"Views", nil)];
+                    [cell addCount:summary.viewCountBest withLabel:NSLocalizedString(@"Views", nil)];
                     return cell;
                 }
                 case VisitorRowAllTime:
                 {
                     StatsCounterCell *cell = [tableView dequeueReusableCellWithIdentifier:CountCellReuseIdentifier];
+                    StatsSummary *summary = _statModels[@(StatsSectionVisitors)];
                     [cell setTitle:NSLocalizedString(@"All Time", nil)];
-                    [cell addCount:@10 withLabel:NSLocalizedString(@"Views", nil)];
-                    [cell addCount:@3 withLabel:NSLocalizedString(@"Comments", nil)];
+                    [cell addCount:summary.totalViews withLabel:NSLocalizedString(@"Views", nil)];
+                    [cell addCount:summary.totalComments withLabel:NSLocalizedString(@"Comments", nil)];
                     return cell;
                 }
                 default:
@@ -262,7 +289,7 @@ typedef NS_ENUM(NSInteger, TotalFollowersShareRow) {
         case StatsSectionClicks:
         case StatsSectionReferrers:
         case StatsSectionSearchTerms:
-            return [self cellForDataSection:indexPath.section rowIndex:indexPath.row];
+            return [self cellForItemListSection:indexPath.section rowIndex:indexPath.row];
         default:
             return nil;
     }
@@ -273,43 +300,48 @@ typedef NS_ENUM(NSInteger, TotalFollowersShareRow) {
 - (UITableViewCell *)cellForTotalsFollowersSharesRowWithIndex:(NSInteger)index {
     NSString *title;
     NSString *leftLabel;
+    NSNumber *leftCount;
     NSString *rightLabel;
-    NSNumber *count;
+    NSNumber *rightCount;
+    
+    StatsSummary *summary = _statModels[@(StatsSectionVisitors)];
     
     switch (index) {
         case TotalFollowersShareRowContentPost:
             title = @"Content";
             leftLabel = @"Posts";
-            count = @0;
+            leftCount = summary.totalPosts;
             break;
         case TotalFollowersShareRowContentCategoryTag:
             leftLabel = @"Categories";
+            leftCount = summary.totalCatagories;
             rightLabel = @"Tags";
-            count = @0;
+            rightCount = summary.totalTags;
             break;
         case TotalFollowersShareRowFollowers:
             title = @"Followers";
             leftLabel = @"Blog";
+            leftCount = summary.totalFollowersBlog;
             rightLabel = @"Comments";
-            count = @0;
+            rightCount = summary.totalFollowersComments;
             break;
         case TotalFollowersShareRowShare:
             title = @"Shares";
             leftLabel = @"Shares";
-            count = @0;
+            leftCount = summary.totalShares;
             break;
     }
     
     StatsCounterCell *cell = [self.tableView dequeueReusableCellWithIdentifier:CountCellReuseIdentifier];
     [cell setTitle:NSLocalizedString(title,@"Title for the data cell")];
-    [cell addCount:@0 withLabel:NSLocalizedString(leftLabel,@"Label for the count")];
+    [cell addCount:leftCount withLabel:NSLocalizedString(leftLabel,@"Label for the count")];
     if (rightLabel) {
-        [cell addCount:@0 withLabel:NSLocalizedString(rightLabel,@"Label for the right count")];
+        [cell addCount:rightCount withLabel:NSLocalizedString(rightLabel,@"Label for the right count")];
     }
     return cell;
 }
 
-- (UITableViewCell *)cellForDataSection:(StatsSection)section rowIndex:(NSInteger)index {
+- (UITableViewCell *)cellForItemListSection:(StatsSection)section rowIndex:(NSInteger)index {
     // Data title header
     NSString *dataTitleRowLeft = NSLocalizedString(@"Title", nil);
     NSString *dataTitleRowRight = NSLocalizedString(@"Views", nil);
@@ -334,28 +366,30 @@ typedef NS_ENUM(NSInteger, TotalFollowersShareRow) {
     switch (index) {
         case StatsDataRowButtons:
         {
-            cell = [self.tableView dequeueReusableCellWithIdentifier:ButtonCellReuseIdentifier];
-            [(StatsButtonCell *)cell addButtonWithTitle:NSLocalizedString(@"Today",nil) target:self.tableView action:@selector(reloadData)];
-            [(StatsButtonCell *)cell addButtonWithTitle:NSLocalizedString(@"Yesterday",nil) target:self.tableView action:@selector(reloadData)];
-            break;
+            cell = [self.tableView dequeueReusableCellWithIdentifier:TodayYesterdayButtonCellReuseIdentifier];
+            [(StatsTodayYesterdayButtonCell *)cell setupForSection:section delegate:self todayActive:[self showingTodayForSection:section]];
+                    break;
         }
         case StatsDataRowTitle:
         {
+            //HERE: should be coloured title
             cell = [self.tableView dequeueReusableCellWithIdentifier:TwoLabelCellReuseIdentifier];
-            [(StatsTwoLabelCell *)cell setLeftLabelText:dataTitleRowLeft];
-            [(StatsTwoLabelCell *)cell setRightLabelText:dataTitleRowRight];
+            [(StatsTwoLabelCell *)cell setLeft:dataTitleRowLeft right:dataTitleRowRight titleCell:YES];
             break;
         }
         default:
         {
-            if ([self numberOfResultsForSection:section] == 0) {
+            if ([self resultsForSection:section].count == 0) {
                 cell = [self.tableView dequeueReusableCellWithIdentifier:NoResultsCellIdentifier];
                 [(StatsNoResultsCell *)cell configureForSection:section];
             } else {
                 cell = [self.tableView dequeueReusableCellWithIdentifier:ResultRowCellIdentifier];
-                // from data array...
-                [(StatsResultCell *)cell setResultTitle:@"Post title!"];
-                [(StatsResultCell *)cell setResultCount:@9];
+                StatsTitleCountItem *data = [self resultsForSection:section][index-2];
+                self.numberFormatter = [[NSNumberFormatter alloc]init];
+                self.numberFormatter.locale = [NSLocale currentLocale];
+                self.numberFormatter.numberStyle = NSNumberFormatterDecimalStyle;
+                self.numberFormatter.usesGroupingSeparator = YES;
+                [(StatsTwoLabelCell *)cell setLeft:data.title right:[self.numberFormatter stringFromNumber:data.count]];
             }
         }
     }
@@ -369,11 +403,12 @@ typedef NS_ENUM(NSInteger, TotalFollowersShareRow) {
 - (UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section {
     UITableViewHeaderFooterView *header = [tableView dequeueReusableHeaderFooterViewWithIdentifier:StatSectionHeaderViewIdentifier];
     [header.contentView.subviews makeObjectsPerformSelector:@selector(removeFromSuperview)];
-    header.backgroundColor = [WPStyleGuide itsEverywhereGrey];
+    header.contentView.backgroundColor = [WPStyleGuide itsEverywhereGrey];
     
-    UILabel *sectionName = [[UILabel alloc] initWithFrame:CGRectMake(0, 6.0f, 0, 30.0f)];
-    sectionName.backgroundColor = [WPStyleGuide darkAsNightGrey];
-    sectionName.textColor = [UIColor whiteColor];
+    UILabel *sectionName = [[UILabel alloc] initWithFrame:CGRectMake(5.0f, 10.0f, 0, 30.0f)];
+    sectionName.textColor = [WPStyleGuide littleEddieGrey];
+    sectionName.backgroundColor = [WPStyleGuide itsEverywhereGrey];
+    sectionName.opaque = YES;
     sectionName.font = [WPStyleGuide postTitleFont];
     
     switch (section) {
@@ -399,17 +434,36 @@ typedef NS_ENUM(NSInteger, TotalFollowersShareRow) {
             sectionName.text = NSLocalizedString(@"Search Engine Terms", nil);
             break;
         default:
-            sectionName.text = @"Pokemon";
+            sectionName.text = @"";
             break;
     }
     
-    CGSize size = [sectionName.text sizeWithAttributes:[WPStyleGuide postTitleAttributes]];
-    sectionName.frame = (CGRect) {
-        .size = CGSizeMake(size.width, sectionName.frame.size.height),
-        .origin = sectionName.frame.origin
-    };
+    [sectionName sizeToFit];
     [header.contentView addSubview:sectionName];
     return header;
+}
+
+
+#pragma mark - StatsTodayYesterdayButtonCellDelegate
+
+- (void)statsDayChangedForSection:(StatsSection)section todaySelected:(BOOL)todaySelected {
+    [_showingToday setObject:@(todaySelected) forKey:@(section)];
+    [self.tableView reloadSections:[NSIndexSet indexSetWithIndex:section] withRowAnimation:UITableViewRowAnimationFade];
+}
+
+
+#pragma mark - Visitors Graph button selectors
+
+- (void)daySelected:(UIButton *)sender {
+
+}
+
+- (void)monthSelected:(UIButton *)sender {
+    
+}
+
+- (void)yearSelected:(UIButton *)sender {
+    
 }
 
 @end
