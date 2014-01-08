@@ -16,10 +16,6 @@
 #import <MediaPlayer/MediaPlayer.h>
 #import "WPAccount.h"
 
-@interface BlurView : UIView
-@property (nonatomic, strong) UIToolbar *toolbar;
-@end
-
 static NSUInteger const AlertDiscardChanges = 500;
 
 @interface UITextView (Placeholder) <UITextViewDelegate>
@@ -127,10 +123,6 @@ static NSUInteger const AlertDiscardChanges = 500;
     
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(keyboardWillShow:) name:UIKeyboardWillShowNotification object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(keyboardWillHide:) name:UIKeyboardWillHideNotification object:nil];
-    
-    BlurView *blur = [[BlurView alloc] initWithFrame:_editContainerView.bounds];
-    blur.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
-    [_editContainerView insertSubview:blur atIndex:0];
     
     _mediaImageview.userInteractionEnabled = NO;
 }
@@ -640,28 +632,6 @@ static NSUInteger const AlertDiscardChanges = 500;
 
 - (NSString *)placeholder {
     return objc_getAssociatedObject(self, "placeholder");
-}
-
-@end
-
-@implementation BlurView
-
-- (instancetype)initWithFrame:(CGRect)frame {
-    self = [super initWithFrame:frame];
-    if (self) {
-        self.clipsToBounds = YES;
-        if (!_toolbar) {
-            _toolbar = [[UIToolbar alloc] initWithFrame:[self bounds]];
-            _toolbar.barTintColor = [UIColor blackColor];
-            [self.layer insertSublayer:_toolbar.layer atIndex:0];
-        }
-    }
-    return self;
-}
-
-- (void)layoutSubviews {
-    [super layoutSubviews];
-    _toolbar.frame = self.bounds;
 }
 
 @end
