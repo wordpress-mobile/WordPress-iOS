@@ -183,7 +183,7 @@
     
         if (_media.remoteStatus == MediaRemoteStatusFailed) {
             arrows.image = [UIImage imageNamed:@"uploading_spin_red"];
-            instruction.text = @"TAP TO RETRY";
+            instruction.text = [NSLocalizedString(@"Tap to retry", @"If a media upload fails, instruction to retry displayed") uppercaseString];
         } else {
             CABasicAnimation *spin = [CABasicAnimation animationWithKeyPath:@"transform.rotation"];
             spin.toValue = [NSNumber numberWithFloat:(M_PI * 2)];
@@ -191,20 +191,23 @@
             spin.cumulative = YES;
             spin.repeatCount = MAXFLOAT;
             [arrows.layer addAnimation:spin forKey:@"spin"];
-            instruction.text = @"TAP TO CANCEL";
+            instruction.text = [NSLocalizedString(@"Tap to cancel", @"During media upload, 'tap to cancel' instruction") uppercaseString];
         }
     }
 }
 
 - (NSString *)titleForMedia {
     if (_media.remoteStatus == MediaRemoteStatusPushing) {
-        return [NSString stringWithFormat:NSLocalizedString(@"Uploading: %.1f%%.", @""), _media.progress * 100.0];
-    
+        NSString *title = NSLocalizedString(@"Processing...", @"Uploading message displayed when an image has finished uploading.");
+        if ((_media.progress * 100.0f) < 100.0f) {
+            title = [NSString stringWithFormat:NSLocalizedString(@"%.1f%%.", @"Uploading message with percentage displayed when an image is uploading."), _media.progress * 100.0];
+        }
+        return title;
     } else if (_media.remoteStatus == MediaRemoteStatusProcessing) {
-        return NSLocalizedString(@"Preparing for upload...", @"");
+        return NSLocalizedString(@"Preparing...", @"Uploading message when an image is about to be uploaded.");
     
     } else if (_media.remoteStatus == MediaRemoteStatusFailed) {
-        return NSLocalizedString(@"Upload failed.", @"");
+        return NSLocalizedString(@"Upload failed.", @"Uploading message when a media upload has failed.");
     
     } else {
         if (_media.title) {

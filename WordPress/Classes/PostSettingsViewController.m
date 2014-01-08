@@ -848,7 +848,7 @@ static NSString *const RemoveGeotagCellIdentifier = @"RemoveGeotagCellIdentifier
                 switch (indexPath.row) {
                     case 0:
                         if (!self.post.post_thumbnail) {
-                            MediaBrowserViewController *vc = [[MediaBrowserViewController alloc] initWithPost:self.apost settingFeaturedImage:YES];
+                            MediaBrowserViewController *vc = [[MediaBrowserViewController alloc] initWithPost:self.apost selectingFeaturedImage:YES];
                             [self.navigationController pushViewController:vc animated:YES];
                             [WPMobileStats flagProperty:StatsPropertyPostDetailSettingsClickedSetFeaturedImage forEvent:[self formattedStatEventString:StatsEventPostDetailClosedEditor]];
                         }
