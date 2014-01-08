@@ -83,7 +83,7 @@
 
 - (void)showAddNewCategory {
     DDLogMethod();
-    WPAddCategoryViewController *addCategoryViewController = [[WPAddCategoryViewController alloc] initWithBlog:self.post.blog];
+    WPAddCategoryViewController *addCategoryViewController = [[WPAddCategoryViewController alloc] initWithPost:self.post];
     [self.navigationController pushViewController:addCategoryViewController animated:YES];
 }
 
@@ -175,18 +175,25 @@
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
     [tableView deselectRowAtIndexPath:[tableView indexPathForSelectedRow] animated:YES];
-    
+
     Category *category = self.categories[indexPath.row];
-    if ([self.selectedCategories containsObject:category]) {
-        [self.selectedCategories removeObject:category];
-    } else {
-        [self.selectedCategories addObject:category];
-    }
-    
+
     // If we're choosing a parent category then we're done.
     if (self.selectionMode == CategoriesSelectionModeParent) {
+        if ([self.delegate respondsToSelector:@selector(categoriesViewController:didSelectCategory:)]) {
+            [self.delegate categoriesViewController:self didSelectCategory:category];
+        }
+
         [self.navigationController popViewControllerAnimated:YES];
         return;
+    }
+
+    if ([self.selectedCategories containsObject:category]) {
+        [self.selectedCategories removeObject:category];
+        [tableView cellForRowAtIndexPath:indexPath].accessoryType = UITableViewCellAccessoryNone;
+    } else {
+        [self.selectedCategories addObject:category];
+        [tableView cellForRowAtIndexPath:indexPath].accessoryType = UITableViewCellAccessoryCheckmark;
     }
 }
 
