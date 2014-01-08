@@ -16,6 +16,7 @@
 #import "StatsClickGroup.h"
 #import "StatsReferrerGroup.h"
 #import "StatsTitleCountItem.h"
+#import "StatsViewByCountry.h"
 
 @interface StatsApiHelper ()
 
@@ -49,17 +50,6 @@
     }];
 }
 
-- (void)fetchStatsForPath:(NSString *)path success:(void (^)(NSDictionary *))success failure:(void (^)(NSError *))failure {
-    
-    [_api getPath:path parameters:nil success:^(AFHTTPRequestOperation *operation, id responseObject) {
-        success(responseObject);
-        return;
-    } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
-        failure(error);
-        return;
-    }];
-}
-
 - (void)fetchClicksWithSuccess:(void (^)(NSDictionary *))success failure:(void (^)(NSError *))failure {
     NSDate *today = [NSDate date];
     NSDate *yesterday = [NSDate dateWithTimeIntervalSinceNow:-24*3600];
@@ -76,12 +66,25 @@
     } failure:failure];
 }
                                              
-- (void)fetchCountryViewsForDate:(NSDate *)date success:(void (^)(NSDictionary *))success failure:(void (^)(NSError *))failure {
-    NSString *path = [NSString stringWithFormat:@"%@/country-views?date=%@", _statsPathPrefix, [self.formatter stringFromDate:date]];
-    [self fetchStatsForPath:path success:success failure:failure];
+- (void)fetchCountryViewsWithSuccess:(void (^)(NSDictionary *))success failure:(void (^)(NSError *))failure {
+    
+    NSDate *today = [NSDate date];
+    NSDate *yesterday = [NSDate dateWithTimeIntervalSinceNow:-24*3600];
+    
+    NSString *todayPath = [NSString stringWithFormat:@"%@/country-views?date=%@", _statsPathPrefix, [self.formatter stringFromDate:today]];
+    NSString *yesterdayPath = [NSString stringWithFormat:@"%@/country-views?date=%@", _statsPathPrefix, [self.formatter stringFromDate:yesterday]];
+    
+    [self fetchStatsForPath:todayPath success:^(NSDictionary *todaysData) {
+        [self fetchStatsForPath:yesterdayPath success:^(NSDictionary *yesterdaysData) {
+            NSArray *todayViewByCountry = [StatsViewByCountry viewByCountryFromData:todaysData withSiteId:self.siteID];
+            NSArray *yesterdayViewByCountry = [StatsViewByCountry viewByCountryFromData:yesterdaysData withSiteId:self.siteID];
+            
+            success(@{@"today":todayViewByCountry,@"yesterday":yesterdayViewByCountry});
+        } failure:failure];
+    }failure:failure];
 }
 
-- (void)fetchReferrersForDate:(NSDate *)date success:(void (^)(NSDictionary *))success failure:(void (^)(NSError *))failure {
+- (void)fetchReferrerWithSuccess:(void (^)(NSDictionary *))success failure:(void (^)(NSError *))failure {
     
     NSDate *today = [NSDate date];
     NSDate *yesterday = [NSDate dateWithTimeIntervalSinceNow:-24*3600];
@@ -99,7 +102,7 @@
     }failure:failure];
 }
 
-- (void)fetchSearchTermsForDate:(NSDate *)date success:(void (^)(NSDictionary *))success failure:(void (^)(NSError *))failure {
+- (void)fetchSearchTermsWithSuccess:(void (^)(NSDictionary *))success failure:(void (^)(NSError *))failure {
     
     NSDate *today = [NSDate date];
     NSDate *yesterday = [NSDate dateWithTimeIntervalSinceNow:-24*3600];
@@ -124,6 +127,7 @@
     [self fetchStatsForPath:yesterdayPath success:^(NSDictionary *yesterdayData) {
         [self fetchStatsForPath:todayPath success:^(NSDictionary *todayData) {
         
+#warning this is different than the other implementations
             success([StatsTopPost postsFromTodaysData:todayData yesterdaysData:yesterdayData siteId:self.siteID]);
 
         } failure:^(NSError *e) {
@@ -132,6 +136,17 @@
         
     } failure:^(NSError *e) {
         failure(e);
+    }];
+}
+
+- (void)fetchStatsForPath:(NSString *)path success:(void (^)(NSDictionary *))success failure:(void (^)(NSError *))failure {
+    
+    [_api getPath:path parameters:nil success:^(AFHTTPRequestOperation *operation, id responseObject) {
+        success(responseObject);
+        return;
+    } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+        failure(error);
+        return;
     }];
 }
 

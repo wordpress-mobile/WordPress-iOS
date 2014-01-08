@@ -72,7 +72,7 @@ static CGFloat const StatCounterCellHeight = 100.0f;
             .origin = CGPointMake(CountPadding, 0),
             .size = CGSizeMake(self.contentView.frame.size.width-2*CountPadding, IS_RETINA ? 0.5f : 1.0f)
         };
-        separator.backgroundColor = [WPStyleGuide whisperGrey];
+        separator.backgroundColor = [WPStyleGuide readGrey];
     }
     [self.separatorLines addObject:separator];
     [self addSubview:separator];
