@@ -11,6 +11,9 @@
 #import <UIKit/UIKit.h>
 #import "MediaSearchFilterHeaderView.h"
 
+// Notifications
+extern NSString *const MediaFeaturedImageSelectedNotification;
+extern NSString *const MediaShouldInsertBelowNotification;
 @class Blog, AbstractPost;
 
 @interface MediaBrowserViewController : UIViewController <MediaSearchFilterDelegate, UISearchBarDelegate, UIActionSheetDelegate, UIImagePickerControllerDelegate>

@@ -38,12 +38,6 @@ typedef NS_ENUM(NSUInteger, MediaOrientation) {
 	MediaOrientationLandscape
 };
 
-extern NSString *const ImageUploadSuccessfulNotification;
-extern NSString *const ImageUploadFailedNotification;
-extern NSString *const FeaturedImageUploadSuccessfulNotification;
-extern NSString *const FeaturedImageUploadFailedNotification;
-extern NSString *const VideoUploadSuccessfulNotification;
-extern NSString *const VideoUploadFailedNotification;
 
 @interface Media :  NSManagedObject
 
