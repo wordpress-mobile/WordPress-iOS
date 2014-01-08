@@ -119,6 +119,15 @@ NSString *const MediaFeaturedImageSelectedNotification = @"MediaFeaturedImageSel
     _refreshHeaderView.tintColor = [WPStyleGuide whisperGrey];
     [self.collectionView addSubview:_refreshHeaderView];
     
+    UIBarButtonItem *addMediaButton;
+    UIImage *image = [UIImage imageNamed:@"icon-posts-add"];
+    UIButton *button = [[UIButton alloc] initWithFrame:CGRectMake(0, 0, image.size.width, image.size.height)];
+    [button setImage:image forState:UIControlStateNormal];
+    [button addTarget:self action:@selector(addMediaButtonPressed:) forControlEvents:UIControlEventTouchUpInside];
+    addMediaButton = [[UIBarButtonItem alloc] initWithCustomView:button];
+    
+    [WPStyleGuide setRightBarButtonItemWithCorrectSpacing:addMediaButton forNavigationItem:self.navigationItem];
+    
     [self.view addSubview:self.multiselectToolbar];
     
     self.multiselectToolbar.barTintColor = [WPStyleGuide littleEddieGrey];
@@ -157,20 +166,7 @@ NSString *const MediaFeaturedImageSelectedNotification = @"MediaFeaturedImageSel
         _allMedia = self.post.media.allObjects;
         self.filteredMedia = _allMedia;
     }
-}
-
-- (void)viewDidAppear:(BOOL)animated {
-    [super viewDidAppear:animated];
     
-    UIBarButtonItem *addMediaButton;
-    UIImage *image = [UIImage imageNamed:@"icon-posts-add"];
-    UIButton *button = [[UIButton alloc] initWithFrame:CGRectMake(0, 0, image.size.width, image.size.height)];
-    [button setImage:image forState:UIControlStateNormal];
-    [button addTarget:self action:@selector(addMediaButtonPressed:) forControlEvents:UIControlEventTouchUpInside];
-    addMediaButton = [[UIBarButtonItem alloc] initWithCustomView:button];
-
-    [WPStyleGuide setRightBarButtonItemWithCorrectSpacing:addMediaButton forNavigationItem:self.navigationItem];
-
     [self applyMonthFilterForMonth:_currentFilterMonth];
     [self applyFilterWithSearchText:_currentSearchText];
 }
@@ -637,8 +633,8 @@ static NSArray *generatedMonthYearsFilters;
             ([[UIImagePickerController availableMediaTypesForSourceType:UIImagePickerControllerSourceTypeCamera] containsObject:(NSString *)kUTTypeMovie]));
 }
 
-- (BOOL)deviceSupportsVideoAndVideoPressEnabled{
-	return ([self deviceSupportsVideo] && self.videoPressEnabled);
+- (BOOL)deviceSupportsVideoAndVideoEnabled {
+	return ([self deviceSupportsVideo] && (self.videoPressEnabled || !self.blog.isWPcom));
 }
 
 - (IBAction)addMediaButtonPressed:(id)sender {
@@ -652,7 +648,7 @@ static NSArray *generatedMonthYearsFilters;
         
         UIActionSheet *addMediaActionSheet;
         if ([UIImagePickerController isSourceTypeAvailable:UIImagePickerControllerSourceTypeCamera]) {
-            if ([self deviceSupportsVideoAndVideoPressEnabled]) {
+            if ([self deviceSupportsVideoAndVideoEnabled]) {
                 addMediaActionSheet = [[UIActionSheet alloc] initWithTitle:nil delegate:self cancelButtonTitle:NSLocalizedString(@"Cancel", nil) destructiveButtonTitle:nil otherButtonTitles:NSLocalizedString(@"Add Photo From Library", nil), NSLocalizedString(@"Take Photo", nil), NSLocalizedString(@"Add Video from Library", @""), NSLocalizedString(@"Record Video", @""),nil];
                 
             } else {
