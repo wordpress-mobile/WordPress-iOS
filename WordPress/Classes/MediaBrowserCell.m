@@ -135,9 +135,9 @@
     
     _title.text = [self titleForMedia];
     
-    _thumbnail.image = [UIImage imageNamed:[@"media_" stringByAppendingString:_media.mediaType]];
+    _thumbnail.image = [UIImage imageNamed:[@"media_" stringByAppendingString:_media.mediaTypeString]];
     
-    if ([_media.mediaType isEqualToString:@"image"]) {
+    if (_media.mediaType == MediaTypeImage) {
         if (_media.thumbnail.length > 0) {
             _thumbnail.image = [UIImage imageWithData:_media.thumbnail];
             _thumbnail.contentMode = UIViewContentModeScaleAspectFit;
@@ -150,7 +150,7 @@
 - (void)loadThumbnail {
     // TODO: Video thumbnails are not available atm. Download them when they are.
     // ATM the API sends the full video, not a thumbnail.
-    if ([_media.mediaType isEqualToString:@"image"] && _media.remoteURL && _media.thumbnail.length == 0) {
+    if (_media.mediaType == MediaTypeImage && _media.remoteURL && _media.thumbnail.length == 0) {
         [[WPImageSource sharedSource] downloadThumbnailForMedia:_media success:^(NSNumber *mediaId){
             if ([mediaId isEqualToNumber:_media.mediaID]) {
                 _thumbnail.contentMode = UIViewContentModeScaleAspectFit;
@@ -213,15 +213,15 @@
         }
 
         NSString *filesizeString = nil;
-        if([_media.filesize floatValue] > 1024)
+        if ([_media.filesize floatValue] > 1024) {
             filesizeString = [NSString stringWithFormat:@"%.2f MB", ([_media.filesize floatValue]/1024)];
-        else
+        } else {
             filesizeString = [NSString stringWithFormat:@"%.2f KB", [_media.filesize floatValue]];
-            
-        if ([_media.mediaType isEqualToString:@"image"]) {
-            return [NSString stringWithFormat:@"%dx%d %@",
-                           [_media.width intValue], [_media.height intValue], filesizeString];
-        } else if ([_media.mediaType isEqualToString:@"video"]) {
+        }
+        
+        if (_media.mediaType == MediaTypeImage) {
+            return [NSString stringWithFormat:@"%dx%d %@", [_media.width intValue], [_media.height intValue], filesizeString];
+        } else if (_media.mediaType == MediaTypeVideo) {
             NSNumber *valueForDisplay = [NSNumber numberWithDouble:[_media.length doubleValue]];
             NSNumber *days = [NSNumber numberWithDouble:
                               ([valueForDisplay doubleValue] / 86400)];
@@ -233,12 +233,6 @@
                                   ([days intValue] * 24 * 60) -
                                   ([hours intValue] * 60))];
             NSNumber *seconds = [NSNumber numberWithInt:([valueForDisplay intValue] % 60)];
-            
-            if([_media.filesize floatValue] > 1024)
-                filesizeString = [NSString stringWithFormat:@"%.2f MB", ([_media.filesize floatValue]/1024)];
-            else
-                filesizeString = [NSString stringWithFormat:@"%.2f KB", [_media.filesize floatValue]];
-            
             return [NSString stringWithFormat:
                            @"%02d:%02d:%02d %@",
                            [hours intValue],

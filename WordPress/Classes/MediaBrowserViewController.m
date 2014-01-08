@@ -1273,10 +1273,11 @@ static NSArray *generatedMonthYearsFilters;
 	imageMedia.filename = filename;
 	imageMedia.localURL = filepath;
 	imageMedia.filesize = [NSNumber numberWithInt:(imageData.length/1024)];
-    if (_isPickingFeaturedImage)
-        imageMedia.mediaType = @"featured";
-    else
-        imageMedia.mediaType = @"image";
+    if (_isPickingFeaturedImage) {
+        imageMedia.featured = YES;
+    } else {
+        imageMedia.mediaType = MediaTypeImage;
+    }
 	imageMedia.thumbnail = UIImageJPEGRepresentation(imageThumbnail, 0.90);
 	imageMedia.width = [NSNumber numberWithInt:theImage.size.width];
 	imageMedia.height = [NSNumber numberWithInt:theImage.size.height];

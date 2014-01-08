@@ -20,7 +20,10 @@ typedef NS_ENUM(NSUInteger, MediaRemoteStatus) {
 
 typedef NS_ENUM(NSUInteger, MediaType) {
 	MediaTypeImage,
-	MediaTypeVideo
+    MediaTypeFeatured,
+	MediaTypeVideo,
+    MediaTypeDocument,
+    MediaTypePowerpoint
 };
 
 typedef NS_ENUM(NSUInteger, MediaResize) {
@@ -45,7 +48,8 @@ extern NSString *const VideoUploadFailedNotification;
 @interface Media :  NSManagedObject
 
 @property (nonatomic, strong) NSNumber * mediaID;
-@property (nonatomic, strong) NSString * mediaType;
+@property (nonatomic, strong) NSString * mediaTypeString;
+@property (nonatomic, assign) MediaType mediaType;
 @property (weak, nonatomic, readonly) NSString * mediaTypeName;
 @property (nonatomic, strong) NSString * remoteURL;
 @property (nonatomic, strong) NSString * localURL;
@@ -61,14 +65,14 @@ extern NSString *const VideoUploadFailedNotification;
 @property (nonatomic, strong) NSDate * creationDate;
 @property (weak, nonatomic, readonly) NSString * html;
 @property (nonatomic, strong) NSNumber * remoteStatusNumber;
-@property (nonatomic) MediaRemoteStatus remoteStatus;
-@property (nonatomic) float progress;
+@property (nonatomic, assign) MediaRemoteStatus remoteStatus;
+@property (nonatomic, assign) CGFloat progress;
 @property (nonatomic, strong) NSString * caption;
 @property (nonatomic, strong) NSString * desc;
-
 @property (nonatomic, strong) Blog * blog;
 @property (nonatomic, strong) NSMutableSet * posts;
-@property (nonatomic, assign) BOOL isUnattached;
+@property (nonatomic, assign, readonly) BOOL unattached;
+@property (nonatomic, assign) BOOL featured;
 
 + (Media *)newMediaForPost:(AbstractPost *)post;
 + (Media *)newMediaForBlog:(Blog *)blog;
