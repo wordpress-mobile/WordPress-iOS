@@ -304,8 +304,9 @@ const CGFloat NotificationsCommentDetailViewControllerReplyTextViewDefaultHeight
         if (response) {
             NSArray *noteArray = [NSArray arrayWithObject:_note];
             [[[WPAccount defaultWordPressComAccount] restApi] refreshNotifications:noteArray fields:nil success:^(AFHTTPRequestOperation *operation, id refreshResponseObject) {
-                [self displayNote];
+                // Buttons are adjusted optimistically, so no need to update
             } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+                // Fail silently but force a refresh to revert any optimistic changes
                 [self displayNote];
             }];
         }
