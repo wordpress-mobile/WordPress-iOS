@@ -767,8 +767,18 @@
 		ACC156CC0E10E67600D6E1A0 /* EditPostViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = ACC156CB0E10E67600D6E1A0 /* EditPostViewController.m */; };
 		C52C783418771F7100FB1D2D /* StatsTwoLabelCell.m in Sources */ = {isa = PBXBuildFile; fileRef = C52C783318771F7100FB1D2D /* StatsTwoLabelCell.m */; };
 		C52C7837187739C500FB1D2D /* StatsNoResultsCell.m in Sources */ = {isa = PBXBuildFile; fileRef = C52C7836187739C500FB1D2D /* StatsNoResultsCell.m */; };
-		C52C783E1877415200FB1D2D /* StatsResultCell.m in Sources */ = {isa = PBXBuildFile; fileRef = C52C783D1877415200FB1D2D /* StatsResultCell.m */; };
 		C52C7841187762FE00FB1D2D /* StatsBarGraphCell.m in Sources */ = {isa = PBXBuildFile; fileRef = C52C7840187762FE00FB1D2D /* StatsBarGraphCell.m */; };
+		C52C784B187AFB2300FB1D2D /* StatsSummary.m in Sources */ = {isa = PBXBuildFile; fileRef = C52C784A187AFB2300FB1D2D /* StatsSummary.m */; };
+		C52C784E187B054100FB1D2D /* StatsVisits.m in Sources */ = {isa = PBXBuildFile; fileRef = C52C784D187B054100FB1D2D /* StatsVisits.m */; };
+		C52C7854187B066700FB1D2D /* StatsTopPost.m in Sources */ = {isa = PBXBuildFile; fileRef = C52C7853187B066700FB1D2D /* StatsTopPost.m */; };
+		C52C7857187B419500FB1D2D /* StatsTitleCountItem.m in Sources */ = {isa = PBXBuildFile; fileRef = C52C7856187B419500FB1D2D /* StatsTitleCountItem.m */; };
+		C52C785A187B460100FB1D2D /* StatsViewByCountry.m in Sources */ = {isa = PBXBuildFile; fileRef = C52C7859187B460100FB1D2D /* StatsViewByCountry.m */; };
+		C52C785D187B597400FB1D2D /* StatsClickGroup.m in Sources */ = {isa = PBXBuildFile; fileRef = C52C785C187B597400FB1D2D /* StatsClickGroup.m */; };
+		C52C7860187B59D500FB1D2D /* StatsClick.m in Sources */ = {isa = PBXBuildFile; fileRef = C52C785F187B59D500FB1D2D /* StatsClick.m */; };
+		C52C7863187C4CEC00FB1D2D /* StatsGroup.m in Sources */ = {isa = PBXBuildFile; fileRef = C52C7862187C4CEC00FB1D2D /* StatsGroup.m */; };
+		C52C7866187C4D7200FB1D2D /* StatsReferrerGroup.m in Sources */ = {isa = PBXBuildFile; fileRef = C52C7865187C4D7200FB1D2D /* StatsReferrerGroup.m */; };
+		C52C7869187C4E9100FB1D2D /* StatsReferrer.m in Sources */ = {isa = PBXBuildFile; fileRef = C52C7868187C4E9100FB1D2D /* StatsReferrer.m */; };
+		C52C786C187C5C3800FB1D2D /* StatsTodayYesterdayButtonCell.m in Sources */ = {isa = PBXBuildFile; fileRef = C52C786B187C5C3800FB1D2D /* StatsTodayYesterdayButtonCell.m */; };
 		C533CF350E6D3ADA000C3DE8 /* CommentsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = C533CF340E6D3ADA000C3DE8 /* CommentsViewController.m */; };
 		C545E0A21811B9880020844C /* ContextManager.m in Sources */ = {isa = PBXBuildFile; fileRef = C545E0A11811B9880020844C /* ContextManager.m */; };
 		C55A90D90E8026CD00E1C9B5 /* WPSegmentedSelectionTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = C55A90D80E8026CD00E1C9B5 /* WPSegmentedSelectionTableViewController.m */; };
@@ -1927,10 +1937,30 @@
 		C52C783318771F7100FB1D2D /* StatsTwoLabelCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = StatsTwoLabelCell.m; sourceTree = "<group>"; };
 		C52C7835187739C500FB1D2D /* StatsNoResultsCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = StatsNoResultsCell.h; sourceTree = "<group>"; };
 		C52C7836187739C500FB1D2D /* StatsNoResultsCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = StatsNoResultsCell.m; sourceTree = "<group>"; };
-		C52C783C1877415200FB1D2D /* StatsResultCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = StatsResultCell.h; sourceTree = "<group>"; };
-		C52C783D1877415200FB1D2D /* StatsResultCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = StatsResultCell.m; sourceTree = "<group>"; };
 		C52C783F187762FE00FB1D2D /* StatsBarGraphCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = StatsBarGraphCell.h; sourceTree = "<group>"; };
 		C52C7840187762FE00FB1D2D /* StatsBarGraphCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = StatsBarGraphCell.m; sourceTree = "<group>"; };
+		C52C7849187AFB2300FB1D2D /* StatsSummary.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = StatsSummary.h; sourceTree = "<group>"; };
+		C52C784A187AFB2300FB1D2D /* StatsSummary.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = StatsSummary.m; sourceTree = "<group>"; };
+		C52C784C187B054100FB1D2D /* StatsVisits.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = StatsVisits.h; sourceTree = "<group>"; };
+		C52C784D187B054100FB1D2D /* StatsVisits.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = StatsVisits.m; sourceTree = "<group>"; };
+		C52C7852187B066700FB1D2D /* StatsTopPost.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = StatsTopPost.h; sourceTree = "<group>"; };
+		C52C7853187B066700FB1D2D /* StatsTopPost.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = StatsTopPost.m; sourceTree = "<group>"; };
+		C52C7855187B419500FB1D2D /* StatsTitleCountItem.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = StatsTitleCountItem.h; sourceTree = "<group>"; };
+		C52C7856187B419500FB1D2D /* StatsTitleCountItem.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = StatsTitleCountItem.m; sourceTree = "<group>"; };
+		C52C7858187B460100FB1D2D /* StatsViewByCountry.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = StatsViewByCountry.h; sourceTree = "<group>"; };
+		C52C7859187B460100FB1D2D /* StatsViewByCountry.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = StatsViewByCountry.m; sourceTree = "<group>"; };
+		C52C785B187B597400FB1D2D /* StatsClickGroup.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = StatsClickGroup.h; sourceTree = "<group>"; };
+		C52C785C187B597400FB1D2D /* StatsClickGroup.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = StatsClickGroup.m; sourceTree = "<group>"; };
+		C52C785E187B59D500FB1D2D /* StatsClick.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = StatsClick.h; sourceTree = "<group>"; };
+		C52C785F187B59D500FB1D2D /* StatsClick.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = StatsClick.m; sourceTree = "<group>"; };
+		C52C7861187C4CEC00FB1D2D /* StatsGroup.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = StatsGroup.h; sourceTree = "<group>"; };
+		C52C7862187C4CEC00FB1D2D /* StatsGroup.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = StatsGroup.m; sourceTree = "<group>"; };
+		C52C7864187C4D7200FB1D2D /* StatsReferrerGroup.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = StatsReferrerGroup.h; sourceTree = "<group>"; };
+		C52C7865187C4D7200FB1D2D /* StatsReferrerGroup.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = StatsReferrerGroup.m; sourceTree = "<group>"; };
+		C52C7867187C4E9100FB1D2D /* StatsReferrer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = StatsReferrer.h; sourceTree = "<group>"; };
+		C52C7868187C4E9100FB1D2D /* StatsReferrer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = StatsReferrer.m; sourceTree = "<group>"; };
+		C52C786A187C5C3800FB1D2D /* StatsTodayYesterdayButtonCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = StatsTodayYesterdayButtonCell.h; sourceTree = "<group>"; };
+		C52C786B187C5C3800FB1D2D /* StatsTodayYesterdayButtonCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = StatsTodayYesterdayButtonCell.m; sourceTree = "<group>"; };
 		C533CF330E6D3ADA000C3DE8 /* CommentsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CommentsViewController.h; sourceTree = "<group>"; };
 		C533CF340E6D3ADA000C3DE8 /* CommentsViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CommentsViewController.m; sourceTree = "<group>"; };
 		C545E0A01811B9880020844C /* ContextManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ContextManager.h; sourceTree = "<group>"; };
@@ -2528,6 +2558,7 @@
 			isa = PBXGroup;
 			children = (
 				46F84612185A8B7E009D0DA5 /* WPContentViewProvider.h */,
+				C52C7845187AFA9700FB1D2D /* Stats */,
 				5D42A3D4175E7452005CFF05 /* AbstractComment.h */,
 				5D42A3D5175E7452005CFF05 /* AbstractComment.m */,
 				5D42A3D6175E7452005CFF05 /* AbstractPost.h */,
@@ -3830,12 +3861,39 @@
 				C52C783318771F7100FB1D2D /* StatsTwoLabelCell.m */,
 				C52C7835187739C500FB1D2D /* StatsNoResultsCell.h */,
 				C52C7836187739C500FB1D2D /* StatsNoResultsCell.m */,
-				C52C783C1877415200FB1D2D /* StatsResultCell.h */,
-				C52C783D1877415200FB1D2D /* StatsResultCell.m */,
 				C52C783F187762FE00FB1D2D /* StatsBarGraphCell.h */,
 				C52C7840187762FE00FB1D2D /* StatsBarGraphCell.m */,
+				C52C786A187C5C3800FB1D2D /* StatsTodayYesterdayButtonCell.h */,
+				C52C786B187C5C3800FB1D2D /* StatsTodayYesterdayButtonCell.m */,
 			);
 			name = Cells;
+			sourceTree = "<group>";
+		};
+		C52C7845187AFA9700FB1D2D /* Stats */ = {
+			isa = PBXGroup;
+			children = (
+				C52C7849187AFB2300FB1D2D /* StatsSummary.h */,
+				C52C784A187AFB2300FB1D2D /* StatsSummary.m */,
+				C52C784C187B054100FB1D2D /* StatsVisits.h */,
+				C52C784D187B054100FB1D2D /* StatsVisits.m */,
+				C52C7852187B066700FB1D2D /* StatsTopPost.h */,
+				C52C7853187B066700FB1D2D /* StatsTopPost.m */,
+				C52C7855187B419500FB1D2D /* StatsTitleCountItem.h */,
+				C52C7856187B419500FB1D2D /* StatsTitleCountItem.m */,
+				C52C7858187B460100FB1D2D /* StatsViewByCountry.h */,
+				C52C7859187B460100FB1D2D /* StatsViewByCountry.m */,
+				C52C785B187B597400FB1D2D /* StatsClickGroup.h */,
+				C52C785C187B597400FB1D2D /* StatsClickGroup.m */,
+				C52C785E187B59D500FB1D2D /* StatsClick.h */,
+				C52C785F187B59D500FB1D2D /* StatsClick.m */,
+				C52C7861187C4CEC00FB1D2D /* StatsGroup.h */,
+				C52C7862187C4CEC00FB1D2D /* StatsGroup.m */,
+				C52C7864187C4D7200FB1D2D /* StatsReferrerGroup.h */,
+				C52C7865187C4D7200FB1D2D /* StatsReferrerGroup.m */,
+				C52C7867187C4E9100FB1D2D /* StatsReferrer.h */,
+				C52C7868187C4E9100FB1D2D /* StatsReferrer.m */,
+			);
+			name = Stats;
 			sourceTree = "<group>";
 		};
 		C533CF320E6D3AB3000C3DE8 /* Comments */ = {
@@ -5233,6 +5291,7 @@
 				CC701658185A7513007B37DB /* InlineComposeToolbarView.m in Sources */,
 				46F8714F1838C41600BC149B /* NSDate+StringFormatting.m in Sources */,
 				296526FE105810E100597FA3 /* NSString+Helpers.m in Sources */,
+				C52C784B187AFB2300FB1D2D /* StatsSummary.m in Sources */,
 				2906F812110CDA8900169D56 /* EditCommentViewController.m in Sources */,
 				45F45B3611614BA50022D394 /* CPopoverManager.m in Sources */,
 				83418AAA11C9FA6E00ACF00C /* Comment.m in Sources */,
@@ -5248,6 +5307,7 @@
 				834CAE9F122D56B1003DDF49 /* UIImage+Alpha.m in Sources */,
 				834CAEA0122D56B1003DDF49 /* UIImage+RoundedCorner.m in Sources */,
 				83D180FA12329B1A002DCCB0 /* EditPageViewController.m in Sources */,
+				C52C784E187B054100FB1D2D /* StatsVisits.m in Sources */,
 				83CAD41D1235F854003DFA20 /* MediaObjectViewController.m in Sources */,
 				E125445612BF5B3900D87A0A /* Category.m in Sources */,
 				E125451812BF68F900D87A0A /* Page.m in Sources */,
@@ -5255,6 +5315,7 @@
 				E1B4A9E112FC8B1000EB3F67 /* EGORefreshTableHeaderView.m in Sources */,
 				85D2415817D0701A00AF090E /* UIViewController+iOS7StyleChanges.m in Sources */,
 				85468F3A17C483F1008AB9C1 /* NewCommentsTableViewCell.m in Sources */,
+				C52C7854187B066700FB1D2D /* StatsTopPost.m in Sources */,
 				E1D458691309589C00BF0235 /* Coordinate.m in Sources */,
 				375D090D133B94C3000CC9CD /* BlogsTableViewCell.m in Sources */,
 				850DE06117CD4611003A1057 /* NewNotificationsTableViewCell.m in Sources */,
@@ -5269,7 +5330,9 @@
 				CCEF153114C9EA050001176D /* WPWebAppViewController.m in Sources */,
 				462F4E0A18369F0B0028D2F8 /* BlogDetailsViewController.m in Sources */,
 				462F4E0E18369F300028D2F8 /* WPTableViewCell.m in Sources */,
+				C52C7863187C4CEC00FB1D2D /* StatsGroup.m in Sources */,
 				C56636ED1875BCBC00226AAB /* StatsApiHelper.m in Sources */,
+				C52C7866187C4D7200FB1D2D /* StatsReferrerGroup.m in Sources */,
 				E13F23C314FE84600081D9CC /* NSMutableDictionary+Helpers.m in Sources */,
 				E114D79A153D85A800984182 /* WPError.m in Sources */,
 				C52C783418771F7100FB1D2D /* StatsTwoLabelCell.m in Sources */,
@@ -5278,6 +5341,7 @@
 				A25EBD87156E330600530E3D /* WPTableViewController.m in Sources */,
 				5DEB61B4156FCD3400242C35 /* WPWebView.m in Sources */,
 				5DEB61B8156FCD5200242C35 /* WPChromelessWebViewController.m in Sources */,
+				C52C785D187B597400FB1D2D /* StatsClickGroup.m in Sources */,
 				CC24E5EF1577D1EA00A6D5B5 /* WPFriendFinderViewController.m in Sources */,
 				E1AB07AD1578D34300D6AD64 /* SettingsViewController.m in Sources */,
 				E13EB7A5157D230000885780 /* WordPressComApi.m in Sources */,
@@ -5295,7 +5359,6 @@
 				E1A0FAE7162F11CF0063B098 /* UIDevice+WordPressIdentifier.m in Sources */,
 				CC1D80141656D938002A542F /* NotificationsViewController.m in Sources */,
 				CC1D802B165830AB002A542F /* NotificationsTableViewCell.m in Sources */,
-				C52C783E1877415200FB1D2D /* StatsResultCell.m in Sources */,
 				CC1D80311658354C002A542F /* Note.m in Sources */,
 				CC0199E9165C17020073A966 /* NotificationsCommentDetailViewController.m in Sources */,
 				372AD15516682BA100F21BC1 /* NotificationsFollowDetailViewController.m in Sources */,
@@ -5318,7 +5381,9 @@
 				E1523EB516D3B305002C5A36 /* InstapaperActivity.m in Sources */,
 				E1D0D81616D3B86800E33F4C /* SafariActivity.m in Sources */,
 				85495F4817C6D9A500871A7A /* CommentViewController.m in Sources */,
+				C52C7860187B59D500FB1D2D /* StatsClick.m in Sources */,
 				E1D0D82916D3D19200E33F4C /* PocketAPI.m in Sources */,
+				C52C786C187C5C3800FB1D2D /* StatsTodayYesterdayButtonCell.m in Sources */,
 				E1D0D82A16D3D19200E33F4C /* PocketAPILogin.m in Sources */,
 				E1D0D82B16D3D19200E33F4C /* PocketAPIOperation.m in Sources */,
 				46FE8276184FD8A200535844 /* WordPressComOAuthClient.m in Sources */,
@@ -5359,6 +5424,7 @@
 				46F8D7FB183C293200E10A38 /* ReaderPostView.m in Sources */,
 				5D42A3FB175E75EE005CFF05 /* ReaderPostDetailViewController.m in Sources */,
 				5D42A3FC175E75EE005CFF05 /* ReaderPostsViewController.m in Sources */,
+				C52C785A187B460100FB1D2D /* StatsViewByCountry.m in Sources */,
 				C56636FB18761C8600226AAB /* StatsButtonCell.m in Sources */,
 				857F55B517CEA01A00E154E1 /* WPKeyboardToolbarBase.m in Sources */,
 				5D42A3FD175E75EE005CFF05 /* ReaderPostTableViewCell.m in Sources */,
@@ -5375,6 +5441,7 @@
 				E100C6BB1741473000AE48D8 /* WordPress-11-12.xcmappingmodel in Sources */,
 				C56636FE1877011000226AAB /* StatsCounterCell.m in Sources */,
 				E1A03EE217422DCF0085D192 /* BlogToAccount.m in Sources */,
+				C52C7869187C4E9100FB1D2D /* StatsReferrer.m in Sources */,
 				E1A03F48174283E10085D192 /* BlogToJetpackAccount.m in Sources */,
 				5D119DA3176FBE040073D83A /* UIImageView+AFNetworkingExtra.m in Sources */,
 				5DF59C0B1770AE3A00171208 /* UILabel+SuggestSize.m in Sources */,
@@ -5382,6 +5449,7 @@
 				E1921F5A17733C3E000F4079 /* WPImageSource.m in Sources */,
 				851734431798C64700A30E27 /* NSURL+Util.m in Sources */,
 				E1D95EB817A28F5E00A3E9F3 /* WPActivityDefaults.m in Sources */,
+				C52C7857187B419500FB1D2D /* StatsTitleCountItem.m in Sources */,
 				E1ECF7DF17A7CEE600535A05 /* ViewAdminButton.m in Sources */,
 				E1AC282D18282423004D394C /* SFHFKeychainUtils.m in Sources */,
 			);
