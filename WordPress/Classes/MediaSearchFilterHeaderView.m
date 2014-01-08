@@ -13,6 +13,7 @@
 #import "InputViewButton.h"
 
 static CGFloat const DateButtonWidth = 44.0f;
+static CGFloat pickerViewHeight = 216.0f;
 
 @interface MediaSearchFilterHeaderView () <UISearchBarDelegate, UIPickerViewDataSource, UIPickerViewDelegate, UIPickerViewAccessibilityDelegate,
                                             UIPopoverControllerDelegate>
@@ -58,6 +59,9 @@ static CGFloat const DateButtonWidth = 44.0f;
 }
 
 - (UISearchBar *)searchBar {
+    if (_searchBar) {
+        return _searchBar;
+    }
     UISearchBar *searchBar = [[UISearchBar alloc] initWithFrame:CGRectMake(0, 0, self.bounds.size.width - DateButtonWidth, 44.0f)];
     _searchBar = searchBar;
     _searchBar.backgroundColor = [WPStyleGuide readGrey];
@@ -71,22 +75,16 @@ static CGFloat const DateButtonWidth = 44.0f;
 }
 
 - (void)filterDatesPressed {
-    CGFloat pickerViewHeight = 216.0f;
+    // Dismiss keyboard if search was active
+    [self.searchBar resignFirstResponder];
+    
     if (_monthPickerView || _popover) {
         if (IS_IPAD) {
             [_popover dismissPopoverAnimated:YES];
             [_monthPickerView removeFromSuperview];
             _popover = nil;
         } else {
-            [UIView animateWithDuration:0.4 delay:0 options:UIViewAnimationOptionBeginFromCurrentState animations:^{
-                _monthPickerView.frame = (CGRect) {
-                    .origin = CGPointMake(0, self.delegate.collectionView.frame.size.height + pickerViewHeight),
-                    .size = _monthPickerView.frame.size
-                };
-            } completion:^(BOOL finished) {
-                [_monthPickerView removeFromSuperview];
-                _monthPickerView = nil;
-            }];
+            [self hideMonthPickerView];
         }
         return;
     }
@@ -122,6 +120,18 @@ static CGFloat const DateButtonWidth = 44.0f;
     }
 }
 
+- (void)hideMonthPickerView {
+    [UIView animateWithDuration:0.4 delay:0 options:UIViewAnimationOptionBeginFromCurrentState animations:^{
+        _monthPickerView.frame = (CGRect) {
+            .origin = CGPointMake(0, self.delegate.collectionView.frame.size.height + pickerViewHeight),
+            .size = _monthPickerView.frame.size
+        };
+    } completion:^(BOOL finished) {
+        [_monthPickerView removeFromSuperview];
+        _monthPickerView = nil;
+    }];
+}
+
 - (void)popoverControllerDidDismissPopover:(UIPopoverController *)popoverController {
     _popover = nil;
     _monthPickerView = nil;
@@ -135,6 +145,10 @@ static CGFloat const DateButtonWidth = 44.0f;
 
 - (void)searchBarTextDidBeginEditing:(UISearchBar *)searchBar {
     [searchBar setShowsCancelButton:YES animated:YES];
+    
+    if (IS_IPHONE && _monthPickerView) {
+        [self hideMonthPickerView];
+    }
 }
 
 - (void)searchBarTextDidEndEditing:(UISearchBar *)searchBar {
