@@ -17,7 +17,7 @@
 #import "StatsButtonCell.h"
 #import "StatsCounterCell.h"
 #import "StatsNoResultsCell.h"
-#import "StatsBarGraphCell.h"
+#import "StatsViewsVisitorsBarGraphCell.h"
 #import "StatsSummary.h"
 #import "StatsTitleCountItem.h"
 #import "StatsTodayYesterdayButtonCell.h"
@@ -91,8 +91,15 @@ typedef NS_ENUM(NSInteger, TotalFollowersShareRow) {
     [self.tableView registerClass:[StatsTwoLabelCell class] forCellReuseIdentifier:TwoLabelCellReuseIdentifier];
     [self.tableView registerClass:[StatsNoResultsCell class] forCellReuseIdentifier:NoResultsCellIdentifier];
     [self.tableView registerClass:[StatsTwoLabelCell class] forCellReuseIdentifier:ResultRowCellIdentifier];
+<<<<<<< HEAD
     [self.tableView registerClass:[StatsBarGraphCell class] forCellReuseIdentifier:GraphCellIdentifier];
     [self.tableView registerClass:[StatsGroupedCell class] forCellReuseIdentifier:StatsGroupedCellIdentifier];
+=======
+    [self.tableView registerClass:[StatsViewsVisitorsBarGraphCell class] forCellReuseIdentifier:GraphCellIdentifier];
+    
+    self.refreshControl = [[UIRefreshControl alloc] init];
+    [self.refreshControl addTarget:self action:@selector(refreshControlTriggered) forControlEvents:UIControlEventValueChanged];
+>>>>>>> Stats views/visitor basic chart
     
     _statModels = [NSMutableDictionary dictionary];
     
@@ -157,48 +164,42 @@ typedef NS_ENUM(NSInteger, TotalFollowersShareRow) {
 }
 
 - (void)loadStats {
+    void (^saveStatsForSection)(id stats, StatsSection section) = ^(id stats, StatsSection section) {
+        [_statModels setObject:stats forKey:@(section)];
+        [self.tableView reloadSections:[NSIndexSet indexSetWithIndex:section] withRowAnimation:UITableViewRowAnimationNone];
+        [self.refreshControl endRefreshing];
+    };
+    void (^failure)(NSError *error) = ^(NSError *error) {
+        DDLogError(@"Stats: Error fetching stats %@", error);
+    };
+    
     [self.statsApiHelper fetchSummaryWithSuccess:^(StatsSummary *summary) {
-        [_statModels setObject:summary forKey:@(StatsSectionVisitors)];
-        [self.tableView reloadSections:[NSIndexSet indexSetWithIndex:StatsSectionVisitors] withRowAnimation:UITableViewRowAnimationNone];
-    } failure:^(NSError *error) {
-        DDLogError(@"Stats: Error fetching summary %@", error);
-    }];
+        saveStatsForSection(summary, StatsSectionVisitors);
+    } failure:failure];
 
     [self.statsApiHelper fetchTopPostsWithSuccess:^(NSDictionary *todayAndYesterdayTopPosts) {
-        [_statModels setObject:todayAndYesterdayTopPosts forKey:@(StatsSectionTopPosts)];
-        [self.tableView reloadSections:[NSIndexSet indexSetWithIndex:StatsSectionTopPosts] withRowAnimation:UITableViewRowAnimationNone];
-    } failure:^(NSError *error) {
-        
-    }];
+        saveStatsForSection(todayAndYesterdayTopPosts, StatsSectionTopPosts);
+    } failure:failure];
     
     [self.statsApiHelper fetchClicksWithSuccess:^(NSDictionary *clicks) {
-        [_statModels setObject:clicks forKey:@(StatsSectionClicks)];
-        [self.tableView reloadSections:[NSIndexSet indexSetWithIndex:StatsSectionClicks] withRowAnimation:UITableViewRowAnimationNone];
-    } failure:^(NSError *error) {
-        
-    }];
+        saveStatsForSection(clicks, StatsSectionClicks);
+    } failure:failure];
     
     [self.statsApiHelper fetchCountryViewsWithSuccess:^(NSDictionary *views) {
-        [_statModels setObject:views forKey:@(StatsSectionViewsByCountry)];
-        [self.tableView reloadSections:[NSIndexSet indexSetWithIndex:StatsSectionViewsByCountry] withRowAnimation:UITableViewRowAnimationNone];
-    } failure:^(NSError *error) {
-        
-    }];
+        saveStatsForSection(views, StatsSectionViewsByCountry);
+    } failure:failure];
     
     [self.statsApiHelper fetchReferrerWithSuccess:^(NSDictionary *referrers) {
-        [_statModels setObject:referrers forKey:@(StatsSectionReferrers)];
-        [self.tableView reloadSections:[NSIndexSet indexSetWithIndex:StatsSectionReferrers] withRowAnimation:UITableViewRowAnimationNone];
-    } failure:^(NSError *error) {
-        
-    }];
+        saveStatsForSection(referrers, StatsSectionReferrers);
+    } failure:failure];
     
     [self.statsApiHelper fetchSearchTermsWithSuccess:^(NSDictionary *terms) {
-        [_statModels setObject:terms forKey:@(StatsSectionSearchTerms)];
-        [self.tableView reloadSections:[NSIndexSet indexSetWithIndex:StatsSectionSearchTerms]withRowAnimation:UITableViewRowAnimationNone];
-    } failure:^(NSError *error) {
-        
-    }];
-    
+        saveStatsForSection(terms, StatsSectionSearchTerms);
+    } failure:failure];
+}
+
+- (void)refreshControlTriggered {
+    [self loadStats];
 }
 
 - (BOOL)showingTodayForSection:(StatsSection)section {
@@ -235,7 +236,7 @@ typedef NS_ENUM(NSInteger, TotalFollowersShareRow) {
                 case VisitorRowGraphUnitButton:
                     return [StatsButtonCell heightForRow];
                 case VisitorRowGraph:
-                    return [StatsBarGraphCell heightForRow];
+                    return [StatsViewsVisitorsBarGraphCell heightForRow];
                 case VisitorRowTodayStats:
                 case VisitorRowBestEver:
                 case VisitorRowAllTime:
@@ -278,8 +279,8 @@ typedef NS_ENUM(NSInteger, TotalFollowersShareRow) {
                 }
                 case VisitorRowGraph:
                 {
-                    StatsBarGraphCell *cell = [tableView dequeueReusableCellWithIdentifier:GraphCellIdentifier];
-                    cell.contentView.backgroundColor = [UIColor magentaColor];
+                    StatsViewsVisitorsBarGraphCell *cell = [tableView dequeueReusableCellWithIdentifier:GraphCellIdentifier];
+                    [cell setGraphData:nil];
                     return cell;
                 }
                 case VisitorRowTodayStats:
