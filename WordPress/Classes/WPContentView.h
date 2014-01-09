@@ -24,7 +24,7 @@
 - (void)contentView:(WPContentView *)contentView didReceiveVideoLinkAction:(id)sender;
 - (void)contentView:(WPContentView *)contentView didReceiveFeaturedImageAction:(id)sender;
 - (void)contentView:(WPContentView *)contentView didReceiveAuthorLinkAction:(id)sender;
-- (void)postViewDidLoadAllMedia:(WPContentView *)postView;
+- (void)contentViewDidLoadAllMedia:(WPContentView *)postView;
 @end
 
 @interface WPContentView : UIView <DTAttributedTextContentViewDelegate, ReaderMediaQueueDelegate> {
@@ -42,6 +42,7 @@
 - (UIButton *)addActionButtonWithImage:(UIImage *)buttonImage selectedImage:(UIImage *)selectedButtonImage;
 - (void)removeActionButton:(UIButton *)button;
 - (void)updateActionButtons;
+- (void)refreshMediaLayout;
 - (void)reset;
 
 @end
