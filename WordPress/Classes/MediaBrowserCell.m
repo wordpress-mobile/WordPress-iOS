@@ -195,7 +195,7 @@
 - (NSString *)titleForMedia {
     if (_media.remoteStatus == MediaRemoteStatusPushing) {
         NSString *title = NSLocalizedString(@"Processing...", @"Uploading message displayed when an image has finished uploading.");
-        if ((_media.progress * 100.0f) < 100.0f) {
+        if (_media.progress < 1.0f) {
             title = [NSString stringWithFormat:NSLocalizedString(@"%.1f%%.", @"Uploading message with percentage displayed when an image is uploading."), _media.progress * 100.0];
         }
         return title;
