@@ -216,17 +216,12 @@
 - (BOOL)hasChanged {
     if (![self isRevision])
         return NO;
+
+    if ([self hasSiteSpecificChanges]) {
+        return YES;
+    }
     
     AbstractPost *original = (AbstractPost *)self.original;
-    
-    //Do not move the Featured Image check below in the code.
-    if ((self.post_thumbnail != original.post_thumbnail)
-        && (![self.post_thumbnail  isEqual:original.post_thumbnail])){
-        self.isFeaturedImageChanged = YES;
-        return YES;
-    } else
-        self.isFeaturedImageChanged = NO;
-	
     
     //first let's check if there's no post title or content (in case a cheeky user deleted them both)
     if ((self.postTitle == nil || [self.postTitle isEqualToString:@""]) && (self.content == nil || [self.content isEqualToString:@""]))
@@ -236,6 +231,7 @@
     if ((self.postTitle != original.postTitle)
         && (![self.postTitle isEqual:original.postTitle]))
         return YES;
+    
     if ((self.content != original.content)
         && (![self.content isEqual:original.content]))
         return YES;
@@ -258,6 +254,25 @@
 	
     if (self.hasRemote == NO) {
         return YES;
+    }
+    
+    return NO;
+}
+
+- (BOOL)hasSiteSpecificChanges {
+    if (![self isRevision]) {
+        return NO;
+    }
+    
+    AbstractPost *original = (AbstractPost *)self.original;
+    
+    //Do not move the Featured Image check below in the code.
+    if ((self.post_thumbnail != original.post_thumbnail)
+        && (![self.post_thumbnail  isEqual:original.post_thumbnail])){
+        self.isFeaturedImageChanged = YES;
+        return YES;
+    } else {
+        self.isFeaturedImageChanged = NO;
     }
     
     // Relationships are not going to be nil, just empty sets,

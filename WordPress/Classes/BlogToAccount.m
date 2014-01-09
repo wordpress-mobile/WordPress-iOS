@@ -12,6 +12,7 @@
 #import "WPAccount.h"
 
 static NSString * const DefaultDotcomAccountDefaultsKey = @"AccountDefaultDotcom";
+static NSString * const WPComXMLRPCUrl = @"https://wordpress.com/xmlrpc.php";
 
 @implementation BlogToAccount {
     NSString *_defaultWpcomUsername;

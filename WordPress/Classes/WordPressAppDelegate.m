@@ -83,11 +83,13 @@ static NSString *const CameraPlusImagesNotification = @"CameraPlusImagesNotifica
 #pragma mark - UIApplicationDelegate
 
 - (BOOL)application:(UIApplication *)application willFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
+    [WordPressAppDelegate fixKeychainAccess];
+
     // Crash reporting, logging, debugging
     [self configureLogging];
     [self configureHockeySDK];
     [self configureCrashlytics];
-    [self printDebugLaunchInfo];
+    [self printDebugLaunchInfoWithLaunchOptions:launchOptions];
     [self toggleExtraDebuggingIfNeeded];
     [self removeCredentialsForDebug];
 
@@ -106,6 +108,27 @@ static NSString *const CameraPlusImagesNotification = @"CameraPlusImagesNotifica
 
     [self customizeAppearance];
 
+    // Push notifications
+    [NotificationsManager registerForPushNotifications];
+
+    // Deferred tasks to speed up app launch
+    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_BACKGROUND, 0), ^{
+        [self changeCurrentDirectory];
+        [[PocketAPI sharedAPI] setConsumerKey:[WordPressComApiCredentials pocketConsumerKey]];
+        [self cleanUnusedMediaFileFromTmpDir];
+    });
+    
+    return YES;
+}
+
+- (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
+    DDLogVerbose(@"didFinishLaunchingWithOptions state: %d", application.applicationState);
+    
+    // Launched by tapping a notification
+    if (application.applicationState == UIApplicationStateActive) {
+        [NotificationsManager handleNotificationForApplicationLaunch:launchOptions];
+    }
+
     CGRect bounds = [[UIScreen mainScreen] bounds];
     [self.window setFrame:bounds];
     [self.window setBounds:bounds]; // for good measure.
@@ -116,23 +139,10 @@ static NSString *const CameraPlusImagesNotification = @"CameraPlusImagesNotifica
     
     [self showWelcomeScreenIfNeededAnimated:NO];
 
-    // Push notifications
-    [NotificationsManager registerForPushNotifications];
-    [NotificationsManager handleNotificationForApplicationLaunch:launchOptions];
-
-    // Deferred tasks to speed up app launch
-    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_BACKGROUND, 0), ^{
-        [self changeCurrentDirectory];
-        [WordPressAppDelegate fixKeychainAccess];
-        [[PocketAPI sharedAPI] setConsumerKey:[WordPressComApiCredentials pocketConsumerKey]];
-        [self cleanUnusedMediaFileFromTmpDir];
-    });
-    
     return YES;
 }
 
-- (BOOL)application:(UIApplication *)application openURL:(NSURL *)url sourceApplication:(NSString *)sourceApplication annotation:(id)annotation
-{
+- (BOOL)application:(UIApplication *)application openURL:(NSURL *)url sourceApplication:(NSString *)sourceApplication annotation:(id)annotation {
     BOOL returnValue = NO;
     
     if ([[BITHockeyManager sharedHockeyManager].authenticator handleOpenURL:url
@@ -238,8 +248,8 @@ static NSString *const CameraPlusImagesNotification = @"CameraPlusImagesNotifica
     }];
 }
 
-- (void)applicationWillEnterForeground:(UIApplication *)application
-{
+- (void)applicationWillEnterForeground:(UIApplication *)application {
+    DDLogInfo(@"%@ %@", self, NSStringFromSelector(_cmd));
     [WPMobileStats resumeSession];
 }
 
@@ -252,18 +262,15 @@ static NSString *const CameraPlusImagesNotification = @"CameraPlusImagesNotifica
     
     [WPMobileStats recordAppOpenedForEvent:StatsEventAppOpened];
     
-    // Clear notifications badge and update server
+    // Clear notifications badge
     [UIApplication sharedApplication].applicationIconBadgeNumber = 0;
-    [[WordPressComApi sharedApi] syncPushNotificationInfo];
 }
 
-- (BOOL)application:(UIApplication *)application shouldSaveApplicationState:(NSCoder *)coder
-{
+- (BOOL)application:(UIApplication *)application shouldSaveApplicationState:(NSCoder *)coder {
     return YES;
 }
 
-- (BOOL)application:(UIApplication *)application shouldRestoreApplicationState:(NSCoder *)coder
-{
+- (BOOL)application:(UIApplication *)application shouldRestoreApplicationState:(NSCoder *)coder {
     return YES;
 }
 
@@ -825,7 +832,7 @@ static NSString *const CameraPlusImagesNotification = @"CameraPlusImagesNotifica
 - (void)checkWPcomAuthentication {
     // Temporarily set the is authenticated flag based upon if we have a WP.com OAuth2 token
     // TODO :: Move this BOOL to a method on the WordPressComApi along with checkWPcomAuthentication
-    BOOL tempIsAuthenticated = [[WordPressComApi sharedApi] authToken].length > 0;
+    BOOL tempIsAuthenticated = [[[WPAccount defaultWordPressComAccount] restApi] authToken].length > 0;
     self.isWPcomAuthenticated = tempIsAuthenticated;
     
 	NSString *authURL = @"https://wordpress.com/xmlrpc.php";
@@ -833,7 +840,7 @@ static NSString *const CameraPlusImagesNotification = @"CameraPlusImagesNotifica
     WPAccount *account = [WPAccount defaultWordPressComAccount];
 	if (account) {
         WPXMLRPCClient *client = [WPXMLRPCClient clientWithXMLRPCEndpoint:[NSURL URLWithString:authURL]];
-        [client setAuthorizationHeaderWithToken:[[WordPressComApi sharedApi] authToken]];
+        [client setAuthorizationHeaderWithToken:[[[WPAccount defaultWordPressComAccount] restApi] authToken]];
         [client callMethod:@"wp.getUsersBlogs"
                 parameters:[NSArray arrayWithObjects:account.username, account.password, nil]
                    success:^(AFHTTPRequestOperation *operation, id responseObject) {
@@ -843,7 +850,7 @@ static NSString *const CameraPlusImagesNotification = @"CameraPlusImagesNotifica
                        if ([error.domain isEqualToString:@"WPXMLRPCFaultError"] ||
                            ([error.domain isEqualToString:@"XMLRPC"] && error.code == 403)) {
                            self.isWPcomAuthenticated = NO;
-                           [[WordPressComApi sharedApi] invalidateOAuth2Token];
+                           [[[WPAccount defaultWordPressComAccount] restApi] invalidateOAuth2Token];
                        }
                        
                        DDLogError(@"Error authenticating %@ with WordPress.com: %@", account.username, [error description]);
@@ -924,7 +931,7 @@ static NSString *const CameraPlusImagesNotification = @"CameraPlusImagesNotifica
 
 #pragma mark - Debugging and logging
 
-- (void)printDebugLaunchInfo {
+- (void)printDebugLaunchInfoWithLaunchOptions:(NSDictionary *)launchOptions {
     UIDevice *device = [UIDevice currentDevice];
     NSInteger crashCount = [[NSUserDefaults standardUserDefaults] integerForKey:@"crashCount"];
     NSArray *languages = [[NSUserDefaults standardUserDefaults] objectForKey:@"AppleLanguages"];
@@ -945,6 +952,7 @@ static NSString *const CameraPlusImagesNotification = @"CameraPlusImagesNotifica
     DDLogInfo(@"Language:  %@", currentLanguage);
     DDLogInfo(@"UDID:      %@", [device wordpressIdentifier]);
     DDLogInfo(@"APN token: %@", [[NSUserDefaults standardUserDefaults] objectForKey:NotificationsDeviceToken]);
+    DDLogInfo(@"Launch options: %@", launchOptions);
     DDLogInfo(@"===========================================================================");
 }
 
