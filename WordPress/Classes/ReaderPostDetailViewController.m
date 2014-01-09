@@ -193,6 +193,7 @@ typedef enum {
 - (void)didRotateFromInterfaceOrientation:(UIInterfaceOrientation)fromInterfaceOrientation {
 	[super didRotateFromInterfaceOrientation:fromInterfaceOrientation];
 
+    [self.postView refreshMediaLayout]; // Resize media in the post detail to match the width of the new orientation.
     [self.postView setNeedsLayout];
 
 	// Make sure a selected comment is visible after rotating.
