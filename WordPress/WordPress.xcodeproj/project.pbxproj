@@ -767,7 +767,7 @@
 		ACC156CC0E10E67600D6E1A0 /* EditPostViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = ACC156CB0E10E67600D6E1A0 /* EditPostViewController.m */; };
 		C52C783418771F7100FB1D2D /* StatsTwoLabelCell.m in Sources */ = {isa = PBXBuildFile; fileRef = C52C783318771F7100FB1D2D /* StatsTwoLabelCell.m */; };
 		C52C7837187739C500FB1D2D /* StatsNoResultsCell.m in Sources */ = {isa = PBXBuildFile; fileRef = C52C7836187739C500FB1D2D /* StatsNoResultsCell.m */; };
-		C52C7841187762FE00FB1D2D /* StatsBarGraphCell.m in Sources */ = {isa = PBXBuildFile; fileRef = C52C7840187762FE00FB1D2D /* StatsBarGraphCell.m */; };
+		C52C7841187762FE00FB1D2D /* StatsViewsVisitorsBarGraphCell.m in Sources */ = {isa = PBXBuildFile; fileRef = C52C7840187762FE00FB1D2D /* StatsViewsVisitorsBarGraphCell.m */; };
 		C52C784B187AFB2300FB1D2D /* StatsSummary.m in Sources */ = {isa = PBXBuildFile; fileRef = C52C784A187AFB2300FB1D2D /* StatsSummary.m */; };
 		C52C784E187B054100FB1D2D /* StatsVisits.m in Sources */ = {isa = PBXBuildFile; fileRef = C52C784D187B054100FB1D2D /* StatsVisits.m */; };
 		C52C7854187B066700FB1D2D /* StatsTopPost.m in Sources */ = {isa = PBXBuildFile; fileRef = C52C7853187B066700FB1D2D /* StatsTopPost.m */; };
@@ -1937,8 +1937,8 @@
 		C52C783318771F7100FB1D2D /* StatsTwoLabelCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = StatsTwoLabelCell.m; sourceTree = "<group>"; };
 		C52C7835187739C500FB1D2D /* StatsNoResultsCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = StatsNoResultsCell.h; sourceTree = "<group>"; };
 		C52C7836187739C500FB1D2D /* StatsNoResultsCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = StatsNoResultsCell.m; sourceTree = "<group>"; };
-		C52C783F187762FE00FB1D2D /* StatsBarGraphCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = StatsBarGraphCell.h; sourceTree = "<group>"; };
-		C52C7840187762FE00FB1D2D /* StatsBarGraphCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = StatsBarGraphCell.m; sourceTree = "<group>"; };
+		C52C783F187762FE00FB1D2D /* StatsViewsVisitorsBarGraphCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = StatsViewsVisitorsBarGraphCell.h; sourceTree = "<group>"; };
+		C52C7840187762FE00FB1D2D /* StatsViewsVisitorsBarGraphCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = StatsViewsVisitorsBarGraphCell.m; sourceTree = "<group>"; };
 		C52C7849187AFB2300FB1D2D /* StatsSummary.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = StatsSummary.h; sourceTree = "<group>"; };
 		C52C784A187AFB2300FB1D2D /* StatsSummary.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = StatsSummary.m; sourceTree = "<group>"; };
 		C52C784C187B054100FB1D2D /* StatsVisits.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = StatsVisits.h; sourceTree = "<group>"; };
@@ -3861,8 +3861,8 @@
 				C52C783318771F7100FB1D2D /* StatsTwoLabelCell.m */,
 				C52C7835187739C500FB1D2D /* StatsNoResultsCell.h */,
 				C52C7836187739C500FB1D2D /* StatsNoResultsCell.m */,
-				C52C783F187762FE00FB1D2D /* StatsBarGraphCell.h */,
-				C52C7840187762FE00FB1D2D /* StatsBarGraphCell.m */,
+				C52C783F187762FE00FB1D2D /* StatsViewsVisitorsBarGraphCell.h */,
+				C52C7840187762FE00FB1D2D /* StatsViewsVisitorsBarGraphCell.m */,
 				C52C786A187C5C3800FB1D2D /* StatsTodayYesterdayButtonCell.h */,
 				C52C786B187C5C3800FB1D2D /* StatsTodayYesterdayButtonCell.m */,
 				C52C7876187DEF7700FB1D2D /* StatsGroupedCell.h */,
@@ -5404,8 +5404,7 @@
 				85AD6AEC173CCF9E002CB896 /* WPNUXPrimaryButton.m in Sources */,
 				85AD6AEF173CCFDC002CB896 /* WPNUXSecondaryButton.m in Sources */,
 				85AD6B1E17405889002CB896 /* WPNUXUtility.m in Sources */,
-				C52C7841187762FE00FB1D2D /* StatsBarGraphCell.m in Sources */,
-				C52C7878187DEF7700FB1D2D /* StatsGroupedCell.m in Sources */,
+				C52C7841187762FE00FB1D2D /* StatsViewsVisitorsBarGraphCell.m in Sources */,
 				85B6F74F1742DA1E00CE7F3A /* WPNUXMainButton.m in Sources */,
 				85B6F7521742DAE800CE7F3A /* WPNUXBackButton.m in Sources */,
 				E2E7EB46185FB140004F5E72 /* WPBlogSelectorButton.m in Sources */,

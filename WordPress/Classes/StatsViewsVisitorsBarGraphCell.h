@@ -10,8 +10,14 @@
 #import <UIKit/UIKit.h>
 #import "WPTableViewCell.h"
 
+<<<<<<< HEAD:WordPress/Classes/StatsBarGraphCell.h
 @interface StatsBarGraphCell : WPTableViewCell
+=======
+@interface StatsViewsVisitorsBarGraphCell : UITableViewCell
+>>>>>>> Stats views/visitor basic chart:WordPress/Classes/StatsViewsVisitorsBarGraphCell.h
 
 + (CGFloat)heightForRow;
+
+- (void)setGraphData:(NSDictionary *)graphData;
 
 @end
