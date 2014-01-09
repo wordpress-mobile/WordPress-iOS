@@ -232,7 +232,7 @@ NSString *const DefaultCellIdentifier = @"DefaultCellIdentifier";
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
     UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:DefaultCellIdentifier];
 
-    if (IS_IPAD || self.tableView.isEditing) {
+    if (self.tableView.isEditing) {
 		cell.accessoryType = UITableViewCellAccessoryNone;
 	} else {
         cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
@@ -244,9 +244,6 @@ NSString *const DefaultCellIdentifier = @"DefaultCellIdentifier";
 }
 
 - (void)tableView:(UITableView *)tableView willDisplayCell:(UITableViewCell *)cell forRowAtIndexPath:(NSIndexPath *)indexPath {
-	if (IS_IPAD) {
-		cell.accessoryType = UITableViewCellAccessoryNone;
-	}
 
     // Are we approaching the end of the table?
     if ((indexPath.section + 1 == [self numberOfSectionsInTableView:tableView]) && (indexPath.row + 4 >= [self tableView:tableView numberOfRowsInSection:indexPath.section]) && [self tableView:tableView numberOfRowsInSection:indexPath.section] > 10) {
