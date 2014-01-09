@@ -218,7 +218,7 @@ const CGFloat RPVControlButtonBorderSize = 0.0f;
 - (void)configurePost:(ReaderPost *)post {
     self.post = post;
     
-    // This will show the placeholder avatar. Do this here instead of prepareForReusue
+    // This will show the placeholder avatar. Do this here instead of prepareForReuse
     // so avatars show up after a cell is created, and not dequeued.
     [self setAvatar:nil];
     
@@ -700,28 +700,37 @@ const CGFloat RPVControlButtonBorderSize = 0.0f;
     [self.timeButton setTitle:[self.post.date_created_gmt shortString] forState:UIControlStateNormal];
 }
 
+- (void)refreshMediaLayout {
+    [self refreshMediaLayoutInArray:self.mediaArray];
+}
 
-#pragma mark ReaderMediaQueueDelegate methods
-
-- (void)readerMediaQueue:(ReaderMediaQueue *)mediaQueue didLoadBatch:(NSArray *)batch {
+- (void)refreshMediaLayoutInArray:(NSArray *)mediaArray {
     BOOL frameChanged = NO;
     
-    for (NSInteger i = 0; i < [batch count]; i++) {
-        ReaderMediaView *mediaView = [batch objectAtIndex:i];
+    for (ReaderMediaView *mediaView in mediaArray) {
         if ([self updateMediaLayout:mediaView]) {
             frameChanged = YES;
         }
     }
     
     if (frameChanged) {
-        // need to reset the layouter because otherwise we get the old framesetter or cached layout frames
-        self.textContentView.layouter = nil;
-        
-        // layout might have changed due to image sizes
-        [self.textContentView relayoutText];
-        [self setNeedsLayout];
+        [self relayoutTextContentView];
     }
+}
+
+- (void)relayoutTextContentView {
+    // need to reset the layouter because otherwise we get the old framesetter or cached layout frames
+    self.textContentView.layouter = nil;
     
+    // layout might have changed due to image sizes
+    [self.textContentView relayoutText];
+    [self setNeedsLayout];
+}
+
+#pragma mark ReaderMediaQueueDelegate methods
+
+- (void)readerMediaQueue:(ReaderMediaQueue *)mediaQueue didLoadBatch:(NSArray *)batch {
+    [self refreshMediaLayoutInArray:batch];    
     [self.delegate postViewDidLoadAllMedia:self];
 }
 

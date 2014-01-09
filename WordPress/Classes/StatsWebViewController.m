@@ -7,7 +7,7 @@
 #import "StatsWebViewController.h"
 #import "Blog+Jetpack.h"
 #import "WordPressAppDelegate.h"
-#import "WordPressComApi.h"
+#import "WPAccount.h"
 #import "AFHTTPClient.h"
 #import "AFHTTPRequestOperation.h"
 #import "WPWebViewController.h"
@@ -28,15 +28,6 @@ NSString * const WPStatsWebBlogKey = @"WPStatsWebBlogKey";
 
 @property (nonatomic, strong) AFHTTPRequestOperation *authRequest;
 @property (assign) BOOL authed;
-
-+ (NSString *)lastAuthedName;
-+ (void)setLastAuthedName:(NSString *)str;
-+ (void)handleLogoutNotification:(NSNotification *)notification;
-
-- (void)clearCookies;
-- (void)showAuthFailed;
-- (void)showBlogSettings;
-- (void)handleRefreshedWithOutValidRequest:(NSNotification *)notification;
 
 @end
 
@@ -71,11 +62,11 @@ static NSString *_lastAuthedName = nil;
 }
 
 + (void)load {
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(handleLogoutNotification:) name:WordPressComApiDidLogoutNotification object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(handleAccountChangeNotification:) name:WPAccountDefaultWordPressComAccountChangedNotification object:nil];
 }
 
-+ (void)handleLogoutNotification:(NSNotification *)notification {
-    [self setLastAuthedName:nil];
++ (void)handleAccountChangeNotification:(NSNotification *)notification {
+    [self setLastAuthedName:[WPAccount defaultWordPressComAccount].username];
 }
 
 + (NSString *)lastAuthedName {
