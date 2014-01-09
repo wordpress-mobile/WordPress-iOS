@@ -504,12 +504,12 @@ CGFloat const EPVCTextViewTopPadding = 7.0f;
 #pragma mark - Actions
 
 - (void)showBlogSelectorPrompt {
-    if (![self hasChanges]) {
+    if (![self.post hasSiteSpecificChanges]) {
         [self showBlogSelector];
         return;
     }
     UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"Change Site", @"Title of an alert prompting the user that they are about to change the blog they are posting to.")
-                                                        message:NSLocalizedString(@"Choosing a different site will loose edits to site specific content like media and categories. Are you sure?", @"And alert message warning the user they will loose blog specific edits like categories, and media if they change the blog being posted to.")
+                                                        message:NSLocalizedString(@"Choosing a different site will lose edits to site specific content like media and categories. Are you sure?", @"And alert message warning the user they will loose blog specific edits like categories, and media if they change the blog being posted to.")
                                                        delegate:self
                                               cancelButtonTitle:NSLocalizedString(@"Cancel",@"")
                                               otherButtonTitles:NSLocalizedString(@"OK",@""), nil];
