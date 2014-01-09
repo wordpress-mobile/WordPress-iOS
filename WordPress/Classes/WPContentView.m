@@ -472,6 +472,36 @@ const CGFloat RPVControlButtonBorderSize = 0.0f;
 }
 
 
+// TODO: Moved the following three methods here as part of a complex merge / conflict resolution
+// (methods were added by aerych in a conflicting commit, should be checked and tested)
+- (void)refreshMediaLayout {
+    [self refreshMediaLayoutInArray:self.mediaArray];
+}
+
+- (void)refreshMediaLayoutInArray:(NSArray *)mediaArray {
+    BOOL frameChanged = NO;
+    
+    for (ReaderMediaView *mediaView in mediaArray) {
+        if ([self updateMediaLayout:mediaView]) {
+            frameChanged = YES;
+        }
+
+        if (frameChanged) {
+            [self relayoutTextContentView];
+        }
+    }
+}
+
+- (void)relayoutTextContentView {
+    // need to reset the layouter because otherwise we get the old framesetter or
+    self.textContentView.layouter = nil;
+
+    // layout might have changed due to image sizes
+    [self.textContentView relayoutText];
+    [self setNeedsLayout];
+}
+
+
 #pragma mark ReaderMediaQueueDelegate methods
 
 - (void)readerMediaQueue:(ReaderMediaQueue *)mediaQueue didLoadBatch:(NSArray *)batch {
@@ -493,7 +523,9 @@ const CGFloat RPVControlButtonBorderSize = 0.0f;
         [self setNeedsLayout];
     }
     
-    [self.delegate postViewDidLoadAllMedia:self];
+    if ([self.delegate respondsToSelector:@selector(contentViewDidLoadAllMedia:)]) {
+        [self.delegate contentViewDidLoadAllMedia:self];
+    }
 }
 
 #pragma mark - DTCoreAttributedTextContentView Delegate Methods
