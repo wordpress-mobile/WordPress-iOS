@@ -430,4 +430,20 @@ NSString * const CommentStatusDraft = @"draft";
                       }];
 }
 
+
+#pragma mark - WPContentViewProvider protocol
+
+- (NSString *)blogNameForDisplay {
+    return self.author_url;
+}
+
+- (NSString *)statusForDisplay {
+    NSString *status = [[self class] titleForStatus:self.status];
+    if ([status isEqualToString:NSLocalizedString(@"Comments", @"")]) {
+        status = nil;
+    }
+    return status;
+}
+
+
 @end

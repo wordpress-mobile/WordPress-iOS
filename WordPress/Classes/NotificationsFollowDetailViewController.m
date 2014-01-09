@@ -52,11 +52,8 @@
         _noteData = [[[_note noteData] objectForKey:@"body"] objectForKey:@"items"];
     }
     
-    [_postTitleView.layer setMasksToBounds:NO];
-    [_postTitleView.layer setShadowColor:[[UIColor blackColor] CGColor]];
-    [_postTitleView.layer setShadowOffset:CGSizeMake(0.0, 2.0)];
-    [_postTitleView.layer setShadowRadius:2.0f];
-    [_postTitleView.layer setShadowOpacity:0.3f];
+    _postTitleView.layer.borderColor = [UIColor lightGrayColor].CGColor;
+    _postTitleView.layer.borderWidth = 1.0 / [[UIScreen mainScreen] scale];
     
     NSString *headerText = [[[_note noteData] objectForKey:@"body"] objectForKey:@"header_text"];
     if (headerText) {
@@ -194,7 +191,7 @@
             
             UIImageView *gravatarImageView = cell.imageView;
             [cell.imageView setImageWithURLRequest:request
-                                  placeholderImage:[UIImage imageNamed:@"gravatar.jpg"]
+                                  placeholderImage:[UIImage imageNamed:@"gravatar"]
                                            success:^(NSURLRequest *request, NSHTTPURLResponse *response, UIImage *image) {
                                                gravatarImageView.image = image;
                                            }

@@ -9,8 +9,9 @@
 #import <Foundation/Foundation.h>
 #import <CoreData/CoreData.h>
 #import "WPAccount.h"
+#import "WPContentViewProvider.h"
 
-@interface Note : NSManagedObject
+@interface Note : NSManagedObject<WPContentViewProvider>
 
 @property (nonatomic, retain) NSNumber *timestamp;
 @property (nonatomic, retain) NSString *type;

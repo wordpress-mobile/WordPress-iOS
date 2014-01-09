@@ -10,6 +10,8 @@
 #import "Media.h"
 #import "NSMutableDictionary+Helpers.h"
 #import "ContextManager.h"
+#import "WPComLanguages.h"
+#import "NSString+XMLExtensions.h"
 
 @interface BasePost(ProtectedMethods)
 + (NSString *)titleForStatus:(NSString *)status;
@@ -178,6 +180,65 @@
     return postParams;
 }
 
+
+#pragma mark - WPContentViewProvider protocol
+
+- (NSString *)titleForDisplay {
+    NSString *title = [self.postTitle stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceCharacterSet]];
+    if (title == nil || ([title length] == 0)) {
+        title = NSLocalizedString(@"(no title)", @"");
+    }
+    return [title stringByDecodingXMLCharacters];}
+
+- (NSString *)authorForDisplay {
+    return self.author;
+}
+
+- (NSString *)blogNameForDisplay {
+    return @"";
+}
+
+- (NSString *)contentForDisplay {
+    return self.content;
+}
+
+- (NSString *)contentPreviewForDisplay {
+    return self.content;
+}
+
+- (NSString *)gravatarEmailForDisplay {
+    return nil;
+}
+
+- (NSURL *)avatarURLForDisplay {
+    return nil;
+}
+
+- (NSDate *)dateForDisplay {
+    return [self dateCreated];
+}
+
+- (NSString *)statusForDisplay {
+    if (self.remoteStatus == AbstractPostRemoteStatusSync) {
+        if ([self.status isEqualToString:@"pending"]) {
+            return NSLocalizedString(@"Pending", @"");
+        } else if ([self.status isEqualToString:@"draft"]) {
+            return self.statusTitle;
+        } else {
+            return @"";
+        }
+    } else {
+        NSString *statusText = [AbstractPost titleForRemoteStatus:@((int)self.remoteStatus)];
+        if ([statusText isEqualToString:NSLocalizedString(@"Uploading", nil)]) {
+            if ([WPComLanguages isRightToLeft]) {
+                return [NSString stringWithFormat:@"…%@", statusText];
+            } else {
+                return [NSString stringWithFormat:@"%@…", statusText];
+            }
+        }
+        return statusText;
+    }
+}
 
 
 @end
