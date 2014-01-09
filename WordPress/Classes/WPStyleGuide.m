@@ -82,7 +82,7 @@
     return [UIFont fontWithName:@"OpenSans-Bold" size:12.0];
 }
 
-+ (NSDictionary *)subtitleBoldAttributes
++ (NSDictionary *)subtitleAttributesBold
 {
     NSMutableParagraphStyle *paragraphStyle = [[NSMutableParagraphStyle alloc] init];
     paragraphStyle.minimumLineHeight = 14;
