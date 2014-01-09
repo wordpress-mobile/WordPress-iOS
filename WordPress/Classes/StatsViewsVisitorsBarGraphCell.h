@@ -10,14 +10,20 @@
 #import <UIKit/UIKit.h>
 #import "WPTableViewCell.h"
 
-<<<<<<< HEAD:WordPress/Classes/StatsBarGraphCell.h
-@interface StatsBarGraphCell : WPTableViewCell
-=======
-@interface StatsViewsVisitorsBarGraphCell : UITableViewCell
->>>>>>> Stats views/visitor basic chart:WordPress/Classes/StatsViewsVisitorsBarGraphCell.h
+typedef NS_ENUM(NSInteger, StatsViewsVisitorsUnit) {
+    StatsViewsVisitorsUnitDay,
+    StatsViewsVisitorsUnitWeek,
+    StatsViewsVisitorsUnitMonth
+};
+
+extern NSString *const StatsViewsCategory;
+extern NSString *const StatsVisitorsCategory;
+
+@interface StatsViewsVisitorsBarGraphCell : WPTableViewCell
 
 + (CGFloat)heightForRow;
 
-- (void)setGraphData:(NSDictionary *)graphData;
+- (void)setData:(NSArray *)data forUnit:(StatsViewsVisitorsUnit)unit category:(NSString *)category;
+- (void)showGraphForUnit:(StatsViewsVisitorsUnit)unit;
 
 @end
