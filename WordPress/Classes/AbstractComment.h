@@ -8,9 +8,9 @@
 
 #import <Foundation/Foundation.h>
 #import <CoreData/CoreData.h>
+#import "WPContentViewProvider.h"
 
-
-@interface AbstractComment : NSManagedObject
+@interface AbstractComment : NSManagedObject<WPContentViewProvider>
 
 @property (nonatomic, strong) NSString * author;
 @property (nonatomic, strong) NSString * author_email;

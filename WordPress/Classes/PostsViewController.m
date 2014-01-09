@@ -2,7 +2,6 @@
 #import "WPTableViewControllerSubclass.h"
 #import "PostsViewController.h"
 #import "EditPostViewController.h"
-#import "PostTableViewCell.h"
 #import "NewPostTableViewCell.h"
 #import "WordPressAppDelegate.h"
 #import "Reachability.h"
@@ -137,12 +136,13 @@
 
 - (void)configureCell:(NewPostTableViewCell *)cell atIndexPath:(NSIndexPath *)indexPath {    
     Post *apost = (Post*) [self.resultsController objectAtIndexPath:indexPath];
-    cell.post = apost;
-	if (cell.post.remoteStatus == AbstractPostRemoteStatusPushing) {
+    cell.contentProvider = apost;
+	if (apost.remoteStatus == AbstractPostRemoteStatusPushing) {
 		cell.selectionStyle = UITableViewCellSelectionStyleNone;
 	} else {
 		cell.selectionStyle = UITableViewCellSelectionStyleBlue;
 	}
+    cell.accessoryType = UITableViewCellAccessoryNone;
 }
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
@@ -159,7 +159,7 @@
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
     AbstractPost *post = [self.resultsController objectAtIndexPath:indexPath];
     CGFloat width = MIN(WPTableViewFixedWidth, CGRectGetWidth(tableView.frame));
-    return [NewPostTableViewCell rowHeightForPost:post andWidth:width];
+    return [NewPostTableViewCell rowHeightForContentProvider:post andWidth:width];
 }
 
 - (BOOL)tableView:(UITableView *)tableView canEditRowAtIndexPath:(NSIndexPath *)indexPath {
