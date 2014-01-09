@@ -262,6 +262,12 @@ NSString * const NotificationsJetpackInformationURL = @"http://jetpack.me/about/
 
 - (void)configureCell:(NewNotificationsTableViewCell *)cell atIndexPath:(NSIndexPath *)indexPath {
     cell.contentProvider = [self.resultsController objectAtIndexPath:indexPath];
+    
+    Note *note = [self.resultsController objectAtIndexPath:indexPath];
+    BOOL hasDetailsView = [self noteHasDetailView:note];
+    if (!hasDetailsView) {
+        cell.accessoryType = UITableViewCellAccessoryNone;
+    }
 }
 
 - (BOOL)userCanRefresh {
