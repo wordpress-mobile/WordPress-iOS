@@ -127,7 +127,6 @@
     [self fetchStatsForPath:yesterdayPath success:^(NSDictionary *yesterdayData) {
         [self fetchStatsForPath:todayPath success:^(NSDictionary *todayData) {
         
-#warning this is different than the other implementations
             success([StatsTopPost postsFromTodaysData:todayData yesterdaysData:yesterdayData siteId:self.siteID]);
 
         } failure:^(NSError *e) {
