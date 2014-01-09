@@ -778,7 +778,6 @@
 		C545E0A21811B9880020844C /* ContextManager.m in Sources */ = {isa = PBXBuildFile; fileRef = C545E0A11811B9880020844C /* ContextManager.m */; };
 		C55A90D90E8026CD00E1C9B5 /* WPSegmentedSelectionTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = C55A90D80E8026CD00E1C9B5 /* WPSegmentedSelectionTableViewController.m */; };
 		C57A31A4183D2111007745B9 /* NotificationsManager.m in Sources */ = {isa = PBXBuildFile; fileRef = C57A31A3183D2111007745B9 /* NotificationsManager.m */; };
-		C57B7CA917C591D000A64A3C /* ThemeBrowserViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = C57B7CA817C591C800A64A3C /* ThemeBrowserViewController.xib */; };
 		C58349C51806F95100B64089 /* IOS7CorrectedTextView.m in Sources */ = {isa = PBXBuildFile; fileRef = C58349C41806F95100B64089 /* IOS7CorrectedTextView.m */; };
 		C5834B1F181040E500B64089 /* MediaBrowserCell.m in Sources */ = {isa = PBXBuildFile; fileRef = C5834B1C181040E500B64089 /* MediaBrowserCell.m */; };
 		C5834B20181040E500B64089 /* MediaSearchFilterHeaderView.m in Sources */ = {isa = PBXBuildFile; fileRef = C5834B1E181040E500B64089 /* MediaSearchFilterHeaderView.m */; };
@@ -811,11 +810,13 @@
 		C5834B961810522300B64089 /* uploading_spin_red.png in Resources */ = {isa = PBXBuildFile; fileRef = C5834B921810522300B64089 /* uploading_spin_red.png */; };
 		C5834B971810522300B64089 /* uploading_spin_red@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = C5834B931810522300B64089 /* uploading_spin_red@2x.png */; };
 		C59D3D4B0E6410D300AA591D /* NSString+XMLExtensions.m in Sources */ = {isa = PBXBuildFile; fileRef = C59D3D4A0E6410D300AA591D /* NSString+XMLExtensions.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
+		C5BE95BF187F2D95008F626D /* ThemeDetailsViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = C5BE95BC187F2D95008F626D /* ThemeDetailsViewController.xib */; };
+		C5BE95C0187F2D95008F626D /* ThemeBrowserViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = C5BE95BD187F2D95008F626D /* ThemeBrowserViewController.xib */; };
+		C5BE95C1187F2D95008F626D /* ThemeDetailsViewController~ipad.xib in Resources */ = {isa = PBXBuildFile; fileRef = C5BE95BE187F2D95008F626D /* ThemeDetailsViewController~ipad.xib */; };
 		C5C272DF0E7EC00A0034AA46 /* uncheck.png in Resources */ = {isa = PBXBuildFile; fileRef = C5C272DE0E7EC00A0034AA46 /* uncheck.png */; };
 		C5C272E10E7EC00F0034AA46 /* check.png in Resources */ = {isa = PBXBuildFile; fileRef = C5C272E00E7EC00F0034AA46 /* check.png */; };
 		C5CFDC2A184F962B00097B05 /* CoreDataConcurrencyTest.m in Sources */ = {isa = PBXBuildFile; fileRef = C5CFDC29184F962B00097B05 /* CoreDataConcurrencyTest.m */; };
 		C5E0780A18634A610034C7CB /* action_icon_followed.png in Resources */ = {isa = PBXBuildFile; fileRef = C5E0780918634A610034C7CB /* action_icon_followed.png */; };
-		C5FC5E3717CE4D4200B299E2 /* ThemeDetailsViewController~ipad.xib in Resources */ = {isa = PBXBuildFile; fileRef = C5FC5E3617CE4D4200B299E2 /* ThemeDetailsViewController~ipad.xib */; };
 		CC0199E9165C17020073A966 /* NotificationsCommentDetailViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = CC0199E8165C17020073A966 /* NotificationsCommentDetailViewController.m */; };
 		CC098B8416A9ECF800450976 /* CameraPlusPickerManager.m in Sources */ = {isa = PBXBuildFile; fileRef = CC098B8316A9ECF800450976 /* CameraPlusPickerManager.m */; };
 		CC0E20AE15B87DA100D3468B /* WPWebBridge.m in Sources */ = {isa = PBXBuildFile; fileRef = CC0E20AD15B87DA100D3468B /* WPWebBridge.m */; };
@@ -1995,7 +1996,6 @@
 		C55A90D80E8026CD00E1C9B5 /* WPSegmentedSelectionTableViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WPSegmentedSelectionTableViewController.m; sourceTree = "<group>"; };
 		C57A31A2183D2111007745B9 /* NotificationsManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NotificationsManager.h; sourceTree = "<group>"; };
 		C57A31A3183D2111007745B9 /* NotificationsManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NotificationsManager.m; sourceTree = "<group>"; };
-		C57B7CA817C591C800A64A3C /* ThemeBrowserViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = ThemeBrowserViewController.xib; path = Resources/ThemeBrowserViewController.xib; sourceTree = "<group>"; };
 		C58349C31806F95100B64089 /* IOS7CorrectedTextView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IOS7CorrectedTextView.h; sourceTree = "<group>"; };
 		C58349C41806F95100B64089 /* IOS7CorrectedTextView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = IOS7CorrectedTextView.m; sourceTree = "<group>"; };
 		C5834B1B181040E500B64089 /* MediaBrowserCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MediaBrowserCell.h; sourceTree = "<group>"; };
@@ -2030,20 +2030,19 @@
 		C5834B6F181042E100B64089 /* media_powerpoint@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "media_powerpoint@2x.png"; path = "Resources/Images/media_powerpoint@2x.png"; sourceTree = "<group>"; };
 		C5834B70181042E100B64089 /* media_spreadsheet.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = media_spreadsheet.png; path = Resources/Images/media_spreadsheet.png; sourceTree = "<group>"; };
 		C5834B71181042E100B64089 /* media_spreadsheet@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "media_spreadsheet@2x.png"; path = "Resources/Images/media_spreadsheet@2x.png"; sourceTree = "<group>"; };
-		C5834B8A1810519F00B64089 /* ThemeBrowserViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = ThemeBrowserViewController.xib; path = Resources/ThemeBrowserViewController.xib; sourceTree = "<group>"; };
-		C5834B8B1810519F00B64089 /* ThemeDetailsViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = ThemeDetailsViewController.xib; path = Resources/ThemeDetailsViewController.xib; sourceTree = "<group>"; };
-		C5834B8C1810519F00B64089 /* ThemeDetailsViewController~ipad.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = "ThemeDetailsViewController~ipad.xib"; path = "Resources/ThemeDetailsViewController~ipad.xib"; sourceTree = "<group>"; };
 		C5834B901810522300B64089 /* uploading_spin_blue.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = uploading_spin_blue.png; path = Resources/Images/uploading_spin_blue.png; sourceTree = "<group>"; };
 		C5834B911810522300B64089 /* uploading_spin_blue@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "uploading_spin_blue@2x.png"; path = "Resources/Images/uploading_spin_blue@2x.png"; sourceTree = "<group>"; };
 		C5834B921810522300B64089 /* uploading_spin_red.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = uploading_spin_red.png; path = Resources/Images/uploading_spin_red.png; sourceTree = "<group>"; };
 		C5834B931810522300B64089 /* uploading_spin_red@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "uploading_spin_red@2x.png"; path = "Resources/Images/uploading_spin_red@2x.png"; sourceTree = "<group>"; };
 		C59D3D490E6410D300AA591D /* NSString+XMLExtensions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSString+XMLExtensions.h"; sourceTree = "<group>"; };
 		C59D3D4A0E6410D300AA591D /* NSString+XMLExtensions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSString+XMLExtensions.m"; sourceTree = "<group>"; };
+		C5BE95BC187F2D95008F626D /* ThemeDetailsViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = ThemeDetailsViewController.xib; path = Resources/ThemeDetailsViewController.xib; sourceTree = "<group>"; };
+		C5BE95BD187F2D95008F626D /* ThemeBrowserViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = ThemeBrowserViewController.xib; path = Resources/ThemeBrowserViewController.xib; sourceTree = "<group>"; };
+		C5BE95BE187F2D95008F626D /* ThemeDetailsViewController~ipad.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = "ThemeDetailsViewController~ipad.xib"; path = "Resources/ThemeDetailsViewController~ipad.xib"; sourceTree = "<group>"; };
 		C5C272DE0E7EC00A0034AA46 /* uncheck.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = uncheck.png; path = Resources/Images/uncheck.png; sourceTree = "<group>"; };
 		C5C272E00E7EC00F0034AA46 /* check.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = check.png; path = Resources/Images/check.png; sourceTree = "<group>"; };
 		C5CFDC29184F962B00097B05 /* CoreDataConcurrencyTest.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CoreDataConcurrencyTest.m; sourceTree = "<group>"; };
 		C5E0780918634A610034C7CB /* action_icon_followed.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = action_icon_followed.png; path = Resources/Images/action_icon_followed.png; sourceTree = "<group>"; };
-		C5FC5E3617CE4D4200B299E2 /* ThemeDetailsViewController~ipad.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = "ThemeDetailsViewController~ipad.xib"; path = "Resources/ThemeDetailsViewController~ipad.xib"; sourceTree = "<group>"; };
 		CC0199E7165C17020073A966 /* NotificationsCommentDetailViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NotificationsCommentDetailViewController.h; sourceTree = "<group>"; };
 		CC0199E8165C17020073A966 /* NotificationsCommentDetailViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; lineEnding = 0; path = NotificationsCommentDetailViewController.m; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objc; };
 		CC098B8216A9ECF800450976 /* CameraPlusPickerManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = CameraPlusPickerManager.h; path = Vendor/CameraPlus/CameraPlusPickerManager.h; sourceTree = SOURCE_ROOT; };
@@ -4313,9 +4312,9 @@
 		E19472D8134E3E4A00879F63 /* UI */ = {
 			isa = PBXGroup;
 			children = (
-				C5834B8A1810519F00B64089 /* ThemeBrowserViewController.xib */,
-				C5834B8B1810519F00B64089 /* ThemeDetailsViewController.xib */,
-				C5834B8C1810519F00B64089 /* ThemeDetailsViewController~ipad.xib */,
+				C5BE95BC187F2D95008F626D /* ThemeDetailsViewController.xib */,
+				C5BE95BD187F2D95008F626D /* ThemeBrowserViewController.xib */,
+				C5BE95BE187F2D95008F626D /* ThemeDetailsViewController~ipad.xib */,
 				37195B7F166A5DDC005F2292 /* Notifications */,
 				ACFF1DC00E231EF600EC6BF5 /* Blog */,
 				C50E78130E71648100991509 /* Comments */,
@@ -4642,6 +4641,7 @@
 				462F4E10183867AE0028D2F8 /* Merriweather-Bold.ttf in Resources */,
 				30EEBB961851B0A30099FB6C /* icon_format_link.png in Resources */,
 				E177088013AAC19700EA6C72 /* undo~ipad.png in Resources */,
+				C5BE95C0187F2D95008F626D /* ThemeBrowserViewController.xib in Resources */,
 				E177088113AAC19700EA6C72 /* undoDisabled~ipad.png in Resources */,
 				85325A4417BB0DF8008E87D1 /* icon-menu-pages-active.png in Resources */,
 				E2013EB218637B6B00AB537F /* icon-secure-text@2x.png in Resources */,
@@ -4894,7 +4894,6 @@
 				30E9683C15AE4EB10047DD84 /* sidebar-logo.png in Resources */,
 				46F8714B1838BB4E00BC149B /* reader-postaction-tag.png in Resources */,
 				30E9683D15AE4EB10047DD84 /* sidebar-logo@2x.png in Resources */,
-				C57B7CA917C591D000A64A3C /* ThemeBrowserViewController.xib in Resources */,
 				30E9684115AE60B20047DD84 /* navbar_add.png in Resources */,
 				E2AA879D1850F91E00886693 /* icon-jetpack-gray.png in Resources */,
 				E232E603182EA16200792CA0 /* icon-password-field.png in Resources */,
@@ -5027,7 +5026,6 @@
 				857F55CE17CEC5E100E154E1 /* keyboardButtoniPad-ios7@2x.png in Resources */,
 				8597439E17D6D956009DCDCA /* toggleButtonMain-ios7.png in Resources */,
 				306BAAE015C78C5400F37378 /* SidebarToolbarButtonHighlighted@2x.png in Resources */,
-				C5FC5E3717CE4D4200B299E2 /* ThemeDetailsViewController~ipad.xib in Resources */,
 				37DDC4EA165C193000316A36 /* menu_button_divider@2x.png in Resources */,
 				85495F6217C6FACF00871A7A /* icon-comments-flag@2x.png in Resources */,
 				85325A2E17BB0DF8008E87D1 /* icon-menu-stats.png in Resources */,
@@ -5042,6 +5040,7 @@
 				37DDC555165C535C00316A36 /* menu_notification_right_bg_down@2x.png in Resources */,
 				37DDC56F165C5F1C00316A36 /* menu_notification_left_bg.png in Resources */,
 				30EEBB991851B0A30099FB6C /* icon_format_media@2x.png in Resources */,
+				C5BE95C1187F2D95008F626D /* ThemeDetailsViewController~ipad.xib in Resources */,
 				37DDC570165C5F1C00316A36 /* menu_notification_left_bg@2x.png in Resources */,
 				37DDC571165C5F1C00316A36 /* menu_notification_right_bg.png in Resources */,
 				30EEBB981851B0A30099FB6C /* icon_format_media.png in Resources */,
@@ -5122,6 +5121,7 @@
 				3772E3431680D0DE0018D2AB /* note_icon_follow_highlighted@2x.png in Resources */,
 				3772E3441680D0DE0018D2AB /* note_icon_like_highlighted.png in Resources */,
 				3772E3451680D0DE0018D2AB /* note_icon_like_highlighted@2x.png in Resources */,
+				C5BE95BF187F2D95008F626D /* ThemeDetailsViewController.xib in Resources */,
 				3772E3461680D0DE0018D2AB /* note_icon_reblog_highlighted.png in Resources */,
 				85ED98AB17DFB17200090D0B /* iTunesArtwork@2x in Resources */,
 				3772E3471680D0DE0018D2AB /* note_icon_reblog_highlighted@2x.png in Resources */,
