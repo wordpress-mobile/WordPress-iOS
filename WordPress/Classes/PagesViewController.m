@@ -67,6 +67,10 @@
     [self editPost:post];
 }
 
+- (NSString *)tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section {
+    return nil;
+}
+
 - (NSString *)statsPropertyForViewOpening
 {
     return StatsPropertyPagesOpened;

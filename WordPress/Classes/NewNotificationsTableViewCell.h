@@ -7,13 +7,8 @@
 //
 
 #import <UIKit/UIKit.h>
-#import "WPTableViewCell.h"
+#import "WPContentCell.h"
 
-@class Note;
-@interface NewNotificationsTableViewCell : WPTableViewCell
-
-@property (readwrite, weak) Note *note;
-
-+ (CGFloat)rowHeightForNotification:(Note *)note andMaxWidth:(CGFloat)maxWidth;
+@interface NewNotificationsTableViewCell : WPContentCell
 
 @end
