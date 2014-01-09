@@ -632,7 +632,7 @@ NSString * const RPVCDisplayedNativeFriendFinder = @"DisplayedNativeFriendFinder
     UIImage *image = [post cachedAvatarWithSize:imageSize];
     if (image) {
         [cell.postView setAvatar:image];
-    } else if (!self.tableView.isDragging && !self.tableView.isDecelerating) {
+    } else {
         [post fetchAvatarWithSize:imageSize success:^(UIImage *image) {
             if (cell == [self.tableView cellForRowAtIndexPath:indexPath]) {
                 [cell.postView setAvatar:image];
