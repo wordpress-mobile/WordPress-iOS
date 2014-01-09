@@ -193,6 +193,7 @@ typedef enum {
 - (void)didRotateFromInterfaceOrientation:(UIInterfaceOrientation)fromInterfaceOrientation {
 	[super didRotateFromInterfaceOrientation:fromInterfaceOrientation];
 
+    [self.postView refreshMediaLayout]; // Resize media in the post detail to match the width of the new orientation.
     [self.postView setNeedsLayout];
 
 	// Make sure a selected comment is visible after rotating.
@@ -636,13 +637,13 @@ typedef enum {
 
 }
 
-- (void)postView:(ReaderPostView *)postView didReceiveLinkAction:(id)sender {
+- (void)contentView:(WPContentView *)contentView didReceiveLinkAction:(id)sender {
     WPWebViewController *controller = [[WPWebViewController alloc] init];
 	[controller setUrl:((DTLinkButton *)sender).URL];
 	[self.navigationController pushViewController:controller animated:YES];
 }
 
-- (void)postView:(ReaderPostView *)postView didReceiveImageLinkAction:(id)sender {
+- (void)contentView:(WPContentView *)contentView didReceiveImageLinkAction:(id)sender {
     ReaderImageView *imageView = (ReaderImageView *)sender;
 	UIViewController *controller;
     
@@ -673,7 +674,7 @@ typedef enum {
     [self.navigationController pushViewController:controller animated:YES];
 }
 
-- (void)postView:(ReaderPostView *)postView didReceiveVideoLinkAction:(id)sender {
+- (void)contentView:(WPContentView *)contentView didReceiveVideoLinkAction:(id)sender {
     ReaderVideoView *videoView = (ReaderVideoView *)sender;
 	if (videoView.contentType == ReaderVideoContentTypeVideo) {
 
@@ -730,7 +731,7 @@ typedef enum {
     [self.navigationController pushViewController:controller animated:YES];
 }
 
-- (void)postViewDidLoadAllMedia:(ReaderPostView *)postView {
+- (void)contentViewDidLoadAllMedia:(WPContentView *)contentView {
     [self.postView layoutIfNeeded];
     [self.tableView reloadData];
 }
@@ -880,6 +881,14 @@ typedef enum {
         UITableViewCell *postCell = [self.tableView dequeueReusableCellWithIdentifier:@"PostCell"];
         postCell.selectionStyle = UITableViewCellSelectionStyleNone;
         [postCell.contentView addSubview:self.postView];
+        
+        // Make the postView matches the width of its cell.
+        // When the postView is first created it matches the width of the tableView
+        // which may or may not be the same width as the cells when we get to this point.
+        // On the iPhone, when viewing in landscape orientation, there can be a 20px difference.
+        CGRect frame = self.postView.frame;
+        frame.size.width = postCell.frame.size.width;
+        self.postView.frame = frame;
         
         return postCell;
     }
