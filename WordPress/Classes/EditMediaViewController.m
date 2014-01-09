@@ -424,7 +424,7 @@ static NSUInteger const AlertDiscardChanges = 500;
     error.textColor = [UIColor whiteColor];
     error.backgroundColor = [UIColor clearColor];
     error.center = CGPointMake(self.view.center.x, _mediaImageview.frame.size.width/2);
-    [self.view addSubview:error];
+    [self.view insertSubview:error belowSubview:_editContainerView];
 }
 
 - (void)loadMediaImage {
