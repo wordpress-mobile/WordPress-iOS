@@ -16,7 +16,6 @@
 @class Blog;
 
 extern NSString *const WPAccountDefaultWordPressComAccountChangedNotification;
-extern NSString *const WPComXMLRPCUrl;
 
 @interface WPAccount : NSManagedObject
 
@@ -37,6 +36,11 @@ extern NSString *const WPComXMLRPCUrl;
  Note that the password is stored using the keychain, not core data
  */
 @property (nonatomic, retain) NSString *password;
+
+/**
+ The OAuth2 auth token for WordPress.com accounts
+ */
+@property (nonatomic, readonly) NSString *authToken;
 
 ///------------------------------------
 /// @name Default WordPress.com account
