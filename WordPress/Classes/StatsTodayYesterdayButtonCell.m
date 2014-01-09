@@ -29,7 +29,7 @@
     self.delegate = delegate;
     [self.buttons[0] setTag:section];
     [self.buttons[1] setTag:section];
-    [self activateButton:self.buttons[(todayActive ? 0 : 1)]];
+    self.currentActiveButton = todayActive ? 0 : 1;
 }
 
 - (void)daySelected:(UIButton *)sender {

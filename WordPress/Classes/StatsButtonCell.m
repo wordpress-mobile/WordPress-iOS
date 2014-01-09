@@ -24,21 +24,30 @@ static CGFloat const StatsButtonHeight = 30.0f;
     if (self) {
         self.selectionStyle = UITableViewCellSelectionStyleNone;
         self.buttons = [NSMutableArray array];
+        _currentActiveButton = 0;
     }
     return self;
 }
 
 - (void)layoutSubviews {
     [super layoutSubviews];
-    CGFloat width = self.frame.size.width;
-    CGFloat widthPerButton = width/self.buttons.count;
+    
+    CGFloat widthPerButton = self.frame.size.width/self.buttons.count;
     [self.buttons enumerateObjectsUsingBlock:^(UIButton *b, NSUInteger idx, BOOL *stop)
-     {
-         b.frame = (CGRect) {
-             .origin = CGPointMake(widthPerButton*idx, 0),
-             .size = CGSizeMake(widthPerButton, StatsButtonHeight)
-         };
-     }];
+    {
+        b.frame = (CGRect) {
+            .origin = CGPointMake(widthPerButton*idx, 0),
+            .size = CGSizeMake(widthPerButton, StatsButtonHeight)
+        };
+    }];
+    
+    [self.buttons enumerateObjectsUsingBlock:^(UIButton *obj, NSUInteger idx, BOOL *stop) {
+        if (idx == _currentActiveButton) {
+            [obj setBackgroundColor:[WPStyleGuide newKidOnTheBlockBlue]];
+        } else {
+            [obj setBackgroundColor:[WPStyleGuide allTAllShadeGrey]];
+        }
+    }];
 }
 
 - (void)addButtonWithTitle:(NSString *)title target:(id)target action:(SEL)action section:(StatsSection)section {
@@ -52,24 +61,12 @@ static CGFloat const StatsButtonHeight = 30.0f;
     button.tag = section;
 
     [self.buttons addObject:button];
-    
-    [self.buttons[0] setBackgroundColor:[WPStyleGuide newKidOnTheBlockBlue]];
     [self.contentView addSubview:button];
 }
 
-- (void)setTodayActive:(BOOL)todayActive {
-    if (todayActive) {
-        [self activateButton:self.buttons[0]];
-    }
-}
-
-- (void)activateButton:(UIButton *)button {
-    [self.buttons enumerateObjectsUsingBlock:^(UIButton *b, NSUInteger idx, BOOL *stop) {
-        if (b == button) {
-            [b setBackgroundColor:[WPStyleGuide newKidOnTheBlockBlue]];
-        } else {
-            [b setBackgroundColor:[WPStyleGuide allTAllShadeGrey]];
-        }
+- (void)activateButton:(UIButton *)sender {
+    _currentActiveButton = [self.buttons indexOfObjectPassingTest:^BOOL(id obj, NSUInteger idx, BOOL *stop) {
+        return obj == sender;
     }];
 }
 

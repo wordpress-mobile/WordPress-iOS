@@ -27,14 +27,22 @@ static CGFloat const InitialBarWidthIpad = 60.0f;
 // Limitation: if N x-axis names are used between the N categories, the last takes precendence
 // If category A has N points and category B has M points, where N < M, then M points are displayed,
 // with M - N points drawn without layers. The x-axis is extended to the last Mth point
-// eg. @{@"Day 1": @44, @"Day 2": @1};
+/*
+ @[
+    @{@"name": @"Jan 10",
+      @"count": @10},
+    @{@"name": @"Jan 11",
+      @"count": @20},
+    ...
+ ]
+ */
 - (void)setBarsWithCount:(NSArray *)pointToCount category:(NSString *)category;
 
 @end
 
 @implementation WPBarGraphView
 
-- (id)initWithFrame:(CGRect)frame xAxisTitle:(NSString *)xAxisTitle yAxisTitle:(NSString *)yAxisTitle {
+- (id)initWithFrame:(CGRect)frame {
     self = [super initWithFrame:frame];
     if (self) {
         if (IS_IPAD) {
@@ -74,7 +82,7 @@ static CGFloat const InitialBarWidthIpad = 60.0f;
     
     *xAxisStepWidth = (self.frame.size.width-3*AxisPadding)/(*maxXAxisPointCount);
     
-    *yAxisScale = MAX(self.frame.size.height-2*AxisPadding, (self.frame.size.height-2*AxisPadding)/(*maxYPoint));
+    *yAxisScale = *maxYPoint > 0 ? (self.frame.size.height-4*AxisPadding)/(*maxYPoint) : 1;
 }
 
 - (void)drawRect:(CGRect)rect {
@@ -108,22 +116,29 @@ static CGFloat const InitialBarWidthIpad = 60.0f;
         CGContextAddLineToPoint(context, xOffset, yAxisHeight+tickHeight/2);
         CGContextStrokePath(context);
     }
-    NSUInteger yAxisTicks = 6;
-    NSUInteger step = (NSUInteger)lroundf(maxYPoint/yAxisTicks);
-    for (NSInteger i = 0; i < yAxisTicks; i++) {
-        CGContextMoveToPoint(context, xAxisStartPoint, (yAxisHeight/6)*(i+1));
-        CGContextAddLineToPoint(context, xAxisStartPoint+xAxisWidth-2*AxisPadding, (yAxisHeight/6)*(i+1));
+    NSUInteger yAxisTicks = 7;
+    NSUInteger tick = 0;
+
+    CGFloat s = (CGFloat)maxYPoint/(CGFloat)yAxisTicks;
+    NSInteger len = log10(s);
+    CGFloat div = pow(10, len);
+    NSUInteger step = ceil(s / div) * div;
+    
+    do {
+        CGContextMoveToPoint(context, xAxisStartPoint, (yAxisHeight/yAxisTicks)*(yAxisTicks-tick));
+        CGContextAddLineToPoint(context, xAxisStartPoint+xAxisWidth-2*AxisPadding, (yAxisHeight/yAxisTicks)*(yAxisTicks-tick));
         CGContextStrokePath(context);
         
         // Scale
         UILabel *increment = [[UILabel alloc] init];
-        increment.text = [@(step*(yAxisTicks-i-1)) stringValue];
+        increment.text = [@(step*(yAxisTicks-tick-1)) stringValue];
         increment.font = [UIFont fontWithName:@"OpenSans" size:8.0f];
         increment.textColor = [WPStyleGuide allTAllShadeGrey];
         [increment sizeToFit];
-        increment.center = CGPointMake(xAxisStartPoint-CGRectGetMidX(increment.frame)-6.0f, (yAxisHeight/6)*(i+1));
+        increment.center = CGPointMake(xAxisStartPoint-CGRectGetMidX(increment.frame)-6.0f, (yAxisHeight/yAxisTicks)*(tick+1));
         [self addSubview:increment];
-    }
+        tick++;
+    } while (tick < yAxisTicks);
     
     // Bars
     __block CGFloat currentXPoint = 0;
@@ -179,9 +194,14 @@ static CGFloat const InitialBarWidthIpad = 60.0f;
 
 @end
 
+NSString *const StatsViewsCategory = @"Views";
+NSString *const StatsVisitorsCategory = @"Visitors";
+
 @interface StatsViewsVisitorsBarGraphCell ()
 
 @property (nonatomic, weak) WPBarGraphView *barGraph;
+@property (nonatomic, strong) NSMutableDictionary *unitsToData;
+@property (nonatomic, assign) StatsViewsVisitorsUnit currentUnit;
 
 @end
 
@@ -196,28 +216,32 @@ static CGFloat const InitialBarWidthIpad = 60.0f;
     self = [super initWithStyle:style reuseIdentifier:reuseIdentifier];
     if (self) {
         self.selectionStyle = UITableViewCellSelectionStyleNone;
+        _unitsToData = [NSMutableDictionary dictionary];
     }
     return self;
 }
 
-- (void)setGraphData:(NSDictionary *)graphData {
-    WPBarGraphView *barGraph = [[WPBarGraphView alloc] initWithFrame:CGRectMake(0, 0, self.frame.size.width, [self.class heightForRow]) xAxisTitle:NSLocalizedString(@"Unit", nil) yAxisTitle:NSLocalizedString(@"Count", nil)];
+- (void)layoutSubviews {
+    [self.barGraph removeFromSuperview];
+    
+    NSDictionary *categoryData = _unitsToData[@(_currentUnit)];
+    WPBarGraphView *barGraph = [[WPBarGraphView alloc] initWithFrame:self.bounds];
     self.barGraph = barGraph;
-    [self.barGraph addCategory:NSLocalizedString(@"Views", nil) color:[WPStyleGuide baseDarkerBlue]];
-    [self.barGraph addCategory:NSLocalizedString(@"Visitors", nil) color:[WPStyleGuide baseLighterBlue]];
-    [self.barGraph setBarsWithCount:@[@{@"name": @"Day 1", @"count": @5},
-                                 @{@"name": @"Day 2", @"count": @100},
-                                 @{@"name": @"Day 3", @"count": @150},
-                                 @{@"name": @"Day 4", @"count": @200},
-                                 @{@"name": @"Day 5", @"count": @90},
-                                 @{@"name": @"Day 6", @"count": @70}] category:@"Visitors"];
-    [self.barGraph setBarsWithCount:@[@{@"name": @"Day 1", @"count": @2},
-                                 @{@"name": @"Day 2", @"count": @30},
-                                 @{@"name": @"Day 3", @"count": @40},
-                                 @{@"name": @"Day 4", @"count": @50},
-                                 @{@"name": @"Day 5", @"count": @60},
-                                 @{@"name": @"Day 6", @"count": @60}] category:@"Views"];
+    [categoryData enumerateKeysAndObjectsUsingBlock:^(NSString *category, NSArray *data, BOOL *stop) {
+        UIColor *color = [category isEqualToString:StatsViewsCategory] ? [WPStyleGuide baseLighterBlue] : [WPStyleGuide baseDarkerBlue];
+        [self.barGraph addCategory:category color:color];
+        [self.barGraph setBarsWithCount:data category:category];
+    }];
     [self.contentView addSubview:self.barGraph];
+}
+
+- (void)setData:(NSArray *)data forUnit:(StatsViewsVisitorsUnit)unit category:(NSString *)category {
+    _unitsToData[@(unit)] = @{NSLocalizedString(category, nil): data};
+}
+
+- (void)showGraphForUnit:(StatsViewsVisitorsUnit)unit {
+    _currentUnit = unit;
+    [self setNeedsDisplay];
 }
 
 @end
