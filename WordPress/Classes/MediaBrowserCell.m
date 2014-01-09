@@ -210,7 +210,7 @@
         return NSLocalizedString(@"Upload failed.", @"Uploading message when a media upload has failed.");
     
     } else {
-        if (_media.title) {
+        if (_media.title.length > 0) {
             return _media.title;
         }
 
