@@ -67,6 +67,10 @@
     return self;
 }
 
+- (void)dealloc {
+    [self removeUploadStatusObservers];
+}
+
 - (void)setHideCheckbox:(BOOL)hideCheckbox {
     _checkbox.hidden = hideCheckbox;
 }
