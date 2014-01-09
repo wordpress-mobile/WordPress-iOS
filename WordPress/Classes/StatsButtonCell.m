@@ -28,6 +28,19 @@ static CGFloat const StatsButtonHeight = 30.0f;
     return self;
 }
 
+- (void)layoutSubviews {
+    [super layoutSubviews];
+    CGFloat width = self.frame.size.width;
+    CGFloat widthPerButton = width/self.buttons.count;
+    [self.buttons enumerateObjectsUsingBlock:^(UIButton *b, NSUInteger idx, BOOL *stop)
+     {
+         b.frame = (CGRect) {
+             .origin = CGPointMake(widthPerButton*idx, 0),
+             .size = CGSizeMake(widthPerButton, StatsButtonHeight)
+         };
+     }];
+}
+
 - (void)addButtonWithTitle:(NSString *)title target:(id)target action:(SEL)action section:(StatsSection)section {
     UIButton *button = [UIButton buttonWithType:UIButtonTypeCustom];
     [button setTitle:title.uppercaseString forState:UIControlStateNormal];
@@ -39,17 +52,6 @@ static CGFloat const StatsButtonHeight = 30.0f;
     button.tag = section;
 
     [self.buttons addObject:button];
-    
-    //layout buttons
-    CGFloat width = self.frame.size.width;
-    CGFloat widthPerButton = width/self.buttons.count;
-    [self.buttons enumerateObjectsUsingBlock:^(UIButton *b, NSUInteger idx, BOOL *stop)
-    {
-        b.frame = (CGRect) {
-            .origin = CGPointMake(widthPerButton*idx, 0),
-            .size = CGSizeMake(widthPerButton, StatsButtonHeight)
-        };
-    }];
     
     [self.buttons[0] setBackgroundColor:[WPStyleGuide newKidOnTheBlockBlue]];
     [self.contentView addSubview:button];

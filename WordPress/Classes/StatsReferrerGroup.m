@@ -19,7 +19,9 @@
         StatsReferrerGroup *rg = [[StatsReferrerGroup alloc] init];
         rg.group = referrerGroup[@"group"];
         rg.title = referrerGroup[@"name"];
-        rg.iconUrl = referrerGroup[@"icon"];
+        if (referrerGroup[@"icon"] != [NSNull null]) {
+            rg.iconUrl = [NSURL URLWithString:referrerGroup[@"icon"]];
+        }
         rg.count = referrerGroup[@"total"];
         rg.date = referrerGroups[@"date"];
         rg.siteId = siteId;

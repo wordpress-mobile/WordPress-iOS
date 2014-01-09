@@ -10,7 +10,7 @@
 
 @interface StatsReferrer : StatsTitleCountItem
 
-@property (nonatomic, strong) NSString *url;
+@property (nonatomic, strong) NSURL *url;
 
 + (NSArray *)referrersFromArray:(NSArray *)referrers withDate:(NSDate *)date siteId:(NSNumber *)siteId;
 

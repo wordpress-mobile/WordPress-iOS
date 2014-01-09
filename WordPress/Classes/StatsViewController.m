@@ -22,6 +22,9 @@
 #import "StatsTitleCountItem.h"
 #import "StatsTodayYesterdayButtonCell.h"
 #import "StatsTwoLabelCell.h"
+#import "StatsGroupedCell.h"
+#import "StatsClickGroup.h"
+#import "WPTableViewCell.h"
 
 static NSString *const VisitorsUnitButtonCellReuseIdentifier = @"VisitorsUnitButtonCellReuseIdentifier";
 static NSString *const TodayYesterdayButtonCellReuseIdentifier = @"TodayYesterdayButtonCellReuseIdentifier";
@@ -32,6 +35,11 @@ static NSString *const StatSectionHeaderViewIdentifier = @"StatSectionHeaderView
 static NSString *const NoResultsCellIdentifier = @"NoResultsCellIdentifier";
 static NSString *const ResultRowCellIdentifier = @"ResultRowCellIdentifier";
 static NSString *const GraphCellIdentifier = @"GraphCellIdentifier";
+static NSString *const StatsGroupedCellIdentifier = @"StatsGroupedCellIdentifier";
+
+static CGFloat const SectionHeaderLeftPadding = 10.0f;
+static CGFloat const SectionHeaderTopPadding = 10.0f;
+static NSUInteger const ResultRowMaxItems = 10;
 
 typedef NS_ENUM(NSInteger, VisitorsRow) {
     VisitorRowGraphUnitButton,
@@ -62,8 +70,6 @@ typedef NS_ENUM(NSInteger, TotalFollowersShareRow) {
 @property (nonatomic, strong) ContextManager *contextManager;
 @property (nonatomic, strong) NSMutableDictionary *statModels;
 @property (nonatomic, strong) NSMutableDictionary *showingToday;
-@property (nonatomic, strong) NSNumberFormatter *numberFormatter;
-
 
 @end
 
@@ -74,9 +80,9 @@ typedef NS_ENUM(NSInteger, TotalFollowersShareRow) {
     [super viewDidLoad];
     
     self.title = NSLocalizedString(@"Stats", nil);
-    self.view.backgroundColor = [WPStyleGuide itsEverywhereGrey];
-    
-    self.tableView.backgroundColor = [WPStyleGuide itsEverywhereGrey];
+  
+    [WPStyleGuide configureColorsForView:self.view andTableView:self.tableView];
+    self.tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
     [self.tableView registerClass:[UITableViewHeaderFooterView class] forHeaderFooterViewReuseIdentifier:StatSectionHeaderViewIdentifier];
     [self.tableView registerClass:[StatsButtonCell class] forCellReuseIdentifier:VisitorsUnitButtonCellReuseIdentifier];
     [self.tableView registerClass:[StatsTodayYesterdayButtonCell class] forCellReuseIdentifier:TodayYesterdayButtonCellReuseIdentifier];
@@ -86,9 +92,11 @@ typedef NS_ENUM(NSInteger, TotalFollowersShareRow) {
     [self.tableView registerClass:[StatsNoResultsCell class] forCellReuseIdentifier:NoResultsCellIdentifier];
     [self.tableView registerClass:[StatsTwoLabelCell class] forCellReuseIdentifier:ResultRowCellIdentifier];
     [self.tableView registerClass:[StatsBarGraphCell class] forCellReuseIdentifier:GraphCellIdentifier];
+    [self.tableView registerClass:[StatsGroupedCell class] forCellReuseIdentifier:StatsGroupedCellIdentifier];
     
     _statModels = [NSMutableDictionary dictionary];
     
+
     // By default, show data for Today
     _showingToday = [NSMutableDictionary dictionaryWithObjectsAndKeys:
                      @(YES), @(StatsSectionTopPosts),
@@ -108,7 +116,7 @@ typedef NS_ENUM(NSInteger, TotalFollowersShareRow) {
     _blog = blog;
     DDLogInfo(@"Loading Stats for the following blog: %@", [blog url]);
     WordPressAppDelegate *appDelegate = [WordPressAppDelegate sharedWordPressApplicationDelegate];
-    self.statsApiHelper = [[StatsApiHelper alloc] initWithSiteID:self.blog.blogID];
+    self.statsApiHelper = [[StatsApiHelper alloc] initWithSiteID:_blog.blogID];
     if (!appDelegate.connectionAvailable) {
         // no network connection
     } else {
@@ -215,7 +223,7 @@ typedef NS_ENUM(NSInteger, TotalFollowersShareRow) {
         default:
         {
             NSInteger numberOfResults = [self resultsForSection:section].count;
-            return numberOfResults ? 2 + numberOfResults : 3;
+            return numberOfResults ? 2 + MIN(numberOfResults, ResultRowMaxItems) : 3;
         }
     }
 }
@@ -380,6 +388,7 @@ typedef NS_ENUM(NSInteger, TotalFollowersShareRow) {
             break;
         case StatsSectionSearchTerms:
             dataTitleRowLeft = NSLocalizedString(@"Search", nil);
+            break;
         default:
             break;
     }
@@ -395,7 +404,7 @@ typedef NS_ENUM(NSInteger, TotalFollowersShareRow) {
         case StatsDataRowTitle:
         {
             cell = [self.tableView dequeueReusableCellWithIdentifier:TwoLabelCellReuseIdentifier];
-            [(StatsTwoLabelCell *)cell setLeft:dataTitleRowLeft right:dataTitleRowRight titleCell:YES];
+            [(StatsTwoLabelCell *)cell setLeft:dataTitleRowLeft.uppercaseString withImageUrl:nil right:dataTitleRowRight.uppercaseString titleCell:YES];
             break;
         }
         default:
@@ -405,12 +414,8 @@ typedef NS_ENUM(NSInteger, TotalFollowersShareRow) {
                 [(StatsNoResultsCell *)cell configureForSection:section];
             } else {
                 cell = [self.tableView dequeueReusableCellWithIdentifier:ResultRowCellIdentifier];
-                StatsTitleCountItem *data = [self resultsForSection:section][index-2];
-                self.numberFormatter = [[NSNumberFormatter alloc]init];
-                self.numberFormatter.locale = [NSLocale currentLocale];
-                self.numberFormatter.numberStyle = NSNumberFormatterDecimalStyle;
-                self.numberFormatter.usesGroupingSeparator = YES;
-                [(StatsTwoLabelCell *)cell setLeft:data.title right:[self.numberFormatter stringFromNumber:data.count]];
+                [(StatsTwoLabelCell *)cell insertData:[self resultsForSection:section][index-2]];
+                
             }
         }
     }
@@ -426,7 +431,7 @@ typedef NS_ENUM(NSInteger, TotalFollowersShareRow) {
     [header.contentView.subviews makeObjectsPerformSelector:@selector(removeFromSuperview)];
     header.contentView.backgroundColor = [WPStyleGuide itsEverywhereGrey];
     
-    UILabel *sectionName = [[UILabel alloc] initWithFrame:CGRectMake(5.0f, 10.0f, 0, 30.0f)];
+    UILabel *sectionName = [[UILabel alloc] initWithFrame:CGRectMake(SectionHeaderLeftPadding, SectionHeaderTopPadding, 0, 0)];
     sectionName.textColor = [WPStyleGuide littleEddieGrey];
     sectionName.backgroundColor = [WPStyleGuide itsEverywhereGrey];
     sectionName.opaque = YES;

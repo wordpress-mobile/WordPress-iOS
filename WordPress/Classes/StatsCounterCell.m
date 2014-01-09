@@ -51,28 +51,61 @@ static CGFloat const StatCounterCellHeight = 100.0f;
     return self;
 }
 
+- (void)layoutSubviews {
+    [super layoutSubviews];
+    
+    UIView *topSeparator = (UIView *)self.separatorLines[0];
+    if (self.titleLabel.text.length > 0) {
+        topSeparator.frame = (CGRect) {
+            .origin = CGPointMake(CGRectGetMinX(self.titleLabel.frame), CGRectGetMaxY(self.titleLabel.frame)),
+            .size = CGSizeMake(self.contentView.frame.size.width-2*CountPadding, IS_RETINA ? 0.5f : 1.0f)
+        };
+        topSeparator.backgroundColor = [WPStyleGuide newKidOnTheBlockBlue];
+    } else {
+        self.titleLabel.frame = (CGRect) {
+            .origin = self.titleLabel.frame.origin,
+            .size = CGSizeZero
+        };
+        topSeparator.frame = (CGRect) {
+            .origin = CGPointMake(CountPadding, 0),
+            .size = CGSizeMake(self.contentView.frame.size.width-2*CountPadding, IS_RETINA ? 0.5f : 1.0f)
+        };
+        topSeparator.backgroundColor = [WPStyleGuide readGrey];
+    }
+
+    CGFloat yOffset = CGRectGetMaxY(self.titleLabel.frame) + 10.0f;
+    if (self.countViews.count == 1) {
+        UIView *countView = self.countViews[0];
+        countView.center = CGPointMake(self.frame.size.width/2, yOffset+CGRectGetMidY(countView.bounds));
+    } else if ([self.countViews count] == 2) {
+        CGFloat width = self.contentView.frame.size.width;
+        UIView *leftView = self.countViews[0];
+        leftView.frame = (CGRect) {
+            .origin = CGPointMake(width*0.25 - leftView.frame.size.width/2, yOffset),
+            .size = leftView.frame.size
+        };
+        UIView *rightView = self.countViews[1];
+        rightView.frame = (CGRect) {
+            .origin = CGPointMake(width*0.75 - rightView.frame.size.width/2, yOffset),
+            .size = rightView.frame.size
+        };
+        if (self.separatorLines.count > 1) {
+            UIView *separator = (UIView *)self.separatorLines[1];
+            separator.frame = (CGRect) {
+                .origin = CGPointMake(width*0.5, CGRectGetMinY(leftView.frame)),
+                .size = CGSizeMake(IS_RETINA ? 0.5f : 1.0f, leftView.frame.size.height)
+            };
+            separator.backgroundColor = [WPStyleGuide readGrey];
+        }
+    }
+}
+
 - (void)setTitle:(NSString *)title {
     UIView *separator = [[UIView alloc] init];
     if (title.length > 0) {
         self.titleLabel.text = [title uppercaseString];
         self.titleLabel.textAlignment = NSTextAlignmentLeft;
         self.titleLabel.textColor = [WPStyleGuide newKidOnTheBlockBlue];
-        //self.titleLabel.backgroundColor = [UIColor purpleColor];
-        separator.frame = (CGRect) {
-            .origin = CGPointMake(CGRectGetMinX(self.titleLabel.frame), CGRectGetMaxY(self.titleLabel.frame)),
-            .size = CGSizeMake(self.titleLabel.frame.size.width, IS_RETINA ? 0.5f : 1.0f)
-        };
-        separator.backgroundColor = [WPStyleGuide newKidOnTheBlockBlue];
-    } else {
-        self.titleLabel.frame = (CGRect) {
-            .origin = self.titleLabel.frame.origin,
-            .size = CGSizeZero
-        };
-        separator.frame = (CGRect) {
-            .origin = CGPointMake(CountPadding, 0),
-            .size = CGSizeMake(self.contentView.frame.size.width-2*CountPadding, IS_RETINA ? 0.5f : 1.0f)
-        };
-        separator.backgroundColor = [WPStyleGuide readGrey];
     }
     [self.separatorLines addObject:separator];
     [self addSubview:separator];
@@ -99,46 +132,16 @@ static CGFloat const StatCounterCellHeight = 100.0f;
     [self.contentView addSubview:countView];
     [self.countViews addObject:countView];
     
-    CGFloat yOffset = CGRectGetMaxY(self.titleLabel.frame) + 5.0f;
-    if ([self.countViews count] == 2) {
-        __block CGFloat width = self.contentView.frame.size.width;
-//        [self.countViews enumerateObjectsUsingBlock:^(UIView *v, NSUInteger idx, BOOL *stop) {
-//            v.frame = (CGRect) {
-//                .origin = CGPointMake(offsetWidth - v.frame.size.width/2, yOffset),
-//                .size = v.frame.size
-//            };
-//            offsetWidth = self.contentView.frame.size.width*0.75;
-//        }];
-        UIView *leftView = self.countViews[0];
-        leftView.frame = (CGRect) {
-            .origin = CGPointMake(width*0.25 - leftView.frame.size.width/2, yOffset),
-            .size = leftView.frame.size
-        };
+    if (self.countViews.count == 2) {
         UIView *separator = [[UIView alloc] init];
-        separator.frame = (CGRect) {
-            .origin = CGPointMake(width*0.5, CGRectGetMinY(leftView.frame)),
-            .size = CGSizeMake(IS_RETINA ? 0.5f : 1.0f, leftView.frame.size.height)
-        };
-        separator.backgroundColor = [WPStyleGuide readGrey];
-        [self.contentView addSubview:separator];
         [self.separatorLines addObject:separator];
-        UIView *rightView = self.countViews[1];
-        rightView.frame = (CGRect) {
-            .origin = CGPointMake(width*0.75 - rightView.frame.size.width/2, yOffset),
-            .size = rightView.frame.size
-        };
-        
-    } else {
-        countView.frame = (CGRect) {
-            .origin = CGPointMake(CGRectGetMidX(self.contentView.frame) - CGRectGetMidX(countView.frame), yOffset),
-            .size = countView.frame.size
-        };
+        [self.contentView addSubview:separator];
     }
 }
 
 - (void)prepareForReuse {
     [self.countViews makeObjectsPerformSelector:@selector(removeFromSuperview)];
-    [self.countViews removeAllObjects];
+    self.countViews = [NSMutableArray array];
     [self.separatorLines makeObjectsPerformSelector:@selector(removeFromSuperview)];
     self.separatorLines = [NSMutableArray array];
     self.titleLabel.text = @"";

@@ -8,12 +8,17 @@
  */
 
 #import <UIKit/UIKit.h>
+#import "StatsTitleCountItem.h"
+#import "WPTableViewCell.h"
 
-@interface StatsTwoLabelCell : UITableViewCell
+@interface StatsTwoLabelCell : WPTableViewCell
+
+@property (nonatomic, strong) NSNumberFormatter *numberFormatter;
+@property (nonatomic, strong) StatsTitleCountItem *cellData;
 
 + (CGFloat)heightForRow;
 
-- (void)setLeft:(NSString *)left right:(NSString *)right;
-- (void)setLeft:(NSString *)left right:(NSString *)right titleCell:(BOOL)titleCell;
+- (void)insertData:(StatsTitleCountItem *)cellData;
+- (void)setLeft:(NSString *)left withImageUrl:(NSURL *)imageUrl right:(NSString *)right titleCell:(BOOL)titleCell;
 
 @end
