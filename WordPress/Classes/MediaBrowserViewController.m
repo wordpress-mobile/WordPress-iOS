@@ -1315,16 +1315,17 @@ static NSArray *generatedMonthYearsFilters;
 	if(copySuccess) {
 		videoMedia = [Media newMediaForBlog:self.blog];
 		
-		if(_currentOrientation == MediaOrientationLandscape)
+		if(_currentOrientation == MediaOrientationLandscape) {
 			videoMedia.orientation = @"landscape";
-		else
+        } else {
 			videoMedia.orientation = @"portrait";
+        }
 		videoMedia.creationDate = [NSDate date];
 		[videoMedia setFilename:filename];
 		[videoMedia setLocalURL:filepath];
 		
 		videoMedia.filesize = [NSNumber numberWithInt:([[attributes objectForKey: NSFileSize] intValue]/1024)];
-		videoMedia.mediaType = @"video";
+		videoMedia.mediaType = MediaTypeVideo;
 		videoMedia.thumbnail = UIImageJPEGRepresentation(videoThumbnail, 1.0);
 		videoMedia.length = [NSNumber numberWithFloat:duration];
 		CGImageRef cgVideoThumbnail = thumbnail.CGImage;
@@ -1343,8 +1344,6 @@ static NSArray *generatedMonthYearsFilters;
         } failure:^(NSError *error) {
             [WPError showAlertWithTitle:NSLocalizedString(@"Upload failed", nil) message:error.localizedDescription];
         }];
-//		isAddingMedia = NO;
-		
 	}
 	else {
         [WPError showAlertWithTitle:NSLocalizedString(@"Error Copying Video", nil) message:NSLocalizedString(@"There was an error copying the video for upload. Please try again.", nil)];
