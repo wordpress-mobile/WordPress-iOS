@@ -397,7 +397,7 @@ static NSArray *generatedMonthYearsFilters;
 
 - (UICollectionViewCell *)collectionView:(UICollectionView *)collectionView cellForItemAtIndexPath:(NSIndexPath *)indexPath {
     MediaBrowserCell *cell = [collectionView dequeueReusableCellWithReuseIdentifier:MediaCellIdentifier forIndexPath:indexPath];
-    cell.hideCheckbox = _selectingFeaturedImage;
+    cell.hideCheckbox = _selectingFeaturedImage || _selectingMediaForPost;
     cell.media = self.filteredMedia[indexPath.item];
     cell.isSelected = ([_selectedMedia objectForKey:cell.media.mediaID] != nil);
     cell.delegate = self;
