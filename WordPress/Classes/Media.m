@@ -300,7 +300,7 @@
 }
 
 - (void)cancelUpload {
-    if (self.remoteStatus == MediaRemoteStatusPushing || self.remoteStatus == MediaRemoteStatusProcessing) {
+    if ((self.remoteStatus == MediaRemoteStatusPushing || self.remoteStatus == MediaRemoteStatusProcessing) && self.progress < 1.0f) {
         [_uploadOperation cancel];
         _uploadOperation = nil;
         self.remoteStatus = MediaRemoteStatusFailed;
