@@ -43,5 +43,6 @@
 - (void)updateActionButtons;
 - (void)reset;
 - (void)configurePost:(ReaderPost *)post;
+- (void)refreshMediaLayout;
 
 @end
