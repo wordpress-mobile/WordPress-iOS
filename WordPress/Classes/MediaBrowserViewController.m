@@ -879,7 +879,11 @@ static NSArray *generatedMonthYearsFilters;
         if (IS_IPAD) {
             [resizeActionSheet showFromBarButtonItem:[self.navigationItem.rightBarButtonItems objectAtIndex:1] animated:YES];
         } else {
-            [resizeActionSheet showFromTabBar:[WordPressAppDelegate sharedWordPressApplicationDelegate].tabBarController.tabBar];
+            if (self.presentingViewController) {
+                [resizeActionSheet showInView:self.view];
+            } else {
+                [resizeActionSheet showFromTabBar:[WordPressAppDelegate sharedWordPressApplicationDelegate].tabBarController.tabBar];
+            }
         }
 	}
 }
@@ -984,7 +988,11 @@ static NSArray *generatedMonthYearsFilters;
 
 - (void)imagePickerControllerDidCancel:(UIImagePickerController *)picker {
     [WordPressAppDelegate sharedWordPressApplicationDelegate].tabBarController.tabBar.hidden = NO;
-    [self.navigationController dismissViewControllerAnimated:YES completion:nil];
+    if (_addPopover) {
+        [_addPopover dismissPopoverAnimated:YES];
+    } else {
+        [self.navigationController dismissViewControllerAnimated:YES completion:nil];
+    }
 }
 
 - (void)navigationController:(UINavigationController *)navigationController willShowViewController:(UIViewController *)viewController animated:(BOOL)animated {
