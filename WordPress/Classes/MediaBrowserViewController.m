@@ -668,7 +668,11 @@ static NSArray *generatedMonthYearsFilters;
             UIBarButtonItem *barButtonItem = self.navigationItem.rightBarButtonItems[1];
             [_currentActionSheet showFromBarButtonItem:barButtonItem animated:YES];
         } else {
-            [_currentActionSheet showFromTabBar:[WordPressAppDelegate sharedWordPressApplicationDelegate].tabBarController.tabBar];
+            if (self.presentingViewController) {
+                [_currentActionSheet showInView:self.view];
+            } else {
+                [_currentActionSheet showFromTabBar:[WordPressAppDelegate sharedWordPressApplicationDelegate].tabBarController.tabBar];
+            }
         }
     }
 }
