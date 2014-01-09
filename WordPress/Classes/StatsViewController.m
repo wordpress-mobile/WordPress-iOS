@@ -70,6 +70,7 @@ typedef NS_ENUM(NSInteger, TotalFollowersShareRow) {
 @property (nonatomic, strong) ContextManager *contextManager;
 @property (nonatomic, strong) NSMutableDictionary *statModels;
 @property (nonatomic, strong) NSMutableDictionary *showingToday;
+@property (nonatomic, assign) StatsViewsVisitorsUnit currentViewsVisitorsGraphUnit;
 
 @end
 
@@ -91,15 +92,10 @@ typedef NS_ENUM(NSInteger, TotalFollowersShareRow) {
     [self.tableView registerClass:[StatsTwoLabelCell class] forCellReuseIdentifier:TwoLabelCellReuseIdentifier];
     [self.tableView registerClass:[StatsNoResultsCell class] forCellReuseIdentifier:NoResultsCellIdentifier];
     [self.tableView registerClass:[StatsTwoLabelCell class] forCellReuseIdentifier:ResultRowCellIdentifier];
-<<<<<<< HEAD
-    [self.tableView registerClass:[StatsBarGraphCell class] forCellReuseIdentifier:GraphCellIdentifier];
-    [self.tableView registerClass:[StatsGroupedCell class] forCellReuseIdentifier:StatsGroupedCellIdentifier];
-=======
     [self.tableView registerClass:[StatsViewsVisitorsBarGraphCell class] forCellReuseIdentifier:GraphCellIdentifier];
     
     self.refreshControl = [[UIRefreshControl alloc] init];
     [self.refreshControl addTarget:self action:@selector(refreshControlTriggered) forControlEvents:UIControlEventValueChanged];
->>>>>>> Stats views/visitor basic chart
     
     _statModels = [NSMutableDictionary dictionary];
     
@@ -273,14 +269,24 @@ typedef NS_ENUM(NSInteger, TotalFollowersShareRow) {
                 {
                     StatsButtonCell *cell = [tableView dequeueReusableCellWithIdentifier:VisitorsUnitButtonCellReuseIdentifier];
                     [cell addButtonWithTitle:NSLocalizedString(@"Days", nil) target:self action:@selector(daySelected:) section:indexPath.section];
+                    [cell addButtonWithTitle:NSLocalizedString(@"Weeks", nil) target:self action:@selector(weekSelected:) section:indexPath.section];
                     [cell addButtonWithTitle:NSLocalizedString(@"Months", nil) target:self action:@selector(monthSelected:) section:indexPath.section];
-                    [cell addButtonWithTitle:NSLocalizedString(@"Years", nil) target:self action:@selector(yearSelected:) section:indexPath.section];
+                    cell.currentActiveButton = _currentViewsVisitorsGraphUnit;
                     return cell;
                 }
                 case VisitorRowGraph:
                 {
                     StatsViewsVisitorsBarGraphCell *cell = [tableView dequeueReusableCellWithIdentifier:GraphCellIdentifier];
-                    [cell setGraphData:nil];
+                    [cell setData:@[@{@"count":@0, @"name":@"Day 1"},
+                                    @{@"count":@0, @"name":@"Day 2"},
+                                    @{@"count":@0, @"name":@"Day 3"}] forUnit:StatsViewsVisitorsUnitDay category:StatsViewsCategory];
+                    [cell setData:@[@{@"count":@100, @"name":@"Week 1"},
+                                    @{@"count":@200, @"name":@"Week 2"},
+                                    @{@"count":@300, @"name":@"Week 3"}] forUnit:StatsViewsVisitorsUnitWeek category:StatsViewsCategory];
+                    [cell setData:@[@{@"count":@1000, @"name":@"Month 1"},
+                                    @{@"count":@2000, @"name":@"Month 2"},
+                                    @{@"count":@3000, @"name":@"Month 3"}] forUnit:StatsViewsVisitorsUnitMonth category:StatsViewsCategory];
+                    [cell showGraphForUnit:_currentViewsVisitorsGraphUnit];
                     return cell;
                 }
                 case VisitorRowTodayStats:
@@ -481,16 +487,21 @@ typedef NS_ENUM(NSInteger, TotalFollowersShareRow) {
 
 #pragma mark - Visitors Graph button selectors
 
-- (void)daySelected:(UIButton *)sender {
+- (void)graphUnitSelected:(StatsViewsVisitorsUnit)unit {
+    _currentViewsVisitorsGraphUnit = unit;
+    [self.tableView reloadSections:[NSIndexSet indexSetWithIndex:StatsSectionVisitors] withRowAnimation:UITableViewRowAnimationNone];
+}
 
+- (void)daySelected:(UIButton *)sender {
+    [self graphUnitSelected:StatsViewsVisitorsUnitDay];
+}
+
+- (void)weekSelected:(UIButton *)sender {
+    [self graphUnitSelected:StatsViewsVisitorsUnitWeek];
 }
 
 - (void)monthSelected:(UIButton *)sender {
-    
-}
-
-- (void)yearSelected:(UIButton *)sender {
-    
+    [self graphUnitSelected:StatsViewsVisitorsUnitMonth];
 }
 
 @end
