@@ -83,7 +83,7 @@
     
     [self setupInfoView];
     
-    ((UIScrollView*)self.view).contentSize = CGSizeMake(self.view.frame.size.width, CGRectGetMaxY(_infoView.frame));
+    ((UIScrollView *)self.view).contentSize = CGSizeMake(self.view.frame.size.width, CGRectGetMaxY(_infoView.frame));
     
     [[WPImageSource sharedSource] downloadImageForURL:[NSURL URLWithString:self.theme.screenshotUrl] withSuccess:^(UIImage *image) {
         self.screenshot.image = image;
