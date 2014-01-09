@@ -67,10 +67,6 @@
     return self;
 }
 
-- (void)dealloc {
-    [self removeUploadStatusObservers];
-}
-
 - (void)setHideCheckbox:(BOOL)hideCheckbox {
     _checkbox.hidden = hideCheckbox;
 }
@@ -101,23 +97,21 @@
         _thumbnail.contentMode = UIViewContentModeCenter;
     }
     [_uploadStatusOverlay removeFromSuperview];
+    
+    [self removeUploadStatusObservers];
 }
 
 #pragma mark - KVO
 
 - (void)addUploadStatusObservers {
-    if (_media.remoteStatus != MediaRemoteStatusLocal && _media.remoteStatus != MediaRemoteStatusSync) {
-        [self updateUploadStatusOverlay];
-        [_media addObserver:self forKeyPath:@"progress" options:NSKeyValueObservingOptionNew context:0];
-        [_media addObserver:self forKeyPath:@"remoteStatus" options:NSKeyValueObservingOptionNew context:0];
-    }
+    [self updateUploadStatusOverlay];
+    [_media addObserver:self forKeyPath:@"progress" options:NSKeyValueObservingOptionNew context:0];
+    [_media addObserver:self forKeyPath:@"remoteStatus" options:NSKeyValueObservingOptionNew context:0];
 }
 
 - (void)removeUploadStatusObservers {
-    if ([_media observationInfo]) {
-        [_media removeObserver:self forKeyPath:@"progress"];
-        [_media removeObserver:self forKeyPath:@"remoteStatus"];
-    }
+    [_media removeObserver:self forKeyPath:@"progress"];
+    [_media removeObserver:self forKeyPath:@"remoteStatus"];
 }
 
 - (void)observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary *)change context:(void *)context {
@@ -129,8 +123,6 @@
 }
 
 - (void)setMedia:(Media *)media {
-    [self removeUploadStatusObservers];
-    
     _media = media;
     
     _title.text = [self titleForMedia];
