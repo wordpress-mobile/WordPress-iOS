@@ -960,6 +960,9 @@ static NSArray *generatedMonthYearsFilters;
         _picker.sourceType = UIImagePickerControllerSourceTypeCamera;
 		_picker.mediaTypes = [NSArray arrayWithObject:(NSString *)kUTTypeImage];
         _picker.modalPresentationStyle = UIModalPresentationCurrentContext;
+        if (IS_IPAD) {
+            [WordPressAppDelegate sharedWordPressApplicationDelegate].tabBarController.tabBar.hidden = YES;
+        }
         [self.navigationController presentViewController:_picker animated:YES completion:nil];
     }
 }
@@ -972,11 +975,15 @@ static NSArray *generatedMonthYearsFilters;
         _picker.mediaTypes = [NSArray arrayWithObject:(NSString *)kUTTypeMovie];
         _picker.videoQuality = [self videoQualityPreference];
         _picker.modalPresentationStyle = UIModalPresentationCurrentContext;
+        if (IS_IPAD) {
+            [WordPressAppDelegate sharedWordPressApplicationDelegate].tabBarController.tabBar.hidden = YES;
+        }
         [self.navigationController presentViewController:_picker animated:YES completion:nil];
     }
 }
 
 - (void)imagePickerControllerDidCancel:(UIImagePickerController *)picker {
+    [WordPressAppDelegate sharedWordPressApplicationDelegate].tabBarController.tabBar.hidden = NO;
     [self.navigationController dismissViewControllerAnimated:YES completion:nil];
 }
 
@@ -987,6 +994,9 @@ static NSArray *generatedMonthYearsFilters;
 }
 
 - (void)imagePickerController:(UIImagePickerController *)picker didFinishPickingMediaWithInfo:(NSDictionary *)info {
+    
+    [WordPressAppDelegate sharedWordPressApplicationDelegate].tabBarController.tabBar.hidden = NO;
+    
  	if ([[info valueForKey:@"UIImagePickerControllerMediaType"] isEqualToString:@"public.movie"]) {
 		self.currentVideo = [info mutableCopy];
 		if (!self.selectingDeviceFromLibrary) {
