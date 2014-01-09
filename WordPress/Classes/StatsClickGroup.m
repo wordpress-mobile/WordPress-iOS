@@ -19,7 +19,9 @@
         StatsClickGroup *cg = [[StatsClickGroup alloc] init];
         cg.group = clickGroup[@"group"];
         cg.title = clickGroup[@"name"];
-        cg.iconUrl = clickGroup[@"icon"];
+        if (clickGroup[@"icon"] != [NSNull null]) {
+            cg.iconUrl = [NSURL URLWithString:clickGroup[@"icon"]];
+        }
         cg.count = clickGroup[@"total"];
         cg.date = clickGroups[@"date"];
         cg.siteId = siteId;

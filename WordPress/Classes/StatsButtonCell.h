@@ -8,8 +8,9 @@
  */
 
 #import "StatsViewController.h"
+#import "WPTableViewCell.h"
 
-@interface StatsButtonCell : UITableViewCell
+@interface StatsButtonCell : WPTableViewCell
 
 @property (nonatomic, strong) NSMutableArray *buttons;
 

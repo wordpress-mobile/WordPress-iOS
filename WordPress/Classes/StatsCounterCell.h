@@ -8,8 +8,9 @@
  */
 
 #import <UIKit/UIKit.h>
+#import "WPTableViewCell.h"
 
-@interface StatsCounterCell : UITableViewCell
+@interface StatsCounterCell : WPTableViewCell
 
 + (CGFloat)heightForRow;
 

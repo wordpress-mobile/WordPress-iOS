@@ -12,6 +12,6 @@
 @interface StatsGroup : StatsTitleCountItem
 
 @property (nonatomic, strong) NSString *group;
-@property (nonatomic, strong) NSString *iconUrl;
+@property (nonatomic, strong) NSURL *iconUrl;
 
 @end

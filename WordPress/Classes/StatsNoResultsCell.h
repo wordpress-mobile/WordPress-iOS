@@ -9,8 +9,9 @@
 
 #import <UIKit/UIKit.h>
 #import "StatsViewController.h"
+#import "WPTableViewCell.h"
 
-@interface StatsNoResultsCell : UITableViewCell
+@interface StatsNoResultsCell : WPTableViewCell
 
 + (CGFloat)heightForRow;
 
