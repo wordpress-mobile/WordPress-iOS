@@ -692,7 +692,9 @@ static NSString *const CameraPlusImagesNotification = @"CameraPlusImagesNotifica
         //get a references to media files linked in a post
         DDLogInfo(@"%i media items to check for cleanup", [mediaObjectsToKeep count]);
         for (Media *media in mediaObjectsToKeep) {
-            [mediaToKeep addObject:media.localURL];
+            if (media.localURL) {
+                [mediaToKeep addObject:media.localURL];
+            }
         }
         
         //searches for jpg files within the app temp file
