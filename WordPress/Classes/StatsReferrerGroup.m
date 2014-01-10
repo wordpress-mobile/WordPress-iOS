@@ -23,9 +23,8 @@
             rg.iconUrl = [NSURL URLWithString:referrerGroup[@"icon"]];
         }
         rg.count = referrerGroup[@"total"];
-        rg.date = referrerGroups[@"date"];
         rg.siteId = siteId;
-        rg.referrers = [StatsReferrer referrersFromArray:referrerGroup[@"results"] withDate:rg.date siteId:siteId];
+        rg.referrers = [StatsReferrer referrersFromArray:referrerGroup[@"results"] siteId:siteId];
         [referrerGroupList addObject:rg];
     }
     return referrerGroupList;

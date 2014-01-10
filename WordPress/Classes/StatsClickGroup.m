@@ -22,10 +22,9 @@
         if (clickGroup[@"icon"] != [NSNull null]) {
             cg.iconUrl = [NSURL URLWithString:clickGroup[@"icon"]];
         }
-        cg.count = clickGroup[@"total"];
-        cg.date = clickGroups[@"date"];
+        cg.count = clickGroup[@"total"];;
         cg.siteId = siteId;
-        cg.clicks = [StatsClick clicksFromArray:clickGroup[@"results"] withDate:cg.date siteId:siteId];
+        cg.clicks = [StatsClick clicksFromArray:clickGroup[@"results"] siteId:siteId];
         [clickGroupList addObject:cg];
     }
     return clickGroupList;
