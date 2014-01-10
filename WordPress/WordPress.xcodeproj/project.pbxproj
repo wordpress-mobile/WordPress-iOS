@@ -765,7 +765,7 @@
 		ACBAB67D0E1247CC00F38795 /* PostPreviewViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = ACBAB67C0E1247CC00F38795 /* PostPreviewViewController.xib */; };
 		ACBAB6860E1247F700F38795 /* PostPreviewViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = ACBAB6850E1247F700F38795 /* PostPreviewViewController.m */; };
 		ACC156CC0E10E67600D6E1A0 /* EditPostViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = ACC156CB0E10E67600D6E1A0 /* EditPostViewController.m */; };
-		C52C783418771F7100FB1D2D /* StatsTwoLabelCell.m in Sources */ = {isa = PBXBuildFile; fileRef = C52C783318771F7100FB1D2D /* StatsTwoLabelCell.m */; };
+		C52C783418771F7100FB1D2D /* StatsTwoColumnCell.m in Sources */ = {isa = PBXBuildFile; fileRef = C52C783318771F7100FB1D2D /* StatsTwoColumnCell.m */; };
 		C52C7837187739C500FB1D2D /* StatsNoResultsCell.m in Sources */ = {isa = PBXBuildFile; fileRef = C52C7836187739C500FB1D2D /* StatsNoResultsCell.m */; };
 		C52C7841187762FE00FB1D2D /* StatsViewsVisitorsBarGraphCell.m in Sources */ = {isa = PBXBuildFile; fileRef = C52C7840187762FE00FB1D2D /* StatsViewsVisitorsBarGraphCell.m */; };
 		C52C784B187AFB2300FB1D2D /* StatsSummary.m in Sources */ = {isa = PBXBuildFile; fileRef = C52C784A187AFB2300FB1D2D /* StatsSummary.m */; };
@@ -1931,8 +1931,8 @@
 		ACC156CB0E10E67600D6E1A0 /* EditPostViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EditPostViewController.m; sourceTree = "<group>"; };
 		BB0E95DCE0724D3696D9F222 /* Pods-WordPressTest.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-WordPressTest.xcconfig"; path = "../Pods/Pods-WordPressTest.xcconfig"; sourceTree = SOURCE_ROOT; };
 		C52812131832E071008931FD /* WordPress 13.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = "WordPress 13.xcdatamodel"; sourceTree = "<group>"; };
-		C52C783218771F7100FB1D2D /* StatsTwoLabelCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = StatsTwoLabelCell.h; sourceTree = "<group>"; };
-		C52C783318771F7100FB1D2D /* StatsTwoLabelCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = StatsTwoLabelCell.m; sourceTree = "<group>"; };
+		C52C783218771F7100FB1D2D /* StatsTwoColumnCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = StatsTwoColumnCell.h; sourceTree = "<group>"; };
+		C52C783318771F7100FB1D2D /* StatsTwoColumnCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = StatsTwoColumnCell.m; sourceTree = "<group>"; };
 		C52C7835187739C500FB1D2D /* StatsNoResultsCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = StatsNoResultsCell.h; sourceTree = "<group>"; };
 		C52C7836187739C500FB1D2D /* StatsNoResultsCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = StatsNoResultsCell.m; sourceTree = "<group>"; };
 		C52C783F187762FE00FB1D2D /* StatsViewsVisitorsBarGraphCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = StatsViewsVisitorsBarGraphCell.h; sourceTree = "<group>"; };
@@ -3853,8 +3853,8 @@
 				C56636FA18761C8600226AAB /* StatsButtonCell.m */,
 				C56636FC1877011000226AAB /* StatsCounterCell.h */,
 				C56636FD1877011000226AAB /* StatsCounterCell.m */,
-				C52C783218771F7100FB1D2D /* StatsTwoLabelCell.h */,
-				C52C783318771F7100FB1D2D /* StatsTwoLabelCell.m */,
+				C52C783218771F7100FB1D2D /* StatsTwoColumnCell.h */,
+				C52C783318771F7100FB1D2D /* StatsTwoColumnCell.m */,
 				C52C7835187739C500FB1D2D /* StatsNoResultsCell.h */,
 				C52C7836187739C500FB1D2D /* StatsNoResultsCell.m */,
 				C52C783F187762FE00FB1D2D /* StatsViewsVisitorsBarGraphCell.h */,
@@ -5331,7 +5331,7 @@
 				C52C7866187C4D7200FB1D2D /* StatsReferrerGroup.m in Sources */,
 				E13F23C314FE84600081D9CC /* NSMutableDictionary+Helpers.m in Sources */,
 				E114D79A153D85A800984182 /* WPError.m in Sources */,
-				C52C783418771F7100FB1D2D /* StatsTwoLabelCell.m in Sources */,
+				C52C783418771F7100FB1D2D /* StatsTwoColumnCell.m in Sources */,
 				E12F95B9155820A40067A653 /* NSObject+BlockObservation.m in Sources */,
 				46F84611185A6E98009D0DA5 /* WPContentView.m in Sources */,
 				A25EBD87156E330600530E3D /* WPTableViewController.m in Sources */,
