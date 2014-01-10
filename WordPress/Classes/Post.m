@@ -192,6 +192,21 @@
         return YES;
     }
     
+	if ((self.geolocation != original.geolocation)
+        && (![self.geolocation isEqual:original.geolocation]) ) {
+        return YES;
+    }
+    
+    return NO;
+}
+
+- (BOOL)hasSiteSpecificChanges {
+    if ([super hasSiteSpecificChanges]) {
+        return YES;
+    }
+    
+    Post *original = (Post *)self.original;
+    
     if ((self.postFormat != original.postFormat)
         && (![self.postFormat isEqual:original.postFormat])) {
         return YES;
@@ -201,17 +216,13 @@
         return YES;
     }
     
-	if ((self.geolocation != original.geolocation)
-        && (![self.geolocation isEqual:original.geolocation]) ) {
-        return YES;
-    }
-    
-    if (![self.featuredImageURL isEqualToString:original.featuredImageURL]) {
+    if (self.featuredImageURL != original.featuredImageURL && ![self.featuredImageURL isEqualToString:original.featuredImageURL]) {
         return YES;
     }
     
     return NO;
 }
+
 
 #pragma mark - QuickPhoto
 - (void)mediaDidUploadSuccessfully:(NSNotification *)notification {

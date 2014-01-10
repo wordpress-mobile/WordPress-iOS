@@ -10,7 +10,7 @@
 
 @class IOS7CorrectedTextView, Note;
 
-@interface NotificationsCommentDetailViewController : UIViewController <UITableViewDataSource, UITableViewDelegate, UITextViewDelegate>
+@interface NotificationsCommentDetailViewController : UIViewController <UITextViewDelegate>
 
 - (id)initWithNote:(Note *)note;
 
