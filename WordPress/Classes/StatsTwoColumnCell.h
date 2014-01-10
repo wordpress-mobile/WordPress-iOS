@@ -1,5 +1,5 @@
 /*
- * StatsTwoLabelCell.h
+ * StatsTwoColumnCell.h
  *
  * Copyright (c) 2014 WordPress. All rights reserved.
  *
@@ -11,7 +11,7 @@
 #import "StatsTitleCountItem.h"
 #import "WPTableViewCell.h"
 
-@interface StatsTwoLabelCell : WPTableViewCell
+@interface StatsTwoColumnCell : WPTableViewCell
 
 @property (nonatomic, strong) NSNumberFormatter *numberFormatter;
 @property (nonatomic, strong) StatsTitleCountItem *cellData;

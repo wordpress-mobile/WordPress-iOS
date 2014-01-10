@@ -9,7 +9,7 @@
 
 #import "StatsNoResultsCell.h"
 
-static CGFloat const CellPadding = 10.0f;
+static CGFloat const CellPadding = 15.0f;
 
 @interface StatsNoResultsCell ()
 
@@ -62,9 +62,9 @@ static CGFloat const CellPadding = 10.0f;
     }
     NSString *localizedBoldString = NSLocalizedString(boldMessage, nil);
     NSString *localizedDescriptionString = NSLocalizedString(description, nil);
-    NSString *completeString = [NSString stringWithFormat:@"%@ %@",localizedBoldString,localizedDescriptionString];
+    NSString *completeString = [NSString stringWithFormat:@"%@ %@", localizedBoldString, localizedDescriptionString];
     
-    NSDictionary *defaultAttributes = [NSDictionary dictionaryWithObjectsAndKeys:[WPStyleGuide regularTextFont], NSFontAttributeName, nil];
+    NSDictionary *defaultAttributes = [WPStyleGuide regularTextAttributes];
     NSDictionary *boldAttributes = [NSDictionary dictionaryWithObjectsAndKeys:[WPStyleGuide regularTextFontBold], NSFontAttributeName, nil];
     NSMutableAttributedString *noResultsAttributedString = [[NSMutableAttributedString alloc] initWithString:completeString attributes:defaultAttributes];
     [noResultsAttributedString setAttributes:boldAttributes range:NSMakeRange(0, localizedBoldString.length)];
@@ -72,6 +72,7 @@ static CGFloat const CellPadding = 10.0f;
     label.attributedText = noResultsAttributedString;
     label.lineBreakMode = NSLineBreakByWordWrapping;
     label.numberOfLines = 0;
+    label.textColor = [WPStyleGuide littleEddieGrey];
     
     self.noStatsDescriptionLabel = label;
     [self.contentView addSubview:label];
