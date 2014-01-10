@@ -10,7 +10,6 @@
 @interface StatsSummary : NSObject
 
 @property (nonatomic, strong) NSNumber *siteId;
-@property (nonatomic, strong) NSArray *statsVisits;
 @property (nonatomic, strong) NSDate *date;
 @property (nonatomic, strong) NSNumber *totalCatagories;
 @property (nonatomic, strong) NSNumber *totalComments;

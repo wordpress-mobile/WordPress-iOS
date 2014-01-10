@@ -17,6 +17,7 @@
 #import "StatsReferrerGroup.h"
 #import "StatsTitleCountItem.h"
 #import "StatsViewByCountry.h"
+#import "StatsViewsVisitors.h"
 
 @interface StatsApiHelper ()
 
@@ -51,107 +52,67 @@
 }
 
 - (void)fetchClicksWithSuccess:(void (^)(NSDictionary *))success failure:(void (^)(NSError *))failure {
-    NSDate *today = [NSDate date];
-    NSDate *yesterday = [NSDate dateWithTimeIntervalSinceNow:-24*3600];
-    
-    NSString *todayPath = [NSString stringWithFormat:@"%@/clicks?date=%@", _statsPathPrefix, [self.formatter stringFromDate:today]];
-    NSString *yesterdayPath = [NSString stringWithFormat:@"%@/clicks?date=%@", _statsPathPrefix, [self.formatter stringFromDate:yesterday]];
-    
-    [self fetchStatsForPath:todayPath success:^(NSDictionary *todaysData) {
-        [self fetchStatsForPath:yesterdayPath success:^(NSDictionary *yesterdaysData) {
-            NSArray *todayClickGroups = [StatsClickGroup clickGroupsFromData:todaysData withSiteId:self.siteID];
-            NSArray *yesterdayClickGroups = [StatsClickGroup clickGroupsFromData:yesterdaysData withSiteId:self.siteID];
-            success(@{@"today": todayClickGroups, @"yesterday": yesterdayClickGroups});
-        } failure:failure];
+    [self fetchTodayYesterdayStatsForPath:@"clicks?date=" success:^(id todayData, id yesterdayData) {
+        success(@{@"today": [StatsClickGroup clickGroupsFromData:todayData withSiteId:_siteID],
+                  @"yesterday": [StatsClickGroup clickGroupsFromData:yesterdayData withSiteId:_siteID]});
     } failure:failure];
 }
                                              
 - (void)fetchCountryViewsWithSuccess:(void (^)(NSDictionary *))success failure:(void (^)(NSError *))failure {
-    
-    NSDate *today = [NSDate date];
-    NSDate *yesterday = [NSDate dateWithTimeIntervalSinceNow:-24*3600];
-    
-    NSString *todayPath = [NSString stringWithFormat:@"%@/country-views?date=%@", _statsPathPrefix, [self.formatter stringFromDate:today]];
-    NSString *yesterdayPath = [NSString stringWithFormat:@"%@/country-views?date=%@", _statsPathPrefix, [self.formatter stringFromDate:yesterday]];
-    
-    [self fetchStatsForPath:todayPath success:^(NSDictionary *todaysData) {
-        [self fetchStatsForPath:yesterdayPath success:^(NSDictionary *yesterdaysData) {
-            NSArray *todayViewByCountry = [StatsViewByCountry viewByCountryFromData:todaysData withSiteId:self.siteID];
-            NSArray *yesterdayViewByCountry = [StatsViewByCountry viewByCountryFromData:yesterdaysData withSiteId:self.siteID];
-            
-            success(@{@"today":todayViewByCountry,@"yesterday":yesterdayViewByCountry});
-        } failure:failure];
-    }failure:failure];
+    [self fetchTodayYesterdayStatsForPath:@"country-views?date=" success:^(id todayData, id yesterdayData) {
+        success(@{@"today": [StatsViewByCountry viewByCountryFromData:todayData withSiteId:_siteID],
+                  @"yesterday": [StatsViewByCountry viewByCountryFromData:yesterdayData withSiteId:_siteID]});
+    } failure:failure];
 }
 
 - (void)fetchReferrerWithSuccess:(void (^)(NSDictionary *))success failure:(void (^)(NSError *))failure {
-    
-    NSDate *today = [NSDate date];
-    NSDate *yesterday = [NSDate dateWithTimeIntervalSinceNow:-24*3600];
-    
-    NSString *todayPath = [NSString stringWithFormat:@"%@/referrers?date=%@", _statsPathPrefix, [self.formatter stringFromDate:today]];
-    NSString *yesterdayPath = [NSString stringWithFormat:@"%@/referrers?date=%@", _statsPathPrefix, [self.formatter stringFromDate:yesterday]];
-    
-    [self fetchStatsForPath:todayPath success:^(NSDictionary *todaysData) {
-        [self fetchStatsForPath:yesterdayPath success:^(NSDictionary *yesterdaysData) {
-            NSArray *todayReferrerGroups = [StatsReferrerGroup referrerGroupsFromData:todaysData withSiteId:self.siteID];
-            NSArray *yesterdayReferrerGroup = [StatsReferrerGroup referrerGroupsFromData:yesterdaysData withSiteId:self.siteID];
-            
-            success(@{@"today":todayReferrerGroups,@"yesterday":yesterdayReferrerGroup});
-        } failure:failure];
-    }failure:failure];
+    [self fetchTodayYesterdayStatsForPath:@"referrers?date=" success:^(id todayData, id yesterdayData) {
+        success(@{@"today": [StatsReferrerGroup referrerGroupsFromData:todayData withSiteId:_siteID],
+                  @"yesterday": [StatsReferrerGroup referrerGroupsFromData:yesterdayData withSiteId:_siteID]});
+    } failure:failure];
 }
 
 - (void)fetchSearchTermsWithSuccess:(void (^)(NSDictionary *))success failure:(void (^)(NSError *))failure {
-    
-    NSDate *today = [NSDate date];
-    NSDate *yesterday = [NSDate dateWithTimeIntervalSinceNow:-24*3600];
-    
-    NSString *todayPath = [NSString stringWithFormat:@"%@/search-terms?date=%@", _statsPathPrefix, [self.formatter stringFromDate:today]];
-    NSString *yesterdayPath = [NSString stringWithFormat:@"%@/search-terms?date=%@", _statsPathPrefix, [self.formatter stringFromDate:yesterday]];
-    
-    [self fetchStatsForPath:todayPath success:^(NSDictionary *todayData) {
-        [self fetchStatsForPath:yesterdayPath success:^(NSDictionary *yesterdayData) {
-            NSArray *todaySearchTerms = [StatsTitleCountItem titleCountItemsFromData:todayData withKey:@"search-terms" siteId:self.siteID];
-            NSArray *yesterdaySearchTerms = [StatsTitleCountItem titleCountItemsFromData:yesterdayData withKey:@"search-terms" siteId:self.siteID];
-            
-            success(@{@"today":todaySearchTerms,@"yesterday":yesterdaySearchTerms});
-        } failure:failure];
-    }failure:failure];
+    [self fetchTodayYesterdayStatsForPath:@"search-terms?date=" success:^(id todayData, id yesterdayData) {
+        success(@{@"today": [StatsTitleCountItem titleCountItemsFromData:todayData[@"search-terms"] siteId:_siteID],
+                  @"yesterday": [StatsTitleCountItem titleCountItemsFromData:yesterdayData[@"search-terms"] siteId:_siteID]});
+    } failure:failure];
 }
 
 - (void)fetchTopPostsWithSuccess:(void (^)(NSDictionary *topPosts))success failure:(void (^)(NSError *error))failure {
-    NSString *yesterdayPath = [NSString stringWithFormat:@"%@/top-posts?date=%@", _statsPathPrefix, [self.formatter stringFromDate:[NSDate dateWithTimeIntervalSinceNow:-24*3600]]];
-    NSString *todayPath = [NSString stringWithFormat:@"%@/top-posts?date=%@", _statsPathPrefix, [self.formatter stringFromDate:[NSDate date]]];
-    
-    [self fetchStatsForPath:yesterdayPath success:^(NSDictionary *yesterdayData) {
-        [self fetchStatsForPath:todayPath success:^(NSDictionary *todayData) {
-        
-            success([StatsTopPost postsFromTodaysData:todayData yesterdaysData:yesterdayData siteId:self.siteID]);
+    [self fetchTodayYesterdayStatsForPath:@"top-posts?date=" success:^(id todayData, id yesterdayData) {
+        success([StatsTopPost postsFromTodaysData:todayData yesterdaysData:yesterdayData siteId:_siteID]);
+    } failure:failure];
+}
 
-        } failure:^(NSError *e) {
-            failure(e);
-        }];
-        
-    } failure:^(NSError *e) {
-        failure(e);
-    }];
+- (void)fetchTodayYesterdayStatsForPath:(NSString *)path success:(void (^)(id todayData, id yesterdayData))success failure:(void (^)(NSError *error))failure {
+    NSString *yesterdayPath = [path stringByAppendingString:[self.formatter stringFromDate:[NSDate dateWithTimeIntervalSinceNow:-24*3600]]];
+    NSString *todayPath = [path stringByAppendingString:[self.formatter stringFromDate:[NSDate date]]];
+    [self fetchStatsForPath:todayPath success:^(id todaysData) {
+        [self fetchStatsForPath:yesterdayPath success:^(id yesterdaysData) {
+            success(todaysData, yesterdaysData);
+        } failure:failure];
+    } failure:failure];
 }
 
 - (void)fetchStatsForPath:(NSString *)path success:(void (^)(NSDictionary *))success failure:(void (^)(NSError *))failure {
-    
-    [_api getPath:path parameters:nil success:^(AFHTTPRequestOperation *operation, id responseObject) {
+    [_api getPath:[_statsPathPrefix stringByAppendingPathComponent:path] parameters:nil success:^(AFHTTPRequestOperation *operation, id responseObject) {
         success(responseObject);
-        return;
     } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
         failure(error);
-        return;
     }];
 }
 
-- (void)fetchBarChartDataWithUnit:(NSString *)unit quantity:(NSNumber *)quantity success:(void (^)(NSDictionary *))success failure:(void (^)(NSError *))failure {
-    NSString *path = [NSString stringWithFormat:@"%@/visits?unit=%@&quantity=%@", _statsPathPrefix, unit, quantity];
-    [self fetchStatsForPath:path success:success failure:failure];
+- (void)fetchViewsVisitorsWithSuccess:(void (^)(StatsViewsVisitors *))success failure:(void (^)(NSError *))failure {
+    NSArray *units = @[@"day", @"week", @"month"];
+    StatsViewsVisitors *vv = [[StatsViewsVisitors alloc] init];
+    [units enumerateObjectsUsingBlock:^(NSString *unit, NSUInteger idx, BOOL *stop) {
+        NSString *path = [NSString stringWithFormat:@"visits?unit=%@&quantity=%d", unit, 7];
+        [self fetchStatsForPath:path success:^(NSDictionary *result) {
+            [vv addViewsVisitorsWithData:result unit:idx];
+            success(vv);
+        } failure:failure];
+    }];
 }
 
 @end

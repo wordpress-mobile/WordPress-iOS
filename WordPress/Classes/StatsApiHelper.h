@@ -9,7 +9,7 @@
 
 #import <Foundation/Foundation.h>
 
-@class StatsSummary;
+@class StatsSummary, StatsViewsVisitors;
 
 @interface StatsApiHelper : NSObject
 
@@ -21,7 +21,6 @@
 - (void)fetchCountryViewsWithSuccess:(void (^)(NSDictionary *))success failure:(void (^)(NSError *))failure;
 - (void)fetchReferrerWithSuccess:(void (^)(NSDictionary *))success failure:(void (^)(NSError *))failure;
 - (void)fetchSearchTermsWithSuccess:(void (^)(NSDictionary *))success failure:(void (^)(NSError *))failure;
-
-- (void)fetchBarChartDataWithUnit:(NSString *)unit quantity:(NSNumber *)quantity success:(void (^)(NSDictionary *))success failure:(void (^)(NSError *))failure;
+- (void)fetchViewsVisitorsWithSuccess:(void (^)(StatsViewsVisitors *))success failure:(void (^)(NSError *))failure;
 
 @end
