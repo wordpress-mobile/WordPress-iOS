@@ -12,9 +12,8 @@
 
 @property (nonatomic, strong) NSString *title;
 @property (nonatomic, strong) NSNumber *count;
-@property (nonatomic, strong) NSNumber *siteId;
-@property (nonatomic, strong) NSURL *url;
+@property (nonatomic, strong) NSURL *URL;
 
-+ (NSArray *)titleCountItemsFromData:(NSDictionary *)data siteId:(NSNumber *)siteId;
++ (NSArray *)titleCountItemsFromData:(NSDictionary *)data;
 
 @end

@@ -9,7 +9,6 @@
 
 @interface StatsSummary : NSObject
 
-@property (nonatomic, strong) NSNumber *siteId;
 @property (nonatomic, strong) NSDate *date;
 @property (nonatomic, strong) NSNumber *totalCatagories;
 @property (nonatomic, strong) NSNumber *totalComments;
@@ -23,6 +22,6 @@
 @property (nonatomic, strong) NSNumber *viewCountToday;
 @property (nonatomic, strong) NSNumber *visitorCountToday;
 
-- (id)initWithData:(NSDictionary *)summary withSiteId:(NSNumber *)siteId;
+- (id)initWithData:(NSDictionary *)summary;
 
 @end

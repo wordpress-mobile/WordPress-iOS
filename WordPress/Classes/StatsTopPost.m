@@ -10,26 +10,26 @@
 
 @implementation StatsTopPost
 
-+ (NSDictionary *)postsFromTodaysData:(NSDictionary *)todaysData yesterdaysData:(NSDictionary *)yesterdaysData siteId:(NSNumber *)siteId {
++ (NSDictionary *)postsFromTodaysData:(NSDictionary *)todaysData yesterdaysData:(NSDictionary *)yesterdaysData {
     NSMutableArray *todayPostList = [NSMutableArray array];
     for (NSDictionary *post in todaysData[@"top-posts"]) {
-        StatsTopPost *topPost = [[StatsTopPost alloc] initTopPost:post withSiteId:siteId];
+        StatsTopPost *topPost = [[StatsTopPost alloc] initTopPost:post];
         [todayPostList addObject:topPost];
     }
     NSMutableArray *yesterdayPostList = [NSMutableArray array];
     for (NSDictionary *post in yesterdaysData[@"top-posts"]) {
-        StatsTopPost *topPost = [[StatsTopPost alloc] initTopPost:post withSiteId:siteId];
+        StatsTopPost *topPost = [[StatsTopPost alloc] initTopPost:post];
         [yesterdayPostList addObject:topPost];
     }
 
     return @{@"today": todayPostList, @"yesterday": yesterdayPostList};
 }
 
-- (id)initTopPost:(NSDictionary *)post withSiteId:(NSNumber *)siteId {
+- (id)initTopPost:(NSDictionary *)post {
     self = [super init];
     if (self) {
         self.title = post[@"title"];
-        self.url = post[@"url"];
+        self.URL = [NSURL URLWithString:post[@"url"]];
         self.count = post[@"views"];
     }
     return self;

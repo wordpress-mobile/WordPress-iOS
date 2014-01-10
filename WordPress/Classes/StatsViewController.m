@@ -22,8 +22,7 @@
 #import "StatsTitleCountItem.h"
 #import "StatsTodayYesterdayButtonCell.h"
 #import "StatsTwoColumnCell.h"
-#import "StatsGroupedCell.h"
-#import "StatsClickGroup.h"
+#import "StatsGroup.h"
 
 static NSString *const VisitorsUnitButtonCellReuseIdentifier = @"VisitorsUnitButtonCellReuseIdentifier";
 static NSString *const TodayYesterdayButtonCellReuseIdentifier = @"TodayYesterdayButtonCellReuseIdentifier";

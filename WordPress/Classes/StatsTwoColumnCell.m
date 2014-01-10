@@ -9,14 +9,11 @@
 
 #import "StatsTwoColumnCell.h"
 #import "StatsTopPost.h"
-#import "StatsClickGroup.h"
-#import "StatsClick.h"
-#import "StatsReferrerGroup.h"
-#import "StatsReferrer.h"
 #import "StatsViewByCountry.h"
 #import "StatsTitleCountItem.h"
 #import "WPImageSource.h"
 #import "NSString+XMLExtensions.h"
+#import "StatsGroup.h"
 
 static CGFloat const CellHeight = 30.0f;
 static CGFloat const PaddingForCellSides = 10.0f;
