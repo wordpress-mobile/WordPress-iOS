@@ -86,7 +86,7 @@ static NSString *const SearchHeaderIdentifier = @"search_header";
 - (void)viewDidLayoutSubviews {
     self.searchBar.frame = (CGRect) {
         .origin = self.searchBar.frame.origin,
-        .size = CGSizeMake(self.view.frame.size.width, self.searchBar.frame.size.height)
+        .size = CGSizeMake(self.view.bounds.size.width, self.searchBar.bounds.size.height)
     };
 }
 
@@ -219,9 +219,7 @@ static NSString *const SearchHeaderIdentifier = @"search_header";
 
 - (void)didRotateFromInterfaceOrientation:(UIInterfaceOrientation)fromInterfaceOrientation {
     [self.collectionView performBatchUpdates:nil completion:nil];
-    [super didRotateFromInterfaceOrientation:fromInterfaceOrientation];
 }
-
 
 #pragma mark - FetchedResultsController
 
