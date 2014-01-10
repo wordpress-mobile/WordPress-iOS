@@ -57,7 +57,7 @@ NSString *const MediaFeaturedImageSelectedNotification = @"MediaFeaturedImageSel
 @property (nonatomic, assign) CGFloat lastScrollOffset;
 @property (nonatomic, assign) BOOL isScrollingFast;
 @property (nonatomic, strong) NSFetchedResultsController *resultsController;
-@property (nonatomic, assign) BOOL shouldUpdateFromContextChange;
+@property (nonatomic, assign) BOOL shouldUpdateFromContextChange, mediaInserted;
 @property (nonatomic, strong) NSDateFormatter *dateFormatter;
 @property (nonatomic, strong) NSArray *generatedMonthFilters;
 
@@ -337,6 +337,7 @@ NSString *const MediaFeaturedImageSelectedNotification = @"MediaFeaturedImageSel
 
 - (void)clearMonthFilter {
     _currentFilterMonth = nil;
+    [self.filterHeaderView resetFilters];
     self.filteredMedia = _allMedia;
     if (_currentSearchText) {
         [self applyFilterWithSearchText:_currentSearchText];
@@ -604,17 +605,22 @@ NSString *const MediaFeaturedImageSelectedNotification = @"MediaFeaturedImageSel
     if (type == NSFetchedResultsChangeDelete || type == NSFetchedResultsChangeInsert) {
         [self clearGeneratedMonthFilters];
     }
+    _mediaInserted = (type == NSFetchedResultsChangeInsert);
 }
 
 - (void)controllerDidChangeContent:(NSFetchedResultsController *)controller {
     // Apply the filters IFF we didn't insert. Having a filter selected for
     // a month other than the current, results in no visual for the upload
-    if (_shouldUpdateFromContextChange &&
-        _allMedia.count <= controller.fetchedObjects.count) {
+    if (_shouldUpdateFromContextChange) {
         _allMedia = controller.fetchedObjects;
         self.filteredMedia = _allMedia;
-        [self applyFilterWithSearchText:_currentSearchText];
-        [self applyMonthFilterForMonth:_currentFilterMonth];
+        if (_mediaInserted) {
+            [self clearMonthFilter];
+            [self clearSearchFilter];
+        } else {
+            [self applyFilterWithSearchText:_currentSearchText];
+            [self applyMonthFilterForMonth:_currentFilterMonth];
+        }
     }
 }
 

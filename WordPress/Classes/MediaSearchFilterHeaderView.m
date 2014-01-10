@@ -110,7 +110,7 @@ static CGFloat pickerViewHeight = 216.0f;
         [_popover setPopoverContentSize:CGSizeMake(320.0f, _monthPickerView.frame.size.height)];
         [_popover presentPopoverFromRect:_filterDatesButton.frame inView:self permittedArrowDirections:UIPopoverArrowDirectionAny animated:YES];
     } else {
-        [self.delegate.collectionView addSubview:_monthPickerView];
+        [self.delegate.view addSubview:_monthPickerView];
         [UIView animateWithDuration:0.4 delay:0 options:UIViewAnimationOptionBeginFromCurrentState animations:^{
             _monthPickerView.frame = (CGRect) {
                 .origin = CGPointMake(0, self.delegate.view.frame.size.height - pickerViewHeight),
@@ -139,8 +139,11 @@ static CGFloat pickerViewHeight = 216.0f;
 
 #pragma mark - UISearchBarDelegate
 
-- (void)resetSearch {
+- (void)resetFilters {
     [self searchBarCancelButtonClicked:_searchBar];
+    [self hideMonthPickerView];
+    _lastSelectedMonthFilter = 0;
+    [_filterDatesButton setImage:[UIImage imageNamed:@"date_picker_unselected"] forState:UIControlStateNormal];
 }
 
 - (void)searchBarTextDidBeginEditing:(UISearchBar *)searchBar {
@@ -153,9 +156,9 @@ static CGFloat pickerViewHeight = 216.0f;
 
 - (void)searchBarTextDidEndEditing:(UISearchBar *)searchBar {
     if (!searchBar.text || [searchBar.text isEqualToString:@""]) {
-        [searchBar setShowsCancelButton:NO animated:YES];
         [_delegate clearSearchFilter];
     }
+    [searchBar setShowsCancelButton:NO animated:YES];
 }
 
 - (void)searchBarCancelButtonClicked:(UISearchBar *)searchBar {
@@ -166,18 +169,6 @@ static CGFloat pickerViewHeight = 216.0f;
 
 - (void)searchBarSearchButtonClicked:(UISearchBar *)searchBar {
     [_delegate applyFilterWithSearchText:searchBar.text];
-    [self reenableCancelButton:searchBar];
-}
-
-- (void)reenableCancelButton:(UISearchBar *)searchBar {
-    for (UIView *v in searchBar.subviews) {
-        for (id subview in v.subviews) {
-            if ([subview isKindOfClass:[UIButton class]]) {
-                [subview setEnabled:YES];
-                return;
-            }
-        }
-    }
 }
 
 
@@ -207,6 +198,7 @@ static CGFloat pickerViewHeight = 216.0f;
     }
     [_filterDatesButton setImage:[UIImage imageNamed:@"date_picker_selected"] forState:UIControlStateNormal];
     [self.delegate selectedMonthPickerIndex:row-1];
+    [self hideMonthPickerView];
 }
 
 - (NSString *)pickerView:(UIPickerView *)pickerView accessibilityLabelForComponent:(NSInteger)component {
