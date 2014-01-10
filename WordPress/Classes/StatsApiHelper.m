@@ -107,7 +107,7 @@
     NSArray *units = @[@"day", @"week", @"month"];
     StatsViewsVisitors *vv = [[StatsViewsVisitors alloc] init];
     [units enumerateObjectsUsingBlock:^(NSString *unit, NSUInteger idx, BOOL *stop) {
-        NSString *path = [NSString stringWithFormat:@"visits?unit=%@&quantity=%d", unit, 7];
+        NSString *path = [NSString stringWithFormat:@"visits?unit=%@&quantity=%d", unit, IS_IPAD ? 12 : 7];
         [self fetchStatsForPath:path success:^(NSDictionary *result) {
             [vv addViewsVisitorsWithData:result unit:idx];
             success(vv);
