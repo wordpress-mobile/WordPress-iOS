@@ -21,7 +21,6 @@ static NSString *const PointsKey = @"points";
 @property (nonatomic, strong) NSMutableArray *categoryBars;
 @property (nonatomic, strong) NSMutableDictionary *categoryColors;
 @property (nonatomic, strong) UIImage *cachedImage;
-@property (nonatomic, strong) NSString *majorCategory; // Category that should be layered under the other
 
 // Builds legend and determines graph layers
 - (void)addCategory:(NSString *)categoryName color:(UIColor *)color;
@@ -79,7 +78,6 @@ static NSString *const PointsKey = @"points";
         
         [categoryToPoints[PointsKey] enumerateObjectsUsingBlock:^(NSDictionary *point, NSUInteger idx, BOOL *stop) {
             *maxYPoint = MAX(*maxYPoint, [point[StatsPointCountKey] unsignedIntegerValue]);
-            _majorCategory = (*maxYPoint == [point[StatsPointCountKey] unsignedIntegerValue]) ? categoryToPoints[CategoryKey] : _majorCategory;
         }];
     }];
     
