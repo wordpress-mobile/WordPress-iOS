@@ -27,7 +27,7 @@
 
 @property (nonatomic, weak) MediaBrowserViewController *delegate;
 
-- (void)resetSearch;
+- (void)resetFilters;
 
 
 @end
