@@ -261,7 +261,7 @@ NSString *const MediaFeaturedImageSelectedNotification = @"MediaFeaturedImageSel
         NSString *title = NSLocalizedString(@"No media has been added to your library yet", nil);
         if ([self showAttachedMedia]) {
             title = NSLocalizedString(@"No media has been attached to your post yet", nil);
-        } else if (_currentSearchText) {
+        } else if (_currentSearchText || _currentFilterMonth) {
             title = NSLocalizedString(@"No media matches that search", nil);
         }
         UIImageView *mediaThumbnail = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"media_image"]];
@@ -501,7 +501,6 @@ NSString *const MediaFeaturedImageSelectedNotification = @"MediaFeaturedImageSel
 - (IBAction)multiselectDeselectAllPressed:(id)sender {
     [_selectedMedia removeAllObjects];
     [self showMultiselectOptions];
-    [self.collectionView reloadData];
 }
 
 - (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex {
@@ -608,8 +607,14 @@ NSString *const MediaFeaturedImageSelectedNotification = @"MediaFeaturedImageSel
 }
 
 - (void)controllerDidChangeContent:(NSFetchedResultsController *)controller {
-    if (_shouldUpdateFromContextChange) {
-        _allMedia = self.filteredMedia = controller.fetchedObjects;
+    // Apply the filters IFF we didn't insert. Having a filter selected for
+    // a month other than the current, results in no visual for the upload
+    if (_shouldUpdateFromContextChange &&
+        _allMedia.count <= controller.fetchedObjects.count) {
+        _allMedia = controller.fetchedObjects;
+        self.filteredMedia = _allMedia;
+        [self applyFilterWithSearchText:_currentSearchText];
+        [self applyMonthFilterForMonth:_currentFilterMonth];
     }
 }
 
