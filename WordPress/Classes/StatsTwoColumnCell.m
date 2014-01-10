@@ -1,5 +1,5 @@
 /*
- * StatsTwoLabelCell.m
+ * StatsTwoColumnCell.m
  *
  * Copyright (c) 2014 WordPress. All rights reserved.
  *
@@ -7,7 +7,7 @@
  * Some rights reserved. See license.txt
  */
 
-#import "StatsTwoLabelCell.h"
+#import "StatsTwoColumnCell.h"
 #import "StatsTopPost.h"
 #import "StatsClickGroup.h"
 #import "StatsClick.h"
@@ -24,7 +24,7 @@ static CGFloat const PaddingBetweenLeftAndRightLabels = 15.0f;
 static CGFloat const PaddingImageText = 10.0f;
 static CGFloat const ImageSize = 20.0f;
 
-@interface StatsTwoLabelCell ()
+@interface StatsTwoColumnCell ()
 
 @property (nonatomic, weak) UIView *separator;
 @property (nonatomic, weak) UIView *leftView;
@@ -33,7 +33,7 @@ static CGFloat const ImageSize = 20.0f;
 @end
 
 
-@implementation StatsTwoLabelCell
+@implementation StatsTwoColumnCell
 
 + (CGFloat)heightForRow {
     return CellHeight;

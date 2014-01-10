@@ -21,7 +21,7 @@
 #import "StatsSummary.h"
 #import "StatsTitleCountItem.h"
 #import "StatsTodayYesterdayButtonCell.h"
-#import "StatsTwoLabelCell.h"
+#import "StatsTwoColumnCell.h"
 #import "StatsGroupedCell.h"
 #import "StatsClickGroup.h"
 
@@ -87,11 +87,11 @@ typedef NS_ENUM(NSInteger, TotalFollowersShareRow) {
     [self.tableView registerClass:[UITableViewHeaderFooterView class] forHeaderFooterViewReuseIdentifier:StatSectionHeaderViewIdentifier];
     [self.tableView registerClass:[StatsButtonCell class] forCellReuseIdentifier:VisitorsUnitButtonCellReuseIdentifier];
     [self.tableView registerClass:[StatsTodayYesterdayButtonCell class] forCellReuseIdentifier:TodayYesterdayButtonCellReuseIdentifier];
-    [self.tableView registerClass:[UITableViewCell class] forCellReuseIdentifier:GraphCellReuseIdentifier];
+    [self.tableView registerClass:[StatsViewsVisitorsBarGraphCell class] forCellReuseIdentifier:GraphCellReuseIdentifier];
     [self.tableView registerClass:[StatsCounterCell class] forCellReuseIdentifier:CountCellReuseIdentifier];
-    [self.tableView registerClass:[StatsTwoLabelCell class] forCellReuseIdentifier:TwoLabelCellReuseIdentifier];
+    [self.tableView registerClass:[StatsTwoColumnCell class] forCellReuseIdentifier:TwoLabelCellReuseIdentifier];
     [self.tableView registerClass:[StatsNoResultsCell class] forCellReuseIdentifier:NoResultsCellIdentifier];
-    [self.tableView registerClass:[StatsTwoLabelCell class] forCellReuseIdentifier:ResultRowCellIdentifier];
+    [self.tableView registerClass:[StatsTwoColumnCell class] forCellReuseIdentifier:ResultRowCellIdentifier];
     [self.tableView registerClass:[StatsViewsVisitorsBarGraphCell class] forCellReuseIdentifier:GraphCellIdentifier];
     
     self.refreshControl = [[UIRefreshControl alloc] init];
@@ -261,9 +261,9 @@ typedef NS_ENUM(NSInteger, TotalFollowersShareRow) {
                 case StatsDataRowButtons:
                     return [StatsButtonCell heightForRow];
                 case StatsDataRowTitle:
-                    return [StatsTwoLabelCell heightForRow];
+                    return [StatsTwoColumnCell heightForRow];
                 default:
-                    return [self resultsForSection:indexPath.section].count > 0 ? [StatsTwoLabelCell heightForRow] : [StatsNoResultsCell heightForRow];
+                    return [self resultsForSection:indexPath.section].count > 0 ? [StatsTwoColumnCell heightForRow] : [StatsNoResultsCell heightForRow];
             }
         default:
             return 0.0f;
@@ -388,7 +388,7 @@ typedef NS_ENUM(NSInteger, TotalFollowersShareRow) {
             dataTitleRowLeft = NSLocalizedString(@"Country", nil);
             break;
         case StatsSectionClicks:
-            dataTitleRowLeft = NSLocalizedString(@"Referrer", nil);
+            dataTitleRowLeft = NSLocalizedString(@"URL", nil);
             dataTitleRowRight = NSLocalizedString(@"Clicks", nil);
             break;
         case StatsSectionReferrers:
@@ -407,12 +407,12 @@ typedef NS_ENUM(NSInteger, TotalFollowersShareRow) {
         {
             cell = [self.tableView dequeueReusableCellWithIdentifier:TodayYesterdayButtonCellReuseIdentifier];
             [(StatsTodayYesterdayButtonCell *)cell setupForSection:section delegate:self todayActive:[self showingTodayForSection:section]];
-                    break;
+            break;
         }
         case StatsDataRowTitle:
         {
             cell = [self.tableView dequeueReusableCellWithIdentifier:TwoLabelCellReuseIdentifier];
-            [(StatsTwoLabelCell *)cell setLeft:dataTitleRowLeft.uppercaseString withImageUrl:nil right:dataTitleRowRight.uppercaseString titleCell:YES];
+            [(StatsTwoColumnCell *)cell setLeft:dataTitleRowLeft.uppercaseString withImageUrl:nil right:dataTitleRowRight.uppercaseString titleCell:YES];
             break;
         }
         default:
@@ -422,7 +422,7 @@ typedef NS_ENUM(NSInteger, TotalFollowersShareRow) {
                 [(StatsNoResultsCell *)cell configureForSection:section];
             } else {
                 cell = [self.tableView dequeueReusableCellWithIdentifier:ResultRowCellIdentifier];
-                [(StatsTwoLabelCell *)cell insertData:[self resultsForSection:section][index-2]];
+                [(StatsTwoColumnCell *)cell insertData:[self resultsForSection:section][index-2]];
                 
             }
         }
