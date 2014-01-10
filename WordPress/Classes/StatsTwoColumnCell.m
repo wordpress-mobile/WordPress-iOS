@@ -143,7 +143,7 @@ static CGFloat const ImageSize = 20.0f;
     titleLabel.text = title;
     titleLabel.backgroundColor = [UIColor whiteColor];
     titleLabel.opaque = YES;
-    titleLabel.font = [WPStyleGuide subtitleFont];
+    titleLabel.font = titleCell ? [WPStyleGuide subtitleFontBold] : [WPStyleGuide subtitleFont];
     [titleLabel sizeToFit];
     return titleLabel;
 }
