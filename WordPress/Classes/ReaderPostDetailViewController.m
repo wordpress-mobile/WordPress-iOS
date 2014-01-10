@@ -637,13 +637,13 @@ typedef enum {
 
 }
 
-- (void)postView:(ReaderPostView *)postView didReceiveLinkAction:(id)sender {
+- (void)contentView:(WPContentView *)contentView didReceiveLinkAction:(id)sender {
     WPWebViewController *controller = [[WPWebViewController alloc] init];
 	[controller setUrl:((DTLinkButton *)sender).URL];
 	[self.navigationController pushViewController:controller animated:YES];
 }
 
-- (void)postView:(ReaderPostView *)postView didReceiveImageLinkAction:(id)sender {
+- (void)contentView:(WPContentView *)contentView didReceiveImageLinkAction:(id)sender {
     ReaderImageView *imageView = (ReaderImageView *)sender;
 	UIViewController *controller;
     
@@ -674,7 +674,7 @@ typedef enum {
     [self.navigationController pushViewController:controller animated:YES];
 }
 
-- (void)postView:(ReaderPostView *)postView didReceiveVideoLinkAction:(id)sender {
+- (void)contentView:(WPContentView *)contentView didReceiveVideoLinkAction:(id)sender {
     ReaderVideoView *videoView = (ReaderVideoView *)sender;
 	if (videoView.contentType == ReaderVideoContentTypeVideo) {
 
@@ -731,7 +731,7 @@ typedef enum {
     [self.navigationController pushViewController:controller animated:YES];
 }
 
-- (void)postViewDidLoadAllMedia:(ReaderPostView *)postView {
+- (void)contentViewDidLoadAllMedia:(WPContentView *)contentView {
     [self.postView layoutIfNeeded];
     [self.tableView reloadData];
 }

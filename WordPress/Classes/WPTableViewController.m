@@ -232,7 +232,7 @@ NSString *const DefaultCellIdentifier = @"DefaultCellIdentifier";
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
     UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:DefaultCellIdentifier];
 
-    if (IS_IPAD || self.tableView.isEditing) {
+    if (self.tableView.isEditing) {
 		cell.accessoryType = UITableViewCellAccessoryNone;
 	} else {
         cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
@@ -244,9 +244,6 @@ NSString *const DefaultCellIdentifier = @"DefaultCellIdentifier";
 }
 
 - (void)tableView:(UITableView *)tableView willDisplayCell:(UITableViewCell *)cell forRowAtIndexPath:(NSIndexPath *)indexPath {
-	if (IS_IPAD) {
-		cell.accessoryType = UITableViewCellAccessoryNone;
-	}
 
     // Are we approaching the end of the table?
     if ((indexPath.section + 1 == [self numberOfSectionsInTableView:tableView]) && (indexPath.row + 4 >= [self tableView:tableView numberOfRowsInSection:indexPath.section]) && [self tableView:tableView numberOfRowsInSection:indexPath.section] > 10) {
@@ -273,16 +270,19 @@ NSString *const DefaultCellIdentifier = @"DefaultCellIdentifier";
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section {
-    id <NSFetchedResultsSectionInfo> sectionInfo = nil;
-    sectionInfo = [[self.resultsController sections] objectAtIndex:section];
-
-    // Don't show section headers if there are no named sections
+    // Don't show section headers if there are no named sections, or if this is the first (and has no name)
     NSString *sectionTitle = [self tableView:tableView titleForHeaderInSection:section];
-    if ([[self.resultsController sections] count] <= 1 && [sectionTitle length] == 0) {
+    BOOL firstTitleAndNoName = section == 0 && [sectionTitle length] == 0;
+    if ([[self.resultsController sections] count] <= 1 || firstTitleAndNoName) {
         return IS_IPHONE ? 1 : WPTableViewTopMargin;
     }
 
     return SectionHeaderHeight;
+}
+
+- (CGFloat)tableView:(UITableView *)tableView heightForFooterInSection:(NSInteger)section {
+    // remove footer height for all but last section
+    return section == [[self.resultsController sections] count] - 1 ? UITableViewAutomaticDimension : 1.0;
 }
 
 - (UITableViewCellEditingStyle)tableView:(UITableView *)tableView editingStyleForRowAtIndexPath:(NSIndexPath *)indexPath {
