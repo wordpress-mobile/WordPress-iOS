@@ -59,6 +59,7 @@ NSString *const MediaFeaturedImageSelectedNotification = @"MediaFeaturedImageSel
 @property (nonatomic, strong) NSFetchedResultsController *resultsController;
 @property (nonatomic, assign) BOOL shouldUpdateFromContextChange;
 @property (nonatomic, strong) NSDateFormatter *dateFormatter;
+@property (nonatomic, strong) NSArray *generatedMonthFilters;
 
 @property (weak, nonatomic) IBOutlet UIToolbar *multiselectToolbar;
 
@@ -342,10 +343,9 @@ NSString *const MediaFeaturedImageSelectedNotification = @"MediaFeaturedImageSel
     }
 }
 
-static NSArray *generatedMonthYearsFilters;
 - (NSArray *)possibleMonthsAndYears {
-    if (generatedMonthYearsFilters) {
-        return generatedMonthYearsFilters;
+    if (_generatedMonthFilters) {
+        return _generatedMonthFilters;
     }
     
     NSMutableOrderedSet *monthsYearsSet = [NSMutableOrderedSet orderedSet];
@@ -356,18 +356,18 @@ static NSArray *generatedMonthYearsFilters;
         NSString *monthYear = [NSString stringWithFormat:@"%@ %d", monthNames[components.month-1], components.year];
         [monthsYearsSet addObject:monthYear];
     }];
-    generatedMonthYearsFilters = monthsYearsSet.array;
-    return generatedMonthYearsFilters;
+    _generatedMonthFilters = monthsYearsSet.array;
+    return _generatedMonthFilters;
 }
 
 - (void)clearGeneratedMonthFilters {
-    generatedMonthYearsFilters = nil;
+    _generatedMonthFilters = nil;
 }
 
 - (void)selectedMonthPickerIndex:(NSInteger)index {
     self.dateFormatter.dateFormat = @"MMMM yyyy";
     self.dateFormatter.timeZone = [NSTimeZone timeZoneWithAbbreviation:@"GMT"];
-    NSDate *filterMonthStart = [self.dateFormatter dateFromString:generatedMonthYearsFilters[index]];
+    NSDate *filterMonthStart = [self.dateFormatter dateFromString:_generatedMonthFilters[index]];
     [self applyMonthFilterForMonth:filterMonthStart];
 }
 
