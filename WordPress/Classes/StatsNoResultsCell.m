@@ -11,6 +11,12 @@
 
 static CGFloat const CellPadding = 10.0f;
 
+@interface StatsNoResultsCell ()
+
+@property (nonatomic, weak) UILabel *noStatsDescriptionLabel;
+
+@end
+
 @implementation StatsNoResultsCell
 
 + (CGFloat)heightForRow {
@@ -67,15 +73,19 @@ static CGFloat const CellPadding = 10.0f;
     label.lineBreakMode = NSLineBreakByWordWrapping;
     label.numberOfLines = 0;
     
+    self.noStatsDescriptionLabel = label;
+    [self.contentView addSubview:label];
+}
+
+- (void)layoutSubviews {
+    [super layoutSubviews];
     CGRect insetFrame = CGRectInset(CGRectMake(0, 0, self.contentView.frame.size.width, [StatsNoResultsCell heightForRow]), CellPadding, 0);
-    CGRect labelRect = [noResultsAttributedString boundingRectWithSize:insetFrame.size options:NSStringDrawingUsesLineFragmentOrigin context:nil];
+    CGRect labelRect = [self.noStatsDescriptionLabel.attributedText boundingRectWithSize:insetFrame.size options:NSStringDrawingUsesLineFragmentOrigin context:nil];
     
-    label.frame = (CGRect) {
+    self.noStatsDescriptionLabel.frame = (CGRect) {
         .origin = insetFrame.origin,
         .size = labelRect.size
     };
-    
-    [self.contentView addSubview:label];
 }
 
 - (void)prepareForReuse {
