@@ -23,6 +23,7 @@
 #import "StatsTodayYesterdayButtonCell.h"
 #import "StatsTwoColumnCell.h"
 #import "StatsGroup.h"
+#import "WPNoResultsView.h"
 
 static NSString *const VisitorsUnitButtonCellReuseIdentifier = @"VisitorsUnitButtonCellReuseIdentifier";
 static NSString *const TodayYesterdayButtonCellReuseIdentifier = @"TodayYesterdayButtonCellReuseIdentifier";
@@ -69,6 +70,8 @@ typedef NS_ENUM(NSInteger, TotalFollowersShareRow) {
 @property (nonatomic, strong) NSMutableDictionary *statModels;
 @property (nonatomic, strong) NSMutableDictionary *showingToday;
 @property (nonatomic, assign) StatsViewsVisitorsUnit currentViewsVisitorsGraphUnit;
+@property (nonatomic, assign) BOOL resultsAvailable;
+@property (nonatomic, weak) WPNoResultsView *noResultsView;
 
 @end
 
@@ -106,6 +109,13 @@ typedef NS_ENUM(NSInteger, TotalFollowersShareRow) {
                      @(YES), @(StatsSectionSearchTerms),
                      @(YES), @(StatsSectionClicks),
                      @(YES), @(StatsSectionReferrers), nil];
+    
+    _resultsAvailable = NO;
+    
+    NSString *noResultsTitleText = NSLocalizedString(@"Loading Stats...", nil);
+    WPNoResultsView *noResultsView = [WPNoResultsView noResultsViewWithTitle:noResultsTitleText message:nil accessoryView:nil buttonTitle:nil];
+    [self.tableView addSubview:noResultsView];
+    _noResultsView = noResultsView;
 }
 
 - (void)didReceiveMemoryWarning
@@ -162,8 +172,10 @@ typedef NS_ENUM(NSInteger, TotalFollowersShareRow) {
 - (void)loadStats {
     void (^saveStatsForSection)(id stats, StatsSection section) = ^(id stats, StatsSection section) {
         [_statModels setObject:stats forKey:@(section)];
-        [self.tableView reloadSections:[NSIndexSet indexSetWithIndex:section] withRowAnimation:UITableViewRowAnimationNone];
-        [self.refreshControl endRefreshing];
+        if (_resultsAvailable) {
+            [self.tableView reloadSections:[NSIndexSet indexSetWithIndex:section] withRowAnimation:UITableViewRowAnimationNone];
+            [self.refreshControl endRefreshing];
+        }
     };
     void (^failure)(NSError *error) = ^(NSError *error) {
         DDLogError(@"Stats: Error fetching stats %@", error);
@@ -175,12 +187,20 @@ typedef NS_ENUM(NSInteger, TotalFollowersShareRow) {
     
     [self.statsApiHelper fetchViewsVisitorsWithSuccess:^(StatsViewsVisitors *viewsVisitors) {
         _statModels[@(StatsSectionVisitorsGraph)] = viewsVisitors;
-        [self.tableView reloadSections:[NSIndexSet indexSetWithIndex:StatsSectionVisitors] withRowAnimation:UITableViewRowAnimationNone];
+        if (_resultsAvailable) {
+            [self.tableView reloadSections:[NSIndexSet indexSetWithIndex:StatsSectionVisitors] withRowAnimation:UITableViewRowAnimationNone];
+        }
     } failure:failure];
 
     [self.statsApiHelper fetchTopPostsWithSuccess:^(NSDictionary *todayAndYesterdayTopPosts) {
         saveStatsForSection(todayAndYesterdayTopPosts, StatsSectionTopPosts);
-    } failure:failure];
+        _resultsAvailable = YES;
+        [self.noResultsView removeFromSuperview];
+        [self.tableView reloadData];
+    } failure:^(NSError *error) {
+        failure(error);
+        _resultsAvailable = YES;
+    }];
     
     [self.statsApiHelper fetchClicksWithSuccess:^(NSDictionary *clicks) {
         saveStatsForSection(clicks, StatsSectionClicks);
@@ -216,10 +236,13 @@ typedef NS_ENUM(NSInteger, TotalFollowersShareRow) {
 }
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
-    return StatsSectionTotalCount;
+    return _resultsAvailable ? StatsSectionTotalCount : 0;
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
+    if (!_resultsAvailable) {
+        return 0;
+    }
     switch (section) {
         case StatsSectionVisitors:
             return VisitorSectionTotalRows;
