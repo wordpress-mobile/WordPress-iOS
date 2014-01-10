@@ -291,4 +291,16 @@
     }
 }
 
+
+#pragma mark - WPContentViewProvider protocol
+
+- (NSString *)blogNameForDisplay {
+    return self.blog.blogName;
+}
+
+- (NSURL *)avatarURLForDisplay {
+    return [NSURL URLWithString:self.blog.blavatarUrl];
+}
+
+
 @end
