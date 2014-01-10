@@ -24,7 +24,6 @@
 #import "StatsTwoLabelCell.h"
 #import "StatsGroupedCell.h"
 #import "StatsClickGroup.h"
-#import "WPTableViewCell.h"
 
 static NSString *const VisitorsUnitButtonCellReuseIdentifier = @"VisitorsUnitButtonCellReuseIdentifier";
 static NSString *const TodayYesterdayButtonCellReuseIdentifier = @"TodayYesterdayButtonCellReuseIdentifier";
@@ -68,7 +67,6 @@ typedef NS_ENUM(NSInteger, TotalFollowersShareRow) {
 
 @property (nonatomic, weak) Blog *blog;
 @property (nonatomic, strong) StatsApiHelper *statsApiHelper;
-@property (nonatomic, strong) ContextManager *contextManager;
 @property (nonatomic, strong) NSMutableDictionary *statModels;
 @property (nonatomic, strong) NSMutableDictionary *showingToday;
 @property (nonatomic, assign) StatsViewsVisitorsUnit currentViewsVisitorsGraphUnit;
@@ -113,7 +111,8 @@ typedef NS_ENUM(NSInteger, TotalFollowersShareRow) {
 - (void)didReceiveMemoryWarning
 {
     [super didReceiveMemoryWarning];
-    // Dispose of any resources that can be recreated.
+    
+    _statModels = nil;
 }
 
 - (void)setBlog:(Blog *)blog {
@@ -173,6 +172,11 @@ typedef NS_ENUM(NSInteger, TotalFollowersShareRow) {
     [self.statsApiHelper fetchSummaryWithSuccess:^(StatsSummary *summary) {
         saveStatsForSection(summary, StatsSectionVisitors);
     } failure:failure];
+    
+    [self.statsApiHelper fetchViewsVisitorsWithSuccess:^(StatsViewsVisitors *viewsVisitors) {
+        _statModels[@(StatsSectionVisitorsGraph)] = viewsVisitors;
+        [self.tableView reloadSections:[NSIndexSet indexSetWithIndex:StatsSectionVisitors] withRowAnimation:UITableViewRowAnimationNone];
+    } failure:failure];
 
     [self.statsApiHelper fetchTopPostsWithSuccess:^(NSDictionary *todayAndYesterdayTopPosts) {
         saveStatsForSection(todayAndYesterdayTopPosts, StatsSectionTopPosts);
@@ -205,7 +209,10 @@ typedef NS_ENUM(NSInteger, TotalFollowersShareRow) {
 
 - (NSArray *)resultsForSection:(StatsSection)section {
     NSDictionary *data = _statModels[@(section)];
-    return [self showingTodayForSection:section] ? data[@"today"] : data[@"yesterday"];
+    if (data) {
+        return [self showingTodayForSection:section] ? data[@"today"] : data[@"yesterday"];
+    }
+    return @[];
 }
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
@@ -278,15 +285,7 @@ typedef NS_ENUM(NSInteger, TotalFollowersShareRow) {
                 case VisitorRowGraph:
                 {
                     StatsViewsVisitorsBarGraphCell *cell = [tableView dequeueReusableCellWithIdentifier:GraphCellIdentifier];
-                    [cell setData:@[@{@"count":@0, @"name":@"Day 1"},
-                                    @{@"count":@0, @"name":@"Day 2"},
-                                    @{@"count":@0, @"name":@"Day 3"}] forUnit:StatsViewsVisitorsUnitDay category:StatsViewsCategory];
-                    [cell setData:@[@{@"count":@100, @"name":@"Week 1"},
-                                    @{@"count":@200, @"name":@"Week 2"},
-                                    @{@"count":@300, @"name":@"Week 3"}] forUnit:StatsViewsVisitorsUnitWeek category:StatsViewsCategory];
-                    [cell setData:@[@{@"count":@1000, @"name":@"Month 1"},
-                                    @{@"count":@2000, @"name":@"Month 2"},
-                                    @{@"count":@3000, @"name":@"Month 3"}] forUnit:StatsViewsVisitorsUnitMonth category:StatsViewsCategory];
+                    [cell setViewsVisitors:_statModels[@(StatsSectionVisitorsGraph)]];
                     [cell showGraphForUnit:_currentViewsVisitorsGraphUnit];
                     return cell;
                 }

@@ -9,21 +9,13 @@
 
 #import <UIKit/UIKit.h>
 #import "WPTableViewCell.h"
-
-typedef NS_ENUM(NSInteger, StatsViewsVisitorsUnit) {
-    StatsViewsVisitorsUnitDay,
-    StatsViewsVisitorsUnitWeek,
-    StatsViewsVisitorsUnitMonth
-};
-
-extern NSString *const StatsViewsCategory;
-extern NSString *const StatsVisitorsCategory;
+#import "StatsViewsVisitors.h"
 
 @interface StatsViewsVisitorsBarGraphCell : WPTableViewCell
 
 + (CGFloat)heightForRow;
 
-- (void)setData:(NSArray *)data forUnit:(StatsViewsVisitorsUnit)unit category:(NSString *)category;
+- (void)setViewsVisitors:(StatsViewsVisitors *)viewsVisitors;
 - (void)showGraphForUnit:(StatsViewsVisitorsUnit)unit;
 
 @end
