@@ -61,6 +61,13 @@ static CGFloat const ImageSize = 20.0f;
         .origin = CGPointMake(PaddingForCellSides, yOrigin),
         .size = CGSizeMake(CGRectGetMinX(self.rightView.frame) - PaddingBetweenLeftAndRightLabels, self.leftView.frame.size.height)
     };
+    
+    if (self.separator) {
+        self.separator.frame = (CGRect) {
+            .origin = CGPointMake(CGRectGetMinX(self.leftView.frame), 0),
+            .size = CGSizeMake(CGRectGetMaxX(self.rightView.frame) - CGRectGetMinX(self.leftView.frame), IS_RETINA ? 0.5f : 1.0f)
+        };
+    }
 }
 
 - (NSNumberFormatter *)numberFormatter {
