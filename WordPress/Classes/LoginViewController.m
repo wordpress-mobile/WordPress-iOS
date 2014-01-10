@@ -781,6 +781,9 @@ CGFloat const GeneralWalkthroughStatusBarOffset = 20.0;
     WPAccount *account = [WPAccount createOrUpdateSelfHostedAccountWithXmlrpc:xmlrpc username:username andPassword:password];
     NSString *blogName = [options stringForKeyPath:@"blog_title.value"];
     NSString *url = [options stringForKeyPath:@"home_url.value"];
+    if (!url) {
+        url = [options stringForKeyPath:@"blog_url.value"];
+    }
     NSMutableDictionary *blogDetails = [NSMutableDictionary dictionaryWithObject:xmlrpc forKey:@"xmlrpc"];
     if (blogName) {
         [blogDetails setObject:blogName forKey:@"blogName"];
