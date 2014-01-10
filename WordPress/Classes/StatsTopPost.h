@@ -13,8 +13,6 @@
 
 @property (nonatomic, strong) NSNumber *postID;
 
-+ (NSDictionary *)postsFromTodaysData:(NSDictionary *)todaysData yesterdaysData:(NSDictionary *)yesterdaysData siteId:(NSNumber *)siteId;
-
-- (id)initTopPost:(NSDictionary *)posts withSiteId:(NSNumber *)siteId;
++ (NSDictionary *)postsFromTodaysData:(NSDictionary *)todaysData yesterdaysData:(NSDictionary *)yesterdaysData;
 
 @end
