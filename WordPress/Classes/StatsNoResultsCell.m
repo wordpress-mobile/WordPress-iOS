@@ -20,7 +20,7 @@ static CGFloat const CellPadding = 10.0f;
 @implementation StatsNoResultsCell
 
 + (CGFloat)heightForRow {
-    return 45.0f;
+    return 60.0f;
 }
 
 - (id)initWithStyle:(UITableViewCellStyle)style reuseIdentifier:(NSString *)reuseIdentifier
@@ -64,8 +64,8 @@ static CGFloat const CellPadding = 10.0f;
     NSString *localizedDescriptionString = NSLocalizedString(description, nil);
     NSString *completeString = [NSString stringWithFormat:@"%@ %@",localizedBoldString,localizedDescriptionString];
     
-    NSDictionary *defaultAttributes = [NSDictionary dictionaryWithObjectsAndKeys:[WPStyleGuide subtitleFont], NSFontAttributeName, nil];
-    NSDictionary *boldAttributes = [NSDictionary dictionaryWithObjectsAndKeys:[WPStyleGuide subtitleFontBold], NSFontAttributeName, nil];
+    NSDictionary *defaultAttributes = [NSDictionary dictionaryWithObjectsAndKeys:[WPStyleGuide regularTextFont], NSFontAttributeName, nil];
+    NSDictionary *boldAttributes = [NSDictionary dictionaryWithObjectsAndKeys:[WPStyleGuide regularTextFontBold], NSFontAttributeName, nil];
     NSMutableAttributedString *noResultsAttributedString = [[NSMutableAttributedString alloc] initWithString:completeString attributes:defaultAttributes];
     [noResultsAttributedString setAttributes:boldAttributes range:NSMakeRange(0, localizedBoldString.length)];
     

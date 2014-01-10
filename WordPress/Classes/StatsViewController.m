@@ -36,10 +36,10 @@ static NSString *const ResultRowCellIdentifier = @"ResultRowCellIdentifier";
 static NSString *const GraphCellIdentifier = @"GraphCellIdentifier";
 static NSString *const StatsGroupedCellIdentifier = @"StatsGroupedCellIdentifier";
 
-static CGFloat const SectionHeaderLeftPadding = 10.0f;
-static CGFloat const SectionHeaderTopPadding = 10.0f;
+static CGFloat const SectionHeaderPadding = 8.0f;
 static NSUInteger const ResultRowMaxItems = 10;
 static CGFloat const TableViewFixedWidth = 600.0f;
+static CGFloat const HeaderHeight = 44.0f;
 
 typedef NS_ENUM(NSInteger, VisitorsRow) {
     VisitorRowGraphUnitButton,
@@ -83,6 +83,7 @@ typedef NS_ENUM(NSInteger, TotalFollowersShareRow) {
   
     [WPStyleGuide configureColorsForView:self.view andTableView:self.tableView];
     self.tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
+    self.tableView.contentInset = UIEdgeInsetsMake(0, 0, HeaderHeight, 0);
     [self.tableView registerClass:[UITableViewHeaderFooterView class] forHeaderFooterViewReuseIdentifier:StatSectionHeaderViewIdentifier];
     [self.tableView registerClass:[StatsButtonCell class] forCellReuseIdentifier:VisitorsUnitButtonCellReuseIdentifier];
     [self.tableView registerClass:[StatsTodayYesterdayButtonCell class] forCellReuseIdentifier:TodayYesterdayButtonCellReuseIdentifier];
@@ -430,7 +431,7 @@ typedef NS_ENUM(NSInteger, TotalFollowersShareRow) {
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section {
-    return 36.0f;
+    return HeaderHeight;
 }
 
 - (UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section {
@@ -438,12 +439,12 @@ typedef NS_ENUM(NSInteger, TotalFollowersShareRow) {
     [header.contentView.subviews makeObjectsPerformSelector:@selector(removeFromSuperview)];
     header.contentView.backgroundColor = [WPStyleGuide itsEverywhereGrey];
     
-    CGFloat headerLeftPadding = SectionHeaderLeftPadding;
+    CGFloat headerLeftPadding = SectionHeaderPadding;
     if (IS_IPAD) {
         headerLeftPadding = (self.view.frame.size.width - TableViewFixedWidth)/2;
     }
-    
-    UILabel *sectionName = [[UILabel alloc] initWithFrame:CGRectMake(headerLeftPadding, SectionHeaderTopPadding, 0, 0)];
+    CGFloat lineHeight = [[WPStyleGuide postTitleAttributes][NSParagraphStyleAttributeName] maximumLineHeight];
+    UILabel *sectionName = [[UILabel alloc] initWithFrame:CGRectMake(headerLeftPadding, HeaderHeight - (lineHeight + SectionHeaderPadding), 0, lineHeight)];
     sectionName.textColor = [WPStyleGuide littleEddieGrey];
     sectionName.backgroundColor = [WPStyleGuide itsEverywhereGrey];
     sectionName.opaque = YES;
