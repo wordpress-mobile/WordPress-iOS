@@ -36,7 +36,7 @@
         </view>
         <searchBar contentMode="redraw" id="cwU-sp-aH0">
             <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
-            <autoresizingMask key="autoresizingMask" flexibleMinX="YES" widthSizable="YES" flexibleMaxX="YES" flexibleMinY="YES" flexibleMaxY="YES"/>
+            <autoresizingMask key="autoresizingMask" flexibleMinX="YES" flexibleMaxX="YES" flexibleMinY="YES" flexibleMaxY="YES"/>
             <textInputTraits key="textInputTraits"/>
             <scopeButtonTitles>
                 <string>Title</string>
