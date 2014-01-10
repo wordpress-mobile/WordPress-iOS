@@ -10,10 +10,10 @@
 
 @interface StatsTitleCountItem : NSObject
 
-@property (nonatomic, strong) NSString *title; //subclasses can return attributed strings
+@property (nonatomic, strong) NSString *title;
 @property (nonatomic, strong) NSNumber *count;
-@property (nonatomic, strong) NSDate *date;
 @property (nonatomic, strong) NSNumber *siteId;
+@property (nonatomic, strong) NSURL *url;
 
 + (NSArray *)titleCountItemsFromData:(NSDictionary *)data siteId:(NSNumber *)siteId;
 

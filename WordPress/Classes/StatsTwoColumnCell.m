@@ -29,6 +29,8 @@ static CGFloat const ImageSize = 20.0f;
 @property (nonatomic, weak) UIView *separator;
 @property (nonatomic, weak) UIView *leftView;
 @property (nonatomic, weak) UIView *rightView;
+@property (nonatomic, strong) StatsTitleCountItem *cellData;
+@property (nonatomic, strong) NSNumberFormatter *numberFormatter;
 
 @end
 
@@ -44,6 +46,7 @@ static CGFloat const ImageSize = 20.0f;
     self = [super initWithStyle:style reuseIdentifier:reuseIdentifier];
     if (self) {
         self.selectionStyle = UITableViewCellSelectionStyleNone;
+        _linkEnabled = NO;
     }
     return self;
 }
@@ -92,6 +95,15 @@ static CGFloat const ImageSize = 20.0f;
         [self setLeft:left withImageUrl:[(StatsGroup *)cellData iconUrl] right:right titleCell:NO];
     } else {
         [self setLeft:left withImageUrl:nil right:right titleCell:NO];
+    }
+}
+
+- (void)setLinkEnabled:(BOOL)linkEnabled {
+    UIColor *color = linkEnabled ? [WPStyleGuide jazzyOrange] : [WPStyleGuide whisperGrey];
+    if ([self.leftView isKindOfClass:[UILabel class]]) {
+        [(UILabel *)self.leftView setTextColor:color];
+    } else {
+        [self.leftView.subviews[0] setTextColor:color];
     }
 }
 
@@ -158,8 +170,8 @@ static CGFloat const ImageSize = 20.0f;
         .size = label.frame.size
     };
     
-    [view addSubview:imageView];
     [view addSubview:label];
+    [view addSubview:imageView];
     
     view.frame = (CGRect) {
         .origin = CGPointZero,

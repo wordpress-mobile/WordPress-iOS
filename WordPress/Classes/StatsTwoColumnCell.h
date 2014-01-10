@@ -7,14 +7,12 @@
  * Some rights reserved. See license.txt
  */
 
-#import <UIKit/UIKit.h>
 #import "StatsTitleCountItem.h"
 #import "WPTableViewCell.h"
 
 @interface StatsTwoColumnCell : WPTableViewCell
 
-@property (nonatomic, strong) NSNumberFormatter *numberFormatter;
-@property (nonatomic, strong) StatsTitleCountItem *cellData;
+@property (nonatomic, assign) BOOL linkEnabled;
 
 + (CGFloat)heightForRow;
 

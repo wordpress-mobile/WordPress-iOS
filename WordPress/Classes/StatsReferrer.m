@@ -10,14 +10,13 @@
 
 @implementation StatsReferrer
 
-+ (NSArray *)referrersFromArray:(NSArray *)results withDate:(NSDate *)date siteId:(NSNumber *)siteId {
++ (NSArray *)referrersFromArray:(NSArray *)results siteId:(NSNumber *)siteId {
     NSMutableArray *referrerList = [NSMutableArray array];
     for (NSArray *referrer in results) {
         StatsReferrer *r = [[StatsReferrer alloc] init];
         r.title = referrer[0];
         r.url = referrer[0];
         r.count = referrer[1];
-        r.date = date;
         r.siteId = siteId;
         [referrerList addObject:r];
     }

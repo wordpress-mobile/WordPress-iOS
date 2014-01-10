@@ -10,8 +10,6 @@
 
 @interface StatsClick : StatsTitleCountItem
 
-@property (nonatomic, strong) NSString *url;
-
-+ (NSArray *)clicksFromArray:(NSArray *)clicks withDate:(NSDate *)date siteId:(NSNumber *)siteId;
++ (NSArray *)clicksFromArray:(NSArray *)clicks siteId:(NSNumber *)siteId;
 
 @end
