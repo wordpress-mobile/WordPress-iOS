@@ -37,7 +37,7 @@ static CGFloat const StatCounterCellHeight = 100.0f;
     if (self) {
         self.countViews = [[NSMutableArray alloc] init];
         UILabel *titleLabel = [[UILabel alloc] initWithFrame:CGRectMake(CountPadding, 0, self.contentView.frame.size.width-2*CountPadding, TitleHeight)];
-        titleLabel.font = [WPStyleGuide subtitleFont];
+        titleLabel.font = [WPStyleGuide subtitleFontBold];
         titleLabel.textAlignment = NSTextAlignmentCenter;
         self.titleLabel = titleLabel;
         [self addSubview:titleLabel];
