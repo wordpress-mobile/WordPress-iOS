@@ -13,12 +13,15 @@ static CGFloat AxisPadding = 18.0f;
 static CGFloat InitialBarWidth = 30.0f;
 static CGFloat const AxisPaddingIpad = 39.0f;
 static CGFloat const InitialBarWidthIpad = 60.0f;
+static NSString *const CategoryKey = @"category";
+static NSString *const PointsKey = @"points";
 
 @interface WPBarGraphView : UIView
 
-@property (nonatomic, strong) NSMutableDictionary *categoryBars;
+@property (nonatomic, strong) NSMutableArray *categoryBars;
 @property (nonatomic, strong) NSMutableDictionary *categoryColors;
 @property (nonatomic, strong) UIImage *cachedImage;
+@property (nonatomic, strong) NSString *majorCategory; // Category that should be layered under the other
 
 // Builds legend and determines graph layers
 - (void)addCategory:(NSString *)categoryName color:(UIColor *)color;
@@ -36,7 +39,7 @@ static CGFloat const InitialBarWidthIpad = 60.0f;
     ...
  ]
  */
-- (void)setBarsWithCount:(NSArray *)pointToCount category:(NSString *)category;
+- (void)setBarsWithCount:(NSArray *)pointToCount forCategory:(NSString *)category;
 
 @end
 
@@ -50,8 +53,8 @@ static CGFloat const InitialBarWidthIpad = 60.0f;
             AxisPadding = AxisPaddingIpad;
         }
         
-        _categoryBars = [NSMutableDictionary dictionary];
-        _categoryColors = [NSMutableDictionary dictionary];
+        _categoryBars = [NSMutableArray arrayWithCapacity:2];
+        _categoryColors = [NSMutableDictionary dictionaryWithCapacity:2];
         
         self.backgroundColor = [UIColor whiteColor];
     }
@@ -63,20 +66,20 @@ static CGFloat const InitialBarWidthIpad = 60.0f;
     _categoryColors[categoryName] = color;
 }
 
-- (void)setBarsWithCount:(NSArray *)pointToCount category:(NSString *)category {
+- (void)setBarsWithCount:(NSArray *)pointToCount forCategory:(NSString *)category {
     _cachedImage = nil;
-    _categoryBars[category] = pointToCount;
+    [_categoryBars addObject:@{CategoryKey: category, PointsKey: pointToCount}];
     
     [self setNeedsDisplay];
 }
 
 - (void)calculateYAxisScale:(CGFloat *)yAxisScale xAxisScale:(CGFloat *)xAxisStepWidth maxXPointCount:(NSUInteger *)maxXAxisPointCount maxYPoint:(NSUInteger *)maxYPoint {
-    // Max X/Y Points
-    [_categoryBars enumerateKeysAndObjectsUsingBlock:^(NSString *key, NSArray *points, BOOL *stop) {
-        *maxXAxisPointCount = MAX(points.count, *maxXAxisPointCount);
+    [_categoryBars enumerateObjectsUsingBlock:^(NSDictionary *categoryToPoints, NSUInteger idx, BOOL *stop) {
+        *maxXAxisPointCount = MAX(((NSArray *)categoryToPoints[PointsKey]).count, *maxXAxisPointCount);
         
-        [points enumerateObjectsUsingBlock:^(NSDictionary *point, NSUInteger idx, BOOL *stop) {
-            *maxYPoint = MAX(*maxYPoint, [point[@"count"] unsignedIntegerValue]);
+        [categoryToPoints[PointsKey] enumerateObjectsUsingBlock:^(NSDictionary *point, NSUInteger idx, BOOL *stop) {
+            *maxYPoint = MAX(*maxYPoint, [point[StatsPointCountKey] unsignedIntegerValue]);
+            _majorCategory = (*maxYPoint == [point[StatsPointCountKey] unsignedIntegerValue]) ? categoryToPoints[CategoryKey] : _majorCategory;
         }];
     }];
     
@@ -92,8 +95,8 @@ static CGFloat const InitialBarWidthIpad = 60.0f;
         return;
     }
     
-    NSUInteger maxYPoint = 0;       // The tallest bar 'point'
-    CGFloat yAxisScale = 0;      // rounded integer scale to use up y axis
+    NSUInteger maxYPoint = 0;   // The tallest bar 'point'
+    CGFloat yAxisScale = 0;     // rounded integer scale to use up y axis
     CGFloat xAxisStepWidth = 0;
     NSUInteger maxXAxisPointCount = 0; // # points along the x axis
     
@@ -144,7 +147,8 @@ static CGFloat const InitialBarWidthIpad = 60.0f;
     __block CGFloat currentXPoint = 0;
     __block NSInteger iteration = 0;
     __block CGFloat legendXOffset = self.frame.size.width - AxisPadding;
-    [_categoryBars enumerateKeysAndObjectsUsingBlock:^(NSString *category, NSArray *points, BOOL *stop) {
+    [_categoryBars enumerateObjectsUsingBlock:^(NSDictionary *categoryToPoints, NSUInteger idx, BOOL *stop) {
+        NSString *category = categoryToPoints[CategoryKey];
         CGColorRef categoryColor = ((UIColor *)_categoryColors[category]).CGColor;
         CGContextSetLineWidth(context, InitialBarWidth-iteration*6.0f);
         CGContextSetStrokeColorWithColor(context, categoryColor);
@@ -166,16 +170,16 @@ static CGFloat const InitialBarWidthIpad = 60.0f;
         CGContextFillRect(context, CGRectMake(legendXOffset, AxisPadding/2, 10.0f, 10.0f));
         legendXOffset -= 25.0f;
         
-        [points enumerateObjectsUsingBlock:^(NSDictionary *point, NSUInteger idx, BOOL *stop) {
+        [categoryToPoints[PointsKey] enumerateObjectsUsingBlock:^(NSDictionary *point, NSUInteger idx, BOOL *stop) {
             // Bar
             CGContextMoveToPoint(context, currentXPoint, yAxisHeight);
-            CGFloat barHeight = [point[@"count"] unsignedIntegerValue]*yAxisScale;
+            CGFloat barHeight = [point[StatsPointCountKey] unsignedIntegerValue]*yAxisScale;
             CGContextAddLineToPoint(context, currentXPoint, yAxisHeight-barHeight);
             CGContextStrokePath(context);
             
             // Label
             UILabel *pointLabel = [[UILabel alloc] init];
-            pointLabel.text = point[@"name"];
+            pointLabel.text = point[StatsPointNameKey];
             pointLabel.font = [UIFont fontWithName:@"OpenSans" size:8.0f];
             pointLabel.textColor = [WPStyleGuide allTAllShadeGrey];
             [pointLabel sizeToFit];
@@ -194,14 +198,11 @@ static CGFloat const InitialBarWidthIpad = 60.0f;
 
 @end
 
-NSString *const StatsViewsCategory = @"Views";
-NSString *const StatsVisitorsCategory = @"Visitors";
-
 @interface StatsViewsVisitorsBarGraphCell ()
 
 @property (nonatomic, weak) WPBarGraphView *barGraph;
-@property (nonatomic, strong) NSMutableDictionary *unitsToData;
 @property (nonatomic, assign) StatsViewsVisitorsUnit currentUnit;
+@property (nonatomic, strong) StatsViewsVisitors *viewsVisitorsData;
 
 @end
 
@@ -216,27 +217,29 @@ NSString *const StatsVisitorsCategory = @"Visitors";
     self = [super initWithStyle:style reuseIdentifier:reuseIdentifier];
     if (self) {
         self.selectionStyle = UITableViewCellSelectionStyleNone;
-        _unitsToData = [NSMutableDictionary dictionary];
     }
     return self;
 }
 
 - (void)layoutSubviews {
-    [self.barGraph removeFromSuperview];
+    [super layoutSubviews];
     
-    NSDictionary *categoryData = _unitsToData[@(_currentUnit)];
+    [self.barGraph removeFromSuperview];
+
+    NSDictionary *categoryData = [_viewsVisitorsData viewsVisitorsForUnit:_currentUnit];
     WPBarGraphView *barGraph = [[WPBarGraphView alloc] initWithFrame:self.bounds];
     self.barGraph = barGraph;
-    [categoryData enumerateKeysAndObjectsUsingBlock:^(NSString *category, NSArray *data, BOOL *stop) {
-        UIColor *color = [category isEqualToString:StatsViewsCategory] ? [WPStyleGuide baseLighterBlue] : [WPStyleGuide baseDarkerBlue];
-        [self.barGraph addCategory:category color:color];
-        [self.barGraph setBarsWithCount:data category:category];
-    }];
+    [self.barGraph addCategory:StatsViewsCategory color:[WPStyleGuide baseLighterBlue]];
+    [self.barGraph addCategory:StatsVisitorsCategory color:[WPStyleGuide baseDarkerBlue]];
+    if (categoryData) {
+        [self.barGraph setBarsWithCount:categoryData[StatsViewsCategory] forCategory:StatsViewsCategory];
+        [self.barGraph setBarsWithCount:categoryData[StatsVisitorsCategory] forCategory:StatsVisitorsCategory];
+    }
     [self.contentView addSubview:self.barGraph];
 }
 
-- (void)setData:(NSArray *)data forUnit:(StatsViewsVisitorsUnit)unit category:(NSString *)category {
-    _unitsToData[@(unit)] = @{NSLocalizedString(category, nil): data};
+- (void)setViewsVisitors:(StatsViewsVisitors *)viewsVisitors {
+    _viewsVisitorsData = viewsVisitors;
 }
 
 - (void)showGraphForUnit:(StatsViewsVisitorsUnit)unit {

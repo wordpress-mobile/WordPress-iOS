@@ -17,7 +17,8 @@ typedef NS_ENUM(NSInteger, StatsSection) {
     StatsSectionClicks,
     StatsSectionReferrers,
     StatsSectionSearchTerms,
-    StatsSectionTotalCount
+    StatsSectionTotalCount,
+    StatsSectionVisitorsGraph
 };
 
 @class Blog;

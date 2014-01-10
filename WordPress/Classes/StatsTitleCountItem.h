@@ -15,6 +15,6 @@
 @property (nonatomic, strong) NSDate *date;
 @property (nonatomic, strong) NSNumber *siteId;
 
-+ (NSArray *)titleCountItemsFromData:(NSDictionary *)data withKey:(NSString *)key siteId:(NSNumber *)siteId;
++ (NSArray *)titleCountItemsFromData:(NSDictionary *)data siteId:(NSNumber *)siteId;
 
 @end

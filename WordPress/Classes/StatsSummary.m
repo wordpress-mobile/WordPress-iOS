@@ -7,7 +7,6 @@
 //
 
 #import "StatsSummary.h"
-#import "StatsVisits.h"
 
 @implementation StatsSummary
 
@@ -28,8 +27,6 @@
         self.viewCountBest = stats[@"views_best_day_total"];
         self.viewCountToday = stats[@"views_today"];
         self.visitorCountToday = stats[@"visitors_today"];
-        
-        self.statsVisits = [StatsVisits visitsFromData:summary[@"visits"] siteId:siteId];
     }
     return self;
 }

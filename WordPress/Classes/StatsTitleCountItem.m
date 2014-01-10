@@ -10,21 +10,22 @@
 
 @implementation StatsTitleCountItem
 
-+ (NSArray *)titleCountItemsFromData:(NSDictionary *)data withKey:(NSString *)key siteId:(NSNumber *)siteId {
-    NSArray *dataArray = data[key];
++ (NSArray *)titleCountItemsFromData:(NSDictionary *)data siteId:(NSNumber *)siteId {
     NSMutableArray *finalArray = [NSMutableArray array];
-    for (NSArray *titleCountArray in dataArray) {
-        StatsTitleCountItem *titleCountItem = [[StatsTitleCountItem alloc] initWithData:titleCountArray date:data[@"date"] siteId:siteId];
+    for (NSArray *titleCountArray in data) {
+        StatsTitleCountItem *titleCountItem = [[StatsTitleCountItem alloc] initWithData:titleCountArray siteId:siteId];
         [finalArray addObject:titleCountItem];
     }
     return finalArray;
 }
 
-- (id)initWithData:(NSArray *)data date:(NSDate *)date siteId:(NSNumber *)siteId {
-    self.title = data[0];
-    self.count = data[1];
-    self.date = date;
-    self.siteId = siteId;
+- (id)initWithData:(NSArray *)data siteId:(NSNumber *)siteId {
+    self = [super init];
+    if (self) {
+        self.title = data[0];
+        self.count = data[1];
+        self.siteId = siteId;
+    }
     return self;
 }
 
