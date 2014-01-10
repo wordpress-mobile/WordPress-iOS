@@ -24,7 +24,6 @@
 - (id)initWithCountry:(NSDictionary *)country withSiteId:(NSNumber *)siteId {
     self = [super init];
     if (self) {
-        self.date = country[@"date"];
         self.title = country[@"country"];
         self.count = country[@"views"];
         self.imageUrl = [[NSURL alloc] initWithString:country[@"imageUrl"]];

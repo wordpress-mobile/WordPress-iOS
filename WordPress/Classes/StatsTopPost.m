@@ -28,7 +28,6 @@
 - (id)initTopPost:(NSDictionary *)post withSiteId:(NSNumber *)siteId {
     self = [super init];
     if (self) {
-        self.date = post[@"date"];
         self.title = post[@"title"];
         self.url = post[@"url"];
         self.count = post[@"views"];
