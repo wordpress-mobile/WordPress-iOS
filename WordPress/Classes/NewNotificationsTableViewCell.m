@@ -7,214 +7,65 @@
 //
 
 #import "NewNotificationsTableViewCell.h"
-#import "Note.h"
-#import "UIImageView+Gravatar.h"
-#import "NSString+XMLExtensions.h"
-
-@interface NewNotificationsTableViewCell() {
-    __weak Note *_note;
-    UIImageView *_gravatarImageView;
-    UILabel *_subjectLabel;
-    UILabel *_comment;
-    UILabel *_detailTextLabel;
-    UILabel *_unreadTextLabel;
-}
-
-@end
+#import "NSString+HTML.h"
 
 @implementation NewNotificationsTableViewCell
 
-CGFloat const NotificationCellImageWidth = 48.0;
-CGFloat const NotificationCellImageHeight = 48.0;
-CGFloat const NotificationCellStandardOffset = 16.0;
-CGFloat const NotificationCellAccessoryViewOffset = 25.0;
-CGFloat const NotificationCellDetailTextNumberOfLines = 2;
-
-- (id)initWithStyle:(UITableViewCellStyle)style reuseIdentifier:(NSString *)reuseIdentifier
-{
-    self = [super initWithStyle:style reuseIdentifier:reuseIdentifier];
-    if (self) {
-        self.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
-
-        _gravatarImageView = [[UIImageView alloc] init];
-        [self.contentView addSubview:_gravatarImageView];
-
-        _subjectLabel = [[UILabel alloc] init];
-        _subjectLabel.backgroundColor = [UIColor clearColor];
-        _subjectLabel.textAlignment = NSTextAlignmentLeft;
-        _subjectLabel.numberOfLines = 0;
-        _subjectLabel.lineBreakMode = NSLineBreakByWordWrapping;
-        _subjectLabel.font = [[self class] subjectFont];
-        _subjectLabel.shadowOffset = CGSizeMake(0.0, 0.0);
-        _subjectLabel.textColor = [UIColor blackColor];
-        [self.contentView addSubview:_subjectLabel];
-
-        _detailTextLabel = [[UILabel alloc] init];
-        _detailTextLabel.backgroundColor = [UIColor clearColor];
-        _detailTextLabel.textAlignment = NSTextAlignmentLeft;
-        _detailTextLabel.numberOfLines = NotificationCellDetailTextNumberOfLines;
-        _detailTextLabel.lineBreakMode = NSLineBreakByWordWrapping;
-        _detailTextLabel.font = [[self class] detailFont];
-        _detailTextLabel.shadowOffset = CGSizeMake(0.0, 0.0);
-        _detailTextLabel.textColor = [WPStyleGuide allTAllShadeGrey];
-        [self.contentView addSubview:_detailTextLabel];
-        
-        _unreadTextLabel = [[UILabel alloc] init];
-        _unreadTextLabel.backgroundColor = [UIColor clearColor];
-        _unreadTextLabel.textAlignment = NSTextAlignmentLeft;
-        _unreadTextLabel.numberOfLines = 0;
-        _unreadTextLabel.lineBreakMode = NSLineBreakByWordWrapping;
-        _unreadTextLabel.font = [[self class] unreadFont];
-        _unreadTextLabel.shadowOffset = CGSizeMake(0.0, 0.0);
-        _unreadTextLabel.textColor = [WPStyleGuide jazzyOrange];
-        _unreadTextLabel.text = @"•";
-        [self.contentView addSubview:_unreadTextLabel];
-    }
-    return self;
++ (BOOL)showGravatarImage {
+    return YES;
 }
 
-- (Note *)note
-{
-    return _note;
++ (BOOL)supportsUnreadStatus {
+    return YES;
 }
-
-- (void)setNote:(Note *)note
-{
-    _note = note;
-    
-    NSString *iconURL = self.note.icon;
-    if (iconURL) {
-        iconURL = [iconURL stringByReplacingOccurrencesOfString:@"s=256" withString:[NSString stringWithFormat:@"s=%d", NotificationCellImageWidth]];
-        [_gravatarImageView setImageWithURL:[NSURL URLWithString:iconURL] placeholderImage:[UIImage imageNamed:@"gravatar.jpg"]];
-    } else {
-        [_gravatarImageView setImage:[UIImage imageNamed:@"gravatar.jpg"]];
-    }
-    
-    _subjectLabel.text =  [[self class] subjectText:_note];
-    _detailTextLabel.text = [[self class] detailText:note];
-    
-    if (_subjectLabel.text != nil) {
-        _subjectLabel.attributedText = [[NSAttributedString alloc] initWithString:_subjectLabel.text attributes:[[self class] subjectAttributes]];
-    }
-    
-    if (_detailTextLabel.text != nil) {
-        _detailTextLabel.attributedText = [[NSAttributedString alloc] initWithString:_detailTextLabel.text attributes:[[self class] detailAttributes]];
-    }
-
-    _unreadTextLabel.hidden = [note isRead];
-    if ([self.note isComment]) {
-        self.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
-    } else {
-        self.accessoryType = UITableViewCellAccessoryNone;
-    }
-}
-
-- (void)layoutSubviews
-{
-    [super layoutSubviews];
-    
-    CGFloat maxWidth = CGRectGetWidth(self.bounds);
-    
-    Note *note = _note;
-    _gravatarImageView.frame =  [[self class] gravatarImageFrame];
-    _subjectLabel.frame = [[self class] subjectFrameForNotification:note leftFrame:_gravatarImageView.frame andMaxWidth:maxWidth];
-    _detailTextLabel.frame = [[self class] detailFrameForNotification:note leftFrame:_gravatarImageView.frame topFrame:_subjectLabel.frame andMaxWidth:maxWidth];
-    _unreadTextLabel.frame = [[self class] unreadFrameForMaxWidth:maxWidth];
-}
-
-+ (CGFloat)rowHeightForNotification:(Note *)note andMaxWidth:(CGFloat)maxWidth
-{
-    CGRect gravatarImageFrame =  [[self class] gravatarImageFrame];
-    CGRect subjectFrame = [[self class] subjectFrameForNotification:note leftFrame:gravatarImageFrame andMaxWidth:maxWidth];
-    CGRect detailFrame = [[self class] detailFrameForNotification:note leftFrame:gravatarImageFrame topFrame:subjectFrame andMaxWidth:maxWidth];
-
-    CGFloat bottom = MAX(CGRectGetMaxY(gravatarImageFrame), CGRectGetMaxY(detailFrame));
-    return bottom + NotificationCellStandardOffset;
-}
-
-- (void)prepareForReuse {
-    [super prepareForReuse];
-
-    _unreadTextLabel.hidden = YES;
-    _gravatarImageView.image = nil;
-}
-
 
 #pragma mark - Private Methods
 
-+ (UIFont *)subjectFont
++ (NSAttributedString *)titleAttributedTextForContentProvider:(id<WPContentViewProvider>)contentProvider
 {
-    return [WPStyleGuide postTitleFont];
-}
+    // combine author and title
+    NSString *title = [contentProvider titleForDisplay];
+    NSString *content = [[contentProvider contentForDisplay] stringByNormalizingWhitespace];
+    
+    NSMutableAttributedString *attributedPostTitle = [[NSMutableAttributedString alloc] initWithString:title attributes:[[self class] titleAttributes]];
+    
+    // Bold text in quotes. This code should be rewritten when the API is more flexible
+    // and includes out-of-band data
+    NSScanner *scanner = [NSScanner scannerWithString:title];
+    NSString *tmp;
+    
+    while ([scanner isAtEnd] == NO)
+    {
+        [scanner scanUpToString:@"\"" intoString:NULL];
+        [scanner scanString:@"\"" intoString:NULL];
+        [scanner scanUpToString:@"\"" intoString:&tmp];
+        [scanner scanString:@"\"" intoString:NULL];
+        
+        if (tmp.length > 0) {
+            NSRange itemRange = [title rangeOfString:tmp];
+            if (itemRange.location != NSNotFound) {
+                [attributedPostTitle addAttributes:[[self class] titleAttributesBold] range:itemRange];
+            }
+        }
+    }
+    
+    // Bold text up until "liked", "commented", or "followed"
+    NSArray *keywords = @[@"liked", @"commented", @"followed"];
+    for (NSString *keyword in keywords) {
+        NSRange keywordRange = [title rangeOfString:keyword];
+        if (keywordRange.location != NSNotFound) {
+            [attributedPostTitle addAttributes:[[self class] titleAttributesBold] range:NSMakeRange(0, keywordRange.location)];
+            break;
+        }
+    }
+    
 
-+ (NSDictionary *)subjectAttributes
-{
-    return [WPStyleGuide postTitleAttributes];
-}
-
-+ (NSString *)subjectText:(Note *)note
-{
-    return [NSString decodeXMLCharactersIn:note.subject];
-}
-
-+ (UIFont *)detailFont
-{
-    return [WPStyleGuide subtitleFont];
-}
-
-+ (NSDictionary *)detailAttributes
-{
-    return [WPStyleGuide subtitleAttributes];
-}
-
-+ (NSString *)detailText:(Note *)note
-{
-    return [NSString decodeXMLCharactersIn:note.commentText];
-}
-
-+ (UIFont *)unreadFont
-{
-    return [WPStyleGuide subtitleFont];
-}
-
-+ (CGRect)gravatarImageFrame
-{
-    return CGRectMake(NotificationCellStandardOffset, NotificationCellStandardOffset, NotificationCellImageWidth, NotificationCellImageHeight);
-}
-
-
-+ (CGFloat)textWidth:(CGFloat)maxWidth
-{
-    CGRect gravatarFrame = [[self class] gravatarImageFrame];
-    return maxWidth - CGRectGetMaxX(gravatarFrame) - NotificationCellStandardOffset - NotificationCellAccessoryViewOffset;
-}
-
-+ (CGRect)subjectFrameForNotification:(Note *)note leftFrame:(CGRect)leftFrame andMaxWidth:(CGFloat )maxWidth
-{
-    NSString *subjectText = [self subjectText:note];
-    CGSize size = [subjectText boundingRectWithSize:CGSizeMake([[self class] textWidth:maxWidth], CGFLOAT_MAX) options:NSStringDrawingUsesLineFragmentOrigin attributes:[self subjectAttributes] context:nil].size;
-    return CGRectMake(CGRectGetMaxX(leftFrame) + NotificationCellStandardOffset, NotificationCellStandardOffset, size.width, size.height);
-}
-
-+ (CGRect)detailFrameForNotification:(Note *)note leftFrame:(CGRect)leftFrame topFrame:(CGRect)topFrame andMaxWidth:(CGFloat)maxWidth
-{
-    NSString *detailText = [self detailText:note];
-
-    if ([detailText length] == 0) {
-        return CGRectMake(CGRectGetMaxX(leftFrame) + NotificationCellStandardOffset, CGRectGetMaxY(topFrame), 0, 0);
+    if (content.length > 0) {
+        [attributedPostTitle appendAttributedString:[[NSAttributedString alloc] initWithString:@": "]];
+        [attributedPostTitle appendAttributedString:[[NSAttributedString alloc] initWithString:content attributes:[[self class] titleAttributes]]];
     }
 
-    CGFloat singleLineHeight = [@"W" sizeWithAttributes:@{NSFontAttributeName:[self detailFont]}].height;
-    CGSize size;
-    size = [detailText boundingRectWithSize:CGSizeMake([[self class] textWidth:maxWidth], singleLineHeight * NotificationCellDetailTextNumberOfLines) options:NSStringDrawingUsesLineFragmentOrigin attributes:[self detailAttributes] context:nil].size;
-    return CGRectMake(CGRectGetMaxX(leftFrame) + NotificationCellStandardOffset, CGRectGetMaxY(topFrame), size.width, size.height);
+    return attributedPostTitle;
 }
-
-+ (CGRect)unreadFrameForMaxWidth:(CGFloat)maxWidth
-{
-    CGSize size = [@"•" sizeWithAttributes:@{NSFontAttributeName:[self unreadFont]}];
-    return CGRectMake(maxWidth - size.width - NotificationCellStandardOffset * 0.5 , NotificationCellStandardOffset * 0.5, size.width, size.height);
-}
-
 
 @end

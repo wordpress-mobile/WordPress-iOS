@@ -17,6 +17,7 @@
 + (UIFont *)postTitleFont;
 + (UIFont *)postTitleFontBold;
 + (NSDictionary *)postTitleAttributes;
++ (NSDictionary *)postTitleAttributesBold;
 + (UIFont *)subtitleFont;
 + (NSDictionary *)subtitleAttributes;
 + (UIFont *)subtitleFontItalic;
