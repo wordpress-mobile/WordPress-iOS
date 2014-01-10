@@ -12,7 +12,6 @@
 @interface StatsTopPost : StatsTitleCountItem
 
 @property (nonatomic, strong) NSNumber *postID;
-@property (nonatomic, strong) NSString *url;
 
 + (NSDictionary *)postsFromTodaysData:(NSDictionary *)todaysData yesterdaysData:(NSDictionary *)yesterdaysData siteId:(NSNumber *)siteId;
 
