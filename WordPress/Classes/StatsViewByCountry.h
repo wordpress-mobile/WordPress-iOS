@@ -13,6 +13,6 @@
 
 @property (nonatomic, strong) NSURL *imageUrl;
 
-+ (NSArray *)viewByCountryFromData:(NSDictionary *)countryData withSiteId:(NSNumber *)siteId;
++ (NSArray *)viewByCountryFromData:(NSDictionary *)countryData;
 
 @end

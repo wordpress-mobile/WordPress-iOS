@@ -10,10 +10,9 @@
 
 @implementation StatsSummary
 
-- (id)initWithData:(NSDictionary *)summary withSiteId:(NSNumber *)siteId {
+- (id)initWithData:(NSDictionary *)summary {
     self = [super init];
     if (self) {
-        self.siteId = siteId;
         self.date = summary[@"day"];
         NSDictionary *stats = summary[@"stats"];
         self.totalCatagories = stats[@"categories"];

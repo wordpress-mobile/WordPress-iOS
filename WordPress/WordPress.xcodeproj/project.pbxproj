@@ -772,13 +772,8 @@
 		C52C7854187B066700FB1D2D /* StatsTopPost.m in Sources */ = {isa = PBXBuildFile; fileRef = C52C7853187B066700FB1D2D /* StatsTopPost.m */; };
 		C52C7857187B419500FB1D2D /* StatsTitleCountItem.m in Sources */ = {isa = PBXBuildFile; fileRef = C52C7856187B419500FB1D2D /* StatsTitleCountItem.m */; };
 		C52C785A187B460100FB1D2D /* StatsViewByCountry.m in Sources */ = {isa = PBXBuildFile; fileRef = C52C7859187B460100FB1D2D /* StatsViewByCountry.m */; };
-		C52C785D187B597400FB1D2D /* StatsClickGroup.m in Sources */ = {isa = PBXBuildFile; fileRef = C52C785C187B597400FB1D2D /* StatsClickGroup.m */; };
-		C52C7860187B59D500FB1D2D /* StatsClick.m in Sources */ = {isa = PBXBuildFile; fileRef = C52C785F187B59D500FB1D2D /* StatsClick.m */; };
 		C52C7863187C4CEC00FB1D2D /* StatsGroup.m in Sources */ = {isa = PBXBuildFile; fileRef = C52C7862187C4CEC00FB1D2D /* StatsGroup.m */; };
-		C52C7866187C4D7200FB1D2D /* StatsReferrerGroup.m in Sources */ = {isa = PBXBuildFile; fileRef = C52C7865187C4D7200FB1D2D /* StatsReferrerGroup.m */; };
-		C52C7869187C4E9100FB1D2D /* StatsReferrer.m in Sources */ = {isa = PBXBuildFile; fileRef = C52C7868187C4E9100FB1D2D /* StatsReferrer.m */; };
 		C52C786C187C5C3800FB1D2D /* StatsTodayYesterdayButtonCell.m in Sources */ = {isa = PBXBuildFile; fileRef = C52C786B187C5C3800FB1D2D /* StatsTodayYesterdayButtonCell.m */; };
-		C52C7878187DEF7700FB1D2D /* StatsGroupedCell.m in Sources */ = {isa = PBXBuildFile; fileRef = C52C7877187DEF7700FB1D2D /* StatsGroupedCell.m */; };
 		C533CF350E6D3ADA000C3DE8 /* CommentsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = C533CF340E6D3ADA000C3DE8 /* CommentsViewController.m */; };
 		C545E0A21811B9880020844C /* ContextManager.m in Sources */ = {isa = PBXBuildFile; fileRef = C545E0A11811B9880020844C /* ContextManager.m */; };
 		C55A90D90E8026CD00E1C9B5 /* WPSegmentedSelectionTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = C55A90D80E8026CD00E1C9B5 /* WPSegmentedSelectionTableViewController.m */; };
@@ -1945,20 +1940,10 @@
 		C52C7856187B419500FB1D2D /* StatsTitleCountItem.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = StatsTitleCountItem.m; sourceTree = "<group>"; };
 		C52C7858187B460100FB1D2D /* StatsViewByCountry.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = StatsViewByCountry.h; sourceTree = "<group>"; };
 		C52C7859187B460100FB1D2D /* StatsViewByCountry.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = StatsViewByCountry.m; sourceTree = "<group>"; };
-		C52C785B187B597400FB1D2D /* StatsClickGroup.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = StatsClickGroup.h; sourceTree = "<group>"; };
-		C52C785C187B597400FB1D2D /* StatsClickGroup.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = StatsClickGroup.m; sourceTree = "<group>"; };
-		C52C785E187B59D500FB1D2D /* StatsClick.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = StatsClick.h; sourceTree = "<group>"; };
-		C52C785F187B59D500FB1D2D /* StatsClick.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = StatsClick.m; sourceTree = "<group>"; };
 		C52C7861187C4CEC00FB1D2D /* StatsGroup.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = StatsGroup.h; sourceTree = "<group>"; };
 		C52C7862187C4CEC00FB1D2D /* StatsGroup.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = StatsGroup.m; sourceTree = "<group>"; };
-		C52C7864187C4D7200FB1D2D /* StatsReferrerGroup.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = StatsReferrerGroup.h; sourceTree = "<group>"; };
-		C52C7865187C4D7200FB1D2D /* StatsReferrerGroup.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = StatsReferrerGroup.m; sourceTree = "<group>"; };
-		C52C7867187C4E9100FB1D2D /* StatsReferrer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = StatsReferrer.h; sourceTree = "<group>"; };
-		C52C7868187C4E9100FB1D2D /* StatsReferrer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = StatsReferrer.m; sourceTree = "<group>"; };
 		C52C786A187C5C3800FB1D2D /* StatsTodayYesterdayButtonCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = StatsTodayYesterdayButtonCell.h; sourceTree = "<group>"; };
 		C52C786B187C5C3800FB1D2D /* StatsTodayYesterdayButtonCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = StatsTodayYesterdayButtonCell.m; sourceTree = "<group>"; };
-		C52C7876187DEF7700FB1D2D /* StatsGroupedCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = StatsGroupedCell.h; sourceTree = "<group>"; };
-		C52C7877187DEF7700FB1D2D /* StatsGroupedCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = StatsGroupedCell.m; sourceTree = "<group>"; };
 		C533CF330E6D3ADA000C3DE8 /* CommentsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CommentsViewController.h; sourceTree = "<group>"; };
 		C533CF340E6D3ADA000C3DE8 /* CommentsViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CommentsViewController.m; sourceTree = "<group>"; };
 		C545E0A01811B9880020844C /* ContextManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ContextManager.h; sourceTree = "<group>"; };
@@ -3861,8 +3846,6 @@
 				C52C7840187762FE00FB1D2D /* StatsViewsVisitorsBarGraphCell.m */,
 				C52C786A187C5C3800FB1D2D /* StatsTodayYesterdayButtonCell.h */,
 				C52C786B187C5C3800FB1D2D /* StatsTodayYesterdayButtonCell.m */,
-				C52C7876187DEF7700FB1D2D /* StatsGroupedCell.h */,
-				C52C7877187DEF7700FB1D2D /* StatsGroupedCell.m */,
 			);
 			name = Cells;
 			sourceTree = "<group>";
@@ -3878,16 +3861,8 @@
 				C52C7856187B419500FB1D2D /* StatsTitleCountItem.m */,
 				C52C7858187B460100FB1D2D /* StatsViewByCountry.h */,
 				C52C7859187B460100FB1D2D /* StatsViewByCountry.m */,
-				C52C785B187B597400FB1D2D /* StatsClickGroup.h */,
-				C52C785C187B597400FB1D2D /* StatsClickGroup.m */,
-				C52C785E187B59D500FB1D2D /* StatsClick.h */,
-				C52C785F187B59D500FB1D2D /* StatsClick.m */,
 				C52C7861187C4CEC00FB1D2D /* StatsGroup.h */,
 				C52C7862187C4CEC00FB1D2D /* StatsGroup.m */,
-				C52C7864187C4D7200FB1D2D /* StatsReferrerGroup.h */,
-				C52C7865187C4D7200FB1D2D /* StatsReferrerGroup.m */,
-				C52C7867187C4E9100FB1D2D /* StatsReferrer.h */,
-				C52C7868187C4E9100FB1D2D /* StatsReferrer.m */,
 				DDDAF055187F38810094973D /* StatsViewsVisitors.h */,
 				DDDAF056187F38810094973D /* StatsViewsVisitors.m */,
 			);
@@ -5328,7 +5303,6 @@
 				462F4E0E18369F300028D2F8 /* WPTableViewCell.m in Sources */,
 				C52C7863187C4CEC00FB1D2D /* StatsGroup.m in Sources */,
 				C56636ED1875BCBC00226AAB /* StatsApiHelper.m in Sources */,
-				C52C7866187C4D7200FB1D2D /* StatsReferrerGroup.m in Sources */,
 				E13F23C314FE84600081D9CC /* NSMutableDictionary+Helpers.m in Sources */,
 				E114D79A153D85A800984182 /* WPError.m in Sources */,
 				C52C783418771F7100FB1D2D /* StatsTwoColumnCell.m in Sources */,
@@ -5337,7 +5311,6 @@
 				A25EBD87156E330600530E3D /* WPTableViewController.m in Sources */,
 				5DEB61B4156FCD3400242C35 /* WPWebView.m in Sources */,
 				5DEB61B8156FCD5200242C35 /* WPChromelessWebViewController.m in Sources */,
-				C52C785D187B597400FB1D2D /* StatsClickGroup.m in Sources */,
 				CC24E5EF1577D1EA00A6D5B5 /* WPFriendFinderViewController.m in Sources */,
 				E1AB07AD1578D34300D6AD64 /* SettingsViewController.m in Sources */,
 				E13EB7A5157D230000885780 /* WordPressComApi.m in Sources */,
@@ -5378,7 +5351,6 @@
 				E1523EB516D3B305002C5A36 /* InstapaperActivity.m in Sources */,
 				E1D0D81616D3B86800E33F4C /* SafariActivity.m in Sources */,
 				85495F4817C6D9A500871A7A /* CommentViewController.m in Sources */,
-				C52C7860187B59D500FB1D2D /* StatsClick.m in Sources */,
 				E1D0D82916D3D19200E33F4C /* PocketAPI.m in Sources */,
 				C52C786C187C5C3800FB1D2D /* StatsTodayYesterdayButtonCell.m in Sources */,
 				E1D0D82A16D3D19200E33F4C /* PocketAPILogin.m in Sources */,
@@ -5438,7 +5410,6 @@
 				E100C6BB1741473000AE48D8 /* WordPress-11-12.xcmappingmodel in Sources */,
 				C56636FE1877011000226AAB /* StatsCounterCell.m in Sources */,
 				E1A03EE217422DCF0085D192 /* BlogToAccount.m in Sources */,
-				C52C7869187C4E9100FB1D2D /* StatsReferrer.m in Sources */,
 				E1A03F48174283E10085D192 /* BlogToJetpackAccount.m in Sources */,
 				5D119DA3176FBE040073D83A /* UIImageView+AFNetworkingExtra.m in Sources */,
 				5DF59C0B1770AE3A00171208 /* UILabel+SuggestSize.m in Sources */,

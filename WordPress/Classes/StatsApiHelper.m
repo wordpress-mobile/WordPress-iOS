@@ -13,18 +13,16 @@
 #import "StatsSummary.h"
 #import "StatsTopPost.h"
 #import "StatsTitleCountItem.h"
-#import "StatsClickGroup.h"
-#import "StatsReferrerGroup.h"
 #import "StatsTitleCountItem.h"
 #import "StatsViewByCountry.h"
 #import "StatsViewsVisitors.h"
+#import "StatsGroup.h"
 
 @interface StatsApiHelper ()
 
 @property (nonatomic, strong) NSString *statsPathPrefix;
 @property (nonatomic, weak) WordPressComApi *api;
 @property (nonatomic, strong) NSDateFormatter *formatter;
-@property (nonatomic, strong) NSNumber *siteID;
 
 @end
 
@@ -34,7 +32,6 @@
     self = [super init];
     if (self) {
         _statsPathPrefix = [NSString stringWithFormat:@"sites/%@/stats", siteID];
-        _siteID = siteID;
         _api = [[WPAccount defaultWordPressComAccount] restApi];
         _formatter = [[NSDateFormatter alloc] init];
         _formatter.dateFormat = @"yyyy-MM-dd";
@@ -44,7 +41,7 @@
 
 - (void)fetchSummaryWithSuccess:(void (^)(StatsSummary *))success failure:(void (^)(NSError *))failure {
     [_api getPath:_statsPathPrefix parameters:nil success:^(AFHTTPRequestOperation *operation, id responseObject) {
-        StatsSummary *summary = [[StatsSummary alloc] initWithData:responseObject withSiteId:_siteID];
+        StatsSummary *summary = [[StatsSummary alloc] initWithData:responseObject];
         success(summary);
     } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
         failure(error);
@@ -53,35 +50,35 @@
 
 - (void)fetchClicksWithSuccess:(void (^)(NSDictionary *))success failure:(void (^)(NSError *))failure {
     [self fetchTodayYesterdayStatsForPath:@"clicks?date=" success:^(id todayData, id yesterdayData) {
-        success(@{@"today": [StatsClickGroup clickGroupsFromData:todayData withSiteId:_siteID],
-                  @"yesterday": [StatsClickGroup clickGroupsFromData:yesterdayData withSiteId:_siteID]});
+        success(@{@"today": [StatsGroup groupsFromData:todayData[@"clicks"]],
+                  @"yesterday": [StatsGroup groupsFromData:yesterdayData[@"clicks"]]});
     } failure:failure];
 }
                                              
 - (void)fetchCountryViewsWithSuccess:(void (^)(NSDictionary *))success failure:(void (^)(NSError *))failure {
     [self fetchTodayYesterdayStatsForPath:@"country-views?date=" success:^(id todayData, id yesterdayData) {
-        success(@{@"today": [StatsViewByCountry viewByCountryFromData:todayData withSiteId:_siteID],
-                  @"yesterday": [StatsViewByCountry viewByCountryFromData:yesterdayData withSiteId:_siteID]});
+        success(@{@"today": [StatsViewByCountry viewByCountryFromData:todayData],
+                  @"yesterday": [StatsViewByCountry viewByCountryFromData:yesterdayData]});
     } failure:failure];
 }
 
 - (void)fetchReferrerWithSuccess:(void (^)(NSDictionary *))success failure:(void (^)(NSError *))failure {
     [self fetchTodayYesterdayStatsForPath:@"referrers?date=" success:^(id todayData, id yesterdayData) {
-        success(@{@"today": [StatsReferrerGroup referrerGroupsFromData:todayData withSiteId:_siteID],
-                  @"yesterday": [StatsReferrerGroup referrerGroupsFromData:yesterdayData withSiteId:_siteID]});
+        success(@{@"today": [StatsGroup groupsFromData:todayData[@"referrers"]],
+                  @"yesterday": [StatsGroup groupsFromData:yesterdayData[@"referrers"]]});
     } failure:failure];
 }
 
 - (void)fetchSearchTermsWithSuccess:(void (^)(NSDictionary *))success failure:(void (^)(NSError *))failure {
     [self fetchTodayYesterdayStatsForPath:@"search-terms?date=" success:^(id todayData, id yesterdayData) {
-        success(@{@"today": [StatsTitleCountItem titleCountItemsFromData:todayData[@"search-terms"] siteId:_siteID],
-                  @"yesterday": [StatsTitleCountItem titleCountItemsFromData:yesterdayData[@"search-terms"] siteId:_siteID]});
+        success(@{@"today": [StatsTitleCountItem titleCountItemsFromData:todayData[@"search-terms"]],
+                  @"yesterday": [StatsTitleCountItem titleCountItemsFromData:yesterdayData[@"search-terms"]]});
     } failure:failure];
 }
 
 - (void)fetchTopPostsWithSuccess:(void (^)(NSDictionary *topPosts))success failure:(void (^)(NSError *error))failure {
     [self fetchTodayYesterdayStatsForPath:@"top-posts?date=" success:^(id todayData, id yesterdayData) {
-        success([StatsTopPost postsFromTodaysData:todayData yesterdaysData:yesterdayData siteId:_siteID]);
+        success([StatsTopPost postsFromTodaysData:todayData yesterdaysData:yesterdayData]);
     } failure:failure];
 }
 
