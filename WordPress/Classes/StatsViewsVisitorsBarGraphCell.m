@@ -210,7 +210,7 @@ static NSString *const PointsKey = @"points";
     WPBarGraphView *barGraph = [[WPBarGraphView alloc] initWithFrame:self.bounds];
     self.barGraph = barGraph;
     [self.barGraph addCategory:StatsViewsCategory color:[WPStyleGuide baseLighterBlue]];
-    [self.barGraph addCategory:StatsVisitorsCategory color:[WPStyleGuide baseDarkerBlue]];
+    [self.barGraph addCategory:StatsVisitorsCategory color:[WPStyleGuide midnightBlue]];
     if (categoryData) {
         [self.barGraph setBarsWithCount:categoryData[StatsViewsCategory] forCategory:StatsViewsCategory];
         [self.barGraph setBarsWithCount:categoryData[StatsVisitorsCategory] forCategory:StatsVisitorsCategory];
