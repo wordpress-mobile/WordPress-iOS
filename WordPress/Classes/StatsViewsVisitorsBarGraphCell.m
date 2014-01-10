@@ -9,10 +9,8 @@
 
 #import "StatsViewsVisitorsBarGraphCell.h"
 
-static CGFloat AxisPadding = 18.0f;
+static CGFloat const AxisPadding = 18.0f;
 static CGFloat InitialBarWidth = 30.0f;
-static CGFloat const AxisPaddingIpad = 39.0f;
-static CGFloat const InitialBarWidthIpad = 60.0f;
 static NSString *const CategoryKey = @"category";
 static NSString *const PointsKey = @"points";
 
@@ -20,7 +18,6 @@ static NSString *const PointsKey = @"points";
 
 @property (nonatomic, strong) NSMutableArray *categoryBars;
 @property (nonatomic, strong) NSMutableDictionary *categoryColors;
-@property (nonatomic, strong) UIImage *cachedImage;
 
 // Builds legend and determines graph layers
 - (void)addCategory:(NSString *)categoryName color:(UIColor *)color;
@@ -47,11 +44,6 @@ static NSString *const PointsKey = @"points";
 - (id)initWithFrame:(CGRect)frame {
     self = [super initWithFrame:frame];
     if (self) {
-        if (IS_IPAD) {
-            InitialBarWidth = InitialBarWidthIpad;
-            AxisPadding = AxisPaddingIpad;
-        }
-        
         _categoryBars = [NSMutableArray arrayWithCapacity:2];
         _categoryColors = [NSMutableDictionary dictionaryWithCapacity:2];
         
@@ -61,18 +53,17 @@ static NSString *const PointsKey = @"points";
 }
 
 - (void)addCategory:(NSString *)categoryName color:(UIColor *)color {
-    _cachedImage = nil;
     _categoryColors[categoryName] = color;
 }
 
 - (void)setBarsWithCount:(NSArray *)pointToCount forCategory:(NSString *)category {
-    _cachedImage = nil;
     [_categoryBars addObject:@{CategoryKey: category, PointsKey: pointToCount}];
     
     [self setNeedsDisplay];
 }
 
-- (void)calculateYAxisScale:(CGFloat *)yAxisScale xAxisScale:(CGFloat *)xAxisStepWidth maxXPointCount:(NSUInteger *)maxXAxisPointCount maxYPoint:(NSUInteger *)maxYPoint {
+- (void)calculateYAxisScale:(CGFloat *)yAxisScale xAxisScale:(CGFloat *)xAxisStepWidth
+             maxXPointCount:(NSUInteger *)maxXAxisPointCount maxYPoint:(NSUInteger *)maxYPoint {
     [_categoryBars enumerateObjectsUsingBlock:^(NSDictionary *categoryToPoints, NSUInteger idx, BOOL *stop) {
         *maxXAxisPointCount = MAX(((NSArray *)categoryToPoints[PointsKey]).count, *maxXAxisPointCount);
         
@@ -87,12 +78,6 @@ static NSString *const PointsKey = @"points";
 }
 
 - (void)drawRect:(CGRect)rect {
-    if (_cachedImage) {
-        // Yes, performance hit, but we're serving a cached image
-        [self addSubview:([[UIImageView alloc] initWithImage:_cachedImage])];
-        return;
-    }
-    
     NSUInteger maxYPoint = 0;   // The tallest bar 'point'
     CGFloat yAxisScale = 0;     // rounded integer scale to use up y axis
     CGFloat xAxisStepWidth = 0;
@@ -189,9 +174,6 @@ static NSString *const PointsKey = @"points";
         }];
         iteration += 1;
     }];
-    
-    // Generate UIImage
-    _cachedImage = UIGraphicsGetImageFromCurrentImageContext();
 }
 
 @end
