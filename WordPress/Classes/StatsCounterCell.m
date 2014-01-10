@@ -116,7 +116,7 @@ static CGFloat const StatCounterCellHeight = 100.0f;
     UILabel *countNumber = [[UILabel alloc] initWithFrame:CGRectMake(0, 0, countView.frame.size.width, StatCountNumberHeight)];
     UILabel *countText = [[UILabel alloc] initWithFrame:CGRectMake(0, CGRectGetMaxY(countNumber.frame), countView.frame.size.width, StatCountTextHeight)];
     
-    countNumber.text = [self.numberFormatter stringFromNumber:count];
+    countNumber.text = count ? [self.numberFormatter stringFromNumber:count] : @"0";
     countNumber.textAlignment = NSTextAlignmentCenter;
     countNumber.textColor = [WPStyleGuide whisperGrey];
     countNumber.font = [WPStyleGuide largePostTitleFont];

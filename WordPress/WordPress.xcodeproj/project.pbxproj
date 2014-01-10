@@ -5327,7 +5327,6 @@
 				5DC3A44D1610B9BC00A890BE /* UINavigationController+Rotation.m in Sources */,
 				E1A0FAE7162F11CF0063B098 /* UIDevice+WordPressIdentifier.m in Sources */,
 				CC1D80141656D938002A542F /* NotificationsViewController.m in Sources */,
-				CC1D802B165830AB002A542F /* NotificationsTableViewCell.m in Sources */,
 				CC1D80311658354C002A542F /* Note.m in Sources */,
 				CC0199E9165C17020073A966 /* NotificationsCommentDetailViewController.m in Sources */,
 				372AD15516682BA100F21BC1 /* NotificationsFollowDetailViewController.m in Sources */,
