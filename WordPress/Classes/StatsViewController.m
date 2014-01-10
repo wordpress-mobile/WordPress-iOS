@@ -40,6 +40,7 @@ static NSString *const StatsGroupedCellIdentifier = @"StatsGroupedCellIdentifier
 static CGFloat const SectionHeaderLeftPadding = 10.0f;
 static CGFloat const SectionHeaderTopPadding = 10.0f;
 static NSUInteger const ResultRowMaxItems = 10;
+static CGFloat const TableViewFixedWidth = 600.0f;
 
 typedef NS_ENUM(NSInteger, VisitorsRow) {
     VisitorRowGraphUnitButton,
@@ -438,39 +439,45 @@ typedef NS_ENUM(NSInteger, TotalFollowersShareRow) {
     [header.contentView.subviews makeObjectsPerformSelector:@selector(removeFromSuperview)];
     header.contentView.backgroundColor = [WPStyleGuide itsEverywhereGrey];
     
-    UILabel *sectionName = [[UILabel alloc] initWithFrame:CGRectMake(SectionHeaderLeftPadding, SectionHeaderTopPadding, 0, 0)];
+    CGFloat headerLeftPadding = SectionHeaderLeftPadding;
+    if (IS_IPAD) {
+        headerLeftPadding = (self.view.frame.size.width - TableViewFixedWidth)/2;
+    }
+    
+    UILabel *sectionName = [[UILabel alloc] initWithFrame:CGRectMake(headerLeftPadding, SectionHeaderTopPadding, 0, 0)];
     sectionName.textColor = [WPStyleGuide littleEddieGrey];
     sectionName.backgroundColor = [WPStyleGuide itsEverywhereGrey];
     sectionName.opaque = YES;
     sectionName.font = [WPStyleGuide postTitleFont];
     
+    NSString *text;
     switch (section) {
         case StatsSectionVisitors:
-            sectionName.text = NSLocalizedString(@"Visitors and Views",nil);
+            text = @"Visitors and Views";
             break;
         case StatsSectionTopPosts:
-            sectionName.text = NSLocalizedString(@"Top Posts",nil);
+            text = @"Top Posts";
             break;
         case StatsSectionViewsByCountry:
-            sectionName.text = NSLocalizedString(@"Views By Country",nil);
+            text = @"Views By Country";
             break;
         case StatsSectionTotalsFollowersShares:
-            sectionName.text = NSLocalizedString(@"Totals, Followers & Shares", nil);
+            text = @"Totals, Followers & Shares";
             break;
         case StatsSectionClicks:
-            sectionName.text = NSLocalizedString(@"Clicks", nil);
+            text = @"Clicks";
             break;
         case StatsSectionReferrers:
-            sectionName.text = NSLocalizedString(@"Referrers", nil);
+            text = @"Referrers";
             break;
         case StatsSectionSearchTerms:
-            sectionName.text = NSLocalizedString(@"Search Engine Terms", nil);
+            text = @"Search Engine Terms";
             break;
         default:
-            sectionName.text = @"";
+            text = @"";
             break;
     }
-    
+    sectionName.text = NSLocalizedString(text, nil);
     [sectionName sizeToFit];
     [header.contentView addSubview:sectionName];
     return header;
