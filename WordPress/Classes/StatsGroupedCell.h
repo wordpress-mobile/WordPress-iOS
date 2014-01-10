@@ -6,9 +6,9 @@
 //  Copyright (c) 2014 WordPress. All rights reserved.
 //
 
-#import "StatsTwoLabelCell.h"
+#import "StatsTwoColumnCell.h"
 
-@interface StatsGroupedCell : StatsTwoLabelCell
+@interface StatsGroupedCell : StatsTwoColumnCell
 
 
 @end

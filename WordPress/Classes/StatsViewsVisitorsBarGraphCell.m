@@ -14,6 +14,16 @@ static CGFloat InitialBarWidth = 30.0f;
 static NSString *const CategoryKey = @"category";
 static NSString *const PointsKey = @"points";
 
+@interface WPStyleGuide (WPBarGraphView)
++ (UIFont *)axisLabelFont;
+@end
+
+@implementation WPStyleGuide (WPBarGraphView)
++ (UIFont *)axisLabelFont {
+    return [UIFont fontWithName:@"OpenSans" size:8.0f];
+}
+@end
+
 @interface WPBarGraphView : UIView
 
 @property (nonatomic, strong) NSMutableArray *categoryBars;
@@ -74,7 +84,7 @@ static NSString *const PointsKey = @"points";
     
     *xAxisStepWidth = (self.frame.size.width-3*AxisPadding)/(*maxXAxisPointCount);
     
-    *yAxisScale = *maxYPoint > 0 ? (self.frame.size.height-4*AxisPadding)/(*maxYPoint) : 1;
+    *yAxisScale = *maxYPoint > 0 ? (self.frame.size.height-3*AxisPadding)/(*maxYPoint) : 1;
 }
 
 - (void)drawRect:(CGRect)rect {
@@ -85,12 +95,12 @@ static NSString *const PointsKey = @"points";
     
     CGFloat xAxisStartPoint = AxisPadding*2;
     CGFloat xAxisWidth = rect.size.width - AxisPadding;
+    CGFloat yAxisStartPoint = 10.0f;
     CGFloat yAxisHeight = rect.size.height - AxisPadding*2;
     
     [self calculateYAxisScale:&yAxisScale xAxisScale:&xAxisStepWidth maxXPointCount:&maxXAxisPointCount maxYPoint:&maxYPoint];
     
     CGContextRef context = UIGraphicsGetCurrentContext();
-
     CGContextSetLineWidth(context, 1.0f);
     
     // Axes ticks and labels
@@ -98,30 +108,30 @@ static NSString *const PointsKey = @"points";
     CGFloat const tickHeight = 6.0f;
     for (NSInteger i = 0; i < maxXAxisPointCount; i++) {
         CGFloat xOffset = xAxisStartPoint - xAxisStepWidth/2 + xAxisStepWidth*(i+1);
-        CGContextMoveToPoint(context, xOffset, yAxisHeight-tickHeight/2);
-        CGContextAddLineToPoint(context, xOffset, yAxisHeight+tickHeight/2);
+        CGContextMoveToPoint(context, xOffset, yAxisStartPoint+yAxisHeight-tickHeight/2);
+        CGContextAddLineToPoint(context, xOffset, yAxisStartPoint+yAxisHeight+tickHeight/2);
         CGContextStrokePath(context);
     }
+    
     NSUInteger yAxisTicks = 7;
     NSUInteger tick = 0;
-
-    CGFloat s = (CGFloat)maxYPoint/(CGFloat)yAxisTicks;
+    CGFloat s = (CGFloat)maxYPoint/(CGFloat)(yAxisTicks+1);
     NSInteger len = log10(s);
     CGFloat div = pow(10, len);
     NSUInteger step = ceil(s / div) * div;
     
     do {
-        CGContextMoveToPoint(context, xAxisStartPoint, (yAxisHeight/yAxisTicks)*(yAxisTicks-tick));
-        CGContextAddLineToPoint(context, xAxisStartPoint+xAxisWidth-2*AxisPadding, (yAxisHeight/yAxisTicks)*(yAxisTicks-tick));
+        CGContextMoveToPoint(context, xAxisStartPoint, yAxisStartPoint+(yAxisHeight/yAxisTicks)*(yAxisTicks-tick));
+        CGContextAddLineToPoint(context, xAxisStartPoint+xAxisWidth-2*AxisPadding, yAxisStartPoint+(yAxisHeight/yAxisTicks)*(yAxisTicks-tick));
         CGContextStrokePath(context);
         
         // Scale
         UILabel *increment = [[UILabel alloc] init];
         increment.text = [@(step*(yAxisTicks-tick-1)) stringValue];
-        increment.font = [UIFont fontWithName:@"OpenSans" size:8.0f];
+        increment.font = [WPStyleGuide axisLabelFont];
         increment.textColor = [WPStyleGuide allTAllShadeGrey];
         [increment sizeToFit];
-        increment.center = CGPointMake(xAxisStartPoint-CGRectGetMidX(increment.frame)-6.0f, (yAxisHeight/yAxisTicks)*(tick+1));
+        increment.center = CGPointMake(xAxisStartPoint-CGRectGetMidX(increment.frame)-6.0f, yAxisStartPoint+(yAxisHeight/yAxisTicks)*(tick+1));
         [self addSubview:increment];
         tick++;
     } while (tick < yAxisTicks);
@@ -155,18 +165,18 @@ static NSString *const PointsKey = @"points";
         
         [categoryToPoints[PointsKey] enumerateObjectsUsingBlock:^(NSDictionary *point, NSUInteger idx, BOOL *stop) {
             // Bar
-            CGContextMoveToPoint(context, currentXPoint, yAxisHeight);
+            CGContextMoveToPoint(context, currentXPoint, yAxisStartPoint+yAxisHeight);
             CGFloat barHeight = [point[StatsPointCountKey] unsignedIntegerValue]*yAxisScale;
-            CGContextAddLineToPoint(context, currentXPoint, yAxisHeight-barHeight);
+            CGContextAddLineToPoint(context, currentXPoint, yAxisStartPoint+yAxisHeight-barHeight);
             CGContextStrokePath(context);
             
             // Label
             UILabel *pointLabel = [[UILabel alloc] init];
             pointLabel.text = point[StatsPointNameKey];
-            pointLabel.font = [UIFont fontWithName:@"OpenSans" size:8.0f];
+            pointLabel.font = [WPStyleGuide axisLabelFont];
             pointLabel.textColor = [WPStyleGuide allTAllShadeGrey];
             [pointLabel sizeToFit];
-            pointLabel.center = CGPointMake(currentXPoint, yAxisHeight+pointLabel.frame.size.height);
+            pointLabel.center = CGPointMake(currentXPoint, yAxisStartPoint+yAxisHeight+pointLabel.frame.size.height);
             [self addSubview:pointLabel];
             
             // Move to next spot
