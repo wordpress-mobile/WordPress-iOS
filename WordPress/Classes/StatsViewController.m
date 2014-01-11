@@ -128,45 +128,48 @@ typedef NS_ENUM(NSInteger, TotalFollowersShareRow) {
 - (void)setBlog:(Blog *)blog {
     _blog = blog;
     DDLogInfo(@"Loading Stats for the following blog: %@", [blog url]);
+    
     WordPressAppDelegate *appDelegate = [WordPressAppDelegate sharedWordPressApplicationDelegate];
-    self.statsApiHelper = [[StatsApiHelper alloc] initWithSiteID:_blog.blogID];
     if (!appDelegate.connectionAvailable) {
-        // no network connection
+        // no results view
     } else {
         [self initStats];
     }
 }
 
 - (void)initStats {
-    if ([self.blog isWPcom]) {
+    if (self.blog.isWPcom) {
+        self.statsApiHelper = [[StatsApiHelper alloc] initWithSiteID:_blog.blogID];
         [self loadStats];
         return;
     }
-    //Jetpack
-    BOOL noCredentials = ![self.blog jetpackBlogID] || ![self.blog.jetpackUsername length] || ![self.blog.jetpackPassword length];
-    if (noCredentials) {
-        [self promptForCredentials];
-    } else {
+    
+    // Jetpack
+    BOOL needsJetpackLogin = ![[[WPAccount defaultWordPressComAccount] restApi] hasCredentials];
+    if (!needsJetpackLogin && self.blog.jetpackBlogID) {
+        self.statsApiHelper = [[StatsApiHelper alloc] initWithSiteID:self.blog.jetpackBlogID];
         [self loadStats];
+    } else {
+        [self promptForJetpackCredentials];
     }
 }
 
-- (void)promptForCredentials {
-    if (![self.blog isWPcom]) {
-        JetpackSettingsViewController *controller = [[JetpackSettingsViewController alloc] initWithBlog:self.blog];
-        controller.showFullScreen = NO;
-        __weak JetpackSettingsViewController *safeController = controller;
-        [controller setCompletionBlock:^(BOOL didAuthenticate) {
-            if (didAuthenticate) {
-                [safeController.view removeFromSuperview];
-                [safeController removeFromParentViewController];
-                [self loadStats];
-            }
-        }];
-        [self addChildViewController:controller];
-        [self.view addSubview:controller.view];
-        controller.view.frame = self.view.bounds;
-    }
+- (void)promptForJetpackCredentials {
+    JetpackSettingsViewController *controller = [[JetpackSettingsViewController alloc] initWithBlog:self.blog];
+    controller.showFullScreen = NO;
+    __weak JetpackSettingsViewController *safeController = controller;
+    [controller setCompletionBlock:^(BOOL didAuthenticate) {
+        if (didAuthenticate) {
+            [safeController.view removeFromSuperview];
+            [safeController removeFromParentViewController];
+            self.tableView.scrollEnabled = YES;
+            [self initStats];
+        }
+    }];
+    
+    self.tableView.scrollEnabled = NO;
+    [self addChildViewController:controller];
+    [self.tableView addSubview:controller.view];
 }
 
 - (void)loadStats {
