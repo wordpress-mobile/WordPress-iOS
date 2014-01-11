@@ -194,6 +194,10 @@
     self.mediaType = featured ? MediaTypeFeatured : MediaTypeImage;
 }
 
++ (NSString *)mediaTypeForFeaturedImage {
+    return @"image";
+}
+
 + (void)bulkDeleteMedia:(NSArray *)media withSuccess:(void(^)())success failure:(void (^)(NSError *error, NSArray *failures))failure {
     __block NSMutableArray *failedDeletes = [NSMutableArray array];
     for (NSUInteger i = 0; i < media.count; i++) {
