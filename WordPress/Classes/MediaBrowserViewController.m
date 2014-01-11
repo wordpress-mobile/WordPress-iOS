@@ -226,7 +226,12 @@ NSString *const MediaFeaturedImageSelectedNotification = @"MediaFeaturedImageSel
         NSManagedObjectContext *context = self.blog.managedObjectContext;
         NSFetchRequest *fetchRequest = [NSFetchRequest fetchRequestWithEntityName:NSStringFromClass([Media class])];
         fetchRequest.sortDescriptors = @[[NSSortDescriptor sortDescriptorWithKey:@"creationDate" ascending:NO]];
-        fetchRequest.predicate = [NSPredicate predicateWithFormat:@"blog == %@", self.blog];
+        NSPredicate *predicate = [NSPredicate predicateWithFormat:@"blog == %@", self.blog];
+        if (_selectingFeaturedImage) {
+            NSPredicate *mediaTypePredicate = [NSPredicate predicateWithFormat:@"mediaTypeString == %@", [Media mediaTypeForFeaturedImage]];
+            predicate = [NSCompoundPredicate andPredicateWithSubpredicates:@[predicate, mediaTypePredicate]];
+        }
+        fetchRequest.predicate = predicate;
         fetchRequest.fetchBatchSize = 10;
         _resultsController = [[NSFetchedResultsController alloc] initWithFetchRequest:fetchRequest managedObjectContext:context sectionNameKeyPath:nil cacheName:nil];
     }

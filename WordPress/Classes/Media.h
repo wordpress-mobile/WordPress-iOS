@@ -38,7 +38,6 @@ typedef NS_ENUM(NSUInteger, MediaOrientation) {
 	MediaOrientationLandscape
 };
 
-
 @interface Media :  NSManagedObject
 
 @property (nonatomic, strong) NSNumber * mediaID;
@@ -70,6 +69,8 @@ typedef NS_ENUM(NSUInteger, MediaOrientation) {
 
 + (Media *)newMediaForPost:(AbstractPost *)post;
 + (Media *)newMediaForBlog:(Blog *)blog;
++ (NSString *)mediaTypeForFeaturedImage;
+
 + (Media *)createOrReplaceMediaFromJSON:(NSDictionary*)json forBlog:(Blog *)blog;
 + (void)bulkDeleteMedia:(NSArray *)media withSuccess:(void(^)())success failure:(void (^)(NSError *error, NSArray *failures))failure;
 + (void)mergeNewMedia:(NSArray *)media forBlog:(Blog *)blog;
