@@ -97,11 +97,11 @@ static CGFloat const ImageSize = 20.0f;
 
 - (void)setLinkEnabled:(BOOL)linkEnabled {
     UIColor *color = linkEnabled ? [WPStyleGuide jazzyOrange] : [WPStyleGuide whisperGrey];
-    if ([self.leftView isKindOfClass:[UILabel class]]) {
-        [(UILabel *)self.leftView setTextColor:color];
-    } else {
-        [self.leftView.subviews[0] setTextColor:color];
-    }
+    [self titleLabel].textColor = color;
+}
+
+- (UILabel *)titleLabel {
+    return [self.leftView isKindOfClass:[UILabel class]] ? self.leftView : [self.leftView.subviews firstObject];
 }
 
 - (void)setLeft:(NSString *)left withImageUrl:(NSURL *)imageUrl right:(NSString *)right titleCell:(BOOL)titleCell {
