@@ -264,7 +264,12 @@ typedef NS_ENUM(NSInteger, TotalFollowersShareRow) {
         {
             NSArray *groups = [self resultsForSection:section];
             NSDictionary *expandedGroup = _expandedLinkGroups[@(section)];
+            
+            // 2: Today/Yesterday buttons, column titles
+            // No groups -> +1 for 'no results' cell
             NSUInteger rows = groups.count ? 2 + MIN(groups.count, ResultRowMaxItems) : 3;
+            
+            // Add rows for the expanded group's children
             return (expandedGroup ? rows + [expandedGroup[@"count"] unsignedIntegerValue] : rows);
         }
     }
@@ -502,17 +507,17 @@ typedef NS_ENUM(NSInteger, TotalFollowersShareRow) {
             StatsGroup *group = sectionResults[expandedGroup.row-offset];
             NSUInteger childCount = group.children.count;
 
-            // A child of expanded group
-            if (expandedGroup.row + childCount <= indexPath.row) {
-                return group.children[indexPath.row-expandedGroup.row-1]; // +1 for the group itself
+            if (indexPath.row > expandedGroup.row + childCount) {
+                // Outside of the children of the expanded group
+                return sectionResults[indexPath.row-offset-childCount];
             }
-            
-            // Outside of the children of the expanded group
-            return sectionResults[indexPath.row-offset-childCount];
+
+            // A child of expanded group
+            return group.children[indexPath.row-expandedGroup.row-1]; // -1 for the group itself
         }
         
-        // Outside the expanded group and above
-        // or there was no expanded group to worry about
+        // Outside and above the expanded group
+        // or there was no expanded group to worry about!
     }
     return sectionResults[indexPath.row-offset];
 }
@@ -533,22 +538,14 @@ typedef NS_ENUM(NSInteger, TotalFollowersShareRow) {
 - (void)toggleGroupExpanded:(NSIndexPath *)indexPath childCount:(NSUInteger)count {
     NSDictionary *current = _expandedLinkGroups[@(indexPath.section)];
     BOOL addChildren = NO;
+    
+    [self.tableView beginUpdates];
+    
     if (current) {
         [_expandedLinkGroups removeObjectForKey:@(indexPath.section)];
     }
     
-    if (![current[@"indexPath"] isEqual:indexPath]) {
-        addChildren = YES;
-        _expandedLinkGroups[@(indexPath.section)] = @{@"indexPath": indexPath, @"count": @(count)};
-    }
-    
-    NSMutableArray *childrenToAdd = [NSMutableArray arrayWithCapacity:count];
-    if (addChildren) {
-        for (NSUInteger c = 0; c < count; c++) {
-            [childrenToAdd addObject:[NSIndexPath indexPathForRow:c+indexPath.row+1 inSection:indexPath.section]];
-        }
-    }
-    
+    // Remove children from current expanded group
     NSMutableArray *childrenToRemove = [NSMutableArray array];
     if (current) {
         NSUInteger count = [current[@"count"] unsignedIntegerValue];
@@ -556,11 +553,28 @@ typedef NS_ENUM(NSInteger, TotalFollowersShareRow) {
         for (NSUInteger i = 0; i < count; i++) {
             [childrenToRemove addObject:[NSIndexPath indexPathForRow:i+offset inSection:indexPath.section]];
         }
+        [self.tableView deleteRowsAtIndexPaths:childrenToRemove withRowAnimation:UITableViewRowAnimationFade];
     }
     
-    [self.tableView beginUpdates];
-    [self.tableView insertRowsAtIndexPaths:childrenToAdd withRowAnimation:UITableViewRowAnimationFade];
-    [self.tableView deleteRowsAtIndexPaths:childrenToRemove withRowAnimation:UITableViewRowAnimationFade];
+    // Insert new children if another group was tapped
+    NSIndexPath *actualIndexPath = indexPath;
+    if (![current[@"indexPath"] isEqual:indexPath]) {
+        addChildren = YES;
+        if (current && indexPath.row > [current[@"indexPath"] row]) {
+            NSUInteger childOffset = indexPath.row - [current[@"count"] unsignedIntegerValue];
+            actualIndexPath = [NSIndexPath indexPathForRow:childOffset inSection:indexPath.section];
+        }
+        _expandedLinkGroups[@(indexPath.section)] = @{@"indexPath": actualIndexPath, @"count": @(count)};
+    }
+    
+    NSMutableArray *childrenToAdd = [NSMutableArray arrayWithCapacity:count];
+    if (addChildren) {
+        for (NSUInteger c = 0; c < count; c++) {
+            [childrenToAdd addObject:[NSIndexPath indexPathForRow:c+actualIndexPath.row+1 inSection:indexPath.section]];
+        }
+        [self.tableView insertRowsAtIndexPaths:childrenToAdd withRowAnimation:UITableViewRowAnimationFade];
+    }
+    
     [self.tableView endUpdates];
 }
 
