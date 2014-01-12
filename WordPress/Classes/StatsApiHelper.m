@@ -21,7 +21,6 @@
 @interface StatsApiHelper ()
 
 @property (nonatomic, strong) NSString *statsPathPrefix;
-@property (nonatomic, weak) WordPressComApi *api;
 @property (nonatomic, strong) NSDateFormatter *formatter;
 
 @end
@@ -32,7 +31,6 @@
     self = [super init];
     if (self) {
         _statsPathPrefix = [NSString stringWithFormat:@"sites/%@/stats", siteID];
-        _api = [[WPAccount defaultWordPressComAccount] restApi];
         _formatter = [[NSDateFormatter alloc] init];
         _formatter.dateFormat = @"yyyy-MM-dd";
     }
@@ -40,7 +38,7 @@
 }
 
 - (void)fetchSummaryWithSuccess:(void (^)(StatsSummary *))success failure:(void (^)(NSError *))failure {
-    [_api getPath:_statsPathPrefix parameters:nil success:^(AFHTTPRequestOperation *operation, id responseObject) {
+    [[[WPAccount defaultWordPressComAccount] restApi] getPath:_statsPathPrefix parameters:nil success:^(AFHTTPRequestOperation *operation, id responseObject) {
         StatsSummary *summary = [[StatsSummary alloc] initWithData:responseObject];
         success(summary);
     } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
@@ -50,29 +48,29 @@
 
 - (void)fetchClicksWithSuccess:(void (^)(NSDictionary *))success failure:(void (^)(NSError *))failure {
     [self fetchTodayYesterdayStatsForPath:@"clicks?date=" success:^(id todayData, id yesterdayData) {
-        success(@{@"today": [StatsGroup groupsFromData:todayData[@"clicks"]],
-                  @"yesterday": [StatsGroup groupsFromData:yesterdayData[@"clicks"]]});
+        success(@{StatsResultsToday: [StatsGroup groupsFromData:todayData[@"clicks"]],
+                  StatsResultsYesterday: [StatsGroup groupsFromData:yesterdayData[@"clicks"]]});
     } failure:failure];
 }
                                              
 - (void)fetchCountryViewsWithSuccess:(void (^)(NSDictionary *))success failure:(void (^)(NSError *))failure {
     [self fetchTodayYesterdayStatsForPath:@"country-views?date=" success:^(id todayData, id yesterdayData) {
-        success(@{@"today": [StatsViewByCountry viewByCountryFromData:todayData],
-                  @"yesterday": [StatsViewByCountry viewByCountryFromData:yesterdayData]});
+        success(@{StatsResultsToday: [StatsViewByCountry viewByCountryFromData:todayData],
+                  StatsResultsYesterday: [StatsViewByCountry viewByCountryFromData:yesterdayData]});
     } failure:failure];
 }
 
 - (void)fetchReferrerWithSuccess:(void (^)(NSDictionary *))success failure:(void (^)(NSError *))failure {
     [self fetchTodayYesterdayStatsForPath:@"referrers?date=" success:^(id todayData, id yesterdayData) {
-        success(@{@"today": [StatsGroup groupsFromData:todayData[@"referrers"]],
-                  @"yesterday": [StatsGroup groupsFromData:yesterdayData[@"referrers"]]});
+        success(@{StatsResultsToday: [StatsGroup groupsFromData:todayData[@"referrers"]],
+                  StatsResultsYesterday: [StatsGroup groupsFromData:yesterdayData[@"referrers"]]});
     } failure:failure];
 }
 
 - (void)fetchSearchTermsWithSuccess:(void (^)(NSDictionary *))success failure:(void (^)(NSError *))failure {
     [self fetchTodayYesterdayStatsForPath:@"search-terms?date=" success:^(id todayData, id yesterdayData) {
-        success(@{@"today": [StatsTitleCountItem titleCountItemsFromData:todayData[@"search-terms"]],
-                  @"yesterday": [StatsTitleCountItem titleCountItemsFromData:yesterdayData[@"search-terms"]]});
+        success(@{StatsResultsToday: [StatsTitleCountItem titleCountItemsFromData:todayData[@"search-terms"]],
+                  StatsResultsYesterday: [StatsTitleCountItem titleCountItemsFromData:yesterdayData[@"search-terms"]]});
     } failure:failure];
 }
 
@@ -93,7 +91,7 @@
 }
 
 - (void)fetchStatsForPath:(NSString *)path success:(void (^)(NSDictionary *))success failure:(void (^)(NSError *))failure {
-    [_api getPath:[_statsPathPrefix stringByAppendingPathComponent:path] parameters:nil success:^(AFHTTPRequestOperation *operation, id responseObject) {
+    [[[WPAccount defaultWordPressComAccount] restApi] getPath:[_statsPathPrefix stringByAppendingPathComponent:path] parameters:nil success:^(AFHTTPRequestOperation *operation, id responseObject) {
         success(responseObject);
     } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
         failure(error);

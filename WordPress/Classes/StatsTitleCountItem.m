@@ -8,6 +8,9 @@
 
 #import "StatsTitleCountItem.h"
 
+NSString *const StatsResultsToday = @"today";
+NSString *const StatsResultsYesterday = @"yesterday";
+
 @implementation StatsTitleCountItem
 
 + (NSArray *)titleCountItemsFromData:(NSDictionary *)data {
