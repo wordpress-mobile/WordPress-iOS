@@ -93,6 +93,8 @@ static CGFloat const ImageSize = 20.0f;
     } else {
         [self setLeft:left withImageUrl:nil right:right titleCell:NO];
     }
+    
+    self.linkEnabled = !!self.cellData.URL;
 }
 
 - (void)setLinkEnabled:(BOOL)linkEnabled {
