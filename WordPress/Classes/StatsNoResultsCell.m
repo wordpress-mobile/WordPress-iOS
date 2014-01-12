@@ -73,6 +73,8 @@ static CGFloat const CellPadding = 15.0f;
     label.lineBreakMode = NSLineBreakByWordWrapping;
     label.numberOfLines = 0;
     label.textColor = [WPStyleGuide littleEddieGrey];
+    label.opaque = YES;
+    label.backgroundColor = [UIColor whiteColor];
     
     self.noStatsDescriptionLabel = label;
     [self.contentView addSubview:label];

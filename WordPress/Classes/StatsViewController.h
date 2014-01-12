@@ -22,6 +22,7 @@ typedef NS_ENUM(NSInteger, StatsSection) {
 };
 
 @class Blog;
+
 @interface StatsViewController : UITableViewController
 
 - (void)setBlog:(Blog *)blog;

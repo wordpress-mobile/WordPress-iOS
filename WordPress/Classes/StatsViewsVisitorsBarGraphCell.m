@@ -103,7 +103,7 @@ static NSString *const PointsKey = @"points";
     CGContextRef context = UIGraphicsGetCurrentContext();
     CGContextSetLineWidth(context, 1.0f);
     
-    // Axes ticks and labels
+    // Axes ticks
     CGContextSetGrayStrokeColor(context, 0.90, 1.0f);
     CGFloat const tickHeight = 6.0f;
     for (NSInteger i = 0; i < maxXAxisPointCount; i++) {
