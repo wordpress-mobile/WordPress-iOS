@@ -77,7 +77,7 @@ typedef NS_ENUM(NSInteger, TotalFollowersShareRow) {
 @implementation StatsViewController
 
 - (id)init {
-    self = [super init];
+    self = [super initWithStyle:UITableViewStyleGrouped];
     if (self) {
         _statModels = [NSMutableDictionary dictionary];
         _expandedLinkGroups = [NSMutableDictionary dictionary];
