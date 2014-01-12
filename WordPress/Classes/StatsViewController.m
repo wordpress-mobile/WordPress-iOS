@@ -22,6 +22,7 @@
 #import "StatsTitleCountItem.h"
 #import "StatsTodayYesterdayButtonCell.h"
 #import "StatsTwoColumnCell.h"
+#import "WPTableViewSectionHeaderView.h"
 #import "StatsGroup.h"
 #import "WPNoResultsView.h"
 
@@ -30,7 +31,6 @@ static NSString *const TodayYesterdayButtonCellReuseIdentifier = @"TodayYesterda
 static NSString *const GraphCellReuseIdentifier = @"GraphCellReuseIdentifier";
 static NSString *const CountCellReuseIdentifier = @"DoubleCountCellReuseIdentifier";
 static NSString *const TwoLabelCellReuseIdentifier = @"TwoLabelCellReuseIdentifier";
-static NSString *const StatSectionHeaderViewIdentifier = @"StatSectionHeaderViewIdentifier";
 static NSString *const NoResultsCellIdentifier = @"NoResultsCellIdentifier";
 static NSString *const ResultRowCellIdentifier = @"ResultRowCellIdentifier";
 static NSString *const GraphCellIdentifier = @"GraphCellIdentifier";
@@ -38,7 +38,6 @@ static NSString *const StatsGroupedCellIdentifier = @"StatsGroupedCellIdentifier
 
 static CGFloat const SectionHeaderPadding = 8.0f;
 static NSUInteger const ResultRowMaxItems = 10;
-static CGFloat const TableViewFixedWidth = 600.0f;
 static CGFloat const HeaderHeight = 44.0f;
 
 typedef NS_ENUM(NSInteger, VisitorsRow) {
@@ -86,7 +85,7 @@ typedef NS_ENUM(NSInteger, TotalFollowersShareRow) {
     [WPStyleGuide configureColorsForView:self.view andTableView:self.tableView];
     self.tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
     self.tableView.contentInset = UIEdgeInsetsMake(0, 0, HeaderHeight, 0);
-    [self.tableView registerClass:[UITableViewHeaderFooterView class] forHeaderFooterViewReuseIdentifier:StatSectionHeaderViewIdentifier];
+    
     [self.tableView registerClass:[StatsButtonCell class] forCellReuseIdentifier:VisitorsUnitButtonCellReuseIdentifier];
     [self.tableView registerClass:[StatsTodayYesterdayButtonCell class] forCellReuseIdentifier:TodayYesterdayButtonCellReuseIdentifier];
     [self.tableView registerClass:[StatsViewsVisitorsBarGraphCell class] forCellReuseIdentifier:GraphCellReuseIdentifier];
@@ -467,58 +466,36 @@ typedef NS_ENUM(NSInteger, TotalFollowersShareRow) {
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section {
-    return HeaderHeight;
+    NSString *title = [self headerTextForSection:section];
+    return [WPTableViewSectionHeaderView heightForTitle:title andWidth:CGRectGetWidth(self.view.bounds)];
 }
 
 - (UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section {
-    UITableViewHeaderFooterView *header = [tableView dequeueReusableHeaderFooterViewWithIdentifier:StatSectionHeaderViewIdentifier];
-    [header.contentView.subviews makeObjectsPerformSelector:@selector(removeFromSuperview)];
-    header.contentView.backgroundColor = [WPStyleGuide itsEverywhereGrey];
-    
-    CGFloat headerLeftPadding = SectionHeaderPadding;
-    if (IS_IPAD) {
-        headerLeftPadding = (self.view.frame.size.width - TableViewFixedWidth)/2;
-    }
-    CGFloat lineHeight = [[WPStyleGuide postTitleAttributes][NSParagraphStyleAttributeName] maximumLineHeight];
-    UILabel *sectionName = [[UILabel alloc] initWithFrame:CGRectMake(headerLeftPadding, HeaderHeight - (lineHeight + SectionHeaderPadding), 0, lineHeight)];
-    sectionName.textColor = [WPStyleGuide littleEddieGrey];
-    sectionName.backgroundColor = [WPStyleGuide itsEverywhereGrey];
-    sectionName.opaque = YES;
-    sectionName.font = [WPStyleGuide postTitleFont];
-    
-    NSString *text;
-    switch (section) {
-        case StatsSectionVisitors:
-            text = @"Visitors and Views";
-            break;
-        case StatsSectionTopPosts:
-            text = @"Top Posts";
-            break;
-        case StatsSectionViewsByCountry:
-            text = @"Views By Country";
-            break;
-        case StatsSectionTotalsFollowersShares:
-            text = @"Totals, Followers & Shares";
-            break;
-        case StatsSectionClicks:
-            text = @"Clicks";
-            break;
-        case StatsSectionReferrers:
-            text = @"Referrers";
-            break;
-        case StatsSectionSearchTerms:
-            text = @"Search Engine Terms";
-            break;
-        default:
-            text = @"";
-            break;
-    }
-    sectionName.text = NSLocalizedString(text, nil);
-    [sectionName sizeToFit];
-    [header.contentView addSubview:sectionName];
+    WPTableViewSectionHeaderView *header = [[WPTableViewSectionHeaderView alloc] initWithFrame:CGRectMake(0, 0, CGRectGetWidth(self.view.bounds), 0)];
+    header.title = [self headerTextForSection:section];
     return header;
 }
 
+- (NSString *)headerTextForSection:(StatsSection)section {
+    switch (section) {
+        case StatsSectionVisitors:
+            return NSLocalizedString(@"Visitors and Views", @"Stats: Section title");
+        case StatsSectionTopPosts:
+            return NSLocalizedString(@"Top Posts", @"Stats: Section title");;
+        case StatsSectionViewsByCountry:
+            return NSLocalizedString(@"Views By Country", @"Stats: Section title");;
+        case StatsSectionTotalsFollowersShares:
+            return NSLocalizedString(@"Totals, Followers & Shares", @"Stats: Section title");;
+        case StatsSectionClicks:
+            return NSLocalizedString(@"Clicks", @"Stats: Section title");;
+        case StatsSectionReferrers:
+            return NSLocalizedString(@"Referrers", @"Stats: Section title");;
+        case StatsSectionSearchTerms:
+            return NSLocalizedString(@"Search Engine Terms", @"Stats: Section title");;
+        default:
+            return @"";
+    }
+}
 
 #pragma mark - StatsTodayYesterdayButtonCellDelegate
 
