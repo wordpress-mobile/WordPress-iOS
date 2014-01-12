@@ -71,10 +71,30 @@ typedef NS_ENUM(NSInteger, TotalFollowersShareRow) {
 @property (nonatomic, assign) StatsViewsVisitorsUnit currentViewsVisitorsGraphUnit;
 @property (nonatomic, assign) BOOL resultsAvailable;
 @property (nonatomic, weak) WPNoResultsView *noResultsView;
+@property (nonatomic, strong) NSMutableDictionary *expandedLinkGroups;
 
 @end
 
 @implementation StatsViewController
+
+- (id)init {
+    self = [super init];
+    if (self) {
+        _statModels = [NSMutableDictionary dictionary];
+        _expandedLinkGroups = [NSMutableDictionary dictionary];
+        
+        // By default, show data for Today
+        _showingToday = [NSMutableDictionary dictionaryWithObjectsAndKeys:
+                         @(YES), @(StatsSectionTopPosts),
+                         @(YES), @(StatsSectionViewsByCountry),
+                         @(YES), @(StatsSectionSearchTerms),
+                         @(YES), @(StatsSectionClicks),
+                         @(YES), @(StatsSectionReferrers), nil];
+        
+        _resultsAvailable = NO;
+    }
+    return self;
+}
 
 - (void)viewDidLoad
 {
@@ -97,19 +117,6 @@ typedef NS_ENUM(NSInteger, TotalFollowersShareRow) {
     
     self.refreshControl = [[UIRefreshControl alloc] init];
     [self.refreshControl addTarget:self action:@selector(refreshControlTriggered) forControlEvents:UIControlEventValueChanged];
-    
-    _statModels = [NSMutableDictionary dictionary];
-    
-
-    // By default, show data for Today
-    _showingToday = [NSMutableDictionary dictionaryWithObjectsAndKeys:
-                     @(YES), @(StatsSectionTopPosts),
-                     @(YES), @(StatsSectionViewsByCountry),
-                     @(YES), @(StatsSectionSearchTerms),
-                     @(YES), @(StatsSectionClicks),
-                     @(YES), @(StatsSectionReferrers), nil];
-    
-    _resultsAvailable = NO;
 
     [self showNoResultsWithTitle:NSLocalizedString(@"No stats to display", nil) message:nil];
 }
@@ -196,8 +203,12 @@ typedef NS_ENUM(NSInteger, TotalFollowersShareRow) {
         DDLogWarn(@"Stats: Error fetching stats %@", error);
     };
     
+    // Show no results until at least the summary has returned
     [self.statsApiHelper fetchSummaryWithSuccess:^(StatsSummary *summary) {
         saveStatsForSection(summary, StatsSectionVisitors);
+        _resultsAvailable = YES;
+        [self hideNoResultsView];
+        [self.tableView reloadData];
     } failure:failure];
     
     [self.statsApiHelper fetchViewsVisitorsWithSuccess:^(StatsViewsVisitors *viewsVisitors) {
@@ -207,12 +218,8 @@ typedef NS_ENUM(NSInteger, TotalFollowersShareRow) {
         }
     } failure:failure];
 
-    // Show no results until at least the summary has returned
     [self.statsApiHelper fetchTopPostsWithSuccess:^(NSDictionary *todayAndYesterdayTopPosts) {
         saveStatsForSection(todayAndYesterdayTopPosts, StatsSectionTopPosts);
-        _resultsAvailable = YES;
-        [self hideNoResultsView];
-        [self.tableView reloadData];
     } failure:failure];
     
     [self.statsApiHelper fetchClicksWithSuccess:^(NSDictionary *clicks) {
@@ -240,14 +247,6 @@ typedef NS_ENUM(NSInteger, TotalFollowersShareRow) {
     return [_showingToday[@(section)] boolValue];
 }
 
-- (NSArray *)resultsForSection:(StatsSection)section {
-    NSDictionary *data = _statModels[@(section)];
-    if (data) {
-        return [self showingTodayForSection:section] ? data[@"today"] : data[@"yesterday"];
-    }
-    return @[];
-}
-
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
     return _resultsAvailable ? StatsSectionTotalCount : 0;
 }
@@ -263,8 +262,10 @@ typedef NS_ENUM(NSInteger, TotalFollowersShareRow) {
             return TotalFollowersShareRowTotalRows;
         default:
         {
-            NSInteger numberOfResults = [self resultsForSection:section].count;
-            return numberOfResults ? 2 + MIN(numberOfResults, ResultRowMaxItems) : 3;
+            NSArray *groups = [self resultsForSection:section];
+            NSDictionary *expandedGroup = _expandedLinkGroups[@(section)];
+            NSUInteger rows = groups.count ? 2 + MIN(groups.count, ResultRowMaxItems) : 3;
+            return (expandedGroup ? rows + [expandedGroup[@"count"] unsignedIntegerValue] : rows);
         }
     }
 }
@@ -362,7 +363,7 @@ typedef NS_ENUM(NSInteger, TotalFollowersShareRow) {
         case StatsSectionClicks:
         case StatsSectionReferrers:
         case StatsSectionSearchTerms:
-            return [self cellForItemListSection:indexPath.section rowIndex:indexPath.row];
+            return [self cellForItemListSectionAtIndexPath:indexPath];
         default:
             return nil;
     }
@@ -378,7 +379,6 @@ typedef NS_ENUM(NSInteger, TotalFollowersShareRow) {
     NSNumber *rightCount;
     
     StatsSummary *summary = _statModels[@(StatsSectionVisitors)];
-    
     switch (index) {
         case TotalFollowersShareRowContentPost:
             title = @"Content";
@@ -414,11 +414,10 @@ typedef NS_ENUM(NSInteger, TotalFollowersShareRow) {
     return cell;
 }
 
-- (UITableViewCell *)cellForItemListSection:(StatsSection)section rowIndex:(NSInteger)index {
-    // Data title header
+- (UITableViewCell *)cellForItemListSectionAtIndexPath:(NSIndexPath *)indexPath {
     NSString *dataTitleRowLeft = NSLocalizedString(@"Title", nil);
     NSString *dataTitleRowRight = NSLocalizedString(@"Views", nil);
-    switch (section) {
+    switch (indexPath.section) {
         case StatsSectionViewsByCountry:
             dataTitleRowLeft = NSLocalizedString(@"Country", nil);
             break;
@@ -437,11 +436,11 @@ typedef NS_ENUM(NSInteger, TotalFollowersShareRow) {
     }
     
     UITableViewCell *cell;
-    switch (index) {
+    switch (indexPath.row) {
         case StatsDataRowButtons:
         {
             cell = [self.tableView dequeueReusableCellWithIdentifier:TodayYesterdayButtonCellReuseIdentifier];
-            [(StatsTodayYesterdayButtonCell *)cell setupForSection:section delegate:self todayActive:[self showingTodayForSection:section]];
+            [(StatsTodayYesterdayButtonCell *)cell setupForSection:indexPath.section delegate:self todayActive:[self showingTodayForSection:indexPath.section]];
             break;
         }
         case StatsDataRowTitle:
@@ -452,17 +451,117 @@ typedef NS_ENUM(NSInteger, TotalFollowersShareRow) {
         }
         default:
         {
-            if ([self resultsForSection:section].count == 0) {
+            if ([self resultsForSection:indexPath.section].count == 0) {
                 cell = [self.tableView dequeueReusableCellWithIdentifier:NoResultsCellIdentifier];
-                [(StatsNoResultsCell *)cell configureForSection:section];
+                [(StatsNoResultsCell *)cell configureForSection:indexPath.section];
             } else {
                 cell = [self.tableView dequeueReusableCellWithIdentifier:ResultRowCellIdentifier];
-                [(StatsTwoColumnCell *)cell insertData:[self resultsForSection:section][index-2]];
-                
+                [(StatsTwoColumnCell *)cell insertData:[self resultForIndexPath:indexPath]];
             }
         }
     }
     return cell;
+}
+
+- (BOOL)tableView:(UITableView *)tableView shouldHighlightRowAtIndexPath:(NSIndexPath *)indexPath {
+    StatsTitleCountItem *item = [self itemSelectedAtIndexPath:indexPath];
+    return [item isKindOfClass:[StatsGroup class]] || !!item.URL;
+}
+
+- (StatsTitleCountItem *)itemSelectedAtIndexPath:(NSIndexPath *)indexPath {
+    if (indexPath.row != StatsDataRowTitle && (indexPath.section == StatsSectionTopPosts ||
+         indexPath.section == StatsSectionClicks ||
+         indexPath.section == StatsSectionReferrers)) {
+        return [self resultForIndexPath:indexPath];
+    }
+    return nil;
+}
+
+- (NSArray *)resultsForSection:(StatsSection)section {
+    NSDictionary *data = _statModels[@(section)];
+    if (data) {
+        return [self showingTodayForSection:section] ? data[@"today"] : data[@"yesterday"];
+    }
+    return @[];
+}
+
+- (StatsTitleCountItem *)resultForIndexPath:(NSIndexPath *)indexPath {
+    NSArray *sectionResults = [self resultsForSection:indexPath.section];
+    NSIndexPath *expandedGroup = [self expandedGroupIndexPath:indexPath.section];
+    NSUInteger offset = StatsDataRowTitle+1; // Column titles + Today/Yesterday buttons
+    
+    // There is an expanded group in this section
+    if (expandedGroup) {
+        // Row for the group itself
+        if (expandedGroup.row == indexPath.row) {
+            return sectionResults[indexPath.row-offset];
+        }
+
+        // Row outside the group row & a child, or below the expanded group
+        if (indexPath.row > expandedGroup.row) {
+            StatsGroup *group = sectionResults[expandedGroup.row-offset];
+            NSUInteger childCount = group.children.count;
+
+            // A child of expanded group
+            if (expandedGroup.row + childCount <= indexPath.row) {
+                return group.children[indexPath.row-expandedGroup.row-1]; // +1 for the group itself
+            }
+            
+            // Outside of the children of the expanded group
+            return sectionResults[indexPath.row-offset-childCount];
+        }
+        
+        // Outside the expanded group and above
+        // or there was no expanded group to worry about
+    }
+    return sectionResults[indexPath.row-offset];
+}
+
+- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
+    StatsTitleCountItem *item = [self itemSelectedAtIndexPath:indexPath];
+    if ([item isKindOfClass:[StatsGroup class]]) {
+        [self toggleGroupExpanded:indexPath childCount:[(StatsGroup *)item children].count];
+    } else {
+        [[UIApplication sharedApplication] openURL:item.URL];
+    }
+}
+
+- (NSIndexPath *)expandedGroupIndexPath:(StatsSection)section {
+    return _expandedLinkGroups[@(section)][@"indexPath"];
+}
+
+- (void)toggleGroupExpanded:(NSIndexPath *)indexPath childCount:(NSUInteger)count {
+    NSDictionary *current = _expandedLinkGroups[@(indexPath.section)];
+    BOOL addChildren = NO;
+    if (current) {
+        [_expandedLinkGroups removeObjectForKey:@(indexPath.section)];
+    }
+    
+    if (![current[@"indexPath"] isEqual:indexPath]) {
+        addChildren = YES;
+        _expandedLinkGroups[@(indexPath.section)] = @{@"indexPath": indexPath, @"count": @(count)};
+    }
+    
+    NSMutableArray *childrenToAdd = [NSMutableArray arrayWithCapacity:count];
+    if (addChildren) {
+        for (NSUInteger c = 0; c < count; c++) {
+            [childrenToAdd addObject:[NSIndexPath indexPathForRow:c+indexPath.row+1 inSection:indexPath.section]];
+        }
+    }
+    
+    NSMutableArray *childrenToRemove = [NSMutableArray array];
+    if (current) {
+        NSUInteger count = [current[@"count"] unsignedIntegerValue];
+        NSUInteger offset = [(NSIndexPath *)current[@"indexPath"] row]+1;
+        for (NSUInteger i = 0; i < count; i++) {
+            [childrenToRemove addObject:[NSIndexPath indexPathForRow:i+offset inSection:indexPath.section]];
+        }
+    }
+    
+    [self.tableView beginUpdates];
+    [self.tableView insertRowsAtIndexPaths:childrenToAdd withRowAnimation:UITableViewRowAnimationFade];
+    [self.tableView deleteRowsAtIndexPaths:childrenToRemove withRowAnimation:UITableViewRowAnimationFade];
+    [self.tableView endUpdates];
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section {
@@ -501,6 +600,7 @@ typedef NS_ENUM(NSInteger, TotalFollowersShareRow) {
 
 - (void)statsDayChangedForSection:(StatsSection)section todaySelected:(BOOL)todaySelected {
     [_showingToday setObject:@(todaySelected) forKey:@(section)];
+    [_expandedLinkGroups removeAllObjects];
     [self.tableView reloadSections:[NSIndexSet indexSetWithIndex:section] withRowAnimation:UITableViewRowAnimationFade];
 }
 
