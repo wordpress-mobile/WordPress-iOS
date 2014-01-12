@@ -49,6 +49,11 @@ static NSString *const PointsKey = @"points";
 
 @end
 
+CGFloat heightFromRangeToRange(NSUInteger height, CGFloat maxOldRange, CGFloat maxNewRange) {
+    CGFloat p = ((CGFloat)height)/maxOldRange;
+    return p * maxNewRange;
+}
+
 @implementation WPBarGraphView
 
 - (id)initWithFrame:(CGRect)frame {
@@ -85,13 +90,6 @@ static NSString *const PointsKey = @"points";
     *xAxisStepWidth = (self.frame.size.width-3*AxisPadding)/(*maxXAxisPointCount);
 }
 
-CGFloat heightFromRangeToRange(NSUInteger height, CGFloat maxOldRange, CGFloat maxNewRange) {
-    CGFloat p = ((CGFloat)height)/maxOldRange;
-    CGFloat f = p * maxNewRange;
-    NSLog(@"Calculated bar height %f for %f", f, maxNewRange);
-    return f;
-}
-
 - (void)drawRect:(CGRect)rect {
     NSUInteger maxYPoint = 0;   // The tallest bar 'point'
     CGFloat xAxisStepWidth = 0;
@@ -99,8 +97,8 @@ CGFloat heightFromRangeToRange(NSUInteger height, CGFloat maxOldRange, CGFloat m
     
     CGFloat xAxisStartPoint = AxisPadding*2;
     CGFloat xAxisWidth = rect.size.width - AxisPadding;
-    CGFloat yAxisStartPoint = 10.0f;
-    CGFloat yAxisHeight = rect.size.height - AxisPadding*2 - yAxisStartPoint;
+    CGFloat yAxisStartPoint = AxisPadding + 10.0f;
+    CGFloat yAxisHeight = rect.size.height - AxisPadding - yAxisStartPoint;
     
     [self calculateXAxisScale:&xAxisStepWidth maxXPointCount:&maxXAxisPointCount maxYPoint:&maxYPoint];
     
@@ -118,12 +116,13 @@ CGFloat heightFromRangeToRange(NSUInteger height, CGFloat maxOldRange, CGFloat m
     }
     
     // Y axis line markers and values
+    // Round up and extend past max value to the next 10s
     NSUInteger yAxisTicks = 7;
-    CGFloat s = (CGFloat)maxYPoint/(CGFloat)(yAxisTicks+1);
-    NSInteger len = log10(s);
-    CGFloat div = pow(10, len);
+    CGFloat s = (CGFloat)maxYPoint/(CGFloat)yAxisTicks;
+    long len = log10(s);
+    long div = pow(10, len);
     NSUInteger stepValue = ceil(s / div) * div;
-    CGFloat yAxisStepSize = yAxisHeight/(yAxisTicks+1);
+    CGFloat yAxisStepSize = yAxisHeight/yAxisTicks;
     
     for (NSUInteger tick = 0; tick <= yAxisTicks; tick++) {
         CGFloat linePosition = yAxisStartPoint+yAxisHeight-(yAxisStepSize*tick)-0.5f;
@@ -131,20 +130,15 @@ CGFloat heightFromRangeToRange(NSUInteger height, CGFloat maxOldRange, CGFloat m
         CGContextAddLineToPoint(context, xAxisStartPoint+xAxisWidth-2*AxisPadding, linePosition);
         CGContextStrokePath(context);
         
-        // Scale
-        UILabel *increment = [[UILabel alloc] init];
-        increment.text = [@(stepValue*tick) stringValue];
-        increment.font = [WPStyleGuide axisLabelFont];
-        increment.textColor = [WPStyleGuide allTAllShadeGrey];
-        [increment sizeToFit];
-        increment.center = CGPointMake(xAxisStartPoint-CGRectGetMidX(increment.frame)-6.0f, linePosition);
-        [self addSubview:increment];
+        UILabel *yIncrement = [self axisLabelWithText:[@(stepValue*tick) stringValue]];
+        yIncrement.center = CGPointMake(xAxisStartPoint-CGRectGetMidX(yIncrement.frame)-6.0f, linePosition);
+        [self addSubview:yIncrement];
     }
 
     // Bars
     __block CGFloat currentXPoint = 0;
     __block NSInteger iteration = 0;
-    __block CGFloat legendXOffset = self.frame.size.width - AxisPadding;
+    __block CGFloat legendXOffset = rect.size.width - AxisPadding;
     
     CGFloat const availableHeight = yAxisStepSize*(CGFloat)yAxisTicks;
     CGFloat const yUpperBound = (CGFloat)stepValue*yAxisTicks;
@@ -157,25 +151,22 @@ CGFloat heightFromRangeToRange(NSUInteger height, CGFloat maxOldRange, CGFloat m
         currentXPoint = xAxisStartPoint + xAxisStepWidth/2;
         
         // Legend
-        UILabel *legendName = [[UILabel alloc] init];
-        legendName.text = category;
-        legendName.font = [WPStyleGuide subtitleFont];
-        legendName.textColor = [WPStyleGuide littleEddieGrey];
-        [legendName sizeToFit];
+        UILabel *legendName = [self legendLabelWithText:category];
         legendXOffset = legendXOffset - CGRectGetMaxX(legendName.frame);
-        CGRect f = legendName.frame; f.origin.x = legendXOffset;
-        f.origin.y = legendName.frame.size.height/2 + yAxisStartPoint;
-        legendName.frame = f;
+        legendName.frame = (CGRect) {
+            .origin = CGPointMake(legendXOffset, AxisPadding/2 - (legendName.frame.size.height-10)/2),
+            .size = legendName.frame.size
+        };
         [self addSubview:legendName];
-        CGContextSetFillColorWithColor(context, categoryColor);
-        legendXOffset -= 20.0f;
-        CGContextFillRect(context, CGRectMake(legendXOffset, AxisPadding/2, 10.0f, 10.0f));
-        legendXOffset -= 25.0f;
         
+        // Colour indicator
+        legendXOffset -= 15.0f;
+        CGContextSetFillColorWithColor(context, categoryColor);
+        CGContextFillRect(context, CGRectMake(legendXOffset, AxisPadding/2, 10.0f, 10.0f));
+        legendXOffset -= 10.0f;
+
         [categoryToPoints[PointsKey] enumerateObjectsUsingBlock:^(NSDictionary *point, NSUInteger idx, BOOL *stop) {
             // Bar
-            NSLog(@"Adding point %@", point);
-            
             CGContextMoveToPoint(context, currentXPoint, yAxisStartPoint+yAxisHeight);
             CGFloat barHeight = heightFromRangeToRange([point[StatsPointCountKey] unsignedIntegerValue], yUpperBound, availableHeight);
             CGContextAddLineToPoint(context, currentXPoint, yAxisStartPoint+yAxisHeight-barHeight);
@@ -183,11 +174,7 @@ CGFloat heightFromRangeToRange(NSUInteger height, CGFloat maxOldRange, CGFloat m
             
             // Label
             if (iteration == 0) {
-                UILabel *pointLabel = [[UILabel alloc] init];
-                pointLabel.text = point[StatsPointNameKey];
-                pointLabel.font = [WPStyleGuide axisLabelFont];
-                pointLabel.textColor = [WPStyleGuide allTAllShadeGrey];
-                [pointLabel sizeToFit];
+                UILabel *pointLabel = [self axisLabelWithText:point[StatsPointNameKey]];
                 pointLabel.center = CGPointMake(currentXPoint, yAxisStartPoint+yAxisHeight+pointLabel.frame.size.height);
                 [self addSubview:pointLabel];
             }
@@ -197,6 +184,28 @@ CGFloat heightFromRangeToRange(NSUInteger height, CGFloat maxOldRange, CGFloat m
         }];
         iteration += 1;
     }];
+}
+
+- (UILabel *)axisLabelWithText:(NSString *)text {
+    UILabel *label = [[UILabel alloc] init];
+    label.text = text;
+    label.font = [WPStyleGuide axisLabelFont];
+    label.textColor = [WPStyleGuide littleEddieGrey];
+    label.backgroundColor = [UIColor whiteColor];
+    label.opaque = YES;
+    [label sizeToFit];
+    return label;
+}
+
+- (UILabel *)legendLabelWithText:(NSString *)text {
+    UILabel *label = [[UILabel alloc] init];
+    label.text = text;
+    label.font = [WPStyleGuide subtitleFont];
+    label.textColor = [WPStyleGuide littleEddieGrey];
+    label.opaque = YES;
+    label.backgroundColor = [UIColor whiteColor];
+    [label sizeToFit];
+    return label;
 }
 
 @end
