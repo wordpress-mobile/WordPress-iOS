@@ -98,7 +98,7 @@ static CGFloat const ImageSize = 20.0f;
 }
 
 - (void)setLinkEnabled:(BOOL)linkEnabled {
-    UIColor *color = linkEnabled ? [WPStyleGuide jazzyOrange] : [WPStyleGuide whisperGrey];
+    UIColor *color = linkEnabled ? [WPStyleGuide baseDarkerBlue] : [WPStyleGuide whisperGrey];
     [self titleLabel].textColor = color;
 }
 
