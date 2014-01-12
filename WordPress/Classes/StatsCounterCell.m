@@ -39,11 +39,12 @@ static CGFloat const StatCounterCellHeight = 100.0f;
         UILabel *titleLabel = [[UILabel alloc] initWithFrame:CGRectMake(CountPadding, 0, self.contentView.frame.size.width-2*CountPadding, TitleHeight)];
         titleLabel.font = [WPStyleGuide subtitleFontBold];
         titleLabel.textAlignment = NSTextAlignmentCenter;
+        titleLabel.opaque = YES;
+        titleLabel.backgroundColor = [UIColor whiteColor];
         self.titleLabel = titleLabel;
         [self addSubview:titleLabel];
         self.selectionStyle = UITableViewCellSelectionStyleNone;
-        self.numberFormatter = [[NSNumberFormatter alloc]init];
-        self.numberFormatter.locale = [NSLocale currentLocale];
+        self.numberFormatter = [[NSNumberFormatter alloc] init];
         self.numberFormatter.numberStyle = NSNumberFormatterDecimalStyle;
         self.numberFormatter.usesGroupingSeparator = YES;
         self.separatorLines = [NSMutableArray array];
@@ -120,14 +121,21 @@ static CGFloat const StatCounterCellHeight = 100.0f;
     countNumber.textAlignment = NSTextAlignmentCenter;
     countNumber.textColor = [WPStyleGuide whisperGrey];
     countNumber.font = [WPStyleGuide largePostTitleFont];
-
+    countNumber.opaque = YES;
+    countNumber.backgroundColor = [UIColor whiteColor];
+    
     countText.text = label;
     countText.textAlignment = NSTextAlignmentCenter;
     countText.textColor = [WPStyleGuide whisperGrey];
     countText.font = [WPStyleGuide tableviewSubtitleFont];
+    countText.opaque = YES;
+    countText.backgroundColor = [UIColor whiteColor];
 
     [countView addSubview:countNumber];
     [countView addSubview:countText];
+    
+    countView.opaque = YES;
+    countView.backgroundColor = [UIColor whiteColor];
     
     [self.contentView addSubview:countView];
     [self.countViews addObject:countView];
