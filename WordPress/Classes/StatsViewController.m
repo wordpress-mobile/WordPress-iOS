@@ -111,11 +111,8 @@ typedef NS_ENUM(NSInteger, TotalFollowersShareRow) {
                      @(YES), @(StatsSectionReferrers), nil];
     
     _resultsAvailable = NO;
-    
-    NSString *noResultsTitleText = NSLocalizedString(@"Loading Stats...", nil);
-    WPNoResultsView *noResultsView = [WPNoResultsView noResultsViewWithTitle:noResultsTitleText message:nil accessoryView:nil buttonTitle:nil];
-    [self.tableView addSubview:noResultsView];
-    _noResultsView = noResultsView;
+
+    [self showNoResultsWithTitle:NSLocalizedString(@"No stats to display", nil) message:nil];
 }
 
 - (void)didReceiveMemoryWarning
@@ -131,7 +128,7 @@ typedef NS_ENUM(NSInteger, TotalFollowersShareRow) {
     
     WordPressAppDelegate *appDelegate = [WordPressAppDelegate sharedWordPressApplicationDelegate];
     if (!appDelegate.connectionAvailable) {
-        // no results view
+        [self showNoResultsWithTitle:NSLocalizedString(@"No Connection", @"") message:NSLocalizedString(@"An active internet connection is required to view stats", @"")];
     } else {
         [self initStats];
     }
@@ -172,6 +169,17 @@ typedef NS_ENUM(NSInteger, TotalFollowersShareRow) {
     [self.tableView addSubview:controller.view];
 }
 
+- (void)showNoResultsWithTitle:(NSString *)title message:(NSString *)message {
+    [_noResultsView removeFromSuperview];
+    WPNoResultsView *noResultsView = [WPNoResultsView noResultsViewWithTitle:title message:message accessoryView:nil buttonTitle:nil];
+    _noResultsView = noResultsView;
+    [self.tableView addSubview:_noResultsView];
+}
+
+- (void)hideNoResultsView {
+    [_noResultsView removeFromSuperview];
+}
+
 - (void)loadStats {
     void (^saveStatsForSection)(id stats, StatsSection section) = ^(id stats, StatsSection section) {
         [_statModels setObject:stats forKey:@(section)];
@@ -181,7 +189,12 @@ typedef NS_ENUM(NSInteger, TotalFollowersShareRow) {
         }
     };
     void (^failure)(NSError *error) = ^(NSError *error) {
-        DDLogError(@"Stats: Error fetching stats %@", error);
+        if (!_resultsAvailable) {
+            [self showNoResultsWithTitle:NSLocalizedString(@"Error displaying stats", nil) message:NSLocalizedString(@"Please try again later", nil)];
+        } else {
+            [self.refreshControl endRefreshing];
+        }
+        DDLogWarn(@"Stats: Error fetching stats %@", error);
     };
     
     [self.statsApiHelper fetchSummaryWithSuccess:^(StatsSummary *summary) {
@@ -195,15 +208,13 @@ typedef NS_ENUM(NSInteger, TotalFollowersShareRow) {
         }
     } failure:failure];
 
+    // Show no results until at least the summary has returned
     [self.statsApiHelper fetchTopPostsWithSuccess:^(NSDictionary *todayAndYesterdayTopPosts) {
         saveStatsForSection(todayAndYesterdayTopPosts, StatsSectionTopPosts);
         _resultsAvailable = YES;
-        [self.noResultsView removeFromSuperview];
+        [self hideNoResultsView];
         [self.tableView reloadData];
-    } failure:^(NSError *error) {
-        failure(error);
-        _resultsAvailable = YES;
-    }];
+    } failure:failure];
     
     [self.statsApiHelper fetchClicksWithSuccess:^(NSDictionary *clicks) {
         saveStatsForSection(clicks, StatsSectionClicks);
