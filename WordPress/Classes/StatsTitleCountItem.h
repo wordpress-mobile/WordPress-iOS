@@ -8,6 +8,10 @@
 
 #import <Foundation/Foundation.h>
 
+
+extern NSString *const StatsResultsToday;
+extern NSString *const StatsResultsYesterday;
+
 @interface StatsTitleCountItem : NSObject
 
 @property (nonatomic, strong) NSString *title;

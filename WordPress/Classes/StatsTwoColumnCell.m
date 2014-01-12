@@ -19,7 +19,7 @@ static CGFloat const CellHeight = 30.0f;
 static CGFloat const PaddingForCellSides = 10.0f;
 static CGFloat const PaddingBetweenLeftAndRightLabels = 15.0f;
 static CGFloat const PaddingImageText = 10.0f;
-static CGFloat const ImageSize = 20.0f;
+static CGFloat const RowIconWidth = 20.0f;
 
 @interface StatsTwoColumnCell ()
 
@@ -117,8 +117,6 @@ static CGFloat const ImageSize = 20.0f;
     UIView *rightView = [self createLabelWithTitle:right titleCell:titleCell];
     self.leftView = leftView;
     self.rightView = rightView;
-    [self.rightView sizeToFit];
-    [self.leftView sizeToFit];
     [self.contentView addSubview:self.leftView];
     [self.contentView addSubview:self.rightView];
     
@@ -148,32 +146,28 @@ static CGFloat const ImageSize = 20.0f;
 }
 
 - (UIView *)createLeftViewWithTitle:(NSString *)title imageUrl:(NSURL *)imageUrl titleCell:(BOOL)titleCell {
-    
-    UILabel *label = [self createLabelWithTitle:title titleCell:titleCell];
-    [label sizeToFit];
     UIView *view = [[UIView alloc] init];
-
-    UIImageView *imageView = [[UIImageView alloc] init];
-    imageView.frame = CGRectMake(0, 0, 20 , 20);
+    UILabel *label = [self createLabelWithTitle:title titleCell:titleCell];
+    [view addSubview:label];
     
     if (imageUrl != nil) {
+        UIImageView *imageView = [[UIImageView alloc] initWithFrame:CGRectMake(0, 0, RowIconWidth, RowIconWidth)];
+        imageView.backgroundColor = [WPStyleGuide readGrey];
         [[WPImageSource sharedSource] downloadImageForURL:imageUrl withSuccess:^(UIImage *image) {
             imageView.image = image;
+            imageView.backgroundColor = [UIColor clearColor];
         } failure:^(NSError *error) {
             DDLogWarn(@"Unable to download icon %@", error);
         }];
+        [view addSubview:imageView];
+        label.frame = (CGRect) {
+            .origin = CGPointMake(RowIconWidth + PaddingImageText, 0),
+            .size = label.frame.size
+        };
     }
-    
-    label.frame = (CGRect) {
-        .origin = CGPointMake(ImageSize + PaddingImageText, 0),
-        .size = label.frame.size
-    };
-    
-    [view addSubview:label];
-    [view addSubview:imageView];
-    
+
     view.frame = (CGRect) {
-        .origin = CGPointZero,
+        .origin = view.frame.origin,
         .size = CGSizeMake(CGRectGetMaxX(label.frame), 20)
     };
     return view;

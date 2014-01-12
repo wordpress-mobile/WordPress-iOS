@@ -30,7 +30,6 @@ static NSString *const VisitorsUnitButtonCellReuseIdentifier = @"VisitorsUnitBut
 static NSString *const TodayYesterdayButtonCellReuseIdentifier = @"TodayYesterdayButtonCellReuseIdentifier";
 static NSString *const GraphCellReuseIdentifier = @"GraphCellReuseIdentifier";
 static NSString *const CountCellReuseIdentifier = @"DoubleCountCellReuseIdentifier";
-static NSString *const TwoLabelCellReuseIdentifier = @"TwoLabelCellReuseIdentifier";
 static NSString *const NoResultsCellIdentifier = @"NoResultsCellIdentifier";
 static NSString *const ResultRowCellIdentifier = @"ResultRowCellIdentifier";
 static NSString *const GraphCellIdentifier = @"GraphCellIdentifier";
@@ -110,7 +109,6 @@ typedef NS_ENUM(NSInteger, TotalFollowersShareRow) {
     [self.tableView registerClass:[StatsTodayYesterdayButtonCell class] forCellReuseIdentifier:TodayYesterdayButtonCellReuseIdentifier];
     [self.tableView registerClass:[StatsViewsVisitorsBarGraphCell class] forCellReuseIdentifier:GraphCellReuseIdentifier];
     [self.tableView registerClass:[StatsCounterCell class] forCellReuseIdentifier:CountCellReuseIdentifier];
-    [self.tableView registerClass:[StatsTwoColumnCell class] forCellReuseIdentifier:TwoLabelCellReuseIdentifier];
     [self.tableView registerClass:[StatsNoResultsCell class] forCellReuseIdentifier:NoResultsCellIdentifier];
     [self.tableView registerClass:[StatsTwoColumnCell class] forCellReuseIdentifier:ResultRowCellIdentifier];
     [self.tableView registerClass:[StatsViewsVisitorsBarGraphCell class] forCellReuseIdentifier:GraphCellIdentifier];
@@ -450,7 +448,7 @@ typedef NS_ENUM(NSInteger, TotalFollowersShareRow) {
         }
         case StatsDataRowTitle:
         {
-            cell = [self.tableView dequeueReusableCellWithIdentifier:TwoLabelCellReuseIdentifier];
+            cell = [self.tableView dequeueReusableCellWithIdentifier:ResultRowCellIdentifier];
             [(StatsTwoColumnCell *)cell setLeft:dataTitleRowLeft.uppercaseString withImageUrl:nil right:dataTitleRowRight.uppercaseString titleCell:YES];
             break;
         }
@@ -485,7 +483,7 @@ typedef NS_ENUM(NSInteger, TotalFollowersShareRow) {
 - (NSArray *)resultsForSection:(StatsSection)section {
     NSDictionary *data = _statModels[@(section)];
     if (data) {
-        return [self showingTodayForSection:section] ? data[@"today"] : data[@"yesterday"];
+        return [self showingTodayForSection:section] ? data[StatsResultsToday] : data[StatsResultsYesterday];
     }
     return @[];
 }

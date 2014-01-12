@@ -1,10 +1,11 @@
-//
-//  StatsTopPost.m
-//  WordPress
-//
-//  Created by DX074-XL on 2014-01-06.
-//  Copyright (c) 2014 WordPress. All rights reserved.
-//
+/*
+ * StatsTopPost.m
+ *
+ * Copyright (c) 2014 WordPress. All rights reserved.
+ *
+ * Licensed under GNU General Public License 2.0.
+ * Some rights reserved. See license.txt
+ */
 
 #import "StatsTopPost.h"
 
@@ -22,7 +23,7 @@
         [yesterdayPostList addObject:topPost];
     }
 
-    return @{@"today": todayPostList, @"yesterday": yesterdayPostList};
+    return @{StatsResultsToday: todayPostList, StatsResultsYesterday: yesterdayPostList};
 }
 
 - (id)initTopPost:(NSDictionary *)post {
