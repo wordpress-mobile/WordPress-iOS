@@ -472,9 +472,11 @@ typedef NS_ENUM(NSInteger, TotalFollowersShareRow) {
 }
 
 - (StatsTitleCountItem *)itemSelectedAtIndexPath:(NSIndexPath *)indexPath {
-    if (indexPath.row != StatsDataRowTitle && (indexPath.section == StatsSectionTopPosts ||
+    if (indexPath.row != StatsDataRowTitle &&
+        (indexPath.section == StatsSectionTopPosts ||
          indexPath.section == StatsSectionClicks ||
-         indexPath.section == StatsSectionReferrers)) {
+         indexPath.section == StatsSectionReferrers) &&
+        [self resultsForSection:indexPath.section].count > 0) {
         return [self resultForIndexPath:indexPath];
     }
     return nil;
