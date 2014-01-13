@@ -25,6 +25,6 @@ typedef NS_ENUM(NSInteger, StatsSection) {
 
 @interface StatsViewController : UITableViewController
 
-- (void)setBlog:(Blog *)blog;
+@property (nonatomic, weak) Blog *blog;
 
 @end
