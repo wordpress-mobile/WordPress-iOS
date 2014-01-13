@@ -63,7 +63,6 @@ typedef NS_ENUM(NSInteger, TotalFollowersShareRow) {
 
 @interface StatsViewController () <UITableViewDataSource, UITableViewDelegate, StatsTodayYesterdayButtonCellDelegate>
 
-@property (nonatomic, weak) Blog *blog;
 @property (nonatomic, strong) StatsApiHelper *statsApiHelper;
 @property (nonatomic, strong) NSMutableDictionary *statModels;
 @property (nonatomic, strong) NSMutableDictionary *showingToday;
