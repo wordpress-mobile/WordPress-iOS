@@ -303,6 +303,7 @@ NSString * const WPBlogListRestorationID = @"WPBlogListID";
         } else {
             cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
         }
+        cell.detailTextLabel.text = blog.url;
         cell.selectionStyle = self.tableView.isEditing ? UITableViewCellSelectionStyleNone : UITableViewCellSelectionStyleBlue;
     }
 }
