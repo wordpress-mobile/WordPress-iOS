@@ -263,11 +263,11 @@ NSString *const MediaFeaturedImageSelectedNotification = @"MediaFeaturedImageSel
         [_noMediaView removeFromSuperview];
     }
     if (!_noMediaView && show) {
-        NSString *title = NSLocalizedString(@"No media has been added to your library yet", nil);
+        NSString *title = NSLocalizedString(@"No media has been added to your library", nil);
         if ([self showAttachedMedia]) {
-            title = NSLocalizedString(@"No media has been attached to your post yet", nil);
+            title = NSLocalizedString(@"No media has been attached to your post", nil);
         } else if (_currentSearchText || _currentFilterMonth) {
-            title = NSLocalizedString(@"No media matches that search", nil);
+            title = NSLocalizedString(@"Nothing matches that search", nil);
         }
         UIImageView *mediaThumbnail = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"media_image"]];
         WPNoResultsView *noMediaView = [WPNoResultsView noResultsViewWithTitle:title message:nil accessoryView:mediaThumbnail buttonTitle:NSLocalizedString(@"Add Media", nil)];
