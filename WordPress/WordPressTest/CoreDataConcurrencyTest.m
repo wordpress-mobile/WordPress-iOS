@@ -24,7 +24,7 @@
 
     ATHStart();
     
-    WPAccount *account = [WPAccount createOrUpdateWordPressComAccountWithUsername:@"test" password:@"test" authToken:nil context:[ContextManager sharedInstance].mainContext];
+    WPAccount *account = [WPAccount createOrUpdateWordPressComAccountWithUsername:@"test" password:@"test" authToken:@"token" context:[ContextManager sharedInstance].mainContext];
     
     ATHEnd();
     [WPAccount setDefaultWordPressComAccount:account];
@@ -104,7 +104,7 @@
     ATHStart();
     
     // Create account in background context
-    WPAccount *account = [WPAccount createOrUpdateWordPressComAccountWithUsername:@"test" password:@"test" authToken:nil
+    WPAccount *account = [WPAccount createOrUpdateWordPressComAccountWithUsername:@"test" password:@"test" authToken:@"token"
                                                                       context:backgroundMOC];
 
     ATHWait();
