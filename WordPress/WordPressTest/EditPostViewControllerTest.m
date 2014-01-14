@@ -99,7 +99,7 @@
     UITextField *titleTextField = [self titleTextField];
     XCTAssertNotNil(titleTextField);
     XCTAssertEqualObjects(titleTextField.accessibilityIdentifier, @"EditorTitleField");
-    XCTAssertEqualObjects(_post.revision, _controller.apost);
+    XCTAssertEqualObjects(_post.revision, _controller.post);
 
     [titleTextField typeText:@"Test1"];
     XCTAssertEqualObjects(titleTextField.text, @"Test1");
@@ -109,38 +109,6 @@
     XCTAssertNoThrow([_controller performSelector:@selector(refreshUIForCurrentPost)]);
     XCTAssertEqualObjects(titleTextField.text, @"Test2");
 }
-
-- (void)testAutosave {
-    return; // Disabled autosaves for now
-    UITextField *titleTextField = [self titleTextField];
-
-    [OHHTTPStubs shouldStubRequestsPassingTest:^BOOL(NSURLRequest *request) {
-        return ([[request.URL absoluteString] isEqualToString:_blog.xmlrpc]);
-    } withStubResponse:^OHHTTPStubsResponse *(NSURLRequest *request) {
-        WPXMLRPCDecoder *decoder = [[WPXMLRPCDecoder alloc] initWithData:[request HTTPBody]];
-        NSDictionary *xmlrpcRequest = [decoder object];
-        if (xmlrpcRequest) {
-            NSString *methodName = [xmlrpcRequest objectForKey:@"methodName"];
-            if ([methodName isEqualToString:@"metaWeblog.newPost"]) {
-                return [OHHTTPStubsResponse responseWithFile:@"xmlrpc-response-newpost.xml" contentType:@"text/xml" responseTime:OHHTTPStubsDownloadSpeedWifi];
-            } else if ([methodName isEqualToString:@"metaWeblog.getPost"]) {
-                return [OHHTTPStubsResponse responseWithFile:@"xmlrpc-response-getpost.xml" contentType:@"text/xml" responseTime:OHHTTPStubsDownloadSpeedWifi];
-            }
-        }
-
-        return nil;
-    }];
-
-    ATHStart();
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(controllerDidAutosave:) name:EditPostViewControllerDidAutosaveNotification object:_controller];
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(controllerAutosaveDidFail:) name:EditPostViewControllerAutosaveDidFailNotification object:_controller];
-    
-    [titleTextField typeText:@"This is a very long title, which should trigger the autosave methods. Just in case... Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nunc est neque, adipiscing vitae euismod ut, elementum nec nibh. In hac habitasse platea dictumst. Mauris eu est lectus, sed elementum nunc. Praesent elit enim, facilisis eu tincidunt imperdiet, iaculis eu elit. In hac habitasse platea dictumst. Pellentesque feugiat elementum nulla, vitae pellentesque urna porttitor quis. Quisque et libero leo. Vestibulum ut erat ut ligula aliquet iaculis. Morbi egestas justo id nunc feugiat viverra vel sed risus. Nunc non ligula erat, eu ullamcorper purus. Nullam vitae erat velit, semper congue nibh. Vestibulum pulvinar mi a justo tincidunt venenatis in nec tortor. Curabitur tortor risus, consequat eget sollicitudin gravida, vestibulum vitae lacus. Aenean ut magna adipiscing mauris iaculis sollicitudin at id nisi."];
-    ATHEnd();
-    XCTAssertEqualObjects(_post.postID, @123);
-    XCTAssertEqualObjects(_post.status, @"draft");
-}
-
 
 #pragma mark - Notifications
 
