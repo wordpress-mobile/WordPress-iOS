@@ -13,6 +13,14 @@
 #import "ContextManager.h"
 #import <objc/runtime.h>
 
+@implementation WPAccount (CoreDataFakeApi)
+
+- (WordPressComApi *)restApi {
+    return nil;
+}
+
+@end
+
 @interface CoreDataConcurrencyTest : XCTestCase
 @end
 
