@@ -30,11 +30,13 @@
 {
     [super setUp];
 
-    ATHStart();
-    
-    WPAccount *account = [WPAccount createOrUpdateWordPressComAccountWithUsername:@"test" password:@"test" authToken:@"token" context:[ContextManager sharedInstance].mainContext];
-    
-    ATHEnd();
+    __block WPAccount *account = nil;
+    CoreDataPerformAndWaitForSave(^{
+        account = [WPAccount createOrUpdateWordPressComAccountWithUsername:@"test" password:@"test" authToken:@"token" context:[ContextManager sharedInstance].mainContext];
+    });
+
+    XCTAssertNotNil(account, @"Account shouldn't be nil");
+
     [WPAccount setDefaultWordPressComAccount:account];
 }
 
@@ -52,29 +54,25 @@
 }
 
 - (void)testObjectPermanence {
-    ATHStart();
-    
     NSManagedObjectContext *backgroundMOC = [[ContextManager sharedInstance] mainContext];
     Blog *blog = [self createTestBlogWithContext:backgroundMOC];
-    [[ContextManager sharedInstance] saveContext:backgroundMOC];
-    
-    // Wait on the merge to be completed
-    ATHEnd();
-    
+
+    CoreDataPerformAndWaitForSave(^{
+        [[ContextManager sharedInstance] saveContext:backgroundMOC];
+    });
+
     XCTAssertFalse(blog.objectID.isTemporaryID, @"Object ID should be permanent");
 }
 
 - (void)testObjectExistenceInBackgroundFromMainSave
 {
-    ATHStart();
-    
     NSManagedObjectContext *mainMOC = [[ContextManager sharedInstance] mainContext];
     Blog *blog = [self createTestBlogWithContext:mainMOC];
-    [[ContextManager sharedInstance] saveContext:mainMOC];
-    
-    // Wait on the merge to be completed
-    ATHEnd();
-    
+
+    CoreDataPerformAndWaitForSave(^{
+        [[ContextManager sharedInstance] saveContext:mainMOC];
+    })
+
     XCTAssertFalse(blog.objectID.isTemporaryID, @"Object ID should be permanent");
     
     NSManagedObjectContext *bgMOC = [[ContextManager sharedInstance] backgroundContext];
@@ -86,15 +84,12 @@
 }
 
 - (void)testObjectExistenceInMainFromBackgroundSave {
-    ATHStart();
-    
     NSManagedObjectContext *backgroundMOC = [[ContextManager sharedInstance] backgroundContext];
     Blog *blog = [self createTestBlogWithContext:backgroundMOC];
-    [[ContextManager sharedInstance] saveContext:backgroundMOC];
-    
-    // Wait on the merge to be completed
-    ATHEnd();
-    
+    CoreDataPerformAndWaitForSave(^{
+        [[ContextManager sharedInstance] saveContext:backgroundMOC];
+    })
+
     XCTAssertFalse(blog.objectID.isTemporaryID, @"Object ID should be permanent");
     
     NSManagedObjectContext *mainMOC = [[ContextManager sharedInstance] mainContext];
@@ -109,14 +104,14 @@
     NSManagedObjectContext *mainMOC = [[ContextManager sharedInstance] mainContext];
     NSManagedObjectContext *backgroundMOC = [[ContextManager sharedInstance] backgroundContext];
     
-    ATHStart();
-    
     // Create account in background context
-    WPAccount *account = [WPAccount createOrUpdateWordPressComAccountWithUsername:@"test" password:@"test" authToken:@"token"
-                                                                      context:backgroundMOC];
+    __block WPAccount *account = nil;
+    CoreDataPerformAndWaitForSave(^{
+        account = [WPAccount createOrUpdateWordPressComAccountWithUsername:@"test" password:@"test" authToken:@"token"
+                                                                   context:backgroundMOC];
+    })
+    XCTAssertNotNil(account, @"Account shouldn't be nil");
 
-    ATHWait();
-    
     // Check for existence in the main context
     WPAccount *mainAccount = (WPAccount *)[mainMOC existingObjectWithID:account.objectID error:nil];
     XCTAssertNotNil(mainAccount, @"Could not retrieve account created in background context from main context");
@@ -126,12 +121,12 @@
     blog.xmlrpc = @"http://test.wordpress.com/xmlrpc.php";
     blog.url = @"http://test.wordpress.com/";
     blog.account = mainAccount;
-    
+
     // Check that the save completes
-    XCTAssertNoThrow([[ContextManager sharedInstance] saveContext:mainMOC], @"Saving should be successful");
-    
-    ATHEnd();
-    
+    CoreDataPerformAndWaitForSave(^{
+        XCTAssertNoThrow([[ContextManager sharedInstance] saveContext:mainMOC], @"Saving should be successful");
+    });
+
     XCTAssertFalse(blog.objectID.isTemporaryID, @"Blog object ID should be permanent");
     Blog *backgroundBlog = (Blog *)[backgroundMOC existingObjectWithID:blog.objectID error:nil];
 
@@ -143,46 +138,48 @@
     
     XCTAssertNotNil([WPAccount defaultWordPressComAccount], @"Account should be present");
     XCTAssertEqualObjects([WPAccount defaultWordPressComAccount].managedObjectContext, [ContextManager sharedInstance].mainContext, @"Account should have been created on main context");
-    
-    ATHStart();
+
     NSManagedObjectID *accountID = [WPAccount defaultWordPressComAccount].objectID;
-    [mainContext performBlock:^{
-        [WPAccount removeDefaultWordPressComAccountWithContext:mainContext];
-    }];
-    ATHEnd();
+    CoreDataPerformAndWaitForSave(^{
+        [mainContext performBlock:^{
+            [WPAccount removeDefaultWordPressComAccountWithContext:mainContext];
+        }];
+    });
 
     // Ensure object deleted in background context as well
-    ATHStart();
+    AsyncTestHelper *helper = [AsyncTestHelper new];
     NSManagedObjectContext *backgroundContext = [ContextManager sharedInstance].backgroundContext;
     [backgroundContext performBlock:^{
         WPAccount *backgroundAccount = (WPAccount *)[backgroundContext objectWithID:accountID];
         XCTAssertTrue(backgroundAccount.isDeleted, @"Account should be considered deleted");
-        ATHNotify();
+        [helper notify];
     }];
-    ATHEnd();
+    XCTAssertTrue([helper wait]);
 }
 
 - (void)testDerivedContext {
     // Create a new derived context, which the mainContext is the parent
-    ATHStart();
     NSManagedObjectContext *derived = [[ContextManager sharedInstance] newDerivedContext];
     __block NSManagedObjectID *blogObjectID;
     __block Blog *newBlog;
-    [derived performBlock:^{
-        WPAccount *derivedAccount = (WPAccount *)[derived objectWithID:[WPAccount defaultWordPressComAccount].objectID];
-        XCTAssertNoThrow(derivedAccount.username, @"Should be able to access properties from this context");
-        
-        newBlog = [derivedAccount findOrCreateBlogFromDictionary:@{@"xmlrpc": @"http://blog.com/xmlrpc.php", @"url": @"blog.com"} withContext:derived];
-        [[ContextManager sharedInstance] saveDerivedContext:derived withCompletionBlock:^{
-            // object exists in main context after derived's save
-            // don't notify, wait for main's save ATHNotify()
-            
-            Blog *mainContextBlog =  (Blog *)[[ContextManager sharedInstance].mainContext existingObjectWithID:newBlog.objectID error:nil];
-            XCTAssertNotNil(mainContextBlog, @"The new blog should exist in the main (parent) context");
+
+    void (^block)() = ^{
+        [derived performBlock:^{
+            WPAccount *derivedAccount = (WPAccount *)[derived objectWithID:[WPAccount defaultWordPressComAccount].objectID];
+            XCTAssertNoThrow(derivedAccount.username, @"Should be able to access properties from this context");
+
+            newBlog = [derivedAccount findOrCreateBlogFromDictionary:@{@"xmlrpc": @"http://blog.com/xmlrpc.php", @"url": @"blog.com"} withContext:derived];
+            [[ContextManager sharedInstance] saveDerivedContext:derived withCompletionBlock:^{
+                // object exists in main context after derived's save
+                // don't notify, wait for main's save ATHNotify()
+
+                Blog *mainContextBlog =  (Blog *)[[ContextManager sharedInstance].mainContext existingObjectWithID:newBlog.objectID error:nil];
+                XCTAssertNotNil(mainContextBlog, @"The new blog should exist in the main (parent) context");
+            }];
         }];
-    }];
-    ATHEnd();
-    
+    };
+    CoreDataPerformAndWaitForSave(block);
+
     // Should be accessible in both contexts: main, background
     blogObjectID = newBlog.objectID;
     XCTAssertFalse(blogObjectID.isTemporaryID, @"Object should be permanent");

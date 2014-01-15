@@ -40,6 +40,18 @@
     return _sharedHelper;
 }
 
+- (void)dealloc {
+    [[NSNotificationCenter defaultCenter] removeObserver:self];
+}
+
+- (id)init {
+    self = [super init];
+    if (self) {
+        [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(contextDidSave:) name:NSManagedObjectContextDidSaveNotification object:nil];
+    }
+    return self;
+}
+
 - (void)setModelName:(NSString *)modelName {
     _managedObjectModel = [self modelWithName:modelName];
     [ContextManager sharedInstance].mainContext = nil;
@@ -134,6 +146,23 @@
     return _managedObjectModel;
 }
 
+- (BOOL)performAndWaitForSave:(void (^)())block {
+    AsyncTestHelper *saveHelper = [AsyncTestHelper new];
+    [[CoreDataTestHelper sharedHelper] setSaveBlock:^{
+        [saveHelper notify];
+    }];
+    block();
+    BOOL result = [saveHelper wait];
+    [[CoreDataTestHelper sharedHelper] setSaveBlock:nil];
+    return result;
+}
+
+- (void)contextDidSave:(NSNotification *)notification {
+    if (self.saveBlock) {
+        self.saveBlock();
+    }
+}
+
 @end
 
 @implementation ContextManager (TestHelper)
@@ -166,37 +195,6 @@ static void *const testPSCKey = "testPSCKey";
 
 + (NSURL *)storeURL {
     return [NSURL fileURLWithPath:[[NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES) lastObject] stringByAppendingPathComponent:@"WordPressTest.sqlite"]];
-}
-
-
-#pragma mark - Swizzle merge methods 
-
-+ (void)load {
-    Method originalMainToBg = class_getInstanceMethod([ContextManager class], @selector(mergeChangesIntoBackgroundContext:));
-    Method testMainToBg = class_getInstanceMethod([ContextManager class], @selector(testMergeChangesIntoBackgroundContext:));
-    Method originalBgToMain = class_getInstanceMethod([ContextManager class], @selector(mergeChangesIntoMainContext:));
-    Method testBgToMain = class_getInstanceMethod([ContextManager class], @selector(testMergeChangesIntoMainContext:));
-    
-    method_exchangeImplementations(originalMainToBg, testMainToBg);
-    method_exchangeImplementations(originalBgToMain, testBgToMain);
-}
-
-- (void)testMergeChangesIntoBackgroundContext:(NSNotification *)notification {
-    [[[ContextManager sharedInstance] backgroundContext] mergeChangesFromContextDidSaveNotification:notification];
-    if (ATHSemaphore) {
-        ATHNotify();
-    } else {
-        NSLog(@"No semaphore present for notify");
-    }
-}
-
-- (void)testMergeChangesIntoMainContext:(NSNotification *)notification {
-    [[[ContextManager sharedInstance] mainContext] mergeChangesFromContextDidSaveNotification:notification];
-    if (ATHSemaphore) {
-        ATHNotify();
-    } else {
-        NSLog(@"No semaphore present for notify for main");
-    }
 }
 
 @end

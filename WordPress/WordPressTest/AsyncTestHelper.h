@@ -12,6 +12,11 @@
 extern dispatch_semaphore_t ATHSemaphore;
 extern const NSTimeInterval AsyncTestCaseDefaultTimeout;
 
+@interface AsyncTestHelper : NSObject
+- (void)notify;
+- (BOOL)wait;
+@end
+
 #define ATHStart() do {\
     ATHSemaphore = dispatch_semaphore_create(0);\
 } while (0)
