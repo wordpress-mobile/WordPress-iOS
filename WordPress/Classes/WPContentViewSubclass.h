@@ -7,19 +7,19 @@
 //
 
 #import "WPContentView.h"
+#import "ReaderAttributionView.h"
 
 @interface WPContentView (SubclassMethods)
 
 @property (nonatomic, strong) UILabel *titleLabel;
 @property (nonatomic, strong) UILabel *snippetLabel;
 @property (nonatomic, strong) DTAttributedTextContentView *textContentView;
-@property (nonatomic, strong) UILabel *bylineLabel;
 @property (nonatomic, strong) UIView *bottomView;
 @property (nonatomic, strong) CALayer *bottomBorder;
 @property (nonatomic, strong) CALayer *titleBorder;
-@property (nonatomic, strong) UIView *byView;
 @property (nonatomic, strong) UIView *controlView;
 @property (nonatomic, strong) UIButton *timeButton;
+@property (nonatomic, strong) ReaderAttributionView *attributionView;
 
 + (UIFont *)titleFont;
 + (UIFont *)summaryFont;

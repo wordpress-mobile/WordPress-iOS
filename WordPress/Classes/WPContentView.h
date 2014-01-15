@@ -12,6 +12,7 @@
 #import "DTAttributedTextContentView.h"
 #import "ReaderMediaQueue.h"
 #import "WPContentViewProvider.h"
+#import "ContentActionButton.h"
 
 @class WPContentView;
 
@@ -27,14 +28,14 @@
 - (void)contentViewDidLoadAllMedia:(WPContentView *)postView;
 @end
 
-@interface WPContentView : UIView <DTAttributedTextContentViewDelegate, ReaderMediaQueueDelegate> {
-    
-}
+@interface WPContentView : UIView <DTAttributedTextContentViewDelegate, ReaderMediaQueueDelegate>
 
 @property (nonatomic, weak) id<WPContentViewDelegate> delegate;
 @property (nonatomic, weak) id<WPContentViewProvider> contentProvider;
 @property (nonatomic, strong) UIImageView *cellImageView;
-@property (nonatomic, strong) UIImageView *avatarImageView;
+@property (nonatomic, weak, readonly) UIImageView *avatarImageView;
+@property (nonatomic, weak, readonly) ContentActionButton *followButton;
+@property (nonatomic, weak, readonly) UIButton *linkButton;
 
 - (id)initWithFrame:(CGRect)frame;
 - (void)setFeaturedImage:(UIImage *)image;
