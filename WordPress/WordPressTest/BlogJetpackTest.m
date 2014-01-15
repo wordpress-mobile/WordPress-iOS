@@ -24,10 +24,10 @@
 @implementation BlogJetpackTest
 
 - (void)setUp {
-    ATHStart();
-    _account = [WPAccount createOrUpdateSelfHostedAccountWithXmlrpc:@"http://blog1.com/xmlrpc.php" username:@"admin" andPassword:@"password!" withContext:[ContextManager sharedInstance].mainContext];
-    ATHEnd();
-    
+    CoreDataPerformAndWaitForSave(^{
+        _account = [WPAccount createOrUpdateSelfHostedAccountWithXmlrpc:@"http://blog1.com/xmlrpc.php" username:@"admin" andPassword:@"password!" withContext:[ContextManager sharedInstance].mainContext];
+    })
+
     _blog = (Blog *)[[CoreDataTestHelper sharedHelper] insertEntityIntoMainContextWithName:@"Blog"];
     _blog.xmlrpc = @"http://test.blog/xmlrpc.php";
     _blog.url = @"http://test.blog/";
@@ -53,10 +53,11 @@
 }
 
 - (void)testAssertionsOnWPcom {
-    ATHStart();
-    WPAccount *wpComAccount = [WPAccount createOrUpdateWordPressComAccountWithUsername:@"user" password:@"pass" authToken:nil context:[ContextManager sharedInstance].mainContext];
-    ATHEnd();
-    
+    __block WPAccount *wpComAccount = nil;
+    CoreDataPerformAndWaitForSave(^{
+        wpComAccount = [WPAccount createOrUpdateWordPressComAccountWithUsername:@"user" password:@"pass" authToken:@"token" context:[ContextManager sharedInstance].mainContext];
+    });
+
     _blog = (Blog *)[[CoreDataTestHelper sharedHelper] insertEntityIntoMainContextWithName:@"Blog"];
     _blog.xmlrpc = @"http://test.wordpress.com/xmlrpc.php";
     _blog.url = @"http://test.wordpress.com/";
@@ -108,25 +109,25 @@
         return [OHHTTPStubsResponse responseWithFile:@"get-user-blogs_has-blog.json" contentType:@"application/json" responseTime:OHHTTPStubsDownloadSpeedWifi];
     }];
 
-    ATHStart();
+    AsyncTestHelper *helper = [AsyncTestHelper new];
     [_blog validateJetpackUsername:@"test1" password:@"test1" success:^{
         XCTFail(@"User test1 shouldn't have access to test.blog");
-        ATHNotify();
+        [helper notify];
     } failure:^(NSError *error) {
         XCTAssertEqual(error.domain, BlogJetpackErrorDomain);
         XCTAssertEqual(error.code, BlogJetpackErrorCodeNoRecordForBlog);
-        ATHNotify();
+        [helper notify];
     }];
-    ATHEnd();
+    AsyncTestHelperWait(helper);
 
-    ATHStart();
+    helper = [AsyncTestHelper new];
     [_blog validateJetpackUsername:@"test2" password:@"test2" success:^{
-        ATHNotify();
+        [helper notify];
     } failure:^(NSError *error) {
         XCTFail(@"User test2 should have access to test.blog");
-        ATHNotify();
+        [helper notify];
     }];
-    ATHEnd();
+    AsyncTestHelperWait(helper);
 }
 
 @end

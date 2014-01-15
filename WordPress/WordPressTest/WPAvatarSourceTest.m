@@ -49,13 +49,13 @@
     UIImage *image = [_source cachedImageForGravatarEmail:email withSize:size];
     XCTAssertNil(image, @"cache should be empty");
 
-    ATHStart();
+    AsyncTestHelper *helper = [AsyncTestHelper new];
     [_source fetchImageForGravatarEmail:email withSize:size success:^(UIImage *image) {
         XCTAssertNotNil(image, @"avatar should be downloaded");
         XCTAssertEqual(image.size.width, 48.f, @"avatar should be resized");
-        ATHNotify();
+        [helper notify];
     }];
-    ATHEnd();
+    AsyncTestHelperWait(helper);
 
     image = [_source cachedImageForGravatarEmail:email withSize:size];
     XCTAssertNotNil(image, @"avatar should be in cache");

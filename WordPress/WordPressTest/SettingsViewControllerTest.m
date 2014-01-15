@@ -26,9 +26,9 @@
     [super setUp];
 
     if ([WPAccount defaultWordPressComAccount]) {
-        ATHStart();
-        [WPAccount removeDefaultWordPressComAccountWithContext:[ContextManager sharedInstance].mainContext];
-        ATHEnd();
+        CoreDataPerformAndWaitForSave(^{
+            [WPAccount removeDefaultWordPressComAccountWithContext:[ContextManager sharedInstance].mainContext];
+        });
     }
 }
 
@@ -59,10 +59,11 @@
 
 
     // Sign In
-    ATHStart();
-    WPAccount *account = [WPAccount createOrUpdateWordPressComAccountWithUsername:@"jacksparrow" password:@"piratesobrave" authToken:@"token" context:[ContextManager sharedInstance].mainContext];
-    ATHEnd();
-    
+    __block WPAccount *account = nil;
+    CoreDataPerformAndWaitForSave(^{
+        account = [WPAccount createOrUpdateWordPressComAccountWithUsername:@"jacksparrow" password:@"piratesobrave" authToken:@"token" context:[ContextManager sharedInstance].mainContext];
+    });
+
     [WPAccount setDefaultWordPressComAccount:account];
 
     /*
@@ -95,11 +96,11 @@
     cell = [self tableView:table cellForRow:2];
     XCTAssertEqualObjects(@"wpcom-sign-out", cell.accessibilityIdentifier);
 
-    ATHStart();
     Blog *blog = [account findOrCreateBlogFromDictionary:@{@"url": @"blog1.com", @"xmlrpc": @"http://blog1.com/xmlrpc.php"} withContext:account.managedObjectContext];
-    [[ContextManager sharedInstance] saveContext:account.managedObjectContext];
-    ATHEnd();
-    
+    CoreDataPerformAndWaitForSave(^{
+        [[ContextManager sharedInstance] saveContext:account.managedObjectContext];
+    });
+
     [table reloadData];
 
     /*
@@ -117,11 +118,11 @@
     cell = [self tableView:table cellForRow:2];
     XCTAssertEqualObjects(@"wpcom-sign-out", cell.accessibilityIdentifier);
     
-    ATHStart();
     blog = [account findOrCreateBlogFromDictionary:@{@"url": @"blog2.com", @"xmlrpc": @"http://blog2.com/xmlrpc.php"} withContext:account.managedObjectContext];
-    [[ContextManager sharedInstance] saveContext:account.managedObjectContext];
-    ATHEnd();
-    
+    CoreDataPerformAndWaitForSave(^{
+        [[ContextManager sharedInstance] saveContext:account.managedObjectContext];
+    })
+
     [table reloadData];
 
     /*

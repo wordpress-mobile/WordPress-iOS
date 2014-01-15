@@ -154,7 +154,7 @@
         XCTAssertTrue(backgroundAccount.isDeleted, @"Account should be considered deleted");
         [helper notify];
     }];
-    XCTAssertTrue([helper wait]);
+    AsyncTestHelperWait(helper);
 }
 
 - (void)testDerivedContext {

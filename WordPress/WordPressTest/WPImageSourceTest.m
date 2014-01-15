@@ -45,35 +45,34 @@
 
     WPImageSource *source = [WPImageSource sharedSource];
 
-    ATHStart();
+    AsyncTestHelper *helper = [AsyncTestHelper new];
     [source downloadImageForURL:url
                     withSuccess:^(UIImage *image) {
-                        ATHNotify();
+                        [helper notify];
                     } failure:^(NSError *error) {
                         XCTFail();
-                        ATHNotify();
+                        [helper notify];
                     }];
     [source downloadImageForURL:url
                     withSuccess:^(UIImage *image) {
-                        ATHNotify();
+                        [helper notify];
                     } failure:^(NSError *error) {
                         XCTFail();
-                        ATHNotify();
+                        [helper notify];
                     }];
-    ATHWait();
-    ATHEnd();
+    AsyncTestHelperWait(helper);
 
     XCTAssertEqual(downloadCount, 1, @"it should download the image once");
 
-    ATHStart();
+    helper = [AsyncTestHelper new];
     [source downloadImageForURL:url
                     withSuccess:^(UIImage *image) {
-                        ATHNotify();
+                        [helper notify];
                     } failure:^(NSError *error) {
                         XCTFail();
-                        ATHNotify();
+                        [helper notify];
                     }];
-    ATHEnd();
+    AsyncTestHelperWait(helper);
     XCTAssertEqual(downloadCount, 2, @"it should download the image");
 }
 
