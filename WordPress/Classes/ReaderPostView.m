@@ -82,6 +82,13 @@
 	return ceil(desiredHeight);
 }
 
++ (CGFloat)heightWithoutAttributionForPost:(ReaderPost *)post withWidth:(CGFloat)width {
+    CGFloat desiredHeight = [self heightForPost:post withWidth:width];
+    desiredHeight -= RPVAuthorViewHeight;
+    desiredHeight -= RPVAuthorPadding;
+    return desiredHeight;
+}
+
 + (NSAttributedString *)titleAttributedStringForPost:(ReaderPost *)post {
     NSMutableParagraphStyle *style = [[NSMutableParagraphStyle alloc] init];
     [style setLineHeightMultiple:RPVLineHeightMultiple];
@@ -240,7 +247,9 @@
 
     self.followButton.hidden = ![self.post isFollowable];
     
-    nextY += RPVAuthorViewHeight + RPVAuthorPadding;
+    if (!self.hidesAttribution) {
+        nextY += RPVAuthorViewHeight + RPVAuthorPadding;
+    }
     
 	// Are we showing an image? What size should it be?
 	if (_showImage) {
@@ -330,6 +339,13 @@
     return self.post.isPrivate;
 }
 
+- (BOOL)hidesAttribution {
+    return self.attributionView.hidden;
+}
+
+- (void)setHidesAttribution:(BOOL)hidesAttribution {
+    self.attributionView.hidden = hidesAttribution;
+}
 
 #pragma mark - Actions
 
