@@ -412,7 +412,7 @@ static NSString *const CameraPlusImagesNotification = @"CameraPlusImagesNotifica
     if (IS_IPAD) {
         postsViewController.tabBarItem.imageInsets = UIEdgeInsetsMake(7.0, 0, -7, 0);
     }
-    postsViewController.tabBarItem.accessibilityValue = NSLocalizedString(@"New Post", @"The accessibility value of the post tab.");
+    postsViewController.tabBarItem.title = NSLocalizedString(@"New Post", @"The accessibility value of the post tab.");
     
     _tabBarController.viewControllers = @[readerNavigationController, notificationsNavigationController, blogListNavigationController, postsViewController];
 
