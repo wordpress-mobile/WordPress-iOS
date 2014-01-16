@@ -222,6 +222,7 @@ CGFloat const CreateAccountAndBlogButtonHeight = 40.0;
     UIImage *helpButtonImage = [UIImage imageNamed:@"btn-help"];
     if (_helpButton == nil) {
         _helpButton = [UIButton buttonWithType:UIButtonTypeCustom];
+        _helpButton.accessibilityLabel = NSLocalizedString(@"Help", @"Help button");
         [_helpButton setImage:helpButtonImage forState:UIControlStateNormal];
         _helpButton.frame = CGRectMake(0, 0, helpButtonImage.size.width, helpButtonImage.size.height);
         [_helpButton addTarget:self action:@selector(helpButtonAction) forControlEvents:UIControlEventTouchUpInside];
