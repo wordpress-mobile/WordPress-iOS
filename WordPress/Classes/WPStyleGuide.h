@@ -44,6 +44,7 @@
 + (UIColor *)littleEddieGrey;
 + (UIColor *)whisperGrey;
 + (UIColor *)allTAllShadeGrey;
++ (UIColor *)theFonzGrey;
 + (UIColor *)readGrey;
 + (UIColor *)itsEverywhereGrey;
 + (UIColor *)darkAsNightGrey;

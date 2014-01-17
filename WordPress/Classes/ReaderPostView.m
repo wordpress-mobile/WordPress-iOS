@@ -242,7 +242,7 @@
     }
     
     CGFloat innerContentWidth = contentWidth - RPVHorizontalInnerPadding * 2;
-	CGFloat nextY = RPVAuthorPadding;
+    CGFloat nextY = [self hidesAttribution] ? 0.0f : RPVAuthorPadding;
 	CGFloat height = 0.0f;
 
     self.followButton.hidden = ![self.post isFollowable];
@@ -258,7 +258,7 @@
 		self.cellImageView.frame = CGRectMake(0, nextY, contentWidth, height);
 		nextY += height;
     } else {
-        self.titleBorder.hidden = NO;
+        self.titleBorder.hidden = [self hidesAttribution];
         self.titleBorder.frame = CGRectMake(RPVHorizontalInnerPadding, nextY, contentWidth - RPVHorizontalInnerPadding * 2, RPVBorderHeight);
     }
     

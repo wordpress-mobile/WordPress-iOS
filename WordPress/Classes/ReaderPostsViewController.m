@@ -39,7 +39,7 @@ static CGFloat const RPVCExtraTableViewHeightPercentage = 2.0f;
 static NSInteger const RPVCRecommendedBlogsSection = 1;
 static NSInteger const RPVCRecommendedBlogsThreshold = 7; // The minimum required number of posts
 static NSInteger const RPVCRecommendedBlogsSectionDefaultInsertionPoint = 4;
-static CGFloat const RPVCRecommendedBlogsCellHeight = 44.0f;
+static CGFloat const RPVCRecommendedBlogsCellHeight = 56.0f;
 
 NSString * const ReaderTopicDidChangeNotification = @"ReaderTopicDidChangeNotification";
 NSString * const RPVCDisplayedNativeFriendFinder = @"DisplayedNativeFriendFinder";
@@ -627,13 +627,14 @@ NSString * const RPVCDisplayedNativeFriendFinder = @"DisplayedNativeFriendFinder
         return;
     
     if ([self isRecommendedBlogIndexPath:indexPath]) {
-        // TODO: configure the cell
         RecommendedBlog *recBlog = self.recommendedBlogs[indexPath.row];
         WPTableViewCell *cell = (WPTableViewCell *)aCell;
         cell.textLabel.text = recBlog.title;
         cell.detailTextLabel.text = recBlog.reason;
         cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
-        cell.imageView.image = [UIImage imageNamed:@"wp-logo"];
+        [cell.imageView setImage:[UIImage imageNamed:@"wpcom_blavatar"]];
+        cell.backgroundColor = [self.tableView backgroundColor];
+        [_featuredImageSource fetchImageForURL:[NSURL URLWithString:recBlog.imagePath] withSize:cell.imageView.image.size indexPath:indexPath isPrivate:NO];
         return;
     }
 
@@ -965,21 +966,19 @@ NSString * const RPVCDisplayedNativeFriendFinder = @"DisplayedNativeFriendFinder
 - (UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section {
     if (section == RPVCRecommendedBlogsSection) {
         return nil;
-        // TODO:
-        // return the view for the recommended blogs section if needed.
     }
     return [[UIView alloc] initWithFrame:CGRectZero];
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section {
-    if (section == RPVCRecommendedBlogsSection) {
-        return RPVCRecommendedBlogsCellHeight;
-    }
-    
     if (IS_IPHONE)
         return RPVCHeaderHeightPhone;
     
     return [super tableView:tableView heightForHeaderInSection:section];
+}
+
+- (UIView *)tableView:(UITableView *)tableView viewForFooterInSection:(NSInteger)section {
+    return [[UIView alloc] initWithFrame:CGRectZero];
 }
 
 - (NSString *)tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section {
@@ -998,6 +997,10 @@ NSString * const RPVCDisplayedNativeFriendFinder = @"DisplayedNativeFriendFinder
         cell = [tableView dequeueReusableCellWithIdentifier:RecommenedBlogCellIdentifierc];
         if (!cell) {
             cell = [[WPTableViewCell alloc] initWithStyle:UITableViewCellStyleSubtitle reuseIdentifier:RecommenedBlogCellIdentifierc];
+            cell.textLabel.font = [WPStyleGuide subtitleFont];
+            cell.textLabel.textColor = [WPStyleGuide littleEddieGrey];
+            cell.detailTextLabel.font = [WPStyleGuide subtitleFont];
+            cell.detailTextLabel.textColor = [WPStyleGuide theFonzGrey];
         }
         [self configureCell:cell atIndexPath:indexPath];
         return cell;
@@ -1221,22 +1224,28 @@ NSString * const RPVCDisplayedNativeFriendFinder = @"DisplayedNativeFriendFinder
 #pragma mark - WPTableImageSourceDelegate
 
 - (void)tableImageSource:(WPTableImageSource *)tableImageSource imageReady:(UIImage *)image forIndexPath:(NSIndexPath *)indexPath {
-    ReaderPostTableViewCell *cell = (ReaderPostTableViewCell *)[self.tableView cellForRowAtIndexPath:indexPath];
-    
+    UITableViewCell *cell = [self.tableView cellForRowAtIndexPath:indexPath];
+   
     // Don't do anything if the cell is out of view or out of range
     // (this is a safety check in case the Reader doesn't properly kill image requests when changing topics)
-    if (cell == nil)
+    if (cell == nil) {
         return;
-
-    [cell.postView setFeaturedImage:image];
-    
-    // Update the detail view if it's open and applicable
-    indexPath = [self restoreResultsControllerIndexPath:indexPath];
-    ReaderPost *post = [self.resultsController objectAtIndexPath:indexPath];
-    
-    if (post == self.detailController.post) {
-        [self.detailController updateFeaturedImage:image];
     }
+    
+    if ([cell isKindOfClass:[ReaderPostTableViewCell class]]) {
+        ReaderPostTableViewCell *postCell = (ReaderPostTableViewCell *)cell;
+        [postCell.postView setFeaturedImage:image];
+        
+        indexPath = [self restoreResultsControllerIndexPath:indexPath];
+        ReaderPost *post = [self.resultsController objectAtIndexPath:indexPath];
+        
+        if (post == self.detailController.post) {
+            [self.detailController updateFeaturedImage:image];
+        }
+    } else {
+        [cell.imageView setImage:image];
+    }
+    
 }
 
 @end

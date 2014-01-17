@@ -31,14 +31,14 @@
         self.authorLabel = [[UILabel alloc] init];
         self.authorLabel.numberOfLines = 1;
         self.authorLabel.autoresizingMask = UIViewAutoresizingFlexibleWidth;
-        self.authorLabel.font = [UIFont fontWithName:@"OpenSans" size:12.0f];
+        self.authorLabel.font = [WPStyleGuide subtitleFont];
         self.authorLabel.adjustsFontSizeToFitWidth = NO;
-        self.authorLabel.textColor = [UIColor colorWithHexString:@"333"];
+        self.authorLabel.textColor = [WPStyleGuide littleEddieGrey];
         [self addSubview:self.authorLabel];
         
         self.linkButton = [UIButton buttonWithType:UIButtonTypeCustom];
         self.linkButton.contentHorizontalAlignment = UIControlContentHorizontalAlignmentLeft;
-        self.linkButton.titleLabel.font = [UIFont fontWithName:@"OpenSans" size:12.0f];
+        self.linkButton.titleLabel.font = [WPStyleGuide subtitleFont];
         self.linkButton.enabled = NO;
         self.linkButton.hidden = YES;
         [self.linkButton setTitleColor:[WPStyleGuide buttonActionColor] forState:UIControlStateNormal];
@@ -46,7 +46,7 @@
         
         self.followButton = [ContentActionButton buttonWithType:UIButtonTypeCustom];
         self.followButton.contentHorizontalAlignment = UIControlContentHorizontalAlignmentLeft;
-        self.followButton.titleLabel.font = [UIFont fontWithName:@"OpenSans" size:12.0f];
+        self.followButton.titleLabel.font = [WPStyleGuide subtitleFont];
         NSString *followString = NSLocalizedString(@"Follow", @"Prompt to follow a blog.");
         NSString *followedString = NSLocalizedString(@"Following", @"User is following the blog.");
         [self.followButton setTitle:followString forState:UIControlStateNormal];
@@ -54,7 +54,7 @@
         [self.followButton setTitleEdgeInsets: UIEdgeInsetsMake(0, RPVSmallButtonLeftPadding, 0, 0)];
         [self.followButton setImage:[UIImage imageNamed:@"reader-postaction-follow"] forState:UIControlStateNormal];
         [self.followButton setImage:[UIImage imageNamed:@"reader-postaction-following"] forState:UIControlStateSelected];
-        [self.followButton setTitleColor:[UIColor colorWithHexString:@"aaa"] forState:UIControlStateNormal];
+        [self.followButton setTitleColor:[WPStyleGuide theFonzGrey] forState:UIControlStateNormal];
         self.followButton.hidden = YES;
         [self addSubview:self.followButton];
         
