@@ -303,7 +303,7 @@
     [dateFormatter setDateFormat:format];
     
     result = [dateFormatter dateFromString:dateString];
-
+    
     return result;
 }
 
