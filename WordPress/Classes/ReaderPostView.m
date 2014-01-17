@@ -323,9 +323,6 @@
 }
 
 - (void)setAvatar:(UIImage *)avatar {
-    if (self.avatarImageView.image)
-        return;
-    
     if (avatar) {
         self.avatarImageView.image = avatar;
     } else if ([self.post isWPCom]) {

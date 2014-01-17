@@ -63,6 +63,7 @@ const CGFloat RPVControlButtonBorderSize = 0.0f;
 @property (nonatomic, strong) UIView *controlView;
 @property (nonatomic, strong) UIButton *timeButton;
 @property (nonatomic, strong) ReaderAttributionView *attributionView;
+@property (nonatomic, assign) BOOL willRefreshMediaLayout;
 
 @end
 
@@ -216,6 +217,7 @@ const CGFloat RPVControlButtonBorderSize = 0.0f;
 }
 
 - (void)configureContentView:(id<WPContentViewProvider>)contentProvider {
+
     [self setAuthorDisplayName:[contentProvider authorForDisplay] authorLink:[contentProvider blogNameForDisplay]];
     
     [self refreshDate];
@@ -381,30 +383,27 @@ const CGFloat RPVControlButtonBorderSize = 0.0f;
 	NSURL *url = imageView.contentURL;
 	
 	CGSize originalSize = imageView.frame.size;
-	CGSize viewSize = imageView.image.size;
+	CGSize imageSize = imageView.image.size;
 	
 	if ([self isEmoji:url]) {
 		CGFloat scale = [UIScreen mainScreen].scale;
-		viewSize.width *= scale;
-		viewSize.height *= scale;
+		imageSize.width *= scale;
+		imageSize.height *= scale;
 	} else {
-        CGFloat ratio = viewSize.width / viewSize.height;
-        CGFloat width = _textContentView.frame.size.width;
-        CGFloat availableWidth = _textContentView.frame.size.width - (_textContentView.edgeInsets.left + _textContentView.edgeInsets.right);
-        
-        viewSize.width = availableWidth;
-        CGFloat placeholderRatio = imageView.frame.size.width / imageView.frame.size.height;
-        if (imageView.isShowingPlaceholder) {
-            viewSize.height = roundf(width / placeholderRatio);
+        if (imageView.image) {
+            CGFloat ratio = imageSize.width / imageSize.height;
+            CGFloat width = _textContentView.frame.size.width;
+            CGFloat availableWidth = _textContentView.frame.size.width - (_textContentView.edgeInsets.left + _textContentView.edgeInsets.right);
+            
+            imageSize.width = availableWidth;
+            imageSize.height = roundf(width / ratio) + imageView.edgeInsets.top;
         } else {
-            viewSize.height = roundf(width / ratio);
+            imageSize = CGSizeMake(0.0f, 0.0f);
         }
-        
-        viewSize.height += imageView.edgeInsets.top; // account for the top edge inset.
 	}
     
     // Widths should always match
-    if (viewSize.height != originalSize.height) {
+    if (imageSize.height != originalSize.height) {
         frameChanged = YES;
     }
     
@@ -413,7 +412,7 @@ const CGFloat RPVControlButtonBorderSize = 0.0f;
 	// update all attachments that matchin this URL (possibly multiple images with same size)
 	for (DTTextAttachment *attachment in [self.textContentView.layoutFrame textAttachmentsWithPredicate:pred]) {
 		attachment.originalSize = originalSize;
-		attachment.displaySize = viewSize;
+		attachment.displaySize = imageSize;
 	}
     
     return frameChanged;
@@ -427,9 +426,23 @@ const CGFloat RPVControlButtonBorderSize = 0.0f;
     [self refreshDate:nil];
 }
 
+// Relayout the textContentView after a brief delay.  Used to make sure there are no
+// gaps in text due to outdated media frames.
+- (void)refreshLayoutAfterDelay {
+    if (self.willRefreshMediaLayout) {
+        return;
+    }
+    self.willRefreshMediaLayout = YES;
+    
+    // The first time we're called we're in the middle of updating layout. Refreshing at
+    // this point has no effect.  Dispatch async will let us refresh layout in a new loop
+    // and correctly update. 
+    dispatch_async(dispatch_get_main_queue(), ^{
+        [self refreshMediaLayout];
+        [self.delegate contentViewDidLoadAllMedia:self]; // So the delegate can correct its size.
+    });
+}
 
-// TODO: Moved the following three methods here as part of a complex merge / conflict resolution
-// (methods were added by aerych in a conflicting commit, should be checked and tested)
 - (void)refreshMediaLayout {
     [self refreshMediaLayoutInArray:self.mediaArray];
 }
@@ -439,6 +452,7 @@ const CGFloat RPVControlButtonBorderSize = 0.0f;
     
     for (ReaderMediaView *mediaView in mediaArray) {
         if ([self updateMediaLayout:mediaView]) {
+            NSLog(@"Frame Changed");
             frameChanged = YES;
         }
 
@@ -461,24 +475,7 @@ const CGFloat RPVControlButtonBorderSize = 0.0f;
 #pragma mark ReaderMediaQueueDelegate methods
 
 - (void)readerMediaQueue:(ReaderMediaQueue *)mediaQueue didLoadBatch:(NSArray *)batch {
-    BOOL frameChanged = NO;
-    
-    for (NSInteger i = 0; i < [batch count]; i++) {
-        ReaderMediaView *mediaView = [batch objectAtIndex:i];
-        if ([self updateMediaLayout:mediaView]) {
-            frameChanged = YES;
-        }
-    }
-    
-    if (frameChanged) {
-        // need to reset the layouter because otherwise we get the old framesetter or cached layout frames
-        self.textContentView.layouter = nil;
-        
-        // layout might have changed due to image sizes
-        [self.textContentView relayoutText];
-        [self setNeedsLayout];
-    }
-    
+    [self refreshMediaLayoutInArray:batch];
     if ([self.delegate respondsToSelector:@selector(contentViewDidLoadAllMedia:)]) {
         [self.delegate contentViewDidLoadAllMedia:self];
     }
@@ -513,10 +510,13 @@ const CGFloat RPVControlButtonBorderSize = 0.0f;
 
 
 - (UIView *)attributedTextContentView:(DTAttributedTextContentView *)attributedTextContentView viewForAttachment:(DTTextAttachment *)attachment frame:(CGRect)frame {
-    
     if (!attachment.contentURL)
         return nil;
-
+    
+    // The textContentView will render the first time with the original frame, and then update when media loads.
+    // To avoid showing gaps in the layout due to the original attachment sizes, relayout the view after a brief delay.
+    [self refreshLayoutAfterDelay];
+    
     CGFloat width = _textContentView.frame.size.width;
     CGFloat availableWidth = _textContentView.frame.size.width - (_textContentView.edgeInsets.left + _textContentView.edgeInsets.right);
     
@@ -547,30 +547,23 @@ const CGFloat RPVControlButtonBorderSize = 0.0f;
 		}
 		
         DTImageTextAttachment *imageAttachment = (DTImageTextAttachment *)attachment;
-		UIImage *image;
 		
 		if ([imageAttachment.image isKindOfClass:[UIImage class]]) {
-			image = imageAttachment.image;
+			UIImage *image = imageAttachment.image;
 			
             CGFloat ratio = image.size.width / image.size.height;
             frame.size.width = availableWidth;
             frame.size.height = roundf(width / ratio);
-		} else {            
-			if (frame.size.width > 1.0f && frame.size.height > 1.0f) {
-                CGFloat ratio = frame.size.width / frame.size.height;
-                frame.size.width = availableWidth;
-                frame.size.height = roundf(width / ratio);
-            } else {
-                frame.size.width = availableWidth;
-                frame.size.height = roundf(width * RPVMaxImageHeightPercentage);
-            }
+            
+            // offset the top edge inset keeping the image from bumping the text above it.
+            frame.size.height += edgeInsets.top;
+		} else {
+            // minimal frame to suppress drawing context errors with 0 height or width.
+            frame.size.width = 1.0f;
+            frame.size.height = 1.0f;
 		}
-		
-		// offset the top edge inset keeping the image from bumping the text above it.
-		frame.size.height += edgeInsets.top;
-		
+        
 		ReaderImageView *imageView = [[ReaderImageView alloc] initWithFrame:frame];
-		imageView.contentMode = UIViewContentModeScaleAspectFit;
 		imageView.edgeInsets = edgeInsets;
         
 		[_mediaArray addObject:imageView];
@@ -578,20 +571,15 @@ const CGFloat RPVControlButtonBorderSize = 0.0f;
 		[imageView addTarget:self action:@selector(imageLinkAction:) forControlEvents:UIControlEventTouchUpInside];
 		
 		if ([imageAttachment.image isKindOfClass:[UIImage class]]) {
-			[imageView setImage:image];
+			[imageView setImage:imageAttachment.image];
 		} else {
-			imageView.backgroundColor = [UIColor colorWithRed:192.0f/255.0f green:192.0f/255.0f blue:192.0f/255.0f alpha:1.0];
             
             [self.mediaQueue enqueueMedia:imageView
                                   withURL:attachment.contentURL
-                         placeholderImage:image
-                                     size:CGSizeMake(width, 0)
+                         placeholderImage:nil
+                                     size:CGSizeMake(width, 0.0f) // Passing zero for height to get the correct aspect ratio
                                 isPrivate:[self privateContent]
-                                  success:^(ReaderMediaView *readerMediaView) {
-                                      ReaderImageView *imageView = (ReaderImageView *)readerMediaView;
-                                      imageView.contentMode = UIViewContentModeScaleAspectFit;
-                                      imageView.backgroundColor = [UIColor clearColor];
-                                  }
+                                  success:nil
                                   failure:nil];
 		}
         
@@ -611,31 +599,19 @@ const CGFloat RPVControlButtonBorderSize = 0.0f;
 			return nil; // Can't handle whatever this is :P
 		}
         
-		// make sure we have a reasonable size.
-		if (frame.size.width > width) {
-            if (frame.size.height == 0) {
-                frame.size.height = roundf(frame.size.width * 0.66f);
-            }
-            CGFloat ratio = frame.size.width / frame.size.height;
-            frame.size.width = availableWidth;
-            frame.size.height = roundf(width / ratio);
-		}
-		
-		// offset the top edge inset keeping the image from bumping the text above it.
-		frame.size.height += edgeInsets.top;
+        // we won't show the vid until we've loaded its thumb.
+        // minimal frame to suppress drawing context errors with 0 height or width.
+        frame.size.width = 1.0f;
+        frame.size.height = 1.0f;
         
 		ReaderVideoView *videoView = [[ReaderVideoView alloc] initWithFrame:frame];
-		videoView.contentMode = UIViewContentModeCenter;
-		videoView.backgroundColor = [UIColor colorWithRed:192.0f/255.0f green:192.0f/255.0f blue:192.0f/255.0f alpha:1.0];
 		videoView.edgeInsets = edgeInsets;
         
 		[_mediaArray addObject:videoView];
 		[videoView setContentURL:attachment.contentURL ofType:videoType success:^(id readerVideoView) {
-			[(ReaderVideoView *)readerVideoView setContentMode:UIViewContentModeScaleAspectFit];
 			[self handleMediaViewLoaded:readerVideoView];
 		} failure:^(id readerVideoView, NSError *error) {
 			[self handleMediaViewLoaded:readerVideoView];
-			
 		}];
         
 		[videoView addTarget:self action:@selector(videoLinkAction:) forControlEvents:UIControlEventTouchUpInside];
@@ -643,6 +619,5 @@ const CGFloat RPVControlButtonBorderSize = 0.0f;
 		return videoView;
 	}
 }
-
 
 @end

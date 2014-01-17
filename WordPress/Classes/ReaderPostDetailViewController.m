@@ -897,6 +897,7 @@ typedef enum {
     ReaderCommentTableViewCell *cell = (ReaderCommentTableViewCell *)[self.tableView dequeueReusableCellWithIdentifier:cellIdentifier];
     if (cell == nil) {
         cell = [[ReaderCommentTableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:cellIdentifier];
+        cell.delegate = self;
     }
 	cell.accessoryType = UITableViewCellAccessoryNone;
 	
@@ -1013,6 +1014,14 @@ typedef enum {
 - (void)commentPublisherDidPublishComment:(ReaderCommentPublisher *)composer {
     [self.inlineComposeView dismissComposer];
     [self syncWithUserInteraction:NO];
+}
+
+#pragma mark - ReaderCommentTableViewCellDelegate methods
+
+- (void)readerCommentTableViewCell:(ReaderCommentTableViewCell *)cell didTapURL:(NSURL *)url {
+    WPWebViewController *controller = [[WPWebViewController alloc] init];
+	[controller setUrl:url];
+	[self.navigationController pushViewController:controller animated:YES];
 }
 
 #pragma mark - ReaderTextForm Delegate Methods
