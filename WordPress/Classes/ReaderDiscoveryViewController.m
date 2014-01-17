@@ -60,4 +60,12 @@
 	}];
 }
 
+- (void)trackSyncEvent {
+    // noop
+}
+
+- (NSString *)endpoint {
+    return [NSString stringWithFormat:@"sites/%@/posts/", self.post.siteID];
+}
+
 @end

@@ -605,7 +605,7 @@ NSString * const RPVCDisplayedNativeFriendFinder = @"DisplayedNativeFriendFinder
 }
 
 - (NSFetchRequest *)fetchRequest {
-	NSString *endpoint = [ReaderPost currentEndpoint];
+	NSString *endpoint = [self endpoint]; //[ReaderPost currentEndpoint];
     NSFetchRequest *fetchRequest = [NSFetchRequest fetchRequestWithEntityName:[self entityName]];
     fetchRequest.predicate = [NSPredicate predicateWithFormat:@"(endpoint == %@)", endpoint];
     NSSortDescriptor *sortDescriptorDate = [NSSortDescriptor sortDescriptorWithKey:@"sortDate" ascending:NO];
@@ -736,9 +736,13 @@ NSString * const RPVCDisplayedNativeFriendFinder = @"DisplayedNativeFriendFinder
     [authRequest start];    
 }
 
+- (NSString *)endpoint {
+    return [ReaderPost currentEndpoint];
+}
+
 - (void)syncReaderItemsWithSuccess:(void (^)())success failure:(void (^)(NSError *))failure {
     DDLogMethod();
-	NSString *endpoint = [ReaderPost currentEndpoint];
+	NSString *endpoint = [self endpoint]; //[ReaderPost currentEndpoint];
 	NSNumber *numberToSync = [NSNumber numberWithInteger:ReaderPostsToSync];
 	NSDictionary *params = @{@"number":numberToSync, @"per_page":numberToSync};
 	[ReaderPost getPostsFromEndpoint:endpoint
@@ -755,8 +759,7 @@ NSString * const RPVCDisplayedNativeFriendFinder = @"DisplayedNativeFriendFinder
 									 failure(error);
 								 }
 							 }];
-    [WPMobileStats trackEventForWPCom:StatsEventReaderHomePageRefresh];
-    [WPMobileStats pingWPComStatsEndpoint:@"home_page_refresh"];
+    [self trackSyncEvent];
 }
 
 - (void)loadMoreWithSuccess:(void (^)())success failure:(void (^)(NSError *error))failure {
@@ -771,7 +774,7 @@ NSString * const RPVCDisplayedNativeFriendFinder = @"DisplayedNativeFriendFinder
 	
 	ReaderPost *post = self.resultsController.fetchedObjects.lastObject;
 	NSNumber *numberToSync = [NSNumber numberWithInteger:ReaderPostsToSync];
-	NSString *endpoint = [ReaderPost currentEndpoint];
+	NSString *endpoint = [self endpoint];
 	id before;
 	if ([endpoint isEqualToString:@"freshly-pressed"]) {
 		// freshly-pressed wants an ISO string but the rest want a timestamp.
@@ -796,7 +799,15 @@ NSString * const RPVCDisplayedNativeFriendFinder = @"DisplayedNativeFriendFinder
 									 failure(error);
 								 }
 							 }];
-    
+    [self trackLoadMoreEvent];
+}
+
+- (void)trackSyncEvent {
+    [WPMobileStats trackEventForWPCom:StatsEventReaderHomePageRefresh];
+    [WPMobileStats pingWPComStatsEndpoint:@"home_page_refresh"];
+}
+
+- (void)trackLoadMoreEvent {
     [WPMobileStats trackEventForWPCom:StatsEventReaderInfiniteScroll properties:[self categoryPropertyForStats]];
     [WPMobileStats logQuantcastEvent:@"newdash.infinite_scroll"];
     [WPMobileStats logQuantcastEvent:@"mobile.infinite_scroll"];
