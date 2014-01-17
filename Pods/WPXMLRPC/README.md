@@ -45,7 +45,7 @@ WordPress XML-RPC only provides classes to encode and decode XML-RPC. You are fr
 ## Parsing a XML-RPC response
 
 	NSData *responseData = …
-	WPXMLRPCDecoder *decoder = [WPXMLRPCDecoder alloc] initWithData:responseData];
+	WPXMLRPCDecoder *decoder = [[WPXMLRPCDecoder alloc] initWithData:responseData];
 	if ([decoder isFault]) {
 		NSLog(@"XML-RPC error %@: %@", [decoder faultCode], [decoder faultString]);
 	} else {

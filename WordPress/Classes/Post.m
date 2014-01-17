@@ -364,7 +364,7 @@
                                                                                        self.remoteStatus = AbstractPostRemoteStatusSync;
                                                                                        if (!self.date_created_gmt) {
                                                                                            // Set the temporary date until we get it from the server so it sorts properly on the list
-                                                                                           self.date_created_gmt = [DateUtils localDateToGMTDate:[NSDate date]];
+                                                                                           self.date_created_gmt = [NSDate date];
                                                                                        }
                                                                                        [self save];
                                                                                        [self getPostWithSuccess:success failure:failure];
