@@ -172,15 +172,6 @@ NSString * const RPVCDisplayedNativeFriendFinder = @"DisplayedNativeFriendFinder
     self.commentPublisher.delegate = self;
 
     self.tableView.tableFooterView = self.inlineComposeView;
-    
-    if ([self canShowRecommendedBlogs]) {
-        [RecommendedBlog syncRecommendedBlogs:^(NSArray *recommendedBlogs) {
-            self.recommendedBlogs = [RecommendedBlog recommendedBlogs];
-            [self.tableView reloadData];
-        } failure:^(NSError *error) {
-            // fail silently.
-        }];
-    }
 }
 
 - (void)viewWillAppear:(BOOL)animated {
@@ -193,6 +184,26 @@ NSString * const RPVCDisplayedNativeFriendFinder = @"DisplayedNativeFriendFinder
     
     if (self.noResultsView && _animatedBox) {
         [_animatedBox prepareAnimation:NO];
+    }
+    
+    // Refresh the recommeneded blogs everytime the view reappears.
+    if ([self canShowRecommendedBlogs]) {
+        [RecommendedBlog syncRecommendedBlogs:^(NSArray *recommendedBlogs) {
+            if ([self.recommendedBlogs count] == 0) {
+                // We don't want to jar the user by refreshing the tableView and shifting content around.
+                // Just bail. The next time the reader is opened it will show the saved recommendations.
+                return;
+            }
+            self.recommendedBlogs = [RecommendedBlog recommendedBlogs];
+            NSMutableArray *mArr = [NSMutableArray array];
+            for (NSInteger i = 0; i < [self.recommendedBlogs count]; i++) {
+                NSIndexPath *indexPath = [NSIndexPath indexPathForRow:i inSection:RPVCRecommendedBlogsSection];
+                [mArr addObject:indexPath];
+            }
+            [self.tableView reloadRowsAtIndexPaths:mArr withRowAnimation:UITableViewRowAnimationFade];
+        } failure:^(NSError *error) {
+            // fail silently.
+        }];
     }
 }
 
@@ -1036,9 +1047,9 @@ NSString * const RPVCDisplayedNativeFriendFinder = @"DisplayedNativeFriendFinder
         // TODO: show the recommended blog viewcontroller
         [tableView deselectRowAtIndexPath:indexPath animated:YES];
         
-        ReaderPost *post = [self.resultsController.fetchedObjects objectAtIndex:[self restoreResultsControllerIndexPath:indexPath].row];
+        RecommendedBlog *recBlog = [self.recommendedBlogs objectAtIndex:indexPath.row];
         ReaderDiscoveryViewController *controller = [[ReaderDiscoveryViewController alloc] init];
-        controller.post = post;
+        controller.recommendedBlog = recBlog;
         [self.navigationController pushViewController:controller animated:YES];
         
         return;

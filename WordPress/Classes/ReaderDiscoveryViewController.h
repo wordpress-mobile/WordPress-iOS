@@ -7,9 +7,10 @@
 //
 
 #import "ReaderPostsViewController.h"
+#import "RecommendedBlog.h"
 
 @interface ReaderDiscoveryViewController : ReaderPostsViewController
 
-@property (nonatomic, strong) ReaderPost *post;
+@property (nonatomic, strong) RecommendedBlog *recommendedBlog;
 
 @end

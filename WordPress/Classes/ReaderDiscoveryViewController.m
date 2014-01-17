@@ -11,6 +11,7 @@
 #import "WPContentViewSubclass.h"
 #import "ReaderAttributionView.h"
 #import "ReaderDiscoveryTableViewCell.h"
+#import "UIImageView+AFNetworkingExtra.h"
 
 @interface ReaderDiscoveryViewController ()
 
@@ -20,6 +21,13 @@
 
 @implementation ReaderDiscoveryViewController
 
+- (void)viewWillAppear:(BOOL)animated {
+    [super viewWillAppear:animated];
+    self.title = NSLocalizedString(@"You Might Like", @"");
+    
+    [self refreshTableHeaderView];
+}
+
 - (BOOL)canShowRecommendedBlogs {
     return NO;
 }
@@ -28,36 +36,31 @@
     return [ReaderDiscoveryTableViewCell class];
 }
 
-- (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section {
-    return RPVAuthorViewHeight;
-}
-
-- (UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section {
-    if (self.attributionView) {
-        return self.attributionView;
+- (void)refreshTableHeaderView {
+    if (!self.attributionView) {
+        self.attributionView = [[ReaderAttributionView alloc] initWithFrame:CGRectMake(0.0f, 0.0f, self.tableView.frame.size.width, RPVAuthorViewHeight + RPVAuthorPadding)];
+        [self.attributionView setAuthorDisplayName:self.recommendedBlog.title authorLink:self.recommendedBlog.domain];
+        [self.attributionView.avatarImageView setImageWithURL:[NSURL URLWithString:self.recommendedBlog.imagePath] placeholderImage:[UIImage imageNamed:@"wpcom_blavatar"]];
+        [self.attributionView.followButton addTarget:self action:@selector(followAction:) forControlEvents:UIControlEventTouchUpInside];
+        self.attributionView.followButton.hidden = NO;
     }
     
-    self.attributionView = [[ReaderAttributionView alloc] initWithFrame:CGRectZero];
-    [self.attributionView setAuthorDisplayName:self.post.authorDisplayName authorLink:self.post.authorURL];
-    self.attributionView.followButton.hidden = ![self.post isFollowable];
-    
-    [self.attributionView.followButton addTarget:self action:@selector(followAction:) forControlEvents:UIControlEventTouchUpInside];
-    
-    return self.attributionView;
+    self.tableView.tableHeaderView = self.attributionView;
 }
 
 - (void)followAction:(id)sender {
-    UIButton *followButton = self.attributionView.followButton;
-    ReaderPost *post = self.post;
-    if (![post isFollowable])
-        return;
-    
-    followButton.selected = ![post.isFollowing boolValue]; // Set it optimistically
-	[post toggleFollowingWithSuccess:^{
-	} failure:^(NSError *error) {
-		DDLogError(@"Error Following Blog : %@", [error localizedDescription]);
-		[followButton setSelected:[post.isFollowing boolValue]];
-	}];
+    // TODO: Handle follow taps
+//    UIButton *followButton = self.attributionView.followButton;
+//    ReaderPost *post = self.post;
+//    if (![post isFollowable])
+//        return;
+//    
+//    followButton.selected = ![post.isFollowing boolValue]; // Set it optimistically
+//	[post toggleFollowingWithSuccess:^{
+//	} failure:^(NSError *error) {
+//		DDLogError(@"Error Following Blog : %@", [error localizedDescription]);
+//		[followButton setSelected:[post.isFollowing boolValue]];
+//	}];
 }
 
 - (void)trackSyncEvent {
@@ -65,7 +68,7 @@
 }
 
 - (NSString *)endpoint {
-    return [NSString stringWithFormat:@"sites/%@/posts/", self.post.siteID];
+    return [NSString stringWithFormat:@"sites/%d/posts/", self.recommendedBlog.siteID];
 }
 
 @end

@@ -76,6 +76,7 @@
         CGFloat followX = bylineX - 4; // Fudge factor for image alignment
         CGFloat followY = RPVAuthorPadding + self.authorLabel.frame.size.height - 2;
         height = ceil([self.followButton.titleLabel suggestedSizeForWidth:self.frame.size.width].height);
+        height = MAX(height, 17.0f);
         self.followButton.frame = CGRectMake(followX, followY, RPVFollowButtonWidth, height);
     }
 }
