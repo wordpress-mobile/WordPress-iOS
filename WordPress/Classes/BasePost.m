@@ -126,18 +126,11 @@
 }
 
 - (NSDate *)dateCreated {
-	if(self.date_created_gmt != nil)
-		return [DateUtils GMTDateTolocalDate:self.date_created_gmt];
-	else 
-		return nil;
-
+    return self.date_created_gmt;
 }
 
 - (void)setDateCreated:(NSDate *)localDate {
-	if(localDate == nil)
-		self.date_created_gmt = nil;
-	else
-		self.date_created_gmt = [DateUtils localDateToGMTDate:localDate];
+    self.date_created_gmt = localDate;
 }
 
 
@@ -146,6 +139,7 @@
 }
 
 - (void)uploadWithSuccess:(void (^)())success failure:(void (^)(NSError *error))failure {
+    
 }
 
 - (void)deletePostWithSuccess:(void (^)())success failure:(void (^)(NSError *error))failure {
