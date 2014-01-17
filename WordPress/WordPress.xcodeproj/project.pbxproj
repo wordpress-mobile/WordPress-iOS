@@ -535,6 +535,7 @@
 		5DD8A70C15A63F4700A673A4 /* wp_logo@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 5DD8A70215A63F4700A673A4 /* wp_logo@2x.png */; };
 		5DEB61B4156FCD3400242C35 /* WPWebView.m in Sources */ = {isa = PBXBuildFile; fileRef = 5DEB61B3156FCD3400242C35 /* WPWebView.m */; };
 		5DEB61B8156FCD5200242C35 /* WPChromelessWebViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 5DEB61B7156FCD5200242C35 /* WPChromelessWebViewController.m */; };
+		5DED118A1887987900EDA25E /* RecommendedBlog.m in Sources */ = {isa = PBXBuildFile; fileRef = 5DED11891887987900EDA25E /* RecommendedBlog.m */; };
 		5DF59C0B1770AE3A00171208 /* UILabel+SuggestSize.m in Sources */ = {isa = PBXBuildFile; fileRef = 5DF59C0A1770AE3A00171208 /* UILabel+SuggestSize.m */; };
 		6E461BAF11C0C06100B07942 /* check@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 6E461BAD11C0C06100B07942 /* check@2x.png */; };
 		6E461BB011C0C06100B07942 /* uncheck@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 6E461BAE11C0C06100B07942 /* uncheck@2x.png */; };
@@ -1625,6 +1626,8 @@
 		5DEB61B3156FCD3400242C35 /* WPWebView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WPWebView.m; sourceTree = "<group>"; };
 		5DEB61B6156FCD5200242C35 /* WPChromelessWebViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WPChromelessWebViewController.h; sourceTree = "<group>"; };
 		5DEB61B7156FCD5200242C35 /* WPChromelessWebViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WPChromelessWebViewController.m; sourceTree = "<group>"; };
+		5DED11881887987900EDA25E /* RecommendedBlog.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RecommendedBlog.h; sourceTree = "<group>"; };
+		5DED11891887987900EDA25E /* RecommendedBlog.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RecommendedBlog.m; sourceTree = "<group>"; };
 		5DF59C091770AE3A00171208 /* UILabel+SuggestSize.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UILabel+SuggestSize.h"; sourceTree = "<group>"; };
 		5DF59C0A1770AE3A00171208 /* UILabel+SuggestSize.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UILabel+SuggestSize.m"; sourceTree = "<group>"; };
 		69187343EC8F435684EFFAF1 /* libPods.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libPods.a; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -2508,6 +2511,8 @@
 		2F706A870DFB229B00B43086 /* Models */ = {
 			isa = PBXGroup;
 			children = (
+				5DED11881887987900EDA25E /* RecommendedBlog.h */,
+				5DED11891887987900EDA25E /* RecommendedBlog.m */,
 				46F84612185A8B7E009D0DA5 /* WPContentViewProvider.h */,
 				5D42A3D4175E7452005CFF05 /* AbstractComment.h */,
 				5D42A3D5175E7452005CFF05 /* AbstractComment.m */,
@@ -5271,6 +5276,7 @@
 				E183EC9A16B16CCF00C2EB11 /* AutosavingIndicatorView.m in Sources */,
 				E1523EB516D3B305002C5A36 /* InstapaperActivity.m in Sources */,
 				E1D0D81616D3B86800E33F4C /* SafariActivity.m in Sources */,
+				5DED118A1887987900EDA25E /* RecommendedBlog.m in Sources */,
 				85495F4817C6D9A500871A7A /* CommentViewController.m in Sources */,
 				E1D0D82916D3D19200E33F4C /* PocketAPI.m in Sources */,
 				E1D0D82A16D3D19200E33F4C /* PocketAPILogin.m in Sources */,

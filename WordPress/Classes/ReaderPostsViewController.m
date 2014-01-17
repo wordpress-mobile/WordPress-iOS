@@ -29,11 +29,17 @@
 #import "InlineComposeView.h"
 #import "ReaderCommentPublisher.h"
 #import "ContextManager.h"
+#import "RecommendedBlog.h"
+#import "ReaderDiscoveryViewController.h"
 
 static CGFloat const RPVCScrollingFastVelocityThreshold = 30.f;
 static CGFloat const RPVCHeaderHeightPhone = 10.f;
 static CGFloat const RPVCMaxImageHeightPercentage = 0.58f;
 static CGFloat const RPVCExtraTableViewHeightPercentage = 2.0f;
+static NSInteger const RPVCRecommendedBlogsSection = 1;
+static NSInteger const RPVCRecommendedBlogsThreshold = 7; // The minimum required number of posts
+static NSInteger const RPVCRecommendedBlogsSectionDefaultInsertionPoint = 4;
+static CGFloat const RPVCRecommendedBlogsCellHeight = 44.0f;
 
 NSString * const ReaderTopicDidChangeNotification = @"ReaderTopicDidChangeNotification";
 NSString * const RPVCDisplayedNativeFriendFinder = @"DisplayedNativeFriendFinder";
@@ -54,6 +60,8 @@ NSString * const RPVCDisplayedNativeFriendFinder = @"DisplayedNativeFriendFinder
 @property (nonatomic) BOOL isShowingReblogForm;
 @property (nonatomic, strong) InlineComposeView *inlineComposeView;
 @property (nonatomic, strong) ReaderCommentPublisher *commentPublisher;
+@property (nonatomic, strong) NSArray *recommendedBlogs;
+@property (nonatomic, assign) NSInteger recommendedBlogsSectionInsertionPoint; // Where in the post list to insert the recommended blogs section.
 
 @end
 
@@ -88,6 +96,11 @@ NSString * const RPVCDisplayedNativeFriendFinder = @"DisplayedNativeFriendFinder
 		_hasMoreContent = YES;
 		self.infiniteScrollEnabled = YES;
         self.incrementalLoadingSupported = YES;
+        
+        if ([self canShowRecommendedBlogs]) {
+            self.recommendedBlogs = [RecommendedBlog recommendedBlogs];
+            self.recommendedBlogsSectionInsertionPoint = RPVCRecommendedBlogsSectionDefaultInsertionPoint;
+        }
         
         [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(readerTopicDidChange:) name:ReaderTopicDidChangeNotification object:nil];
 	}
@@ -159,6 +172,15 @@ NSString * const RPVCDisplayedNativeFriendFinder = @"DisplayedNativeFriendFinder
     self.commentPublisher.delegate = self;
 
     self.tableView.tableFooterView = self.inlineComposeView;
+    
+    if ([self canShowRecommendedBlogs]) {
+        [RecommendedBlog syncRecommendedBlogs:^(NSArray *recommendedBlogs) {
+            self.recommendedBlogs = [RecommendedBlog recommendedBlogs];
+            [self.tableView reloadData];
+        } failure:^(NSError *error) {
+            // fail silently.
+        }];
+    }
 }
 
 - (void)viewWillAppear:(BOOL)animated {
@@ -313,8 +335,9 @@ NSString * const RPVCDisplayedNativeFriendFinder = @"DisplayedNativeFriendFinder
 	if (_readerReblogFormView.superview != nil)
 		return;
 	
-	NSIndexPath *path = [self.tableView indexPathForSelectedRow];
-	_readerReblogFormView.post = (ReaderPost *)[self.resultsController objectAtIndexPath:path];
+	NSIndexPath *indexPath = [self.tableView indexPathForSelectedRow];
+    indexPath = [self restoreResultsControllerIndexPath:indexPath];
+	_readerReblogFormView.post = (ReaderPost *)[self.resultsController objectAtIndexPath:indexPath];
 	
 	CGFloat reblogHeight = [ReaderReblogFormView desiredHeight];
 	CGRect tableFrame = self.tableView.frame;
@@ -415,7 +438,8 @@ NSString * const RPVCDisplayedNativeFriendFinder = @"DisplayedNativeFriendFinder
 
     // scroll the item into view if possible
     NSIndexPath *indexPath = [self.resultsController indexPathForObject:postView.post];
-
+    indexPath = [self adjustResultsControllerIndexPath:indexPath];
+    
     [self.tableView scrollToRowAtIndexPath:indexPath
                           atScrollPosition:UITableViewScrollPositionTop
                                   animated:YES];
@@ -601,19 +625,30 @@ NSString * const RPVCDisplayedNativeFriendFinder = @"DisplayedNativeFriendFinder
 - (void)configureCell:(UITableViewCell *)aCell atIndexPath:(NSIndexPath *)indexPath {
 	if (!aCell)
         return;
+    
+    if ([self isRecommendedBlogIndexPath:indexPath]) {
+        // TODO: configure the cell
+        RecommendedBlog *recBlog = self.recommendedBlogs[indexPath.row];
+        WPTableViewCell *cell = (WPTableViewCell *)aCell;
+        cell.textLabel.text = recBlog.title;
+        cell.detailTextLabel.text = recBlog.reason;
+        cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
+        cell.imageView.image = [UIImage imageNamed:@"wp-logo"];
+        return;
+    }
 
 	ReaderPostTableViewCell *cell = (ReaderPostTableViewCell *)aCell;
 	cell.selectionStyle = UITableViewCellSelectionStyleNone;
 	cell.accessoryType = UITableViewCellAccessoryNone;
 	
-	ReaderPost *post = (ReaderPost *)[self.resultsController objectAtIndexPath:indexPath];
+    NSIndexPath *restoredIndexPath = [self restoreResultsControllerIndexPath:indexPath];
+	ReaderPost *post = (ReaderPost *)[self.resultsController objectAtIndexPath:restoredIndexPath];
 
 	[cell configureCell:post];
     [self setImageForPost:post forCell:cell indexPath:indexPath];
     [self setAvatarForPost:post forCell:cell indexPath:indexPath];
     
     cell.postView.delegate = self;
-
 }
 
 - (UIImage *)imageForURL:(NSURL *)imageURL size:(CGSize)imageSize {
@@ -792,28 +827,174 @@ NSString * const RPVCDisplayedNativeFriendFinder = @"DisplayedNativeFriendFinder
 	}
 }
 
+#pragma mark - RecommendedBlogs
+
+// If the recommendedBlogs section is showing, we need to adjust the indexPath of items
+// from the results controller, splitting section 0 into two and inserting recommended blogs.
+- (NSIndexPath *)adjustResultsControllerIndexPath:(NSIndexPath *)indexPath {
+    NSUInteger row = indexPath.row;
+    NSUInteger section = indexPath.section;
+    NSUInteger recommendedCount = [self.recommendedBlogs count];
+    
+    if (section > 0) {
+        // update the section but not the row.
+        section = section + 2;
+        
+    } else {
+        
+        // Adjust the index path's section and row to account for the recommened blogs
+        if (indexPath.row < RPVCRecommendedBlogsSectionDefaultInsertionPoint) {
+            // no change needed.
+        } else {
+            section = 2;
+            row = row - (self.recommendedBlogsSectionInsertionPoint + recommendedCount);
+        }
+    }
+    
+    indexPath = [NSIndexPath indexPathForRow:row inSection:section];
+    
+    return indexPath;
+}
+
+- (NSIndexPath *)restoreResultsControllerIndexPath:(NSIndexPath *)indexPath {
+    if (indexPath.section == 0) {
+        return indexPath;
+    }
+
+    // Adjust the index path's section and row to account for the recommened blogs
+    NSUInteger row = indexPath.row;
+    NSUInteger section = indexPath.section;
+    
+    if (indexPath.section > 1) {
+        section = section - 2;
+        if (indexPath.section == 2) {
+            row = row + self.recommendedBlogsSectionInsertionPoint;
+        }
+    }
+    
+    indexPath = [NSIndexPath indexPathForRow:row inSection:section];
+    
+    return indexPath;
+}
+
+// Check if the specified indexPath belongs to the inserted recommended blogs section
+- (BOOL)isRecommendedBlogIndexPath:(NSIndexPath *)indexPath {
+    if (indexPath.section == RPVCRecommendedBlogsSection) {
+        return YES;
+    }
+    return NO;
+}
+
+// Subclasses can over ride and return NO to avoid showing recommendations.
+- (BOOL)canShowRecommendedBlogs {
+    return YES;
+}
+
+- (BOOL)shouldShowRecommendedBlogsSection {
+    if (![self canShowRecommendedBlogs]) {
+        return NO;
+    }
+    
+    if ([self.resultsController.fetchedObjects count] < RPVCRecommendedBlogsThreshold) {
+        return NO;
+    }
+    
+    if ([self.recommendedBlogs count] == 0) {
+        return NO;
+    }
+    
+    return YES;
+}
 
 #pragma mark -
 #pragma mark TableView Methods
 
+- (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
+    if ([self shouldShowRecommendedBlogsSection]) {
+        NSUInteger recBlogsCount = [self.recommendedBlogs count];
+        
+        if (section == 0) {
+            return self.recommendedBlogsSectionInsertionPoint;
+        } else if (section == 1) {
+            return recBlogsCount;
+        } else if (section == 2) {
+            return [super tableView:tableView numberOfRowsInSection:0] - (self.recommendedBlogsSectionInsertionPoint + recBlogsCount);
+        } else {
+            return [super tableView:tableView numberOfRowsInSection:(section - 2)];
+        }
+    }
+    
+    return [super tableView:tableView numberOfRowsInSection:section];
+}
+
+- (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
+    if (self.shouldShowRecommendedBlogsSection) {
+        NSInteger sections = [super numberOfSectionsInTableView:tableView];
+        return sections + 2;
+    }
+    return [super numberOfSectionsInTableView:tableView];
+}
+
 - (CGFloat)tableView:(UITableView *)tableView estimatedHeightForRowAtIndexPath:(NSIndexPath *)indexPath {
-     return [[self cellClass] cellHeightForPost:[self.resultsController objectAtIndexPath:indexPath] withWidth:self.tableView.bounds.size.width];
+    if ([self isRecommendedBlogIndexPath:indexPath]) {
+        return RPVCRecommendedBlogsCellHeight;
+    }
+    indexPath = [self restoreResultsControllerIndexPath:indexPath];
+    return [[self cellClass] cellHeightForPost:[self.resultsController objectAtIndexPath:indexPath] withWidth:self.tableView.bounds.size.width];
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
+    if ([self isRecommendedBlogIndexPath:indexPath]) {
+        return RPVCRecommendedBlogsCellHeight;
+    }
+    indexPath = [self restoreResultsControllerIndexPath:indexPath];
     return [[self cellClass] cellHeightForPost:[self.resultsController objectAtIndexPath:indexPath] withWidth:self.tableView.bounds.size.width];
 }
 
 - (UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section {
+    if (section == RPVCRecommendedBlogsSection) {
+        return nil;
+        // TODO:
+        // return the view for the recommended blogs section if needed.
+    }
     return [[UIView alloc] initWithFrame:CGRectZero];
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section {
+    if (section == RPVCRecommendedBlogsSection) {
+        return RPVCRecommendedBlogsCellHeight;
+    }
+    
     if (IS_IPHONE)
         return RPVCHeaderHeightPhone;
     
     return [super tableView:tableView heightForHeaderInSection:section];
 }
+
+- (NSString *)tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section {
+    if ([self shouldShowRecommendedBlogsSection] && section == RPVCRecommendedBlogsSection) {
+        return NSLocalizedString(@"You May Like", @"Title of the recommended blogs section in the reader post list.");
+    }
+    return nil;
+}
+
+- (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
+    // Return the cell but do not make any changes to the indexPath.  That happens else where.
+    UITableViewCell *cell;
+    
+    if ([self shouldShowRecommendedBlogsSection] && indexPath.section == RPVCRecommendedBlogsSection) {
+        static NSString *RecommenedBlogCellIdentifierc = @"RecommenedBlogCellIdentifierc";
+        cell = [tableView dequeueReusableCellWithIdentifier:RecommenedBlogCellIdentifierc];
+        if (!cell) {
+            cell = [[WPTableViewCell alloc] initWithStyle:UITableViewCellStyleSubtitle reuseIdentifier:RecommenedBlogCellIdentifierc];
+        }
+        [self configureCell:cell atIndexPath:indexPath];
+        return cell;
+    }
+    
+    return [super tableView:tableView cellForRowAtIndexPath:indexPath];
+}
+
 
 - (NSIndexPath *)tableView:(UITableView *)tableView willSelectRowAtIndexPath:(NSIndexPath *)indexPath {
 	if (_readerReblogFormView.superview != nil) {
@@ -837,6 +1018,19 @@ NSString * const RPVCDisplayedNativeFriendFinder = @"DisplayedNativeFriendFinder
         [tableView deselectRowAtIndexPath:indexPath animated:YES];
     }
 
+    if ([self isRecommendedBlogIndexPath:indexPath]) {
+        // TODO: show the recommended blog viewcontroller
+        [tableView deselectRowAtIndexPath:indexPath animated:YES];
+        
+        ReaderPost *post = [self.resultsController.fetchedObjects objectAtIndex:[self restoreResultsControllerIndexPath:indexPath].row];
+        ReaderDiscoveryViewController *controller = [[ReaderDiscoveryViewController alloc] init];
+        controller.post = post;
+        [self.navigationController pushViewController:controller animated:YES];
+        
+        return;
+    }
+    indexPath = [self restoreResultsControllerIndexPath:indexPath];
+    
     // Pass the image forward
 	ReaderPost *post = [self.resultsController.fetchedObjects objectAtIndex:indexPath.row];
     ReaderPostTableViewCell *cell = (ReaderPostTableViewCell *)[self.tableView cellForRowAtIndexPath:indexPath];
@@ -1026,6 +1220,7 @@ NSString * const RPVCDisplayedNativeFriendFinder = @"DisplayedNativeFriendFinder
     [cell.postView setFeaturedImage:image];
     
     // Update the detail view if it's open and applicable
+    indexPath = [self restoreResultsControllerIndexPath:indexPath];
     ReaderPost *post = [self.resultsController objectAtIndexPath:indexPath];
     
     if (post == self.detailController.post) {

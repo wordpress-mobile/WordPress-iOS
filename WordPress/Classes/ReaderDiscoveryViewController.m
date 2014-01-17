@@ -20,6 +20,10 @@
 
 @implementation ReaderDiscoveryViewController
 
+- (BOOL)canShowRecommendedBlogs {
+    return NO;
+}
+
 - (Class)cellClass {
     return [ReaderDiscoveryTableViewCell class];
 }
