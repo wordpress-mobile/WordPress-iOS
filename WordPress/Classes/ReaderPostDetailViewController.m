@@ -615,7 +615,7 @@ typedef enum {
 	[postView updateActionButtons];
 }
 
-- (void)postView:(ReaderPostView *)postView didReceiveFollowAction:(id)sender {
+- (void)contentView:(ReaderPostView *)postView didReceiveFollowAction:(id)sender {
     UIButton *followButton = (UIButton *)sender;
     ReaderPost *post = postView.post;
     

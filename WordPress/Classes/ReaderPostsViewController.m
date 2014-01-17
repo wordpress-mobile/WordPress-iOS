@@ -386,7 +386,7 @@ NSString * const RPVCDisplayedNativeFriendFinder = @"DisplayedNativeFriendFinder
 	[postView updateActionButtons];
 }
 
-- (void)postView:(ReaderPostView *)postView didReceiveFollowAction:(id)sender {
+- (void)contentView:(ReaderPostView *)postView didReceiveFollowAction:(id)sender {
     UIButton *followButton = (UIButton *)sender;
     ReaderPostTableViewCell *cell = [ReaderPostTableViewCell cellForSubview:sender];
     ReaderPost *post = postView.post;
