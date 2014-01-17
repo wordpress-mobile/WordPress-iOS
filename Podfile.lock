@@ -12,10 +12,10 @@ PODS:
     - DTFoundation/Core (~> 1.6.0)
     - DTFoundation/DTHTMLParser (~> 1.6.0)
     - DTFoundation/UIKit (~> 1.6.0)
-  - DTFoundation/Core (1.6.0)
-  - DTFoundation/DTHTMLParser (1.6.0):
+  - DTFoundation/Core (1.6.1)
+  - DTFoundation/DTHTMLParser (1.6.1):
     - DTFoundation/Core
-  - DTFoundation/UIKit (1.6.0):
+  - DTFoundation/UIKit (1.6.1):
     - DTFoundation/Core
   - EmailChecker (0.1)
   - google-plus-ios-sdk (1.3.0)
@@ -38,7 +38,7 @@ PODS:
   - WordPressApi (0.0.1):
     - AFNetworking (>= 1.0)
     - wpxmlrpc (~> 0.1)
-  - wpxmlrpc (0.2)
+  - wpxmlrpc (0.3)
 
 DEPENDENCIES:
   - AFNetworking (= 1.2.0)
@@ -60,7 +60,7 @@ DEPENDENCIES:
   - SVProgressHUD (~> 0.9)
   - UIDeviceIdentifier (~> 0.1)
   - WordPressApi (from `https://github.com/koke/WordPressApi.git`)
-  - wpxmlrpc (~> 0.2)
+  - wpxmlrpc (~> 0.3)
 
 EXTERNAL SOURCES:
   EmailChecker:
@@ -79,7 +79,7 @@ SPEC CHECKSUMS:
   CocoaLumberjack: d62b2c37c8bdac37094d710bfa978eb6e2fe650e
   CrashlyticsLumberjack: 3a1647407e3c980545175e7a56d073c58beeab03
   DTCoreText: e48c1526945272133b8c935c40da3f3e79836f1b
-  DTFoundation: 5bfec187ed495cea33c47dc64e8ee623e8beb353
+  DTFoundation: 23d39b258d481221167cd4bf3df86ff3f22b1f55
   EmailChecker: e909e6d113fac7ad5e3c304fabce30fc4a79c80e
   google-plus-ios-sdk: 38378c4094a72a4fcdd5254c03fdd1813b345fb9
   HockeySDK: 685e6ca0b78668ef8b595fba17fe087ea6074b05
@@ -95,6 +95,6 @@ SPEC CHECKSUMS:
   SVProgressHUD: 03d4845ec8e64591726428a08236c6a5489d45f8
   UIDeviceIdentifier: 64036321b0f77ff41b4200002f0c138431c00d86
   WordPressApi: 76f9d7752b090197c172e2c5e6fccbffbaf7c336
-  wpxmlrpc: 7c3db4b1e1ab6087d6d5cc5d00ee16d8ee4654ea
+  wpxmlrpc: 1042b13566bac04112fdd1e16808478b3a21b080
 
-COCOAPODS: 0.28.0
+COCOAPODS: 0.29.0
