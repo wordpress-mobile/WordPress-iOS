@@ -51,13 +51,6 @@ typedef enum {
 } PostSettingsRow;
 
 typedef enum {
-    PickerTagStatus = 0,
-    PickerTagVisibility,
-    PickerTagDate,
-    PickerTagFormat
-} PickerTag;
-
-typedef enum {
     ActionSheetTagPhoto = 0,
     ActionSheetTagResizePhoto
 } ActionSheetTag;
@@ -82,7 +75,6 @@ static NSString *const RemoveGeotagCellIdentifier = @"RemoveGeotagCellIdentifier
 @property (nonatomic, strong) WPAlertView *customSizeAlert;
 
 // Post tags, status
-@property (nonatomic, strong) IBOutlet WPTableViewCell *visibilityTableViewCell;
 @property (nonatomic, strong) IBOutlet UILabel *visibilityLabel;
 @property (nonatomic, strong) IBOutlet UILabel *postFormatLabel;
 @property (nonatomic, strong) IBOutlet UITextField *passwordTextField;
@@ -751,7 +743,6 @@ static NSString *const RemoveGeotagCellIdentifier = @"RemoveGeotagCellIdentifier
 
 
 - (void)configureAndShowDatePicker {
-    self.datePickerView.tag = PickerTagDate;
     if (self.apost.dateCreated) {
         self.datePickerView.date = self.apost.dateCreated;
     } else {
@@ -1196,51 +1187,16 @@ static NSString *const RemoveGeotagCellIdentifier = @"RemoveGeotagCellIdentifier
 }
 
 - (NSInteger)pickerView:(UIPickerView *)aPickerView numberOfRowsInComponent:(NSInteger)component {
-    if (aPickerView.tag == PickerTagStatus) {
-        return [self.statusList count];
-    } else if (aPickerView.tag == PickerTagVisibility) {
-        return [self.visibilityList count];
-    } else if (aPickerView.tag == PickerTagFormat) {
-        return [self.formatsList count];
-    }
     return 0;
 }
 
 #pragma mark - UIPickerViewDelegate
 
 - (NSString *)pickerView:(UIPickerView *)aPickerView titleForRow:(NSInteger)row forComponent:(NSInteger)component {
-    if (aPickerView.tag == PickerTagStatus) {
-        return [self.statusList objectAtIndex:row];
-    } else if (aPickerView.tag == PickerTagVisibility) {
-        return [self.visibilityList objectAtIndex:row];
-    } else if (aPickerView.tag == PickerTagFormat) {
-        return [self.formatsList objectAtIndex:row];
-    }
-
     return @"";
 }
 
 - (void)pickerView:(UIPickerView *)aPickerView didSelectRow:(NSInteger)row inComponent:(NSInteger)component {
-    if (aPickerView.tag == PickerTagStatus) {
-        self.apost.statusTitle = [self.statusList objectAtIndex:row];
-    } else if (aPickerView.tag == PickerTagVisibility) {
-        NSString *visibility = [self.visibilityList objectAtIndex:row];
-        if ([visibility isEqualToString:NSLocalizedString(@"Private", @"Post privacy status in the Post Editor/Settings area (compare with WP core translations).")]) {
-            self.apost.status = @"private";
-            self.apost.password = nil;
-        } else {
-            if ([self.apost.status isEqualToString:@"private"]) {
-                self.apost.status = @"publish";
-            }
-            if ([visibility isEqualToString:NSLocalizedString(@"Password protected", @"Post password protection in the Post Editor/Settings area (compare with WP core translations).")]) {
-                self.apost.password = @"";
-            } else {
-                self.apost.password = nil;
-            }
-        }
-    } else if (aPickerView.tag == PickerTagFormat) {
-        self.post.postFormatText = [self.formatsList objectAtIndex:row];
-    }
     [self.tableView reloadData];
 }
 
@@ -1254,40 +1210,27 @@ static NSString *const RemoveGeotagCellIdentifier = @"RemoveGeotagCellIdentifier
     if (IS_IPAD) {
         UIViewController *fakeController = [[UIViewController alloc] init];
         
-        if (picker.tag == PickerTagDate) {
-            fakeController.preferredContentSize = CGSizeMake(320.0f, 256.0f);
+        fakeController.preferredContentSize = CGSizeMake(320.0f, 256.0f);
 
-            UIButton *button = [[UIButton alloc] init];
-            [button addTarget:self action:@selector(removeDate) forControlEvents:UIControlEventTouchUpInside];
-            [button setBackgroundImage:[[UIImage imageNamed:@"keyboardButton-ios7"] stretchableImageWithLeftCapWidth:5.0f topCapHeight:0.0f] forState:UIControlStateNormal];
-            [button setBackgroundImage:[[UIImage imageNamed:@"keyboardButtonHighlighted-ios7"] stretchableImageWithLeftCapWidth:5.0f topCapHeight:0.0f] forState:UIControlStateNormal];
-            [button setTitle:[NSString stringWithFormat:@" %@ ", NSLocalizedString(@"Publish Immediately", @"Post publishing status in the Post Editor/Settings area (compare with WP core translations).")] forState:UIControlStateNormal];            [button sizeToFit];
-            CGPoint buttonCenter = button.center;
-            buttonCenter.x = CGRectGetMidX(picker.frame);
-            button.center = buttonCenter;
+        UIButton *button = [[UIButton alloc] init];
+        [button addTarget:self action:@selector(removeDate) forControlEvents:UIControlEventTouchUpInside];
+        [button setBackgroundImage:[[UIImage imageNamed:@"keyboardButton-ios7"] stretchableImageWithLeftCapWidth:5.0f topCapHeight:0.0f] forState:UIControlStateNormal];
+        [button setBackgroundImage:[[UIImage imageNamed:@"keyboardButtonHighlighted-ios7"] stretchableImageWithLeftCapWidth:5.0f topCapHeight:0.0f] forState:UIControlStateNormal];
+        [button setTitle:[NSString stringWithFormat:@" %@ ", NSLocalizedString(@"Publish Immediately", @"Post publishing status in the Post Editor/Settings area (compare with WP core translations).")] forState:UIControlStateNormal];            [button sizeToFit];
+        CGPoint buttonCenter = button.center;
+        buttonCenter.x = CGRectGetMidX(picker.frame);
+        button.center = buttonCenter;
 
-            [fakeController.view addSubview:button];
-            CGRect pickerFrame = picker.frame;
-            pickerFrame.origin.y = CGRectGetMaxY(button.frame);
-            picker.frame = pickerFrame;
-        } else {
-            fakeController.preferredContentSize = CGSizeMake(320.0f, 216.0f);
-        }
+        [fakeController.view addSubview:button];
+        CGRect pickerFrame = picker.frame;
+        pickerFrame.origin.y = CGRectGetMaxY(button.frame);
+        picker.frame = pickerFrame;
+
         
         [fakeController.view addSubview:picker];
         self.popover = [[UIPopoverController alloc] initWithContentViewController:fakeController];
         
-        CGRect popoverRect;
-        if (picker.tag == PickerTagStatus) {
-            popoverRect = [self.view convertRect:self.statusLabel.frame fromView:[self.statusLabel superview]];
-        } else if (picker.tag == PickerTagVisibility) {
-            popoverRect = [self.view convertRect:self.visibilityLabel.frame fromView:[self.visibilityLabel superview]];
-        } else if (picker.tag == PickerTagFormat) {
-            popoverRect = [self.view convertRect:self.postFormatLabel.frame fromView:[self.postFormatLabel superview]];
-        } else {
-            popoverRect = [self.view convertRect:self.publishOnDateLabel.frame fromView:[self.publishOnDateLabel superview]];
-        }
-
+        CGRect popoverRect = [self.view convertRect:self.publishOnDateLabel.frame fromView:[self.publishOnDateLabel superview]];
         popoverRect.size.width = 100.0f;
         [self.popover presentPopoverFromRect:popoverRect inView:self.view permittedArrowDirections:UIPopoverArrowDirectionAny animated:YES];
     } else {
