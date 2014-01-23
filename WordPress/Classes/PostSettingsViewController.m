@@ -60,13 +60,10 @@ static NSString *const LocationServicesCellIdentifier = @"LocationServicesCellId
 static NSString *const TableViewActivityCellIdentifier = @"TableViewActivityCellIdentifier";
 static NSString *const RemoveGeotagCellIdentifier = @"RemoveGeotagCellIdentifier";
 
-@interface PostSettingsViewController () <UINavigationControllerDelegate, UIImagePickerControllerDelegate,
-                                          UIPopoverControllerDelegate, UIPickerViewDelegate, UIPickerViewDataSource, UITextFieldDelegate, CLLocationManagerDelegate, UIActionSheetDelegate>
+@interface PostSettingsViewController () <UINavigationControllerDelegate, UIImagePickerControllerDelegate, UIPopoverControllerDelegate, UIPickerViewDelegate, UIPickerViewDataSource, UITextFieldDelegate, CLLocationManagerDelegate, UIActionSheetDelegate>
 
 @property (nonatomic, strong) NSMutableArray *sections;
-@property (nonatomic, weak) IBOutlet UITableView *tableView;
 @property (nonatomic, assign) BOOL triedAuthOnce;
-@property (nonatomic, assign) BOOL isNewCategory;
 @property (nonatomic, strong) NSDictionary *currentImageMetadata;
 @property (nonatomic, assign) BOOL isShowingResizeActionSheet;
 @property (nonatomic, assign) BOOL isShowingCustomSizeAlert;
@@ -76,20 +73,17 @@ static NSString *const RemoveGeotagCellIdentifier = @"RemoveGeotagCellIdentifier
 
 // Post tags, status
 @property (nonatomic, strong) IBOutlet UILabel *visibilityLabel;
-@property (nonatomic, strong) IBOutlet UILabel *postFormatLabel;
 @property (nonatomic, strong) IBOutlet UITextField *passwordTextField;
-@property (nonatomic, strong) IBOutlet UITableViewCell *postFormatTableViewCell;
-@property (nonatomic, strong) UILabel *statusLabel;
 @property (nonatomic, strong) UILabel *publishOnDateLabel;
 @property (nonatomic, strong) UITextField *tagsTextField;
 @property (nonatomic, strong) NSArray *statusList;
 @property (nonatomic, strong) NSArray *visibilityList;
 @property (nonatomic, strong) NSArray *formatsList;
-@property (nonatomic, strong) UIPickerView *pickerView;
 @property (nonatomic, strong) UIActionSheet *actionSheet;
 @property (nonatomic, strong) UIDatePicker *datePickerView;
 @property (nonatomic, strong) UIPopoverController *popover;
-@property (nonatomic, assign) BOOL isShowingKeyboard, blogSupportsFeaturedImage;
+@property (nonatomic, assign) BOOL isShowingKeyboard;
+@property (nonatomic, assign) BOOL blogSupportsFeaturedImage;
 
 // Geotagging
 @property (nonatomic, strong) IBOutlet MKMapView *mapView;
@@ -100,7 +94,7 @@ static NSString *const RemoveGeotagCellIdentifier = @"RemoveGeotagCellIdentifier
 @property (nonatomic, strong) CLGeocoder *reverseGeocoder;
 @property (nonatomic, strong) PostAnnotation *annotation;
 @property (nonatomic, strong) NSString *address;
-@property (nonatomic, assign) BOOL isUpdatingLocation, isUploadingFeaturedImage;
+@property (nonatomic, assign) BOOL isUpdatingLocation;
 
 // Featured image
 @property (nonatomic, strong) IBOutlet UILabel *visibilityTitleLabel;
@@ -108,11 +102,7 @@ static NSString *const RemoveGeotagCellIdentifier = @"RemoveGeotagCellIdentifier
 @property (nonatomic, strong) IBOutlet UIImageView *featuredImageView;
 @property (nonatomic, strong) IBOutlet WPTableViewActivityCell *featuredImageTableViewCell;
 @property (nonatomic, strong) IBOutlet UIActivityIndicatorView *featuredImageSpinner;
-
-- (void)reloadData;
-- (void)featuredImageUploadFailed: (NSNotification *)notificationInfo;
-- (void)featuredImageUploadSucceeded: (NSNotification *)notificationInfo;
-- (void)showFeaturedImageUploader: (NSNotification *)notificationInfo;
+@property (nonatomic, assign) BOOL isUploadingFeaturedImage;
 
 @end
 
@@ -166,7 +156,9 @@ static NSString *const RemoveGeotagCellIdentifier = @"RemoveGeotagCellIdentifier
     NSMutableArray *allStatuses = [NSMutableArray arrayWithArray:[self.apost availableStatuses]];
     [allStatuses removeObject:NSLocalizedString(@"Private", @"Privacy setting for posts set to 'Private'. Should be the same as in core WP.")];
     self.statusList = [NSArray arrayWithArray:allStatuses];
-    self.visibilityList = [NSArray arrayWithObjects:NSLocalizedString(@"Public", @"Privacy setting for posts set to 'Public' (default). Should be the same as in core WP."), NSLocalizedString(@"Password protected", @"Privacy setting for posts set to 'Password protected'. Should be the same as in core WP."), NSLocalizedString(@"Private", @"Privacy setting for posts set to 'Private'. Should be the same as in core WP."), nil];
+    self.visibilityList = @[NSLocalizedString(@"Public", @"Privacy setting for posts set to 'Public' (default). Should be the same as in core WP."),
+                           NSLocalizedString(@"Password protected", @"Privacy setting for posts set to 'Password protected'. Should be the same as in core WP."),
+                           NSLocalizedString(@"Private", @"Privacy setting for posts set to 'Private'. Should be the same as in core WP.")];
     self.formatsList = self.post.blog.sortedPostFormatNames;
 
     self.isShowingKeyboard = NO;
@@ -178,12 +170,7 @@ static NSString *const RemoveGeotagCellIdentifier = @"RemoveGeotagCellIdentifier
 		pickerFrame = CGRectMake(0.0f, 44.0f, 320.0f, 216.0f);
     }
 
-    self.pickerView = [[UIPickerView alloc] initWithFrame:pickerFrame];
-    self.pickerView.delegate = self;
-    self.pickerView.dataSource = self;
-    self.pickerView.showsSelectionIndicator = YES;
-
-    self.datePickerView = [[UIDatePicker alloc] initWithFrame:self.pickerView.frame];
+    self.datePickerView = [[UIDatePicker alloc] initWithFrame:pickerFrame];
     self.datePickerView.minuteInterval = 5;
     [self.datePickerView addTarget:self action:@selector(datePickerChanged) forControlEvents:UIControlEventValueChanged];
 
@@ -688,19 +675,6 @@ static NSString *const RemoveGeotagCellIdentifier = @"RemoveGeotagCellIdentifier
 
 - (UITableViewCell *)configureGeolocationCellForIndexPath:(NSIndexPath *)indexPath {
     return [self getGeolocationCellWithIndexPath:indexPath forTableView:self.tableView];
-    //    UITableViewCell *cell;
-    //
-    //    if (NO) {
-    //        if (indexPath.row == 0) {
-    //
-    //        } else {
-    //
-    //        }
-    //    } else {
-    //
-    //    }
-    //    
-    //    return cell;
 }
 
 - (WPTableViewCell *)getWPTableViewCell {
@@ -1851,9 +1825,6 @@ static NSString *const RemoveGeotagCellIdentifier = @"RemoveGeotagCellIdentifier
         }
 	}
 }
-
-
-#pragma mark - Private Methods
 
 - (NSString *)titleForVisibility {
     if (self.apost.password) {
