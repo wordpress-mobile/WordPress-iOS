@@ -186,17 +186,21 @@ static NSString *const CameraPlusImagesNotification = @"CameraPlusImagesNotifica
         NSString *URLString = [url absoluteString];
         DDLogInfo(@"Application launched with URL: %@", URLString);
 
-        if ([URLString rangeOfString:@"wpcom_signup_completed"].length) {
+        if ([URLString rangeOfString:@"newpost"].length) {
+            // Create a new post from data shared by a third party application.
             NSDictionary *params = [[url query] dictionaryFromQueryString];
             DDLogInfo(@"%@", params);
-            [[NSNotificationCenter defaultCenter] postNotificationName:@"wpcomSignupNotification" object:nil userInfo:params];
-            returnValue = YES;
+            if ([params count]) {
+                [self showPostTabWithOptions:params];
+                returnValue = YES;
+            }
         } else if ([URLString rangeOfString:@"viewpost"].length) {
+            // View the post specified by the shared blog ID and post ID
             NSDictionary *params = [[url query] dictionaryFromQueryString];
             
             if (params.count) {
-                NSUInteger *blogId = [[params valueForKey:@"blogId"] integerValue];
-                NSUInteger *postId = [[params valueForKey:@"postId"] integerValue];
+                NSUInteger *blogId = [[params numberForKey:@"blogId"] integerValue];
+                NSUInteger *postId = [[params numberForKey:@"postId"] integerValue];
                 
                 [WPMobileStats flagSuperProperty:StatsPropertyReaderOpenedFromExternalURL];
                 [WPMobileStats incrementSuperProperty:StatsPropertyReaderOpenedFromExternalURLCount];
@@ -441,12 +445,24 @@ static NSString *const CameraPlusImagesNotification = @"CameraPlusImagesNotifica
 }
 
 - (void)showPostTab {
+    [self showPostTabWithOptions:nil];
+}
+
+- (void)showPostTabWithOptions:(NSDictionary *)options {
     UIViewController *presenter = self.window.rootViewController;
     if (presenter.presentedViewController) {
         [presenter dismissViewControllerAnimated:NO completion:nil];
     }
     
-    EditPostViewController *editPostViewController = [[EditPostViewController alloc] initWithDraftForLastUsedBlog];
+    EditPostViewController *editPostViewController;
+    if (!options) {
+        editPostViewController = [[EditPostViewController alloc] initWithDraftForLastUsedBlog];
+    } else {
+        editPostViewController = [[EditPostViewController alloc] initWithTitle:[options stringForKey:@"title"]
+                                                                    andContent:[options stringForKey:@"content"]
+                                                                       andTags:[options stringForKey:@"tags"]
+                                                                      andImage:[options stringForKey:@"image"]];
+    }
     editPostViewController.editorOpenedBy = StatsPropertyPostDetailEditorOpenedOpenedByTabBarButton;
     UINavigationController *navController = [[UINavigationController alloc] initWithRootViewController:editPostViewController];
     navController.modalPresentationStyle = UIModalPresentationCurrentContext;
