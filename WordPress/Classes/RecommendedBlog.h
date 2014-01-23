@@ -16,6 +16,7 @@
 @property (nonatomic, strong) NSString *title;
 @property (nonatomic, strong) NSString *titleShort;
 @property (nonatomic, strong) NSString *domain;
+@property (nonatomic, assign) BOOL isFollowing;
 
 + (void)syncRecommendedBlogs:(void (^)(NSArray *recommendedBlogs))success failure:(void (^)(NSError *error))failure;
 + (NSArray *)recommendedBlogs;
@@ -23,5 +24,6 @@
 - (id)initWithDictionary:(NSDictionary *)dictionary;
 - (NSDictionary *)dictionaryFromItem;
 - (void)updateFromDictionary:(NSDictionary *)dictionary;
+- (void)toggleFollowingWithSuccess:(void (^)())success failure:(void (^)(NSError *error))failure;
 
 @end

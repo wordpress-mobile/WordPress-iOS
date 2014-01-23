@@ -26,6 +26,7 @@
     self.title = NSLocalizedString(@"You Might Like", @"");
     
     [self refreshTableHeaderView];
+    self.attributionView.followButton.selected = !self.recommendedBlog.isFollowing;
 }
 
 - (BOOL)canShowRecommendedBlogs {
@@ -49,18 +50,15 @@
 }
 
 - (void)followAction:(id)sender {
-    // TODO: Handle follow taps
-//    UIButton *followButton = self.attributionView.followButton;
-//    ReaderPost *post = self.post;
-//    if (![post isFollowable])
-//        return;
-//    
-//    followButton.selected = ![post.isFollowing boolValue]; // Set it optimistically
-//	[post toggleFollowingWithSuccess:^{
-//	} failure:^(NSError *error) {
-//		DDLogError(@"Error Following Blog : %@", [error localizedDescription]);
-//		[followButton setSelected:[post.isFollowing boolValue]];
-//	}];
+    UIButton *followButton = self.attributionView.followButton;
+    followButton.selected = !self.recommendedBlog.isFollowing;
+    
+    [self.recommendedBlog toggleFollowingWithSuccess:^{
+        // noop
+    } failure:^(NSError *error) {
+        DDLogError(@"Error toggling follow of recommended blog: %@", error);
+        followButton.selected = self.recommendedBlog.isFollowing;
+    }];
 }
 
 - (void)trackSyncEvent {

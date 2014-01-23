@@ -11,6 +11,8 @@
 #import "WPAccount.h"
 
 NSString * const RecommendedBlogsKey = @"RecommendedBlogsKey";
+NSString * const RecommendedBlogsExcludedIDsKey = @"RecommendedBlogsExcludedIDsKey";
+NSInteger const RecommendedBlogsMaxExcludedIDs = 50;
 
 @implementation RecommendedBlog
 
@@ -25,13 +27,17 @@ NSString * const RecommendedBlogsKey = @"RecommendedBlogsKey";
         api = [WordPressComApi anonymousApi];
     }
     
+    NSArray *excludedIDs = [[NSUserDefaults standardUserDefaults] arrayForKey:RecommendedBlogsExcludedIDsKey];
+    NSString *excludedIDsStr = [excludedIDs componentsJoinedByString:@","];
+    
 	[api getPath:@"read/recommendations/mine/"
-      parameters:@{@"number":@3}
+      parameters:@{@"number":@3, @"exclude":excludedIDsStr}
          success:^(AFHTTPRequestOperation *operation, id responseObject) {
              
              NSArray *results = [responseObject arrayForKey:@"blogs"];
              if (results) {
                  [[NSUserDefaults standardUserDefaults] setObject:results forKey:RecommendedBlogsKey];
+                 [[self class] updateExcludedRecommendedBlogIDs:results];
              }
              
              if (success) {
@@ -58,8 +64,28 @@ NSString * const RecommendedBlogsKey = @"RecommendedBlogsKey";
     return recommendedBlogs;
 }
 
++ (void)updateExcludedRecommendedBlogIDs:(NSArray *)array {
+    NSArray *arr = [[NSUserDefaults standardUserDefaults] arrayForKey:RecommendedBlogsExcludedIDsKey];
+    if (!arr) {
+        arr = [NSArray array];
+    }
+    NSMutableArray *excludedIDs = [arr mutableCopy];
+    
+    for (NSDictionary *dict in array) {
+        NSString *blogID = [dict stringForKey:@"blog_id"];
+        [excludedIDs insertObject:blogID atIndex:0];
+    }
+    
+    while ([excludedIDs count] > RecommendedBlogsMaxExcludedIDs) {
+        [excludedIDs removeLastObject];
+    }
+    
+    [[NSUserDefaults standardUserDefaults] setObject:excludedIDs forKey:RecommendedBlogsExcludedIDsKey];
+    [[NSUserDefaults standardUserDefaults] synchronize];
+}
 
-#pragma mark - 
+
+#pragma mark -
 
 - (id)initWithDictionary:(NSDictionary *)dictionary {
     self = [super init];
@@ -76,7 +102,8 @@ NSString * const RecommendedBlogsKey = @"RecommendedBlogsKey";
              @"reason":self.reason,
              @"title":self.title,
              @"title_short":self.titleShort,
-             @"blog_domain":self.domain
+             @"blog_domain":self.domain,
+             @"following":[NSNumber numberWithBool:self.isFollowing]
              };
 }
 
@@ -87,6 +114,33 @@ NSString * const RecommendedBlogsKey = @"RecommendedBlogsKey";
     self.title = [dictionary stringForKey:@"title"];
     self.titleShort = [dictionary stringForKey:@"title_short"];
     self.domain = [dictionary stringForKey:@"blog_domain"];
+    self.isFollowing = [[dictionary numberForKey:@"following"] boolValue];
+}
+
+- (void)toggleFollowingWithSuccess:(void (^)())success failure:(void (^)(NSError *error))failure {
+    BOOL following = !self.isFollowing;
+	self.isFollowing = following;
+	
+	NSString *path = nil;
+	if (self.isFollowing) {
+		path = [NSString stringWithFormat:@"sites/%d/follows/new", self.siteID];
+	} else {
+		path = [NSString stringWithFormat:@"sites/%d/follows/mine/delete", self.siteID];
+	}
+	
+	[[[WPAccount defaultWordPressComAccount] restApi] postPath:path
+                                                    parameters:nil
+                                                       success:^(AFHTTPRequestOperation *operation, id responseObject) {
+                                                           if(success) {
+                                                               success();
+                                                           }
+                                                       } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+                                                           self.isFollowing = !following;
+                                                           
+                                                           if(failure) {
+                                                               failure(error);
+                                                           }
+                                                       }];
 }
 
 @end

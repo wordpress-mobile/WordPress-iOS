@@ -203,6 +203,7 @@ NSString * const RPVCDisplayedNativeFriendFinder = @"DisplayedNativeFriendFinder
             [self.tableView reloadRowsAtIndexPaths:mArr withRowAnimation:UITableViewRowAnimationFade];
         } failure:^(NSError *error) {
             // fail silently.
+            DDLogError(@"Error syncing recommended blogs: %@", error);
         }];
     }
 }
