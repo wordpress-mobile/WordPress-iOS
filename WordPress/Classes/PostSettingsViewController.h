@@ -10,7 +10,7 @@
 #import <UIKit/UIKit.h>
 #import "AbstractPost.h"
 
-@interface PostSettingsViewController : UIViewController <UITableViewDelegate, UITableViewDataSource>
+@interface PostSettingsViewController : UITableViewController
 
 @property (nonatomic, strong) NSString *statsPrefix;
 
