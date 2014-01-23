@@ -909,7 +909,7 @@ NSString * const RPVCDisplayedNativeFriendFinder = @"DisplayedNativeFriendFinder
     return NO;
 }
 
-// Subclasses can over ride and return NO to avoid showing recommendations.
+// Subclasses can override and return NO to avoid showing recommendations.
 - (BOOL)canShowRecommendedBlogs {
     return YES;
 }
