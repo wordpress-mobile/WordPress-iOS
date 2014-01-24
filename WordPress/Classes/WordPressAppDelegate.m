@@ -218,7 +218,6 @@ static NSString *const CameraPlusImagesNotification = @"CameraPlusImagesNotifica
 - (void)applicationWillTerminate:(UIApplication *)application {
     DDLogInfo(@"%@ %@", self, NSStringFromSelector(_cmd));
     
-    [UIApplication sharedApplication].applicationIconBadgeNumber = 0;
     [WPMobileStats endSession];
 }
 
