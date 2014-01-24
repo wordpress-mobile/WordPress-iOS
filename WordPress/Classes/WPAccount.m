@@ -87,8 +87,6 @@ NSString * const WPAccountDefaultWordPressComAccountChangedNotification = @"WPAc
     [[NSUserDefaults standardUserDefaults] synchronize];
     [[NSNotificationCenter defaultCenter] postNotificationName:WPAccountDefaultWordPressComAccountChangedNotification object:account];
     
-    [SFHFKeychainUtils storeUsername:account.username andPassword:account.authToken forServiceName:WordPressComOAuthKeychainServiceName updateExisting:YES error:nil];
-    
     [NotificationsManager registerForPushNotifications];
 }
 
@@ -257,20 +255,36 @@ NSString * const WPAccountDefaultWordPressComAccountChangedNotification = @"WPAc
 }
 
 - (NSString *)authToken {
-    return [SFHFKeychainUtils getPasswordForUsername:self.username andServiceName:WordPressComOAuthKeychainServiceName error:nil];
+    NSError *error = nil;
+    NSString *authToken = [SFHFKeychainUtils getPasswordForUsername:self.username andServiceName:WordPressComOAuthKeychainServiceName error:&error];
+
+    if (error) {
+        DDLogError(@"Error while retrieving WordPressComOAuthKeychainServiceName token: %@", error);
+    }
+
+    return authToken;
 }
 
 - (void)setAuthToken:(NSString *)authToken {
     if (authToken) {
+        NSError *error = nil;
         [SFHFKeychainUtils storeUsername:self.username
                              andPassword:authToken
                           forServiceName:WordPressComOAuthKeychainServiceName
                           updateExisting:YES
-                                   error:nil];
+                                   error:&error];
+        if (error) {
+            DDLogError(@"Error while updating WordPressComOAuthKeychainServiceName token: %@", error);
+        }
+
     } else {
+        NSError *error = nil;
         [SFHFKeychainUtils deleteItemForUsername:self.username
                                   andServiceName:WordPressComOAuthKeychainServiceName
-                                           error:nil];
+                                           error:&error];
+        if (error) {
+            DDLogError(@"Error while retrieving WordPressComOAuthKeychainServiceName token: %@", error);
+        }
     }
 }
 
