@@ -262,7 +262,9 @@ static NSString *const CameraPlusImagesNotification = @"CameraPlusImagesNotifica
     [WPMobileStats recordAppOpenedForEvent:StatsEventAppOpened];
     
     // Clear notifications badge
+    // TODO :: Move this reset to NotificationsViewController & also display badge on tab bar icon
     [UIApplication sharedApplication].applicationIconBadgeNumber = 0;
+    [NotificationsManager registerForPushNotifications];
 }
 
 - (BOOL)application:(UIApplication *)application shouldSaveApplicationState:(NSCoder *)coder {
