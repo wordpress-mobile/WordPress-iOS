@@ -127,7 +127,7 @@ NSString *const Ellipsis =  @"...";
 
 // A method to truncate a string at a predetermined length and append ellipsis to the end
 
-- (NSString *)stringByEllipsizingAtLength:(NSInteger)lengthlimit preserveWords:(BOOL)preserveWords{
+- (NSString *)stringByEllipsizingWithMaxLength:(NSInteger)lengthlimit preserveWords:(BOOL)preserveWords{
     
     NSInteger currentLength = [self length];
     NSString *result = @"";
