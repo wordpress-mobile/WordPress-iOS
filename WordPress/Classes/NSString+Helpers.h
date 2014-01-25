@@ -16,5 +16,5 @@
 - (NSString *)stringByReplacingHTMLEmoticonsWithEmoji;
 - (NSString *)stringByStrippingHTML;
 - (NSString *)stringByRemovingScriptsAndStrippingHTML;
-- (NSString *)stringByEllipsizingAtLength:(NSInteger)lengthlimit preserveWords:(BOOL)preserveWords;
+- (NSString *)stringByEllipsizingWithMaxLength:(NSInteger)lengthlimit preserveWords:(BOOL)preserveWords;
 @end
