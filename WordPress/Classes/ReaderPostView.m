@@ -12,6 +12,10 @@
 #import "ContentActionButton.h"
 #import "UILabel+SuggestSize.h"
 #import "NSAttributedString+HTML.h"
+#import "NSString+Helpers.h" 
+
+static NSInteger const MaxTitleLengtiPhone = 80;
+static NSInteger const MaxTitleLengthiPad = 130;
 
 @interface ReaderPostView()
 
@@ -27,7 +31,7 @@
 
 @implementation ReaderPostView
 
-+ (CGFloat)heightForPost:(ReaderPost *)post withWidth:(CGFloat)width {
++ (CGFloat)heightForPost:(ReaderPost *)post withWidth:(CGFloat)width showFullContent:(BOOL)showFullContent {
 	CGFloat desiredHeight = 0.0f;
     
     // Margins
@@ -51,7 +55,7 @@
     
     // Title
     desiredHeight += RPVVerticalPadding;
-    NSAttributedString *postTitle = [self titleAttributedStringForPost:post];
+    NSAttributedString *postTitle = [self titleAttributedStringForPost:post showFullContent:showFullContent];
     desiredHeight += [postTitle boundingRectWithSize:CGSizeMake(contentWidth, CGFLOAT_MAX) options:NSStringDrawingUsesLineFragmentOrigin | NSStringDrawingUsesFontLeading context:nil].size.height;
     desiredHeight += RPVTitlePaddingBottom;
     
@@ -83,7 +87,7 @@
 	return ceil(desiredHeight);
 }
 
-+ (NSAttributedString *)titleAttributedStringForPost:(ReaderPost *)post {
++ (NSAttributedString *)titleAttributedStringForPost:(ReaderPost *)post showFullContent:(BOOL)showFullContent {
     NSMutableParagraphStyle *style = [[NSMutableParagraphStyle alloc] init];
     [style setLineHeightMultiple:RPVLineHeightMultiple];
     NSDictionary *attributes = @{NSParagraphStyleAttributeName : style,
@@ -91,6 +95,20 @@
     NSString *postTitle = [post.postTitle trim];
     if (postTitle == nil) {
         postTitle = @"";
+    }
+    else{
+        if(!showFullContent)
+        {
+            if(IS_IPAD){
+                postTitle = [postTitle stringByEllipsizingWithMaxLength:MaxTitleLengthiPad
+                                                          preserveWords:YES];
+            }
+            else
+            {
+                postTitle = [postTitle stringByEllipsizingWithMaxLength:MaxTitleLengtiPhone
+                                                          preserveWords:YES];
+            }
+        }
     }
     
     NSMutableAttributedString *titleString = [[NSMutableAttributedString alloc] initWithString:postTitle
@@ -190,7 +208,8 @@
     // so avatars show up after a cell is created, and not dequeued.
     [self setAvatar:nil];
     
-	self.titleLabel.attributedText = [[self class] titleAttributedStringForPost:post];
+	self.titleLabel.attributedText = [[self class] titleAttributedStringForPost:post
+                                                                showFullContent:self.showFullContent];
     
     if (self.showFullContent) {
         NSData *data = [self.post.content dataUsingEncoding:NSUTF8StringEncoding];

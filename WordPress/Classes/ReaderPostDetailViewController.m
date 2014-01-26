@@ -212,7 +212,7 @@ typedef enum {
 
 - (void)buildHeader {
     // The text view in postView needs an initial frame
-    CGFloat postHeight = [ReaderPostView heightForPost:self.post withWidth:self.view.frame.size.width];
+    CGFloat postHeight = [ReaderPostView heightForPost:self.post withWidth:self.view.frame.size.width showFullContent:YES];
     CGRect postFrame = CGRectMake(0.0f, 0.0f, self.tableView.frame.size.width, postHeight);
 	self.postView = [[ReaderPostView alloc] initWithFrame:postFrame showFullContent:YES];
     self.postView.delegate = self;
