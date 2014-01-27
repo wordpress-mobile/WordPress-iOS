@@ -141,6 +141,15 @@ CGFloat const WPAlertViewStandardOffset = 16.0;
     }
 }
 
+- (void)setFirstTextFieldLabelText:(NSString *)firstTextFieldLabelText
+{
+    if (![_firstTextFieldLabelText isEqualToString:firstTextFieldLabelText]) {
+        _firstTextFieldLabelText = firstTextFieldLabelText;
+        _firstTextFieldLabel.text = _firstTextFieldLabelText;
+        [self setNeedsUpdateConstraints];
+    }
+}
+
 - (void)setSecondTextFieldPlaceholder:(NSString *)secondTextFieldPlaceholder
 {
     if (![_secondTextFieldPlaceholder isEqualToString:secondTextFieldPlaceholder]) {
@@ -155,6 +164,15 @@ CGFloat const WPAlertViewStandardOffset = 16.0;
     if (![_secondTextFieldValue isEqualToString:secondTextFieldValue]) {
         _secondTextFieldValue = secondTextFieldValue;
         self.secondTextField.text = _secondTextFieldValue;
+        [self setNeedsUpdateConstraints];
+    }
+}
+
+- (void)setSecondTextFieldLabelText:(NSString *)secondTextFieldLabelText
+{
+    if (![_secondTextFieldLabelText isEqualToString:secondTextFieldLabelText]) {
+        _secondTextFieldLabelText = secondTextFieldLabelText;
+        _secondTextFieldLabel.text = _secondTextFieldLabelText;
         [self setNeedsUpdateConstraints];
     }
 }
