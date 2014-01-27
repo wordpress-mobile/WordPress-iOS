@@ -874,7 +874,9 @@ NSString * const ReaderPostStoredCommentTextKey = @"comment";
 							   completionHandler([postsArr count], nil);
 						   }
 					   } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
-						   completionHandler(0, error);
+                           if (completionHandler) {
+                               completionHandler(0, error);                               
+                           }
 					   }];
 }
 
