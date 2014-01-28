@@ -83,41 +83,27 @@ static NSInteger const ImageSizeLargeHeight = 480;
 #pragma mark Custom methods
 
 + (NSInteger)countVisibleWithContext:(NSManagedObjectContext *)moc {
-    NSFetchRequest *request = [[NSFetchRequest alloc] init];
-    [request setEntity:[NSEntityDescription entityForName:@"Blog" inManagedObjectContext:moc]];
-    [request setIncludesSubentities:NO];
-    
     NSPredicate *predicate = [NSPredicate predicateWithFormat:@"visible = %@" argumentArray:@[@(YES)]];
-    [request setPredicate:predicate];
-    
-    NSError *err;
-    NSUInteger count = [moc countForFetchRequest:request error:&err];
-    if(count == NSNotFound) {
-        count = 0;
-    }
-    return count;
+    return [self countWithContext:moc predicate:predicate];
 }
 
 + (NSInteger)countSelfHostedWithContext:(NSManagedObjectContext *)moc {
-    NSFetchRequest *request = [[NSFetchRequest alloc] init];
-    [request setEntity:[NSEntityDescription entityForName:@"Blog" inManagedObjectContext:moc]];
-    [request setIncludesSubentities:NO];
-
     NSPredicate *predicate = [NSPredicate predicateWithFormat:@"account.isWpcom = %@" argumentArray:@[@(NO)]];
-    [request setPredicate:predicate];
-
-    NSError *err;
-    NSUInteger count = [moc countForFetchRequest:request error:&err];
-    if (count == NSNotFound) {
-        count = 0;
-    }
-    return count;
+    return [self countWithContext:moc predicate:predicate];
 }
 
 + (NSInteger)countWithContext:(NSManagedObjectContext *)moc {
+    return [self countWithContext:moc predicate:nil];
+}
+
++ (NSInteger)countWithContext:(NSManagedObjectContext *)moc predicate:(NSPredicate *)predicate {
     NSFetchRequest *request = [[NSFetchRequest alloc] init];
     [request setEntity:[NSEntityDescription entityForName:@"Blog" inManagedObjectContext:moc]];
     [request setIncludesSubentities:NO];
+
+    if (predicate) {
+        [request setPredicate:predicate];
+    }
     
     NSError *err;
     NSUInteger count = [moc countForFetchRequest:request error:&err];
