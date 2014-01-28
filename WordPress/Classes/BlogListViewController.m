@@ -27,7 +27,6 @@ NSString * const WPBlogListRestorationID = @"WPBlogListID";
 
 @property (nonatomic, strong) NSFetchedResultsController *resultsController;
 @property (nonatomic, strong) UIBarButtonItem *settingsButton;
-@property (nonatomic) BOOL sectionDeletedByController;
 @end
 
 @implementation BlogListViewController
@@ -441,91 +440,8 @@ NSString * const WPBlogListRestorationID = @"WPBlogListID";
     [self.tableView reloadData];
 }
 
-- (void)controllerWillChangeContent:(NSFetchedResultsController *)controller {
-    [self.tableView beginUpdates];
-}
-
 - (void)controllerDidChangeContent:(NSFetchedResultsController *)controller {
-    [self.tableView endUpdates];
-
-    if (self.sectionDeletedByController) {
-        /*
-         This covers the corner case when the only self hosted blog is removed and
-         there's a WordPress.com account.
-         
-         Since we only show the section title if there are multiple blog sections,
-         the section header wouldn't change when the section count changed, and it
-         would still display the wordpress.com header.
-         
-         It's not a big deal but it wouldn't be consistent with future appearances
-         of the same view.
-         */
-        
-        [self.tableView reloadSections:[NSIndexSet indexSetWithIndex:0] withRowAnimation:UITableViewRowAnimationFade];
-        self.sectionDeletedByController = NO;
-    }
-}
-
-- (void)controller:(NSFetchedResultsController *)controller
-   didChangeObject:(id)anObject
-       atIndexPath:(NSIndexPath *)indexPath
-     forChangeType:(NSFetchedResultsChangeType)type
-      newIndexPath:(NSIndexPath *)newIndexPath {
-    
-    if (NSFetchedResultsChangeUpdate == type && newIndexPath != nil) {
-        // Seriously, Apple?
-        // http://developer.apple.com/library/ios/#releasenotes/iPhone/NSFetchedResultsChangeMoveReportedAsNSFetchedResultsChangeUpdate/_index.html
-        type = NSFetchedResultsChangeMove;
-    }
-    
-    switch (type) {
-        case NSFetchedResultsChangeInsert:
-            [self.tableView insertRowsAtIndexPaths:[NSArray arrayWithObject:newIndexPath] withRowAnimation:UITableViewRowAnimationFade];
-            break;
-            
-        case NSFetchedResultsChangeDelete:
-            [self.tableView deleteRowsAtIndexPaths:[NSArray arrayWithObject:indexPath] withRowAnimation:UITableViewRowAnimationFade];
-            break;
-            
-        case NSFetchedResultsChangeUpdate:
-            [self configureCell:[self.tableView cellForRowAtIndexPath:indexPath] atIndexPath:indexPath];
-            break;
-            
-        case NSFetchedResultsChangeMove:
-            [self.tableView deleteRowsAtIndexPaths:[NSArray
-                                                    arrayWithObject:indexPath] withRowAnimation:UITableViewRowAnimationFade];
-            [self.tableView insertRowsAtIndexPaths:[NSArray
-                                                    arrayWithObject:newIndexPath] withRowAnimation:UITableViewRowAnimationFade];
-            break;
-    }
-}
-
-- (void)controller:(NSFetchedResultsController *)controller didChangeSection:(id<NSFetchedResultsSectionInfo>)sectionInfo atIndex:(NSUInteger)sectionIndex forChangeType:(NSFetchedResultsChangeType)type {
-    /*
-     The section for self hosted is always present, since it includes the
-     'Add Site' row.
-
-     If we tried to add/remove the section when the results controller changed,
-     it would crash, as the table's data source section count would remain the
-     same.
-     */
-    if (sectionIndex == [self sectionForSelfHosted]) {
-        return;
-    }
-
-    switch (type) {
-        case NSFetchedResultsChangeInsert:
-            [self.tableView insertSections:[NSIndexSet indexSetWithIndex:sectionIndex] withRowAnimation:UITableViewRowAnimationFade];
-            break;
-
-        case NSFetchedResultsChangeDelete:
-            [self.tableView deleteSections:[NSIndexSet indexSetWithIndex:sectionIndex] withRowAnimation:UITableViewRowAnimationFade];
-            self.sectionDeletedByController = YES;
-            break;
-
-        default:
-            break;
-    }
+    [self.tableView reloadData];
 }
 
 - (NSString *)controller:(NSFetchedResultsController *)controller sectionIndexTitleForSectionName:(NSString *)sectionName {
