@@ -46,6 +46,7 @@ NSString * const RPVCDisplayedNativeFriendFinder = @"DisplayedNativeFriendFinder
     CGFloat _lastOffset;
     UIPopoverController *_popover;
     WPAnimatedBox *_animatedBox;
+    UIGestureRecognizer *_tapOffKeyboardGesture;
 }
 
 @property (nonatomic, strong) ReaderReblogFormView *readerReblogFormView;
@@ -134,6 +135,9 @@ NSString * const RPVCDisplayedNativeFriendFinder = @"DisplayedNativeFriendFinder
 	_readerReblogFormView.navigationItem = self.navigationItem;
 	_readerReblogFormView.delegate = self;
 	
+    _tapOffKeyboardGesture = [[UITapGestureRecognizer alloc] initWithTarget:self
+                                                                     action:@selector(dismissKeyboard:)];
+    
 	if (_isShowingReblogForm) {
 		[self showReblogForm];
 	}
@@ -405,6 +409,8 @@ NSString * const RPVCDisplayedNativeFriendFinder = @"DisplayedNativeFriendFinder
 }
 
 - (void)postView:(ReaderPostView *)postView didReceiveCommentAction:(id)sender {
+    [self.view addGestureRecognizer:_tapOffKeyboardGesture];
+    
     if (self.commentPublisher.post == postView.post) {
         [self.inlineComposeView toggleComposer];
         return;
@@ -454,6 +460,16 @@ NSString * const RPVCDisplayedNativeFriendFinder = @"DisplayedNativeFriendFinder
         navController.navigationBar.translucent = NO;
         [self presentViewController:navController animated:YES completion:nil];
     }
+}
+
+- (void)dismissKeyboard:(id)sender {
+    for (UIGestureRecognizer *gesture in self.view.gestureRecognizers) {
+        if ([gesture isEqual:_tapOffKeyboardGesture]) {
+            [self.view removeGestureRecognizer:gesture];
+        }
+    }
+    
+    [self.inlineComposeView toggleComposer];
 }
 
 #pragma mark - ReaderCommentPublisherDelegate Methods
