@@ -41,6 +41,7 @@ const CGFloat InlineComposeViewMaxHeight = 88.f;
         _toolbarTextView.scrollsToTop = NO;
 
         self.placeholderLabel.text = NSLocalizedString(@"Write a reply…", @"Placeholder text for inline compose view");
+        [self.sendButton setTitle:NSLocalizedString(@"Reply", @"") forState:UIControlStateNormal];
 
         [self addSubview:_proxyTextView];
 
