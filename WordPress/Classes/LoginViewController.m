@@ -349,6 +349,7 @@ CGFloat const GeneralWalkthroughStatusBarOffset = 20.0;
         _helpButton.autoresizingMask = UIViewAutoresizingFlexibleRightMargin | UIViewAutoresizingFlexibleLeftMargin;
         [_helpButton addTarget:self action:@selector(helpButtonAction:) forControlEvents:UIControlEventTouchUpInside];
         [_helpButton sizeToFit];
+        [_helpButton setExclusiveTouch:YES];
         [_mainView addSubview:_helpButton];
     }
     
@@ -422,6 +423,7 @@ CGFloat const GeneralWalkthroughStatusBarOffset = 20.0;
         _cancelButton = [[WPNUXSecondaryButton alloc] init];
         [_cancelButton setTitle:NSLocalizedString(@"Cancel", nil) forState:UIControlStateNormal];
         [_cancelButton addTarget:self action:@selector(cancelButtonAction:) forControlEvents:UIControlEventTouchUpInside];
+        [_cancelButton setExclusiveTouch:YES];
         [_cancelButton sizeToFit];
         [self.view addSubview:_cancelButton];
     }
