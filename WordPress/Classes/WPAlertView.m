@@ -308,6 +308,15 @@ CGFloat const WPAlertViewStandardOffset = 16.0;
     }
 }
 
+- (IBAction)viewTapped:(id)sender {
+    if ([self.firstTextField isFirstResponder]) {
+        [self.firstTextField resignFirstResponder];
+    }
+    if ([self.secondTextField isFirstResponder]) {
+        [self.secondTextField resignFirstResponder];
+    }
+}
+
 #pragma mark - Private Methods
 
 - (void)configureBackgroundColor
