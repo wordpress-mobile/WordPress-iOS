@@ -176,7 +176,7 @@ CGFloat const blavatarImageViewSize = 43.f;
             return [self.mediaSettingsArray count];
 
         case SettingsSectionInfo:
-            return 3;
+            return 2;
             
         default:
             return 0;
@@ -257,21 +257,10 @@ CGFloat const blavatarImageViewSize = 43.f;
         
     } else if (indexPath.section == SettingsSectionInfo) {
         if (indexPath.row == 0) {
-            // App Version
-            cell.textLabel.text = NSLocalizedString(@"Version", @"");
-            NSString *appversion = [[[NSBundle mainBundle] infoDictionary] objectForKey:@"CFBundleVersion"];
-#if DEBUG
-            appversion = [appversion stringByAppendingString:@" (DEV)"];
-#endif
-            cell.detailTextLabel.text = appversion;
-            cell.selectionStyle = UITableViewCellSelectionStyleNone;
-            
-        } else if (indexPath.row == 1) {
             // About
             cell.textLabel.text = NSLocalizedString(@"About", @"");
             cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
-            
-        } else if (indexPath.row == 2) {
+        } else if (indexPath.row == 1) {
             // Settings
             cell.textLabel.text = NSLocalizedString(@"Support", @"");
             cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
@@ -299,12 +288,6 @@ CGFloat const blavatarImageViewSize = 43.f;
             cellStyle = UITableViewCellStyleValue1;
             break;
             
-        case SettingsSectionInfo:
-            if (indexPath.row == 0) {
-                cellIdentifier = @"InfoCell";
-                cellStyle = UITableViewCellStyleValue1;
-            }
-            break;
         default:
             break;
     }
@@ -387,12 +370,12 @@ CGFloat const blavatarImageViewSize = 43.f;
         [self.navigationController pushViewController:controller animated:YES];
 
     } else if (indexPath.section == SettingsSectionInfo) {
-        if (indexPath.row == 1) {
+        if (indexPath.row == 0) {
             [WPMobileStats trackEventForWPCom:StatsEventSettingsClickedAbout];
             
             AboutViewController *aboutViewController = [[AboutViewController alloc] initWithNibName:@"AboutViewController" bundle:nil];
             [self.navigationController pushViewController:aboutViewController animated:YES];
-        } else if (indexPath.row == 2) {
+        } else if (indexPath.row == 1) {
             // Support Page
             SupportViewController *supportViewController = [[SupportViewController alloc] init];
             [self.navigationController pushViewController:supportViewController animated:YES];
