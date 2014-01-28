@@ -93,8 +93,8 @@ SPEC CHECKSUMS:
   Quantcast-Measure: ff28ef371e54b710dc051a9ef96fd49b77f098c3
   Reachability: 500bd76bf6cd8ff2c6fb715fc5f44ef6e4c024f2
   SVProgressHUD: 03d4845ec8e64591726428a08236c6a5489d45f8
-  UIDeviceIdentifier: 64036321b0f77ff41b4200002f0c138431c00d86
-  WordPressApi: 76f9d7752b090197c172e2c5e6fccbffbaf7c336
+  UIDeviceIdentifier: 38f7035dd0040fc4979d1548d9a63a1ccd339b0d
+  WordPressApi: 6c7ab5320344fbec850f0baba4b0ec2bfd03587d
   wpxmlrpc: 1042b13566bac04112fdd1e16808478b3a21b080
 
 COCOAPODS: 0.29.0
