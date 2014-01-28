@@ -49,8 +49,9 @@ NSString *const NotificationsDeviceToken = @"apnsDeviceToken";
     if (![previousToken isEqualToString:newToken]) {
         DDLogInfo(@"Device Token has changed! OLD Value %@, NEW value %@", previousToken, newToken);
         [[NSUserDefaults standardUserDefaults] setObject:newToken forKey:NotificationsDeviceToken];
-        [self syncPushNotificationInfo];
     }
+
+    [self syncPushNotificationInfo];
 }
 
 + (void)registrationDidFail:(NSError *)error {

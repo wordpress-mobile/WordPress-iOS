@@ -472,7 +472,7 @@ NSString *const WordPressComApiPushAppId = @"org.wordpress.appstore";
 - (void)fetchNotificationsSince:(NSNumber *)timestamp
                         success:(void (^)(NSArray *notes))success
                         failure:(WordPressComApiRestSuccessFailureBlock)failure {
-    NSDictionary *parameters;
+    NSDictionary *parameters = nil;
     if (timestamp != nil) {
         parameters = @{@"since": timestamp};
     }
@@ -482,7 +482,7 @@ NSString *const WordPressComApiPushAppId = @"org.wordpress.appstore";
 - (void)fetchNotificationsBefore:(NSNumber *)timestamp
                          success:(void (^)(NSArray *notes))success
                          failure:(WordPressComApiRestSuccessFailureBlock)failure {
-    NSDictionary *parameters;
+    NSDictionary *parameters = nil;
     if (timestamp != nil) {
         parameters = @{@"before": timestamp};
     }
