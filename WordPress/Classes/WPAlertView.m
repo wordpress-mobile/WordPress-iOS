@@ -308,15 +308,6 @@ CGFloat const WPAlertViewStandardOffset = 16.0;
     }
 }
 
-- (IBAction)viewTapped:(id)sender {
-    if ([self.firstTextField isFirstResponder]) {
-        [self.firstTextField resignFirstResponder];
-    }
-    if ([self.secondTextField isFirstResponder]) {
-        [self.secondTextField resignFirstResponder];
-    }
-}
-
 #pragma mark - Private Methods
 
 - (void)configureBackgroundColor
@@ -405,6 +396,13 @@ CGFloat const WPAlertViewStandardOffset = 16.0;
     if (touchedButton1 || touchedButton2)
         return;
     
+    if ([self.firstTextField isFirstResponder]) {
+        [self.firstTextField resignFirstResponder];
+    }
+    if ([self.secondTextField isFirstResponder]) {
+        [self.secondTextField resignFirstResponder];
+    }
+
     if (gestureRecognizer.numberOfTapsRequired == 1) {
         if (self.singleTapCompletionBlock) {
             self.singleTapCompletionBlock(self);

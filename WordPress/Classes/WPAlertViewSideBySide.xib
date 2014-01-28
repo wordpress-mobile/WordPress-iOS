@@ -183,15 +183,7 @@
             </constraints>
             <simulatedStatusBarMetrics key="simulatedStatusBarMetrics"/>
             <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
-            <connections>
-                <outletCollection property="gestureRecognizers" destination="0l5-mF-CHO" appends="YES" id="zU9-gk-b6I"/>
-            </connections>
         </view>
-        <tapGestureRecognizer id="0l5-mF-CHO">
-            <connections>
-                <action selector="viewTapped:" destination="-1" id="PQr-7m-QT2"/>
-            </connections>
-        </tapGestureRecognizer>
     </objects>
     <resources>
         <image name="ui-line-dark.png" width="1" height="2"/>
