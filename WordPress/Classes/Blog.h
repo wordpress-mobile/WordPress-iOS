@@ -23,6 +23,8 @@
 @property (nonatomic, strong) NSSet *posts;
 @property (nonatomic, strong) NSSet *categories;
 @property (nonatomic, strong) NSSet *comments;
+@property (nonatomic, strong) NSSet *themes;
+@property (nonatomic, strong) NSString *currentThemeId;
 @property (nonatomic, assign) BOOL isSyncingPosts;
 @property (nonatomic, assign) BOOL isSyncingPages;
 @property (nonatomic, assign) BOOL isSyncingComments;

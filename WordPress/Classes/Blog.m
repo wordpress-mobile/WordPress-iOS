@@ -15,6 +15,7 @@
 #import "NSURL+IDN.h"
 #import "NSString+XMLExtensions.h"
 #import "WPError.h"
+#import "Theme.h"
 #import "ContextManager.h"
 #import "WordPressComApi.h"
 
@@ -41,7 +42,8 @@ static NSInteger const ImageSizeLargeHeight = 480;
 
 @dynamic blogID, blogName, url, xmlrpc, apiKey;
 @dynamic hasOlderPosts, hasOlderPages;
-@dynamic posts, categories, comments; 
+@dynamic posts, categories, comments, themes;
+@dynamic currentThemeId;
 @dynamic lastPostsSync, lastStatsSync, lastPagesSync, lastCommentsSync, lastUpdateWarning;
 @synthesize isSyncingPosts, isSyncingPages, isSyncingComments;
 @dynamic geolocationEnabled, options, postFormats, isActivated, visible;

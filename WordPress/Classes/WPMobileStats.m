@@ -35,6 +35,7 @@ NSString *const StatsPropertySidebarSiteClickedComments = @"sidebar_site_clicked
 NSString *const StatsPropertySidebarSiteClickedStats = @"sidebar_site_clicked_stats";
 NSString *const StatsPropertySidebarSiteClickedViewSite = @"sidebar_site_clicked_view_site";
 NSString *const StatsPropertySidebarSiteClickedViewAdmin = @"sidebar_site_clicked_view_admin";
+NSString *const StatsPropertySidebarSiteClickedThemes = @"sidebar_site_clicked_themes";
 NSString *const StatsPropertySidebarClickedSettings = @"sidebar_clicked_settings";
 NSString *const StatsPropertySidebarClickedQuickPhoto = @"sidebar_clicked_quick_photo";
 

@@ -12,6 +12,7 @@
 #import "PagesViewController.h"
 #import "CommentsViewController.h"
 #import "StatsWebViewController.h"
+#import "ThemeBrowserViewController.h"
 #import "WPWebViewController.h"
 #import "WPTableViewCell.h"
 #import "ContextManager.h"
@@ -23,6 +24,7 @@ typedef enum {
     BlogDetailsRowPages,
     BlogDetailsRowComments,
     BlogDetailsRowStats,
+    BlogDetailsRowThemes,
     BlogDetailsRowViewSite,
     BlogDetailsRowViewAdmin,
     BlogDetailsRowEdit,
@@ -108,7 +110,7 @@ NSString * const WPBlogDetailsBlogKey = @"WPBlogDetailsBlogKey";
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
     // Return the number of rows in the section.
-    return BlogDetailsRowCount;
+    return [self shouldShowThemesOption] ? BlogDetailsRowCount : BlogDetailsRowCount - 1;
 }
 
 - (void)configureCell:(UITableViewCell *)cell atIndexPath:(NSIndexPath *)indexPath {
@@ -128,13 +130,16 @@ NSString * const WPBlogDetailsBlogKey = @"WPBlogDetailsBlogKey";
     } else if (indexPath.row == BlogDetailsRowStats) {
         cell.textLabel.text = NSLocalizedString(@"Stats", nil);
         cell.imageView.image = [UIImage imageNamed:@"icon-menu-stats"];
-    } else if (indexPath.row == BlogDetailsRowViewSite) {
+    } else if ([self shouldShowThemesOption] && indexPath.row == BlogDetailsRowThemes) {
+        cell.textLabel.text = NSLocalizedString(@"Themes", nil);
+        cell.imageView.image = [UIImage imageNamed:@"icon-menu-themes"];
+    } else if ([self isRowForViewSite:indexPath.row]) {
         cell.textLabel.text = NSLocalizedString(@"View Site", nil);
         cell.imageView.image = [UIImage imageNamed:@"icon-menu-viewsite"];
-    } else if (indexPath.row == BlogDetailsRowViewAdmin) {
+    } else if ([self isRowForViewAdmin:indexPath.row]) {
         cell.textLabel.text = NSLocalizedString(@"View Admin", nil);
         cell.imageView.image = [UIImage imageNamed:@"icon-menu-viewadmin"];
-    } else if (indexPath.row == BlogDetailsRowEdit) {
+    } else if ([self isRowForEditBlog:indexPath.row]) {
         cell.textLabel.text = NSLocalizedString(@"Edit Blog", nil);
         cell.imageView.image = [UIImage imageNamed:@"icon-menu-settings"];
     }
@@ -152,7 +157,7 @@ NSString * const WPBlogDetailsBlogKey = @"WPBlogDetailsBlogKey";
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
     [tableView deselectRowAtIndexPath:indexPath animated:YES];
     
-    if (indexPath.row == BlogDetailsRowEdit) {
+    if ([self isRowForEditBlog:indexPath.row]) {
         [WPMobileStats trackEventForWPCom:StatsEventSettingsClickedEditBlog];
         
         EditSiteViewController *editSiteViewController = [[EditSiteViewController alloc] initWithBlog:self.blog];
@@ -172,12 +177,15 @@ NSString * const WPBlogDetailsBlogKey = @"WPBlogDetailsBlogKey";
     } else if (indexPath.row == BlogDetailsRowStats) {
         [WPMobileStats incrementProperty:StatsPropertySidebarSiteClickedStats forEvent:StatsEventAppClosed];
         controllerClass =  [StatsWebViewController class];
-    } else if (indexPath.row == BlogDetailsRowViewSite) {
+    } else if ([self shouldShowThemesOption] && indexPath.row == BlogDetailsRowThemes) {
+        [WPMobileStats incrementProperty:StatsPropertySidebarSiteClickedThemes forEvent:StatsEventAppClosed];
+        controllerClass = [ThemeBrowserViewController class];
+    } else if ([self isRowForViewSite:indexPath.row]) {
         [self showViewSiteForBlog:self.blog];
-    } else if (indexPath.row == BlogDetailsRowViewAdmin) {
+    } else if ([self isRowForViewAdmin:indexPath.row]) {
         [self showViewAdminForBlog:self.blog];
     }
-        
+  
     // Check if the controller is already on the screen
     if ([self.navigationController.visibleViewController isMemberOfClass:controllerClass]) {
         if ([self.navigationController.visibleViewController respondsToSelector:@selector(setBlog:)]) {
@@ -247,6 +255,21 @@ NSString * const WPBlogDetailsBlogKey = @"WPBlogDetailsBlogKey";
     [[UIApplication sharedApplication] openURL:[NSURL URLWithString:dashboardUrl]];
 }
 
+- (BOOL)isRowForViewSite:(NSUInteger)index {
+    return index == ([self shouldShowThemesOption] ? BlogDetailsRowViewSite : BlogDetailsRowViewSite - 1);
+}
+
+- (BOOL)isRowForViewAdmin:(NSUInteger)index {
+    return index == ([self shouldShowThemesOption] ? BlogDetailsRowViewAdmin : BlogDetailsRowViewAdmin - 1);
+}
+
+- (BOOL)isRowForEditBlog:(NSUInteger)index {
+    return index == ([self shouldShowThemesOption] ? BlogDetailsRowEdit : BlogDetailsRowEdit - 1);
+}
+
+- (BOOL)shouldShowThemesOption {
+    return self.blog.isWPcom;
+}
 
 /*
 // Override to support conditional editing of the table view.

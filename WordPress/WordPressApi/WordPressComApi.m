@@ -567,6 +567,32 @@ NSString *const WordPressComApiPushAppId = @"org.wordpress.appstore";
            failure:failure];
 }
 
+#pragma mark - Blog Themes
+
+- (void)fetchThemesForBlogId:(NSString *)blogId
+                     success:(WordPressComApiRestSuccessResponseBlock)success failure:(WordPressComApiRestSuccessFailureBlock)failure
+{
+    NSString *path = [NSString stringWithFormat:@"sites/%@/themes", blogId];
+    [self getPath:path parameters:nil
+          success:success failure:failure];
+}
+
+- (void)fetchCurrentThemeForBlogId:(NSString *)blogId
+                           success:(WordPressComApiRestSuccessResponseBlock)success failure:(WordPressComApiRestSuccessFailureBlock)failure
+{
+    NSString *path = [NSString stringWithFormat:@"sites/%@/themes/mine", blogId];
+    [self getPath:path parameters:nil
+          success:success failure:failure];
+}
+
+- (void)activateThemeForBlogId:(NSString *)blogId themeId:(NSString *)themeId
+                       success:(WordPressComApiRestSuccessResponseBlock)success failure:(WordPressComApiRestSuccessFailureBlock)failure
+{
+    NSString *path = [NSString stringWithFormat:@"sites/%@/themes/mine", blogId];
+    [self postPath:path parameters:@{@"theme": themeId}
+           success:success failure:failure];
+}
+
 /* HACK: temporary fix for cases where password is nil
  We believe jetpack settings might be causing this, but since we're actually doing authentication
  with the authToken, we don't care that much about username/password in this method

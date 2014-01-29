@@ -10,7 +10,9 @@
 #import "NSString+Helpers.h"
 #import "NSString+XMLExtensions.h"
 #import "WordPressComApi.h"
+#import "WPAccount.h"
 #import "ContextManager.h"
+
 
 const NSUInteger NoteKeepCount = 20;
 

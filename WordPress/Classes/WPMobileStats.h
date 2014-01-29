@@ -22,6 +22,7 @@ extern NSString *const StatsPropertySidebarSiteClickedComments;
 extern NSString *const StatsPropertySidebarSiteClickedStats;
 extern NSString *const StatsPropertySidebarSiteClickedViewSite;
 extern NSString *const StatsPropertySidebarSiteClickedViewAdmin;
+extern NSString *const StatsPropertySidebarSiteClickedThemes;
 extern NSString *const StatsPropertySidebarClickedSettings;
 extern NSString *const StatsPropertySidebarClickedQuickPhoto;
 
