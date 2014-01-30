@@ -94,7 +94,7 @@ SPEC CHECKSUMS:
   Reachability: 500bd76bf6cd8ff2c6fb715fc5f44ef6e4c024f2
   SVProgressHUD: 03d4845ec8e64591726428a08236c6a5489d45f8
   UIDeviceIdentifier: 38f7035dd0040fc4979d1548d9a63a1ccd339b0d
-  WordPressApi: 76f9d7752b090197c172e2c5e6fccbffbaf7c336
+  WordPressApi: 6c7ab5320344fbec850f0baba4b0ec2bfd03587d
   wpxmlrpc: 2206985822e725838c77e1143c9171e577ac063b
 
 COCOAPODS: 0.29.0
