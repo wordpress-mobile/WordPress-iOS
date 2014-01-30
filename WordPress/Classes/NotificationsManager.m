@@ -79,11 +79,19 @@ NSString *const NotificationsDeviceToken = @"apnsDeviceToken";
 + (void)handleNotification:(NSDictionary *)userInfo forState:(UIApplicationState)state completionHandler:(void (^)(UIBackgroundFetchResult))completionHandler {
     DDLogInfo(@"Received push notification:\nPayload: %@\nCurrent Application state: %d", userInfo, state);
     
+    if([userInfo objectForKey:@"type"]) { //check if it is the badge reset PN
+        NSString *notificationType = [userInfo objectForKey:@"type"];
+        if ([notificationType isEqualToString:@"badge-reset"]){
+            [UIApplication sharedApplication].applicationIconBadgeNumber = 0;
+            return;
+        }
+    }
+    
     switch (state) {
         case UIApplicationStateActive:
-            [self syncPushNotificationInfo];
+            [[WordPressAppDelegate sharedWordPressApplicationDelegate] clearNotificationsBadgeAndSyncItems];
             break;
-    
+            
         case UIApplicationStateInactive:
             [WPMobileStats recordAppOpenedForEvent:StatsEventAppOpenedDueToPushNotification];
             [[WordPressAppDelegate sharedWordPressApplicationDelegate] showNotificationsTab];

@@ -44,6 +44,7 @@
 - (void)showMeTab;
 - (void)showPostTab;
 - (void)switchTabToPostsListForPost:(AbstractPost *)post;
+- (void)clearNotificationsBadgeAndSyncItems;
 
 ///-----------
 /// @name NUX
