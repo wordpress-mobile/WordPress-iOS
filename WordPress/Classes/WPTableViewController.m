@@ -546,14 +546,14 @@ NSString *const DefaultCellIdentifier = @"DefaultCellIdentifier";
         return;
     }
 
-    _isSyncing = YES;
+    [self setSyncing:YES];
     [self syncItemsViaUserInteraction:userInteraction success:^{
         [self hideRefreshHeader];
-        _isSyncing = NO;
+        [self setSyncing:NO];
         [self configureNoResultsView];
     } failure:^(NSError *error) {
         [self hideRefreshHeader];
-        _isSyncing = NO;
+        [self setSyncing:NO];
         [self configureNoResultsView];
         if (self.blog) {
             if ([error.domain isEqualToString:WPXMLRPCClientErrorDomain]) {
@@ -672,6 +672,10 @@ NSString *const DefaultCellIdentifier = @"DefaultCellIdentifier";
 
 - (BOOL)isSyncing {
     return _isSyncing;
+}
+
+- (void)setSyncing:(BOOL) value {
+    _isSyncing = value;
 }
 
 - (Class)cellClass {

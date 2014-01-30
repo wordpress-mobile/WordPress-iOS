@@ -303,6 +303,10 @@ NSString * const NotificationsJetpackInformationURL = @"http://jetpack.me/about/
     return _retrievingNotifications;
 }
 
+- (void)setSyncing:(BOOL) value {
+    _retrievingNotifications = value;
+}
+
 - (void)syncItems
 {
     // Check to see if there is a WordPress.com account before attempting to fetch notifications
