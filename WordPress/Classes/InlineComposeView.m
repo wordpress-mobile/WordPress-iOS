@@ -65,6 +65,8 @@ const CGFloat InlineComposeViewMaxHeight = 88.f;
     self.placeholderLabel.hidden = !empty;
     self.sendButton.enabled = !empty;
 
+    [self updateSendButtonSize];
+
     CGRect frame = self.inputAccessoryView.frame;
 
     // if there's no text, force it back to min height
@@ -93,6 +95,25 @@ const CGFloat InlineComposeViewMaxHeight = 88.f;
 
     [self.toolbarTextView scrollRangeToVisible:self.toolbarTextView.selectedRange];
 
+}
+
+- (void)updateSendButtonSize {
+    // Update the components' size and location after localized button label has been set.
+    CGFloat sendButtonWidth = self.sendButton.frame.size.width;
+    [self.sendButton sizeToFit];
+    CGFloat sendButtonDelta = self.sendButton.frame.size.width - sendButtonWidth;
+
+    CGRect frame = self.toolbarTextView.frame;
+    frame.size.width -= sendButtonDelta;
+    self.toolbarTextView.frame = frame;
+
+    frame = self.placeholderLabel.frame;
+    frame.size.width -= sendButtonDelta;
+    self.placeholderLabel.frame = frame;
+
+    frame = self.sendButton.frame;
+    frame.origin.x -= sendButtonDelta;
+    self.sendButton.frame = frame;
 }
 
 - (void)clearText {
