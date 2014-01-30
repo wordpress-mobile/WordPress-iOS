@@ -92,7 +92,6 @@ NSString * const WPBlogListRestorationID = @"WPBlogListID";
     
     [WPStyleGuide configureColorsForView:self.view andTableView:self.tableView];
  
-    [self.tableView registerClass:[WPTableViewCell class] forCellReuseIdentifier:BlogCellIdentifier];
     self.tableView.allowsSelectionDuringEditing = YES;
     self.navigationItem.leftBarButtonItem = self.editButtonItem;
 
@@ -177,13 +176,21 @@ NSString * const WPBlogListRestorationID = @"WPBlogListID";
 {
     
     UITableViewCell *cell = [self.tableView dequeueReusableCellWithIdentifier:BlogCellIdentifier];
-    
+    if (!cell) {
+        if ([indexPath isEqual:[self indexPathForAddSite]]) {
+            cell = [[WPTableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:BlogCellIdentifier];
+        } else {
+            cell = [[WPTableViewCell alloc] initWithStyle:UITableViewCellStyleSubtitle reuseIdentifier:BlogCellIdentifier];
+        }
+    }
+
     [self configureCell:cell atIndexPath:indexPath];
     
     if ([indexPath isEqual:[self indexPathForAddSite]]) {
         [WPStyleGuide configureTableViewActionCell:cell];
     } else {
         [WPStyleGuide configureTableViewCell:cell];
+        cell.detailTextLabel.font = [cell.detailTextLabel.font fontWithSize:10.0];
     }
 
     return cell;
@@ -283,6 +290,7 @@ NSString * const WPBlogListRestorationID = @"WPBlogListID";
         Blog *blog = [self.resultsController objectAtIndexPath:indexPath];
         if ([blog.blogName length] != 0) {
             cell.textLabel.text = blog.blogName;
+            cell.detailTextLabel.text = blog.url;
         } else {
             cell.textLabel.text = blog.url;
         }
