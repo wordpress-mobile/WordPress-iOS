@@ -37,7 +37,7 @@ NSString *const DefaultCellIdentifier = @"DefaultCellIdentifier";
 @property (nonatomic, strong) UIActivityIndicatorView *activityFooter;
 @property (nonatomic, assign) BOOL animatingRemovalOfModerationSwipeView;
 @property (nonatomic, assign) BOOL didPromptForCredentials;
-@property (nonatomic, assign) BOOL isSyncing;
+@property (nonatomic, assign, setter = setSyncing:) BOOL isSyncing;
 @property (nonatomic, assign) BOOL isLoadingMore;
 @property (nonatomic, assign) BOOL didTriggerRefresh;
 @property (nonatomic, assign) CGPoint savedScrollOffset;
@@ -546,14 +546,14 @@ NSString *const DefaultCellIdentifier = @"DefaultCellIdentifier";
         return;
     }
 
-    _isSyncing = YES;
+    [self setSyncing:YES];
     [self syncItemsViaUserInteraction:userInteraction success:^{
         [self hideRefreshHeader];
-        _isSyncing = NO;
+        [self setSyncing:NO];
         [self configureNoResultsView];
     } failure:^(NSError *error) {
         [self hideRefreshHeader];
-        _isSyncing = NO;
+        [self setSyncing:NO];
         [self configureNoResultsView];
         if (self.blog) {
             if ([error.domain isEqualToString:WPXMLRPCClientErrorDomain]) {

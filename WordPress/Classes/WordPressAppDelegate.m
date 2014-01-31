@@ -260,11 +260,7 @@ static NSString *const CameraPlusImagesNotification = @"CameraPlusImagesNotifica
     DDLogInfo(@"%@ %@", self, NSStringFromSelector(_cmd));
     
     [WPMobileStats recordAppOpenedForEvent:StatsEventAppOpened];
-    
-    // Clear notifications badge
-    // TODO :: Move this reset to NotificationsViewController & also display badge on tab bar icon
-    [UIApplication sharedApplication].applicationIconBadgeNumber = 0;
-    [NotificationsManager registerForPushNotifications];
+    [self clearBadgeAndSyncItemsIfNotificationsScreenActive];
 }
 
 - (BOOL)application:(UIApplication *)application shouldSaveApplicationState:(NSCoder *)coder {
@@ -299,6 +295,13 @@ static NSString *const CameraPlusImagesNotification = @"CameraPlusImagesNotifica
 }
 
 #pragma mark - Custom methods
+
+- (void)clearBadgeAndSyncItemsIfNotificationsScreenActive {
+    NSInteger notificationsTabIndex = [[self.tabBarController viewControllers] indexOfObject:self.notificationsViewController.navigationController];
+    if ([self.tabBarController selectedIndex] == notificationsTabIndex) {
+       [self.notificationsViewController clearNotificationsBadgeAndSyncItems];
+    }
+}
 
 - (void)showWelcomeScreenIfNeededAnimated:(BOOL)animated {
     if ([self noBlogsAndNoWordPressDotComAccount]) {
