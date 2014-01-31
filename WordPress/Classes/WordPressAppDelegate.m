@@ -260,7 +260,7 @@ static NSString *const CameraPlusImagesNotification = @"CameraPlusImagesNotifica
     DDLogInfo(@"%@ %@", self, NSStringFromSelector(_cmd));
     
     [WPMobileStats recordAppOpenedForEvent:StatsEventAppOpened];
-    [self clearNotificationsBadgeAndSyncItems];
+    [self clearBadgeAndSyncItemsIfNotificationsScreenActive];
 }
 
 - (BOOL)application:(UIApplication *)application shouldSaveApplicationState:(NSCoder *)coder {
@@ -296,9 +296,9 @@ static NSString *const CameraPlusImagesNotification = @"CameraPlusImagesNotifica
 
 #pragma mark - Custom methods
 
-- (void)clearNotificationsBadgeAndSyncItems {
+- (void)clearBadgeAndSyncItemsIfNotificationsScreenActive {
     NSInteger notificationsTabIndex = [[self.tabBarController viewControllers] indexOfObject:self.notificationsViewController.navigationController];
-    if( [self.tabBarController selectedIndex] == notificationsTabIndex ) {
+    if ([self.tabBarController selectedIndex] == notificationsTabIndex) {
        [self.notificationsViewController clearNotificationsBadgeAndSyncItems];
     }
 }
