@@ -459,7 +459,7 @@ static NSString *_lastAuthedName = nil;
     DDLogInfo(@"%@ %@", self, NSStringFromSelector(_cmd));
    
     // Override super so we do not change our title.
-    self.title = @"Stats";
+    self.title = NSLocalizedString(@"Stats", nil);
 }
 
 
