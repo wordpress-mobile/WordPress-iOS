@@ -329,7 +329,7 @@ static NSString *const CameraPlusImagesNotification = @"CameraPlusImagesNotifica
 }
 
 - (BOOL)noBlogsAndNoWordPressDotComAccount {
-    NSInteger blogCount = [Blog countWithContext:[[ContextManager sharedInstance] mainContext]];
+    NSInteger blogCount = [Blog countSelfHostedWithContext:[[ContextManager sharedInstance] mainContext]];
     return blogCount == 0 && ![WPAccount defaultWordPressComAccount];
 }
 
@@ -1087,10 +1087,13 @@ static NSString *const CameraPlusImagesNotification = @"CameraPlusImagesNotifica
 	[self toggleExtraDebuggingIfNeeded];
 
     [NotificationsManager registerForPushNotifications];
-    [self showWelcomeScreenIfNeededAnimated:NO];
+
     // If the notification object is not nil, then it's a login
     if (notification.object) {
         [ReaderPost fetchPostsWithCompletionHandler:nil];
+    } else {
+        // No need to check for welcome screen unless we are signing out
+        [self showWelcomeScreenIfNeededAnimated:NO];
     }
 }
 

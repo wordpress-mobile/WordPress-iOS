@@ -104,7 +104,11 @@ NSString * const WPAccountDefaultWordPressComAccountChangedNotification = @"WPAc
     [[NSUserDefaults standardUserDefaults] removeObjectForKey:DefaultDotcomAccountDefaultsKey];
     NSManagedObjectID *accountObjectID = __defaultDotcomAccount.objectID;
     __defaultDotcomAccount = nil;
-    
+
+    dispatch_async(dispatch_get_main_queue(), ^{
+        [[NSNotificationCenter defaultCenter] postNotificationName:WPAccountDefaultWordPressComAccountChangedNotification object:nil];
+    });
+
     [context performBlock:^{
         WPAccount *account = (WPAccount *)[context objectWithID:accountObjectID];
         [context deleteObject:account];
@@ -127,10 +131,6 @@ NSString * const WPAccountDefaultWordPressComAccountChangedNotification = @"WPAc
 
     [[NSUserDefaults standardUserDefaults] removeObjectForKey:@"wpcom_username_preference"];
     [[NSUserDefaults standardUserDefaults] synchronize];
-
-    dispatch_async(dispatch_get_main_queue(), ^{
-        [[NSNotificationCenter defaultCenter] postNotificationName:WPAccountDefaultWordPressComAccountChangedNotification object:nil];
-    });
 }
 
 
