@@ -38,7 +38,7 @@ PODS:
   - WordPressApi (0.0.1):
     - AFNetworking (>= 1.0)
     - wpxmlrpc (~> 0.1)
-  - wpxmlrpc (0.3)
+  - wpxmlrpc (0.4)
 
 DEPENDENCIES:
   - AFNetworking (= 1.2.0)
@@ -60,7 +60,7 @@ DEPENDENCIES:
   - SVProgressHUD (~> 0.9)
   - UIDeviceIdentifier (~> 0.1)
   - WordPressApi (from `https://github.com/koke/WordPressApi.git`)
-  - wpxmlrpc (~> 0.3)
+  - wpxmlrpc (~> 0.4)
 
 EXTERNAL SOURCES:
   EmailChecker:
@@ -95,6 +95,6 @@ SPEC CHECKSUMS:
   SVProgressHUD: 03d4845ec8e64591726428a08236c6a5489d45f8
   UIDeviceIdentifier: 38f7035dd0040fc4979d1548d9a63a1ccd339b0d
   WordPressApi: 6c7ab5320344fbec850f0baba4b0ec2bfd03587d
-  wpxmlrpc: 1042b13566bac04112fdd1e16808478b3a21b080
+  wpxmlrpc: 2206985822e725838c77e1143c9171e577ac063b
 
 COCOAPODS: 0.29.0

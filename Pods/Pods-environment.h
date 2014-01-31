@@ -153,6 +153,6 @@
 // wpxmlrpc
 #define COCOAPODS_POD_AVAILABLE_wpxmlrpc
 #define COCOAPODS_VERSION_MAJOR_wpxmlrpc 0
-#define COCOAPODS_VERSION_MINOR_wpxmlrpc 3
+#define COCOAPODS_VERSION_MINOR_wpxmlrpc 4
 #define COCOAPODS_VERSION_PATCH_wpxmlrpc 0
 
