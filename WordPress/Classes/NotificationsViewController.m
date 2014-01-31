@@ -303,7 +303,7 @@ NSString * const NotificationsJetpackInformationURL = @"http://jetpack.me/about/
     return _retrievingNotifications;
 }
 
-- (void)setSyncing:(BOOL) value {
+- (void)setSyncing:(BOOL)value {
     _retrievingNotifications = value;
 }
 
