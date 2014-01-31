@@ -9,7 +9,7 @@ pod 'NSURL+IDN', :podspec => 'https://raw.github.com/koke/NSURL-IDN/master/Podfi
 pod 'DTCoreText',   '1.6.9'
 pod 'UIDeviceIdentifier', '~> 0.1'
 pod 'SVProgressHUD', '~> 0.9'
-pod 'wpxmlrpc', '~> 0.3'
+pod 'wpxmlrpc', '~> 0.4'
 pod 'WordPressApi', :git => 'https://github.com/koke/WordPressApi.git'
 pod 'NSObject-SafeExpectations', :podspec => 'https://raw.github.com/koke/NSObject-SafeExpectations/master/NSObject-SafeExpectations.podspec'
 pod 'Mixpanel'
