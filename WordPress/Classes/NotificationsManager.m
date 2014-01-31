@@ -84,7 +84,7 @@ NSString *const NotificationsDeviceToken = @"apnsDeviceToken";
         if ([notificationType isEqualToString:@"badge-reset"]) {
             [UIApplication sharedApplication].applicationIconBadgeNumber = 0;
             //Try to pull the badge number from the notification object
-            NSDictionary *apsObject = [userInfo objectForKey:@"aps"];
+            NSDictionary *apsObject = [userInfo dictionaryForKey:@"aps"];
             if (apsObject) {
                 NSNumber *badgeCount = [apsObject numberForKey:@"badge"];
                 if (badgeCount) {

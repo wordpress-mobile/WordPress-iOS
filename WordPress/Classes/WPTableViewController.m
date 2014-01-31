@@ -37,7 +37,7 @@ NSString *const DefaultCellIdentifier = @"DefaultCellIdentifier";
 @property (nonatomic, strong) UIActivityIndicatorView *activityFooter;
 @property (nonatomic, assign) BOOL animatingRemovalOfModerationSwipeView;
 @property (nonatomic, assign) BOOL didPromptForCredentials;
-@property (nonatomic, assign) BOOL isSyncing;
+@property (nonatomic, assign, setter = setSyncing:) BOOL isSyncing;
 @property (nonatomic, assign) BOOL isLoadingMore;
 @property (nonatomic, assign) BOOL didTriggerRefresh;
 @property (nonatomic, assign) CGPoint savedScrollOffset;
@@ -672,10 +672,6 @@ NSString *const DefaultCellIdentifier = @"DefaultCellIdentifier";
 
 - (BOOL)isSyncing {
     return _isSyncing;
-}
-
-- (void)setSyncing:(BOOL) value {
-    _isSyncing = value;
 }
 
 - (Class)cellClass {
