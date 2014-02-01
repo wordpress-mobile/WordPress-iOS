@@ -1020,7 +1020,11 @@ CGFloat const EPVCTextViewTopPadding = 7.0f;
     if (range.length > 0)
         infoText = [_textView.text substringWithRange:range];
     
-    _linkHelperAlertView = [[WPAlertView alloc] initWithFrame:self.view.bounds andOverlayMode:WPAlertViewOverlayModeTwoTextFieldsTwoButtonMode];
+    CGRect frame = CGRectMake(0.0f, 0.0f, self.view.bounds.size.width, self.view.bounds.size.height);
+    if (IS_IPAD) {
+        frame.origin.y = 22.0f; // Make sure the title of the alert view is visible on the iPad.
+    }
+    _linkHelperAlertView = [[WPAlertView alloc] initWithFrame:frame andOverlayMode:WPAlertViewOverlayModeTwoTextFieldsTwoButtonMode];
     
     NSString *title = NSLocalizedString(@"Make a Link\n\n\n\n", @"Title of the Link Helper popup to aid in creating a Link in the Post Editor.\n\n\n\n");
     NSCharacterSet *charSet = [NSCharacterSet whitespaceAndNewlineCharacterSet];
@@ -1105,7 +1109,7 @@ CGFloat const EPVCTextViewTopPadding = 7.0f;
     };
     
     _linkHelperAlertView.alpha = 0.0;
-    [self.view addSubview:_linkHelperAlertView];
+    [self.view.superview addSubview:_linkHelperAlertView];
     if ([infoText length] > 0) {
         [_linkHelperAlertView.secondTextField becomeFirstResponder];
     }
