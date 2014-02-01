@@ -370,7 +370,15 @@ static NSInteger const ImageSizeLargeHeight = 480;
 }
 
 - (NSString *)password {
-    return self.account.password ?: @"";
+    [self willAccessValueForKey:@"account"];
+    
+    WPAccount *account = self.account;
+    
+    [self didAccessValueForKey:@"account"];
+    
+    NSString *password = account.password ?: @"";
+    
+    return password;
 }
 
 #pragma mark -
