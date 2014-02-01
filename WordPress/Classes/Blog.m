@@ -48,10 +48,10 @@ static NSInteger const ImageSizeLargeHeight = 480;
 @dynamic account;
 @dynamic jetpackAccount;
 
-#pragma mark -
-#pragma mark Dealloc
+#pragma mark - NSManagedObject subclass methods
 
-- (void)dealloc {
+- (void)didTurnIntoFault {
+    // Clean up instance variables
     _blavatarUrl = nil;
     _api = nil;
     [_reachability stopNotifier];
@@ -60,6 +60,7 @@ static NSInteger const ImageSizeLargeHeight = 480;
     [[NSNotificationCenter defaultCenter] removeObserver:self];
 }
 
+#pragma mark -
 
 - (BOOL)geolocationEnabled
 {
@@ -359,7 +360,13 @@ static NSInteger const ImageSizeLargeHeight = 480;
 }
 
 - (NSString *)username {
-    return self.account.username ?: @"";
+    [self willAccessValueForKey:@"username"];
+    
+    NSString *username = self.account.username ?: @"";
+    
+    [self didAccessValueForKey:@"username"];
+    
+    return username;
 }
 
 - (NSString *)password {
