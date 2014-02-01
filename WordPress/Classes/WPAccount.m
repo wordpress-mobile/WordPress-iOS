@@ -200,7 +200,17 @@ NSString * const WPAccountDefaultWordPressComAccountChangedNotification = @"WPAc
         blog.blogName = [[blogInfo objectForKey:@"blogName"] stringByDecodingXMLCharacters];
         blog.xmlrpc = [blogInfo objectForKey:@"xmlrpc"];
 
-        DDLogInfo(@"Created blog: %@", blog);
+        // Replace plaintext password in log with asterisks.
+        NSString *blogCopy = [NSString stringWithFormat:@"Created blog: %@", blog];
+        NSError *error = NULL;
+        NSRegularExpression *regex = [NSRegularExpression regularExpressionWithPattern:@"password = \"[^\"]+\""
+                                                                               options:NSRegularExpressionCaseInsensitive
+                                                                                 error:&error];
+        NSString *sanitizedCopy = [regex stringByReplacingMatchesInString:blogCopy
+                                                                  options:0
+                                                                    range:NSMakeRange(0, [blogCopy length])
+                                                             withTemplate:@"password = \"***\""];
+        DDLogInfo(sanitizedCopy);
     }];
     
     return blog;
