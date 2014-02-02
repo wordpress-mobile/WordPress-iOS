@@ -118,6 +118,11 @@
     return [UIFont fontWithName:@"OpenSans-Light" size:18.0];
 }
 
++ (UIFont *)tableviewSubtitleFontSmall
+{
+    return [self.tableviewSubtitleFont fontWithSize:10.0];
+}
+
 + (UIFont *)tableviewSectionHeaderFont
 {
     return [UIFont fontWithName:@"OpenSans-Bold" size:12.0];
@@ -298,6 +303,12 @@
         cell.textField.textColor = [self textFieldPlaceholderGrey];
         cell.textField.textAlignment = NSTextAlignmentRight;
     }
+}
+
++ (void)configureTableViewSmallSubtitleCell:(UITableViewCell *)cell
+{
+    [self configureTableViewCell:cell];
+    cell.detailTextLabel.font = [self tableviewSubtitleFontSmall];
 }
 
 + (void)configureColorsForView:(UIView *)view andTableView:(UITableView *)tableView

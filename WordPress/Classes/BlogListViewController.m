@@ -189,8 +189,7 @@ NSString * const WPBlogListRestorationID = @"WPBlogListID";
     if ([indexPath isEqual:[self indexPathForAddSite]]) {
         [WPStyleGuide configureTableViewActionCell:cell];
     } else {
-        [WPStyleGuide configureTableViewCell:cell];
-        cell.detailTextLabel.font = [cell.detailTextLabel.font fontWithSize:10.0];
+        [WPStyleGuide configureTableViewSmallSubtitleCell:cell];
     }
 
     return cell;
