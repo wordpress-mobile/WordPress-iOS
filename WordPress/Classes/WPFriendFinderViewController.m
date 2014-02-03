@@ -10,10 +10,15 @@
 #import <AddressBook/AddressBook.h>
 #import <Accounts/Accounts.h>
 #import <Social/Social.h>
+#import "WPAlertView.h"
 #import "WPFriendFinderViewController.h"
 #import "WordPressAppDelegate.h"
 #import "ReachabilityUtils.h"
 #import "Constants.h"
+
+#define kSearchStatusSearching 0
+#define kSearchStatusError 1
+#define kSearchStatusSearched 2
 
 typedef void (^DismissBlock)(NSInteger buttonIndex);
 typedef void (^CancelBlock)();
@@ -125,6 +130,7 @@ static NSString *const AccessedAddressBookPreference = @"AddressBookAccessGrante
                         NSData *jsonData = [NSJSONSerialization dataWithJSONObject:addresses options:0 error:nil];
                         NSString *json = [[NSString alloc] initWithData:jsonData encoding:NSUTF8StringEncoding];
                         [self.webView stringByEvaluatingJavaScriptFromString:[NSString stringWithFormat:@"FriendFinder.findByEmail(%@)", json]];
+                        [self toggleSearchStatus:kSearchStatusSearched forSource:@"address-book"];
                     });
                 } else {
                     dispatch_async(dispatch_get_main_queue(), ^{
@@ -155,20 +161,32 @@ static NSString *const AccessedAddressBookPreference = @"AddressBookAccessGrante
             
             NSURL *followingURL = [NSURL URLWithString:@"http://api.twitter.com/1/friends/ids.json"];
             NSArray *twitterAccounts = [store accountsWithAccountType:twitterAccountType];
-            [twitterAccounts enumerateObjectsUsingBlock:^(id obj, NSUInteger idx, BOOL *stop) {
-                ACAccount *account = (ACAccount *)obj;
-                SLRequest *request = [SLRequest requestForServiceType:SLServiceTypeTwitter
-                                                        requestMethod:SLRequestMethodGET
-                                                                  URL:followingURL
-                                                           parameters:params];
-                request.account = account;
-                [request performRequestWithHandler:^(NSData *responseData, NSHTTPURLResponse *urlResponse, NSError *error) {
-                    NSString *responseJSON = [[NSString alloc] initWithData:responseData encoding:NSUTF8StringEncoding];
-                    dispatch_async(dispatch_get_main_queue(), ^{
-                        [self.webView stringByEvaluatingJavaScriptFromString:[NSString stringWithFormat:@"FriendFinder.findByTwitterID(%@, '%@')", responseJSON, account.accountDescription]];
-                    });
+            if (twitterAccounts.count == 0) {
+                UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"No Twitter Account", @"Title of an alert warning the user that no Twitter account was registered on the device.")
+                                                                    message:NSLocalizedString(@"In order to use Twitter functionality, please add your Twitter account in the Settings app.", @"")
+                                                                   delegate:self
+                                                          cancelButtonTitle:NSLocalizedString(@"OK",@"")
+                                                          otherButtonTitles:nil];
+                dispatch_async(dispatch_get_main_queue(), ^{
+                    [self toggleSearchStatus:kSearchStatusError forSource:@"twitter"];
+                    [alertView show];
+                });
+            } else {
+                [twitterAccounts enumerateObjectsUsingBlock:^(id obj, NSUInteger idx, BOOL *stop) {
+                    ACAccount *account = (ACAccount *)obj;
+                    SLRequest *request = [SLRequest requestForServiceType:SLServiceTypeTwitter
+                                                            requestMethod:SLRequestMethodGET
+                                                                      URL:followingURL
+                                                               parameters:params];
+                    request.account = account;
+                    [request performRequestWithHandler:^(NSData *responseData, NSHTTPURLResponse *urlResponse, NSError *error) {
+                        NSString *responseJSON = [[NSString alloc] initWithData:responseData encoding:NSUTF8StringEncoding];
+                        dispatch_async(dispatch_get_main_queue(), ^{
+                            [self.webView stringByEvaluatingJavaScriptFromString:[NSString stringWithFormat:@"FriendFinder.findByTwitterID(%@, '%@')", responseJSON, account.accountDescription]];
+                        });
+                    }];
                 }];
-            }];
+            }
         } else {
             dispatch_async(dispatch_get_main_queue(), ^{
                 [self.webView stringByEvaluatingJavaScriptFromString:@"FriendFinder.findByTwitterID()"];
@@ -221,6 +239,19 @@ static NSString *const AccessedAddressBookPreference = @"AddressBookAccessGrante
             });
         }
     }];
+}
+
+- (void)toggleSearchStatus:(NSUInteger)status forSource:(NSString *)source {
+    // Manipulate spinner on webview with JavaScript call.
+    NSString *javaScriptToggle;
+    if (status == kSearchStatusSearching) {
+        javaScriptToggle = @".removeClass('searched').removeClass('error').addClass('searching')";
+    } else if (status == kSearchStatusError) {
+        javaScriptToggle = @".removeClass('searching').removeClass('searched').addClass('error')";
+    } else if (status == kSearchStatusSearched) {
+        javaScriptToggle = @".removeClass('error').removeClass('searching').addClass('searched')";
+    }
+    [self.webView stringByEvaluatingJavaScriptFromString:[NSString stringWithFormat:@"jQuery('#%@')%@", source, javaScriptToggle]];
 }
 
 - (UIAlertView *)alertWithTitle:(NSString *)title message:(NSString *)message cancelButtonTitle:(NSString *)cancelButtonTitle confirmButtonTitle:(NSString *)confirmButtonTitle dismissBlock:(DismissBlock)dismiss {
