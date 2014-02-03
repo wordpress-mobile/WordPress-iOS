@@ -118,6 +118,12 @@ static NSString *const CameraPlusImagesNotification = @"CameraPlusImagesNotifica
         [self cleanUnusedMediaFileFromTmpDir];
     });
     
+    CGRect bounds = [[UIScreen mainScreen] bounds];
+    [self.window setFrame:bounds];
+    [self.window setBounds:bounds]; // for good measure.
+    self.window.backgroundColor = [UIColor blackColor];
+    self.window.rootViewController = self.tabBarController;
+    
     return YES;
 }
 
@@ -129,12 +135,6 @@ static NSString *const CameraPlusImagesNotification = @"CameraPlusImagesNotifica
         [NotificationsManager handleNotificationForApplicationLaunch:launchOptions];
     }
 
-    CGRect bounds = [[UIScreen mainScreen] bounds];
-    [self.window setFrame:bounds];
-    [self.window setBounds:bounds]; // for good measure.
-    
-    self.window.backgroundColor = [UIColor blackColor];
-    self.window.rootViewController = self.tabBarController;
     [self.window makeKeyAndVisible];
     
     [self showWelcomeScreenIfNeededAnimated:NO];
