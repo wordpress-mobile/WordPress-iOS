@@ -372,14 +372,11 @@ NSString *const WordPressComApiPushAppId = @"org.wordpress.appstore";
                                         success:(void (^)(NSDictionary *settings))success
                                         failure:(void (^)(NSError *error))failure {
     if (nil == token) {
-        DDLogWarn(@"syncPushNotificationInfoWithDeviceToken called with no token!");
         return;
     }
 
-    if (![self hasCredentials]) {
-        DDLogWarn(@"syncPushNotificationInfoWithDeviceToken called with no credentials!");
+    if (![self hasCredentials])
         return;
-    }
         
     // Send a multicall for register the token and retrieval of push notification settings
     NSMutableArray *operations = [NSMutableArray arrayWithCapacity:2];
