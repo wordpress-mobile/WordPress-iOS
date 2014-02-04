@@ -115,24 +115,30 @@ NSString * const WPAccountDefaultWordPressComAccountChangedNotification = @"WPAc
     [context performBlock:^{
         WPAccount *account = (WPAccount *)[context objectWithID:accountObjectID];
         [context deleteObject:account];
-
-        [[account restApi] cancelAllHTTPOperationsWithMethod:nil path:nil];
-        [[account restApi] reset];
-
-        // Clear keychain entries
-        NSError *error;
-        [SFHFKeychainUtils deleteItemForUsername:account.username andServiceName:@"WordPress.com" error:&error];
-        [SFHFKeychainUtils deleteItemForUsername:account.username andServiceName:WordPressComOAuthKeychainServiceName error:&error];
-        account.password = nil;
-        account.authToken = nil;
-
-        [WordPressAppDelegate sharedWordPressApplicationDelegate].isWPcomAuthenticated = NO;
-
-        [[NSUserDefaults standardUserDefaults] removeObjectForKey:@"wpcom_username_preference"];
-        [[NSUserDefaults standardUserDefaults] synchronize];
-
         [[ContextManager sharedInstance] saveContext:context];
     }];
+}
+
+- (void)prepareForDeletion {
+    // Only do these deletions in the primary context (no parent)
+    if (self.managedObjectContext.parentContext) {
+        return;
+    }
+    
+    [[self restApi] cancelAllHTTPOperationsWithMethod:nil path:nil];
+    [[self restApi] reset];
+
+    // Clear keychain entries
+    NSError *error;
+    [SFHFKeychainUtils deleteItemForUsername:self.username andServiceName:@"WordPress.com" error:&error];
+    [SFHFKeychainUtils deleteItemForUsername:self.username andServiceName:WordPressComOAuthKeychainServiceName error:&error];
+    self.password = nil;
+    self.authToken = nil;
+    
+    [WordPressAppDelegate sharedWordPressApplicationDelegate].isWPcomAuthenticated = NO;
+    
+    [[NSUserDefaults standardUserDefaults] removeObjectForKey:@"wpcom_username_preference"];
+    [[NSUserDefaults standardUserDefaults] synchronize];
 }
 
 #pragma mark - Account creation
