@@ -115,8 +115,12 @@ static NSString *const GravatarBaseUrl = @"http://gravatar.com";
     CGSize maxSize = [self maxSizeForType:type];
     [[WPImageSource sharedSource] downloadImageForURL:url
                                           withSuccess:^(UIImage *image) {
-                                              [self setCachedImage:image forHash:hash type:type size:maxSize];
-                                              [self processImage:image forHash:hash type:type size:size success:success];
+                                              if (image != nil) {
+                                                  [self setCachedImage:image forHash:hash type:type size:maxSize];
+                                                  [self processImage:image forHash:hash type:type size:size success:success];
+                                              } else if (success) {
+                                                  success(nil);
+                                              }
                                           } failure:^(NSError *error) {
                                               if (success) {
                                                   success(nil);
