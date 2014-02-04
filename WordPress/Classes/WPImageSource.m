@@ -101,8 +101,7 @@ NSString * const WPImageSourceErrorDomain = @"WPImageSourceErrorDomain";
 - (void)downloadSucceededWithNilImageForURL:(NSURL *)url response:(NSHTTPURLResponse *)response
 {
     DDLogError(@"WPImageSource download completed sucessfully but the image was nil. Headers: ", [response allHeaderFields]);
-    NSString *description = NSLocalizedString(@"A download request ended successfully but the image was nil.", @"Error message text.");
-    description = [NSString stringWithFormat:@"%@ URL: %@", description, [url absoluteString]];
+    NSString *description = [NSString stringWithFormat:@"A download request ended successfully but the image was nil. URL: %@", [url absoluteString]];
     NSError *error = [NSError errorWithDomain:WPImageSourceErrorDomain
                                          code:WPImageSourceErrorNilImage
                                      userInfo:@{NSLocalizedDescriptionKey:description}];
