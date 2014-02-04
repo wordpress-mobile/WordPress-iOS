@@ -70,6 +70,7 @@ NSString *const NotificationsDeviceToken = @"apnsDeviceToken";
         
         NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
         [defaults removeObjectForKey:NotificationsDeviceToken];
+        [defaults removeObjectForKey:NotificationsPreferencesKey];
         [defaults synchronize];
     } failure:^(NSError *error){
         DDLogError(@"Couldn't unregister token: %@", [error localizedDescription]);
