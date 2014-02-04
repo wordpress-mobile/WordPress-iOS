@@ -108,6 +108,11 @@ NSString * const WPAccountDefaultWordPressComAccountChangedNotification = @"WPAc
     NSManagedObjectID *accountObjectID = __defaultDotcomAccount.objectID;
     __defaultDotcomAccount = nil;
 
+    [WordPressAppDelegate sharedWordPressApplicationDelegate].isWPcomAuthenticated = NO;
+    
+    [[NSUserDefaults standardUserDefaults] removeObjectForKey:@"wpcom_username_preference"];
+    [[NSUserDefaults standardUserDefaults] synchronize];
+
     dispatch_async(dispatch_get_main_queue(), ^{
         [[NSNotificationCenter defaultCenter] postNotificationName:WPAccountDefaultWordPressComAccountChangedNotification object:nil];
     });
@@ -134,11 +139,6 @@ NSString * const WPAccountDefaultWordPressComAccountChangedNotification = @"WPAc
     [SFHFKeychainUtils deleteItemForUsername:self.username andServiceName:WordPressComOAuthKeychainServiceName error:&error];
     self.password = nil;
     self.authToken = nil;
-    
-    [WordPressAppDelegate sharedWordPressApplicationDelegate].isWPcomAuthenticated = NO;
-    
-    [[NSUserDefaults standardUserDefaults] removeObjectForKey:@"wpcom_username_preference"];
-    [[NSUserDefaults standardUserDefaults] synchronize];
 }
 
 #pragma mark - Account creation
