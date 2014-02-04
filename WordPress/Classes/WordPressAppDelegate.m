@@ -1089,6 +1089,8 @@ static NSString *const CameraPlusImagesNotification = @"CameraPlusImagesNotifica
 - (void)handleDefaultAccountChangedNotification:(NSNotification *)notification {
 	[self toggleExtraDebuggingIfNeeded];
 
+    [NotificationsManager registerForPushNotifications];
+
     // If the notification object is not nil, then it's a login
     if (notification.object) {
         [ReaderPost fetchPostsWithCompletionHandler:nil];
