@@ -282,7 +282,7 @@ NSString *const WordPressComApiPushAppId = @"org.wordpress.appstore";
                          success:(void (^)())success
                          failure:(void (^)(NSError *error))failure {
     
-    if (nil == token)
+    if (nil == token || nil == settings)
         return;
     
     NSArray *parameters = @[[self usernameForXmlrpc],
