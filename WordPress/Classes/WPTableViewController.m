@@ -83,6 +83,9 @@ NSString *const DefaultCellIdentifier = @"DefaultCellIdentifier";
 - (void)dealloc {
     _resultsController.delegate = nil;
     _editSiteViewController.delegate = nil;
+    
+    NSNotificationCenter *nc = [NSNotificationCenter defaultCenter];
+    [nc removeObserver:self];
 }
 
 - (void)encodeRestorableStateWithCoder:(NSCoder *)coder {
@@ -113,6 +116,9 @@ NSString *const DefaultCellIdentifier = @"DefaultCellIdentifier";
     }
 
     [self configureNoResultsView];
+    
+    NSNotificationCenter *nc = [NSNotificationCenter defaultCenter];
+    [nc addObserver:self selector:@selector(refreshIfAppropriate) name:UIApplicationDidBecomeActiveNotification object:nil];
 }
 
 - (void)viewWillAppear:(BOOL)animated {
@@ -131,18 +137,8 @@ NSString *const DefaultCellIdentifier = @"DefaultCellIdentifier";
 
 - (void)viewDidAppear:(BOOL)animated {
 	[super viewDidAppear:animated];
-    WordPressAppDelegate *appDelegate = [WordPressAppDelegate sharedWordPressApplicationDelegate];
-    if( appDelegate.connectionAvailable == NO ) return; //do not start auto-synch if connection is down
-
-    // Don't try to refresh if we just canceled editing credentials
-    if (_didPromptForCredentials) {
-        return;
-    }
-    NSDate *lastSynced = [self lastSyncDate];
-    if (lastSynced == nil || ABS([lastSynced timeIntervalSinceNow]) > WPTableViewControllerRefreshTimeout) {
-        // Update in the background
-        [self syncItems];
-    }
+    
+    [self refreshIfAppropriate];
 }
 
 - (void)viewWillDisappear:(BOOL)animated {
@@ -468,6 +464,21 @@ NSString *const DefaultCellIdentifier = @"DefaultCellIdentifier";
 }
 
 #pragma mark - Private Methods
+
+- (void)refreshIfAppropriate {
+    WordPressAppDelegate *appDelegate = [WordPressAppDelegate sharedWordPressApplicationDelegate];
+    if( appDelegate.connectionAvailable == NO ) return; //do not start auto-synch if connection is down
+    
+    // Don't try to refresh if we just canceled editing credentials
+    if (_didPromptForCredentials) {
+        return;
+    }
+    NSDate *lastSynced = [self lastSyncDate];
+    if (lastSynced == nil || ABS([lastSynced timeIntervalSinceNow]) > WPTableViewControllerRefreshTimeout) {
+        // Update in the background
+        [self syncItems];
+    }
+}
 
 - (void)configureNoResultsView {
     if (![self isViewLoaded]) {
