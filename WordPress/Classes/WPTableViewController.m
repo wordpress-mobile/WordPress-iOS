@@ -466,6 +466,12 @@ NSString *const DefaultCellIdentifier = @"DefaultCellIdentifier";
 #pragma mark - Private Methods
 
 - (void)automaticallyRefreshIfAppropriate {
+    // Only automatically refresh if the view is loaded and visible on the screen
+    if (self.isViewLoaded == NO || self.view.window == nil) {
+        DDLogVerbose(@"View is not visible and will not check for auto refresh.");
+        return;
+    }
+    
     WordPressAppDelegate *appDelegate = [WordPressAppDelegate sharedWordPressApplicationDelegate];
     if( appDelegate.connectionAvailable == NO ) return; //do not start auto-synch if connection is down
     
@@ -473,6 +479,7 @@ NSString *const DefaultCellIdentifier = @"DefaultCellIdentifier";
     if (_didPromptForCredentials) {
         return;
     }
+    
     NSDate *lastSynced = [self lastSyncDate];
     if (lastSynced == nil || ABS([lastSynced timeIntervalSinceNow]) > WPTableViewControllerRefreshTimeout) {
         // Update in the background
