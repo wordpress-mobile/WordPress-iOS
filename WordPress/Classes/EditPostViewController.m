@@ -227,6 +227,9 @@ CGFloat const EPVCTextViewTopPadding = 7.0f;
     
     previewButton.tintColor = [WPStyleGuide readGrey];
     photoButton.tintColor = [WPStyleGuide readGrey];
+
+    previewButton.accessibilityLabel = NSLocalizedString(@"Preview post", nil);
+    photoButton.accessibilityLabel = NSLocalizedString(@"Add media", nil);
     
     UIBarButtonItem *leftFixedSpacer = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFixedSpace target:nil action:nil];
     UIBarButtonItem *rightFixedSpacer = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFixedSpace target:nil action:nil];
@@ -284,6 +287,7 @@ CGFloat const EPVCTextViewTopPadding = 7.0f;
         _titleTextField.textColor = [WPStyleGuide darkAsNightGrey];
         _titleTextField.autoresizingMask = UIViewAutoresizingFlexibleWidth;
         _titleTextField.attributedPlaceholder = [[NSAttributedString alloc] initWithString:(NSLocalizedString(@"Enter title here", @"Label for the title of the post field. Should be the same as WP core.")) attributes:(@{NSForegroundColorAttributeName: [WPStyleGuide textFieldPlaceholderGrey]})];
+        _titleTextField.accessibilityLabel = NSLocalizedString(@"Title", @"Post title");
         
         _titleTextField.returnKeyType = UIReturnKeyNext;
     }
@@ -331,6 +335,7 @@ CGFloat const EPVCTextViewTopPadding = 7.0f;
         _textView.font = [WPStyleGuide regularTextFont];
         _textView.textColor = [WPStyleGuide darkAsNightGrey];
         _textView.textContainerInset = UIEdgeInsetsMake(0.0f, EPVCTextViewOffset, 0.0f, EPVCTextViewOffset);
+        _textView.accessibilityLabel = NSLocalizedString(@"Content", @"Post content");
     }
     [_tableHeaderViewContentView addSubview:_textView];
     
@@ -370,6 +375,7 @@ CGFloat const EPVCTextViewTopPadding = 7.0f;
         _tapToStartWritingLabel.autoresizingMask = UIViewAutoresizingFlexibleWidth;
         _tapToStartWritingLabel.font = [WPStyleGuide regularTextFont];
         _tapToStartWritingLabel.textColor = [WPStyleGuide textFieldPlaceholderGrey];
+        _tapToStartWritingLabel.isAccessibilityElement = NO;
     }
     [_tableHeaderViewContentView addSubview:_tapToStartWritingLabel];
 }
@@ -577,20 +583,23 @@ CGFloat const EPVCTextViewTopPadding = 7.0f;
                                                                                    selectedCompletion:selectedCompletion
                                                                                      cancelCompletion:dismissHandler];
     vc.title = NSLocalizedString(@"Select Blog", @"");
+
+    UINavigationController *navController = [[UINavigationController alloc] initWithRootViewController:vc];
+    navController.navigationBar.translucent = NO;
+    navController.navigationBar.barStyle = UIBarStyleBlack;
     
     if (IS_IPAD) {
         vc.preferredContentSize = CGSizeMake(320.0, 500);
         
         CGRect titleRect = self.navigationItem.titleView.frame;
         titleRect = [self.navigationController.view convertRect:titleRect fromView:self.navigationItem.titleView.superview];
-        
-        self.blogSelectorPopover = [[UIPopoverController alloc] initWithContentViewController:vc];
+
+        self.blogSelectorPopover = [[UIPopoverController alloc] initWithContentViewController:navController];
         self.blogSelectorPopover.backgroundColor = [WPStyleGuide newKidOnTheBlockBlue];
         self.blogSelectorPopover.delegate = self;
         [self.blogSelectorPopover presentPopoverFromRect:titleRect inView:self.navigationController.view permittedArrowDirections:UIPopoverArrowDirectionAny animated:YES];
+
     } else {
-        UINavigationController *navController = [[UINavigationController alloc] initWithRootViewController:vc];
-        navController.navigationBar.translucent = NO;
         navController.modalPresentationStyle = UIModalPresentationPageSheet;
         navController.modalTransitionStyle = UIModalTransitionStyleCoverVertical;
         
@@ -801,6 +810,7 @@ CGFloat const EPVCTextViewTopPadding = 7.0f;
     [titleButton addTarget:self action:@selector(showBlogSelectorPrompt) forControlEvents:UIControlEventTouchUpInside];
     [titleButton setImageEdgeInsets:UIEdgeInsetsMake(0, 0, 0, 10)];
     [titleButton setTitleEdgeInsets:UIEdgeInsetsMake(0, 10, 0, 0)];
+    [titleButton setAccessibilityHint:NSLocalizedString(@"Tap to select which blog to post to", nil)];
 
     _titleBarButton = titleButton;
     self.navigationItem.titleView = titleButton;
@@ -1010,7 +1020,11 @@ CGFloat const EPVCTextViewTopPadding = 7.0f;
     if (range.length > 0)
         infoText = [_textView.text substringWithRange:range];
     
-    _linkHelperAlertView = [[WPAlertView alloc] initWithFrame:self.view.bounds andOverlayMode:WPAlertViewOverlayModeTwoTextFieldsTwoButtonMode];
+    CGRect frame = CGRectMake(0.0f, 0.0f, self.view.bounds.size.width, self.view.bounds.size.height);
+    if (IS_IPAD) {
+        frame.origin.y = 22.0f; // Make sure the title of the alert view is visible on the iPad.
+    }
+    _linkHelperAlertView = [[WPAlertView alloc] initWithFrame:frame andOverlayMode:WPAlertViewOverlayModeTwoTextFieldsTwoButtonMode];
     
     NSString *title = NSLocalizedString(@"Make a Link\n\n\n\n", @"Title of the Link Helper popup to aid in creating a Link in the Post Editor.\n\n\n\n");
     NSCharacterSet *charSet = [NSCharacterSet whitespaceAndNewlineCharacterSet];
@@ -1095,7 +1109,7 @@ CGFloat const EPVCTextViewTopPadding = 7.0f;
     };
     
     _linkHelperAlertView.alpha = 0.0;
-    [self.view addSubview:_linkHelperAlertView];
+    [self.view.superview addSubview:_linkHelperAlertView];
     if ([infoText length] > 0) {
         [_linkHelperAlertView.secondTextField becomeFirstResponder];
     }

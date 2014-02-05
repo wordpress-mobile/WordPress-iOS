@@ -93,7 +93,12 @@
  5/3/2013
  */
 
+#if ! __has_feature(objc_arc)
+#error This file must be compiled with ARC. Either turn on ARC for the project or use -fobjc-arc flag on this file.
+#endif
+
 #import "UIImage+MPImageEffects.h"
+#import "UIColor+MPColor.h"
 
 #import <Accelerate/Accelerate.h>
 #import <float.h>
@@ -104,21 +109,21 @@
 
 - (UIImage *)mp_applyLightEffect
 {
-    UIColor *tintColor = [UIColor colorWithWhite:1.0f alpha:0.3f];
+    UIColor *tintColor = [UIColor mp_lightEffectColor];
     return [self mp_applyBlurWithRadius:30.0f tintColor:tintColor saturationDeltaFactor:1.8f maskImage:nil];
 }
 
 
 - (UIImage *)mp_applyExtraLightEffect
 {
-    UIColor *tintColor = [UIColor colorWithWhite:0.97f alpha:0.82f];
+    UIColor *tintColor = [UIColor mp_extraLightEffectColor];
     return [self mp_applyBlurWithRadius:20.0f tintColor:tintColor saturationDeltaFactor:1.8f maskImage:nil];
 }
 
 
 - (UIImage *)mp_applyDarkEffect
 {
-    UIColor *tintColor = [UIColor colorWithWhite:0.11f alpha:0.73f];
+    UIColor *tintColor = [UIColor mp_darkEffectColor];
     return [self mp_applyBlurWithRadius:20.0f tintColor:tintColor saturationDeltaFactor:1.8f maskImage:nil];
 }
 
@@ -133,8 +138,7 @@
         if ([tintColor getWhite:&b alpha:NULL]) {
             effectColor = [UIColor colorWithWhite:b alpha:EffectColorAlpha];
         }
-    }
-    else {
+    } else {
         CGFloat r, g, b;
         if ([tintColor getRed:&r green:&g blue:&b alpha:NULL]) {
             effectColor = [UIColor colorWithRed:r green:g blue:b alpha:EffectColorAlpha];
@@ -226,8 +230,7 @@
             if (hasBlur) {
                 vImageMatrixMultiply_ARGB8888(&effectOutBuffer, &effectInBuffer, saturationMatrix, divisor, NULL, NULL, kvImageNoFlags);
                 effectImageBuffersAreSwapped = YES;
-            }
-            else {
+            } else {
                 vImageMatrixMultiply_ARGB8888(&effectInBuffer, &effectOutBuffer, saturationMatrix, divisor, NULL, NULL, kvImageNoFlags);
             }
         }

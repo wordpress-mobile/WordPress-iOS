@@ -48,10 +48,10 @@ static NSInteger const ImageSizeLargeHeight = 480;
 @dynamic account;
 @dynamic jetpackAccount;
 
-#pragma mark -
-#pragma mark Dealloc
+#pragma mark - NSManagedObject subclass methods
 
-- (void)dealloc {
+- (void)didTurnIntoFault {
+    // Clean up instance variables
     _blavatarUrl = nil;
     _api = nil;
     [_reachability stopNotifier];
@@ -60,6 +60,7 @@ static NSInteger const ImageSizeLargeHeight = 480;
     [[NSNotificationCenter defaultCenter] removeObserver:self];
 }
 
+#pragma mark -
 
 - (BOOL)geolocationEnabled
 {
@@ -83,25 +84,27 @@ static NSInteger const ImageSizeLargeHeight = 480;
 #pragma mark Custom methods
 
 + (NSInteger)countVisibleWithContext:(NSManagedObjectContext *)moc {
-    NSFetchRequest *request = [[NSFetchRequest alloc] init];
-    [request setEntity:[NSEntityDescription entityForName:@"Blog" inManagedObjectContext:moc]];
-    [request setIncludesSubentities:NO];
-    
     NSPredicate *predicate = [NSPredicate predicateWithFormat:@"visible = %@" argumentArray:@[@(YES)]];
-    [request setPredicate:predicate];
-    
-    NSError *err;
-    NSUInteger count = [moc countForFetchRequest:request error:&err];
-    if(count == NSNotFound) {
-        count = 0;
-    }
-    return count;
+    return [self countWithContext:moc predicate:predicate];
+}
+
++ (NSInteger)countSelfHostedWithContext:(NSManagedObjectContext *)moc {
+    NSPredicate *predicate = [NSPredicate predicateWithFormat:@"account.isWpcom = %@" argumentArray:@[@(NO)]];
+    return [self countWithContext:moc predicate:predicate];
 }
 
 + (NSInteger)countWithContext:(NSManagedObjectContext *)moc {
+    return [self countWithContext:moc predicate:nil];
+}
+
++ (NSInteger)countWithContext:(NSManagedObjectContext *)moc predicate:(NSPredicate *)predicate {
     NSFetchRequest *request = [[NSFetchRequest alloc] init];
     [request setEntity:[NSEntityDescription entityForName:@"Blog" inManagedObjectContext:moc]];
     [request setIncludesSubentities:NO];
+
+    if (predicate) {
+        [request setPredicate:predicate];
+    }
     
     NSError *err;
     NSUInteger count = [moc countForFetchRequest:request error:&err];
@@ -357,11 +360,20 @@ static NSInteger const ImageSizeLargeHeight = 480;
 }
 
 - (NSString *)username {
-    return self.account.username ?: @"";
+    [self willAccessValueForKey:@"username"];
+    
+    NSString *username = self.account.username ?: @"";
+    
+    [self didAccessValueForKey:@"username"];
+    
+    return username;
 }
 
 - (NSString *)password {
-    return self.account.password ?: @"";
+    WPAccount *account = self.account;
+    NSString *password = account.password ?: @"";
+    
+    return password;
 }
 
 - (BOOL)supportsFeaturedImages {
