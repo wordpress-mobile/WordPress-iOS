@@ -138,7 +138,7 @@ NSString *const DefaultCellIdentifier = @"DefaultCellIdentifier";
 - (void)viewDidAppear:(BOOL)animated {
 	[super viewDidAppear:animated];
     
-    [self refreshIfAppropriate];
+    [self automaticallyRefreshIfAppropriate];
 }
 
 - (void)viewWillDisappear:(BOOL)animated {
@@ -465,7 +465,7 @@ NSString *const DefaultCellIdentifier = @"DefaultCellIdentifier";
 
 #pragma mark - Private Methods
 
-- (void)refreshIfAppropriate {
+- (void)automaticallyRefreshIfAppropriate {
     WordPressAppDelegate *appDelegate = [WordPressAppDelegate sharedWordPressApplicationDelegate];
     if( appDelegate.connectionAvailable == NO ) return; //do not start auto-synch if connection is down
     
