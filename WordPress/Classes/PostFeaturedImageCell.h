@@ -10,8 +10,9 @@
 
 @interface PostFeaturedImageCell : WPTableViewCell
 
-@property (nonatomic, strong) NSString *imageURL;
+extern CGFloat const PostFeaturedImageCellMargin;
 
-- (CGFloat)desiredHeightForWidth:(CGFloat)width;
+- (void)setImage:(UIImage *)image;
+- (void)showLoadingSpinner:(BOOL)showSpinner;
 
 @end

@@ -9,23 +9,22 @@
 
 #import "PostSettingsViewController.h"
 
-#import <ImageIO/ImageIO.h>
-#import <CoreLocation/CoreLocation.h>
-#import <MapKit/MapKit.h>
-
 #import "CategoriesViewController.h"
 #import "EditPostViewController_Internal.h"
+#import "FeaturedImageViewController.h"
 #import "NSString+XMLExtensions.h"
 #import "NSString+Helpers.h"
 #import "Post.h"
-#import "PostAnnotation.h"
+#import "PostFeaturedImageCell.h"
+#import "PostGeolocationCell.h"
+#import "PostGeolocationViewController.h"
 #import "PostSettingsSelectionViewController.h"
-#import "UIImageView+AFNetworking.h"
 #import "UITableViewTextFieldCell.h"
 #import "WordPressAppDelegate.h"
 #import "WPAlertView.h"
 #import "WPTableViewActivityCell.h"
 #import "WPTableViewSectionHeaderView.h"
+#import "WPTableImageSource.h"
 
 typedef enum {
     PostSettingsSectionTaxonomy = 0,
@@ -47,33 +46,19 @@ typedef enum {
     PostSettingsRowFeaturedImageAdd,
     PostSettingsRowFeaturedImageRemove,
     PostSettingsRowGeolocationAdd,
-    PostSettingsRowGeolocationRemove
+    PostSettingsRowGeolocationMap
 } PostSettingsRow;
 
-typedef enum {
-    ActionSheetTagPhoto = 0,
-    ActionSheetTagResizePhoto
-} ActionSheetTag;
+static CGFloat CellHeight = 44.0f;
+static CGFloat GeoCellHeight = 160.0f;
 
-
-static NSString *const LocationServicesCellIdentifier = @"LocationServicesCellIdentifier";
-static NSString *const TableViewActivityCellIdentifier = @"TableViewActivityCellIdentifier";
-static NSString *const RemoveGeotagCellIdentifier = @"RemoveGeotagCellIdentifier";
-
-@interface PostSettingsViewController () <UINavigationControllerDelegate, UIImagePickerControllerDelegate, UIPopoverControllerDelegate, UIPickerViewDelegate, UIPickerViewDataSource, UITextFieldDelegate, CLLocationManagerDelegate, UIActionSheetDelegate>
+@interface PostSettingsViewController () <UIPopoverControllerDelegate, UIPickerViewDelegate, UIPickerViewDataSource, UITextFieldDelegate, UIActionSheetDelegate, WPTableImageSourceDelegate>
 
 @property (nonatomic, strong) NSMutableArray *sections;
-@property (nonatomic, assign) BOOL triedAuthOnce;
-@property (nonatomic, strong) NSDictionary *currentImageMetadata;
-@property (nonatomic, assign) BOOL isShowingResizeActionSheet;
-@property (nonatomic, assign) BOOL isShowingCustomSizeAlert;
-@property (nonatomic, strong) UIImage *currentImage;
 @property (nonatomic, strong) AbstractPost *apost;
-@property (nonatomic, strong) WPAlertView *customSizeAlert;
 
 // Post tags, status
-@property (nonatomic, strong) IBOutlet UILabel *visibilityLabel;
-@property (nonatomic, strong) IBOutlet UITextField *passwordTextField;
+@property (nonatomic, strong) UITextField *passwordTextField;
 @property (nonatomic, strong) UILabel *publishOnDateLabel;
 @property (nonatomic, strong) UITextField *tagsTextField;
 @property (nonatomic, strong) NSArray *statusList;
@@ -83,40 +68,15 @@ static NSString *const RemoveGeotagCellIdentifier = @"RemoveGeotagCellIdentifier
 @property (nonatomic, strong) UIDatePicker *datePickerView;
 @property (nonatomic, strong) UIPopoverController *popover;
 @property (nonatomic, assign) BOOL isShowingKeyboard;
-@property (nonatomic, assign) BOOL blogSupportsFeaturedImage;
-
-// Geotagging
-@property (nonatomic, strong) IBOutlet MKMapView *mapView;
-@property (nonatomic, strong) IBOutlet UILabel *addressLabel;
-@property (nonatomic, strong) IBOutlet UILabel *coordinateLabel;
-@property (nonatomic, strong) IBOutlet UITableViewCell *mapGeotagTableViewCell;
-@property (nonatomic, strong) CLLocationManager *locationManager;
-@property (nonatomic, strong) CLGeocoder *reverseGeocoder;
-@property (nonatomic, strong) PostAnnotation *annotation;
-@property (nonatomic, strong) NSString *address;
-@property (nonatomic, assign) BOOL isUpdatingLocation;
-
-// Featured image
-@property (nonatomic, strong) IBOutlet UILabel *visibilityTitleLabel;
-@property (nonatomic, strong) IBOutlet UILabel *featuredImageLabel;
-@property (nonatomic, strong) IBOutlet UIImageView *featuredImageView;
-@property (nonatomic, strong) IBOutlet WPTableViewActivityCell *featuredImageTableViewCell;
-@property (nonatomic, strong) IBOutlet UIActivityIndicatorView *featuredImageSpinner;
-@property (nonatomic, assign) BOOL isUploadingFeaturedImage;
+@property (nonatomic, strong) WPTableImageSource *imageSource;
+@property (nonatomic, strong) UIImage *featuredImage;
 
 @end
 
 @implementation PostSettingsViewController
 
 - (void)dealloc {
-	if (_locationManager) {
-		_locationManager.delegate = nil;
-		[_locationManager stopUpdatingLocation];
-	}
-	if (_reverseGeocoder) {
-		[_reverseGeocoder cancelGeocode];
-	}
-	_mapView.delegate = nil;
+
     [[NSNotificationCenter defaultCenter] removeObserver:self];
 }
 
@@ -124,6 +84,10 @@ static NSString *const RemoveGeotagCellIdentifier = @"RemoveGeotagCellIdentifier
     self = [super init];
     if (self) {
         _apost = aPost;
+        [_apost addObserver:self
+                 forKeyPath:@"post_thumbnail"
+                    options:NSKeyValueObservingOptionNew | NSKeyValueObservingOptionOld
+                    context:nil];
     }
     return self;
 }
@@ -145,14 +109,9 @@ static NSString *const RemoveGeotagCellIdentifier = @"RemoveGeotagCellIdentifier
 
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(keyboardWillShow:) name:UIKeyboardWillShowNotification object:nil];
 	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(keyboardWillHide:) name:UIKeyboardWillHideNotification object:nil];
-	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(showFeaturedImageUploader:) name:@"UploadingFeaturedImage" object:nil];
-	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(featuredImageUploadSucceeded:) name:FeaturedImageUploadSuccessfulNotification object:nil];
-	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(featuredImageUploadFailed:) name:FeaturedImageUploadFailedNotification object:nil];
 
     [WPStyleGuide configureColorsForView:self.view andTableView:self.tableView];
 
-    self.visibilityTitleLabel.text = NSLocalizedString(@"Visibility", @"The visibility settings of the post. Should be the same as in core WP.");
-    self.passwordTextField.placeholder = NSLocalizedString(@"Enter a password", @"");
     NSMutableArray *allStatuses = [NSMutableArray arrayWithArray:[self.apost availableStatuses]];
     [allStatuses removeObject:NSLocalizedString(@"Private", @"Privacy setting for posts set to 'Private'. Should be the same as in core WP.")];
     self.statusList = [NSArray arrayWithArray:allStatuses];
@@ -174,79 +133,28 @@ static NSString *const RemoveGeotagCellIdentifier = @"RemoveGeotagCellIdentifier
     self.datePickerView.minuteInterval = 5;
     [self.datePickerView addTarget:self action:@selector(datePickerChanged) forControlEvents:UIControlEventValueChanged];
 
-    self.passwordTextField.returnKeyType = UIReturnKeyDone;
-	self.passwordTextField.delegate = self;
-
-    // Automatically update the location for a new post
-    BOOL isNewPost = (self.apost.remoteStatus == AbstractPostRemoteStatusLocal) && !self.post.geolocation;
-    BOOL postAllowsGeotag = self.post && self.post.blog.geolocationEnabled;
-	if (isNewPost && postAllowsGeotag && [CLLocationManager locationServicesEnabled]) {
-        self.isUpdatingLocation = YES;
-        [self.locationManager startUpdatingLocation];
-	}
-
-    self.featuredImageView.layer.shadowOffset = CGSizeMake(0.0, 1.0f);
-    self.featuredImageView.layer.shadowColor = [[UIColor blackColor] CGColor];
-    self.featuredImageView.layer.shadowOpacity = 0.5f;
-    self.featuredImageView.layer.shadowRadius = 1.0f;
-
-    self.featuredImageLabel.font = [WPStyleGuide tableviewTextFont];
-    self.featuredImageLabel.textColor = [WPStyleGuide whisperGrey];
-
-    // Check if blog supports featured images
-    id supportsFeaturedImages = [self.post.blog getOptionValue:@"post_thumbnail"];
-    if (supportsFeaturedImages) {
-        self.blogSupportsFeaturedImage = [supportsFeaturedImages boolValue];
-
-        if (self.blogSupportsFeaturedImage && [self.post.media count] > 0) {
-            for (Media *media in self.post.media) {
-                NSInteger status = [media.remoteStatusNumber integerValue];
-                if ([media.mediaType isEqualToString:@"featured"] && (status == MediaRemoteStatusPushing || status == MediaRemoteStatusProcessing)){
-                    [self showFeaturedImageUploader:nil];
-                }
-            }
-        }
-
-        if (!self.isUploadingFeaturedImage && (self.blogSupportsFeaturedImage && self.post.post_thumbnail != nil)) {
-            // Download the current featured image
-            [self.featuredImageView setHidden:YES];
-            [self.featuredImageLabel setText:NSLocalizedString(@"Loading Featured Image", @"Loading featured image in post settings")];
-            [self.featuredImageLabel setHidden:NO];
-            [self.featuredImageSpinner setHidden:NO];
-            if (!self.featuredImageSpinner.isAnimating) {
-                [self.featuredImageSpinner startAnimating];
-            }
-            [self.tableView reloadData];
-
-            [self.post getFeaturedImageURLWithSuccess:^{
-                if (self.post.featuredImageURL) {
-                    NSURL *imageURL = [[NSURL alloc] initWithString:self.post.featuredImageURL];
-                    if (imageURL) {
-                        [self.featuredImageTableViewCell setSelectionStyle:UITableViewCellSelectionStyleNone];
-                        [self loadFeaturedImage:imageURL];
-                    }
-                }
-            } failure:^(NSError *error) {
-                [self.featuredImageView setHidden:YES];
-                [self.featuredImageSpinner stopAnimating];
-                [self.featuredImageSpinner setHidden:YES];
-                [self.featuredImageLabel setText:NSLocalizedString(@"Could not download Featured Image.", @"Featured image could not be downloaded for display in post settings.")];
-            }];
-        }
-    }
+// TODO: Prime the location value.
+//    // Automatically update the location for a new post
+//    BOOL isNewPost = (self.apost.remoteStatus == AbstractPostRemoteStatusLocal) && !self.post.geolocation;
+//    BOOL postAllowsGeotag = self.post && self.post.blog.geolocationEnabled;
+//	if (isNewPost && postAllowsGeotag && [CLLocationManager locationServicesEnabled]) {
+//        self.isUpdatingLocation = YES;
+//        [self.locationManager startUpdatingLocation];
+//	}
 
     UITapGestureRecognizer *gestureRecognizer = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(dismissTagsKeyboardIfAppropriate:)];
     gestureRecognizer.cancelsTouchesInView = NO;
     gestureRecognizer.numberOfTapsRequired = 1;
     [self.tableView addGestureRecognizer:gestureRecognizer];
 
-    [self.tableView registerClass:[WPTableViewCell class] forCellReuseIdentifier:LocationServicesCellIdentifier];
-    [self.tableView registerClass:[WPTableViewCell class] forCellReuseIdentifier:RemoveGeotagCellIdentifier];
+    static NSString *const TableViewActivityCellIdentifier = @"TableViewActivityCellIdentifier";
     [self.tableView registerNib:[UINib nibWithNibName:@"WPTableViewActivityCell" bundle:nil] forCellReuseIdentifier:TableViewActivityCellIdentifier];
 }
 
 - (void)viewWillAppear:(BOOL)animated {
     [super viewWillAppear:animated];
+    
+    [self.navigationController setToolbarHidden:YES];
     [self reloadData];
 }
 
@@ -261,13 +169,21 @@ static NSString *const RemoveGeotagCellIdentifier = @"RemoveGeotagCellIdentifier
 - (void)didReceiveMemoryWarning {
     DDLogWarn(@"%@ %@", self, NSStringFromSelector(_cmd));
     [super didReceiveMemoryWarning];
-
-    self.mapView = nil;
 }
 
 - (void)didRotateFromInterfaceOrientation:(UIInterfaceOrientation)fromInterfaceOrientation {
     [self reloadData];
 }
+
+#pragma mark - KVO
+
+- (void)observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary *)change context:(void *)context {
+    if ([@"post_thumbnail" isEqualToString:keyPath]) {
+        self.featuredImage = nil;
+    };
+}
+
+#pragma mark - Instance Methods
 
 - (Post *)post {
     if ([self.apost isKindOfClass:[Post class]]) {
@@ -276,64 +192,6 @@ static NSString *const RemoveGeotagCellIdentifier = @"RemoveGeotagCellIdentifier
         return nil;
     }
 }
-
-- (void)loadFeaturedImage:(NSURL *)imageURL {
-    NSURLRequest *req = [NSURLRequest requestWithURL:imageURL];
-    AFImageRequestOperation *operation = [[AFImageRequestOperation alloc] initWithRequest:req];
-    [operation setCompletionBlockWithSuccess:^(AFHTTPRequestOperation *operation, id responseObject) {
-        [self.featuredImageView setImage:responseObject];
-        [self.featuredImageView setHidden:NO];
-        [self.featuredImageSpinner stopAnimating];
-        [self.featuredImageSpinner setHidden:YES];
-        [self.featuredImageLabel setHidden:YES];
-
-    } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
-        // private blog, auth needed.
-        if (operation.response.statusCode == 403) {
-            if (!self.triedAuthOnce) {
-                self.triedAuthOnce = YES;
-
-                Blog *blog = self.apost.blog;
-                NSString *username = blog.username;
-                NSString *password = blog.password;
-
-                NSMutableURLRequest *mRequest = [[NSMutableURLRequest alloc] init];
-                NSString *requestBody = [NSString stringWithFormat:@"log=%@&pwd=%@&redirect_to=",
-                                         [username stringByUrlEncoding],
-                                         [password stringByUrlEncoding]];
-
-                [mRequest setURL:[NSURL URLWithString:blog.loginUrl]];
-                [mRequest setHTTPBody:[requestBody dataUsingEncoding:NSUTF8StringEncoding]];
-                [mRequest setValue:[NSString stringWithFormat:@"%d", [requestBody length]] forHTTPHeaderField:@"Content-Length"];
-                [mRequest addValue:@"*/*" forHTTPHeaderField:@"Accept"];
-                [mRequest setHTTPMethod:@"POST"];
-
-                AFHTTPRequestOperation *authOp = [[AFHTTPRequestOperation alloc] initWithRequest:mRequest];
-                [authOp setCompletionBlockWithSuccess:^(AFHTTPRequestOperation *operation, id responseObject) {
-                    // Good auth. We should be able to show the image now.
-                    [self loadFeaturedImage:imageURL];
-
-                } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
-                    // Rather than duplicate the fail condition, just call the method again and let it fail a second time.
-                    [self loadFeaturedImage:imageURL];
-
-                }];
-                [authOp start];
-
-                return;
-            }
-        }
-
-        // Unable to download the image.
-        [self.featuredImageView setHidden:YES];
-        [self.featuredImageSpinner stopAnimating];
-        [self.featuredImageSpinner setHidden:YES];
-        [self.featuredImageLabel setText:NSLocalizedString(@"Could not download Featured Image.", @"Featured image could not be downloaded for display in post settings.")];
-    }];
-
-    [operation start];
-}
-
 
 - (void)endEditingAction:(id)sender {
 	if (self.passwordTextField) {
@@ -378,7 +236,6 @@ static NSString *const RemoveGeotagCellIdentifier = @"RemoveGeotagCellIdentifier
     return YES;
 }
 
-
 #pragma mark - UITableView Delegate
 
 - (void)configureSections {
@@ -386,7 +243,7 @@ static NSString *const RemoveGeotagCellIdentifier = @"RemoveGeotagCellIdentifier
     [self.sections addObject:[NSNumber numberWithInteger:PostSettingsSectionTaxonomy]];
     [self.sections addObject:[NSNumber numberWithInteger:PostSettingsSectionMeta]];
     [self.sections addObject:[NSNumber numberWithInteger:PostSettingsSectionFormat]];
-    if (self.blogSupportsFeaturedImage) {
+    if ([self.post.blog supportsFeaturedImages]) {
         [self.sections addObject:[NSNumber numberWithInteger:PostSettingsSectionFeaturedImage]];
     }
     if (self.post.blog.geolocationEnabled || self.post.geolocation) {
@@ -416,9 +273,6 @@ static NSString *const RemoveGeotagCellIdentifier = @"RemoveGeotagCellIdentifier
         return 1;
         
     } else if (sec == PostSettingsSectionFeaturedImage) {
-        if (self.post.post_thumbnail && !self.isUploadingFeaturedImage) {
-            return 2; // Image | Remove
-        }
         return 1; // Add
         
     } else if (sec == PostSettingsSectionGeolocation) {
@@ -465,7 +319,28 @@ static NSString *const RemoveGeotagCellIdentifier = @"RemoveGeotagCellIdentifier
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
     // TODO: Check for geolocation or featured image and return the desired height
-    return 44.0f;
+    if (indexPath.section == PostSettingsSectionGeolocation && indexPath.row == 1) {
+        return GeoCellHeight;
+    }
+    
+    if (indexPath.section == PostSettingsSectionFeaturedImage) {
+        if (self.featuredImage) {
+            CGFloat cellMargins = (2 * PostFeaturedImageCellMargin);
+            CGFloat imageWidth = self.featuredImage.size.width;
+            CGFloat imageHeight = self.featuredImage.size.height;
+            
+            CGFloat width = IS_IPAD ? WPTableViewFixedWidth : CGRectGetWidth(self.tableView.frame);
+            CGFloat displayWidth = width - cellMargins;
+
+            if (imageWidth < displayWidth) {
+                imageHeight = imageHeight * (displayWidth / imageWidth);
+            }
+            
+            return imageHeight + cellMargins;
+        }
+    }
+    
+    return CellHeight;
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
@@ -520,25 +395,14 @@ static NSString *const RemoveGeotagCellIdentifier = @"RemoveGeotagCellIdentifier
         [self showPostFormatSelector];
         
     } else if (cell.tag == PostSettingsRowFeaturedImage) {
-        // TODO: Show preview
+        [self showFeaturedImageSelector];
         
     } else if (cell.tag == PostSettingsRowFeaturedImageAdd) {
-        if (!self.post.post_thumbnail) {
-            [WPMobileStats trackEventForWPCom:[self formattedStatEventString:StatsPropertyPostDetailSettingsClickedSetFeaturedImage]];
-            [self showPhotoPickerForRect:cell.frame];
-        }
+        [WPMobileStats trackEventForWPCom:[self formattedStatEventString:StatsPropertyPostDetailSettingsClickedSetFeaturedImage]];
+        [self showFeaturedImageSelector];
         
-    } else if (cell.tag == PostSettingsRowFeaturedImageRemove) {
-        [WPMobileStats flagProperty:StatsPropertyPostDetailSettingsClickedRemoveFeaturedImage forEvent:[self formattedStatEventString:StatsEventPostDetailClosedEditor]];
-        self.actionSheet = [[UIActionSheet alloc] initWithTitle:NSLocalizedString(@"Remove this Featured Image?", @"Prompt when removing a featured image from a post") delegate:self cancelButtonTitle:NSLocalizedString(@"Cancel", "Cancel a prompt") destructiveButtonTitle:NSLocalizedString(@"Remove", @"Remove an image/posts/etc") otherButtonTitles:nil];
-        [self.actionSheet showFromRect:cell.frame inView:self.tableView animated:YES];
-        
-    } else if (cell.tag == PostSettingsRowGeolocationAdd) {
-        [self geolocationCellTapped:indexPath];
-        
-    } else if (cell.tag == PostSettingsRowGeolocationRemove) {
-        [self geolocationCellTapped:indexPath];
-        
+    } else if (cell.tag == PostSettingsRowGeolocationAdd || cell.tag == PostSettingsRowGeolocationMap) {
+        [self showPostGeolocationSelector];
     }
 }
 
@@ -612,18 +476,20 @@ static NSString *const RemoveGeotagCellIdentifier = @"RemoveGeotagCellIdentifier
     } else if (indexPath.row == 2) {
         // Visibility
         cell = [self getWPTableViewCell];
-        cell.textLabel.text = NSLocalizedString(@"Visibility", @"");
+        cell.textLabel.text = NSLocalizedString(@"Visibility", @"The visibility settings of the post. Should be the same as in core WP.");
         cell.detailTextLabel.text = [self titleForVisibility];
         cell.tag = PostSettingsRowVisibility;
         
     } else {
         // Password
         UITableViewTextFieldCell *textCell = [self getTextFieldCell];
-        textCell.textLabel.text = NSLocalizedString(@"Tags", @"Label for the tags field. Should be the same as WP core.");
+        textCell.textLabel.text = NSLocalizedString(@"Password", @"Label for the tags field. Should be the same as WP core.");
         textCell.textField.text = self.apost.password;
         textCell.textField.attributedPlaceholder = nil;
+        textCell.textField.placeholder = NSLocalizedString(@"Enter a password", @"");
         textCell.textField.secureTextEntry = YES;
         textCell.textField.clearButtonMode = UITextFieldViewModeWhileEditing;
+
         cell = textCell;
         cell.tag = PostSettingsRowPassword;
         
@@ -646,7 +512,7 @@ static NSString *const RemoveGeotagCellIdentifier = @"RemoveGeotagCellIdentifier
 - (UITableViewCell *)configureFeaturedImageCellForIndexPath:(NSIndexPath *)indexPath {
     UITableViewCell *cell;
     
-    if (!self.post.post_thumbnail && !self.isUploadingFeaturedImage) {
+    if (!self.post.post_thumbnail) {
         WPTableViewActivityCell *activityCell = [self getWPActivityTableViewCell];
         activityCell.textLabel.text = NSLocalizedString(@"Set Featured Image", @"");
         activityCell.tag = PostSettingsRowFeaturedImageAdd;
@@ -654,34 +520,59 @@ static NSString *const RemoveGeotagCellIdentifier = @"RemoveGeotagCellIdentifier
         cell = activityCell;
         
     } else {
-        switch (indexPath.row) {
-            case 0:
-                cell = self.featuredImageTableViewCell;
-                cell.tag = PostSettingsRowFeaturedImage;
-                
-            case 1: {
-                WPTableViewActivityCell *activityCell = [self getWPActivityTableViewCell];
-                activityCell.textLabel.text = NSLocalizedString(@"Remove Featured Image", "Remove featured image from post");
-                activityCell.tag = PostSettingsRowFeaturedImageRemove;
-                
-                cell = activityCell;
-
-            }
+        static NSString *FeaturedImageCellIdentifier = @"FeaturedImageCellIdentifier";
+        PostFeaturedImageCell *featuredImageCell = [self.tableView dequeueReusableCellWithIdentifier:FeaturedImageCellIdentifier];
+        if (!cell) {
+            featuredImageCell = [[PostFeaturedImageCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:FeaturedImageCellIdentifier];
         }
+        
+        if (self.featuredImage) {
+            [featuredImageCell setImage:self.featuredImage];
+        } else {
+            [self loadFeaturedImage:indexPath];
+            [featuredImageCell showLoadingSpinner:YES];
+        }
+
+        cell = featuredImageCell;
+        cell.tag = PostSettingsRowFeaturedImage;
     }
     
     return cell;
 }
 
 - (UITableViewCell *)configureGeolocationCellForIndexPath:(NSIndexPath *)indexPath {
-    return [self getGeolocationCellWithIndexPath:indexPath forTableView:self.tableView];
+    WPTableViewCell *cell;
+    if (indexPath.row == 0) {
+        cell = [self getWPActivityTableViewCell];
+        if (self.post.geolocation) {
+            // Edit the location.
+            cell.textLabel.text = NSLocalizedString(@"Edit Location", @"Geolocation feature to edit location.");
+        } else {
+            // Add a location.
+            cell.textLabel.text = NSLocalizedString(@"Set Location", @"Geolocation feature to set the location.");
+        }
+        cell.tag = PostSettingsRowGeolocationAdd;
+
+    } else if (indexPath.row == 1) {
+        // TODO: We should be able to swipe to delete a set location
+        static NSString *wpPostSettingsGeoCellIdentifier = @"wpPostSettingsGeoCellIdentifier";
+        PostGeolocationCell *geoCell = [self.tableView dequeueReusableCellWithIdentifier:wpPostSettingsGeoCellIdentifier];
+        if (!geoCell) {
+            geoCell = [[PostGeolocationCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:wpPostSettingsGeoCellIdentifier];
+        }
+        //TODO: set geocell's coordinate and address.
+        cell = geoCell;
+        cell.tag = PostSettingsRowGeolocationMap;
+    }
+    
+    return cell;
 }
 
 - (WPTableViewCell *)getWPTableViewCell {
     static NSString *wpTableViewCellIdentifier = @"wpTableViewCellIdentifier";
     WPTableViewCell *cell = [self.tableView dequeueReusableCellWithIdentifier:wpTableViewCellIdentifier];
     if (!cell) {
-        cell = [[WPTableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:wpTableViewCellIdentifier];
+        cell = [[WPTableViewCell alloc] initWithStyle:UITableViewCellStyleValue1 reuseIdentifier:wpTableViewCellIdentifier];
         cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
         [WPStyleGuide configureTableViewCell:cell];
     }
@@ -714,7 +605,6 @@ static NSString *const RemoveGeotagCellIdentifier = @"RemoveGeotagCellIdentifier
     cell.tag = 0;
     return cell;
 }
-
 
 - (void)configureAndShowDatePicker {
     if (self.apost.dateCreated) {
@@ -816,343 +706,76 @@ static NSString *const RemoveGeotagCellIdentifier = @"RemoveGeotagCellIdentifier
     [self.navigationController pushViewController:vc animated:YES];
 }
 
-
-- (UITableViewCell*)getGeolocationCellWithIndexPath:(NSIndexPath*)indexPath forTableView:(UITableView *)tableView {
-    switch (indexPath.row) {
-        case 0: // Add/update location
-        {
-            // If location services are disabled at the app level [CLLocationManager locationServicesEnabled] will be true, but the location will be nil.
-            if(!self.post.blog.geolocationEnabled) {
-                UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:@"GeolocationDisabledCell"];
-                if (!cell) {
-                    cell = [[WPTableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:@"GeolocationDisabledCell"];
-                    cell.textLabel.text = NSLocalizedString(@"Enable Geotagging to Edit", @"Prompt the user to enable geolocation tagging on their blog.");
-                    cell.textLabel.textAlignment = NSTextAlignmentCenter;
-                    [WPStyleGuide configureTableViewActionCell:cell];
-                }
-                return cell;
-                
-            } else if(![CLLocationManager locationServicesEnabled] || [self.locationManager location] == nil) {
-                WPTableViewCell *cell = (WPTableViewCell *) [tableView dequeueReusableCellWithIdentifier:LocationServicesCellIdentifier forIndexPath:indexPath];
-                cell.textLabel.text = NSLocalizedString(@"Please Enable Location Services", @"Prompt the user to enable location services on their device.");
-                cell.textLabel.textAlignment = NSTextAlignmentCenter;
-                [WPStyleGuide configureTableViewActionCell:cell];
-                
-                return cell;
-                
-            } else {
-                WPTableViewActivityCell *activityCell = (WPTableViewActivityCell *)[tableView dequeueReusableCellWithIdentifier:TableViewActivityCellIdentifier forIndexPath:indexPath];
-                if (self.isUpdatingLocation) {
-                    activityCell.textLabel.text = NSLocalizedString(@"Finding your location...", @"Geo-tagging posts, status message when geolocation is found.");
-                    [activityCell.spinner startAnimating];
-                } else {
-                    [activityCell.spinner stopAnimating];
-                    if (self.post.geolocation) {
-                        activityCell.textLabel.text = NSLocalizedString(@"Update Location", @"Gelocation feature to update physical location.");
-                    } else {
-                        activityCell.textLabel.text = NSLocalizedString(@"Add Location", @"Geolocation feature to add location.");
-                    }
-                }
-                [WPStyleGuide configureTableViewActionCell:activityCell];
-                return activityCell;
-            }
-            break;
-        }
-        case 1:
-        {
-            DDLogVerbose(@"Reloading map");
-            [self.mapView removeAnnotation:self.annotation];
-            self.annotation = [[PostAnnotation alloc] initWithCoordinate:self.post.geolocation.coordinate];
-            [self.mapView addAnnotation:self.annotation];
-            
-            if (self.addressLabel == nil) {
-                self.addressLabel = [[UILabel alloc] initWithFrame:CGRectMake(20, 130, 280, 30)];
-            }
-            if (self.coordinateLabel == nil) {
-                self.coordinateLabel = [[UILabel alloc] initWithFrame:CGRectMake(20, 162, 280, 20)];
-            }
-            
-            // Set center of map and show a region of around 200x100 meters
-            MKCoordinateRegion region = MKCoordinateRegionMakeWithDistance(self.post.geolocation.coordinate, 200, 100);
-            [self.mapView setRegion:region animated:YES];
-            if (self.address) {
-                self.addressLabel.text = self.address;
-            } else {
-                self.addressLabel.text = NSLocalizedString(@"Finding address...", @"Used for Geo-tagging posts.");
-                [self geocodeCoordinate:self.post.geolocation.coordinate];
-            }
-            self.addressLabel.font = [WPStyleGuide regularTextFont];
-            self.addressLabel.textColor = [WPStyleGuide allTAllShadeGrey];
-            CLLocationDegrees latitude = self.post.geolocation.latitude;
-            CLLocationDegrees longitude = self.post.geolocation.longitude;
-            int latD = trunc(fabs(latitude));
-            int latM = trunc((fabs(latitude) - latD) * 60);
-            int lonD = trunc(fabs(longitude));
-            int lonM = trunc((fabs(longitude) - lonD) * 60);
-            NSString *latDir = (latitude > 0) ? NSLocalizedString(@"North", @"Used for Geo-tagging posts by latitude and longitude. Basic form.") : NSLocalizedString(@"South", @"Used for Geo-tagging posts by latitude and longitude. Basic form.");
-            NSString *lonDir = (longitude > 0) ? NSLocalizedString(@"East", @"Used for Geo-tagging posts by latitude and longitude. Basic form.") : NSLocalizedString(@"West", @"Used for Geo-tagging posts by latitude and longitude. Basic form.");
-            if (latitude == 0.0) latDir = @"";
-            if (longitude == 0.0) lonDir = @"";
-            
-            self.coordinateLabel.text = [NSString stringWithFormat:@"%i°%i' %@, %i°%i' %@",
-                                         latD, latM, latDir,
-                                         lonD, lonM, lonDir];
-            
-            self.coordinateLabel.font = [WPStyleGuide regularTextFont];
-            self.coordinateLabel.textColor = [WPStyleGuide allTAllShadeGrey];
-            
-            return self.mapGeotagTableViewCell;
-        }
-        case 2:
-        {
-            WPTableViewCell *cell = (WPTableViewCell *)[tableView dequeueReusableCellWithIdentifier:RemoveGeotagCellIdentifier forIndexPath:indexPath];
-            cell.textLabel.text = NSLocalizedString(@"Remove Location", @"Used for Geo-tagging posts by latitude and longitude. Basic form.");
-            cell.textLabel.textAlignment = NSTextAlignmentCenter;
-            [WPStyleGuide configureTableViewActionCell:cell];
-            return cell;
-        }
-    }
-    
-    return nil;
+- (void)showPostGeolocationSelector {
+    PostGeolocationViewController *controller = [[PostGeolocationViewController alloc] initWithPost:self.post];
+    [self.navigationController pushViewController:controller animated:YES];
 }
 
-- (void)geolocationCellTapped:(NSIndexPath *)indexPath {
-    switch (indexPath.row) {
-        case 0:
-            
-            if (!self.post.blog.geolocationEnabled) {
-                [WPError showAlertWithTitle:NSLocalizedString(@"Enable Geotagging", @"Title of an alert view stating the user needs to turn on geotagging.")
-                                    message:NSLocalizedString(@"Geotagging is turned off. \nTo update this post's location, please enable geotagging in this blog's settings.", @"Message of an alert explaining that geotagging need to be enabled.")
-                          withSupportButton:NO];
-                return;
-            }
-            
-            // If location services are disabled at the app level [CLLocationManager locationServicesEnabled] will be true, but the location will be nil.
-            if (![CLLocationManager locationServicesEnabled] || [self.locationManager location] == nil) {
-                [WPError showAlertWithTitle:NSLocalizedString(@"Location Unavailable", @"Title of an alert view stating that the user's location is unavailable.")
-                                    message:NSLocalizedString(@"Location Services are turned off. \nTo add or update this post's location, please enable Location Services in the Settings app.", @"Message of an alert explaining that location services need to be enabled.")
-                          withSupportButton:NO];
-
-                return;
-            }
-
-            if (!self.isUpdatingLocation) {
-                if (self.post.geolocation) {
-                    [WPMobileStats flagProperty:StatsPropertyPostDetailSettingsClickedUpdateLocation forEvent:[self formattedStatEventString:StatsEventPostDetailClosedEditor]];
-                } else {
-                    [WPMobileStats flagProperty:StatsPropertyPostDetailSettingsClickedAddLocation forEvent:[self formattedStatEventString:StatsEventPostDetailClosedEditor]];
-                }
-                // Add or replace geotag
-                self.isUpdatingLocation = YES;
-                [self.locationManager startUpdatingLocation];
-            }
-            break;
-        case 2:
-            [WPMobileStats flagProperty:StatsPropertyPostDetailSettingsClickedRemoveLocation forEvent:[self formattedStatEventString:StatsEventPostDetailClosedEditor]];
-
-            if (self.isUpdatingLocation) {
-                // Cancel update
-                self.isUpdatingLocation = NO;
-                [self.locationManager stopUpdatingLocation];
-            }
-            self.post.geolocation = nil;
-            break;
-    }
-    [self.tableView reloadData];
+- (void)showFeaturedImageSelector {
+    FeaturedImageViewController *controller = [[FeaturedImageViewController alloc] initWithPost:self.post];
+    [self.navigationController pushViewController:controller animated:YES];
 }
 
-- (void)featuredImageUploadFailed:(NSNotification *)notificationInfo {
-    self.isUploadingFeaturedImage = NO;
-    [self.featuredImageTableViewCell setSelectionStyle:UITableViewCellSelectionStyleNone];
-    [self.featuredImageSpinner stopAnimating];
-    [self.featuredImageSpinner setHidden:YES];
-    [self.featuredImageView setHidden:NO];
-    [self.tableView reloadData];
-}
-
-- (void)featuredImageUploadSucceeded:(NSNotification *)notificationInfo {
-    self.isUploadingFeaturedImage = NO;
-    Media *media = (Media *)[notificationInfo object];
-    if (media) {
-        [self.featuredImageTableViewCell setSelectionStyle:UITableViewCellSelectionStyleNone];
-        [self.featuredImageSpinner stopAnimating];
-        [self.featuredImageSpinner setHidden:YES];
-        [self.featuredImageLabel setHidden:YES];
-        [self.featuredImageView setHidden:NO];
-        if (![self.post isDeleted] && [self.post managedObjectContext]) {
-            self.post.post_thumbnail = media.mediaID;
-        }
-        [self.featuredImageView setImage:[UIImage imageWithContentsOfFile:media.localURL]];
-    }
-    [self.tableView reloadData];
-}
-
-- (void)showFeaturedImageUploader:(NSNotification *)notificationInfo {
-    self.isUploadingFeaturedImage = YES;
-    [self.featuredImageView setHidden:YES];
-    [self.featuredImageLabel setHidden:NO];
-    [self.featuredImageLabel setText:NSLocalizedString(@"Uploading Image", @"Uploading a featured image in post settings")];
-    [self.featuredImageSpinner setHidden:NO];
-    if (!self.featuredImageSpinner.isAnimating) {
-        [self.featuredImageSpinner startAnimating];
-    }
-    [self.tableView reloadData];
+- (void)showCategoriesSelection {
+    [WPMobileStats flagProperty:StatsPropertyPostDetailClickedShowCategories forEvent:[self formattedStatEventString:StatsEventPostDetailClosedEditor]];
+    CategoriesViewController *controller = [[CategoriesViewController alloc] initWithPost:[self post] selectionMode:CategoriesSelectionModePost];
+    [self.navigationController pushViewController:controller animated:YES];
 }
 
 - (NSString *)formattedStatEventString:(NSString *)event {
     return [NSString stringWithFormat:@"%@ - %@", self.statsPrefix, event];
 }
 
-#pragma mark - UIActionSheetDelegate
+- (void)loadFeaturedImage:(NSIndexPath *)indexPath {
+    if (self.post.featuredImageURL) {
+        if (!self.featuredImage) {
+            CGFloat width = CGRectGetWidth(self.view.frame);
+            if (IS_IPAD) {
+                width = WPTableViewFixedWidth;
+            }
+            width = width - (PostFeaturedImageCellMargin * 2); // left and right cell margins
+            NSURL *url = [NSURL URLWithString:self.post.featuredImageURL];
+            CGSize imageSize = CGSizeMake(width, 0.0f);
 
-- (void)actionSheet:(UIActionSheet *)acSheet didDismissWithButtonIndex:(NSInteger)buttonIndex {
-    if (acSheet.tag == ActionSheetTagPhoto) {
-        [self processPhotoTypeActionSheet:acSheet thatDismissedWithButtonIndex:buttonIndex];
-    } else if (acSheet.tag == ActionSheetTagResizePhoto) {
-        [self processPhotoResizeActionSheet:acSheet thatDismissedWithButtonIndex:buttonIndex];
-    } else {
-        if (buttonIndex == 0) {
-            [self.featuredImageTableViewCell setSelectionStyle:UITableViewCellSelectionStyleBlue];
-            self.post.post_thumbnail = nil;
-            [self.tableView reloadData];
+            [self.imageSource fetchImageForURL:url
+                                      withSize:imageSize
+                                     indexPath:indexPath
+                                     isPrivate:self.post.blog.isPrivate];
         }
-    }
-}
-
-- (void)processPhotoTypeActionSheet:(UIActionSheet *)acSheet thatDismissedWithButtonIndex:(NSInteger)buttonIndex {
-    CGRect frame = self.view.bounds;
-    if (IS_IPAD) {
-        frame = [self.tableView cellForRowAtIndexPath:[NSIndexPath indexPathForRow:0 inSection:3]].frame;
-    }
-    NSString *buttonTitle = [acSheet buttonTitleAtIndex:buttonIndex];
-    if ([buttonTitle isEqualToString:NSLocalizedString(@"Add Photo from Library", nil)]) {
-        [self pickPhotoFromLibrary:frame];
-    } else if ([buttonTitle isEqualToString:NSLocalizedString(@"Take Photo", nil)]) {
-        [self pickPhotoFromCamera:frame];
-    }
-}
-
-- (void)processPhotoResizeActionSheet:(UIActionSheet *)acSheet thatDismissedWithButtonIndex:(NSInteger)buttonIndex {
-    switch (buttonIndex) {
-        case 0:
-            if (acSheet.numberOfButtons == 2) {
-                [self useImage:[self resizeImage:_currentImage toSize:MediaResizeOriginal]];
-            } else {
-                [self useImage:[self resizeImage:_currentImage toSize:MediaResizeSmall]];
-            }
-            break;
-        case 1:
-            if (acSheet.numberOfButtons == 2) {
-                [self showCustomSizeAlert];
-            } else if (acSheet.numberOfButtons == 3) {
-                [self useImage:[self resizeImage:_currentImage toSize:MediaResizeOriginal]];
-            } else {
-                [self useImage:[self resizeImage:_currentImage toSize:MediaResizeMedium]];
-            }
-            break;
-        case 2:
-            if (acSheet.numberOfButtons == 3) {
-                [self showCustomSizeAlert];
-            } else if (acSheet.numberOfButtons == 4) {
-                [self useImage:[self resizeImage:_currentImage toSize:MediaResizeOriginal]];
-            } else {
-                [self useImage:[self resizeImage:_currentImage toSize:MediaResizeLarge]];
-            }
-            break;
-        case 3:
-            if (acSheet.numberOfButtons == 4) {
-                [self showCustomSizeAlert];
-            } else {
-                [self useImage:[self resizeImage:_currentImage toSize:MediaResizeOriginal]];
-            }
-            break;
-        case 4:
-            [self showCustomSizeAlert];
-            break;
-    }
-    
-    _isShowingResizeActionSheet = NO;
-}
-
-
-- (void)showCustomSizeAlert {
-    if (self.customSizeAlert) {
-        [self.customSizeAlert dismiss];
-        self.customSizeAlert = nil;
-    }
-    
-    _isShowingCustomSizeAlert = YES;
-    
-    // Check for previous width setting
-    NSString *widthText = nil;
-    if([[NSUserDefaults standardUserDefaults] objectForKey:@"prefCustomImageWidth"] != nil) {
-        widthText = [[NSUserDefaults standardUserDefaults] objectForKey:@"prefCustomImageWidth"];
-    } else {
-        widthText = [NSString stringWithFormat:@"%d", (int)_currentImage.size.width];
-    }
-    
-    NSString *heightText = nil;
-    if([[NSUserDefaults standardUserDefaults] objectForKey:@"prefCustomImageHeight"] != nil) {
-        heightText = [[NSUserDefaults standardUserDefaults] objectForKey:@"prefCustomImageHeight"];
-    } else {
-        heightText = [NSString stringWithFormat:@"%d", (int)_currentImage.size.height];
-    }
-    
-    WPAlertView *alertView = [[WPAlertView alloc] initWithFrame:self.view.bounds andOverlayMode:WPAlertViewOverlayModeTwoTextFieldsSideBySideTwoButtonMode];
-    alertView.overlayTitle = NSLocalizedString(@"Custom Size", @"");
-    alertView.overlayDescription = @"";
-    alertView.footerDescription = nil;
-    alertView.firstTextFieldPlaceholder = NSLocalizedString(@"Width", @"");
-    alertView.firstTextFieldValue = widthText;
-    alertView.secondTextFieldPlaceholder = NSLocalizedString(@"Height", @"");
-    alertView.secondTextFieldValue = heightText;
-    alertView.leftButtonText = NSLocalizedString(@"Cancel", @"Cancel button");
-    alertView.rightButtonText = NSLocalizedString(@"OK", @"");
-    
-    alertView.firstTextField.autocapitalizationType = UITextAutocapitalizationTypeNone;
-    alertView.secondTextField.autocapitalizationType = UITextAutocapitalizationTypeNone;
-    alertView.firstTextField.keyboardAppearance = UIKeyboardAppearanceAlert;
-    alertView.secondTextField.keyboardAppearance = UIKeyboardAppearanceAlert;
-    alertView.firstTextField.keyboardType = UIKeyboardTypeNumberPad;
-    alertView.secondTextField.keyboardType = UIKeyboardTypeNumberPad;
-    
-    alertView.button1CompletionBlock = ^(WPAlertView *overlayView){
-        // Cancel
-        [overlayView dismiss];
-        _isShowingCustomSizeAlert = NO;
         
-    };
-    alertView.button2CompletionBlock = ^(WPAlertView *overlayView){
-        [overlayView dismiss];
-        _isShowingCustomSizeAlert = NO;
-        
-		NSNumber *width = [NSNumber numberWithInt:[overlayView.firstTextField.text intValue]];
-		NSNumber *height = [NSNumber numberWithInt:[overlayView.secondTextField.text intValue]];
-		
-		if([width intValue] < 10)
-			width = [NSNumber numberWithInt:10];
-		if([height intValue] < 10)
-			height = [NSNumber numberWithInt:10];
-		
-		overlayView.firstTextField.text = [NSString stringWithFormat:@"%@", width];
-		overlayView.secondTextField.text = [NSString stringWithFormat:@"%@", height];
-		
-		[[NSUserDefaults standardUserDefaults] setObject:overlayView.firstTextField.text forKey:@"prefCustomImageWidth"];
-		[[NSUserDefaults standardUserDefaults] setObject:overlayView.secondTextField.text forKey:@"prefCustomImageHeight"];
-		
-		[self useImage:[self resizeImage:_currentImage width:[width floatValue] height:[height floatValue]]];
-    };
-    
-    alertView.alpha = 0.0;
-    [self.view addSubview:alertView];
-    
-    [UIView animateWithDuration:0.2 animations:^{
-        alertView.alpha = 1.0;
-    }];
-    
-    self.customSizeAlert = alertView;
+    } else {
+        [self.post getFeaturedImageURLWithSuccess:^{
+            [self loadFeaturedImage:indexPath];
+        } failure:^(NSError *error) {
+            DDLogError(@"Error fetching featured image URL: @%", error);
+        }];
+    }
 }
 
+- (WPTableImageSource *)imageSource {
+    if (!_imageSource) {
+        CGFloat max = MAX(self.view.frame.size.width, self.view.frame.size.height);
+        CGSize maxSize = CGSizeMake(max, max);
+        _imageSource = [[WPTableImageSource alloc] initWithMaxSize:maxSize];
+        _imageSource.resizesImagesSynchronously = YES;
+        _imageSource.delegate = self;
+    }
+    return _imageSource;
+}
+
+#pragma mark - WPTableImageSourceDelegate
+
+- (void)tableImageSource:(WPTableImageSource *)tableImageSource imageReady:(UIImage *)image forIndexPath:(NSIndexPath *)indexPath {
+    self.featuredImage = image;
+    [self.tableView reloadData];
+}
+
+- (void)tableImageSource:(WPTableImageSource *)tableImageSource imageFailedforIndexPath:(NSIndexPath *)indexPath error:(NSError *)error {
+    DDLogError(@"Error loading featured image: %@", error);
+    PostFeaturedImageCell *cell = (PostFeaturedImageCell *)[self.tableView cellForRowAtIndexPath:indexPath];
+    [cell showLoadingSpinner:NO];
+    cell.textLabel.text = NSLocalizedString(@"Featured Image did not load", @"");
+}
 
 #pragma mark - UIPickerViewDataSource
 
@@ -1291,541 +914,6 @@ static NSString *const RemoveGeotagCellIdentifier = @"RemoveGeotagCellIdentifier
     self.isShowingKeyboard = NO;
 }
 
-#pragma mark - CLLocationManager
-
-- (CLLocationManager *)locationManager {
-    if (_locationManager) {
-        return _locationManager;
-    }
-    _locationManager = [[CLLocationManager alloc] init];
-    _locationManager.delegate = self;
-    _locationManager.desiredAccuracy = kCLLocationAccuracyNearestTenMeters;
-    _locationManager.distanceFilter = 10;
-    return _locationManager;
-}
-
-// Delegate method from the CLLocationManagerDelegate protocol.
-- (void)locationManager:(CLLocationManager *)manager
-    didUpdateToLocation:(CLLocation *)newLocation
-		   fromLocation:(CLLocation *)oldLocation {
-	// If it's a relatively recent event, turn off updates to save power
-    NSDate* eventDate = newLocation.timestamp;
-    NSTimeInterval howRecent = [eventDate timeIntervalSinceNow];
-    if (abs(howRecent) < 15.0)
-    {
-		if (!self.isUpdatingLocation) {
-			return;
-		}
-		self.isUpdatingLocation = NO;
-		CLLocationCoordinate2D coordinate = newLocation.coordinate;
-#if FALSE // Switch this on/off for testing location updates
-		// Factor values (YMMV)
-		// 0.0001 ~> whithin your zip code (for testing small map changes)
-		// 0.01 ~> nearby cities (good for testing address label changes)
-		double factor = 0.001f; 
-		coordinate.latitude += factor * (rand() % 100);
-		coordinate.longitude += factor * (rand() % 100);
-#endif
-		Coordinate *c = [[Coordinate alloc] initWithCoordinate:coordinate];
-		self.post.geolocation = c;
-        DDLogInfo(@"Added geotag (%+.6f, %+.6f)",
-                  c.latitude,
-                  c.longitude);
-		[self.locationManager stopUpdatingLocation];
-		[self.tableView reloadData];
-		
-		[self geocodeCoordinate:c.coordinate];
-
-    }
-    // else skip the event and process the next one.
-}
-
-#pragma mark - CLGecocoder wrapper
-
-- (void)geocodeCoordinate:(CLLocationCoordinate2D)c {
-	if (self.reverseGeocoder) {
-		if (self.reverseGeocoder.geocoding)
-			[self.reverseGeocoder cancelGeocode];
-	}
-    self.reverseGeocoder = [[CLGeocoder alloc] init];
-    [self.reverseGeocoder reverseGeocodeLocation:[[CLLocation alloc] initWithLatitude:c.latitude longitude:c.longitude] completionHandler:^(NSArray *placemarks, NSError *error) {
-        if (placemarks) {
-            CLPlacemark *placemark = [placemarks objectAtIndex:0];
-            if (placemark.subLocality) {
-                self.address = [NSString stringWithFormat:@"%@, %@, %@", placemark.subLocality, placemark.locality, placemark.country];
-            } else {
-                self.address = [NSString stringWithFormat:@"%@, %@, %@", placemark.locality, placemark.administrativeArea, placemark.country];
-            }
-            self.addressLabel.text = self.address;
-        } else {
-            DDLogError(@"Reverse geocoder failed for coordinate (%.6f, %.6f): %@",
-                  c.latitude,
-                  c.longitude,
-                  [error localizedDescription]);
-            
-            self.address = [NSString stringWithString:NSLocalizedString(@"Location unknown", @"Used when geo-tagging posts, if the geo-tagging failed.")];
-            self.addressLabel.text = self.address;
-        }
-    }];
-}
-
-#pragma mark - Featured Image Selection related methods
-// TODO: Remove duplication with these methods and PostMediaViewController
-- (void)imagePickerController:(UIImagePickerController *)thePicker didFinishPickingMediaWithInfo:(NSDictionary *)info {
-    // On iOS7 Beta 6 the image picker seems to override our preferred setting so we force the status bar color back.
-    [[UIApplication sharedApplication] setStatusBarStyle:UIStatusBarStyleLightContent];
-
-    UIImage *image = [info valueForKey:@"UIImagePickerControllerOriginalImage"];
-
-    if (thePicker.sourceType == UIImagePickerControllerSourceTypeCamera) {
-        UIImageWriteToSavedPhotosAlbum(image, nil, nil, nil);
-    }
-    
-    _currentImage = image;
-    
-    //UIImagePickerControllerReferenceURL = "assets-library://asset/asset.JPG?id=1000000050&ext=JPG").
-    NSURL *assetURL = [info objectForKey:UIImagePickerControllerReferenceURL];
-    if (assetURL) {
-        [self getMetadataFromAssetForURL:assetURL];
-    } else {
-        NSDictionary *metadata = [info objectForKey:UIImagePickerControllerMediaMetadata];
-        if (metadata) {
-            NSMutableDictionary *mutableMetadata = [metadata mutableCopy];
-            NSDictionary *gpsData = [mutableMetadata objectForKey:@"{GPS}"];
-            if (!gpsData && self.post.geolocation) {
-                /*
-                 Sample GPS data dictionary
-                 "{GPS}" =     {
-                 Altitude = 188;
-                 AltitudeRef = 0;
-                 ImgDirection = "84.19556";
-                 ImgDirectionRef = T;
-                 Latitude = "41.01333333333333";
-                 LatitudeRef = N;
-                 Longitude = "0.01666666666666";
-                 LongitudeRef = W;
-                 TimeStamp = "10:34:04.00";
-                 };
-                 */
-                CLLocationDegrees latitude = self.post.geolocation.latitude;
-                CLLocationDegrees longitude = self.post.geolocation.longitude;
-                NSDictionary *gps = [NSDictionary dictionaryWithObjectsAndKeys:
-                                     [NSNumber numberWithDouble:fabs(latitude)], @"Latitude",
-                                     (latitude < 0.0) ? @"S" : @"N", @"LatitudeRef",
-                                     [NSNumber numberWithDouble:fabs(longitude)], @"Longitude",
-                                     (longitude < 0.0) ? @"W" : @"E", @"LongitudeRef",
-                                     nil];
-                [mutableMetadata setObject:gps forKey:@"{GPS}"];
-            }
-            [mutableMetadata removeObjectForKey:@"Orientation"];
-            [mutableMetadata removeObjectForKey:@"{TIFF}"];
-            _currentImageMetadata = mutableMetadata;
-        }
-    }
-    
-    NSNumberFormatter *nf = [[NSNumberFormatter alloc] init];
-    [nf setNumberStyle:NSNumberFormatterDecimalStyle];
-    NSNumber *resizePreference = [NSNumber numberWithInt:-1];
-    if([[NSUserDefaults standardUserDefaults] objectForKey:@"media_resize_preference"] != nil)
-        resizePreference = [nf numberFromString:[[NSUserDefaults standardUserDefaults] objectForKey:@"media_resize_preference"]];
-    BOOL showResizeActionSheet = NO;
-    switch ([resizePreference intValue]) {
-        case 0:
-        {
-            // Dispatch async to detal with a rare bug presenting the actionsheet after a memory warning when the
-            // view has been recreated.
-            showResizeActionSheet = YES;
-            break;
-        }
-        case 1:
-        {
-            [self useImage:[self resizeImage:_currentImage toSize:MediaResizeSmall]];
-            break;
-        }
-        case 2:
-        {
-            [self useImage:[self resizeImage:_currentImage toSize:MediaResizeMedium]];
-            break;
-        }
-        case 3:
-        {
-            [self useImage:[self resizeImage:_currentImage toSize:MediaResizeLarge]];
-            break;
-        }
-        case 4:
-        {
-            //[self useImage:currentImage];
-            [self useImage:[self resizeImage:_currentImage toSize:MediaResizeOriginal]];
-            break;
-        }
-        default:
-        {
-            showResizeActionSheet = YES;
-            break;
-        }
-    }
-
-    BOOL isPopoverDisplayed = NO;
-    if (IS_IPAD) {
-        if (thePicker.sourceType == UIImagePickerControllerSourceTypeCamera) {
-            isPopoverDisplayed = NO;
-        } else {
-            isPopoverDisplayed = YES;
-        }
-    }
-    
-    if (isPopoverDisplayed) {
-        [self.popover dismissPopoverAnimated:YES];
-        if (showResizeActionSheet) {
-            [self showResizeActionSheet];
-        }
-    } else {
-        [self.navigationController dismissViewControllerAnimated:YES completion:^{
-            if (showResizeActionSheet) {
-                [self showResizeActionSheet];
-            }
-        }];
-    }
-}
-
-- (void)imagePickerControllerDidCancel:(UIImagePickerController *)picker
-{
-    // On iOS7 Beta 6 the image picker seems to override our preferred setting so we force the status bar color back.
-    [[UIApplication sharedApplication] setStatusBarStyle:UIStatusBarStyleLightContent];
-    [self dismissViewControllerAnimated:YES completion:nil];
-}
-
-/*
- * Take Asset URL and set imageJPEG property to NSData containing the
- * associated JPEG, including the metadata we're after.
- */
--(void)getMetadataFromAssetForURL:(NSURL *)url {
-    ALAssetsLibrary* assetslibrary = [[ALAssetsLibrary alloc] init];
-    [assetslibrary assetForURL:url
-				   resultBlock: ^(ALAsset *myasset) {
-					   ALAssetRepresentation *rep = [myasset defaultRepresentation];
-					   
-					   DDLogInfo(@"getJPEGFromAssetForURL: default asset representation for %@: uti: %@ size: %lld url: %@ orientation: %d scale: %f metadata: %@",
-                                 url, [rep UTI], [rep size], [rep url], [rep orientation],
-                                 [rep scale], [rep metadata]);
-					   
-					   Byte *buf = malloc([rep size]);  // will be freed automatically when associated NSData is deallocated
-					   NSError *err = nil;
-					   NSUInteger bytes = [rep getBytes:buf fromOffset:0LL
-												 length:[rep size] error:&err];
-					   if (err || bytes == 0) {
-						   // Are err and bytes == 0 redundant? Doc says 0 return means
-						   // error occurred which presumably means NSError is returned.
-						   free(buf); // Free up memory so we don't leak.
-						   DDLogError(@"error from getBytes: %@", err);
-						   
-						   return;
-					   }
-					   NSData *imageJPEG = [NSData dataWithBytesNoCopy:buf length:[rep size]
-														  freeWhenDone:YES];  // YES means free malloc'ed buf that backs this when deallocated
-					   
-					   CGImageSourceRef  source ;
-					   source = CGImageSourceCreateWithData((__bridge CFDataRef)imageJPEG, nil);
-					   
-                       NSDictionary *metadata = (NSDictionary *) CFBridgingRelease(CGImageSourceCopyPropertiesAtIndex(source,0,nil));
-                       
-                       //make the metadata dictionary mutable so we can remove properties to it
-                       NSMutableDictionary *metadataAsMutable = [metadata mutableCopy];
-                       
-					   if(!self.apost.blog.geolocationEnabled) {
-						   //we should remove the GPS info if the blog has the geolocation set to off
-						   
-						   //get all the metadata in the image
-						   [metadataAsMutable removeObjectForKey:@"{GPS}"];
-					   }
-                       [metadataAsMutable removeObjectForKey:@"Orientation"];
-                       [metadataAsMutable removeObjectForKey:@"{TIFF}"];
-                       _currentImageMetadata = [NSDictionary dictionaryWithDictionary:metadataAsMutable];
-					   
-					   CFRelease(source);
-				   }
-				  failureBlock: ^(NSError *err) {
-					  DDLogError(@"can't get asset %@: %@", url, err);
-					  _currentImageMetadata = nil;
-				  }];
-}
-
-- (UIImage *)resizeImage:(UIImage *)original toSize:(MediaResize)resize {
-    NSDictionary* predefDim = [self.apost.blog getImageResizeDimensions];
-    CGSize smallSize =  [[predefDim objectForKey: @"smallSize"] CGSizeValue];
-    CGSize mediumSize = [[predefDim objectForKey: @"mediumSize"] CGSizeValue];
-    CGSize largeSize =  [[predefDim objectForKey: @"largeSize"] CGSizeValue];
-    switch (original.imageOrientation) {
-        case UIImageOrientationLeft:
-        case UIImageOrientationLeftMirrored:
-        case UIImageOrientationRight:
-        case UIImageOrientationRightMirrored:
-            smallSize = CGSizeMake(smallSize.height, smallSize.width);
-            mediumSize = CGSizeMake(mediumSize.height, mediumSize.width);
-            largeSize = CGSizeMake(largeSize.height, largeSize.width);
-            break;
-        default:
-            break;
-    }
-    
-    CGSize originalSize = CGSizeMake(original.size.width, original.size.height); //The dimensions of the image, taking orientation into account.
-	
-	// Resize the image using the selected dimensions
-	UIImage *resizedImage = original;
-	switch (resize) {
-		case MediaResizeSmall:
-			if(original.size.width > smallSize.width  || original.size.height > smallSize.height) {
-				resizedImage = [original resizedImageWithContentMode:UIViewContentModeScaleAspectFit
-															  bounds:smallSize
-												interpolationQuality:kCGInterpolationHigh];
-            } else {
-				resizedImage = [original resizedImageWithContentMode:UIViewContentModeScaleAspectFit
-															  bounds:originalSize
-												interpolationQuality:kCGInterpolationHigh];
-            }
-			break;
-		case MediaResizeMedium:
-			if(original.size.width > mediumSize.width  || original.size.height > mediumSize.height) {
-				resizedImage = [original resizedImageWithContentMode:UIViewContentModeScaleAspectFit
-															  bounds:mediumSize
-												interpolationQuality:kCGInterpolationHigh];
-            } else {
-				resizedImage = [original resizedImageWithContentMode:UIViewContentModeScaleAspectFit
-															  bounds:originalSize
-												interpolationQuality:kCGInterpolationHigh];
-            }
-			break;
-		case MediaResizeLarge:
-			if(original.size.width > largeSize.width || original.size.height > largeSize.height) {
-				resizedImage = [original resizedImageWithContentMode:UIViewContentModeScaleAspectFit
-															  bounds:largeSize
-												interpolationQuality:kCGInterpolationHigh];
-            } else {
-				resizedImage = [original resizedImageWithContentMode:UIViewContentModeScaleAspectFit
-															  bounds:originalSize
-												interpolationQuality:kCGInterpolationHigh];
-            }
-			break;
-		case MediaResizeOriginal:
-			resizedImage = [original resizedImageWithContentMode:UIViewContentModeScaleAspectFit
-														  bounds:originalSize
-											interpolationQuality:kCGInterpolationHigh];
-			break;
-	}
-    
-	return resizedImage;
-}
-
-/* Used in Custom Dimensions Resize */
-- (UIImage *)resizeImage:(UIImage *)original width:(CGFloat)width height:(CGFloat)height {
-	UIImage *resizedImage = original;
-	if(_currentImage.size.width > width || _currentImage.size.height > height) {
-		// Resize the image using the selected dimensions
-		resizedImage = [original resizedImageWithContentMode:UIViewContentModeScaleAspectFit
-													  bounds:CGSizeMake(width, height)
-										interpolationQuality:kCGInterpolationHigh];
-	} else {
-		//use the original dimension
-		resizedImage = [original resizedImageWithContentMode:UIViewContentModeScaleAspectFit
-													  bounds:CGSizeMake(_currentImage.size.width, _currentImage.size.height)
-										interpolationQuality:kCGInterpolationHigh];
-	}
-	
-	return resizedImage;
-}
-
-
-- (void)useImage:(UIImage *)theImage {
-	Media *imageMedia = [Media newMediaForPost:self.apost];
-	NSData *imageData = UIImageJPEGRepresentation(theImage, 0.90);
-	UIImage *imageThumbnail = [self generateThumbnailFromImage:theImage andSize:CGSizeMake(75, 75)];
-	NSDateFormatter *formatter = [[NSDateFormatter alloc] init];
-	[formatter setDateFormat:@"yyyyMMdd-HHmmss"];
-    
-	NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
-	NSString *documentsDirectory = [paths objectAtIndex:0];
-	NSString *filename = [NSString stringWithFormat:@"%@.jpg", [formatter stringFromDate:[NSDate date]]];
-	NSString *filepath = [documentsDirectory stringByAppendingPathComponent:filename];
-    
-	if (_currentImageMetadata != nil) {
-		// Write the EXIF data with the image data to disk
-		CGImageSourceRef  source = nil;
-        CGImageDestinationRef destination = nil;
-		BOOL success = NO;
-        //this will be the data CGImageDestinationRef will write into
-        NSMutableData *dest_data = [NSMutableData data];
-        
-		source = CGImageSourceCreateWithData((__bridge CFDataRef)imageData, nil);
-        if (source) {
-            CFStringRef UTI = CGImageSourceGetType(source); //this is the type of image (e.g., public.jpeg)
-            destination = CGImageDestinationCreateWithData((__bridge CFMutableDataRef)dest_data,UTI,1,nil);
-            
-            if(destination) {
-                //add the image contained in the image source to the destination, copying the old metadata
-                CGImageDestinationAddImageFromSource(destination,source,0, (__bridge CFDictionaryRef) _currentImageMetadata);
-                
-                //tell the destination to write the image data and metadata into our data object.
-                //It will return false if something goes wrong
-                success = CGImageDestinationFinalize(destination);
-            } else {
-                DDLogError(@"***Could not create image destination ***");
-            }
-        } else {
-            DDLogError(@"***Could not create image source ***");
-        }
-		
-		if(!success) {
-			DDLogError(@"***Could not create data from image destination ***");
-			//write the data without EXIF to disk
-			NSFileManager *fileManager = [NSFileManager defaultManager];
-			[fileManager createFileAtPath:filepath contents:imageData attributes:nil];
-		} else {
-			//write it to disk
-			[dest_data writeToFile:filepath atomically:YES];
-		}
-		//cleanup
-        if (destination) {
-            CFRelease(destination);
-        }
-        if (source) {
-            CFRelease(source);
-        }
-    } else {
-		NSFileManager *fileManager = [NSFileManager defaultManager];
-		[fileManager createFileAtPath:filepath contents:imageData attributes:nil];
-	}
-    
-	if ([self interpretOrientation] == MediaOrientationLandscape) {
-		imageMedia.orientation = @"landscape";
-    } else {
-		imageMedia.orientation = @"portrait";
-    }
-	imageMedia.creationDate = [NSDate date];
-	imageMedia.filename = filename;
-	imageMedia.localURL = filepath;
-	imageMedia.filesize = [NSNumber numberWithInt:(imageData.length/1024)];
-    imageMedia.mediaType = @"featured";
-	imageMedia.thumbnail = UIImageJPEGRepresentation(imageThumbnail, 0.90);
-	imageMedia.width = [NSNumber numberWithInt:theImage.size.width];
-	imageMedia.height = [NSNumber numberWithInt:theImage.size.height];
-
-    [[NSNotificationCenter defaultCenter] postNotificationName:@"UploadingFeaturedImage" object:nil];
-    
-    [imageMedia uploadWithSuccess:^{
-        if ([imageMedia isDeleted]) {
-            DDLogWarn(@"Media deleted while uploading (%@)", imageMedia);
-            return;
-        }
-        [imageMedia save];
-    } failure:^(NSError *error) {
-        [WPError showNetworkingAlertWithError:error title:NSLocalizedString(@"Upload failed", @"")];
-    }];
-}
-
-- (UIImage *)generateThumbnailFromImage:(UIImage *)theImage andSize:(CGSize)targetSize {
-    return [theImage thumbnailImage:75 transparentBorder:0 cornerRadius:0 interpolationQuality:kCGInterpolationHigh];
-}
-
-- (MediaOrientation)interpretOrientation {
-	MediaOrientation result = MediaOrientationPortrait;
-	switch ([[UIDevice currentDevice] orientation]) {
-		case UIDeviceOrientationPortrait:
-			result = MediaOrientationPortrait;
-			break;
-		case UIDeviceOrientationPortraitUpsideDown:
-			result = MediaOrientationPortrait;
-			break;
-		case UIDeviceOrientationLandscapeLeft:
-			result = MediaOrientationLandscape;
-			break;
-		case UIDeviceOrientationLandscapeRight:
-			result = MediaOrientationLandscape;
-			break;
-		case UIDeviceOrientationFaceUp:
-			result = MediaOrientationPortrait;
-			break;
-		case UIDeviceOrientationFaceDown:
-			result = MediaOrientationPortrait;
-			break;
-		case UIDeviceOrientationUnknown:
-			result = MediaOrientationPortrait;
-			break;
-	}
-	
-	return result;
-}
-
-- (void)showResizeActionSheet {
-	if(_isShowingResizeActionSheet == NO) {
-		_isShowingResizeActionSheet = YES;
-        
-        Blog *currentBlog = self.apost.blog;
-        NSDictionary* predefDim = [currentBlog getImageResizeDimensions];
-        CGSize smallSize =  [[predefDim objectForKey: @"smallSize"] CGSizeValue];
-        CGSize mediumSize = [[predefDim objectForKey: @"mediumSize"] CGSizeValue];
-        CGSize largeSize =  [[predefDim objectForKey: @"largeSize"] CGSizeValue];
-        CGSize originalSize = CGSizeMake(_currentImage.size.width, _currentImage.size.height); //The dimensions of the image, taking orientation into account.
-        
-        switch (_currentImage.imageOrientation) {
-            case UIImageOrientationLeft:
-            case UIImageOrientationLeftMirrored:
-            case UIImageOrientationRight:
-            case UIImageOrientationRightMirrored:
-                smallSize = CGSizeMake(smallSize.height, smallSize.width);
-                mediumSize = CGSizeMake(mediumSize.height, mediumSize.width);
-                largeSize = CGSizeMake(largeSize.height, largeSize.width);
-                break;
-            default:
-                break;
-        }
-        
-		NSString *resizeSmallStr = [NSString stringWithFormat:NSLocalizedString(@"Small (%@)", @"Small (width x height)"), [NSString stringWithFormat:@"%ix%i", (int)smallSize.width, (int)smallSize.height]];
-   		NSString *resizeMediumStr = [NSString stringWithFormat:NSLocalizedString(@"Medium (%@)", @"Medium (width x height)"), [NSString stringWithFormat:@"%ix%i", (int)mediumSize.width, (int)mediumSize.height]];
-        NSString *resizeLargeStr = [NSString stringWithFormat:NSLocalizedString(@"Large (%@)", @"Large (width x height)"), [NSString stringWithFormat:@"%ix%i", (int)largeSize.width, (int)largeSize.height]];
-        NSString *originalSizeStr = [NSString stringWithFormat:NSLocalizedString(@"Original (%@)", @"Original (width x height)"), [NSString stringWithFormat:@"%ix%i", (int)originalSize.width, (int)originalSize.height]];
-        
-		UIActionSheet *resizeActionSheet;
-		
-		if(_currentImage.size.width > largeSize.width  && _currentImage.size.height > largeSize.height) {
-			resizeActionSheet = [[UIActionSheet alloc] initWithTitle:NSLocalizedString(@"Choose Image Size", @"")
-															delegate:self
-												   cancelButtonTitle:NSLocalizedString(@"Cancel", nil)
-											  destructiveButtonTitle:nil
-												   otherButtonTitles:resizeSmallStr, resizeMediumStr, resizeLargeStr, originalSizeStr, NSLocalizedString(@"Custom", @""), nil];
-			
-		} else if(_currentImage.size.width > mediumSize.width  && _currentImage.size.height > mediumSize.height) {
-			resizeActionSheet = [[UIActionSheet alloc] initWithTitle:NSLocalizedString(@"Choose Image Size", @"")
-															delegate:self
-												   cancelButtonTitle:NSLocalizedString(@"Cancel", nil)
-											  destructiveButtonTitle:nil
-												   otherButtonTitles:resizeSmallStr, resizeMediumStr, originalSizeStr, NSLocalizedString(@"Custom", @""), nil];
-			
-		} else if(_currentImage.size.width > smallSize.width  && _currentImage.size.height > smallSize.height) {
-			resizeActionSheet = [[UIActionSheet alloc] initWithTitle:NSLocalizedString(@"Choose Image Size", @"")
-															delegate:self
-												   cancelButtonTitle:NSLocalizedString(@"Cancel", nil)
-											  destructiveButtonTitle:nil
-												   otherButtonTitles:resizeSmallStr, originalSizeStr, NSLocalizedString(@"Custom", @""), nil];
-			
-		} else {
-			resizeActionSheet = [[UIActionSheet alloc] initWithTitle:NSLocalizedString(@"Choose Image Size", @"")
-															delegate:self
-												   cancelButtonTitle:NSLocalizedString(@"Cancel", nil)
-											  destructiveButtonTitle:nil
-												   otherButtonTitles: originalSizeStr, NSLocalizedString(@"Custom", @""), nil];
-		}
-		
-        resizeActionSheet.tag = ActionSheetTagResizePhoto;
-        
-        UITableViewCell *featuredImageCell = [self.tableView cellForRowAtIndexPath:[NSIndexPath indexPathForRow:0 inSection:3]];
-        if (featuredImageCell != nil) {
-            [resizeActionSheet showFromRect:featuredImageCell.frame inView:self.view animated:YES];
-        } else {
-            [resizeActionSheet showInView:self.view];
-        }
-	}
-}
-
 - (NSString *)titleForVisibility {
     if (self.apost.password) {
         return NSLocalizedString(@"Password protected", @"Privacy setting for posts set to 'Password protected'. Should be the same as in core WP.");
@@ -1834,52 +922,6 @@ static NSString *const RemoveGeotagCellIdentifier = @"RemoveGeotagCellIdentifier
     } else {
         return NSLocalizedString(@"Public", @"Privacy setting for posts set to 'Public' (default). Should be the same as in core WP.");
     }
-}
-
-- (void)showPhotoPickerForRect:(CGRect)frame {
-    UIActionSheet *photoActionSheet;
-    if ([UIImagePickerController isSourceTypeAvailable:UIImagePickerControllerSourceTypeCamera]) {
-		photoActionSheet = [[UIActionSheet alloc] initWithTitle:@""
-												  delegate:self
-										 cancelButtonTitle:NSLocalizedString(@"Cancel", @"")
-									destructiveButtonTitle:nil
-										 otherButtonTitles:NSLocalizedString(@"Add Photo from Library", @""),NSLocalizedString(@"Take Photo", @""),nil];
-        photoActionSheet.tag = ActionSheetTagPhoto;
-        photoActionSheet.actionSheetStyle = UIActionSheetStyleDefault;
-        [photoActionSheet showFromRect:frame inView:self.view animated:YES];
-	}
-	else {
-        [self pickPhotoFromLibrary:frame];
-	}
-}
-
-- (void)pickPhotoFromLibrary:(CGRect)frame {
-    UIImagePickerController *picker = [[UIImagePickerController alloc] init];
-    picker.sourceType = UIImagePickerControllerSourceTypePhotoLibrary;
-	picker.delegate = self;
-	picker.allowsEditing = NO;
-    picker.navigationBar.translucent = NO;
-    picker.modalPresentationStyle = UIModalPresentationCurrentContext;
-    picker.navigationBar.barStyle = UIBarStyleBlack;
-    
-    if (IS_IPAD) {
-        self.popover = [[UIPopoverController alloc] initWithContentViewController:picker];
-        self.popover.delegate = self;
-        [self.popover presentPopoverFromRect:frame inView:self.view permittedArrowDirections:UIPopoverArrowDirectionAny animated:YES];
-    } else {
-        [self.navigationController presentViewController:picker animated:YES completion:nil];
-    }
-}
-
-- (void)pickPhotoFromCamera:(CGRect)frame {
-    UIImagePickerController *picker = [[UIImagePickerController alloc] init];
-    picker.sourceType = UIImagePickerControllerSourceTypeCamera;
-	picker.delegate = self;
-	picker.allowsEditing = NO;
-    picker.navigationBar.translucent = NO;
-    picker.modalPresentationStyle = UIModalPresentationCurrentContext;
-    
-    [self.navigationController presentViewController:picker animated:YES completion:nil];
 }
 
 - (void)popoverControllerDidDismissPopover:(UIPopoverController *)popoverController{
@@ -1892,14 +934,6 @@ static NSString *const RemoveGeotagCellIdentifier = @"RemoveGeotagCellIdentifier
     if (!CGRectContainsPoint(self.tagsTextField.frame, touchPoint) && [self.tagsTextField isFirstResponder]) {
         [self.tagsTextField resignFirstResponder];
     }
-}
-
-#pragma mark - Categories Related
-
-- (void)showCategoriesSelection {
-    [WPMobileStats flagProperty:StatsPropertyPostDetailClickedShowCategories forEvent:[self formattedStatEventString:StatsEventPostDetailClosedEditor]];
-    CategoriesViewController *controller = [[CategoriesViewController alloc] initWithPost:[self post] selectionMode:CategoriesSelectionModePost];
-    [self.navigationController pushViewController:controller animated:YES];
 }
 
 @end
