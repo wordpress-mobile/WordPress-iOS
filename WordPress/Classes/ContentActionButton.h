@@ -1,5 +1,5 @@
 //
-//  ReaderButton.h
+//  ContentActionButton.h
 //  WordPress
 //
 //  Created by Jorge Bernal on 6/27/13.
@@ -8,6 +8,6 @@
 
 #import <UIKit/UIKit.h>
 
-@interface ReaderButton : UIButton
+@interface ContentActionButton : UIButton
 
 @end

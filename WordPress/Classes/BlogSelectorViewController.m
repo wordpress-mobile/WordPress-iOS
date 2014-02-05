@@ -54,19 +54,23 @@ static CGFloat const blavatarImageSize = 50.f;
 - (void)viewDidLoad {
     [super viewDidLoad];
     
-    UIBarButtonItem *cancelButtonItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemCancel
-                                                                                      target:self
-                                                                                      action:@selector(cancelButtonTapped:)];
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(wordPressComAccountChanged)
+                                                 name:WPAccountDefaultWordPressComAccountChangedNotification
+                                               object:nil];
     
-    self.navigationItem.leftBarButtonItem = cancelButtonItem;
-    
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(wordPressComAccountChanged) name:WPAccountDefaultWordPressComAccountChangedNotification object:nil];
-    
-    // Remove one-pixel gap resulting from a top-aligned grouped table view
     if (IS_IPHONE) {
+        // Remove one-pixel gap resulting from a top-aligned grouped table view
         UIEdgeInsets tableInset = [self.tableView contentInset];
         tableInset.top = -1;
         self.tableView.contentInset = tableInset;
+        
+        // Cancel button
+        UIBarButtonItem *cancelButtonItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemCancel
+                                                                                          target:self
+                                                                                          action:@selector(cancelButtonTapped:)];
+        
+        self.navigationItem.leftBarButtonItem = cancelButtonItem;
     }
 
     [WPStyleGuide configureColorsForView:self.view andTableView:self.tableView];

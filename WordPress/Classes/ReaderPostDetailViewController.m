@@ -42,6 +42,7 @@ typedef enum {
 
 @interface ReaderPostDetailViewController ()<UIActionSheetDelegate, MFMailComposeViewControllerDelegate, ReaderTextFormDelegate, UIPopoverControllerDelegate, ReaderCommentPublisherDelegate> {
     UIPopoverController *_popover;
+    UIGestureRecognizer *_tapOffKeyboardGesture;
 }
 
 @property (nonatomic, strong) ReaderPostView *postView;
@@ -131,6 +132,9 @@ typedef enum {
 
     self.inlineComposeView = [[InlineComposeView alloc] initWithFrame:CGRectZero];
 
+    _tapOffKeyboardGesture = [[UITapGestureRecognizer alloc] initWithTarget:self
+                                                                     action:@selector(dismissKeyboard:)];
+    
     // comment composer responds to the inline compose view to publish comments
     self.commentPublisher = [[ReaderCommentPublisher alloc]
                              initWithComposer:self.inlineComposeView
@@ -202,6 +206,17 @@ typedef enum {
 	}
 }
 
+#pragma mark - Actions
+
+- (void)dismissKeyboard:(id)sender {
+    for (UIGestureRecognizer *gesture in self.view.gestureRecognizers) {
+        if ([gesture isEqual:_tapOffKeyboardGesture]) {
+            [self.view removeGestureRecognizer:gesture];
+        }
+    }
+    
+    [self.inlineComposeView dismissComposer];
+}
 
 #pragma mark - View getters/builders
 
@@ -615,7 +630,7 @@ typedef enum {
 	[postView updateActionButtons];
 }
 
-- (void)postView:(ReaderPostView *)postView didReceiveFollowAction:(id)sender {
+- (void)contentView:(ReaderPostView *)postView didReceiveFollowAction:(id)sender {
     UIButton *followButton = (UIButton *)sender;
     ReaderPost *post = postView.post;
     
@@ -631,19 +646,19 @@ typedef enum {
 }
 
 - (void)postView:(ReaderPostView *)postView didReceiveCommentAction:(id)sender {
-
+    [self.view addGestureRecognizer:_tapOffKeyboardGesture];
+    
     self.commentPublisher.comment = nil;
     [self.inlineComposeView toggleComposer];
-
 }
 
-- (void)postView:(ReaderPostView *)postView didReceiveLinkAction:(id)sender {
+- (void)contentView:(WPContentView *)contentView didReceiveLinkAction:(id)sender {
     WPWebViewController *controller = [[WPWebViewController alloc] init];
 	[controller setUrl:((DTLinkButton *)sender).URL];
 	[self.navigationController pushViewController:controller animated:YES];
 }
 
-- (void)postView:(ReaderPostView *)postView didReceiveImageLinkAction:(id)sender {
+- (void)contentView:(WPContentView *)contentView didReceiveImageLinkAction:(id)sender {
     ReaderImageView *imageView = (ReaderImageView *)sender;
 	UIViewController *controller;
     
@@ -674,7 +689,7 @@ typedef enum {
     [self.navigationController pushViewController:controller animated:YES];
 }
 
-- (void)postView:(ReaderPostView *)postView didReceiveVideoLinkAction:(id)sender {
+- (void)contentView:(WPContentView *)contentView didReceiveVideoLinkAction:(id)sender {
     ReaderVideoView *videoView = (ReaderVideoView *)sender;
 	if (videoView.contentType == ReaderVideoContentTypeVideo) {
 
@@ -731,7 +746,7 @@ typedef enum {
     [self.navigationController pushViewController:controller animated:YES];
 }
 
-- (void)postViewDidLoadAllMedia:(ReaderPostView *)postView {
+- (void)contentViewDidLoadAllMedia:(WPContentView *)contentView {
     [self.postView layoutIfNeeded];
     [self.tableView reloadData];
 }
@@ -897,6 +912,7 @@ typedef enum {
     ReaderCommentTableViewCell *cell = (ReaderCommentTableViewCell *)[self.tableView dequeueReusableCellWithIdentifier:cellIdentifier];
     if (cell == nil) {
         cell = [[ReaderCommentTableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:cellIdentifier];
+        cell.delegate = self;
     }
 	cell.accessoryType = UITableViewCellAccessoryNone;
 	
@@ -926,6 +942,8 @@ typedef enum {
 	}
 
 	if ([self canComment]) {
+        [self.view addGestureRecognizer:_tapOffKeyboardGesture];
+        
 		[self.inlineComposeView displayComposer];
 	}
 	
@@ -1013,6 +1031,14 @@ typedef enum {
 - (void)commentPublisherDidPublishComment:(ReaderCommentPublisher *)composer {
     [self.inlineComposeView dismissComposer];
     [self syncWithUserInteraction:NO];
+}
+
+#pragma mark - ReaderCommentTableViewCellDelegate methods
+
+- (void)readerCommentTableViewCell:(ReaderCommentTableViewCell *)cell didTapURL:(NSURL *)url {
+    WPWebViewController *controller = [[WPWebViewController alloc] init];
+	[controller setUrl:url];
+	[self.navigationController pushViewController:controller animated:YES];
 }
 
 #pragma mark - ReaderTextForm Delegate Methods
