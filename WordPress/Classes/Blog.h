@@ -75,6 +75,7 @@
 - (NSArray *)getXMLRPCArgsWithExtra:(id)extra;
 - (int)numberOfPendingComments;
 - (NSDictionary *) getImageResizeDimensions;
+- (BOOL)supportsFeaturedImages;
 
 #pragma mark - 
 

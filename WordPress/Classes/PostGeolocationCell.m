@@ -9,11 +9,11 @@
 #import "PostGeolocationCell.h"
 #import <MapKit/MapKit.h>
 
+#import "PostGeolocationView.h"
+
 @interface PostGeolocationCell ()
 
-@property (nonatomic, strong) MKMapView *mapView;
-@property (nonatomic, strong) UILabel *addressLabel;
-@property (nonatomic, strong) UILabel *coordinateLabel;
+@property (nonatomic, strong) PostGeolocationView *geoView;
 
 @end
 
@@ -22,13 +22,20 @@
 - (id)initWithFrame:(CGRect)frame {
     self = [super initWithFrame:frame];
     if (self) {
-        self.mapView = [[MKMapView alloc] initWithFrame:CGRectMake(0.0, 0.0, frame.size.width, frame.size.height)];
-        self.addressLabel = [[UILabel alloc] initWithFrame:CGRectZero];
-        self.coordinateLabel = [[UILabel alloc] initWithFrame:CGRectZero];
+        [self createSubviews];
     }
     return self;
 }
 
+- (void)createSubviews {
+    self.geoView = [[PostGeolocationView alloc] initWithFrame:self.contentView.bounds];
+    self.geoView.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
+    [self.contentView addSubview:self.geoView];
+}
 
+- (void)setCoordinate:(Coordinate *)coordinate andAddress:(NSString *)address {
+    self.geoView.coordinate = coordinate;
+    self.geoView.address = address;
+}
 
 @end
