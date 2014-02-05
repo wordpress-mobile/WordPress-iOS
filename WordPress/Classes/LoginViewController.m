@@ -344,11 +344,13 @@ CGFloat const GeneralWalkthroughStatusBarOffset = 20.0;
     UIImage *infoButtonImage = [UIImage imageNamed:@"btn-help"];
     if (_helpButton == nil) {
         _helpButton = [UIButton buttonWithType:UIButtonTypeCustom];
+        _helpButton.accessibilityLabel = NSLocalizedString(@"Help", @"Help button");
         [_helpButton setImage:infoButtonImage forState:UIControlStateNormal];
         _helpButton.frame = CGRectMake(GeneralWalkthroughStandardOffset, GeneralWalkthroughStandardOffset, infoButtonImage.size.width, infoButtonImage.size.height);
         _helpButton.autoresizingMask = UIViewAutoresizingFlexibleRightMargin | UIViewAutoresizingFlexibleLeftMargin;
         [_helpButton addTarget:self action:@selector(helpButtonAction:) forControlEvents:UIControlEventTouchUpInside];
         [_helpButton sizeToFit];
+        [_helpButton setExclusiveTouch:YES];
         [_mainView addSubview:_helpButton];
     }
     
@@ -422,6 +424,7 @@ CGFloat const GeneralWalkthroughStatusBarOffset = 20.0;
         _cancelButton = [[WPNUXSecondaryButton alloc] init];
         [_cancelButton setTitle:NSLocalizedString(@"Cancel", nil) forState:UIControlStateNormal];
         [_cancelButton addTarget:self action:@selector(cancelButtonAction:) forControlEvents:UIControlEventTouchUpInside];
+        [_cancelButton setExclusiveTouch:YES];
         [_cancelButton sizeToFit];
         [self.view addSubview:_cancelButton];
     }
@@ -773,6 +776,7 @@ CGFloat const GeneralWalkthroughStatusBarOffset = 20.0;
         [self setAuthenticating:NO withStatusMessage:nil];
         [self displayRemoteError:error];
     }];
+
     [Note fetchNewNotificationsWithSuccess:nil failure:nil];
 }
 
@@ -781,6 +785,9 @@ CGFloat const GeneralWalkthroughStatusBarOffset = 20.0;
     WPAccount *account = [WPAccount createOrUpdateSelfHostedAccountWithXmlrpc:xmlrpc username:username andPassword:password];
     NSString *blogName = [options stringForKeyPath:@"blog_title.value"];
     NSString *url = [options stringForKeyPath:@"home_url.value"];
+    if (!url) {
+        url = [options stringForKeyPath:@"blog_url.value"];
+    }
     NSMutableDictionary *blogDetails = [NSMutableDictionary dictionaryWithObject:xmlrpc forKey:@"xmlrpc"];
     if (blogName) {
         [blogDetails setObject:blogName forKey:@"blogName"];

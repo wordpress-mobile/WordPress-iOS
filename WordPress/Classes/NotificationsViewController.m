@@ -99,6 +99,7 @@ NSString * const NotificationsJetpackInformationURL = @"http://jetpack.me/about/
     
     [WPStyleGuide configureColorsForView:self.view andTableView:self.tableView];
     
+    self.tableView.separatorInset = UIEdgeInsetsMake(0, 25, 0, 0);
     self.infiniteScrollEnabled = YES;
 }
 
@@ -122,8 +123,7 @@ NSString * const NotificationsJetpackInformationURL = @"http://jetpack.me/about/
         [self pruneOldNotes];
     }
 
-    [self syncItems];
-    [self refreshUnreadNotes];
+    [self clearNotificationsBadgeAndSyncItems];
 }
 
 - (void)viewDidDisappear:(BOOL)animated {
@@ -154,7 +154,7 @@ NSString * const NotificationsJetpackInformationURL = @"http://jetpack.me/about/
 
 - (void)pruneOldNotes {
     NSNumber *pruneBefore;
-    Note *lastVisibleNote = [[[self.tableView visibleCells] lastObject] note];
+    Note *lastVisibleNote = [[[self.tableView visibleCells] lastObject] contentProvider];
     if (lastVisibleNote) {
         pruneBefore = lastVisibleNote.timestamp;
     }
@@ -175,20 +175,19 @@ NSString * const NotificationsJetpackInformationURL = @"http://jetpack.me/about/
 
 #pragma mark - Public methods
 
-- (void)refreshFromPushNotification {
-    if (IS_IPHONE)
-        [self.navigationController popToRootViewControllerAnimated:YES];
-    [self.tableView scrollRectToVisible:CGRectMake(0, 0, 1, 1) animated:YES];
+- (void)clearNotificationsBadgeAndSyncItems {
+    [UIApplication sharedApplication].applicationIconBadgeNumber = 0;
     if (![self isSyncing]) {
         [self syncItems];
     }
+    [self refreshUnreadNotes];
 }
 
 #pragma mark - UITableViewDelegate
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
     Note *note = [self.resultsController objectAtIndexPath:indexPath];
-    return [NewNotificationsTableViewCell rowHeightForNotification:note andMaxWidth:CGRectGetWidth(tableView.bounds)];
+    return [NewNotificationsTableViewCell rowHeightForContentProvider:note andWidth:WPTableViewFixedWidth];
 }
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
@@ -260,7 +259,13 @@ NSString * const NotificationsJetpackInformationURL = @"http://jetpack.me/about/
 }
 
 - (void)configureCell:(NewNotificationsTableViewCell *)cell atIndexPath:(NSIndexPath *)indexPath {
-    cell.note = [self.resultsController objectAtIndexPath:indexPath];
+    cell.contentProvider = [self.resultsController objectAtIndexPath:indexPath];
+    
+    Note *note = [self.resultsController objectAtIndexPath:indexPath];
+    BOOL hasDetailsView = [self noteHasDetailView:note];
+    if (!hasDetailsView) {
+        cell.accessoryType = UITableViewCellAccessoryNone;
+    }
 }
 
 - (BOOL)userCanRefresh {
@@ -296,6 +301,10 @@ NSString * const NotificationsJetpackInformationURL = @"http://jetpack.me/about/
 - (BOOL)isSyncing
 {
     return _retrievingNotifications;
+}
+
+- (void)setSyncing:(BOOL)value {
+    _retrievingNotifications = value;
 }
 
 - (void)syncItems
