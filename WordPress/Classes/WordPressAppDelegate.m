@@ -420,8 +420,17 @@ static NSString *const CameraPlusImagesNotification = @"CameraPlusImagesNotifica
     if (IS_IPAD) {
         postsViewController.tabBarItem.imageInsets = UIEdgeInsetsMake(7.0, 0, -7, 0);
     }
-    postsViewController.tabBarItem.title = NSLocalizedString(@"New Post", @"The accessibility value of the post tab.");
-    
+
+    /*
+     If title is used, the title will be visible. See #1158
+     If accessibilityLabel/Value are used, the "New Post" text is not read by VoiceOver
+
+     The only apparent solution is to have an actual title, and then hide it for
+     non-VoiceOver users.
+     */
+    postsViewController.title = NSLocalizedString(@"New Post", @"The accessibility value of the post tab.");
+    [postsViewController.tabBarItem setTitleTextAttributes:@{NSForegroundColorAttributeName: [UIColor clearColor]} forState:UIControlStateNormal];
+
     _tabBarController.viewControllers = @[readerNavigationController, notificationsNavigationController, blogListNavigationController, postsViewController];
 
     [_tabBarController setSelectedViewController:readerNavigationController];
