@@ -473,7 +473,7 @@ NSString *const DefaultCellIdentifier = @"DefaultCellIdentifier";
     }
     
     WordPressAppDelegate *appDelegate = [WordPressAppDelegate sharedWordPressApplicationDelegate];
-    if( appDelegate.connectionAvailable == NO ) return; //do not start auto-synch if connection is down
+    if(appDelegate.connectionAvailable == NO) return; // Do not start auto-synch if connection is down
     
     // Don't try to refresh if we just canceled editing credentials
     if (_didPromptForCredentials) {
