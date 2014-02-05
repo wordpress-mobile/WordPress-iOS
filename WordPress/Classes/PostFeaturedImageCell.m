@@ -7,40 +7,69 @@
 //
 
 #import "PostFeaturedImageCell.h"
+#import "UIImageView+AFNetworkingExtra.h"
+
+CGFloat const PostFeaturedImageCellMargin = 15.0f;
 
 @interface PostFeaturedImageCell ()
 
-@property (nonatomic, strong) UIImageView *imageView;
+//@property (nonatomic, strong) UIImageView *imageView;
 @property (nonatomic, strong) UIActivityIndicatorView *activityView;
-@property (nonatomic, strong) UILabel *statusLabel;
 
 @end
 
 @implementation PostFeaturedImageCell
 
-- (id)initWithFrame:(CGRect)frame {
-    self = [super initWithFrame:frame];
+- (id)initWithStyle:(UITableViewCellStyle)style reuseIdentifier:(NSString *)reuseIdentifier {
+    self = [super initWithStyle:style reuseIdentifier:reuseIdentifier];
     if (self) {
-        self.imageView = [[UIImageView alloc] initWithFrame:CGRectMake(0.0, 0.0, frame.size.width, frame.size.height)];
-        self.statusLabel = [[UILabel alloc] initWithFrame:CGRectMake(0.0, 0.0, frame.size.width, 44.0f)];
-        self.activityView = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleGray];
+        [self configureSubviews];
     }
     return self;
 }
 
-- (void)setImageURL:(NSString *)imageURL {
+- (void)configureSubviews {
+    CGRect contentFrame = self.contentView.frame;
+    self.imageView.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
+    self.imageView.contentMode = UIViewContentModeScaleAspectFill;
+    self.imageView.clipsToBounds = YES;
+    [self.contentView addSubview:self.imageView];
     
+    self.activityView = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleGray];
+    CGRect activityFrame = self.activityView.frame;
+    CGFloat x = (contentFrame.size.width - activityFrame.size.width) / 2.0f;
+    CGFloat y = (contentFrame.size.height - activityFrame.size.height) / 2.0f;
+    activityFrame = CGRectMake(x, y, activityFrame.size.width, activityFrame.size.height);
+    self.activityView.frame = activityFrame;
+    self.activityView.autoresizingMask = UIViewAutoresizingFlexibleLeftMargin | UIViewAutoresizingFlexibleRightMargin | UIViewAutoresizingFlexibleTopMargin | UIViewAutoresizingFlexibleBottomMargin;
+    self.activityView.hidesWhenStopped = YES;
+    [self.contentView addSubview:self.activityView];
 }
 
-- (CGFloat)desiredHeightForWidth:(CGFloat)width {
-    
-    if (self.imageView.image) {
-        CGSize size = self.imageView.image.size;
-        if (size.height > 0.0f) {
-            return ceilf(width * (size.width / size.height));
-        }
+- (void)layoutSubviews {
+    [super layoutSubviews];
+    if (!self.imageView.hidden) {
+        CGFloat x = PostFeaturedImageCellMargin;
+        CGFloat y = PostFeaturedImageCellMargin;
+        CGFloat w = CGRectGetWidth(self.contentView.frame) - (PostFeaturedImageCellMargin * 2);
+        CGFloat h = CGRectGetHeight(self.contentView.frame) - (PostFeaturedImageCellMargin * 2);
+        self.imageView.frame = CGRectMake(x, y, w, h);
     }
-    return 44.0f;
+}
+
+- (void)setImage:(UIImage *)image {
+    [self.imageView setImage:image];
+    [self showLoadingSpinner:NO];
+}
+
+- (void)showLoadingSpinner:(BOOL)showSpinner {
+    if (showSpinner) {
+        [self.activityView startAnimating];
+    } else {
+        [self.activityView stopAnimating];
+    }
+    self.imageView.hidden = showSpinner;
+    self.textLabel.text = @"";
 }
 
 @end
