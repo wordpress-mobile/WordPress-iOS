@@ -19,15 +19,15 @@
 
 @implementation PostGeolocationCell
 
-- (id)initWithFrame:(CGRect)frame {
-    self = [super initWithFrame:frame];
+- (id)initWithStyle:(UITableViewCellStyle)style reuseIdentifier:(NSString *)reuseIdentifier {
+    self = [super initWithStyle:style reuseIdentifier:reuseIdentifier];
     if (self) {
-        [self createSubviews];
+        [self setupSubviews];
     }
     return self;
 }
 
-- (void)createSubviews {
+- (void)setupSubviews {
     self.geoView = [[PostGeolocationView alloc] initWithFrame:self.contentView.bounds];
     self.geoView.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
     [self.contentView addSubview:self.geoView];
