@@ -142,7 +142,7 @@ static NSString *const Ellipsis =  @"\u2026";
         
         if(preserveWords){
             
-            NSMutableArray *wordsSeperated = [[self componentsSeparatedByString:@" "] mutableCopy];
+            NSArray *wordsSeperated = [self tokenize];
             
             for(NSString *word in wordsSeperated){
                 
@@ -150,7 +150,7 @@ static NSString *const Ellipsis =  @"\u2026";
                     temp = word;
                 }
                 else{
-                    temp = [NSString stringWithFormat:@"%@ %@", temp, word];
+                    temp = [NSString stringWithFormat:@"%@%@", temp, word];
                 }
                 
                 if([temp length] <= newLimitWithoutEllipsis){
@@ -171,6 +171,37 @@ static NSString *const Ellipsis =  @"\u2026";
     }
     
     return self;
+}
+
+- (NSArray *)tokenize
+{
+    CFLocaleRef locale = CFLocaleCopyCurrent();
+    CFRange stringRange = CFRangeMake(0, [self length]);
+    
+    CFStringTokenizerRef tokenizer = CFStringTokenizerCreate(kCFAllocatorDefault,
+                                                             (CFStringRef)self,
+                                                             stringRange,
+                                                             kCFStringTokenizerUnitWordBoundary,
+                                                             locale);
+    
+    CFStringTokenizerTokenType tokenType = CFStringTokenizerAdvanceToNextToken(tokenizer);
+    
+    
+    NSMutableArray *tokens = [NSMutableArray new];
+
+    
+    while (tokenType != kCFStringTokenizerTokenNone)
+    {
+        stringRange = CFStringTokenizerGetCurrentTokenRange(tokenizer);
+        NSString *token = [self substringWithRange:NSMakeRange(stringRange.location, stringRange.length)];
+        [tokens addObject:token];
+        tokenType = CFStringTokenizerAdvanceToNextToken(tokenizer);
+    }
+    
+    CFRelease(locale);
+    CFRelease(tokenizer);
+    
+    return tokens;
 }
 
 @end
