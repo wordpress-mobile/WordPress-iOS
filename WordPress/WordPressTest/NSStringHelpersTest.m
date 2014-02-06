@@ -34,6 +34,9 @@
     XCTAssertTrue([[sampleText stringByEllipsizingWithMaxLength:14 preserveWords:NO] isEqualToString:@"The quick bro…"], @"Incorrect Result.");
     XCTAssertTrue([[sampleText stringByEllipsizingWithMaxLength:100 preserveWords:NO] isEqualToString:sampleText], @"Incorrect Result.");
     XCTAssertTrue([[sampleText stringByEllipsizingWithMaxLength:0 preserveWords:NO] isEqualToString:@""], @"Incorrect Result.");
+    
+    NSString *foreignLanguageTest = @"わたしはいぬがすきです";
+    XCTAssertTrue([[foreignLanguageTest stringByEllipsizingWithMaxLength:4 preserveWords:YES] isEqualToString:@"わたし…"], @"Incorrect Result.");
 }
 
 
