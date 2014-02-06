@@ -39,6 +39,12 @@ PODS:
     - CocoaLumberjack
     - Google-Diff-Match-Patch
     - JRSwizzle
+    - Simperium/STKeychain
+    - SocketRocket
+  - Simperium/STKeychain (0.7.0):
+    - CocoaLumberjack
+    - Google-Diff-Match-Patch
+    - JRSwizzle
     - SocketRocket
   - SocketRocket (0.3.1-beta2)
   - SVProgressHUD (0.9)
@@ -105,7 +111,7 @@ SPEC CHECKSUMS:
   OHHTTPStubs: cb1cef742f2fba18b192fb92ede52a69cf3a04d5
   Quantcast-Measure: ff28ef371e54b710dc051a9ef96fd49b77f098c3
   Reachability: 500bd76bf6cd8ff2c6fb715fc5f44ef6e4c024f2
-  Simperium: 0be8ff8b5f9f5d0cd8ee7e146e4b7f997a0c2b6a
+  Simperium: 5237934a2f63f8c6849b5a88fcbadf714f414c34
   SocketRocket: 7ac946bcce46287a791dfff3c1f8daa692821dae
   SVProgressHUD: 03d4845ec8e64591726428a08236c6a5489d45f8
   UIDeviceIdentifier: 64036321b0f77ff41b4200002f0c138431c00d86

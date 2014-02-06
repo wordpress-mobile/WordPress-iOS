@@ -1,0 +1,1 @@
+../../Simperium/Simperium/SPRelationshipResolver.h

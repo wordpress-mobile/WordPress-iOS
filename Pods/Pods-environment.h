@@ -150,6 +150,12 @@
 #define COCOAPODS_VERSION_MINOR_Simperium 7
 #define COCOAPODS_VERSION_PATCH_Simperium 0
 
+// Simperium/STKeychain
+#define COCOAPODS_POD_AVAILABLE_Simperium_STKeychain
+#define COCOAPODS_VERSION_MAJOR_Simperium_STKeychain 0
+#define COCOAPODS_VERSION_MINOR_Simperium_STKeychain 7
+#define COCOAPODS_VERSION_PATCH_Simperium_STKeychain 0
+
 // SocketRocket
 #define COCOAPODS_POD_AVAILABLE_SocketRocket
 #define COCOAPODS_VERSION_MAJOR_SocketRocket 0
