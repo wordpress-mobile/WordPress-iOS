@@ -91,6 +91,7 @@ NSString * const RPVCDisplayedNativeFriendFinder = @"DisplayedNativeFriendFinder
         self.incrementalLoadingSupported = YES;
         
         [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(readerTopicDidChange:) name:ReaderTopicDidChangeNotification object:nil];
+        [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(fetchBlogsAndPrimaryBlog) name:WPAccountDefaultWordPressComAccountChangedNotification object:nil];
 	}
 	return self;
 }
@@ -1018,6 +1019,7 @@ NSString * const RPVCDisplayedNativeFriendFinder = @"DisplayedNativeFriendFinder
 
 			} failure:^(AFHTTPRequestOperation *operation, NSError *error) {
 				// Fail silently.
+                DDLogError(@"Failed retrieving user blogs in ReaderPostsViewController: %@", error);
             }];
 }
 
