@@ -144,6 +144,11 @@ static NSString *const Ellipsis =  @"\u2026";
             
             NSArray *wordsSeperated = [self tokenize];
             
+            if([wordsSeperated count] == 1) //If this is a long, single word, then we disregard preserveWords property. 
+            {
+                return [NSString stringWithFormat:@"%@%@", [self substringToIndex:newLimitWithoutEllipsis], Ellipsis];
+            }
+            
             for(NSString *word in wordsSeperated){
                 
                 if([temp isEqualToString:@""]){
