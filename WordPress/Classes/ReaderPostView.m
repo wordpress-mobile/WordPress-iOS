@@ -55,7 +55,7 @@ static NSInteger const MaxTitleLengthiPad = 130;
     
     // Title
     desiredHeight += RPVVerticalPadding;
-    NSAttributedString *postTitle = [self titleAttributedStringForPost:post showFullContent:showFullContent];
+    NSAttributedString *postTitle = [self titleAttributedStringForPost:post showFullContent:showFullContent withWidth:contentWidth];
     desiredHeight += [postTitle boundingRectWithSize:CGSizeMake(contentWidth, CGFLOAT_MAX) options:NSStringDrawingUsesLineFragmentOrigin | NSStringDrawingUsesFontLeading context:nil].size.height;
     desiredHeight += RPVTitlePaddingBottom;
     
@@ -87,7 +87,7 @@ static NSInteger const MaxTitleLengthiPad = 130;
 	return ceil(desiredHeight);
 }
 
-+ (NSAttributedString *)titleAttributedStringForPost:(ReaderPost *)post showFullContent:(BOOL)showFullContent {
++ (NSAttributedString *)titleAttributedStringForPost:(ReaderPost *)post showFullContent:(BOOL)showFullContent withWidth:(CGFloat) width {
     NSMutableParagraphStyle *style = [[NSMutableParagraphStyle alloc] init];
     [style setLineHeightMultiple:RPVLineHeightMultiple];
     NSDictionary *attributes = @{NSParagraphStyleAttributeName : style,
@@ -200,7 +200,17 @@ static NSInteger const MaxTitleLengthiPad = 130;
     return self;
 }
 
-- (void)configurePost:(ReaderPost *)post {
+- (void)configurePost:(ReaderPost *)post withWidth:(CGFloat)width {
+   
+    // Margins
+    CGFloat contentWidth = width;
+    if (IS_IPAD) {
+        contentWidth = WPTableViewFixedWidth;
+    }
+    
+    contentWidth -= RPVHorizontalInnerPadding * 2;
+    
+    
     _post = post;
     self.contentProvider = post;
     
@@ -209,7 +219,8 @@ static NSInteger const MaxTitleLengthiPad = 130;
     [self setAvatar:nil];
     
 	self.titleLabel.attributedText = [[self class] titleAttributedStringForPost:post
-                                                                showFullContent:self.showFullContent];
+                                                                showFullContent:self.showFullContent
+                                                                      withWidth:contentWidth];
     
     if (self.showFullContent) {
         NSData *data = [self.post.content dataUsingEncoding:NSUTF8StringEncoding];
