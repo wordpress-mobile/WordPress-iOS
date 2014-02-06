@@ -1,0 +1,26 @@
+Changes with version 2.0.0                                         25 Apr 2013
+
+    * New [mixpanel identify:], removed [mixpanel.people identify:]. 
+
+        IMPORTANT: We used to have a separate [mixpanel.people identify:]
+        method. You had to call it before we'd flush people records. It's gone
+        (hence incrementing the major version number for this release). The new
+        behavior is this: events will go right away with default distinct ID.
+        People records will be queued until identify: is called. At that point
+        the distinct ID used in identify: is used for both events and people
+        records. if you want to use the default ID for people, use [mixpanel
+        identify:mixpanel.distinctId];
+
+    * Distinct ID defaults to iOS IFA for iOS 6+ and falls back to ODIN1
+
+    * New automatic properties:
+        
+        $app_release and $ios_app_release (for Engagement and People,
+        respectively) which are CFBundleShortVersionString. Note: old
+        $ios_app_version remains for backward compatibility.
+
+        $ios_ifa 
+
+    * Added setOnce:
+
+    * Added unregisterSuperProperty:

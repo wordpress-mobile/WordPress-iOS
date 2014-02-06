@@ -1,0 +1,503 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 46;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		0043C79F1580045B000DF02E /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0043C79E1580045B000DF02E /* UIKit.framework */; };
+		0043C7A11580045B000DF02E /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0043C7A01580045B000DF02E /* Foundation.framework */; };
+		0043C7A31580045B000DF02E /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0043C7A21580045B000DF02E /* CoreGraphics.framework */; };
+		00F70E83158006DC0077799E /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 00F70E82158006DC0077799E /* main.m */; };
+		00F70E99158007D90077799E /* Security.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 00F70E98158007D90077799E /* Security.framework */; };
+		00F70E9B158008040077799E /* SystemConfiguration.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 00F70E9A158008040077799E /* SystemConfiguration.framework */; };
+		0C52D6F8158BAB1F001510E6 /* button_background.png in Resources */ = {isa = PBXBuildFile; fileRef = 0C52D6F7158BAB1F001510E6 /* button_background.png */; };
+		8E47E994171CB75C003FBA75 /* GoogleOpenSource.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8E47E991171CB75C003FBA75 /* GoogleOpenSource.framework */; };
+		8E47E995171CB75C003FBA75 /* GooglePlus.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 8E47E992171CB75C003FBA75 /* GooglePlus.bundle */; };
+		8E47E996171CB75C003FBA75 /* GooglePlus.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8E47E993171CB75C003FBA75 /* GooglePlus.framework */; };
+		D907F676166967D400EB5273 /* Icon@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = D907F675166967D400EB5273 /* Icon@2x.png */; };
+		D945ED39166AE4950051858C /* ListMomentsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = D945ED34166AE4950051858C /* ListMomentsViewController.m */; };
+		D945ED3A166AE4950051858C /* ListMomentsViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = D945ED35166AE4950051858C /* ListMomentsViewController.xib */; };
+		D945ED3B166AE4950051858C /* ListPeopleViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = D945ED37166AE4950051858C /* ListPeopleViewController.m */; };
+		D945ED3C166AE4950051858C /* ListPeopleViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = D945ED38166AE4950051858C /* ListPeopleViewController.xib */; };
+		D973B402158ABC1F0083A4B5 /* MessageUI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D973B401158ABC1F0083A4B5 /* MessageUI.framework */; };
+		D98254A915990D8D0060CA47 /* Icon.png in Resources */ = {isa = PBXBuildFile; fileRef = D98254A715990D8D0060CA47 /* Icon.png */; };
+		D9A49D9F1720DD5E009C6DE2 /* Default@2x~iphone.png in Resources */ = {isa = PBXBuildFile; fileRef = D9A49D9B1720DD5E009C6DE2 /* Default@2x~iphone.png */; };
+		D9A49DA01720DD5E009C6DE2 /* Default~iphone.png in Resources */ = {isa = PBXBuildFile; fileRef = D9A49D9C1720DD5E009C6DE2 /* Default~iphone.png */; };
+		D9A49DA11720DD5E009C6DE2 /* Icon-72.png in Resources */ = {isa = PBXBuildFile; fileRef = D9A49D9D1720DD5E009C6DE2 /* Icon-72.png */; };
+		D9A49DA21720DD5E009C6DE2 /* Icon-144.png in Resources */ = {isa = PBXBuildFile; fileRef = D9A49D9E1720DD5E009C6DE2 /* Icon-144.png */; };
+		D9EE74C2158A8E0500EC1D05 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = D9EE74B4158A8E0500EC1D05 /* AppDelegate.m */; };
+		D9EE74C3158A8E0500EC1D05 /* MasterViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = D9EE74B6158A8E0500EC1D05 /* MasterViewController.m */; };
+		D9EE74C4158A8E0500EC1D05 /* MasterViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = D9EE74B7158A8E0500EC1D05 /* MasterViewController.xib */; };
+		D9EE74C5158A8E0500EC1D05 /* MomentsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = D9EE74B9158A8E0500EC1D05 /* MomentsViewController.m */; };
+		D9EE74C6158A8E0500EC1D05 /* MomentsViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = D9EE74BA158A8E0500EC1D05 /* MomentsViewController.xib */; };
+		D9EE74C7158A8E0500EC1D05 /* ShareViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = D9EE74BC158A8E0500EC1D05 /* ShareViewController.m */; };
+		D9EE74C8158A8E0500EC1D05 /* ShareViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = D9EE74BD158A8E0500EC1D05 /* ShareViewController.xib */; };
+		D9EE74C9158A8E0500EC1D05 /* SignInViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = D9EE74BF158A8E0500EC1D05 /* SignInViewController.m */; };
+		D9EE74CA158A8E0500EC1D05 /* SignInViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = D9EE74C0158A8E0500EC1D05 /* SignInViewController.xib */; };
+		D9EE74CD158A8E2900EC1D05 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = D9EE74CB158A8E2900EC1D05 /* InfoPlist.strings */; };
+		E0681E5F171F46EB0098D356 /* Default-568h@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = E0681E5E171F46EB0098D356 /* Default-568h@2x.png */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXFileReference section */
+		0043C79A1580045B000DF02E /* GooglePlusSample.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = GooglePlusSample.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		0043C79E1580045B000DF02E /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = System/Library/Frameworks/UIKit.framework; sourceTree = SDKROOT; };
+		0043C7A01580045B000DF02E /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
+		0043C7A21580045B000DF02E /* CoreGraphics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreGraphics.framework; path = System/Library/Frameworks/CoreGraphics.framework; sourceTree = SDKROOT; };
+		00F70E82158006DC0077799E /* main.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = SOURCE_ROOT; };
+		00F70E98158007D90077799E /* Security.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Security.framework; path = System/Library/Frameworks/Security.framework; sourceTree = SDKROOT; };
+		00F70E9A158008040077799E /* SystemConfiguration.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SystemConfiguration.framework; path = System/Library/Frameworks/SystemConfiguration.framework; sourceTree = SDKROOT; };
+		0C52D6F7158BAB1F001510E6 /* button_background.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = button_background.png; path = Resources/button_background.png; sourceTree = SOURCE_ROOT; };
+		8E47E991171CB75C003FBA75 /* GoogleOpenSource.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = GoogleOpenSource.framework; path = ../GoogleOpenSource.framework; sourceTree = "<group>"; };
+		8E47E992171CB75C003FBA75 /* GooglePlus.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; name = GooglePlus.bundle; path = ../GooglePlus.bundle; sourceTree = "<group>"; };
+		8E47E993171CB75C003FBA75 /* GooglePlus.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = GooglePlus.framework; path = ../GooglePlus.framework; sourceTree = "<group>"; };
+		D907F675166967D400EB5273 /* Icon@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "Icon@2x.png"; path = "Resources/Icon@2x.png"; sourceTree = SOURCE_ROOT; };
+		D945ED33166AE4950051858C /* ListMomentsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ListMomentsViewController.h; sourceTree = SOURCE_ROOT; };
+		D945ED34166AE4950051858C /* ListMomentsViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ListMomentsViewController.m; sourceTree = SOURCE_ROOT; };
+		D945ED35166AE4950051858C /* ListMomentsViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ListMomentsViewController.xib; sourceTree = SOURCE_ROOT; };
+		D945ED36166AE4950051858C /* ListPeopleViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ListPeopleViewController.h; sourceTree = SOURCE_ROOT; };
+		D945ED37166AE4950051858C /* ListPeopleViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ListPeopleViewController.m; sourceTree = SOURCE_ROOT; };
+		D945ED38166AE4950051858C /* ListPeopleViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ListPeopleViewController.xib; sourceTree = SOURCE_ROOT; };
+		D973B401158ABC1F0083A4B5 /* MessageUI.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MessageUI.framework; path = System/Library/Frameworks/MessageUI.framework; sourceTree = SDKROOT; };
+		D98254A715990D8D0060CA47 /* Icon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = Icon.png; path = Resources/Icon.png; sourceTree = SOURCE_ROOT; };
+		D9A49D9B1720DD5E009C6DE2 /* Default@2x~iphone.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "Default@2x~iphone.png"; path = "Resources/Default@2x~iphone.png"; sourceTree = SOURCE_ROOT; };
+		D9A49D9C1720DD5E009C6DE2 /* Default~iphone.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "Default~iphone.png"; path = "Resources/Default~iphone.png"; sourceTree = SOURCE_ROOT; };
+		D9A49D9D1720DD5E009C6DE2 /* Icon-72.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "Icon-72.png"; path = "Resources/Icon-72.png"; sourceTree = SOURCE_ROOT; };
+		D9A49D9E1720DD5E009C6DE2 /* Icon-144.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "Icon-144.png"; path = "Resources/Icon-144.png"; sourceTree = SOURCE_ROOT; };
+		D9EE74B1158A8E0500EC1D05 /* GooglePlusSample-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GooglePlusSample-Info.plist"; sourceTree = SOURCE_ROOT; };
+		D9EE74B2158A8E0500EC1D05 /* GooglePlusSample-Prefix.pch */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "GooglePlusSample-Prefix.pch"; sourceTree = SOURCE_ROOT; };
+		D9EE74B3158A8E0500EC1D05 /* AppDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = SOURCE_ROOT; };
+		D9EE74B4158A8E0500EC1D05 /* AppDelegate.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AppDelegate.m; sourceTree = SOURCE_ROOT; };
+		D9EE74B5158A8E0500EC1D05 /* MasterViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MasterViewController.h; sourceTree = SOURCE_ROOT; };
+		D9EE74B6158A8E0500EC1D05 /* MasterViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MasterViewController.m; sourceTree = SOURCE_ROOT; };
+		D9EE74B7158A8E0500EC1D05 /* MasterViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = MasterViewController.xib; sourceTree = SOURCE_ROOT; };
+		D9EE74B8158A8E0500EC1D05 /* MomentsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MomentsViewController.h; sourceTree = SOURCE_ROOT; };
+		D9EE74B9158A8E0500EC1D05 /* MomentsViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MomentsViewController.m; sourceTree = SOURCE_ROOT; };
+		D9EE74BA158A8E0500EC1D05 /* MomentsViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = MomentsViewController.xib; sourceTree = SOURCE_ROOT; };
+		D9EE74BB158A8E0500EC1D05 /* ShareViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ShareViewController.h; sourceTree = SOURCE_ROOT; };
+		D9EE74BC158A8E0500EC1D05 /* ShareViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ShareViewController.m; sourceTree = SOURCE_ROOT; };
+		D9EE74BD158A8E0500EC1D05 /* ShareViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ShareViewController.xib; sourceTree = SOURCE_ROOT; };
+		D9EE74BE158A8E0500EC1D05 /* SignInViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SignInViewController.h; sourceTree = SOURCE_ROOT; };
+		D9EE74BF158A8E0500EC1D05 /* SignInViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SignInViewController.m; sourceTree = SOURCE_ROOT; };
+		D9EE74C0158A8E0500EC1D05 /* SignInViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = SignInViewController.xib; sourceTree = SOURCE_ROOT; };
+		D9EE74CC158A8E2900EC1D05 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = SOURCE_ROOT; };
+		E0681E5E171F46EB0098D356 /* Default-568h@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "Default-568h@2x.png"; path = "Resources/Default-568h@2x.png"; sourceTree = SOURCE_ROOT; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		0043C7971580045B000DF02E /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				8E47E996171CB75C003FBA75 /* GooglePlus.framework in Frameworks */,
+				8E47E994171CB75C003FBA75 /* GoogleOpenSource.framework in Frameworks */,
+				00F70E9B158008040077799E /* SystemConfiguration.framework in Frameworks */,
+				00F70E99158007D90077799E /* Security.framework in Frameworks */,
+				0043C79F1580045B000DF02E /* UIKit.framework in Frameworks */,
+				0043C7A11580045B000DF02E /* Foundation.framework in Frameworks */,
+				0043C7A31580045B000DF02E /* CoreGraphics.framework in Frameworks */,
+				D973B402158ABC1F0083A4B5 /* MessageUI.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		0043C78F1580045B000DF02E = {
+			isa = PBXGroup;
+			children = (
+				0043C7A41580045B000DF02E /* GooglePlusSample */,
+				0043C79D1580045B000DF02E /* Frameworks */,
+				0043C79B1580045B000DF02E /* Products */,
+			);
+			sourceTree = "<group>";
+		};
+		0043C79B1580045B000DF02E /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				0043C79A1580045B000DF02E /* GooglePlusSample.app */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		0043C79D1580045B000DF02E /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				8E47E993171CB75C003FBA75 /* GooglePlus.framework */,
+				8E47E992171CB75C003FBA75 /* GooglePlus.bundle */,
+				8E47E991171CB75C003FBA75 /* GoogleOpenSource.framework */,
+				D973B401158ABC1F0083A4B5 /* MessageUI.framework */,
+				00F70E9A158008040077799E /* SystemConfiguration.framework */,
+				00F70E98158007D90077799E /* Security.framework */,
+				0043C79E1580045B000DF02E /* UIKit.framework */,
+				0043C7A01580045B000DF02E /* Foundation.framework */,
+				0043C7A21580045B000DF02E /* CoreGraphics.framework */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		0043C7A41580045B000DF02E /* GooglePlusSample */ = {
+			isa = PBXGroup;
+			children = (
+				D9EE74B3158A8E0500EC1D05 /* AppDelegate.h */,
+				D9EE74B4158A8E0500EC1D05 /* AppDelegate.m */,
+				D945ED33166AE4950051858C /* ListMomentsViewController.h */,
+				D945ED34166AE4950051858C /* ListMomentsViewController.m */,
+				D945ED35166AE4950051858C /* ListMomentsViewController.xib */,
+				D945ED36166AE4950051858C /* ListPeopleViewController.h */,
+				D945ED37166AE4950051858C /* ListPeopleViewController.m */,
+				D945ED38166AE4950051858C /* ListPeopleViewController.xib */,
+				D9EE74B5158A8E0500EC1D05 /* MasterViewController.h */,
+				D9EE74B6158A8E0500EC1D05 /* MasterViewController.m */,
+				D9EE74B7158A8E0500EC1D05 /* MasterViewController.xib */,
+				D9EE74B8158A8E0500EC1D05 /* MomentsViewController.h */,
+				D9EE74B9158A8E0500EC1D05 /* MomentsViewController.m */,
+				D9EE74BA158A8E0500EC1D05 /* MomentsViewController.xib */,
+				D9EE74BB158A8E0500EC1D05 /* ShareViewController.h */,
+				D9EE74BC158A8E0500EC1D05 /* ShareViewController.m */,
+				D9EE74BD158A8E0500EC1D05 /* ShareViewController.xib */,
+				D9EE74BE158A8E0500EC1D05 /* SignInViewController.h */,
+				D9EE74BF158A8E0500EC1D05 /* SignInViewController.m */,
+				D9EE74C0158A8E0500EC1D05 /* SignInViewController.xib */,
+				D98254AB15990DBC0060CA47 /* Resources */,
+				0043C7A51580045B000DF02E /* Supporting Files */,
+			);
+			path = GooglePlusSample;
+			sourceTree = "<group>";
+		};
+		0043C7A51580045B000DF02E /* Supporting Files */ = {
+			isa = PBXGroup;
+			children = (
+				00F70E82158006DC0077799E /* main.m */,
+				D9EE74CB158A8E2900EC1D05 /* InfoPlist.strings */,
+				D9EE74B1158A8E0500EC1D05 /* GooglePlusSample-Info.plist */,
+				D9EE74B2158A8E0500EC1D05 /* GooglePlusSample-Prefix.pch */,
+			);
+			name = "Supporting Files";
+			sourceTree = "<group>";
+		};
+		D98254AB15990DBC0060CA47 /* Resources */ = {
+			isa = PBXGroup;
+			children = (
+				0C52D6F7158BAB1F001510E6 /* button_background.png */,
+				E0681E5E171F46EB0098D356 /* Default-568h@2x.png */,
+				D9A49D9B1720DD5E009C6DE2 /* Default@2x~iphone.png */,
+				D9A49D9C1720DD5E009C6DE2 /* Default~iphone.png */,
+				D9A49D9E1720DD5E009C6DE2 /* Icon-144.png */,
+				D9A49D9D1720DD5E009C6DE2 /* Icon-72.png */,
+				D98254A715990D8D0060CA47 /* Icon.png */,
+				D907F675166967D400EB5273 /* Icon@2x.png */,
+			);
+			name = Resources;
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		0043C7991580045B000DF02E /* GooglePlusSample */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 0043C7B21580045B000DF02E /* Build configuration list for PBXNativeTarget "GooglePlusSample" */;
+			buildPhases = (
+				0043C7961580045B000DF02E /* Sources */,
+				0043C7971580045B000DF02E /* Frameworks */,
+				0043C7981580045B000DF02E /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = GooglePlusSample;
+			productName = GooglePlusSample;
+			productReference = 0043C79A1580045B000DF02E /* GooglePlusSample.app */;
+			productType = "com.apple.product-type.application";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		0043C7911580045B000DF02E /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				LastUpgradeCheck = 0460;
+				ORGANIZATIONNAME = "Google Inc";
+			};
+			buildConfigurationList = 0043C7941580045B000DF02E /* Build configuration list for PBXProject "GooglePlusSample" */;
+			compatibilityVersion = "Xcode 3.2";
+			developmentRegion = English;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				en,
+				af,
+				am,
+				ar,
+				be,
+				bg,
+				ca,
+				cs,
+				da,
+				de_AT,
+				de_CH,
+				de,
+				el,
+				en_GB,
+				en_IE,
+				en_IN,
+				en_SG,
+				en_ZA,
+				es_419,
+				es_AR,
+				es_BO,
+				es_CL,
+				es_CO,
+				es_CR,
+				es_DO,
+				es_EC,
+				es_GT,
+				es_HN,
+				es_MX,
+				es_NI,
+				es_PA,
+				es_PE,
+				es_PR,
+				es_PY,
+				es_SV,
+				es_US,
+				es_UY,
+				es_VE,
+				es,
+				et,
+				fa,
+				fi,
+				fil,
+				fr_CH,
+				fr,
+				gsw,
+				he,
+				hi,
+				hr,
+				hu,
+				id,
+				in,
+				it,
+				iw,
+				ja,
+				ko,
+				ln,
+				lt,
+				lv,
+				mo,
+				ms,
+				nb,
+				nl,
+				no,
+				pl,
+				pt_BR,
+				pt_PT,
+				pt,
+				ro,
+				ru,
+				sk,
+				sl,
+				sr,
+				sv,
+				sw,
+				th,
+				tl,
+				tr,
+				uk,
+				vi,
+				zh_CN,
+				zh_HK,
+				zh_TW,
+				zh,
+				zu,
+			);
+			mainGroup = 0043C78F1580045B000DF02E;
+			productRefGroup = 0043C79B1580045B000DF02E /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				0043C7991580045B000DF02E /* GooglePlusSample */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXResourcesBuildPhase section */
+		0043C7981580045B000DF02E /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				D9EE74C4158A8E0500EC1D05 /* MasterViewController.xib in Resources */,
+				D9EE74C6158A8E0500EC1D05 /* MomentsViewController.xib in Resources */,
+				D9EE74C8158A8E0500EC1D05 /* ShareViewController.xib in Resources */,
+				D9EE74CA158A8E0500EC1D05 /* SignInViewController.xib in Resources */,
+				D9EE74CD158A8E2900EC1D05 /* InfoPlist.strings in Resources */,
+				0C52D6F8158BAB1F001510E6 /* button_background.png in Resources */,
+				D98254A915990D8D0060CA47 /* Icon.png in Resources */,
+				D907F676166967D400EB5273 /* Icon@2x.png in Resources */,
+				D945ED3A166AE4950051858C /* ListMomentsViewController.xib in Resources */,
+				D945ED3C166AE4950051858C /* ListPeopleViewController.xib in Resources */,
+				8E47E995171CB75C003FBA75 /* GooglePlus.bundle in Resources */,
+				E0681E5F171F46EB0098D356 /* Default-568h@2x.png in Resources */,
+				D9A49D9F1720DD5E009C6DE2 /* Default@2x~iphone.png in Resources */,
+				D9A49DA01720DD5E009C6DE2 /* Default~iphone.png in Resources */,
+				D9A49DA11720DD5E009C6DE2 /* Icon-72.png in Resources */,
+				D9A49DA21720DD5E009C6DE2 /* Icon-144.png in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		0043C7961580045B000DF02E /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				00F70E83158006DC0077799E /* main.m in Sources */,
+				D9EE74C2158A8E0500EC1D05 /* AppDelegate.m in Sources */,
+				D9EE74C3158A8E0500EC1D05 /* MasterViewController.m in Sources */,
+				D9EE74C5158A8E0500EC1D05 /* MomentsViewController.m in Sources */,
+				D9EE74C7158A8E0500EC1D05 /* ShareViewController.m in Sources */,
+				D9EE74C9158A8E0500EC1D05 /* SignInViewController.m in Sources */,
+				D945ED39166AE4950051858C /* ListMomentsViewController.m in Sources */,
+				D945ED3B166AE4950051858C /* ListPeopleViewController.m in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin PBXVariantGroup section */
+		D9EE74CB158A8E2900EC1D05 /* InfoPlist.strings */ = {
+			isa = PBXVariantGroup;
+			children = (
+				D9EE74CC158A8E2900EC1D05 /* en */,
+			);
+			name = InfoPlist.strings;
+			sourceTree = "<group>";
+		};
+/* End PBXVariantGroup section */
+
+/* Begin XCBuildConfiguration section */
+		0043C7B01580045B000DF02E /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				ARCHS = "$(ARCHS_STANDARD_32_BIT)";
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				COPY_PHASE_STRIP = NO;
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
+				GCC_VERSION = com.apple.compilers.llvm.clang.1_0;
+				GCC_WARN_ABOUT_MISSING_PROTOTYPES = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 5.0;
+				OTHER_LDFLAGS = "-ObjC";
+				SDKROOT = iphoneos;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Debug;
+		};
+		0043C7B11580045B000DF02E /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				ARCHS = "$(ARCHS_STANDARD_32_BIT)";
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				COPY_PHASE_STRIP = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_VERSION = com.apple.compilers.llvm.clang.1_0;
+				GCC_WARN_ABOUT_MISSING_PROTOTYPES = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 5.0;
+				OTHER_CFLAGS = "-DNS_BLOCK_ASSERTIONS=1";
+				OTHER_LDFLAGS = "-ObjC";
+				SDKROOT = iphoneos;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				VALIDATE_PRODUCT = YES;
+			};
+			name = Release;
+		};
+		0043C7B31580045B000DF02E /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"\"$(SRCROOT)/..\"",
+				);
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = "GooglePlusSample-Prefix.pch";
+				INFOPLIST_FILE = "GooglePlusSample-Info.plist";
+				LIBRARY_SEARCH_PATHS = (
+					"$(inherited)",
+					"\"$(SRCROOT)\"",
+				);
+				OTHER_LDFLAGS = "-ObjC";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				WRAPPER_EXTENSION = app;
+			};
+			name = Debug;
+		};
+		0043C7B41580045B000DF02E /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"\"$(SRCROOT)/..\"",
+				);
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = "GooglePlusSample-Prefix.pch";
+				INFOPLIST_FILE = "GooglePlusSample-Info.plist";
+				LIBRARY_SEARCH_PATHS = (
+					"$(inherited)",
+					"\"$(SRCROOT)\"",
+				);
+				OTHER_LDFLAGS = "-ObjC";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				WRAPPER_EXTENSION = app;
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		0043C7941580045B000DF02E /* Build configuration list for PBXProject "GooglePlusSample" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				0043C7B01580045B000DF02E /* Debug */,
+				0043C7B11580045B000DF02E /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		0043C7B21580045B000DF02E /* Build configuration list for PBXNativeTarget "GooglePlusSample" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				0043C7B31580045B000DF02E /* Debug */,
+				0043C7B41580045B000DF02E /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = 0043C7911580045B000DF02E /* Project object */;
+}

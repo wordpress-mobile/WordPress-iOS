@@ -1,0 +1,15 @@
+.classpath
+.DS_Store
+.project
+*.jar
+*.mode1v3
+*.mode1
+*.mode2
+*.pbxuser
+*.perspectivev3
+build/
+classes/
+logs/
+xcuserdata/
+docs/
+Pods/

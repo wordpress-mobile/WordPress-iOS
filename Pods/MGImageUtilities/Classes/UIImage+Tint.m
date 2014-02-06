@@ -23,15 +23,14 @@
 	if (color) {
 		// Construct new image the same size as this one.
 		UIImage *image;
-		
-#if __IPHONE_OS_VERSION_MAX_ALLOWED >= __IPHONE_4_0
-		if ([UIScreen instancesRespondToSelector:@selector(scale)]) {
-			UIGraphicsBeginImageContextWithOptions([self size], NO, 0.f); // 0.f for scale means "scale for device's main screen".
-		} else {
-			UIGraphicsBeginImageContext([self size]);
+#if __IPHONE_OS_VERSION_MAX_ALLOWED >= 40000
+		if ([[[UIDevice currentDevice] systemVersion] floatValue] >= 4.0) {
+			UIGraphicsBeginImageContextWithOptions([self size], NO, 0.0); // 0.0 for scale means "scale for device's main screen".
 		}
 #else
-		UIGraphicsBeginImageContext([self size]);
+		if ([[[UIDevice currentDevice] systemVersion] floatValue] < 4.0) {
+			UIGraphicsBeginImageContext([self size]);
+		}
 #endif
 		CGRect rect = CGRectZero;
 		rect.size = [self size];

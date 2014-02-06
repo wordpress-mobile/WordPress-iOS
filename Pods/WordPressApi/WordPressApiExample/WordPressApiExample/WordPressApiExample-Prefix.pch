@@ -1,0 +1,19 @@
+//
+// Prefix header for all source files of the 'WordPressApiExample' target in the 'WordPressApiExample' project
+//
+
+#import <Availability.h>
+
+#ifndef __IPHONE_5_0
+#warning "This project uses features only available in iOS SDK 5.0 and later."
+#endif
+
+#ifdef __OBJC__
+    #import <UIKit/UIKit.h>
+    #import <Foundation/Foundation.h>
+#endif
+
+//#error Please fill in your OAuth details
+#define OAUTH_CLIENT_ID @"2174"
+#define OAUTH_REDIRECT_URI @"https://github.com/koke/WordPressApi"
+#define OAUTH_SECRET @"kPS9VGJ1kVmVnRwD5UBNkaSSCQb70zyAV2amIjgMvI6TGj2f7Zl4ch0hvAsVE6nX"
