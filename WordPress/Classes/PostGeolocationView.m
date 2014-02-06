@@ -22,12 +22,12 @@ const CGFloat LabelMargins = 20.0f;
 - (id)initWithFrame:(CGRect)frame {
     self = [super initWithFrame:frame];
     if (self) {
-        [self configureSubviews];
+        [self setupSubviews];
     }
     return self;
 }
 
-- (void)configureSubviews {
+- (void)setupSubviews {
     self.mapView = [[MKMapView alloc] initWithFrame:CGRectMake(0.0f, 0.0f, self.frame.size.width, self.frame.size.height)];
     self.mapView.autoresizingMask = UIViewAutoresizingFlexibleHeight | UIViewAutoresizingFlexibleWidth;
     [self addSubview:self.mapView];

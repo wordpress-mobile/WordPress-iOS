@@ -12,6 +12,7 @@
 #import "CategoriesViewController.h"
 #import "EditPostViewController_Internal.h"
 #import "FeaturedImageViewController.h"
+#import "LocationService.h"
 #import "NSString+XMLExtensions.h"
 #import "NSString+Helpers.h"
 #import "Post.h"
@@ -44,7 +45,6 @@ typedef enum {
     PostSettingsRowFormat,
     PostSettingsRowFeaturedImage,
     PostSettingsRowFeaturedImageAdd,
-    PostSettingsRowFeaturedImageRemove,
     PostSettingsRowGeolocationAdd,
     PostSettingsRowGeolocationMap
 } PostSettingsRow;
@@ -132,15 +132,6 @@ static CGFloat GeoCellHeight = 160.0f;
     self.datePickerView = [[UIDatePicker alloc] initWithFrame:pickerFrame];
     self.datePickerView.minuteInterval = 5;
     [self.datePickerView addTarget:self action:@selector(datePickerChanged) forControlEvents:UIControlEventValueChanged];
-
-// TODO: Prime the location value.
-//    // Automatically update the location for a new post
-//    BOOL isNewPost = (self.apost.remoteStatus == AbstractPostRemoteStatusLocal) && !self.post.geolocation;
-//    BOOL postAllowsGeotag = self.post && self.post.blog.geolocationEnabled;
-//	if (isNewPost && postAllowsGeotag && [CLLocationManager locationServicesEnabled]) {
-//        self.isUpdatingLocation = YES;
-//        [self.locationManager startUpdatingLocation];
-//	}
 
     UITapGestureRecognizer *gestureRecognizer = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(dismissTagsKeyboardIfAppropriate:)];
     gestureRecognizer.cancelsTouchesInView = NO;
@@ -273,13 +264,10 @@ static CGFloat GeoCellHeight = 160.0f;
         return 1;
         
     } else if (sec == PostSettingsSectionFeaturedImage) {
-        return 1; // Add
+        return 1;
         
     } else if (sec == PostSettingsSectionGeolocation) {
-        if (self.post.geolocation) {
-			return 3; // Add/Update | Map | Remove
-		}
-        return 1; // Add
+        return 1;
         
     }
     return 0;
@@ -318,8 +306,7 @@ static CGFloat GeoCellHeight = 160.0f;
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
-    // TODO: Check for geolocation or featured image and return the desired height
-    if (indexPath.section == PostSettingsSectionGeolocation && indexPath.row == 1) {
+    if (indexPath.section == PostSettingsSectionGeolocation && [self post].geolocation) {
         return GeoCellHeight;
     }
     
@@ -542,29 +529,22 @@ static CGFloat GeoCellHeight = 160.0f;
 
 - (UITableViewCell *)configureGeolocationCellForIndexPath:(NSIndexPath *)indexPath {
     WPTableViewCell *cell;
-    if (indexPath.row == 0) {
+    if ([self post].geolocation == nil) {
         cell = [self getWPActivityTableViewCell];
-        if (self.post.geolocation) {
-            // Edit the location.
-            cell.textLabel.text = NSLocalizedString(@"Edit Location", @"Geolocation feature to edit location.");
-        } else {
-            // Add a location.
-            cell.textLabel.text = NSLocalizedString(@"Set Location", @"Geolocation feature to set the location.");
-        }
+        cell.textLabel.text = NSLocalizedString(@"Set Location", @"Geolocation feature to set the location.");
         cell.tag = PostSettingsRowGeolocationAdd;
-
-    } else if (indexPath.row == 1) {
-        // TODO: We should be able to swipe to delete a set location
+        
+    } else {
         static NSString *wpPostSettingsGeoCellIdentifier = @"wpPostSettingsGeoCellIdentifier";
         PostGeolocationCell *geoCell = [self.tableView dequeueReusableCellWithIdentifier:wpPostSettingsGeoCellIdentifier];
         if (!geoCell) {
             geoCell = [[PostGeolocationCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:wpPostSettingsGeoCellIdentifier];
         }
         //TODO: set geocell's coordinate and address.
+        [geoCell setCoordinate:self.post.geolocation andAddress:[LocationService sharedService].lastGeocodedAddress];
         cell = geoCell;
         cell.tag = PostSettingsRowGeolocationMap;
     }
-    
     return cell;
 }
 
