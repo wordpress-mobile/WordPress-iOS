@@ -867,8 +867,7 @@ static NSString *const CameraPlusImagesNotification = @"CameraPlusImagesNotifica
 		self.isWPcomAuthenticated = NO;
 	}
 }
-
-
+q
 #pragma mark - Keychain
 
 + (void)wipeAllKeychainItems

@@ -35,7 +35,7 @@ static NSString *const AccessedAddressBookPreference = @"AddressBookAccessGrante
 - (void)viewDidLoad {
     [super viewDidLoad];
     
-    [self loadURL:kMobileReaderFFURL];
+    [self loadURL:WPMobileReaderFFURL];
     
     // register for a notification
     NSNotificationCenter *nc = [NSNotificationCenter defaultCenter];
