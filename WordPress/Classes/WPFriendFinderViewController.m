@@ -127,10 +127,19 @@ static NSString *const AccessedAddressBookPreference = @"AddressBookAccessGrante
                     
                     // pipe this addresses into the webview
                     dispatch_async(dispatch_get_main_queue(), ^{
-                        NSData *jsonData = [NSJSONSerialization dataWithJSONObject:addresses options:0 error:nil];
-                        NSString *json = [[NSString alloc] initWithData:jsonData encoding:NSUTF8StringEncoding];
-                        [self.webView stringByEvaluatingJavaScriptFromString:[NSString stringWithFormat:@"FriendFinder.findByEmail(%@)", json]];
-                        [self toggleSearchStatus:kSearchStatusSearched forSource:@"address-book"];
+                        if (count == 0) {
+                            UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"No Contacts", @"Title of an alert warning the user that the address book does not contain any contacts.")
+                                                                                message:NSLocalizedString(@"No contacts were found in your address book.", @"")
+                                                                               delegate:self
+                                                                      cancelButtonTitle:NSLocalizedString(@"OK",@"")
+                                                                      otherButtonTitles:nil];
+                            [alertView show];
+                            [self.webView stringByEvaluatingJavaScriptFromString:@"FriendFinder.findByEmail()"];
+                        } else {
+                            NSData *jsonData = [NSJSONSerialization dataWithJSONObject:addresses options:0 error:nil];
+                            NSString *json = [[NSString alloc] initWithData:jsonData encoding:NSUTF8StringEncoding];
+                            [self.webView stringByEvaluatingJavaScriptFromString:[NSString stringWithFormat:@"FriendFinder.findByEmail(%@)", json]];
+                        }
                     });
                 } else {
                     dispatch_async(dispatch_get_main_queue(), ^{
@@ -168,7 +177,7 @@ static NSString *const AccessedAddressBookPreference = @"AddressBookAccessGrante
                                                           cancelButtonTitle:NSLocalizedString(@"OK",@"")
                                                           otherButtonTitles:nil];
                 dispatch_async(dispatch_get_main_queue(), ^{
-                    [self toggleSearchStatus:kSearchStatusError forSource:@"twitter"];
+                    [self.webView stringByEvaluatingJavaScriptFromString:@"FriendFinder.findByTwitterID()"];
                     [alertView show];
                 });
             } else {
@@ -188,8 +197,14 @@ static NSString *const AccessedAddressBookPreference = @"AddressBookAccessGrante
                 }];
             }
         } else {
+            UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"No Twitter Access", @"Title of an alert warning the user that the WordPress app is not authorized to access her Twitter accounts.")
+                                                                message:NSLocalizedString(@"In order to use Twitter functionality, please grant the WordPress app access to your Twitter account in the Settings app.", @"")
+                                                               delegate:self
+                                                      cancelButtonTitle:NSLocalizedString(@"OK",@"")
+                                                      otherButtonTitles:nil];
             dispatch_async(dispatch_get_main_queue(), ^{
                 [self.webView stringByEvaluatingJavaScriptFromString:@"FriendFinder.findByTwitterID()"];
+                [alertView show];
             });
         }
     }];
@@ -208,7 +223,7 @@ static NSString *const AccessedAddressBookPreference = @"AddressBookAccessGrante
 
     NSDictionary *options = @{
                               ACFacebookAppIdKey: FacebookAppID,
-                              ACFacebookPermissionsKey: @[]
+                              ACFacebookPermissionsKey: @[@"email"]
                               };
     [store requestAccessToAccountsWithType:[store accountTypeWithAccountTypeIdentifier:ACAccountTypeIdentifierFacebook] options:options completion:^(BOOL granted, NSError *error) {
         if (granted) {
@@ -234,24 +249,26 @@ static NSString *const AccessedAddressBookPreference = @"AddressBookAccessGrante
                 }];
             }];
         } else {
+            UIAlertView *alertView;
+            if (error.code == ACErrorAccountNotFound) {
+                alertView = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"No Facebook Account", @"Title of an alert warning the user that no Facebook account was registered on the device.")
+                                                                    message:NSLocalizedString(@"In order to use Facebook functionality, please add your Facebook account in the Settings app.", @"")
+                                                                   delegate:self
+                                                          cancelButtonTitle:NSLocalizedString(@"OK",@"")
+                                                          otherButtonTitles:nil];
+            } else {
+                alertView = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"No Facebook Access", @"Title of an alert warning the user that the WordPress app is not authorized to access her Facebook accounts.")
+                                                                    message:NSLocalizedString(@"In order to use Facebook functionality, please grant the WordPress app access to your Facebook account in the Settings app.", @"")
+                                                                   delegate:self
+                                                          cancelButtonTitle:NSLocalizedString(@"OK",@"")
+                                                          otherButtonTitles:nil];
+            }
             dispatch_async(dispatch_get_main_queue(), ^{
+                [alertView show];
                 [self.webView stringByEvaluatingJavaScriptFromString:@"FriendFinder.findByFacebookID()"];
             });
         }
     }];
-}
-
-- (void)toggleSearchStatus:(NSUInteger)status forSource:(NSString *)source {
-    // Manipulate spinner on webview with JavaScript call.
-    NSString *javaScriptToggle;
-    if (status == kSearchStatusSearching) {
-        javaScriptToggle = @".removeClass('searched').removeClass('error').addClass('searching')";
-    } else if (status == kSearchStatusError) {
-        javaScriptToggle = @".removeClass('searching').removeClass('searched').addClass('error')";
-    } else if (status == kSearchStatusSearched) {
-        javaScriptToggle = @".removeClass('error').removeClass('searching').addClass('searched')";
-    }
-    [self.webView stringByEvaluatingJavaScriptFromString:[NSString stringWithFormat:@"jQuery('#%@')%@", source, javaScriptToggle]];
 }
 
 - (UIAlertView *)alertWithTitle:(NSString *)title message:(NSString *)message cancelButtonTitle:(NSString *)cancelButtonTitle confirmButtonTitle:(NSString *)confirmButtonTitle dismissBlock:(DismissBlock)dismiss {
