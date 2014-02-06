@@ -248,7 +248,7 @@ static NSString *const GravatarBaseUrl = @"http://gravatar.com";
  */
 - (UIImage *)resizeImage:(UIImage *)image toSize:(CGSize)size
 {
-    return [image imageCroppedToFitSize:size ignoreAlpha:YES];
+    return [image imageCroppedToFitSize:size];
 }
 
 - (NSURL *)URLWithHash:(NSString *)hash type:(WPAvatarSourceType)type
