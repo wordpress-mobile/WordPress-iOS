@@ -15,6 +15,7 @@
 #import "WPTableViewCell.h"
 #import "BlogSelectorViewController.h"
 #import "WPBlogSelectorButton.h"
+#import "LocationService.h"
 
 NSString *const EditPostViewControllerLastUsedBlogURL = @"EditPostViewControllerLastUsedBlogURL";
 CGFloat const EPVCTextfieldHeight = 44.0f;
@@ -124,6 +125,8 @@ CGFloat const EPVCTextViewTopPadding = 7.0f;
     } else {
         [WPMobileStats trackEventForWPCom:[self formattedStatEventString:StatsEventPostDetailOpenedEditor]];
     }
+    
+    [self geotagNewPost];
 }
 
 - (void)viewWillAppear:(BOOL)animated {
@@ -609,7 +612,8 @@ CGFloat const EPVCTextViewTopPadding = 7.0f;
 
 - (void)showSettings {
     [WPMobileStats flagProperty:StatsPropertyPostDetailClickedSettings forEvent:[self formattedStatEventString:StatsEventPostDetailClosedEditor]];
-    PostSettingsViewController *vc = [[PostSettingsViewController alloc] initWithPost:self.post];
+    Post *post = (Post *)self.post;
+    PostSettingsViewController *vc = [[PostSettingsViewController alloc] initWithPost:post];
     vc.statsPrefix = self.statsPrefix;
     self.navigationItem.title = NSLocalizedString(@"Back", nil);
     [self.navigationController pushViewController:vc animated:YES];
@@ -681,6 +685,22 @@ CGFloat const EPVCTextViewTopPadding = 7.0f;
 }
 
 #pragma mark - Instance Methods
+
+- (void)geotagNewPost {
+    if (EditPostViewControllerModeNewPost != self.editMode) {
+        return;
+    }
+    
+    if (self.post.blog.geolocationEnabled && ![LocationService sharedService].locationServicesDisabled) {
+        [[LocationService sharedService] getCurrentLocationAndAddress:^(CLLocation *location, NSString *address, NSError *error) {
+            if (location) {
+                Coordinate *coord = [[Coordinate alloc] initWithCoordinate:location.coordinate];
+                Post *post = (Post *)self.post;
+                post.geolocation = coord;
+            }
+        }];
+    }
+}
 
 - (void)setEditorOpenedBy:(NSString *)editorOpenedBy {
     if ([_editorOpenedBy isEqualToString:editorOpenedBy]) {
