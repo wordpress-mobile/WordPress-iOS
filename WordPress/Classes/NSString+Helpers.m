@@ -9,7 +9,7 @@
 #import "NSString+Helpers.h"
 #import <CommonCrypto/CommonDigest.h>
 
-static NSString *const Ellipsis =  @"…";
+static NSString *const Ellipsis =  @"\u2026";
 
 @implementation NSString (Helpers)
 
