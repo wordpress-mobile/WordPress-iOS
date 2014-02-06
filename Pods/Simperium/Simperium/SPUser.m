@@ -11,11 +11,6 @@
 
 
 
-@interface SPUser ()
-@property (copy, nonatomic, readwrite) NSString *email;
-@end
-
-
 @implementation SPUser
 
 - (id)initWithEmail:(NSString *)username token:(NSString *)token {

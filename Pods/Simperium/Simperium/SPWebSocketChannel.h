@@ -33,6 +33,7 @@
 - (void)sendBucketStatus:(SPBucket *)bucket;
 - (void)removeAllBucketObjects:(SPBucket *)bucket;
 - (void)shareObject:(id<SPDiffable>)object withEmail:(NSString *)email;
+- (void)handleAuthResponse:(NSString *)responseString bucket:(SPBucket *)bucket;
 - (void)handleRemoteChanges:(NSArray *)changes bucket:(SPBucket *)bucket;
 - (void)handleIndexResponse:(NSString *)responseString bucket:(SPBucket *)bucket;
 - (void)handleVersionResponse:(NSString *)responseString bucket:(SPBucket *)bucket;

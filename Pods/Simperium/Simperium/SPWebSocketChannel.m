@@ -26,26 +26,24 @@
 #import "DDLogDebug.h"
 #import "SRWebSocket.h"
 
-#define INDEX_PAGE_SIZE 500
-#define INDEX_BATCH_SIZE 10
+static int const SPWebsocketIndexPageSize			= 500;
+static int const SPWebsocketIndexBatchSize			= 10;
+static int const SPWebsocketErrorAuthFailed			= 401;
+static NSString* const SPWebsocketErrorMark			= @"{";
+static NSString* const SPWebsocketErrorKey			= @"code";
 
-#define CHAN_NUMBER_INDEX 0
-#define CHAN_COMMAND_INDEX 1
-#define CHAN_DATA_INDEX 2
-
-
-static BOOL useNetworkActivityIndicator = 0;
-static int ddLogLevel = LOG_LEVEL_INFO;
+static BOOL useNetworkActivityIndicator				= 0;
+static int ddLogLevel								= LOG_LEVEL_INFO;
 
 @interface SPWebSocketChannel()
-@property (nonatomic, weak)   Simperium *simperium;
-@property (nonatomic, strong) NSMutableArray *responseBatch;
-@property (nonatomic, strong) NSMutableDictionary *versionsWithErrors;
-@property (nonatomic, copy)   NSString *clientID;
-@property (nonatomic, assign) NSInteger retryDelay;
-@property (nonatomic, assign) NSInteger objectVersionsPending;
-@property (nonatomic, assign) BOOL indexing;
-@property (nonatomic, assign) BOOL retrievingObjectHistory;
+@property (nonatomic, weak)   Simperium				*simperium;
+@property (nonatomic, strong) NSMutableArray		*responseBatch;
+@property (nonatomic, strong) NSMutableDictionary	*versionsWithErrors;
+@property (nonatomic, copy)   NSString				*clientID;
+@property (nonatomic, assign) NSInteger				retryDelay;
+@property (nonatomic, assign) NSInteger				objectVersionsPending;
+@property (nonatomic, assign) BOOL					indexing;
+@property (nonatomic, assign) BOOL					retrievingObjectHistory;
 @end
 
 @implementation SPWebSocketChannel
@@ -217,6 +215,34 @@ static int ddLogLevel = LOG_LEVEL_INFO;
     self.retryDelay = 2;
 }
 
+- (void)handleAuthResponse:(NSString *)responseString bucket:(SPBucket *)bucket {
+		
+	// Does the response have a payload?
+	if ([responseString rangeOfString:SPWebsocketErrorMark].location == 0) {
+		DDLogWarn(@"Simperium received unexpected auth response: %@", responseString);
+		
+		NSError *error = nil;
+		NSDictionary *authPayload = [responseString sp_objectFromJSONStringWithError:&error];
+		
+		if ( [authPayload isKindOfClass:[NSDictionary class]] ) {
+			if ( [authPayload[SPWebsocketErrorKey] isEqualToNumber:@(SPWebsocketErrorAuthFailed)] ) {
+				[[NSNotificationCenter defaultCenter] postNotificationName:SPAuthenticationDidFail object:self];
+			}
+		}
+		
+	// Everything looks good!
+	} else {
+		self.started = YES;
+		self.simperium.user.email = responseString;
+		
+		if (bucket.lastChangeSignature == nil) {
+			[self requestLatestVersionsForBucket:bucket];
+		} else {
+			[self startProcessingChangesForBucket:bucket];
+		}
+	}
+}
+
 - (void)handleRemoteChanges:(NSArray *)changes bucket:(SPBucket *)bucket {
 
 	// Signal that the bucket was sync'ed. We need this, in case the sync was manually triggered
@@ -261,7 +287,7 @@ static int ddLogLevel = LOG_LEVEL_INFO;
 	// Get an index of all objects and fetch their latest versions
     self.indexing = YES;
     
-    NSString *message = [NSString stringWithFormat:@"%d:i::%@::%d", self.number, mark ? mark : @"", INDEX_PAGE_SIZE];
+    NSString *message = [NSString stringWithFormat:@"%d:i::%@::%d", self.number, mark ? mark : @"", SPWebsocketIndexPageSize];
     DDLogVerbose(@"Simperium requesting index (%@): %@", self.name, message);
     [self.webSocketManager send:message];
 }
@@ -293,7 +319,7 @@ static int ddLogLevel = LOG_LEVEL_INFO;
         [bucket.delegate bucketWillStartIndexing:bucket];
 	}
 
-    self.responseBatch = [NSMutableArray arrayWithCapacity:INDEX_BATCH_SIZE];
+    self.responseBatch = [NSMutableArray arrayWithCapacity:SPWebsocketIndexBatchSize];
 
     // Get all the latest versions
     DDLogInfo(@"Simperium processing %lu objects from index (%@)", (unsigned long)[currentIndexArray count], self.name);
@@ -459,7 +485,7 @@ static int ddLogLevel = LOG_LEVEL_INFO;
 
         // Batch responses for more efficient processing
         // (process the last handful individually though)
-        if ([self.responseBatch count] < INDEX_BATCH_SIZE || [self.responseBatch count] % INDEX_BATCH_SIZE == 0) {
+        if (self.responseBatch.count < SPWebsocketIndexBatchSize || self.responseBatch.count % SPWebsocketIndexBatchSize == 0) {
             [self processBatchForBucket:bucket];
 		}
     }

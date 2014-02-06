@@ -11,7 +11,7 @@
 
 @interface SPUser : NSObject
 
-@property (copy, nonatomic, readonly)  NSString *email;
+@property (copy, nonatomic, readwrite) NSString *email;
 @property (copy, nonatomic, readwrite) NSString *authToken;
 
 - (id)initWithEmail:(NSString *)username token:(NSString *)token;

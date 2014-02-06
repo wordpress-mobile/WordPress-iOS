@@ -311,23 +311,7 @@ static int ddLogLevel = LOG_LEVEL_INFO;
     NSString *data		= [commandStr substringFromIndex:range.location+range.length];
     
     if ([command isEqualToString:COM_AUTH]) {
-        if ([data isEqualToString:[self.simperium.user.email lowercaseString]]) {
-            channel.started = YES;
-            BOOL bFirstStart = bucket.lastChangeSignature == nil;
-            if (bFirstStart) {
-                [channel requestLatestVersionsForBucket:bucket];
-            } else {
-                [channel startProcessingChangesForBucket:bucket];
-			}
-        } else {
-            DDLogWarn(@"Simperium received unexpected auth response: %@", data);
-            NSDictionary *authPayload = [data sp_objectFromJSONString];
-            NSNumber *code = authPayload[@"code"];
-            if ([code isEqualToNumber:@401]) {
-                // Let Simperium proper deal with it
-                [[NSNotificationCenter defaultCenter] postNotificationName:SPAuthenticationDidFail object:self];
-            }
-        }
+		[channel handleAuthResponse:data bucket:bucket];
     } else if ([command isEqualToString:COM_INDEX]) {
         [channel handleIndexResponse:data bucket:bucket];
     } else if ([command isEqualToString:COM_CHANGE_VERSION]) {

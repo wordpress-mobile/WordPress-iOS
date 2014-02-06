@@ -16,32 +16,43 @@ static NSJSONWritingOptions const SPJSONWritingOptions = 0;
 
 @implementation NSJSONSerialization (SPJSONKitAdapterCategories)
 
-+ (NSString *)sp_JSONStringFromObject:(id)object
++ (NSString *)sp_JSONStringFromObject:(id)object error:(NSError **)error
 {
-    if (!object) return nil;
+    if (!object) {
+		return nil;
+	}
 
-    NSError __autoreleasing *error = nil;
-    NSData *data = [NSJSONSerialization dataWithJSONObject:object
-                                                   options:SPJSONWritingOptions
-                                                     error:&error];
+	NSError *theError = nil;
+    NSData *data = [NSJSONSerialization dataWithJSONObject:object options:SPJSONWritingOptions error:&theError];
 
-    if (error) {
-        NSLog(@"JSON Serialization of object %@ failed due to error %@",object, error);
+    if (theError) {
+		if(error) {
+			*error = theError;
+		} else {
+			NSLog(@"JSON Serialization of object %@ failed due to error %@",object, theError);
+		}
+		
         return nil;
     }
 
     return [[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding];
 }
 
-+ (id)sp_JSONObjectWithData:(NSData *)data
++ (id)sp_JSONObjectWithData:(NSData *)data error:(NSError **)error
 {
-    if (!data) return nil;
+    if (!data) {
+		return nil;
+	}
 
-    NSError __autoreleasing *error = nil;
-
-    id value = [NSJSONSerialization JSONObjectWithData:data options:NSJSONReadingMutableContainers | NSJSONReadingMutableLeaves error:&error];
-    if (error) {
-        NSLog(@"JSON Deserialization of data %@ failed due to error %@",data, error);
+	NSError *theError = nil;
+    id value = [NSJSONSerialization JSONObjectWithData:data options:NSJSONReadingMutableContainers | NSJSONReadingMutableLeaves error:&theError];
+    if (theError) {
+		if(error) {
+			*error = theError;
+		} else {
+			NSLog(@"JSON Deserialization of data %@ failed due to error %@", data, theError);
+		}
+		
         return nil;
     }
     return value;
@@ -54,7 +65,12 @@ static NSJSONWritingOptions const SPJSONWritingOptions = 0;
 
 - (NSString *)sp_JSONString
 {
-    return [NSJSONSerialization sp_JSONStringFromObject:self];
+    return [NSJSONSerialization sp_JSONStringFromObject:self error:nil];
+}
+
+- (NSString *)sp_JSONStringWithError:(NSError **)error
+{
+    return [NSJSONSerialization sp_JSONStringFromObject:self error:error];
 }
 
 @end
@@ -63,7 +79,12 @@ static NSJSONWritingOptions const SPJSONWritingOptions = 0;
 
 - (NSString *)sp_JSONString
 {
-    return [NSJSONSerialization sp_JSONStringFromObject:self];
+    return [NSJSONSerialization sp_JSONStringFromObject:self error:nil];
+}
+
+- (NSString *)sp_JSONStringWithError:(NSError **)error
+{
+    return [NSJSONSerialization sp_JSONStringFromObject:self error:error];
 }
 
 @end
@@ -75,7 +96,13 @@ static NSJSONWritingOptions const SPJSONWritingOptions = 0;
 - (id)sp_objectFromJSONString
 {
     NSData *data = [self dataUsingEncoding:NSUTF8StringEncoding];
-    return [NSJSONSerialization sp_JSONObjectWithData:data];
+	return [NSJSONSerialization sp_JSONObjectWithData:data error:nil];
+}
+
+- (id)sp_objectFromJSONStringWithError:(NSError**)error
+{
+    NSData *data = [self dataUsingEncoding:NSUTF8StringEncoding];
+	return [NSJSONSerialization sp_JSONObjectWithData:data error:error];
 }
 
 @end
@@ -84,7 +111,12 @@ static NSJSONWritingOptions const SPJSONWritingOptions = 0;
 
 - (id)sp_objectFromJSONString
 {
-    return [NSJSONSerialization sp_JSONObjectWithData:self];
+	return [NSJSONSerialization sp_JSONObjectWithData:self error:nil];
+}
+
+- (id)sp_objectFromJSONStringWithError:(NSError **)error
+{
+	return [NSJSONSerialization sp_JSONObjectWithData:self error:error];
 }
 
 @end

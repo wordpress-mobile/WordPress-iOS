@@ -518,9 +518,10 @@ static int ddLogLevel = LOG_LEVEL_INFO;
 #pragma mark Manual Authentication
 #pragma mark ====================================================================================
 
-- (void)authenticateWithEmail:(NSString *)email token:(NSString *)token {
+- (void)authenticateWithToken:(NSString *)token {
 
-	self.user = [[SPUser alloc] initWithEmail:email token:token];
+	// User's email will be loaded during auth mechanism, if successful
+	self.user = [[SPUser alloc] initWithEmail:@"" token:token];
     [self startNetworkManagers];
 }
 
