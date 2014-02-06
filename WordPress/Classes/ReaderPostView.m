@@ -14,8 +14,7 @@
 #import "NSAttributedString+HTML.h"
 #import "NSString+Helpers.h" 
 
-static NSInteger const MaxTitleLengtiPhone = 80;
-static NSInteger const MaxTitleLengthiPad = 130;
+static NSInteger const MaxNumberOfLinesForTitleForSummary = 3;
 
 @interface ReaderPostView()
 
@@ -96,25 +95,50 @@ static NSInteger const MaxTitleLengthiPad = 130;
     if (postTitle == nil) {
         postTitle = @"";
     }
-    else{
-        if(!showFullContent)
+    
+    NSMutableAttributedString *titleString = [[NSMutableAttributedString alloc] initWithString:postTitle
+                                                                                    attributes:attributes];
+    if(!showFullContent) //Ellipsizing long titles
+    {
+        if([postTitle length] > 0)
         {
-            if(IS_IPAD){
-                postTitle = [postTitle stringByEllipsizingWithMaxLength:MaxTitleLengthiPad
-                                                          preserveWords:YES];
-            }
-            else
+            
+            CGFloat currentHeightOfTitle = [titleString
+                                            boundingRectWithSize:CGSizeMake(width, CGFLOAT_MAX)
+                                            options:NSStringDrawingUsesLineFragmentOrigin | NSStringDrawingUsesFontLeading
+                                            context:nil].size.height;
+            
+            
+            CGFloat heightOfSingleLine = [[titleString attributedSubstringFromRange:NSMakeRange(0,1)]
+                                          boundingRectWithSize:CGSizeMake(width, CGFLOAT_MAX)
+                                          options:NSStringDrawingUsesLineFragmentOrigin | NSStringDrawingUsesFontLeading
+                                          context:nil].size.height;
+            
+            NSInteger numberOfLines = currentHeightOfTitle / heightOfSingleLine;
+            
+            if(numberOfLines > MaxNumberOfLinesForTitleForSummary)
             {
-                postTitle = [postTitle stringByEllipsizingWithMaxLength:MaxTitleLengtiPhone
-                                                          preserveWords:YES];
+                NSInteger newLength = [ReaderPostView calculateTitleLengthWithSingleLineHeight:heightOfSingleLine
+                                                                             currentLineHeight:currentHeightOfTitle
+                                                                                  currentTitle:titleString];
+                
+                
+                titleString = [[NSMutableAttributedString alloc]initWithString:[postTitle stringByEllipsizingWithMaxLength:newLength preserveWords:YES]
+                                                                    attributes:attributes];
+                
             }
         }
     }
     
-    NSMutableAttributedString *titleString = [[NSMutableAttributedString alloc] initWithString:postTitle
-                                                                                    attributes:attributes];
-    
     return titleString;
+}
+
++ (NSInteger)calculateTitleLengthWithSingleLineHeight:(CGFloat)singleLineHeight currentLineHeight:(CGFloat)currentLineHeight currentTitle:(NSAttributedString *)postTitle
+{
+    CGFloat allowedHeight = singleLineHeight * MaxNumberOfLinesForTitleForSummary;
+    CGFloat overageRatio = allowedHeight / currentLineHeight;
+    return [postTitle length] * overageRatio;
+    
 }
 
 + (NSAttributedString *)summaryAttributedStringForPost:(ReaderPost *)post {
