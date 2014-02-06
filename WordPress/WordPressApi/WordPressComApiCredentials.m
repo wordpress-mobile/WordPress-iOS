@@ -12,6 +12,7 @@
 #define WPCOM_API_CLIENT_SECRET @""
 
 @implementation WordPressComApiCredentials
+
 + (NSString *)client {
     return WPCOM_API_CLIENT_ID;
 }
@@ -43,6 +44,14 @@
 + (NSString *)quantcastAPIKey
 {
     return @"";
+}
+
++ (NSString *)simperiumAppId {
+	return @"";
+}
+
++ (NSString *)simperiumAPIKey {
+	return @"";
 }
 
 @end

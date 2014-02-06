@@ -101,7 +101,18 @@ def print_quantcast(quantcast)
 EOF
 end
 
-def print_class(client, secret, pocket, mixpanel_dev, mixpanel_prod, crashlytics, hockeyapp, googleplus, quantcast)
+def print_simperium(simperium_api_key, simperium_app_id)
+print <<-EOF
++ (NSString *)simperiumAppId {
+	return @"#{simperium_app_id}";
+}
++ (NSString *)simperiumAPIKey {
+	return @"#{simperium_api_key}";
+}
+EOF
+end
+
+def print_class(client, secret, pocket, mixpanel_dev, mixpanel_prod, crashlytics, hockeyapp, googleplus, quantcast, simperium_api_key, simperium_app_id)
   print <<-EOF
 #import "WordPressComApiCredentials.h"
 @implementation WordPressComApiCredentials
@@ -114,6 +125,7 @@ EOF
   print_hockeyapp(hockeyapp)
   print_googleplus(googleplus)
   print_quantcast(quantcast)
+  print_simperium(simperium_api_key, simperium_app_id)
   printf("@end\n")
 end
 
@@ -138,6 +150,8 @@ crashlytics = nil
 hockeyapp = nil
 googleplus = nil
 quantcast = nil
+simperium_api_key = nil
+simperium_app_id = nil
 File.open(path) do |f|
   f.each_line do |l|
     (k,v) = l.split("=")
@@ -159,6 +173,10 @@ File.open(path) do |f|
       googleplus = v.chomp
     elsif k == "QUANTCAST_API_KEY"
       quantcast = v.chomp
+	elsif k == "SIMPERIUM_API_KEY"
+      simperium_api_key = v.chomp
+	elsif k == "SIMPERIUM_APP_ID"
+      simperium_app_id = v.chomp
     else
       $stderr.puts "warning: Unknown key #{k}"
     end
@@ -175,4 +193,4 @@ if secret.nil?
   exit 3
 end
 
-print_class(client, secret, pocket, mixpanel_dev, mixpanel_prod, crashlytics, hockeyapp, googleplus, quantcast)
+print_class(client, secret, pocket, mixpanel_dev, mixpanel_prod, crashlytics, hockeyapp, googleplus, quantcast, simperium_api_key, simperium_app_id)
