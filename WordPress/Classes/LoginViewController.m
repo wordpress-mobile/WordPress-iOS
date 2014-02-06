@@ -776,6 +776,7 @@ CGFloat const GeneralWalkthroughStatusBarOffset = 20.0;
         [self setAuthenticating:NO withStatusMessage:nil];
         [self displayRemoteError:error];
     }];
+
     [Note fetchNewNotificationsWithSuccess:nil failure:nil];
 }
 
