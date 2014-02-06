@@ -956,13 +956,19 @@ NSString * const RPVCDisplayedNativeFriendFinder = @"DisplayedNativeFriendFinder
 
 - (void)fetchBlogsAndPrimaryBlog {
 	NSURL *xmlrpc;
-    NSString *username, *password;
+    NSString *username, *password, *authToken;
     WPAccount *account = [WPAccount defaultWordPressComAccount];
+    if (!account) {
+        return;
+    }
+	
 	xmlrpc = [NSURL URLWithString:@"https://wordpress.com/xmlrpc.php"];
 	username = account.username;
 	password = account.password;
-	
+    authToken = account.authToken;
+    
     WPXMLRPCClient *api = [WPXMLRPCClient clientWithXMLRPCEndpoint:xmlrpc];
+    [api setAuthorizationHeaderWithToken:[[[WPAccount defaultWordPressComAccount] restApi] authToken]];
     [api callMethod:@"wp.getUsersBlogs"
          parameters:[NSArray arrayWithObjects:username, password, nil]
             success:^(AFHTTPRequestOperation *operation, id responseObject) {
