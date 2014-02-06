@@ -18,8 +18,10 @@ PODS:
   - DTFoundation/UIKit (1.6.1):
     - DTFoundation/Core
   - EmailChecker (0.1)
+  - Google-Diff-Match-Patch (0.0.1)
   - google-plus-ios-sdk (1.3.0)
   - HockeySDK (3.5.0)
+  - JRSwizzle (1.0)
   - MGImageUtilities (0.0.1)
   - Mixpanel (2.1.0)
   - NSLogger (1.1)
@@ -33,6 +35,12 @@ PODS:
     - Quantcast-Measure/Core
   - Quantcast-Measure/Core (1.2.13)
   - Reachability (3.0.0)
+  - Simperium (0.7.0):
+    - CocoaLumberjack
+    - Google-Diff-Match-Patch
+    - JRSwizzle
+    - SocketRocket
+  - SocketRocket (0.3.1-beta2)
   - SVProgressHUD (0.9)
   - UIDeviceIdentifier (0.1)
   - WordPressApi (0.0.1):
@@ -57,6 +65,7 @@ DEPENDENCIES:
   - OHHTTPStubs (= 1.1.1)
   - Quantcast-Measure (~> 1.2.10)
   - Reachability (= 3.0.0)
+  - Simperium (from `https://github.com/Simperium/simperium-ios.git`)
   - SVProgressHUD (~> 0.9)
   - UIDeviceIdentifier (~> 0.1)
   - WordPressApi (from `https://github.com/koke/WordPressApi.git`)
@@ -71,6 +80,8 @@ EXTERNAL SOURCES:
     :podspec: https://raw.github.com/koke/NSObject-SafeExpectations/master/NSObject-SafeExpectations.podspec
   NSURL+IDN:
     :podspec: https://raw.github.com/koke/NSURL-IDN/master/Podfile
+  Simperium:
+    :git: https://github.com/Simperium/simperium-ios.git
   WordPressApi:
     :git: https://github.com/koke/WordPressApi.git
 
@@ -81,8 +92,10 @@ SPEC CHECKSUMS:
   DTCoreText: e48c1526945272133b8c935c40da3f3e79836f1b
   DTFoundation: 23d39b258d481221167cd4bf3df86ff3f22b1f55
   EmailChecker: e909e6d113fac7ad5e3c304fabce30fc4a79c80e
+  Google-Diff-Match-Patch: 63f4950ecbd0bf3f7ccae48987e958fc825041d3
   google-plus-ios-sdk: 38378c4094a72a4fcdd5254c03fdd1813b345fb9
   HockeySDK: 685e6ca0b78668ef8b595fba17fe087ea6074b05
+  JRSwizzle: 6242ff38485d870fc2636899048ee1ab883ae587
   MGImageUtilities: ab3580f2161b10f8a41331baea87aaafbd688950
   Mixpanel: f007967b585bf66c4e56325ce3af9bbcd52eccf0
   NSLogger: 4567fef08d0db18a89cce91b2053823fc0950738
@@ -92,6 +105,8 @@ SPEC CHECKSUMS:
   OHHTTPStubs: cb1cef742f2fba18b192fb92ede52a69cf3a04d5
   Quantcast-Measure: ff28ef371e54b710dc051a9ef96fd49b77f098c3
   Reachability: 500bd76bf6cd8ff2c6fb715fc5f44ef6e4c024f2
+  Simperium: 0be8ff8b5f9f5d0cd8ee7e146e4b7f997a0c2b6a
+  SocketRocket: 7ac946bcce46287a791dfff3c1f8daa692821dae
   SVProgressHUD: 03d4845ec8e64591726428a08236c6a5489d45f8
   UIDeviceIdentifier: 64036321b0f77ff41b4200002f0c138431c00d86
   WordPressApi: 6c7ab5320344fbec850f0baba4b0ec2bfd03587d

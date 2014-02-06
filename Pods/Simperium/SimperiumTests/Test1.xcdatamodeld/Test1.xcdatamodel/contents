@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<model userDefinedModelVersionIdentifier="" type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="3401" systemVersion="13A603" minimumToolsVersion="Automatic" macOSVersion="Automatic" iOSVersion="Automatic">
+    <entity name="Config" representedClassName="Config" parentEntity="SPManagedObject" syncable="YES">
+        <attribute name="binaryFile" optional="YES" attributeType="String" syncable="YES">
+            <userInfo>
+                <entry key="spOverride" value="binary"/>
+            </userInfo>
+        </attribute>
+        <attribute name="captainsLog" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="cost" optional="YES" attributeType="Decimal" defaultValueString="0.0" syncable="YES"/>
+        <attribute name="date" optional="YES" attributeType="Date" syncable="YES"/>
+        <attribute name="shieldPercent" optional="YES" attributeType="Double" syncable="YES"/>
+        <attribute name="shieldsUp" optional="YES" attributeType="Boolean" syncable="YES"/>
+        <attribute name="warpSpeed" optional="YES" attributeType="Integer 32" syncable="YES"/>
+    </entity>
+    <entity name="Post" representedClassName="Post" parentEntity="SPManagedObject" syncable="YES">
+        <attribute name="title" optional="YES" attributeType="String" syncable="YES"/>
+        <relationship name="comments" optional="YES" toMany="YES" deletionRule="Cascade" destinationEntity="PostComment" inverseName="post" inverseEntity="PostComment" syncable="YES"/>
+    </entity>
+    <entity name="PostComment" representedClassName="PostComment" parentEntity="SPManagedObject" syncable="YES">
+        <attribute name="content" optional="YES" attributeType="String" syncable="YES"/>
+        <relationship name="post" optional="YES" minCount="1" maxCount="1" deletionRule="Nullify" destinationEntity="Post" inverseName="comments" inverseEntity="Post" syncable="YES"/>
+    </entity>
+    <entity name="SPManagedObject" representedClassName="SPManagedObject" isAbstract="YES" syncable="YES">
+        <attribute name="ghostData" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="simperiumKey" optional="YES" attributeType="String" syncable="YES"/>
+    </entity>
+    <elements>
+        <element name="Config" positionX="0" positionY="0" width="0" height="0"/>
+        <element name="Post" positionX="0" positionY="0" width="0" height="0"/>
+        <element name="PostComment" positionX="0" positionY="0" width="0" height="0"/>
+        <element name="SPManagedObject" positionX="0" positionY="0" width="0" height="0"/>
+    </elements>
+</model>
