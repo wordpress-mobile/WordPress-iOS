@@ -11,7 +11,7 @@
 #import "UIImageView+Gravatar.h"
 #import "WordPressComApi.h"
 #import "BlogDetailsViewController.h"
-#import "WPTableViewCell.h"
+#import "WPBlogTableViewCell.h"
 #import "ContextManager.h"
 #import "Blog.h"
 #import "WPAccount.h"
@@ -70,6 +70,8 @@ static CGFloat const blavatarImageSize = 50.f;
     }
 
     [WPStyleGuide configureColorsForView:self.view andTableView:self.tableView];
+
+    [self.tableView registerClass:[WPBlogTableViewCell class] forCellReuseIdentifier:BlogCellIdentifier];
 }
 
 - (void)viewWillAppear:(BOOL)animated {
@@ -130,10 +132,6 @@ static CGFloat const blavatarImageSize = 50.f;
 {
     
     UITableViewCell *cell = [self.tableView dequeueReusableCellWithIdentifier:BlogCellIdentifier];
-
-    if (cell == nil) {
-        cell = [[WPTableViewCell alloc] initWithStyle:UITableViewCellStyleSubtitle reuseIdentifier:BlogCellIdentifier];
-    }
 
     [WPStyleGuide configureTableViewSmallSubtitleCell:cell];
     [self configureCell:cell atIndexPath:indexPath];
