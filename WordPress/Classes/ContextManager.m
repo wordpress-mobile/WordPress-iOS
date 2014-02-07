@@ -79,6 +79,10 @@ static ContextManager *instance;
 }
 
 - (void)saveContext:(NSManagedObjectContext *)context {
+	[self saveContext:context withCompletionBlock:nil];
+}
+
+- (void)saveContext:(NSManagedObjectContext *)context withCompletionBlock:(void (^)())completionBlock {
     [context performBlock:^{
         NSError *error;
         if (![context obtainPermanentIDsForObjects:context.insertedObjects.allObjects error:&error]) {
@@ -90,6 +94,10 @@ static ContextManager *instance;
             @throw [NSException exceptionWithName:@"Unresolved Core Data save error"
                                            reason:@"Unresolved Core Data save error"
                                          userInfo:[error userInfo]];
+        }
+		
+        if (completionBlock) {
+            dispatch_async(dispatch_get_main_queue(), completionBlock);
         }
     }];
 }

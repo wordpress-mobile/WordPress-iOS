@@ -74,10 +74,19 @@
 - (void)saveDerivedContext:(NSManagedObjectContext *)context withCompletionBlock:(void (^)())completionBlock;
 
 /**
- Save one of the background/main.
+ Save a given context.
  
  Convenience for error handling.
  */
 - (void)saveContext:(NSManagedObjectContext *)context;
+
+
+/**
+ Save a given context.
+ 
+ @param a NSManagedObject context instance
+ @param a completion block that will be executed on the main queue
+ */
+- (void)saveContext:(NSManagedObjectContext *)context withCompletionBlock:(void (^)())completionBlock;
 
 @end
