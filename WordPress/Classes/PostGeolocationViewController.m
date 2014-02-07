@@ -22,6 +22,7 @@
 @property (nonatomic, strong) PostGeolocationView *geoView;
 @property (nonatomic, strong) UIBarButtonItem *deleteButton;
 @property (nonatomic, strong) UIBarButtonItem *refreshButton;
+@property (nonatomic, strong) UIBarButtonItem *activityItem;
 
 @end
 
@@ -44,11 +45,6 @@
     self.geoView = [[PostGeolocationView alloc] initWithFrame:self.view.bounds];
     self.geoView.autoresizingMask = UIViewAutoresizingFlexibleHeight | UIViewAutoresizingFlexibleWidth;
     
-    if (self.post.geolocation) {
-        self.geoView.address = [LocationService sharedService].lastGeocodedAddress;
-        self.geoView.coordinate = self.post.geolocation;
-    }
-    
     [self.view addSubview:self.geoView];
 }
 
@@ -61,6 +57,13 @@
     
     for (UIView *view in self.navigationController.toolbar.subviews) {
         [view setExclusiveTouch:YES];
+    }
+    
+    if ([[LocationService sharedService] locationServiceRunning]) {
+        // Register our own completion block for when the location/geo lookup completes.
+        [self updateLocation];
+    } else {
+        [self refreshView];
     }
 }
 
@@ -81,15 +84,10 @@
     
     self.deleteButton.tintColor = [WPStyleGuide readGrey];
     self.refreshButton.tintColor = [WPStyleGuide readGrey];
-    
-    UIBarButtonItem *leftFixedSpacer = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFixedSpace target:nil action:nil];
-    UIBarButtonItem *rightFixedSpacer = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFixedSpace target:nil action:nil];
-    UIBarButtonItem *centerFlexSpacer = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFlexibleSpace target:nil action:nil];
-    
-    leftFixedSpacer.width = -2.0f;
-    rightFixedSpacer.width = -5.0f;
-    
-    self.toolbarItems = @[leftFixedSpacer, self.deleteButton, centerFlexSpacer, self.refreshButton, rightFixedSpacer];
+
+    UIActivityIndicatorView *activityView = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleWhite];
+    [activityView startAnimating];
+    self.activityItem = [[UIBarButtonItem alloc] initWithCustomView:activityView];
 }
 
 - (void)removeGeolocation {
@@ -106,15 +104,49 @@
     }
     
     [[LocationService sharedService] getCurrentLocationAndAddress:^(CLLocation *location, NSString *address, NSError *error) {
-        
         if (location) {
             Coordinate *coord = [[Coordinate alloc] initWithCoordinate:location.coordinate];
             self.post.geolocation = coord;
-            [self.geoView setCoordinate:coord];
-            [self.geoView setAddress:address];
         }
-        
+        [self refreshView];
     }];
+
+    [self refreshView];
+}
+
+- (void)refreshView {
+    [self refreshToolbar];
+    
+    if ([[LocationService sharedService] locationServiceRunning]) {
+        self.geoView.coordinate = nil;
+        self.geoView.address = NSLocalizedString(@"Finding your location...", @"Geo-tagging posts, status message when geolocation is found.");
+        
+        // show spinner
+        
+        
+    } else if (self.post.geolocation) {
+        self.geoView.coordinate = self.post.geolocation;
+        self.geoView.address = [[LocationService sharedService] lastGeocodedAddress];
+        
+    } else {
+        self.geoView.coordinate = nil;
+        self.geoView.address = [[LocationService sharedService] lastGeocodedAddress];
+    }
+}
+
+- (void)refreshToolbar {
+    UIBarButtonItem *leftFixedSpacer = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFixedSpace target:nil action:nil];
+    UIBarButtonItem *rightFixedSpacer = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFixedSpace target:nil action:nil];
+    UIBarButtonItem *centerFlexSpacer = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFlexibleSpace target:nil action:nil];
+    
+    leftFixedSpacer.width = -2.0f;
+    rightFixedSpacer.width = -5.0f;
+    
+    if ([[LocationService sharedService] locationServiceRunning]) {
+        self.toolbarItems = @[leftFixedSpacer, self.deleteButton, centerFlexSpacer, self.activityItem, rightFixedSpacer];
+    } else {
+        self.toolbarItems = @[leftFixedSpacer, self.deleteButton, centerFlexSpacer, self.refreshButton, rightFixedSpacer];
+    }
 }
 
 @end

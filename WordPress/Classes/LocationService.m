@@ -19,6 +19,7 @@ static NSInteger const LocationHorizontalAccuracyThreshold = 50; // Meters
 @property (nonatomic, strong) CLLocationManager *locationManager;
 @property (nonatomic, strong) CLGeocoder *geocoder;
 @property (nonatomic, strong) LocationServiceCompletionBlock completionBlock;
+@property (nonatomic, strong) NSMutableArray *completionBlocks;
 @property (nonatomic, readwrite) BOOL locationServiceRunning;
 @property (nonatomic, strong, readwrite) CLLocation *lastGeocodedLocation;
 @property (nonatomic, strong, readwrite) NSString *lastGeocodedAddress;
@@ -41,8 +42,8 @@ static NSInteger const LocationHorizontalAccuracyThreshold = 50; // Meters
         self.locationManager.delegate = self;
         self.locationManager.desiredAccuracy = kCLLocationAccuracyNearestTenMeters;
         self.locationManager.distanceFilter = 0;
-        
         self.geocoder = [[CLGeocoder alloc] init];
+        self.completionBlocks = [NSMutableArray array];
     }
     
     return self;
@@ -59,13 +60,15 @@ static NSInteger const LocationHorizontalAccuracyThreshold = 50; // Meters
 }
 
 - (void)getCurrentLocationAndAddress:(LocationServiceCompletionBlock)completionBlock {
-    self.completionBlock = completionBlock;
+    if (completionBlock) {
+        [self.completionBlocks addObject:completionBlock];
+    }
     [self startService];
 }
 
 - (void)getAddressForLocation:(CLLocation *)location completion:(LocationServiceCompletionBlock)completionBlock {
     if (completionBlock) {
-        self.completionBlock = completionBlock;
+        [self.completionBlocks addObject:completionBlock];
     }
     
     // Skip the address lookup if this is not a new location
@@ -106,18 +109,21 @@ static NSInteger const LocationHorizontalAccuracyThreshold = 50; // Meters
     self.locationServiceRunning = NO;
     self.lastGeocodedAddress = address;
     self.lastGeocodedLocation = location;
-    if (self.completionBlock) {
-        self.completionBlock(location, address, error);
-        self.completionBlock = nil;
+    
+    for (NSInteger i = 0; i < [self.completionBlocks count]; i++) {
+        LocationServiceCompletionBlock block = [self.completionBlocks objectAtIndex:i];
+        block(location, address, error);
     }
+    [self.completionBlocks removeAllObjects];
 }
 
 - (void)serviceFailed:(NSError *)error {
     DDLogError(@"Error finding location: %@", error);
-    if (self.completionBlock) {
-        self.completionBlock(nil, nil, error);
-        self.completionBlock = nil;
+    for (NSInteger i = 0; i < [self.completionBlocks count]; i++) {
+        LocationServiceCompletionBlock block = [self.completionBlocks objectAtIndex:i];
+        block(nil, nil, error);
     }
+    [self.completionBlocks removeAllObjects];
 }
 
 - (void)startService {
