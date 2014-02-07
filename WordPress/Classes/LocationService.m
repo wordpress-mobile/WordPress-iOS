@@ -64,6 +64,16 @@ static NSInteger const LocationHorizontalAccuracyThreshold = 50; // Meters
 }
 
 - (void)getAddressForLocation:(CLLocation *)location completion:(LocationServiceCompletionBlock)completionBlock {
+    if (completionBlock) {
+        self.completionBlock = completionBlock;
+    }
+    
+    // Skip the address lookup if this is not a new location
+    if (self.lastGeocodedAddress && ([self.lastGeocodedLocation distanceFromLocation:location] >= LocationHorizontalAccuracyThreshold)) {
+        [self addressUpdated:self.lastGeocodedAddress forLocation:self.lastGeocodedLocation error:nil];
+        return;
+    }
+    
     self.locationServiceRunning = YES;
     self.lastGeocodedAddress = nil;
     self.lastGeocodedLocation = nil;
@@ -83,7 +93,6 @@ static NSInteger const LocationHorizontalAccuracyThreshold = 50; // Meters
                        [error localizedDescription]);
             
             address = [NSString stringWithString:NSLocalizedString(@"Location unknown", @"Used when geo-tagging posts, if the geo-tagging failed.")];
-
         }
         [self addressUpdated:address forLocation:location error:error];
     }];
@@ -104,6 +113,7 @@ static NSInteger const LocationHorizontalAccuracyThreshold = 50; // Meters
 }
 
 - (void)serviceFailed:(NSError *)error {
+    DDLogError(@"Error finding location: %@", error);
     if (self.completionBlock) {
         self.completionBlock(nil, nil, error);
         self.completionBlock = nil;
@@ -123,19 +133,7 @@ static NSInteger const LocationHorizontalAccuracyThreshold = 50; // Meters
 #pragma mark - CLLocationManager Delegate Methods
 
 - (void)locationManager:(CLLocationManager *)manager didFailWithError:(NSError *)error {
-    DDLogError(@"Error finding location: %@", error);
-    switch ([error code]) {
-//        case kCLErrorLocationUnknown :
-//            // Possibly a temporary error and we can allow the service to continue.
-//            break;
-        case kCLErrorDenied:
-            // service denied
-            break;
-        default:
-            // service failed
-            [self serviceFailed:error];
-            break;
-    }
+    [self serviceFailed:error];
 }
 
 - (void)locationManager:(CLLocationManager *)manager didUpdateLocations:(NSArray *)locations {
@@ -150,7 +148,6 @@ static NSInteger const LocationHorizontalAccuracyThreshold = 50; // Meters
         [self locationUpdated:location];
     }
 #endif
-    
 }
 
 @end
