@@ -297,6 +297,7 @@ static CGFloat GeoCellHeight = 200.0f;
 - (UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section {
     WPTableViewSectionHeaderView *header = [[WPTableViewSectionHeaderView alloc] initWithFrame:CGRectMake(0.0f, 0.0f, CGRectGetWidth(self.view.bounds), 0.0f)];
     header.title = [self titleForHeaderInSection:section];
+    header.backgroundColor = self.tableView.backgroundColor;
     return header;
 }
 
