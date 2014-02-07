@@ -9,10 +9,13 @@
 #import "PostGeolocationView.h"
 #import "PostAnnotation.h"
 
-const CGFloat LabelMargins = 20.0f;
+const CGFloat DefaultLabelMargin = 20.0f;
+const CGFloat GeoViewMinHeight = 130.0f;
 
 @interface PostGeolocationView ()
 
+@property (nonatomic, strong) MKMapView *mapView;
+@property (nonatomic, strong) UILabel *addressLabel;
 @property (nonatomic, strong) PostAnnotation *annotation;
 
 @end
@@ -23,51 +26,64 @@ const CGFloat LabelMargins = 20.0f;
     self = [super initWithFrame:frame];
     if (self) {
         [self setupSubviews];
+        self.labelMargin = DefaultLabelMargin;
     }
     return self;
 }
 
 - (void)setupSubviews {
     self.mapView = [[MKMapView alloc] initWithFrame:CGRectMake(0.0f, 0.0f, self.frame.size.width, self.frame.size.height)];
-    self.mapView.autoresizingMask = UIViewAutoresizingFlexibleHeight | UIViewAutoresizingFlexibleWidth;
+    self.mapView.autoresizingMask = UIViewAutoresizingFlexibleHeight | UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleBottomMargin;
     [self addSubview:self.mapView];
     
-    CGFloat x = LabelMargins;
+    CGFloat x = self.labelMargin;
     CGFloat w = self.frame.size.width - (2 * x);
     
-    self.addressLabel = [[UILabel alloc] initWithFrame:CGRectMake(x, 130.0f, w, 30.0)];
-    self.addressLabel.autoresizingMask = UIViewAutoresizingFlexibleWidth;
+    self.addressLabel = [[UILabel alloc] initWithFrame:CGRectMake(x, 130.0f, w, 60.0)];
+    self.addressLabel.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleTopMargin;
     self.addressLabel.font = [WPStyleGuide regularTextFont];
     self.addressLabel.textColor = [WPStyleGuide allTAllShadeGrey];
+    self.addressLabel.numberOfLines = 0;
+    self.addressLabel.lineBreakMode = NSLineBreakByWordWrapping;
     [self addSubview:self.addressLabel];
-    
-    self.coordinateLabel = [[UILabel alloc] initWithFrame:CGRectMake(x, 162.0f, w, 20.0f)];
-    self.coordinateLabel.autoresizingMask = UIViewAutoresizingFlexibleWidth;
-    self.coordinateLabel.font = [WPStyleGuide regularTextFont];
-    self.coordinateLabel.textColor = [WPStyleGuide allTAllShadeGrey];
-    [self addSubview:self.coordinateLabel];
 }
 
-- (NSString *)address {
-    return self.addressLabel.text;
+- (void)layoutSubviews {
+    [super layoutSubviews];
+    
+    CGFloat availableHeight = MAX(CGRectGetHeight(self.frame), GeoViewMinHeight);
+    CGFloat addressLabelHeight = 80.0f;
+    CGFloat mapHeight = availableHeight - addressLabelHeight;
+    
+    CGFloat width = CGRectGetWidth(self.frame);
+    CGFloat labelX = self.labelMargin;
+    CGFloat labelWidth = CGRectGetWidth(self.frame) - (2 * labelX);
+    
+    self.mapView.frame = CGRectMake(0.0, 0.0, width, mapHeight);
+    self.addressLabel.frame = CGRectMake(labelX, mapHeight, labelWidth, addressLabelHeight);
 }
 
 - (void)setAddress:(NSString *)address {
-    self.addressLabel.text = address;
+    _address = address;
+    [self updateAddressLabel];
 }
 
 - (void)setCoordinate:(Coordinate *)coordinate {
     _coordinate = coordinate;
-    
+
     [self.mapView removeAnnotation:self.annotation];
     self.annotation = [[PostAnnotation alloc] initWithCoordinate:self.coordinate.coordinate];
     [self.mapView addAnnotation:self.annotation];
     
     MKCoordinateRegion region = MKCoordinateRegionMakeWithDistance(coordinate.coordinate, 200, 100);
     [self.mapView setRegion:region animated:YES];
-    
-    CLLocationDegrees latitude = coordinate.latitude;
-    CLLocationDegrees longitude = coordinate.longitude;
+
+    [self updateAddressLabel];
+}
+
+- (void)updateAddressLabel {
+    CLLocationDegrees latitude = self.coordinate.latitude;
+    CLLocationDegrees longitude = self.coordinate.longitude;
     int latD = trunc(fabs(latitude));
     int latM = trunc((fabs(latitude) - latD) * 60);
     int lonD = trunc(fabs(longitude));
@@ -77,9 +93,19 @@ const CGFloat LabelMargins = 20.0f;
     if (latitude == 0.0) latDir = @"";
     if (longitude == 0.0) lonDir = @"";
     
-    self.coordinateLabel.text = [NSString stringWithFormat:@"%i°%i' %@, %i°%i' %@",
+    NSString *coordText = [NSString stringWithFormat:@"%i°%i' %@, %i°%i' %@",
                                  latD, latM, latDir,
                                  lonD, lonM, lonDir];
+    
+    self.addressLabel.text = [NSString stringWithFormat:@"%@\n%@", self.address, coordText];
+}
+
+- (BOOL)scrollEnabled {
+    return self.mapView.scrollEnabled;
+}
+
+- (void)setScrollEnabled:(BOOL)scrollEnabled {
+    self.mapView.scrollEnabled = scrollEnabled;
 }
 
 @end
