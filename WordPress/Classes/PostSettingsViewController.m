@@ -50,7 +50,7 @@ typedef enum {
 } PostSettingsRow;
 
 static CGFloat CellHeight = 44.0f;
-static CGFloat GeoCellHeight = 160.0f;
+static CGFloat GeoCellHeight = 200.0f;
 
 @interface PostSettingsViewController () <UIPopoverControllerDelegate, UIPickerViewDelegate, UIPickerViewDataSource, UITextFieldDelegate, UIActionSheetDelegate, WPTableImageSourceDelegate>
 

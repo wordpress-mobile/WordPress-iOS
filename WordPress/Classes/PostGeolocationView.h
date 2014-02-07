@@ -12,10 +12,9 @@
 
 @interface PostGeolocationView : UIView
 
-@property (nonatomic, strong) MKMapView *mapView;
-@property (nonatomic, strong) UILabel *addressLabel;
-@property (nonatomic, strong) UILabel *coordinateLabel;
 @property (nonatomic, strong) Coordinate *coordinate;
-@property (nonatomic, weak) NSString *address;
+@property (nonatomic, strong) NSString *address;
+@property (nonatomic) CGFloat labelMargin;
+@property (nonatomic) BOOL scrollEnabled;
 
 @end
