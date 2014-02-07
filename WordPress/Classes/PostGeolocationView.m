@@ -72,31 +72,39 @@ const CGFloat GeoViewMinHeight = 130.0f;
     _coordinate = coordinate;
 
     [self.mapView removeAnnotation:self.annotation];
-    self.annotation = [[PostAnnotation alloc] initWithCoordinate:self.coordinate.coordinate];
-    [self.mapView addAnnotation:self.annotation];
     
-    MKCoordinateRegion region = MKCoordinateRegionMakeWithDistance(coordinate.coordinate, 200, 100);
-    [self.mapView setRegion:region animated:YES];
-
+    if (coordinate.latitude == 0 && coordinate.longitude == 0) {
+        [self.mapView setRegion:MKCoordinateRegionForMapRect(MKMapRectWorld) animated:NO];
+    } else {
+        self.annotation = [[PostAnnotation alloc] initWithCoordinate:self.coordinate.coordinate];
+        [self.mapView addAnnotation:self.annotation];
+        
+        MKCoordinateRegion region = MKCoordinateRegionMakeWithDistance(coordinate.coordinate, 200, 100);
+        [self.mapView setRegion:region animated:YES];
+    }
+    
     [self updateAddressLabel];
 }
 
 - (void)updateAddressLabel {
+    NSString *coordText = @"";
     CLLocationDegrees latitude = self.coordinate.latitude;
     CLLocationDegrees longitude = self.coordinate.longitude;
-    int latD = trunc(fabs(latitude));
-    int latM = trunc((fabs(latitude) - latD) * 60);
-    int lonD = trunc(fabs(longitude));
-    int lonM = trunc((fabs(longitude) - lonD) * 60);
-    NSString *latDir = (latitude > 0) ? NSLocalizedString(@"North", @"Used for Geo-tagging posts by latitude and longitude. Basic form.") : NSLocalizedString(@"South", @"Used for Geo-tagging posts by latitude and longitude. Basic form.");
-    NSString *lonDir = (longitude > 0) ? NSLocalizedString(@"East", @"Used for Geo-tagging posts by latitude and longitude. Basic form.") : NSLocalizedString(@"West", @"Used for Geo-tagging posts by latitude and longitude. Basic form.");
-    if (latitude == 0.0) latDir = @"";
-    if (longitude == 0.0) lonDir = @"";
     
-    NSString *coordText = [NSString stringWithFormat:@"%i°%i' %@, %i°%i' %@",
-                                 latD, latM, latDir,
-                                 lonD, lonM, lonDir];
-    
+    if (latitude != 0 && longitude !=0 ) {
+        int latD = trunc(fabs(latitude));
+        int latM = trunc((fabs(latitude) - latD) * 60);
+        int lonD = trunc(fabs(longitude));
+        int lonM = trunc((fabs(longitude) - lonD) * 60);
+        NSString *latDir = (latitude > 0) ? NSLocalizedString(@"North", @"Used for Geo-tagging posts by latitude and longitude. Basic form.") : NSLocalizedString(@"South", @"Used for Geo-tagging posts by latitude and longitude. Basic form.");
+        NSString *lonDir = (longitude > 0) ? NSLocalizedString(@"East", @"Used for Geo-tagging posts by latitude and longitude. Basic form.") : NSLocalizedString(@"West", @"Used for Geo-tagging posts by latitude and longitude. Basic form.");
+        if (latitude == 0.0) latDir = @"";
+        if (longitude == 0.0) lonDir = @"";
+        
+        coordText = [NSString stringWithFormat:@"%i°%i' %@, %i°%i' %@",
+                     latD, latM, latDir,
+                     lonD, lonM, lonDir];
+    }
     self.addressLabel.text = [NSString stringWithFormat:@"%@\n%@", self.address, coordText];
 }
 
