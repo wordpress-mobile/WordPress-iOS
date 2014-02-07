@@ -411,7 +411,9 @@ static int ddLogLevel = LOG_LEVEL_INFO;
     [storage unstashUnsavedObjects];
     
     for (id<SPDiffable>object in unsavedObjects) {
-        [object.bucket.network sendObjectChanges: object];
+		if ( [[object class] conformsToProtocol:@protocol(SPDiffable)] ) {
+			[object.bucket.network sendObjectChanges: object];
+		}
     }
     
     // Send changes for all unsaved, inserted and updated objects

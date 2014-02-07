@@ -11,20 +11,33 @@
 @implementation SPMemberInt
 
 - (id)defaultValue {
-	return [NSNumber numberWithInt:0];
+	return @(0);
 }
 
 - (NSDictionary *)diff:(id)thisValue otherValue:(id)otherValue {
 	NSAssert([thisValue isKindOfClass:[NSNumber class]] && [otherValue isKindOfClass:[NSNumber class]],
 			 @"Simperium error: couldn't diff ints because their classes weren't NSNumber");
 	
-	if ([thisValue isEqualToNumber: otherValue])
+	if ([thisValue isEqualToNumber: otherValue]) {
 		return [NSDictionary dictionary];
+	}
     
 	// Construct the diff in the expected format
-	return [NSDictionary dictionaryWithObjectsAndKeys:
-			OP_REPLACE, OP_OP,
-			otherValue, OP_VALUE, nil];
+	return @{
+		OP_OP : OP_REPLACE,
+		OP_VALUE : otherValue
+	};
+}
+
+- (id)getValueFromDictionary:(NSDictionary *)dict key:(NSString *)key object:(id<SPDiffable>)object {
+	id value = [super getValueFromDictionary:dict key:key object:object];
+	
+	// Failsafe: Attempt to parse the int value
+	if ([value isKindOfClass:[NSString class]]) {
+		value = @([((NSString *)value) integerValue]);
+	}
+	
+	return value;
 }
 
 - (id)applyDiff:(id)thisValue otherValue:(id)otherValue {
