@@ -16,6 +16,7 @@
 #import <GooglePlus/GooglePlus.h>
 #import <HockeySDK/HockeySDK.h>
 #import <UIDeviceIdentifier/UIDeviceHardware.h>
+#import <Simperium/Simperium.h>
 
 #import "WordPressAppDelegate.h"
 #import "CameraPlusPickerManager.h"
@@ -62,10 +63,10 @@ static NSString *const CameraPlusImagesNotification = @"CameraPlusImagesNotifica
 
 @interface WordPressAppDelegate () <UITabBarControllerDelegate, CrashlyticsDelegate, UIAlertViewDelegate, BITHockeyManagerDelegate>
 
-@property (nonatomic, assign) BOOL listeningForBlogChanges;
 @property (nonatomic, strong) NotificationsViewController *notificationsViewController;
 @property (nonatomic, assign) UIBackgroundTaskIdentifier bgTask;
-@property (strong, nonatomic) DDFileLogger *fileLogger;
+@property (nonatomic, strong) DDFileLogger *fileLogger;
+@property (nonatomic, strong) Simperium *simperium;
 
 @end
 
@@ -85,6 +86,12 @@ static NSString *const CameraPlusImagesNotification = @"CameraPlusImagesNotifica
 - (BOOL)application:(UIApplication *)application willFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
     [WordPressAppDelegate fixKeychainAccess];
 
+	// Simperium Setup
+	[self setupSimperium];
+	
+	// Listen for WPAccount changes
+	[self hookAccountNotifications];
+	
     // Crash reporting, logging, debugging
     [self configureLogging];
     [self configureHockeySDK];
@@ -92,7 +99,7 @@ static NSString *const CameraPlusImagesNotification = @"CameraPlusImagesNotifica
     [self printDebugLaunchInfoWithLaunchOptions:launchOptions];
     [self toggleExtraDebuggingIfNeeded];
     [self removeCredentialsForDebug];
-
+		
     // Stats and feedback
     [WPMobileStats initializeStats];
     [[GPPSignIn sharedInstance] setClientID:[WordPressComApiCredentials googlePlusClientId]];
@@ -603,14 +610,6 @@ static NSString *const CameraPlusImagesNotification = @"CameraPlusImagesNotifica
 }
 
 
-#pragma mark - Notifications
-
-- (void)defaultAccountDidChange:(NSNotification *)notification {
-    [Crashlytics setUserName:[[WPAccount defaultWordPressComAccount] username]];
-    [self setCommonCrashlyticsParameters];
-}
-
-
 #pragma mark - Crash reporting
 
 - (void)configureCrashlytics {
@@ -627,15 +626,7 @@ static NSString *const CameraPlusImagesNotification = @"CameraPlusImagesNotifica
     
     [Crashlytics startWithAPIKey:[WordPressComApiCredentials crashlyticsApiKey]];
     [[Crashlytics sharedInstance] setDelegate:self];
-    
-    BOOL hasCredentials = ([WPAccount defaultWordPressComAccount] != nil);
     [self setCommonCrashlyticsParameters];
-    
-    if (hasCredentials && [[WPAccount defaultWordPressComAccount] username] != nil) {
-        [Crashlytics setUserName:[[WPAccount defaultWordPressComAccount] username]];
-    }
-
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(defaultAccountDidChange:) name:WPAccountDefaultWordPressComAccountChangedNotification object:nil];
 }
 
 - (void)crashlytics:(Crashlytics *)crashlytics didDetectCrashDuringPreviousExecution:(id<CLSCrashReport>)crash
@@ -651,10 +642,17 @@ static NSString *const CameraPlusImagesNotification = @"CameraPlusImagesNotifica
 
 - (void)setCommonCrashlyticsParameters
 {
-    BOOL loggedIn = [WPAccount defaultWordPressComAccount] != nil;
+	WPAccount* account = [WPAccount defaultWordPressComAccount];
+	NSUInteger blogCount = [Blog countWithContext:[[ContextManager sharedInstance] mainContext]];
+    BOOL loggedIn = (account != nil);
+	
     [Crashlytics setObjectValue:@(loggedIn) forKey:@"logged_in"];
     [Crashlytics setObjectValue:@(loggedIn) forKey:@"connected_to_dotcom"];
-    [Crashlytics setObjectValue:@([Blog countWithContext:[[ContextManager sharedInstance] mainContext]]) forKey:@"number_of_blogs"];
+    [Crashlytics setObjectValue:@(blogCount) forKey:@"number_of_blogs"];
+	
+	if (account.username.length > 0) {
+		[Crashlytics setUserName:account.username];
+	}
 }
 
 - (void)configureHockeySDK {
@@ -684,7 +682,7 @@ static NSString *const CameraPlusImagesNotification = @"CameraPlusImagesNotifica
 - (void)cleanUnusedMediaFileFromTmpDir {
     DDLogInfo(@"%@ %@", self, NSStringFromSelector(_cmd));
 
-    NSManagedObjectContext *context = [[ContextManager sharedInstance] backgroundContext];
+    NSManagedObjectContext *context = [[ContextManager sharedInstance] newDerivedContext];
     [context performBlock:^{
         NSError *error;
         NSMutableArray *mediaToKeep = [NSMutableArray array];
@@ -867,7 +865,46 @@ static NSString *const CameraPlusImagesNotification = @"CameraPlusImagesNotifica
 		self.isWPcomAuthenticated = NO;
 	}
 }
-q
+
+
+#pragma mark - Simperium
+
+- (void)setupSimperium
+{
+	self.simperium = [[Simperium alloc] initWithRootViewController:self.tabBarController];
+	self.simperium.authenticationEnabled = NO;
+	self.simperium.verboseLoggingEnabled = YES;
+	
+	ContextManager* manager = [ContextManager sharedInstance];
+	[self.simperium startWithAppID:[WordPressComApiCredentials simperiumAppId]
+							APIKey:[WordPressComApiCredentials simperiumAPIKey]
+							 model:manager.managedObjectModel
+						   context:manager.mainContext
+					   coordinator:manager.persistentStoreCoordinator];
+	
+#warning TODO: Login if we already have creds (after launch)
+	[self loginSimperium];
+}
+
+- (void)loginSimperium
+{
+	WPAccount *account = [WPAccount defaultWordPressComAccount];
+	NSString *appId = [WordPressComApiCredentials simperiumAppId];
+
+	if (!account.authToken.length || !appId.length) {
+		return;
+	}
+	
+	NSString *simperiumToken = [NSString stringWithFormat:@"WPCC/%@/%@", [WordPressComApiCredentials simperiumAPIKey], account.authToken];
+	[self.simperium authenticateWithToken:simperiumToken];
+}
+
+- (void)logoutSimperium
+{
+	[self.simperium signOutAndRemoveLocalData:NO];
+}
+
+
 #pragma mark - Keychain
 
 + (void)wipeAllKeychainItems
@@ -1021,7 +1058,7 @@ q
 }
 
 // get the log content with a maximum byte size
-- (NSString *) getLogFilesContentWithMaxSize:(NSInteger)maxSize {
+- (NSString *)getLogFilesContentWithMaxSize:(NSInteger)maxSize {
     NSMutableString *description = [NSMutableString string];
     
     NSArray *sortedLogFileInfos = [[self.fileLogger logFileManager] sortedLogFileInfos];
@@ -1049,10 +1086,6 @@ q
 }
 
 - (void)toggleExtraDebuggingIfNeeded {
-    if (!_listeningForBlogChanges) {
-        _listeningForBlogChanges = YES;
-        [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(handleDefaultAccountChangedNotification:) name:WPAccountDefaultWordPressComAccountChangedNotification object:nil];
-    }
     
 	int num_blogs = [Blog countWithContext:[[ContextManager sharedInstance] mainContext]];
 	BOOL authed = self.isWPcomAuthenticated;
@@ -1085,16 +1118,31 @@ q
 	}
 }
 
-- (void)handleDefaultAccountChangedNotification:(NSNotification *)notification {
+
+#pragma mark - Notifications
+
+- (void)hookAccountNotifications {
+	
+	NSNotificationCenter *nc = [NSNotificationCenter defaultCenter];
+    [nc addObserver:self selector:@selector(defaultAccountDidChange:) name:WPAccountDefaultWordPressComAccountChangedNotification object:nil];
+}
+
+- (void)defaultAccountDidChange:(NSNotification *)notification {
+
+#warning TODO: Decouple Me!
+	
+    [self setCommonCrashlyticsParameters];
 	[self toggleExtraDebuggingIfNeeded];
-
-    [NotificationsManager registerForPushNotifications];
-
+	
     // If the notification object is not nil, then it's a login
     if (notification.object) {
+		[NotificationsManager registerForPushNotifications];
+		[self loginSimperium];
         [ReaderPost fetchPostsWithCompletionHandler:nil];
+		
     } else {
-        // No need to check for welcome screen unless we are signing out
+		[NotificationsManager unregisterDeviceToken];
+		[self logoutSimperium];
         [self showWelcomeScreenIfNeededAnimated:NO];
     }
 }

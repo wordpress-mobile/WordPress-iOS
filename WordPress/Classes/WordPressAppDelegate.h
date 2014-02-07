@@ -13,18 +13,22 @@
 @class ReaderPostsViewController;
 @class BlogListViewController;
 @class AbstractPost;
+@class Simperium;
 
 @interface WordPressAppDelegate : NSObject <UIApplicationDelegate>
 
 @property (nonatomic, strong) IBOutlet UIWindow *window;
 @property (nonatomic, strong) UINavigationController *navigationController;
-@property (nonatomic, assign) BOOL isWPcomAuthenticated;
 @property (nonatomic, strong) UITabBarController *tabBarController;
 @property (nonatomic, strong) ReaderPostsViewController *readerPostsViewController;
 @property (nonatomic, strong) BlogListViewController *blogListViewController;
-@property (strong, nonatomic, readonly) DDFileLogger *fileLogger;
-@property (nonatomic, strong) Reachability *internetReachability, *wpcomReachability;
-@property (nonatomic, assign) BOOL connectionAvailable, wpcomAvailable;
+@property (nonatomic, strong) Reachability *internetReachability;
+@property (nonatomic, strong) Reachability *wpcomReachability;
+@property (nonatomic, assign) BOOL isWPcomAuthenticated;
+@property (nonatomic, assign) BOOL connectionAvailable;
+@property (nonatomic, assign) BOOL wpcomAvailable;
+@property (nonatomic, strong, readonly) DDFileLogger *fileLogger;
+@property (nonatomic, strong, readonly) Simperium *simperium;
 
 + (WordPressAppDelegate *)sharedWordPressApplicationDelegate;
 
