@@ -120,16 +120,16 @@ NSString * const ReaderPostStoredCommentTextKey = @"comment";
         return;
     }
     
-    NSManagedObjectContext *backgroundMOC = [[ContextManager sharedInstance] backgroundContext];
-    [backgroundMOC performBlock:^{
+    NSManagedObjectContext *derivedMOC = [[ContextManager sharedInstance] newDerivedContext];
+    [derivedMOC performBlock:^{
         for (NSDictionary *postData in arr) {
             if (![postData isKindOfClass:[NSDictionary class]]) {
                 continue;
             }
-            [self createOrUpdateWithDictionary:postData forEndpoint:endpoint withContext:backgroundMOC];
+            [self createOrUpdateWithDictionary:postData forEndpoint:endpoint withContext:derivedMOC];
         }
         
-        [[ContextManager sharedInstance] saveContext:backgroundMOC];
+        [[ContextManager sharedInstance] saveDerivedContext:derivedMOC];
         if (success) {
             dispatch_async(dispatch_get_main_queue(), success);
         }
@@ -139,24 +139,24 @@ NSString * const ReaderPostStoredCommentTextKey = @"comment";
 
 + (void)deletePostsSyncedEarlierThan:(NSDate *)syncedDate {
     DDLogMethod();
-    NSManagedObjectContext *context = [[ContextManager sharedInstance] backgroundContext];
-    [context performBlock:^{
+    NSManagedObjectContext *derivedMOC = [[ContextManager sharedInstance] newDerivedContext];
+    [derivedMOC performBlock:^{
         NSFetchRequest *request = [[NSFetchRequest alloc] init];
-        [request setEntity:[NSEntityDescription entityForName:@"ReaderPost" inManagedObjectContext:context]];
+        [request setEntity:[NSEntityDescription entityForName:@"ReaderPost" inManagedObjectContext:derivedMOC]];
         
         NSPredicate *predicate = [NSPredicate predicateWithFormat:@"(dateSynced < %@)", syncedDate];
         [request setPredicate:predicate];
         
         NSError *error = nil;
-        NSArray *array = [context executeFetchRequest:request error:&error];
+        NSArray *array = [derivedMOC executeFetchRequest:request error:&error];
         
         if ([array count]) {
             DDLogInfo(@"Deleting %i ReaderPosts synced earlier than: %@ ", [array count], syncedDate);
             for (ReaderPost *post in array) {
-                [context deleteObject:post];
+                [derivedMOC deleteObject:post];
             }
         }
-        [[ContextManager sharedInstance] saveContext:context];
+        [[ContextManager sharedInstance] saveDerivedContext:derivedMOC];
     }];
 }
 

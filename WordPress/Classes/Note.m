@@ -56,33 +56,31 @@ const NSUInteger NoteKeepCount = 20;
 
 
 + (void)mergeNewNotes:(NSArray *)notesData {
-    NSManagedObjectContext *context = [[ContextManager sharedInstance] backgroundContext];
-    [context performBlock:^{
+    NSManagedObjectContext *derivedMOC = [[ContextManager sharedInstance] newDerivedContext];
+    [derivedMOC performBlock:^{
         NSFetchRequest *request = [NSFetchRequest fetchRequestWithEntityName:@"Note"];
         NSError *error;
-        NSArray *existingNotes = [context executeFetchRequest:request error:&error];
+        NSArray *existingNotes = [derivedMOC executeFetchRequest:request error:&error];
         if (error){
             DDLogError(@"Error finding notes: %@", error);
             return;
         }
         
-        WPAccount *account = (WPAccount *)[context objectWithID:[WPAccount defaultWordPressComAccount].objectID];
+        WPAccount *account = (WPAccount *)[derivedMOC objectWithID:[WPAccount defaultWordPressComAccount].objectID];
         [notesData enumerateObjectsUsingBlock:^(NSDictionary *noteData, NSUInteger idx, BOOL *stop) {
-            NSNumber *noteID = [noteData objectForKey:@"id"];
+            NSString *noteID = noteData[@"id"];
             NSArray *results = [existingNotes filteredArrayUsingPredicate:[NSPredicate predicateWithFormat:@"noteID == %@", noteID]];
             
-            Note *note;
-            if ([results count] != 0) {
-                note = results[0];
-            } else {
-                note = [NSEntityDescription insertNewObjectForEntityForName:NSStringFromClass(self) inManagedObjectContext:context];
-                note.noteID = [noteData objectForKey:@"id"];
+            Note *note = [results firstObject];
+            if (!note) {
+                note = [NSEntityDescription insertNewObjectForEntityForName:NSStringFromClass(self) inManagedObjectContext:derivedMOC];
+                note.noteID = noteID;
                 note.account = account;
             }
             [note syncAttributes:noteData];
         }];
         
-        [[ContextManager sharedInstance] saveContext:context];
+        [[ContextManager sharedInstance] saveDerivedContext:derivedMOC];
     }];
 }
 
@@ -131,10 +129,10 @@ const NSUInteger NoteKeepCount = 20;
     request.fetchLimit = 1;
     request.sortDescriptors = @[[NSSortDescriptor sortDescriptorWithKey:@"timestamp" ascending:NO]];
     NSArray *results = [context executeFetchRequest:request error:nil];
-    NSNumber *timestamp;
+    NSNumber *timestamp = nil;
     if ([results count]) {
-        NSDictionary *note = results[0];
-        timestamp = [note objectForKey:@"timestamp"];
+        NSDictionary *note = [results firstObject];
+        timestamp = note[@"timestamp"];
     }
     return timestamp;
 }
@@ -304,10 +302,13 @@ const NSUInteger NoteKeepCount = 20;
 
 @end
 
+
+#warning TODO: Nuke REST API
+
 @implementation Note (WordPressComApi)
 
 + (void)fetchNewNotificationsWithSuccess:(void (^)(BOOL hasNewNotes))success failure:(void (^)(NSError *error))failure {
-    NSNumber *timestamp = [self lastNoteTimestampWithContext:[ContextManager sharedInstance].backgroundContext];
+    NSNumber *timestamp = [self lastNoteTimestampWithContext:[ContextManager sharedInstance].mainContext];
     
     [[[WPAccount defaultWordPressComAccount] restApi] fetchNotificationsSince:timestamp success:^(NSArray *notes) {
         [Note mergeNewNotes:notes];

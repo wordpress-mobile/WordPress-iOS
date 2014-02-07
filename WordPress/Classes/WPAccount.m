@@ -91,17 +91,13 @@ NSString * const WPAccountDefaultWordPressComAccountChangedNotification = @"WPAc
 }
 
 + (void)removeDefaultWordPressComAccount {
-    [self removeDefaultWordPressComAccountWithContext:[ContextManager sharedInstance].backgroundContext];
-}
-
-+ (void)removeDefaultWordPressComAccountWithContext:(NSManagedObjectContext *)context {
     if (!__defaultDotcomAccount) {
         return;
     }
-    
-    [NotificationsManager unregisterDeviceToken];
-    
+
     [[NSUserDefaults standardUserDefaults] removeObjectForKey:DefaultDotcomAccountDefaultsKey];
+	[[NSUserDefaults standardUserDefaults] synchronize];
+		
     NSManagedObjectID *accountObjectID = __defaultDotcomAccount.objectID;
     __defaultDotcomAccount = nil;
 
@@ -109,10 +105,11 @@ NSString * const WPAccountDefaultWordPressComAccountChangedNotification = @"WPAc
         [[NSNotificationCenter defaultCenter] postNotificationName:WPAccountDefaultWordPressComAccountChangedNotification object:nil];
     });
 
+	NSManagedObjectContext *context = [ContextManager sharedInstance].newDerivedContext;
     [context performBlock:^{
         WPAccount *account = (WPAccount *)[context objectWithID:accountObjectID];
         [context deleteObject:account];
-        [[ContextManager sharedInstance] saveContext:context];
+        [[ContextManager sharedInstance] saveDerivedContext:context];
     }];
 }
 
@@ -137,41 +134,36 @@ NSString * const WPAccountDefaultWordPressComAccountChangedNotification = @"WPAc
 #pragma mark - Account creation
 
 + (WPAccount *)createOrUpdateWordPressComAccountWithUsername:(NSString *)username password:(NSString *)password authToken:(NSString *)authToken {
-    return [WPAccount createOrUpdateWordPressComAccountWithUsername:username password:password authToken:authToken context:[[ContextManager sharedInstance] backgroundContext]];
-}
+#warning TODO: Verify
+	NSAssert([NSThread isMainThread], @"This method should never be called in BG mode");
 
-+ (WPAccount *)createOrUpdateWordPressComAccountWithUsername:(NSString *)username password:(NSString *)password authToken:(NSString *)authToken context:(NSManagedObjectContext *)context {
-    WPAccount *account = [self createOrUpdateSelfHostedAccountWithXmlrpc:WordPressDotcomXMLRPCKey username:username andPassword:password withContext:context];
-    [account.managedObjectContext performBlockAndWait:^{
-        account.isWpcom = YES;
-        account.authToken = authToken;
-    }];
+    WPAccount *account = [self createOrUpdateSelfHostedAccountWithXmlrpc:WordPressDotcomXMLRPCKey username:username andPassword:password];
+	account.isWpcom = YES;
+	account.authToken = authToken;
+
     return account;
 }
 
 + (WPAccount *)createOrUpdateSelfHostedAccountWithXmlrpc:(NSString *)xmlrpc username:(NSString *)username andPassword:(NSString *)password {
-    return [WPAccount createOrUpdateSelfHostedAccountWithXmlrpc:xmlrpc username:username andPassword:password withContext:[[ContextManager sharedInstance] backgroundContext]];
-}
+#warning TODO: Verify
+	NSAssert([NSThread isMainThread], @"This method should never be called in BG mode");
+	
+	NSManagedObjectContext *context = [[ContextManager sharedInstance] mainContext];
 
-+ (WPAccount *)createOrUpdateSelfHostedAccountWithXmlrpc:(NSString *)xmlrpc username:(NSString *)username andPassword:(NSString *)password withContext:(NSManagedObjectContext *)context {
     NSFetchRequest *request = [NSFetchRequest fetchRequestWithEntityName:@"Account"];
-    [request setPredicate:[NSPredicate predicateWithFormat:@"xmlrpc like %@ AND username like %@", xmlrpc, username]];
-    [request setIncludesPendingChanges:YES];
+    request.predicate = [NSPredicate predicateWithFormat:@"xmlrpc like %@ AND username like %@", xmlrpc, username];
+    request.includesPendingChanges = YES;
     
-    __block WPAccount *account;
-    [context performBlockAndWait:^{
-        NSArray *results = [context executeFetchRequest:request error:nil];
-        if ([results count] > 0) {
-            account = [results objectAtIndex:0];
-        } else {
-            account = [NSEntityDescription insertNewObjectForEntityForName:@"Account" inManagedObjectContext:context];
-            account.xmlrpc = xmlrpc;
-            account.username = username;
-        }
-        account.password = password;
-        
-        [[ContextManager sharedInstance] saveContext:context];
-    }];
+    WPAccount *account = [[context executeFetchRequest:request error:nil] firstObject];
+	if (!account) {
+		account = [NSEntityDescription insertNewObjectForEntityForName:@"Account" inManagedObjectContext:context];
+		account.xmlrpc = xmlrpc;
+		account.username = username;
+	}
+	account.password = password;
+	
+	[[ContextManager sharedInstance] saveContext:context];
+
     return account;
 }
 
@@ -219,15 +211,15 @@ NSString * const WPAccountDefaultWordPressComAccountChangedNotification = @"WPAc
 }
 
 - (void)mergeBlogs:(NSArray *)blogs withCompletion:(void (^)())completion {
-    NSManagedObjectContext *backgroundMOC = [[ContextManager sharedInstance] backgroundContext];
+    NSManagedObjectContext *derivedMOC = [[ContextManager sharedInstance] newDerivedContext];
 
     NSManagedObjectID *accountID = self.objectID;
-    [backgroundMOC performBlock:^{
-        WPAccount *account = (WPAccount *)[backgroundMOC objectWithID:accountID];
+    [derivedMOC performBlock:^{
+        WPAccount *account = (WPAccount *)[derivedMOC objectWithID:accountID];
         for (NSDictionary *blog in blogs) {
-            [account findOrCreateBlogFromDictionary:blog withContext:backgroundMOC];
+            [account findOrCreateBlogFromDictionary:blog withContext:derivedMOC];
         }
-        [[ContextManager sharedInstance] saveContext:backgroundMOC];
+        [[ContextManager sharedInstance] saveDerivedContext:derivedMOC];
         if (completion != nil) {
             dispatch_async(dispatch_get_main_queue(), completion);
         }

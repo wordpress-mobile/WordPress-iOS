@@ -137,8 +137,8 @@ NSString * const BlogJetpackApiPath = @"get-user-blogs/1.0";
     [client authenticateWithUsername:username
                             password:password
                              success:^(NSString *authToken) {
-                                 WPAccount *account = [WPAccount createOrUpdateWordPressComAccountWithUsername:username password:password authToken:authToken context:self.managedObjectContext];
-                                 self.jetpackAccount = account;
+                                 WPAccount *account = [WPAccount createOrUpdateWordPressComAccountWithUsername:username password:password authToken:authToken];
+                                 self.jetpackAccount = (WPAccount *)[self.managedObjectContext objectWithID:account.objectID];
                                  [self dataSave];
 
                                  // If there is no WP.com account on the device, make this the default
@@ -155,8 +155,8 @@ NSString * const BlogJetpackApiPath = @"get-user-blogs/1.0";
                                  
                                  // OAuth2 login failed - we can still create the WPAccount without the token
                                  // TODO: This is the behavior prior to 3.9 and could get removed
-                                 WPAccount *account = [WPAccount createOrUpdateWordPressComAccountWithUsername:username password:password authToken:nil context:self.managedObjectContext];
-                                 self.jetpackAccount = account;
+                                 WPAccount *account = [WPAccount createOrUpdateWordPressComAccountWithUsername:username password:password authToken:nil];
+                                 self.jetpackAccount = (WPAccount *)[self.managedObjectContext objectWithID:account.objectID];
                                  [self dataSave];
                              }];
 }

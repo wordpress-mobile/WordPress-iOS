@@ -154,7 +154,7 @@ NSString * const NotificationsJetpackInformationURL = @"http://jetpack.me/about/
 
 - (void)pruneOldNotes {
     NSNumber *pruneBefore;
-    Note *lastVisibleNote = [[[self.tableView visibleCells] lastObject] contentProvider];
+    Note *lastVisibleNote = (Note *)[[[self.tableView visibleCells] lastObject] contentProvider];
     if (lastVisibleNote) {
         pruneBefore = lastVisibleNote.timestamp;
     }
