@@ -84,10 +84,7 @@ static CGFloat GeoCellHeight = 200.0f;
     self = [super init];
     if (self) {
         _apost = aPost;
-        [_apost addObserver:self
-                 forKeyPath:@"post_thumbnail"
-                    options:NSKeyValueObservingOptionNew | NSKeyValueObservingOptionOld
-                    context:nil];
+        [self observePostProperties];
     }
     return self;
 }
@@ -168,10 +165,22 @@ static CGFloat GeoCellHeight = 200.0f;
 
 #pragma mark - KVO
 
+- (void)observePostProperties {
+    [self.post addObserver:self
+             forKeyPath:@"post_thumbnail"
+                options:NSKeyValueObservingOptionNew | NSKeyValueObservingOptionOld
+                context:nil];
+    
+    [self.post addObserver:self
+             forKeyPath:@"geolocation"
+                options:NSKeyValueObservingOptionNew | NSKeyValueObservingOptionOld
+                context:nil];
+}
 - (void)observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary *)change context:(void *)context {
     if ([@"post_thumbnail" isEqualToString:keyPath]) {
         self.featuredImage = nil;
-    };
+    }
+    [self.tableView reloadData];
 }
 
 #pragma mark - Instance Methods
