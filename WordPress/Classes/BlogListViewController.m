@@ -14,11 +14,13 @@
 #import "LoginViewController.h"
 #import "BlogDetailsViewController.h"
 #import "WPTableViewCell.h"
+#import "WPBlogTableViewCell.h"
 #import "ContextManager.h"
 #import "Blog.h"
 #import "WPAccount.h"
 #import "WPTableViewSectionHeaderView.h"
 
+static NSString *const AddSiteCellIdentifier = @"AddSiteCell";
 static NSString *const BlogCellIdentifier = @"BlogCell";
 CGFloat const blavatarImageSize = 50.f;
 NSString * const WPBlogListRestorationID = @"WPBlogListID";
@@ -91,7 +93,9 @@ NSString * const WPBlogListRestorationID = @"WPBlogListID";
     }
     
     [WPStyleGuide configureColorsForView:self.view andTableView:self.tableView];
- 
+
+    [self.tableView registerClass:[WPTableViewCell class] forCellReuseIdentifier:AddSiteCellIdentifier];
+    [self.tableView registerClass:[WPBlogTableViewCell class] forCellReuseIdentifier:BlogCellIdentifier];
     self.tableView.allowsSelectionDuringEditing = YES;
     self.navigationItem.leftBarButtonItem = self.editButtonItem;
 
@@ -175,13 +179,11 @@ NSString * const WPBlogListRestorationID = @"WPBlogListID";
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
     
-    UITableViewCell *cell = [self.tableView dequeueReusableCellWithIdentifier:BlogCellIdentifier];
-    if (!cell) {
-        if ([indexPath isEqual:[self indexPathForAddSite]]) {
-            cell = [[WPTableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:BlogCellIdentifier];
-        } else {
-            cell = [[WPTableViewCell alloc] initWithStyle:UITableViewCellStyleSubtitle reuseIdentifier:BlogCellIdentifier];
-        }
+    UITableViewCell *cell;
+    if ([indexPath isEqual:[self indexPathForAddSite]]) {
+        cell = [self.tableView dequeueReusableCellWithIdentifier:AddSiteCellIdentifier];
+    } else {
+        cell = [self.tableView dequeueReusableCellWithIdentifier:BlogCellIdentifier];
     }
 
     [self configureCell:cell atIndexPath:indexPath];
