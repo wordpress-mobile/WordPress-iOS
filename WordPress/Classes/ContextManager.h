@@ -22,9 +22,9 @@
 /// The mainContext has concurrency type
 /// NSMainQueueConcurrencyType and should be used
 /// for UI elements and fetched results controllers.
-/// Its parent is the backgroundContext.
+/// During Simperium startup, a backgroundWriterContext
+///  will be created.
 ///----------------------------------------------
-@property (nonatomic, readonly, strong) NSManagedObjectContext *backgroundContext;
 @property (nonatomic, readonly, strong) NSManagedObjectContext *mainContext;
 
 ///-------------------------------------------------------------
@@ -53,7 +53,7 @@
  For usage as a 'scratch pad' context
  
  @return a new MOC with NSPrivateQueueConcurrencyType, 
- with the parent context as the background writer context
+ with the parent context as the main context
 */
 - (NSManagedObjectContext *const)newDerivedContext;
 

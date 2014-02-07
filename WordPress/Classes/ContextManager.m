@@ -17,7 +17,6 @@ static ContextManager *instance;
 @property (nonatomic, strong) NSPersistentStoreCoordinator *persistentStoreCoordinator;
 @property (nonatomic, strong) NSManagedObjectModel *managedObjectModel;
 @property (nonatomic, strong) NSManagedObjectContext *mainContext;
-@property (nonatomic, strong) NSManagedObjectContext *backgroundContext;
 
 @end
 
@@ -48,39 +47,10 @@ static ContextManager *instance;
         return _mainContext;
     }
     _mainContext = [[NSManagedObjectContext alloc] initWithConcurrencyType:NSMainQueueConcurrencyType];
-    _mainContext.persistentStoreCoordinator = [self persistentStoreCoordinator];
     
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(mergeChangesIntoBackgroundContext:) name:NSManagedObjectContextDidSaveNotification object:_mainContext];
     return _mainContext;
 }
 
-- (NSManagedObjectContext *const)backgroundContext {
-    if (_backgroundContext) {
-        return _backgroundContext;
-    }
-    _backgroundContext = [[NSManagedObjectContext alloc] initWithConcurrencyType:NSPrivateQueueConcurrencyType];
-    _backgroundContext.persistentStoreCoordinator = [self persistentStoreCoordinator];
-    _backgroundContext.mergePolicy = NSMergeByPropertyObjectTrumpMergePolicy;
-
-    
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(mergeChangesIntoMainContext:)
-                                                 name:NSManagedObjectContextDidSaveNotification object:_backgroundContext];
-    return _backgroundContext;
-}
-
-- (void)mergeChangesIntoMainContext:(NSNotification *)notification {
-    [self.mainContext performBlock:^{
-        DDLogVerbose(@"Merging changes into main context");
-        [self.mainContext mergeChangesFromContextDidSaveNotification:notification];
-    }];
-}
-
-- (void)mergeChangesIntoBackgroundContext:(NSNotification *)notification {
-    [self.backgroundContext performBlock:^{
-        DDLogVerbose(@"Merging changes into background context");
-        [self.backgroundContext mergeChangesFromContextDidSaveNotification:notification];
-    }];
-}
 
 #pragma mark - Context Saving and Merging
 
@@ -145,9 +115,10 @@ static ContextManager *instance;
     NSURL *storeURL = [NSURL fileURLWithPath:[documentsDirectory stringByAppendingPathComponent:@"WordPress.sqlite"]];
 	
 	// This is important for automatic version migration. Leave it here!
-	NSDictionary *options = [NSDictionary dictionaryWithObjectsAndKeys:
-							 [NSNumber numberWithBool:YES], NSInferMappingModelAutomaticallyOption,
-							 [NSNumber numberWithBool:YES], NSMigratePersistentStoresAutomaticallyOption, nil];
+	NSDictionary *options = @{
+		NSInferMappingModelAutomaticallyOption			: @(YES),
+		NSMigratePersistentStoresAutomaticallyOption	: @(YES)
+	};
 	
 	NSError *error = nil;
 	
@@ -163,6 +134,7 @@ static ContextManager *instance;
 	} else {
 		DDLogInfo(@"Source store: %@", sourceMetadata);
 	}
+	
 	NSManagedObjectModel *destinationModel = [self managedObjectModel];
 	BOOL pscCompatibile = [destinationModel
 						   isConfiguration:nil
@@ -172,6 +144,7 @@ static ContextManager *instance;
 	} else {
 		DDLogInfo(@"Migration needed");
 	}
+	
 	NSManagedObjectModel *sourceModel = [NSManagedObjectModel mergedModelFromBundles:nil forStoreMetadata:sourceMetadata];
 	if (sourceModel != nil) {
 		DDLogInfo(@"source model found");
@@ -181,7 +154,7 @@ static ContextManager *instance;
     
 	NSMigrationManager *manager = [[NSMigrationManager alloc] initWithSourceModel:sourceModel
 																 destinationModel:destinationModel];
-	NSMappingModel *mappingModel = [NSMappingModel mappingModelFromBundles:[NSArray arrayWithObject:[NSBundle mainBundle]]
+	NSMappingModel *mappingModel = [NSMappingModel mappingModelFromBundles:@[ [NSBundle mainBundle] ]
 															forSourceModel:sourceModel
 														  destinationModel:destinationModel];
 	if (mappingModel != nil) {
@@ -220,6 +193,7 @@ static ContextManager *instance;
         
         // make a backup of the old database
         [[NSFileManager defaultManager] copyItemAtPath:storeURL.path toPath:[storeURL.path stringByAppendingString:@"~"] error:&error];
+		
         // delete the sqlite file and try again
 		[[NSFileManager defaultManager] removeItemAtPath:storeURL.path error:nil];
 		if (![_persistentStoreCoordinator addPersistentStoreWithType:NSSQLiteStoreType configuration:nil URL:storeURL options:nil error:&error]) {
