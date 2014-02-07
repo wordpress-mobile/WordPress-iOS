@@ -52,6 +52,8 @@ typedef enum {
 static CGFloat CellHeight = 44.0f;
 static CGFloat GeoCellHeight = 200.0f;
 
+static NSString *const TableViewActivityCellIdentifier = @"TableViewActivityCellIdentifier";
+
 @interface PostSettingsViewController () <UIPopoverControllerDelegate, UIPickerViewDelegate, UIPickerViewDataSource, UITextFieldDelegate, UIActionSheetDelegate, WPTableImageSourceDelegate>
 
 @property (nonatomic, strong) NSMutableArray *sections;
@@ -135,7 +137,7 @@ static CGFloat GeoCellHeight = 200.0f;
     gestureRecognizer.numberOfTapsRequired = 1;
     [self.tableView addGestureRecognizer:gestureRecognizer];
 
-    static NSString *const TableViewActivityCellIdentifier = @"TableViewActivityCellIdentifier";
+
     [self.tableView registerNib:[UINib nibWithNibName:@"WPTableViewActivityCell" bundle:nil] forCellReuseIdentifier:TableViewActivityCellIdentifier];
 }
 
@@ -176,6 +178,7 @@ static CGFloat GeoCellHeight = 200.0f;
                 options:NSKeyValueObservingOptionNew | NSKeyValueObservingOptionOld
                 context:nil];
 }
+
 - (void)observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary *)change context:(void *)context {
     if ([@"post_thumbnail" isEqualToString:keyPath]) {
         self.featuredImage = nil;
@@ -540,17 +543,26 @@ static CGFloat GeoCellHeight = 200.0f;
 - (UITableViewCell *)configureGeolocationCellForIndexPath:(NSIndexPath *)indexPath {
     WPTableViewCell *cell;
     if ([self post].geolocation == nil) {
-        cell = [self getWPActivityTableViewCell];
-        cell.textLabel.text = NSLocalizedString(@"Set Location", @"Geolocation feature to set the location.");
-        cell.tag = PostSettingsRowGeolocationAdd;
+        WPTableViewActivityCell *actCell = [self getWPActivityTableViewCell];
+
+        actCell.tag = PostSettingsRowGeolocationAdd;
         
+        if ([[LocationService sharedService] locationServiceRunning]) {
+            [actCell.spinner startAnimating];
+            actCell.textLabel.text = NSLocalizedString(@"Finding your location...", @"Geo-tagging posts, status message when geolocation is found.");
+        } else {
+            actCell.textLabel.text = NSLocalizedString(@"Set Location", @"Geolocation feature to set the location.");
+            [actCell.spinner stopAnimating];
+        }
+        
+        cell = actCell;
+
     } else {
         static NSString *wpPostSettingsGeoCellIdentifier = @"wpPostSettingsGeoCellIdentifier";
         PostGeolocationCell *geoCell = [self.tableView dequeueReusableCellWithIdentifier:wpPostSettingsGeoCellIdentifier];
         if (!geoCell) {
             geoCell = [[PostGeolocationCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:wpPostSettingsGeoCellIdentifier];
         }
-        //TODO: set geocell's coordinate and address.
         [geoCell setCoordinate:self.post.geolocation andAddress:[LocationService sharedService].lastGeocodedAddress];
         cell = geoCell;
         cell.tag = PostSettingsRowGeolocationMap;
@@ -571,14 +583,11 @@ static CGFloat GeoCellHeight = 200.0f;
 }
 
 - (WPTableViewActivityCell *)getWPActivityTableViewCell {
-    static NSString *wpActivityTableViewCellIdentifier = @"wpActivityTableViewCellIdentifier";
-    WPTableViewActivityCell *cell = [self.tableView dequeueReusableCellWithIdentifier:wpActivityTableViewCellIdentifier];
-    if (!cell) {
-        cell = [[WPTableViewActivityCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:wpActivityTableViewCellIdentifier];
-        cell.accessoryType = UITableViewCellAccessoryNone;
-        cell.selectionStyle = UITableViewCellSelectionStyleBlue;
-        [WPStyleGuide configureTableViewActionCell:cell];
-    }
+    WPTableViewActivityCell *cell = [self.tableView dequeueReusableCellWithIdentifier:TableViewActivityCellIdentifier];
+    cell.accessoryType = UITableViewCellAccessoryNone;
+    cell.selectionStyle = UITableViewCellSelectionStyleBlue;
+    [WPStyleGuide configureTableViewActionCell:cell];
+
     cell.tag = 0;
     return cell;
 }
