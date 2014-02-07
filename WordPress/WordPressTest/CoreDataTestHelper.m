@@ -15,7 +15,7 @@
 @interface ContextManager (TestHelper)
 
 @property (nonatomic, strong) NSManagedObjectContext *mainContext;
-@property (nonatomic, strong) NSManagedObjectContext *backgroundContext;
+//@property (nonatomic, strong) NSManagedObjectContext *backgroundContext;
 @property (nonatomic, strong) NSPersistentStoreCoordinator *persistentStoreCoordinator;
 
 + (NSURL *)storeURL;
@@ -30,7 +30,7 @@
 
 @implementation CoreDataTestHelper
 
-+ (id)sharedHelper {
++ (instancetype)sharedHelper {
     static CoreDataTestHelper *_sharedHelper = nil;
     static dispatch_once_t oncePredicate;
     dispatch_once(&oncePredicate, ^{
@@ -43,7 +43,6 @@
 - (void)setModelName:(NSString *)modelName {
     _managedObjectModel = [self modelWithName:modelName];
     [ContextManager sharedInstance].mainContext = nil;
-    [ContextManager sharedInstance].backgroundContext = nil;
     [ContextManager sharedInstance].persistentStoreCoordinator = nil;
 }
 
@@ -101,29 +100,18 @@
     return [NSEntityDescription insertNewObjectForEntityForName:entityName inManagedObjectContext:[ContextManager sharedInstance].mainContext];
 }
 
-- (NSManagedObject *)insertEntityIntoBackgroundContextWithName:(NSString *)entityName {
-    return [NSEntityDescription insertNewObjectForEntityForName:entityName inManagedObjectContext:[ContextManager sharedInstance].backgroundContext];
-}
-
 - (NSArray *)allObjectsInMainContextForEntityName:(NSString *)entityName {
     NSFetchRequest *request = [NSFetchRequest fetchRequestWithEntityName:entityName];
     return [[ContextManager sharedInstance].mainContext executeFetchRequest:request error:nil];
 }
 
-- (NSArray *)allObjectsInBackgroundContextForEntityName:(NSString *)entityName {
-    NSFetchRequest *request = [NSFetchRequest fetchRequestWithEntityName:entityName];
-    return [[ContextManager sharedInstance].backgroundContext executeFetchRequest:request error:nil];
-}
-
 - (void)reset {
-    [[ContextManager sharedInstance].mainContext reset];
-    [[ContextManager sharedInstance].backgroundContext reset];
-    [ContextManager sharedInstance].mainContext = nil;
-    [ContextManager sharedInstance].backgroundContext = nil;
-    [ContextManager sharedInstance].persistentStoreCoordinator = nil;
-    
-    [[NSFileManager defaultManager] removeItemAtURL:[ContextManager storeURL] error:nil];
-    return;
+#warning TODO: FIXME
+//    [[ContextManager sharedInstance].mainContext reset];
+//    [ContextManager sharedInstance].mainContext = nil;
+//    [ContextManager sharedInstance].persistentStoreCoordinator = nil;
+
+//    [[NSFileManager defaultManager] removeItemAtURL:[ContextManager storeURL] error:nil];
 }
 
 - (NSManagedObjectModel *)managedObjectModel {
@@ -138,9 +126,9 @@
 
 @implementation ContextManager (TestHelper)
 
-@dynamic mainContext, backgroundContext;
-
 static void *const testPSCKey = "testPSCKey";
+
+@dynamic mainContext;
 
 #pragma mark - Override persistent store coordinator
 
@@ -152,7 +140,7 @@ static void *const testPSCKey = "testPSCKey";
     
     psc = [[NSPersistentStoreCoordinator alloc] initWithManagedObjectModel:[[ContextManager sharedInstance] managedObjectModel]];
     NSError *error;
-    NSPersistentStore *store = [psc addPersistentStoreWithType:NSSQLiteStoreType configuration:nil URL:[ContextManager storeURL] options:nil error:&error];
+    NSPersistentStore *store = [psc addPersistentStoreWithType:NSInMemoryStoreType configuration:nil URL:[ContextManager storeURL] options:nil error:&error];
     NSAssert(store != nil, @"Can't initialize core data storage");
     
     objc_setAssociatedObject([ContextManager sharedInstance], testPSCKey, psc, OBJC_ASSOCIATION_RETAIN);
@@ -166,37 +154,6 @@ static void *const testPSCKey = "testPSCKey";
 
 + (NSURL *)storeURL {
     return [NSURL fileURLWithPath:[[NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES) lastObject] stringByAppendingPathComponent:@"WordPressTest.sqlite"]];
-}
-
-
-#pragma mark - Swizzle merge methods 
-
-+ (void)load {
-    Method originalMainToBg = class_getInstanceMethod([ContextManager class], @selector(mergeChangesIntoBackgroundContext:));
-    Method testMainToBg = class_getInstanceMethod([ContextManager class], @selector(testMergeChangesIntoBackgroundContext:));
-    Method originalBgToMain = class_getInstanceMethod([ContextManager class], @selector(mergeChangesIntoMainContext:));
-    Method testBgToMain = class_getInstanceMethod([ContextManager class], @selector(testMergeChangesIntoMainContext:));
-    
-    method_exchangeImplementations(originalMainToBg, testMainToBg);
-    method_exchangeImplementations(originalBgToMain, testBgToMain);
-}
-
-- (void)testMergeChangesIntoBackgroundContext:(NSNotification *)notification {
-    [[[ContextManager sharedInstance] backgroundContext] mergeChangesFromContextDidSaveNotification:notification];
-    if (ATHSemaphore) {
-        ATHNotify();
-    } else {
-        NSLog(@"No semaphore present for notify");
-    }
-}
-
-- (void)testMergeChangesIntoMainContext:(NSNotification *)notification {
-    [[[ContextManager sharedInstance] mainContext] mergeChangesFromContextDidSaveNotification:notification];
-    if (ATHSemaphore) {
-        ATHNotify();
-    } else {
-        NSLog(@"No semaphore present for notify for main");
-    }
 }
 
 @end

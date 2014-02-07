@@ -26,9 +26,7 @@
     [super setUp];
 
     if ([WPAccount defaultWordPressComAccount]) {
-        ATHStart();
-        [WPAccount removeDefaultWordPressComAccountWithContext:[ContextManager sharedInstance].mainContext];
-        ATHEnd();
+        [WPAccount removeDefaultWordPressComAccount];
     }
 }
 
@@ -59,10 +57,7 @@
 
 
     // Sign In
-    ATHStart();
-    WPAccount *account = [WPAccount createOrUpdateWordPressComAccountWithUsername:@"jacksparrow" password:@"piratesobrave" authToken:@"token" context:[ContextManager sharedInstance].mainContext];
-    ATHEnd();
-    
+    WPAccount *account = [WPAccount createOrUpdateWordPressComAccountWithUsername:@"jacksparrow" password:@"piratesobrave" authToken:@"token"];
     [WPAccount setDefaultWordPressComAccount:account];
 
     /*
@@ -97,7 +92,9 @@
 
     ATHStart();
     Blog *blog = [account findOrCreateBlogFromDictionary:@{@"url": @"blog1.com", @"xmlrpc": @"http://blog1.com/xmlrpc.php"} withContext:account.managedObjectContext];
-    [[ContextManager sharedInstance] saveContext:account.managedObjectContext];
+    [[ContextManager sharedInstance] saveContext:account.managedObjectContext withCompletionBlock:^{
+		ATHNotify();
+	}];
     ATHEnd();
     
     [table reloadData];
@@ -119,7 +116,9 @@
     
     ATHStart();
     blog = [account findOrCreateBlogFromDictionary:@{@"url": @"blog2.com", @"xmlrpc": @"http://blog2.com/xmlrpc.php"} withContext:account.managedObjectContext];
-    [[ContextManager sharedInstance] saveContext:account.managedObjectContext];
+    [[ContextManager sharedInstance] saveContext:account.managedObjectContext withCompletionBlock:^{
+		ATHNotify();
+	}];
     ATHEnd();
     
     [table reloadData];

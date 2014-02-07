@@ -24,9 +24,7 @@
 @implementation BlogJetpackTest
 
 - (void)setUp {
-    ATHStart();
-    _account = [WPAccount createOrUpdateSelfHostedAccountWithXmlrpc:@"http://blog1.com/xmlrpc.php" username:@"admin" andPassword:@"password!" withContext:[ContextManager sharedInstance].mainContext];
-    ATHEnd();
+    _account = [WPAccount createOrUpdateSelfHostedAccountWithXmlrpc:@"http://blog1.com/xmlrpc.php" username:@"admin" andPassword:@"password!"];
     
     _blog = (Blog *)[[CoreDataTestHelper sharedHelper] insertEntityIntoMainContextWithName:@"Blog"];
     _blog.xmlrpc = @"http://test.blog/xmlrpc.php";
@@ -53,9 +51,7 @@
 }
 
 - (void)testAssertionsOnWPcom {
-    ATHStart();
-    WPAccount *wpComAccount = [WPAccount createOrUpdateWordPressComAccountWithUsername:@"user" password:@"pass" authToken:nil context:[ContextManager sharedInstance].mainContext];
-    ATHEnd();
+    WPAccount *wpComAccount = [WPAccount createOrUpdateWordPressComAccountWithUsername:@"user" password:@"pass" authToken:nil];
     
     _blog = (Blog *)[[CoreDataTestHelper sharedHelper] insertEntityIntoMainContextWithName:@"Blog"];
     _blog.xmlrpc = @"http://test.wordpress.com/xmlrpc.php";

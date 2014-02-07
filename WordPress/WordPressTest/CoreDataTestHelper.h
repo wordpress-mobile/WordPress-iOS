@@ -11,7 +11,7 @@
 
 @interface CoreDataTestHelper : NSObject
 
-+ (id)sharedHelper;
++ (instancetype)sharedHelper;
 
 - (void)reset;
 
@@ -19,8 +19,6 @@
 - (BOOL)migrateToModelName:(NSString *)modelName;
 
 - (NSManagedObject *)insertEntityIntoMainContextWithName:(NSString *)entityName;
-- (NSManagedObject *)insertEntityIntoBackgroundContextWithName:(NSString *)entityName;
 - (NSArray *)allObjectsInMainContextForEntityName:(NSString *)entityName;
-- (NSArray *)allObjectsInBackgroundContextForEntityName:(NSString *)entityName;
 
 @end
