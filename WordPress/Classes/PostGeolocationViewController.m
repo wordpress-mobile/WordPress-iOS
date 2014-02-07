@@ -92,14 +92,19 @@
     self.toolbarItems = @[leftFixedSpacer, self.deleteButton, centerFlexSpacer, self.refreshButton, rightFixedSpacer];
 }
 
-
 - (void)removeGeolocation {
     self.post.geolocation = nil;
     [self.navigationController popViewControllerAnimated:YES];
 }
 
-
 - (void)updateLocation {
+    if ([[LocationService sharedService] locationServicesDisabled]) {
+        [WPError showAlertWithTitle:NSLocalizedString(@"Location Unavailable", @"Title of an alert view stating that the user's location is unavailable.")
+                            message:NSLocalizedString(@"Location Services are turned off. \nTo add or update this post's location, please enable Location Services in the Settings app.", @"Message of an alert explaining that location services need to be enabled.")
+                  withSupportButton:NO];
+        return;
+    }
+    
     [[LocationService sharedService] getCurrentLocationAndAddress:^(CLLocation *location, NSString *address, NSError *error) {
         
         if (location) {
@@ -111,12 +116,5 @@
         
     }];
 }
-
-/*
- NSDate* eventDate = newLocation.timestamp;
- NSTimeInterval howRecent = [eventDate timeIntervalSinceNow];
- if (abs(howRecent) < 15.0)
- */
-
 
 @end
