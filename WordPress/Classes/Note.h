@@ -8,10 +8,11 @@
 
 #import <Foundation/Foundation.h>
 #import <CoreData/CoreData.h>
+#import <Simperium/SPManagedObject.h>
 #import "WPAccount.h"
 #import "WPContentViewProvider.h"
 
-@interface Note : NSManagedObject<WPContentViewProvider>
+@interface Note : SPManagedObject<WPContentViewProvider>
 
 @property (nonatomic, retain) NSNumber *timestamp;
 @property (nonatomic, retain) NSString *type;
