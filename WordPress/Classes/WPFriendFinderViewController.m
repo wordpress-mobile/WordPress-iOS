@@ -96,63 +96,68 @@ static NSString *const AccessedAddressBookPreference = @"AddressBookAccessGrante
 }
 
 - (void)findEmails {
-    NSString *appName = [[[NSBundle mainBundle] infoDictionary] objectForKey:@"CFBundleDisplayName"];
-    NSString *title = [NSString stringWithFormat:@"“%@” %@", appName, NSLocalizedString(@"Would Like Access to Address Book", @"")];
-    NSString *message = NSLocalizedString(@"Your contacts will be transmitted securely and will not be stored on our servers.", @"");
-    
-    [self alertWithTitle:title
-                 message:message
-       cancelButtonTitle:NSLocalizedString(@"Don't Allow", @"")
-      confirmButtonTitle:NSLocalizedString(@"OK", @"")
-            dismissBlock:^(int buttonIndex) {
-                
-                if (1 == buttonIndex) {
-                    ABAddressBookRef address_book = ABAddressBookCreateWithOptions(NULL, NULL);
-                    CFArrayRef people = ABAddressBookCopyArrayOfAllPeople(address_book);
-                    CFIndex count = CFArrayGetCount(people);
-                    
-                    NSMutableArray *addresses = [NSMutableArray arrayWithCapacity:count];
-                    
-                    for (CFIndex i = 0; i<count; i++) {
-                        ABRecordRef person = CFArrayGetValueAtIndex(people, i);
-                        ABMultiValueRef emails = ABRecordCopyValue(person, kABPersonEmailProperty);
-                        for (CFIndex j = 0; j<ABMultiValueGetCount(emails); j++) {
-                            NSString *email = (NSString *)CFBridgingRelease(ABMultiValueCopyValueAtIndex(emails, j));
-                            [addresses addObject:email];
-                        }
-                        CFRelease(emails);
+    ABAddressBookRef addressBookForAccessCheck = ABAddressBookCreateWithOptions(NULL, NULL);
+    if (addressBookForAccessCheck) {
+        addressBookForAccessCheck = CFAutorelease(addressBookForAccessCheck);
+        ABAddressBookRequestAccessWithCompletion(addressBookForAccessCheck, ^(bool granted, CFErrorRef error) {
+            if (granted) {
+                ABAddressBookRef addressBook = ABAddressBookCreateWithOptions(NULL, NULL);
+                addressBook = CFAutorelease(addressBook);
+                CFArrayRef people = ABAddressBookCopyArrayOfAllPeople(addressBook);
+                CFIndex count = CFArrayGetCount(people);
+                NSMutableArray *addresses = [NSMutableArray arrayWithCapacity:count];
+
+                for (CFIndex i = 0; i < count; i++) {
+                    ABRecordRef person = CFArrayGetValueAtIndex(people, i);
+                    ABMultiValueRef emails = ABRecordCopyValue(person, kABPersonEmailProperty);
+                    for (CFIndex j = 0; j<ABMultiValueGetCount(emails); j++) {
+                        NSString *email = (NSString *)CFBridgingRelease(ABMultiValueCopyValueAtIndex(emails, j));
+                        [addresses addObject:email];
                     }
-                    CFRelease(people);
-                    CFRelease(address_book);
-                    
-                    // pipe this addresses into the webview
-                    dispatch_async(dispatch_get_main_queue(), ^{
-                        if (count == 0) {
-                            UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"No Contacts", @"Title of an alert warning the user that the address book does not contain any contacts.")
-                                                                                message:NSLocalizedString(@"No contacts were found in your address book.", @"")
-                                                                               delegate:self
-                                                                      cancelButtonTitle:NSLocalizedString(@"OK",@"")
-                                                                      otherButtonTitles:nil];
-                            [alertView show];
-                            [self.webView stringByEvaluatingJavaScriptFromString:@"FriendFinder.findByEmail()"];
-                        } else {
-                            NSData *jsonData = [NSJSONSerialization dataWithJSONObject:addresses options:0 error:nil];
-                            NSString *json = [[NSString alloc] initWithData:jsonData encoding:NSUTF8StringEncoding];
-                            [self.webView stringByEvaluatingJavaScriptFromString:[NSString stringWithFormat:@"FriendFinder.findByEmail(%@)", json]];
-                        }
-                    });
-                } else {
-                    dispatch_async(dispatch_get_main_queue(), ^{
-                        [self.webView stringByEvaluatingJavaScriptFromString:@"FriendFinder.findByEmail()"];
-                    });
-
+                    CFRelease(emails);
                 }
-                
-            }];
-    
-    return;
-    
+                CFRelease(people);
 
+                dispatch_async(dispatch_get_main_queue(), ^{
+                    if (addresses.count == 0) {
+                        UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"No Contacts", @"Title of an alert warning the user that the address book does not contain any contacts.")
+                                                                            message:NSLocalizedString(@"No contacts were found in your address book.", @"")
+                                                                           delegate:self
+                                                                  cancelButtonTitle:NSLocalizedString(@"OK",@"")
+                                                                  otherButtonTitles:nil];
+                        [alertView show];
+                        [self.webView stringByEvaluatingJavaScriptFromString:@"FriendFinder.findByEmail()"];
+                    } else {
+                        NSData *jsonData = [NSJSONSerialization dataWithJSONObject:addresses options:0 error:nil];
+                        NSString *json = [[NSString alloc] initWithData:jsonData encoding:NSUTF8StringEncoding];
+                        [self.webView stringByEvaluatingJavaScriptFromString:[NSString stringWithFormat:@"FriendFinder.findByEmail(%@)", json]];
+                    }
+                });
+            } else {
+                UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"No Access To Address Book", @"Title of an alert warning the user that the WordPress app is not authorized to access her address book.")
+                                                                    message:NSLocalizedString(@"In order to search your address book, please grant the WordPress app access to your Contacts in the Settings app.", @"")
+                                                                   delegate:self
+                                                          cancelButtonTitle:NSLocalizedString(@"OK",@"")
+                                                          otherButtonTitles:nil];
+
+                dispatch_async(dispatch_get_main_queue(), ^{
+                    [self.webView stringByEvaluatingJavaScriptFromString:@"FriendFinder.findByEmail()"];
+                    [alertView show];
+                });
+            }
+        });
+    } else {
+        UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"No Access To Address Book", @"Title of an alert warning the user that the WordPress app is not authorized to access her address book.")
+                                                            message:NSLocalizedString(@"In order to search your address book, please grant the WordPress app access to your Contacts in the Settings app.", @"")
+                                                           delegate:self
+                                                  cancelButtonTitle:NSLocalizedString(@"OK",@"")
+                                                  otherButtonTitles:nil];
+
+        dispatch_async(dispatch_get_main_queue(), ^{
+            [self.webView stringByEvaluatingJavaScriptFromString:@"FriendFinder.findByEmail()"];
+            [alertView show];
+        });
+    }
 }
 
 - (void)findTwitterFriends {
