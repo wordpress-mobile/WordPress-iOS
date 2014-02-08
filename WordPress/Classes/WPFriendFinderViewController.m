@@ -168,7 +168,7 @@ static NSString *const AccessedAddressBookPreference = @"AddressBookAccessGrante
                                     @"-1", @"cursor",
                                     nil];
             
-            NSURL *followingURL = [NSURL URLWithString:@"http://api.twitter.com/1/friends/ids.json"];
+            NSURL *followingURL = [NSURL URLWithString:@"https://api.twitter.com/1.1/friends/ids.json"];
             NSArray *twitterAccounts = [store accountsWithAccountType:twitterAccountType];
             if (twitterAccounts.count == 0) {
                 UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"No Twitter Account", @"Title of an alert warning the user that no Twitter account was registered on the device.")
