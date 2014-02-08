@@ -10,27 +10,16 @@
 #import <AddressBook/AddressBook.h>
 #import <Accounts/Accounts.h>
 #import <Social/Social.h>
-#import "WPAlertView.h"
 #import "WPFriendFinderViewController.h"
-#import "WordPressAppDelegate.h"
-#import "ReachabilityUtils.h"
 #import "Constants.h"
-
-#define kSearchStatusSearching 0
-#define kSearchStatusError 1
-#define kSearchStatusSearched 2
-
-typedef void (^DismissBlock)(NSInteger buttonIndex);
-typedef void (^CancelBlock)();
 
 static NSString *const FacebookAppID = @"249643311490";
 static NSString *const FacebookLoginNotificationName = @"FacebookLogin";
 static NSString *const FacebookNoLoginNotificationName = @"FacebookNoLogin";
 static NSString *const AccessedAddressBookPreference = @"AddressBookAccessGranted";
 
-@interface WPFriendFinderViewController () <UIAlertViewDelegate>
+@interface WPFriendFinderViewController ()
 
-@property (nonatomic, copy) DismissBlock dismissBlock;
 @property (nonatomic, strong) UIActivityIndicatorView *activityView;
 
 @end
@@ -62,7 +51,6 @@ static NSString *const AccessedAddressBookPreference = @"AddressBookAccessGrante
 
 - (void)dealloc {
     [[NSNotificationCenter defaultCenter] removeObserver:self];
-    self.dismissBlock = nil;
     self.activityView = nil;
 }
 
@@ -274,41 +262,6 @@ static NSString *const AccessedAddressBookPreference = @"AddressBookAccessGrante
             });
         }
     }];
-}
-
-- (UIAlertView *)alertWithTitle:(NSString *)title message:(NSString *)message cancelButtonTitle:(NSString *)cancelButtonTitle confirmButtonTitle:(NSString *)confirmButtonTitle dismissBlock:(DismissBlock)dismiss {
-    NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
-    if([defaults boolForKey:AccessedAddressBookPreference] == YES){
-        dismiss(1);
-        return nil;
-    } else {
-        UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:title message:message delegate:self cancelButtonTitle:cancelButtonTitle otherButtonTitles:confirmButtonTitle, nil];
-        self.dismissBlock = dismiss;
-        [alertView show];
-        return alertView;
-    }
-}
-
-#pragma mark - UIAlertView Delegate Methods
-
-// Called when a button is clicked. The view will be automatically dismissed after this call returns
-- (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex {
-    if (1 == buttonIndex){
-        NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
-        [defaults setBool:YES forKey:AccessedAddressBookPreference];
-        [defaults synchronize];
-    }
-    if (self.dismissBlock) {
-        self.dismissBlock(buttonIndex);
-    }
-}
-
-// Called when we cancel a view (eg. the user clicks the Home button). This is not called when the user clicks the cancel button.
-// If not defined in the delegate, we simulate a click in the cancel button
-- (void)alertViewCancel:(UIAlertView *)alertView {
-    if (self.dismissBlock) {
-        self.dismissBlock(-1);
-    }
 }
 
 #pragma mark - UIWebView Delegate Methods
