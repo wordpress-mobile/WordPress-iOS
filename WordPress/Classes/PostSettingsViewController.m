@@ -80,13 +80,13 @@ static NSString *const TableViewActivityCellIdentifier = @"TableViewActivityCell
 - (void)dealloc {
 
     [[NSNotificationCenter defaultCenter] removeObserver:self];
+    [self removePostPropertiesObserver];
 }
 
 - (id)initWithPost:(AbstractPost *)aPost {
     self = [super init];
     if (self) {
-        _apost = aPost;
-        [self observePostProperties];
+        self.apost = aPost;
     }
     return self;
 }
@@ -167,7 +167,7 @@ static NSString *const TableViewActivityCellIdentifier = @"TableViewActivityCell
 
 #pragma mark - KVO
 
-- (void)observePostProperties {
+- (void)addPostPropertiesObserver {
     [self.post addObserver:self
              forKeyPath:@"post_thumbnail"
                 options:NSKeyValueObservingOptionNew | NSKeyValueObservingOptionOld
@@ -179,6 +179,12 @@ static NSString *const TableViewActivityCellIdentifier = @"TableViewActivityCell
                 context:nil];
 }
 
+- (void)removePostPropertiesObserver {
+
+    [self.post removeObserver:self forKeyPath:@"post_thumbnail"];
+    [self.post removeObserver:self forKeyPath:@"geolocation"];
+}
+
 - (void)observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary *)change context:(void *)context {
     if ([@"post_thumbnail" isEqualToString:keyPath]) {
         self.featuredImage = nil;
@@ -187,6 +193,17 @@ static NSString *const TableViewActivityCellIdentifier = @"TableViewActivityCell
 }
 
 #pragma mark - Instance Methods
+
+- (void)setApost:(AbstractPost *)apost {
+    if ([apost isEqual:_apost]) {
+        return;
+    }
+    if (_apost) {
+        [self removePostPropertiesObserver];
+    }
+    _apost = apost;
+    [self addPostPropertiesObserver];
+}
 
 - (Post *)post {
     if ([self.apost isKindOfClass:[Post class]]) {
