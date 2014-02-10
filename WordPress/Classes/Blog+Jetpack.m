@@ -148,7 +148,6 @@ NSString * const BlogJetpackApiPath = @"get-user-blogs/1.0";
                                      
                                      // Sadly we don't care if this succeeds or not
                                      [account syncBlogsWithSuccess:nil failure:nil];
-                                     [Note fetchNewNotificationsWithSuccess:nil failure:nil];
                                  }
                              } failure:^(NSError *error) {
                                  DDLogError(@"Error while obtaining OAuth2 token after enabling JetPack: %@", error);

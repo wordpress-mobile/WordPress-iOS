@@ -19,16 +19,13 @@
 #import "WPWebViewController.h"
 #import "Note.h"
 
-NSString * const NotificationsLastSyncDateKey = @"NotificationsLastSyncDate";
 NSString * const NotificationsJetpackInformationURL = @"http://jetpack.me/about/";
 
-@interface NotificationsViewController () {
-    BOOL _retrievingNotifications;
-    BOOL _viewHasAppeared;
-}
+@interface NotificationsViewController ()
 
 @property (nonatomic, strong) id authListener;
 @property (nonatomic, assign) BOOL isPushingViewController;
+@property (nonatomic, assign) BOOL viewHasAppeared;
 
 @end
 
@@ -111,8 +108,8 @@ NSString * const NotificationsJetpackInformationURL = @"http://jetpack.me/about/
 - (void)viewDidAppear:(BOOL)animated {
     [super viewDidAppear:animated];
 
-    if (!_viewHasAppeared) {
-        _viewHasAppeared = YES;
+    if (!self.viewHasAppeared) {
+        self.viewHasAppeared = YES;
         [WPMobileStats incrementProperty:StatsPropertyNotificationsOpened forEvent:StatsEventAppClosed];
     }
     
@@ -128,29 +125,13 @@ NSString * const NotificationsJetpackInformationURL = @"http://jetpack.me/about/
 
 - (void)viewDidDisappear:(BOOL)animated {
     [super viewDidDisappear:animated];
-    if (!_isPushingViewController)
+    if (!_isPushingViewController) {
         [self pruneOldNotes];
+	}
 }
 
 
 #pragma mark - Custom methods
-
-- (void)refreshUnreadNotes {
-    [Note refreshUnreadNotesWithContext:self.resultsController.managedObjectContext];
-}
-
-- (void)updateSyncDate {
-    // get the most recent note
-    NSArray *notes = self.resultsController.fetchedObjects;
-    if ([notes count] > 0) {
-        Note *note = [notes objectAtIndex:0];
-        [[[WPAccount defaultWordPressComAccount] restApi] updateNoteLastSeenTime:note.timestamp success:nil failure:nil];
-    }
-
-    NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
-    [defaults setObject:[NSDate date] forKey:NotificationsLastSyncDateKey];
-    [defaults synchronize];
-}
 
 - (void)pruneOldNotes {
     NSNumber *pruneBefore;
@@ -209,16 +190,14 @@ NSString * const NotificationsJetpackInformationURL = @"http://jetpack.me/about/
         [self.tableView deselectRowAtIndexPath:indexPath animated:YES];
     }
     if(note.isUnread) {
-        note.unread = @(0);
+        note.unread = @(false);
+		[[ContextManager sharedInstance] saveContext:note.managedObjectContext];
+		
         [self.tableView reloadRowsAtIndexPaths:[NSArray arrayWithObject:indexPath] withRowAnimation:UITableViewRowAnimationNone];
 
         if(hasDetailsView) {
             [self.tableView selectRowAtIndexPath:indexPath animated:NO scrollPosition:UITableViewScrollPositionNone];
         }
-        
-        [note markAsReadWithSuccess:nil failure:^(NSError *error){
-            note.unread = @(1);
-        }];
     }
 }
 
@@ -245,13 +224,12 @@ NSString * const NotificationsJetpackInformationURL = @"http://jetpack.me/about/
 }
 
 - (NSDate *)lastSyncDate {
-    return [[NSUserDefaults standardUserDefaults] objectForKey:NotificationsLastSyncDateKey];
+    return [NSDate date];
 }
 
 - (NSFetchRequest *)fetchRequest {
     NSFetchRequest *fetchRequest = [NSFetchRequest fetchRequestWithEntityName:[self entityName]];
-    NSSortDescriptor *dateSortDescriptor = [NSSortDescriptor sortDescriptorWithKey:@"timestamp" ascending:NO];
-    fetchRequest.sortDescriptors = @[dateSortDescriptor];
+    fetchRequest.sortDescriptors = @[ [NSSortDescriptor sortDescriptorWithKey:@"timestamp" ascending:NO] ];
     fetchRequest.fetchBatchSize = 10;
     return fetchRequest;
 }
@@ -271,71 +249,19 @@ NSString * const NotificationsJetpackInformationURL = @"http://jetpack.me/about/
 }
 
 - (BOOL)userCanRefresh {
-    return [WPAccount defaultWordPressComAccount] != nil;
-}
-
-- (void)syncItemsViaUserInteraction:(BOOL)userInteraction success:(void (^)())success failure:(void (^)(NSError *error))failure {
-    if (userInteraction) {
-        [self pruneOldNotes];
-    }
-    
-    NSNumber *timestamp;
-    NSArray *notes = [self.resultsController fetchedObjects];
-    if (userInteraction == NO && [notes count] > 0) {
-        Note *note = [notes objectAtIndex:0];
-        timestamp = note.timestamp;
-    } else {
-        timestamp = nil;
-    }
-    
-    [Note fetchNotificationsSince:timestamp success:^{
-        [self updateSyncDate];
-        if (success) {
-            success();
-        }
-    } failure:failure];
+    return NO;
 }
 
 - (BOOL)hasMoreContent {
-    return YES;
+    return NO;
 }
 
-- (BOOL)isSyncing
-{
-    return _retrievingNotifications;
-}
-
-- (void)setSyncing:(BOOL)value {
-    _retrievingNotifications = value;
-}
-
-- (void)syncItems
-{
-    // Check to see if there is a WordPress.com account before attempting to fetch notifications
-    if ([WPAccount defaultWordPressComAccount]) {
-        [super syncItems];
-    }
+- (void)syncItems {
+	// No-Op. Handled by Simperium!
 }
 
 - (void)loadMoreWithSuccess:(void (^)())success failure:(void (^)(NSError *))failure {
-    Note *lastNote = [self.resultsController.fetchedObjects lastObject];
-    if (lastNote == nil) {
-        return;
-    }
-    
-    _retrievingNotifications = YES;
-    
-    [Note fetchNotificationsBefore:lastNote.timestamp success:^{
-        _retrievingNotifications = NO;
-        if (success) {
-            success();
-        }
-    } failure:^(NSError *error) {
-        _retrievingNotifications = NO;
-        if (failure) {
-            failure(error);
-        }
-    }];
+	// No-Op. Handled by Simperium!
 }
 
 #pragma mark - DetailViewDelegate

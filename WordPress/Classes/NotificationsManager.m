@@ -11,6 +11,7 @@
 #import "Note.h"
 #import "WordPressAppDelegate.h"
 #import "WPAccount.h"
+#import "WPMobileStats.h"
 #import "WordPressComApi.h"
 #import "UIDevice+WordPressIdentifier.h"
 #import <WPXMLRPCClient.h>
@@ -106,19 +107,21 @@ NSString *const NotificationsDeviceToken = @"apnsDeviceToken";
             break;
             
         case UIApplicationStateBackground:
-            if (completionHandler) {
-                [Note fetchNewNotificationsWithSuccess:^(BOOL hasNewNotes) {
-                    DDLogInfo(@"notification fetch completion handler completed with new notes: %@", hasNewNotes ? @"YES" : @"NO");
-                    if (hasNewNotes) {
-                        completionHandler(UIBackgroundFetchResultNewData);
-                    } else {
-                        completionHandler(UIBackgroundFetchResultNoData);
-                    }
-                } failure:^(NSError *error) {
-                    DDLogError(@"notification fetch completion handler failed with error: %@", error);
-                    completionHandler(UIBackgroundFetchResultFailed);
-                }];
-            }
+#warning TODO: FIXME
+			completionHandler(UIBackgroundFetchResultNoData);
+//            if (completionHandler) {
+//                [Note fetchNewNotificationsWithSuccess:^(BOOL hasNewNotes) {
+//                    DDLogInfo(@"notification fetch completion handler completed with new notes: %@", hasNewNotes ? @"YES" : @"NO");
+//                    if (hasNewNotes) {
+//                        completionHandler(UIBackgroundFetchResultNewData);
+//                    } else {
+//                        completionHandler(UIBackgroundFetchResultNoData);
+//                    }
+//                } failure:^(NSError *error) {
+//                    DDLogError(@"notification fetch completion handler failed with error: %@", error);
+//                    completionHandler(UIBackgroundFetchResultFailed);
+//                }];
+//            }
             break;
         default:
             break;

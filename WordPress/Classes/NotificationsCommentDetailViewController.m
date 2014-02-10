@@ -300,15 +300,16 @@ const CGFloat NotificationsCommentDetailViewControllerReplyTextViewDefaultHeight
     NSString *path = [NSString stringWithFormat:@"/rest/v1%@", [commentAction valueForKeyPath:@"params.rest_path"]];
     
     [[[WPAccount defaultWordPressComAccount] restApi] postPath:path parameters:[commentAction valueForKeyPath:@"params.rest_body"] success:^(AFHTTPRequestOperation *operation, id responseObject) {
-        NSDictionary *response = (NSDictionary *)responseObject;
-        if (response) {
-            [_note refreshNoteDataWithSuccess:^{
-                // Buttons are adjusted optimistically, so no need to update UI
-            } failure:^(NSError *error) {
-                // Fail silently but force a refresh to revert any optimistic changes
-                [self displayNote];
-            }];
-        }
+#warning TODO: FIX FIX
+//        NSDictionary *response = (NSDictionary *)responseObject;
+//        if (response) {
+//            [_note refreshNoteDataWithSuccess:^{
+//                // Buttons are adjusted optimistically, so no need to update UI
+//            } failure:^(NSError *error) {
+//                // Fail silently but force a refresh to revert any optimistic changes
+//                [self displayNote];
+//            }];
+//        }
     } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
         DDLogVerbose(@"[Rest API] ! %@", [error localizedDescription]);
     }];

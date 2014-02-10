@@ -776,7 +776,6 @@ CGFloat const GeneralWalkthroughStatusBarOffset = 20.0;
         [self setAuthenticating:NO withStatusMessage:nil];
         [self displayRemoteError:error];
     }];
-    [Note fetchNewNotificationsWithSuccess:nil failure:nil];
 }
 
 - (void)createSelfHostedAccountAndBlogWithUsername:(NSString *)username password:(NSString *)password xmlrpc:(NSString *)xmlrpc options:(NSDictionary *)options

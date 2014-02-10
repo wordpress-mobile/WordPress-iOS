@@ -306,21 +306,6 @@ const NSUInteger NoteKeepCount = 20;
 
 @implementation Note (WordPressComApi)
 
-+ (void)fetchNewNotificationsWithSuccess:(void (^)(BOOL hasNewNotes))success failure:(void (^)(NSError *error))failure {
-    NSNumber *timestamp = [self lastNoteTimestampWithContext:[ContextManager sharedInstance].mainContext];
-    
-    [[[WPAccount defaultWordPressComAccount] restApi] fetchNotificationsSince:timestamp success:^(NSArray *notes) {
-        [Note mergeNewNotes:notes];
-        if (success) {
-            success([notes count] > 0);
-        }
-    } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
-        if (failure) {
-            failure(error);
-        }
-    }];
-}
-
 + (void)refreshUnreadNotesWithContext:(NSManagedObjectContext *)context {
     NSFetchRequest *request = [[ContextManager sharedInstance].managedObjectModel fetchRequestTemplateForName:@"UnreadNotes"];
     NSError *error = nil;
@@ -333,32 +318,6 @@ const NSUInteger NoteKeepCount = 20;
         
         [[[WPAccount defaultWordPressComAccount] restApi] refreshNotifications:array fields:@"id,unread" success:nil failure:nil];
     }
-}
-
-+ (void)fetchNotificationsBefore:(NSNumber *)timestamp success:(void (^)())success failure:(void (^)(NSError *))failure {
-    [[[WPAccount defaultWordPressComAccount] restApi] fetchNotificationsBefore:timestamp success:^(NSArray *notes) {
-        [self mergeNewNotes:notes];
-        if (success) {
-            success();
-        }
-    } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
-        if (failure) {
-            failure(error);
-        }
-    }];
-}
-
-+ (void)fetchNotificationsSince:(NSNumber *)timestamp success:(void (^)())success failure:(void (^)(NSError *))failure {
-    [[[WPAccount defaultWordPressComAccount] restApi] fetchNotificationsSince:timestamp success:^(NSArray *notes) {
-        [self mergeNewNotes:notes];
-        if (success) {
-            success();
-        }
-    } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
-        if (failure) {
-            failure(error);
-        }
-    }];
 }
 
 - (void)refreshNoteDataWithSuccess:(void (^)())success failure:(void (^)(NSError *))failure {
@@ -375,18 +334,6 @@ const NSUInteger NoteKeepCount = 20;
                 failure(error);
             }
         }];
-}
-
-- (void)markAsReadWithSuccess:(void (^)())success failure:(void (^)(NSError *))failure {
-    [[[WPAccount defaultWordPressComAccount] restApi] markNoteAsRead:self.noteID success:^(AFHTTPRequestOperation *operation, id responseObject) {
-        if (success) {
-            success();
-        }
-    } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
-        if (failure) {
-            failure(error);
-        }
-    }];
 }
 
 @end

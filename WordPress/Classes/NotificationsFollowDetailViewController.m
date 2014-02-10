@@ -39,7 +39,7 @@
     self = [super init];
     if (self) {
         _note = note;
-        self.title = _note.subject;
+        self.title = _note.subjectText;
     }
     return self;
 }
@@ -76,9 +76,9 @@
         }
     }
     
-    if (_note.subject) {
+    if (_note.subjectText) {
         // Silly way to get the post title until we get it from the API directly
-        NSArray *quotedText = [_note.subject componentsSeparatedByString: @"\""];
+        NSArray *quotedText = [_note.subjectText componentsSeparatedByString: @"\""];
         if ([quotedText count] >= 3) {
             NSString *postTitle = [[quotedText objectAtIndex:[quotedText count] - 2] stringByDecodingXMLCharacters];
             [_postTitleLabel setText:postTitle];

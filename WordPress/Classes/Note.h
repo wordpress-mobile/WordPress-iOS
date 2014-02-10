@@ -47,11 +47,7 @@
 
 @interface Note (WordPressComApi)
 
-+ (void)fetchNewNotificationsWithSuccess:(void (^)(BOOL hasNewNotes))success failure:(void (^)(NSError *error))failure;
 + (void)refreshUnreadNotesWithContext:(NSManagedObjectContext *)context;
-+ (void)fetchNotificationsSince:(NSNumber *)timestamp success:(void (^)())success failure:(void (^)(NSError *error))failure;
-+ (void)fetchNotificationsBefore:(NSNumber *)timestamp success:(void (^)())success failure:(void (^)(NSError *error))failure;
 - (void)refreshNoteDataWithSuccess:(void (^)())success failure:(void (^)(NSError *error))failure;
-- (void)markAsReadWithSuccess:(void (^)())success failure:(void (^)(NSError *error))failure;
 
 @end
