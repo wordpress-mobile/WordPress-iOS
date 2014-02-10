@@ -14,13 +14,17 @@
 
 static LocationService *instance;
 static NSInteger const LocationHorizontalAccuracyThreshold = 50; // Meters
+static NSInteger const LocationServiceTimeoutDuration = 3; // Seconds
+NSString *const LocationServiceErrorDomain = @"LocationServiceErrorDomain";
 
 @interface LocationService()<CLLocationManagerDelegate>
 @property (nonatomic, strong) CLLocationManager *locationManager;
 @property (nonatomic, strong) CLGeocoder *geocoder;
 @property (nonatomic, strong) LocationServiceCompletionBlock completionBlock;
 @property (nonatomic, strong) NSMutableArray *completionBlocks;
+@property (nonatomic, strong) NSTimer *timeoutClock;
 @property (nonatomic, readwrite) BOOL locationServiceRunning;
+@property (nonatomic, strong) CLLocation *lastUpdatedLocation;
 @property (nonatomic, strong, readwrite) CLLocation *lastGeocodedLocation;
 @property (nonatomic, strong, readwrite) NSString *lastGeocodedAddress;
 @end
@@ -63,7 +67,7 @@ static NSInteger const LocationHorizontalAccuracyThreshold = 50; // Meters
     if (completionBlock) {
         [self.completionBlocks addObject:completionBlock];
     }
-    [self startService];
+    [self startUpdatingLocation];
 }
 
 - (void)getAddressForLocation:(CLLocation *)location completion:(LocationServiceCompletionBlock)completionBlock {
@@ -101,7 +105,7 @@ static NSInteger const LocationHorizontalAccuracyThreshold = 50; // Meters
     }];
 }
 
-- (void)locationUpdated:(CLLocation *)location {
+- (void)getAddressForLocation:(CLLocation *)location {
     [self getAddressForLocation:location completion:nil];
 }
 
@@ -126,14 +130,37 @@ static NSInteger const LocationHorizontalAccuracyThreshold = 50; // Meters
     [self.completionBlocks removeAllObjects];
 }
 
-- (void)startService {
-    [self stopService];
+- (void)startUpdatingLocation {
+    [self stopUpdatingLocation];
     self.locationServiceRunning = YES;
     [self.locationManager startUpdatingLocation];
+    self.timeoutClock = [NSTimer scheduledTimerWithTimeInterval:LocationServiceTimeoutDuration
+                                                         target:self
+                                                       selector:@selector(timeoutUpdatingLocation)
+                                                       userInfo:nil
+                                                        repeats:NO];
 }
 
-- (void)stopService {
+- (void)stopUpdatingLocation {
     [self.locationManager stopUpdatingLocation];
+    [self.timeoutClock invalidate];
+    self.timeoutClock = nil;
+    self.lastUpdatedLocation = nil;
+}
+
+- (void)timeoutUpdatingLocation {
+    CLLocation *lastLocation = self.lastUpdatedLocation;
+    [self stopUpdatingLocation];
+    
+    if (lastLocation) {
+        [self getAddressForLocation:lastLocation];
+    } else {
+        NSString *description = @"Unable to find the current location in a reasonable amount of time.";
+        NSError *error = [NSError errorWithDomain:LocationServiceErrorDomain
+                                             code:LocationServiceErrorLocationServiceTimedOut
+                                         userInfo:@{NSLocalizedDescriptionKey:description}];
+        [self serviceFailed:error];
+    }
 }
 
 #pragma mark - CLLocationManager Delegate Methods
@@ -146,12 +173,14 @@ static NSInteger const LocationHorizontalAccuracyThreshold = 50; // Meters
     CLLocation *location = [locations lastObject]; // The last item is the most recent.
     
 #if TARGET_IPHONE_SIMULATOR
-    [self stopService];
-    [self locationUpdated:location];
+    [self stopUpdatingLocation];
+    [self getAddressForLocation:location];
 #else
     if (location.horizontalAccuracy > 0 && location.horizontalAccuracy < LocationHorizontalAccuracyThreshold) {
-        [self stopService];
-        [self locationUpdated:location];
+        [self stopUpdatingLocation];
+        [self getAddressForLocation:location];
+    } else {
+        self.lastUpdatedLocation = location;
     }
 #endif
 }
