@@ -58,12 +58,11 @@
     for (UIView *view in self.navigationController.toolbar.subviews) {
         [view setExclusiveTouch:YES];
     }
-    
-    if ([[LocationService sharedService] locationServiceRunning]) {
-        // Register our own completion block for when the location/geo lookup completes.
-        [self updateLocation];
-    } else {
+
+    if (self.post.geolocation) {
         [self refreshView];
+    } else {
+        [self updateLocation];
     }
 }
 
