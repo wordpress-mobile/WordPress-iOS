@@ -49,7 +49,6 @@ const NSUInteger NoteKeepCount = 20;
 @dynamic unread;
 @dynamic icon;
 @dynamic noteID;
-@dynamic account;
 @synthesize commentText = _commentText;
 @synthesize noteData = _noteData;
 @synthesize date = _date;
