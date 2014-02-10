@@ -209,7 +209,7 @@ NSString * const NotificationsJetpackInformationURL = @"http://jetpack.me/about/
         [self.tableView deselectRowAtIndexPath:indexPath animated:YES];
     }
     if(note.isUnread) {
-        note.unread = [NSNumber numberWithInt:0];
+        note.unread = @(0);
         [self.tableView reloadRowsAtIndexPaths:[NSArray arrayWithObject:indexPath] withRowAnimation:UITableViewRowAnimationNone];
 
         if(hasDetailsView) {
@@ -217,20 +217,22 @@ NSString * const NotificationsJetpackInformationURL = @"http://jetpack.me/about/
         }
         
         [note markAsReadWithSuccess:nil failure:^(NSError *error){
-            note.unread = [NSNumber numberWithInt:1];
+            note.unread = @(1);
         }];
     }
 }
 
 - (BOOL)noteHasDetailView:(Note *)note {
-    if ([note isComment])
+    if ([note isComment]) {
         return YES;
+	}
     
     NSDictionary *noteBody = [[note noteData] objectForKey:@"body"];
     if (noteBody) {
         NSString *noteTemplate = [noteBody objectForKey:@"template"];
-        if ([noteTemplate isEqualToString:@"single-line-list"] || [noteTemplate isEqualToString:@"multi-line-list"])
+        if ([noteTemplate isEqualToString:@"single-line-list"] || [noteTemplate isEqualToString:@"multi-line-list"]) {
             return YES;
+		}
     }
     
     return NO;
@@ -239,7 +241,7 @@ NSString * const NotificationsJetpackInformationURL = @"http://jetpack.me/about/
 #pragma mark - WPTableViewController subclass methods
 
 - (NSString *)entityName {
-    return @"Note";
+    return NSStringFromClass([Note class]);
 }
 
 - (NSDate *)lastSyncDate {
@@ -247,7 +249,7 @@ NSString * const NotificationsJetpackInformationURL = @"http://jetpack.me/about/
 }
 
 - (NSFetchRequest *)fetchRequest {
-    NSFetchRequest *fetchRequest = [NSFetchRequest fetchRequestWithEntityName:@"Note"];
+    NSFetchRequest *fetchRequest = [NSFetchRequest fetchRequestWithEntityName:[self entityName]];
     NSSortDescriptor *dateSortDescriptor = [NSSortDescriptor sortDescriptorWithKey:@"timestamp" ascending:NO];
     fetchRequest.sortDescriptors = @[dateSortDescriptor];
     fetchRequest.fetchBatchSize = 10;
