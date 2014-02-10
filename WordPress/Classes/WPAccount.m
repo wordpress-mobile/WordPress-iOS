@@ -134,8 +134,7 @@ NSString * const WPAccountDefaultWordPressComAccountChangedNotification = @"WPAc
 #pragma mark - Account creation
 
 + (WPAccount *)createOrUpdateWordPressComAccountWithUsername:(NSString *)username password:(NSString *)password authToken:(NSString *)authToken {
-#warning TODO: Verify
-	NSAssert([NSThread isMainThread], @"This method should never be called in BG mode");
+	NSAssert([NSThread isMainThread], @"This method should never be called in background");
 
     WPAccount *account = [self createOrUpdateSelfHostedAccountWithXmlrpc:WordPressDotcomXMLRPCKey username:username andPassword:password];
 	account.isWpcom = YES;
@@ -145,8 +144,7 @@ NSString * const WPAccountDefaultWordPressComAccountChangedNotification = @"WPAc
 }
 
 + (WPAccount *)createOrUpdateSelfHostedAccountWithXmlrpc:(NSString *)xmlrpc username:(NSString *)username andPassword:(NSString *)password {
-#warning TODO: Verify
-	NSAssert([NSThread isMainThread], @"This method should never be called in BG mode");
+	NSAssert([NSThread isMainThread], @"This method should never be called in background");
 	
 	NSManagedObjectContext *context = [[ContextManager sharedInstance] mainContext];
 
