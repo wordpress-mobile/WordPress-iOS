@@ -343,8 +343,7 @@ static NSString *const CameraPlusImagesNotification = @"CameraPlusImagesNotifica
     return blogCount == 0 && ![WPAccount defaultWordPressComAccount];
 }
 
-- (void)customizeAppearance
-{
+- (void)customizeAppearance {
     UIColor *defaultTintColor = self.window.tintColor;
     self.window.tintColor = [WPStyleGuide newKidOnTheBlockBlue];
     
@@ -629,8 +628,7 @@ static NSString *const CameraPlusImagesNotification = @"CameraPlusImagesNotifica
     [self setCommonCrashlyticsParameters];
 }
 
-- (void)crashlytics:(Crashlytics *)crashlytics didDetectCrashDuringPreviousExecution:(id<CLSCrashReport>)crash
-{
+- (void)crashlytics:(Crashlytics *)crashlytics didDetectCrashDuringPreviousExecution:(id<CLSCrashReport>)crash {
     DDLogMethod();
     NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
     NSInteger crashCount = [defaults integerForKey:@"crashCount"];
@@ -640,8 +638,7 @@ static NSString *const CameraPlusImagesNotification = @"CameraPlusImagesNotifica
     [WPMobileStats trackEventForSelfHostedAndWPCom:@"Crashed" properties:@{@"crash_id": crash.identifier}];
 }
 
-- (void)setCommonCrashlyticsParameters
-{
+- (void)setCommonCrashlyticsParameters {
 	WPAccount* account		= [WPAccount defaultWordPressComAccount];
 	NSUInteger blogCount	= [Blog countWithContext:[[ContextManager sharedInstance] mainContext]];
     BOOL loggedIn			= (account != nil);
@@ -869,8 +866,7 @@ static NSString *const CameraPlusImagesNotification = @"CameraPlusImagesNotifica
 
 #pragma mark - Simperium
 
-- (void)setupSimperium
-{
+- (void)setupSimperium {
 	self.simperium = [[Simperium alloc] initWithRootViewController:self.tabBarController];
 	self.simperium.authenticationEnabled = NO;
 	self.simperium.verboseLoggingEnabled = YES;
@@ -886,8 +882,7 @@ static NSString *const CameraPlusImagesNotification = @"CameraPlusImagesNotifica
 	[self loginSimperium];
 }
 
-- (void)loginSimperium
-{
+- (void)loginSimperium {
 	WPAccount *account = [WPAccount defaultWordPressComAccount];
 	NSString *apiKey = [WordPressComApiCredentials simperiumAPIKey];
 
@@ -899,8 +894,7 @@ static NSString *const CameraPlusImagesNotification = @"CameraPlusImagesNotifica
 	[self.simperium authenticateWithToken:simperiumToken];
 }
 
-- (void)logoutSimperiumAndResetNotifications
-{
+- (void)logoutSimperiumAndResetNotifications {
 	[self.simperium signOutAndRemoveLocalData:YES];
 }
 
@@ -908,7 +902,7 @@ static NSString *const CameraPlusImagesNotification = @"CameraPlusImagesNotifica
 #pragma mark - Keychain
 
 + (void)wipeAllKeychainItems
-{
++ (void)wipeAllKeychainItems {
     NSArray *secItemClasses = @[(__bridge id)kSecClassGenericPassword,
                                 (__bridge id)kSecClassInternetPassword,
                                 (__bridge id)kSecClassCertificate,
@@ -920,8 +914,7 @@ static NSString *const CameraPlusImagesNotification = @"CameraPlusImagesNotifica
     }
 }
 
-+ (void)fixKeychainAccess
-{
++ (void)fixKeychainAccess {
 	NSDictionary *query = @{
                             (__bridge id)kSecClass: (__bridge id)kSecClassGenericPassword,
                             (__bridge id)kSecAttrAccessible: (__bridge id)kSecAttrAccessibleWhenUnlocked,
@@ -1127,7 +1120,6 @@ static NSString *const CameraPlusImagesNotification = @"CameraPlusImagesNotifica
     [nc addObserver:self selector:@selector(defaultWordPressAccountWasRemoved:) name:WPAccountWordPressComAccountWasRemovedNotification object:nil];
 }
 
-#warning TODO: Decouple Me!
 - (void)defaultWordPressAccountWasAdded:(NSNotification *)notification {
     [self setCommonCrashlyticsParameters];
 	[self toggleExtraDebuggingIfNeeded];
