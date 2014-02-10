@@ -44,8 +44,5 @@
 @end
 
 @interface Note (WordPressComApi)
-
-+ (void)refreshUnreadNotesWithContext:(NSManagedObjectContext *)context;
 - (void)refreshNoteDataWithSuccess:(void (^)())success failure:(void (^)(NSError *error))failure;
-
 @end

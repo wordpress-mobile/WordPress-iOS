@@ -276,20 +276,6 @@ const NSUInteger NoteKeepCount = 20;
 
 @implementation Note (WordPressComApi)
 
-+ (void)refreshUnreadNotesWithContext:(NSManagedObjectContext *)context {
-    NSFetchRequest *request = [[ContextManager sharedInstance].managedObjectModel fetchRequestTemplateForName:@"UnreadNotes"];
-    NSError *error = nil;
-    NSArray *notes = [context executeFetchRequest:request error:&error];
-    if ([notes count] > 0) {
-        NSMutableArray *array = [NSMutableArray arrayWithCapacity:notes.count];
-        for (Note *note in notes) {
-            [array addObject:note.noteID];
-        }
-        
-        [[[WPAccount defaultWordPressComAccount] restApi] refreshNotifications:array fields:@"id,unread" success:nil failure:nil];
-    }
-}
-
 - (void)refreshNoteDataWithSuccess:(void (^)())success failure:(void (^)(NSError *))failure {
     [[[WPAccount defaultWordPressComAccount] restApi] refreshNotifications:@[self.noteID] fields:nil success:^(NSArray *updatedNotes){
             if ([updatedNotes count] > 0 && ![self isDeleted] && self.managedObjectContext) {
