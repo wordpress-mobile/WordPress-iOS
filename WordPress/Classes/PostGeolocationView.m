@@ -69,6 +69,10 @@ const CGFloat GeoViewMinHeight = 130.0f;
 }
 
 - (void)setCoordinate:(Coordinate *)coordinate {
+    if ([coordinate isEqual:_coordinate]) {
+        return;
+    }
+    
     _coordinate = coordinate;
 
     [self.mapView removeAnnotation:self.annotation];
