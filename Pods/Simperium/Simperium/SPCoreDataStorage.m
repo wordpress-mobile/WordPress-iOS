@@ -454,7 +454,9 @@ static NSInteger const SPWorkersDone	= 0;
 	NSDictionary *userInfo	= notification.userInfo;
 	NSMutableSet *locallyDeleted = [NSMutableSet set];
 	for (SPManagedObject* mainMO in userInfo[NSDeletedObjectsKey]) {
-		
+		if ([mainMO isKindOfClass:[SPManagedObject class]] == NO) {
+			continue;
+		}
 		if ([self.remotelyDeletedKeys containsObject:mainMO.simperiumKey] == NO) {
 			// We'll need to post it
 			[locallyDeleted addObject:mainMO];
