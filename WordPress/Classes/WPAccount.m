@@ -22,7 +22,8 @@ static NSString * const WordPressDotcomXMLRPCKey = @"https://wordpress.com/xmlrp
 
 static WPAccount *__defaultDotcomAccount = nil;
 
-NSString * const WPAccountDefaultWordPressComAccountChangedNotification = @"WPAccountDefaultWordPressComAccountChangedNotification";
+NSString * const WPAccountWordPressComAccountWasAddedNotification	= @"WPAccountWordPressComAccountWasAddedNotification";
+NSString * const WPAccountWordPressComAccountWasRemovedNotification	= @"WPAccountWordPressComAccountWasRemovedNotification";
 
 
 @interface WPAccount ()
@@ -85,12 +86,14 @@ NSString * const WPAccountDefaultWordPressComAccountChangedNotification = @"WPAc
     NSURL *accountURL = [[account objectID] URIRepresentation];
     [[NSUserDefaults standardUserDefaults] setURL:accountURL forKey:DefaultDotcomAccountDefaultsKey];
     [[NSUserDefaults standardUserDefaults] synchronize];
-    [[NSNotificationCenter defaultCenter] postNotificationName:WPAccountDefaultWordPressComAccountChangedNotification object:account];
+    [[NSNotificationCenter defaultCenter] postNotificationName:WPAccountWordPressComAccountWasAddedNotification object:account];
     
     [NotificationsManager registerForPushNotifications];
 }
 
 + (void)removeDefaultWordPressComAccount {
+	NSAssert([NSThread isMainThread], @"This method should never be called in background");
+	
     if (!__defaultDotcomAccount) {
         return;
     }
@@ -98,19 +101,12 @@ NSString * const WPAccountDefaultWordPressComAccountChangedNotification = @"WPAc
     [[NSUserDefaults standardUserDefaults] removeObjectForKey:DefaultDotcomAccountDefaultsKey];
 	[[NSUserDefaults standardUserDefaults] synchronize];
 		
-    NSManagedObjectID *accountObjectID = __defaultDotcomAccount.objectID;
+	NSManagedObjectContext *context = [[ContextManager sharedInstance] mainContext];
+	[context deleteObject:__defaultDotcomAccount];
+	[[ContextManager sharedInstance] saveContext:context];
+	
     __defaultDotcomAccount = nil;
-
-    dispatch_async(dispatch_get_main_queue(), ^{
-        [[NSNotificationCenter defaultCenter] postNotificationName:WPAccountDefaultWordPressComAccountChangedNotification object:nil];
-    });
-
-	NSManagedObjectContext *context = [ContextManager sharedInstance].newDerivedContext;
-    [context performBlock:^{
-        WPAccount *account = (WPAccount *)[context objectWithID:accountObjectID];
-        [context deleteObject:account];
-        [[ContextManager sharedInstance] saveDerivedContext:context];
-    }];
+	[[NSNotificationCenter defaultCenter] postNotificationName:WPAccountWordPressComAccountWasRemovedNotification object:nil];
 }
 
 - (void)prepareForDeletion {

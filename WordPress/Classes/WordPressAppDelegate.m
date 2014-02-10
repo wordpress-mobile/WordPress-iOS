@@ -85,7 +85,7 @@ static NSString *const CameraPlusImagesNotification = @"CameraPlusImagesNotifica
 
 - (BOOL)application:(UIApplication *)application willFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
     [WordPressAppDelegate fixKeychainAccess];
-
+	
 	// Simperium Setup
 	[self setupSimperium];
 	
@@ -99,7 +99,7 @@ static NSString *const CameraPlusImagesNotification = @"CameraPlusImagesNotifica
     [self printDebugLaunchInfoWithLaunchOptions:launchOptions];
     [self toggleExtraDebuggingIfNeeded];
     [self removeCredentialsForDebug];
-		
+			
     // Stats and feedback
     [WPMobileStats initializeStats];
     [[GPPSignIn sharedInstance] setClientID:[WordPressComApiCredentials googlePlusClientId]];
@@ -642,9 +642,9 @@ static NSString *const CameraPlusImagesNotification = @"CameraPlusImagesNotifica
 
 - (void)setCommonCrashlyticsParameters
 {
-	WPAccount* account = [WPAccount defaultWordPressComAccount];
-	NSUInteger blogCount = [Blog countWithContext:[[ContextManager sharedInstance] mainContext]];
-    BOOL loggedIn = (account != nil);
+	WPAccount* account		= [WPAccount defaultWordPressComAccount];
+	NSUInteger blogCount	= [Blog countWithContext:[[ContextManager sharedInstance] mainContext]];
+    BOOL loggedIn			= (account != nil);
 	
     [Crashlytics setObjectValue:@(loggedIn) forKey:@"logged_in"];
     [Crashlytics setObjectValue:@(loggedIn) forKey:@"connected_to_dotcom"];
@@ -889,19 +889,19 @@ static NSString *const CameraPlusImagesNotification = @"CameraPlusImagesNotifica
 - (void)loginSimperium
 {
 	WPAccount *account = [WPAccount defaultWordPressComAccount];
-	NSString *appId = [WordPressComApiCredentials simperiumAppId];
+	NSString *apiKey = [WordPressComApiCredentials simperiumAPIKey];
 
-	if (!account.authToken.length || !appId.length) {
+	if (!account.authToken.length || !apiKey.length) {
 		return;
 	}
 	
-	NSString *simperiumToken = [NSString stringWithFormat:@"WPCC/%@/%@", [WordPressComApiCredentials simperiumAPIKey], account.authToken];
+	NSString *simperiumToken = [NSString stringWithFormat:@"WPCC/%@/%@", apiKey, account.authToken];
 	[self.simperium authenticateWithToken:simperiumToken];
 }
 
-- (void)logoutSimperium
+- (void)logoutSimperiumAndResetNotifications
 {
-	[self.simperium signOutAndRemoveLocalData:NO];
+	[self.simperium signOutAndRemoveLocalData:YES];
 }
 
 
@@ -1122,29 +1122,28 @@ static NSString *const CameraPlusImagesNotification = @"CameraPlusImagesNotifica
 #pragma mark - Notifications
 
 - (void)hookAccountNotifications {
-	
 	NSNotificationCenter *nc = [NSNotificationCenter defaultCenter];
-    [nc addObserver:self selector:@selector(defaultAccountDidChange:) name:WPAccountDefaultWordPressComAccountChangedNotification object:nil];
+    [nc addObserver:self selector:@selector(defaultWordPressAccountWasAdded:) name:WPAccountWordPressComAccountWasAddedNotification object:nil];
+    [nc addObserver:self selector:@selector(defaultWordPressAccountWasRemoved:) name:WPAccountWordPressComAccountWasRemovedNotification object:nil];
 }
 
-- (void)defaultAccountDidChange:(NSNotification *)notification {
-
 #warning TODO: Decouple Me!
-	
+- (void)defaultWordPressAccountWasAdded:(NSNotification *)notification {
     [self setCommonCrashlyticsParameters];
 	[self toggleExtraDebuggingIfNeeded];
 	
-    // If the notification object is not nil, then it's a login
-    if (notification.object) {
-		[NotificationsManager registerForPushNotifications];
-		[self loginSimperium];
-        [ReaderPost fetchPostsWithCompletionHandler:nil];
-		
-    } else {
-		[NotificationsManager unregisterDeviceToken];
-		[self logoutSimperium];
-        [self showWelcomeScreenIfNeededAnimated:NO];
-    }
+	[NotificationsManager registerForPushNotifications];
+	[self loginSimperium];
+	[ReaderPost fetchPostsWithCompletionHandler:nil];
+}
+
+- (void)defaultWordPressAccountWasRemoved:(NSNotification *)notification {
+    [self setCommonCrashlyticsParameters];
+	[self toggleExtraDebuggingIfNeeded];
+	
+	[NotificationsManager unregisterDeviceToken];
+	[self logoutSimperiumAndResetNotifications];
+	[self showWelcomeScreenIfNeededAnimated:NO];
 }
 
 @end

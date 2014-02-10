@@ -62,10 +62,10 @@ static NSString *_lastAuthedName = nil;
 }
 
 + (void)load {
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(handleAccountChangeNotification:) name:WPAccountDefaultWordPressComAccountChangedNotification object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(defaultWordPressAccountWasAdded:) name:WPAccountWordPressComAccountWasAddedNotification object:nil];
 }
 
-+ (void)handleAccountChangeNotification:(NSNotification *)notification {
++ (void)defaultWordPressAccountWasAdded:(NSNotification *)notification {
     [self setLastAuthedName:[WPAccount defaultWordPressComAccount].username];
 }
 

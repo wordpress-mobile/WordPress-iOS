@@ -15,7 +15,8 @@
 
 @class Blog;
 
-extern NSString *const WPAccountDefaultWordPressComAccountChangedNotification;
+extern NSString *const WPAccountWordPressComAccountWasAddedNotification;
+extern NSString *const WPAccountWordPressComAccountWasRemovedNotification;
 
 @interface WPAccount : NSManagedObject
 

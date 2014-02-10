@@ -152,7 +152,10 @@ NSString * const RPVCDisplayedNativeFriendFinder = @"DisplayedNativeFriendFinder
     }
     
     // Sync content as soon as login or creation occurs
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(didChangeAccount:) name:WPAccountDefaultWordPressComAccountChangedNotification object:nil];
+	
+	NSNotificationCenter *nc = [NSNotificationCenter defaultCenter];
+    [nc addObserver:self selector:@selector(defaultWordPressAccountWasAdded:) name:WPAccountWordPressComAccountWasAddedNotification object:nil];
+    [nc addObserver:self selector:@selector(defaultWordPressAccountWasRemoved:) name:WPAccountWordPressComAccountWasRemovedNotification object:nil];
 
     self.inlineComposeView = [[InlineComposeView alloc] initWithFrame:CGRectZero];
 
@@ -924,13 +927,16 @@ NSString * const RPVCDisplayedNativeFriendFinder = @"DisplayedNativeFriendFinder
     }
 }
 
-- (void)didChangeAccount:(NSNotification *)notification {
-    if ([WPAccount defaultWordPressComAccount]) {
-        [self syncItems];
-    } else {
-        [[NSUserDefaults standardUserDefaults] removeObjectForKey:ReaderLastSyncDateKey];
-        [NSUserDefaults resetStandardUserDefaults];
-    }
+
+#pragma mark - WPAccount Notifications
+
+- (void)defaultWordPressAccountWasAdded:(NSNotification *)notification {
+	[self syncItems];
+}
+
+- (void)defaultWordPressAccountWasRemoved:(NSNotification *)notification {
+	[[NSUserDefaults standardUserDefaults] removeObjectForKey:ReaderLastSyncDateKey];
+	[NSUserDefaults resetStandardUserDefaults];
 }
 
 
