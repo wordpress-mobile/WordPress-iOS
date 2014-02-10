@@ -32,8 +32,6 @@
 
 - (void)syncAttributes:(NSDictionary *)data;
 
-+ (void)mergeNewNotes:(NSArray *)notesData;
-
 /**
  Remove old notes from Core Data storage
 

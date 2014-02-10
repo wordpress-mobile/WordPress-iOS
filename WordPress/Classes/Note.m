@@ -53,36 +53,6 @@ const NSUInteger NoteKeepCount = 20;
 @synthesize noteData = _noteData;
 @synthesize date = _date;
 
-
-+ (void)mergeNewNotes:(NSArray *)notesData {
-    NSManagedObjectContext *derivedMOC = [[ContextManager sharedInstance] newDerivedContext];
-    [derivedMOC performBlock:^{
-        NSFetchRequest *request = [NSFetchRequest fetchRequestWithEntityName:@"Note"];
-        NSError *error;
-        NSArray *existingNotes = [derivedMOC executeFetchRequest:request error:&error];
-        if (error){
-            DDLogError(@"Error finding notes: %@", error);
-            return;
-        }
-        
-        WPAccount *account = (WPAccount *)[derivedMOC objectWithID:[WPAccount defaultWordPressComAccount].objectID];
-        [notesData enumerateObjectsUsingBlock:^(NSDictionary *noteData, NSUInteger idx, BOOL *stop) {
-            NSString *noteID = noteData[@"id"];
-            NSArray *results = [existingNotes filteredArrayUsingPredicate:[NSPredicate predicateWithFormat:@"noteID == %@", noteID]];
-            
-            Note *note = [results firstObject];
-            if (!note) {
-                note = [NSEntityDescription insertNewObjectForEntityForName:NSStringFromClass(self) inManagedObjectContext:derivedMOC];
-                note.noteID = noteID;
-                note.account = account;
-            }
-            [note syncAttributes:noteData];
-        }];
-        
-        [[ContextManager sharedInstance] saveDerivedContext:derivedMOC];
-    }];
-}
-
 + (void)pruneOldNotesBefore:(NSNumber *)timestamp withContext:(NSManagedObjectContext *)context {
     NSError *error;
 
