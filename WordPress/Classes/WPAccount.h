@@ -24,19 +24,19 @@ extern NSString *const WPAccountWordPressComAccountWasRemovedNotification;
 /// @name Properties
 ///-----------------
 
-@property (nonatomic, readonly, retain) NSString *xmlrpc;
-@property (nonatomic, readonly, retain) NSString *username;
-@property (nonatomic, readonly) BOOL isWpcom;
-@property (nonatomic, retain) NSSet *blogs;
-@property (nonatomic, retain) NSSet *jetpackBlogs;
-@property (nonatomic, readonly) NSArray *visibleBlogs;
+@property (nonatomic, readonly, strong) NSString *xmlrpc;
+@property (nonatomic, readonly, strong) NSString *username;
+@property (nonatomic, readonly, strong) NSArray *visibleBlogs;
+@property (nonatomic, readonly, assign) BOOL isWpcom;
+@property (nonatomic, strong) NSSet *blogs;
+@property (nonatomic, strong) NSSet *jetpackBlogs;
 
 /**
  The account's password
  
  Note that the password is stored using the keychain, not core data
  */
-@property (nonatomic, retain) NSString *password;
+@property (nonatomic, strong) NSString *password;
 
 /**
  The OAuth2 auth token for WordPress.com accounts

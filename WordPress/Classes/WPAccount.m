@@ -27,10 +27,10 @@ NSString * const WPAccountWordPressComAccountWasRemovedNotification	= @"WPAccoun
 
 
 @interface WPAccount ()
-@property (nonatomic, retain) NSString *xmlrpc;
-@property (nonatomic, retain) NSString *username;
-@property (nonatomic, retain) NSString *authToken;
-@property (nonatomic) BOOL isWpcom;
+@property (nonatomic, strong, readwrite) NSString *xmlrpc;
+@property (nonatomic, strong, readwrite) NSString *username;
+@property (nonatomic, strong, readwrite) NSString *authToken;
+@property (nonatomic, assign, readwrite) BOOL isWpcom;
 @end
 
 @implementation WPAccount {
