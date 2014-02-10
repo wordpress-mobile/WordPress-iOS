@@ -306,7 +306,7 @@ static NSString *const CameraPlusImagesNotification = @"CameraPlusImagesNotifica
 - (void)clearBadgeAndSyncItemsIfNotificationsScreenActive {
     NSInteger notificationsTabIndex = [[self.tabBarController viewControllers] indexOfObject:self.notificationsViewController.navigationController];
     if ([self.tabBarController selectedIndex] == notificationsTabIndex) {
-       [self.notificationsViewController clearNotificationsBadgeAndSyncItems];
+       [self.notificationsViewController clearNotificationsBadge];
     }
 }
 
@@ -901,7 +901,6 @@ static NSString *const CameraPlusImagesNotification = @"CameraPlusImagesNotifica
 
 #pragma mark - Keychain
 
-+ (void)wipeAllKeychainItems
 + (void)wipeAllKeychainItems {
     NSArray *secItemClasses = @[(__bridge id)kSecClassGenericPassword,
                                 (__bridge id)kSecClassInternetPassword,

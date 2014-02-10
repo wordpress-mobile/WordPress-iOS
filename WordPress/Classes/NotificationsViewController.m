@@ -18,6 +18,7 @@
 #import "WPAccount.h"
 #import "WPWebViewController.h"
 #import "Note.h"
+#import "ContextManager.h"
 
 NSString * const NotificationsJetpackInformationURL = @"http://jetpack.me/about/";
 
@@ -120,7 +121,7 @@ NSString * const NotificationsJetpackInformationURL = @"http://jetpack.me/about/
         [self pruneOldNotes];
     }
 
-    [self clearNotificationsBadgeAndSyncItems];
+    [self clearNotificationsBadge];
 }
 
 - (void)viewDidDisappear:(BOOL)animated {
@@ -156,12 +157,8 @@ NSString * const NotificationsJetpackInformationURL = @"http://jetpack.me/about/
 
 #pragma mark - Public methods
 
-- (void)clearNotificationsBadgeAndSyncItems {
+- (void)clearNotificationsBadge {
     [UIApplication sharedApplication].applicationIconBadgeNumber = 0;
-    if (![self isSyncing]) {
-        [self syncItems];
-    }
-    [self refreshUnreadNotes];
 }
 
 #pragma mark - UITableViewDelegate
