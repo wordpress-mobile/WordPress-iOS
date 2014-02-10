@@ -32,6 +32,7 @@ typedef enum {
 
 @property (nonatomic, strong) NSDictionary *currentImageMetadata;
 @property (nonatomic, assign) BOOL isShowingResizeActionSheet;
+@property (nonatomic, assign) BOOL hasShownPicker;
 @property (nonatomic, strong) UIImage *currentImage;
 @property (nonatomic, strong) WPAlertView *customSizeAlert;
 
@@ -90,6 +91,12 @@ typedef enum {
     
     // Super class will hide the status bar by default
     [self hideBars:NO animated:NO];
+
+    // We're not loading an image, and we don't have a url to show.
+    // Show the photo picker, and include an option to switch to the camera.
+    if (!self.hasShownPicker && !self.isLoadingImage && !self.url) {
+        [self showPhotoPicker];
+    }
 }
 
 - (void)viewWillDisappear:(BOOL)animated {
@@ -149,16 +156,6 @@ typedef enum {
     }];
 }
 
-- (void)loadImage {
-    [super loadImage];
-    
-    // We're not loading an image, and we don't have a url to show.
-    // Show the photo picker, and include an option to switch to the camera.
-    if (!self.isLoadingImage && !self.url) {
-        [self showPhotoPicker];
-    }
-}
-
 #pragma mark - Action Methods
 
 - (void)handleImageTapped:(UITapGestureRecognizer *)tgr {
@@ -192,6 +189,7 @@ typedef enum {
         [self pickPhotoFromLibrary];
 	}
     self.scrollView.hidden = YES;
+    self.hasShownPicker = YES;
 }
 
 #pragma mark - Image Picker Methods
