@@ -694,6 +694,9 @@ CGFloat const EPVCTextViewTopPadding = 7.0f;
     if (self.post.blog.geolocationEnabled && ![LocationService sharedService].locationServicesDisabled) {
         [[LocationService sharedService] getCurrentLocationAndAddress:^(CLLocation *location, NSString *address, NSError *error) {
             if (location) {
+                if(self.post.isDeleted) {
+                    return;
+                }
                 Coordinate *coord = [[Coordinate alloc] initWithCoordinate:location.coordinate];
                 Post *post = (Post *)self.post;
                 post.geolocation = coord;
