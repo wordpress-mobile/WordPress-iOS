@@ -18,8 +18,10 @@ typedef void(^LocationServiceCompletionBlock)(CLLocation *location, NSString *ad
  */
 typedef NS_ENUM(NSUInteger, LocationServiceError) {
     LocationServiceErrorLocationsUnavailable,
-    WPImageSourceErrorNilImage
+    LocationServiceErrorLocationServiceTimedOut
 };
+
+extern NSString *const LocationServiceErrorDomain;
 
 @interface LocationService : NSObject
 
