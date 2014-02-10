@@ -20,7 +20,6 @@ NSString *const LocationServiceErrorDomain = @"LocationServiceErrorDomain";
 @interface LocationService()<CLLocationManagerDelegate>
 @property (nonatomic, strong) CLLocationManager *locationManager;
 @property (nonatomic, strong) CLGeocoder *geocoder;
-@property (nonatomic, strong) LocationServiceCompletionBlock completionBlock;
 @property (nonatomic, strong) NSMutableArray *completionBlocks;
 @property (nonatomic, strong) NSTimer *timeoutClock;
 @property (nonatomic, readwrite) BOOL locationServiceRunning;
