@@ -1052,7 +1052,7 @@ static NSString *const CameraPlusImagesNotification = @"CameraPlusImagesNotifica
     }
     
     if ([description length] > maxSize) {
-        description = (NSMutableString *)[description substringWithRange:NSMakeRange([description length] - maxSize - 1, maxSize)];
+        description = (NSMutableString *)[description substringWithRange:NSMakeRange(0, maxSize)];
     }
     
     return description;
