@@ -610,10 +610,14 @@ CGFloat const EPVCTextViewTopPadding = 7.0f;
     }
 }
 
+- (Class)classForSettingsViewController {
+    return [PostSettingsViewController class];
+}
+
 - (void)showSettings {
     [WPMobileStats flagProperty:StatsPropertyPostDetailClickedSettings forEvent:[self formattedStatEventString:StatsEventPostDetailClosedEditor]];
     Post *post = (Post *)self.post;
-    PostSettingsViewController *vc = [[PostSettingsViewController alloc] initWithPost:post];
+    PostSettingsViewController *vc = [[[self classForSettingsViewController] alloc] initWithPost:post];
     vc.statsPrefix = self.statsPrefix;
     self.navigationItem.title = NSLocalizedString(@"Back", nil);
     [self.navigationController pushViewController:vc animated:YES];

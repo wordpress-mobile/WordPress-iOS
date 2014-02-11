@@ -419,6 +419,7 @@
 		5D577D361891360900B964C3 /* PostGeolocationView.m in Sources */ = {isa = PBXBuildFile; fileRef = 5D577D351891360900B964C3 /* PostGeolocationView.m */; };
 		5D5A953B1760DDE0000F7A1E /* ReaderReblogFormView.m in Sources */ = {isa = PBXBuildFile; fileRef = 5D5A953A1760DDDF000F7A1E /* ReaderReblogFormView.m */; };
 		5D5D0027187DA9D30027CEF6 /* CategoriesViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 5D5D0026187DA9D30027CEF6 /* CategoriesViewController.m */; };
+		5D62BAD718AA88210044E5F7 /* PageSettingsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 5D62BAD618AA88210044E5F7 /* PageSettingsViewController.m */; };
 		5D69DBC4165428CA00A2D1F7 /* n.caf in Resources */ = {isa = PBXBuildFile; fileRef = 5D69DBC3165428CA00A2D1F7 /* n.caf */; };
 		5D7BEA0417749F8C00423E7F /* sidebar_icon_add.png in Resources */ = {isa = PBXBuildFile; fileRef = 5D7BEA0217749F8C00423E7F /* sidebar_icon_add.png */; };
 		5D7BEA0517749F8C00423E7F /* sidebar_icon_add@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 5D7BEA0317749F8C00423E7F /* sidebar_icon_add@2x.png */; };
@@ -1495,6 +1496,8 @@
 		5D5A953A1760DDDF000F7A1E /* ReaderReblogFormView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ReaderReblogFormView.m; sourceTree = "<group>"; };
 		5D5D0025187DA9D30027CEF6 /* CategoriesViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CategoriesViewController.h; sourceTree = "<group>"; };
 		5D5D0026187DA9D30027CEF6 /* CategoriesViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CategoriesViewController.m; sourceTree = "<group>"; };
+		5D62BAD518AA88210044E5F7 /* PageSettingsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PageSettingsViewController.h; sourceTree = "<group>"; };
+		5D62BAD618AA88210044E5F7 /* PageSettingsViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PageSettingsViewController.m; sourceTree = "<group>"; };
 		5D69DBC3165428CA00A2D1F7 /* n.caf */ = {isa = PBXFileReference; lastKnownFileType = file; name = n.caf; path = Resources/Sounds/n.caf; sourceTree = "<group>"; };
 		5D7BEA0217749F8C00423E7F /* sidebar_icon_add.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = sidebar_icon_add.png; path = Resources/Images/sidebar_icon_add.png; sourceTree = "<group>"; };
 		5D7BEA0317749F8C00423E7F /* sidebar_icon_add@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "sidebar_icon_add@2x.png"; path = "Resources/Images/sidebar_icon_add@2x.png"; sourceTree = "<group>"; };
@@ -4200,6 +4203,8 @@
 				EC4696FE0EA75D460040EE8E /* PagesViewController.m */,
 				83D180F712329B1A002DCCB0 /* EditPageViewController.h */,
 				83D180F812329B1A002DCCB0 /* EditPageViewController.m */,
+				5D62BAD518AA88210044E5F7 /* PageSettingsViewController.h */,
+				5D62BAD618AA88210044E5F7 /* PageSettingsViewController.m */,
 			);
 			name = Pages;
 			sourceTree = "<group>";
@@ -5174,6 +5179,7 @@
 				C533CF350E6D3ADA000C3DE8 /* CommentsViewController.m in Sources */,
 				CC701659185A7513007B37DB /* InlineComposeView.m in Sources */,
 				C57A31A4183D2111007745B9 /* NotificationsManager.m in Sources */,
+				5D62BAD718AA88210044E5F7 /* PageSettingsViewController.m in Sources */,
 				EC4696FF0EA75D460040EE8E /* PagesViewController.m in Sources */,
 				7059CD210F332B6500A0660B /* WPCategoryTree.m in Sources */,
 				03CF21ED0FE9F0C3008AD538 /* NSString+Util.m in Sources */,
