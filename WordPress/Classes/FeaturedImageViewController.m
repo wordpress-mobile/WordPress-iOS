@@ -27,12 +27,14 @@ typedef enum {
 @property (nonatomic, strong) UIBarButtonItem *photoButton;
 @property (nonatomic, strong) UIBarButtonItem *deleteButton;
 @property (nonatomic, strong) Post *post;
-@property (nonatomic, strong) UIActivityIndicatorView *activityView;
+@property (nonatomic, strong) UIBarButtonItem *activityItem;
 @property (nonatomic, strong) UIPopoverController *popover;
+@property (nonatomic, strong) UIImage *previousImage;
 
 @property (nonatomic, strong) NSDictionary *currentImageMetadata;
 @property (nonatomic, assign) BOOL isShowingResizeActionSheet;
 @property (nonatomic, assign) BOOL hasShownPicker;
+@property (nonatomic, assign) BOOL loadingFeaturedImage;
 @property (nonatomic, strong) UIImage *currentImage;
 @property (nonatomic, strong) WPAlertView *customSizeAlert;
 
@@ -50,10 +52,10 @@ typedef enum {
     self = [super init];
     if (self) {
         self.post = post;
+        self.extendedLayoutIncludesOpaqueBars = YES;
+        self.automaticallyAdjustsScrollViewInsets = NO;
         if (post.featuredImageURL) {
             self.url = [NSURL URLWithString:post.featuredImageURL];
-            self.extendedLayoutIncludesOpaqueBars = YES;
-            self.automaticallyAdjustsScrollViewInsets = NO;
         }
     }
     return self;
@@ -65,15 +67,6 @@ typedef enum {
     self.view.backgroundColor = [UIColor whiteColor];
     
     [self setupToolbar];
-    
-    self.activityView = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleGray];
-    self.activityView.autoresizingMask = UIViewAutoresizingFlexibleTopMargin | UIViewAutoresizingFlexibleLeftMargin | UIViewAutoresizingFlexibleRightMargin | UIViewAutoresizingFlexibleBottomMargin;
-    self.activityView.hidesWhenStopped = YES;
-    CGRect frame = self.activityView.frame;
-    frame.origin.x = (CGRectGetWidth(self.view.frame) - CGRectGetWidth(frame)) / 2.0f;
-    frame.origin.y = (CGRectGetHeight(self.view.frame) - CGRectGetHeight(frame)) / 2.0f;
-    self.activityView.frame = frame;
-    [self.view addSubview:self.activityView];
 }
 
 - (void)viewWillAppear:(BOOL)animated {
@@ -94,11 +87,8 @@ typedef enum {
     // Super class will hide the status bar by default
     [self hideBars:NO animated:NO];
 
-    // We're not loading an image, and we don't have a url to show.
-    // Show the photo picker, and include an option to switch to the camera.
-    if (!self.hasShownPicker && !self.isLoadingImage && !self.url) {
-        [self showPhotoPicker];
-    }
+    // Called here to be sure the view is complete in case we need to present a popover from the toolbar.
+    [self loadImageOrShowPicker];
 }
 
 - (void)viewWillDisappear:(BOOL)animated {
@@ -107,6 +97,55 @@ typedef enum {
     [[NSNotificationCenter defaultCenter] removeObserver:self];
     self.navigationController.navigationBar.translucent = NO;
     self.navigationController.toolbar.translucent = NO;
+}
+
+- (void)loadImageOrShowPicker {
+    
+    // Show the picker if it hasn't been shown, and there is no featured image.
+    if (!self.post.post_thumbnail && !self.hasShownPicker) {
+        [self showPhotoPicker];
+        return;
+    }
+    
+    if (self.url) {
+        [self loadImage];
+        
+    } else if (self.post.featuredImageURL) {
+        self.url = [NSURL URLWithString:self.post.featuredImageURL];
+        [self loadImage];
+        
+    } else if (self.post.post_thumbnail) {
+        [self getFeaturedImageShowingActivity:YES
+                                      success:^{
+                                          [self loadImageOrShowPicker];
+                                      } failure:^(NSError *error) {
+                                          DDLogError(@"Error getting featured image: %@", error);
+                                      }];
+    } else {
+        // Should never reach this point.
+    }
+}
+
+- (void)getFeaturedImageShowingActivity:(BOOL)showActivity success:(void (^)())success failure:(void (^)(NSError *error))failure {
+    if (self.loadingFeaturedImage) {
+        return;
+    }
+    self.loadingFeaturedImage = YES;
+    [self showActivityView:showActivity];
+    [self.post getFeaturedImageURLWithSuccess:^{
+        self.loadingFeaturedImage = NO;
+        [self showActivityView:NO];
+        if(success) {
+            success();
+        }
+        
+    } failure:^(NSError *error) {
+        self.loadingFeaturedImage = NO;
+        [self showActivityView:NO];
+        if(failure) {
+            failure(error);
+        }
+    }];
 }
 
 #pragma mark - Appearance Related Methods
@@ -126,15 +165,12 @@ typedef enum {
     
     self.deleteButton.tintColor = [WPStyleGuide readGrey];
     self.photoButton.tintColor = [WPStyleGuide readGrey];
+ 
+    UIActivityIndicatorView *activityView = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleWhite];
+    [activityView startAnimating];
+    self.activityItem = [[UIBarButtonItem alloc] initWithCustomView:activityView];
     
-    UIBarButtonItem *leftFixedSpacer = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFixedSpace target:nil action:nil];
-    UIBarButtonItem *rightFixedSpacer = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFixedSpace target:nil action:nil];
-    UIBarButtonItem *centerFlexSpacer = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFlexibleSpace target:nil action:nil];
-    
-    leftFixedSpacer.width = -2.0f;
-    rightFixedSpacer.width = -5.0f;
-    
-    self.toolbarItems = @[leftFixedSpacer, self.deleteButton, centerFlexSpacer, self.photoButton, rightFixedSpacer];
+    [self showActivityView:NO];
 }
 
 - (void)hideBars:(BOOL)hide animated:(BOOL)animated {
@@ -156,6 +192,21 @@ typedef enum {
             self.view.backgroundColor = [UIColor whiteColor];
         }
     }];
+}
+
+- (void)showActivityView:(BOOL)show {
+    UIBarButtonItem *leftFixedSpacer = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFixedSpace target:nil action:nil];
+    UIBarButtonItem *rightFixedSpacer = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFixedSpace target:nil action:nil];
+    UIBarButtonItem *centerFlexSpacer = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFlexibleSpace target:nil action:nil];
+    
+    leftFixedSpacer.width = -2.0f;
+    rightFixedSpacer.width = -5.0f;
+    
+    if (show){
+        self.toolbarItems = @[leftFixedSpacer, self.deleteButton, centerFlexSpacer, self.activityItem, rightFixedSpacer];
+    } else {
+        self.toolbarItems = @[leftFixedSpacer, self.deleteButton, centerFlexSpacer, self.photoButton, rightFixedSpacer];
+    }
 }
 
 #pragma mark - Action Methods
@@ -227,38 +278,29 @@ typedef enum {
 #pragma mark - Featured Image Notification Handlers
 
 - (void)featuredImageUploadFailed:(NSNotification *)notificationInfo {
-    [self.activityView stopAnimating];
-    self.scrollView.hidden = NO;
+    [self showActivityView:NO];
 }
 
 - (void)featuredImageUploadSucceeded:(NSNotification *)notificationInfo {
     Media *media = (Media *)[notificationInfo object];
+    [self showActivityView:NO];
     if (media) {
         if (![self.post isDeleted] && [self.post managedObjectContext]) {
+            
             self.post.post_thumbnail = media.mediaID;
-            [self.post getFeaturedImageURLWithSuccess:^{
-                self.url = [NSURL URLWithString:self.post.featuredImageURL];
-                [self.activityView stopAnimating];
-                self.scrollView.hidden = NO;
-                self.image = [UIImage imageWithContentsOfFile:media.localURL];
-                [self loadImage];
-                
-            } failure:^(NSError *error) {
-                DDLogError(@"Failed to update FeaturedImage URL: %@", error);
-                [self.activityView stopAnimating];
-                self.scrollView.hidden = NO;
-                self.image = [UIImage imageWithContentsOfFile:media.localURL];
-                [self loadImage];
-            }];
+            // Be nice and preload the featuredImageURL
+            [self getFeaturedImageShowingActivity:NO
+                                          success:^{
+                                              self.url = [NSURL URLWithString:self.post.featuredImageURL];
+                                          } failure:^(NSError *error) {
+                                              DDLogError(@"Failed to update FeaturedImage URL: %@", error);
+                                          }];
         }
     }
 }
 
 - (void)showFeaturedImageUploader:(NSNotification *)notificationInfo {
-    [self.activityView startAnimating];
-    self.scrollView.hidden = YES;
-    self.image = nil;
-    self.imageView.image = nil;
+    [self showActivityView:YES];
 }
 
 #pragma mark - UIActionSheetDelegate
@@ -283,14 +325,17 @@ typedef enum {
         [self pickPhotoFromLibrary];
     } else if ([buttonTitle isEqualToString:NSLocalizedString(@"Take Photo", nil)]) {
         [self pickPhotoFromCamera];
-    } else {
-        if (self.image) {
-            self.scrollView.hidden = NO;
-        }
     }
 }
 
 - (void)processPhotoResizeActionSheet:(UIActionSheet *)acSheet thatDismissedWithButtonIndex:(NSInteger)buttonIndex {
+    if (acSheet.cancelButtonIndex == buttonIndex) {
+        if (self.previousImage) {
+            self.image = self.previousImage;
+            self.previousImage = nil;
+            [self loadImage];
+        }
+    }
     switch (buttonIndex) {
         case 0:
             if (acSheet.numberOfButtons == 2) {
@@ -423,6 +468,11 @@ typedef enum {
     
     _currentImage = image;
     
+    // show the new image
+    self.previousImage = self.imageView.image;
+    self.image = image;
+    [self loadImage];
+    
     //UIImagePickerControllerReferenceURL = "assets-library://asset/asset.JPG?id=1000000050&ext=JPG").
     NSURL *assetURL = [info objectForKey:UIImagePickerControllerReferenceURL];
     if (assetURL) {
@@ -514,6 +564,10 @@ typedef enum {
         }
     }
     
+    if (!showResizeActionSheet) {
+        self.previousImage = nil;
+    }
+    
     if (isPopoverDisplayed) {
         [self.popover dismissPopoverAnimated:YES];
         if (showResizeActionSheet) {
@@ -532,9 +586,6 @@ typedef enum {
     // On iOS7 Beta 6 the image picker seems to override our preferred setting so we force the status bar color back.
     [[UIApplication sharedApplication] setStatusBarStyle:UIStatusBarStyleLightContent];
     [self.navigationController dismissViewControllerAnimated:YES completion:nil];
-    if (self.imageView.image) {
-        self.scrollView.hidden = NO;
-    }
 }
 
 #pragma mark - Media and Image Wrangling
