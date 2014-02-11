@@ -335,8 +335,11 @@ static NSString *const TableViewActivityCellIdentifier = @"TableViewActivityCell
     if (indexPath.section == PostSettingsSectionFeaturedImage) {
         if (self.featuredImage) {
             CGFloat cellMargins = (2 * PostFeaturedImageCellMargin);
+            CGFloat imageWidth = self.featuredImage.size.width;
             CGFloat imageHeight = self.featuredImage.size.height;
-            return imageHeight + cellMargins;
+            width = width - cellMargins;
+            CGFloat height = ceilf((width / imageWidth) * imageHeight);
+            return height + cellMargins;
         }
     }
     
