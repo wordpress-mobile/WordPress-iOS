@@ -10,14 +10,13 @@
 
 #import <CoreLocation/CoreLocation.h>
 
-// TODO: Set the NSLocationUsageDescription key in the plist.ini
-
 static LocationService *instance;
 static NSInteger const LocationHorizontalAccuracyThreshold = 50; // Meters
 static NSInteger const LocationServiceTimeoutDuration = 3; // Seconds
 NSString *const LocationServiceErrorDomain = @"LocationServiceErrorDomain";
 
 @interface LocationService()<CLLocationManagerDelegate>
+
 @property (nonatomic, strong) CLLocationManager *locationManager;
 @property (nonatomic, strong) CLGeocoder *geocoder;
 @property (nonatomic, strong) NSMutableArray *completionBlocks;
@@ -26,6 +25,7 @@ NSString *const LocationServiceErrorDomain = @"LocationServiceErrorDomain";
 @property (nonatomic, strong) CLLocation *lastUpdatedLocation;
 @property (nonatomic, strong, readwrite) CLLocation *lastGeocodedLocation;
 @property (nonatomic, strong, readwrite) NSString *lastGeocodedAddress;
+
 @end
 
 @implementation LocationService

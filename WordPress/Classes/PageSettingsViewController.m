@@ -7,6 +7,7 @@
 //
 
 #import "PageSettingsViewController.h"
+#import "PostSettingsViewController_Internal.h"
 
 @interface PageSettingsViewController ()
 
@@ -24,10 +25,12 @@
 
 - (void)addPostPropertiesObserver {
     // noop
+    // No need to observe properties for page settings
 }
 
 - (void)removePostPropertiesObserver {
     // noop
+    // No need to observe properties for page settings
 }
 
 
