@@ -10,8 +10,17 @@
 #import <UIKit/UIKit.h>
 #import "AbstractPost.h"
 
+typedef enum {
+    PostSettingsSectionTaxonomy = 0,
+    PostSettingsSectionMeta,
+    PostSettingsSectionFormat,
+    PostSettingsSectionFeaturedImage,
+    PostSettingsSectionGeolocation
+} PostSettingsSection;
+
 @interface PostSettingsViewController : UITableViewController
 
+@property (nonatomic, strong) NSMutableArray *sections;
 @property (nonatomic, strong) NSString *statsPrefix;
 
 - (id)initWithPost:(AbstractPost *)aPost;

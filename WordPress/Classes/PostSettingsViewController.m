@@ -28,14 +28,6 @@
 #import "WPTableImageSource.h"
 
 typedef enum {
-    PostSettingsSectionTaxonomy = 0,
-    PostSettingsSectionMeta,
-    PostSettingsSectionFormat,
-    PostSettingsSectionFeaturedImage,
-    PostSettingsSectionGeolocation
-} PostSettingsSection;
-
-typedef enum {
     PostSettingsRowCategories = 0,
     PostSettingsRowTags,
     PostSettingsRowPublishDate,
@@ -55,7 +47,6 @@ static NSString *const TableViewActivityCellIdentifier = @"TableViewActivityCell
 
 @interface PostSettingsViewController () <UIPopoverControllerDelegate, UIPickerViewDelegate, UIPickerViewDataSource, UITextFieldDelegate, UIActionSheetDelegate, WPTableImageSourceDelegate>
 
-@property (nonatomic, strong) NSMutableArray *sections;
 @property (nonatomic, strong) AbstractPost *apost;
 
 // Post tags, status
