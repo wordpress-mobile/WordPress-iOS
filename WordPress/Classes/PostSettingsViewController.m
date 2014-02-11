@@ -136,7 +136,6 @@ static NSString *const TableViewActivityCellIdentifier = @"TableViewActivityCell
     gestureRecognizer.numberOfTapsRequired = 1;
     [self.tableView addGestureRecognizer:gestureRecognizer];
 
-
     [self.tableView registerNib:[UINib nibWithNibName:@"WPTableViewActivityCell" bundle:nil] forCellReuseIdentifier:TableViewActivityCellIdentifier];
 }
 
@@ -571,7 +570,17 @@ static NSString *const TableViewActivityCellIdentifier = @"TableViewActivityCell
         if (!geoCell) {
             geoCell = [[PostGeolocationCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:wpPostSettingsGeoCellIdentifier];
         }
-        [geoCell setCoordinate:self.post.geolocation andAddress:[LocationService sharedService].lastGeocodedAddress];
+        NSString *address = [LocationService sharedService].lastGeocodedAddress;
+        if (!address) {
+            address = NSLocalizedString(@"Looking up address...", @"Used with posts that are geo-tagged. Let's the user know the the app is looking up the address for the coordinates tagging the post.");
+            Coordinate *coordinate = self.post.geolocation;
+            CLLocation *location = [[CLLocation alloc] initWithLatitude:coordinate.latitude longitude:coordinate.longitude];
+            [[LocationService sharedService] getAddressForLocation:location
+                                                        completion:^(CLLocation *location, NSString *address, NSError *error) {
+                                                            [self.tableView reloadData];
+                                                        }];
+        }
+        [geoCell setCoordinate:self.post.geolocation andAddress:address];
         cell = geoCell;
         cell.tag = PostSettingsRowGeolocationMap;
     }
