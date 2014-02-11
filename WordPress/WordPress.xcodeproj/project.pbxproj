@@ -2821,8 +2821,6 @@
 				5D577D32189127BE00B964C3 /* PostGeolocationViewController.m */,
 				5D577D341891360900B964C3 /* PostGeolocationView.h */,
 				5D577D351891360900B964C3 /* PostGeolocationView.m */,
-				5DB4683918A2E718004A89A9 /* LocationService.h */,
-				5DB4683A18A2E718004A89A9 /* LocationService.m */,
 			);
 			name = Geolocation;
 			sourceTree = "<group>";
@@ -3762,6 +3760,8 @@
 				E1921F5917733C3E000F4079 /* WPImageSource.m */,
 				E1E4CE091773C59B00430844 /* WPAvatarSource.h */,
 				E1E4CE0A1773C59B00430844 /* WPAvatarSource.m */,
+				5DB4683918A2E718004A89A9 /* LocationService.h */,
+				5DB4683A18A2E718004A89A9 /* LocationService.m */,
 			);
 			name = Utils;
 			sourceTree = "<group>";
