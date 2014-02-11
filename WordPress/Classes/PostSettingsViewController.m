@@ -137,6 +137,8 @@ static NSString *const TableViewActivityCellIdentifier = @"TableViewActivityCell
     [self.tableView addGestureRecognizer:gestureRecognizer];
 
     [self.tableView registerNib:[UINib nibWithNibName:@"WPTableViewActivityCell" bundle:nil] forCellReuseIdentifier:TableViewActivityCellIdentifier];
+    
+    self.tableView.tableFooterView = [[UIView alloc] initWithFrame:CGRectZero];
 }
 
 - (void)viewWillAppear:(BOOL)animated {
