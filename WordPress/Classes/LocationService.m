@@ -154,7 +154,7 @@ NSString *const LocationServiceErrorDomain = @"LocationServiceErrorDomain";
     if (lastLocation) {
         [self getAddressForLocation:lastLocation];
     } else {
-        NSString *description = @"Unable to find the current location in a reasonable amount of time.";
+        NSString *description = NSLocalizedString(@"Unable to find the current location in a reasonable amount of time.", @"Error message that is displayed when the user's current location could not be found after a few seconds.");
         NSError *error = [NSError errorWithDomain:LocationServiceErrorDomain
                                              code:LocationServiceErrorLocationServiceTimedOut
                                          userInfo:@{NSLocalizedDescriptionKey:description}];
