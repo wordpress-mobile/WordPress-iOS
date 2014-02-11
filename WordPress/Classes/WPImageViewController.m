@@ -83,6 +83,10 @@
 }
 
 - (void)loadImage {
+    if (self.isLoadingImage) {
+        return;
+    }
+    
 	if(self.image != nil) {
 		_imageView.image = self.image;
 		[_imageView sizeToFit];
@@ -141,8 +145,8 @@
 }
 
 - (void)centerImage {
-	CGFloat scaleWidth = ceilf(_scrollView.frame.size.width / _imageView.image.size.width);
-	CGFloat scaleHeight = ceilf(_scrollView.frame.size.height / _imageView.image.size.height);
+	CGFloat scaleWidth = _scrollView.frame.size.width / _imageView.image.size.width;
+	CGFloat scaleHeight = _scrollView.frame.size.height / _imageView.image.size.height;
 
 	_scrollView.minimumZoomScale = MIN(scaleWidth, scaleHeight);
 	_scrollView.zoomScale = _scrollView.minimumZoomScale;
