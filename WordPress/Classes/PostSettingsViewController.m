@@ -50,7 +50,6 @@ typedef enum {
 } PostSettingsRow;
 
 static CGFloat CellHeight = 44.0f;
-static CGFloat GeoCellHeight = 200.0f;
 
 static NSString *const TableViewActivityCellIdentifier = @"TableViewActivityCellIdentifier";
 
@@ -336,23 +335,15 @@ static NSString *const TableViewActivityCellIdentifier = @"TableViewActivityCell
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
+    CGFloat width = IS_IPAD ? WPTableViewFixedWidth : CGRectGetWidth(self.tableView.frame);
     if (indexPath.section == PostSettingsSectionGeolocation && [self post].geolocation) {
-        return GeoCellHeight;
+        return ceilf(width * 0.75f);
     }
     
     if (indexPath.section == PostSettingsSectionFeaturedImage) {
         if (self.featuredImage) {
             CGFloat cellMargins = (2 * PostFeaturedImageCellMargin);
-            CGFloat imageWidth = self.featuredImage.size.width;
             CGFloat imageHeight = self.featuredImage.size.height;
-            
-            CGFloat width = IS_IPAD ? WPTableViewFixedWidth : CGRectGetWidth(self.tableView.frame);
-            CGFloat displayWidth = width - cellMargins;
-
-            if (imageWidth < displayWidth) {
-                imageHeight = imageHeight * (displayWidth / imageWidth);
-            }
-            
             return imageHeight + cellMargins;
         }
     }
@@ -751,7 +742,8 @@ static NSString *const TableViewActivityCellIdentifier = @"TableViewActivityCell
             }
             width = width - (PostFeaturedImageCellMargin * 2); // left and right cell margins
             NSURL *url = [NSURL URLWithString:self.post.featuredImageURL];
-            CGSize imageSize = CGSizeMake(width, 0.0f);
+            CGFloat height = ceilf(width * 0.66);
+            CGSize imageSize = CGSizeMake(width, height);
 
             [self.imageSource fetchImageForURL:url
                                       withSize:imageSize
