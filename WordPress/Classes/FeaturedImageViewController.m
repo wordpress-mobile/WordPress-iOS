@@ -237,9 +237,9 @@ typedef enum {
         if (![self.post isDeleted] && [self.post managedObjectContext]) {
             self.post.post_thumbnail = media.mediaID;
             [self.post getFeaturedImageURLWithSuccess:^{
+                self.url = [NSURL URLWithString:self.post.featuredImageURL];
                 [self.activityView stopAnimating];
                 self.scrollView.hidden = NO;
-                self.url = [NSURL URLWithString:self.post.featuredImageURL];
                 self.image = [UIImage imageWithContentsOfFile:media.localURL];
                 [self loadImage];
                 
@@ -247,8 +247,8 @@ typedef enum {
                 DDLogError(@"Failed to update FeaturedImage URL: %@", error);
                 [self.activityView stopAnimating];
                 self.scrollView.hidden = NO;
-                
-                // TODO: Show error message
+                self.image = [UIImage imageWithContentsOfFile:media.localURL];
+                [self loadImage];
             }];
         }
     }
