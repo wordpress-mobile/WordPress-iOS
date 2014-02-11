@@ -49,10 +49,10 @@
  * Note: If manually creating your own background threads (via NSThread/alloc/init or NSThread/detachNeThread),
  * you can use [[NSThread currentThread] setName:(NSString *)].
 **/
-@interface DispatchQueueLogFormatter : NSObject <DDLogFormatter> {
+@interface DDDispatchQueueLogFormatter : NSObject <DDLogFormatter> {
 @protected
-	
-	NSString *dateFormatString;
+    
+    NSString *dateFormatString;
 }
 
 /**
@@ -114,3 +114,15 @@
 - (void)setReplacementString:(NSString *)shortLabel forQueueLabel:(NSString *)longLabel;
 
 @end
+
+/**
+ * Method declarations that make it easier to extend/modify DDDispatchQueueLogFormatter
+**/
+@interface DDDispatchQueueLogFormatter (OverridableMethods)
+
+- (NSString *)stringFromDate:(NSDate *)date;
+- (NSString *)queueThreadLabelForLogMessage:(DDLogMessage *)logMessage;
+- (NSString *)formatLogMessage:(DDLogMessage *)logMessage;
+
+@end
+
