@@ -8,6 +8,7 @@
  */
 
 #import "PostSettingsViewController.h"
+#import "PostSettingsViewController_Internal.h"
 
 #import "CategoriesViewController.h"
 #import "EditPostViewController_Internal.h"
@@ -49,7 +50,6 @@ static NSString *const TableViewActivityCellIdentifier = @"TableViewActivityCell
 
 @property (nonatomic, strong) AbstractPost *apost;
 
-// Post tags, status
 @property (nonatomic, strong) UITextField *passwordTextField;
 @property (nonatomic, strong) UILabel *publishOnDateLabel;
 @property (nonatomic, strong) UITextField *tagsTextField;
