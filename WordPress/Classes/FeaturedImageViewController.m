@@ -190,7 +190,6 @@ typedef enum {
 	} else {
         [self pickPhotoFromLibrary];
 	}
-    self.scrollView.hidden = YES;
     self.hasShownPicker = YES;
 }
 
@@ -208,7 +207,7 @@ typedef enum {
     if (IS_IPAD) {
         self.popover = [[UIPopoverController alloc] initWithContentViewController:picker];
         self.popover.delegate = self;
-        [self.popover presentPopoverFromRect:CGRectZero inView:self.view permittedArrowDirections:UIPopoverArrowDirectionAny animated:YES];
+        [self.popover presentPopoverFromBarButtonItem:self.photoButton permittedArrowDirections:UIPopoverArrowDirectionAny animated:YES];
     } else {
         [self.navigationController presentViewController:picker animated:YES completion:nil];
     }
@@ -230,7 +229,6 @@ typedef enum {
 - (void)featuredImageUploadFailed:(NSNotification *)notificationInfo {
     [self.activityView stopAnimating];
     self.scrollView.hidden = NO;
-    // TODO: Show error message
 }
 
 - (void)featuredImageUploadSucceeded:(NSNotification *)notificationInfo {
@@ -873,6 +871,9 @@ typedef enum {
 - (void)popoverControllerDidDismissPopover:(UIPopoverController *)popoverController{
     // On iOS7 Beta 6 the image picker seems to override our preferred setting so we force the status bar color back.
     [[UIApplication sharedApplication] setStatusBarStyle:UIStatusBarStyleLightContent];
+    if(!self.imageView.image) {
+        [self.navigationController popViewControllerAnimated:YES];
+    }
 }
 
 @end
