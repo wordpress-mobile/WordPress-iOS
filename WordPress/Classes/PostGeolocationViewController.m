@@ -102,6 +102,13 @@
         return;
     }
     
+    if (![self.post.blog geolocationEnabled]) {        
+        [WPError showAlertWithTitle:NSLocalizedString(@"Enable Geotagging", @"Title of an alert view stating the user needs to turn on geotagging.")
+                            message:NSLocalizedString(@"Geotagging is turned off. \nTo update this post's location, please enable geotagging in this blog's settings.", @"Message of an alert explaining that geotagging need to be enabled.")
+                  withSupportButton:NO];
+        return;
+    }
+    
     [[LocationService sharedService] getCurrentLocationAndAddress:^(CLLocation *location, NSString *address, NSError *error) {
         if (location) {
             Coordinate *coord = [[Coordinate alloc] initWithCoordinate:location.coordinate];
