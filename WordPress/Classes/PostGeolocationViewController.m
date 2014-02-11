@@ -15,6 +15,7 @@
 #import "Post.h"
 #import "PostAnnotation.h"
 #import "PostGeolocationView.h"
+#import "WPTableViewCell.h"
 
 @interface PostGeolocationViewController () <MKMapViewDelegate>
 
@@ -38,12 +39,20 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-    self.view.backgroundColor = [UIColor whiteColor];
+    self.view.backgroundColor = [WPStyleGuide itsEverywhereGrey];
     
     [self setupToolbar];
     
-    self.geoView = [[PostGeolocationView alloc] initWithFrame:self.view.bounds];
-    self.geoView.autoresizingMask = UIViewAutoresizingFlexibleHeight | UIViewAutoresizingFlexibleWidth;
+    CGRect frame = self.view.bounds;
+    UIViewAutoresizing mask = UIViewAutoresizingFlexibleHeight | UIViewAutoresizingFlexibleWidth;
+    if (IS_IPAD) {
+        mask = UIViewAutoresizingFlexibleHeight | UIViewAutoresizingFlexibleLeftMargin | UIViewAutoresizingFlexibleRightMargin;
+        frame.size.width = WPTableViewFixedWidth;
+        frame.origin.x = (CGRectGetWidth(self.view.bounds) - CGRectGetWidth(frame)) / 2;
+    }
+    self.geoView = [[PostGeolocationView alloc] initWithFrame:frame];
+    self.geoView.autoresizingMask = mask;
+    self.geoView.backgroundColor = [UIColor whiteColor];
     
     [self.view addSubview:self.geoView];
 }
