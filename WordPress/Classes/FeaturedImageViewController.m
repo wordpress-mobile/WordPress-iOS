@@ -52,6 +52,8 @@ typedef enum {
         self.post = post;
         if (post.featuredImageURL) {
             self.url = [NSURL URLWithString:post.featuredImageURL];
+            self.extendedLayoutIncludesOpaqueBars = YES;
+            self.automaticallyAdjustsScrollViewInsets = NO;
         }
     }
     return self;
