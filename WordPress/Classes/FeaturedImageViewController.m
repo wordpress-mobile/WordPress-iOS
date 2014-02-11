@@ -325,6 +325,10 @@ typedef enum {
         [self pickPhotoFromLibrary];
     } else if ([buttonTitle isEqualToString:NSLocalizedString(@"Take Photo", nil)]) {
         [self pickPhotoFromCamera];
+    } else if (acSheet.cancelButtonIndex == buttonIndex) {
+        if (!self.post.post_thumbnail) {
+            [self.navigationController popViewControllerAnimated:YES];
+        }
     }
 }
 
