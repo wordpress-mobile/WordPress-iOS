@@ -1,0 +1,149 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="4514" systemVersion="12F45" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" initialViewController="puo-Hy-QiQ">
+    <dependencies>
+        <deployment defaultVersion="1536" identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="3746"/>
+    </dependencies>
+    <scenes>
+        <!--Takeover Notification View Controller-->
+        <scene sceneID="YMc-Jc-CKb">
+            <objects>
+                <viewController storyboardIdentifier="MPNotificationViewController" modalTransitionStyle="crossDissolve" id="puo-Hy-QiQ" customClass="MPTakeoverNotificationViewController" sceneMemberID="viewController">
+                    <layoutGuides>
+                        <viewControllerLayoutGuide type="top" id="en5-wb-o36"/>
+                        <viewControllerLayoutGuide type="bottom" id="oJ2-nk-n4o"/>
+                    </layoutGuides>
+                    <view key="view" contentMode="scaleToFill" id="Wch-Xc-Avw">
+                        <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
+                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                        <subviews>
+                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="j3M-ip-xjd" userLabel="Bg Image View">
+                                <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                            </imageView>
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="If2-9m-eT9" userLabel="Bg Mask" customClass="MPBgRadialGradientView">
+                                <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                            </view>
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="1s2-xv-3au" userLabel="Image Mask" customClass="MPAlphaMaskView">
+                                <rect key="frame" x="0.0" y="0.0" width="320" height="435"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <subviews>
+                                    <imageView contentMode="top" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="LyM-hA-PHV" userLabel="Notif Image View">
+                                        <rect key="frame" x="20" y="82" width="280" height="400"/>
+                                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                                        <constraints>
+                                            <constraint firstAttribute="width" constant="280" id="A3b-w6-LPB"/>
+                                            <constraint firstAttribute="height" constant="400" id="LQn-ew-MQG"/>
+                                        </constraints>
+                                    </imageView>
+                                    <view contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="NtW-qx-qOt" userLabel="Image Drag View">
+                                        <rect key="frame" x="20" y="84" width="280" height="400"/>
+                                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                        <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                                    </view>
+                                </subviews>
+                                <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                                <constraints>
+                                    <constraint firstItem="LyM-hA-PHV" firstAttribute="top" secondItem="1s2-xv-3au" secondAttribute="top" constant="82" id="ZDm-Xj-EEQ"/>
+                                    <constraint firstAttribute="centerX" secondItem="LyM-hA-PHV" secondAttribute="centerX" id="nOP-MM-gCn"/>
+                                </constraints>
+                            </view>
+                            <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Notification Title" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" preferredMaxLayoutWidth="260" translatesAutoresizingMaskIntoConstraints="NO" id="eF7-ct-CP3">
+                                <rect key="frame" x="30" y="435" width="260" height="25"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <constraints>
+                                    <constraint firstAttribute="width" constant="260" id="f7M-nn-fH8"/>
+                                </constraints>
+                                <fontDescription key="fontDescription" type="boldSystem" pointSize="20"/>
+                                <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                <nil key="highlightedColor"/>
+                                <color key="shadowColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
+                            </label>
+                            <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Notification body" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" preferredMaxLayoutWidth="260" translatesAutoresizingMaskIntoConstraints="NO" id="MmD-8U-og7">
+                                <rect key="frame" x="30" y="460" width="260" height="21"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="16"/>
+                                <color key="textColor" red="0.6588235294117647" green="0.70588235294117641" blue="0.76470588235294112" alpha="1" colorSpace="calibratedRGB"/>
+                                <nil key="highlightedColor"/>
+                                <color key="shadowColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
+                                <size key="shadowOffset" width="0.0" height="1"/>
+                            </label>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="LDp-cp-cpg" customClass="MPActionButton">
+                                <rect key="frame" x="127" y="496" width="67" height="35"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <color key="backgroundColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="15"/>
+                                <inset key="contentEdgeInsets" minX="15" minY="8" maxX="15" maxY="9"/>
+                                <state key="normal" title="Cool!">
+                                    <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                </state>
+                                <state key="highlighted">
+                                    <color key="titleColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                                </state>
+                            </button>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="EGH-qT-4wM" userLabel="Button - Close">
+                                <rect key="frame" x="275" y="30" width="35" height="35"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="13"/>
+                                <inset key="contentEdgeInsets" minX="10" minY="0.0" maxX="0.0" maxY="10"/>
+                                <state key="normal" image="MPCloseBtn.png">
+                                    <color key="titleColor" red="0.6588235294117647" green="0.70588235294117641" blue="0.76470588235294112" alpha="1" colorSpace="calibratedRGB"/>
+                                    <color key="titleShadowColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                                </state>
+                            </button>
+                        </subviews>
+                        <color key="backgroundColor" red="0.094117647058823528" green="0.094117647058823528" blue="0.12156862745098039" alpha="1" colorSpace="calibratedRGB"/>
+                        <constraints>
+                            <constraint firstItem="oJ2-nk-n4o" firstAttribute="top" secondItem="j3M-ip-xjd" secondAttribute="bottom" id="1wF-9Y-JlE"/>
+                            <constraint firstItem="j3M-ip-xjd" firstAttribute="top" secondItem="Wch-Xc-Avw" secondAttribute="top" id="7FN-LA-fsE"/>
+                            <constraint firstAttribute="trailing" secondItem="EGH-qT-4wM" secondAttribute="trailing" constant="10" id="98S-L3-L61"/>
+                            <constraint firstItem="eF7-ct-CP3" firstAttribute="top" secondItem="1s2-xv-3au" secondAttribute="bottom" id="DAk-1W-QOq"/>
+                            <constraint firstItem="eF7-ct-CP3" firstAttribute="width" secondItem="MmD-8U-og7" secondAttribute="width" id="IfC-Ls-kOm"/>
+                            <constraint firstItem="j3M-ip-xjd" firstAttribute="width" secondItem="If2-9m-eT9" secondAttribute="width" id="Lnc-cn-mSW"/>
+                            <constraint firstItem="1s2-xv-3au" firstAttribute="width" secondItem="j3M-ip-xjd" secondAttribute="width" id="NWH-Fr-taF"/>
+                            <constraint firstItem="1s2-xv-3au" firstAttribute="top" secondItem="j3M-ip-xjd" secondAttribute="top" id="Nr5-qR-uWj"/>
+                            <constraint firstAttribute="centerX" secondItem="MmD-8U-og7" secondAttribute="centerX" id="NuK-mI-4RY"/>
+                            <constraint firstItem="eF7-ct-CP3" firstAttribute="centerX" secondItem="MmD-8U-og7" secondAttribute="centerX" id="Ple-yR-sUf"/>
+                            <constraint firstItem="1s2-xv-3au" firstAttribute="leading" secondItem="j3M-ip-xjd" secondAttribute="leading" id="Rdb-xl-vSi"/>
+                            <constraint firstAttribute="trailing" secondItem="j3M-ip-xjd" secondAttribute="trailing" id="Zgs-3K-N1E"/>
+                            <constraint firstItem="oJ2-nk-n4o" firstAttribute="top" secondItem="LDp-cp-cpg" secondAttribute="bottom" constant="37" id="ZmZ-Jx-bjS"/>
+                            <constraint firstItem="j3M-ip-xjd" firstAttribute="leading" secondItem="Wch-Xc-Avw" secondAttribute="leading" id="bJ0-Sf-jdK"/>
+                            <constraint firstItem="j3M-ip-xjd" firstAttribute="leading" secondItem="If2-9m-eT9" secondAttribute="leading" id="crJ-FY-cZ4"/>
+                            <constraint firstItem="j3M-ip-xjd" firstAttribute="top" secondItem="If2-9m-eT9" secondAttribute="top" id="cv2-h4-fvc"/>
+                            <constraint firstItem="MmD-8U-og7" firstAttribute="top" secondItem="eF7-ct-CP3" secondAttribute="bottom" id="hDC-Mi-ipg"/>
+                            <constraint firstItem="EGH-qT-4wM" firstAttribute="top" secondItem="en5-wb-o36" secondAttribute="bottom" constant="10" id="i3W-1P-cy6"/>
+                            <constraint firstItem="j3M-ip-xjd" firstAttribute="height" secondItem="If2-9m-eT9" secondAttribute="height" id="s2w-wS-P0V"/>
+                            <constraint firstItem="LDp-cp-cpg" firstAttribute="top" secondItem="MmD-8U-og7" secondAttribute="bottom" constant="15" id="vCY-0M-x1R"/>
+                            <constraint firstAttribute="centerX" secondItem="LDp-cp-cpg" secondAttribute="centerX" constant="-0.5" id="vQ8-41-fqj"/>
+                        </constraints>
+                    </view>
+                    <connections>
+                        <outlet property="backgroundImageView" destination="j3M-ip-xjd" id="EVc-3C-Pm6"/>
+                        <outlet property="bgMask" destination="If2-9m-eT9" id="dIj-LB-Qog"/>
+                        <outlet property="bodyView" destination="MmD-8U-og7" id="B7o-i2-uMk"/>
+                        <outlet property="closeButton" destination="EGH-qT-4wM" id="Xjn-Xo-pek"/>
+                        <outlet property="imageAlphaMaskView" destination="1s2-xv-3au" id="8ow-LG-krW"/>
+                        <outlet property="imageDragView" destination="NtW-qx-qOt" id="VGo-AD-HKH"/>
+                        <outlet property="imageHeight" destination="LQn-ew-MQG" id="UJF-hS-zLq"/>
+                        <outlet property="imageView" destination="LyM-hA-PHV" id="HDE-mT-R4c"/>
+                        <outlet property="imageWidth" destination="A3b-w6-LPB" id="zeQ-mE-r1S"/>
+                        <outlet property="okayButton" destination="LDp-cp-cpg" id="LS3-Ih-mH9"/>
+                        <outlet property="titleView" destination="eF7-ct-CP3" id="1i6-Xa-Dow"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="U1O-0Q-ISd" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="278" y="248"/>
+        </scene>
+    </scenes>
+    <resources>
+        <image name="MPCloseBtn.png" width="25" height="25"/>
+    </resources>
+    <simulatedMetricsContainer key="defaultSimulatedMetrics">
+        <simulatedStatusBarMetrics key="statusBar"/>
+        <simulatedOrientationMetrics key="orientation"/>
+        <simulatedScreenMetrics key="destination" type="retina4"/>
+    </simulatedMetricsContainer>
+</document>
