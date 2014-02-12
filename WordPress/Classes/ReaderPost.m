@@ -606,22 +606,6 @@ NSString * const ReaderPostStoredCommentTextKey = @"comment";
 	}];
 }
 
-
-- (NSString *)prettyDateString {
-	NSDate *date = [self isFreshlyPressed] ? self.sortDate : self.date_created_gmt;
-    NSDateFormatter *formatter = [[NSDateFormatter alloc] init];
-	NSTimeInterval diff = [[NSDate date] timeIntervalSinceDate:date];
-    if (diff < 86400) {
-        formatter.dateStyle = NSDateFormatterNoStyle;
-        formatter.timeStyle = NSDateFormatterShortStyle;
-    } else {
-        formatter.dateStyle = NSDateFormatterShortStyle;
-        formatter.timeStyle = NSDateFormatterNoStyle;
-    }
-    formatter.doesRelativeDateFormatting = YES;
-    return [formatter stringFromDate:date];
-}
-
 - (BOOL)isFollowable {
     return self.siteID != nil;
 }
@@ -874,8 +858,23 @@ NSString * const ReaderPostStoredCommentTextKey = @"comment";
 							   completionHandler([postsArr count], nil);
 						   }
 					   } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
-						   completionHandler(0, error);
+                           if (completionHandler) {
+                               completionHandler(0, error);                               
+                           }
 					   }];
 }
+
+#pragma mark - WPContentViewProvider protocol
+
+- (NSDate *)dateForDisplay {
+    BOOL isFreshlyPressed = [self isFreshlyPressed];
+    
+    if (isFreshlyPressed) {
+        return [self sortDate];
+    }
+    
+    return [self dateCreated];
+}
+
 
 @end

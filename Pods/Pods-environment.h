@@ -14,27 +14,30 @@
 
 // CocoaLumberjack
 #define COCOAPODS_POD_AVAILABLE_CocoaLumberjack
-#define COCOAPODS_VERSION_MAJOR_CocoaLumberjack 1
-#define COCOAPODS_VERSION_MINOR_CocoaLumberjack 6
-#define COCOAPODS_VERSION_PATCH_CocoaLumberjack 3
+// This library does not follow semantic-versioning,
+// so we were not able to define version macros.
+// Please contact the author.
+// Version: 1.6.5.1.
 
 // CocoaLumberjack/Core
 #define COCOAPODS_POD_AVAILABLE_CocoaLumberjack_Core
-#define COCOAPODS_VERSION_MAJOR_CocoaLumberjack_Core 1
-#define COCOAPODS_VERSION_MINOR_CocoaLumberjack_Core 6
-#define COCOAPODS_VERSION_PATCH_CocoaLumberjack_Core 3
+// This library does not follow semantic-versioning,
+// so we were not able to define version macros.
+// Please contact the author.
+// Version: 1.6.5.1.
 
 // CocoaLumberjack/Extensions
 #define COCOAPODS_POD_AVAILABLE_CocoaLumberjack_Extensions
-#define COCOAPODS_VERSION_MAJOR_CocoaLumberjack_Extensions 1
-#define COCOAPODS_VERSION_MINOR_CocoaLumberjack_Extensions 6
-#define COCOAPODS_VERSION_PATCH_CocoaLumberjack_Extensions 3
+// This library does not follow semantic-versioning,
+// so we were not able to define version macros.
+// Please contact the author.
+// Version: 1.6.5.1.
 
 // CrashlyticsLumberjack
 #define COCOAPODS_POD_AVAILABLE_CrashlyticsLumberjack
 #define COCOAPODS_VERSION_MAJOR_CrashlyticsLumberjack 1
 #define COCOAPODS_VERSION_MINOR_CrashlyticsLumberjack 0
-#define COCOAPODS_VERSION_PATCH_CrashlyticsLumberjack 0
+#define COCOAPODS_VERSION_PATCH_CrashlyticsLumberjack 1
 
 // DTCoreText
 #define COCOAPODS_POD_AVAILABLE_DTCoreText
@@ -70,7 +73,7 @@
 #define COCOAPODS_POD_AVAILABLE_HockeySDK
 #define COCOAPODS_VERSION_MAJOR_HockeySDK 3
 #define COCOAPODS_VERSION_MINOR_HockeySDK 5
-#define COCOAPODS_VERSION_PATCH_HockeySDK 0
+#define COCOAPODS_VERSION_PATCH_HockeySDK 2
 
 // MGImageUtilities
 #define COCOAPODS_POD_AVAILABLE_MGImageUtilities
@@ -81,8 +84,8 @@
 // Mixpanel
 #define COCOAPODS_POD_AVAILABLE_Mixpanel
 #define COCOAPODS_VERSION_MAJOR_Mixpanel 2
-#define COCOAPODS_VERSION_MINOR_Mixpanel 1
-#define COCOAPODS_VERSION_PATCH_Mixpanel 0
+#define COCOAPODS_VERSION_MINOR_Mixpanel 3
+#define COCOAPODS_VERSION_PATCH_Mixpanel 1
 
 // NSLogger
 #define COCOAPODS_POD_AVAILABLE_NSLogger
@@ -153,6 +156,6 @@
 // wpxmlrpc
 #define COCOAPODS_POD_AVAILABLE_wpxmlrpc
 #define COCOAPODS_VERSION_MAJOR_wpxmlrpc 0
-#define COCOAPODS_VERSION_MINOR_wpxmlrpc 3
+#define COCOAPODS_VERSION_MINOR_wpxmlrpc 4
 #define COCOAPODS_VERSION_PATCH_wpxmlrpc 0
 
