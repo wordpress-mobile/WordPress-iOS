@@ -42,6 +42,7 @@ typedef enum {
 
 @interface ReaderPostDetailViewController ()<UIActionSheetDelegate, MFMailComposeViewControllerDelegate, ReaderTextFormDelegate, UIPopoverControllerDelegate, ReaderCommentPublisherDelegate> {
     UIPopoverController *_popover;
+    UIGestureRecognizer *_tapOffKeyboardGesture;
 }
 
 @property (nonatomic, strong) ReaderPostView *postView;
@@ -131,6 +132,9 @@ typedef enum {
 
     self.inlineComposeView = [[InlineComposeView alloc] initWithFrame:CGRectZero];
 
+    _tapOffKeyboardGesture = [[UITapGestureRecognizer alloc] initWithTarget:self
+                                                                     action:@selector(dismissKeyboard:)];
+    
     // comment composer responds to the inline compose view to publish comments
     self.commentPublisher = [[ReaderCommentPublisher alloc]
                              initWithComposer:self.inlineComposeView
@@ -202,6 +206,17 @@ typedef enum {
 	}
 }
 
+#pragma mark - Actions
+
+- (void)dismissKeyboard:(id)sender {
+    for (UIGestureRecognizer *gesture in self.view.gestureRecognizers) {
+        if ([gesture isEqual:_tapOffKeyboardGesture]) {
+            [self.view removeGestureRecognizer:gesture];
+        }
+    }
+    
+    [self.inlineComposeView dismissComposer];
+}
 
 #pragma mark - View getters/builders
 
@@ -615,7 +630,7 @@ typedef enum {
 	[postView updateActionButtons];
 }
 
-- (void)postView:(ReaderPostView *)postView didReceiveFollowAction:(id)sender {
+- (void)contentView:(ReaderPostView *)postView didReceiveFollowAction:(id)sender {
     UIButton *followButton = (UIButton *)sender;
     ReaderPost *post = postView.post;
     
@@ -631,10 +646,10 @@ typedef enum {
 }
 
 - (void)postView:(ReaderPostView *)postView didReceiveCommentAction:(id)sender {
-
+    [self.view addGestureRecognizer:_tapOffKeyboardGesture];
+    
     self.commentPublisher.comment = nil;
     [self.inlineComposeView toggleComposer];
-
 }
 
 - (void)contentView:(WPContentView *)contentView didReceiveLinkAction:(id)sender {
@@ -927,6 +942,8 @@ typedef enum {
 	}
 
 	if ([self canComment]) {
+        [self.view addGestureRecognizer:_tapOffKeyboardGesture];
+        
 		[self.inlineComposeView displayComposer];
 	}
 	

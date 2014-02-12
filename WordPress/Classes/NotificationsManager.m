@@ -49,23 +49,28 @@ NSString *const NotificationsDeviceToken = @"apnsDeviceToken";
     if (![previousToken isEqualToString:newToken]) {
         DDLogInfo(@"Device Token has changed! OLD Value %@, NEW value %@", previousToken, newToken);
         [[NSUserDefaults standardUserDefaults] setObject:newToken forKey:NotificationsDeviceToken];
-        [self syncPushNotificationInfo];
+        [[NSUserDefaults standardUserDefaults] synchronize];
     }
+
+    [self syncPushNotificationInfo];
 }
 
 + (void)registrationDidFail:(NSError *)error {
     DDLogError(@"Failed to register for push notifications: %@", error);
-    [[NSUserDefaults standardUserDefaults] removeObjectForKey:NotificationsDeviceToken];
+    [self unregisterDeviceToken];
 }
 
 + (void)unregisterDeviceToken {
-    [[UIApplication sharedApplication] unregisterForRemoteNotifications];
-    
     NSString *token = [[NSUserDefaults standardUserDefaults] objectForKey:NotificationsDeviceToken];
     [[[WPAccount defaultWordPressComAccount] restApi] unregisterForPushNotificationsWithDeviceToken:token success:^{
-        DDLogInfo(@"Unregistered token %@", token);
+        DDLogInfo(@"Unregistered push token %@", token);
+
+        NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
+        [defaults removeObjectForKey:NotificationsDeviceToken];
+        [defaults removeObjectForKey:NotificationsPreferencesKey];
+        [defaults synchronize];
     } failure:^(NSError *error){
-        DDLogError(@"Couldn't unregister token: %@", [error localizedDescription]);
+        DDLogError(@"Couldn't unregister push token: %@", [error localizedDescription]);
     }];
 }
 
@@ -76,13 +81,29 @@ NSString *const NotificationsDeviceToken = @"apnsDeviceToken";
 #pragma mark - Notification handling
 
 + (void)handleNotification:(NSDictionary *)userInfo forState:(UIApplicationState)state completionHandler:(void (^)(UIBackgroundFetchResult))completionHandler {
-    DDLogInfo(@"Received push notification:\nPayload: %@\nCurrent Application state: %d", userInfo, state);
+    DDLogVerbose(@"Received push notification:\nPayload: %@\nCurrent Application state: %d", userInfo, state);
+    
+    if ([userInfo stringForKey:@"type"]) { //check if it is the badge reset PN
+        NSString *notificationType = [userInfo stringForKey:@"type"];
+        if ([notificationType isEqualToString:@"badge-reset"]) {
+            [UIApplication sharedApplication].applicationIconBadgeNumber = 0;
+            //Try to pull the badge number from the notification object
+            NSDictionary *apsObject = [userInfo dictionaryForKey:@"aps"];
+            if (apsObject) {
+                NSNumber *badgeCount = [apsObject numberForKey:@"badge"];
+                if (badgeCount) {
+                    [UIApplication sharedApplication].applicationIconBadgeNumber = [badgeCount intValue];
+                }
+            }
+            return;
+        }
+    }
     
     switch (state) {
         case UIApplicationStateActive:
-            [self syncPushNotificationInfo];
+            [[WordPressAppDelegate sharedWordPressApplicationDelegate] clearBadgeAndSyncItemsIfNotificationsScreenActive];
             break;
-    
+            
         case UIApplicationStateInactive:
             [WPMobileStats recordAppOpenedForEvent:StatsEventAppOpenedDueToPushNotification];
             [[WordPressAppDelegate sharedWordPressApplicationDelegate] showNotificationsTab];
@@ -91,7 +112,7 @@ NSString *const NotificationsDeviceToken = @"apnsDeviceToken";
         case UIApplicationStateBackground:
             if (completionHandler) {
                 [Note fetchNewNotificationsWithSuccess:^(BOOL hasNewNotes) {
-                    DDLogInfo(@"notification fetch completion handler completed with new notes: %@", hasNewNotes ? @"YES" : @"NO");
+                    DDLogVerbose(@"notification fetch completion handler completed with new notes: %@", hasNewNotes ? @"YES" : @"NO");
                     if (hasNewNotes) {
                         completionHandler(UIBackgroundFetchResultNewData);
                     } else {
@@ -113,7 +134,7 @@ NSString *const NotificationsDeviceToken = @"apnsDeviceToken";
     if (remoteNotif) {
         [WPMobileStats recordAppOpenedForEvent:StatsEventAppOpenedDueToPushNotification];
         
-        DDLogInfo(@"Launched with a remote notification as parameter:  %@", remoteNotif);
+        DDLogVerbose(@"Launched with a remote notification as parameter:  %@", remoteNotif);
         [[WordPressAppDelegate sharedWordPressApplicationDelegate] showNotificationsTab];
     }
 }
@@ -189,7 +210,7 @@ NSString *const NotificationsDeviceToken = @"apnsDeviceToken";
             success();
         }
     } failure:^(NSError *error) {
-        DDLogError(@"Failed to fetch notification settings %@", error.localizedDescription);
+        DDLogError(@"Failed to fetch notification settings %@ with token %@", error.localizedDescription, token);
         if (failure) {
             failure(error);
         }
@@ -198,11 +219,13 @@ NSString *const NotificationsDeviceToken = @"apnsDeviceToken";
 
 + (void)syncPushNotificationInfo {
     NSString *token = [[NSUserDefaults standardUserDefaults] objectForKey:NotificationsDeviceToken];
-    [[[WPAccount defaultWordPressComAccount] restApi] syncPushNotificationInfoWithDeviceToken:token success:^(NSDictionary *settings) {
+    WPAccount *account = [WPAccount defaultWordPressComAccount];
+    WordPressComApi *api = [account restApi];
+    [api syncPushNotificationInfoWithDeviceToken:token success:^(NSDictionary *settings) {
         [[NSUserDefaults standardUserDefaults] setObject:settings forKey:NotificationsPreferencesKey];
         DDLogInfo(@"Synched push notification token and received settings %@", settings);
     } failure:^(NSError *error) {
-        DDLogError(@"Failed to receive supported notification list: %@", [error localizedDescription]);
+        DDLogError(@"Failed to receive supported notification list: %@", error);
     }];
 }
 
