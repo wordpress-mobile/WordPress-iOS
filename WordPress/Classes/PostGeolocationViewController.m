@@ -136,9 +136,6 @@
         self.geoView.coordinate = nil;
         self.geoView.address = NSLocalizedString(@"Finding your location...", @"Geo-tagging posts, status message when geolocation is found.");
         
-        // show spinner
-        
-        
     } else if (self.post.geolocation) {
         self.geoView.coordinate = self.post.geolocation;
         self.geoView.address = [[LocationService sharedService] lastGeocodedAddress];
