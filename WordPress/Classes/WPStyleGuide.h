@@ -29,7 +29,6 @@
 + (NSDictionary *)regularTextAttributes;
 + (UIFont *)tableviewTextFont;
 + (UIFont *)tableviewSubtitleFont;
-+ (UIFont *)tableviewSubtitleFontSmall;
 + (UIFont *)tableviewSectionHeaderFont;
 + (NSDictionary *)defaultDTCoreTextOptions;
 
