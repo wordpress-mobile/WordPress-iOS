@@ -189,7 +189,7 @@ static NSString *const CameraPlusImagesNotification = @"CameraPlusImagesNotifica
         if ([URLString rangeOfString:@"newpost"].length) {
             // Create a new post from data shared by a third party application.
             NSDictionary *params = [[url query] dictionaryFromQueryString];
-            DDLogInfo(@"%@", params);
+            DDLogInfo(@"App launched for new post with params: %@", params);
             if ([params count]) {
                 [self showPostTabWithOptions:params];
                 returnValue = YES;
@@ -199,8 +199,8 @@ static NSString *const CameraPlusImagesNotification = @"CameraPlusImagesNotifica
             NSDictionary *params = [[url query] dictionaryFromQueryString];
             
             if (params.count) {
-                NSUInteger *blogId = [[params numberForKey:@"blogId"] integerValue];
-                NSUInteger *postId = [[params numberForKey:@"postId"] integerValue];
+                NSUInteger blogId = [[params numberForKey:@"blogId"] integerValue];
+                NSUInteger postId = [[params numberForKey:@"postId"] integerValue];
                 
                 [WPMobileStats flagSuperProperty:StatsPropertyReaderOpenedFromExternalURL];
                 [WPMobileStats incrementSuperProperty:StatsPropertyReaderOpenedFromExternalURLCount];
