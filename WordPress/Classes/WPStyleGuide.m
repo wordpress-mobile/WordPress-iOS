@@ -300,6 +300,12 @@
     }
 }
 
++ (void)configureTableViewSmallSubtitleCell:(UITableViewCell *)cell
+{
+    [self configureTableViewCell:cell];
+    cell.detailTextLabel.font = [self subtitleFont];
+}
+
 + (void)configureColorsForView:(UIView *)view andTableView:(UITableView *)tableView
 {
     tableView.backgroundView = nil;
