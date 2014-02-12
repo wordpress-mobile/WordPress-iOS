@@ -94,7 +94,12 @@
     [style setLineHeightMultiple:RPVLineHeightMultiple];
     NSDictionary *attributes = @{NSParagraphStyleAttributeName : style,
                                  NSFontAttributeName : [self titleFont]};
-    NSMutableAttributedString *titleString = [[NSMutableAttributedString alloc] initWithString:[post.postTitle trim]
+    NSString *postTitle = [post.postTitle trim];
+    if (postTitle == nil) {
+        postTitle = @"";
+    }
+    
+    NSMutableAttributedString *titleString = [[NSMutableAttributedString alloc] initWithString:postTitle
                                                                                     attributes:attributes];
     
     return titleString;
