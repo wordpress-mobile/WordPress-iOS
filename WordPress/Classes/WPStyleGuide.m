@@ -118,11 +118,6 @@
     return [UIFont fontWithName:@"OpenSans-Light" size:18.0];
 }
 
-+ (UIFont *)tableviewSubtitleFontSmall
-{
-    return [self.tableviewSubtitleFont fontWithSize:10.0];
-}
-
 + (UIFont *)tableviewSectionHeaderFont
 {
     return [UIFont fontWithName:@"OpenSans-Bold" size:12.0];
@@ -308,7 +303,7 @@
 + (void)configureTableViewSmallSubtitleCell:(UITableViewCell *)cell
 {
     [self configureTableViewCell:cell];
-    cell.detailTextLabel.font = [self tableviewSubtitleFontSmall];
+    cell.detailTextLabel.font = [self subtitleFont];
 }
 
 + (void)configureColorsForView:(UIView *)view andTableView:(UITableView *)tableView
