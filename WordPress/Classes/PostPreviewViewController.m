@@ -172,7 +172,7 @@
 	BOOL needsLogin = NO;
 	NSString *status = self.apost.original.status;
     NSDate *postGMTDate = self.apost.date_created_gmt;
-    NSDate *laterDate = self.apost.date_created_gmt;
+    NSDate *laterDate = [self.apost.date_created_gmt laterDate:[NSDate date]];
 
     if ([status isEqualToString:@"draft"]) {
         needsLogin = YES;
