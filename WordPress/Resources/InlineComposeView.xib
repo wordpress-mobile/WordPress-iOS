@@ -40,7 +40,7 @@
                             <nil key="highlightedColor"/>
                         </label>
                         <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" id="sqC-Nr-O7m">
-                            <rect key="frame" x="504" y="5" width="44" height="36"/>
+                            <rect key="frame" x="503" y="5" width="44" height="36"/>
                             <autoresizingMask key="autoresizingMask" flexibleMinX="YES" flexibleMinY="YES"/>
                             <state key="normal" title="Reply"/>
                             <connections>
