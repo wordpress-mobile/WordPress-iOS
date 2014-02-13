@@ -123,8 +123,7 @@ NSString * const NotificationsJetpackInformationURL = @"http://jetpack.me/about/
         [self pruneOldNotes];
     }
 
-    [self syncItems];
-    [self refreshUnreadNotes];
+    [self clearNotificationsBadgeAndSyncItems];
 }
 
 - (void)viewDidDisappear:(BOOL)animated {
@@ -176,13 +175,12 @@ NSString * const NotificationsJetpackInformationURL = @"http://jetpack.me/about/
 
 #pragma mark - Public methods
 
-- (void)refreshFromPushNotification {
-    if (IS_IPHONE)
-        [self.navigationController popToRootViewControllerAnimated:YES];
-    [self.tableView scrollRectToVisible:CGRectMake(0, 0, 1, 1) animated:YES];
+- (void)clearNotificationsBadgeAndSyncItems {
+    [UIApplication sharedApplication].applicationIconBadgeNumber = 0;
     if (![self isSyncing]) {
         [self syncItems];
     }
+    [self refreshUnreadNotes];
 }
 
 #pragma mark - UITableViewDelegate
@@ -310,6 +308,10 @@ NSString * const NotificationsJetpackInformationURL = @"http://jetpack.me/about/
 - (BOOL)isSyncing
 {
     return _retrievingNotifications;
+}
+
+- (void)setSyncing:(BOOL)value {
+    _retrievingNotifications = value;
 }
 
 - (void)syncItems
