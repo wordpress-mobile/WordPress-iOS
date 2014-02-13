@@ -467,7 +467,7 @@ typedef NS_ENUM(NSInteger, TotalFollowersShareRow) {
 
 - (BOOL)tableView:(UITableView *)tableView shouldHighlightRowAtIndexPath:(NSIndexPath *)indexPath {
     StatsTitleCountItem *item = [self itemSelectedAtIndexPath:indexPath];
-    return [item isKindOfClass:[StatsGroup class]] || !!item.URL;
+    return [item isKindOfClass:[StatsGroup class]] || item.URL != nil;
 }
 
 - (StatsTitleCountItem *)itemSelectedAtIndexPath:(NSIndexPath *)indexPath {
