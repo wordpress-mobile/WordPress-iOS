@@ -545,7 +545,7 @@ static NSString *const TableViewActivityCellIdentifier = @"TableViewActivityCell
 
 - (UITableViewCell *)configureGeolocationCellForIndexPath:(NSIndexPath *)indexPath {
     WPTableViewCell *cell;
-    if ([self post].geolocation == nil) {
+    if (self.post.geolocation == nil) {
         WPTableViewActivityCell *actCell = [self getWPActivityTableViewCell];
 
         actCell.tag = PostSettingsRowGeolocationAdd;
@@ -566,15 +566,20 @@ static NSString *const TableViewActivityCellIdentifier = @"TableViewActivityCell
         if (!geoCell) {
             geoCell = [[PostGeolocationCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:wpPostSettingsGeoCellIdentifier];
         }
-        NSString *address = [LocationService sharedService].lastGeocodedAddress;
-        if (!address) {
+        
+        Coordinate *coordinate = self.post.geolocation;
+        CLLocation *lastLocation = [LocationService sharedService].lastGeocodedLocation;
+        CLLocation *postLocation = [[CLLocation alloc] initWithLatitude:coordinate.latitude longitude:coordinate.longitude];
+        NSString *address;
+        if(lastLocation && [lastLocation distanceFromLocation:postLocation] == 0) {
+            address = [LocationService sharedService].lastGeocodedAddress;
+        } else {
             address = NSLocalizedString(@"Looking up address...", @"Used with posts that are geo-tagged. Let's the user know the the app is looking up the address for the coordinates tagging the post.");
-            Coordinate *coordinate = self.post.geolocation;
-            CLLocation *location = [[CLLocation alloc] initWithLatitude:coordinate.latitude longitude:coordinate.longitude];
-            [[LocationService sharedService] getAddressForLocation:location
+            [[LocationService sharedService] getAddressForLocation:postLocation
                                                         completion:^(CLLocation *location, NSString *address, NSError *error) {
                                                             [self.tableView reloadData];
                                                         }];
+
         }
         [geoCell setCoordinate:self.post.geolocation andAddress:address];
         cell = geoCell;
