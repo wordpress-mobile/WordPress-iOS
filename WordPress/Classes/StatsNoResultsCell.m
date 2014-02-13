@@ -39,29 +39,29 @@ static CGFloat const CellPadding = 15.0f;
 
     switch (section) {
         case StatsSectionTopPosts:
-            boldMessage = @"No top posts or pages.";
-            description = @"This panel shows your most viewed posts and pages.";
+            boldMessage = NSLocalizedString(@"No top posts or pages.", @"");
+            description = NSLocalizedString(@"This panel shows your most viewed posts and pages.", @"");
             break;
         case StatsSectionViewsByCountry:
-            description = @"No posts viewed.";
+            description = NSLocalizedString(@"No posts viewed.", @"");
             break;
         case StatsSectionClicks:
-            boldMessage = @"No clicks recorded.";
-            description = @"\"Clicks\" are viewers clicking outbound links on your site.";
+            boldMessage = NSLocalizedString(@"No clicks recorded.", @"");
+            description = NSLocalizedString(@"\"Clicks\" are viewers clicking outbound links on your site.", @"");
             break;
         case StatsSectionReferrers:
-            boldMessage = @"No referrers.";
-            description = @"A referrer is a click from another site that links to yours.";
+            boldMessage = NSLocalizedString(@"No referrers.", @"");
+            description = NSLocalizedString(@"A referrer is a click from another site that links to yours.", @"");
             break;
         case StatsSectionSearchTerms:
-            boldMessage = @"No search terms.";
-            description = @"Search terms are words or phrases users find you with when they search.";
+            boldMessage = NSLocalizedString(@"No search terms.", @"");
+            description = NSLocalizedString(@"Search terms are words or phrases users find you with when they search.", @"");
             break;
         default:
             break;
     }
-    NSString *localizedBoldString = NSLocalizedString(boldMessage, nil);
-    NSString *localizedDescriptionString = NSLocalizedString(description, nil);
+    NSString *localizedBoldString = boldMessage;
+    NSString *localizedDescriptionString = description;
     NSString *completeString = [NSString stringWithFormat:@"%@ %@", localizedBoldString, localizedDescriptionString];
     
     NSDictionary *defaultAttributes = [WPStyleGuide regularTextAttributes];
