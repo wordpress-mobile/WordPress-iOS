@@ -7,9 +7,7 @@
 //
 
 #import "AbstractComment.h"
-#import "NSString+XMLExtensions.h"
-#import "NSString+HTML.h"
-#import "NSString+Helpers.h"
+
 
 @implementation AbstractComment
 
@@ -26,45 +24,6 @@
 @dynamic postTitle;
 @dynamic status;
 @dynamic type;
-
-
-#pragma mark - WPContentViewProvider protocol
-
-- (NSString *)titleForDisplay {
-    return [self.postTitle stringByDecodingXMLCharacters];
-}
-
-- (NSString *)authorForDisplay {
-    return [self.author length] > 0 ? [[self.author stringByDecodingXMLCharacters] trim] : [self.author_email trim];
-}
-
-- (NSString *)blogNameForDisplay {
-    return nil;
-}
-
-- (NSString *)statusForDisplay {
-    return self.status;
-}
-
-- (NSString *)contentForDisplay {
-    return [self.content stringByDecodingXMLCharacters];
-}
-
-- (NSString *)contentPreviewForDisplay {
-    return [[[self.content stringByDecodingXMLCharacters] stringByStrippingHTML] stringByNormalizingWhitespace];
-}
-
-- (NSURL *)avatarURLForDisplay {
-    return nil;
-}
-
-- (NSString *)gravatarEmailForDisplay {
-    return [self.author_email trim];
-}
-
-- (NSDate *)dateForDisplay {
-    return self.dateCreated;
-}
 
 
 @end

@@ -42,13 +42,10 @@ CGFloat const EPVCTextViewTopPadding = 7.0f;
     NSManagedObjectContext *context = [[ContextManager sharedInstance] mainContext];
     NSFetchRequest *fetchRequest = [NSFetchRequest fetchRequestWithEntityName:@"Blog"];
     NSString *url = [[NSUserDefaults standardUserDefaults] stringForKey:EditPostViewControllerLastUsedBlogURL];
-    NSPredicate *predicate;
     if (url) {
-        predicate = [NSPredicate predicateWithFormat:@"visible = YES AND url = %@", url];
-    } else {
-        predicate = [NSPredicate predicateWithFormat:@"visible = YES"];
+        NSPredicate *predicate = [NSPredicate predicateWithFormat:@"url = %@", url];
+        [fetchRequest setPredicate:predicate];
     }
-    [fetchRequest setPredicate:predicate];
     fetchRequest.sortDescriptors = @[[NSSortDescriptor sortDescriptorWithKey:@"blogName" ascending:YES]];
     NSError *error = nil;
     NSArray *results = [context executeFetchRequest:fetchRequest error:&error];
@@ -76,29 +73,6 @@ CGFloat const EPVCTextViewTopPadding = 7.0f;
     [[NSNotificationCenter defaultCenter] removeObserver:self];
 }
 
-- (id)initWithTitle:(NSString *)title andContent:(NSString *)content andTags:(NSString *)tags andImage:(NSString *)image {
-    self = [self initWithDraftForLastUsedBlog];
-    if (self) {
-        Post *post = (Post *)self.post;
-        post.postTitle = title;
-        post.content = content;
-        post.tags = tags;
-        
-        if (image) {
-            NSURL *imageURL = [NSURL URLWithString:image];
-            if (imageURL) {
-                NSString *aimg = [NSString stringWithFormat:@"<a href=\"%@\"><img src=\"%@\"></a>", [imageURL absoluteString], [imageURL absoluteString]];
-                content = [NSString stringWithFormat:@"%@\n%@", aimg, content];
-                post.content = content;
-            } else {
-                // Assume image as base64 encoded string.
-                // TODO: Wrangle a base64 encoded image.
-            }
-        }
-    }
-    return self;
-}
-
 - (id)initWithDraftForLastUsedBlog {
     Blog *blog = [EditPostViewController blogForNewDraft];
     return [self initWithPost:[Post newDraftForBlog:blog]];
@@ -121,7 +95,7 @@ CGFloat const EPVCTextViewTopPadding = 7.0f;
 }
 
 - (void)viewDidLoad {
-    DDLogMethod();
+    WPFLogMethod();
     [super viewDidLoad];
     
     // For the iPhone, let's let the overscroll background color be white to
@@ -135,9 +109,21 @@ CGFloat const EPVCTextViewTopPadding = 7.0f;
     [self setupToolbar];
     [self setupTableHeaderView];
     
-    [self createRevisionOfPost];
+    // Using performBlock: with the AbstractPost on the main context:
+    // Prevents a hang on opening this view on slow and fast devices
+    // by deferring the cloning and UI update.
+    // Slower devices have the effect of the content appearing after
+    // a short delay
+    [self.post.managedObjectContext performBlock:^{
+        self.post = [self.post createRevision];
+        [self.post save];
+        [self refreshUIForCurrentPost];
+    }];
     
     [[NSNotificationCenter defaultCenter] removeObserver:self];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(keyboardWillShow:) name:UIKeyboardWillShowNotification object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(keyboardDidShow:) name:UIKeyboardDidShowNotification object:nil];
+	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(keyboardWillHide:) name:UIKeyboardWillHideNotification object:nil];
 	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(insertMediaAbove:) name:@"ShouldInsertMediaAbove" object:nil];
 	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(insertMediaBelow:) name:@"ShouldInsertMediaBelow" object:nil];
 	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(removeMedia:) name:@"ShouldRemoveMedia" object:nil];
@@ -152,10 +138,6 @@ CGFloat const EPVCTextViewTopPadding = 7.0f;
 - (void)viewWillAppear:(BOOL)animated {
     [super viewWillAppear:animated];
     
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(keyboardWillShow:) name:UIKeyboardWillShowNotification object:nil];
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(keyboardDidShow:) name:UIKeyboardDidShowNotification object:nil];
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(keyboardWillHide:) name:UIKeyboardWillHideNotification object:nil];
-
     if(self.navigationController.navigationBarHidden) {
         [self.navigationController setNavigationBarHidden:NO animated:YES];
     }
@@ -164,29 +146,15 @@ CGFloat const EPVCTextViewTopPadding = 7.0f;
         [self.navigationController setToolbarHidden:NO animated:YES];
     }
     
-    for (UIView *view in self.navigationController.toolbar.subviews) {
-        [view setExclusiveTouch:YES];
-    }
-    
     [self refreshUIForCurrentPost];
     
     [_textView setContentOffset:CGPointMake(0, 0)];
 }
 
 - (void)viewWillDisappear:(BOOL)animated {
-    DDLogMethod();
+    WPFLogMethod();
     [super viewWillDisappear:animated];
-    
-    [[NSNotificationCenter defaultCenter] removeObserver:self name:UIKeyboardWillShowNotification object:nil];
-    [[NSNotificationCenter defaultCenter] removeObserver:self name:UIKeyboardDidShowNotification object:nil];
-    [[NSNotificationCenter defaultCenter] removeObserver:self name:UIKeyboardWillHideNotification object:nil];
-
-    
     [self.navigationController setToolbarHidden:YES animated:YES];
-    
-    [[NSNotificationCenter defaultCenter] removeObserver:self name:UIKeyboardWillShowNotification object:nil];
-    [[NSNotificationCenter defaultCenter] removeObserver:self name:UIKeyboardDidShowNotification object:nil];
-	[[NSNotificationCenter defaultCenter] removeObserver:self name:UIKeyboardWillHideNotification object:nil];
     
 	[_titleTextField resignFirstResponder];
 	[_textView resignFirstResponder];
@@ -250,9 +218,6 @@ CGFloat const EPVCTextViewTopPadding = 7.0f;
     
     previewButton.tintColor = [WPStyleGuide readGrey];
     photoButton.tintColor = [WPStyleGuide readGrey];
-
-    previewButton.accessibilityLabel = NSLocalizedString(@"Preview post", nil);
-    photoButton.accessibilityLabel = NSLocalizedString(@"Add media", nil);
     
     UIBarButtonItem *leftFixedSpacer = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFixedSpace target:nil action:nil];
     UIBarButtonItem *rightFixedSpacer = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFixedSpace target:nil action:nil];
@@ -309,8 +274,8 @@ CGFloat const EPVCTextViewTopPadding = 7.0f;
         _titleTextField.font = [WPStyleGuide postTitleFont];
         _titleTextField.textColor = [WPStyleGuide darkAsNightGrey];
         _titleTextField.autoresizingMask = UIViewAutoresizingFlexibleWidth;
+        //_titleTextField.placeholder = NSLocalizedString(@"Enter title here", @"Label for the title of the post field. Should be the same as WP core.");
         _titleTextField.attributedPlaceholder = [[NSAttributedString alloc] initWithString:(NSLocalizedString(@"Enter title here", @"Label for the title of the post field. Should be the same as WP core.")) attributes:(@{NSForegroundColorAttributeName: [WPStyleGuide textFieldPlaceholderGrey]})];
-        _titleTextField.accessibilityLabel = NSLocalizedString(@"Title", @"Post title");
         
         _titleTextField.returnKeyType = UIReturnKeyNext;
     }
@@ -358,7 +323,6 @@ CGFloat const EPVCTextViewTopPadding = 7.0f;
         _textView.font = [WPStyleGuide regularTextFont];
         _textView.textColor = [WPStyleGuide darkAsNightGrey];
         _textView.textContainerInset = UIEdgeInsetsMake(0.0f, EPVCTextViewOffset, 0.0f, EPVCTextViewOffset);
-        _textView.accessibilityLabel = NSLocalizedString(@"Content", @"Post content");
     }
     [_tableHeaderViewContentView addSubview:_textView];
     
@@ -398,7 +362,6 @@ CGFloat const EPVCTextViewTopPadding = 7.0f;
         _tapToStartWritingLabel.autoresizingMask = UIViewAutoresizingFlexibleWidth;
         _tapToStartWritingLabel.font = [WPStyleGuide regularTextFont];
         _tapToStartWritingLabel.textColor = [WPStyleGuide textFieldPlaceholderGrey];
-        _tapToStartWritingLabel.isAccessibilityElement = NO;
     }
     [_tableHeaderViewContentView addSubview:_tapToStartWritingLabel];
 }
@@ -475,11 +438,6 @@ CGFloat const EPVCTextViewTopPadding = 7.0f;
 }
 
 - (void)scrollCursorIntoViewIfNeeded {
-    if ([_titleTextField isFirstResponder]) {
-        [self.tableView scrollRectToVisible:CGRectZero animated:YES];
-        return;
-    }
-    
     // Get the cursor position in the textView
     CGRect rect = [_textView caretRectForPosition:_textView.selectedTextRange.start];
     
@@ -532,20 +490,6 @@ CGFloat const EPVCTextViewTopPadding = 7.0f;
 
 #pragma mark - Actions
 
-- (void)showBlogSelectorPrompt {
-    if (![self.post hasSiteSpecificChanges]) {
-        [self showBlogSelector];
-        return;
-    }
-    UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"Change Site", @"Title of an alert prompting the user that they are about to change the blog they are posting to.")
-                                                        message:NSLocalizedString(@"Choosing a different site will lose edits to site specific content like media and categories. Are you sure?", @"And alert message warning the user they will loose blog specific edits like categories, and media if they change the blog being posted to.")
-                                                       delegate:self
-                                              cancelButtonTitle:NSLocalizedString(@"Cancel",@"")
-                                              otherButtonTitles:NSLocalizedString(@"OK",@""), nil];
-    alertView.tag = EditPostViewControllerAlertTagSwitchBlogs;
-    [alertView show];
-}
-
 - (void)showBlogSelector {
     [WPMobileStats incrementProperty:StatsPropertyPostDetailClickedBlogSelector forEvent:[self formattedStatEventString:StatsEventPostDetailClosedEditor]];
 
@@ -568,31 +512,7 @@ CGFloat const EPVCTextViewTopPadding = 7.0f;
         Blog *blog = (Blog *)[context objectWithID:selectedObjectID];
         
         if (blog) {
-            AbstractPost *newPost = [[self.post class] newDraftForBlog:blog];
-            AbstractPost *oldPost = self.post;
-            
-            NSString *content = oldPost.content;
-            if ([oldPost.media count] > 0) {
-                for (Media *media in oldPost.media) {
-                    content = [self removeMedia:media fromString:content];
-                }
-            }
-            newPost.content = content;
-            newPost.postTitle = oldPost.postTitle;
-            newPost.password = oldPost.password;
-            newPost.status = oldPost.status;
-            newPost.dateCreated = oldPost.dateCreated;
-            
-            if ([newPost isKindOfClass:[Post class]]) {
-                ((Post *)newPost).tags = ((Post *)oldPost).tags;
-            }
-
-            self.post = newPost;
-            [self createRevisionOfPost];
-            
-            [oldPost.original deleteRevision];
-            [oldPost.original remove];
-
+            self.post.blog = blog;
             [[NSUserDefaults standardUserDefaults] setObject:blog.url forKey:EditPostViewControllerLastUsedBlogURL];
             [[NSUserDefaults standardUserDefaults] synchronize];
             [self syncOptionsIfNecessaryForBlog:blog afterBlogChanged:YES];
@@ -606,23 +526,20 @@ CGFloat const EPVCTextViewTopPadding = 7.0f;
                                                                                    selectedCompletion:selectedCompletion
                                                                                      cancelCompletion:dismissHandler];
     vc.title = NSLocalizedString(@"Select Blog", @"");
-
-    UINavigationController *navController = [[UINavigationController alloc] initWithRootViewController:vc];
-    navController.navigationBar.translucent = NO;
-    navController.navigationBar.barStyle = UIBarStyleBlack;
     
     if (IS_IPAD) {
         vc.preferredContentSize = CGSizeMake(320.0, 500);
         
         CGRect titleRect = self.navigationItem.titleView.frame;
         titleRect = [self.navigationController.view convertRect:titleRect fromView:self.navigationItem.titleView.superview];
-
-        self.blogSelectorPopover = [[UIPopoverController alloc] initWithContentViewController:navController];
+        
+        self.blogSelectorPopover = [[UIPopoverController alloc] initWithContentViewController:vc];
         self.blogSelectorPopover.backgroundColor = [WPStyleGuide newKidOnTheBlockBlue];
         self.blogSelectorPopover.delegate = self;
         [self.blogSelectorPopover presentPopoverFromRect:titleRect inView:self.navigationController.view permittedArrowDirections:UIPopoverArrowDirectionAny animated:YES];
-
     } else {
+        UINavigationController *navController = [[UINavigationController alloc] initWithRootViewController:vc];
+        navController.navigationBar.translucent = NO;
         navController.modalPresentationStyle = UIModalPresentationPageSheet;
         navController.modalTransitionStyle = UIModalTransitionStyleCoverVertical;
         
@@ -699,7 +616,7 @@ CGFloat const EPVCTextViewTopPadding = 7.0f;
     if (IS_IPAD) {
         [actionSheet showFromBarButtonItem:self.navigationItem.leftBarButtonItem animated:YES];
     } else {
-        [actionSheet showFromToolbar:self.navigationController.toolbar];
+        [actionSheet showInView:self.view];
     }
 }
 
@@ -830,10 +747,9 @@ CGFloat const EPVCTextViewTopPadding = 7.0f;
     titleButton.titleLabel.textAlignment = NSTextAlignmentCenter;
     titleButton.autoresizingMask = UIViewAutoresizingFlexibleLeftMargin | UIViewAutoresizingFlexibleRightMargin | UIViewAutoresizingFlexibleTopMargin | UIViewAutoresizingFlexibleBottomMargin;
     [titleButton setImage:[UIImage imageNamed:@"icon-navbar-dropdown.png"] forState:UIControlStateNormal];
-    [titleButton addTarget:self action:@selector(showBlogSelectorPrompt) forControlEvents:UIControlEventTouchUpInside];
+    [titleButton addTarget:self action:@selector(showBlogSelector) forControlEvents:UIControlEventTouchUpInside];
     [titleButton setImageEdgeInsets:UIEdgeInsetsMake(0, 0, 0, 10)];
     [titleButton setTitleEdgeInsets:UIEdgeInsetsMake(0, 10, 0, 0)];
-    [titleButton setAccessibilityHint:NSLocalizedString(@"Tap to select which blog to post to", nil)];
 
     _titleBarButton = titleButton;
     self.navigationItem.titleView = titleButton;
@@ -842,19 +758,6 @@ CGFloat const EPVCTextViewTopPadding = 7.0f;
 }
 
 # pragma mark - Model State Methods
-
-- (void)createRevisionOfPost {
-    // Using performBlock: with the AbstractPost on the main context:
-    // Prevents a hang on opening this view on slow and fast devices
-    // by deferring the cloning and UI update.
-    // Slower devices have the effect of the content appearing after
-    // a short delay
-    [self.post.managedObjectContext performBlock:^{
-        self.post = [self.post createRevision];
-        [self.post save];
-        [self refreshUIForCurrentPost];
-    }];
-}
 
 - (void)discardChangesAndDismiss {
     [self.post.original deleteRevision];
@@ -891,7 +794,7 @@ CGFloat const EPVCTextViewTopPadding = 7.0f;
 }
 
 - (void)savePost:(BOOL)upload {
-    DDLogMethod();
+    WPFLogMethod();
     [WPMobileStats trackEventForWPComWithSavedProperties:[self formattedStatEventString:StatsEventPostDetailClosedEditor]];
     
     [self logSavePostStats];
@@ -1043,11 +946,7 @@ CGFloat const EPVCTextViewTopPadding = 7.0f;
     if (range.length > 0)
         infoText = [_textView.text substringWithRange:range];
     
-    CGRect frame = CGRectMake(0.0f, 0.0f, self.view.bounds.size.width, self.view.bounds.size.height);
-    if (IS_IPAD) {
-        frame.origin.y = 22.0f; // Make sure the title of the alert view is visible on the iPad.
-    }
-    _linkHelperAlertView = [[WPAlertView alloc] initWithFrame:frame andOverlayMode:WPAlertViewOverlayModeTwoTextFieldsTwoButtonMode];
+    _linkHelperAlertView = [[WPAlertView alloc] initWithFrame:self.view.bounds andOverlayMode:WPAlertViewOverlayModeTwoTextFieldsTwoButtonMode];
     
     NSString *title = NSLocalizedString(@"Make a Link\n\n\n\n", @"Title of the Link Helper popup to aid in creating a Link in the Post Editor.\n\n\n\n");
     NSCharacterSet *charSet = [NSCharacterSet whitespaceAndNewlineCharacterSet];
@@ -1132,7 +1031,7 @@ CGFloat const EPVCTextViewTopPadding = 7.0f;
     };
     
     _linkHelperAlertView.alpha = 0.0;
-    [self.view.superview addSubview:_linkHelperAlertView];
+    [self.view addSubview:_linkHelperAlertView];
     if ([infoText length] > 0) {
         [_linkHelperAlertView.secondTextField becomeFirstResponder];
     }
@@ -1220,19 +1119,12 @@ CGFloat const EPVCTextViewTopPadding = 7.0f;
     
 	//remove the html string for the media object
 	Media *media = (Media *)[notification object];
-    _textView.text = [self removeMedia:media fromString:_textView.text];
+	_textView.text = [_textView.text stringByReplacingOccurrencesOfString:[NSString stringWithFormat:@"<br /><br />%@", media.html] withString:@""];
+	_textView.text = [_textView.text stringByReplacingOccurrencesOfString:[NSString stringWithFormat:@"%@<br /><br />", media.html] withString:@""];
+	_textView.text = [_textView.text stringByReplacingOccurrencesOfString:media.html withString:@""];
     [self autosaveContent];
     [self refreshUIForCurrentPost];
 }
-
-- (NSString *)removeMedia:(Media *)media fromString:(NSString *)string {
-	string = [string stringByReplacingOccurrencesOfString:[NSString stringWithFormat:@"<br /><br />%@", media.html] withString:@""];
-	string = [string stringByReplacingOccurrencesOfString:[NSString stringWithFormat:@"%@<br /><br />", media.html] withString:@""];
-	string = [string stringByReplacingOccurrencesOfString:media.html withString:@""];
-    
-    return string;
-}
-
 
 #pragma mark - Formatting
 
@@ -1298,7 +1190,7 @@ CGFloat const EPVCTextViewTopPadding = 7.0f;
 #pragma mark - WPKeyboardToolbar Delegate Methods
 
 - (void)keyboardToolbarButtonItemPressed:(WPKeyboardToolbarButtonItem *)buttonItem {
-    DDLogMethod();
+    WPFLogMethod();
     [self logWPKeyboardToolbarButtonStat:buttonItem];
     if ([buttonItem.actionTag isEqualToString:@"link"]) {
         [self showLinkView];
@@ -1359,10 +1251,6 @@ CGFloat const EPVCTextViewTopPadding = 7.0f;
             [self savePost:YES];
         }
         _failedMediaAlertView = nil;
-    } else if (alertView.tag == EditPostViewControllerAlertTagSwitchBlogs) {
-        if (buttonIndex == 1) {
-            [self showBlogSelector];
-        }
     }
     return;
 }
@@ -1468,7 +1356,7 @@ CGFloat const EPVCTextViewTopPadding = 7.0f;
 }
 
 - (void)willAnimateRotationToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation duration:(NSTimeInterval)duration {
-    DDLogMethod();
+    WPFLogMethod();
     CGRect frame = _editorToolbar.frame;
     if (UIDeviceOrientationIsLandscape(interfaceOrientation)) {
         if (IS_IPAD) {
@@ -1499,7 +1387,7 @@ CGFloat const EPVCTextViewTopPadding = 7.0f;
 #pragma mark Keyboard management
 
 - (void)keyboardWillShow:(NSNotification *)notification {
-    DDLogMethod();
+    WPFLogMethod();
 	_isShowingKeyboard = YES;
     
     CGRect originalKeyboardFrame = [[[notification userInfo] objectForKey:UIKeyboardFrameEndUserInfoKey] CGRectValue];
@@ -1525,7 +1413,7 @@ CGFloat const EPVCTextViewTopPadding = 7.0f;
 }
 
 - (void)keyboardWillHide:(NSNotification *)notification {
-    DDLogMethod();
+    WPFLogMethod();
 	_isShowingKeyboard = NO;
     [[UIApplication sharedApplication] setStatusBarHidden:NO withAnimation:UIStatusBarAnimationFade];
     [self.navigationController setNavigationBarHidden:NO animated:YES];

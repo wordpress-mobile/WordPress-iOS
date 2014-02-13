@@ -10,7 +10,7 @@
 #import "CoreDataTestHelper.h"
 #import "WPAccount.h"
 #import "Blog.h"
-#import "NotificationsManager.h"
+#import "Constants.h"
 #import "SettingsViewController.h"
 #import "AsyncTestHelper.h"
 #import "ContextManager.h"
@@ -42,7 +42,7 @@
 {    
     XCTAssertNil([WPAccount defaultWordPressComAccount], @"There should be no default account");
     
-    [[NSUserDefaults standardUserDefaults] removeObjectForKey:NotificationsDeviceToken];
+    [[NSUserDefaults standardUserDefaults] removeObjectForKey:kApnsDeviceTokenPrefKey];
     SettingsViewController *controller = [self settingsViewController];
     [self present:controller];
 
@@ -60,7 +60,7 @@
 
     // Sign In
     ATHStart();
-    WPAccount *account = [WPAccount createOrUpdateWordPressComAccountWithUsername:@"jacksparrow" password:@"piratesobrave" authToken:@"token" context:[ContextManager sharedInstance].mainContext];
+    WPAccount *account = [WPAccount createOrUpdateWordPressComAccountWithUsername:@"jacksparrow" password:@"piratesobrave" authToken:nil context:[ContextManager sharedInstance].mainContext];
     ATHEnd();
     
     [WPAccount setDefaultWordPressComAccount:account];
@@ -77,7 +77,7 @@
     cell = [self tableView:table cellForRow:1];
     XCTAssertEqualObjects(@"wpcom-sign-out", cell.accessibilityIdentifier);
 
-    [[NSUserDefaults standardUserDefaults] setObject:@"aFakeAPNSToken" forKey:NotificationsDeviceToken];
+    [[NSUserDefaults standardUserDefaults] setObject:@"aFakeAPNSToken" forKey:kApnsDeviceTokenPrefKey];
     [table reloadData];
 
     /*
@@ -139,7 +139,7 @@
     cell = [self tableView:table cellForRow:2];
     XCTAssertEqualObjects(@"wpcom-sign-out", cell.accessibilityIdentifier);
 
-    [[NSUserDefaults standardUserDefaults] removeObjectForKey:NotificationsDeviceToken];
+    [[NSUserDefaults standardUserDefaults] removeObjectForKey:kApnsDeviceTokenPrefKey];
     [table reloadData];
 
     /*

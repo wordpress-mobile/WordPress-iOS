@@ -28,7 +28,6 @@
 - (BOOL)isRevision;
 - (BOOL)isOriginal;
 - (void)cloneFrom:(AbstractPost *)source;
-- (BOOL)hasSiteSpecificChanges;
 
 + (AbstractPost *)newDraftForBlog:(Blog *)blog;
 + (NSString *const)remoteUniqueIdentifier;

@@ -10,9 +10,6 @@
 #import <CommonCrypto/CommonDigest.h>
 #import "UIDevice+WordPressIdentifier.h"
 
-static NSString *const HybridTokenSetting = @"WPWebAppHybridAuthToken";
-static NSString *const AuthorizedHybridHost = @"en.wordpress.com";
-
 @implementation WPWebBridge
 
 @synthesize delegate;
@@ -52,12 +49,12 @@ static NSString *const AuthorizedHybridHost = @"en.wordpress.com";
 }
 
 + (BOOL) isValidHybridURL:(NSURL *)url {
-    return [url.host isEqualToString:AuthorizedHybridHost];
+    return [url.host isEqualToString:kAuthorizedHybridHost];
 }
 
 - (BOOL)requestIsValidHybridRequest:(NSURLRequest *)request {
     
-    return [request.URL.host isEqualToString:AuthorizedHybridHost];
+    return [request.URL.host isEqualToString:kAuthorizedHybridHost];
     
 }
 
@@ -69,7 +66,7 @@ static NSString *const AuthorizedHybridHost = @"en.wordpress.com";
 + (NSString *)hybridAuthToken
 {
     NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
-    NSString *token = [defaults stringForKey:HybridTokenSetting];
+    NSString *token = [defaults stringForKey:kHybridTokenSetting];
     if (token == nil)
     {
         NSString *concat = [NSString stringWithFormat:@"%@--%d", [[UIDevice currentDevice] wordpressIdentifier], arc4random()];
@@ -81,7 +78,7 @@ static NSString *const AuthorizedHybridHost = @"en.wordpress.com";
             [hash appendFormat:@"%02X", result[i]];
         token = [hash lowercaseString];
         DDLogInfo(@"Generating new hybrid token: %@", token);
-        [defaults setValue:token forKey:HybridTokenSetting];
+        [defaults setValue:token forKey:kHybridTokenSetting];
         [defaults synchronize];
         
     }

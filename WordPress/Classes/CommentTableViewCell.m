@@ -37,7 +37,19 @@
 #define GRAVATAR_LEFT_OFFSET        ( LEFT_OFFSET + GRAVATAR_WIDTH + CELL_PADDING )
 #define GRAVATAR_TOP_OFFSET         ( TOP_OFFSET + GRAVATAR_HEIGHT + PADDING )
 
-static CGFloat const CommentRowHeight = 130.0f;
+
+@interface CommentTableViewCell (Private)
+
+- (void)updateLayout:(BOOL)editing;
+- (void)addCheckButton;
+- (void)addNameLabel;
+- (void)addURLLabel;
+- (void)addPostLabel;
+- (void)addCommentLabel;
+- (void)addGravatarImageView;
+
+@end
+
 
 @implementation CommentTableViewCell
 
@@ -179,7 +191,7 @@ static CGFloat const CommentRowHeight = 130.0f;
 
 - (void)addCheckButton {
 
-    CGRect rect = CGRectMake(LEFT_OFFSET, (CommentRowHeight - 30.0f)/2, 30.0, 30.0f);
+    CGRect rect = CGRectMake(LEFT_OFFSET, (COMMENT_ROW_HEIGHT - 30.0f)/2, 30.0, 30.0f);
     checkButton = [[UIButton alloc] initWithFrame:rect];
     [checkButton addTarget:self action:@selector(checkButtonPressed) forControlEvents:UIControlEventTouchUpInside];
     [self setChecked:NO];

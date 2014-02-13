@@ -9,6 +9,7 @@
 #import "BlogsTableViewCell.h"
 #import "QuartzCore/QuartzCore.h"
 
+#define MARGIN 10;
 @implementation BlogsTableViewCell
 
 - (void) layoutSubviews {

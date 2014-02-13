@@ -7,8 +7,14 @@
 //
 
 #import <UIKit/UIKit.h>
-#import "WPContentCell.h"
+#import "WPTableViewCell.h"
 
-@interface NewPostTableViewCell : WPContentCell
+@class AbstractPost;
+@interface NewPostTableViewCell : WPTableViewCell
+
+@property (readwrite, weak) AbstractPost *post;
+
+- (void)runSpinner:(BOOL)value;
++ (CGFloat)rowHeightForPost:(AbstractPost *)post andWidth:(CGFloat)width;
 
 @end

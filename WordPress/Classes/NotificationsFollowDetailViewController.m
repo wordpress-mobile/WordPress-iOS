@@ -16,7 +16,6 @@
 #import "WPWebViewController.h"
 #import <QuartzCore/QuartzCore.h>
 #import "WPAccount.h"
-#import "WPToast.h"
 #import "Note.h"
 
 @interface NotificationsFollowDetailViewController () <UITableViewDelegate, UITableViewDataSource>
@@ -49,13 +48,16 @@
     [super viewDidLoad];
 
     if (_note) {
-        _noteData = [[[_note noteData] objectForKey:@"body"] objectForKey:@"items"];
+        _noteData = [[[_note getNoteData] objectForKey:@"body"] objectForKey:@"items"];
     }
     
-    _postTitleView.layer.borderColor = [UIColor lightGrayColor].CGColor;
-    _postTitleView.layer.borderWidth = 1.0 / [[UIScreen mainScreen] scale];
+    [_postTitleView.layer setMasksToBounds:NO];
+    [_postTitleView.layer setShadowColor:[[UIColor blackColor] CGColor]];
+    [_postTitleView.layer setShadowOffset:CGSizeMake(0.0, 2.0)];
+    [_postTitleView.layer setShadowRadius:2.0f];
+    [_postTitleView.layer setShadowOpacity:0.3f];
     
-    NSString *headerText = [[[_note noteData] objectForKey:@"body"] objectForKey:@"header_text"];
+    NSString *headerText = [[[_note getNoteData] objectForKey:@"body"] objectForKey:@"header_text"];
     if (headerText) {
         UILabel *headerLabel = [[UILabel alloc] initWithFrame:CGRectMake(0.0f, 0.0f, self.view.frame.size.width, 40.0f)];
         [headerLabel setBackgroundColor:[WPStyleGuide itsEverywhereGrey]];
@@ -66,7 +68,7 @@
         [self.tableView setTableHeaderView:headerLabel];
         [self.view bringSubviewToFront:_postTitleView];
         
-        NSString *headerLink = [[[_note noteData] objectForKey:@"body"] objectForKey:@"header_link"];
+        NSString *headerLink = [[[_note getNoteData] objectForKey:@"body"] objectForKey:@"header_link"];
         if (headerLink && [headerLink isKindOfClass:[NSString class]]) {
             NSURL *postURL = [NSURL URLWithString:headerLink];
             if (postURL) {
@@ -86,7 +88,7 @@
     }
     
     
-    NSString *footerText = [[[_note noteData] objectForKey:@"body"] objectForKey:@"footer_text"];
+    NSString *footerText = [[[_note getNoteData] objectForKey:@"body"] objectForKey:@"footer_text"];
     if (footerText && ![footerText isEqualToString:@""]) {
         _hasFooter = YES;
     }
@@ -191,7 +193,7 @@
             
             UIImageView *gravatarImageView = cell.imageView;
             [cell.imageView setImageWithURLRequest:request
-                                  placeholderImage:[UIImage imageNamed:@"gravatar"]
+                                  placeholderImage:[UIImage imageNamed:@"gravatar.jpg"]
                                            success:^(NSURLRequest *request, NSHTTPURLResponse *response, UIImage *image) {
                                                gravatarImageView.image = image;
                                            }
@@ -209,7 +211,7 @@
             cell.textLabel.textColor = [WPStyleGuide newKidOnTheBlockBlue];
             cell.textLabel.font = [WPStyleGuide regularTextFont];
         }
-        NSString *footerText = [[[_note noteData] objectForKey:@"body"] objectForKey:@"footer_text"];
+        NSString *footerText = [[[_note getNoteData] objectForKey:@"body"] objectForKey:@"footer_text"];
         cell.textLabel.text = footerText;
         return cell;
     }
@@ -242,7 +244,7 @@
     
     NSUInteger blogID = [[noteDetails objectForKey:@"site_id"] intValue];
     if (blogID) {
-        [[[WPAccount defaultWordPressComAccount] restApi] followBlog:blogID isFollowing:isFollowing success:^(AFHTTPRequestOperation *operation, id responseObject) {
+        [[WordPressComApi sharedApi] followBlog:blogID isFollowing:isFollowing success:^(AFHTTPRequestOperation *operation, id responseObject) {
             NSDictionary *followResponse = (NSDictionary *)responseObject;
             if (followResponse && [[followResponse objectForKey:@"success"] intValue] == 1) {
                 if ([[followResponse objectForKey:@"is_following"] intValue] == 1) {
@@ -256,11 +258,6 @@
             } else {
                 [cell setFollowing:isFollowing];
             }
-            
-            NSString *message = isFollowing ? NSLocalizedString(@"Unfollowed", @"User unfollowed a blog") : NSLocalizedString(@"Followed", @"User followed a blog");
-            NSString *imageName = [NSString stringWithFormat:@"action_icon_%@", (isFollowing) ? @"unfollowed" : @"followed"];
-            [WPToast showToastWithMessage:message andImage:[UIImage imageNamed:imageName]];
-            
         } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
             [cell setFollowing: isFollowing];
             DDLogVerbose(@"[Rest API] ! %@", [error localizedDescription]);
@@ -269,7 +266,7 @@
 }
 
 - (IBAction)viewPostTitle:(id)sender {
-    [self loadWebViewWithURL:[[[_note noteData] objectForKey:@"body"] objectForKey:@"header_link"]];
+    [self loadWebViewWithURL:[[[_note getNoteData] objectForKey:@"body"] objectForKey:@"header_link"]];
 }
 
 - (void)loadWebViewWithURL: (NSString*)url {
@@ -323,7 +320,7 @@
             [self.tableView deselectRowAtIndexPath:indexPath animated:NO];
         }
     } else {
-        [self loadWebViewWithURL:[[[_note noteData] objectForKey:@"body"] objectForKey:@"footer_link"]];
+        [self loadWebViewWithURL:[[[_note getNoteData] objectForKey:@"body"] objectForKey:@"footer_link"]];
     }
 }
 

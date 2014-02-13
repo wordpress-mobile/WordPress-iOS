@@ -28,27 +28,20 @@
 
 + (UIFont *)postTitleFont
 {
-    return [UIFont fontWithName:@"OpenSans" size:16.0];
+    return [UIFont fontWithName:@"OpenSans" size:18.0];
 }
 
 + (UIFont *)postTitleFontBold
 {
-    return [UIFont fontWithName:@"OpenSans-Bold" size:16.0];
+    return [UIFont fontWithName:@"OpenSans-Bold" size:18.0];    
 }
 
 + (NSDictionary *)postTitleAttributes
 {
     NSMutableParagraphStyle *paragraphStyle = [[NSMutableParagraphStyle alloc] init];
-    paragraphStyle.minimumLineHeight = 19;
-    paragraphStyle.maximumLineHeight = 19;
+    paragraphStyle.minimumLineHeight = 20;
+    paragraphStyle.maximumLineHeight = 20;
     return @{NSParagraphStyleAttributeName: paragraphStyle, NSFontAttributeName : [self postTitleFont]};
-}
-
-+ (NSDictionary *)postTitleAttributesBold {
-    NSMutableParagraphStyle *paragraphStyle = [[NSMutableParagraphStyle alloc] init];
-    paragraphStyle.minimumLineHeight = 19;
-    paragraphStyle.maximumLineHeight = 19;
-    return @{NSParagraphStyleAttributeName: paragraphStyle, NSFontAttributeName : [self postTitleFontBold]};
 }
 
 + (UIFont *)subtitleFont
@@ -127,8 +120,8 @@
 {
     return @{
              DTDefaultFontFamily:@"Open Sans",
-             DTDefaultLineHeightMultiplier:(IS_IPAD ? @1.6 : @1.4),
-             DTDefaultFontSize:(IS_IPAD ? @18 : @16),
+             DTDefaultLineHeightMultiplier:@1.4,
+             DTDefaultFontSize:@14,
              DTDefaultTextColor:[WPStyleGuide littleEddieGrey],
              DTDefaultLinkColor:[WPStyleGuide baseLighterBlue],
              DTDefaultLinkHighlightColor:[WPStyleGuide midnightBlue],
@@ -298,12 +291,6 @@
         cell.textField.textColor = [self textFieldPlaceholderGrey];
         cell.textField.textAlignment = NSTextAlignmentRight;
     }
-}
-
-+ (void)configureTableViewSmallSubtitleCell:(UITableViewCell *)cell
-{
-    [self configureTableViewCell:cell];
-    cell.detailTextLabel.font = [self subtitleFont];
 }
 
 + (void)configureColorsForView:(UIView *)view andTableView:(UITableView *)tableView

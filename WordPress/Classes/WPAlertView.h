@@ -24,10 +24,8 @@ typedef NS_ENUM(NSUInteger, WPAlertViewOverlayMode) {
 @property (nonatomic, strong) NSString *footerDescription;
 @property (nonatomic, strong) NSString *firstTextFieldPlaceholder;
 @property (nonatomic, strong) NSString *firstTextFieldValue;
-@property (nonatomic, strong) NSString *firstTextFieldLabelText;
 @property (nonatomic, strong) NSString *secondTextFieldPlaceholder;
 @property (nonatomic, strong) NSString *secondTextFieldValue;
-@property (nonatomic, strong) NSString *secondTextFieldLabelText;
 @property (nonatomic, strong) NSString *leftButtonText;
 @property (nonatomic, strong) NSString *rightButtonText;
 @property (nonatomic, assign) BOOL hideBackgroundView;
@@ -35,9 +33,6 @@ typedef NS_ENUM(NSUInteger, WPAlertViewOverlayMode) {
 // Provided for convenience to alter keyboard behavior
 @property (nonatomic, weak) IBOutlet UITextField *firstTextField;
 @property (nonatomic, weak) IBOutlet UITextField *secondTextField;
-
-@property (nonatomic, weak) IBOutlet UILabel *firstTextFieldLabel;
-@property (nonatomic, weak) IBOutlet UILabel *secondTextFieldLabel;
 
 @property (nonatomic, copy) void (^singleTapCompletionBlock)(WPAlertView *);
 @property (nonatomic, copy) void (^doubleTapCompletionBlock)(WPAlertView *);

@@ -40,7 +40,6 @@ static ContextManager *instance;
 - (NSManagedObjectContext *const)newDerivedContext {
     NSManagedObjectContext *derived = [[NSManagedObjectContext alloc] initWithConcurrencyType:NSPrivateQueueConcurrencyType];
     derived.parentContext = self.mainContext;
-    derived.mergePolicy = NSMergeByPropertyObjectTrumpMergePolicy;
     return derived;
 }
 
@@ -50,7 +49,6 @@ static ContextManager *instance;
     }
     _mainContext = [[NSManagedObjectContext alloc] initWithConcurrencyType:NSMainQueueConcurrencyType];
     _mainContext.persistentStoreCoordinator = [self persistentStoreCoordinator];
-    _mainContext.mergePolicy = NSMergeByPropertyObjectTrumpMergePolicy;
     
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(mergeChangesIntoBackgroundContext:) name:NSManagedObjectContextDidSaveNotification object:_mainContext];
     return _mainContext;

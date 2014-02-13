@@ -28,6 +28,7 @@ NSString * const NotificationsJetpackInformationURL = @"http://jetpack.me/about/
 }
 
 @property (nonatomic, strong) id authListener;
+@property (nonatomic, strong) WordPressComApi *user;
 @property (nonatomic, assign) BOOL isPushingViewController;
 
 @end
@@ -39,6 +40,7 @@ NSString * const NotificationsJetpackInformationURL = @"http://jetpack.me/about/
     self = [super init];
     if (self) {
         self.title = NSLocalizedString(@"Notifications", @"Notifications View Controller title");
+        self.user = [WordPressComApi sharedApi];
     }
     return self;
 }
@@ -54,7 +56,7 @@ NSString * const NotificationsJetpackInformationURL = @"http://jetpack.me/about/
 - (NSString *)noResultsMessageText
 {
     if ([self showJetpackConnectMessage]) {
-        return NSLocalizedString(@"Jetpack supercharges your self-hosted WordPress site.", @"Displayed in the notifications view when a self-hosted user is not connected to Jetpack");
+        return NSLocalizedString(@"Jetpack supercharges your self‑hosted WordPress site.", @"Displayed in the notifications view when a self-hosted user is not connected to Jetpack");
     } else {
         return nil;
     }
@@ -84,8 +86,12 @@ NSString * const NotificationsJetpackInformationURL = @"http://jetpack.me/about/
     [self.navigationController pushViewController:webViewController animated:YES];
 }
 
-- (BOOL)showJetpackConnectMessage {
-    return [WPAccount defaultWordPressComAccount] == nil;
+- (BOOL)showJetpackConnectMessage
+{
+    // self.user == nil. No user implies that the user is using the
+    // app with a self-hosted blog not connected to jetpack
+    return self.user == nil;
+    
 }
 
 - (void)dealloc {
@@ -94,17 +100,16 @@ NSString * const NotificationsJetpackInformationURL = @"http://jetpack.me/about/
 
 - (void)viewDidLoad
 {
-    DDLogMethod();
+    WPFLogMethod();
     [super viewDidLoad];
     
     [WPStyleGuide configureColorsForView:self.view andTableView:self.tableView];
     
-    self.tableView.separatorInset = UIEdgeInsetsMake(0, 25, 0, 0);
     self.infiniteScrollEnabled = YES;
 }
 
 - (void)viewWillAppear:(BOOL)animated {
-    DDLogMethod();
+    WPFLogMethod();
     [super viewWillAppear:animated];
 }
 
@@ -123,7 +128,8 @@ NSString * const NotificationsJetpackInformationURL = @"http://jetpack.me/about/
         [self pruneOldNotes];
     }
 
-    [self clearNotificationsBadgeAndSyncItems];
+    [self syncItems];
+    [self refreshUnreadNotes];
 }
 
 - (void)viewDidDisappear:(BOOL)animated {
@@ -144,7 +150,7 @@ NSString * const NotificationsJetpackInformationURL = @"http://jetpack.me/about/
     NSArray *notes = self.resultsController.fetchedObjects;
     if ([notes count] > 0) {
         Note *note = [notes objectAtIndex:0];
-        [[[WPAccount defaultWordPressComAccount] restApi] updateNoteLastSeenTime:note.timestamp success:nil failure:nil];
+        [self.user updateNoteLastSeenTime:note.timestamp success:nil failure:nil];
     }
 
     NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
@@ -154,7 +160,7 @@ NSString * const NotificationsJetpackInformationURL = @"http://jetpack.me/about/
 
 - (void)pruneOldNotes {
     NSNumber *pruneBefore;
-    Note *lastVisibleNote = [[[self.tableView visibleCells] lastObject] contentProvider];
+    Note *lastVisibleNote = [[[self.tableView visibleCells] lastObject] note];
     if (lastVisibleNote) {
         pruneBefore = lastVisibleNote.timestamp;
     }
@@ -175,19 +181,20 @@ NSString * const NotificationsJetpackInformationURL = @"http://jetpack.me/about/
 
 #pragma mark - Public methods
 
-- (void)clearNotificationsBadgeAndSyncItems {
-    [UIApplication sharedApplication].applicationIconBadgeNumber = 0;
+- (void)refreshFromPushNotification {
+    if (IS_IPHONE)
+        [self.navigationController popToRootViewControllerAnimated:YES];
+    [self.tableView scrollRectToVisible:CGRectMake(0, 0, 1, 1) animated:YES];
     if (![self isSyncing]) {
         [self syncItems];
     }
-    [self refreshUnreadNotes];
 }
 
 #pragma mark - UITableViewDelegate
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
     Note *note = [self.resultsController objectAtIndexPath:indexPath];
-    return [NewNotificationsTableViewCell rowHeightForContentProvider:note andWidth:WPTableViewFixedWidth];
+    return [NewNotificationsTableViewCell rowHeightForNotification:note andMaxWidth:CGRectGetWidth(tableView.bounds)];
 }
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
@@ -216,17 +223,19 @@ NSString * const NotificationsJetpackInformationURL = @"http://jetpack.me/about/
             [self.tableView selectRowAtIndexPath:indexPath animated:NO scrollPosition:UITableViewScrollPositionNone];
         }
         
-        [note markAsReadWithSuccess:nil failure:^(NSError *error){
+        [self.user markNoteAsRead:note.noteID success:^(AFHTTPRequestOperation *operation, id responseObject) {
+        } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
             note.unread = [NSNumber numberWithInt:1];
         }];
     }
 }
 
 - (BOOL)noteHasDetailView:(Note *)note {
+    
     if ([note isComment])
         return YES;
     
-    NSDictionary *noteBody = [[note noteData] objectForKey:@"body"];
+    NSDictionary *noteBody = [[note getNoteData] objectForKey:@"body"];
     if (noteBody) {
         NSString *noteTemplate = [noteBody objectForKey:@"template"];
         if ([noteTemplate isEqualToString:@"single-line-list"] || [noteTemplate isEqualToString:@"multi-line-list"])
@@ -259,17 +268,11 @@ NSString * const NotificationsJetpackInformationURL = @"http://jetpack.me/about/
 }
 
 - (void)configureCell:(NewNotificationsTableViewCell *)cell atIndexPath:(NSIndexPath *)indexPath {
-    cell.contentProvider = [self.resultsController objectAtIndexPath:indexPath];
-    
-    Note *note = [self.resultsController objectAtIndexPath:indexPath];
-    BOOL hasDetailsView = [self noteHasDetailView:note];
-    if (!hasDetailsView) {
-        cell.accessoryType = UITableViewCellAccessoryNone;
-    }
+    cell.note = [self.resultsController objectAtIndexPath:indexPath];
 }
 
 - (BOOL)userCanRefresh {
-    return [WPAccount defaultWordPressComAccount] != nil;
+    return self.user != nil;
 }
 
 - (void)syncItemsViaUserInteraction:(BOOL)userInteraction success:(void (^)())success failure:(void (^)(NSError *error))failure {
@@ -279,19 +282,22 @@ NSString * const NotificationsJetpackInformationURL = @"http://jetpack.me/about/
     
     NSNumber *timestamp;
     NSArray *notes = [self.resultsController fetchedObjects];
-    if (userInteraction == NO && [notes count] > 0) {
+    if ([notes count] > 0) {
         Note *note = [notes objectAtIndex:0];
         timestamp = note.timestamp;
     } else {
         timestamp = nil;
     }
-    
-    [Note fetchNotificationsSince:timestamp success:^{
+    [self.user getNotificationsSince:timestamp success:^(AFHTTPRequestOperation *operation, id responseObject) {
         [self updateSyncDate];
         if (success) {
             success();
         }
-    } failure:failure];
+    } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+        if (failure) {
+            failure(error);
+        }
+    }];
 }
 
 - (BOOL)hasMoreContent {
@@ -301,10 +307,6 @@ NSString * const NotificationsJetpackInformationURL = @"http://jetpack.me/about/
 - (BOOL)isSyncing
 {
     return _retrievingNotifications;
-}
-
-- (void)setSyncing:(BOOL)value {
-    _retrievingNotifications = value;
 }
 
 - (void)syncItems
@@ -323,13 +325,15 @@ NSString * const NotificationsJetpackInformationURL = @"http://jetpack.me/about/
     
     _retrievingNotifications = YES;
     
-    [Note fetchNotificationsBefore:lastNote.timestamp success:^{
+    [self.user getNotificationsBefore:lastNote.timestamp success:^(AFHTTPRequestOperation *operation, id responseObject) {
         _retrievingNotifications = NO;
+                
         if (success) {
             success();
         }
-    } failure:^(NSError *error) {
+    } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
         _retrievingNotifications = NO;
+        
         if (failure) {
             failure(error);
         }

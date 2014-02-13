@@ -10,10 +10,9 @@
 #import "WordPressComApiCredentials.h"
 
 NSString * const WordPressComOAuthErrorDomain = @"WordPressComOAuthError";
-NSString * const WordPressComOAuthKeychainServiceName = @"public-api.wordpress.com";
-static NSString * const WordPressComOAuthBaseUrl = @"https://public-api.wordpress.com/oauth2";
-static NSString * const WordPressComOAuthRedirectUrl = @"https://wordpress.com/";
 
+static NSString * const WordPressComOAuthBaseUrl = @"https://public-api.wordpress.com/oauth2";
+static NSString * const WordPressComOAuthRedirectUrl = @"http://wordpress.com/";
 
 @implementation WordPressComOAuthClient
 

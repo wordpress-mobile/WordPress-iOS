@@ -7,8 +7,13 @@
 //
 
 #import <UIKit/UIKit.h>
-#import "WPContentCell.h"
+#import "WPTableViewCell.h"
 
-@interface NewCommentsTableViewCell : WPContentCell
+@class Comment;
+@interface NewCommentsTableViewCell : WPTableViewCell
+
+@property (readwrite, weak) Comment *comment;
+
++ (CGFloat)rowHeightForComment:(Comment *)comment andMaxWidth:(CGFloat)maxWidth;
 
 @end

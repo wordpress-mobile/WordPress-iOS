@@ -17,7 +17,6 @@
 + (UIFont *)postTitleFont;
 + (UIFont *)postTitleFontBold;
 + (NSDictionary *)postTitleAttributes;
-+ (NSDictionary *)postTitleAttributesBold;
 + (UIFont *)subtitleFont;
 + (NSDictionary *)subtitleAttributes;
 + (UIFont *)subtitleFontItalic;
@@ -65,7 +64,6 @@
 + (void)configureTableViewActionCell:(UITableViewCell *)cell;
 + (void)configureTableViewCell:(UITableViewCell *)cell;
 + (void)configureTableViewTextCell:(UITableViewTextFieldCell *)cell;
-+ (void)configureTableViewSmallSubtitleCell:(UITableViewCell *)cell;
 + (void)configureColorsForView:(UIView *)view andTableView:(UITableView *)tableView;
 
 @end
