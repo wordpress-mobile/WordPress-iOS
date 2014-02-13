@@ -49,7 +49,9 @@
         _boldButton.frame = CGRectMake(x, 0, width, height);
         x += _boldButton.frame.size.width;
         _boldButton.actionTag = @"strong";
+        _boldButton.accessibilityIdentifier = @"strong";
         _boldButton.actionName = NSLocalizedString(@"bold", @"Bold text formatting in the Post Editor. This string will be used in the Undo message if the last change was adding formatting.");
+        _boldButton.accessibilityLabel = NSLocalizedString(@"bold", nil);
         _boldButton.exclusiveTouch = YES;
         [_boldButton addTarget:self action:@selector(buttonAction:) forControlEvents:UIControlEventTouchUpInside];
     }
@@ -59,7 +61,9 @@
         _italicsButton.frame = CGRectMake(x, 0, width, height);
         x += _italicsButton.frame.size.width;
         _italicsButton.actionTag = @"em";
+        _italicsButton.accessibilityIdentifier = @"em";
         _italicsButton.actionName = NSLocalizedString(@"italic", @"Italic text formatting in the Post Editor. This string will be used in the Undo message if the last change was adding formatting.");
+        _italicsButton.accessibilityLabel = NSLocalizedString(@"italic", nil);
         [_italicsButton addTarget:self action:@selector(buttonAction:) forControlEvents:UIControlEventTouchUpInside];
         _italicsButton.exclusiveTouch = YES;
     }
@@ -69,7 +73,9 @@
         _underlineButton.frame = CGRectMake(x, 0, width, height);
         x += _underlineButton.frame.size.width;
         _underlineButton.actionTag = @"u";
+        _underlineButton.accessibilityIdentifier = @"u";
         _underlineButton.actionName = NSLocalizedString(@"underline", @"Underline text formatting in the Post Editor. This string will be used in the Undo message if the last change was adding formatting.");
+        _underlineButton.accessibilityLabel = NSLocalizedString(@"underline", nil);
         [_underlineButton addTarget:self action:@selector(buttonAction:) forControlEvents:UIControlEventTouchUpInside];
         _underlineButton.exclusiveTouch = YES;
     }
@@ -79,7 +85,9 @@
         _delButton.frame = CGRectMake(x, 0, width, height);
         x += _delButton.frame.size.width;
         _delButton.actionTag = @"del";
+        _delButton.accessibilityIdentifier = @"del";
         _delButton.actionName = NSLocalizedString(@"del", @"<del> (deleted text) HTML formatting in the Post Editor. This string will be used in the Undo message if the last change was adding a <del> HTML element.");
+        _delButton.accessibilityLabel = NSLocalizedString(@"delete", nil);
         _delButton.exclusiveTouch = YES;
         [_delButton addTarget:self action:@selector(buttonAction:) forControlEvents:UIControlEventTouchUpInside];
     }
@@ -89,7 +97,9 @@
         _linkButton.frame = CGRectMake(x, 0, width, height);
         x += _linkButton.frame.size.width;
         _linkButton.actionTag = @"link";
+        _linkButton.accessibilityIdentifier = @"link";
         _linkButton.actionName = NSLocalizedString(@"link", @"Link helper button in the Post Editor. This string will be used in the Undo message if the last change was adding a link.");
+        _linkButton.accessibilityLabel = NSLocalizedString(@"link", nil);
         _linkButton.exclusiveTouch = YES;
         [_linkButton addTarget:self action:@selector(buttonAction:) forControlEvents:UIControlEventTouchUpInside];
     }
@@ -99,7 +109,9 @@
         _quoteButton.frame = CGRectMake(x, 0, width, height);
 		x += _quoteButton.frame.size.width;
         _quoteButton.actionTag = @"blockquote";
+        _quoteButton.accessibilityIdentifier = @"blockquote";
         _quoteButton.actionName = NSLocalizedString(@"quote", @"Blockquote HTML formatting in the Post Editor. This string will be used in the Undo message if the last change was adding a blockquote.");
+        _quoteButton.accessibilityLabel = NSLocalizedString(@"quote", nil);
         _quoteButton.exclusiveTouch = YES;
         [_quoteButton addTarget:self action:@selector(buttonAction:) forControlEvents:UIControlEventTouchUpInside];
     }
@@ -108,7 +120,9 @@
         [_moreButton setImageName:@"icon_format_more" withColor:nil highlightColor:highlightColor];
         _moreButton.frame = CGRectMake(x, 0, width, height);
         _moreButton.actionTag = @"more";
+        _moreButton.accessibilityIdentifier = @"more";
         _moreButton.actionName = NSLocalizedString(@"more", @"Adding a More excerpt cut-off in the Post Editor. This string will be used in the Undo message if the last change was adding this formatting.");
+        _moreButton.accessibilityLabel = NSLocalizedString(@"more", nil);
         _moreButton.exclusiveTouch = YES;
         [_moreButton addTarget:self action:@selector(buttonAction:) forControlEvents:UIControlEventTouchUpInside];
     }
@@ -143,7 +157,9 @@
         [_doneButton setImageName:@"icon_format_keyboard" withColor:nil highlightColor:highlightColor];
         _doneButton.frame = CGRectMake(x, 0, width, height);
         _doneButton.actionTag = @"done";
+        _doneButton.accessibilityIdentifier = @"done";
         _doneButton.exclusiveTouch = YES;
+        _doneButton.accessibilityLabel = NSLocalizedString(@"Hide keyboard", nil);
         [_doneButton addTarget:self action:@selector(buttonAction:) forControlEvents:UIControlEventTouchUpInside];
     }
 }

@@ -119,6 +119,12 @@ static NSString *const CameraPlusImagesNotification = @"CameraPlusImagesNotifica
         [self cleanUnusedMediaFileFromTmpDir];
     });
     
+    CGRect bounds = [[UIScreen mainScreen] bounds];
+    [self.window setFrame:bounds];
+    [self.window setBounds:bounds]; // for good measure.
+    self.window.backgroundColor = [UIColor blackColor];
+    self.window.rootViewController = self.tabBarController;
+    
     return YES;
 }
 
@@ -130,12 +136,6 @@ static NSString *const CameraPlusImagesNotification = @"CameraPlusImagesNotifica
         [NotificationsManager handleNotificationForApplicationLaunch:launchOptions];
     }
 
-    CGRect bounds = [[UIScreen mainScreen] bounds];
-    [self.window setFrame:bounds];
-    [self.window setBounds:bounds]; // for good measure.
-    
-    self.window.backgroundColor = [UIColor blackColor];
-    self.window.rootViewController = self.tabBarController;
     [self.window makeKeyAndVisible];
     
     [self showWelcomeScreenIfNeededAnimated:NO];
@@ -187,17 +187,21 @@ static NSString *const CameraPlusImagesNotification = @"CameraPlusImagesNotifica
         NSString *URLString = [url absoluteString];
         DDLogInfo(@"Application launched with URL: %@", URLString);
 
-        if ([URLString rangeOfString:@"wpcom_signup_completed"].length) {
+        if ([URLString rangeOfString:@"newpost"].length) {
+            // Create a new post from data shared by a third party application.
             NSDictionary *params = [[url query] dictionaryFromQueryString];
-            DDLogInfo(@"%@", params);
-            [[NSNotificationCenter defaultCenter] postNotificationName:@"wpcomSignupNotification" object:nil userInfo:params];
-            returnValue = YES;
+            DDLogInfo(@"App launched for new post with params: %@", params);
+            if ([params count]) {
+                [self showPostTabWithOptions:params];
+                returnValue = YES;
+            }
         } else if ([URLString rangeOfString:@"viewpost"].length) {
+            // View the post specified by the shared blog ID and post ID
             NSDictionary *params = [[url query] dictionaryFromQueryString];
             
             if (params.count) {
-                NSUInteger *blogId = [[params valueForKey:@"blogId"] integerValue];
-                NSUInteger *postId = [[params valueForKey:@"postId"] integerValue];
+                NSUInteger blogId = [[params numberForKey:@"blogId"] integerValue];
+                NSUInteger postId = [[params numberForKey:@"postId"] integerValue];
                 
                 [WPMobileStats flagSuperProperty:StatsPropertyReaderOpenedFromExternalURL];
                 [WPMobileStats incrementSuperProperty:StatsPropertyReaderOpenedFromExternalURLCount];
@@ -219,7 +223,6 @@ static NSString *const CameraPlusImagesNotification = @"CameraPlusImagesNotifica
 - (void)applicationWillTerminate:(UIApplication *)application {
     DDLogInfo(@"%@ %@", self, NSStringFromSelector(_cmd));
     
-    [UIApplication sharedApplication].applicationIconBadgeNumber = 0;
     [WPMobileStats endSession];
 }
 
@@ -262,9 +265,7 @@ static NSString *const CameraPlusImagesNotification = @"CameraPlusImagesNotifica
     DDLogInfo(@"%@ %@", self, NSStringFromSelector(_cmd));
     
     [WPMobileStats recordAppOpenedForEvent:StatsEventAppOpened];
-    
-    // Clear notifications badge
-    [UIApplication sharedApplication].applicationIconBadgeNumber = 0;
+    [self clearBadgeAndSyncItemsIfNotificationsScreenActive];
 }
 
 - (BOOL)application:(UIApplication *)application shouldSaveApplicationState:(NSCoder *)coder {
@@ -300,6 +301,13 @@ static NSString *const CameraPlusImagesNotification = @"CameraPlusImagesNotifica
 
 #pragma mark - Custom methods
 
+- (void)clearBadgeAndSyncItemsIfNotificationsScreenActive {
+    NSInteger notificationsTabIndex = [[self.tabBarController viewControllers] indexOfObject:self.notificationsViewController.navigationController];
+    if ([self.tabBarController selectedIndex] == notificationsTabIndex) {
+       [self.notificationsViewController clearNotificationsBadgeAndSyncItems];
+    }
+}
+
 - (void)showWelcomeScreenIfNeededAnimated:(BOOL)animated {
     if ([self noBlogsAndNoWordPressDotComAccount]) {
         [WordPressAppDelegate wipeAllKeychainItems];
@@ -329,7 +337,7 @@ static NSString *const CameraPlusImagesNotification = @"CameraPlusImagesNotifica
 }
 
 - (BOOL)noBlogsAndNoWordPressDotComAccount {
-    NSInteger blogCount = [Blog countWithContext:[[ContextManager sharedInstance] mainContext]];
+    NSInteger blogCount = [Blog countSelfHostedWithContext:[[ContextManager sharedInstance] mainContext]];
     return blogCount == 0 && ![WPAccount defaultWordPressComAccount];
 }
 
@@ -350,6 +358,10 @@ static NSString *const CameraPlusImagesNotification = @"CameraPlusImagesNotifica
     [[UIToolbar appearance] setBarTintColor:[WPStyleGuide newKidOnTheBlockBlue]];
     [[UISwitch appearance] setOnTintColor:[WPStyleGuide newKidOnTheBlockBlue]];
     [[UIApplication sharedApplication] setStatusBarStyle:UIStatusBarStyleLightContent];
+
+    [[UINavigationBar appearanceWhenContainedIn:[UIReferenceLibraryViewController class], nil] setBackgroundImage:nil forBarMetrics:UIBarMetricsDefault];
+    [[UINavigationBar appearanceWhenContainedIn:[UIReferenceLibraryViewController class], nil] setBarTintColor:[WPStyleGuide newKidOnTheBlockBlue]];
+    [[UIToolbar appearanceWhenContainedIn:[UIReferenceLibraryViewController class], nil] setBarTintColor:[UIColor darkGrayColor]];
 }
 
 #pragma mark - Tab bar methods
@@ -413,8 +425,17 @@ static NSString *const CameraPlusImagesNotification = @"CameraPlusImagesNotifica
     if (IS_IPAD) {
         postsViewController.tabBarItem.imageInsets = UIEdgeInsetsMake(7.0, 0, -7, 0);
     }
-    postsViewController.tabBarItem.accessibilityValue = NSLocalizedString(@"New Post", @"The accessibility value of the post tab.");
-    
+
+    /*
+     If title is used, the title will be visible. See #1158
+     If accessibilityLabel/Value are used, the "New Post" text is not read by VoiceOver
+
+     The only apparent solution is to have an actual title, and then hide it for
+     non-VoiceOver users.
+     */
+    postsViewController.title = NSLocalizedString(@"New Post", @"The accessibility value of the post tab.");
+    [postsViewController.tabBarItem setTitleTextAttributes:@{NSForegroundColorAttributeName: [UIColor clearColor]} forState:UIControlStateNormal];
+
     _tabBarController.viewControllers = @[readerNavigationController, notificationsNavigationController, blogListNavigationController, postsViewController];
 
     [_tabBarController setSelectedViewController:readerNavigationController];
@@ -442,12 +463,24 @@ static NSString *const CameraPlusImagesNotification = @"CameraPlusImagesNotifica
 }
 
 - (void)showPostTab {
+    [self showPostTabWithOptions:nil];
+}
+
+- (void)showPostTabWithOptions:(NSDictionary *)options {
     UIViewController *presenter = self.window.rootViewController;
     if (presenter.presentedViewController) {
         [presenter dismissViewControllerAnimated:NO completion:nil];
     }
     
-    EditPostViewController *editPostViewController = [[EditPostViewController alloc] initWithDraftForLastUsedBlog];
+    EditPostViewController *editPostViewController;
+    if (!options) {
+        editPostViewController = [[EditPostViewController alloc] initWithDraftForLastUsedBlog];
+    } else {
+        editPostViewController = [[EditPostViewController alloc] initWithTitle:[options stringForKey:@"title"]
+                                                                    andContent:[options stringForKey:@"content"]
+                                                                       andTags:[options stringForKey:@"tags"]
+                                                                      andImage:[options stringForKey:@"image"]];
+    }
     editPostViewController.editorOpenedBy = StatsPropertyPostDetailEditorOpenedOpenedByTabBarButton;
     UINavigationController *navController = [[UINavigationController alloc] initWithRootViewController:editPostViewController];
     navController.modalPresentationStyle = UIModalPresentationCurrentContext;
@@ -1066,7 +1099,7 @@ static NSString *const CameraPlusImagesNotification = @"CameraPlusImagesNotifica
     }
     
     if ([description length] > maxSize) {
-        description = (NSMutableString *)[description substringWithRange:NSMakeRange([description length] - maxSize - 1, maxSize)];
+        description = (NSMutableString *)[description substringWithRange:NSMakeRange(0, maxSize)];
     }
     
     return description;
@@ -1112,11 +1145,12 @@ static NSString *const CameraPlusImagesNotification = @"CameraPlusImagesNotifica
 - (void)handleDefaultAccountChangedNotification:(NSNotification *)notification {
 	[self toggleExtraDebuggingIfNeeded];
 
-    [NotificationsManager registerForPushNotifications];
-    [self showWelcomeScreenIfNeededAnimated:NO];
     // If the notification object is not nil, then it's a login
     if (notification.object) {
         [ReaderPost fetchPostsWithCompletionHandler:nil];
+    } else {
+        // No need to check for welcome screen unless we are signing out
+        [self showWelcomeScreenIfNeededAnimated:NO];
     }
 }
 

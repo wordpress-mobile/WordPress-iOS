@@ -29,6 +29,12 @@
 #define DEFAULT_LOG_ROLLING_FREQUENCY (60 * 60 * 24)  // 24 Hours
 #define DEFAULT_LOG_MAX_NUM_LOG_FILES (5)             //  5 Files
 
+// How should we produce unique file names? by UUID or timestamp?
+typedef enum {
+    DDLogFileNamingConventionUUID,
+    DDLogFileNamingConventionTimestamp
+} DDLogFileNamingConvention;
+
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 #pragma mark -
@@ -115,9 +121,11 @@
 **/
 @interface DDLogFileManagerDefault : NSObject <DDLogFileManager>
 {
-	NSUInteger maximumNumberOfLogFiles;
-	NSString *_logsDirectory;
+    NSUInteger maximumNumberOfLogFiles;
+    NSString *_logsDirectory;
 }
+
+@property (readwrite, assign) DDLogFileNamingConvention fileNamingConvention;
 
 - (id)init;
 - (instancetype)initWithLogsDirectory:(NSString *)logsDirectory;
@@ -156,7 +164,7 @@
 **/
 @interface DDLogFileFormatterDefault : NSObject <DDLogFormatter>
 {
-	NSDateFormatter *dateFormatter;
+    NSDateFormatter *dateFormatter;
 }
 
 - (id)init;
@@ -170,15 +178,16 @@
 
 @interface DDFileLogger : DDAbstractLogger <DDLogger>
 {
-	__strong id <DDLogFileManager> logFileManager;
-	
-	DDLogFileInfo *currentLogFileInfo;
-	NSFileHandle *currentLogFileHandle;
-	
-	dispatch_source_t rollingTimer;
-	
-	unsigned long long maximumFileSize;
-	NSTimeInterval rollingFrequency;
+    __strong id <DDLogFileManager> logFileManager;
+    
+    DDLogFileInfo *currentLogFileInfo;
+    NSFileHandle *currentLogFileHandle;
+    
+    dispatch_source_t currentLogFileVnode;
+    dispatch_source_t rollingTimer;
+    
+    unsigned long long maximumFileSize;
+    NSTimeInterval rollingFrequency;
 }
 
 - (id)init;
@@ -228,8 +237,13 @@
 
 
 // You can optionally force the current log file to be rolled with this method.
+// CompletionBlock will be called on main queue.
 
-- (void)rollLogFile;
+- (void)rollLogFileWithCompletionBlock:(void (^)())completionBlock;
+
+// Method is deprecated. Use rollLogFileWithCompletionBlock: method instead.
+
+- (void)rollLogFile __attribute((deprecated));
 
 // Inherited from DDAbstractLogger
 
@@ -258,15 +272,15 @@
 **/
 @interface DDLogFileInfo : NSObject
 {
-	__strong NSString *filePath;
-	__strong NSString *fileName;
-	
-	__strong NSDictionary *fileAttributes;
-	
-	__strong NSDate *creationDate;
-	__strong NSDate *modificationDate;
-	
-	unsigned long long fileSize;
+    __strong NSString *filePath;
+    __strong NSString *fileName;
+    
+    __strong NSDictionary *fileAttributes;
+    
+    __strong NSDate *creationDate;
+    __strong NSDate *modificationDate;
+    
+    unsigned long long fileSize;
 }
 
 @property (strong, nonatomic, readonly) NSString *filePath;

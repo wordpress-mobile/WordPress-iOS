@@ -8,6 +8,8 @@
 
 #import "WPImageSource.h"
 
+NSString * const WPImageSourceErrorDomain = @"WPImageSourceErrorDomain";
+
 @implementation WPImageSource {
     NSOperationQueue *_downloadingQueue;
     NSMutableSet *_urlDownloadsInProgress;
@@ -62,6 +64,10 @@
         NSURLRequest *request = [NSURLRequest requestWithURL:url cachePolicy:NSURLRequestReturnCacheDataElseLoad timeoutInterval:60];
         AFImageRequestOperation *operation = [AFImageRequestOperation imageRequestOperationWithRequest:request
                                                                                   imageProcessingBlock:nil success:^(NSURLRequest *request, NSHTTPURLResponse *response, UIImage *image) {
+                                                                                      if (!image) {
+                                                                                          [self downloadSucceededWithNilImageForURL:url response:response];
+                                                                                          return;
+                                                                                      }
                                                                                       [self downloadedImage:image forURL:url];
                                                                                   } failure:^(NSURLRequest *request, NSHTTPURLResponse *response, NSError *error) {
                                                                                       [self downloadFailedWithError:error forURL:url];
@@ -90,6 +96,16 @@
             failure(error);
         }
     });
+}
+
+- (void)downloadSucceededWithNilImageForURL:(NSURL *)url response:(NSHTTPURLResponse *)response
+{
+    DDLogError(@"WPImageSource download completed sucessfully but the image was nil. Headers: ", [response allHeaderFields]);
+    NSString *description = [NSString stringWithFormat:@"A download request ended successfully but the image was nil. URL: %@", [url absoluteString]];
+    NSError *error = [NSError errorWithDomain:WPImageSourceErrorDomain
+                                         code:WPImageSourceErrorNilImage
+                                     userInfo:@{NSLocalizedDescriptionKey:description}];
+    [self downloadFailedWithError:error forURL:url];
 }
 
 #pragma mark - Callback storage
