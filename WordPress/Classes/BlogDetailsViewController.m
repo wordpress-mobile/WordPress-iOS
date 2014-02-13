@@ -11,7 +11,7 @@
 #import "EditSiteViewController.h"
 #import "PagesViewController.h"
 #import "CommentsViewController.h"
-#import "StatsWebViewController.h"
+#import "StatsViewController.h"
 #import "WPWebViewController.h"
 #import "WPTableViewCell.h"
 #import "ContextManager.h"
@@ -171,7 +171,7 @@ NSString * const WPBlogDetailsBlogKey = @"WPBlogDetailsBlogKey";
         controllerClass = [CommentsViewController class];
     } else if (indexPath.row == BlogDetailsRowStats) {
         [WPMobileStats incrementProperty:StatsPropertySidebarSiteClickedStats forEvent:StatsEventAppClosed];
-        controllerClass =  [StatsWebViewController class];
+        controllerClass =  [StatsViewController class];
     } else if (indexPath.row == BlogDetailsRowViewSite) {
         [self showViewSiteForBlog:self.blog];
     } else if (indexPath.row == BlogDetailsRowViewAdmin) {

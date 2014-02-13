@@ -13,6 +13,7 @@
 @class ReaderPostsViewController;
 @class BlogListViewController;
 @class AbstractPost;
+@class Blog;
 
 @interface WordPressAppDelegate : NSObject <UIApplicationDelegate>
 
@@ -45,6 +46,16 @@
 - (void)showPostTab;
 - (void)switchTabToPostsListForPost:(AbstractPost *)post;
 - (void)clearBadgeAndSyncItemsIfNotificationsScreenActive;
+
+/*
+ * Navigates to the StatsViewController for the given blog
+ *
+ * @discussion Used for internal deep link for stats notifications
+ *
+ * @param blog The blog to open stats for
+ *
+ */
+- (void)showStatsForBlog:(Blog *)blog;
 
 ///-----------
 /// @name NUX
