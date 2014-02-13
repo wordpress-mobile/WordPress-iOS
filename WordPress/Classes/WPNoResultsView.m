@@ -42,21 +42,21 @@
 
 - (void)layoutSubviews {
     
-    CGFloat width = 270.0;
+    CGFloat width = 250.0f;
     
     // Layout views
     _accessoryView.frame = CGRectMake((width - CGRectGetWidth(_accessoryView.frame)) / 2, 0, CGRectGetWidth(_accessoryView.frame), CGRectGetHeight(_accessoryView.frame));
     
     CGSize titleSize = [_titleLabel.text boundingRectWithSize:CGSizeMake(width, CGFLOAT_MAX) options:NSStringDrawingUsesLineFragmentOrigin attributes:@{NSFontAttributeName: _titleLabel.font} context:nil].size;
-    _titleLabel.frame = CGRectMake(0, (CGRectGetMaxY(_accessoryView.frame) > 0 && _accessoryView.hidden != YES ? CGRectGetMaxY(_accessoryView.frame) + 10.0 : 0) , width, titleSize.height);
+    _titleLabel.frame = CGRectMake(0.0f, (CGRectGetMaxY(_accessoryView.frame) > 0 && _accessoryView.hidden != YES ? CGRectGetMaxY(_accessoryView.frame) + 10.0 : 0) , width, titleSize.height);
     
     CGSize messageSize = [_messageLabel.text boundingRectWithSize:CGSizeMake(width, CGFLOAT_MAX) options:NSStringDrawingUsesLineFragmentOrigin attributes:@{NSFontAttributeName: _messageLabel.font} context:nil].size;
-    _messageLabel.frame = CGRectMake(0, CGRectGetMaxY(_titleLabel.frame) + 10.0, width, messageSize.height);
+    _messageLabel.frame = CGRectMake(0.0f, CGRectGetMaxY(_titleLabel.frame) + 8.0, width, messageSize.height);
     
     [_button sizeToFit];
     CGSize buttonSize = _button.frame.size;
-    buttonSize.width += 20.0;
-    CGFloat buttonYOrigin = (CGRectGetHeight(_messageLabel.frame) > 0 ? CGRectGetMaxY(_messageLabel.frame) : CGRectGetMaxY(_titleLabel.frame)) + 20.0 ;
+    buttonSize.width += 40.0;
+    CGFloat buttonYOrigin = (CGRectGetHeight(_messageLabel.frame) > 0 ? CGRectGetMaxY(_messageLabel.frame) : CGRectGetMaxY(_titleLabel.frame)) + 17.0 ;
     _button.frame = CGRectMake((width - buttonSize.width) / 2, buttonYOrigin, MIN(buttonSize.width, width), buttonSize.height);
     
     
@@ -93,16 +93,16 @@
     _titleLabel.numberOfLines = 0;
     [self setTitleText:titleText];
     [self addSubview:_titleLabel];
-    
+
     // Setup message text
     _messageLabel = [[UILabel alloc] init];
-    _messageLabel.font = [WPStyleGuide regularTextFont];
+    _messageLabel.font = [UIFont fontWithName:@"OpenSans" size:14.0];
     _messageLabel.textColor = [WPStyleGuide allTAllShadeGrey];
     [self setMessageText:messageText];
     _messageLabel.numberOfLines = 0;
     _messageLabel.textAlignment = NSTextAlignmentCenter;
     [self addSubview:_messageLabel];
-    
+
     // Setup button
     if (buttonTitle.length > 0) {
         _button = [UIButton buttonWithType:UIButtonTypeCustom];
@@ -129,8 +129,6 @@
         [self addSubview:_button];
     }
     
-    
-    
     // Register for orientation changes
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(orientationDidChange:) name:UIDeviceOrientationDidChangeNotification object:nil];
     
@@ -139,7 +137,7 @@
 
 - (void)setTitleText:(NSString *)title {
     if (title.length > 0) {
-        _titleLabel.attributedText = [[NSAttributedString alloc] initWithString:title attributes:[WPNUXUtility titleAttributesWithColor:[WPStyleGuide allTAllShadeGrey]]];
+        _titleLabel.attributedText = [[NSAttributedString alloc] initWithString:title attributes:[WPNUXUtility titleAttributesWithColor:[WPStyleGuide whisperGrey]]];
     }
     [self setNeedsLayout];
 }
@@ -166,8 +164,13 @@
     // account for content insets of superview if it is a scrollview
     if ([self.superview.class isSubclassOfClass:[UIScrollView class]]) {
         UIScrollView *scrollView = (UIScrollView *)self.superview;
-        frame.size.height -= scrollView.contentInset.top + scrollView.contentInset.bottom;
-        frame.size.width -=  scrollView.contentInset.left + scrollView.contentInset.right;
+        
+        CGFloat verticalOffset = scrollView.contentInset.top + scrollView.contentInset.bottom;
+        CGFloat horizontalOffset =  scrollView.contentInset.left + scrollView.contentInset.right;
+        
+        // Sanity check to make sure the offsets are not set to large values
+        frame.size.height = frame.size.height - verticalOffset > 0 ? frame.size.height - verticalOffset : frame.size.height;
+        frame.size.width = frame.size.width - horizontalOffset > 0 ? frame.size.width - horizontalOffset : frame.size.width;
     }
     
     CGFloat x = (CGRectGetWidth(frame) - CGRectGetWidth(self.frame))/2.0;

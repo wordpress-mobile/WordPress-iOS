@@ -21,7 +21,7 @@
 #pragma mark - View lifecycle
 
 - (void)dealloc {
-    WPFLogMethod();
+    DDLogMethod();
 
     [self.webView stopLoading];
     self.webView.delegate = nil;
@@ -31,7 +31,7 @@
 
 
 - (void)didReceiveMemoryWarning {
-    WPFLogMethod();
+    DDLogMethod();
     // Releases the view if it doesn't have a superview.
     [super didReceiveMemoryWarning];
     
@@ -49,7 +49,7 @@
 }
 
 - (void)viewDidLoad {
-    WPFLogMethod();
+    DDLogMethod();
     [super viewDidLoad];
     
     if (!self.webBridge) {

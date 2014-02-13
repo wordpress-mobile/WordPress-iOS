@@ -18,6 +18,13 @@
 #import "ContextManager.h"
 #import "WordPressComApi.h"
 
+static NSInteger const ImageSizeSmallWidth = 240;
+static NSInteger const ImageSizeSmallHeight = 180;
+static NSInteger const ImageSizeMediumWidth = 480;
+static NSInteger const ImageSizeMediumHeight = 360;
+static NSInteger const ImageSizeLargeWidth = 640;
+static NSInteger const ImageSizeLargeHeight = 480;
+
 @interface Blog (PrivateMethods)
 
 @property (readwrite, assign) BOOL reachable;
@@ -41,10 +48,10 @@
 @dynamic account;
 @dynamic jetpackAccount;
 
-#pragma mark -
-#pragma mark Dealloc
+#pragma mark - NSManagedObject subclass methods
 
-- (void)dealloc {
+- (void)didTurnIntoFault {
+    // Clean up instance variables
     _blavatarUrl = nil;
     _api = nil;
     [_reachability stopNotifier];
@@ -53,6 +60,7 @@
     [[NSNotificationCenter defaultCenter] removeObserver:self];
 }
 
+#pragma mark -
 
 - (BOOL)geolocationEnabled
 {
@@ -75,10 +83,28 @@
 #pragma mark -
 #pragma mark Custom methods
 
++ (NSInteger)countVisibleWithContext:(NSManagedObjectContext *)moc {
+    NSPredicate *predicate = [NSPredicate predicateWithFormat:@"visible = %@" argumentArray:@[@(YES)]];
+    return [self countWithContext:moc predicate:predicate];
+}
+
++ (NSInteger)countSelfHostedWithContext:(NSManagedObjectContext *)moc {
+    NSPredicate *predicate = [NSPredicate predicateWithFormat:@"account.isWpcom = %@" argumentArray:@[@(NO)]];
+    return [self countWithContext:moc predicate:predicate];
+}
+
 + (NSInteger)countWithContext:(NSManagedObjectContext *)moc {
+    return [self countWithContext:moc predicate:nil];
+}
+
++ (NSInteger)countWithContext:(NSManagedObjectContext *)moc predicate:(NSPredicate *)predicate {
     NSFetchRequest *request = [[NSFetchRequest alloc] init];
     [request setEntity:[NSEntityDescription entityForName:@"Blog" inManagedObjectContext:moc]];
     [request setIncludesSubentities:NO];
+
+    if (predicate) {
+        [request setPredicate:predicate];
+    }
     
     NSError *err;
     NSUInteger count = [moc countForFetchRequest:request error:&err];
@@ -232,18 +258,18 @@
     return NO;
 }
 
-- (NSDictionary *) getImageResizeDimensions{
+- (NSDictionary *)getImageResizeDimensions{
     CGSize smallSize, mediumSize, largeSize;
-    int small_size_w =      [[self getOptionValue:@"thumbnail_size_w"] intValue]    > 0 ? [[self getOptionValue:@"thumbnail_size_w"] intValue] : image_small_size_w;
-    int small_size_h =      [[self getOptionValue:@"thumbnail_size_h"] intValue]    > 0 ? [[self getOptionValue:@"thumbnail_size_h"] intValue] : image_small_size_h;
-    int medium_size_w =     [[self getOptionValue:@"medium_size_w"] intValue]       > 0 ? [[self getOptionValue:@"medium_size_w"] intValue] : image_medium_size_w;
-    int medium_size_h =     [[self getOptionValue:@"medium_size_h"] intValue]       > 0 ? [[self getOptionValue:@"medium_size_h"] intValue] : image_medium_size_h;
-    int large_size_w =      [[self getOptionValue:@"large_size_w"] intValue]        > 0 ? [[self getOptionValue:@"large_size_w"] intValue] : image_large_size_w;
-    int large_size_h =      [[self getOptionValue:@"large_size_h"] intValue]        > 0 ? [[self getOptionValue:@"large_size_h"] intValue] : image_large_size_h;
+    NSInteger smallSizeWidth = [[self getOptionValue:@"thumbnail_size_w"] integerValue] > 0 ? [[self getOptionValue:@"thumbnail_size_w"] integerValue] : ImageSizeSmallWidth;
+    NSInteger smallSizeHeight = [[self getOptionValue:@"thumbnail_size_h"] integerValue] > 0 ? [[self getOptionValue:@"thumbnail_size_h"] integerValue] : ImageSizeSmallHeight;
+    NSInteger mediumSizeWidth = [[self getOptionValue:@"medium_size_w"] integerValue] > 0 ? [[self getOptionValue:@"medium_size_w"] integerValue] : ImageSizeMediumWidth;
+    NSInteger mediumSizeHeight = [[self getOptionValue:@"medium_size_h"] integerValue] > 0 ? [[self getOptionValue:@"medium_size_h"] integerValue] : ImageSizeMediumHeight;
+    NSInteger largeSizeWidth = [[self getOptionValue:@"large_size_w"] integerValue] > 0 ? [[self getOptionValue:@"large_size_w"] integerValue] : ImageSizeLargeWidth;
+    NSInteger largeSizeHeight = [[self getOptionValue:@"large_size_h"] integerValue] > 0 ? [[self getOptionValue:@"large_size_h"] integerValue] : ImageSizeLargeHeight;
     
-    smallSize = CGSizeMake(small_size_w, small_size_h);
-    mediumSize = CGSizeMake(medium_size_w, medium_size_h);
-    largeSize = CGSizeMake(large_size_w, large_size_h);
+    smallSize = CGSizeMake(smallSizeWidth, smallSizeHeight);
+    mediumSize = CGSizeMake(mediumSizeWidth, mediumSizeHeight);
+    largeSize = CGSizeMake(largeSizeWidth, largeSizeHeight);
     
     return [NSDictionary dictionaryWithObjectsAndKeys: [NSValue valueWithCGSize:smallSize], @"smallSize", 
             [NSValue valueWithCGSize:mediumSize], @"mediumSize", 
@@ -334,11 +360,20 @@
 }
 
 - (NSString *)username {
-    return self.account.username ?: @"";
+    [self willAccessValueForKey:@"username"];
+    
+    NSString *username = self.account.username ?: @"";
+    
+    [self didAccessValueForKey:@"username"];
+    
+    return username;
 }
 
 - (NSString *)password {
-    return self.account.password ?: @"";
+    WPAccount *account = self.account;
+    NSString *password = account.password ?: @"";
+    
+    return password;
 }
 
 #pragma mark -
@@ -518,7 +553,7 @@
         // Enable compression for wp.com only, as some self hosted have connection issues
         if (self.isWPcom) {
             [_api setDefaultHeader:@"gzip, deflate" value:@"Accept-Encoding"];
-            [_api setAuthorizationHeaderWithToken:[WordPressComApi sharedApi].authToken];
+            [_api setAuthorizationHeaderWithToken:self.account.authToken];
         }
     }
     return _api;
@@ -617,7 +652,6 @@
             if (success) {
                 success();
             }
-            [[NSNotificationCenter defaultCenter] postNotificationName:kCommentsChangedNotificationName object:self];
         } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
 	        DDLogError(@"Error syncing comments (%@): %@", operation.request.URL, error);
             self.isSyncingComments = NO;
@@ -625,7 +659,6 @@
             if (failure) {
                 failure(error);
             }
-            [[NSNotificationCenter defaultCenter] postNotificationName:kCommentsChangedNotificationName object:self];
         }];
     }];
     return operation;

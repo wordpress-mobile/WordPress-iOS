@@ -7,7 +7,7 @@
 #import "StatsWebViewController.h"
 #import "Blog+Jetpack.h"
 #import "WordPressAppDelegate.h"
-#import "WordPressComApi.h"
+#import "WPAccount.h"
 #import "AFHTTPClient.h"
 #import "AFHTTPRequestOperation.h"
 #import "WPWebViewController.h"
@@ -28,15 +28,6 @@ NSString * const WPStatsWebBlogKey = @"WPStatsWebBlogKey";
 
 @property (nonatomic, strong) AFHTTPRequestOperation *authRequest;
 @property (assign) BOOL authed;
-
-+ (NSString *)lastAuthedName;
-+ (void)setLastAuthedName:(NSString *)str;
-+ (void)handleLogoutNotification:(NSNotification *)notification;
-
-- (void)clearCookies;
-- (void)showAuthFailed;
-- (void)showBlogSettings;
-- (void)handleRefreshedWithOutValidRequest:(NSNotification *)notification;
 
 @end
 
@@ -71,11 +62,11 @@ static NSString *_lastAuthedName = nil;
 }
 
 + (void)load {
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(handleLogoutNotification:) name:WordPressComApiDidLogoutNotification object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(handleAccountChangeNotification:) name:WPAccountDefaultWordPressComAccountChangedNotification object:nil];
 }
 
-+ (void)handleLogoutNotification:(NSNotification *)notification {
-    [self setLastAuthedName:nil];
++ (void)handleAccountChangeNotification:(NSNotification *)notification {
+    [self setLastAuthedName:[WPAccount defaultWordPressComAccount].username];
 }
 
 + (NSString *)lastAuthedName {
@@ -98,7 +89,7 @@ static NSString *_lastAuthedName = nil;
 }
 
 - (void)dealloc {
-    WPFLogMethod();
+    DDLogMethod();
     if (authRequest && [authRequest isExecuting]) {
         [authRequest cancel];
     }
@@ -148,7 +139,7 @@ static NSString *_lastAuthedName = nil;
 #pragma mark Instance Methods
 
 - (void)clearCookies {
-    NSArray *arr = [[NSHTTPCookieStorage sharedHTTPCookieStorage] cookiesForURL:[NSURL URLWithString:@"http://wordpress.com"]];
+    NSArray *arr = [[NSHTTPCookieStorage sharedHTTPCookieStorage] cookiesForURL:[NSURL URLWithString:@"https://wordpress.com"]];
     for(NSHTTPCookie *cookie in arr){
         [[NSHTTPCookieStorage sharedHTTPCookieStorage] deleteCookie:cookie];
     }
@@ -314,7 +305,7 @@ static NSString *_lastAuthedName = nil;
     }
 
     NSMutableURLRequest *mRequest = [[NSMutableURLRequest alloc] init];
-    NSString *requestBody = [NSString stringWithFormat:@"log=%@&pwd=%@&redirect_to=http://wordpress.com",
+    NSString *requestBody = [NSString stringWithFormat:@"log=%@&pwd=%@&redirect_to=https://wordpress.com",
                              [username stringByUrlEncoding],
                              [password stringByUrlEncoding]];
 
@@ -337,7 +328,7 @@ static NSString *_lastAuthedName = nil;
         
         // wordpress.com/wp-login.php currently returns http200 even when auth fails.
         // Sanity check the cookies to make sure we're actually logged in.
-        NSArray *cookies = [[NSHTTPCookieStorage sharedHTTPCookieStorage] cookiesForURL:[NSURL URLWithString:@"http://wordpress.com"]];
+        NSArray *cookies = [[NSHTTPCookieStorage sharedHTTPCookieStorage] cookiesForURL:[NSURL URLWithString:@"https://wordpress.com"]];
         
         for (NSHTTPCookie *cookie in cookies) {
             if([cookie.name isEqualToString:@"wordpress_logged_in"]){
@@ -394,7 +385,7 @@ static NSString *_lastAuthedName = nil;
 		blogID = [blog jetpackBlogID];
 	}
 	
-    NSString *pathStr = [NSString stringWithFormat:@"http://wordpress.com/?no-chrome#!/my-stats/?blog=%@&unit=1", blogID];
+    NSString *pathStr = [NSString stringWithFormat:@"https://wordpress.com/?no-chrome#!/my-stats/?blog=%@&unit=1", blogID];
     NSMutableURLRequest *mRequest = [[NSMutableURLRequest alloc] init];
     [mRequest setURL:[NSURL URLWithString:pathStr]];
     [mRequest addValue:@"*/*" forHTTPHeaderField:@"Accept"];
@@ -468,7 +459,7 @@ static NSString *_lastAuthedName = nil;
     DDLogInfo(@"%@ %@", self, NSStringFromSelector(_cmd));
    
     // Override super so we do not change our title.
-    self.title = @"Stats";
+    self.title = NSLocalizedString(@"Stats", nil);
 }
 
 

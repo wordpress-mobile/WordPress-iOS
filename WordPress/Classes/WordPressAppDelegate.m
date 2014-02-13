@@ -42,6 +42,7 @@
 #import "ReaderPostsViewController.h"
 #import "ReaderPostDetailViewController.h"
 #import "SupportViewController.h"
+#import "Constants.h"
 
 #if DEBUG
 #import "DDTTYLogger.h"
@@ -49,12 +50,15 @@
 #endif
 
 int ddLogLevel = LOG_LEVEL_INFO;
-NSInteger const UpdateCheckAlertViewTag = 102;
-NSString * const WPTabBarRestorationID = @"WPTabBarID";
-NSString * const WPBlogListNavigationRestorationID = @"WPBlogListNavigationID";
-NSString * const WPReaderNavigationRestorationID = @"WPReaderNavigationID";
-NSString * const WPNotificationsNavigationRestorationID = @"WPNotificationsNavigationID";
-NSInteger const IndexForMeTab = 2;
+static NSInteger const UpdateCheckAlertViewTag = 102;
+static NSString * const WPTabBarRestorationID = @"WPTabBarID";
+static NSString * const WPBlogListNavigationRestorationID = @"WPBlogListNavigationID";
+static NSString * const WPReaderNavigationRestorationID = @"WPReaderNavigationID";
+static NSString * const WPNotificationsNavigationRestorationID = @"WPNotificationsNavigationID";
+static NSInteger const IndexForMeTab = 2;
+static NSInteger const NotificationNewComment = 1001;
+static NSInteger const NotificationNewSocial = 1002;
+static NSString *const CameraPlusImagesNotification = @"CameraPlusImagesNotification";
 
 @interface WordPressAppDelegate () <UITabBarControllerDelegate, CrashlyticsDelegate, UIAlertViewDelegate, BITHockeyManagerDelegate>
 
@@ -79,11 +83,13 @@ NSInteger const IndexForMeTab = 2;
 #pragma mark - UIApplicationDelegate
 
 - (BOOL)application:(UIApplication *)application willFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
+    [WordPressAppDelegate fixKeychainAccess];
+
     // Crash reporting, logging, debugging
     [self configureLogging];
     [self configureHockeySDK];
     [self configureCrashlytics];
-    [self printDebugLaunchInfo];
+    [self printDebugLaunchInfoWithLaunchOptions:launchOptions];
     [self toggleExtraDebuggingIfNeeded];
     [self removeCredentialsForDebug];
 
@@ -91,7 +97,7 @@ NSInteger const IndexForMeTab = 2;
     [WPMobileStats initializeStats];
     [[GPPSignIn sharedInstance] setClientID:[WordPressComApiCredentials googlePlusClientId]];
     [self checkIfStatsShouldSendAndUpdateCheck];
-    [self checkIfFeedbackShouldBeEnabled];
+    [SupportViewController checkIfFeedbackShouldBeEnabled];
     
     // Networking setup
     [[AFNetworkActivityIndicatorManager sharedManager] setEnabled:YES];
@@ -102,33 +108,41 @@ NSInteger const IndexForMeTab = 2;
 
     [self customizeAppearance];
 
-    CGRect bounds = [[UIScreen mainScreen] bounds];
-    [self.window setFrame:bounds];
-    [self.window setBounds:bounds]; // for good measure.
-    
-    self.window.backgroundColor = [UIColor blackColor];
-    self.window.rootViewController = self.tabBarController;
-    [self.window makeKeyAndVisible];
-    
-    [self showWelcomeScreenIfNeededAnimated:NO];
-
     // Push notifications
     [NotificationsManager registerForPushNotifications];
-    [NotificationsManager handleNotificationForApplicationLaunch:launchOptions];
 
     // Deferred tasks to speed up app launch
     dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_BACKGROUND, 0), ^{
         [self changeCurrentDirectory];
-        [WordPressAppDelegate fixKeychainAccess];
         [[PocketAPI sharedAPI] setConsumerKey:[WordPressComApiCredentials pocketConsumerKey]];
         [self cleanUnusedMediaFileFromTmpDir];
     });
     
+    CGRect bounds = [[UIScreen mainScreen] bounds];
+    [self.window setFrame:bounds];
+    [self.window setBounds:bounds]; // for good measure.
+    self.window.backgroundColor = [UIColor blackColor];
+    self.window.rootViewController = self.tabBarController;
+    
     return YES;
 }
 
-- (BOOL)application:(UIApplication *)application openURL:(NSURL *)url sourceApplication:(NSString *)sourceApplication annotation:(id)annotation
-{
+- (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
+    DDLogVerbose(@"didFinishLaunchingWithOptions state: %d", application.applicationState);
+    
+    // Launched by tapping a notification
+    if (application.applicationState == UIApplicationStateActive) {
+        [NotificationsManager handleNotificationForApplicationLaunch:launchOptions];
+    }
+
+    [self.window makeKeyAndVisible];
+    
+    [self showWelcomeScreenIfNeededAnimated:NO];
+
+    return YES;
+}
+
+- (BOOL)application:(UIApplication *)application openURL:(NSURL *)url sourceApplication:(NSString *)sourceApplication annotation:(id)annotation {
     BOOL returnValue = NO;
     
     if ([[BITHockeyManager sharedHockeyManager].authenticator handleOpenURL:url
@@ -157,7 +171,7 @@ NSInteger const IndexForMeTab = 2;
             UIImage *image = [images image];
             UIImageWriteToSavedPhotosAlbum(image, nil, nil, nil);
             NSDictionary *userInfo = [NSDictionary dictionaryWithObject:image forKey:@"image"];
-            [[NSNotificationCenter defaultCenter] postNotificationName:kCameraPlusImagesNotification object:nil userInfo:userInfo];
+            [[NSNotificationCenter defaultCenter] postNotificationName:CameraPlusImagesNotification object:nil userInfo:userInfo];
         } cancelBlock:^(void) {
             DDLogInfo(@"Camera+ picker canceled");
         }];
@@ -172,17 +186,25 @@ NSInteger const IndexForMeTab = 2;
         NSString *URLString = [url absoluteString];
         DDLogInfo(@"Application launched with URL: %@", URLString);
 
-        if ([URLString rangeOfString:@"wpcom_signup_completed"].length) {
+        if ([URLString rangeOfString:@"newpost"].length) {
+            // Create a new post from data shared by a third party application.
             NSDictionary *params = [[url query] dictionaryFromQueryString];
-            DDLogInfo(@"%@", params);
-            [[NSNotificationCenter defaultCenter] postNotificationName:@"wpcomSignupNotification" object:nil userInfo:params];
-            returnValue = YES;
+            DDLogInfo(@"App launched for new post with params: %@", params);
+            if ([params count]) {
+                [self showPostTabWithOptions:params];
+                returnValue = YES;
+            }
         } else if ([URLString rangeOfString:@"viewpost"].length) {
+            // View the post specified by the shared blog ID and post ID
             NSDictionary *params = [[url query] dictionaryFromQueryString];
             
             if (params.count) {
-                NSUInteger *blogId = [[params valueForKey:@"blogId"] integerValue];
-                NSUInteger *postId = [[params valueForKey:@"postId"] integerValue];
+                NSUInteger blogId = [[params numberForKey:@"blogId"] integerValue];
+                NSUInteger postId = [[params numberForKey:@"postId"] integerValue];
+                
+                [WPMobileStats flagSuperProperty:StatsPropertyReaderOpenedFromExternalURL];
+                [WPMobileStats incrementSuperProperty:StatsPropertyReaderOpenedFromExternalURLCount];
+                [WPMobileStats trackEventForWPCom:StatsEventReaderOpenedFromExternalSource];
                 
                 [self.readerPostsViewController.navigationController popToRootViewControllerAnimated:NO];
                 NSInteger readerTabIndex = [[self.tabBarController viewControllers] indexOfObject:self.readerPostsViewController.navigationController];
@@ -200,7 +222,6 @@ NSInteger const IndexForMeTab = 2;
 - (void)applicationWillTerminate:(UIApplication *)application {
     DDLogInfo(@"%@ %@", self, NSStringFromSelector(_cmd));
     
-    [UIApplication sharedApplication].applicationIconBadgeNumber = 0;
     [WPMobileStats endSession];
 }
 
@@ -230,8 +251,8 @@ NSInteger const IndexForMeTab = 2;
     }];
 }
 
-- (void)applicationWillEnterForeground:(UIApplication *)application
-{
+- (void)applicationWillEnterForeground:(UIApplication *)application {
+    DDLogInfo(@"%@ %@", self, NSStringFromSelector(_cmd));
     [WPMobileStats resumeSession];
 }
 
@@ -243,19 +264,14 @@ NSInteger const IndexForMeTab = 2;
     DDLogInfo(@"%@ %@", self, NSStringFromSelector(_cmd));
     
     [WPMobileStats recordAppOpenedForEvent:StatsEventAppOpened];
-    
-    // Clear notifications badge and update server
-    [UIApplication sharedApplication].applicationIconBadgeNumber = 0;
-    [[WordPressComApi sharedApi] syncPushNotificationInfo];
+    [self clearBadgeAndSyncItemsIfNotificationsScreenActive];
 }
 
-- (BOOL)application:(UIApplication *)application shouldSaveApplicationState:(NSCoder *)coder
-{
+- (BOOL)application:(UIApplication *)application shouldSaveApplicationState:(NSCoder *)coder {
     return YES;
 }
 
-- (BOOL)application:(UIApplication *)application shouldRestoreApplicationState:(NSCoder *)coder
-{
+- (BOOL)application:(UIApplication *)application shouldRestoreApplicationState:(NSCoder *)coder {
     return YES;
 }
 
@@ -271,18 +287,25 @@ NSInteger const IndexForMeTab = 2;
 }
 
 - (void)application:(UIApplication *)application didReceiveRemoteNotification:(NSDictionary *)userInfo {
-    WPFLogMethod();
+    DDLogMethod();
     
     [NotificationsManager handleNotification:userInfo forState:application.applicationState completionHandler:nil];
 }
 
 - (void)application:(UIApplication *)application didReceiveRemoteNotification:(NSDictionary *)userInfo fetchCompletionHandler:(void (^)(UIBackgroundFetchResult))completionHandler {
-    WPFLogMethod();
+    DDLogMethod();
     
     [NotificationsManager handleNotification:userInfo forState:[UIApplication sharedApplication].applicationState completionHandler:completionHandler];
 }
 
 #pragma mark - Custom methods
+
+- (void)clearBadgeAndSyncItemsIfNotificationsScreenActive {
+    NSInteger notificationsTabIndex = [[self.tabBarController viewControllers] indexOfObject:self.notificationsViewController.navigationController];
+    if ([self.tabBarController selectedIndex] == notificationsTabIndex) {
+       [self.notificationsViewController clearNotificationsBadgeAndSyncItems];
+    }
+}
 
 - (void)showWelcomeScreenIfNeededAnimated:(BOOL)animated {
     if ([self noBlogsAndNoWordPressDotComAccount]) {
@@ -313,7 +336,7 @@ NSInteger const IndexForMeTab = 2;
 }
 
 - (BOOL)noBlogsAndNoWordPressDotComAccount {
-    NSInteger blogCount = [Blog countWithContext:[[ContextManager sharedInstance] mainContext]];
+    NSInteger blogCount = [Blog countSelfHostedWithContext:[[ContextManager sharedInstance] mainContext]];
     return blogCount == 0 && ![WPAccount defaultWordPressComAccount];
 }
 
@@ -334,6 +357,10 @@ NSInteger const IndexForMeTab = 2;
     [[UIToolbar appearance] setBarTintColor:[WPStyleGuide newKidOnTheBlockBlue]];
     [[UISwitch appearance] setOnTintColor:[WPStyleGuide newKidOnTheBlockBlue]];
     [[UIApplication sharedApplication] setStatusBarStyle:UIStatusBarStyleLightContent];
+
+    [[UINavigationBar appearanceWhenContainedIn:[UIReferenceLibraryViewController class], nil] setBackgroundImage:nil forBarMetrics:UIBarMetricsDefault];
+    [[UINavigationBar appearanceWhenContainedIn:[UIReferenceLibraryViewController class], nil] setBarTintColor:[WPStyleGuide newKidOnTheBlockBlue]];
+    [[UIToolbar appearanceWhenContainedIn:[UIReferenceLibraryViewController class], nil] setBarTintColor:[UIColor darkGrayColor]];
 }
 
 #pragma mark - Tab bar methods
@@ -398,6 +425,16 @@ NSInteger const IndexForMeTab = 2;
         postsViewController.tabBarItem.imageInsets = UIEdgeInsetsMake(7.0, 0, -7, 0);
     }
 
+    /*
+     If title is used, the title will be visible. See #1158
+     If accessibilityLabel/Value are used, the "New Post" text is not read by VoiceOver
+
+     The only apparent solution is to have an actual title, and then hide it for
+     non-VoiceOver users.
+     */
+    postsViewController.title = NSLocalizedString(@"New Post", @"The accessibility value of the post tab.");
+    [postsViewController.tabBarItem setTitleTextAttributes:@{NSForegroundColorAttributeName: [UIColor clearColor]} forState:UIControlStateNormal];
+
     _tabBarController.viewControllers = @[readerNavigationController, notificationsNavigationController, blogListNavigationController, postsViewController];
 
     [_tabBarController setSelectedViewController:readerNavigationController];
@@ -425,12 +462,24 @@ NSInteger const IndexForMeTab = 2;
 }
 
 - (void)showPostTab {
+    [self showPostTabWithOptions:nil];
+}
+
+- (void)showPostTabWithOptions:(NSDictionary *)options {
     UIViewController *presenter = self.window.rootViewController;
     if (presenter.presentedViewController) {
         [presenter dismissViewControllerAnimated:NO completion:nil];
     }
     
-    EditPostViewController *editPostViewController = [[EditPostViewController alloc] initWithDraftForLastUsedBlog];
+    EditPostViewController *editPostViewController;
+    if (!options) {
+        editPostViewController = [[EditPostViewController alloc] initWithDraftForLastUsedBlog];
+    } else {
+        editPostViewController = [[EditPostViewController alloc] initWithTitle:[options stringForKey:@"title"]
+                                                                    andContent:[options stringForKey:@"content"]
+                                                                       andTags:[options stringForKey:@"tags"]
+                                                                      andImage:[options stringForKey:@"image"]];
+    }
     editPostViewController.editorOpenedBy = StatsPropertyPostDetailEditorOpenedOpenedByTabBarButton;
     UINavigationController *navController = [[UINavigationController alloc] initWithRootViewController:editPostViewController];
     navController.modalPresentationStyle = UIModalPresentationCurrentContext;
@@ -472,7 +521,7 @@ NSInteger const IndexForMeTab = 2;
 - (BOOL)tabBarController:(UITabBarController *)tabBarController shouldSelectViewController:(UIViewController *)viewController {
     if ([tabBarController.viewControllers indexOfObject:viewController] == 3) {
         // Ignore taps on the post tab and instead show the modal.
-        if ([Blog countWithContext:[[ContextManager sharedInstance] mainContext]] == 0) {
+        if ([Blog countVisibleWithContext:[[ContextManager sharedInstance] mainContext]] == 0) {
             [WPMobileStats trackEventForWPCom:StatsEventAccountCreationOpenedFromTabBar];
             [self showWelcomeScreenAnimated:YES thenEditor:YES];
         } else {
@@ -578,33 +627,6 @@ NSInteger const IndexForMeTab = 2;
 	[defaults synchronize];
 }
 
-- (void)checkIfFeedbackShouldBeEnabled
-{
-    [[NSUserDefaults standardUserDefaults] registerDefaults:@{kWPUserDefaultsFeedbackEnabled: @YES}];
-    NSURL *url = [NSURL URLWithString:@"http://api.wordpress.org/iphoneapp/feedback-check/1.0/"];
-    NSURLRequest *request = [[NSURLRequest alloc] initWithURL:url];
-    AFJSONRequestOperation *operation = [AFJSONRequestOperation JSONRequestOperationWithRequest:request success:^(NSURLRequest *request, NSHTTPURLResponse *response, id JSON) {
-        DDLogVerbose(@"Feedback response received: %@", JSON);
-        NSNumber *feedbackEnabled = JSON[@"feedback-enabled"];
-        if (feedbackEnabled == nil) {
-            feedbackEnabled = @YES;
-        }
-        
-        NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
-        [defaults setBool:feedbackEnabled.boolValue forKey:kWPUserDefaultsFeedbackEnabled];
-        [defaults synchronize];
-    } failure:^(NSURLRequest *request, NSHTTPURLResponse *response, NSError *error, id JSON) {
-        DDLogError(@"Error received while checking feedback enabled status: %@", error);
-
-        // Lets be optimistic and turn on feedback by default if this call doesn't work
-        NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
-        [defaults setBool:YES forKey:kWPUserDefaultsFeedbackEnabled];
-        [defaults synchronize];
-    }];
-    
-    [operation start];
-}
-
 
 #pragma mark - Notifications
 
@@ -643,7 +665,7 @@ NSInteger const IndexForMeTab = 2;
 
 - (void)crashlytics:(Crashlytics *)crashlytics didDetectCrashDuringPreviousExecution:(id<CLSCrashReport>)crash
 {
-    WPFLogMethod();
+    DDLogMethod();
     NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
     NSInteger crashCount = [defaults integerForKey:@"crashCount"];
     crashCount += 1;
@@ -843,7 +865,7 @@ NSInteger const IndexForMeTab = 2;
 - (void)checkWPcomAuthentication {
     // Temporarily set the is authenticated flag based upon if we have a WP.com OAuth2 token
     // TODO :: Move this BOOL to a method on the WordPressComApi along with checkWPcomAuthentication
-    BOOL tempIsAuthenticated = [[WordPressComApi sharedApi] authToken].length > 0;
+    BOOL tempIsAuthenticated = [[[WPAccount defaultWordPressComAccount] restApi] authToken].length > 0;
     self.isWPcomAuthenticated = tempIsAuthenticated;
     
 	NSString *authURL = @"https://wordpress.com/xmlrpc.php";
@@ -851,7 +873,7 @@ NSInteger const IndexForMeTab = 2;
     WPAccount *account = [WPAccount defaultWordPressComAccount];
 	if (account) {
         WPXMLRPCClient *client = [WPXMLRPCClient clientWithXMLRPCEndpoint:[NSURL URLWithString:authURL]];
-        [client setAuthorizationHeaderWithToken:[[WordPressComApi sharedApi] authToken]];
+        [client setAuthorizationHeaderWithToken:[[[WPAccount defaultWordPressComAccount] restApi] authToken]];
         [client callMethod:@"wp.getUsersBlogs"
                 parameters:[NSArray arrayWithObjects:account.username, account.password, nil]
                    success:^(AFHTTPRequestOperation *operation, id responseObject) {
@@ -861,7 +883,7 @@ NSInteger const IndexForMeTab = 2;
                        if ([error.domain isEqualToString:@"WPXMLRPCFaultError"] ||
                            ([error.domain isEqualToString:@"XMLRPC"] && error.code == 403)) {
                            self.isWPcomAuthenticated = NO;
-                           [[WordPressComApi sharedApi] invalidateOAuth2Token];
+                           [[[WPAccount defaultWordPressComAccount] restApi] invalidateOAuth2Token];
                        }
                        
                        DDLogError(@"Error authenticating %@ with WordPress.com: %@", account.username, [error description]);
@@ -942,7 +964,7 @@ NSInteger const IndexForMeTab = 2;
 
 #pragma mark - Debugging and logging
 
-- (void)printDebugLaunchInfo {
+- (void)printDebugLaunchInfoWithLaunchOptions:(NSDictionary *)launchOptions {
     UIDevice *device = [UIDevice currentDevice];
     NSInteger crashCount = [[NSUserDefaults standardUserDefaults] integerForKey:@"crashCount"];
     NSArray *languages = [[NSUserDefaults standardUserDefaults] objectForKey:@"AppleLanguages"];
@@ -962,7 +984,8 @@ NSInteger const IndexForMeTab = 2;
     DDLogInfo(@"OS:        %@ %@", [device systemName], [device systemVersion]);
     DDLogInfo(@"Language:  %@", currentLanguage);
     DDLogInfo(@"UDID:      %@", [device wordpressIdentifier]);
-    DDLogInfo(@"APN token: %@", [[NSUserDefaults standardUserDefaults] objectForKey:kApnsDeviceTokenPrefKey]);
+    DDLogInfo(@"APN token: %@", [[NSUserDefaults standardUserDefaults] objectForKey:NotificationsDeviceToken]);
+    DDLogInfo(@"Launch options: %@", launchOptions);
     DDLogInfo(@"===========================================================================");
 }
 
@@ -1045,7 +1068,7 @@ NSInteger const IndexForMeTab = 2;
     }
     
     if ([description length] > maxSize) {
-        description = (NSMutableString *)[description substringWithRange:NSMakeRange([description length] - maxSize - 1, maxSize)];
+        description = (NSMutableString *)[description substringWithRange:NSMakeRange(0, maxSize)];
     }
     
     return description;
@@ -1091,11 +1114,12 @@ NSInteger const IndexForMeTab = 2;
 - (void)handleDefaultAccountChangedNotification:(NSNotification *)notification {
 	[self toggleExtraDebuggingIfNeeded];
 
-    [NotificationsManager registerForPushNotifications];
-    [self showWelcomeScreenIfNeededAnimated:NO];
     // If the notification object is not nil, then it's a login
     if (notification.object) {
         [ReaderPost fetchPostsWithCompletionHandler:nil];
+    } else {
+        // No need to check for welcome screen unless we are signing out
+        [self showWelcomeScreenIfNeededAnimated:NO];
     }
 }
 

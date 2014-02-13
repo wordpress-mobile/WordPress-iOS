@@ -92,7 +92,7 @@ NSString * const ReaderPostStoredCommentTextKey = @"comment";
 
 
 + (NSArray *)fetchPostsForEndpoint:(NSString *)endpoint withContext:(NSManagedObjectContext *)context {
-    WPFLogMethod();
+    DDLogMethod();
 	NSFetchRequest *request = [[NSFetchRequest alloc] init];
     [request setEntity:[NSEntityDescription entityForName:@"ReaderPost" inManagedObjectContext:context]];
 	
@@ -112,7 +112,7 @@ NSString * const ReaderPostStoredCommentTextKey = @"comment";
 
 
 + (void)syncPostsFromEndpoint:(NSString *)endpoint withArray:(NSArray *)arr success:(void (^)())success {
-    WPFLogMethod();
+    DDLogMethod();
     if (![arr isKindOfClass:[NSArray class]] || [arr count] == 0) {
 		if (success) {
 			dispatch_async(dispatch_get_main_queue(), success);
@@ -138,7 +138,7 @@ NSString * const ReaderPostStoredCommentTextKey = @"comment";
 
 
 + (void)deletePostsSyncedEarlierThan:(NSDate *)syncedDate {
-    WPFLogMethod();
+    DDLogMethod();
     NSManagedObjectContext *context = [[ContextManager sharedInstance] backgroundContext];
     [context performBlock:^{
         NSFetchRequest *request = [[NSFetchRequest alloc] init];
@@ -165,9 +165,7 @@ NSString * const ReaderPostStoredCommentTextKey = @"comment";
 	NSNumber *blogSiteID = [dict numberForKey:@"site_id"];
 	NSNumber *siteID = [dict numberForKey:@"blog_id"];
 	NSNumber *postID = [dict numberForKey:@"ID"];
-    
-    WPAccount *account = (WPAccount *)[context objectWithID:[WPAccount defaultWordPressComAccount].objectID];
-    
+
     // Some endpoints (e.g. tags) use different case
     if (siteID == nil) {
         siteID = [dict numberForKey:@"site_ID"];
@@ -198,15 +196,14 @@ NSString * const ReaderPostStoredCommentTextKey = @"comment";
     
     // single reader post loaded from wordpress://viewpost handler
     if ([dict valueForKey:@"meta"]) {
-        NSDictionary *meta_root = [dict objectForKey:@"meta"];
-        NSDictionary *meta_data = [meta_root objectForKey:@"data"];
-        NSDictionary *meta_site = [meta_data objectForKey:@"site"];
-        
-        // hardcode blog_site_id to 1 for now because only WordPress.com and Jetpack blogs will
-        // return from the endpoint anyway. this should be changed to data from the API once the
-        // API returns the data.
-        blogSiteID = @1;
-        siteID = [meta_site numberForKey:@"ID"];
+        NSDictionary *metaSite = [dict objectForKeyPath:@"meta.data.site"];
+        if (metaSite) {
+            // hardcode blog_site_id to 1 for now because only WordPress.com and Jetpack blogs will
+            // return from the endpoint anyway. this should be changed to data from the API once the
+            // API returns the data.
+            blogSiteID = @1;
+            siteID = [metaSite numberForKey:@"ID"];
+        }
     };
 
 	NSFetchRequest *request = [NSFetchRequest fetchRequestWithEntityName:@"ReaderPost"];
@@ -234,7 +231,10 @@ NSString * const ReaderPostStoredCommentTextKey = @"comment";
 		post.endpoint = endpoint;
     }
     
-    post.account = account;
+    // Set account on the post, but only if signed in
+    if ([WPAccount defaultWordPressComAccount] != nil) {
+        post.account = (WPAccount *)[context objectWithID:[WPAccount defaultWordPressComAccount].objectID];
+    }
     
     @autoreleasepool {
         [post updateFromDictionary:dict];
@@ -330,6 +330,7 @@ NSString * const ReaderPostStoredCommentTextKey = @"comment";
 	self.likeCount = [dict numberForKey:@"like_count"];
 	self.permaLink = [dict stringForKey:@"URL"];
 	self.postTitle = [[[dict stringForKey:@"title"] stringByDecodingXMLCharacters] trim];
+    self.postTitle = [self.postTitle stringByStrippingHTML];
 	
 	self.isLiked = [dict numberForKey:@"i_like"];
 	
@@ -392,6 +393,7 @@ NSString * const ReaderPostStoredCommentTextKey = @"comment";
 	self.likeCount = [dict numberForKey:@"post_like_count"];
 	self.permaLink = [dict stringForKey:@"post_permalink"];
 	self.postTitle = [[[dict stringForKey:@"post_title"] stringByDecodingXMLCharacters] trim];
+    self.postTitle = [self.postTitle stringByStrippingHTML];
 	
     // blog_public is either a 1 or a -1.
     NSInteger isPublic = [[dict numberForKey:@"blog_public"] integerValue];
@@ -533,7 +535,7 @@ NSString * const ReaderPostStoredCommentTextKey = @"comment";
 		path = [NSString stringWithFormat:@"sites/%@/posts/%@/likes/mine/delete", self.siteID, self.postID];
 	}
 
-	[[WordPressComApi sharedApi] postPath:path parameters:nil success:^(AFHTTPRequestOperation *operation, id responseObject) {
+	[[[WPAccount defaultWordPressComAccount] restApi] postPath:path parameters:nil success:^(AFHTTPRequestOperation *operation, id responseObject) {
 		[self save];
 		
 		if(success) {
@@ -565,7 +567,7 @@ NSString * const ReaderPostStoredCommentTextKey = @"comment";
 		path = [NSString stringWithFormat:@"sites/%@/follows/mine/delete", self.siteID];
 	}
 	
-	[[WordPressComApi sharedApi] postPath:path parameters:nil success:^(AFHTTPRequestOperation *operation, id responseObject) {
+	[[[WPAccount defaultWordPressComAccount] restApi] postPath:path parameters:nil success:^(AFHTTPRequestOperation *operation, id responseObject) {
 		[self save];
 		
 		if(success) {
@@ -590,7 +592,7 @@ NSString * const ReaderPostStoredCommentTextKey = @"comment";
 	}
 
 	NSString *path = [NSString stringWithFormat:@"sites/%@/posts/%@/reblogs/new", self.siteID, self.postID];
-	[[WordPressComApi sharedApi] postPath:path parameters:params success:^(AFHTTPRequestOperation *operation, id responseObject) {
+	[[[WPAccount defaultWordPressComAccount] restApi] postPath:path parameters:params success:^(AFHTTPRequestOperation *operation, id responseObject) {
 		NSDictionary *dict = (NSDictionary *)responseObject;
 		self.isReblogged = [dict numberForKey:@"is_reblogged"];
 
@@ -602,22 +604,6 @@ NSString * const ReaderPostStoredCommentTextKey = @"comment";
 			failure(error);
 		}
 	}];
-}
-
-
-- (NSString *)prettyDateString {
-	NSDate *date = [self isFreshlyPressed] ? self.sortDate : self.date_created_gmt;
-    NSDateFormatter *formatter = [[NSDateFormatter alloc] init];
-	NSTimeInterval diff = [[NSDate date] timeIntervalSinceDate:date];
-    if (diff < 86400) {
-        formatter.dateStyle = NSDateFormatterNoStyle;
-        formatter.timeStyle = NSDateFormatterShortStyle;
-    } else {
-        formatter.dateStyle = NSDateFormatterShortStyle;
-        formatter.timeStyle = NSDateFormatterNoStyle;
-    }
-    formatter.doesRelativeDateFormatting = YES;
-    return [formatter stringFromDate:date];
 }
 
 - (BOOL)isFollowable {
@@ -734,24 +720,39 @@ NSString * const ReaderPostStoredCommentTextKey = @"comment";
 - (NSString *)formatVideoPress:(NSString *)str {
     NSMutableString *mstr = [str mutableCopy];
     NSError *error;
+    
+    // Find instances of VideoPress markup.
     NSRegularExpression *regex = [NSRegularExpression regularExpressionWithPattern:@"<div[\\S\\s]+?<div.*class=\"videopress-placeholder[\\s\\S]*?</noscript>" options:NSRegularExpressionCaseInsensitive error:&error];
     NSArray *matches = [regex matchesInString:mstr options:NSRegularExpressionCaseInsensitive range:NSMakeRange(0, [mstr length])];
     for (NSTextCheckingResult *match in [matches reverseObjectEnumerator]) {
         // compose videopress string
 
-        NSRegularExpression *mregex = [NSRegularExpression regularExpressionWithPattern:@"mp4[\\s\\S]+?mp4" options:NSRegularExpressionCaseInsensitive error:&error];
-        NSRange mmatch = [mregex rangeOfFirstMatchInString:mstr options:NSRegularExpressionCaseInsensitive range:match.range];
-        NSString *mp4 = [mstr substringWithRange:mmatch];
-        NSRegularExpression *sregex = [NSRegularExpression regularExpressionWithPattern:@"http\\S+mp4" options:NSRegularExpressionCaseInsensitive error:&error];
-        NSRange smatch = [sregex rangeOfFirstMatchInString:mp4 options:NSRegularExpressionCaseInsensitive range:NSMakeRange(0, [mp4 length])];
-        NSString *src = [mp4 substringWithRange:smatch];
+        // Find the mp4 in the markup.
+        NSRegularExpression *mp4Regex = [NSRegularExpression regularExpressionWithPattern:@"mp4[\\s\\S]+?mp4" options:NSRegularExpressionCaseInsensitive error:&error];
+        NSRange mp4Match = [mp4Regex rangeOfFirstMatchInString:mstr options:NSRegularExpressionCaseInsensitive range:match.range];
+        if (mp4Match.location == NSNotFound) {
+            DDLogError(@"%@ failed to match mp4 JSON string while formatting video press markup: %@", self, [mstr substringWithRange:match.range]);
+            [mstr replaceCharactersInRange:match.range withString:@""];
+            continue;
+        }
+        NSString *mp4 = [mstr substringWithRange:mp4Match];
+        
+        // Get the mp4 url.
+        NSRegularExpression *srcRegex = [NSRegularExpression regularExpressionWithPattern:@"http\\S+mp4" options:NSRegularExpressionCaseInsensitive error:&error];
+        NSRange srcMatch = [srcRegex rangeOfFirstMatchInString:mp4 options:NSRegularExpressionCaseInsensitive range:NSMakeRange(0, [mp4 length])];
+        if (srcMatch.location == NSNotFound) {
+            DDLogError(@"%@ failed to match mp4 src when formatting video press markup: %@", self, mp4);
+            [mstr replaceCharactersInRange:match.range withString:@""];
+            continue;
+        }
+        NSString *src = [mp4 substringWithRange:srcMatch];
         src = [src stringByReplacingOccurrencesOfString:@"\\/" withString:@"/"];
         
+        // Compose a video tag to replace the default markup.
         NSString *fmt = @"<video src=\"%@\"><source src=\"%@\" type=\"video/mp4\"></video>";
         NSString *vid = [NSString stringWithFormat:fmt, src, src];
         
         [mstr replaceCharactersInRange:match.range withString:vid];
-
     }
 
     return mstr;
@@ -797,7 +798,7 @@ NSString * const ReaderPostStoredCommentTextKey = @"comment";
 				 loadingMore:(BOOL)loadingMore
 					 success:(WordPressComApiRestSuccessResponseBlock)success
 					 failure:(WordPressComApiRestSuccessFailureBlock)failure {
-	WPFLogMethod();
+	DDLogMethod();
     
     WordPressComApi *api;
     if ([[WPAccount defaultWordPressComAccount] restApi].authToken) {
@@ -857,8 +858,23 @@ NSString * const ReaderPostStoredCommentTextKey = @"comment";
 							   completionHandler([postsArr count], nil);
 						   }
 					   } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
-						   completionHandler(0, error);
+                           if (completionHandler) {
+                               completionHandler(0, error);                               
+                           }
 					   }];
 }
+
+#pragma mark - WPContentViewProvider protocol
+
+- (NSDate *)dateForDisplay {
+    BOOL isFreshlyPressed = [self isFreshlyPressed];
+    
+    if (isFreshlyPressed) {
+        return [self sortDate];
+    }
+    
+    return [self dateCreated];
+}
+
 
 @end

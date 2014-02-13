@@ -29,8 +29,9 @@
 #import "InlineComposeView.h"
 #import "ReaderCommentPublisher.h"
 
-NSInteger const ReaderCommentsToSync = 100;
-NSTimeInterval const ReaderPostDetailViewControllerRefreshTimeout = 300; // 5 minutes
+static NSInteger const ReaderCommentsToSync = 100;
+static NSTimeInterval const ReaderPostDetailViewControllerRefreshTimeout = 300; // 5 minutes
+static CGFloat const SectionHeaderHeight = 25.0f;
 
 typedef enum {
     ReaderDetailContentSection = 0,
@@ -41,6 +42,7 @@ typedef enum {
 
 @interface ReaderPostDetailViewController ()<UIActionSheetDelegate, MFMailComposeViewControllerDelegate, ReaderTextFormDelegate, UIPopoverControllerDelegate, ReaderCommentPublisherDelegate> {
     UIPopoverController *_popover;
+    UIGestureRecognizer *_tapOffKeyboardGesture;
 }
 
 @property (nonatomic, strong) ReaderPostView *postView;
@@ -130,6 +132,9 @@ typedef enum {
 
     self.inlineComposeView = [[InlineComposeView alloc] initWithFrame:CGRectZero];
 
+    _tapOffKeyboardGesture = [[UITapGestureRecognizer alloc] initWithTarget:self
+                                                                     action:@selector(dismissKeyboard:)];
+    
     // comment composer responds to the inline compose view to publish comments
     self.commentPublisher = [[ReaderCommentPublisher alloc]
                              initWithComposer:self.inlineComposeView
@@ -192,6 +197,7 @@ typedef enum {
 - (void)didRotateFromInterfaceOrientation:(UIInterfaceOrientation)fromInterfaceOrientation {
 	[super didRotateFromInterfaceOrientation:fromInterfaceOrientation];
 
+    [self.postView refreshMediaLayout]; // Resize media in the post detail to match the width of the new orientation.
     [self.postView setNeedsLayout];
 
 	// Make sure a selected comment is visible after rotating.
@@ -200,6 +206,17 @@ typedef enum {
 	}
 }
 
+#pragma mark - Actions
+
+- (void)dismissKeyboard:(id)sender {
+    for (UIGestureRecognizer *gesture in self.view.gestureRecognizers) {
+        if ([gesture isEqual:_tapOffKeyboardGesture]) {
+            [self.view removeGestureRecognizer:gesture];
+        }
+    }
+    
+    [self.inlineComposeView dismissComposer];
+}
 
 #pragma mark - View getters/builders
 
@@ -613,7 +630,7 @@ typedef enum {
 	[postView updateActionButtons];
 }
 
-- (void)postView:(ReaderPostView *)postView didReceiveFollowAction:(id)sender {
+- (void)contentView:(ReaderPostView *)postView didReceiveFollowAction:(id)sender {
     UIButton *followButton = (UIButton *)sender;
     ReaderPost *post = postView.post;
     
@@ -629,19 +646,19 @@ typedef enum {
 }
 
 - (void)postView:(ReaderPostView *)postView didReceiveCommentAction:(id)sender {
-
+    [self.view addGestureRecognizer:_tapOffKeyboardGesture];
+    
     self.commentPublisher.comment = nil;
     [self.inlineComposeView toggleComposer];
-
 }
 
-- (void)postView:(ReaderPostView *)postView didReceiveLinkAction:(id)sender {
+- (void)contentView:(WPContentView *)contentView didReceiveLinkAction:(id)sender {
     WPWebViewController *controller = [[WPWebViewController alloc] init];
 	[controller setUrl:((DTLinkButton *)sender).URL];
 	[self.navigationController pushViewController:controller animated:YES];
 }
 
-- (void)postView:(ReaderPostView *)postView didReceiveImageLinkAction:(id)sender {
+- (void)contentView:(WPContentView *)contentView didReceiveImageLinkAction:(id)sender {
     ReaderImageView *imageView = (ReaderImageView *)sender;
 	UIViewController *controller;
     
@@ -672,7 +689,7 @@ typedef enum {
     [self.navigationController pushViewController:controller animated:YES];
 }
 
-- (void)postView:(ReaderPostView *)postView didReceiveVideoLinkAction:(id)sender {
+- (void)contentView:(WPContentView *)contentView didReceiveVideoLinkAction:(id)sender {
     ReaderVideoView *videoView = (ReaderVideoView *)sender;
 	if (videoView.contentType == ReaderVideoContentTypeVideo) {
 
@@ -689,7 +706,7 @@ typedef enum {
                                                    object:controller.moviePlayer];
 
 		controller.modalTransitionStyle = UIModalTransitionStyleCrossDissolve;
-		controller.modalPresentationStyle = UIModalPresentationFormSheet;
+		controller.modalPresentationStyle = UIModalPresentationFullScreen;
         [self.navigationController presentViewController:controller animated:YES completion:nil];
 
 	} else {
@@ -729,7 +746,7 @@ typedef enum {
     [self.navigationController pushViewController:controller animated:YES];
 }
 
-- (void)postViewDidLoadAllMedia:(ReaderPostView *)postView {
+- (void)contentViewDidLoadAllMedia:(WPContentView *)contentView {
     [self.postView layoutIfNeeded];
     [self.tableView reloadData];
 }
@@ -837,10 +854,11 @@ typedef enum {
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section {
-    if (section == 0)
+    if (section == 0) {
         return IS_IPHONE ? 1 : WPTableViewTopMargin;
+    }
     
-    return kSectionHeaderHight;
+    return SectionHeaderHeight;
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
@@ -862,8 +880,9 @@ typedef enum {
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
-    if (section == ReaderDetailContentSection)
+    if (section == ReaderDetailContentSection) {
         return 1;
+    }
 
 	return [_comments count];
 }
@@ -878,6 +897,14 @@ typedef enum {
         postCell.selectionStyle = UITableViewCellSelectionStyleNone;
         [postCell.contentView addSubview:self.postView];
         
+        // Make the postView matches the width of its cell.
+        // When the postView is first created it matches the width of the tableView
+        // which may or may not be the same width as the cells when we get to this point.
+        // On the iPhone, when viewing in landscape orientation, there can be a 20px difference.
+        CGRect frame = self.postView.frame;
+        frame.size.width = postCell.frame.size.width;
+        self.postView.frame = frame;
+        
         return postCell;
     }
     
@@ -885,6 +912,7 @@ typedef enum {
     ReaderCommentTableViewCell *cell = (ReaderCommentTableViewCell *)[self.tableView dequeueReusableCellWithIdentifier:cellIdentifier];
     if (cell == nil) {
         cell = [[ReaderCommentTableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:cellIdentifier];
+        cell.delegate = self;
     }
 	cell.accessoryType = UITableViewCellAccessoryNone;
 	
@@ -914,6 +942,8 @@ typedef enum {
 	}
 
 	if ([self canComment]) {
+        [self.view addGestureRecognizer:_tapOffKeyboardGesture];
+        
 		[self.inlineComposeView displayComposer];
 	}
 	
@@ -1001,6 +1031,14 @@ typedef enum {
 - (void)commentPublisherDidPublishComment:(ReaderCommentPublisher *)composer {
     [self.inlineComposeView dismissComposer];
     [self syncWithUserInteraction:NO];
+}
+
+#pragma mark - ReaderCommentTableViewCellDelegate methods
+
+- (void)readerCommentTableViewCell:(ReaderCommentTableViewCell *)cell didTapURL:(NSURL *)url {
+    WPWebViewController *controller = [[WPWebViewController alloc] init];
+	[controller setUrl:url];
+	[self.navigationController pushViewController:controller animated:YES];
 }
 
 #pragma mark - ReaderTextForm Delegate Methods

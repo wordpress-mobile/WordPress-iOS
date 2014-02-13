@@ -9,8 +9,9 @@
 #import <Foundation/Foundation.h>
 #import <CoreData/CoreData.h>
 #import "WPAccount.h"
+#import "WPContentViewProvider.h"
 
-@interface Note : NSManagedObject
+@interface Note : NSManagedObject<WPContentViewProvider>
 
 @property (nonatomic, retain) NSNumber *timestamp;
 @property (nonatomic, retain) NSString *type;
@@ -30,10 +31,8 @@
 - (BOOL)isUnread;
 
 - (void)syncAttributes:(NSDictionary *)data;
-- (NSDictionary *)getNoteData;
 
-+ (void)syncNotesWithResponse:(NSArray *)notesData;
-+ (void)refreshUnreadNotesWithContext:(NSManagedObjectContext *)context;
++ (void)mergeNewNotes:(NSArray *)notesData;
 
 /**
  Remove old notes from Core Data storage
@@ -43,6 +42,16 @@
  @param context The context which contains the notes to delete.
  */
 + (void)pruneOldNotesBefore:(NSNumber *)timestamp withContext:(NSManagedObjectContext *)context;
-+ (void)getNewNotificationswithContext:(NSManagedObjectContext *)context success:(void (^)(BOOL hasNewNotes))success failure:(void (^)(NSError *error))failure;
+
+@end
+
+@interface Note (WordPressComApi)
+
++ (void)fetchNewNotificationsWithSuccess:(void (^)(BOOL hasNewNotes))success failure:(void (^)(NSError *error))failure;
++ (void)refreshUnreadNotesWithContext:(NSManagedObjectContext *)context;
++ (void)fetchNotificationsSince:(NSNumber *)timestamp success:(void (^)())success failure:(void (^)(NSError *error))failure;
++ (void)fetchNotificationsBefore:(NSNumber *)timestamp success:(void (^)())success failure:(void (^)(NSError *error))failure;
+- (void)refreshNoteDataWithSuccess:(void (^)())success failure:(void (^)(NSError *error))failure;
+- (void)markAsReadWithSuccess:(void (^)())success failure:(void (^)(NSError *error))failure;
 
 @end

@@ -18,6 +18,8 @@
 
 NSTimeInterval const WPTableViewControllerRefreshTimeout = 300; // 5 minutes
 CGFloat const WPTableViewTopMargin = 40;
+CGFloat const CellHeight = 44.0;
+static CGFloat const SectionHeaderHeight = 25.0;
 NSString *const WPBlogRestorationKey = @"WPBlogRestorationKey";
 NSString *const DefaultCellIdentifier = @"DefaultCellIdentifier";
 
@@ -27,7 +29,7 @@ NSString *const DefaultCellIdentifier = @"DefaultCellIdentifier";
 @property (nonatomic) BOOL infiniteScrollEnabled;
 @property (nonatomic, strong, readonly) UIView *swipeView;
 @property (nonatomic, strong) UITableViewCell *swipeCell;
-@property (nonatomic, strong) UIView *noResultsView;
+@property (nonatomic, strong) WPNoResultsView *noResultsView;
 @property (nonatomic, strong) EditSiteViewController *editSiteViewController;
 @property (nonatomic, strong) NSIndexPath *indexPathSelectedBeforeUpdates;
 @property (nonatomic, strong) NSIndexPath *indexPathSelectedAfterUpdates;
@@ -35,7 +37,7 @@ NSString *const DefaultCellIdentifier = @"DefaultCellIdentifier";
 @property (nonatomic, strong) UIActivityIndicatorView *activityFooter;
 @property (nonatomic, assign) BOOL animatingRemovalOfModerationSwipeView;
 @property (nonatomic, assign) BOOL didPromptForCredentials;
-@property (nonatomic, assign) BOOL isSyncing;
+@property (nonatomic, assign, setter = setSyncing:) BOOL isSyncing;
 @property (nonatomic, assign) BOOL isLoadingMore;
 @property (nonatomic, assign) BOOL didTriggerRefresh;
 @property (nonatomic, assign) CGPoint savedScrollOffset;
@@ -81,6 +83,9 @@ NSString *const DefaultCellIdentifier = @"DefaultCellIdentifier";
 - (void)dealloc {
     _resultsController.delegate = nil;
     _editSiteViewController.delegate = nil;
+    
+    NSNotificationCenter *nc = [NSNotificationCenter defaultCenter];
+    [nc removeObserver:self];
 }
 
 - (void)encodeRestorableStateWithCoder:(NSCoder *)coder {
@@ -111,6 +116,9 @@ NSString *const DefaultCellIdentifier = @"DefaultCellIdentifier";
     }
 
     [self configureNoResultsView];
+    
+    NSNotificationCenter *nc = [NSNotificationCenter defaultCenter];
+    [nc addObserver:self selector:@selector(automaticallyRefreshIfAppropriate) name:UIApplicationDidBecomeActiveNotification object:nil];
 }
 
 - (void)viewWillAppear:(BOOL)animated {
@@ -129,18 +137,8 @@ NSString *const DefaultCellIdentifier = @"DefaultCellIdentifier";
 
 - (void)viewDidAppear:(BOOL)animated {
 	[super viewDidAppear:animated];
-    WordPressAppDelegate *appDelegate = [WordPressAppDelegate sharedWordPressApplicationDelegate];
-    if( appDelegate.connectionAvailable == NO ) return; //do not start auto-synch if connection is down
-
-    // Don't try to refresh if we just canceled editing credentials
-    if (_didPromptForCredentials) {
-        return;
-    }
-    NSDate *lastSynced = [self lastSyncDate];
-    if (lastSynced == nil || ABS([lastSynced timeIntervalSinceNow]) > WPTableViewControllerRefreshTimeout) {
-        // Update in the background
-        [self syncItems];
-    }
+    
+    [self automaticallyRefreshIfAppropriate];
 }
 
 - (void)viewWillDisappear:(BOOL)animated {
@@ -230,7 +228,7 @@ NSString *const DefaultCellIdentifier = @"DefaultCellIdentifier";
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
     UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:DefaultCellIdentifier];
 
-    if (IS_IPAD || self.tableView.isEditing) {
+    if (self.tableView.isEditing) {
 		cell.accessoryType = UITableViewCellAccessoryNone;
 	} else {
         cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
@@ -242,9 +240,6 @@ NSString *const DefaultCellIdentifier = @"DefaultCellIdentifier";
 }
 
 - (void)tableView:(UITableView *)tableView willDisplayCell:(UITableViewCell *)cell forRowAtIndexPath:(NSIndexPath *)indexPath {
-	if (IS_IPAD) {
-		cell.accessoryType = UITableViewCellAccessoryNone;
-	}
 
     // Are we approaching the end of the table?
     if ((indexPath.section + 1 == [self numberOfSectionsInTableView:tableView]) && (indexPath.row + 4 >= [self tableView:tableView numberOfRowsInSection:indexPath.section]) && [self tableView:tableView numberOfRowsInSection:indexPath.section] > 10) {
@@ -267,20 +262,23 @@ NSString *const DefaultCellIdentifier = @"DefaultCellIdentifier";
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
-    return kCellHeight;
+    return CellHeight;
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section {
-    id <NSFetchedResultsSectionInfo> sectionInfo = nil;
-    sectionInfo = [[self.resultsController sections] objectAtIndex:section];
-
-    // Don't show section headers if there are no named sections
+    // Don't show section headers if there are no named sections, or if this is the first (and has no name)
     NSString *sectionTitle = [self tableView:tableView titleForHeaderInSection:section];
-    if ([[self.resultsController sections] count] <= 1 && [sectionTitle length] == 0) {
+    BOOL firstTitleAndNoName = section == 0 && [sectionTitle length] == 0;
+    if ([[self.resultsController sections] count] <= 1 || firstTitleAndNoName) {
         return IS_IPHONE ? 1 : WPTableViewTopMargin;
     }
 
-    return kSectionHeaderHight;
+    return SectionHeaderHeight;
+}
+
+- (CGFloat)tableView:(UITableView *)tableView heightForFooterInSection:(NSInteger)section {
+    // remove footer height for all but last section
+    return section == [[self.resultsController sections] count] - 1 ? UITableViewAutomaticDimension : 1.0;
 }
 
 - (UITableViewCellEditingStyle)tableView:(UITableView *)tableView editingStyleForRowAtIndexPath:(NSIndexPath *)indexPath {
@@ -467,6 +465,28 @@ NSString *const DefaultCellIdentifier = @"DefaultCellIdentifier";
 
 #pragma mark - Private Methods
 
+- (void)automaticallyRefreshIfAppropriate {
+    // Only automatically refresh if the view is loaded and visible on the screen
+    if (self.isViewLoaded == NO || self.view.window == nil) {
+        DDLogVerbose(@"View is not visible and will not check for auto refresh.");
+        return;
+    }
+    
+    WordPressAppDelegate *appDelegate = [WordPressAppDelegate sharedWordPressApplicationDelegate];
+    if(appDelegate.connectionAvailable == NO) return; // Do not start auto-synch if connection is down
+    
+    // Don't try to refresh if we just canceled editing credentials
+    if (_didPromptForCredentials) {
+        return;
+    }
+    
+    NSDate *lastSynced = [self lastSyncDate];
+    if (lastSynced == nil || ABS([lastSynced timeIntervalSinceNow]) > WPTableViewControllerRefreshTimeout) {
+        // Update in the background
+        [self syncItems];
+    }
+}
+
 - (void)configureNoResultsView {
     if (![self isViewLoaded]) {
         return;
@@ -481,44 +501,45 @@ NSString *const DefaultCellIdentifier = @"DefaultCellIdentifier";
             // Show activity indicator view when syncing is occuring
             // and the fetched results controller has no objects
             
-            if (self.noResultsActivityIndicator == nil) {
-                self.noResultsActivityIndicator = [self createNoResultsActivityIndicator];
-            }
-            
             [self.noResultsActivityIndicator startAnimating];
+            self.noResultsActivityIndicator.center = [self.tableView convertPoint:self.tableView.center fromView:self.tableView.superview];
             [self.tableView addSubview:self.noResultsActivityIndicator];
         } else {
             // Show no results view if the fetched results controller
             // has no objects and syncing is not happening.
             
-            if (self.noResultsView == nil) {
-                self.noResultsView = [self createNoResultsView];
-            }
+            
             // only add and animate no results view if it isn't already
             // in the table view
             if (![self.noResultsView isDescendantOfView:self.tableView]) {
                 [self.tableView addSubviewWithFadeAnimation:self.noResultsView];
+            } else {
+                [self.noResultsView centerInSuperview];
             }
         }
     }
 }
 
-- (UIView *)createNoResultsView {
+- (WPNoResultsView *)noResultsView {
 	
-    WPNoResultsView *view = [WPNoResultsView noResultsViewWithTitle:[self noResultsTitleText] message:[self noResultsMessageText] accessoryView:[self noResultsAccessoryView] buttonTitle:[self noResultsButtonText]];
-    view.delegate = self;
+    if (!_noResultsView) {
+        _noResultsView = [WPNoResultsView noResultsViewWithTitle:[self noResultsTitleText] message:[self noResultsMessageText] accessoryView:[self noResultsAccessoryView] buttonTitle:[self noResultsButtonText]];
+        _noResultsView.delegate = self;
+    }
     
-	return view;
+	return _noResultsView;
 }
 
-- (UIActivityIndicatorView *)createNoResultsActivityIndicator {
+- (UIActivityIndicatorView *)noResultsActivityIndicator {
     
-    UIActivityIndicatorView *activityIndicator = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleGray];
-    activityIndicator.hidesWhenStopped = YES;
-    activityIndicator.autoresizingMask = UIViewAutoresizingFlexibleLeftMargin | UIViewAutoresizingFlexibleRightMargin | UIViewAutoresizingFlexibleTopMargin | UIViewAutoresizingFlexibleBottomMargin;
-    activityIndicator.center = [self.tableView convertPoint:self.tableView.center fromView:self.tableView.superview];
+    if (!_noResultsActivityIndicator) {
+        _noResultsActivityIndicator = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleGray];
+        _noResultsActivityIndicator.hidesWhenStopped = YES;
+        _noResultsActivityIndicator.autoresizingMask = UIViewAutoresizingFlexibleLeftMargin | UIViewAutoresizingFlexibleRightMargin | UIViewAutoresizingFlexibleTopMargin | UIViewAutoresizingFlexibleBottomMargin;
+        _noResultsActivityIndicator.center = [self.tableView convertPoint:self.tableView.center fromView:self.tableView.superview];
+    }
     
-	return activityIndicator;
+	return _noResultsActivityIndicator;
 }
 
 - (void)hideRefreshHeader {
@@ -543,18 +564,18 @@ NSString *const DefaultCellIdentifier = @"DefaultCellIdentifier";
         return;
     }
 
-    _isSyncing = YES;
+    [self setSyncing:YES];
     [self syncItemsViaUserInteraction:userInteraction success:^{
         [self hideRefreshHeader];
-        _isSyncing = NO;
+        [self setSyncing:NO];
         [self configureNoResultsView];
     } failure:^(NSError *error) {
         [self hideRefreshHeader];
-        _isSyncing = NO;
+        [self setSyncing:NO];
         [self configureNoResultsView];
         if (self.blog) {
-            if ([error.domain isEqualToString:AFNetworkingErrorDomain]) {
-                NSInteger statusCode = ((NSHTTPURLResponse *)error.userInfo[AFNetworkingOperationFailingURLResponseErrorKey]).statusCode;
+            if ([error.domain isEqualToString:WPXMLRPCClientErrorDomain]) {
+                NSInteger statusCode = error.code;
                 if (statusCode == 405) {
                     // Prompt to enable XML-RPC using the default message provided from the WordPress site.
                     [WPError showAlertWithTitle:NSLocalizedString(@"Couldn't sync", @"") message:[error localizedDescription]

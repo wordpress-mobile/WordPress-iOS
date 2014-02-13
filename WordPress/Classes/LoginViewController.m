@@ -60,11 +60,11 @@
 @implementation LoginViewController
 
 CGFloat const GeneralWalkthroughIconVerticalOffset = 77;
-CGFloat const GeneralWalkthroughStandardOffset = 16;
-CGFloat const GeneralWalkthroughMaxTextWidth = 289.0;
+CGFloat const GeneralWalkthroughStandardOffset = 15;
+CGFloat const GeneralWalkthroughMaxTextWidth = 290.0;
 CGFloat const GeneralWalkthroughTextFieldWidth = 320.0;
 CGFloat const GeneralWalkthroughTextFieldHeight = 44.0;
-CGFloat const GeneralWalkthroughButtonWidth = 289.0;
+CGFloat const GeneralWalkthroughButtonWidth = 290.0;
 CGFloat const GeneralWalkthroughButtonHeight = 41.0;
 CGFloat const GeneralWalkthroughSecondaryButtonHeight = 33;
 CGFloat const GeneralWalkthroughStatusBarOffset = 20.0;
@@ -344,11 +344,13 @@ CGFloat const GeneralWalkthroughStatusBarOffset = 20.0;
     UIImage *infoButtonImage = [UIImage imageNamed:@"btn-help"];
     if (_helpButton == nil) {
         _helpButton = [UIButton buttonWithType:UIButtonTypeCustom];
+        _helpButton.accessibilityLabel = NSLocalizedString(@"Help", @"Help button");
         [_helpButton setImage:infoButtonImage forState:UIControlStateNormal];
         _helpButton.frame = CGRectMake(GeneralWalkthroughStandardOffset, GeneralWalkthroughStandardOffset, infoButtonImage.size.width, infoButtonImage.size.height);
         _helpButton.autoresizingMask = UIViewAutoresizingFlexibleRightMargin | UIViewAutoresizingFlexibleLeftMargin;
         [_helpButton addTarget:self action:@selector(helpButtonAction:) forControlEvents:UIControlEventTouchUpInside];
         [_helpButton sizeToFit];
+        [_helpButton setExclusiveTouch:YES];
         [_mainView addSubview:_helpButton];
     }
     
@@ -374,6 +376,7 @@ CGFloat const GeneralWalkthroughStatusBarOffset = 20.0;
         _passwordText.font = [WPNUXUtility textFieldFont];
         _passwordText.delegate = self;
         _passwordText.secureTextEntry = YES;
+        _passwordText.showSecureTextEntryToggle = YES;
         _passwordText.showTopLineSeparator = YES;
         _passwordText.autoresizingMask = UIViewAutoresizingFlexibleRightMargin | UIViewAutoresizingFlexibleLeftMargin;
         [_mainView addSubview:_passwordText];
@@ -421,6 +424,7 @@ CGFloat const GeneralWalkthroughStatusBarOffset = 20.0;
         _cancelButton = [[WPNUXSecondaryButton alloc] init];
         [_cancelButton setTitle:NSLocalizedString(@"Cancel", nil) forState:UIControlStateNormal];
         [_cancelButton addTarget:self action:@selector(cancelButtonAction:) forControlEvents:UIControlEventTouchUpInside];
+        [_cancelButton setExclusiveTouch:YES];
         [_cancelButton sizeToFit];
         [self.view addSubview:_cancelButton];
     }
@@ -772,7 +776,8 @@ CGFloat const GeneralWalkthroughStatusBarOffset = 20.0;
         [self setAuthenticating:NO withStatusMessage:nil];
         [self displayRemoteError:error];
     }];
-    [account.restApi getNotificationsSince:nil success:nil failure:nil];
+
+    [Note fetchNewNotificationsWithSuccess:nil failure:nil];
 }
 
 - (void)createSelfHostedAccountAndBlogWithUsername:(NSString *)username password:(NSString *)password xmlrpc:(NSString *)xmlrpc options:(NSDictionary *)options
@@ -780,6 +785,9 @@ CGFloat const GeneralWalkthroughStatusBarOffset = 20.0;
     WPAccount *account = [WPAccount createOrUpdateSelfHostedAccountWithXmlrpc:xmlrpc username:username andPassword:password];
     NSString *blogName = [options stringForKeyPath:@"blog_title.value"];
     NSString *url = [options stringForKeyPath:@"home_url.value"];
+    if (!url) {
+        url = [options stringForKeyPath:@"blog_url.value"];
+    }
     NSMutableDictionary *blogDetails = [NSMutableDictionary dictionaryWithObject:xmlrpc forKey:@"xmlrpc"];
     if (blogName) {
         [blogDetails setObject:blogName forKey:@"blogName"];
@@ -855,7 +863,7 @@ CGFloat const GeneralWalkthroughStatusBarOffset = 20.0;
     CGFloat animationDuration = [[keyboardInfo objectForKey:UIKeyboardAnimationDurationUserInfoKey] floatValue];
     CGRect keyboardFrame = [[[notification userInfo] objectForKey:UIKeyboardFrameEndUserInfoKey] CGRectValue];
     keyboardFrame = [self.view convertRect:keyboardFrame fromView:nil];
-    CGFloat newKeyboardOffset = (CGRectGetMaxY(_signInButton.frame) - CGRectGetMinY(keyboardFrame)) + 0.5 * GeneralWalkthroughStandardOffset;
+    CGFloat newKeyboardOffset = (CGRectGetMaxY(_signInButton.frame) - CGRectGetMinY(keyboardFrame)) + GeneralWalkthroughStandardOffset;
 
     if (newKeyboardOffset < 0) {
         newKeyboardOffset = 0;
