@@ -83,11 +83,11 @@ typedef NS_ENUM(NSInteger, TotalFollowersShareRow) {
         
         // By default, show data for Today
         _showingToday = [NSMutableDictionary dictionaryWithObjectsAndKeys:
-                         @(YES), @(StatsSectionTopPosts),
-                         @(YES), @(StatsSectionViewsByCountry),
-                         @(YES), @(StatsSectionSearchTerms),
-                         @(YES), @(StatsSectionClicks),
-                         @(YES), @(StatsSectionReferrers), nil];
+                         @YES, @(StatsSectionTopPosts),
+                         @YES, @(StatsSectionViewsByCountry),
+                         @YES, @(StatsSectionSearchTerms),
+                         @YES, @(StatsSectionClicks),
+                         @YES, @(StatsSectionReferrers), nil];
         
         _resultsAvailable = NO;
     }
@@ -139,7 +139,7 @@ typedef NS_ENUM(NSInteger, TotalFollowersShareRow) {
 
 - (void)initStats {
     if (self.blog.isWPcom) {
-        self.statsApiHelper = [[StatsApiHelper alloc] initWithSiteID:_blog.blogID];
+        self.statsApiHelper = [[StatsApiHelper alloc] initWithSiteID:self.blog.blogID];
         [self loadStats];
         return;
     }
