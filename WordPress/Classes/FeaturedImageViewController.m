@@ -590,6 +590,10 @@ typedef enum {
     // On iOS7 Beta 6 the image picker seems to override our preferred setting so we force the status bar color back.
     [[UIApplication sharedApplication] setStatusBarStyle:UIStatusBarStyleLightContent];
     [self.navigationController dismissViewControllerAnimated:YES completion:nil];
+    
+    if (!self.imageView.image) {
+        [self.navigationController popViewControllerAnimated:YES];
+    }
 }
 
 #pragma mark - Media and Image Wrangling
