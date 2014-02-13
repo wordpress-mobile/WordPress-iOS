@@ -75,7 +75,7 @@ NSString *const LocationServiceErrorDomain = @"LocationServiceErrorDomain";
     }
     
     // Skip the address lookup if this is not a new location
-    if (self.lastGeocodedAddress && ([self.lastGeocodedLocation distanceFromLocation:location] >= LocationHorizontalAccuracyThreshold)) {
+    if (self.lastGeocodedAddress && ([self.lastGeocodedLocation distanceFromLocation:location] <= LocationHorizontalAccuracyThreshold)) {
         [self addressUpdated:self.lastGeocodedAddress forLocation:self.lastGeocodedLocation error:nil];
         return;
     }
@@ -122,6 +122,8 @@ NSString *const LocationServiceErrorDomain = @"LocationServiceErrorDomain";
 
 - (void)serviceFailed:(NSError *)error {
     DDLogError(@"Error finding location: %@", error);
+    [self stopUpdatingLocation];
+    self.locationServiceRunning = NO;
     for (NSInteger i = 0; i < [self.completionBlocks count]; i++) {
         LocationServiceCompletionBlock block = [self.completionBlocks objectAtIndex:i];
         block(nil, nil, error);
@@ -150,7 +152,9 @@ NSString *const LocationServiceErrorDomain = @"LocationServiceErrorDomain";
 - (void)timeoutUpdatingLocation {
     CLLocation *lastLocation = self.lastUpdatedLocation;
     [self stopUpdatingLocation];
-    
+#if TARGET_IPHONE_SIMULATOR
+    lastLocation = self.locationManager.location;
+#endif
     if (lastLocation) {
         [self getAddressForLocation:lastLocation];
     } else {
