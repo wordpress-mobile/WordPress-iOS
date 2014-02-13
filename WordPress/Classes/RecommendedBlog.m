@@ -27,8 +27,11 @@ NSInteger const RecommendedBlogsMaxExcludedIDs = 50;
         api = [WordPressComApi anonymousApi];
     }
     
+    NSString *excludedIDsStr = @"";
     NSArray *excludedIDs = [[NSUserDefaults standardUserDefaults] arrayForKey:RecommendedBlogsExcludedIDsKey];
-    NSString *excludedIDsStr = [excludedIDs componentsJoinedByString:@","];
+    if ([excludedIDs count]) {
+        excludedIDsStr = [excludedIDs componentsJoinedByString:@","];
+    }
     
 	[api getPath:@"read/recommendations/mine/"
       parameters:@{@"number":@3, @"exclude":excludedIDsStr}
