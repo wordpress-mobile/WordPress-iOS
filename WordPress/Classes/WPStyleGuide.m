@@ -77,6 +77,19 @@
     return @{NSParagraphStyleAttributeName: paragraphStyle, NSFontAttributeName : [self subtitleFontItalic]};
 }
 
++ (UIFont *)subtitleFontBold
+{
+    return [UIFont fontWithName:@"OpenSans-Bold" size:12.0];
+}
+
++ (NSDictionary *)subtitleAttributesBold
+{
+    NSMutableParagraphStyle *paragraphStyle = [[NSMutableParagraphStyle alloc] init];
+    paragraphStyle.minimumLineHeight = 14;
+    paragraphStyle.maximumLineHeight = 14;
+    return @{NSParagraphStyleAttributeName: paragraphStyle, NSFontAttributeName : [self subtitleFontBold]};
+}
+
 + (UIFont *)labelFont
 {
     return [UIFont fontWithName:@"OpenSans-Bold" size:10.0];
