@@ -148,6 +148,16 @@ typedef enum {
     }];
 }
 
+- (void)restorePreviousImage {
+    if (self.previousImage) {
+        self.image = self.previousImage;
+        self.previousImage = nil;
+        [self loadImage];
+    } else {
+        [self.navigationController popViewControllerAnimated:YES];
+    }
+}
+
 #pragma mark - Appearance Related Methods
 
 - (void)setupToolbar {
@@ -334,48 +344,31 @@ typedef enum {
 
 - (void)processPhotoResizeActionSheet:(UIActionSheet *)acSheet thatDismissedWithButtonIndex:(NSInteger)buttonIndex {
     if (acSheet.cancelButtonIndex == buttonIndex) {
-        if (self.previousImage) {
-            self.image = self.previousImage;
-            self.previousImage = nil;
-            [self loadImage];
-        }
+        [self restorePreviousImage];
     }
-    switch (buttonIndex) {
-        case 0:
-            if (acSheet.numberOfButtons == 2) {
-                [self useImage:[self resizeImage:_currentImage toSize:MediaResizeOriginal]];
-            } else {
-                [self useImage:[self resizeImage:_currentImage toSize:MediaResizeSmall]];
-            }
-            break;
-        case 1:
-            if (acSheet.numberOfButtons == 2) {
-                [self showCustomSizeAlert];
-            } else if (acSheet.numberOfButtons == 3) {
-                [self useImage:[self resizeImage:_currentImage toSize:MediaResizeOriginal]];
-            } else {
-                [self useImage:[self resizeImage:_currentImage toSize:MediaResizeMedium]];
-            }
-            break;
-        case 2:
-            if (acSheet.numberOfButtons == 3) {
-                [self showCustomSizeAlert];
-            } else if (acSheet.numberOfButtons == 4) {
-                [self useImage:[self resizeImage:_currentImage toSize:MediaResizeOriginal]];
-            } else {
-                [self useImage:[self resizeImage:_currentImage toSize:MediaResizeLarge]];
-            }
-            break;
-        case 3:
-            if (acSheet.numberOfButtons == 4) {
-                [self showCustomSizeAlert];
-            } else {
-                [self useImage:[self resizeImage:_currentImage toSize:MediaResizeOriginal]];
-            }
-            break;
-        case 4:
-            [self showCustomSizeAlert];
-            break;
+    
+    // 6 button: small, medium, large, original, custom, cancel
+    // 5 buttons: small, medium, original, custom, cancel
+    // 4 buttons: small, original, custom, cancel
+    // 3 buttons: original, custom, cancel
+    // The last three buttons are always the same, so we can count down, then count up and avoid alot of branching.
+    if (buttonIndex == acSheet.numberOfButtons - 1) {
+        // cancel button. Noop.
+    } else if (buttonIndex == acSheet.numberOfButtons - 2) {
+        // custom
+        [self showCustomSizeAlert];
+    } else if (buttonIndex == acSheet.numberOfButtons - 3) {
+        // original
+        [self useImage:[self resizeImage:_currentImage toSize:MediaResizeOriginal]];
+    } else if (buttonIndex == 0) {
+        // small
+        [self useImage:[self resizeImage:_currentImage toSize:MediaResizeSmall]];
+    } else if (buttonIndex == 1) {
+        // medium
+        [self useImage:[self resizeImage:_currentImage toSize:MediaResizeMedium]];
+    } else if (buttonIndex == 2) {
+        // large
+        [self useImage:[self resizeImage:_currentImage toSize:MediaResizeLarge]];
     }
     
     _isShowingResizeActionSheet = NO;
@@ -425,7 +418,7 @@ typedef enum {
     alertView.button1CompletionBlock = ^(WPAlertView *overlayView){
         // Cancel
         [overlayView dismiss];
-        
+        [self restorePreviousImage];
     };
     alertView.button2CompletionBlock = ^(WPAlertView *overlayView){
         [overlayView dismiss];
