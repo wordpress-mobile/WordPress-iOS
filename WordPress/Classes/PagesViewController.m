@@ -25,25 +25,7 @@
 
 - (NSString *)noResultsTitleText
 {
-    return NSLocalizedString(@"You haven't created any pages yet", @"Displayed when the user pulls up the pages view and they have no pages");
-}
-
-- (NSString *)noResultsMessageText {
-    return NSLocalizedString(@"Would you like to create your first page?",  @"Displayed when the user pulls up the pages view and they have no pages");
-}
-
-- (UIView *)noResultsAccessoryView {
-    return [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"penandink"]];
-}
-
-- (NSString *)noResultsButtonText
-{
-    return NSLocalizedString(@"Create page", @"");
-}
-
-- (void)didTapNoResultsView:(WPNoResultsView *)noResultsView
-{
-    [self showAddPostView];
+    return NSLocalizedString(@"You don't have any pages yet.", @"Displayed when the user pulls up the pages view and they have no pages");
 }
 
 
@@ -65,10 +47,6 @@
     
     Page *post = [Page newDraftForBlog:self.blog];
     [self editPost:post];
-}
-
-- (NSString *)tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section {
-    return nil;
 }
 
 - (NSString *)statsPropertyForViewOpening

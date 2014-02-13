@@ -15,11 +15,9 @@
 #import "ReachabilityUtils.h"
 #import "WPAccount.h"
 #import "WPTableViewSectionHeaderView.h"
-#import "NotificationsManager.h"
 #import <WPXMLRPC/WPXMLRPC.h>
 #import <SVProgressHUD/SVProgressHUD.h>
 #import <NSDictionary+SafeExpectations.h>
-#import "NotificationsManager.h"
 
 static NSString *const TextFieldCellIdentifier = @"TextFieldCellIdentifier";
 static NSString *const GeotaggingCellIdentifier = @"GeotaggingCellIdentifier";
@@ -70,7 +68,7 @@ static NSString *const JetpackConnectedCellIdentifier = @"JetpackConnectedCellId
         
         _notificationPreferences = [[[NSUserDefaults standardUserDefaults] objectForKey:@"notification_preferences"] mutableCopy];
         if (!_notificationPreferences) {
-            [NotificationsManager fetchNotificationSettingsWithSuccess:^{
+            [[WordPressComApi sharedApi] fetchNotificationSettings:^{
                 [self reloadNotificationSettings];
             } failure:^(NSError *error) {
                 [WPError showAlertWithTitle:NSLocalizedString(@"Error", @"") message:error.localizedDescription];
@@ -129,13 +127,9 @@ static NSString *const JetpackConnectedCellIdentifier = @"JetpackConnectedCellId
 - (NSInteger)tableView:(UITableView *)tv numberOfRowsInSection:(NSInteger)section {
     switch (section) {
 		case 0:
-            // URL, username, [password]
-            if ([self.blog isWPcom])
-                return 2;
-            return 3;
-		case 1:
-            // Settings: Geolocation, [ Push Notifications ]
-            if ([self canTogglePushNotifications])
+            return 3;	// URL, username, password
+		case 1: // Settings: Geolocation, [ Push Notifications ]
+            if (self.blog && ( [self.blog isWPcom] || [self.blog hasJetpack] ) && [[WordPressComApi sharedApi] hasCredentials] && [[NSUserDefaults standardUserDefaults] objectForKey:kApnsDeviceTokenPrefKey] != nil)
                 return 2;
             else
                 return 1;	
@@ -258,8 +252,6 @@ static NSString *const JetpackConnectedCellIdentifier = @"JetpackConnectedCellId
             pushCell.textLabel.text = NSLocalizedString(@"Push Notifications", @"");
             pushCell.selectionStyle = UITableViewCellSelectionStyleNone;
             pushSwitch.on = [self getBlogPushNotificationsSetting];
-            [pushSwitch addTarget:self action:@selector(togglePushNotifications:) forControlEvents:UIControlEventValueChanged];
-            pushCell.accessoryView = pushSwitch;
             [WPStyleGuide configureTableViewCell:pushCell];
             return pushCell;
         }
@@ -297,7 +289,7 @@ static NSString *const JetpackConnectedCellIdentifier = @"JetpackConnectedCellId
         }
 	} 
     [tv deselectRowAtIndexPath:indexPath animated:YES];
-
+    
     if (indexPath.section == 2) {
         JetpackSettingsViewController *controller = [[JetpackSettingsViewController alloc] initWithBlog:self.blog];
         controller.showFullScreen = NO;
@@ -373,23 +365,12 @@ static NSString *const JetpackConnectedCellIdentifier = @"JetpackConnectedCellId
     }
 }
 
-- (BOOL)canTogglePushNotifications {
-    return self.blog &&
-        ([self.blog isWPcom] || [self.blog hasJetpack]) &&
-        [[[WPAccount defaultWordPressComAccount] restApi] hasCredentials] &&
-        [NotificationsManager deviceRegisteredForPushNotifications];
-}
-
 - (void)toggleGeolocation:(id)sender {
     UISwitch *geolocationSwitch = (UISwitch *)sender;
     self.geolocationEnabled = geolocationSwitch.on;
-
-    // Save the change
-    self.blog.geolocationEnabled = self.geolocationEnabled;
-    [self.blog dataSave];
 }
 
-- (void)togglePushNotifications:(id)sender {
+- (void)togglePushNotifications:(id)sender {    
     UISwitch *pushSwitch = (UISwitch *)sender;
     BOOL muted = !pushSwitch.on;
     if (_notificationPreferences) {
@@ -409,7 +390,7 @@ static NSString *const JetpackConnectedCellIdentifier = @"JetpackConnectedCellId
                 [[NSUserDefaults standardUserDefaults] setValue:_notificationPreferences forKey:@"notification_preferences"];
                 
                 // Send these settings optimistically since they're low-impact (not ideal but works for now)
-                [NotificationsManager saveNotificationSettings];
+                [[WordPressComApi sharedApi] saveNotificationSettings:nil failure:nil];
                 return;
             }
         }

@@ -11,7 +11,7 @@
 #import "UIImageView+Gravatar.h"
 #import "WordPressComApi.h"
 #import "BlogDetailsViewController.h"
-#import "WPBlogTableViewCell.h"
+#import "WPTableViewCell.h"
 #import "ContextManager.h"
 #import "Blog.h"
 #import "WPAccount.h"
@@ -54,28 +54,25 @@ static CGFloat const blavatarImageSize = 50.f;
 - (void)viewDidLoad {
     [super viewDidLoad];
     
-    [[NSNotificationCenter defaultCenter] addObserver:self
-                                             selector:@selector(wordPressComAccountChanged)
-                                                 name:WPAccountDefaultWordPressComAccountChangedNotification
-                                               object:nil];
+    UIBarButtonItem *cancelButtonItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemCancel
+                                                                                      target:self
+                                                                                      action:@selector(cancelButtonTapped:)];
     
+    self.navigationItem.leftBarButtonItem = cancelButtonItem;
+    
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(wordPressComApiDidLogin:) name:WordPressComApiDidLoginNotification object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(wordPressComApiDidLogout:) name:WordPressComApiDidLogoutNotification object:nil];
+    
+    // Remove one-pixel gap resulting from a top-aligned grouped table view
     if (IS_IPHONE) {
-        // Remove one-pixel gap resulting from a top-aligned grouped table view
         UIEdgeInsets tableInset = [self.tableView contentInset];
         tableInset.top = -1;
         self.tableView.contentInset = tableInset;
-        
-        // Cancel button
-        UIBarButtonItem *cancelButtonItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemCancel
-                                                                                          target:self
-                                                                                          action:@selector(cancelButtonTapped:)];
-        
-        self.navigationItem.leftBarButtonItem = cancelButtonItem;
     }
 
     [WPStyleGuide configureColorsForView:self.view andTableView:self.tableView];
-
-    [self.tableView registerClass:[WPBlogTableViewCell class] forCellReuseIdentifier:BlogCellIdentifier];
+ 
+    [self.tableView registerClass:[WPTableViewCell class] forCellReuseIdentifier:BlogCellIdentifier];
 }
 
 - (void)viewWillAppear:(BOOL)animated {
@@ -103,9 +100,14 @@ static CGFloat const blavatarImageSize = 50.f;
 
 #pragma mark - Notifications
 
-- (void)wordPressComAccountChanged {
+- (void)wordPressComApiDidLogin:(NSNotification *)notification {
     [self.tableView reloadSections:[NSIndexSet indexSetWithIndex:0] withRowAnimation:UITableViewRowAnimationFade];
 }
+
+- (void)wordPressComApiDidLogout:(NSNotification *)notification {
+    [self.tableView reloadSections:[NSIndexSet indexSetWithIndex:0] withRowAnimation:UITableViewRowAnimationFade];
+}
+
 
 #pragma mark - Actions
 
@@ -136,8 +138,8 @@ static CGFloat const blavatarImageSize = 50.f;
 {
     
     UITableViewCell *cell = [self.tableView dequeueReusableCellWithIdentifier:BlogCellIdentifier];
-
-    [WPStyleGuide configureTableViewSmallSubtitleCell:cell];
+    
+    [WPStyleGuide configureTableViewCell:cell];
     [self configureCell:cell atIndexPath:indexPath];
 
     return cell;
@@ -179,7 +181,6 @@ static CGFloat const blavatarImageSize = 50.f;
     Blog *blog = [self.resultsController objectAtIndexPath:indexPath];
     if ([blog.blogName length] != 0) {
         cell.textLabel.text = blog.blogName;
-        cell.detailTextLabel.text = blog.url;
     } else {
         cell.textLabel.text = blog.url;
     }

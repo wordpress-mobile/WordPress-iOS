@@ -181,48 +181,26 @@
 }
 
 - (BOOL)hasChanged {
-    if ([super hasChanged]) {
-        return YES;
-    }
+    if ([super hasChanged]) return YES;
    
     Post *original = (Post *)self.original;
     
     if ((self.tags != original.tags)
-        && (![self.tags isEqual:original.tags])) {
+        && (![self.tags isEqual:original.tags]))
         return YES;
-    }
-    
-	if ((self.geolocation != original.geolocation)
-        && (![self.geolocation isEqual:original.geolocation]) ) {
-        return YES;
-    }
-    
-    return NO;
-}
-
-- (BOOL)hasSiteSpecificChanges {
-    if ([super hasSiteSpecificChanges]) {
-        return YES;
-    }
-    
-    Post *original = (Post *)self.original;
     
     if ((self.postFormat != original.postFormat)
-        && (![self.postFormat isEqual:original.postFormat])) {
+        && (![self.postFormat isEqual:original.postFormat]))
         return YES;
-    }
+
+    if (![self.categories isEqual:original.categories]) return YES;
     
-    if (![self.categories isEqual:original.categories]) {
+	if ((self.geolocation != original.geolocation)
+		 && (![self.geolocation isEqual:original.geolocation]) )
         return YES;
-    }
-    
-    if (self.featuredImageURL != original.featuredImageURL && ![self.featuredImageURL isEqualToString:original.featuredImageURL]) {
-        return YES;
-    }
-    
+
     return NO;
 }
-
 
 #pragma mark - QuickPhoto
 - (void)mediaDidUploadSuccessfully:(NSNotification *)notification {
@@ -260,7 +238,7 @@
 }
 
 - (void)getFeaturedImageURLWithSuccess:(void (^)())success failure:(void (^)(NSError *error))failure {
-    DDLogMethod();
+    WPFLogMethod();
     NSArray *parameters = [NSArray arrayWithObjects:self.blog.blogID, self.blog.username, self.blog.password, self.post_thumbnail, nil];
     [self.blog.api callMethod:@"wp.getMediaItem"
                    parameters:parameters
@@ -340,7 +318,7 @@
 }
 
 - (void)postPostWithSuccess:(void (^)())success failure:(void (^)(NSError *error))failure {
-    DDLogMethod();
+    WPFLogMethod();
     // XML-RPC doesn't like empty post thumbnail ID's for new posts, but it's required to delete them on edit. see #1395 and #1507
     NSMutableDictionary *xmlrpcDictionary = [NSMutableDictionary dictionaryWithDictionary:[self XMLRPCDictionary]];
     if ([[xmlrpcDictionary objectForKey:@"wp_post_thumbnail"] isEqual:@""]) {
@@ -364,7 +342,7 @@
                                                                                        self.remoteStatus = AbstractPostRemoteStatusSync;
                                                                                        if (!self.date_created_gmt) {
                                                                                            // Set the temporary date until we get it from the server so it sorts properly on the list
-                                                                                           self.date_created_gmt = [NSDate date];
+                                                                                           self.date_created_gmt = [DateUtils localDateToGMTDate:[NSDate date]];
                                                                                        }
                                                                                        [self save];
                                                                                        [self getPostWithSuccess:success failure:failure];
@@ -389,7 +367,7 @@
 }
 
 - (void)getPostWithSuccess:(void (^)())success failure:(void (^)(NSError *error))failure {
-    DDLogMethod();
+    WPFLogMethod();
     NSArray *parameters = [NSArray arrayWithObjects:self.postID, self.blog.username, self.blog.password, nil];
     [self.blog.api callMethod:@"metaWeblog.getPost"
                    parameters:parameters
@@ -408,7 +386,7 @@
 }
 
 - (void)editPostWithSuccess:(void (^)())success failure:(void (^)(NSError *error))failure {
-    DDLogMethod();
+    WPFLogMethod();
     if (self.postID == nil) {
         if (failure) {
             NSDictionary *userInfo = [NSDictionary dictionaryWithObject:@"Can't edit a post if it's not in the server" forKey:NSLocalizedDescriptionKey];
@@ -435,7 +413,8 @@
                               return;
 
                           self.remoteStatus = AbstractPostRemoteStatusSync;
-                          [self getPostWithSuccess:success failure:failure];
+                          [self getPostWithSuccess:nil failure:nil];
+                          if (success) success();
                           [[NSNotificationCenter defaultCenter] postNotificationName:@"PostUploaded" object:self];
                       } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
                           if ([self isDeleted] || self.managedObjectContext == nil)
@@ -448,7 +427,7 @@
 }
 
 - (void)deletePostWithSuccess:(void (^)())success failure:(void (^)(NSError *error))failure {
-    DDLogMethod();
+    WPFLogMethod();
     BOOL remote = [self hasRemote];
     if (remote) {
         NSArray *parameters = [NSArray arrayWithObjects:@"unused", self.postID, self.blog.username, self.blog.password, nil];

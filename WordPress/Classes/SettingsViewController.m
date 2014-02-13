@@ -40,7 +40,6 @@
 #import "WPTableViewSectionHeaderView.h"
 #import "SupportViewController.h"
 #import "ContextManager.h"
-#import "NotificationsManager.h"
 
 typedef enum {
     SettingsSectionWpcom = 0,
@@ -140,6 +139,9 @@ CGFloat const blavatarImageViewSize = 43.f;
     [self dismissViewControllerAnimated:YES completion:nil];
 }
 
+- (BOOL)supportsNotifications {
+    return nil != [[NSUserDefaults standardUserDefaults] objectForKey:kApnsDeviceTokenPrefKey];
+}
 
 #pragma mark - Table view data source
 
@@ -150,14 +152,14 @@ CGFloat const blavatarImageViewSize = 43.f;
 // The Sign Out row in Wpcom section can change, so identify it dynamically
 - (NSInteger)rowForSignOut {
     NSInteger rowForSignOut = 1;
-    if ([NotificationsManager deviceRegisteredForPushNotifications]) {
+    if ([self supportsNotifications]) {
         rowForSignOut += 1;
     }
     return rowForSignOut;
 }
 
 - (NSInteger)rowForNotifications {
-    if ([NotificationsManager deviceRegisteredForPushNotifications]) {
+    if ([self supportsNotifications]) {
         return 1;
     }
     return -1;
@@ -176,7 +178,7 @@ CGFloat const blavatarImageViewSize = 43.f;
             return [self.mediaSettingsArray count];
 
         case SettingsSectionInfo:
-            return 2;
+            return 3;
             
         default:
             return 0;
@@ -257,10 +259,21 @@ CGFloat const blavatarImageViewSize = 43.f;
         
     } else if (indexPath.section == SettingsSectionInfo) {
         if (indexPath.row == 0) {
+            // App Version
+            cell.textLabel.text = NSLocalizedString(@"Version", @"");
+            NSString *appversion = [[[NSBundle mainBundle] infoDictionary] objectForKey:@"CFBundleVersion"];
+#if DEBUG
+            appversion = [appversion stringByAppendingString:@" (DEV)"];
+#endif
+            cell.detailTextLabel.text = appversion;
+            cell.selectionStyle = UITableViewCellSelectionStyleNone;
+            
+        } else if (indexPath.row == 1) {
             // About
             cell.textLabel.text = NSLocalizedString(@"About", @"");
             cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
-        } else if (indexPath.row == 1) {
+            
+        } else if (indexPath.row == 2) {
             // Settings
             cell.textLabel.text = NSLocalizedString(@"Support", @"");
             cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
@@ -288,6 +301,12 @@ CGFloat const blavatarImageViewSize = 43.f;
             cellStyle = UITableViewCellStyleValue1;
             break;
             
+        case SettingsSectionInfo:
+            if (indexPath.row == 0) {
+                cellIdentifier = @"InfoCell";
+                cellStyle = UITableViewCellStyleValue1;
+            }
+            break;
         default:
             break;
     }
@@ -306,7 +325,7 @@ CGFloat const blavatarImageViewSize = 43.f;
     [self configureCell:cell atIndexPath:indexPath];
     
     BOOL isSignInCell = NO;
-    if (![[[WPAccount defaultWordPressComAccount] restApi] hasCredentials]) {
+    if (![[WordPressComApi sharedApi] hasCredentials]) {
         isSignInCell = indexPath.section == SettingsSectionWpcom && indexPath.row == 0;
     }
     
@@ -370,12 +389,12 @@ CGFloat const blavatarImageViewSize = 43.f;
         [self.navigationController pushViewController:controller animated:YES];
 
     } else if (indexPath.section == SettingsSectionInfo) {
-        if (indexPath.row == 0) {
+        if (indexPath.row == 1) {
             [WPMobileStats trackEventForWPCom:StatsEventSettingsClickedAbout];
             
             AboutViewController *aboutViewController = [[AboutViewController alloc] initWithNibName:@"AboutViewController" bundle:nil];
             [self.navigationController pushViewController:aboutViewController animated:YES];
-        } else if (indexPath.row == 1) {
+        } else if (indexPath.row == 2) {
             // Support Page
             SupportViewController *supportViewController = [[SupportViewController alloc] init];
             [self.navigationController pushViewController:supportViewController animated:YES];

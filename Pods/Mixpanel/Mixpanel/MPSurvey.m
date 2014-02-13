@@ -1,16 +1,12 @@
-#if ! __has_feature(objc_arc)
-#error This file must be compiled with ARC. Either turn on ARC for the project or use -fobjc-arc flag on this file.
-#endif
-
 #import "MPSurvey.h"
 #import "MPSurveyQuestion.h"
 
 @interface MPSurvey ()
 
 @property (nonatomic) NSUInteger ID;
-@property (nonatomic, strong) NSString *name;
+@property (nonatomic, retain) NSString *name;
 @property (nonatomic) NSUInteger collectionID;
-@property (nonatomic, strong) NSArray *questions;
+@property (nonatomic, retain) NSArray *questions;
 
 - (id)initWithID:(NSUInteger)ID name:(NSString *)name collectionID:(NSUInteger)collectionID andQuestions:(NSArray *)questions;
 
@@ -56,10 +52,10 @@
             [questions addObject:q];
         }
     }
-    return [[MPSurvey alloc] initWithID:[ID unsignedIntegerValue]
+    return [[[MPSurvey alloc] initWithID:[ID unsignedIntegerValue]
                                     name:name
                             collectionID:[collectionID unsignedIntegerValue]
-                            andQuestions:[NSArray arrayWithArray:questions]];
+                            andQuestions:[NSArray arrayWithArray:questions]] autorelease];
 }
 
 - (id)initWithID:(NSUInteger)ID name:(NSString *)name collectionID:(NSUInteger)collectionID andQuestions:(NSArray *)questions
@@ -81,6 +77,7 @@
             _collectionID = collectionID;
             self.questions = questions;
         } else {
+            [self release];
             self = nil;
         }
     }
@@ -92,5 +89,11 @@
     return [NSString stringWithFormat:@"%@, (ID:%lu, collection:%lu questions:%lu)", self.name, (unsigned long)self.ID, (unsigned long)self.collectionID, (unsigned long)[self.questions count]];
 }
 
+- (void)dealloc
+{
+    self.questions = nil;
+    self.name = nil;
+    [super dealloc];
+}
 
 @end

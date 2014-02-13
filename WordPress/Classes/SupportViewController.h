@@ -11,7 +11,6 @@
 
 @interface SupportViewController : UITableViewController <MFMailComposeViewControllerDelegate>
 
-+ (void)checkIfFeedbackShouldBeEnabled;
 + (void)showFromTabBar;
 
 @end

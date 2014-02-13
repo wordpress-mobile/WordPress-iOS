@@ -117,13 +117,18 @@ extern NSString * const ReaderPostStoredCommentTextKey;
 - (void)reblogPostToSite:(id)site note:(NSString *)note success:(void (^)())success failure:(void (^)(NSError *error))failure;
 
 
+- (NSString *)prettyDateString;
+
 - (BOOL)isFollowable;
 
 - (BOOL)isFreshlyPressed;
 
+
 - (BOOL)isBlogsIFollow;
 
+
 - (BOOL)isPrivate;
+
 
 - (BOOL)isWPCom;
 

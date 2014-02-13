@@ -14,6 +14,7 @@
 @property (nonatomic, assign) UIEdgeInsets edgeInsets;
 @property (nonatomic, strong) NSURL *contentURL;
 @property (nonatomic) BOOL isShowingPlaceholder;
+@property (nonatomic) CGFloat placeholderRatio;
 
 - (UIImage *)image;
 - (void)setImage:(UIImage *)image;

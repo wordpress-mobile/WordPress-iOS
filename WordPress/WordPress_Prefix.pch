@@ -15,9 +15,9 @@
     #import <AFNetworking/AFNetworking.h>
     #import <NSObject+SafeExpectations.h>
     #import "NSObject+BlockObservation.h"
-    #import "DDLog.h"
 
 	// Project-specific
+    #import "Constants.h"
     #import "NSString+Util.h"
     #import "WPError.h"
     #import "UIColor+Helpers.h"
@@ -36,8 +36,10 @@
 
 #define AssertSubclassMethod() NSAssert(NO, @"You must override %@ in a subclass", NSStringFromSelector(_cmd))
 
-#define DDLogMethod() DDLogInfo(@"%@ %@", self, NSStringFromSelector(_cmd));
-#define DDLogMethodParam(param) DDLogInfo(@"%@ %@%@", self, NSStringFromSelector(_cmd), param);
+// WPFLog is deprecated - use DDLogError, Info, Verbose, etc
+#define WPFLog(fmt, ...) DDLogInfo(fmt, ##__VA_ARGS__)
+#define WPFLogMethod() DDLogInfo(@"%@ %@", self, NSStringFromSelector(_cmd));
+#define WPFLogMethodParam(param) DDLogInfo(@"%@ %@%@", self, NSStringFromSelector(_cmd), param);
 
 // CocoaLumberjack Default Logging Level
 extern int ddLogLevel;

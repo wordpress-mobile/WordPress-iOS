@@ -83,7 +83,7 @@ NSString * const CommentStatusDraft = @"draft";
             for (Comment *comment in existingComments) {
                 // Don't delete unpublished comments
                 if(![commentsToKeep containsObject:comment] && comment.commentID != nil) {
-                    DDLogInfo(@"Deleting Comment: %@", comment);
+                    WPLog(@"Deleting Comment: %@", comment);
                     [backgroundMOC deleteObject:comment];
                 }
             }
@@ -184,7 +184,11 @@ NSString * const CommentStatusDraft = @"draft";
 	date = [self primitiveValueForKey:@"dateCreated"];
 	[self didAccessValueForKey:@"dateCreated"];
 	
-    return date;
+	if(date != nil)
+		return [DateUtils GMTDateTolocalDate:date];
+	else 
+		return nil;
+	
 }
 
 #pragma mark - Remote management
@@ -425,21 +429,5 @@ NSString * const CommentStatusDraft = @"draft";
                           if (failure) failure(error);
                       }];
 }
-
-
-#pragma mark - WPContentViewProvider protocol
-
-- (NSString *)blogNameForDisplay {
-    return self.author_url;
-}
-
-- (NSString *)statusForDisplay {
-    NSString *status = [[self class] titleForStatus:self.status];
-    if ([status isEqualToString:NSLocalizedString(@"Comments", @"")]) {
-        status = nil;
-    }
-    return status;
-}
-
 
 @end

@@ -16,7 +16,6 @@
 #import "WPAccount.h"
 #import "ContextManager.h"
 #import "Blog.h"
-#import "Constants.h"
 
 static BOOL hasRecordedAppOpenedEvent = NO;
 
@@ -49,9 +48,6 @@ NSString *const StatsEventReaderPublishedComment = @"Reader - Published Comment"
 NSString *const StatsEventReaderReblogged = @"Reader - Reblogged";
 NSString *const StatsEventReaderLikedPost = @"Reader - Liked Post";
 NSString *const StatsEventReaderUnlikedPost = @"Reader - Unliked Post";
-NSString *const StatsPropertyReaderOpenedFromExternalURL = @"reader_opened_from_external_url";
-NSString *const StatsPropertyReaderOpenedFromExternalURLCount = @"reader_opened_from_external_url_count";
-NSString *const StatsEventReaderOpenedFromExternalSource = @"Reader - Opened From External Source";
 
 // Reader Detail
 NSString *const StatsPropertyReaderDetailClickedPrevious = @"reader_detail_clicked_previous";
@@ -188,7 +184,6 @@ NSString *const StatsEventQuickPhotoPosted = @"Quick Photo - Posted";
 // NUX First Walkthrough 
 NSString *const StatsEventNUXFirstWalkthroughOpened = @"NUX - First Walkthrough - Opened";
 NSString *const StatsEventNUXFirstWalkthroughClickedSkipToCreateAccount = @"NUX - First Walkthrough - Skipped to Create Account";
-NSString *const StatsEventNUXFirstWalkthroughClickedLostPassword = @"NUX - First Walkthrough - Lost Password";
 NSString *const StatsEventNUXFirstWalkthroughClickedInfo = @"NUX - First Walkthrough - Clicked Info";
 NSString *const StatsEventNUXFirstWalkthroughClickedCreateAccount = @"NUX - First Walkthrough - Clicked Create Account";
 NSString *const StatsEventNUXFirstWalkthroughSignedInWithoutUrl = @"NUX - First Walkthrough - Signed In Without URL";
@@ -257,17 +252,16 @@ NSString *const StatsEventAddBlogsClickedAddSelected = @"Add Blogs - Clicked Add
     // Tracking session count will help us isolate users who just installed the app
     NSUInteger sessionCount = [[[[Mixpanel sharedInstance] currentSuperProperties] objectForKey:@"session_count"] intValue];
     sessionCount++;
-
-    WPAccount *account = [WPAccount defaultWordPressComAccount];
+    
     NSDictionary *properties = @{
                                  @"platform": @"iOS",
                                  @"session_count": @(sessionCount),
-                                 @"connected_to_dotcom": @(account != nil),
+                                 @"connected_to_dotcom": @([[WordPressComApi sharedApi] hasCredentials]),
                                  @"number_of_blogs" : @([Blog countWithContext:[[ContextManager sharedInstance] mainContext]]) };
     [[Mixpanel sharedInstance] registerSuperProperties:properties];
     
-    NSString *username = account.username;
-    if (account && [username length] > 0) {
+    NSString *username = [[WPAccount defaultWordPressComAccount] username];
+    if ([[WordPressComApi sharedApi] hasCredentials] && [username length] > 0) {
         [[Mixpanel sharedInstance] identify:username];
         [[Mixpanel sharedInstance].people increment:@"Application Opened" by:@(1)];
         [[Mixpanel sharedInstance].people set:@{ @"$username": username, @"$first_name" : username }];
@@ -374,22 +368,11 @@ NSString *const StatsEventAddBlogsClickedAddSelected = @"Add Blogs - Clicked Add
     [[self sharedInstance] unflagProperty:property forEvent:event];
 }
 
-+ (void)flagSuperProperty:(NSString *)property
-{
-    [[self sharedInstance] flagSuperProperty:property];
-}
-
-+ (void)incrementSuperProperty:(NSString *)property
-{
-    [[self sharedInstance] incrementSuperProperty:property];
-}
-
-
 #pragma mark - Private Methods
 
 - (BOOL)connectedToWordPressDotCom
 {
-    return [[[WPAccount defaultWordPressComAccount] restApi] hasCredentials];
+    return [[WordPressComApi sharedApi] hasCredentials];
 }
 
 - (void)trackEventForSelfHostedAndWPCom:(NSString *)event
@@ -455,24 +438,6 @@ NSString *const StatsEventAddBlogsClickedAddSelected = @"Add Blogs - Clicked Add
 - (void)unflagProperty:(NSString *)property forEvent:(NSString *)event
 {
     [self saveProperty:property withValue:@(NO) forEvent:event];
-}
-
-- (void)flagSuperProperty:(NSString *)property
-{
-    NSParameterAssert(property != nil);
-    NSMutableDictionary *superProperties = [[NSMutableDictionary alloc] initWithDictionary:[Mixpanel sharedInstance].currentSuperProperties];
-    superProperties[property] = @(YES);
-    [[Mixpanel sharedInstance] registerSuperProperties:superProperties];
-}
-
-
-- (void)incrementSuperProperty:(NSString *)property
-{
-    NSParameterAssert(property != nil);
-    NSMutableDictionary *superProperties = [[NSMutableDictionary alloc] initWithDictionary:[Mixpanel sharedInstance].currentSuperProperties];
-    NSUInteger propertyValue = [superProperties[property] integerValue];
-    superProperties[property] = @(++propertyValue);
-    [[Mixpanel sharedInstance] registerSuperProperties:superProperties];
 }
 
 - (id)property:(NSString *)property forEvent:(NSString *)event

@@ -149,10 +149,10 @@
 }
 
 - (void)addNotifications {
-	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(mediaDidUploadSuccessfully:) name:VideoUploadSuccessfulNotification object:nil];
-	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(mediaDidUploadSuccessfully:) name:ImageUploadSuccessfulNotification object:nil];
-	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(mediaUploadFailed:) name:VideoUploadFailedNotification object:nil];
-	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(mediaUploadFailed:) name:ImageUploadFailedNotification object:nil];
+	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(mediaDidUploadSuccessfully:) name:VideoUploadSuccessful object:nil];
+	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(mediaDidUploadSuccessfully:) name:ImageUploadSuccessful object:nil];
+	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(mediaUploadFailed:) name:VideoUploadFailed object:nil];
+	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(mediaUploadFailed:) name:ImageUploadFailed object:nil];
 }
 
 - (void)removeNotifications{
@@ -337,16 +337,10 @@
 	DDLogVerbose(@"scaling and rotating image...");
 }
 
-- (void)resetStatusBarColor {
-    // On iOS7 Beta 6 the image picker seems to override our preferred setting so we force the status bar color back.
-    [[UIApplication sharedApplication] setStatusBarStyle:UIStatusBarStyleLightContent];
-}
-
 #pragma mark -
 #pragma mark UIPopover Delegate Methods
 
 - (void)popoverControllerDidDismissPopover:(UIPopoverController *)popoverController {
-    [self resetStatusBarColor]; // incase the popover is dismissed after the image picker is presented.
     _addPopover.delegate = nil;
     _addPopover = nil;
 }
@@ -400,13 +394,13 @@
 	else if(_isShowingChangeOrientationActionSheet == YES) {
 		switch (buttonIndex) {
 			case 0:
-				self.currentOrientation = MediaOrientationPortrait;
+				self.currentOrientation = kPortrait;
 				break;
 			case 1:
-				self.currentOrientation = MediaOrientationLandscape;
+				self.currentOrientation = kLandscape;
 				break;
 			default:
-				self.currentOrientation = MediaOrientationPortrait;
+				self.currentOrientation = kPortrait;
 				break;
 		}
 		[self processRecordedVideo];
@@ -416,31 +410,31 @@
             switch (buttonIndex) {
                 case 0:
                     if (actionSheet.numberOfButtons == 3)
-                        [self useImage:[self resizeImage:_currentImage toSize:MediaResizeOriginal]];
+                        [self useImage:[self resizeImage:_currentImage toSize:kResizeOriginal]];
                     else
-                        [self useImage:[self resizeImage:_currentImage toSize:MediaResizeSmall]];
+                        [self useImage:[self resizeImage:_currentImage toSize:kResizeSmall]];
                     break;
                 case 1:
                     if (actionSheet.numberOfButtons == 3)
                         [self showCustomSizeAlert];
                     else if (actionSheet.numberOfButtons == 4)
-                        [self useImage:[self resizeImage:_currentImage toSize:MediaResizeOriginal]];
+                        [self useImage:[self resizeImage:_currentImage toSize:kResizeOriginal]];
                     else
-                        [self useImage:[self resizeImage:_currentImage toSize:MediaResizeMedium]];
+                        [self useImage:[self resizeImage:_currentImage toSize:kResizeMedium]];
                     break;
                 case 2:
                     if (actionSheet.numberOfButtons == 4)
                         [self showCustomSizeAlert];
                     else if (actionSheet.numberOfButtons == 5)
-                        [self useImage:[self resizeImage:_currentImage toSize:MediaResizeOriginal]];
+                        [self useImage:[self resizeImage:_currentImage toSize:kResizeOriginal]];
                     else
-                        [self useImage:[self resizeImage:_currentImage toSize:MediaResizeLarge]];
+                        [self useImage:[self resizeImage:_currentImage toSize:kResizeLarge]];
                     break;
                 case 3:
                     if (actionSheet.numberOfButtons == 5)
                         [self showCustomSizeAlert];
                     else
-                        [self useImage:[self resizeImage:_currentImage toSize:MediaResizeOriginal]];
+                        [self useImage:[self resizeImage:_currentImage toSize:kResizeOriginal]];
                     break;
                 case 4: 
                     [self showCustomSizeAlert]; 
@@ -493,7 +487,6 @@
     _picker.navigationBar.translucent = NO;
 	_picker.delegate = self;
 	_picker.allowsEditing = NO;
-    _picker.navigationBar.barStyle = UIBarStyleBlack;
     return _picker;
 }
 
@@ -602,28 +595,28 @@
 }
 
 - (MediaOrientation)interpretOrientation:(UIDeviceOrientation)theOrientation {
-	MediaOrientation result = MediaOrientationPortrait;
+	MediaOrientation result = kPortrait;
 	switch (theOrientation) {
 		case UIDeviceOrientationPortrait:
-			result = MediaOrientationPortrait;
+			result = kPortrait;
 			break;
 		case UIDeviceOrientationPortraitUpsideDown:
-			result = MediaOrientationPortrait;
+			result = kPortrait;
 			break;
 		case UIDeviceOrientationLandscapeLeft:
-			result = MediaOrientationLandscape;
+			result = kLandscape;
 			break;
 		case UIDeviceOrientationLandscapeRight:
-			result = MediaOrientationLandscape;
+			result = kLandscape;
 			break;
 		case UIDeviceOrientationFaceUp:
-			result = MediaOrientationPortrait;
+			result = kPortrait;
 			break;
 		case UIDeviceOrientationFaceDown:
-			result = MediaOrientationPortrait;
+			result = kPortrait;
 			break;
 		case UIDeviceOrientationUnknown:
-			result = MediaOrientationPortrait;
+			result = kPortrait;
 			break;
 	}
 	
@@ -762,9 +755,9 @@
     alertView.overlayTitle = NSLocalizedString(@"Custom Size", @"");
     alertView.overlayDescription = @"";
     alertView.footerDescription = nil;
-    alertView.firstTextFieldLabelText = NSLocalizedString(@"Width", @"");
+    alertView.firstTextFieldPlaceholder = NSLocalizedString(@"Width", @"");
     alertView.firstTextFieldValue = widthText;
-    alertView.secondTextFieldLabelText = NSLocalizedString(@"Height", @"");
+    alertView.secondTextFieldPlaceholder = NSLocalizedString(@"Height", @"");
     alertView.secondTextFieldValue = heightText;
     alertView.leftButtonText = NSLocalizedString(@"Cancel", @"Cancel button");
     alertView.rightButtonText = NSLocalizedString(@"OK", @"");
@@ -844,7 +837,8 @@
 }
 
 - (void)imagePickerController:(UIImagePickerController *)thePicker didFinishPickingMediaWithInfo:(NSDictionary *)info {
-    [self resetStatusBarColor];
+    // On iOS7 Beta 6 the image picker seems to override our preferred setting so we force the status bar color back.
+    [[UIApplication sharedApplication] setStatusBarStyle:UIStatusBarStyleLightContent];
 
 	if([[info valueForKey:@"UIImagePickerControllerMediaType"] isEqualToString:@"public.movie"]) {
 		self.currentVideo = [info mutableCopy];
@@ -915,22 +909,22 @@
             }
 			case 1:
             {
-				[self useImage:[self resizeImage:_currentImage toSize:MediaResizeSmall]];
+				[self useImage:[self resizeImage:_currentImage toSize:kResizeSmall]];
 				break;
             }
 			case 2:
             {
-				[self useImage:[self resizeImage:_currentImage toSize:MediaResizeMedium]];
+				[self useImage:[self resizeImage:_currentImage toSize:kResizeMedium]];
 				break;
             }
 			case 3:
             {
-				[self useImage:[self resizeImage:_currentImage toSize:MediaResizeLarge]];
+				[self useImage:[self resizeImage:_currentImage toSize:kResizeLarge]];
 				break;
             }
 			case 4:
             {
-                [self useImage:[self resizeImage:_currentImage toSize:MediaResizeOriginal]];
+                [self useImage:[self resizeImage:_currentImage toSize:kResizeOriginal]];
 				break;
             }
 			default:
@@ -1132,7 +1126,7 @@
 	// Resize the image using the selected dimensions
 	UIImage *resizedImage = original;
 	switch (resize) {
-		case MediaResizeSmall:
+		case kResizeSmall:
 			if(_currentImage.size.width > smallSize.width  || _currentImage.size.height > smallSize.height)
 				resizedImage = [original resizedImageWithContentMode:UIViewContentModeScaleAspectFit  
 															  bounds:smallSize  
@@ -1142,7 +1136,7 @@
 															  bounds:originalSize  
 												interpolationQuality:kCGInterpolationHigh];
 			break;
-		case MediaResizeMedium:
+		case kResizeMedium:
 			if(_currentImage.size.width > mediumSize.width  || _currentImage.size.height > mediumSize.height)
 				resizedImage = [original resizedImageWithContentMode:UIViewContentModeScaleAspectFit  
 															  bounds:mediumSize  
@@ -1152,7 +1146,7 @@
 															  bounds:originalSize  
 												interpolationQuality:kCGInterpolationHigh];
 			break;
-		case MediaResizeLarge:
+		case kResizeLarge:
 			if(_currentImage.size.width > largeSize.width || _currentImage.size.height > largeSize.height)
 				resizedImage = [original resizedImageWithContentMode:UIViewContentModeScaleAspectFit  
 															  bounds:largeSize  
@@ -1162,7 +1156,7 @@
 															  bounds:originalSize  
 												interpolationQuality:kCGInterpolationHigh];
 			break;
-		case MediaResizeOriginal:
+		case kResizeOriginal:
 			resizedImage = [original resizedImageWithContentMode:UIViewContentModeScaleAspectFit 
 														  bounds:originalSize 
 											interpolationQuality:kCGInterpolationHigh];
@@ -1253,7 +1247,7 @@
 		[fileManager createFileAtPath:filepath contents:imageData attributes:nil];
 	}
 
-	if(_currentOrientation == MediaOrientationLandscape) {
+	if(_currentOrientation == kLandscape) {
 		imageMedia.orientation = @"landscape";
     }else {
 		imageMedia.orientation = @"portrait";
@@ -1344,7 +1338,7 @@
 	if(copySuccess == YES) {
 		videoMedia = [Media newMediaForPost:self.apost];
 		
-		if(_currentOrientation == MediaOrientationLandscape) {
+		if(_currentOrientation == kLandscape) {
 			videoMedia.orientation = @"landscape";
 		} else {
 			videoMedia.orientation = @"portrait";

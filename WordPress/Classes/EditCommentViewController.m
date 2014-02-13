@@ -51,7 +51,7 @@
 }
 
 - (void)viewWillAppear:(BOOL)animated {
-    DDLogMethod();
+    WPFLogMethod();
 	[super viewWillAppear:animated];
 	
 	self.textView.text = self.comment.content;
@@ -65,7 +65,7 @@
 }
 
 - (void)viewWillDisappear:(BOOL)animated {
-    DDLogMethod();
+    WPFLogMethod();
     [super viewWillDisappear:animated];
 }
 

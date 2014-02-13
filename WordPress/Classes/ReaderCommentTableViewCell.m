@@ -143,9 +143,6 @@
     return self;
 }
 
-- (void)dealloc {
-    _delegate = nil;
-}
 
 - (void)layoutSubviews {
 	[super layoutSubviews];
@@ -198,8 +195,10 @@
 
 
 - (void)handleLinkTapped:(id)sender {
-    NSURL *url = ((DTLinkButton *)sender).URL;
-    [self.delegate readerCommentTableViewCell:self didTapURL:url];
+	WPWebViewController *controller = [[WPWebViewController alloc] init];
+	[controller setUrl:((DTLinkButton *)sender).URL];
+	[[[WordPressAppDelegate sharedWordPressApplicationDelegate] navigationController] pushViewController:controller
+																									 animated:YES];
 }
 
 

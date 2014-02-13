@@ -118,8 +118,9 @@ static NSString *const RemoveGeotagCellIdentifier = @"RemoveGeotagCellIdentifier
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(keyboardWillShow:) name:UIKeyboardWillShowNotification object:nil];
 	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(keyboardWillHide:) name:UIKeyboardWillHideNotification object:nil];
 	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(showFeaturedImageUploader:) name:@"UploadingFeaturedImage" object:nil];
-	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(featuredImageUploadSucceeded:) name:FeaturedImageUploadSuccessfulNotification object:nil];
-	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(featuredImageUploadFailed:) name:FeaturedImageUploadFailedNotification object:nil];
+	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(featuredImageUploadSucceeded:) name:FeaturedImageUploadSuccessful object:nil];
+	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(featuredImageUploadFailed:) name:FeaturedImageUploadFailed object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(newCategoryCreatedNotificationReceived:) name:WPNewCategoryCreatedAndUpdatedInBlogNotificationName object:nil];
 
     [WPStyleGuide configureColorsForView:self.view andTableView:self.tableView];
 
@@ -985,34 +986,34 @@ static NSString *const RemoveGeotagCellIdentifier = @"RemoveGeotagCellIdentifier
     switch (buttonIndex) {
         case 0:
             if (acSheet.numberOfButtons == 2) {
-                [self useImage:[self resizeImage:_currentImage toSize:MediaResizeOriginal]];
+                [self useImage:[self resizeImage:_currentImage toSize:kResizeOriginal]];
             } else {
-                [self useImage:[self resizeImage:_currentImage toSize:MediaResizeSmall]];
+                [self useImage:[self resizeImage:_currentImage toSize:kResizeSmall]];
             }
             break;
         case 1:
             if (acSheet.numberOfButtons == 2) {
                 [self showCustomSizeAlert];
             } else if (acSheet.numberOfButtons == 3) {
-                [self useImage:[self resizeImage:_currentImage toSize:MediaResizeOriginal]];
+                [self useImage:[self resizeImage:_currentImage toSize:kResizeOriginal]];
             } else {
-                [self useImage:[self resizeImage:_currentImage toSize:MediaResizeMedium]];
+                [self useImage:[self resizeImage:_currentImage toSize:kResizeMedium]];
             }
             break;
         case 2:
             if (acSheet.numberOfButtons == 3) {
                 [self showCustomSizeAlert];
             } else if (acSheet.numberOfButtons == 4) {
-                [self useImage:[self resizeImage:_currentImage toSize:MediaResizeOriginal]];
+                [self useImage:[self resizeImage:_currentImage toSize:kResizeOriginal]];
             } else {
-                [self useImage:[self resizeImage:_currentImage toSize:MediaResizeLarge]];
+                [self useImage:[self resizeImage:_currentImage toSize:kResizeLarge]];
             }
             break;
         case 3:
             if (acSheet.numberOfButtons == 4) {
                 [self showCustomSizeAlert];
             } else {
-                [self useImage:[self resizeImage:_currentImage toSize:MediaResizeOriginal]];
+                [self useImage:[self resizeImage:_currentImage toSize:kResizeOriginal]];
             }
             break;
         case 4:
@@ -1173,8 +1174,8 @@ static NSString *const RemoveGeotagCellIdentifier = @"RemoveGeotagCellIdentifier
 
             UIButton *button = [[UIButton alloc] init];
             [button addTarget:self action:@selector(removeDate) forControlEvents:UIControlEventTouchUpInside];
-            [button setBackgroundImage:[[UIImage imageNamed:@"keyboardButton-ios7"] stretchableImageWithLeftCapWidth:5.0f topCapHeight:0.0f] forState:UIControlStateNormal];
-            [button setBackgroundImage:[[UIImage imageNamed:@"keyboardButtonHighlighted-ios7"] stretchableImageWithLeftCapWidth:5.0f topCapHeight:0.0f] forState:UIControlStateNormal];
+            [button setBackgroundImage:[[UIImage imageNamed:@"keyboardButton"] stretchableImageWithLeftCapWidth:5.0f topCapHeight:0.0f] forState:UIControlStateNormal];
+            [button setBackgroundImage:[[UIImage imageNamed:@"keyboardButtonHighlighted"] stretchableImageWithLeftCapWidth:5.0f topCapHeight:0.0f] forState:UIControlStateNormal];
             [button setTitle:[NSString stringWithFormat:@" %@ ", NSLocalizedString(@"Publish Immediately", @"Post publishing status in the Post Editor/Settings area (compare with WP core translations).")] forState:UIControlStateNormal];            [button sizeToFit];
             CGPoint buttonCenter = button.center;
             buttonCenter.x = CGRectGetMidX(picker.frame);
@@ -1236,8 +1237,8 @@ static NSString *const RemoveGeotagCellIdentifier = @"RemoveGeotagCellIdentifier
         
         UIButton *button = [[UIButton alloc] init];
         [button addTarget:self action:@selector(hidePicker) forControlEvents:UIControlEventTouchUpInside];
-        [button setBackgroundImage:[[UIImage imageNamed:@"keyboardButton-ios7"] stretchableImageWithLeftCapWidth:5.0f topCapHeight:0.0f] forState:UIControlStateNormal];
-        [button setBackgroundImage:[[UIImage imageNamed:@"keyboardButtonHighlighted-ios7"] stretchableImageWithLeftCapWidth:5.0f topCapHeight:0.0f] forState:UIControlStateNormal];
+        [button setBackgroundImage:[[UIImage imageNamed:@"keyboardButton"] stretchableImageWithLeftCapWidth:5.0f topCapHeight:0.0f] forState:UIControlStateNormal];
+        [button setBackgroundImage:[[UIImage imageNamed:@"keyboardButtonHighlighted"] stretchableImageWithLeftCapWidth:5.0f topCapHeight:0.0f] forState:UIControlStateNormal];
         [button setTitle:[NSString stringWithFormat:@" %@ ", NSLocalizedString(@"Done", @"Default main action button for closing/finishing a work flow in the app (used in Comments>Edit, Comment edits and replies, post editor body text, etc, to dismiss keyboard).")] forState:UIControlStateNormal];
         [button sizeToFit];
         CGRect frame = button.frame;
@@ -1249,8 +1250,8 @@ static NSString *const RemoveGeotagCellIdentifier = @"RemoveGeotagCellIdentifier
         button = [[UIButton alloc] init];
         [button setTintColor:[WPStyleGuide newKidOnTheBlockBlue]];
         [button addTarget:self action:@selector(removeDate) forControlEvents:UIControlEventTouchUpInside];
-        [button setBackgroundImage:[[UIImage imageNamed:@"keyboardButton-ios7"] stretchableImageWithLeftCapWidth:5.0f topCapHeight:0.0f] forState:UIControlStateNormal];
-        [button setBackgroundImage:[[UIImage imageNamed:@"keyboardButtonHighlighted-ios7"] stretchableImageWithLeftCapWidth:5.0f topCapHeight:0.0f] forState:UIControlStateNormal];
+        [button setBackgroundImage:[[UIImage imageNamed:@"keyboardButton"] stretchableImageWithLeftCapWidth:5.0f topCapHeight:0.0f] forState:UIControlStateNormal];
+        [button setBackgroundImage:[[UIImage imageNamed:@"keyboardButtonHighlighted"] stretchableImageWithLeftCapWidth:5.0f topCapHeight:0.0f] forState:UIControlStateNormal];
         [button setTitle:[NSString stringWithFormat:@" %@ ", NSLocalizedString(@"Publish Immediately", @"Post publishing status in the Post Editor/Settings area (compare with WP core translations).")] forState:UIControlStateNormal];
         [button sizeToFit];
         frame = button.frame;
@@ -1436,23 +1437,23 @@ static NSString *const RemoveGeotagCellIdentifier = @"RemoveGeotagCellIdentifier
         }
         case 1:
         {
-            [self useImage:[self resizeImage:_currentImage toSize:MediaResizeSmall]];
+            [self useImage:[self resizeImage:_currentImage toSize:kResizeSmall]];
             break;
         }
         case 2:
         {
-            [self useImage:[self resizeImage:_currentImage toSize:MediaResizeMedium]];
+            [self useImage:[self resizeImage:_currentImage toSize:kResizeMedium]];
             break;
         }
         case 3:
         {
-            [self useImage:[self resizeImage:_currentImage toSize:MediaResizeLarge]];
+            [self useImage:[self resizeImage:_currentImage toSize:kResizeLarge]];
             break;
         }
         case 4:
         {
             //[self useImage:currentImage];
-            [self useImage:[self resizeImage:_currentImage toSize:MediaResizeOriginal]];
+            [self useImage:[self resizeImage:_currentImage toSize:kResizeOriginal]];
             break;
         }
         default:
@@ -1570,7 +1571,7 @@ static NSString *const RemoveGeotagCellIdentifier = @"RemoveGeotagCellIdentifier
 	// Resize the image using the selected dimensions
 	UIImage *resizedImage = original;
 	switch (resize) {
-		case MediaResizeSmall:
+		case kResizeSmall:
 			if(original.size.width > smallSize.width  || original.size.height > smallSize.height) {
 				resizedImage = [original resizedImageWithContentMode:UIViewContentModeScaleAspectFit
 															  bounds:smallSize
@@ -1581,7 +1582,7 @@ static NSString *const RemoveGeotagCellIdentifier = @"RemoveGeotagCellIdentifier
 												interpolationQuality:kCGInterpolationHigh];
             }
 			break;
-		case MediaResizeMedium:
+		case kResizeMedium:
 			if(original.size.width > mediumSize.width  || original.size.height > mediumSize.height) {
 				resizedImage = [original resizedImageWithContentMode:UIViewContentModeScaleAspectFit
 															  bounds:mediumSize
@@ -1592,7 +1593,7 @@ static NSString *const RemoveGeotagCellIdentifier = @"RemoveGeotagCellIdentifier
 												interpolationQuality:kCGInterpolationHigh];
             }
 			break;
-		case MediaResizeLarge:
+		case kResizeLarge:
 			if(original.size.width > largeSize.width || original.size.height > largeSize.height) {
 				resizedImage = [original resizedImageWithContentMode:UIViewContentModeScaleAspectFit
 															  bounds:largeSize
@@ -1603,7 +1604,7 @@ static NSString *const RemoveGeotagCellIdentifier = @"RemoveGeotagCellIdentifier
 												interpolationQuality:kCGInterpolationHigh];
             }
 			break;
-		case MediaResizeOriginal:
+		case kResizeOriginal:
 			resizedImage = [original resizedImageWithContentMode:UIViewContentModeScaleAspectFit
 														  bounds:originalSize
 											interpolationQuality:kCGInterpolationHigh];
@@ -1692,7 +1693,7 @@ static NSString *const RemoveGeotagCellIdentifier = @"RemoveGeotagCellIdentifier
 		[fileManager createFileAtPath:filepath contents:imageData attributes:nil];
 	}
     
-	if ([self interpretOrientation] == MediaOrientationLandscape) {
+	if([self interpretOrientation] == kLandscape) {
 		imageMedia.orientation = @"landscape";
     } else {
 		imageMedia.orientation = @"portrait";
@@ -1724,28 +1725,28 @@ static NSString *const RemoveGeotagCellIdentifier = @"RemoveGeotagCellIdentifier
 }
 
 - (MediaOrientation)interpretOrientation {
-	MediaOrientation result = MediaOrientationPortrait;
+	MediaOrientation result = kPortrait;
 	switch ([[UIDevice currentDevice] orientation]) {
 		case UIDeviceOrientationPortrait:
-			result = MediaOrientationPortrait;
+			result = kPortrait;
 			break;
 		case UIDeviceOrientationPortraitUpsideDown:
-			result = MediaOrientationPortrait;
+			result = kPortrait;
 			break;
 		case UIDeviceOrientationLandscapeLeft:
-			result = MediaOrientationLandscape;
+			result = kLandscape;
 			break;
 		case UIDeviceOrientationLandscapeRight:
-			result = MediaOrientationLandscape;
+			result = kLandscape;
 			break;
 		case UIDeviceOrientationFaceUp:
-			result = MediaOrientationPortrait;
+			result = kPortrait;
 			break;
 		case UIDeviceOrientationFaceDown:
-			result = MediaOrientationPortrait;
+			result = kPortrait;
 			break;
 		case UIDeviceOrientationUnknown:
-			result = MediaOrientationPortrait;
+			result = kPortrait;
 			break;
 	}
 	
@@ -1860,7 +1861,6 @@ static NSString *const RemoveGeotagCellIdentifier = @"RemoveGeotagCellIdentifier
 	picker.allowsEditing = NO;
     picker.navigationBar.translucent = NO;
     picker.modalPresentationStyle = UIModalPresentationCurrentContext;
-    picker.navigationBar.barStyle = UIBarStyleBlack;
     
     if (IS_IPAD) {
         self.popover = [[UIPopoverController alloc] initWithContentViewController:picker];
@@ -1903,7 +1903,7 @@ static NSString *const RemoveGeotagCellIdentifier = @"RemoveGeotagCellIdentifier
 }
 
 - (void)populateSelectionsControllerWithCategories:(CGRect)cellFrame {
-    DDLogMethod();
+    WPFLogMethod();
     if (_segmentedTableViewController == nil) {
         _segmentedTableViewController = [[WPSegmentedSelectionTableViewController alloc] init];
     }
@@ -1935,7 +1935,7 @@ static NSString *const RemoveGeotagCellIdentifier = @"RemoveGeotagCellIdentifier
 }
 
 - (IBAction)showAddNewCategoryView:(id)sender {
-    DDLogMethod();
+    WPFLogMethod();
     WPAddCategoryViewController *addCategoryViewController = [[WPAddCategoryViewController alloc] initWithBlog:self.post.blog];
 	if (IS_IPAD) {
         [_segmentedTableViewController pushViewController:addCategoryViewController animated:YES];
@@ -1959,7 +1959,7 @@ static NSString *const RemoveGeotagCellIdentifier = @"RemoveGeotagCellIdentifier
 }
 
 - (void)newCategoryCreatedNotificationReceived:(NSNotification *)notification {
-    DDLogMethod();
+    WPFLogMethod();
     if ([_segmentedTableViewController curContext] == kSelectionsCategoriesContext) {
         _isNewCategory = YES;
         [self populateSelectionsControllerWithCategories:CGRectZero];

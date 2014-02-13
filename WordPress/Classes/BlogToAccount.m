@@ -9,10 +9,9 @@
 #import "BlogToAccount.h"
 #import <NSURL+IDN.h>
 #import "SFHFKeychainUtils.h"
-#import "WPAccount.h"
 
 static NSString * const DefaultDotcomAccountDefaultsKey = @"AccountDefaultDotcom";
-static NSString * const WPComXMLRPCUrl = @"https://wordpress.com/xmlrpc.php";
+static NSString * const DotcomXmlrpcKey = @"https://wordpress.com/xmlrpc.php";
 
 @implementation BlogToAccount {
     NSString *_defaultWpcomUsername;
@@ -33,7 +32,7 @@ static NSString * const WPComXMLRPCUrl = @"https://wordpress.com/xmlrpc.php";
     }
 
     NSFetchRequest *request = [NSFetchRequest fetchRequestWithEntityName:@"Account"];
-    [request setPredicate:[NSPredicate predicateWithFormat:@"xmlrpc = %@ AND username = %@", WPComXMLRPCUrl, username]];
+    [request setPredicate:[NSPredicate predicateWithFormat:@"xmlrpc = %@ AND username = %@", DotcomXmlrpcKey, username]];
     NSManagedObjectContext *destMOC = [manager destinationContext];
     NSArray *results = [destMOC executeFetchRequest:request error:nil];
     NSManagedObject *account = [results lastObject];
@@ -42,11 +41,11 @@ static NSString * const WPComXMLRPCUrl = @"https://wordpress.com/xmlrpc.php";
          The default wp.com account (used for Reader/Notifications) doesn't have any blogs added in the app, so it wasn't created on the migration.
          */
         account = [NSEntityDescription insertNewObjectForEntityForName:@"Account" inManagedObjectContext:destMOC];
-        [account setValue:WPComXMLRPCUrl forKey:@"xmlrpc"];
+        [account setValue:DotcomXmlrpcKey forKey:@"xmlrpc"];
         [account setValue:username forKey:@"username"];
         [account setValue:@YES forKey:@"isWpcom"];
         NSString *oldKey = @"WordPress.com";
-        NSString *newKey = WPComXMLRPCUrl;
+        NSString *newKey = DotcomXmlrpcKey;
 
         NSError *error;
         NSString *password = [SFHFKeychainUtils getPasswordForUsername:username andServiceName:oldKey error:&error];
@@ -83,7 +82,7 @@ static NSString * const WPComXMLRPCUrl = @"https://wordpress.com/xmlrpc.php";
     BOOL isWpcom = [self blogIsWpcom:source];
     NSString *xmlrpc = [source valueForKey:@"xmlrpc"];
     if (isWpcom) {
-        xmlrpc = WPComXMLRPCUrl;
+        xmlrpc = DotcomXmlrpcKey;
     }
     NSString *username = [source valueForKey:@"username"];
 
@@ -111,7 +110,7 @@ static NSString * const WPComXMLRPCUrl = @"https://wordpress.com/xmlrpc.php";
         NSString *newKey;
         if (isWpcom) {
             oldKey = @"WordPress.com";
-            newKey = WPComXMLRPCUrl;
+            newKey = DotcomXmlrpcKey;
         } else {
             oldKey = [self hostUrlForBlog:source];
             newKey = xmlrpc;

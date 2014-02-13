@@ -9,7 +9,6 @@
 #import "ReaderPost.h"
 #import "ReaderComment.h"
 #import "WPToast.h"
-#import "WPAccount.h"
 
 
 @interface ReaderCommentPublisher ()
@@ -120,7 +119,7 @@
     self.composeView.enabled = NO;
 	NSDictionary *params = @{@"content":str};
 
-	[[[WPAccount defaultWordPressComAccount] restApi] postPath:[self pathForContext] parameters:params success:^(AFHTTPRequestOperation *operation, id responseObject) {
+	[[WordPressComApi sharedApi] postPath:[self pathForContext] parameters:params success:^(AFHTTPRequestOperation *operation, id responseObject) {
 
         [self.composeView clearText];
         self.composeView.enabled = YES;

@@ -8,10 +8,9 @@
 
 #import "BlogToJetpackAccount.h"
 #import "SFHFKeychainUtils.h"
-#import "WPAccount.h"
 
 static NSString * const BlogJetpackKeychainPrefix = @"jetpackblog-";
-static NSString * const WPComXMLRPCUrl = @"https://wordpress.com/xmlrpc.php";
+static NSString * const DotcomXmlrpcKey = @"https://wordpress.com/xmlrpc.php";
 
 @implementation BlogToJetpackAccount
 
@@ -42,17 +41,18 @@ static NSString * const WPComXMLRPCUrl = @"https://wordpress.com/xmlrpc.php";
     if (isWpcom) {
         return YES;
     }
+    NSString *xmlrpc = DotcomXmlrpcKey;
     NSString *username = [self jetpackUsernameForBlog:source];
     if (!username) {
         return YES;
     }
     NSFetchRequest *request = [NSFetchRequest fetchRequestWithEntityName:@"Account"];
-    [request setPredicate:[NSPredicate predicateWithFormat:@"xmlrpc = %@ and username = %@", WPComXMLRPCUrl, username]];
+    [request setPredicate:[NSPredicate predicateWithFormat:@"xmlrpc = %@ and username = %@", DotcomXmlrpcKey, username]];
     NSArray *results = [destMOC executeFetchRequest:request error:nil];
     NSManagedObject *dest = [results lastObject];
     if (!dest) {
         dest = [NSEntityDescription insertNewObjectForEntityForName:@"Account" inManagedObjectContext:destMOC];
-        [dest setValue:WPComXMLRPCUrl forKey:@"xmlrpc"];
+        [dest setValue:xmlrpc forKey:@"xmlrpc"];
         [dest setValue:username forKey:@"username"];
         [dest setValue:@YES forKey:@"isWpcom"];
 
@@ -60,7 +60,7 @@ static NSString * const WPComXMLRPCUrl = @"https://wordpress.com/xmlrpc.php";
         NSError *error;
         NSString *password = [SFHFKeychainUtils getPasswordForUsername:username andServiceName:@"WordPress.com" error:&error];
         if (password) {
-            if ([SFHFKeychainUtils storeUsername:username andPassword:password forServiceName:WPComXMLRPCUrl updateExisting:YES error:&error]) {
+            if ([SFHFKeychainUtils storeUsername:username andPassword:password forServiceName:DotcomXmlrpcKey updateExisting:YES error:&error]) {
                 [SFHFKeychainUtils deleteItemForUsername:username andServiceName:@"WordPress.com" error:&error];
             }
         }

@@ -10,6 +10,8 @@
 #import "Comment.h"
 #import "WPTableViewCell.h"
 
+#define COMMENT_ROW_HEIGHT 130
+
 @interface CommentTableViewCell : WPTableViewCell {
     Comment *comment;
 

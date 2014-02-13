@@ -50,10 +50,7 @@ CGFloat const WPTableViewSectionHeaderViewBottomVerticalPadding = 8.0;
 {
     [super layoutSubviews];
     
-    CGFloat width = CGRectGetWidth(self.superview.frame);
-    if (self.fixedWidth > 0) {
-        width = MIN(self.fixedWidth, width);
-    }
+    CGFloat width = self.fixedWidth > 0 ? self.fixedWidth : CGRectGetWidth(self.superview.frame);
     CGSize titleSize = [[self class] sizeForTitle:_titleLabel.text andWidth:CGRectGetWidth(self.bounds)];
     _titleLabel.frame = CGRectIntegral(CGRectMake(WPTableViewSectionHeaderViewStandardOffset + (CGRectGetWidth(self.superview.frame) - width) / 2.0, WPTableViewSectionHeaderViewTopVerticalPadding, width, titleSize.height));
 }

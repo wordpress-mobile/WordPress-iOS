@@ -20,6 +20,7 @@
 #import "BITCrashManagerPrivate.h"
 #import "BITHockeyBaseManager.h"
 #import "BITHockeyBaseManagerPrivate.h"
+#import "BITHockeyManagerPrivate.h"
 
 #import "BITTestHelper.h"
 

@@ -9,7 +9,6 @@
 #import "AFHTTPClient.h"
 
 extern NSString * const WordPressComOAuthErrorDomain;
-extern NSString * const WordPressComOAuthKeychainServiceName;
 
 typedef NS_ENUM(NSUInteger, WordPressComOAuthError) {
     WordPressComOAuthErrorUnknown,

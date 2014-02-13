@@ -13,9 +13,6 @@
 #import "WordPressAppDelegate.h"
 #import <DDFileLogger.h>
 
-static NSString *const UserDefaultsFeedbackEnabled = @"wp_feedback_enabled";
-static NSString *const FeedbackCheckUrl = @"http://api.wordpress.org/iphoneapp/feedback-check/1.0/";
-
 @interface SupportViewController ()
 
 @property (nonatomic, assign) BOOL feedbackEnabled;
@@ -31,31 +28,6 @@ typedef NS_ENUM(NSInteger, SettingsViewControllerSections)
     SettingsSectionActivityLog,
 };
 
-+ (void)checkIfFeedbackShouldBeEnabled {
-    [[NSUserDefaults standardUserDefaults] registerDefaults:@{UserDefaultsFeedbackEnabled: @YES}];
-    NSURL *url = [NSURL URLWithString:FeedbackCheckUrl];
-    NSURLRequest *request = [[NSURLRequest alloc] initWithURL:url];
-    AFJSONRequestOperation *operation = [AFJSONRequestOperation JSONRequestOperationWithRequest:request success:^(NSURLRequest *request, NSHTTPURLResponse *response, id JSON) {
-        DDLogVerbose(@"Feedback response received: %@", JSON);
-        NSNumber *feedbackEnabled = JSON[@"feedback-enabled"];
-        if (feedbackEnabled == nil) {
-            feedbackEnabled = @YES;
-        }
-        
-        NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
-        [defaults setBool:feedbackEnabled.boolValue forKey:UserDefaultsFeedbackEnabled];
-        [defaults synchronize];
-    } failure:^(NSURLRequest *request, NSHTTPURLResponse *response, NSError *error, id JSON) {
-        DDLogError(@"Error received while checking feedback enabled status: %@", error);
-        
-        // Lets be optimistic and turn on feedback by default if this call doesn't work
-        NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
-        [defaults setBool:YES forKey:UserDefaultsFeedbackEnabled];
-        [defaults synchronize];
-    }];
-    
-    [operation start];
-}
 
 + (void)showFromTabBar {
     SupportViewController *supportViewController = [[SupportViewController alloc] init];
@@ -79,7 +51,7 @@ typedef NS_ENUM(NSInteger, SettingsViewControllerSections)
     self = [super initWithStyle:UITableViewStyleGrouped];
     if (self) {
         self.title = NSLocalizedString(@"Support", @"");
-        _feedbackEnabled = YES;
+        self.feedbackEnabled = YES;
     }
 
     return self;
@@ -90,7 +62,7 @@ typedef NS_ENUM(NSInteger, SettingsViewControllerSections)
     [super viewDidLoad];
     
     NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
-    self.feedbackEnabled = [defaults boolForKey:UserDefaultsFeedbackEnabled];
+    self.feedbackEnabled = [defaults boolForKey:kWPUserDefaultsFeedbackEnabled];
     
     [WPStyleGuide configureColorsForView:self.view andTableView:self.tableView];
     
@@ -116,12 +88,8 @@ typedef NS_ENUM(NSInteger, SettingsViewControllerSections)
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
-    if (section == SettingsSectionFAQForums)
+    if (section == SettingsSectionFAQForums || section == SettingsSectionActivityLog)
         return 2;
-    
-    if (section == SettingsSectionActivityLog) {
-        return 3;
-    }
     
     if (section == SettingsSectionFeedback) {
         return self.feedbackEnabled ? 1 : 0;
@@ -132,26 +100,18 @@ typedef NS_ENUM(NSInteger, SettingsViewControllerSections)
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    UITableViewCell *cell = nil;
-    if (indexPath.section == SettingsSectionActivityLog && indexPath.row == 1) {
+    static NSString *CellIdentifier = @"SupportViewStandardCell";
+    static NSString *CellIdentifierExtraDebug = @"SupportViewExtraDebugCell";
+    UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier];
+
+    if (cell == nil && indexPath.section == SettingsSectionActivityLog && indexPath.row == 0) {
         // Settings / Extra Debug
-        static NSString *CellIdentifierExtraDebug = @"SupportViewExtraDebugCell";
-        cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifierExtraDebug];
-        
-        if (cell == nil) {
-            cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:CellIdentifierExtraDebug];
-        }
-        
+        cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:CellIdentifierExtraDebug];
         UISwitch *extraDebugSwitch = [[UISwitch alloc] initWithFrame:CGRectZero];
         [extraDebugSwitch addTarget:self action:@selector(handleExtraDebugChanged:) forControlEvents:UIControlEventValueChanged];
         cell.accessoryView = extraDebugSwitch;
     } else {
-        static NSString *CellIdentifier = @"SupportViewStandardCell";
-        cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier];
-        
-        if (cell == nil) {
-            cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleValue1 reuseIdentifier:CellIdentifier];
-        }
+        cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:CellIdentifier];
     }
 
     [self configureCell:cell atIndexPath:indexPath];
@@ -179,20 +139,11 @@ typedef NS_ENUM(NSInteger, SettingsViewControllerSections)
         cell.textLabel.textAlignment = NSTextAlignmentLeft;
 
         if (indexPath.row == 0) {
-            // App Version
-            cell.textLabel.text = NSLocalizedString(@"Version", @"");
-            NSString *appversion = [[[NSBundle mainBundle] infoDictionary] objectForKey:@"CFBundleVersion"];
-#if DEBUG
-            appversion = [appversion stringByAppendingString:@" (DEV)"];
-#endif
-            cell.detailTextLabel.text = appversion;
-            cell.selectionStyle = UITableViewCellSelectionStyleNone;
-        } else if (indexPath.row == 1) {
             cell.selectionStyle = UITableViewCellSelectionStyleNone;
             cell.textLabel.text = NSLocalizedString(@"Extra Debug", @"");
             UISwitch *aSwitch = (UISwitch *)cell.accessoryView;
             aSwitch.on = [[NSUserDefaults standardUserDefaults] boolForKey:@"extra_debug"];
-        } else if (indexPath.row == 2) {
+        } else if (indexPath.row == 1) {
             cell.textLabel.text = NSLocalizedString(@"Activity Logs", @"");
             cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
         }
@@ -220,7 +171,9 @@ typedef NS_ENUM(NSInteger, SettingsViewControllerSections)
     [tableView deselectRowAtIndexPath:indexPath animated:YES];
 
     if (indexPath.section == SettingsSectionFAQForums && indexPath.row == 0) {
-        [[UIApplication sharedApplication] openURL:[NSURL URLWithString:@"http://ios.wordpress.org/faq"]];
+        WPWebViewController *webViewController = [[WPWebViewController alloc] init];
+        [webViewController setUrl:[NSURL URLWithString:@"http://ios.wordpress.org/faq"]];
+        [self.navigationController pushViewController:webViewController animated:YES];
     } else if (indexPath.section == SettingsSectionFAQForums && indexPath.row == 1) {
         [[UIApplication sharedApplication] openURL:[NSURL URLWithString:@"http://ios.forums.wordpress.org"]];
     } else if (indexPath.section == SettingsSectionFeedback) {
@@ -230,7 +183,7 @@ typedef NS_ENUM(NSInteger, SettingsViewControllerSections)
         } else {
             [WPError showAlertWithTitle:NSLocalizedString(@"Feedback", nil) message:NSLocalizedString(@"Your device is not configured to send e-mail.", nil)];
         }
-    } else if (indexPath.section == SettingsSectionActivityLog && indexPath.row == 2) {
+    } else if (indexPath.section == SettingsSectionActivityLog && indexPath.row == 1) {
         ActivityLogViewController *activityLogViewController = [[ActivityLogViewController alloc] init];
         [self.navigationController pushViewController:activityLogViewController animated:YES];
     }
