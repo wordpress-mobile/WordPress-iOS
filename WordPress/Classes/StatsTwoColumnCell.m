@@ -74,7 +74,7 @@ static CGFloat const RowIconWidth = 20.0f;
     if (_numberFormatter) {
         return _numberFormatter;
     }
-    _numberFormatter = [[NSNumberFormatter alloc]init];
+    _numberFormatter = [[NSNumberFormatter alloc] init];
     _numberFormatter.locale = [NSLocale currentLocale];
     _numberFormatter.numberStyle = NSNumberFormatterDecimalStyle;
     _numberFormatter.usesGroupingSeparator = YES;
