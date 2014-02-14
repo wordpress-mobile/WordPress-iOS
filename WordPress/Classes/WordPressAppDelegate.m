@@ -43,6 +43,7 @@
 #import "ReaderPostsViewController.h"
 #import "ReaderPostDetailViewController.h"
 #import "SupportViewController.h"
+#import "StatsViewController.h"
 #import "Constants.h"
 
 #if DEBUG
@@ -193,17 +194,21 @@ static NSString *const CameraPlusImagesNotification = @"CameraPlusImagesNotifica
         NSString *URLString = [url absoluteString];
         DDLogInfo(@"Application launched with URL: %@", URLString);
 
-        if ([URLString rangeOfString:@"wpcom_signup_completed"].length) {
+        if ([URLString rangeOfString:@"newpost"].length) {
+            // Create a new post from data shared by a third party application.
             NSDictionary *params = [[url query] dictionaryFromQueryString];
-            DDLogInfo(@"%@", params);
-            [[NSNotificationCenter defaultCenter] postNotificationName:@"wpcomSignupNotification" object:nil userInfo:params];
-            returnValue = YES;
+            DDLogInfo(@"App launched for new post with params: %@", params);
+            if ([params count]) {
+                [self showPostTabWithOptions:params];
+                returnValue = YES;
+            }
         } else if ([URLString rangeOfString:@"viewpost"].length) {
+            // View the post specified by the shared blog ID and post ID
             NSDictionary *params = [[url query] dictionaryFromQueryString];
             
             if (params.count) {
-                NSUInteger *blogId = [[params valueForKey:@"blogId"] integerValue];
-                NSUInteger *postId = [[params valueForKey:@"postId"] integerValue];
+                NSUInteger blogId = [[params numberForKey:@"blogId"] integerValue];
+                NSUInteger postId = [[params numberForKey:@"postId"] integerValue];
                 
                 [WPMobileStats flagSuperProperty:StatsPropertyReaderOpenedFromExternalURL];
                 [WPMobileStats incrementSuperProperty:StatsPropertyReaderOpenedFromExternalURLCount];
@@ -426,8 +431,17 @@ static NSString *const CameraPlusImagesNotification = @"CameraPlusImagesNotifica
     if (IS_IPAD) {
         postsViewController.tabBarItem.imageInsets = UIEdgeInsetsMake(7.0, 0, -7, 0);
     }
-    postsViewController.tabBarItem.title = NSLocalizedString(@"New Post", @"The accessibility value of the post tab.");
-    
+
+    /*
+     If title is used, the title will be visible. See #1158
+     If accessibilityLabel/Value are used, the "New Post" text is not read by VoiceOver
+
+     The only apparent solution is to have an actual title, and then hide it for
+     non-VoiceOver users.
+     */
+    postsViewController.title = NSLocalizedString(@"New Post", @"The accessibility value of the post tab.");
+    [postsViewController.tabBarItem setTitleTextAttributes:@{NSForegroundColorAttributeName: [UIColor clearColor]} forState:UIControlStateNormal];
+
     _tabBarController.viewControllers = @[readerNavigationController, notificationsNavigationController, blogListNavigationController, postsViewController];
 
     [_tabBarController setSelectedViewController:readerNavigationController];
@@ -455,12 +469,24 @@ static NSString *const CameraPlusImagesNotification = @"CameraPlusImagesNotifica
 }
 
 - (void)showPostTab {
+    [self showPostTabWithOptions:nil];
+}
+
+- (void)showPostTabWithOptions:(NSDictionary *)options {
     UIViewController *presenter = self.window.rootViewController;
     if (presenter.presentedViewController) {
         [presenter dismissViewControllerAnimated:NO completion:nil];
     }
     
-    EditPostViewController *editPostViewController = [[EditPostViewController alloc] initWithDraftForLastUsedBlog];
+    EditPostViewController *editPostViewController;
+    if (!options) {
+        editPostViewController = [[EditPostViewController alloc] initWithDraftForLastUsedBlog];
+    } else {
+        editPostViewController = [[EditPostViewController alloc] initWithTitle:[options stringForKey:@"title"]
+                                                                    andContent:[options stringForKey:@"content"]
+                                                                       andTags:[options stringForKey:@"tags"]
+                                                                      andImage:[options stringForKey:@"image"]];
+    }
     editPostViewController.editorOpenedBy = StatsPropertyPostDetailEditorOpenedOpenedByTabBarButton;
     UINavigationController *navController = [[UINavigationController alloc] initWithRootViewController:editPostViewController];
     navController.modalPresentationStyle = UIModalPresentationCurrentContext;
@@ -495,6 +521,34 @@ static NSString *const CameraPlusImagesNotification = @"CameraPlusImagesNotifica
     [postsViewController setBlog:post.blog];
     
     [blogListNavController setViewControllers:@[blogListViewController, blogDetailsViewController, postsViewController]];
+}
+
+- (void)showStatsForBlog:(Blog *)blog {
+    UINavigationController *blogListNav = self.tabBarController.viewControllers[IndexForMeTab];
+    StatsViewController *statsViewController;
+    BlogDetailsViewController *blogDetailsViewController;
+    
+    if ([blogListNav.topViewController isKindOfClass:[StatsViewController class]] &&
+        [[(StatsViewController *)blogListNav.topViewController blog] isEqual:blog]) {
+        // If we're already showing stats for the blog, just go there
+        [self showMeTab];
+        return;
+    } else {
+        statsViewController = [[StatsViewController alloc] init];
+        statsViewController.blog = blog;
+    }
+    
+    if ([blogListNav.topViewController isKindOfClass:[BlogDetailsViewController class]] &&
+        [((BlogDetailsViewController *)blogListNav.topViewController).blog isEqual:blog]) {
+        // Use the current blog details view controller
+        blogDetailsViewController = (BlogDetailsViewController *)blogListNav.topViewController;
+    } else {
+        blogDetailsViewController = [[BlogDetailsViewController alloc] init];
+        blogDetailsViewController.blog = blog;
+    }
+    
+    blogListNav.viewControllers = @[self.blogListViewController, blogDetailsViewController, statsViewController];
+    [self showMeTab];
 }
 
 #pragma mark - UITabBarControllerDelegate methods.
@@ -695,7 +749,9 @@ static NSString *const CameraPlusImagesNotification = @"CameraPlusImagesNotifica
         //get a references to media files linked in a post
         DDLogInfo(@"%i media items to check for cleanup", [mediaObjectsToKeep count]);
         for (Media *media in mediaObjectsToKeep) {
-            [mediaToKeep addObject:media.localURL];
+            if (media.localURL) {
+                [mediaToKeep addObject:media.localURL];
+            }
         }
         
         //searches for jpg files within the app temp file
@@ -1071,7 +1127,7 @@ static NSString *const CameraPlusImagesNotification = @"CameraPlusImagesNotifica
     }
     
     if ([description length] > maxSize) {
-        description = (NSMutableString *)[description substringWithRange:NSMakeRange([description length] - maxSize - 1, maxSize)];
+        description = (NSMutableString *)[description substringWithRange:NSMakeRange(0, maxSize)];
     }
     
     return description;
@@ -1129,6 +1185,7 @@ static NSString *const CameraPlusImagesNotification = @"CameraPlusImagesNotifica
 }
 
 - (void)defaultWordPressAccountWasRemoved:(NSNotification *)notification {
+    self.isWPcomAuthenticated = NO;
     [self setCommonCrashlyticsParameters];
 	[self toggleExtraDebuggingIfNeeded];
 	

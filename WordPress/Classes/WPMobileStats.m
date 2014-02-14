@@ -188,6 +188,7 @@ NSString *const StatsEventQuickPhotoPosted = @"Quick Photo - Posted";
 // NUX First Walkthrough 
 NSString *const StatsEventNUXFirstWalkthroughOpened = @"NUX - First Walkthrough - Opened";
 NSString *const StatsEventNUXFirstWalkthroughClickedSkipToCreateAccount = @"NUX - First Walkthrough - Skipped to Create Account";
+NSString *const StatsEventNUXFirstWalkthroughClickedLostPassword = @"NUX - First Walkthrough - Lost Password";
 NSString *const StatsEventNUXFirstWalkthroughClickedInfo = @"NUX - First Walkthrough - Clicked Info";
 NSString *const StatsEventNUXFirstWalkthroughClickedCreateAccount = @"NUX - First Walkthrough - Clicked Create Account";
 NSString *const StatsEventNUXFirstWalkthroughSignedInWithoutUrl = @"NUX - First Walkthrough - Signed In Without URL";

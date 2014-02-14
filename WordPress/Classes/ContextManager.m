@@ -39,6 +39,7 @@ static ContextManager *instance;
 - (NSManagedObjectContext *const)newDerivedContext {
     NSManagedObjectContext *derived = [[NSManagedObjectContext alloc] initWithConcurrencyType:NSPrivateQueueConcurrencyType];
     derived.parentContext = self.mainContext;
+    derived.mergePolicy = NSMergeByPropertyObjectTrumpMergePolicy;
     return derived;
 }
 

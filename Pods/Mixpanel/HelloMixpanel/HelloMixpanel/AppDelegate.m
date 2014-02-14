@@ -1,21 +1,3 @@
-//
-// AppDelegate.m
-// HelloMixpanel
-//
-// Copyright 2012 Mixpanel
-//
-// Licensed under the Apache License, Version 2.0 (the "License");
-// you may not use this file except in compliance with the License.
-// You may obtain a copy of the License at
-//
-// http://www.apache.org/licenses/LICENSE-2.0
-//
-// Unless required by applicable law or agreed to in writing, software
-// distributed under the License is distributed on an "AS IS" BASIS,
-// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-// See the License for the specific language governing permissions and
-// limitations under the License.
-
 #import "Mixpanel.h"
 
 #import "AppDelegate.h"
@@ -27,17 +9,10 @@
 
 @implementation AppDelegate
 
-- (void)dealloc
-{
-    [_startTime release];
-    [_window release];
-    [_viewController release];
-    [super dealloc];
-}
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {
-    self.window = [[[UIWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]] autorelease];
+    self.window = [[UIWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
 
     // Override point for customization after application launch.
 
@@ -46,6 +21,9 @@
 
     self.mixpanel.checkForSurveysOnActive = YES;
     self.mixpanel.showSurveyOnActive = YES; //Change this to NO to show your surveys manually.
+
+    self.mixpanel.checkForNotificationsOnActive = YES;
+    self.mixpanel.showNotificationOnActive = YES; //Change this to NO to show your notifs manually.
 
     // Set the upload interval to 20 seconds for demonstration purposes. This would be overkill for most applications.
     self.mixpanel.flushInterval = 20; // defaults to 60 seconds
@@ -56,8 +34,9 @@
     // Name a user in Mixpanel Streams
     self.mixpanel.nameTag = @"Walter Sobchak";
 
-    self.viewController = [[[ViewController alloc] initWithNibName:@"ViewController" bundle:nil] autorelease];
-    self.window.rootViewController = self.viewController;
+    UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"HelloMixpanel" bundle:nil];
+    self.window.rootViewController = [storyboard instantiateInitialViewController];
+
     [self.window makeKeyAndVisible];
 
     [[UIApplication sharedApplication] registerForRemoteNotificationTypes:(UIRemoteNotificationTypeBadge | UIRemoteNotificationTypeSound | UIRemoteNotificationTypeAlert)];
@@ -88,7 +67,6 @@
                                           cancelButtonTitle:@"OK"
                                           otherButtonTitles:nil];
     [alert show];
-    [alert release];
 }
 
 #pragma mark - Session timing example
@@ -101,8 +79,8 @@
 - (void)applicationWillResignActive:(UIApplication *)application
 {
     NSLog(@"%@ will resign active", self);
-    NSNumber *seconds = [NSNumber numberWithDouble:[[NSDate date] timeIntervalSinceDate:self.startTime]];
-    [[Mixpanel sharedInstance] track:@"Session" properties:[NSDictionary dictionaryWithObject:seconds forKey:@"Length"]];
+    NSNumber *seconds = @([[NSDate date] timeIntervalSinceDate:self.startTime]);
+    [[Mixpanel sharedInstance] track:@"Session" properties:@{@"Length": seconds}];
 }
 
 #pragma mark - Background task tracking test

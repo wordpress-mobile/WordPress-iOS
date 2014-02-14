@@ -41,6 +41,12 @@
 
 #define BITHOCKEY_FEEDBACK_SETTINGS @"BITFeedbackManager.plist"
 
+#define BITHOCKEY_USAGE_DATA @"BITUpdateManager.plist"
+
+#define kBITHockeyMetaUserName  @"BITHockeyMetaUserName"
+#define kBITHockeyMetaUserEmail @"BITHockeyMetaUserEmail"
+#define kBITHockeyMetaUserID    @"BITHockeyMetaUserID"
+
 #define kBITUpdateInstalledUUID              @"BITUpdateInstalledUUID"
 #define kBITUpdateInstalledVersionID         @"BITUpdateInstalledVersionID"
 #define kBITUpdateCurrentCompanyName         @"BITUpdateCurrentCompanyName"
@@ -56,6 +62,8 @@
 #define kBITStoreUpdateLastUUID              @"BITStoreUpdateLastUUID"
 #define kBITStoreUpdateIgnoreVersion         @"BITStoreUpdateIgnoredVersion"
 
+#define BITHOCKEY_INTEGRATIONFLOW_TIMESTAMP  @"BITIntegrationFlowStartTimestamp"
+
 #define BITHOCKEYSDK_BUNDLE @"HockeySDKResources.bundle"
 #define BITHOCKEYSDK_URL @"https://sdk.hockeyapp.net/"
 
@@ -67,21 +75,21 @@ NSBundle *BITHockeyBundle(void);
 NSString *BITHockeyLocalizedString(NSString *stringToken);
 NSString *BITHockeyMD5(NSString *str);
 
-#if __IPHONE_OS_VERSION_MIN_REQUIRED < __IPHONE_6_0
-
-#define kBITTextLabelAlignmentCenter        UITextAlignmentCenter
-#define kBITTextLabelAlignmentLeft          UITextAlignmentLeft
-#define kBITTextLabelAlignmentRight         UITextAlignmentRight
-#define kBITLineBreakModeMiddleTruncation   UILineBreakModeMiddleTruncation
-
-#else
+#ifdef __IPHONE_6_0
 
 #define kBITTextLabelAlignmentCenter        NSTextAlignmentCenter
 #define kBITTextLabelAlignmentLeft          NSTextAlignmentLeft
 #define kBITTextLabelAlignmentRight         NSTextAlignmentRight
 #define kBITLineBreakModeMiddleTruncation   NSLineBreakByTruncatingMiddle
 
-#endif /* __IPHONE_OS_VERSION_MIN_REQUIRED */
+#else
+
+#define kBITTextLabelAlignmentCenter        UITextAlignmentCenter
+#define kBITTextLabelAlignmentLeft          UITextAlignmentLeft
+#define kBITTextLabelAlignmentRight         UITextAlignmentRight
+#define kBITLineBreakModeMiddleTruncation   UILineBreakModeMiddleTruncation
+
+#endif /* __IPHONE_6_0 */
 
 #if __IPHONE_OS_VERSION_MIN_REQUIRED > __IPHONE_6_1
 

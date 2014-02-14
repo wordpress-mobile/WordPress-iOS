@@ -2,7 +2,7 @@
  * Author: Andreas Linde <mail@andreaslinde.de>
  *         Kent Sutherland
  *
- * Copyright (c) 2012-2013 HockeyApp, Bit Stadium GmbH.
+ * Copyright (c) 2012-2014 HockeyApp, Bit Stadium GmbH.
  * All rights reserved.
  *
  * Permission is hereby granted, free of charge, to any person
@@ -75,7 +75,7 @@
 #pragma mark - Public Methods
 
 ///-----------------------------------------------------------------------------
-/// @name Initializion
+/// @name Initialization
 ///-----------------------------------------------------------------------------
 
 /**
@@ -84,6 +84,22 @@
  @return A singleton BITHockeyManager instance ready use
  */
 + (BITHockeyManager *)sharedHockeyManager;
+
+
+/**
+ Initializes the manager with a particular app identifier
+ 
+ Initialize the manager with a HockeyApp app identifier.
+ 
+    [[BITHockeyManager sharedHockeyManager]
+      configureWithIdentifier:@"<AppIdentifierFromHockeyApp>"];
+ 
+ @see configureWithIdentifier:delegate:
+ @see configureWithBetaIdentifier:liveIdentifier:delegate:
+ @see startManager
+ @param appIdentifier The app identifier that should be used.
+ */
+- (void)configureWithIdentifier:(NSString *)appIdentifier;
 
 
 /**
@@ -97,6 +113,7 @@
       configureWithIdentifier:@"<AppIdentifierFromHockeyApp>"
                      delegate:nil];
 
+ @see configureWithIdentifier:
  @see configureWithBetaIdentifier:liveIdentifier:delegate:
  @see startManager
  @see BITHockeyManagerDelegate
@@ -132,6 +149,7 @@
  you to upload any IPA files, uploading only the dSYM package for crash reporting is
  just fine.
 
+ @see configureWithIdentifier:
  @see configureWithIdentifier:delegate:
  @see startManager
  @see BITHockeyManagerDelegate
@@ -161,6 +179,19 @@
 ///-----------------------------------------------------------------------------
 /// @name Modules
 ///-----------------------------------------------------------------------------
+
+
+/**
+ * Set the delegate
+ *
+ * Defines the class that implements the optional protocol `BITHockeyManagerDelegate`.
+ *
+ * @see BITHockeyManagerDelegate
+ * @see BITCrashManagerDelegate
+ * @see BITUpdateManagerDelegate
+ * @see BITFeedbackManagerDelegate
+ */
+@property (nonatomic, weak) id<BITHockeyManagerDelegate> delegate;
 
 
 /**
@@ -281,9 +312,6 @@
 /**
  Reference to the initialized BITAuthenticator module
  
- The authenticator is disabled by default. To enable it you need to set
- `[BITAuthenticator authenticationType]` and `[BITAuthenticator validationType]`
- 
  Returns the BITAuthenticator instance initialized by BITHockeyManager
  
  @see configureWithIdentifier:delegate:
@@ -335,5 +363,105 @@
  */
 @property (nonatomic, assign, getter=isDebugLogEnabled) BOOL debugLogEnabled;
 
+
+///-----------------------------------------------------------------------------
+/// @name Integration test
+///-----------------------------------------------------------------------------
+
+/**
+ Pings the server with the HockeyApp app identifiers used for initialization
+ 
+ Call this method once for debugging purposes to test if your SDK setup code
+ reaches the server successfully.
+ 
+ Once invoked, check the apps page on HockeyApp for a verification.
+ 
+ If you setup the SDK with a beta and live identifier, a call to both app IDs will be done.
+
+ This call is ignored if the app is running in the App Store!.
+ */
+- (void)testIdentifier;
+
+
+///-----------------------------------------------------------------------------
+/// @name Additional meta data
+///-----------------------------------------------------------------------------
+
+/** Set the userid that should used in the SDK components
+ 
+ Right now this is used by the `BITCrashManager` to attach to a crash report.
+ `BITFeedbackManager` uses it too for assigning the user to a discussion thread.
+
+ The value can be set at any time and will be stored in the keychain on the current
+ device only! To delete the value from the keychain set the value to `nil`.
+ 
+ This property is optional and can be used as an alternative to the delegate. If you
+ want to define specific data for each component, use the delegate instead which does
+ overwrite the values set by this property.
+ 
+ @see userName
+ @see userEmail
+ @see `[BITHockeyManagerDelegate userIDForHockeyManager:componentManager:]`
+ */
+@property (nonatomic, retain) NSString *userID;
+
+
+/** Set the user name that should used in the SDK components
+ 
+ Right now this is used by the `BITCrashManager` to attach to a crash report.
+ `BITFeedbackManager` uses it too for assigning the user to a discussion thread.
+ 
+ The value can be set at any time and will be stored in the keychain on the current
+ device only! To delete the value from the keychain set the value to `nil`.
+ 
+ This property is optional and can be used as an alternative to the delegate. If you
+ want to define specific data for each component, use the delegate instead which does
+ overwrite the values set by this property.
+
+ @warning When returning a non nil value, crash reports are not anonymous any more
+ and the crash alerts will not show the word "anonymous"!
+
+ @see userID
+ @see userEmail
+ @see `[BITHockeyManagerDelegate userNameForHockeyManager:componentManager:]`
+ */
+@property (nonatomic, retain) NSString *userName;
+
+
+/** Set the users email address that should used in the SDK components
+ 
+ Right now this is used by the `BITCrashManager` to attach to a crash report.
+ `BITFeedbackManager` uses it too for assigning the user to a discussion thread.
+ 
+ The value can be set at any time and will be stored in the keychain on the current
+ device only! To delete the value from the keychain set the value to `nil`.
+ 
+ This property is optional and can be used as an alternative to the delegate. If you
+ want to define specific data for each component, use the delegate instead which does
+ overwrite the values set by this property.
+ 
+ @warning When returning a non nil value, crash reports are not anonymous any more
+ and the crash alerts will not show the word "anonymous"!
+
+ @see userID
+ @see userName
+ @see `[BITHockeyManagerDelegate userEmailForHockeyManager:componentManager:]`
+ */
+@property (nonatomic, retain) NSString *userEmail;
+
+
+///-----------------------------------------------------------------------------
+/// @name SDK meta data
+///-----------------------------------------------------------------------------
+
+/**
+ Returns the SDK Version (CFBundleShortVersionString).
+ */
+- (NSString *)version;
+
+/**
+ Returns the SDK Build (CFBundleVersion) as a string.
+ */
+- (NSString *)build;
 
 @end

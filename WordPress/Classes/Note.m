@@ -152,6 +152,19 @@ const NSUInteger NoteKeepCount = 20;
     return ![self isUnread];
 }
 
+- (BOOL)statsEvent {
+    return [self.type isEqualToString:@"traffic_surge"];
+}
+
+- (Blog *)blogForStatsEvent {
+    NSSet *blogs = [WPAccount defaultWordPressComAccount].blogs;
+    blogs = [blogs filteredSetUsingPredicate:[NSPredicate predicateWithFormat:@"%@ CONTAINS[cd] self.blogName", self.subject]];
+    if (blogs.count) {
+        return [blogs anyObject];
+    }
+    return nil;
+}
+
 - (NSString *)commentText {
     if (_commentText == nil) {
         [self parseComment];

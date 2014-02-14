@@ -1,3 +1,75 @@
+## Version 3.5.3
+
+- [NEW] Crash Reports now provide the selector name e.g. for crashes in `objc_MsgSend`
+- [NEW] Add setter for global `userID`, `userName`, `userEmail`. Can be used instead of the delegates.
+- [UPDATE] On device symbolication is now optional, disabled by default
+- [BUGFIX] Fix for automatic authentication not always working correctly
+- [BUGFIX] `BITFeedbackComposeViewControllerDelegate` now also works for compose view controller used by the feedback list view
+- [BUGFIX] Fix typos in documentation
+<br /><br/>
+
+## Version 3.5.2
+
+- [UPDATE] Make sure a log message appears in the console if the SDK is not setup on the main thread
+- [BUGFIX] Fix usage time always being send as `0` instead of sending the actual usage time
+- [BUGFIX] Fix "Install" button in the mandatory update alert not working and forcing users to use the "show" button and then install from the update view instead
+- [BUGFIX] Fix possible unused function warnings
+- [BUGFIX] Fix two warnings when `-Wshorten-64-to-32` is set.
+- [BUGFIX] Fix typos in documentation
+<br /><br/>
+
+## Version 3.5.1
+
+- General
+
+  - [NEW] Add new initialize to make the configuration easier: `[BITHockeyManager configureWithIdentifier:]`
+  - [NEW] Add `[BITHockeyManager testIdentifier]` to check if the SDK reaches the server. The result is shown on the HockeyApp website on success.
+  - [UPDATE] `delegate` can now also be defined using the property directly (instead of using the configureWith methods)
+  - [UPDATE] Use system provided Base64 encoding implementation
+  - [UPDATE] Improved logic to choose the right `UIWindow` instance for dialogs
+  - [BUGFIX] Fix compile issues when excluding all modules but crash reporting
+  - [BUGFIX] Fix warning on implicit conversion from `CGImageAlphaInfo` to `CGBitmapInfo`
+  - [BUGFIX] Fix warnings for implicit conversions of `UITextAlignment` and `UILineBreakMode`
+  - [BUGFIX] Various additional smaller bug fixes
+	<br /><br/>
+
+- Crash Reporting
+
+  - [NEW] Integrated PLCrashReporter 1.2 RC 2
+  - [NEW] Add `generateTestCrash` method to more quickly test the crash reporting (automatically disabled in App Store environment!)
+  - [NEW] Add PLCR header files to the public headers in the framework
+  - [NEW] Add the option to define callbacks that will be executed prior to program termination after a crash has occurred. Callback code has to be async-safe!
+  - [UPDATE] Change the default of `showAlwaysButton` property to `YES`
+  - [BUGFIX] Always format date and timestamps in crash report in `en_US_POSIX` locale.
+	<br /><br/>
+  
+- Feedback
+
+  - [UPDATE] Use only one activity view controller per UIActivity
+  - [BUGFIX] Fix delete button appearance in feedback list view on iOS 7 when swiping a feedback message
+  - [BUGFIX] Comply to -[UIActivity activityDidFinish:] requirements
+  - [BUGFIX] Use non-deprecated delegate method for `BITFeedbackActivity`
+	<br /><br/>
+
+- Ad-Hoc/Enterprise Authentication
+
+  - [NEW] Automatic authorization when app was installed over the air. This still requires to call `[BITAuthenticator authenticateInstallation];` after calling `startManager`!
+  - [UPDATE] Set the tintColor in the auth view and modal views navigation controller on iOS 7
+  - [UPDATE] Show an alert if the authentication token could not be stored into the keychain
+  - [UPDATE] Use UTF8 encoding for auth data
+  - [UPDATE] Replace email placeholder texts
+  - [BUGFIX] Make sure the authentication window is always correctly dismissed
+  - [BUGFIX] Fixed memory issues
+	<br /><br/>
+
+- Ad-Hoc/Enterprise Updates
+
+  - [NEW] Provide alert option to show mandatory update details
+  - [NEW] Add button to expired page (and alert) that lets the user check for a new version (can be disabled using `disableUpdateCheckOptionWhenExpired`)
+  - [UPDATE] Usage metrics are now stored in an independent file instead of using `NSUserDefaults`
+	<br /><br/>
+	
+
 ## Version 3.5.0
 
 - General

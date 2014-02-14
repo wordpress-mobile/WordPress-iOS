@@ -183,6 +183,13 @@ NSString * const NotificationsJetpackInformationURL = @"http://jetpack.me/about/
             NotificationsFollowDetailViewController *detailViewController = [[NotificationsFollowDetailViewController alloc] initWithNote:note];
             [self.navigationController pushViewController:detailViewController animated:YES];
         }
+    } else if ([note statsEvent]) {
+        Blog *blog = [note blogForStatsEvent];
+        if (blog) {
+            [[WordPressAppDelegate sharedWordPressApplicationDelegate] showStatsForBlog:blog];
+        } else {
+            [self.tableView deselectRowAtIndexPath:indexPath animated:YES];
+        }
     } else {
         [self.tableView deselectRowAtIndexPath:indexPath animated:YES];
     }

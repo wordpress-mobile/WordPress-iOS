@@ -1,38 +1,22 @@
-//
-//  HelloMixpanelTests.m
-//  HelloMixpanelTests
-//
-// Copyright 2012 Mixpanel
-//
-// Licensed under the Apache License, Version 2.0 (the "License");
-// you may not use this file except in compliance with the License.
-// You may obtain a copy of the License at
-//
-// http://www.apache.org/licenses/LICENSE-2.0
-//
-// Unless required by applicable law or agreed to in writing, software
-// distributed under the License is distributed on an "AS IS" BASIS,
-// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-// See the License for the specific language governing permissions and
-// limitations under the License.
-
 #import "HelloMixpanelTests.h"
 
 #import "Mixpanel.h"
+#import "MPNotification.h"
 #import "MPSurvey.h"
 #import "MPSurveyQuestion.h"
 #import "HTTPServer.h"
 #import "MixpanelDummyHTTPConnection.h"
+#import "MPSurveyNavigationController.h"
 
 #define TEST_TOKEN @"abc123"
 
 @interface Mixpanel (Test)
 
 // get access to private members
-@property(nonatomic,retain) NSMutableArray *eventsQueue;
-@property(nonatomic,retain) NSMutableArray *peopleQueue;
-@property(nonatomic,retain) NSTimer *timer;
-@property(nonatomic,assign) dispatch_queue_t serialQueue;
+@property (nonatomic, retain) NSMutableArray *eventsQueue;
+@property (nonatomic, retain) NSMutableArray *peopleQueue;
+@property (nonatomic, retain) NSTimer *timer;
+@property (nonatomic, assign) dispatch_queue_t serialQueue;
 
 - (NSData *)JSONSerializeObject:(id)obj;
 - (NSString *)defaultDistinctId;
@@ -46,16 +30,16 @@
 @interface MixpanelPeople (Test)
 
 // get access to private members
-@property(nonatomic,retain) NSMutableArray *unidentifiedQueue;
-@property(nonatomic,copy) NSMutableArray *distinctId;
+@property (nonatomic, retain) NSMutableArray *unidentifiedQueue;
+@property (nonatomic, copy) NSMutableArray *distinctId;
 
 @end
 
 @interface HelloMixpanelTests ()  <MixpanelDelegate>
 
-@property(nonatomic,retain) Mixpanel *mixpanel;
-@property(nonatomic,retain) HTTPServer *httpServer;
-@property(atomic) BOOL mixpanelWillFlush;
+@property (nonatomic, strong) Mixpanel *mixpanel;
+@property (nonatomic, strong) HTTPServer *httpServer;
+@property (atomic) BOOL mixpanelWillFlush;
 
 @end
 
@@ -65,7 +49,7 @@
 {
     NSLog(@"starting test setup...");
     [super setUp];
-    self.mixpanel = [[[Mixpanel alloc] initWithToken:TEST_TOKEN andFlushInterval:0] autorelease];
+    self.mixpanel = [[Mixpanel alloc] initWithToken:TEST_TOKEN andFlushInterval:0];
     [self.mixpanel reset];
     self.mixpanelWillFlush = NO;
     [self waitForSerialQueue];
@@ -79,7 +63,7 @@
     self.mixpanel = nil;
 }
 
-- (void) setupHTTPServer
+- (void)setupHTTPServer
 {
     if (!self.httpServer) {
         self.httpServer = [[HTTPServer alloc] init];
@@ -91,12 +75,9 @@
         [self.httpServer setDocumentRoot:webPath];
 
         NSError *error;
-        if([self.httpServer start:&error])
-        {
+        if ([self.httpServer start:&error]) {
             NSLog(@"Started HTTP Server on port %hu", [self.httpServer listeningPort]);
-        }
-        else
-        {
+        } else {
             NSLog(@"Error starting HTTP Server: %@", error);
         }
     }
@@ -116,46 +97,45 @@
 
 - (NSDictionary *)allPropertyTypes
 {
-    NSNumber *number = [NSNumber numberWithInt:3];
+    NSNumber *number = @3;
     NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
     [dateFormatter setDateFormat:@"yyyy-MM-dd HH:mm:ss zzz"];
     NSDate *date = [dateFormatter dateFromString:@"2012-09-28 19:14:36 PDT"];
-    [dateFormatter release];
-    NSDictionary *dictionary = [NSDictionary dictionaryWithObject:@"v" forKey:@"k"];
-    NSArray *array = [NSArray arrayWithObject:@"1"];
+    NSDictionary *dictionary = @{@"k": @"v"};
+    NSArray *array = @[@"1"];
     NSNull *null = [NSNull null];
-    NSDictionary *nested = [NSDictionary dictionaryWithObject:
-                            [NSDictionary dictionaryWithObject:
-                             [NSArray arrayWithObject:
-                              [NSDictionary dictionaryWithObject:
-                               [NSArray arrayWithObject:@"bottom"]
-                                                          forKey:@"p3"]]
-                                                        forKey:@"p2"]
-                                                       forKey:@"p1"];
+    NSDictionary *nested = @{@"p1": @{@"p2": @[@{@"p3": @[@"bottom"]}]}};
     NSURL *url = [NSURL URLWithString:@"https://mixpanel.com/"];
-    return [NSDictionary dictionaryWithObjectsAndKeys:
-            @"yello",   @"string",
-            number,     @"number",
-            date,       @"date",
-            dictionary, @"dictionary",
-            array,      @"array",
-            null,       @"null",
-            nested,     @"nested",
-            url,        @"url",
-            @1.3,       @"float",
-            nil];
+    return @{@"string": @"yello",
+            @"number": number,
+            @"date": date,
+            @"dictionary": dictionary,
+            @"array": array,
+            @"null": null,
+            @"nested": nested,
+            @"url": url,
+            @"float": @1.3};
 }
 
 - (void)assertDefaultPeopleProperties:(NSDictionary *)p
 {
-    STAssertNotNil([p objectForKey:@"$ios_device_model"], @"missing $ios_device_model property");
-    STAssertNotNil([p objectForKey:@"$ios_version"], @"missing $ios_version property");
-    STAssertNotNil([p objectForKey:@"$ios_app_version"], @"missing $ios_app_version property");
-    STAssertNotNil([p objectForKey:@"$ios_app_release"], @"missing $ios_app_release property");
-    STAssertNotNil([p objectForKey:@"$ios_ifa"], @"missing $ios_ifa property");
+    STAssertNotNil(p[@"$ios_device_model"], @"missing $ios_device_model property");
+    STAssertNotNil(p[@"$ios_lib_version"], @"missing $ios_lib_version property");
+    STAssertNotNil(p[@"$ios_version"], @"missing $ios_version property");
+    STAssertNotNil(p[@"$ios_app_version"], @"missing $ios_app_version property");
+    STAssertNotNil(p[@"$ios_app_release"], @"missing $ios_app_release property");
 }
 
-- (void)testHTTPServer {
+-(UIViewController *)topViewController {
+    UIViewController *rootViewController = [UIApplication sharedApplication].keyWindow.rootViewController;
+    while (rootViewController.presentedViewController) {
+        rootViewController = rootViewController.presentedViewController;
+    }
+    return rootViewController;
+}
+
+- (void)testHTTPServer
+{
     [self setupHTTPServer];
     int requestCount = [MixpanelDummyHTTPConnection getRequestCount];
 
@@ -168,7 +148,7 @@
     NSError *error = nil;
     NSURLResponse *urlResponse = nil;
     NSData *responseData = [NSURLConnection sendSynchronousRequest:request returningResponse:&urlResponse error:&error];
-    NSString *response = [[[NSString alloc] initWithData:responseData encoding:NSUTF8StringEncoding] autorelease];
+    NSString *response = [[NSString alloc] initWithData:responseData encoding:NSUTF8StringEncoding];
 
     STAssertTrue([response length] > 0, @"HTTP server response not valid");
     STAssertEquals([MixpanelDummyHTTPConnection getRequestCount] - requestCount, 1, @"One server request should have been made");
@@ -183,7 +163,7 @@
     int requestCount = [MixpanelDummyHTTPConnection getRequestCount];
 
     [self.mixpanel identify:@"d1"];
-    for(uint i=0, n=50; i<n; i++) {
+    for (NSUInteger i=0, n=50; i<n; i++) {
         [self.mixpanel track:[NSString stringWithFormat:@"event %d", i]];
     }
     [self.mixpanel flush];
@@ -193,7 +173,7 @@
     STAssertEquals([MixpanelDummyHTTPConnection getRequestCount] - requestCount, 1, @"50 events should have been batched in 1 HTTP request");
 
     requestCount = [MixpanelDummyHTTPConnection getRequestCount];
-    for(uint i=0, n=60; i<n; i++) {
+    for (NSUInteger i=0, n=60; i<n; i++) {
         [self.mixpanel track:[NSString stringWithFormat:@"event %d", i]];
     }
     [self.mixpanel flush];
@@ -212,7 +192,7 @@
     int requestCount = [MixpanelDummyHTTPConnection getRequestCount];
 
     [self.mixpanel identify:@"d1"];
-    for(uint i=0, n=50; i<n; i++) {
+    for (NSUInteger i=0, n=50; i<n; i++) {
         [self.mixpanel.people set:@"p1" to:[NSString stringWithFormat:@"%d", i]];
     }
     [self.mixpanel flush];
@@ -222,7 +202,7 @@
     STAssertEquals(requestCount + 1, [MixpanelDummyHTTPConnection getRequestCount], @"50 people properties should have been batched in 1 HTTP request");
 
     requestCount = [MixpanelDummyHTTPConnection getRequestCount];
-    for(uint i=0, n=60; i<n; i++) {
+    for (NSUInteger i=0, n=60; i<n; i++) {
         [self.mixpanel.people set:@"p1" to:[NSString stringWithFormat:@"%d", i]];
     }
     [self.mixpanel flush];
@@ -241,7 +221,7 @@
     int requestCount = [MixpanelDummyHTTPConnection getRequestCount];
 
     [self.mixpanel identify:@"d1"];
-    for(uint i=0, n=50; i<n; i++) {
+    for (NSUInteger i=0, n=50; i<n; i++) {
         [self.mixpanel track:[NSString stringWithFormat:@"event %d", i]];
     }
     [self waitForSerialQueue];
@@ -262,13 +242,13 @@
     int requestCount = [MixpanelDummyHTTPConnection getRequestCount];
 
     [self.mixpanel identify:@"d1"];
-    for(uint i=0, n=10; i<n; i++) {
+    for (NSUInteger i=0, n=10; i<n; i++) {
         [self.mixpanel track:[NSString stringWithFormat:@"event %d", i]];
     }
     [self waitForSerialQueue];
     STAssertTrue([self.mixpanel.eventsQueue count] == 10U, @"10 events should be queued up");
     [self.mixpanel flush];
-    for(uint i=0, n=5; i<n; i++) {
+    for (NSUInteger i=0, n=5; i<n; i++) {
         [self.mixpanel track:[NSString stringWithFormat:@"event %d", i]];
     }
     [self waitForSerialQueue];
@@ -283,19 +263,19 @@
 
 - (void)testJSONSerializeObject {
     NSDictionary *test = [self allPropertyTypes];
-    NSData *data = [self.mixpanel JSONSerializeObject:[NSArray arrayWithObject:test]];
-    NSString *json = [[[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding] autorelease];
+    NSData *data = [self.mixpanel JSONSerializeObject:@[test]];
+    NSString *json = [[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding];
     STAssertEqualObjects(json, @"[{\"float\":1.3,\"string\":\"yello\",\"url\":\"https:\\/\\/mixpanel.com\\/\",\"nested\":{\"p1\":{\"p2\":[{\"p3\":[\"bottom\"]}]}},\"array\":[\"1\"],\"date\":\"2012-09-29T02:14:36.000Z\",\"dictionary\":{\"k\":\"v\"},\"null\":null,\"number\":3}]", nil);
-    test = [NSDictionary dictionaryWithObject:@"non-string key" forKey:@3];
-    data = [self.mixpanel JSONSerializeObject:[NSArray arrayWithObject:test]];
-    json = [[[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding] autorelease];
+    test = @{@3: @"non-string key"};
+    data = [self.mixpanel JSONSerializeObject:@[test]];
+    json = [[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding];
     STAssertEqualObjects(json, @"[{\"3\":\"non-string key\"}]", @"json serialization failed");
 }
 
 - (void)testIdentify
 {
     NSLog(@"starting testIdentify...");
-    for (int i = 0; i < 2; i++) { // run this twice to test reset works correctly wrt to distinct ids
+    for (NSInteger i = 0; i < 2; i++) { // run this twice to test reset works correctly wrt to distinct ids
         NSString *distinctId = @"d1";
         // try this for IFA, ODIN and nil
         STAssertEqualObjects(self.mixpanel.distinctId, self.mixpanel.defaultDistinctId, @"mixpanel identify failed to set default distinct id");
@@ -318,7 +298,7 @@
         STAssertEqualObjects(self.mixpanel.peopleQueue.lastObject[@"$token"], TEST_TOKEN, @"incorrect project token in people record");
         STAssertEqualObjects(self.mixpanel.peopleQueue.lastObject[@"$distinct_id"], distinctId, @"distinct id not set properly on unidentified people record");
         NSDictionary *p = self.mixpanel.peopleQueue.lastObject[@"$set"];
-        STAssertEqualObjects([p objectForKey:@"p1"], @"a", @"custom people property not queued");
+        STAssertEqualObjects(p[@"p1"], @"a", @"custom people property not queued");
         [self assertDefaultPeopleProperties:p];
         [self.mixpanel.people set:@"p1" to:@"a"];
         [self waitForSerialQueue];
@@ -340,96 +320,87 @@
     [self waitForSerialQueue];
     STAssertTrue(self.mixpanel.eventsQueue.count == 1, @"event not queued");
     NSDictionary *e = self.mixpanel.eventsQueue.lastObject;
-    STAssertEquals([e objectForKey:@"event"], @"Something Happened", @"incorrect event name");
-    NSDictionary *p = [e objectForKey:@"properties"];
-    STAssertTrue(p.count == 17, @"incorrect number of properties");
-    STAssertNotNil([p objectForKey:@"$app_version"], @"$app_version not set");
-    STAssertNotNil([p objectForKey:@"$app_release"], @"$app_release not set");
-    STAssertNotNil([p objectForKey:@"$lib_version"], @"$lib_version not set");
-    STAssertEqualObjects([p objectForKey:@"$manufacturer"], @"Apple", @"incorrect $manufacturer");
-    STAssertNotNil([p objectForKey:@"$model"], @"$model not set");
-    STAssertNotNil([p objectForKey:@"$os"], @"$os not set");
-    STAssertNotNil([p objectForKey:@"$os_version"], @"$os_version not set");
-    STAssertNotNil([p objectForKey:@"$screen_height"], @"$screen_height not set");
-    STAssertNotNil([p objectForKey:@"$screen_width"], @"$screen_width not set");
-    STAssertNotNil([p objectForKey:@"distinct_id"], @"distinct_id not set");
-    STAssertNotNil([p objectForKey:@"mp_device_model"], @"mp_device_model not set");
-    STAssertEqualObjects([p objectForKey:@"mp_lib"], @"iphone", @"incorrect mp_lib");
-    STAssertNotNil([p objectForKey:@"time"], @"time not set");
-    STAssertNotNil([p objectForKey:@"$ios_ifa"], @"$ios_ifa not set");
-    STAssertEqualObjects([p objectForKey:@"token"], TEST_TOKEN, @"incorrect token");
+    STAssertEquals(e[@"event"], @"Something Happened", @"incorrect event name");
+    NSDictionary *p = e[@"properties"];
+    STAssertNotNil(p[@"$app_version"], @"$app_version not set");
+    STAssertNotNil(p[@"$app_release"], @"$app_release not set");
+    STAssertNotNil(p[@"$lib_version"], @"$lib_version not set");
+    STAssertEqualObjects(p[@"$manufacturer"], @"Apple", @"incorrect $manufacturer");
+    STAssertNotNil(p[@"$model"], @"$model not set");
+    STAssertNotNil(p[@"$os"], @"$os not set");
+    STAssertNotNil(p[@"$os_version"], @"$os_version not set");
+    STAssertNotNil(p[@"$screen_height"], @"$screen_height not set");
+    STAssertNotNil(p[@"$screen_width"], @"$screen_width not set");
+    STAssertNotNil(p[@"distinct_id"], @"distinct_id not set");
+    STAssertNotNil(p[@"mp_device_model"], @"mp_device_model not set");
+    STAssertEqualObjects(p[@"mp_lib"], @"iphone", @"incorrect mp_lib");
+    STAssertNotNil(p[@"time"], @"time not set");
+    STAssertEqualObjects(p[@"token"], TEST_TOKEN, @"incorrect token");
     NSLog(@"finished testTrack");
 }
 
 - (void)testTrackProperties
 {
-    NSDictionary *p = [NSDictionary dictionaryWithObjectsAndKeys:
-                       @"yello",                   @"string",
-                       [NSNumber numberWithInt:3], @"number",
-                       [NSDate date],              @"date",
-                       @"override",                @"$app_version",
-                       nil];
+    NSDictionary *p = @{@"string": @"yello",
+                       @"number": @3,
+                       @"date": [NSDate date],
+                       @"$app_version": @"override"};
     [self.mixpanel track:@"Something Happened" properties:p];
     [self waitForSerialQueue];
     STAssertTrue(self.mixpanel.eventsQueue.count == 1, @"event not queued");
     NSDictionary *e = self.mixpanel.eventsQueue.lastObject;
-    STAssertEquals([e objectForKey:@"event"], @"Something Happened", @"incorrect event name");
-    p = [e objectForKey:@"properties"];
-    STAssertTrue(p.count == 20, @"incorrect number of properties");
-    STAssertEqualObjects([p objectForKey:@"$app_version"], @"override", @"reserved property override failed");
+    STAssertEquals(e[@"event"], @"Something Happened", @"incorrect event name");
+    p = e[@"properties"];
+    STAssertEqualObjects(p[@"$app_version"], @"override", @"reserved property override failed");
 }
 
 - (void)testTrackWithCustomDistinctIdAndToken
 {
-    NSDictionary *p = [NSDictionary dictionaryWithObjectsAndKeys:
-                       @"t1",                      @"token",
-                       @"d1",                      @"distinct_id",
-                       nil];
+    NSDictionary *p = @{@"token": @"t1",
+                       @"distinct_id": @"d1"};
     [self.mixpanel track:@"e1" properties:p];
     [self waitForSerialQueue];
-    NSString *trackToken = [[self.mixpanel.eventsQueue.lastObject objectForKey:@"properties"] objectForKey:@"token"];
-    NSString *trackDistinctId = [[self.mixpanel.eventsQueue.lastObject objectForKey:@"properties"] objectForKey:@"distinct_id"];
+    NSString *trackToken = self.mixpanel.eventsQueue.lastObject[@"properties"][@"token"];
+    NSString *trackDistinctId = self.mixpanel.eventsQueue.lastObject[@"properties"][@"distinct_id"];
     STAssertEqualObjects(trackToken, @"t1", @"user-defined distinct id not used in track. got: %@", trackToken);
     STAssertEqualObjects(trackDistinctId, @"d1", @"user-defined distinct id not used in track. got: %@", trackDistinctId);
 }
 
 - (void)testSuperProperties
 {
-    NSDictionary *p = [NSDictionary dictionaryWithObjectsAndKeys:
-                       @"a",                       @"p1",
-                       [NSNumber numberWithInt:3], @"p2",
-                       [NSDate date],              @"p2",
-                       nil];
+    NSDictionary *p = @{@"p1": @"a",
+                       @"p2": @3,
+                       @"p2": [NSDate date]};
     [self.mixpanel registerSuperProperties:p];
     [self waitForSerialQueue];
     STAssertEqualObjects([self.mixpanel currentSuperProperties], p, @"register super properties failed");
-    p = [NSDictionary dictionaryWithObject:@"b" forKey:@"p1"];
+    p = @{@"p1": @"b"};
     [self.mixpanel registerSuperProperties:p];
     [self waitForSerialQueue];
-    STAssertEqualObjects([[self.mixpanel currentSuperProperties] objectForKey:@"p1"], @"b",
+    STAssertEqualObjects([self.mixpanel currentSuperProperties][@"p1"], @"b",
                          @"register super properties failed to overwrite existing value");
-    p = [NSDictionary dictionaryWithObject:@"a" forKey:@"p4"];
+    p = @{@"p4": @"a"};
     [self.mixpanel registerSuperPropertiesOnce:p];
     [self waitForSerialQueue];
-    STAssertEqualObjects([[self.mixpanel currentSuperProperties] objectForKey:@"p4"], @"a",
+    STAssertEqualObjects([self.mixpanel currentSuperProperties][@"p4"], @"a",
                          @"register super properties once failed first time");
-    p = [NSDictionary dictionaryWithObject:@"b" forKey:@"p4"];
+    p = @{@"p4": @"b"};
     [self.mixpanel registerSuperPropertiesOnce:p];
     [self waitForSerialQueue];
-    STAssertEqualObjects([[self.mixpanel currentSuperProperties] objectForKey:@"p4"], @"a",
+    STAssertEqualObjects([self.mixpanel currentSuperProperties][@"p4"], @"a",
                          @"register super properties once failed second time");
-    p = [NSDictionary dictionaryWithObject:@"c" forKey:@"p4"];
+    p = @{@"p4": @"c"};
     [self.mixpanel registerSuperPropertiesOnce:p defaultValue:@"d"];
     [self waitForSerialQueue];
-    STAssertEqualObjects([[self.mixpanel currentSuperProperties] objectForKey:@"p4"], @"a",
+    STAssertEqualObjects([self.mixpanel currentSuperProperties][@"p4"], @"a",
                          @"register super properties once with default value failed when no match");
     [self.mixpanel registerSuperPropertiesOnce:p defaultValue:@"a"];
     [self waitForSerialQueue];
-    STAssertEqualObjects([[self.mixpanel currentSuperProperties] objectForKey:@"p4"], @"c",
+    STAssertEqualObjects([self.mixpanel currentSuperProperties][@"p4"], @"c",
                          @"register super properties once with default value failed when match");
     [self.mixpanel unregisterSuperProperty:@"a"];
     [self waitForSerialQueue];
-    STAssertNil([[self.mixpanel currentSuperProperties] objectForKey:@"a"],
+    STAssertNil([self.mixpanel currentSuperProperties][@"a"],
                          @"unregister super property failed");
     STAssertNoThrow([self.mixpanel unregisterSuperProperty:@"a"], @"unregister non-existent super property should not throw");
     [self.mixpanel clearSuperProperties];
@@ -439,7 +410,7 @@
 
 - (void)testAssertPropertyTypes
 {
-    NSDictionary *p = [NSDictionary dictionaryWithObject:[NSData data] forKey:@"data"];
+    NSDictionary *p = @{@"data": [NSData data]};
     STAssertThrows([self.mixpanel track:@"e1" properties:p], @"property type should not be allowed");
     STAssertThrows([self.mixpanel registerSuperProperties:p], @"property type should not be allowed");
     STAssertThrows([self.mixpanel registerSuperPropertiesOnce:p], @"property type should not be allowed");
@@ -453,7 +424,7 @@
 
 - (void)testReset
 {
-    NSDictionary *p = [NSDictionary dictionaryWithObject:@"a" forKey:@"p1"];
+    NSDictionary *p = @{@"p1": @"a"};
     [self.mixpanel identify:@"d1"];
     self.mixpanel.nameTag = @"n1";
     [self.mixpanel registerSuperProperties:p];
@@ -468,7 +439,7 @@
     STAssertTrue(self.mixpanel.eventsQueue.count == 0, @"events queue failed to reset");
     STAssertNil(self.mixpanel.people.distinctId, @"people distinct id failed to reset");
     STAssertTrue(self.mixpanel.peopleQueue.count == 0, @"people queue failed to reset");
-    self.mixpanel = [[[Mixpanel alloc] initWithToken:TEST_TOKEN andFlushInterval:0] autorelease];
+    self.mixpanel = [[Mixpanel alloc] initWithToken:TEST_TOKEN andFlushInterval:0];
     STAssertEqualObjects(self.mixpanel.distinctId, [self.mixpanel defaultDistinctId], @"distinct id failed to reset after archive");
     STAssertNil(self.mixpanel.nameTag, @"name tag failed to reset after archive");
     STAssertTrue([[self.mixpanel currentSuperProperties] count] == 0, @"super properties failed to reset after archive");
@@ -480,14 +451,14 @@
 - (void)testArchive
 {
     [self.mixpanel archive];
-    self.mixpanel = [[[Mixpanel alloc] initWithToken:TEST_TOKEN andFlushInterval:0] autorelease];
+    self.mixpanel = [[Mixpanel alloc] initWithToken:TEST_TOKEN andFlushInterval:0];
     STAssertEqualObjects(self.mixpanel.distinctId, [self.mixpanel defaultDistinctId], @"default distinct id archive failed");
     STAssertNil(self.mixpanel.nameTag, @"default name tag archive failed");
     STAssertTrue([[self.mixpanel currentSuperProperties] count] == 0, @"default super properties archive failed");
     STAssertTrue(self.mixpanel.eventsQueue.count == 0, @"default events queue archive failed");
     STAssertNil(self.mixpanel.people.distinctId, @"default people distinct id archive failed");
     STAssertTrue(self.mixpanel.peopleQueue.count == 0, @"default people queue archive failed");
-    NSDictionary *p = [NSDictionary dictionaryWithObject:@"a" forKey:@"p1"];
+    NSDictionary *p = @{@"p1": @"a"};
     [self.mixpanel identify:@"d1"];
     self.mixpanel.nameTag = @"n1";
     [self.mixpanel registerSuperProperties:p];
@@ -495,7 +466,7 @@
     [self.mixpanel.people set:p];
     [self waitForSerialQueue];
     [self.mixpanel archive];
-    self.mixpanel = [[[Mixpanel alloc] initWithToken:TEST_TOKEN andFlushInterval:0] autorelease];
+    self.mixpanel = [[Mixpanel alloc] initWithToken:TEST_TOKEN andFlushInterval:0];
     STAssertEqualObjects(self.mixpanel.distinctId, @"d1", @"custom distinct archive failed");
     STAssertEqualObjects(self.mixpanel.nameTag, @"n1", @"custom name tag archive failed");
     STAssertTrue([[self.mixpanel currentSuperProperties] count] == 1, @"custom super properties archive failed");
@@ -503,17 +474,10 @@
     STAssertEqualObjects(self.mixpanel.people.distinctId, @"d1", @"custom people distinct id archive failed");
     STAssertTrue(self.mixpanel.peopleQueue.count == 1, @"pending people queue archive failed");
     NSFileManager *fileManager = [NSFileManager defaultManager];
-    STAssertTrue([fileManager fileExistsAtPath:[self.mixpanel eventsFilePath]], @"events archive file not found");
-    STAssertTrue([fileManager fileExistsAtPath:[self.mixpanel peopleFilePath]], @"people archive file not found");
-    STAssertTrue([fileManager fileExistsAtPath:[self.mixpanel propertiesFilePath]], @"properties archive file not found");
-    // no existing file
-    [fileManager removeItemAtPath:[self.mixpanel eventsFilePath] error:NULL];
-    [fileManager removeItemAtPath:[self.mixpanel peopleFilePath] error:NULL];
-    [fileManager removeItemAtPath:[self.mixpanel propertiesFilePath] error:NULL];
     STAssertFalse([fileManager fileExistsAtPath:[self.mixpanel eventsFilePath]], @"events archive file not removed");
     STAssertFalse([fileManager fileExistsAtPath:[self.mixpanel peopleFilePath]], @"people archive file not removed");
     STAssertFalse([fileManager fileExistsAtPath:[self.mixpanel propertiesFilePath]], @"properties archive file not removed");
-    self.mixpanel = [[[Mixpanel alloc] initWithToken:TEST_TOKEN andFlushInterval:0] autorelease];
+    self.mixpanel = [[Mixpanel alloc] initWithToken:TEST_TOKEN andFlushInterval:0];
     STAssertEqualObjects(self.mixpanel.distinctId, [self.mixpanel defaultDistinctId], @"default distinct id from no file failed");
     STAssertNil(self.mixpanel.nameTag, @"default name tag archive from no file failed");
     STAssertTrue([[self.mixpanel currentSuperProperties] count] == 0, @"default super properties from no file failed");
@@ -530,7 +494,7 @@
     STAssertTrue([fileManager fileExistsAtPath:[self.mixpanel eventsFilePath]], @"garbage events archive file not found");
     STAssertTrue([fileManager fileExistsAtPath:[self.mixpanel peopleFilePath]], @"garbage people archive file not found");
     STAssertTrue([fileManager fileExistsAtPath:[self.mixpanel propertiesFilePath]], @"garbage properties archive file not found");
-    self.mixpanel = [[[Mixpanel alloc] initWithToken:TEST_TOKEN andFlushInterval:0] autorelease];
+    self.mixpanel = [[Mixpanel alloc] initWithToken:TEST_TOKEN andFlushInterval:0];
     STAssertEqualObjects(self.mixpanel.distinctId, [self.mixpanel defaultDistinctId], @"default distinct id from garbage failed");
     STAssertNil(self.mixpanel.nameTag, @"default name tag archive from garbage failed");
     STAssertTrue([[self.mixpanel currentSuperProperties] count] == 0, @"default super properties from garbage failed");
@@ -549,12 +513,12 @@
     [self waitForSerialQueue];
     STAssertTrue(self.mixpanel.peopleQueue.count == 1, @"people records not queued");
     NSDictionary *r = self.mixpanel.peopleQueue.lastObject;
-    STAssertEqualObjects([r objectForKey:@"$token"], TEST_TOKEN, @"project token not set");
-    STAssertEqualObjects([r objectForKey:@"$distinct_id"], @"d1", @"distinct id not set");
-    STAssertNotNil([r objectForKey:@"$union"], @"$union dictionary missing");
-    NSDictionary *p = [r objectForKey:@"$union"];
+    STAssertEqualObjects(r[@"$token"], TEST_TOKEN, @"project token not set");
+    STAssertEqualObjects(r[@"$distinct_id"], @"d1", @"distinct id not set");
+    STAssertNotNil(r[@"$union"], @"$union dictionary missing");
+    NSDictionary *p = r[@"$union"];
     STAssertTrue(p.count == 1, @"incorrect people properties: %@", p);
-    NSArray *a = [p objectForKey:@"$ios_devices"];
+    NSArray *a = p[@"$ios_devices"];
     STAssertTrue(a.count == 1, @"device token array not set");
     STAssertEqualObjects(a.lastObject, @"30313233343536373839616263646566", @"device token not encoded properly");
 }
@@ -563,46 +527,46 @@
 {
     [self.mixpanel identify:@"d1"];
     [self waitForSerialQueue];
-    NSDictionary *p = [NSDictionary dictionaryWithObject:@"a" forKey:@"p1"];
+    NSDictionary *p = @{@"p1": @"a"};
     [self.mixpanel.people set:p];
     [self waitForSerialQueue];
     STAssertTrue(self.mixpanel.peopleQueue.count == 1, @"people records not queued");
     NSDictionary *r = self.mixpanel.peopleQueue.lastObject;
-    STAssertEqualObjects([r objectForKey:@"$token"], TEST_TOKEN, @"project token not set");
-    STAssertEqualObjects([r objectForKey:@"$distinct_id"], @"d1", @"distinct id not set");
-    STAssertNotNil([r objectForKey:@"$time"], @"$time timestamp missing");
-    STAssertNotNil([r objectForKey:@"$set"], @"$set dictionary missing");
-    p = [r objectForKey:@"$set"];
-    STAssertEqualObjects([p objectForKey:@"p1"], @"a", @"custom people property not queued");
+    STAssertEqualObjects(r[@"$token"], TEST_TOKEN, @"project token not set");
+    STAssertEqualObjects(r[@"$distinct_id"], @"d1", @"distinct id not set");
+    STAssertNotNil(r[@"$time"], @"$time timestamp missing");
+    STAssertNotNil(r[@"$set"], @"$set dictionary missing");
+    p = r[@"$set"];
+    STAssertEqualObjects(p[@"p1"], @"a", @"custom people property not queued");
     [self assertDefaultPeopleProperties:p];
 }
 
 - (void)testPeopleSetOnce
 {
     [self.mixpanel identify:@"d1"];
-    NSDictionary *p = [NSDictionary dictionaryWithObject:@"a" forKey:@"p1"];
+    NSDictionary *p = @{@"p1": @"a"};
     [self.mixpanel.people setOnce:p];
     [self waitForSerialQueue];
     STAssertTrue(self.mixpanel.peopleQueue.count == 1, @"people records not queued");
     NSDictionary *r = self.mixpanel.peopleQueue.lastObject;
-    STAssertEqualObjects([r objectForKey:@"$token"], TEST_TOKEN, @"project token not set");
-    STAssertEqualObjects([r objectForKey:@"$distinct_id"], @"d1", @"distinct id not set");
-    STAssertNotNil([r objectForKey:@"$time"], @"$time timestamp missing");
-    STAssertNotNil([r objectForKey:@"$set_once"], @"$set dictionary missing");
-    p = [r objectForKey:@"$set_once"];
-    STAssertEqualObjects([p objectForKey:@"p1"], @"a", @"custom people property not queued");
+    STAssertEqualObjects(r[@"$token"], TEST_TOKEN, @"project token not set");
+    STAssertEqualObjects(r[@"$distinct_id"], @"d1", @"distinct id not set");
+    STAssertNotNil(r[@"$time"], @"$time timestamp missing");
+    STAssertNotNil(r[@"$set_once"], @"$set dictionary missing");
+    p = r[@"$set_once"];
+    STAssertEqualObjects(p[@"p1"], @"a", @"custom people property not queued");
     [self assertDefaultPeopleProperties:p];
 }
 
 - (void)testPeopleSetReservedProperty
 {
     [self.mixpanel identify:@"d1"];
-    NSDictionary *p = [NSDictionary dictionaryWithObject:@"override" forKey:@"$ios_app_version"];
+    NSDictionary *p = @{@"$ios_app_version": @"override"};
     [self.mixpanel.people set:p];
     [self waitForSerialQueue];
     NSDictionary *r = self.mixpanel.peopleQueue.lastObject;
-    p = [r objectForKey:@"$set"];
-    STAssertEqualObjects([p objectForKey:@"$ios_app_version"], @"override", @"reserved property override failed");
+    p = r[@"$set"];
+    STAssertEqualObjects(p[@"$ios_app_version"], @"override", @"reserved property override failed");
 }
 
 - (void)testPeopleSetTo
@@ -612,43 +576,43 @@
     [self waitForSerialQueue];
     STAssertTrue(self.mixpanel.peopleQueue.count == 1, @"people records not queued");
     NSDictionary *r = self.mixpanel.peopleQueue.lastObject;
-    STAssertEqualObjects([r objectForKey:@"$token"], TEST_TOKEN, @"project token not set");
-    STAssertEqualObjects([r objectForKey:@"$distinct_id"], @"d1", @"distinct id not set");
-    STAssertNotNil([r objectForKey:@"$set"], @"$set dictionary missing");
-    NSDictionary *p = [r objectForKey:@"$set"];
-    STAssertEqualObjects([p objectForKey:@"p1"], @"a", @"custom people property not queued");
+    STAssertEqualObjects(r[@"$token"], TEST_TOKEN, @"project token not set");
+    STAssertEqualObjects(r[@"$distinct_id"], @"d1", @"distinct id not set");
+    STAssertNotNil(r[@"$set"], @"$set dictionary missing");
+    NSDictionary *p = r[@"$set"];
+    STAssertEqualObjects(p[@"p1"], @"a", @"custom people property not queued");
     [self assertDefaultPeopleProperties:p];
 }
 
 - (void)testPeopleIncrement
 {
     [self.mixpanel identify:@"d1"];
-    NSDictionary *p = [NSDictionary dictionaryWithObject:[NSNumber numberWithInt:3] forKey:@"p1"];
+    NSDictionary *p = @{@"p1": @3};
     [self.mixpanel.people increment:p];
     [self waitForSerialQueue];
     STAssertTrue(self.mixpanel.peopleQueue.count == 1, @"people records not queued");
     NSDictionary *r = self.mixpanel.peopleQueue.lastObject;
-    STAssertEqualObjects([r objectForKey:@"$token"], TEST_TOKEN, @"project token not set");
-    STAssertEqualObjects([r objectForKey:@"$distinct_id"], @"d1", @"distinct id not set");
-    STAssertNotNil([r objectForKey:@"$add"], @"$add dictionary missing");
-    p = [r objectForKey:@"$add"];
+    STAssertEqualObjects(r[@"$token"], TEST_TOKEN, @"project token not set");
+    STAssertEqualObjects(r[@"$distinct_id"], @"d1", @"distinct id not set");
+    STAssertNotNil(r[@"$add"], @"$add dictionary missing");
+    p = r[@"$add"];
     STAssertTrue(p.count == 1, @"incorrect people properties: %@", p);
-    STAssertEqualObjects([p objectForKey:@"p1"], [NSNumber numberWithInt:3], @"custom people property not queued");
+    STAssertEqualObjects(p[@"p1"], @3, @"custom people property not queued");
 }
 
 - (void)testPeopleIncrementBy
 {
     [self.mixpanel identify:@"d1"];
-    [self.mixpanel.people increment:@"p1" by:[NSNumber numberWithInt:3]];
+    [self.mixpanel.people increment:@"p1" by:@3];
     [self waitForSerialQueue];
     STAssertTrue(self.mixpanel.peopleQueue.count == 1, @"people records not queued");
     NSDictionary *r = self.mixpanel.peopleQueue.lastObject;
-    STAssertEqualObjects([r objectForKey:@"$token"], TEST_TOKEN, @"project token not set");
-    STAssertEqualObjects([r objectForKey:@"$distinct_id"], @"d1", @"distinct id not set");
-    STAssertNotNil([r objectForKey:@"$add"], @"$add dictionary missing");
-    NSDictionary *p = [r objectForKey:@"$add"];
+    STAssertEqualObjects(r[@"$token"], TEST_TOKEN, @"project token not set");
+    STAssertEqualObjects(r[@"$distinct_id"], @"d1", @"distinct id not set");
+    STAssertNotNil(r[@"$add"], @"$add dictionary missing");
+    NSDictionary *p = r[@"$add"];
     STAssertTrue(p.count == 1, @"incorrect people properties: %@", p);
-    STAssertEqualObjects([p objectForKey:@"p1"], [NSNumber numberWithInt:3], @"custom people property not queued");
+    STAssertEqualObjects(p[@"p1"], @3, @"custom people property not queued");
 }
 
 - (void)testPeopleDeleteUser
@@ -658,10 +622,10 @@
     [self waitForSerialQueue];
     STAssertTrue(self.mixpanel.peopleQueue.count == 1, @"people records not queued");
     NSDictionary *r = self.mixpanel.peopleQueue.lastObject;
-    STAssertEqualObjects([r objectForKey:@"$token"], TEST_TOKEN, @"project token not set");
-    STAssertEqualObjects([r objectForKey:@"$distinct_id"], @"d1", @"distinct id not set");
-    STAssertNotNil([r objectForKey:@"$delete"], @"$delete dictionary missing");
-    NSDictionary *p = [r objectForKey:@"$delete"];
+    STAssertEqualObjects(r[@"$token"], TEST_TOKEN, @"project token not set");
+    STAssertEqualObjects(r[@"$distinct_id"], @"d1", @"distinct id not set");
+    STAssertNotNil(r[@"$delete"], @"$delete dictionary missing");
+    NSDictionary *p = r[@"$delete"];
     STAssertTrue(p.count == 0, @"incorrect people properties: %@", p);
 }
 
@@ -680,10 +644,10 @@
 - (void)testPeopleAssertPropertyTypes
 {
     NSURL *d = [NSData data];
-    NSDictionary *p = [NSDictionary dictionaryWithObject:d forKey:@"URL"];
+    NSDictionary *p = @{@"URL": d};
     STAssertThrows([self.mixpanel.people set:p], @"unsupported property allowed");
     STAssertThrows([self.mixpanel.people set:@"p1" to:d], @"unsupported property allowed");
-    p = [NSDictionary dictionaryWithObject:@"a" forKey:@"p1"]; // increment should require a number
+    p = @{@"p1": @"a"}; // increment should require a number
     STAssertThrows([self.mixpanel.people increment:p], @"unsupported property allowed");
 }
 
@@ -699,7 +663,7 @@
     [self waitForSerialQueue];
     // legacy behavior
     STAssertTrue(self.mixpanel.eventsQueue.count == 2, @"track with nil should create mp_event event");
-    STAssertEqualObjects([self.mixpanel.eventsQueue.lastObject objectForKey:@"event"], @"mp_event", @"track with nil should create mp_event event");
+    STAssertEqualObjects(self.mixpanel.eventsQueue.lastObject[@"event"], @"mp_event", @"track with nil should create mp_event event");
     STAssertNotNil([self.mixpanel currentSuperProperties], @"setting super properties to nil should have no effect");
     STAssertTrue([[self.mixpanel currentSuperProperties] count] == 0, @"setting super properties to nil should have no effect");
     [self.mixpanel identify:nil];
@@ -709,7 +673,7 @@
     STAssertThrows([self.mixpanel.people set:@"p1" to:nil], @"should not take nil argument");
     STAssertThrows([self.mixpanel.people set:nil to:nil], @"should not take nil argument");
     STAssertThrows([self.mixpanel.people increment:nil], @"should not take nil argument");
-    STAssertThrows([self.mixpanel.people increment:nil by:[NSNumber numberWithInt:3]], @"should not take nil argument");
+    STAssertThrows([self.mixpanel.people increment:nil by:@3], @"should not take nil argument");
     STAssertThrows([self.mixpanel.people increment:@"p1" by:nil], @"should not take nil argument");
     STAssertThrows([self.mixpanel.people increment:nil by:nil], @"should not take nil argument");
 }
@@ -766,12 +730,12 @@
 
 - (void)testDropEvents
 {
-    for (int i = 0; i < 505; i++) {
+    for (NSInteger i = 0; i < 505; i++) {
         [self.mixpanel track:@"rapid_event" properties:@{@"i": @(i)}];
     }
     [self waitForSerialQueue];
     STAssertTrue([self.mixpanel.eventsQueue count] == 500, nil);
-    NSDictionary *e = [self.mixpanel.eventsQueue objectAtIndex:0];
+    NSDictionary *e = self.mixpanel.eventsQueue[0];
     STAssertEqualObjects(e[@"properties"][@"i"], @(5), nil);
     e = [self.mixpanel.eventsQueue lastObject];
     STAssertEqualObjects(e[@"properties"][@"i"], @(504), nil);
@@ -779,12 +743,12 @@
 
 - (void)testDropUnidentifiedPeopleRecords
 {
-    for (int i = 0; i < 505; i++) {
+    for (NSInteger i = 0; i < 505; i++) {
         [self.mixpanel.people set:@"i" to:@(i)];
     }
     [self waitForSerialQueue];
     STAssertTrue([self.mixpanel.people.unidentifiedQueue count] == 500, nil);
-    NSDictionary *r = [self.mixpanel.people.unidentifiedQueue objectAtIndex:0];
+    NSDictionary *r = self.mixpanel.people.unidentifiedQueue[0];
     STAssertEqualObjects(r[@"$set"][@"i"], @(5), nil);
     r = [self.mixpanel.people.unidentifiedQueue lastObject];
     STAssertEqualObjects(r[@"$set"][@"i"], @(504), nil);
@@ -793,12 +757,12 @@
 - (void)testDropPeopleRecords
 {
     [self.mixpanel identify:@"d1"];
-    for (int i = 0; i < 505; i++) {
+    for (NSInteger i = 0; i < 505; i++) {
         [self.mixpanel.people set:@"i" to:@(i)];
     }
     [self waitForSerialQueue];
     STAssertTrue([self.mixpanel.peopleQueue count] == 500, nil);
-    NSDictionary *r = [self.mixpanel.peopleQueue objectAtIndex:0];
+    NSDictionary *r = self.mixpanel.peopleQueue[0];
     STAssertEqualObjects(r[@"$set"][@"i"], @(5), nil);
     r = [self.mixpanel.peopleQueue lastObject];
     STAssertEqualObjects(r[@"$set"][@"i"], @(504), nil);
@@ -931,6 +895,132 @@
     m = [NSMutableDictionary dictionaryWithDictionary:o];
     m[@"prompt"] = @"";
     STAssertNil([MPSurveyQuestion questionWithJSONObject:m], nil);
+}
+
+- (void)testParseNotification
+{
+    // invalid bad title
+    NSDictionary *invalid = @{@"id": @3,
+                              @"title": @5,
+                              @"type": @"takeover",
+                              @"body": @"Hi!",
+                              @"cta_url": @"blah blah blah",
+                              @"cta": [NSNull null],
+                              @"image_url": @[]};
+
+    STAssertNil([MPNotification notificationWithJSONObject:invalid], nil);
+
+    // valid
+    NSDictionary *o = @{@"id": @3,
+                        @"message_id": @1,
+                        @"title": @"title",
+                        @"type": @"takeover",
+                        @"body": @"body",
+                        @"cta": @"cta",
+                        @"cta_url": @"maps://",
+                        @"image_url": @"http://mixpanel.com"};
+
+    STAssertNotNil([MPNotification notificationWithJSONObject:o], nil);
+
+    // nil
+    STAssertNil([MPNotification notificationWithJSONObject:nil], nil);
+
+    // empty
+    STAssertNil([MPNotification notificationWithJSONObject:@{}], nil);
+
+    // garbage keys
+    STAssertNil([MPNotification notificationWithJSONObject:@{@"gar": @"bage"}], nil);
+
+    NSMutableDictionary *m;
+
+    // invalid id
+    m = [NSMutableDictionary dictionaryWithDictionary:o];
+    m[@"id"] = @NO;
+    STAssertNil([MPNotification notificationWithJSONObject:m], nil);
+
+    // invalid title
+    m = [NSMutableDictionary dictionaryWithDictionary:o];
+    m[@"title"] = @NO;
+    STAssertNil([MPNotification notificationWithJSONObject:m], nil);
+
+    // invalid body
+    m = [NSMutableDictionary dictionaryWithDictionary:o];
+    m[@"body"] = @NO;
+    STAssertNil([MPNotification notificationWithJSONObject:m], nil);
+
+    // invalid cta
+    m = [NSMutableDictionary dictionaryWithDictionary:o];
+    m[@"cta"] = @NO;
+    STAssertNil([MPNotification notificationWithJSONObject:m], nil);
+
+    // invalid cta_url
+    m = [NSMutableDictionary dictionaryWithDictionary:o];
+    m[@"cta_url"] = @NO;
+    STAssertNil([MPNotification notificationWithJSONObject:m], nil);
+
+    // invalid image_urls
+    m = [NSMutableDictionary dictionaryWithDictionary:o];
+    m[@"image_url"] = @NO;
+    STAssertNil([MPNotification notificationWithJSONObject:m], nil);
+
+    // invalid image_urls item
+    m = [NSMutableDictionary dictionaryWithDictionary:o];
+    m[@"image_url"] = @[@NO];
+    STAssertNil([MPNotification notificationWithJSONObject:m], nil);
+
+    // an image with a space in the URL should be % encoded
+    m = [NSMutableDictionary dictionaryWithDictionary:o];
+    m[@"image_url"] = @"http://test.com/animagewithaspace init.jpg";
+    STAssertNotNil([MPNotification notificationWithJSONObject:m], nil);
+
+}
+
+- (void)testNoShowSurveyOnPresentingVC
+{
+    NSDictionary *o = @{@"id": @3,
+                        @"name": @"survey",
+                        @"collections": @[@{@"id": @9, @"name": @"collection"}],
+                        @"questions": @[@{
+                                            @"id": @12,
+                                            @"type": @"text",
+                                            @"prompt": @"Anything else?",
+                                            @"extra_data": @{}}]};
+
+    MPSurvey *survey = [MPSurvey surveyWithJSONObject:o];
+
+    //Start presenting a View Controller on the current root
+    UIViewController *topViewController = [self topViewController];
+
+    __block BOOL waitForBlock = YES;
+    [topViewController presentViewController:[[UIViewController alloc]init] animated:YES completion:^{ waitForBlock = NO; }];
+
+    //Survey should not show as it cannot present on top of a currently presenting view controller
+    [self.mixpanel performSelector:@selector(presentSurveyWithRootViewController:) withObject:survey];
+
+    STAssertFalse([[self topViewController] isKindOfClass:[MPSurveyNavigationController class]], @"Survey was presented when it shouldn't have been");
+
+    //Wait for original VC to present, so we don't interfere with subsequent tests.
+    while(waitForBlock) {
+        [[NSRunLoop currentRunLoop] runMode:NSDefaultRunLoopMode beforeDate:[NSDate dateWithTimeIntervalSinceNow:0.1]];
+    }
+}
+
+- (void)testShowSurvey
+{
+    NSDictionary *o = @{@"id": @3,
+                        @"name": @"survey",
+                        @"collections": @[@{@"id": @9, @"name": @"collection"}],
+                        @"questions": @[@{
+                                            @"id": @12,
+                                            @"type": @"text",
+                                            @"prompt": @"Anything else?",
+                                            @"extra_data": @{}}]};
+
+    MPSurvey *survey = [MPSurvey surveyWithJSONObject:o];
+
+    [self.mixpanel performSelector:@selector(presentSurveyWithRootViewController:) withObject:survey];
+
+    STAssertTrue([[self topViewController] isKindOfClass:[MPSurveyNavigationController class]], @"Survey was not presented");
 }
 
 @end

@@ -87,8 +87,6 @@ NSString * const WPAccountWordPressComAccountWasRemovedNotification	= @"WPAccoun
     [[NSUserDefaults standardUserDefaults] setURL:accountURL forKey:DefaultDotcomAccountDefaultsKey];
     [[NSUserDefaults standardUserDefaults] synchronize];
     [[NSNotificationCenter defaultCenter] postNotificationName:WPAccountWordPressComAccountWasAddedNotification object:account];
-    
-    [NotificationsManager registerForPushNotifications];
 }
 
 + (void)removeDefaultWordPressComAccount {
@@ -97,7 +95,8 @@ NSString * const WPAccountWordPressComAccountWasRemovedNotification	= @"WPAccoun
     if (!__defaultDotcomAccount) {
         return;
     }
-
+#warning TODO: wpcom_username_preference should be a constant
+    [[NSUserDefaults standardUserDefaults] removeObjectForKey:@"wpcom_username_preference"];
     [[NSUserDefaults standardUserDefaults] removeObjectForKey:DefaultDotcomAccountDefaultsKey];
 	[[NSUserDefaults standardUserDefaults] synchronize];
 		
@@ -106,10 +105,16 @@ NSString * const WPAccountWordPressComAccountWasRemovedNotification	= @"WPAccoun
 	[[ContextManager sharedInstance] saveContext:context];
 	
     __defaultDotcomAccount = nil;
+
 	[[NSNotificationCenter defaultCenter] postNotificationName:WPAccountWordPressComAccountWasRemovedNotification object:nil];
 }
 
 - (void)prepareForDeletion {
+    // Only do these deletions in the primary context (no parent)
+    if (self.managedObjectContext.parentContext) {
+        return;
+    }
+    
     [[self restApi] cancelAllHTTPOperationsWithMethod:nil path:nil];
     [[self restApi] reset];
 
@@ -119,13 +124,7 @@ NSString * const WPAccountWordPressComAccountWasRemovedNotification	= @"WPAccoun
     [SFHFKeychainUtils deleteItemForUsername:self.username andServiceName:WordPressComOAuthKeychainServiceName error:&error];
     self.password = nil;
     self.authToken = nil;
-
-    [WordPressAppDelegate sharedWordPressApplicationDelegate].isWPcomAuthenticated = NO;
-
-    [[NSUserDefaults standardUserDefaults] removeObjectForKey:@"wpcom_username_preference"];
-    [[NSUserDefaults standardUserDefaults] synchronize];
 }
-
 
 #pragma mark - Account creation
 
@@ -135,6 +134,7 @@ NSString * const WPAccountWordPressComAccountWasRemovedNotification	= @"WPAccoun
     WPAccount *account = [self createOrUpdateSelfHostedAccountWithXmlrpc:WordPressDotcomXMLRPCKey username:username andPassword:password];
 	account.isWpcom = YES;
 	account.authToken = authToken;
+	[[ContextManager sharedInstance] saveContext:account.managedObjectContext];
 
     return account;
 }
