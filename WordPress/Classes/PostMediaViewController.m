@@ -761,9 +761,9 @@
     alertView.overlayTitle = NSLocalizedString(@"Custom Size", @"");
     alertView.overlayDescription = @"";
     alertView.footerDescription = nil;
-    alertView.firstTextFieldPlaceholder = NSLocalizedString(@"Width", @"");
+    alertView.firstTextFieldLabelText = NSLocalizedString(@"Width", @"");
     alertView.firstTextFieldValue = widthText;
-    alertView.secondTextFieldPlaceholder = NSLocalizedString(@"Height", @"");
+    alertView.secondTextFieldLabelText = NSLocalizedString(@"Height", @"");
     alertView.secondTextFieldValue = heightText;
     alertView.leftButtonText = NSLocalizedString(@"Cancel", @"Cancel button");
     alertView.rightButtonText = NSLocalizedString(@"OK", @"");
