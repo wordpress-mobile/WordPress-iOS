@@ -11,7 +11,7 @@
 #import "UIImageView+Gravatar.h"
 #import "WordPressComApi.h"
 #import "BlogDetailsViewController.h"
-#import "WPTableViewCell.h"
+#import "WPBlogTableViewCell.h"
 #import "ContextManager.h"
 #import "Blog.h"
 #import "WPAccount.h"
@@ -74,8 +74,8 @@ static CGFloat const blavatarImageSize = 50.f;
     }
 
     [WPStyleGuide configureColorsForView:self.view andTableView:self.tableView];
- 
-    [self.tableView registerClass:[WPTableViewCell class] forCellReuseIdentifier:BlogCellIdentifier];
+
+    [self.tableView registerClass:[WPBlogTableViewCell class] forCellReuseIdentifier:BlogCellIdentifier];
 }
 
 - (void)viewWillAppear:(BOOL)animated {
@@ -136,8 +136,8 @@ static CGFloat const blavatarImageSize = 50.f;
 {
     
     UITableViewCell *cell = [self.tableView dequeueReusableCellWithIdentifier:BlogCellIdentifier];
-    
-    [WPStyleGuide configureTableViewCell:cell];
+
+    [WPStyleGuide configureTableViewSmallSubtitleCell:cell];
     [self configureCell:cell atIndexPath:indexPath];
 
     return cell;
@@ -179,6 +179,7 @@ static CGFloat const blavatarImageSize = 50.f;
     Blog *blog = [self.resultsController objectAtIndexPath:indexPath];
     if ([blog.blogName length] != 0) {
         cell.textLabel.text = blog.blogName;
+        cell.detailTextLabel.text = blog.url;
     } else {
         cell.textLabel.text = blog.url;
     }

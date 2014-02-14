@@ -561,7 +561,7 @@ static NSInteger const ImageSizeLargeHeight = 480;
         _api = [[WPXMLRPCClient alloc] initWithXMLRPCEndpoint:[NSURL URLWithString:self.xmlrpc]];
         // Enable compression for wp.com only, as some self hosted have connection issues
         if (self.isWPcom) {
-            [_api setDefaultHeader:@"gzip, deflate" value:@"Accept-Encoding"];
+            [_api setDefaultHeader:@"Accept-Encoding" value:@"gzip, deflate"];
             [_api setAuthorizationHeaderWithToken:self.account.authToken];
         }
     }
