@@ -177,6 +177,7 @@ extern NSString *const StatsEventNUXFirstWalkthroughOpened;
 extern NSString *const StatsEventNUXFirstWalkthroughClickedSkipToCreateAccount;
 extern NSString *const StatsEventNUXFirstWalkthroughClickedInfo;
 extern NSString *const StatsEventNUXFirstWalkthroughClickedCreateAccount;
+extern NSString *const StatsEventNUXFirstWalkthroughClickedLostPassword;
 extern NSString *const StatsEventNUXFirstWalkthroughSignedInWithoutUrl;
 extern NSString *const StatsEventNUXFirstWalkthroughSignedInWithUrl;
 extern NSString *const StatsEventNUXFirstWalkthroughSignedInForDotCom;
