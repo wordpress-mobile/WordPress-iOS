@@ -89,6 +89,7 @@ static NSString *const CameraPlusImagesNotification = @"CameraPlusImagesNotifica
 	
 	// Simperium Setup
 	[self setupSimperium];
+	[self loginSimperium];
 	
 	// Listen for WPAccount changes
 	[self hookAccountNotifications];
@@ -933,9 +934,6 @@ static NSString *const CameraPlusImagesNotification = @"CameraPlusImagesNotifica
 							 model:manager.managedObjectModel
 						   context:manager.mainContext
 					   coordinator:manager.persistentStoreCoordinator];
-	
-#warning TODO: Login if we already have creds (after launch)
-	[self loginSimperium];
 }
 
 - (void)loginSimperium {
