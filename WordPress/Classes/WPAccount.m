@@ -16,9 +16,8 @@
 #import <SFHFKeychainUtils.h>
 #import "NotificationsManager.h"
 #import "WordPressComOAuthClient.h"
+#import "Constants.h"
 
-static NSString * const DefaultDotcomAccountDefaultsKey = @"AccountDefaultDotcom";
-static NSString * const WordPressDotcomXMLRPCKey = @"https://wordpress.com/xmlrpc.php";
 
 static WPAccount *__defaultDotcomAccount = nil;
 
@@ -52,7 +51,7 @@ NSString * const WPAccountWordPressComAccountWasRemovedNotification	= @"WPAccoun
     }
     NSManagedObjectContext *context = [[ContextManager sharedInstance] mainContext];
 
-    NSURL *accountURL = [[NSUserDefaults standardUserDefaults] URLForKey:DefaultDotcomAccountDefaultsKey];
+    NSURL *accountURL = [[NSUserDefaults standardUserDefaults] URLForKey:WPComDefaultAccountUrlKey];
     if (!accountURL) {
         return nil;
     }
@@ -66,7 +65,7 @@ NSString * const WPAccountWordPressComAccountWasRemovedNotification	= @"WPAccoun
         __defaultDotcomAccount = account;
     } else {
         // The stored Account reference is invalid, so let's remove it to avoid wasting time querying for it
-        [[NSUserDefaults standardUserDefaults] removeObjectForKey:DefaultDotcomAccountDefaultsKey];
+        [[NSUserDefaults standardUserDefaults] removeObjectForKey:WPComDefaultAccountUrlKey];
     }
 
     return __defaultDotcomAccount;
@@ -84,7 +83,7 @@ NSString * const WPAccountWordPressComAccountWasRemovedNotification	= @"WPAccoun
         [account.managedObjectContext obtainPermanentIDsForObjects:@[account] error:nil];
     }
     NSURL *accountURL = [[account objectID] URIRepresentation];
-    [[NSUserDefaults standardUserDefaults] setURL:accountURL forKey:DefaultDotcomAccountDefaultsKey];
+    [[NSUserDefaults standardUserDefaults] setURL:accountURL forKey:WPComDefaultAccountUrlKey];
     [[NSUserDefaults standardUserDefaults] synchronize];
     [[NSNotificationCenter defaultCenter] postNotificationName:WPAccountWordPressComAccountWasAddedNotification object:account];
 }
@@ -95,9 +94,8 @@ NSString * const WPAccountWordPressComAccountWasRemovedNotification	= @"WPAccoun
     if (!__defaultDotcomAccount) {
         return;
     }
-#warning TODO: wpcom_username_preference should be a constant
-    [[NSUserDefaults standardUserDefaults] removeObjectForKey:@"wpcom_username_preference"];
-    [[NSUserDefaults standardUserDefaults] removeObjectForKey:DefaultDotcomAccountDefaultsKey];
+    [[NSUserDefaults standardUserDefaults] removeObjectForKey:WPComDefaultAccountUsernameKey];
+    [[NSUserDefaults standardUserDefaults] removeObjectForKey:WPComDefaultAccountUrlKey];
 	[[NSUserDefaults standardUserDefaults] synchronize];
 		
 	NSManagedObjectContext *context = [[ContextManager sharedInstance] mainContext];
@@ -131,7 +129,7 @@ NSString * const WPAccountWordPressComAccountWasRemovedNotification	= @"WPAccoun
 + (WPAccount *)createOrUpdateWordPressComAccountWithUsername:(NSString *)username password:(NSString *)password authToken:(NSString *)authToken {
 	NSAssert([NSThread isMainThread], @"This method should never be called in background");
 
-    WPAccount *account = [self createOrUpdateSelfHostedAccountWithXmlrpc:WordPressDotcomXMLRPCKey username:username andPassword:password];
+    WPAccount *account = [self createOrUpdateSelfHostedAccountWithXmlrpc:WPComXMLRPCUrl username:username andPassword:password];
 	account.isWpcom = YES;
 	account.authToken = authToken;
 	[[ContextManager sharedInstance] saveContext:account.managedObjectContext];
