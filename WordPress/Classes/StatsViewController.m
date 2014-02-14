@@ -593,7 +593,7 @@ typedef NS_ENUM(NSInteger, TotalFollowersShareRow) {
         case StatsSectionVisitors:
             return NSLocalizedString(@"Visitors and Views", @"Stats: Section title");
         case StatsSectionTopPosts:
-            return NSLocalizedString(@"Top Posts", @"Stats: Section title");;
+            return NSLocalizedString(@"Top Posts & Pages", @"Stats: Section title");;
         case StatsSectionViewsByCountry:
             return NSLocalizedString(@"Views By Country", @"Stats: Section title");;
         case StatsSectionTotalsFollowersShares:
