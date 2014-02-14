@@ -14,15 +14,32 @@
 
 @interface Note : SPManagedObject<WPContentViewProvider>
 
-@property (nonatomic, retain) NSNumber *timestamp;
-@property (nonatomic, retain) NSString *type;
-@property (nonatomic, retain) NSString *subject;
-@property (nonatomic, retain) NSData *payload;
-@property (nonatomic, retain) NSNumber *unread;
-@property (nonatomic, retain) NSString *icon;
-@property (nonatomic, retain) NSString *noteID;
-@property (nonatomic, strong, readonly) NSString *commentText;
-@property (nonatomic, strong, readonly) NSDictionary *noteData;
+
+///////////////////////////////////////////////////////////////////////////
+
+#warning TODO: Encapsulate bodyItems and bodyActions into objects
+
+@property (nonatomic, strong,  readonly) NSString		*noteID;
+@property (nonatomic, strong,  readonly) NSNumber		*timestamp;
+@property (nonatomic, strong,  readonly) NSString		*type;
+@property (nonatomic, strong, readwrite) NSNumber		*unread;
+@property (nonatomic, retain,  readonly) NSDictionary	*subject;
+@property (nonatomic, retain,  readonly) NSDictionary	*body;
+
+// Derived attributes from the Subject and Body collections.
+// Ref: http://developer.wordpress.com/docs/api/1/get/notifications/
+//
+@property (nonatomic, strong,  readonly) NSString		*subjectText;
+@property (nonatomic, strong,  readonly) NSString		*subjectIcon;
+@property (nonatomic, strong,  readonly) NSArray		*bodyItems;
+@property (nonatomic, strong,  readonly) NSArray		*bodyActions;
+@property (nonatomic, strong,  readonly) NSString		*bodyTemplate;
+@property (nonatomic, strong,  readonly) NSString		*bodyHeaderText;
+@property (nonatomic, strong,  readonly) NSString		*bodyHeaderLink;
+@property (nonatomic, strong,  readonly) NSString		*bodyFooterText;
+@property (nonatomic, strong,  readonly) NSString		*bodyFooterLink;
+@property (nonatomic, strong,  readonly) NSString		*bodyCommentText;
+
 
 - (BOOL)isComment;
 - (BOOL)isLike;
@@ -32,9 +49,7 @@
 
 // Attempt to get the right blog for the note's stats event
 - (Blog *)blogForStatsEvent;
-- (BOOL)statsEvent;
-
-- (void)syncAttributes:(NSDictionary *)data;
+- (BOOL)isStatsEvent;
 
 /**
  Remove old notes from Core Data storage
@@ -45,8 +60,4 @@
  */
 + (void)pruneOldNotesBefore:(NSNumber *)timestamp withContext:(NSManagedObjectContext *)context;
 
-@end
-
-@interface Note (WordPressComApi)
-- (void)refreshNoteDataWithSuccess:(void (^)())success failure:(void (^)(NSError *error))failure;
 @end

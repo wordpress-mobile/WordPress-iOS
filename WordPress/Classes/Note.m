@@ -13,110 +13,105 @@
 #import "ContextManager.h"
 #import "XMLParserCollecter.h"
 
-const NSUInteger NoteKeepCount = 20;
 
 
+const NSUInteger WPNoteKeepCount = 20;
 
 
 @interface Note ()
-
-@property (nonatomic, strong) NSDictionary *noteData;
-@property (nonatomic, strong) NSString *commentText;
-@property (nonatomic, strong) NSDate *date;
-
+@property (nonatomic, strong, readwrite) NSDate		*date;
+@property (nonatomic, strong, readwrite) NSString	*bodyCommentText;
 @end
+
 
 @implementation Note
 
+@dynamic noteID;
 @dynamic timestamp;
 @dynamic type;
-@dynamic subject;
-@dynamic payload;
 @dynamic unread;
-@dynamic icon;
-@dynamic noteID;
-@synthesize commentText = _commentText;
-@synthesize noteData = _noteData;
-@synthesize date = _date;
+@dynamic subject;
+@dynamic body;
 
-+ (void)pruneOldNotesBefore:(NSNumber *)timestamp withContext:(NSManagedObjectContext *)context {
-    NSError *error;
+@synthesize date			= _date;
+@synthesize bodyCommentText	= _bodyCommentText;
 
-    // For some strange reason, core data objects with changes are ignored when using fetchOffset
-    // Even if you have 20 notes and fetchOffset is 20, any object with uncommitted changes would show up as a result
-    // To avoid that we make sure to commit all changes before doing our request
-    [context save:&error];
-    NSUInteger keepCount = NoteKeepCount;
-    if (timestamp) {
-        NSFetchRequest *countRequest = [NSFetchRequest fetchRequestWithEntityName:@"Note"];
-        countRequest.predicate = [NSPredicate predicateWithFormat:@"timestamp >= %@", timestamp];
-        NSSortDescriptor *dateSortDescriptor = [NSSortDescriptor sortDescriptorWithKey:@"timestamp" ascending:NO];
-        countRequest.sortDescriptors = @[ dateSortDescriptor ];
-        NSError *error;
-        NSUInteger notesCount = [context countForFetchRequest:countRequest error:&error];
-        if (notesCount != NSNotFound) {
-            keepCount = MAX(keepCount, notesCount);
-        }
-    }
 
-    NSFetchRequest *request = [NSFetchRequest fetchRequestWithEntityName:@"Note"];
-    request.fetchOffset = keepCount;
-    NSSortDescriptor *dateSortDescriptor = [NSSortDescriptor sortDescriptorWithKey:@"timestamp" ascending:NO];
-    request.sortDescriptors = @[ dateSortDescriptor ];
-    NSArray *notes = [context executeFetchRequest:request error:&error];
-    if (error) {
-        DDLogError(@"Error pruning old notes: %@", error);
-        return;
-    }
-    for (Note *note in notes) {
-        [context deleteObject:note];
-    }
-    if(![context save:&error]){
-        DDLogError(@"Failed to save after pruning notes: %@", error);
-    }
-    [context save:&error];
+#pragma mark - Derived Properties from subject / body dictionaries
+
+- (NSString *)subjectText {
+	NSString *subject = self.subject[@"text"] ?: self.subject[@"html"];
+	return [subject trim];
 }
 
-+ (NSNumber *)lastNoteTimestampWithContext:(NSManagedObjectContext *)context {
-    NSFetchRequest *request = [NSFetchRequest fetchRequestWithEntityName:@"Note"];
-    request.resultType = NSDictionaryResultType;
-    request.propertiesToFetch = @[@"timestamp"];
-    request.fetchLimit = 1;
-    request.sortDescriptors = @[[NSSortDescriptor sortDescriptorWithKey:@"timestamp" ascending:NO]];
-    NSArray *results = [context executeFetchRequest:request error:nil];
-    NSNumber *timestamp = nil;
-    if ([results count]) {
-        NSDictionary *note = [results firstObject];
-        timestamp = note[@"timestamp"];
-    }
-    return timestamp;
+- (NSString *)subjectIcon {
+	return self.subject[@"icon"];
 }
 
-- (void)syncAttributes:(NSDictionary *)noteData {
-    self.payload = [NSJSONSerialization dataWithJSONObject:noteData options:0 error:nil];
-    self.noteData = [NSJSONSerialization JSONObjectWithData:self.payload options:NSJSONReadingMutableContainers error:nil];
-    if ([noteData objectForKey:@"type"]) {
-        self.type = [noteData objectForKey:@"type"];
-    }
-    if ([noteData objectForKey:@"subject"]) {
-        NSString *subject = [[noteData objectForKey:@"subject"] objectForKey:@"text"];
-        if (!subject)
-            subject = [[noteData objectForKey:@"subject"] objectForKey:@"html"];
-        self.subject = [subject trim];
-        self.icon = [[noteData objectForKey:@"subject"] objectForKey:@"icon"];
-    }
-    if ([noteData objectForKey:@"timestamp"]) {
-        NSInteger timestamp = [[noteData objectForKey:@"timestamp"] integerValue];
-        self.timestamp = [NSNumber numberWithInteger:timestamp];
-    }
-    if ([noteData objectForKey:@"unread"]) {
-        NSInteger unread = [[noteData objectForKey:@"unread"] integerValue];
-        self.unread = [NSNumber numberWithInteger:unread];
-    }
-    if ([self isComment] && [noteData objectForKey:@"body"]) {
-        [self parseComment];
-    }
+- (NSArray *)bodyItems {
+	return [self.body arrayForKey:@"items"];
 }
+
+- (NSArray *)bodyActions {
+	return [self.body arrayForKey:@"actions"];
+}
+
+- (NSString *)bodyTemplate {
+	return [self.body stringForKey:@"template"];	
+}
+
+- (NSString *)bodyHeaderText {
+	return [self.body stringForKey:@"header_text"];
+}
+
+- (NSString *)bodyHeaderLink {
+	return [self.body stringForKey:@"header_link"];
+}
+
+- (NSString *)bodyFooterText {
+	return [self.body stringForKey:@"footer_text"];
+}
+
+- (NSString *)bodyFooterLink {
+	return [self.body stringForKey:@"footer_link"];
+}
+
+- (NSString *)bodyCommentText {
+    if (_bodyCommentText == nil) {
+        _bodyCommentText = [self parseBodyComments];
+    }
+    return _bodyCommentText;
+}
+- (NSString *)parseBodyComments {
+    
+    if (self.isComment == NO) {
+		return nil;
+	}
+	
+	NSDictionary *bodyItem	= [self.bodyItems lastObject];
+	NSString *comment		= bodyItem[@"html"];
+	if (comment == (id)[NSNull null] || comment.length == 0 ) {
+		return nil;
+	}
+	
+	// Sanitize the string: strips HTML Tags and converts html entites
+	comment = [comment stringByReplacingHTMLEmoticonsWithEmoji];
+	comment = [comment stringByStrippingHTML];
+	
+	NSString *xmlString				= [NSString stringWithFormat:@"<d>%@</d>", comment];
+	NSData *xml						= [xmlString dataUsingEncoding:NSUTF8StringEncoding allowLossyConversion:YES];
+	
+	// Parse please!
+	NSXMLParser *parser				= [[NSXMLParser alloc] initWithData:xml];
+	XMLParserCollecter *collector	= [XMLParserCollecter new];
+	parser.delegate					= collector;
+	[parser parse];
+	
+	return collector.result;
+}
+
+
+#pragma mark - Public Methods
 
 - (BOOL)isComment {
     return [self.type isEqualToString:@"comment"];
@@ -138,66 +133,78 @@ const NSUInteger NoteKeepCount = 20;
     return ![self isUnread];
 }
 
-- (BOOL)statsEvent {
+- (BOOL)isStatsEvent {
     return [self.type isEqualToString:@"traffic_surge"];
 }
 
 - (Blog *)blogForStatsEvent {
     NSSet *blogs = [WPAccount defaultWordPressComAccount].blogs;
-    blogs = [blogs filteredSetUsingPredicate:[NSPredicate predicateWithFormat:@"%@ CONTAINS[cd] self.blogName", self.subject]];
+    blogs = [blogs filteredSetUsingPredicate:[NSPredicate predicateWithFormat:@"%@ CONTAINS[cd] self.blogName", self.subjectText]];
     if (blogs.count) {
         return [blogs anyObject];
     }
     return nil;
 }
 
-- (NSString *)commentText {
-    if (_commentText == nil) {
-        [self parseComment];
+
+#pragma mark - CoreData Helpers
+
++ (void)pruneOldNotesBefore:(NSNumber *)timestamp withContext:(NSManagedObjectContext *)context {
+    NSError *error;
+
+    // For some strange reason, core data objects with changes are ignored when using fetchOffset
+    // Even if you have 20 notes and fetchOffset is 20, any object with uncommitted changes would show up as a result
+    // To avoid that we make sure to commit all changes before doing our request
+    [context save:&error];
+    NSUInteger keepCount = WPNoteKeepCount;
+    if (timestamp) {
+        NSFetchRequest *countRequest	= [NSFetchRequest fetchRequestWithEntityName:@"Note"];
+        countRequest.predicate			= [NSPredicate predicateWithFormat:@"timestamp >= %@", timestamp];
+        countRequest.sortDescriptors	= @[ [NSSortDescriptor sortDescriptorWithKey:@"timestamp" ascending:NO] ];
+		
+        NSError *error;
+        NSUInteger notesCount = [context countForFetchRequest:countRequest error:&error];
+        if (notesCount != NSNotFound) {
+            keepCount = MAX(keepCount, notesCount);
+        }
     }
-    return _commentText;
+
+    NSFetchRequest *request		= [NSFetchRequest fetchRequestWithEntityName:@"Note"];
+    request.fetchOffset			= keepCount;
+    request.sortDescriptors		= @[ [NSSortDescriptor sortDescriptorWithKey:@"timestamp" ascending:NO] ];
+    NSArray *notes				= [context executeFetchRequest:request error:&error];
+    if (error) {
+        DDLogError(@"Error pruning old notes: %@", error);
+        return;
+    }
+    for (Note *note in notes) {
+        [context deleteObject:note];
+    }
+    if(![context save:&error]){
+        DDLogError(@"Failed to save after pruning notes: %@", error);
+    }
 }
 
-- (id)noteData {
-    if (_noteData == nil) {
-        _noteData = [NSJSONSerialization JSONObjectWithData:self.payload options:NSJSONReadingMutableContainers error:nil];
++ (NSNumber *)lastNoteTimestampWithContext:(NSManagedObjectContext *)context {
+    NSFetchRequest *request		= [NSFetchRequest fetchRequestWithEntityName:@"Note"];
+    request.resultType			= NSDictionaryResultType;
+    request.propertiesToFetch	= @[@"timestamp"];
+    request.fetchLimit			= 1;
+    request.sortDescriptors		= @[[NSSortDescriptor sortDescriptorWithKey:@"timestamp" ascending:NO]];
+    NSArray *results			= [context executeFetchRequest:request error:nil];
+    NSNumber *timestamp			= nil;
+    if (results.count) {
+        NSDictionary *note = [results firstObject];
+        timestamp = note[@"timestamp"];
     }
-    return _noteData;
-}
-
-#pragma mark - Comment HTML parsing
-
-/*
- * Strips HTML Tags and converts html entites
- */
-- (void)parseComment {
-    
-    if ([self isComment]) {
-        NSDictionary *bodyItem = [[[self.noteData objectForKey:@"body"] objectForKey:@"items"] lastObject];
-        NSString *comment = [bodyItem objectForKey:@"html"];
-        if (comment == (id)[NSNull null] || comment.length == 0 )
-            return;
-        comment = [comment stringByReplacingHTMLEmoticonsWithEmoji];
-        comment = [comment stringByStrippingHTML];
-        
-        NSString *xmlString = [NSString stringWithFormat:@"<d>%@</d>", comment];
-        NSData *xml = [xmlString dataUsingEncoding:NSUTF8StringEncoding allowLossyConversion:YES];
-        NSXMLParser *parser = [[NSXMLParser alloc] initWithData:xml];
-        XMLParserCollecter *collector = [[XMLParserCollecter alloc] init];
-        parser.delegate = collector;
-        [parser parse];
-        
-        self.commentText = collector.result;
-        
-    }
-    
+    return timestamp;
 }
 
 
 #pragma mark - WPContentViewProvider protocol
 
 - (NSString *)titleForDisplay {
-    NSString *title = [self.subject trim];
+    NSString *title = [self.subjectText trim];
     if (title.length > 0 && [title hasPrefix:@"["]) {
         // Find location of trailing bracket
         NSRange statusRange = [title rangeOfString:@"]"];
@@ -206,8 +213,7 @@ const NSUInteger NoteKeepCount = 20;
             title = [title trim];
         }
     }
-    title = [title stringByDecodingXMLCharacters];
-    return title;
+	return [title stringByDecodingXMLCharacters];
 }
 
 - (NSString *)authorForDisplay {
@@ -225,7 +231,7 @@ const NSUInteger NoteKeepCount = 20;
     // but is necessary due to the current API. This should be changed
     // if/when the API is improved.
     
-    NSString *status = [self.subject trim];
+    NSString *status = [self.subjectText trim];
     if (status.length > 0 && [status hasPrefix:@"["]) {
         // Find location of trailing bracket
         NSRange statusRange = [status rangeOfString:@"]"];
@@ -240,11 +246,11 @@ const NSUInteger NoteKeepCount = 20;
 
 - (NSString *)contentForDisplay {
     // Contains a lot of cruft
-    return self.commentText;
+    return self.bodyCommentText;
 }
 
 - (NSString *)contentPreviewForDisplay {
-    return self.commentText;
+    return self.bodyCommentText;
 }
 
 - (NSString *)gravatarEmailForDisplay {
@@ -252,7 +258,7 @@ const NSUInteger NoteKeepCount = 20;
 }
 
 - (NSURL *)avatarURLForDisplay {
-    return [NSURL URLWithString:self.icon];
+    return [NSURL URLWithString:self.subjectIcon];
 }
 
 - (NSDate *)dateForDisplay {
@@ -266,29 +272,6 @@ const NSUInteger NoteKeepCount = 20;
 
 - (BOOL)unreadStatusForDisplay {
     return !self.isRead;
-}
-
-@end
-
-
-#warning TODO: Nuke REST API
-
-@implementation Note (WordPressComApi)
-
-- (void)refreshNoteDataWithSuccess:(void (^)())success failure:(void (^)(NSError *))failure {
-    [[[WPAccount defaultWordPressComAccount] restApi] refreshNotifications:@[self.noteID] fields:nil success:^(NSArray *updatedNotes){
-            if ([updatedNotes count] > 0 && ![self isDeleted] && self.managedObjectContext) {
-                [self syncAttributes:updatedNotes[0]];
-            }
-            [[ContextManager sharedInstance] saveContext:self.managedObjectContext];
-            if (success) {
-                success();
-            }
-        } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
-            if (failure) {
-                failure(error);
-            }
-        }];
 }
 
 @end

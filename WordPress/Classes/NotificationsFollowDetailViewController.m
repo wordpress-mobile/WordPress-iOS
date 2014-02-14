@@ -21,8 +21,8 @@
 
 @interface NotificationsFollowDetailViewController () <UITableViewDelegate, UITableViewDataSource>
 
-@property NSMutableArray *noteData;
-@property BOOL hasFooter;
+@property (nonatomic, strong) NSArray *noteData;
+@property (nonatomic, assign) BOOL hasFooter;
 @property (nonatomic, strong) Note *note;
 @property (nonatomic, weak) IBOutlet UITableView *tableView;
 @property (nonatomic, weak) IBOutlet UIView *postTitleView;
@@ -32,6 +32,9 @@
 
 @end
 
+
+#warning TODO: Verify this class
+
 @implementation NotificationsFollowDetailViewController
 
 - (id)initWithNote:(Note *)note
@@ -39,7 +42,7 @@
     self = [super init];
     if (self) {
         _note = note;
-        self.title = _note.subject;
+        self.title = _note.subjectText;
     }
     return self;
 }
@@ -49,13 +52,13 @@
     [super viewDidLoad];
 
     if (_note) {
-        _noteData = [[[_note noteData] objectForKey:@"body"] objectForKey:@"items"];
+        _noteData = [_note bodyItems];
     }
     
     _postTitleView.layer.borderColor = [UIColor lightGrayColor].CGColor;
     _postTitleView.layer.borderWidth = 1.0 / [[UIScreen mainScreen] scale];
     
-    NSString *headerText = [[[_note noteData] objectForKey:@"body"] objectForKey:@"header_text"];
+    NSString *headerText = [_note bodyHeaderText];
     if (headerText) {
         UILabel *headerLabel = [[UILabel alloc] initWithFrame:CGRectMake(0.0f, 0.0f, self.view.frame.size.width, 40.0f)];
         [headerLabel setBackgroundColor:[WPStyleGuide itsEverywhereGrey]];
@@ -66,7 +69,7 @@
         [self.tableView setTableHeaderView:headerLabel];
         [self.view bringSubviewToFront:_postTitleView];
         
-        NSString *headerLink = [[[_note noteData] objectForKey:@"body"] objectForKey:@"header_link"];
+        NSString *headerLink = [_note bodyHeaderLink];
         if (headerLink && [headerLink isKindOfClass:[NSString class]]) {
             NSURL *postURL = [NSURL URLWithString:headerLink];
             if (postURL) {
@@ -76,9 +79,9 @@
         }
     }
     
-    if (_note.subject) {
+    if (_note.subjectText) {
         // Silly way to get the post title until we get it from the API directly
-        NSArray *quotedText = [_note.subject componentsSeparatedByString: @"\""];
+        NSArray *quotedText = [_note.subjectText componentsSeparatedByString: @"\""];
         if ([quotedText count] >= 3) {
             NSString *postTitle = [[quotedText objectAtIndex:[quotedText count] - 2] stringByDecodingXMLCharacters];
             [_postTitleLabel setText:postTitle];
@@ -86,7 +89,7 @@
     }
     
     
-    NSString *footerText = [[[_note noteData] objectForKey:@"body"] objectForKey:@"footer_text"];
+    NSString *footerText = [_note bodyFooterText];
     if (footerText && ![footerText isEqualToString:@""]) {
         _hasFooter = YES;
     }
@@ -209,8 +212,8 @@
             cell.textLabel.textColor = [WPStyleGuide newKidOnTheBlockBlue];
             cell.textLabel.font = [WPStyleGuide regularTextFont];
         }
-        NSString *footerText = [[[_note noteData] objectForKey:@"body"] objectForKey:@"footer_text"];
-        cell.textLabel.text = footerText;
+		
+        cell.textLabel.text = [_note bodyFooterText];
         return cell;
     }
     
@@ -269,7 +272,7 @@
 }
 
 - (IBAction)viewPostTitle:(id)sender {
-    [self loadWebViewWithURL:[[[_note noteData] objectForKey:@"body"] objectForKey:@"header_link"]];
+    [self loadWebViewWithURL:_note.bodyHeaderLink];
 }
 
 - (void)loadWebViewWithURL: (NSString*)url {
@@ -323,7 +326,7 @@
             [self.tableView deselectRowAtIndexPath:indexPath animated:NO];
         }
     } else {
-        [self loadWebViewWithURL:[[[_note noteData] objectForKey:@"body"] objectForKey:@"footer_link"]];
+        [self loadWebViewWithURL:_note.bodyFooterLink];
     }
 }
 

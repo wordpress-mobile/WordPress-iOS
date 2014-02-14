@@ -132,9 +132,9 @@ const CGFloat NotificationsCommentDetailViewControllerReplyTextViewDefaultHeight
 
 - (void)displayNote {
     // get the note's actions
-    NSArray *actions = [self.note.noteData valueForKeyPath:@"body.actions"];
-    NSDictionary *action = [actions objectAtIndex:0];
-    NSArray *items = [self.note.noteData valueForKeyPath:@"body.items"];
+    NSArray *actions = self.note.bodyActions;
+    NSDictionary *action = actions[0];
+    NSArray *items = [self.note bodyItems];
     self.siteID = [action valueForKeyPath:@"params.site_id"];
     
     NoteComment *comment = [[NoteComment alloc] initWithCommentID:[action valueForKeyPath:@"params.comment_id"]];
@@ -208,7 +208,7 @@ const CGFloat NotificationsCommentDetailViewControllerReplyTextViewDefaultHeight
 }
 
 - (NSDictionary *)getActionByType:(NSString *)type {
-    NSArray *actions = [self.note.noteData valueForKeyPath:@"body.actions"];
+    NSArray *actions = [self.note bodyActions];
     for (NSDictionary *action in actions) {
         if ([[action valueForKey:@"type"] isEqualToString:type]) {
             return action;

@@ -19,16 +19,20 @@
 #import "WPWebViewController.h"
 #import "Note.h"
 #import "ContextManager.h"
+#import "Constants.h"
 
-NSString * const NotificationsJetpackInformationURL = @"http://jetpack.me/about/";
+
 
 @interface NotificationsViewController ()
 
-@property (nonatomic, strong) id authListener;
-@property (nonatomic, assign) BOOL isPushingViewController;
-@property (nonatomic, assign) BOOL viewHasAppeared;
+@property (nonatomic, strong) id	authListener;
+@property (nonatomic, assign) BOOL	isPushingViewController;
+@property (nonatomic, assign) BOOL	viewHasAppeared;
 
 @end
+
+
+#warning TODO: Verify this class
 
 
 @implementation NotificationsViewController
@@ -78,7 +82,7 @@ NSString * const NotificationsJetpackInformationURL = @"http://jetpack.me/about/
 {
     // Show Jetpack information screen
     WPWebViewController *webViewController = [[WPWebViewController alloc] init];
-    [webViewController setUrl:[NSURL URLWithString:NotificationsJetpackInformationURL]];
+	webViewController.url = [NSURL URLWithString:WPNotificationsJetpackInformationURL];
     [self.navigationController pushViewController:webViewController animated:YES];
 }
 
@@ -183,7 +187,7 @@ NSString * const NotificationsJetpackInformationURL = @"http://jetpack.me/about/
             NotificationsFollowDetailViewController *detailViewController = [[NotificationsFollowDetailViewController alloc] initWithNote:note];
             [self.navigationController pushViewController:detailViewController animated:YES];
         }
-    } else if ([note statsEvent]) {
+    } else if (note.isStatsEvent) {
         Blog *blog = [note blogForStatsEvent];
         if (blog) {
             [[WordPressAppDelegate sharedWordPressApplicationDelegate] showStatsForBlog:blog];
@@ -206,19 +210,12 @@ NSString * const NotificationsJetpackInformationURL = @"http://jetpack.me/about/
 }
 
 - (BOOL)noteHasDetailView:(Note *)note {
-    if ([note isComment]) {
+    if (note.isComment) {
         return YES;
 	}
     
-    NSDictionary *noteBody = [[note noteData] objectForKey:@"body"];
-    if (noteBody) {
-        NSString *noteTemplate = [noteBody objectForKey:@"template"];
-        if ([noteTemplate isEqualToString:@"single-line-list"] || [noteTemplate isEqualToString:@"multi-line-list"]) {
-            return YES;
-		}
-    }
-    
-    return NO;
+	NSString *noteTemplate = note.bodyTemplate;
+	return ([noteTemplate isEqualToString:@"single-line-list"] || [noteTemplate isEqualToString:@"multi-line-list"]);
 }
 
 #pragma mark - WPTableViewController subclass methods
