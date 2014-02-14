@@ -12,13 +12,24 @@
 #import "SPStorageProvider.h"
 #import "JSONKit+Simperium.h"
 #import "SPGhost.h"
-#import "DDLog.h"
+#import "SPLogger.h"
 
-#define PATH_KEY @"SPPathKey"
-#define PATH_BUCKET @"SPPathBucket"
-#define PATH_ATTRIBUTE @"SPPathAttribute"
 
-static int ddLogLevel = LOG_LEVEL_INFO;
+
+#pragma mark ====================================================================================
+#pragma mark Constants
+#pragma mark ====================================================================================
+
+#define PATH_KEY			@"SPPathKey"
+#define PATH_BUCKET			@"SPPathBucket"
+#define PATH_ATTRIBUTE		@"SPPathAttribute"
+
+static SPLogLevels logLevel = SPLogLevelsInfo;
+
+
+#pragma mark ====================================================================================
+#pragma mark Private
+#pragma mark ====================================================================================
 
 @interface SPRelationshipResolver() {
     dispatch_queue_t queue;
@@ -30,17 +41,14 @@ static int ddLogLevel = LOG_LEVEL_INFO;
 @end
 
 
+#pragma mark ====================================================================================
+#pragma mark SPRelationshipResolver
+#pragma mark ====================================================================================
+
 @implementation SPRelationshipResolver
+
 @synthesize pendingRelationships;
 @synthesize queue;
-
-+ (int)ddLogLevel {
-    return ddLogLevel;
-}
-
-+ (void)ddSetLogLevel:(int)logLevel {
-    ddLogLevel = logLevel;
-}
 
 - (id)init {
     if ((self = [super init])) {
@@ -89,7 +97,7 @@ static int ddLogLevel = LOG_LEVEL_INFO;
 - (void)addPendingRelationshipToKey:(NSString *)key fromKey:(NSString *)fromKey bucketName:(NSString *)bucketName
                    attributeName:(NSString *)attributeName storage:(id<SPStorageProvider>)storage {
     if (key.length == 0) {
-        DDLogWarn(@"Simperium warning: received empty pending reference to attribute %@", attributeName);
+        SPLogWarn(@"Simperium warning: received empty pending reference to attribute %@", attributeName);
         return;
     }
     
@@ -97,7 +105,7 @@ static int ddLogLevel = LOG_LEVEL_INFO;
                                  fromKey, PATH_KEY,
                                  bucketName, PATH_BUCKET,
                                  attributeName, PATH_ATTRIBUTE, nil];
-    DDLogVerbose(@"Simperium adding pending reference from %@ (%@) to %@ (%@)", fromKey, attributeName, key, bucketName);
+    SPLogVerbose(@"Simperium adding pending reference from %@ (%@) to %@ (%@)", fromKey, attributeName, key, bucketName);
     
     // Check to see if any references are already being tracked for this entity
     NSMutableArray *paths = [pendingRelationships objectForKey: key];
@@ -145,7 +153,7 @@ static int ddLogLevel = LOG_LEVEL_INFO;
             id<SPDiffable>toObject = [threadSafeStorage objectForKey:toKey bucketName:bucketName];
             
             if (!toObject) {
-                DDLogError(@"Simperium error, tried to resolve reference to an object that doesn't exist yet (%@): %@", bucketName, toKey);
+                SPLogError(@"Simperium error, tried to resolve reference to an object that doesn't exist yet (%@): %@", bucketName, toKey);
 				[threadSafeStorage finishSafeSection];
                 return;
             }
@@ -157,7 +165,7 @@ static int ddLogLevel = LOG_LEVEL_INFO;
                 NSString *fromBucketName = [path objectForKey:PATH_BUCKET];
                 NSString *attributeName = [path objectForKey:PATH_ATTRIBUTE];
                 id<SPDiffable> fromObject = [threadSafeStorage objectForKey:fromKey bucketName:fromBucketName];
-                DDLogVerbose(@"Simperium resolving pending reference for %@.%@=%@", fromKey, attributeName, toKey);
+                SPLogVerbose(@"Simperium resolving pending reference for %@.%@=%@", fromKey, attributeName, toKey);
                 [fromObject simperiumSetValue:toObject forKey: attributeName];
                 
                 // Get the key reference into the ghost as well

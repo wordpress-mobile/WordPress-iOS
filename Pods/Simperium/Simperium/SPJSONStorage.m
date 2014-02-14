@@ -235,7 +235,7 @@
 {
 //    NSEntityDescription *entity = [NSEntityDescription entityForName:entityName inManagedObjectContext:context];
 //    if (entity == nil) {
-//        //DDLogWarn(@"Simperium warning: couldn't find any instances for entity named %@", entityName);
+//        //SPLogWarn(@"Simperium warning: couldn't find any instances for entity named %@", entityName);
 //        return;
 //    }
 //    NSFetchRequest *request = [[NSFetchRequest alloc] init];
@@ -268,7 +268,7 @@
 //            if ([object respondsToSelector:@selector(getSimperiumKeyFromLegacyKey)]) {
 //                key = [object performSelector:@selector(getSimperiumKeyFromLegacyKey)];
 //                //if (key && key.length > 0)
-//                //    DDLogVerbose(@"Simperium local entity found without key (%@), porting legacy key: %@", entityName, key);
+//                //    SPLogVerbose(@"Simperium local entity found without key (%@), porting legacy key: %@", entityName, key);
 //            }
 //            
 //            // If it's still nil (unsynced local change in legacy system), treat it like a newly inserted object:

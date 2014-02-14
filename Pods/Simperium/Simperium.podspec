@@ -52,7 +52,6 @@ Pod::Spec.new do |s|
 
   # Finally, specify any Pods that this Pod depends on.
   #
-  s.dependency 'CocoaLumberjack'
   s.dependency 'Google-Diff-Match-Patch'
   s.dependency 'JRSwizzle'
   s.dependency 'SocketRocket'

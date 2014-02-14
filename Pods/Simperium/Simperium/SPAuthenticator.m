@@ -7,16 +7,17 @@
 //
 
 #import "Simperium.h"
+#import "Simperium+Internals.h"
 #import "SPEnvironment.h"
 #import "SPUser.h"
 #import "SPAuthenticator.h"
 #import "SPBinaryManager.h"
-#import "DDLog.h"
 #import "JSONKit+Simperium.h"
 #import "STKeychain.h"
 #import "SPReachability.h"
 #import "SPHttpRequest.h"
 #import "SPHttpRequestQueue.h"
+#import "SPLogger.h"
 
 #define USERNAME_KEY @"SPUsername"
 
@@ -26,26 +27,32 @@
 #import <AppKit/NSApplication.h>
 #endif
 
-static int ddLogLevel = LOG_LEVEL_INFO;
+
+
+#pragma mark ====================================================================================
+#pragma mark Constants
+#pragma mark ====================================================================================
+
+static SPLogLevels logLevel = SPLogLevelsInfo;
+
+
+#pragma mark ====================================================================================
+#pragma mark Private
+#pragma mark ====================================================================================
 
 @interface SPAuthenticator()
 @property (nonatomic, weak) id<SPAuthenticatorDelegate>	delegate;
 @property (nonatomic, weak) Simperium					*simperium;
 @property (nonatomic, copy) SucceededBlockType			succeededBlock;
 @property (nonatomic, copy) FailedBlockType				failedBlock;
-@property (nonatomic, copy) NSString					*providerString;
-
 @end
 
+
+#pragma mark ====================================================================================
+#pragma mark SPAuthenticator
+#pragma mark ====================================================================================
+
 @implementation SPAuthenticator
-
-+ (int)ddLogLevel {
-    return ddLogLevel;
-}
-
-+ (void)ddSetLogLevel:(int)logLevel {
-    ddLogLevel = logLevel;
-}
 
 - (id)initWithDelegate:(id<SPAuthenticatorDelegate>)authDelegate simperium:(Simperium *)s {
     if ((self = [super init])) {
@@ -66,12 +73,12 @@ static int ddLogLevel = LOG_LEVEL_INFO;
         token = [STKeychain getPasswordForUsername:username andServiceName:self.simperium.appID error:&error];
 		
 		if (error) {
-			DDLogError(@"Simperium couldn't retrieve token from keychain. Error: %@", error);
+			SPLogError(@"Simperium couldn't retrieve token from keychain. Error: %@", error);
 		}
     }
 	
     if (!username || username.length == 0 || !token || token.length == 0) {
-        DDLogInfo(@"Simperium didn't find an existing auth token (username %@; token %@; appID: %@)", username, token, self.simperium.appID);
+        SPLogInfo(@"Simperium didn't find an existing auth token (username %@; token %@; appID: %@)", username, token, self.simperium.appID);
         if ([self.delegate respondsToSelector:@selector(authenticationDidFail)]) {
             [self.delegate authenticationDidFail];
         }
@@ -79,7 +86,7 @@ static int ddLogLevel = LOG_LEVEL_INFO;
         return YES;
     }
 	
-	DDLogInfo(@"Simperium found an existing auth token for %@", username);
+	SPLogInfo(@"Simperium found an existing auth token for %@", username);
 	// Assume the token is valid and return success
 	// TODO: ensure if it isn't valid, a reauth process will get triggered
 
@@ -97,8 +104,8 @@ static int ddLogLevel = LOG_LEVEL_INFO;
 - (void)authenticateWithUsername:(NSString *)username password:(NSString *)password success:(SucceededBlockType)successBlock failure:(FailedBlockType)failureBlock
 {    
     NSURL *tokenURL = [NSURL URLWithString:[NSString stringWithFormat:@"%@%@/authorize/", SPAuthURL, self.simperium.appID]];
-    DDLogInfo(@"Simperium authenticating: %@", [NSString stringWithFormat:@"%@%@/authorize/", SPAuthURL, self.simperium.appID]);
-    DDLogVerbose(@"Simperium username is %@", username);
+    SPLogInfo(@"Simperium authenticating: %@", [NSString stringWithFormat:@"%@%@/authorize/", SPAuthURL, self.simperium.appID]);
+    SPLogVerbose(@"Simperium username is %@", username);
 	
 	SPHttpRequest *request = [SPHttpRequest requestWithURL:tokenURL];
 	request.headers = @{
@@ -135,7 +142,7 @@ static int ddLogLevel = LOG_LEVEL_INFO;
 		self.succeededBlock = nil;
 	}
     
-    DDLogInfo(@"Simperium authentication success!");
+    SPLogInfo(@"Simperium authentication success!");
 
     if ([self.delegate respondsToSelector:@selector(authenticationDidSucceedForUsername:token:)]) {
         [self.delegate authenticationDidSucceedForUsername:self.simperium.user.email token:self.simperium.user.authToken];
@@ -161,7 +168,7 @@ static int ddLogLevel = LOG_LEVEL_INFO;
     BOOL success = [STKeychain storeUsername:username andPassword:token forServiceName:self.simperium.appID updateExisting:YES error:&error];
     
 	if (success == NO) {
-		DDLogError(@"Simperium couldn't store token in the keychain. Error: %@", error);
+		SPLogError(@"Simperium couldn't store token in the keychain. Error: %@", error);
 	}
 	
     // Set the Simperium user
@@ -179,7 +186,7 @@ static int ddLogLevel = LOG_LEVEL_INFO;
 		self.succeededBlock = nil;
 	}
     
-    DDLogError(@"Simperium authentication error (%d): %@", request.responseCode, request.responseError);
+    SPLogError(@"Simperium authentication error (%d): %@", request.responseCode, request.responseError);
     
     if ([self.delegate respondsToSelector:@selector(authenticationDidFail)]) {
         [self.delegate authenticationDidFail];
@@ -220,7 +227,7 @@ static int ddLogLevel = LOG_LEVEL_INFO;
 }
 
 - (void)reset {
-	DDLogVerbose(@"Simperium Authenticator resetting credentials");
+	SPLogVerbose(@"Simperium Authenticator resetting credentials");
 	
     NSString *username = [[NSUserDefaults standardUserDefaults] objectForKey:USERNAME_KEY];
     if (!username || username.length == 0) {
@@ -236,11 +243,15 @@ static int ddLogLevel = LOG_LEVEL_INFO;
 }
 
 - (void)cancel {
-    DDLogVerbose(@"Simperium authentication cancelled");
+    SPLogVerbose(@"Simperium authentication cancelled");
     
     if ([self.delegate respondsToSelector:@selector(authenticationDidCancel)]) {
         [self.delegate authenticationDidCancel];
 	}
+}
+
+- (BOOL)connected {
+	return (self.simperium.reachability.currentReachabilityStatus != NotReachable);
 }
 
 @end

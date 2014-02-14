@@ -115,10 +115,6 @@ typedef void (^SimperiumForceSyncCompletion)(BOOL success);
 - (NSString *)addBinary:(NSData *)binaryData toObject:(SPManagedObject *)object bucketName:(NSString *)bucketName attributeName:(NSString *)attributeName;
 - (void)addBinaryWithFilename:(NSString *)filename toObject:(SPManagedObject *)object bucketName:(NSString *)bucketName attributeName:(NSString *)attributeName;
 
-// Exports Simperium Internal logfiles. Note: you should enable verboseLogging before!
-- (NSData*)exportLogfiles;
-
-
 // Set this to true if you need to be able to cancel the authentication dialog.
 @property (nonatomic) BOOL authenticationOptional;
 

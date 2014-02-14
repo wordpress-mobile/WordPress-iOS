@@ -8,7 +8,6 @@
 
 #import "SimperiumTests.h"
 #import "SPGhost.h"
-#import "DDLog.h"
 #import "JSONKit+Simperium.h"
 #import "NSString+Simperium.h"
 #import "Config.h"

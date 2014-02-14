@@ -17,11 +17,17 @@
 #import "SPMember.h"
 #import "JSONKit+Simperium.h"
 #import "SPGhost.h"
-#import "DDLog.h"
+#import "SPLogger.h"
 #import "SPBucket+Internals.h"
 #import "SPDiffer.h"
 
-static int ddLogLevel = LOG_LEVEL_INFO;
+
+
+#pragma mark ====================================================================================
+#pragma mark Constants
+#pragma mark ====================================================================================
+
+static SPLogLevels logLevel			= SPLogLevelsInfo;
 
 NSString * const CH_KEY				= @"id";
 NSString * const CH_ADD				= @"+";
@@ -43,21 +49,22 @@ typedef NS_ENUM(NSUInteger, CH_ERRORS) {
 };
 
 
+#pragma mark ====================================================================================
+#pragma mark Private
+#pragma mark ====================================================================================
+
 @interface SPChangeProcessor()
 @property (nonatomic, strong, readwrite) NSString						*instanceLabel;
 @property (nonatomic, strong, readwrite) SPPersistentMutableDictionary	*changesPending;
 @property (nonatomic, strong, readwrite) SPPersistentMutableSet			*keysForObjectsWithMoreChanges;
 @end
 
+
+#pragma mark ====================================================================================
+#pragma mark SPChangeProcessor
+#pragma mark ====================================================================================
+
 @implementation SPChangeProcessor
-
-+ (int)ddLogLevel {
-    return ddLogLevel;
-}
-
-+ (void)ddSetLogLevel:(int)logLevel {
-    ddLogLevel = logLevel;
-}
 
 - (id)initWithLabel:(NSString *)label {
     if (self = [super init]) {
@@ -90,7 +97,7 @@ typedef NS_ENUM(NSUInteger, CH_ERRORS) {
 	}
 	
 	// Proceed migrating!
-    DDLogInfo(@"Migrating changesPending collection to SPDictionaryStorage");
+    SPLogInfo(@"Migrating changesPending collection to SPDictionaryStorage");
     
     NSDictionary *pendingDict = [pendingJSON sp_objectFromJSONString];
 
@@ -131,7 +138,7 @@ typedef NS_ENUM(NSUInteger, CH_ERRORS) {
 		NSString *key	= change[CH_KEY];
 		long errorCode	= [change[CH_ERROR] integerValue];
 		
-		DDLogError(@"Simperium POST returned error %ld for change %@", errorCode, change);
+		SPLogError(@"Simperium POST returned error %ld for change %@", errorCode, change);
 		
 		if (errorCode == CH_ERRORS_EXPECTATION_FAILED || errorCode == CH_ERRORS_INVALID_DIFF) {
 			// Resubmit with all data
@@ -170,7 +177,7 @@ typedef NS_ENUM(NSUInteger, CH_ERRORS) {
 	// REMOVE operation
 	// If this wasn't just an ack, perform the deletion
 	if (!acknowledged) {
-		DDLogVerbose(@"Simperium non-local REMOVE ENTITY received");
+		SPLogVerbose(@"Simperium non-local REMOVE ENTITY received");
 		
 		id<SPStorageProvider> threadSafeStorage = [bucket.storage threadSafeStorage];
 		[threadSafeStorage beginCriticalSection];
@@ -228,7 +235,7 @@ typedef NS_ENUM(NSUInteger, CH_ERRORS) {
 		
         // Create the new object
         object = [threadSafeStorage insertNewObjectForBucketName:bucket.name simperiumKey:key];
-        DDLogVerbose(@"Simperium managing newly added entity %@", [object simperiumKey]);
+        SPLogVerbose(@"Simperium managing newly added entity %@", [object simperiumKey]);
         
         // Remember this object's ghost for future diffing			
         // Send nil member data because it'll get loaded below
@@ -237,7 +244,7 @@ typedef NS_ENUM(NSUInteger, CH_ERRORS) {
         object.ghost = ghost;
         
         // If this wasn't just an ack, send a notification and load the data
-        DDLogVerbose(@"Simperium non-local ADD ENTITY received");
+        SPLogVerbose(@"Simperium non-local ADD ENTITY received");
     }
     
     // Another hack since 'ghost' isn't transient: check for fault and forcefire if necessary
@@ -245,7 +252,7 @@ typedef NS_ENUM(NSUInteger, CH_ERRORS) {
     
     // It already exists, now MODIFY it
     if (!object.ghost) {
-        DDLogWarn(@"Simperium warning: received change for unknown entity (%@): %@", bucket.name, key);
+        SPLogWarn(@"Simperium warning: received change for unknown entity (%@): %@", bucket.name, key);
 		[threadSafeStorage finishSafeSection];
         return NO;
     }
@@ -270,7 +277,7 @@ typedef NS_ENUM(NSUInteger, CH_ERRORS) {
 		return NO;
 	}
 	
-    DDLogVerbose(@"Simperium received version = %@, previous version = %@", startVersion, oldVersion);
+    SPLogVerbose(@"Simperium received version = %@, previous version = %@", startVersion, oldVersion);
     // If the versions are equal or there's no start version (new object), process the change
     if (startVersion == nil || [oldVersion isEqualToString:startVersion]) {
         // Remember the old ghost
@@ -285,15 +292,15 @@ typedef NS_ENUM(NSUInteger, CH_ERRORS) {
         NSString *ghostDataCopy = [[[object.ghost dictionary] sp_JSONString] copy];
         object.ghostData = ghostDataCopy;
         
-        DDLogVerbose(@"Simperium MODIFIED ghost version %@ (%@-%@)", endVersion, bucket.name, self.instanceLabel);
+        SPLogVerbose(@"Simperium MODIFIED ghost version %@ (%@-%@)", endVersion, bucket.name, self.instanceLabel);
         
         // If it wasn't an ack, then local data needs to be updated and the app needs to be notified
         if (!acknowledged && !newlyAdded) {
-            DDLogVerbose(@"Simperium non-local MODIFY ENTITY received");
+            SPLogVerbose(@"Simperium non-local MODIFY ENTITY received");
             NSDictionary *oldDiff = [bucket.differ diff:object withDictionary:[oldGhost memberData]];
             if ([oldDiff count] > 0) {
                 // The local client version changed in the meantime, so transform the diff before applying it
-                DDLogVerbose(@"Simperium applying transform to diff: %@", diff);			
+                SPLogVerbose(@"Simperium applying transform to diff: %@", diff);			
                 diff = [bucket.differ transform:object diff:oldDiff oldDiff: diff oldGhost: oldGhost];
                 
                 // Load from the ghost data so the subsequent diff is applied to the correct data
@@ -302,14 +309,14 @@ typedef NS_ENUM(NSUInteger, CH_ERRORS) {
                 if ([diff count] > 0) {
                     [object loadMemberData: [object.ghost memberData]];
                 } else {
-                    DDLogVerbose(@"Simperium transform resulted in empty diff (invalid ack?)");
+                    SPLogVerbose(@"Simperium transform resulted in empty diff (invalid ack?)");
 				}
             }
         }
         
         // Apply the diff to the object itself
         if (!acknowledged && [diff count] > 0) {
-            DDLogVerbose(@"Simperium applying diff: %@", diff);
+            SPLogVerbose(@"Simperium applying diff: %@", diff);
             [bucket.differ applyDiff: diff to:object];
         }
         [threadSafeStorage save];
@@ -332,7 +339,7 @@ typedef NS_ENUM(NSUInteger, CH_ERRORS) {
         });
         
     } else {
-        DDLogWarn(@"Simperium warning: couldn't apply change due to version mismatch (duplicate? start %@, old %@): change %@", startVersion, oldVersion, change);
+        SPLogWarn(@"Simperium warning: couldn't apply change due to version mismatch (duplicate? start %@, old %@): change %@", startVersion, oldVersion, change);
         dispatch_async(dispatch_get_main_queue(), ^{
             [[NSNotificationCenter defaultCenter] postNotificationName:ProcessorRequestsReindexing object:bucket];
         });
@@ -349,7 +356,7 @@ typedef NS_ENUM(NSUInteger, CH_ERRORS) {
     NSString *key	= change[CH_KEY];
 	NSString *error = change[CH_ERROR];
     if (error) {
-        DDLogVerbose(@"Simperium error received (%@) for %@, should reload the object here to be safe", bucket.name, key);
+        SPLogVerbose(@"Simperium error received (%@) for %@, should reload the object here to be safe", bucket.name, key);
         [self.changesPending removeObjectForKey:key];
         return NO;
     }
@@ -363,7 +370,7 @@ typedef NS_ENUM(NSUInteger, CH_ERRORS) {
     NSString *changeClientID	= change[CH_CLIENT_ID];
     id<SPDiffable> object		= [threadSafeStorage objectForKey:key bucketName:bucket.name];
     
-    DDLogVerbose(@"Simperium client %@ received change (%@) %@: %@", clientID, bucket.name, changeClientID, change);
+    SPLogVerbose(@"Simperium client %@ received change (%@) %@: %@", clientID, bucket.name, changeClientID, change);
 	
 	// Process
     BOOL clientMatches			= [changeClientID compare:clientID] == NSOrderedSame;
@@ -375,12 +382,12 @@ typedef NS_ENUM(NSUInteger, CH_ERRORS) {
         // TODO: If this isn't a deletion change, but there's a deletion change pending, then ignore this change
         // Change was awaiting acknowledgement; safe now to remove from changesPending
         if (acknowledged) {
-            DDLogVerbose(@"Simperium acknowledged change for %@, cv=%@", changeClientID, changeVersion);
+            SPLogVerbose(@"Simperium acknowledged change for %@, cv=%@", changeClientID, changeVersion);
 		}
         [self.changesPending removeObjectForKey:key];
     }
 
-    DDLogVerbose(@"Simperium performing change operation: %@", operation);
+    SPLogVerbose(@"Simperium performing change operation: %@", operation);
 	[threadSafeStorage finishSafeSection];
 		
     if (remove) {
@@ -392,7 +399,7 @@ typedef NS_ENUM(NSUInteger, CH_ERRORS) {
     }
 	
 	// invalid
-	DDLogError(@"Simperium error (%@), received an invalid change for (%@): %@", bucket.name, key, change);
+	SPLogError(@"Simperium error (%@), received an invalid change for (%@): %@", bucket.name, key, change);
     return NO;
 }
 
@@ -490,7 +497,7 @@ typedef NS_ENUM(NSUInteger, CH_ERRORS) {
     // If the object no longer exists, it was likely previously deleted, in which case this change is no longer
     // relevant
     if (!object) {
-        //DDLogWarn(@"Simperium warning: couldn't processLocalObjectWithKey %@ because the object no longer exists", key);
+        //SPLogWarn(@"Simperium warning: couldn't processLocalObjectWithKey %@ because the object no longer exists", key);
         [self.changesPending removeObjectForKey:key];
 		[self.changesPending save];
         [self.keysForObjectsWithMoreChanges removeObject:key];
@@ -501,7 +508,7 @@ typedef NS_ENUM(NSUInteger, CH_ERRORS) {
     
     // If there are already changes pending for this entity, mark this entity and come back to it later to get the changes
     if (([self.changesPending objectForKey:object.simperiumKey] != nil) || later) {
-        DDLogVerbose(@"Simperium marking object for sending more changes when ready (%@): %@", bucket.name, object.simperiumKey);
+        SPLogVerbose(@"Simperium marking object for sending more changes when ready (%@): %@", bucket.name, object.simperiumKey);
         [self.keysForObjectsWithMoreChanges addObject:[object simperiumKey]];
         [self.keysForObjectsWithMoreChanges save];
 		[storage finishSafeSection];
@@ -509,7 +516,7 @@ typedef NS_ENUM(NSUInteger, CH_ERRORS) {
     }
     
     NSDictionary *change = nil;
-    DDLogVerbose(@"Simperium processing local object changes (%@): %@", bucket.name, object.simperiumKey); 
+    SPLogVerbose(@"Simperium processing local object changes (%@): %@", bucket.name, object.simperiumKey); 
     
     if (object.ghost != nil && [object.ghost memberData] != nil) {
         // This object has already been synced in the past and has a server ghost, so we're
@@ -517,16 +524,16 @@ typedef NS_ENUM(NSUInteger, CH_ERRORS) {
         
         // Get a diff of the object (in dictionary form)
 		NSDictionary *newData = [bucket.differ diff:object withDictionary: [object.ghost memberData]];
-        DDLogVerbose(@"Simperium entity diff found %lu changed members", (unsigned long)[newData count]);
+        SPLogVerbose(@"Simperium entity diff found %lu changed members", (unsigned long)[newData count]);
         if ([newData count] > 0) {
             change = [self createChangeForKey: object.simperiumKey operation: CH_MODIFY version:object.ghost.version data: newData];
         } else {
             // No difference, don't do anything else
-            DDLogVerbose(@"Simperium warning: no difference in call to sendChanges (%@): %@", bucket.name, object.simperiumKey);
+            SPLogVerbose(@"Simperium warning: no difference in call to sendChanges (%@): %@", bucket.name, object.simperiumKey);
         }
         
     } else /*if (!entity.deleted)*/ {
-        DDLogVerbose(@"Simperium local ADD detected, creating diff...");
+        SPLogVerbose(@"Simperium local ADD detected, creating diff...");
         
 		NSDictionary *newData = [bucket.differ diffForAddition:object];
         change = [self createChangeForKey: object.simperiumKey operation:CH_MODIFY version: object.ghost.version data: newData];
@@ -543,7 +550,7 @@ typedef NS_ENUM(NSUInteger, CH_ERRORS) {
 		return;
 	}
 	
-	DDLogVerbose(@"Simperium found %lu objects with more changes to send (%@)", (unsigned long)self.keysForObjectsWithMoreChanges.count, bucket.name);
+	SPLogVerbose(@"Simperium found %lu objects with more changes to send (%@)", (unsigned long)self.keysForObjectsWithMoreChanges.count, bucket.name);
 	
     NSMutableSet *queuedKeys = [NSMutableSet setWithCapacity:self.keysForObjectsWithMoreChanges.count];
 	NSMutableSet *pendingKeys = [NSMutableSet setWithArray:self.changesPending.allKeys];
@@ -591,7 +598,7 @@ typedef NS_ENUM(NSUInteger, CH_ERRORS) {
     // Check if there are more changes that need to be sent
     NSMutableArray *newChangesPending = [NSMutableArray arrayWithCapacity:3];
     if ([self.keysForObjectsWithMoreChanges count] > 0) {
-        DDLogVerbose(@"Simperium found %lu objects with more changes to send (%@)", (unsigned long)[self.keysForObjectsWithMoreChanges count], bucket.name);
+        SPLogVerbose(@"Simperium found %lu objects with more changes to send (%@)", (unsigned long)[self.keysForObjectsWithMoreChanges count], bucket.name);
         
         NSMutableSet *keysProcessed = [NSMutableSet setWithCapacity:self.keysForObjectsWithMoreChanges.count];
         // Create changes for any objects that have more changes

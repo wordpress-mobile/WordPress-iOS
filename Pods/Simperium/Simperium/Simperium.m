@@ -21,10 +21,7 @@
 #import "SPRelationshipResolver.h"
 #import "JSONKit+Simperium.h"
 #import "NSString+Simperium.h"
-#import "DDLog.h"
-#import "DDASLLogger.h"
-#import "DDTTYLogger.h"
-#import "DDFileLogger+Simperium.h"
+#import "SPLogger.h"
 
 
 
@@ -35,37 +32,18 @@
 NSString * const UUID_KEY						= @"SPUUIDKey";
 NSString * const SimperiumWillSaveNotification	= @"SimperiumWillSaveNotification";
 
+#ifdef DEBUG
+static SPLogLevels logLevel						= SPLogLevelsVerbose;
+#else
+static SPLogLevels logLevel						= SPLogLevelsInfo;
+#endif
+
 
 #pragma mark ====================================================================================
 #pragma mark Simperium
 #pragma mark ====================================================================================
 
 @implementation Simperium
-
-#ifdef DEBUG
-static int ddLogLevel = LOG_LEVEL_VERBOSE;
-#else
-static int ddLogLevel = LOG_LEVEL_INFO;
-#endif
-
-+ (int)ddLogLevel {
-    return ddLogLevel;
-}
-
-+ (void)ddSetLogLevel:(int)logLevel {
-    ddLogLevel = logLevel;
-}
-
-+ (void)setupLogging {
-	// Handle multiple Simperium instances by ensuring logging only gets started once
-    static dispatch_once_t _once;
-    dispatch_once(&_once, ^{
-		[DDLog addLogger:[DDASLLogger sharedInstance]];
-		[DDLog addLogger:[DDTTYLogger sharedInstance]];
-		[DDLog addLogger:[DDFileLogger sharedInstance]];
-		[DDLog addLogger:[SPSimperiumLogger sharedInstance]];
-	});
-}
 
 - (void)dealloc {
     [self stopNetworking];
@@ -80,8 +58,6 @@ static int ddLogLevel = LOG_LEVEL_INFO;
 #pragma mark - Constructors
 - (id)init {
 	if ((self = [super init])) {
-
-        [[self class] setupLogging];
         
         self.label = @"";
         self.networkEnabled = YES;
@@ -95,7 +71,7 @@ static int ddLogLevel = LOG_LEVEL_INFO;
         SPRelationshipResolver *resolver = [[SPRelationshipResolver alloc] init];
         self.relationshipResolver = resolver;
 
-		SPSimperiumLogger *logger = [SPSimperiumLogger sharedInstance];
+		SPLogger *logger = [SPLogger sharedInstance];
 		logger.delegate = self;
 		
 #if TARGET_OS_IPHONE
@@ -192,10 +168,6 @@ static int ddLogLevel = LOG_LEVEL_INFO;
     return bucket;
 }
 
-- (NSData*)exportLogfiles {
-	return [[DDFileLogger sharedInstance] exportLogfiles];
-}
-
 
 #pragma mark ====================================================================================
 #pragma mark Networking
@@ -206,7 +178,7 @@ static int ddLogLevel = LOG_LEVEL_INFO;
         return;
 	}
     
-    DDLogInfo(@"Simperium starting network managers...");
+    SPLogInfo(@"Simperium starting network managers...");
     // Finally, start the network managers to start syncing data
     for (SPBucket *bucket in [self.buckets allValues]) {
         [bucket.network start:bucket];
@@ -309,7 +281,7 @@ static int ddLogLevel = LOG_LEVEL_INFO;
 
 /*
 - (void)startWithAppID:(NSString *)identifier APIKey:(NSString *)key {
-    DDLogInfo(@"Simperium starting... %@", self.label);
+    SPLogInfo(@"Simperium starting... %@", self.label);
 	
 	// Enforce required parameters
 	NSParameterAssert(identifier);
@@ -341,7 +313,7 @@ static int ddLogLevel = LOG_LEVEL_INFO;
 */
 
 - (void)startWithAppID:(NSString *)identifier APIKey:(NSString *)key model:(NSManagedObjectModel *)model context:(NSManagedObjectContext *)context coordinator:(NSPersistentStoreCoordinator *)coordinator {
-	DDLogInfo(@"Simperium starting... %@", self.label);
+	SPLogInfo(@"Simperium starting... %@", self.label);
 	
 	// Enforce required parameters
 	NSParameterAssert(identifier);
@@ -528,7 +500,7 @@ static int ddLogLevel = LOG_LEVEL_INFO;
 }
 
 - (void)signOutAndRemoveLocalData:(BOOL)remove {
-    DDLogInfo(@"Simperium clearing local data...");
+    SPLogInfo(@"Simperium clearing local data...");
     
     // Reset Simperium: Don't start network managers again; expect app to handle that
     [self stopNetworking];
@@ -613,9 +585,7 @@ static int ddLogLevel = LOG_LEVEL_INFO;
 
 - (void)setVerboseLoggingEnabled:(BOOL)on {
     _verboseLoggingEnabled = on;
-    for (Class cls in [DDLog registeredClasses]) {
-        [DDLog setLogLevel:on ? LOG_LEVEL_VERBOSE : LOG_LEVEL_INFO forClass:cls];
-    }
+	[[SPLogger sharedInstance] setSharedLogLevel:on ? SPLogLevelsVerbose : SPLogLevelsInfo];
 }
 
 - (BOOL)objectsShouldSync {
@@ -755,13 +725,13 @@ static int ddLogLevel = LOG_LEVEL_INFO;
 
 #if !TARGET_OS_IPHONE
 - (void)handleSleepNote:(NSNotification *)note {
-	DDLogVerbose(@"<> OSX Sleep: Stopping Network Managers");
+	SPLogVerbose(@"<> OSX Sleep: Stopping Network Managers");
 	
 	[self stopNetworkManagers];
 }
 
 - (void)handleWakeNote:(NSNotification *)note {
-	DDLogVerbose(@"<> OSX WakeUp: Restarting Network Managers");
+	SPLogVerbose(@"<> OSX WakeUp: Restarting Network Managers");
 	
 	if (self.user.authenticated) {
         [self startNetworkManagers];

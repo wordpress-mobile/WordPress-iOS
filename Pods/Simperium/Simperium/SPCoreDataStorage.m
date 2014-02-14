@@ -12,16 +12,23 @@
 #import "SPCoreDataExporter.h"
 #import "SPSchema.h"
 #import "SPThreadsafeMutableSet.h"
-#import "DDLog.h"
+#import "SPLogger.h"
 
 
+
+#pragma mark ====================================================================================
+#pragma mark Constants
+#pragma mark ====================================================================================
 
 NSString* const SPCoreDataBucketListKey = @"SPCoreDataBucketListKey";
 NSString* const SPCoreDataWorkerContext	= @"SPCoreDataWorkerContext";
-static int ddLogLevel					= LOG_LEVEL_INFO;
-
+static SPLogLevels logLevel				= SPLogLevelsInfo;
 static NSInteger const SPWorkersDone	= 0;
 
+
+#pragma mark ====================================================================================
+#pragma mark Private
+#pragma mark ====================================================================================
 
 @interface SPCoreDataStorage ()
 @property (nonatomic, strong, readwrite) NSManagedObjectContext			*writerManagedObjectContext;
@@ -37,15 +44,11 @@ static NSInteger const SPWorkersDone	= 0;
 @end
 
 
+#pragma mark ====================================================================================
+#pragma mark SPCoreDataStorage
+#pragma mark ====================================================================================
+
 @implementation SPCoreDataStorage
-
-+ (int)ddLogLevel {
-    return ddLogLevel;
-}
-
-+ (void)ddSetLogLevel:(int)logLevel {
-    ddLogLevel = logLevel;
-}
 
 - (id)initWithModel:(NSManagedObjectModel *)model mainContext:(NSManagedObjectContext *)mainContext coordinator:(NSPersistentStoreCoordinator *)coordinator {
     if (self = [super init]) {
@@ -124,7 +127,7 @@ static NSInteger const SPWorkersDone	= 0;
     SPCoreDataExporter *exporter = [[SPCoreDataExporter alloc] init];
     NSDictionary *definitionDict = [exporter exportModel:self.managedObjectModel classMappings:self.classMappings];
     
-    DDLogInfo(@"Simperium loaded %lu entity definitions", (unsigned long)[definitionDict count]);
+    SPLogInfo(@"Simperium loaded %lu entity definitions", (unsigned long)[definitionDict count]);
     
     NSUInteger numEntities = [[definitionDict allKeys] count];
     NSMutableArray *schemas = [NSMutableArray arrayWithCapacity:numEntities];
@@ -185,7 +188,7 @@ static NSInteger const SPWorkersDone	= 0;
 - (NSArray *)objectKeysAndIdsForBucketName:(NSString *)bucketName {
     NSEntityDescription *entity = [NSEntityDescription entityForName:bucketName inManagedObjectContext:self.mainManagedObjectContext];
     if (entity == nil) {
-        //DDLogWarn(@"Simperium warning: couldn't find any instances for entity named %@", entityName);
+        //SPLogWarn(@"Simperium warning: couldn't find any instances for entity named %@", entityName);
         return nil;
     }
     NSFetchRequest *request = [[NSFetchRequest alloc] init];
@@ -337,13 +340,13 @@ static NSInteger const SPWorkersDone	= 0;
             if ([object respondsToSelector:@selector(getSimperiumKeyFromLegacyKey)]) {
                 key = [object performSelector:@selector(getSimperiumKeyFromLegacyKey)];
                 if (key && key.length > 0)
-                    DDLogVerbose(@"Simperium local entity found without key (%@), porting legacy key: %@", bucketName, key);
+                    SPLogVerbose(@"Simperium local entity found without key (%@), porting legacy key: %@", bucketName, key);
             }
             
             // If it's still nil (unsynced local change in legacy system), treat it like a newly inserted object:
             // generate a UUID and mark it for sycing
             if (key == nil || key.length == 0) {
-                DDLogVerbose(@"Simperium local entity found with no legacy key (created offline?); generating one now");
+                SPLogVerbose(@"Simperium local entity found with no legacy key (created offline?); generating one now");
                 key = [NSString sp_makeUUID];
             }
             object.simperiumKey = key;
@@ -408,7 +411,7 @@ static NSInteger const SPWorkersDone	= 0;
     NSArray *entitiesToStash = [self allUpdatedAndInsertedObjects];
     
     if ([entitiesToStash count] > 0) {
-        DDLogVerbose(@"Simperium stashing changes for %lu entities", (unsigned long)[entitiesToStash count]);
+        SPLogVerbose(@"Simperium stashing changes for %lu entities", (unsigned long)[entitiesToStash count]);
         [stashedObjects addObjectsFromArray: entitiesToStash];
     }
 }
@@ -433,7 +436,7 @@ static NSInteger const SPWorkersDone	= 0;
 	// Obtain permanentID's for newly inserted objects
 	NSError *error = nil;
 	if (![context obtainPermanentIDsForObjects:temporaryObjects.allObjects error:&error]) {
-        DDLogVerbose(@"Unable to obtain permanent IDs for objects newly inserted into the main context: %@", error);
+        SPLogVerbose(@"Unable to obtain permanent IDs for objects newly inserted into the main context: %@", error);
     }
 }
 

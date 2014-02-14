@@ -8,19 +8,22 @@
 
 #import "SPCoreDataExporter.h"
 #import "SPManagedObject.h"
-#import "DDLog.h"
+#import "SPLogger.h"
 
-static int ddLogLevel = LOG_LEVEL_INFO;
+
+
+#pragma mark ====================================================================================
+#pragma mark Constants
+#pragma mark ====================================================================================
+
+static SPLogLevels logLevel = SPLogLevelsInfo;
+
+
+#pragma mark ====================================================================================
+#pragma mark SPCoreDataExporter
+#pragma mark ====================================================================================
 
 @implementation SPCoreDataExporter
-
-+ (int)ddLogLevel {
-    return ddLogLevel;
-}
-
-+ (void)ddSetLogLevel:(int)logLevel {
-    ddLogLevel = logLevel;
-}
 
 - (id)init {
     if ((self = [super init])) {
@@ -162,7 +165,7 @@ static int ddLogLevel = LOG_LEVEL_INFO;
     // For now, just print to log to make sure the export worked
     // Also freeze; copy/paste the log to a file, then comment out the export line so
     // this doesn't run again (hacky)
-    DDLogVerbose(@"Simperium result of Core Data export: %@", definitions);
+    SPLogVerbose(@"Simperium result of Core Data export: %@", definitions);
     //NSAssert(0, @"Asserting to look at export log (hack)");
 }
 

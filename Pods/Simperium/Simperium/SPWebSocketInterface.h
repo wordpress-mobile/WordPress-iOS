@@ -9,8 +9,14 @@
 #import <Foundation/Foundation.h>
 #import "SPNetworkInterface.h"
 
+
+
 @class Simperium;
 @class SPWebSocket;
+
+#pragma mark ====================================================================================
+#pragma mark SPWebSocketInterface
+#pragma mark ====================================================================================
 
 @interface SPWebSocketInterface : NSObject <SPNetworkInterface>
 

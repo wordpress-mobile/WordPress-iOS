@@ -9,7 +9,13 @@
 #import <Foundation/Foundation.h>
 #import "SPProcessorNotificationNames.h"
 
+
+
 @class SPBucket;
+
+#pragma mark ====================================================================================
+#pragma mark SPChangeProcessor
+#pragma mark ====================================================================================
 
 @interface SPChangeProcessor : NSObject
 

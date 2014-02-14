@@ -10,26 +10,24 @@
 #import "Simperium.h"
 #import "SPGhost.h"
 #import "JSONKit+Simperium.h"
-#import "DDLog.h"
+#import "SPLogger.h"
 #import "SPDiffable.h"
 #import "SPSchema.h"
 
-@interface SPDiffer(Private)
-@end
+
+
+#pragma mark ====================================================================================
+#pragma mark Constants
+#pragma mark ====================================================================================
+
+static SPLogLevels logLevel = SPLogLevelsInfo;
+
+
+#pragma mark ====================================================================================
+#pragma mark SPDiffer
+#pragma mark ====================================================================================
 
 @implementation SPDiffer
-@synthesize schema;
-
-static int ddLogLevel = LOG_LEVEL_INFO;
-
-+ (int)ddLogLevel {
-    return ddLogLevel;
-}
-
-+ (void)ddSetLogLevel:(int)logLevel {
-    ddLogLevel = logLevel;
-}
-
 
 - (id)initWithSchema:(SPSchema *)aSchema {
     if ((self = [super init])) {
@@ -42,9 +40,9 @@ static int ddLogLevel = LOG_LEVEL_INFO;
 
 // Construct a diff for newly added entities
 - (NSMutableDictionary *)diffForAddition:(id<SPDiffable>)object {
-    NSMutableDictionary *diff = [NSMutableDictionary dictionaryWithCapacity: [schema.members count]];
+    NSMutableDictionary *diff = [NSMutableDictionary dictionaryWithCapacity: [self.schema.members count]];
     
-    for (SPMember *member in [schema.members allValues]) {
+    for (SPMember *member in [self.schema.members allValues]) {
         NSString *key = [member keyName];
 		id data = [object simperiumValueForKey: key];
         
@@ -66,13 +64,13 @@ static int ddLogLevel = LOG_LEVEL_INFO;
 	// but not the other; ignore this functionality for now
 	
 	NSDictionary *currentDiff = nil;
-	for (SPMember *member in [schema.members allValues])
+	for (SPMember *member in [self.schema.members allValues])
     {
         NSString *key = [member keyName];
 		// Make sure the member exists and is tracked by Simperium
-		SPMember *thisMember = [schema memberForKey: key];
+		SPMember *thisMember = [self.schema memberForKey: key];
 		if (!thisMember) {
-			DDLogWarn(@"Simperium warning: trying to diff a member that doesn't exist (%@) from ghost: %@", key, [dict description]);
+			SPLogWarn(@"Simperium warning: trying to diff a member that doesn't exist (%@) from ghost: %@", key, [dict description]);
 			continue;
 		}
 		
@@ -90,7 +88,7 @@ static int ddLogLevel = LOG_LEVEL_INFO;
             currentDiff = [thisMember diffForAddition:currentValue];
         else if (!currentValue && dictValue)
             // This could happen if you have an optional member that gets set to nil
-            //DDLogWarn(@"Simperium warning: trying to set a nil member (%@)", key);
+            //SPLogWarn(@"Simperium warning: trying to set a nil member (%@)", key);
             // TODO: Consider returning a diff that sets the value to [member defaultValue]
             currentDiff = [thisMember diffForRemoval];
         else
@@ -116,9 +114,9 @@ static int ddLogLevel = LOG_LEVEL_INFO;
 		NSString *operation = [change objectForKey:OP_OP];
 		
 		// Make sure the member exists and is tracked by Simperium
-		SPMember *member = [schema memberForKey: key];
+		SPMember *member = [self.schema memberForKey: key];
 		if (!member) {
-			DDLogWarn(@"Simperium warning: applyDiff for a member that doesn't exist (%@): %@", key, [change description]);
+			SPLogWarn(@"Simperium warning: applyDiff for a member that doesn't exist (%@): %@", key, [change description]);
 			continue;
 		}
 		
@@ -163,11 +161,11 @@ static int ddLogLevel = LOG_LEVEL_INFO;
             continue;
         
 		NSString *operation = [change objectForKey:OP_OP];
-        SPMember *member = [schema memberForKey: key];
+        SPMember *member = [self.schema memberForKey: key];
 
         // Make sure the member exists and is tracked by Simperium
         if (!member) {
-            DDLogWarn(@"Simperium warning: applyGhostDiff for a member that doesn't exist (%@): %@", key, [change description]);
+            SPLogWarn(@"Simperium warning: applyGhostDiff for a member that doesn't exist (%@): %@", key, [change description]);
             continue;
         }
 		
@@ -190,7 +188,7 @@ static int ddLogLevel = LOG_LEVEL_INFO;
                 thisValue = [member defaultValue];
                 
             } else if (otherValue == nil) {
-                DDLogError(@"Simperium error: member %@ from diff wasn't in change", key);
+                SPLogError(@"Simperium error: member %@ from diff wasn't in change", key);
                 continue;
             }
             
@@ -209,15 +207,15 @@ static int ddLogLevel = LOG_LEVEL_INFO;
 		NSDictionary *oldChange = [oldDiff objectForKey:key];
 		
 		// Make sure the member exists and is tracked by Simperium
-		SPMember *member = [schema memberForKey: key];
+		SPMember *member = [self.schema memberForKey: key];
 		id ghostValue = [member getValueFromDictionary:oldGhost.memberData key:key object:object];
 		if (!member) {
-			DDLogError(@"Simperium error: transform diff for a member that doesn't exist (%@): %@", key, [change description]);
+			SPLogError(@"Simperium error: transform diff for a member that doesn't exist (%@): %@", key, [change description]);
 			continue;
 		}
         
         if (!ghostValue) {
-			DDLogError(@"Simperium error: transform diff for a ghost member (ghost %@, memberData %@) that doesn't exist (%@): %@", oldGhost, oldGhost.memberData, key, [change description]);
+			SPLogError(@"Simperium error: transform diff for a ghost member (ghost %@, memberData %@) that doesn't exist (%@): %@", oldGhost, oldGhost.memberData, key, [change description]);
             continue;
         }
 		

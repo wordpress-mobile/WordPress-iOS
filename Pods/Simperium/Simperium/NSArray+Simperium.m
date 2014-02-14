@@ -10,7 +10,6 @@
 #import "SPMember.h"
 #import "DiffMatchPatch.h"
 #import "JSONKit+Simperium.h"
-#import "DDLog.h"
 
 
 @implementation NSArray (Simperium)

@@ -14,6 +14,11 @@ typedef void(^FailedBlockType)(int responseCode, NSString *responseString);
 
 @class Simperium;
 
+
+#pragma mark ====================================================================================
+#pragma mark SPAuthenticatorDelegate
+#pragma mark ====================================================================================
+
 @protocol SPAuthenticatorDelegate <NSObject>
 @optional
 - (void)authenticationDidSucceedForUsername:(NSString *)username token:(NSString *)token;
@@ -22,7 +27,14 @@ typedef void(^FailedBlockType)(int responseCode, NSString *responseString);
 @end
 
 
+#pragma mark ====================================================================================
+#pragma mark SPAuthenticator
+#pragma mark ====================================================================================
+
 @interface SPAuthenticator : NSObject
+
+@property (nonatomic, copy,   readwrite) NSString	*providerString;
+@property (nonatomic, assign,  readonly) BOOL		connected;
 
 - (id)initWithDelegate:(id<SPAuthenticatorDelegate>)authDelegate simperium:(Simperium *)s;
 - (BOOL)authenticateIfNecessary;

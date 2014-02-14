@@ -13,6 +13,11 @@
 @class SPWebSocketInterface;
 @protocol SPDiffable;
 
+
+#pragma mark ====================================================================================
+#pragma mark SPWebSocketChannel
+#pragma mark ====================================================================================
+
 @interface SPWebSocketChannel : NSObject
 
 @property (nonatomic, weak) SPWebSocketInterface *webSocketManager;

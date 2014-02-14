@@ -14,26 +14,17 @@
 #import "Simperium.h"
 #import "SPGhost.h"
 #import "JSONKit+Simperium.h"
-#import "DDLog.h"
+#import "SPLogger.h"
 
 
 
 @implementation SPManagedObject
+
 @synthesize ghost;
 @synthesize updateWaiting;
 @synthesize bucket;
 @dynamic simperiumKey;
 @dynamic ghostData;
-
-static int ddLogLevel = LOG_LEVEL_INFO;
-
-+ (int)ddLogLevel {
-    return ddLogLevel;
-}
-
-+ (void)ddSetLogLevel:(int)logLevel {
-    ddLogLevel = logLevel;
-}
 
 - (void)simperiumSetValue:(id)value forKey:(NSString *)key {
     [self setValue:value forKey:key];

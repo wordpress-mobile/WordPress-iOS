@@ -9,6 +9,11 @@
 #import <Foundation/Foundation.h>
 
 
+
+#pragma mark ====================================================================================
+#pragma mark SPPersistentMutableDictionary
+#pragma mark ====================================================================================
+
 @interface SPPersistentMutableDictionary : NSObject
 
 @property (nonatomic, strong, readonly) NSString *label;

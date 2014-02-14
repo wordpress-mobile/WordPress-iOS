@@ -9,7 +9,7 @@
 #import "Simperium.h"
 #import "SPCoreDataStorage.h"
 #import "SPAuthenticator.h"
-#import "SPSimperiumLogger.h"
+#import "SPLogger.h"
 #import "SPJSONStorage.h"
 #import "SPReachability.h"
 
@@ -25,7 +25,7 @@
 #pragma mark Simperium: Private Methods
 #pragma mark ====================================================================================
 
-@interface Simperium() <SPStorageObserver, SPAuthenticatorDelegate, SPSimperiumLoggerDelegate>
+@interface Simperium() <SPStorageObserver, SPAuthenticatorDelegate, SPLoggerDelegate>
 
 @property (nonatomic, strong) SPCoreDataStorage			*coreDataStorage;
 @property (nonatomic, strong) SPJSONStorage				*JSONStorage;

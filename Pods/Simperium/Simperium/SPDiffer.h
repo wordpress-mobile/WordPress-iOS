@@ -10,13 +10,16 @@
 #import <Foundation/Foundation.h>
 #import "SPDiffable.h"
 
+
 @class SPMember;
 @class SPGhost;
 @class SPSchema;
 
-@interface SPDiffer : NSObject {
-    SPSchema *schema;
-}
+#pragma mark ====================================================================================
+#pragma mark SPDiffer
+#pragma mark ====================================================================================
+
+@interface SPDiffer : NSObject
 
 @property (nonatomic, strong) SPSchema *schema;
 

@@ -9,6 +9,12 @@
 #import <Foundation/Foundation.h>
 #import "SPStorageProvider.h"
 
+
+
+#pragma mark ====================================================================================
+#pragma mark SPRelationshipResolver
+#pragma mark ====================================================================================
+
 @interface SPRelationshipResolver : NSObject {
     NSMutableDictionary *pendingRelationships;
 }
