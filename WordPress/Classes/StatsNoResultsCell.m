@@ -34,8 +34,8 @@ static CGFloat const CellPadding = 15.0f;
 
 - (void)configureForSection:(StatsSection)section {
     UILabel *label = [[UILabel alloc] init];
-    NSString *boldMessage;
-    NSString *description;
+    NSString *boldMessage = @"";
+    NSString *description = @"";
 
     switch (section) {
         case StatsSectionTopPosts:
@@ -60,14 +60,12 @@ static CGFloat const CellPadding = 15.0f;
         default:
             break;
     }
-    NSString *localizedBoldString = boldMessage;
-    NSString *localizedDescriptionString = description;
-    NSString *completeString = [NSString stringWithFormat:@"%@ %@", localizedBoldString, localizedDescriptionString];
+    NSString *completeString = [NSString stringWithFormat:@"%@ %@", boldMessage, description];
     
     NSDictionary *defaultAttributes = [WPStyleGuide regularTextAttributes];
     NSDictionary *boldAttributes = [NSDictionary dictionaryWithObjectsAndKeys:[WPStyleGuide regularTextFontBold], NSFontAttributeName, nil];
     NSMutableAttributedString *noResultsAttributedString = [[NSMutableAttributedString alloc] initWithString:completeString attributes:defaultAttributes];
-    [noResultsAttributedString setAttributes:boldAttributes range:NSMakeRange(0, localizedBoldString.length)];
+    [noResultsAttributedString setAttributes:boldAttributes range:NSMakeRange(0, boldMessage.length)];
     
     label.attributedText = noResultsAttributedString;
     label.lineBreakMode = NSLineBreakByWordWrapping;
