@@ -11,26 +11,12 @@
 #import "NSString+XMLExtensions.h"
 #import "WordPressComApi.h"
 #import "ContextManager.h"
+#import "XMLParserCollecter.h"
 
 const NSUInteger NoteKeepCount = 20;
 
-@interface XMLParserCollecter : NSObject <NSXMLParserDelegate>
-@property (nonatomic, strong) NSMutableString *result;
-@end
-@implementation XMLParserCollecter
 
-- (id)init {
-    if (self = [super init]) {
-        self.result = [[NSMutableString alloc] init];
-    }
-    return self;
-}
 
-- (void)parser:(NSXMLParser *)parser foundCharacters:(NSString *)string {
-    [self.result appendString:string];
-}
-
-@end
 
 @interface Note ()
 
