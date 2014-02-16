@@ -39,6 +39,7 @@
     self.textView.autoresizingMask = UIViewAutoresizingFlexibleHeight | UIViewAutoresizingFlexibleWidth;
     self.textView.editable = NO;
     self.textView.text = self.logText;
+    self.textView.font = [WPStyleGuide subtitleFont];
     [self.view addSubview:self.textView];
 
     UIBarButtonItem *shareButton = nil;
