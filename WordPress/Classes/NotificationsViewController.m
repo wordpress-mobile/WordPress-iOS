@@ -122,8 +122,6 @@ NSString * const NotificationsJetpackInformationURL = @"http://jetpack.me/about/
     if (self.tableView.contentOffset.y == 0) {
         [self pruneOldNotes];
     }
-
-    [self clearNotificationsBadgeAndSyncItems];
 }
 
 - (void)viewDidDisappear:(BOOL)animated {
