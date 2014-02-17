@@ -18,11 +18,6 @@
 const NSUInteger WPNoteKeepCount = 20;
 
 
-@interface Note ()
-@property (nonatomic, strong, readwrite) NSDate		*date;
-@property (nonatomic, strong, readwrite) NSString	*bodyCommentText;
-@end
-
 
 @implementation Note
 
@@ -33,19 +28,16 @@ const NSUInteger WPNoteKeepCount = 20;
 @dynamic subject;
 @dynamic body;
 
-@synthesize date			= _date;
-@synthesize bodyCommentText	= _bodyCommentText;
-
 
 #pragma mark - Derived Properties from subject / body dictionaries
 
 - (NSString *)subjectText {
-	NSString *subject = self.subject[@"text"] ?: self.subject[@"html"];
+	NSString *subject = [self.subject stringForKey:@"text"] ?: [self.subject stringForKey:@"html"];
 	return [subject trim];
 }
 
 - (NSString *)subjectIcon {
-	return self.subject[@"icon"];
+	return [self.subject stringForKey:@"icon"];
 }
 
 - (NSArray *)bodyItems {
@@ -77,11 +69,9 @@ const NSUInteger WPNoteKeepCount = 20;
 }
 
 - (NSString *)bodyCommentText {
-    if (_bodyCommentText == nil) {
-        _bodyCommentText = [self parseBodyComments];
-    }
-    return _bodyCommentText;
+	return [self parseBodyComments];
 }
+
 - (NSString *)parseBodyComments {
     
     if (self.isComment == NO) {
@@ -89,7 +79,7 @@ const NSUInteger WPNoteKeepCount = 20;
 	}
 	
 	NSDictionary *bodyItem	= [self.bodyItems lastObject];
-	NSString *comment		= bodyItem[@"html"];
+	NSString *comment		= [bodyItem stringForKey:@"html"];
 	if (comment == (id)[NSNull null] || comment.length == 0 ) {
 		return nil;
 	}
@@ -213,7 +203,7 @@ const NSUInteger WPNoteKeepCount = 20;
             title = [title trim];
         }
     }
-	return [title stringByDecodingXMLCharacters];
+	return [title stringByDecodingXMLCharacters] ?: @"";
 }
 
 - (NSString *)authorForDisplay {
@@ -262,12 +252,8 @@ const NSUInteger WPNoteKeepCount = 20;
 }
 
 - (NSDate *)dateForDisplay {
-    if (self.date == nil) {
-        NSTimeInterval timeInterval = [self.timestamp doubleValue];
-        self.date = [NSDate dateWithTimeIntervalSince1970:timeInterval];
-    }
-    
-    return self.date;
+	NSTimeInterval timeInterval = [self.timestamp doubleValue];
+	return [NSDate dateWithTimeIntervalSince1970:timeInterval];
 }
 
 - (BOOL)unreadStatusForDisplay {

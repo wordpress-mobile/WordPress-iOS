@@ -14,11 +14,6 @@
 
 @interface Note : SPManagedObject<WPContentViewProvider>
 
-
-///////////////////////////////////////////////////////////////////////////
-
-#warning TODO: Encapsulate bodyItems and bodyActions into objects
-
 @property (nonatomic, strong,  readonly) NSString		*noteID;
 @property (nonatomic, strong,  readonly) NSNumber		*timestamp;
 @property (nonatomic, strong,  readonly) NSString		*type;
