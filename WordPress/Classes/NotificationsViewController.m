@@ -25,14 +25,13 @@
 
 @interface NotificationsViewController ()
 
-@property (nonatomic, strong) id	authListener;
 @property (nonatomic, assign) BOOL	isPushingViewController;
 @property (nonatomic, assign) BOOL	viewHasAppeared;
 
 @end
 
 
-#warning TODO: Verify this class
+//#warning TODO: Verify this class
 
 
 @implementation NotificationsViewController
@@ -102,7 +101,8 @@
     [WPStyleGuide configureColorsForView:self.view andTableView:self.tableView];
     
     self.tableView.separatorInset = UIEdgeInsetsMake(0, 25, 0, 0);
-    self.infiniteScrollEnabled = YES;
+    self.infiniteScrollEnabled = NO;
+	self.refreshControl = nil;
 }
 
 - (void)viewWillAppear:(BOOL)animated {
@@ -201,7 +201,7 @@
         note.unread = @(false);
 		[[ContextManager sharedInstance] saveContext:note.managedObjectContext];
 		
-        [self.tableView reloadRowsAtIndexPaths:[NSArray arrayWithObject:indexPath] withRowAnimation:UITableViewRowAnimationNone];
+        [self.tableView reloadRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationNone];
 
         if(hasDetailsView) {
             [self.tableView selectRowAtIndexPath:indexPath animated:NO scrollPosition:UITableViewScrollPositionNone];
@@ -249,19 +249,7 @@
     }
 }
 
-- (BOOL)userCanRefresh {
-    return NO;
-}
-
-- (BOOL)hasMoreContent {
-    return NO;
-}
-
 - (void)syncItems {
-	// No-Op. Handled by Simperium!
-}
-
-- (void)loadMoreWithSuccess:(void (^)())success failure:(void (^)(NSError *))failure {
 	// No-Op. Handled by Simperium!
 }
 
