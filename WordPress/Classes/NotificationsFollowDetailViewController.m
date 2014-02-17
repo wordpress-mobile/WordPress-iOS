@@ -21,7 +21,6 @@
 
 @interface NotificationsFollowDetailViewController () <UITableViewDelegate, UITableViewDataSource>
 
-@property (nonatomic, strong) NSArray *noteData;
 @property (nonatomic, assign) BOOL hasFooter;
 @property (nonatomic, strong) Note *note;
 @property (nonatomic, weak) IBOutlet UITableView *tableView;
@@ -33,7 +32,7 @@
 @end
 
 
-#warning TODO: Verify this class
+//#warning TODO: Verify this class
 
 @implementation NotificationsFollowDetailViewController
 
@@ -50,10 +49,6 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-
-    if (_note) {
-        _noteData = [_note bodyItems];
-    }
     
     _postTitleView.layer.borderColor = [UIColor lightGrayColor].CGColor;
     _postTitleView.layer.borderWidth = 1.0 / [[UIScreen mainScreen] scale];
@@ -104,37 +99,35 @@
     [self.tableView deselectRowAtIndexPath:[self.tableView indexPathForSelectedRow] animated:animated];
 }
 
-- (void)didReceiveMemoryWarning
-{
-    [super didReceiveMemoryWarning];
-    // Dispose of any resources that can be recreated.
-}
 
 #pragma mark - Table view data source
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
 {
     // Return the number of sections.
-    if (_hasFooter)
+    if (_hasFooter) {
         return 2;
-    else
+    } else {
         return 1;
+	}
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
     // Return the number of rows in the section.
-    if (section == 0)
-        return [_noteData count];
-    else
+    if (section == 0) {
+        return [self.note.bodyItems count];
+    } else {
         return 1;
+	}
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
-    if (indexPath.section == 0)
+    if (indexPath.section == 0) {
         return 100.0f;
-    else
+    } else {
         return 60.0f;
+	}
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
@@ -152,7 +145,7 @@
         [cell.actionButton setHidden:NO];
         cell.accessoryType = UITableViewCellAccessoryNone;
         
-        NSDictionary *selectedNote = [_noteData objectAtIndex:indexPath.row];
+        NSDictionary *selectedNote = [self.note.bodyItems objectAtIndex:indexPath.row];
         NSDictionary *noteAction = [selectedNote objectForKey:@"action"];
         NSDictionary *noteActionDetails;
         if ([noteAction isKindOfClass:[NSDictionary class]])
@@ -224,7 +217,7 @@
     UIButton *button = (UIButton *)sender;
     NSInteger row = button.tag;
     
-    NSMutableDictionary *selectedNote = [_noteData objectAtIndex:row];
+    NSMutableDictionary *selectedNote = [self.note.bodyItems objectAtIndex:row];
     NSMutableDictionary *noteAction = [selectedNote objectForKey:@"action"];
     NSMutableDictionary *noteDetails;
     if ([noteAction isKindOfClass:[NSDictionary class]])
@@ -276,8 +269,9 @@
 }
 
 - (void)loadWebViewWithURL: (NSString*)url {
-    if (!url)
+    if (!url) {
         return;
+	}
     
     NSURL *webViewURL = [NSURL URLWithString:url];
     if (webViewURL) {
@@ -301,7 +295,7 @@
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
     if (indexPath.section == 0) {
-        NSDictionary *noteAction = [[_noteData objectAtIndex:indexPath.row] objectForKey:@"action"];
+        NSDictionary *noteAction = [[self.note.bodyItems objectAtIndex:indexPath.row] objectForKey:@"action"];
         NSDictionary *likeDetails;
         if ([noteAction isKindOfClass:[NSDictionary class]])
             likeDetails = [noteAction objectForKey:@"params"];
