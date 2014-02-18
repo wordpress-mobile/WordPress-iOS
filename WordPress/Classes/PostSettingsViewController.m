@@ -683,10 +683,20 @@ static NSString *const TableViewActivityCellIdentifier = @"TableViewActivityCell
             self.apost.password = nil;
         } else {
             if ([self.apost.status isEqualToString:@"private"]) {
-                self.apost.status = @"publish";
+                if ([self.apost.original.status isEqualToString:@"private"]) {
+                    self.apost.status = @"publish";
+                } else {
+                    // restore the original status
+                    self.apost.status = self.apost.original.status;
+                }
             }
             if ([visibility isEqualToString:NSLocalizedString(@"Password protected", @"Post password protection in the Post Editor/Settings area (compare with WP core translations).")]) {
-                self.apost.password = @"";
+                NSString *password = @"";
+                if (self.apost.original.password) {
+                    // restore the original password
+                    password = self.apost.original.password;
+                }
+                self.apost.password = password;
             } else {
                 self.apost.password = nil;
             }
