@@ -490,7 +490,6 @@ static NSString *const TableViewActivityCellIdentifier = @"TableViewActivityCell
         textCell.textField.text = self.apost.password;
         textCell.textField.attributedPlaceholder = nil;
         textCell.textField.placeholder = NSLocalizedString(@"Enter a password", @"");
-        textCell.textField.secureTextEntry = YES;
         textCell.textField.clearButtonMode = UITextFieldViewModeWhileEditing;
 
         cell = textCell;
