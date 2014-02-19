@@ -68,7 +68,7 @@ typedef NS_ENUM(NSUInteger, CH_ERRORS) {
 
 - (id)initWithLabel:(NSString *)label {
     if (self = [super init]) {
-        self.instanceLabel = label;
+        self.instanceLabel	= label;
 		self.changesPending = [SPPersistentMutableDictionary loadDictionaryWithLabel:label];
 		
 		NSString *moreKey = [NSString stringWithFormat:@"keysForObjectsWithMoreChanges-%@", self.instanceLabel];
@@ -123,11 +123,6 @@ typedef NS_ENUM(NSUInteger, CH_ERRORS) {
 
 #pragma mark Remote changes
 
-- (BOOL)change:(NSDictionary *)change equals:(NSDictionary *)anotherChange {
-	return [change[CH_KEY] compare:anotherChange[CH_KEY]] == NSOrderedSame &&
-			[change[CH_LOCAL_ID] compare:anotherChange[CH_LOCAL_ID]] == NSOrderedSame;
-}
-
 - (BOOL)processRemoteResponseForChanges:(NSArray *)changes bucket:(SPBucket *)bucket {
     BOOL repostNeeded = NO;
     for (NSDictionary *change in changes) {
@@ -135,7 +130,7 @@ typedef NS_ENUM(NSUInteger, CH_ERRORS) {
 			continue;
 		}
 
-		NSString *key	= change[CH_KEY];
+		NSString *key	= [self keyWithoutNamespaces:change bucket:bucket];
 		long errorCode	= [change[CH_ERROR] integerValue];
 		
 		SPLogError(@"Simperium POST returned error %ld for change %@", errorCode, change);
@@ -219,7 +214,7 @@ typedef NS_ENUM(NSUInteger, CH_ERRORS) {
     id<SPDiffable> object = [threadSafeStorage objectForKey:simperiumKey bucketName:bucket.name];
 	
     BOOL newlyAdded = NO;
-    NSString *key = change[CH_KEY];
+    NSString *key = [self keyWithoutNamespaces:change bucket:bucket];
     
     // MODIFY operation
     if (!object) {
@@ -353,7 +348,7 @@ typedef NS_ENUM(NSUInteger, CH_ERRORS) {
 - (BOOL)processRemoteChange:(NSDictionary *)change bucket:(SPBucket *)bucket clientID:(NSString *)clientID {
 	
 	// Check for an error
-    NSString *key	= change[CH_KEY];
+    NSString *key	= [self keyWithoutNamespaces:change bucket:bucket];
 	NSString *error = change[CH_ERROR];
     if (error) {
         SPLogVerbose(@"Simperium error received (%@) for %@, should reload the object here to be safe", bucket.name, key);
@@ -408,7 +403,7 @@ typedef NS_ENUM(NSUInteger, CH_ERRORS) {
     
     // Construct a list of keys for a willChange notification (and ignore acks)
     for (NSDictionary *change in changes) {
-        NSString *key = change[CH_KEY];
+        NSString *key = [self keyWithoutNamespaces:change bucket:bucket];
         if (![self awaitingAcknowledgementForKey:key]) {
             [changedKeys addObject:key];
 		}
@@ -660,6 +655,18 @@ typedef NS_ENUM(NSUInteger, CH_ERRORS) {
 	}
 	
 	return pendings;
+}
+
+- (NSString *)keyWithoutNamespaces:(NSDictionary *)change bucket:(SPBucket *)bucket {
+	
+	NSString *changeKey = change[CH_KEY];
+	if (!bucket.exposeNamespace) {
+		return changeKey;
+	}
+	
+	// Proceed removing our local namespace
+	NSString *namespace = [bucket.localNamespace stringByAppendingString:@"/"];
+	return [changeKey stringByReplacingOccurrencesOfString:namespace withString:@""];
 }
 
 @end

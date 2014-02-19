@@ -22,6 +22,8 @@ typedef void (^SPBucketForceSyncCompletion)(void);
 @property (nonatomic,   copy) NSString						*remoteName;
 @property (nonatomic,   copy) NSString						*instanceLabel;
 @property (nonatomic,   copy) NSString						*lastChangeSignature;
+@property (nonatomic, assign) BOOL							exposeNamespace;
+@property (nonatomic,   copy) NSString						*localNamespace;
 @property (nonatomic,   weak) id<SPStorageProvider>			storage;
 @property (nonatomic, strong) id<SPNetworkInterface>		network;
 @property (nonatomic, strong) SPDiffer						*differ;

@@ -65,6 +65,7 @@ NSTimeInterval const SPWebSocketTimeoutInterval = 60;
 }
 
 - (void)close {
+	[self invalidateTimeoutTimer];
 	[self.webSocket close];
 }
 

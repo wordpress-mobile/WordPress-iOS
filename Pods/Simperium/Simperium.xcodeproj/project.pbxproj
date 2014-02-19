@@ -203,6 +203,9 @@
 		B5C91A0E1827E9CB0002D306 /* NSURLResponse+Simperium.h in Headers */ = {isa = PBXBuildFile; fileRef = B5C91A0C1827E9CB0002D306 /* NSURLResponse+Simperium.h */; };
 		B5C91A0F1827E9CB0002D306 /* NSURLResponse+Simperium.m in Sources */ = {isa = PBXBuildFile; fileRef = B5C91A0D1827E9CB0002D306 /* NSURLResponse+Simperium.m */; };
 		B5DE0E0F1850D0200080C44D /* DeletionCascadeTest.m in Sources */ = {isa = PBXBuildFile; fileRef = B5DE0E0E1850D0200080C44D /* DeletionCascadeTest.m */; };
+		B5DF229218B41E3200874C75 /* SPMemberJSON.h in Headers */ = {isa = PBXBuildFile; fileRef = B5DF229018B41E3200874C75 /* SPMemberJSON.h */; };
+		B5DF229318B41E3200874C75 /* SPMemberJSON.m in Sources */ = {isa = PBXBuildFile; fileRef = B5DF229118B41E3200874C75 /* SPMemberJSON.m */; };
+		B5DF229518B41FB700874C75 /* SPMemberJSONTests.m in Sources */ = {isa = PBXBuildFile; fileRef = B5DF229418B41FB700874C75 /* SPMemberJSONTests.m */; };
 		B5E03D99182C115100412572 /* JSONKit+Simperium.m in Sources */ = {isa = PBXBuildFile; fileRef = B5E03D97182C115100412572 /* JSONKit+Simperium.m */; };
 		B5E8D3091831221100AE2C5A /* XCTest.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B5E8D3081831221100AE2C5A /* XCTest.framework */; };
 		B5E8D30F1831237500AE2C5A /* MockWebSocketInterface.m in Sources */ = {isa = PBXBuildFile; fileRef = B5ECEA251831154700B9289A /* MockWebSocketInterface.m */; };
@@ -436,6 +439,9 @@
 		B5C91A0C1827E9CB0002D306 /* NSURLResponse+Simperium.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSURLResponse+Simperium.h"; sourceTree = "<group>"; };
 		B5C91A0D1827E9CB0002D306 /* NSURLResponse+Simperium.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSURLResponse+Simperium.m"; sourceTree = "<group>"; };
 		B5DE0E0E1850D0200080C44D /* DeletionCascadeTest.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DeletionCascadeTest.m; sourceTree = "<group>"; };
+		B5DF229018B41E3200874C75 /* SPMemberJSON.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SPMemberJSON.h; sourceTree = "<group>"; };
+		B5DF229118B41E3200874C75 /* SPMemberJSON.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SPMemberJSON.m; sourceTree = "<group>"; };
+		B5DF229418B41FB700874C75 /* SPMemberJSONTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SPMemberJSONTests.m; sourceTree = "<group>"; };
 		B5E03D96182C115100412572 /* JSONKit+Simperium.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; lineEnding = 0; path = "JSONKit+Simperium.h"; sourceTree = "<group>"; };
 		B5E03D97182C115100412572 /* JSONKit+Simperium.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "JSONKit+Simperium.m"; sourceTree = "<group>"; };
 		B5E8D3081831221100AE2C5A /* XCTest.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = XCTest.framework; path = Library/Frameworks/XCTest.framework; sourceTree = DEVELOPER_DIR; };
@@ -561,6 +567,8 @@
 				2622FD17147F24E000C8EEB4 /* SPMemberFloat.m */,
 				2622FD1A147F24F600C8EEB4 /* SPMemberEntity.h */,
 				2622FD1B147F24F600C8EEB4 /* SPMemberEntity.m */,
+				B5DF229018B41E3200874C75 /* SPMemberJSON.h */,
+				B5DF229118B41E3200874C75 /* SPMemberJSON.m */,
 				46DD15C8179A6F4B0093678C /* SPMemberJSONList.h */,
 				46DD15C9179A6F4B0093678C /* SPMemberJSONList.m */,
 				2622FD22147F251100C8EEB4 /* SPMemberList.h */,
@@ -897,6 +905,7 @@
 				B5549FE5184581BF007EA226 /* SPThreadsafeMutableSetTests.m */,
 				B597DD58183128FE005E95D7 /* RemoteDebugTests.m */,
 				B5DE0E0E1850D0200080C44D /* DeletionCascadeTest.m */,
+				B5DF229418B41FB700874C75 /* SPMemberJSONTests.m */,
 			);
 			name = UnitTests;
 			sourceTree = "<group>";
@@ -975,6 +984,7 @@
 				2622FD08147F249400C8EEB4 /* SPMemberText.h in Headers */,
 				2622FD0C147F24A700C8EEB4 /* SPMemberDate.h in Headers */,
 				2622FD10147F24CC00C8EEB4 /* SPMemberInt.h in Headers */,
+				B5DF229218B41E3200874C75 /* SPMemberJSON.h in Headers */,
 				B5C91A0A1827E8600002D306 /* SPHttpRequestQueue.h in Headers */,
 				2622FD14147F24D700C8EEB4 /* SPMemberDouble.h in Headers */,
 				2622FD18147F24E000C8EEB4 /* SPMemberFloat.h in Headers */,
@@ -1262,6 +1272,7 @@
 				B5549FE418457F72007EA226 /* SPThreadsafeMutableSet.m in Sources */,
 				46A16A8217289FE2003AED55 /* NSString+Simperium.m in Sources */,
 				1854D5101799F6D2006C4211 /* NSArray+Simperium.m in Sources */,
+				B5DF229318B41E3200874C75 /* SPMemberJSON.m in Sources */,
 				46DD15CB179A6F4B0093678C /* SPMemberJSONList.m in Sources */,
 				466EB41517BC45F5005F7599 /* SPAuthenticationConfiguration.m in Sources */,
 				466EB41717BC45F5005F7599 /* SPAuthenticationValidator.m in Sources */,
@@ -1305,6 +1316,7 @@
 				B565ECA51832643000D162FF /* Post.m in Sources */,
 				B5F068B1186223DF00D0D7B7 /* DiffMatchPatchTest.m in Sources */,
 				B565ECA61832643000D162FF /* Config.m in Sources */,
+				B5DF229518B41FB700874C75 /* SPMemberJSONTests.m in Sources */,
 				B597DD59183128FE005E95D7 /* RemoteDebugTests.m in Sources */,
 				B5B69C0318325B2C001F0DE1 /* MockSimperium.m in Sources */,
 				B5549FE6184581BF007EA226 /* SPThreadsafeMutableSetTests.m in Sources */,

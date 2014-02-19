@@ -42,6 +42,7 @@
 - (void)handleRemoteChanges:(NSArray *)changes bucket:(SPBucket *)bucket;
 - (void)handleIndexResponse:(NSString *)responseString bucket:(SPBucket *)bucket;
 - (void)handleVersionResponse:(NSString *)responseString bucket:(SPBucket *)bucket;
+- (void)handleOptions:(NSString *)options bucket:(SPBucket *)bucket;
 - (void)startProcessingChangesForBucket:(SPBucket *)bucket;
 
 + (instancetype)channelWithSimperium:(Simperium *)s clientID:(NSString *)clientID;

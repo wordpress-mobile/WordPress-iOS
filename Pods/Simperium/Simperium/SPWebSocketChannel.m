@@ -498,6 +498,14 @@ static SPLogLevels logLevel							= SPLogLevelsInfo;
     }
 }
 
+- (void)handleOptions:(NSString *)options bucket:(SPBucket *)bucket {
+	
+    NSDictionary *optionsDict = [options sp_objectFromJSONString];
+	
+	bucket.localNamespace	= optionsDict[@"namespace"];
+	bucket.exposeNamespace	= [optionsDict[@"expose_namespace"] boolValue];
+}
+
 - (void)allVersionsFinishedForBucket:(SPBucket *)bucket {
     [self processBatchForBucket:bucket];
     [self resetRetryDelay];

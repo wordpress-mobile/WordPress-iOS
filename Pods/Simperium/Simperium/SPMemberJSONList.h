@@ -8,6 +8,8 @@
 
 #import "SPMember.h"
 
+// TODO: Remove this class
+
 @interface SPMemberJSONList : SPMember
 
 @end

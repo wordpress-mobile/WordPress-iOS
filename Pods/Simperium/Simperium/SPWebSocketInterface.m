@@ -34,6 +34,7 @@ NSString * const COM_ERROR							= @"?";
 NSString * const COM_LOG							= @"log";
 NSString * const COM_INDEX_STATE					= @"index";
 NSString * const COM_HEARTBEAT						= @"h";
+NSString * const COM_OPTIONS						= @"o";
 
 static SPLogLevels logLevel							= SPLogLevelsInfo;
 
@@ -333,6 +334,8 @@ typedef NS_ENUM(NSInteger, SPRemoteLogging) {
 		[channel handleRemoteChanges: changes bucket:bucket];
     } else if ([command isEqualToString:COM_ENTITY]) {
         [channel handleVersionResponse:data bucket:bucket];
+	} else if ([command isEqualToString:COM_OPTIONS]) {
+		[channel handleOptions:data bucket:bucket];
     } else if ([command isEqualToString:COM_ERROR]) {
         SPLogVerbose(@"Simperium returned a command error (?) for bucket %@", bucket.name);
     }

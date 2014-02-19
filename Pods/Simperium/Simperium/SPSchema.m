@@ -15,6 +15,7 @@
 #import "SPMemberFloat.h"
 #import "SPMemberDouble.h"
 #import "SPMemberEntity.h"
+#import "SPMemberJSON.h"
 #import "SPMemberJSONList.h"
 #import "SPMemberList.h"
 #import "SPMemberBase64.h"
@@ -28,27 +29,28 @@
 
 // Maps primitive type strings to base member classes
 - (Class)memberClassForType:(NSString *)type {
-	if ([type isEqualToString:@"text"])
-		return [SPMemberText class];
-	else if ([type isEqualToString:@"int"] || [type isEqualToString:@"bool"])
-		return [SPMemberInt class];
-	else if ([type isEqualToString:@"date"])
-		return [SPMemberDate class];
-    else if ([type isEqualToString:@"entity"])
-        return [SPMemberEntity class];
-    else if ([type isEqualToString:@"double"])
-        return [SPMemberDouble class];
-    else if ([type isEqualToString:@"binary"])
-        return [SPMemberBinary class];
-    else if ([type isEqualToString:@"list"])
-        return [SPMemberList class];
-    else if ([type isEqualToString:@"jsonlist"])
-        return [SPMemberJSONList class];
-    else if ([type isEqualToString:@"base64"])
-        return [SPMemberBase64 class];
 	
-	// error
-	return nil;
+	static NSDictionary *memberMap = nil;
+	static dispatch_once_t onceToken;
+	
+	dispatch_once(&onceToken, ^{
+		memberMap = @{
+			@"text"		: NSStringFromClass([SPMemberText class]),
+			@"int"		: NSStringFromClass([SPMemberInt class]),
+			@"bool"		: NSStringFromClass([SPMemberInt class]),
+			@"date"		: NSStringFromClass([SPMemberDate class]),
+			@"entity"	: NSStringFromClass([SPMemberEntity class]),
+			@"double"	: NSStringFromClass([SPMemberDouble class]),
+			@"binary"	: NSStringFromClass([SPMemberBinary class]),
+			@"list"		: NSStringFromClass([SPMemberList class]),
+			@"json"		: NSStringFromClass([SPMemberJSON class]),
+			@"jsonlist" : NSStringFromClass([SPMemberJSONList class]),
+			@"base64"	: NSStringFromClass([SPMemberBase64 class])
+		};
+	});
+	
+	NSString *name = memberMap[type];
+	return name ? NSClassFromString(name) : nil;
 }
 
 // Loads an entity's definition (name, members, their types, etc.) from a plist dictionary
