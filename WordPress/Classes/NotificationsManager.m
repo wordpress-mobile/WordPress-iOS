@@ -62,17 +62,20 @@ NSString *const NotificationsDeviceToken = @"apnsDeviceToken";
 }
 
 + (void)unregisterDeviceToken {
-    NSString *token = [[NSUserDefaults standardUserDefaults] objectForKey:NotificationsDeviceToken];
-    [[[WPAccount defaultWordPressComAccount] restApi] unregisterForPushNotificationsWithDeviceToken:token success:^{
-        DDLogInfo(@"Unregistered push token %@", token);
-
-        NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
-        [defaults removeObjectForKey:NotificationsDeviceToken];
-        [defaults removeObjectForKey:NotificationsPreferencesKey];
-        [defaults synchronize];
-    } failure:^(NSError *error){
-        DDLogError(@"Couldn't unregister push token: %@", [error localizedDescription]);
-    }];
+    NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
+    NSString *deviceId = [defaults stringForKey:NotificationsDeviceIdKey];
+    WPAccount *account = [WPAccount defaultWordPressComAccount];
+    
+    [[account restApi] unregisterForPushNotificationsWithDeviceId:deviceId
+                                                          success:^{
+                                                              NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
+                                                              [defaults removeObjectForKey:NotificationsDeviceToken];
+                                                              [defaults removeObjectForKey:NotificationsDeviceIdKey];
+                                                              [defaults removeObjectForKey:NotificationsPreferencesKey];
+                                                              [defaults synchronize];
+                                                          } failure:^(NSError *error){
+                                                              DDLogError(@"Couldn't unregister push token: %@", [error localizedDescription]);
+                                                          }];
 }
 
 + (BOOL)deviceRegisteredForPushNotifications {
@@ -232,7 +235,7 @@ NSString *const NotificationsDeviceToken = @"apnsDeviceToken";
         
         [defaults setObject:deviceId forKey:NotificationsDeviceIdKey];
         [defaults setObject:settings forKey:NotificationsPreferencesKey];
-        
+        [defaults synchronize];
     } failure:^(NSError *error) {
         DDLogError(@"Failed to receive supported notification list: %@", error);
     }];
