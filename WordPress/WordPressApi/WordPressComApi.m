@@ -338,35 +338,30 @@ NSString *const WordPressComApiPushAppId = @"org.wordpress.appstore";
 
 }
 
-- (void)unregisterForPushNotificationsWithDeviceToken:(NSString *)token
-                                              success:(void (^)())success failure:(void (^)(NSError *error))failure {
-    if (nil == token) {
+- (void)unregisterForPushNotificationsWithDeviceId:(NSString *)deviceId
+                                           success:(void (^)())success
+                                           failure:(void (^)(NSError *error))failure {
+    if (!(deviceId.length > 0)) {
+        DDLogWarn(@"Unable to fetchNotificationSettings - Device ID is empty!");
         return;
     }
 
-    NSArray *parameters = @[[self usernameForXmlrpc],
-                            [self passwordForXmlrpc],
-                            token,
-                            @"apple",
-                            @NO, // Sandbox parameter - deprecated
-                            WordPressComApiPushAppId
-                            ];
-    
-    WPXMLRPCClient *api = [[WPXMLRPCClient alloc] initWithXMLRPCEndpoint:[NSURL URLWithString:WordPressComXMLRPCUrl]];
-    [api setAuthorizationHeaderWithToken:self.authToken];
-    [api callMethod:@"wpcom.mobile_push_unregister_token"
-         parameters:parameters
-            success:^(AFHTTPRequestOperation *operation, id responseObject) {
-                DDLogInfo(@"Unregistered token %@", token);
-                if (success) {
-                    success();
-                }
-            } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
-                DDLogError(@"Couldn't unregister token: %@", [error localizedDescription]);
-                if (failure) {
-                    failure(error);
-                }
-            }];
+    NSString *path = [NSString stringWithFormat:@"devices/%@/delete", deviceId];
+    [self postPath:path
+        parameters:nil
+           success:^(AFHTTPRequestOperation *operation, id responseObject) {
+               DDLogInfo(@"Successfully unregistered device ID %@", deviceId);
+               if (success) {
+                   success();
+               }
+           }
+           failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+               DDLogError(@"Unable to unregister push for device ID %@: %@", deviceId, error);
+               if (failure) {
+                   failure(error);
+               }
+           }
+     ];
 }
 
 - (void)syncPushNotificationInfoWithDeviceToken:(NSString *)token
