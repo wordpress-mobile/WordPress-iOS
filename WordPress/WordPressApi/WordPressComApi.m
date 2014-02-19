@@ -12,7 +12,6 @@
 #import <AFJSONRequestOperation.h>
 #import <UIDeviceHardware.h>
 #import "UIDevice+WordPressIdentifier.h"
-#import <WPXMLRPCClient.h>
 #import "WordPressAppDelegate.h"
 #import "NotificationsManager.h"
 
@@ -20,7 +19,6 @@ static NSString *const WordPressComApiClientEndpointURL = @"https://public-api.w
 static NSString *const WordPressComApiOauthBaseUrl = @"https://public-api.wordpress.com/oauth2";
 NSString *const WordPressComApiNotificationFields = @"id,type,unread,body,subject,timestamp";
 static NSString *const WordPressComApiLoginUrl = @"https://wordpress.com/wp-login.php";
-static NSString *const WordPressComXMLRPCUrl = @"https://wordpress.com/xmlrpc.php";
 NSString *const WordPressComApiErrorDomain = @"com.wordpress.api";
 NSString *const WordPressComApiErrorCodeKey = @"WordPressComApiErrorCodeKey";
 NSString *const WordPressComApiErrorMessageKey = @"WordPressComApiErrorMessageKey";
@@ -534,25 +532,6 @@ NSString *const WordPressComApiPushAppId = @"org.wordpress.appstore";
            success:success
            failure:failure];
 }
-
-/* HACK: temporary fix for cases where password is nil
- We believe jetpack settings might be causing this, but since we're actually doing authentication
- with the authToken, we don't care that much about username/password in this method
- */
-- (NSString *)usernameForXmlrpc {
-    NSString *username = self.username;
-    if (!username)
-        username = @"";
-    return username;
-}
-
-- (NSString *)passwordForXmlrpc {
-    NSString *password = self.password;
-    if (!password)
-        password = @"";
-    return password;
-}
-/* HACK ENDS */
 
 - (void)setAuthorizationHeaderWithToken:(NSString *)token {
     [self setDefaultHeader:@"Authorization" value:[NSString stringWithFormat:@"Bearer %@", token]];
