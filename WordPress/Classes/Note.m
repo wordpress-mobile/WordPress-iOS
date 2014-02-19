@@ -115,12 +115,8 @@ const NSUInteger WPNoteKeepCount = 20;
     return [self.type isEqualToString:@"like"];
 }
 
-- (BOOL)isUnread {
-    return [self.unread boolValue];
-}
-
 - (BOOL)isRead {
-    return ![self isUnread];
+    return ![self.unread boolValue];
 }
 
 - (BOOL)isStatsEvent {

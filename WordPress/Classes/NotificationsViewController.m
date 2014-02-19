@@ -197,8 +197,10 @@
     } else {
         [self.tableView deselectRowAtIndexPath:indexPath animated:YES];
     }
-    if(note.isUnread) {
-        note.unread = @(false);
+	
+    if(!note.isRead) {
+		// God forgive me: The backend needs this to be a string.
+        note.unread = @"0";
 		[[ContextManager sharedInstance] saveContext:note.managedObjectContext];
 		
         [self.tableView reloadRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationNone];

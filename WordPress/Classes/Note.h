@@ -17,7 +17,7 @@
 @property (nonatomic, strong,  readonly) NSString		*noteID;
 @property (nonatomic, strong,  readonly) NSNumber		*timestamp;
 @property (nonatomic, strong,  readonly) NSString		*type;
-@property (nonatomic, strong, readwrite) NSNumber		*unread;
+@property (nonatomic, strong, readwrite) NSString		*unread;	// Yes. This should be a number instead.
 @property (nonatomic, retain,  readonly) NSDictionary	*subject;
 @property (nonatomic, retain,  readonly) NSDictionary	*body;
 
@@ -40,7 +40,6 @@
 - (BOOL)isLike;
 - (BOOL)isFollow;
 - (BOOL)isRead;
-- (BOOL)isUnread;
 
 // Attempt to get the right blog for the note's stats event
 - (Blog *)blogForStatsEvent;
