@@ -308,33 +308,34 @@ NSString *const WordPressComApiPushAppId = @"org.wordpress.appstore";
             }];
 }
 
-- (void)fetchNotificationSettingsWithDeviceToken:(NSString *)token success:(void (^)(NSDictionary *settings))success failure:(void (^)(NSError *error))failure {
-    if( nil == token )
+- (void)fetchNotificationSettingsWithDeviceId:(NSString *)deviceId
+                                      success:(void (^)(NSDictionary *settings))success
+                                      failure:(void (^)(NSError *error))failure {
+    if (!(deviceId.length > 0)) {
+        DDLogWarn(@"Unable to fetchNotificationSettings - Device ID is empty!");
         return;
+    }
     
-    if (![self hasCredentials])
+    if (![self hasCredentials]) {
+        DDLogWarn(@"Unable to fetchNotificationSettings - not authenticated!");
         return;
+    }
     
-    NSArray *parameters = @[[self usernameForXmlrpc],
-                            [self passwordForXmlrpc],
-                            token,
-                            @"apple",
-                            WordPressComApiPushAppId
-                            ];
-    
-    WPXMLRPCClient *api = [[WPXMLRPCClient alloc] initWithXMLRPCEndpoint:[NSURL URLWithString:WordPressComXMLRPCUrl]];
-    [api setAuthorizationHeaderWithToken:self.authToken];
-    [api callMethod:@"wpcom.get_mobile_push_notification_settings"
-         parameters:parameters
-            success:^(AFHTTPRequestOperation *operation, id responseObject) {
-                if (success) {
-                    success(responseObject);
-                }
-            } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
-                if (failure) {
-                    failure(error);
-                }
-            }];
+    NSString *path = [NSString stringWithFormat:@"device/%@", deviceId];
+    [self getPath:path
+       parameters:nil
+          success:^(AFHTTPRequestOperation *operation, id responseObject) {
+              if (success) {
+                  success(responseObject);
+              }
+          }
+          failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+              if (failure) {
+                  failure(error);
+              }
+          }
+     ];
+
 }
 
 - (void)unregisterForPushNotificationsWithDeviceToken:(NSString *)token
