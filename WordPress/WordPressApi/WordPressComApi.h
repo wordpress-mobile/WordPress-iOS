@@ -83,7 +83,7 @@ extern NSString *const WordPressComApiPushAppId;
                                               success:(void (^)())success failure:(void (^)(NSError *error))failure;
 
 - (void)syncPushNotificationInfoWithDeviceToken:(NSString *)token
-                                        success:(void (^)(NSDictionary *settings))success
+                                        success:(void (^)(NSString *deviceId, NSDictionary *settings))success
                                         failure:(void (^)(NSError *error))failure;
 /*
  * Queries the REST Api for unread notes and determines if the user has
