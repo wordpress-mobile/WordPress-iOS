@@ -16,6 +16,7 @@
 #import <WPXMLRPCClient.h>
 #import "ContextManager.h"
 
+static NSString *const NotificationsDeviceIdKey = @"notification_device_id";
 static NSString *const NotificationsPreferencesKey = @"notification_preferences";
 NSString *const NotificationsDeviceToken = @"apnsDeviceToken";
 
@@ -221,9 +222,14 @@ NSString *const NotificationsDeviceToken = @"apnsDeviceToken";
     NSString *token = [[NSUserDefaults standardUserDefaults] objectForKey:NotificationsDeviceToken];
     WPAccount *account = [WPAccount defaultWordPressComAccount];
     WordPressComApi *api = [account restApi];
-    [api syncPushNotificationInfoWithDeviceToken:token success:^(NSDictionary *settings) {
-        [[NSUserDefaults standardUserDefaults] setObject:settings forKey:NotificationsPreferencesKey];
-        DDLogInfo(@"Synched push notification token and received settings %@", settings);
+    [api syncPushNotificationInfoWithDeviceToken:token success:^(NSString *deviceId, NSDictionary *settings) {
+        DDLogVerbose(@"Synched push notification token and received device ID %@ with settings:\n %@", deviceId, settings);
+
+        NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
+        
+        [defaults setObject:deviceId forKey:NotificationsDeviceIdKey];
+        [defaults setObject:settings forKey:NotificationsPreferencesKey];
+        
     } failure:^(NSError *error) {
         DDLogError(@"Failed to receive supported notification list: %@", error);
     }];
