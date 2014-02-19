@@ -203,19 +203,22 @@ NSString *const NotificationsDeviceToken = @"apnsDeviceToken";
 }
 
 + (void)fetchNotificationSettingsWithSuccess:(void (^)())success failure:(void (^)(NSError *))failure {
-    NSString *token = [[NSUserDefaults standardUserDefaults] objectForKey:NotificationsDeviceToken];
-    [[[WPAccount defaultWordPressComAccount] restApi] fetchNotificationSettingsWithDeviceToken:token success:^(NSDictionary *settings) {
-        [[NSUserDefaults standardUserDefaults] setObject:settings forKey:NotificationsPreferencesKey];
-        DDLogInfo(@"Received notification settings %@", settings);
-        if (success) {
-            success();
-        }
-    } failure:^(NSError *error) {
-        DDLogError(@"Failed to fetch notification settings %@ with token %@", error.localizedDescription, token);
-        if (failure) {
-            failure(error);
-        }
-    }];
+    NSString *deviceId = [[NSUserDefaults standardUserDefaults] objectForKey:NotificationsDeviceIdKey];
+    
+    WPAccount *account = [WPAccount defaultWordPressComAccount];
+    [[account restApi] fetchNotificationSettingsWithDeviceId:deviceId
+                                                     success:^(NSDictionary *settings) {
+                                                         [[NSUserDefaults standardUserDefaults] setObject:settings forKey:NotificationsPreferencesKey];
+                                                         DDLogInfo(@"Received notification settings %@", settings);
+                                                         if (success) {
+                                                             success();
+                                                         }
+                                                     } failure:^(NSError *error) {
+                                                         DDLogError(@"Failed to fetch notification settings %@ with device ID %@", error, deviceId);
+                                                         if (failure) {
+                                                             failure(error);
+                                                         }
+                                                     }];
 }
 
 + (void)syncPushNotificationInfo {
