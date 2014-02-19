@@ -197,12 +197,15 @@ NSString *const NotificationsDeviceToken = @"apnsDeviceToken";
 
 + (void)saveNotificationSettings {
     NSDictionary *settings = [NotificationsManager notificationSettingsDictionary];
-    NSString *token = [[NSUserDefaults standardUserDefaults] objectForKey:NotificationsDeviceToken];
-    [[[WPAccount defaultWordPressComAccount] restApi] saveNotificationSettings:settings deviceToken:token success:^{
-        DDLogInfo(@"Notification settings successfully sent to WP.com\n Settings: %@", settings);
-    } failure:^(NSError *error){
-        DDLogError(@"Failed to update notification settings on WP.com %@", error.localizedDescription);
-    }];
+    NSString *deviceId = [[NSUserDefaults standardUserDefaults] objectForKey:NotificationsDeviceIdKey];
+    WPAccount *account = [WPAccount defaultWordPressComAccount];
+    [[account restApi] saveNotificationSettings:settings
+                                       deviceId:deviceId
+                                        success:^{
+                                            DDLogInfo(@"Notification settings successfully sent to WP.com\n Settings: %@", settings);
+                                        } failure:^(NSError *error){
+                                            DDLogError(@"Failed to update notification settings on WP.com %@", error.localizedDescription);
+                                        }];
 }
 
 + (void)fetchNotificationSettingsWithSuccess:(void (^)())success failure:(void (^)(NSError *))failure {
@@ -228,17 +231,19 @@ NSString *const NotificationsDeviceToken = @"apnsDeviceToken";
     NSString *token = [[NSUserDefaults standardUserDefaults] objectForKey:NotificationsDeviceToken];
     WPAccount *account = [WPAccount defaultWordPressComAccount];
     WordPressComApi *api = [account restApi];
-    [api syncPushNotificationInfoWithDeviceToken:token success:^(NSString *deviceId, NSDictionary *settings) {
-        DDLogVerbose(@"Synched push notification token and received device ID %@ with settings:\n %@", deviceId, settings);
-
-        NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
-        
-        [defaults setObject:deviceId forKey:NotificationsDeviceIdKey];
-        [defaults setObject:settings forKey:NotificationsPreferencesKey];
-        [defaults synchronize];
-    } failure:^(NSError *error) {
-        DDLogError(@"Failed to receive supported notification list: %@", error);
-    }];
+    [api syncPushNotificationInfoWithDeviceToken:token
+                                         success:^(NSString *deviceId, NSDictionary *settings) {
+                                             DDLogVerbose(@"Synched push notification token and received device ID %@ with settings:\n %@", deviceId, settings);
+                                             
+                                             NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
+                                             
+                                             [defaults setObject:deviceId forKey:NotificationsDeviceIdKey];
+                                             [defaults setObject:settings forKey:NotificationsPreferencesKey];
+                                             [defaults synchronize];
+                                         } failure:^(NSError *error) {
+                                             DDLogError(@"Failed to receive supported notification list: %@", error);
+                                         }
+     ];
 }
 
 @end
