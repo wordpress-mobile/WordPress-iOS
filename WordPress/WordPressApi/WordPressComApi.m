@@ -323,7 +323,8 @@ NSString *const WordPressComApiPushAppId = @"org.wordpress.appstore";
        parameters:nil
           success:^(AFHTTPRequestOperation *operation, id responseObject) {
               if (success) {
-                  success(responseObject);
+                  NSDictionary *settings = responseObject[@"settings"];
+                  success(settings);
               }
           }
           failure:^(AFHTTPRequestOperation *operation, NSError *error) {
