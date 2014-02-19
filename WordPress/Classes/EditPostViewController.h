@@ -10,7 +10,7 @@
 
 @class AbstractPost;
 
-@interface EditPostViewController : UITableViewController
+@interface EditPostViewController : UIViewController
 
 /*
  Initialize the editor with the specified post.
