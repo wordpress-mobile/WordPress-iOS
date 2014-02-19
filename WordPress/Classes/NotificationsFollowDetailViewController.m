@@ -83,11 +83,7 @@
         }
     }
     
-    
-    NSString *footerText = [_note bodyFooterText];
-    if (footerText && ![footerText isEqualToString:@""]) {
-        _hasFooter = YES;
-    }
+	_hasFooter = (_note.bodyFooterText.length > 0);
     
     [_tableView setDelegate:self];
     
