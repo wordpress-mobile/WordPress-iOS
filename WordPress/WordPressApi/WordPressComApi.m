@@ -278,34 +278,31 @@ NSString *const WordPressComApiPushAppId = @"org.wordpress.appstore";
 
 #pragma mark - Notifications
 
-- (void)saveNotificationSettings:(NSDictionary *)settings deviceToken:(NSString *)token
+- (void)saveNotificationSettings:(NSDictionary *)settings
+                        deviceId:(NSString *)deviceId
                          success:(void (^)())success
                          failure:(void (^)(NSError *error))failure {
     
-    if (nil == token || nil == settings)
+    if (!(deviceId.length > 0)) {
+        DDLogWarn(@"Unable to saveNotificationSettings - Device ID is empty!");
         return;
-    
-    NSArray *parameters = @[[self usernameForXmlrpc],
-                            [self passwordForXmlrpc],
-                            settings,
-                            token,
-                            @"apple",
-                            WordPressComApiPushAppId
-                            ];
+    }
 
-    WPXMLRPCClient *api = [[WPXMLRPCClient alloc] initWithXMLRPCEndpoint:[NSURL URLWithString:WordPressComXMLRPCUrl]];
-    [api setAuthorizationHeaderWithToken:self.authToken];
-    [api callMethod:@"wpcom.set_mobile_push_notification_settings"
-         parameters:parameters
-            success:^(AFHTTPRequestOperation *operation, id responseObject) {
-                if (success) {
-                    success();
-                }
-            } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
-                if (failure) {
-                    failure(error);
-                }
-            }];
+    NSString *path = [NSString stringWithFormat:@"device/%@", deviceId];
+    NSDictionary *parameters = @{@"settings": settings};
+    [self postPath:path
+        parameters:parameters
+           success:^(AFHTTPRequestOperation *operation, id responseObject) {
+               if (success) {
+                   success();
+               }
+           }
+           failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+               if (failure) {
+                   failure(error);
+               }
+           }];
+    
 }
 
 - (void)fetchNotificationSettingsWithDeviceId:(NSString *)deviceId
