@@ -100,9 +100,6 @@ NSString *const NotificationsDeviceToken = @"apnsDeviceToken";
     }
     
     switch (state) {
-        case UIApplicationStateActive:
-            break;
-            
         case UIApplicationStateInactive:
             [WPMobileStats recordAppOpenedForEvent:StatsEventAppOpenedDueToPushNotification];
             [[WordPressAppDelegate sharedWordPressApplicationDelegate] showNotificationsTab];
