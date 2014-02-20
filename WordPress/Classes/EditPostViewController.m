@@ -76,6 +76,29 @@ CGFloat const EPVCTextViewTopPadding = 7.0f;
     [[NSNotificationCenter defaultCenter] removeObserver:self];
 }
 
+- (id)initWithTitle:(NSString *)title andContent:(NSString *)content andTags:(NSString *)tags andImage:(NSString *)image {
+    self = [self initWithDraftForLastUsedBlog];
+    if (self) {
+        Post *post = (Post *)self.post;
+        post.postTitle = title;
+        post.content = content;
+        post.tags = tags;
+        
+        if (image) {
+            NSURL *imageURL = [NSURL URLWithString:image];
+            if (imageURL) {
+                NSString *aimg = [NSString stringWithFormat:@"<a href=\"%@\"><img src=\"%@\"></a>", [imageURL absoluteString], [imageURL absoluteString]];
+                content = [NSString stringWithFormat:@"%@\n%@", aimg, content];
+                post.content = content;
+            } else {
+                // Assume image as base64 encoded string.
+                // TODO: Wrangle a base64 encoded image.
+            }
+        }
+    }
+    return self;
+}
+
 - (id)initWithDraftForLastUsedBlog {
     Blog *blog = [EditPostViewController blogForNewDraft];
     return [self initWithPost:[Post newDraftForBlog:blog]];
@@ -186,7 +209,7 @@ CGFloat const EPVCTextViewTopPadding = 7.0f;
     self.navigationController.navigationBar.translucent = NO;
     
     if (self.navigationItem.leftBarButtonItem == nil) {
-        UIBarButtonItem *cancelButton = [[UIBarButtonItem alloc] initWithTitle:NSLocalizedString(@"Cancel", nil) style:UIBarButtonItemStylePlain target:self action:@selector(cancelEditing)];
+        UIBarButtonItem *cancelButton = [[UIBarButtonItem alloc] initWithTitle:NSLocalizedString(@"Close", @"Label for the button to close the post editor.") style:UIBarButtonItemStylePlain target:self action:@selector(cancelEditing)];
         self.navigationItem.leftBarButtonItem = cancelButton;
     }
     self.navigationItem.backBarButtonItem.title = [self editorTitle];

@@ -100,10 +100,6 @@ NSString *const NotificationsDeviceToken = @"apnsDeviceToken";
     }
     
     switch (state) {
-        case UIApplicationStateActive:
-            [[WordPressAppDelegate sharedWordPressApplicationDelegate] clearBadgeAndSyncItemsIfNotificationsScreenActive];
-            break;
-            
         case UIApplicationStateInactive:
             [WPMobileStats recordAppOpenedForEvent:StatsEventAppOpenedDueToPushNotification];
             [[WordPressAppDelegate sharedWordPressApplicationDelegate] showNotificationsTab];
