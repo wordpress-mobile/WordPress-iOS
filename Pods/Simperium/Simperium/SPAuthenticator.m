@@ -41,10 +41,12 @@ static SPLogLevels logLevel = SPLogLevelsInfo;
 #pragma mark ====================================================================================
 
 @interface SPAuthenticator()
-@property (nonatomic, weak) id<SPAuthenticatorDelegate>	delegate;
-@property (nonatomic, weak) Simperium					*simperium;
-@property (nonatomic, copy) SucceededBlockType			succeededBlock;
-@property (nonatomic, copy) FailedBlockType				failedBlock;
+@property (nonatomic, strong, readwrite) SPReachability					*reachability;
+@property (nonatomic,   weak, readwrite) id<SPAuthenticatorDelegate>	delegate;
+@property (nonatomic,   weak, readwrite) Simperium						*simperium;
+@property (nonatomic,   copy, readwrite) SucceededBlockType				succeededBlock;
+@property (nonatomic,   copy, readwrite) FailedBlockType				failedBlock;
+@property (nonatomic, assign, readwrite) BOOL							connected;
 @end
 
 
@@ -54,16 +56,33 @@ static SPLogLevels logLevel = SPLogLevelsInfo;
 
 @implementation SPAuthenticator
 
+- (void)dealloc {
+    [[NSNotificationCenter defaultCenter] removeObserver:self];
+}
+
 - (id)initWithDelegate:(id<SPAuthenticatorDelegate>)authDelegate simperium:(Simperium *)s {
     if ((self = [super init])) {
         self.delegate	= authDelegate;
         self.simperium	= s;
+		
+        [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(handleNetworkChange:) name:kReachabilityChangedNotification object:nil];
+		self.reachability = [SPReachability reachabilityForInternetConnection];
+        self.connected = [self.reachability currentReachabilityStatus] != NotReachable;
+        [self.reachability startNotifier];
     }
     return self;
 }
 
+- (void)handleNetworkChange:(NSNotification *)notification {
+    self.connected = ([self.reachability currentReachabilityStatus] != NotReachable);
+}
+
 // Open a UI to handle authentication if necessary
 - (BOOL)authenticateIfNecessary {
+	
+	NSAssert(self.simperium.APIKey, @"Simperium APIKey must be initialized before attempting authentication");
+	NSAssert(self.simperium.appID, @"Simperium AppID must be initialized before attempting authentication");
+	
     // Look up a stored token (if it exists) and try authenticating
     NSString *username = [[NSUserDefaults standardUserDefaults] objectForKey:USERNAME_KEY];
     NSString *token = nil;
@@ -106,7 +125,7 @@ static SPLogLevels logLevel = SPLogLevelsInfo;
     NSURL *tokenURL = [NSURL URLWithString:[NSString stringWithFormat:@"%@%@/authorize/", SPAuthURL, self.simperium.appID]];
     SPLogInfo(@"Simperium authenticating: %@", [NSString stringWithFormat:@"%@%@/authorize/", SPAuthURL, self.simperium.appID]);
     SPLogVerbose(@"Simperium username is %@", username);
-	
+		
 	SPHttpRequest *request = [SPHttpRequest requestWithURL:tokenURL];
 	request.headers = @{
 		@"X-Simperium-API-Key"	: self.simperium.APIKey,
@@ -248,10 +267,6 @@ static SPLogLevels logLevel = SPLogLevelsInfo;
     if ([self.delegate respondsToSelector:@selector(authenticationDidCancel)]) {
         [self.delegate authenticationDidCancel];
 	}
-}
-
-- (BOOL)connected {
-	return (self.simperium.reachability.currentReachabilityStatus != NotReachable);
 }
 
 @end

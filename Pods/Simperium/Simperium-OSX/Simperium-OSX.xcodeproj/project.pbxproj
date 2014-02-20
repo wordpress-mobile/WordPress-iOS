@@ -136,6 +136,8 @@
 		46EA1AEB17569EA0009AC5AA /* SPNetworkInterface.h in Headers */ = {isa = PBXBuildFile; fileRef = 46EA1AEA17569EA0009AC5AA /* SPNetworkInterface.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		46EA1AEE17569EB4009AC5AA /* SPWebSocketInterface.h in Headers */ = {isa = PBXBuildFile; fileRef = 46EA1AEC17569EB4009AC5AA /* SPWebSocketInterface.h */; };
 		46EA1AEF17569EB4009AC5AA /* SPWebSocketInterface.m in Sources */ = {isa = PBXBuildFile; fileRef = 46EA1AED17569EB4009AC5AA /* SPWebSocketInterface.m */; };
+		B5008F5818B55D5100AC0337 /* SPMemberJSON.h in Headers */ = {isa = PBXBuildFile; fileRef = B5008F5618B55D5100AC0337 /* SPMemberJSON.h */; };
+		B5008F5918B55D5100AC0337 /* SPMemberJSON.m in Sources */ = {isa = PBXBuildFile; fileRef = B5008F5718B55D5100AC0337 /* SPMemberJSON.m */; };
 		B504EF4E182818BE002FA5A1 /* SPHttpRequest.h in Headers */ = {isa = PBXBuildFile; fileRef = B504EF47182818BE002FA5A1 /* SPHttpRequest.h */; };
 		B504EF4F182818BE002FA5A1 /* SPHttpRequest.m in Sources */ = {isa = PBXBuildFile; fileRef = B504EF48182818BE002FA5A1 /* SPHttpRequest.m */; };
 		B504EF50182818BE002FA5A1 /* SPHttpRequest+Internals.h in Headers */ = {isa = PBXBuildFile; fileRef = B504EF49182818BE002FA5A1 /* SPHttpRequest+Internals.h */; };
@@ -328,6 +330,8 @@
 		46EA1AEA17569EA0009AC5AA /* SPNetworkInterface.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SPNetworkInterface.h; path = ../../Simperium/SPNetworkInterface.h; sourceTree = "<group>"; };
 		46EA1AEC17569EB4009AC5AA /* SPWebSocketInterface.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SPWebSocketInterface.h; path = ../../Simperium/SPWebSocketInterface.h; sourceTree = "<group>"; };
 		46EA1AED17569EB4009AC5AA /* SPWebSocketInterface.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SPWebSocketInterface.m; path = ../../Simperium/SPWebSocketInterface.m; sourceTree = "<group>"; };
+		B5008F5618B55D5100AC0337 /* SPMemberJSON.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SPMemberJSON.h; path = ../../Simperium/SPMemberJSON.h; sourceTree = "<group>"; };
+		B5008F5718B55D5100AC0337 /* SPMemberJSON.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SPMemberJSON.m; path = ../../Simperium/SPMemberJSON.m; sourceTree = "<group>"; };
 		B504EF47182818BE002FA5A1 /* SPHttpRequest.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SPHttpRequest.h; path = ../../Simperium/SPHttpRequest.h; sourceTree = "<group>"; };
 		B504EF48182818BE002FA5A1 /* SPHttpRequest.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SPHttpRequest.m; path = ../../Simperium/SPHttpRequest.m; sourceTree = "<group>"; };
 		B504EF49182818BE002FA5A1 /* SPHttpRequest+Internals.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "SPHttpRequest+Internals.h"; path = "../../Simperium/SPHttpRequest+Internals.h"; sourceTree = "<group>"; };
@@ -525,6 +529,8 @@
 				268EDF14155F08A0006B566F /* SPMemberFloat.m */,
 				268EDF15155F08A0006B566F /* SPMemberInt.h */,
 				268EDF16155F08A0006B566F /* SPMemberInt.m */,
+				B5008F5618B55D5100AC0337 /* SPMemberJSON.h */,
+				B5008F5718B55D5100AC0337 /* SPMemberJSON.m */,
 				46DD15C4179A6DAC0093678C /* SPMemberJSONList.h */,
 				46DD15C5179A6DAC0093678C /* SPMemberJSONList.m */,
 				268EDF17155F08A0006B566F /* SPMemberList.h */,
@@ -791,6 +797,7 @@
 				268EDF60155F08A2006B566F /* SPMemberInt.h in Headers */,
 				268EDF62155F08A2006B566F /* SPMemberList.h in Headers */,
 				268EDF64155F08A2006B566F /* SPMemberText.h in Headers */,
+				B5008F5818B55D5100AC0337 /* SPMemberJSON.h in Headers */,
 				268EDF6C155F08A2006B566F /* SPS3Manager.h in Headers */,
 				268EDF70155F08A2006B566F /* SPStorage.h in Headers */,
 				268EDF72155F08A2006B566F /* SPStorageObserver.h in Headers */,
@@ -944,6 +951,7 @@
 				268EDF32155F08A2006B566F /* NSString+Simperium.m in Sources */,
 				268EDF36155F08A2006B566F /* Simperium.m in Sources */,
 				268EDF38155F08A2006B566F /* SPAuthenticator.m in Sources */,
+				B5008F5918B55D5100AC0337 /* SPMemberJSON.m in Sources */,
 				268EDF3C155F08A2006B566F /* SPBinaryManager.m in Sources */,
 				B5E03DA6182C236200412572 /* JSONKit+Simperium.m in Sources */,
 				268EDF3F155F08A2006B566F /* SPChangeProcessor.m in Sources */,

@@ -93,28 +93,6 @@ static SPLogLevels logLevel						= SPLogLevelsInfo;
 	return self;
 }
 
-#if TARGET_OS_IPHONE
-- (id)initWithRootViewController:(UIViewController *)controller {
-    if ((self = [self init])) {
-        self.rootViewController = controller;
-    }
-    
-    return self;
-}
-#else
-- (id)initWithWindow:(NSWindow *)aWindow {
-    if ((self = [self init])) {
-        self.window = aWindow;
-        
-        // Hide window by default - authenticating will make it visible
-        [self.window orderOut:nil];
-    }
-    
-    return self;
-}
-#endif
-
-
 - (void)configureBinaryManager:(SPBinaryManager *)manager {    
     // Binary members need to know about the manager (ugly but avoids singleton/global)
     for (SPBucket *bucket in [self.buckets allValues]) {
@@ -275,49 +253,16 @@ static SPLogLevels logLevel						= SPLogLevelsInfo;
 }
 
 
+
+
 #pragma mark ====================================================================================
-#pragma mark Initialization
+#pragma mark New Initialization Methods
 #pragma mark ====================================================================================
 
-/*
-- (void)startWithAppID:(NSString *)identifier APIKey:(NSString *)key {
-    SPLogInfo(@"Simperium starting... %@", self.label);
+- (id)initWithModel:(NSManagedObjectModel *)model
+			context:(NSManagedObjectContext *)context
+		coordinator:(NSPersistentStoreCoordinator *)coordinator {
 	
-	// Enforce required parameters
-	NSParameterAssert(identifier);
-	NSParameterAssert(key);
-	
-	// Keep the keys!
-    self.appID = identifier;
-    self.APIKey = key;
-    self.rootURL = SPBaseURL;
-    
-	// Setup the Network
-	SPWebSocketInterface *websocket = [SPWebSocketInterface interfaceWithSimperium:self appURL:self.appURL clientID:self.clientID];;
-	self.network = websocket;
-	
-    // Setup JSON storage
-    SPJSONStorage *storage = [[SPJSONStorage alloc] initWithDelegate:self];
-    self.JSONStorage = storage;
-    
-    // Network managers (load but don't start yet)
-    //[self loadNetworkManagers];
-    
-    // Check all existing objects (e.g. in case there are existing ones that aren't in Simperium yet)
-    //    [objectManager validateObjects];
-    
-    if (self.authenticationEnabled) {
-        [self authenticateIfNecessary];
-    }
-}
-*/
-
-- (void)startWithAppID:(NSString *)identifier APIKey:(NSString *)key model:(NSManagedObjectModel *)model context:(NSManagedObjectContext *)context coordinator:(NSPersistentStoreCoordinator *)coordinator {
-	SPLogInfo(@"Simperium starting... %@", self.label);
-	
-	// Enforce required parameters
-	NSParameterAssert(identifier);
-	NSParameterAssert(key);
 	NSParameterAssert(model);
 	NSParameterAssert(context);
 	NSParameterAssert(coordinator);
@@ -325,6 +270,64 @@ static SPLogLevels logLevel						= SPLogLevelsInfo;
 	NSAssert((context.concurrencyType == NSMainQueueConcurrencyType), NSLocalizedString(@"Error: you must initialize your context with 'NSMainQueueConcurrencyType' concurrency type.", nil));
 	NSAssert((context.persistentStoreCoordinator == nil), NSLocalizedString(@"Error: NSManagedObjectContext's persistentStoreCoordinator must be nil. Simperium will handle CoreData connections for you.", nil));
 	
+    if ((self = [self init])) {
+		
+		SPCoreDataStorage* storage = [[SPCoreDataStorage alloc] initWithModel:model mainContext:context coordinator:coordinator];
+		storage.delegate = self;
+		self.coreDataStorage = storage;
+    }
+    
+    return self;
+}
+
+#if TARGET_OS_IPHONE
+- (void)authenticateWithAppID:(NSString *)identifier APIKey:(NSString *)key rootViewController:(UIViewController *)controller {
+
+	NSParameterAssert(identifier);
+	NSParameterAssert(key);
+	NSParameterAssert(controller);
+	
+	self.rootViewController = controller;
+	[self startWithAppID:identifier APIKey:key];
+}
+#else
+- (void)authenticateWithAppID:(NSString *)identifier APIKey:(NSString *)key window:(NSWindow *)aWindow {
+	
+	NSParameterAssert(identifier);
+	NSParameterAssert(key);
+	NSParameterAssert(aWindow);
+	
+	// Hide the window right away
+	self.window = aWindow;
+	[self.window orderOut:nil];
+	
+	// Initialize + Authenticate
+	[self startWithAppID:identifier APIKey:key];
+}
+#endif
+
+- (void)authenticateWithAppID:(NSString *)identifier token:(NSString *)token {
+	
+	NSParameterAssert(identifier);
+	NSParameterAssert(token);
+	
+	// Authentication Disabled by default!
+	self.authenticationEnabled = NO;
+	
+	// Start Simperium
+	[self startWithAppID:identifier APIKey:nil];
+	
+	// Manually initialize the user
+	self.user = [[SPUser alloc] initWithEmail:@"" token:token];
+    [self startNetworkManagers];
+}
+
+- (void)startWithAppID:(NSString *)identifier APIKey:(NSString *)key {
+	SPLogInfo(@"Simperium starting... %@", self.label);
+	
+	// Enforce required parameters
+	NSAssert(self.coreDataStorage, NSLocalizedString(@"Error: NSManagedObjectContext's persistentStoreCoordinator must be nil. Simperium will handle CoreData connections for you.", nil));
+	
 	// Keep the keys!
     self.appID = identifier;
     self.APIKey = key;
@@ -333,13 +336,8 @@ static SPLogLevels logLevel						= SPLogLevelsInfo;
 	// Setup the Network
 	SPWebSocketInterface *websocket = [SPWebSocketInterface interfaceWithSimperium:self appURL:self.appURL clientID:self.clientID];;
 	self.network = websocket;
-	
-    // Setup Core Data storage
-    SPCoreDataStorage *storage = [[SPCoreDataStorage alloc] initWithModel:model mainContext:context coordinator:coordinator];
-    self.coreDataStorage = storage;
-    self.coreDataStorage.delegate = self;
     
-    // Get the schema from Core Data    
+    // Get the schemas from Core Data
     NSArray *schemas = [self.coreDataStorage exportSchemas];
     
     // Load but don't start yet
@@ -358,14 +356,59 @@ static SPLogLevels logLevel						= SPLogLevelsInfo;
     // With everything configured, all objects can now be validated. This will pick up any objects that aren't yet
     // known to Simperium (for the case where you're adding Simperium to an existing app).
     [self validateObjects];
-                            
-    if (self.authenticationEnabled) {
-        [self authenticateIfNecessary];
-    }    
+	
+	// Handle authentication
+	if (self.authenticationEnabled) {
+		[self authenticateIfNecessary];
+	}
 }
 
 - (void)shutdown {
 	
+}
+
+
+#pragma mark ====================================================================================
+#pragma mark OLD Initialization Methods: This will be deprecated in the future
+#pragma mark ====================================================================================
+
+#if TARGET_OS_IPHONE
+- (id)initWithRootViewController:(UIViewController *)controller {
+    if ((self = [self init])) {
+        self.rootViewController = controller;
+    }
+    
+    return self;
+}
+#else
+- (id)initWithWindow:(NSWindow *)aWindow {
+    if ((self = [self init])) {
+        self.window = aWindow;
+        
+        // Hide window by default - authenticating will make it visible
+        [self.window orderOut:nil];
+    }
+    
+    return self;
+}
+#endif
+
+- (void)startWithAppID:(NSString *)identifier APIKey:(NSString *)key model:(NSManagedObjectModel *)model context:(NSManagedObjectContext *)context coordinator:(NSPersistentStoreCoordinator *)coordinator {
+	SPLogInfo(@"Simperium starting... %@", self.label);
+
+	NSParameterAssert(model);
+	NSParameterAssert(context);
+	NSParameterAssert(coordinator);
+	
+	NSAssert((context.concurrencyType == NSMainQueueConcurrencyType), NSLocalizedString(@"Error: you must initialize your context with 'NSMainQueueConcurrencyType' concurrency type.", nil));
+	NSAssert((context.persistentStoreCoordinator == nil), NSLocalizedString(@"Error: NSManagedObjectContext's persistentStoreCoordinator must be nil. Simperium will handle CoreData connections for you.", nil));
+
+    // Setup Core Data storage
+    SPCoreDataStorage *storage = [[SPCoreDataStorage alloc] initWithModel:model mainContext:context coordinator:coordinator];
+    storage.delegate = self;
+    self.coreDataStorage = storage;
+	
+	[self startWithAppID:identifier APIKey:key];
 }
 
 

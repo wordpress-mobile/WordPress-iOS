@@ -66,6 +66,33 @@ extern NSString * const SimperiumWillSaveNotification;
                context:(NSManagedObjectContext *)context
 		   coordinator:(NSPersistentStoreCoordinator *)coordinator;
 
+
+#pragma mark ====================================================================================
+#pragma mark New Initialization Methods
+#pragma mark ====================================================================================
+
+// Initializes Simperium: After executing this method, your CoreData Stack will be fully initialized
+- (id)initWithModel:(NSManagedObjectModel *)model
+			context:(NSManagedObjectContext *)context
+		coordinator:(NSPersistentStoreCoordinator *)coordinator;
+
+
+#if TARGET_OS_IPHONE
+// Starts Simperium and displays the auth interface, if needed.
+- (void)authenticateWithAppID:(NSString *)identifier APIKey:(NSString *)key rootViewController:(UIViewController *)controller;
+#else
+// Starts Simperium and displays the auth interface, if needed.
+- (void)authenticateWithAppID:(NSString *)identifier APIKey:(NSString *)key window:(NSWindow *)aWindow;
+#endif
+
+// Starts Simperium with a given token, with no UI interaction required.
+- (void)authenticateWithAppID:(NSString *)identifier token:(NSString *)token;
+
+
+#pragma mark ====================================================================================
+#pragma mark Public Methods
+#pragma mark ====================================================================================
+
 // Save and sync all changed objects. If you're using Core Data, this is just a convenience method
 // (you can also just save your context and Simperium will see the changes).
 - (BOOL)save;
