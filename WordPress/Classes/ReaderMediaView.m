@@ -77,11 +77,6 @@
 }
 
 
-- (CGFloat)placeholderRatio {
-    return self.frame.size.width / self.frame.size.height;
-}
-
-
 - (void)setImageWithURL:(NSURL *)url
 	   placeholderImage:(UIImage *)image
 				success:(void (^)(ReaderMediaView *))success

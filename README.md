@@ -1,5 +1,7 @@
 WordPress for iOS
 
+[![Build Status](https://travis-ci.org/wordpress-mobile/WordPress-iOS.png)](https://travis-ci.org/wordpress-mobile/WordPress-iOS)
+
 ## Resources
 
 ### Developer blog & Handbook
@@ -19,6 +21,10 @@ https://github.com/wordpress-mobile/WordPress-iOS/issues
 ### Source Code
 
 GitHub: https://github.com/wordpress-mobile/WordPress-iOS/
+
+### How to Contribute
+
+http://make.wordpress.org/mobile/handbook/pathways/ios/how-to-contribute/
 
 ## Building
 

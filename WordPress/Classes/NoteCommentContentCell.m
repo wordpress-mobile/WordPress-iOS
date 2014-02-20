@@ -81,7 +81,7 @@
 
     self.attributedTextContextView.attributedString = colorString;
     
-    self.backgroundView.backgroundColor = COMMENT_PARENT_BACKGROUND_COLOR;
+    self.backgroundView.backgroundColor = [WPStyleGuide readGrey];
 }
 
 @end

@@ -34,7 +34,7 @@
         [self.textLabel setFont:[WPStyleGuide postTitleFont]];
         
         [self.detailTextLabel setFont:[WPStyleGuide subtitleFont]];
-        [self.detailTextLabel setTextColor:WP_LINK_COLOR];
+        [self.detailTextLabel setTextColor:[WPStyleGuide baseDarkerBlue]];
         [self.detailTextLabel setBackgroundColor:[UIColor clearColor]];
         [self.detailTextLabel setNumberOfLines:1];
         [self.detailTextLabel setAdjustsFontSizeToFitWidth:NO];
@@ -59,7 +59,7 @@
         [actionButton setBackgroundImage:[[UIImage imageNamed:@"navbar_button_bg_active"] resizableImageWithCapInsets:UIEdgeInsetsMake(0.0f, 4.0f, 0.0f, 4.0f)] forState:UIControlStateHighlighted];
         [actionButton.titleLabel setShadowColor:[UIColor whiteColor]];
     }
-    CGSize textSize = [[actionButton.titleLabel text] sizeWithFont:[actionButton.titleLabel font]];
+    CGSize textSize = [[actionButton.titleLabel text] sizeWithAttributes:@{NSFontAttributeName:[actionButton.titleLabel font]}];
     CGFloat buttonWidth = textSize.width + 40.0f;
     if (buttonWidth > 180.0f)
         buttonWidth = 180.0f;

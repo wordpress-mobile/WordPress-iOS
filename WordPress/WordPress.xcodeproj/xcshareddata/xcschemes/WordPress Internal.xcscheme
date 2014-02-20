@@ -33,7 +33,7 @@
             <BuildableReference
                BuildableIdentifier = "primary"
                BlueprintIdentifier = "E16AB92914D978240047A2E5"
-               BuildableName = "WordPressTest.octest"
+               BuildableName = "WordPressTest.xctest"
                BlueprintName = "WordPressTest"
                ReferencedContainer = "container:WordPress.xcodeproj">
             </BuildableReference>
@@ -133,7 +133,7 @@
       buildConfiguration = "Debug">
    </AnalyzeAction>
    <ArchiveAction
-      buildConfiguration = "Release"
+      buildConfiguration = "Release-Internal"
       revealArchiveInOrganizer = "YES">
    </ArchiveAction>
 </Scheme>

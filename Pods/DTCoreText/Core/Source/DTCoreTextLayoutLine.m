@@ -14,7 +14,7 @@
 #import "NSDictionary+DTCoreText.h"
 #import "DTTextBlock.h"
 #import "DTCoreTextConstants.h"
-#import <UIKit/UIKit.h>
+#import "DTCoreTextFunctions.h"
 
 @interface DTCoreTextLayoutLine ()
 
@@ -73,10 +73,15 @@
 	CFRelease(_line);
 }
 
+#ifndef COVERAGE
+// exclude method from coverage testing
+
 - (NSString *)description
 {
 	return [NSString stringWithFormat:@"<%@ origin=%@ frame=%@ range=%@", [self class], NSStringFromCGPoint(_baselineOrigin), NSStringFromCGRect(self.frame), NSStringFromRange([self stringRange])];
 }
+
+#endif
 
 - (NSRange)stringRange
 {
@@ -313,7 +318,7 @@
 			
 			if (usedFont)
 			{
-				maxOffset = MAX(maxOffset, fabsf(CTFontGetUnderlinePosition(usedFont)));
+				maxOffset = MAX(maxOffset, fabs(CTFontGetUnderlinePosition(usedFont)));
 				
 				maxFontSize = MAX(maxFontSize, CTFontGetSize(usedFont));
 			}
@@ -533,5 +538,7 @@
 
 @synthesize baselineOrigin = _baselineOrigin;
 @synthesize writingDirectionIsRightToLeft = _writingDirectionIsRightToLeft;
+
+@synthesize stringLocationOffset = _stringLocationOffset;
 
 @end

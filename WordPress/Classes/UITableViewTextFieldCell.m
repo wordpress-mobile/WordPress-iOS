@@ -14,6 +14,7 @@
 
 @implementation UITableViewTextFieldCell
 @synthesize textField;
+@synthesize minimumLabelWidth;
 
 - (id)initWithStyle:(UITableViewCellStyle)style reuseIdentifier:(NSString *)reuseIdentifier {
     self = [super initWithStyle:style reuseIdentifier:reuseIdentifier];
@@ -30,10 +31,12 @@
         self.textField.contentVerticalAlignment = UIControlContentVerticalAlignmentCenter;
         self.textField.delegate = self;
         
+        self.minimumLabelWidth = 90;
+        
         self.selectionStyle = UITableViewCellSelectionStyleNone;
         self.accessoryType = UITableViewCellAccessoryNone;
         
-        [self addSubview:self.textField];
+        [self.contentView addSubview:self.textField];
     }
     
     return self;
@@ -43,8 +46,9 @@
     [super layoutSubviews];
     CGRect frame;
 
-    CGSize labelSize = [self.textLabel.text sizeWithFont:[UIFont boldSystemFontOfSize:17]];
+    CGSize labelSize = [self.textLabel.text sizeWithAttributes:@{NSFontAttributeName:[UIFont boldSystemFontOfSize:17]}];
     labelSize.width = ceil(labelSize.width/5) * 5; // Round to upper 5
+    labelSize.width = MAX(minimumLabelWidth, labelSize.width); // Impose alignment for shorter labels
 
     if (IS_IPAD) {
         frame = CGRectMake(labelSize.width + 60,

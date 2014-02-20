@@ -7,7 +7,7 @@
 //
 
 /**
- Methods for copying file wrappers
+ Methods for copying file wrappers.
  */
 @interface NSFileWrapper (DTCopying)
 

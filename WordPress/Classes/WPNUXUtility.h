@@ -16,8 +16,8 @@
 + (UIFont *)swipeToContinueFont;
 + (UIFont *)tosLabelFont;
 + (UIFont *)confirmationLabelFont;
++ (UIFont *)tosLabelSmallerFont;
 
-+ (UIColor *)textShadowColor;
 + (UIColor *)bottomPanelLineColor;
 + (UIColor *)descriptionTextColor;
 + (UIColor *)bottomPanelBackgroundColor;
@@ -25,9 +25,9 @@
 + (UIColor *)confirmationLabelColor;
 + (UIColor *)backgroundColor;
 + (UIColor *)tosLabelColor;
-+ (UIFont *)tosLabelSmallerFont;
 
 + (void)centerViews:(NSArray *)controls withStartingView:(UIView *)startingView andEndingView:(UIView *)endingView forHeight:(CGFloat)viewHeight;
 + (void)configurePageControlTintColors:(UIPageControl *)pageControl;
++ (NSDictionary *)titleAttributesWithColor:(UIColor *)color;
 
 @end

@@ -43,17 +43,9 @@
 
     UIBarButtonItem *shareButton = nil;
     
-    if (IS_IOS7) {
-        shareButton = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemAction
-                                                                    target:self
-                                                                    action:@selector(showShareOptions:)];
-    } else {
-        shareButton = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"UIButtonBarActionBlack.png"]
-                                         landscapeImagePhone:[UIImage imageNamed:@"UIButtonBarActionSmallBlack.png"]
-                                                       style:UIBarButtonItemStyleBordered
-                                                      target:self
-                                                      action:@selector(showShareOptions:)];
-    }
+    shareButton = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemAction
+                                                                target:self
+                                                                action:@selector(showShareOptions:)];
     
     self.navigationItem.rightBarButtonItem = shareButton;
 }

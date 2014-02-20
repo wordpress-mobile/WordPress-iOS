@@ -186,23 +186,10 @@
 }
 
 
-- (NSString *)shortDate {
+#pragma mark - WPContentViewProvider protocol
 
-	NSString *str;
-	NSTimeInterval diff = [[NSDate date] timeIntervalSince1970] - [self.dateCreated timeIntervalSince1970];
-
-	if(diff < 60) {
-		str = [NSString stringWithFormat:@"%is", (int)diff];
-	} else if(diff < 3600) {
-		str = [NSString stringWithFormat:@"%im", (int)floor(diff / 60)];
-	} else if (diff < 86400) {
-		str = [NSString stringWithFormat:@"%ih", (int)floor(diff / 3600)];
-	} else {
-		str = [NSString stringWithFormat:@"%id", (int)floor(diff / 86400)];
-	}
-
-	return str;
-
+- (NSURL *)avatarURLForDisplay {
+    return [NSURL URLWithString:self.authorAvatarURL];
 }
 
 @end

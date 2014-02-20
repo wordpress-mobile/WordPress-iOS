@@ -8,10 +8,9 @@
 #import <Foundation/Foundation.h>
 #import "WPLabel.h"
 #import "Comment.h"
+#import "WPTableViewCell.h"
 
-#define COMMENT_ROW_HEIGHT 130
-
-@interface CommentTableViewCell : UITableViewCell {
+@interface CommentTableViewCell : WPTableViewCell {
     Comment *comment;
 
     UIButton *checkButton;

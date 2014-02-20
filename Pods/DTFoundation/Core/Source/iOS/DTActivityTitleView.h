@@ -8,7 +8,7 @@
 
 /**
  Alternative view for showing titles with a configurable activity indicator
- instead of default title view in navigationItem
+ instead of default title view in navigationItem.
  */
 @interface DTActivityTitleView : UIView
 
