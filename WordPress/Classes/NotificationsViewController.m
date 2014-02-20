@@ -18,6 +18,8 @@
 #import "WPAccount.h"
 #import "WPWebViewController.h"
 #import "Note.h"
+#import "NotificationsManager.h"
+#import "NotificationSettingsViewController.h"
 
 NSString * const NotificationsLastSyncDateKey = @"NotificationsLastSyncDate";
 NSString * const NotificationsJetpackInformationURL = @"http://jetpack.me/about/";
@@ -101,6 +103,14 @@ NSString * const NotificationsJetpackInformationURL = @"http://jetpack.me/about/
     
     self.tableView.separatorInset = UIEdgeInsetsMake(0, 25, 0, 0);
     self.infiniteScrollEnabled = YES;
+    
+    if ([NotificationsManager deviceRegisteredForPushNotifications]) {
+        UIBarButtonItem *pushSettings = [[UIBarButtonItem alloc] initWithTitle:NSLocalizedString(@"Manage", @"")
+                                                                         style:UIBarButtonItemStylePlain
+                                                                        target:self
+                                                                        action:@selector(showNotificationSettings)];
+        self.navigationItem.rightBarButtonItem = pushSettings;
+    }
 }
 
 - (void)viewWillAppear:(BOOL)animated {
@@ -169,6 +179,24 @@ NSString * const NotificationsJetpackInformationURL = @"http://jetpack.me/about/
         }
     }
     [Note pruneOldNotesBefore:pruneBefore withContext:self.resultsController.managedObjectContext];
+}
+
+- (void)showNotificationSettings {
+    [WPMobileStats trackEventForWPCom:StatsEventNotificationsClickedManageNotifications];
+    
+    NotificationSettingsViewController *notificationSettingsViewController = [[NotificationSettingsViewController alloc] initWithStyle:UITableViewStyleGrouped];
+    UINavigationController *navigationController = [[UINavigationController alloc] initWithRootViewController:notificationSettingsViewController];
+    navigationController.navigationBar.translucent = NO;
+    navigationController.modalPresentationStyle = UIModalPresentationFormSheet;
+    
+    UIBarButtonItem *closeButton = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemDone target:self action:@selector(closeNotificationSettings)];
+    notificationSettingsViewController.navigationItem.rightBarButtonItem = closeButton;
+    
+    [self presentViewController:navigationController animated:YES completion:nil];
+}
+
+- (void)closeNotificationSettings {
+    [self dismissViewControllerAnimated:YES completion:nil];
 }
 
 #pragma mark - Public methods
