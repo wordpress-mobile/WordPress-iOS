@@ -15,11 +15,8 @@
 {
 	NSAttributedString *_attributedString;
 	NSString *_HTMLString;
-	
 	CGFloat _textScale;
 	BOOL _useAppleConvertedSpace;
-	BOOL _iOS6TagsPossible;
-	
 	NSMutableDictionary *_styleLookup;
 }
 
@@ -35,18 +32,6 @@
 
 		// default is to leave px sizes as is
 		_textScale = 1.0f;
-		
-#if DTCORETEXT_SUPPORT_NS_ATTRIBUTES
-		// if running on iOS6 or higher
-		if ([DTVersion osVersionIsLessThen:@"6.0"])
-		{
-			_iOS6TagsPossible = NO;
-		}
-		else
-		{
-			_iOS6TagsPossible = YES;
-		}
-#endif
 	}
 	
 	return self;
@@ -91,7 +76,7 @@
 	return [NSString stringWithFormat:@"%@%d", [elementName substringToIndex:1],(int)index];
 }
 
-- (NSString *)_tagRepresentationForListStyle:(DTCSSListStyle *)listStyle closingTag:(BOOL)closingTag inlineStyles:(BOOL)inlineStyles
+- (NSString *)_tagRepresentationForListStyle:(DTCSSListStyle *)listStyle closingTag:(BOOL)closingTag listPadding:(CGFloat)listPadding inlineStyles:(BOOL)inlineStyles
 {
 	BOOL isOrdered = NO;
 	
@@ -229,19 +214,23 @@
 			blockElement = @"ul";
 		}
 		
-		NSString *listStyleString = [NSString stringWithFormat:@"list-style='%@';\">", typeString];
+		NSString *listStyleString = [NSString stringWithFormat:@"list-style:'%@';", typeString];
+		
+		if (listPadding>0)
+		{
+			listStyleString = [listStyleString stringByAppendingFormat:@"-webkit-padding-start:%.0fpx;padding-left:%.0fpx;", listPadding, listPadding];
+		}
+		
 		NSString *className = [self _styleClassForElement:blockElement style:listStyleString];
 		
-		NSString *listElementString = nil;
 		if (inlineStyles)
 		{
-			listElementString = [NSString stringWithFormat:@"<%@ style=\"%@\">", blockElement, listStyleString];
+			return [NSString stringWithFormat:@"<%@ style=\"%@\">", blockElement, listStyleString];
 		}
 		else
 		{
-			listElementString = [NSString stringWithFormat:@"<%@ class=\"%@\">", blockElement, className];
+			return [NSString stringWithFormat:@"<%@ class=\"%@\">", blockElement, className];
 		}
-		return [NSString stringWithFormat:@"<%@ class=\"%@\">", blockElement, className];
 	}
 }
 
@@ -307,7 +296,7 @@
 		DTCoreTextParagraphStyle *paragraphStyle = [paraAttributes paragraphStyle];
 		NSString *paraStyleString = nil;
 		
-		if (paragraphStyle)
+		if (paragraphStyle && !effectiveListStyle)
 		{
 			if (_textScale!=1.0f)
 			{
@@ -367,7 +356,7 @@
 				}
 				
 				// end of a list block
-				[retString appendString:[self _tagRepresentationForListStyle:closingStyle closingTag:YES inlineStyles:fragment]];
+				[retString appendString:[self _tagRepresentationForListStyle:closingStyle closingTag:YES listPadding:0 inlineStyles:fragment]];
 				[retString appendString:@"\n"];
 				
 				[closingStyles removeLastObject];
@@ -382,12 +371,61 @@
 			// next text needs to have list prefix removed
 			needsToRemovePrefix = YES;
 			
-			if (![previousListStyles containsObject:effectiveListStyle])
+			
+			// get lists that need to be opened here
+			NSArray *listsToOpen = nil;
+			
+			if (!previousListStyles)
 			{
-				// beginning of a list block
-				[retString appendString:[self _tagRepresentationForListStyle:effectiveListStyle closingTag:NO inlineStyles:fragment]];
-				[retString appendString:@"\n"];
+				listsToOpen = currentListStyles;
 			}
+			else
+			{
+				NSMutableArray *tmpArray = [NSMutableArray array];
+				
+				for (DTCSSListStyle *oneList in currentListStyles)
+				{
+					NSRange listRange = [_attributedString rangeOfTextList:oneList atIndex:paragraphRange.location];
+					
+					if (listRange.location == paragraphRange.location)
+					{
+						// lists starts here
+						[tmpArray addObject:oneList];
+					}
+				}
+
+				if ([tmpArray count])
+				{
+					listsToOpen = [tmpArray copy];
+				}
+			}
+			
+			[listsToOpen enumerateObjectsUsingBlock:^(DTCSSListStyle *oneList, NSUInteger idx, BOOL *stop) {
+				
+				NSString *name;
+				
+				if ([oneList isOrdered])
+				{
+					name = @"ol";
+				}
+				else
+				{
+					name = @"ul";
+				}
+				
+				// only padding can be reconstructed so far
+				CGFloat listPadding = (paragraphStyle.headIndent - paragraphStyle.firstLineHeadIndent) / _textScale;
+				
+				// beginning of a list block
+				[retString appendString:[self _tagRepresentationForListStyle:oneList closingTag:NO listPadding:listPadding inlineStyles:fragment]];
+				[retString appendString:@"\n"];
+				
+				// all but the effective list need an extra LI
+				if (oneList != effectiveListStyle)
+				{
+					[retString appendString:@"<li>"];
+				}
+			}];
 			
 			blockElement = @"li";
 		}
@@ -504,7 +542,7 @@
 		
 		// ----- SPAN enumeration
 		
-		[_attributedString enumerateAttributesInRange:paragraphRange options:0 usingBlock:^(NSDictionary *attributes, NSRange spanRange, BOOL *stop) {
+		[_attributedString enumerateAttributesInRange:paragraphRange options:0 usingBlock:^(NSDictionary *attributes, NSRange spanRange, BOOL *stopEnumerateAttributes) {
 
 			NSURL *spanURL = [attributes objectForKey:DTLinkAttribute];
 			NSString *spanAnchorName = [attributes objectForKey:DTAnchorAttribute];
@@ -540,9 +578,9 @@
 				}
 				
 				// find which custom attributes are for the link
-				NSDictionary *HTMLAttributes = [_attributedString HTMLAttributesAtIndex:currentLinkRange.location];
+				NSDictionary *localHTMLAttributes = [_attributedString HTMLAttributesAtIndex:currentLinkRange.location];
 				
-				[HTMLAttributes enumerateKeysAndObjectsUsingBlock:^(NSString *key, id value, BOOL *stop) {
+				[localHTMLAttributes enumerateKeysAndObjectsUsingBlock:^(NSString *key, id value, BOOL *stopEnumerateKeysAndObjects) {
 					
 					// check if range is longer than current paragraph
 					NSRange attributeEffectiveRange = [_attributedString rangeOfHTMLAttribute:key atIndex:currentLinkRange.location];
@@ -574,7 +612,8 @@
 					}
 					else
 					{
-						plainSubString = @"";
+						// avoid output of empty span tag, issue #601
+						return;
 					}
 				}
 				
@@ -638,36 +677,25 @@
 				fontStyle = @"";
 			}
 			
-			CGColorRef textColor = (__bridge CGColorRef)[attributes objectForKey:(id)kCTForegroundColorAttributeName];
+			CGFloat kerning = [attributes kerning] / _textScale;
 			
-			if (!textColor && _iOS6TagsPossible)
+			if (kerning)
 			{
-				// could also be the iOS 6 color
-				DTColor *color = [attributes objectForKey:NSForegroundColorAttributeName];
-				textColor = color.CGColor;
+				fontStyle = [fontStyle stringByAppendingFormat:@"letter-spacing:%.0fpx;", kerning];
 			}
+			
+			DTColor *textColor = [attributes foregroundColor];
 			
 			if (textColor)
 			{
-				DTColor *color = [DTColor colorWithCGColor:textColor];
-				
-				fontStyle = [fontStyle stringByAppendingFormat:@"color:#%@;", [color htmlHexString]];
+				fontStyle = [fontStyle stringByAppendingFormat:@"color:#%@;",  DTHexStringFromDTColor(textColor)];
 			}
 			
-			CGColorRef backgroundColor = (__bridge CGColorRef)[attributes objectForKey:DTBackgroundColorAttribute];
-			
-			if (!backgroundColor && _iOS6TagsPossible)
-			{
-					// could also be the iOS 6 background color
-					DTColor *color = [attributes objectForKey:NSBackgroundColorAttributeName];
-					backgroundColor = color.CGColor;
-			}
+			DTColor *backgroundColor = [attributes backgroundColor];
 			
 			if (backgroundColor)
 			{
-				DTColor *color = [DTColor colorWithCGColor:backgroundColor];
-				
-				fontStyle = [fontStyle stringByAppendingFormat:@"background-color:#%@;", [color htmlHexString]];
+				fontStyle = [fontStyle stringByAppendingFormat:@"background-color:#%@;", DTHexStringFromDTColor(backgroundColor)];
 			}
 			
 			NSNumber *underline = [attributes objectForKey:(id)kCTUnderlineStyleAttributeName];
@@ -719,10 +747,10 @@
 			__block BOOL needsSpanTag = NO;
 			
 			// find which custom attributes are only for this span
-			NSDictionary *HTMLAttributes = [attributes objectForKey:DTCustomAttributesAttribute];
+			NSDictionary *localHTMLAttributes = [attributes objectForKey:DTCustomAttributesAttribute];
 			NSMutableDictionary *spanLevelHTMLAttributes = [NSMutableDictionary dictionary];
 			
-			[HTMLAttributes enumerateKeysAndObjectsUsingBlock:^(NSString *key, id value, BOOL *stop) {
+			[localHTMLAttributes enumerateKeysAndObjectsUsingBlock:^(NSString *key, id value, BOOL *stop) {
 				
 				// check if there is already an identical paragraph attribute
 				id valueForParagraph = [paragraphLevelHTMLAttributes objectForKey:key];
@@ -833,7 +861,35 @@
 			}
 		}];  // end of SPAN loop
 
-		[retString appendFormat:@"</%@>", blockElement];
+		
+		if ([blockElement isEqualToString:@"li"])
+		{
+			BOOL shouldCloseLI = YES;
+
+			NSUInteger nextParagraphStart = NSMaxRange([plainString paragraphRangeForRange:paragraphRange]);
+			
+			if (nextParagraphStart < [plainString length])
+			{
+				NSArray *nextListStyles = [_attributedString attribute:DTTextListsAttribute atIndex:nextParagraphStart effectiveRange:NULL];
+				
+				// LI are only closed if there is not a deeper list level following
+				if (nextListStyles && ([nextListStyles indexOfObjectIdenticalTo:effectiveListStyle]!=NSNotFound) && [nextListStyles count] > [currentListStyles count])
+				{
+					// deeper list following
+					shouldCloseLI = NO;
+				}
+			}
+			
+			if (shouldCloseLI)
+			{
+				[retString appendString:@"</li>"];
+			}
+		}
+		else
+		{
+			// other blocks are always closed
+			[retString appendFormat:@"</%@>\n", blockElement];
+		}
 		
 		previousListStyles = [currentListStyles copy];
 	}  // end of P loop
@@ -849,8 +905,13 @@
 			DTCSSListStyle *closingStyle = [closingStyles lastObject];
 			
 			// end of a list block
-			[retString appendString:[self _tagRepresentationForListStyle:closingStyle closingTag:YES inlineStyles:fragment]];
+			[retString appendString:[self _tagRepresentationForListStyle:closingStyle closingTag:YES listPadding:0 inlineStyles:fragment]];
 			[retString appendString:@"\n"];
+			
+			if ([closingStyles count]>1)
+			{
+				[retString appendString:@"</li>"];
+			}
 			
 			[closingStyles removeLastObject];
 		}
@@ -885,7 +946,6 @@
 		
 		[output appendFormat:@"<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.01//EN\" \"http://www.w3.org/TR/html40/strict.dtd\">\n<html>\n<head>\n<meta http-equiv=\"Content-Type\" content=\"text/html; charset=UTF-8\" />\n<meta http-equiv=\"Content-Style-Type\" content=\"text/css\" />\n<meta name=\"Generator\" content=\"DTCoreText HTML Writer\" />\n<style type=\"text/css\">\n%@</style>\n</head>\n<body>\n", styleBlock];
 	}
-
 
 	if (hasTab)
 	{

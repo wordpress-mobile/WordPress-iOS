@@ -23,6 +23,11 @@
     return [NSNumber numberWithUnsignedLongLong:[self longLongValue]];
 }
 
+- (CGSize)suggestedSizeWithFont:(UIFont *)font width:(CGFloat)width {
+    CGRect bounds = [self boundingRectWithSize:CGSizeMake(width, CGFLOAT_MAX) options:NSStringDrawingUsesLineFragmentOrigin attributes:@{NSFontAttributeName: font} context:nil];
+    return bounds.size;
+}
+
 @end
 
 @implementation NSObject (NumericValueHack)

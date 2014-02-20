@@ -6,7 +6,6 @@
 //
 
 #import "PagesViewController.h"
-#import "PageViewController.h"
 #import "EditPageViewController.h"
 #import "WPTableViewControllerSubclass.h"
 
@@ -19,72 +18,62 @@
 
 @implementation PagesViewController
 
-- (id)init {
-    self = [super init];
-    if(self) {
-        self.title = NSLocalizedString(@"Pages", @"");
-    }
-    return self;
+- (void)viewDidLoad {
+    [super viewDidLoad];
+    self.title = NSLocalizedString(@"Pages", @"");
 }
 
-- (NSString *)noResultsText
+- (NSString *)noResultsTitleText
 {
-    return NSLocalizedString(@"No pages yet", @"Displayed when the user pulls up the pages view and they have no pages");
+    return NSLocalizedString(@"You haven't created any pages yet", @"Displayed when the user pulls up the pages view and they have no pages");
+}
+
+- (NSString *)noResultsMessageText {
+    return NSLocalizedString(@"Would you like to create your first page?",  @"Displayed when the user pulls up the pages view and they have no pages");
+}
+
+- (UIView *)noResultsAccessoryView {
+    return [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"penandink"]];
+}
+
+- (NSString *)noResultsButtonText
+{
+    return NSLocalizedString(@"Create page", @"");
+}
+
+- (void)didTapNoResultsView:(WPNoResultsView *)noResultsView
+{
+    [self showAddPostView];
 }
 
 
-- (void)syncItemsWithUserInteraction:(BOOL)userInteraction success:(void (^)())success failure:(void (^)(NSError *))failure {
+- (void)syncItemsViaUserInteraction:(BOOL)userInteraction success:(void (^)())success failure:(void (^)(NSError *))failure {
     [self.blog syncPagesWithSuccess:success failure:failure loadMore: NO];
 }
 
 // For iPhone
 - (void)editPost:(AbstractPost *)apost {
-    EditPageViewController *editPostViewController = [[EditPageViewController alloc] initWithPost:[apost createRevision]];
+    EditPageViewController *editPostViewController = [[EditPageViewController alloc] initWithPost:apost];
     UINavigationController *navController = [[UINavigationController alloc] initWithRootViewController:editPostViewController];
-    navController.modalPresentationStyle = UIModalPresentationCurrentContext;
-    [self.panelNavigationController.detailViewController presentViewController:navController animated:YES completion:nil];
-}
-
-// For iPad
-- (void)showSelectedPost {
-    Page *page = nil;
-    NSIndexPath *indexPath = self.selectedIndexPath;
-
-    @try {
-        page = [self.resultsController objectAtIndexPath:indexPath];
-        DDLogInfo(@"Selected page at indexPath: (%i,%i)", indexPath.section, indexPath.row);
-    }
-    @catch (NSException *e) {
-        DDLogError(@"Can't select page at indexPath (%i,%i)", indexPath.section, indexPath.row);
-        DDLogError(@"sections: %@", self.resultsController.sections);
-        DDLogError(@"results: %@", self.resultsController.fetchedObjects);
-        page = nil;
-    }
-    
-    self.postReaderViewController = [[PageViewController alloc] initWithPost:page];
-    [self.panelNavigationController.navigationController pushViewController:self.postReaderViewController animated:YES];
+    [navController setToolbarHidden:NO]; // Fixes wrong toolbar icon animation.
+    navController.modalPresentationStyle = UIModalPresentationFullScreen;
+    [self.navigationController presentViewController:navController animated:YES completion:nil];
 }
 
 - (void)showAddPostView {
     [WPMobileStats trackEventForWPCom:StatsEventPagesClickedNewPage];
-
-    if (IS_IPAD)
-        [self resetView];
     
     Page *post = [Page newDraftForBlog:self.blog];
     [self editPost:post];
 }
 
 - (NSString *)tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section {
-    id <NSFetchedResultsSectionInfo> sectionInfo = [[self.resultsController sections] objectAtIndex:section];
-    NSString *sectionName = [sectionInfo name];
-    
-    return [Page titleForRemoteStatus:[sectionName numericValue]];
+    return nil;
 }
 
 - (NSString *)statsPropertyForViewOpening
 {
-    return StatsPropertyPagedOpened;
+    return StatsPropertyPagesOpened;
 }
 
 

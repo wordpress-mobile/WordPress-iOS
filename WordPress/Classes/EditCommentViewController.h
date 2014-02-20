@@ -21,7 +21,7 @@
 @property (nonatomic) BOOL hasChanges;
 @property (nonatomic) BOOL isTransitioning;
 @property (nonatomic) BOOL isEditing;
-@property (nonatomic, strong) IBOutlet IOS7CorrectedTextView *textView;
+@property (nonatomic, weak) IBOutlet IOS7CorrectedTextView *textView;
 @property (nonatomic, strong) NSString *textViewText;
 
 - (void)handleKeyboardDidShow:(NSNotification *)notification;
@@ -29,7 +29,6 @@
 - (void)endTextEnteringButtonAction:(id)sender;
 - (void)textViewDidEndEditing:(UITextView *)aTextView;
 - (void)textViewDidBeginEditing:(UITextView *)aTextView;
-- (BOOL)isConnectedToHost;
 - (void)initiateSaveCommentReply:(id)sender;
 - (void)cancelView:(id)sender;
 

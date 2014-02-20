@@ -10,6 +10,14 @@
 #import "UIImage+Resize.h"
 #import "NSString+Helpers.h"
 #import "AFHTTPRequestOperation.h"
+#import "ContextManager.h"
+
+NSString *const ImageUploadSuccessfulNotification = @"ImageUploadSuccessful";
+NSString *const ImageUploadFailedNotification = @"ImageUploadFailed";
+NSString *const FeaturedImageUploadSuccessfulNotification = @"FeaturedImageUploadSuccessful";
+NSString *const FeaturedImageUploadFailedNotification = @"FeaturedImageUploadFailed";
+NSString *const VideoUploadSuccessfulNotification = @"VideoUploadSuccessful";
+NSString *const VideoUploadFailedNotification = @"VideoUploadFailed";
 
 @interface Media (PrivateMethods)
 - (void)xmlrpcUploadWithSuccess:(void (^)())success failure:(void (^)(NSError *error))failure ;
@@ -38,13 +46,9 @@
 @dynamic remoteStatusNumber;
 
 + (Media *)newMediaForPost:(AbstractPost *)post {
-    Media *media = [[Media alloc] initWithEntity:[NSEntityDescription entityForName:@"Media"
-                                                          inManagedObjectContext:[post managedObjectContext]]
-               insertIntoManagedObjectContext:[post managedObjectContext]];
-    
+    Media *media = [NSEntityDescription insertNewObjectForEntityForName:@"Media" inManagedObjectContext:post.managedObjectContext];
     media.blog = post.blog;
     media.posts = [NSMutableSet setWithObject:post];
-    
     return media;
 }
 
@@ -100,15 +104,18 @@
     [self cancelUpload];
     NSError *error = nil;
     [[NSFileManager defaultManager] removeItemAtPath:self.localURL error:&error];
-    [[self managedObjectContext] deleteObject:self];
+    
+    [self.managedObjectContext performBlockAndWait:^{
+        [self.managedObjectContext deleteObject:self];
+        [self.managedObjectContext save:nil];
+    }];
 }
 
+
 - (void)save {
-    NSError *error;
-    if (![[self managedObjectContext] save:&error]) {
-        DDLogError(@"Unresolved Core Data Save error %@, %@", error, [error userInfo]);
-        exit(-1);
-    }
+    [self.managedObjectContext performBlock:^{
+        [self.managedObjectContext save:nil];
+    }];
 }
 
 - (void)cancelUpload {
@@ -148,7 +155,7 @@
                     return;
 
                 if ([self.mediaType isEqualToString:@"featured"]) {
-                    [[NSNotificationCenter defaultCenter] postNotificationName:FeaturedImageUploadFailed
+                    [[NSNotificationCenter defaultCenter] postNotificationName:FeaturedImageUploadFailedNotification
                                                                         object:self];
                 }
 
@@ -182,15 +189,15 @@
                 if (success) success();
 
                 if([self.mediaType isEqualToString:@"video"]) {
-                    [[NSNotificationCenter defaultCenter] postNotificationName:VideoUploadSuccessful
+                    [[NSNotificationCenter defaultCenter] postNotificationName:VideoUploadSuccessfulNotification
                                                                         object:self
                                                                       userInfo:response];
                 } else if ([self.mediaType isEqualToString:@"image"]){ 
-                    [[NSNotificationCenter defaultCenter] postNotificationName:ImageUploadSuccessful
+                    [[NSNotificationCenter defaultCenter] postNotificationName:ImageUploadSuccessfulNotification
                                                                         object:self
                                                                       userInfo:response];
                 } else if ([self.mediaType isEqualToString:@"featured"]){
-                    [[NSNotificationCenter defaultCenter] postNotificationName:FeaturedImageUploadSuccessful
+                    [[NSNotificationCenter defaultCenter] postNotificationName:FeaturedImageUploadSuccessfulNotification
                                                                         object:self
                                                                       userInfo:response];
                 }
@@ -325,13 +332,13 @@
     
     CGSize newSize;
     switch (size) {
-        case kResizeSmall:
+        case MediaResizeSmall:
 			newSize = smallSize;
             break;
-        case kResizeMedium:
+        case MediaResizeMedium:
             newSize = mediumSize;
             break;
-        case kResizeLarge:
+        case MediaResizeLarge:
             newSize = largeSize;
             break;
         default:

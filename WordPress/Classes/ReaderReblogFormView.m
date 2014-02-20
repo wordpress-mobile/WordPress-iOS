@@ -26,7 +26,6 @@
 @property (nonatomic, assign) BOOL blogsAvailable;
 @property (nonatomic, strong) UIView *loadingBlogsView;
 
-- (void)setDestinationBlog:(NSDictionary *)dict;
 - (void)handleBlogButtonTapped:(id)sender;
 
 @end
@@ -53,9 +52,7 @@
 - (id)initWithFrame:(CGRect)frame {
     self = [super initWithFrame:frame];
     if (self) {
-        if (IS_IOS7) {
-            self.backgroundColor = [WPStyleGuide littleEddieGrey];
-        }
+        self.backgroundColor = [WPStyleGuide littleEddieGrey];
 		self.requireText = NO;
 		self.promptLabel.text = NSLocalizedString(@"Add your thoughts here... (optional)", @"Placeholder text prompting the user to add a note to the post they are reblogging.");
 		
@@ -90,7 +87,7 @@
         
         NSString *str = NSLocalizedString(@"Post to", @"Lable for the blog selector. Says 'Post to' followed by the blog's icon and its name.");
         UIFont *font = [UIFont fontWithName:@"OpenSans" size:15.0f];
-        CGSize size = [str sizeWithFont:font];
+        CGSize size = [str sizeWithAttributes:@{NSFontAttributeName:font}];
         UILabel *postToLabel = [[UILabel alloc] initWithFrame:CGRectMake(0.0f, 0.0, size.width, frame.size.height)];
         postToLabel.text = str;
         postToLabel.font = font;
@@ -119,16 +116,16 @@
         if (primaryBlogId) {
             [blogs enumerateObjectsUsingBlock:^(id obj, NSUInteger idx, BOOL *stop) {
                 if ([[obj numberForKey:@"blogid"] isEqualToNumber:primaryBlogId]) {
-                    [self setDestinationBlog:obj];
+                    [self configureDestinationBlogFromDictionary:obj];
                     *stop = YES;
                 }
             }];
         } else {
-            [self setDestinationBlog:[blogs objectAtIndex:0]];
+            [self configureDestinationBlogFromDictionary:[blogs objectAtIndex:0]];
         }
     } else if ([blogs count]) {
         offset = -CGRectGetMaxY(_loadingBlogsView.frame);
-        [self setDestinationBlog:[blogs objectAtIndex:0]];
+        [self configureDestinationBlogFromDictionary:[blogs objectAtIndex:0]];
     } else {
         // No blogs yet, they're probably being loaded
         _loadingBlogsView = [[UIView alloc] initWithFrame:CGRectMake(10.0f, 8.0f, self.bounds.size.width, 20.0f)];
@@ -207,19 +204,24 @@
 		[self.textView becomeFirstResponder];
 
 		// TODO: Failure reason.
-		UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"Reblog failed", @"")
-															message:NSLocalizedString(@"There was a problem reblogging. Please try again.", @"")
-														   delegate:nil
-												  cancelButtonTitle:NSLocalizedString(@"OK", @"OK")
-												  otherButtonTitles:nil];
-		[alertView show];
+        [WPError showAlertWithTitle:NSLocalizedString(@"Reblog failed", nil) message:NSLocalizedString(@"There was a problem reblogging. Please try again.", nil)];
 	}];
 
 }
 
 
-- (void)handleBlogButtonTapped:(id)sender {
-	[ReaderUsersBlogsViewController presentAsModalWithDelegate:self];
+- (void)handleBlogButtonTapped:(id)sender {    
+    ReaderUsersBlogsViewController *controller = [[ReaderUsersBlogsViewController alloc] init];
+	controller.delegate = self;
+	
+	UINavigationController *navController = [[UINavigationController alloc] initWithRootViewController:controller];
+    navController.navigationBar.translucent = NO;
+	navController.modalPresentationStyle = UIModalPresentationFormSheet;
+    if (!IS_IPAD) {
+        // Avoid a weird issue on the iPad with cross dissolves when the keyboard is visible.
+        navController.modalTransitionStyle = UIModalTransitionStyleCrossDissolve;
+    }
+    [[[WordPressAppDelegate sharedWordPressApplicationDelegate].window rootViewController] presentViewController:navController animated:YES completion:nil];
 }
 
 
@@ -254,26 +256,36 @@
 	[self updateNavItem];
 }
 
-
-- (void)setDestinationBlog:(NSDictionary *)dict {
-	
-	self.siteId = [dict numberForKey:@"blogid"];
-	self.siteTitle = [dict stringForKey:@"blogName"];
-
-	if (_blogButton) {
-		NSURL *url = [NSURL URLWithString:[dict stringForKey:@"url"]];
+- (void)configureDestinationBlogWithID:(NSNumber *)blogID name:(NSString *)blogName url:(NSString *)urlString {
+	self.siteId = blogID;
+	self.siteTitle = blogName;
+    
+    if (_blogButton) {
+		NSURL *url = [NSURL URLWithString:urlString];
 		[_blavatarImageView setImageWithBlavatarUrl:[url host] isWPcom:YES];
 		_blogNameLabel.text = _siteTitle;
 	}
-
+    
 	[self updateNavItem];
+}
+
+- (void)configureDestinationBlog:(Blog *)blog {
+    [self configureDestinationBlogWithID:blog.blogID name:blog.blogName url:blog.url];
+}
+
+- (void)configureDestinationBlogFromDictionary:(NSDictionary *)dict {
+    NSNumber *siteId = [dict numberForKey:@"blogid"];
+	NSString *siteTitle = [dict stringForKey:@"blogName"];
+    NSString *url = [dict stringForKey:@"url"];
+    
+    [self configureDestinationBlogWithID:siteId name:siteTitle url:url];
 }
 
 
 #pragma mark - ReaderUsersBlog Delegate method
 
-- (void)userDidSelectBlog:(NSDictionary *)blog {
-	[self setDestinationBlog:blog];
+- (void)userDidSelectBlog:(Blog *)blog {
+	[self configureDestinationBlog:blog];
 }
 
 

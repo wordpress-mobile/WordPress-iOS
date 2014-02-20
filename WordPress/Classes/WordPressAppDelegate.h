@@ -1,82 +1,54 @@
-#import <UIKit/UIKit.h>
-#import <CoreData/CoreData.h>
+/*
+ * WordPressAppDelegate.h
+ *
+ * Copyright (c) 2013 WordPress. All rights reserved.
+ *
+ * Licensed under GNU General Public License 2.0.
+ * Some rights reserved. See license.txt
+ */
 
-#import "Constants.h"
-#import "Blog.h"
-#import "Reachability.h"
-#import "PanelNavigationController.h"
-#import "Constants.h"
-#import "DDFileLogger.h"
 
+@class Reachability;
+@class DDFileLogger;
+@class ReaderPostsViewController;
+@class BlogListViewController;
+@class AbstractPost;
 
-@class AutosaveManager;
+@interface WordPressAppDelegate : NSObject <UIApplicationDelegate>
 
-@interface WordPressAppDelegate : NSObject <UIApplicationDelegate, UIAlertViewDelegate> {
-	Blog *currentBlog;
-    //Connection Reachability variables
-    Reachability *internetReachability;
-    Reachability *wpcomReachability;
-    Reachability *currentBlogReachability;
-    BOOL connectionAvailable, wpcomAvailable, currentBlogAvailable;
-@private
-    IBOutlet UIWindow *window;
-    IBOutlet UINavigationController *navigationController;
-
-    BOOL alertRunning, passwordAlertRunning;
-    BOOL isUploadingPost;
-	BOOL isWPcomAuthenticated;
-
-	NSMutableData *statsData;
-	NSString *postID;
-    UITextField *passwordTextField;
-	    
-	// Core Data
-    NSManagedObjectContext *managedObjectContext_;
-    NSManagedObjectModel *managedObjectModel_;
-    NSPersistentStoreCoordinator *persistentStoreCoordinator_;
-    
-    //Background tasks
-    UIBackgroundTaskIdentifier bgTask;
-    
-    // Push notifications
-    NSDictionary *lastNotificationInfo;
-    PanelNavigationController *panelNavigationController;
-
-}
-
-@property (nonatomic, strong) UIWindow *window;
+@property (nonatomic, strong) IBOutlet UIWindow *window;
 @property (nonatomic, strong) UINavigationController *navigationController;
-@property (nonatomic, getter = isAlertRunning) BOOL alertRunning;
 @property (nonatomic, assign) BOOL isWPcomAuthenticated;
-@property (nonatomic, assign) BOOL isUploadingPost;
-@property (nonatomic, strong) Blog *currentBlog;
-@property (nonatomic, strong) NSString *postID;
-@property (nonatomic, strong, readonly) NSManagedObjectContext *managedObjectContext;
-@property (nonatomic, strong, readonly) NSManagedObjectModel *managedObjectModel;
-@property (nonatomic, strong, readonly) NSPersistentStoreCoordinator *persistentStoreCoordinator;
-@property (nonatomic, strong) PanelNavigationController *panelNavigationController;
-@property (strong, nonatomic) DDFileLogger *fileLogger;
-
-
-//Connection Reachability variables
-@property (nonatomic, strong) Reachability *internetReachability, *wpcomReachability, *currentBlogReachability;
-@property (nonatomic, assign) BOOL connectionAvailable, wpcomAvailable, currentBlogAvailable;
-
-- (NSString *)applicationDocumentsDirectory;
-- (NSString *)applicationUserAgent;
+@property (nonatomic, strong) UITabBarController *tabBarController;
+@property (nonatomic, strong) ReaderPostsViewController *readerPostsViewController;
+@property (nonatomic, strong) BlogListViewController *blogListViewController;
+@property (strong, nonatomic, readonly) DDFileLogger *fileLogger;
+@property (nonatomic, strong) Reachability *internetReachability, *wpcomReachability;
+@property (nonatomic, assign) BOOL connectionAvailable, wpcomAvailable;
 
 + (WordPressAppDelegate *)sharedWordPressApplicationDelegate;
 
-+ (void)wipeAllKeychainItems;
-- (void)showAlertWithTitle:(NSString *)title message:(NSString *)message;
-- (void)showNotificationErrorAlert:(NSNotification *)notification;
-- (BOOL)isWPcomAuthenticated;
-- (void)checkWPcomAuthentication;
-- (void)showContentDetailViewController:(UIViewController *)viewController;
-- (void)registerForPushNotifications;
-- (void)unregisterApnsToken;
-- (void)openNotificationScreenWithOptions:(NSDictionary *)remoteNotif;
+///---------------------------
+/// @name User agent switching
+///---------------------------
 - (void)useDefaultUserAgent;
 - (void)useAppUserAgent;
+- (NSString *)applicationUserAgent;
+
+///-----------------------
+/// @name Tab bar controls
+///-----------------------
+- (void)showNotificationsTab;
+- (void)showBlogListTab;
+- (void)showReaderTab;
+- (void)showMeTab;
+- (void)showPostTab;
+- (void)switchTabToPostsListForPost:(AbstractPost *)post;
+- (void)clearBadgeAndSyncItemsIfNotificationsScreenActive;
+
+///-----------
+/// @name NUX
+///-----------
+- (void)showWelcomeScreenIfNeededAnimated:(BOOL)animated;
 
 @end

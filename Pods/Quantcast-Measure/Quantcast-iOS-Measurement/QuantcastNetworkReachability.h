@@ -30,4 +30,6 @@ typedef enum {
 @required
 -(QuantcastNetworkStatus)currentReachabilityStatus;
 
+-(NSString*)currentRadioAccess;
+
 @end

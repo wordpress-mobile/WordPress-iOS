@@ -7,7 +7,7 @@
 #import "StatsWebViewController.h"
 #import "Blog+Jetpack.h"
 #import "WordPressAppDelegate.h"
-#import "WordPressComApi.h"
+#import "WPAccount.h"
 #import "AFHTTPClient.h"
 #import "AFHTTPRequestOperation.h"
 #import "WPWebViewController.h"
@@ -15,6 +15,9 @@
 #import "EditSiteViewController.h"
 #import "ReachabilityUtils.h"
 #import "NSString+Helpers.h"
+#import "ContextManager.h"
+
+NSString * const WPStatsWebBlogKey = @"WPStatsWebBlogKey";
 
 @interface StatsWebViewController () <SettingsViewControllerDelegate> {
     BOOL loadStatsWhenViewAppears;
@@ -26,15 +29,6 @@
 @property (nonatomic, strong) AFHTTPRequestOperation *authRequest;
 @property (assign) BOOL authed;
 
-+ (NSString *)lastAuthedName;
-+ (void)setLastAuthedName:(NSString *)str;
-+ (void)handleLogoutNotification:(NSNotification *)notification;
-
-- (void)clearCookies;
-- (void)showAuthFailed;
-- (void)showBlogSettings;
-- (void)handleRefreshedWithOutValidRequest:(NSNotification *)notification;
-
 @end
 
 @implementation StatsWebViewController
@@ -45,12 +39,34 @@
 
 static NSString *_lastAuthedName = nil;
 
-+ (void)load {
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(handleLogoutNotification:) name:WordPressComApiDidLogoutNotification object:nil];
++ (UIViewController *)viewControllerWithRestorationIdentifierPath:(NSArray *)identifierComponents coder:(NSCoder *)coder {
+    NSString *blogID = [coder decodeObjectForKey:WPStatsWebBlogKey];
+    if (!blogID)
+        return nil;
+    
+    NSManagedObjectContext *context = [[ContextManager sharedInstance] mainContext];
+    NSManagedObjectID *objectID = [context.persistentStoreCoordinator managedObjectIDForURIRepresentation:[NSURL URLWithString:blogID]];
+    if (!objectID)
+        return nil;
+    
+    NSError *error = nil;
+    Blog *restoredBlog = (Blog *)[context existingObjectWithID:objectID error:&error];
+    if (error || !restoredBlog) {
+        return nil;
+    }
+    
+    StatsWebViewController *viewController = [[self alloc] init];
+    viewController.blog = restoredBlog;
+    
+    return viewController;
 }
 
-+ (void)handleLogoutNotification:(NSNotification *)notification {
-    [self setLastAuthedName:nil];
++ (void)load {
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(handleAccountChangeNotification:) name:WPAccountDefaultWordPressComAccountChangedNotification object:nil];
+}
+
++ (void)handleAccountChangeNotification:(NSNotification *)notification {
+    [self setLastAuthedName:[WPAccount defaultWordPressComAccount].username];
 }
 
 + (NSString *)lastAuthedName {
@@ -61,15 +77,29 @@ static NSString *_lastAuthedName = nil;
     _lastAuthedName = [str copy];
 }
 
+- (id)init {
+    self = [super init];
+    
+    if (self) {
+        self.restorationIdentifier = NSStringFromClass([self class]);
+        self.restorationClass = [self class];
+    }
+    
+    return self;
+}
 
 - (void)dealloc {
-    WPFLogMethod();
+    DDLogMethod();
     if (authRequest && [authRequest isExecuting]) {
         [authRequest cancel];
     }
     retryAlertView.delegate = nil;
 }
 
+- (void)encodeRestorableStateWithCoder:(NSCoder *)coder {
+    [coder encodeObject:[[self.blog.objectID URIRepresentation] absoluteString] forKey:WPStatsWebBlogKey];
+    [super encodeRestorableStateWithCoder:coder];
+}
 
 - (void)viewDidLoad {
     [super viewDidLoad];
@@ -109,7 +139,7 @@ static NSString *_lastAuthedName = nil;
 #pragma mark Instance Methods
 
 - (void)clearCookies {
-    NSArray *arr = [[NSHTTPCookieStorage sharedHTTPCookieStorage] cookiesForURL:[NSURL URLWithString:@"http://wordpress.com"]];
+    NSArray *arr = [[NSHTTPCookieStorage sharedHTTPCookieStorage] cookiesForURL:[NSURL URLWithString:@"https://wordpress.com"]];
     for(NSHTTPCookie *cookie in arr){
         [[NSHTTPCookieStorage sharedHTTPCookieStorage] deleteCookie:cookie];
     }
@@ -119,21 +149,16 @@ static NSString *_lastAuthedName = nil;
 - (void)showAuthFailed {
     DDLogError(@"Auth Failed, showing login screen");
     [self showBlogSettings];
+    NSString *title;
+    NSString *message;
     if ([blog isWPcom]) {
-        UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"Authentication Error", @"")
-                                                            message:NSLocalizedString(@"Invalid username/password. Please update your credentials try again.", @"")
-                                                           delegate:nil
-                                                  cancelButtonTitle:NSLocalizedString(@"OK", @"")
-                                                  otherButtonTitles:nil];
-        [alertView show];
+        title = NSLocalizedString(@"Authentication Error", @"");
+        message = NSLocalizedString(@"Invalid username/password. Please update your credentials try again.", @"");
     } else {
-        UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"Jetpack Sign In", @"")
-                                                            message:NSLocalizedString(@"Unable to sign in to Jetpack. Please update your credentials try again.", @"")
-                                                           delegate:nil
-                                                  cancelButtonTitle:NSLocalizedString(@"OK", @"")
-                                                  otherButtonTitles:nil];
-        [alertView show];
+        title = NSLocalizedString(@"Jetpack Sign In", @"");
+        message = NSLocalizedString(@"Unable to sign in to Jetpack. Please update your credentials try again.", @"");
     }
+    [WPError showAlertWithTitle:title message:message];
 }
 
 
@@ -143,18 +168,17 @@ static NSString *_lastAuthedName = nil;
     UINavigationController *navController = nil;
     
     if ([blog isWPcom]) {
-        EditSiteViewController *controller = [[EditSiteViewController alloc] initWithNibName:nil bundle:nil];
+        EditSiteViewController *controller = [[EditSiteViewController alloc] initWithBlog:self.blog];
         controller.delegate = self;
         controller.isCancellable = YES;
-        controller.blog = self.blog;
         navController = [[UINavigationController alloc] initWithRootViewController:controller];
         navController.navigationBar.translucent = NO;
         navController.modalTransitionStyle = UIModalTransitionStyleCrossDissolve;
         navController.modalPresentationStyle = UIModalPresentationFormSheet;
-        [self.panelNavigationController presentViewController:navController animated:YES completion:nil];
+        [self.navigationController presentViewController:navController animated:YES completion:nil];
     } else {
         JetpackSettingsViewController *controller = [[JetpackSettingsViewController alloc] initWithBlog:blog];
-        controller.ignoreNavigationController = YES;
+        controller.showFullScreen = NO;
         __weak JetpackSettingsViewController *safeController = controller;
         [controller setCompletionBlock:^(BOOL didAuthenticate) {
             if (didAuthenticate) {
@@ -281,7 +305,7 @@ static NSString *_lastAuthedName = nil;
     }
 
     NSMutableURLRequest *mRequest = [[NSMutableURLRequest alloc] init];
-    NSString *requestBody = [NSString stringWithFormat:@"log=%@&pwd=%@&redirect_to=http://wordpress.com",
+    NSString *requestBody = [NSString stringWithFormat:@"log=%@&pwd=%@&redirect_to=https://wordpress.com",
                              [username stringByUrlEncoding],
                              [password stringByUrlEncoding]];
 
@@ -304,7 +328,7 @@ static NSString *_lastAuthedName = nil;
         
         // wordpress.com/wp-login.php currently returns http200 even when auth fails.
         // Sanity check the cookies to make sure we're actually logged in.
-        NSArray *cookies = [[NSHTTPCookieStorage sharedHTTPCookieStorage] cookiesForURL:[NSURL URLWithString:@"http://wordpress.com"]];
+        NSArray *cookies = [[NSHTTPCookieStorage sharedHTTPCookieStorage] cookiesForURL:[NSURL URLWithString:@"https://wordpress.com"]];
         
         for (NSHTTPCookie *cookie in cookies) {
             if([cookie.name isEqualToString:@"wordpress_logged_in"]){
@@ -361,7 +385,7 @@ static NSString *_lastAuthedName = nil;
 		blogID = [blog jetpackBlogID];
 	}
 	
-    NSString *pathStr = [NSString stringWithFormat:@"http://wordpress.com/?no-chrome#!/my-stats/?blog=%@&unit=1", blogID];
+    NSString *pathStr = [NSString stringWithFormat:@"https://wordpress.com/?no-chrome#!/my-stats/?blog=%@&unit=1", blogID];
     NSMutableURLRequest *mRequest = [[NSMutableURLRequest alloc] init];
     [mRequest setURL:[NSURL URLWithString:pathStr]];
     [mRequest addValue:@"*/*" forHTTPHeaderField:@"Accept"];
@@ -420,7 +444,7 @@ static NSString *_lastAuthedName = nil;
             [query rangeOfString:@"no-chrome"].location == NSNotFound) {
             WPWebViewController *webViewController = [[WPWebViewController alloc] init];
             [webViewController setUrl:request.URL];
-            [self.panelNavigationController pushViewController:webViewController fromViewController:self animated:YES];
+            [self.navigationController pushViewController:webViewController animated:YES];
             return NO;
         }
         
@@ -435,14 +459,15 @@ static NSString *_lastAuthedName = nil;
     DDLogInfo(@"%@ %@", self, NSStringFromSelector(_cmd));
    
     // Override super so we do not change our title.
-    self.title = @"Stats";
+    self.title = NSLocalizedString(@"Stats", nil);
 }
 
 
 - (void)webView:(UIWebView *)webView didFailLoadWithError:(NSError *)error {
     DDLogInfo(@"%@ %@: %@", self, NSStringFromSelector(_cmd), error);
-    if ( ([error code] != -999) && [error code] != 102 )
-        [[NSNotificationCenter defaultCenter] postNotificationName:@"OpenWebPageFailed" object:error userInfo:nil];
+    if (([error code] != -999) && [error code] != 102) {
+        [WPError showAlertWithTitle:NSLocalizedString(@"Error", nil) message:error.localizedDescription];
+    }
     // -999: Canceled AJAX request
     // 102:  Frame load interrupted: canceled wp-login redirect to make the POST
 }

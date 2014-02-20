@@ -51,7 +51,7 @@
 }
 
 - (void)viewWillAppear:(BOOL)animated {
-    WPFLogMethod();
+    DDLogMethod();
 	[super viewWillAppear:animated];
 	
 	self.textView.text = self.comment.content;
@@ -65,7 +65,7 @@
 }
 
 - (void)viewWillDisappear:(BOOL)animated {
-    WPFLogMethod();
+    DDLogMethod();
     [super viewWillDisappear:animated];
 }
 
@@ -146,20 +146,6 @@
 #pragma mark -
 #pragma mark Comment Handling Methods
 
-- (BOOL)isConnectedToHost {
-    WordPressAppDelegate  *appDelegate = (WordPressAppDelegate *)[[UIApplication sharedApplication] delegate];
-    if (appDelegate.currentBlogAvailable == NO) {
-        UIAlertView *connectionFailAlert = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"No connection to host.", @"")
-																	  message:NSLocalizedString(@"Operation is not supported now.", @"")
-																	 delegate:nil
-                                                            cancelButtonTitle:NSLocalizedString(@"OK", @"")
-                                                            otherButtonTitles:nil];
-        [connectionFailAlert show];
-        return NO;
-    }
-    return YES;
-}
-
 - (void)initiateSaveCommentReply:(id)sender {
 	[self endTextEnteringButtonAction: sender];
 	if(self.hasChanges == NO) {
@@ -181,12 +167,6 @@
         self.textView.editable = YES;
         self.navigationItem.rightBarButtonItem.enabled = YES;
         self.navigationItem.leftBarButtonItem.enabled = YES;
-        NSString *message = NSLocalizedString(@"Sorry, something went wrong editing the comment. Please try again.", @"");
-        if (error.code == 405) {
-            // XML-RPC is disabled.
-            message = error.localizedDescription;
-        }
-		[[NSNotificationCenter defaultCenter] postNotificationName:@"CommentUploadFailed" object:message];
     }];
 }
 

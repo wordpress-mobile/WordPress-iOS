@@ -14,6 +14,8 @@
 #import "WPAvatarSource.h"
 #import "NSString+Helpers.h"
 #import "WordPressAppDelegate.h"
+#import "ContextManager.h"
+#import "WPAccount.h"
 
 NSInteger const ReaderTopicEndpointIndex = 3;
 NSInteger const ReaderPostSummaryLength = 150;
@@ -23,18 +25,9 @@ NSString *const ReaderCurrentTopicKey = @"ReaderCurrentTopicKey";
 NSString *const ReaderTopicsArrayKey = @"ReaderTopicsArrayKey";
 NSString *const ReaderExtrasArrayKey = @"ReaderExtrasArrayKey";
 
-@interface ReaderPost()
-
-+ (void)handleLogoutNotification:(NSNotification *)notification;
-- (void)updateFromDictionary:(NSDictionary *)dict;
-- (void)updateFromRESTDictionary:(NSDictionary *)dict;
-- (void)updateFromReaderDictionary:(NSDictionary *)dict;
-- (NSString *)createSummary:(NSString *)str makePlainText:(BOOL)makePlainText;
-- (NSString *)makePlainText:(NSString *)string;
-- (NSString *)normalizeParagraphs:(NSString *)string;
-- (NSString *)parseImageSrcFromHTML:(NSString *)html;
-
-@end
+// These keys are used in the getStoredComment method
+NSString * const ReaderPostStoredCommentIDKey = @"commentID";
+NSString * const ReaderPostStoredCommentTextKey = @"comment";
 
 @implementation ReaderPost
 
@@ -62,32 +55,10 @@ NSString *const ReaderExtrasArrayKey = @"ReaderExtrasArrayKey";
 @dynamic storedComment;
 @dynamic summary;
 @dynamic comments;
-
-+ (void)load {
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(handleLogoutNotification:) name:WordPressComApiDidLogoutNotification object:nil];
-}
-
-
-+ (void)handleLogoutNotification:(NSNotification *)notification {
-	[[NSUserDefaults standardUserDefaults] removeObjectForKey:ReaderLastSyncDateKey];
-	[[NSUserDefaults standardUserDefaults] removeObjectForKey:ReaderCurrentTopicKey];
-    [[NSUserDefaults standardUserDefaults] removeObjectForKey:ReaderTopicsArrayKey];
-    [[NSUserDefaults standardUserDefaults] removeObjectForKey:ReaderExtrasArrayKey];
-	[NSUserDefaults resetStandardUserDefaults];
-	
-	NSManagedObjectContext *context = [[WordPressAppDelegate sharedWordPressApplicationDelegate] managedObjectContext];
-	NSFetchRequest *request = [NSFetchRequest fetchRequestWithEntityName:@"ReaderPost"];
-    request.includesPropertyValues = NO;
-    NSError *error;
-    NSArray *posts = [context executeFetchRequest:request error:&error];
-    if (posts) {
-        for (ReaderPost *post in posts) {
-            [context deleteObject:post];
-        }
-    }
-    [context save:&error];
-}
-
+@dynamic account;
+@dynamic primaryTagName;
+@dynamic primaryTagSlug;
+@dynamic tags;
 
 + (NSArray *)readerEndpoints {
 	static NSArray *endpoints = nil;
@@ -121,7 +92,7 @@ NSString *const ReaderExtrasArrayKey = @"ReaderExtrasArrayKey";
 
 
 + (NSArray *)fetchPostsForEndpoint:(NSString *)endpoint withContext:(NSManagedObjectContext *)context {
-    WPFLogMethod();
+    DDLogMethod();
 	NSFetchRequest *request = [[NSFetchRequest alloc] init];
     [request setEntity:[NSEntityDescription entityForName:@"ReaderPost" inManagedObjectContext:context]];
 	
@@ -140,8 +111,8 @@ NSString *const ReaderExtrasArrayKey = @"ReaderExtrasArrayKey";
 }
 
 
-+ (void)syncPostsFromEndpoint:(NSString *)endpoint withArray:(NSArray *)arr withContext:(NSManagedObjectContext *)context success:(void (^)())success {
-    WPFLogMethod();
++ (void)syncPostsFromEndpoint:(NSString *)endpoint withArray:(NSArray *)arr success:(void (^)())success {
+    DDLogMethod();
     if (![arr isKindOfClass:[NSArray class]] || [arr count] == 0) {
 		if (success) {
 			dispatch_async(dispatch_get_main_queue(), success);
@@ -149,59 +120,44 @@ NSString *const ReaderExtrasArrayKey = @"ReaderExtrasArrayKey";
         return;
     }
     
-    // Reuse the same background context for every call. Update the parent context if necessary
-    static NSManagedObjectContext *backgroundMoc;
-    if (backgroundMoc == nil) {
-		backgroundMoc = [[NSManagedObjectContext alloc] initWithConcurrencyType:NSPrivateQueueConcurrencyType];
-    }
-    if (![backgroundMoc.parentContext isEqual:context]) {
-        [backgroundMoc setParentContext:context];
-    }
-
-    [backgroundMoc performBlock:^{
-        NSError *error;
+    NSManagedObjectContext *backgroundMOC = [[ContextManager sharedInstance] backgroundContext];
+    [backgroundMOC performBlock:^{
         for (NSDictionary *postData in arr) {
             if (![postData isKindOfClass:[NSDictionary class]]) {
                 continue;
             }
-            [self createOrUpdateWithDictionary:postData forEndpoint:endpoint withContext:backgroundMoc];
+            [self createOrUpdateWithDictionary:postData forEndpoint:endpoint withContext:backgroundMOC];
         }
-		
-        if(![backgroundMoc save:&error]){
-            DDLogError(@"Failed to sync ReaderPosts: %@", error);
+        
+        [[ContextManager sharedInstance] saveContext:backgroundMOC];
+        if (success) {
+            dispatch_async(dispatch_get_main_queue(), success);
         }
-        [context performBlock:^{
-            NSError *error;
-            if (![context save:&error]) {
-                DDLogError(@"Failed to sync ReaderPosts: %@", error);
-            }
-        }];
-		
-		if (success) {
-			dispatch_async(dispatch_get_main_queue(), success);
-		}
     }];
 }
 
 
-+ (void)deletePostsSyncedEarlierThan:(NSDate *)syncedDate withContext:(NSManagedObjectContext *)context {
-    WPFLogMethod();
-	NSFetchRequest *request = [[NSFetchRequest alloc] init];
-    [request setEntity:[NSEntityDescription entityForName:@"ReaderPost" inManagedObjectContext:context]];
-	
-	NSPredicate *predicate = [NSPredicate predicateWithFormat:@"(dateSynced < %@)", syncedDate];
-	[request setPredicate:predicate];
-    
-    NSError *error = nil;
-    NSArray *array = [context executeFetchRequest:request error:&error];
-
-    if ([array count]) {
-		DDLogInfo(@"Deleting %i ReaderPosts synced earlier than: %@ ", [array count], syncedDate);
-        for (ReaderPost *post in array) {
-            [context deleteObject:post];
++ (void)deletePostsSyncedEarlierThan:(NSDate *)syncedDate {
+    DDLogMethod();
+    NSManagedObjectContext *context = [[ContextManager sharedInstance] backgroundContext];
+    [context performBlock:^{
+        NSFetchRequest *request = [[NSFetchRequest alloc] init];
+        [request setEntity:[NSEntityDescription entityForName:@"ReaderPost" inManagedObjectContext:context]];
+        
+        NSPredicate *predicate = [NSPredicate predicateWithFormat:@"(dateSynced < %@)", syncedDate];
+        [request setPredicate:predicate];
+        
+        NSError *error = nil;
+        NSArray *array = [context executeFetchRequest:request error:&error];
+        
+        if ([array count]) {
+            DDLogInfo(@"Deleting %i ReaderPosts synced earlier than: %@ ", [array count], syncedDate);
+            for (ReaderPost *post in array) {
+                [context deleteObject:post];
+            }
         }
-    }
-    [context save:&error];
+        [[ContextManager sharedInstance] saveContext:context];
+    }];
 }
 
 
@@ -209,6 +165,12 @@ NSString *const ReaderExtrasArrayKey = @"ReaderExtrasArrayKey";
 	NSNumber *blogSiteID = [dict numberForKey:@"site_id"];
 	NSNumber *siteID = [dict numberForKey:@"blog_id"];
 	NSNumber *postID = [dict numberForKey:@"ID"];
+
+    // Some endpoints (e.g. tags) use different case
+    if (siteID == nil) {
+        siteID = [dict numberForKey:@"site_ID"];
+        blogSiteID = [dict numberForKey:@"site_ID"];
+    }
 
 	// following, likes and topics endpoints
 	if ([dict valueForKey:@"blog_site_id"] != nil) {
@@ -231,6 +193,18 @@ NSString *const ReaderExtrasArrayKey = @"ReaderExtrasArrayKey";
 		postID = [dict numberForKey:@"feed_item_id"];
 		siteID = [dict numberForKey:@"feed_id"];
 	}
+    
+    // single reader post loaded from wordpress://viewpost handler
+    if ([dict valueForKey:@"meta"]) {
+        NSDictionary *metaSite = [dict objectForKeyPath:@"meta.data.site"];
+        if (metaSite) {
+            // hardcode blog_site_id to 1 for now because only WordPress.com and Jetpack blogs will
+            // return from the endpoint anyway. this should be changed to data from the API once the
+            // API returns the data.
+            blogSiteID = @1;
+            siteID = [metaSite numberForKey:@"ID"];
+        }
+    };
 
 	NSFetchRequest *request = [NSFetchRequest fetchRequestWithEntityName:@"ReaderPost"];
     request.predicate = [NSPredicate predicateWithFormat:@"(postID = %@) AND (siteID = %@) AND (blogSiteID = %@) AND (endpoint = %@)", postID, siteID, blogSiteID, endpoint];
@@ -257,6 +231,11 @@ NSString *const ReaderExtrasArrayKey = @"ReaderExtrasArrayKey";
 		post.endpoint = endpoint;
     }
     
+    // Set account on the post, but only if signed in
+    if ([WPAccount defaultWordPressComAccount] != nil) {
+        post.account = (WPAccount *)[context objectWithID:[WPAccount defaultWordPressComAccount].objectID];
+    }
+    
     @autoreleasepool {
         [post updateFromDictionary:dict];
     }
@@ -281,7 +260,6 @@ NSString *const ReaderExtrasArrayKey = @"ReaderExtrasArrayKey";
 
 	self.dateSynced = [NSDate date];
 }
-
 
 - (void)updateFromRESTDictionary:(NSDictionary *)dict {
 	// REST api.  Freshly Pressed, sites/site/posts
@@ -323,6 +301,14 @@ NSString *const ReaderExtrasArrayKey = @"ReaderExtrasArrayKey";
 		self.sortDate = [DateUtils dateFromISOString:[dict objectForKey:@"date"]];
 	}
 	
+    if ([dict valueForKey:@"meta"]) {
+        NSDictionary *meta_root = [dict objectForKey:@"meta"];
+        NSDictionary *meta_data = [meta_root objectForKey:@"data"];
+        NSDictionary *meta_site = [meta_data objectForKey:@"site"];
+        
+        self.blogName = [[meta_site stringForKey:@"name"] stringByDecodingXMLCharacters];
+    };
+    
 	NSDictionary *author = [dict objectForKey:@"author"];
 	self.author = [author stringForKey:@"name"];
 	self.authorURL = [author stringForKey:@"URL"];
@@ -344,6 +330,7 @@ NSString *const ReaderExtrasArrayKey = @"ReaderExtrasArrayKey";
 	self.likeCount = [dict numberForKey:@"like_count"];
 	self.permaLink = [dict stringForKey:@"URL"];
 	self.postTitle = [[[dict stringForKey:@"title"] stringByDecodingXMLCharacters] trim];
+    self.postTitle = [self.postTitle stringByStrippingHTML];
 	
 	self.isLiked = [dict numberForKey:@"i_like"];
 	
@@ -351,6 +338,17 @@ NSString *const ReaderExtrasArrayKey = @"ReaderExtrasArrayKey";
 	self.blogURL = [NSString stringWithFormat:@"%@://%@/", url.scheme, url.host];
 	
 	self.summary = [self createSummary:self.content makePlainText:YES];
+    
+    NSDictionary *tagsDict = [dict objectForKey:@"tags"];
+    NSArray *tagsList = [NSArray arrayWithArray:[tagsDict allKeys]];
+    self.tags = [tagsList componentsJoinedByString:@", "];
+    
+    if ([tagsDict count] > 0) {
+        NSDictionary *tagDict = [[tagsDict allValues] objectAtIndex:0];
+        self.primaryTagSlug = tagDict[@"slug"];
+        self.primaryTagName = tagDict[@"name"];
+        self.primaryTagName = [self.primaryTagName stringByDecodingXMLCharacters];
+    }
 }
 
 
@@ -395,6 +393,7 @@ NSString *const ReaderExtrasArrayKey = @"ReaderExtrasArrayKey";
 	self.likeCount = [dict numberForKey:@"post_like_count"];
 	self.permaLink = [dict stringForKey:@"post_permalink"];
 	self.postTitle = [[[dict stringForKey:@"post_title"] stringByDecodingXMLCharacters] trim];
+    self.postTitle = [self.postTitle stringByStrippingHTML];
 	
     // blog_public is either a 1 or a -1.
     NSInteger isPublic = [[dict numberForKey:@"blog_public"] integerValue];
@@ -423,6 +422,23 @@ NSString *const ReaderExtrasArrayKey = @"ReaderExtrasArrayKey";
 		img = [img stringByDecodingXMLCharacters];
 		self.postAvatar = [self parseImageSrcFromHTML:img];
 	}
+    
+    NSDictionary *tagsDict = [dict dictionaryForKey:@"topics"];
+    
+    if ([tagsDict count] > 0) {
+        NSArray *tagsList = [NSArray arrayWithArray:[tagsDict allValues]];
+        self.tags = [tagsList componentsJoinedByString:@", "];
+    }
+    
+    NSDictionary *primaryTagDict = [dict dictionaryForKey:@"primary_tag"];
+    if ([primaryTagDict isKindOfClass:[NSDictionary class]]) {
+        self.primaryTagSlug = [primaryTagDict stringForKey:@"slug"];
+        self.primaryTagName = [primaryTagDict stringForKey:@"name"];
+        self.primaryTagName = [self.primaryTagName stringByDecodingXMLCharacters];
+    } else if ([tagsDict count] > 0) {
+        self.primaryTagSlug = [[tagsDict allKeys] objectAtIndex:0];
+        self.primaryTagName = [tagsDict stringForKey:self.primaryTagSlug];
+    }
 }
 
 
@@ -519,7 +535,7 @@ NSString *const ReaderExtrasArrayKey = @"ReaderExtrasArrayKey";
 		path = [NSString stringWithFormat:@"sites/%@/posts/%@/likes/mine/delete", self.siteID, self.postID];
 	}
 
-	[[WordPressComApi sharedApi] postPath:path parameters:nil success:^(AFHTTPRequestOperation *operation, id responseObject) {
+	[[[WPAccount defaultWordPressComAccount] restApi] postPath:path parameters:nil success:^(AFHTTPRequestOperation *operation, id responseObject) {
 		[self save];
 		
 		if(success) {
@@ -551,7 +567,7 @@ NSString *const ReaderExtrasArrayKey = @"ReaderExtrasArrayKey";
 		path = [NSString stringWithFormat:@"sites/%@/follows/mine/delete", self.siteID];
 	}
 	
-	[[WordPressComApi sharedApi] postPath:path parameters:nil success:^(AFHTTPRequestOperation *operation, id responseObject) {
+	[[[WPAccount defaultWordPressComAccount] restApi] postPath:path parameters:nil success:^(AFHTTPRequestOperation *operation, id responseObject) {
 		[self save];
 		
 		if(success) {
@@ -576,7 +592,7 @@ NSString *const ReaderExtrasArrayKey = @"ReaderExtrasArrayKey";
 	}
 
 	NSString *path = [NSString stringWithFormat:@"sites/%@/posts/%@/reblogs/new", self.siteID, self.postID];
-	[[WordPressComApi sharedApi] postPath:path parameters:params success:^(AFHTTPRequestOperation *operation, id responseObject) {
+	[[[WPAccount defaultWordPressComAccount] restApi] postPath:path parameters:params success:^(AFHTTPRequestOperation *operation, id responseObject) {
 		NSDictionary *dict = (NSDictionary *)responseObject;
 		self.isReblogged = [dict numberForKey:@"is_reblogged"];
 
@@ -590,22 +606,9 @@ NSString *const ReaderExtrasArrayKey = @"ReaderExtrasArrayKey";
 	}];
 }
 
-
-- (NSString *)prettyDateString {
-	NSDate *date = [self isFreshlyPressed] ? self.sortDate : self.date_created_gmt;
-    NSDateFormatter *formatter = [[NSDateFormatter alloc] init];
-	NSTimeInterval diff = [[NSDate date] timeIntervalSinceDate:date];
-    if (diff < 86400) {
-        formatter.dateStyle = NSDateFormatterNoStyle;
-        formatter.timeStyle = NSDateFormatterShortStyle;
-    } else {
-        formatter.dateStyle = NSDateFormatterShortStyle;
-        formatter.timeStyle = NSDateFormatterNoStyle;
-    }
-    formatter.doesRelativeDateFormatting = YES;
-    return [formatter stringFromDate:date];
+- (BOOL)isFollowable {
+    return self.siteID != nil;
 }
-
 
 - (BOOL)isFreshlyPressed {
 	return ([self.endpoint rangeOfString:@"freshly-pressed"].location != NSNotFound)? YES : NO;
@@ -640,9 +643,18 @@ NSString *const ReaderExtrasArrayKey = @"ReaderExtrasArrayKey";
 	NSArray *arr = [self.storedComment componentsSeparatedByString:@"|storedcomment|"];
 	NSNumber *commentID = [[arr objectAtIndex:0] numericValue];
 	NSString *commentText = [arr objectAtIndex:1];
-	return @{@"commentID":commentID, @"comment":commentText};
+	return @{ReaderPostStoredCommentIDKey:commentID, ReaderPostStoredCommentTextKey:commentText};
 }
 
+- (NSString *)authorString {
+    if ([self.blogName length] > 0) {
+        return self.blogName;
+    } else if ([self.authorDisplayName length] > 0) {
+        return self.authorDisplayName;
+    } else {
+        return self.author;
+    }
+}
 
 - (NSString *)avatar {
 	return (self.postAvatar == nil) ? self.authorAvatarURL : self.postAvatar;
@@ -708,24 +720,39 @@ NSString *const ReaderExtrasArrayKey = @"ReaderExtrasArrayKey";
 - (NSString *)formatVideoPress:(NSString *)str {
     NSMutableString *mstr = [str mutableCopy];
     NSError *error;
+    
+    // Find instances of VideoPress markup.
     NSRegularExpression *regex = [NSRegularExpression regularExpressionWithPattern:@"<div[\\S\\s]+?<div.*class=\"videopress-placeholder[\\s\\S]*?</noscript>" options:NSRegularExpressionCaseInsensitive error:&error];
     NSArray *matches = [regex matchesInString:mstr options:NSRegularExpressionCaseInsensitive range:NSMakeRange(0, [mstr length])];
     for (NSTextCheckingResult *match in [matches reverseObjectEnumerator]) {
         // compose videopress string
 
-        NSRegularExpression *mregex = [NSRegularExpression regularExpressionWithPattern:@"mp4[\\s\\S]+?mp4" options:NSRegularExpressionCaseInsensitive error:&error];
-        NSRange mmatch = [mregex rangeOfFirstMatchInString:mstr options:NSRegularExpressionCaseInsensitive range:match.range];
-        NSString *mp4 = [mstr substringWithRange:mmatch];
-        NSRegularExpression *sregex = [NSRegularExpression regularExpressionWithPattern:@"http\\S+mp4" options:NSRegularExpressionCaseInsensitive error:&error];
-        NSRange smatch = [sregex rangeOfFirstMatchInString:mp4 options:NSRegularExpressionCaseInsensitive range:NSMakeRange(0, [mp4 length])];
-        NSString *src = [mp4 substringWithRange:smatch];
+        // Find the mp4 in the markup.
+        NSRegularExpression *mp4Regex = [NSRegularExpression regularExpressionWithPattern:@"mp4[\\s\\S]+?mp4" options:NSRegularExpressionCaseInsensitive error:&error];
+        NSRange mp4Match = [mp4Regex rangeOfFirstMatchInString:mstr options:NSRegularExpressionCaseInsensitive range:match.range];
+        if (mp4Match.location == NSNotFound) {
+            DDLogError(@"%@ failed to match mp4 JSON string while formatting video press markup: %@", self, [mstr substringWithRange:match.range]);
+            [mstr replaceCharactersInRange:match.range withString:@""];
+            continue;
+        }
+        NSString *mp4 = [mstr substringWithRange:mp4Match];
+        
+        // Get the mp4 url.
+        NSRegularExpression *srcRegex = [NSRegularExpression regularExpressionWithPattern:@"http\\S+mp4" options:NSRegularExpressionCaseInsensitive error:&error];
+        NSRange srcMatch = [srcRegex rangeOfFirstMatchInString:mp4 options:NSRegularExpressionCaseInsensitive range:NSMakeRange(0, [mp4 length])];
+        if (srcMatch.location == NSNotFound) {
+            DDLogError(@"%@ failed to match mp4 src when formatting video press markup: %@", self, mp4);
+            [mstr replaceCharactersInRange:match.range withString:@""];
+            continue;
+        }
+        NSString *src = [mp4 substringWithRange:srcMatch];
         src = [src stringByReplacingOccurrencesOfString:@"\\/" withString:@"/"];
         
+        // Compose a video tag to replace the default markup.
         NSString *fmt = @"<video src=\"%@\"><source src=\"%@\" type=\"video/mp4\"></video>";
         NSString *vid = [NSString stringWithFormat:fmt, src, src];
         
         [mstr replaceCharactersInRange:match.range withString:vid];
-
     }
 
     return mstr;
@@ -741,7 +768,12 @@ NSString *const ReaderExtrasArrayKey = @"ReaderExtrasArrayKey";
 	
 	NSString *path = @"reader/topics";
 	
-	[[WordPressComApi sharedApi] getPath:path parameters:nil success:success failure:failure];
+    // There should probably be a better check here
+    if ([[WPAccount defaultWordPressComAccount] restApi].authToken) {
+        [[WPAccount defaultWordPressComAccount].restApi getPath:path parameters:nil success:success failure:failure];
+    } else {
+        [[WordPressComApi anonymousApi] getPath:path parameters:nil success:success failure:failure];
+    }
 }
 
 
@@ -753,7 +785,11 @@ NSString *const ReaderExtrasArrayKey = @"ReaderExtrasArrayKey";
 	
 	NSString *path = [NSString stringWithFormat:@"sites/%@/posts/%i/replies", siteID, postID];
 	
-	[[WordPressComApi sharedApi] getPath:path parameters:params success:success failure:failure];
+    if ([[WPAccount defaultWordPressComAccount] restApi].authToken) {
+        [[WPAccount defaultWordPressComAccount].restApi getPath:path parameters:params success:success failure:failure];
+    } else {
+        [[WordPressComApi anonymousApi] getPath:path parameters:params success:success failure:failure];
+    }
 }
 
 
@@ -762,16 +798,23 @@ NSString *const ReaderExtrasArrayKey = @"ReaderExtrasArrayKey";
 				 loadingMore:(BOOL)loadingMore
 					 success:(WordPressComApiRestSuccessResponseBlock)success
 					 failure:(WordPressComApiRestSuccessFailureBlock)failure {
-	WPFLogMethod();
-	[[WordPressComApi sharedApi] getPath:path
+	DDLogMethod();
+    
+    WordPressComApi *api;
+    if ([[WPAccount defaultWordPressComAccount] restApi].authToken) {
+        api = [[WPAccount defaultWordPressComAccount] restApi];
+    } else {
+        api = [WordPressComApi anonymousApi];
+    }
+    
+	[api getPath:path
 							  parameters:params
 								 success:^(AFHTTPRequestOperation *operation, id responseObject) {
 									 
 									 NSArray *postsArr = [responseObject arrayForKey:@"posts"];
-									 if (postsArr) {									 
+									 if (postsArr) {
 										 [ReaderPost syncPostsFromEndpoint:path
 																 withArray:postsArr
-															   withContext:[[WordPressAppDelegate sharedWordPressApplicationDelegate] managedObjectContext]
 																   success:^{
 																	   if (success) {
 																		   success(operation, responseObject);
@@ -783,7 +826,7 @@ NSString *const ReaderExtrasArrayKey = @"ReaderExtrasArrayKey";
 										 
 										 if (!loadingMore) {
 											 NSTimeInterval interval = - (60 * 60 * 24 * 7); // 7 days.
-											 [ReaderPost deletePostsSyncedEarlierThan:[NSDate dateWithTimeInterval:interval sinceDate:[NSDate date]] withContext:[[WordPressAppDelegate sharedWordPressApplicationDelegate] managedObjectContext]];
+											 [ReaderPost deletePostsSyncedEarlierThan:[NSDate dateWithTimeInterval:interval sinceDate:[NSDate date]]] ;
 										 }
 										 return;
 									 }
@@ -815,8 +858,23 @@ NSString *const ReaderExtrasArrayKey = @"ReaderExtrasArrayKey";
 							   completionHandler([postsArr count], nil);
 						   }
 					   } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
-						   completionHandler(0, error);
+                           if (completionHandler) {
+                               completionHandler(0, error);                               
+                           }
 					   }];
 }
+
+#pragma mark - WPContentViewProvider protocol
+
+- (NSDate *)dateForDisplay {
+    BOOL isFreshlyPressed = [self isFreshlyPressed];
+    
+    if (isFreshlyPressed) {
+        return [self sortDate];
+    }
+    
+    return [self dateCreated];
+}
+
 
 @end

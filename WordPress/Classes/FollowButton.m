@@ -8,6 +8,7 @@
 
 #import "FollowButton.h"
 #import "NSString+XMLExtensions.h"
+#import "WPToast.h"
 
 @interface FollowButton ()
 @property (nonatomic, strong) UIButton *button;
@@ -82,6 +83,11 @@
     [self.user followBlog:[self.siteID intValue] isFollowing:isFollowing success:^(AFHTTPRequestOperation *operation, id followResponse){
         BOOL following = [[followResponse objectForKey:@"is_following"] intValue] == 1;
         self.followState = following ? FollowButtonStateFollowing : FollowButtonStateNotFollowing;
+        
+        NSString *message = following ? NSLocalizedString(@"Unfollowed", @"User unfollowed a blog") : NSLocalizedString(@"Followed", @"User followed a blog");
+        NSString *imageName = [NSString stringWithFormat:@"action_icon_%@", (following) ? @"unfollowed" : @"followed"];
+        [WPToast showToastWithMessage:message andImage:[UIImage imageNamed:imageName]];
+        
     } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
         // flip the button back since it failed
         self.followState = isFollowing ? FollowButtonStateNotFollowing : FollowButtonStateFollowing;
@@ -138,7 +144,7 @@
 }
 
 - (void)resizeButtonWithMaxWidth:(CGFloat)maxSize {
-    CGSize textSize = [self.label sizeWithFont:[self.button.titleLabel font]];
+    CGSize textSize = [self.label sizeWithAttributes:@{NSFontAttributeName:[self.button.titleLabel font]}];
     CGFloat buttonWidth = textSize.width + 40.0f;
     if (buttonWidth > maxSize)
         buttonWidth = maxSize;

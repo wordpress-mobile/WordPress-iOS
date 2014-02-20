@@ -6,11 +6,14 @@
 //  Copyright (c) 2013 WordPress. All rights reserved.
 //
 
+#import "ReaderPostsViewController.h"
 #import "ReaderTopicsViewController.h"
 #import "WordPressComApi.h"
 #import "ReaderPost.h"
 #import "WPFriendFinderViewController.h"
 #import "WPTableViewSectionHeaderView.h"
+#import "NSString+XMLExtensions.h"
+#import "Constants.h"
 
 @interface ReaderTopicsViewController ()
 
@@ -27,7 +30,6 @@
 
 @implementation ReaderTopicsViewController
 
-@synthesize delegate;
 
 #pragma mark - LifeCycle Methods
 
@@ -48,9 +50,7 @@
 		self.topicsArray = arr;
 		
         self.currentTopic = [ReaderPost currentTopic];
-		
-		[self loadTopics];
-	}
+    }
 	
 	return self;
 }
@@ -59,7 +59,7 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
 	
-	self.title = NSLocalizedString(@"Topics", @"Title of the Reader Topics screen");
+	self.title = NSLocalizedString(@"Browse", @"Title of the Reader Topics screen");
     UIBarButtonItem *cancelButton = [[UIBarButtonItem alloc] initWithTitle:NSLocalizedString(@"Cancel", nil)
                                                                      style:UIBarButtonItemStylePlain
                                                                     target:self
@@ -71,12 +71,11 @@
 																		  target:self
 																		  action:@selector(handleFriendFinderButtonTapped:)];
 	self.navigationItem.leftBarButtonItem = friendFinderButton;
+    
+    [self loadTopics];
 	
     [WPStyleGuide configureColorsForView:self.view andTableView:self.tableView];
-	
-	[self refreshIfReady];
 }
-
 
 #pragma mark - Instance Methods
 
@@ -88,14 +87,6 @@
     }];
     return [arr objectsAtIndexes:indexSet];
 }
-
-
-- (void)refreshIfReady {
-	if([self.topicsArray count] && [self isViewLoaded]) {
-		[self.tableView reloadData];
-	}
-}
-
 
 - (void)handleCancelButtonTapped:(id)sender {
     [self dismissViewControllerAnimated:YES completion:nil];
@@ -128,6 +119,7 @@
 		
 		for (NSDictionary *dict in arr) {
 			NSString *title = [dict objectForKey:@"cat_name"];
+            title = [title stringByDecodingXMLCharacters];
 			NSString *endpoint = [NSString stringWithFormat:topicEndpoint, [dict stringForKey:@"category_nicename"]];
 			[topics addObject:@{@"title": title, @"endpoint":endpoint}];
 		}
@@ -144,20 +136,15 @@
 				[extras addObject:@{@"title": title, @"endpoint":endpoint}];
 			}
             [[NSUserDefaults standardUserDefaults] setObject:extras forKey:ReaderExtrasArrayKey];
+            [[NSUserDefaults standardUserDefaults] synchronize];
 			self.defaultTopicsArray = [[self fetchDefaultTopics] arrayByAddingObjectsFromArray:extras];
 		}
-        [NSUserDefaults resetStandardUserDefaults];
         
-		[self refreshIfReady];
-		
+		[self.tableView reloadData];
 	} failure:^(AFHTTPRequestOperation *operation, NSError *error) {
 		[self.tableView setTableFooterView:nil];
-		UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"Unable to Load Topics", @"")
-															message:NSLocalizedString(@"Sorry. There was a problem loading the topics list.  Please try again later.", @"")
-														   delegate:nil
-												  cancelButtonTitle:NSLocalizedString(@"OK", @"")
-												  otherButtonTitles:nil, nil];
-		[alertView show];
+        
+        [WPError showAlertWithTitle:NSLocalizedString(@"Unable to Load Topics", nil) message:NSLocalizedString(@"Sorry. There was a problem loading the topics list.  Please try again later.", nil)];
 	}];
 }
 
@@ -190,7 +177,7 @@
 			break;
 			
 		default:
-			return NSLocalizedString(@"Topics", @"");
+			return NSLocalizedString(@"Tags", @"Section title for reader tags you can browse");
 			break;
 	}
 }
@@ -228,7 +215,7 @@
 	}
     
 	NSDictionary *dict = [arr objectAtIndex:indexPath.row];
-	cell.textLabel.text = [dict objectForKey:@"title"];
+	cell.textLabel.text = [[dict objectForKey:@"title"] capitalizedString];
 	cell.accessoryType = UITableViewCellAccessoryNone;
 	if([[_currentTopic objectForKey:@"endpoint"] isEqualToString:[dict objectForKey:@"endpoint"]]) {
 		cell.accessoryType = UITableViewCellAccessoryCheckmark;
@@ -255,9 +242,7 @@
 	[[NSUserDefaults standardUserDefaults] synchronize];
 	
 	if(![[dict objectForKey:@"endpoint"] isEqualToString:[_currentTopic objectForKey:@"endpoint"]]) {
-		if(self.delegate) {
-			[delegate readerTopicChanged];
-		}
+        [[NSNotificationCenter defaultCenter] postNotificationName:ReaderTopicDidChangeNotification object:self];
 	}
 	
     [self dismissViewControllerAnimated:YES completion:nil];

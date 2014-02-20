@@ -8,7 +8,7 @@
 
 
 /** 
- A collection of useful additions for `NSString` to deal with paths.
+ A collection of utility additions for `NSString`.
  */
 
 @interface NSString (DTUtilities)

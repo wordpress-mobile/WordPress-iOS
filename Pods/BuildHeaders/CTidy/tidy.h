@@ -1,1 +1,0 @@
-../../CTidy/libtidy/include/tidy.h
