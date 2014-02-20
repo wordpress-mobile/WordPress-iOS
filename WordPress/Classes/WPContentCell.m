@@ -281,7 +281,8 @@ CGFloat const WPContentCellDateImageSide = 16.0;
         
         if (dateFormatter == nil) {
             dateFormatter = [[NSDateFormatter alloc] init];
-            [dateFormatter setDateFormat:@"yyyy-MM-dd '|' HH:mm a"];
+            [dateFormatter setTimeStyle:NSDateFormatterShortStyle];
+            [dateFormatter setDateStyle:NSDateFormatterMediumStyle];
         }
         
         return [dateFormatter stringFromDate:date];
