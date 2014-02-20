@@ -60,6 +60,7 @@ extern NSString *const StatsEventWebviewSentArticleToGooglePlus;
 // Notifications
 extern NSString *const StatsPropertyNotificationsOpened;
 extern NSString *const StatsPropertyNotificationsOpenedDetails;
+extern NSString *const StatsEventNotificationsClickedManageNotifications;
 
 // Notifications Detail
 extern NSString *const StatsEventNotificationsDetailClickedReplyButton;
