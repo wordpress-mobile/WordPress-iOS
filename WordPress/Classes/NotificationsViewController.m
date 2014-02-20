@@ -15,9 +15,12 @@
 #import "NewNotificationsTableViewCell.h"
 #import "WPTableViewControllerSubclass.h"
 #import "NotificationSettingsViewController.h"
+#import "WPAccount.h"
+#import "WPWebViewController.h"
+#import "Note.h"
 
-NSString * const NotificationsTableViewNoteCellIdentifier = @"NotificationsTableViewCell";
 NSString * const NotificationsLastSyncDateKey = @"NotificationsLastSyncDate";
+NSString * const NotificationsJetpackInformationURL = @"http://jetpack.me/about/";
 
 @interface NotificationsViewController () {
     BOOL _retrievingNotifications;
@@ -25,7 +28,6 @@ NSString * const NotificationsLastSyncDateKey = @"NotificationsLastSyncDate";
 }
 
 @property (nonatomic, strong) id authListener;
-@property (nonatomic, strong) WordPressComApi *user;
 @property (nonatomic, assign) BOOL isPushingViewController;
 
 @end
@@ -37,14 +39,53 @@ NSString * const NotificationsLastSyncDateKey = @"NotificationsLastSyncDate";
     self = [super init];
     if (self) {
         self.title = NSLocalizedString(@"Notifications", @"Notifications View Controller title");
-        self.user = [WordPressComApi sharedApi];
     }
     return self;
 }
 
-- (NSString *)noResultsText
+- (NSString *)noResultsTitleText
 {
-    return NSLocalizedString(@"No notifications yet", @"Displayed when the user pulls up the notifications view and they have no items");
+    if ([self showJetpackConnectMessage]) {
+        return NSLocalizedString(@"Connect to Jetpack", @"Displayed in the notifications view when a self-hosted user is not connected to Jetpack");
+    } else {
+        return NSLocalizedString(@"No notifications yet", @"Displayed when the user pulls up the notifications view and they have no items");
+    }
+}
+- (NSString *)noResultsMessageText
+{
+    if ([self showJetpackConnectMessage]) {
+        return NSLocalizedString(@"Jetpack supercharges your self-hosted WordPress site.", @"Displayed in the notifications view when a self-hosted user is not connected to Jetpack");
+    } else {
+        return nil;
+    }
+}
+- (NSString *)noResultsButtonText
+{
+    if ([self showJetpackConnectMessage]) {
+        return NSLocalizedString(@"Learn more", @"");
+    } else {
+        return nil;
+    }
+}
+- (UIView *)noResultsAccessoryView
+{
+    if ([self showJetpackConnectMessage]) {
+        return [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"icon-jetpack-gray"]];
+    } else {
+        return nil;
+    }
+}
+
+- (void)didTapNoResultsView:(WPNoResultsView *)noResultsView
+{
+    // Show Jetpack information screen
+    WPWebViewController *webViewController = [[WPWebViewController alloc] init];
+    [webViewController setUrl:[NSURL URLWithString:NotificationsJetpackInformationURL]];
+    [self.navigationController pushViewController:webViewController animated:YES];
+}
+
+- (BOOL)showJetpackConnectMessage {
+    return [WPAccount defaultWordPressComAccount] == nil;
 }
 
 - (void)dealloc {
@@ -53,18 +94,17 @@ NSString * const NotificationsLastSyncDateKey = @"NotificationsLastSyncDate";
 
 - (void)viewDidLoad
 {
-    WPFLogMethod();
+    DDLogMethod();
     [super viewDidLoad];
     
     [WPStyleGuide configureColorsForView:self.view andTableView:self.tableView];
     
-    self.panelNavigationController.delegate = self;
+    self.tableView.separatorInset = UIEdgeInsetsMake(0, 25, 0, 0);
     self.infiniteScrollEnabled = YES;
-    [self.tableView registerClass:[NewNotificationsTableViewCell class] forCellReuseIdentifier:NotificationsTableViewNoteCellIdentifier];
 }
 
 - (void)viewWillAppear:(BOOL)animated {
-    WPFLogMethod();
+    DDLogMethod();
     [super viewWillAppear:animated];
 }
 
@@ -77,10 +117,13 @@ NSString * const NotificationsLastSyncDateKey = @"NotificationsLastSyncDate";
     }
     
     _isPushingViewController = NO;
-    // If table is at the top, simulate a pull to refresh
-    BOOL simulatePullToRefresh = (self.tableView.contentOffset.y == 0);
-    [self syncItemsWithUserInteraction:simulatePullToRefresh];
-    [self refreshUnreadNotes];
+    
+    // If table is at the top (i.e. freshly opened), do some extra work
+    if (self.tableView.contentOffset.y == 0) {
+        [self pruneOldNotes];
+    }
+
+    [self clearNotificationsBadgeAndSyncItems];
 }
 
 - (void)viewDidDisappear:(BOOL)animated {
@@ -89,10 +132,6 @@ NSString * const NotificationsLastSyncDateKey = @"NotificationsLastSyncDate";
         [self pruneOldNotes];
 }
 
-- (UIColor *)backgroundColorForRefreshHeaderView
-{
-    return [WPStyleGuide itsEverywhereGrey];
-}
 
 #pragma mark - Custom methods
 
@@ -105,7 +144,7 @@ NSString * const NotificationsLastSyncDateKey = @"NotificationsLastSyncDate";
     NSArray *notes = self.resultsController.fetchedObjects;
     if ([notes count] > 0) {
         Note *note = [notes objectAtIndex:0];
-        [self.user updateNoteLastSeenTime:note.timestamp success:nil failure:nil];
+        [[[WPAccount defaultWordPressComAccount] restApi] updateNoteLastSeenTime:note.timestamp success:nil failure:nil];
     }
 
     NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
@@ -115,7 +154,7 @@ NSString * const NotificationsLastSyncDateKey = @"NotificationsLastSyncDate";
 
 - (void)pruneOldNotes {
     NSNumber *pruneBefore;
-    Note *lastVisibleNote = [[[self.tableView visibleCells] lastObject] note];
+    Note *lastVisibleNote = [[[self.tableView visibleCells] lastObject] contentProvider];
     if (lastVisibleNote) {
         pruneBefore = lastVisibleNote.timestamp;
     }
@@ -136,20 +175,19 @@ NSString * const NotificationsLastSyncDateKey = @"NotificationsLastSyncDate";
 
 #pragma mark - Public methods
 
-- (void)refreshFromPushNotification {
-    if (IS_IPHONE)
-        [self.panelNavigationController popToRootViewControllerAnimated:YES];
-    [self.tableView scrollRectToVisible:CGRectMake(0, 0, 1, 1) animated:YES];
+- (void)clearNotificationsBadgeAndSyncItems {
+    [UIApplication sharedApplication].applicationIconBadgeNumber = 0;
     if (![self isSyncing]) {
-        [self syncItemsWithUserInteraction:NO];
+        [self syncItems];
     }
+    [self refreshUnreadNotes];
 }
 
 #pragma mark - UITableViewDelegate
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
     Note *note = [self.resultsController objectAtIndexPath:indexPath];
-    return [NewNotificationsTableViewCell rowHeightForNotification:note andMaxWidth:CGRectGetWidth(tableView.bounds)];
+    return [NewNotificationsTableViewCell rowHeightForContentProvider:note andWidth:WPTableViewFixedWidth];
 }
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
@@ -161,14 +199,11 @@ NSString * const NotificationsLastSyncDateKey = @"NotificationsLastSyncDate";
 
         _isPushingViewController = YES;
         if ([note isComment]) {
-            NotificationsCommentDetailViewController *detailViewController = [[NotificationsCommentDetailViewController alloc] initWithNibName:@"NotificationsCommentDetailViewController" bundle:nil];
-            detailViewController.note = note;
-            detailViewController.user = self.user;
-            [self.panelNavigationController pushViewController:detailViewController fromViewController:self animated:YES];
+            NotificationsCommentDetailViewController *detailViewController = [[NotificationsCommentDetailViewController alloc] initWithNote:note];
+            [self.navigationController pushViewController:detailViewController animated:YES];
         } else {
-            NotificationsFollowDetailViewController *detailViewController = [[NotificationsFollowDetailViewController alloc] initWithNibName:@"NotificationsFollowDetailViewController" bundle:nil];
-            detailViewController.note = note;
-            [self.panelNavigationController pushViewController:detailViewController fromViewController:self animated:YES];
+            NotificationsFollowDetailViewController *detailViewController = [[NotificationsFollowDetailViewController alloc] initWithNote:note];
+            [self.navigationController pushViewController:detailViewController animated:YES];
         }
     } else {
         [self.tableView deselectRowAtIndexPath:indexPath animated:YES];
@@ -181,19 +216,17 @@ NSString * const NotificationsLastSyncDateKey = @"NotificationsLastSyncDate";
             [self.tableView selectRowAtIndexPath:indexPath animated:NO scrollPosition:UITableViewScrollPositionNone];
         }
         
-        [self.user markNoteAsRead:note.noteID success:^(AFHTTPRequestOperation *operation, id responseObject) {
-        } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+        [note markAsReadWithSuccess:nil failure:^(NSError *error){
             note.unread = [NSNumber numberWithInt:1];
         }];
     }
 }
 
 - (BOOL)noteHasDetailView:(Note *)note {
-    
     if ([note isComment])
         return YES;
     
-    NSDictionary *noteBody = [[note getNoteData] objectForKey:@"body"];
+    NSDictionary *noteBody = [[note noteData] objectForKey:@"body"];
     if (noteBody) {
         NSString *noteTemplate = [noteBody objectForKey:@"template"];
         if ([noteTemplate isEqualToString:@"single-line-list"] || [noteTemplate isEqualToString:@"multi-line-list"])
@@ -216,46 +249,49 @@ NSString * const NotificationsLastSyncDateKey = @"NotificationsLastSyncDate";
 - (NSFetchRequest *)fetchRequest {
     NSFetchRequest *fetchRequest = [NSFetchRequest fetchRequestWithEntityName:@"Note"];
     NSSortDescriptor *dateSortDescriptor = [NSSortDescriptor sortDescriptorWithKey:@"timestamp" ascending:NO];
-    fetchRequest.sortDescriptors = @[ dateSortDescriptor ];
+    fetchRequest.sortDescriptors = @[dateSortDescriptor];
+    fetchRequest.fetchBatchSize = 10;
     return fetchRequest;
 }
 
-- (UITableViewCell *)newCell {
-    NewNotificationsTableViewCell *cell = [self.tableView dequeueReusableCellWithIdentifier:NotificationsTableViewNoteCellIdentifier];
-
-    if (cell == nil) {
-        cell = [[NewNotificationsTableViewCell alloc] initWithStyle:UITableViewCellStyleSubtitle reuseIdentifier:NotificationsTableViewNoteCellIdentifier];
-    }
-    
-    return cell;
+- (Class)cellClass {
+    return [NewNotificationsTableViewCell class];
 }
 
 - (void)configureCell:(NewNotificationsTableViewCell *)cell atIndexPath:(NSIndexPath *)indexPath {
-    cell.note = [self.resultsController objectAtIndexPath:indexPath];
+    cell.contentProvider = [self.resultsController objectAtIndexPath:indexPath];
+    
+    Note *note = [self.resultsController objectAtIndexPath:indexPath];
+    BOOL hasDetailsView = [self noteHasDetailView:note];
+    if (!hasDetailsView) {
+        cell.accessoryType = UITableViewCellAccessoryNone;
+    }
 }
 
-- (void)syncItemsWithUserInteraction:(BOOL)userInteraction success:(void (^)())success failure:(void (^)(NSError *error))failure {
+- (BOOL)userCanRefresh {
+    return [WPAccount defaultWordPressComAccount] != nil;
+}
+
+- (void)syncItemsViaUserInteraction:(BOOL)userInteraction success:(void (^)())success failure:(void (^)(NSError *error))failure {
     if (userInteraction) {
         [self pruneOldNotes];
     }
+    
     NSNumber *timestamp;
     NSArray *notes = [self.resultsController fetchedObjects];
-    if ([notes count] > 0) {
+    if (userInteraction == NO && [notes count] > 0) {
         Note *note = [notes objectAtIndex:0];
         timestamp = note.timestamp;
     } else {
         timestamp = nil;
     }
-    [self.user getNotificationsSince:timestamp success:^(AFHTTPRequestOperation *operation, id responseObject) {
+    
+    [Note fetchNotificationsSince:timestamp success:^{
         [self updateSyncDate];
         if (success) {
             success();
         }
-    } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
-        if (failure) {
-            failure(error);
-        }
-    }];
+    } failure:failure];
 }
 
 - (BOOL)hasMoreContent {
@@ -267,6 +303,18 @@ NSString * const NotificationsLastSyncDateKey = @"NotificationsLastSyncDate";
     return _retrievingNotifications;
 }
 
+- (void)setSyncing:(BOOL)value {
+    _retrievingNotifications = value;
+}
+
+- (void)syncItems
+{
+    // Check to see if there is a WordPress.com account before attempting to fetch notifications
+    if ([WPAccount defaultWordPressComAccount]) {
+        [super syncItems];
+    }
+}
+
 - (void)loadMoreWithSuccess:(void (^)())success failure:(void (^)(NSError *))failure {
     Note *lastNote = [self.resultsController.fetchedObjects lastObject];
     if (lastNote == nil) {
@@ -275,15 +323,13 @@ NSString * const NotificationsLastSyncDateKey = @"NotificationsLastSyncDate";
     
     _retrievingNotifications = YES;
     
-    [self.user getNotificationsBefore:lastNote.timestamp success:^(AFHTTPRequestOperation *operation, id responseObject) {
+    [Note fetchNotificationsBefore:lastNote.timestamp success:^{
         _retrievingNotifications = NO;
-                
         if (success) {
             success();
         }
-    } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+    } failure:^(NSError *error) {
         _retrievingNotifications = NO;
-        
         if (failure) {
             failure(error);
         }

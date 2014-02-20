@@ -7,7 +7,6 @@
 #import "WPChromelessWebViewController.h"
 #import "WordPressAppDelegate.h"
 #import "WPWebViewController.h"
-#import "PanelNavigationConstants.h"
 
 @interface WPChromelessWebViewController ()
 @property (nonatomic, strong) WPWebView *webView;
@@ -43,15 +42,6 @@
         [webView loadPath:self.path];
     }
 }
-
-
-- (void)viewDidUnload {
-    [super viewDidUnload];
-    
-    webView.delegate = nil;
-    self.webView = nil;
-}
-
 
 #pragma mark -
 #pragma mark Instance Methods
@@ -94,7 +84,7 @@
         // If so check to see if its displaying the same url that was just clicked. 
         // If so just pop ourself off the stack.
         UIViewController *prevController = nil;
-        NSArray *controllers = [self.panelNavigationController viewControllers];
+        NSArray *controllers = [self.navigationController viewControllers];
         NSInteger len = [controllers count]; 
         if(len > 0) {
             for (NSInteger i = len; i > 0; i--) {
@@ -119,7 +109,7 @@
                 if([currURL.path isEqualToString:reqURL.path]) {
                     if ([currURL.query isEqualToString:reqURL.query]) {
                         // if the detail controller is ourself disregard the click so we don't spam a series of the same page.
-                        [self.panelNavigationController popToViewController:prevController animated:YES];
+                        [self.navigationController popToViewController:prevController animated:YES];
                         return NO;
                     }
                 }
@@ -131,13 +121,13 @@
         if ([host rangeOfString:@"wordpress.com"].location == NSNotFound) {
             WPWebViewController *webViewController = [[WPWebViewController alloc] init];
             [webViewController setUrl:request.URL];
-            [self.panelNavigationController pushViewController:webViewController animated:YES];
+            [self.navigationController pushViewController:webViewController animated:YES];
             return NO;
         }
         
         WPChromelessWebViewController *controller = [[WPChromelessWebViewController alloc] init];
         [controller loadPath:request.URL.absoluteString];        
-        [self.panelNavigationController pushViewController:controller fromViewController:self animated:YES];
+        [self.navigationController pushViewController:controller animated:YES];
         
         return NO;
     }

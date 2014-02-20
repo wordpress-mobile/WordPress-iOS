@@ -10,30 +10,47 @@
 #import "PostSettingsViewController.h"
 #import "PostMediaViewController.h"
 #import "PostPreviewViewController.h"
+#import "AbstractPost.h"
+#import "IOS7CorrectedTextView.h"
+#import "WPKeyboardToolbarBase.h"
+#import "WPKeyboardToolbarDone.h"
 
-extern NSString *const EditPostViewControllerDidAutosaveNotification;
-extern NSString *const EditPostViewControllerAutosaveDidFailNotification;
+typedef NS_ENUM(NSInteger, EditPostViewControllerAlertTag) {
+    EditPostViewControllerAlertTagNone,
+    EditPostViewControllerAlertTagLinkHelper,
+    EditPostViewControllerAlertTagFailedMedia,
+    EditPostViewControllerAlertTagSwitchBlogs
+};
 
-@interface EditPostViewController ()
+typedef NS_ENUM(NSUInteger, EditPostViewControllerMode) {
+	EditPostViewControllerModeNewPost,
+	EditPostViewControllerModeEditPost
+};
+
+@interface EditPostViewController () <UIActionSheetDelegate, UITextFieldDelegate, UITextViewDelegate, WPKeyboardToolbarDelegate>
+
 @property (nonatomic, strong) PostSettingsViewController *postSettingsViewController;
 @property (nonatomic, strong) PostMediaViewController *postMediaViewController;
 @property (nonatomic, strong) PostPreviewViewController *postPreviewViewController;
 @property (nonatomic, assign) EditPostViewControllerMode editMode;
-@property (nonatomic, strong) AbstractPost *apost;
+@property (nonatomic, strong) AbstractPost *post;
 @property (readonly) BOOL hasChanges;
+@property (nonatomic) BOOL isShowingKeyboard;
+@property (nonatomic) BOOL isExternalKeyboard;
 
-@property (nonatomic, strong) IBOutlet UIButton *hasLocation;
-@property (nonatomic, strong) IBOutlet UIToolbar *toolbar;
-@property (nonatomic, strong) IBOutlet UIBarButtonItem *photoButton;
-@property (nonatomic, strong) IBOutlet UIBarButtonItem *movieButton;
-@property (nonatomic, strong) IBOutlet UIBarButtonItem *settingsButton;
+@property (nonatomic, strong) UIView *tableHeaderViewContentView;
+@property (nonatomic, strong) UITextField *titleTextField;
+@property (nonatomic, strong) UIView *separatorView;
+@property (nonatomic, strong) UIView *cellSeparatorView;
+@property (nonatomic, strong) IOS7CorrectedTextView *textView;
+@property (nonatomic, strong) WPKeyboardToolbarBase *editorToolbar;
+@property (nonatomic, strong) WPKeyboardToolbarDone *titleToolbar;
+@property (nonatomic, strong) UILabel *tapToStartWritingLabel;
+@property (nonatomic, strong) UIActionSheet *currentActionSheet;
+@property (nonatomic, strong) UIAlertView *failedMediaAlertView;
 
-- (BOOL)autosaveRemoteWithSuccess:(void (^)())success failure:(void (^)(NSError *error))failure;
-- (void)refreshButtons;
-- (void)refreshTags;
-- (IBAction)switchToEdit;
-- (IBAction)switchToSettings;
-- (IBAction)switchToMedia;
-- (IBAction)switchToPreview;
-- (CGRect)normalTextFrame;
+@property (nonatomic, strong) NSString *statsPrefix;
+
+- (void)didSaveNewPost;
+
 @end

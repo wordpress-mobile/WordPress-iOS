@@ -1,144 +1,749 @@
-#import <UIDeviceIdentifier/UIDeviceHardware.h>
-#import <WordPressApi/WordPressApi.h>
-#import <Crashlytics/Crashlytics.h>
-#import <GooglePlus/GooglePlus.h>
+/*
+ * WordPressAppDelegate.m
+ *
+ * Copyright (c) 2013 WordPress. All rights reserved.
+ *
+ * Licensed under GNU General Public License 2.0.
+ * Some rights reserved. See license.txt
+ */
 
-#import "WordPressAppDelegate.h"
-#import "Reachability.h"
-#import "NSString+Helpers.h"
-#import "CPopoverManager.h"
-#import "BetaUIWindow.h"
-#import "MigrateBlogsFromFiles.h"
-#import "Blog.h"
-#import "Media.h"
-#import "CameraPlusPickerManager.h"
-#import "PanelNavigationController.h"
-#import "MP6SidebarViewController.h"
-#import "UIDevice+WordPressIdentifier.h"
-#import "WordPressComApi.h"
-#import "PostsViewController.h"
-#import "CommentsViewController.h"
-#import "StatsWebViewController.h"
-#import "SoundUtil.h"
-#import "WordPressComApiCredentials.h"
-#import "PocketAPI.h"
-#import "WPMobileStats.h"
-#import "WPComLanguages.h"
-#import "DDLog.h"
-#import "DDTTYLogger.h"
-#import "DDASLLogger.h"
-#import "WPAccount.h"
-#import "Note.h"
-#import "UIColor+Helpers.h"
-#import <Security/Security.h>
-#import "SupportViewController.h"
-#import <CrashlyticsLumberjack/CrashlyticsLogger.h>
+#import <AFNetworking/AFNetworking.h>
 #import <CoreTelephony/CTTelephonyNetworkInfo.h>
 #import <CoreTelephony/CTCarrier.h>
+#import <Crashlytics/Crashlytics.h>
+#import <CrashlyticsLumberjack/CrashlyticsLogger.h>
+#import <DDFileLogger.h>
+#import <GooglePlus/GooglePlus.h>
+#import <HockeySDK/HockeySDK.h>
+#import <UIDeviceIdentifier/UIDeviceHardware.h>
 
-@interface WordPressAppDelegate (Private) <CrashlyticsDelegate>
+#import "WordPressAppDelegate.h"
+#import "CameraPlusPickerManager.h"
+#import "ContextManager.h"
+#import "Media.h"
+#import "NotificationsManager.h"
+#import "NSString+Helpers.h"
+#import "PocketAPI.h"
+#import "Post.h"
+#import "Comment.h"
+#import "Reachability.h"
+#import "ReaderPost.h"
+#import "UIDevice+WordPressIdentifier.h"
+#import "WordPressComApi.h"
+#import "WordPressComApiCredentials.h"
+#import "WPAccount.h"
 
-- (void)setAppBadge;
-- (void)checkIfStatsShouldRun;
-- (void)runStats;
-- (void)cleanUnusedMediaFileFromTmpDir;
-- (void)customizeAppearance;
-- (void)toggleExtraDebuggingIfNeeded;
-- (void)handleLogoutOrBlogsChangedNotification:(NSNotification *)notification;
+#import "BlogListViewController.h"
+#import "BlogDetailsViewController.h"
+#import "PostsViewController.h"
+#import "EditPostViewController.h"
+#import "LoginViewController.h"
+#import "NotificationsViewController.h"
+#import "ReaderPostsViewController.h"
+#import "ReaderPostDetailViewController.h"
+#import "SupportViewController.h"
+#import "Constants.h"
+
+#if DEBUG
+#import "DDTTYLogger.h"
+#import "DDASLLogger.h"
+#endif
+
+int ddLogLevel = LOG_LEVEL_INFO;
+static NSInteger const UpdateCheckAlertViewTag = 102;
+static NSString * const WPTabBarRestorationID = @"WPTabBarID";
+static NSString * const WPBlogListNavigationRestorationID = @"WPBlogListNavigationID";
+static NSString * const WPReaderNavigationRestorationID = @"WPReaderNavigationID";
+static NSString * const WPNotificationsNavigationRestorationID = @"WPNotificationsNavigationID";
+static NSInteger const IndexForMeTab = 2;
+static NSInteger const NotificationNewComment = 1001;
+static NSInteger const NotificationNewSocial = 1002;
+static NSString *const CameraPlusImagesNotification = @"CameraPlusImagesNotification";
+
+@interface WordPressAppDelegate () <UITabBarControllerDelegate, CrashlyticsDelegate, UIAlertViewDelegate, BITHockeyManagerDelegate>
+
+@property (nonatomic, assign) BOOL listeningForBlogChanges;
+@property (nonatomic, strong) NotificationsViewController *notificationsViewController;
+@property (nonatomic, assign) UIBackgroundTaskIdentifier bgTask;
+@property (strong, nonatomic) DDFileLogger *fileLogger;
 
 @end
 
-int ddLogLevel = LOG_LEVEL_INFO;
-
-@implementation WordPressAppDelegate {
-    BOOL _listeningForBlogChanges;
-
-    // We have this so we can make sure not to send two Application Opened related events. This comes
-    // into play when we receive a push notification and the user opens the app in response to that. We
-    // don't want to double count the events in Mixpanel so we use this to ensure it doesn't happen.
-    BOOL _hasRecordedApplicationOpenedEvent;
-}
-
-@synthesize window, currentBlog, postID;
-@synthesize navigationController, alertRunning, isWPcomAuthenticated;
-@synthesize isUploadingPost;
-@synthesize connectionAvailable, wpcomAvailable, currentBlogAvailable, wpcomReachability, internetReachability, currentBlogReachability;
-@synthesize panelNavigationController;
-
-#pragma mark -
-#pragma mark Class Methods
+@implementation WordPressAppDelegate
 
 + (WordPressAppDelegate *)sharedWordPressApplicationDelegate {
     return (WordPressAppDelegate *)[[UIApplication sharedApplication] delegate];
 }
 
-+ (void)wipeAllKeychainItems
-{
-    NSArray *secItemClasses = @[(__bridge id)kSecClassGenericPassword,
-                                (__bridge id)kSecClassInternetPassword,
-                                (__bridge id)kSecClassCertificate,
-                                (__bridge id)kSecClassKey,
-                                (__bridge id)kSecClassIdentity];
-    for (id secItemClass in secItemClasses) {
-        NSDictionary *spec = @{(__bridge id)kSecClass : secItemClass};
-        SecItemDelete((__bridge CFDictionaryRef)spec);
-    }
+- (void)dealloc {
+    [[NSNotificationCenter defaultCenter] removeObserver:self];
 }
 
-+ (void)fixKeychainAccess
-{
-	NSDictionary *query = @{
-                            (__bridge id)kSecClass: (__bridge id)kSecClassGenericPassword,
-                            (__bridge id)kSecAttrAccessible: (__bridge id)kSecAttrAccessibleWhenUnlocked,
-                            (__bridge id)kSecReturnAttributes: @YES,
-                            (__bridge id)kSecMatchLimit: (__bridge id)kSecMatchLimitAll
-                            };
 
-    CFTypeRef result = NULL;
-	OSStatus status = SecItemCopyMatching((__bridge CFDictionaryRef)query, &result);
-    if (status != errSecSuccess) {
-        return;
+#pragma mark - UIApplicationDelegate
+
+- (BOOL)application:(UIApplication *)application willFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
+    [WordPressAppDelegate fixKeychainAccess];
+
+    // Crash reporting, logging, debugging
+    [self configureLogging];
+    [self configureHockeySDK];
+    [self configureCrashlytics];
+    [self printDebugLaunchInfoWithLaunchOptions:launchOptions];
+    [self toggleExtraDebuggingIfNeeded];
+    [self removeCredentialsForDebug];
+
+    // Stats and feedback
+    [WPMobileStats initializeStats];
+    [[GPPSignIn sharedInstance] setClientID:[WordPressComApiCredentials googlePlusClientId]];
+    [self checkIfStatsShouldSendAndUpdateCheck];
+    [SupportViewController checkIfFeedbackShouldBeEnabled];
+    
+    // Networking setup
+    [[AFNetworkActivityIndicatorManager sharedManager] setEnabled:YES];
+    [self setupReachability];
+    [self setupUserAgent];
+    [self checkWPcomAuthentication];
+    [self setupSingleSignOn];
+
+    [self customizeAppearance];
+
+    // Push notifications
+    [NotificationsManager registerForPushNotifications];
+
+    // Deferred tasks to speed up app launch
+    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_BACKGROUND, 0), ^{
+        [self changeCurrentDirectory];
+        [[PocketAPI sharedAPI] setConsumerKey:[WordPressComApiCredentials pocketConsumerKey]];
+        [self cleanUnusedMediaFileFromTmpDir];
+    });
+    
+    CGRect bounds = [[UIScreen mainScreen] bounds];
+    [self.window setFrame:bounds];
+    [self.window setBounds:bounds]; // for good measure.
+    self.window.backgroundColor = [UIColor blackColor];
+    self.window.rootViewController = self.tabBarController;
+    
+    return YES;
+}
+
+- (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
+    DDLogVerbose(@"didFinishLaunchingWithOptions state: %d", application.applicationState);
+    
+    // Launched by tapping a notification
+    if (application.applicationState == UIApplicationStateActive) {
+        [NotificationsManager handleNotificationForApplicationLaunch:launchOptions];
     }
-    DDLogVerbose(@"Fixing keychain items with wrong access requirements");
-    for (NSDictionary *item in (__bridge_transfer NSArray *)result) {
-        NSDictionary *itemQuery = @{
-                                    (__bridge id)kSecClass: (__bridge id)kSecClassGenericPassword,
-                                    (__bridge id)kSecAttrAccessible: (__bridge id)kSecAttrAccessibleWhenUnlocked,
-                                    (__bridge id)kSecAttrService: item[(__bridge id)kSecAttrService],
-                                    (__bridge id)kSecAttrAccount: item[(__bridge id)kSecAttrAccount],
-                                    (__bridge id)kSecReturnAttributes: @YES,
-                                    (__bridge id)kSecReturnData: @YES,
-                                    };
 
-        CFTypeRef itemResult = NULL;
-        status = SecItemCopyMatching((__bridge CFDictionaryRef)itemQuery, &itemResult);
-        if (status == errSecSuccess) {
-            NSDictionary *itemDictionary = (__bridge NSDictionary *)itemResult;
-            NSDictionary *updateQuery = @{
-                                        (__bridge id)kSecClass: (__bridge id)kSecClassGenericPassword,
-                                        (__bridge id)kSecAttrAccessible: (__bridge id)kSecAttrAccessibleWhenUnlocked,
-                                        (__bridge id)kSecAttrService: item[(__bridge id)kSecAttrService],
-                                        (__bridge id)kSecAttrAccount: item[(__bridge id)kSecAttrAccount],
-                                        };
-            NSDictionary *updatedAttributes = @{
-                                                (__bridge id)kSecValueData: itemDictionary[(__bridge id)kSecValueData],
-                                                (__bridge id)kSecAttrAccessible: (__bridge id)kSecAttrAccessibleAfterFirstUnlock,
-                                                };
-            status = SecItemUpdate((__bridge CFDictionaryRef)updateQuery, (__bridge CFDictionaryRef)updatedAttributes);
-            if (status == errSecSuccess) {
-                DDLogInfo(@"Migrated keychain item %@", item);
-            } else {
-                DDLogError(@"Error migrating keychain item: %d", status);
+    [self.window makeKeyAndVisible];
+    
+    [self showWelcomeScreenIfNeededAnimated:NO];
+
+    return YES;
+}
+
+- (BOOL)application:(UIApplication *)application openURL:(NSURL *)url sourceApplication:(NSString *)sourceApplication annotation:(id)annotation {
+    BOOL returnValue = NO;
+    
+    if ([[BITHockeyManager sharedHockeyManager].authenticator handleOpenURL:url
+                                                          sourceApplication:sourceApplication
+                                                                 annotation:annotation]) {
+        returnValue = YES;
+    }
+
+    if ([[GPPShare sharedInstance] handleURL:url sourceApplication:sourceApplication annotation:annotation]) {
+        returnValue = YES;
+    }
+
+    if ([[PocketAPI sharedAPI] handleOpenURL:url]) {
+        returnValue = YES;
+    }
+
+    if ([[CameraPlusPickerManager sharedManager] shouldHandleURLAsCameraPlusPickerCallback:url]) {
+        /* Note that your application has been in the background and may have been terminated.
+         * The only CameraPlusPickerManager state that is restored is the pickerMode, which is
+         * restored to indicate the mode used to pick images.
+         */
+
+        /* Handle the callback and notify the delegate. */
+        [[CameraPlusPickerManager sharedManager] handleCameraPlusPickerCallback:url usingBlock:^(CameraPlusPickedImages *images) {
+            DDLogInfo(@"Camera+ returned %@", [images images]);
+            UIImage *image = [images image];
+            UIImageWriteToSavedPhotosAlbum(image, nil, nil, nil);
+            NSDictionary *userInfo = [NSDictionary dictionaryWithObject:image forKey:@"image"];
+            [[NSNotificationCenter defaultCenter] postNotificationName:CameraPlusImagesNotification object:nil userInfo:userInfo];
+        } cancelBlock:^(void) {
+            DDLogInfo(@"Camera+ picker canceled");
+        }];
+        returnValue = YES;
+    }
+
+    if ([WordPressApi handleOpenURL:url]) {
+        returnValue = YES;
+    }
+
+    if (url && [url isKindOfClass:[NSURL class]] && [[url absoluteString] hasPrefix:@"wordpress://"]) {
+        NSString *URLString = [url absoluteString];
+        DDLogInfo(@"Application launched with URL: %@", URLString);
+
+        if ([URLString rangeOfString:@"wpcom_signup_completed"].length) {
+            NSDictionary *params = [[url query] dictionaryFromQueryString];
+            DDLogInfo(@"%@", params);
+            [[NSNotificationCenter defaultCenter] postNotificationName:@"wpcomSignupNotification" object:nil userInfo:params];
+            returnValue = YES;
+        } else if ([URLString rangeOfString:@"viewpost"].length) {
+            NSDictionary *params = [[url query] dictionaryFromQueryString];
+            
+            if (params.count) {
+                NSUInteger *blogId = [[params valueForKey:@"blogId"] integerValue];
+                NSUInteger *postId = [[params valueForKey:@"postId"] integerValue];
+                
+                [WPMobileStats flagSuperProperty:StatsPropertyReaderOpenedFromExternalURL];
+                [WPMobileStats incrementSuperProperty:StatsPropertyReaderOpenedFromExternalURLCount];
+                [WPMobileStats trackEventForWPCom:StatsEventReaderOpenedFromExternalSource];
+                
+                [self.readerPostsViewController.navigationController popToRootViewControllerAnimated:NO];
+                NSInteger readerTabIndex = [[self.tabBarController viewControllers] indexOfObject:self.readerPostsViewController.navigationController];
+                [self.tabBarController setSelectedIndex:readerTabIndex];
+                [self.readerPostsViewController openPost:postId onBlog:blogId];
+                
+                returnValue = YES;
             }
-        } else {
-            DDLogError(@"Error migrating keychain item: %d", status);
         }
     }
-    NSLog(@"end fixing");
+
+    return returnValue;
 }
 
-#pragma mark -
-#pragma mark UIApplicationDelegate Methods
+- (void)applicationWillTerminate:(UIApplication *)application {
+    DDLogInfo(@"%@ %@", self, NSStringFromSelector(_cmd));
+    
+    [WPMobileStats endSession];
+}
+
+- (void)applicationDidEnterBackground:(UIApplication *)application {
+    DDLogInfo(@"%@ %@", self, NSStringFromSelector(_cmd));
+
+    [WPMobileStats trackEventForWPComWithSavedProperties:StatsEventAppClosed];
+    [WPMobileStats pauseSession];
+    
+    // Let the app finish any uploads that are in progress
+    UIApplication *app = [UIApplication sharedApplication];
+    if (_bgTask != UIBackgroundTaskInvalid) {
+        [app endBackgroundTask:_bgTask];
+        _bgTask = UIBackgroundTaskInvalid;
+    }
+    
+    _bgTask = [app beginBackgroundTaskWithExpirationHandler:^{
+        // Synchronize the cleanup call on the main thread in case
+        // the task actually finishes at around the same time.
+        dispatch_async(dispatch_get_main_queue(), ^{
+            if (_bgTask != UIBackgroundTaskInvalid)
+            {
+                [app endBackgroundTask:_bgTask];
+                _bgTask = UIBackgroundTaskInvalid;
+            }
+        });
+    }];
+}
+
+- (void)applicationWillEnterForeground:(UIApplication *)application {
+    DDLogInfo(@"%@ %@", self, NSStringFromSelector(_cmd));
+    [WPMobileStats resumeSession];
+}
+
+- (void)applicationWillResignActive:(UIApplication *)application {
+    DDLogInfo(@"%@ %@", self, NSStringFromSelector(_cmd));
+}
+
+- (void)applicationDidBecomeActive:(UIApplication *)application {
+    DDLogInfo(@"%@ %@", self, NSStringFromSelector(_cmd));
+    
+    [WPMobileStats recordAppOpenedForEvent:StatsEventAppOpened];
+    [self clearBadgeAndSyncItemsIfNotificationsScreenActive];
+}
+
+- (BOOL)application:(UIApplication *)application shouldSaveApplicationState:(NSCoder *)coder {
+    return YES;
+}
+
+- (BOOL)application:(UIApplication *)application shouldRestoreApplicationState:(NSCoder *)coder {
+    return YES;
+}
+
+
+#pragma mark - Push Notification delegate
+
+- (void)application:(UIApplication *)application didRegisterForRemoteNotificationsWithDeviceToken:(NSData *)deviceToken {
+	[NotificationsManager registerDeviceToken:deviceToken];
+}
+
+- (void)application:(UIApplication *)application didFailToRegisterForRemoteNotificationsWithError:(NSError *)error {
+	[NotificationsManager registrationDidFail:error];
+}
+
+- (void)application:(UIApplication *)application didReceiveRemoteNotification:(NSDictionary *)userInfo {
+    DDLogMethod();
+    
+    [NotificationsManager handleNotification:userInfo forState:application.applicationState completionHandler:nil];
+}
+
+- (void)application:(UIApplication *)application didReceiveRemoteNotification:(NSDictionary *)userInfo fetchCompletionHandler:(void (^)(UIBackgroundFetchResult))completionHandler {
+    DDLogMethod();
+    
+    [NotificationsManager handleNotification:userInfo forState:[UIApplication sharedApplication].applicationState completionHandler:completionHandler];
+}
+
+#pragma mark - Custom methods
+
+- (void)clearBadgeAndSyncItemsIfNotificationsScreenActive {
+    NSInteger notificationsTabIndex = [[self.tabBarController viewControllers] indexOfObject:self.notificationsViewController.navigationController];
+    if ([self.tabBarController selectedIndex] == notificationsTabIndex) {
+       [self.notificationsViewController clearNotificationsBadgeAndSyncItems];
+    }
+}
+
+- (void)showWelcomeScreenIfNeededAnimated:(BOOL)animated {
+    if ([self noBlogsAndNoWordPressDotComAccount]) {
+        [WordPressAppDelegate wipeAllKeychainItems];
+
+        UIViewController *presenter = self.window.rootViewController;
+        if (presenter.presentedViewController) {
+            [presenter dismissViewControllerAnimated:NO completion:nil];
+        }
+
+        [self showWelcomeScreenAnimated:animated thenEditor:NO];
+    }
+}
+
+- (void)showWelcomeScreenAnimated:(BOOL)animated thenEditor:(BOOL)thenEditor {
+    LoginViewController *loginViewController = [[LoginViewController alloc] init];
+    if (thenEditor) {
+        loginViewController.dismissBlock = ^{
+            [self.window.rootViewController dismissViewControllerAnimated:YES completion:nil];
+        };
+        loginViewController.showEditorAfterAddingSites = YES;
+    }
+    
+    UINavigationController *navigationController = [[UINavigationController alloc] initWithRootViewController:loginViewController];
+    navigationController.navigationBar.translucent = NO;
+
+    [self.window.rootViewController presentViewController:navigationController animated:animated completion:nil];
+}
+
+- (BOOL)noBlogsAndNoWordPressDotComAccount {
+    NSInteger blogCount = [Blog countSelfHostedWithContext:[[ContextManager sharedInstance] mainContext]];
+    return blogCount == 0 && ![WPAccount defaultWordPressComAccount];
+}
+
+- (void)customizeAppearance
+{
+    UIColor *defaultTintColor = self.window.tintColor;
+    self.window.tintColor = [WPStyleGuide newKidOnTheBlockBlue];
+    
+    [[UINavigationBar appearance] setBarTintColor:[WPStyleGuide newKidOnTheBlockBlue]];
+    [[UINavigationBar appearanceWhenContainedIn:[MFMailComposeViewController class], nil] setBarTintColor:[UIColor whiteColor]];
+    [[UINavigationBar appearance] setTintColor:[UIColor whiteColor]];
+    [[UINavigationBar appearanceWhenContainedIn:[MFMailComposeViewController class], nil] setTintColor:defaultTintColor];
+    [[UINavigationBar appearance] setTitleTextAttributes:@{NSForegroundColorAttributeName: [UIColor whiteColor], NSFontAttributeName: [UIFont fontWithName:@"OpenSans-Bold" size:16.0]} ];
+    [[UINavigationBar appearance] setBackgroundImage:[UIImage imageNamed:@"transparent-point"] forBarMetrics:UIBarMetricsDefault];
+    [[UINavigationBar appearance] setShadowImage:[UIImage imageNamed:@"transparent-point"]];
+    [[UIBarButtonItem appearance] setTitleTextAttributes:@{NSFontAttributeName: [WPStyleGuide regularTextFont], NSForegroundColorAttributeName: [UIColor whiteColor]} forState:UIControlStateNormal];
+    [[UIBarButtonItem appearance] setTitleTextAttributes:@{NSFontAttributeName: [WPStyleGuide regularTextFont], NSForegroundColorAttributeName: [UIColor lightGrayColor]} forState:UIControlStateDisabled];
+    [[UIToolbar appearance] setBarTintColor:[WPStyleGuide newKidOnTheBlockBlue]];
+    [[UISwitch appearance] setOnTintColor:[WPStyleGuide newKidOnTheBlockBlue]];
+    [[UIApplication sharedApplication] setStatusBarStyle:UIStatusBarStyleLightContent];
+
+    [[UINavigationBar appearanceWhenContainedIn:[UIReferenceLibraryViewController class], nil] setBackgroundImage:nil forBarMetrics:UIBarMetricsDefault];
+    [[UINavigationBar appearanceWhenContainedIn:[UIReferenceLibraryViewController class], nil] setBarTintColor:[WPStyleGuide newKidOnTheBlockBlue]];
+    [[UIToolbar appearanceWhenContainedIn:[UIReferenceLibraryViewController class], nil] setBarTintColor:[UIColor darkGrayColor]];
+}
+
+#pragma mark - Tab bar methods
+
+- (UITabBarController *)tabBarController {
+    if (_tabBarController) {
+        return _tabBarController;
+    }
+    
+    UIOffset tabBarTitleOffset = UIOffsetMake(0, 0);
+    if ( IS_IPHONE ) {
+        tabBarTitleOffset = UIOffsetMake(0, -2);
+    }
+    _tabBarController = [[UITabBarController alloc] init];
+    _tabBarController.delegate = self;
+    _tabBarController.restorationIdentifier = WPTabBarRestorationID;
+    [_tabBarController.tabBar setTranslucent:NO];
+
+
+    // Create a background
+    // (not strictly needed when white, but left here for possible customization)
+    UIColor *backgroundColor = [UIColor whiteColor];
+    CGRect rect = CGRectMake(0.0f, 0.0f, 1.0f, 1.0f);
+    UIGraphicsBeginImageContext(rect.size);
+    CGContextRef context = UIGraphicsGetCurrentContext();
+    CGContextSetFillColorWithColor(context, [backgroundColor CGColor]);
+    CGContextFillRect(context, rect);
+    UIImage *tabBackgroundImage = UIGraphicsGetImageFromCurrentImageContext();
+    UIGraphicsEndImageContext();
+    _tabBarController.tabBar.backgroundImage = tabBackgroundImage;
+    
+    self.readerPostsViewController = [[ReaderPostsViewController alloc] init];
+    UINavigationController *readerNavigationController = [[UINavigationController alloc] initWithRootViewController:self.readerPostsViewController];
+    readerNavigationController.navigationBar.translucent = NO;
+    readerNavigationController.tabBarItem.image = [UIImage imageNamed:@"icon-tab-reader"];
+    readerNavigationController.restorationIdentifier = WPReaderNavigationRestorationID;
+    self.readerPostsViewController.title = NSLocalizedString(@"Reader", nil);
+    [readerNavigationController.tabBarItem setTitlePositionAdjustment:tabBarTitleOffset];
+    
+    self.notificationsViewController = [[NotificationsViewController alloc] init];
+    UINavigationController *notificationsNavigationController = [[UINavigationController alloc] initWithRootViewController:self.notificationsViewController];
+    notificationsNavigationController.navigationBar.translucent = NO;
+    notificationsNavigationController.tabBarItem.image = [UIImage imageNamed:@"icon-tab-notifications"];
+    notificationsNavigationController.restorationIdentifier = WPNotificationsNavigationRestorationID;
+    self.notificationsViewController.title = NSLocalizedString(@"Notifications", @"");
+    [notificationsNavigationController.tabBarItem setTitlePositionAdjustment:tabBarTitleOffset];
+    
+    self.blogListViewController = [[BlogListViewController alloc] init];
+    UINavigationController *blogListNavigationController = [[UINavigationController alloc] initWithRootViewController:self.blogListViewController];
+    blogListNavigationController.navigationBar.translucent = NO;
+    blogListNavigationController.tabBarItem.image = [UIImage imageNamed:@"icon-tab-blogs"];
+    blogListNavigationController.restorationIdentifier = WPBlogListNavigationRestorationID;
+    self.blogListViewController.title = NSLocalizedString(@"Me", @"");
+    [blogListNavigationController.tabBarItem setTitlePositionAdjustment:tabBarTitleOffset];
+  
+    UIImage *image = [UIImage imageNamed:@"icon-tab-newpost"];
+    image = [image imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal];
+    UIViewController *postsViewController = [[UIViewController alloc] init];
+    postsViewController.tabBarItem.image = image;
+    postsViewController.tabBarItem.imageInsets = UIEdgeInsetsMake(5.0, 0, -5, 0);
+    if (IS_IPAD) {
+        postsViewController.tabBarItem.imageInsets = UIEdgeInsetsMake(7.0, 0, -7, 0);
+    }
+
+    /*
+     If title is used, the title will be visible. See #1158
+     If accessibilityLabel/Value are used, the "New Post" text is not read by VoiceOver
+
+     The only apparent solution is to have an actual title, and then hide it for
+     non-VoiceOver users.
+     */
+    postsViewController.title = NSLocalizedString(@"New Post", @"The accessibility value of the post tab.");
+    [postsViewController.tabBarItem setTitleTextAttributes:@{NSForegroundColorAttributeName: [UIColor clearColor]} forState:UIControlStateNormal];
+
+    _tabBarController.viewControllers = @[readerNavigationController, notificationsNavigationController, blogListNavigationController, postsViewController];
+
+    [_tabBarController setSelectedViewController:readerNavigationController];
+    
+    return _tabBarController;
+}
+
+- (void)showNotificationsTab {
+    NSInteger notificationsTabIndex = [[self.tabBarController viewControllers] indexOfObject:self.notificationsViewController.navigationController];
+    [self.tabBarController setSelectedIndex:notificationsTabIndex];
+}
+
+- (void)showReaderTab {
+    NSInteger readerTabIndex = [[self.tabBarController viewControllers] indexOfObject:self.readerPostsViewController.navigationController];
+    [self.tabBarController setSelectedIndex:readerTabIndex];
+}
+
+- (void)showBlogListTab {
+    NSInteger blogListTabIndex = [[self.tabBarController viewControllers] indexOfObject:self.blogListViewController.navigationController];
+    [self.tabBarController setSelectedIndex:blogListTabIndex];
+}
+
+- (void)showMeTab {
+    [self.tabBarController setSelectedIndex:IndexForMeTab];
+}
+
+- (void)showPostTab {
+    UIViewController *presenter = self.window.rootViewController;
+    if (presenter.presentedViewController) {
+        [presenter dismissViewControllerAnimated:NO completion:nil];
+    }
+    
+    EditPostViewController *editPostViewController = [[EditPostViewController alloc] initWithDraftForLastUsedBlog];
+    editPostViewController.editorOpenedBy = StatsPropertyPostDetailEditorOpenedOpenedByTabBarButton;
+    UINavigationController *navController = [[UINavigationController alloc] initWithRootViewController:editPostViewController];
+    navController.modalPresentationStyle = UIModalPresentationCurrentContext;
+    navController.navigationBar.translucent = NO;
+    [navController setToolbarHidden:NO]; // Make the toolbar visible here to avoid a weird left/right transition when the VC appears.
+    [self.window.rootViewController presentViewController:navController animated:YES completion:nil];
+}
+
+- (void)switchTabToPostsListForPost:(AbstractPost *)post {
+    // Make sure the desired tab is selected.
+    [self showMeTab];
+
+    // Check which VC is showing.
+    UINavigationController *blogListNavController = [self.tabBarController.viewControllers objectAtIndex:IndexForMeTab];
+    UIViewController *topVC = blogListNavController.topViewController;
+    if ([topVC isKindOfClass:[PostsViewController class]]) {
+        Blog *blog = ((PostsViewController *)topVC).blog;
+        if ([post.blog.objectID isEqual:blog.objectID]) {
+            // The desired post view controller is already the top viewController for the tab.
+            // Nothing to see here.  Move along.
+            return;
+        }
+    }
+    
+    // Build and set the navigation heirarchy for the Me tab.
+    BlogListViewController *blogListViewController = [blogListNavController.viewControllers objectAtIndex:0];
+    
+    BlogDetailsViewController *blogDetailsViewController = [[BlogDetailsViewController alloc] init];
+    blogDetailsViewController.blog = post.blog;
+
+    PostsViewController *postsViewController = [[PostsViewController alloc] init];
+    [postsViewController setBlog:post.blog];
+    
+    [blogListNavController setViewControllers:@[blogListViewController, blogDetailsViewController, postsViewController]];
+}
+
+#pragma mark - UITabBarControllerDelegate methods.
+
+- (BOOL)tabBarController:(UITabBarController *)tabBarController shouldSelectViewController:(UIViewController *)viewController {
+    if ([tabBarController.viewControllers indexOfObject:viewController] == 3) {
+        // Ignore taps on the post tab and instead show the modal.
+        if ([Blog countVisibleWithContext:[[ContextManager sharedInstance] mainContext]] == 0) {
+            [WPMobileStats trackEventForWPCom:StatsEventAccountCreationOpenedFromTabBar];
+            [self showWelcomeScreenAnimated:YES thenEditor:YES];
+        } else {
+            [self showPostTab];
+        }
+        return NO;
+    }
+    return YES;
+}
+
+
+#pragma mark - Application directories
+
+- (NSString *)applicationDocumentsDirectory {
+    return [NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES) lastObject];
+}
+
+- (void)changeCurrentDirectory {
+    // Set current directory for WordPress app
+	NSFileManager *fileManager = [NSFileManager defaultManager];
+	NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
+	NSString *currentDirectoryPath = [[paths objectAtIndex:0] stringByAppendingPathComponent:@"wordpress"];
+    
+	BOOL isDir;
+	if (![fileManager fileExistsAtPath:currentDirectoryPath isDirectory:&isDir] || !isDir) {
+		[fileManager createDirectoryAtPath:currentDirectoryPath withIntermediateDirectories:YES attributes:nil error:nil];
+    }
+	[fileManager changeCurrentDirectoryPath:currentDirectoryPath];
+}
+
+
+#pragma mark - Stats and feedback
+
+- (void)checkIfStatsShouldSendAndUpdateCheck {
+    if (NO) { // Switch this to YES to debug stats/update check
+        [self sendStatsAndCheckForAppUpdate];
+        return;
+    }
+	//check if statsDate exists in user defaults, if not, add it and run stats since this is obviously the first time
+	NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
+	//[defaults setObject:nil forKey:@"statsDate"];  // Uncomment this line to force stats.
+	if (![defaults objectForKey:@"statsDate"]){
+		NSDate *theDate = [NSDate date];
+		[defaults setObject:theDate forKey:@"statsDate"];
+		[self sendStatsAndCheckForAppUpdate];
+	} else {
+		//if statsDate existed, check if it's 7 days since last stats run, if it is > 7 days, run stats
+		NSDate *statsDate = [defaults objectForKey:@"statsDate"];
+		NSDate *today = [NSDate date];
+		NSTimeInterval difference = [today timeIntervalSinceDate:statsDate];
+		NSTimeInterval statsInterval = 7 * 24 * 60 * 60; //number of seconds in 30 days
+		if (difference > statsInterval) //if it's been more than 7 days since last stats run
+		{
+            // WARNING: for some reason, if runStats is called in a background thread
+            // NSURLConnection doesn't launch and stats are not sent
+            // Don't change this or be really sure it's working
+			[self sendStatsAndCheckForAppUpdate];
+		}
+	}
+}
+
+- (void)sendStatsAndCheckForAppUpdate {
+	//generate and post the stats data
+	/*
+	 - device_uuid – A unique identifier to the iPhone/iPod that the app is installed on.
+	 - app_version – the version number of the WP iPhone app
+	 - language – language setting for the device. What does that look like? Is it EN or English?
+	 - os_version – the version of the iPhone/iPod OS for the device
+	 - num_blogs – number of blogs configured in the WP iPhone app
+	 - device_model - kind of device on which the WP iPhone app is installed
+	 */
+	NSDictionary *info = [[NSBundle mainBundle] infoDictionary];
+	NSLocale *locale = [NSLocale currentLocale];
+	NSInteger blogCount = [Blog countWithContext:[[ContextManager sharedInstance] mainContext]];
+    NSDictionary *parameters = @{@"device_uuid": [[UIDevice currentDevice] wordpressIdentifier],
+                                 @"app_version": [[info objectForKey:@"CFBundleVersion"] stringByUrlEncoding],
+                                 @"language": [[locale objectForKey: NSLocaleIdentifier] stringByUrlEncoding],
+                                 @"os_version": [[[UIDevice currentDevice] systemVersion] stringByUrlEncoding],
+                                 @"num_blogs": [[NSString stringWithFormat:@"%d", blogCount] stringByUrlEncoding],
+                                 @"device_model": [[UIDeviceHardware platform] stringByUrlEncoding]};
+
+    AFHTTPClient *client = [[AFHTTPClient alloc] initWithBaseURL:[NSURL URLWithString:@"http://api.wordpress.org/iphoneapp/update-check/1.0/"]];
+    client.parameterEncoding = AFFormURLParameterEncoding;
+    [client postPath:@"" parameters:parameters success:^(AFHTTPRequestOperation *operation, NSData *responseObject) {
+        NSString *statsDataString = [[NSString alloc] initWithData:responseObject encoding:NSUTF8StringEncoding];
+        statsDataString = [[statsDataString componentsSeparatedByCharactersInSet:[NSCharacterSet newlineCharacterSet]] objectAtIndex:0];
+        NSString *appversion = [[[NSBundle mainBundle] infoDictionary] objectForKey:@"CFBundleVersion"];
+        if ([statsDataString compare:appversion options:NSNumericSearch] > 0) {
+            DDLogInfo(@"There's a new version: %@", statsDataString);
+            UIAlertView *alert = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"Update Available", @"Popup title to highlight a new version of the app being available.")
+                                                            message:NSLocalizedString(@"A new version of WordPress for iOS is now available", @"Generic popup message to highlight a new version of the app being available.")
+                                                           delegate:self
+                                                  cancelButtonTitle:NSLocalizedString(@"Dismiss", @"Dismiss button label.")
+                                                  otherButtonTitles:NSLocalizedString(@"Update Now", @"Popup 'update' button to highlight a new version of the app being available. The button takes you to the app store on the device, and should be actionable."), nil];
+            alert.tag = UpdateCheckAlertViewTag;
+            [alert show];
+        }
+    } failure:nil];
+	
+	NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
+	NSDate *theDate = [NSDate date];
+	[defaults setObject:theDate forKey:@"statsDate"];
+	[defaults synchronize];
+}
+
+
+#pragma mark - Notifications
+
+- (void)defaultAccountDidChange:(NSNotification *)notification {
+    [Crashlytics setUserName:[[WPAccount defaultWordPressComAccount] username]];
+    [self setCommonCrashlyticsParameters];
+}
+
+
+#pragma mark - Crash reporting
+
+- (void)configureCrashlytics {
+#if DEBUG
+    return;
+#endif
+#ifdef INTERNAL_BUILD
+    return;
+#endif
+    
+    if ([[WordPressComApiCredentials crashlyticsApiKey] length] == 0) {
+        return;
+    }
+    
+    [Crashlytics startWithAPIKey:[WordPressComApiCredentials crashlyticsApiKey]];
+    [[Crashlytics sharedInstance] setDelegate:self];
+    
+    BOOL hasCredentials = ([WPAccount defaultWordPressComAccount] != nil);
+    [self setCommonCrashlyticsParameters];
+    
+    if (hasCredentials && [[WPAccount defaultWordPressComAccount] username] != nil) {
+        [Crashlytics setUserName:[[WPAccount defaultWordPressComAccount] username]];
+    }
+
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(defaultAccountDidChange:) name:WPAccountDefaultWordPressComAccountChangedNotification object:nil];
+}
+
+- (void)crashlytics:(Crashlytics *)crashlytics didDetectCrashDuringPreviousExecution:(id<CLSCrashReport>)crash
+{
+    DDLogMethod();
+    NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
+    NSInteger crashCount = [defaults integerForKey:@"crashCount"];
+    crashCount += 1;
+    [defaults setInteger:crashCount forKey:@"crashCount"];
+    [defaults synchronize];
+    [WPMobileStats trackEventForSelfHostedAndWPCom:@"Crashed" properties:@{@"crash_id": crash.identifier}];
+}
+
+- (void)setCommonCrashlyticsParameters
+{
+    BOOL loggedIn = [WPAccount defaultWordPressComAccount] != nil;
+    [Crashlytics setObjectValue:@(loggedIn) forKey:@"logged_in"];
+    [Crashlytics setObjectValue:@(loggedIn) forKey:@"connected_to_dotcom"];
+    [Crashlytics setObjectValue:@([Blog countWithContext:[[ContextManager sharedInstance] mainContext]]) forKey:@"number_of_blogs"];
+}
+
+- (void)configureHockeySDK {
+#ifndef INTERNAL_BUILD
+    return;
+#endif
+    [[BITHockeyManager sharedHockeyManager] configureWithIdentifier:[WordPressComApiCredentials hockeyappAppId]
+                                                           delegate:self];
+    [[BITHockeyManager sharedHockeyManager].authenticator setIdentificationType:BITAuthenticatorIdentificationTypeDevice];
+    [[BITHockeyManager sharedHockeyManager] startManager];
+    [[BITHockeyManager sharedHockeyManager].authenticator authenticateInstallation];
+}
+
+#pragma mark - BITCrashManagerDelegate
+
+- (NSString *)applicationLogForCrashManager:(BITCrashManager *)crashManager {
+    NSString *description = [self getLogFilesContentWithMaxSize:5000]; // 5000 bytes should be enough!
+    if ([description length] == 0) {
+        return nil;
+    } else {
+        return description;
+    }
+}
+
+#pragma mark - Media cleanup
+
+- (void)cleanUnusedMediaFileFromTmpDir {
+    DDLogInfo(@"%@ %@", self, NSStringFromSelector(_cmd));
+
+    NSManagedObjectContext *context = [[ContextManager sharedInstance] backgroundContext];
+    [context performBlock:^{
+        NSError *error;
+        NSMutableArray *mediaToKeep = [NSMutableArray array];
+        
+        NSFetchRequest *fetchRequest = [[NSFetchRequest alloc] init];
+        [fetchRequest setEntity:[NSEntityDescription entityForName:@"Media" inManagedObjectContext:context]];
+        NSPredicate *predicate = [NSPredicate predicateWithFormat:@"ANY posts.blog != NULL AND remoteStatusNumber <> %@", @(MediaRemoteStatusSync)];
+        [fetchRequest setPredicate:predicate];
+        NSArray *mediaObjectsToKeep = [context executeFetchRequest:fetchRequest error:&error];
+        if (error != nil) {
+            DDLogError(@"Error cleaning up tmp files: %@", [error localizedDescription]);
+        }
+        //get a references to media files linked in a post
+        DDLogInfo(@"%i media items to check for cleanup", [mediaObjectsToKeep count]);
+        for (Media *media in mediaObjectsToKeep) {
+            [mediaToKeep addObject:media.localURL];
+        }
+        
+        //searches for jpg files within the app temp file
+        NSFileManager *fileManager = [NSFileManager defaultManager];
+        NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
+        NSString *documentsDirectory = [paths objectAtIndex:0];
+        NSArray *contentsOfDir = [fileManager contentsOfDirectoryAtPath:documentsDirectory error:NULL];
+        
+        NSError *regexpError = NULL;
+        NSRegularExpression *jpeg = [NSRegularExpression regularExpressionWithPattern:@".jpg$" options:NSRegularExpressionCaseInsensitive error:&regexpError];
+        
+        for (NSString *currentPath in contentsOfDir) {
+            if([jpeg numberOfMatchesInString:currentPath options:0 range:NSMakeRange(0, [currentPath length])] > 0) {
+                NSString *filepath = [documentsDirectory stringByAppendingPathComponent:currentPath];
+                
+                BOOL keep = NO;
+                //if the file is not referenced in any post we can delete it
+                for (NSString *currentMediaToKeepPath in mediaToKeep) {
+                    if([currentMediaToKeepPath isEqualToString:filepath]) {
+                        keep = YES;
+                        break;
+                    }
+                }
+                
+                if(keep == NO) {
+                    [fileManager removeItemAtPath:filepath error:NULL];
+                }
+            }
+        }
+    }];
+}
+
+
+#pragma mark - Networking setup, User agents
 
 - (void)setupUserAgent {
     // Keep a copy of the original userAgent for use with certain webviews in the app.
@@ -148,19 +753,40 @@ int ddLogLevel = LOG_LEVEL_INFO;
     NSString *appVersion = [[[NSBundle mainBundle] infoDictionary] objectForKey:@"CFBundleVersion"];
     [[NSUserDefaults standardUserDefaults] setObject:appVersion forKey:@"version_preference"];
     NSString *appUA = [NSString stringWithFormat:@"wp-iphone/%@ (%@ %@, %@) Mobile",
-                           appVersion,
-                           [[UIDevice currentDevice] systemName],
-                           [[UIDevice currentDevice] systemVersion],
-                           [[UIDevice currentDevice] model]
-                           ];
+                       appVersion,
+                       [[UIDevice currentDevice] systemName],
+                       [[UIDevice currentDevice] systemVersion],
+                       [[UIDevice currentDevice] model]
+                       ];
     NSDictionary *dictionary = [[NSDictionary alloc] initWithObjectsAndKeys: appUA, @"UserAgent", defaultUA, @"DefaultUserAgent", appUA, @"AppUserAgent", nil];
     [[NSUserDefaults standardUserDefaults] registerDefaults:dictionary];
 }
 
-- (void)setupCoreData {
-    NSManagedObjectContext *context = [self managedObjectContext];
-    if (!context) {
-        DDLogError(@"Could not setup Core Data stack");
+- (void)useDefaultUserAgent {
+    NSString *ua = [[NSUserDefaults standardUserDefaults] stringForKey:@"DefaultUserAgent"];
+    NSDictionary *dictionary = [[NSDictionary alloc] initWithObjectsAndKeys:ua, @"UserAgent", nil];
+    // We have to call registerDefaults else the change isn't picked up by UIWebViews.
+    [[NSUserDefaults standardUserDefaults] registerDefaults:dictionary];
+    DDLogVerbose(@"User-Agent set to: %@", ua);
+}
+
+- (void)useAppUserAgent {
+    NSString *ua = [[NSUserDefaults standardUserDefaults] stringForKey:@"AppUserAgent"];
+    NSDictionary *dictionary = [[NSDictionary alloc] initWithObjectsAndKeys:ua, @"UserAgent", nil];
+    // We have to call registerDefaults else the change isn't picked up by UIWebViews.
+    [[NSUserDefaults standardUserDefaults] registerDefaults:dictionary];
+    
+    DDLogVerbose(@"User-Agent set to: %@", ua);
+}
+
+- (NSString *)applicationUserAgent {
+    return [[NSUserDefaults standardUserDefaults] objectForKey:@"UserAgent"];
+}
+
+- (void)setupSingleSignOn {
+    if ([[WPAccount defaultWordPressComAccount] username]) {
+        [[WPComOAuthController sharedController] setWordPressComUsername:[[WPAccount defaultWordPressComAccount] username]];
+        [[WPComOAuthController sharedController] setWordPressComPassword:[[WPAccount defaultWordPressComAccount] password]];
     }
 }
 
@@ -171,7 +797,7 @@ int ddLogLevel = LOG_LEVEL_INFO;
     self.wpcomAvailable = YES;
     // Same for general internet connection
     self.connectionAvailable = YES;
-
+    
     // allocate the internet reachability object
     self.internetReachability = [Reachability reachabilityForInternetConnection];
     
@@ -213,68 +839,118 @@ int ddLogLevel = LOG_LEVEL_INFO;
     };
     self.wpcomReachability.reachableBlock = wpcomReachabilityBlock;
     self.wpcomReachability.unreachableBlock = wpcomReachabilityBlock;
-    
+
     // start the notifier which will cause the reachability object to retain itself!
     [self.wpcomReachability startNotifier];
 #pragma clang diagnostic pop
 }
 
-- (void)setupPocket {
-    [[PocketAPI sharedAPI] setConsumerKey:[WordPressComApiCredentials pocketConsumerKey]];
+// TODO :: Eliminate this check or at least move it to WordPressComApi (or WPAccount)
+- (void)checkWPcomAuthentication {
+    // Temporarily set the is authenticated flag based upon if we have a WP.com OAuth2 token
+    // TODO :: Move this BOOL to a method on the WordPressComApi along with checkWPcomAuthentication
+    BOOL tempIsAuthenticated = [[[WPAccount defaultWordPressComAccount] restApi] authToken].length > 0;
+    self.isWPcomAuthenticated = tempIsAuthenticated;
+    
+	NSString *authURL = @"https://wordpress.com/xmlrpc.php";
+
+    WPAccount *account = [WPAccount defaultWordPressComAccount];
+	if (account) {
+        WPXMLRPCClient *client = [WPXMLRPCClient clientWithXMLRPCEndpoint:[NSURL URLWithString:authURL]];
+        [client setAuthorizationHeaderWithToken:[[[WPAccount defaultWordPressComAccount] restApi] authToken]];
+        [client callMethod:@"wp.getUsersBlogs"
+                parameters:[NSArray arrayWithObjects:account.username, account.password, nil]
+                   success:^(AFHTTPRequestOperation *operation, id responseObject) {
+                       self.isWPcomAuthenticated = YES;
+                       DDLogInfo(@"Logged in to WordPress.com as %@", account.username);
+                   } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+                       if ([error.domain isEqualToString:@"WPXMLRPCFaultError"] ||
+                           ([error.domain isEqualToString:@"XMLRPC"] && error.code == 403)) {
+                           self.isWPcomAuthenticated = NO;
+                           [[[WPAccount defaultWordPressComAccount] restApi] invalidateOAuth2Token];
+                       }
+                       
+                       DDLogError(@"Error authenticating %@ with WordPress.com: %@", account.username, [error description]);
+                   }];
+	} else {
+		self.isWPcomAuthenticated = NO;
+	}
 }
 
-- (void)setupSingleSignOn {
-    if ([[WPAccount defaultWordPressComAccount] username]) {
-        [[WPComOAuthController sharedController] setWordPressComUsername:[[WPAccount defaultWordPressComAccount] username]];
-        [[WPComOAuthController sharedController] setWordPressComPassword:[[WPAccount defaultWordPressComAccount] password]];
+
+#pragma mark - Keychain
+
++ (void)wipeAllKeychainItems
+{
+    NSArray *secItemClasses = @[(__bridge id)kSecClassGenericPassword,
+                                (__bridge id)kSecClassInternetPassword,
+                                (__bridge id)kSecClassCertificate,
+                                (__bridge id)kSecClassKey,
+                                (__bridge id)kSecClassIdentity];
+    for (id secItemClass in secItemClasses) {
+        NSDictionary *spec = @{(__bridge id)kSecClass : secItemClass};
+        SecItemDelete((__bridge CFDictionaryRef)spec);
     }
 }
 
-- (void)configureCrashlytics {
-#if DEBUG
-    return;
-#endif
-
-    if ([[WordPressComApiCredentials crashlyticsApiKey] length] == 0) {
++ (void)fixKeychainAccess
+{
+	NSDictionary *query = @{
+                            (__bridge id)kSecClass: (__bridge id)kSecClassGenericPassword,
+                            (__bridge id)kSecAttrAccessible: (__bridge id)kSecAttrAccessibleWhenUnlocked,
+                            (__bridge id)kSecReturnAttributes: @YES,
+                            (__bridge id)kSecMatchLimit: (__bridge id)kSecMatchLimitAll
+                            };
+    
+    CFTypeRef result = NULL;
+	OSStatus status = SecItemCopyMatching((__bridge CFDictionaryRef)query, &result);
+    if (status != errSecSuccess) {
         return;
     }
-    
-    [Crashlytics startWithAPIKey:[WordPressComApiCredentials crashlyticsApiKey]];
-    [[Crashlytics sharedInstance] setDelegate:self];
-
-    BOOL hasCredentials = [[WordPressComApi sharedApi] hasCredentials];
-    [self setCommonCrashlyticsParameters];
-
-    if (hasCredentials && [[WPAccount defaultWordPressComAccount] username] != nil) {
-        [Crashlytics setUserName:[[WPAccount defaultWordPressComAccount] username]];
+    DDLogVerbose(@"Fixing keychain items with wrong access requirements");
+    for (NSDictionary *item in (__bridge_transfer NSArray *)result) {
+        NSDictionary *itemQuery = @{
+                                    (__bridge id)kSecClass: (__bridge id)kSecClassGenericPassword,
+                                    (__bridge id)kSecAttrAccessible: (__bridge id)kSecAttrAccessibleWhenUnlocked,
+                                    (__bridge id)kSecAttrService: item[(__bridge id)kSecAttrService],
+                                    (__bridge id)kSecAttrAccount: item[(__bridge id)kSecAttrAccount],
+                                    (__bridge id)kSecReturnAttributes: @YES,
+                                    (__bridge id)kSecReturnData: @YES,
+                                    };
+        
+        CFTypeRef itemResult = NULL;
+        status = SecItemCopyMatching((__bridge CFDictionaryRef)itemQuery, &itemResult);
+        if (status == errSecSuccess) {
+            NSDictionary *itemDictionary = (__bridge NSDictionary *)itemResult;
+            NSDictionary *updateQuery = @{
+                                          (__bridge id)kSecClass: (__bridge id)kSecClassGenericPassword,
+                                          (__bridge id)kSecAttrAccessible: (__bridge id)kSecAttrAccessibleWhenUnlocked,
+                                          (__bridge id)kSecAttrService: item[(__bridge id)kSecAttrService],
+                                          (__bridge id)kSecAttrAccount: item[(__bridge id)kSecAttrAccount],
+                                          };
+            NSDictionary *updatedAttributes = @{
+                                                (__bridge id)kSecValueData: itemDictionary[(__bridge id)kSecValueData],
+                                                (__bridge id)kSecAttrAccessible: (__bridge id)kSecAttrAccessibleAfterFirstUnlock,
+                                                };
+            status = SecItemUpdate((__bridge CFDictionaryRef)updateQuery, (__bridge CFDictionaryRef)updatedAttributes);
+            if (status == errSecSuccess) {
+                DDLogInfo(@"Migrated keychain item %@", item);
+            } else {
+                DDLogError(@"Error migrating keychain item: %d", status);
+            }
+        } else {
+            DDLogError(@"Error migrating keychain item: %d", status);
+        }
     }
-
-    void (^wpcomLoggedInBlock)(NSNotification *) = ^(NSNotification *note) {
-        [Crashlytics setUserName:[[WPAccount defaultWordPressComAccount] username]];
-        [self setCommonCrashlyticsParameters];
-    };
-    void (^wpcomLoggedOutBlock)(NSNotification *) = ^(NSNotification *note) {
-        [Crashlytics setUserName:nil];
-        [self setCommonCrashlyticsParameters];
-    };
-    [[NSNotificationCenter defaultCenter] addObserverForName:WordPressComApiDidLoginNotification object:nil queue:nil usingBlock:wpcomLoggedInBlock];
-    [[NSNotificationCenter defaultCenter] addObserverForName:WordPressComApiDidLogoutNotification object:nil queue:nil usingBlock:wpcomLoggedOutBlock];
+    DDLogVerbose(@"End keychain fixing");
 }
 
-- (void)setCommonCrashlyticsParameters
-{
-    [Crashlytics setObjectValue:[NSNumber numberWithBool:[[WordPressComApi sharedApi] hasCredentials]] forKey:@"logged_in"];
-    [Crashlytics setObjectValue:@([[WordPressComApi sharedApi] hasCredentials]) forKey:@"connected_to_dotcom"];
-    [Crashlytics setObjectValue:@([Blog countWithContext:[self managedObjectContext]]) forKey:@"number_of_blogs"];
-}
 
-- (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
+#pragma mark - Debugging and logging
+
+- (void)printDebugLaunchInfoWithLaunchOptions:(NSDictionary *)launchOptions {
     UIDevice *device = [UIDevice currentDevice];
     NSInteger crashCount = [[NSUserDefaults standardUserDefaults] integerForKey:@"crashCount"];
-
-    [self configureCrashlytics];
-    [self configureLogging];
-
     NSArray *languages = [[NSUserDefaults standardUserDefaults] objectForKey:@"AppleLanguages"];
     NSString *currentLanguage = [languages objectAtIndex:0];
     BOOL extraDebug = [[NSUserDefaults standardUserDefaults] boolForKey:@"extra_debug"];
@@ -292,99 +968,12 @@ int ddLogLevel = LOG_LEVEL_INFO;
     DDLogInfo(@"OS:        %@ %@", [device systemName], [device systemVersion]);
     DDLogInfo(@"Language:  %@", currentLanguage);
     DDLogInfo(@"UDID:      %@", [device wordpressIdentifier]);
-    DDLogInfo(@"APN token: %@", [[NSUserDefaults standardUserDefaults] objectForKey:kApnsDeviceTokenPrefKey]);
+    DDLogInfo(@"APN token: %@", [[NSUserDefaults standardUserDefaults] objectForKey:NotificationsDeviceToken]);
+    DDLogInfo(@"Launch options: %@", launchOptions);
     DDLogInfo(@"===========================================================================");
+}
 
-    [self setupUserAgent];
-    [WPMobileStats initializeStats];
-    [[GPPSignIn sharedInstance] setClientID:[WordPressComApiCredentials googlePlusClientId]];
-
-    // Temporarily set the is authenticated flag based upon if we have a WP.com OAuth2 token
-    // TODO :: Move this BOOL to a method on the WordPressComApi along with checkWPcomAuthentication
-    BOOL tempIsAuthenticated = [[WordPressComApi sharedApi] authToken].length > 0;
-    self.isWPcomAuthenticated = tempIsAuthenticated;
-
-	// Set current directory for WordPress app
-	NSFileManager *fileManager = [NSFileManager defaultManager];
-	NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
-	NSString *currentDirectoryPath = [[paths objectAtIndex:0] stringByAppendingPathComponent:@"wordpress"];
-
-	BOOL isDir;
-
-	if (![fileManager fileExistsAtPath:currentDirectoryPath isDirectory:&isDir] || !isDir) {
-		[fileManager createDirectoryAtPath:currentDirectoryPath withIntermediateDirectories:YES attributes:nil error:nil];
-	}
-	// set the current dir
-	[fileManager changeCurrentDirectoryPath:currentDirectoryPath];
-    
-    [[AFNetworkActivityIndicatorManager sharedManager] setEnabled:YES];
-    [self setupReachability];
-
-	[self setupCoreData];
-	
-	[self toggleExtraDebuggingIfNeeded];
-
-	// Stats use core data, so run them after initialization
-	[self checkIfStatsShouldRun];
-    
-    [self checkIfFeedbackShouldBeEnabled];
-
-	// Clean media files asynchronously
-    // dispatch_async feels a bit faster than performSelectorOnBackground:
-    // and we're trying to launch the app as fast as possible
-    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_BACKGROUND, 0), ^(void) {
-        [self cleanUnusedMediaFileFromTmpDir];
-    });
-
-    [self checkWPcomAuthentication];
-
-    [self customizeAppearance];
-    
-    [self setupPocket];
-    [self setupSingleSignOn];
-
-    MP6SidebarViewController *sidebarViewController = [[MP6SidebarViewController alloc] init];
-    
-    CGRect bounds = [[UIScreen mainScreen] bounds];
-    [window setFrame:bounds];
-    [window setBounds:bounds]; // for good measure.
-    panelNavigationController = [[PanelNavigationController alloc] initWithDetailController:nil masterViewController:sidebarViewController];
-    window.rootViewController = panelNavigationController;
-    window.backgroundColor = [UIColor blackColor];
-
-	//listener for XML-RPC errors
-	//in the future we could put the errors message in a dedicated screen that users can bring to front when samething went wrong, and can take a look at the error msg.
-	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(showNotificationErrorAlert:) name:kXML_RPC_ERROR_OCCURS object:nil];
-	
-	// another notification message came from comments --> CommentUploadFailed
-	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(showNotificationErrorAlert:) name:@"CommentUploadFailed" object:nil];
-
-    // another notification message came from WPWebViewController
-	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(showNotificationErrorAlert:) name:@"OpenWebPageFailed" object:nil];
-
-
-	[window makeKeyAndVisible];
-
-	[self registerForPushNotifications];
-
-    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_BACKGROUND, 0), ^{
-        [WordPressAppDelegate fixKeychainAccess];
-    });
-    
-    //Information related to the reason for its launching, which can include things other than notifications.
-    NSDictionary *remoteNotif = [launchOptions objectForKey:UIApplicationLaunchOptionsRemoteNotificationKey];
-
-    if (remoteNotif) {
-        _hasRecordedApplicationOpenedEvent = YES;
-        [WPMobileStats trackEventForSelfHostedAndWPCom:StatsEventAppOpenedDueToPushNotification];
-
-        DDLogInfo(@"Launched with a remote notification as parameter:  %@", remoteNotif);
-        [self openNotificationScreenWithOptions:remoteNotif];
-    }
-    
-    //the guide say: NO if the application cannot handle the URL resource, otherwise return YES. 
-    //The return value is ignored if the application is launched as a result of a remote notification.
-
+- (void)removeCredentialsForDebug {
 #if DEBUG
     /*
      A dictionary containing the credentials for all available protection spaces.
@@ -398,393 +987,7 @@ int ddLogLevel = LOG_LEVEL_INFO;
         }];
     }];
 #endif
-    
-    return YES;
 }
-
-- (BOOL)application:(UIApplication *)application openURL:(NSURL *)url sourceApplication:(NSString *)sourceApplication annotation:(id)annotation
-{
-    if ([[GPPShare sharedInstance] handleURL:url sourceApplication:sourceApplication annotation:annotation]) {
-        return YES;
-    }
-
-    if ([[PocketAPI sharedAPI] handleOpenURL:url]) {
-        return YES;
-    }
-
-    if ([[CameraPlusPickerManager sharedManager] shouldHandleURLAsCameraPlusPickerCallback:url]) {
-        /* Note that your application has been in the background and may have been terminated.
-         * The only CameraPlusPickerManager state that is restored is the pickerMode, which is
-         * restored to indicate the mode used to pick images.
-         */
-
-        /* Handle the callback and notify the delegate. */
-        [[CameraPlusPickerManager sharedManager] handleCameraPlusPickerCallback:url usingBlock:^(CameraPlusPickedImages *images) {
-            DDLogInfo(@"Camera+ returned %@", [images images]);
-            UIImage *image = [images image];
-            UIImageWriteToSavedPhotosAlbum(image, nil, nil, nil);
-            NSDictionary *userInfo = [NSDictionary dictionaryWithObject:image forKey:@"image"];
-            [[NSNotificationCenter defaultCenter] postNotificationName:kCameraPlusImagesNotification object:nil userInfo:userInfo];
-        } cancelBlock:^(void) {
-            DDLogInfo(@"Camera+ picker canceled");
-        }];
-        return YES;
-    }
-
-    if ([WordPressApi handleOpenURL:url]) {
-        return YES;
-    }
-
-    if (url && [url isKindOfClass:[NSURL class]]) {
-        NSString *URLString = [url absoluteString];
-        DDLogInfo(@"Application launched with URL: %@", URLString);
-        if ([[url absoluteString] hasPrefix:@"wordpress://wpcom_signup_completed"]) {
-            NSDictionary *params = [[url query] dictionaryFromQueryString];
-            DDLogInfo(@"%@", params);
-            [[NSNotificationCenter defaultCenter] postNotificationName:@"wpcomSignupNotification" object:nil userInfo:params];
-            return YES;
-        }
-    }
-
-    return NO;
-}
-
-- (void)applicationWillTerminate:(UIApplication *)application {
-    DDLogInfo(@"%@ %@", self, NSStringFromSelector(_cmd));
-    [self setAppBadge];
-    [WPMobileStats endSession];
-}
-
-- (void)applicationDidEnterBackground:(UIApplication *)application {
-    DDLogInfo(@"%@ %@", self, NSStringFromSelector(_cmd));
-
-    [WPMobileStats trackEventForWPComWithSavedProperties:StatsEventAppClosed];
-    [self resetStatRelatedVariables];
-    [WPMobileStats pauseSession];
-    
-    //Keep the app alive in the background if we are uploading a post, currently only used for quick photo posts
-    UIApplication *app = [UIApplication sharedApplication];
-    if (!isUploadingPost && [app respondsToSelector:@selector(endBackgroundTask:)]) {
-        if (bgTask != UIBackgroundTaskInvalid) {
-            [app endBackgroundTask:bgTask];
-            bgTask = UIBackgroundTaskInvalid;
-        }
-    }
-    
-    if ([app respondsToSelector:@selector(beginBackgroundTaskWithExpirationHandler:)]) {
-        bgTask = [app beginBackgroundTaskWithExpirationHandler:^{
-            // Synchronize the cleanup call on the main thread in case
-            // the task actually finishes at around the same time.
-            dispatch_async(dispatch_get_main_queue(), ^{
-                if (bgTask != UIBackgroundTaskInvalid)
-                {
-                    [app endBackgroundTask:bgTask];
-                    bgTask = UIBackgroundTaskInvalid;
-                }
-            });
-        }];
-    }
-
-    NSError *error = nil;
-    if (![self.managedObjectContext save:&error]) {
-        DDLogError(@"Unresolved Core Data Save error %@, %@", error, [error userInfo]);
-        exit(-1);
-    }
-}
-
-- (void)applicationWillEnterForeground:(UIApplication *)application
-{
-    [WPMobileStats resumeSession];
-}
-
-- (void)applicationWillResignActive:(UIApplication *)application {
-    DDLogInfo(@"%@ %@", self, NSStringFromSelector(_cmd));    
-  
-    if (passwordAlertRunning && passwordTextField != nil) {
-        [passwordTextField resignFirstResponder];
-    } else {
-        [[NSNotificationCenter defaultCenter] postNotificationName:@"DismissAlertViewKeyboard" object:nil];
-    }
-}
-
-- (void)applicationDidBecomeActive:(UIApplication *)application {
-    DDLogInfo(@"%@ %@", self, NSStringFromSelector(_cmd));
-    
-    [[NSNotificationCenter defaultCenter] postNotificationName:@"ApplicationDidBecomeActive" object:nil];
-    
-    if (!_hasRecordedApplicationOpenedEvent) {
-        [WPMobileStats trackEventForSelfHostedAndWPCom:StatsEventAppOpened];
-    }
-    
-    // Clear notifications badge and update server
-    [self setAppBadge];
-    [[WordPressComApi sharedApi] syncPushNotificationInfo];
-}
-
-
-- (void)application:(UIApplication *)application didChangeStatusBarFrame:(CGRect)oldStatusBarFrame {
-	//The guide says: After calling this method, the application also posts a UIApplicationDidChangeStatusBarFrameNotification notification to give interested objects a chance to respond to the change.
-	//but seems that the notification is never sent.
-	//we are using a custom notification
-	[[NSNotificationCenter defaultCenter] postNotificationName:DidChangeStatusBarFrame object:nil];
-}
-
-
-#pragma mark -
-#pragma mark Public Methods
-
-- (void)showAlertWithTitle:(NSString *)title message:(NSString *)message {
-	DDLogInfo(@"Showing alert with title: %@", message);
-    UIAlertView *alert = [[UIAlertView alloc] initWithTitle:title
-                          message:message
-                          delegate:self
-						cancelButtonTitle:NSLocalizedString(@"Need Help?", @"'Need help?' button label, links off to the WP for iOS FAQ.")
-						otherButtonTitles:NSLocalizedString(@"OK", @"OK button label."), nil];
-    [alert show];
-}
-
-- (void)showNotificationErrorAlert:(NSNotification *)notification {
-	NSString *cleanedErrorMsg = nil;
-	
-	if([self isAlertRunning] == YES) return; //another alert is already shown 
-	[self setAlertRunning:YES];
-	
-	if([[notification object] isKindOfClass:[NSError class]]) {
-		
-		NSError *err  = (NSError *)[notification object];
-		cleanedErrorMsg = [err localizedDescription];
-		
-		//org.wordpress.iphone --> XML-RPC errors
-		if ([[err domain] isEqualToString:@"org.wordpress.iphone"]){
-			if([err code] == 401)
-				cleanedErrorMsg = NSLocalizedString(@"Sorry, you cannot access this feature. Please check your User Role on this blog.", @"");
-		}
-        
-        // ignore HTTP auth canceled errors
-        if ([err.domain isEqual:NSURLErrorDomain] && err.code == NSURLErrorUserCancelledAuthentication) {
-            [self setAlertRunning:NO];
-            return;
-        }
-	} else { //the notification obj is a String
-		cleanedErrorMsg  = (NSString *)[notification object];
-	}
-	
-	if([cleanedErrorMsg rangeOfString:@"NSXMLParserErrorDomain"].location != NSNotFound )
-		cleanedErrorMsg = NSLocalizedString(@"The app can't recognize the server response. Please, check the configuration of your blog.", @"");
-	
-	[self showAlertWithTitle:NSLocalizedString(@"Error", @"Generic popup title for any type of error.") message:cleanedErrorMsg];
-}
-
-- (void)showContentDetailViewController:(UIViewController *)viewController {
-    if (viewController) {
-        [panelNavigationController pushViewController:viewController animated:YES];
-    } else {
-        [panelNavigationController popToRootViewControllerAnimated:YES];
-    }
-}
-
-- (void)useDefaultUserAgent {
-    NSString *ua = [[NSUserDefaults standardUserDefaults] stringForKey:@"DefaultUserAgent"];
-    NSDictionary *dictionary = [[NSDictionary alloc] initWithObjectsAndKeys:ua, @"UserAgent", nil];
-    // We have to call registerDefaults else the change isn't picked up by UIWebViews.
-    [[NSUserDefaults standardUserDefaults] registerDefaults:dictionary];
-    DDLogVerbose(@"User-Agent set to: %@", ua);
-}
-
-- (void)useAppUserAgent {
-    NSString *ua = [[NSUserDefaults standardUserDefaults] stringForKey:@"AppUserAgent"];
-    NSDictionary *dictionary = [[NSDictionary alloc] initWithObjectsAndKeys:ua, @"UserAgent", nil];
-    // We have to call registerDefaults else the change isn't picked up by UIWebViews.
-    [[NSUserDefaults standardUserDefaults] registerDefaults:dictionary];
-    
-    DDLogVerbose(@"User-Agent set to: %@", ua);
-}
-
-#pragma mark -
-#pragma mark Core Data stack
-
-/**
- Returns the managed object context for the application.
- If the context doesn't already exist, it is created and bound to the persistent store coordinator for the application.
- */
-- (NSManagedObjectContext *)managedObjectContext {
-    
-    if (managedObjectContext_ != nil) {
-        return managedObjectContext_;
-    }
-    
-    NSPersistentStoreCoordinator *coordinator = [self persistentStoreCoordinator];
-    if (coordinator != nil) {
-        managedObjectContext_ = [[NSManagedObjectContext alloc] initWithConcurrencyType:NSMainQueueConcurrencyType];
-        [managedObjectContext_ setPersistentStoreCoordinator:coordinator];
-    }
-    return managedObjectContext_;
-}
-
-
-/**
- Returns the managed object model for the application.
- If the model doesn't already exist, it is created from the application's model.
- */
-- (NSManagedObjectModel *)managedObjectModel {
-    
-    if (managedObjectModel_ != nil) {
-        return managedObjectModel_;
-    }
-    NSString *modelPath = [[NSBundle mainBundle] pathForResource:@"WordPress" ofType:@"momd"];
-    NSURL *modelURL = [NSURL fileURLWithPath:modelPath];
-    managedObjectModel_ = [[NSManagedObjectModel alloc] initWithContentsOfURL:modelURL];    
-    return managedObjectModel_;
-}
-
-/**
- Returns the persistent store coordinator for the application.
- If the coordinator doesn't already exist, it is created and the application's store added to it.
- */
-- (NSPersistentStoreCoordinator *)persistentStoreCoordinator {
-    
-    if (persistentStoreCoordinator_ != nil) {
-        return persistentStoreCoordinator_;
-    }
-    
-    NSURL *storeURL = [NSURL fileURLWithPath: [[self applicationDocumentsDirectory] stringByAppendingPathComponent: @"WordPress.sqlite"]];
-	
-	// This is important for automatic version migration. Leave it here!
-	NSDictionary *options = [NSDictionary dictionaryWithObjectsAndKeys:
-							 [NSNumber numberWithBool:YES], NSInferMappingModelAutomaticallyOption,
-							 [NSNumber numberWithBool:YES], NSMigratePersistentStoresAutomaticallyOption, nil];
-	
-	NSError *error = nil;
-	
-// The following conditional code is meant to test the detection of mapping model for migrations
-// It should remain disabled unless you are debugging why migrations aren't run
-#if FALSE
-	DDLogInfo(@"Debugging migration detection");
-	NSDictionary *sourceMetadata = [NSPersistentStoreCoordinator metadataForPersistentStoreOfType:NSSQLiteStoreType
-																							  URL:storeURL
-																							error:&error];
-	if (sourceMetadata == nil) {
-		DDLogInfo(@"Can't find source persistent store");
-	} else {
-		DDLogInfo(@"Source store: %@", sourceMetadata);
-	}
-	NSManagedObjectModel *destinationModel = [self managedObjectModel];
-	BOOL pscCompatibile = [destinationModel
-						   isConfiguration:nil
-						   compatibleWithStoreMetadata:sourceMetadata];
-	if (pscCompatibile) {
-		DDLogInfo(@"No migration needed");
-	} else {
-		DDLogInfo(@"Migration needed");
-	}
-	NSManagedObjectModel *sourceModel = [NSManagedObjectModel mergedModelFromBundles:nil forStoreMetadata:sourceMetadata];
-	if (sourceModel != nil) {
-		DDLogInfo(@"source model found");
-	} else {
-		DDLogInfo(@"source model not found");
-	}
-
-	NSMigrationManager *manager = [[NSMigrationManager alloc] initWithSourceModel:sourceModel
-																 destinationModel:destinationModel];
-	NSMappingModel *mappingModel = [NSMappingModel mappingModelFromBundles:[NSArray arrayWithObject:[NSBundle mainBundle]]
-															forSourceModel:sourceModel
-														  destinationModel:destinationModel];
-	if (mappingModel != nil) {
-		DDLogInfo(@"mapping model found");
-	} else {
-		DDLogInfo(@"mapping model not found");
-	}
-
-	if (NO) {
-		BOOL migrates = [manager migrateStoreFromURL:storeURL
-												type:NSSQLiteStoreType
-											 options:nil
-									withMappingModel:mappingModel
-									toDestinationURL:storeURL
-									 destinationType:NSSQLiteStoreType
-								  destinationOptions:nil
-											   error:&error];
-
-		if (migrates) {
-			DDLogInfo(@"migration went OK");
-		} else {
-			DDLogInfo(@"migration failed: %@", [error localizedDescription]);
-		}
-	}
-	
-	DDLogInfo(@"End of debugging migration detection");
-#endif
-    persistentStoreCoordinator_ = [[NSPersistentStoreCoordinator alloc] initWithManagedObjectModel:[self managedObjectModel]];
-    if (![persistentStoreCoordinator_ addPersistentStoreWithType:NSSQLiteStoreType configuration:nil URL:storeURL options:options error:&error]) {
-		DDLogError(@"Error opening the database. %@\nDeleting the file and trying again", error);
-#ifdef CORE_DATA_MIGRATION_DEBUG
-		// Don't delete the database on debug builds
-		// Makes migration debugging less of a pain
-		abort();
-#endif
-
-        // make a backup of the old database
-        [[NSFileManager defaultManager] copyItemAtPath:storeURL.path toPath:[storeURL.path stringByAppendingString:@"~"] error:&error];
-        // delete the sqlite file and try again
-		[[NSFileManager defaultManager] removeItemAtPath:storeURL.path error:nil];
-		if (![persistentStoreCoordinator_ addPersistentStoreWithType:NSSQLiteStoreType configuration:nil URL:storeURL options:nil error:&error]) {
-			DDLogError(@"Unresolved error %@, %@", error, [error userInfo]);
-			abort();
-		}
-
-        // If everything went wrong and we lost the DB, we sign out and simulate a fresh install
-        // It's equally annoying, but it's more confusing to stay logged in to the reader having lost all the blogs in the app
-        [[WordPressComApi sharedApi] signOut];
-    } else {
-		// If there are no blogs and blogs.archive still exists, force import of blogs
-		NSFileManager *fileManager = [NSFileManager defaultManager];
-		NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
-		NSString *currentDirectoryPath = [[paths objectAtIndex:0] stringByAppendingPathComponent:@"wordpress"];
-		NSString *blogsArchiveFilePath = [currentDirectoryPath stringByAppendingPathComponent:@"blogs.archive"];
-		if ([fileManager fileExistsAtPath:blogsArchiveFilePath]) {
-			NSManagedObjectContext *destMOC = [[NSManagedObjectContext alloc] init];
-			[destMOC setPersistentStoreCoordinator:persistentStoreCoordinator_];
-
-			MigrateBlogsFromFiles *blogMigrator = [[MigrateBlogsFromFiles alloc] init];
-			[blogMigrator forceBlogsMigrationInContext:destMOC error:&error];
-			if (![destMOC save:&error]) {
-				DDLogError(@"Error saving blogs-only migration: %@", error);
-			}
-			[fileManager removeItemAtPath:blogsArchiveFilePath error:&error];
-		}
-	}
-    
-    return persistentStoreCoordinator_;
-}
-
-- (void)setManagedObjectContext:(NSManagedObjectContext *)managedObjectContext {
-    managedObjectContext_ = managedObjectContext;
-}
-
-- (void)setManagedObjectModel:(NSManagedObjectModel *)managedObjectModel {
-    managedObjectModel_ = managedObjectModel;
-}
-
-- (void)setPersistentStoreCoordinator:(NSPersistentStoreCoordinator *)persistentStoreCoordinator {
-    persistentStoreCoordinator_ = persistentStoreCoordinator;
-}
-
-#pragma mark -
-#pragma mark Application's Documents directory
-
-/**
- Returns the path to the application's Documents directory.
- */
-- (NSString *)applicationDocumentsDirectory {
-    return [NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES) lastObject];
-}
-
-- (NSString *)applicationUserAgent {
-  return [[NSUserDefaults standardUserDefaults] objectForKey:@"UserAgent"];
-}
-
-#pragma mark -
-#pragma mark Private Methods
 
 - (void)configureLogging
 {
@@ -804,12 +1007,11 @@ int ddLogLevel = LOG_LEVEL_INFO;
     [DDLog addLogger:[DDTTYLogger sharedInstance]];
 #endif
     
-    self.fileLogger = [[DDFileLogger alloc] init];
-    self.fileLogger.rollingFrequency = 60 * 60 * 24; // 24 hour rolling
-    self.fileLogger.logFileManager.maximumNumberOfLogFiles = 7;
-    [DDLog addLogger:self.fileLogger];
-    
+#ifndef INTERNAL_BUILD
     [DDLog addLogger:[CrashlyticsLogger sharedInstance]];
+#endif
+    
+    [DDLog addLogger:self.fileLogger];
     
     BOOL extraDebug = [[NSUserDefaults standardUserDefaults] boolForKey:@"extra_debug"];
     if (extraDebug) {
@@ -817,306 +1019,53 @@ int ddLogLevel = LOG_LEVEL_INFO;
     }
 }
 
-- (void)customizeAppearance {
-    if (IS_IOS7) {
-        [self customizeForiOS7];
-    } else {
-        [self customizeForiOS6];
+- (DDFileLogger *)fileLogger {
+    if (_fileLogger) {
+        return _fileLogger;
     }
-}
-
-- (void)customizeForiOS6
-{
-    // If UIAppearance is supported, configure global styles.
-    //Configure navigation bar style if >= iOS 5
-    if ([[UINavigationBar class] respondsToSelector:@selector(appearance)]) {
-        [[UIToolbar appearance] setTintColor:[WPStyleGuide littleEddieGrey]];
-        
-        [[UINavigationBar appearance] setBackgroundImage:[UIImage imageNamed:@"navbar_bg"] forBarMetrics:UIBarMetricsDefault];
-        [[UINavigationBar appearance] setTitleTextAttributes:
-         [NSDictionary dictionaryWithObjectsAndKeys:
-          [UIColor colorWithRed:70.0/255.0 green:70.0/255.0 blue:70.0/255.0 alpha:1.0],
-          UITextAttributeTextColor,
-          [UIColor whiteColor],
-          UITextAttributeTextShadowColor,
-          [NSValue valueWithUIOffset:UIOffsetMake(0, 1)],
-          UITextAttributeTextShadowOffset,
-          nil]];
-        
-        //        [[UIBarButtonItem appearance] setTintColor:[UIColor colorWithRed:229.0/255.0 green:229.0/255.0 blue:229.0/255.0 alpha:1.0]];
-        
-        [[UIBarButtonItem appearance] setBackgroundImage:[UIImage imageNamed:@"navbar_button_bg"] forState:UIControlStateNormal barMetrics:UIBarMetricsDefault];
-        [[UIBarButtonItem appearance] setBackgroundImage:[UIImage imageNamed:@"navbar_button_bg_active"] forState:UIControlStateHighlighted barMetrics:UIBarMetricsDefault];
-        [[UIBarButtonItem appearance] setBackgroundImage:[UIImage imageNamed:@"navbar_button_bg_landscape"] forState:UIControlStateNormal barMetrics:UIBarMetricsLandscapePhone];
-        [[UIBarButtonItem appearance] setBackgroundImage:[UIImage imageNamed:@"navbar_button_bg_landscape_active"] forState:UIControlStateHighlighted barMetrics:UIBarMetricsLandscapePhone];
-        
-        [[UIBarButtonItem appearance] setBackButtonBackgroundImage:[[UIImage imageNamed:@"navbar_back_button_bg"] stretchableImageWithLeftCapWidth:14.f topCapHeight:0] forState:UIControlStateNormal barMetrics:UIBarMetricsDefault];
-        [[UIBarButtonItem appearance] setBackButtonBackgroundImage:[[UIImage imageNamed:@"navbar_back_button_bg_active"] stretchableImageWithLeftCapWidth:14.f topCapHeight:0] forState:UIControlStateHighlighted barMetrics:UIBarMetricsDefault];
-        [[UIBarButtonItem appearance] setBackButtonBackgroundImage:[[UIImage imageNamed:@"navbar_back_button_bg_landscape"] stretchableImageWithLeftCapWidth:14.f topCapHeight:0] forState:UIControlStateNormal barMetrics:UIBarMetricsLandscapePhone];
-        [[UIBarButtonItem appearance] setBackButtonBackgroundImage:[[UIImage imageNamed:@"navbar_back_button_bg_landscape_active"] stretchableImageWithLeftCapWidth:14.f topCapHeight:0] forState:UIControlStateHighlighted barMetrics:UIBarMetricsLandscapePhone];
-        
-        NSDictionary *titleTextAttributesForStateNormal = [NSDictionary dictionaryWithObjectsAndKeys:
-                                                           [UIColor colorWithRed:34.0/255.0 green:34.0/255.0 blue:34.0/255.0 alpha:1.0],
-                                                           UITextAttributeTextColor,
-                                                           [UIColor colorWithRed:255.0/255.0 green:255.0/255.0 blue:255.0/255.0 alpha:1.0],
-                                                           UITextAttributeTextShadowColor,
-                                                           [NSValue valueWithUIOffset:UIOffsetMake(0, 1)],
-                                                           UITextAttributeTextShadowOffset,
-                                                           nil];
-        
-        
-        NSDictionary *titleTextAttributesForStateDisabled = [NSDictionary dictionaryWithObjectsAndKeys:
-                                                             [UIColor colorWithRed:150.0/255.0 green:150.0/255.0 blue:150.0/255.0 alpha:1.0],
-                                                             UITextAttributeTextColor,
-                                                             //          [UIColor colorWithRed:34.0/255.0 green:34.0/255.0 blue:34.0/255.0 alpha:1.0],
-                                                             [UIColor UIColorFromHex:0xeeeeee],
-                                                             UITextAttributeTextShadowColor,
-                                                             [NSValue valueWithUIOffset:UIOffsetMake(0, 1)],
-                                                             UITextAttributeTextShadowOffset,
-                                                             nil];
-        
-        NSDictionary *titleTextAttributesForStateHighlighted = [NSDictionary dictionaryWithObjectsAndKeys:
-                                                                [UIColor colorWithRed:34.0/255.0 green:34.0/255.0 blue:34.0/255.0 alpha:1.0],
-                                                                UITextAttributeTextColor,
-                                                                [UIColor colorWithRed:255.0/255.0 green:255.0/255.0 blue:255.0/255.0 alpha:1.0],
-                                                                UITextAttributeTextShadowColor,
-                                                                [NSValue valueWithUIOffset:UIOffsetMake(0, 1)],
-                                                                UITextAttributeTextShadowOffset,
-                                                                nil];
-        
-        
-        [[UIBarButtonItem appearance] setTitleTextAttributes:titleTextAttributesForStateNormal forState:UIControlStateNormal];
-        [[UIBarButtonItem appearance] setTitleTextAttributes:titleTextAttributesForStateDisabled forState:UIControlStateDisabled];
-        [[UIBarButtonItem appearance] setTitleTextAttributes:titleTextAttributesForStateHighlighted forState:UIControlStateHighlighted];
-        
-        //        [[UISegmentedControl appearance] setTintColor:[UIColor UIColorFromHex:0xeeeeee]];
-        [[UISegmentedControl appearance] setTitleTextAttributes:titleTextAttributesForStateNormal forState:UIControlStateNormal];
-        [[UISegmentedControl appearance] setTitleTextAttributes:titleTextAttributesForStateDisabled forState:UIControlStateDisabled];
-        [[UISegmentedControl appearance] setTitleTextAttributes:titleTextAttributesForStateHighlighted forState:UIControlStateHighlighted];
-    }
-}
-
-- (void)customizeForiOS7
-{
-    UIColor *defaultTintColor = self.window.tintColor;
-    self.window.tintColor = [WPStyleGuide newKidOnTheBlockBlue];
-
-    [[UINavigationBar appearance] setBarTintColor:[WPStyleGuide newKidOnTheBlockBlue]];
-    [[UINavigationBar appearanceWhenContainedIn:[MFMailComposeViewController class], nil] setBarTintColor:[UIColor whiteColor]];
-    [[UINavigationBar appearance] setTintColor:[UIColor whiteColor]];
-    [[UINavigationBar appearanceWhenContainedIn:[MFMailComposeViewController class], nil] setTintColor:defaultTintColor];
-    [[UINavigationBar appearance] setTitleTextAttributes:@{UITextAttributeTextColor: [UIColor whiteColor], UITextAttributeFont : [UIFont fontWithName:@"OpenSans-Bold" size:16.0]} ];
-    [[UINavigationBar appearance] setBackgroundImage:[UIImage imageNamed:@"transparent-point"] forBarMetrics:UIBarMetricsDefault];
-    [[UINavigationBar appearance] setShadowImage:[UIImage imageNamed:@"transparent-point"]];
-    [[UIBarButtonItem appearance] setTitleTextAttributes:@{UITextAttributeFont: [WPStyleGuide regularTextFont], UITextAttributeTextColor : [UIColor whiteColor]} forState:UIControlStateNormal];
-    [[UIBarButtonItem appearance] setTitleTextAttributes:@{UITextAttributeFont: [WPStyleGuide regularTextFont], UITextAttributeTextColor : [UIColor lightGrayColor]} forState:UIControlStateDisabled];
-    [[UIToolbar appearance] setBarTintColor:[WPStyleGuide newKidOnTheBlockBlue]];
-    [[UISwitch appearance] setOnTintColor:[WPStyleGuide newKidOnTheBlockBlue]];
-    [[UIApplication sharedApplication] setStatusBarStyle:UIStatusBarStyleLightContent];
-}
-
-- (void)setAppBadge {
-    [UIApplication sharedApplication].applicationIconBadgeNumber = 0;
-}
-
-// TODO :: Eliminate this check or at least move it to WordPressComApi (or WPAccount)
-- (void)checkWPcomAuthentication {
-	NSString *authURL = @"https://wordpress.com/xmlrpc.php";
-
-    WPAccount *account = [WPAccount defaultWordPressComAccount];
-	if (account) {
-        WPXMLRPCClient *client = [WPXMLRPCClient clientWithXMLRPCEndpoint:[NSURL URLWithString:authURL]];
-        [client setAuthorizationHeaderWithToken:[[WordPressComApi sharedApi] authToken]];
-        [client callMethod:@"wp.getUsersBlogs"
-                parameters:[NSArray arrayWithObjects:account.username, account.password, nil]
-                   success:^(AFHTTPRequestOperation *operation, id responseObject) {
-                       isWPcomAuthenticated = YES;
-                       DDLogInfo(@"Logged in to WordPress.com as %@", account.username);
-                   } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
-                       if ([error.domain isEqualToString:@"WPXMLRPCFaultError"] ||
-                           ([error.domain isEqualToString:@"XMLRPC"] && error.code == 403)) {
-                           isWPcomAuthenticated = NO;
-                           [[WordPressComApi sharedApi] invalidateOAuth2Token];
-                       }
-                       
-                       DDLogError(@"Error authenticating %@ with WordPress.com: %@", account.username, [error description]);
-                   }];
-	} else {
-		isWPcomAuthenticated = NO;
-	}
-}
-
-
-- (void)checkIfStatsShouldRun {
-    if (NO) { // Switch this to YES to debug stats/update check
-        [self runStats];
-        return;
-    }
-	//check if statsDate exists in user defaults, if not, add it and run stats since this is obviously the first time
-	NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
-	//[defaults setObject:nil forKey:@"statsDate"];  // Uncomment this line to force stats.
-	if (![defaults objectForKey:@"statsDate"]){
-		NSDate *theDate = [NSDate date];
-		[defaults setObject:theDate forKey:@"statsDate"];
-		[self runStats];
-	} else {
-		//if statsDate existed, check if it's 7 days since last stats run, if it is > 7 days, run stats
-		NSDate *statsDate = [defaults objectForKey:@"statsDate"];
-		NSDate *today = [NSDate date];
-		NSTimeInterval difference = [today timeIntervalSinceDate:statsDate];
-		NSTimeInterval statsInterval = 7 * 24 * 60 * 60; //number of seconds in 30 days
-		if (difference > statsInterval) //if it's been more than 7 days since last stats run
-		{
-            // WARNING: for some reason, if runStats is called in a background thread
-            // NSURLConnection doesn't launch and stats are not sent
-            // Don't change this or be really sure it's working
-			[self runStats];
-		}
-	}
-}
-
-- (void)runStats {
-	//generate and post the stats data
-	/*
-	 - device_uuid – A unique identifier to the iPhone/iPod that the app is installed on.
-	 - app_version – the version number of the WP iPhone app
-	 - language – language setting for the device. What does that look like? Is it EN or English?
-	 - os_version – the version of the iPhone/iPod OS for the device
-	 - num_blogs – number of blogs configured in the WP iPhone app
-	 - device_model - kind of device on which the WP iPhone app is installed
-	 */
-	
-	NSString *deviceModel = [[UIDeviceHardware platform] stringByUrlEncoding];
-	NSString *deviceuuid = [[UIDevice currentDevice] wordpressIdentifier];
-	NSDictionary *info = [[NSBundle mainBundle] infoDictionary];
-	NSString *appversion = [[info objectForKey:@"CFBundleVersion"] stringByUrlEncoding];
-	NSLocale *locale = [NSLocale currentLocale];
-	NSString *language = [[locale objectForKey: NSLocaleIdentifier] stringByUrlEncoding];
-	NSString *osversion = [[[UIDevice currentDevice] systemVersion] stringByUrlEncoding];
-	int num_blogs = [Blog countWithContext:[self managedObjectContext]];
-	NSString *numblogs = [[NSString stringWithFormat:@"%d", num_blogs] stringByUrlEncoding];
-	
-	//handle data coming back
-	statsData = [[NSMutableData alloc] init];
-	
-	NSMutableURLRequest *theRequest=[NSMutableURLRequest requestWithURL:[NSURL URLWithString:@"http://api.wordpress.org/iphoneapp/update-check/1.0/"]
-															cachePolicy:NSURLRequestUseProtocolCachePolicy
-														timeoutInterval:30.0];
-	
-	[theRequest setHTTPMethod:@"POST"];
-	[theRequest addValue:@"application/x-www-form-urlencoded" forHTTPHeaderField: @"Content-Type"];
-	//create the body
-	NSMutableData *postBody = [NSMutableData data];
-	
-	[postBody appendData:[[NSString stringWithFormat:@"device_uuid=%@&app_version=%@&language=%@&os_version=%@&num_blogs=%@&device_model=%@",
-						   deviceuuid,
-						   appversion,
-						   language,
-						   osversion,
-						   numblogs,
-						   deviceModel] dataUsingEncoding:NSUTF8StringEncoding]];
-	
-	//NSString *htmlStr = [[[NSString alloc] initWithData:postBody encoding:NSUTF8StringEncoding] autorelease];
-	[theRequest setHTTPBody:postBody];
-	
-	NSURLConnection *conn = [[NSURLConnection alloc] initWithRequest:theRequest delegate:self];
-	if(conn){
-		// This is just to keep Analyzer from complaining.
-	}
-
-	NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
-	NSDate *theDate = [NSDate date];
-	[defaults setObject:theDate forKey:@"statsDate"];
-	[defaults synchronize];
-}
-
-- (void)checkIfFeedbackShouldBeEnabled
-{
-    [[NSUserDefaults standardUserDefaults] registerDefaults:@{kWPUserDefaultsFeedbackEnabled: @YES}];
-    NSURL *url = [NSURL URLWithString:@"http://api.wordpress.org/iphoneapp/feedback-check/1.0/"];
-    NSURLRequest *request = [[NSURLRequest alloc] initWithURL:url];
-    AFJSONRequestOperation *operation = [AFJSONRequestOperation JSONRequestOperationWithRequest:request success:^(NSURLRequest *request, NSHTTPURLResponse *response, id JSON) {
-        DDLogVerbose(@"Feedback response received: %@", JSON);
-        NSNumber *feedbackEnabled = JSON[@"feedback-enabled"];
-        if (feedbackEnabled == nil) {
-            feedbackEnabled = @YES;
-        }
-        
-        NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
-        [defaults setBool:feedbackEnabled.boolValue forKey:kWPUserDefaultsFeedbackEnabled];
-        [defaults synchronize];
-    } failure:^(NSURLRequest *request, NSHTTPURLResponse *response, NSError *error, id JSON) {
-        DDLogError(@"Error received while checking feedback enabled status: %@", error);
-
-        // Lets be optimistic and turn on feedback by default if this call doesn't work
-        NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
-        [defaults setBool:YES forKey:kWPUserDefaultsFeedbackEnabled];
-        [defaults synchronize];
-    }];
+    _fileLogger = [[DDFileLogger alloc] init];
+    _fileLogger.rollingFrequency = 60 * 60 * 24; // 24 hour rolling
+    _fileLogger.logFileManager.maximumNumberOfLogFiles = 7;
     
-    [operation start];
+    return _fileLogger;
 }
 
-- (void)cleanUnusedMediaFileFromTmpDir {
-    DDLogInfo(@"%@ %@", self, NSStringFromSelector(_cmd));
-    NSMutableArray *mediaToKeep = [NSMutableArray array];
-
-    NSError *error = nil;
-    NSManagedObjectContext *context = [[NSManagedObjectContext alloc] init];
-    [context setUndoManager:nil];
-    [context setPersistentStoreCoordinator:self.persistentStoreCoordinator];
-    NSFetchRequest *fetchRequest = [[NSFetchRequest alloc] init];
-    [fetchRequest setEntity:[NSEntityDescription entityForName:@"Media" inManagedObjectContext:context]];
-    NSPredicate *predicate = [NSPredicate predicateWithFormat:@"ANY posts.blog != NULL AND remoteStatusNumber <> %@", @(MediaRemoteStatusSync)];
-    [fetchRequest setPredicate:predicate];
-    NSArray *mediaObjectsToKeep = [context executeFetchRequest:fetchRequest error:&error];
-    if (error != nil) {
-        DDLogError(@"Error cleaning up tmp files: %@", [error localizedDescription]);
-    }
-    //get a references to media files linked in a post
-    DDLogInfo(@"%i media items to check for cleanup", [mediaObjectsToKeep count]);
-    for (Media *media in mediaObjectsToKeep) {
-        [mediaToKeep addObject:media.localURL];
-    }
-
-    //searches for jpg files within the app temp file
-    NSFileManager *fileManager = [NSFileManager defaultManager];
-    NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
-    NSString *documentsDirectory = [paths objectAtIndex:0];
-    NSArray *contentsOfDir = [fileManager contentsOfDirectoryAtPath:documentsDirectory error:NULL];
-
-    NSError *regexpError = NULL;
-    NSRegularExpression *jpeg = [NSRegularExpression regularExpressionWithPattern:@".jpg$" options:NSRegularExpressionCaseInsensitive error:&regexpError];
-
-    for (NSString *currentPath in contentsOfDir) {
-        if([jpeg numberOfMatchesInString:currentPath options:0 range:NSMakeRange(0, [currentPath length])] > 0) {
-            NSString *filepath = [documentsDirectory stringByAppendingPathComponent:currentPath];
-
-            BOOL keep = NO;
-            //if the file is not referenced in any post we can delete it
-            for (NSString *currentMediaToKeepPath in mediaToKeep) {
-                if([currentMediaToKeepPath isEqualToString:filepath]) {
-                    keep = YES;
-                    break;
-                }
-            }
-
-            if(keep == NO) {
-                [fileManager removeItemAtPath:filepath error:NULL];
-            }
+// get the log content with a maximum byte size
+- (NSString *) getLogFilesContentWithMaxSize:(NSInteger)maxSize {
+    NSMutableString *description = [NSMutableString string];
+    
+    NSArray *sortedLogFileInfos = [[self.fileLogger logFileManager] sortedLogFileInfos];
+    NSInteger count = [sortedLogFileInfos count];
+    
+    // we start from the last one
+    for (NSInteger index = 0; index < count; index++) {
+        DDLogFileInfo *logFileInfo = [sortedLogFileInfos objectAtIndex:index];
+        
+        NSData *logData = [[NSFileManager defaultManager] contentsAtPath:[logFileInfo filePath]];
+        if ([logData length] > 0) {
+            NSString *result = [[NSString alloc] initWithBytes:[logData bytes]
+                                                        length:[logData length]
+                                                      encoding: NSUTF8StringEncoding];
+            
+            [description appendString:result];
         }
     }
+    
+    if ([description length] > maxSize) {
+        description = (NSMutableString *)[description substringWithRange:NSMakeRange(0, maxSize)];
+    }
+    
+    return description;
 }
 
 - (void)toggleExtraDebuggingIfNeeded {
     if (!_listeningForBlogChanges) {
         _listeningForBlogChanges = YES;
-        [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(handleLogoutOrBlogsChangedNotification:) name:BlogChangedNotification object:nil];
-        [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(handleLogoutOrBlogsChangedNotification:) name:WordPressComApiDidLogoutNotification object:nil];
+        [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(handleDefaultAccountChangedNotification:) name:WPAccountDefaultWordPressComAccountChangedNotification object:nil];
     }
     
-	int num_blogs = [Blog countWithContext:[self managedObjectContext]];
-	BOOL authed = isWPcomAuthenticated;
+	int num_blogs = [Blog countWithContext:[[ContextManager sharedInstance] mainContext]];
+	BOOL authed = self.isWPcomAuthenticated;
 	if (num_blogs == 0 && !authed) {
 		// When there are no blogs in the app the settings screen is unavailable.
 		// In this case, enable extra_debugging by default to help troubleshoot any issues.
@@ -1146,258 +1095,16 @@ int ddLogLevel = LOG_LEVEL_INFO;
 	}
 }
 
-- (void)handleLogoutOrBlogsChangedNotification:(NSNotification *)notification {
+- (void)handleDefaultAccountChangedNotification:(NSNotification *)notification {
 	[self toggleExtraDebuggingIfNeeded];
-}
 
-
-#pragma mark - Push Notification delegate
-
-- (void)application:(UIApplication *)application didRegisterForRemoteNotificationsWithDeviceToken:(NSData *)deviceToken {
-	// Send the deviceToken to our server...
-	NSString *myToken = [[[[deviceToken description]
-					 stringByReplacingOccurrencesOfString: @"<" withString: @""]
-					stringByReplacingOccurrencesOfString: @">" withString: @""]
-				   stringByReplacingOccurrencesOfString: @" " withString: @""];
-
-    DDLogInfo(@"Device token received in didRegisterForRemoteNotificationsWithDeviceToken: %@", myToken);
-    
-	// Store the token
-    NSString *previousToken = [[NSUserDefaults standardUserDefaults] objectForKey:kApnsDeviceTokenPrefKey];
-    if (![previousToken isEqualToString:myToken]) {
-         DDLogInfo(@"Device Token has changed! OLD Value %@, NEW value %@", previousToken, myToken);
-        [[NSUserDefaults standardUserDefaults] setObject:myToken forKey:kApnsDeviceTokenPrefKey];
-        [[WordPressComApi sharedApi] syncPushNotificationInfo]; //synch info again since the device token has changed.
-    }
-
-}
-
-- (void)application:(UIApplication *)application didFailToRegisterForRemoteNotificationsWithError:(NSError *)error {
-	DDLogError(@"Failed to register for push notifications: %@", error);
-    [[NSUserDefaults standardUserDefaults] removeObjectForKey:kApnsDeviceTokenPrefKey];
-}
-
-- (void)application:(UIApplication *)application didReceiveRemoteNotification:(NSDictionary *)userInfo {
-    WPFLogMethod();
-    
-    [self handleNotification:userInfo forState:application.applicationState completionHandler:nil];
-}
-
-- (void)application:(UIApplication *)application didReceiveRemoteNotification:(NSDictionary *)userInfo fetchCompletionHandler:(void (^)(UIBackgroundFetchResult))completionHandler {
-    WPFLogMethod();
-    
-    [self handleNotification:userInfo forState:[UIApplication sharedApplication].applicationState completionHandler:completionHandler];
-}
-
-- (void)handleNotification:(NSDictionary*)userInfo forState:(UIApplicationState)state completionHandler:(void (^)(UIBackgroundFetchResult))completionHandler {
-    
-    DDLogInfo(@"Received push notification:\nPayload: %@\nCurrent Application state: %d", userInfo, state);
-    
-    switch (state) {
-        case UIApplicationStateActive:
-            [[WordPressComApi sharedApi] checkForNewUnseenNotifications];
-            [[WordPressComApi sharedApi] syncPushNotificationInfo];
-            [SoundUtil playNotificationSound];
-            break;
-            
-        case UIApplicationStateInactive:
-            _hasRecordedApplicationOpenedEvent = YES;
-            [WPMobileStats trackEventForSelfHostedAndWPCom:StatsEventAppOpenedDueToPushNotification];
-
-            [self openNotificationScreenWithOptions:userInfo];
-            break;
-            
-        case UIApplicationStateBackground:
-            _hasRecordedApplicationOpenedEvent = YES;
-            [WPMobileStats trackEventForSelfHostedAndWPCom:StatsEventAppOpenedDueToPushNotification];
-
-            [self openNotificationScreenWithOptions:userInfo];
-            
-            if (completionHandler) {
-                [Note getNewNotificationswithContext:self.managedObjectContext success:^(BOOL hasNewNotes) {
-                    DDLogInfo(@"notification fetch completion handler completed with new notes: %@", hasNewNotes ? @"YES" : @"NO");
-                    if (hasNewNotes) {
-                        completionHandler(UIBackgroundFetchResultNewData);
-                    } else {
-                        completionHandler(UIBackgroundFetchResultNewData);
-                    }
-                } failure:^(NSError *error) {
-                    DDLogError(@"notification fetch completion handler failed with error: %@", error);
-                    completionHandler(UIBackgroundFetchResultFailed);
-                }];
-            }
-            break;
-        default:
-            break;
-    }
-}
-
-- (void)registerForPushNotifications {
-    if (isWPcomAuthenticated) {
-        [[UIApplication sharedApplication]
-         registerForRemoteNotificationTypes:(UIRemoteNotificationTypeBadge |
-                                             UIRemoteNotificationTypeSound |
-                                             UIRemoteNotificationTypeAlert)];
-    }
-}
-
-- (void)unregisterApnsToken {
-    NSString *token = [[NSUserDefaults standardUserDefaults] objectForKey:kApnsDeviceTokenPrefKey];
-    if( nil == token ) return; //no apns token available
-    
-    if(![[WordPressComApi sharedApi] hasCredentials])
-        return;
-    
-    NSString *authURL = kNotificationAuthURL;   	
-    WPAccount *account = [WPAccount defaultWordPressComAccount];
-	if (account) {
-#ifdef DEBUG
-        NSNumber *sandbox = [NSNumber numberWithBool:YES];
-#else
-        NSNumber *sandbox = [NSNumber numberWithBool:NO];
-#endif
-        WPXMLRPCClient *api = [[WPXMLRPCClient alloc] initWithXMLRPCEndpoint:[NSURL URLWithString:authURL]];
-        [api setAuthorizationHeaderWithToken:[[WordPressComApi sharedApi] authToken]];
-        [api callMethod:@"wpcom.mobile_push_unregister_token"
-             parameters:[NSArray arrayWithObjects:account.username, account.password, token, [[UIDevice currentDevice] wordpressIdentifier], @"apple", sandbox, nil]
-                success:^(AFHTTPRequestOperation *operation, id responseObject) {
-                    DDLogInfo(@"Unregistered token %@", token);
-                } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
-                    DDLogError(@"Couldn't unregister token: %@", [error localizedDescription]);
-                }];
-    }
-}
-
-- (void)openNotificationScreenWithOptions:(NSDictionary *)remoteNotif {
-    if ([remoteNotif objectForKey:@"type"]) { //new social PNs
-        DDLogInfo(@"Received new notification: %@", remoteNotif);
-        
-        if( self.panelNavigationController )
-            [self.panelNavigationController showNotificationsView:YES];
-        
-    } else if ([remoteNotif objectForKey:@"blog_id"] && [remoteNotif objectForKey:@"comment_id"]) {
-        DDLogInfo(@"Received notification: %@", remoteNotif);
-        MP6SidebarViewController *sidebar = (MP6SidebarViewController *)self.panelNavigationController.masterViewController;
-        [sidebar showCommentWithId:[[remoteNotif objectForKey:@"comment_id"] numericValue] blogId:[[remoteNotif objectForKey:@"blog_id"] numericValue]];
+    // If the notification object is not nil, then it's a login
+    if (notification.object) {
+        [ReaderPost fetchPostsWithCompletionHandler:nil];
     } else {
-        DDLogWarn(@"Got unsupported notification: %@", remoteNotif);
+        // No need to check for welcome screen unless we are signing out
+        [self showWelcomeScreenIfNeededAnimated:NO];
     }
-}
-
-#pragma mark -
-#pragma mark NSURLConnection callbacks
-
-- (void)connection:(NSURLConnection *)connection didReceiveData:(NSData *)data {
-	[statsData appendData: data];
-}
-
-- (void)connection:(NSURLConnection *)connection didFailWithError: (NSError *)error {
-	UIAlertView *errorAlert = [[UIAlertView alloc]
-							   initWithTitle: [error localizedDescription]
-							   message: [error localizedFailureReason]
-							   delegate:nil
-							   cancelButtonTitle:NSLocalizedString(@"OK", @"OK button label (shown in popups).")
-							   otherButtonTitles:nil];
-	[errorAlert show];
-}
-
-- (void) connectionDidFinishLoading: (NSURLConnection*) connection {
-	NSString *statsDataString = [[NSString alloc] initWithData:statsData encoding:NSUTF8StringEncoding];
-    statsDataString = [[statsDataString componentsSeparatedByCharactersInSet:[NSCharacterSet newlineCharacterSet]] objectAtIndex:0];
-	NSString *appversion = [[[NSBundle mainBundle] infoDictionary] objectForKey:@"CFBundleVersion"];
-    if ([statsDataString compare:appversion options:NSNumericSearch] > 0) {
-        DDLogInfo(@"There's a new version: %@", statsDataString);
-        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"Update Available", @"Popup title to highlight a new version of the app being available.")
-                                                        message:NSLocalizedString(@"A new version of WordPress for iOS is now available", @"Generic popup message to highlight a new version of the app being available.")
-                                                       delegate:self
-                                              cancelButtonTitle:NSLocalizedString(@"Dismiss", @"Dismiss button label.")
-                                              otherButtonTitles:NSLocalizedString(@"Update Now", @"Popup 'update' button to highlight a new version of the app being available. The button takes you to the app store on the device, and should be actionable."), nil];
-        alert.tag = 102;
-        [alert show];
-    }
-}
-
-- (void)connection:(NSURLConnection *)connection didReceiveResponse:(NSURLResponse *)response {
-}
-
-- (void)connection:(NSURLConnection *)connection didReceiveAuthenticationChallenge:(NSURLAuthenticationChallenge *)challenge {
-
-}
-
-- (void) handleAuthenticationOKForChallenge:(NSURLAuthenticationChallenge *)aChallenge withUser:(NSString*)username password:(NSString*)password {
-
-}
-
-- (void) handleAuthenticationCancelForChallenge: (NSURLAuthenticationChallenge *)aChallenge {
-
-}
-
-#pragma mark -
-#pragma mark UIAlertViewDelegate
-
-- (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex { 
-	[self setAlertRunning:NO];
-	
-    if (alertView.tag == 102) { // Update alert
-        if (buttonIndex == 1) {
-            [[UIApplication sharedApplication] openURL:[NSURL URLWithString:@"http://itunes.apple.com/us/app/wordpress/id335703880?mt=8&ls=1"]];
-        }
-    } else if (alertView.tag == kNotificationNewComment) {
-        if (buttonIndex == 1) {
-            [self openNotificationScreenWithOptions:lastNotificationInfo];
-             lastNotificationInfo = nil;
-        }
-    } else if (alertView.tag == kNotificationNewSocial) {
-        if (buttonIndex == 1) {
-            if( self.panelNavigationController )
-                [self.panelNavigationController showNotificationsView:YES];
-            lastNotificationInfo = nil;
-        }
-	} else {
-		//Need Help Alert
-		switch(buttonIndex) {
-			case 0: {
-				SupportViewController *supportViewController = [[SupportViewController alloc] init];
-                UINavigationController *aNavigationController = [[UINavigationController alloc] initWithRootViewController:supportViewController];
-                aNavigationController.navigationBar.translucent = NO;
-                if (IS_IPAD) {
-                    aNavigationController.modalTransitionStyle = UIModalTransitionStyleCrossDissolve;
-                    aNavigationController.modalPresentationStyle = UIModalPresentationFormSheet;
-                }
-                
-                UIViewController *presenter = self.panelNavigationController;
-                if (presenter.presentedViewController) {
-                    presenter = presenter.presentedViewController;
-                }
-                [presenter presentViewController:aNavigationController animated:YES completion:nil];
-
-				break;
-			}
-			case 1:
-				//ok
-				break;
-			default:
-				break;
-		}
-		
-	}
-}
-
-- (void)crashlytics:(Crashlytics *)crashlytics didDetectCrashDuringPreviousExecution:(id<CLSCrashReport>)crash
-{
-    WPFLogMethod();
-    NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
-    NSInteger crashCount = [defaults integerForKey:@"crashCount"];
-    crashCount += 1;
-    [defaults setInteger:crashCount forKey:@"crashCount"];
-    [defaults synchronize];
-    [WPMobileStats trackEventForSelfHostedAndWPCom:@"Crashed" properties:@{@"crash_id": crash.identifier}];
-}
-
-- (void)resetStatRelatedVariables
-{
-    [WPMobileStats clearPropertiesForAllEvents];
-    _hasRecordedApplicationOpenedEvent = NO;
 }
 
 @end

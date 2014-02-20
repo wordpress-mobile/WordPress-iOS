@@ -7,6 +7,7 @@
 //
 
 #import "WPTableViewSectionHeaderView.h"
+#import "WPTableViewCell.h"
 
 @interface WPTableViewSectionHeaderView() {
     UILabel *_titleLabel;
@@ -32,6 +33,7 @@ CGFloat const WPTableViewSectionHeaderViewBottomVerticalPadding = 8.0;
         _titleLabel.textColor = [WPStyleGuide whisperGrey];
         _titleLabel.backgroundColor = [UIColor clearColor];
         _titleLabel.shadowOffset = CGSizeMake(0.0, 0.0);
+        _fixedWidth = IS_IPAD ? WPTableViewFixedWidth : 0.0;
         [self addSubview:_titleLabel];
     }
     return self;
@@ -48,8 +50,12 @@ CGFloat const WPTableViewSectionHeaderViewBottomVerticalPadding = 8.0;
 {
     [super layoutSubviews];
     
+    CGFloat width = CGRectGetWidth(self.superview.frame);
+    if (self.fixedWidth > 0) {
+        width = MIN(self.fixedWidth, width);
+    }
     CGSize titleSize = [[self class] sizeForTitle:_titleLabel.text andWidth:CGRectGetWidth(self.bounds)];
-    _titleLabel.frame = CGRectMake(WPTableViewSectionHeaderViewStandardOffset, WPTableViewSectionHeaderViewTopVerticalPadding, titleSize.width, titleSize.height);
+    _titleLabel.frame = CGRectIntegral(CGRectMake(WPTableViewSectionHeaderViewStandardOffset + (CGRectGetWidth(self.superview.frame) - width) / 2.0, WPTableViewSectionHeaderViewTopVerticalPadding, width, titleSize.height));
 }
 
 + (CGFloat)heightForTitle:(NSString *)title andWidth:(CGFloat)width
@@ -64,7 +70,8 @@ CGFloat const WPTableViewSectionHeaderViewBottomVerticalPadding = 8.0;
 
 + (CGSize)sizeForTitle:(NSString *)title andWidth:(CGFloat)width
 {
-    return [title sizeWithFont:[WPStyleGuide tableviewSectionHeaderFont] constrainedToSize:CGSizeMake(width - 2 * WPTableViewSectionHeaderViewStandardOffset, CGFLOAT_MAX) lineBreakMode:NSLineBreakByWordWrapping];
+    CGFloat titleWidth = width - 2 * WPTableViewSectionHeaderViewStandardOffset;
+    return [title suggestedSizeWithFont:[WPStyleGuide tableviewSectionHeaderFont] width:titleWidth];
 }
 
 @end

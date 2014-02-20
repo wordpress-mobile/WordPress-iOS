@@ -9,6 +9,7 @@
 #import <Foundation/Foundation.h>
 #import "Blog.h"
 #import "DateUtils.h"
+#import "WPContentViewProvider.h"
 
 typedef enum {
     AbstractPostRemoteStatusPushing,    // Uploading post
@@ -17,7 +18,7 @@ typedef enum {
     AbstractPostRemoteStatusSync,       // Post uploaded
 } AbstractPostRemoteStatus;
 
-@interface BasePost : NSManagedObject {
+@interface BasePost : NSManagedObject<WPContentViewProvider> {
 
 }
 
@@ -38,7 +39,7 @@ typedef enum {
 @property (nonatomic) AbstractPostRemoteStatus remoteStatus;
 @property (nonatomic, strong) NSNumber * post_thumbnail;
 
-@property (readonly) BOOL hasChanges;
+@property (readonly) BOOL hasChanged;
 @property (nonatomic, assign) BOOL isFeaturedImageChanged;
 
 - (NSArray *)availableStatuses;

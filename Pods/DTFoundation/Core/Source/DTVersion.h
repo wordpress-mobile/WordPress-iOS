@@ -6,7 +6,7 @@
 //  Copyright (c) 2012 Cocoanetics. All rights reserved.
 
 /**
-  Class that represents a version number comprised of major, minor and maintenance number separarated by dots. For example "1.2.2".
+  Class that represents a version number comprised of major, minor and maintenance number separated by dots. For example "1.2.2".
   This encapsulation simplifies comparing versions against each other. Sub-numbers that are omitted on creating a `DTVersion` are assumed to be 0.
  */
 @interface DTVersion : NSObject

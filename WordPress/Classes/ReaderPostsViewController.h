@@ -7,9 +7,13 @@
 //
 
 #import <UIKit/UIKit.h>
-#import "PanelNavigationController.h"
 #import "WPTableViewController.h"
+#import "ReaderPostView.h"
 
-@interface ReaderPostsViewController : WPTableViewController <DetailViewDelegate>
+extern NSString * const ReaderTopicDidChangeNotification;
+
+@interface ReaderPostsViewController : WPTableViewController<ReaderPostViewDelegate>
+
+- (void)openPost:(NSUInteger*)postId onBlog:(NSUInteger)blogId;
 
 @end

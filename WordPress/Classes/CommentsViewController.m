@@ -11,9 +11,9 @@
 #import "CommentViewController.h"
 #import "WordPressAppDelegate.h"
 #import "ReachabilityUtils.h"
-#import "ReplyToCommentViewController.h"
 #import "UIColor+Helpers.h"
-#import "UIBarButtonItem+Styled.h"
+#import "WPTableViewSectionHeaderView.h"
+#import "Comment.h"
 
 @interface CommentsViewController ()
 
@@ -26,29 +26,22 @@
 CGFloat const CommentsStandardOffset = 16.0;
 CGFloat const CommentsSectionHeaderHeight = 24.0;
 
-- (id)init {
-    self = [super init];
-    if(self) {
-        self.title = NSLocalizedString(@"Comments", @"");
-    }
-    return self;
-}
-
 - (void)dealloc {
-    WPFLogMethod();
+    DDLogMethod();
 	[[NSNotificationCenter defaultCenter] removeObserver:self];
 }
 
-- (NSString *)noResultsText
+- (NSString *)noResultsTitleText
 {
     return NSLocalizedString(@"No comments yet", @"Displayed when the user pulls up the comments view and they have no comments");
 }
 
 - (void)viewDidLoad {
-    WPFLogMethod();
+    DDLogMethod();
     
     [super viewDidLoad];
     
+    self.title = NSLocalizedString(@"Comments", @"");
     [WPStyleGuide configureColorsForView:self.view andTableView:self.tableView];
     
     self.tableView.accessibilityLabel = @"Comments";       // required for UIAutomation for iOS 4
@@ -62,31 +55,30 @@ CGFloat const CommentsSectionHeaderHeight = 24.0;
     self.tableView.tableFooterView = [[UIView alloc] initWithFrame:CGRectZero];
 }
 
-- (UIColor *)backgroundColorForRefreshHeaderView
-{
-    return [WPStyleGuide itsEverywhereGrey];
-}
-
 - (void)viewWillAppear:(BOOL)animated {
-    WPFLogMethod();
+    DDLogMethod();
 
 	[super viewWillAppear:animated];
-    
-    self.panelNavigationController.delegate = self;
 }
 
 - (void)viewWillDisappear:(BOOL)animated {
-    WPFLogMethod();
+    DDLogMethod();
     
-    [super viewWillDisappear:animated];
-    
-    self.panelNavigationController.delegate = nil;
+    [super viewWillDisappear:animated];    
 }
 
+- (void)viewDidAppear:(BOOL)animated {
+    [super viewDidAppear:animated];
+    // Returning to the comments list while the reply-to keyboard is visible
+    // messes with the bottom contentInset. Let's reset it just in case.
+    UIEdgeInsets contentInset = self.tableView.contentInset;
+    contentInset.bottom = 0;
+    self.tableView.contentInset = contentInset;
+}
 
 - (void)configureCell:(NewCommentsTableViewCell *)cell atIndexPath:(NSIndexPath *)indexPath {
     Comment *comment = [self.resultsController objectAtIndexPath:indexPath];
-    cell.comment = comment;
+    cell.contentProvider = comment;
 }
 
 #pragma mark - DetailViewDelegate
@@ -101,7 +93,7 @@ CGFloat const CommentsSectionHeaderHeight = 24.0;
 #pragma mark Action Methods
 
 - (void)showCommentAtIndexPath:(NSIndexPath *)indexPath {
-    WPFLogMethodParam(indexPath);
+    DDLogMethodParam(indexPath);
 	Comment *comment;
     if (indexPath) {
         @try {
@@ -125,9 +117,9 @@ CGFloat const CommentsSectionHeaderHeight = 24.0;
         vc.comment = comment;
         [self.tableView selectRowAtIndexPath:indexPath animated:YES scrollPosition:UITableViewScrollPositionNone];
         
-        [self.panelNavigationController pushViewController:vc fromViewController:self animated:YES];
+        [self.navigationController pushViewController:vc animated:YES];
     } else {
-        [self.panelNavigationController popToViewController:self animated:YES];
+        [self.navigationController popToViewController:self animated:YES];
     }
 }
 
@@ -145,7 +137,7 @@ CGFloat const CommentsSectionHeaderHeight = 24.0;
                 [self willChangeValueForKey:@"wantedCommentId"];
                 _wantedCommentId = wantedCommentId;
                 [self didChangeValueForKey:@"wantedCommentId"];
-                [self syncItemsWithUserInteraction:NO];
+                [self syncItems];
             }
         }
     }
@@ -157,34 +149,13 @@ CGFloat const CommentsSectionHeaderHeight = 24.0;
     return comment;
 }
 
-- (UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section
-{
-    id <NSFetchedResultsSectionInfo> sectionInfo = [[self.resultsController sections] objectAtIndex:section];
-    NSString *title = [Comment titleForStatus:[sectionInfo name]];
-    
-    UIView *view = [[UIView alloc] initWithFrame:CGRectMake(0, 0, CGRectGetWidth(self.tableView.frame), CommentsSectionHeaderHeight)];
-    view.backgroundColor = [WPStyleGuide itsEverywhereGrey];
-
-    UILabel *label = [[UILabel alloc] init];
-    label.backgroundColor = [WPStyleGuide itsEverywhereGrey];
-    label.text = [title uppercaseString];
-    label.font = [WPStyleGuide labelFont];
-    [label sizeToFit];
-    CGFloat y = (CGRectGetHeight(view.frame) - CGRectGetHeight(label.frame))/2.0;
-    label.frame = CGRectMake(16, y, CGRectGetWidth(label.frame), CGRectGetHeight(label.frame));
-    [view addSubview:label];
-
-    return view;
-}
-
-- (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section
-{
-    return CommentsSectionHeaderHeight;
+- (NSString *)tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section {
+    return nil;
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
     Comment *comment = [self.resultsController objectAtIndexPath:indexPath];
-    return [NewCommentsTableViewCell rowHeightForComment:comment andMaxWidth:CGRectGetWidth(self.tableView.bounds)];
+    return [NewCommentsTableViewCell rowHeightForContentProvider:comment andWidth:WPTableViewFixedWidth];
 }
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
@@ -206,12 +177,12 @@ CGFloat const CommentsSectionHeaderHeight = 24.0;
 }
 
 - (NSFetchRequest *)fetchRequest {
-    NSFetchRequest *fetchRequest = [super fetchRequest];
-    [fetchRequest setPredicate:[NSPredicate predicateWithFormat:@"(blog == %@ AND status != %@)", self.blog, @"spam"]];
-    NSSortDescriptor *sortDescriptorStatus = [[NSSortDescriptor alloc] initWithKey:@"status" ascending:NO];
-    NSSortDescriptor *sortDescriptorDate = [[NSSortDescriptor alloc] initWithKey:@"dateCreated" ascending:NO];
-    NSArray *sortDescriptors = [[NSArray alloc] initWithObjects:sortDescriptorStatus, sortDescriptorDate, nil];
-    [fetchRequest setSortDescriptors:sortDescriptors];
+    NSFetchRequest *fetchRequest = [NSFetchRequest fetchRequestWithEntityName:[self entityName]];
+    fetchRequest.predicate = [NSPredicate predicateWithFormat:@"(blog == %@ AND status != %@)", self.blog, @"spam"];
+    NSSortDescriptor *sortDescriptorStatus = [NSSortDescriptor sortDescriptorWithKey:@"status" ascending:NO];
+    NSSortDescriptor *sortDescriptorDate = [NSSortDescriptor sortDescriptorWithKey:@"dateCreated" ascending:NO];
+    fetchRequest.sortDescriptors = @[sortDescriptorStatus, sortDescriptorDate];
+    fetchRequest.fetchBatchSize = 10;
     return fetchRequest;
 }
 
@@ -219,16 +190,11 @@ CGFloat const CommentsSectionHeaderHeight = 24.0;
     return @"status";
 }
 
-- (UITableViewCell *)newCell {
-    static NSString *cellIdentifier = @"CommentCell";
-    UITableViewCell *cell = [self.tableView dequeueReusableCellWithIdentifier:cellIdentifier];
-    if (cell == nil) {
-        cell = [[NewCommentsTableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:cellIdentifier];
-    }
-    return cell;
+- (Class)cellClass {
+    return [NewCommentsTableViewCell class];
 }
 
-- (void)syncItemsWithUserInteraction:(BOOL)userInteraction success:(void (^)())success failure:(void (^)(NSError *))failure {
+- (void)syncItemsViaUserInteraction:(BOOL)userInteraction success:(void (^)())success failure:(void (^)(NSError *))failure {
     [self.blog syncCommentsWithSuccess:success failure:failure];
 }
 

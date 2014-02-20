@@ -8,8 +8,10 @@
 
 #import "WPWebBridge.h"
 #import <CommonCrypto/CommonDigest.h>
-#import "JSONKit.h"
 #import "UIDevice+WordPressIdentifier.h"
+
+static NSString *const HybridTokenSetting = @"WPWebAppHybridAuthToken";
+static NSString *const AuthorizedHybridHost = @"en.wordpress.com";
 
 @implementation WPWebBridge
 
@@ -50,12 +52,12 @@
 }
 
 + (BOOL) isValidHybridURL:(NSURL *)url {
-    return [url.host isEqualToString:kAuthorizedHybridHost];
+    return [url.host isEqualToString:AuthorizedHybridHost];
 }
 
 - (BOOL)requestIsValidHybridRequest:(NSURLRequest *)request {
     
-    return [request.URL.host isEqualToString:kAuthorizedHybridHost];
+    return [request.URL.host isEqualToString:AuthorizedHybridHost];
     
 }
 
@@ -67,7 +69,7 @@
 + (NSString *)hybridAuthToken
 {
     NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
-    NSString *token = [defaults stringForKey:kHybridTokenSetting];
+    NSString *token = [defaults stringForKey:HybridTokenSetting];
     if (token == nil)
     {
         NSString *concat = [NSString stringWithFormat:@"%@--%d", [[UIDevice currentDevice] wordpressIdentifier], arc4random()];
@@ -79,7 +81,7 @@
             [hash appendFormat:@"%02X", result[i]];
         token = [hash lowercaseString];
         DDLogInfo(@"Generating new hybrid token: %@", token);
-        [defaults setValue:token forKey:kHybridTokenSetting];
+        [defaults setValue:token forKey:HybridTokenSetting];
         [defaults synchronize];
         
     }
@@ -128,7 +130,7 @@
         return;
     }
     
-    id payload = [payload_data objectFromJSONString];
+    id payload = [NSJSONSerialization JSONObjectWithData:[payload_data dataUsingEncoding:NSUTF8StringEncoding] options:0 error:nil];
     
     [payload enumerateObjectsUsingBlock:^(id obj, NSUInteger idx, BOOL *stop) {
         NSDictionary *action = (NSDictionary *)obj;

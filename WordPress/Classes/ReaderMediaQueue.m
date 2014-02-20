@@ -135,7 +135,7 @@ typedef void (^ReaderMediaViewFailureBlock)(ReaderMediaView *readerMediaView, NS
 
 #pragma mark - WPTableImageSourceDelegate Methods
 
-- (void)tableImageSource:(WPTableImageSource *)tableImageSource imageFailedForIndexPath:(NSIndexPath *)indexPath {
+- (void)tableImageSource:(WPTableImageSource *)tableImageSource imageFailedForIndexPath:(NSIndexPath *)indexPath error:(NSError *)error {
     self.counter++;
     ReaderMediaQueueItem *item = [self.activeQueue objectAtIndex:indexPath.row];
     item.failedToLoad = YES;
@@ -166,9 +166,11 @@ typedef void (^ReaderMediaViewFailureBlock)(ReaderMediaView *readerMediaView, NS
             if (item.failure) {
                 item.failure(item.mediaView, nil); //TODO: return the actual error as well?
             }
-        } else if (item.success) {
+        } else {
             [item.mediaView setImage:item.image];
-            item.success(item.mediaView);
+            if (item.success) {
+                item.success(item.mediaView);
+            }
         }
         // clear blocks because paranoid
         item.success = nil;

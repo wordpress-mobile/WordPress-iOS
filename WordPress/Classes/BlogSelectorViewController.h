@@ -1,25 +1,19 @@
-//
-//  BlogSelectorViewController.h
-//  WordPress
-//
-//  Created by Jorge Bernal on 4/6/11.
-//  Copyright 2011 WordPress. All rights reserved.
-//
+/*
+ * BlogSelectorViewController.h
+ *
+ * Copyright (c) 2013 WordPress. All rights reserved.
+ *
+ * Licensed under GNU General Public License 2.0.
+ * Some rights reserved. See license.txt
+ */
+
 
 #import <UIKit/UIKit.h>
-#import "Blog.h"
 
-@class BlogSelectorViewController;
-@protocol BlogSelectorViewControllerDelegate <NSObject>
+@interface BlogSelectorViewController : UITableViewController <NSFetchedResultsControllerDelegate>
 
-- (void)blogSelectorViewController:(BlogSelectorViewController *)blogSelector didSelectBlog:(Blog *)blog;
-
-@end
-
-@interface BlogSelectorViewController : UITableViewController<NSFetchedResultsControllerDelegate> {
-    NSFetchedResultsController *resultsController;
-}
-@property (nonatomic, weak) id<BlogSelectorViewControllerDelegate> delegate;
-@property (nonatomic, strong) Blog *selectedBlog;
+- (id)initWithSelectedBlogObjectID:(NSManagedObjectID *)objectID
+                selectedCompletion:(void (^)(NSManagedObjectID *selectedObjectID))selected
+                  cancelCompletion:(void (^)())cancel;
 
 @end

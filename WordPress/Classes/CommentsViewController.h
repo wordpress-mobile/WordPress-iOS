@@ -10,9 +10,8 @@
 #import "CommentsTableViewDelegate.h"
 #import "WPTableViewController.h"
 #import "Blog.h"
-#import "ReplyToCommentViewController.h"
 
-@interface CommentsViewController : WPTableViewController <CommentsTableViewDelegate, DetailViewDelegate> {
+@interface CommentsViewController : WPTableViewController <CommentsTableViewDelegate> {
 @private
 }
 

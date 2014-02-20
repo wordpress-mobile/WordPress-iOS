@@ -7,6 +7,9 @@
 //
 
 #import "PostSettingsSelectionViewController.h"
+#import "WPStyleGuide.h"
+#import "NSString+XMLExtensions.h"
+#import "WPTableViewCell.h"
 
 @interface PostSettingsSelectionViewController ()
 
@@ -59,6 +62,11 @@
     return self;
 }
 
+- (void)viewDidLoad {
+    [super viewDidLoad];
+    [WPStyleGuide configureColorsForView:self.view andTableView:self.tableView];
+}
+
 #pragma mark -
 #pragma mark Table view data source
 
@@ -79,11 +87,11 @@
     
     UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier];
     if (cell == nil) {
-        cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleValue1 reuseIdentifier:CellIdentifier];
+        cell = [[WPTableViewCell alloc] initWithStyle:UITableViewCellStyleValue1 reuseIdentifier:CellIdentifier];
     }
     cell.accessoryType = UITableViewCellAccessoryNone;
     
-    cell.textLabel.text = [self.titles objectAtIndex:indexPath.row];
+    cell.textLabel.text = [NSString decodeXMLCharactersIn:[self.titles objectAtIndex:indexPath.row]];
     
     NSString *val = [self.values objectAtIndex:indexPath.row];
     if ([self.currentValue isEqual:val]) {

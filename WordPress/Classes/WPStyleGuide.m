@@ -28,20 +28,27 @@
 
 + (UIFont *)postTitleFont
 {
-    return [UIFont fontWithName:@"OpenSans" size:18.0];
+    return [UIFont fontWithName:@"OpenSans" size:16.0];
 }
 
 + (UIFont *)postTitleFontBold
 {
-    return [UIFont fontWithName:@"OpenSans-Bold" size:18.0];    
+    return [UIFont fontWithName:@"OpenSans-Bold" size:16.0];
 }
 
 + (NSDictionary *)postTitleAttributes
 {
     NSMutableParagraphStyle *paragraphStyle = [[NSMutableParagraphStyle alloc] init];
-    paragraphStyle.minimumLineHeight = 20;
-    paragraphStyle.maximumLineHeight = 20;
+    paragraphStyle.minimumLineHeight = 19;
+    paragraphStyle.maximumLineHeight = 19;
     return @{NSParagraphStyleAttributeName: paragraphStyle, NSFontAttributeName : [self postTitleFont]};
+}
+
++ (NSDictionary *)postTitleAttributesBold {
+    NSMutableParagraphStyle *paragraphStyle = [[NSMutableParagraphStyle alloc] init];
+    paragraphStyle.minimumLineHeight = 19;
+    paragraphStyle.maximumLineHeight = 19;
+    return @{NSParagraphStyleAttributeName: paragraphStyle, NSFontAttributeName : [self postTitleFontBold]};
 }
 
 + (UIFont *)subtitleFont
@@ -120,8 +127,8 @@
 {
     return @{
              DTDefaultFontFamily:@"Open Sans",
-             DTDefaultLineHeightMultiplier:@1.5,
-             DTDefaultFontSize:@16,
+             DTDefaultLineHeightMultiplier:(IS_IPAD ? @1.6 : @1.4),
+             DTDefaultFontSize:(IS_IPAD ? @18 : @16),
              DTDefaultTextColor:[WPStyleGuide littleEddieGrey],
              DTDefaultLinkColor:[WPStyleGuide baseLighterBlue],
              DTDefaultLinkHighlightColor:[WPStyleGuide midnightBlue],
@@ -202,6 +209,16 @@
 	return [UIColor colorWithRed:16/255.0f green:16/255.0f blue:16/255.0f alpha:1.0f];
 }
 
++ (UIColor *)textFieldPlaceholderGrey
+{
+    return [UIColor colorWithRed:184.0f/255.0f green:184.0f/255.0f blue:184.0f/255.0f alpha:1.0f];
+}
+
++ (UIColor *)validationErrorRed
+{
+    return [UIColor colorWithRed:0.7 green:0.0 blue:0.0 alpha:1.0];
+}
+
 + (UIColor *)tableViewActionColor
 {
     return [WPStyleGuide baseLighterBlue];
@@ -212,38 +229,32 @@
     return [WPStyleGuide baseLighterBlue];
 }
 
++ (UIColor *)keyboardColor {
+    if (IS_IPAD) {
+        return [UIColor colorWithRed:207.0f/255.0f green:210.0f/255.0f blue:213.0f/255.0f alpha:1.0];
+    } else {
+        return [UIColor colorWithRed:220.0f/255.0f green:223.0f/255.0f blue:226.0f/255.0f alpha:1.0];
+    }
+}
+
 + (UIBarButtonItemStyle)barButtonStyleForDone
 {
-    if (IS_IOS7)
-        return UIBarButtonItemStylePlain;
-    else
-        return UIBarButtonItemStyleDone;
+    return UIBarButtonItemStylePlain;
 }
 
 + (UIBarButtonItemStyle)barButtonStyleForBordered
 {
-    if (IS_IOS7)
-        return UIBarButtonItemStylePlain;
-    else
-        return UIBarButtonItemStyleBordered;
+    return UIBarButtonItemStylePlain;
 }
 
 + (void)setLeftBarButtonItemWithCorrectSpacing:(UIBarButtonItem *)barButtonItem forNavigationItem:(UINavigationItem *)navigationItem
 {
-    if (IS_IOS7) {
-        navigationItem.leftBarButtonItems = @[[self spacerForNavigationBarButtonItems], barButtonItem];
-    } else {
-        navigationItem.leftBarButtonItem = barButtonItem;
-    }
+    navigationItem.leftBarButtonItems = @[[self spacerForNavigationBarButtonItems], barButtonItem];
 }
 
 + (void)setRightBarButtonItemWithCorrectSpacing:(UIBarButtonItem *)barButtonItem forNavigationItem:(UINavigationItem *)navigationItem
 {
-    if (IS_IOS7) {
-        navigationItem.rightBarButtonItems = @[[self spacerForNavigationBarButtonItems], barButtonItem];
-    } else {
-        navigationItem.rightBarButtonItem = barButtonItem;
-    }
+    navigationItem.rightBarButtonItems = @[[self spacerForNavigationBarButtonItems], barButtonItem];
 }
 
 + (UIBarButtonItem *)spacerForNavigationBarButtonItems
@@ -262,15 +273,31 @@
 + (void)configureTableViewCell:(UITableViewCell *)cell
 {
     cell.textLabel.font = [self tableviewTextFont];
+    [cell.textLabel sizeToFit];
+
     cell.detailTextLabel.font = [self tableviewSubtitleFont];
+    [cell.detailTextLabel sizeToFit];
+    
     cell.textLabel.textColor = [self whisperGrey];
     cell.detailTextLabel.textColor = [self whisperGrey];
+    if ([cell isKindOfClass:[UITableViewTextFieldCell class]]) {
+        UITableViewTextFieldCell *tfcell = (UITableViewTextFieldCell *)cell;
+        [tfcell.textField setTextColor:[self whisperGrey]];
+    }
 }
 
 + (void)configureTableViewTextCell:(UITableViewTextFieldCell *)cell
 {
     [self configureTableViewCell:cell];
-    cell.textField.font = [self tableviewTextFont];
+    cell.textField.font = [self tableviewSubtitleFont];
+    
+    if (cell.textField.enabled) {
+        cell.textField.textColor = [self darkAsNightGrey];
+        cell.textField.textAlignment = NSTextAlignmentLeft;
+    } else {
+        cell.textField.textColor = [self textFieldPlaceholderGrey];
+        cell.textField.textAlignment = NSTextAlignmentRight;
+    }
 }
 
 + (void)configureColorsForView:(UIView *)view andTableView:(UITableView *)tableView

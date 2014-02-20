@@ -1,20 +1,18 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="4504" systemVersion="12E55" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="4514" systemVersion="13A598" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none">
     <dependencies>
-        <deployment version="784" defaultVersion="1536" identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="3734.1"/>
+        <deployment version="784" defaultVersion="1792" identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="3747"/>
     </dependencies>
     <objects>
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="WPAddCategoryViewController">
             <connections>
-                <outlet property="cancelButtonItem" destination="5" id="53"/>
-                <outlet property="catTableView" destination="3" id="17"/>
-                <outlet property="newCatNameCell" destination="10" id="14"/>
-                <outlet property="newCatNameField" destination="12" id="15"/>
+                <outlet property="createCatNameCell" destination="10" id="dY5-v9-QvZ"/>
+                <outlet property="createCatNameField" destination="12" id="s3G-q9-BSG"/>
                 <outlet property="parentCatNameCell" destination="11" id="13"/>
                 <outlet property="parentCatNameField" destination="58" id="59"/>
                 <outlet property="parentCatNameLabel" destination="29" id="61"/>
-                <outlet property="saveButtonItem" destination="24" id="54"/>
+                <outlet property="tableView" destination="3" id="62d-T5-G5c"/>
                 <outlet property="view" destination="1" id="18"/>
             </connections>
         </placeholder>
@@ -35,7 +33,7 @@
             </subviews>
             <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
         </view>
-        <tableViewCell opaque="NO" clearsContextBeforeDrawing="NO" contentMode="scaleToFill" selectionStyle="blue" indentationWidth="10" reuseIdentifier="newCategoryCell" id="10" userLabel="newcatname">
+        <tableViewCell opaque="NO" clearsContextBeforeDrawing="NO" contentMode="scaleToFill" selectionStyle="blue" indentationWidth="10" reuseIdentifier="newCategoryCell" id="10" userLabel="newcatname" customClass="WPTableViewCell">
             <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
             <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="10" id="J1u-Ns-mAI">
@@ -55,7 +53,7 @@
             </tableViewCellContentView>
             <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
         </tableViewCell>
-        <tableViewCell opaque="NO" clearsContextBeforeDrawing="NO" contentMode="scaleToFill" selectionStyle="blue" accessoryType="disclosureIndicator" indentationWidth="10" reuseIdentifier="parentCategoryCell" id="11" userLabel="parentcatname">
+        <tableViewCell opaque="NO" clearsContextBeforeDrawing="NO" contentMode="scaleToFill" selectionStyle="blue" accessoryType="disclosureIndicator" indentationWidth="10" reuseIdentifier="parentCategoryCell" id="11" userLabel="parentcatname" customClass="WPTableViewCell">
             <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
             <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="11" id="9U4-4L-gH1">
@@ -80,15 +78,5 @@
             </tableViewCellContentView>
             <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
         </tableViewCell>
-        <barButtonItem title="Save" style="done" id="24" userLabel="save">
-            <connections>
-                <action selector="saveAddCategory:" destination="-1" id="56"/>
-            </connections>
-        </barButtonItem>
-        <barButtonItem title="Cancel" id="5" userLabel="cancel">
-            <connections>
-                <action selector="cancelAddCategory:" destination="-1" id="57"/>
-            </connections>
-        </barButtonItem>
     </objects>
 </document>

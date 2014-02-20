@@ -17,6 +17,7 @@
 + (UIFont *)postTitleFont;
 + (UIFont *)postTitleFontBold;
 + (NSDictionary *)postTitleAttributes;
++ (NSDictionary *)postTitleAttributesBold;
 + (UIFont *)subtitleFont;
 + (NSDictionary *)subtitleAttributes;
 + (UIFont *)subtitleFontItalic;
@@ -46,9 +47,13 @@
 + (UIColor *)readGrey;
 + (UIColor *)itsEverywhereGrey;
 + (UIColor *)darkAsNightGrey;
++ (UIColor *)textFieldPlaceholderGrey;
++ (UIColor *)validationErrorRed;
 
 + (UIColor *)tableViewActionColor;
 + (UIColor *)buttonActionColor;
+
++ (UIColor *)keyboardColor;
 
 // Bar Button Styles
 + (UIBarButtonItemStyle)barButtonStyleForDone;
