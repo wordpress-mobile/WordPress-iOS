@@ -111,7 +111,7 @@ NSString *const NotificationsDeviceToken = @"apnsDeviceToken";
             break;
             
         case UIApplicationStateBackground:
-#warning TODO: FIXME
+//#warning TODO: FIXME
 			completionHandler(UIBackgroundFetchResultNoData);
 //            if (completionHandler) {
 //                [Note fetchNewNotificationsWithSuccess:^(BOOL hasNewNotes) {

@@ -924,16 +924,12 @@ static NSString *const CameraPlusImagesNotification = @"CameraPlusImagesNotifica
 #pragma mark - Simperium
 
 - (void)setupSimperium {
-	self.simperium = [[Simperium alloc] initWithRootViewController:self.tabBarController];
-	self.simperium.authenticationEnabled = NO;
-	self.simperium.verboseLoggingEnabled = YES;
-	
 	ContextManager* manager = [ContextManager sharedInstance];
-	[self.simperium startWithAppID:[WordPressComApiCredentials simperiumAppId]
-							APIKey:[WordPressComApiCredentials simperiumAPIKey]
-							 model:manager.managedObjectModel
-						   context:manager.mainContext
-					   coordinator:manager.persistentStoreCoordinator];
+	self.simperium = [[Simperium alloc] initWithModel:manager.managedObjectModel
+											  context:manager.mainContext
+										  coordinator:manager.persistentStoreCoordinator];
+	
+	self.simperium.verboseLoggingEnabled = YES;
 }
 
 - (void)loginSimperium {
@@ -945,7 +941,8 @@ static NSString *const CameraPlusImagesNotification = @"CameraPlusImagesNotifica
 	}
 	
 	NSString *simperiumToken = [NSString stringWithFormat:@"WPCC/%@/%@", apiKey, account.authToken];
-	[self.simperium authenticateWithToken:simperiumToken];
+	NSString *simperiumAppID = [WordPressComApiCredentials simperiumAppId];
+	[self.simperium authenticateWithAppID:simperiumAppID token:simperiumToken];
 }
 
 - (void)logoutSimperiumAndResetNotifications {
