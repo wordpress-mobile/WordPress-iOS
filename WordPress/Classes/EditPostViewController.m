@@ -391,7 +391,7 @@ CGFloat const EPVCTextViewTopPadding = 7.0f;
         self.tapToStartWritingLabel.textColor = [WPStyleGuide textFieldPlaceholderGrey];
         self.tapToStartWritingLabel.isAccessibilityElement = NO;
     }
-    [self.view addSubview:self.tapToStartWritingLabel];
+    [self.textView addSubview:self.tapToStartWritingLabel];
     
     // Update the textView's textContainerInsets so text does not overlap content.
     CGFloat left = EPVCTextViewOffset;
