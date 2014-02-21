@@ -122,8 +122,6 @@ NSString * const NotificationsJetpackInformationURL = @"http://jetpack.me/about/
     if (self.tableView.contentOffset.y == 0) {
         [self pruneOldNotes];
     }
-
-    [self clearNotificationsBadgeAndSyncItems];
 }
 
 - (void)viewDidDisappear:(BOOL)animated {
@@ -176,7 +174,6 @@ NSString * const NotificationsJetpackInformationURL = @"http://jetpack.me/about/
 #pragma mark - Public methods
 
 - (void)clearNotificationsBadgeAndSyncItems {
-    [UIApplication sharedApplication].applicationIconBadgeNumber = 0;
     if (![self isSyncing]) {
         [self syncItems];
     }
@@ -294,6 +291,8 @@ NSString * const NotificationsJetpackInformationURL = @"http://jetpack.me/about/
     }
     
     [Note fetchNotificationsSince:timestamp success:^{
+        [UIApplication sharedApplication].applicationIconBadgeNumber = 0;
+
         [self updateSyncDate];
         if (success) {
             success();
@@ -305,21 +304,12 @@ NSString * const NotificationsJetpackInformationURL = @"http://jetpack.me/about/
     return YES;
 }
 
-- (BOOL)isSyncing
-{
+- (BOOL)isSyncing {
     return _retrievingNotifications;
 }
 
 - (void)setSyncing:(BOOL)value {
     _retrievingNotifications = value;
-}
-
-- (void)syncItems
-{
-    // Check to see if there is a WordPress.com account before attempting to fetch notifications
-    if ([WPAccount defaultWordPressComAccount]) {
-        [super syncItems];
-    }
 }
 
 - (void)loadMoreWithSuccess:(void (^)())success failure:(void (^)(NSError *))failure {

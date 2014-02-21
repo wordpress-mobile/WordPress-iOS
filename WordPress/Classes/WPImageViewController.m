@@ -11,11 +11,6 @@
 
 @interface WPImageViewController ()<UIScrollViewDelegate>
 
-@property (nonatomic, strong) UIScrollView *scrollView;
-@property (nonatomic, strong) UIImageView *imageView;
-@property (nonatomic, strong) UIImage *image;
-@property (nonatomic, strong) NSURL *url;
-
 - (void)handleImageTapped:(UITapGestureRecognizer *)tgr;
 - (void)handleImageDoubleTapped:(UITapGestureRecognizer *)tgr;
 
@@ -84,6 +79,14 @@
 	[tgr1 requireGestureRecognizerToFail:tgr2];
     [_scrollView addGestureRecognizer:tgr1];
 	
+    [self loadImage];
+}
+
+- (void)loadImage {
+    if (self.isLoadingImage) {
+        return;
+    }
+    
 	if(self.image != nil) {
 		_imageView.image = self.image;
 		[_imageView sizeToFit];
@@ -91,7 +94,8 @@
 		[self centerImage];
 		
 	} else if(self.url) {
-		
+		self.isLoadingImage = YES;
+        
 		__weak UIImageView *imageViewRef = _imageView;
 		__weak UIScrollView *scrollViewRef = _scrollView;
 		__weak WPImageViewController *selfRef = self;
@@ -102,23 +106,24 @@
 									  [imageViewRef sizeToFit];
 									  scrollViewRef.contentSize = imageViewRef.image.size;
 									  [selfRef centerImage];
+                                      selfRef.isLoadingImage = NO;
 								  } failure:^(NSURLRequest *request, NSHTTPURLResponse *response, NSError *error) {
-									  // TODO: doH!
+                                      DDLogError(@"Error loading image: %@", error);
+                                      selfRef.isLoadingImage = NO;
 								  }];
 	}
 }
 
-
 - (void)viewWillAppear:(BOOL)animated {
 	[super viewWillAppear:animated];
 
-    [[UIApplication sharedApplication] setStatusBarHidden:YES withAnimation:(animated ? UIStatusBarAnimationFade : UIStatusBarAnimationNone)];
+    [self hideBars:YES animated:animated];
 	[self centerImage];
 }
 
 - (void)viewWillDisappear:(BOOL)animated {
     [super viewWillDisappear:animated];
-    [[UIApplication sharedApplication] setStatusBarHidden:NO withAnimation:(animated ? UIStatusBarAnimationFade : UIStatusBarAnimationNone)];
+    [self hideBars:NO animated:animated];
 }
 
 - (void)willAnimateRotationToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation duration:(NSTimeInterval)duration {
@@ -132,6 +137,12 @@
 }
 
 #pragma mark - Instance Methods
+
+- (void)hideBars:(BOOL)hide animated:(BOOL)animated {
+    
+    [[UIApplication sharedApplication] setStatusBarHidden:hide withAnimation:(animated ? UIStatusBarAnimationFade : UIStatusBarAnimationNone)];
+    
+}
 
 - (void)centerImage {
 	CGFloat scaleWidth = _scrollView.frame.size.width / _imageView.image.size.width;

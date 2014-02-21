@@ -265,7 +265,6 @@ static NSString *const CameraPlusImagesNotification = @"CameraPlusImagesNotifica
     DDLogInfo(@"%@ %@", self, NSStringFromSelector(_cmd));
     
     [WPMobileStats recordAppOpenedForEvent:StatsEventAppOpened];
-    [self clearBadgeAndSyncItemsIfNotificationsScreenActive];
 }
 
 - (BOOL)application:(UIApplication *)application shouldSaveApplicationState:(NSCoder *)coder {
@@ -300,13 +299,6 @@ static NSString *const CameraPlusImagesNotification = @"CameraPlusImagesNotifica
 }
 
 #pragma mark - Custom methods
-
-- (void)clearBadgeAndSyncItemsIfNotificationsScreenActive {
-    NSInteger notificationsTabIndex = [[self.tabBarController viewControllers] indexOfObject:self.notificationsViewController.navigationController];
-    if ([self.tabBarController selectedIndex] == notificationsTabIndex) {
-       [self.notificationsViewController clearNotificationsBadgeAndSyncItems];
-    }
-}
 
 - (void)showWelcomeScreenIfNeededAnimated:(BOOL)animated {
     if ([self noBlogsAndNoWordPressDotComAccount]) {
@@ -358,6 +350,7 @@ static NSString *const CameraPlusImagesNotification = @"CameraPlusImagesNotifica
     [[UIToolbar appearance] setBarTintColor:[WPStyleGuide newKidOnTheBlockBlue]];
     [[UISwitch appearance] setOnTintColor:[WPStyleGuide newKidOnTheBlockBlue]];
     [[UIApplication sharedApplication] setStatusBarStyle:UIStatusBarStyleLightContent];
+    [[UITabBarItem appearance] setTitleTextAttributes:@{NSFontAttributeName: [UIFont fontWithName:@"OpenSans" size:10.0]} forState:UIControlStateNormal];
 
     [[UINavigationBar appearanceWhenContainedIn:[UIReferenceLibraryViewController class], nil] setBackgroundImage:nil forBarMetrics:UIBarMetricsDefault];
     [[UINavigationBar appearanceWhenContainedIn:[UIReferenceLibraryViewController class], nil] setBarTintColor:[WPStyleGuide newKidOnTheBlockBlue]];
