@@ -344,10 +344,8 @@
 - (void)setAvatar:(UIImage *)avatar {
     if (avatar) {
         self.avatarImageView.image = avatar;
-    } else if ([self.post isWPCom]) {
-        self.avatarImageView.image = [UIImage imageNamed:@"wpcom_blavatar"];
     } else {
-        self.avatarImageView.image = [UIImage imageNamed:@"wporg_blavatar"];
+        self.avatarImageView.image = [UIImage imageNamed:@"gravatar-reader"];
     }
 }
 
