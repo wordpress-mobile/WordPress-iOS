@@ -16,6 +16,8 @@
 #import "BlogSelectorViewController.h"
 #import "WPBlogSelectorButton.h"
 
+NSString *const WPEditorNavigationRestorationID = @"WPEditorNavigationRestorationID";
+NSString *const WPAbstractPostRestorationKey = @"WPAbstractPostRestorationKey";
 NSString *const EditPostViewControllerLastUsedBlogURL = @"EditPostViewControllerLastUsedBlogURL";
 CGFloat const EPVCTextfieldHeight = 44.0f;
 CGFloat const EPVCCellHeight = 44.0f;
@@ -36,6 +38,34 @@ CGFloat const EPVCTextViewTopPadding = 7.0f;
 @end
 
 @implementation EditPostViewController
+
++ (UIViewController *)viewControllerWithRestorationIdentifierPath:(NSArray *)identifierComponents coder:(NSCoder *)coder {
+    
+    if ([[identifierComponents lastObject] isEqualToString:WPEditorNavigationRestorationID]) {
+        UINavigationController *navController = [[UINavigationController alloc] init];
+        navController.restorationIdentifier = WPEditorNavigationRestorationID;
+        return navController;
+    }
+    
+    NSString *postID = [coder decodeObjectForKey:WPAbstractPostRestorationKey];
+    if (!postID) {
+        return nil;
+    }
+    
+    NSManagedObjectContext *context = [[ContextManager sharedInstance] mainContext];
+    NSManagedObjectID *objectID = [context.persistentStoreCoordinator managedObjectIDForURIRepresentation:[NSURL URLWithString:postID]];
+    if (!objectID) {
+        return nil;
+    }
+    
+    NSError *error = nil;
+    AbstractPost *restoredPost = (AbstractPost *)[context existingObjectWithID:objectID error:&error];
+    if (error || !restoredPost) {
+        return nil;
+    }
+    
+    return [[self alloc] initWithPost:restoredPost];
+}
 
 + (Blog *)blogForNewDraft {
     // Try to get the last used blog, if there is one.
@@ -71,6 +101,12 @@ CGFloat const EPVCTextViewTopPadding = 7.0f;
     return [results firstObject];
 }
 
+- (void)encodeRestorableStateWithCoder:(NSCoder *)coder {
+    [coder encodeObject:[[self.post.objectID URIRepresentation] absoluteString] forKey:WPAbstractPostRestorationKey];
+    [super encodeRestorableStateWithCoder:coder];
+}
+
+
 - (void)dealloc {
     _failedMediaAlertView.delegate = nil;
     [[NSNotificationCenter defaultCenter] removeObserver:self];
@@ -79,6 +115,8 @@ CGFloat const EPVCTextViewTopPadding = 7.0f;
 - (id)initWithTitle:(NSString *)title andContent:(NSString *)content andTags:(NSString *)tags andImage:(NSString *)image {
     self = [self initWithDraftForLastUsedBlog];
     if (self) {
+        self.restorationIdentifier = NSStringFromClass([self class]);
+        self.restorationClass = [self class];
         Post *post = (Post *)self.post;
         post.postTitle = title;
         post.content = content;
@@ -107,6 +145,8 @@ CGFloat const EPVCTextViewTopPadding = 7.0f;
 - (id)initWithPost:(AbstractPost *)post {
     self = [self initWithStyle:UITableViewStylePlain];
     if (self) {
+        self.restorationIdentifier = NSStringFromClass([self class]);
+        self.restorationClass = [self class];
         _post = post;
         [[NSUserDefaults standardUserDefaults] setObject:post.blog.url forKey:EditPostViewControllerLastUsedBlogURL];
         [[NSUserDefaults standardUserDefaults] synchronize];
@@ -156,6 +196,11 @@ CGFloat const EPVCTextViewTopPadding = 7.0f;
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(keyboardDidShow:) name:UIKeyboardDidShowNotification object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(keyboardWillHide:) name:UIKeyboardWillHideNotification object:nil];
 
+    // Make sure toolbar is the right shade.
+    // When returning from stateRestoration it might match the navbar.
+    UIToolbar *toolbar = self.navigationController.toolbar;
+    toolbar.barTintColor = [WPStyleGuide littleEddieGrey];
+    
     if(self.navigationController.navigationBarHidden) {
         [self.navigationController setNavigationBarHidden:NO animated:YES];
     }
