@@ -376,6 +376,15 @@ static NSInteger const ImageSizeLargeHeight = 480;
     return password;
 }
 
+- (BOOL)supportsFeaturedImages {
+    id hasSupport = [self getOptionValue:@"post_thumbnail"];
+    if (hasSupport) {
+        return [hasSupport boolValue];
+    }
+    
+    return NO;
+}
+
 #pragma mark -
 #pragma mark Synchronization
 
