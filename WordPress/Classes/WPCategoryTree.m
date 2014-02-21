@@ -20,10 +20,10 @@
 - (void)getChildrenFromObjects:(NSArray *)collection {
     NSUInteger count = [collection count];
 
-    for (NSInteger i = 0; i < count; i++) {
+    for (NSUInteger i = 0; i < count; i++) {
         Category *category = [collection objectAtIndex:i];
 
-        if ([category.parentID intValue] == [self.parent.categoryID intValue]) {
+        if ([category.parentID isEqualToNumber:self.parent.categoryID]) {
             WPCategoryTree *child = [[WPCategoryTree alloc] initWithParent:category];
             [child getChildrenFromObjects:collection];
             [self.children addObject:child];
@@ -40,7 +40,7 @@
         [allObjects addObject:self.parent];
     }
     
-    for (NSInteger i = 0; i < count; i++) {
+    for (NSUInteger i = 0; i < count; i++) {
         [allObjects addObjectsFromArray:[[self.children objectAtIndex:i] getAllObjects]];
     }
 
