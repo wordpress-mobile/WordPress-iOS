@@ -212,7 +212,7 @@ CGFloat const EPVCTextViewTopPadding = 7.0f;
     self.navigationController.navigationBar.translucent = NO;
     
     if (self.navigationItem.leftBarButtonItem == nil) {
-        UIBarButtonItem *cancelButton = [[UIBarButtonItem alloc] initWithTitle:NSLocalizedString(@"Cancel", nil) style:UIBarButtonItemStylePlain target:self action:@selector(cancelEditing)];
+        UIBarButtonItem *cancelButton = [[UIBarButtonItem alloc] initWithTitle:NSLocalizedString(@"Close", @"Label for the button to close the post editor.") style:UIBarButtonItemStylePlain target:self action:@selector(cancelEditing)];
         self.navigationItem.leftBarButtonItem = cancelButton;
     }
     self.navigationItem.backBarButtonItem.title = [self editorTitle];
