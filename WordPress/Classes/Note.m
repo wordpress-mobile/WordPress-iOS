@@ -212,6 +212,12 @@ const NSUInteger NoteKeepCount = 20;
     return _noteData;
 }
 
+#pragma mark - NSManagedObject methods
+
+- (void)didTurnIntoFault {
+    _noteData = nil;
+}
+
 #pragma mark - Comment HTML parsing
 
 /*
