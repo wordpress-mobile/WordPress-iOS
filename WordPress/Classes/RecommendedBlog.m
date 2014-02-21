@@ -12,7 +12,7 @@
 
 NSString * const RecommendedBlogsKey = @"RecommendedBlogsKey";
 NSString * const RecommendedBlogsExcludedIDsKey = @"RecommendedBlogsExcludedIDsKey";
-NSInteger const RecommendedBlogsMaxExcludedIDs = 50;
+NSInteger const RecommendedBlogsMaxExcludedIDs = 20;
 
 @implementation RecommendedBlog
 
@@ -33,8 +33,9 @@ NSInteger const RecommendedBlogsMaxExcludedIDs = 50;
         excludedIDsStr = [excludedIDs componentsJoinedByString:@","];
     }
     
-	[api getPath:@"read/recommendations/mine/"
-      parameters:@{@"number":@3, @"exclude":excludedIDsStr}
+    NSString *path = [NSString stringWithFormat:@"read/recommendations/mine/?number=%@&exclude=%@", @3, excludedIDsStr];
+	[api getPath:path
+      parameters:nil
          success:^(AFHTTPRequestOperation *operation, id responseObject) {
              
              NSArray *results = [responseObject arrayForKey:@"blogs"];
@@ -76,7 +77,10 @@ NSInteger const RecommendedBlogsMaxExcludedIDs = 50;
     
     for (NSDictionary *dict in array) {
         NSString *blogID = [dict stringForKey:@"blog_id"];
-        [excludedIDs insertObject:blogID atIndex:0];
+        // Make sure we don't (for whatever reason) add a duplicate
+        if (![excludedIDs containsObject:blogID]) {
+            [excludedIDs insertObject:blogID atIndex:0];
+        }
     }
     
     while ([excludedIDs count] > RecommendedBlogsMaxExcludedIDs) {
