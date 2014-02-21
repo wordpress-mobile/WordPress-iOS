@@ -345,7 +345,7 @@
     if (avatar) {
         self.avatarImageView.image = avatar;
     } else {
-        self.avatarImageView.image = [UIImage imageNamed:@"gravatar"];
+        self.avatarImageView.image = [UIImage imageNamed:@"gravatar-reader"];
     }
 }
 
