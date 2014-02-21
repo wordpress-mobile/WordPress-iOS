@@ -48,7 +48,7 @@
         UIButton *button = [[UIButton alloc] initWithFrame:CGRectMake(0, 0, image.size.width, image.size.height)];
         [button setImage:image forState:UIControlStateNormal];
         [button addTarget:self action:@selector(showAddNewCategory) forControlEvents:UIControlEventTouchUpInside];
-        UIBarButtonItem  *rightBarButtonItem = [[UIBarButtonItem alloc] initWithCustomView:button];
+        UIBarButtonItem *rightBarButtonItem = [[UIBarButtonItem alloc] initWithCustomView:button];
         
         [WPStyleGuide setRightBarButtonItemWithCorrectSpacing:rightBarButtonItem forNavigationItem:self.navigationItem];
     }

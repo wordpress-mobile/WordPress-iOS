@@ -2,7 +2,7 @@
 //  WPAddCategoryViewController.m
 //  WordPress
 //
-//  Created by ? on ?
+//  Created by ganeshr on 07/24/08
 //  Copyright (c) 2014 WordPress. All rights reserved.
 //
 
@@ -168,7 +168,7 @@
         self.createCatNameField = [[UITextField alloc] initWithFrame:CGRectZero];
         self.createCatNameField.borderStyle = UITextBorderStyleNone;
         self.createCatNameField.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
-        self.createCatNameField.font = [UIFont fontWithName:@"OpenSans" size:17];
+        self.createCatNameField.font = [WPStyleGuide regularTextFont];
         self.createCatNameField.placeholder = NSLocalizedString(@"Title", @"Title of the new Category being created.");
     }
 
