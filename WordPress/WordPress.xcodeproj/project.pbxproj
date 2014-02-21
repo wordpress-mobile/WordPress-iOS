@@ -75,6 +75,8 @@
 		3032EA821757EE6700F1F861 /* toolbar_reblog@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 3032EA741757EE6700F1F861 /* toolbar_reblog@2x.png */; };
 		3032EA831757EE6700F1F861 /* toolbar_follow_active.png in Resources */ = {isa = PBXBuildFile; fileRef = 3032EA751757EE6700F1F861 /* toolbar_follow_active.png */; };
 		3032EA841757EE6700F1F861 /* toolbar_follow_active@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 3032EA761757EE6700F1F861 /* toolbar_follow_active@2x.png */; };
+		303E1A6818B78BB90005123F /* gravatar-reader.png in Resources */ = {isa = PBXBuildFile; fileRef = 303E1A6618B78BB90005123F /* gravatar-reader.png */; };
+		303E1A6918B78BB90005123F /* gravatar-reader@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 303E1A6718B78BB90005123F /* gravatar-reader@2x.png */; };
 		30410685144E17AE00E98F07 /* next.png in Resources */ = {isa = PBXBuildFile; fileRef = 30410681144E17AE00E98F07 /* next.png */; };
 		30410686144E17AE00E98F07 /* next@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 30410682144E17AE00E98F07 /* next@2x.png */; };
 		30410687144E17AE00E98F07 /* previous.png in Resources */ = {isa = PBXBuildFile; fileRef = 30410683144E17AE00E98F07 /* previous.png */; };
@@ -1117,6 +1119,8 @@
 		3032EA741757EE6700F1F861 /* toolbar_reblog@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "toolbar_reblog@2x.png"; path = "Resources/Images/toolbar_reblog@2x.png"; sourceTree = "<group>"; };
 		3032EA751757EE6700F1F861 /* toolbar_follow_active.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = toolbar_follow_active.png; path = Resources/Images/toolbar_follow_active.png; sourceTree = "<group>"; };
 		3032EA761757EE6700F1F861 /* toolbar_follow_active@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "toolbar_follow_active@2x.png"; path = "Resources/Images/toolbar_follow_active@2x.png"; sourceTree = "<group>"; };
+		303E1A6618B78BB90005123F /* gravatar-reader.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "gravatar-reader.png"; sourceTree = "<group>"; };
+		303E1A6718B78BB90005123F /* gravatar-reader@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "gravatar-reader@2x.png"; sourceTree = "<group>"; };
 		30410681144E17AE00E98F07 /* next.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = next.png; path = Resources/Images/next.png; sourceTree = "<group>"; };
 		30410682144E17AE00E98F07 /* next@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "next@2x.png"; path = "Resources/Images/next@2x.png"; sourceTree = "<group>"; };
 		30410683144E17AE00E98F07 /* previous.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = previous.png; path = Resources/Images/previous.png; sourceTree = "<group>"; };
@@ -3405,6 +3409,8 @@
 			children = (
 				E2981BF2186111C1008DB434 /* gravatar.png */,
 				E2981BF3186111C1008DB434 /* gravatar@2x.png */,
+				303E1A6618B78BB90005123F /* gravatar-reader.png */,
+				303E1A6718B78BB90005123F /* gravatar-reader@2x.png */,
 				E2013EAB18637B6B00AB537F /* icon-secure-text-visible.png */,
 				E2013EAC18637B6B00AB537F /* icon-secure-text-visible@2x.png */,
 				E2013EAD18637B6B00AB537F /* icon-secure-text.png */,
@@ -4831,6 +4837,7 @@
 				5D15F4D915B8C43E001B14EA /* toolbarBlockquoteHighlighted@2x.png in Resources */,
 				5D15F4DA15B8C43E001B14EA /* toolbarBlockquoteiPad.png in Resources */,
 				5D15F4DB15B8C43E001B14EA /* toolbarBlockquoteiPad@2x.png in Resources */,
+				303E1A6918B78BB90005123F /* gravatar-reader@2x.png in Resources */,
 				5D15F4DC15B8C43E001B14EA /* toolbarBoldHighlighted.png in Resources */,
 				5D15F4DD15B8C43E001B14EA /* toolbarBoldHighlighted@2x.png in Resources */,
 				5D15F4DE15B8C43E001B14EA /* toolbarBoldiPad.png in Resources */,
@@ -5022,6 +5029,7 @@
 				5D7BEA2017749FBB00423E7F /* reader-postaction-like-active.png in Resources */,
 				5D7BEA2117749FBB00423E7F /* reader-postaction-like-active@2x.png in Resources */,
 				85ED54FC17CC1A01006564AE /* icon-posts-editor-inspector@2x.png in Resources */,
+				303E1A6818B78BB90005123F /* gravatar-reader.png in Resources */,
 				5D7BEA2217749FBB00423E7F /* reader-postaction-like.png in Resources */,
 				5D7BEA2317749FBB00423E7F /* reader-postaction-like@2x.png in Resources */,
 				5D7BEA2417749FBB00423E7F /* reader-postaction-reblog-active.png in Resources */,
