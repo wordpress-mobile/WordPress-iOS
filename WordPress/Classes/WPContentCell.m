@@ -98,6 +98,7 @@ CGFloat const WPContentCellDateImageSide = 16.0;
     _gravatarImageView.image = nil;
     _unreadView.hidden = YES;
 	self.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
+    self.selectionStyle = UITableViewCellSelectionStyleDefault;
 }
 
 - (void)layoutSubviews
