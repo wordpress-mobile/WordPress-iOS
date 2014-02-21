@@ -22,6 +22,8 @@
 + (NSDictionary *)subtitleAttributes;
 + (UIFont *)subtitleFontItalic;
 + (NSDictionary *)subtitleItalicAttributes;
++ (UIFont *)subtitleFontBold;
++ (NSDictionary *)subtitleAttributesBold;
 + (UIFont *)labelFont;
 + (NSDictionary *)labelAttributes;
 + (UIFont *)regularTextFont;
