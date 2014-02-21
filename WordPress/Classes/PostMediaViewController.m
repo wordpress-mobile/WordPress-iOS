@@ -104,7 +104,9 @@
         [_currentActionSheet dismissWithClickedButtonIndex:_currentActionSheet.cancelButtonIndex animated:YES];
     }
     
-    [[[CPopoverManager instance] currentPopoverController] dismissPopoverAnimated:YES];
+    if (self.addPopover) {
+        [self.addPopover dismissPopoverAnimated:YES];
+    }
 }
 
 - (NSString *)statsPrefix {
@@ -118,10 +120,9 @@
     if (_addMediaActionSheet != nil || self.isShowingResizeActionSheet == YES)
         return;
 
-    if (_addPopover != nil) {
-        [_addPopover dismissPopoverAnimated:YES];
-        [[CPopoverManager instance] setCurrentPopoverController:nil];
-        _addPopover = nil;
+    if (self.addPopover != nil) {
+        [self.addPopover dismissPopoverAnimated:YES];
+        self.addPopover = nil;
     }
     
     UIActionSheet *addMediaActionSheet;
@@ -346,9 +347,9 @@
 #pragma mark UIPopover Delegate Methods
 
 - (void)popoverControllerDidDismissPopover:(UIPopoverController *)popoverController {
+    self.addPopover.delegate = nil;
+    self.addPopover = nil;
     [self resetStatusBarColor]; // incase the popover is dismissed after the image picker is presented.
-    _addPopover.delegate = nil;
-    _addPopover = nil;
 }
 
 
@@ -543,8 +544,8 @@
 
 - (void)pickPhotoFromPhotoLibrary:(id)sender {
     if ([UIImagePickerController isSourceTypeAvailable:UIImagePickerControllerSourceTypePhotoLibrary]) {
-        if (IS_IPAD && _addPopover != nil) {
-            [_addPopover dismissPopoverAnimated:YES];
+        if (IS_IPAD && self.addPopover != nil) {
+            [self.addPopover dismissPopoverAnimated:YES];
         }        
         [self resetImagePicker];
         _picker.sourceType = UIImagePickerControllerSourceTypePhotoLibrary;
@@ -579,21 +580,19 @@
 		self.isLibraryMedia = YES;
 		
 		if(IS_IPAD) {
-            if (_addPopover == nil) {
+            if (self.addPopover == nil) {
                 self.addPopover = [[UIPopoverController alloc] initWithContentViewController:_picker];
-                _addPopover.delegate = self;
+                self.addPopover.delegate = self;
             }
 
             if (!CGRectIsEmpty(actionSheetRect)) {
-//                [addPopover presentPopoverFromRect:actionSheetRect inView:self.postDetailViewController.postSettingsViewController.view permittedArrowDirections:UIPopoverArrowDirectionAny animated:YES];
-                [_addPopover presentPopoverFromRect:actionSheetRect inView:self.view permittedArrowDirections:UIPopoverArrowDirectionAny animated:YES];
+                [self.addPopover presentPopoverFromRect:actionSheetRect inView:self.view permittedArrowDirections:UIPopoverArrowDirectionAny animated:YES];
             } else {
                 // We insert a spacer into the barButtonItems so we need to grab the actual
                 // bar button item otherwise there is a crash.
                 UIBarButtonItem *barButton = [self.navigationItem.rightBarButtonItems objectAtIndex:1];
-                [_addPopover presentPopoverFromBarButtonItem:barButton permittedArrowDirections:UIPopoverArrowDirectionAny animated:YES];
+                [self.addPopover presentPopoverFromBarButtonItem:barButton permittedArrowDirections:UIPopoverArrowDirectionAny animated:YES];
             }
-            [[CPopoverManager instance] setCurrentPopoverController:_addPopover];
 		}
 		else {
             [self.navigationController presentViewController:_picker animated:YES completion:nil];
@@ -631,7 +630,7 @@
 }
 
 - (void)showOrientationChangedActionSheet {
-    if (_currentActionSheet || _addPopover) {
+    if (_currentActionSheet || self.addPopover) {
         return;
     }
     
@@ -940,9 +939,8 @@
             }
 		}
 		
-        if (_addPopover != nil) {
-            [_addPopover dismissPopoverAnimated:YES];
-            [[CPopoverManager instance] setCurrentPopoverController:nil];
+        if (self.addPopover != nil) {
+            [self.addPopover dismissPopoverAnimated:YES];
             self.addPopover = nil;
             if (showResizeActionSheet) {
                 [self showResizeActionSheet];
@@ -957,8 +955,7 @@
 	}
 
 	if(IS_IPAD){
-		[_addPopover dismissPopoverAnimated:YES];
-		[[CPopoverManager instance] setCurrentPopoverController:nil];
+		[self.addPopover dismissPopoverAnimated:YES];
 		self.addPopover = nil;
 	}
 }
@@ -1044,7 +1041,7 @@
 	
 	if(videoURL != nil) {
 		if(IS_IPAD)
-			[_addPopover dismissPopoverAnimated:YES];
+			[self.addPopover dismissPopoverAnimated:YES];
 		else {
             [self.navigationController dismissViewControllerAnimated:YES completion:nil];
 		}
