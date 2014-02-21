@@ -42,6 +42,7 @@
 #import "ReaderPostsViewController.h"
 #import "ReaderPostDetailViewController.h"
 #import "SupportViewController.h"
+#import "StatsViewController.h"
 #import "Constants.h"
 
 #if DEBUG
@@ -264,7 +265,6 @@ static NSString *const CameraPlusImagesNotification = @"CameraPlusImagesNotifica
     DDLogInfo(@"%@ %@", self, NSStringFromSelector(_cmd));
     
     [WPMobileStats recordAppOpenedForEvent:StatsEventAppOpened];
-    [self clearBadgeAndSyncItemsIfNotificationsScreenActive];
 }
 
 - (BOOL)application:(UIApplication *)application shouldSaveApplicationState:(NSCoder *)coder {
@@ -299,13 +299,6 @@ static NSString *const CameraPlusImagesNotification = @"CameraPlusImagesNotifica
 }
 
 #pragma mark - Custom methods
-
-- (void)clearBadgeAndSyncItemsIfNotificationsScreenActive {
-    NSInteger notificationsTabIndex = [[self.tabBarController viewControllers] indexOfObject:self.notificationsViewController.navigationController];
-    if ([self.tabBarController selectedIndex] == notificationsTabIndex) {
-       [self.notificationsViewController clearNotificationsBadgeAndSyncItems];
-    }
-}
 
 - (void)showWelcomeScreenIfNeededAnimated:(BOOL)animated {
     if ([self noBlogsAndNoWordPressDotComAccount]) {
@@ -357,6 +350,7 @@ static NSString *const CameraPlusImagesNotification = @"CameraPlusImagesNotifica
     [[UIToolbar appearance] setBarTintColor:[WPStyleGuide newKidOnTheBlockBlue]];
     [[UISwitch appearance] setOnTintColor:[WPStyleGuide newKidOnTheBlockBlue]];
     [[UIApplication sharedApplication] setStatusBarStyle:UIStatusBarStyleLightContent];
+    [[UITabBarItem appearance] setTitleTextAttributes:@{NSFontAttributeName: [UIFont fontWithName:@"OpenSans" size:10.0]} forState:UIControlStateNormal];
 
     [[UINavigationBar appearanceWhenContainedIn:[UIReferenceLibraryViewController class], nil] setBackgroundImage:nil forBarMetrics:UIBarMetricsDefault];
     [[UINavigationBar appearanceWhenContainedIn:[UIReferenceLibraryViewController class], nil] setBarTintColor:[WPStyleGuide newKidOnTheBlockBlue]];
@@ -514,6 +508,34 @@ static NSString *const CameraPlusImagesNotification = @"CameraPlusImagesNotifica
     [postsViewController setBlog:post.blog];
     
     [blogListNavController setViewControllers:@[blogListViewController, blogDetailsViewController, postsViewController]];
+}
+
+- (void)showStatsForBlog:(Blog *)blog {
+    UINavigationController *blogListNav = self.tabBarController.viewControllers[IndexForMeTab];
+    StatsViewController *statsViewController;
+    BlogDetailsViewController *blogDetailsViewController;
+    
+    if ([blogListNav.topViewController isKindOfClass:[StatsViewController class]] &&
+        [[(StatsViewController *)blogListNav.topViewController blog] isEqual:blog]) {
+        // If we're already showing stats for the blog, just go there
+        [self showMeTab];
+        return;
+    } else {
+        statsViewController = [[StatsViewController alloc] init];
+        statsViewController.blog = blog;
+    }
+    
+    if ([blogListNav.topViewController isKindOfClass:[BlogDetailsViewController class]] &&
+        [((BlogDetailsViewController *)blogListNav.topViewController).blog isEqual:blog]) {
+        // Use the current blog details view controller
+        blogDetailsViewController = (BlogDetailsViewController *)blogListNav.topViewController;
+    } else {
+        blogDetailsViewController = [[BlogDetailsViewController alloc] init];
+        blogDetailsViewController.blog = blog;
+    }
+    
+    blogListNav.viewControllers = @[self.blogListViewController, blogDetailsViewController, statsViewController];
+    [self showMeTab];
 }
 
 #pragma mark - UITabBarControllerDelegate methods.
@@ -725,7 +747,9 @@ static NSString *const CameraPlusImagesNotification = @"CameraPlusImagesNotifica
         //get a references to media files linked in a post
         DDLogInfo(@"%i media items to check for cleanup", [mediaObjectsToKeep count]);
         for (Media *media in mediaObjectsToKeep) {
-            [mediaToKeep addObject:media.localURL];
+            if (media.localURL) {
+                [mediaToKeep addObject:media.localURL];
+            }
         }
         
         //searches for jpg files within the app temp file

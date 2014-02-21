@@ -12,9 +12,9 @@
 @implementation Coordinate
 @synthesize coordinate = _coordinate;
 
-- (id)initWithCoordinate:(CLLocationCoordinate2D)c {
+- (id)initWithCoordinate:(CLLocationCoordinate2D)coordinate {
 	if (self = [super init]) {
-		_coordinate = c;
+		_coordinate = coordinate;
 	}
 	return self;
 }

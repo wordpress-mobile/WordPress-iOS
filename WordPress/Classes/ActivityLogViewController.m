@@ -119,7 +119,7 @@ static NSString *const ActivityLogCellIdentifier = @"ActivityLogCell";
 - (NSString *)tableView:(UITableView *)tableView titleForFooterInSection:(NSInteger)section
 {
     if (section == 0) {
-        return NSLocalizedString(@"Log files are rolled automatically each day and at most 7 files are kept.", @"");
+        return NSLocalizedString(@"Seven days worth of log files are kept on file.", @"");
     }
 
     return nil;
