@@ -281,7 +281,7 @@ NSString *const WordPressComApiPushAppId = @"org.wordpress.appstore";
                          success:(void (^)())success
                          failure:(void (^)(NSError *error))failure {
     
-    if (!(deviceId.length > 0)) {
+    if (deviceId.length == 0) {
         DDLogWarn(@"Unable to saveNotificationSettings - Device ID is empty!");
         return;
     }
@@ -306,7 +306,7 @@ NSString *const WordPressComApiPushAppId = @"org.wordpress.appstore";
 - (void)fetchNotificationSettingsWithDeviceId:(NSString *)deviceId
                                       success:(void (^)(NSDictionary *settings))success
                                       failure:(void (^)(NSError *error))failure {
-    if (!(deviceId.length > 0)) {
+    if (deviceId.length == 0) {
         DDLogWarn(@"Unable to fetchNotificationSettings - Device ID is empty!");
         return;
     }
@@ -337,7 +337,7 @@ NSString *const WordPressComApiPushAppId = @"org.wordpress.appstore";
 - (void)unregisterForPushNotificationsWithDeviceId:(NSString *)deviceId
                                            success:(void (^)())success
                                            failure:(void (^)(NSError *error))failure {
-    if (!(deviceId.length > 0)) {
+    if (deviceId.length == 0) {
         DDLogWarn(@"Unable to fetchNotificationSettings - Device ID is empty!");
         return;
     }
@@ -363,7 +363,7 @@ NSString *const WordPressComApiPushAppId = @"org.wordpress.appstore";
 - (void)syncPushNotificationInfoWithDeviceToken:(NSString *)token
                                         success:(void (^)(NSString *deviceId, NSDictionary *settings))success
                                         failure:(void (^)(NSError *error))failure {
-    if (!(token.length > 0)) {
+    if (token.length == 0) {
         DDLogWarn(@"syncPushNotificationInfoWithDeviceToken called with no token!");
         return;
     }
