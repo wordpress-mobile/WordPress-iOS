@@ -233,7 +233,7 @@ NSString *const NotificationsDeviceToken = @"apnsDeviceToken";
     WordPressComApi *api = [account restApi];
     [api syncPushNotificationInfoWithDeviceToken:token
                                          success:^(NSString *deviceId, NSDictionary *settings) {
-                                             DDLogVerbose(@"Synched push notification token and received device ID %@ with settings:\n %@", deviceId, settings);
+                                             DDLogVerbose(@"Synced push notification token and received device ID %@ with settings:\n %@", deviceId, settings);
                                              
                                              NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
                                              
