@@ -15,10 +15,7 @@
 @interface ContextManager (TestHelper)
 
 @property (nonatomic, strong) NSManagedObjectContext *mainContext;
-//@property (nonatomic, strong) NSManagedObjectContext *backgroundContext;
 @property (nonatomic, strong) NSPersistentStoreCoordinator *persistentStoreCoordinator;
-
-+ (NSURL *)storeURL;
 
 @end
 
@@ -46,51 +43,6 @@
     [ContextManager sharedInstance].persistentStoreCoordinator = nil;
 }
 
-- (BOOL)migrateToModelName:(NSString *)modelName {
-    NSManagedObjectModel *destinationModel = [self modelWithName:modelName];
-    NSPersistentStoreCoordinator *psc = [ContextManager sharedInstance].persistentStoreCoordinator;
-    NSDictionary *sourceMetadata = [psc metadataForPersistentStore:psc.persistentStores[0]];
-    BOOL pscCompatible = [destinationModel isConfiguration:nil compatibleWithStoreMetadata:sourceMetadata];
-    if (pscCompatible) {
-        // Models are compatible, no migration needed
-        return YES;
-    }
-
-    NSManagedObjectModel *sourceModel = [NSManagedObjectModel mergedModelFromBundles:nil forStoreMetadata:sourceMetadata];
-    if (!sourceModel) {
-        // Source model not found
-        return NO;
-    }
-
-    NSMigrationManager *manager = [[NSMigrationManager alloc] initWithSourceModel:sourceModel destinationModel:destinationModel];
-    NSMappingModel *mappingModel = [NSMappingModel mappingModelFromBundles:@[[NSBundle mainBundle]] forSourceModel:sourceModel destinationModel:destinationModel];
-    if (!mappingModel) {
-        // Mapping model not found
-        return NO;
-    }
-
-    NSError *error;
-    NSURL *destinationURL = [NSURL fileURLWithPath:[[NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES) lastObject] stringByAppendingPathComponent: @"WordPressTestMigrated.sqlite"]];
-    BOOL migrated = [manager migrateStoreFromURL:[ContextManager storeURL]
-                                   type:NSSQLiteStoreType
-                                options:nil
-                       withMappingModel:mappingModel
-                       toDestinationURL:destinationURL
-                        destinationType:NSSQLiteStoreType
-                     destinationOptions:nil
-                                  error:&error];
-    if (error) {
-        NSLog(@"error: %@", error);
-        return NO;
-    }
-
-    [[NSFileManager defaultManager] removeItemAtURL:[ContextManager storeURL] error:nil];
-    [[NSFileManager defaultManager] moveItemAtURL:destinationURL toURL:[ContextManager storeURL] error:nil];
-
-    [self setModelName:modelName];
-    return migrated;
-}
-
 - (NSManagedObjectModel *)modelWithName:(NSString *)modelName {
     NSURL *modelURL = [NSURL fileURLWithPath:[[NSBundle mainBundle] pathForResource:modelName ofType:@"mom" inDirectory:@"WordPress.momd"]];
     return [[NSManagedObjectModel alloc] initWithContentsOfURL:modelURL];
@@ -106,12 +58,22 @@
 }
 
 - (void)reset {
-#warning TODO: FIXME
-//    [[ContextManager sharedInstance].mainContext reset];
-//    [ContextManager sharedInstance].mainContext = nil;
-//    [ContextManager sharedInstance].persistentStoreCoordinator = nil;
-
-//    [[NSFileManager defaultManager] removeItemAtURL:[ContextManager storeURL] error:nil];
+	NSManagedObjectContext *context = [[ContextManager sharedInstance] mainContext];
+	NSPersistentStoreCoordinator *coordinator = [[ContextManager sharedInstance] persistentStoreCoordinator];
+	
+	[context lock];
+    [context reset];
+	
+	NSError *error = nil;
+	for (NSPersistentStore *store in coordinator.persistentStores) {
+		BOOL success = [coordinator removePersistentStore:store error:&error];
+		NSAssert(success, @"Error removing PSC: %@", error);
+	}
+	
+    [coordinator addPersistentStoreWithType:NSInMemoryStoreType configuration:nil URL:nil options:nil error:&error];
+	NSAssert(error == nil, @"Error adding PSC: %@", error);
+	
+	[context unlock];
 }
 
 - (NSManagedObjectModel *)managedObjectModel {
@@ -140,7 +102,7 @@ static void *const testPSCKey = "testPSCKey";
     
     psc = [[NSPersistentStoreCoordinator alloc] initWithManagedObjectModel:[[ContextManager sharedInstance] managedObjectModel]];
     NSError *error;
-    NSPersistentStore *store = [psc addPersistentStoreWithType:NSInMemoryStoreType configuration:nil URL:[ContextManager storeURL] options:nil error:&error];
+    NSPersistentStore *store = [psc addPersistentStoreWithType:NSInMemoryStoreType configuration:nil URL:nil options:nil error:&error];
     NSAssert(store != nil, @"Can't initialize core data storage");
     
     objc_setAssociatedObject([ContextManager sharedInstance], testPSCKey, psc, OBJC_ASSOCIATION_RETAIN);
@@ -150,10 +112,6 @@ static void *const testPSCKey = "testPSCKey";
 
 - (void)setPersistentStoreCoordinator:(NSPersistentStoreCoordinator *)persistentStoreCoordinator {
     objc_setAssociatedObject(self, testPSCKey, persistentStoreCoordinator, OBJC_ASSOCIATION_RETAIN);
-}
-
-+ (NSURL *)storeURL {
-    return [NSURL fileURLWithPath:[[NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES) lastObject] stringByAppendingPathComponent:@"WordPressTest.sqlite"]];
 }
 
 @end

@@ -16,7 +16,6 @@
 - (void)reset;
 
 - (void)setModelName:(NSString *)modelName;
-- (BOOL)migrateToModelName:(NSString *)modelName;
 
 - (NSManagedObject *)insertEntityIntoMainContextWithName:(NSString *)entityName;
 - (NSArray *)allObjectsInMainContextForEntityName:(NSString *)entityName;
