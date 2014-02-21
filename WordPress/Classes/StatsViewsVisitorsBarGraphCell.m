@@ -50,8 +50,14 @@ static NSString *const PointsKey = @"points";
 @end
 
 CGFloat heightFromRangeToRange(NSUInteger height, CGFloat maxOldRange, CGFloat maxNewRange) {
-    CGFloat p = ((CGFloat)height)/maxOldRange;
-    return p * maxNewRange;
+    if (height == 0 || maxNewRange == 0.0) {
+        return 0.0;
+    }
+    
+    CGFloat p = ((CGFloat)height) / maxOldRange;
+    CGFloat newHeight = p * maxNewRange;
+    
+    return newHeight;
 }
 
 @implementation WPBarGraphView
@@ -171,7 +177,7 @@ CGFloat heightFromRangeToRange(NSUInteger height, CGFloat maxOldRange, CGFloat m
             CGFloat barHeight = heightFromRangeToRange([point[StatsPointCountKey] unsignedIntegerValue], yUpperBound, availableHeight);
             CGContextAddLineToPoint(context, currentXPoint, yAxisStartPoint+yAxisHeight-barHeight);
             CGContextStrokePath(context);
-            
+         
             // Label
             if (iteration == 0) {
                 UILabel *pointLabel = [self axisLabelWithText:point[StatsPointNameKey]];
