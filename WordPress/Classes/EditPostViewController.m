@@ -417,6 +417,9 @@ CGFloat const EPVCTextViewTopPadding = 7.0f;
 
         // Rather than using a UIImageView to fake a disclosure icon, just use a cell and future proof the UI.
         WPTableViewCell *cell = [[WPTableViewCell alloc] initWithFrame:self.optionsButton.bounds];
+        // The cell uses its default frame and ignores what was passed during init, so set it again.
+        cell.frame = self.optionsButton.bounds;
+        cell.backgroundColor = [UIColor clearColor];
         cell.autoresizingMask = UIViewAutoresizingFlexibleHeight | UIViewAutoresizingFlexibleWidth;
         cell.textLabel.text = optionsTitle;
         cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
