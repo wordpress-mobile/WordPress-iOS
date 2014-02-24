@@ -211,6 +211,8 @@
     UINavigationController *navController = [[UINavigationController alloc] initWithRootViewController:editPostViewController];
     [navController setToolbarHidden:NO]; // Fixes incorrect toolbar animation.
     navController.modalPresentationStyle = UIModalPresentationCurrentContext;
+    navController.restorationIdentifier = WPEditorNavigationRestorationID;
+    navController.restorationClass = [EditPostViewController class];
     [self.view.window.rootViewController presentViewController:navController animated:YES completion:nil];
 }
 
