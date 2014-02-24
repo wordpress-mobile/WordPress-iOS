@@ -378,12 +378,20 @@ CGFloat const EPVCTextViewTopPadding = 7.0f;
         self.optionsButton.titleEdgeInsets = insets;
     }
     [self.optionsView addSubview:self.optionsButton];
+    
+    // Update the textView's textContainerInsets so text does not overlap content.
+    CGFloat left = EPVCTextViewOffset;
+    CGFloat right = EPVCTextViewOffset;
+    CGFloat top = CGRectGetMaxY(self.separatorView.frame) + EPVCTextViewTopPadding;
+    CGFloat bottom = CGRectGetHeight(self.optionsView.frame);
+    self.textView.textContainerInset = UIEdgeInsetsMake(top, left, bottom, right);
 
     if (!self.tapToStartWritingLabel) {
-        frame = _textView.frame;
-        frame.size.height = 26.0f;
+        frame = CGRectZero;
         frame.origin.x = EPVCStandardOffset;
-        frame.size.width -= (EPVCStandardOffset * 2);
+        frame.origin.y = self.textView.textContainerInset.top;
+        frame.size.width = width - (EPVCStandardOffset * 2);
+        frame.size.height = 26.0f;
         self.tapToStartWritingLabel = [[UILabel alloc] initWithFrame:frame];
         self.tapToStartWritingLabel.text = NSLocalizedString(@"Tap here to begin writing", @"Placeholder for the main body text. Should hint at tapping to enter text (not specifying body text).");
         self.tapToStartWritingLabel.autoresizingMask = UIViewAutoresizingFlexibleWidth;
@@ -392,13 +400,7 @@ CGFloat const EPVCTextViewTopPadding = 7.0f;
         self.tapToStartWritingLabel.isAccessibilityElement = NO;
     }
     [self.textView addSubview:self.tapToStartWritingLabel];
-    
-    // Update the textView's textContainerInsets so text does not overlap content.
-    CGFloat left = EPVCTextViewOffset;
-    CGFloat right = EPVCTextViewOffset;
-    CGFloat top = CGRectGetMaxY(self.separatorView.frame) + EPVCTextViewTopPadding;
-    CGFloat bottom = CGRectGetHeight(self.optionsView.frame);
-    self.textView.textContainerInset = UIEdgeInsetsMake(top, left, bottom, right);
+
 }
 
 - (void)positionOptionsView {
