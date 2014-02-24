@@ -194,18 +194,21 @@ NSString * const RPVCDisplayedNativeFriendFinder = @"DisplayedNativeFriendFinder
     // Refresh the recommeneded blogs everytime the view reappears.
     if ([self canShowRecommendedBlogs]) {
         [RecommendedBlog syncRecommendedBlogs:^(NSArray *recommendedBlogs) {
-            if ([self.recommendedBlogs count] == 0) {
+            if ([self.recommendedBlogs count] == 0 && [[self.resultsController fetchedObjects] count] > 0) {
                 // We don't want to jar the user by refreshing the tableView and shifting content around.
                 // Just bail. The next time the reader is opened it will show the saved recommendations.
                 return;
             }
             self.recommendedBlogs = [RecommendedBlog recommendedBlogs];
-            NSMutableArray *mArr = [NSMutableArray array];
-            for (NSInteger i = 0; i < [self.recommendedBlogs count]; i++) {
-                NSIndexPath *indexPath = [NSIndexPath indexPathForRow:i inSection:RPVCRecommendedBlogsSection];
-                [mArr addObject:indexPath];
+            
+            if ([self shouldShowRecommendedBlogsSection]) {
+                NSMutableArray *mArr = [NSMutableArray array];
+                for (NSInteger i = 0; i < [self.recommendedBlogs count]; i++) {
+                    NSIndexPath *indexPath = [NSIndexPath indexPathForRow:i inSection:RPVCRecommendedBlogsSection];
+                    [mArr addObject:indexPath];
+                }
+                [self.tableView reloadRowsAtIndexPaths:mArr withRowAnimation:UITableViewRowAnimationFade];
             }
-            [self.tableView reloadRowsAtIndexPaths:mArr withRowAnimation:UITableViewRowAnimationFade];
         } failure:^(NSError *error) {
             // fail silently.
             DDLogError(@"Error syncing recommended blogs: %@", error);
