@@ -367,15 +367,18 @@ CGFloat const EPVCTextViewTopPadding = 7.0f;
         self.optionsButton = [UIButton buttonWithType:UIButtonTypeCustom];
         self.optionsButton.frame = frame;
         self.optionsButton.autoresizingMask = UIViewAutoresizingFlexibleWidth;
-        [self.optionsButton setTitle:optionsTitle forState:UIControlStateNormal];
         [self.optionsButton addTarget:self action:@selector(showSettings) forControlEvents:UIControlEventTouchUpInside];
         [self.optionsButton setBackgroundImage:[UIImage imageWithColor:[WPStyleGuide readGrey]] forState:UIControlStateHighlighted];
-        [self.optionsButton setTitleColor:[WPStyleGuide darkAsNightGrey] forState:UIControlStateNormal];
-        [self.optionsButton setTitleColor:[UIColor whiteColor] forState:UIControlStateHighlighted];
-        [self.optionsButton setContentHorizontalAlignment:UIControlContentHorizontalAlignmentLeft];
-        UIEdgeInsets insets = self.optionsButton.titleEdgeInsets;
-        insets.left = EPVCStandardOffset;
-        self.optionsButton.titleEdgeInsets = insets;
+
+        // Rather than using a UIImageView to fake a disclosure icon, just use a cell and future proof the UI.
+        WPTableViewCell *cell = [[WPTableViewCell alloc] initWithFrame:self.optionsButton.bounds];
+        cell.autoresizingMask = UIViewAutoresizingFlexibleHeight | UIViewAutoresizingFlexibleWidth;
+        cell.textLabel.text = optionsTitle;
+        cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
+        cell.userInteractionEnabled = NO;
+        [WPStyleGuide configureTableViewCell:cell];
+        
+        [self.optionsButton addSubview:cell];
     }
     [self.optionsView addSubview:self.optionsButton];
     
