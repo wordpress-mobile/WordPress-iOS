@@ -222,6 +222,11 @@ static NSString *const TableViewActivityCellIdentifier = @"TableViewActivityCell
 
 - (void)datePickerChanged {
     self.apost.dateCreated = self.datePickerView.date;
+    
+    if ([self.apost.dateCreated compare:[NSDate date]] == NSOrderedDescending && [self.apost.status isEqualToString:@"draft"]) {
+        self.apost.status = @"publish";
+    }
+    
     [self.tableView reloadData];
 }
 
