@@ -267,8 +267,11 @@ NSString * const NotificationsJetpackInformationURL = @"http://jetpack.me/about/
     
     Note *note = [self.resultsController objectAtIndexPath:indexPath];
     BOOL hasDetailsView = [self noteHasDetailView:note];
-    if (!hasDetailsView) {
+    BOOL isStatsNote = [note statsEvent];
+    
+    if (!hasDetailsView && !isStatsNote) {
         cell.accessoryType = UITableViewCellAccessoryNone;
+        cell.selectionStyle = UITableViewCellSelectionStyleNone;
     }
 }
 
