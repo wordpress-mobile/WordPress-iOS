@@ -612,9 +612,14 @@ typedef NS_ENUM(NSInteger, TotalFollowersShareRow) {
 #pragma mark - StatsTodayYesterdayButtonCellDelegate
 
 - (void)statsDayChangedForSection:(StatsSection)section todaySelected:(BOOL)todaySelected {
-    [_showingToday setObject:@(todaySelected) forKey:@(section)];
-    [_expandedLinkGroups removeAllObjects];
-    [self.tableView reloadSections:[NSIndexSet indexSetWithIndex:section] withRowAnimation:UITableViewRowAnimationFade];
+    BOOL todayCurrentlySelected = [self.showingToday[@(section)] boolValue];
+    
+    // Only reload section if the selection changed
+    if (todayCurrentlySelected != todaySelected) {
+        [self.showingToday setObject:@(todaySelected) forKey:@(section)];
+        [self.expandedLinkGroups removeAllObjects];
+        [self.tableView reloadSections:[NSIndexSet indexSetWithIndex:section] withRowAnimation:UITableViewRowAnimationFade];
+    }
 }
 
 
