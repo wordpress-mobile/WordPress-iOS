@@ -51,6 +51,8 @@
 + (UIColor *)darkAsNightGrey;
 + (UIColor *)textFieldPlaceholderGrey;
 + (UIColor *)validationErrorRed;
++ (UIColor *)statsLighterBlue;
++ (UIColor *)statsDarkerBlue;
 
 + (UIColor *)tableViewActionColor;
 + (UIColor *)buttonActionColor;

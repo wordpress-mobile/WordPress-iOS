@@ -242,6 +242,14 @@
     return [WPStyleGuide baseLighterBlue];
 }
 
++ (UIColor *)statsLighterBlue {
+    return [UIColor colorWithRed:143.0f/255.0f green:186.0f/255.0f blue:203.0f/255.0f alpha:1.0f];
+}
+
++ (UIColor *)statsDarkerBlue {
+    return [UIColor colorWithRed:25.0f/255.0f green:88.0f/255.0f blue:137.0f/255.0f alpha:1.0f];
+}
+
 + (UIColor *)keyboardColor {
     if (IS_IPAD) {
         return [UIColor colorWithRed:207.0f/255.0f green:210.0f/255.0f blue:213.0f/255.0f alpha:1.0];
