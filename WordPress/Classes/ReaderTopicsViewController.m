@@ -113,32 +113,20 @@
 		[self.tableView setTableFooterView:nil];
 		NSDictionary *dict = (NSDictionary *)responseObject;
 		
-		NSString *topicEndpoint = [[[ReaderPost readerEndpoints] objectAtIndex:ReaderTopicEndpointIndex] objectForKey:@"endpoint"];
-		NSArray *arr = [dict arrayForKey:@"topics"];
-		NSMutableArray *topics = [NSMutableArray arrayWithCapacity:[arr count]];
+        NSDictionary *topicsDict = [dict dictionaryForKey:@"tags"];
+        NSMutableArray *topics = [NSMutableArray arrayWithCapacity:[topicsDict count]];
 		
-		for (NSDictionary *dict in arr) {
-			NSString *title = [dict objectForKey:@"cat_name"];
+		for (id key in topicsDict) {
+            NSDictionary *dict = [topicsDict objectForKey:key];
+            
+            NSString *title = [dict objectForKey:@"title"];
             title = [title stringByDecodingXMLCharacters];
-			NSString *endpoint = [NSString stringWithFormat:topicEndpoint, [dict stringForKey:@"category_nicename"]];
-			[topics addObject:@{@"title": title, @"endpoint":endpoint}];
+            NSString *endpoint = [dict objectForKey:@"URL"];
+            [topics addObject:@{@"title": title, @"endpoint":endpoint}];
 		}
 		
 		self.topicsArray = topics;
 		[[NSUserDefaults standardUserDefaults] setObject:topics forKey:ReaderTopicsArrayKey];
-		
-		arr = [dict objectForKey:@"extra"];
-		if (arr) {
-			NSMutableArray *extras = [NSMutableArray array];
-			for (NSDictionary *dict in arr) {
-				NSString *title = [dict objectForKey:@"cat_name"];
-				NSString *endpoint = [dict objectForKey:@"endpoint"];
-				[extras addObject:@{@"title": title, @"endpoint":endpoint}];
-			}
-            [[NSUserDefaults standardUserDefaults] setObject:extras forKey:ReaderExtrasArrayKey];
-            [[NSUserDefaults standardUserDefaults] synchronize];
-			self.defaultTopicsArray = [[self fetchDefaultTopics] arrayByAddingObjectsFromArray:extras];
-		}
         
 		[self.tableView reloadData];
 	} failure:^(AFHTTPRequestOperation *operation, NSError *error) {

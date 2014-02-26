@@ -68,7 +68,7 @@ NSString * const ReaderPostStoredCommentTextKey = @"comment";
 		NSDictionary *fpDict = @{@"title": NSLocalizedString(@"Freshly Pressed", @""), @"endpoint":@"freshly-pressed", @"default":@YES};
 		NSDictionary *follows = @{@"title": NSLocalizedString(@"Blogs I Follow", @""), @"endpoint":@"reader/following", @"default":@YES};
 		NSDictionary *likes = @{@"title": NSLocalizedString(@"Posts I Like", @""), @"endpoint":@"reader/liked", @"default":@YES};
-		NSDictionary *topic = @{@"title": NSLocalizedString(@"Topics", @""), @"endpoint":@"reader/topics/%@", @"default":@NO};
+		NSDictionary *topic = @{@"title": NSLocalizedString(@"Topics", @""), @"endpoint":@"read/tags/%@", @"default":@NO};
 		
 		endpoints = @[follows, fpDict, likes, topic];
 		
@@ -423,7 +423,7 @@ NSString * const ReaderPostStoredCommentTextKey = @"comment";
 		self.postAvatar = [self parseImageSrcFromHTML:img];
 	}
     
-    NSDictionary *tagsDict = [dict dictionaryForKey:@"topics"];
+    NSDictionary *tagsDict = [dict dictionaryForKey:@"tags"];
     
     if ([tagsDict count] > 0) {
         NSArray *tagsList = [NSArray arrayWithArray:[tagsDict allValues]];
@@ -766,7 +766,7 @@ NSString * const ReaderPostStoredCommentTextKey = @"comment";
 + (void)getReaderTopicsWithSuccess:(WordPressComApiRestSuccessResponseBlock)success
 						   failure:(WordPressComApiRestSuccessFailureBlock)failure {
 	
-	NSString *path = @"reader/topics";
+	NSString *path = @"read/tags";
 	
     // There should probably be a better check here
     if ([[WPAccount defaultWordPressComAccount] restApi].authToken) {
