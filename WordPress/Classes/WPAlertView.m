@@ -24,12 +24,14 @@
 @property (nonatomic, weak) IBOutlet WPNUXSecondaryButton *leftButton;
 @property (nonatomic, weak) IBOutlet WPNUXPrimaryButton *rightButton;
 @property (nonatomic, strong) NSLayoutConstraint *originalFirstTextFieldConstraint;
+@property (nonatomic, weak) IBOutlet NSLayoutConstraint *firstTextFieldLabelWidthConstraint;
 
 @end
 
 @implementation WPAlertView
 
 CGFloat const WPAlertViewStandardOffset = 16.0;
+CGFloat const WPAlertViewDefaultTextFieldLabelWidth = 118.0f;
 
 - (void)dealloc
 {
@@ -64,9 +66,25 @@ CGFloat const WPAlertViewStandardOffset = 16.0;
             backgroundView = [[NSBundle mainBundle] loadNibNamed:@"WPAlertView" owner:self options:nil][0];
         }
         
-        backgroundView.frame = scrollView.frame;
-        backgroundView.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
+        if (IS_IPAD) {
+            CGFloat backgroundViewWidth = CGRectGetWidth(scrollView.frame) / 2.0f;
+            CGFloat backgroundViewHeight = CGRectGetHeight(scrollView.frame) / 2.0f;
+            CGFloat backgroundViewX = CGRectGetMidX(scrollView.frame) / 2.0f;
+            CGFloat backgroundViewY = CGRectGetMidY(scrollView.frame) / 4.0f;
+            backgroundView.frame = CGRectMake(backgroundViewX,
+                                              backgroundViewY,
+                                              backgroundViewWidth,
+                                              backgroundViewHeight);
+            backgroundView.autoresizingMask = UIViewAutoresizingFlexibleHeight |
+                                              UIViewAutoresizingFlexibleLeftMargin |
+                                              UIViewAutoresizingFlexibleRightMargin;
+        } else {
+            backgroundView.frame = scrollView.frame;
+            backgroundView.autoresizingMask = UIViewAutoresizingFlexibleWidth |
+                                              UIViewAutoresizingFlexibleHeight;
+        }
         
+        [self adjustTextFieldLabelWidths];
         [scrollView addSubview:backgroundView];
         
         [self configureView];
@@ -146,6 +164,7 @@ CGFloat const WPAlertViewStandardOffset = 16.0;
     if (![_firstTextFieldLabelText isEqualToString:firstTextFieldLabelText]) {
         _firstTextFieldLabelText = firstTextFieldLabelText;
         _firstTextFieldLabel.text = _firstTextFieldLabelText;
+        [self adjustTextFieldLabelWidths];
         [self setNeedsUpdateConstraints];
     }
 }
@@ -173,6 +192,7 @@ CGFloat const WPAlertViewStandardOffset = 16.0;
     if (![_secondTextFieldLabelText isEqualToString:secondTextFieldLabelText]) {
         _secondTextFieldLabelText = secondTextFieldLabelText;
         _secondTextFieldLabel.text = _secondTextFieldLabelText;
+        [self adjustTextFieldLabelWidths];
         [self setNeedsUpdateConstraints];
     }
 }
@@ -380,6 +400,13 @@ CGFloat const WPAlertViewStandardOffset = 16.0;
     }
 }
 
+- (void)adjustTextFieldLabelWidths {
+    if (_firstTextFieldLabel.text.length == 0 && _secondTextFieldLabel.text.length == 0) {
+        _firstTextFieldLabelWidthConstraint.constant = 0.0f;
+    } else {
+        _firstTextFieldLabelWidthConstraint.constant = WPAlertViewDefaultTextFieldLabelWidth;
+    }
+}
 
 - (void)tappedOnView:(UITapGestureRecognizer *)gestureRecognizer
 {
