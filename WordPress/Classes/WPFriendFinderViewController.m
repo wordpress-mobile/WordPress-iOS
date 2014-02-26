@@ -197,11 +197,13 @@ static NSString *const SourceFacebook = @"Facebook";
                     NSDictionary *response = [NSJSONSerialization JSONObjectWithData:responseData options:0 error:nil];
                     if (response && [response isKindOfClass:[NSDictionary class]]) {
                         NSArray *friends = response[@"data"];
-                        dispatch_async(dispatch_get_main_queue(), ^{
-                            NSData *jsonData = [NSJSONSerialization dataWithJSONObject:friends options:0 error:nil];
-                            NSString *json = [[NSString alloc] initWithData:jsonData encoding:NSUTF8StringEncoding];
-                            [self.webView stringByEvaluatingJavaScriptFromString:[NSString stringWithFormat:@"FriendFinder.findByFacebookID(%@)", json]];
-                        });
+                        if (friends != nil) {
+                            dispatch_async(dispatch_get_main_queue(), ^{
+                                NSData *jsonData = [NSJSONSerialization dataWithJSONObject:friends options:0 error:nil];
+                                NSString *json = [[NSString alloc] initWithData:jsonData encoding:NSUTF8StringEncoding];
+                                [self.webView stringByEvaluatingJavaScriptFromString:[NSString stringWithFormat:@"FriendFinder.findByFacebookID(%@)", json]];
+                            });
+                        }
                     }
                 }];
             }];
