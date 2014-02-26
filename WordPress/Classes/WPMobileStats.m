@@ -73,6 +73,7 @@ NSString *const StatsEventWebviewSentArticleToGooglePlus = @"Sent Article to Goo
 // Notifications
 NSString *const StatsPropertyNotificationsOpened = @"notifications_opened";
 NSString *const StatsPropertyNotificationsOpenedDetails = @"notifications_opened_details";
+NSString *const StatsEventNotificationsClickedManageNotifications = @"Notifications - Manage Button";
 
 // Notifications Detail
 NSString *const StatsEventNotificationsDetailClickedReplyButton = @"Notifications Detail - Clicked Reply Button";

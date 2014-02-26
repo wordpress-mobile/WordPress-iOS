@@ -44,6 +44,7 @@ Pods/Pods.xcodeproj/*.perspectivev3
 Pods/Pods.xcodeproj/project.xcworkspace
 Pods/Pods.xcodeproj/xcuserdata
 Pods/Documentation/
+Pods/resources-to-copy-WordPress.txt
 WordPress.xcworkspace/*.mode1v3
 WordPress.xcworkspace/*.mode2v3
 WordPress.xcworkspace/*.pbxuser

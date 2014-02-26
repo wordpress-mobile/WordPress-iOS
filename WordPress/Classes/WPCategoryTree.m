@@ -23,7 +23,8 @@
     for (NSUInteger i = 0; i < count; i++) {
         Category *category = [collection objectAtIndex:i];
 
-        if ([category.parentID isEqualToNumber:self.parent.categoryID]) {
+        // self.parent can be nil, so compare int values to avoid badness
+        if ([category.parentID intValue] == [self.parent.categoryID intValue]) {
             WPCategoryTree *child = [[WPCategoryTree alloc] initWithParent:category];
             [child getChildrenFromObjects:collection];
             [self.children addObject:child];

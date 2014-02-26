@@ -10,6 +10,8 @@
 
 @class AbstractPost;
 
+extern NSString *const WPEditorNavigationRestorationID;
+
 @interface EditPostViewController : UITableViewController
 
 /*

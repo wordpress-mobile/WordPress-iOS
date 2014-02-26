@@ -23,6 +23,6 @@ extern const CGFloat RPTVCHorizontalOuterPadding;
 + (CGFloat)cellHeightForPost:(ReaderPost *)post withWidth:(CGFloat)width;
 + (ReaderPostTableViewCell *)cellForSubview:(UIView *)subview;
 
-- (void)configureCell:(ReaderPost *)post;
+- (void)configureCell:(ReaderPost *)post withWidth:(CGFloat)width;
 
 @end
