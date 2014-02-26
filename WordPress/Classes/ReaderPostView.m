@@ -85,8 +85,8 @@ static NSInteger const MaxNumberOfLinesForTitleForSummary = 3;
 	return ceil(desiredHeight);
 }
 
-+ (CGFloat)heightWithoutAttributionForPost:(ReaderPost *)post withWidth:(CGFloat)width {
-    CGFloat desiredHeight = [self heightForPost:post withWidth:width];
++ (CGFloat)heightWithoutAttributionForPost:(ReaderPost *)post withWidth:(CGFloat)width showFullContent:(BOOL)showFullContent {
+    CGFloat desiredHeight = [self heightForPost:post withWidth:width showFullContent:showFullContent];
     desiredHeight -= RPVAuthorViewHeight;
     desiredHeight -= RPVAuthorPadding;
     return desiredHeight;

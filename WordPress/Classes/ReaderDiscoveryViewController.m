@@ -26,7 +26,7 @@
     self.title = NSLocalizedString(@"You Might Like", @"");
     
     [self refreshTableHeaderView];
-    self.attributionView.followButton.selected = !self.recommendedBlog.isFollowing;
+    self.attributionView.followButton.selected = self.recommendedBlog.isFollowing;
 }
 
 - (BOOL)canShowRecommendedBlogs {

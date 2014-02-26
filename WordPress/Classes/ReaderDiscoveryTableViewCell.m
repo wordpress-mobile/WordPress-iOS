@@ -17,7 +17,7 @@
         width = width - 2 * RPTVCHorizontalOuterPadding;
     }
     
-	CGFloat desiredHeight = [ReaderPostView heightWithoutAttributionForPost:post withWidth:width];
+	CGFloat desiredHeight = [ReaderPostView heightWithoutAttributionForPost:post withWidth:width showFullContent:NO];
     
 	return ceil(desiredHeight);
 }
