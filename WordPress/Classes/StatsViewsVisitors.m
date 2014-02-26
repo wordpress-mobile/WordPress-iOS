@@ -70,9 +70,13 @@ NSString *const StatsPointCountKey = @"count";
             return [self.dateFormatter stringFromDate:d];
         }
         case StatsViewsVisitorsUnitWeek:
-            // Assumes format: yyyyWxx where xx is the week number with leading zero
-            return [NSLocalizedString(@"Week", @"Stats 'nice' name prefix for week unit")
-                    stringByAppendingFormat:@" %@",[name substringWithRange:NSMakeRange(name.length-2, 2)]];
+        {
+            // Assumes format: yyyyWxxWxx first xx is month, second xx is first day of that week
+            self.dateFormatter.dateFormat = @"yyyy'W'MM'W'dd";
+            NSDate *d = [self.dateFormatter dateFromString:name];
+            self.dateFormatter.dateFormat = @"LLL dd";
+            return [self.dateFormatter stringFromDate:d];
+        }
         case StatsViewsVisitorsUnitMonth:
         {
             self.dateFormatter.dateFormat = @"yyyy-MM-dd";
