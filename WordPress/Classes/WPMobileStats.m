@@ -120,6 +120,8 @@ NSString *const StatsPropertyPostDetailEditorOpenedOpenedByPostsView = @"posts_v
 NSString *const StatsPropertyPostDetailEditorOpenedOpenedByTabBarButton = @"tab_bar_button";
 NSString *const StatsPropertyPostDetailClickedBlogSelector = @"clicked_blog_selector";
 NSString *const StatsPropertyPostDetailHasExternalKeyboard = @"has_external_keybord";
+NSString *const StatsPropertyPostDetailWordCount = @"word_count";
+NSString *const StatsPropertyPostDetailWordDiffCount = @"word_diff_count";
 
 // Post Detail - Settings
 NSString *const StatsPropertyPostDetailSettingsClickedStatus = @"settings_clicked_status";
@@ -365,6 +367,11 @@ NSString *const StatsEventAddBlogsClickedAddSelected = @"Add Blogs - Clicked Add
     [[self sharedInstance] incrementProperty:property forEvent:event];
 }
 
++ (void)setValue:(id)value forProperty:(NSString *)property forEvent:(NSString *)event
+{
+    [[self sharedInstance] setValue:value forProperty:property forEvent:event];
+}
+
 + (void)flagProperty:(NSString *)property forEvent:(NSString *)event
 {
     [[self sharedInstance] flagProperty:property forEvent:event];
@@ -456,6 +463,11 @@ NSString *const StatsEventAddBlogsClickedAddSelected = @"Add Blogs - Clicked Add
 - (void)unflagProperty:(NSString *)property forEvent:(NSString *)event
 {
     [self saveProperty:property withValue:@(NO) forEvent:event];
+}
+
+- (void)setValue:(id)value forProperty:(NSString *)property forEvent:(NSString *)event
+{
+    [self saveProperty:property withValue:value forEvent:event];
 }
 
 - (void)flagSuperProperty:(NSString *)property

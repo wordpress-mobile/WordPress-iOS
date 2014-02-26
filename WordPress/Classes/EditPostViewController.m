@@ -964,9 +964,9 @@ CGFloat const EPVCTextViewTopPadding = 7.0f;
 
 - (void)savePost:(BOOL)upload {
     DDLogMethod();
-    [WPMobileStats trackEventForWPComWithSavedProperties:[self formattedStatEventString:StatsEventPostDetailClosedEditor]];
-    
     [self logSavePostStats];
+
+    [WPMobileStats trackEventForWPComWithSavedProperties:[self formattedStatEventString:StatsEventPostDetailClosedEditor]];
     
     [self.view endEditing:YES];
     
@@ -1008,6 +1008,28 @@ CGFloat const EPVCTextViewTopPadding = 7.0f;
     
     if (event != nil) {
         [WPMobileStats trackEventForWPCom:[self formattedStatEventString:event]];
+    }
+
+    // This word counting algorithm is from : http://stackoverflow.com/a/13367063
+    __block NSInteger originalWordCount = 0;
+    [self.post.original.content enumerateSubstringsInRange:NSMakeRange(0, [self.post.original.content length])
+                               options:NSStringEnumerationByWords | NSStringEnumerationLocalized
+                            usingBlock:^(NSString *substring, NSRange substringRange, NSRange enclosingRange, BOOL *stop){
+                                originalWordCount++;
+                            }];
+    
+    __block NSInteger wordCount = 0;
+    [self.post.content enumerateSubstringsInRange:NSMakeRange(0, [self.post.content length])
+                               options:NSStringEnumerationByWords | NSStringEnumerationLocalized
+                            usingBlock:^(NSString *substring, NSRange substringRange, NSRange enclosingRange, BOOL *stop){
+                                wordCount++;
+                            }];
+    
+    if ([self.post hasRemote]) {
+        [WPMobileStats setValue:@(wordCount) forProperty:StatsPropertyPostDetailWordCount forEvent:[self formattedStatEventString:StatsEventPostDetailClosedEditor]];
+        [WPMobileStats setValue:@(wordCount - originalWordCount) forProperty:StatsPropertyPostDetailWordDiffCount forEvent:[self formattedStatEventString:StatsEventPostDetailClosedEditor]];
+    } else {
+        [WPMobileStats setValue:@(wordCount) forProperty:StatsPropertyPostDetailWordCount forEvent:[self formattedStatEventString:StatsEventPostDetailClosedEditor]];
     }
 }
 
