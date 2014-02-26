@@ -12,6 +12,7 @@
                 <outlet property="descriptionLabel" destination="jUH-h8-t6N" id="65h-hP-Zbi"/>
                 <outlet property="firstTextField" destination="QOp-w7-qQW" id="1RL-Eg-nY8"/>
                 <outlet property="firstTextFieldLabel" destination="his-1i-AHr" id="dtj-ta-o07"/>
+                <outlet property="firstTextFieldLabelWidthConstraint" destination="Zcn-mR-zzn" id="1vu-aM-mhF"/>
                 <outlet property="leftButton" destination="jIS-Eo-CLW" id="CF0-Sc-Ild"/>
                 <outlet property="rightButton" destination="sbI-dd-DIb" id="3lD-v5-GoT"/>
                 <outlet property="secondTextField" destination="Fqb-fm-JFc" id="ztH-Jz-XPo"/>
