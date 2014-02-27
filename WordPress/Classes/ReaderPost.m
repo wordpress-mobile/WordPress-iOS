@@ -268,6 +268,7 @@ NSString * const ReaderPostStoredCommentTextKey = @"comment";
 	
 	// Freshly Pressed posts will have an editorial section.
 	NSDictionary *editorial = [dict objectForKey:@"editorial"];
+    NSDictionary *featured_media = [dict objectForKey:@"featured_media"];
 	if (editorial) {
 		self.blogName = [[editorial stringForKey:@"blog_name"] stringByDecodingXMLCharacters];
 		self.sortDate = [DateUtils dateFromISOString:[editorial objectForKey:@"displayed_on"]];
@@ -298,7 +299,12 @@ NSString * const ReaderPostStoredCommentTextKey = @"comment";
 		}
 		self.featuredImage = img;
 		
-	} else {
+	} else if (featured_media && [[featured_media stringForKey:@"type"] isEqualToString:@"image"]) {
+        self.blogName = [[dict stringForKey:@"site_name"] stringByDecodingXMLCharacters];
+		self.sortDate = [DateUtils dateFromISOString:[dict objectForKey:@"date"]];
+
+        self.featuredImage = [featured_media stringForKey:@"uri"];
+    } else {
 		self.blogName = [[dict stringForKey:@"blog_name"] stringByDecodingXMLCharacters];
 		self.sortDate = [DateUtils dateFromISOString:[dict objectForKey:@"date"]];
 	}
