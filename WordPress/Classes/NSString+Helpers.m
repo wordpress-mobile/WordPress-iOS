@@ -93,7 +93,7 @@ static NSString *const Ellipsis =  @"\u2026";
                                    };
 
     NSError *error = nil;
-    NSRegularExpression *regex = [NSRegularExpression regularExpressionWithPattern:@"<img src='.*?wp-includes/images/smilies/icon_(.+?).gif'.*?class='wp-smiley' ?/?>" options:NSRegularExpressionCaseInsensitive error:&error];
+    NSRegularExpression *regex = [NSRegularExpression regularExpressionWithPattern:@"<img src=['\"].*?wp-includes/images/smilies/icon_(.+?).gif['\"].*?class=['\"]wp-smiley['\"] ?/?>" options:NSRegularExpressionCaseInsensitive error:&error];
     NSArray *matches = [regex matchesInString:result options:0 range:NSMakeRange(0, [result length])];
     for (NSTextCheckingResult *match in [matches reverseObjectEnumerator]) {
         NSRange range = [match rangeAtIndex:1];
