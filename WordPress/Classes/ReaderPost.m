@@ -66,8 +66,8 @@ NSString * const ReaderPostStoredCommentTextKey = @"comment";
 	dispatch_once(&token, ^{
 		
 		NSDictionary *fpDict = @{@"title": NSLocalizedString(@"Freshly Pressed", @""), @"endpoint":@"freshly-pressed", @"default":@YES};
-		NSDictionary *follows = @{@"title": NSLocalizedString(@"Blogs I Follow", @""), @"endpoint":@"reader/following", @"default":@YES};
-		NSDictionary *likes = @{@"title": NSLocalizedString(@"Posts I Like", @""), @"endpoint":@"reader/liked", @"default":@YES};
+		NSDictionary *follows = @{@"title": NSLocalizedString(@"Blogs I Follow", @""), @"endpoint":@"read/following", @"default":@YES};
+		NSDictionary *likes = @{@"title": NSLocalizedString(@"Posts I Like", @""), @"endpoint":@"read/liked", @"default":@YES};
 		NSDictionary *topic = @{@"title": NSLocalizedString(@"Topics", @""), @"endpoint":@"read/tags/%@", @"default":@NO};
 		
 		endpoints = @[follows, fpDict, likes, topic];
@@ -300,9 +300,10 @@ NSString * const ReaderPostStoredCommentTextKey = @"comment";
 		self.blogName = [[dict stringForKey:@"blog_name"] stringByDecodingXMLCharacters];
 		self.sortDate = [DateUtils dateFromISOString:[dict objectForKey:@"date"]];
 	}
-	
-    if ([dict valueForKey:@"meta"]) {
-        NSDictionary *meta_root = [dict objectForKey:@"meta"];
+
+    // check class of meta_root because an empty "meta" is 0 and not nil
+	NSDictionary *meta_root = [dict objectForKey:@"meta"];
+    if ([meta_root isKindOfClass:[NSDictionary class]]) {
         NSDictionary *meta_data = [meta_root objectForKey:@"data"];
         NSDictionary *meta_site = [meta_data objectForKey:@"site"];
         
@@ -616,7 +617,7 @@ NSString * const ReaderPostStoredCommentTextKey = @"comment";
 
 
 - (BOOL)isBlogsIFollow {
-	return ([self.endpoint rangeOfString:@"reader/following"].location != NSNotFound)? YES : NO;
+	return ([self.endpoint rangeOfString:@"read/following"].location != NSNotFound)? YES : NO;
 }
 
 
