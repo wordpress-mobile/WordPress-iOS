@@ -12,7 +12,7 @@
 
 extern NSString *const WPEditorNavigationRestorationID;
 
-@interface EditPostViewController : UITableViewController
+@interface EditPostViewController : UIViewController
 
 /*
  Initialize the editor with the specified post.
