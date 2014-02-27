@@ -174,7 +174,7 @@ typedef enum {
         return;
 	
     NSDate *lastSynced = [self lastSyncDate];
-    if ((lastSynced == nil || ABS([lastSynced timeIntervalSinceNow]) > ReaderPostDetailViewControllerRefreshTimeout) && _post.isWPCom) {
+    if ((lastSynced == nil || ABS([lastSynced timeIntervalSinceNow]) > ReaderPostDetailViewControllerRefreshTimeout) && [[_post isWPCom] boolValue]) {
 		[self syncWithUserInteraction:NO];
     }
     
@@ -314,7 +314,7 @@ typedef enum {
 		[items addObjectsFromArray:@[_commentButton, placeholder]];
 	}
 	
-	if ([self.post isWPCom]) {
+	if ([[self.post isWPCom] boolValue]) {
 		[items addObjectsFromArray:@[_likeButton, placeholder, _reblogButton]];
 	}
 	
@@ -419,7 +419,7 @@ typedef enum {
 		[items addObjectsFromArray:@[_commentButton, placeholder]];
 	}
 	
-	if ([self.post isWPCom]) {
+	if ([[self.post isWPCom] boolValue]) {
 		[items addObjectsFromArray:@[_likeButton, placeholder, _reblogButton]];
 	}
 	
