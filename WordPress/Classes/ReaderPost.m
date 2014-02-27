@@ -48,6 +48,7 @@ NSString * const ReaderPostStoredCommentTextKey = @"comment";
 @dynamic isFollowing;
 @dynamic isLiked;
 @dynamic isReblogged;
+@dynamic isWPCom;
 @dynamic likeCount;
 @dynamic postAvatar;
 @dynamic siteID;
@@ -623,11 +624,6 @@ NSString * const ReaderPostStoredCommentTextKey = @"comment";
 
 - (BOOL)isPrivate {
     return [self.isBlogPrivate boolValue];
-}
-
-
-- (BOOL)isWPCom {
-	return [self.blogSiteID integerValue] == 1 ? YES : NO;
 }
 
 
