@@ -1,17 +1,25 @@
+#if ! __has_feature(objc_arc)
+#error This file must be compiled with ARC. Either turn on ARC for the project or use -fobjc-arc flag on this file.
+#endif
+
 #import <QuartzCore/QuartzCore.h>
 
 #import "MPSurveyQuestionViewController.h"
 
 @interface MPSurveyQuestionViewController ()
-@property(nonatomic,retain) IBOutlet UILabel *prompt;
-@property(nonatomic,retain) IBOutlet NSLayoutConstraint *promptHeight;
+
+@property (nonatomic, strong) IBOutlet UILabel *prompt;
+@property (nonatomic, strong) IBOutlet NSLayoutConstraint *promptHeight;
+
 @end
 
 @interface MPSurveyMultipleChoiceQuestionViewController : MPSurveyQuestionViewController <UITableViewDataSource, UITableViewDelegate>
-@property(nonatomic,retain) MPSurveyMultipleChoiceQuestion *question;
-@property(nonatomic,retain) IBOutlet UITableView *tableView;
-@property(nonatomic,retain) IBOutlet UIView *tableContainer;
-@property(nonatomic,retain) IBOutlet NSLayoutConstraint *tableContainerVerticalPadding;
+
+@property (nonatomic, strong) MPSurveyMultipleChoiceQuestion *question;
+@property (nonatomic, strong) IBOutlet UITableView *tableView;
+@property (nonatomic, strong) IBOutlet UIView *tableContainer;
+@property (nonatomic, strong) IBOutlet NSLayoutConstraint *tableContainerVerticalPadding;
+
 @end
 
 typedef NS_ENUM(NSInteger, MPSurveyTableViewCellPosition) {
@@ -22,30 +30,36 @@ typedef NS_ENUM(NSInteger, MPSurveyTableViewCellPosition) {
 };
 
 @interface MPSurveyTableViewCellBackground : UIView
-@property(nonatomic,retain) UIColor *strokeColor;
-@property(nonatomic,retain) UIColor *fillColor;
-@property(nonatomic) MPSurveyTableViewCellPosition position;
+
+@property (nonatomic, strong) UIColor *strokeColor;
+@property (nonatomic, strong) UIColor *fillColor;
+@property (nonatomic) MPSurveyTableViewCellPosition position;
+
 @end
 
 @interface MPSurveyTableViewCell : UITableViewCell
+
 @property(nonatomic,getter=isChecked) BOOL checked;
-@property(nonatomic,retain) IBOutlet UILabel *label;
-@property(nonatomic,retain) IBOutlet UILabel *selectedLabel;
-@property(nonatomic,retain) IBOutlet UIImageView *checkmark;
-@property(nonatomic,retain) IBOutlet MPSurveyTableViewCellBackground *customBackgroundView;
-@property(nonatomic,retain) IBOutlet MPSurveyTableViewCellBackground *customSelectedBackgroundView;
-@property(nonatomic,retain) IBOutlet NSLayoutConstraint *selectedLabelLeadingSpace;
-@property(nonatomic,retain) IBOutlet NSLayoutConstraint *checkmarkLeadingSpace;
+@property (nonatomic, strong) IBOutlet UILabel *label;
+@property (nonatomic, strong) IBOutlet UILabel *selectedLabel;
+@property (nonatomic, strong) IBOutlet UIImageView *checkmark;
+@property (nonatomic, strong) IBOutlet MPSurveyTableViewCellBackground *customBackgroundView;
+@property (nonatomic, strong) IBOutlet MPSurveyTableViewCellBackground *customSelectedBackgroundView;
+@property (nonatomic, strong) IBOutlet NSLayoutConstraint *selectedLabelLeadingSpace;
+@property (nonatomic, strong) IBOutlet NSLayoutConstraint *checkmarkLeadingSpace;
+
 @end
 
 @interface MPSurveyTextQuestionViewController : MPSurveyQuestionViewController <UITextViewDelegate>
-@property(nonatomic,retain) MPSurveyTextQuestion *question;
-@property(nonatomic,retain) IBOutlet NSLayoutConstraint *promptTopSpace;
-@property(nonatomic,retain) IBOutlet UITextView *textView;
-@property(nonatomic,retain) IBOutlet NSLayoutConstraint *textViewHeight;
-@property(nonatomic,retain) IBOutlet UIView *keyboardAccessory;
-@property(nonatomic,retain) IBOutlet NSLayoutConstraint *keyboardAccessoryWidth;
-@property(nonatomic,retain) IBOutlet UILabel *charactersLeftLabel;
+
+@property (nonatomic, strong) MPSurveyTextQuestion *question;
+@property (nonatomic, strong) IBOutlet NSLayoutConstraint *promptTopSpace;
+@property (nonatomic, strong) IBOutlet UITextView *textView;
+@property (nonatomic, strong) IBOutlet NSLayoutConstraint *textViewHeight;
+@property (nonatomic, strong) IBOutlet UIView *keyboardAccessory;
+@property (nonatomic, strong) IBOutlet NSLayoutConstraint *keyboardAccessoryWidth;
+@property (nonatomic, strong) IBOutlet UILabel *charactersLeftLabel;
+
 @end
 
 @implementation MPSurveyQuestionViewController
@@ -58,18 +72,35 @@ typedef NS_ENUM(NSInteger, MPSurveyTableViewCellPosition) {
 
 - (void)viewWillLayoutSubviews
 {
-    // can't use _prompt.bounds here cause it hasn't been calculated yet
+    // Can't use _prompt.bounds here cause it hasn't been calculated yet.
     CGFloat promptWidth = self.view.bounds.size.width - 30; // 2x 15 point horizontal padding on prompt
     CGFloat promptHeight = UIDeviceOrientationIsPortrait([UIApplication sharedApplication].statusBarOrientation) ? 72 : 48;
     UIFont *font = _prompt.font;
-    CGSize sizeToFit;
-    CGSize constraintSize = CGSizeMake(promptWidth, MAXFLOAT);
-    // lower prompt font size until it fits (or hits min of 9 points)
+    CGSize constraintSize = CGSizeMake(promptWidth, CGFLOAT_MAX);
+
+    // Lower prompt font size until it fits (or hits min of 9 points).
     for (CGFloat size = 20; size >= 9; size--) {
         font = [font fontWithSize:size];
+        CGSize sizeToFit;
+
+        // Use boundingRectWithSize for iOS 7 and above, sizeWithFont otherwise.
+#if __IPHONE_OS_VERSION_MAX_ALLOWED >= 70000
+        if ([[[UIDevice currentDevice] systemVersion] compare:@"7.0" options:NSNumericSearch] != NSOrderedAscending) {
+            sizeToFit = [_prompt.text boundingRectWithSize:constraintSize
+                                                       options:NSStringDrawingUsesLineFragmentOrigin
+                                                    attributes:@{NSFontAttributeName: font}
+                                                       context:nil].size;
+        } else {
+            sizeToFit = [_prompt.text sizeWithFont:font
+                                 constrainedToSize:constraintSize
+                                     lineBreakMode:_prompt.lineBreakMode];
+        }
+#else
         sizeToFit = [_prompt.text sizeWithFont:font
                              constrainedToSize:constraintSize
                                  lineBreakMode:_prompt.lineBreakMode];
+#endif
+
         if (sizeToFit.height <= promptHeight) {
             promptHeight = sizeToFit.height;
             break;
@@ -79,12 +110,6 @@ typedef NS_ENUM(NSInteger, MPSurveyTableViewCellPosition) {
     _promptHeight.constant = ceilf(promptHeight);
 }
 
-- (void)dealloc
-{
-    self.question = nil;
-    self.highlightColor = nil;
-    [super dealloc];
-}
 
 @end
 
@@ -202,8 +227,8 @@ typedef NS_ENUM(NSInteger, MPSurveyTableViewCellPosition) {
     CAGradientLayer *fadeLayer = [CAGradientLayer layer];
     CGColorRef outerColor = [UIColor colorWithWhite:1 alpha:0].CGColor;
     CGColorRef innerColor = [UIColor colorWithWhite:1 alpha:1].CGColor;
-    fadeLayer.colors = @[(id)outerColor, (id)innerColor, (id)innerColor, (id)outerColor];
-    // add 20 pixels of fade in and out at top and bottom of table view container
+    fadeLayer.colors = @[(__bridge id)outerColor, (__bridge id)innerColor, (__bridge id)innerColor, (__bridge id)outerColor];
+    // add 44 pixels of fade in and out at top and bottom of table view container
     CGFloat offset = 44 / _tableContainer.bounds.size.height;
     fadeLayer.locations = @[@0, @(0 + offset), @(1 - offset), @1];
     fadeLayer.bounds = _tableContainer.bounds;
@@ -224,7 +249,6 @@ typedef NS_ENUM(NSInteger, MPSurveyTableViewCellPosition) {
             NSNumberFormatter *formatter = [[NSNumberFormatter alloc] init];
             [formatter setNumberStyle:NSNumberFormatterDecimalStyle];
             label = [formatter stringFromNumber:value];
-            [formatter release];
         }
     } else if ([value isKindOfClass:[NSNull class]]) {
         label = @"None";
@@ -243,10 +267,11 @@ typedef NS_ENUM(NSInteger, MPSurveyTableViewCellPosition) {
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
     MPSurveyTableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:@"MPSurveyTableViewCell"];
-    NSString *text = [self labelForValue:[self.question.choices objectAtIndex:(NSUInteger)indexPath.row]];
+    NSString *text = [self labelForValue:(self.question.choices)[(NSUInteger)indexPath.row]];
     cell.label.text = text;
     cell.selectedLabel.text = text;
     UIColor *strokeColor = [UIColor colorWithWhite:1 alpha:0.5];
+    cell.backgroundColor = [UIColor clearColor]; // necessary on ipad to get rid of white background in cell
     cell.customBackgroundView.strokeColor = strokeColor;
     cell.customSelectedBackgroundView.strokeColor = strokeColor;
     cell.customBackgroundView.fillColor = [UIColor clearColor];
@@ -268,28 +293,26 @@ typedef NS_ENUM(NSInteger, MPSurveyTableViewCellPosition) {
     return cell;
 }
 
--(void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
+- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
     MPSurveyTableViewCell *cell = (MPSurveyTableViewCell *)[tableView cellForRowAtIndexPath:indexPath];
     if (!cell.isChecked) {
         [cell setChecked:YES animatedWithCompletion:^(BOOL finished){
-            id value = [self.question.choices objectAtIndex:(NSUInteger)indexPath.row];
-            [self.delegate questionController:self didReceiveAnswerProperties:@{@"$value": value}];
+            id value = (self.question.choices)[(NSUInteger)indexPath.row];
+            __strong id<MPSurveyQuestionViewControllerDelegate> strongDelegate = self.delegate;
+            if (strongDelegate != nil) {
+                [strongDelegate questionController:self didReceiveAnswerProperties:@{@"$value": value}];
+            }
         }];
     }
 }
 
--(void)tableView:(UITableView *)tableView didDeselectRowAtIndexPath:(NSIndexPath *)indexPath
+- (void)tableView:(UITableView *)tableView didDeselectRowAtIndexPath:(NSIndexPath *)indexPath
 {
     MPSurveyTableViewCell *cell = (MPSurveyTableViewCell *)[tableView cellForRowAtIndexPath:indexPath];
     if (cell.isChecked) {
         [cell setChecked:NO animatedWithCompletion:nil];
     }
-}
-
-- (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section
-{
-    return (floor(NSFoundationVersionNumber) <= NSFoundationVersionNumber_iOS_6_1) ? 0 : 0.1f; // for some reason, 0 doesn't work in ios7
 }
 
 @end
@@ -336,7 +359,10 @@ typedef NS_ENUM(NSInteger, MPSurveyTableViewCellPosition) {
     if ([text isEqualToString:@"\n"]) {
         // submit answer
         shouldChange = NO;
-        [self.delegate questionController:self didReceiveAnswerProperties:@{@"$value": textView.text}];
+        __strong id<MPSurveyQuestionViewControllerDelegate> strongDelegate = self.delegate;
+        if (strongDelegate != nil) {
+            [strongDelegate questionController:self didReceiveAnswerProperties:@{@"$value": textView.text}];
+        }
     } else {
         NSUInteger newLength = [textView.text length] + ([text length] - range.length);
         shouldChange = newLength <= 255;
@@ -377,7 +403,7 @@ typedef NS_ENUM(NSInteger, MPSurveyTableViewCellPosition) {
     _promptTopSpace.constant = promptTopSpace;
     [UIView animateWithDuration:duration
                           delay:0
-                        options:curve | UIViewKeyframeAnimationOptionBeginFromCurrentState
+                        options:curve | UIViewAnimationOptionBeginFromCurrentState
                      animations:^{
                          self.prompt.alpha = promptAlpha;
                          [self.view layoutIfNeeded];
@@ -393,7 +419,7 @@ typedef NS_ENUM(NSInteger, MPSurveyTableViewCellPosition) {
     _promptTopSpace.constant = 15;
     [UIView animateWithDuration:duration
                           delay:0
-                        options:curve | UIViewKeyframeAnimationOptionBeginFromCurrentState
+                        options:curve | UIViewAnimationOptionBeginFromCurrentState
                      animations:^{
                          self.prompt.alpha = 1;
                          [self.view layoutIfNeeded];
