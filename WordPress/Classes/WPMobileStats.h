@@ -60,6 +60,7 @@ extern NSString *const StatsEventWebviewSentArticleToGooglePlus;
 // Notifications
 extern NSString *const StatsPropertyNotificationsOpened;
 extern NSString *const StatsPropertyNotificationsOpenedDetails;
+extern NSString *const StatsEventNotificationsClickedManageNotifications;
 
 // Notifications Detail
 extern NSString *const StatsEventNotificationsDetailClickedReplyButton;
@@ -177,6 +178,7 @@ extern NSString *const StatsEventNUXFirstWalkthroughOpened;
 extern NSString *const StatsEventNUXFirstWalkthroughClickedSkipToCreateAccount;
 extern NSString *const StatsEventNUXFirstWalkthroughClickedInfo;
 extern NSString *const StatsEventNUXFirstWalkthroughClickedCreateAccount;
+extern NSString *const StatsEventNUXFirstWalkthroughClickedLostPassword;
 extern NSString *const StatsEventNUXFirstWalkthroughSignedInWithoutUrl;
 extern NSString *const StatsEventNUXFirstWalkthroughSignedInWithUrl;
 extern NSString *const StatsEventNUXFirstWalkthroughSignedInForDotCom;

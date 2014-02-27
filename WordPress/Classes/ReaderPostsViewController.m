@@ -91,6 +91,7 @@ NSString * const RPVCDisplayedNativeFriendFinder = @"DisplayedNativeFriendFinder
         self.incrementalLoadingSupported = YES;
         
         [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(readerTopicDidChange:) name:ReaderTopicDidChangeNotification object:nil];
+        [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(fetchBlogsAndPrimaryBlog) name:WPAccountDefaultWordPressComAccountChangedNotification object:nil];
 	}
 	return self;
 }
@@ -559,7 +560,7 @@ NSString * const RPVCDisplayedNativeFriendFinder = @"DisplayedNativeFriendFinder
 	switch (idx) {
 		case 0:
 			// Blogs I follow
-			prompt = NSLocalizedString(@"You're not following any blogs yet.", @"");
+			prompt = NSLocalizedString(@"You’re not following any blogs yet.", @"");
 			break;
 			
 		case 2:
@@ -625,7 +626,7 @@ NSString * const RPVCDisplayedNativeFriendFinder = @"DisplayedNativeFriendFinder
 	
 	ReaderPost *post = (ReaderPost *)[self.resultsController objectAtIndexPath:indexPath];
 
-	[cell configureCell:post];
+	[cell configureCell:post withWidth:self.tableView.bounds.size.width];
     [self setImageForPost:post forCell:cell indexPath:indexPath];
     [self setAvatarForPost:post forCell:cell indexPath:indexPath];
     
@@ -955,13 +956,19 @@ NSString * const RPVCDisplayedNativeFriendFinder = @"DisplayedNativeFriendFinder
 
 - (void)fetchBlogsAndPrimaryBlog {
 	NSURL *xmlrpc;
-    NSString *username, *password;
+    NSString *username, *password, *authToken;
     WPAccount *account = [WPAccount defaultWordPressComAccount];
+    if (!account) {
+        return;
+    }
+	
 	xmlrpc = [NSURL URLWithString:@"https://wordpress.com/xmlrpc.php"];
 	username = account.username;
 	password = account.password;
-	
+    authToken = account.authToken;
+    
     WPXMLRPCClient *api = [WPXMLRPCClient clientWithXMLRPCEndpoint:xmlrpc];
+    [api setAuthorizationHeaderWithToken:authToken];
     [api callMethod:@"wp.getUsersBlogs"
          parameters:[NSArray arrayWithObjects:username, password, nil]
             success:^(AFHTTPRequestOperation *operation, id responseObject) {
@@ -1018,6 +1025,7 @@ NSString * const RPVCDisplayedNativeFriendFinder = @"DisplayedNativeFriendFinder
 
 			} failure:^(AFHTTPRequestOperation *operation, NSError *error) {
 				// Fail silently.
+                DDLogError(@"Failed retrieving user blogs in ReaderPostsViewController: %@", error);
             }];
 }
 

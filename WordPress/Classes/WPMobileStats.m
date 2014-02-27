@@ -73,6 +73,7 @@ NSString *const StatsEventWebviewSentArticleToGooglePlus = @"Sent Article to Goo
 // Notifications
 NSString *const StatsPropertyNotificationsOpened = @"notifications_opened";
 NSString *const StatsPropertyNotificationsOpenedDetails = @"notifications_opened_details";
+NSString *const StatsEventNotificationsClickedManageNotifications = @"Notifications - Manage Button";
 
 // Notifications Detail
 NSString *const StatsEventNotificationsDetailClickedReplyButton = @"Notifications Detail - Clicked Reply Button";
@@ -188,6 +189,7 @@ NSString *const StatsEventQuickPhotoPosted = @"Quick Photo - Posted";
 // NUX First Walkthrough 
 NSString *const StatsEventNUXFirstWalkthroughOpened = @"NUX - First Walkthrough - Opened";
 NSString *const StatsEventNUXFirstWalkthroughClickedSkipToCreateAccount = @"NUX - First Walkthrough - Skipped to Create Account";
+NSString *const StatsEventNUXFirstWalkthroughClickedLostPassword = @"NUX - First Walkthrough - Lost Password";
 NSString *const StatsEventNUXFirstWalkthroughClickedInfo = @"NUX - First Walkthrough - Clicked Info";
 NSString *const StatsEventNUXFirstWalkthroughClickedCreateAccount = @"NUX - First Walkthrough - Clicked Create Account";
 NSString *const StatsEventNUXFirstWalkthroughSignedInWithoutUrl = @"NUX - First Walkthrough - Signed In Without URL";

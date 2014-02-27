@@ -27,7 +27,7 @@ const CGFloat RPTVCVerticalOuterPadding = 16.0f;
         width = width - 2 * RPTVCHorizontalOuterPadding;
     }
     
-	CGFloat desiredHeight = [ReaderPostView heightForPost:post withWidth:width];
+	CGFloat desiredHeight = [ReaderPostView heightForPost:post withWidth:width showFullContent:NO];
 
 	return ceil(desiredHeight);
 }
@@ -148,9 +148,9 @@ const CGFloat RPTVCVerticalOuterPadding = 16.0f;
     self.sideBorderView.frame = CGRectMake(sideBorderX, 1, self.frame.size.width - sideBorderX * 2, sideBorderHeight);
 }
 
-- (void)configureCell:(ReaderPost *)post {
+- (void)configureCell:(ReaderPost *)post withWidth:(CGFloat)width{
 	self.post = post;
-    [self.postView configurePost:post];
+    [self.postView configurePost:post withWidth:width];
 }
 
 @end

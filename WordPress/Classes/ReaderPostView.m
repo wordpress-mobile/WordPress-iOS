@@ -12,6 +12,9 @@
 #import "ContentActionButton.h"
 #import "UILabel+SuggestSize.h"
 #import "NSAttributedString+HTML.h"
+#import "NSString+Helpers.h" 
+
+static NSInteger const MaxNumberOfLinesForTitleForSummary = 3;
 
 @interface ReaderPostView()
 
@@ -27,7 +30,7 @@
 
 @implementation ReaderPostView
 
-+ (CGFloat)heightForPost:(ReaderPost *)post withWidth:(CGFloat)width {
++ (CGFloat)heightForPost:(ReaderPost *)post withWidth:(CGFloat)width showFullContent:(BOOL)showFullContent {
 	CGFloat desiredHeight = 0.0f;
     
     // Margins
@@ -51,7 +54,7 @@
     
     // Title
     desiredHeight += RPVVerticalPadding;
-    NSAttributedString *postTitle = [self titleAttributedStringForPost:post];
+    NSAttributedString *postTitle = [self titleAttributedStringForPost:post showFullContent:showFullContent withWidth:contentWidth];
     desiredHeight += [postTitle boundingRectWithSize:CGSizeMake(contentWidth, CGFLOAT_MAX) options:NSStringDrawingUsesLineFragmentOrigin | NSStringDrawingUsesFontLeading context:nil].size.height;
     desiredHeight += RPVTitlePaddingBottom;
     
@@ -83,7 +86,7 @@
 	return ceil(desiredHeight);
 }
 
-+ (NSAttributedString *)titleAttributedStringForPost:(ReaderPost *)post {
++ (NSAttributedString *)titleAttributedStringForPost:(ReaderPost *)post showFullContent:(BOOL)showFullContent withWidth:(CGFloat) width {
     NSMutableParagraphStyle *style = [[NSMutableParagraphStyle alloc] init];
     [style setLineHeightMultiple:RPVLineHeightMultiple];
     NSDictionary *attributes = @{NSParagraphStyleAttributeName : style,
@@ -95,8 +98,47 @@
     
     NSMutableAttributedString *titleString = [[NSMutableAttributedString alloc] initWithString:postTitle
                                                                                     attributes:attributes];
+    if(!showFullContent) //Ellipsizing long titles
+    {
+        if([postTitle length] > 0)
+        {
+            
+            CGFloat currentHeightOfTitle = [titleString
+                                            boundingRectWithSize:CGSizeMake(width, CGFLOAT_MAX)
+                                            options:NSStringDrawingUsesLineFragmentOrigin | NSStringDrawingUsesFontLeading
+                                            context:nil].size.height;
+            
+            
+            CGFloat heightOfSingleLine = [[titleString attributedSubstringFromRange:NSMakeRange(0,1)]
+                                          boundingRectWithSize:CGSizeMake(width, CGFLOAT_MAX)
+                                          options:NSStringDrawingUsesLineFragmentOrigin | NSStringDrawingUsesFontLeading
+                                          context:nil].size.height;
+            
+            NSInteger numberOfLines = currentHeightOfTitle / heightOfSingleLine;
+            
+            if(numberOfLines > MaxNumberOfLinesForTitleForSummary)
+            {
+                NSInteger newLength = [ReaderPostView calculateTitleLengthWithSingleLineHeight:heightOfSingleLine
+                                                                             currentLineHeight:currentHeightOfTitle
+                                                                                  currentTitle:titleString];
+                
+                
+                titleString = [[NSMutableAttributedString alloc]initWithString:[postTitle stringByEllipsizingWithMaxLength:newLength preserveWords:YES]
+                                                                    attributes:attributes];
+                
+            }
+        }
+    }
     
     return titleString;
+}
+
++ (NSInteger)calculateTitleLengthWithSingleLineHeight:(CGFloat)singleLineHeight currentLineHeight:(CGFloat)currentLineHeight currentTitle:(NSAttributedString *)postTitle
+{
+    CGFloat allowedHeight = singleLineHeight * MaxNumberOfLinesForTitleForSummary;
+    CGFloat overageRatio = allowedHeight / currentLineHeight;
+    return [postTitle length] * overageRatio;
+    
 }
 
 + (NSAttributedString *)summaryAttributedStringForPost:(ReaderPost *)post {
@@ -182,7 +224,17 @@
     return self;
 }
 
-- (void)configurePost:(ReaderPost *)post {
+- (void)configurePost:(ReaderPost *)post withWidth:(CGFloat)width {
+   
+    // Margins
+    CGFloat contentWidth = width;
+    if (IS_IPAD) {
+        contentWidth = WPTableViewFixedWidth;
+    }
+    
+    contentWidth -= RPVHorizontalInnerPadding * 2;
+    
+    
     _post = post;
     self.contentProvider = post;
     
@@ -190,7 +242,9 @@
     // so avatars show up after a cell is created, and not dequeued.
     [self setAvatar:nil];
     
-	self.titleLabel.attributedText = [[self class] titleAttributedStringForPost:post];
+	self.titleLabel.attributedText = [[self class] titleAttributedStringForPost:post
+                                                                showFullContent:self.showFullContent
+                                                                      withWidth:contentWidth];
     
     if (self.showFullContent) {
         NSData *data = [self.post.content dataUsingEncoding:NSUTF8StringEncoding];
@@ -346,7 +400,7 @@
     } else if ([[self.post isWPCom] boolValue]) {
         self.avatarImageView.image = [UIImage imageNamed:@"wpcom_blavatar"];
     } else {
-        self.avatarImageView.image = [UIImage imageNamed:@"wporg_blavatar"];
+        self.avatarImageView.image = [UIImage imageNamed:@"gravatar-reader"];
     }
 }
 
