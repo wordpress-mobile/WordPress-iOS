@@ -360,6 +360,7 @@ const NSUInteger NoteKeepCount = 20;
             success([notes count] > 0);
         }
     } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+        DDLogVerbose(@"Failed to fetch notifications - %@", [error localizedDescription]);
         if (failure) {
             failure(error);
         }
