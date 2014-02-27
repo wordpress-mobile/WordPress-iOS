@@ -23,8 +23,11 @@
 
 @property (nonatomic, strong) ReaderPost *post;
 @property (nonatomic, weak) id <ReaderPostViewDelegate> delegate;
+@property (nonatomic, assign) BOOL hidesAttribution;
 
 + (CGFloat)heightForPost:(ReaderPost *)post withWidth:(CGFloat)width showFullContent:(BOOL)showFullContent;
++ (CGFloat)heightWithoutAttributionForPost:(ReaderPost *)post withWidth:(CGFloat)width showFullContent:(BOOL)showFullContent;
+
 - (id)initWithFrame:(CGRect)frame showFullContent:(BOOL)showFullContent;
 - (void)configurePost:(ReaderPost *)post withWidth:(CGFloat)width;
 - (void)setAvatar:(UIImage *)avatar;

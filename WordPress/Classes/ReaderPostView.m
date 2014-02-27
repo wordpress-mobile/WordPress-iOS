@@ -20,7 +20,6 @@ static NSInteger const MaxNumberOfLinesForTitleForSummary = 3;
 
 @property (nonatomic, assign) BOOL showImage;
 @property (nonatomic, strong) UIButton *tagButton;
-@property (nonatomic, strong) UIButton *followButton;
 @property (nonatomic, strong) UIButton *likeButton;
 @property (nonatomic, strong) UIButton *reblogButton;
 @property (nonatomic, strong) UIButton *commentButton;
@@ -84,6 +83,13 @@ static NSInteger const MaxNumberOfLinesForTitleForSummary = 3;
     desiredHeight += RPVMetaViewHeight;
     
 	return ceil(desiredHeight);
+}
+
++ (CGFloat)heightWithoutAttributionForPost:(ReaderPost *)post withWidth:(CGFloat)width showFullContent:(BOOL)showFullContent {
+    CGFloat desiredHeight = [self heightForPost:post withWidth:width showFullContent:showFullContent];
+    desiredHeight -= RPVAuthorViewHeight;
+    desiredHeight -= RPVAuthorPadding;
+    return desiredHeight;
 }
 
 + (NSAttributedString *)titleAttributedStringForPost:(ReaderPost *)post showFullContent:(BOOL)showFullContent withWidth:(CGFloat) width {
@@ -185,20 +191,7 @@ static NSInteger const MaxNumberOfLinesForTitleForSummary = 3;
             [super.cellImageView addGestureRecognizer:imageTap];
         }
 
-        _followButton = [ContentActionButton buttonWithType:UIButtonTypeCustom];
-        _followButton.contentHorizontalAlignment = UIControlContentHorizontalAlignmentLeft;
-        _followButton.backgroundColor = [UIColor clearColor];
-        _followButton.titleLabel.font = [UIFont fontWithName:@"OpenSans" size:12.0f];
-        NSString *followString = NSLocalizedString(@"Follow", @"Prompt to follow a blog.");
-        NSString *followedString = NSLocalizedString(@"Following", @"User is following the blog.");
-        [_followButton setTitle:followString forState:UIControlStateNormal];
-        [_followButton setTitle:followedString forState:UIControlStateSelected];
-        [_followButton setTitleEdgeInsets: UIEdgeInsetsMake(0, RPVSmallButtonLeftPadding, 0, 0)];
-        [_followButton setImage:[UIImage imageNamed:@"reader-postaction-follow"] forState:UIControlStateNormal];
-        [_followButton setImage:[UIImage imageNamed:@"reader-postaction-following"] forState:UIControlStateSelected];
-        [_followButton setTitleColor:[UIColor colorWithHexString:@"aaa"] forState:UIControlStateNormal];
-        [_followButton addTarget:self action:@selector(followAction:) forControlEvents:UIControlEventTouchUpInside];
-        [super.byView addSubview:_followButton];
+        [self.followButton addTarget:self action:@selector(followAction:) forControlEvents:UIControlEventTouchUpInside];
         
         _tagButton = [ContentActionButton buttonWithType:UIButtonTypeCustom];
         _tagButton.contentHorizontalAlignment = UIControlContentHorizontalAlignmentLeft;
@@ -256,7 +249,7 @@ static NSInteger const MaxNumberOfLinesForTitleForSummary = 3;
         self.snippetLabel.attributedText = [[self class] summaryAttributedStringForPost:post];
     }
     
-    self.bylineLabel.text = [post authorString];
+    self.attributionView.authorName = [post authorString];
     [self refreshDate];
     
 	self.showImage = NO;
@@ -308,21 +301,14 @@ static NSInteger const MaxNumberOfLinesForTitleForSummary = 3;
     }
     
     CGFloat innerContentWidth = contentWidth - RPVHorizontalInnerPadding * 2;
-	CGFloat nextY = RPVAuthorPadding;
+    CGFloat nextY = [self hidesAttribution] ? 0.0f : RPVAuthorPadding;
 	CGFloat height = 0.0f;
-    CGFloat bylineX = RPVAvatarSize + RPVAuthorPadding + RPVHorizontalInnerPadding;
 
-    if ([self.post isFollowable]) {
-        self.followButton.hidden = NO;
-        CGFloat followX = bylineX - 4; // Fudge factor for image alignment
-        CGFloat followY = RPVAuthorPadding + self.bylineLabel.frame.size.height - 2;
-        height = ceil([self.followButton.titleLabel suggestedSizeForWidth:innerContentWidth].height);
-        self.followButton.frame = CGRectMake(followX, followY, RPVFollowButtonWidth, height);
-    } else {
-        self.followButton.hidden = YES;
-    }
+    self.followButton.hidden = ![self.post isFollowable];
     
-    nextY += RPVAuthorViewHeight + RPVAuthorPadding;
+    if (!self.hidesAttribution) {
+        nextY += RPVAuthorViewHeight + RPVAuthorPadding;
+    }
     
 	// Are we showing an image? What size should it be?
 	if (_showImage) {
@@ -331,7 +317,7 @@ static NSInteger const MaxNumberOfLinesForTitleForSummary = 3;
 		self.cellImageView.frame = CGRectMake(0, nextY, contentWidth, height);
 		nextY += height;
     } else {
-        self.titleBorder.hidden = NO;
+        self.titleBorder.hidden = [self hidesAttribution];
         self.titleBorder.frame = CGRectMake(RPVHorizontalInnerPadding, nextY, contentWidth - RPVHorizontalInnerPadding * 2, RPVBorderHeight);
     }
     
@@ -407,6 +393,13 @@ static NSInteger const MaxNumberOfLinesForTitleForSummary = 3;
     return self.post.isPrivate;
 }
 
+- (BOOL)hidesAttribution {
+    return self.attributionView.hidden;
+}
+
+- (void)setHidesAttribution:(BOOL)hidesAttribution {
+    self.attributionView.hidden = hidesAttribution;
+}
 
 #pragma mark - Actions
 

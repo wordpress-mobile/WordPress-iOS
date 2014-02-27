@@ -25,6 +25,7 @@
 #import "ReaderMediaView.h"
 #import "ReaderImageView.h"
 #import "ReaderVideoView.h"
+#import "ReaderAttributionView.h"
 
 const CGFloat RPVAuthorPadding = 8.0f;
 const CGFloat RPVHorizontalInnerPadding = 12.0f;
@@ -59,11 +60,9 @@ const CGFloat RPVControlButtonBorderSize = 0.0f;
 @property (nonatomic, strong) UIView *bottomView;
 @property (nonatomic, strong) CALayer *bottomBorder;
 @property (nonatomic, strong) CALayer *titleBorder;
-@property (nonatomic, strong) UIView *byView;
 @property (nonatomic, strong) UIView *controlView;
 @property (nonatomic, strong) UIButton *timeButton;
-@property (nonatomic, strong) UILabel *bylineLabel;
-@property (nonatomic, strong) UIButton *byButton;
+@property (nonatomic, strong) ReaderAttributionView *attributionView;
 @property (nonatomic, assign) BOOL willRefreshMediaLayout;
 
 @end
@@ -115,32 +114,9 @@ const CGFloat RPVControlButtonBorderSize = 0.0f;
         _titleBorder.backgroundColor = [[UIColor colorWithHexString:@"f1f1f1"] CGColor];
         [self.layer addSublayer:_titleBorder];
         
-        _byView = [[UIView alloc] init];
-        _byView.autoresizingMask = UIViewAutoresizingFlexibleWidth;
-        _byView.backgroundColor = [UIColor clearColor];
-        _byView.userInteractionEnabled = YES;
-        [self addSubview:_byView];
-        
-        CGRect avatarFrame = CGRectMake(RPVHorizontalInnerPadding, RPVAuthorPadding, RPVAvatarSize, RPVAvatarSize);
-        _avatarImageView = [[UIImageView alloc] initWithFrame:avatarFrame];
-        [_byView addSubview:_avatarImageView];
-        
-        _bylineLabel = [[UILabel alloc] init];
-        _bylineLabel.backgroundColor = [UIColor clearColor];
-        _bylineLabel.numberOfLines = 1;
-        _bylineLabel.autoresizingMask = UIViewAutoresizingFlexibleWidth;
-        _bylineLabel.font = [UIFont fontWithName:@"OpenSans" size:12.0f];
-        _bylineLabel.adjustsFontSizeToFitWidth = NO;
-        _bylineLabel.textColor = [UIColor colorWithHexString:@"333"];
-        [_byView addSubview:_bylineLabel];
-        
-        _byButton = [UIButton buttonWithType:UIButtonTypeCustom];
-        _byButton.contentHorizontalAlignment = UIControlContentHorizontalAlignmentLeft;
-        _byButton.backgroundColor = [UIColor clearColor];
-        _byButton.titleLabel.font = [UIFont fontWithName:@"OpenSans" size:12.0f];
-        [_byButton addTarget:self action:@selector(authorLinkAction:) forControlEvents:UIControlEventTouchUpInside];
-        [_byButton setTitleColor:[WPStyleGuide buttonActionColor] forState:UIControlStateNormal];
-        [_byView addSubview:_byButton];
+        self.attributionView = [[ReaderAttributionView alloc] initWithFrame:CGRectZero];
+        [self addSubview:self.attributionView];
+        [self.attributionView.linkButton addTarget:self action:@selector(authorLinkAction:) forControlEvents:UIControlEventTouchUpInside];
         
         _bottomView = [[UIView alloc] init];
         _bottomView.autoresizingMask = UIViewAutoresizingFlexibleWidth;
@@ -214,8 +190,8 @@ const CGFloat RPVControlButtonBorderSize = 0.0f;
 
 #pragma mark - Instance methods
 
-- (void)reset {    
-	_bylineLabel.text = nil;
+- (void)reset {
+    [self.attributionView setAuthorDisplayName:@"" authorLink:@""];
 	_titleLabel.text = nil;
 	_snippetLabel.text = nil;
     
@@ -237,23 +213,12 @@ const CGFloat RPVControlButtonBorderSize = 0.0f;
 }
 
 - (void)setAuthorDisplayName:(NSString *)authorName authorLink:(NSString *)authorLink {
-    self.bylineLabel.text = authorName;
-    [self.byButton setTitle:authorLink forState:UIControlStateNormal];
-    [self.byButton setEnabled:YES];
-    [self.byButton setHidden:NO];
+    [self.attributionView setAuthorDisplayName:authorName authorLink:authorLink];
 }
 
 - (void)configureContentView:(id<WPContentViewProvider>)contentProvider {
-    self.bylineLabel.text = [contentProvider authorForDisplay];
-    
-    if ([[contentProvider blogNameForDisplay] length] > 0) {
-        [self.byButton setEnabled:YES];
-        [self.byButton setHidden:NO];
-        [self.byButton setTitle:[contentProvider blogNameForDisplay] forState:UIControlStateNormal];
-    } else {
-        [self.byButton setEnabled:NO];
-        [self.byButton setHidden:YES];
-    }
+
+    [self setAuthorDisplayName:[contentProvider authorForDisplay] authorLink:[contentProvider blogNameForDisplay]];
     
     [self refreshDate];
     
@@ -268,17 +233,14 @@ const CGFloat RPVControlButtonBorderSize = 0.0f;
     
     CGFloat contentWidth = self.frame.size.width;
 
-    self.byView.frame = CGRectMake(0, 0, contentWidth, RPVAuthorViewHeight + RPVAuthorPadding * 2);
-    CGFloat bylineX = RPVAvatarSize + RPVAuthorPadding + RPVHorizontalInnerPadding;
-    self.bylineLabel.frame = CGRectMake(bylineX, RPVAuthorPadding - 2, contentWidth - bylineX, 18);
-    self.byButton.frame = CGRectMake(bylineX, self.bylineLabel.frame.origin.y + 18, contentWidth - bylineX, 18);
+    self.attributionView.frame = CGRectMake(0, 0, contentWidth, RPVAuthorViewHeight + RPVAuthorPadding * 2);
     
     [self.textContentView relayoutText];
     CGFloat height = [self.textContentView suggestedFrameSizeToFitEntireStringConstraintedToWidth:contentWidth].height;
     CGRect textContainerFrame = self.textContentView.frame;
     textContainerFrame.size.width = contentWidth;
     textContainerFrame.size.height = height;
-    textContainerFrame.origin.y = self.byView.frame.origin.y + self.byView.frame.size.height;
+    textContainerFrame.origin.y = self.attributionView.frame.origin.y + self.attributionView.frame.size.height;
     self.textContentView.frame = textContainerFrame;
     
     // Position the meta view and its subviews
@@ -327,6 +289,17 @@ const CGFloat RPVControlButtonBorderSize = 0.0f;
     [self.actionButtons removeObject:button];
 }
 
+- (UIImageView *)avatarImageView {
+    return self.attributionView.avatarImageView;
+}
+
+- (UIButton *)linkButton {
+    return self.attributionView.linkButton;
+}
+
+- (ContentActionButton *)followButton {
+    return self.attributionView.followButton;
+}
 
 #pragma mark - Actions
 

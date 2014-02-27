@@ -207,6 +207,12 @@
 	return  [UIColor colorWithRed:153/255.0f green:153/255.0f blue:153/255.0f alpha:1.0f];
 }
 
++ (UIColor *)theFonzGrey
+{
+    // #aaa;
+    return [UIColor colorWithRed:170/255.0f green:170/255.0f blue:170/255.0f alpha:1.0f];
+}
+
 + (UIColor *)readGrey
 {
 	return [UIColor colorWithRed:221/255.0f green:221/255.0f blue:221/255.0f alpha:1.0f];
@@ -257,6 +263,8 @@
         return [UIColor colorWithRed:220.0f/255.0f green:223.0f/255.0f blue:226.0f/255.0f alpha:1.0];
     }
 }
+
+#pragma mark - UIView Styles
 
 + (UIBarButtonItemStyle)barButtonStyleForDone
 {
