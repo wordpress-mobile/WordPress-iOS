@@ -257,6 +257,7 @@ NSString * const ReaderPostStoredCommentTextKey = @"comment";
     self.commentCount = [dict numberForKey:@"comment_count"];
 	self.isFollowing = [dict numberForKey:@"is_following"];
 	self.isReblogged = [dict numberForKey:@"is_reblogged"];
+    self.isWPCom = ([[dict numberForKey:@"is_external"] isEqualToNumber:@1]) ? @0 : @1;
 	self.status = [dict objectForKey:@"status"];
 
 	self.dateSynced = [NSDate date];
@@ -336,6 +337,8 @@ NSString * const ReaderPostStoredCommentTextKey = @"comment";
 	
 	self.isLiked = [dict numberForKey:@"i_like"];
 	
+    self.isWPCom = ([[dict numberForKey:@"is_external"] isEqualToNumber:@1]) ? @0 : @1;
+    
 	NSURL *url = [NSURL URLWithString:self.permaLink];
 	self.blogURL = [NSString stringWithFormat:@"%@://%@/", url.scheme, url.host];
 	
@@ -403,6 +406,8 @@ NSString * const ReaderPostStoredCommentTextKey = @"comment";
     
 	self.isLiked = [dict numberForKey:@"is_liked"];
 	
+    self.isWPCom = ([[dict numberForKey:@"is_external"] isEqualToNumber:@1]) ? @0 : @1;
+    
 	NSString *summary = [self makePlainText:self.content];
 	if ([summary length] > ReaderPostSummaryLength) {
 		summary = [self createSummary:summary makePlainText:NO];
