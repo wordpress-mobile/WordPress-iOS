@@ -379,6 +379,7 @@ typedef NS_ENUM(NSInteger, TotalFollowersShareRow) {
             StatsLinkToWebviewCell *cell = [tableView dequeueReusableCellWithIdentifier:LinkToWebviewCellIdentifier];
             [cell configureForSection:StatsSectionLinkToWebview];
             cell.onTappedLinkToWebview = ^{
+                [WPMobileStats trackEventForWPCom:StatsEventStatsClickedOnWebVersion];
                 StatsWebViewController *vc = [[StatsWebViewController alloc] init];
                 vc.blog = self.blog;
                 [self.navigationController pushViewController:vc animated:YES];
