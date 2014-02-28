@@ -876,5 +876,12 @@ NSString * const ReaderPostStoredCommentTextKey = @"comment";
     return [self dateCreated];
 }
 
+- (NSString *)contentPreviewForDisplay {
+    return self.summary;
+}
+
+- (NSURL *)featuredImageURLForDisplay {
+    return [self featuredImageURL];
+}
 
 @end

@@ -520,10 +520,13 @@
 		5DA1FDBA15AB5F72005DC38E /* toolbar_flag_lite@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 5DA1FDB615AB5F71005DC38E /* toolbar_flag_lite@2x.png */; };
 		5DA1FDBB15AB5F72005DC38E /* toolbar_write_lite.png in Resources */ = {isa = PBXBuildFile; fileRef = 5DA1FDB715AB5F71005DC38E /* toolbar_write_lite.png */; };
 		5DA1FDBC15AB5F72005DC38E /* toolbar_write_lite@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 5DA1FDB815AB5F72005DC38E /* toolbar_write_lite@2x.png */; };
+		5DA7287918BFD25B00B67407 /* PostContentView.m in Sources */ = {isa = PBXBuildFile; fileRef = 5DA7287818BFD25B00B67407 /* PostContentView.m */; };
+		5DA8434E18BD49D3009276BB /* PostViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 5DA8434D18BD49D3009276BB /* PostViewController.m */; };
 		5DB4683B18A2E718004A89A9 /* LocationService.m in Sources */ = {isa = PBXBuildFile; fileRef = 5DB4683A18A2E718004A89A9 /* LocationService.m */; };
 		5DB767411588F64D00EBE36C /* postPreview.html in Resources */ = {isa = PBXBuildFile; fileRef = 5DB767401588F64D00EBE36C /* postPreview.html */; };
 		5DBE185A18B50D9F00605CF8 /* UIImage+Util.m in Sources */ = {isa = PBXBuildFile; fileRef = 5DBE185918B50D9F00605CF8 /* UIImage+Util.m */; };
 		5DC3A44D1610B9BC00A890BE /* UINavigationController+Rotation.m in Sources */ = {isa = PBXBuildFile; fileRef = 5DC3A44C1610B9BC00A890BE /* UINavigationController+Rotation.m */; };
+		5DC6D55F18C1218A004B665F /* BasePostContentView.m in Sources */ = {isa = PBXBuildFile; fileRef = 5DC6D55E18C1218A004B665F /* BasePostContentView.m */; };
 		5DD8A6E415A5ECDC00A673A4 /* sync_dark.png in Resources */ = {isa = PBXBuildFile; fileRef = 5DD8A6E015A5ECD700A673A4 /* sync_dark.png */; };
 		5DD8A6E515A5ECDC00A673A4 /* sync_dark@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 5DD8A6E115A5ECD900A673A4 /* sync_dark@2x.png */; };
 		5DD8A6E615A5ECDC00A673A4 /* sync_lite.png in Resources */ = {isa = PBXBuildFile; fileRef = 5DD8A6E215A5ECDA00A673A4 /* sync_lite.png */; };
@@ -1622,6 +1625,10 @@
 		5DA1FDB615AB5F71005DC38E /* toolbar_flag_lite@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "toolbar_flag_lite@2x.png"; path = "Resources/Images/toolbar_flag_lite@2x.png"; sourceTree = "<group>"; };
 		5DA1FDB715AB5F71005DC38E /* toolbar_write_lite.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = toolbar_write_lite.png; path = Resources/Images/toolbar_write_lite.png; sourceTree = "<group>"; };
 		5DA1FDB815AB5F72005DC38E /* toolbar_write_lite@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "toolbar_write_lite@2x.png"; path = "Resources/Images/toolbar_write_lite@2x.png"; sourceTree = "<group>"; };
+		5DA7287718BFD25B00B67407 /* PostContentView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PostContentView.h; sourceTree = "<group>"; };
+		5DA7287818BFD25B00B67407 /* PostContentView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PostContentView.m; sourceTree = "<group>"; };
+		5DA8434C18BD49D3009276BB /* PostViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PostViewController.h; sourceTree = "<group>"; };
+		5DA8434D18BD49D3009276BB /* PostViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PostViewController.m; sourceTree = "<group>"; };
 		5DB4683918A2E718004A89A9 /* LocationService.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LocationService.h; sourceTree = "<group>"; };
 		5DB4683A18A2E718004A89A9 /* LocationService.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LocationService.m; sourceTree = "<group>"; };
 		5DB767401588F64D00EBE36C /* postPreview.html */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.html; name = postPreview.html; path = Resources/HTML/postPreview.html; sourceTree = "<group>"; };
@@ -1629,6 +1636,8 @@
 		5DBE185918B50D9F00605CF8 /* UIImage+Util.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIImage+Util.m"; sourceTree = "<group>"; };
 		5DC3A44B1610B9BC00A890BE /* UINavigationController+Rotation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UINavigationController+Rotation.h"; sourceTree = "<group>"; };
 		5DC3A44C1610B9BC00A890BE /* UINavigationController+Rotation.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UINavigationController+Rotation.m"; sourceTree = "<group>"; };
+		5DC6D55D18C1218A004B665F /* BasePostContentView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BasePostContentView.h; sourceTree = "<group>"; };
+		5DC6D55E18C1218A004B665F /* BasePostContentView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BasePostContentView.m; sourceTree = "<group>"; };
 		5DD8A6E015A5ECD700A673A4 /* sync_dark.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = sync_dark.png; path = Resources/Images/sync_dark.png; sourceTree = "<group>"; };
 		5DD8A6E115A5ECD900A673A4 /* sync_dark@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "sync_dark@2x.png"; path = "Resources/Images/sync_dark@2x.png"; sourceTree = "<group>"; };
 		5DD8A6E215A5ECDA00A673A4 /* sync_lite.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = sync_lite.png; path = Resources/Images/sync_lite.png; sourceTree = "<group>"; };
@@ -2376,6 +2385,8 @@
 				46F84613185AEB38009D0DA5 /* WPContentViewSubclass.h */,
 				46F8460F185A6E98009D0DA5 /* WPContentView.h */,
 				46F84610185A6E98009D0DA5 /* WPContentView.m */,
+				5DC6D55D18C1218A004B665F /* BasePostContentView.h */,
+				5DC6D55E18C1218A004B665F /* BasePostContentView.m */,
 				C56636EE1875D56300226AAB /* Stats */,
 				C58349C31806F95100B64089 /* IOS7CorrectedTextView.h */,
 				C58349C41806F95100B64089 /* IOS7CorrectedTextView.m */,
@@ -3405,6 +3416,10 @@
 				2F970F730DF92274006BD934 /* PostsViewController.m */,
 				5D146EB9189857ED0068FDC6 /* FeaturedImageViewController.h */,
 				5D146EBA189857ED0068FDC6 /* FeaturedImageViewController.m */,
+				5DA8434C18BD49D3009276BB /* PostViewController.h */,
+				5DA8434D18BD49D3009276BB /* PostViewController.m */,
+				5DA7287718BFD25B00B67407 /* PostContentView.h */,
+				5DA7287818BFD25B00B67407 /* PostContentView.m */,
 			);
 			name = Post;
 			sourceTree = "<group>";
@@ -5270,6 +5285,7 @@
 				C545E0A21811B9880020844C /* ContextManager.m in Sources */,
 				5D4AD40F185FE64C00CDEE17 /* WPMainTabBarController.m in Sources */,
 				1D60589B0D05DD56006BFB54 /* main.m in Sources */,
+				5DC6D55F18C1218A004B665F /* BasePostContentView.m in Sources */,
 				5D577D33189127BE00B964C3 /* PostGeolocationViewController.m in Sources */,
 				1D3623260D0F684500981E51 /* WordPressAppDelegate.m in Sources */,
 				2F970F740DF92274006BD934 /* PostsViewController.m in Sources */,
@@ -5357,6 +5373,7 @@
 				CC0E20AE15B87DA100D3468B /* WPWebBridge.m in Sources */,
 				5D97C2F315CAF8D8009B44DD /* UINavigationController+KeyboardFix.m in Sources */,
 				5D1EE80215E7AF3E007F1F02 /* JetpackSettingsViewController.m in Sources */,
+				5DA8434E18BD49D3009276BB /* PostViewController.m in Sources */,
 				5D3E334E15EEBB6B005FC6F2 /* ReachabilityUtils.m in Sources */,
 				5D87E10C15F5120C0012C595 /* SettingsPageViewController.m in Sources */,
 				5DC3A44D1610B9BC00A890BE /* UINavigationController+Rotation.m in Sources */,
@@ -5436,6 +5453,7 @@
 				5D42A3FE175E75EE005CFF05 /* ReaderTableViewCell.m in Sources */,
 				5D42A3FF175E75EE005CFF05 /* ReaderTopicsViewController.m in Sources */,
 				5D42A400175E75EE005CFF05 /* ReaderVideoView.m in Sources */,
+				5DA7287918BFD25B00B67407 /* PostContentView.m in Sources */,
 				5D42A405175E76A7005CFF05 /* WPImageViewController.m in Sources */,
 				5D42A406175E76A7005CFF05 /* WPWebVideoViewController.m in Sources */,
 				5D2A8FF2175EC15800263144 /* ReaderTextFormView.m in Sources */,

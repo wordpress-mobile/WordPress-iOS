@@ -302,5 +302,4 @@
     return [NSURL URLWithString:self.blog.blavatarUrl];
 }
 
-
 @end

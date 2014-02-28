@@ -208,6 +208,10 @@
     return nil;
 }
 
+- (NSURL *)featuredImageURLForDisplay {
+    return nil;
+}
+
 - (NSDate *)dateForDisplay {
     return [self dateCreated];
 }

@@ -58,6 +58,10 @@
     return nil;
 }
 
+- (NSURL *)featuredImageURLForDisplay {
+    return nil;
+}
+
 - (NSString *)gravatarEmailForDisplay {
     return [self.author_email trim];
 }

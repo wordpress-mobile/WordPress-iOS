@@ -1,6 +1,7 @@
 
 #import "WPTableViewControllerSubclass.h"
 #import "PostsViewController.h"
+#import "PostViewController.h"
 #import "EditPostViewController.h"
 #import "NewPostTableViewCell.h"
 #import "WordPressAppDelegate.h"
@@ -102,8 +103,7 @@
     [[NSNotificationCenter defaultCenter] removeObserver:self];
 }
 
-- (NSString *)statsPropertyForViewOpening
-{
+- (NSString *)statsPropertyForViewOpening {
     return StatsPropertyPostsOpened;
 }
 
@@ -206,14 +206,17 @@
 }
 
 - (void)editPost:(AbstractPost *)apost {
-    EditPostViewController *editPostViewController = [[EditPostViewController alloc] initWithPost:apost];
-    editPostViewController.editorOpenedBy = StatsPropertyPostDetailEditorOpenedOpenedByPostsView;
-    UINavigationController *navController = [[UINavigationController alloc] initWithRootViewController:editPostViewController];
-    [navController setToolbarHidden:NO]; // Fixes incorrect toolbar animation.
-    navController.modalPresentationStyle = UIModalPresentationCurrentContext;
-    navController.restorationIdentifier = WPEditorNavigationRestorationID;
-    navController.restorationClass = [EditPostViewController class];
-    [self.view.window.rootViewController presentViewController:navController animated:YES completion:nil];
+    PostViewController *controller = [[PostViewController alloc] initWithPost:apost];
+    [self.navigationController pushViewController:controller animated:YES];
+// TODO:
+//    EditPostViewController *editPostViewController = [[EditPostViewController alloc] initWithPost:apost];
+//    editPostViewController.editorOpenedBy = StatsPropertyPostDetailEditorOpenedOpenedByPostsView;
+//    UINavigationController *navController = [[UINavigationController alloc] initWithRootViewController:editPostViewController];
+//    [navController setToolbarHidden:NO]; // Fixes incorrect toolbar animation.
+//    navController.modalPresentationStyle = UIModalPresentationCurrentContext;
+//    navController.restorationIdentifier = WPEditorNavigationRestorationID;
+//    navController.restorationClass = [EditPostViewController class];
+//    [self.view.window.rootViewController presentViewController:navController animated:YES completion:nil];
 }
 
 - (void)setBlog:(Blog *)blog {

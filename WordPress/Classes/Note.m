@@ -334,6 +334,10 @@ const NSUInteger NoteKeepCount = 20;
     return [NSURL URLWithString:self.icon];
 }
 
+- (NSURL *)featuredImageURLForDisplay {
+    return nil;
+}
+
 - (NSDate *)dateForDisplay {
     if (self.date == nil) {
         NSTimeInterval timeInterval = [self.timestamp doubleValue];

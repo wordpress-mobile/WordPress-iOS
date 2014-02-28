@@ -225,6 +225,14 @@
     return NO;
 }
 
+#pragma mark - WPContentProviderProtocol
+
+- (NSURL *)featuredImageURLForDisplay {
+    if (self.featuredImageURL) {
+        return [NSURL URLWithString:self.featuredImageURL];
+    }
+    return nil;
+}
 
 #pragma mark - QuickPhoto
 - (void)mediaDidUploadSuccessfully:(NSNotification *)notification {

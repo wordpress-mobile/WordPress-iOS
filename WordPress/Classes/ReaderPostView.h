@@ -6,7 +6,7 @@
 //  Copyright (c) 2013 WordPress. All rights reserved.
 //
 
-#import "WPContentView.h"
+#import "BasePostContentView.h"
 
 @class ReaderPostView;
 
@@ -17,16 +17,11 @@
 @end
 
 
-@interface ReaderPostView : WPContentView {
-    
-}
+@interface ReaderPostView : BasePostContentView
 
 @property (nonatomic, strong) ReaderPost *post;
 @property (nonatomic, weak) id <ReaderPostViewDelegate> delegate;
 
-+ (CGFloat)heightForPost:(ReaderPost *)post withWidth:(CGFloat)width showFullContent:(BOOL)showFullContent;
-- (id)initWithFrame:(CGRect)frame showFullContent:(BOOL)showFullContent;
-- (void)configurePost:(ReaderPost *)post withWidth:(CGFloat)width;
 - (void)setAvatar:(UIImage *)avatar;
 
 @end
