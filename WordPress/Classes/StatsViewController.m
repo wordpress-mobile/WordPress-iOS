@@ -626,7 +626,7 @@ typedef NS_ENUM(NSInteger, TotalFollowersShareRow) {
         case StatsSectionSearchTerms:
             return NSLocalizedString(@"Search Engine Terms", @"Stats: Section title");;
         case StatsSectionLinkToWebview:
-            return NSLocalizedString(@"Link to Web Version", @"Stats: Section title");
+            return NSLocalizedString(@"Web Version", @"Stats: Section title");
         default:
             return @"";
     }
