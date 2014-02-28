@@ -389,7 +389,7 @@ typedef NS_ENUM(NSInteger, TotalFollowersShareRow) {
             break;
         case TotalFollowersShareRowContentCategoryTag:
             leftLabel = @"Categories";
-            leftCount = summary.totalCatagories;
+            leftCount = summary.totalCategories;
             rightLabel = @"Tags";
             rightCount = summary.totalTags;
             break;
