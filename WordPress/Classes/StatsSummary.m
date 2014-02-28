@@ -15,7 +15,7 @@
     self = [super init];
     if (self) {
         NSDictionary *stats = summary[@"stats"];
-        self.totalCatagories = stats[@"categories"];
+        self.totalCategories = stats[@"categories"];
         self.totalComments = stats[@"comments"];
         self.totalFollowersBlog = stats[@"followers_blog"];
         self.totalFollowersComments = stats[@"followers_comments"];
