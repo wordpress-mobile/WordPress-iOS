@@ -34,19 +34,13 @@ static CGFloat const CellPadding = 15.0f;
 
 - (void)configureForSection:(StatsSection)section {
     UILabel *label = [[UILabel alloc] init];
-
-    NSDictionary *defaultAttributes = [WPStyleGuide regularTextAttributes];
-    NSDictionary *colorAttributes = @{NSForegroundColorAttributeName: [WPStyleGuide newKidOnTheBlockBlue], NSFontAttributeName : [WPStyleGuide regularTextFontBold] };
-    NSMutableAttributedString *noResultsAttributedString = [[NSMutableAttributedString alloc] initWithString:NSLocalizedString(@"Tap here to see the web version of stats.", @"Stats - Link at bottom of stats page allowing the user to open the web version of stats") attributes:defaultAttributes];
-    [noResultsAttributedString addAttribute:NSForegroundColorAttributeName value:[WPStyleGuide littleEddieGrey] range:NSMakeRange(0, [noResultsAttributedString length])];
-    NSRange coloredTextRange = [noResultsAttributedString.string rangeOfString:NSLocalizedString(@"here", @"Stats - this is the text that is highlighted in the text 'Tap here to see the web version of stats.'")];
-    [noResultsAttributedString setAttributes:colorAttributes range:coloredTextRange];
-    
-    label.attributedText = noResultsAttributedString;
+    label.attributedText = [[NSAttributedString alloc] initWithString:NSLocalizedString(@"View web version of stats", @"Stats - Link at bottom of stats page allowing the user to open the web version of stats") attributes:[WPStyleGuide regularTextAttributes]];
     label.lineBreakMode = NSLineBreakByWordWrapping;
+    label.textColor = [WPStyleGuide littleEddieGrey];
     label.numberOfLines = 0;
     label.opaque = YES;
     label.backgroundColor = [UIColor whiteColor];
+    [label sizeToFit];
     
     UITapGestureRecognizer *tapGestureRecognizer = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(tappedLabel)];
     tapGestureRecognizer.numberOfTapsRequired = 1;
