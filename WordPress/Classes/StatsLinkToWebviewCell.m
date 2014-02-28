@@ -59,11 +59,14 @@ static CGFloat const CellPadding = 15.0f;
 
 - (void)layoutSubviews {
     [super layoutSubviews];
+
     CGRect insetFrame = CGRectInset(CGRectMake(0, 0, self.contentView.frame.size.width, [StatsLinkToWebviewCell heightForRow]), CellPadding, 0);
     CGRect labelRect = [self.linkToWebviewLabel.attributedText boundingRectWithSize:insetFrame.size options:NSStringDrawingUsesLineFragmentOrigin context:nil];
+    CGFloat x = CGRectGetMinX(insetFrame);
+    CGFloat y = floorf((CGRectGetHeight(self.contentView.frame) - CGRectGetHeight(labelRect)) / 2.0);
     
     self.linkToWebviewLabel.frame = (CGRect) {
-        .origin = insetFrame.origin,
+        .origin = CGPointMake(x, y),
         .size = labelRect.size
     };
 }
