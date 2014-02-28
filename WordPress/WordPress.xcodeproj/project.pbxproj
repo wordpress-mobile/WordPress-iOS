@@ -445,10 +445,6 @@
 		5D7BEA3117749FFD00423E7F /* wp_img_placeholder@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 5D7BEA2917749FFD00423E7F /* wp_img_placeholder@2x.png */; };
 		5D7BEA3217749FFD00423E7F /* wp_vid_placeholder.png in Resources */ = {isa = PBXBuildFile; fileRef = 5D7BEA2A17749FFD00423E7F /* wp_vid_placeholder.png */; };
 		5D7BEA3317749FFD00423E7F /* wp_vid_placeholder@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 5D7BEA2B17749FFD00423E7F /* wp_vid_placeholder@2x.png */; };
-		5D7BEA3417749FFD00423E7F /* wpcom_blavatar.png in Resources */ = {isa = PBXBuildFile; fileRef = 5D7BEA2C17749FFD00423E7F /* wpcom_blavatar.png */; };
-		5D7BEA3517749FFD00423E7F /* wpcom_blavatar@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 5D7BEA2D17749FFD00423E7F /* wpcom_blavatar@2x.png */; };
-		5D7BEA3617749FFD00423E7F /* wporg_blavatar.png in Resources */ = {isa = PBXBuildFile; fileRef = 5D7BEA2E17749FFD00423E7F /* wporg_blavatar.png */; };
-		5D7BEA3717749FFD00423E7F /* wporg_blavatar@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 5D7BEA2F17749FFD00423E7F /* wporg_blavatar@2x.png */; };
 		5D7BEA3A1774A02400423E7F /* cell-separator.png in Resources */ = {isa = PBXBuildFile; fileRef = 5D7BEA381774A02400423E7F /* cell-separator.png */; };
 		5D7BEA3B1774A02400423E7F /* cell-separator@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 5D7BEA391774A02400423E7F /* cell-separator@2x.png */; };
 		5D7BEA4C1774A06400423E7F /* NNInstapaperActivity@2x~ipad.png in Resources */ = {isa = PBXBuildFile; fileRef = 5D7BEA3C1774A06400423E7F /* NNInstapaperActivity@2x~ipad.png */; };
@@ -1541,10 +1537,6 @@
 		5D7BEA2917749FFD00423E7F /* wp_img_placeholder@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "wp_img_placeholder@2x.png"; path = "Resources/Images/wp_img_placeholder@2x.png"; sourceTree = "<group>"; };
 		5D7BEA2A17749FFD00423E7F /* wp_vid_placeholder.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = wp_vid_placeholder.png; path = Resources/Images/wp_vid_placeholder.png; sourceTree = "<group>"; };
 		5D7BEA2B17749FFD00423E7F /* wp_vid_placeholder@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "wp_vid_placeholder@2x.png"; path = "Resources/Images/wp_vid_placeholder@2x.png"; sourceTree = "<group>"; };
-		5D7BEA2C17749FFD00423E7F /* wpcom_blavatar.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = wpcom_blavatar.png; path = Resources/Images/wpcom_blavatar.png; sourceTree = "<group>"; };
-		5D7BEA2D17749FFD00423E7F /* wpcom_blavatar@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "wpcom_blavatar@2x.png"; path = "Resources/Images/wpcom_blavatar@2x.png"; sourceTree = "<group>"; };
-		5D7BEA2E17749FFD00423E7F /* wporg_blavatar.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = wporg_blavatar.png; path = Resources/Images/wporg_blavatar.png; sourceTree = "<group>"; };
-		5D7BEA2F17749FFD00423E7F /* wporg_blavatar@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "wporg_blavatar@2x.png"; path = "Resources/Images/wporg_blavatar@2x.png"; sourceTree = "<group>"; };
 		5D7BEA381774A02400423E7F /* cell-separator.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "cell-separator.png"; path = "Resources/Images/cell-separator.png"; sourceTree = "<group>"; };
 		5D7BEA391774A02400423E7F /* cell-separator@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "cell-separator@2x.png"; path = "Resources/Images/cell-separator@2x.png"; sourceTree = "<group>"; };
 		5D7BEA3C1774A06400423E7F /* NNInstapaperActivity@2x~ipad.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "NNInstapaperActivity@2x~ipad.png"; path = "Resources/Images/NNInstapaperActivity@2x~ipad.png"; sourceTree = "<group>"; };
@@ -3522,10 +3514,6 @@
 				5D7BEA2917749FFD00423E7F /* wp_img_placeholder@2x.png */,
 				5D7BEA2A17749FFD00423E7F /* wp_vid_placeholder.png */,
 				5D7BEA2B17749FFD00423E7F /* wp_vid_placeholder@2x.png */,
-				5D7BEA2C17749FFD00423E7F /* wpcom_blavatar.png */,
-				5D7BEA2D17749FFD00423E7F /* wpcom_blavatar@2x.png */,
-				5D7BEA2E17749FFD00423E7F /* wporg_blavatar.png */,
-				5D7BEA2F17749FFD00423E7F /* wporg_blavatar@2x.png */,
 				5D7BEA0717749FBB00423E7F /* reader-postaction-comment-active.png */,
 				5D7BEA0817749FBB00423E7F /* reader-postaction-comment-active@2x.png */,
 				5D7BEA0917749FBB00423E7F /* reader-postaction-comment.png */,
@@ -3771,10 +3759,6 @@
 				5D7BEA2917749FFD00423E7F /* wp_img_placeholder@2x.png */,
 				5D7BEA2A17749FFD00423E7F /* wp_vid_placeholder.png */,
 				5D7BEA2B17749FFD00423E7F /* wp_vid_placeholder@2x.png */,
-				5D7BEA2C17749FFD00423E7F /* wpcom_blavatar.png */,
-				5D7BEA2D17749FFD00423E7F /* wpcom_blavatar@2x.png */,
-				5D7BEA2E17749FFD00423E7F /* wporg_blavatar.png */,
-				5D7BEA2F17749FFD00423E7F /* wporg_blavatar@2x.png */,
 				374CB16315B9907600DD0EBC /* WPpregressHUDBackground.png */,
 				374CB16415B9907600DD0EBC /* WPpregressHUDBackground@2x.png */,
 				E15051CC16CA8E4900D3DDDC /* logo_jetpack.png */,
@@ -5082,10 +5066,6 @@
 				85325A4517BB0DF8008E87D1 /* icon-menu-notifications@2x.png in Resources */,
 				85325A4817BB0DF8008E87D1 /* icon-menu-notifications-active.png in Resources */,
 				5D7BEA3317749FFD00423E7F /* wp_vid_placeholder@2x.png in Resources */,
-				5D7BEA3417749FFD00423E7F /* wpcom_blavatar.png in Resources */,
-				5D7BEA3517749FFD00423E7F /* wpcom_blavatar@2x.png in Resources */,
-				5D7BEA3617749FFD00423E7F /* wporg_blavatar.png in Resources */,
-				5D7BEA3717749FFD00423E7F /* wporg_blavatar@2x.png in Resources */,
 				5D7BEA3A1774A02400423E7F /* cell-separator.png in Resources */,
 				E233414A182DB62900A4CC40 /* btn-back-chevron-tapped@2x.png in Resources */,
 				85325A3717BB0DF8008E87D1 /* icon-menu-reader-active@2x.png in Resources */,
