@@ -273,12 +273,12 @@ static NSInteger const MaxNumberOfLinesForTitleForSummary = 3;
         self.tagButton.hidden = YES;
     }
     
-	if ([self.post isWPCom]) {
+	if ([[self.post isWPCom] boolValue]) {
 		self.likeButton.hidden = NO;
 		self.reblogButton.hidden = NO;
         self.commentButton.hidden = NO;
 	} else {
-		self.likeButton.hidden = YES;
+        self.likeButton.hidden = YES;
 		self.reblogButton.hidden = YES;
         self.commentButton.hidden = YES;
 	}
@@ -287,13 +287,12 @@ static NSInteger const MaxNumberOfLinesForTitleForSummary = 3;
 	self.reblogButton.userInteractionEnabled = ![post.isReblogged boolValue];
 	
 	[self updateActionButtons];
-
 }
 
 - (void)layoutSubviews {
 
     // Determine button visibility before parent lays them out
-    BOOL commentsOpen = [[self.post commentsOpen] boolValue] && [self.post isWPCom];
+    BOOL commentsOpen = [[self.post commentsOpen] boolValue] && [[self.post isWPCom] boolValue];
     self.commentButton.hidden = !commentsOpen;
 
 	[super layoutSubviews];
@@ -398,6 +397,8 @@ static NSInteger const MaxNumberOfLinesForTitleForSummary = 3;
 - (void)setAvatar:(UIImage *)avatar {
     if (avatar) {
         self.avatarImageView.image = avatar;
+    } else if ([[self.post isWPCom] boolValue]) {
+        self.avatarImageView.image = [UIImage imageNamed:@"wpcom_blavatar"];
     } else {
         self.avatarImageView.image = [UIImage imageNamed:@"gravatar-reader"];
     }

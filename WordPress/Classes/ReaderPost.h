@@ -42,6 +42,7 @@ extern NSString * const ReaderPostStoredCommentTextKey;
 @property (nonatomic, strong) NSNumber *isFollowing;
 @property (nonatomic, strong) NSNumber *isLiked;
 @property (nonatomic, strong) NSNumber *isReblogged;
+@property (nonatomic, strong) NSNumber *isWPCom;
 @property (nonatomic, strong) NSNumber *likeCount;
 @property (nonatomic, strong) NSString *postAvatar;
 @property (nonatomic, strong) NSNumber *siteID;
@@ -124,9 +125,6 @@ extern NSString * const ReaderPostStoredCommentTextKey;
 - (BOOL)isBlogsIFollow;
 
 - (BOOL)isPrivate;
-
-- (BOOL)isWPCom;
-
 
 - (void)storeComment:(NSNumber *)commentID comment:(NSString *)comment;
 
