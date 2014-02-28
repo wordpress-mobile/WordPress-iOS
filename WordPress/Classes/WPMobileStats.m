@@ -222,6 +222,9 @@ NSString *const StatsEventAddBlogsClickedSelectAll = @"Add Blogs - Clicked Selec
 NSString *const StatsEventAddBlogsClickedDeselectAll = @"Add Blogs - Clicked Deselect All";
 NSString *const StatsEventAddBlogsClickedAddSelected = @"Add Blogs - Clicked Add Selected";
 
+// Stats
+NSString *const StatsEventStatsClickedOnWebVersion = @"Stats - Clicked on Web Version";
+
 @interface WPMobileStats() {
     NSMutableDictionary *_aggregatedEventProperties;
 }
