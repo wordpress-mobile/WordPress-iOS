@@ -46,6 +46,9 @@
     [self showAddPostView];
 }
 
+- (NSString *)newPostAccessibilityLabel {
+    return NSLocalizedString(@"New Page", @"The accessibility value of the new page button.");
+}
 
 - (void)syncItemsViaUserInteraction:(BOOL)userInteraction success:(void (^)())success failure:(void (^)(NSError *))failure {
     [self.blog syncPagesWithSuccess:success failure:failure loadMore: NO];
