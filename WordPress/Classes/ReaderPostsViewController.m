@@ -755,13 +755,7 @@ NSString * const RPVCDisplayedNativeFriendFinder = @"DisplayedNativeFriendFinder
 	ReaderPost *post = self.resultsController.fetchedObjects.lastObject;
 	NSNumber *numberToSync = [NSNumber numberWithInteger:ReaderPostsToSync];
 	NSString *endpoint = [ReaderPost currentEndpoint];
-	id before;
-	if ([endpoint isEqualToString:@"freshly-pressed"]) {
-		// freshly-pressed wants an ISO string but the rest want a timestamp.
-		before = [DateUtils isoStringFromDate:post.date_created_gmt];
-	} else {
-		before = [NSNumber numberWithInteger:[post.date_created_gmt timeIntervalSince1970]];
-	}
+	id before = [DateUtils isoStringFromDate:post.date_created_gmt];
 
 	NSDictionary *params = @{@"before":before, @"number":numberToSync, @"per_page":numberToSync};
 
