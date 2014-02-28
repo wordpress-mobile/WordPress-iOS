@@ -110,30 +110,30 @@
 	}
 	
 	[ReaderPost getReaderTopicsWithSuccess:^(AFHTTPRequestOperation *operation, id responseObject) {
-		[self.tableView setTableFooterView:nil];
-		NSDictionary *dict = (NSDictionary *)responseObject;
+        [self.tableView setTableFooterView:nil];
+        NSDictionary *dict = (NSDictionary *)responseObject;
 		
-        NSDictionary *topicsDict = [dict dictionaryForKey:@"tags"];
-        NSMutableArray *topics = [NSMutableArray arrayWithCapacity:[topicsDict count]];
+        NSDictionary *tagsDict = [dict dictionaryForKey:@"tags"];
+        NSMutableArray *tags = [NSMutableArray arrayWithCapacity:[tagsDict count]];
 		
-		for (id key in topicsDict) {
-            NSDictionary *dict = [topicsDict objectForKey:key];
+        for (id key in tagsDict) {
+            NSDictionary *dict = [tagsDict objectForKey:key];
             
             NSString *title = [dict objectForKey:@"title"];
             title = [title stringByDecodingXMLCharacters];
             NSString *endpoint = [dict objectForKey:@"URL"];
-            [topics addObject:@{@"title": title, @"endpoint":endpoint}];
-		}
-		
-		self.topicsArray = topics;
-		[[NSUserDefaults standardUserDefaults] setObject:topics forKey:ReaderTopicsArrayKey];
+            [tags addObject:@{@"title": title, @"endpoint":endpoint}];
+        }
         
-		[self.tableView reloadData];
-	} failure:^(AFHTTPRequestOperation *operation, NSError *error) {
-		[self.tableView setTableFooterView:nil];
+        self.topicsArray = tags;
+        [[NSUserDefaults standardUserDefaults] setObject:tags forKey:ReaderTopicsArrayKey];
+        
+        [self.tableView reloadData];
+    } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+        [self.tableView setTableFooterView:nil];
         
         [WPError showAlertWithTitle:NSLocalizedString(@"Unable to Load Topics", nil) message:NSLocalizedString(@"Sorry. There was a problem loading the topics list.  Please try again later.", nil)];
-	}];
+    }];
 }
 
 
