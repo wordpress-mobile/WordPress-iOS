@@ -9,6 +9,7 @@
 #import "StatsLinkToWebviewCell.h"
 
 static CGFloat const CellPadding = 15.0f;
+static CGFloat const LabelVerticalOffset = 2.0f;
 
 @interface StatsLinkToWebviewCell ()
 
@@ -63,7 +64,7 @@ static CGFloat const CellPadding = 15.0f;
     CGRect insetFrame = CGRectInset(CGRectMake(0, 0, self.contentView.frame.size.width, [StatsLinkToWebviewCell heightForRow]), CellPadding, 0);
     CGRect labelRect = [self.linkToWebviewLabel.attributedText boundingRectWithSize:insetFrame.size options:NSStringDrawingUsesLineFragmentOrigin context:nil];
     CGFloat x = CGRectGetMinX(insetFrame);
-    CGFloat y = floorf((CGRectGetHeight(self.contentView.frame) - CGRectGetHeight(labelRect)) / 2.0);
+    CGFloat y = floorf((CGRectGetHeight(self.contentView.frame) - CGRectGetHeight(labelRect)) / 2.0) - LabelVerticalOffset;
     
     self.linkToWebviewLabel.frame = (CGRect) {
         .origin = CGPointMake(x, y),
