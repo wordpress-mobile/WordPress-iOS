@@ -9,6 +9,7 @@
 #import "WPStyleGuide.h"
 #import "UITableViewTextFieldCell.h"
 #import <DTCoreText/DTCoreText.h>
+#import <iOSPasscodeLock/PasscodeManager.h>
 
 @implementation WPStyleGuide
 
@@ -333,6 +334,37 @@
     view.backgroundColor = [WPStyleGuide itsEverywhereGrey];
     tableView.backgroundColor = [WPStyleGuide itsEverywhereGrey];
     tableView.separatorColor = [WPStyleGuide readGrey];
+}
+
++ (void) configurePasscodeLockStyle{
+    
+    UIColor *iPhone5CWhite = [UIColor colorWithRed:0.961 green:0.957 blue:0.969 alpha:1.0];
+    UIColor *wpOrange = [UIColor colorWithRed:0.835 green:0.306 blue:0.129 alpha:1.0];
+    
+    PasscodeButtonStyleProvider *buttonStyleProvider = [[PasscodeButtonStyleProvider alloc]init];
+    PasscodeStyle *style = [[PasscodeStyle alloc]init];
+    style.lineColor = iPhone5CWhite;
+    style.titleColor = iPhone5CWhite;
+    style.fillColor = [UIColor clearColor];
+    style.selectedFillColor = wpOrange;
+    style.selectedLineColor = iPhone5CWhite;
+    style.selectedTitleColor = iPhone5CWhite;
+    style.titleFont = [UIFont fontWithName:@"Avenir-Book" size:35];
+    
+    [buttonStyleProvider addStyleForButton:PasscodeButtonAll stye:style];
+    
+    [PasscodeManager sharedManager].buttonStyleProvider = buttonStyleProvider;
+    [PasscodeManager sharedManager].instructionsLabelFont = [UIFont fontWithName:@"Avenir-Book" size:17];
+    [PasscodeManager sharedManager].cancelOrDeleteButtonFont = [UIFont fontWithName:@"Avenir-Book" size:15];
+    [PasscodeManager sharedManager].errorLabelFont = [UIFont fontWithName:@"Avenir-Book" size:15];
+    [PasscodeManager sharedManager].backgroundColor = [WPStyleGuide newKidOnTheBlockBlue];
+    [PasscodeManager sharedManager].appLockedCoverScreenBackgroundImage = [UIImage imageNamed:@"wpLogo.png"];
+    [PasscodeManager sharedManager].appLockedCoverScreenBackgroundColor = [WPStyleGuide newKidOnTheBlockBlue];
+    [PasscodeManager sharedManager].instructionsLabelColor = iPhone5CWhite;
+    [PasscodeManager sharedManager].cancelOrDeleteButtonColor = iPhone5CWhite;
+    [PasscodeManager sharedManager].passcodeViewFillColor = wpOrange;
+    [PasscodeManager sharedManager].passcodeViewLineColor = iPhone5CWhite;
+    
 }
 
 @end
