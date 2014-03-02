@@ -41,10 +41,13 @@
 #import "SupportViewController.h"
 #import "ContextManager.h"
 #import "NotificationsManager.h"
+#import "PasscodeSettingsViewController.h"
+
 
 typedef enum {
     SettingsSectionWpcom = 0,
     SettingsSectionMedia,
+    SettingsSectionPasscode,
     SettingsSectionInfo,
     SettingsSectionCount
 } SettingsSection;
@@ -177,7 +180,8 @@ CGFloat const blavatarImageViewSize = 43.f;
 
         case SettingsSectionInfo:
             return 2;
-            
+        case SettingsSectionPasscode:
+            return 1;
         default:
             return 0;
     }
@@ -204,7 +208,10 @@ CGFloat const blavatarImageViewSize = 43.f;
 		
     } else if (section == SettingsSectionInfo) {
         return NSLocalizedString(@"App Info", @"Title label for the application information section in the app settings");
+    } else if (section == SettingsSectionPasscode){
+        return NSLocalizedString(@"Security", @"Title label for passcode lock settings");
     }
+
     
     return nil;
 }
@@ -254,6 +261,10 @@ CGFloat const blavatarImageViewSize = 43.f;
         NSInteger index = [values indexOfObject:currentVal];
         NSArray *titles = [dict objectForKey:@"Titles"];
         cell.detailTextLabel.text = titles[index];
+        
+    } else if(indexPath.section == SettingsSectionPasscode){
+        cell.textLabel.text = NSLocalizedString(@"Passcode Lock", nil]);
+        cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
         
     } else if (indexPath.section == SettingsSectionInfo) {
         if (indexPath.row == 0) {
@@ -369,6 +380,10 @@ CGFloat const blavatarImageViewSize = 43.f;
         SettingsPageViewController *controller = [[SettingsPageViewController alloc] initWithDictionary:dict];
         [self.navigationController pushViewController:controller animated:YES];
 
+    } else if (indexPath.section == SettingsSectionPasscode){
+        PasscodeSettingsViewController *passcodeController = [[PasscodeSettingsViewController alloc]initWithStyle:UITableViewStyleGrouped];
+        [self.navigationController pushViewController:passcodeController animated:YES];
+        
     } else if (indexPath.section == SettingsSectionInfo) {
         if (indexPath.row == 0) {
             [WPMobileStats trackEventForWPCom:StatsEventSettingsClickedAbout];
