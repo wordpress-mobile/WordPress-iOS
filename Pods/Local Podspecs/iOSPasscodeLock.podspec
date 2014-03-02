@@ -5,7 +5,7 @@ Pod::Spec.new do |s|
   s.summary      = "A library to implement Passcode Lock protection to iOS apps."
   s.homepage     = "https://github.com/bakyelli/iOS-PasscodeLock"
 
-  s.license      = { :type => 'MIT', :file => 'LICENSE' }
+  s.license      = { :type => 'GPL', :file => 'LICENSE' }
 
   s.authors       = { "Basar Akyelli" => "bakyelli@gmail.com" }
 
