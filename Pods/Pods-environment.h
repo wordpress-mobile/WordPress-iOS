@@ -73,7 +73,7 @@
 #define COCOAPODS_POD_AVAILABLE_HockeySDK
 #define COCOAPODS_VERSION_MAJOR_HockeySDK 3
 #define COCOAPODS_VERSION_MINOR_HockeySDK 5
-#define COCOAPODS_VERSION_PATCH_HockeySDK 2
+#define COCOAPODS_VERSION_PATCH_HockeySDK 4
 
 // MGImageUtilities
 #define COCOAPODS_POD_AVAILABLE_MGImageUtilities
@@ -152,6 +152,12 @@
 #define COCOAPODS_VERSION_MAJOR_google_plus_ios_sdk 1
 #define COCOAPODS_VERSION_MINOR_google_plus_ios_sdk 3
 #define COCOAPODS_VERSION_PATCH_google_plus_ios_sdk 0
+
+// iOSPasscodeLock
+#define COCOAPODS_POD_AVAILABLE_iOSPasscodeLock
+#define COCOAPODS_VERSION_MAJOR_iOSPasscodeLock 1
+#define COCOAPODS_VERSION_MINOR_iOSPasscodeLock 0
+#define COCOAPODS_VERSION_PATCH_iOSPasscodeLock 0
 
 // wpxmlrpc
 #define COCOAPODS_POD_AVAILABLE_wpxmlrpc
