@@ -359,6 +359,7 @@
     [PasscodeManager sharedManager].errorLabelFont = [UIFont fontWithName:@"Avenir-Book" size:15];
     [PasscodeManager sharedManager].backgroundColor = [WPStyleGuide newKidOnTheBlockBlue];
     [PasscodeManager sharedManager].logo = [UIImage imageNamed:@"logo_wp_white.png"];
+    [PasscodeManager sharedManager].appLockedCoverScreenBackgroundImage = [UIImage imageNamed:@"logo_wp_white.png"];
     [PasscodeManager sharedManager].appLockedCoverScreenBackgroundColor = [WPStyleGuide newKidOnTheBlockBlue];
     [PasscodeManager sharedManager].instructionsLabelColor = iPhone5CWhite;
     [PasscodeManager sharedManager].cancelOrDeleteButtonColor = iPhone5CWhite;
