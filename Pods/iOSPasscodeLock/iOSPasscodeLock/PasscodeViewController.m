@@ -16,11 +16,14 @@
 #define IS_IPAD   ([UIDevice currentDevice].userInterfaceIdiom == UIUserInterfaceIdiomPad)
 #endif
 
-static CGFloat const PasscodeButtonSize = 65;
+static CGFloat const TouchButtonSize = 65;
+static CGFloat const TouchButtonSizeiPad = 80;
 static CGFloat const PasscodeButtonPaddingHorizontal = 20;
 static CGFloat const PasscodeButtonPaddingVertical = 10;
-static CGFloat const PasscodeEntryViewSize = 12;
+static CGFloat const PasscodeEntryViewSize = 14;
 static CGFloat const LogoSize = 40;
+static CGFloat const LogoSizeiPad = 50;
+
 static NSInteger const PasscodeDigitCount = 4;
 
 
@@ -54,6 +57,7 @@ typedef enum PasscodeErrorType : NSUInteger {
 
 @property (assign) PasscodeType passcodeType;
 @property (assign) PasscodeWorkflowStep currentWorkflowStep;
+@property (assign) CGFloat passcodeButtonSize;
 
 @end
 
@@ -151,6 +155,11 @@ typedef enum PasscodeErrorType : NSUInteger {
 
 - (void)generateView
 {
+    if(IS_IPAD){
+        self.passcodeButtonSize = TouchButtonSizeiPad;
+    }else {
+        self.passcodeButtonSize = TouchButtonSize;
+    }
     [self applyBackgroundImageAndLogo];
     [self createButtons];
     [self createPasscodeEntryView];
@@ -163,7 +172,7 @@ typedef enum PasscodeErrorType : NSUInteger {
 -(void)createButtons
 {
     self.passcodeButtons = [NSMutableArray new];
-    CGRect initialFrame = CGRectMake(0, 0, PasscodeButtonSize, PasscodeButtonSize);
+    CGRect initialFrame = CGRectMake(0, 0, self.passcodeButtonSize, self.passcodeButtonSize);
     
     PasscodeButtonStyleProvider *styleProvider = [PasscodeManager sharedManager].buttonStyleProvider;
     BOOL styleForAllButtonsExists = [styleProvider styleExistsForButton:PasscodeButtonAll];
@@ -210,33 +219,33 @@ typedef enum PasscodeErrorType : NSUInteger {
 - (void)buildLayout
 {
 
-    CGFloat buttonRowWidth = (PasscodeButtonSize * 3) + (PasscodeButtonPaddingHorizontal * 2);
+    CGFloat buttonRowWidth = (self.passcodeButtonSize * 3) + (PasscodeButtonPaddingHorizontal * 2);
   
     CGFloat firstButtonX = ([self returnWidth]/2) - (buttonRowWidth/2) + 0.5;
-    CGFloat middleButtonX = firstButtonX + PasscodeButtonSize + PasscodeButtonPaddingHorizontal;
-    CGFloat lastButtonX = middleButtonX + PasscodeButtonSize + PasscodeButtonPaddingHorizontal;
+    CGFloat middleButtonX = firstButtonX + self.passcodeButtonSize + PasscodeButtonPaddingHorizontal;
+    CGFloat lastButtonX = middleButtonX + self.passcodeButtonSize + PasscodeButtonPaddingHorizontal;
     
-    CGFloat firstRowY = (IS_IPAD) ? ([self returnHeight]/2) - PasscodeButtonSize * 2 : ([self returnHeight]/2) - PasscodeButtonSize;
+    CGFloat firstRowY = (IS_IPAD) ? ([self returnHeight]/2) - self.passcodeButtonSize * 2 : ([self returnHeight]/2) - self.passcodeButtonSize;
 
-    CGFloat middleRowY = firstRowY + PasscodeButtonSize + PasscodeButtonPaddingVertical;
-    CGFloat lastRowY = middleRowY + PasscodeButtonSize + PasscodeButtonPaddingVertical;
-    CGFloat zeroRowY = lastRowY + PasscodeButtonSize + PasscodeButtonPaddingVertical;
+    CGFloat middleRowY = firstRowY + self.passcodeButtonSize + PasscodeButtonPaddingVertical;
+    CGFloat lastRowY = middleRowY + self.passcodeButtonSize + PasscodeButtonPaddingVertical;
+    CGFloat zeroRowY = lastRowY + self.passcodeButtonSize + PasscodeButtonPaddingVertical;
 
-    NSValue *frameBtnOne = [NSValue valueWithCGRect:CGRectMake(firstButtonX, firstRowY, PasscodeButtonSize, PasscodeButtonSize)];
-    NSValue *frameBtnTwo = [NSValue valueWithCGRect:CGRectMake(middleButtonX, firstRowY, PasscodeButtonSize, PasscodeButtonSize)];
-    NSValue *frameBtnThree = [NSValue valueWithCGRect:CGRectMake(lastButtonX, firstRowY, PasscodeButtonSize, PasscodeButtonSize)];
-    NSValue *frameBtnFour = [NSValue valueWithCGRect:CGRectMake(firstButtonX, middleRowY, PasscodeButtonSize, PasscodeButtonSize)];
-    NSValue *frameBtnFive = [NSValue valueWithCGRect:CGRectMake(middleButtonX, middleRowY, PasscodeButtonSize, PasscodeButtonSize)];
-    NSValue *frameBtnSix = [NSValue valueWithCGRect:CGRectMake(lastButtonX, middleRowY, PasscodeButtonSize, PasscodeButtonSize)];
-    NSValue *frameBtnSeven = [NSValue valueWithCGRect:CGRectMake(firstButtonX, lastRowY, PasscodeButtonSize, PasscodeButtonSize)];
-    NSValue *frameBtnEight = [NSValue valueWithCGRect:CGRectMake(middleButtonX, lastRowY, PasscodeButtonSize, PasscodeButtonSize)];
-    NSValue *frameBtnNine = [NSValue valueWithCGRect:CGRectMake(lastButtonX, lastRowY, PasscodeButtonSize, PasscodeButtonSize)];
-    NSValue *frameBtnZero = [NSValue valueWithCGRect:CGRectMake(middleButtonX, zeroRowY, PasscodeButtonSize, PasscodeButtonSize)];
+    NSValue *frameBtnOne = [NSValue valueWithCGRect:CGRectMake(firstButtonX, firstRowY, self.passcodeButtonSize, self.passcodeButtonSize)];
+    NSValue *frameBtnTwo = [NSValue valueWithCGRect:CGRectMake(middleButtonX, firstRowY, self.passcodeButtonSize, self.passcodeButtonSize)];
+    NSValue *frameBtnThree = [NSValue valueWithCGRect:CGRectMake(lastButtonX, firstRowY, self.passcodeButtonSize, self.passcodeButtonSize)];
+    NSValue *frameBtnFour = [NSValue valueWithCGRect:CGRectMake(firstButtonX, middleRowY, self.passcodeButtonSize, self.passcodeButtonSize)];
+    NSValue *frameBtnFive = [NSValue valueWithCGRect:CGRectMake(middleButtonX, middleRowY, self.passcodeButtonSize, self.passcodeButtonSize)];
+    NSValue *frameBtnSix = [NSValue valueWithCGRect:CGRectMake(lastButtonX, middleRowY, self.passcodeButtonSize, self.passcodeButtonSize)];
+    NSValue *frameBtnSeven = [NSValue valueWithCGRect:CGRectMake(firstButtonX, lastRowY, self.passcodeButtonSize, self.passcodeButtonSize)];
+    NSValue *frameBtnEight = [NSValue valueWithCGRect:CGRectMake(middleButtonX, lastRowY, self.passcodeButtonSize, self.passcodeButtonSize)];
+    NSValue *frameBtnNine = [NSValue valueWithCGRect:CGRectMake(lastButtonX, lastRowY, self.passcodeButtonSize, self.passcodeButtonSize)];
+    NSValue *frameBtnZero = [NSValue valueWithCGRect:CGRectMake(middleButtonX, zeroRowY, self.passcodeButtonSize, self.passcodeButtonSize)];
    
-    CGRect frameBtnCancel = CGRectMake(lastButtonX, zeroRowY, PasscodeButtonSize, PasscodeButtonSize);
+    CGRect frameBtnCancel = CGRectMake(lastButtonX, zeroRowY, self.passcodeButtonSize, self.passcodeButtonSize);
     CGRect frameLblInstruction = CGRectMake(0, 0, 250, 20);
     CGRect frameLblError = CGRectMake(-100, -100, 200, 20);
-    CGRect frameLogo = CGRectMake(0, 0, LogoSize, LogoSize);
+    CGRect frameLogo = (IS_IPAD) ? CGRectMake(0, 0, LogoSizeiPad, LogoSizeiPad) : CGRectMake(0, 0, LogoSize, LogoSize);
     CGRect frameBackgroundImageView = CGRectMake(self.view.frame.origin.x, self.view.frame.origin.y, [self returnWidth], [self returnHeight]);
     
     NSArray *buttonFrames = @[frameBtnZero, frameBtnOne, frameBtnTwo, frameBtnThree, frameBtnFour, frameBtnFive, frameBtnSix, frameBtnSeven, frameBtnEight, frameBtnNine];
@@ -263,7 +272,7 @@ typedef enum PasscodeErrorType : NSUInteger {
     self.lblError.hidden = YES;
     
     self.logoImageView.frame = frameLogo;
-    self.logoImageView.center = CGPointMake([self returnWidth]/2, firstRowY - (PasscodeButtonPaddingVertical) * 12);
+    self.logoImageView.center = (IS_IPAD) ? CGPointMake([self returnWidth]/2, firstRowY - (PasscodeButtonPaddingVertical) * 13) : CGPointMake([self returnWidth]/2, firstRowY - (PasscodeButtonPaddingVertical) * 12);
 
     [self.view addSubview:self.btnCancelOrDelete];
     [self.view addSubview:self.lblInstruction];
