@@ -51,7 +51,6 @@ static NSString *const TableViewActivityCellIdentifier = @"TableViewActivityCell
 @property (nonatomic, strong) AbstractPost *apost;
 
 @property (nonatomic, strong) UITextField *passwordTextField;
-@property (nonatomic, strong) UILabel *publishOnDateLabel;
 @property (nonatomic, strong) UITextField *tagsTextField;
 @property (nonatomic, strong) NSArray *statusList;
 @property (nonatomic, strong) NSArray *visibilityList;
@@ -855,12 +854,10 @@ static NSString *const TableViewActivityCellIdentifier = @"TableViewActivityCell
         pickerFrame.origin.y = CGRectGetMaxY(button.frame);
         picker.frame = pickerFrame;
 
-        
         [fakeController.view addSubview:picker];
         self.popover = [[UIPopoverController alloc] initWithContentViewController:fakeController];
         
-        CGRect popoverRect = [self.view convertRect:self.publishOnDateLabel.frame fromView:[self.publishOnDateLabel superview]];
-        popoverRect.size.width = 100.0f;
+        CGRect popoverRect = [self.view viewWithTag:PostSettingsRowPublishDate].frame;
         [self.popover presentPopoverFromRect:popoverRect inView:self.view permittedArrowDirections:UIPopoverArrowDirectionAny animated:YES];
     } else {
         CGFloat width = self.view.frame.size.width;
