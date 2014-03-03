@@ -1,5 +1,5 @@
 //
-//  StatsLinkToWebView.m
+//  StatsLinkToWebviewCell.m
 //  WordPress
 //
 //  Created by Sendhil Panchadsaram on 2/27/14.
