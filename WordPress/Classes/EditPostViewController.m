@@ -1024,12 +1024,10 @@ CGFloat const EPVCTextViewTopPadding = 7.0f;
                             usingBlock:^(NSString *substring, NSRange substringRange, NSRange enclosingRange, BOOL *stop){
                                 wordCount++;
                             }];
-    
+
+    [WPMobileStats setValue:@(wordCount) forProperty:StatsPropertyPostDetailWordCount forEvent:[self formattedStatEventString:StatsEventPostDetailClosedEditor]];
     if ([self.post hasRemote]) {
-        [WPMobileStats setValue:@(wordCount) forProperty:StatsPropertyPostDetailWordCount forEvent:[self formattedStatEventString:StatsEventPostDetailClosedEditor]];
         [WPMobileStats setValue:@(wordCount - originalWordCount) forProperty:StatsPropertyPostDetailWordDiffCount forEvent:[self formattedStatEventString:StatsEventPostDetailClosedEditor]];
-    } else {
-        [WPMobileStats setValue:@(wordCount) forProperty:StatsPropertyPostDetailWordCount forEvent:[self formattedStatEventString:StatsEventPostDetailClosedEditor]];
     }
 }
 
