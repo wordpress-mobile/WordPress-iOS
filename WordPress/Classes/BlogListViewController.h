@@ -10,4 +10,7 @@
 
 @interface BlogListViewController : UITableViewController <NSFetchedResultsControllerDelegate, UIDataSourceModelAssociation>
 
+- (void)bypassBlogListViewController;
+- (BOOL)shouldBypassBlogListViewControllerWhenSelectedFromTabBar;
+
 @end

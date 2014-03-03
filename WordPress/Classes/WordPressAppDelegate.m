@@ -551,6 +551,22 @@ static NSString *const CameraPlusImagesNotification = @"CameraPlusImagesNotifica
             [self showPostTab];
         }
         return NO;
+    } else if ([tabBarController.viewControllers indexOfObject:viewController] == 2) {
+        // If the user has one blog then we don't want to present them with the main "me"
+        // screen where they can see all their blogs. In the case of only one blog just show
+        // the main blog details screen
+
+        // Don't kick of this auto selecting behavior if the user taps the the active tab as it
+        // would break from standard iOS UX
+        if (tabBarController.selectedIndex != 2) {
+            UINavigationController *navController = (UINavigationController *)viewController;
+            BlogListViewController *blogListViewController = (BlogListViewController *)navController.viewControllers[0];
+            if ([blogListViewController shouldBypassBlogListViewControllerWhenSelectedFromTabBar]) {
+                if ([navController.visibleViewController isKindOfClass:[blogListViewController class]]) {
+                    [blogListViewController bypassBlogListViewController];
+                }
+            }
+        }
     }
     return YES;
 }

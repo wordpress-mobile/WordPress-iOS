@@ -125,6 +125,24 @@ NSString * const WPBlogListRestorationID = @"WPBlogListID";
     return ([[self.resultsController sections] count] > 1);
 }
 
+- (BOOL)shouldBypassBlogListViewControllerWhenSelectedFromTabBar
+{
+    return [self numSites] == 1;
+}
+
+- (void)bypassBlogListViewController
+{
+    if ([self shouldBypassBlogListViewControllerWhenSelectedFromTabBar]) {
+        // We do a delay of 0.0 so that way this doesn't kick off until the next run loop.
+        [self performSelector:@selector(selectFirstSite) withObject:nil afterDelay:0.0];
+    }
+}
+
+- (void)selectFirstSite
+{
+    [self tableView:self.tableView didSelectRowAtIndexPath:[NSIndexPath indexPathForRow:0 inSection:0]];
+}
+
 
 #pragma mark - Notifications
 
