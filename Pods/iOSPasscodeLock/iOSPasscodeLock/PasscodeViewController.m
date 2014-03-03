@@ -243,7 +243,7 @@ typedef enum PasscodeErrorType : NSUInteger {
     NSValue *frameBtnZero = [NSValue valueWithCGRect:CGRectMake(middleButtonX, zeroRowY, self.passcodeButtonSize, self.passcodeButtonSize)];
    
     CGRect frameBtnCancel = CGRectMake(lastButtonX, zeroRowY, self.passcodeButtonSize, self.passcodeButtonSize);
-    CGRect frameLblInstruction = CGRectMake(0, 0, 250, 20);
+    CGRect frameLblInstruction = CGRectMake(0, 0, 300, 20);
     CGRect frameLblError = CGRectMake(-100, -100, 200, 20);
     CGRect frameLogo = (IS_IPAD) ? CGRectMake(0, 0, LogoSizeiPad, LogoSizeiPad) : CGRectMake(0, 0, LogoSize, LogoSize);
     CGRect frameBackgroundImageView = CGRectMake(self.view.frame.origin.x, self.view.frame.origin.y, [self returnWidth], [self returnHeight]);
