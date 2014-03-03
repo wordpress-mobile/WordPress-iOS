@@ -453,51 +453,54 @@ typedef enum PasscodeErrorType : NSUInteger {
     [NSThread sleepForTimeInterval:0.1];
     self.lblError.hidden = YES;
     
-    if(self.passcodeType == PasscodeTypeSetup){
-        if(self.currentWorkflowStep == WorkflowStepOne){
-            self.currentWorkflowStep = WorkflowStepSetupPasscodeEnteredOnce;
-            self.passcodeFirstEntry = self.passcodeEntered;
-            [self updateLayoutBasedOnWorkflowStep];
-        }
-        else if(self.currentWorkflowStep == WorkflowStepSetupPasscodeEnteredOnce)
-        {
-            if([self.passcodeFirstEntry isEqualToString:self.passcodeEntered])
-            {
-                [[PasscodeManager sharedManager] setPasscode:self.passcodeEntered];
-                [self.delegate didSetupPasscode];
+    dispatch_async(dispatch_get_main_queue(), ^{
+        
+        if(self.passcodeType == PasscodeTypeSetup){
+            if(self.currentWorkflowStep == WorkflowStepOne){
+                self.currentWorkflowStep = WorkflowStepSetupPasscodeEnteredOnce;
+                self.passcodeFirstEntry = self.passcodeEntered;
+                [self updateLayoutBasedOnWorkflowStep];
             }
-            else
+            else if(self.currentWorkflowStep == WorkflowStepSetupPasscodeEnteredOnce)
             {
-                self.currentWorkflowStep = WorkflowStepSetupPasscodesDidNotMatch;
-                [self performErrorWithErrorType:PasscodeErrorTypePascodesDidNotMatch];
+                if([self.passcodeFirstEntry isEqualToString:self.passcodeEntered])
+                {
+                    [[PasscodeManager sharedManager] setPasscode:self.passcodeEntered];
+                    [self.delegate didSetupPasscode];
+                }
+                else
+                {
+                    self.currentWorkflowStep = WorkflowStepSetupPasscodesDidNotMatch;
+                    [self performErrorWithErrorType:PasscodeErrorTypePascodesDidNotMatch];
+                    [self updateLayoutBasedOnWorkflowStep];
+                }
+            }
+        }
+        else if(self.passcodeType == PasscodeTypeVerify || self.passcodeType == PasscodeTypeVerifyForSettingChange){
+            if([[PasscodeManager sharedManager] isPasscodeCorrect:self.passcodeEntered]){
+                [self.delegate didVerifyPasscode];
+            }
+            else{
+                [self performErrorWithErrorType:PasscodeErrorTypeIncorrectPasscode];
+                self.currentWorkflowStep = WorkflowStepOne;
                 [self updateLayoutBasedOnWorkflowStep];
             }
         }
-    }
-    else if(self.passcodeType == PasscodeTypeVerify || self.passcodeType == PasscodeTypeVerifyForSettingChange){
-        if([[PasscodeManager sharedManager] isPasscodeCorrect:self.passcodeEntered]){
-            [self.delegate didVerifyPasscode];
+        else if(self.passcodeType == PasscodeTypeChangePasscode)
+        {
+            if([[PasscodeManager sharedManager] isPasscodeCorrect:self.passcodeEntered]){
+                self.passcodeType = PasscodeTypeSetup;
+                self.currentWorkflowStep = WorkflowStepOne;
+                [self updateLayoutBasedOnWorkflowStep];
+            }
+            else{
+                [self performErrorWithErrorType:PasscodeErrorTypeIncorrectPasscode];
+                self.currentWorkflowStep = WorkflowStepOne;
+                [self updateLayoutBasedOnWorkflowStep];
+            }
+            
         }
-        else{
-            [self performErrorWithErrorType:PasscodeErrorTypeIncorrectPasscode];
-            self.currentWorkflowStep = WorkflowStepOne;
-            [self updateLayoutBasedOnWorkflowStep];
-        }
-    }
-    else if(self.passcodeType == PasscodeTypeChangePasscode)
-    {
-        if([[PasscodeManager sharedManager] isPasscodeCorrect:self.passcodeEntered]){
-            self.passcodeType = PasscodeTypeSetup;
-            self.currentWorkflowStep = WorkflowStepOne;
-            [self updateLayoutBasedOnWorkflowStep];
-        }
-        else{
-            [self performErrorWithErrorType:PasscodeErrorTypeIncorrectPasscode];
-            self.currentWorkflowStep = WorkflowStepOne;
-            [self updateLayoutBasedOnWorkflowStep];
-        }
-        
-    }
+    });
 
 }
 
