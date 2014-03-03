@@ -337,7 +337,7 @@
 }
 
 + (void) configurePasscodeLockStyle{
-        
+    
     PasscodeButtonStyleProvider *buttonStyleProvider = [[PasscodeButtonStyleProvider alloc]init];
     PasscodeStyle *style = [[PasscodeStyle alloc]init];
     style.lineColor = [UIColor whiteColor];

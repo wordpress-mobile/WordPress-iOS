@@ -41,10 +41,6 @@
     [self resetDurations];
 }
 
-- (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation {
-    return [super shouldAutorotateToInterfaceOrientation:interfaceOrientation];
-}
-
 #pragma mark - UITableViewDataSource methods
 
 -(NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
