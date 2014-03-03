@@ -11,9 +11,9 @@
 
 @interface StatsLinkToWebviewCell : WPTableViewCell
 
+@property (nonatomic, copy) void (^onTappedLinkToWebview)(void);
+
 + (CGFloat)heightForRow;
 - (void)configureForSection:(StatsSection)section;
-
-@property (nonatomic, copy) void (^onTappedLinkToWebview)(void);
 
 @end
