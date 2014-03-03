@@ -209,6 +209,9 @@ extern NSString *const StatsEventAddBlogsClickedSelectAll;
 extern NSString *const StatsEventAddBlogsClickedDeselectAll;
 extern NSString *const StatsEventAddBlogsClickedAddSelected;
 
+// Stats
+extern NSString *const StatsEventStatsClickedOnWebVersion;
+
 @interface WPMobileStats : NSObject
 
 + (void)initializeStats;

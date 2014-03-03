@@ -11,6 +11,7 @@
 #import "Blog+Jetpack.h"
 #import "WordPressAppDelegate.h"
 #import "JetpackSettingsViewController.h"
+#import "StatsWebViewController.h"
 #import "WPAccount.h"
 #import "StatsApiHelper.h"
 #import "ContextManager.h"
@@ -22,6 +23,7 @@
 #import "StatsTitleCountItem.h"
 #import "StatsTodayYesterdayButtonCell.h"
 #import "StatsTwoColumnCell.h"
+#import "StatsLinkToWebviewCell.h"
 #import "WPTableViewSectionHeaderView.h"
 #import "StatsGroup.h"
 #import "WPNoResultsView.h"
@@ -34,6 +36,7 @@ static NSString *const NoResultsCellIdentifier = @"NoResultsCellIdentifier";
 static NSString *const ResultRowCellIdentifier = @"ResultRowCellIdentifier";
 static NSString *const GraphCellIdentifier = @"GraphCellIdentifier";
 static NSString *const StatsGroupedCellIdentifier = @"StatsGroupedCellIdentifier";
+static NSString *const LinkToWebviewCellIdentifier = @"LinkToWebviewCellIdentifier";
 
 static CGFloat const SectionHeaderPadding = 8.0f;
 static NSUInteger const ResultRowMaxItems = 10;
@@ -111,6 +114,7 @@ typedef NS_ENUM(NSInteger, TotalFollowersShareRow) {
     [self.tableView registerClass:[StatsNoResultsCell class] forCellReuseIdentifier:NoResultsCellIdentifier];
     [self.tableView registerClass:[StatsTwoColumnCell class] forCellReuseIdentifier:ResultRowCellIdentifier];
     [self.tableView registerClass:[StatsViewsVisitorsBarGraphCell class] forCellReuseIdentifier:GraphCellIdentifier];
+    [self.tableView registerClass:[StatsLinkToWebviewCell class] forCellReuseIdentifier:LinkToWebviewCellIdentifier];
     
     self.refreshControl = [[UIRefreshControl alloc] init];
     [self.refreshControl addTarget:self action:@selector(refreshControlTriggered) forControlEvents:UIControlEventValueChanged];
@@ -257,6 +261,8 @@ typedef NS_ENUM(NSInteger, TotalFollowersShareRow) {
             return VisitorSectionTotalRows;
         case StatsSectionTotalsFollowersShares:
             return TotalFollowersShareRowTotalRows;
+        case StatsSectionLinkToWebview:
+            return 1;
         default:
         {
             NSArray *groups = [self resultsForSection:section];
@@ -303,6 +309,8 @@ typedef NS_ENUM(NSInteger, TotalFollowersShareRow) {
                 default:
                     return [self resultsForSection:indexPath.section].count > 0 ? [StatsTwoColumnCell heightForRow] : [StatsNoResultsCell heightForRow];
             }
+        case StatsSectionLinkToWebview:
+            return [StatsLinkToWebviewCell heightForRow];
         default:
             return 0.0f;
     }
@@ -366,6 +374,19 @@ typedef NS_ENUM(NSInteger, TotalFollowersShareRow) {
         case StatsSectionReferrers:
         case StatsSectionSearchTerms:
             return [self cellForItemListSectionAtIndexPath:indexPath];
+        case StatsSectionLinkToWebview:
+        {
+            StatsLinkToWebviewCell *cell = [tableView dequeueReusableCellWithIdentifier:LinkToWebviewCellIdentifier];
+            [cell configureForSection:StatsSectionLinkToWebview];
+            cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
+            cell.onTappedLinkToWebview = ^{
+                [WPMobileStats trackEventForWPCom:StatsEventStatsClickedOnWebVersion];
+                StatsWebViewController *vc = [[StatsWebViewController alloc] init];
+                vc.blog = self.blog;
+                [self.navigationController pushViewController:vc animated:YES];
+            };
+            return cell;
+        }
         default:
             return nil;
     }
@@ -604,6 +625,8 @@ typedef NS_ENUM(NSInteger, TotalFollowersShareRow) {
             return NSLocalizedString(@"Referrers", @"Stats: Section title");;
         case StatsSectionSearchTerms:
             return NSLocalizedString(@"Search Engine Terms", @"Stats: Section title");;
+        case StatsSectionLinkToWebview:
+            return NSLocalizedString(@"Web Version", @"Stats: Section title");
         default:
             return @"";
     }
