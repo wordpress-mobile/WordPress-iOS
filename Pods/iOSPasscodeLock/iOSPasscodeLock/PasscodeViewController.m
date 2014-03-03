@@ -132,7 +132,7 @@ typedef enum PasscodeErrorType : NSUInteger {
         }
         if(self.numberOfDigitsEntered == PasscodeDigitCount)
         {
-            [self evaluatePasscodeEntry];
+            [self performSelectorInBackground:@selector(evaluatePasscodeEntry) withObject:nil];
         }
     }
 }
@@ -450,6 +450,7 @@ typedef enum PasscodeErrorType : NSUInteger {
 
 -(void)evaluatePasscodeEntry{
     
+    [NSThread sleepForTimeInterval:0.1];
     self.lblError.hidden = YES;
     
     if(self.passcodeType == PasscodeTypeSetup){
