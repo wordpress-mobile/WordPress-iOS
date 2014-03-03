@@ -902,7 +902,7 @@ NSString * const RPVCDisplayedNativeFriendFinder = @"DisplayedNativeFriendFinder
     [self syncItems];
 	[self configureNoResultsView];
     
-	self.title = [[ReaderPost currentTopic] stringForKey:@"title"];
+	self.title = [[[ReaderPost currentTopic] stringForKey:@"title"] capitalizedString];
 
     if ([WordPressAppDelegate sharedWordPressApplicationDelegate].connectionAvailable == YES && ![self isSyncing] ) {
 		[[NSUserDefaults standardUserDefaults] removeObjectForKey:ReaderLastSyncDateKey];
