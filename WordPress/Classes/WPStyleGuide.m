@@ -337,18 +337,15 @@
 }
 
 + (void) configurePasscodeLockStyle{
-    
-    UIColor *iPhone5CWhite = [UIColor colorWithRed:0.961 green:0.957 blue:0.969 alpha:1.0];
-    UIColor *wpOrange = [UIColor colorWithRed:0.835 green:0.306 blue:0.129 alpha:1.0];
-    
+        
     PasscodeButtonStyleProvider *buttonStyleProvider = [[PasscodeButtonStyleProvider alloc]init];
     PasscodeStyle *style = [[PasscodeStyle alloc]init];
-    style.lineColor = iPhone5CWhite;
-    style.titleColor = iPhone5CWhite;
+    style.lineColor = [UIColor whiteColor];
+    style.titleColor = [UIColor whiteColor];
     style.fillColor = [UIColor clearColor];
-    style.selectedFillColor = wpOrange;
-    style.selectedLineColor = iPhone5CWhite;
-    style.selectedTitleColor = iPhone5CWhite;
+    style.selectedFillColor = [UIColor whiteColor];
+    style.selectedLineColor = [WPStyleGuide newKidOnTheBlockBlue];
+    style.selectedTitleColor = [WPStyleGuide newKidOnTheBlockBlue];
     style.titleFont = [UIFont fontWithName:@"Avenir-Book" size:35];
     
     [buttonStyleProvider addStyleForButton:PasscodeButtonAll stye:style];
@@ -360,10 +357,10 @@
     [PasscodeManager sharedManager].logo = [UIImage imageNamed:@"logo_wp_white.png"];
     [PasscodeManager sharedManager].appLockedCoverScreenBackgroundImage = [UIImage imageNamed:@"logo_wp_white.png"];
     [PasscodeManager sharedManager].appLockedCoverScreenBackgroundColor = [WPStyleGuide newKidOnTheBlockBlue];
-    [PasscodeManager sharedManager].instructionsLabelColor = iPhone5CWhite;
-    [PasscodeManager sharedManager].cancelOrDeleteButtonColor = iPhone5CWhite;
-    [PasscodeManager sharedManager].passcodeViewFillColor = wpOrange;
-    [PasscodeManager sharedManager].passcodeViewLineColor = iPhone5CWhite;
+    [PasscodeManager sharedManager].instructionsLabelColor = [UIColor whiteColor];
+    [PasscodeManager sharedManager].cancelOrDeleteButtonColor = [UIColor whiteColor];
+    [PasscodeManager sharedManager].passcodeViewFillColor = [UIColor whiteColor];
+    [PasscodeManager sharedManager].passcodeViewLineColor = [UIColor whiteColor];
     
 }
 
