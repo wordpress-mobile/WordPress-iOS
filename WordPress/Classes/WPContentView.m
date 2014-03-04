@@ -466,7 +466,10 @@ const CGFloat RPVControlButtonBorderSize = 0.0f;
     // and correctly update. 
     dispatch_async(dispatch_get_main_queue(), ^{
         [self refreshMediaLayout];
-        [self.delegate contentViewDidLoadAllMedia:self]; // So the delegate can correct its size.
+        
+        if ([self.delegate respondsToSelector:@selector(contentViewDidLoadAllMedia:)]) {
+            [self.delegate contentViewDidLoadAllMedia:self]; // So the delegate can correct its size.
+        }
     });
 }
 
