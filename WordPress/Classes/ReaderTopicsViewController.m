@@ -19,12 +19,8 @@
 
 @property (nonatomic, assign) BOOL topicsLoaded;
 @property (nonatomic, strong) NSArray *topicsArray;
-@property (nonatomic, strong) NSArray *defaultTopicsArray;
+@property (nonatomic, strong) NSArray *listsArray;
 @property (nonatomic, strong) NSDictionary *currentTopic;
-
-- (NSArray *)fetchDefaultTopics;
-- (void)loadTopics;
-- (void)handleFriendFinderButtonTapped:(id)sender;
 
 @end
 
@@ -36,18 +32,9 @@
 - (id)initWithStyle:(UITableViewStyle)style {
 	self = [super initWithStyle:style];
 	if (self) {
-		self.defaultTopicsArray = [self fetchDefaultTopics];
+		self.listsArray = [self fetchLists];
         
-        NSArray *arr = [[NSUserDefaults standardUserDefaults] arrayForKey:ReaderExtrasArrayKey];
-        if (arr != nil) {
-            self.defaultTopicsArray = [_defaultTopicsArray arrayByAddingObjectsFromArray:arr];
-        }
-        
-		arr = [[NSUserDefaults standardUserDefaults] arrayForKey:ReaderTopicsArrayKey];
-		if (arr == nil) {
-			arr = @[];
-		}
-		self.topicsArray = arr;
+		self.topicsArray = [[NSUserDefaults standardUserDefaults] arrayForKey:ReaderTopicsArrayKey] ?: @[];
 		
         self.currentTopic = [ReaderPost currentTopic];
     }
@@ -72,15 +59,21 @@
 																		  action:@selector(handleFriendFinderButtonTapped:)];
 	self.navigationItem.leftBarButtonItem = friendFinderButton;
     
-    [self loadTopics];
+    [self fetchTagsAndLists];
 	
     [WPStyleGuide configureColorsForView:self.view andTableView:self.tableView];
 }
 
 #pragma mark - Instance Methods
 
-- (NSArray *)fetchDefaultTopics {
-    NSArray *arr = [ReaderPost readerEndpoints];
+- (NSArray *)fetchLists {
+    NSArray *arr = [[NSUserDefaults standardUserDefaults] arrayForKey:ReaderListsArrayKey];
+    
+    if (arr.count > 0) {
+        return arr;
+    }
+    
+    arr = [ReaderPost readerEndpoints];
     NSIndexSet *indexSet = [arr indexesOfObjectsPassingTest:^BOOL(id obj, NSUInteger idx, BOOL *stop) {
         NSDictionary *dict = (NSDictionary *)obj;
         return [[dict objectForKey:@"default"] boolValue];
@@ -93,7 +86,7 @@
 }
 
 
-- (void)loadTopics {
+- (void)fetchTagsAndLists {
 	
 	if ([self.topicsArray count] == 0) {
 		CGFloat width = self.tableView.frame.size.width;
@@ -109,24 +102,35 @@
 		[activityView startAnimating];
 	}
 	
-	[ReaderPost getReaderTopicsWithSuccess:^(AFHTTPRequestOperation *operation, id responseObject) {
+	[ReaderPost getReaderMenuItemsWithSuccess:^(AFHTTPRequestOperation *operation, id responseObject) {
         [self.tableView setTableFooterView:nil];
         NSDictionary *dict = (NSDictionary *)responseObject;
 		
-        NSDictionary *tagsDict = [dict dictionaryForKey:@"tags"];
-        NSMutableArray *tags = [NSMutableArray arrayWithCapacity:[tagsDict count]];
+        NSDictionary *listsDict = dict[@"default"];
+        NSDictionary *tagsDict = dict[@"subscribed"];
+        NSMutableArray *lists = [NSMutableArray arrayWithCapacity:listsDict.count];
+        NSMutableArray *tags = [NSMutableArray arrayWithCapacity:tagsDict.count];
 		
-        for (id key in tagsDict) {
-            NSDictionary *dict = [tagsDict objectForKey:key];
-            
-            NSString *title = [dict objectForKey:@"title"];
+        [listsDict enumerateKeysAndObjectsUsingBlock:^(id key, id obj, BOOL *stop) {
+            NSString *title = [obj objectForKey:@"title"];
             title = [title stringByDecodingXMLCharacters];
-            NSString *endpoint = [dict objectForKey:@"URL"];
+            NSString *endpoint = [obj objectForKey:@"URL"];
+            [lists addObject:@{@"title": title, @"endpoint":endpoint}];
+        }];
+		
+        [tagsDict enumerateKeysAndObjectsUsingBlock:^(id key, id obj, BOOL *stop) {
+            NSString *title = [obj objectForKey:@"title"];
+            title = [title stringByDecodingXMLCharacters];
+            NSString *endpoint = [obj objectForKey:@"URL"];
             [tags addObject:@{@"title": title, @"endpoint":endpoint}];
-        }
-        
+        }];
+
+        self.listsArray = lists;
         self.topicsArray = tags;
-        [[NSUserDefaults standardUserDefaults] setObject:tags forKey:ReaderTopicsArrayKey];
+        NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
+        [defaults setObject:tags forKey:ReaderTopicsArrayKey];
+        [defaults setObject:lists forKey:ReaderListsArrayKey];
+        [defaults synchronize];
         
         [self.tableView reloadData];
     } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
@@ -181,7 +185,7 @@
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
 	if (section == 0) {
-		return [_defaultTopicsArray count];
+		return [_listsArray count];
 	}
 	return [_topicsArray count];
 }
@@ -197,7 +201,7 @@
 	
 	NSArray *arr = nil;
 	if (indexPath.section == 0) {
-		arr = _defaultTopicsArray;
+		arr = _listsArray;
 	} else {
 		arr = _topicsArray;
 	}
@@ -219,7 +223,7 @@
 	// Selected topics yo.
 	NSArray *arr = nil;
 	if (indexPath.section == 0) {
-		arr = _defaultTopicsArray;
+		arr = _listsArray;
 	} else {
 		arr = _topicsArray;
 	}
