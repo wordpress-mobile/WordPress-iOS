@@ -23,7 +23,7 @@ NSInteger const ReaderPostsToSync = 20;
 NSString *const ReaderLastSyncDateKey = @"ReaderLastSyncDate";
 NSString *const ReaderCurrentTopicKey = @"ReaderCurrentTopicKey";
 NSString *const ReaderTopicsArrayKey = @"ReaderTopicsArrayKey";
-NSString *const ReaderExtrasArrayKey = @"ReaderExtrasArrayKey";
+NSString *const ReaderListsArrayKey = @"ReaderListsArrayKey";
 
 // These keys are used in the getStoredComment method
 NSString * const ReaderPostStoredCommentIDKey = @"commentID";
@@ -765,14 +765,16 @@ NSString * const ReaderPostStoredCommentTextKey = @"comment";
 
 @implementation ReaderPost (WordPressComApi)
 
-+ (void)getReaderTopicsWithSuccess:(WordPressComApiRestSuccessResponseBlock)success
-                           failure:(WordPressComApiRestSuccessFailureBlock)failure {
++ (void)getReaderMenuItemsWithSuccess:(WordPressComApiRestSuccessResponseBlock)success
+                         failure:(WordPressComApiRestSuccessFailureBlock)failure {
     
-    NSString *path = @"read/tags";
+    NSString *path = @"read/menu";
+    WPAccount *account = [WPAccount defaultWordPressComAccount];
+    WordPressComApi *api = [account restApi];
     
     // There should probably be a better check here
-    if ([[WPAccount defaultWordPressComAccount] restApi].authToken) {
-        [[WPAccount defaultWordPressComAccount].restApi getPath:path parameters:nil success:success failure:failure];
+    if ([api hasCredentials]) {
+        [api getPath:path parameters:nil success:success failure:failure];
     } else {
         [[WordPressComApi anonymousApi] getPath:path parameters:nil success:success failure:failure];
     }
