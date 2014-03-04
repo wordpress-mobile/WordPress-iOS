@@ -106,19 +106,27 @@
         [self.tableView setTableFooterView:nil];
         NSDictionary *dict = (NSDictionary *)responseObject;
 		
-        NSDictionary *listsDict = dict[@"default"];
-        NSDictionary *tagsDict = dict[@"subscribed"];
-        NSMutableArray *lists = [NSMutableArray arrayWithCapacity:listsDict.count];
-        NSMutableArray *tags = [NSMutableArray arrayWithCapacity:tagsDict.count];
+        NSDictionary *defaultItems, *subscribedItems;
+        
+        if ([dict[@"default"] isKindOfClass:[NSDictionary class]]) {
+            defaultItems = dict[@"default"];
+        }
+        
+        if ([dict[@"subscribed"] isKindOfClass:[NSDictionary class]]) {
+            subscribedItems = dict[@"subscribed"];
+        }
+        
+        NSMutableArray *lists = [NSMutableArray arrayWithCapacity:defaultItems.count];
+        NSMutableArray *tags = [NSMutableArray arrayWithCapacity:subscribedItems.count];
 		
-        [listsDict enumerateKeysAndObjectsUsingBlock:^(id key, id obj, BOOL *stop) {
+        [defaultItems enumerateKeysAndObjectsUsingBlock:^(id key, id obj, BOOL *stop) {
             NSString *title = [obj objectForKey:@"title"];
             title = [title stringByDecodingXMLCharacters];
             NSString *endpoint = [obj objectForKey:@"URL"];
             [lists addObject:@{@"title": title, @"endpoint":endpoint}];
         }];
 		
-        [tagsDict enumerateKeysAndObjectsUsingBlock:^(id key, id obj, BOOL *stop) {
+        [subscribedItems enumerateKeysAndObjectsUsingBlock:^(id key, id obj, BOOL *stop) {
             NSString *title = [obj objectForKey:@"title"];
             title = [title stringByDecodingXMLCharacters];
             NSString *endpoint = [obj objectForKey:@"URL"];
