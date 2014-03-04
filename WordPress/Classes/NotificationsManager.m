@@ -195,7 +195,7 @@ NSString *const NotificationsDeviceToken = @"apnsDeviceToken";
 
 + (void)saveNotificationSettings {
     NSDictionary *settings = [NotificationsManager notificationSettingsDictionary];
-    NSString *deviceId = [[NSUserDefaults standardUserDefaults] objectForKey:NotificationsDeviceIdKey];
+    NSString *deviceId = [[NSUserDefaults standardUserDefaults] stringForKey:NotificationsDeviceIdKey];
     WPAccount *account = [WPAccount defaultWordPressComAccount];
     [[account restApi] saveNotificationSettings:settings
                                        deviceId:deviceId
@@ -207,7 +207,7 @@ NSString *const NotificationsDeviceToken = @"apnsDeviceToken";
 }
 
 + (void)fetchNotificationSettingsWithSuccess:(void (^)())success failure:(void (^)(NSError *))failure {
-    NSString *deviceId = [[NSUserDefaults standardUserDefaults] objectForKey:NotificationsDeviceIdKey];
+    NSString *deviceId = [[NSUserDefaults standardUserDefaults] stringForKey:NotificationsDeviceIdKey];
     
     WPAccount *account = [WPAccount defaultWordPressComAccount];
     [[account restApi] fetchNotificationSettingsWithDeviceId:deviceId
