@@ -404,35 +404,35 @@ typedef NS_ENUM(NSInteger, TotalFollowersShareRow) {
     StatsSummary *summary = _statModels[@(StatsSectionVisitors)];
     switch (index) {
         case TotalFollowersShareRowContentPost:
-            title = @"Content";
-            leftLabel = @"Posts";
+            title = NSLocalizedString(@"Content", @"Stats - Title for the data cell");
+            leftLabel = NSLocalizedString(@"Posts", @"Stats - Label for the count");
             leftCount = summary.totalPosts;
             break;
         case TotalFollowersShareRowContentCategoryTag:
-            leftLabel = @"Categories";
+            leftLabel = NSLocalizedString(@"Categories", @"Stats - Title for the data cell");
             leftCount = summary.totalCategories;
-            rightLabel = @"Tags";
+            rightLabel = NSLocalizedString(@"Tags", @"Stats - Label for the count");
             rightCount = summary.totalTags;
             break;
         case TotalFollowersShareRowFollowers:
-            title = @"Followers";
-            leftLabel = @"Blog";
+            title = NSLocalizedString(@"Followers", @"Stats - Title for the data cell");
+            leftLabel = NSLocalizedString(@"Blog", @"Stats - Label for the count");
             leftCount = summary.totalFollowersBlog;
-            rightLabel = @"Comments";
+            rightLabel = NSLocalizedString(@"Comments", @"Stats -Label for the right count");
             rightCount = summary.totalFollowersComments;
             break;
         case TotalFollowersShareRowShare:
-            title = @"Shares";
-            leftLabel = @"Shares";
+            title = NSLocalizedString(@"Shares", @"Stats - Title for the data cell");
+            leftLabel = NSLocalizedString(@"Shares", @"Stats - Label for the count");
             leftCount = summary.totalShares;
             break;
     }
     
     StatsCounterCell *cell = [self.tableView dequeueReusableCellWithIdentifier:CountCellReuseIdentifier];
-    [cell setTitle:NSLocalizedString(title,@"Title for the data cell")];
-    [cell addCount:leftCount withLabel:NSLocalizedString(leftLabel,@"Label for the count")];
+    [cell setTitle:title];
+    [cell addCount:leftCount withLabel:leftLabel];
     if (rightLabel) {
-        [cell addCount:rightCount withLabel:NSLocalizedString(rightLabel,@"Label for the right count")];
+        [cell addCount:rightCount withLabel:rightLabel];
     }
     return cell;
 }
