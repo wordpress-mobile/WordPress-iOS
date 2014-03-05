@@ -389,8 +389,8 @@ NSString *const WordPressComApiPushAppId = @"org.wordpress.appstore";
                NSAssert([responseObject isKindOfClass:[NSDictionary class]], @"Response should be a dictionary");
                
                if (success) {
-                   NSString *deviceId = responseObject[@"ID"];
-                   NSDictionary *settings = responseObject[@"settings"];
+                   NSString *deviceId = [responseObject stringForKey:@"ID"];
+                   NSDictionary *settings = [responseObject dictionaryForKey:@"settings"];
                    
                    success(deviceId, settings);
                }
