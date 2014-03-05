@@ -341,22 +341,20 @@ static NSInteger const MaxNumberOfLinesForTitleForSummary = 3;
 	nextY += height + RPVTitlePaddingBottom * (self.showFullContent ? 2.0 : 1.0);
     
 	// Position the snippet / content
-    if ([self.post.summary length] > 0) {
-        if (self.showFullContent) {
-            [self.textContentView relayoutText];
-            height = [self.textContentView suggestedFrameSizeToFitEntireStringConstraintedToWidth:contentWidth].height;
-            CGRect textContainerFrame = self.textContentView.frame;
-            textContainerFrame.size.width = contentWidth;
-            textContainerFrame.size.height = height;
-            textContainerFrame.origin.y = nextY;
-            self.textContentView.frame = textContainerFrame;
-        } else {
-            height = ceil([self.snippetLabel suggestedSizeForWidth:innerContentWidth].height);
-            self.snippetLabel.frame = CGRectMake(RPVHorizontalInnerPadding, nextY, innerContentWidth, height);
-        }
-        nextY += ceilf(height);
+    height = 0;
+    if (self.showFullContent) {
+        [self.textContentView relayoutText];
+        height = [self.textContentView suggestedFrameSizeToFitEntireStringConstraintedToWidth:contentWidth].height;
+        CGRect textContainerFrame = self.textContentView.frame;
+        textContainerFrame.size.width = contentWidth;
+        textContainerFrame.size.height = height;
+        textContainerFrame.origin.y = nextY;
+        self.textContentView.frame = textContainerFrame;
+    } else if ([self.snippetLabel.text length] > 0) {
+        height = ceil([self.snippetLabel suggestedSizeForWidth:innerContentWidth].height);
+        self.snippetLabel.frame = CGRectMake(RPVHorizontalInnerPadding, nextY, innerContentWidth, height);
     }
-    nextY += RPVVerticalPadding;
+    nextY += ceilf(height) + RPVVerticalPadding;
     
     // Tag
     // TODO: reenable tags once a better browsing experience is implemented
