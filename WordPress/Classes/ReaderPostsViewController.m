@@ -560,7 +560,7 @@ NSString * const RPVCDisplayedNativeFriendFinder = @"DisplayedNativeFriendFinder
 	switch (idx) {
 		case 0:
 			// Blogs I follow
-			prompt = NSLocalizedString(@"You’re not following any blogs yet.", @"");
+			prompt = NSLocalizedString(@"You're not following any blogs yet.", @"");
 			break;
 			
 		case 2:
