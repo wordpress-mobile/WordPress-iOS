@@ -543,9 +543,14 @@ NSString * const RPVCDisplayedNativeFriendFinder = @"DisplayedNativeFriendFinder
 #pragma mark - WPTableViewSublass methods
 
 - (NSString *)noResultsTitleText {
-	NSString *prompt;
+	NSString *prompt = NSLocalizedString(@"Sorry. No posts yet.", @"");
+    if ([WPAccount defaultWordPressComAccount] == nil) {
+        return prompt; // un-authed endpoints do not include likes or follows
+    }
+    
 	NSString *endpoint = [ReaderPost currentEndpoint];
 	NSArray *endpoints = [ReaderPost readerEndpoints];
+
 	NSInteger idx = [endpoints indexOfObjectPassingTest:^BOOL(id obj, NSUInteger idx, BOOL *stop) {
 		BOOL match = NO;
 		
@@ -556,7 +561,8 @@ NSString * const RPVCDisplayedNativeFriendFinder = @"DisplayedNativeFriendFinder
 				
 		return match;
 	}];
-	
+    
+	// TODO: need a smarter way to check here since the menu should not be hard coded.
 	switch (idx) {
 		case 0:
 			// Blogs I follow
@@ -570,7 +576,6 @@ NSString * const RPVCDisplayedNativeFriendFinder = @"DisplayedNativeFriendFinder
 			
 		default:
 			// Topics // freshly pressed.
-			prompt = NSLocalizedString(@"Sorry. No posts yet.", @"");
 			break;
 			
 
@@ -938,9 +943,13 @@ NSString * const RPVCDisplayedNativeFriendFinder = @"DisplayedNativeFriendFinder
 - (NSString *)currentCategory {
     NSDictionary *categoryDetails = [[NSUserDefaults standardUserDefaults] objectForKey:ReaderCurrentTopicKey];
     NSString *category = [categoryDetails stringForKey:@"endpoint"];
-    if (category == nil)
-        return @"read/following";
-    
+    if (category == nil) {
+        if ([WPAccount defaultWordPressComAccount] != nil) {
+            return @"read/following";
+        } else {
+            return @"freshly-pressed";
+        }
+    }
     return category;
 }
 
