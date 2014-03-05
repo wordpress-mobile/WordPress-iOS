@@ -62,19 +62,17 @@ NSString * const ReaderPostStoredCommentTextKey = @"comment";
 @dynamic tags;
 
 + (NSArray *)readerEndpoints {
-    static NSArray *endpoints = nil;
-    static dispatch_once_t token;
-    dispatch_once(&token, ^{
-        
-        NSDictionary *fpDict = @{@"title": NSLocalizedString(@"Freshly Pressed", @""), @"endpoint":@"freshly-pressed", @"default":@YES};
-        NSDictionary *follows = @{@"title": NSLocalizedString(@"Blogs I Follow", @""), @"endpoint":@"read/following", @"default":@YES};
-        NSDictionary *likes = @{@"title": NSLocalizedString(@"Posts I Like", @""), @"endpoint":@"read/liked", @"default":@YES};
-        NSDictionary *topic = @{@"title": NSLocalizedString(@"Topics", @""), @"endpoint":@"read/tags/%@", @"default":@NO};
-        
-        endpoints = @[follows, fpDict, likes, topic];
-        
-    });
-    return endpoints;
+
+    NSDictionary *fpDict = @{@"title": NSLocalizedString(@"Freshly Pressed", @""), @"endpoint":@"freshly-pressed", @"default":@YES};
+    NSDictionary *follows = @{@"title": NSLocalizedString(@"Blogs I Follow", @""), @"endpoint":@"read/following", @"default":@YES};
+    NSDictionary *likes = @{@"title": NSLocalizedString(@"Posts I Like", @""), @"endpoint":@"read/liked", @"default":@YES};
+    NSDictionary *topic = @{@"title": NSLocalizedString(@"Topics", @""), @"endpoint":@"read/tags/%@", @"default":@NO};
+    
+    if ([WPAccount defaultWordPressComAccount]) {
+        return @[follows, fpDict, likes, topic];
+    } else {
+        return @[fpDict, topic];
+    }
 }
 
 
