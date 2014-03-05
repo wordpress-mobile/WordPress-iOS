@@ -146,9 +146,10 @@ extern NSString *const WPAccountDefaultWordPressComAccountChangedNotification;
  @param password the account's password
  @return a `WPAccount` object for the given `xmlrpc` endpoint and `username`
  */
+
 + (WPAccount *)createOrUpdateSelfHostedAccountWithXmlrpc:(NSString *)xmlrpc
                                                 username:(NSString *)username
-                                             andPassword:(NSString *)password;
+                                             andPassword:(NSString *)password __attribute((deprecated("Similarly named method with context parameter")));
 
 ///--------------------
 /// @name Blog creation
