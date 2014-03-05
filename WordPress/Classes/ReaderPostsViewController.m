@@ -920,11 +920,14 @@ NSString * const RPVCDisplayedNativeFriendFinder = @"DisplayedNativeFriendFinder
 }
 
 - (void)didChangeAccount:(NSNotification *)notification {
-    if ([WPAccount defaultWordPressComAccount]) {
+    NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
+    [defaults removeObjectForKey:ReaderCurrentTopicKey];
+    [defaults removeObjectForKey:ReaderLastSyncDateKey];
+    [NSUserDefaults resetStandardUserDefaults];
+    [self.navigationController popToViewController:self animated:NO];
+    
+    if ([WPAccount defaultWordPressComAccount] && [self isViewLoaded]) {
         [self syncItems];
-    } else {
-        [[NSUserDefaults standardUserDefaults] removeObjectForKey:ReaderLastSyncDateKey];
-        [NSUserDefaults resetStandardUserDefaults];
     }
 }
 
