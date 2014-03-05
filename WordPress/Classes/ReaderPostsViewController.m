@@ -925,6 +925,7 @@ NSString * const RPVCDisplayedNativeFriendFinder = @"DisplayedNativeFriendFinder
     [defaults removeObjectForKey:ReaderLastSyncDateKey];
     [NSUserDefaults resetStandardUserDefaults];
     [self resetResultsController];
+    [self.tableView reloadData];
     [self.navigationController popToViewController:self animated:NO];
     
     if ([WPAccount defaultWordPressComAccount] && [self isViewLoaded]) {
