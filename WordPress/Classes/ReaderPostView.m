@@ -59,7 +59,7 @@ static NSInteger const MaxNumberOfLinesForTitleForSummary = 3;
     desiredHeight += RPVTitlePaddingBottom;
     
     // Post summary
-    if ([post.summary length] > 0) {
+    if (!showFullContent) {
         NSAttributedString *postSummary = [self summaryAttributedStringForPost:post];
         desiredHeight += [postSummary boundingRectWithSize:CGSizeMake(contentWidth, CGFLOAT_MAX) options:NSStringDrawingUsesLineFragmentOrigin | NSStringDrawingUsesFontLeading context:nil].size.height;
     }
