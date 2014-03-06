@@ -8,6 +8,7 @@
 
 #import <QuartzCore/QuartzCore.h>
 #import "ReaderPostView.h"
+#import "WPAccount.h"
 #import "WPContentViewSubclass.h"
 #import "ContentActionButton.h"
 #import "UILabel+SuggestSize.h"
@@ -273,7 +274,7 @@ static NSInteger const MaxNumberOfLinesForTitleForSummary = 3;
         self.tagButton.hidden = YES;
     }
     
-	if ([[self.post isWPCom] boolValue]) {
+	if ([[self.post isWPCom] boolValue] && [WPAccount defaultWordPressComAccount] != nil) {
 		self.likeButton.hidden = NO;
 		self.reblogButton.hidden = NO;
         self.commentButton.hidden = NO;
