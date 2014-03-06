@@ -114,6 +114,8 @@
         
         if ([dict[@"subscribed"] isKindOfClass:[NSDictionary class]]) {
             subscribedItems = dict[@"subscribed"];
+        } else if ([dict[@"recommended"] isKindOfClass:[NSDictionary class]]) {
+            subscribedItems = dict[@"recommended"];
         }
         
         NSMutableArray *lists = [NSMutableArray arrayWithCapacity:defaultItems.count];
@@ -132,9 +134,11 @@
             NSString *endpoint = [obj objectForKey:@"URL"];
             [tags addObject:@{@"title": title, @"endpoint":endpoint}];
         }];
-
-        self.listsArray = lists;
-        self.topicsArray = tags;
+        
+        NSSortDescriptor *sortDescriptor = [NSSortDescriptor sortDescriptorWithKey:@"title" ascending:YES];
+        self.listsArray = [lists sortedArrayUsingDescriptors:@[sortDescriptor]];
+        self.topicsArray = [tags sortedArrayUsingDescriptors:@[sortDescriptor]];
+        
         NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
         [defaults setObject:tags forKey:ReaderTopicsArrayKey];
         [defaults setObject:lists forKey:ReaderListsArrayKey];
