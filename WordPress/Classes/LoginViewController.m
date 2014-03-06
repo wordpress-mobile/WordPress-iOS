@@ -27,6 +27,7 @@
 #import "WPNUXBackButton.h"
 #import "WPAccount.h"
 #import "Note.h"
+#import "ContextManager.h"
 
 static NSString *const ForgotPasswordDotComBaseUrl = @"https://wordpress.com";
 static NSString *const ForgotPasswordRelativeUrl = @"/wp-login.php?action=lostpassword&redirect_to=wordpress%3A%2F%2F";
@@ -826,7 +827,7 @@ CGFloat const GeneralWalkthroughStatusBarOffset = 20.0;
 
 - (void)createSelfHostedAccountAndBlogWithUsername:(NSString *)username password:(NSString *)password xmlrpc:(NSString *)xmlrpc options:(NSDictionary *)options
 {
-    WPAccount *account = [WPAccount createOrUpdateSelfHostedAccountWithXmlrpc:xmlrpc username:username andPassword:password];
+    WPAccount *account = [WPAccount createOrUpdateSelfHostedAccountWithXmlrpc:xmlrpc username:username andPassword:password withContext:[[ContextManager sharedInstance] mainContext]];
     NSString *blogName = [options stringForKeyPath:@"blog_title.value"];
     NSString *url = [options stringForKeyPath:@"home_url.value"];
     if (!url) {
