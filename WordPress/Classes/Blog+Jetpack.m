@@ -95,13 +95,12 @@ NSString * const BlogJetpackApiPath = @"get-user-blogs/1.0";
                     }
                     if (valid) {
                         DDLogInfo(@"Found blog: %@", evaluatedObject);
-                        [self saveJetpackUsername:username andPassword:password];
                     }
                     return valid;
                 }]];
+                
                 if (foundBlogs && [foundBlogs count] > 0) {
-                    
-                    if (success) success();
+                    [self saveJetpackUsername:username andPassword:password success:success failure:failure];
                 } else {
                     NSError *error = [NSError errorWithDomain:BlogJetpackErrorDomain
                                                          code:BlogJetpackErrorCodeNoRecordForBlog
@@ -130,7 +129,7 @@ NSString * const BlogJetpackApiPath = @"get-user-blogs/1.0";
 
 #pragma mark - Private methods
 
-- (void)saveJetpackUsername:(NSString *)username andPassword:(NSString *)password {
+- (void)saveJetpackUsername:(NSString *)username andPassword:(NSString *)password success:(void (^)())success failure:(void (^)(NSError *))failure {
     NSAssert(![self isWPcom], @"Blog+Jetpack doesn't support WordPress.com blogs");
     
     WordPressComOAuthClient *client = [WordPressComOAuthClient client];
@@ -139,6 +138,7 @@ NSString * const BlogJetpackApiPath = @"get-user-blogs/1.0";
                              success:^(NSString *authToken) {
                                  WPAccount *account = [WPAccount createOrUpdateWordPressComAccountWithUsername:username password:password authToken:authToken context:self.managedObjectContext];
                                  self.jetpackAccount = account;
+                                 [account addJetpackBlogsObject:self];
                                  [self dataSave];
 
                                  // If there is no WP.com account on the device, make this the default
@@ -150,6 +150,10 @@ NSString * const BlogJetpackApiPath = @"get-user-blogs/1.0";
                                      [account syncBlogsWithSuccess:nil failure:nil];
                                      [Note fetchNewNotificationsWithSuccess:nil failure:nil];
                                  }
+                                 
+                                 if (success) {
+                                     success();
+                                 }
                              } failure:^(NSError *error) {
                                  DDLogError(@"Error while obtaining OAuth2 token after enabling JetPack: %@", error);
                                  
@@ -158,6 +162,11 @@ NSString * const BlogJetpackApiPath = @"get-user-blogs/1.0";
                                  WPAccount *account = [WPAccount createOrUpdateWordPressComAccountWithUsername:username password:password authToken:nil context:self.managedObjectContext];
                                  self.jetpackAccount = account;
                                  [self dataSave];
+                                 
+                                 // If the default 3.9 behavior is removed above, this should call the failure block, not success
+                                 if (success) {
+                                     success();
+                                 }
                              }];
 }
 
