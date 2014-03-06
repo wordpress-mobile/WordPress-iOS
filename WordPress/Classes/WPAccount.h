@@ -134,21 +134,6 @@ extern NSString *const WPAccountDefaultWordPressComAccountChangedNotification;
                                                 username:(NSString *)username
                                              andPassword:(NSString *)password
                                              withContext:(NSManagedObjectContext *)context;
-/**
- Creates a new self hosted account or updates the password if there is a matching account
-
- There can only be one account per XML-RPC endpoint and username, so if one already exists its password is updated
- 
- Uses a background managed object context.
-
- @param xmlrpc the account XML-RPC endpoint
- @param username the account's username
- @param password the account's password
- @return a `WPAccount` object for the given `xmlrpc` endpoint and `username`
- */
-+ (WPAccount *)createOrUpdateSelfHostedAccountWithXmlrpc:(NSString *)xmlrpc
-                                                username:(NSString *)username
-                                             andPassword:(NSString *)password;
 
 ///--------------------
 /// @name Blog creation

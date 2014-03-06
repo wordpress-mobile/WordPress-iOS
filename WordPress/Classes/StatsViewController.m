@@ -143,15 +143,15 @@ typedef NS_ENUM(NSInteger, TotalFollowersShareRow) {
 
 - (void)initStats {
     if (self.blog.isWPcom) {
-        self.statsApiHelper = [[StatsApiHelper alloc] initWithSiteID:self.blog.blogID];
+        self.statsApiHelper = [[StatsApiHelper alloc] initWithSiteID:self.blog.blogID andAccount:self.blog.account];
         [self loadStats];
         return;
     }
     
     // Jetpack
-    BOOL needsJetpackLogin = ![[[WPAccount defaultWordPressComAccount] restApi] hasCredentials];
-    if (!needsJetpackLogin && self.blog.jetpackBlogID) {
-        self.statsApiHelper = [[StatsApiHelper alloc] initWithSiteID:self.blog.jetpackBlogID];
+    BOOL needsJetpackLogin = ![self.blog.jetpackAccount.restApi hasCredentials];
+    if (!needsJetpackLogin && self.blog.jetpackBlogID && self.blog.jetpackAccount) {
+        self.statsApiHelper = [[StatsApiHelper alloc] initWithSiteID:self.blog.jetpackBlogID andAccount:self.blog.jetpackAccount];
         [self loadStats];
     } else {
         [self promptForJetpackCredentials];
