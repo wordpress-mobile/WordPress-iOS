@@ -196,7 +196,18 @@ static NSString * const PasscodeInactivityEnded = @"PasscodeInactivityEnded";
 #pragma mark - Helper methods
 
 - (UIViewController *)topViewController{
-    return [self topViewController:[UIApplication sharedApplication].keyWindow.rootViewController];
+    
+    NSArray *windows = [UIApplication sharedApplication].windows;
+    
+    for(int i=windows.count-1; i >= 0; i--)
+    {
+        UIWindow *window = windows[i];
+        if(window.windowLevel == UIWindowLevelNormal){
+            return [self topViewController:window.rootViewController];
+        }
+        
+    }
+    return nil;
 }
 
 - (UIViewController *)topViewController:(UIViewController *)rootViewController
