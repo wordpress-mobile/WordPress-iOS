@@ -307,7 +307,7 @@ typedef NS_ENUM(NSInteger, TotalFollowersShareRow) {
                 case StatsDataRowTitle:
                     return [StatsTwoColumnCell heightForRow];
                 default:
-                    return [self resultsForSection:indexPath.section].count > 0 ? [StatsTwoColumnCell heightForRow] : [StatsNoResultsCell heightForRow];
+                    return [self resultsForSection:indexPath.section].count > 0 ? [StatsTwoColumnCell heightForRow] : [StatsNoResultsCell heightForRowForSection:(StatsSection)indexPath.section withWidth:CGRectGetWidth(self.view.bounds)];
             }
         case StatsSectionLinkToWebview:
             return [StatsLinkToWebviewCell heightForRow];
