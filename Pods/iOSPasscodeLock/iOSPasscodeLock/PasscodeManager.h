@@ -43,5 +43,6 @@
 @property (strong, nonatomic) UIFont *instructionsLabelFont;
 @property (strong, nonatomic) UIFont *cancelOrDeleteButtonFont;
 @property (strong, nonatomic) PasscodeButtonStyleProvider *buttonStyleProvider;
+@property (assign) BOOL shouldUseAppLockedCoverScreen; 
 
 @end

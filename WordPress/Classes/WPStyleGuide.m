@@ -350,6 +350,7 @@
     
     [buttonStyleProvider addStyleForButton:PasscodeButtonAll stye:style];
     
+    [PasscodeManager sharedManager].shouldUseAppLockedCoverScreen = NO; 
     [PasscodeManager sharedManager].buttonStyleProvider = buttonStyleProvider;
     [PasscodeManager sharedManager].instructionsLabelFont = [UIFont fontWithName:@"Avenir-Book" size:20];
     [PasscodeManager sharedManager].cancelOrDeleteButtonFont = [UIFont fontWithName:@"Avenir-Book" size:15];
@@ -361,6 +362,7 @@
     [PasscodeManager sharedManager].cancelOrDeleteButtonColor = [UIColor whiteColor];
     [PasscodeManager sharedManager].passcodeViewFillColor = [UIColor whiteColor];
     [PasscodeManager sharedManager].passcodeViewLineColor = [UIColor whiteColor];
+    
     
 }
 

@@ -38,6 +38,16 @@ static NSString * const PasscodeInactivityEnded = @"PasscodeInactivityEnded";
     return sharedManager;
 }
 
+-(id) init
+{
+    self = [super init];
+    
+    if(self){
+        _shouldUseAppLockedCoverScreen = NO;
+    }
+    return self;
+}
+
 #pragma mark -
 #pragma mark - Subscriptions management
 
@@ -89,11 +99,15 @@ static NSString * const PasscodeInactivityEnded = @"PasscodeInactivityEnded";
         [self startTrackingInactivity];
     }
     if(notification.name == UIApplicationDidEnterBackgroundNotification){
-        [self presentCoverView];
+        if(self.shouldUseAppLockedCoverScreen){
+            [self presentCoverView];
+        }
     }
     if(notification.name == UIApplicationDidBecomeActiveNotification)
     {
-        [self dismissCoverView];
+        if(self.shouldUseAppLockedCoverScreen){
+            [self dismissCoverView];
+        }
         [self stopTrackingInactivity];
         if([self shouldLock]){
             [self verifyPasscodeWithPasscodeType:PasscodeTypeVerify withCompletion:nil];
