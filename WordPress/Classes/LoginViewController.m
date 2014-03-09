@@ -331,7 +331,7 @@ CGFloat const GeneralWalkthroughStatusBarOffset = 20.0;
 
 - (void)addMainView
 {
-    _mainView = [[UIView alloc] init];;
+    _mainView = [[UIView alloc] init];
     _mainView.frame = self.view.bounds;
     _mainView.autoresizingMask = UIViewAutoresizingFlexibleHeight | UIViewAutoresizingFlexibleWidth;
     [self.view addSubview:_mainView];
