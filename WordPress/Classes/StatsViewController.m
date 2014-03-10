@@ -614,17 +614,17 @@ typedef NS_ENUM(NSInteger, TotalFollowersShareRow) {
         case StatsSectionVisitors:
             return NSLocalizedString(@"Visitors and Views", @"Stats: Section title");
         case StatsSectionTopPosts:
-            return NSLocalizedString(@"Top Posts & Pages", @"Stats: Section title");;
+            return NSLocalizedString(@"Top Posts & Pages", @"Stats: Section title");
         case StatsSectionViewsByCountry:
-            return NSLocalizedString(@"Views By Country", @"Stats: Section title");;
+            return NSLocalizedString(@"Views By Country", @"Stats: Section title");
         case StatsSectionTotalsFollowersShares:
-            return NSLocalizedString(@"Totals, Followers & Shares", @"Stats: Section title");;
+            return NSLocalizedString(@"Totals, Followers & Shares", @"Stats: Section title");
         case StatsSectionClicks:
-            return NSLocalizedString(@"Clicks", @"Stats: Section title");;
+            return NSLocalizedString(@"Clicks", @"Stats: Section title");
         case StatsSectionReferrers:
-            return NSLocalizedString(@"Referrers", @"Stats: Section title");;
+            return NSLocalizedString(@"Referrers", @"Stats: Section title");
         case StatsSectionSearchTerms:
-            return NSLocalizedString(@"Search Engine Terms", @"Stats: Section title");;
+            return NSLocalizedString(@"Search Engine Terms", @"Stats: Section title");
         case StatsSectionLinkToWebview:
             return NSLocalizedString(@"Web Version", @"Stats: Section title");
         default:
