@@ -182,16 +182,10 @@ NSString * const WPAccountDefaultWordPressComAccountChangedNotification = @"WPAc
 #pragma mark - Blog creation
 
 - (Blog *)findOrCreateBlogFromDictionary:(NSDictionary *)blogInfo withContext:(NSManagedObjectContext*)context {
-    NSString *blogUrl = [[blogInfo objectForKey:@"url"] stringByReplacingOccurrencesOfString:@"http://" withString:@""];
-	if ([blogUrl hasSuffix:@"/"]) {
-		blogUrl = [blogUrl substringToIndex:blogUrl.length-1];
-    }
-	blogUrl = [blogUrl stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceCharacterSet]];
-
     __block Blog *blog;
     [context performBlockAndWait:^{
         WPAccount *contextAccount = (WPAccount *)[context existingObjectWithID:self.objectID error:nil];
-        NSSet *foundBlogs = [contextAccount.blogs filteredSetUsingPredicate:[NSPredicate predicateWithFormat:@"url like %@", blogUrl]];
+        NSSet *foundBlogs = [contextAccount.blogs filteredSetUsingPredicate:[NSPredicate predicateWithFormat:@"xmlrpc like %@", [blogInfo stringForKey:@"xmlrpc"]]];
         if ([foundBlogs count]) {
             blog = [foundBlogs anyObject];
             return;
@@ -199,7 +193,7 @@ NSString * const WPAccountDefaultWordPressComAccountChangedNotification = @"WPAc
         
         blog = [NSEntityDescription insertNewObjectForEntityForName:NSStringFromClass([Blog class]) inManagedObjectContext:context];
         blog.account = contextAccount;
-        blog.url = blogUrl;
+        blog.url = [blogInfo stringForKey:@"url"];
         blog.blogID = [NSNumber numberWithInt:[[blogInfo objectForKey:@"blogid"] intValue]];
         blog.blogName = [[blogInfo objectForKey:@"blogName"] stringByDecodingXMLCharacters];
         blog.xmlrpc = [blogInfo objectForKey:@"xmlrpc"];
@@ -228,8 +222,28 @@ NSString * const WPAccountDefaultWordPressComAccountChangedNotification = @"WPAc
     NSManagedObjectID *accountID = self.objectID;
     [backgroundMOC performBlock:^{
         WPAccount *account = (WPAccount *)[backgroundMOC objectWithID:accountID];
-        for (NSDictionary *blog in blogs) {
-            [account findOrCreateBlogFromDictionary:blog withContext:backgroundMOC];
+
+        NSSet *remoteSet = [NSSet setWithArray:[blogs valueForKey:@"xmlrpc"]];
+        NSSet *localSet = [account.blogs valueForKey:@"xmlrpc"];
+        NSMutableSet *toDelete = [localSet mutableCopy];
+        NSMutableSet *toAdd = [remoteSet mutableCopy];
+        [toDelete minusSet:remoteSet];
+        [toAdd minusSet:localSet];
+
+        if ([toAdd count] > 0) {
+            for (NSDictionary *blog in blogs) {
+                if ([toAdd containsObject:blog[@"xmlrpc"]]) {
+                    [account findOrCreateBlogFromDictionary:blog withContext:backgroundMOC];
+                }
+            }
+        }
+
+        if ([toDelete count] > 0) {
+            for (Blog *blog in account.blogs) {
+                if ([toDelete containsObject:blog.xmlrpc]) {
+                    [backgroundMOC deleteObject:blog];
+                }
+            }
         }
         [[ContextManager sharedInstance] saveContext:backgroundMOC];
         if (completion != nil) {
