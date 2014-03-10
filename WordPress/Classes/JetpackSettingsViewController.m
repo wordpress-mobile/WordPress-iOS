@@ -254,7 +254,7 @@ CGFloat const JetpackSignInButtonHeight = 41.0;
     _passwordField.autoresizingMask = UIViewAutoresizingFlexibleLeftMargin | UIViewAutoresizingFlexibleRightMargin;
     
     // Layout Sign in Button
-    x = (viewWidth - JetpackSignInButtonWidth) / 2.0;;
+    x = (viewWidth - JetpackSignInButtonWidth) / 2.0;
     y = CGRectGetMaxY(_passwordField.frame) + JetpackStandardOffset;
     _signInButton.frame = CGRectMake(x, y, JetpackSignInButtonWidth, JetpackSignInButtonHeight);
     _signInButton.hidden = !hasJetpack;
