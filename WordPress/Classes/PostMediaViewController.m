@@ -90,7 +90,7 @@
         id <NSFetchedResultsSectionInfo> sectionInfo = nil;
         sectionInfo = [[self.resultsController sections] objectAtIndex:0];
         if ([sectionInfo numberOfObjects] == 0) {
-            _dismissOnCancel = YES;;
+            _dismissOnCancel = YES;
             [self tappedAddButton];
         }
     }

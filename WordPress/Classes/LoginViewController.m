@@ -546,12 +546,12 @@ CGFloat const GeneralWalkthroughStatusBarOffset = 20.0;
     _siteUrlText.frame = CGRectIntegral(CGRectMake(x, y, GeneralWalkthroughTextFieldWidth, GeneralWalkthroughTextFieldHeight));
 
     // Layout Sign in Button
-    x = (viewWidth - GeneralWalkthroughButtonWidth) / 2.0;;
+    x = (viewWidth - GeneralWalkthroughButtonWidth) / 2.0;
     y = CGRectGetMaxY(_siteUrlText.frame) + GeneralWalkthroughStandardOffset;
     _signInButton.frame = CGRectIntegral(CGRectMake(x, y, GeneralWalkthroughButtonWidth, GeneralWalkthroughButtonHeight));
 
     // Layout Lost password Button
-    x = (viewWidth - GeneralWalkthroughButtonWidth) / 2.0;;
+    x = (viewWidth - GeneralWalkthroughButtonWidth) / 2.0;
     y = CGRectGetMaxY(_signInButton.frame) + 0.5 * GeneralWalkthroughStandardOffset;
     CGFloat forgotPasswordHeight = [_forgotPassword.titleLabel.text sizeWithAttributes:@{NSFontAttributeName:_forgotPassword.titleLabel.font}].height;
     _forgotPassword.frame = CGRectIntegral(CGRectMake(x, y, GeneralWalkthroughButtonWidth, forgotPasswordHeight));
