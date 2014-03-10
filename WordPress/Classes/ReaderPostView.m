@@ -262,7 +262,10 @@ static NSInteger const MaxNumberOfLinesForTitleForSummary = 3;
     
 	self.showImage = NO;
 	self.cellImageView.hidden = YES;
-	if (post.featuredImageURL) {
+    
+    // If ReaderPostView has a featured image, show it unless you're showing full detail & featured image is in the post already
+	if (post.featuredImageURL &&
+        (self.showFullContent == NO || [self.post.content rangeOfString:[post.featuredImageURL absoluteString]].length == 0)) {
 		self.showImage = YES;
 		self.cellImageView.hidden = NO;
 	}
