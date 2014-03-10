@@ -273,8 +273,11 @@ CGFloat const EPVCTextViewTopPadding = 7.0f;
         UIButton *titleButton = self.titleBarButton;
         NSMutableAttributedString *titleText = [[NSMutableAttributedString alloc] initWithString:[NSString stringWithFormat:@"%@\n", [self editorTitle]]
                                                                                       attributes:@{ NSFontAttributeName : [UIFont fontWithName:@"OpenSans-Bold" size:14.0] }];
-        NSMutableAttributedString *titleSubtext = [[NSMutableAttributedString alloc] initWithString:self.post.blog.blogName
-                                                                                         attributes:@{ NSFontAttributeName : [UIFont fontWithName:@"OpenSans" size:10.0] }];
+
+        NSString *subtext = [self.post.blog.blogName length] == 0 ? self.post.blog.url : self.post.blog.blogName;
+        NSDictionary *subtextAttributes = @{ NSFontAttributeName: [UIFont fontWithName:@"OpenSans" size:10.0] };
+        NSMutableAttributedString *titleSubtext = [[NSMutableAttributedString alloc] initWithString:subtext
+                                                                                         attributes:subtextAttributes];
         [titleText appendAttributedString:titleSubtext];
         [titleButton setAttributedTitle:titleText forState:UIControlStateNormal];
 
