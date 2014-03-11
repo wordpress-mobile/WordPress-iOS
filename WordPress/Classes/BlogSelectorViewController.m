@@ -18,7 +18,6 @@
 #import "WPTableViewSectionHeaderView.h"
 
 static NSString *const BlogCellIdentifier = @"BlogCell";
-static CGFloat const blavatarImageSize = 50.f;
 
 @interface BlogSelectorViewController ()
 

@@ -57,8 +57,6 @@ static NSString * const WPBlogListNavigationRestorationID = @"WPBlogListNavigati
 static NSString * const WPReaderNavigationRestorationID = @"WPReaderNavigationID";
 static NSString * const WPNotificationsNavigationRestorationID = @"WPNotificationsNavigationID";
 static NSInteger const IndexForMeTab = 2;
-static NSInteger const NotificationNewComment = 1001;
-static NSInteger const NotificationNewSocial = 1002;
 static NSString *const CameraPlusImagesNotification = @"CameraPlusImagesNotification";
 
 @interface WordPressAppDelegate () <UITabBarControllerDelegate, CrashlyticsDelegate, UIAlertViewDelegate, BITHockeyManagerDelegate>
