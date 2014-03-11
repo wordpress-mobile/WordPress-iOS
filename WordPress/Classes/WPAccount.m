@@ -186,8 +186,28 @@ NSString * const WPAccountDefaultWordPressComAccountChangedNotification = @"WPAc
     [context performBlockAndWait:^{
         WPAccount *contextAccount = (WPAccount *)[context existingObjectWithID:self.objectID error:nil];
         NSSet *foundBlogs = [contextAccount.blogs filteredSetUsingPredicate:[NSPredicate predicateWithFormat:@"xmlrpc like %@", [blogInfo stringForKey:@"xmlrpc"]]];
-        if ([foundBlogs count]) {
+        if ([foundBlogs count] == 1) {
             blog = [foundBlogs anyObject];
+            return;
+        }
+        
+        // If more than one blog matches, return the first and delete the rest
+        if ([foundBlogs count] > 1) {
+            Blog *blogToReturn = [foundBlogs anyObject];
+            for (Blog *b in foundBlogs) {
+                if ([b.url rangeOfString:@"https://"].length == 0) {
+                    blogToReturn = b;
+                    break;
+                }
+            }
+            
+            for (Blog *b in foundBlogs) {
+                if ([b isEqual:blogToReturn] == NO) {
+                    [context deleteObject:b];
+                }
+            }
+            
+            blog = blogToReturn;
             return;
         }
         
@@ -245,7 +265,14 @@ NSString * const WPAccountDefaultWordPressComAccountChangedNotification = @"WPAc
                 }
             }
         }
+        
+        // Go through each remote incoming blog and make sure we're up to date with titles, etc.
+        for (NSDictionary *blog in blogs) {
+            [account findOrCreateBlogFromDictionary:blog withContext:backgroundMOC];
+        }
+        
         [[ContextManager sharedInstance] saveContext:backgroundMOC];
+        
         if (completion != nil) {
             dispatch_async(dispatch_get_main_queue(), completion);
         }
