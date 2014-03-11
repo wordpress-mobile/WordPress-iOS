@@ -1258,7 +1258,7 @@
 	imageMedia.creationDate = [NSDate date];
 	imageMedia.filename = filename;
 	imageMedia.localURL = filepath;
-	imageMedia.filesize = [NSNumber numberWithInt:(imageData.length/1024)];
+	imageMedia.filesize = [NSNumber numberWithUnsignedInteger:(imageData.length/1024)];
     if (isPickingFeaturedImage) {
         imageMedia.mediaType = @"featured";
     } else {
@@ -1357,8 +1357,8 @@
 		CGImageRef cgVideoThumbnail = thumbnail.CGImage;
 		NSUInteger videoWidth = CGImageGetWidth(cgVideoThumbnail);
 		NSUInteger videoHeight = CGImageGetHeight(cgVideoThumbnail);
-		videoMedia.width = [NSNumber numberWithInt:videoWidth];
-		videoMedia.height = [NSNumber numberWithInt:videoHeight];
+		videoMedia.width = [NSNumber numberWithUnsignedInteger:videoWidth];
+		videoMedia.height = [NSNumber numberWithUnsignedInteger:videoHeight];
 
 		[videoMedia uploadWithSuccess:^{
             if ([videoMedia isDeleted]) {

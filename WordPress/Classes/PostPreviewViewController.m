@@ -137,7 +137,7 @@
 		//Categories [selObjects count]
 		NSArray *categories = [self.post.categories allObjects];
 		NSString *catStr = @"";
-		int i = 0, count = [categories count];
+		NSUInteger i = 0, count = [categories count];
 		for (i = 0; i < count; i++) {
 			Category *category = [categories objectAtIndex:i];
 			catStr = [catStr stringByAppendingString:category.categoryName];
