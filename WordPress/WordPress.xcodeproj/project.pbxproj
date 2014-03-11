@@ -1926,7 +1926,7 @@
 		A0E293F00E21027E00C6919C /* WPAddCategoryViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WPAddCategoryViewController.m; sourceTree = "<group>"; };
 		A25EBD85156E330600530E3D /* WPTableViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WPTableViewController.h; sourceTree = "<group>"; };
 		A25EBD86156E330600530E3D /* WPTableViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WPTableViewController.m; sourceTree = "<group>"; };
-		A284044518BFE7F300D982B6 /* WordPress 15.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = file; path = "WordPress 15.xcdatamodel"; sourceTree = "<group>"; };
+		A284044518BFE7F300D982B6 /* WordPress 15.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = "WordPress 15.xcdatamodel"; sourceTree = "<group>"; };
 		A2CDC80D14C7681600091CEB /* approve.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = approve.png; path = Resources/Images/approve.png; sourceTree = "<group>"; };
 		A2CDC80E14C7681600091CEB /* approve@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "approve@2x.png"; path = "Resources/Images/approve@2x.png"; sourceTree = "<group>"; };
 		A2CDC80F14C7681600091CEB /* unapprove.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = unapprove.png; path = Resources/Images/unapprove.png; sourceTree = "<group>"; };
@@ -4361,7 +4361,7 @@
 		29B97313FDCFA39411CA2CEA /* Project object */ = {
 			isa = PBXProject;
 			attributes = {
-				LastUpgradeCheck = 0450;
+				LastUpgradeCheck = 0510;
 				ORGANIZATIONNAME = WordPress;
 				TargetAttributes = {
 					1D6058900D05DD3D006BFB54 = {
@@ -5602,7 +5602,6 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = EBC24772E5CD4036B5AFD803 /* Pods.xcconfig */;
 			buildSettings = {
-				ARCHS = "$(ARCHS_STANDARD)";
 				GCC_C_LANGUAGE_STANDARD = c99;
 				GCC_THUMB_SUPPORT = NO;
 				GCC_TREAT_WARNINGS_AS_ERRORS = NO;
@@ -5660,7 +5659,6 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = EBC24772E5CD4036B5AFD803 /* Pods.xcconfig */;
 			buildSettings = {
-				ARCHS = "$(ARCHS_STANDARD)";
 				GCC_C_LANGUAGE_STANDARD = c99;
 				GCC_THUMB_SUPPORT = NO;
 				GCC_WARN_ABOUT_RETURN_TYPE = YES;
@@ -5720,7 +5718,6 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = EBC24772E5CD4036B5AFD803 /* Pods.xcconfig */;
 			buildSettings = {
-				ARCHS = "$(ARCHS_STANDARD)";
 				BUNDLE_LOADER = "$(BUILT_PRODUCTS_DIR)/WordPress.app/WordPress";
 				CLANG_ENABLE_OBJC_ARC = YES;
 				COPY_PHASE_STRIP = YES;
@@ -5744,7 +5741,6 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = EBC24772E5CD4036B5AFD803 /* Pods.xcconfig */;
 			buildSettings = {
-				ARCHS = "$(ARCHS_STANDARD)";
 				GCC_C_LANGUAGE_STANDARD = c99;
 				GCC_PREPROCESSOR_DEFINITIONS = "";
 				GCC_THUMB_SUPPORT = NO;
@@ -5769,7 +5765,6 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = EBC24772E5CD4036B5AFD803 /* Pods.xcconfig */;
 			buildSettings = {
-				ARCHS = "$(ARCHS_STANDARD)";
 				GCC_C_LANGUAGE_STANDARD = c99;
 				GCC_THUMB_SUPPORT = NO;
 				GCC_WARN_ABOUT_RETURN_TYPE = YES;
@@ -5790,7 +5785,6 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = BB0E95DCE0724D3696D9F222 /* Pods-WordPressTest.xcconfig */;
 			buildSettings = {
-				ARCHS = "$(ARCHS_STANDARD)";
 				BUNDLE_LOADER = "$(BUILT_PRODUCTS_DIR)/WordPress.app/WordPress";
 				CLANG_ENABLE_OBJC_ARC = YES;
 				COPY_PHASE_STRIP = NO;
@@ -5821,7 +5815,6 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = EBC24772E5CD4036B5AFD803 /* Pods.xcconfig */;
 			buildSettings = {
-				ARCHS = "$(ARCHS_STANDARD)";
 				BUNDLE_LOADER = "$(BUILT_PRODUCTS_DIR)/WordPress.app/WordPress";
 				CLANG_ENABLE_OBJC_ARC = YES;
 				COPY_PHASE_STRIP = YES;
@@ -5845,7 +5838,6 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = BB0E95DCE0724D3696D9F222 /* Pods-WordPressTest.xcconfig */;
 			buildSettings = {
-				ARCHS = "$(ARCHS_STANDARD)";
 				BUNDLE_LOADER = "$(BUILT_PRODUCTS_DIR)/WordPress.app/WordPress";
 				CLANG_ENABLE_OBJC_ARC = YES;
 				COPY_PHASE_STRIP = YES;
