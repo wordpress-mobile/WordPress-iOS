@@ -239,7 +239,11 @@ static NSString * const PasscodeInactivityEnded = @"PasscodeInactivityEnded";
         difference = 0; 
     }
     NSInteger differenceInMinutes = difference / 60;
-        
+    
+    if(differenceInMinutes < 0){ //Date/Time on device might be altered. 
+        differenceInMinutes = [inactivityLimit integerValue] + 1; 
+    }
+    
     if([self isPasscodeProtectionOn] && ([inactivityLimit integerValue] <= differenceInMinutes))
     {
         return YES;
