@@ -240,7 +240,7 @@ static NSString * const PasscodeInactivityEnded = @"PasscodeInactivityEnded";
     }
     NSInteger differenceInMinutes = difference / 60;
     
-    if(differenceInMinutes < 0){ //Date/Time on device might be altered. 
+    if(differenceInMinutes < 0){ //Date/Time on device might be altered.
         differenceInMinutes = [inactivityLimit integerValue] + 1; 
     }
     

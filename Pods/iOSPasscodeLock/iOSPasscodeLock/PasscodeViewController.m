@@ -313,7 +313,7 @@ typedef enum PasscodeErrorType : NSUInteger {
         }
         else if(self.currentWorkflowStep == WorkflowStepSetupPasscodesDidNotMatch)
         {
-            self.lblInstruction.text = NSLocalizedString(@"Enter Passcode", nil);
+            self.lblInstruction.text = NSLocalizedString(@"Enter your new Passcode", nil);
 
             self.currentWorkflowStep = WorkflowStepOne;
         }
