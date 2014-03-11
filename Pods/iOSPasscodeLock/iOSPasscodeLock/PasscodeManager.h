@@ -31,18 +31,15 @@
 @property (strong, nonatomic) UIColor *backgroundColor;
 @property (strong, nonatomic) UIImage *backgroundImage;
 @property (strong, nonatomic) UIImage *logo;
-@property (strong, nonatomic) UIImage *appLockedCoverScreenBackgroundImage;
 @property (strong, nonatomic) UIColor *instructionsLabelColor;
 @property (strong, nonatomic) UIColor *cancelOrDeleteButtonColor;
 @property (strong, nonatomic) UIColor *passcodeViewLineColor;
 @property (strong, nonatomic) UIColor *passcodeViewFillColor;
 @property (strong, nonatomic) UIColor *errorLabelColor;
 @property (strong, nonatomic) UIColor *errorLabelBackgroundColor;
-@property (strong, nonatomic) UIColor *appLockedCoverScreenBackgroundColor;
 @property (strong, nonatomic) UIFont *errorLabelFont;
 @property (strong, nonatomic) UIFont *instructionsLabelFont;
 @property (strong, nonatomic) UIFont *cancelOrDeleteButtonFont;
 @property (strong, nonatomic) PasscodeButtonStyleProvider *buttonStyleProvider;
-@property (assign) BOOL shouldUseAppLockedCoverScreen; 
 
 @end

@@ -350,14 +350,11 @@
     
     [buttonStyleProvider addStyleForButton:PasscodeButtonAll stye:style];
     
-    [PasscodeManager sharedManager].shouldUseAppLockedCoverScreen = NO; 
     [PasscodeManager sharedManager].buttonStyleProvider = buttonStyleProvider;
     [PasscodeManager sharedManager].instructionsLabelFont = [UIFont fontWithName:@"Avenir-Book" size:20];
     [PasscodeManager sharedManager].cancelOrDeleteButtonFont = [UIFont fontWithName:@"Avenir-Book" size:15];
     [PasscodeManager sharedManager].backgroundColor = [WPStyleGuide newKidOnTheBlockBlue];
     [PasscodeManager sharedManager].logo = [UIImage imageNamed:@"logo_wp_white.png"];
-    [PasscodeManager sharedManager].appLockedCoverScreenBackgroundImage = [UIImage imageNamed:@"logo_wp_white.png"];
-    [PasscodeManager sharedManager].appLockedCoverScreenBackgroundColor = [WPStyleGuide newKidOnTheBlockBlue];
     [PasscodeManager sharedManager].instructionsLabelColor = [UIColor whiteColor];
     [PasscodeManager sharedManager].cancelOrDeleteButtonColor = [UIColor whiteColor];
     [PasscodeManager sharedManager].passcodeViewFillColor = [UIColor whiteColor];
