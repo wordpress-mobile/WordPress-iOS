@@ -5615,7 +5615,6 @@
 				);
 				SDKROOT = iphoneos;
 				VALIDATE_PRODUCT = YES;
-				VALID_ARCHS = "armv7 armv7s";
 			};
 			name = Distribution;
 		};
@@ -5671,7 +5670,6 @@
 				);
 				SDKROOT = iphoneos;
 				VALIDATE_PRODUCT = YES;
-				VALID_ARCHS = "armv7 armv7s";
 			};
 			name = "Release-Internal";
 		};
@@ -5757,7 +5755,6 @@
 					"-licucore",
 				);
 				SDKROOT = iphoneos;
-				VALID_ARCHS = "armv7 armv7s";
 			};
 			name = Debug;
 		};
@@ -5777,7 +5774,6 @@
 				);
 				SDKROOT = iphoneos;
 				VALIDATE_PRODUCT = YES;
-				VALID_ARCHS = "armv7 armv7s";
 			};
 			name = Release;
 		};
