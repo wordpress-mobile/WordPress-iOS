@@ -799,7 +799,7 @@ typedef enum {
 	imageMedia.creationDate = [NSDate date];
 	imageMedia.filename = filename;
 	imageMedia.localURL = filepath;
-	imageMedia.filesize = [NSNumber numberWithInt:(imageData.length/1024)];
+	imageMedia.filesize = [NSNumber numberWithUnsignedInteger:(imageData.length/1024)];
     imageMedia.mediaType = @"featured";
 	imageMedia.thumbnail = UIImageJPEGRepresentation(imageThumbnail, 0.90);
 	imageMedia.width = [NSNumber numberWithInt:theImage.size.width];

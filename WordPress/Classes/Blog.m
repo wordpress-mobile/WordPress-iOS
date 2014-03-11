@@ -202,8 +202,8 @@ static NSInteger const ImageSizeLargeHeight = 480;
     return [NSString stringWithFormat:@"%@%@", adminBaseUrl, path];
 }
 
-- (int)numberOfPendingComments{
-    int pendingComments = 0;
+- (NSUInteger)numberOfPendingComments{
+    NSUInteger pendingComments = 0;
     if ([self hasFaultForRelationshipNamed:@"comments"]) {
         NSFetchRequest *request = [NSFetchRequest fetchRequestWithEntityName:@"Comment"];
         [request setPredicate:[NSPredicate predicateWithFormat:@"blog = %@ AND status like 'hold'", self]];
@@ -716,7 +716,7 @@ static NSInteger const ImageSizeLargeHeight = 480;
             }
         }
         
-        NSArray *parameters = [self getXMLRPCArgsWithExtra:[NSNumber numberWithInt:postsToRequest]];
+        NSArray *parameters = [self getXMLRPCArgsWithExtra:[NSNumber numberWithUnsignedInteger:postsToRequest]];
         WPXMLRPCRequest *request = [self.api XMLRPCRequestWithMethod:@"metaWeblog.getRecentPosts" parameters:parameters];
         operation = [self.api XMLRPCRequestOperationWithRequest:request success:^(AFHTTPRequestOperation *operation, id responseObject) {
             if ([self isDeleted] || self.managedObjectContext == nil)
@@ -771,7 +771,7 @@ static NSInteger const ImageSizeLargeHeight = 480;
             }
         }
         
-        NSArray *parameters = [self getXMLRPCArgsWithExtra:[NSNumber numberWithInt:pagesToRequest]];
+        NSArray *parameters = [self getXMLRPCArgsWithExtra:[NSNumber numberWithUnsignedInteger:pagesToRequest]];
         WPXMLRPCRequest *request = [self.api XMLRPCRequestWithMethod:@"wp.getPages" parameters:parameters];
         operation = [self.api XMLRPCRequestOperationWithRequest:request success:^(AFHTTPRequestOperation *operation, id responseObject) {
             if ([self isDeleted] || self.managedObjectContext == nil)
