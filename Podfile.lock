@@ -18,8 +18,8 @@ PODS:
   - DTFoundation/UIKit (1.6.1):
     - DTFoundation/Core
   - EmailChecker (0.1)
-  - google-plus-ios-sdk (1.3.0)
-  - HockeySDK (3.5.2)
+  - google-plus-ios-sdk (1.5.0)
+  - HockeySDK (3.5.4)
   - MGImageUtilities (0.0.1)
   - Mixpanel (2.3.1)
   - NSLogger (1.1)
@@ -47,7 +47,7 @@ DEPENDENCIES:
   - CrashlyticsLumberjack (~> 1.0.0)
   - DTCoreText (= 1.6.9)
   - EmailChecker (from `https://raw.github.com/wordpress-mobile/EmailChecker/master/ios/EmailChecker.podspec`)
-  - google-plus-ios-sdk (= 1.3.0)
+  - google-plus-ios-sdk (= 1.5.0)
   - HockeySDK (~> 3.5.0)
   - MGImageUtilities (from `git://github.com/wordpress-mobile/MGImageUtilities.git`)
   - Mixpanel (= 2.3.1)
@@ -81,8 +81,8 @@ SPEC CHECKSUMS:
   DTCoreText: e48c1526945272133b8c935c40da3f3e79836f1b
   DTFoundation: 23d39b258d481221167cd4bf3df86ff3f22b1f55
   EmailChecker: e909e6d113fac7ad5e3c304fabce30fc4a79c80e
-  google-plus-ios-sdk: 38378c4094a72a4fcdd5254c03fdd1813b345fb9
-  HockeySDK: 203d3af93c2a229bfb528ff085201670ff65e1cf
+  google-plus-ios-sdk: 5bda2a87ec54320dc99a67c745a445bbdf22cc72
+  HockeySDK: 4f7f7e15c1f594e8ca1e16a09f04e7418289de7a
   MGImageUtilities: ab3580f2161b10f8a41331baea87aaafbd688950
   Mixpanel: 8d189c58bcaac429de9cb4f18a54621df99b7e38
   NSLogger: 4567fef08d0db18a89cce91b2053823fc0950738
