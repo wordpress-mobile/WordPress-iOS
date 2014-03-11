@@ -1119,7 +1119,7 @@ static NSString *const CameraPlusImagesNotification = @"CameraPlusImagesNotifica
         [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(handleDefaultAccountChangedNotification:) name:WPAccountDefaultWordPressComAccountChangedNotification object:nil];
     }
     
-	int num_blogs = [Blog countWithContext:[[ContextManager sharedInstance] mainContext]];
+	NSInteger num_blogs = [Blog countWithContext:[[ContextManager sharedInstance] mainContext]];
 	BOOL authed = self.isWPcomAuthenticated;
 	if (num_blogs == 0 && !authed) {
 		// When there are no blogs in the app the settings screen is unavailable.
