@@ -38,7 +38,6 @@ static NSString *const GraphCellIdentifier = @"GraphCellIdentifier";
 static NSString *const StatsGroupedCellIdentifier = @"StatsGroupedCellIdentifier";
 static NSString *const LinkToWebviewCellIdentifier = @"LinkToWebviewCellIdentifier";
 
-static CGFloat const SectionHeaderPadding = 8.0f;
 static NSUInteger const ResultRowMaxItems = 10;
 static CGFloat const HeaderHeight = 44.0f;
 
