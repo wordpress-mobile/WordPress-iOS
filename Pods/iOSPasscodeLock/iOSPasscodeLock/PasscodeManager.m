@@ -278,15 +278,14 @@ static NSString * const PasscodeInactivityEnded = @"PasscodeInactivityEnded";
 {
     UIWindow *window = [[[UIApplication sharedApplication] delegate] window];
     self.coverView = [[UIView alloc]initWithFrame:window.bounds];
-   
+    PasscodeViewController *pvc = [PasscodeViewController new];
+    
     if(!IS_IPAD){
-        PasscodeViewController *pvc = [PasscodeViewController new];
         [self.coverView addSubview:pvc.view];
-    }else
-    {
+    } else {
         [self.coverView setBackgroundColor:self.backgroundColor];
     }
-    
+   
     self.coverView.hidden = NO;
     [UIApplication.sharedApplication.keyWindow addSubview:self.coverView];
 }
