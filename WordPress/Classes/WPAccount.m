@@ -247,17 +247,7 @@ NSString * const WPAccountDefaultWordPressComAccountChangedNotification = @"WPAc
         NSSet *remoteSet = [NSSet setWithArray:[blogs valueForKey:@"xmlrpc"]];
         NSSet *localSet = [account.blogs valueForKey:@"xmlrpc"];
         NSMutableSet *toDelete = [localSet mutableCopy];
-        NSMutableSet *toAdd = [remoteSet mutableCopy];
         [toDelete minusSet:remoteSet];
-        [toAdd minusSet:localSet];
-
-        if ([toAdd count] > 0) {
-            for (NSDictionary *blog in blogs) {
-                if ([toAdd containsObject:blog[@"xmlrpc"]]) {
-                    [account findOrCreateBlogFromDictionary:blog withContext:backgroundMOC];
-                }
-            }
-        }
 
         if ([toDelete count] > 0) {
             for (Blog *blog in account.blogs) {
@@ -268,6 +258,7 @@ NSString * const WPAccountDefaultWordPressComAccountChangedNotification = @"WPAc
         }
         
         // Go through each remote incoming blog and make sure we're up to date with titles, etc.
+        // Also adds any blogs we don't have
         for (NSDictionary *blog in blogs) {
             [account findOrCreateBlogFromDictionary:blog withContext:backgroundMOC];
         }
