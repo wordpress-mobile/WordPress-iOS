@@ -9,6 +9,11 @@
 
 #import <UIKit/UIKit.h>
 
+#ifndef IS_IPAD
+#define IS_IPAD   ([UIDevice currentDevice].userInterfaceIdiom == UIUserInterfaceIdiomPad)
+#endif
+
+
 @protocol PasscodeViewControllerDelegate <NSObject>
 
 @optional
