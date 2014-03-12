@@ -101,6 +101,9 @@ typedef NS_ENUM(NSInteger, TotalFollowersShareRow) {
     [super viewDidLoad];
     
     self.title = NSLocalizedString(@"Stats", nil);
+    
+    UIBarButtonItem *backButton = [[UIBarButtonItem alloc] initWithTitle:NSLocalizedString(@"Back", nil) style:UIBarButtonItemStyleBordered target:nil action:nil];
+    self.navigationItem.backBarButtonItem = backButton;
   
     [WPStyleGuide configureColorsForView:self.view andTableView:self.tableView];
     self.tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
