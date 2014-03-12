@@ -308,9 +308,9 @@ NSString * const WPBlogListRestorationID = @"WPBlogListID";
         Blog *blog = [self.resultsController objectAtIndexPath:indexPath];
         if ([blog.blogName length] != 0) {
             cell.textLabel.text = blog.blogName;
-            cell.detailTextLabel.text = blog.url;
+            cell.detailTextLabel.text = [blog displayURL];
         } else {
-            cell.textLabel.text = blog.url;
+            cell.textLabel.text = [blog displayURL];
         }
         
         [cell.imageView setImageWithBlavatarUrl:blog.blavatarUrl isWPcom:blog.isWPcom];
