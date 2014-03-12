@@ -1,0 +1,9 @@
+/* 
+  InfoPlist.strings
+  WordPress
+
+  Created by Aaron Douglas on 3/12/14.
+  Copyright (c) 2014 WordPress. All rights reserved.
+*/
+
+NSLocationUsageDescription = "WordPress vorrebbe aggiungere la tua posizione agli articoli che pubblichi sui siti in cui hai attivato il geotagging.";
