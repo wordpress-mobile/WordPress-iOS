@@ -255,7 +255,7 @@ typedef NS_ENUM(NSInteger, SettingsViewControllerSections)
 
 - (MFMailComposeViewController *)feedbackMailViewController
 {
-    NSString *appVersion = [[[NSBundle mainBundle] infoDictionary] objectForKey:(NSString*)kCFBundleVersionKey];;
+    NSString *appVersion = [[[NSBundle mainBundle] infoDictionary] objectForKey:(NSString*)kCFBundleVersionKey];
     NSString *device = [UIDeviceHardware platformString];
     NSString *locale = [[NSLocale currentLocale] localeIdentifier];
     NSString *iosVersion = [[UIDevice currentDevice] systemVersion];
