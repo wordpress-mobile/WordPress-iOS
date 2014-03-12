@@ -42,10 +42,10 @@
                   Identifier = "AccountMigrationTest">
                </Test>
                <Test
-                  Identifier = "ReaderTest/testGetPostsLikes">
+                  Identifier = "ReaderTest/testGetPostsFollowing">
                </Test>
                <Test
-                  Identifier = "ReaderTest/testGetPostsFollowing">
+                  Identifier = "ReaderTest/testGetPostsLikes">
                </Test>
             </SkippedTests>
          </TestableReference>

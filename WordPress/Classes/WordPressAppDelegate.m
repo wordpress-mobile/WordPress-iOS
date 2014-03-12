@@ -16,6 +16,7 @@
 #import <GooglePlus/GooglePlus.h>
 #import <HockeySDK/HockeySDK.h>
 #import <UIDeviceIdentifier/UIDeviceHardware.h>
+#import <iOSPasscodeLock/PasscodeManager.h>
 
 #import "WordPressAppDelegate.h"
 #import "CameraPlusPickerManager.h"
@@ -118,6 +119,10 @@ static NSString *const CameraPlusImagesNotification = @"CameraPlusImagesNotifica
         [[PocketAPI sharedAPI] setConsumerKey:[WordPressComApiCredentials pocketConsumerKey]];
         [self cleanUnusedMediaFileFromTmpDir];
     });
+    
+    //Passcode Lock activation
+    [[PasscodeManager sharedManager] activatePasscodeProtection];
+    [WPStyleGuide configurePasscodeLockStyle];
     
     CGRect bounds = [[UIScreen mainScreen] bounds];
     [self.window setFrame:bounds];
