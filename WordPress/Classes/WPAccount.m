@@ -196,7 +196,7 @@ NSString * const WPAccountDefaultWordPressComAccountChangedNotification = @"WPAc
             Blog *blogToReturn = [foundBlogs anyObject];
             for (Blog *b in foundBlogs) {
                 // Choose blogs with URL not starting with https to account for a glitch in the API in early 2014
-                if ([b.url hasPrefix:@"https://"] == NO) {
+                if (!([b.url hasPrefix:@"https://"])) {
                     blogToReturn = b;
                     break;
                 }
