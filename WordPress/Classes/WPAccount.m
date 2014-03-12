@@ -203,7 +203,7 @@ NSString * const WPAccountDefaultWordPressComAccountChangedNotification = @"WPAc
             }
             
             for (Blog *b in foundBlogs) {
-                if ([b isEqual:blogToReturn] == NO) {
+                if (!([b isEqual:blogToReturn])) {
                     [context deleteObject:b];
                 }
             }
