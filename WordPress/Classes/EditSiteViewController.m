@@ -55,7 +55,7 @@ static NSString *const JetpackConnectedCellIdentifier = @"JetpackConnectedCellId
     [super viewDidLoad];
     
     if (self.blog) {
-        self.navigationItem.title = NSLocalizedString(@"Edit Blog", @"");
+        self.navigationItem.title = NSLocalizedString(@"Edit Site", @"");
 
         [WPStyleGuide configureColorsForView:self.view andTableView:self.tableView];
         

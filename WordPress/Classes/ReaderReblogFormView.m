@@ -135,7 +135,7 @@
         [_loadingBlogsView addSubview:activityIndicator];
         
         UILabel *noBlogsLabel = [[UILabel alloc] initWithFrame:CGRectMake(CGRectGetMaxX(activityIndicator.frame) + 10.0f, 0, _loadingBlogsView.bounds.size.width - CGRectGetMaxX(activityIndicator.frame), _loadingBlogsView.frame.size.height)];
-        noBlogsLabel.text = NSLocalizedString(@"Loading blogs...", @"");
+        noBlogsLabel.text = NSLocalizedString(@"Loading sites...", @"");
         noBlogsLabel.backgroundColor = [UIColor clearColor];
         noBlogsLabel.textColor = [UIColor whiteColor];
         noBlogsLabel.font = [UIFont fontWithName:@"OpenSans" size:15.0f];

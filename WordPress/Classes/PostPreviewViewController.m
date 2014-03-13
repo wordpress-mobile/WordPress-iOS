@@ -193,7 +193,7 @@
     if( appDelegate.connectionAvailable == NO ) {
         [self showSimplePreviewWithMessage:[NSString stringWithFormat:@"<div class=\"page\"><p>%@ %@</p>", NSLocalizedString(@"The internet connection appears to be offline.", @""), NSLocalizedString(@"A simple preview is shown below.", @"")]];
     } else if ( self.apost.blog.reachable == NO ) {
-        [self showSimplePreviewWithMessage:[NSString stringWithFormat:@"<div class=\"page\"><p>%@ %@</p>", NSLocalizedString(@"The internet connection cannot reach your blog.", @""), NSLocalizedString(@"A simple preview is shown below.", @"")]];
+        [self showSimplePreviewWithMessage:[NSString stringWithFormat:@"<div class=\"page\"><p>%@ %@</p>", NSLocalizedString(@"The internet connection cannot reach your site.", @""), NSLocalizedString(@"A simple preview is shown below.", @"")]];
     } else if (link == nil ) {
         [self showSimplePreview];
     } else {
