@@ -560,7 +560,7 @@ NSString * const RPVCDisplayedNativeFriendFinder = @"DisplayedNativeFriendFinder
 	switch (idx) {
 		case 0:
 			// Blogs I follow
-			prompt = NSLocalizedString(@"You're not following any blogs yet.", @"");
+			prompt = NSLocalizedString(@"You're not following any sites yet.", @"");
 			break;
 			
 		case 2:
@@ -580,7 +580,7 @@ NSString * const RPVCDisplayedNativeFriendFinder = @"DisplayedNativeFriendFinder
 
 
 - (NSString *)noResultsMessageText {
-	return NSLocalizedString(@"Tap the tag icon to browse posts from popular blogs.", nil);
+	return NSLocalizedString(@"Tap the tag icon to browse posts from popular sites.", nil);
 }
 
 - (UIView *)noResultsAccessoryView {
