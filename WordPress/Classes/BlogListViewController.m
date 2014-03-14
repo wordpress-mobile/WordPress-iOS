@@ -311,6 +311,7 @@ NSString * const WPBlogListRestorationID = @"WPBlogListID";
             cell.detailTextLabel.text = [blog displayURL];
         } else {
             cell.textLabel.text = [blog displayURL];
+            cell.detailTextLabel.text = @"";
         }
         
         [cell.imageView setImageWithBlavatarUrl:blog.blavatarUrl isWPcom:blog.isWPcom];
