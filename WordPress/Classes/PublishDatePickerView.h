@@ -10,6 +10,4 @@
 
 @interface PublishDatePickerView : WPPickerView
 
-@property (nonatomic, copy) void(^onPublishImmediately)();
-
 @end

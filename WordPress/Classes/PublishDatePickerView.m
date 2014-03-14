@@ -21,8 +21,8 @@
 }
 
 - (void)publishImmeidately {
-    if (self.onPublishImmediately) {
-        self.onPublishImmediately();
+    if (self.delegate && [self.delegate respondsToSelector:@selector(pickerView:didFinishWithValue:)]) {
+        [self.delegate pickerView:self didFinishWithValue:nil];
     }
 }
 
