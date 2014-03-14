@@ -455,7 +455,7 @@ CGFloat const JetpackSignInButtonHeight = 41.0;
 
 - (void)updateMessage {
     if ([_blog hasJetpack]) {
-        _description.text = NSLocalizedString(@"Looks like you have Jetpack set up on your blog. Congrats!\nSign in with your WordPress.com credentials below to enable Stats and Notifications.", @"");
+        _description.text = NSLocalizedString(@"Looks like you have Jetpack set up on your site. Congrats!\nSign in with your WordPress.com credentials below to enable Stats and Notifications.", @"");
     } else {
         _description.text = NSLocalizedString(@"Jetpack 1.8.2 or later is required for stats. Do you want to install Jetpack?", @"");
     }
