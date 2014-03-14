@@ -18,21 +18,20 @@ static NSInteger WPPickerStartingWidth = 320.0f;
 @property (nonatomic, strong) UIDatePicker *datePickerView;
 @property (nonatomic, strong) NSDate *startingDate;
 @property (nonatomic, strong) NSArray *dataSource;
-@property (nonatomic, strong) NSArray *startingIndexes;
+@property (nonatomic, strong) NSIndexPath *startingIndexes;
 
 @end
 
 @implementation WPPickerView
 
-- (id)initWithDataSource:(NSArray *)dataSource andStartingIndexs:(NSArray *)startingIndexes {
+- (id)initWithDataSource:(NSArray *)dataSource andStartingIndexes:(NSIndexPath *)startingIndexes {
     self = [self init];
     if (self) {
         if (!startingIndexes) {
-            NSMutableArray *arr = [NSMutableArray array];
+            startingIndexes = [[NSIndexPath alloc] init];
             for (NSInteger i = 0; i < [dataSource count]; i++) {
-                [arr addObject:@-1];
+                startingIndexes = [startingIndexes indexPathByAddingIndex:0];
             }
-            startingIndexes = arr;
         }
         self.startingIndexes = startingIndexes;
         self.dataSource = dataSource;
@@ -43,7 +42,7 @@ static NSInteger WPPickerStartingWidth = 320.0f;
 
 - (id)initWithDate:(NSDate *)date {
     self = [self init];
-    if (self){
+    if (self) {
         if (!date) {
             date = [NSDate date];
         }
@@ -113,19 +112,25 @@ static NSInteger WPPickerStartingWidth = 320.0f;
     if ([self isDateMode]) {
         return self.datePickerView.date;
     }
-    
-    NSMutableArray *arr = [NSMutableArray array];
+
+    NSIndexPath *path = [[NSIndexPath alloc] init];
     for (NSInteger i = 0; i < [self.pickerView numberOfComponents]; i++) {
-        [arr addObject:[NSNumber numberWithInteger:[self.pickerView selectedRowInComponent:i]]];
+        path = [path indexPathByAddingIndex:[self.pickerView selectedRowInComponent:i]];
     }
-    return arr;
+    return path;
+}
+
+- (id)startingValue {
+    if ([self isDateMode]) {
+        return self.startingDate;
+    }
+    return self.startingIndexes;
 }
 
 - (void)pickerValueChanged {
-    if (!self.onValueChanged) {
-        return;
+    if (self.delegate && [self.delegate respondsToSelector:@selector(pickerView:didChangeValue:)]) {
+        [self.delegate pickerView:self didChangeValue:[self currentValue]];
     }
-    self.onValueChanged([self currentValue]);
 }
 
 - (BOOL)isDateMode {
@@ -141,8 +146,8 @@ static NSInteger WPPickerStartingWidth = 320.0f;
 }
 
 - (void)finished {
-    if (self.onFinished) {
-        self.onFinished([self currentValue]);
+    if (self.delegate && [self.delegate respondsToSelector:@selector(pickerView:didFinishWithValue:)]) {
+        [self.delegate pickerView:self didFinishWithValue:[self currentValue]];
     }
 }
 
@@ -187,13 +192,14 @@ static NSInteger WPPickerStartingWidth = 320.0f;
 - (BOOL)setPickerStartingIndexes {
     BOOL changed = NO;
     
-    for (NSInteger i = 0; i < [self.startingIndexes count]; i++) {
-        NSInteger row = [[self.startingIndexes objectAtIndex:i] integerValue];
-        if (row != [self.pickerView selectedRowInComponent:i]) {
+    for (NSUInteger i = 0; i < [self.startingIndexes length]; i++) {
+        NSUInteger index = [self.startingIndexes indexAtPosition:i];
+        if (index != [self.pickerView selectedRowInComponent:i]) {
             changed = YES;
         }
-        [self.pickerView selectRow:row inComponent:i animated:YES];
+        [self.pickerView selectRow:index inComponent:i animated:YES];
     }
+    
     return changed;
 }
 

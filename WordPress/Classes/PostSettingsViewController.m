@@ -48,7 +48,7 @@ static NSInteger RowIndexForDatePicker = 0;
 
 static NSString *const TableViewActivityCellIdentifier = @"TableViewActivityCellIdentifier";
 
-@interface PostSettingsViewController () <UITextFieldDelegate, WPTableImageSourceDelegate>
+@interface PostSettingsViewController () <UITextFieldDelegate, WPTableImageSourceDelegate, WPPickerViewDelegate>
 
 @property (nonatomic, strong) AbstractPost *apost;
 @property (nonatomic, strong) UITextField *passwordTextField;
@@ -654,6 +654,7 @@ static NSString *const TableViewActivityCellIdentifier = @"TableViewActivityCell
     }
     
     self.datePicker = [[PublishDatePickerView alloc] initWithDate:date];
+    self.datePicker.delegate = self;
     CGRect frame = self.datePicker.frame;
     if (IS_IPAD) {
         frame.size.width = WPTableViewFixedWidth;
@@ -662,16 +663,6 @@ static NSString *const TableViewActivityCellIdentifier = @"TableViewActivityCell
         self.datePicker.autoresizingMask = UIViewAutoresizingFlexibleWidth;
     }
     self.datePicker.frame = frame;
-    
-    __weak PostSettingsViewController *selfRef = self;
-    self.datePicker.onFinished = ^(id result) {
-        NSDate *changedDate = (NSDate *)result;
-        [selfRef datePickerChanged:changedDate];
-    };
-    self.datePicker.onPublishImmediately = ^(){
-        selfRef.apost.dateCreated = nil;
-        [selfRef hideDatePicker];
-    };
     
     NSIndexPath *indexPath = [NSIndexPath indexPathForRow:RowIndexForDatePicker inSection:PostSettingsSectionMeta];
     [self.tableView reloadRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationFade];
@@ -865,6 +856,29 @@ static NSString *const TableViewActivityCellIdentifier = @"TableViewActivityCell
     if (!CGRectContainsPoint(self.tagsTextField.frame, touchPoint) && [self.tagsTextField isFirstResponder]) {
         [self.tagsTextField resignFirstResponder];
     }
+}
+
+#pragma mark - WPPickerView Delegate
+
+- (void)pickerView:(WPPickerView *)pickerView didFinishWithValue:(id)value {
+    if (value == nil) {
+        // Publish Immediately
+        self.apost.dateCreated = nil;
+        [self hideDatePicker];
+        return;
+    }
+    
+    // Compare via timeIntervalSinceDate to let us ignore subsecond variation.
+    NSDate *startingDate = (NSDate *)self.datePicker.startingValue;
+    NSDate *selectedDate = (NSDate *)value;
+    NSTimeInterval interval = [startingDate timeIntervalSinceDate:selectedDate];
+    if (interval < 1.0) {
+        // Nothing changed.
+        [self hideDatePicker];
+        return;
+    }
+    
+    [self datePickerChanged:selectedDate];
 }
 
 @end
