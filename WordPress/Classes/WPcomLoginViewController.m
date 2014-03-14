@@ -351,7 +351,7 @@
                                     }
                                 } failure:^(NSError *error) {
                                     DDLogError(@"Login failed with username %@: %@", username, error);
-                                    loginController.footerText = NSLocalizedString(@"Sign in failed. Please try again.", @"");
+                                    loginController.footerText = [error localizedDescription];
                                     loginController.buttonText = NSLocalizedString(@"Sign In", @"");
                                     loginController.isSigningIn = NO;
                                     [loginController.tableView reloadData];

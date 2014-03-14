@@ -22,23 +22,25 @@
 
 @property (nonatomic, strong) NSString *statsPathPrefix;
 @property (nonatomic, strong) NSDateFormatter *formatter;
+@property (nonatomic, strong) WPAccount *account;
 
 @end
 
 @implementation StatsApiHelper
 
-- (id)initWithSiteID:(NSNumber *)siteID {
+- (id)initWithSiteID:(NSNumber *)siteID andAccount:(WPAccount *)account {
     self = [super init];
     if (self) {
         _statsPathPrefix = [NSString stringWithFormat:@"sites/%@/stats", siteID];
         _formatter = [[NSDateFormatter alloc] init];
         _formatter.dateFormat = @"yyyy-MM-dd";
+        _account = account;
     }
     return self;
 }
 
 - (void)fetchSummaryWithSuccess:(void (^)(StatsSummary *))success failure:(void (^)(NSError *))failure {
-    [[[WPAccount defaultWordPressComAccount] restApi] getPath:_statsPathPrefix parameters:nil success:^(AFHTTPRequestOperation *operation, id responseObject) {
+    [self.account.restApi getPath:_statsPathPrefix parameters:nil success:^(AFHTTPRequestOperation *operation, id responseObject) {
         StatsSummary *summary = [[StatsSummary alloc] initWithData:responseObject];
         success(summary);
     } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
@@ -91,7 +93,7 @@
 }
 
 - (void)fetchStatsForPath:(NSString *)path success:(void (^)(NSDictionary *))success failure:(void (^)(NSError *))failure {
-    [[[WPAccount defaultWordPressComAccount] restApi] getPath:[_statsPathPrefix stringByAppendingPathComponent:path] parameters:nil success:^(AFHTTPRequestOperation *operation, id responseObject) {
+    [self.account.restApi getPath:[_statsPathPrefix stringByAppendingPathComponent:path] parameters:nil success:^(AFHTTPRequestOperation *operation, id responseObject) {
         success(responseObject);
     } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
         failure(error);

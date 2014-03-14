@@ -38,7 +38,6 @@ static NSString *const GraphCellIdentifier = @"GraphCellIdentifier";
 static NSString *const StatsGroupedCellIdentifier = @"StatsGroupedCellIdentifier";
 static NSString *const LinkToWebviewCellIdentifier = @"LinkToWebviewCellIdentifier";
 
-static CGFloat const SectionHeaderPadding = 8.0f;
 static NSUInteger const ResultRowMaxItems = 10;
 static CGFloat const HeaderHeight = 44.0f;
 
@@ -102,6 +101,9 @@ typedef NS_ENUM(NSInteger, TotalFollowersShareRow) {
     [super viewDidLoad];
     
     self.title = NSLocalizedString(@"Stats", nil);
+    
+    UIBarButtonItem *backButton = [[UIBarButtonItem alloc] initWithTitle:NSLocalizedString(@"Back", nil) style:UIBarButtonItemStyleBordered target:nil action:nil];
+    self.navigationItem.backBarButtonItem = backButton;
   
     [WPStyleGuide configureColorsForView:self.view andTableView:self.tableView];
     self.tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
@@ -143,15 +145,15 @@ typedef NS_ENUM(NSInteger, TotalFollowersShareRow) {
 
 - (void)initStats {
     if (self.blog.isWPcom) {
-        self.statsApiHelper = [[StatsApiHelper alloc] initWithSiteID:self.blog.blogID];
+        self.statsApiHelper = [[StatsApiHelper alloc] initWithSiteID:self.blog.blogID andAccount:self.blog.account];
         [self loadStats];
         return;
     }
     
     // Jetpack
-    BOOL needsJetpackLogin = ![[[WPAccount defaultWordPressComAccount] restApi] hasCredentials];
-    if (!needsJetpackLogin && self.blog.jetpackBlogID) {
-        self.statsApiHelper = [[StatsApiHelper alloc] initWithSiteID:self.blog.jetpackBlogID];
+    BOOL needsJetpackLogin = ![self.blog.jetpackAccount.restApi hasCredentials];
+    if (!needsJetpackLogin && self.blog.jetpackBlogID && self.blog.jetpackAccount) {
+        self.statsApiHelper = [[StatsApiHelper alloc] initWithSiteID:self.blog.jetpackBlogID andAccount:self.blog.jetpackAccount];
         [self loadStats];
     } else {
         [self promptForJetpackCredentials];
@@ -307,7 +309,7 @@ typedef NS_ENUM(NSInteger, TotalFollowersShareRow) {
                 case StatsDataRowTitle:
                     return [StatsTwoColumnCell heightForRow];
                 default:
-                    return [self resultsForSection:indexPath.section].count > 0 ? [StatsTwoColumnCell heightForRow] : [StatsNoResultsCell heightForRow];
+                    return [self resultsForSection:indexPath.section].count > 0 ? [StatsTwoColumnCell heightForRow] : [StatsNoResultsCell heightForRowForSection:(StatsSection)indexPath.section withWidth:CGRectGetWidth(self.view.bounds)];
             }
         case StatsSectionLinkToWebview:
             return [StatsLinkToWebviewCell heightForRow];
