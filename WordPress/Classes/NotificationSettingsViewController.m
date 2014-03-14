@@ -130,7 +130,7 @@ BOOL hasChanges;
     
     if( toolbarVisible == YES ) {
         
-        NSString *buttonLabel = muteAvailable ? NSLocalizedString(@"Mute all blogs", @"") : NSLocalizedString(@"Unmute all blogs", @"");
+        NSString *buttonLabel = muteAvailable ? NSLocalizedString(@"Mute all sites", @"") : NSLocalizedString(@"Unmute all sites", @"");
 
         self.muteUnmuteBarButton = [[UIBarButtonItem alloc] initWithTitle:buttonLabel
                                                                     style:[WPStyleGuide barButtonStyleForBordered]

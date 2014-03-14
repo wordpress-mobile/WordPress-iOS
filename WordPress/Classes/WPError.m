@@ -115,7 +115,7 @@ NSInteger const SupportButtonIndex = 0;
     
     //org.wordpress.iphone --> XML-RPC errors
     if ([error.domain isEqualToString:@"org.wordpress.iphone"] && error.code == 401){
-        cleanedErrorMsg = NSLocalizedString(@"Sorry, you cannot access this feature. Please check your User Role on this blog.", @"");
+        cleanedErrorMsg = NSLocalizedString(@"Sorry, you cannot access this feature. Please check your User Role on this site.", @"");
     }
     
     // ignore HTTP auth canceled errors
@@ -125,7 +125,7 @@ NSInteger const SupportButtonIndex = 0;
     }
 	
 	if ([cleanedErrorMsg rangeOfString:@"NSXMLParserErrorDomain"].location != NSNotFound) {
-		cleanedErrorMsg = NSLocalizedString(@"The app can't recognize the server response. Please, check the configuration of your blog.", @"");
+		cleanedErrorMsg = NSLocalizedString(@"The app can't recognize the server response. Please, check the configuration of your site.", @"");
     }
 	
 	[self showAlertWithTitle:NSLocalizedString(@"Error", @"Generic popup title for any type of error.") message:cleanedErrorMsg];

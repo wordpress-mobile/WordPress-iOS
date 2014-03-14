@@ -135,7 +135,7 @@ NSString * const WPBlogDetailsBlogKey = @"WPBlogDetailsBlogKey";
         cell.textLabel.text = NSLocalizedString(@"View Admin", nil);
         cell.imageView.image = [UIImage imageNamed:@"icon-menu-viewadmin"];
     } else if (indexPath.row == BlogDetailsRowEdit) {
-        cell.textLabel.text = NSLocalizedString(@"Edit Blog", nil);
+        cell.textLabel.text = NSLocalizedString(@"Edit Site", nil);
         cell.imageView.image = [UIImage imageNamed:@"icon-menu-settings"];
     }
 }
