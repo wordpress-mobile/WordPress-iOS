@@ -621,6 +621,7 @@ static NSString *const TableViewActivityCellIdentifier = @"TableViewActivityCell
         cell.textField.returnKeyType = UIReturnKeyDone;
         cell.textField.delegate = self;
         [WPStyleGuide configureTableViewTextCell:cell];
+        cell.textField.textAlignment = NSTextAlignmentRight;
     }
     cell.tag = 0;
     return cell;
