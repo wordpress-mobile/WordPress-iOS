@@ -129,7 +129,7 @@ static NSString *const TableViewActivityCellIdentifier = @"TableViewActivityCell
 
     [self.tableView registerNib:[UINib nibWithNibName:@"WPTableViewActivityCell" bundle:nil] forCellReuseIdentifier:TableViewActivityCellIdentifier];
     
-    self.tableView.tableFooterView = [[UIView alloc] initWithFrame:CGRectZero];
+    self.tableView.tableFooterView = [[UIView alloc] initWithFrame:CGRectMake(0.0, 0.0, 0.0, 44.0)]; // add some verticle padding
 }
 
 - (void)viewWillAppear:(BOOL)animated {
@@ -332,18 +332,6 @@ static NSString *const TableViewActivityCellIdentifier = @"TableViewActivityCell
     }
     NSString *title = [self titleForHeaderInSection:section];
     return [WPTableViewSectionHeaderView heightForTitle:title andWidth:CGRectGetWidth(self.view.bounds)];
-}
-
-- (CGFloat)tableView:(UITableView *)tableView heightForFooterInSection:(NSInteger)section {
-    // remove footer height for all but last section
-    return section == [self numberOfSectionsInTableView:tableView] - 1 ? WPTableViewTopMargin : 0.0;
-}
-
-- (UIView *)tableView:(UITableView *)tableView viewForFooterInSection:(NSInteger)section {
-    if (section < [self numberOfSectionsInTableView:tableView]-1) {
-        return nil;
-    }
-    return [[UIView alloc] initWithFrame:CGRectZero];
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
