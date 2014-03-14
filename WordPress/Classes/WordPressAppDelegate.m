@@ -18,7 +18,6 @@
 #import <UIDeviceIdentifier/UIDeviceHardware.h>
 
 #import "WordPressAppDelegate.h"
-#import "CameraPlusPickerManager.h"
 #import "ContextManager.h"
 #import "Media.h"
 #import "NotificationsManager.h"
@@ -57,8 +56,6 @@ static NSString * const WPBlogListNavigationRestorationID = @"WPBlogListNavigati
 static NSString * const WPReaderNavigationRestorationID = @"WPReaderNavigationID";
 static NSString * const WPNotificationsNavigationRestorationID = @"WPNotificationsNavigationID";
 static NSInteger const IndexForMeTab = 2;
-static NSInteger const NotificationNewComment = 1001;
-static NSInteger const NotificationNewSocial = 1002;
 static NSString *const CameraPlusImagesNotification = @"CameraPlusImagesNotification";
 
 @interface WordPressAppDelegate () <UITabBarControllerDelegate, CrashlyticsDelegate, UIAlertViewDelegate, BITHockeyManagerDelegate>
@@ -157,25 +154,6 @@ static NSString *const CameraPlusImagesNotification = @"CameraPlusImagesNotifica
     }
 
     if ([[PocketAPI sharedAPI] handleOpenURL:url]) {
-        returnValue = YES;
-    }
-
-    if ([[CameraPlusPickerManager sharedManager] shouldHandleURLAsCameraPlusPickerCallback:url]) {
-        /* Note that your application has been in the background and may have been terminated.
-         * The only CameraPlusPickerManager state that is restored is the pickerMode, which is
-         * restored to indicate the mode used to pick images.
-         */
-
-        /* Handle the callback and notify the delegate. */
-        [[CameraPlusPickerManager sharedManager] handleCameraPlusPickerCallback:url usingBlock:^(CameraPlusPickedImages *images) {
-            DDLogInfo(@"Camera+ returned %@", [images images]);
-            UIImage *image = [images image];
-            UIImageWriteToSavedPhotosAlbum(image, nil, nil, nil);
-            NSDictionary *userInfo = [NSDictionary dictionaryWithObject:image forKey:@"image"];
-            [[NSNotificationCenter defaultCenter] postNotificationName:CameraPlusImagesNotification object:nil userInfo:userInfo];
-        } cancelBlock:^(void) {
-            DDLogInfo(@"Camera+ picker canceled");
-        }];
         returnValue = YES;
     }
 
@@ -1121,7 +1099,7 @@ static NSString *const CameraPlusImagesNotification = @"CameraPlusImagesNotifica
         [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(handleDefaultAccountChangedNotification:) name:WPAccountDefaultWordPressComAccountChangedNotification object:nil];
     }
     
-	int num_blogs = [Blog countWithContext:[[ContextManager sharedInstance] mainContext]];
+	NSInteger num_blogs = [Blog countWithContext:[[ContextManager sharedInstance] mainContext]];
 	BOOL authed = self.isWPcomAuthenticated;
 	if (num_blogs == 0 && !authed) {
 		// When there are no blogs in the app the settings screen is unavailable.

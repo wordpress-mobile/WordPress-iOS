@@ -1,3 +1,3 @@
 PODS_HOCKEYSDK_FRAMEWORK_SEARCH_PATHS = "$(PODS_ROOT)/HockeySDK/Vendor"
-PODS_HOCKEYSDK_GCC_PREPROCESSOR_DEFINITIONS = $(inherited) BITHOCKEY_VERSION="@\"3.5.2\"" BITHOCKEY_BUILD="@\"25\""
+PODS_HOCKEYSDK_GCC_PREPROCESSOR_DEFINITIONS = $(inherited) BITHOCKEY_VERSION="@\"3.5.4\"" BITHOCKEY_BUILD="@\"27\""
 PODS_HOCKEYSDK_OTHER_LDFLAGS = -framework CoreGraphics -framework CoreText -framework CrashReporter -framework QuartzCore -framework Security -framework SystemConfiguration -framework UIKit

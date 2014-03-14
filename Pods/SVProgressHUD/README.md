@@ -1,18 +1,21 @@
-_**If your project doesn't use ARC**: you must add the `-fobjc-arc` compiler flag to `SVProgressHUD.m` in Target Settings > Build Phases > Compile Sources._
-
 # SVProgressHUD
 
 SVProgressHUD is a clean and easy-to-use HUD meant to display the progress of an ongoing task.
-
 
 ![SVProgressHUD](http://f.cl.ly/items/3r2x0b1E1O2F0V422a3R/screenshots2.png)
 
 ## Installation
 
+### From CocoaPods
+
+Add `pod 'SVProgressHUD'` to your Podfile or `pod 'SVProgressHUD', :head` if you're feeling adventurous.
+
+### Manually
+
+_**Important note if your project doesn't use ARC**: you must add the `-fobjc-arc` compiler flag to `SVProgressHUD.m` in Target Settings > Build Phases > Compile Sources._
+
 * Drag the `SVProgressHUD/SVProgressHUD` folder into your project.
 * Add the **QuartzCore** framework to your project.
-
-_If you plan on using SVProgressHUD in a lot of places inside your app, I recommend importing it directly inside your prefix file._
 
 ## Usage
 
@@ -22,7 +25,7 @@ SVProgressHUD is created as a singleton (i.e. it doesn't need to be explicitly a
 
 ### Showing the HUD
 
-You can show the status of inderterminate tasks using:
+You can show the status of indeterminate tasks using:
 
 ```objective-c
 + (void)show;
@@ -60,6 +63,14 @@ It can be dismissed right away using:
 + (void)dismiss;
 ```
 
+If you'd like to stack HUDs, you can balance out every show call using:
+
+```objective-c
++ (void)popActivity;
+```
+
+The HUD will get dismissed once the `popActivity` calls will match the number of show calls.  
+
 Or show a confirmation glyph before before getting dismissed 1 second later using:
 
 ```objective-c
@@ -67,6 +78,16 @@ Or show a confirmation glyph before before getting dismissed 1 second later usin
 + (void)showErrorWithStatus:(NSString *)string;
 + (void)showImage:(UIImage*)image status:(NSString*)string; // use 28x28 white pngs
 ```
+
+### Observing HUD Notifications
+
+`SVProgressHUD` posts four notifications via `NSNotificationCenter` in response to being shown/dismissed:
+* `SVProgressHUDWillAppearNotification` when the show animation starts
+* `SVProgressHUDDidAppearNotification` when the show animation completes
+* `SVProgressHUDWillDisappearNotification` when the dismiss animation starts
+* `SVProgressHUDDidDisappearNotification` when the dismiss animation completes
+
+Each notification passes a `userInfo` dictionary holding the HUD's status string (if any), retrievable via `SVProgressHUDStatusUserInfoKey`
 
 ## Credits
 

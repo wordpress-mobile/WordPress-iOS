@@ -8,6 +8,7 @@
 
 #import <QuartzCore/QuartzCore.h>
 #import "ReaderPostView.h"
+#import "WPAccount.h"
 #import "WPContentViewSubclass.h"
 #import "ContentActionButton.h"
 #import "UILabel+SuggestSize.h"
@@ -59,7 +60,7 @@ static NSInteger const MaxNumberOfLinesForTitleForSummary = 3;
     desiredHeight += RPVTitlePaddingBottom;
     
     // Post summary
-    if ([post.summary length] > 0) {
+    if (!showFullContent) {
         NSAttributedString *postSummary = [self summaryAttributedStringForPost:post];
         desiredHeight += [postSummary boundingRectWithSize:CGSizeMake(contentWidth, CGFLOAT_MAX) options:NSStringDrawingUsesLineFragmentOrigin | NSStringDrawingUsesFontLeading context:nil].size.height;
     }
@@ -261,7 +262,10 @@ static NSInteger const MaxNumberOfLinesForTitleForSummary = 3;
     
 	self.showImage = NO;
 	self.cellImageView.hidden = YES;
-	if (post.featuredImageURL) {
+    
+    // If ReaderPostView has a featured image, show it unless you're showing full detail & featured image is in the post already
+	if (post.featuredImageURL &&
+        (self.showFullContent == NO || [self.post.content rangeOfString:[post.featuredImageURL absoluteString]].length == 0)) {
 		self.showImage = YES;
 		self.cellImageView.hidden = NO;
 	}
@@ -273,7 +277,7 @@ static NSInteger const MaxNumberOfLinesForTitleForSummary = 3;
         self.tagButton.hidden = YES;
     }
     
-	if ([[self.post isWPCom] boolValue]) {
+	if ([[self.post isWPCom] boolValue] && [WPAccount defaultWordPressComAccount] != nil) {
 		self.likeButton.hidden = NO;
 		self.reblogButton.hidden = NO;
         self.commentButton.hidden = NO;
@@ -341,22 +345,20 @@ static NSInteger const MaxNumberOfLinesForTitleForSummary = 3;
 	nextY += height + RPVTitlePaddingBottom * (self.showFullContent ? 2.0 : 1.0);
     
 	// Position the snippet / content
-    if ([self.post.summary length] > 0) {
-        if (self.showFullContent) {
-            [self.textContentView relayoutText];
-            height = [self.textContentView suggestedFrameSizeToFitEntireStringConstraintedToWidth:contentWidth].height;
-            CGRect textContainerFrame = self.textContentView.frame;
-            textContainerFrame.size.width = contentWidth;
-            textContainerFrame.size.height = height;
-            textContainerFrame.origin.y = nextY;
-            self.textContentView.frame = textContainerFrame;
-        } else {
-            height = ceil([self.snippetLabel suggestedSizeForWidth:innerContentWidth].height);
-            self.snippetLabel.frame = CGRectMake(RPVHorizontalInnerPadding, nextY, innerContentWidth, height);
-        }
-        nextY += ceilf(height);
+    height = 0;
+    if (self.showFullContent) {
+        [self.textContentView relayoutText];
+        height = [self.textContentView suggestedFrameSizeToFitEntireStringConstraintedToWidth:contentWidth].height;
+        CGRect textContainerFrame = self.textContentView.frame;
+        textContainerFrame.size.width = contentWidth;
+        textContainerFrame.size.height = height;
+        textContainerFrame.origin.y = nextY;
+        self.textContentView.frame = textContainerFrame;
+    } else if ([self.snippetLabel.text length] > 0) {
+        height = ceil([self.snippetLabel suggestedSizeForWidth:innerContentWidth].height);
+        self.snippetLabel.frame = CGRectMake(RPVHorizontalInnerPadding, nextY, innerContentWidth, height);
     }
-    nextY += RPVVerticalPadding;
+    nextY += ceilf(height) + RPVVerticalPadding;
     
     // Tag
     // TODO: reenable tags once a better browsing experience is implemented
