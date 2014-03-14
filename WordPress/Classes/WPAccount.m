@@ -157,10 +157,6 @@ NSString * const WPAccountDefaultWordPressComAccountChangedNotification = @"WPAc
     return account;
 }
 
-+ (WPAccount *)createOrUpdateSelfHostedAccountWithXmlrpc:(NSString *)xmlrpc username:(NSString *)username andPassword:(NSString *)password {
-    return [WPAccount createOrUpdateSelfHostedAccountWithXmlrpc:xmlrpc username:username andPassword:password withContext:[[ContextManager sharedInstance] backgroundContext]];
-}
-
 + (WPAccount *)createOrUpdateSelfHostedAccountWithXmlrpc:(NSString *)xmlrpc username:(NSString *)username andPassword:(NSString *)password withContext:(NSManagedObjectContext *)context {
     NSFetchRequest *request = [NSFetchRequest fetchRequestWithEntityName:@"Account"];
     [request setPredicate:[NSPredicate predicateWithFormat:@"xmlrpc like %@ AND username like %@", xmlrpc, username]];
@@ -186,24 +182,39 @@ NSString * const WPAccountDefaultWordPressComAccountChangedNotification = @"WPAc
 #pragma mark - Blog creation
 
 - (Blog *)findOrCreateBlogFromDictionary:(NSDictionary *)blogInfo withContext:(NSManagedObjectContext*)context {
-    NSString *blogUrl = [[blogInfo objectForKey:@"url"] stringByReplacingOccurrencesOfString:@"http://" withString:@""];
-	if ([blogUrl hasSuffix:@"/"]) {
-		blogUrl = [blogUrl substringToIndex:blogUrl.length-1];
-    }
-	blogUrl = [blogUrl stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceCharacterSet]];
-
     __block Blog *blog;
     [context performBlockAndWait:^{
         WPAccount *contextAccount = (WPAccount *)[context existingObjectWithID:self.objectID error:nil];
-        NSSet *foundBlogs = [contextAccount.blogs filteredSetUsingPredicate:[NSPredicate predicateWithFormat:@"url like %@", blogUrl]];
-        if ([foundBlogs count]) {
+        NSSet *foundBlogs = [contextAccount.blogs filteredSetUsingPredicate:[NSPredicate predicateWithFormat:@"xmlrpc like %@", [blogInfo stringForKey:@"xmlrpc"]]];
+        if ([foundBlogs count] == 1) {
             blog = [foundBlogs anyObject];
+            return;
+        }
+        
+        // If more than one blog matches, return the first and delete the rest
+        if ([foundBlogs count] > 1) {
+            Blog *blogToReturn = [foundBlogs anyObject];
+            for (Blog *b in foundBlogs) {
+                // Choose blogs with URL not starting with https to account for a glitch in the API in early 2014
+                if (!([b.url hasPrefix:@"https://"])) {
+                    blogToReturn = b;
+                    break;
+                }
+            }
+            
+            for (Blog *b in foundBlogs) {
+                if (!([b isEqual:blogToReturn])) {
+                    [context deleteObject:b];
+                }
+            }
+            
+            blog = blogToReturn;
             return;
         }
         
         blog = [NSEntityDescription insertNewObjectForEntityForName:NSStringFromClass([Blog class]) inManagedObjectContext:context];
         blog.account = contextAccount;
-        blog.url = blogUrl;
+        blog.url = [blogInfo stringForKey:@"url"];
         blog.blogID = [NSNumber numberWithInt:[[blogInfo objectForKey:@"blogid"] intValue]];
         blog.blogName = [[blogInfo objectForKey:@"blogName"] stringByDecodingXMLCharacters];
         blog.xmlrpc = [blogInfo objectForKey:@"xmlrpc"];
@@ -232,10 +243,28 @@ NSString * const WPAccountDefaultWordPressComAccountChangedNotification = @"WPAc
     NSManagedObjectID *accountID = self.objectID;
     [backgroundMOC performBlock:^{
         WPAccount *account = (WPAccount *)[backgroundMOC objectWithID:accountID];
+
+        NSSet *remoteSet = [NSSet setWithArray:[blogs valueForKey:@"xmlrpc"]];
+        NSSet *localSet = [account.blogs valueForKey:@"xmlrpc"];
+        NSMutableSet *toDelete = [localSet mutableCopy];
+        [toDelete minusSet:remoteSet];
+
+        if ([toDelete count] > 0) {
+            for (Blog *blog in account.blogs) {
+                if ([toDelete containsObject:blog.xmlrpc]) {
+                    [backgroundMOC deleteObject:blog];
+                }
+            }
+        }
+        
+        // Go through each remote incoming blog and make sure we're up to date with titles, etc.
+        // Also adds any blogs we don't have
         for (NSDictionary *blog in blogs) {
             [account findOrCreateBlogFromDictionary:blog withContext:backgroundMOC];
         }
+        
         [[ContextManager sharedInstance] saveContext:backgroundMOC];
+        
         if (completion != nil) {
             dispatch_async(dispatch_get_main_queue(), completion);
         }

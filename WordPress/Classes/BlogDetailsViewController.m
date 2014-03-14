@@ -121,7 +121,7 @@ NSString * const WPBlogDetailsBlogKey = @"WPBlogDetailsBlogKey";
     } else if (indexPath.row == BlogDetailsRowComments) {
         cell.textLabel.text = NSLocalizedString(@"Comments", nil);
         cell.imageView.image = [UIImage imageNamed:@"icon-menu-comments"];
-        int numberOfPendingComments = [self.blog numberOfPendingComments];
+        NSUInteger numberOfPendingComments = [self.blog numberOfPendingComments];
         if (numberOfPendingComments > 0) {
             cell.detailTextLabel.text = [NSString stringWithFormat:@"%d", numberOfPendingComments];
         }
