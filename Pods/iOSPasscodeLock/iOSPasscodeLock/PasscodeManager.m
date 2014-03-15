@@ -10,7 +10,7 @@
 
 #import "PasscodeManager.h"
 #import "FXKeychain.h"
-#import <math.h> 
+#import <math.h>
 
 static NSString * const PasscodeProtectionStatusKey = @"PasscodeProtectionEnabled";
 static NSString * const PasscodeKey = @"PasscodeKey";
@@ -81,7 +81,7 @@ static NSString * const PasscodeInactivityEnded = @"PasscodeInactivityEnded";
                                                     name:UIApplicationDidBecomeActiveNotification object:nil];
     [[NSNotificationCenter defaultCenter] removeObserver:self
                                                     name:UIApplicationDidEnterBackgroundNotification object:nil];
-
+    
 }
 
 -(void)handleNotification:(NSNotification *)notification
@@ -149,8 +149,8 @@ static NSString * const PasscodeInactivityEnded = @"PasscodeInactivityEnded";
     [self dismissLockScreen];
 }
 
-#pragma mark - 
-#pragma mark - Workflow launchers 
+#pragma mark -
+#pragma mark - Workflow launchers
 
 - (void) disablePasscodeProtectionWithCompletion:(void (^) (BOOL success)) completion
 {
@@ -174,7 +174,7 @@ static NSString * const PasscodeInactivityEnded = @"PasscodeInactivityEnded";
     [self dismissLockScreen];
     self.passcodeViewController = [[PasscodeViewController alloc]initWithPasscodeType:passcodeType withDelegate:self];
     self.presentingViewController = [self topViewController];
-
+    
     [self.presentingViewController.view.window.layer addAnimation:[self transitionAnimation:kCATransitionFade] forKey:kCATransition];
     [self.presentingViewController presentViewController:self.passcodeViewController animated:NO completion:nil];
 }
@@ -233,15 +233,15 @@ static NSString * const PasscodeInactivityEnded = @"PasscodeInactivityEnded";
     NSNumber *inactivityLimit = [self getPasscodeInactivityDurationInMinutes];
     NSDate *inactivityStarted = [self getInactivityStartTime];
     NSDate *inactivityEnded = [self getInactivityEndTime];
-
+    
     NSTimeInterval difference = [inactivityEnded timeIntervalSinceDate:inactivityStarted];
     if(isnan(difference)){
-        difference = 0; 
+        difference = 0;
     }
     NSInteger differenceInMinutes = difference / 60;
     
     if(differenceInMinutes < 0){ //Date/Time on device might be altered.
-        differenceInMinutes = [inactivityLimit integerValue] + 1; 
+        differenceInMinutes = [inactivityLimit integerValue] + 1;
     }
     
     if([self isPasscodeProtectionOn] && ([inactivityLimit integerValue] <= differenceInMinutes))
@@ -285,7 +285,7 @@ static NSString * const PasscodeInactivityEnded = @"PasscodeInactivityEnded";
     } else {
         [self.coverView setBackgroundColor:self.backgroundColor];
     }
-   
+    
     self.coverView.hidden = NO;
     [UIApplication.sharedApplication.keyWindow addSubview:self.coverView];
 }
@@ -369,7 +369,7 @@ static NSString * const PasscodeInactivityEnded = @"PasscodeInactivityEnded";
     return transition;
 }
 
-#pragma mark - 
+#pragma mark -
 #pragma mark - Styling Getters
 
 -(UIColor *)backgroundColor

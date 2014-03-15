@@ -4384,7 +4384,7 @@
 				ORGANIZATIONNAME = WordPress;
 				TargetAttributes = {
 					1D6058900D05DD3D006BFB54 = {
-						DevelopmentTeam = PZYM8XX95Q;
+						DevelopmentTeam = 5P5F5MZ84L;
 					};
 				};
 			};
@@ -5562,6 +5562,7 @@
 				CLANG_ENABLE_OBJC_ARC = YES;
 				CLANG_WARN__ARC_BRIDGE_CAST_NONARC = NO;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				COPY_PHASE_STRIP = NO;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
@@ -5583,7 +5584,7 @@
 					"-Wno-format",
 				);
 				PRODUCT_NAME = WordPress;
-				PROVISIONING_PROFILE = "70B9AA90-62E0-44C7-8367-DBE16D74DB99";
+				PROVISIONING_PROFILE = "";
 				TARGETED_DEVICE_FAMILY = "1,2";
 				WPCOM_CONFIG = $HOME/.wpcom_app_credentials;
 			};
@@ -5602,7 +5603,8 @@
 				CLANG_ENABLE_MODULES = NO;
 				CLANG_ENABLE_OBJC_ARC = YES;
 				CLANG_WARN__ARC_BRIDGE_CAST_NONARC = NO;
-				CODE_SIGN_IDENTITY = "iPhone Distribution: Automattic, Inc. (PZYM8XX95Q)";
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				COPY_PHASE_STRIP = YES;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
@@ -5626,7 +5628,7 @@
 					"-Wno-format",
 				);
 				PRODUCT_NAME = WordPress;
-				PROVISIONING_PROFILE = "A5A51EB7-2E4D-4D01-A0E9-6E1C7BEC4951";
+				PROVISIONING_PROFILE = "";
 				TARGETED_DEVICE_FAMILY = "1,2";
 				WPCOM_CONFIG = $HOME/.wpcom_app_credentials;
 			};
@@ -5672,7 +5674,8 @@
 				CLANG_ENABLE_OBJC_ARC = YES;
 				CLANG_WARN__ARC_BRIDGE_CAST_NONARC = NO;
 				CODE_SIGN_ENTITLEMENTS = Entitlements.plist;
-				CODE_SIGN_IDENTITY = "iPhone Distribution: Automattic, Inc. (PZYM8XX95Q)";
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				COPY_PHASE_STRIP = YES;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
@@ -5692,7 +5695,7 @@
 					"-Wno-format-security",
 				);
 				PRODUCT_NAME = WordPress;
-				PROVISIONING_PROFILE = "A5A51EB7-2E4D-4D01-A0E9-6E1C7BEC4951";
+				PROVISIONING_PROFILE = "";
 				STRIP_INSTALLED_PRODUCT = NO;
 				TARGETED_DEVICE_FAMILY = "1,2";
 				WPCOM_CONFIG = $HOME/.wpcom_app_credentials;
@@ -5737,7 +5740,8 @@
 				CLANG_ENABLE_MODULES = NO;
 				CLANG_ENABLE_OBJC_ARC = YES;
 				CLANG_WARN__ARC_BRIDGE_CAST_NONARC = NO;
-				CODE_SIGN_IDENTITY = "iPhone Distribution: Automattic, Inc.";
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				COPY_PHASE_STRIP = YES;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
@@ -5762,7 +5766,7 @@
 					"-Wno-format",
 				);
 				PRODUCT_NAME = WordPress;
-				PROVISIONING_PROFILE = "74FADB78-88AD-4CB2-9225-24AA1D4D5319";
+				PROVISIONING_PROFILE = "";
 				TARGETED_DEVICE_FAMILY = "1,2";
 				WPCOM_CONFIG = $HOME/.wpcom_internal_app_credentials;
 			};

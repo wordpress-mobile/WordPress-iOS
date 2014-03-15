@@ -86,10 +86,14 @@
         cell.textLabel.text = NSLocalizedString(@"Activate",nil);
         cell.detailTextLabel.text = self.passcodeDuration;
         cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
+        cell.selectionStyle = UITableViewCellSelectionStyleNone;
+
     }
     else if(indexPath.section == 1 && indexPath.row == 1) //Change passcode
     {
         cell.textLabel.text = NSLocalizedString(@"Change Passcode",nil);
+        cell.selectionStyle = UITableViewCellSelectionStyleNone;
+
     }
     
     return cell;
@@ -129,10 +133,14 @@
             if(success){
                 selfRef.passcodeEnabled = YES;
                 [selfRef.tableView insertSections:[NSIndexSet indexSetWithIndex:1] withRowAnimation:UITableViewRowAnimationFade];
+                [self reloadTableView];
+
             }
             else{
                 selfRef.passcodeEnabled = NO;
                 [switchView setOn:NO];
+                [self reloadTableView];
+
             }
         }];
     }
@@ -141,14 +149,17 @@
             if(success){
                 self.passcodeEnabled = NO;
                 [self.tableView deleteSections:[NSIndexSet indexSetWithIndex:1] withRowAnimation:UITableViewRowAnimationNone];
+                [self reloadTableView];
+
             }
             else{
                 [switchView setOn:YES];
                 self.passcodeEnabled = YES;
+                [self reloadTableView];
+
             }
         }];
     }
-    [self reloadTableView];
 }
 
 -(void)reloadTableView
