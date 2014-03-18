@@ -123,33 +123,30 @@
 }
 
 - (void)mergeNewCategories:(NSArray *)newCategories forBlogObjectID:(NSManagedObjectID *)blogObjectID {
-    // TODO :: This needs to be done on the current context
-    NSManagedObjectContext *backgroundMOC = [[ContextManager sharedInstance] backgroundContext];
-    [backgroundMOC performBlock:^{
-        NSMutableArray *categoriesToKeep = [NSMutableArray array];
-        Blog *contextBlog = (Blog *)[backgroundMOC existingObjectWithID:blogObjectID error:nil];
-        
-        for (NSDictionary *categoryInfo in newCategories) {
-            // TODO :: This needs to be done on the current context
-            Category *newCategory = [self createOrReplaceFromDictionary:categoryInfo forBlogObjectID:blogObjectID];
-            if (newCategory != nil) {
-                [categoriesToKeep addObject:newCategory];
-            } else {
-                DDLogInfo(@"-[Category createOrReplaceFromDictionary:forBlog:] returned a nil category: %@", categoryInfo);
+    NSMutableArray *categoriesToKeep = [NSMutableArray array];
+    Blog *contextBlog = [self blogWithObjectID:blogObjectID];
+    
+    for (NSDictionary *categoryInfo in newCategories) {
+        // TODO :: This needs to be done on the current context
+        Category *newCategory = [self createOrReplaceFromDictionary:categoryInfo forBlogObjectID:blogObjectID];
+        if (newCategory != nil) {
+            [categoriesToKeep addObject:newCategory];
+        } else {
+            DDLogInfo(@"-[Category createOrReplaceFromDictionary:forBlog:] returned a nil category: %@", categoryInfo);
+        }
+    }
+    
+    NSSet *existingCategories = contextBlog.categories;
+    if (existingCategories && (existingCategories.count > 0)) {
+        for (Category *c in existingCategories) {
+            if (![categoriesToKeep containsObject:c]) {
+                DDLogInfo(@"Deleting Category: %@", c);
+                [self.managedObjectContext deleteObject:c];
             }
         }
-        
-        NSSet *existingCategories = contextBlog.categories;
-        if (existingCategories && (existingCategories.count > 0)) {
-            for (Category *c in existingCategories) {
-                if (![categoriesToKeep containsObject:c]) {
-                    DDLogInfo(@"Deleting Category: %@", c);
-                    [backgroundMOC deleteObject:c];
-                }
-            }
-        }
-        [[ContextManager sharedInstance] saveContext:backgroundMOC];
-    }];
+    }
+    
+    [[ContextManager sharedInstance] saveContext:self.managedObjectContext];
 }
 
 - (Blog *)blogWithObjectID:(NSManagedObjectID *)objectID {
