@@ -153,6 +153,10 @@
 }
 
 - (Blog *)blogWithObjectID:(NSManagedObjectID *)objectID {
+    if (objectID == nil) {
+        return nil;
+    }
+    
     NSError *error;
     Blog *blog = (Blog *)[self.managedObjectContext existingObjectWithID:objectID error:&error];
     if (error) {
@@ -164,6 +168,10 @@
 }
 
 - (Category *)categoryWithObjectID:(NSManagedObjectID *)objectID {
+    if (objectID == nil) {
+        return nil;
+    }
+    
     NSError *error;
     Category *category = (Category *)[self.managedObjectContext existingObjectWithID:objectID error:&error];
     if (error) {
