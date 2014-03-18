@@ -279,8 +279,6 @@ static NSString *const CameraPlusImagesNotification = @"CameraPlusImagesNotifica
 
 - (void)showWelcomeScreenIfNeededAnimated:(BOOL)animated {
     if ([self noBlogsAndNoWordPressDotComAccount]) {
-        [WordPressAppDelegate wipeAllKeychainItems];
-
         UIViewController *presenter = self.window.rootViewController;
         if (presenter.presentedViewController) {
             [presenter dismissViewControllerAnimated:NO completion:nil];
@@ -914,19 +912,6 @@ static NSString *const CameraPlusImagesNotification = @"CameraPlusImagesNotifica
 
 
 #pragma mark - Keychain
-
-+ (void)wipeAllKeychainItems
-{
-    NSArray *secItemClasses = @[(__bridge id)kSecClassGenericPassword,
-                                (__bridge id)kSecClassInternetPassword,
-                                (__bridge id)kSecClassCertificate,
-                                (__bridge id)kSecClassKey,
-                                (__bridge id)kSecClassIdentity];
-    for (id secItemClass in secItemClasses) {
-        NSDictionary *spec = @{(__bridge id)kSecClass : secItemClass};
-        SecItemDelete((__bridge CFDictionaryRef)spec);
-    }
-}
 
 + (void)fixKeychainAccess
 {
