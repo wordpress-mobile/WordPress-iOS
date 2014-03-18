@@ -683,7 +683,6 @@ static NSInteger const ImageSizeLargeHeight = 480;
             if ([self isDeleted] || self.managedObjectContext == nil)
                 return;
             
-            // TODO - This needs to be passed a context - it previously used a background context!
             CategoryService *categoryService = [[CategoryService alloc] initWithManagedObjectContext:self.managedObjectContext];
             [categoryService mergeNewCategories:responseObject forBlogObjectID:self.objectID];
             
