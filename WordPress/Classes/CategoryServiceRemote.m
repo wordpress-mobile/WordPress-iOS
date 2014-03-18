@@ -1,0 +1,37 @@
+//
+//  CategoryServiceRemote.m
+//  WordPress
+//
+//  Created by Aaron Douglas on 3/18/14.
+//  Copyright (c) 2014 WordPress. All rights reserved.
+//
+
+#import "CategoryServiceRemote.h"
+#import "Blog.h"
+
+@implementation CategoryServiceRemote
+
+- (void)createCategoryWithName:(NSString *)name parentCategoryID:(NSNumber *)parentCategoryID forBlog:(Blog *)blog success:(void (^)(NSNumber *))success failure:(void (^)(NSError *))failure {
+    NSDictionary *parameters = @{ @"name" : name,
+                                  @"parent_id" : parentCategoryID };
+    
+    // TODO - Get the API for a Blog without needing the Blog object
+    [blog.api callMethod:@"wp.newCategory"
+              parameters:[blog getXMLRPCArgsWithExtra:parameters]
+                 success:^(AFHTTPRequestOperation *operation, id responseObject) {
+                     NSNumber *categoryID = responseObject;
+                     int newID = [categoryID intValue];
+                     if (newID > 0) {
+                         
+                         if (success) {
+                             success(categoryID);
+                         }
+                     }
+                 } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+                     if (failure) {
+                         failure(error);
+                     }
+                 }];
+}
+
+@end

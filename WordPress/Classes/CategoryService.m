@@ -10,6 +10,7 @@
 #import "Category.h"
 #import "Blog.h"
 #import "ContextManager.h"
+#import "CategoryServiceRemote.h"
 
 @interface CategoryService ()
 
@@ -94,31 +95,30 @@
 	if (parent.categoryID != nil)
 		category.parentID = parent.categoryID;
     
-    NSDictionary *parameters = [NSDictionary dictionaryWithObjectsAndKeys:
-                                category.categoryName, @"name",
-                                category.parentID, @"parent_id",
-                                nil];
-    [blog.api callMethod:@"wp.newCategory"
-              parameters:[blog getXMLRPCArgsWithExtra:parameters]
-                 success:^(AFHTTPRequestOperation *operation, id responseObject) {
-                     NSNumber *categoryID = responseObject;
-                     int newID = [categoryID intValue];
-                     if (newID > 0) {
-                         category.categoryID = [categoryID numericValue];
-                         [blog dataSave];
-                         if (success) {
-                             success(category);
-                         }
-                     }
-                 } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
-                     DDLogError(@"Error while creating category: %@", [error localizedDescription]);
-                     // Just in case another thread has saved while we were creating
-                     [[blog managedObjectContext] deleteObject:category];
-                     [blog dataSave]; // Commit core data changes
-                     if (failure) {
-                         failure(error);
-                     }
-                 }];
+    CategoryServiceRemote *remote = [CategoryServiceRemote new];
+    [remote createCategoryWithName:name
+                  parentCategoryID:parent.categoryID
+                           forBlog:blog
+                           success:^(NSNumber *categoryID) {
+                               [self.managedObjectContext performBlockAndWait:^{
+                                   [[ContextManager sharedInstance] saveContext:self.managedObjectContext];
+                               }];
+                               
+                               if (success) {
+                                   success(category);
+                               }
+                               
+                           } failure:^(NSError *error) {
+                               DDLogError(@"Error while saving remote Category: %@", error);
+                               [self.managedObjectContext performBlockAndWait:^{
+                                   [self.managedObjectContext deleteObject:category];
+                                   [[ContextManager sharedInstance] saveContext:self.managedObjectContext];
+                               }];
+                               
+                               if (failure) {
+                                   failure(error);
+                               }
+                           }];
 }
 
 - (void)mergeNewCategories:(NSArray *)newCategories forBlogObjectID:(NSManagedObjectID *)blogObjectID {
