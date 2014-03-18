@@ -17,6 +17,7 @@
 #import "WPError.h"
 #import "ContextManager.h"
 #import "WordPressComApi.h"
+#import "CategoryService.h"
 
 static NSInteger const ImageSizeSmallWidth = 240;
 static NSInteger const ImageSizeSmallHeight = 180;
@@ -682,7 +683,9 @@ static NSInteger const ImageSizeLargeHeight = 480;
             if ([self isDeleted] || self.managedObjectContext == nil)
                 return;
             
-            [Category mergeNewCategories:responseObject forBlog:self];
+            // TODO - This needs to be passed a context - it previously used a background context!
+            CategoryService *categoryService = [[CategoryService alloc] initWithManagedObjectContext:self.managedObjectContext];
+            [categoryService mergeNewCategories:responseObject forBlogObjectID:self.objectID];
             
             if (success) {
                 success();
