@@ -21,7 +21,6 @@ NSString *const WPEditorNavigationRestorationID = @"WPEditorNavigationRestoratio
 NSString *const WPAbstractPostRestorationKey = @"WPAbstractPostRestorationKey";
 NSString *const EditPostViewControllerLastUsedBlogURL = @"EditPostViewControllerLastUsedBlogURL";
 CGFloat const EPVCTextfieldHeight = 44.0f;
-CGFloat const EPVCOptionsHeight = 44.0f;
 CGFloat const EPVCToolbarHeight = 44.0f;
 CGFloat const EPVCNavbarHeight = 44.0f;
 CGFloat const EPVCStandardOffset = 15.0;
@@ -241,8 +240,6 @@ CGFloat const EPVCTextViewTopPadding = 7.0f;
 
 - (void)didRotateFromInterfaceOrientation:(UIInterfaceOrientation)fromInterfaceOrientation {
     [super didRotateFromInterfaceOrientation:fromInterfaceOrientation];
-    
-    [self positionOptionsView];
 }
 
 - (void)didReceiveMemoryWarning {
@@ -256,9 +253,22 @@ CGFloat const EPVCTextViewTopPadding = 7.0f;
     self.navigationController.navigationBar.translucent = NO;
     
     if (self.navigationItem.leftBarButtonItem == nil) {
-        UIBarButtonItem *cancelButton = [[UIBarButtonItem alloc] initWithTitle:NSLocalizedString(@"Close", @"Label for the button to close the post editor.") style:UIBarButtonItemStylePlain target:self action:@selector(cancelEditing)];
-        self.navigationItem.leftBarButtonItem = cancelButton;
+        UIBarButtonItem *saveButton = [[UIBarButtonItem alloc] initWithTitle:NSLocalizedString(@"Finish", @"Default main action button for closing/completing the post editing screen")
+                                                                       style:[WPStyleGuide barButtonStyleForDone]
+                                                                      target:self
+                                                                      action:@selector(finishEditing)];
+        self.navigationItem.leftBarButtonItem = saveButton;
+        
+        UIImage *image = [UIImage imageNamed:@"icon-posts-options"];
+        UIButton *button = [[UIButton alloc] initWithFrame:CGRectMake(0, 0, image.size.width, image.size.height)];
+        [button setImage:image forState:UIControlStateNormal];
+        [button addTarget:self action:@selector(showSettings) forControlEvents:UIControlEventTouchUpInside];
+        button.accessibilityLabel = NSLocalizedString(@"Options", @"The accessibility value of the post options button.");
+        button.accessibilityIdentifier = @"postOptions";
+        UIBarButtonItem *postOptionsButtonItem = [[UIBarButtonItem alloc] initWithCustomView:button];
+        [WPStyleGuide setRightBarButtonItemWithCorrectSpacing:postOptionsButtonItem forNavigationItem:self.navigationItem];
     }
+
     self.navigationItem.backBarButtonItem.title = [self editorTitle];
     self.title = [self editorTitle];
     
@@ -390,54 +400,11 @@ CGFloat const EPVCTextViewTopPadding = 7.0f;
     }
     [self.textView addSubview:self.separatorView];
     
-    
-    if (!self.optionsView) {
-        frame = CGRectMake(0.0f, 0.0f, width, EPVCOptionsHeight + EPVCTextViewBottomPadding);
-        self.optionsView = [[UIView alloc] initWithFrame:frame];
-        self.optionsView.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleTopMargin;
-    }
-    [self.textView addSubview:self.optionsView];
-    
-    // One pixel separator bewteen content and table view cells.
-    if (!self.optionsSeparatorView) {
-        CGFloat y = EPVCTextViewBottomPadding - 1;
-        CGFloat separatorWidth = width - EPVCStandardOffset;
-        frame = CGRectMake(EPVCStandardOffset, y, separatorWidth, 1.0);
-        self.optionsSeparatorView = [[UIView alloc] initWithFrame:frame];
-        self.optionsSeparatorView.backgroundColor = [WPStyleGuide readGrey];
-        self.optionsSeparatorView.autoresizingMask = UIViewAutoresizingFlexibleWidth;
-    }
-    [self.optionsView addSubview:self.optionsSeparatorView];
-    
-    if (!self.optionsButton) {
-        NSString *optionsTitle = NSLocalizedString(@"Options", @"Title of the Post Settings tableview cell in the Post Editor. Tapping shows settings and options related to the post being edited.");
-        frame = CGRectMake(0.0f, EPVCTextViewBottomPadding, width, EPVCOptionsHeight);
-        self.optionsButton = [UIButton buttonWithType:UIButtonTypeCustom];
-        self.optionsButton.frame = frame;
-        self.optionsButton.autoresizingMask = UIViewAutoresizingFlexibleWidth;
-        [self.optionsButton addTarget:self action:@selector(showSettings) forControlEvents:UIControlEventTouchUpInside];
-        [self.optionsButton setBackgroundImage:[UIImage imageWithColor:[WPStyleGuide readGrey]] forState:UIControlStateHighlighted];
-
-        // Rather than using a UIImageView to fake a disclosure icon, just use a cell and future proof the UI.
-        WPTableViewCell *cell = [[WPTableViewCell alloc] initWithFrame:self.optionsButton.bounds];
-        // The cell uses its default frame and ignores what was passed during init, so set it again.
-        cell.frame = self.optionsButton.bounds;
-        cell.backgroundColor = [UIColor clearColor];
-        cell.autoresizingMask = UIViewAutoresizingFlexibleHeight | UIViewAutoresizingFlexibleWidth;
-        cell.textLabel.text = optionsTitle;
-        cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
-        cell.userInteractionEnabled = NO;
-        [WPStyleGuide configureTableViewCell:cell];
-        
-        [self.optionsButton addSubview:cell];
-    }
-    [self.optionsView addSubview:self.optionsButton];
-    
     // Update the textView's textContainerInsets so text does not overlap content.
     CGFloat left = EPVCTextViewOffset;
     CGFloat right = EPVCTextViewOffset;
     CGFloat top = CGRectGetMaxY(self.separatorView.frame) + EPVCTextViewTopPadding;
-    CGFloat bottom = CGRectGetHeight(self.optionsView.frame);
+    CGFloat bottom = EPVCTextViewBottomPadding;
     self.textView.textContainerInset = UIEdgeInsetsMake(top, left, bottom, right);
 
     if (!self.tapToStartWritingLabel) {
@@ -455,20 +422,6 @@ CGFloat const EPVCTextViewTopPadding = 7.0f;
     }
     [self.textView addSubview:self.tapToStartWritingLabel];
 
-}
-
-- (void)positionOptionsView {
-    // make sure the options view is always positioned at the bottom of the UITextView's content.
-    
-    CGFloat contentHeight = self.textView.contentSize.height;
-    contentHeight -= CGRectGetHeight(self.optionsView.frame);
-
-    CGFloat minHeight = CGRectGetHeight(self.textView.frame) - CGRectGetHeight(self.optionsView.frame);
-    contentHeight = MAX(minHeight, contentHeight);
-    
-    CGRect frame = self.optionsView.frame;
-    frame.origin.y = contentHeight;
-    self.optionsView.frame = frame;
 }
 
 - (void)positionTextView:(NSNotification *)notification {
@@ -615,7 +568,7 @@ CGFloat const EPVCTextViewTopPadding = 7.0f;
     [self.navigationController pushViewController:vc animated:YES];
 }
 
-- (void)cancelEditing {
+- (void)finishEditing {
     if(_currentActionSheet) return;
     
     [_textView resignFirstResponder];
@@ -626,35 +579,62 @@ CGFloat const EPVCTextViewTopPadding = 7.0f;
 		[self showMediaInUploadingAlert];
 		return;
 	}
-    
-    if (![self hasChanges]) {
+
+    if (![self hasChanges] && [self.post.status isEqualToString:@"publish"]) {
+        //No changes + publishedso just dismiss this view
         [WPMobileStats trackEventForWPComWithSavedProperties:[self formattedStatEventString:StatsEventPostDetailClosedEditor]];
         [self discardChangesAndDismiss];
         return;
     }
     
 	UIActionSheet *actionSheet;
-	if (![self.post.original.status isEqualToString:@"draft"] && self.editMode != EditPostViewControllerModeNewPost) {
-        // The post is already published in the server or it was intended to be and failed: Discard changes or keep editing
-		actionSheet = [[UIActionSheet alloc] initWithTitle:NSLocalizedString(@"You have unsaved changes.", @"Title of message with options that shown when there are unsaved changes and the author is trying to move away from the post.")
-												  delegate:self
-                                         cancelButtonTitle:NSLocalizedString(@"Keep Editing", @"Button shown if there are unsaved changes and the author is trying to move away from the post.")
-                                    destructiveButtonTitle:NSLocalizedString(@"Discard", @"Button shown if there are unsaved changes and the author is trying to move away from the post.")
-										 otherButtonTitles:nil];
-    } else if (self.editMode == EditPostViewControllerModeNewPost) {
-        // The post is a local draft or an autosaved draft: Discard or Save
-        actionSheet = [[UIActionSheet alloc] initWithTitle:NSLocalizedString(@"You have unsaved changes.", @"Title of message with options that shown when there are unsaved changes and the author is trying to move away from the post.")
-                                                  delegate:self
-                                         cancelButtonTitle:NSLocalizedString(@"Keep Editing", @"Button shown if there are unsaved changes and the author is trying to move away from the post.")
-                                    destructiveButtonTitle:NSLocalizedString(@"Discard", @"Button shown if there are unsaved changes and the author is trying to move away from the post.")
-                                         otherButtonTitles:NSLocalizedString(@"Save Draft", @"Button shown if there are unsaved changes and the author is trying to move away from the post."), nil];
+    NSString *keepEditingText = NSLocalizedString(@"Keep Editing",
+                                                  @"Button shown if there are unsaved changes and the author decides to keep editing the post.");
+    NSString *publishText = NSLocalizedString(@"Publish",
+                                              @"Button shown when the author wants to publish a draft post.");
+    
+    if ([self hasChanges]) {
+        NSString *unsavedChangesTitle = NSLocalizedString(@"You have unsaved changes",
+                                                          @"Title of message with options that shown when there are unsaved changes and the author is trying to move away from the post.");
+        NSString *discardText = NSLocalizedString(@"Discard Changes", @"Button shown if there are unsaved changes and the author decides to not save his changes.");
+        NSString *saveDraftText = NSLocalizedString(@"Save Draft", @"Button shown when the author wants to save a draft post.");
+        NSString *updatePublishedText = NSLocalizedString(@"Update Published Post", @"Button shown when the author wants to update a published post.");
+        NSString *updateDraftText = NSLocalizedString(@"Update Draft", @"Button shown when the author wants to update an existing a draft post.");
+        
+        if ( [self.post.original.status isEqualToString:@"publish"] && self.editMode != EditPostViewControllerModeNewPost) {
+            // The post is already published on the server or it was intended to be and failed
+            actionSheet = [[UIActionSheet alloc] initWithTitle:unsavedChangesTitle
+                                                      delegate:self
+                                             cancelButtonTitle:keepEditingText
+                                        destructiveButtonTitle:discardText
+                                             otherButtonTitles:updatePublishedText, nil];
+        } else if (self.editMode == EditPostViewControllerModeNewPost) {
+            // The post is a local draft or an autosaved draft
+            actionSheet = [[UIActionSheet alloc] initWithTitle:unsavedChangesTitle
+                                                      delegate:self
+                                             cancelButtonTitle:keepEditingText
+                                        destructiveButtonTitle:discardText
+                                             otherButtonTitles:saveDraftText, publishText, nil];
+        } else {
+            // The post was already a draft or private or pending
+            actionSheet = [[UIActionSheet alloc] initWithTitle:unsavedChangesTitle
+                                                      delegate:self
+                                             cancelButtonTitle:keepEditingText
+                                        destructiveButtonTitle:discardText
+                                             otherButtonTitles:updateDraftText, publishText, nil];
+        }
+        
     } else {
-        // The post was already a draft
-        actionSheet = [[UIActionSheet alloc] initWithTitle:NSLocalizedString(@"You have unsaved changes.", @"Title of message with options that shown when there are unsaved changes and the author is trying to move away from the post.")
+        //No changes, but not published so prompt user for action
+        NSString *chooseTitle = NSLocalizedString(@"Please choose one of the following",
+                                                  @"Title of message with options shown when the author is trying to move away from the post.");
+        NSString *goBackText = NSLocalizedString(@"Go Back to Posts", @"Button shown if there are unsaved changes and the author is trying to move away from the post.");
+        
+        actionSheet = [[UIActionSheet alloc] initWithTitle:chooseTitle
                                                   delegate:self
-                                         cancelButtonTitle:NSLocalizedString(@"Keep Editing", @"Button shown if there are unsaved changes and the author is trying to move away from the post.")
-                                    destructiveButtonTitle:NSLocalizedString(@"Discard", @"Button shown if there are unsaved changes and the author is trying to move away from the post.")
-                                         otherButtonTitles:NSLocalizedString(@"Update Draft", @"Button shown if there are unsaved changes and the author is trying to move away from an already published/saved post."), nil];
+                                         cancelButtonTitle:keepEditingText
+                                    destructiveButtonTitle:goBackText
+                                         otherButtonTitles:publishText, nil];
     }
     
     actionSheet.tag = 201;
@@ -738,49 +718,6 @@ CGFloat const EPVCTextViewTopPadding = 7.0f;
 
 #pragma mark - UI Manipulation
 
-- (void)refreshButtons {
-    // Left nav button: Cancel Button
-    if (self.navigationItem.leftBarButtonItem == nil) {
-        UIBarButtonItem *cancelButton = [[UIBarButtonItem alloc] initWithTitle:NSLocalizedString(@"Cancel", nil) style:UIBarButtonItemStylePlain target:self action:@selector(cancelEditing)];
-        self.navigationItem.leftBarButtonItem = cancelButton;
-    }
-    
-    // Right nav button: Publish Button
-    NSString *buttonTitle;
-    if(![self.post hasRemote] || ![self.post.status isEqualToString:self.post.original.status]) {
-        if ([self.post.status isEqualToString:@"publish"] && ([self.post.dateCreated compare:[NSDate date]] == NSOrderedDescending)) {
-            buttonTitle = NSLocalizedString(@"Schedule", @"Schedule button, this is what the Publish button changes to in the Post Editor if the post has been scheduled for posting later.");
-            
-		} else if ([self.post.status isEqualToString:@"publish"]){
-            buttonTitle = NSLocalizedString(@"Publish", @"Publish button label.");
-            
-		} else {
-            buttonTitle = NSLocalizedString(@"Save", @"Save button label (saving content, ex: Post, Page, Comment).");
-        }
-    } else {
-        buttonTitle = NSLocalizedString(@"Update", @"Update button label (saving content, ex: Post, Page, Comment).");
-    }
-    
-    if (self.navigationItem.rightBarButtonItem == nil) {
-        UIBarButtonItem *saveButton = [[UIBarButtonItem alloc] initWithTitle:buttonTitle
-                                                                       style:[WPStyleGuide barButtonStyleForDone]
-                                                                      target:self
-                                                                      action:@selector(saveAction)];
-        self.navigationItem.rightBarButtonItem = saveButton;
-    } else {
-        self.navigationItem.rightBarButtonItem.title = buttonTitle;
-    }
-    
-    BOOL updateEnabled = self.hasChanges || self.post.remoteStatus == AbstractPostRemoteStatusFailed;
-    [self.navigationItem.rightBarButtonItem setEnabled:updateEnabled];
-    
-    // Seems to be a bug with UIBarButtonItem respecting the UIControlStateDisabled text color
-    NSDictionary *titleTextAttributes;
-    UIColor *color = updateEnabled ? [UIColor whiteColor] : [UIColor lightGrayColor];
-    titleTextAttributes = @{NSFontAttributeName: [WPStyleGuide regularTextFont], NSForegroundColorAttributeName : color};
-    [self.navigationItem.rightBarButtonItem setTitleTextAttributes:titleTextAttributes forState:UIControlStateNormal];
-}
-
 - (void)refreshUIForCurrentPost {
     [self setupNavbar];
     
@@ -797,9 +734,6 @@ CGFloat const EPVCTextViewTopPadding = 7.0f;
 			_textView.text = self.post.content;
         }
     }
-    
-    [self positionOptionsView];
-    [self refreshButtons];
 }
 
 - (UIButton *)titleBarButton {
@@ -904,6 +838,8 @@ CGFloat const EPVCTextViewTopPadding = 7.0f;
 }
 
 - (void)logSavePostStats {
+    
+    //TODO: Fix this logging
     NSString *buttonTitle = self.navigationItem.rightBarButtonItem.title;
     NSString *event;
     if ([buttonTitle isEqualToString:NSLocalizedString(@"Schedule", nil)]) {
@@ -957,7 +893,6 @@ CGFloat const EPVCTextViewTopPadding = 7.0f;
     }
     
     [self.post save];
-    [self positionOptionsView];
     [_textView scrollRangeToVisible:[_textView selectedRange]];
 }
 
@@ -1387,29 +1322,36 @@ CGFloat const EPVCTextViewTopPadding = 7.0f;
 
 - (void)actionSheet:(UIActionSheet *)actionSheet clickedButtonAtIndex:(NSInteger)buttonIndex {
     if ([actionSheet tag] == 201) {
+        [WPMobileStats trackEventForWPComWithSavedProperties:[self formattedStatEventString:StatsEventPostDetailClosedEditor]];
         // Discard
         if (buttonIndex == 0) {
-            [WPMobileStats trackEventForWPComWithSavedProperties:[self formattedStatEventString:StatsEventPostDetailClosedEditor]];
             [self discardChangesAndDismiss];
         }
         
         if (buttonIndex == 1) {
-            // Cancel / Keep editing
-			if ([actionSheet numberOfButtons] == 2) {
-                [WPMobileStats trackEventForWPComWithSavedProperties:[self formattedStatEventString:StatsEventPostDetailClosedEditor]];
+			if ([actionSheet numberOfButtons] == 3) {
+                // Publish / Update published
+                if (![self.post.original.status isEqualToString:@"publish"] && ![self.post.status isEqualToString:@"publish"]) {
+                    self.post.status = @"publish";
+                }
+                [self saveAction];
                 
-				[actionSheet dismissWithClickedButtonIndex:0 animated:YES];
-                // Save draft
 			} else {
-                [WPMobileStats trackEventForWPComWithSavedProperties:[self formattedStatEventString:StatsEventPostDetailClosedEditor]];
-                
+                // Save or update draft
                 // If you tapped on a button labeled "Save Draft", you probably expect the post to be saved as a draft
                 if (![self.post hasRemote] && [self.post.status isEqualToString:@"publish"]) {
                     self.post.status = @"draft";
                 }
-                DDLogInfo(@"Saving post as a draft after user initially attempted to cancel");
-                [self savePost:YES];
+                [self saveAction];
 			}
+        }
+        
+        if (buttonIndex == 2 && [actionSheet numberOfButtons] == 4) {
+            //Publish
+            if (![self.post.status isEqualToString:@"publish"]) {
+                self.post.status = @"publish";
+            }
+            [self saveAction];
         }
     }
 }
@@ -1422,12 +1364,10 @@ CGFloat const EPVCTextViewTopPadding = 7.0f;
 
 - (void)textViewDidChange:(UITextView *)aTextView {
     [self autosaveContent];
-    [self refreshButtons];
 }
 
 - (void)textViewDidEndEditing:(UITextView *)aTextView {
     [self autosaveContent];
-    [self refreshButtons];
     if ([_textView.text isEqualToString:@""]) {
         _tapToStartWritingLabel.hidden = NO;
     }
@@ -1437,7 +1377,6 @@ CGFloat const EPVCTextViewTopPadding = 7.0f;
 
 - (void)textFieldDidEndEditing:(UITextField *)textField {
     [self autosaveContent];
-    [self refreshButtons];
 }
 
 - (BOOL)textField:(UITextField *)textField shouldChangeCharactersInRange:(NSRange)range replacementString:(NSString *)string {
@@ -1445,8 +1384,6 @@ CGFloat const EPVCTextViewTopPadding = 7.0f;
         self.post.postTitle = [textField.text stringByReplacingCharactersInRange:range withString:string];
         self.navigationItem.title = [self editorTitle];
     }
-    
-    [self refreshButtons];
     return YES;
 }
 
@@ -1528,8 +1465,6 @@ CGFloat const EPVCTextViewTopPadding = 7.0f;
 
 - (void)keyboardDidShow:(NSNotification *)notification {
     [self positionTextView:notification];
-    [self positionOptionsView];
-
 }
 
 - (void)keyboardWillHide:(NSNotification *)notification {
@@ -1540,7 +1475,6 @@ CGFloat const EPVCTextViewTopPadding = 7.0f;
     [self.navigationController setToolbarHidden:NO animated:NO];
     
     [self positionTextView:notification];
-    [self positionOptionsView];
 }
 
 @end
