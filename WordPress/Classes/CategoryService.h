@@ -18,13 +18,12 @@
 
 - (Category *)findWithBlogObjectID:(NSManagedObjectID *)blogObjectID andCategoryID:(NSNumber *)categoryID;
 
-// Takes the NSDictionary from a XMLRPC call and creates or updates a post
-- (Category *)createOrReplaceFromDictionary:(NSDictionary *)categoryInfo forBlogObjectID:(NSManagedObjectID *)blogObjectID;
 - (void)createCategoryWithName:(NSString *)name
         parentCategoryObjectID:(NSManagedObjectID *)parentCategoryObjectID
                forBlogObjectID:(NSManagedObjectID *)blogObjectID
                        success:(void (^)(Category *category))success
                        failure:(void (^)(NSError *error))failure;
+
 - (void)mergeNewCategories:(NSArray *)newCategories forBlogObjectID:(NSManagedObjectID *)blogObjectID;
 
 
