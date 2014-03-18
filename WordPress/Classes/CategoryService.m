@@ -101,6 +101,7 @@
                            forBlog:blog
                            success:^(NSNumber *categoryID) {
                                [self.managedObjectContext performBlockAndWait:^{
+                                   category.categoryID = categoryID;
                                    [[ContextManager sharedInstance] saveContext:self.managedObjectContext];
                                }];
                                
