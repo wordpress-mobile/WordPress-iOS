@@ -214,7 +214,9 @@ static NSString *const BlogCellIdentifier = @"BlogCell";
         }
         
         if ([previousIndexPath compare:indexPath] == NSOrderedSame) {
-            // Do nothing
+            // User tapped the already selected item. Treat this as a cancel event
+            // so the picker can be dismissed without changes.
+            [self cancelButtonTapped:nil];
             return;
         }
     }
