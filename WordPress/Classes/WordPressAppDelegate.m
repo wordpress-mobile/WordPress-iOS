@@ -555,6 +555,14 @@ static NSInteger const IndexForMeTab = 2;
 }
 
 
+#pragma mark - Notifications
+
+- (void)defaultAccountDidChange:(NSNotification *)notification {
+    [Crashlytics setUserName:[[WPAccount defaultWordPressComAccount] username]];
+    [self setCommonCrashlyticsParameters];
+}
+
+
 #pragma mark - Crash reporting
 
 - (void)configureCrashlytics {
