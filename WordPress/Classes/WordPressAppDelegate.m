@@ -101,7 +101,6 @@ static NSString *const CameraPlusImagesNotification = @"CameraPlusImagesNotifica
     [[AFNetworkActivityIndicatorManager sharedManager] setEnabled:YES];
     [self setupReachability];
     [self setupUserAgent];
-    [self checkWPcomAuthentication];
     [self setupSingleSignOn];
 
     [self customizeAppearance];
