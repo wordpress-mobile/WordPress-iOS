@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
-<model userDefinedModelVersionIdentifier="" type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="3401" systemVersion="13B42" minimumToolsVersion="Automatic" macOSVersion="Automatic" iOSVersion="Automatic">
+<model userDefinedModelVersionIdentifier="" type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="3400" systemVersion="13C64" minimumToolsVersion="Automatic" macOSVersion="Automatic" iOSVersion="Automatic">
     <entity name="AbstractComment" representedClassName="AbstractComment" isAbstract="YES">
         <attribute name="author" optional="YES" attributeType="String">
             <userInfo/>
@@ -56,6 +56,7 @@
         <attribute name="xmlrpc" attributeType="String" indexed="YES" syncable="YES"/>
         <relationship name="blogs" optional="YES" toMany="YES" deletionRule="Cascade" destinationEntity="Blog" inverseName="account" inverseEntity="Blog" indexed="YES" syncable="YES"/>
         <relationship name="jetpackBlogs" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="Blog" inverseName="jetpackAccount" inverseEntity="Blog" indexed="YES" syncable="YES"/>
+        <relationship name="notes" optional="YES" toMany="YES" deletionRule="Cascade" destinationEntity="Note" inverseName="account" inverseEntity="Note" syncable="YES"/>
         <relationship name="readerPosts" optional="YES" toMany="YES" deletionRule="Cascade" destinationEntity="ReaderPost" inverseName="account" inverseEntity="ReaderPost" syncable="YES"/>
     </entity>
     <entity name="BasePost" representedClassName="BasePost" isAbstract="YES">
@@ -246,16 +247,15 @@
         </relationship>
         <userInfo/>
     </entity>
-    <entity name="Note" representedClassName="Note" parentEntity="SPManagedObject" syncable="YES">
-        <attribute name="body" optional="YES" attributeType="Transformable" syncable="YES"/>
-        <attribute name="noteID" optional="YES" attributeType="String" syncable="YES"/>
-        <attribute name="subject" optional="YES" attributeType="Transformable" syncable="YES"/>
+    <entity name="Note" representedClassName="Note" syncable="YES">
+        <attribute name="icon" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="noteID" attributeType="String" syncable="YES"/>
+        <attribute name="payload" attributeType="Binary" syncable="YES"/>
+        <attribute name="subject" attributeType="String" syncable="YES"/>
         <attribute name="timestamp" attributeType="Integer 32" defaultValueString="0" syncable="YES"/>
         <attribute name="type" attributeType="String" syncable="YES"/>
-        <attribute name="unread" optional="YES" attributeType="String" syncable="YES"/>
-        <userInfo>
-            <entry key="spOverride" value="json"/>
-        </userInfo>
+        <attribute name="unread" optional="YES" attributeType="Integer 16" defaultValueString="0" syncable="YES"/>
+        <relationship name="account" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="Account" inverseName="notes" inverseEntity="Account" syncable="YES"/>
     </entity>
     <entity name="Page" representedClassName="Page" parentEntity="AbstractPost">
         <attribute name="parentID" optional="YES" attributeType="Integer 32" defaultValueString="0">
@@ -313,6 +313,7 @@
         <attribute name="isFollowing" optional="YES" attributeType="Boolean" syncable="YES"/>
         <attribute name="isLiked" optional="YES" attributeType="Boolean" syncable="YES"/>
         <attribute name="isReblogged" optional="YES" attributeType="Boolean" syncable="YES"/>
+        <attribute name="isWPCom" optional="YES" attributeType="Boolean" syncable="YES"/>
         <attribute name="likeCount" optional="YES" attributeType="Integer 16" defaultValueString="0" syncable="YES"/>
         <attribute name="postAvatar" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="primaryTagName" optional="YES" attributeType="String" syncable="YES"/>
@@ -324,10 +325,6 @@
         <attribute name="tags" optional="YES" attributeType="String" syncable="YES"/>
         <relationship name="account" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="Account" inverseName="readerPosts" inverseEntity="Account" syncable="YES"/>
         <relationship name="comments" optional="YES" toMany="YES" deletionRule="Cascade" destinationEntity="ReaderComment" inverseName="post" inverseEntity="ReaderComment" indexed="YES" syncable="YES"/>
-    </entity>
-    <entity name="SPManagedObject" representedClassName="SPManagedObject" syncable="YES">
-        <attribute name="ghostData" optional="YES" attributeType="String" syncable="YES"/>
-        <attribute name="simperiumKey" optional="YES" attributeType="String" syncable="YES"/>
     </entity>
     <fetchRequest name="UnreadNotes" entity="Note" predicateString="unread == 1"/>
     <elements>
@@ -344,6 +341,5 @@
         <element name="Post" positionX="0" positionY="0" width="0" height="0"/>
         <element name="ReaderComment" positionX="0" positionY="0" width="0" height="0"/>
         <element name="ReaderPost" positionX="0" positionY="0" width="0" height="0"/>
-        <element name="SPManagedObject" positionX="0" positionY="0" width="0" height="0"/>
     </elements>
 </model>
