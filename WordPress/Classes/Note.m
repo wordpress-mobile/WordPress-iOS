@@ -243,9 +243,9 @@ const NSUInteger NoteKeepCount = 20;
 - (void)didTurnIntoFault {
     [super didTurnIntoFault];
     
-    _noteData = nil;
-    _date = nil;
-    _commentText = nil;
+    self.noteData = nil;
+    self.date = nil;
+    self.commentText = nil;
 }
 
 #pragma mark - Comment HTML parsing
