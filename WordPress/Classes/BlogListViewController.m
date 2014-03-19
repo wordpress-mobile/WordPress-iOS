@@ -35,7 +35,7 @@ NSString * const WPBlogListRestorationID = @"WPBlogListID";
 
 - (id)initWithStyle:(UITableViewStyle)style
 {
-    self = [super initWithStyle:UITableViewStyleGrouped];
+    self = [super initWithStyle:UITableViewStylePlain];
     if (self) {
         self.restorationIdentifier = WPBlogListRestorationID;
     }
@@ -101,6 +101,9 @@ NSString * const WPBlogListRestorationID = @"WPBlogListID";
     // Trigger the blog sync when loading the view, which should more or less be once when the app launches
     // We could do this on the app delegate, but the blogs list feels like a better place for it.
     [[WPAccount defaultWordPressComAccount] syncBlogsWithSuccess:nil failure:nil];
+
+    // Remove extra separator lines
+    self.tableView.tableFooterView = [[UIView alloc] initWithFrame:CGRectZero];
 }
 
 - (void)viewWillAppear:(BOOL)animated {
@@ -335,6 +338,29 @@ NSString * const WPBlogListRestorationID = @"WPBlogListID";
 }
 
 - (UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section {
+    // The first section is the segmenter controller (A-Z / Z-A)
+    if(section == 0) {
+
+        UIView* headerView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, self.view.bounds.size.width, 40)];
+        [headerView setBackgroundColor:[[WPStyleGuide itsEverywhereGrey] colorWithAlphaComponent:0.4f]];
+
+        NSArray *buttonNames = [NSArray arrayWithObjects:NSLocalizedString(@"A-Z", @"A-Z segment for reordering blogs)"), NSLocalizedString(@"Z-A", @"Z-A segment for reordering blogs)"), nil];
+        UISegmentedControl* segmentedControl = [[UISegmentedControl alloc] initWithItems:buttonNames];
+        [segmentedControl addTarget:self action:@selector(segmentAction:) forControlEvents:UIControlEventValueChanged];
+        segmentedControl.frame = CGRectMake(0, 0, 150, 25);
+        segmentedControl.center = CGPointMake(self.view.bounds.size.width/2, headerView.frame.size.height/2);
+
+        NSUInteger selectedIndex = 0;
+        if([[NSUserDefaults standardUserDefaults] objectForKey:@"blog_order_preference"] != nil)
+            selectedIndex = [[[NSUserDefaults standardUserDefaults] objectForKey:@"blog_order_preference"] integerValue];
+
+        segmentedControl.selectedSegmentIndex = selectedIndex;
+
+        [headerView addSubview:segmentedControl];
+
+        return headerView;
+    }
+
     NSString *title = [self tableView:self.tableView titleForHeaderInSection:section];
     if (title.length > 0) {
         WPTableViewSectionHeaderView *header = [[WPTableViewSectionHeaderView alloc] initWithFrame:CGRectMake(0, 0, CGRectGetWidth(self.view.bounds), 0)];
@@ -345,6 +371,10 @@ NSString * const WPBlogListRestorationID = @"WPBlogListID";
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section {
+    //Height for the segmented controller (A-Z / Z-A)
+    if(section == 0)
+        return 40.;
+
     NSString *title = [self tableView:self.tableView titleForHeaderInSection:section];
     if (title.length > 0) {
         return [WPTableViewSectionHeaderView heightForTitle:title andWidth:CGRectGetWidth(self.view.bounds)];
@@ -431,7 +461,7 @@ NSString * const WPBlogListRestorationID = @"WPBlogListID";
     
     NSManagedObjectContext *moc = [[ContextManager sharedInstance] mainContext];
     NSFetchRequest *fetchRequest = [NSFetchRequest fetchRequestWithEntityName:@"Blog"];
-    [fetchRequest setSortDescriptors:@[[NSSortDescriptor sortDescriptorWithKey:@"account.isWpcom" ascending:NO], [NSSortDescriptor sortDescriptorWithKey:@"blogName" ascending:YES selector:@selector(localizedCaseInsensitiveCompare:)]]];
+    [fetchRequest setSortDescriptors:[self fetchRequestSortDescriptor]];
     [fetchRequest setPredicate:[self fetchRequestPredicate]];
     
     _resultsController = [[NSFetchedResultsController alloc]
@@ -457,8 +487,16 @@ NSString * const WPBlogListRestorationID = @"WPBlogListID";
     }
 }
 
+- (NSArray *) fetchRequestSortDescriptor {
+    BOOL ascendingOrder = YES;
+    if([[NSUserDefaults standardUserDefaults] objectForKey:@"blog_order_preference"] != nil)
+        ascendingOrder = [[[NSUserDefaults standardUserDefaults] objectForKey:@"blog_order_preference"] boolValue];
+    return @[[NSSortDescriptor sortDescriptorWithKey:@"account.isWpcom" ascending:NO], [NSSortDescriptor sortDescriptorWithKey:@"blogName" ascending:!ascendingOrder selector:@selector(localizedCaseInsensitiveCompare:)]];
+}
+
 - (void)updateFetchRequest {
     self.resultsController.fetchRequest.predicate = [self fetchRequestPredicate];
+    self.resultsController.fetchRequest.sortDescriptors = [self fetchRequestSortDescriptor];
     
     NSError *error = nil;
     if (![self.resultsController performFetch:&error]) {
@@ -479,4 +517,14 @@ NSString * const WPBlogListRestorationID = @"WPBlogListID";
     return NSLocalizedString(@"Self Hosted", @"Section header for self hosted blogs");
 }
 
+- (void) segmentAction:(UISegmentedControl*) sender {
+    [WPMobileStats trackEventForWPCom:StatsEventSettingsClickedBlogsOrder];
+    [[NSUserDefaults standardUserDefaults] setInteger:sender.selectedSegmentIndex forKey:@"blog_order_preference"];
+    [self updateFetchRequest];
+}
+
+- (void)didRotateFromInterfaceOrientation:(UIInterfaceOrientation)fromInterfaceOrientation {
+    [super didRotateFromInterfaceOrientation:fromInterfaceOrientation];
+    [self.tableView reloadData];
+}
 @end

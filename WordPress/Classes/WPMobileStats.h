@@ -152,6 +152,7 @@ extern NSString *const StatsEventSettingsClickedManageNotifications;
 extern NSString *const StatsEventSettingsEnabledSounds;
 extern NSString *const StatsEventSettingsDisabledSounds;
 extern NSString *const StatsEventSettingsClickedAbout;
+extern NSString *const StatsEventSettingsClickedBlogsOrder;
 
 // Manage Notifications
 extern NSString *const StatsEventManageNotificationsTurnOn;
