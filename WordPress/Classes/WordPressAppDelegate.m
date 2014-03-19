@@ -7,7 +7,6 @@
  * Some rights reserved. See license.txt
  */
 
-#import <AFNetworking/AFNetworking.h>
 #import <CoreTelephony/CTTelephonyNetworkInfo.h>
 #import <CoreTelephony/CTCarrier.h>
 #import <Crashlytics/Crashlytics.h>
@@ -23,12 +22,8 @@
 #import "NotificationsManager.h"
 #import "NSString+Helpers.h"
 #import "PocketAPI.h"
-#import "Post.h"
-#import "Comment.h"
-#import "Reachability.h"
 #import "ReaderPost.h"
 #import "UIDevice+WordPressIdentifier.h"
-#import "WordPressComApi.h"
 #import "WordPressComApiCredentials.h"
 #import "WPAccount.h"
 
@@ -39,7 +34,6 @@
 #import "LoginViewController.h"
 #import "NotificationsViewController.h"
 #import "ReaderPostsViewController.h"
-#import "ReaderPostDetailViewController.h"
 #import "SupportViewController.h"
 #import "StatsViewController.h"
 #import "Constants.h"
@@ -50,13 +44,11 @@
 #endif
 
 int ddLogLevel = LOG_LEVEL_INFO;
-static NSInteger const UpdateCheckAlertViewTag = 102;
 static NSString * const WPTabBarRestorationID = @"WPTabBarID";
 static NSString * const WPBlogListNavigationRestorationID = @"WPBlogListNavigationID";
 static NSString * const WPReaderNavigationRestorationID = @"WPReaderNavigationID";
 static NSString * const WPNotificationsNavigationRestorationID = @"WPNotificationsNavigationID";
 static NSInteger const IndexForMeTab = 2;
-static NSString *const CameraPlusImagesNotification = @"CameraPlusImagesNotification";
 
 @interface WordPressAppDelegate () <UITabBarControllerDelegate, CrashlyticsDelegate, UIAlertViewDelegate, BITHockeyManagerDelegate>
 
@@ -548,10 +540,6 @@ static NSString *const CameraPlusImagesNotification = @"CameraPlusImagesNotifica
 
 
 #pragma mark - Application directories
-
-- (NSString *)applicationDocumentsDirectory {
-    return [NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES) lastObject];
-}
 
 - (void)changeCurrentDirectory {
     // Set current directory for WordPress app
