@@ -63,8 +63,10 @@
 // wp.koke.me
 @property (weak, readonly) NSString *hostname;
 
++ (Blog *)defaultOrLastUsedBlog;
 
 #pragma mark - Blog information
+- (void)flagAsLastUsed;
 - (BOOL)isWPcom;
 - (BOOL)isPrivate;
 - (NSArray *)sortedCategories;

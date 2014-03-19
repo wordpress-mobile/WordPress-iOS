@@ -24,6 +24,8 @@ static NSInteger const ImageSizeMediumWidth = 480;
 static NSInteger const ImageSizeMediumHeight = 360;
 static NSInteger const ImageSizeLargeWidth = 640;
 static NSInteger const ImageSizeLargeHeight = 480;
+NSString *const EditPostViewControllerLastUsedBlogURL = @"EditPostViewControllerLastUsedBlogURL";
+NSString *const LastUsedBlogURL = @"LastUsedBlogURL";
 
 @interface Blog (PrivateMethods)
 
@@ -83,6 +85,52 @@ static NSInteger const ImageSizeLargeHeight = 480;
 #pragma mark -
 #pragma mark Custom methods
 
++ (Blog *)defaultOrLastUsedBlog {
+    // Try to get the last used blog, if there is one.
+    NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
+    NSManagedObjectContext *context = [[ContextManager sharedInstance] mainContext];
+    NSFetchRequest *fetchRequest = [NSFetchRequest fetchRequestWithEntityName:@"Blog"];
+    NSString *url = [defaults stringForKey:LastUsedBlogURL];
+    if (!url) {
+        // Check for the old key and migrate the value if it exists.
+        // TODO: We can probably discard this in the 4.2 release.
+        url = [defaults stringForKey:EditPostViewControllerLastUsedBlogURL];
+        if (url) {
+            [defaults setObject:url forKey:LastUsedBlogURL];
+            [defaults removeObjectForKey:EditPostViewControllerLastUsedBlogURL];
+            [defaults synchronize];
+        }
+    }
+
+    NSPredicate *predicate;
+    if (url) {
+        predicate = [NSPredicate predicateWithFormat:@"visible = YES AND url = %@", url];
+    } else {
+        predicate = [NSPredicate predicateWithFormat:@"visible = YES"];
+    }
+    [fetchRequest setPredicate:predicate];
+    fetchRequest.sortDescriptors = @[[NSSortDescriptor sortDescriptorWithKey:@"blogName" ascending:YES]];
+    NSError *error = nil;
+    NSArray *results = [context executeFetchRequest:fetchRequest error:&error];
+
+    if (error) {
+        DDLogError(@"Couldn't fetch blogs: %@", error);
+        return nil;
+    }
+
+    if([results count] == 0) {
+        if (url) {
+            // Blog might have been removed from the app. Get the first available.
+            [defaults removeObjectForKey:LastUsedBlogURL];
+            [defaults synchronize];
+            return [self defaultOrLastUsedBlog];
+        }
+        return nil;
+    }
+
+    return [results firstObject];
+}
+
 + (NSInteger)countVisibleWithContext:(NSManagedObjectContext *)moc {
     NSPredicate *predicate = [NSPredicate predicateWithFormat:@"visible = %@" argumentArray:@[@(YES)]];
     return [self countWithContext:moc predicate:predicate];
@@ -112,6 +160,12 @@ static NSInteger const ImageSizeLargeHeight = 480;
         count = 0;
     }
     return count;
+}
+
+- (void)flagAsLastUsed {
+    NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
+    [defaults setObject:self.url forKey:LastUsedBlogURL];
+    [defaults synchronize];
 }
 
 - (NSString *)blavatarUrl {
