@@ -378,7 +378,7 @@ NSString * const WPBlogListRestorationID = @"WPBlogListID";
         [WPMobileStats trackEventForWPCom:StatsEventSettingsClickedEditBlog];
         
         Blog *blog = [self.resultsController objectAtIndexPath:indexPath];
-        
+        [blog flagAsLastUsed];
         BlogDetailsViewController *blogDetailsViewController = [[BlogDetailsViewController alloc] init];
         blogDetailsViewController.blog = blog;
         [self.navigationController pushViewController:blogDetailsViewController animated:YES];
