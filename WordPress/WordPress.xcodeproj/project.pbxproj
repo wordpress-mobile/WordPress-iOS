@@ -1919,7 +1919,7 @@
 		93069F5B17625C28000C966D /* UIButtonBarActionBlack@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "UIButtonBarActionBlack@2x.png"; sourceTree = "<group>"; };
 		93069F5C17625C28000C966D /* UIButtonBarActionSmallBlack.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = UIButtonBarActionSmallBlack.png; sourceTree = "<group>"; };
 		93069F5D17625C28000C966D /* UIButtonBarActionSmallBlack@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "UIButtonBarActionSmallBlack@2x.png"; sourceTree = "<group>"; };
-		930C6374182BD86400976C21 /* WordPress-Internal-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; name = "WordPress-Internal-Info.plist"; path = "/Users/aaron/src/WordPress-iOS-public/WordPress/WordPress-Internal-Info.plist"; sourceTree = "<absolute>"; };
+		930C6374182BD86400976C21 /* WordPress-Internal-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "WordPress-Internal-Info.plist"; sourceTree = "<group>"; };
 		931DF4D718D09A2F00540BDD /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
 		931DF4D918D09A9B00540BDD /* pt */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = pt; path = pt.lproj/InfoPlist.strings; sourceTree = "<group>"; };
 		931DF4DA18D09AE100540BDD /* fr */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = fr; path = fr.lproj/InfoPlist.strings; sourceTree = "<group>"; };
