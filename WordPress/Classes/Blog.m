@@ -60,6 +60,14 @@ static NSInteger const ImageSizeLargeHeight = 480;
     [[NSNotificationCenter defaultCenter] removeObserver:self];
 }
 
+- (void)awakeFromFetch {
+    [super awakeFromFetch];
+    
+    if (!self.isDeleted) {
+        [self reachability];
+    }
+}
+
 #pragma mark -
 
 - (BOOL)geolocationEnabled
@@ -277,11 +285,6 @@ static NSInteger const ImageSizeLargeHeight = 480;
             nil];
 }
 
-- (void)awakeFromFetch {
-    if (!self.isDeleted) {
-        [self reachability];
-    }
-}
 
 - (void)dataSave {
     [[ContextManager sharedInstance] saveContext:self.managedObjectContext];
