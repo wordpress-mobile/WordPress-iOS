@@ -83,9 +83,6 @@ const CGFloat WPToastAnimationVisibleDuration = 0.35f;
         [UIView beginAnimations:@"toast_zoom_out" context:(__bridge void *)(toastView)];
         [UIView setAnimationDuration:WPToastAnimationZoomDuration];
         [UIView setAnimationCurve:UIViewAnimationCurveEaseOut];
-        CGFloat toastOffset = 95.0f;
-        if (IS_IPHONE && UIInterfaceOrientationIsPortrait(parentViewController.interfaceOrientation))
-            toastOffset = 125.0f;
         toastView.frame = CGRectMake(parentViewController.view.bounds.size.width / 2, parentViewController.view.bounds.size.height / 2, 0.0f, 0.0f);
         toastView.alpha = 0.0f;
         [UIView commitAnimations];
