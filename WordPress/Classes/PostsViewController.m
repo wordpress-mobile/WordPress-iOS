@@ -47,6 +47,10 @@
     [self showAddPostView];
 }
 
+- (NSString *)newPostAccessibilityLabel {
+    return NSLocalizedString(@"New Post", @"The accessibility value of the new post button.");
+}
+
 - (void)viewDidLoad {
     DDLogInfo(@"%@ %@", self, NSStringFromSelector(_cmd));
     [super viewDidLoad];
@@ -57,6 +61,8 @@
     UIButton *button = [[UIButton alloc] initWithFrame:CGRectMake(0, 0, image.size.width, image.size.height)];
     [button setImage:image forState:UIControlStateNormal];
     [button addTarget:self action:@selector(showAddPostView) forControlEvents:UIControlEventTouchUpInside];
+    button.accessibilityLabel = [self newPostAccessibilityLabel];
+    button.accessibilityIdentifier = @"addpost";
     UIBarButtonItem *composeButtonItem = [[UIBarButtonItem alloc] initWithCustomView:button];
 
     [WPStyleGuide setRightBarButtonItemWithCorrectSpacing:composeButtonItem forNavigationItem:self.navigationItem];
@@ -64,7 +70,6 @@
     self.infiniteScrollEnabled = YES;
     
     [WPStyleGuide configureColorsForView:self.view andTableView:self.tableView];
-    
 }
 
 - (void)viewDidAppear:(BOOL)animated
@@ -211,6 +216,8 @@
     UINavigationController *navController = [[UINavigationController alloc] initWithRootViewController:editPostViewController];
     [navController setToolbarHidden:NO]; // Fixes incorrect toolbar animation.
     navController.modalPresentationStyle = UIModalPresentationCurrentContext;
+    navController.restorationIdentifier = WPEditorNavigationRestorationID;
+    navController.restorationClass = [EditPostViewController class];
     [self.view.window.rootViewController presentViewController:navController animated:YES completion:nil];
 }
 

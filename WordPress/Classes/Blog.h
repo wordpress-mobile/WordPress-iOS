@@ -73,8 +73,9 @@
 - (NSString *)urlWithPath:(NSString *)path;
 - (NSString *)adminUrlWithPath:(NSString *)path;
 - (NSArray *)getXMLRPCArgsWithExtra:(id)extra;
-- (int)numberOfPendingComments;
+- (NSUInteger)numberOfPendingComments;
 - (NSDictionary *) getImageResizeDimensions;
+- (BOOL)supportsFeaturedImages;
 
 #pragma mark - 
 

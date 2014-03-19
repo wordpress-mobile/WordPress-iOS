@@ -11,6 +11,4 @@
 
 @interface NotificationsViewController : WPTableViewController
 
-- (void)clearNotificationsBadge;
-
 @end

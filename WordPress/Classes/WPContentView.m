@@ -20,6 +20,7 @@
 #import "ContentActionButton.h"
 #import "NSDate+StringFormatting.h"
 #import "UIColor+Helpers.h"
+#import "UIImage+Util.h"
 #import "WPTableViewCell.h"
 #import "DTTiledLayerWithoutFade.h"
 #import "ReaderMediaView.h"
@@ -466,7 +467,10 @@ const CGFloat RPVControlButtonBorderSize = 0.0f;
     // and correctly update. 
     dispatch_async(dispatch_get_main_queue(), ^{
         [self refreshMediaLayout];
-        [self.delegate contentViewDidLoadAllMedia:self]; // So the delegate can correct its size.
+        
+        if ([self.delegate respondsToSelector:@selector(contentViewDidLoadAllMedia:)]) {
+            [self.delegate contentViewDidLoadAllMedia:self]; // So the delegate can correct its size.
+        }
     });
 }
 
@@ -638,6 +642,9 @@ const CGFloat RPVControlButtonBorderSize = 0.0f;
 		[videoView setContentURL:attachment.contentURL ofType:videoType success:^(id readerVideoView) {
 			[self handleMediaViewLoaded:readerVideoView];
 		} failure:^(id readerVideoView, NSError *error) {
+            // if the image is 404, just show a black image.
+            ReaderVideoView *videoView = (ReaderVideoView *)readerVideoView;
+            videoView.image = [UIImage imageWithColor:[UIColor blackColor] havingSize:CGSizeMake(2.0f, 1.0f)];
 			[self handleMediaViewLoaded:readerVideoView];
 		}];
         

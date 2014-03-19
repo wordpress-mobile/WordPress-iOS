@@ -10,7 +10,9 @@
 
 @class AbstractPost;
 
-@interface EditPostViewController : UITableViewController
+extern NSString *const WPEditorNavigationRestorationID;
+
+@interface EditPostViewController : UIViewController
 
 /*
  Initialize the editor with the specified post.

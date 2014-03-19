@@ -19,7 +19,6 @@
 #import <Simperium/Simperium.h>
 
 #import "WordPressAppDelegate.h"
-#import "CameraPlusPickerManager.h"
 #import "ContextManager.h"
 #import "Media.h"
 #import "NotificationsManager.h"
@@ -58,8 +57,6 @@ static NSString * const WPBlogListNavigationRestorationID = @"WPBlogListNavigati
 static NSString * const WPReaderNavigationRestorationID = @"WPReaderNavigationID";
 static NSString * const WPNotificationsNavigationRestorationID = @"WPNotificationsNavigationID";
 static NSInteger const IndexForMeTab = 2;
-static NSInteger const NotificationNewComment = 1001;
-static NSInteger const NotificationNewSocial = 1002;
 static NSString *const CameraPlusImagesNotification = @"CameraPlusImagesNotification";
 
 @interface WordPressAppDelegate () <UITabBarControllerDelegate, CrashlyticsDelegate, UIAlertViewDelegate, BITHockeyManagerDelegate>
@@ -168,25 +165,6 @@ static NSString *const CameraPlusImagesNotification = @"CameraPlusImagesNotifica
         returnValue = YES;
     }
 
-    if ([[CameraPlusPickerManager sharedManager] shouldHandleURLAsCameraPlusPickerCallback:url]) {
-        /* Note that your application has been in the background and may have been terminated.
-         * The only CameraPlusPickerManager state that is restored is the pickerMode, which is
-         * restored to indicate the mode used to pick images.
-         */
-
-        /* Handle the callback and notify the delegate. */
-        [[CameraPlusPickerManager sharedManager] handleCameraPlusPickerCallback:url usingBlock:^(CameraPlusPickedImages *images) {
-            DDLogInfo(@"Camera+ returned %@", [images images]);
-            UIImage *image = [images image];
-            UIImageWriteToSavedPhotosAlbum(image, nil, nil, nil);
-            NSDictionary *userInfo = [NSDictionary dictionaryWithObject:image forKey:@"image"];
-            [[NSNotificationCenter defaultCenter] postNotificationName:CameraPlusImagesNotification object:nil userInfo:userInfo];
-        } cancelBlock:^(void) {
-            DDLogInfo(@"Camera+ picker canceled");
-        }];
-        returnValue = YES;
-    }
-
     if ([WordPressApi handleOpenURL:url]) {
         returnValue = YES;
     }
@@ -273,7 +251,6 @@ static NSString *const CameraPlusImagesNotification = @"CameraPlusImagesNotifica
     DDLogInfo(@"%@ %@", self, NSStringFromSelector(_cmd));
     
     [WPMobileStats recordAppOpenedForEvent:StatsEventAppOpened];
-    [self clearBadgeAndSyncItemsIfNotificationsScreenActive];
 }
 
 - (BOOL)application:(UIApplication *)application shouldSaveApplicationState:(NSCoder *)coder {
@@ -283,7 +260,6 @@ static NSString *const CameraPlusImagesNotification = @"CameraPlusImagesNotifica
 - (BOOL)application:(UIApplication *)application shouldRestoreApplicationState:(NSCoder *)coder {
     return YES;
 }
-
 
 #pragma mark - Push Notification delegate
 
@@ -309,17 +285,8 @@ static NSString *const CameraPlusImagesNotification = @"CameraPlusImagesNotifica
 
 #pragma mark - Custom methods
 
-- (void)clearBadgeAndSyncItemsIfNotificationsScreenActive {
-    NSInteger notificationsTabIndex = [[self.tabBarController viewControllers] indexOfObject:self.notificationsViewController.navigationController];
-    if ([self.tabBarController selectedIndex] == notificationsTabIndex) {
-       [self.notificationsViewController clearNotificationsBadge];
-    }
-}
-
 - (void)showWelcomeScreenIfNeededAnimated:(BOOL)animated {
     if ([self noBlogsAndNoWordPressDotComAccount]) {
-        [WordPressAppDelegate wipeAllKeychainItems];
-
         UIViewController *presenter = self.window.rootViewController;
         if (presenter.presentedViewController) {
             [presenter dismissViewControllerAnimated:NO completion:nil];
@@ -365,6 +332,7 @@ static NSString *const CameraPlusImagesNotification = @"CameraPlusImagesNotifica
     [[UIToolbar appearance] setBarTintColor:[WPStyleGuide newKidOnTheBlockBlue]];
     [[UISwitch appearance] setOnTintColor:[WPStyleGuide newKidOnTheBlockBlue]];
     [[UIApplication sharedApplication] setStatusBarStyle:UIStatusBarStyleLightContent];
+    [[UITabBarItem appearance] setTitleTextAttributes:@{NSFontAttributeName: [UIFont fontWithName:@"OpenSans" size:10.0]} forState:UIControlStateNormal];
 
     [[UINavigationBar appearanceWhenContainedIn:[UIReferenceLibraryViewController class], nil] setBackgroundImage:nil forBarMetrics:UIBarMetricsDefault];
     [[UINavigationBar appearanceWhenContainedIn:[UIReferenceLibraryViewController class], nil] setBarTintColor:[WPStyleGuide newKidOnTheBlockBlue]];
@@ -404,6 +372,7 @@ static NSString *const CameraPlusImagesNotification = @"CameraPlusImagesNotifica
     UINavigationController *readerNavigationController = [[UINavigationController alloc] initWithRootViewController:self.readerPostsViewController];
     readerNavigationController.navigationBar.translucent = NO;
     readerNavigationController.tabBarItem.image = [UIImage imageNamed:@"icon-tab-reader"];
+    readerNavigationController.tabBarItem.selectedImage = [UIImage imageNamed:@"icon-tab-reader-filled"];
     readerNavigationController.restorationIdentifier = WPReaderNavigationRestorationID;
     self.readerPostsViewController.title = NSLocalizedString(@"Reader", nil);
     [readerNavigationController.tabBarItem setTitlePositionAdjustment:tabBarTitleOffset];
@@ -412,6 +381,7 @@ static NSString *const CameraPlusImagesNotification = @"CameraPlusImagesNotifica
     UINavigationController *notificationsNavigationController = [[UINavigationController alloc] initWithRootViewController:self.notificationsViewController];
     notificationsNavigationController.navigationBar.translucent = NO;
     notificationsNavigationController.tabBarItem.image = [UIImage imageNamed:@"icon-tab-notifications"];
+    notificationsNavigationController.tabBarItem.selectedImage = [UIImage imageNamed:@"icon-tab-notifications-filled"];
     notificationsNavigationController.restorationIdentifier = WPNotificationsNavigationRestorationID;
     self.notificationsViewController.title = NSLocalizedString(@"Notifications", @"");
     [notificationsNavigationController.tabBarItem setTitlePositionAdjustment:tabBarTitleOffset];
@@ -420,6 +390,7 @@ static NSString *const CameraPlusImagesNotification = @"CameraPlusImagesNotifica
     UINavigationController *blogListNavigationController = [[UINavigationController alloc] initWithRootViewController:self.blogListViewController];
     blogListNavigationController.navigationBar.translucent = NO;
     blogListNavigationController.tabBarItem.image = [UIImage imageNamed:@"icon-tab-blogs"];
+    blogListNavigationController.tabBarItem.selectedImage = [UIImage imageNamed:@"icon-tab-blogs-filled"];
     blogListNavigationController.restorationIdentifier = WPBlogListNavigationRestorationID;
     self.blogListViewController.title = NSLocalizedString(@"Me", @"");
     [blogListNavigationController.tabBarItem setTitlePositionAdjustment:tabBarTitleOffset];
@@ -492,6 +463,8 @@ static NSString *const CameraPlusImagesNotification = @"CameraPlusImagesNotifica
     UINavigationController *navController = [[UINavigationController alloc] initWithRootViewController:editPostViewController];
     navController.modalPresentationStyle = UIModalPresentationCurrentContext;
     navController.navigationBar.translucent = NO;
+    navController.restorationIdentifier = WPEditorNavigationRestorationID;
+    navController.restorationClass = [EditPostViewController class];
     [navController setToolbarHidden:NO]; // Make the toolbar visible here to avoid a weird left/right transition when the VC appears.
     [self.window.rootViewController presentViewController:navController animated:YES completion:nil];
 }
@@ -564,6 +537,22 @@ static NSString *const CameraPlusImagesNotification = @"CameraPlusImagesNotifica
             [self showPostTab];
         }
         return NO;
+    } else if ([tabBarController.viewControllers indexOfObject:viewController] == 2) {
+        // If the user has one blog then we don't want to present them with the main "me"
+        // screen where they can see all their blogs. In the case of only one blog just show
+        // the main blog details screen
+
+        // Don't kick of this auto selecting behavior if the user taps the the active tab as it
+        // would break from standard iOS UX
+        if (tabBarController.selectedIndex != 2) {
+            UINavigationController *navController = (UINavigationController *)viewController;
+            BlogListViewController *blogListViewController = (BlogListViewController *)navController.viewControllers[0];
+            if ([blogListViewController shouldBypassBlogListViewControllerWhenSelectedFromTabBar]) {
+                if ([navController.visibleViewController isKindOfClass:[blogListViewController class]]) {
+                    [blogListViewController bypassBlogListViewController];
+                }
+            }
+        }
     }
     return YES;
 }
@@ -952,18 +941,6 @@ static NSString *const CameraPlusImagesNotification = @"CameraPlusImagesNotifica
 
 #pragma mark - Keychain
 
-+ (void)wipeAllKeychainItems {
-    NSArray *secItemClasses = @[(__bridge id)kSecClassGenericPassword,
-                                (__bridge id)kSecClassInternetPassword,
-                                (__bridge id)kSecClassCertificate,
-                                (__bridge id)kSecClassKey,
-                                (__bridge id)kSecClassIdentity];
-    for (id secItemClass in secItemClasses) {
-        NSDictionary *spec = @{(__bridge id)kSecClass : secItemClass};
-        SecItemDelete((__bridge CFDictionaryRef)spec);
-    }
-}
-
 + (void)fixKeychainAccess {
 	NSDictionary *query = @{
                             (__bridge id)kSecClass: (__bridge id)kSecClassGenericPassword,
@@ -1130,7 +1107,7 @@ static NSString *const CameraPlusImagesNotification = @"CameraPlusImagesNotifica
 
 - (void)toggleExtraDebuggingIfNeeded {
     
-	int num_blogs = [Blog countWithContext:[[ContextManager sharedInstance] mainContext]];
+	NSInteger num_blogs = [Blog countWithContext:[[ContextManager sharedInstance] mainContext]];
 	BOOL authed = self.isWPcomAuthenticated;
 	if (num_blogs == 0 && !authed) {
 		// When there are no blogs in the app the settings screen is unavailable.

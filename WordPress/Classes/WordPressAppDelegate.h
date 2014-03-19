@@ -49,7 +49,6 @@
 - (void)showMeTab;
 - (void)showPostTab;
 - (void)switchTabToPostsListForPost:(AbstractPost *)post;
-- (void)clearBadgeAndSyncItemsIfNotificationsScreenActive;
 
 /*
  * Navigates to the StatsViewController for the given blog

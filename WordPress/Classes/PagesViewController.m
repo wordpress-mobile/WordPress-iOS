@@ -46,6 +46,9 @@
     [self showAddPostView];
 }
 
+- (NSString *)newPostAccessibilityLabel {
+    return NSLocalizedString(@"New Page", @"The accessibility value of the new page button.");
+}
 
 - (void)syncItemsViaUserInteraction:(BOOL)userInteraction success:(void (^)())success failure:(void (^)(NSError *))failure {
     [self.blog syncPagesWithSuccess:success failure:failure loadMore: NO];
@@ -57,6 +60,8 @@
     UINavigationController *navController = [[UINavigationController alloc] initWithRootViewController:editPostViewController];
     [navController setToolbarHidden:NO]; // Fixes wrong toolbar icon animation.
     navController.modalPresentationStyle = UIModalPresentationFullScreen;
+    navController.restorationIdentifier = WPEditorNavigationRestorationID;
+    navController.restorationClass = [EditPostViewController class];
     [self.navigationController presentViewController:navController animated:YES completion:nil];
 }
 

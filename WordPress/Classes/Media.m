@@ -170,7 +170,7 @@ NSString *const VideoUploadFailedNotification = @"VideoUploadFailed";
                 NSDictionary *response = (NSDictionary *)responseObject;
 
                 if (![response isKindOfClass:[NSDictionary class]]) {
-                    NSError *error = [NSError errorWithDomain:NSURLErrorDomain code:NSURLErrorBadServerResponse userInfo:@{NSLocalizedDescriptionKey: NSLocalizedString(@"The server returned an empty response. This usually means you need to increase the memory limit in your blog", @"")}];
+                    NSError *error = [NSError errorWithDomain:NSURLErrorDomain code:NSURLErrorBadServerResponse userInfo:@{NSLocalizedDescriptionKey: NSLocalizedString(@"The server returned an empty response. This usually means you need to increase the memory limit for your site.", @"")}];
                     failureBlock(operation, error);
                     return;
                 }
@@ -394,7 +394,7 @@ NSString *const VideoUploadFailedNotification = @"VideoUploadFailed";
 	self.creationDate = [NSDate date];
 	self.filename = filename;
 	self.localURL = filepath;
-	self.filesize = [NSNumber numberWithInt:(imageData.length/1024)];
+	self.filesize = [NSNumber numberWithUnsignedInteger:(imageData.length/1024)];
 	self.mediaType = @"image";
 	self.thumbnail = UIImageJPEGRepresentation(imageThumbnail, 0.90);
 	self.width = [NSNumber numberWithInt:resizedImage.size.width];

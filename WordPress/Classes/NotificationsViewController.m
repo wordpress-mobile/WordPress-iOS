@@ -20,6 +20,8 @@
 #import "Note.h"
 #import "ContextManager.h"
 #import "Constants.h"
+#import "NotificationsManager.h"
+#import "NotificationSettingsViewController.h"
 
 
 
@@ -91,6 +93,7 @@
 
 - (void)dealloc {
     [[NSNotificationCenter defaultCenter] removeObserver:self];
+    [[UIApplication sharedApplication] removeObserver:self forKeyPath:@"applicationIconBadgeNumber"];
 }
 
 - (void)viewDidLoad
@@ -103,6 +106,22 @@
     self.tableView.separatorInset = UIEdgeInsetsMake(0, 25, 0, 0);
     self.infiniteScrollEnabled = NO;
 	self.refreshControl = nil;
+    
+    if ([NotificationsManager deviceRegisteredForPushNotifications]) {
+        UIBarButtonItem *pushSettings = [[UIBarButtonItem alloc] initWithTitle:NSLocalizedString(@"Manage", @"")
+                                                                         style:UIBarButtonItemStylePlain
+                                                                        target:self
+                                                                        action:@selector(showNotificationSettings)];
+        self.navigationItem.rightBarButtonItem = pushSettings;
+    }
+    
+    // Watch for application badge number changes
+    UIApplication *application = [UIApplication sharedApplication];
+    [application addObserver:self
+                  forKeyPath:@"applicationIconBadgeNumber"
+                     options:NSKeyValueObservingOptionNew
+                     context:nil];
+    [self updateTabBarBadgeNumber];
 }
 
 - (void)viewWillAppear:(BOOL)animated {
@@ -124,8 +143,6 @@
     if (self.tableView.contentOffset.y == 0) {
         [self pruneOldNotes];
     }
-
-    [self clearNotificationsBadge];
 }
 
 - (void)viewDidDisappear:(BOOL)animated {
@@ -135,8 +152,35 @@
 	}
 }
 
+#pragma mark - NSObject(NSKeyValueObserving) methods
+
+- (void)observeValueForKeyPath:(NSString *)keyPath
+                      ofObject:(id)object
+                        change:(NSDictionary *)change
+                       context:(void *)context {
+    if ([keyPath isEqualToString:@"applicationIconBadgeNumber"]) {
+        [self updateTabBarBadgeNumber];
+    }
+}
 
 #pragma mark - Custom methods
+
+- (void)updateTabBarBadgeNumber {
+    UIApplication *application = [UIApplication sharedApplication];
+    NSInteger count = application.applicationIconBadgeNumber;
+    
+    NSString *countString = count == 0 ? nil : [NSString stringWithFormat:@"%d", count];
+    self.navigationController.tabBarItem.badgeValue = countString;
+}
+
+- (void)updateSyncDate {
+    // get the most recent note
+    NSArray *notes = self.resultsController.fetchedObjects;
+    if ([notes count] > 0) {
+        Note *note = [notes objectAtIndex:0];
+        [[[WPAccount defaultWordPressComAccount] restApi] updateNoteLastSeenTime:note.timestamp success:nil failure:nil];
+    }
+}
 
 - (void)pruneOldNotes {
     NSNumber *pruneBefore;
@@ -159,11 +203,24 @@
     [Note pruneOldNotesBefore:pruneBefore withContext:self.resultsController.managedObjectContext];
 }
 
-#pragma mark - Public methods
-
-- (void)clearNotificationsBadge {
-    [UIApplication sharedApplication].applicationIconBadgeNumber = 0;
+- (void)showNotificationSettings {
+    [WPMobileStats trackEventForWPCom:StatsEventNotificationsClickedManageNotifications];
+    
+    NotificationSettingsViewController *notificationSettingsViewController = [[NotificationSettingsViewController alloc] initWithStyle:UITableViewStyleGrouped];
+    UINavigationController *navigationController = [[UINavigationController alloc] initWithRootViewController:notificationSettingsViewController];
+    navigationController.navigationBar.translucent = NO;
+    navigationController.modalPresentationStyle = UIModalPresentationFormSheet;
+    
+    UIBarButtonItem *closeButton = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemDone target:self action:@selector(closeNotificationSettings)];
+    notificationSettingsViewController.navigationItem.rightBarButtonItem = closeButton;
+    
+    [self presentViewController:navigationController animated:YES completion:nil];
 }
+
+- (void)closeNotificationSettings {
+    [self dismissViewControllerAnimated:YES completion:nil];
+}
+
 
 #pragma mark - UITableViewDelegate
 
@@ -246,8 +303,11 @@
     
     Note *note = [self.resultsController objectAtIndexPath:indexPath];
     BOOL hasDetailsView = [self noteHasDetailView:note];
-    if (!hasDetailsView) {
+    BOOL isStatsNote = [note isStatsEvent];
+    
+    if (!hasDetailsView && !isStatsNote) {
         cell.accessoryType = UITableViewCellAccessoryNone;
+        cell.selectionStyle = UITableViewCellSelectionStyleNone;
     }
 }
 

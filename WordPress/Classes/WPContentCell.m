@@ -98,6 +98,7 @@ CGFloat const WPContentCellDateImageSide = 16.0;
     _gravatarImageView.image = nil;
     _unreadView.hidden = YES;
 	self.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
+    self.selectionStyle = UITableViewCellSelectionStyleDefault;
 }
 
 - (void)layoutSubviews
@@ -281,7 +282,8 @@ CGFloat const WPContentCellDateImageSide = 16.0;
         
         if (dateFormatter == nil) {
             dateFormatter = [[NSDateFormatter alloc] init];
-            [dateFormatter setDateFormat:@"yyyy-MM-dd '|' HH:mm a"];
+            [dateFormatter setTimeStyle:NSDateFormatterShortStyle];
+            [dateFormatter setDateStyle:NSDateFormatterMediumStyle];
         }
         
         return [dateFormatter stringFromDate:date];

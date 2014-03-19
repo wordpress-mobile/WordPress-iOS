@@ -27,6 +27,7 @@
 #import "WPNUXBackButton.h"
 #import "WPAccount.h"
 #import "Note.h"
+#import "ContextManager.h"
 
 static NSString *const ForgotPasswordDotComBaseUrl = @"https://wordpress.com";
 static NSString *const ForgotPasswordRelativeUrl = @"/wp-login.php?action=lostpassword&redirect_to=wordpress%3A%2F%2F";
@@ -330,7 +331,7 @@ CGFloat const GeneralWalkthroughStatusBarOffset = 20.0;
 
 - (void)addMainView
 {
-    _mainView = [[UIView alloc] init];;
+    _mainView = [[UIView alloc] init];
     _mainView.frame = self.view.bounds;
     _mainView.autoresizingMask = UIViewAutoresizingFlexibleHeight | UIViewAutoresizingFlexibleWidth;
     [self.view addSubview:_mainView];
@@ -545,12 +546,12 @@ CGFloat const GeneralWalkthroughStatusBarOffset = 20.0;
     _siteUrlText.frame = CGRectIntegral(CGRectMake(x, y, GeneralWalkthroughTextFieldWidth, GeneralWalkthroughTextFieldHeight));
 
     // Layout Sign in Button
-    x = (viewWidth - GeneralWalkthroughButtonWidth) / 2.0;;
+    x = (viewWidth - GeneralWalkthroughButtonWidth) / 2.0;
     y = CGRectGetMaxY(_siteUrlText.frame) + GeneralWalkthroughStandardOffset;
     _signInButton.frame = CGRectIntegral(CGRectMake(x, y, GeneralWalkthroughButtonWidth, GeneralWalkthroughButtonHeight));
 
     // Layout Lost password Button
-    x = (viewWidth - GeneralWalkthroughButtonWidth) / 2.0;;
+    x = (viewWidth - GeneralWalkthroughButtonWidth) / 2.0;
     y = CGRectGetMaxY(_signInButton.frame) + 0.5 * GeneralWalkthroughStandardOffset;
     CGFloat forgotPasswordHeight = [_forgotPassword.titleLabel.text sizeWithAttributes:@{NSFontAttributeName:_forgotPassword.titleLabel.font}].height;
     _forgotPassword.frame = CGRectIntegral(CGRectMake(x, y, GeneralWalkthroughButtonWidth, forgotPasswordHeight));
@@ -824,7 +825,7 @@ CGFloat const GeneralWalkthroughStatusBarOffset = 20.0;
 
 - (void)createSelfHostedAccountAndBlogWithUsername:(NSString *)username password:(NSString *)password xmlrpc:(NSString *)xmlrpc options:(NSDictionary *)options
 {
-    WPAccount *account = [WPAccount createOrUpdateSelfHostedAccountWithXmlrpc:xmlrpc username:username andPassword:password];
+    WPAccount *account = [WPAccount createOrUpdateSelfHostedAccountWithXmlrpc:xmlrpc username:username andPassword:password withContext:[[ContextManager sharedInstance] mainContext]];
     NSString *blogName = [options stringForKeyPath:@"blog_title.value"];
     NSString *url = [options stringForKeyPath:@"home_url.value"];
     if (!url) {

@@ -60,6 +60,7 @@ extern NSString *const StatsEventWebviewSentArticleToGooglePlus;
 // Notifications
 extern NSString *const StatsPropertyNotificationsOpened;
 extern NSString *const StatsPropertyNotificationsOpenedDetails;
+extern NSString *const StatsEventNotificationsClickedManageNotifications;
 
 // Notifications Detail
 extern NSString *const StatsEventNotificationsDetailClickedReplyButton;
@@ -106,6 +107,8 @@ extern NSString *const StatsPropertyPostDetailEditorOpenedOpenedByPostsView;
 extern NSString *const StatsPropertyPostDetailEditorOpenedOpenedByTabBarButton;
 extern NSString *const StatsPropertyPostDetailClickedBlogSelector;
 extern NSString *const StatsPropertyPostDetailHasExternalKeyboard;
+extern NSString *const StatsPropertyPostDetailWordCount;
+extern NSString *const StatsPropertyPostDetailWordDiffCount;
 
 // Post Detail - Settings
 extern NSString *const StatsPropertyPostDetailSettingsClickedStatus;
@@ -208,6 +211,9 @@ extern NSString *const StatsEventAddBlogsClickedSelectAll;
 extern NSString *const StatsEventAddBlogsClickedDeselectAll;
 extern NSString *const StatsEventAddBlogsClickedAddSelected;
 
+// Stats
+extern NSString *const StatsEventStatsClickedOnWebVersion;
+
 @interface WPMobileStats : NSObject
 
 + (void)initializeStats;
@@ -240,6 +246,7 @@ extern NSString *const StatsEventAddBlogsClickedAddSelected;
  */
 + (void)clearPropertiesForAllEvents;
 + (void)incrementProperty:(NSString *)property forEvent:(NSString *)event;
++ (void)setValue:(id)value forProperty:(NSString *)property forEvent:(NSString *)event;
 + (void)flagProperty:(NSString *)property forEvent:(NSString *)event;
 + (void)unflagProperty:(NSString *)property forEvent:(NSString *)event;
 + (void)flagSuperProperty:(NSString *)property;

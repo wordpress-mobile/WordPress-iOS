@@ -124,11 +124,37 @@ const NSUInteger WPNoteKeepCount = 20;
 }
 
 - (Blog *)blogForStatsEvent {
-    NSSet *blogs = [WPAccount defaultWordPressComAccount].blogs;
-    blogs = [blogs filteredSetUsingPredicate:[NSPredicate predicateWithFormat:@"%@ CONTAINS[cd] self.blogName", self.subjectText]];
-    if (blogs.count) {
-        return [blogs anyObject];
+    NSScanner *scanner = [NSScanner scannerWithString:self.subject];
+    NSString *blogName;
+    
+    while ([scanner isAtEnd] == NO) {
+        [scanner scanUpToString:@"\"" intoString:NULL];
+        [scanner scanString:@"\"" intoString:NULL];
+        [scanner scanUpToString:@"\"" intoString:&blogName];
+        [scanner scanString:@"\"" intoString:NULL];
     }
+
+    NSPredicate *subjectPredicate = [NSPredicate predicateWithFormat:@"self.blogName CONTAINS[cd] %@", blogName];
+    NSPredicate *wpcomPredicate = [NSPredicate predicateWithFormat:@"self.account.isWpcom == YES"];
+    NSPredicate *jetpackPredicate = [NSPredicate predicateWithFormat:@"self.jetpackAccount != nil"];
+    NSPredicate *statsBlogsPredicate = [NSCompoundPredicate orPredicateWithSubpredicates:@[wpcomPredicate, jetpackPredicate]];
+    NSPredicate *combinedPredicate = [NSCompoundPredicate andPredicateWithSubpredicates:@[subjectPredicate, statsBlogsPredicate]];
+
+    NSFetchRequest *fetchRequest = [NSFetchRequest fetchRequestWithEntityName:@"Blog"];
+    fetchRequest.predicate = combinedPredicate;
+    
+    NSError *error = nil;
+    NSArray *blogs = [self.managedObjectContext executeFetchRequest:fetchRequest error:&error];
+    
+    if (error) {
+        DDLogError(@"Error while retrieving blogs with stats: %@", error);
+        return nil;
+    }
+
+    if (blogs.count > 0) {
+        return [blogs firstObject];
+    }
+    
     return nil;
 }
 
@@ -257,3 +283,4 @@ const NSUInteger WPNoteKeepCount = 20;
 }
 
 @end
+

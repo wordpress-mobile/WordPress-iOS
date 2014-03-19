@@ -11,21 +11,19 @@
 #import <Accounts/Accounts.h>
 #import <Social/Social.h>
 #import "WPFriendFinderViewController.h"
-#import "WordPressAppDelegate.h"
-#import "ReachabilityUtils.h"
 #import "Constants.h"
-
-typedef void (^DismissBlock)(NSInteger buttonIndex);
-typedef void (^CancelBlock)();
 
 static NSString *const FacebookAppID = @"249643311490";
 static NSString *const FacebookLoginNotificationName = @"FacebookLogin";
 static NSString *const FacebookNoLoginNotificationName = @"FacebookNoLogin";
 static NSString *const AccessedAddressBookPreference = @"AddressBookAccessGranted";
 
-@interface WPFriendFinderViewController () <UIAlertViewDelegate>
+static NSString *const SourceAddressBook = @"Address Book";
+static NSString *const SourceTwitter = @"Twitter";
+static NSString *const SourceFacebook = @"Facebook";
 
-@property (nonatomic, copy) DismissBlock dismissBlock;
+@interface WPFriendFinderViewController ()
+
 @property (nonatomic, strong) UIActivityIndicatorView *activityView;
 
 @end
@@ -57,7 +55,6 @@ static NSString *const AccessedAddressBookPreference = @"AddressBookAccessGrante
 
 - (void)dealloc {
     [[NSNotificationCenter defaultCenter] removeObserver:self];
-    self.dismissBlock = nil;
     self.activityView = nil;
 }
 
@@ -91,53 +88,44 @@ static NSString *const AccessedAddressBookPreference = @"AddressBookAccessGrante
 }
 
 - (void)findEmails {
-    NSString *appName = [[[NSBundle mainBundle] infoDictionary] objectForKey:@"CFBundleDisplayName"];
-    NSString *title = [NSString stringWithFormat:@"“%@” %@", appName, NSLocalizedString(@"Would Like Access to Address Book", @"")];
-    NSString *message = NSLocalizedString(@"Your contacts will be transmitted securely and will not be stored on our servers.", @"");
-    
-    [self alertWithTitle:title
-                 message:message
-       cancelButtonTitle:NSLocalizedString(@"Don't Allow", @"")
-      confirmButtonTitle:NSLocalizedString(@"OK", @"")
-            dismissBlock:^(int buttonIndex) {
-                
-                if (1 == buttonIndex) {
-                    ABAddressBookRef address_book = ABAddressBookCreateWithOptions(NULL, NULL);
-                    CFArrayRef people = ABAddressBookCopyArrayOfAllPeople(address_book);
-                    CFIndex count = CFArrayGetCount(people);
-                    
-                    NSMutableArray *addresses = [NSMutableArray arrayWithCapacity:count];
-                    
-                    for (CFIndex i = 0; i<count; i++) {
-                        ABRecordRef person = CFArrayGetValueAtIndex(people, i);
-                        ABMultiValueRef emails = ABRecordCopyValue(person, kABPersonEmailProperty);
-                        for (CFIndex j = 0; j<ABMultiValueGetCount(emails); j++) {
-                            NSString *email = (NSString *)CFBridgingRelease(ABMultiValueCopyValueAtIndex(emails, j));
-                            [addresses addObject:email];
-                        }
-                        CFRelease(emails);
+    ABAddressBookRef addressBookForAccessCheck = ABAddressBookCreateWithOptions(NULL, NULL);
+    if (addressBookForAccessCheck) {
+        addressBookForAccessCheck = CFAutorelease(addressBookForAccessCheck);
+        ABAddressBookRequestAccessWithCompletion(addressBookForAccessCheck, ^(bool granted, CFErrorRef error) {
+            if (granted) {
+                ABAddressBookRef addressBook = ABAddressBookCreateWithOptions(NULL, NULL);
+                addressBook = CFAutorelease(addressBook);
+                CFArrayRef people = ABAddressBookCopyArrayOfAllPeople(addressBook);
+                CFIndex count = CFArrayGetCount(people);
+                NSMutableArray *addresses = [NSMutableArray arrayWithCapacity:count];
+
+                for (CFIndex i = 0; i < count; i++) {
+                    ABRecordRef person = CFArrayGetValueAtIndex(people, i);
+                    ABMultiValueRef emails = ABRecordCopyValue(person, kABPersonEmailProperty);
+                    for (CFIndex j = 0; j<ABMultiValueGetCount(emails); j++) {
+                        NSString *email = (NSString *)CFBridgingRelease(ABMultiValueCopyValueAtIndex(emails, j));
+                        [addresses addObject:email];
                     }
-                    CFRelease(people);
-                    CFRelease(address_book);
-                    
-                    // pipe this addresses into the webview
-                    dispatch_async(dispatch_get_main_queue(), ^{
+                    CFRelease(emails);
+                }
+                CFRelease(people);
+
+                dispatch_async(dispatch_get_main_queue(), ^{
+                    if (addresses.count == 0) {
+                        [self showNoAccountsAlertFor:SourceAddressBook];
+                    } else {
                         NSData *jsonData = [NSJSONSerialization dataWithJSONObject:addresses options:0 error:nil];
                         NSString *json = [[NSString alloc] initWithData:jsonData encoding:NSUTF8StringEncoding];
                         [self.webView stringByEvaluatingJavaScriptFromString:[NSString stringWithFormat:@"FriendFinder.findByEmail(%@)", json]];
-                    });
-                } else {
-                    dispatch_async(dispatch_get_main_queue(), ^{
-                        [self.webView stringByEvaluatingJavaScriptFromString:@"FriendFinder.findByEmail()"];
-                    });
-
-                }
-                
-            }];
-    
-    return;
-    
-
+                    }
+                });
+            } else {
+                [self showNotAuthorizedAlertFor:SourceAddressBook];
+            }
+        });
+    } else {
+        [self showNotAuthorizedAlertFor:SourceAddressBook];
+    }
 }
 
 - (void)findTwitterFriends {
@@ -153,26 +141,28 @@ static NSString *const AccessedAddressBookPreference = @"AddressBookAccessGrante
                                     @"-1", @"cursor",
                                     nil];
             
-            NSURL *followingURL = [NSURL URLWithString:@"http://api.twitter.com/1/friends/ids.json"];
+            NSURL *followingURL = [NSURL URLWithString:@"https://api.twitter.com/1.1/friends/ids.json"];
             NSArray *twitterAccounts = [store accountsWithAccountType:twitterAccountType];
-            [twitterAccounts enumerateObjectsUsingBlock:^(id obj, NSUInteger idx, BOOL *stop) {
-                ACAccount *account = (ACAccount *)obj;
-                SLRequest *request = [SLRequest requestForServiceType:SLServiceTypeTwitter
-                                                        requestMethod:SLRequestMethodGET
-                                                                  URL:followingURL
-                                                           parameters:params];
-                request.account = account;
-                [request performRequestWithHandler:^(NSData *responseData, NSHTTPURLResponse *urlResponse, NSError *error) {
-                    NSString *responseJSON = [[NSString alloc] initWithData:responseData encoding:NSUTF8StringEncoding];
-                    dispatch_async(dispatch_get_main_queue(), ^{
-                        [self.webView stringByEvaluatingJavaScriptFromString:[NSString stringWithFormat:@"FriendFinder.findByTwitterID(%@, '%@')", responseJSON, account.accountDescription]];
-                    });
+            if (twitterAccounts.count == 0) {
+                [self showNoAccountsAlertFor:SourceTwitter];
+            } else {
+                [twitterAccounts enumerateObjectsUsingBlock:^(id obj, NSUInteger idx, BOOL *stop) {
+                    ACAccount *account = (ACAccount *)obj;
+                    SLRequest *request = [SLRequest requestForServiceType:SLServiceTypeTwitter
+                                                            requestMethod:SLRequestMethodGET
+                                                                      URL:followingURL
+                                                               parameters:params];
+                    request.account = account;
+                    [request performRequestWithHandler:^(NSData *responseData, NSHTTPURLResponse *urlResponse, NSError *error) {
+                        NSString *responseJSON = [[NSString alloc] initWithData:responseData encoding:NSUTF8StringEncoding];
+                        dispatch_async(dispatch_get_main_queue(), ^{
+                            [self.webView stringByEvaluatingJavaScriptFromString:[NSString stringWithFormat:@"FriendFinder.findByTwitterID(%@, '%@')", responseJSON, account.accountDescription]];
+                        });
+                    }];
                 }];
-            }];
+            }
         } else {
-            dispatch_async(dispatch_get_main_queue(), ^{
-                [self.webView stringByEvaluatingJavaScriptFromString:@"FriendFinder.findByTwitterID()"];
-            });
+            [self showNotAuthorizedAlertFor:SourceTwitter];
         }
     }];
 }
@@ -190,7 +180,7 @@ static NSString *const AccessedAddressBookPreference = @"AddressBookAccessGrante
 
     NSDictionary *options = @{
                               ACFacebookAppIdKey: FacebookAppID,
-                              ACFacebookPermissionsKey: @[]
+                              ACFacebookPermissionsKey: @[@"email"]
                               };
     [store requestAccessToAccountsWithType:[store accountTypeWithAccountTypeIdentifier:ACAccountTypeIdentifierFacebook] options:options completion:^(BOOL granted, NSError *error) {
         if (granted) {
@@ -207,54 +197,68 @@ static NSString *const AccessedAddressBookPreference = @"AddressBookAccessGrante
                     NSDictionary *response = [NSJSONSerialization JSONObjectWithData:responseData options:0 error:nil];
                     if (response && [response isKindOfClass:[NSDictionary class]]) {
                         NSArray *friends = response[@"data"];
-                        dispatch_async(dispatch_get_main_queue(), ^{
-                            NSData *jsonData = [NSJSONSerialization dataWithJSONObject:friends options:0 error:nil];
-                            NSString *json = [[NSString alloc] initWithData:jsonData encoding:NSUTF8StringEncoding];
-                            [self.webView stringByEvaluatingJavaScriptFromString:[NSString stringWithFormat:@"FriendFinder.findByFacebookID(%@)", json]];
-                        });
+                        if (friends != nil) {
+                            dispatch_async(dispatch_get_main_queue(), ^{
+                                NSData *jsonData = [NSJSONSerialization dataWithJSONObject:friends options:0 error:nil];
+                                NSString *json = [[NSString alloc] initWithData:jsonData encoding:NSUTF8StringEncoding];
+                                [self.webView stringByEvaluatingJavaScriptFromString:[NSString stringWithFormat:@"FriendFinder.findByFacebookID(%@)", json]];
+                            });
+                        }
                     }
                 }];
             }];
         } else {
-            dispatch_async(dispatch_get_main_queue(), ^{
-                [self.webView stringByEvaluatingJavaScriptFromString:@"FriendFinder.findByFacebookID()"];
-            });
+            if (error.code == ACErrorAccountNotFound) {
+                [self showNoAccountsAlertFor:SourceFacebook];
+            } else {
+                [self showNotAuthorizedAlertFor:SourceFacebook];
+            }
         }
     }];
 }
 
-- (UIAlertView *)alertWithTitle:(NSString *)title message:(NSString *)message cancelButtonTitle:(NSString *)cancelButtonTitle confirmButtonTitle:(NSString *)confirmButtonTitle dismissBlock:(DismissBlock)dismiss {
-    NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
-    if([defaults boolForKey:AccessedAddressBookPreference] == YES){
-        dismiss(1);
-        return nil;
+- (void)showNotAuthorizedAlertFor:(NSString *)source
+{
+    NSString *title = [NSString stringWithFormat:NSLocalizedString(@"No %@ Access", @"Title of an alert warning the user that the WordPress app is not authorized to access Twitter/Facebook/Address Book."), source];
+    NSString *message = [NSString stringWithFormat:NSLocalizedString(@"In order to use %@ functionality, please grant WordPress access to %1$@ in the Settings app.", @""), source];
+    [self showAlertFor:source title:title message:message];
+}
+
+- (void)showNoAccountsAlertFor:(NSString *)source
+{
+    NSString *title;
+    NSString *message;
+    if ([source isEqualToString:SourceAddressBook]) {
+        title = NSLocalizedString(@"No Contacts", @"Title of an alert warning the user that the address book does not contain any contacts.");
+        message = NSLocalizedString(@"No contacts were found in your address book.", @"Alert warning the user that the address book does not contain any contacts.");
     } else {
-        UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:title message:message delegate:self cancelButtonTitle:cancelButtonTitle otherButtonTitles:confirmButtonTitle, nil];
-        self.dismissBlock = dismiss;
+        title = [NSString stringWithFormat:NSLocalizedString(@"No %@ Account", @"Title of an alert warning the user that no Twitter/Facebook account was registered on the device."), source];
+        message = [NSString stringWithFormat:NSLocalizedString(@"In order to use %@ functionality, please add your %1$@ account in the Settings app.", @"Alert instructing the user to add a Twitter/Facebook account in the Settings app."), source];
+    }
+    [self showAlertFor:source title:title message:message];
+}
+
+- (void)showAlertFor:(NSString *)source title:(NSString *)title message:(NSString *)message
+{
+    UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:title
+                                                        message:message
+                                                       delegate:self
+                                              cancelButtonTitle:NSLocalizedString(@"OK",@"")
+                                              otherButtonTitles:nil];
+    dispatch_async(dispatch_get_main_queue(), ^{
         [alertView show];
-        return alertView;
-    }
+        [self stopWebViewSpinnerFor:source];
+    });
 }
 
-#pragma mark - UIAlertView Delegate Methods
-
-// Called when a button is clicked. The view will be automatically dismissed after this call returns
-- (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex {
-    if (1 == buttonIndex){
-        NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
-        [defaults setBool:YES forKey:AccessedAddressBookPreference];
-        [defaults synchronize];
-    }
-    if (self.dismissBlock) {
-        self.dismissBlock(buttonIndex);
-    }
-}
-
-// Called when we cancel a view (eg. the user clicks the Home button). This is not called when the user clicks the cancel button.
-// If not defined in the delegate, we simulate a click in the cancel button
-- (void)alertViewCancel:(UIAlertView *)alertView {
-    if (self.dismissBlock) {
-        self.dismissBlock(-1);
+- (void)stopWebViewSpinnerFor:(NSString *)source
+{
+    if ([source isEqualToString:SourceAddressBook]) {
+        [self.webView stringByEvaluatingJavaScriptFromString:@"FriendFinder.findByEmail()"];
+    } else if ([source isEqualToString:SourceTwitter]) {
+        [self.webView stringByEvaluatingJavaScriptFromString:@"FriendFinder.findByTwitterID()"];
+    } else if ([source isEqualToString:SourceFacebook]) {
+        [self.webView stringByEvaluatingJavaScriptFromString:@"FriendFinder.findByFacebookID()"];
     }
 }
 

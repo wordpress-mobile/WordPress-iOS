@@ -9,6 +9,8 @@
 #import "NSString+Helpers.h"
 #import <CommonCrypto/CommonDigest.h>
 
+static NSString *const Ellipsis =  @"\u2026";
+
 @implementation NSString (Helpers)
 
 #pragma mark Helpers
@@ -27,7 +29,7 @@
     const char *cStr = [self UTF8String];
     unsigned char result[CC_MD5_DIGEST_LENGTH];
     
-    CC_MD5(cStr, strlen(cStr), result);
+    CC_MD5(cStr, (CC_LONG)strlen(cStr), result);
     
     return [NSString stringWithFormat:
             @"%02x%02x%02x%02x%02x%02x%02x%02x%02x%02x%02x%02x%02x%02x%02x%02x",
@@ -91,7 +93,7 @@
                                    };
 
     NSError *error = nil;
-    NSRegularExpression *regex = [NSRegularExpression regularExpressionWithPattern:@"<img src='.*?wp-includes/images/smilies/icon_(.+?).gif'.*?class='wp-smiley' ?/?>" options:NSRegularExpressionCaseInsensitive error:&error];
+    NSRegularExpression *regex = [NSRegularExpression regularExpressionWithPattern:@"<img src=['\"].*?wp-includes/images/smilies/icon_(.+?).gif['\"].*?class=['\"]wp-smiley['\"] ?/?>" options:NSRegularExpressionCaseInsensitive error:&error];
     NSArray *matches = [regex matchesInString:result options:0 range:NSMakeRange(0, [result length])];
     for (NSTextCheckingResult *match in [matches reverseObjectEnumerator]) {
         NSRange range = [match rangeAtIndex:1];
@@ -121,6 +123,90 @@
         [mString replaceCharactersInRange:match.range withString:@""];
     }
     return [mString stringByStrippingHTML];
+}
+
+// A method to truncate a string at a predetermined length and append ellipsis to the end
+
+- (NSString *)stringByEllipsizingWithMaxLength:(NSInteger)lengthlimit preserveWords:(BOOL)preserveWords{
+    
+    NSInteger currentLength = [self length];
+    NSString *result = @"";
+    NSString *temp = @"";
+    
+    if(currentLength <= lengthlimit){ //If the string is already within limits
+        return self;
+    }
+    else if(lengthlimit > 0){ //If the string is longer than the limit, and the limit is larger than 0.
+        
+        NSInteger newLimitWithoutEllipsis = lengthlimit - [Ellipsis length];
+        
+        if(preserveWords){
+            
+            NSArray *wordsSeperated = [self tokenize];
+            
+            if([wordsSeperated count] == 1) //If this is a long, single word, then we disregard preserveWords property. 
+            {
+                return [NSString stringWithFormat:@"%@%@", [self substringToIndex:newLimitWithoutEllipsis], Ellipsis];
+            }
+            
+            for(NSString *word in wordsSeperated){
+                
+                if([temp isEqualToString:@""]){
+                    temp = word;
+                }
+                else{
+                    temp = [NSString stringWithFormat:@"%@%@", temp, word];
+                }
+                
+                if([temp length] <= newLimitWithoutEllipsis){
+                    result = [temp copy];
+                }
+                else{
+                    return [NSString stringWithFormat:@"%@%@",result,Ellipsis];
+                }
+            }
+        }
+        else{
+            return [NSString stringWithFormat:@"%@%@", [self substringToIndex:newLimitWithoutEllipsis], Ellipsis];
+        }
+        
+    }
+    else{ //if the limit is 0.
+        return @"";
+    }
+    
+    return self;
+}
+
+- (NSArray *)tokenize
+{
+    CFLocaleRef locale = CFLocaleCopyCurrent();
+    CFRange stringRange = CFRangeMake(0, [self length]);
+    
+    CFStringTokenizerRef tokenizer = CFStringTokenizerCreate(kCFAllocatorDefault,
+                                                             (CFStringRef)self,
+                                                             stringRange,
+                                                             kCFStringTokenizerUnitWordBoundary,
+                                                             locale);
+    
+    CFStringTokenizerTokenType tokenType = CFStringTokenizerAdvanceToNextToken(tokenizer);
+    
+    
+    NSMutableArray *tokens = [NSMutableArray new];
+
+    
+    while (tokenType != kCFStringTokenizerTokenNone)
+    {
+        stringRange = CFStringTokenizerGetCurrentTokenRange(tokenizer);
+        NSString *token = [self substringWithRange:NSMakeRange(stringRange.location, stringRange.length)];
+        [tokens addObject:token];
+        tokenType = CFStringTokenizerAdvanceToNextToken(tokenizer);
+    }
+    
+    CFRelease(locale);
+    CFRelease(tokenizer);
+    
+    return tokens;
 }
 
 @end

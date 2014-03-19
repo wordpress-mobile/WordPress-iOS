@@ -113,6 +113,7 @@ extern NSString *const WPAccountWordPressComAccountWasRemovedNotification;
 												username:(NSString *)username
 											 andPassword:(NSString *)password;
 
+
 ///--------------------
 /// @name Blog creation
 ///--------------------
