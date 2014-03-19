@@ -589,7 +589,7 @@ static NSInteger const ImageSizeLargeHeight = 480;
                 return;
             
             self.options = [NSDictionary dictionaryWithDictionary:(NSDictionary *)responseObject];
-            NSString *minimumVersion = @"3.5";
+            NSString *minimumVersion = @"3.6";
             float version = [[self version] floatValue];
             if (version < [minimumVersion floatValue]) {
                 if (self.lastUpdateWarning == nil || [self.lastUpdateWarning floatValue] < [minimumVersion floatValue]) {
