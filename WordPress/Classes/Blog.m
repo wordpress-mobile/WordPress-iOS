@@ -24,8 +24,8 @@ static NSInteger const ImageSizeMediumWidth = 480;
 static NSInteger const ImageSizeMediumHeight = 360;
 static NSInteger const ImageSizeLargeWidth = 640;
 static NSInteger const ImageSizeLargeHeight = 480;
-NSString *const EditPostViewControllerLastUsedBlogURL = @"EditPostViewControllerLastUsedBlogURL";
-NSString *const LastUsedBlogURL = @"LastUsedBlogURL";
+NSString *const EditPostViewControllerLastUsedBlogURLDefaultsKey = @"EditPostViewControllerLastUsedBlogURL";
+NSString *const LastUsedBlogURLDefaultsKey = @"LastUsedBlogURLDefaultsKey";
 
 @interface Blog (PrivateMethods)
 
@@ -90,14 +90,14 @@ NSString *const LastUsedBlogURL = @"LastUsedBlogURL";
     NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
     NSManagedObjectContext *context = [[ContextManager sharedInstance] mainContext];
     NSFetchRequest *fetchRequest = [NSFetchRequest fetchRequestWithEntityName:@"Blog"];
-    NSString *url = [defaults stringForKey:LastUsedBlogURL];
+    NSString *url = [defaults stringForKey:LastUsedBlogURLDefaultsKey];
     if (!url) {
         // Check for the old key and migrate the value if it exists.
         // TODO: We can probably discard this in the 4.2 release.
-        url = [defaults stringForKey:EditPostViewControllerLastUsedBlogURL];
+        url = [defaults stringForKey:EditPostViewControllerLastUsedBlogURLDefaultsKey];
         if (url) {
-            [defaults setObject:url forKey:LastUsedBlogURL];
-            [defaults removeObjectForKey:EditPostViewControllerLastUsedBlogURL];
+            [defaults setObject:url forKey:LastUsedBlogURLDefaultsKey];
+            [defaults removeObjectForKey:EditPostViewControllerLastUsedBlogURLDefaultsKey];
             [defaults synchronize];
         }
     }
@@ -121,7 +121,7 @@ NSString *const LastUsedBlogURL = @"LastUsedBlogURL";
     if([results count] == 0) {
         if (url) {
             // Blog might have been removed from the app. Get the first available.
-            [defaults removeObjectForKey:LastUsedBlogURL];
+            [defaults removeObjectForKey:LastUsedBlogURLDefaultsKey];
             [defaults synchronize];
             return [self defaultOrLastUsedBlog];
         }
@@ -164,7 +164,7 @@ NSString *const LastUsedBlogURL = @"LastUsedBlogURL";
 
 - (void)flagAsLastUsed {
     NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
-    [defaults setObject:self.url forKey:LastUsedBlogURL];
+    [defaults setObject:self.url forKey:LastUsedBlogURLDefaultsKey];
     [defaults synchronize];
 }
 
