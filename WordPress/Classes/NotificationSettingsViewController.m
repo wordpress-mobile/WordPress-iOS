@@ -272,7 +272,7 @@ BOOL hasChanges;
     // Return the number of sections.
     if (_notificationPrefArray) {
         NSString *mute_value = [_notificationMutePreferences objectForKey:@"value"];
-        if(![mute_value isEqualToString:@"0"]){
+        if (mute_value && ![mute_value isEqualToString:@"0"]){
             return 1;
         } else {
             if (_mutedBlogsArray) {
