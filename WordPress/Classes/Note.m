@@ -124,7 +124,7 @@ const NSUInteger WPNoteKeepCount = 20;
 }
 
 - (Blog *)blogForStatsEvent {
-    NSScanner *scanner = [NSScanner scannerWithString:self.subject];
+    NSScanner *scanner = [NSScanner scannerWithString:self.subjectText];
     NSString *blogName;
     
     while ([scanner isAtEnd] == NO) {

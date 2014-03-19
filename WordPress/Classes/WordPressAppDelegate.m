@@ -935,7 +935,7 @@ static NSString *const CameraPlusImagesNotification = @"CameraPlusImagesNotifica
 }
 
 - (void)logoutSimperiumAndResetNotifications {
-	[self.simperium signOutAndRemoveLocalData:YES];
+	[self.simperium signOutAndRemoveLocalData:YES completion:nil];
 }
 
 
