@@ -844,7 +844,6 @@
 		E125451812BF68F900D87A0A /* Page.m in Sources */ = {isa = PBXBuildFile; fileRef = E125451712BF68F900D87A0A /* Page.m */; };
 		E128566415103A3600406BC9 /* keyboardButtoniPad@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = E128566215103A3600406BC9 /* keyboardButtoniPad@2x.png */; };
 		E128566515103A3600406BC9 /* keyboardButtoniPadHighlighted@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = E128566315103A3600406BC9 /* keyboardButtoniPadHighlighted@2x.png */; };
-		E12F95B9155820A40067A653 /* NSObject+BlockObservation.m in Sources */ = {isa = PBXBuildFile; fileRef = E12F95B8155820A40067A653 /* NSObject+BlockObservation.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
 		E131CB5216CACA6B004B0314 /* CoreText.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E131CB5116CACA6B004B0314 /* CoreText.framework */; };
 		E131CB5416CACB05004B0314 /* libxml2.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = E131CB5316CACB05004B0314 /* libxml2.dylib */; };
 		E131CB5616CACF1E004B0314 /* get-user-blogs_has-blog.json in Resources */ = {isa = PBXBuildFile; fileRef = E131CB5516CACF1E004B0314 /* get-user-blogs_has-blog.json */; };
@@ -2069,8 +2068,6 @@
 		E12F95A51557C9C20067A653 /* zh-Hant */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "zh-Hant"; path = "zh-Hant.lproj/Localizable.strings"; sourceTree = "<group>"; };
 		E12F95A61557CA210067A653 /* hu */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = hu; path = hu.lproj/Localizable.strings; sourceTree = "<group>"; };
 		E12F95A71557CA400067A653 /* pl */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = pl; path = pl.lproj/Localizable.strings; sourceTree = "<group>"; };
-		E12F95B7155820A40067A653 /* NSObject+BlockObservation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSObject+BlockObservation.h"; sourceTree = "<group>"; };
-		E12F95B8155820A40067A653 /* NSObject+BlockObservation.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSObject+BlockObservation.m"; sourceTree = "<group>"; };
 		E131CB5116CACA6B004B0314 /* CoreText.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreText.framework; path = System/Library/Frameworks/CoreText.framework; sourceTree = SDKROOT; };
 		E131CB5316CACB05004B0314 /* libxml2.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libxml2.dylib; path = usr/lib/libxml2.dylib; sourceTree = SDKROOT; };
 		E131CB5516CACF1E004B0314 /* get-user-blogs_has-blog.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = "get-user-blogs_has-blog.json"; sourceTree = "<group>"; };
@@ -4127,18 +4124,8 @@
 			children = (
 				E1D0D81E16D3D19200E33F4C /* PocketAPI */,
 				E1B4A9DE12FC8B1000EB3F67 /* EGOTableViewPullRefresh */,
-				E12F95B6155820A40067A653 /* KVO+Blocks */,
 			);
 			path = Vendor;
-			sourceTree = "<group>";
-		};
-		E12F95B6155820A40067A653 /* KVO+Blocks */ = {
-			isa = PBXGroup;
-			children = (
-				E12F95B7155820A40067A653 /* NSObject+BlockObservation.h */,
-				E12F95B8155820A40067A653 /* NSObject+BlockObservation.m */,
-			);
-			path = "KVO+Blocks";
 			sourceTree = "<group>";
 		};
 		E131CB5B16CAD638004B0314 /* Test Helpers */ = {
@@ -5333,7 +5320,6 @@
 				E13F23C314FE84600081D9CC /* NSMutableDictionary+Helpers.m in Sources */,
 				E114D79A153D85A800984182 /* WPError.m in Sources */,
 				C52C783418771F7100FB1D2D /* StatsTwoColumnCell.m in Sources */,
-				E12F95B9155820A40067A653 /* NSObject+BlockObservation.m in Sources */,
 				46F84611185A6E98009D0DA5 /* WPContentView.m in Sources */,
 				A25EBD87156E330600530E3D /* WPTableViewController.m in Sources */,
 				5DEB61B4156FCD3400242C35 /* WPWebView.m in Sources */,
