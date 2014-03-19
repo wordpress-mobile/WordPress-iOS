@@ -62,6 +62,11 @@ NSString *const VideoUploadFailedNotification = @"VideoUploadFailed";
     }
 }
 
+- (void)didTurnIntoFault {
+    [_uploadOperation cancel];
+    _uploadOperation = nil;
+}
+
 #pragma mark -
 
 - (float)progress {
