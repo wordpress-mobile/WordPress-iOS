@@ -35,6 +35,7 @@
 #import "LoggerConnection.h"
 #import "LoggerNativeMessage.h"
 #import "LoggerAppDelegate.h"
+#import "LoggerTCPConnection.h"
 
 @implementation LoggerDocument
 
@@ -72,6 +73,14 @@
 	// since delegate is retained, we need to set it to nil
 	[attachedLogs makeObjectsPerformSelector:@selector(setDelegate:) withObject:nil];
 	[super close];
+}
+
+- (BOOL)isDocumentEdited {
+    if ([[NSUserDefaults standardUserDefaults] boolForKey:kPrefCloseWithoutSaving]) {
+        /* Don't bother asking, I don't want to save the logs 99% of the time. */
+        return NO;
+    }
+    return [super isDocumentEdited];
 }
 
 - (void)selectRun:(NSInteger)runIndex
@@ -271,7 +280,24 @@
 
 	if ([typeName isEqualToString:@"NSLogger Data"])
 	{
-		id logs = [NSKeyedUnarchiver unarchiveObjectWithData:data];
+		id logs=nil;
+		@try
+		{
+			// backward compatibility with NSLogger < 1.5
+			[NSKeyedUnarchiver setClass:[LoggerTCPConnection class] forClassName:@"LoggerNativeConnection"];
+
+			logs = [NSKeyedUnarchiver unarchiveObjectWithData:data];
+		}
+		@catch (NSException *exception)
+		{
+			if (outError != NULL)
+			{
+				*outError = [NSError errorWithDomain:@"NSLogger" code:-1 userInfo:@{
+					NSLocalizedDescriptionKey: [exception reason]
+				}];
+			}
+			return NO;
+		}
 		if ([logs isKindOfClass:[LoggerConnection class]])
 			[attachedLogs addObject:logs];
 		else

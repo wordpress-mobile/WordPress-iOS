@@ -20,11 +20,9 @@
 
 @interface SPWebSocketInterface : NSObject <SPNetworkInterface>
 
-@property (nonatomic, strong, readonly) SPWebSocket *webSocket;
-
 - (void)loadChannelsForBuckets:(NSDictionary *)bucketList;
 - (void)send:(NSString *)message;
 
-+ (instancetype)interfaceWithSimperium:(Simperium *)s appURL:(NSString *)appURL clientID:(NSString *)clientID;
++ (instancetype)interfaceWithSimperium:(Simperium *)s;
 
 @end

@@ -29,10 +29,11 @@
  * 
  */
 #import <Cocoa/Cocoa.h>
+#import <HockeySDK/HockeySDK.h>
 
 @class LoggerConnection, LoggerTransport, LoggerStatusWindowController, LoggerPrefsWindowController;
 
-@interface LoggerAppDelegate : NSObject
+@interface LoggerAppDelegate : NSObject <BITCrashReportManagerDelegate>
 {
 	CFArrayRef serverCerts;
 	BOOL serverCertsLoadAttempted;
@@ -65,6 +66,7 @@
 @end
 
 extern NSString * const kPrefKeepMultipleRuns;
+extern NSString * const kPrefCloseWithoutSaving;
 
 extern NSString * const kPrefPublishesBonjourService;
 extern NSString * const kPrefHasDirectTCPIPResponder;

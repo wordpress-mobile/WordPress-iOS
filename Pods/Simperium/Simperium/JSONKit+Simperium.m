@@ -16,15 +16,15 @@ static NSJSONWritingOptions const SPJSONWritingOptions = 0;
 
 @implementation NSJSONSerialization (SPJSONKitAdapterCategories)
 
-+ (NSString *)sp_JSONStringFromObject:(id)object error:(NSError **)error
++ (NSData *)sp_JSONDataFromObject:(id)object error:(NSError **)error
 {
     if (!object) {
 		return nil;
 	}
-
+	
 	NSError *theError = nil;
     NSData *data = [NSJSONSerialization dataWithJSONObject:object options:SPJSONWritingOptions error:&theError];
-
+	
     if (theError) {
 		if(error) {
 			*error = theError;
@@ -34,8 +34,14 @@ static NSJSONWritingOptions const SPJSONWritingOptions = 0;
 		
         return nil;
     }
+	
+    return data;
+}
 
-    return [[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding];
++ (NSString *)sp_JSONStringFromObject:(id)object error:(NSError **)error
+{
+    NSData *data = [NSJSONSerialization sp_JSONDataFromObject:object error:error];
+    return data ? [[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding] : nil;
 }
 
 + (id)sp_JSONObjectWithData:(NSData *)data error:(NSError **)error
@@ -62,6 +68,11 @@ static NSJSONWritingOptions const SPJSONWritingOptions = 0;
 @end
 
 @implementation NSArray (SPJSONKitAdapterCategories)
+
+- (NSData *)sp_JSONData
+{
+    return [NSJSONSerialization sp_JSONDataFromObject:self error:nil];
+}
 
 - (NSString *)sp_JSONString
 {

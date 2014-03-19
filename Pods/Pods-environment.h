@@ -49,19 +49,19 @@
 #define COCOAPODS_POD_AVAILABLE_DTFoundation_Core
 #define COCOAPODS_VERSION_MAJOR_DTFoundation_Core 1
 #define COCOAPODS_VERSION_MINOR_DTFoundation_Core 6
-#define COCOAPODS_VERSION_PATCH_DTFoundation_Core 1
+#define COCOAPODS_VERSION_PATCH_DTFoundation_Core 2
 
 // DTFoundation/DTHTMLParser
 #define COCOAPODS_POD_AVAILABLE_DTFoundation_DTHTMLParser
 #define COCOAPODS_VERSION_MAJOR_DTFoundation_DTHTMLParser 1
 #define COCOAPODS_VERSION_MINOR_DTFoundation_DTHTMLParser 6
-#define COCOAPODS_VERSION_PATCH_DTFoundation_DTHTMLParser 1
+#define COCOAPODS_VERSION_PATCH_DTFoundation_DTHTMLParser 2
 
 // DTFoundation/UIKit
 #define COCOAPODS_POD_AVAILABLE_DTFoundation_UIKit
 #define COCOAPODS_VERSION_MAJOR_DTFoundation_UIKit 1
 #define COCOAPODS_VERSION_MINOR_DTFoundation_UIKit 6
-#define COCOAPODS_VERSION_PATCH_DTFoundation_UIKit 1
+#define COCOAPODS_VERSION_PATCH_DTFoundation_UIKit 2
 
 // EmailChecker
 #define COCOAPODS_POD_AVAILABLE_EmailChecker
@@ -102,7 +102,7 @@
 // NSLogger
 #define COCOAPODS_POD_AVAILABLE_NSLogger
 #define COCOAPODS_VERSION_MAJOR_NSLogger 1
-#define COCOAPODS_VERSION_MINOR_NSLogger 1
+#define COCOAPODS_VERSION_MINOR_NSLogger 2
 #define COCOAPODS_VERSION_PATCH_NSLogger 0
 
 // NSLogger-CocoaLumberjack-connector
@@ -143,8 +143,8 @@
 
 // SVProgressHUD
 #define COCOAPODS_POD_AVAILABLE_SVProgressHUD
-#define COCOAPODS_VERSION_MAJOR_SVProgressHUD 0
-#define COCOAPODS_VERSION_MINOR_SVProgressHUD 9
+#define COCOAPODS_VERSION_MAJOR_SVProgressHUD 1
+#define COCOAPODS_VERSION_MINOR_SVProgressHUD 0
 #define COCOAPODS_VERSION_PATCH_SVProgressHUD 0
 
 // Simperium
@@ -180,7 +180,7 @@
 // google-plus-ios-sdk
 #define COCOAPODS_POD_AVAILABLE_google_plus_ios_sdk
 #define COCOAPODS_VERSION_MAJOR_google_plus_ios_sdk 1
-#define COCOAPODS_VERSION_MINOR_google_plus_ios_sdk 3
+#define COCOAPODS_VERSION_MINOR_google_plus_ios_sdk 5
 #define COCOAPODS_VERSION_PATCH_google_plus_ios_sdk 0
 
 // wpxmlrpc

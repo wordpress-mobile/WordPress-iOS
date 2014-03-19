@@ -12,7 +12,6 @@
 #import "SPManagedObject.h"
 #import "SPAuthenticator.h"
 #import "SPUser.h"
-#import "SPAuthenticationConfiguration.h"
 
 
 
@@ -25,7 +24,19 @@
 @class NSWindow;
 #endif
 
+
+#pragma mark ====================================================================================
+#pragma mark Simperium Constants
+#pragma mark ====================================================================================
+
 extern NSString * const SimperiumWillSaveNotification;
+
+typedef NS_ENUM(NSInteger, SPSimperiumErrors) {
+	SPSimperiumErrorsMissingAppID,
+	SPSimperiumErrorsMissingAPIKey,
+	SPSimperiumErrorsMissingToken,
+	SPSimperiumErrorsMissingWindow
+};
 
 
 #pragma mark ====================================================================================
@@ -76,7 +87,6 @@ extern NSString * const SimperiumWillSaveNotification;
 			context:(NSManagedObjectContext *)context
 		coordinator:(NSPersistentStoreCoordinator *)coordinator;
 
-
 #if TARGET_OS_IPHONE
 // Starts Simperium and displays the auth interface, if needed.
 - (void)authenticateWithAppID:(NSString *)identifier APIKey:(NSString *)key rootViewController:(UIViewController *)controller;
@@ -122,11 +132,10 @@ typedef void (^SimperiumForceSyncCompletion)(BOOL success);
 - (NSApplicationTerminateReply)applicationShouldTerminate:(NSApplication *)sender;
 #endif
 
-// Manual Authentication Mechanism
-- (void)authenticateWithToken:(NSString *)token;
-
 // Clears all locally stored data from the device. Can be used to perform a manual sign out.
-- (void)signOutAndRemoveLocalData:(BOOL)remove;
+// Note: This method is now asynchronous. Please, listen to signout delegate calls, or implement a completion callback block.
+typedef void (^SimperiumSignoutCompletion)(void);
+- (void)signOutAndRemoveLocalData:(BOOL)remove completion:(SimperiumSignoutCompletion)completion;
 
 // Shares an object with a particular user's email address (forthcoming).
 //- (void)shareObject:(SPManagedObject *)object withEmail:(NSString *)email;
@@ -138,30 +147,23 @@ typedef void (^SimperiumForceSyncCompletion)(BOOL success);
 // Opens an authentication interface if necessary.
 - (BOOL)authenticateIfNecessary;
 
-// Manually adds a binary file to be tracked by Simperium (forthcoming).
-- (NSString *)addBinary:(NSData *)binaryData toObject:(SPManagedObject *)object bucketName:(NSString *)bucketName attributeName:(NSString *)attributeName;
-- (void)addBinaryWithFilename:(NSString *)filename toObject:(SPManagedObject *)object bucketName:(NSString *)bucketName attributeName:(NSString *)attributeName;
-
-// Set this to true if you need to be able to cancel the authentication dialog.
-@property (nonatomic) BOOL authenticationOptional;
-
 // A SimperiumDelegate for system callbacks.
 @property (nonatomic, weak) id<SimperiumDelegate> delegate;
 
+// Set this to true if you need to be able to cancel the authentication dialog.
+@property (nonatomic, assign) BOOL authenticationOptional;
+
 // Toggle verbose logging.
-@property (nonatomic) BOOL verboseLoggingEnabled;
+@property (nonatomic, assign) BOOL verboseLoggingEnabled;
 
 // Toggle remote logging.
-@property (nonatomic) BOOL remoteLoggingEnabled;
+@property (nonatomic, assign) BOOL remoteLoggingEnabled;
 
 // Enables or disables the network.
-@property (nonatomic) BOOL networkEnabled;
-
-// Overrides the built-in authentication flow so you can customize the behavior.
-@property (nonatomic) BOOL authenticationEnabled;
+@property (nonatomic, assign) BOOL networkEnabled;
 
 // Returns the currently authenticated Simperium user.
-@property (nonatomic, strong) SPUser *user;
+@property (nonatomic, readonly, strong) SPUser *user;
 
 // The full URL used to communicate with Simperium.
 @property (nonatomic, readonly, copy) NSString *appURL;
@@ -178,9 +180,6 @@ typedef void (^SimperiumForceSyncCompletion)(BOOL success);
 // A hashed, unique ID for this client.
 @property (nonatomic, readonly, copy) NSString *clientID;
 
-// Set this if for some reason you want to use multiple Simperium instances (e.g. unit testing).
-@property (nonatomic, copy) NSString *label;
-
 // Remote Bucket Name Overrides!
 @property (nonatomic, copy) NSDictionary *bucketOverrides;
 
@@ -191,8 +190,6 @@ typedef void (^SimperiumForceSyncCompletion)(BOOL success);
 #else
 @property (nonatomic, weak) Class authenticationWindowControllerClass;
 #endif
-
-@property (nonatomic, strong) SPBinaryManager *binaryManager;
 
 @property (nonatomic, strong) SPAuthenticator *authenticator;
 

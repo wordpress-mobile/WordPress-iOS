@@ -23,6 +23,9 @@
 /* Begin PBXBuildFile section */
 		355B26B862090A50B1ED1EB4 /* DTSidePanelPanGestureRecognizer.h in Headers */ = {isa = PBXBuildFile; fileRef = 355B257CC69FC64D78ABE0BE /* DTSidePanelPanGestureRecognizer.h */; };
 		355B2F0AD6E0ED773FACD941 /* DTSidePanelPanGestureRecognizer.m in Sources */ = {isa = PBXBuildFile; fileRef = 355B210F4174F2B22B0CD6A0 /* DTSidePanelPanGestureRecognizer.m */; };
+		7DBE5BE11859D2E300679AF8 /* DTASN1BitString.h in CopyFiles */ = {isa = PBXBuildFile; fileRef = A78EDD1E17A65AD800480205 /* DTASN1BitString.h */; };
+		7DBE5BE21859D2E500679AF8 /* DTASN1Parser.h in CopyFiles */ = {isa = PBXBuildFile; fileRef = A78EDD2017A65AD800480205 /* DTASN1Parser.h */; };
+		7DBE5BE31859D2E800679AF8 /* DTASN1Serialization.h in CopyFiles */ = {isa = PBXBuildFile; fileRef = A78EDD2217A65AD800480205 /* DTASN1Serialization.h */; };
 		A70B4CD01486621B00873A4A /* DTFoundation.h in Headers */ = {isa = PBXBuildFile; fileRef = A70B4CC51486621B00873A4A /* DTFoundation.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		A70B4CD11486621B00873A4A /* DTVersion.h in Headers */ = {isa = PBXBuildFile; fileRef = A70B4CC71486621B00873A4A /* DTVersion.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		A70B4CD21486621B00873A4A /* DTVersion.m in Sources */ = {isa = PBXBuildFile; fileRef = A70B4CC81486621B00873A4A /* DTVersion.m */; };
@@ -521,6 +524,9 @@
 			dstPath = "include/${PRODUCT_NAME}";
 			dstSubfolderSpec = 16;
 			files = (
+				7DBE5BE11859D2E300679AF8 /* DTASN1BitString.h in CopyFiles */,
+				7DBE5BE21859D2E500679AF8 /* DTASN1Parser.h in CopyFiles */,
+				7DBE5BE31859D2E800679AF8 /* DTASN1Serialization.h in CopyFiles */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -2090,7 +2096,8 @@
 		A7F4DF9A147FB61500F4059A /* Project object */ = {
 			isa = PBXProject;
 			attributes = {
-				LastUpgradeCheck = 0500;
+				LastTestingUpgradeCheck = 0510;
+				LastUpgradeCheck = 0510;
 				ORGANIZATIONNAME = Cocoanetics;
 			};
 			buildConfigurationList = A7F4DF9D147FB61500F4059A /* Build configuration list for PBXProject "DTFoundation" */;

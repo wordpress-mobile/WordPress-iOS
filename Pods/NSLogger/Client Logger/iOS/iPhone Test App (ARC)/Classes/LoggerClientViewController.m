@@ -31,8 +31,45 @@
 #import "LoggerClientViewController.h"
 
 #define TEST_FILE_BUFFERING 0
+#define NUM_LOGGING_QUEUES	10
+
+dispatch_queue_t loggingQueues[NUM_LOGGING_QUEUES];
+
+void logRandomImage(int numImage)
+{
+	UIGraphicsBeginImageContext(CGSizeMake(100, 100));
+	CGContextRef ctx = UIGraphicsGetCurrentContext();
+	CGFloat r = (CGFloat)(arc4random() % 256) / 255.0f;
+	CGFloat g = (CGFloat)(arc4random() % 256) / 255.0f;
+	CGFloat b = (CGFloat)(arc4random() % 256) / 255.0f;
+	UIColor *fillColor = [UIColor colorWithRed:r green:g blue:b alpha:1.0f];
+	CGContextSetFillColorWithColor(ctx, fillColor.CGColor);
+	CGContextFillRect(ctx, CGRectMake(0, 0, 100, 100));
+	CGContextSetTextMatrix(ctx, CGAffineTransformConcat(CGAffineTransformMakeTranslation(0, 100), CGAffineTransformMakeScale(1.0f, -1.0f)));
+	CGContextSelectFont(ctx, "Helvetica", 14.0, kCGEncodingMacRoman);
+	CGContextSetShadowWithColor(ctx, CGSizeMake(1, 1), 1.0f, [UIColor whiteColor].CGColor);
+	CGContextSetTextDrawingMode(ctx, kCGTextFill);
+	CGContextSetFillColorWithColor(ctx, [UIColor blackColor].CGColor);
+	char buf[64];
+	sprintf(buf, "Log Image %d", numImage);
+	CGContextShowTextAtPoint(ctx, 0, 50, buf, strlen(buf));
+	UIImage *img = UIGraphicsGetImageFromCurrentImageContext();
+	CGSize sz = img.size;
+	LogImageData(@"image", 0, sz.width, sz.height, UIImagePNGRepresentation(img));
+	UIGraphicsEndImageContext();
+}
 
 @implementation LoggerClientViewController
+
++ (void)load
+{
+	char label[32];
+	for (int i=0; i < NUM_LOGGING_QUEUES; i++)
+	{
+		sprintf(label, "logging queue %d", i);
+		loggingQueues[i] = dispatch_queue_create(label, NULL);
+	}
+}
 
 - (void)awakeFromNib
 {
@@ -46,8 +83,10 @@
 	NSUserDefaults *ud = [NSUserDefaults standardUserDefaults];
 	viewerHostField.text = [ud stringForKey:@"host"];
 	viewerPortField.text = [ud stringForKey:@"port"];
+	intervalField.text = [ud stringForKey:@"interval"];
 	browseBonjour.on = [ud boolForKey:@"browseBonjour"];
 	browseLocalDomainOnly.on = [ud boolForKey:@"localDomain"];
+	sendImages.on = [ud boolForKey:@"sendImages"];
 
 	[[NSNotificationCenter defaultCenter] addObserver:self
 											 selector:@selector(textFieldDidChange:)
@@ -73,6 +112,12 @@
 	[[NSUserDefaults standardUserDefaults] synchronize];
 }
 
+- (IBAction)sendImagesSettingChanged
+{
+	[[NSUserDefaults standardUserDefaults] setBool:sendImages.on forKey:@"sendImages"];
+	[[NSUserDefaults standardUserDefaults] synchronize];
+}
+
 - (IBAction)startStopSendingMessages
 {
 	if (sendTimer == nil)
@@ -88,16 +133,20 @@
 		else
 			LoggerSetViewerHost(NULL, NULL, 0);
 
+		BOOL useBonjour = browseBonjour.on;
+		BOOL onlyLocalDomain = browseLocalDomainOnly.on;
+
 		LoggerSetOptions(NULL,						// configure the default logger
 						 kLoggerOption_BufferLogsUntilConnection |
 						 kLoggerOption_UseSSL |
-						 (browseBonjour.on ? kLoggerOption_BrowseBonjour : 0) |
-						 (browseLocalDomainOnly.on ? kLoggerOption_BrowseOnlyLocalDomain : 0));
+						 kLoggerOption_CaptureSystemConsole	|
+						 (useBonjour ? kLoggerOption_BrowseBonjour : 0) |
+						 (onlyLocalDomain ? kLoggerOption_BrowseOnlyLocalDomain : 0));
 
 		// Start logging random messages
 		counter = 0;
 		imagesCounter = 0;
-		sendTimer = [NSTimer scheduledTimerWithTimeInterval:0.20f
+		sendTimer = [NSTimer scheduledTimerWithTimeInterval:0.001f * [intervalField.text integerValue]
 													  target:self
 													selector:@selector(sendTimerFired:)
 													userInfo:nil
@@ -125,7 +174,7 @@
 {
 	// we use the numbers & punct keyboard to get the Done key,
 	// in exchange we need to validate input to exclude non-number chars
-	if (textField != viewerPortField)
+	if (textField != viewerPortField && textField != intervalField)
 		return YES;
 	NSMutableString *s = [string mutableCopy];
 	NSUInteger length = [string length];
@@ -149,6 +198,7 @@
 	NSUserDefaults *ud = [NSUserDefaults standardUserDefaults];
 	[ud setObject:viewerHostField.text forKey:@"host"];
 	[ud setObject:viewerPortField.text forKey:@"port"];
+	[ud setObject:intervalField.text forKey:@"interval"];
 	[ud synchronize];
 }
 
@@ -160,61 +210,50 @@
 
 - (void)sendTimerFired:(NSTimer *)timer
 {
-	static int image = 1;
-	int phase = arc4random() % 10;
-	if (phase != 1 && phase != 5)
+	for (int q = 0; q < NUM_LOGGING_QUEUES; q++)
 	{
-		NSMutableString *s = [NSMutableString stringWithFormat:@"test log message %d - Random characters follow: ", counter++];
-		int nadd = 1 + arc4random() % 150;
-		for (int i = 0; i < nadd; i++)
-			[s appendFormat:@"%c", 32 + (arc4random() % 27)];
-		LogMessage([tagsArray objectAtIndex:(arc4random() % [tagsArray count])], arc4random() % 3, s);
+		dispatch_async(loggingQueues[q], ^{
+			int phase = arc4random() % 10;
+			if (phase == 7)
+			{
+				NSLog(@"Some message %d to NSLog", counter++);
+			}
+			else if (phase == 6)
+			{
+				fprintf(stdout, "Some message %d to stdout\n", counter++);
+				fflush(stdout);		// required for stdout to be flushed when not connected to Xcode debugger
+			}
+			else if (phase == 5)
+			{
+				fprintf(stderr, "Some message %d to stderr\n", counter++);
+				fflush(stderr);
+			}
+			else if (phase != 1)
+			{
+				NSMutableString *s = [NSMutableString stringWithFormat:@"test log message %d - Random characters follow: ", counter++];
+				int nadd = 1 + arc4random() % 150;
+				for (int i = 0; i < nadd; i++)
+					[s appendFormat:@"%c", 32 + (arc4random() % 27)];
+				LogMessage([tagsArray objectAtIndex:(arc4random() % [tagsArray count])], arc4random() % 3, @"%@", s);
+			}
+			else if (phase == 1)
+			{
+				unsigned char *buf = (unsigned char *)malloc(1024);
+				int n = 1 + arc4random() % 1024;
+				for (int i = 0; i < n; i++)
+					buf[i] = (unsigned char)arc4random();
+				LogData(@"main", 1, [[NSData alloc] initWithBytesNoCopy:buf length:n]);
+			}
+			else if (phase == 5)
+			{
+				logRandomImage(++imagesCounter);
+			}
+			dispatch_async(dispatch_get_main_queue(), ^{
+				messagesSentLabel.text = [NSString stringWithFormat:@"%d", counter];
+				imagesSentLabel.text = [NSString stringWithFormat:@"%d", imagesCounter];
+			});
+		});
 	}
-	else if (phase == 1)
-	{
-		unsigned char *buf = (unsigned char *)malloc(1024);
-		int n = 1 + arc4random() % 1024;
-		for (int i = 0; i < n; i++)
-			buf[i] = (unsigned char)arc4random();
-		LogData(@"main", 1, [[NSData alloc] initWithBytesNoCopy:buf length:n]);
-	}
-	else if (phase == 5)
-	{
-		imagesCounter++;
-		UIGraphicsBeginImageContext(CGSizeMake(100, 100));
-		CGContextRef ctx = UIGraphicsGetCurrentContext();
-		CGFloat r = (CGFloat)(arc4random() % 256) / 255.0f;
-		CGFloat g = (CGFloat)(arc4random() % 256) / 255.0f;
-		CGFloat b = (CGFloat)(arc4random() % 256) / 255.0f;
-		UIColor *fillColor = [UIColor colorWithRed:r green:g blue:b alpha:1.0f];
-		CGContextSetFillColorWithColor(ctx, fillColor.CGColor);
-		CGContextFillRect(ctx, CGRectMake(0, 0, 100, 100));
-		CGContextSetTextMatrix(ctx, CGAffineTransformConcat(CGAffineTransformMakeTranslation(0, 100), CGAffineTransformMakeScale(1.0f, -1.0f)));
-		CGContextSelectFont(ctx, "Helvetica", 14.0, kCGEncodingMacRoman);
-		CGContextSetShadowWithColor(ctx, CGSizeMake(1, 1), 1.0f, [UIColor whiteColor].CGColor);
-		CGContextSetTextDrawingMode(ctx, kCGTextFill);
-		CGContextSetFillColorWithColor(ctx, [UIColor blackColor].CGColor);
-		char buf[64];
-		sprintf(buf, "Log Image %d", image++);
-		CGContextShowTextAtPoint(ctx, 0, 50, buf, strlen(buf));
-		UIImage *img = UIGraphicsGetImageFromCurrentImageContext();
-		CGSize sz = img.size;
-		LogImageData(@"image", 0, sz.width, sz.height, UIImagePNGRepresentation(img));
-		UIGraphicsEndImageContext();
-	}
-	if (phase == 0)
-	{
-		[NSThread detachNewThreadSelector:@selector(sendLogFromAnotherThread:)
-								 toTarget:self
-							   withObject:[NSNumber numberWithInteger:counter++]];
-	}
-	messagesSentLabel.text = [NSString stringWithFormat:@"%d", counter];
-	imagesSentLabel.text = [NSString stringWithFormat:@"%d", imagesCounter];
-}
-
-- (void)sendLogFromAnotherThread:(NSNumber *)counterNum
-{
-	LogMessage(@"transfers", 0, @"message %d from standalone thread", [counterNum integerValue]);
 }
 
 @end

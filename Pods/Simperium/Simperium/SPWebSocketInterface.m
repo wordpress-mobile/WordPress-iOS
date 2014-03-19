@@ -6,7 +6,7 @@
 //  Copyright 2011 Simperium. All rights reserved.
 //
 #import "SPWebSocketInterface.h"
-#import "Simperium.h"
+#import "Simperium+Internals.h"
 #import "SPChangeProcessor.h"
 #import "SPUser.h"
 #import "SPBucket+Internals.h"
@@ -53,7 +53,6 @@ typedef NS_ENUM(NSInteger, SPRemoteLogging) {
 @property (nonatomic, strong, readwrite) SPWebSocket			*webSocket;
 @property (nonatomic, weak,   readwrite) Simperium				*simperium;
 @property (nonatomic, strong, readwrite) NSMutableDictionary	*channels;
-@property (nonatomic, copy,   readwrite) NSString				*clientID;
 @property (nonatomic, strong, readwrite) NSTimer				*heartbeatTimer;
 @property (nonatomic, strong, readwrite) NSTimer				*timeoutTimer;
 @property (nonatomic, assign, readwrite) BOOL					open;
@@ -66,10 +65,9 @@ typedef NS_ENUM(NSInteger, SPRemoteLogging) {
 
 @implementation SPWebSocketInterface
 
-- (id)initWithSimperium:(Simperium *)s appURL:(NSString *)url clientID:(NSString *)cid {
+- (id)initWithSimperium:(Simperium *)s {
 	if ((self = [super init])) {
         self.simperium = s;
-        self.clientID = cid;
         self.channels = [NSMutableDictionary dictionaryWithCapacity:20];
 	}
 	
@@ -91,7 +89,7 @@ typedef NS_ENUM(NSInteger, SPRemoteLogging) {
 
 - (SPWebSocketChannel *)loadChannelForBucket:(SPBucket *)bucket {
     int channelNumber = (int)[self.channels count];
-    SPWebSocketChannel *channel = [SPWebSocketChannel channelWithSimperium:self.simperium clientID:self.clientID];
+    SPWebSocketChannel *channel = [SPWebSocketChannel channelWithSimperium:self.simperium];
     channel.number = channelNumber;
     channel.name = bucket.name;
 	channel.remoteName = bucket.remoteName;
@@ -211,6 +209,18 @@ typedef NS_ENUM(NSInteger, SPRemoteLogging) {
     // TODO: Consider ensuring threads are done their work and sending a notification
 }
 
+- (void)reset:(SPBucket *)bucket completion:(SPNetworkInterfaceResetCompletion)completion {
+	// Note: Let's prevent any death lock scenarios. This call should be sync, and we'll hit the callback when appropiate
+    dispatch_async(bucket.processorQueue, ^{
+        [bucket.changeProcessor reset];
+		[bucket setLastChangeSignature:nil];
+		
+		if (completion) {
+			completion();
+		}
+    });
+}
+
 - (void)send:(NSString *)message {
 	if (!self.open) {
 		return;
@@ -306,7 +316,7 @@ typedef NS_ENUM(NSInteger, SPRemoteLogging) {
     
 	// Message: Remote Index Request
 	if ([commandStr isEqualToString:COM_INDEX_STATE]) {
-		[channel sendBucketStatus:bucket];
+		[channel handleIndexStatusRequest:bucket];
 		return;
 	}
 	
@@ -360,15 +370,6 @@ typedef NS_ENUM(NSInteger, SPRemoteLogging) {
 
 #pragma mark - Public Methods
 
-- (void)resetBucketAndWait:(SPBucket *)bucket {
-    // Careful, this will block if the queue has work on it; however, enqueued tasks should empty quickly if the
-    // started flag is set to false
-    dispatch_sync(bucket.processorQueue, ^{
-        [bucket.changeProcessor reset];
-    });
-    [bucket setLastChangeSignature:nil];
-}
-
 - (void)requestVersions:(int)numVersions object:(id<SPDiffable>)object {
     SPWebSocketChannel *channel = [self channelForName:object.bucket.name];
     [channel requestVersions:numVersions object:object];
@@ -404,8 +405,8 @@ static Class _class;
 	_class = c;
 }
 
-+ (instancetype)interfaceWithSimperium:(Simperium *)s appURL:(NSString *)appURL clientID:(NSString *)clientID {
-	return [[_class alloc] initWithSimperium:s appURL:clientID clientID:clientID];
++ (instancetype)interfaceWithSimperium:(Simperium *)s {
+	return [[_class alloc] initWithSimperium:s];
 }
 
 @end

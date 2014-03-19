@@ -37,13 +37,13 @@ static NSUInteger const SPDeleteCount = 500;
 		[first addObject:@(i)];
 		total += i;
 	}
-	[first save];
+	[first saveAndWait:YES];
 	XCTAssertTrue(first.count == SPInsertCount, @"Insertion Issue");
 	
 	// Test: Retrieve
 	first = [SPPersistentMutableSet loadSetWithLabel:@"first"];
 	NSInteger control = 0;
-	for (NSNumber *number in first) {
+	for (NSNumber *number in first.allObjects) {
 		control += number.intValue;
 	}
 	
@@ -52,7 +52,7 @@ static NSUInteger const SPDeleteCount = 500;
 	// Test: Delete
 	NSMutableSet *deletions = [NSMutableSet set];
 	NSInteger deletedSum = 0;
-	for (NSNumber *num in first) {
+	for (NSNumber *num in first.allObjects) {
 		[deletions addObject:num];
 		deletedSum += num.intValue;
 		if (deletions.count == SPDeleteCount) {
@@ -63,7 +63,7 @@ static NSUInteger const SPDeleteCount = 500;
 	XCTAssertTrue(first.count == (SPInsertCount - SPDeleteCount), @"Deletion Issue");
 	
 	NSInteger newTotal = 0;
-	for (NSNumber *num in first) {
+	for (NSNumber *num in first.allObjects) {
 		newTotal += num.intValue;
 	}
 	
@@ -71,7 +71,7 @@ static NSUInteger const SPDeleteCount = 500;
 	
 	// Test: Nuke
 	[first removeAllObjects];
-	[first save];
+	[first saveAndWait:YES];
 	
 	first = [SPPersistentMutableSet loadSetWithLabel:@"first"];
 	XCTAssert(first.count == 0, @"Removal Issue");
@@ -83,7 +83,7 @@ static NSUInteger const SPDeleteCount = 500;
 	for (NSInteger i = 0; ++i <= SPInsertCount; ) {
 		[first addObject:@(i)];
 	}
-	[first save];
+	[first saveAndWait:YES];
 	XCTAssert(first.count == SPInsertCount, @"Insert Issue");
 	
 	// Verify: 'second'

@@ -296,6 +296,9 @@ static SPLogLevels logLevel					= SPLogLevelsError;
 			abort();
 		}
 		
+		// We've moved the store location to NSApplicationSupportDirectory. Let's move old folders, if needed
+		[self migrateIfNeeded];
+		
 		// Finally, load the PSC
 		NSURL *storeURL = [baseURL URLByAppendingPathComponent:self.filename];
 		
@@ -322,7 +325,31 @@ static SPLogLevels logLevel					= SPLogLevelsError;
 #if TARGET_OS_IPHONE
 
 - (NSURL *)baseURL {
-	return [[[NSFileManager defaultManager] URLsForDirectory:NSDocumentDirectory inDomains:NSUserDomainMask] lastObject];
+	return [[[NSFileManager defaultManager] URLsForDirectory:NSApplicationSupportDirectory inDomains:NSUserDomainMask] lastObject];
+}
+
+- (void)migrateIfNeeded {
+	
+	// Prepare the URL's
+	NSFileManager *fm	= [NSFileManager defaultManager];
+	NSURL *oldBaseURL	= [[fm URLsForDirectory:NSDocumentDirectory inDomains:NSUserDomainMask] lastObject];
+	NSURL *newBaseURL	= self.baseURL;
+	NSArray *contents	= [fm contentsOfDirectoryAtURL:oldBaseURL includingPropertiesForKeys:@[NSURLNameKey] options:NSDirectoryEnumerationSkipsSubdirectoryDescendants error:nil];
+	NSString *filename	= self.filename;
+	
+	// CoreData usually generates three files per PSC. Let's move all of them
+	for (NSURL *oldFileURL in contents) {
+		if ([oldFileURL.lastPathComponent hasPrefix:filename] == NO) {
+			continue;
+		}
+		
+		NSError *error		= nil;
+		NSURL *newFileURL	= [newBaseURL URLByAppendingPathComponent:oldFileURL.lastPathComponent];
+		
+		if ( ![fm moveItemAtURL:oldFileURL toURL:newFileURL error:&error] ) {
+			SPLogError(@"Error migrating %@ from %@ to %@", NSStringFromClass([self class]), oldFileURL, newFileURL);
+		}
+	}
 }
 
 #else
@@ -335,7 +362,7 @@ static SPLogLevels logLevel					= SPLogLevelsError;
 	// This will cause, as a side effect, SPDictionaryStorage test-database's to get spread in the AppSupport folder.
 	// As a workaround (until we figure out a better way of handling this), let's detect XCTestCase class, and append the Simperium-OSX name to the path.
 	// That will generate an URL like this:
-	//		- //Users/[USER]/Library/Application 0Support/Simperium-OSX/SPDictionaryStorage/
+	//		- //Users/[USER]/Library/Application Support/Simperium-OSX/SPDictionaryStorage/
 	//
 	if (NSClassFromString(@"XCTestCase") != nil) {
 		NSBundle *bundle = [NSBundle bundleForClass:[self class]];
@@ -344,6 +371,11 @@ static SPLogLevels logLevel					= SPLogLevelsError;
 		
 	return [appSupportURL URLByAppendingPathComponent:NSStringFromClass([self class])];
 }
+
+- (void)migrateIfNeeded {
+	// No-Op. We're already in the right location
+}
+
 
 #endif
 

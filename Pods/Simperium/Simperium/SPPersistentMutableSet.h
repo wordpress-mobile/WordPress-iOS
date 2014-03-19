@@ -9,7 +9,7 @@
 #import <Foundation/Foundation.h>
 
 
-@interface SPPersistentMutableSet : NSObject <NSFastEnumeration>
+@interface SPPersistentMutableSet : NSObject
 
 @property (nonatomic, strong, readonly) NSString *label;
 
@@ -24,6 +24,7 @@
 - (void)removeAllObjects;
 
 - (void)save;
+- (void)saveAndWait:(BOOL)wait;
 
 + (instancetype)loadSetWithLabel:(NSString *)label;
 

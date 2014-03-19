@@ -16,6 +16,9 @@
 #import "Post.h"
 #import "PostComment.h"
 
+#import "XCTestCase+Simperium.h"
+
+
 @implementation Farm
 @synthesize managedObjectContext		= __managedObjectContext;
 @synthesize managedObjectModel			= __managedObjectModel;
@@ -26,14 +29,15 @@
     if (self = [super init]) {
         self.done = NO;
         
-        self.simperium = [[Simperium alloc] initWithRootViewController:nil];
+		self.simperium = [[Simperium alloc] initWithModel:self.managedObjectModel
+												  context:self.managedObjectContext
+											  coordinator:self.persistentStoreCoordinator
+													label:label];
         
-        // Setting a label allows each Simperium instance to store user prefs under a different key
-        // (be sure to do this before the call to clearLocalData)
-        self.simperium.label = label;
-        
-        [self.simperium setAuthenticationEnabled:NO];
-        [self.simperium setVerboseLoggingEnabled:YES];
+        // Some stuff is stored in user prefs / keychain, so be sure to remove it
+		[self signout];
+		      
+        self.simperium.verboseLoggingEnabled = YES;
         self.token = aToken;
     }
     return self;
@@ -48,30 +52,32 @@
     //[simperium startWithAppName:APP_ID APIKey:API_KEY];
     
     // Core Data testing
-    [self.simperium startWithAppID:APP_ID
-							APIKey:API_KEY
-							 model:self.managedObjectModel
-						   context:self.managedObjectContext
-					   coordinator:self.persistentStoreCoordinator];
+	[self.simperium authenticateWithAppID:APP_ID token:self.token];
     
     [self.simperium setAllBucketDelegates: self];
-    
-    self.simperium.user = [[SPUser alloc] initWithEmail:USERNAME token:self.token];
 	
     for (NSString *bucketName in [self bucketNames]) {
         SPBucket *bucket = [self.simperium bucketForName:bucketName];
         bucket.notifyWhileIndexing = YES;
         
         // Clear data from previous tests if necessary
-        [bucket.network resetBucketAndWait:bucket];
+        [bucket.network reset:bucket completion:nil];
     }
 }
 
 - (void)stop {
 	[self.simperium removeRemoteData];
 	[self waitForCompletion:1.0f];
-	[self.simperium signOutAndRemoveLocalData:YES];
-	[self waitForCompletion:1.0f];
+	[self signout];
+}
+
+- (void)signout {
+	StartBlock();
+	[self.simperium signOutAndRemoveLocalData:YES completion:^() {
+		EndBlock();
+	}];
+	
+	WaitUntilBlockCompletes();
 }
 
 - (BOOL)waitForCompletion:(NSTimeInterval)timeoutSecs {

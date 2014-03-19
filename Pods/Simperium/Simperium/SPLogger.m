@@ -10,6 +10,16 @@
 
 
 
+
+#pragma mark ====================================================================================
+#pragma mark Private
+#pragma mark ====================================================================================
+
+@interface SPLogger ()
+@property (nonatomic, strong) dispatch_queue_t queue;
+@end
+
+
 #pragma mark ====================================================================================
 #pragma mark SPLogger
 #pragma mark ====================================================================================
@@ -19,6 +29,7 @@
 - (instancetype)init {
 	if ((self = [super init])) {
 		self.sharedLogLevel = SPLogLevelsOff;
+        self.queue = dispatch_queue_create("com.simperium.SPLogger", NULL);
 	}
 	return self;
 }
@@ -35,17 +46,19 @@
 }
 
 - (void)logWithLevel:(SPLogLevels)level flag:(SPLogFlags)flag format:(NSString*)format, ... {
-	
+
 	va_list args;
 	va_start(args, format);
 	NSString *message = [[NSString alloc] initWithFormat:format arguments:args];
 	va_end(args);
 	
-	if (_delegate) {
-		[_delegate handleLogMessage:message];
-	}
-	
-	NSLog(@"%@", message);
+	dispatch_async(self.queue, ^{
+		if (_delegate) {
+			[_delegate handleLogMessage:message];
+		}
+		
+		NSLog(@"%@", message);
+	});
 }
 
 @end

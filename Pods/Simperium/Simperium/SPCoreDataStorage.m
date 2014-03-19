@@ -144,25 +144,20 @@ static NSInteger const SPWorkersDone	= 0;
     return [[SPCoreDataStorage alloc] initWithSibling:self];
 }
 
-- (id<SPDiffable>)objectForKey: (NSString *)key bucketName:(NSString *)bucketName {
-    NSFetchRequest *fetchRequest = [[NSFetchRequest alloc] init];
-    NSEntityDescription *entityDescription = [NSEntityDescription entityForName:bucketName inManagedObjectContext:self.mainManagedObjectContext];
-    [fetchRequest setEntity:entityDescription];
-    
-    NSPredicate *predicate = [NSPredicate predicateWithFormat:@"simperiumKey == %@", key];
-    [fetchRequest setPredicate:predicate];
-    
-	// Fetch just one object: we don't really need to go through the entire database!
-	[fetchRequest setFetchLimit:1];
+- (id<SPDiffable>)objectForKey:(NSString *)key bucketName:(NSString *)bucketName {
+	
+    NSEntityDescription *entityDescription	= [NSEntityDescription entityForName:bucketName inManagedObjectContext:self.mainManagedObjectContext];
+    NSPredicate *predicate					= [NSPredicate predicateWithFormat:@"simperiumKey == %@", key];
+	
+    NSFetchRequest *fetchRequest			= [[NSFetchRequest alloc] init];
+    fetchRequest.entity						= entityDescription;
+    fetchRequest.predicate					= predicate;
+	fetchRequest.fetchLimit					= 1;
 	
     NSError *error;
     NSArray *items = [self.mainManagedObjectContext executeFetchRequest:fetchRequest error:&error];
 
-    if ([items count] == 0) {
-        return nil;
-	}
-    
-    return items[0];
+	return [items firstObject];
 }
 
 - (NSArray *)objectsForKeys:(NSSet *)keys bucketName:(NSString *)bucketName {
@@ -603,7 +598,7 @@ static NSInteger const SPWorkersDone	= 0;
     
     // Setup the persistent store
     //NSURL *storeURL = [[self applicationDocumentsDirectory] URLByAppendingPathComponent:@"Simplenote.sqlite"];
-    NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
+    NSArray *paths = NSSearchPathForDirectoriesInDomains(NSApplicationSupportDirectory, NSUserDomainMask, YES);
     NSString *documentsDirectory = [paths objectAtIndex:0];
     NSString *bundleName = [[NSBundle mainBundle] objectForInfoDictionaryKey:@"CFBundleName"];
     NSString *databaseFilename = [NSString stringWithFormat:@"%@.sqlite", bundleName];    

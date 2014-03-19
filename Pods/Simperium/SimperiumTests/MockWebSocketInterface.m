@@ -61,7 +61,6 @@
 	SPWebSocketChannel* channel = [super loadChannelForBucket:bucket];
 	channel.webSocketManager = self;
 	channel.started = YES;
-	[super authenticateChannel:channel];
 	return channel;
 }
 

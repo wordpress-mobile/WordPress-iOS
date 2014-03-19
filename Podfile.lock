@@ -12,19 +12,19 @@ PODS:
     - DTFoundation/Core (~> 1.6.0)
     - DTFoundation/DTHTMLParser (~> 1.6.0)
     - DTFoundation/UIKit (~> 1.6.0)
-  - DTFoundation/Core (1.6.1)
-  - DTFoundation/DTHTMLParser (1.6.1):
+  - DTFoundation/Core (1.6.2)
+  - DTFoundation/DTHTMLParser (1.6.2):
     - DTFoundation/Core
-  - DTFoundation/UIKit (1.6.1):
+  - DTFoundation/UIKit (1.6.2):
     - DTFoundation/Core
   - EmailChecker (0.1)
   - Google-Diff-Match-Patch (0.0.1)
-  - google-plus-ios-sdk (1.3.0)
+  - google-plus-ios-sdk (1.5.0)
   - HockeySDK (3.5.3)
   - JRSwizzle (1.0)
   - MGImageUtilities (0.0.1)
   - Mixpanel (2.3.1)
-  - NSLogger (1.1)
+  - NSLogger (1.2)
   - NSLogger-CocoaLumberjack-connector (1.3):
     - CocoaLumberjack
     - NSLogger
@@ -45,7 +45,7 @@ PODS:
     - JRSwizzle
     - SocketRocket
   - SocketRocket (0.3.1-beta2)
-  - SVProgressHUD (0.9)
+  - SVProgressHUD (1.0)
   - UIDeviceIdentifier (0.1)
   - WordPressApi (0.0.1):
     - AFNetworking (>= 1.0)
@@ -59,7 +59,7 @@ DEPENDENCIES:
   - CrashlyticsLumberjack (~> 1.0.0)
   - DTCoreText (= 1.6.9)
   - EmailChecker (from `https://raw.github.com/wordpress-mobile/EmailChecker/master/ios/EmailChecker.podspec`)
-  - google-plus-ios-sdk (= 1.3.0)
+  - google-plus-ios-sdk (= 1.5.0)
   - HockeySDK (~> 3.5.0)
   - MGImageUtilities (from `git://github.com/wordpress-mobile/MGImageUtilities.git`)
   - Mixpanel (= 2.3.1)
@@ -70,7 +70,7 @@ DEPENDENCIES:
   - Quantcast-Measure (~> 1.2.10)
   - Reachability (= 3.0.0)
   - Simperium (from `https://github.com/Simperium/simperium-ios.git`)
-  - SVProgressHUD (~> 0.9)
+  - SVProgressHUD (~> 1.0)
   - UIDeviceIdentifier (~> 0.1)
   - WordPressApi (from `https://github.com/koke/WordPressApi.git`)
   - wpxmlrpc (~> 0.4)
@@ -94,15 +94,15 @@ SPEC CHECKSUMS:
   CocoaLumberjack: 17803afbade3126a377d32b8d23367264b44ced6
   CrashlyticsLumberjack: 8ee2adbd0f815d8b111e5f72cd82d39b08430ebc
   DTCoreText: e48c1526945272133b8c935c40da3f3e79836f1b
-  DTFoundation: 23d39b258d481221167cd4bf3df86ff3f22b1f55
+  DTFoundation: 7c69990fa3cb7655cafa95ab59c3fcea014460f0
   EmailChecker: e909e6d113fac7ad5e3c304fabce30fc4a79c80e
   Google-Diff-Match-Patch: 63f4950ecbd0bf3f7ccae48987e958fc825041d3
-  google-plus-ios-sdk: 38378c4094a72a4fcdd5254c03fdd1813b345fb9
+  google-plus-ios-sdk: 5bda2a87ec54320dc99a67c745a445bbdf22cc72
   HockeySDK: 2a2d77539bbc2df940cbe7cb1ebe8029ce5c1cc6
   JRSwizzle: 6242ff38485d870fc2636899048ee1ab883ae587
   MGImageUtilities: ab3580f2161b10f8a41331baea87aaafbd688950
   Mixpanel: 8d189c58bcaac429de9cb4f18a54621df99b7e38
-  NSLogger: 4567fef08d0db18a89cce91b2053823fc0950738
+  NSLogger: 9607fdeafd0b09922c69615f99f127de45971b8f
   NSLogger-CocoaLumberjack-connector: da77800fec7415c1d378dfd93465031a58c5a9a8
   NSObject-SafeExpectations: 241ab1289cbc33a00307cd025d22883646f2e1f0
   NSURL+IDN: 22633c0149b86d6391f32f23776bc0e6ecc532e2
@@ -111,7 +111,7 @@ SPEC CHECKSUMS:
   Reachability: 500bd76bf6cd8ff2c6fb715fc5f44ef6e4c024f2
   Simperium: 02c4c7ea1945387a6b06b2145106b85ea9c24d5c
   SocketRocket: 7ac946bcce46287a791dfff3c1f8daa692821dae
-  SVProgressHUD: 03d4845ec8e64591726428a08236c6a5489d45f8
+  SVProgressHUD: 5e10939a296debf5fe5a5895eda9539b8b2114f1
   UIDeviceIdentifier: 64036321b0f77ff41b4200002f0c138431c00d86
   WordPressApi: 6c7ab5320344fbec850f0baba4b0ec2bfd03587d
   wpxmlrpc: 2206985822e725838c77e1143c9171e577ac063b

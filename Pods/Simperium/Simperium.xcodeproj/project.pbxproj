@@ -48,8 +48,6 @@
 		2622FD19147F24E000C8EEB4 /* SPMemberFloat.m in Sources */ = {isa = PBXBuildFile; fileRef = 2622FD17147F24E000C8EEB4 /* SPMemberFloat.m */; };
 		2622FD1C147F24F700C8EEB4 /* SPMemberEntity.h in Headers */ = {isa = PBXBuildFile; fileRef = 2622FD1A147F24F600C8EEB4 /* SPMemberEntity.h */; };
 		2622FD1D147F24F700C8EEB4 /* SPMemberEntity.m in Sources */ = {isa = PBXBuildFile; fileRef = 2622FD1B147F24F600C8EEB4 /* SPMemberEntity.m */; };
-		2622FD20147F250400C8EEB4 /* SPMemberBinary.h in Headers */ = {isa = PBXBuildFile; fileRef = 2622FD1E147F250200C8EEB4 /* SPMemberBinary.h */; };
-		2622FD21147F250400C8EEB4 /* SPMemberBinary.m in Sources */ = {isa = PBXBuildFile; fileRef = 2622FD1F147F250200C8EEB4 /* SPMemberBinary.m */; };
 		2622FD24147F251200C8EEB4 /* SPMemberList.h in Headers */ = {isa = PBXBuildFile; fileRef = 2622FD22147F251100C8EEB4 /* SPMemberList.h */; };
 		2622FD25147F251200C8EEB4 /* SPMemberList.m in Sources */ = {isa = PBXBuildFile; fileRef = 2622FD23147F251100C8EEB4 /* SPMemberList.m */; };
 		2622FD28147F251D00C8EEB4 /* SPMemberBase64.h in Headers */ = {isa = PBXBuildFile; fileRef = 2622FD26147F251C00C8EEB4 /* SPMemberBase64.h */; };
@@ -125,7 +123,6 @@
 		269CAC2F146DF86000584C56 /* Test1.xcdatamodeld in Resources */ = {isa = PBXBuildFile; fileRef = 26ED4412146CF03A00C3D7D6 /* Test1.xcdatamodeld */; };
 		26B16EFF13B1B79100BEB3E5 /* NSData+Simperium.h in Headers */ = {isa = PBXBuildFile; fileRef = 26B16EFD13B1B78C00BEB3E5 /* NSData+Simperium.h */; };
 		26B16F0013B1B79100BEB3E5 /* NSData+Simperium.m in Sources */ = {isa = PBXBuildFile; fileRef = 26B16EFE13B1B78F00BEB3E5 /* NSData+Simperium.m */; };
-		26B473F714A116B100397E7F /* SPBinaryTransportDelegate.h in Headers */ = {isa = PBXBuildFile; fileRef = 26B473F614A116B100397E7F /* SPBinaryTransportDelegate.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		26B733F015E585630081CF4A /* SPRelationshipResolver.h in Headers */ = {isa = PBXBuildFile; fileRef = 26B733EE15E585620081CF4A /* SPRelationshipResolver.h */; };
 		26B733F115E585630081CF4A /* SPRelationshipResolver.m in Sources */ = {isa = PBXBuildFile; fileRef = 26B733EF15E585620081CF4A /* SPRelationshipResolver.m */; };
 		26C93A6A14F8159300BE99F5 /* libSimperium.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 264CD8FB135DFD7A00C51BAD /* libSimperium.a */; };
@@ -133,7 +130,6 @@
 		26C93A6E14F850EA00BE99F5 /* SPAuthenticationViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 26C93A6C14F850EA00BE99F5 /* SPAuthenticationViewController.m */; };
 		26D4D3B3156C3DA300E822E9 /* JRSwizzle.h in Headers */ = {isa = PBXBuildFile; fileRef = 26D4D3B1156C3DA300E822E9 /* JRSwizzle.h */; };
 		26D4D3B4156C3DA300E822E9 /* JRSwizzle.m in Sources */ = {isa = PBXBuildFile; fileRef = 26D4D3B2156C3DA300E822E9 /* JRSwizzle.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
-		26E83A811395A1FC00195758 /* SPS3Manager.h in Headers */ = {isa = PBXBuildFile; fileRef = 26E83A7F1395A1FC00195758 /* SPS3Manager.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		26E83C2613985DBE00195758 /* SPCoreDataExporter.h in Headers */ = {isa = PBXBuildFile; fileRef = 26E83C2413985DBB00195758 /* SPCoreDataExporter.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		26E83C2713985DBE00195758 /* SPCoreDataExporter.m in Sources */ = {isa = PBXBuildFile; fileRef = 26E83C2513985DBC00195758 /* SPCoreDataExporter.m */; };
 		26E83D9913999C0F00195758 /* SPUser.h in Headers */ = {isa = PBXBuildFile; fileRef = 26E83D9713999C0C00195758 /* SPUser.h */; settings = {ATTRIBUTES = (Public, ); }; };
@@ -149,8 +145,6 @@
 		26ED4418146CF6D000C3D7D6 /* Config.m in Sources */ = {isa = PBXBuildFile; fileRef = 26ED43EA146CE1FD00C3D7D6 /* Config.m */; };
 		26ED441B146CF8E600C3D7D6 /* Farm.m in Sources */ = {isa = PBXBuildFile; fileRef = 26ED441A146CF8E500C3D7D6 /* Farm.m */; };
 		26EF3BA6147C6AB500E62AD6 /* SPChangeProcessor.m in Sources */ = {isa = PBXBuildFile; fileRef = 269A7F3E147355D100CB29EE /* SPChangeProcessor.m */; };
-		26EF3BA9147C6BB200E62AD6 /* SPBinaryManager.h in Headers */ = {isa = PBXBuildFile; fileRef = 26EF3BA7147C6BB200E62AD6 /* SPBinaryManager.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		26EF3BAA147C6BB200E62AD6 /* SPBinaryManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 26EF3BA8147C6BB200E62AD6 /* SPBinaryManager.m */; };
 		26F4BBCC13DCFD9E00B8AC56 /* SystemConfiguration.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 26F4BBCB13DCFD9E00B8AC56 /* SystemConfiguration.framework */; };
 		26F4BBCE13DCFDA700B8AC56 /* CFNetwork.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 26F4BBCD13DCFDA700B8AC56 /* CFNetwork.framework */; };
 		26F4BBD013DCFDB000B8AC56 /* libz.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 26F4BBCF13DCFDB000B8AC56 /* libz.dylib */; };
@@ -284,8 +278,6 @@
 		2622FD17147F24E000C8EEB4 /* SPMemberFloat.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SPMemberFloat.m; sourceTree = "<group>"; };
 		2622FD1A147F24F600C8EEB4 /* SPMemberEntity.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SPMemberEntity.h; sourceTree = "<group>"; };
 		2622FD1B147F24F600C8EEB4 /* SPMemberEntity.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SPMemberEntity.m; sourceTree = "<group>"; };
-		2622FD1E147F250200C8EEB4 /* SPMemberBinary.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SPMemberBinary.h; sourceTree = "<group>"; };
-		2622FD1F147F250200C8EEB4 /* SPMemberBinary.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SPMemberBinary.m; sourceTree = "<group>"; };
 		2622FD22147F251100C8EEB4 /* SPMemberList.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SPMemberList.h; sourceTree = "<group>"; };
 		2622FD23147F251100C8EEB4 /* SPMemberList.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; lineEnding = 0; path = SPMemberList.m; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objc; };
 		2622FD26147F251C00C8EEB4 /* SPMemberBase64.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SPMemberBase64.h; sourceTree = "<group>"; };
@@ -366,15 +358,12 @@
 		269A7F4314743A9C00CB29EE /* SPIndexProcessor.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; lineEnding = 0; path = SPIndexProcessor.m; sourceTree = "<group>"; };
 		26B16EFD13B1B78C00BEB3E5 /* NSData+Simperium.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSData+Simperium.h"; sourceTree = "<group>"; };
 		26B16EFE13B1B78F00BEB3E5 /* NSData+Simperium.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSData+Simperium.m"; sourceTree = "<group>"; };
-		26B473F614A116B100397E7F /* SPBinaryTransportDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SPBinaryTransportDelegate.h; sourceTree = "<group>"; };
 		26B733EE15E585620081CF4A /* SPRelationshipResolver.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SPRelationshipResolver.h; sourceTree = "<group>"; };
 		26B733EF15E585620081CF4A /* SPRelationshipResolver.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; lineEnding = 0; path = SPRelationshipResolver.m; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objc; };
 		26C93A6B14F850EA00BE99F5 /* SPAuthenticationViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SPAuthenticationViewController.h; sourceTree = "<group>"; };
 		26C93A6C14F850EA00BE99F5 /* SPAuthenticationViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SPAuthenticationViewController.m; sourceTree = "<group>"; };
 		26D4D3B1156C3DA300E822E9 /* JRSwizzle.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = JRSwizzle.h; sourceTree = "<group>"; };
 		26D4D3B2156C3DA300E822E9 /* JRSwizzle.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = JRSwizzle.m; sourceTree = "<group>"; };
-		26E83A7F1395A1FC00195758 /* SPS3Manager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SPS3Manager.h; sourceTree = "<group>"; };
-		26E83A801395A1FC00195758 /* SPS3Manager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; lineEnding = 0; path = SPS3Manager.m; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objc; };
 		26E83C2413985DBB00195758 /* SPCoreDataExporter.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SPCoreDataExporter.h; sourceTree = "<group>"; };
 		26E83C2513985DBC00195758 /* SPCoreDataExporter.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; lineEnding = 0; path = SPCoreDataExporter.m; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objc; };
 		26E83D9713999C0C00195758 /* SPUser.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SPUser.h; sourceTree = "<group>"; };
@@ -387,8 +376,6 @@
 		26ED4419146CF8E500C3D7D6 /* Farm.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Farm.h; sourceTree = "<group>"; };
 		26ED441A146CF8E500C3D7D6 /* Farm.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Farm.m; sourceTree = "<group>"; };
 		26ED441C146CFAF100C3D7D6 /* TestParams.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TestParams.h; sourceTree = "<group>"; };
-		26EF3BA7147C6BB200E62AD6 /* SPBinaryManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SPBinaryManager.h; sourceTree = "<group>"; };
-		26EF3BA8147C6BB200E62AD6 /* SPBinaryManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; lineEnding = 0; path = SPBinaryManager.m; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objc; };
 		26F4BBCB13DCFD9E00B8AC56 /* SystemConfiguration.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SystemConfiguration.framework; path = System/Library/Frameworks/SystemConfiguration.framework; sourceTree = SDKROOT; };
 		26F4BBCD13DCFDA700B8AC56 /* CFNetwork.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CFNetwork.framework; path = System/Library/Frameworks/CFNetwork.framework; sourceTree = SDKROOT; };
 		26F4BBCF13DCFDB000B8AC56 /* libz.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libz.dylib; path = usr/lib/libz.dylib; sourceTree = SDKROOT; };
@@ -534,18 +521,6 @@
 			path = SocketRocket;
 			sourceTree = "<group>";
 		};
-		2622FCFE147F224200C8EEB4 /* Binary */ = {
-			isa = PBXGroup;
-			children = (
-				26B473F614A116B100397E7F /* SPBinaryTransportDelegate.h */,
-				26EF3BA7147C6BB200E62AD6 /* SPBinaryManager.h */,
-				26EF3BA8147C6BB200E62AD6 /* SPBinaryManager.m */,
-				26E83A7F1395A1FC00195758 /* SPS3Manager.h */,
-				26E83A801395A1FC00195758 /* SPS3Manager.m */,
-			);
-			name = Binary;
-			sourceTree = "<group>";
-		};
 		2622FCFF147F225800C8EEB4 /* Diffing */ = {
 			isa = PBXGroup;
 			children = (
@@ -575,8 +550,6 @@
 				2622FD23147F251100C8EEB4 /* SPMemberList.m */,
 				2622FD26147F251C00C8EEB4 /* SPMemberBase64.h */,
 				2622FD27147F251D00C8EEB4 /* SPMemberBase64.m */,
-				2622FD1E147F250200C8EEB4 /* SPMemberBinary.h */,
-				2622FD1F147F250200C8EEB4 /* SPMemberBinary.m */,
 			);
 			name = Diffing;
 			sourceTree = "<group>";
@@ -714,7 +687,6 @@
 				46B7880216B709AD001AA908 /* Networking */,
 				2622FD02147F23BE00C8EEB4 /* User */,
 				2622FD05147F241500C8EEB4 /* Helpers */,
-				2622FCFE147F224200C8EEB4 /* Binary */,
 				264CD901135DFD7A00C51BAD /* Supporting Files */,
 				265D80061475C2CE00002A19 /* Categories */,
 			);
@@ -965,7 +937,6 @@
 				264CD99D135DFE7E00C51BAD /* NSString+JavaSubstring.h in Headers */,
 				264CD99F135DFE7E00C51BAD /* NSString+UnicharUtilities.h in Headers */,
 				264CD9A1135DFE7E00C51BAD /* NSString+UriCompatibility.h in Headers */,
-				26E83A811395A1FC00195758 /* SPS3Manager.h in Headers */,
 				26E83C2613985DBE00195758 /* SPCoreDataExporter.h in Headers */,
 				26E83D9913999C0F00195758 /* SPUser.h in Headers */,
 				26E83DAA1399D05F00195758 /* NSDate+Simperium.h in Headers */,
@@ -979,7 +950,6 @@
 				265D80091475C2F500002A19 /* SPStorage.h in Headers */,
 				265D800D1476188200002A19 /* SPCoreDataStorage.h in Headers */,
 				265D80141476461800002A19 /* SPStorageObserver.h in Headers */,
-				26EF3BA9147C6BB200E62AD6 /* SPBinaryManager.h in Headers */,
 				B5C91A0E1827E9CB0002D306 /* NSURLResponse+Simperium.h in Headers */,
 				2622FD08147F249400C8EEB4 /* SPMemberText.h in Headers */,
 				2622FD0C147F24A700C8EEB4 /* SPMemberDate.h in Headers */,
@@ -989,12 +959,10 @@
 				2622FD14147F24D700C8EEB4 /* SPMemberDouble.h in Headers */,
 				2622FD18147F24E000C8EEB4 /* SPMemberFloat.h in Headers */,
 				2622FD1C147F24F700C8EEB4 /* SPMemberEntity.h in Headers */,
-				2622FD20147F250400C8EEB4 /* SPMemberBinary.h in Headers */,
 				B5EC2C2518858E3E0067E3B8 /* SPPersistentMutableSet.h in Headers */,
 				2622FD24147F251200C8EEB4 /* SPMemberList.h in Headers */,
 				2622FD28147F251D00C8EEB4 /* SPMemberBase64.h in Headers */,
 				2622FD2D147F32A500C8EEB4 /* SPNetworkInterface.h in Headers */,
-				26B473F714A116B100397E7F /* SPBinaryTransportDelegate.h in Headers */,
 				26C93A6D14F850EA00BE99F5 /* SPAuthenticationViewController.h in Headers */,
 				26563AE414FC3BDE0081C8C1 /* SPAuthenticator.h in Headers */,
 				267CE8FA156C0FD20028801C /* NSMutableDictionary+Simperium.h in Headers */,
@@ -1239,14 +1207,12 @@
 				265D800E1476188200002A19 /* SPCoreDataStorage.m in Sources */,
 				26EF3BA6147C6AB500E62AD6 /* SPChangeProcessor.m in Sources */,
 				B5C91A081827E8600002D306 /* SPHttpRequest.m in Sources */,
-				26EF3BAA147C6BB200E62AD6 /* SPBinaryManager.m in Sources */,
 				2622FD09147F249400C8EEB4 /* SPMemberText.m in Sources */,
 				2622FD0D147F24A700C8EEB4 /* SPMemberDate.m in Sources */,
 				2622FD11147F24CC00C8EEB4 /* SPMemberInt.m in Sources */,
 				2622FD15147F24D700C8EEB4 /* SPMemberDouble.m in Sources */,
 				2622FD19147F24E000C8EEB4 /* SPMemberFloat.m in Sources */,
 				2622FD1D147F24F700C8EEB4 /* SPMemberEntity.m in Sources */,
-				2622FD21147F250400C8EEB4 /* SPMemberBinary.m in Sources */,
 				2622FD25147F251200C8EEB4 /* SPMemberList.m in Sources */,
 				2622FD29147F251D00C8EEB4 /* SPMemberBase64.m in Sources */,
 				B5C91A0B1827E8600002D306 /* SPHttpRequestQueue.m in Sources */,

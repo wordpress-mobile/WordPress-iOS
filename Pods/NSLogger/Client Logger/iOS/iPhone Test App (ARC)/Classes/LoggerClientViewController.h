@@ -40,16 +40,20 @@
 	IBOutlet UITextField *viewerPortField;
 	IBOutlet UISwitch *browseBonjour;
 	IBOutlet UISwitch *browseLocalDomainOnly;
+	
+	IBOutlet UITextField *intervalField;
+	IBOutlet UISwitch *sendImages;
 
 	NSTimer *sendTimer;
 	NSArray *tagsArray;
 	int counter;
-	int imagesCounter;
+	volatile int imagesCounter;
 }
 
 - (IBAction)startStopSendingMessages;
 - (IBAction)bonjourSettingChanged;
 - (IBAction)browseLocalDomainOnlySettingChanged;
+- (IBAction)sendImagesSettingChanged;
 
 @end
 

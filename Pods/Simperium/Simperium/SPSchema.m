@@ -19,7 +19,6 @@
 #import "SPMemberJSONList.h"
 #import "SPMemberList.h"
 #import "SPMemberBase64.h"
-#import "SPMemberBinary.h"
 
 @implementation SPSchema
 @synthesize bucketName;
@@ -41,7 +40,6 @@
 			@"date"		: NSStringFromClass([SPMemberDate class]),
 			@"entity"	: NSStringFromClass([SPMemberEntity class]),
 			@"double"	: NSStringFromClass([SPMemberDouble class]),
-			@"binary"	: NSStringFromClass([SPMemberBinary class]),
 			@"list"		: NSStringFromClass([SPMemberList class]),
 			@"json"		: NSStringFromClass([SPMemberJSON class]),
 			@"jsonlist" : NSStringFromClass([SPMemberJSONList class]),
@@ -67,9 +65,6 @@
 			if (member) {
 				[members setObject:member forKey:member.keyName];
 			}
-			
-            if ([member isKindOfClass:[SPMemberBinary class]])
-                [binaryMembers addObject: member];
         }        
     }
     

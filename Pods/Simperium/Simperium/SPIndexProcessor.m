@@ -70,10 +70,10 @@ static SPLogLevels logLevel = SPLogLevelsInfo;
         }
     }
     
-//    // Take this opportunity to check for any objects that exist locally but not remotely, and remove them
-//    // (this can happen after reindexing if the client missed some remote deletion changes)
-//	NSSet *remoteKeySet = [NSSet setWithArray:[indexDict allKeys]];
-//	[self reconcileLocalAndRemoteIndex:remoteKeySet bucket:bucket];
+    // Take this opportunity to check for any objects that exist locally but not remotely, and remove them
+    // (this can happen after reindexing if the client missed some remote deletion changes)
+	NSSet *remoteKeySet = [NSSet setWithArray:[indexDict allKeys]];
+	[self reconcileLocalAndRemoteIndex:remoteKeySet bucket:bucket];
     
     // Process each batch while being efficient with memory and faulting
     id<SPStorageProvider> threadSafeStorage = [bucket.storage threadSafeStorage];

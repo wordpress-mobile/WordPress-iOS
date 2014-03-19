@@ -29,6 +29,7 @@
  * 
  */
 #import <Security/SecItem.h>
+#import <HockeySDK/BITHockeyManager.h>
 #import "LoggerAppDelegate.h"
 #import "LoggerNativeTransport.h"
 #import "LoggerWindowController.h"
@@ -36,8 +37,10 @@
 #import "LoggerDocumentController.h"
 #import "LoggerStatusWindowController.h"
 #import "LoggerPrefsWindowController.h"
+#import "LoggerMessageCell.h"
 
 NSString * const kPrefKeepMultipleRuns = @"keepMultipleRuns";
+NSString * const kPrefCloseWithoutSaving = @"closeWithoutSaving";
 
 NSString * const kPrefPublishesBonjourService = @"publishesBonjourService";
 NSString * const kPrefHasDirectTCPIPResponder = @"hasDirectTCPIPResponder";
@@ -184,6 +187,7 @@ NSString * const kPref_ApplicationFilterSet = @"appFilterSet";
 - (void)prefsChangeNotification:(NSNotification *)note
 {
 	[self performSelector:@selector(startStopTransports) withObject:nil afterDelay:0];
+    [LoggerMessageCell loadAdvancedColors];
 }
 
 - (void)startStopTransports
@@ -221,6 +225,19 @@ NSString * const kPref_ApplicationFilterSet = @"appFilterSet";
 
 - (void)applicationDidFinishLaunching:(NSNotification *)aNotification
 {
+	// Initialize HockeyApp if properly configured
+	NSDictionary *hockeyConf = [NSDictionary dictionaryWithContentsOfFile:[[NSBundle mainBundle] pathForResource:@"HockeyConf" ofType:@"plist"]];
+	NSString *hockeyAppID = [hockeyConf objectForKey:@"appID"];
+	if ([hockeyAppID isKindOfClass:[NSString class]] && [hockeyAppID length])
+	{
+		BITHockeyManager *shm = [BITHockeyManager sharedHockeyManager];
+		[shm configureWithIdentifier:hockeyAppID
+						 companyName:[hockeyConf objectForKey:@"companyName"]
+		  crashReportManagerDelegate:self];
+		[shm startManager];
+		[shm setExceptionInterceptionEnabled:YES];
+	}
+	
 	// Listen to prefs change notifications, where we start / stop transports on demand
 	[[NSNotificationCenter defaultCenter] addObserver:self
 											 selector:@selector(prefsChangeNotification:)
@@ -507,6 +524,14 @@ NSString * const kPref_ApplicationFilterSet = @"appFilterSet";
 	}
 
 	return (serverCerts != NULL);
+}
+
+// -----------------------------------------------------------------------------
+#pragma mark -
+#pragma mark BITCrashReportManagerDelegate
+// -----------------------------------------------------------------------------
+- (void) showMainApplicationWindow
+{
 }
 
 @end

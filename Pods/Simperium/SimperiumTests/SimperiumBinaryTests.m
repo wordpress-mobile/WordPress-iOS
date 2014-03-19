@@ -20,9 +20,9 @@
 - (void)setUp
 {
     [super setUp];
-    NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
+    NSArray *paths = NSSearchPathForDirectoriesInDomains(NSApplicationSupportDirectory, NSUserDomainMask, YES);
     if(![[NSFileManager defaultManager] createDirectoryAtPath: [paths objectAtIndex:0] withIntermediateDirectories:YES attributes:nil error:NULL])
-        NSLog(@"Error: Create folder failed %@", NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES));
+        NSLog(@"Error: Create folder failed %@", NSSearchPathForDirectoriesInDomains(NSApplicationSupportDirectory, NSUserDomainMask, YES));
 }
 
 - (NSData *)randomDataWithBytes: (NSUInteger)length

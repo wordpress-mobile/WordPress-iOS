@@ -11,10 +11,12 @@
 
 @class SPBucket;
 
+typedef void (^SPNetworkInterfaceResetCompletion)(void);
+
 @protocol SPNetworkInterface <NSObject>
 - (void)start:(SPBucket *)bucket;
 - (void)stop:(SPBucket *)bucket;
-- (void)resetBucketAndWait:(SPBucket *)bucket;
+- (void)reset:(SPBucket *)bucket completion:(SPNetworkInterfaceResetCompletion)completion;
 - (void)requestLatestVersionsForBucket:(SPBucket *)bucket;
 - (void)requestVersions:(int)numVersions object:(id<SPDiffable>)object;
 - (void)sendObjectDeletion:(id<SPDiffable>)object;

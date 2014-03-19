@@ -10,16 +10,13 @@
 #import "SPProcessorNotificationNames.h"
 
 
-
 @class SPBucket;
 
 #pragma mark ====================================================================================
-#pragma mark SPChangeProcessor
+#pragma mark Constants
 #pragma mark ====================================================================================
 
-@interface SPChangeProcessor : NSObject
-
-@property (nonatomic, strong, readonly) NSString *instanceLabel;
+typedef void(^SPChangeEnumerationBlockType)(NSDictionary *change, BOOL *stop);
 
 extern NSString * const CH_KEY;
 extern NSString * const CH_ADD;
@@ -32,16 +29,33 @@ extern NSString * const CH_END_VERSION;
 extern NSString * const CH_LOCAL_ID;
 
 
+#pragma mark ====================================================================================
+#pragma mark SPChangeProcessor
+#pragma mark ====================================================================================
+
+@interface SPChangeProcessor : NSObject
+
+@property (nonatomic, strong, readonly) NSString	*label;
+@property (nonatomic, assign, readonly) int			numChangesPending;
+@property (nonatomic, assign, readonly) int			numKeysForObjectsWithMoreChanges;
+
 - (id)initWithLabel:(NSString *)label;
+
 - (void)reset;
-- (BOOL)processRemoteResponseForChanges:(NSArray *)changes bucket:(SPBucket *)bucket;
+
+- (void)processRemoteResponseForChanges:(NSArray *)changes bucket:(SPBucket *)bucket repostNeeded:(BOOL *)repostNeeded;
 - (void)processRemoteChanges:(NSArray *)changes bucket:(SPBucket *)bucket clientID:(NSString *)clientID;
-- (void)processLocalChange:(NSDictionary *)change key:(NSString *)key;
-- (NSDictionary *)processLocalObjectWithKey:(NSString *)key bucket:(SPBucket *)bucket later:(BOOL)later;
+
+- (void)markObjectWithPendingChanges:(NSString *)key bucket:(SPBucket *)bucket;
+- (NSDictionary *)processLocalObjectWithKey:(NSString *)key bucket:(SPBucket *)bucket;
 - (NSDictionary *)processLocalDeletionWithKey:(NSString *)key;
-- (int)numChangesPending;
-- (int)numKeysForObjectsWithMoreChanges;
-- (void)enumeratePendingChanges:(SPBucket *)bucket onlyQueuedChanges:(BOOL)onlyQueuedChanges block:(void (^)(NSDictionary *change))block;
-- (NSArray *)processKeysForObjectsWithMoreChanges:(SPBucket *)bucket;
+- (NSDictionary *)processLocalBucketDeletion:(SPBucket *)bucket;
+
+- (void)enumeratePendingChangesForBucket:(SPBucket *)bucket block:(SPChangeEnumerationBlockType)block;
+- (void)enumerateQueuedChangesForBucket:(SPBucket *)bucket block:(SPChangeEnumerationBlockType)block;
+- (void)enumerateRetryChangesForBucket:(SPBucket *)bucket block:(SPChangeEnumerationBlockType)block;
+
+- (BOOL)hasReachedMaxPendings;
 - (NSArray*)exportPendingChanges;
+
 @end

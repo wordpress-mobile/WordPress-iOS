@@ -8,6 +8,7 @@
 
 #import "DTASN1Parser.h"
 #import "DTASN1BitString.h"
+#import "DTWeakSupport.h"
 #import "DTLog.h"
 
 @implementation DTASN1Parser
@@ -135,7 +136,7 @@
 {
 	if (!dataRange.length && tag != DTASN1TypeNull)
 	{
-		DTLogError(@"Encountered zero length data for tag %ld", (unsigned long)tag);
+		//DTLogError(@"Encountered zero length data for tag %ld", (unsigned long)tag);
 		
 		// only NULL can have zero length
 		return NO;

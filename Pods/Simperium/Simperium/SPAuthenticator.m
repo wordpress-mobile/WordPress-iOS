@@ -11,7 +11,6 @@
 #import "SPEnvironment.h"
 #import "SPUser.h"
 #import "SPAuthenticator.h"
-#import "SPBinaryManager.h"
 #import "JSONKit+Simperium.h"
 #import "STKeychain.h"
 #import "SPReachability.h"

@@ -9,10 +9,8 @@
 #import "SPUser.h"
 #import "SPSchema.h"
 #import "SPManagedObject.h"
-#import "SPBinaryManager.h"
 #import "SPStorageObserver.h"
 #import "SPMember.h"
-#import "SPMemberBinary.h"
 #import "SPDiffer.h"
 #import "SPGhost.h"
 #import "SPEnvironment.h"
@@ -65,12 +63,15 @@ static SPLogLevels logLevel						= SPLogLevelsInfo;
         self.dynamicSchemaEnabled = YES;
         self.buckets = [NSMutableDictionary dictionary];
         
+		SPWebSocketInterface *websocket = [SPWebSocketInterface interfaceWithSimperium:self];
+		self.network = websocket;
+		
         SPAuthenticator *auth = [[SPAuthenticator alloc] initWithDelegate:self simperium:self];
         self.authenticator = auth;
         
         SPRelationshipResolver *resolver = [[SPRelationshipResolver alloc] init];
         self.relationshipResolver = resolver;
-
+		
 		SPLogger *logger = [SPLogger sharedInstance];
 		logger.delegate = self;
 		
@@ -78,12 +79,10 @@ static SPLogLevels logLevel						= SPLogLevelsInfo;
         self.authenticationViewControllerClass = [SPAuthenticationViewController class];
 #else
         self.authenticationWindowControllerClass = [SPAuthenticationWindowController class];
-#endif
-		
-#if !TARGET_OS_IPHONE
+
 		NSNotificationCenter* wc = [[NSWorkspace sharedWorkspace] notificationCenter];
-		[wc addObserver:self selector:@selector(handleSleepNote:) name:NSWorkspaceWillSleepNotification object: NULL];
-		[wc addObserver:self selector:@selector(handleWakeNote:) name:NSWorkspaceDidWakeNotification object: NULL];
+		[wc addObserver:self selector:@selector(handleSleepNote:) name:NSWorkspaceWillSleepNotification object:NULL];
+		[wc addObserver:self selector:@selector(handleWakeNote:)  name:NSWorkspaceDidWakeNotification   object:NULL];
 #endif
 		
 		NSNotificationCenter *nc = [NSNotificationCenter defaultCenter];
@@ -91,30 +90,6 @@ static SPLogLevels logLevel						= SPLogLevelsInfo;
     }
 
 	return self;
-}
-
-- (void)configureBinaryManager:(SPBinaryManager *)manager {    
-    // Binary members need to know about the manager (ugly but avoids singleton/global)
-    for (SPBucket *bucket in [self.buckets allValues]) {
-        for (SPMemberBinary *binaryMember in bucket.differ.schema.binaryMembers) {
-            binaryMember.binaryManager = manager;
-        }
-    }
-}
-
-- (NSString *)addBinary:(NSData *)binaryData toObject:(SPManagedObject *)object bucketName:(NSString *)bucketName attributeName:(NSString *)attributeName {
-    return [self.binaryManager addBinary:binaryData toObject:object bucketName:bucketName attributeName:attributeName];
-}
-
-- (void)addBinaryWithFilename:(NSString *)filename toObject:(SPManagedObject *)object bucketName:(NSString *)bucketName attributeName:(NSString *)attributeName {
-    // Make sure the object has a simperiumKey (it might not if it was just created)
-    if (!object.simperiumKey)
-        object.simperiumKey = [NSString sp_makeUUID];
-    return [self.binaryManager addBinaryWithFilename:filename toObject:object bucketName:bucketName attributeName:attributeName];
-}
-
-- (NSData *)dataForFilename:(NSString *)filename {
-    return [self.binaryManager dataForFilename:filename];
 }
 
 - (SPBucket *)bucketForName:(NSString *)name { 
@@ -152,7 +127,7 @@ static SPLogLevels logLevel						= SPLogLevelsInfo;
 #pragma mark ====================================================================================
 
 - (void)startNetworkManagers {
-    if (!self.networkEnabled || self.networkManagersStarted) {
+    if (!self.networkEnabled || self.networkManagersStarted || !self.appID) {
         return;
 	}
     
@@ -214,12 +189,15 @@ static SPLogLevels logLevel						= SPLogLevelsInfo;
 #pragma mark ====================================================================================
 
 - (NSMutableDictionary *)loadBuckets:(NSArray *)schemas {
+	NSAssert(schemas,				@"No schemas were provided");
+	NSAssert(_network,				@"Network Interface should be initialized");
+	NSAssert(_coreDataStorage,		@"CoreDataStorage should be initialized");
+	NSAssert(_relationshipResolver,	@"CoreDataStorage should be initialized");
+	
     NSMutableDictionary *bucketList = [NSMutableDictionary dictionaryWithCapacity:[schemas count]];
     SPBucket *bucket;
 
     for (SPSchema *schema in schemas) {
-//        Class entityClass = NSClassFromString(schema.bucketName);
-//        NSAssert1(entityClass != nil, @"Simperium error: couldn't find a class mapping for: ", schema.bucketName);
         
 		NSString *remoteName = self.bucketOverrides[schema.bucketName] ?: schema.bucketName;
 		bucket = [[SPBucket alloc] initWithSchema:schema storage:self.coreDataStorage networkInterface:self.network
@@ -253,8 +231,6 @@ static SPLogLevels logLevel						= SPLogLevelsInfo;
 }
 
 
-
-
 #pragma mark ====================================================================================
 #pragma mark New Initialization Methods
 #pragma mark ====================================================================================
@@ -263,18 +239,18 @@ static SPLogLevels logLevel						= SPLogLevelsInfo;
 			context:(NSManagedObjectContext *)context
 		coordinator:(NSPersistentStoreCoordinator *)coordinator {
 	
-	NSParameterAssert(model);
-	NSParameterAssert(context);
-	NSParameterAssert(coordinator);
-	
-	NSAssert((context.concurrencyType == NSMainQueueConcurrencyType), NSLocalizedString(@"Error: you must initialize your context with 'NSMainQueueConcurrencyType' concurrency type.", nil));
-	NSAssert((context.persistentStoreCoordinator == nil), NSLocalizedString(@"Error: NSManagedObjectContext's persistentStoreCoordinator must be nil. Simperium will handle CoreData connections for you.", nil));
+	return [self initWithModel:model context:context coordinator:coordinator label:@""];
+}
+
+- (id)initWithModel:(NSManagedObjectModel *)model
+			context:(NSManagedObjectContext *)context
+		coordinator:(NSPersistentStoreCoordinator *)coordinator
+			  label:(NSString *)label {
 	
     if ((self = [self init])) {
 		
-		SPCoreDataStorage* storage = [[SPCoreDataStorage alloc] initWithModel:model mainContext:context coordinator:coordinator];
-		storage.delegate = self;
-		self.coreDataStorage = storage;
+		self.label = label;
+		[self setupCoreDataWithModelModel:model context:context coordinator:coordinator];
     }
     
     return self;
@@ -283,9 +259,21 @@ static SPLogLevels logLevel						= SPLogLevelsInfo;
 #if TARGET_OS_IPHONE
 - (void)authenticateWithAppID:(NSString *)identifier APIKey:(NSString *)key rootViewController:(UIViewController *)controller {
 
-	NSParameterAssert(identifier);
-	NSParameterAssert(key);
-	NSParameterAssert(controller);
+	// Validate!
+	if (!identifier) {
+		[self failWithErrorCode:SPSimperiumErrorsMissingAppID];
+		return;
+	}
+	
+	if (!key) {
+		[self failWithErrorCode:SPSimperiumErrorsMissingAPIKey];
+		return;
+	}
+	
+	if (!controller) {
+		[self failWithErrorCode:SPSimperiumErrorsMissingWindow];
+		return;
+	}
 	
 	self.rootViewController = controller;
 	[self startWithAppID:identifier APIKey:key];
@@ -293,9 +281,21 @@ static SPLogLevels logLevel						= SPLogLevelsInfo;
 #else
 - (void)authenticateWithAppID:(NSString *)identifier APIKey:(NSString *)key window:(NSWindow *)aWindow {
 	
-	NSParameterAssert(identifier);
-	NSParameterAssert(key);
-	NSParameterAssert(aWindow);
+	// Validate!
+	if (!identifier) {
+		[self failWithErrorCode:SPSimperiumErrorsMissingAppID];
+		return;
+	}
+	
+	if (!key) {
+		[self failWithErrorCode:SPSimperiumErrorsMissingAPIKey];
+		return;
+	}
+	
+	if (!aWindow) {
+		[self failWithErrorCode:SPSimperiumErrorsMissingWindow];
+		return;
+	}
 	
 	// Hide the window right away
 	self.window = aWindow;
@@ -308,13 +308,19 @@ static SPLogLevels logLevel						= SPLogLevelsInfo;
 
 - (void)authenticateWithAppID:(NSString *)identifier token:(NSString *)token {
 	
-	NSParameterAssert(identifier);
-	NSParameterAssert(token);
-	
-	// Authentication Disabled by default!
+	// Validate!
+	if (!identifier) {
+		[self failWithErrorCode:SPSimperiumErrorsMissingAppID];
+		return;
+	}
+		
+	if (!token) {
+		[self failWithErrorCode:SPSimperiumErrorsMissingToken];
+		return;
+	}
+		
+	// Start Simperium: Manua auth for us
 	self.authenticationEnabled = NO;
-	
-	// Start Simperium
 	[self startWithAppID:identifier APIKey:nil];
 	
 	// Manually initialize the user
@@ -322,50 +328,60 @@ static SPLogLevels logLevel						= SPLogLevelsInfo;
     [self startNetworkManagers];
 }
 
+- (void)shutdown {
+	
+}
+
+
+// TODO: Nuke when we officially switch to Init API 2.0
+- (void)setupCoreDataWithModelModel:(NSManagedObjectModel *)model
+							context:(NSManagedObjectContext *)context
+						coordinator:(NSPersistentStoreCoordinator *)coordinator {
+	
+	NSParameterAssert(model);
+	NSParameterAssert(context);
+	NSParameterAssert(coordinator);
+	
+	NSAssert((context.concurrencyType == NSMainQueueConcurrencyType), NSLocalizedString(@"Error: you must initialize your context with 'NSMainQueueConcurrencyType' concurrency type.", nil));
+	NSAssert((context.persistentStoreCoordinator == nil), NSLocalizedString(@"Error: NSManagedObjectContext's persistentStoreCoordinator must be nil. Simperium will handle CoreData connections for you.", nil));
+	
+	// Initialize CoreData
+	SPCoreDataStorage* storage = [[SPCoreDataStorage alloc] initWithModel:model mainContext:context coordinator:coordinator];
+	storage.delegate = self;
+	self.coreDataStorage = storage;
+	
+	// Load the Buckets but don't start them yet
+	NSArray *schemas = [storage exportSchemas];
+	NSMutableDictionary *buckets = [self loadBuckets:schemas];
+	self.buckets = buckets;
+	
+	// SPManagedObject's need the bucket list
+	[storage setBucketList:buckets];
+	
+	// Load metadata for pending references among objects
+	[self.relationshipResolver loadPendingRelationships:storage];
+}
+
+// TODO: Nuke when we officially switch to Init API 2.0
 - (void)startWithAppID:(NSString *)identifier APIKey:(NSString *)key {
+	
+	NSParameterAssert(identifier);
+	
 	SPLogInfo(@"Simperium starting... %@", self.label);
-	
-	// Enforce required parameters
-	NSAssert(self.coreDataStorage, NSLocalizedString(@"Error: NSManagedObjectContext's persistentStoreCoordinator must be nil. Simperium will handle CoreData connections for you.", nil));
-	
+		
 	// Keep the keys!
     self.appID = identifier;
     self.APIKey = key;
     self.rootURL = SPBaseURL;
-    
-	// Setup the Network
-	SPWebSocketInterface *websocket = [SPWebSocketInterface interfaceWithSimperium:self appURL:self.appURL clientID:self.clientID];;
-	self.network = websocket;
-    
-    // Get the schemas from Core Data
-    NSArray *schemas = [self.coreDataStorage exportSchemas];
-    
-    // Load but don't start yet
-    self.buckets = [self loadBuckets:schemas];
-    
-    // Each NSManagedObject stores a reference to the bucket in which it's stored
-    [self.coreDataStorage setBucketList: self.buckets];
-    
-    // Load metadata for pending references among objects
-    [self.relationshipResolver loadPendingRelationships:self.coreDataStorage];
-    
-    if (self.binaryManager) {
-        [self configureBinaryManager:self.binaryManager];
-	}
-    
+	
     // With everything configured, all objects can now be validated. This will pick up any objects that aren't yet
     // known to Simperium (for the case where you're adding Simperium to an existing app).
     [self validateObjects];
 	
 	// Handle authentication
-	if (self.authenticationEnabled) {
-		[self authenticateIfNecessary];
-	}
+	[self authenticateIfNecessary];
 }
 
-- (void)shutdown {
-	
-}
 
 
 #pragma mark ====================================================================================
@@ -394,20 +410,7 @@ static SPLogLevels logLevel						= SPLogLevelsInfo;
 #endif
 
 - (void)startWithAppID:(NSString *)identifier APIKey:(NSString *)key model:(NSManagedObjectModel *)model context:(NSManagedObjectContext *)context coordinator:(NSPersistentStoreCoordinator *)coordinator {
-	SPLogInfo(@"Simperium starting... %@", self.label);
-
-	NSParameterAssert(model);
-	NSParameterAssert(context);
-	NSParameterAssert(coordinator);
-	
-	NSAssert((context.concurrencyType == NSMainQueueConcurrencyType), NSLocalizedString(@"Error: you must initialize your context with 'NSMainQueueConcurrencyType' concurrency type.", nil));
-	NSAssert((context.persistentStoreCoordinator == nil), NSLocalizedString(@"Error: NSManagedObjectContext's persistentStoreCoordinator must be nil. Simperium will handle CoreData connections for you.", nil));
-
-    // Setup Core Data storage
-    SPCoreDataStorage *storage = [[SPCoreDataStorage alloc] initWithModel:model mainContext:context coordinator:coordinator];
-    storage.delegate = self;
-    self.coreDataStorage = storage;
-	
+	[self setupCoreDataWithModelModel:model context:context coordinator:coordinator];
 	[self startWithAppID:identifier APIKey:key];
 }
 
@@ -532,50 +535,54 @@ static SPLogLevels logLevel						= SPLogLevelsInfo;
 
 
 #pragma mark ====================================================================================
-#pragma mark Manual Authentication
+#pragma mark Signout Helpers
 #pragma mark ====================================================================================
 
-- (void)authenticateWithToken:(NSString *)token {
-
-	// User's email will be loaded during auth mechanism, if successful
-	self.user = [[SPUser alloc] initWithEmail:@"" token:token];
-    [self startNetworkManagers];
-}
-
-- (void)signOutAndRemoveLocalData:(BOOL)remove {
-    SPLogInfo(@"Simperium clearing local data...");
-    
+- (void)signOutAndRemoveLocalData:(BOOL)remove completion:(SimperiumSignoutCompletion)completion {
+	
+    SPLogInfo(@"Simperium logging out...");
     // Reset Simperium: Don't start network managers again; expect app to handle that
     [self stopNetworking];
     
     // Reset the network manager and processors; any enqueued tasks will get skipped
-    for (SPBucket *bucket in [self.buckets allValues]) {
-        [bucket unloadAllObjects];
-        
-        // This will block until everything is all clear
-        [bucket.network resetBucketAndWait:bucket];
-    }
-    
-    // Now delete all local content; no more changes will be coming in at this point
-    if (remove) {
-        self.skipContextProcessing = YES;
-        for (SPBucket *bucket in [self.buckets allValues]) {
-            [bucket deleteAllObjects];
-        }
-        self.skipContextProcessing = NO;
-    }
-    
-    // Clear the token and user
-    [self.authenticator reset];
-    self.user = nil;
-
-	// We just logged out. Let's display SignIn fields next time!
-	self.shouldSignIn = YES;
+	dispatch_group_t group = dispatch_group_create();
 	
-	// Hit the delegate
-	if ([self.delegate respondsToSelector:@selector(simperiumDidLogout:)]) {
-		[self.delegate simperiumDidLogout:self];
+    for (SPBucket *bucket in self.buckets.allValues) {
+		
+		dispatch_group_enter(group);
+        [bucket unloadAllObjects];
+        [bucket.network reset:bucket completion:^(void) {
+			dispatch_group_leave(group);
+		}];
 	}
+		
+	// Once every changeProcessor queue has been effectively, hit the completion callback
+	dispatch_group_notify(group, dispatch_get_main_queue(), ^(void) {
+		
+		// Now delete all local content; no more changes will be coming in at this point
+		if (remove) {
+			SPLogInfo(@"Simperium clearing local data...");
+			self.skipContextProcessing = YES;
+			[self.buckets.allValues makeObjectsPerformSelector:@selector(deleteAllObjects)];
+			self.skipContextProcessing = NO;
+		}
+
+		// Clear the token and user
+		[self.authenticator reset];
+		self.user = nil;
+
+		// We just logged out. Let's display SignIn fields next time!
+		self.shouldSignIn = YES;
+
+		// Hit the delegate + callback
+		if ([self.delegate respondsToSelector:@selector(simperiumDidLogout:)]) {
+			[self.delegate simperiumDidLogout:self];
+		}
+		
+		if (completion) {
+			completion();
+		}
+	});
 }
 
 
@@ -642,7 +649,6 @@ static SPLogLevels logLevel						= SPLogLevelsInfo;
 #pragma mark ====================================================================================
 
 - (void)authenticationDidSucceedForUsername:(NSString *)username token:(NSString *)token {
-    [self.binaryManager setupAuth:self.user];
     
     // It's now safe to start the network managers
     [self startNetworking];
@@ -677,7 +683,7 @@ static SPLogLevels logLevel						= SPLogLevelsInfo;
 }
 
 - (BOOL)authenticateIfNecessary {
-    if (!self.networkEnabled || !self.authenticationEnabled) {
+    if (!self.networkEnabled || !self.authenticationEnabled || !self.appID) {
         return NO;
 	}
     
@@ -807,6 +813,15 @@ static SPLogLevels logLevel						= SPLogLevelsInfo;
     for (SPBucket *bucket in [self.buckets allValues]) {
 		[bucket.network removeAllBucketObjects:bucket];
 	}
+}
+
+- (void)failWithErrorCode:(SPSimperiumErrors)code {
+	if (![self.delegate respondsToSelector:@selector(simperium:didFailWithError:)]) {
+		return;
+	}
+	
+	NSError* error = [NSError errorWithDomain:NSStringFromClass([self class]) code:code userInfo:nil];
+	[self.delegate simperium:self didFailWithError:error];
 }
 
 @end
