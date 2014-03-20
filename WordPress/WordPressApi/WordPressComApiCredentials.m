@@ -40,9 +40,4 @@
     return @"";
 }
 
-+ (NSString *)quantcastAPIKey
-{
-    return @"";
-}
-
 @end

@@ -16,5 +16,4 @@
 + (NSString *)crashlyticsApiKey;
 + (NSString *)hockeyappAppId;
 + (NSString *)googlePlusClientId;
-+ (NSString *)quantcastAPIKey;
 @end
