@@ -194,30 +194,38 @@ CGFloat const EPVCTextViewTopPadding = 7.0f;
 - (void)viewWillAppear:(BOOL)animated {
     [super viewWillAppear:animated];
     
+    // When restoring state, the navigationController is nil when the view loads,
+    // so configure its appearance here instead.
+    self.navigationController.navigationBar.translucent = NO;
+    UIToolbar *toolbar = self.navigationController.toolbar;
+    toolbar.barTintColor = [WPStyleGuide littleEddieGrey];
+    toolbar.translucent = NO;
+    toolbar.barStyle = UIBarStyleDefault;
+
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(keyboardWillShow:) name:UIKeyboardWillShowNotification object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(keyboardDidShow:) name:UIKeyboardDidShowNotification object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(keyboardWillHide:) name:UIKeyboardWillHideNotification object:nil];
-
-    // Make sure toolbar is the right shade.
-    // When returning from stateRestoration it might match the navbar.
-    UIToolbar *toolbar = self.navigationController.toolbar;
-    toolbar.barTintColor = [WPStyleGuide littleEddieGrey];
     
     if(self.navigationController.navigationBarHidden) {
-        [self.navigationController setNavigationBarHidden:NO animated:YES];
+        [self.navigationController setNavigationBarHidden:NO animated:animated];
     }
     
     if (self.navigationController.toolbarHidden) {
-        [self.navigationController setToolbarHidden:NO animated:YES];
+        [self.navigationController setToolbarHidden:NO animated:animated];
     }
     
     for (UIView *view in self.navigationController.toolbar.subviews) {
         [view setExclusiveTouch:YES];
     }
     
-    [self refreshUIForCurrentPost];
-    
     [_textView setContentOffset:CGPointMake(0, 0)];
+}
+
+- (void)viewDidAppear:(BOOL)animated {
+    [super viewDidAppear:animated];
+    // Refresh the UI when the view appears or the options button won't be
+    // visible when restoring state.
+    [self refreshUIForCurrentPost];
 }
 
 - (void)viewWillDisappear:(BOOL)animated {
@@ -227,9 +235,8 @@ CGFloat const EPVCTextViewTopPadding = 7.0f;
     [[NSNotificationCenter defaultCenter] removeObserver:self name:UIKeyboardWillShowNotification object:nil];
     [[NSNotificationCenter defaultCenter] removeObserver:self name:UIKeyboardDidShowNotification object:nil];
     [[NSNotificationCenter defaultCenter] removeObserver:self name:UIKeyboardWillHideNotification object:nil];
-
     
-    [self.navigationController setToolbarHidden:YES animated:YES];
+    [self.navigationController setToolbarHidden:YES animated:animated];
     
     [[NSNotificationCenter defaultCenter] removeObserver:self name:UIKeyboardWillShowNotification object:nil];
     [[NSNotificationCenter defaultCenter] removeObserver:self name:UIKeyboardDidShowNotification object:nil];
@@ -253,8 +260,6 @@ CGFloat const EPVCTextViewTopPadding = 7.0f;
 #pragma mark - View Setup
 
 - (void)setupNavbar {
-    self.navigationController.navigationBar.translucent = NO;
-    
     if (self.navigationItem.leftBarButtonItem == nil) {
         UIBarButtonItem *cancelButton = [[UIBarButtonItem alloc] initWithTitle:NSLocalizedString(@"Close", @"Label for the button to close the post editor.") style:UIBarButtonItemStylePlain target:self action:@selector(cancelEditing)];
         self.navigationItem.leftBarButtonItem = cancelButton;
@@ -286,11 +291,6 @@ CGFloat const EPVCTextViewTopPadding = 7.0f;
 }
 
 - (void)setupToolbar {
-    UIToolbar *toolbar = self.navigationController.toolbar;
-    toolbar.barTintColor = [WPStyleGuide littleEddieGrey];
-    toolbar.translucent = NO;
-    toolbar.barStyle = UIBarStyleDefault;
-    
     if ([self.toolbarItems count] > 0) {
         return;
     }
@@ -804,8 +804,9 @@ CGFloat const EPVCTextViewTopPadding = 7.0f;
         return _titleBarButton;
     }
     UIButton *titleButton = [WPBlogSelectorButton buttonWithType:UIButtonTypeSystem];
-    titleButton.frame = CGRectMake(0, 0, 200, 33);
+    titleButton.frame = CGRectMake(0.0f, 0.0f, 200.0f, 33.0f);
     titleButton.titleLabel.numberOfLines = 2;
+    titleButton.titleLabel.textColor = [UIColor whiteColor];
     titleButton.titleLabel.textAlignment = NSTextAlignmentCenter;
     titleButton.autoresizingMask = UIViewAutoresizingFlexibleLeftMargin | UIViewAutoresizingFlexibleRightMargin | UIViewAutoresizingFlexibleTopMargin | UIViewAutoresizingFlexibleBottomMargin;
     [titleButton setImage:[UIImage imageNamed:@"icon-navbar-dropdown.png"] forState:UIControlStateNormal];
