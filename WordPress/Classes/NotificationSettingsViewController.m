@@ -270,13 +270,21 @@ BOOL hasChanges;
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
 {
     // Return the number of sections.
-    if (_notificationPrefArray && _mutedBlogsArray)
-        return 3;
-    else if (_notificationPrefArray)
-        return 2;
-    else
+    if (_notificationPrefArray) {
+        NSString *mute_value = [_notificationMutePreferences objectForKey:@"value"];
+        if (mute_value && ![mute_value isEqualToString:@"0"]){
+            return 1;
+        } else {
+            if (_mutedBlogsArray) {
+                return 3;
+            } else {
+                return 2;
+            }
+        }
+    } else {
         return 0;
-} 
+    }
+}
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {

@@ -124,7 +124,16 @@ NSString * const BlogJetpackApiPath = @"get-user-blogs/1.0";
 - (void)removeJetpackCredentials {
     NSAssert(![self isWPcom], @"Blog+Jetpack doesn't support WordPress.com blogs");
 
-    self.account = nil;
+    // If the associated jetpack account is not used for anything else, remove it
+    WPAccount *jetpackAccount = self.jetpackAccount;
+    if (jetpackAccount
+        && [jetpackAccount.jetpackBlogs count] == 1
+        && [[jetpackAccount.jetpackBlogs anyObject] isEqual:self]
+        && [jetpackAccount.visibleBlogs count] == 0
+        && ![[WPAccount defaultWordPressComAccount] isEqual:jetpackAccount]) {
+        DDLogWarn(@"Removing jetpack account %@ since the last blog using it is being removed", jetpackAccount.username);
+        [self.managedObjectContext deleteObject:jetpackAccount];
+    }
 }
 
 #pragma mark - Private methods

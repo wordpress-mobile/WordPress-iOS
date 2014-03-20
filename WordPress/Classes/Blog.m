@@ -295,7 +295,16 @@ static NSInteger const ImageSizeLargeHeight = 480;
     _reachability.unreachableBlock = nil;
     [_reachability stopNotifier];
     [self.managedObjectContext performBlock:^{
-        [[self managedObjectContext] deleteObject:self];
+        WPAccount *account = self.account;
+
+        NSManagedObjectContext *context = [self managedObjectContext];
+        [context deleteObject:self];
+        // For self hosted blogs, remove account unless there are other associated blogs
+        if (account && !account.isWpcom) {
+            if ([account.blogs count] == 1 && [[account.blogs anyObject] isEqual:self]) {
+                [context deleteObject:account];
+            }
+        }
         [self dataSave];
     }];
 }
@@ -581,7 +590,7 @@ static NSInteger const ImageSizeLargeHeight = 480;
                 return;
             
             self.options = [NSDictionary dictionaryWithDictionary:(NSDictionary *)responseObject];
-            NSString *minimumVersion = @"3.5";
+            NSString *minimumVersion = @"3.6";
             float version = [[self version] floatValue];
             if (version < [minimumVersion floatValue]) {
                 if (self.lastUpdateWarning == nil || [self.lastUpdateWarning floatValue] < [minimumVersion floatValue]) {
