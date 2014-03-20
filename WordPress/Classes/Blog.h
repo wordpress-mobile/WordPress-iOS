@@ -63,7 +63,21 @@
 // wp.koke.me
 @property (weak, readonly) NSString *hostname;
 
-+ (Blog *)defaultOrLastUsedBlog;
+/**
+ Returns the blog currently flagged as the one last used, or the first blog in 
+ an alphanumerically sorted list, if no blog is currently flagged as last used.
+ */
++ (Blog *)lastUsedOrFirstBlog;
+
+/**
+ Returns the blog currently flaged as the one last used.
+ */
++ (Blog *)lastUsedBlog;
+
+/**
+ Returns the first blog in an alphanumerically sorted list. 
+ */
++ (Blog *)firstBlog;
 
 #pragma mark - Blog information
 - (void)flagAsLastUsed;
