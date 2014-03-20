@@ -52,6 +52,8 @@ static NSInteger const ImageSizeLargeHeight = 480;
 #pragma mark - NSManagedObject subclass methods
 
 - (void)didTurnIntoFault {
+    [super didTurnIntoFault];
+    
     // Clean up instance variables
     _blavatarUrl = nil;
     _api = nil;
@@ -59,6 +61,14 @@ static NSInteger const ImageSizeLargeHeight = 480;
     _reachability = nil;
     
     [[NSNotificationCenter defaultCenter] removeObserver:self];
+}
+
+- (void)awakeFromFetch {
+    [super awakeFromFetch];
+    
+    if (!self.isDeleted) {
+        [self reachability];
+    }
 }
 
 #pragma mark -
@@ -278,11 +288,6 @@ static NSInteger const ImageSizeLargeHeight = 480;
             nil];
 }
 
-- (void)awakeFromFetch {
-    if (!self.isDeleted) {
-        [self reachability];
-    }
-}
 
 - (void)dataSave {
     [[ContextManager sharedInstance] saveContext:self.managedObjectContext];

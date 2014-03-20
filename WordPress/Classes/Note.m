@@ -241,7 +241,11 @@ const NSUInteger NoteKeepCount = 20;
 #pragma mark - NSManagedObject methods
 
 - (void)didTurnIntoFault {
-    _noteData = nil;
+    [super didTurnIntoFault];
+    
+    self.noteData = nil;
+    self.date = nil;
+    self.commentText = nil;
 }
 
 #pragma mark - Comment HTML parsing
