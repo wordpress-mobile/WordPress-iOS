@@ -354,10 +354,7 @@ CGFloat const EPVCTextViewTopPadding = 7.0f;
     if (self.editorToolbar == nil) {
         frame = CGRectMake(0.0f, 0.0f, viewWidth, WPKT_HEIGHT_PORTRAIT);
         self.editorToolbar = [[WPKeyboardToolbarBase alloc] initWithFrame:frame];
-        self.editorToolbar.backgroundColor = [UIColor UIColorFromHex:(0xdcdfe2)];
-        if (IS_IPAD) {
-            self.editorToolbar.backgroundColor = [UIColor UIColorFromHex:(0xcfd2d5)];
-        }
+        self.editorToolbar.backgroundColor = [WPStyleGuide keyboardColor];
         self.editorToolbar.delegate = self;
         self.textView.inputAccessoryView = self.editorToolbar;
     }

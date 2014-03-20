@@ -82,12 +82,13 @@
 }
 
 - (void)saveAddCategory:(id)sender {
-    NSString *catName = self.createCatNameField.text;
+    NSString *catName = [self.createCatNameField.text trim];
     
     if (!catName ||[catName length] == 0) {
         NSString *title = NSLocalizedString(@"Category title missing.", @"Error popup title to indicate that there was no category title filled in.");
         NSString *message = NSLocalizedString(@"Title for a category is mandatory.", @"Error popup message to indicate that there was no category title filled in.");
         [WPError showAlertWithTitle:title message:message withSupportButton:NO];
+        self.createCatNameField.text = @""; // To clear whitespace that was trimed.
 
         return;
     }
