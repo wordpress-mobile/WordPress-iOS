@@ -14,6 +14,8 @@
 #import "Constants.h"
 #import "EditSiteViewController.h"
 #import "WordPressAppDelegate.h"
+#import "CategoryService.h"
+#import "ContextManager.h"
 
 @interface WPAddCategoryViewController ()<CategoriesViewControllerDelegate>
 
@@ -82,6 +84,7 @@
 }
 
 - (void)saveAddCategory:(id)sender {
+    CategoryService *categoryService = [[CategoryService alloc] initWithManagedObjectContext:[[ContextManager sharedInstance] mainContext]];
     NSString *catName = [self.createCatNameField.text trim];
     
     if (!catName ||[catName length] == 0) {
@@ -93,7 +96,7 @@
         return;
     }
     
-    if ([Category existsName:catName forBlog:self.post.blog withParentId:self.parentCategory.categoryID]) {
+    if ([categoryService existsName:catName forBlogObjectID:self.post.blog.objectID withParentId:self.parentCategory.categoryID]) {
         NSString *title = NSLocalizedString(@"Category name already exists.", @"Error popup title to show that a category already exists.");
         NSString *message = NSLocalizedString(@"There is another category with that name.", @"Error popup message to show that a category already exists.");
         [WPError showAlertWithTitle:title message:message withSupportButton:NO];
@@ -102,33 +105,36 @@
     
     [self addProgressIndicator];
     
-    [Category createCategory:catName parent:self.parentCategory forBlog:self.post.blog success:^(Category *category) {
-        // Add the newly created category to the post
-        [self.post.categories addObject:category];
-        [self.post save];
-        
-        //re-syncs categories this is necessary because the server can change the name of the category!!!
-		[self.post.blog syncCategoriesWithSuccess:nil failure:nil];
-
-        // Cleanup and dismiss
-        [self clearUI];
-        [self removeProgressIndicator];
-        [self dismiss];
-    } failure:^(NSError *error) {
-		[[UIApplication sharedApplication] setNetworkActivityIndicatorVisible:NO];
-		[self removeProgressIndicator];
-		
-		if ([error code] == 403) {
-            [WPError showAlertWithTitle:NSLocalizedString(@"Couldn't Connect", @"") message:NSLocalizedString(@"The username or password stored in the app may be out of date. Please re-enter your password in the settings and try again.", @"") withSupportButton:NO];
-			
-			// bad login/pass combination
-			EditSiteViewController *editSiteViewController = [[EditSiteViewController alloc] initWithBlog:self.post.blog];
-			[self.navigationController pushViewController:editSiteViewController animated:YES];
-			
-		} else {
-			[WPError showXMLRPCErrorAlert:error];
-		}
-    }];
+    [categoryService createCategoryWithName:catName
+                     parentCategoryObjectID:self.parentCategory.objectID
+                            forBlogObjectID:self.post.blog.objectID
+                                    success:^(Category *category) {
+                                        // Add the newly created category to the post
+                                        [self.post.categories addObject:category];
+                                        [self.post save];
+                                        
+                                        //re-syncs categories this is necessary because the server can change the name of the category!!!
+                                        [self.post.blog syncCategoriesWithSuccess:nil failure:nil];
+                                        
+                                        // Cleanup and dismiss
+                                        [self clearUI];
+                                        [self removeProgressIndicator];
+                                        [self dismiss];
+                                    } failure:^(NSError *error) {
+                                        [[UIApplication sharedApplication] setNetworkActivityIndicatorVisible:NO];
+                                        [self removeProgressIndicator];
+                                        
+                                        if ([error code] == 403) {
+                                            [WPError showAlertWithTitle:NSLocalizedString(@"Couldn't Connect", @"") message:NSLocalizedString(@"The username or password stored in the app may be out of date. Please re-enter your password in the settings and try again.", @"") withSupportButton:NO];
+                                            
+                                            // bad login/pass combination
+                                            EditSiteViewController *editSiteViewController = [[EditSiteViewController alloc] initWithBlog:self.post.blog];
+                                            [self.navigationController pushViewController:editSiteViewController animated:YES];
+                                            
+                                        } else {
+                                            [WPError showXMLRPCErrorAlert:error];
+                                        }
+                                    }];
 }
 
 #pragma mark - functional methods

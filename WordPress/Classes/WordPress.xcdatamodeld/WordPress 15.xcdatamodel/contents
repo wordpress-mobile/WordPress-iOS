@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
-<model userDefinedModelVersionIdentifier="" type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="3400" systemVersion="13C64" minimumToolsVersion="Automatic" macOSVersion="Automatic" iOSVersion="Automatic">
+<model userDefinedModelVersionIdentifier="" type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="5063" systemVersion="13C64" minimumToolsVersion="Automatic" macOSVersion="Automatic" iOSVersion="Automatic">
     <entity name="AbstractComment" representedClassName="AbstractComment" isAbstract="YES">
         <attribute name="author" optional="YES" attributeType="String">
             <userInfo/>
@@ -164,7 +164,7 @@
         </relationship>
         <userInfo/>
     </entity>
-    <entity name="Category" representedClassName="Cateogry">
+    <entity name="Category" representedClassName="Category">
         <attribute name="categoryID" optional="YES" attributeType="Integer 32" defaultValueString="-1">
             <userInfo/>
         </attribute>
@@ -328,18 +328,18 @@
     </entity>
     <fetchRequest name="UnreadNotes" entity="Note" predicateString="unread == 1"/>
     <elements>
-        <element name="AbstractComment" positionX="0" positionY="0" width="0" height="0"/>
-        <element name="AbstractPost" positionX="0" positionY="0" width="0" height="0"/>
-        <element name="Account" positionX="0" positionY="0" width="0" height="0"/>
-        <element name="BasePost" positionX="0" positionY="0" width="0" height="0"/>
-        <element name="Blog" positionX="0" positionY="0" width="0" height="0"/>
-        <element name="Category" positionX="0" positionY="0" width="0" height="0"/>
-        <element name="Comment" positionX="0" positionY="0" width="0" height="0"/>
-        <element name="Media" positionX="0" positionY="0" width="0" height="0"/>
-        <element name="Note" positionX="0" positionY="0" width="0" height="0"/>
-        <element name="Page" positionX="0" positionY="0" width="0" height="0"/>
-        <element name="Post" positionX="0" positionY="0" width="0" height="0"/>
-        <element name="ReaderComment" positionX="0" positionY="0" width="0" height="0"/>
-        <element name="ReaderPost" positionX="0" positionY="0" width="0" height="0"/>
+        <element name="AbstractComment" positionX="0" positionY="0" width="128" height="240"/>
+        <element name="AbstractPost" positionX="0" positionY="0" width="128" height="120"/>
+        <element name="Account" positionX="0" positionY="0" width="128" height="150"/>
+        <element name="BasePost" positionX="0" positionY="0" width="128" height="240"/>
+        <element name="Blog" positionX="0" positionY="0" width="128" height="405"/>
+        <element name="Category" positionX="0" positionY="0" width="128" height="120"/>
+        <element name="Comment" positionX="0" positionY="0" width="128" height="75"/>
+        <element name="Media" positionX="0" positionY="0" width="128" height="315"/>
+        <element name="Note" positionX="0" positionY="0" width="128" height="165"/>
+        <element name="Page" positionX="0" positionY="0" width="128" height="60"/>
+        <element name="Post" positionX="0" positionY="0" width="128" height="150"/>
+        <element name="ReaderComment" positionX="0" positionY="0" width="128" height="120"/>
+        <element name="ReaderPost" positionX="0" positionY="0" width="128" height="480"/>
     </elements>
 </model>
