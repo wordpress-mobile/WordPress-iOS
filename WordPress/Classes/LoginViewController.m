@@ -31,6 +31,7 @@
 
 static NSString *const ForgotPasswordDotComBaseUrl = @"https://wordpress.com";
 static NSString *const ForgotPasswordRelativeUrl = @"/wp-login.php?action=lostpassword&redirect_to=wordpress%3A%2F%2F";
+static NSString *const GenerateApplicationSpecificPasswordUrl = @"http://en.support.wordpress.com/security/two-step-authentication/#application-specific-passwords";
 
 @interface LoginViewController () <
     UITextFieldDelegate> {
@@ -237,6 +238,24 @@ CGFloat const GeneralWalkthroughStatusBarOffset = 20.0;
         webViewController.url = [NSURL URLWithString:@"http://ios.wordpress.org/faq/#faq_3"];
         [self.navigationController setNavigationBarHidden:NO animated:NO];
         [self.navigationController pushViewController:webViewController animated:NO];
+    };
+    overlayView.primaryButtonCompletionBlock = ^(WPWalkthroughOverlayView *overlayView){
+        [overlayView dismiss];
+    };
+    [self.view addSubview:overlayView];
+}
+
+- (void)displayGenerateApplicationSpecificPasswordErrorMessage:(NSString *)message
+{
+    WPWalkthroughOverlayView *overlayView = [self baseLoginErrorOverlayView:message];
+    overlayView.secondaryButtonCompletionBlock = ^(WPWalkthroughOverlayView *overlayView){
+        [WPMobileStats trackEventForSelfHostedAndWPCom:StatsEventNUXFirstWalkthroughClickedNeededHelpOnError properties:@{@"error_message": message}];
+        
+        [overlayView dismiss];
+        WPWebViewController *webViewController = [[WPWebViewController alloc] init];
+        [webViewController setUrl:[NSURL URLWithString:GenerateApplicationSpecificPasswordUrl]];
+        [self.navigationController setNavigationBarHidden:NO animated:YES];
+        [self.navigationController pushViewController:webViewController animated:YES];
     };
     overlayView.primaryButtonCompletionBlock = ^(WPWalkthroughOverlayView *overlayView){
         [overlayView dismiss];
@@ -880,7 +899,11 @@ CGFloat const GeneralWalkthroughStatusBarOffset = 20.0;
     DDLogError(@"%@", error);
     NSString *message = [error localizedDescription];
     if (![[error domain] isEqualToString:WPXMLRPCFaultErrorDomain]) {
-        [self displayGenericErrorMessage:message];
+        if ([message rangeOfString:@"application-specific"].location != NSNotFound) {
+            [self displayGenerateApplicationSpecificPasswordErrorMessage:message];
+        } else {
+            [self displayGenericErrorMessage:message];
+        }
         return;
     }
     if ([error code] == 403) {
