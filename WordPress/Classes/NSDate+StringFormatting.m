@@ -19,13 +19,13 @@
                                                     options:0];
 
     if (dateComponents.day > 0) {
-        shortString = [NSString stringWithFormat:@"%i%@", dateComponents.day, NSLocalizedString(@"d", @"Days single character abbreviation")];
+        shortString = [NSString stringWithFormat:NSLocalizedString(@"%id", @"Days duration single character abbreviation"), dateComponents.day];
     } else if (dateComponents.hour > 0) {
-        shortString = [NSString stringWithFormat:@"%i%@", dateComponents.hour, NSLocalizedString(@"h", @"Hours single character abbreviation")];
+        shortString = [NSString stringWithFormat:NSLocalizedString(@"%ih", @"Hours duration single character abbreviation"), dateComponents.hour];
     } else if (dateComponents.minute > 0) {
-        shortString = [NSString stringWithFormat:@"%i%@", dateComponents.minute, NSLocalizedString(@"m", @"Minutes single character abbreviation")];
+        shortString = [NSString stringWithFormat:NSLocalizedString(@"%im", @"Minutes duration single character abbreviation"), dateComponents.minute];
     } else {
-        shortString = [NSString stringWithFormat:@"%i%@", dateComponents.second, NSLocalizedString(@"s", @"Seconds single character abbreviation")];
+        shortString = [NSString stringWithFormat:NSLocalizedString(@"%is", @"Seconds duration single character abbreviation"), dateComponents.second];
     }
 
     return shortString;
