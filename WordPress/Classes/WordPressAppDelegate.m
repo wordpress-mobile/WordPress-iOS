@@ -200,8 +200,6 @@ static NSString *const CameraPlusImagesNotification = @"CameraPlusImagesNotifica
 
 - (void)applicationWillTerminate:(UIApplication *)application {
     DDLogInfo(@"%@ %@", self, NSStringFromSelector(_cmd));
-    
-    [WPMobileStats endSession];
 }
 
 - (void)applicationDidEnterBackground:(UIApplication *)application {
@@ -232,7 +230,6 @@ static NSString *const CameraPlusImagesNotification = @"CameraPlusImagesNotifica
 
 - (void)applicationWillEnterForeground:(UIApplication *)application {
     DDLogInfo(@"%@ %@", self, NSStringFromSelector(_cmd));
-    [WPMobileStats resumeSession];
 }
 
 - (void)applicationWillResignActive:(UIApplication *)application {
