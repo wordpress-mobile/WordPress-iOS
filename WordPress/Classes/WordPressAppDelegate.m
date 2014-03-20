@@ -101,7 +101,6 @@ static NSString *const CameraPlusImagesNotification = @"CameraPlusImagesNotifica
     [[AFNetworkActivityIndicatorManager sharedManager] setEnabled:YES];
     [self setupReachability];
     [self setupUserAgent];
-    [self checkWPcomAuthentication];
     [self setupSingleSignOn];
 
     [self customizeAppearance];
@@ -881,39 +880,6 @@ static NSString *const CameraPlusImagesNotification = @"CameraPlusImagesNotifica
 #pragma clang diagnostic pop
 }
 
-// TODO :: Eliminate this check or at least move it to WordPressComApi (or WPAccount)
-- (void)checkWPcomAuthentication {
-    // Temporarily set the is authenticated flag based upon if we have a WP.com OAuth2 token
-    // TODO :: Move this BOOL to a method on the WordPressComApi along with checkWPcomAuthentication
-    BOOL tempIsAuthenticated = [[[WPAccount defaultWordPressComAccount] restApi] authToken].length > 0;
-    self.isWPcomAuthenticated = tempIsAuthenticated;
-    
-	NSString *authURL = @"https://wordpress.com/xmlrpc.php";
-
-    WPAccount *account = [WPAccount defaultWordPressComAccount];
-	if (account) {
-        WPXMLRPCClient *client = [WPXMLRPCClient clientWithXMLRPCEndpoint:[NSURL URLWithString:authURL]];
-        [client setAuthorizationHeaderWithToken:[[[WPAccount defaultWordPressComAccount] restApi] authToken]];
-        [client callMethod:@"wp.getUsersBlogs"
-                parameters:[NSArray arrayWithObjects:account.username, account.password, nil]
-                   success:^(AFHTTPRequestOperation *operation, id responseObject) {
-                       self.isWPcomAuthenticated = YES;
-                       DDLogInfo(@"Logged in to WordPress.com as %@", account.username);
-                   } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
-                       if ([error.domain isEqualToString:@"WPXMLRPCFaultError"] ||
-                           ([error.domain isEqualToString:@"XMLRPC"] && error.code == 403)) {
-                           self.isWPcomAuthenticated = NO;
-                           [[[WPAccount defaultWordPressComAccount] restApi] invalidateOAuth2Token];
-                       }
-                       
-                       DDLogError(@"Error authenticating %@ with WordPress.com: %@", account.username, [error description]);
-                   }];
-	} else {
-		self.isWPcomAuthenticated = NO;
-	}
-}
-
-
 #pragma mark - Keychain
 
 + (void)fixKeychainAccess
@@ -1087,9 +1053,7 @@ static NSString *const CameraPlusImagesNotification = @"CameraPlusImagesNotifica
         [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(handleDefaultAccountChangedNotification:) name:WPAccountDefaultWordPressComAccountChangedNotification object:nil];
     }
     
-	NSInteger num_blogs = [Blog countWithContext:[[ContextManager sharedInstance] mainContext]];
-	BOOL authed = self.isWPcomAuthenticated;
-	if (num_blogs == 0 && !authed) {
+	if ([self noBlogsAndNoWordPressDotComAccount]) {
 		// When there are no blogs in the app the settings screen is unavailable.
 		// In this case, enable extra_debugging by default to help troubleshoot any issues.
 		if([[NSUserDefaults standardUserDefaults] objectForKey:@"orig_extra_debug"] != nil) {
