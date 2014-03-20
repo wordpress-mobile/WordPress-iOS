@@ -21,6 +21,7 @@
 @property (nonatomic, weak) NSAttributedString *attributedText;
 @property (nonatomic, getter = isEnabled) BOOL enabled;
 
+- (void)setButtonTitle:(NSString *)title;
 - (void)clearText;
 - (BOOL)isDisplayed;
 - (void)toggleComposer;
