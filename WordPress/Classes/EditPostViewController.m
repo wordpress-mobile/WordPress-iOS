@@ -368,10 +368,7 @@ CGFloat const EPVCTextViewTopPadding = 7.0f;
     if (!self.titleToolbar) {
         frame = CGRectMake(0.0f, 0.0f, viewWidth, WPKT_HEIGHT_PORTRAIT);
         self.titleToolbar = [[WPKeyboardToolbarDone alloc] initWithFrame:frame];
-        self.titleToolbar.backgroundColor = [UIColor UIColorFromHex:(0xdcdfe2)];
-        if (IS_IPAD) {
-            self.titleToolbar.backgroundColor = [UIColor UIColorFromHex:(0xcfd2d5)];
-        }
+        self.titleToolbar.backgroundColor = [WPStyleGuide keyboardColor];
         self.titleToolbar.delegate = self;
         self.titleTextField.inputAccessoryView = self.titleToolbar;
     }
