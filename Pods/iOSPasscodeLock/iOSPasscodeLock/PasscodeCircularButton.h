@@ -13,8 +13,6 @@
 
 @interface PasscodeCircularButton : UIButton
 
+- (id)initWithNumber:(NSString *)number frame:(CGRect)frame style:(PasscodeButtonStyle *)style;
 
-- (id) initWithNumber:(NSString *)number
-                frame:(CGRect)frame
-                style:(PasscodeStyle *)style;
 @end

@@ -9,7 +9,7 @@
 #import "WPStyleGuide.h"
 #import "UITableViewTextFieldCell.h"
 #import <DTCoreText/DTCoreText.h>
-#import <iOSPasscodeLock/PasscodeManager.h>
+#import <iOSPasscodeLock/PasscodeCoordinator.h>
 
 @implementation WPStyleGuide
 
@@ -339,7 +339,7 @@
 + (void) configurePasscodeLockStyle{
     
     PasscodeButtonStyleProvider *buttonStyleProvider = [[PasscodeButtonStyleProvider alloc]init];
-    PasscodeStyle *style = [[PasscodeStyle alloc]init];
+    PasscodeButtonStyle *style = [[PasscodeButtonStyle alloc]init];
     style.lineColor = [UIColor whiteColor];
     style.titleColor = [UIColor whiteColor];
     style.fillColor = [UIColor clearColor];
@@ -348,19 +348,18 @@
     style.selectedTitleColor = [WPStyleGuide newKidOnTheBlockBlue];
     style.titleFont = [UIFont fontWithName:@"Avenir-Book" size:35];
     
-    [buttonStyleProvider addStyleForButton:PasscodeButtonAll stye:style];
+    [buttonStyleProvider addStyle:style forButton:PasscodeButtonTypeAll];
     
-    [PasscodeManager sharedManager].buttonStyleProvider = buttonStyleProvider;
-    [PasscodeManager sharedManager].instructionsLabelFont = [UIFont fontWithName:@"Avenir-Book" size:20];
-    [PasscodeManager sharedManager].cancelOrDeleteButtonFont = [UIFont fontWithName:@"Avenir-Book" size:15];
-    [PasscodeManager sharedManager].backgroundColor = [WPStyleGuide newKidOnTheBlockBlue];
-    [PasscodeManager sharedManager].logo = [UIImage imageNamed:@"logo_wp_white.png"];
-    [PasscodeManager sharedManager].instructionsLabelColor = [UIColor whiteColor];
-    [PasscodeManager sharedManager].cancelOrDeleteButtonColor = [UIColor whiteColor];
-    [PasscodeManager sharedManager].passcodeViewFillColor = [UIColor whiteColor];
-    [PasscodeManager sharedManager].passcodeViewLineColor = [UIColor whiteColor];
-    
-    
+    [PasscodeCoordinator sharedCoordinator].buttonStyleProvider = buttonStyleProvider;
+    [PasscodeCoordinator sharedCoordinator].instructionsLabelFont = [UIFont fontWithName:@"Avenir-Book" size:20];
+    [PasscodeCoordinator sharedCoordinator].cancelOrDeleteButtonFont = [UIFont fontWithName:@"Avenir-Book" size:15];
+    [PasscodeCoordinator sharedCoordinator].backgroundColor = [WPStyleGuide newKidOnTheBlockBlue];
+    [PasscodeCoordinator sharedCoordinator].logo = [UIImage imageNamed:@"logo_wp_white.png"];
+    [PasscodeCoordinator sharedCoordinator].instructionsLabelColor = [UIColor whiteColor];
+    [PasscodeCoordinator sharedCoordinator].cancelOrDeleteButtonColor = [UIColor whiteColor];
+    [PasscodeCoordinator sharedCoordinator].passcodeViewFillColor = [UIColor whiteColor];
+    [PasscodeCoordinator sharedCoordinator].passcodeViewLineColor = [UIColor whiteColor];
+
 }
 
 @end

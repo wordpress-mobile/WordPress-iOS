@@ -9,7 +9,7 @@
 
 
 #import "PasscodeSettingsDurationViewController.h"
-#import <iOSPasscodeLock/PasscodeManager.h>
+#import <iOSPasscodeLock/PasscodeCoordinator.h>
 
 @interface PasscodeSettingsDurationViewController ()
 
@@ -18,8 +18,7 @@
 @implementation PasscodeSettingsDurationViewController
 
 
-- (void)viewDidLoad
-{
+- (void)viewDidLoad {
     [super viewDidLoad];
     [WPStyleGuide configureColorsForView:self.view andTableView:self.tableView];
     [self setTitle:NSLocalizedString(@"Activation", nil)];
@@ -29,13 +28,11 @@
 #pragma mark - Table view data source
 
 
-- (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
-{
+- (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
     return 3;
 }
 
-- (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
-{
+- (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
     UITableViewCell *cell = [[UITableViewCell alloc]initWithStyle:UITableViewCellStyleDefault reuseIdentifier:@"Cell"];
     [WPStyleGuide configureTableViewCell:cell];
 
@@ -53,15 +50,11 @@
 
 #pragma mark - UITableViewDelegate methods
 
--(void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath{
-    
+-(void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
     self.psvc.passcodeDuration = self.durations[indexPath.row];
-    [[PasscodeManager sharedManager] setPasscodeInactivityDurationInMinutes:self.durationMinutes[indexPath.row]];
+    [[PasscodeCoordinator sharedCoordinator] setPasscodeInactivityDurationInMinutes:self.durationMinutes[indexPath.row]];
     [self.psvc reloadTableView];
     [self.navigationController popViewControllerAnimated:YES];
     
 }
-
-
-
 @end

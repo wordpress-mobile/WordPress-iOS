@@ -18,10 +18,10 @@
 
 @optional
 
--(void) didSetupPasscode;
--(void) passcodeSetupCancelled;
--(void) didVerifyPasscode;
--(void) passcodeVerificationFailed;
+-(void)didSetupPasscode;
+-(void)passcodeSetupCancelled;
+-(void)didVerifyPasscode;
+-(void)passcodeVerificationFailed;
 
 @end
 
@@ -32,11 +32,10 @@ typedef enum PasscodeType : NSUInteger {
     PasscodeTypeChangePasscode
 } PasscodeType;
 
-
 @interface PasscodeViewController : UIViewController
 
 @property (nonatomic, unsafe_unretained) id <PasscodeViewControllerDelegate> delegate;
 
--(id) initWithPasscodeType:(PasscodeType)type withDelegate:(id<PasscodeViewControllerDelegate>)delegate;
+- (id)initWithPasscodeType:(PasscodeType)type withDelegate:(id<PasscodeViewControllerDelegate>)delegate;
 
 @end

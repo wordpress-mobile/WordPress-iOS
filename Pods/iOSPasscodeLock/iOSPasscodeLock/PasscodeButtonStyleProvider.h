@@ -9,7 +9,7 @@
 
 #import <Foundation/Foundation.h>
 
-@interface PasscodeStyle : NSObject
+@interface PasscodeButtonStyle : NSObject
 
 @property (strong, nonatomic) UIColor *lineColor;
 @property (strong, nonatomic) UIColor *titleColor;
@@ -21,25 +21,27 @@
 
 @end
 
+typedef enum PasscodeButtonType : NSUInteger {
+    PasscodeButtonTypeZero,
+    PasscodeButtonTypeOne,
+    PasscodeButtonTypeTwo,
+    PasscodeButtonTypeThree,
+    PasscodeButtonTypeFour,
+    PasscodeButtonTypeFive,
+    PasscodeButtonTypeSix,
+    PasscodeButtonTypeSeven,
+    PasscodeButtonTypeEight,
+    PasscodeButtonTypeNine,
+    PasscodeButtonTypeAll
+} PasscodeButtonType;
+
 @interface PasscodeButtonStyleProvider : NSObject
 
-typedef enum PasscodeButton : NSUInteger {
-    PasscodeButtonZero,
-    PasscodeButtonOne,
-    PasscodeButtonTwo,
-    PasscodeButtonThree,
-    PasscodeButtonFour,
-    PasscodeButtonFive,
-    PasscodeButtonSix,
-    PasscodeButtonSeven,
-    PasscodeButtonEight,
-    PasscodeButtonNine,
-    PasscodeButtonAll
-} PasscodeButton;
+@property (strong, nonatomic) PasscodeButtonStyle *defaultButtonStyle;
 
-- (void) addStyleForButton:(PasscodeButton)button stye:(PasscodeStyle *)passcodeStyle;
-- (PasscodeStyle *) styleForButton:(PasscodeButton)button;
-- (BOOL) styleExistsForButton:(PasscodeButton)button; 
+- (void)addStyle:(PasscodeButtonStyle *)passcodeStyle forButton:(PasscodeButtonType)buttonType;
+- (PasscodeButtonStyle *)styleForButtonType:(PasscodeButtonType)buttonType;
+- (BOOL)customStyleExistsForButtonType:(PasscodeButtonType)buttonType;
 @end
 
 

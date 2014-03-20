@@ -11,22 +11,22 @@
 #import "PasscodeViewController.h" 
 #import "PasscodeButtonStyleProvider.h"
 
-@interface PasscodeManager : NSObject <PasscodeViewControllerDelegate> 
+@interface PasscodeCoordinator : NSObject <PasscodeViewControllerDelegate>
 
-+ (PasscodeManager *)sharedManager;
++ (PasscodeCoordinator *)sharedCoordinator;
 
-- (void) activatePasscodeProtection;
-- (void) setupNewPasscodeWithCompletion:(void (^)(BOOL success)) completion;
-- (void) changePasscodeWithCompletion:(void (^)(BOOL success)) completion;
-- (void) disablePasscodeProtectionWithCompletion:(void (^) (BOOL success)) completion;
-- (void) setPasscodeInactivityDurationInMinutes:(NSNumber *) minutes;
-- (void) didSetupPasscode;
-- (void) setPasscode:(NSString *)passcode;
-- (void) togglePasscodeProtection:(BOOL)isOn;
-- (BOOL) isPasscodeProtectionOn;
-- (BOOL) isPasscodeCorrect:(NSString *)passcode;
-- (BOOL) shouldLock;
-- (NSNumber *) getPasscodeInactivityDurationInMinutes;
+- (void)activatePasscodeProtection;
+- (void)setupNewPasscodeWithCompletion:(void (^)(BOOL success)) completion;
+- (void)changePasscodeWithCompletion:(void (^)(BOOL success)) completion;
+- (void)disablePasscodeProtectionWithCompletion:(void (^) (BOOL success)) completion;
+- (void)setPasscodeInactivityDurationInMinutes:(NSNumber *) minutes;
+- (void)didSetupPasscode;
+- (void)setPasscode:(NSString *)passcode;
+- (void)togglePasscodeProtection:(BOOL)isOn;
+- (BOOL)isPasscodeProtectionOn;
+- (BOOL)isPasscodeCorrect:(NSString *)passcode;
+- (BOOL)shouldLock;
+- (NSNumber *)getPasscodeInactivityDurationInMinutes;
 
 @property (strong, nonatomic) UIColor *backgroundColor;
 @property (strong, nonatomic) UIImage *backgroundImage;

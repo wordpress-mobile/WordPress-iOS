@@ -35,7 +35,7 @@ PODS:
   - Quantcast-Measure/Core (1.2.13)
   - Reachability (3.0.0)
   - SVProgressHUD (0.9)
-  - UIDeviceIdentifier (0.1)
+  - UIDeviceIdentifier (0.4)
   - WordPressApi (0.0.1):
     - AFNetworking (>= 1.0)
     - wpxmlrpc (~> 0.1)
@@ -86,7 +86,7 @@ SPEC CHECKSUMS:
   DTFoundation: 7c69990fa3cb7655cafa95ab59c3fcea014460f0
   EmailChecker: e909e6d113fac7ad5e3c304fabce30fc4a79c80e
   google-plus-ios-sdk: 38378c4094a72a4fcdd5254c03fdd1813b345fb9
-  HockeySDK: 4f7f7e15c1f594e8ca1e16a09f04e7418289de7a
+  HockeySDK: aa28abb106de7804d31acf515f2c9aa4e6481fd0
   iOSPasscodeLock: 567a68671f7a34a4ba932e9108081994140d0e06
   MGImageUtilities: ab3580f2161b10f8a41331baea87aaafbd688950
   Mixpanel: 8d189c58bcaac429de9cb4f18a54621df99b7e38
@@ -98,7 +98,7 @@ SPEC CHECKSUMS:
   Quantcast-Measure: ff28ef371e54b710dc051a9ef96fd49b77f098c3
   Reachability: 500bd76bf6cd8ff2c6fb715fc5f44ef6e4c024f2
   SVProgressHUD: 03d4845ec8e64591726428a08236c6a5489d45f8
-  UIDeviceIdentifier: 38f7035dd0040fc4979d1548d9a63a1ccd339b0d
+  UIDeviceIdentifier: d3469c4cdf6cdc38a3fee52f59e99ccb64015652
   WordPressApi: 6c7ab5320344fbec850f0baba4b0ec2bfd03587d
   wpxmlrpc: 2206985822e725838c77e1143c9171e577ac063b
 
