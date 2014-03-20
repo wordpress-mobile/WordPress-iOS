@@ -24,7 +24,6 @@ static NSInteger const ImageSizeMediumWidth = 480;
 static NSInteger const ImageSizeMediumHeight = 360;
 static NSInteger const ImageSizeLargeWidth = 640;
 static NSInteger const ImageSizeLargeHeight = 480;
-NSString *const EditPostViewControllerLastUsedBlogURLDefaultsKey = @"EditPostViewControllerLastUsedBlogURL";
 NSString *const LastUsedBlogURLDefaultsKey = @"LastUsedBlogURLDefaultsKey";
 
 @interface Blog (PrivateMethods)
@@ -85,46 +84,67 @@ NSString *const LastUsedBlogURLDefaultsKey = @"LastUsedBlogURLDefaultsKey";
 #pragma mark -
 #pragma mark Custom methods
 
-+ (Blog *)defaultOrLastUsedBlog {
++ (Blog *)lastUsedOrFirstBlog {
+    Blog *blog = [self lastUsedBlog];
+
+    if (!blog) {
+        blog = [self firstBlog];
+    }
+
+    return blog;
+}
+
++ (Blog *)lastUsedBlog {
     // Try to get the last used blog, if there is one.
     NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
-    NSManagedObjectContext *context = [[ContextManager sharedInstance] mainContext];
-    NSFetchRequest *fetchRequest = [NSFetchRequest fetchRequestWithEntityName:@"Blog"];
     NSString *url = [defaults stringForKey:LastUsedBlogURLDefaultsKey];
     if (!url) {
         // Check for the old key and migrate the value if it exists.
         // TODO: We can probably discard this in the 4.2 release.
-        url = [defaults stringForKey:EditPostViewControllerLastUsedBlogURLDefaultsKey];
+        NSString *oldKey = @"EditPostViewControllerLastUsedBlogURL";
+        url = [defaults stringForKey:oldKey];
         if (url) {
             [defaults setObject:url forKey:LastUsedBlogURLDefaultsKey];
-            [defaults removeObjectForKey:EditPostViewControllerLastUsedBlogURLDefaultsKey];
+            [defaults removeObjectForKey:oldKey];
             [defaults synchronize];
         }
     }
 
-    NSPredicate *predicate;
-    if (url) {
-        predicate = [NSPredicate predicateWithFormat:@"visible = YES AND url = %@", url];
-    } else {
-        predicate = [NSPredicate predicateWithFormat:@"visible = YES"];
+    if (!url) {
+        return nil;
     }
+
+    NSFetchRequest *fetchRequest = [NSFetchRequest fetchRequestWithEntityName:@"Blog"];
+    NSPredicate *predicate = [NSPredicate predicateWithFormat:@"visible = YES AND url = %@", url];
     [fetchRequest setPredicate:predicate];
     fetchRequest.sortDescriptors = @[[NSSortDescriptor sortDescriptorWithKey:@"blogName" ascending:YES]];
     NSError *error = nil;
-    NSArray *results = [context executeFetchRequest:fetchRequest error:&error];
-
+    NSArray *results = [[[ContextManager sharedInstance] mainContext] executeFetchRequest:fetchRequest error:&error];
     if (error) {
         DDLogError(@"Couldn't fetch blogs: %@", error);
         return nil;
     }
 
     if([results count] == 0) {
-        if (url) {
-            // Blog might have been removed from the app. Get the first available.
-            [defaults removeObjectForKey:LastUsedBlogURLDefaultsKey];
-            [defaults synchronize];
-            return [self defaultOrLastUsedBlog];
-        }
+        // Blog might have been removed from the app. Clear the key.
+        [defaults removeObjectForKey:LastUsedBlogURLDefaultsKey];
+        [defaults synchronize];
+        return nil;
+    }
+
+    return [results firstObject];
+}
+
++ (Blog *)firstBlog {
+    NSPredicate *predicate = [NSPredicate predicateWithFormat:@"visible = YES"];
+    NSFetchRequest *fetchRequest = [NSFetchRequest fetchRequestWithEntityName:@"Blog"];
+    [fetchRequest setPredicate:predicate];
+    fetchRequest.sortDescriptors = @[[NSSortDescriptor sortDescriptorWithKey:@"blogName" ascending:YES]];
+    NSError *error = nil;
+    NSArray *results = [[[ContextManager sharedInstance] mainContext] executeFetchRequest:fetchRequest error:&error];
+
+    if (error) {
+        DDLogError(@"Couldn't fetch blogs: %@", error);
         return nil;
     }
 

@@ -104,7 +104,7 @@ CGFloat const EPVCTextViewTopPadding = 7.0f;
 }
 
 - (id)initWithDraftForLastUsedBlog {
-    Blog *blog = [Blog defaultOrLastUsedBlog];
+    Blog *blog = [Blog lastUsedOrFirstBlog];
     return [self initWithPost:[Post newDraftForBlog:blog]];
 }
 
