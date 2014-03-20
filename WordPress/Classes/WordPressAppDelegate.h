@@ -19,7 +19,6 @@
 
 @property (nonatomic, strong) IBOutlet UIWindow *window;
 @property (nonatomic, strong) UINavigationController *navigationController;
-@property (nonatomic, assign) BOOL isWPcomAuthenticated;
 @property (nonatomic, strong) UITabBarController *tabBarController;
 @property (nonatomic, strong) ReaderPostsViewController *readerPostsViewController;
 @property (nonatomic, strong) BlogListViewController *blogListViewController;

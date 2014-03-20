@@ -43,6 +43,17 @@
 @dynamic categories;
 @synthesize specialType, featuredImageURL;
 
+#pragma mark - NSManagedObject subclass methods
+
+- (void)didTurnIntoFault {
+    [super didTurnIntoFault];
+    
+    self.specialType = nil;
+    self.featuredImageURL = nil;
+}
+
+#pragma mark -
+
 + (NSString *const)remoteUniqueIdentifier {
     return @"postid";
 }

@@ -17,6 +17,7 @@
 #import "WPError.h"
 #import "ContextManager.h"
 #import "WordPressComApi.h"
+#import "CategoryService.h"
 
 static NSInteger const ImageSizeSmallWidth = 240;
 static NSInteger const ImageSizeSmallHeight = 180;
@@ -51,6 +52,8 @@ static NSInteger const ImageSizeLargeHeight = 480;
 #pragma mark - NSManagedObject subclass methods
 
 - (void)didTurnIntoFault {
+    [super didTurnIntoFault];
+    
     // Clean up instance variables
     _blavatarUrl = nil;
     _api = nil;
@@ -58,6 +61,14 @@ static NSInteger const ImageSizeLargeHeight = 480;
     _reachability = nil;
     
     [[NSNotificationCenter defaultCenter] removeObserver:self];
+}
+
+- (void)awakeFromFetch {
+    [super awakeFromFetch];
+    
+    if (!self.isDeleted) {
+        [self reachability];
+    }
 }
 
 #pragma mark -
@@ -277,11 +288,6 @@ static NSInteger const ImageSizeLargeHeight = 480;
             nil];
 }
 
-- (void)awakeFromFetch {
-    if (!self.isDeleted) {
-        [self reachability];
-    }
-}
 
 - (void)dataSave {
     [[ContextManager sharedInstance] saveContext:self.managedObjectContext];
@@ -691,7 +697,8 @@ static NSInteger const ImageSizeLargeHeight = 480;
             if ([self isDeleted] || self.managedObjectContext == nil)
                 return;
             
-            [Category mergeNewCategories:responseObject forBlog:self];
+            CategoryService *categoryService = [[CategoryService alloc] initWithManagedObjectContext:self.managedObjectContext];
+            [categoryService mergeNewCategories:responseObject forBlogObjectID:self.objectID];
             
             if (success) {
                 success();
