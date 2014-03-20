@@ -23,7 +23,7 @@ pod 'NSLogger-CocoaLumberjack-connector', '~>1.3'
 pod 'EmailChecker', :podspec => 'https://raw.github.com/wordpress-mobile/EmailChecker/master/ios/EmailChecker.podspec'
 pod 'CrashlyticsLumberjack', '~>1.0.0'
 pod 'HockeySDK', '~>3.5.0'
-pod 'iOSPasscodeLock', :git => 'https://github.com/bakyelli/iOS-PasscodeLock.git', :branch => 'UIWindow'
+pod 'iOSPasscodeLock', :git => 'https://github.com/bakyelli/iOS-PasscodeLock.git'
 
 target :WordPressTest, :exclusive => true do
   pod 'OHHTTPStubs', '1.1.1'
