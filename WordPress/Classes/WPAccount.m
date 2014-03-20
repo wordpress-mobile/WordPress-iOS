@@ -122,6 +122,8 @@ NSString * const WPAccountDefaultWordPressComAccountChangedNotification = @"WPAc
     }];
 }
 
+#pragma mark - NSManagedObject subclass methods
+
 - (void)prepareForDeletion {
     // Only do these deletions in the primary context (no parent)
     if (self.managedObjectContext.parentContext) {
@@ -137,6 +139,13 @@ NSString * const WPAccountDefaultWordPressComAccountChangedNotification = @"WPAc
     [SFHFKeychainUtils deleteItemForUsername:self.username andServiceName:WordPressComOAuthKeychainServiceName error:&error];
     self.password = nil;
     self.authToken = nil;
+}
+
+- (void)didTurnIntoFault {
+    [super didTurnIntoFault];
+    
+    _restApi = nil;
+    _xmlrpcApi = nil;
 }
 
 #pragma mark - Account creation
