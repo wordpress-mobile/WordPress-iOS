@@ -1,14 +1,14 @@
 /*
  * LoggerClient.h
  *
- * version 1.1 2012-03-31
+ * version 1.5-RC2 22-NOV-2013
  *
  * Part of NSLogger (client side)
  * https://github.com/fpillet/NSLogger
  *
  * BSD license follows (http://www.opensource.org/licenses/bsd-license.php)
  * 
- * Copyright (c) 2010-2012 Florent Pillet All Rights Reserved.
+ * Copyright (c) 2010-2013 Florent Pillet All Rights Reserved.
  *
  * Redistribution and use in source and binary forms, with or without modification,
  * are permitted provided that the following conditions are met:
@@ -35,6 +35,7 @@
  */
 #import <unistd.h>
 #import <pthread.h>
+#import <dispatch/once.h>
 #import <libkern/OSAtomic.h>
 #import <Foundation/Foundation.h>
 #import <CoreFoundation/CoreFoundation.h>
@@ -64,13 +65,15 @@ enum {
 	kLoggerOption_BufferLogsUntilConnection			= 0x02,
 	kLoggerOption_BrowseBonjour						= 0x04,
 	kLoggerOption_BrowseOnlyLocalDomain				= 0x08,
-	kLoggerOption_UseSSL							= 0x10
+	kLoggerOption_UseSSL							= 0x10,
+	kLoggerOption_CaptureSystemConsole				= 0x20
 };
 
 #define LOGGER_DEFAULT_OPTIONS	(kLoggerOption_BufferLogsUntilConnection |	\
 								 kLoggerOption_BrowseBonjour |				\
 								 kLoggerOption_BrowseOnlyLocalDomain |		\
-								 kLoggerOption_UseSSL)
+								 kLoggerOption_UseSSL |						\
+								 kLoggerOption_CaptureSystemConsole)
 
 /* -----------------------------------------------------------------
  * Structure defining a Logger
@@ -90,22 +93,25 @@ typedef struct
 	pthread_mutex_t logQueueMutex;
 	pthread_cond_t logQueueEmpty;
 	
+	dispatch_once_t workerThreadInit;				// Use this to ensure creation of the worker thread is ever done only once for a given logger
 	pthread_t workerThread;							// The worker thread responsible for Bonjour resolution, connection and logs transmission
 	CFRunLoopSourceRef messagePushedSource;			// A message source that fires on the worker thread when messages are available for send
 	CFRunLoopSourceRef bufferFileChangedSource;		// A message source that fires on the worker thread when the buffer file configuration changes
+	CFRunLoopSourceRef remoteOptionsChangedSource;	// A message source that fires when option changes imply a networking strategy change (switch to/from Bonjour, direct host or file streaming)
 
 	CFWriteStreamRef logStream;						// The connected stream we're writing to
 	CFWriteStreamRef bufferWriteStream;				// If bufferFile not NULL and we're not connected, points to a stream for writing log data
 	CFReadStreamRef bufferReadStream;				// If bufferFile not NULL, points to a read stream that will be emptied prior to sending the rest of in-memory messages
 	
 	SCNetworkReachabilityRef reachability;			// The reachability object we use to determine when the target host becomes reachable
-	CFRunLoopTimerRef checkHostTimer;				// A timer to regularly check connection to the defined host, along with reachability for added reliability
+	SCNetworkReachabilityFlags reachabilityFlags;	// Last known reachability flags - we use these to detect network transitions without network loss
+	CFRunLoopTimerRef reconnectTimer;				// A timer to regularly check connection to the defined host, along with reachability for added reliability
 
 	uint8_t *sendBuffer;							// data waiting to be sent
 	NSUInteger sendBufferSize;
 	NSUInteger sendBufferUsed;						// number of bytes of the send buffer currently in use
 	NSUInteger sendBufferOffset;					// offset in sendBuffer to start sending at
-	
+
 	int32_t messageSeq;								// sequential message number (added to each message sent)
 
 	// settings
@@ -114,6 +120,7 @@ typedef struct
 	CFStringRef bonjourServiceName;					// leave NULL to use the first one available
 
 	// internal state
+	BOOL targetReachable;							// Set to YES when the Reachability target (host or internet) is deemed reachable
 	BOOL connected;									// Set to YES once the write stream declares the connection open
 	volatile BOOL quit;								// Set to YES to terminate the logger worker thread's runloop
 	BOOL incompleteSendOfFirstItem;					// set to YES if we are sending the first item in the queue and it's bigger than what the buffer can hold
@@ -129,9 +136,14 @@ typedef struct
 extern "C" {
 #endif
 
-// Functions to set and get the default logger
+// Set the default logger which will be the one used when passing NULL for logge
 extern void LoggerSetDefaultLogger(Logger *aLogger);
+
+// Get the default logger, create one if it does not exist
 extern Logger *LoggerGetDefaultLogger(void);
+
+// Checks whether the default logger exists, returns it if YES, otherwise do NO create one
+extern Logger *LoggerCheckDefaultLogger(void);
 
 // Initialize a new logger, set as default logger if this is the first one
 // Options default to:
@@ -152,7 +164,6 @@ extern void LoggerSetupBonjour(Logger *logger, CFStringRef bonjourServiceType, C
 // try to connect there first before trying Bonjour
 extern void LoggerSetViewerHost(Logger *logger, CFStringRef hostName, UInt32 port);
 
-
 // Configure the logger to use a local file for buffering, instead of memory.
 // - If you initially set a buffer file after logging started but while a logger connection
 //   has not been acquired, the contents of the log queue will be written to the buffer file
@@ -162,8 +173,9 @@ extern void LoggerSetViewerHost(Logger *logger, CFStringRef hostName, UInt32 por
 //   buffer file WON'T be transferred to the new file in this case.
 extern void LoggerSetBufferFile(Logger *logger, CFStringRef absolutePath);
 
-// Activate the logger, try connecting
-extern void LoggerStart(Logger *logger);
+// Activate the logger, try connecting. You can pass NULL to start the default logger,
+// it will return a pointer to it.
+extern Logger* LoggerStart(Logger *logger);
 
 //extern void LoggerConnectToHost(CFDataRef address, int port);
 
@@ -189,6 +201,11 @@ extern void LoggerFlush(Logger *logger, BOOL waitForConnection);
 
 // Log a message, calling format compatible with NSLog
 extern void LogMessageCompat(NSString *format, ...);
+
+// Log a message without any formatting (just log the given string)
+extern void LogMessageRaw(NSString *message);
+extern void LogMessageRawF(const char *filename, int lineNumber, const char *functionName, NSString *domain, int level, NSString *message);
+extern void LogMessageRawToF(Logger *logger, const char *filename, int lineNumber, const char *functionName, NSString *domain, int level, NSString *message);
 
 // Log a message. domain can be nil if default domain.
 extern void LogMessage(NSString *domain, int level, NSString *format, ...) NS_FORMAT_FUNCTION(3,4);
