@@ -119,6 +119,8 @@
             [[PasscodeManager sharedManager] changePasscodeWithCompletion:nil];
         }
     }
+    [self reloadTableView];
+
 }
 
 #pragma mark - Helper methods
@@ -160,6 +162,8 @@
             }
         }];
     }
+    [self reloadTableView];
+
 }
 
 -(void)reloadTableView

@@ -99,6 +99,7 @@ static NSString * const PasscodeInactivityEnded = @"PasscodeInactivityEnded";
 -(void)handleNotification:(NSNotification *)notification
 {
     if(notification.name == UIApplicationDidEnterBackgroundNotification){
+        [self dismissLockScreen];
         [self startTrackingInactivity];
         if([self shouldLock]){
             [self verifyPasscodeWithPasscodeType:PasscodeTypeVerify withCompletion:nil];
