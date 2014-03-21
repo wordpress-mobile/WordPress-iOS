@@ -1,10 +1,9 @@
 PODS:
   - AFNetworking (1.2.0)
-  - CocoaLumberjack (1.6.5.1):
-    - CocoaLumberjack/Core
+  - CocoaLumberjack (1.8.1):
     - CocoaLumberjack/Extensions
-  - CocoaLumberjack/Core (1.6.5.1)
-  - CocoaLumberjack/Extensions (1.6.5.1):
+  - CocoaLumberjack/Core (1.8.1)
+  - CocoaLumberjack/Extensions (1.8.1):
     - CocoaLumberjack/Core
   - CrashlyticsLumberjack (1.0.1):
     - CocoaLumberjack/Core
@@ -12,17 +11,17 @@ PODS:
     - DTFoundation/Core (~> 1.6.0)
     - DTFoundation/DTHTMLParser (~> 1.6.0)
     - DTFoundation/UIKit (~> 1.6.0)
-  - DTFoundation/Core (1.6.1)
-  - DTFoundation/DTHTMLParser (1.6.1):
+  - DTFoundation/Core (1.6.2)
+  - DTFoundation/DTHTMLParser (1.6.2):
     - DTFoundation/Core
-  - DTFoundation/UIKit (1.6.1):
+  - DTFoundation/UIKit (1.6.2):
     - DTFoundation/Core
   - EmailChecker (0.1)
   - google-plus-ios-sdk (1.5.0)
   - HockeySDK (3.5.4)
   - MGImageUtilities (0.0.1)
   - Mixpanel (2.3.1)
-  - NSLogger (1.1)
+  - NSLogger (1.2)
   - NSLogger-CocoaLumberjack-connector (1.3):
     - CocoaLumberjack
     - NSLogger
@@ -38,12 +37,11 @@ PODS:
   - WordPressApi (0.0.1):
     - AFNetworking (>= 1.0)
     - wpxmlrpc (~> 0.1)
-  - wpxmlrpc (0.4)
+  - wpxmlrpc (0.4.1)
 
 DEPENDENCIES:
   - AFNetworking (= 1.2.0)
-  - CocoaLumberjack (= 1.6.2)
-  - CocoaLumberjack (~> 1.6.2)
+  - CocoaLumberjack (~> 1.8.1)
   - CrashlyticsLumberjack (~> 1.0.0)
   - DTCoreText (= 1.6.9)
   - EmailChecker (from `https://raw.github.com/wordpress-mobile/EmailChecker/master/ios/EmailChecker.podspec`)
@@ -60,7 +58,7 @@ DEPENDENCIES:
   - SVProgressHUD (~> 1.0)
   - UIDeviceIdentifier (~> 0.1)
   - WordPressApi (from `https://github.com/koke/WordPressApi.git`)
-  - wpxmlrpc (~> 0.4)
+  - wpxmlrpc (~> 0.4.1)
 
 EXTERNAL SOURCES:
   EmailChecker:
@@ -76,16 +74,16 @@ EXTERNAL SOURCES:
 
 SPEC CHECKSUMS:
   AFNetworking: 3cbae45f61a9f995cdbd56bd571223910d7f4e44
-  CocoaLumberjack: 17803afbade3126a377d32b8d23367264b44ced6
+  CocoaLumberjack: 020378ec400d658923bf5887178394f65f052c90
   CrashlyticsLumberjack: 8ee2adbd0f815d8b111e5f72cd82d39b08430ebc
   DTCoreText: e48c1526945272133b8c935c40da3f3e79836f1b
-  DTFoundation: 23d39b258d481221167cd4bf3df86ff3f22b1f55
+  DTFoundation: 7c69990fa3cb7655cafa95ab59c3fcea014460f0
   EmailChecker: e909e6d113fac7ad5e3c304fabce30fc4a79c80e
-  google-plus-ios-sdk: 5bda2a87ec54320dc99a67c745a445bbdf22cc72
-  HockeySDK: 4f7f7e15c1f594e8ca1e16a09f04e7418289de7a
+  google-plus-ios-sdk: 36ba69c66a9ec3d9722094755743a6d88b82d9a2
+  HockeySDK: aa28abb106de7804d31acf515f2c9aa4e6481fd0
   MGImageUtilities: ab3580f2161b10f8a41331baea87aaafbd688950
   Mixpanel: 8d189c58bcaac429de9cb4f18a54621df99b7e38
-  NSLogger: 4567fef08d0db18a89cce91b2053823fc0950738
+  NSLogger: 9607fdeafd0b09922c69615f99f127de45971b8f
   NSLogger-CocoaLumberjack-connector: da77800fec7415c1d378dfd93465031a58c5a9a8
   NSObject-SafeExpectations: 241ab1289cbc33a00307cd025d22883646f2e1f0
   NSURL+IDN: 22633c0149b86d6391f32f23776bc0e6ecc532e2
@@ -95,6 +93,6 @@ SPEC CHECKSUMS:
   SVProgressHUD: 5e10939a296debf5fe5a5895eda9539b8b2114f1
   UIDeviceIdentifier: 38f7035dd0040fc4979d1548d9a63a1ccd339b0d
   WordPressApi: 6c7ab5320344fbec850f0baba4b0ec2bfd03587d
-  wpxmlrpc: 2206985822e725838c77e1143c9171e577ac063b
+  wpxmlrpc: 63b5b10d5925fb030f8266215bc955366354a2b8
 
 COCOAPODS: 0.29.0
