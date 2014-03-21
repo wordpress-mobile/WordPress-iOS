@@ -379,6 +379,9 @@ const CGFloat NotificationsCommentDetailViewControllerReplyTextViewDefaultHeight
             comment.loading = NO;
 
             NSString *author = [comment.commentData valueForKeyPath:@"author.name"];
+            if ([[author trim] length] == 0) {
+                author = NSLocalizedString(@"Someone", @"Identifies the author of a comment that chose to be anonymous. Should match the wpcom translation for 'Someone' who left a comment, as opposed to an 'anonymous' author.");
+            }
             NSString *authorLink = [comment.commentData valueForKeyPath:@"author.URL"];
             [self.commentView setAuthorDisplayName:author authorLink:authorLink];
 

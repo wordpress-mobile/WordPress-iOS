@@ -40,6 +40,7 @@ NSString * const RPVCDisplayedNativeFriendFinder = @"DisplayedNativeFriendFinder
 @interface ReaderPostsViewController ()<ReaderTextFormDelegate, WPTableImageSourceDelegate, ReaderCommentPublisherDelegate> {
 	BOOL _hasMoreContent;
 	BOOL _loadingMore;
+    BOOL _viewHasAppeared;
     WPTableImageSource *_featuredImageSource;
 	CGFloat keyboardOffset;
     CGFloat _lastOffset;
@@ -142,9 +143,6 @@ NSString * const RPVCDisplayedNativeFriendFinder = @"DisplayedNativeFriendFinder
 		[self showReblogForm];
 	}
 
-    [WPMobileStats trackEventForWPCom:StatsEventReaderOpened properties:[self categoryPropertyForStats]];
-    [WPMobileStats pingWPComStatsEndpoint:@"home_page"];
-    
     // Sync content as soon as login or creation occurs
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(didChangeAccount:) name:WPAccountDefaultWordPressComAccountChangedNotification object:nil];
 
@@ -179,7 +177,13 @@ NSString * const RPVCDisplayedNativeFriendFinder = @"DisplayedNativeFriendFinder
     if (selectedIndexPath) {
         [self.tableView deselectRowAtIndexPath:selectedIndexPath animated:YES];
     }
-    
+
+    if (!_viewHasAppeared) {
+	    [WPMobileStats trackEventForWPCom:StatsEventReaderOpened properties:[self categoryPropertyForStats]];
+	    [WPMobileStats pingWPComStatsEndpoint:@"home_page"];
+        _viewHasAppeared = YES;
+    }
+
     [self resizeTableViewForImagePreloading];
 
     // Delay box animation after the view appears
