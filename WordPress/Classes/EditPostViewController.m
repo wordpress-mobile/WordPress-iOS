@@ -11,6 +11,7 @@
 #import "ContextManager.h"
 #import "NSString+XMLExtensions.h"
 #import "Post.h"
+#import "Page.h"
 #import "WPTableViewCell.h"
 #import "BlogSelectorViewController.h"
 #import "WPBlogSelectorButton.h"
@@ -582,21 +583,18 @@ CGFloat const EPVCTextViewTopPadding = 7.0f;
     }
     
 	UIActionSheet *actionSheet;
-    NSString *keepEditingText = NSLocalizedString(@"Keep Editing",
-                                                  @"Button shown if there are unsaved changes and the author decides to keep editing the post.");
-    NSString *publishText = NSLocalizedString(@"Publish",
-                                              @"Button shown when the author wants to publish a draft post.");
+    NSString *keepEditingText = NSLocalizedString(@"Keep Editing", @"Button shown if there are unsaved changes and the author decides to keep editing the post.");
+    NSString *publishText = NSLocalizedString(@"Publish", @"Button shown when the author wants to publish a draft post.");
     
     if ([self hasChanges]) {
         NSString *unsavedChangesTitle = NSLocalizedString(@"You have unsaved changes",
                                                           @"Title of message with options that shown when there are unsaved changes and the author is trying to move away from the post.");
         NSString *discardText = NSLocalizedString(@"Discard Changes", @"Button shown if there are unsaved changes and the author decides to not save his changes.");
-        NSString *saveDraftText = NSLocalizedString(@"Save Draft", @"Button shown when the author wants to save a draft post.");
-        NSString *updatePublishedText = NSLocalizedString(@"Update Published Post", @"Button shown when the author wants to update a published post.");
-        NSString *updateDraftText = NSLocalizedString(@"Update Draft", @"Button shown when the author wants to update an existing a draft post.");
         
         if ( [self.post.original.status isEqualToString:@"publish"] && self.editMode != EditPostViewControllerModeNewPost) {
             // The post is already published on the server or it was intended to be and failed
+            NSString *updatePublishedText = ([self isPage]) ? NSLocalizedString(@"Update Published Page", @"Button shown when the author wants to update a published page.")
+                                                            : NSLocalizedString(@"Update Published Post", @"Button shown when the author wants to update a published post.");
             actionSheet = [[UIActionSheet alloc] initWithTitle:unsavedChangesTitle
                                                       delegate:self
                                              cancelButtonTitle:keepEditingText
@@ -604,6 +602,7 @@ CGFloat const EPVCTextViewTopPadding = 7.0f;
                                              otherButtonTitles:updatePublishedText, nil];
         } else if (self.editMode == EditPostViewControllerModeNewPost) {
             // The post is a local draft or an autosaved draft
+            NSString *saveDraftText = NSLocalizedString(@"Save Draft", @"Button shown when the author wants to save a draft post.");
             actionSheet = [[UIActionSheet alloc] initWithTitle:unsavedChangesTitle
                                                       delegate:self
                                              cancelButtonTitle:keepEditingText
@@ -611,6 +610,7 @@ CGFloat const EPVCTextViewTopPadding = 7.0f;
                                              otherButtonTitles:saveDraftText, publishText, nil];
         } else {
             // The post was already a draft or private or pending
+            NSString *updateDraftText = NSLocalizedString(@"Update Draft", @"Button shown when the author wants to update an existing a draft post.");
             actionSheet = [[UIActionSheet alloc] initWithTitle:unsavedChangesTitle
                                                       delegate:self
                                              cancelButtonTitle:keepEditingText
@@ -622,7 +622,8 @@ CGFloat const EPVCTextViewTopPadding = 7.0f;
         //No changes, but not published so prompt user for action
         NSString *chooseTitle = NSLocalizedString(@"Please choose one of the following",
                                                   @"Title of message with options shown when the author is trying to move away from the post.");
-        NSString *goBackText = NSLocalizedString(@"Go Back to Posts", @"Button shown if there are unsaved changes and the author is trying to move away from the post.");
+        NSString *goBackText = ([self isPage]) ? NSLocalizedString(@"Go Back to Pages", @"Button shown if there are unsaved changes and the author is trying to move away from the page.")
+                                               : NSLocalizedString(@"Go Back to Posts", @"Button shown if there are unsaved changes and the author is trying to move away from the post.");
         
         actionSheet = [[UIActionSheet alloc] initWithTitle:chooseTitle
                                                   delegate:self
@@ -708,6 +709,10 @@ CGFloat const EPVCTextViewTopPadding = 7.0f;
 
 - (BOOL)hasChanges {
     return [self.post hasChanged];
+}
+
+- (BOOL)isPage {
+    return [_post isKindOfClass:Page.class];
 }
 
 #pragma mark - UI Manipulation
