@@ -7,24 +7,20 @@
 //
 
 #import <WPXMLRPC/WPXMLRPC.h>
-#import <QuartzCore/QuartzCore.h>
 #import "LoginViewController.h"
 #import "CreateAccountAndBlogViewController.h"
-#import "AboutViewController.h"
+#import "WordPressAppDelegate.h"
 #import "SupportViewController.h"
 #import "WPNUXMainButton.h"
-#import "WPNUXPrimaryButton.h"
 #import "WPNUXSecondaryButton.h"
 #import "WPWalkthroughTextField.h"
 #import "WordPressComOAuthClient.h"
 #import "WPWebViewController.h"
-#import "EditPostViewController.h"
 #import "Blog+Jetpack.h"
 #import "JetpackSettingsViewController.h"
 #import "WPWalkthroughOverlayView.h"
 #import "ReachabilityUtils.h"
 #import "WPNUXUtility.h"
-#import "WPNUXBackButton.h"
 #import "WPAccount.h"
 #import "Note.h"
 #import "ContextManager.h"
