@@ -14,7 +14,9 @@ CGFloat const WPTableViewFixedWidth = 600;
 
 - (id)initWithStyle:(UITableViewCellStyle)style reuseIdentifier:(NSString *)reuseIdentifier {
     self = [super initWithStyle:style reuseIdentifier:reuseIdentifier];
-    [self setClipsToBounds:YES];
+    if (self) {
+        [self setClipsToBounds:YES];
+    }
     return self;
 }
 
