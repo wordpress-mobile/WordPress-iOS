@@ -584,12 +584,18 @@ CGFloat const EPVCTextViewTopPadding = 7.0f;
     
 	UIActionSheet *actionSheet;
     NSString *keepEditingText = NSLocalizedString(@"Keep Editing", @"Button shown if there are unsaved changes and the author decides to keep editing the post.");
-    NSString *publishText = NSLocalizedString(@"Publish", @"Button shown when the author wants to publish a draft post.");
+    NSString *publishText;
+    if ([self isScheduled]) {
+        publishText = NSLocalizedString(@"Schedule", @"Schedule button, this is what the Publish button changes to in the Post Editor if the post has been scheduled for posting later.");
+    } else {
+        publishText = NSLocalizedString(@"Publish", @"Button shown when the author wants to publish a draft post.");
+    }
     
     if ([self hasChanges]) {
         NSString *unsavedChangesTitle = NSLocalizedString(@"You have unsaved changes",
                                                           @"Title of message with options that shown when there are unsaved changes and the author is trying to move away from the post.");
-        NSString *discardText = NSLocalizedString(@"Discard Changes", @"Button shown if there are unsaved changes and the author decides to not save his changes.");
+        NSString *discardText = NSLocalizedString(@"Discard Changes",
+                                                  @"Button shown if there are unsaved changes and the author decides to not save his changes.");
         
         if ( [self.post.original.status isEqualToString:@"publish"] && self.editMode != EditPostViewControllerModeNewPost) {
             // The post is already published on the server or it was intended to be and failed
@@ -713,6 +719,10 @@ CGFloat const EPVCTextViewTopPadding = 7.0f;
 
 - (BOOL)isPage {
     return [_post isKindOfClass:Page.class];
+}
+
+- (BOOL)isScheduled {
+    return ([self.post.status isEqualToString:@"publish"] && ([self.post.dateCreated compare:[NSDate date]] == NSOrderedDescending));
 }
 
 #pragma mark - UI Manipulation
