@@ -27,6 +27,14 @@ typedef NS_ENUM(NSUInteger, EditPostViewControllerMode) {
 	EditPostViewControllerModeEditPost
 };
 
+typedef NS_ENUM(NSInteger, EditPostUserEvent) {
+    EditPostUserActionNone,
+    EditPostUserActionSchedule,
+    EditPostUserActionPublish,
+    EditPostUserActionSave,
+    EditPostUserActionUpdate
+};
+
 @interface EditPostViewController () <UIActionSheetDelegate, UITextFieldDelegate, UITextViewDelegate, WPKeyboardToolbarDelegate, UIViewControllerRestoration>
 
 @property (nonatomic, strong) PostSettingsViewController *postSettingsViewController;

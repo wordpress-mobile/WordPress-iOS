@@ -35,6 +35,7 @@ CGFloat const EPVCTextViewTopPadding = 7.0f;
 @property (nonatomic, strong) WPAlertView *linkHelperAlertView;
 @property (nonatomic, strong) UIPopoverController *blogSelectorPopover;
 @property (nonatomic) BOOL dismissingBlogPicker;
+@property (nonatomic) EditPostUserEvent currentUserEvent;
 
 @end
 
@@ -797,7 +798,9 @@ CGFloat const EPVCTextViewTopPadding = 7.0f;
     [[NSNotificationCenter defaultCenter] removeObserver:self];
 }
 
-- (void)saveAction {
+- (void)saveActionWithUserEvent:(EditPostUserEvent)userEvent {
+    _currentUserEvent = userEvent;
+    
     if (_currentActionSheet.isVisible) {
         [_currentActionSheet dismissWithClickedButtonIndex:-1 animated:YES];
         _currentActionSheet = nil;
@@ -848,22 +851,28 @@ CGFloat const EPVCTextViewTopPadding = 7.0f;
 }
 
 - (void)logSavePostStats {
-    
-    //TODO: Fix this logging
-    NSString *buttonTitle = self.navigationItem.rightBarButtonItem.title;
     NSString *event;
-    if ([buttonTitle isEqualToString:NSLocalizedString(@"Schedule", nil)]) {
-        event = StatsEventPostDetailClickedSchedule;
-    } else if ([buttonTitle isEqualToString:NSLocalizedString(@"Publish", nil)]) {
-        event = StatsEventPostDetailClickedPublish;
-    } else if ([buttonTitle isEqualToString:NSLocalizedString(@"Save", nil)]) {
-        event = StatsEventPostDetailClickedSave;
-    } else if ([buttonTitle isEqualToString:NSLocalizedString(@"Update", nil)]) {
-        event = StatsEventPostDetailClickedUpdate;
+    switch (_currentUserEvent) {
+        case EditPostUserActionSchedule:
+            event = StatsEventPostDetailClickedSchedule;
+            break;
+        case EditPostUserActionPublish:
+            event = StatsEventPostDetailClickedPublish;
+            break;
+        case EditPostUserActionSave:
+            event = StatsEventPostDetailClickedSave;
+            break;
+        case EditPostUserActionUpdate:
+            event = StatsEventPostDetailClickedUpdate;
+            break;
+        default:
+            break;
     }
     
     if (event != nil) {
         [WPMobileStats trackEventForWPCom:[self formattedStatEventString:event]];
+        //Reset the current user event
+        _currentUserEvent = EditPostUserActionNone;
     }
 
     // This word counting algorithm is from : http://stackoverflow.com/a/13367063
@@ -1341,18 +1350,33 @@ CGFloat const EPVCTextViewTopPadding = 7.0f;
         if (buttonIndex == 1) {
 			if ([actionSheet numberOfButtons] == 3) {
                 // Publish / Update published
-                if (![self.post.original.status isEqualToString:@"publish"] && ![self.post.status isEqualToString:@"publish"]) {
-                    self.post.status = @"publish";
+                EditPostUserEvent userEvent = EditPostUserActionUpdate;
+                if (![self.post.original.status isEqualToString:@"publish"]) {
+                    if ([self isScheduled]) {
+                        userEvent = EditPostUserActionSchedule;
+                    } else {
+                        userEvent = EditPostUserActionPublish;
+                    }
+                    
+                    // If you tapped on a button labeled "Publish", you probably expect the post to be published
+                    if (![self.post.status isEqualToString:@"publish"]) {
+                        self.post.status = @"publish";
+                    }
                 }
-                [self saveAction];
+                [self saveActionWithUserEvent:userEvent];
                 
 			} else {
                 // Save or update draft
-                // If you tapped on a button labeled "Save Draft", you probably expect the post to be saved as a draft
-                if (![self.post hasRemote] && [self.post.status isEqualToString:@"publish"]) {
-                    self.post.status = @"draft";
+                EditPostUserEvent userEvent = EditPostUserActionUpdate;
+                if (![self.post hasRemote]) {
+                    userEvent = EditPostUserActionSave;
+                    
+                    // If you tapped on a button labeled "Save Draft", you probably expect the post to be saved as a draft
+                    if([self.post.status isEqualToString:@"publish"]) {
+                        self.post.status = @"draft";
+                    }
                 }
-                [self saveAction];
+                [self saveActionWithUserEvent:userEvent];
 			}
         }
         
@@ -1361,7 +1385,12 @@ CGFloat const EPVCTextViewTopPadding = 7.0f;
             if (![self.post.status isEqualToString:@"publish"]) {
                 self.post.status = @"publish";
             }
-            [self saveAction];
+            
+            EditPostUserEvent userEvent = EditPostUserActionPublish;
+            if ([self isScheduled]) {
+                userEvent = EditPostUserActionSchedule;
+            }
+            [self saveActionWithUserEvent:userEvent];
         }
     }
 }
