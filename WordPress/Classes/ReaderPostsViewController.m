@@ -179,14 +179,8 @@ NSString * const RPVCDisplayedNativeFriendFinder = @"DisplayedNativeFriendFinder
     }
 
     if (!_viewHasAppeared) {
-        [WPMobileStats trackEventForWPCom:StatsEventReaderOpened properties:[self categoryPropertyForStats]];
-        [WPMobileStats pingWPComStatsEndpoint:@"home_page"];
-        [WPMobileStats logQuantcastEvent:@"newdash.home_page"];
-        [WPMobileStats logQuantcastEvent:@"mobile.home_page"];
-        if ([self isCurrentCategoryFreshlyPressed]) {
-            [WPMobileStats logQuantcastEvent:@"newdash.freshly"];
-            [WPMobileStats logQuantcastEvent:@"mobile.freshly"];
-        }
+	    [WPMobileStats trackEventForWPCom:StatsEventReaderOpened properties:[self categoryPropertyForStats]];
+	    [WPMobileStats pingWPComStatsEndpoint:@"home_page"];
         _viewHasAppeared = YES;
     }
 
@@ -783,8 +777,6 @@ NSString * const RPVCDisplayedNativeFriendFinder = @"DisplayedNativeFriendFinder
 							 }];
     
     [WPMobileStats trackEventForWPCom:StatsEventReaderInfiniteScroll properties:[self categoryPropertyForStats]];
-    [WPMobileStats logQuantcastEvent:@"newdash.infinite_scroll"];
-    [WPMobileStats logQuantcastEvent:@"mobile.infinite_scroll"];
 }
 
 - (UITableViewRowAnimation)tableViewRowAnimation {
@@ -920,8 +912,6 @@ NSString * const RPVCDisplayedNativeFriendFinder = @"DisplayedNativeFriendFinder
     if ([self isCurrentCategoryFreshlyPressed]) {
         [WPMobileStats trackEventForWPCom:StatsEventReaderSelectedFreshlyPressedTopic];
         [WPMobileStats pingWPComStatsEndpoint:@"freshly"];
-        [WPMobileStats logQuantcastEvent:@"newdash.fresh"];
-        [WPMobileStats logQuantcastEvent:@"mobile.fresh"];
     } else {
         [WPMobileStats trackEventForWPCom:StatsEventReaderSelectedCategory properties:[self categoryPropertyForStats]];
     }
@@ -1002,13 +992,6 @@ NSString * const RPVCDisplayedNativeFriendFinder = @"DisplayedNativeFriendFinder
                                                      return;
                                                  
                                                  NSDictionary *dict = (NSDictionary *)responseObject;
-                                                 NSString *userID = [dict stringForKey:@"ID"];
-                                                 if (userID != nil) {
-                                                     [WPMobileStats updateUserIDForStats:userID];
-                                                     [[NSUserDefaults standardUserDefaults] setObject:userID forKey:@"wpcom_user_id"];
-                                                     [NSUserDefaults resetStandardUserDefaults];
-                                                 }
-                                                 
                                                  __block NSNumber *preferredBlogId;
                                                  NSNumber *primaryBlog = [dict objectForKey:@"primary_blog"];
                                                  [usersBlogs enumerateObjectsUsingBlock:^(id obj, NSUInteger idx, BOOL *stop) {
