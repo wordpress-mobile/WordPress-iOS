@@ -379,6 +379,9 @@ const CGFloat NotificationsCommentDetailViewControllerReplyTextViewDefaultHeight
             comment.loading = NO;
 
             NSString *author = [comment.commentData valueForKeyPath:@"author.name"];
+            if ([[author trim] length] == 0) {
+                author = NSLocalizedString(@"Someone", @"");
+            }
             NSString *authorLink = [comment.commentData valueForKeyPath:@"author.URL"];
             [self.commentView setAuthorDisplayName:author authorLink:authorLink];
 
