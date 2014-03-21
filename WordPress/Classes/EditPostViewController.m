@@ -719,7 +719,7 @@ CGFloat const EPVCTextViewTopPadding = 7.0f;
 }
 
 - (BOOL)isPage {
-    return [_post isKindOfClass:Page.class];
+    return [self.post isKindOfClass:Page.class];
 }
 
 - (BOOL)isScheduled {
