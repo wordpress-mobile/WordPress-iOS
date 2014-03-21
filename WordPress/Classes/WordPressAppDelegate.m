@@ -508,6 +508,10 @@ static NSInteger const IndexForMeTab = 2;
     [self showMeTab];
 }
 
+- (BOOL)isNavigatingMeTab {
+    return (self.tabBarController.selectedIndex == IndexForMeTab && [self.blogListViewController.navigationController.viewControllers count] > 1);
+}
+
 #pragma mark - UITabBarControllerDelegate methods.
 
 - (BOOL)tabBarController:(UITabBarController *)tabBarController shouldSelectViewController:(UIViewController *)viewController {

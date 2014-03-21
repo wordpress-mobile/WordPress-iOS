@@ -44,6 +44,7 @@
 - (void)showMeTab;
 - (void)showPostTab;
 - (void)switchTabToPostsListForPost:(AbstractPost *)post;
+- (BOOL)isNavigatingMeTab;
 
 /*
  * Navigates to the StatsViewController for the given blog
