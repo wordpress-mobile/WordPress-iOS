@@ -147,6 +147,7 @@ NSString * const RPVCDisplayedNativeFriendFinder = @"DisplayedNativeFriendFinder
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(didChangeAccount:) name:WPAccountDefaultWordPressComAccountChangedNotification object:nil];
 
     self.inlineComposeView = [[InlineComposeView alloc] initWithFrame:CGRectZero];
+    [self.inlineComposeView setButtonTitle:NSLocalizedString(@"Post", nil)];
 
     self.commentPublisher = [[ReaderCommentPublisher alloc]
                              initWithComposer:self.inlineComposeView

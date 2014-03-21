@@ -131,6 +131,7 @@ typedef enum {
 	[self prepareComments];
 
     self.inlineComposeView = [[InlineComposeView alloc] initWithFrame:CGRectZero];
+    [self.inlineComposeView setButtonTitle:NSLocalizedString(@"Post", nil)];
 
     _tapOffKeyboardGesture = [[UITapGestureRecognizer alloc] initWithTarget:self
                                                                      action:@selector(dismissKeyboard:)];
