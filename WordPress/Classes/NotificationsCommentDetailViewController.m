@@ -337,20 +337,31 @@ const CGFloat NotificationsCommentDetailViewControllerReplyTextViewDefaultHeight
                 [self displayNote];
             } failure:nil];
         }
-        
-        [[[WPAccount defaultWordPressComAccount] restApi] postPath:replyPath parameters:params success:^(AFHTTPRequestOperation *operation, id responseObject) {
-            DDLogVerbose(@"Response: %@", responseObject);
+
+        void (^success)() = ^{
             [self.inlineComposeView clearText];
             self.inlineComposeView.enabled = YES;
             [self.inlineComposeView dismissComposer];
             [WPToast showToastWithMessage:NSLocalizedString(@"Replied", @"User replied to a comment")
                                  andImage:[UIImage imageNamed:@"action_icon_replied"]];
+        };
 
-        } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
-            DDLogError(@"Failure %@", error);
+        void (^failure)() = ^{
             self.inlineComposeView.enabled = YES;
             [self.inlineComposeView displayComposer];
-            DDLogVerbose(@"[Rest API] ! %@", [error localizedDescription]);
+        };
+
+        [[[WPAccount defaultWordPressComAccount] restApi] postPath:replyPath parameters:params success:^(AFHTTPRequestOperation *operation, id responseObject) {
+            DDLogVerbose(@"Response: %@", responseObject);
+            success();
+        } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+            DDLogError(@"Failure %@", error);
+            if ([error.userInfo[WordPressComApiErrorCodeKey] isEqual:@"comment_duplicate"]) {
+                // If it's a duplicate comment, fake success since an identical comment is published
+                success();
+            } else {
+                failure();
+            }
         }];
     }
 
