@@ -595,11 +595,11 @@ CGFloat const EPVCTextViewTopPadding = 7.0f;
     if ([self hasChanges]) {
         NSString *unsavedChangesTitle = NSLocalizedString(@"You have unsaved changes",
                                                           @"Title of message with options that shown when there are unsaved changes and the author is trying to move away from the post.");
-        NSString *discardText = NSLocalizedString(@"Discard Changes",
-                                                  @"Button shown if there are unsaved changes and the author decides to not save his changes.");
         
         if ( [self.post.original.status isEqualToString:@"publish"] && self.editMode != EditPostViewControllerModeNewPost) {
             // The post is already published on the server or it was intended to be and failed
+            NSString *discardText = NSLocalizedString(@"Discard Changes",
+                                                      @"Button shown if there are unsaved changes and the author decides to not save his changes.");
             NSString *updatePublishedText = ([self isPage]) ? NSLocalizedString(@"Update Published Page", @"Button shown when the author wants to update a published page.")
                                                             : NSLocalizedString(@"Update Published Post", @"Button shown when the author wants to update a published post.");
             actionSheet = [[UIActionSheet alloc] initWithTitle:unsavedChangesTitle
@@ -610,6 +610,8 @@ CGFloat const EPVCTextViewTopPadding = 7.0f;
         } else if (self.editMode == EditPostViewControllerModeNewPost) {
             // The post is a local draft or an autosaved draft
             NSString *saveDraftText = NSLocalizedString(@"Save Draft", @"Button shown when the author wants to save a draft post.");
+            NSString *discardText = NSLocalizedString(@"Discard New Post",
+                                                      @"Button shown if the author is creating a new post that has content and the author decides to not save it.");
             actionSheet = [[UIActionSheet alloc] initWithTitle:unsavedChangesTitle
                                                       delegate:self
                                              cancelButtonTitle:keepEditingText
@@ -618,6 +620,8 @@ CGFloat const EPVCTextViewTopPadding = 7.0f;
         } else {
             // The post was already a draft or private or pending
             NSString *updateDraftText = NSLocalizedString(@"Update Draft", @"Button shown when the author wants to update an existing a draft post.");
+            NSString *discardText = NSLocalizedString(@"Discard Changes",
+                                                      @"Button shown if there are unsaved changes and the author decides to not save his changes.");
             actionSheet = [[UIActionSheet alloc] initWithTitle:unsavedChangesTitle
                                                       delegate:self
                                              cancelButtonTitle:keepEditingText
