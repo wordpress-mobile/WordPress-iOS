@@ -760,6 +760,8 @@
 		93C4864F181043D700A24725 /* ActivityLogDetailViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 93069F581762410B000C966D /* ActivityLogDetailViewController.m */; };
 		93C486501810442200A24725 /* SupportViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 93027BB71758332300483FFD /* SupportViewController.m */; };
 		93C486511810445D00A24725 /* ActivityLogViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 93069F55176237A4000C966D /* ActivityLogViewController.m */; };
+		93FA59DD18D88C1C001446BC /* CategoryService.m in Sources */ = {isa = PBXBuildFile; fileRef = 93FA59DC18D88C1C001446BC /* CategoryService.m */; };
+		93FA59E018D8986D001446BC /* CategoryServiceRemote.m in Sources */ = {isa = PBXBuildFile; fileRef = 93FA59DF18D8986D001446BC /* CategoryServiceRemote.m */; };
 		A01C542E0E24E88400D411F2 /* SystemConfiguration.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A01C542D0E24E88400D411F2 /* SystemConfiguration.framework */; };
 		A01C55480E25E0D000D411F2 /* defaultPostTemplate.html in Resources */ = {isa = PBXBuildFile; fileRef = A01C55470E25E0D000D411F2 /* defaultPostTemplate.html */; };
 		A0E293F10E21027E00C6919C /* WPAddCategoryViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A0E293F00E21027E00C6919C /* WPAddCategoryViewController.m */; };
@@ -848,7 +850,6 @@
 		E125451812BF68F900D87A0A /* Page.m in Sources */ = {isa = PBXBuildFile; fileRef = E125451712BF68F900D87A0A /* Page.m */; };
 		E128566415103A3600406BC9 /* keyboardButtoniPad@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = E128566215103A3600406BC9 /* keyboardButtoniPad@2x.png */; };
 		E128566515103A3600406BC9 /* keyboardButtoniPadHighlighted@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = E128566315103A3600406BC9 /* keyboardButtoniPadHighlighted@2x.png */; };
-		E12F95B9155820A40067A653 /* NSObject+BlockObservation.m in Sources */ = {isa = PBXBuildFile; fileRef = E12F95B8155820A40067A653 /* NSObject+BlockObservation.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
 		E131CB5216CACA6B004B0314 /* CoreText.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E131CB5116CACA6B004B0314 /* CoreText.framework */; };
 		E131CB5416CACB05004B0314 /* libxml2.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = E131CB5316CACB05004B0314 /* libxml2.dylib */; };
 		E131CB5616CACF1E004B0314 /* get-user-blogs_has-blog.json in Resources */ = {isa = PBXBuildFile; fileRef = E131CB5516CACF1E004B0314 /* get-user-blogs_has-blog.json */; };
@@ -1938,6 +1939,10 @@
 		9390B85E1858D0BF00BE43FC /* BlogSelectorViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BlogSelectorViewController.m; sourceTree = "<group>"; };
 		93A3F7DD1843F6F00082FEEA /* CoreTelephony.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreTelephony.framework; path = System/Library/Frameworks/CoreTelephony.framework; sourceTree = SDKROOT; };
 		93B17EDB17DFD626002B1014 /* WPAlertViewSideBySide.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = WPAlertViewSideBySide.xib; sourceTree = "<group>"; };
+		93FA59DB18D88C1C001446BC /* CategoryService.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CategoryService.h; sourceTree = "<group>"; };
+		93FA59DC18D88C1C001446BC /* CategoryService.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CategoryService.m; sourceTree = "<group>"; };
+		93FA59DE18D8986D001446BC /* CategoryServiceRemote.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CategoryServiceRemote.h; sourceTree = "<group>"; };
+		93FA59DF18D8986D001446BC /* CategoryServiceRemote.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CategoryServiceRemote.m; sourceTree = "<group>"; };
 		A01C542D0E24E88400D411F2 /* SystemConfiguration.framework */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = wrapper.framework; name = SystemConfiguration.framework; path = System/Library/Frameworks/SystemConfiguration.framework; sourceTree = SDKROOT; };
 		A01C55470E25E0D000D411F2 /* defaultPostTemplate.html */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.html; name = defaultPostTemplate.html; path = Resources/HTML/defaultPostTemplate.html; sourceTree = "<group>"; };
 		A0E293EF0E21027E00C6919C /* WPAddCategoryViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WPAddCategoryViewController.h; sourceTree = "<group>"; };
@@ -2079,8 +2084,6 @@
 		E12F95A51557C9C20067A653 /* zh-Hant */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "zh-Hant"; path = "zh-Hant.lproj/Localizable.strings"; sourceTree = "<group>"; };
 		E12F95A61557CA210067A653 /* hu */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = hu; path = hu.lproj/Localizable.strings; sourceTree = "<group>"; };
 		E12F95A71557CA400067A653 /* pl */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = pl; path = pl.lproj/Localizable.strings; sourceTree = "<group>"; };
-		E12F95B7155820A40067A653 /* NSObject+BlockObservation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSObject+BlockObservation.h"; sourceTree = "<group>"; };
-		E12F95B8155820A40067A653 /* NSObject+BlockObservation.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSObject+BlockObservation.m"; sourceTree = "<group>"; };
 		E131CB5116CACA6B004B0314 /* CoreText.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreText.framework; path = System/Library/Frameworks/CoreText.framework; sourceTree = SDKROOT; };
 		E131CB5316CACB05004B0314 /* libxml2.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libxml2.dylib; path = usr/lib/libxml2.dylib; sourceTree = SDKROOT; };
 		E131CB5516CACF1E004B0314 /* get-user-blogs_has-blog.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = "get-user-blogs_has-blog.json"; sourceTree = "<group>"; };
@@ -2446,6 +2449,7 @@
 				C59D3D480E6410BC00AA591D /* Categories */,
 				AC34397A0E11435A00E5D79B /* Controllers */,
 				2F706A870DFB229B00B43086 /* Models */,
+				93FA59DA18D88BDB001446BC /* Services */,
 				031662E60FFB14C60045D052 /* Views */,
 				2F970F970DF929B8006BD934 /* Constants.h */,
 				1D3623240D0F684500981E51 /* WordPressAppDelegate.h */,
@@ -2564,24 +2568,16 @@
 		2F706A870DFB229B00B43086 /* Models */ = {
 			isa = PBXGroup;
 			children = (
-				46F84612185A8B7E009D0DA5 /* WPContentViewProvider.h */,
-				C52C7845187AFA9700FB1D2D /* Stats */,
 				5D42A3D4175E7452005CFF05 /* AbstractComment.h */,
 				5D42A3D5175E7452005CFF05 /* AbstractComment.m */,
 				5D42A3D6175E7452005CFF05 /* AbstractPost.h */,
 				5D42A3D7175E7452005CFF05 /* AbstractPost.m */,
 				5D42A3D8175E7452005CFF05 /* BasePost.h */,
 				5D42A3D9175E7452005CFF05 /* BasePost.m */,
-				5D42A3DA175E7452005CFF05 /* ReaderComment.h */,
-				5D42A3DB175E7452005CFF05 /* ReaderComment.m */,
-				5D42A3DC175E7452005CFF05 /* ReaderPost.h */,
-				5D42A3DD175E7452005CFF05 /* ReaderPost.m */,
-				E105E9CD1726955600C0D9E7 /* WPAccount.h */,
-				E105E9CE1726955600C0D9E7 /* WPAccount.m */,
-				CEBD3EA90FF1BA3B00C1396E /* Blog.h */,
-				CEBD3EAA0FF1BA3B00C1396E /* Blog.m */,
 				E15051C916CA5DDB00D3DDDC /* Blog+Jetpack.h */,
 				E15051CA16CA5DDB00D3DDDC /* Blog+Jetpack.m */,
+				CEBD3EA90FF1BA3B00C1396E /* Blog.h */,
+				CEBD3EAA0FF1BA3B00C1396E /* Blog.m */,
 				E125445412BF5B3900D87A0A /* Category.h */,
 				E125445512BF5B3900D87A0A /* Category.m */,
 				83418AA811C9FA6E00ACF00C /* Comment.h */,
@@ -2590,14 +2586,22 @@
 				E14932B5130427B300154804 /* Coordinate.m */,
 				8350E49411D2C71E00A7B073 /* Media.h */,
 				8350E49511D2C71E00A7B073 /* Media.m */,
+				CC1D802F1658354C002A542F /* Note.h */,
+				CC1D80301658354C002A542F /* Note.m */,
 				E125451612BF68F900D87A0A /* Page.h */,
 				E125451712BF68F900D87A0A /* Page.m */,
 				838C672C1210C3C300B09CA3 /* Post.h */,
 				838C672D1210C3C300B09CA3 /* Post.m */,
 				833AF259114575A50016DE8F /* PostAnnotation.h */,
 				833AF25A114575A50016DE8F /* PostAnnotation.m */,
-				CC1D802F1658354C002A542F /* Note.h */,
-				CC1D80301658354C002A542F /* Note.m */,
+				5D42A3DA175E7452005CFF05 /* ReaderComment.h */,
+				5D42A3DB175E7452005CFF05 /* ReaderComment.m */,
+				5D42A3DC175E7452005CFF05 /* ReaderPost.h */,
+				5D42A3DD175E7452005CFF05 /* ReaderPost.m */,
+				C52C7845187AFA9700FB1D2D /* Stats */,
+				E105E9CD1726955600C0D9E7 /* WPAccount.h */,
+				E105E9CE1726955600C0D9E7 /* WPAccount.m */,
+				46F84612185A8B7E009D0DA5 /* WPContentViewProvider.h */,
 			);
 			name = Models;
 			sourceTree = "<group>";
@@ -3399,6 +3403,17 @@
 			name = "Post Editor";
 			sourceTree = "<group>";
 		};
+		93FA59DA18D88BDB001446BC /* Services */ = {
+			isa = PBXGroup;
+			children = (
+				93FA59DB18D88C1C001446BC /* CategoryService.h */,
+				93FA59DC18D88C1C001446BC /* CategoryService.m */,
+				93FA59DE18D8986D001446BC /* CategoryServiceRemote.h */,
+				93FA59DF18D8986D001446BC /* CategoryServiceRemote.m */,
+			);
+			name = Services;
+			sourceTree = "<group>";
+		};
 		A2F140A415E464C900132A5E /* Rich Text */ = {
 			isa = PBXGroup;
 			children = (
@@ -4143,18 +4158,8 @@
 			children = (
 				E1D0D81E16D3D19200E33F4C /* PocketAPI */,
 				E1B4A9DE12FC8B1000EB3F67 /* EGOTableViewPullRefresh */,
-				E12F95B6155820A40067A653 /* KVO+Blocks */,
 			);
 			path = Vendor;
-			sourceTree = "<group>";
-		};
-		E12F95B6155820A40067A653 /* KVO+Blocks */ = {
-			isa = PBXGroup;
-			children = (
-				E12F95B7155820A40067A653 /* NSObject+BlockObservation.h */,
-				E12F95B8155820A40067A653 /* NSObject+BlockObservation.m */,
-			);
-			path = "KVO+Blocks";
 			sourceTree = "<group>";
 		};
 		E131CB5B16CAD638004B0314 /* Test Helpers */ = {
@@ -5352,7 +5357,6 @@
 				E13F23C314FE84600081D9CC /* NSMutableDictionary+Helpers.m in Sources */,
 				E114D79A153D85A800984182 /* WPError.m in Sources */,
 				C52C783418771F7100FB1D2D /* StatsTwoColumnCell.m in Sources */,
-				E12F95B9155820A40067A653 /* NSObject+BlockObservation.m in Sources */,
 				46F84611185A6E98009D0DA5 /* WPContentView.m in Sources */,
 				A25EBD87156E330600530E3D /* WPTableViewController.m in Sources */,
 				5DEB61B4156FCD3400242C35 /* WPWebView.m in Sources */,
@@ -5389,6 +5393,7 @@
 				85468F3D17C484AB008AB9C1 /* WPStyleGuide.m in Sources */,
 				E1756E651694A99400D9EC00 /* WordPressComApiCredentials.m in Sources */,
 				5D4DE6F4167177560030518D /* WPNoResultsView.m in Sources */,
+				93FA59DD18D88C1C001446BC /* CategoryService.m in Sources */,
 				8516972C169D42F4006C5DED /* WPToast.m in Sources */,
 				93C4864F181043D700A24725 /* ActivityLogDetailViewController.m in Sources */,
 				CC70165E185BB97A007B37DB /* ReaderCommentPublisher.m in Sources */,
@@ -5406,6 +5411,7 @@
 				E2DA78061864B11E007BA447 /* WPFixedWidthScrollView.m in Sources */,
 				E15051CB16CA5DDB00D3DDDC /* Blog+Jetpack.m in Sources */,
 				85325A5917BC42E5008E87D1 /* NewPostTableViewCell.m in Sources */,
+				93FA59E018D8986D001446BC /* CategoryServiceRemote.m in Sources */,
 				85D8055D171631F10075EEAC /* SelectWPComLanguageViewController.m in Sources */,
 				E23EEC5E185A72C100F4DE2A /* WPContentCell.m in Sources */,
 				8525398B171761D9003F6B32 /* WPComLanguages.m in Sources */,
