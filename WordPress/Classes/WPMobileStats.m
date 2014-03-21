@@ -164,6 +164,7 @@ NSString *const StatsEventSettingsClickedManageNotifications = @"Settings - Clic
 NSString *const StatsEventSettingsEnabledSounds = @"Settings - Enabled Sounds";
 NSString *const StatsEventSettingsDisabledSounds = @"Settings - Disabled Sounds";
 NSString *const StatsEventSettingsClickedAbout = @"Settings - Clicked About";
+NSString *const StatsEventSettingsClickedBlogsOrder = @"Settings - Clicked Blogs Order";
 
 // Manage Notifications
 NSString *const StatsEventManageNotificationsTurnOn = @"Manage Notifications - Turn On Notifications";
