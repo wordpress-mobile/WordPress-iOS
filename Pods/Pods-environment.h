@@ -108,18 +108,6 @@
 #define COCOAPODS_VERSION_MINOR_NSURL_IDN 1
 #define COCOAPODS_VERSION_PATCH_NSURL_IDN 0
 
-// Quantcast-Measure
-#define COCOAPODS_POD_AVAILABLE_Quantcast_Measure
-#define COCOAPODS_VERSION_MAJOR_Quantcast_Measure 1
-#define COCOAPODS_VERSION_MINOR_Quantcast_Measure 2
-#define COCOAPODS_VERSION_PATCH_Quantcast_Measure 13
-
-// Quantcast-Measure/Core
-#define COCOAPODS_POD_AVAILABLE_Quantcast_Measure_Core
-#define COCOAPODS_VERSION_MAJOR_Quantcast_Measure_Core 1
-#define COCOAPODS_VERSION_MINOR_Quantcast_Measure_Core 2
-#define COCOAPODS_VERSION_PATCH_Quantcast_Measure_Core 13
-
 // Reachability
 #define COCOAPODS_POD_AVAILABLE_Reachability
 #define COCOAPODS_VERSION_MAJOR_Reachability 3
