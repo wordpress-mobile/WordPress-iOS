@@ -49,19 +49,19 @@
 #define COCOAPODS_POD_AVAILABLE_DTFoundation_Core
 #define COCOAPODS_VERSION_MAJOR_DTFoundation_Core 1
 #define COCOAPODS_VERSION_MINOR_DTFoundation_Core 6
-#define COCOAPODS_VERSION_PATCH_DTFoundation_Core 1
+#define COCOAPODS_VERSION_PATCH_DTFoundation_Core 2
 
 // DTFoundation/DTHTMLParser
 #define COCOAPODS_POD_AVAILABLE_DTFoundation_DTHTMLParser
 #define COCOAPODS_VERSION_MAJOR_DTFoundation_DTHTMLParser 1
 #define COCOAPODS_VERSION_MINOR_DTFoundation_DTHTMLParser 6
-#define COCOAPODS_VERSION_PATCH_DTFoundation_DTHTMLParser 1
+#define COCOAPODS_VERSION_PATCH_DTFoundation_DTHTMLParser 2
 
 // DTFoundation/UIKit
 #define COCOAPODS_POD_AVAILABLE_DTFoundation_UIKit
 #define COCOAPODS_VERSION_MAJOR_DTFoundation_UIKit 1
 #define COCOAPODS_VERSION_MINOR_DTFoundation_UIKit 6
-#define COCOAPODS_VERSION_PATCH_DTFoundation_UIKit 1
+#define COCOAPODS_VERSION_PATCH_DTFoundation_UIKit 2
 
 // EmailChecker
 #define COCOAPODS_POD_AVAILABLE_EmailChecker
@@ -90,7 +90,7 @@
 // NSLogger
 #define COCOAPODS_POD_AVAILABLE_NSLogger
 #define COCOAPODS_VERSION_MAJOR_NSLogger 1
-#define COCOAPODS_VERSION_MINOR_NSLogger 1
+#define COCOAPODS_VERSION_MINOR_NSLogger 2
 #define COCOAPODS_VERSION_PATCH_NSLogger 0
 
 // NSLogger-CocoaLumberjack-connector
@@ -110,18 +110,6 @@
 #define COCOAPODS_VERSION_MAJOR_NSURL_IDN 0
 #define COCOAPODS_VERSION_MINOR_NSURL_IDN 1
 #define COCOAPODS_VERSION_PATCH_NSURL_IDN 0
-
-// Quantcast-Measure
-#define COCOAPODS_POD_AVAILABLE_Quantcast_Measure
-#define COCOAPODS_VERSION_MAJOR_Quantcast_Measure 1
-#define COCOAPODS_VERSION_MINOR_Quantcast_Measure 2
-#define COCOAPODS_VERSION_PATCH_Quantcast_Measure 13
-
-// Quantcast-Measure/Core
-#define COCOAPODS_POD_AVAILABLE_Quantcast_Measure_Core
-#define COCOAPODS_VERSION_MAJOR_Quantcast_Measure_Core 1
-#define COCOAPODS_VERSION_MINOR_Quantcast_Measure_Core 2
-#define COCOAPODS_VERSION_PATCH_Quantcast_Measure_Core 13
 
 // Reachability
 #define COCOAPODS_POD_AVAILABLE_Reachability
