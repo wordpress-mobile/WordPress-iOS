@@ -19,7 +19,6 @@
 
 NSString *const WPEditorNavigationRestorationID = @"WPEditorNavigationRestorationID";
 NSString *const WPAbstractPostRestorationKey = @"WPAbstractPostRestorationKey";
-NSString *const EditPostViewControllerLastUsedBlogURL = @"EditPostViewControllerLastUsedBlogURL";
 CGFloat const EPVCTextfieldHeight = 44.0f;
 CGFloat const EPVCOptionsHeight = 44.0f;
 CGFloat const EPVCToolbarHeight = 44.0f;
@@ -68,40 +67,6 @@ CGFloat const EPVCTextViewTopPadding = 7.0f;
     return [[self alloc] initWithPost:restoredPost];
 }
 
-+ (Blog *)blogForNewDraft {
-    // Try to get the last used blog, if there is one.
-    NSManagedObjectContext *context = [[ContextManager sharedInstance] mainContext];
-    NSFetchRequest *fetchRequest = [NSFetchRequest fetchRequestWithEntityName:@"Blog"];
-    NSString *url = [[NSUserDefaults standardUserDefaults] stringForKey:EditPostViewControllerLastUsedBlogURL];
-    NSPredicate *predicate;
-    if (url) {
-        predicate = [NSPredicate predicateWithFormat:@"visible = YES AND url = %@", url];
-    } else {
-        predicate = [NSPredicate predicateWithFormat:@"visible = YES"];
-    }
-    [fetchRequest setPredicate:predicate];
-    fetchRequest.sortDescriptors = @[[NSSortDescriptor sortDescriptorWithKey:@"blogName" ascending:YES]];
-    NSError *error = nil;
-    NSArray *results = [context executeFetchRequest:fetchRequest error:&error];
-    
-    if (error) {
-        DDLogError(@"Couldn't fetch blogs: %@", error);
-        return nil;
-    }
-    
-    if([results count] == 0) {
-        if (url) {
-            // Blog might have been removed from the app. Get the first available.
-            [[NSUserDefaults standardUserDefaults] removeObjectForKey:EditPostViewControllerLastUsedBlogURL];
-            [[NSUserDefaults standardUserDefaults] synchronize];
-            return [self blogForNewDraft];
-        }
-        return nil;
-    }
-    
-    return [results firstObject];
-}
-
 - (void)encodeRestorableStateWithCoder:(NSCoder *)coder {
     [coder encodeObject:[[self.post.objectID URIRepresentation] absoluteString] forKey:WPAbstractPostRestorationKey];
     [super encodeRestorableStateWithCoder:coder];
@@ -139,7 +104,7 @@ CGFloat const EPVCTextViewTopPadding = 7.0f;
 }
 
 - (id)initWithDraftForLastUsedBlog {
-    Blog *blog = [EditPostViewController blogForNewDraft];
+    Blog *blog = [Blog lastUsedOrFirstBlog];
     return [self initWithPost:[Post newDraftForBlog:blog]];
 }
 
@@ -149,8 +114,6 @@ CGFloat const EPVCTextViewTopPadding = 7.0f;
         self.restorationIdentifier = NSStringFromClass([self class]);
         self.restorationClass = [self class];
         _post = post;
-        [[NSUserDefaults standardUserDefaults] setObject:post.blog.url forKey:EditPostViewControllerLastUsedBlogURL];
-        [[NSUserDefaults standardUserDefaults] synchronize];
         
         if (_post.remoteStatus == AbstractPostRemoteStatusLocal) {
             _editMode = EditPostViewControllerModeNewPost;
@@ -272,7 +235,7 @@ CGFloat const EPVCTextViewTopPadding = 7.0f;
     NSManagedObjectContext *context = [[ContextManager sharedInstance] mainContext];
     NSInteger blogCount = [Blog countWithContext:context];
     
-    if (blogCount <= 1 || self.editMode == EditPostViewControllerModeEditPost) {
+    if (blogCount <= 1 || self.editMode == EditPostViewControllerModeEditPost || [[WordPressAppDelegate sharedWordPressApplicationDelegate] isNavigatingMeTab]) {
         self.navigationItem.title = [self editorTitle];
     } else {
         UIButton *titleButton = self.titleBarButton;
@@ -520,6 +483,7 @@ CGFloat const EPVCTextViewTopPadding = 7.0f;
         Blog *blog = (Blog *)[context objectWithID:selectedObjectID];
         
         if (blog) {
+            [blog flagAsLastUsed];
             AbstractPost *newPost = [[self.post class] newDraftForBlog:blog];
             AbstractPost *oldPost = self.post;
             
@@ -545,8 +509,6 @@ CGFloat const EPVCTextViewTopPadding = 7.0f;
             [oldPost.original deleteRevision];
             [oldPost.original remove];
 
-            [[NSUserDefaults standardUserDefaults] setObject:blog.url forKey:EditPostViewControllerLastUsedBlogURL];
-            [[NSUserDefaults standardUserDefaults] synchronize];
             [self syncOptionsIfNecessaryForBlog:blog afterBlogChanged:YES];
         }
         

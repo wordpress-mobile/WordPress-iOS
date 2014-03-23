@@ -118,6 +118,15 @@ const CGFloat InlineComposeViewMaxHeight = 88.f;
     self.sendButton.frame = frame;
 }
 
+- (void)setButtonTitle:(NSString *)title
+{
+    if ([title length] > 0) {
+        [self.sendButton setTitle:title forState:UIControlStateNormal];
+    } else {
+        [self.sendButton setTitle:NSLocalizedString(@"Reply", @"") forState:UIControlStateNormal];
+    }
+}
+
 - (void)clearText {
     self.text = @"";
 }

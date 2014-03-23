@@ -1,7 +1,7 @@
 # NSLogger #
 ![Icon](https://github.com/fpillet/NSLogger/raw/master/Screenshots/icon_small.png "Icon")
 
-*NSLogger* is a high perfomance logging utility which displays traces emitted by client applications running on **Mac OS X** or **iOS (iPhone OS)**. It replaces your usual *NSLog()*-based traces and provides powerful additions like display filtering, image and binary logging, traces buffering, timing information, etc.
+*NSLogger* is a high perfomance logging utility which displays traces emitted by client applications running on **Mac OS X**, **iOS** and **Android**. It replaces traditional console logging (*NSLog()*, Java *Log*) traces and provides powerful additions like display filtering, image and binary logging, traces buffering, timing information, etc.
 
 *NSLogger* feature summary:
 
@@ -21,6 +21,36 @@ Your application emits traces using the *NSLogger* [trace APIs](https://github.c
 Clients automatically find the logger application running on Mac OS X via Bonjour networking, and can optionally connect to a specific remote host/port. You have no setup to do: just start the logger on your Mac, launch your iOS or Mac OS X application then when your app emits traces, they will automatically show up in *NSLogger* if the viewer is running locally on your network. Until a logger is found, logs are buffered on the client so you don't lose anything.
 
 ![Desktop Viewer (main window)](https://github.com/fpillet/NSLogger/raw/master/Screenshots/mainwindow.png "Desktop Viewer")
+
+# CocoaPods Install #
+[CocoaPods](http://cocoapods.org) is a dependency manager for Objective-C, which automates and simplifies the process of using 3rd-party libraries like AFNetworking in your projects.
+
+## Podfile ##
+If your project is configured to use [CocoaPods](http://cocoapods.org), just add this line to your Podfile:
+
+```ruby
+pod "NSLogger"
+```
+
+Then download this pre-built version of the [NSLogger desktop viewer](https://www.dropbox.com/sh/8z4gdaz4a5nr2q8/DXTQI0THSv) for OS X.
+
+## Adding logs to you app ##
+A one stop-shopper header file is `<NSLogger/NSLogger.h>`. By importing this header file, you'll be able to add traces to your code this way:
+
+```objective-c
+LoggerApp(1, @"Hello world! Today is: %@", [self myDate]);
+```
+
+## Starting the logger ##
+The `NSLogger.h` will also allow you to start the logger at the begining of your code. To do so, just add the following line to your `main.m` file, at the beginning of your `main()` function:
+
+```objective-c
+LoggerStartForBuildUser();
+```
+
+In the Preferences of the NSLogger.app desktop viewer, go to the "Network" tab. Type your user name (i.e. $USER) in the "Bonjour service name" text field. This will allow the traces to be received only by the computer of the user who compiled the app (important for team work).
+
+This only work when NSLogger has been added to your project using CocoaPods.
 
 # One-step setup #
 All you have to do is add `LoggerClient.h`, `LoggerClient.m` and `LoggerCommon.h` (as well as add the `CFNetwork.framework` and `SystemConfiguration.framework` frameworks) to your iOS or Mac OS X application, then replace your *NSLog()* calls with *LogMessageCompat()* calls. We recommend using a macro, so you can turn off logs when building the distribution version of your application.
@@ -56,11 +86,16 @@ Note that the NSLogger Mac OS X viewer requires **Mac OS X 10.6 or later**.
 
 *NSLogger* can be used for low-level code in situations where only CoreFoundation can be called. Disable the **ALLOW_COCOA** flag in *LoggerClient.h* to prevent any use of Cocoa code.
 
+# Advanced colors configuration #
+Apply colors to tags and messages using regular expressions.
+
+![Advanced Colors Preferences](https://github.com/djromero/NSLogger/raw/master/Screenshots/advanced_colors_prefs.png "Advanced Colors Preferences")
+
 # Work in progress - Current status #
 This tool comes from a personal need for a more powerful logger. There are more features planned for inclusion, here is a quick list of what I'm thinking of. Requests and suggestions are welcome.
 
- * Log entry colorization
  * Search and search term highlight in Details window
+ * Rewrite of the details window
  * Support time-based filtering (filter clause based on the time lapse between a previous trace)
  * Pause (buffer logs) and resume sending logs to the logger, in order to eliminate NSLogger's network load from the equation when testing networking code
 
@@ -69,5 +104,5 @@ You'll find documentation in the [NSLogger Wiki](https://github.com/fpillet/NSLo
 
 NSLogger uses parts of [Brandon Walkin's BWToolkit](http://www.brandonwalkin.com/bwtoolkit/), for which source code is included with NSLogger.
 
-NSLogger is Copyright (c) 2010-2011 Florent Pillet, All Rights Reserved, All Wrongs Revenged. Released under the [New BSD Licence](http://www.opensource.org/licenses/bsd-license.php).
+NSLogger is Copyright (c) 2010-2013 Florent Pillet, All Rights Reserved, All Wrongs Revenged. Released under the [New BSD Licence](http://www.opensource.org/licenses/bsd-license.php).
 The NSLogger icon is Copyright (c) [Louis Harboe](http://www.graphicpeel.com)
