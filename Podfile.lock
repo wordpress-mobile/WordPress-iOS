@@ -1,10 +1,9 @@
 PODS:
   - AFNetworking (1.2.0)
-  - CocoaLumberjack (1.6.5.1):
-    - CocoaLumberjack/Core
+  - CocoaLumberjack (1.8.1):
     - CocoaLumberjack/Extensions
-  - CocoaLumberjack/Core (1.6.5.1)
-  - CocoaLumberjack/Extensions (1.6.5.1):
+  - CocoaLumberjack/Core (1.8.1)
+  - CocoaLumberjack/Extensions (1.8.1):
     - CocoaLumberjack/Core
   - CrashlyticsLumberjack (1.0.1):
     - CocoaLumberjack/Core
@@ -35,12 +34,11 @@ PODS:
   - WordPressApi (0.0.1):
     - AFNetworking (>= 1.0)
     - wpxmlrpc (~> 0.1)
-  - wpxmlrpc (0.4)
+  - wpxmlrpc (0.4.1)
 
 DEPENDENCIES:
   - AFNetworking (= 1.2.0)
-  - CocoaLumberjack (= 1.6.2)
-  - CocoaLumberjack (~> 1.6.2)
+  - CocoaLumberjack (~> 1.8.1)
   - CrashlyticsLumberjack (~> 1.0.0)
   - DTCoreText (= 1.6.9)
   - EmailChecker (from `https://raw.github.com/wordpress-mobile/EmailChecker/master/ios/EmailChecker.podspec`)
@@ -56,7 +54,7 @@ DEPENDENCIES:
   - SVProgressHUD (~> 1.0)
   - UIDeviceIdentifier (~> 0.1)
   - WordPressApi (from `https://github.com/koke/WordPressApi.git`)
-  - wpxmlrpc (~> 0.4)
+  - wpxmlrpc (~> 0.4.1)
 
 EXTERNAL SOURCES:
   EmailChecker:
@@ -72,7 +70,7 @@ EXTERNAL SOURCES:
 
 SPEC CHECKSUMS:
   AFNetworking: 3cbae45f61a9f995cdbd56bd571223910d7f4e44
-  CocoaLumberjack: 17803afbade3126a377d32b8d23367264b44ced6
+  CocoaLumberjack: 020378ec400d658923bf5887178394f65f052c90
   CrashlyticsLumberjack: 8ee2adbd0f815d8b111e5f72cd82d39b08430ebc
   DTCoreText: e48c1526945272133b8c935c40da3f3e79836f1b
   DTFoundation: 7c69990fa3cb7655cafa95ab59c3fcea014460f0
@@ -90,6 +88,6 @@ SPEC CHECKSUMS:
   SVProgressHUD: 5e10939a296debf5fe5a5895eda9539b8b2114f1
   UIDeviceIdentifier: 38f7035dd0040fc4979d1548d9a63a1ccd339b0d
   WordPressApi: 6c7ab5320344fbec850f0baba4b0ec2bfd03587d
-  wpxmlrpc: 2206985822e725838c77e1143c9171e577ac063b
+  wpxmlrpc: 63b5b10d5925fb030f8266215bc955366354a2b8
 
 COCOAPODS: 0.29.0

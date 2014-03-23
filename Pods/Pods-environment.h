@@ -14,24 +14,21 @@
 
 // CocoaLumberjack
 #define COCOAPODS_POD_AVAILABLE_CocoaLumberjack
-// This library does not follow semantic-versioning,
-// so we were not able to define version macros.
-// Please contact the author.
-// Version: 1.6.5.1.
+#define COCOAPODS_VERSION_MAJOR_CocoaLumberjack 1
+#define COCOAPODS_VERSION_MINOR_CocoaLumberjack 8
+#define COCOAPODS_VERSION_PATCH_CocoaLumberjack 1
 
 // CocoaLumberjack/Core
 #define COCOAPODS_POD_AVAILABLE_CocoaLumberjack_Core
-// This library does not follow semantic-versioning,
-// so we were not able to define version macros.
-// Please contact the author.
-// Version: 1.6.5.1.
+#define COCOAPODS_VERSION_MAJOR_CocoaLumberjack_Core 1
+#define COCOAPODS_VERSION_MINOR_CocoaLumberjack_Core 8
+#define COCOAPODS_VERSION_PATCH_CocoaLumberjack_Core 1
 
 // CocoaLumberjack/Extensions
 #define COCOAPODS_POD_AVAILABLE_CocoaLumberjack_Extensions
-// This library does not follow semantic-versioning,
-// so we were not able to define version macros.
-// Please contact the author.
-// Version: 1.6.5.1.
+#define COCOAPODS_VERSION_MAJOR_CocoaLumberjack_Extensions 1
+#define COCOAPODS_VERSION_MINOR_CocoaLumberjack_Extensions 8
+#define COCOAPODS_VERSION_PATCH_CocoaLumberjack_Extensions 1
 
 // CrashlyticsLumberjack
 #define COCOAPODS_POD_AVAILABLE_CrashlyticsLumberjack
@@ -145,5 +142,5 @@
 #define COCOAPODS_POD_AVAILABLE_wpxmlrpc
 #define COCOAPODS_VERSION_MAJOR_wpxmlrpc 0
 #define COCOAPODS_VERSION_MINOR_wpxmlrpc 4
-#define COCOAPODS_VERSION_PATCH_wpxmlrpc 0
+#define COCOAPODS_VERSION_PATCH_wpxmlrpc 1
 
