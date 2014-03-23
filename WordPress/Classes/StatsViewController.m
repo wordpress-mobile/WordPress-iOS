@@ -37,6 +37,7 @@ static NSString *const ResultRowCellIdentifier = @"ResultRowCellIdentifier";
 static NSString *const GraphCellIdentifier = @"GraphCellIdentifier";
 static NSString *const StatsGroupedCellIdentifier = @"StatsGroupedCellIdentifier";
 static NSString *const LinkToWebviewCellIdentifier = @"LinkToWebviewCellIdentifier";
+static NSString *const WPStatsBlogRestorationKey = @"WPStatsBlogRestorationKey";
 
 static NSUInteger const ResultRowMaxItems = 10;
 static CGFloat const HeaderHeight = 44.0f;
@@ -63,7 +64,7 @@ typedef NS_ENUM(NSInteger, TotalFollowersShareRow) {
     TotalFollowersShareRowTotalRows
 };
 
-@interface StatsViewController () <UITableViewDataSource, UITableViewDelegate, StatsTodayYesterdayButtonCellDelegate>
+@interface StatsViewController () <UITableViewDataSource, UITableViewDelegate, StatsTodayYesterdayButtonCellDelegate, UIViewControllerRestoration>
 
 @property (nonatomic, strong) StatsApiHelper *statsApiHelper;
 @property (nonatomic, strong) NSMutableDictionary *statModels;
@@ -76,6 +77,28 @@ typedef NS_ENUM(NSInteger, TotalFollowersShareRow) {
 @end
 
 @implementation StatsViewController
+
++ (UIViewController *)viewControllerWithRestorationIdentifierPath:(NSArray *)identifierComponents coder:(NSCoder *)coder {
+    NSString *blogID = [coder decodeObjectForKey:WPStatsBlogRestorationKey];
+    if (!blogID)
+        return nil;
+    
+    NSManagedObjectContext *context = [[ContextManager sharedInstance] mainContext];
+    NSManagedObjectID *objectID = [context.persistentStoreCoordinator managedObjectIDForURIRepresentation:[NSURL URLWithString:blogID]];
+    if (!objectID)
+        return nil;
+    
+    NSError *error = nil;
+    Blog *restoredBlog = (Blog *)[context existingObjectWithID:objectID error:&error];
+    if (error || !restoredBlog) {
+        return nil;
+    }
+    
+    StatsViewController *viewController = [[self alloc] init];
+    viewController.blog = restoredBlog;
+    
+    return viewController;
+}
 
 - (id)init {
     self = [super initWithStyle:UITableViewStyleGrouped];
@@ -92,6 +115,9 @@ typedef NS_ENUM(NSInteger, TotalFollowersShareRow) {
                          @YES, @(StatsSectionReferrers), nil];
         
         _resultsAvailable = NO;
+        
+        self.restorationIdentifier = NSStringFromClass([self class]);
+        self.restorationClass = [self class];
     }
     return self;
 }
@@ -129,6 +155,11 @@ typedef NS_ENUM(NSInteger, TotalFollowersShareRow) {
     [super didReceiveMemoryWarning];
     
     _statModels = nil;
+}
+
+- (void)encodeRestorableStateWithCoder:(NSCoder *)coder {
+    [coder encodeObject:[[self.blog.objectID URIRepresentation] absoluteString] forKey:WPStatsBlogRestorationKey];
+    [super encodeRestorableStateWithCoder:coder];
 }
 
 - (void)setBlog:(Blog *)blog {
