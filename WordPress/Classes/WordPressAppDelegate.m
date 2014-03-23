@@ -190,8 +190,6 @@ static NSInteger const IndexForMeTab = 2;
 
 - (void)applicationWillTerminate:(UIApplication *)application {
     DDLogInfo(@"%@ %@", self, NSStringFromSelector(_cmd));
-    
-    [WPMobileStats endSession];
 }
 
 - (void)applicationDidEnterBackground:(UIApplication *)application {
@@ -222,7 +220,6 @@ static NSInteger const IndexForMeTab = 2;
 
 - (void)applicationWillEnterForeground:(UIApplication *)application {
     DDLogInfo(@"%@ %@", self, NSStringFromSelector(_cmd));
-    [WPMobileStats resumeSession];
 }
 
 - (void)applicationWillResignActive:(UIApplication *)application {
@@ -506,6 +503,10 @@ static NSInteger const IndexForMeTab = 2;
     
     blogListNav.viewControllers = @[self.blogListViewController, blogDetailsViewController, statsViewController];
     [self showMeTab];
+}
+
+- (BOOL)isNavigatingMeTab {
+    return (self.tabBarController.selectedIndex == IndexForMeTab && [self.blogListViewController.navigationController.viewControllers count] > 1);
 }
 
 #pragma mark - UITabBarControllerDelegate methods.
