@@ -61,7 +61,7 @@ const CGFloat InlineComposeViewMaxHeight = 88.f;
 - (void)updatePlaceholderAndSize {
     UITextView *textView = self.toolbarTextView;
     // show placeholder if text is empty
-    BOOL empty = [textView.text isEqualToString:@""];
+    BOOL empty = [[textView.text trim] isEqualToString:@""];
     self.placeholderLabel.hidden = !empty;
     self.sendButton.enabled = !empty;
 
