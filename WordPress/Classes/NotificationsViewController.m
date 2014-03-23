@@ -39,7 +39,7 @@ NSString * const NotificationsJetpackInformationURL = @"http://jetpack.me/about/
 
 + (UIViewController *)viewControllerWithRestorationIdentifierPath:(NSArray *)identifierComponents coder:(NSCoder *)coder {
     // We need to override the implementation in our superclass or else restoration fails - no blog!
-    UIViewController *controller =[[self alloc] init];
+    UIViewController *controller = [[self alloc] init];
     return controller;
 }
 
