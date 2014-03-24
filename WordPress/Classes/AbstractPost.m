@@ -51,7 +51,7 @@
 + (AbstractPost *)newDraftForBlog:(Blog *)blog {
     AbstractPost *post = [self newPostForBlog:blog];
     post.remoteStatus = AbstractPostRemoteStatusLocal;
-    post.status = @"publish";
+    post.status = @"draft";
     [post save];
     return post;
 }

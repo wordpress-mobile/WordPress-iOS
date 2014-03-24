@@ -27,6 +27,14 @@ typedef NS_ENUM(NSUInteger, EditPostViewControllerMode) {
 	EditPostViewControllerModeEditPost
 };
 
+typedef NS_ENUM(NSInteger, EditPostUserEvent) {
+    EditPostUserActionNone,
+    EditPostUserActionSchedule,
+    EditPostUserActionPublish,
+    EditPostUserActionSave,
+    EditPostUserActionUpdate
+};
+
 @interface EditPostViewController () <UIActionSheetDelegate, UITextFieldDelegate, UITextViewDelegate, WPKeyboardToolbarDelegate, UIViewControllerRestoration>
 
 @property (nonatomic, strong) PostSettingsViewController *postSettingsViewController;
@@ -40,9 +48,6 @@ typedef NS_ENUM(NSUInteger, EditPostViewControllerMode) {
 
 @property (nonatomic, strong) UITextField *titleTextField;
 @property (nonatomic, strong) UIView *separatorView;
-@property (nonatomic, strong) UIView *optionsSeparatorView;
-@property (nonatomic, strong) UIView *optionsView;
-@property (nonatomic, strong) UIButton *optionsButton;
 @property (nonatomic, strong) IOS7CorrectedTextView *textView;
 @property (nonatomic, strong) WPKeyboardToolbarBase *editorToolbar;
 @property (nonatomic, strong) WPKeyboardToolbarDone *titleToolbar;
