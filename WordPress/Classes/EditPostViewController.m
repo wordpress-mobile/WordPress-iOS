@@ -293,7 +293,7 @@ CGFloat const EPVCTextViewTopPadding = 7.0f;
     // Shows the post body.
     // Height should never be smaller than what is required to display its text.
     if (!self.textView) {
-        self.textView = [[IOS7CorrectedTextView alloc] initWithFrame:frame];
+        self.textView = [[UITextView alloc] initWithFrame:frame];
         self.textView.autoresizingMask = mask;
         self.textView.delegate = self;
         self.textView.typingAttributes = [WPStyleGuide regularTextAttributes];
