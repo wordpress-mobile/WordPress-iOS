@@ -9,6 +9,16 @@
 #import <Foundation/Foundation.h>
 
 /**
+ WPImageSource Error Codes
+ */
+typedef NS_ENUM(NSUInteger, WPImageSourceError) {
+    WPImageSourceErrorUnknown,
+    WPImageSourceErrorNilImage
+};
+
+extern NSString * const WPImageSourceErrorDomain;
+
+/**
  WPImageSource takes care of downloading images.
  
  It's a simple wrapper over AFImageRequestOperation that prevents duplicate requests. When a image URL is requested, it checks if there is a download in progress for that same URL.

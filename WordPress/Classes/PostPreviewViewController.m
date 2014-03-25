@@ -1,4 +1,3 @@
-#import <QuartzCore/QuartzCore.h>
 #import "PostPreviewViewController.h"
 #import "WordPressAppDelegate.h"
 #import "NSString+Helpers.h"
@@ -6,7 +5,12 @@
 #import "Post.h"
 
 @interface PostPreviewViewController ()
+
+@property (nonatomic, strong) UIWebView *webView;
+@property (nonatomic, strong) UIView *loadingView;
+@property (nonatomic, strong) NSMutableData *receivedData;
 @property (nonatomic, strong) AbstractPost *apost;
+
 @end
 
 @implementation PostPreviewViewController
@@ -31,46 +35,14 @@
 
 - (void)didReceiveMemoryWarning {
     DDLogWarn(@"%@ %@", self, NSStringFromSelector(_cmd));
-    [super didReceiveMemoryWarning]; // Releases the view if it doesn't have a superview
-    // Release anything that's not essential, such as cached data
+    [super didReceiveMemoryWarning];
 }
-
 
 - (void)viewDidLoad {
     [super viewDidLoad];
     DDLogInfo(@"%@ %@", self, NSStringFromSelector(_cmd));
-	self.webView.delegate = self;
-	if (loadingView == nil) {
-        
-        CGRect frame = self.view.frame;
-        CGFloat sides = 100.0f;
-        CGFloat x = (frame.size.width / 2.0f) - (sides / 2.0f);
-        CGFloat y = (frame.size.height / 2.0f) - (sides / 2.0f);
-
-        loadingView = [[UIView alloc] initWithFrame:CGRectMake(x, y, sides, sides)];
-        loadingView.layer.cornerRadius = 10.0f;
-        loadingView.backgroundColor = [UIColor colorWithWhite:0.0f alpha:0.8f];
-        loadingView.autoresizingMask = UIViewAutoresizingFlexibleLeftMargin |
-                                       UIViewAutoresizingFlexibleBottomMargin |
-                                       UIViewAutoresizingFlexibleTopMargin |
-                                       UIViewAutoresizingFlexibleRightMargin;
-        
-        UIActivityIndicatorView *activityView = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleWhite];
-        activityView.hidesWhenStopped = NO;
-        activityView.autoresizingMask = UIViewAutoresizingFlexibleLeftMargin |
-                                        UIViewAutoresizingFlexibleBottomMargin |
-                                        UIViewAutoresizingFlexibleTopMargin |
-                                        UIViewAutoresizingFlexibleRightMargin;
-        [activityView startAnimating];
-        
-        CGRect frm = activityView.frame;
-        frm.origin.x = (sides / 2.0f) - (frm.size.width / 2.0f);
-        frm.origin.y = (sides / 2.0f) - (frm.size.height / 2.0f);
-        activityView.frame = frm;
-        [loadingView addSubview:activityView];
-    }
-	
-    [self.view addSubview:loadingView];
+    [self setupWebView];
+    [self setupLoadingView];
 }
 
 - (void)viewWillAppear:(BOOL)animated {
@@ -85,14 +57,46 @@
 	[self.webView stopLoading];
 }
 
-
-- (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation {
-    return [super shouldAutorotateToInterfaceOrientation:interfaceOrientation];
-}
-
-
 #pragma mark -
 #pragma mark Instance Methods
+
+- (void)setupWebView {
+    if (!self.webView) {
+        self.webView = [[UIWebView alloc] initWithFrame:self.view.bounds];
+        self.webView.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
+        self.webView.delegate = self;
+    }
+    [self.view addSubview:self.webView];
+}
+
+- (void)setupLoadingView {
+	if (!self.loadingView) {
+        
+        CGRect frame = self.view.frame;
+        CGFloat sides = 100.0f;
+        CGFloat x = (frame.size.width - sides) / 2.0f;
+        CGFloat y = (frame.size.height - sides) / 2.0f;
+        
+        self.loadingView = [[UIView alloc] initWithFrame:CGRectMake(x, y, sides, sides)];
+        self.loadingView.layer.cornerRadius = 10.0f;
+        self.loadingView.backgroundColor = [UIColor colorWithWhite:0.0f alpha:0.8f];
+        self.loadingView.autoresizingMask = UIViewAutoresizingFlexibleLeftMargin |
+        UIViewAutoresizingFlexibleBottomMargin |
+        UIViewAutoresizingFlexibleTopMargin |
+        UIViewAutoresizingFlexibleRightMargin;
+        
+        UIActivityIndicatorView *activityView = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleWhite];
+        [activityView startAnimating];
+        
+        frame = activityView.frame;
+        frame.origin.x = (sides - frame.size.width) / 2.0f;
+        frame.origin.y = (sides - frame.size.height) / 2.0f;
+        activityView.frame = frame;
+        [self.loadingView addSubview:activityView];
+    }
+    
+    [self.view addSubview:self.loadingView];
+}
 
 - (Post *)post {
     if ([self.apost isKindOfClass:[Post class]]) {
@@ -116,31 +120,32 @@
 		
 		//Content
 		NSString *desc = self.apost.content;
-		if (!desc)
+		if (!desc) {
 			desc = [NSString stringWithFormat:@"<h1>%@</h1>", NSLocalizedString(@"No Description available for this Post", @"")];
-        else {
-				desc = [self stringReplacingNewlinesWithBR:desc];
-			}
+        } else {
+            desc = [self stringReplacingNewlinesWithBR:desc];
+        }
 		desc = [NSString stringWithFormat:@"<p>%@</p><br />", desc];
 		str = [str stringByReplacingOccurrencesOfString:@"!$text$!" withString:desc];
 		
 		//Tags
 		NSString *tags = self.post.tags;
 		tags = (tags == nil ? @"" : tags);
-		tags = [NSString stringWithFormat:NSLocalizedString(@"Tags: %@", @""), tags]; //desc = [NSString stringWithFormat:@"%@ \n <p>Tags: %@</p><br>", desc, tags];
+		tags = [NSString stringWithFormat:NSLocalizedString(@"Tags: %@", @""), tags];
 		str = [str stringByReplacingOccurrencesOfString:@"!$mt_keywords$!" withString:tags];
 		
 		//Categories [selObjects count]
 		NSArray *categories = [self.post.categories allObjects];
 		NSString *catStr = @"";
-		int i = 0, count = [categories count];
+		NSUInteger i = 0, count = [categories count];
 		for (i = 0; i < count; i++) {
 			Category *category = [categories objectAtIndex:i];
 			catStr = [catStr stringByAppendingString:category.categoryName];
-			if(i < count-1)
+			if(i < count-1) {
 				catStr = [catStr stringByAppendingString:@", "];
+            }
 		}
-		catStr = [NSString stringWithFormat:NSLocalizedString(@"Categories: %@", @""), catStr]; //desc = [NSString stringWithFormat:@"%@ \n <p>Categories: %@</p><br>", desc, catStr];
+		catStr = [NSString stringWithFormat:NSLocalizedString(@"Categories: %@", @""), catStr];
 		str = [str stringByReplacingOccurrencesOfString:@"!$categories$!" withString:catStr];
 
 	} else {
@@ -167,19 +172,20 @@
 	BOOL needsLogin = NO;
 	NSString *status = self.apost.original.status;
     NSDate *postGMTDate = self.apost.date_created_gmt;
-    NSDate *laterDate = self.apost.date_created_gmt;
+    NSDate *laterDate = [self.apost.date_created_gmt laterDate:[NSDate date]];
 
-	if ([status isEqualToString:@"draft"])
-		needsLogin = YES;
-	else if ([status isEqualToString:@"private"])
-		needsLogin = YES;
-	else if ([status isEqualToString:@"pending"])
-		needsLogin = YES;
-    else if ([self.apost.blog isPrivate])
+    if ([status isEqualToString:@"draft"]) {
+        needsLogin = YES;
+    } else if ([status isEqualToString:@"private"]) {
+        needsLogin = YES;
+    } else if ([status isEqualToString:@"pending"]) {
+        needsLogin = YES;
+    } else if ([self.apost.blog isPrivate]) {
         needsLogin = YES; // Private blog
-    else if ([laterDate isEqualToDate:postGMTDate])
+    } else if ([laterDate isEqualToDate:postGMTDate]) {
         needsLogin = YES; // Scheduled post
-
+    }
+    
     NSString *link = self.apost.original.permaLink;
 
     WordPressAppDelegate  *appDelegate = (WordPressAppDelegate *)[[UIApplication sharedApplication] delegate];
@@ -187,7 +193,7 @@
     if( appDelegate.connectionAvailable == NO ) {
         [self showSimplePreviewWithMessage:[NSString stringWithFormat:@"<div class=\"page\"><p>%@ %@</p>", NSLocalizedString(@"The internet connection appears to be offline.", @""), NSLocalizedString(@"A simple preview is shown below.", @"")]];
     } else if ( self.apost.blog.reachable == NO ) {
-        [self showSimplePreviewWithMessage:[NSString stringWithFormat:@"<div class=\"page\"><p>%@ %@</p>", NSLocalizedString(@"The internet connection cannot reach your blog.", @""), NSLocalizedString(@"A simple preview is shown below.", @"")]];
+        [self showSimplePreviewWithMessage:[NSString stringWithFormat:@"<div class=\"page\"><p>%@ %@</p>", NSLocalizedString(@"The internet connection cannot reach your site.", @""), NSLocalizedString(@"A simple preview is shown below.", @"")]];
     } else if (link == nil ) {
         [self showSimplePreview];
     } else {
@@ -220,7 +226,7 @@
 
 - (void)refreshWebView {
 	BOOL edited = [self.apost hasChanges];
-    loadingView.hidden = NO;
+    self.loadingView.hidden = NO;
 
 	if (edited) {
         [self showSimplePreview];
@@ -231,18 +237,17 @@
 
 - (void)webViewDidStartLoad:(UIWebView *)webView {
     DDLogMethod();
-    loadingView.hidden = NO;
+    self.loadingView.hidden = NO;
 }
 
 - (void)webViewDidFinishLoad:(UIWebView *)awebView {
     DDLogMethod();
-    loadingView.hidden = YES;
+    self.loadingView.hidden = YES;
 }
 
-- (void)webView:(UIWebView *)webView didFailLoadWithError:(NSError *)error
-{
+- (void)webView:(UIWebView *)webView didFailLoadWithError:(NSError *)error {
     DDLogMethodParam(error);
-    loadingView.hidden = YES;
+    self.loadingView.hidden = YES;
 }
 
 - (BOOL)webView:(UIWebView *)awebView shouldStartLoadWithRequest:(NSURLRequest *)request navigationType:(UIWebViewNavigationType)navigationType {

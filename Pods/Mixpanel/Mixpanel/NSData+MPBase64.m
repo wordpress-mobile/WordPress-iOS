@@ -12,6 +12,10 @@
 //  appreciated but not required.
 //
 
+#if ! __has_feature(objc_arc)
+#error This file must be compiled with ARC. Either turn on ARC for the project or use -fobjc-arc flag on this file.
+#endif
+
 #import "NSData+MPBase64.h"
 
 //
@@ -72,14 +76,13 @@ void *MP_NewBase64Decode(
 	size_t length,
 	size_t *outputLength)
 {
-	if (length == 0)
-	{
+	if (length == 0) {
 		length = strlen(inputBuffer);
 	}
-	
+
 	size_t outputBufferSize = (length / BASE64_UNIT_SIZE) * BINARY_UNIT_SIZE;
 	unsigned char *outputBuffer = (unsigned char *)malloc(outputBufferSize);
-	
+
 	size_t i = 0;
 	size_t j = 0;
 	while (i < length)
@@ -92,18 +95,16 @@ void *MP_NewBase64Decode(
 		while (i < length)
 		{
 			unsigned char decode = base64DecodeLookup[inputBuffer[i++]];
-			if (decode != xx)
-			{
+			if (decode != xx) {
 				accumulated[accumulateIndex] = decode;
 				accumulateIndex++;
-				
-				if (accumulateIndex == BASE64_UNIT_SIZE)
-				{
+
+				if (accumulateIndex == BASE64_UNIT_SIZE) {
 					break;
 				}
 			}
 		}
-		
+
 		//
 		// Store the 6 bits from each of the 4 characters as 3 bytes
 		//
@@ -112,9 +113,8 @@ void *MP_NewBase64Decode(
 		outputBuffer[j + 2] = (unsigned char)(accumulated[2] << 6) | accumulated[3];
 		j += accumulateIndex - 1;
 	}
-	
-	if (outputLength)
-	{
+
+	if (outputLength) {
 		*outputLength = j;
 	}
 	return outputBuffer;
@@ -143,12 +143,12 @@ char *MP_NewBase64Encode(
 	size_t *outputLength)
 {
 	const unsigned char *inputBuffer = (const unsigned char *)buffer;
-	
+
 	#define MAX_NUM_PADDING_CHARS 2
 	#define OUTPUT_LINE_LENGTH 64
 	#define INPUT_LINE_LENGTH ((OUTPUT_LINE_LENGTH / BASE64_UNIT_SIZE) * BINARY_UNIT_SIZE)
 	#define CR_LF_SIZE 2
-	
+
 	//
 	// Byte accurate calculation of final buffer size
 	//
@@ -156,12 +156,11 @@ char *MP_NewBase64Encode(
 			((length / BINARY_UNIT_SIZE)
 				+ ((length % BINARY_UNIT_SIZE) ? 1 : 0))
 					* BASE64_UNIT_SIZE;
-	if (separateLines)
-	{
+	if (separateLines) {
 		outputBufferSize +=
 			(outputBufferSize / OUTPUT_LINE_LENGTH) * CR_LF_SIZE;
 	}
-	
+
 	//
 	// Include space for a terminating zero
 	//
@@ -171,8 +170,7 @@ char *MP_NewBase64Encode(
 	// Allocate the output buffer
 	//
 	char *outputBuffer = (char *)malloc(outputBufferSize);
-	if (!outputBuffer)
-	{
+	if (!outputBuffer) {
 		return NULL;
 	}
 
@@ -180,16 +178,14 @@ char *MP_NewBase64Encode(
 	size_t j = 0;
 	const size_t lineLength = separateLines ? INPUT_LINE_LENGTH : length;
 	size_t lineEnd = lineLength;
-	
+
 	while (true)
 	{
-		if (lineEnd > length)
-		{
+		if (lineEnd > length) {
 			lineEnd = length;
 		}
 
-		for (; i + BINARY_UNIT_SIZE - 1 < lineEnd; i += BINARY_UNIT_SIZE)
-		{
+		for (; i + BINARY_UNIT_SIZE - 1 < lineEnd; i += BINARY_UNIT_SIZE) {
 			//
 			// Inner loop: turn 48 bytes into 64 base64 characters
 			//
@@ -200,12 +196,11 @@ char *MP_NewBase64Encode(
 				| ((inputBuffer[i + 2] & 0xC0) >> 6)];
 			outputBuffer[j++] = (char)base64EncodeLookup[inputBuffer[i + 2] & 0x3F];
 		}
-		
-		if (lineEnd == length)
-		{
+
+		if (lineEnd == length) {
 			break;
 		}
-		
+
 		//
 		// Add the newline
 		//
@@ -213,9 +208,8 @@ char *MP_NewBase64Encode(
 		outputBuffer[j++] = '\n';
 		lineEnd += lineLength;
 	}
-	
-	if (i + 1 < length)
-	{
+
+	if (i + 1 < length) {
 		//
 		// Handle the single '=' case
 		//
@@ -225,8 +219,7 @@ char *MP_NewBase64Encode(
 		outputBuffer[j++] = (char)base64EncodeLookup[(inputBuffer[i + 1] & 0x0F) << 2];
 		outputBuffer[j++] =	'=';
 	}
-	else if (i < length)
-	{
+	else if (i < length) {
 		//
 		// Handle the double '=' case
 		//
@@ -236,12 +229,11 @@ char *MP_NewBase64Encode(
 		outputBuffer[j++] = '=';
 	}
 	outputBuffer[j] = 0;
-	
+
 	//
 	// Set the output length and return the buffer
 	//
-	if (outputLength)
-	{
+	if (outputLength) {
 		*outputLength = j;
 	}
 	return outputBuffer;
@@ -284,13 +276,12 @@ char *MP_NewBase64Encode(
 	size_t outputLength = 0;
 	char *outputBuffer =
 		MP_NewBase64Encode([self bytes], [self length], false, &outputLength);
-	
+
 	NSString *result =
-		[[[NSString alloc]
+		[[NSString alloc]
 			initWithBytes:outputBuffer
 			length:outputLength
-			encoding:NSASCIIStringEncoding]
-		autorelease];
+			encoding:NSASCIIStringEncoding];
 	free(outputBuffer);
 	return result;
 }

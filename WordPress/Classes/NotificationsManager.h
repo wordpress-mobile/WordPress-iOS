@@ -12,8 +12,6 @@
  */
 extern NSString *const NotificationsDeviceToken;
 
-extern NSString *const NotificationsDeviceToken;
-
 @interface NotificationsManager : NSObject
 
 ///--------------------------------

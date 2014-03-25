@@ -12,7 +12,6 @@
 #import <AFJSONRequestOperation.h>
 #import <UIDeviceHardware.h>
 #import "UIDevice+WordPressIdentifier.h"
-#import <WPXMLRPCClient.h>
 #import "WordPressAppDelegate.h"
 #import "NotificationsManager.h"
 
@@ -20,7 +19,6 @@ static NSString *const WordPressComApiClientEndpointURL = @"https://public-api.w
 static NSString *const WordPressComApiOauthBaseUrl = @"https://public-api.wordpress.com/oauth2";
 NSString *const WordPressComApiNotificationFields = @"id,type,unread,body,subject,timestamp";
 static NSString *const WordPressComApiLoginUrl = @"https://wordpress.com/wp-login.php";
-static NSString *const WordPressComXMLRPCUrl = @"https://wordpress.com/xmlrpc.php";
 NSString *const WordPressComApiErrorDomain = @"com.wordpress.api";
 NSString *const WordPressComApiErrorCodeKey = @"WordPressComApiErrorCodeKey";
 NSString *const WordPressComApiErrorMessageKey = @"WordPressComApiErrorMessageKey";
@@ -278,163 +276,131 @@ NSString *const WordPressComApiPushAppId = @"org.wordpress.appstore";
 
 #pragma mark - Notifications
 
-- (void)saveNotificationSettings:(NSDictionary *)settings deviceToken:(NSString *)token
+- (void)saveNotificationSettings:(NSDictionary *)settings
+                        deviceId:(NSString *)deviceId
                          success:(void (^)())success
                          failure:(void (^)(NSError *error))failure {
     
-    if (nil == token)
-        return;
-    
-    NSArray *parameters = @[[self usernameForXmlrpc],
-                            [self passwordForXmlrpc],
-                            settings,
-                            token,
-                            @"apple",
-                            WordPressComApiPushAppId
-                            ];
-
-    WPXMLRPCClient *api = [[WPXMLRPCClient alloc] initWithXMLRPCEndpoint:[NSURL URLWithString:WordPressComXMLRPCUrl]];
-    [api setAuthorizationHeaderWithToken:self.authToken];
-    [api callMethod:@"wpcom.set_mobile_push_notification_settings"
-         parameters:parameters
-            success:^(AFHTTPRequestOperation *operation, id responseObject) {
-                if (success) {
-                    success();
-                }
-            } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
-                if (failure) {
-                    failure(error);
-                }
-            }];
-}
-
-- (void)fetchNotificationSettingsWithDeviceToken:(NSString *)token success:(void (^)(NSDictionary *settings))success failure:(void (^)(NSError *error))failure {
-    if( nil == token )
-        return;
-    
-    if (![self hasCredentials])
-        return;
-    
-    NSArray *parameters = @[[self usernameForXmlrpc],
-                            [self passwordForXmlrpc],
-                            token,
-                            @"apple",
-                            WordPressComApiPushAppId
-                            ];
-    
-    WPXMLRPCClient *api = [[WPXMLRPCClient alloc] initWithXMLRPCEndpoint:[NSURL URLWithString:WordPressComXMLRPCUrl]];
-    [api setAuthorizationHeaderWithToken:self.authToken];
-    [api callMethod:@"wpcom.get_mobile_push_notification_settings"
-         parameters:parameters
-            success:^(AFHTTPRequestOperation *operation, id responseObject) {
-                if (success) {
-                    success(responseObject);
-                }
-            } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
-                if (failure) {
-                    failure(error);
-                }
-            }];
-}
-
-- (void)unregisterForPushNotificationsWithDeviceToken:(NSString *)token
-                                              success:(void (^)())success failure:(void (^)(NSError *error))failure {
-    if (nil == token) {
+    if (deviceId.length == 0) {
+        DDLogWarn(@"Unable to saveNotificationSettings - Device ID is empty!");
         return;
     }
 
-    NSArray *parameters = @[[self usernameForXmlrpc],
-                            [self passwordForXmlrpc],
-                            token,
-                            @"apple",
-                            @NO, // Sandbox parameter - deprecated
-                            WordPressComApiPushAppId
-                            ];
+    NSString *path = [NSString stringWithFormat:@"device/%@", deviceId];
+    NSDictionary *parameters = @{@"settings": settings};
+    [self postPath:path
+        parameters:parameters
+           success:^(AFHTTPRequestOperation *operation, id responseObject) {
+               if (success) {
+                   success();
+               }
+           }
+           failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+               if (failure) {
+                   failure(error);
+               }
+           }];
     
-    WPXMLRPCClient *api = [[WPXMLRPCClient alloc] initWithXMLRPCEndpoint:[NSURL URLWithString:WordPressComXMLRPCUrl]];
-    [api setAuthorizationHeaderWithToken:self.authToken];
-    [api callMethod:@"wpcom.mobile_push_unregister_token"
-         parameters:parameters
-            success:^(AFHTTPRequestOperation *operation, id responseObject) {
-                DDLogInfo(@"Unregistered token %@", token);
-                if (success) {
-                    success();
-                }
-            } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
-                DDLogError(@"Couldn't unregister token: %@", [error localizedDescription]);
-                if (failure) {
-                    failure(error);
-                }
-            }];
+}
+
+- (void)fetchNotificationSettingsWithDeviceId:(NSString *)deviceId
+                                      success:(void (^)(NSDictionary *settings))success
+                                      failure:(void (^)(NSError *error))failure {
+    if (deviceId.length == 0) {
+        DDLogWarn(@"Unable to fetchNotificationSettings - Device ID is empty!");
+        return;
+    }
+    
+    if (![self hasCredentials]) {
+        DDLogWarn(@"Unable to fetchNotificationSettings - not authenticated!");
+        return;
+    }
+    
+    NSString *path = [NSString stringWithFormat:@"device/%@", deviceId];
+    [self getPath:path
+       parameters:nil
+          success:^(AFHTTPRequestOperation *operation, id responseObject) {
+              if (success) {
+                  NSDictionary *settings = responseObject[@"settings"];
+                  success(settings);
+              }
+          }
+          failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+              if (failure) {
+                  failure(error);
+              }
+          }
+     ];
+
+}
+
+- (void)unregisterForPushNotificationsWithDeviceId:(NSString *)deviceId
+                                           success:(void (^)())success
+                                           failure:(void (^)(NSError *error))failure {
+    if (deviceId.length == 0) {
+        DDLogWarn(@"Unable to fetchNotificationSettings - Device ID is empty!");
+        return;
+    }
+
+    NSString *path = [NSString stringWithFormat:@"devices/%@/delete", deviceId];
+    [self postPath:path
+        parameters:nil
+           success:^(AFHTTPRequestOperation *operation, id responseObject) {
+               DDLogInfo(@"Successfully unregistered device ID %@", deviceId);
+               if (success) {
+                   success();
+               }
+           }
+           failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+               DDLogError(@"Unable to unregister push for device ID %@: %@", deviceId, error);
+               if (failure) {
+                   failure(error);
+               }
+           }
+     ];
 }
 
 - (void)syncPushNotificationInfoWithDeviceToken:(NSString *)token
-                                        success:(void (^)(NSDictionary *settings))success
+                                        success:(void (^)(NSString *deviceId, NSDictionary *settings))success
                                         failure:(void (^)(NSError *error))failure {
-    if (nil == token) {
+    if (token.length == 0) {
+        DDLogWarn(@"syncPushNotificationInfoWithDeviceToken called with no token!");
         return;
     }
 
-    if (![self hasCredentials])
+    if (![self hasCredentials]) {
+        DDLogWarn(@"syncPushNotificationInfoWithDeviceToken called with no credentials!");
         return;
+    }
         
-    // Send a multicall for register the token and retrieval of push notification settings
-    NSMutableArray *operations = [NSMutableArray arrayWithCapacity:2];
-    WPXMLRPCClient *api = [[WPXMLRPCClient alloc] initWithXMLRPCEndpoint:[NSURL URLWithString:WordPressComXMLRPCUrl]];
+    NSDictionary *parameters = @{@"device_token"    : token,
+                                 @"device_family"   : @"apple",
+                                 @"app_secret_key"  : WordPressComApiPushAppId,
+                                 @"device_name"     : [[UIDevice currentDevice] name],
+                                 @"device_model"    : [UIDeviceHardware platform],
+                                 @"os_version"      : [[UIDevice currentDevice] systemVersion],
+                                 @"app_version"     : [[[NSBundle mainBundle] infoDictionary] objectForKey:@"CFBundleVersion"],
+                                 @"device_uuid"     : [[UIDevice currentDevice] wordpressIdentifier],
+                                 };
     
-    [api setAuthorizationHeaderWithToken:self.authToken];
-    
-    NSDictionary *tokenOptions = @{
-                                   @"device_family": @"apple",
-                                   @"device_model": [UIDeviceHardware platform],
-                                   @"device_name": [[UIDevice currentDevice] name],
-                                   @"device_uuid": [[UIDevice currentDevice] wordpressIdentifier],
-                                   @"production": @YES, // deprecated in favor of app_secret_key
-                                   @"app_version": [[[NSBundle mainBundle] infoDictionary] objectForKey:@"CFBundleVersion"],
-                                   @"os_version": [[UIDevice currentDevice] systemVersion],
-                                   @"app_secret_key": WordPressComApiPushAppId,
-                                   };
-    NSArray *parameters = @[
-                            [self usernameForXmlrpc],
-                            [self passwordForXmlrpc],
-                            token,
-                            tokenOptions
-                            ];
-    WPXMLRPCRequest *tokenRequest = [api XMLRPCRequestWithMethod:@"wpcom.mobile_push_register_token" parameters:parameters];
-    WPXMLRPCRequestOperation *tokenOperation = [api XMLRPCRequestOperationWithRequest:tokenRequest success:^(AFHTTPRequestOperation *op, id response){
-    } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
-        if (failure) {
-            failure(error);
-        }
-    }];
-    
-    [operations addObject:tokenOperation];
-    
-    NSArray *settingsParameters = @[[self usernameForXmlrpc],
-                                    [self passwordForXmlrpc],
-                                    token,
-                                    @"apple",
-                                    WordPressComApiPushAppId
-                                    ];
-    WPXMLRPCRequest *settingsRequest = [api XMLRPCRequestWithMethod:@"wpcom.get_mobile_push_notification_settings" parameters:settingsParameters];
-    WPXMLRPCRequestOperation *settingsOperation = [api XMLRPCRequestOperationWithRequest:settingsRequest success:^(AFHTTPRequestOperation *operation, id responseObject) {
-        if (success) {
-            success(responseObject);
-        }
-    } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
-        if (failure) {
-            failure(error);
-        }
-    }];
-    
-    [operations addObject:settingsOperation];
-    
-    AFHTTPRequestOperation *combinedOperation = [api combinedHTTPRequestOperationWithOperations:operations success:nil failure:^(AFHTTPRequestOperation *operation, NSError *error) {
-        if (failure) {
-            failure(error);
-        }
-    }];
-    [api enqueueHTTPRequestOperation:combinedOperation];
+    [self postPath:@"devices/new"
+        parameters:parameters
+           success:^(AFHTTPRequestOperation *operation, id responseObject) {
+               NSAssert([responseObject isKindOfClass:[NSDictionary class]], @"Response should be a dictionary");
+               
+               if (success) {
+                   NSString *deviceId = [responseObject stringForKey:@"ID"];
+                   NSDictionary *settings = [responseObject dictionaryForKey:@"settings"];
+                   
+                   success(deviceId, settings);
+               }
+           }
+           failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+               if (failure) {
+                   failure(error);
+               }
+           }
+     ];
 }
 
 - (void)fetchNewUnseenNotificationsWithSuccess:(void (^)(NSArray *notes))success failure:(void (^)(NSError *error))failure {
@@ -472,7 +438,7 @@ NSString *const WordPressComApiPushAppId = @"org.wordpress.appstore";
 - (void)fetchNotificationsSince:(NSNumber *)timestamp
                         success:(void (^)(NSArray *notes))success
                         failure:(WordPressComApiRestSuccessFailureBlock)failure {
-    NSDictionary *parameters;
+    NSDictionary *parameters = nil;
     if (timestamp != nil) {
         parameters = @{@"since": timestamp};
     }
@@ -482,7 +448,7 @@ NSString *const WordPressComApiPushAppId = @"org.wordpress.appstore";
 - (void)fetchNotificationsBefore:(NSNumber *)timestamp
                          success:(void (^)(NSArray *notes))success
                          failure:(WordPressComApiRestSuccessFailureBlock)failure {
-    NSDictionary *parameters;
+    NSDictionary *parameters = nil;
     if (timestamp != nil) {
         parameters = @{@"before": timestamp};
     }
@@ -592,25 +558,6 @@ NSString *const WordPressComApiPushAppId = @"org.wordpress.appstore";
     [self postPath:path parameters:@{@"theme": themeId}
            success:success failure:failure];
 }
-
-/* HACK: temporary fix for cases where password is nil
- We believe jetpack settings might be causing this, but since we're actually doing authentication
- with the authToken, we don't care that much about username/password in this method
- */
-- (NSString *)usernameForXmlrpc {
-    NSString *username = self.username;
-    if (!username)
-        username = @"";
-    return username;
-}
-
-- (NSString *)passwordForXmlrpc {
-    NSString *password = self.password;
-    if (!password)
-        password = @"";
-    return password;
-}
-/* HACK ENDS */
 
 - (void)setAuthorizationHeaderWithToken:(NSString *)token {
     [self setDefaultHeader:@"Authorization" value:[NSString stringWithFormat:@"Bearer %@", token]];

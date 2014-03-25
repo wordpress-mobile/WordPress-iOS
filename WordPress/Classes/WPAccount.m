@@ -76,20 +76,21 @@ NSString * const WPAccountDefaultWordPressComAccountChangedNotification = @"WPAc
     NSAssert(account.authToken.length > 0, @"Account should have an authToken for WP.com");
     
     // Make sure the account is on the main context
-    __defaultDotcomAccount = (WPAccount *)[[[ContextManager sharedInstance] mainContext] existingObjectWithID:account.objectID error:nil];
-    // When the account object hasn't been saved yet, its objectID is temporary
-    // If we store a reference to that objectID it will be invalid the next time we launch
-    if ([[account objectID] isTemporaryID]) {
-        [account.managedObjectContext obtainPermanentIDsForObjects:@[account] error:nil];
-    }
-    NSURL *accountURL = [[account objectID] URIRepresentation];
-    [[NSUserDefaults standardUserDefaults] setURL:accountURL forKey:DefaultDotcomAccountDefaultsKey];
-    [[NSUserDefaults standardUserDefaults] synchronize];
-    [[NSNotificationCenter defaultCenter] postNotificationName:WPAccountDefaultWordPressComAccountChangedNotification object:account];
-    
-    [SFHFKeychainUtils storeUsername:account.username andPassword:account.authToken forServiceName:WordPressComOAuthKeychainServiceName updateExisting:YES error:nil];
-    
-    [NotificationsManager registerForPushNotifications];
+    NSManagedObjectContext *context = [[ContextManager sharedInstance] mainContext];
+    [context performBlockAndWait:^{
+        __defaultDotcomAccount = (WPAccount *)[context existingObjectWithID:account.objectID error:nil];
+        // When the account object hasn't been saved yet, its objectID is temporary
+        // If we store a reference to that objectID it will be invalid the next time we launch
+        if ([[account objectID] isTemporaryID]) {
+            [account.managedObjectContext obtainPermanentIDsForObjects:@[account] error:nil];
+        }
+        NSURL *accountURL = [[account objectID] URIRepresentation];
+        [[NSUserDefaults standardUserDefaults] setURL:accountURL forKey:DefaultDotcomAccountDefaultsKey];
+        [[NSUserDefaults standardUserDefaults] synchronize];
+        [[NSNotificationCenter defaultCenter] postNotificationName:WPAccountDefaultWordPressComAccountChangedNotification object:account];
+
+        [NotificationsManager registerForPushNotifications];
+    }];
 }
 
 + (void)removeDefaultWordPressComAccount {
@@ -107,6 +108,13 @@ NSString * const WPAccountDefaultWordPressComAccountChangedNotification = @"WPAc
     NSManagedObjectID *accountObjectID = __defaultDotcomAccount.objectID;
     __defaultDotcomAccount = nil;
     
+    [[NSUserDefaults standardUserDefaults] removeObjectForKey:@"wpcom_username_preference"];
+    [[NSUserDefaults standardUserDefaults] synchronize];
+
+    dispatch_async(dispatch_get_main_queue(), ^{
+        [[NSNotificationCenter defaultCenter] postNotificationName:WPAccountDefaultWordPressComAccountChangedNotification object:nil];
+    });
+
     [context performBlock:^{
         WPAccount *account = (WPAccount *)[context objectWithID:accountObjectID];
         [context deleteObject:account];
@@ -114,7 +122,14 @@ NSString * const WPAccountDefaultWordPressComAccountChangedNotification = @"WPAc
     }];
 }
 
+#pragma mark - NSManagedObject subclass methods
+
 - (void)prepareForDeletion {
+    // Only do these deletions in the primary context (no parent)
+    if (self.managedObjectContext.parentContext) {
+        return;
+    }
+    
     [[self restApi] cancelAllHTTPOperationsWithMethod:nil path:nil];
     [[self restApi] reset];
 
@@ -124,17 +139,14 @@ NSString * const WPAccountDefaultWordPressComAccountChangedNotification = @"WPAc
     [SFHFKeychainUtils deleteItemForUsername:self.username andServiceName:WordPressComOAuthKeychainServiceName error:&error];
     self.password = nil;
     self.authToken = nil;
-
-    [WordPressAppDelegate sharedWordPressApplicationDelegate].isWPcomAuthenticated = NO;
-
-    [[NSUserDefaults standardUserDefaults] removeObjectForKey:@"wpcom_username_preference"];
-    [[NSUserDefaults standardUserDefaults] synchronize];
-
-    dispatch_async(dispatch_get_main_queue(), ^{
-        [[NSNotificationCenter defaultCenter] postNotificationName:WPAccountDefaultWordPressComAccountChangedNotification object:nil];
-    });
 }
 
+- (void)didTurnIntoFault {
+    [super didTurnIntoFault];
+    
+    _restApi = nil;
+    _xmlrpcApi = nil;
+}
 
 #pragma mark - Account creation
 
@@ -143,16 +155,13 @@ NSString * const WPAccountDefaultWordPressComAccountChangedNotification = @"WPAc
 }
 
 + (WPAccount *)createOrUpdateWordPressComAccountWithUsername:(NSString *)username password:(NSString *)password authToken:(NSString *)authToken context:(NSManagedObjectContext *)context {
-    WPAccount *account = [self createOrUpdateSelfHostedAccountWithXmlrpc:WordPressDotcomXMLRPCKey username:username andPassword:password withContext:context];
-    [account.managedObjectContext performBlockAndWait:^{
-        account.isWpcom = YES;
+    __block WPAccount *account = [self createOrUpdateSelfHostedAccountWithXmlrpc:WordPressDotcomXMLRPCKey username:username andPassword:password withContext:context];
+    [context performBlockAndWait:^{
         account.authToken = authToken;
+        account.isWpcom = YES;
+        [[ContextManager sharedInstance] saveContext:context];
     }];
     return account;
-}
-
-+ (WPAccount *)createOrUpdateSelfHostedAccountWithXmlrpc:(NSString *)xmlrpc username:(NSString *)username andPassword:(NSString *)password {
-    return [WPAccount createOrUpdateSelfHostedAccountWithXmlrpc:xmlrpc username:username andPassword:password withContext:[[ContextManager sharedInstance] backgroundContext]];
 }
 
 + (WPAccount *)createOrUpdateSelfHostedAccountWithXmlrpc:(NSString *)xmlrpc username:(NSString *)username andPassword:(NSString *)password withContext:(NSManagedObjectContext *)context {
@@ -180,24 +189,39 @@ NSString * const WPAccountDefaultWordPressComAccountChangedNotification = @"WPAc
 #pragma mark - Blog creation
 
 - (Blog *)findOrCreateBlogFromDictionary:(NSDictionary *)blogInfo withContext:(NSManagedObjectContext*)context {
-    NSString *blogUrl = [[blogInfo objectForKey:@"url"] stringByReplacingOccurrencesOfString:@"http://" withString:@""];
-	if ([blogUrl hasSuffix:@"/"]) {
-		blogUrl = [blogUrl substringToIndex:blogUrl.length-1];
-    }
-	blogUrl = [blogUrl stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceCharacterSet]];
-
     __block Blog *blog;
     [context performBlockAndWait:^{
         WPAccount *contextAccount = (WPAccount *)[context existingObjectWithID:self.objectID error:nil];
-        NSSet *foundBlogs = [contextAccount.blogs filteredSetUsingPredicate:[NSPredicate predicateWithFormat:@"url like %@", blogUrl]];
-        if ([foundBlogs count]) {
+        NSSet *foundBlogs = [contextAccount.blogs filteredSetUsingPredicate:[NSPredicate predicateWithFormat:@"xmlrpc like %@", [blogInfo stringForKey:@"xmlrpc"]]];
+        if ([foundBlogs count] == 1) {
             blog = [foundBlogs anyObject];
+            return;
+        }
+        
+        // If more than one blog matches, return the first and delete the rest
+        if ([foundBlogs count] > 1) {
+            Blog *blogToReturn = [foundBlogs anyObject];
+            for (Blog *b in foundBlogs) {
+                // Choose blogs with URL not starting with https to account for a glitch in the API in early 2014
+                if (!([b.url hasPrefix:@"https://"])) {
+                    blogToReturn = b;
+                    break;
+                }
+            }
+            
+            for (Blog *b in foundBlogs) {
+                if (!([b isEqual:blogToReturn])) {
+                    [context deleteObject:b];
+                }
+            }
+            
+            blog = blogToReturn;
             return;
         }
         
         blog = [NSEntityDescription insertNewObjectForEntityForName:NSStringFromClass([Blog class]) inManagedObjectContext:context];
         blog.account = contextAccount;
-        blog.url = blogUrl;
+        blog.url = [blogInfo stringForKey:@"url"];
         blog.blogID = [NSNumber numberWithInt:[[blogInfo objectForKey:@"blogid"] intValue]];
         blog.blogName = [[blogInfo objectForKey:@"blogName"] stringByDecodingXMLCharacters];
         blog.xmlrpc = [blogInfo objectForKey:@"xmlrpc"];
@@ -226,10 +250,28 @@ NSString * const WPAccountDefaultWordPressComAccountChangedNotification = @"WPAc
     NSManagedObjectID *accountID = self.objectID;
     [backgroundMOC performBlock:^{
         WPAccount *account = (WPAccount *)[backgroundMOC objectWithID:accountID];
+
+        NSSet *remoteSet = [NSSet setWithArray:[blogs valueForKey:@"xmlrpc"]];
+        NSSet *localSet = [account.blogs valueForKey:@"xmlrpc"];
+        NSMutableSet *toDelete = [localSet mutableCopy];
+        [toDelete minusSet:remoteSet];
+
+        if ([toDelete count] > 0) {
+            for (Blog *blog in account.blogs) {
+                if ([toDelete containsObject:blog.xmlrpc]) {
+                    [backgroundMOC deleteObject:blog];
+                }
+            }
+        }
+        
+        // Go through each remote incoming blog and make sure we're up to date with titles, etc.
+        // Also adds any blogs we don't have
         for (NSDictionary *blog in blogs) {
             [account findOrCreateBlogFromDictionary:blog withContext:backgroundMOC];
         }
+        
         [[ContextManager sharedInstance] saveContext:backgroundMOC];
+        
         if (completion != nil) {
             dispatch_async(dispatch_get_main_queue(), completion);
         }
@@ -257,20 +299,36 @@ NSString * const WPAccountDefaultWordPressComAccountChangedNotification = @"WPAc
 }
 
 - (NSString *)authToken {
-    return [SFHFKeychainUtils getPasswordForUsername:self.username andServiceName:WordPressComOAuthKeychainServiceName error:nil];
+    NSError *error = nil;
+    NSString *authToken = [SFHFKeychainUtils getPasswordForUsername:self.username andServiceName:WordPressComOAuthKeychainServiceName error:&error];
+
+    if (error) {
+        DDLogError(@"Error while retrieving WordPressComOAuthKeychainServiceName token: %@", error);
+    }
+
+    return authToken;
 }
 
 - (void)setAuthToken:(NSString *)authToken {
     if (authToken) {
+        NSError *error = nil;
         [SFHFKeychainUtils storeUsername:self.username
                              andPassword:authToken
                           forServiceName:WordPressComOAuthKeychainServiceName
                           updateExisting:YES
-                                   error:nil];
+                                   error:&error];
+        if (error) {
+            DDLogError(@"Error while updating WordPressComOAuthKeychainServiceName token: %@", error);
+        }
+
     } else {
+        NSError *error = nil;
         [SFHFKeychainUtils deleteItemForUsername:self.username
                                   andServiceName:WordPressComOAuthKeychainServiceName
-                                           error:nil];
+                                           error:&error];
+        if (error) {
+            DDLogError(@"Error while retrieving WordPressComOAuthKeychainServiceName token: %@", error);
+        }
     }
 }
 

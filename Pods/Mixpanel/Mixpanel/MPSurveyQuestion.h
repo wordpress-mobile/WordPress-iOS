@@ -2,9 +2,9 @@
 
 @interface MPSurveyQuestion : NSObject
 
-@property(nonatomic,readonly) NSUInteger ID;
-@property(nonatomic,readonly,retain) NSString *type;
-@property(nonatomic,readonly,retain) NSString *prompt;
+@property (nonatomic, readonly) NSUInteger ID;
+@property (nonatomic, readonly, strong) NSString *type;
+@property (nonatomic, readonly, strong) NSString *prompt;
 
 + (MPSurveyQuestion *)questionWithJSONObject:(NSObject *)object;
 
@@ -12,7 +12,7 @@
 
 @interface MPSurveyMultipleChoiceQuestion : MPSurveyQuestion
 
-@property(nonatomic,readonly,retain) NSArray *choices;
+@property (nonatomic, readonly, strong) NSArray *choices;
 
 @end
 

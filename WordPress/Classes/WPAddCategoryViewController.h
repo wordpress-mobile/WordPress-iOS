@@ -1,11 +1,16 @@
+//
+//  WPAddCategoryViewController.h
+//  WordPress
+//
+//  Created by ganeshr on 07/24/08
+//  Copyright (c) 2014 WordPress. All rights reserved.
+//
 #import <UIKit/UIKit.h>
 
-extern NSString *const NewCategoryCreatedAndUpdatedInBlogNotification;
+@class Post;
 
-@class Blog;
+@interface WPAddCategoryViewController : UITableViewController
 
-@interface WPAddCategoryViewController : UIViewController
-
-- (id)initWithBlog:(Blog *)blog;
+- (id)initWithPost:(Post *)post;
 
 @end

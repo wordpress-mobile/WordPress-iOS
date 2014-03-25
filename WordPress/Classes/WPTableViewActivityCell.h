@@ -14,7 +14,6 @@
 }
 
 @property (nonatomic, strong) IBOutlet UIActivityIndicatorView *spinner;
-@property (nonatomic, strong) IBOutlet UILabel *textLabel;
 @property (nonatomic, strong) IBOutlet UIView *viewForBackground;
 
 @end

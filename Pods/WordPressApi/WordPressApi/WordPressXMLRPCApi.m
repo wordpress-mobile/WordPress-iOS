@@ -204,8 +204,12 @@ NSString *const WordPressXMLRPCApiErrorDomain = @"WordPressXMLRPCApiError";
     // 1. Assume the given url is the home page and XML-RPC sits at /xmlrpc.php
     // ------------------------------------------------------------------------
     [self logExtraInfo: @"1. Assume the given url is the home page and XML-RPC sits at /xmlrpc.php" ];
-    if(![url hasPrefix:@"http"])
+    NSURL *baseURL = [NSURL URLWithString:url];
+    if (!baseURL.scheme) {
         url = [NSString stringWithFormat:@"http://%@", url];
+    } else {
+        url = [baseURL absoluteString];
+    }
 
     if ([url hasSuffix:@"xmlrpc.php"])
         xmlrpc = url;

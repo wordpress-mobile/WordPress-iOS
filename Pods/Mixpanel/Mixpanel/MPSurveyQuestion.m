@@ -1,3 +1,7 @@
+#if ! __has_feature(objc_arc)
+#error This file must be compiled with ARC. Either turn on ARC for the project or use -fobjc-arc flag on this file.
+#endif
+
 #import "MPSurveyQuestion.h"
 
 static NSString *MPSurveyQuestionTypeMultipleChoice = @"multiple_choice";
@@ -5,9 +9,9 @@ static NSString *MPSurveyQuestionTypeText = @"text";
 
 @interface MPSurveyQuestion ()
 
-@property(nonatomic) NSUInteger ID;
-@property(nonatomic,retain) NSString *type;
-@property(nonatomic,retain) NSString *prompt;
+@property (nonatomic) NSUInteger ID;
+@property (nonatomic, strong) NSString *type;
+@property (nonatomic, strong) NSString *prompt;
 
 - (id)initWithID:(NSUInteger)ID type:(NSString *)type andPrompt:(NSString *)prompt;
 
@@ -15,7 +19,7 @@ static NSString *MPSurveyQuestionTypeText = @"text";
 
 @interface MPSurveyMultipleChoiceQuestion ()
 
-@property(nonatomic,retain) NSArray *choices;
+@property (nonatomic, strong) NSArray *choices;
 
 - (id)initWithID:(NSUInteger)ID type:(NSString *)type prompt:(NSString *)prompt andChoices:(NSArray *)choices;
 
@@ -51,14 +55,14 @@ static NSString *MPSurveyQuestionTypeText = @"text";
     }
     if ([type isEqualToString:MPSurveyQuestionTypeMultipleChoice]) {
         NSArray *choices = extraData[@"$choices"];
-        return [[[MPSurveyMultipleChoiceQuestion alloc] initWithID:[ID unsignedIntegerValue]
+        return [[MPSurveyMultipleChoiceQuestion alloc] initWithID:[ID unsignedIntegerValue]
                                                               type:type
                                                             prompt:prompt
-                                                        andChoices:choices] autorelease];
+                                                        andChoices:choices];
     } else if ([type isEqualToString:MPSurveyQuestionTypeText]) {
-        return [[[MPSurveyTextQuestion alloc] initWithID:[ID unsignedIntegerValue]
+        return [[MPSurveyTextQuestion alloc] initWithID:[ID unsignedIntegerValue]
                                                     type:type
-                                               andPrompt:prompt] autorelease];
+                                               andPrompt:prompt];
     }
     NSLog(@"unknown question type: %@", type);
     return nil;
@@ -81,19 +85,12 @@ static NSString *MPSurveyQuestionTypeText = @"text";
             NSLog(@"invalid question type: %@", type);
         }
         if (!valid) {
-            [self release];
             self = nil;
         }
     }
     return self;
 }
 
-- (void)dealloc
-{
-    self.prompt = nil;
-    self.type = nil;
-    [super dealloc];
-}
 
 @end
 
@@ -111,11 +108,6 @@ static NSString *MPSurveyQuestionTypeText = @"text";
     return self;
 }
 
-- (void)dealloc
-{
-    self.choices = nil;
-    [super dealloc];
-}
 
 @end
 

@@ -67,8 +67,24 @@
 // wp.koke.me
 @property (weak, readonly) NSString *hostname;
 
+/**
+ Returns the blog currently flagged as the one last used, or the first blog in 
+ an alphanumerically sorted list, if no blog is currently flagged as last used.
+ */
++ (Blog *)lastUsedOrFirstBlog;
+
+/**
+ Returns the blog currently flaged as the one last used.
+ */
++ (Blog *)lastUsedBlog;
+
+/**
+ Returns the first blog in an alphanumerically sorted list. 
+ */
++ (Blog *)firstBlog;
 
 #pragma mark - Blog information
+- (void)flagAsLastUsed;
 - (BOOL)isWPcom;
 - (BOOL)isPrivate;
 - (NSArray *)sortedCategories;
@@ -77,8 +93,9 @@
 - (NSString *)urlWithPath:(NSString *)path;
 - (NSString *)adminUrlWithPath:(NSString *)path;
 - (NSArray *)getXMLRPCArgsWithExtra:(id)extra;
-- (int)numberOfPendingComments;
+- (NSUInteger)numberOfPendingComments;
 - (NSDictionary *) getImageResizeDimensions;
+- (BOOL)supportsFeaturedImages;
 
 #pragma mark - 
 
@@ -124,6 +141,7 @@
 #pragma mark -
 #pragma mark Class methods
 + (NSInteger)countWithContext:(NSManagedObjectContext *)moc;
++ (NSInteger)countSelfHostedWithContext:(NSManagedObjectContext *)moc;
 + (NSInteger)countVisibleWithContext:(NSManagedObjectContext *)moc;
 
 @end

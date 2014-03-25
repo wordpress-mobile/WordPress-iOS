@@ -1,66 +1,60 @@
 PODS:
   - AFNetworking (1.2.0)
-  - CocoaLumberjack (1.6.3):
-    - CocoaLumberjack/Core
+  - CocoaLumberjack (1.8.1):
     - CocoaLumberjack/Extensions
-  - CocoaLumberjack/Core (1.6.3)
-  - CocoaLumberjack/Extensions (1.6.3):
+  - CocoaLumberjack/Core (1.8.1)
+  - CocoaLumberjack/Extensions (1.8.1):
     - CocoaLumberjack/Core
-  - CrashlyticsLumberjack (1.0.0):
-    - CocoaLumberjack
+  - CrashlyticsLumberjack (1.0.1):
+    - CocoaLumberjack/Core
   - DTCoreText (1.6.9):
     - DTFoundation/Core (~> 1.6.0)
     - DTFoundation/DTHTMLParser (~> 1.6.0)
     - DTFoundation/UIKit (~> 1.6.0)
-  - DTFoundation/Core (1.6.0)
-  - DTFoundation/DTHTMLParser (1.6.0):
+  - DTFoundation/Core (1.6.2)
+  - DTFoundation/DTHTMLParser (1.6.2):
     - DTFoundation/Core
-  - DTFoundation/UIKit (1.6.0):
+  - DTFoundation/UIKit (1.6.2):
     - DTFoundation/Core
   - EmailChecker (0.1)
-  - google-plus-ios-sdk (1.3.0)
-  - HockeySDK (3.5.0)
+  - google-plus-ios-sdk (1.5.0)
+  - HockeySDK (3.5.4)
   - MGImageUtilities (0.0.1)
-  - Mixpanel (2.1.0)
-  - NSLogger (1.1)
+  - Mixpanel (2.3.1)
+  - NSLogger (1.2)
   - NSLogger-CocoaLumberjack-connector (1.3):
     - CocoaLumberjack
     - NSLogger
   - NSObject-SafeExpectations (0.0.1)
   - NSURL+IDN (0.1)
   - OHHTTPStubs (1.1.1)
-  - Quantcast-Measure (1.2.13):
-    - Quantcast-Measure/Core
-  - Quantcast-Measure/Core (1.2.13)
-  - Reachability (3.0.0)
-  - SVProgressHUD (0.9)
+  - Reachability (3.1.1)
+  - SVProgressHUD (1.0)
   - UIDeviceIdentifier (0.1)
   - WordPressApi (0.0.1):
     - AFNetworking (>= 1.0)
     - wpxmlrpc (~> 0.1)
-  - wpxmlrpc (0.2)
+  - wpxmlrpc (0.4.1)
 
 DEPENDENCIES:
   - AFNetworking (= 1.2.0)
-  - CocoaLumberjack (= 1.6.2)
-  - CocoaLumberjack (~> 1.6.2)
+  - CocoaLumberjack (~> 1.8.1)
   - CrashlyticsLumberjack (~> 1.0.0)
   - DTCoreText (= 1.6.9)
   - EmailChecker (from `https://raw.github.com/wordpress-mobile/EmailChecker/master/ios/EmailChecker.podspec`)
-  - google-plus-ios-sdk (= 1.3.0)
+  - google-plus-ios-sdk (= 1.5.0)
   - HockeySDK (~> 3.5.0)
   - MGImageUtilities (from `git://github.com/wordpress-mobile/MGImageUtilities.git`)
-  - Mixpanel
+  - Mixpanel (= 2.3.1)
   - NSLogger-CocoaLumberjack-connector (~> 1.3)
   - NSObject-SafeExpectations (from `https://raw.github.com/koke/NSObject-SafeExpectations/master/NSObject-SafeExpectations.podspec`)
   - NSURL+IDN (from `https://raw.github.com/koke/NSURL-IDN/master/Podfile`)
   - OHHTTPStubs (= 1.1.1)
-  - Quantcast-Measure (~> 1.2.10)
-  - Reachability (= 3.0.0)
-  - SVProgressHUD (~> 0.9)
+  - Reachability (= 3.1.1)
+  - SVProgressHUD (~> 1.0)
   - UIDeviceIdentifier (~> 0.1)
   - WordPressApi (from `https://github.com/koke/WordPressApi.git`)
-  - wpxmlrpc (~> 0.2)
+  - wpxmlrpc (~> 0.4.1)
 
 EXTERNAL SOURCES:
   EmailChecker:
@@ -76,25 +70,24 @@ EXTERNAL SOURCES:
 
 SPEC CHECKSUMS:
   AFNetworking: 3cbae45f61a9f995cdbd56bd571223910d7f4e44
-  CocoaLumberjack: d62b2c37c8bdac37094d710bfa978eb6e2fe650e
-  CrashlyticsLumberjack: 3a1647407e3c980545175e7a56d073c58beeab03
+  CocoaLumberjack: 020378ec400d658923bf5887178394f65f052c90
+  CrashlyticsLumberjack: 8ee2adbd0f815d8b111e5f72cd82d39b08430ebc
   DTCoreText: e48c1526945272133b8c935c40da3f3e79836f1b
-  DTFoundation: 5bfec187ed495cea33c47dc64e8ee623e8beb353
+  DTFoundation: 7c69990fa3cb7655cafa95ab59c3fcea014460f0
   EmailChecker: e909e6d113fac7ad5e3c304fabce30fc4a79c80e
-  google-plus-ios-sdk: 38378c4094a72a4fcdd5254c03fdd1813b345fb9
-  HockeySDK: 685e6ca0b78668ef8b595fba17fe087ea6074b05
+  google-plus-ios-sdk: 36ba69c66a9ec3d9722094755743a6d88b82d9a2
+  HockeySDK: aa28abb106de7804d31acf515f2c9aa4e6481fd0
   MGImageUtilities: ab3580f2161b10f8a41331baea87aaafbd688950
-  Mixpanel: f007967b585bf66c4e56325ce3af9bbcd52eccf0
-  NSLogger: 4567fef08d0db18a89cce91b2053823fc0950738
+  Mixpanel: 8d189c58bcaac429de9cb4f18a54621df99b7e38
+  NSLogger: 9607fdeafd0b09922c69615f99f127de45971b8f
   NSLogger-CocoaLumberjack-connector: da77800fec7415c1d378dfd93465031a58c5a9a8
   NSObject-SafeExpectations: 241ab1289cbc33a00307cd025d22883646f2e1f0
   NSURL+IDN: 22633c0149b86d6391f32f23776bc0e6ecc532e2
   OHHTTPStubs: cb1cef742f2fba18b192fb92ede52a69cf3a04d5
-  Quantcast-Measure: ff28ef371e54b710dc051a9ef96fd49b77f098c3
-  Reachability: 500bd76bf6cd8ff2c6fb715fc5f44ef6e4c024f2
-  SVProgressHUD: 03d4845ec8e64591726428a08236c6a5489d45f8
-  UIDeviceIdentifier: 64036321b0f77ff41b4200002f0c138431c00d86
-  WordPressApi: 76f9d7752b090197c172e2c5e6fccbffbaf7c336
-  wpxmlrpc: 7c3db4b1e1ab6087d6d5cc5d00ee16d8ee4654ea
+  Reachability: be4883bb93f31e38266ae3365e5600a317aae735
+  SVProgressHUD: 5e10939a296debf5fe5a5895eda9539b8b2114f1
+  UIDeviceIdentifier: 38f7035dd0040fc4979d1548d9a63a1ccd339b0d
+  WordPressApi: 6c7ab5320344fbec850f0baba4b0ec2bfd03587d
+  wpxmlrpc: 63b5b10d5925fb030f8266215bc955366354a2b8
 
-COCOAPODS: 0.28.0
+COCOAPODS: 0.29.0

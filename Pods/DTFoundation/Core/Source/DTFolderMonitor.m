@@ -54,7 +54,7 @@
 {
 	[self stopMonitoring];
 	
-#if OS_OBJECT_USE_OBJC
+#if !OS_OBJECT_USE_OBJC
 	dispatch_release(_queue);
 #endif
 }

@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
-<model userDefinedModelVersionIdentifier="" type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="3396" systemVersion="12F45" minimumToolsVersion="Automatic" macOSVersion="Automatic" iOSVersion="Automatic">
+<model userDefinedModelVersionIdentifier="" type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="3401" systemVersion="13B42" minimumToolsVersion="Automatic" macOSVersion="Automatic" iOSVersion="Automatic">
     <entity name="AbstractComment" representedClassName="AbstractComment" isAbstract="YES">
         <attribute name="author" optional="YES" attributeType="String">
             <userInfo/>
@@ -109,7 +109,6 @@
         <attribute name="blogName" optional="YES" attributeType="String">
             <userInfo/>
         </attribute>
-        <attribute name="currentThemeId" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="geolocationEnabled" attributeType="Boolean" defaultValueString="NO">
             <userInfo/>
         </attribute>
@@ -120,9 +119,6 @@
             <userInfo/>
         </attribute>
         <attribute name="isActivated" optional="YES" attributeType="Boolean" syncable="YES"/>
-        <attribute name="isAdmin" attributeType="Boolean" defaultValueString="NO">
-            <userInfo/>
-        </attribute>
         <attribute name="lastCommentsSync" optional="YES" attributeType="Date">
             <userInfo/>
         </attribute>
@@ -139,19 +135,16 @@
         <attribute name="options" optional="YES" attributeType="Transformable">
             <userInfo/>
         </attribute>
-        <attribute name="password" optional="YES" attributeType="String">
-            <userInfo/>
-        </attribute>
         <attribute name="postFormats" optional="YES" attributeType="Transformable">
             <userInfo/>
         </attribute>
         <attribute name="url" attributeType="String">
             <userInfo/>
         </attribute>
-        <attribute name="username" optional="YES" attributeType="String">
+        <attribute name="username" optional="YES" transient="YES" attributeType="String">
             <userInfo/>
         </attribute>
-        <attribute name="visible" optional="YES" attributeType="Boolean" defaultValueString="YES" syncable="YES"/>
+        <attribute name="visible" attributeType="Boolean" defaultValueString="YES" syncable="YES"/>
         <attribute name="xmlrpc" attributeType="String">
             <userInfo/>
         </attribute>
@@ -169,7 +162,6 @@
         <relationship name="posts" optional="YES" toMany="YES" deletionRule="Cascade" destinationEntity="AbstractPost" inverseName="blog" inverseEntity="AbstractPost" indexed="YES">
             <userInfo/>
         </relationship>
-        <relationship name="themes" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="Theme" inverseName="blog" inverseEntity="Theme" syncable="YES"/>
         <userInfo/>
     </entity>
     <entity name="Category" representedClassName="Cateogry">
@@ -333,20 +325,6 @@
         <relationship name="account" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="Account" inverseName="readerPosts" inverseEntity="Account" syncable="YES"/>
         <relationship name="comments" optional="YES" toMany="YES" deletionRule="Cascade" destinationEntity="ReaderComment" inverseName="post" inverseEntity="ReaderComment" indexed="YES" syncable="YES"/>
     </entity>
-    <entity name="Theme" representedClassName="Theme" syncable="YES">
-        <attribute name="details" optional="YES" attributeType="String" syncable="YES"/>
-        <attribute name="launchDate" optional="YES" attributeType="Date" syncable="YES"/>
-        <attribute name="name" optional="YES" attributeType="String" syncable="YES"/>
-        <attribute name="popularityRank" optional="YES" attributeType="Integer 32" defaultValueString="0" syncable="YES"/>
-        <attribute name="premium" optional="YES" attributeType="Boolean" syncable="YES"/>
-        <attribute name="previewUrl" optional="YES" attributeType="String" syncable="YES"/>
-        <attribute name="screenshotUrl" optional="YES" attributeType="String" syncable="YES"/>
-        <attribute name="tags" optional="YES" attributeType="Transformable" syncable="YES"/>
-        <attribute name="themeId" optional="YES" attributeType="String" syncable="YES"/>
-        <attribute name="trendingRank" optional="YES" attributeType="Integer 32" defaultValueString="0" syncable="YES"/>
-        <attribute name="version" optional="YES" attributeType="String" syncable="YES"/>
-        <relationship name="blog" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="Blog" inverseName="themes" inverseEntity="Blog" syncable="YES"/>
-    </entity>
     <fetchRequest name="UnreadNotes" entity="Note" predicateString="unread == 1"/>
     <elements>
         <element name="AbstractComment" positionX="0" positionY="0" width="0" height="0"/>
@@ -362,6 +340,5 @@
         <element name="Post" positionX="0" positionY="0" width="0" height="0"/>
         <element name="ReaderComment" positionX="0" positionY="0" width="0" height="0"/>
         <element name="ReaderPost" positionX="0" positionY="0" width="0" height="0"/>
-        <element name="Theme" positionX="0" positionY="0" width="0" height="0"/>
     </elements>
 </model>
