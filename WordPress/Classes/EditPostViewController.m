@@ -577,7 +577,7 @@ CGFloat const EPVCTextViewTopPadding = 7.0f;
 	}
 
     if (![self hasChanges] && [self.post.status isEqualToString:@"publish"]) {
-        //No changes + publishedso just dismiss this view
+        // No changes + published so just dismiss this view
         [WPMobileStats trackEventForWPComWithSavedProperties:[self formattedStatEventString:StatsEventPostDetailClosedEditor]];
         [self discardChangesAndDismiss];
         return;
@@ -630,7 +630,7 @@ CGFloat const EPVCTextViewTopPadding = 7.0f;
         }
         
     } else {
-        //No changes, but not published so prompt user for action
+        // No changes, but not published so prompt user for action
         NSString *chooseTitle = NSLocalizedString(@"Please choose one of the following",
                                                   @"Title of message with options shown when the author is trying to move away from the post.");
         NSString *goBackText = ([self isPage]) ? NSLocalizedString(@"Go Back to Pages", @"Button shown if there are unsaved changes and the author is trying to move away from the page.")
@@ -875,7 +875,7 @@ CGFloat const EPVCTextViewTopPadding = 7.0f;
     
     if (event != nil) {
         [WPMobileStats trackEventForWPCom:[self formattedStatEventString:event]];
-        //Reset the current user event
+        // Reset the current user event
         _currentUserEvent = EditPostUserActionNone;
     }
 
@@ -909,8 +909,8 @@ CGFloat const EPVCTextViewTopPadding = 7.0f;
 	if ([self.post.content rangeOfString:@"<!--more-->"].location != NSNotFound)
 		self.post.mt_text_more = @"";
     
-    if ( self.post.original.password != nil ) { //original post was password protected
-        if ( self.post.password == nil || [self.post.password isEqualToString:@""] ) { //removed the password
+    if ( self.post.original.password != nil ) { // original post was password protected
+        if ( self.post.password == nil || [self.post.password isEqualToString:@""] ) { // removed the password
             self.post.password = @"";
         }
     }
@@ -936,7 +936,7 @@ CGFloat const EPVCTextViewTopPadding = 7.0f;
 	return hasFailedMedia;
 }
 
-//check if there are media in uploading status
+// check if there are media in uploading status
 - (BOOL)isMediaInUploading {
 	BOOL isMediaInUploading = NO;
 	
@@ -965,7 +965,7 @@ CGFloat const EPVCTextViewTopPadding = 7.0f;
 }
 
 - (void)showMediaInUploadingAlert {
-	//the post is using the network connection and cannot be stoped, show a message to the user
+	// the post is using the network connection and cannot be stoped, show a message to the user
 	UIAlertView *blogIsCurrentlyBusy = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"Info", @"Info alert title")
 																  message:NSLocalizedString(@"A Media file is currently uploading. Please try later.", @"")
 																 delegate:nil cancelButtonTitle:NSLocalizedString(@"OK", @"") otherButtonTitles:nil];
@@ -976,7 +976,7 @@ CGFloat const EPVCTextViewTopPadding = 7.0f;
 #pragma mark - Editor and Formatting Methods
 #pragma mark Link Methods
 
-//code to append http:// if protocol part is not there as part of urlText.
+// code to append http:// if protocol part is not there as part of urlText.
 - (NSString *)validateNewLinkInfo:(NSString *)urlText {
     NSError *error = nil;
     NSRegularExpression *regex = [NSRegularExpression regularExpressionWithPattern:@"^[\\w]+:" options:0 error:&error];
@@ -1047,7 +1047,7 @@ CGFloat const EPVCTextViewTopPadding = 7.0f;
     _linkHelperAlertView.button2CompletionBlock = ^(WPAlertView *overlayView){
         // Insert
         
-        //Disable scrolling temporarily otherwise inserting text will scroll to the bottom in iOS6 and below.
+        // Disable scrolling temporarily otherwise inserting text will scroll to the bottom in iOS6 and below.
         editorTextView.scrollEnabled = NO;
         [overlayView dismiss];
         
@@ -1072,13 +1072,13 @@ CGFloat const EPVCTextViewTopPadding = 7.0f;
         NSRange oldRange = editorTextView.selectedRange;
         editorTextView.text = [editorTextView.text stringByReplacingCharactersInRange:range withString:aTagText];
         
-        //Re-enable scrolling after insertion is complete
+        // Re-enable scrolling after insertion is complete
         editorTextView.scrollEnabled = YES;
         
-        //reset selection back to nothing
+        // reset selection back to nothing
         range.length = 0;
         
-        if (range.length == 0) {                // If nothing was selected
+        if (range.length == 0) {                 // If nothing was selected
             range.location += [aTagText length]; // Place selection between tags
             editorTextView.selectedRange = range;
         }
@@ -1178,7 +1178,7 @@ CGFloat const EPVCTextViewTopPadding = 7.0f;
 - (void)removeMedia:(NSNotification *)notification {
     [WPMobileStats trackEventForWPCom:[self formattedStatEventString:StatsEventPostDetailRemovedPhoto]];
     
-	//remove the html string for the media object
+	// remove the html string for the media object
 	Media *media = (Media *)[notification object];
     _textView.text = [self removeMedia:media fromString:_textView.text];
     [self autosaveContent];
@@ -1231,7 +1231,7 @@ CGFloat const EPVCTextViewTopPadding = 7.0f;
     _textView.text = [_textView.text stringByReplacingCharactersInRange:range
                                                              withString:replacement];
     _textView.scrollEnabled = YES;
-    if (range.length == 0) {                // If nothing was selected
+    if (range.length == 0) {               // If nothing was selected
         range.location += [prefix length]; // Place selection between tags
     } else {
         range.location += range.length + [prefix length] + [suffix length]; // Place selection after tag
@@ -1376,7 +1376,7 @@ CGFloat const EPVCTextViewTopPadding = 7.0f;
                     userEvent = EditPostUserActionSave;
                     
                     // If you tapped on a button labeled "Save Draft", you probably expect the post to be saved as a draft
-                    if([self.post.status isEqualToString:@"publish"]) {
+                    if ([self.post.status isEqualToString:@"publish"]) {
                         self.post.status = @"draft";
                     }
                 }
@@ -1385,7 +1385,7 @@ CGFloat const EPVCTextViewTopPadding = 7.0f;
         }
         
         if (buttonIndex == 2 && [actionSheet numberOfButtons] == 4) {
-            //Publish
+            // Publish
             if (![self.post.status isEqualToString:@"publish"]) {
                 self.post.status = @"publish";
             }
