@@ -137,6 +137,7 @@ CGFloat const EPVCTextViewTopPadding = 7.0f;
     [self setupNavbar];
     [self setupToolbar];
     [self setupTextView];
+    [self setupOptionsView];
     
     [self createRevisionOfPost];
     
@@ -207,12 +208,6 @@ CGFloat const EPVCTextViewTopPadding = 7.0f;
     
 	[_titleTextField resignFirstResponder];
 	[_textView resignFirstResponder];
-}
-
-- (void)didRotateFromInterfaceOrientation:(UIInterfaceOrientation)fromInterfaceOrientation {
-    [super didRotateFromInterfaceOrientation:fromInterfaceOrientation];
-    
-    [self positionOptionsView];
 }
 
 - (void)didReceiveMemoryWarning {
@@ -287,7 +282,7 @@ CGFloat const EPVCTextViewTopPadding = 7.0f;
         x = ceilf((viewWidth - width) / 2.0f);
         mask = UIViewAutoresizingFlexibleLeftMargin | UIViewAutoresizingFlexibleRightMargin | UIViewAutoresizingFlexibleHeight;
     }
-    CGRect frame = CGRectMake(x, 0.0f, width, CGRectGetHeight(self.view.frame));
+    CGRect frame = CGRectMake(x, 0.0f, width, CGRectGetHeight(self.view.frame) - EPVCOptionsHeight);
     
     // Content text field.
     // Shows the post body.
@@ -347,19 +342,51 @@ CGFloat const EPVCTextViewTopPadding = 7.0f;
     }
     [self.textView addSubview:self.separatorView];
     
+    // Update the textView's textContainerInsets so text does not overlap content.
+    CGFloat left = EPVCTextViewOffset;
+    CGFloat right = EPVCTextViewOffset;
+    CGFloat top = CGRectGetMaxY(self.separatorView.frame) + EPVCTextViewTopPadding;
+    CGFloat bottom = EPVCTextViewBottomPadding;
+    self.textView.textContainerInset = UIEdgeInsetsMake(top, left, bottom, right);
+
+    if (!self.tapToStartWritingLabel) {
+        frame = CGRectZero;
+        frame.origin.x = EPVCStandardOffset;
+        frame.origin.y = self.textView.textContainerInset.top;
+        frame.size.width = width - (EPVCStandardOffset * 2);
+        frame.size.height = 26.0f;
+        self.tapToStartWritingLabel = [[UILabel alloc] initWithFrame:frame];
+        self.tapToStartWritingLabel.text = NSLocalizedString(@"Tap here to begin writing", @"Placeholder for the main body text. Should hint at tapping to enter text (not specifying body text).");
+        self.tapToStartWritingLabel.autoresizingMask = UIViewAutoresizingFlexibleWidth;
+        self.tapToStartWritingLabel.font = [WPStyleGuide regularTextFont];
+        self.tapToStartWritingLabel.textColor = [WPStyleGuide textFieldPlaceholderGrey];
+        self.tapToStartWritingLabel.isAccessibilityElement = NO;
+    }
+    [self.textView addSubview:self.tapToStartWritingLabel];
+
+}
+
+- (void)setupOptionsView {
+    CGFloat width = CGRectGetWidth(self.textView.frame);
+    CGFloat x = CGRectGetMinX(self.textView.frame);
+    CGFloat y = CGRectGetMaxY(self.textView.frame);
     
+    CGRect frame;
     if (!self.optionsView) {
-        frame = CGRectMake(0.0f, 0.0f, width, EPVCOptionsHeight + EPVCTextViewBottomPadding);
+        frame = CGRectMake(x, y, width, EPVCOptionsHeight);
         self.optionsView = [[UIView alloc] initWithFrame:frame];
         self.optionsView.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleTopMargin;
+        if (IS_IPAD) {
+            self.optionsView.autoresizingMask = UIViewAutoresizingFlexibleLeftMargin | UIViewAutoresizingFlexibleRightMargin | UIViewAutoresizingFlexibleTopMargin;
+        }
+        self.optionsView.backgroundColor = [UIColor whiteColor];
     }
-    [self.textView addSubview:self.optionsView];
+    [self.view addSubview:self.optionsView];
     
     // One pixel separator bewteen content and table view cells.
     if (!self.optionsSeparatorView) {
-        CGFloat y = EPVCTextViewBottomPadding - 1;
         CGFloat separatorWidth = width - EPVCStandardOffset;
-        frame = CGRectMake(EPVCStandardOffset, y, separatorWidth, 1.0);
+        frame = CGRectMake(EPVCStandardOffset, 0.0f, separatorWidth, 1.0f);
         self.optionsSeparatorView = [[UIView alloc] initWithFrame:frame];
         self.optionsSeparatorView.backgroundColor = [WPStyleGuide readGrey];
         self.optionsSeparatorView.autoresizingMask = UIViewAutoresizingFlexibleWidth;
@@ -368,7 +395,7 @@ CGFloat const EPVCTextViewTopPadding = 7.0f;
     
     if (!self.optionsButton) {
         NSString *optionsTitle = NSLocalizedString(@"Options", @"Title of the Post Settings tableview cell in the Post Editor. Tapping shows settings and options related to the post being edited.");
-        frame = CGRectMake(0.0f, EPVCTextViewBottomPadding, width, EPVCOptionsHeight);
+        frame = CGRectMake(0.0f, 1.0f, width, EPVCOptionsHeight - 1.0f);
         self.optionsButton = [UIButton buttonWithType:UIButtonTypeCustom];
         self.optionsButton.frame = frame;
         self.optionsButton.autoresizingMask = UIViewAutoresizingFlexibleWidth;
@@ -389,43 +416,6 @@ CGFloat const EPVCTextViewTopPadding = 7.0f;
         [self.optionsButton addSubview:cell];
     }
     [self.optionsView addSubview:self.optionsButton];
-    
-    // Update the textView's textContainerInsets so text does not overlap content.
-    CGFloat left = EPVCTextViewOffset;
-    CGFloat right = EPVCTextViewOffset;
-    CGFloat top = CGRectGetMaxY(self.separatorView.frame) + EPVCTextViewTopPadding;
-    CGFloat bottom = CGRectGetHeight(self.optionsView.frame);
-    self.textView.textContainerInset = UIEdgeInsetsMake(top, left, bottom, right);
-
-    if (!self.tapToStartWritingLabel) {
-        frame = CGRectZero;
-        frame.origin.x = EPVCStandardOffset;
-        frame.origin.y = self.textView.textContainerInset.top;
-        frame.size.width = width - (EPVCStandardOffset * 2);
-        frame.size.height = 26.0f;
-        self.tapToStartWritingLabel = [[UILabel alloc] initWithFrame:frame];
-        self.tapToStartWritingLabel.text = NSLocalizedString(@"Tap here to begin writing", @"Placeholder for the main body text. Should hint at tapping to enter text (not specifying body text).");
-        self.tapToStartWritingLabel.autoresizingMask = UIViewAutoresizingFlexibleWidth;
-        self.tapToStartWritingLabel.font = [WPStyleGuide regularTextFont];
-        self.tapToStartWritingLabel.textColor = [WPStyleGuide textFieldPlaceholderGrey];
-        self.tapToStartWritingLabel.isAccessibilityElement = NO;
-    }
-    [self.textView addSubview:self.tapToStartWritingLabel];
-
-}
-
-- (void)positionOptionsView {
-    // make sure the options view is always positioned at the bottom of the UITextView's content.
-    
-    CGFloat contentHeight = self.textView.contentSize.height;
-    contentHeight -= CGRectGetHeight(self.optionsView.frame);
-
-    CGFloat minHeight = CGRectGetHeight(self.textView.frame) - CGRectGetHeight(self.optionsView.frame);
-    contentHeight = MAX(minHeight, contentHeight);
-    
-    CGRect frame = self.optionsView.frame;
-    frame.origin.y = contentHeight;
-    self.optionsView.frame = frame;
 }
 
 - (void)positionTextView:(NSNotification *)notification {
@@ -439,7 +429,7 @@ CGFloat const EPVCTextViewTopPadding = 7.0f;
     if (self.isShowingKeyboard) {
         frame.size.height = CGRectGetMinY(keyboardFrame) - CGRectGetMinY(frame);
     } else {
-        frame.size.height = CGRectGetHeight(self.view.frame);
+        frame.size.height = CGRectGetHeight(self.view.frame) - EPVCOptionsHeight;
     }
 
     self.textView.frame = frame;
@@ -754,7 +744,6 @@ CGFloat const EPVCTextViewTopPadding = 7.0f;
         }
     }
     
-    [self positionOptionsView];
     [self refreshButtons];
 }
 
@@ -914,7 +903,6 @@ CGFloat const EPVCTextViewTopPadding = 7.0f;
     }
     
     [self.post save];
-    [self positionOptionsView];
     [_textView scrollRangeToVisible:[_textView selectedRange]];
 }
 
@@ -1485,8 +1473,6 @@ CGFloat const EPVCTextViewTopPadding = 7.0f;
 
 - (void)keyboardDidShow:(NSNotification *)notification {
     [self positionTextView:notification];
-    [self positionOptionsView];
-
 }
 
 - (void)keyboardWillHide:(NSNotification *)notification {
@@ -1497,7 +1483,6 @@ CGFloat const EPVCTextViewTopPadding = 7.0f;
     [self.navigationController setToolbarHidden:NO animated:NO];
     
     [self positionTextView:notification];
-    [self positionOptionsView];
 }
 
 @end
