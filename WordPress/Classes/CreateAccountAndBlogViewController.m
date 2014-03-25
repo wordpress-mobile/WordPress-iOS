@@ -222,6 +222,7 @@ CGFloat const CreateAccountAndBlogButtonHeight = 40.0;
     UIImage *helpButtonImage = [UIImage imageNamed:@"btn-help"];
     if (_helpButton == nil) {
         _helpButton = [UIButton buttonWithType:UIButtonTypeCustom];
+        _helpButton.accessibilityLabel = NSLocalizedString(@"Help", @"Help button");
         [_helpButton setImage:helpButtonImage forState:UIControlStateNormal];
         _helpButton.frame = CGRectMake(0, 0, helpButtonImage.size.width, helpButtonImage.size.height);
         [_helpButton addTarget:self action:@selector(helpButtonAction) forControlEvents:UIControlEventTouchUpInside];
@@ -329,7 +330,7 @@ CGFloat const CreateAccountAndBlogButtonHeight = 40.0;
         _TOSLabel = [[UILabel alloc] init];
         _TOSLabel.userInteractionEnabled = YES;
         _TOSLabel.textAlignment = NSTextAlignmentCenter;
-        _TOSLabel.text = NSLocalizedString(@"By creating an account you agree to the fascinating terms of service.", @"NUX Create Account TOS Label");
+        _TOSLabel.text = NSLocalizedString(@"By creating an account you agree to the fascinating Terms of Service.", @"NUX Create Account TOS Label");
         _TOSLabel.numberOfLines = 0;
         _TOSLabel.backgroundColor = [UIColor clearColor];
         _TOSLabel.font = [WPNUXUtility tosLabelFont];

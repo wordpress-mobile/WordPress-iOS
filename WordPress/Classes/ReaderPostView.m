@@ -8,10 +8,14 @@
 
 #import <QuartzCore/QuartzCore.h>
 #import "ReaderPostView.h"
+#import "WPAccount.h"
 #import "WPContentViewSubclass.h"
 #import "ContentActionButton.h"
 #import "UILabel+SuggestSize.h"
 #import "NSAttributedString+HTML.h"
+#import "NSString+Helpers.h" 
+
+static NSInteger const MaxNumberOfLinesForTitleForSummary = 3;
 
 @interface ReaderPostView()
 
@@ -27,7 +31,7 @@
 
 @implementation ReaderPostView
 
-+ (CGFloat)heightForPost:(ReaderPost *)post withWidth:(CGFloat)width {
++ (CGFloat)heightForPost:(ReaderPost *)post withWidth:(CGFloat)width showFullContent:(BOOL)showFullContent {
 	CGFloat desiredHeight = 0.0f;
     
     // Margins
@@ -51,12 +55,12 @@
     
     // Title
     desiredHeight += RPVVerticalPadding;
-    NSAttributedString *postTitle = [self titleAttributedStringForPost:post];
+    NSAttributedString *postTitle = [self titleAttributedStringForPost:post showFullContent:showFullContent withWidth:contentWidth];
     desiredHeight += [postTitle boundingRectWithSize:CGSizeMake(contentWidth, CGFLOAT_MAX) options:NSStringDrawingUsesLineFragmentOrigin | NSStringDrawingUsesFontLeading context:nil].size.height;
     desiredHeight += RPVTitlePaddingBottom;
     
     // Post summary
-    if ([post.summary length] > 0) {
+    if (!showFullContent) {
         NSAttributedString *postSummary = [self summaryAttributedStringForPost:post];
         desiredHeight += [postSummary boundingRectWithSize:CGSizeMake(contentWidth, CGFLOAT_MAX) options:NSStringDrawingUsesLineFragmentOrigin | NSStringDrawingUsesFontLeading context:nil].size.height;
     }
@@ -83,15 +87,59 @@
 	return ceil(desiredHeight);
 }
 
-+ (NSAttributedString *)titleAttributedStringForPost:(ReaderPost *)post {
++ (NSAttributedString *)titleAttributedStringForPost:(ReaderPost *)post showFullContent:(BOOL)showFullContent withWidth:(CGFloat) width {
     NSMutableParagraphStyle *style = [[NSMutableParagraphStyle alloc] init];
     [style setLineHeightMultiple:RPVLineHeightMultiple];
     NSDictionary *attributes = @{NSParagraphStyleAttributeName : style,
                                  NSFontAttributeName : [self titleFont]};
-    NSMutableAttributedString *titleString = [[NSMutableAttributedString alloc] initWithString:[post.postTitle trim]
+    NSString *postTitle = [post.postTitle trim];
+    if (postTitle == nil) {
+        postTitle = @"";
+    }
+    
+    NSMutableAttributedString *titleString = [[NSMutableAttributedString alloc] initWithString:postTitle
                                                                                     attributes:attributes];
+    if(!showFullContent) //Ellipsizing long titles
+    {
+        if([postTitle length] > 0)
+        {
+            
+            CGFloat currentHeightOfTitle = [titleString
+                                            boundingRectWithSize:CGSizeMake(width, CGFLOAT_MAX)
+                                            options:NSStringDrawingUsesLineFragmentOrigin | NSStringDrawingUsesFontLeading
+                                            context:nil].size.height;
+            
+            
+            CGFloat heightOfSingleLine = [[titleString attributedSubstringFromRange:NSMakeRange(0,1)]
+                                          boundingRectWithSize:CGSizeMake(width, CGFLOAT_MAX)
+                                          options:NSStringDrawingUsesLineFragmentOrigin | NSStringDrawingUsesFontLeading
+                                          context:nil].size.height;
+            
+            NSInteger numberOfLines = currentHeightOfTitle / heightOfSingleLine;
+            
+            if(numberOfLines > MaxNumberOfLinesForTitleForSummary)
+            {
+                NSInteger newLength = [ReaderPostView calculateTitleLengthWithSingleLineHeight:heightOfSingleLine
+                                                                             currentLineHeight:currentHeightOfTitle
+                                                                                  currentTitle:titleString];
+                
+                
+                titleString = [[NSMutableAttributedString alloc]initWithString:[postTitle stringByEllipsizingWithMaxLength:newLength preserveWords:YES]
+                                                                    attributes:attributes];
+                
+            }
+        }
+    }
     
     return titleString;
+}
+
++ (NSInteger)calculateTitleLengthWithSingleLineHeight:(CGFloat)singleLineHeight currentLineHeight:(CGFloat)currentLineHeight currentTitle:(NSAttributedString *)postTitle
+{
+    CGFloat allowedHeight = singleLineHeight * MaxNumberOfLinesForTitleForSummary;
+    CGFloat overageRatio = allowedHeight / currentLineHeight;
+    return [postTitle length] * overageRatio;
+    
 }
 
 + (NSAttributedString *)summaryAttributedStringForPost:(ReaderPost *)post {
@@ -177,7 +225,17 @@
     return self;
 }
 
-- (void)configurePost:(ReaderPost *)post {
+- (void)configurePost:(ReaderPost *)post withWidth:(CGFloat)width {
+   
+    // Margins
+    CGFloat contentWidth = width;
+    if (IS_IPAD) {
+        contentWidth = WPTableViewFixedWidth;
+    }
+    
+    contentWidth -= RPVHorizontalInnerPadding * 2;
+    
+    
     _post = post;
     self.contentProvider = post;
     
@@ -185,7 +243,9 @@
     // so avatars show up after a cell is created, and not dequeued.
     [self setAvatar:nil];
     
-	self.titleLabel.attributedText = [[self class] titleAttributedStringForPost:post];
+	self.titleLabel.attributedText = [[self class] titleAttributedStringForPost:post
+                                                                showFullContent:self.showFullContent
+                                                                      withWidth:contentWidth];
     
     if (self.showFullContent) {
         NSData *data = [self.post.content dataUsingEncoding:NSUTF8StringEncoding];
@@ -202,7 +262,10 @@
     
 	self.showImage = NO;
 	self.cellImageView.hidden = YES;
-	if (post.featuredImageURL) {
+    
+    // If ReaderPostView has a featured image, show it unless you're showing full detail & featured image is in the post already
+	if (post.featuredImageURL &&
+        (self.showFullContent == NO || [self.post.content rangeOfString:[post.featuredImageURL absoluteString]].length == 0)) {
 		self.showImage = YES;
 		self.cellImageView.hidden = NO;
 	}
@@ -214,12 +277,12 @@
         self.tagButton.hidden = YES;
     }
     
-	if ([self.post isWPCom]) {
+	if ([[self.post isWPCom] boolValue] && [WPAccount defaultWordPressComAccount] != nil) {
 		self.likeButton.hidden = NO;
 		self.reblogButton.hidden = NO;
         self.commentButton.hidden = NO;
 	} else {
-		self.likeButton.hidden = YES;
+        self.likeButton.hidden = YES;
 		self.reblogButton.hidden = YES;
         self.commentButton.hidden = YES;
 	}
@@ -228,13 +291,12 @@
 	self.reblogButton.userInteractionEnabled = ![post.isReblogged boolValue];
 	
 	[self updateActionButtons];
-
 }
 
 - (void)layoutSubviews {
 
     // Determine button visibility before parent lays them out
-    BOOL commentsOpen = [[self.post commentsOpen] boolValue] && [self.post isWPCom];
+    BOOL commentsOpen = [[self.post commentsOpen] boolValue] && [[self.post isWPCom] boolValue];
     self.commentButton.hidden = !commentsOpen;
 
 	[super layoutSubviews];
@@ -253,7 +315,7 @@
 	CGFloat height = 0.0f;
     CGFloat bylineX = RPVAvatarSize + RPVAuthorPadding + RPVHorizontalInnerPadding;
 
-    if ([self.post isFollowable]) {
+    if ([self.post isFollowable] && [WPAccount defaultWordPressComAccount] != nil) {
         self.followButton.hidden = NO;
         CGFloat followX = bylineX - 4; // Fudge factor for image alignment
         CGFloat followY = RPVAuthorPadding + self.bylineLabel.frame.size.height - 2;
@@ -283,22 +345,20 @@
 	nextY += height + RPVTitlePaddingBottom * (self.showFullContent ? 2.0 : 1.0);
     
 	// Position the snippet / content
-    if ([self.post.summary length] > 0) {
-        if (self.showFullContent) {
-            [self.textContentView relayoutText];
-            height = [self.textContentView suggestedFrameSizeToFitEntireStringConstraintedToWidth:contentWidth].height;
-            CGRect textContainerFrame = self.textContentView.frame;
-            textContainerFrame.size.width = contentWidth;
-            textContainerFrame.size.height = height;
-            textContainerFrame.origin.y = nextY;
-            self.textContentView.frame = textContainerFrame;
-        } else {
-            height = ceil([self.snippetLabel suggestedSizeForWidth:innerContentWidth].height);
-            self.snippetLabel.frame = CGRectMake(RPVHorizontalInnerPadding, nextY, innerContentWidth, height);
-        }
-        nextY += ceilf(height);
+    height = 0;
+    if (self.showFullContent) {
+        [self.textContentView relayoutText];
+        height = [self.textContentView suggestedFrameSizeToFitEntireStringConstraintedToWidth:contentWidth].height;
+        CGRect textContainerFrame = self.textContentView.frame;
+        textContainerFrame.size.width = contentWidth;
+        textContainerFrame.size.height = height;
+        textContainerFrame.origin.y = nextY;
+        self.textContentView.frame = textContainerFrame;
+    } else if ([self.snippetLabel.text length] > 0) {
+        height = ceil([self.snippetLabel suggestedSizeForWidth:innerContentWidth].height);
+        self.snippetLabel.frame = CGRectMake(RPVHorizontalInnerPadding, nextY, innerContentWidth, height);
     }
-    nextY += RPVVerticalPadding;
+    nextY += ceilf(height) + RPVVerticalPadding;
     
     // Tag
     // TODO: reenable tags once a better browsing experience is implemented
@@ -337,15 +397,12 @@
 }
 
 - (void)setAvatar:(UIImage *)avatar {
-    if (self.avatarImageView.image)
-        return;
-    
     if (avatar) {
         self.avatarImageView.image = avatar;
-    } else if ([self.post isWPCom]) {
+    } else if ([[self.post isWPCom] boolValue]) {
         self.avatarImageView.image = [UIImage imageNamed:@"wpcom_blavatar"];
     } else {
-        self.avatarImageView.image = [UIImage imageNamed:@"wporg_blavatar"];
+        self.avatarImageView.image = [UIImage imageNamed:@"gravatar-reader"];
     }
 }
 

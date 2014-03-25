@@ -11,6 +11,6 @@
 
 @interface NotificationsViewController : WPTableViewController
 
--(void)refreshFromPushNotification;
+-(void) clearNotificationsBadgeAndSyncItems;
 
 @end

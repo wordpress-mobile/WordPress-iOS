@@ -42,6 +42,7 @@ typedef enum {
 
 @interface ReaderPostDetailViewController ()<UIActionSheetDelegate, MFMailComposeViewControllerDelegate, ReaderTextFormDelegate, UIPopoverControllerDelegate, ReaderCommentPublisherDelegate> {
     UIPopoverController *_popover;
+    UIGestureRecognizer *_tapOffKeyboardGesture;
 }
 
 @property (nonatomic, strong) ReaderPostView *postView;
@@ -130,7 +131,11 @@ typedef enum {
 	[self prepareComments];
 
     self.inlineComposeView = [[InlineComposeView alloc] initWithFrame:CGRectZero];
+    [self.inlineComposeView setButtonTitle:NSLocalizedString(@"Post", nil)];
 
+    _tapOffKeyboardGesture = [[UITapGestureRecognizer alloc] initWithTarget:self
+                                                                     action:@selector(dismissKeyboard:)];
+    
     // comment composer responds to the inline compose view to publish comments
     self.commentPublisher = [[ReaderCommentPublisher alloc]
                              initWithComposer:self.inlineComposeView
@@ -170,7 +175,7 @@ typedef enum {
         return;
 	
     NSDate *lastSynced = [self lastSyncDate];
-    if ((lastSynced == nil || ABS([lastSynced timeIntervalSinceNow]) > ReaderPostDetailViewControllerRefreshTimeout) && _post.isWPCom) {
+    if ((lastSynced == nil || ABS([lastSynced timeIntervalSinceNow]) > ReaderPostDetailViewControllerRefreshTimeout) && [[_post isWPCom] boolValue]) {
 		[self syncWithUserInteraction:NO];
     }
     
@@ -202,6 +207,17 @@ typedef enum {
 	}
 }
 
+#pragma mark - Actions
+
+- (void)dismissKeyboard:(id)sender {
+    for (UIGestureRecognizer *gesture in self.view.gestureRecognizers) {
+        if ([gesture isEqual:_tapOffKeyboardGesture]) {
+            [self.view removeGestureRecognizer:gesture];
+        }
+    }
+    
+    [self.inlineComposeView dismissComposer];
+}
 
 #pragma mark - View getters/builders
 
@@ -212,11 +228,11 @@ typedef enum {
 
 - (void)buildHeader {
     // The text view in postView needs an initial frame
-    CGFloat postHeight = [ReaderPostView heightForPost:self.post withWidth:self.view.frame.size.width];
+    CGFloat postHeight = [ReaderPostView heightForPost:self.post withWidth:self.view.frame.size.width showFullContent:YES];
     CGRect postFrame = CGRectMake(0.0f, 0.0f, self.tableView.frame.size.width, postHeight);
 	self.postView = [[ReaderPostView alloc] initWithFrame:postFrame showFullContent:YES];
     self.postView.delegate = self;
-    [self.postView configurePost:self.post];
+    [self.postView configurePost:self.post withWidth:self.view.frame.size.width];
     self.postView.backgroundColor = [UIColor whiteColor];
     
     if (self.avatarImage) {
@@ -242,8 +258,9 @@ typedef enum {
     [button setImage:image forState:UIControlStateNormal];
     [button addTarget:self action:@selector(handleShareButtonTapped:) forControlEvents:UIControlEventTouchUpInside];
     _shareButton = [[UIBarButtonItem alloc] initWithCustomView:button];
+    _shareButton.accessibilityLabel = NSLocalizedString(@"Share", @"Spoken accessibility label");
 
-        return _shareButton;
+    return _shareButton;
 }
 
 - (void)buildActionBar {
@@ -253,6 +270,7 @@ typedef enum {
 	commentBtn.frame = CGRectMake(0.0f, 0.0f, 40.0f, 40.0f);
 	[commentBtn addTarget:self action:@selector(handleCommentButtonTapped:) forControlEvents:UIControlEventTouchUpInside];
 	self.commentButton = [[UIBarButtonItem alloc] initWithCustomView:commentBtn];
+    self.commentButton.accessibilityLabel = NSLocalizedString(@"Comment", @"");
 	
 	UIButton *likeBtn = [UIButton buttonWithType:UIButtonTypeCustom];
 	[likeBtn.titleLabel setFont:[UIFont fontWithName:@"OpenSans-Bold" size:10.0f]];
@@ -265,6 +283,7 @@ typedef enum {
 	likeBtn.autoresizingMask = UIViewAutoresizingFlexibleLeftMargin | UIViewAutoresizingFlexibleRightMargin;
 	[likeBtn addTarget:self action:@selector(handleLikeButtonTapped:) forControlEvents:UIControlEventTouchUpInside];
 	self.likeButton = [[UIBarButtonItem alloc] initWithCustomView:likeBtn];
+    self.likeButton.accessibilityLabel = NSLocalizedString(@"Like", @"");
 	
 	UIButton *reblogBtn = [UIButton buttonWithType:UIButtonTypeCustom];
     [reblogBtn setImage:[UIImage imageNamed:@"reader-postaction-reblog"] forState:UIControlStateNormal];
@@ -274,6 +293,7 @@ typedef enum {
 	reblogBtn.autoresizingMask = UIViewAutoresizingFlexibleLeftMargin;
 	[reblogBtn addTarget:self action:@selector(handleReblogButtonTapped:) forControlEvents:UIControlEventTouchUpInside];
 	self.reblogButton = [[UIBarButtonItem alloc] initWithCustomView:reblogBtn];
+    self.reblogButton.accessibilityLabel = NSLocalizedString(@"Reblog", @"");
 	
 	[self updateActionBar];
 }
@@ -299,7 +319,7 @@ typedef enum {
 		[items addObjectsFromArray:@[_commentButton, placeholder]];
 	}
 	
-	if ([self.post isWPCom]) {
+	if ([[self.post isWPCom] boolValue]) {
 		[items addObjectsFromArray:@[_likeButton, placeholder, _reblogButton]];
 	}
 	
@@ -404,7 +424,7 @@ typedef enum {
 		[items addObjectsFromArray:@[_commentButton, placeholder]];
 	}
 	
-	if ([self.post isWPCom]) {
+	if ([[self.post isWPCom] boolValue]) {
 		[items addObjectsFromArray:@[_likeButton, placeholder, _reblogButton]];
 	}
 	
@@ -615,7 +635,7 @@ typedef enum {
 	[postView updateActionButtons];
 }
 
-- (void)postView:(ReaderPostView *)postView didReceiveFollowAction:(id)sender {
+- (void)contentView:(ReaderPostView *)postView didReceiveFollowAction:(id)sender {
     UIButton *followButton = (UIButton *)sender;
     ReaderPost *post = postView.post;
     
@@ -631,10 +651,10 @@ typedef enum {
 }
 
 - (void)postView:(ReaderPostView *)postView didReceiveCommentAction:(id)sender {
-
+    [self.view addGestureRecognizer:_tapOffKeyboardGesture];
+    
     self.commentPublisher.comment = nil;
     [self.inlineComposeView toggleComposer];
-
 }
 
 - (void)contentView:(WPContentView *)contentView didReceiveLinkAction:(id)sender {
@@ -897,6 +917,7 @@ typedef enum {
     ReaderCommentTableViewCell *cell = (ReaderCommentTableViewCell *)[self.tableView dequeueReusableCellWithIdentifier:cellIdentifier];
     if (cell == nil) {
         cell = [[ReaderCommentTableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:cellIdentifier];
+        cell.delegate = self;
     }
 	cell.accessoryType = UITableViewCellAccessoryNone;
 	
@@ -926,6 +947,8 @@ typedef enum {
 	}
 
 	if ([self canComment]) {
+        [self.view addGestureRecognizer:_tapOffKeyboardGesture];
+        
 		[self.inlineComposeView displayComposer];
 	}
 	
@@ -1013,6 +1036,14 @@ typedef enum {
 - (void)commentPublisherDidPublishComment:(ReaderCommentPublisher *)composer {
     [self.inlineComposeView dismissComposer];
     [self syncWithUserInteraction:NO];
+}
+
+#pragma mark - ReaderCommentTableViewCellDelegate methods
+
+- (void)readerCommentTableViewCell:(ReaderCommentTableViewCell *)cell didTapURL:(NSURL *)url {
+    WPWebViewController *controller = [[WPWebViewController alloc] init];
+	[controller setUrl:url];
+	[self.navigationController pushViewController:controller animated:YES];
 }
 
 #pragma mark - ReaderTextForm Delegate Methods

@@ -1,25 +1,5 @@
-//
-// Mixpanel.h
-// Mixpanel
-//
-// Copyright 2012 Mixpanel
-//
-// Licensed under the Apache License, Version 2.0 (the "License");
-// you may not use this file except in compliance with the License.
-// You may obtain a copy of the License at
-//
-// http://www.apache.org/licenses/LICENSE-2.0
-//
-// Unless required by applicable law or agreed to in writing, software
-// distributed under the License is distributed on an "AS IS" BASIS,
-// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-// See the License for the specific language governing permissions and
-// limitations under the License.
-
 #import <Foundation/Foundation.h>
 #import <UIKit/UIKit.h>
-
-#import "MPSurvey.h"
 
 @class    MixpanelPeople;
 @protocol MixpanelDelegate;
@@ -63,7 +43,7 @@
  @discussion
  See the documentation for MixpanelDelegate below for more information.
  */
-@property(atomic,readonly,retain) MixpanelPeople *people;
+@property (atomic, readonly, strong) MixpanelPeople *people;
 
 /*!
  @property
@@ -77,7 +57,7 @@
  hash of the MAC address of the device. To change the current distinct ID,
  use the <code>identify:</code> method.
  */
-@property(atomic,readonly,copy) NSString *distinctId;
+@property (atomic, readonly, copy) NSString *distinctId;
 
 /*!
  @property
@@ -85,7 +65,7 @@
  @abstract
  Current user's name in Mixpanel Streams.
  */
-@property(atomic,copy) NSString *nameTag;
+@property (atomic, copy) NSString *nameTag;
 
 /*!
  @property
@@ -97,19 +77,7 @@
  Useful if you need to proxy Mixpanel requests. Defaults to
  https://api.mixpanel.com.
  */
-@property(atomic,copy) NSString *serverURL;
-
-/*!
- @property
-
- @abstract
- The base URL used for Mixpanel Decide requests.
-
- @discussion
- Useful if you need to proxy Mixpanel requests. Defaults to
- https://decide.mixpanel.com.
- */
-@property(atomic,copy) NSString *decideURL;
+@property (atomic, copy) NSString *serverURL;
 
 /*!
  @property
@@ -120,7 +88,7 @@
  @discussion
  Setting a flush interval of 0 will turn off the flush timer.
  */
-@property(atomic) NSUInteger flushInterval;
+@property (atomic) NSUInteger flushInterval;
 
 /*!
  @property
@@ -133,7 +101,7 @@
  Defaults to YES. Only affects apps targeted at iOS 4.0, when background
  task support was introduced, and later.
  */
-@property(atomic) BOOL flushOnBackground;
+@property (atomic) BOOL flushOnBackground;
 
 /*!
  @property
@@ -145,7 +113,7 @@
  @discussion
  Defaults to YES.
  */
-@property(atomic) BOOL showNetworkActivityIndicator;
+@property (atomic) BOOL showNetworkActivityIndicator;
 
 /*!
  @property
@@ -159,7 +127,7 @@
  <code>applicationDidBecomeActive</code> to retrieve a list of valid suerveys
  for the currently identified user.
  */
-@property(atomic) BOOL checkForSurveysOnActive;
+@property (atomic) BOOL checkForSurveysOnActive;
 
 /*!
  @property
@@ -174,7 +142,33 @@
  survey check retrieves at least 1 valid survey for the currently
  identified user.
  */
-@property(atomic) BOOL showSurveyOnActive;
+@property (atomic) BOOL showSurveyOnActive;
+
+/*!
+ @property
+
+ @abstract
+ Controls whether to automatically check for notifications for the
+ currently identified user when the application becomes active.
+
+ @discussion
+ Defaults to YES. Will fire a network request on
+ <code>applicationDidBecomeActive</code> to retrieve a list of valid notifications
+ for the currently identified user.
+ */
+@property (atomic) BOOL checkForNotificationsOnActive;
+
+/*!
+ @property
+
+ @abstract
+ Controls whether to automatically check for and show in-app notifications
+ for the currently identified user when the application becomes active.
+
+ @discussion
+ Defaults to YES.
+ */
+@property (atomic) BOOL showNotificationOnActive;
 
 /*!
  @property
@@ -187,7 +181,7 @@
  Using a delegate is optional. See the documentation for MixpanelDelegate
  below for more information.
  */
-@property(atomic,assign) id<MixpanelDelegate> delegate; // allows fine grain control over uploading (optional)
+@property (atomic, weak) id<MixpanelDelegate> delegate; // allows fine grain control over uploading (optional)
 
 /*!
  @method
@@ -240,7 +234,7 @@
  project, consider using <code>sharedInstanceWithToken:</code>.
 
  @param apiToken        your project token
- @param startFlushTimer whether to start the background flush timer
+ @param flushInterval   interval to run background flushing
  */
 - (instancetype)initWithToken:(NSString *)apiToken andFlushInterval:(NSUInteger)flushInterval;
 
@@ -251,10 +245,24 @@
  Sets the distinct ID of the current user.
 
  @discussion
- By default, Mixpanel will set the distinct ID to the device's iOS ID for
- Advertising (IFA). The IFA depends on the the Ad Support framework, which is
- only available in iOS 6 and later. For earlier platforms, we fallback to ODIN1
- (see https://code.google.com/p/odinmobile/wiki/ODIN1).
+ As of version 2.3.1, Mixpanel will choose a default distinct ID based on
+ whether you are using the AdSupport.framework or not.
+
+ If you are not using the AdSupport Framework (iAds), then we use the
+ <code>[UIDevice currentDevice].identifierForVendor</code> (IFV) string as the
+ default distinct ID.  This ID will identify a user across all apps by the same
+ vendor, but cannot be used to link the same user across apps from different
+ vendors.
+
+ If you are showing iAds in your application, you are allowed use the iOS ID
+ for Advertising (IFA) to identify users. If you have this framework in your
+ app, Mixpanel will use the IFA as the default distinct ID. If you have
+ AdSupport installed but still don't want to use the IFA, you can define the
+ <code>MIXPANEL_NO_IFA</code> preprocessor flag in your build settings, and
+ Mixpanel will use the IFV as the default distinct ID.
+
+ If we are unable to get an IFA or IFV, we will fall back to generating a
+ random persistent UUID.
 
  For tracking events, you do not need to call <code>identify:</code> if you
  want to use the default.  However, <b>Mixpanel People always requires an
@@ -452,6 +460,42 @@
  */
 - (void)showSurvey;
 
+
+/*!
+ @method
+
+ @abstract
+ Shows the notification of the given id.
+
+ @discussion
+ You do not need to call this method on the main thread.
+ */
+- (void)showNotificationWithID:(NSUInteger)ID;
+
+
+/*!
+ @method
+
+ @abstract
+ Shows a notification with the given type if one is available.
+
+ @discussion
+ You do not need to call this method on the main thread.
+
+ @param type The type of notification to show, either @"mini", or @"takeover"
+ */
+- (void)showNotificationWithType:(NSString *)type;
+
+/*!
+ @method
+
+ @abstract
+ Shows a notification if one is available.
+
+ @discussion
+ You do not need to call this method on the main thread.
+ */
+- (void)showNotification;
 
 - (void)createAlias:(NSString *)alias forDistinctID:(NSString *)distinctID;
 

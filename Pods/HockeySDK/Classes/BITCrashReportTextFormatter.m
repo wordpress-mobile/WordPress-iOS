@@ -6,7 +6,7 @@
  *
  * Copyright (c) 2008-2013 Plausible Labs Cooperative, Inc.
  * Copyright (c) 2010 MOSO Corporation, Pty Ltd.
- * Copyright (c) 2012-2013 HockeyApp, Bit Stadium GmbH.
+ * Copyright (c) 2012-2014 HockeyApp, Bit Stadium GmbH.
  * All rights reserved.
  *
  * Permission is hereby granted, free of charge, to any person
@@ -33,6 +33,18 @@
 
 #import <CrashReporter/CrashReporter.h>
 
+#import <mach-o/dyld.h>
+#import <mach-o/getsect.h>
+#import <mach-o/ldsyms.h>
+#import <dlfcn.h>
+#import <Availability.h>
+
+#if defined(__OBJC2__)
+#define SEL_NAME_SECT "__objc_methname"
+#else
+#define SEL_NAME_SECT "__cstring"
+#endif
+
 #import "BITCrashReportTextFormatter.h"
 
 /*
@@ -52,14 +64,127 @@
 #endif
 
 
-@interface BITCrashReportTextFormatter (PrivateAPI)
-static NSInteger bit_binaryImageSort(id binary1, id binary2, void *context);
-+ (NSString *)bit_formatStackFrame:(BITPLCrashReportStackFrameInfo *)frameInfo
-                        frameIndex:(NSUInteger)frameIndex
-                            report:(BITPLCrashReport *)report
-                              lp64: (BOOL) lp64;
-@end
+/**
+ * Sort PLCrashReportBinaryImageInfo instances by their starting address.
+ */
+static NSInteger bit_binaryImageSort(id binary1, id binary2, void *context) {
+  uint64_t addr1 = [binary1 imageBaseAddress];
+  uint64_t addr2 = [binary2 imageBaseAddress];
+  
+  if (addr1 < addr2)
+    return NSOrderedAscending;
+  else if (addr1 > addr2)
+    return NSOrderedDescending;
+  else
+    return NSOrderedSame;
+}
 
+/**
+ * Validates that the given @a string terminates prior to @a limit.
+ */
+static const char *safer_string_read (const char *string, const char *limit) {
+  const char *p = string;
+  do {
+    if (p >= limit || p+1 >= limit) {
+      return NULL;
+    }
+    p++;
+  } while (*p != '\0');
+  
+  return string;
+}
+
+/*
+ * The relativeAddress should be `<ecx/rsi/r1/x1 ...> - <image base>`, extracted from the crash report's thread
+ * and binary image list.
+ *
+ * For the (architecture-specific) registers to attempt, see:
+ *  http://sealiesoftware.com/blog/archive/2008/09/22/objc_explain_So_you_crashed_in_objc_msgSend.html
+ */
+static const char *findSEL (const char *imageName, NSString *imageUUID, uint64_t relativeAddress) {
+  unsigned int images_count = _dyld_image_count();
+  for (unsigned int i = 0; i < images_count; ++i) {
+    intptr_t slide = _dyld_get_image_vmaddr_slide(i);
+    const struct mach_header *header = _dyld_get_image_header(i);
+    const struct mach_header_64 *header64 = (const struct mach_header_64 *) header;
+    const char *name = _dyld_get_image_name(i);
+    
+    /* Image disappeared? */
+    if (name == NULL || header == NULL)
+      continue;
+    
+    /* Check if this is the correct image. If we were being even more careful, we'd check the LC_UUID */
+    if (strcmp(name, imageName) != 0)
+      continue;
+
+    /* Determine whether this is a 64-bit or 32-bit Mach-O file */
+    BOOL m64 = NO;
+    if (header->magic == MH_MAGIC_64)
+      m64 = YES;
+
+    NSString *uuidString = nil;
+    const uint8_t *command;
+    uint32_t	ncmds;
+    
+    if (m64) {
+      command = (const uint8_t *)(header64 + 1);
+      ncmds = header64->ncmds;
+    } else {
+      command = (const uint8_t *)(header + 1);
+      ncmds = header->ncmds;
+    }
+    for (uint32_t idx = 0; idx < ncmds; ++idx) {
+      const struct load_command *load_command = (const struct load_command *)command;
+      if (load_command->cmd == LC_UUID) {
+        const struct uuid_command *uuid_command = (const struct uuid_command *)command;
+        const uint8_t *uuid = uuid_command->uuid;
+        uuidString = [[NSString stringWithFormat:@"%02X%02X%02X%02X%02X%02X%02X%02X%02X%02X%02X%02X%02X%02X%02X%02X",
+                       uuid[0], uuid[1], uuid[2], uuid[3],
+                       uuid[4], uuid[5], uuid[6], uuid[7],
+                       uuid[8], uuid[9], uuid[10], uuid[11],
+                       uuid[12], uuid[13], uuid[14], uuid[15]]
+                      lowercaseString];
+        break;
+      } else {
+        command += load_command->cmdsize;
+      }
+    }
+
+    // Check if this is the correct image by comparing the UUIDs
+    if (!uuidString || ![uuidString isEqualToString:imageUUID])
+      continue;
+        
+    /* Fetch the __objc_methname section */
+    const char *methname_sect;
+    uint64_t methname_sect_size;
+    if (m64) {
+      methname_sect = getsectdatafromheader_64(header64, SEG_TEXT, SEL_NAME_SECT, &methname_sect_size);
+    } else {
+      uint32_t meth_size_32;
+      methname_sect = getsectdatafromheader(header, SEG_TEXT, SEL_NAME_SECT, &meth_size_32);
+      methname_sect_size = meth_size_32;
+    }
+    
+    /* Apply the slide, as per getsectdatafromheader(3) */
+    methname_sect += slide;
+    
+    if (methname_sect == NULL) {
+      return NULL;
+    }
+    
+    /* Calculate the target address within this image, and verify that it is within __objc_methname */
+    const char *target = ((const char *)header) + relativeAddress;
+    const char *limit = methname_sect + methname_sect_size;
+    if (target < methname_sect || target >= limit) {
+      return NULL;
+    }
+    
+    /* Read the actual method name */
+    return safer_string_read(target, limit);
+  }
+  
+  return NULL;
+}
 
 /**
  * Formats PLCrashReport data as human-readable text.
@@ -249,7 +374,13 @@ static NSInteger bit_binaryImageSort(id binary1, id binary2, void *context);
     if (report.systemInfo.operatingSystemBuild != nil)
       osBuild = report.systemInfo.operatingSystemBuild;
     
-    [text appendFormat: @"Date/Time:       %@\n", report.systemInfo.timestamp];
+    NSLocale *enUSPOSIXLocale = [[NSLocale alloc] initWithLocaleIdentifier:@"en_US_POSIX"];
+    NSDateFormatter *rfc3339Formatter = [[NSDateFormatter alloc] init];
+    [rfc3339Formatter setLocale:enUSPOSIXLocale];
+    [rfc3339Formatter setDateFormat:@"yyyy'-'MM'-'dd'T'HH':'mm':'ss'Z'"];
+    [rfc3339Formatter setTimeZone:[NSTimeZone timeZoneForSecondsFromGMT:0]];
+    
+    [text appendFormat: @"Date/Time:       %@\n", [rfc3339Formatter stringFromDate:report.systemInfo.timestamp]];
     [text appendFormat: @"OS Version:      %@ %@ (%@)\n", osName, report.systemInfo.operatingSystemVersion, osBuild];
     [text appendFormat: @"Report Version:  104\n"];
   }
@@ -269,6 +400,14 @@ static NSInteger bit_binaryImageSort(id binary1, id binary2, void *context);
   
   [text appendString: @"\n"];
   
+  BITPLCrashReportThreadInfo *crashed_thread = nil;
+  for (BITPLCrashReportThreadInfo *thread in report.threads) {
+    if (thread.crashed) {
+      crashed_thread = thread;
+      break;
+    }
+  }
+  
   /* Uncaught Exception */
   if (report.hasExceptionInfo) {
     [text appendFormat: @"Application Specific Information:\n"];
@@ -276,6 +415,36 @@ static NSInteger bit_binaryImageSort(id binary1, id binary2, void *context);
      report.exceptionInfo.exceptionName, report.exceptionInfo.exceptionReason];
     
     [text appendString: @"\n"];
+  } else if (crashed_thread != nil) {
+    // try to find the selector in case this was a crash in obj_msgSend
+    // we search this wether the crash happend in obj_msgSend or not since we don't have the symbol!
+    
+    NSString *foundSelector = nil;
+
+    // search the registers value for the current arch
+#if TARGET_IPHONE_SIMULATOR
+    if (lp64) {
+      foundSelector = [[self class] selectorForRegisterWithName:@"rsi" ofThread:crashed_thread report:report];
+      if (foundSelector == NULL)
+        foundSelector = [[self class] selectorForRegisterWithName:@"rdx" ofThread:crashed_thread report:report];
+    } else {
+      foundSelector = [[self class] selectorForRegisterWithName:@"ecx" ofThread:crashed_thread report:report];
+    }
+#else
+    if (lp64) {
+      foundSelector = [[self class] selectorForRegisterWithName:@"x1" ofThread:crashed_thread report:report];
+    } else {
+      foundSelector = [[self class] selectorForRegisterWithName:@"r1" ofThread:crashed_thread report:report];
+      if (foundSelector == NULL)
+        foundSelector = [[self class] selectorForRegisterWithName:@"r2" ofThread:crashed_thread report:report];
+    }
+#endif
+    
+    if (foundSelector) {
+      [text appendFormat: @"Application Specific Information:\n"];
+      [text appendFormat: @"Selector name found in current argument registers: %@\n", foundSelector];
+      [text appendString: @"\n"];
+    }
   }
   
   /* If an exception stack trace is available, output an Apple-compatible backtrace. */
@@ -289,24 +458,22 @@ static NSInteger bit_binaryImageSort(id binary1, id binary2, void *context);
      * post-processed report, Apple writes this out as full frame entries. We use the latter format. */
     for (NSUInteger frame_idx = 0; frame_idx < [exception.stackFrames count]; frame_idx++) {
       BITPLCrashReportStackFrameInfo *frameInfo = [exception.stackFrames objectAtIndex: frame_idx];
-      [text appendString: [self bit_formatStackFrame: frameInfo frameIndex: frame_idx report: report lp64: lp64]];
+      [text appendString: [[self class] bit_formatStackFrame: frameInfo frameIndex: frame_idx report: report lp64: lp64]];
     }
     [text appendString: @"\n"];
   }
   
   /* Threads */
-  BITPLCrashReportThreadInfo *crashed_thread = nil;
   NSInteger maxThreadNum = 0;
   for (BITPLCrashReportThreadInfo *thread in report.threads) {
     if (thread.crashed) {
       [text appendFormat: @"Thread %ld Crashed:\n", (long) thread.threadNumber];
-      crashed_thread = thread;
     } else {
       [text appendFormat: @"Thread %ld:\n", (long) thread.threadNumber];
     }
     for (NSUInteger frame_idx = 0; frame_idx < [thread.stackFrames count]; frame_idx++) {
       BITPLCrashReportStackFrameInfo *frameInfo = [thread.stackFrames objectAtIndex: frame_idx];
-      [text appendString: [self bit_formatStackFrame: frameInfo frameIndex: frame_idx report: report lp64: lp64]];
+      [text appendString: [[self class] bit_formatStackFrame: frameInfo frameIndex: frame_idx report: report lp64: lp64]];
     }
     [text appendString: @"\n"];
     
@@ -365,7 +532,7 @@ static NSInteger bit_binaryImageSort(id binary1, id binary2, void *context);
       uuid = @"???";
     
     /* Determine the architecture string */
-    NSString *archName = [self bit_archNameFromImageInfo:imageInfo];
+    NSString *archName = [[self class] bit_archNameFromImageInfo:imageInfo];
     
     /* Determine if this is the main executable or an app specific framework*/
     NSString *binaryDesignator = @" ";
@@ -405,6 +572,43 @@ static NSInteger bit_binaryImageSort(id binary1, id binary2, void *context);
 }
 
 /**
+ *  Return the selector string of a given register name
+ *
+ *  @param regName The name of the register to use for getting the address
+ *  @param thread  The crashed thread
+ *  @param images  NSArray of binary images
+ *
+ *  @return The selector as a C string or NULL if no selector was found
+ */
++ (NSString *)selectorForRegisterWithName:(NSString *)regName ofThread:(BITPLCrashReportThreadInfo *)thread report:(BITPLCrashReport *)report {
+  // get the address for the register
+  uint64_t regAddress = 0;
+  
+  for (BITPLCrashReportRegisterInfo *reg in thread.registers) {
+    if ([reg.registerName isEqualToString:regName]) {
+      regAddress = reg.registerValue;
+      break;
+    }
+  }
+  
+  if (regAddress == 0)
+    return nil;
+  
+  BITPLCrashReportBinaryImageInfo *imageForRegAddress = [report imageForAddress:regAddress];
+  if (imageForRegAddress) {
+    // get the SEL
+    const char *foundSelector = findSEL([imageForRegAddress.imageName UTF8String], imageForRegAddress.imageUUID, regAddress - (uint64_t)imageForRegAddress.imageBaseAddress);
+    
+    if (foundSelector != NULL) {
+      return [NSString stringWithUTF8String:foundSelector];
+    }
+  }
+    
+  return nil;
+}
+
+
+/**
  * Returns an array of app UUIDs and their architecture
  * As a dictionary for each element
  *
@@ -425,7 +629,7 @@ static NSInteger bit_binaryImageSort(id binary1, id binary2, void *context);
       uuid = @"???";
     
     /* Determine the architecture string */
-    NSString *archName = [self bit_archNameFromImageInfo:imageInfo];
+    NSString *archName = [[self class] bit_archNameFromImageInfo:imageInfo];
     
     /* Determine if this is the app executable or app specific framework */
     NSString *imagePath = [imageInfo.imageName stringByStandardizingPath];
@@ -510,11 +714,6 @@ static NSInteger bit_binaryImageSort(id binary1, id binary2, void *context);
   
   return archName;
 }
-
-@end
-
-
-@implementation BITCrashReportTextFormatter (PrivateAPI)
 
 
 /**
@@ -606,21 +805,6 @@ static NSInteger bit_binaryImageSort(id binary1, id binary2, void *context);
           (const uint16_t *)[imageName cStringUsingEncoding: NSUTF16StringEncoding],
           lp64 ? 16 : 8, frameInfo.instructionPointer,
           symbolString];
-}
-
-/**
- * Sort PLCrashReportBinaryImageInfo instances by their starting address.
- */
-static NSInteger bit_binaryImageSort(id binary1, id binary2, void *context) {
-  uint64_t addr1 = [binary1 imageBaseAddress];
-  uint64_t addr2 = [binary2 imageBaseAddress];
-  
-  if (addr1 < addr2)
-    return NSOrderedAscending;
-  else if (addr1 > addr2)
-    return NSOrderedDescending;
-  else
-    return NSOrderedSame;
 }
 
 @end

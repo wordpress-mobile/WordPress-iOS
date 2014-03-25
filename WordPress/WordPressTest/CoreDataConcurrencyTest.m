@@ -13,6 +13,14 @@
 #import "ContextManager.h"
 #import <objc/runtime.h>
 
+@implementation WPAccount (CoreDataFakeApi)
+
+- (WordPressComApi *)restApi {
+    return nil;
+}
+
+@end
+
 @interface CoreDataConcurrencyTest : XCTestCase
 @end
 
@@ -24,7 +32,7 @@
 
     ATHStart();
     
-    WPAccount *account = [WPAccount createOrUpdateWordPressComAccountWithUsername:@"test" password:@"test" authToken:nil context:[ContextManager sharedInstance].mainContext];
+    WPAccount *account = [WPAccount createOrUpdateWordPressComAccountWithUsername:@"test" password:@"test" authToken:@"token" context:[ContextManager sharedInstance].mainContext];
     
     ATHEnd();
     [WPAccount setDefaultWordPressComAccount:account];
@@ -104,7 +112,7 @@
     ATHStart();
     
     // Create account in background context
-    WPAccount *account = [WPAccount createOrUpdateWordPressComAccountWithUsername:@"test" password:@"test" authToken:nil
+    WPAccount *account = [WPAccount createOrUpdateWordPressComAccountWithUsername:@"test" password:@"test" authToken:@"token"
                                                                       context:backgroundMOC];
 
     ATHWait();

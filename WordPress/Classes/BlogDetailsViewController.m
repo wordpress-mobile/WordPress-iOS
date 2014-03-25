@@ -11,9 +11,9 @@
 #import "EditSiteViewController.h"
 #import "PagesViewController.h"
 #import "CommentsViewController.h"
-#import "StatsWebViewController.h"
 #import "ThemeBrowserViewController.h"
 #import "MediaBrowserViewController.h"
+#import "StatsViewController.h"
 #import "WPWebViewController.h"
 #import "WPTableViewCell.h"
 #import "ContextManager.h"
@@ -128,7 +128,7 @@ NSString * const WPBlogDetailsBlogKey = @"WPBlogDetailsBlogKey";
     } else if (indexPath.row == BlogDetailsRowComments) {
         cell.textLabel.text = NSLocalizedString(@"Comments", nil);
         cell.imageView.image = [UIImage imageNamed:@"icon-menu-comments"];
-        int numberOfPendingComments = [self.blog numberOfPendingComments];
+        NSUInteger numberOfPendingComments = [self.blog numberOfPendingComments];
         if (numberOfPendingComments > 0) {
             cell.detailTextLabel.text = [NSString stringWithFormat:@"%d", numberOfPendingComments];
         }
@@ -147,8 +147,8 @@ NSString * const WPBlogDetailsBlogKey = @"WPBlogDetailsBlogKey";
     } else if ([self isRowForViewAdmin:indexPath.row]) {
         cell.textLabel.text = NSLocalizedString(@"View Admin", nil);
         cell.imageView.image = [UIImage imageNamed:@"icon-menu-viewadmin"];
-    } else if ([self isRowForEditBlog:indexPath.row]) {
-        cell.textLabel.text = NSLocalizedString(@"Edit Blog", nil);
+    } else if (indexPath.row == BlogDetailsRowEdit) {
+        cell.textLabel.text = NSLocalizedString(@"Edit Site", nil);
         cell.imageView.image = [UIImage imageNamed:@"icon-menu-settings"];
     }
 }
@@ -184,14 +184,14 @@ NSString * const WPBlogDetailsBlogKey = @"WPBlogDetailsBlogKey";
         controllerClass = [CommentsViewController class];
     } else if (indexPath.row == BlogDetailsRowStats) {
         [WPMobileStats incrementProperty:StatsPropertySidebarSiteClickedStats forEvent:StatsEventAppClosed];
-        controllerClass =  [StatsWebViewController class];
+        controllerClass =  [StatsViewController class];
     } else if ([self shouldShowThemesOption] && indexPath.row == BlogDetailsRowThemes) {
         [WPMobileStats incrementProperty:StatsPropertySidebarSiteClickedThemes forEvent:StatsEventAppClosed];
         controllerClass = [ThemeBrowserViewController class];
     } else if ([self isRowForMedia:indexPath.row]) {
         [WPMobileStats incrementProperty:StatsPropertySidebarSiteClickedMediaLibrary forEvent:StatsEventAppClosed];
         controllerClass = [MediaBrowserViewController class];
-    } else if ([self isRowForViewSite:indexPath.row]) {
+    } else if (indexPath.row == BlogDetailsRowViewSite) {
         [self showViewSiteForBlog:self.blog];
     } else if ([self isRowForViewAdmin:indexPath.row]) {
         [self showViewAdminForBlog:self.blog];

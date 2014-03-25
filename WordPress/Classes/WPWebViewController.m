@@ -56,7 +56,10 @@
     [self setLoading:NO];
     self.backButton.enabled = NO;
     self.forwardButton.enabled = NO;
-
+    self.backButton.accessibilityLabel = NSLocalizedString(@"Back", @"Spoken accessibility label");
+    self.forwardButton.accessibilityLabel = NSLocalizedString(@"Forward", @"Spoken accessibility label");
+    self.refreshButton.accessibilityLabel = NSLocalizedString(@"Refresh", @"Spoken accessibility label");
+    
     if (IS_IPHONE) {
         if (!self.hidesLinkOptions) {
             [WPStyleGuide setRightBarButtonItemWithCorrectSpacing:self.optionsButton forNavigationItem:self.navigationItem];
@@ -86,6 +89,7 @@
             self.refreshButton.customView = btn;
             self.iPadNavBar.topItem.title = NSLocalizedString(@"Loading...", @"");
         }
+        self.loadingLabel.text = NSLocalizedString(@"Loading...", @"");
     }
 
     self.toolbar.translucent = NO;
@@ -163,6 +167,7 @@
     [button setImage:image forState:UIControlStateNormal];
     [button addTarget:self action:@selector(showLinkOptions) forControlEvents:UIControlEventTouchUpInside];
     _optionsButton = [[UIBarButtonItem alloc] initWithCustomView:button];
+    _optionsButton.accessibilityLabel = NSLocalizedString(@"Share", @"Spoken accessibility label");
     return _optionsButton;
 }
 

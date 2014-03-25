@@ -30,7 +30,6 @@
 #import "ReaderCommentPublisher.h"
 #import "ContextManager.h"
 
-static CGFloat const RPVCScrollingFastVelocityThreshold = 30.f;
 static CGFloat const RPVCHeaderHeightPhone = 10.f;
 static CGFloat const RPVCMaxImageHeightPercentage = 0.58f;
 static CGFloat const RPVCExtraTableViewHeightPercentage = 2.0f;
@@ -41,11 +40,13 @@ NSString * const RPVCDisplayedNativeFriendFinder = @"DisplayedNativeFriendFinder
 @interface ReaderPostsViewController ()<ReaderTextFormDelegate, WPTableImageSourceDelegate, ReaderCommentPublisherDelegate> {
 	BOOL _hasMoreContent;
 	BOOL _loadingMore;
+    BOOL _viewHasAppeared;
     WPTableImageSource *_featuredImageSource;
 	CGFloat keyboardOffset;
     CGFloat _lastOffset;
     UIPopoverController *_popover;
     WPAnimatedBox *_animatedBox;
+    UIGestureRecognizer *_tapOffKeyboardGesture;
 }
 
 @property (nonatomic, strong) ReaderReblogFormView *readerReblogFormView;
@@ -90,6 +91,7 @@ NSString * const RPVCDisplayedNativeFriendFinder = @"DisplayedNativeFriendFinder
         self.incrementalLoadingSupported = YES;
         
         [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(readerTopicDidChange:) name:ReaderTopicDidChangeNotification object:nil];
+        [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(fetchBlogsAndPrimaryBlog) name:WPAccountDefaultWordPressComAccountChangedNotification object:nil];
 	}
 	return self;
 }
@@ -134,23 +136,18 @@ NSString * const RPVCDisplayedNativeFriendFinder = @"DisplayedNativeFriendFinder
 	_readerReblogFormView.navigationItem = self.navigationItem;
 	_readerReblogFormView.delegate = self;
 	
+    _tapOffKeyboardGesture = [[UITapGestureRecognizer alloc] initWithTarget:self
+                                                                     action:@selector(dismissKeyboard:)];
+    
 	if (_isShowingReblogForm) {
 		[self showReblogForm];
 	}
 
-    [WPMobileStats trackEventForWPCom:StatsEventReaderOpened properties:[self categoryPropertyForStats]];
-    [WPMobileStats pingWPComStatsEndpoint:@"home_page"];
-    [WPMobileStats logQuantcastEvent:@"newdash.home_page"];
-    [WPMobileStats logQuantcastEvent:@"mobile.home_page"];
-    if ([self isCurrentCategoryFreshlyPressed]) {
-        [WPMobileStats logQuantcastEvent:@"newdash.freshly"];
-        [WPMobileStats logQuantcastEvent:@"mobile.freshly"];
-    }
-    
     // Sync content as soon as login or creation occurs
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(didChangeAccount:) name:WPAccountDefaultWordPressComAccountChangedNotification object:nil];
 
     self.inlineComposeView = [[InlineComposeView alloc] initWithFrame:CGRectZero];
+    [self.inlineComposeView setButtonTitle:NSLocalizedString(@"Post", nil)];
 
     self.commentPublisher = [[ReaderCommentPublisher alloc]
                              initWithComposer:self.inlineComposeView
@@ -181,7 +178,13 @@ NSString * const RPVCDisplayedNativeFriendFinder = @"DisplayedNativeFriendFinder
     if (selectedIndexPath) {
         [self.tableView deselectRowAtIndexPath:selectedIndexPath animated:YES];
     }
-    
+
+    if (!_viewHasAppeared) {
+	    [WPMobileStats trackEventForWPCom:StatsEventReaderOpened properties:[self categoryPropertyForStats]];
+	    [WPMobileStats pingWPComStatsEndpoint:@"home_page"];
+        _viewHasAppeared = YES;
+    }
+
     [self resizeTableViewForImagePreloading];
 
     // Delay box animation after the view appears
@@ -385,7 +388,7 @@ NSString * const RPVCDisplayedNativeFriendFinder = @"DisplayedNativeFriendFinder
 	[postView updateActionButtons];
 }
 
-- (void)postView:(ReaderPostView *)postView didReceiveFollowAction:(id)sender {
+- (void)contentView:(ReaderPostView *)postView didReceiveFollowAction:(id)sender {
     UIButton *followButton = (UIButton *)sender;
     ReaderPostTableViewCell *cell = [ReaderPostTableViewCell cellForSubview:sender];
     ReaderPost *post = postView.post;
@@ -404,6 +407,8 @@ NSString * const RPVCDisplayedNativeFriendFinder = @"DisplayedNativeFriendFinder
 }
 
 - (void)postView:(ReaderPostView *)postView didReceiveCommentAction:(id)sender {
+    [self.view addGestureRecognizer:_tapOffKeyboardGesture];
+    
     if (self.commentPublisher.post == postView.post) {
         [self.inlineComposeView toggleComposer];
         return;
@@ -453,6 +458,16 @@ NSString * const RPVCDisplayedNativeFriendFinder = @"DisplayedNativeFriendFinder
         navController.navigationBar.translucent = NO;
         [self presentViewController:navController animated:YES completion:nil];
     }
+}
+
+- (void)dismissKeyboard:(id)sender {
+    for (UIGestureRecognizer *gesture in self.view.gestureRecognizers) {
+        if ([gesture isEqual:_tapOffKeyboardGesture]) {
+            [self.view removeGestureRecognizer:gesture];
+        }
+    }
+    
+    [self.inlineComposeView toggleComposer];
 }
 
 #pragma mark - ReaderCommentPublisherDelegate Methods
@@ -525,9 +540,14 @@ NSString * const RPVCDisplayedNativeFriendFinder = @"DisplayedNativeFriendFinder
 #pragma mark - WPTableViewSublass methods
 
 - (NSString *)noResultsTitleText {
-	NSString *prompt;
+	NSString *prompt = NSLocalizedString(@"Sorry. No posts yet.", @"");
+    if ([WPAccount defaultWordPressComAccount] == nil) {
+        return prompt; // un-authed endpoints do not include likes or follows
+    }
+    
 	NSString *endpoint = [ReaderPost currentEndpoint];
 	NSArray *endpoints = [ReaderPost readerEndpoints];
+
 	NSInteger idx = [endpoints indexOfObjectPassingTest:^BOOL(id obj, NSUInteger idx, BOOL *stop) {
 		BOOL match = NO;
 		
@@ -538,11 +558,12 @@ NSString * const RPVCDisplayedNativeFriendFinder = @"DisplayedNativeFriendFinder
 				
 		return match;
 	}];
-	
+    
+	// TODO: need a smarter way to check here since the menu should not be hard coded.
 	switch (idx) {
 		case 0:
 			// Blogs I follow
-			prompt = NSLocalizedString(@"You're not following any blogs yet.", @"");
+			prompt = NSLocalizedString(@"You're not following any sites yet.", @"");
 			break;
 			
 		case 2:
@@ -552,7 +573,6 @@ NSString * const RPVCDisplayedNativeFriendFinder = @"DisplayedNativeFriendFinder
 			
 		default:
 			// Topics // freshly pressed.
-			prompt = NSLocalizedString(@"Sorry. No posts yet.", @"");
 			break;
 			
 
@@ -562,7 +582,7 @@ NSString * const RPVCDisplayedNativeFriendFinder = @"DisplayedNativeFriendFinder
 
 
 - (NSString *)noResultsMessageText {
-	return NSLocalizedString(@"Tap the tag icon to browse posts from popular blogs.", nil);
+	return NSLocalizedString(@"Tap the tag icon to browse posts from popular sites.", nil);
 }
 
 - (UIView *)noResultsAccessoryView {
@@ -608,7 +628,7 @@ NSString * const RPVCDisplayedNativeFriendFinder = @"DisplayedNativeFriendFinder
 	
 	ReaderPost *post = (ReaderPost *)[self.resultsController objectAtIndexPath:indexPath];
 
-	[cell configureCell:post];
+	[cell configureCell:post withWidth:self.tableView.bounds.size.width];
     [self setImageForPost:post forCell:cell indexPath:indexPath];
     [self setAvatarForPost:post forCell:cell indexPath:indexPath];
     
@@ -678,7 +698,7 @@ NSString * const RPVCDisplayedNativeFriendFinder = @"DisplayedNativeFriendFinder
     NSString *username = [[WPAccount defaultWordPressComAccount] username];
     NSString *password = [[WPAccount defaultWordPressComAccount] password];
     NSMutableURLRequest *mRequest = [[NSMutableURLRequest alloc] init];
-    NSString *requestBody = [NSString stringWithFormat:@"log=%@&pwd=%@&redirect_to=http://wordpress.com",
+    NSString *requestBody = [NSString stringWithFormat:@"log=%@&pwd=%@&redirect_to=https://wordpress.com",
                              [username stringByUrlEncoding],
                              [password stringByUrlEncoding]];
     
@@ -737,13 +757,7 @@ NSString * const RPVCDisplayedNativeFriendFinder = @"DisplayedNativeFriendFinder
 	ReaderPost *post = self.resultsController.fetchedObjects.lastObject;
 	NSNumber *numberToSync = [NSNumber numberWithInteger:ReaderPostsToSync];
 	NSString *endpoint = [ReaderPost currentEndpoint];
-	id before;
-	if ([endpoint isEqualToString:@"freshly-pressed"]) {
-		// freshly-pressed wants an ISO string but the rest want a timestamp.
-		before = [DateUtils isoStringFromDate:post.date_created_gmt];
-	} else {
-		before = [NSNumber numberWithInteger:[post.date_created_gmt timeIntervalSince1970]];
-	}
+	id before = [DateUtils isoStringFromDate:post.date_created_gmt];
 
 	NSDictionary *params = @{@"before":before, @"number":numberToSync, @"per_page":numberToSync};
 
@@ -763,8 +777,6 @@ NSString * const RPVCDisplayedNativeFriendFinder = @"DisplayedNativeFriendFinder
 							 }];
     
     [WPMobileStats trackEventForWPCom:StatsEventReaderInfiniteScroll properties:[self categoryPropertyForStats]];
-    [WPMobileStats logQuantcastEvent:@"newdash.infinite_scroll"];
-    [WPMobileStats logQuantcastEvent:@"mobile.infinite_scroll"];
 }
 
 - (UITableViewRowAnimation)tableViewRowAnimation {
@@ -890,7 +902,7 @@ NSString * const RPVCDisplayedNativeFriendFinder = @"DisplayedNativeFriendFinder
     [self syncItems];
 	[self configureNoResultsView];
     
-	self.title = [[ReaderPost currentTopic] stringForKey:@"title"];
+	self.title = [[[ReaderPost currentTopic] stringForKey:@"title"] capitalizedString];
 
     if ([WordPressAppDelegate sharedWordPressApplicationDelegate].connectionAvailable == YES && ![self isSyncing] ) {
 		[[NSUserDefaults standardUserDefaults] removeObjectForKey:ReaderLastSyncDateKey];
@@ -900,19 +912,22 @@ NSString * const RPVCDisplayedNativeFriendFinder = @"DisplayedNativeFriendFinder
     if ([self isCurrentCategoryFreshlyPressed]) {
         [WPMobileStats trackEventForWPCom:StatsEventReaderSelectedFreshlyPressedTopic];
         [WPMobileStats pingWPComStatsEndpoint:@"freshly"];
-        [WPMobileStats logQuantcastEvent:@"newdash.fresh"];
-        [WPMobileStats logQuantcastEvent:@"mobile.fresh"];
     } else {
         [WPMobileStats trackEventForWPCom:StatsEventReaderSelectedCategory properties:[self categoryPropertyForStats]];
     }
 }
 
 - (void)didChangeAccount:(NSNotification *)notification {
-    if ([WPAccount defaultWordPressComAccount]) {
+    NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
+    [defaults removeObjectForKey:ReaderCurrentTopicKey];
+    [defaults removeObjectForKey:ReaderLastSyncDateKey];
+    [NSUserDefaults resetStandardUserDefaults];
+    [self resetResultsController];
+    [self.tableView reloadData];
+    [self.navigationController popToViewController:self animated:NO];
+    
+    if ([WPAccount defaultWordPressComAccount] && [self isViewLoaded]) {
         [self syncItems];
-    } else {
-        [[NSUserDefaults standardUserDefaults] removeObjectForKey:ReaderLastSyncDateKey];
-        [NSUserDefaults resetStandardUserDefaults];
     }
 }
 
@@ -926,9 +941,13 @@ NSString * const RPVCDisplayedNativeFriendFinder = @"DisplayedNativeFriendFinder
 - (NSString *)currentCategory {
     NSDictionary *categoryDetails = [[NSUserDefaults standardUserDefaults] objectForKey:ReaderCurrentTopicKey];
     NSString *category = [categoryDetails stringForKey:@"endpoint"];
-    if (category == nil)
-        return @"reader/following";
-    
+    if (category == nil) {
+        if ([WPAccount defaultWordPressComAccount] != nil) {
+            return @"read/following";
+        } else {
+            return @"freshly-pressed";
+        }
+    }
     return category;
 }
 
@@ -938,13 +957,19 @@ NSString * const RPVCDisplayedNativeFriendFinder = @"DisplayedNativeFriendFinder
 
 - (void)fetchBlogsAndPrimaryBlog {
 	NSURL *xmlrpc;
-    NSString *username, *password;
+    NSString *username, *password, *authToken;
     WPAccount *account = [WPAccount defaultWordPressComAccount];
+    if (!account) {
+        return;
+    }
+	
 	xmlrpc = [NSURL URLWithString:@"https://wordpress.com/xmlrpc.php"];
 	username = account.username;
 	password = account.password;
-	
+    authToken = account.authToken;
+    
     WPXMLRPCClient *api = [WPXMLRPCClient clientWithXMLRPCEndpoint:xmlrpc];
+    [api setAuthorizationHeaderWithToken:authToken];
     [api callMethod:@"wp.getUsersBlogs"
          parameters:[NSArray arrayWithObjects:username, password, nil]
             success:^(AFHTTPRequestOperation *operation, id responseObject) {
@@ -967,13 +992,6 @@ NSString * const RPVCDisplayedNativeFriendFinder = @"DisplayedNativeFriendFinder
                                                      return;
                                                  
                                                  NSDictionary *dict = (NSDictionary *)responseObject;
-                                                 NSString *userID = [dict stringForKey:@"ID"];
-                                                 if (userID != nil) {
-                                                     [WPMobileStats updateUserIDForStats:userID];
-                                                     [[NSUserDefaults standardUserDefaults] setObject:userID forKey:@"wpcom_user_id"];
-                                                     [NSUserDefaults resetStandardUserDefaults];
-                                                 }
-                                                 
                                                  __block NSNumber *preferredBlogId;
                                                  NSNumber *primaryBlog = [dict objectForKey:@"primary_blog"];
                                                  [usersBlogs enumerateObjectsUsingBlock:^(id obj, NSUInteger idx, BOOL *stop) {
@@ -1001,6 +1019,7 @@ NSString * const RPVCDisplayedNativeFriendFinder = @"DisplayedNativeFriendFinder
 
 			} failure:^(AFHTTPRequestOperation *operation, NSError *error) {
 				// Fail silently.
+                DDLogError(@"Failed retrieving user blogs in ReaderPostsViewController: %@", error);
             }];
 }
 

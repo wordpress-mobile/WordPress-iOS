@@ -11,14 +11,13 @@
 #import "UIImageView+Gravatar.h"
 #import "WordPressComApi.h"
 #import "BlogDetailsViewController.h"
-#import "WPTableViewCell.h"
+#import "WPBlogTableViewCell.h"
 #import "ContextManager.h"
 #import "Blog.h"
 #import "WPAccount.h"
 #import "WPTableViewSectionHeaderView.h"
 
 static NSString *const BlogCellIdentifier = @"BlogCell";
-static CGFloat const blavatarImageSize = 50.f;
 
 @interface BlogSelectorViewController ()
 
@@ -54,24 +53,28 @@ static CGFloat const blavatarImageSize = 50.f;
 - (void)viewDidLoad {
     [super viewDidLoad];
     
-    UIBarButtonItem *cancelButtonItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemCancel
-                                                                                      target:self
-                                                                                      action:@selector(cancelButtonTapped:)];
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(wordPressComAccountChanged)
+                                                 name:WPAccountDefaultWordPressComAccountChangedNotification
+                                               object:nil];
     
-    self.navigationItem.leftBarButtonItem = cancelButtonItem;
-    
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(wordPressComAccountChanged) name:WPAccountDefaultWordPressComAccountChangedNotification object:nil];
-    
-    // Remove one-pixel gap resulting from a top-aligned grouped table view
     if (IS_IPHONE) {
+        // Remove one-pixel gap resulting from a top-aligned grouped table view
         UIEdgeInsets tableInset = [self.tableView contentInset];
         tableInset.top = -1;
         self.tableView.contentInset = tableInset;
+        
+        // Cancel button
+        UIBarButtonItem *cancelButtonItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemCancel
+                                                                                          target:self
+                                                                                          action:@selector(cancelButtonTapped:)];
+        
+        self.navigationItem.leftBarButtonItem = cancelButtonItem;
     }
 
     [WPStyleGuide configureColorsForView:self.view andTableView:self.tableView];
- 
-    [self.tableView registerClass:[WPTableViewCell class] forCellReuseIdentifier:BlogCellIdentifier];
+
+    [self.tableView registerClass:[WPBlogTableViewCell class] forCellReuseIdentifier:BlogCellIdentifier];
 }
 
 - (void)viewWillAppear:(BOOL)animated {
@@ -81,6 +84,11 @@ static CGFloat const blavatarImageSize = 50.f;
     self.resultsController.delegate = self;
     [self.resultsController performFetch:nil];
     [self.tableView reloadData];
+
+    // Scroll the currently selected object into view.
+    NSManagedObject *obj = [self.resultsController.managedObjectContext objectWithID:self.selectedObjectID];
+    NSIndexPath *indexPath = [self.resultsController indexPathForObject:obj];
+    [self.tableView scrollToRowAtIndexPath:indexPath atScrollPosition:UITableViewScrollPositionNone animated:NO];
 }
 
 - (void)viewWillDisappear:(BOOL)animated {
@@ -132,8 +140,8 @@ static CGFloat const blavatarImageSize = 50.f;
 {
     
     UITableViewCell *cell = [self.tableView dequeueReusableCellWithIdentifier:BlogCellIdentifier];
-    
-    [WPStyleGuide configureTableViewCell:cell];
+
+    [WPStyleGuide configureTableViewSmallSubtitleCell:cell];
     [self configureCell:cell atIndexPath:indexPath];
 
     return cell;
@@ -175,6 +183,7 @@ static CGFloat const blavatarImageSize = 50.f;
     Blog *blog = [self.resultsController objectAtIndexPath:indexPath];
     if ([blog.blogName length] != 0) {
         cell.textLabel.text = blog.blogName;
+        cell.detailTextLabel.text = blog.url;
     } else {
         cell.textLabel.text = blog.url;
     }
@@ -210,7 +219,9 @@ static CGFloat const blavatarImageSize = 50.f;
         }
         
         if ([previousIndexPath compare:indexPath] == NSOrderedSame) {
-            // Do nothing
+            // User tapped the already selected item. Treat this as a cancel event
+            // so the picker can be dismissed without changes.
+            [self cancelButtonTapped:nil];
             return;
         }
     }
@@ -258,7 +269,7 @@ static CGFloat const blavatarImageSize = 50.f;
     
     NSError *error = nil;
     if (![_resultsController performFetch:&error]) {
-        DDLogError(@"Couldn't fetch blogs: %@", [error localizedDescription]);
+        DDLogError(@"Couldn't fetch sites: %@", [error localizedDescription]);
         _resultsController = nil;
     }
     return _resultsController;
@@ -274,7 +285,7 @@ static CGFloat const blavatarImageSize = 50.f;
 
 - (NSString *)controller:(NSFetchedResultsController *)controller sectionIndexTitleForSectionName:(NSString *)sectionName {
     if ([sectionName isEqualToString:@"1"]) {
-        return [NSString stringWithFormat:NSLocalizedString(@"%@'s blogs", @"Section header for WordPress.com blogs"), [[WPAccount defaultWordPressComAccount] username]];
+        return [NSString stringWithFormat:NSLocalizedString(@"%@'s sites", @"Section header for WordPress.com blogs"), [[WPAccount defaultWordPressComAccount] username]];
     }
     return NSLocalizedString(@"Self Hosted", @"Section header for self hosted blogs");
 }

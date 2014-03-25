@@ -14,35 +14,40 @@
 #import "LoginViewController.h"
 #import "BlogDetailsViewController.h"
 #import "WPTableViewCell.h"
+#import "WPBlogTableViewCell.h"
 #import "ContextManager.h"
 #import "Blog.h"
 #import "WPAccount.h"
 #import "WPTableViewSectionHeaderView.h"
 
+static NSString *const AddSiteCellIdentifier = @"AddSiteCell";
 static NSString *const BlogCellIdentifier = @"BlogCell";
 CGFloat const blavatarImageSize = 50.f;
-NSString * const WPBlogListRestorationID = @"WPBlogListID";
 
-@interface BlogListViewController ()
+@interface BlogListViewController () <UIViewControllerRestoration>
 
 @property (nonatomic, strong) NSFetchedResultsController *resultsController;
 @property (nonatomic, strong) UIBarButtonItem *settingsButton;
-@property (nonatomic) BOOL sectionDeletedByController;
 @end
 
 @implementation BlogListViewController
+
++ (UIViewController *)viewControllerWithRestorationIdentifierPath:(NSArray *)identifierComponents coder:(NSCoder *)coder {
+    return [[self alloc] initWithStyle:UITableViewStyleGrouped];
+}
+
+- (void)dealloc {
+    [[NSNotificationCenter defaultCenter] removeObserver:self];
+}
 
 - (id)initWithStyle:(UITableViewStyle)style
 {
     self = [super initWithStyle:UITableViewStyleGrouped];
     if (self) {
-        self.restorationIdentifier = WPBlogListRestorationID;
+        self.restorationIdentifier = NSStringFromClass([self class]);
+        self.restorationClass = [self class];
     }
     return self;
-}
-
-- (void)dealloc {
-    [[NSNotificationCenter defaultCenter] removeObserver:self];
 }
 
 - (NSString *)modelIdentifierForElementAtIndexPath:(NSIndexPath *)indexPath inView:(UIView *)view {
@@ -91,8 +96,9 @@ NSString * const WPBlogListRestorationID = @"WPBlogListID";
     }
     
     [WPStyleGuide configureColorsForView:self.view andTableView:self.tableView];
- 
-    [self.tableView registerClass:[WPTableViewCell class] forCellReuseIdentifier:BlogCellIdentifier];
+
+    [self.tableView registerClass:[WPTableViewCell class] forCellReuseIdentifier:AddSiteCellIdentifier];
+    [self.tableView registerClass:[WPBlogTableViewCell class] forCellReuseIdentifier:BlogCellIdentifier];
     self.tableView.allowsSelectionDuringEditing = YES;
     self.navigationItem.leftBarButtonItem = self.editButtonItem;
 
@@ -121,6 +127,24 @@ NSString * const WPBlogListRestorationID = @"WPBlogListID";
 
 - (BOOL)hasDotComAndSelfHosted {
     return ([[self.resultsController sections] count] > 1);
+}
+
+- (BOOL)shouldBypassBlogListViewControllerWhenSelectedFromTabBar
+{
+    return [self numSites] == 1;
+}
+
+- (void)bypassBlogListViewController
+{
+    if ([self shouldBypassBlogListViewControllerWhenSelectedFromTabBar]) {
+        // We do a delay of 0.0 so that way this doesn't kick off until the next run loop.
+        [self performSelector:@selector(selectFirstSite) withObject:nil afterDelay:0.0];
+    }
+}
+
+- (void)selectFirstSite
+{
+    [self tableView:self.tableView didSelectRowAtIndexPath:[NSIndexPath indexPathForRow:0 inSection:0]];
 }
 
 
@@ -176,14 +200,19 @@ NSString * const WPBlogListRestorationID = @"WPBlogListID";
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
     
-    UITableViewCell *cell = [self.tableView dequeueReusableCellWithIdentifier:BlogCellIdentifier];
-    
+    UITableViewCell *cell;
+    if ([indexPath isEqual:[self indexPathForAddSite]]) {
+        cell = [self.tableView dequeueReusableCellWithIdentifier:AddSiteCellIdentifier];
+    } else {
+        cell = [self.tableView dequeueReusableCellWithIdentifier:BlogCellIdentifier];
+    }
+
     [self configureCell:cell atIndexPath:indexPath];
     
     if ([indexPath isEqual:[self indexPathForAddSite]]) {
         [WPStyleGuide configureTableViewActionCell:cell];
     } else {
-        [WPStyleGuide configureTableViewCell:cell];
+        [WPStyleGuide configureTableViewSmallSubtitleCell:cell];
     }
 
     return cell;
@@ -283,8 +312,10 @@ NSString * const WPBlogListRestorationID = @"WPBlogListID";
         Blog *blog = [self.resultsController objectAtIndexPath:indexPath];
         if ([blog.blogName length] != 0) {
             cell.textLabel.text = blog.blogName;
+            cell.detailTextLabel.text = [blog displayURL];
         } else {
-            cell.textLabel.text = blog.url;
+            cell.textLabel.text = [blog displayURL];
+            cell.detailTextLabel.text = @"";
         }
         
         [cell.imageView setImageWithBlavatarUrl:blog.blavatarUrl isWPcom:blog.isWPcom];
@@ -351,7 +382,7 @@ NSString * const WPBlogListRestorationID = @"WPBlogListID";
         [WPMobileStats trackEventForWPCom:StatsEventSettingsClickedEditBlog];
         
         Blog *blog = [self.resultsController objectAtIndexPath:indexPath];
-        
+        [blog flagAsLastUsed];
         BlogDetailsViewController *blogDetailsViewController = [[BlogDetailsViewController alloc] init];
         blogDetailsViewController.blog = blog;
         [self.navigationController pushViewController:blogDetailsViewController animated:YES];
@@ -416,7 +447,7 @@ NSString * const WPBlogListRestorationID = @"WPBlogListID";
     
     NSError *error = nil;
     if (![_resultsController performFetch:&error]) {
-        DDLogError(@"Couldn't fetch blogs: %@", [error localizedDescription]);
+        DDLogError(@"Couldn't fetch sites: %@", [error localizedDescription]);
         _resultsController = nil;
     }
     return _resultsController;
@@ -435,102 +466,19 @@ NSString * const WPBlogListRestorationID = @"WPBlogListID";
     
     NSError *error = nil;
     if (![self.resultsController performFetch:&error]) {
-        DDLogError(@"Couldn't fetch blogs: %@", [error localizedDescription]);
+        DDLogError(@"Couldn't fetch sites: %@", [error localizedDescription]);
     }
     
     [self.tableView reloadData];
 }
 
-- (void)controllerWillChangeContent:(NSFetchedResultsController *)controller {
-    [self.tableView beginUpdates];
-}
-
 - (void)controllerDidChangeContent:(NSFetchedResultsController *)controller {
-    [self.tableView endUpdates];
-
-    if (self.sectionDeletedByController) {
-        /*
-         This covers the corner case when the only self hosted blog is removed and
-         there's a WordPress.com account.
-         
-         Since we only show the section title if there are multiple blog sections,
-         the section header wouldn't change when the section count changed, and it
-         would still display the wordpress.com header.
-         
-         It's not a big deal but it wouldn't be consistent with future appearances
-         of the same view.
-         */
-        
-        [self.tableView reloadSections:[NSIndexSet indexSetWithIndex:0] withRowAnimation:UITableViewRowAnimationFade];
-        self.sectionDeletedByController = NO;
-    }
-}
-
-- (void)controller:(NSFetchedResultsController *)controller
-   didChangeObject:(id)anObject
-       atIndexPath:(NSIndexPath *)indexPath
-     forChangeType:(NSFetchedResultsChangeType)type
-      newIndexPath:(NSIndexPath *)newIndexPath {
-    
-    if (NSFetchedResultsChangeUpdate == type && newIndexPath != nil) {
-        // Seriously, Apple?
-        // http://developer.apple.com/library/ios/#releasenotes/iPhone/NSFetchedResultsChangeMoveReportedAsNSFetchedResultsChangeUpdate/_index.html
-        type = NSFetchedResultsChangeMove;
-    }
-    
-    switch (type) {
-        case NSFetchedResultsChangeInsert:
-            [self.tableView insertRowsAtIndexPaths:[NSArray arrayWithObject:newIndexPath] withRowAnimation:UITableViewRowAnimationFade];
-            break;
-            
-        case NSFetchedResultsChangeDelete:
-            [self.tableView deleteRowsAtIndexPaths:[NSArray arrayWithObject:indexPath] withRowAnimation:UITableViewRowAnimationFade];
-            break;
-            
-        case NSFetchedResultsChangeUpdate:
-            [self configureCell:[self.tableView cellForRowAtIndexPath:indexPath] atIndexPath:indexPath];
-            break;
-            
-        case NSFetchedResultsChangeMove:
-            [self.tableView deleteRowsAtIndexPaths:[NSArray
-                                                    arrayWithObject:indexPath] withRowAnimation:UITableViewRowAnimationFade];
-            [self.tableView insertRowsAtIndexPaths:[NSArray
-                                                    arrayWithObject:newIndexPath] withRowAnimation:UITableViewRowAnimationFade];
-            break;
-    }
-}
-
-- (void)controller:(NSFetchedResultsController *)controller didChangeSection:(id<NSFetchedResultsSectionInfo>)sectionInfo atIndex:(NSUInteger)sectionIndex forChangeType:(NSFetchedResultsChangeType)type {
-    /*
-     The section for self hosted is always present, since it includes the
-     'Add Site' row.
-
-     If we tried to add/remove the section when the results controller changed,
-     it would crash, as the table's data source section count would remain the
-     same.
-     */
-    if (sectionIndex == [self sectionForSelfHosted]) {
-        return;
-    }
-
-    switch (type) {
-        case NSFetchedResultsChangeInsert:
-            [self.tableView insertSections:[NSIndexSet indexSetWithIndex:sectionIndex] withRowAnimation:UITableViewRowAnimationFade];
-            break;
-
-        case NSFetchedResultsChangeDelete:
-            [self.tableView deleteSections:[NSIndexSet indexSetWithIndex:sectionIndex] withRowAnimation:UITableViewRowAnimationFade];
-            self.sectionDeletedByController = YES;
-            break;
-
-        default:
-            break;
-    }
+    [self.tableView reloadData];
 }
 
 - (NSString *)controller:(NSFetchedResultsController *)controller sectionIndexTitleForSectionName:(NSString *)sectionName {
     if ([sectionName isEqualToString:@"1"]) {
-        return [NSString stringWithFormat:NSLocalizedString(@"%@'s blogs", @"Section header for WordPress.com blogs"), [[WPAccount defaultWordPressComAccount] username]];
+        return [NSString stringWithFormat:NSLocalizedString(@"%@'s sites", @"Section header for WordPress.com blogs"), [[WPAccount defaultWordPressComAccount] username]];
     }
     return NSLocalizedString(@"Self Hosted", @"Section header for self hosted blogs");
 }

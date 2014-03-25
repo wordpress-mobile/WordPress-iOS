@@ -33,16 +33,6 @@ NSString *const GravatarDefault = @"gravatar.png";
 
 - (void)setImageWithGravatarEmail:(NSString *)emailAddress fallbackImage:(UIImage *)fallbackImage
 {
-    static UIImage *gravatarDefaultImage;
-    if (gravatarDefaultImage == nil) {
-        gravatarDefaultImage = [UIImage imageNamed:GravatarDefault];
-    }
-    
-    UIImage *defaultImage = fallbackImage;
-    if (defaultImage == nil) {
-        defaultImage = gravatarDefaultImage;
-    }
-    
     NSMutableURLRequest *request = [NSMutableURLRequest requestWithURL:[self gravatarURLForEmail:emailAddress]];
     [request addValue:@"image/*" forHTTPHeaderField:@"Accept"];
     

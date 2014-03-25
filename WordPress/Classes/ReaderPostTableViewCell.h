@@ -18,7 +18,7 @@
 + (CGFloat)cellHeightForPost:(ReaderPost *)post withWidth:(CGFloat)width;
 + (ReaderPostTableViewCell *)cellForSubview:(UIView *)subview;
 
-- (void)configureCell:(ReaderPost *)post;
+- (void)configureCell:(ReaderPost *)post withWidth:(CGFloat)width;
 
 @property (nonatomic, strong) ReaderPost *post;
 @property (nonatomic, strong) ReaderPostView *postView;
