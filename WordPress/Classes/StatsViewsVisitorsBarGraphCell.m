@@ -124,10 +124,13 @@ CGFloat heightFromRangeToRange(NSUInteger height, CGFloat maxOldRange, CGFloat m
     // Y axis line markers and values
     // Round up and extend past max value to the next 10s
     NSUInteger yAxisTicks = 7;
-    CGFloat s = (CGFloat)maxYPoint/(CGFloat)yAxisTicks;
-    long len = log10(s);
-    long div = pow(10, len);
-    NSUInteger stepValue = ceil(s / div) * div;
+    NSUInteger stepValue = 1;
+    if (maxYPoint > 0) {
+        CGFloat s = (CGFloat)maxYPoint/(CGFloat)yAxisTicks;
+        long len = (long)(double)log10(s);
+        long div = (long)(double)pow(10, len);
+        stepValue = ceil(s / div) * div;
+    }
     CGFloat yAxisStepSize = yAxisHeight/yAxisTicks;
     
     for (NSUInteger tick = 0; tick <= yAxisTicks; tick++) {
@@ -249,7 +252,7 @@ CGFloat heightFromRangeToRange(NSUInteger height, CGFloat maxOldRange, CGFloat m
     self.barGraph = barGraph;
     [self.barGraph addCategory:StatsViewsCategory color:[WPStyleGuide statsLighterBlue]];
     [self.barGraph addCategory:StatsVisitorsCategory color:[WPStyleGuide statsDarkerBlue]];
-    if (categoryData) {
+    if (categoryData && [categoryData count] > 0) {
         [self.barGraph setBarsWithCount:categoryData[StatsViewsCategory] forCategory:StatsViewsCategory];
         [self.barGraph setBarsWithCount:categoryData[StatsVisitorsCategory] forCategory:StatsVisitorsCategory];
     }
