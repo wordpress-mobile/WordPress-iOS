@@ -34,6 +34,7 @@ CGFloat const EPVCTextViewTopPadding = 7.0f;
 @property (nonatomic, strong) WPAlertView *linkHelperAlertView;
 @property (nonatomic, strong) UIPopoverController *blogSelectorPopover;
 @property (nonatomic) BOOL dismissingBlogPicker;
+@property (nonatomic) CGPoint scrollOffsetRestorePoint;
 
 @end
 
@@ -1032,25 +1033,19 @@ CGFloat const EPVCTextViewTopPadding = 7.0f;
     if (UIInterfaceOrientationIsLandscape(self.interfaceOrientation) && IS_IPHONE && !_isExternalKeyboard) {
         [_linkHelperAlertView hideTitleAndDescription:YES];
     }
+
+    self.scrollOffsetRestorePoint = self.textView.contentOffset;
     
     __block UITextView *editorTextView = _textView;
     __block id fles = self;
     _linkHelperAlertView.button1CompletionBlock = ^(WPAlertView *overlayView){
         // Cancel
         [overlayView dismiss];
-        
         [editorTextView becomeFirstResponder];
-        
         [fles setLinkHelperAlertView:nil];
     };
     _linkHelperAlertView.button2CompletionBlock = ^(WPAlertView *overlayView){
         // Insert
-        
-        //Disable scrolling temporarily otherwise inserting text will scroll to the bottom in iOS6 and below.
-        editorTextView.scrollEnabled = NO;
-        [overlayView dismiss];
-        
-        [editorTextView becomeFirstResponder];
         
         UITextField *infoText = overlayView.firstTextField;
         UITextField *urlField = overlayView.secondTextField;
@@ -1059,8 +1054,9 @@ CGFloat const EPVCTextViewTopPadding = 7.0f;
             return;
         }
         
-        if ((infoText.text == nil) || ([infoText.text isEqualToString:@""]))
+        if ((infoText.text == nil) || ([infoText.text isEqualToString:@""])) {
             infoText.text = urlField.text;
+        }
         
         NSString *urlString = [fles validateNewLinkInfo:[urlField.text stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceCharacterSet]]];
         NSString *aTagText = [NSString stringWithFormat:@"<a href=\"%@\">%@</a>", urlString, infoText.text];
@@ -1069,24 +1065,24 @@ CGFloat const EPVCTextViewTopPadding = 7.0f;
         
         NSString *oldText = editorTextView.text;
         NSRange oldRange = editorTextView.selectedRange;
+        editorTextView.scrollEnabled = NO;
         editorTextView.text = [editorTextView.text stringByReplacingCharactersInRange:range withString:aTagText];
-        
-        //Re-enable scrolling after insertion is complete
         editorTextView.scrollEnabled = YES;
         
         //reset selection back to nothing
         range.length = 0;
-        
-        if (range.length == 0) {                // If nothing was selected
-            range.location += [aTagText length]; // Place selection between tags
-            editorTextView.selectedRange = range;
-        }
+        range.location += [aTagText length]; // Place selection after the tag
+        editorTextView.selectedRange = range;
+
         [[editorTextView.undoManager prepareWithInvocationTarget:fles] restoreText:oldText withRange:oldRange];
         [editorTextView.undoManager setActionName:@"link"];
-        
+
         [fles autosaveContent];
 
+        [overlayView dismiss];
+        [editorTextView becomeFirstResponder];
         [fles setLinkHelperAlertView:nil];
+
         [fles refreshTextView];
     };
     
@@ -1484,6 +1480,12 @@ CGFloat const EPVCTextViewTopPadding = 7.0f;
 }
 
 - (void)keyboardDidShow:(NSNotification *)notification {
+    if ([self.textView isFirstResponder]) {
+        if (!CGPointEqualToPoint(CGPointZero, self.scrollOffsetRestorePoint)) {
+            self.textView.contentOffset = self.scrollOffsetRestorePoint;
+            self.scrollOffsetRestorePoint = CGPointZero;
+        }
+    }
     [self positionTextView:notification];
     [self positionOptionsView];
 
