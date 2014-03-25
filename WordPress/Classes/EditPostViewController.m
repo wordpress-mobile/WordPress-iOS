@@ -569,12 +569,12 @@ CGFloat const EPVCTextViewTopPadding = 7.0f;
     
     [_textView resignFirstResponder];
     [_titleTextField resignFirstResponder];
-	[self.postSettingsViewController endEditingAction:nil];
+    [self.postSettingsViewController endEditingAction:nil];
     
-	if ([self isMediaInUploading]) {
-		[self showMediaInUploadingAlert];
-		return;
-	}
+    if ([self isMediaInUploading]) {
+        [self showMediaInUploadingAlert];
+        return;
+    }
 
     if (![self hasChanges] && [self.post.status isEqualToString:@"publish"]) {
         // No changes + published so just dismiss this view
@@ -583,7 +583,7 @@ CGFloat const EPVCTextViewTopPadding = 7.0f;
         return;
     }
     
-	UIActionSheet *actionSheet;
+    UIActionSheet *actionSheet;
     NSString *keepEditingText = NSLocalizedString(@"Keep Editing", @"Button shown if there are unsaved changes and the author decides to keep editing the post.");
     NSString *publishText;
     if ([self isScheduled]) {
@@ -591,7 +591,7 @@ CGFloat const EPVCTextViewTopPadding = 7.0f;
     } else {
         publishText = NSLocalizedString(@"Publish", @"Button shown when the author wants to publish a draft post.");
     }
-    
+
     if ([self hasChanges]) {
         NSString *unsavedChangesTitle = NSLocalizedString(@"You have unsaved changes",
                                                           @"Title of message with options that shown when there are unsaved changes and the author is trying to move away from the post.");
@@ -643,7 +643,6 @@ CGFloat const EPVCTextViewTopPadding = 7.0f;
                                          otherButtonTitles:publishText, nil];
     }
     
-    actionSheet.tag = 201;
     actionSheet.actionSheetStyle = UIActionSheetStyleAutomatic;
     if (IS_IPAD) {
         [actionSheet showFromBarButtonItem:self.navigationItem.leftBarButtonItem animated:YES];
@@ -1344,58 +1343,56 @@ CGFloat const EPVCTextViewTopPadding = 7.0f;
 }
 
 - (void)actionSheet:(UIActionSheet *)actionSheet clickedButtonAtIndex:(NSInteger)buttonIndex {
-    if ([actionSheet tag] == 201) {
-        [WPMobileStats trackEventForWPComWithSavedProperties:[self formattedStatEventString:StatsEventPostDetailClosedEditor]];
-        // Discard
-        if (buttonIndex == 0) {
-            [self discardChangesAndDismiss];
-        }
-        
-        if (buttonIndex == 1) {
-			if ([actionSheet numberOfButtons] == 3) {
-                // Publish / Update published
-                EditPostUserEvent userEvent = EditPostUserActionUpdate;
-                if (![self.post.original.status isEqualToString:@"publish"]) {
-                    if ([self isScheduled]) {
-                        userEvent = EditPostUserActionSchedule;
-                    } else {
-                        userEvent = EditPostUserActionPublish;
-                    }
-                    
-                    // If you tapped on a button labeled "Publish", you probably expect the post to be published
-                    if (![self.post.status isEqualToString:@"publish"]) {
-                        self.post.status = @"publish";
-                    }
+    [WPMobileStats trackEventForWPComWithSavedProperties:[self formattedStatEventString:StatsEventPostDetailClosedEditor]];
+    // Discard
+    if (buttonIndex == 0) {
+        [self discardChangesAndDismiss];
+    }
+    
+    if (buttonIndex == 1) {
+        if ([actionSheet numberOfButtons] == 3) {
+            // Publish / Update published
+            EditPostUserEvent userEvent = EditPostUserActionUpdate;
+            if (![self.post.original.status isEqualToString:@"publish"]) {
+                if ([self isScheduled]) {
+                    userEvent = EditPostUserActionSchedule;
+                } else {
+                    userEvent = EditPostUserActionPublish;
                 }
-                [self saveActionWithUserEvent:userEvent];
                 
-			} else {
-                // Save or update draft
-                EditPostUserEvent userEvent = EditPostUserActionUpdate;
-                if (![self.post hasRemote]) {
-                    userEvent = EditPostUserActionSave;
-                    
-                    // If you tapped on a button labeled "Save Draft", you probably expect the post to be saved as a draft
-                    if ([self.post.status isEqualToString:@"publish"]) {
-                        self.post.status = @"draft";
-                    }
+                // If you tapped on a button labeled "Publish", you probably expect the post to be published
+                if (![self.post.status isEqualToString:@"publish"]) {
+                    self.post.status = @"publish";
                 }
-                [self saveActionWithUserEvent:userEvent];
-			}
-        }
-        
-        if (buttonIndex == 2 && [actionSheet numberOfButtons] == 4) {
-            // Publish
-            if (![self.post.status isEqualToString:@"publish"]) {
-                self.post.status = @"publish";
             }
+            [self saveActionWithUserEvent:userEvent];
             
-            EditPostUserEvent userEvent = EditPostUserActionPublish;
-            if ([self isScheduled]) {
-                userEvent = EditPostUserActionSchedule;
+        } else {
+            // Save or update draft
+            EditPostUserEvent userEvent = EditPostUserActionUpdate;
+            if (![self.post hasRemote]) {
+                userEvent = EditPostUserActionSave;
+                
+                // If you tapped on a button labeled "Save Draft", you probably expect the post to be saved as a draft
+                if ([self.post.status isEqualToString:@"publish"]) {
+                    self.post.status = @"draft";
+                }
             }
             [self saveActionWithUserEvent:userEvent];
         }
+    }
+    
+    if (buttonIndex == 2 && [actionSheet numberOfButtons] == 4) {
+        // Publish
+        if (![self.post.status isEqualToString:@"publish"]) {
+            self.post.status = @"publish";
+        }
+        
+        EditPostUserEvent userEvent = EditPostUserActionPublish;
+        if ([self isScheduled]) {
+            userEvent = EditPostUserActionSchedule;
+        }
+        [self saveActionWithUserEvent:userEvent];
     }
 }
 
