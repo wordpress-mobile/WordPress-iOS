@@ -28,7 +28,7 @@ PODS:
   - NSObject-SafeExpectations (0.0.1)
   - NSURL+IDN (0.1)
   - OHHTTPStubs (1.1.1)
-  - Reachability (3.0.0)
+  - Reachability (3.1.1)
   - SVProgressHUD (1.0)
   - UIDeviceIdentifier (0.1)
   - WordPressApi (0.0.1):
@@ -50,7 +50,7 @@ DEPENDENCIES:
   - NSObject-SafeExpectations (from `https://raw.github.com/koke/NSObject-SafeExpectations/master/NSObject-SafeExpectations.podspec`)
   - NSURL+IDN (from `https://raw.github.com/koke/NSURL-IDN/master/Podfile`)
   - OHHTTPStubs (= 1.1.1)
-  - Reachability (= 3.0.0)
+  - Reachability (= 3.1.1)
   - SVProgressHUD (~> 1.0)
   - UIDeviceIdentifier (~> 0.1)
   - WordPressApi (from `https://github.com/koke/WordPressApi.git`)
@@ -84,7 +84,7 @@ SPEC CHECKSUMS:
   NSObject-SafeExpectations: 241ab1289cbc33a00307cd025d22883646f2e1f0
   NSURL+IDN: 22633c0149b86d6391f32f23776bc0e6ecc532e2
   OHHTTPStubs: cb1cef742f2fba18b192fb92ede52a69cf3a04d5
-  Reachability: 500bd76bf6cd8ff2c6fb715fc5f44ef6e4c024f2
+  Reachability: be4883bb93f31e38266ae3365e5600a317aae735
   SVProgressHUD: 5e10939a296debf5fe5a5895eda9539b8b2114f1
   UIDeviceIdentifier: 38f7035dd0040fc4979d1548d9a63a1ccd339b0d
   WordPressApi: 6c7ab5320344fbec850f0baba4b0ec2bfd03587d
