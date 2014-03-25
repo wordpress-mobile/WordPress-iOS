@@ -565,7 +565,7 @@ CGFloat const EPVCTextViewTopPadding = 7.0f;
 }
 
 - (void)finishEditing {
-    if(_currentActionSheet) return;
+    if(self.currentActionSheet) return;
     
     [_textView resignFirstResponder];
     [_titleTextField resignFirstResponder];
@@ -805,9 +805,9 @@ CGFloat const EPVCTextViewTopPadding = 7.0f;
 - (void)saveActionWithUserEvent:(EditPostUserEvent)userEvent {
     _currentUserEvent = userEvent;
     
-    if (_currentActionSheet.isVisible) {
-        [_currentActionSheet dismissWithClickedButtonIndex:-1 animated:YES];
-        _currentActionSheet = nil;
+    if (self.currentActionSheet.isVisible) {
+        [self.currentActionSheet dismissWithClickedButtonIndex:-1 animated:YES];
+        self.currentActionSheet = nil;
     }
     
 	if ([self isMediaInUploading] ) {
@@ -1336,11 +1336,11 @@ CGFloat const EPVCTextViewTopPadding = 7.0f;
 #pragma mark ActionSheet Delegate Methods
 
 - (void)willPresentActionSheet:(UIActionSheet *)actionSheet {
-    _currentActionSheet = actionSheet;
+    self.currentActionSheet = actionSheet;
 }
 
 - (void)actionSheet:(UIActionSheet *)actionSheet didDismissWithButtonIndex:(NSInteger)buttonIndex {
-    _currentActionSheet = nil;
+    self.currentActionSheet = nil;
 }
 
 - (void)actionSheet:(UIActionSheet *)actionSheet clickedButtonAtIndex:(NSInteger)buttonIndex {
