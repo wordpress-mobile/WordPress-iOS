@@ -673,7 +673,7 @@ typedef NS_ENUM(NSInteger, TotalFollowersShareRow) {
     // Only reload section if the selection changed
     if (todayCurrentlySelected != todaySelected) {
         [self.showingToday setObject:@(todaySelected) forKey:@(section)];
-        [self.expandedLinkGroups removeAllObjects];
+        [self.expandedLinkGroups removeObjectForKey:@(section)];
         [self.tableView reloadSections:[NSIndexSet indexSetWithIndex:section] withRowAnimation:UITableViewRowAnimationFade];
     }
 }
