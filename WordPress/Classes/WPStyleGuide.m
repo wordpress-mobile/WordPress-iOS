@@ -77,6 +77,19 @@
     return @{NSParagraphStyleAttributeName: paragraphStyle, NSFontAttributeName : [self subtitleFontItalic]};
 }
 
++ (UIFont *)subtitleFontBold
+{
+    return [UIFont fontWithName:@"OpenSans-Bold" size:12.0];
+}
+
++ (NSDictionary *)subtitleAttributesBold
+{
+    NSMutableParagraphStyle *paragraphStyle = [[NSMutableParagraphStyle alloc] init];
+    paragraphStyle.minimumLineHeight = 14;
+    paragraphStyle.maximumLineHeight = 14;
+    return @{NSParagraphStyleAttributeName: paragraphStyle, NSFontAttributeName : [self subtitleFontBold]};
+}
+
 + (UIFont *)labelFont
 {
     return [UIFont fontWithName:@"OpenSans-Bold" size:10.0];
@@ -228,11 +241,34 @@
     return [WPStyleGuide baseLighterBlue];
 }
 
++ (UIColor *)statsLighterBlue {
+    return [UIColor colorWithRed:143.0f/255.0f green:186.0f/255.0f blue:203.0f/255.0f alpha:1.0f];
+}
+
++ (UIColor *)statsDarkerBlue {
+    return [UIColor colorWithRed:25.0f/255.0f green:88.0f/255.0f blue:137.0f/255.0f alpha:1.0f];
+}
+
 + (UIColor *)keyboardColor {
+    // Pre iOS 7.1 uses a the lighter keyboard background.
+    // There doesn't seem to be a good way to get the keyboard background color
+    // programatically so we'll rely on checking the OS version.
+    // Approach based on http://stackoverflow.com/a/5337804
+    NSString *versionStr = [[UIDevice currentDevice] systemVersion];
+    BOOL hasLighterKeyboard = [versionStr compare:@"7.1" options:NSNumericSearch] == NSOrderedAscending;
+    
+    if (hasLighterKeyboard) {
+        if (IS_IPAD) {
+            return [UIColor colorWithRed:207.0f/255.0f green:210.0f/255.0f blue:213.0f/255.0f alpha:1.0];
+        } else {
+            return [UIColor colorWithRed:220.0f/255.0f green:223.0f/255.0f blue:226.0f/255.0f alpha:1.0];
+        }
+    }
+    
     if (IS_IPAD) {
-        return [UIColor colorWithRed:207.0f/255.0f green:210.0f/255.0f blue:213.0f/255.0f alpha:1.0];
+        return [UIColor colorWithRed:217.0f/255.0f green:220.0f/255.0f blue:223.0f/255.0f alpha:1.0];
     } else {
-        return [UIColor colorWithRed:220.0f/255.0f green:223.0f/255.0f blue:226.0f/255.0f alpha:1.0];
+        return [UIColor colorWithRed:204.0f/255.0f green:208.0f/255.0f blue:214.0f/255.0f alpha:1.0];
     }
 }
 
@@ -297,6 +333,12 @@
         cell.textField.textColor = [self textFieldPlaceholderGrey];
         cell.textField.textAlignment = NSTextAlignmentRight;
     }
+}
+
++ (void)configureTableViewSmallSubtitleCell:(UITableViewCell *)cell
+{
+    [self configureTableViewCell:cell];
+    cell.detailTextLabel.font = [self subtitleFont];
 }
 
 + (void)configureColorsForView:(UIView *)view andTableView:(UITableView *)tableView

@@ -43,6 +43,17 @@
 @dynamic categories;
 @synthesize specialType, featuredImageURL;
 
+#pragma mark - NSManagedObject subclass methods
+
+- (void)didTurnIntoFault {
+    [super didTurnIntoFault];
+    
+    self.specialType = nil;
+    self.featuredImageURL = nil;
+}
+
+#pragma mark -
+
 + (NSString *const)remoteUniqueIdentifier {
     return @"postid";
 }
@@ -186,15 +197,21 @@
     }
    
     Post *original = (Post *)self.original;
+    if (!original) {
+        return NO;
+    }
     
-    if ((self.tags != original.tags)
+    if (([self.tags length] != [original.tags length])
         && (![self.tags isEqual:original.tags])) {
         return YES;
     }
     
-	if ((self.geolocation != original.geolocation)
-        && (![self.geolocation isEqual:original.geolocation]) ) {
-        return YES;
+    if (self.hasRemote) {
+        CLLocationCoordinate2D coord1 = self.geolocation.coordinate;
+        CLLocationCoordinate2D coord2 = original.geolocation.coordinate;
+        if ((coord1.latitude != coord2.latitude) || (coord1.longitude != coord2.longitude)) {
+            return YES;
+        }
     }
     
     return NO;
@@ -213,10 +230,6 @@
     }
     
     if (![self.categories isEqual:original.categories]) {
-        return YES;
-    }
-    
-    if (self.featuredImageURL != original.featuredImageURL && ![self.featuredImageURL isEqualToString:original.featuredImageURL]) {
         return YES;
     }
     
@@ -364,7 +377,7 @@
                                                                                        self.remoteStatus = AbstractPostRemoteStatusSync;
                                                                                        if (!self.date_created_gmt) {
                                                                                            // Set the temporary date until we get it from the server so it sorts properly on the list
-                                                                                           self.date_created_gmt = [DateUtils localDateToGMTDate:[NSDate date]];
+                                                                                           self.date_created_gmt = [NSDate date];
                                                                                        }
                                                                                        [self save];
                                                                                        [self getPostWithSuccess:success failure:failure];
@@ -435,8 +448,7 @@
                               return;
 
                           self.remoteStatus = AbstractPostRemoteStatusSync;
-                          [self getPostWithSuccess:nil failure:nil];
-                          if (success) success();
+                          [self getPostWithSuccess:success failure:failure];
                           [[NSNotificationCenter defaultCenter] postNotificationName:@"PostUploaded" object:self];
                       } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
                           if ([self isDeleted] || self.managedObjectContext == nil)

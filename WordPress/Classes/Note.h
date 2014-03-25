@@ -29,6 +29,10 @@
 - (BOOL)isRead;
 - (BOOL)isUnread;
 
+// Attempt to get the right blog for the note's stats event
+- (Blog *)blogForStatsEvent;
+- (BOOL)statsEvent;
+
 - (void)syncAttributes:(NSDictionary *)data;
 
 + (void)mergeNewNotes:(NSArray *)notesData;

@@ -295,13 +295,14 @@
     NSLocale *enUSPOSIXLocale = [[NSLocale alloc] initWithLocaleIdentifier:@"en_US_POSIX"];
     NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
     dateFormatter.locale = enUSPOSIXLocale;
+    // Forcing to GMT time zone to prevent issues with converting from/to time zones
+    dateFormatter.timeZone = [NSTimeZone timeZoneWithName:@"GMT"];
 
     NSDate *result = nil;
     
     [dateFormatter setDateFormat:format];
     
     result = [dateFormatter dateFromString:dateString];
-    
     
     return result;
 }

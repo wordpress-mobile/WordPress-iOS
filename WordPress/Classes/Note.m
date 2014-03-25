@@ -187,6 +187,49 @@ const NSUInteger NoteKeepCount = 20;
     return ![self isUnread];
 }
 
+- (BOOL)statsEvent {
+    return [self.type isEqualToString:@"traffic_surge"];
+}
+
+- (Blog *)blogForStatsEvent {
+    NSScanner *scanner = [NSScanner scannerWithString:self.subject];
+    NSString *blogName;
+    
+    while ([scanner isAtEnd] == NO) {
+        [scanner scanUpToString:@"\"" intoString:NULL];
+        [scanner scanString:@"\"" intoString:NULL];
+        [scanner scanUpToString:@"\"" intoString:&blogName];
+        [scanner scanString:@"\"" intoString:NULL];
+    }
+    
+    if (blogName.length == 0) {
+        return nil;
+    }
+
+    NSPredicate *subjectPredicate = [NSPredicate predicateWithFormat:@"self.blogName CONTAINS[cd] %@", blogName];
+    NSPredicate *wpcomPredicate = [NSPredicate predicateWithFormat:@"self.account.isWpcom == YES"];
+    NSPredicate *jetpackPredicate = [NSPredicate predicateWithFormat:@"self.jetpackAccount != nil"];
+    NSPredicate *statsBlogsPredicate = [NSCompoundPredicate orPredicateWithSubpredicates:@[wpcomPredicate, jetpackPredicate]];
+    NSPredicate *combinedPredicate = [NSCompoundPredicate andPredicateWithSubpredicates:@[subjectPredicate, statsBlogsPredicate]];
+
+    NSFetchRequest *fetchRequest = [NSFetchRequest fetchRequestWithEntityName:@"Blog"];
+    fetchRequest.predicate = combinedPredicate;
+    
+    NSError *error = nil;
+    NSArray *blogs = [self.managedObjectContext executeFetchRequest:fetchRequest error:&error];
+    
+    if (error) {
+        DDLogError(@"Error while retrieving blogs with stats: %@", error);
+        return nil;
+    }
+
+    if (blogs.count > 0) {
+        return [blogs firstObject];
+    }
+    
+    return nil;
+}
+
 - (NSString *)commentText {
     if (_commentText == nil) {
         [self parseComment];
@@ -199,6 +242,16 @@ const NSUInteger NoteKeepCount = 20;
         _noteData = [NSJSONSerialization JSONObjectWithData:self.payload options:NSJSONReadingMutableContainers error:nil];
     }
     return _noteData;
+}
+
+#pragma mark - NSManagedObject methods
+
+- (void)didTurnIntoFault {
+    [super didTurnIntoFault];
+    
+    self.noteData = nil;
+    self.date = nil;
+    self.commentText = nil;
 }
 
 #pragma mark - Comment HTML parsing
@@ -317,6 +370,7 @@ const NSUInteger NoteKeepCount = 20;
             success([notes count] > 0);
         }
     } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+        DDLogVerbose(@"Failed to fetch notifications - %@", [error localizedDescription]);
         if (failure) {
             failure(error);
         }
@@ -328,7 +382,12 @@ const NSUInteger NoteKeepCount = 20;
     NSError *error = nil;
     NSArray *notes = [context executeFetchRequest:request error:&error];
     if ([notes count] > 0) {
-        [[[WPAccount defaultWordPressComAccount] restApi] refreshNotifications:notes fields:@"id,unread" success:nil failure:nil];
+        NSMutableArray *array = [NSMutableArray arrayWithCapacity:notes.count];
+        for (Note *note in notes) {
+            [array addObject:note.noteID];
+        }
+        
+        [[[WPAccount defaultWordPressComAccount] restApi] refreshNotifications:array fields:@"id,unread" success:nil failure:nil];
     }
 }
 

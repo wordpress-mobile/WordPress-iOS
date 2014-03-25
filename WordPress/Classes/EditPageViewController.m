@@ -8,6 +8,7 @@
 #import "EditPageViewController.h"
 #import "EditPostViewController_Internal.h"
 #import "AbstractPost.h"
+#import "PageSettingsViewController.h"
 
 @implementation EditPageViewController
 
@@ -38,6 +39,14 @@
 - (void)didSaveNewPost {
     // Noop.
     // The superclass triggers a tab switch with this method which we don't want for pages.
+}
+
+- (Class)classForSettingsViewController {
+    return [PageSettingsViewController class];
+}
+
+- (void)geotagNewPost {
+    // Noop. Pages do not support geolocation.
 }
 
 @end

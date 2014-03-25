@@ -231,13 +231,24 @@
     }
 }
 
+#pragma mark - NSManagedObject subclass methods
 - (void)awakeFromFetch {
-    if ((self.remoteStatus == MediaRemoteStatusPushing && _uploadOperation == nil) || (self.remoteStatus == MediaRemoteStatusProcessing) || self.remoteStatus == MediaRemoteStatusFailed) {
+    [super awakeFromFetch];
+	if ((self.remoteStatus == MediaRemoteStatusPushing && _uploadOperation == nil) || (self.remoteStatus == MediaRemoteStatusProcessing) || self.remoteStatus == MediaRemoteStatusFailed) {
         self.remoteStatus = MediaRemoteStatusFailed;
     } else {
         self.remoteStatus = MediaRemoteStatusSync;
     }
 }
+
+- (void)didTurnIntoFault {
+    [super didTurnIntoFault];
+    
+    [_uploadOperation cancel];
+    _uploadOperation = nil;
+}
+
+#pragma mark -
 
 - (float)progress {
     [self willAccessValueForKey:@"progress"];
@@ -358,7 +369,7 @@
                 NSDictionary *response = (NSDictionary *)responseObject;
 
                 if (![response isKindOfClass:[NSDictionary class]]) {
-                    NSError *error = [NSError errorWithDomain:NSURLErrorDomain code:NSURLErrorBadServerResponse userInfo:@{NSLocalizedDescriptionKey: NSLocalizedString(@"The server returned an empty response. This usually means you need to increase the memory limit in your blog", @"")}];
+                    NSError *error = [NSError errorWithDomain:NSURLErrorDomain code:NSURLErrorBadServerResponse userInfo:@{NSLocalizedDescriptionKey: NSLocalizedString(@"The server returned an empty response. This usually means you need to increase the memory limit for your site.", @"")}];
                     failureBlock(operation, error);
                     return;
                 }
@@ -584,7 +595,7 @@
 	self.creationDate = [NSDate date];
 	self.filename = filename;
 	self.localURL = filepath;
-	self.filesize = [NSNumber numberWithInt:(imageData.length/1024)];
+	self.filesize = [NSNumber numberWithUnsignedInteger:(imageData.length/1024)];
 	self.mediaType = @"image";
 	self.thumbnail = UIImageJPEGRepresentation(imageThumbnail, 0.90);
 	self.width = [NSNumber numberWithInt:resizedImage.size.width];

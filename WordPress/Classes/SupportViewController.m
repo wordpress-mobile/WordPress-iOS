@@ -12,6 +12,7 @@
 #import <UIDeviceIdentifier/UIDeviceHardware.h>
 #import "WordPressAppDelegate.h"
 #import <DDFileLogger.h>
+#import "WPTableViewSectionFooterView.h"
 
 static NSString *const UserDefaultsFeedbackEnabled = @"wp_feedback_enabled";
 static NSString *const FeedbackCheckUrl = @"http://api.wordpress.org/iphoneapp/feedback-check/1.0/";
@@ -116,8 +117,12 @@ typedef NS_ENUM(NSInteger, SettingsViewControllerSections)
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
-    if (section == SettingsSectionFAQForums || section == SettingsSectionActivityLog)
+    if (section == SettingsSectionFAQForums)
         return 2;
+    
+    if (section == SettingsSectionActivityLog) {
+        return 3;
+    }
     
     if (section == SettingsSectionFeedback) {
         return self.feedbackEnabled ? 1 : 0;
@@ -128,18 +133,26 @@ typedef NS_ENUM(NSInteger, SettingsViewControllerSections)
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    static NSString *CellIdentifier = @"SupportViewStandardCell";
-    static NSString *CellIdentifierExtraDebug = @"SupportViewExtraDebugCell";
-    UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier];
-
-    if (cell == nil && indexPath.section == SettingsSectionActivityLog && indexPath.row == 0) {
+    UITableViewCell *cell = nil;
+    if (indexPath.section == SettingsSectionActivityLog && indexPath.row == 1) {
         // Settings / Extra Debug
-        cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:CellIdentifierExtraDebug];
+        static NSString *CellIdentifierExtraDebug = @"SupportViewExtraDebugCell";
+        cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifierExtraDebug];
+        
+        if (cell == nil) {
+            cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:CellIdentifierExtraDebug];
+        }
+        
         UISwitch *extraDebugSwitch = [[UISwitch alloc] initWithFrame:CGRectZero];
         [extraDebugSwitch addTarget:self action:@selector(handleExtraDebugChanged:) forControlEvents:UIControlEventValueChanged];
         cell.accessoryView = extraDebugSwitch;
     } else {
-        cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:CellIdentifier];
+        static NSString *CellIdentifier = @"SupportViewStandardCell";
+        cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier];
+        
+        if (cell == nil) {
+            cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleValue1 reuseIdentifier:CellIdentifier];
+        }
     }
 
     [self configureCell:cell atIndexPath:indexPath];
@@ -167,11 +180,20 @@ typedef NS_ENUM(NSInteger, SettingsViewControllerSections)
         cell.textLabel.textAlignment = NSTextAlignmentLeft;
 
         if (indexPath.row == 0) {
+            // App Version
+            cell.textLabel.text = NSLocalizedString(@"Version", @"");
+            NSString *appversion = [[[NSBundle mainBundle] infoDictionary] objectForKey:@"CFBundleVersion"];
+#if DEBUG
+            appversion = [appversion stringByAppendingString:@" (DEV)"];
+#endif
+            cell.detailTextLabel.text = appversion;
+            cell.selectionStyle = UITableViewCellSelectionStyleNone;
+        } else if (indexPath.row == 1) {
             cell.selectionStyle = UITableViewCellSelectionStyleNone;
             cell.textLabel.text = NSLocalizedString(@"Extra Debug", @"");
             UISwitch *aSwitch = (UISwitch *)cell.accessoryView;
             aSwitch.on = [[NSUserDefaults standardUserDefaults] boolForKey:@"extra_debug"];
-        } else if (indexPath.row == 1) {
+        } else if (indexPath.row == 2) {
             cell.textLabel.text = NSLocalizedString(@"Activity Logs", @"");
             cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
         }
@@ -180,17 +202,25 @@ typedef NS_ENUM(NSInteger, SettingsViewControllerSections)
 
 }
 
-- (NSString *)tableView:(UITableView *)tableView titleForFooterInSection:(NSInteger)section
-{
+- (UIView *)tableView:(UITableView *)tableView viewForFooterInSection:(NSInteger)section {
+    WPTableViewSectionFooterView *header = [[WPTableViewSectionFooterView alloc] initWithFrame:CGRectMake(0, 0, CGRectGetWidth(self.view.bounds), 0)];
+    header.title = [self titleForFooterInSection:section];
+    return header;
+}
+
+- (CGFloat)tableView:(UITableView *)tableView heightForFooterInSection:(NSInteger)section {
+    NSString *title = [self titleForFooterInSection:section];
+    return [WPTableViewSectionFooterView heightForTitle:title andWidth:CGRectGetWidth(self.view.bounds)];
+}
+
+- (NSString *)titleForFooterInSection:(NSInteger)section {
     if (section == SettingsSectionFAQForums) {
         return NSLocalizedString(@"Visit the Help Center to get answers to common questions, or visit the Forums to ask new ones.", @"");
     } else if (section == SettingsSectionActivityLog) {
         return NSLocalizedString(@"Turning on Extra Debug will log additional items to assist with us helping you with resolving a problem.", @"");
     }
-
     return nil;
 }
-
 
 #pragma mark - Table view delegate
 
@@ -209,7 +239,7 @@ typedef NS_ENUM(NSInteger, SettingsViewControllerSections)
         } else {
             [WPError showAlertWithTitle:NSLocalizedString(@"Feedback", nil) message:NSLocalizedString(@"Your device is not configured to send e-mail.", nil)];
         }
-    } else if (indexPath.section == SettingsSectionActivityLog && indexPath.row == 1) {
+    } else if (indexPath.section == SettingsSectionActivityLog && indexPath.row == 2) {
         ActivityLogViewController *activityLogViewController = [[ActivityLogViewController alloc] init];
         [self.navigationController pushViewController:activityLogViewController animated:YES];
     }
@@ -225,7 +255,7 @@ typedef NS_ENUM(NSInteger, SettingsViewControllerSections)
 
 - (MFMailComposeViewController *)feedbackMailViewController
 {
-    NSString *appVersion = [[[NSBundle mainBundle] infoDictionary] objectForKey:(NSString*)kCFBundleVersionKey];;
+    NSString *appVersion = [[[NSBundle mainBundle] infoDictionary] objectForKey:(NSString*)kCFBundleVersionKey];
     NSString *device = [UIDeviceHardware platformString];
     NSString *locale = [[NSLocale currentLocale] localeIdentifier];
     NSString *iosVersion = [[UIDevice currentDevice] systemVersion];

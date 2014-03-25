@@ -37,7 +37,7 @@ NSString *const DefaultCellIdentifier = @"DefaultCellIdentifier";
 @property (nonatomic, strong) UIActivityIndicatorView *activityFooter;
 @property (nonatomic, assign) BOOL animatingRemovalOfModerationSwipeView;
 @property (nonatomic, assign) BOOL didPromptForCredentials;
-@property (nonatomic, assign) BOOL isSyncing;
+@property (nonatomic, assign, setter = setSyncing:) BOOL isSyncing;
 @property (nonatomic, assign) BOOL isLoadingMore;
 @property (nonatomic, assign) BOOL didTriggerRefresh;
 @property (nonatomic, assign) CGPoint savedScrollOffset;
@@ -83,6 +83,9 @@ NSString *const DefaultCellIdentifier = @"DefaultCellIdentifier";
 - (void)dealloc {
     _resultsController.delegate = nil;
     _editSiteViewController.delegate = nil;
+    
+    NSNotificationCenter *nc = [NSNotificationCenter defaultCenter];
+    [nc removeObserver:self];
 }
 
 - (void)encodeRestorableStateWithCoder:(NSCoder *)coder {
@@ -113,6 +116,9 @@ NSString *const DefaultCellIdentifier = @"DefaultCellIdentifier";
     }
 
     [self configureNoResultsView];
+    
+    NSNotificationCenter *nc = [NSNotificationCenter defaultCenter];
+    [nc addObserver:self selector:@selector(automaticallyRefreshIfAppropriate) name:UIApplicationDidBecomeActiveNotification object:nil];
 }
 
 - (void)viewWillAppear:(BOOL)animated {
@@ -131,18 +137,8 @@ NSString *const DefaultCellIdentifier = @"DefaultCellIdentifier";
 
 - (void)viewDidAppear:(BOOL)animated {
 	[super viewDidAppear:animated];
-    WordPressAppDelegate *appDelegate = [WordPressAppDelegate sharedWordPressApplicationDelegate];
-    if( appDelegate.connectionAvailable == NO ) return; //do not start auto-synch if connection is down
-
-    // Don't try to refresh if we just canceled editing credentials
-    if (_didPromptForCredentials) {
-        return;
-    }
-    NSDate *lastSynced = [self lastSyncDate];
-    if (lastSynced == nil || ABS([lastSynced timeIntervalSinceNow]) > WPTableViewControllerRefreshTimeout) {
-        // Update in the background
-        [self syncItems];
-    }
+    
+    [self automaticallyRefreshIfAppropriate];
 }
 
 - (void)viewWillDisappear:(BOOL)animated {
@@ -469,6 +465,35 @@ NSString *const DefaultCellIdentifier = @"DefaultCellIdentifier";
 
 #pragma mark - Private Methods
 
+- (void)automaticallyRefreshIfAppropriate {
+    // Only automatically refresh if the view is loaded and visible on the screen
+    if (self.isViewLoaded == NO || self.view.window == nil) {
+        DDLogVerbose(@"View is not visible and will not check for auto refresh.");
+        return;
+    }
+    
+    // Do not start auto-sync if connection is down
+    WordPressAppDelegate *appDelegate = [WordPressAppDelegate sharedWordPressApplicationDelegate];
+    if (appDelegate.connectionAvailable == NO) {
+        return;
+    }
+    
+    // Don't try to refresh if we just canceled editing credentials
+    if (_didPromptForCredentials) {
+        return;
+    }
+    
+    if ([self userCanRefresh] == NO) {
+        return;
+    }
+    
+    NSDate *lastSynced = [self lastSyncDate];
+    if (lastSynced == nil || ABS([lastSynced timeIntervalSinceNow]) > WPTableViewControllerRefreshTimeout) {
+        // Update in the background
+        [self syncItems];
+    }
+}
+
 - (void)configureNoResultsView {
     if (![self isViewLoaded]) {
         return;
@@ -546,14 +571,14 @@ NSString *const DefaultCellIdentifier = @"DefaultCellIdentifier";
         return;
     }
 
-    _isSyncing = YES;
+    [self setSyncing:YES];
     [self syncItemsViaUserInteraction:userInteraction success:^{
         [self hideRefreshHeader];
-        _isSyncing = NO;
+        [self setSyncing:NO];
         [self configureNoResultsView];
     } failure:^(NSError *error) {
         [self hideRefreshHeader];
-        _isSyncing = NO;
+        [self setSyncing:NO];
         [self configureNoResultsView];
         if (self.blog) {
             if ([error.domain isEqualToString:WPXMLRPCClientErrorDomain]) {

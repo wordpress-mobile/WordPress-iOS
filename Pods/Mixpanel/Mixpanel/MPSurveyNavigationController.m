@@ -1,3 +1,8 @@
+#if ! __has_feature(objc_arc)
+#error This file must be compiled with ARC. Either turn on ARC for the project or use -fobjc-arc flag on this file.
+#endif
+
+#import <Availability.h>
 #import <QuartzCore/QuartzCore.h>
 
 #import "MPSurvey.h"
@@ -7,36 +12,28 @@
 #import "UIImage+MPAverageColor.h"
 #import "UIImage+MPImageEffects.h"
 #import "UIView+MPSnapshotImage.h"
+#import "UIColor+MPColor.h"
 
 @interface MPSurveyNavigationController () <MPSurveyQuestionViewControllerDelegate>
 
-@property(nonatomic,retain) IBOutlet UIImageView *view;
-@property(nonatomic,retain) IBOutlet UIColor *highlightColor;
-@property(nonatomic,retain) IBOutlet UIView *containerView;
-@property(nonatomic,retain) IBOutlet UILabel *pageNumberLabel;
-@property(nonatomic,retain) IBOutlet UIButton *nextButton;
-@property(nonatomic,retain) IBOutlet UIButton *previousButton;
-@property(nonatomic,retain) IBOutlet UIImageView *logo;
-@property(nonatomic,retain) IBOutlet UIButton *exitButton;
-@property(nonatomic,retain) IBOutlet UIView *header;
-@property(nonatomic,retain) IBOutlet UIView *footer;
-@property(nonatomic,retain) NSMutableArray *questionControllers;
-@property(nonatomic) UIViewController *currentQuestionController;
-@property(nonatomic,retain) NSMutableDictionary *answers;
+@property (nonatomic, strong) IBOutlet UIImageView *view;
+@property (nonatomic, strong) IBOutlet UIColor *highlightColor;
+@property (nonatomic, strong) IBOutlet UIView *containerView;
+@property (nonatomic, strong) IBOutlet UILabel *pageNumberLabel;
+@property (nonatomic, strong) IBOutlet UIButton *nextButton;
+@property (nonatomic, strong) IBOutlet UIButton *previousButton;
+@property (nonatomic, strong) IBOutlet UIImageView *logo;
+@property (nonatomic, strong) IBOutlet UIButton *exitButton;
+@property (nonatomic, strong) IBOutlet UIView *header;
+@property (nonatomic, strong) IBOutlet UIView *footer;
+@property (nonatomic, strong) NSMutableArray *questionControllers;
+@property (nonatomic, weak) UIViewController *currentQuestionController;
+@property (nonatomic, strong) NSMutableDictionary *answers;
 
 @end
 
 @implementation MPSurveyNavigationController
 
-- (void)dealloc
-{
-    self.survey = nil;
-    self.backgroundImage = nil;
-    self.questionControllers = nil;
-    self.answers = nil;
-    self.highlightColor = nil;
-    [super dealloc];
-}
 
 - (void)viewDidLoad
 {
@@ -45,17 +42,10 @@
 
     // set highlight color based on average background color
     UIColor *avgColor = [_backgroundImage mp_averageColor];
-    CGFloat hue;
-    CGFloat brightness;
-    CGFloat saturation;
-    CGFloat alpha;
-    if ([avgColor getHue:&hue saturation:&saturation brightness:&brightness alpha:&alpha]) {
-        avgColor = [UIColor colorWithHue:hue saturation:0.8f brightness:brightness alpha:alpha];
-    }
-    self.highlightColor = avgColor;
+    self.highlightColor = [avgColor colorWithSaturationComponent:0.8f];
     self.questionControllers = [NSMutableArray array];
     self.answers = [NSMutableDictionary dictionary];
-    for (NSUInteger i = 0; i < _survey.questions.count; i++) {
+    for (NSUInteger i = 0; i < [_survey.questions count]; i++) {
         [_questionControllers addObject:[NSNull null]];
     }
     [self loadQuestion:0];
@@ -124,10 +114,12 @@
                      completion:nil];
 }
 
+#if __IPHONE_OS_VERSION_MAX_ALLOWED >= 70000
 - (UIStatusBarStyle)preferredStatusBarStyle
 {
     return UIStatusBarStyleLightContent;
 }
+#endif
 
 - (UIStatusBarAnimation)preferredStatusBarUpdateAnimation
 {
@@ -147,7 +139,7 @@
 
 - (void)loadQuestion:(NSUInteger)index
 {
-    if (index < _survey.questions.count) {
+    if (index < [_survey.questions count]) {
         MPSurveyQuestionViewController *controller = _questionControllers[index];
         // replace the placeholder if necessary
         if ((NSNull *)controller == [NSNull null]) {
@@ -328,7 +320,7 @@
 - (IBAction)showNextQuestion
 {
     NSUInteger currentIndex = [self currentIndex];
-    if (currentIndex < (_survey.questions.count - 1)) {
+    if (currentIndex < ([_survey.questions count] - 1)) {
         [self showQuestionAtIndex:currentIndex + 1 animatingForward:YES];
     }
 }
@@ -343,7 +335,10 @@
 
 - (IBAction)dismiss
 {
-    [_delegate surveyControllerWasDismissed:self withAnswers:[_answers allValues]];
+    __strong id<MPSurveyNavigationControllerDelegate> strongDelegate = _delegate;
+    if (strongDelegate != nil) {
+        [strongDelegate surveyController:self wasDismissedWithAnswers:[_answers allValues]];
+    }
 }
 
 - (void)questionController:(MPSurveyQuestionViewController *)controller didReceiveAnswerProperties:(NSDictionary *)properties

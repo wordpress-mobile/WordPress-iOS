@@ -184,11 +184,7 @@ NSString * const CommentStatusDraft = @"draft";
 	date = [self primitiveValueForKey:@"dateCreated"];
 	[self didAccessValueForKey:@"dateCreated"];
 	
-	if(date != nil)
-		return [DateUtils GMTDateTolocalDate:date];
-	else 
-		return nil;
-	
+    return date;
 }
 
 #pragma mark - Remote management

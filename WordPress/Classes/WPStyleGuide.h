@@ -22,6 +22,8 @@
 + (NSDictionary *)subtitleAttributes;
 + (UIFont *)subtitleFontItalic;
 + (NSDictionary *)subtitleItalicAttributes;
++ (UIFont *)subtitleFontBold;
++ (NSDictionary *)subtitleAttributesBold;
 + (UIFont *)labelFont;
 + (NSDictionary *)labelAttributes;
 + (UIFont *)regularTextFont;
@@ -49,6 +51,8 @@
 + (UIColor *)darkAsNightGrey;
 + (UIColor *)textFieldPlaceholderGrey;
 + (UIColor *)validationErrorRed;
++ (UIColor *)statsLighterBlue;
++ (UIColor *)statsDarkerBlue;
 
 + (UIColor *)tableViewActionColor;
 + (UIColor *)buttonActionColor;
@@ -65,6 +69,7 @@
 + (void)configureTableViewActionCell:(UITableViewCell *)cell;
 + (void)configureTableViewCell:(UITableViewCell *)cell;
 + (void)configureTableViewTextCell:(UITableViewTextFieldCell *)cell;
++ (void)configureTableViewSmallSubtitleCell:(UITableViewCell *)cell;
 + (void)configureColorsForView:(UIView *)view andTableView:(UITableView *)tableView;
 + (void)configureColorsForView:(UIView *)view collectionView:(UICollectionView *)collectionView;
 

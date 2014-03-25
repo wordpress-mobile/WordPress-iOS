@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Scheme
-   LastUpgradeVersion = "0500"
+   LastUpgradeVersion = "0510"
    version = "1.3">
    <BuildAction
       parallelizeBuildables = "YES"
@@ -42,10 +42,10 @@
                   Identifier = "AccountMigrationTest">
                </Test>
                <Test
-                  Identifier = "ReaderTest/testGetPostsLikes">
+                  Identifier = "ReaderTest/testGetPostsFollowing">
                </Test>
                <Test
-                  Identifier = "ReaderTest/testGetPostsFollowing">
+                  Identifier = "ReaderTest/testGetPostsLikes">
                </Test>
             </SkippedTests>
          </TestableReference>

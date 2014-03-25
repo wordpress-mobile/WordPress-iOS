@@ -18,13 +18,15 @@
 #import "Theme.h"
 #import "ContextManager.h"
 #import "WordPressComApi.h"
+#import "CategoryService.h"
 
-static CGFloat const ImageSizeSmallWidth = 240.0f;
-static CGFloat const ImageSizeSmallHeight = 180.0f;
-static CGFloat const ImageSizeMediumWidth = 480.0f;
-static CGFloat const ImageSizeMediumHeight = 360.0f;
-static CGFloat const ImageSizeLargeWidth = 640.0f;
-static CGFloat const ImageSizeLargeHeight = 480.0f;
+static NSInteger const ImageSizeSmallWidth = 240;
+static NSInteger const ImageSizeSmallHeight = 180;
+static NSInteger const ImageSizeMediumWidth = 480;
+static NSInteger const ImageSizeMediumHeight = 360;
+static NSInteger const ImageSizeLargeWidth = 640;
+static NSInteger const ImageSizeLargeHeight = 480;
+NSString *const LastUsedBlogURLDefaultsKey = @"LastUsedBlogURLDefaultsKey";
 
 @interface Blog (PrivateMethods)
 
@@ -50,10 +52,12 @@ static CGFloat const ImageSizeLargeHeight = 480.0f;
 @dynamic account;
 @dynamic jetpackAccount;
 
-#pragma mark -
-#pragma mark Dealloc
+#pragma mark - NSManagedObject subclass methods
 
-- (void)dealloc {
+- (void)didTurnIntoFault {
+    [super didTurnIntoFault];
+    
+    // Clean up instance variables
     _blavatarUrl = nil;
     _api = nil;
     [_reachability stopNotifier];
@@ -62,6 +66,15 @@ static CGFloat const ImageSizeLargeHeight = 480.0f;
     [[NSNotificationCenter defaultCenter] removeObserver:self];
 }
 
+- (void)awakeFromFetch {
+    [super awakeFromFetch];
+    
+    if (!self.isDeleted) {
+        [self reachability];
+    }
+}
+
+#pragma mark -
 
 - (BOOL)geolocationEnabled
 {
@@ -84,13 +97,95 @@ static CGFloat const ImageSizeLargeHeight = 480.0f;
 #pragma mark -
 #pragma mark Custom methods
 
++ (Blog *)lastUsedOrFirstBlog {
+    Blog *blog = [self lastUsedBlog];
+
+    if (!blog) {
+        blog = [self firstBlog];
+    }
+
+    return blog;
+}
+
++ (Blog *)lastUsedBlog {
+    // Try to get the last used blog, if there is one.
+    NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
+    NSString *url = [defaults stringForKey:LastUsedBlogURLDefaultsKey];
+    if (!url) {
+        // Check for the old key and migrate the value if it exists.
+        // TODO: We can probably discard this in the 4.2 release.
+        NSString *oldKey = @"EditPostViewControllerLastUsedBlogURL";
+        url = [defaults stringForKey:oldKey];
+        if (url) {
+            [defaults setObject:url forKey:LastUsedBlogURLDefaultsKey];
+            [defaults removeObjectForKey:oldKey];
+            [defaults synchronize];
+        }
+    }
+
+    if (!url) {
+        return nil;
+    }
+
+    NSFetchRequest *fetchRequest = [NSFetchRequest fetchRequestWithEntityName:@"Blog"];
+    NSPredicate *predicate = [NSPredicate predicateWithFormat:@"visible = YES AND url = %@", url];
+    [fetchRequest setPredicate:predicate];
+    fetchRequest.sortDescriptors = @[[NSSortDescriptor sortDescriptorWithKey:@"blogName" ascending:YES]];
+    NSError *error = nil;
+    NSArray *results = [[[ContextManager sharedInstance] mainContext] executeFetchRequest:fetchRequest error:&error];
+    if (error) {
+        DDLogError(@"Couldn't fetch blogs: %@", error);
+        return nil;
+    }
+
+    if([results count] == 0) {
+        // Blog might have been removed from the app. Clear the key.
+        [defaults removeObjectForKey:LastUsedBlogURLDefaultsKey];
+        [defaults synchronize];
+        return nil;
+    }
+
+    return [results firstObject];
+}
+
++ (Blog *)firstBlog {
+    NSPredicate *predicate = [NSPredicate predicateWithFormat:@"visible = YES"];
+    NSFetchRequest *fetchRequest = [NSFetchRequest fetchRequestWithEntityName:@"Blog"];
+    [fetchRequest setPredicate:predicate];
+    fetchRequest.sortDescriptors = @[[NSSortDescriptor sortDescriptorWithKey:@"blogName" ascending:YES]];
+    NSError *error = nil;
+    NSArray *results = [[[ContextManager sharedInstance] mainContext] executeFetchRequest:fetchRequest error:&error];
+
+    if (error) {
+        DDLogError(@"Couldn't fetch blogs: %@", error);
+        return nil;
+    }
+
+    return [results firstObject];
+}
+
 + (NSInteger)countVisibleWithContext:(NSManagedObjectContext *)moc {
+    NSPredicate *predicate = [NSPredicate predicateWithFormat:@"visible = %@" argumentArray:@[@(YES)]];
+    return [self countWithContext:moc predicate:predicate];
+}
+
++ (NSInteger)countSelfHostedWithContext:(NSManagedObjectContext *)moc {
+    NSPredicate *predicate = [NSPredicate predicateWithFormat:@"account.isWpcom = %@" argumentArray:@[@(NO)]];
+    return [self countWithContext:moc predicate:predicate];
+}
+
++ (NSInteger)countWithContext:(NSManagedObjectContext *)moc {
+    return [self countWithContext:moc predicate:nil];
+}
+
++ (NSInteger)countWithContext:(NSManagedObjectContext *)moc predicate:(NSPredicate *)predicate {
     NSFetchRequest *request = [[NSFetchRequest alloc] init];
     [request setEntity:[NSEntityDescription entityForName:@"Blog" inManagedObjectContext:moc]];
     [request setIncludesSubentities:NO];
-    
-    NSPredicate *predicate = [NSPredicate predicateWithFormat:@"visible = %@" argumentArray:@[@(YES)]];
-    [request setPredicate:predicate];
+
+    if (predicate) {
+        [request setPredicate:predicate];
+    }
     
     NSError *err;
     NSUInteger count = [moc countForFetchRequest:request error:&err];
@@ -100,17 +195,10 @@ static CGFloat const ImageSizeLargeHeight = 480.0f;
     return count;
 }
 
-+ (NSInteger)countWithContext:(NSManagedObjectContext *)moc {
-    NSFetchRequest *request = [[NSFetchRequest alloc] init];
-    [request setEntity:[NSEntityDescription entityForName:@"Blog" inManagedObjectContext:moc]];
-    [request setIncludesSubentities:NO];
-    
-    NSError *err;
-    NSUInteger count = [moc countForFetchRequest:request error:&err];
-    if(count == NSNotFound) {
-        count = 0;
-    }
-    return count;
+- (void)flagAsLastUsed {
+    NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
+    [defaults setObject:self.url forKey:LastUsedBlogURLDefaultsKey];
+    [defaults synchronize];
 }
 
 - (NSString *)blavatarUrl {
@@ -201,8 +289,8 @@ static CGFloat const ImageSizeLargeHeight = 480.0f;
     return [NSString stringWithFormat:@"%@%@", adminBaseUrl, path];
 }
 
-- (int)numberOfPendingComments{
-    int pendingComments = 0;
+- (NSUInteger)numberOfPendingComments{
+    NSUInteger pendingComments = 0;
     if ([self hasFaultForRelationshipNamed:@"comments"]) {
         NSFetchRequest *request = [NSFetchRequest fetchRequestWithEntityName:@"Comment"];
         [request setPredicate:[NSPredicate predicateWithFormat:@"blog = %@ AND status like 'hold'", self]];
@@ -275,11 +363,6 @@ static CGFloat const ImageSizeLargeHeight = 480.0f;
              @"largeSize": [NSValue valueWithCGSize:largeSize]};
 }
 
-- (void)awakeFromFetch {
-    if (!self.isDeleted) {
-        [self reachability];
-    }
-}
 
 - (void)dataSave {
     [[ContextManager sharedInstance] saveContext:self.managedObjectContext];
@@ -292,7 +375,16 @@ static CGFloat const ImageSizeLargeHeight = 480.0f;
     _reachability.unreachableBlock = nil;
     [_reachability stopNotifier];
     [self.managedObjectContext performBlock:^{
-        [[self managedObjectContext] deleteObject:self];
+        WPAccount *account = self.account;
+
+        NSManagedObjectContext *context = [self managedObjectContext];
+        [context deleteObject:self];
+        // For self hosted blogs, remove account unless there are other associated blogs
+        if (account && !account.isWpcom) {
+            if ([account.blogs count] == 1 && [[account.blogs anyObject] isEqual:self]) {
+                [context deleteObject:account];
+            }
+        }
         [self dataSave];
     }];
 }
@@ -358,11 +450,29 @@ static CGFloat const ImageSizeLargeHeight = 480.0f;
 }
 
 - (NSString *)username {
-    return self.account.username ?: @"";
+    [self willAccessValueForKey:@"username"];
+    
+    NSString *username = self.account.username ?: @"";
+    
+    [self didAccessValueForKey:@"username"];
+    
+    return username;
 }
 
 - (NSString *)password {
-    return self.account.password ?: @"";
+    WPAccount *account = self.account;
+    NSString *password = account.password ?: @"";
+    
+    return password;
+}
+
+- (BOOL)supportsFeaturedImages {
+    id hasSupport = [self getOptionValue:@"post_thumbnail"];
+    if (hasSupport) {
+        return [hasSupport boolValue];
+    }
+    
+    return NO;
 }
 
 #pragma mark -
@@ -546,7 +656,7 @@ static CGFloat const ImageSizeLargeHeight = 480.0f;
         _api = [[WPXMLRPCClient alloc] initWithXMLRPCEndpoint:[NSURL URLWithString:self.xmlrpc]];
         // Enable compression for wp.com only, as some self hosted have connection issues
         if (self.isWPcom) {
-            [_api setDefaultHeader:@"gzip, deflate" value:@"Accept-Encoding"];
+            [_api setDefaultHeader:@"Accept-Encoding" value:@"gzip, deflate"];
             [_api setAuthorizationHeaderWithToken:self.account.authToken];
         }
     }
@@ -565,7 +675,7 @@ static CGFloat const ImageSizeLargeHeight = 480.0f;
                 return;
             
             self.options = [NSDictionary dictionaryWithDictionary:(NSDictionary *)responseObject];
-            NSString *minimumVersion = @"3.5";
+            NSString *minimumVersion = @"3.6";
             float version = [[self version] floatValue];
             if (version < [minimumVersion floatValue]) {
                 if (self.lastUpdateWarning == nil || [self.lastUpdateWarning floatValue] < [minimumVersion floatValue]) {
@@ -667,7 +777,8 @@ static CGFloat const ImageSizeLargeHeight = 480.0f;
             if ([self isDeleted] || self.managedObjectContext == nil)
                 return;
             
-            [Category mergeNewCategories:responseObject forBlog:self];
+            CategoryService *categoryService = [[CategoryService alloc] initWithManagedObjectContext:self.managedObjectContext];
+            [categoryService mergeNewCategories:responseObject forBlogObjectID:self.objectID];
             
             if (success) {
                 success();
@@ -701,7 +812,7 @@ static CGFloat const ImageSizeLargeHeight = 480.0f;
             }
         }
         
-        NSArray *parameters = [self getXMLRPCArgsWithExtra:[NSNumber numberWithInt:postsToRequest]];
+        NSArray *parameters = [self getXMLRPCArgsWithExtra:[NSNumber numberWithUnsignedInteger:postsToRequest]];
         WPXMLRPCRequest *request = [self.api XMLRPCRequestWithMethod:@"metaWeblog.getRecentPosts" parameters:parameters];
         operation = [self.api XMLRPCRequestOperationWithRequest:request success:^(AFHTTPRequestOperation *operation, id responseObject) {
             if ([self isDeleted] || self.managedObjectContext == nil)
@@ -756,7 +867,7 @@ static CGFloat const ImageSizeLargeHeight = 480.0f;
             }
         }
         
-        NSArray *parameters = [self getXMLRPCArgsWithExtra:[NSNumber numberWithInt:pagesToRequest]];
+        NSArray *parameters = [self getXMLRPCArgsWithExtra:[NSNumber numberWithUnsignedInteger:pagesToRequest]];
         WPXMLRPCRequest *request = [self.api XMLRPCRequestWithMethod:@"wp.getPages" parameters:parameters];
         operation = [self.api XMLRPCRequestOperationWithRequest:request success:^(AFHTTPRequestOperation *operation, id responseObject) {
             if ([self isDeleted] || self.managedObjectContext == nil)

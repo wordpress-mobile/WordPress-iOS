@@ -15,26 +15,26 @@
 // CocoaLumberjack
 #define COCOAPODS_POD_AVAILABLE_CocoaLumberjack
 #define COCOAPODS_VERSION_MAJOR_CocoaLumberjack 1
-#define COCOAPODS_VERSION_MINOR_CocoaLumberjack 6
-#define COCOAPODS_VERSION_PATCH_CocoaLumberjack 3
+#define COCOAPODS_VERSION_MINOR_CocoaLumberjack 8
+#define COCOAPODS_VERSION_PATCH_CocoaLumberjack 1
 
 // CocoaLumberjack/Core
 #define COCOAPODS_POD_AVAILABLE_CocoaLumberjack_Core
 #define COCOAPODS_VERSION_MAJOR_CocoaLumberjack_Core 1
-#define COCOAPODS_VERSION_MINOR_CocoaLumberjack_Core 6
-#define COCOAPODS_VERSION_PATCH_CocoaLumberjack_Core 3
+#define COCOAPODS_VERSION_MINOR_CocoaLumberjack_Core 8
+#define COCOAPODS_VERSION_PATCH_CocoaLumberjack_Core 1
 
 // CocoaLumberjack/Extensions
 #define COCOAPODS_POD_AVAILABLE_CocoaLumberjack_Extensions
 #define COCOAPODS_VERSION_MAJOR_CocoaLumberjack_Extensions 1
-#define COCOAPODS_VERSION_MINOR_CocoaLumberjack_Extensions 6
-#define COCOAPODS_VERSION_PATCH_CocoaLumberjack_Extensions 3
+#define COCOAPODS_VERSION_MINOR_CocoaLumberjack_Extensions 8
+#define COCOAPODS_VERSION_PATCH_CocoaLumberjack_Extensions 1
 
 // CrashlyticsLumberjack
 #define COCOAPODS_POD_AVAILABLE_CrashlyticsLumberjack
 #define COCOAPODS_VERSION_MAJOR_CrashlyticsLumberjack 1
 #define COCOAPODS_VERSION_MINOR_CrashlyticsLumberjack 0
-#define COCOAPODS_VERSION_PATCH_CrashlyticsLumberjack 0
+#define COCOAPODS_VERSION_PATCH_CrashlyticsLumberjack 1
 
 // DTCoreText
 #define COCOAPODS_POD_AVAILABLE_DTCoreText
@@ -46,19 +46,19 @@
 #define COCOAPODS_POD_AVAILABLE_DTFoundation_Core
 #define COCOAPODS_VERSION_MAJOR_DTFoundation_Core 1
 #define COCOAPODS_VERSION_MINOR_DTFoundation_Core 6
-#define COCOAPODS_VERSION_PATCH_DTFoundation_Core 0
+#define COCOAPODS_VERSION_PATCH_DTFoundation_Core 2
 
 // DTFoundation/DTHTMLParser
 #define COCOAPODS_POD_AVAILABLE_DTFoundation_DTHTMLParser
 #define COCOAPODS_VERSION_MAJOR_DTFoundation_DTHTMLParser 1
 #define COCOAPODS_VERSION_MINOR_DTFoundation_DTHTMLParser 6
-#define COCOAPODS_VERSION_PATCH_DTFoundation_DTHTMLParser 0
+#define COCOAPODS_VERSION_PATCH_DTFoundation_DTHTMLParser 2
 
 // DTFoundation/UIKit
 #define COCOAPODS_POD_AVAILABLE_DTFoundation_UIKit
 #define COCOAPODS_VERSION_MAJOR_DTFoundation_UIKit 1
 #define COCOAPODS_VERSION_MINOR_DTFoundation_UIKit 6
-#define COCOAPODS_VERSION_PATCH_DTFoundation_UIKit 0
+#define COCOAPODS_VERSION_PATCH_DTFoundation_UIKit 2
 
 // EmailChecker
 #define COCOAPODS_POD_AVAILABLE_EmailChecker
@@ -70,7 +70,7 @@
 #define COCOAPODS_POD_AVAILABLE_HockeySDK
 #define COCOAPODS_VERSION_MAJOR_HockeySDK 3
 #define COCOAPODS_VERSION_MINOR_HockeySDK 5
-#define COCOAPODS_VERSION_PATCH_HockeySDK 0
+#define COCOAPODS_VERSION_PATCH_HockeySDK 4
 
 // MGImageUtilities
 #define COCOAPODS_POD_AVAILABLE_MGImageUtilities
@@ -81,13 +81,13 @@
 // Mixpanel
 #define COCOAPODS_POD_AVAILABLE_Mixpanel
 #define COCOAPODS_VERSION_MAJOR_Mixpanel 2
-#define COCOAPODS_VERSION_MINOR_Mixpanel 1
-#define COCOAPODS_VERSION_PATCH_Mixpanel 0
+#define COCOAPODS_VERSION_MINOR_Mixpanel 3
+#define COCOAPODS_VERSION_PATCH_Mixpanel 1
 
 // NSLogger
 #define COCOAPODS_POD_AVAILABLE_NSLogger
 #define COCOAPODS_VERSION_MAJOR_NSLogger 1
-#define COCOAPODS_VERSION_MINOR_NSLogger 1
+#define COCOAPODS_VERSION_MINOR_NSLogger 2
 #define COCOAPODS_VERSION_PATCH_NSLogger 0
 
 // NSLogger-CocoaLumberjack-connector
@@ -108,28 +108,16 @@
 #define COCOAPODS_VERSION_MINOR_NSURL_IDN 1
 #define COCOAPODS_VERSION_PATCH_NSURL_IDN 0
 
-// Quantcast-Measure
-#define COCOAPODS_POD_AVAILABLE_Quantcast_Measure
-#define COCOAPODS_VERSION_MAJOR_Quantcast_Measure 1
-#define COCOAPODS_VERSION_MINOR_Quantcast_Measure 2
-#define COCOAPODS_VERSION_PATCH_Quantcast_Measure 13
-
-// Quantcast-Measure/Core
-#define COCOAPODS_POD_AVAILABLE_Quantcast_Measure_Core
-#define COCOAPODS_VERSION_MAJOR_Quantcast_Measure_Core 1
-#define COCOAPODS_VERSION_MINOR_Quantcast_Measure_Core 2
-#define COCOAPODS_VERSION_PATCH_Quantcast_Measure_Core 13
-
 // Reachability
 #define COCOAPODS_POD_AVAILABLE_Reachability
 #define COCOAPODS_VERSION_MAJOR_Reachability 3
-#define COCOAPODS_VERSION_MINOR_Reachability 0
-#define COCOAPODS_VERSION_PATCH_Reachability 0
+#define COCOAPODS_VERSION_MINOR_Reachability 1
+#define COCOAPODS_VERSION_PATCH_Reachability 1
 
 // SVProgressHUD
 #define COCOAPODS_POD_AVAILABLE_SVProgressHUD
-#define COCOAPODS_VERSION_MAJOR_SVProgressHUD 0
-#define COCOAPODS_VERSION_MINOR_SVProgressHUD 9
+#define COCOAPODS_VERSION_MAJOR_SVProgressHUD 1
+#define COCOAPODS_VERSION_MINOR_SVProgressHUD 0
 #define COCOAPODS_VERSION_PATCH_SVProgressHUD 0
 
 // UIDeviceIdentifier
@@ -147,12 +135,12 @@
 // google-plus-ios-sdk
 #define COCOAPODS_POD_AVAILABLE_google_plus_ios_sdk
 #define COCOAPODS_VERSION_MAJOR_google_plus_ios_sdk 1
-#define COCOAPODS_VERSION_MINOR_google_plus_ios_sdk 3
+#define COCOAPODS_VERSION_MINOR_google_plus_ios_sdk 5
 #define COCOAPODS_VERSION_PATCH_google_plus_ios_sdk 0
 
 // wpxmlrpc
 #define COCOAPODS_POD_AVAILABLE_wpxmlrpc
 #define COCOAPODS_VERSION_MAJOR_wpxmlrpc 0
-#define COCOAPODS_VERSION_MINOR_wpxmlrpc 2
-#define COCOAPODS_VERSION_PATCH_wpxmlrpc 0
+#define COCOAPODS_VERSION_MINOR_wpxmlrpc 4
+#define COCOAPODS_VERSION_PATCH_wpxmlrpc 1
 
