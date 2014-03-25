@@ -4,7 +4,7 @@ inhibit_all_warnings!
 
 platform :ios, '7.0'
 pod 'AFNetworking',	'1.2.0'
-pod 'Reachability',	'3.0.0'
+pod 'Reachability',	'3.1.1'
 pod 'NSURL+IDN', :podspec => 'https://raw.github.com/koke/NSURL-IDN/master/Podfile'
 pod 'DTCoreText',   '1.6.9'
 pod 'UIDeviceIdentifier', '~> 0.1'
