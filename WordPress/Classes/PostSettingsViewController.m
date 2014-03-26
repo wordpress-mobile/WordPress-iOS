@@ -95,8 +95,6 @@ static NSString *const TableViewActivityCellIdentifier = @"TableViewActivityCell
 
     DDLogInfo(@"%@ %@", self, NSStringFromSelector(_cmd));
 
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(mediaFeaturedImageSelected:) name:MediaFeaturedImageSelectedNotification object:nil];
-
     [WPStyleGuide configureColorsForView:self.view andTableView:self.tableView];
 
     NSMutableArray *allStatuses = [NSMutableArray arrayWithArray:[self.apost availableStatuses]];
@@ -508,21 +506,6 @@ static NSString *const TableViewActivityCellIdentifier = @"TableViewActivityCell
     return cell;
 }
 
-<<<<<<< HEAD
-- (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
-    if ((indexPath.section == 1) && (indexPath.row == 1) && (self.apost.password)) {
-        return 88.f;
-
-    } else if (
-             (!self.blogSupportsFeaturedImage && (indexPath.section == 3) && (indexPath.row == 1))
-             || (self.blogSupportsFeaturedImage && self.post.post_thumbnail && indexPath.section == 3 && indexPath.row == 0)
-             || (self.blogSupportsFeaturedImage && (indexPath.section == 4) && (indexPath.row == 1))
-               ) {
-		return 188.0f;
-	} else {
-        return 44.0f;
-    }
-=======
 - (UITableViewCell *)configurePostFormatCellForIndexPath:(NSIndexPath *)indexPath {
     UITableViewCell *cell = [self getWPTableViewCell];
     
@@ -531,7 +514,6 @@ static NSString *const TableViewActivityCellIdentifier = @"TableViewActivityCell
     cell.tag = PostSettingsRowFormat;
     
     return cell;
->>>>>>> a8c/develop
 }
 
 - (UITableViewCell *)configureFeaturedImageCellForIndexPath:(NSIndexPath *)indexPath {
@@ -609,22 +591,6 @@ static NSString *const TableViewActivityCellIdentifier = @"TableViewActivityCell
 
     }
     return cell;
-}
-
-- (void)featuredImageSelected:(NSNotification *)notificationInfo {
-    Media *media = (Media *)[notificationInfo object];
-    if (media) {
-        BOOL localFileExists = media.localURL && [[NSFileManager defaultManager] fileExistsAtPath:media.localURL isDirectory:0];
-        if (localFileExists) {
-            self.featuredImageView.image = [UIImage imageWithContentsOfFile:media.localURL];
-        } else {
-            [self loadFeaturedImage:[NSURL URLWithString:media.remoteURL]];
-        }
-        
-        if (![self.post isDeleted] && [self.post managedObjectContext]) {
-            self.post.post_thumbnail = media.mediaID;
-        }
-	}
 }
 
 - (WPTableViewCell *)getWPTableViewCell {
