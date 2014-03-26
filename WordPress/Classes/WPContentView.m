@@ -447,7 +447,8 @@ const CGFloat RPVControlButtonBorderSize = 0.0f;
 }
 
 - (void)refreshDate:(NSTimer *)timer {
-    [self.timeButton setTitle:[self.contentProvider.dateForDisplay shortString] forState:UIControlStateNormal];
+    NSString *title = [self.contentProvider.dateForDisplay shortString];
+    [self.timeButton setTitle:title forState:UIControlStateNormal | UIControlStateDisabled];
 }
 
 - (void)refreshDate {
