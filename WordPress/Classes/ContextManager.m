@@ -81,6 +81,9 @@ static ContextManager *instance;
     [self.backgroundContext performBlock:^{
         DDLogVerbose(@"Merging changes into background context");
         [self.backgroundContext mergeChangesFromContextDidSaveNotification:notification];
+        
+        // Changes are not saved out to the persistent store coordinator until the root context is saved
+        [self saveContext:self.backgroundContext];
     }];
 }
 
