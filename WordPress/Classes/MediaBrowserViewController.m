@@ -18,7 +18,6 @@
 #import "WPLoadingView.h"
 #import "WPNoResultsView.h"
 #import "Post.h"
-#import "CPopoverManager.h"
 #import "WPAlertView.h"
 #import <ImageIO/ImageIO.h>
 #import <AssetsLibrary/AssetsLibrary.h>
@@ -1126,7 +1125,7 @@ NSString *const MediaFeaturedImageSelectedNotification = @"MediaFeaturedImageSel
 		
         if (_addPopover) {
             [_addPopover dismissPopoverAnimated:YES];
-            [[CPopoverManager instance] setCurrentPopoverController:NULL];
+//            [[CPopoverManager instance] setCurrentPopoverController:NULL];
             _addPopover = nil;
             [self showResizeActionSheet];
         } else {
@@ -1139,7 +1138,7 @@ NSString *const MediaFeaturedImageSelectedNotification = @"MediaFeaturedImageSel
         
         if (IS_IPAD){
             [_addPopover dismissPopoverAnimated:YES];
-            [[CPopoverManager instance] setCurrentPopoverController:NULL];
+//            [[CPopoverManager instance] setCurrentPopoverController:NULL];
             _addPopover = nil;
         }
         
