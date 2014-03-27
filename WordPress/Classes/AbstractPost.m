@@ -291,6 +291,15 @@
     }
 }
 
+- (void)setFeaturedImage:(Media *)featuredImage {
+    // Implement in subclasses.
+}
+
+- (Media *)featuredImage {
+    // Imlplement in subclasses
+    return nil;
+}
+
 
 #pragma mark - WPContentViewProvider protocol
 

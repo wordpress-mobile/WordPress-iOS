@@ -24,8 +24,6 @@
 #import <AVFoundation/AVFoundation.h>
 
 static NSString *const MediaCellIdentifier = @"media_cell";
-static NSUInteger const MultiselectToolbarDeleteTag = 1;
-static NSUInteger const MultiselectToolbarDeselectTag = 2;
 static NSUInteger const MediaTypeActionSheetVideo = 1;
 static CGFloat const ScrollingVelocityThreshold = 30.0f;
 
@@ -428,6 +426,7 @@ NSString *const MediaFeaturedImageSelectedNotification = @"MediaFeaturedImageSel
         [cell.media cancelUpload];
     } else if (cell.media.remoteStatus == MediaRemoteStatusLocal || cell.media.remoteStatus == MediaRemoteStatusSync) {
         if (_selectingFeaturedImage) {
+            [self.post setFeaturedImage:cell.media];
             [[NSNotificationCenter defaultCenter] postNotificationName:MediaFeaturedImageSelectedNotification object:cell.media];
             [self.navigationController popViewControllerAnimated:YES];
         } else if (_selectingMediaForPost) {
@@ -721,41 +720,34 @@ NSString *const MediaFeaturedImageSelectedNotification = @"MediaFeaturedImageSel
 }
 
 - (void)processResizeSelection:(NSUInteger)buttonIndex actionSheet:(UIActionSheet*)actionSheet {
-    if (actionSheet.cancelButtonIndex != buttonIndex) {
-        switch (buttonIndex) {
-            case 0:
-                if (actionSheet.numberOfButtons == 3)
-                    [self useImage:[self resizeImage:_currentImage toSize:MediaResizeOriginal]];
-                else
-                    [self useImage:[self resizeImage:_currentImage toSize:MediaResizeSmall]];
-                break;
-            case 1:
-                if (actionSheet.numberOfButtons == 3) {
-                    [self showCustomSizeAlert];
-                } else if (actionSheet.numberOfButtons == 4)
-                    [self useImage:[self resizeImage:_currentImage toSize:MediaResizeOriginal]];
-                else
-                    [self useImage:[self resizeImage:_currentImage toSize:MediaResizeMedium]];
-                break;
-            case 2:
-                if (actionSheet.numberOfButtons == 4) {
-                    [self showCustomSizeAlert];
-                } else if (actionSheet.numberOfButtons == 5)
-                    [self useImage:[self resizeImage:_currentImage toSize:MediaResizeOriginal]];
-                else
-                    [self useImage:[self resizeImage:_currentImage toSize:MediaResizeLarge]];
-                break;
-            case 3:
-                if (actionSheet.numberOfButtons == 5) {
-                    [self showCustomSizeAlert];
-                } else
-                    [self useImage:[self resizeImage:_currentImage toSize:MediaResizeOriginal]];
-                break;
-            case 4:
-                [self showCustomSizeAlert];
-                break;
-        }
-    }}
+    if (actionSheet.cancelButtonIndex == buttonIndex) {
+        return;
+    }
+    
+    // 6 button: small, medium, large, original, custom, cancel
+    // 5 buttons: small, medium, original, custom, cancel
+    // 4 buttons: small, original, custom, cancel
+    // 3 buttons: original, custom, cancel
+    // The last three buttons are always the same, so we can count down, then count up and avoid alot of branching.
+    if (buttonIndex == actionSheet.numberOfButtons - 1) {
+        // cancel button. Noop.
+    } else if (buttonIndex == actionSheet.numberOfButtons - 2) {
+        // custom
+        [self showCustomSizeAlert];
+    } else if (buttonIndex == actionSheet.numberOfButtons - 3) {
+        // original
+        [self useImage:[self resizeImage:_currentImage toSize:MediaResizeOriginal]];
+    } else if (buttonIndex == 0) {
+        // small
+        [self useImage:[self resizeImage:_currentImage toSize:MediaResizeSmall]];
+    } else if (buttonIndex == 1) {
+        // medium
+        [self useImage:[self resizeImage:_currentImage toSize:MediaResizeMedium]];
+    } else if (buttonIndex == 2) {
+        // large
+        [self useImage:[self resizeImage:_currentImage toSize:MediaResizeLarge]];
+    }
+}
 
 - (void)showCustomSizeAlert {
     if (self.customSizeAlert) {
@@ -1125,7 +1117,6 @@ NSString *const MediaFeaturedImageSelectedNotification = @"MediaFeaturedImageSel
 		
         if (_addPopover) {
             [_addPopover dismissPopoverAnimated:YES];
-//            [[CPopoverManager instance] setCurrentPopoverController:NULL];
             _addPopover = nil;
             [self showResizeActionSheet];
         } else {
@@ -1138,7 +1129,6 @@ NSString *const MediaFeaturedImageSelectedNotification = @"MediaFeaturedImageSel
         
         if (IS_IPAD){
             [_addPopover dismissPopoverAnimated:YES];
-//            [[CPopoverManager instance] setCurrentPopoverController:NULL];
             _addPopover = nil;
         }
         
@@ -1240,10 +1230,11 @@ NSString *const MediaFeaturedImageSelectedNotification = @"MediaFeaturedImageSel
 		[fileManager createFileAtPath:filepath contents:imageData attributes:nil];
 	}
     
-	if(self.currentOrientation == MediaOrientationLandscape)
+	if(self.currentOrientation == MediaOrientationLandscape) {
 		imageMedia.orientation = @"landscape";
-	else
+	} else {
 		imageMedia.orientation = @"portrait";
+    }
 	imageMedia.creationDate = [NSDate date];
 	imageMedia.filename = filename;
 	imageMedia.localURL = filepath;
@@ -1263,9 +1254,9 @@ NSString *const MediaFeaturedImageSelectedNotification = @"MediaFeaturedImageSel
             return;
         }
         if (_selectingFeaturedImage) {
+            [self.post setFeaturedImage:imageMedia];
             [[NSNotificationCenter defaultCenter] postNotificationName:MediaFeaturedImageSelectedNotification object:imageMedia];
-        }
-        else {
+        } else {
             [[NSNotificationCenter defaultCenter] postNotificationName:MediaShouldInsertBelowNotification object:imageMedia];
         }
         [imageMedia save];

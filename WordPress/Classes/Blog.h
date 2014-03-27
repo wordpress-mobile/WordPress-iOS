@@ -29,6 +29,7 @@
 @property (nonatomic, assign) BOOL isSyncingPosts;
 @property (nonatomic, assign) BOOL isSyncingPages;
 @property (nonatomic, assign) BOOL isSyncingComments;
+@property (nonatomic, assign) BOOL isSyncingMedia;
 @property (nonatomic, strong) NSDate *lastPostsSync;
 @property (nonatomic, strong) NSDate *lastPagesSync;
 @property (nonatomic, strong) NSDate *lastCommentsSync;

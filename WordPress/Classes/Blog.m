@@ -47,10 +47,14 @@ NSString *const LastUsedBlogURLDefaultsKey = @"LastUsedBlogURLDefaultsKey";
 @dynamic posts, categories, comments, themes, media;
 @dynamic currentThemeId;
 @dynamic lastPostsSync, lastStatsSync, lastPagesSync, lastCommentsSync, lastUpdateWarning;
-@synthesize isSyncingPosts, isSyncingPages, isSyncingComments, videoPressEnabled;
 @dynamic geolocationEnabled, options, postFormats, isActivated, visible;
 @dynamic account;
 @dynamic jetpackAccount;
+@synthesize isSyncingPosts;
+@synthesize isSyncingPages;
+@synthesize isSyncingComments;
+@synthesize videoPressEnabled;
+@synthesize isSyncingMedia;
 
 #pragma mark - NSManagedObject subclass methods
 
@@ -550,6 +554,11 @@ NSString *const LastUsedBlogURLDefaultsKey = @"LastUsedBlogURLDefaultsKey";
 }
 
 - (void)syncMediaLibraryWithSuccess:(void (^)())success failure:(void (^)(NSError *))failure {
+    if (self.isSyncingMedia) {
+        DDLogWarn(@"Already syncing media. Skip");
+        return;
+    }
+    self.isSyncingMedia = YES;
     WPXMLRPCRequestOperation *operation = [self operationForMediaLibraryWithSuccess:success failure:failure];
     [self.api enqueueXMLRPCRequestOperation:operation];
 }
@@ -585,6 +594,12 @@ NSString *const LastUsedBlogURLDefaultsKey = @"LastUsedBlogURLDefaultsKey";
         operation = [self operationForPagesWithSuccess:nil failure:nil loadMore:NO];
         [operations addObject:operation];
         self.isSyncingPages = YES;
+    }
+    
+    if (!self.isSyncingMedia) {
+        operation = [self operationForMediaLibraryWithSuccess:nil failure:nil];
+        [operations addObject:operation];
+        self.isSyncingMedia = YES;
     }
 
     AFHTTPRequestOperation *combinedOperation = [self.api combinedHTTPRequestOperationWithOperations:operations success:^(AFHTTPRequestOperation *operation, id responseObject) {
@@ -906,12 +921,15 @@ NSString *const LastUsedBlogURLDefaultsKey = @"LastUsedBlogURLDefaultsKey";
     WPXMLRPCRequest *mediaLibraryRequest = [self.api XMLRPCRequestWithMethod:@"wp.getMediaLibrary" parameters:[self getXMLRPCArgsWithExtra:nil]];
     WPXMLRPCRequestOperation *operation = [self.api XMLRPCRequestOperationWithRequest:mediaLibraryRequest success:^(AFHTTPRequestOperation *operation, id responseObject) {
         [Media mergeNewMedia:responseObject forBlog:self];
+        self.isSyncingMedia = NO;
         if (success) {
             success();
         }
         
     } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
         DDLogError(@"Error syncing media library: %@", [error localizedDescription]);
+        self.isSyncingMedia = NO;
+        
         if (failure) {
             failure(error);
         }

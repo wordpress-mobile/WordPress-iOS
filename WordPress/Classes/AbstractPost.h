@@ -10,15 +10,17 @@
 #import <CoreData/CoreData.h>
 #import "BasePost.h"
 
+@class Media;
 
 @interface AbstractPost : BasePost
 
 // Relationships
-@property (nonatomic, strong) Blog * blog;
-@property (nonatomic, strong) NSMutableSet * media;
+@property (nonatomic, strong) Blog *blog;
+@property (nonatomic, strong) NSMutableSet *media;
 @property (weak, readonly) AbstractPost *original;
 @property (weak, readonly) AbstractPost *revision;
-@property (nonatomic, strong) NSMutableSet * comments;
+@property (nonatomic, strong) NSMutableSet *comments;
+@property (nonatomic, strong) Media *featuredImage;
 
 // Revision management
 - (AbstractPost *)createRevision;
