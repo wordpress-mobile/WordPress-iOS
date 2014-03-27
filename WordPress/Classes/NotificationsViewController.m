@@ -18,6 +18,8 @@
 #import "WPAccount.h"
 #import "WPWebViewController.h"
 #import "Note.h"
+#import "NotificationsManager.h"
+#import "NotificationSettingsViewController.h"
 
 NSString * const NotificationsLastSyncDateKey = @"NotificationsLastSyncDate";
 NSString * const NotificationsJetpackInformationURL = @"http://jetpack.me/about/";
@@ -90,6 +92,7 @@ NSString * const NotificationsJetpackInformationURL = @"http://jetpack.me/about/
 
 - (void)dealloc {
     [[NSNotificationCenter defaultCenter] removeObserver:self];
+    [[UIApplication sharedApplication] removeObserver:self forKeyPath:@"applicationIconBadgeNumber"];
 }
 
 - (void)viewDidLoad
@@ -101,6 +104,22 @@ NSString * const NotificationsJetpackInformationURL = @"http://jetpack.me/about/
     
     self.tableView.separatorInset = UIEdgeInsetsMake(0, 25, 0, 0);
     self.infiniteScrollEnabled = YES;
+    
+    if ([NotificationsManager deviceRegisteredForPushNotifications]) {
+        UIBarButtonItem *pushSettings = [[UIBarButtonItem alloc] initWithTitle:NSLocalizedString(@"Manage", @"")
+                                                                         style:UIBarButtonItemStylePlain
+                                                                        target:self
+                                                                        action:@selector(showNotificationSettings)];
+        self.navigationItem.rightBarButtonItem = pushSettings;
+    }
+    
+    // Watch for application badge number changes
+    UIApplication *application = [UIApplication sharedApplication];
+    [application addObserver:self
+                  forKeyPath:@"applicationIconBadgeNumber"
+                     options:NSKeyValueObservingOptionNew
+                     context:nil];
+    [self updateTabBarBadgeNumber];
 }
 
 - (void)viewWillAppear:(BOOL)animated {
@@ -122,8 +141,6 @@ NSString * const NotificationsJetpackInformationURL = @"http://jetpack.me/about/
     if (self.tableView.contentOffset.y == 0) {
         [self pruneOldNotes];
     }
-
-    [self clearNotificationsBadgeAndSyncItems];
 }
 
 - (void)viewDidDisappear:(BOOL)animated {
@@ -132,8 +149,26 @@ NSString * const NotificationsJetpackInformationURL = @"http://jetpack.me/about/
         [self pruneOldNotes];
 }
 
+#pragma mark - NSObject(NSKeyValueObserving) methods
+
+- (void)observeValueForKeyPath:(NSString *)keyPath
+                      ofObject:(id)object
+                        change:(NSDictionary *)change
+                       context:(void *)context {
+    if ([keyPath isEqualToString:@"applicationIconBadgeNumber"]) {
+        [self updateTabBarBadgeNumber];
+    }
+}
 
 #pragma mark - Custom methods
+
+- (void)updateTabBarBadgeNumber {
+    UIApplication *application = [UIApplication sharedApplication];
+    NSInteger count = application.applicationIconBadgeNumber;
+    
+    NSString *countString = count == 0 ? nil : [NSString stringWithFormat:@"%d", count];
+    self.navigationController.tabBarItem.badgeValue = countString;
+}
 
 - (void)refreshUnreadNotes {
     [Note refreshUnreadNotesWithContext:self.resultsController.managedObjectContext];
@@ -173,10 +208,27 @@ NSString * const NotificationsJetpackInformationURL = @"http://jetpack.me/about/
     [Note pruneOldNotesBefore:pruneBefore withContext:self.resultsController.managedObjectContext];
 }
 
+- (void)showNotificationSettings {
+    [WPMobileStats trackEventForWPCom:StatsEventNotificationsClickedManageNotifications];
+    
+    NotificationSettingsViewController *notificationSettingsViewController = [[NotificationSettingsViewController alloc] initWithStyle:UITableViewStyleGrouped];
+    UINavigationController *navigationController = [[UINavigationController alloc] initWithRootViewController:notificationSettingsViewController];
+    navigationController.navigationBar.translucent = NO;
+    navigationController.modalPresentationStyle = UIModalPresentationFormSheet;
+    
+    UIBarButtonItem *closeButton = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemDone target:self action:@selector(closeNotificationSettings)];
+    notificationSettingsViewController.navigationItem.rightBarButtonItem = closeButton;
+    
+    [self presentViewController:navigationController animated:YES completion:nil];
+}
+
+- (void)closeNotificationSettings {
+    [self dismissViewControllerAnimated:YES completion:nil];
+}
+
 #pragma mark - Public methods
 
 - (void)clearNotificationsBadgeAndSyncItems {
-    [UIApplication sharedApplication].applicationIconBadgeNumber = 0;
     if (![self isSyncing]) {
         [self syncItems];
     }
@@ -204,6 +256,13 @@ NSString * const NotificationsJetpackInformationURL = @"http://jetpack.me/about/
         } else {
             NotificationsFollowDetailViewController *detailViewController = [[NotificationsFollowDetailViewController alloc] initWithNote:note];
             [self.navigationController pushViewController:detailViewController animated:YES];
+        }
+    } else if ([note statsEvent]) {
+        Blog *blog = [note blogForStatsEvent];
+        if (blog) {
+            [[WordPressAppDelegate sharedWordPressApplicationDelegate] showStatsForBlog:blog];
+        } else {
+            [self.tableView deselectRowAtIndexPath:indexPath animated:YES];
         }
     } else {
         [self.tableView deselectRowAtIndexPath:indexPath animated:YES];
@@ -263,8 +322,11 @@ NSString * const NotificationsJetpackInformationURL = @"http://jetpack.me/about/
     
     Note *note = [self.resultsController objectAtIndexPath:indexPath];
     BOOL hasDetailsView = [self noteHasDetailView:note];
-    if (!hasDetailsView) {
+    BOOL isStatsNote = [note statsEvent];
+    
+    if (!hasDetailsView && !isStatsNote) {
         cell.accessoryType = UITableViewCellAccessoryNone;
+        cell.selectionStyle = UITableViewCellSelectionStyleNone;
     }
 }
 
@@ -287,6 +349,8 @@ NSString * const NotificationsJetpackInformationURL = @"http://jetpack.me/about/
     }
     
     [Note fetchNotificationsSince:timestamp success:^{
+        [UIApplication sharedApplication].applicationIconBadgeNumber = 0;
+
         [self updateSyncDate];
         if (success) {
             success();
@@ -298,21 +362,12 @@ NSString * const NotificationsJetpackInformationURL = @"http://jetpack.me/about/
     return YES;
 }
 
-- (BOOL)isSyncing
-{
+- (BOOL)isSyncing {
     return _retrievingNotifications;
 }
 
 - (void)setSyncing:(BOOL)value {
     _retrievingNotifications = value;
-}
-
-- (void)syncItems
-{
-    // Check to see if there is a WordPress.com account before attempting to fetch notifications
-    if ([WPAccount defaultWordPressComAccount]) {
-        [super syncItems];
-    }
 }
 
 - (void)loadMoreWithSuccess:(void (^)())success failure:(void (^)(NSError *))failure {

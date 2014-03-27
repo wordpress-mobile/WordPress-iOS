@@ -122,7 +122,7 @@ CGFloat const blavatarImageViewSize = 43.f;
                                       NSLocalizedString(@"Default (360p)", @"Video quality - default size, 360p"),
                                       NSLocalizedString(@"Low (144p)", @"Video quality - low quality, 144p"), nil], @"Titles",
                                       [NSArray arrayWithObjects:@"0", @"3", @"1", @"2", nil], @"Values",
-                                      NSLocalizedString(@"Choose the quality at which video should be uploaded when inserting into posts.", @""), @"Info",                                      
+                                      NSLocalizedString(@"Choose the quality at which video should be uploaded.", @""), @"Info",                                      
                                       nil];
     
     NSDictionary *videoContentDict = [NSDictionary dictionaryWithObjectsAndKeys:@"0", @"DefaultValue", 

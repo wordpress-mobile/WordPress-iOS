@@ -118,7 +118,7 @@
 
 - (void)handleImageDownloadFailedForReceiver:(NSDictionary *)receiver error:(NSError *)error {
     if (self.delegate && [self.delegate respondsToSelector:@selector(tableImageSource:imageFailedforIndexPath:error:)]) {
-        dispatch_sync(dispatch_get_main_queue(), ^{
+        dispatch_async(dispatch_get_main_queue(), ^{
             if (_lastInvalidationOfIndexPaths
                 && [_lastInvalidationOfIndexPaths compare:receiver[@"date"]] == NSOrderedDescending) {
                 // This index path has been invalidated, don't call the delegate

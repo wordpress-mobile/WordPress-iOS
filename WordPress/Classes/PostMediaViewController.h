@@ -32,7 +32,7 @@ static inline double radians(double degrees) {
     NSFetchedResultsController *resultsController;
 }
 
-@property (nonatomic, strong) IBOutlet UIPopoverController *addPopover;
+@property (nonatomic, strong) UIPopoverController *addPopover;
 @property (nonatomic, assign) BOOL hasPhotos, hasVideos, isAddingMedia, isShowingMediaPickerActionSheet, isShowingChangeOrientationActionSheet, isShowingCustomSizeAlert;
 @property (nonatomic, assign) BOOL isLibraryMedia, didChangeOrientationDuringRecord, isShowingResizeActionSheet, videoEnabled, isCheckingVideoCapability;
 @property (nonatomic, strong) NSString *postID, *blogURL, *videoPressCheckBlogURL, *uniqueID;

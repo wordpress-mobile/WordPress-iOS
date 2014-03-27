@@ -202,8 +202,8 @@ static NSInteger const ImageSizeLargeHeight = 480;
     return [NSString stringWithFormat:@"%@%@", adminBaseUrl, path];
 }
 
-- (int)numberOfPendingComments{
-    int pendingComments = 0;
+- (NSUInteger)numberOfPendingComments{
+    NSUInteger pendingComments = 0;
     if ([self hasFaultForRelationshipNamed:@"comments"]) {
         NSFetchRequest *request = [NSFetchRequest fetchRequestWithEntityName:@"Comment"];
         [request setPredicate:[NSPredicate predicateWithFormat:@"blog = %@ AND status like 'hold'", self]];
@@ -374,6 +374,15 @@ static NSInteger const ImageSizeLargeHeight = 480;
     NSString *password = account.password ?: @"";
     
     return password;
+}
+
+- (BOOL)supportsFeaturedImages {
+    id hasSupport = [self getOptionValue:@"post_thumbnail"];
+    if (hasSupport) {
+        return [hasSupport boolValue];
+    }
+    
+    return NO;
 }
 
 #pragma mark -
@@ -552,7 +561,7 @@ static NSInteger const ImageSizeLargeHeight = 480;
         _api = [[WPXMLRPCClient alloc] initWithXMLRPCEndpoint:[NSURL URLWithString:self.xmlrpc]];
         // Enable compression for wp.com only, as some self hosted have connection issues
         if (self.isWPcom) {
-            [_api setDefaultHeader:@"gzip, deflate" value:@"Accept-Encoding"];
+            [_api setDefaultHeader:@"Accept-Encoding" value:@"gzip, deflate"];
             [_api setAuthorizationHeaderWithToken:self.account.authToken];
         }
     }
@@ -707,7 +716,7 @@ static NSInteger const ImageSizeLargeHeight = 480;
             }
         }
         
-        NSArray *parameters = [self getXMLRPCArgsWithExtra:[NSNumber numberWithInt:postsToRequest]];
+        NSArray *parameters = [self getXMLRPCArgsWithExtra:[NSNumber numberWithUnsignedInteger:postsToRequest]];
         WPXMLRPCRequest *request = [self.api XMLRPCRequestWithMethod:@"metaWeblog.getRecentPosts" parameters:parameters];
         operation = [self.api XMLRPCRequestOperationWithRequest:request success:^(AFHTTPRequestOperation *operation, id responseObject) {
             if ([self isDeleted] || self.managedObjectContext == nil)
@@ -762,7 +771,7 @@ static NSInteger const ImageSizeLargeHeight = 480;
             }
         }
         
-        NSArray *parameters = [self getXMLRPCArgsWithExtra:[NSNumber numberWithInt:pagesToRequest]];
+        NSArray *parameters = [self getXMLRPCArgsWithExtra:[NSNumber numberWithUnsignedInteger:pagesToRequest]];
         WPXMLRPCRequest *request = [self.api XMLRPCRequestWithMethod:@"wp.getPages" parameters:parameters];
         operation = [self.api XMLRPCRequestOperationWithRequest:request success:^(AFHTTPRequestOperation *operation, id responseObject) {
             if ([self isDeleted] || self.managedObjectContext == nil)

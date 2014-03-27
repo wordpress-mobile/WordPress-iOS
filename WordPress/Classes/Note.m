@@ -185,6 +185,45 @@ const NSUInteger NoteKeepCount = 20;
     return ![self isUnread];
 }
 
+- (BOOL)statsEvent {
+    return [self.type isEqualToString:@"traffic_surge"];
+}
+
+- (Blog *)blogForStatsEvent {
+    NSScanner *scanner = [NSScanner scannerWithString:self.subject];
+    NSString *blogName;
+    
+    while ([scanner isAtEnd] == NO) {
+        [scanner scanUpToString:@"\"" intoString:NULL];
+        [scanner scanString:@"\"" intoString:NULL];
+        [scanner scanUpToString:@"\"" intoString:&blogName];
+        [scanner scanString:@"\"" intoString:NULL];
+    }
+
+    NSPredicate *subjectPredicate = [NSPredicate predicateWithFormat:@"self.blogName CONTAINS[cd] %@", blogName];
+    NSPredicate *wpcomPredicate = [NSPredicate predicateWithFormat:@"self.account.isWpcom == YES"];
+    NSPredicate *jetpackPredicate = [NSPredicate predicateWithFormat:@"self.jetpackAccount != nil"];
+    NSPredicate *statsBlogsPredicate = [NSCompoundPredicate orPredicateWithSubpredicates:@[wpcomPredicate, jetpackPredicate]];
+    NSPredicate *combinedPredicate = [NSCompoundPredicate andPredicateWithSubpredicates:@[subjectPredicate, statsBlogsPredicate]];
+
+    NSFetchRequest *fetchRequest = [NSFetchRequest fetchRequestWithEntityName:@"Blog"];
+    fetchRequest.predicate = combinedPredicate;
+    
+    NSError *error = nil;
+    NSArray *blogs = [self.managedObjectContext executeFetchRequest:fetchRequest error:&error];
+    
+    if (error) {
+        DDLogError(@"Error while retrieving blogs with stats: %@", error);
+        return nil;
+    }
+
+    if (blogs.count > 0) {
+        return [blogs firstObject];
+    }
+    
+    return nil;
+}
+
 - (NSString *)commentText {
     if (_commentText == nil) {
         [self parseComment];
@@ -197,6 +236,12 @@ const NSUInteger NoteKeepCount = 20;
         _noteData = [NSJSONSerialization JSONObjectWithData:self.payload options:NSJSONReadingMutableContainers error:nil];
     }
     return _noteData;
+}
+
+#pragma mark - NSManagedObject methods
+
+- (void)didTurnIntoFault {
+    _noteData = nil;
 }
 
 #pragma mark - Comment HTML parsing
@@ -315,6 +360,7 @@ const NSUInteger NoteKeepCount = 20;
             success([notes count] > 0);
         }
     } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+        DDLogVerbose(@"Failed to fetch notifications - %@", [error localizedDescription]);
         if (failure) {
             failure(error);
         }

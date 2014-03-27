@@ -11,7 +11,7 @@
 #import "EditSiteViewController.h"
 #import "PagesViewController.h"
 #import "CommentsViewController.h"
-#import "StatsWebViewController.h"
+#import "StatsViewController.h"
 #import "WPWebViewController.h"
 #import "WPTableViewCell.h"
 #import "ContextManager.h"
@@ -121,7 +121,7 @@ NSString * const WPBlogDetailsBlogKey = @"WPBlogDetailsBlogKey";
     } else if (indexPath.row == BlogDetailsRowComments) {
         cell.textLabel.text = NSLocalizedString(@"Comments", nil);
         cell.imageView.image = [UIImage imageNamed:@"icon-menu-comments"];
-        int numberOfPendingComments = [self.blog numberOfPendingComments];
+        NSUInteger numberOfPendingComments = [self.blog numberOfPendingComments];
         if (numberOfPendingComments > 0) {
             cell.detailTextLabel.text = [NSString stringWithFormat:@"%d", numberOfPendingComments];
         }
@@ -171,7 +171,7 @@ NSString * const WPBlogDetailsBlogKey = @"WPBlogDetailsBlogKey";
         controllerClass = [CommentsViewController class];
     } else if (indexPath.row == BlogDetailsRowStats) {
         [WPMobileStats incrementProperty:StatsPropertySidebarSiteClickedStats forEvent:StatsEventAppClosed];
-        controllerClass =  [StatsWebViewController class];
+        controllerClass =  [StatsViewController class];
     } else if (indexPath.row == BlogDetailsRowViewSite) {
         [self showViewSiteForBlog:self.blog];
     } else if (indexPath.row == BlogDetailsRowViewAdmin) {

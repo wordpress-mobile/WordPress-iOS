@@ -86,6 +86,7 @@
             self.refreshButton.customView = btn;
             self.iPadNavBar.topItem.title = NSLocalizedString(@"Loading...", @"");
         }
+        self.loadingLabel.text = NSLocalizedString(@"Loading...", @"");
     }
 
     self.toolbar.translucent = NO;

@@ -16,7 +16,7 @@ extern NSInteger const ReaderPostsToSync;
 extern NSString *const ReaderLastSyncDateKey;
 extern NSString *const ReaderCurrentTopicKey;
 extern NSString *const ReaderTopicsArrayKey;
-extern NSString *const ReaderExtrasArrayKey;
+extern NSString *const ReaderListsArrayKey;
 
 
 extern NSString * const ReaderPostStoredCommentIDKey;
@@ -42,6 +42,7 @@ extern NSString * const ReaderPostStoredCommentTextKey;
 @property (nonatomic, strong) NSNumber *isFollowing;
 @property (nonatomic, strong) NSNumber *isLiked;
 @property (nonatomic, strong) NSNumber *isReblogged;
+@property (nonatomic, strong) NSNumber *isWPCom;
 @property (nonatomic, strong) NSNumber *likeCount;
 @property (nonatomic, strong) NSString *postAvatar;
 @property (nonatomic, strong) NSNumber *siteID;
@@ -125,9 +126,6 @@ extern NSString * const ReaderPostStoredCommentTextKey;
 
 - (BOOL)isPrivate;
 
-- (BOOL)isWPCom;
-
-
 - (void)storeComment:(NSNumber *)commentID comment:(NSString *)comment;
 
 
@@ -149,10 +147,13 @@ extern NSString * const ReaderPostStoredCommentTextKey;
 @interface ReaderPost (WordPressComApi)
 
 /**
- Gets the list of recommended topics for the Reader.
+ Gets the list of tags & lists for the Reader.
+ 
+ @param success a block called if the REST API call is successful.
+ @param failure a block called if there is any error. `error` can be any underlying network error
  */
-+ (void)getReaderTopicsWithSuccess:(WordPressComApiRestSuccessResponseBlock)success
-						   failure:(WordPressComApiRestSuccessFailureBlock)failure;
++ (void)getReaderMenuItemsWithSuccess:(WordPressComApiRestSuccessResponseBlock)success
+                              failure:(WordPressComApiRestSuccessFailureBlock)failure;
 
 /**
  Gets the list of comments for the specified post, on the specified site.
