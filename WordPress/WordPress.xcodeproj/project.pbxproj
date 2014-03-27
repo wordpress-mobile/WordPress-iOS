@@ -26,7 +26,6 @@
 		2A8FF7D90E8A32F7001A9A40 /* lock.png in Resources */ = {isa = PBXBuildFile; fileRef = 2A8FF7D80E8A32F7001A9A40 /* lock.png */; };
 		2F970F740DF92274006BD934 /* PostsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 2F970F730DF92274006BD934 /* PostsViewController.m */; };
 		2FAE97090E33B21600CA8540 /* defaultPostTemplate_old.html in Resources */ = {isa = PBXBuildFile; fileRef = 2FAE97040E33B21600CA8540 /* defaultPostTemplate_old.html */; };
-		2FAE970A0E33B21600CA8540 /* license.txt in Resources */ = {isa = PBXBuildFile; fileRef = 2FAE97050E33B21600CA8540 /* license.txt */; };
 		2FAE970C0E33B21600CA8540 /* xhtml1-transitional.dtd in Resources */ = {isa = PBXBuildFile; fileRef = 2FAE97070E33B21600CA8540 /* xhtml1-transitional.dtd */; };
 		2FAE970D0E33B21600CA8540 /* xhtmlValidatorTemplate.xhtml in Resources */ = {isa = PBXBuildFile; fileRef = 2FAE97080E33B21600CA8540 /* xhtmlValidatorTemplate.xhtml */; };
 		3001AB4215AEE56C00A9F8F3 /* toolbar_swipe_trash@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 3001AB4115AEE56C00A9F8F3 /* toolbar_swipe_trash@2x.png */; };
@@ -1053,7 +1052,6 @@
 		2F970F730DF92274006BD934 /* PostsViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PostsViewController.m; sourceTree = "<group>"; };
 		2F970F970DF929B8006BD934 /* Constants.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Constants.h; sourceTree = "<group>"; };
 		2FAE97040E33B21600CA8540 /* defaultPostTemplate_old.html */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.html; name = defaultPostTemplate_old.html; path = Resources/HTML/defaultPostTemplate_old.html; sourceTree = "<group>"; };
-		2FAE97050E33B21600CA8540 /* license.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = license.txt; sourceTree = "<group>"; };
 		2FAE97070E33B21600CA8540 /* xhtml1-transitional.dtd */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; name = "xhtml1-transitional.dtd"; path = "Resources/HTML/xhtml1-transitional.dtd"; sourceTree = "<group>"; };
 		2FAE97080E33B21600CA8540 /* xhtmlValidatorTemplate.xhtml */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; name = xhtmlValidatorTemplate.xhtml; path = Resources/HTML/xhtmlValidatorTemplate.xhtml; sourceTree = "<group>"; };
 		3001AB4115AEE56C00A9F8F3 /* toolbar_swipe_trash@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "toolbar_swipe_trash@2x.png"; path = "Resources/Images/toolbar_swipe_trash@2x.png"; sourceTree = "<group>"; };
@@ -1865,7 +1863,7 @@
 		85ED54EF17CC1A01006564AE /* icon-posts-editor-media-active@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "icon-posts-editor-media-active@2x.png"; sourceTree = "<group>"; };
 		85ED54F017CC1A01006564AE /* icon-posts-editor-inspector@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "icon-posts-editor-inspector@2x.png"; sourceTree = "<group>"; };
 		85ED54F117CC1A01006564AE /* icon-posts-editor-inspector-active@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "icon-posts-editor-inspector-active@2x.png"; sourceTree = "<group>"; };
-		85ED988717DFA00000090D0B /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; name = Images.xcassets; path = WordPress/Images.xcassets; sourceTree = "<group>"; };
+		85ED988717DFA00000090D0B /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; name = Images.xcassets; path = Images.xcassets; sourceTree = "<group>"; };
 		85ED98AA17DFB17200090D0B /* iTunesArtwork@2x */ = {isa = PBXFileReference; lastKnownFileType = file; path = "iTunesArtwork@2x"; sourceTree = "<group>"; };
 		85EE305C18C00E21000822C5 /* StatsLinkToWebviewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = StatsLinkToWebviewCell.h; sourceTree = "<group>"; };
 		85EE305D18C00E21000822C5 /* StatsLinkToWebviewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = StatsLinkToWebviewCell.m; sourceTree = "<group>"; };
@@ -1899,6 +1897,11 @@
 		9390B85E1858D0BF00BE43FC /* BlogSelectorViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BlogSelectorViewController.m; sourceTree = "<group>"; };
 		93A3F7DD1843F6F00082FEEA /* CoreTelephony.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreTelephony.framework; path = System/Library/Frameworks/CoreTelephony.framework; sourceTree = SDKROOT; };
 		93B17EDB17DFD626002B1014 /* WPAlertViewSideBySide.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = WPAlertViewSideBySide.xib; sourceTree = "<group>"; };
+		93FA0F0118E451A80007903B /* LICENSE */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = LICENSE; path = ../LICENSE; sourceTree = "<group>"; };
+		93FA0F0218E451A80007903B /* README.md */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = README.md; path = ../README.md; sourceTree = "<group>"; };
+		93FA0F0318E451A80007903B /* update-translations.rb */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.script.ruby; name = "update-translations.rb"; path = "../update-translations.rb"; sourceTree = "<group>"; };
+		93FA0F0418E451A80007903B /* fix-translation.php */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.script.php; name = "fix-translation.php"; path = "../fix-translation.php"; sourceTree = "<group>"; };
+		93FA0F0518E451A80007903B /* localize.py */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.script.python; name = localize.py; path = ../localize.py; sourceTree = "<group>"; };
 		93FA59DB18D88C1C001446BC /* CategoryService.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CategoryService.h; sourceTree = "<group>"; };
 		93FA59DC18D88C1C001446BC /* CategoryService.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CategoryService.m; sourceTree = "<group>"; };
 		93FA59DE18D8986D001446BC /* CategoryServiceRemote.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CategoryServiceRemote.h; sourceTree = "<group>"; };
@@ -2440,7 +2443,6 @@
 			isa = PBXGroup;
 			children = (
 				E1756E661694AA1500D9EC00 /* Derived Sources */,
-				2FAE97050E33B21600CA8540 /* license.txt */,
 				E11F949814A3344300277D31 /* WordPressApi */,
 				080E96DDFE201D6D7F000001 /* Classes */,
 				E12F55F714A1F2640060A510 /* Vendor */,
@@ -2451,8 +2453,10 @@
 				29B97323FDCFA39411CA2CEA /* Frameworks */,
 				19C28FACFE9D520D11CA2CBB /* Products */,
 				45B71DE4113EDAA100D0A33C /* Entitlements.plist */,
+				93FA0F0118E451A80007903B /* LICENSE */,
 				EBC24772E5CD4036B5AFD803 /* Pods.xcconfig */,
 				BB0E95DCE0724D3696D9F222 /* Pods-WordPressTest.xcconfig */,
+				93FA0F0218E451A80007903B /* README.md */,
 			);
 			name = CustomTemplate;
 			sourceTree = "<group>";
@@ -2460,8 +2464,11 @@
 		29B97315FDCFA39411CA2CEA /* Other Sources */ = {
 			isa = PBXGroup;
 			children = (
-				28A0AAE50D9B0CCF005BE974 /* WordPress_Prefix.pch */,
+				93FA0F0418E451A80007903B /* fix-translation.php */,
+				93FA0F0518E451A80007903B /* localize.py */,
 				29B97316FDCFA39411CA2CEA /* main.m */,
+				93FA0F0318E451A80007903B /* update-translations.rb */,
+				28A0AAE50D9B0CCF005BE974 /* WordPress_Prefix.pch */,
 			);
 			name = "Other Sources";
 			sourceTree = "<group>";
@@ -4344,7 +4351,6 @@
 				A01C55480E25E0D000D411F2 /* defaultPostTemplate.html in Resources */,
 				85325A3C17BB0DF8008E87D1 /* icon-menu-posts-quickphoto.png in Resources */,
 				2FAE97090E33B21600CA8540 /* defaultPostTemplate_old.html in Resources */,
-				2FAE970A0E33B21600CA8540 /* license.txt in Resources */,
 				2FAE970C0E33B21600CA8540 /* xhtml1-transitional.dtd in Resources */,
 				2FAE970D0E33B21600CA8540 /* xhtmlValidatorTemplate.xhtml in Resources */,
 				2A7F722B0E71000000E48A1F /* up.png in Resources */,
