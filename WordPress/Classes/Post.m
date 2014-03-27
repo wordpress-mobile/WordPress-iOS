@@ -186,15 +186,21 @@
     }
    
     Post *original = (Post *)self.original;
+    if (!original) {
+        return NO;
+    }
     
-    if ((self.tags != original.tags)
+    if (([self.tags length] != [original.tags length])
         && (![self.tags isEqual:original.tags])) {
         return YES;
     }
     
-	if ((self.geolocation != original.geolocation)
-        && (![self.geolocation isEqual:original.geolocation]) ) {
-        return YES;
+    if (self.hasRemote) {
+        CLLocationCoordinate2D coord1 = self.geolocation.coordinate;
+        CLLocationCoordinate2D coord2 = original.geolocation.coordinate;
+        if ((coord1.latitude != coord2.latitude) || (coord1.longitude != coord2.longitude)) {
+            return YES;
+        }
     }
     
     return NO;
@@ -213,10 +219,6 @@
     }
     
     if (![self.categories isEqual:original.categories]) {
-        return YES;
-    }
-    
-    if (self.featuredImageURL != original.featuredImageURL && ![self.featuredImageURL isEqualToString:original.featuredImageURL]) {
         return YES;
     }
     

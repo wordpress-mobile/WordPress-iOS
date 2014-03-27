@@ -33,7 +33,7 @@
 - (BOOL)privateContent;
 
 
-extern const CGFloat RPVAuthorPadding;;
+extern const CGFloat RPVAuthorPadding;
 extern const CGFloat RPVHorizontalInnerPadding;
 extern const CGFloat RPVMetaViewHeight;
 extern const CGFloat RPVAuthorViewHeight;
