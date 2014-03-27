@@ -823,7 +823,11 @@ static NSString *const TableViewActivityCellIdentifier = @"TableViewActivityCell
 
 - (WPTableImageSource *)imageSource {
     if (!_imageSource) {
-        CGFloat max = MAX(self.view.frame.size.width, self.view.frame.size.height);
+        CGFloat width = CGRectGetWidth(self.view.frame);
+        if (IS_IPAD) {
+            width = WPTableViewFixedWidth;
+        }
+        CGFloat max = MAX(width, CGRectGetHeight(self.view.frame));
         CGSize maxSize = CGSizeMake(max, max);
         _imageSource = [[WPTableImageSource alloc] initWithMaxSize:maxSize];
         _imageSource.resizesImagesSynchronously = YES;
