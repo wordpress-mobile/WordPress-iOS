@@ -529,6 +529,7 @@ static NSString *const TableViewActivityCellIdentifier = @"TableViewActivityCell
         PostFeaturedImageCell *featuredImageCell = [self.tableView dequeueReusableCellWithIdentifier:FeaturedImageCellIdentifier];
         if (!cell) {
             featuredImageCell = [[PostFeaturedImageCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:FeaturedImageCellIdentifier];
+            [WPStyleGuide configureTableViewCell:featuredImageCell];
         }
         
         if (self.featuredImage) {
