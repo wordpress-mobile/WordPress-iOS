@@ -783,7 +783,12 @@ static NSString *const TableViewActivityCellIdentifier = @"TableViewActivityCell
 }
 
 - (void)showFeaturedImageSelector {
-    FeaturedImageViewController *controller = [[FeaturedImageViewController alloc] initWithPost:self.post];
+    UIViewController *controller;
+    if (self.post.post_thumbnail) {
+        controller = [[FeaturedImageViewController alloc] initWithPost:self.post];
+    } else {
+        controller = [[MediaBrowserViewController alloc] initWithPost:self.post selectingFeaturedImage:YES];
+    }
     [self.navigationController pushViewController:controller animated:YES];
 }
 
@@ -798,29 +803,21 @@ static NSString *const TableViewActivityCellIdentifier = @"TableViewActivityCell
 }
 
 - (void)loadFeaturedImage:(NSIndexPath *)indexPath {
-    if (self.post.featuredImageURL) {
-        if (!self.featuredImage) {
-            CGFloat width = CGRectGetWidth(self.view.frame);
-            if (IS_IPAD) {
-                width = WPTableViewFixedWidth;
-            }
-            width = width - (PostFeaturedImageCellMargin * 2); // left and right cell margins
-            NSURL *url = [NSURL URLWithString:self.post.featuredImageURL];
-            CGFloat height = ceilf(width * 0.66);
-            CGSize imageSize = CGSizeMake(width, height);
-
-            [self.imageSource fetchImageForURL:url
-                                      withSize:imageSize
-                                     indexPath:indexPath
-                                     isPrivate:self.post.blog.isPrivate];
+    NSURL *url = [NSURL URLWithString:self.post.featuredImage.remoteURL];
+    if (url) {
+        CGFloat width = CGRectGetWidth(self.view.frame);
+        if (IS_IPAD) {
+            width = WPTableViewFixedWidth;
         }
+        width = width - (PostFeaturedImageCellMargin * 2); // left and right cell margins
+        CGFloat height = ceilf(width * 0.66);
+        CGSize imageSize = CGSizeMake(width, height);
+
+        [self.imageSource fetchImageForURL:url
+                                  withSize:imageSize
+                                 indexPath:indexPath
+                                 isPrivate:self.post.blog.isPrivate];
         
-    } else {
-        [self.post getFeaturedImageURLWithSuccess:^{
-            [self loadFeaturedImage:indexPath];
-        } failure:^(NSError *error) {
-            DDLogError(@"Error fetching featured image URL: @%", error);
-        }];
     }
 }
 
