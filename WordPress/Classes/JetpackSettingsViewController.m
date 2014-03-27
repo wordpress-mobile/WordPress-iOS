@@ -254,7 +254,7 @@ CGFloat const JetpackSignInButtonHeight = 41.0;
     _passwordField.autoresizingMask = UIViewAutoresizingFlexibleLeftMargin | UIViewAutoresizingFlexibleRightMargin;
     
     // Layout Sign in Button
-    x = (viewWidth - JetpackSignInButtonWidth) / 2.0;;
+    x = (viewWidth - JetpackSignInButtonWidth) / 2.0;
     y = CGRectGetMaxY(_passwordField.frame) + JetpackStandardOffset;
     _signInButton.frame = CGRectMake(x, y, JetpackSignInButtonWidth, JetpackSignInButtonHeight);
     _signInButton.hidden = !hasJetpack;
@@ -303,6 +303,19 @@ CGFloat const JetpackSignInButtonHeight = 41.0;
     [self dismissKeyboard];
     [self setAuthenticating:YES];
 
+    void (^finishedBlock)(BOOL didAuth) = ^(BOOL didAuth) {
+        [self setAuthenticating:NO];
+        if (self.completionBlock) {
+            self.completionBlock(YES);
+        }
+    };
+    
+    void (^failureBlock)(NSError *error) = ^(NSError *error) {
+        [self setAuthenticating:NO];
+        DDLogError(@"Unable to authenticate with Jetpack");
+        [WPError showNetworkingAlertWithError:error];
+    };
+    
     [_blog validateJetpackUsername:_usernameField.text
                           password:_passwordField.text
                            success:^{
@@ -310,18 +323,12 @@ CGFloat const JetpackSignInButtonHeight = 41.0;
                                    [[WordPressComOAuthClient client] authenticateWithUsername:_usernameField.text password:_passwordField.text success:^(NSString *authToken) {
                                        WPAccount *account = [WPAccount createOrUpdateWordPressComAccountWithUsername:_usernameField.text password:_passwordField.text authToken:authToken];
                                        [WPAccount setDefaultWordPressComAccount:account];
-                                   } failure:^(NSError *error) {
-                                       DDLogWarn(@"Unabled to obtain OAuth token for account credentials provided for Jetpack blog. %@", error);
-                                   }];
+                                       finishedBlock(YES);
+                                   } failure:failureBlock];
+                               } else {
+                                   finishedBlock(YES);
                                }
-                               [self setAuthenticating:NO];
-                               if (self.completionBlock) {
-                                   self.completionBlock(YES);
-                               }
-                           } failure:^(NSError *error) {
-                               [self setAuthenticating:NO];
-                               [WPError showNetworkingAlertWithError:error];
-                           }];
+                           } failure:failureBlock];
 }
 
 #pragma mark - UITextField delegate and Keyboard

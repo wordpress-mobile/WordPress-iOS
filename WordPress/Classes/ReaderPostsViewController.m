@@ -30,7 +30,6 @@
 #import "ReaderCommentPublisher.h"
 #import "ContextManager.h"
 
-static CGFloat const RPVCScrollingFastVelocityThreshold = 30.f;
 static CGFloat const RPVCHeaderHeightPhone = 10.f;
 static CGFloat const RPVCMaxImageHeightPercentage = 0.58f;
 static CGFloat const RPVCExtraTableViewHeightPercentage = 2.0f;
@@ -543,9 +542,14 @@ NSString * const RPVCDisplayedNativeFriendFinder = @"DisplayedNativeFriendFinder
 #pragma mark - WPTableViewSublass methods
 
 - (NSString *)noResultsTitleText {
-	NSString *prompt;
+	NSString *prompt = NSLocalizedString(@"Sorry. No posts yet.", @"");
+    if ([WPAccount defaultWordPressComAccount] == nil) {
+        return prompt; // un-authed endpoints do not include likes or follows
+    }
+    
 	NSString *endpoint = [ReaderPost currentEndpoint];
 	NSArray *endpoints = [ReaderPost readerEndpoints];
+
 	NSInteger idx = [endpoints indexOfObjectPassingTest:^BOOL(id obj, NSUInteger idx, BOOL *stop) {
 		BOOL match = NO;
 		
@@ -556,7 +560,8 @@ NSString * const RPVCDisplayedNativeFriendFinder = @"DisplayedNativeFriendFinder
 				
 		return match;
 	}];
-	
+    
+	// TODO: need a smarter way to check here since the menu should not be hard coded.
 	switch (idx) {
 		case 0:
 			// Blogs I follow
@@ -570,7 +575,6 @@ NSString * const RPVCDisplayedNativeFriendFinder = @"DisplayedNativeFriendFinder
 			
 		default:
 			// Topics // freshly pressed.
-			prompt = NSLocalizedString(@"Sorry. No posts yet.", @"");
 			break;
 			
 
@@ -626,7 +630,7 @@ NSString * const RPVCDisplayedNativeFriendFinder = @"DisplayedNativeFriendFinder
 	
 	ReaderPost *post = (ReaderPost *)[self.resultsController objectAtIndexPath:indexPath];
 
-	[cell configureCell:post];
+	[cell configureCell:post withWidth:self.tableView.bounds.size.width];
     [self setImageForPost:post forCell:cell indexPath:indexPath];
     [self setAvatarForPost:post forCell:cell indexPath:indexPath];
     
@@ -755,13 +759,7 @@ NSString * const RPVCDisplayedNativeFriendFinder = @"DisplayedNativeFriendFinder
 	ReaderPost *post = self.resultsController.fetchedObjects.lastObject;
 	NSNumber *numberToSync = [NSNumber numberWithInteger:ReaderPostsToSync];
 	NSString *endpoint = [ReaderPost currentEndpoint];
-	id before;
-	if ([endpoint isEqualToString:@"freshly-pressed"]) {
-		// freshly-pressed wants an ISO string but the rest want a timestamp.
-		before = [DateUtils isoStringFromDate:post.date_created_gmt];
-	} else {
-		before = [NSNumber numberWithInteger:[post.date_created_gmt timeIntervalSince1970]];
-	}
+	id before = [DateUtils isoStringFromDate:post.date_created_gmt];
 
 	NSDictionary *params = @{@"before":before, @"number":numberToSync, @"per_page":numberToSync};
 
@@ -908,7 +906,7 @@ NSString * const RPVCDisplayedNativeFriendFinder = @"DisplayedNativeFriendFinder
     [self syncItems];
 	[self configureNoResultsView];
     
-	self.title = [[ReaderPost currentTopic] stringForKey:@"title"];
+	self.title = [[[ReaderPost currentTopic] stringForKey:@"title"] capitalizedString];
 
     if ([WordPressAppDelegate sharedWordPressApplicationDelegate].connectionAvailable == YES && ![self isSyncing] ) {
 		[[NSUserDefaults standardUserDefaults] removeObjectForKey:ReaderLastSyncDateKey];
@@ -926,11 +924,16 @@ NSString * const RPVCDisplayedNativeFriendFinder = @"DisplayedNativeFriendFinder
 }
 
 - (void)didChangeAccount:(NSNotification *)notification {
-    if ([WPAccount defaultWordPressComAccount]) {
+    NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
+    [defaults removeObjectForKey:ReaderCurrentTopicKey];
+    [defaults removeObjectForKey:ReaderLastSyncDateKey];
+    [NSUserDefaults resetStandardUserDefaults];
+    [self resetResultsController];
+    [self.tableView reloadData];
+    [self.navigationController popToViewController:self animated:NO];
+    
+    if ([WPAccount defaultWordPressComAccount] && [self isViewLoaded]) {
         [self syncItems];
-    } else {
-        [[NSUserDefaults standardUserDefaults] removeObjectForKey:ReaderLastSyncDateKey];
-        [NSUserDefaults resetStandardUserDefaults];
     }
 }
 
@@ -944,9 +947,13 @@ NSString * const RPVCDisplayedNativeFriendFinder = @"DisplayedNativeFriendFinder
 - (NSString *)currentCategory {
     NSDictionary *categoryDetails = [[NSUserDefaults standardUserDefaults] objectForKey:ReaderCurrentTopicKey];
     NSString *category = [categoryDetails stringForKey:@"endpoint"];
-    if (category == nil)
-        return @"reader/following";
-    
+    if (category == nil) {
+        if ([WPAccount defaultWordPressComAccount] != nil) {
+            return @"read/following";
+        } else {
+            return @"freshly-pressed";
+        }
+    }
     return category;
 }
 

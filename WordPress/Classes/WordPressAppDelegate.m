@@ -18,7 +18,6 @@
 #import <UIDeviceIdentifier/UIDeviceHardware.h>
 
 #import "WordPressAppDelegate.h"
-#import "CameraPlusPickerManager.h"
 #import "ContextManager.h"
 #import "Media.h"
 #import "NotificationsManager.h"
@@ -42,6 +41,7 @@
 #import "ReaderPostsViewController.h"
 #import "ReaderPostDetailViewController.h"
 #import "SupportViewController.h"
+#import "StatsViewController.h"
 #import "Constants.h"
 
 #if DEBUG
@@ -56,8 +56,6 @@ static NSString * const WPBlogListNavigationRestorationID = @"WPBlogListNavigati
 static NSString * const WPReaderNavigationRestorationID = @"WPReaderNavigationID";
 static NSString * const WPNotificationsNavigationRestorationID = @"WPNotificationsNavigationID";
 static NSInteger const IndexForMeTab = 2;
-static NSInteger const NotificationNewComment = 1001;
-static NSInteger const NotificationNewSocial = 1002;
 static NSString *const CameraPlusImagesNotification = @"CameraPlusImagesNotification";
 
 @interface WordPressAppDelegate () <UITabBarControllerDelegate, CrashlyticsDelegate, UIAlertViewDelegate, BITHockeyManagerDelegate>
@@ -159,25 +157,6 @@ static NSString *const CameraPlusImagesNotification = @"CameraPlusImagesNotifica
         returnValue = YES;
     }
 
-    if ([[CameraPlusPickerManager sharedManager] shouldHandleURLAsCameraPlusPickerCallback:url]) {
-        /* Note that your application has been in the background and may have been terminated.
-         * The only CameraPlusPickerManager state that is restored is the pickerMode, which is
-         * restored to indicate the mode used to pick images.
-         */
-
-        /* Handle the callback and notify the delegate. */
-        [[CameraPlusPickerManager sharedManager] handleCameraPlusPickerCallback:url usingBlock:^(CameraPlusPickedImages *images) {
-            DDLogInfo(@"Camera+ returned %@", [images images]);
-            UIImage *image = [images image];
-            UIImageWriteToSavedPhotosAlbum(image, nil, nil, nil);
-            NSDictionary *userInfo = [NSDictionary dictionaryWithObject:image forKey:@"image"];
-            [[NSNotificationCenter defaultCenter] postNotificationName:CameraPlusImagesNotification object:nil userInfo:userInfo];
-        } cancelBlock:^(void) {
-            DDLogInfo(@"Camera+ picker canceled");
-        }];
-        returnValue = YES;
-    }
-
     if ([WordPressApi handleOpenURL:url]) {
         returnValue = YES;
     }
@@ -186,17 +165,21 @@ static NSString *const CameraPlusImagesNotification = @"CameraPlusImagesNotifica
         NSString *URLString = [url absoluteString];
         DDLogInfo(@"Application launched with URL: %@", URLString);
 
-        if ([URLString rangeOfString:@"wpcom_signup_completed"].length) {
+        if ([URLString rangeOfString:@"newpost"].length) {
+            // Create a new post from data shared by a third party application.
             NSDictionary *params = [[url query] dictionaryFromQueryString];
-            DDLogInfo(@"%@", params);
-            [[NSNotificationCenter defaultCenter] postNotificationName:@"wpcomSignupNotification" object:nil userInfo:params];
-            returnValue = YES;
+            DDLogInfo(@"App launched for new post with params: %@", params);
+            if ([params count]) {
+                [self showPostTabWithOptions:params];
+                returnValue = YES;
+            }
         } else if ([URLString rangeOfString:@"viewpost"].length) {
+            // View the post specified by the shared blog ID and post ID
             NSDictionary *params = [[url query] dictionaryFromQueryString];
             
             if (params.count) {
-                NSUInteger *blogId = [[params valueForKey:@"blogId"] integerValue];
-                NSUInteger *postId = [[params valueForKey:@"postId"] integerValue];
+                NSUInteger blogId = [[params numberForKey:@"blogId"] integerValue];
+                NSUInteger postId = [[params numberForKey:@"postId"] integerValue];
                 
                 [WPMobileStats flagSuperProperty:StatsPropertyReaderOpenedFromExternalURL];
                 [WPMobileStats incrementSuperProperty:StatsPropertyReaderOpenedFromExternalURLCount];
@@ -260,7 +243,6 @@ static NSString *const CameraPlusImagesNotification = @"CameraPlusImagesNotifica
     DDLogInfo(@"%@ %@", self, NSStringFromSelector(_cmd));
     
     [WPMobileStats recordAppOpenedForEvent:StatsEventAppOpened];
-    [self clearBadgeAndSyncItemsIfNotificationsScreenActive];
 }
 
 - (BOOL)application:(UIApplication *)application shouldSaveApplicationState:(NSCoder *)coder {
@@ -270,7 +252,6 @@ static NSString *const CameraPlusImagesNotification = @"CameraPlusImagesNotifica
 - (BOOL)application:(UIApplication *)application shouldRestoreApplicationState:(NSCoder *)coder {
     return YES;
 }
-
 
 #pragma mark - Push Notification delegate
 
@@ -295,13 +276,6 @@ static NSString *const CameraPlusImagesNotification = @"CameraPlusImagesNotifica
 }
 
 #pragma mark - Custom methods
-
-- (void)clearBadgeAndSyncItemsIfNotificationsScreenActive {
-    NSInteger notificationsTabIndex = [[self.tabBarController viewControllers] indexOfObject:self.notificationsViewController.navigationController];
-    if ([self.tabBarController selectedIndex] == notificationsTabIndex) {
-       [self.notificationsViewController clearNotificationsBadgeAndSyncItems];
-    }
-}
 
 - (void)showWelcomeScreenIfNeededAnimated:(BOOL)animated {
     if ([self noBlogsAndNoWordPressDotComAccount]) {
@@ -353,6 +327,7 @@ static NSString *const CameraPlusImagesNotification = @"CameraPlusImagesNotifica
     [[UIToolbar appearance] setBarTintColor:[WPStyleGuide newKidOnTheBlockBlue]];
     [[UISwitch appearance] setOnTintColor:[WPStyleGuide newKidOnTheBlockBlue]];
     [[UIApplication sharedApplication] setStatusBarStyle:UIStatusBarStyleLightContent];
+    [[UITabBarItem appearance] setTitleTextAttributes:@{NSFontAttributeName: [UIFont fontWithName:@"OpenSans" size:10.0]} forState:UIControlStateNormal];
 
     [[UINavigationBar appearanceWhenContainedIn:[UIReferenceLibraryViewController class], nil] setBackgroundImage:nil forBarMetrics:UIBarMetricsDefault];
     [[UINavigationBar appearanceWhenContainedIn:[UIReferenceLibraryViewController class], nil] setBarTintColor:[WPStyleGuide newKidOnTheBlockBlue]];
@@ -458,16 +433,30 @@ static NSString *const CameraPlusImagesNotification = @"CameraPlusImagesNotifica
 }
 
 - (void)showPostTab {
+    [self showPostTabWithOptions:nil];
+}
+
+- (void)showPostTabWithOptions:(NSDictionary *)options {
     UIViewController *presenter = self.window.rootViewController;
     if (presenter.presentedViewController) {
         [presenter dismissViewControllerAnimated:NO completion:nil];
     }
     
-    EditPostViewController *editPostViewController = [[EditPostViewController alloc] initWithDraftForLastUsedBlog];
+    EditPostViewController *editPostViewController;
+    if (!options) {
+        editPostViewController = [[EditPostViewController alloc] initWithDraftForLastUsedBlog];
+    } else {
+        editPostViewController = [[EditPostViewController alloc] initWithTitle:[options stringForKey:@"title"]
+                                                                    andContent:[options stringForKey:@"content"]
+                                                                       andTags:[options stringForKey:@"tags"]
+                                                                      andImage:[options stringForKey:@"image"]];
+    }
     editPostViewController.editorOpenedBy = StatsPropertyPostDetailEditorOpenedOpenedByTabBarButton;
     UINavigationController *navController = [[UINavigationController alloc] initWithRootViewController:editPostViewController];
     navController.modalPresentationStyle = UIModalPresentationCurrentContext;
     navController.navigationBar.translucent = NO;
+    navController.restorationIdentifier = WPEditorNavigationRestorationID;
+    navController.restorationClass = [EditPostViewController class];
     [navController setToolbarHidden:NO]; // Make the toolbar visible here to avoid a weird left/right transition when the VC appears.
     [self.window.rootViewController presentViewController:navController animated:YES completion:nil];
 }
@@ -500,6 +489,34 @@ static NSString *const CameraPlusImagesNotification = @"CameraPlusImagesNotifica
     [blogListNavController setViewControllers:@[blogListViewController, blogDetailsViewController, postsViewController]];
 }
 
+- (void)showStatsForBlog:(Blog *)blog {
+    UINavigationController *blogListNav = self.tabBarController.viewControllers[IndexForMeTab];
+    StatsViewController *statsViewController;
+    BlogDetailsViewController *blogDetailsViewController;
+    
+    if ([blogListNav.topViewController isKindOfClass:[StatsViewController class]] &&
+        [[(StatsViewController *)blogListNav.topViewController blog] isEqual:blog]) {
+        // If we're already showing stats for the blog, just go there
+        [self showMeTab];
+        return;
+    } else {
+        statsViewController = [[StatsViewController alloc] init];
+        statsViewController.blog = blog;
+    }
+    
+    if ([blogListNav.topViewController isKindOfClass:[BlogDetailsViewController class]] &&
+        [((BlogDetailsViewController *)blogListNav.topViewController).blog isEqual:blog]) {
+        // Use the current blog details view controller
+        blogDetailsViewController = (BlogDetailsViewController *)blogListNav.topViewController;
+    } else {
+        blogDetailsViewController = [[BlogDetailsViewController alloc] init];
+        blogDetailsViewController.blog = blog;
+    }
+    
+    blogListNav.viewControllers = @[self.blogListViewController, blogDetailsViewController, statsViewController];
+    [self showMeTab];
+}
+
 #pragma mark - UITabBarControllerDelegate methods.
 
 - (BOOL)tabBarController:(UITabBarController *)tabBarController shouldSelectViewController:(UIViewController *)viewController {
@@ -512,6 +529,22 @@ static NSString *const CameraPlusImagesNotification = @"CameraPlusImagesNotifica
             [self showPostTab];
         }
         return NO;
+    } else if ([tabBarController.viewControllers indexOfObject:viewController] == 2) {
+        // If the user has one blog then we don't want to present them with the main "me"
+        // screen where they can see all their blogs. In the case of only one blog just show
+        // the main blog details screen
+
+        // Don't kick of this auto selecting behavior if the user taps the the active tab as it
+        // would break from standard iOS UX
+        if (tabBarController.selectedIndex != 2) {
+            UINavigationController *navController = (UINavigationController *)viewController;
+            BlogListViewController *blogListViewController = (BlogListViewController *)navController.viewControllers[0];
+            if ([blogListViewController shouldBypassBlogListViewControllerWhenSelectedFromTabBar]) {
+                if ([navController.visibleViewController isKindOfClass:[blogListViewController class]]) {
+                    [blogListViewController bypassBlogListViewController];
+                }
+            }
+        }
     }
     return YES;
 }
@@ -709,7 +742,9 @@ static NSString *const CameraPlusImagesNotification = @"CameraPlusImagesNotifica
         //get a references to media files linked in a post
         DDLogInfo(@"%i media items to check for cleanup", [mediaObjectsToKeep count]);
         for (Media *media in mediaObjectsToKeep) {
-            [mediaToKeep addObject:media.localURL];
+            if (media.localURL) {
+                [mediaToKeep addObject:media.localURL];
+            }
         }
         
         //searches for jpg files within the app temp file
@@ -1064,7 +1099,7 @@ static NSString *const CameraPlusImagesNotification = @"CameraPlusImagesNotifica
         [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(handleDefaultAccountChangedNotification:) name:WPAccountDefaultWordPressComAccountChangedNotification object:nil];
     }
     
-	int num_blogs = [Blog countWithContext:[[ContextManager sharedInstance] mainContext]];
+	NSInteger num_blogs = [Blog countWithContext:[[ContextManager sharedInstance] mainContext]];
 	BOOL authed = self.isWPcomAuthenticated;
 	if (num_blogs == 0 && !authed) {
 		// When there are no blogs in the app the settings screen is unavailable.

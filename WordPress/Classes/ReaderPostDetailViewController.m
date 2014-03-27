@@ -174,7 +174,7 @@ typedef enum {
         return;
 	
     NSDate *lastSynced = [self lastSyncDate];
-    if ((lastSynced == nil || ABS([lastSynced timeIntervalSinceNow]) > ReaderPostDetailViewControllerRefreshTimeout) && _post.isWPCom) {
+    if ((lastSynced == nil || ABS([lastSynced timeIntervalSinceNow]) > ReaderPostDetailViewControllerRefreshTimeout) && [[_post isWPCom] boolValue]) {
 		[self syncWithUserInteraction:NO];
     }
     
@@ -227,11 +227,11 @@ typedef enum {
 
 - (void)buildHeader {
     // The text view in postView needs an initial frame
-    CGFloat postHeight = [ReaderPostView heightForPost:self.post withWidth:self.view.frame.size.width];
+    CGFloat postHeight = [ReaderPostView heightForPost:self.post withWidth:self.view.frame.size.width showFullContent:YES];
     CGRect postFrame = CGRectMake(0.0f, 0.0f, self.tableView.frame.size.width, postHeight);
 	self.postView = [[ReaderPostView alloc] initWithFrame:postFrame showFullContent:YES];
     self.postView.delegate = self;
-    [self.postView configurePost:self.post];
+    [self.postView configurePost:self.post withWidth:self.view.frame.size.width];
     self.postView.backgroundColor = [UIColor whiteColor];
     
     if (self.avatarImage) {
@@ -314,7 +314,7 @@ typedef enum {
 		[items addObjectsFromArray:@[_commentButton, placeholder]];
 	}
 	
-	if ([self.post isWPCom]) {
+	if ([[self.post isWPCom] boolValue]) {
 		[items addObjectsFromArray:@[_likeButton, placeholder, _reblogButton]];
 	}
 	
@@ -419,7 +419,7 @@ typedef enum {
 		[items addObjectsFromArray:@[_commentButton, placeholder]];
 	}
 	
-	if ([self.post isWPCom]) {
+	if ([[self.post isWPCom] boolValue]) {
 		[items addObjectsFromArray:@[_likeButton, placeholder, _reblogButton]];
 	}
 	

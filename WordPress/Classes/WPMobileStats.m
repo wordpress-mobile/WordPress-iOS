@@ -73,6 +73,7 @@ NSString *const StatsEventWebviewSentArticleToGooglePlus = @"Sent Article to Goo
 // Notifications
 NSString *const StatsPropertyNotificationsOpened = @"notifications_opened";
 NSString *const StatsPropertyNotificationsOpenedDetails = @"notifications_opened_details";
+NSString *const StatsEventNotificationsClickedManageNotifications = @"Notifications - Manage Button";
 
 // Notifications Detail
 NSString *const StatsEventNotificationsDetailClickedReplyButton = @"Notifications Detail - Clicked Reply Button";
@@ -119,6 +120,8 @@ NSString *const StatsPropertyPostDetailEditorOpenedOpenedByPostsView = @"posts_v
 NSString *const StatsPropertyPostDetailEditorOpenedOpenedByTabBarButton = @"tab_bar_button";
 NSString *const StatsPropertyPostDetailClickedBlogSelector = @"clicked_blog_selector";
 NSString *const StatsPropertyPostDetailHasExternalKeyboard = @"has_external_keybord";
+NSString *const StatsPropertyPostDetailWordCount = @"word_count";
+NSString *const StatsPropertyPostDetailWordDiffCount = @"word_diff_count";
 
 // Post Detail - Settings
 NSString *const StatsPropertyPostDetailSettingsClickedStatus = @"settings_clicked_status";
@@ -188,6 +191,7 @@ NSString *const StatsEventQuickPhotoPosted = @"Quick Photo - Posted";
 // NUX First Walkthrough 
 NSString *const StatsEventNUXFirstWalkthroughOpened = @"NUX - First Walkthrough - Opened";
 NSString *const StatsEventNUXFirstWalkthroughClickedSkipToCreateAccount = @"NUX - First Walkthrough - Skipped to Create Account";
+NSString *const StatsEventNUXFirstWalkthroughClickedLostPassword = @"NUX - First Walkthrough - Lost Password";
 NSString *const StatsEventNUXFirstWalkthroughClickedInfo = @"NUX - First Walkthrough - Clicked Info";
 NSString *const StatsEventNUXFirstWalkthroughClickedCreateAccount = @"NUX - First Walkthrough - Clicked Create Account";
 NSString *const StatsEventNUXFirstWalkthroughSignedInWithoutUrl = @"NUX - First Walkthrough - Signed In Without URL";
@@ -219,6 +223,9 @@ NSString *const StatsEventAddBlogsOpened = @"Add Blogs - Opened";
 NSString *const StatsEventAddBlogsClickedSelectAll = @"Add Blogs - Clicked Select All";
 NSString *const StatsEventAddBlogsClickedDeselectAll = @"Add Blogs - Clicked Deselect All";
 NSString *const StatsEventAddBlogsClickedAddSelected = @"Add Blogs - Clicked Add Selected";
+
+// Stats
+NSString *const StatsEventStatsClickedOnWebVersion = @"Stats - Clicked on Web Version";
 
 @interface WPMobileStats() {
     NSMutableDictionary *_aggregatedEventProperties;
@@ -363,6 +370,11 @@ NSString *const StatsEventAddBlogsClickedAddSelected = @"Add Blogs - Clicked Add
     [[self sharedInstance] incrementProperty:property forEvent:event];
 }
 
++ (void)setValue:(id)value forProperty:(NSString *)property forEvent:(NSString *)event
+{
+    [[self sharedInstance] setValue:value forProperty:property forEvent:event];
+}
+
 + (void)flagProperty:(NSString *)property forEvent:(NSString *)event
 {
     [[self sharedInstance] flagProperty:property forEvent:event];
@@ -454,6 +466,11 @@ NSString *const StatsEventAddBlogsClickedAddSelected = @"Add Blogs - Clicked Add
 - (void)unflagProperty:(NSString *)property forEvent:(NSString *)event
 {
     [self saveProperty:property withValue:@(NO) forEvent:event];
+}
+
+- (void)setValue:(id)value forProperty:(NSString *)property forEvent:(NSString *)event
+{
+    [self saveProperty:property withValue:value forEvent:event];
 }
 
 - (void)flagSuperProperty:(NSString *)property

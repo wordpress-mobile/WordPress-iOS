@@ -27,6 +27,10 @@
 #import "WPNUXBackButton.h"
 #import "WPAccount.h"
 #import "Note.h"
+#import "ContextManager.h"
+
+static NSString *const ForgotPasswordDotComBaseUrl = @"https://wordpress.com";
+static NSString *const ForgotPasswordRelativeUrl = @"/wp-login.php?action=lostpassword&redirect_to=wordpress%3A%2F%2F";
 
 @interface LoginViewController () <
     UITextFieldDelegate> {
@@ -35,6 +39,7 @@
     UIView *_mainView;
     WPNUXSecondaryButton *_skipToCreateAccount;
     WPNUXSecondaryButton *_toggleSignInForm;
+    WPNUXSecondaryButton *_forgotPassword;
     UIButton *_helpButton;
     UIImageView *_icon;
     WPWalkthroughTextField *_usernameText;
@@ -162,6 +167,7 @@ CGFloat const GeneralWalkthroughStatusBarOffset = 20.0;
         isSiteUrlFilled = updatedStringHasContent;
     }
     _signInButton.enabled = isUsernameFilled && isPasswordFilled && (_userIsDotCom || isSiteUrlFilled);
+    _forgotPassword.enabled = (_userIsDotCom || isSiteUrlFilled);
     
     return YES;
 }
@@ -310,11 +316,22 @@ CGFloat const GeneralWalkthroughStatusBarOffset = 20.0;
     }
 }
 
+- (void)forgotPassword:(id)sender {
+    [WPMobileStats trackEventForSelfHostedAndWPCom:StatsEventNUXFirstWalkthroughClickedLostPassword];
+
+    NSString *baseUrl = ForgotPasswordDotComBaseUrl;
+    if (!_userIsDotCom) {
+        baseUrl = [self getSiteUrl];
+    }
+    NSURL *forgotPasswordURL = [NSURL URLWithString:[baseUrl stringByAppendingString:ForgotPasswordRelativeUrl]];
+    [[UIApplication sharedApplication] openURL:forgotPasswordURL];
+}
+
 #pragma mark - Private Methods
 
 - (void)addMainView
 {
-    _mainView = [[UIView alloc] init];;
+    _mainView = [[UIView alloc] init];
     _mainView.frame = self.view.bounds;
     _mainView.autoresizingMask = UIViewAutoresizingFlexibleHeight | UIViewAutoresizingFlexibleWidth;
     [self.view addSubview:_mainView];
@@ -408,8 +425,8 @@ CGFloat const GeneralWalkthroughStatusBarOffset = 20.0;
         [_signInButton addTarget:self action:@selector(signInButtonAction:) forControlEvents:UIControlEventTouchUpInside];
         _signInButton.autoresizingMask = UIViewAutoresizingFlexibleRightMargin | UIViewAutoresizingFlexibleLeftMargin;
         [_mainView addSubview:_signInButton];
-        _signInButton.enabled = NO;
     }
+    _signInButton.enabled = [self isSignInEnabled];
     
     NSString *signInTitle;
     if (_userIsDotCom) {
@@ -473,6 +490,19 @@ CGFloat const GeneralWalkthroughStatusBarOffset = 20.0;
             [_mainView addSubview:_skipToCreateAccount];
         }
     }
+
+    // Add Lost Password Button
+    if (_forgotPassword == nil) {
+        _forgotPassword = [[WPNUXSecondaryButton alloc] init];
+        _forgotPassword.autoresizingMask = UIViewAutoresizingFlexibleLeftMargin | UIViewAutoresizingFlexibleRightMargin | UIViewAutoresizingFlexibleBottomMargin;
+        [_forgotPassword setTitle:NSLocalizedString(@"Lost your password?", nil) forState:UIControlStateNormal];
+        [_forgotPassword addTarget:self action:@selector(forgotPassword:) forControlEvents:UIControlEventTouchUpInside];
+        _forgotPassword.titleLabel.font = [WPNUXUtility tosLabelFont];
+        [_forgotPassword setTitleColor:[WPNUXUtility tosLabelColor] forState:UIControlStateNormal];
+        [_forgotPassword setTitleColor:[UIColor colorWithWhite:1.0 alpha:0.4] forState:UIControlStateDisabled];
+        [_mainView addSubview:_forgotPassword];
+    }
+    _forgotPassword.enabled = [self isForgotPasswordEnabled];
 }
 
 - (void)layoutControls
@@ -516,10 +546,16 @@ CGFloat const GeneralWalkthroughStatusBarOffset = 20.0;
     _siteUrlText.frame = CGRectIntegral(CGRectMake(x, y, GeneralWalkthroughTextFieldWidth, GeneralWalkthroughTextFieldHeight));
 
     // Layout Sign in Button
-    x = (viewWidth - GeneralWalkthroughButtonWidth) / 2.0;;
+    x = (viewWidth - GeneralWalkthroughButtonWidth) / 2.0;
     y = CGRectGetMaxY(_siteUrlText.frame) + GeneralWalkthroughStandardOffset;
     _signInButton.frame = CGRectIntegral(CGRectMake(x, y, GeneralWalkthroughButtonWidth, GeneralWalkthroughButtonHeight));
-    
+
+    // Layout Lost password Button
+    x = (viewWidth - GeneralWalkthroughButtonWidth) / 2.0;
+    y = CGRectGetMaxY(_signInButton.frame) + 0.5 * GeneralWalkthroughStandardOffset;
+    CGFloat forgotPasswordHeight = [_forgotPassword.titleLabel.text sizeWithAttributes:@{NSFontAttributeName:_forgotPassword.titleLabel.font}].height;
+    _forgotPassword.frame = CGRectIntegral(CGRectMake(x, y, GeneralWalkthroughButtonWidth, forgotPasswordHeight));
+
     // Layout Skip to Create Account Button
     x = GeneralWalkthroughStandardOffset;
     x = (viewWidth - GeneralWalkthroughButtonWidth)/2.0;
@@ -657,6 +693,11 @@ CGFloat const GeneralWalkthroughStatusBarOffset = 20.0;
     return _userIsDotCom ? [self areDotComFieldsFilled] : [self areSelfHostedFieldsFilled];
 }
 
+- (BOOL)isForgotPasswordEnabled
+{
+    return _userIsDotCom || [self isUrlValid];
+}
+
 - (BOOL)areDotComFieldsFilled
 {
     return [self isUsernameFilled] && [self isPasswordFilled];
@@ -674,6 +715,9 @@ CGFloat const GeneralWalkthroughStatusBarOffset = 20.0;
 
 - (BOOL)isUrlValid
 {
+    if (_siteUrlText.text.length == 0) {
+        return NO;
+    }
     NSURL *siteURL = [NSURL URLWithString:_siteUrlText.text];
     return siteURL != nil;
 }
@@ -691,6 +735,7 @@ CGFloat const GeneralWalkthroughStatusBarOffset = 20.0;
     _signInButton.enabled = !authenticating;
     _toggleSignInForm.hidden = authenticating;
     _skipToCreateAccount.hidden = authenticating;
+    _forgotPassword.hidden = authenticating;
     _cancelButton.enabled = !authenticating;
     [_signInButton showActivityIndicator:authenticating];
 }
@@ -782,7 +827,7 @@ CGFloat const GeneralWalkthroughStatusBarOffset = 20.0;
 
 - (void)createSelfHostedAccountAndBlogWithUsername:(NSString *)username password:(NSString *)password xmlrpc:(NSString *)xmlrpc options:(NSDictionary *)options
 {
-    WPAccount *account = [WPAccount createOrUpdateSelfHostedAccountWithXmlrpc:xmlrpc username:username andPassword:password];
+    WPAccount *account = [WPAccount createOrUpdateSelfHostedAccountWithXmlrpc:xmlrpc username:username andPassword:password withContext:[[ContextManager sharedInstance] mainContext]];
     NSString *blogName = [options stringForKeyPath:@"blog_title.value"];
     NSString *url = [options stringForKeyPath:@"home_url.value"];
     if (!url) {

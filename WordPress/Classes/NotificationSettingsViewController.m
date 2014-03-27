@@ -479,7 +479,7 @@ BOOL hasChanges;
                 //Get the hr from the current date and check if > 8AM
                 unsigned int unitFlags = NSHourCalendarUnit;//Other usage:  =(NSHourCalendarUnit | NSMinuteCalendarUnit | NSDayCalendarUnit | NSMonthCalendarUnit);
                 NSDateComponents *comps = [sysCalendar components:unitFlags fromDate:currentDate];
-                int hour = [comps hour]; //Other usage: [comps minute] [comps hour] [comps day] [comps month];
+                NSInteger hour = [comps hour]; //Other usage: [comps minute] [comps hour] [comps day] [comps month];
 
                 comps = [[NSDateComponents alloc] init];
                 if(hour >= 8){ //add one day if 8AM is already passed

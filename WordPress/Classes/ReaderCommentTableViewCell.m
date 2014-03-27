@@ -12,6 +12,7 @@
 #import "WordPressAppDelegate.h"
 #import "WPWebViewController.h"
 #import "NSDate+StringFormatting.h"
+#import "NSString+Helpers.h"
 
 #define RCTVCVerticalPadding 5.0f
 #define RCTVCIndentationWidth 15.0f
@@ -82,8 +83,9 @@
     NSAssert(html != nil, @"Can't convert nil to AttributedString");
 	
     NSMutableDictionary *dict = [NSMutableDictionary dictionaryWithDictionary:[WPStyleGuide defaultDTCoreTextOptions]];
+    html = [html stringByReplacingHTMLEmoticonsWithEmoji];
 
-	if(options) {
+	if (options) {
 		[dict addEntriesFromDictionary:options];
 	}
 	
@@ -209,6 +211,11 @@
 	NSDictionary *attributes = [string attributesAtIndex:0 effectiveRange:nil];
 	
 	NSURL *URL = [attributes objectForKey:DTLinkAttribute];
+    
+    if (URL == nil) {
+        return nil;
+    }
+    
 	NSString *identifier = [attributes objectForKey:DTGUIDAttribute];
 	
 	DTLinkButton *button = [[DTLinkButton alloc] initWithFrame:frame];
