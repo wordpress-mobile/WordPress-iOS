@@ -41,11 +41,6 @@
     return @"";
 }
 
-+ (NSString *)quantcastAPIKey
-{
-    return @"";
-}
-
 + (NSString *)simperiumAppId {
 	return @"";
 }

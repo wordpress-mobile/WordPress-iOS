@@ -7,6 +7,7 @@
 //
 
 #import "NotificationsFollowDetailViewController.h"
+#import "ContextManager.h"
 #import "UIImageView+AFNetworking.h"
 #import "WordPressComApi.h"
 #import "NSString+XMLExtensions.h"
@@ -19,7 +20,9 @@
 #import "WPToast.h"
 #import "Note.h"
 
-@interface NotificationsFollowDetailViewController () <UITableViewDelegate, UITableViewDataSource>
+NSString *const WPNotificationFollowRestorationKey = @"WPNotificationFollowRestorationKey";
+
+@interface NotificationsFollowDetailViewController () <UITableViewDelegate, UITableViewDataSource, UIViewControllerRestoration>
 
 @property (nonatomic, assign) BOOL hasFooter;
 @property (nonatomic, strong) Note *note;
@@ -36,12 +39,33 @@
 
 @implementation NotificationsFollowDetailViewController
 
++ (UIViewController *)viewControllerWithRestorationIdentifierPath:(NSArray *)identifierComponents coder:(NSCoder *)coder {
+    NSString *noteID = [coder decodeObjectForKey:WPNotificationFollowRestorationKey];
+    if (!noteID)
+        return nil;
+    
+    NSManagedObjectContext *context = [[ContextManager sharedInstance] mainContext];
+    NSManagedObjectID *objectID = [context.persistentStoreCoordinator managedObjectIDForURIRepresentation:[NSURL URLWithString:noteID]];
+    if (!objectID)
+        return nil;
+    
+    NSError *error = nil;
+    Note *restoredNote = (Note *)[context existingObjectWithID:objectID error:&error];
+    if (error || !restoredNote) {
+        return nil;
+    }
+    
+    return [[self alloc] initWithNote:restoredNote];
+}
+
 - (id)initWithNote:(Note *)note
 {
     self = [super init];
     if (self) {
         _note = note;
         self.title = _note.subjectText;
+        self.restorationIdentifier = NSStringFromClass([self class]);
+        self.restorationClass = [self class];
     }
     return self;
 }
@@ -95,6 +119,11 @@
     [self.tableView deselectRowAtIndexPath:[self.tableView indexPathForSelectedRow] animated:animated];
 }
 
+
+- (void)encodeRestorableStateWithCoder:(NSCoder *)coder {
+    [coder encodeObject:[[self.note.objectID URIRepresentation] absoluteString] forKey:WPNotificationFollowRestorationKey];
+    [super encodeRestorableStateWithCoder:coder];
+}
 
 #pragma mark - Table view data source
 

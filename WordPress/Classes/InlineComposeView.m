@@ -59,11 +59,13 @@ const CGFloat InlineComposeViewMaxHeight = 88.f;
 }
 
 - (void)updatePlaceholderAndSize {
+    NSCharacterSet *whitespaceCharSet = [NSCharacterSet whitespaceAndNewlineCharacterSet];
     UITextView *textView = self.toolbarTextView;
     // show placeholder if text is empty
-    BOOL empty = [textView.text isEqualToString:@""];
+    BOOL empty = [textView.text length] == 0;
+    BOOL emptyOrOnlyWhitespace = [[textView.text stringByTrimmingCharactersInSet:whitespaceCharSet] length] == 0;
     self.placeholderLabel.hidden = !empty;
-    self.sendButton.enabled = !empty;
+    self.sendButton.enabled = !emptyOrOnlyWhitespace;
 
     [self updateSendButtonSize];
 
@@ -114,6 +116,15 @@ const CGFloat InlineComposeViewMaxHeight = 88.f;
     frame = self.sendButton.frame;
     frame.origin.x -= sendButtonDelta;
     self.sendButton.frame = frame;
+}
+
+- (void)setButtonTitle:(NSString *)title
+{
+    if ([title length] > 0) {
+        [self.sendButton setTitle:title forState:UIControlStateNormal];
+    } else {
+        [self.sendButton setTitle:NSLocalizedString(@"Reply", @"") forState:UIControlStateNormal];
+    }
 }
 
 - (void)clearText {

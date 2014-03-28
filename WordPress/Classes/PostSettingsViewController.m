@@ -529,6 +529,7 @@ static NSString *const TableViewActivityCellIdentifier = @"TableViewActivityCell
         PostFeaturedImageCell *featuredImageCell = [self.tableView dequeueReusableCellWithIdentifier:FeaturedImageCellIdentifier];
         if (!cell) {
             featuredImageCell = [[PostFeaturedImageCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:FeaturedImageCellIdentifier];
+            [WPStyleGuide configureTableViewCell:featuredImageCell];
         }
         
         if (self.featuredImage) {
@@ -823,7 +824,11 @@ static NSString *const TableViewActivityCellIdentifier = @"TableViewActivityCell
 
 - (WPTableImageSource *)imageSource {
     if (!_imageSource) {
-        CGFloat max = MAX(self.view.frame.size.width, self.view.frame.size.height);
+        CGFloat width = CGRectGetWidth(self.view.frame);
+        if (IS_IPAD) {
+            width = WPTableViewFixedWidth;
+        }
+        CGFloat max = MAX(width, CGRectGetHeight(self.view.frame));
         CGSize maxSize = CGSizeMake(max, max);
         _imageSource = [[WPTableImageSource alloc] initWithMaxSize:maxSize];
         _imageSource.resizesImagesSynchronously = YES;
@@ -877,7 +882,7 @@ static NSString *const TableViewActivityCellIdentifier = @"TableViewActivityCell
     NSDate *startingDate = (NSDate *)self.datePicker.startingValue;
     NSDate *selectedDate = (NSDate *)value;
     NSTimeInterval interval = [startingDate timeIntervalSinceDate:selectedDate];
-    if (interval < 1.0) {
+    if (abs(interval) < 1.0) {
         // Nothing changed.
         [self hideDatePicker];
         return;

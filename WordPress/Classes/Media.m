@@ -52,11 +52,24 @@ NSString *const VideoUploadFailedNotification = @"VideoUploadFailed";
     return media;
 }
 
+#pragma mark - NSManagedObject subclass methods
+
 - (void)awakeFromFetch {
+    [super awakeFromFetch];
+    
     if ((self.remoteStatus == MediaRemoteStatusPushing && _uploadOperation == nil) || (self.remoteStatus == MediaRemoteStatusProcessing)) {
         self.remoteStatus = MediaRemoteStatusFailed;
     }
 }
+
+- (void)didTurnIntoFault {
+    [super didTurnIntoFault];
+    
+    [_uploadOperation cancel];
+    _uploadOperation = nil;
+}
+
+#pragma mark -
 
 - (float)progress {
     [self willAccessValueForKey:@"progress"];

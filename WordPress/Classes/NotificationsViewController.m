@@ -38,6 +38,12 @@
 
 @implementation NotificationsViewController
 
++ (UIViewController *)viewControllerWithRestorationIdentifierPath:(NSArray *)identifierComponents coder:(NSCoder *)coder {
+    // We need to override the implementation in our superclass or else restoration fails - no blog!
+    UIViewController *controller = [[self alloc] init];
+    return controller;
+}
+
 - (id)init {
     self = [super init];
     if (self) {

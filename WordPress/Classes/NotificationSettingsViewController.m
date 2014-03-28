@@ -419,8 +419,8 @@ BOOL hasChanges;
             actionSheet = [[UIActionSheet alloc] initWithTitle:NSLocalizedString(@"Notifications", @"")
                                                       delegate:self
                                              cancelButtonTitle:NSLocalizedString(@"Cancel", @"")
-                                        destructiveButtonTitle:NSLocalizedString(@"Turn Off", @"")
-                                             otherButtonTitles:NSLocalizedString(@"Turn Off for 1hr", @""), NSLocalizedString(@"Turn Off Until 8am", @""), nil ];
+                                        destructiveButtonTitle:nil
+                                             otherButtonTitles:NSLocalizedString(@"Turn Off", @""), NSLocalizedString(@"Turn Off for 1hr", @""), NSLocalizedString(@"Turn Off Until 8am", @""), nil ];
             actionSheet.tag = 101;
             
         }

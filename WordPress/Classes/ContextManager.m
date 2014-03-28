@@ -40,6 +40,7 @@ static ContextManager *instance;
     NSManagedObjectContext *derived = [[NSManagedObjectContext alloc] initWithConcurrencyType:NSPrivateQueueConcurrencyType];
     derived.parentContext = self.mainContext;
     derived.mergePolicy = NSMergeByPropertyObjectTrumpMergePolicy;
+
     return derived;
 }
 
@@ -65,6 +66,7 @@ static ContextManager *instance;
         if (![context obtainPermanentIDsForObjects:context.insertedObjects.allObjects error:&error]) {
             DDLogError(@"Error obtaining permanent object IDs for %@, %@", context.insertedObjects.allObjects, error);
         }
+        
         if (![context save:&error]) {
             @throw [NSException exceptionWithName:@"Unresolved Core Data save error"
                                            reason:@"Unresolved Core Data save error - derived context"
@@ -75,6 +77,9 @@ static ContextManager *instance;
             dispatch_async(dispatch_get_main_queue(), completionBlock);
         }
         
+        // While this is needed because we don't observe change notifications for the derived context, it
+        // breaks concurrency rules for Core Data.  Provide a mechanism to destroy a derived context that
+        // unregisters it from the save notification instead and rely upon that for merging.
         [self saveContext:self.mainContext];
     }];
 }

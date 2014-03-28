@@ -133,6 +133,10 @@ const NSUInteger WPNoteKeepCount = 20;
         [scanner scanUpToString:@"\"" intoString:&blogName];
         [scanner scanString:@"\"" intoString:NULL];
     }
+    
+    if (blogName.length == 0) {
+        return nil;
+    }
 
     NSPredicate *subjectPredicate = [NSPredicate predicateWithFormat:@"self.blogName CONTAINS[cd] %@", blogName];
     NSPredicate *wpcomPredicate = [NSPredicate predicateWithFormat:@"self.account.isWpcom == YES"];

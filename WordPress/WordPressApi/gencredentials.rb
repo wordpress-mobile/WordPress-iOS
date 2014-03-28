@@ -93,14 +93,6 @@ def print_googleplus(googleplus)
 EOF
 end
 
-def print_quantcast(quantcast)
-  print <<-EOF
-+ (NSString *)quantcastAPIKey {
-  return @"#{quantcast}";
-}
-EOF
-end
-
 def print_simperium(simperium_api_key, simperium_app_id)
 print <<-EOF
 + (NSString *)simperiumAppId {
@@ -112,7 +104,7 @@ print <<-EOF
 EOF
 end
 
-def print_class(client, secret, pocket, mixpanel_dev, mixpanel_prod, crashlytics, hockeyapp, googleplus, quantcast, simperium_api_key, simperium_app_id)
+def print_class(client, secret, pocket, mixpanel_dev, mixpanel_prod, crashlytics, hockeyapp, googleplus, simperium_api_key, simperium_app_id)
   print <<-EOF
 #import "WordPressComApiCredentials.h"
 @implementation WordPressComApiCredentials
@@ -124,7 +116,6 @@ EOF
   print_crashlytics(crashlytics)
   print_hockeyapp(hockeyapp)
   print_googleplus(googleplus)
-  print_quantcast(quantcast)
   print_simperium(simperium_api_key, simperium_app_id)
   printf("@end\n")
 end
@@ -149,7 +140,6 @@ mixpanel_prod = nil
 crashlytics = nil
 hockeyapp = nil
 googleplus = nil
-quantcast = nil
 simperium_api_key = nil
 simperium_app_id = nil
 File.open(path) do |f|
@@ -171,8 +161,6 @@ File.open(path) do |f|
       hockeyapp = v.chomp
     elsif k == "GOOGLE_PLUS_CLIENT_ID"
       googleplus = v.chomp
-    elsif k == "QUANTCAST_API_KEY"
-      quantcast = v.chomp
 	elsif k == "SIMPERIUM_API_KEY"
       simperium_api_key = v.chomp
 	elsif k == "SIMPERIUM_APP_ID"
@@ -193,4 +181,4 @@ if secret.nil?
   exit 3
 end
 
-print_class(client, secret, pocket, mixpanel_dev, mixpanel_prod, crashlytics, hockeyapp, googleplus, quantcast, simperium_api_key, simperium_app_id)
+print_class(client, secret, pocket, mixpanel_dev, mixpanel_prod, crashlytics, hockeyapp, googleplus, simperium_api_key, simperium_app_id)

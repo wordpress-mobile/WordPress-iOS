@@ -7,7 +7,6 @@
  * Some rights reserved. See license.txt
  */
 
-#import <AFNetworking/AFNetworking.h>
 #import <CoreTelephony/CTTelephonyNetworkInfo.h>
 #import <CoreTelephony/CTCarrier.h>
 #import <Crashlytics/Crashlytics.h>
@@ -24,12 +23,8 @@
 #import "NotificationsManager.h"
 #import "NSString+Helpers.h"
 #import "PocketAPI.h"
-#import "Post.h"
-#import "Comment.h"
-#import "Reachability.h"
 #import "ReaderPost.h"
 #import "UIDevice+WordPressIdentifier.h"
-#import "WordPressComApi.h"
 #import "WordPressComApiCredentials.h"
 #import "WPAccount.h"
 
@@ -40,7 +35,6 @@
 #import "LoginViewController.h"
 #import "NotificationsViewController.h"
 #import "ReaderPostsViewController.h"
-#import "ReaderPostDetailViewController.h"
 #import "SupportViewController.h"
 #import "StatsViewController.h"
 #import "Constants.h"
@@ -51,13 +45,11 @@
 #endif
 
 int ddLogLevel = LOG_LEVEL_INFO;
-static NSInteger const UpdateCheckAlertViewTag = 102;
 static NSString * const WPTabBarRestorationID = @"WPTabBarID";
 static NSString * const WPBlogListNavigationRestorationID = @"WPBlogListNavigationID";
 static NSString * const WPReaderNavigationRestorationID = @"WPReaderNavigationID";
 static NSString * const WPNotificationsNavigationRestorationID = @"WPNotificationsNavigationID";
 static NSInteger const IndexForMeTab = 2;
-static NSString *const CameraPlusImagesNotification = @"CameraPlusImagesNotification";
 
 @interface WordPressAppDelegate () <UITabBarControllerDelegate, CrashlyticsDelegate, UIAlertViewDelegate, BITHockeyManagerDelegate>
 
@@ -102,14 +94,12 @@ static NSString *const CameraPlusImagesNotification = @"CameraPlusImagesNotifica
     // Stats and feedback
     [WPMobileStats initializeStats];
     [[GPPSignIn sharedInstance] setClientID:[WordPressComApiCredentials googlePlusClientId]];
-    [self checkIfStatsShouldSendAndUpdateCheck];
     [SupportViewController checkIfFeedbackShouldBeEnabled];
     
     // Networking setup
     [[AFNetworkActivityIndicatorManager sharedManager] setEnabled:YES];
     [self setupReachability];
     [self setupUserAgent];
-    [self checkWPcomAuthentication];
     [self setupSingleSignOn];
 
     [self customizeAppearance];
@@ -208,8 +198,6 @@ static NSString *const CameraPlusImagesNotification = @"CameraPlusImagesNotifica
 
 - (void)applicationWillTerminate:(UIApplication *)application {
     DDLogInfo(@"%@ %@", self, NSStringFromSelector(_cmd));
-    
-    [WPMobileStats endSession];
 }
 
 - (void)applicationDidEnterBackground:(UIApplication *)application {
@@ -240,7 +228,6 @@ static NSString *const CameraPlusImagesNotification = @"CameraPlusImagesNotifica
 
 - (void)applicationWillEnterForeground:(UIApplication *)application {
     DDLogInfo(@"%@ %@", self, NSStringFromSelector(_cmd));
-    [WPMobileStats resumeSession];
 }
 
 - (void)applicationWillResignActive:(UIApplication *)application {
@@ -525,6 +512,10 @@ static NSString *const CameraPlusImagesNotification = @"CameraPlusImagesNotifica
     [self showMeTab];
 }
 
+- (BOOL)isNavigatingMeTab {
+    return (self.tabBarController.selectedIndex == IndexForMeTab && [self.blogListViewController.navigationController.viewControllers count] > 1);
+}
+
 #pragma mark - UITabBarControllerDelegate methods.
 
 - (BOOL)tabBarController:(UITabBarController *)tabBarController shouldSelectViewController:(UIViewController *)viewController {
@@ -559,10 +550,6 @@ static NSString *const CameraPlusImagesNotification = @"CameraPlusImagesNotifica
 
 
 #pragma mark - Application directories
-
-- (NSString *)applicationDocumentsDirectory {
-    return [NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES) lastObject];
-}
 
 - (void)changeCurrentDirectory {
     // Set current directory for WordPress app
@@ -1107,9 +1094,7 @@ static NSString *const CameraPlusImagesNotification = @"CameraPlusImagesNotifica
 
 - (void)toggleExtraDebuggingIfNeeded {
     
-	NSInteger num_blogs = [Blog countWithContext:[[ContextManager sharedInstance] mainContext]];
-	BOOL authed = self.isWPcomAuthenticated;
-	if (num_blogs == 0 && !authed) {
+	if ([self noBlogsAndNoWordPressDotComAccount]) {
 		// When there are no blogs in the app the settings screen is unavailable.
 		// In this case, enable extra_debugging by default to help troubleshoot any issues.
 		if([[NSUserDefaults standardUserDefaults] objectForKey:@"orig_extra_debug"] != nil) {
