@@ -250,14 +250,14 @@
 
 #pragma mark -
 
-- (float)progress {
+- (CGFloat)progress {
     [self willAccessValueForKey:@"progress"];
     NSNumber *result = [self primitiveValueForKey:@"progress"];
     [self didAccessValueForKey:@"progress"];
     return [result floatValue];
 }
 
-- (void)setProgress:(float)progress {
+- (void)setProgress:(CGFloat)progress {
     [self willChangeValueForKey:@"progress"];
     [self setPrimitiveValue:[NSNumber numberWithFloat:progress] forKey:@"progress"];
     [self didChangeValueForKey:@"progress"];

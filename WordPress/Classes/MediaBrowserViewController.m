@@ -1238,7 +1238,7 @@ NSString *const MediaFeaturedImageSelectedNotification = @"MediaFeaturedImageSel
 	imageMedia.creationDate = [NSDate date];
 	imageMedia.filename = filename;
 	imageMedia.localURL = filepath;
-	imageMedia.filesize = [NSNumber numberWithInt:(imageData.length/1024)];
+	imageMedia.filesize = @(imageData.length/1024);
     if (_selectingFeaturedImage) {
         imageMedia.featured = YES;
     } else {
@@ -1337,8 +1337,8 @@ NSString *const MediaFeaturedImageSelectedNotification = @"MediaFeaturedImageSel
 		CGImageRef cgVideoThumbnail = thumbnail.CGImage;
 		NSUInteger videoWidth = CGImageGetWidth(cgVideoThumbnail);
 		NSUInteger videoHeight = CGImageGetHeight(cgVideoThumbnail);
-		videoMedia.width = [NSNumber numberWithInt:videoWidth];
-		videoMedia.height = [NSNumber numberWithInt:videoHeight];
+		videoMedia.width = @(videoWidth);
+		videoMedia.height = @(videoHeight);
         
 		[videoMedia uploadWithSuccess:^{
             if ([videoMedia isDeleted]) {
