@@ -59,6 +59,8 @@
 
 + (UIColor *)keyboardColor;
 
++ (UIColor *)notificationsLightGrey;
+
 // Bar Button Styles
 + (UIBarButtonItemStyle)barButtonStyleForDone;
 + (UIBarButtonItemStyle)barButtonStyleForBordered;
