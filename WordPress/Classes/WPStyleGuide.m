@@ -273,6 +273,11 @@
     }
 }
 
++ (UIColor *)notificationsLightGrey
+{
+	return [UIColor colorWithRed:0xF2/255.0 green:0xF2/255.0 blue:0xF2/255.0 alpha:0xFF/255.0];
+}
+
 + (UIBarButtonItemStyle)barButtonStyleForDone
 {
     return UIBarButtonItemStylePlain;
