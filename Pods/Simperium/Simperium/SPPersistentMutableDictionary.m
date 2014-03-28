@@ -331,11 +331,11 @@ static SPLogLevels logLevel					= SPLogLevelsError;
 - (void)migrateIfNeeded {
 	
 	// Prepare the URL's
-	NSFileManager *fm	= [NSFileManager defaultManager];
-	NSURL *oldBaseURL	= [[fm URLsForDirectory:NSDocumentDirectory inDomains:NSUserDomainMask] lastObject];
-	NSURL *newBaseURL	= self.baseURL;
-	NSArray *contents	= [fm contentsOfDirectoryAtURL:oldBaseURL includingPropertiesForKeys:@[NSURLNameKey] options:NSDirectoryEnumerationSkipsSubdirectoryDescendants error:nil];
-	NSString *filename	= self.filename;
+	NSFileManager *fileManager	= [NSFileManager defaultManager];
+	NSURL *oldBaseURL			= [[fileManager URLsForDirectory:NSDocumentDirectory inDomains:NSUserDomainMask] lastObject];
+	NSURL *newBaseURL			= self.baseURL;
+	NSArray *contents			= [fileManager contentsOfDirectoryAtURL:oldBaseURL includingPropertiesForKeys:@[NSURLNameKey] options:NSDirectoryEnumerationSkipsSubdirectoryDescendants error:nil];
+	NSString *filename			= self.filename;
 	
 	// CoreData usually generates three files per PSC. Let's move all of them
 	for (NSURL *oldFileURL in contents) {
@@ -346,7 +346,7 @@ static SPLogLevels logLevel					= SPLogLevelsError;
 		NSError *error		= nil;
 		NSURL *newFileURL	= [newBaseURL URLByAppendingPathComponent:oldFileURL.lastPathComponent];
 		
-		if ( ![fm moveItemAtURL:oldFileURL toURL:newFileURL error:&error] ) {
+		if ( ![fileManager moveItemAtURL:oldFileURL toURL:newFileURL error:&error] ) {
 			SPLogError(@"Error migrating %@ from %@ to %@", NSStringFromClass([self class]), oldFileURL, newFileURL);
 		}
 	}

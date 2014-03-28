@@ -54,43 +54,103 @@ static SPLogLevels logLevel						= SPLogLevelsInfo;
 }
 
 #pragma mark - Constructors
-- (id)init {
+
+- (id)initWithModel:(NSManagedObjectModel *)model
+			context:(NSManagedObjectContext *)context
+		coordinator:(NSPersistentStoreCoordinator *)coordinator {
+	
+	return [self initWithModel:model context:context coordinator:coordinator label:@""];
+}
+
+- (id)initWithModel:(NSManagedObjectModel *)model
+			context:(NSManagedObjectContext *)context
+		coordinator:(NSPersistentStoreCoordinator *)coordinator
+			  label:(NSString *)label {
+	
 	if ((self = [super init])) {
         
-        self.label = @"";
-        self.networkEnabled = YES;
-        self.authenticationEnabled = YES;
-        self.dynamicSchemaEnabled = YES;
-        self.buckets = [NSMutableDictionary dictionary];
+		self.label							= label;
+        self.networkEnabled					= YES;
+        self.authenticationEnabled			= YES;
+        self.dynamicSchemaEnabled			= YES;
+		self.authenticationEnabled			= YES;
+        self.buckets						= [NSMutableDictionary dictionary];
         
-		SPWebSocketInterface *websocket = [SPWebSocketInterface interfaceWithSimperium:self];
-		self.network = websocket;
+		SPWebSocketInterface *websocket		= [SPWebSocketInterface interfaceWithSimperium:self];
+		self.network						= websocket;
 		
-        SPAuthenticator *auth = [[SPAuthenticator alloc] initWithDelegate:self simperium:self];
-        self.authenticator = auth;
+        SPAuthenticator *auth				= [[SPAuthenticator alloc] initWithDelegate:self simperium:self];
+        self.authenticator					= auth;
         
-        SPRelationshipResolver *resolver = [[SPRelationshipResolver alloc] init];
-        self.relationshipResolver = resolver;
+        SPRelationshipResolver *resolver	= [[SPRelationshipResolver alloc] init];
+        self.relationshipResolver			= resolver;
 		
-		SPLogger *logger = [SPLogger sharedInstance];
-		logger.delegate = self;
+		SPLogger *logger					= [SPLogger sharedInstance];
+		logger.delegate						= self;
 		
 #if TARGET_OS_IPHONE
-        self.authenticationViewControllerClass = [SPAuthenticationViewController class];
+        self.authenticationViewControllerClass		= [SPAuthenticationViewController class];
 #else
-        self.authenticationWindowControllerClass = [SPAuthenticationWindowController class];
-
-		NSNotificationCenter* wc = [[NSWorkspace sharedWorkspace] notificationCenter];
-		[wc addObserver:self selector:@selector(handleSleepNote:) name:NSWorkspaceWillSleepNotification object:NULL];
-		[wc addObserver:self selector:@selector(handleWakeNote:)  name:NSWorkspaceDidWakeNotification   object:NULL];
+        self.authenticationWindowControllerClass	= [SPAuthenticationWindowController class];
 #endif
 		
-		NSNotificationCenter *nc = [NSNotificationCenter defaultCenter];
-        [nc addObserver:self selector:@selector(authenticationDidFail) name:SPAuthenticationDidFail object:nil];
+		[self setupNotifications];
+		
+		[self setupCoreDataWithModelModel:model context:context coordinator:coordinator];
     }
 
 	return self;
 }
+
+
+#pragma mark ====================================================================================
+#pragma mark Init Helpers
+#pragma mark ====================================================================================
+
+- (void)setupNotifications {
+#if !TARGET_OS_IPHONE
+	NSNotificationCenter* wc = [[NSWorkspace sharedWorkspace] notificationCenter];
+	[wc addObserver:self selector:@selector(handleSleepNote:) name:NSWorkspaceWillSleepNotification object:NULL];
+	[wc addObserver:self selector:@selector(handleWakeNote:)  name:NSWorkspaceDidWakeNotification   object:NULL];
+#endif
+	
+	NSNotificationCenter *nc = [NSNotificationCenter defaultCenter];
+	[nc addObserver:self selector:@selector(authenticationDidFail) name:SPAuthenticationDidFail object:nil];
+
+}
+
+- (void)setupCoreDataWithModelModel:(NSManagedObjectModel *)model
+							context:(NSManagedObjectContext *)context
+						coordinator:(NSPersistentStoreCoordinator *)coordinator {
+	
+	NSParameterAssert(model);
+	NSParameterAssert(context);
+	NSParameterAssert(coordinator);
+	
+	NSAssert((context.concurrencyType == NSMainQueueConcurrencyType), NSLocalizedString(@"Error: you must initialize your context with 'NSMainQueueConcurrencyType' concurrency type.", nil));
+	NSAssert((context.persistentStoreCoordinator == nil), NSLocalizedString(@"Error: NSManagedObjectContext's persistentStoreCoordinator must be nil. Simperium will handle CoreData connections for you.", nil));
+	
+	// Initialize CoreData
+	SPCoreDataStorage* storage = [[SPCoreDataStorage alloc] initWithModel:model mainContext:context coordinator:coordinator];
+	storage.delegate = self;
+	self.coreDataStorage = storage;
+	
+	// Load the Buckets but don't start them yet
+	NSArray *schemas = [storage exportSchemas];
+	NSMutableDictionary *buckets = [self loadBuckets:schemas];
+	self.buckets = buckets;
+	
+	// SPManagedObject's need the bucket list
+	[storage setBucketList:buckets];
+	
+	// Load metadata for pending references among objects
+	[self.relationshipResolver loadPendingRelationships:storage];
+}
+
+
+#pragma mark ====================================================================================
+#pragma mark Bucket Helpers
+#pragma mark ====================================================================================
 
 - (SPBucket *)bucketForName:(NSString *)name { 
     SPBucket *bucket = [self.buckets objectForKey:name];
@@ -232,29 +292,8 @@ static SPLogLevels logLevel						= SPLogLevelsInfo;
 
 
 #pragma mark ====================================================================================
-#pragma mark New Initialization Methods
+#pragma mark Authentication Methods
 #pragma mark ====================================================================================
-
-- (id)initWithModel:(NSManagedObjectModel *)model
-			context:(NSManagedObjectContext *)context
-		coordinator:(NSPersistentStoreCoordinator *)coordinator {
-	
-	return [self initWithModel:model context:context coordinator:coordinator label:@""];
-}
-
-- (id)initWithModel:(NSManagedObjectModel *)model
-			context:(NSManagedObjectContext *)context
-		coordinator:(NSPersistentStoreCoordinator *)coordinator
-			  label:(NSString *)label {
-	
-    if ((self = [self init])) {
-		
-		self.label = label;
-		[self setupCoreDataWithModelModel:model context:context coordinator:coordinator];
-    }
-    
-    return self;
-}
 
 #if TARGET_OS_IPHONE
 - (void)authenticateWithAppID:(NSString *)identifier APIKey:(NSString *)key rootViewController:(UIViewController *)controller {
@@ -319,7 +358,7 @@ static SPLogLevels logLevel						= SPLogLevelsInfo;
 		return;
 	}
 		
-	// Start Simperium: Manua auth for us
+	// Start Simperium: Disable Authentication!
 	self.authenticationEnabled = NO;
 	[self startWithAppID:identifier APIKey:nil];
 	
@@ -332,37 +371,6 @@ static SPLogLevels logLevel						= SPLogLevelsInfo;
 	
 }
 
-
-// TODO: Nuke when we officially switch to Init API 2.0
-- (void)setupCoreDataWithModelModel:(NSManagedObjectModel *)model
-							context:(NSManagedObjectContext *)context
-						coordinator:(NSPersistentStoreCoordinator *)coordinator {
-	
-	NSParameterAssert(model);
-	NSParameterAssert(context);
-	NSParameterAssert(coordinator);
-	
-	NSAssert((context.concurrencyType == NSMainQueueConcurrencyType), NSLocalizedString(@"Error: you must initialize your context with 'NSMainQueueConcurrencyType' concurrency type.", nil));
-	NSAssert((context.persistentStoreCoordinator == nil), NSLocalizedString(@"Error: NSManagedObjectContext's persistentStoreCoordinator must be nil. Simperium will handle CoreData connections for you.", nil));
-	
-	// Initialize CoreData
-	SPCoreDataStorage* storage = [[SPCoreDataStorage alloc] initWithModel:model mainContext:context coordinator:coordinator];
-	storage.delegate = self;
-	self.coreDataStorage = storage;
-	
-	// Load the Buckets but don't start them yet
-	NSArray *schemas = [storage exportSchemas];
-	NSMutableDictionary *buckets = [self loadBuckets:schemas];
-	self.buckets = buckets;
-	
-	// SPManagedObject's need the bucket list
-	[storage setBucketList:buckets];
-	
-	// Load metadata for pending references among objects
-	[self.relationshipResolver loadPendingRelationships:storage];
-}
-
-// TODO: Nuke when we officially switch to Init API 2.0
 - (void)startWithAppID:(NSString *)identifier APIKey:(NSString *)key {
 	
 	NSParameterAssert(identifier);
@@ -370,9 +378,9 @@ static SPLogLevels logLevel						= SPLogLevelsInfo;
 	SPLogInfo(@"Simperium starting... %@", self.label);
 		
 	// Keep the keys!
-    self.appID = identifier;
-    self.APIKey = key;
-    self.rootURL = SPBaseURL;
+    self.appID		= identifier;
+    self.APIKey		= key;
+    self.rootURL	= SPBaseURL;
 	
     // With everything configured, all objects can now be validated. This will pick up any objects that aren't yet
     // known to Simperium (for the case where you're adding Simperium to an existing app).
@@ -380,38 +388,6 @@ static SPLogLevels logLevel						= SPLogLevelsInfo;
 	
 	// Handle authentication
 	[self authenticateIfNecessary];
-}
-
-
-
-#pragma mark ====================================================================================
-#pragma mark OLD Initialization Methods: This will be deprecated in the future
-#pragma mark ====================================================================================
-
-#if TARGET_OS_IPHONE
-- (id)initWithRootViewController:(UIViewController *)controller {
-    if ((self = [self init])) {
-        self.rootViewController = controller;
-    }
-    
-    return self;
-}
-#else
-- (id)initWithWindow:(NSWindow *)aWindow {
-    if ((self = [self init])) {
-        self.window = aWindow;
-        
-        // Hide window by default - authenticating will make it visible
-        [self.window orderOut:nil];
-    }
-    
-    return self;
-}
-#endif
-
-- (void)startWithAppID:(NSString *)identifier APIKey:(NSString *)key model:(NSManagedObjectModel *)model context:(NSManagedObjectContext *)context coordinator:(NSPersistentStoreCoordinator *)coordinator {
-	[self setupCoreDataWithModelModel:model context:context coordinator:coordinator];
-	[self startWithAppID:identifier APIKey:key];
 }
 
 
@@ -635,7 +611,7 @@ static SPLogLevels logLevel						= SPLogLevelsInfo;
 
 - (void)setVerboseLoggingEnabled:(BOOL)on {
     _verboseLoggingEnabled = on;
-	[[SPLogger sharedInstance] setSharedLogLevel:on ? SPLogLevelsVerbose : SPLogLevelsInfo];
+	[[SPLogger sharedInstance] setSharedLogLevel:on ? SPLogLevelsVerbose : SPLogLevelsWarn];
 }
 
 - (BOOL)objectsShouldSync {
@@ -645,7 +621,7 @@ static SPLogLevels logLevel						= SPLogLevelsInfo;
 
 
 #pragma mark ====================================================================================
-#pragma mark Authentication
+#pragma mark Authentication Helpers
 #pragma mark ====================================================================================
 
 - (void)authenticationDidSucceedForUsername:(NSString *)username token:(NSString *)token {

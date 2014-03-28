@@ -26,7 +26,7 @@
 #pragma mark ====================================================================================
 
 static SPLogLevels logLevel = SPLogLevelsInfo;
-#define kBatchSize 30
+#define kBatchSize 50
 
 
 #pragma mark ====================================================================================

@@ -16,7 +16,6 @@
 
 
 @class Simperium;
-@class SPBinaryManager;
 
 #if TARGET_OS_IPHONE
 @class UIViewController;
@@ -61,26 +60,6 @@ typedef NS_ENUM(NSInteger, SPSimperiumErrors) {
 #pragma mark ====================================================================================
 
 @interface Simperium : NSObject
-
-// Initializes Simperium.
-#if TARGET_OS_IPHONE
-- (id)initWithRootViewController:(UIViewController *)controller;
-#else
-- (id)initWithWindow:(NSWindow *)aWindow;
-#endif
-
-
-// Starts Simperium with the given credentials (from simperium.com) and an existing Core Data stack.
-- (void)startWithAppID:(NSString *)identifier
-				APIKey:(NSString *)key
-				 model:(NSManagedObjectModel *)model
-               context:(NSManagedObjectContext *)context
-		   coordinator:(NSPersistentStoreCoordinator *)coordinator;
-
-
-#pragma mark ====================================================================================
-#pragma mark New Initialization Methods
-#pragma mark ====================================================================================
 
 // Initializes Simperium: After executing this method, your CoreData Stack will be fully initialized
 - (id)initWithModel:(NSManagedObjectModel *)model

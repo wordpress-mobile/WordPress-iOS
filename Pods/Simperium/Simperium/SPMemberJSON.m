@@ -78,9 +78,6 @@
         return @{ };
     }
 	
-    // Some binary data, like UIImages, won't detect equality with isEqual:
-    // Therefore, compare base64 instead; this can be very slow
-    // TODO: think of better ways to handle this
     NSString *thisStr  = [self stringValueFromTransformable:thisValue];
     NSString *otherStr = [self stringValueFromTransformable:otherValue];
     if ([thisStr compare:otherStr] == NSOrderedSame) {

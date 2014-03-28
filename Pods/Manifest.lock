@@ -1,10 +1,9 @@
 PODS:
   - AFNetworking (1.2.0)
-  - CocoaLumberjack (1.6.5.1):
-    - CocoaLumberjack/Core
+  - CocoaLumberjack (1.8.1):
     - CocoaLumberjack/Extensions
-  - CocoaLumberjack/Core (1.6.5.1)
-  - CocoaLumberjack/Extensions (1.6.5.1):
+  - CocoaLumberjack/Core (1.8.1)
+  - CocoaLumberjack/Extensions (1.8.1):
     - CocoaLumberjack/Core
   - CrashlyticsLumberjack (1.0.1):
     - CocoaLumberjack/Core
@@ -31,10 +30,7 @@ PODS:
   - NSObject-SafeExpectations (0.0.1)
   - NSURL+IDN (0.1)
   - OHHTTPStubs (1.1.1)
-  - Quantcast-Measure (1.2.13):
-    - Quantcast-Measure/Core
-  - Quantcast-Measure/Core (1.2.13)
-  - Reachability (3.0.0)
+  - Reachability (3.1.1)
   - Simperium (0.7.0):
     - Google-Diff-Match-Patch
     - JRSwizzle
@@ -50,12 +46,11 @@ PODS:
   - WordPressApi (0.0.1):
     - AFNetworking (>= 1.0)
     - wpxmlrpc (~> 0.1)
-  - wpxmlrpc (0.4)
+  - wpxmlrpc (0.4.1)
 
 DEPENDENCIES:
   - AFNetworking (= 1.2.0)
-  - CocoaLumberjack (= 1.6.2)
-  - CocoaLumberjack (~> 1.6.2)
+  - CocoaLumberjack (~> 1.8.1)
   - CrashlyticsLumberjack (~> 1.0.0)
   - DTCoreText (= 1.6.9)
   - EmailChecker (from `https://raw.github.com/wordpress-mobile/EmailChecker/master/ios/EmailChecker.podspec`)
@@ -67,13 +62,12 @@ DEPENDENCIES:
   - NSObject-SafeExpectations (from `https://raw.github.com/koke/NSObject-SafeExpectations/master/NSObject-SafeExpectations.podspec`)
   - NSURL+IDN (from `https://raw.github.com/koke/NSURL-IDN/master/Podfile`)
   - OHHTTPStubs (= 1.1.1)
-  - Quantcast-Measure (~> 1.2.10)
-  - Reachability (= 3.0.0)
+  - Reachability (= 3.1.1)
   - Simperium (from `https://github.com/Simperium/simperium-ios.git`)
   - SVProgressHUD (~> 1.0)
   - UIDeviceIdentifier (~> 0.1)
   - WordPressApi (from `https://github.com/koke/WordPressApi.git`)
-  - wpxmlrpc (~> 0.4)
+  - wpxmlrpc (~> 0.4.1)
 
 EXTERNAL SOURCES:
   EmailChecker:
@@ -91,7 +85,7 @@ EXTERNAL SOURCES:
 
 SPEC CHECKSUMS:
   AFNetworking: 3cbae45f61a9f995cdbd56bd571223910d7f4e44
-  CocoaLumberjack: 17803afbade3126a377d32b8d23367264b44ced6
+  CocoaLumberjack: 020378ec400d658923bf5887178394f65f052c90
   CrashlyticsLumberjack: 8ee2adbd0f815d8b111e5f72cd82d39b08430ebc
   DTCoreText: e48c1526945272133b8c935c40da3f3e79836f1b
   DTFoundation: 7c69990fa3cb7655cafa95ab59c3fcea014460f0
@@ -107,13 +101,12 @@ SPEC CHECKSUMS:
   NSObject-SafeExpectations: 241ab1289cbc33a00307cd025d22883646f2e1f0
   NSURL+IDN: 22633c0149b86d6391f32f23776bc0e6ecc532e2
   OHHTTPStubs: cb1cef742f2fba18b192fb92ede52a69cf3a04d5
-  Quantcast-Measure: ff28ef371e54b710dc051a9ef96fd49b77f098c3
-  Reachability: 500bd76bf6cd8ff2c6fb715fc5f44ef6e4c024f2
+  Reachability: be4883bb93f31e38266ae3365e5600a317aae735
   Simperium: 02c4c7ea1945387a6b06b2145106b85ea9c24d5c
   SocketRocket: 7ac946bcce46287a791dfff3c1f8daa692821dae
   SVProgressHUD: 5e10939a296debf5fe5a5895eda9539b8b2114f1
   UIDeviceIdentifier: 64036321b0f77ff41b4200002f0c138431c00d86
   WordPressApi: 6c7ab5320344fbec850f0baba4b0ec2bfd03587d
-  wpxmlrpc: 2206985822e725838c77e1143c9171e577ac063b
+  wpxmlrpc: 63b5b10d5925fb030f8266215bc955366354a2b8
 
 COCOAPODS: 0.29.0

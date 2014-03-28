@@ -53,7 +53,6 @@
 		2622FD28147F251D00C8EEB4 /* SPMemberBase64.h in Headers */ = {isa = PBXBuildFile; fileRef = 2622FD26147F251C00C8EEB4 /* SPMemberBase64.h */; };
 		2622FD29147F251D00C8EEB4 /* SPMemberBase64.m in Sources */ = {isa = PBXBuildFile; fileRef = 2622FD27147F251D00C8EEB4 /* SPMemberBase64.m */; };
 		2622FD2D147F32A500C8EEB4 /* SPNetworkInterface.h in Headers */ = {isa = PBXBuildFile; fileRef = 2622FD2B147F32A500C8EEB4 /* SPNetworkInterface.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		264AE50E15D3092200E5E04E /* libicucore.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 264AE50D15D3092200E5E04E /* libicucore.dylib */; };
 		264AE51115D3094D00E5E04E /* Security.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 264AE51015D3094D00E5E04E /* Security.framework */; };
 		264AE51A15D45E2A00E5E04E /* SPWebSocketChannel.h in Headers */ = {isa = PBXBuildFile; fileRef = 264AE51815D45E2A00E5E04E /* SPWebSocketChannel.h */; };
 		264AE51B15D45E2A00E5E04E /* SPWebSocketChannel.m in Sources */ = {isa = PBXBuildFile; fileRef = 264AE51915D45E2A00E5E04E /* SPWebSocketChannel.m */; };
@@ -147,7 +146,6 @@
 		26EF3BA6147C6AB500E62AD6 /* SPChangeProcessor.m in Sources */ = {isa = PBXBuildFile; fileRef = 269A7F3E147355D100CB29EE /* SPChangeProcessor.m */; };
 		26F4BBCC13DCFD9E00B8AC56 /* SystemConfiguration.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 26F4BBCB13DCFD9E00B8AC56 /* SystemConfiguration.framework */; };
 		26F4BBCE13DCFDA700B8AC56 /* CFNetwork.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 26F4BBCD13DCFDA700B8AC56 /* CFNetwork.framework */; };
-		26F4BBD013DCFDB000B8AC56 /* libz.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 26F4BBCF13DCFDB000B8AC56 /* libz.dylib */; };
 		26F4BBD413DCFDC100B8AC56 /* MobileCoreServices.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 26F4BBD313DCFDC100B8AC56 /* MobileCoreServices.framework */; };
 		460A505E17DE96350070F02B /* SPProcessorNotificationNames.m in Sources */ = {isa = PBXBuildFile; fileRef = 460A505C17DE96350070F02B /* SPProcessorNotificationNames.m */; };
 		460A505F17DE96350070F02B /* SPProcessorNotificationNames.h in Headers */ = {isa = PBXBuildFile; fileRef = 460A505D17DE96350070F02B /* SPProcessorNotificationNames.h */; };
@@ -456,9 +454,7 @@
 			files = (
 				466EB41D17BC49DB005F7599 /* QuartzCore.framework in Frameworks */,
 				264AE51115D3094D00E5E04E /* Security.framework in Frameworks */,
-				264AE50E15D3092200E5E04E /* libicucore.dylib in Frameworks */,
 				26F4BBD413DCFDC100B8AC56 /* MobileCoreServices.framework in Frameworks */,
-				26F4BBD013DCFDB000B8AC56 /* libz.dylib in Frameworks */,
 				26F4BBCE13DCFDA700B8AC56 /* CFNetwork.framework in Frameworks */,
 				26F4BBCC13DCFD9E00B8AC56 /* SystemConfiguration.framework in Frameworks */,
 				264CD9B1135DFFFF00C51BAD /* CoreData.framework in Frameworks */,
@@ -1064,7 +1060,7 @@
 		264CD8F2135DFD7900C51BAD /* Project object */ = {
 			isa = PBXProject;
 			attributes = {
-				LastUpgradeCheck = 0440;
+				LastUpgradeCheck = 0510;
 				ORGANIZATIONNAME = Simperium;
 			};
 			buildConfigurationList = 264CD8F5135DFD7900C51BAD /* Build configuration list for PBXProject "Simperium" */;
@@ -1319,7 +1315,6 @@
 		264CD91C135DFD7A00C51BAD /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				ARCHS = "$(ARCHS_STANDARD_32_BIT)";
 				COPY_PHASE_STRIP = NO;
 				DEAD_CODE_STRIPPING = NO;
 				GCC_C_LANGUAGE_STANDARD = gnu99;
@@ -1333,6 +1328,7 @@
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				GENERATE_PROFILING_CODE = YES;
 				IPHONEOS_DEPLOYMENT_TARGET = 6.0;
+				ONLY_ACTIVE_ARCH = YES;
 				PUBLIC_HEADERS_FOLDER_PATH = Headers;
 				SDKROOT = iphoneos;
 				SKIP_INSTALL = YES;
@@ -1344,7 +1340,6 @@
 		264CD91D135DFD7A00C51BAD /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				ARCHS = "$(ARCHS_STANDARD_32_BIT)";
 				COPY_PHASE_STRIP = NO;
 				DEAD_CODE_STRIPPING = NO;
 				GCC_C_LANGUAGE_STANDARD = gnu99;
@@ -1365,7 +1360,6 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
-				ARCHS = "$(ARCHS_STANDARD_INCLUDING_64_BIT)";
 				CLANG_ENABLE_OBJC_ARC = YES;
 				CODE_SIGN_IDENTITY = "";
 				DSTROOT = /tmp/Simperium.dst;
@@ -1392,7 +1386,6 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
-				ARCHS = "$(ARCHS_STANDARD_INCLUDING_64_BIT)";
 				CLANG_ENABLE_OBJC_ARC = YES;
 				CODE_SIGN_IDENTITY = "";
 				DSTROOT = /tmp/Simperium.dst;
@@ -1464,7 +1457,6 @@
 		26563AEB14FDAD0F0081C8C1 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				ARCHS = "$(ARCHS_STANDARD_32_BIT)";
 				GCC_THUMB_SUPPORT = NO;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				VALID_ARCHS = "armv7 armv7s i386";
@@ -1474,7 +1466,6 @@
 		26563AEC14FDAD0F0081C8C1 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				ARCHS = "$(ARCHS_STANDARD_32_BIT)";
 				GCC_THUMB_SUPPORT = NO;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				VALID_ARCHS = "armv7 armv7s i386";

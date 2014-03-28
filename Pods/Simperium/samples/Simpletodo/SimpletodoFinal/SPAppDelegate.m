@@ -39,14 +39,14 @@
     // NOTE: go to https://simperium.com/tutorials/ios/ to get a pre-generated app ID
     // and API key for you to use with this sample. Or you can create your own app at
     // https://simperium.com/app/new/ if you prefer.
-    
-    self.simperium = [[Simperium alloc] initWithRootViewController: _window.rootViewController];
 
-    [self.simperium startWithAppID:@"SIMPERIUM_APP_ID"
-                            APIKey:@"SIMPERIUM_API_KEY"  
-                             model:[self managedObjectModel]
-						   context:[self managedObjectContext]
-                       coordinator:[self persistentStoreCoordinator]];
+    self.simperium = [[Simperium alloc] initWithModel:self.managedObjectModel
+											  context:self.managedObjectContext
+										  coordinator:self.persistentStoreCoordinator];
+	
+	[self.simperium authenticateWithAppID:@"SIMPERIUM_APP_ID"
+								   APIKey:@"SIMPERIUM_API_KEY"
+					   rootViewController:_window.rootViewController];
     
     return YES;
 }
