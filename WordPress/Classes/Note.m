@@ -242,6 +242,26 @@ const NSUInteger NoteKeepCount = 20;
     return _noteData;
 }
 
+- (NSArray *)bodyItems {
+	return self.noteData[@"body"][@"items"];
+}
+
+- (NSString *)bodyHeaderText {
+	return self.noteData[@"body"][@"header_text"];
+}
+
+- (NSString *)bodyHeaderLink {
+	return self.noteData[@"body"][@"header_link"];
+}
+
+- (NSString *)bodyFooterText {
+	return self.noteData[@"body"][@"footer_text"];
+}
+
+- (NSString *)bodyFooterLink {
+	return self.noteData[@"body"][@"footer_link"];
+}
+
 #pragma mark - NSManagedObject methods
 
 - (void)didTurnIntoFault {

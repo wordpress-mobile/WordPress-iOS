@@ -22,6 +22,11 @@
 @property (nonatomic, retain) NSString *noteID;
 @property (nonatomic, strong, readonly) NSString *commentText;
 @property (nonatomic, strong, readonly) NSDictionary *noteData;
+@property (nonatomic, strong, readonly) NSArray *bodyItems;
+@property (nonatomic, strong, readonly) NSString *bodyHeaderText;
+@property (nonatomic, strong, readonly) NSString *bodyHeaderLink;
+@property (nonatomic, strong, readonly) NSString *bodyFooterText;
+@property (nonatomic, strong, readonly) NSString *bodyFooterLink;
 @property (nonatomic, retain) WPAccount *account;
 
 - (BOOL)isComment;
