@@ -18,8 +18,4 @@ typedef void (^NotificationsFollowBlock)(id sender);
 @property (nonatomic, strong) UIButton					*actionButton;
 @property (nonatomic, assign) BOOL						following;
 
-+ (CGFloat)cellHeight;
-
 @end
-
-
