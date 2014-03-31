@@ -78,8 +78,19 @@ CGFloat const WPNotificationsFollowBottomCellHeight = 60.0f;
 
 	self = [super init];
     if (self) {
-        _note = note;
-        self.title = _note.subject;
+		_note = note;
+
+		// Filter the first element in the body items: it's the same as the Subject Field!
+		NSMutableArray *filtered = [_note.bodyItems mutableCopy];
+		if (filtered.count) {
+			NoteBodyItem *firstItem = filtered.firstObject;
+			if (!firstItem.iconURL) {
+				[filtered removeObjectAtIndex:0];
+			}
+		}
+		self.filteredBodyItems = filtered;
+						
+		// Restoration Mechanism
         self.restorationIdentifier = NSStringFromClass([self class]);
         self.restorationClass = [self class];
     }
