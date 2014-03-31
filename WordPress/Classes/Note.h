@@ -7,7 +7,6 @@
 //
 
 #import <Foundation/Foundation.h>
-#import <CoreData/CoreData.h>
 #import "WPAccount.h"
 #import "WPContentViewProvider.h"
 
@@ -20,9 +19,9 @@
 @property (nonatomic, retain) NSNumber *unread;
 @property (nonatomic, retain) NSString *icon;
 @property (nonatomic, retain) NSString *noteID;
+@property (nonatomic, retain) WPAccount *account;
 @property (nonatomic, strong, readonly) NSString *commentText;
 @property (nonatomic, strong, readonly) NSDictionary *noteData;
-@property (nonatomic, retain) WPAccount *account;
 
 - (BOOL)isComment;
 - (BOOL)isLike;
