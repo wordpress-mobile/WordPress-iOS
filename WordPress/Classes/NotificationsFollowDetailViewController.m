@@ -21,6 +21,19 @@
 #import "Note.h"
 
 NSString *const WPNotificationFollowRestorationKey = @"WPNotificationFollowRestorationKey";
+NSString *const WPNotificationHeaderCellIdentifier = @"WPNotificationHeaderCellIdentifier";
+NSString *const WPNotificationFollowCellIdentifier = @"WPNotificationFollowCellIdentifier";
+NSString *const WPNotificationFooterCellIdentifier = @"WPNotificationFooterCellIdentifier";
+
+typedef NS_ENUM(NSInteger, WPNotificationSections) {
+	WPNotificationSectionsFollow	= 0,
+	WPNotificationSectionsFooter	= 1,
+	WPNotificationSectionsCount		= 2
+};
+
+CGFloat const WPNotificationsFollowPersonCellHeight = 100.0f;
+CGFloat const WPNotificationsFollowBottomCellHeight = 60.0f;
+
 
 @interface NotificationsFollowDetailViewController () <UITableViewDelegate, UITableViewDataSource, UIViewControllerRestoration>
 
@@ -147,11 +160,12 @@ NSString *const WPNotificationFollowRestorationKey = @"WPNotificationFollowResto
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
 {
-    // Return the number of sections.
-    if (_hasFooter)
-        return 2;
-    else
-        return 1;
+	// Hide the footer section if needed
+	if (_note.bodyFooterText.length == 0) {
+		return WPNotificationSectionsCount - 1;
+	}
+	
+	return WPNotificationSectionsCount;
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
@@ -163,11 +177,13 @@ NSString *const WPNotificationFollowRestorationKey = @"WPNotificationFollowResto
         return 1;
 }
 
-- (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
-    if (indexPath.section == 0)
-        return 100.0f;
-    else
-        return 60.0f;
+- (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    if (indexPath.section == WPNotificationSectionsFollow) {
+        return WPNotificationsFollowPersonCellHeight;
+    } else {
+        return WPNotificationsFollowBottomCellHeight;
+	}
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
