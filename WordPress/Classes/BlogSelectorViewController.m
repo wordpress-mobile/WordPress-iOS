@@ -18,7 +18,6 @@
 #import "WPTableViewSectionHeaderView.h"
 
 static NSString *const BlogCellIdentifier = @"BlogCell";
-static CGFloat const blavatarImageSize = 50.f;
 
 @interface BlogSelectorViewController ()
 
@@ -85,6 +84,11 @@ static CGFloat const blavatarImageSize = 50.f;
     self.resultsController.delegate = self;
     [self.resultsController performFetch:nil];
     [self.tableView reloadData];
+
+    // Scroll the currently selected object into view.
+    NSManagedObject *obj = [self.resultsController.managedObjectContext objectWithID:self.selectedObjectID];
+    NSIndexPath *indexPath = [self.resultsController indexPathForObject:obj];
+    [self.tableView scrollToRowAtIndexPath:indexPath atScrollPosition:UITableViewScrollPositionNone animated:NO];
 }
 
 - (void)viewWillDisappear:(BOOL)animated {
@@ -215,7 +219,9 @@ static CGFloat const blavatarImageSize = 50.f;
         }
         
         if ([previousIndexPath compare:indexPath] == NSOrderedSame) {
-            // Do nothing
+            // User tapped the already selected item. Treat this as a cancel event
+            // so the picker can be dismissed without changes.
+            [self cancelButtonTapped:nil];
             return;
         }
     }
@@ -263,7 +269,7 @@ static CGFloat const blavatarImageSize = 50.f;
     
     NSError *error = nil;
     if (![_resultsController performFetch:&error]) {
-        DDLogError(@"Couldn't fetch blogs: %@", [error localizedDescription]);
+        DDLogError(@"Couldn't fetch sites: %@", [error localizedDescription]);
         _resultsController = nil;
     }
     return _resultsController;
@@ -279,7 +285,7 @@ static CGFloat const blavatarImageSize = 50.f;
 
 - (NSString *)controller:(NSFetchedResultsController *)controller sectionIndexTitleForSectionName:(NSString *)sectionName {
     if ([sectionName isEqualToString:@"1"]) {
-        return [NSString stringWithFormat:NSLocalizedString(@"%@'s blogs", @"Section header for WordPress.com blogs"), [[WPAccount defaultWordPressComAccount] username]];
+        return [NSString stringWithFormat:NSLocalizedString(@"%@'s sites", @"Section header for WordPress.com blogs"), [[WPAccount defaultWordPressComAccount] username]];
     }
     return NSLocalizedString(@"Self Hosted", @"Section header for self hosted blogs");
 }

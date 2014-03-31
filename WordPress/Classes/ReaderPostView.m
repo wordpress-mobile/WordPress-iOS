@@ -8,6 +8,7 @@
 
 #import <QuartzCore/QuartzCore.h>
 #import "ReaderPostView.h"
+#import "WPAccount.h"
 #import "WPContentViewSubclass.h"
 #import "ContentActionButton.h"
 #import "UILabel+SuggestSize.h"
@@ -25,6 +26,146 @@
 @end
 
 @implementation ReaderPostView
+
++ (CGFloat)heightForPost:(ReaderPost *)post withWidth:(CGFloat)width showFullContent:(BOOL)showFullContent {
+	CGFloat desiredHeight = 0.0f;
+    
+    // Margins
+    CGFloat contentWidth = width;
+    if (IS_IPAD) {
+        contentWidth = WPTableViewFixedWidth;
+    }
+    
+    desiredHeight += RPVAuthorPadding;
+    desiredHeight += RPVAuthorViewHeight;
+    desiredHeight += RPVAuthorPadding;
+    
+	// Are we showing an image? What size should it be?
+	if (post.featuredImageURL) {
+		CGFloat height = ceilf((contentWidth * RPVMaxImageHeightPercentage));
+		desiredHeight += height;
+	}
+    
+    // Everything but the image has inner padding
+    contentWidth -= RPVHorizontalInnerPadding * 2;
+    
+    // Title
+    desiredHeight += RPVVerticalPadding;
+    NSAttributedString *postTitle = [self titleAttributedStringForPost:post showFullContent:showFullContent withWidth:contentWidth];
+    desiredHeight += [postTitle boundingRectWithSize:CGSizeMake(contentWidth, CGFLOAT_MAX) options:NSStringDrawingUsesLineFragmentOrigin | NSStringDrawingUsesFontLeading context:nil].size.height;
+    desiredHeight += RPVTitlePaddingBottom;
+    
+    // Post summary
+    if (!showFullContent) {
+        NSAttributedString *postSummary = [self summaryAttributedStringForPost:post];
+        desiredHeight += [postSummary boundingRectWithSize:CGSizeMake(contentWidth, CGFLOAT_MAX) options:NSStringDrawingUsesLineFragmentOrigin | NSStringDrawingUsesFontLeading context:nil].size.height;
+    }
+    desiredHeight += RPVVerticalPadding;
+    
+    // Tag
+    // TODO: reenable tags once a better browsing experience is implemented
+    /*    NSString *tagName = post.primaryTagName;
+     if ([tagName length] > 0) {
+     CGRect tagRect = [tagName boundingRectWithSize:CGSizeMake(contentWidth, CGFLOAT_MAX)
+     options:NSStringDrawingUsesLineFragmentOrigin | NSStringDrawingUsesFontLeading
+     attributes:@{NSFontAttributeName : [self summaryFont]}
+     context:nil];
+     desiredHeight += tagRect.size.height;
+     }
+     */
+    
+    // Padding below the line
+	desiredHeight += RPVVerticalPadding;
+    
+	// Size of the meta view
+    desiredHeight += RPVMetaViewHeight;
+    
+	return ceil(desiredHeight);
+}
+
++ (NSAttributedString *)titleAttributedStringForPost:(ReaderPost *)post showFullContent:(BOOL)showFullContent withWidth:(CGFloat) width {
+    NSMutableParagraphStyle *style = [[NSMutableParagraphStyle alloc] init];
+    [style setLineHeightMultiple:RPVLineHeightMultiple];
+    NSDictionary *attributes = @{NSParagraphStyleAttributeName : style,
+                                 NSFontAttributeName : [self titleFont]};
+    NSString *postTitle = [post.postTitle trim];
+    if (postTitle == nil) {
+        postTitle = @"";
+    }
+    
+    NSMutableAttributedString *titleString = [[NSMutableAttributedString alloc] initWithString:postTitle
+                                                                                    attributes:attributes];
+    if(!showFullContent) //Ellipsizing long titles
+    {
+        if([postTitle length] > 0)
+        {
+            
+            CGFloat currentHeightOfTitle = [titleString
+                                            boundingRectWithSize:CGSizeMake(width, CGFLOAT_MAX)
+                                            options:NSStringDrawingUsesLineFragmentOrigin | NSStringDrawingUsesFontLeading
+                                            context:nil].size.height;
+            
+            
+            CGFloat heightOfSingleLine = [[titleString attributedSubstringFromRange:NSMakeRange(0,1)]
+                                          boundingRectWithSize:CGSizeMake(width, CGFLOAT_MAX)
+                                          options:NSStringDrawingUsesLineFragmentOrigin | NSStringDrawingUsesFontLeading
+                                          context:nil].size.height;
+            
+            NSInteger numberOfLines = currentHeightOfTitle / heightOfSingleLine;
+            
+            if(numberOfLines > MaxNumberOfLinesForTitleForSummary)
+            {
+                NSInteger newLength = [ReaderPostView calculateTitleLengthWithSingleLineHeight:heightOfSingleLine
+                                                                             currentLineHeight:currentHeightOfTitle
+                                                                                  currentTitle:titleString];
+                
+                
+                titleString = [[NSMutableAttributedString alloc]initWithString:[postTitle stringByEllipsizingWithMaxLength:newLength preserveWords:YES]
+                                                                    attributes:attributes];
+                
+            }
+        }
+    }
+    
+    return titleString;
+}
+
++ (NSInteger)calculateTitleLengthWithSingleLineHeight:(CGFloat)singleLineHeight currentLineHeight:(CGFloat)currentLineHeight currentTitle:(NSAttributedString *)postTitle
+{
+    CGFloat allowedHeight = singleLineHeight * MaxNumberOfLinesForTitleForSummary;
+    CGFloat overageRatio = allowedHeight / currentLineHeight;
+    return [postTitle length] * overageRatio;
+    
+}
+
++ (NSAttributedString *)summaryAttributedStringForPost:(ReaderPost *)post {
+    NSString *summary = [post.summary trim];
+    NSInteger newline = [post.summary rangeOfString:@"\n"].location;
+    
+    if (newline != NSNotFound)
+        summary = [post.summary substringToIndex:newline];
+    
+    NSMutableParagraphStyle *style = [[NSMutableParagraphStyle alloc] init];
+    [style setLineHeightMultiple:RPVLineHeightMultiple];
+    NSDictionary *attributes = @{NSParagraphStyleAttributeName : style,
+                                 NSFontAttributeName : [self summaryFont]};
+    NSMutableAttributedString *attributedSummary = [[NSMutableAttributedString alloc] initWithString:summary
+                                                                                          attributes:attributes];
+    
+    NSDictionary *moreContentAttributes = @{NSParagraphStyleAttributeName: style,
+                                            NSFontAttributeName: [self moreContentFont],
+                                            NSForegroundColorAttributeName: [WPStyleGuide baseLighterBlue]};
+    NSAttributedString *moreContent = [[NSAttributedString alloc] initWithString:[@"   " stringByAppendingString:NSLocalizedString(@"more", @"")] attributes:moreContentAttributes];
+    [attributedSummary appendAttributedString:moreContent];
+    
+    return attributedSummary;
+}
+
+- (id)initWithFrame:(CGRect)frame {
+    self = [self initWithFrame:frame showFullContent:NO];
+    
+    return self;
+}
 
 - (id)initWithFrame:(CGRect)frame showFullContent:(BOOL)showFullContent {
     self = [super initWithFrame:frame showFullContent:showFullContent];
@@ -113,7 +254,11 @@
     [self refreshDate];
     
 	self.cellImageView.hidden = YES;
-	if (self.post.featuredImageURL) {
+
+    // If ReaderPostView has a featured image, show it unless you're showing full detail & featured image is in the post already
+	if (post.featuredImageURL &&
+        (self.showFullContent == NO || [self.post.content rangeOfString:[post.featuredImageURL absoluteString]].length == 0)) {
+		self.showImage = YES;
 		self.cellImageView.hidden = NO;
 	}
     
@@ -124,12 +269,12 @@
         self.tagButton.hidden = YES;
     }
     
-	if ([self.post isWPCom]) {
+	if ([[self.post isWPCom] boolValue] && [WPAccount defaultWordPressComAccount] != nil) {
 		self.likeButton.hidden = NO;
 		self.reblogButton.hidden = NO;
         self.commentButton.hidden = NO;
 	} else {
-		self.likeButton.hidden = YES;
+        self.likeButton.hidden = YES;
 		self.reblogButton.hidden = YES;
         self.commentButton.hidden = YES;
 	}
@@ -138,13 +283,12 @@
 	self.reblogButton.userInteractionEnabled = ![self.post.isReblogged boolValue];
 	
 	[self updateActionButtons];
-
 }
 
 - (void)layoutSubviews {
 
     // Determine button visibility before parent lays them out
-    BOOL commentsOpen = [[self.post commentsOpen] boolValue] && [self.post isWPCom];
+    BOOL commentsOpen = [[self.post commentsOpen] boolValue] && [[self.post isWPCom] boolValue];
     self.commentButton.hidden = !commentsOpen;
 
 	[super layoutSubviews];
@@ -156,7 +300,7 @@
     CGFloat innerContentWidth = [self innerContentWidth];
     CGFloat bylineX = RPVAvatarSize + RPVAuthorPadding + RPVHorizontalInnerPadding;
 
-    if ([self.post isFollowable]) {
+    if ([self.post isFollowable] && [WPAccount defaultWordPressComAccount] != nil) {
         self.followButton.hidden = NO;
         CGFloat followX = bylineX - 4; // Fudge factor for image alignment
         CGFloat followY = RPVAuthorPadding + self.bylineLabel.frame.size.height - 2;
@@ -192,6 +336,8 @@
 - (void)setAvatar:(UIImage *)avatar {
     if (avatar) {
         self.avatarImageView.image = avatar;
+    } else if ([[self.post isWPCom] boolValue]) {
+        self.avatarImageView.image = [UIImage imageNamed:@"wpcom_blavatar"];
     } else {
         self.avatarImageView.image = [UIImage imageNamed:@"gravatar-reader"];
     }

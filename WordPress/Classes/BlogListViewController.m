@@ -23,9 +23,8 @@
 static NSString *const AddSiteCellIdentifier = @"AddSiteCell";
 static NSString *const BlogCellIdentifier = @"BlogCell";
 CGFloat const blavatarImageSize = 50.f;
-NSString * const WPBlogListRestorationID = @"WPBlogListID";
 
-@interface BlogListViewController ()
+@interface BlogListViewController () <UIViewControllerRestoration>
 
 @property (nonatomic, strong) NSFetchedResultsController *resultsController;
 @property (nonatomic, strong) UIBarButtonItem *settingsButton;
@@ -33,17 +32,22 @@ NSString * const WPBlogListRestorationID = @"WPBlogListID";
 
 @implementation BlogListViewController
 
-- (id)initWithStyle:(UITableViewStyle)style
-{
-    self = [super initWithStyle:UITableViewStyleGrouped];
-    if (self) {
-        self.restorationIdentifier = WPBlogListRestorationID;
-    }
-    return self;
++ (UIViewController *)viewControllerWithRestorationIdentifierPath:(NSArray *)identifierComponents coder:(NSCoder *)coder {
+    return [[self alloc] initWithStyle:UITableViewStyleGrouped];
 }
 
 - (void)dealloc {
     [[NSNotificationCenter defaultCenter] removeObserver:self];
+}
+
+- (id)initWithStyle:(UITableViewStyle)style
+{
+    self = [super initWithStyle:UITableViewStyleGrouped];
+    if (self) {
+        self.restorationIdentifier = NSStringFromClass([self class]);
+        self.restorationClass = [self class];
+    }
+    return self;
 }
 
 - (NSString *)modelIdentifierForElementAtIndexPath:(NSIndexPath *)indexPath inView:(UIView *)view {
@@ -123,6 +127,24 @@ NSString * const WPBlogListRestorationID = @"WPBlogListID";
 
 - (BOOL)hasDotComAndSelfHosted {
     return ([[self.resultsController sections] count] > 1);
+}
+
+- (BOOL)shouldBypassBlogListViewControllerWhenSelectedFromTabBar
+{
+    return [self numSites] == 1;
+}
+
+- (void)bypassBlogListViewController
+{
+    if ([self shouldBypassBlogListViewControllerWhenSelectedFromTabBar]) {
+        // We do a delay of 0.0 so that way this doesn't kick off until the next run loop.
+        [self performSelector:@selector(selectFirstSite) withObject:nil afterDelay:0.0];
+    }
+}
+
+- (void)selectFirstSite
+{
+    [self tableView:self.tableView didSelectRowAtIndexPath:[NSIndexPath indexPathForRow:0 inSection:0]];
 }
 
 
@@ -290,9 +312,10 @@ NSString * const WPBlogListRestorationID = @"WPBlogListID";
         Blog *blog = [self.resultsController objectAtIndexPath:indexPath];
         if ([blog.blogName length] != 0) {
             cell.textLabel.text = blog.blogName;
-            cell.detailTextLabel.text = blog.url;
+            cell.detailTextLabel.text = [blog displayURL];
         } else {
-            cell.textLabel.text = blog.url;
+            cell.textLabel.text = [blog displayURL];
+            cell.detailTextLabel.text = @"";
         }
         
         [cell.imageView setImageWithBlavatarUrl:blog.blavatarUrl isWPcom:blog.isWPcom];
@@ -359,7 +382,7 @@ NSString * const WPBlogListRestorationID = @"WPBlogListID";
         [WPMobileStats trackEventForWPCom:StatsEventSettingsClickedEditBlog];
         
         Blog *blog = [self.resultsController objectAtIndexPath:indexPath];
-        
+        [blog flagAsLastUsed];
         BlogDetailsViewController *blogDetailsViewController = [[BlogDetailsViewController alloc] init];
         blogDetailsViewController.blog = blog;
         [self.navigationController pushViewController:blogDetailsViewController animated:YES];
@@ -424,7 +447,7 @@ NSString * const WPBlogListRestorationID = @"WPBlogListID";
     
     NSError *error = nil;
     if (![_resultsController performFetch:&error]) {
-        DDLogError(@"Couldn't fetch blogs: %@", [error localizedDescription]);
+        DDLogError(@"Couldn't fetch sites: %@", [error localizedDescription]);
         _resultsController = nil;
     }
     return _resultsController;
@@ -443,7 +466,7 @@ NSString * const WPBlogListRestorationID = @"WPBlogListID";
     
     NSError *error = nil;
     if (![self.resultsController performFetch:&error]) {
-        DDLogError(@"Couldn't fetch blogs: %@", [error localizedDescription]);
+        DDLogError(@"Couldn't fetch sites: %@", [error localizedDescription]);
     }
     
     [self.tableView reloadData];
@@ -455,7 +478,7 @@ NSString * const WPBlogListRestorationID = @"WPBlogListID";
 
 - (NSString *)controller:(NSFetchedResultsController *)controller sectionIndexTitleForSectionName:(NSString *)sectionName {
     if ([sectionName isEqualToString:@"1"]) {
-        return [NSString stringWithFormat:NSLocalizedString(@"%@'s blogs", @"Section header for WordPress.com blogs"), [[WPAccount defaultWordPressComAccount] username]];
+        return [NSString stringWithFormat:NSLocalizedString(@"%@'s sites", @"Section header for WordPress.com blogs"), [[WPAccount defaultWordPressComAccount] username]];
     }
     return NSLocalizedString(@"Self Hosted", @"Section header for self hosted blogs");
 }

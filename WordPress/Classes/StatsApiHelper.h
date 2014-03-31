@@ -9,11 +9,11 @@
 
 #import <Foundation/Foundation.h>
 
-@class StatsSummary, StatsViewsVisitors;
+@class StatsSummary, StatsViewsVisitors, WPAccount;
 
 @interface StatsApiHelper : NSObject
 
-- (id)initWithSiteID:(NSNumber *)siteID;
+- (id)initWithSiteID:(NSNumber *)siteID andAccount:(WPAccount *)account;
 
 - (void)fetchSummaryWithSuccess:(void (^)(StatsSummary *summary))success failure:(void (^)(NSError *error))failure;
 - (void)fetchTopPostsWithSuccess:(void (^)(NSDictionary *topPosts))success failure:(void (^)(NSError *error))failure;

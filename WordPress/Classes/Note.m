@@ -10,7 +10,9 @@
 #import "NSString+Helpers.h"
 #import "NSString+XMLExtensions.h"
 #import "WordPressComApi.h"
+#import "WPAccount.h"
 #import "ContextManager.h"
+
 
 const NSUInteger NoteKeepCount = 20;
 
@@ -199,6 +201,10 @@ const NSUInteger NoteKeepCount = 20;
         [scanner scanUpToString:@"\"" intoString:&blogName];
         [scanner scanString:@"\"" intoString:NULL];
     }
+    
+    if (blogName.length == 0) {
+        return nil;
+    }
 
     NSPredicate *subjectPredicate = [NSPredicate predicateWithFormat:@"self.blogName CONTAINS[cd] %@", blogName];
     NSPredicate *wpcomPredicate = [NSPredicate predicateWithFormat:@"self.account.isWpcom == YES"];
@@ -241,7 +247,11 @@ const NSUInteger NoteKeepCount = 20;
 #pragma mark - NSManagedObject methods
 
 - (void)didTurnIntoFault {
-    _noteData = nil;
+    [super didTurnIntoFault];
+    
+    self.noteData = nil;
+    self.date = nil;
+    self.commentText = nil;
 }
 
 #pragma mark - Comment HTML parsing

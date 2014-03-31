@@ -87,18 +87,20 @@ NSString *const NotificationsDeviceToken = @"apnsDeviceToken";
 + (void)handleNotification:(NSDictionary *)userInfo forState:(UIApplicationState)state completionHandler:(void (^)(UIBackgroundFetchResult))completionHandler {
     DDLogVerbose(@"Received push notification:\nPayload: %@\nCurrent Application state: %d", userInfo, state);
     
+    // Try to pull the badge number from the notification object
+    // Badge count does not normally update when the app is active
+    // And this forces KVO to be fired
+    NSDictionary *apsObject = [userInfo dictionaryForKey:@"aps"];
+    if (apsObject) {
+        NSNumber *badgeCount = [apsObject numberForKey:@"badge"];
+        if (badgeCount) {
+            [UIApplication sharedApplication].applicationIconBadgeNumber = [badgeCount intValue];
+        }
+    }
+    
     if ([userInfo stringForKey:@"type"]) { //check if it is the badge reset PN
         NSString *notificationType = [userInfo stringForKey:@"type"];
         if ([notificationType isEqualToString:@"badge-reset"]) {
-            [UIApplication sharedApplication].applicationIconBadgeNumber = 0;
-            //Try to pull the badge number from the notification object
-            NSDictionary *apsObject = [userInfo dictionaryForKey:@"aps"];
-            if (apsObject) {
-                NSNumber *badgeCount = [apsObject numberForKey:@"badge"];
-                if (badgeCount) {
-                    [UIApplication sharedApplication].applicationIconBadgeNumber = [badgeCount intValue];
-                }
-            }
             return;
         }
     }
@@ -193,7 +195,7 @@ NSString *const NotificationsDeviceToken = @"apnsDeviceToken";
 
 + (void)saveNotificationSettings {
     NSDictionary *settings = [NotificationsManager notificationSettingsDictionary];
-    NSString *deviceId = [[NSUserDefaults standardUserDefaults] objectForKey:NotificationsDeviceIdKey];
+    NSString *deviceId = [[NSUserDefaults standardUserDefaults] stringForKey:NotificationsDeviceIdKey];
     WPAccount *account = [WPAccount defaultWordPressComAccount];
     [[account restApi] saveNotificationSettings:settings
                                        deviceId:deviceId
@@ -205,7 +207,7 @@ NSString *const NotificationsDeviceToken = @"apnsDeviceToken";
 }
 
 + (void)fetchNotificationSettingsWithSuccess:(void (^)())success failure:(void (^)(NSError *))failure {
-    NSString *deviceId = [[NSUserDefaults standardUserDefaults] objectForKey:NotificationsDeviceIdKey];
+    NSString *deviceId = [[NSUserDefaults standardUserDefaults] stringForKey:NotificationsDeviceIdKey];
     
     WPAccount *account = [WPAccount defaultWordPressComAccount];
     [[account restApi] fetchNotificationSettingsWithDeviceId:deviceId

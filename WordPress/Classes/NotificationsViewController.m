@@ -37,6 +37,12 @@ NSString * const NotificationsJetpackInformationURL = @"http://jetpack.me/about/
 
 @implementation NotificationsViewController
 
++ (UIViewController *)viewControllerWithRestorationIdentifierPath:(NSArray *)identifierComponents coder:(NSCoder *)coder {
+    // We need to override the implementation in our superclass or else restoration fails - no blog!
+    UIViewController *controller = [[self alloc] init];
+    return controller;
+}
+
 - (id)init {
     self = [super init];
     if (self) {
@@ -92,6 +98,7 @@ NSString * const NotificationsJetpackInformationURL = @"http://jetpack.me/about/
 
 - (void)dealloc {
     [[NSNotificationCenter defaultCenter] removeObserver:self];
+    [[UIApplication sharedApplication] removeObserver:self forKeyPath:@"applicationIconBadgeNumber"];
 }
 
 - (void)viewDidLoad
@@ -111,6 +118,14 @@ NSString * const NotificationsJetpackInformationURL = @"http://jetpack.me/about/
                                                                         action:@selector(showNotificationSettings)];
         self.navigationItem.rightBarButtonItem = pushSettings;
     }
+    
+    // Watch for application badge number changes
+    UIApplication *application = [UIApplication sharedApplication];
+    [application addObserver:self
+                  forKeyPath:@"applicationIconBadgeNumber"
+                     options:NSKeyValueObservingOptionNew
+                     context:nil];
+    [self updateTabBarBadgeNumber];
 }
 
 - (void)viewWillAppear:(BOOL)animated {
@@ -140,8 +155,26 @@ NSString * const NotificationsJetpackInformationURL = @"http://jetpack.me/about/
         [self pruneOldNotes];
 }
 
+#pragma mark - NSObject(NSKeyValueObserving) methods
+
+- (void)observeValueForKeyPath:(NSString *)keyPath
+                      ofObject:(id)object
+                        change:(NSDictionary *)change
+                       context:(void *)context {
+    if ([keyPath isEqualToString:@"applicationIconBadgeNumber"]) {
+        [self updateTabBarBadgeNumber];
+    }
+}
 
 #pragma mark - Custom methods
+
+- (void)updateTabBarBadgeNumber {
+    UIApplication *application = [UIApplication sharedApplication];
+    NSInteger count = application.applicationIconBadgeNumber;
+    
+    NSString *countString = count == 0 ? nil : [NSString stringWithFormat:@"%d", count];
+    self.navigationController.tabBarItem.badgeValue = countString;
+}
 
 - (void)refreshUnreadNotes {
     [Note refreshUnreadNotesWithContext:self.resultsController.managedObjectContext];

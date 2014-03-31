@@ -25,6 +25,12 @@
 @dynamic parentComment;
 @synthesize attributedContent;
 
+- (void)didTurnIntoFault {
+    [super didTurnIntoFault];
+    
+    self.attributedContent = nil;
+}
+
 + (NSArray *)fetchCommentsForPost:(ReaderPost *)post withContext:(NSManagedObjectContext *)context {
 	NSFetchRequest *request = [[NSFetchRequest alloc] init];
     [request setEntity:[NSEntityDescription entityForName:@"ReaderComment" inManagedObjectContext:context]];

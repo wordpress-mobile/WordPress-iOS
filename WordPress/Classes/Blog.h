@@ -23,9 +23,13 @@
 @property (nonatomic, strong) NSSet *posts;
 @property (nonatomic, strong) NSSet *categories;
 @property (nonatomic, strong) NSSet *comments;
+@property (nonatomic, strong) NSSet *themes;
+@property (nonatomic, strong) NSSet *media;
+@property (nonatomic, strong) NSString *currentThemeId;
 @property (nonatomic, assign) BOOL isSyncingPosts;
 @property (nonatomic, assign) BOOL isSyncingPages;
 @property (nonatomic, assign) BOOL isSyncingComments;
+@property (nonatomic, assign) BOOL isSyncingMedia;
 @property (nonatomic, strong) NSDate *lastPostsSync;
 @property (nonatomic, strong) NSDate *lastPagesSync;
 @property (nonatomic, strong) NSDate *lastCommentsSync;
@@ -45,6 +49,7 @@
 @property (nonatomic, readonly, strong) NSString *password;
 @property (weak, readonly) Reachability *reachability;
 @property (readonly) BOOL reachable;
+@property (nonatomic, assign) BOOL videoPressEnabled;
 
 /**
  URL properties (example: http://wp.koke.me/sub/xmlrpc.php)
@@ -63,8 +68,24 @@
 // wp.koke.me
 @property (weak, readonly) NSString *hostname;
 
+/**
+ Returns the blog currently flagged as the one last used, or the first blog in 
+ an alphanumerically sorted list, if no blog is currently flagged as last used.
+ */
++ (Blog *)lastUsedOrFirstBlog;
+
+/**
+ Returns the blog currently flaged as the one last used.
+ */
++ (Blog *)lastUsedBlog;
+
+/**
+ Returns the first blog in an alphanumerically sorted list. 
+ */
++ (Blog *)firstBlog;
 
 #pragma mark - Blog information
+- (void)flagAsLastUsed;
 - (BOOL)isWPcom;
 - (BOOL)isPrivate;
 - (NSArray *)sortedCategories;
@@ -73,7 +94,7 @@
 - (NSString *)urlWithPath:(NSString *)path;
 - (NSString *)adminUrlWithPath:(NSString *)path;
 - (NSArray *)getXMLRPCArgsWithExtra:(id)extra;
-- (int)numberOfPendingComments;
+- (NSUInteger)numberOfPendingComments;
 - (NSDictionary *) getImageResizeDimensions;
 - (BOOL)supportsFeaturedImages;
 
@@ -105,6 +126,7 @@
 - (void)syncCategoriesWithSuccess:(void (^)())success failure:(void (^)(NSError *error))failure;
 - (void)syncOptionsWithWithSuccess:(void (^)())success failure:(void (^)(NSError *error))failure;
 - (void)syncCommentsWithSuccess:(void (^)())success failure:(void (^)(NSError *error))failure;
+- (void)syncMediaLibraryWithSuccess:(void (^)())success failure:(void (^)(NSError *error))failure;
 - (void)syncPostFormatsWithSuccess:(void (^)())success failure:(void (^)(NSError *error))failure;
 
 /*! Syncs an entire blog include posts, pages, comments, options, post formats and categories.

@@ -137,7 +137,7 @@
 		//Categories [selObjects count]
 		NSArray *categories = [self.post.categories allObjects];
 		NSString *catStr = @"";
-		int i = 0, count = [categories count];
+		NSUInteger i = 0, count = [categories count];
 		for (i = 0; i < count; i++) {
 			Category *category = [categories objectAtIndex:i];
 			catStr = [catStr stringByAppendingString:category.categoryName];
@@ -193,7 +193,7 @@
     if( appDelegate.connectionAvailable == NO ) {
         [self showSimplePreviewWithMessage:[NSString stringWithFormat:@"<div class=\"page\"><p>%@ %@</p>", NSLocalizedString(@"The internet connection appears to be offline.", @""), NSLocalizedString(@"A simple preview is shown below.", @"")]];
     } else if ( self.apost.blog.reachable == NO ) {
-        [self showSimplePreviewWithMessage:[NSString stringWithFormat:@"<div class=\"page\"><p>%@ %@</p>", NSLocalizedString(@"The internet connection cannot reach your blog.", @""), NSLocalizedString(@"A simple preview is shown below.", @"")]];
+        [self showSimplePreviewWithMessage:[NSString stringWithFormat:@"<div class=\"page\"><p>%@ %@</p>", NSLocalizedString(@"The internet connection cannot reach your site.", @""), NSLocalizedString(@"A simple preview is shown below.", @"")]];
     } else if (link == nil ) {
         [self showSimplePreview];
     } else {

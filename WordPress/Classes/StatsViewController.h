@@ -17,6 +17,7 @@ typedef NS_ENUM(NSInteger, StatsSection) {
     StatsSectionClicks,
     StatsSectionReferrers,
     StatsSectionSearchTerms,
+    StatsSectionLinkToWebview,
     StatsSectionTotalCount,
     StatsSectionVisitorsGraph
 };

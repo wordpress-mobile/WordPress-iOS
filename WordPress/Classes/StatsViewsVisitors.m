@@ -61,6 +61,11 @@ NSString *const StatsPointCountKey = @"count";
 }
 
 - (NSString *)nicePointName:(NSString *)name forUnit:(StatsViewsVisitorsUnit)unit {
+    if (name.length == 0) {
+        DDLogWarn(@"Invalid date/name passed into nicePointName for unit: %i", unit);
+        return @"";
+    }
+    
     switch (unit) {
         case StatsViewsVisitorsUnitDay:
         {
@@ -81,7 +86,7 @@ NSString *const StatsPointCountKey = @"count";
         {
             self.dateFormatter.dateFormat = @"yyyy-MM-dd";
             NSDate *d = [self.dateFormatter dateFromString:name];
-            self.dateFormatter.dateFormat = @"LLL yy"; // L is stand-alone month
+            self.dateFormatter.dateFormat = @"LLL yyyy"; // L is stand-alone month
             return [self.dateFormatter stringFromDate:d];
         }
         default:

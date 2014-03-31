@@ -14,12 +14,12 @@
 #import "WPTableViewCell.h"
 #import "BlogSelectorViewController.h"
 #import "WPBlogSelectorButton.h"
+#import "WPAlertView.h"
 #import "UIImage+Util.h"
 #import "LocationService.h"
 
 NSString *const WPEditorNavigationRestorationID = @"WPEditorNavigationRestorationID";
 NSString *const WPAbstractPostRestorationKey = @"WPAbstractPostRestorationKey";
-NSString *const EditPostViewControllerLastUsedBlogURL = @"EditPostViewControllerLastUsedBlogURL";
 CGFloat const EPVCTextfieldHeight = 44.0f;
 CGFloat const EPVCOptionsHeight = 44.0f;
 CGFloat const EPVCToolbarHeight = 44.0f;
@@ -35,6 +35,7 @@ CGFloat const EPVCTextViewTopPadding = 7.0f;
 @property (nonatomic, strong) WPAlertView *linkHelperAlertView;
 @property (nonatomic, strong) UIPopoverController *blogSelectorPopover;
 @property (nonatomic) BOOL dismissingBlogPicker;
+@property (nonatomic) CGPoint scrollOffsetRestorePoint;
 
 @end
 
@@ -66,40 +67,6 @@ CGFloat const EPVCTextViewTopPadding = 7.0f;
     }
     
     return [[self alloc] initWithPost:restoredPost];
-}
-
-+ (Blog *)blogForNewDraft {
-    // Try to get the last used blog, if there is one.
-    NSManagedObjectContext *context = [[ContextManager sharedInstance] mainContext];
-    NSFetchRequest *fetchRequest = [NSFetchRequest fetchRequestWithEntityName:@"Blog"];
-    NSString *url = [[NSUserDefaults standardUserDefaults] stringForKey:EditPostViewControllerLastUsedBlogURL];
-    NSPredicate *predicate;
-    if (url) {
-        predicate = [NSPredicate predicateWithFormat:@"visible = YES AND url = %@", url];
-    } else {
-        predicate = [NSPredicate predicateWithFormat:@"visible = YES"];
-    }
-    [fetchRequest setPredicate:predicate];
-    fetchRequest.sortDescriptors = @[[NSSortDescriptor sortDescriptorWithKey:@"blogName" ascending:YES]];
-    NSError *error = nil;
-    NSArray *results = [context executeFetchRequest:fetchRequest error:&error];
-    
-    if (error) {
-        DDLogError(@"Couldn't fetch blogs: %@", error);
-        return nil;
-    }
-    
-    if([results count] == 0) {
-        if (url) {
-            // Blog might have been removed from the app. Get the first available.
-            [[NSUserDefaults standardUserDefaults] removeObjectForKey:EditPostViewControllerLastUsedBlogURL];
-            [[NSUserDefaults standardUserDefaults] synchronize];
-            return [self blogForNewDraft];
-        }
-        return nil;
-    }
-    
-    return [results firstObject];
 }
 
 - (void)encodeRestorableStateWithCoder:(NSCoder *)coder {
@@ -139,7 +106,7 @@ CGFloat const EPVCTextViewTopPadding = 7.0f;
 }
 
 - (id)initWithDraftForLastUsedBlog {
-    Blog *blog = [EditPostViewController blogForNewDraft];
+    Blog *blog = [Blog lastUsedOrFirstBlog];
     return [self initWithPost:[Post newDraftForBlog:blog]];
 }
 
@@ -149,8 +116,6 @@ CGFloat const EPVCTextViewTopPadding = 7.0f;
         self.restorationIdentifier = NSStringFromClass([self class]);
         self.restorationClass = [self class];
         _post = post;
-        [[NSUserDefaults standardUserDefaults] setObject:post.blog.url forKey:EditPostViewControllerLastUsedBlogURL];
-        [[NSUserDefaults standardUserDefaults] synchronize];
         
         if (_post.remoteStatus == AbstractPostRemoteStatusLocal) {
             _editMode = EditPostViewControllerModeNewPost;
@@ -174,12 +139,12 @@ CGFloat const EPVCTextViewTopPadding = 7.0f;
     [self setupNavbar];
     [self setupToolbar];
     [self setupTextView];
+    [self setupOptionsView];
     
     [self createRevisionOfPost];
     
     [[NSNotificationCenter defaultCenter] removeObserver:self];
-	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(insertMediaAbove:) name:@"ShouldInsertMediaAbove" object:nil];
-	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(insertMediaBelow:) name:@"ShouldInsertMediaBelow" object:nil];
+	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(insertMediaBelow:) name:MediaShouldInsertBelowNotification object:nil];
 	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(removeMedia:) name:@"ShouldRemoveMedia" object:nil];
     
     if (self.editorOpenedBy) {
@@ -194,30 +159,38 @@ CGFloat const EPVCTextViewTopPadding = 7.0f;
 - (void)viewWillAppear:(BOOL)animated {
     [super viewWillAppear:animated];
     
+    // When restoring state, the navigationController is nil when the view loads,
+    // so configure its appearance here instead.
+    self.navigationController.navigationBar.translucent = NO;
+    UIToolbar *toolbar = self.navigationController.toolbar;
+    toolbar.barTintColor = [WPStyleGuide littleEddieGrey];
+    toolbar.translucent = NO;
+    toolbar.barStyle = UIBarStyleDefault;
+
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(keyboardWillShow:) name:UIKeyboardWillShowNotification object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(keyboardDidShow:) name:UIKeyboardDidShowNotification object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(keyboardWillHide:) name:UIKeyboardWillHideNotification object:nil];
-
-    // Make sure toolbar is the right shade.
-    // When returning from stateRestoration it might match the navbar.
-    UIToolbar *toolbar = self.navigationController.toolbar;
-    toolbar.barTintColor = [WPStyleGuide littleEddieGrey];
     
     if(self.navigationController.navigationBarHidden) {
-        [self.navigationController setNavigationBarHidden:NO animated:YES];
+        [self.navigationController setNavigationBarHidden:NO animated:animated];
     }
     
     if (self.navigationController.toolbarHidden) {
-        [self.navigationController setToolbarHidden:NO animated:YES];
+        [self.navigationController setToolbarHidden:NO animated:animated];
     }
     
     for (UIView *view in self.navigationController.toolbar.subviews) {
         [view setExclusiveTouch:YES];
     }
     
-    [self refreshUIForCurrentPost];
-    
     [_textView setContentOffset:CGPointMake(0, 0)];
+}
+
+- (void)viewDidAppear:(BOOL)animated {
+    [super viewDidAppear:animated];
+    // Refresh the UI when the view appears or the options button won't be
+    // visible when restoring state.
+    [self refreshUIForCurrentPost];
 }
 
 - (void)viewWillDisappear:(BOOL)animated {
@@ -227,9 +200,8 @@ CGFloat const EPVCTextViewTopPadding = 7.0f;
     [[NSNotificationCenter defaultCenter] removeObserver:self name:UIKeyboardWillShowNotification object:nil];
     [[NSNotificationCenter defaultCenter] removeObserver:self name:UIKeyboardDidShowNotification object:nil];
     [[NSNotificationCenter defaultCenter] removeObserver:self name:UIKeyboardWillHideNotification object:nil];
-
     
-    [self.navigationController setToolbarHidden:YES animated:YES];
+    [self.navigationController setToolbarHidden:YES animated:animated];
     
     [[NSNotificationCenter defaultCenter] removeObserver:self name:UIKeyboardWillShowNotification object:nil];
     [[NSNotificationCenter defaultCenter] removeObserver:self name:UIKeyboardDidShowNotification object:nil];
@@ -237,12 +209,6 @@ CGFloat const EPVCTextViewTopPadding = 7.0f;
     
 	[_titleTextField resignFirstResponder];
 	[_textView resignFirstResponder];
-}
-
-- (void)didRotateFromInterfaceOrientation:(UIInterfaceOrientation)fromInterfaceOrientation {
-    [super didRotateFromInterfaceOrientation:fromInterfaceOrientation];
-    
-    [self positionOptionsView];
 }
 
 - (void)didReceiveMemoryWarning {
@@ -253,8 +219,6 @@ CGFloat const EPVCTextViewTopPadding = 7.0f;
 #pragma mark - View Setup
 
 - (void)setupNavbar {
-    self.navigationController.navigationBar.translucent = NO;
-    
     if (self.navigationItem.leftBarButtonItem == nil) {
         UIBarButtonItem *cancelButton = [[UIBarButtonItem alloc] initWithTitle:NSLocalizedString(@"Close", @"Label for the button to close the post editor.") style:UIBarButtonItemStylePlain target:self action:@selector(cancelEditing)];
         self.navigationItem.leftBarButtonItem = cancelButton;
@@ -267,14 +231,17 @@ CGFloat const EPVCTextViewTopPadding = 7.0f;
     NSManagedObjectContext *context = [[ContextManager sharedInstance] mainContext];
     NSInteger blogCount = [Blog countWithContext:context];
     
-    if (blogCount <= 1 || self.editMode == EditPostViewControllerModeEditPost) {
+    if (blogCount <= 1 || self.editMode == EditPostViewControllerModeEditPost || [[WordPressAppDelegate sharedWordPressApplicationDelegate] isNavigatingMeTab]) {
         self.navigationItem.title = [self editorTitle];
     } else {
         UIButton *titleButton = self.titleBarButton;
         NSMutableAttributedString *titleText = [[NSMutableAttributedString alloc] initWithString:[NSString stringWithFormat:@"%@\n", [self editorTitle]]
                                                                                       attributes:@{ NSFontAttributeName : [UIFont fontWithName:@"OpenSans-Bold" size:14.0] }];
-        NSMutableAttributedString *titleSubtext = [[NSMutableAttributedString alloc] initWithString:self.post.blog.blogName
-                                                                                         attributes:@{ NSFontAttributeName : [UIFont fontWithName:@"OpenSans" size:10.0] }];
+
+        NSString *subtext = [self.post.blog.blogName length] == 0 ? self.post.blog.url : self.post.blog.blogName;
+        NSDictionary *subtextAttributes = @{ NSFontAttributeName: [UIFont fontWithName:@"OpenSans" size:10.0] };
+        NSMutableAttributedString *titleSubtext = [[NSMutableAttributedString alloc] initWithString:subtext
+                                                                                         attributes:subtextAttributes];
         [titleText appendAttributedString:titleSubtext];
         [titleButton setAttributedTitle:titleText forState:UIControlStateNormal];
 
@@ -283,11 +250,6 @@ CGFloat const EPVCTextViewTopPadding = 7.0f;
 }
 
 - (void)setupToolbar {
-    UIToolbar *toolbar = self.navigationController.toolbar;
-    toolbar.barTintColor = [WPStyleGuide littleEddieGrey];
-    toolbar.translucent = NO;
-    toolbar.barStyle = UIBarStyleDefault;
-    
     if ([self.toolbarItems count] > 0) {
         return;
     }
@@ -321,13 +283,13 @@ CGFloat const EPVCTextViewTopPadding = 7.0f;
         x = ceilf((viewWidth - width) / 2.0f);
         mask = UIViewAutoresizingFlexibleLeftMargin | UIViewAutoresizingFlexibleRightMargin | UIViewAutoresizingFlexibleHeight;
     }
-    CGRect frame = CGRectMake(x, 0.0f, width, CGRectGetHeight(self.view.frame));
-    
+    CGRect frame = CGRectMake(x, 0.0f, width, CGRectGetHeight(self.view.frame) - EPVCOptionsHeight);
+
     // Content text field.
     // Shows the post body.
     // Height should never be smaller than what is required to display its text.
     if (!self.textView) {
-        self.textView = [[IOS7CorrectedTextView alloc] initWithFrame:frame];
+        self.textView = [[UITextView alloc] initWithFrame:frame];
         self.textView.autoresizingMask = mask;
         self.textView.delegate = self;
         self.textView.typingAttributes = [WPStyleGuide regularTextAttributes];
@@ -341,10 +303,7 @@ CGFloat const EPVCTextViewTopPadding = 7.0f;
     if (self.editorToolbar == nil) {
         frame = CGRectMake(0.0f, 0.0f, viewWidth, WPKT_HEIGHT_PORTRAIT);
         self.editorToolbar = [[WPKeyboardToolbarBase alloc] initWithFrame:frame];
-        self.editorToolbar.backgroundColor = [UIColor UIColorFromHex:(0xdcdfe2)];
-        if (IS_IPAD) {
-            self.editorToolbar.backgroundColor = [UIColor UIColorFromHex:(0xcfd2d5)];
-        }
+        self.editorToolbar.backgroundColor = [WPStyleGuide keyboardColor];
         self.editorToolbar.delegate = self;
         self.textView.inputAccessoryView = self.editorToolbar;
     }
@@ -368,10 +327,7 @@ CGFloat const EPVCTextViewTopPadding = 7.0f;
     if (!self.titleToolbar) {
         frame = CGRectMake(0.0f, 0.0f, viewWidth, WPKT_HEIGHT_PORTRAIT);
         self.titleToolbar = [[WPKeyboardToolbarDone alloc] initWithFrame:frame];
-        self.titleToolbar.backgroundColor = [UIColor UIColorFromHex:(0xdcdfe2)];
-        if (IS_IPAD) {
-            self.titleToolbar.backgroundColor = [UIColor UIColorFromHex:(0xcfd2d5)];
-        }
+        self.titleToolbar.backgroundColor = [WPStyleGuide keyboardColor];
         self.titleToolbar.delegate = self;
         self.titleTextField.inputAccessoryView = self.titleToolbar;
     }
@@ -387,19 +343,51 @@ CGFloat const EPVCTextViewTopPadding = 7.0f;
     }
     [self.textView addSubview:self.separatorView];
     
+    // Update the textView's textContainerInsets so text does not overlap content.
+    CGFloat left = EPVCTextViewOffset;
+    CGFloat right = EPVCTextViewOffset;
+    CGFloat top = CGRectGetMaxY(self.separatorView.frame) + EPVCTextViewTopPadding;
+    CGFloat bottom = EPVCTextViewBottomPadding;
+    self.textView.textContainerInset = UIEdgeInsetsMake(top, left, bottom, right);
+
+    if (!self.tapToStartWritingLabel) {
+        frame = CGRectZero;
+        frame.origin.x = EPVCStandardOffset;
+        frame.origin.y = self.textView.textContainerInset.top;
+        frame.size.width = width - (EPVCStandardOffset * 2);
+        frame.size.height = 26.0f;
+        self.tapToStartWritingLabel = [[UILabel alloc] initWithFrame:frame];
+        self.tapToStartWritingLabel.text = NSLocalizedString(@"Tap here to begin writing", @"Placeholder for the main body text. Should hint at tapping to enter text (not specifying body text).");
+        self.tapToStartWritingLabel.autoresizingMask = UIViewAutoresizingFlexibleWidth;
+        self.tapToStartWritingLabel.font = [WPStyleGuide regularTextFont];
+        self.tapToStartWritingLabel.textColor = [WPStyleGuide textFieldPlaceholderGrey];
+        self.tapToStartWritingLabel.isAccessibilityElement = NO;
+    }
+    [self.textView addSubview:self.tapToStartWritingLabel];
+
+}
+
+- (void)setupOptionsView {
+    CGFloat width = CGRectGetWidth(self.textView.frame);
+    CGFloat x = CGRectGetMinX(self.textView.frame);
+    CGFloat y = CGRectGetMaxY(self.textView.frame);
     
+    CGRect frame;
     if (!self.optionsView) {
-        frame = CGRectMake(0.0f, 0.0f, width, EPVCOptionsHeight + EPVCTextViewBottomPadding);
+        frame = CGRectMake(x, y, width, EPVCOptionsHeight);
         self.optionsView = [[UIView alloc] initWithFrame:frame];
         self.optionsView.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleTopMargin;
+        if (IS_IPAD) {
+            self.optionsView.autoresizingMask = UIViewAutoresizingFlexibleLeftMargin | UIViewAutoresizingFlexibleRightMargin | UIViewAutoresizingFlexibleTopMargin;
+        }
+        self.optionsView.backgroundColor = [UIColor whiteColor];
     }
-    [self.textView addSubview:self.optionsView];
+    [self.view addSubview:self.optionsView];
     
     // One pixel separator bewteen content and table view cells.
     if (!self.optionsSeparatorView) {
-        CGFloat y = EPVCTextViewBottomPadding - 1;
         CGFloat separatorWidth = width - EPVCStandardOffset;
-        frame = CGRectMake(EPVCStandardOffset, y, separatorWidth, 1.0);
+        frame = CGRectMake(EPVCStandardOffset, 0.0f, separatorWidth, 1.0f);
         self.optionsSeparatorView = [[UIView alloc] initWithFrame:frame];
         self.optionsSeparatorView.backgroundColor = [WPStyleGuide readGrey];
         self.optionsSeparatorView.autoresizingMask = UIViewAutoresizingFlexibleWidth;
@@ -408,7 +396,7 @@ CGFloat const EPVCTextViewTopPadding = 7.0f;
     
     if (!self.optionsButton) {
         NSString *optionsTitle = NSLocalizedString(@"Options", @"Title of the Post Settings tableview cell in the Post Editor. Tapping shows settings and options related to the post being edited.");
-        frame = CGRectMake(0.0f, EPVCTextViewBottomPadding, width, EPVCOptionsHeight);
+        frame = CGRectMake(0.0f, 1.0f, width, EPVCOptionsHeight - 1.0f);
         self.optionsButton = [UIButton buttonWithType:UIButtonTypeCustom];
         self.optionsButton.frame = frame;
         self.optionsButton.autoresizingMask = UIViewAutoresizingFlexibleWidth;
@@ -429,43 +417,6 @@ CGFloat const EPVCTextViewTopPadding = 7.0f;
         [self.optionsButton addSubview:cell];
     }
     [self.optionsView addSubview:self.optionsButton];
-    
-    // Update the textView's textContainerInsets so text does not overlap content.
-    CGFloat left = EPVCTextViewOffset;
-    CGFloat right = EPVCTextViewOffset;
-    CGFloat top = CGRectGetMaxY(self.separatorView.frame) + EPVCTextViewTopPadding;
-    CGFloat bottom = CGRectGetHeight(self.optionsView.frame);
-    self.textView.textContainerInset = UIEdgeInsetsMake(top, left, bottom, right);
-
-    if (!self.tapToStartWritingLabel) {
-        frame = CGRectZero;
-        frame.origin.x = EPVCStandardOffset;
-        frame.origin.y = self.textView.textContainerInset.top;
-        frame.size.width = width - (EPVCStandardOffset * 2);
-        frame.size.height = 26.0f;
-        self.tapToStartWritingLabel = [[UILabel alloc] initWithFrame:frame];
-        self.tapToStartWritingLabel.text = NSLocalizedString(@"Tap here to begin writing", @"Placeholder for the main body text. Should hint at tapping to enter text (not specifying body text).");
-        self.tapToStartWritingLabel.autoresizingMask = UIViewAutoresizingFlexibleWidth;
-        self.tapToStartWritingLabel.font = [WPStyleGuide regularTextFont];
-        self.tapToStartWritingLabel.textColor = [WPStyleGuide textFieldPlaceholderGrey];
-        self.tapToStartWritingLabel.isAccessibilityElement = NO;
-    }
-    [self.textView addSubview:self.tapToStartWritingLabel];
-
-}
-
-- (void)positionOptionsView {
-    // make sure the options view is always positioned at the bottom of the UITextView's content.
-    
-    CGFloat contentHeight = self.textView.contentSize.height;
-    contentHeight -= CGRectGetHeight(self.optionsView.frame);
-
-    CGFloat minHeight = CGRectGetHeight(self.textView.frame) - CGRectGetHeight(self.optionsView.frame);
-    contentHeight = MAX(minHeight, contentHeight);
-    
-    CGRect frame = self.optionsView.frame;
-    frame.origin.y = contentHeight;
-    self.optionsView.frame = frame;
 }
 
 - (void)positionTextView:(NSNotification *)notification {
@@ -479,7 +430,7 @@ CGFloat const EPVCTextViewTopPadding = 7.0f;
     if (self.isShowingKeyboard) {
         frame.size.height = CGRectGetMinY(keyboardFrame) - CGRectGetMinY(frame);
     } else {
-        frame.size.height = CGRectGetHeight(self.view.frame);
+        frame.size.height = CGRectGetHeight(self.view.frame) - EPVCOptionsHeight;
     }
 
     self.textView.frame = frame;
@@ -523,6 +474,7 @@ CGFloat const EPVCTextViewTopPadding = 7.0f;
         Blog *blog = (Blog *)[context objectWithID:selectedObjectID];
         
         if (blog) {
+            [blog flagAsLastUsed];
             AbstractPost *newPost = [[self.post class] newDraftForBlog:blog];
             AbstractPost *oldPost = self.post;
             
@@ -548,8 +500,6 @@ CGFloat const EPVCTextViewTopPadding = 7.0f;
             [oldPost.original deleteRevision];
             [oldPost.original remove];
 
-            [[NSUserDefaults standardUserDefaults] setObject:blog.url forKey:EditPostViewControllerLastUsedBlogURL];
-            [[NSUserDefaults standardUserDefaults] synchronize];
             [self syncOptionsIfNecessaryForBlog:blog afterBlogChanged:YES];
         }
         
@@ -560,7 +510,7 @@ CGFloat const EPVCTextViewTopPadding = 7.0f;
     BlogSelectorViewController *vc = [[BlogSelectorViewController alloc] initWithSelectedBlogObjectID:self.post.blog.objectID
                                                                                    selectedCompletion:selectedCompletion
                                                                                      cancelCompletion:dismissHandler];
-    vc.title = NSLocalizedString(@"Select Blog", @"");
+    vc.title = NSLocalizedString(@"Select Site", @"");
 
     UINavigationController *navController = [[UINavigationController alloc] initWithRootViewController:vc];
     navController.navigationBar.translucent = NO;
@@ -607,8 +557,8 @@ CGFloat const EPVCTextViewTopPadding = 7.0f;
 
 - (void)showMediaOptions {
     [WPMobileStats flagProperty:StatsPropertyPostDetailClickedMediaOptions forEvent:[self formattedStatEventString:StatsEventPostDetailClosedEditor]];
-    PostMediaViewController *vc = [[PostMediaViewController alloc] initWithPost:self.post];
     self.navigationItem.title = NSLocalizedString(@"Back", nil);
+    MediaBrowserViewController *vc = [[MediaBrowserViewController alloc] initWithPost:self.post];
     [self.navigationController pushViewController:vc animated:YES];
 }
 
@@ -795,7 +745,6 @@ CGFloat const EPVCTextViewTopPadding = 7.0f;
         }
     }
     
-    [self positionOptionsView];
     [self refreshButtons];
 }
 
@@ -804,8 +753,9 @@ CGFloat const EPVCTextViewTopPadding = 7.0f;
         return _titleBarButton;
     }
     UIButton *titleButton = [WPBlogSelectorButton buttonWithType:UIButtonTypeSystem];
-    titleButton.frame = CGRectMake(0, 0, 200, 33);
+    titleButton.frame = CGRectMake(0.0f, 0.0f, 200.0f, 33.0f);
     titleButton.titleLabel.numberOfLines = 2;
+    titleButton.titleLabel.textColor = [UIColor whiteColor];
     titleButton.titleLabel.textAlignment = NSTextAlignmentCenter;
     titleButton.autoresizingMask = UIViewAutoresizingFlexibleLeftMargin | UIViewAutoresizingFlexibleRightMargin | UIViewAutoresizingFlexibleTopMargin | UIViewAutoresizingFlexibleBottomMargin;
     [titleButton setImage:[UIImage imageNamed:@"icon-navbar-dropdown.png"] forState:UIControlStateNormal];
@@ -871,9 +821,9 @@ CGFloat const EPVCTextViewTopPadding = 7.0f;
 
 - (void)savePost:(BOOL)upload {
     DDLogMethod();
-    [WPMobileStats trackEventForWPComWithSavedProperties:[self formattedStatEventString:StatsEventPostDetailClosedEditor]];
-    
     [self logSavePostStats];
+
+    [WPMobileStats trackEventForWPComWithSavedProperties:[self formattedStatEventString:StatsEventPostDetailClosedEditor]];
     
     [self.view endEditing:YES];
     
@@ -916,6 +866,26 @@ CGFloat const EPVCTextViewTopPadding = 7.0f;
     if (event != nil) {
         [WPMobileStats trackEventForWPCom:[self formattedStatEventString:event]];
     }
+
+    // This word counting algorithm is from : http://stackoverflow.com/a/13367063
+    __block NSInteger originalWordCount = 0;
+    [self.post.original.content enumerateSubstringsInRange:NSMakeRange(0, [self.post.original.content length])
+                               options:NSStringEnumerationByWords | NSStringEnumerationLocalized
+                            usingBlock:^(NSString *substring, NSRange substringRange, NSRange enclosingRange, BOOL *stop){
+                                originalWordCount++;
+                            }];
+    
+    __block NSInteger wordCount = 0;
+    [self.post.content enumerateSubstringsInRange:NSMakeRange(0, [self.post.content length])
+                               options:NSStringEnumerationByWords | NSStringEnumerationLocalized
+                            usingBlock:^(NSString *substring, NSRange substringRange, NSRange enclosingRange, BOOL *stop){
+                                wordCount++;
+                            }];
+
+    [WPMobileStats setValue:@(wordCount) forProperty:StatsPropertyPostDetailWordCount forEvent:[self formattedStatEventString:StatsEventPostDetailClosedEditor]];
+    if ([self.post hasRemote]) {
+        [WPMobileStats setValue:@(wordCount - originalWordCount) forProperty:StatsPropertyPostDetailWordDiffCount forEvent:[self formattedStatEventString:StatsEventPostDetailClosedEditor]];
+    }
 }
 
 // Save changes to core data
@@ -934,7 +904,6 @@ CGFloat const EPVCTextViewTopPadding = 7.0f;
     }
     
     [self.post save];
-    [self positionOptionsView];
     [_textView scrollRangeToVisible:[_textView selectedRange]];
 }
 
@@ -1052,25 +1021,19 @@ CGFloat const EPVCTextViewTopPadding = 7.0f;
     if (UIInterfaceOrientationIsLandscape(self.interfaceOrientation) && IS_IPHONE && !_isExternalKeyboard) {
         [_linkHelperAlertView hideTitleAndDescription:YES];
     }
+
+    self.scrollOffsetRestorePoint = self.textView.contentOffset;
     
     __block UITextView *editorTextView = _textView;
     __block id fles = self;
     _linkHelperAlertView.button1CompletionBlock = ^(WPAlertView *overlayView){
         // Cancel
         [overlayView dismiss];
-        
         [editorTextView becomeFirstResponder];
-        
         [fles setLinkHelperAlertView:nil];
     };
     _linkHelperAlertView.button2CompletionBlock = ^(WPAlertView *overlayView){
         // Insert
-        
-        //Disable scrolling temporarily otherwise inserting text will scroll to the bottom in iOS6 and below.
-        editorTextView.scrollEnabled = NO;
-        [overlayView dismiss];
-        
-        [editorTextView becomeFirstResponder];
         
         UITextField *infoText = overlayView.firstTextField;
         UITextField *urlField = overlayView.secondTextField;
@@ -1079,8 +1042,9 @@ CGFloat const EPVCTextViewTopPadding = 7.0f;
             return;
         }
         
-        if ((infoText.text == nil) || ([infoText.text isEqualToString:@""]))
+        if ((infoText.text == nil) || ([infoText.text isEqualToString:@""])) {
             infoText.text = urlField.text;
+        }
         
         NSString *urlString = [fles validateNewLinkInfo:[urlField.text stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceCharacterSet]]];
         NSString *aTagText = [NSString stringWithFormat:@"<a href=\"%@\">%@</a>", urlString, infoText.text];
@@ -1089,24 +1053,24 @@ CGFloat const EPVCTextViewTopPadding = 7.0f;
         
         NSString *oldText = editorTextView.text;
         NSRange oldRange = editorTextView.selectedRange;
+        editorTextView.scrollEnabled = NO;
         editorTextView.text = [editorTextView.text stringByReplacingCharactersInRange:range withString:aTagText];
-        
-        //Re-enable scrolling after insertion is complete
         editorTextView.scrollEnabled = YES;
         
         //reset selection back to nothing
         range.length = 0;
-        
-        if (range.length == 0) {                // If nothing was selected
-            range.location += [aTagText length]; // Place selection between tags
-            editorTextView.selectedRange = range;
-        }
+        range.location += [aTagText length]; // Place selection after the tag
+        editorTextView.selectedRange = range;
+
         [[editorTextView.undoManager prepareWithInvocationTarget:fles] restoreText:oldText withRange:oldRange];
         [editorTextView.undoManager setActionName:@"link"];
-        
+
         [fles autosaveContent];
 
+        [overlayView dismiss];
+        [editorTextView becomeFirstResponder];
         [fles setLinkHelperAlertView:nil];
+
         [fles refreshTextView];
     };
     
@@ -1121,43 +1085,6 @@ CGFloat const EPVCTextViewTopPadding = 7.0f;
 }
 
 #pragma mark Media Formatting
-
-- (void)insertMediaAbove:(NSNotification *)notification {
-    [WPMobileStats trackEventForWPCom:[self formattedStatEventString:StatsEventPostDetailAddedPhoto]];
-    
-	Media *media = (Media *)[notification object];
-	NSString *prefix = @"<br /><br />";
-	
-	if(self.post.content == nil || [self.post.content isEqualToString:@""]) {
-		self.post.content = @"";
-		prefix = @"";
-	}
-	
-	NSMutableString *content = [[NSMutableString alloc] initWithString:media.html];
-	NSRange imgHTML = [_textView.text rangeOfString: content];
-	
-	NSRange imgHTMLPre = [_textView.text rangeOfString:[NSString stringWithFormat:@"%@%@", @"<br /><br />", content]];
- 	NSRange imgHTMLPost = [_textView.text rangeOfString:[NSString stringWithFormat:@"%@%@", content, @"<br /><br />"]];
-	
-	if (imgHTMLPre.location == NSNotFound && imgHTMLPost.location == NSNotFound && imgHTML.location == NSNotFound) {
-		[content appendString:[NSString stringWithFormat:@"%@%@", prefix, self.post.content]];
-        self.post.content = content;
-	}
-	else {
-		NSMutableString *processedText = [[NSMutableString alloc] initWithString:_textView.text];
-		if (imgHTMLPre.location != NSNotFound)
-			[processedText replaceCharactersInRange:imgHTMLPre withString:@""];
-		else if (imgHTMLPost.location != NSNotFound)
-			[processedText replaceCharactersInRange:imgHTMLPost withString:@""];
-		else
-			[processedText replaceCharactersInRange:imgHTML withString:@""];
-        
-		[content appendString:[NSString stringWithFormat:@"<br /><br />%@", processedText]];
-		self.post.content = content;
-	}
-    [self refreshUIForCurrentPost];
-    [self.post save];
-}
 
 - (void)insertMediaBelow:(NSNotification *)notification {
     [WPMobileStats trackEventForWPCom:[self formattedStatEventString:StatsEventPostDetailAddedPhoto]];
@@ -1504,9 +1431,13 @@ CGFloat const EPVCTextViewTopPadding = 7.0f;
 }
 
 - (void)keyboardDidShow:(NSNotification *)notification {
+    if ([self.textView isFirstResponder]) {
+        if (!CGPointEqualToPoint(CGPointZero, self.scrollOffsetRestorePoint)) {
+            self.textView.contentOffset = self.scrollOffsetRestorePoint;
+            self.scrollOffsetRestorePoint = CGPointZero;
+        }
+    }
     [self positionTextView:notification];
-    [self positionOptionsView];
-
 }
 
 - (void)keyboardWillHide:(NSNotification *)notification {
@@ -1517,7 +1448,6 @@ CGFloat const EPVCTextViewTopPadding = 7.0f;
     [self.navigationController setToolbarHidden:NO animated:NO];
     
     [self positionTextView:notification];
-    [self positionOptionsView];
 }
 
 @end

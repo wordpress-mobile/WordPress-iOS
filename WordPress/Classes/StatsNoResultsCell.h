@@ -13,7 +13,7 @@
 
 @interface StatsNoResultsCell : WPTableViewCell
 
-+ (CGFloat)heightForRow;
++ (CGFloat)heightForRowForSection:(StatsSection)section withWidth:(CGFloat)width;
 
 - (void)configureForSection:(StatsSection)section;
 

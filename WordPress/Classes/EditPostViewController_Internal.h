@@ -8,10 +8,9 @@
 
 #import "EditPostViewController.h"
 #import "PostSettingsViewController.h"
-#import "PostMediaViewController.h"
+#import "MediaBrowserViewController.h"
 #import "PostPreviewViewController.h"
 #import "AbstractPost.h"
-#import "IOS7CorrectedTextView.h"
 #import "WPKeyboardToolbarBase.h"
 #import "WPKeyboardToolbarDone.h"
 
@@ -30,8 +29,6 @@ typedef NS_ENUM(NSUInteger, EditPostViewControllerMode) {
 @interface EditPostViewController () <UIActionSheetDelegate, UITextFieldDelegate, UITextViewDelegate, WPKeyboardToolbarDelegate, UIViewControllerRestoration>
 
 @property (nonatomic, strong) PostSettingsViewController *postSettingsViewController;
-@property (nonatomic, strong) PostMediaViewController *postMediaViewController;
-@property (nonatomic, strong) PostPreviewViewController *postPreviewViewController;
 @property (nonatomic, assign) EditPostViewControllerMode editMode;
 @property (nonatomic, strong) AbstractPost *post;
 @property (readonly) BOOL hasChanges;
@@ -43,7 +40,7 @@ typedef NS_ENUM(NSUInteger, EditPostViewControllerMode) {
 @property (nonatomic, strong) UIView *optionsSeparatorView;
 @property (nonatomic, strong) UIView *optionsView;
 @property (nonatomic, strong) UIButton *optionsButton;
-@property (nonatomic, strong) IOS7CorrectedTextView *textView;
+@property (nonatomic, strong) UITextView *textView;
 @property (nonatomic, strong) WPKeyboardToolbarBase *editorToolbar;
 @property (nonatomic, strong) WPKeyboardToolbarDone *titleToolbar;
 @property (nonatomic, strong) UILabel *tapToStartWritingLabel;

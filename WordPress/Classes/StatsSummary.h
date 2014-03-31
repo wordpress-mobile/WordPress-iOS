@@ -9,7 +9,7 @@
 
 @interface StatsSummary : NSObject
 
-@property (nonatomic, strong) NSNumber *totalCatagories;
+@property (nonatomic, strong) NSNumber *totalCategories;
 @property (nonatomic, strong) NSNumber *totalComments;
 @property (nonatomic, strong) NSNumber *totalFollowersBlog;
 @property (nonatomic, strong) NSNumber *totalFollowersComments;

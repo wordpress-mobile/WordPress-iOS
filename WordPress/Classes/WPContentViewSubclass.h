@@ -37,7 +37,7 @@
 - (CGFloat)layoutTextContentAt:(CGFloat)yPosition;
 - (CGFloat)layoutActionViewAt:(CGFloat)yPosition;
 
-extern const CGFloat RPVAuthorPadding;;
+extern const CGFloat RPVAuthorPadding;
 extern const CGFloat RPVHorizontalInnerPadding;
 extern const CGFloat RPVMetaViewHeight;
 extern const CGFloat RPVAuthorViewHeight;

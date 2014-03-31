@@ -11,6 +11,7 @@
 #import "Blog+Jetpack.h"
 #import "WordPressAppDelegate.h"
 #import "JetpackSettingsViewController.h"
+#import "StatsWebViewController.h"
 #import "WPAccount.h"
 #import "StatsApiHelper.h"
 #import "ContextManager.h"
@@ -22,6 +23,7 @@
 #import "StatsTitleCountItem.h"
 #import "StatsTodayYesterdayButtonCell.h"
 #import "StatsTwoColumnCell.h"
+#import "StatsLinkToWebviewCell.h"
 #import "WPTableViewSectionHeaderView.h"
 #import "StatsGroup.h"
 #import "WPNoResultsView.h"
@@ -34,8 +36,9 @@ static NSString *const NoResultsCellIdentifier = @"NoResultsCellIdentifier";
 static NSString *const ResultRowCellIdentifier = @"ResultRowCellIdentifier";
 static NSString *const GraphCellIdentifier = @"GraphCellIdentifier";
 static NSString *const StatsGroupedCellIdentifier = @"StatsGroupedCellIdentifier";
+static NSString *const LinkToWebviewCellIdentifier = @"LinkToWebviewCellIdentifier";
+static NSString *const WPStatsBlogRestorationKey = @"WPStatsBlogRestorationKey";
 
-static CGFloat const SectionHeaderPadding = 8.0f;
 static NSUInteger const ResultRowMaxItems = 10;
 static CGFloat const HeaderHeight = 44.0f;
 
@@ -61,7 +64,7 @@ typedef NS_ENUM(NSInteger, TotalFollowersShareRow) {
     TotalFollowersShareRowTotalRows
 };
 
-@interface StatsViewController () <UITableViewDataSource, UITableViewDelegate, StatsTodayYesterdayButtonCellDelegate>
+@interface StatsViewController () <UITableViewDataSource, UITableViewDelegate, StatsTodayYesterdayButtonCellDelegate, UIViewControllerRestoration>
 
 @property (nonatomic, strong) StatsApiHelper *statsApiHelper;
 @property (nonatomic, strong) NSMutableDictionary *statModels;
@@ -74,6 +77,28 @@ typedef NS_ENUM(NSInteger, TotalFollowersShareRow) {
 @end
 
 @implementation StatsViewController
+
++ (UIViewController *)viewControllerWithRestorationIdentifierPath:(NSArray *)identifierComponents coder:(NSCoder *)coder {
+    NSString *blogID = [coder decodeObjectForKey:WPStatsBlogRestorationKey];
+    if (!blogID)
+        return nil;
+    
+    NSManagedObjectContext *context = [[ContextManager sharedInstance] mainContext];
+    NSManagedObjectID *objectID = [context.persistentStoreCoordinator managedObjectIDForURIRepresentation:[NSURL URLWithString:blogID]];
+    if (!objectID)
+        return nil;
+    
+    NSError *error = nil;
+    Blog *restoredBlog = (Blog *)[context existingObjectWithID:objectID error:&error];
+    if (error || !restoredBlog) {
+        return nil;
+    }
+    
+    StatsViewController *viewController = [[self alloc] init];
+    viewController.blog = restoredBlog;
+    
+    return viewController;
+}
 
 - (id)init {
     self = [super initWithStyle:UITableViewStyleGrouped];
@@ -90,6 +115,9 @@ typedef NS_ENUM(NSInteger, TotalFollowersShareRow) {
                          @YES, @(StatsSectionReferrers), nil];
         
         _resultsAvailable = NO;
+        
+        self.restorationIdentifier = NSStringFromClass([self class]);
+        self.restorationClass = [self class];
     }
     return self;
 }
@@ -99,6 +127,9 @@ typedef NS_ENUM(NSInteger, TotalFollowersShareRow) {
     [super viewDidLoad];
     
     self.title = NSLocalizedString(@"Stats", nil);
+    
+    UIBarButtonItem *backButton = [[UIBarButtonItem alloc] initWithTitle:NSLocalizedString(@"Back", nil) style:UIBarButtonItemStyleBordered target:nil action:nil];
+    self.navigationItem.backBarButtonItem = backButton;
   
     [WPStyleGuide configureColorsForView:self.view andTableView:self.tableView];
     self.tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
@@ -111,6 +142,7 @@ typedef NS_ENUM(NSInteger, TotalFollowersShareRow) {
     [self.tableView registerClass:[StatsNoResultsCell class] forCellReuseIdentifier:NoResultsCellIdentifier];
     [self.tableView registerClass:[StatsTwoColumnCell class] forCellReuseIdentifier:ResultRowCellIdentifier];
     [self.tableView registerClass:[StatsViewsVisitorsBarGraphCell class] forCellReuseIdentifier:GraphCellIdentifier];
+    [self.tableView registerClass:[StatsLinkToWebviewCell class] forCellReuseIdentifier:LinkToWebviewCellIdentifier];
     
     self.refreshControl = [[UIRefreshControl alloc] init];
     [self.refreshControl addTarget:self action:@selector(refreshControlTriggered) forControlEvents:UIControlEventValueChanged];
@@ -123,6 +155,11 @@ typedef NS_ENUM(NSInteger, TotalFollowersShareRow) {
     [super didReceiveMemoryWarning];
     
     _statModels = nil;
+}
+
+- (void)encodeRestorableStateWithCoder:(NSCoder *)coder {
+    [coder encodeObject:[[self.blog.objectID URIRepresentation] absoluteString] forKey:WPStatsBlogRestorationKey];
+    [super encodeRestorableStateWithCoder:coder];
 }
 
 - (void)setBlog:(Blog *)blog {
@@ -139,15 +176,15 @@ typedef NS_ENUM(NSInteger, TotalFollowersShareRow) {
 
 - (void)initStats {
     if (self.blog.isWPcom) {
-        self.statsApiHelper = [[StatsApiHelper alloc] initWithSiteID:self.blog.blogID];
+        self.statsApiHelper = [[StatsApiHelper alloc] initWithSiteID:self.blog.blogID andAccount:self.blog.account];
         [self loadStats];
         return;
     }
     
     // Jetpack
-    BOOL needsJetpackLogin = ![[[WPAccount defaultWordPressComAccount] restApi] hasCredentials];
-    if (!needsJetpackLogin && self.blog.jetpackBlogID) {
-        self.statsApiHelper = [[StatsApiHelper alloc] initWithSiteID:self.blog.jetpackBlogID];
+    BOOL needsJetpackLogin = ![self.blog.jetpackAccount.restApi hasCredentials];
+    if (!needsJetpackLogin && self.blog.jetpackBlogID && self.blog.jetpackAccount) {
+        self.statsApiHelper = [[StatsApiHelper alloc] initWithSiteID:self.blog.jetpackBlogID andAccount:self.blog.jetpackAccount];
         [self loadStats];
     } else {
         [self promptForJetpackCredentials];
@@ -257,6 +294,8 @@ typedef NS_ENUM(NSInteger, TotalFollowersShareRow) {
             return VisitorSectionTotalRows;
         case StatsSectionTotalsFollowersShares:
             return TotalFollowersShareRowTotalRows;
+        case StatsSectionLinkToWebview:
+            return 1;
         default:
         {
             NSArray *groups = [self resultsForSection:section];
@@ -301,8 +340,10 @@ typedef NS_ENUM(NSInteger, TotalFollowersShareRow) {
                 case StatsDataRowTitle:
                     return [StatsTwoColumnCell heightForRow];
                 default:
-                    return [self resultsForSection:indexPath.section].count > 0 ? [StatsTwoColumnCell heightForRow] : [StatsNoResultsCell heightForRow];
+                    return [self resultsForSection:indexPath.section].count > 0 ? [StatsTwoColumnCell heightForRow] : [StatsNoResultsCell heightForRowForSection:(StatsSection)indexPath.section withWidth:CGRectGetWidth(self.view.bounds)];
             }
+        case StatsSectionLinkToWebview:
+            return [StatsLinkToWebviewCell heightForRow];
         default:
             return 0.0f;
     }
@@ -366,6 +407,19 @@ typedef NS_ENUM(NSInteger, TotalFollowersShareRow) {
         case StatsSectionReferrers:
         case StatsSectionSearchTerms:
             return [self cellForItemListSectionAtIndexPath:indexPath];
+        case StatsSectionLinkToWebview:
+        {
+            StatsLinkToWebviewCell *cell = [tableView dequeueReusableCellWithIdentifier:LinkToWebviewCellIdentifier];
+            [cell configureForSection:StatsSectionLinkToWebview];
+            cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
+            cell.onTappedLinkToWebview = ^{
+                [WPMobileStats trackEventForWPCom:StatsEventStatsClickedOnWebVersion];
+                StatsWebViewController *vc = [[StatsWebViewController alloc] init];
+                vc.blog = self.blog;
+                [self.navigationController pushViewController:vc animated:YES];
+            };
+            return cell;
+        }
         default:
             return nil;
     }
@@ -383,35 +437,35 @@ typedef NS_ENUM(NSInteger, TotalFollowersShareRow) {
     StatsSummary *summary = _statModels[@(StatsSectionVisitors)];
     switch (index) {
         case TotalFollowersShareRowContentPost:
-            title = @"Content";
-            leftLabel = @"Posts";
+            title = NSLocalizedString(@"Content", @"Stats - Title for the data cell");
+            leftLabel = NSLocalizedString(@"Posts", @"Stats - Label for the count");
             leftCount = summary.totalPosts;
             break;
         case TotalFollowersShareRowContentCategoryTag:
-            leftLabel = @"Categories";
-            leftCount = summary.totalCatagories;
-            rightLabel = @"Tags";
+            leftLabel = NSLocalizedString(@"Categories", @"Stats - Title for the data cell");
+            leftCount = summary.totalCategories;
+            rightLabel = NSLocalizedString(@"Tags", @"Stats - Label for the count");
             rightCount = summary.totalTags;
             break;
         case TotalFollowersShareRowFollowers:
-            title = @"Followers";
-            leftLabel = @"Blog";
+            title = NSLocalizedString(@"Followers", @"Stats - Title for the data cell");
+            leftLabel = NSLocalizedString(@"Blog", @"Stats - Label for the count");
             leftCount = summary.totalFollowersBlog;
-            rightLabel = @"Comments";
+            rightLabel = NSLocalizedString(@"Comments", @"Stats -Label for the right count");
             rightCount = summary.totalFollowersComments;
             break;
         case TotalFollowersShareRowShare:
-            title = @"Shares";
-            leftLabel = @"Shares";
+            title = NSLocalizedString(@"Shares", @"Stats - Title for the data cell");
+            leftLabel = NSLocalizedString(@"Shares", @"Stats - Label for the count");
             leftCount = summary.totalShares;
             break;
     }
     
     StatsCounterCell *cell = [self.tableView dequeueReusableCellWithIdentifier:CountCellReuseIdentifier];
-    [cell setTitle:NSLocalizedString(title,@"Title for the data cell")];
-    [cell addCount:leftCount withLabel:NSLocalizedString(leftLabel,@"Label for the count")];
+    [cell setTitle:title];
+    [cell addCount:leftCount withLabel:leftLabel];
     if (rightLabel) {
-        [cell addCount:rightCount withLabel:NSLocalizedString(rightLabel,@"Label for the right count")];
+        [cell addCount:rightCount withLabel:rightLabel];
     }
     return cell;
 }
@@ -593,17 +647,19 @@ typedef NS_ENUM(NSInteger, TotalFollowersShareRow) {
         case StatsSectionVisitors:
             return NSLocalizedString(@"Visitors and Views", @"Stats: Section title");
         case StatsSectionTopPosts:
-            return NSLocalizedString(@"Top Posts & Pages", @"Stats: Section title");;
+            return NSLocalizedString(@"Top Posts & Pages", @"Stats: Section title");
         case StatsSectionViewsByCountry:
-            return NSLocalizedString(@"Views By Country", @"Stats: Section title");;
+            return NSLocalizedString(@"Views By Country", @"Stats: Section title");
         case StatsSectionTotalsFollowersShares:
-            return NSLocalizedString(@"Totals, Followers & Shares", @"Stats: Section title");;
+            return NSLocalizedString(@"Totals, Followers & Shares", @"Stats: Section title");
         case StatsSectionClicks:
-            return NSLocalizedString(@"Clicks", @"Stats: Section title");;
+            return NSLocalizedString(@"Clicks", @"Stats: Section title");
         case StatsSectionReferrers:
-            return NSLocalizedString(@"Referrers", @"Stats: Section title");;
+            return NSLocalizedString(@"Referrers", @"Stats: Section title");
         case StatsSectionSearchTerms:
-            return NSLocalizedString(@"Search Engine Terms", @"Stats: Section title");;
+            return NSLocalizedString(@"Search Engine Terms", @"Stats: Section title");
+        case StatsSectionLinkToWebview:
+            return NSLocalizedString(@"Web Version", @"Stats: Section title");
         default:
             return @"";
     }
@@ -617,7 +673,7 @@ typedef NS_ENUM(NSInteger, TotalFollowersShareRow) {
     // Only reload section if the selection changed
     if (todayCurrentlySelected != todaySelected) {
         [self.showingToday setObject:@(todaySelected) forKey:@(section)];
-        [self.expandedLinkGroups removeAllObjects];
+        [self.expandedLinkGroups removeObjectForKey:@(section)];
         [self.tableView reloadSections:[NSIndexSet indexSetWithIndex:section] withRowAnimation:UITableViewRowAnimationFade];
     }
 }

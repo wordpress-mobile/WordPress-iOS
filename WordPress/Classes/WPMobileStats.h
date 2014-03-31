@@ -22,6 +22,8 @@ extern NSString *const StatsPropertySidebarSiteClickedComments;
 extern NSString *const StatsPropertySidebarSiteClickedStats;
 extern NSString *const StatsPropertySidebarSiteClickedViewSite;
 extern NSString *const StatsPropertySidebarSiteClickedViewAdmin;
+extern NSString *const StatsPropertySidebarSiteClickedThemes;
+extern NSString *const StatsPropertySidebarSiteClickedMediaLibrary;
 extern NSString *const StatsPropertySidebarClickedSettings;
 extern NSString *const StatsPropertySidebarClickedQuickPhoto;
 
@@ -107,6 +109,8 @@ extern NSString *const StatsPropertyPostDetailEditorOpenedOpenedByPostsView;
 extern NSString *const StatsPropertyPostDetailEditorOpenedOpenedByTabBarButton;
 extern NSString *const StatsPropertyPostDetailClickedBlogSelector;
 extern NSString *const StatsPropertyPostDetailHasExternalKeyboard;
+extern NSString *const StatsPropertyPostDetailWordCount;
+extern NSString *const StatsPropertyPostDetailWordDiffCount;
 
 // Post Detail - Settings
 extern NSString *const StatsPropertyPostDetailSettingsClickedStatus;
@@ -209,14 +213,14 @@ extern NSString *const StatsEventAddBlogsClickedSelectAll;
 extern NSString *const StatsEventAddBlogsClickedDeselectAll;
 extern NSString *const StatsEventAddBlogsClickedAddSelected;
 
+// Stats
+extern NSString *const StatsEventStatsClickedOnWebVersion;
+
 @interface WPMobileStats : NSObject
 
 + (void)initializeStats;
-+ (void)updateUserIDForStats:(NSString *)userID;
 
 + (void)pauseSession;
-+ (void)endSession;
-+ (void)resumeSession;
 
 + (void)recordAppOpenedForEvent:(NSString *)event;
 + (void)trackEventForSelfHostedAndWPCom:(NSString *)event;
@@ -226,7 +230,6 @@ extern NSString *const StatsEventAddBlogsClickedAddSelected;
 + (void)trackEventForWPCom:(NSString *)event properties:(NSDictionary *)properties;
 + (void)trackEventForWPComWithSavedProperties:(NSString *)event;
 + (void)pingWPComStatsEndpoint:(NSString *)statName;
-+ (void)logQuantcastEvent:(NSString *)quantcast;
 
 /*
     Mixpanel has both properties and super properties which should be used differently depending on the
@@ -241,6 +244,7 @@ extern NSString *const StatsEventAddBlogsClickedAddSelected;
  */
 + (void)clearPropertiesForAllEvents;
 + (void)incrementProperty:(NSString *)property forEvent:(NSString *)event;
++ (void)setValue:(id)value forProperty:(NSString *)property forEvent:(NSString *)event;
 + (void)flagProperty:(NSString *)property forEvent:(NSString *)event;
 + (void)unflagProperty:(NSString *)property forEvent:(NSString *)event;
 + (void)flagSuperProperty:(NSString *)property;

@@ -7,29 +7,27 @@
 //
 
 #import <WPXMLRPC/WPXMLRPC.h>
-#import <QuartzCore/QuartzCore.h>
 #import "LoginViewController.h"
 #import "CreateAccountAndBlogViewController.h"
-#import "AboutViewController.h"
+#import "WordPressAppDelegate.h"
 #import "SupportViewController.h"
 #import "WPNUXMainButton.h"
-#import "WPNUXPrimaryButton.h"
 #import "WPNUXSecondaryButton.h"
 #import "WPWalkthroughTextField.h"
 #import "WordPressComOAuthClient.h"
 #import "WPWebViewController.h"
-#import "EditPostViewController.h"
 #import "Blog+Jetpack.h"
 #import "JetpackSettingsViewController.h"
 #import "WPWalkthroughOverlayView.h"
 #import "ReachabilityUtils.h"
 #import "WPNUXUtility.h"
-#import "WPNUXBackButton.h"
 #import "WPAccount.h"
 #import "Note.h"
+#import "ContextManager.h"
 
 static NSString *const ForgotPasswordDotComBaseUrl = @"https://wordpress.com";
 static NSString *const ForgotPasswordRelativeUrl = @"/wp-login.php?action=lostpassword&redirect_to=wordpress%3A%2F%2F";
+static NSString *const GenerateApplicationSpecificPasswordUrl = @"http://en.support.wordpress.com/security/two-step-authentication/#application-specific-passwords";
 
 @interface LoginViewController () <
     UITextFieldDelegate> {
@@ -243,6 +241,24 @@ CGFloat const GeneralWalkthroughStatusBarOffset = 20.0;
     [self.view addSubview:overlayView];
 }
 
+- (void)displayGenerateApplicationSpecificPasswordErrorMessage:(NSString *)message
+{
+    WPWalkthroughOverlayView *overlayView = [self baseLoginErrorOverlayView:message];
+    overlayView.secondaryButtonCompletionBlock = ^(WPWalkthroughOverlayView *overlayView){
+        [WPMobileStats trackEventForSelfHostedAndWPCom:StatsEventNUXFirstWalkthroughClickedNeededHelpOnError properties:@{@"error_message": message}];
+        
+        [overlayView dismiss];
+        WPWebViewController *webViewController = [[WPWebViewController alloc] init];
+        [webViewController setUrl:[NSURL URLWithString:GenerateApplicationSpecificPasswordUrl]];
+        [self.navigationController setNavigationBarHidden:NO animated:YES];
+        [self.navigationController pushViewController:webViewController animated:YES];
+    };
+    overlayView.primaryButtonCompletionBlock = ^(WPWalkthroughOverlayView *overlayView){
+        [overlayView dismiss];
+    };
+    [self.view addSubview:overlayView];
+}
+
 - (void)displayGenericErrorMessage:(NSString *)message
 {
     WPWalkthroughOverlayView *overlayView = [self baseLoginErrorOverlayView:message];
@@ -330,7 +346,7 @@ CGFloat const GeneralWalkthroughStatusBarOffset = 20.0;
 
 - (void)addMainView
 {
-    _mainView = [[UIView alloc] init];;
+    _mainView = [[UIView alloc] init];
     _mainView.frame = self.view.bounds;
     _mainView.autoresizingMask = UIViewAutoresizingFlexibleHeight | UIViewAutoresizingFlexibleWidth;
     [self.view addSubview:_mainView];
@@ -545,12 +561,12 @@ CGFloat const GeneralWalkthroughStatusBarOffset = 20.0;
     _siteUrlText.frame = CGRectIntegral(CGRectMake(x, y, GeneralWalkthroughTextFieldWidth, GeneralWalkthroughTextFieldHeight));
 
     // Layout Sign in Button
-    x = (viewWidth - GeneralWalkthroughButtonWidth) / 2.0;;
+    x = (viewWidth - GeneralWalkthroughButtonWidth) / 2.0;
     y = CGRectGetMaxY(_siteUrlText.frame) + GeneralWalkthroughStandardOffset;
     _signInButton.frame = CGRectIntegral(CGRectMake(x, y, GeneralWalkthroughButtonWidth, GeneralWalkthroughButtonHeight));
 
     // Layout Lost password Button
-    x = (viewWidth - GeneralWalkthroughButtonWidth) / 2.0;;
+    x = (viewWidth - GeneralWalkthroughButtonWidth) / 2.0;
     y = CGRectGetMaxY(_signInButton.frame) + 0.5 * GeneralWalkthroughStandardOffset;
     CGFloat forgotPasswordHeight = [_forgotPassword.titleLabel.text sizeWithAttributes:@{NSFontAttributeName:_forgotPassword.titleLabel.font}].height;
     _forgotPassword.frame = CGRectIntegral(CGRectMake(x, y, GeneralWalkthroughButtonWidth, forgotPasswordHeight));
@@ -826,7 +842,7 @@ CGFloat const GeneralWalkthroughStatusBarOffset = 20.0;
 
 - (void)createSelfHostedAccountAndBlogWithUsername:(NSString *)username password:(NSString *)password xmlrpc:(NSString *)xmlrpc options:(NSDictionary *)options
 {
-    WPAccount *account = [WPAccount createOrUpdateSelfHostedAccountWithXmlrpc:xmlrpc username:username andPassword:password];
+    WPAccount *account = [WPAccount createOrUpdateSelfHostedAccountWithXmlrpc:xmlrpc username:username andPassword:password withContext:[[ContextManager sharedInstance] mainContext]];
     NSString *blogName = [options stringForKeyPath:@"blog_title.value"];
     NSString *url = [options stringForKeyPath:@"home_url.value"];
     if (!url) {
@@ -879,7 +895,11 @@ CGFloat const GeneralWalkthroughStatusBarOffset = 20.0;
     DDLogError(@"%@", error);
     NSString *message = [error localizedDescription];
     if (![[error domain] isEqualToString:WPXMLRPCFaultErrorDomain]) {
-        [self displayGenericErrorMessage:message];
+        if ([message rangeOfString:@"application-specific"].location != NSNotFound) {
+            [self displayGenerateApplicationSpecificPasswordErrorMessage:message];
+        } else {
+            [self displayGenericErrorMessage:message];
+        }
         return;
     }
     if ([error code] == 403) {

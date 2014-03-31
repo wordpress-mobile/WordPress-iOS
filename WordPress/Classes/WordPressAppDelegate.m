@@ -7,7 +7,6 @@
  * Some rights reserved. See license.txt
  */
 
-#import <AFNetworking/AFNetworking.h>
 #import <CoreTelephony/CTTelephonyNetworkInfo.h>
 #import <CoreTelephony/CTCarrier.h>
 #import <Crashlytics/Crashlytics.h>
@@ -18,18 +17,13 @@
 #import <UIDeviceIdentifier/UIDeviceHardware.h>
 
 #import "WordPressAppDelegate.h"
-#import "CameraPlusPickerManager.h"
 #import "ContextManager.h"
 #import "Media.h"
 #import "NotificationsManager.h"
 #import "NSString+Helpers.h"
 #import "PocketAPI.h"
-#import "Post.h"
-#import "Comment.h"
-#import "Reachability.h"
 #import "ReaderPost.h"
 #import "UIDevice+WordPressIdentifier.h"
-#import "WordPressComApi.h"
 #import "WordPressComApiCredentials.h"
 #import "WPAccount.h"
 
@@ -40,7 +34,6 @@
 #import "LoginViewController.h"
 #import "NotificationsViewController.h"
 #import "ReaderPostsViewController.h"
-#import "ReaderPostDetailViewController.h"
 #import "SupportViewController.h"
 #import "StatsViewController.h"
 #import "Constants.h"
@@ -51,15 +44,11 @@
 #endif
 
 int ddLogLevel = LOG_LEVEL_INFO;
-static NSInteger const UpdateCheckAlertViewTag = 102;
 static NSString * const WPTabBarRestorationID = @"WPTabBarID";
 static NSString * const WPBlogListNavigationRestorationID = @"WPBlogListNavigationID";
 static NSString * const WPReaderNavigationRestorationID = @"WPReaderNavigationID";
 static NSString * const WPNotificationsNavigationRestorationID = @"WPNotificationsNavigationID";
 static NSInteger const IndexForMeTab = 2;
-static NSInteger const NotificationNewComment = 1001;
-static NSInteger const NotificationNewSocial = 1002;
-static NSString *const CameraPlusImagesNotification = @"CameraPlusImagesNotification";
 
 @interface WordPressAppDelegate () <UITabBarControllerDelegate, CrashlyticsDelegate, UIAlertViewDelegate, BITHockeyManagerDelegate>
 
@@ -97,14 +86,12 @@ static NSString *const CameraPlusImagesNotification = @"CameraPlusImagesNotifica
     // Stats and feedback
     [WPMobileStats initializeStats];
     [[GPPSignIn sharedInstance] setClientID:[WordPressComApiCredentials googlePlusClientId]];
-    [self checkIfStatsShouldSendAndUpdateCheck];
     [SupportViewController checkIfFeedbackShouldBeEnabled];
     
     // Networking setup
     [[AFNetworkActivityIndicatorManager sharedManager] setEnabled:YES];
     [self setupReachability];
     [self setupUserAgent];
-    [self checkWPcomAuthentication];
     [self setupSingleSignOn];
 
     [self customizeAppearance];
@@ -160,25 +147,6 @@ static NSString *const CameraPlusImagesNotification = @"CameraPlusImagesNotifica
         returnValue = YES;
     }
 
-    if ([[CameraPlusPickerManager sharedManager] shouldHandleURLAsCameraPlusPickerCallback:url]) {
-        /* Note that your application has been in the background and may have been terminated.
-         * The only CameraPlusPickerManager state that is restored is the pickerMode, which is
-         * restored to indicate the mode used to pick images.
-         */
-
-        /* Handle the callback and notify the delegate. */
-        [[CameraPlusPickerManager sharedManager] handleCameraPlusPickerCallback:url usingBlock:^(CameraPlusPickedImages *images) {
-            DDLogInfo(@"Camera+ returned %@", [images images]);
-            UIImage *image = [images image];
-            UIImageWriteToSavedPhotosAlbum(image, nil, nil, nil);
-            NSDictionary *userInfo = [NSDictionary dictionaryWithObject:image forKey:@"image"];
-            [[NSNotificationCenter defaultCenter] postNotificationName:CameraPlusImagesNotification object:nil userInfo:userInfo];
-        } cancelBlock:^(void) {
-            DDLogInfo(@"Camera+ picker canceled");
-        }];
-        returnValue = YES;
-    }
-
     if ([WordPressApi handleOpenURL:url]) {
         returnValue = YES;
     }
@@ -222,8 +190,6 @@ static NSString *const CameraPlusImagesNotification = @"CameraPlusImagesNotifica
 
 - (void)applicationWillTerminate:(UIApplication *)application {
     DDLogInfo(@"%@ %@", self, NSStringFromSelector(_cmd));
-    
-    [WPMobileStats endSession];
 }
 
 - (void)applicationDidEnterBackground:(UIApplication *)application {
@@ -254,7 +220,6 @@ static NSString *const CameraPlusImagesNotification = @"CameraPlusImagesNotifica
 
 - (void)applicationWillEnterForeground:(UIApplication *)application {
     DDLogInfo(@"%@ %@", self, NSStringFromSelector(_cmd));
-    [WPMobileStats resumeSession];
 }
 
 - (void)applicationWillResignActive:(UIApplication *)application {
@@ -301,8 +266,6 @@ static NSString *const CameraPlusImagesNotification = @"CameraPlusImagesNotifica
 
 - (void)showWelcomeScreenIfNeededAnimated:(BOOL)animated {
     if ([self noBlogsAndNoWordPressDotComAccount]) {
-        [WordPressAppDelegate wipeAllKeychainItems];
-
         UIViewController *presenter = self.window.rootViewController;
         if (presenter.presentedViewController) {
             [presenter dismissViewControllerAnimated:NO completion:nil];
@@ -389,6 +352,7 @@ static NSString *const CameraPlusImagesNotification = @"CameraPlusImagesNotifica
     UINavigationController *readerNavigationController = [[UINavigationController alloc] initWithRootViewController:self.readerPostsViewController];
     readerNavigationController.navigationBar.translucent = NO;
     readerNavigationController.tabBarItem.image = [UIImage imageNamed:@"icon-tab-reader"];
+    readerNavigationController.tabBarItem.selectedImage = [UIImage imageNamed:@"icon-tab-reader-filled"];
     readerNavigationController.restorationIdentifier = WPReaderNavigationRestorationID;
     self.readerPostsViewController.title = NSLocalizedString(@"Reader", nil);
     [readerNavigationController.tabBarItem setTitlePositionAdjustment:tabBarTitleOffset];
@@ -397,6 +361,7 @@ static NSString *const CameraPlusImagesNotification = @"CameraPlusImagesNotifica
     UINavigationController *notificationsNavigationController = [[UINavigationController alloc] initWithRootViewController:self.notificationsViewController];
     notificationsNavigationController.navigationBar.translucent = NO;
     notificationsNavigationController.tabBarItem.image = [UIImage imageNamed:@"icon-tab-notifications"];
+    notificationsNavigationController.tabBarItem.selectedImage = [UIImage imageNamed:@"icon-tab-notifications-filled"];
     notificationsNavigationController.restorationIdentifier = WPNotificationsNavigationRestorationID;
     self.notificationsViewController.title = NSLocalizedString(@"Notifications", @"");
     [notificationsNavigationController.tabBarItem setTitlePositionAdjustment:tabBarTitleOffset];
@@ -405,6 +370,7 @@ static NSString *const CameraPlusImagesNotification = @"CameraPlusImagesNotifica
     UINavigationController *blogListNavigationController = [[UINavigationController alloc] initWithRootViewController:self.blogListViewController];
     blogListNavigationController.navigationBar.translucent = NO;
     blogListNavigationController.tabBarItem.image = [UIImage imageNamed:@"icon-tab-blogs"];
+    blogListNavigationController.tabBarItem.selectedImage = [UIImage imageNamed:@"icon-tab-blogs-filled"];
     blogListNavigationController.restorationIdentifier = WPBlogListNavigationRestorationID;
     self.blogListViewController.title = NSLocalizedString(@"Me", @"");
     [blogListNavigationController.tabBarItem setTitlePositionAdjustment:tabBarTitleOffset];
@@ -539,6 +505,10 @@ static NSString *const CameraPlusImagesNotification = @"CameraPlusImagesNotifica
     [self showMeTab];
 }
 
+- (BOOL)isNavigatingMeTab {
+    return (self.tabBarController.selectedIndex == IndexForMeTab && [self.blogListViewController.navigationController.viewControllers count] > 1);
+}
+
 #pragma mark - UITabBarControllerDelegate methods.
 
 - (BOOL)tabBarController:(UITabBarController *)tabBarController shouldSelectViewController:(UIViewController *)viewController {
@@ -551,16 +521,28 @@ static NSString *const CameraPlusImagesNotification = @"CameraPlusImagesNotifica
             [self showPostTab];
         }
         return NO;
+    } else if ([tabBarController.viewControllers indexOfObject:viewController] == 2) {
+        // If the user has one blog then we don't want to present them with the main "me"
+        // screen where they can see all their blogs. In the case of only one blog just show
+        // the main blog details screen
+
+        // Don't kick of this auto selecting behavior if the user taps the the active tab as it
+        // would break from standard iOS UX
+        if (tabBarController.selectedIndex != 2) {
+            UINavigationController *navController = (UINavigationController *)viewController;
+            BlogListViewController *blogListViewController = (BlogListViewController *)navController.viewControllers[0];
+            if ([blogListViewController shouldBypassBlogListViewControllerWhenSelectedFromTabBar]) {
+                if ([navController.visibleViewController isKindOfClass:[blogListViewController class]]) {
+                    [blogListViewController bypassBlogListViewController];
+                }
+            }
+        }
     }
     return YES;
 }
 
 
 #pragma mark - Application directories
-
-- (NSString *)applicationDocumentsDirectory {
-    return [NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES) lastObject];
-}
 
 - (void)changeCurrentDirectory {
     // Set current directory for WordPress app
@@ -573,81 +555,6 @@ static NSString *const CameraPlusImagesNotification = @"CameraPlusImagesNotifica
 		[fileManager createDirectoryAtPath:currentDirectoryPath withIntermediateDirectories:YES attributes:nil error:nil];
     }
 	[fileManager changeCurrentDirectoryPath:currentDirectoryPath];
-}
-
-
-#pragma mark - Stats and feedback
-
-- (void)checkIfStatsShouldSendAndUpdateCheck {
-    if (NO) { // Switch this to YES to debug stats/update check
-        [self sendStatsAndCheckForAppUpdate];
-        return;
-    }
-	//check if statsDate exists in user defaults, if not, add it and run stats since this is obviously the first time
-	NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
-	//[defaults setObject:nil forKey:@"statsDate"];  // Uncomment this line to force stats.
-	if (![defaults objectForKey:@"statsDate"]){
-		NSDate *theDate = [NSDate date];
-		[defaults setObject:theDate forKey:@"statsDate"];
-		[self sendStatsAndCheckForAppUpdate];
-	} else {
-		//if statsDate existed, check if it's 7 days since last stats run, if it is > 7 days, run stats
-		NSDate *statsDate = [defaults objectForKey:@"statsDate"];
-		NSDate *today = [NSDate date];
-		NSTimeInterval difference = [today timeIntervalSinceDate:statsDate];
-		NSTimeInterval statsInterval = 7 * 24 * 60 * 60; //number of seconds in 30 days
-		if (difference > statsInterval) //if it's been more than 7 days since last stats run
-		{
-            // WARNING: for some reason, if runStats is called in a background thread
-            // NSURLConnection doesn't launch and stats are not sent
-            // Don't change this or be really sure it's working
-			[self sendStatsAndCheckForAppUpdate];
-		}
-	}
-}
-
-- (void)sendStatsAndCheckForAppUpdate {
-	//generate and post the stats data
-	/*
-	 - device_uuid – A unique identifier to the iPhone/iPod that the app is installed on.
-	 - app_version – the version number of the WP iPhone app
-	 - language – language setting for the device. What does that look like? Is it EN or English?
-	 - os_version – the version of the iPhone/iPod OS for the device
-	 - num_blogs – number of blogs configured in the WP iPhone app
-	 - device_model - kind of device on which the WP iPhone app is installed
-	 */
-	NSDictionary *info = [[NSBundle mainBundle] infoDictionary];
-	NSLocale *locale = [NSLocale currentLocale];
-	NSInteger blogCount = [Blog countWithContext:[[ContextManager sharedInstance] mainContext]];
-    NSDictionary *parameters = @{@"device_uuid": [[UIDevice currentDevice] wordpressIdentifier],
-                                 @"app_version": [[info objectForKey:@"CFBundleVersion"] stringByUrlEncoding],
-                                 @"language": [[locale objectForKey: NSLocaleIdentifier] stringByUrlEncoding],
-                                 @"os_version": [[[UIDevice currentDevice] systemVersion] stringByUrlEncoding],
-                                 @"num_blogs": [[NSString stringWithFormat:@"%d", blogCount] stringByUrlEncoding],
-                                 @"device_model": [[UIDeviceHardware platform] stringByUrlEncoding]};
-
-    AFHTTPClient *client = [[AFHTTPClient alloc] initWithBaseURL:[NSURL URLWithString:@"http://api.wordpress.org/iphoneapp/update-check/1.0/"]];
-    client.parameterEncoding = AFFormURLParameterEncoding;
-    [client postPath:@"" parameters:parameters success:^(AFHTTPRequestOperation *operation, NSData *responseObject) {
-        NSString *statsDataString = [[NSString alloc] initWithData:responseObject encoding:NSUTF8StringEncoding];
-        statsDataString = [[statsDataString componentsSeparatedByCharactersInSet:[NSCharacterSet newlineCharacterSet]] objectAtIndex:0];
-        NSString *appversion = [[[NSBundle mainBundle] infoDictionary] objectForKey:@"CFBundleVersion"];
-        if ([statsDataString compare:appversion options:NSNumericSearch] > 0) {
-            DDLogInfo(@"There's a new version: %@", statsDataString);
-            UIAlertView *alert = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"Update Available", @"Popup title to highlight a new version of the app being available.")
-                                                            message:NSLocalizedString(@"A new version of WordPress for iOS is now available", @"Generic popup message to highlight a new version of the app being available.")
-                                                           delegate:self
-                                                  cancelButtonTitle:NSLocalizedString(@"Dismiss", @"Dismiss button label.")
-                                                  otherButtonTitles:NSLocalizedString(@"Update Now", @"Popup 'update' button to highlight a new version of the app being available. The button takes you to the app store on the device, and should be actionable."), nil];
-            alert.tag = UpdateCheckAlertViewTag;
-            [alert show];
-        }
-    } failure:nil];
-	
-	NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
-	NSDate *theDate = [NSDate date];
-	[defaults setObject:theDate forKey:@"statsDate"];
-	[defaults synchronize];
 }
 
 
@@ -886,53 +793,7 @@ static NSString *const CameraPlusImagesNotification = @"CameraPlusImagesNotifica
 #pragma clang diagnostic pop
 }
 
-// TODO :: Eliminate this check or at least move it to WordPressComApi (or WPAccount)
-- (void)checkWPcomAuthentication {
-    // Temporarily set the is authenticated flag based upon if we have a WP.com OAuth2 token
-    // TODO :: Move this BOOL to a method on the WordPressComApi along with checkWPcomAuthentication
-    BOOL tempIsAuthenticated = [[[WPAccount defaultWordPressComAccount] restApi] authToken].length > 0;
-    self.isWPcomAuthenticated = tempIsAuthenticated;
-    
-	NSString *authURL = @"https://wordpress.com/xmlrpc.php";
-
-    WPAccount *account = [WPAccount defaultWordPressComAccount];
-	if (account) {
-        WPXMLRPCClient *client = [WPXMLRPCClient clientWithXMLRPCEndpoint:[NSURL URLWithString:authURL]];
-        [client setAuthorizationHeaderWithToken:[[[WPAccount defaultWordPressComAccount] restApi] authToken]];
-        [client callMethod:@"wp.getUsersBlogs"
-                parameters:[NSArray arrayWithObjects:account.username, account.password, nil]
-                   success:^(AFHTTPRequestOperation *operation, id responseObject) {
-                       self.isWPcomAuthenticated = YES;
-                       DDLogInfo(@"Logged in to WordPress.com as %@", account.username);
-                   } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
-                       if ([error.domain isEqualToString:@"WPXMLRPCFaultError"] ||
-                           ([error.domain isEqualToString:@"XMLRPC"] && error.code == 403)) {
-                           self.isWPcomAuthenticated = NO;
-                           [[[WPAccount defaultWordPressComAccount] restApi] invalidateOAuth2Token];
-                       }
-                       
-                       DDLogError(@"Error authenticating %@ with WordPress.com: %@", account.username, [error description]);
-                   }];
-	} else {
-		self.isWPcomAuthenticated = NO;
-	}
-}
-
-
 #pragma mark - Keychain
-
-+ (void)wipeAllKeychainItems
-{
-    NSArray *secItemClasses = @[(__bridge id)kSecClassGenericPassword,
-                                (__bridge id)kSecClassInternetPassword,
-                                (__bridge id)kSecClassCertificate,
-                                (__bridge id)kSecClassKey,
-                                (__bridge id)kSecClassIdentity];
-    for (id secItemClass in secItemClasses) {
-        NSDictionary *spec = @{(__bridge id)kSecClass : secItemClass};
-        SecItemDelete((__bridge CFDictionaryRef)spec);
-    }
-}
 
 + (void)fixKeychainAccess
 {
@@ -1105,9 +966,7 @@ static NSString *const CameraPlusImagesNotification = @"CameraPlusImagesNotifica
         [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(handleDefaultAccountChangedNotification:) name:WPAccountDefaultWordPressComAccountChangedNotification object:nil];
     }
     
-	int num_blogs = [Blog countWithContext:[[ContextManager sharedInstance] mainContext]];
-	BOOL authed = self.isWPcomAuthenticated;
-	if (num_blogs == 0 && !authed) {
+	if ([self noBlogsAndNoWordPressDotComAccount]) {
 		// When there are no blogs in the app the settings screen is unavailable.
 		// In this case, enable extra_debugging by default to help troubleshoot any issues.
 		if([[NSUserDefaults standardUserDefaults] objectForKey:@"orig_extra_debug"] != nil) {
