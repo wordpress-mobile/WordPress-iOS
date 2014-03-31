@@ -71,5 +71,6 @@
 + (void)configureTableViewTextCell:(UITableViewTextFieldCell *)cell;
 + (void)configureTableViewSmallSubtitleCell:(UITableViewCell *)cell;
 + (void)configureColorsForView:(UIView *)view andTableView:(UITableView *)tableView;
++ (void)configureColorsForView:(UIView *)view collectionView:(UICollectionView *)collectionView;
 
 @end
