@@ -11,6 +11,8 @@
 #import "WPAccount.h"
 #import "WPContentViewProvider.h"
 
+
+
 @interface Note : NSManagedObject<WPContentViewProvider>
 
 @property (nonatomic, retain) NSNumber *timestamp;
@@ -22,7 +24,7 @@
 @property (nonatomic, retain) NSString *noteID;
 @property (nonatomic, strong, readonly) NSString *commentText;
 @property (nonatomic, strong, readonly) NSDictionary *noteData;
-@property (nonatomic, strong, readonly) NSArray *bodyItems;
+@property (nonatomic, strong, readonly) NSArray *bodyItems;		// Array of NoteBodyItem Objects
 @property (nonatomic, strong, readonly) NSString *bodyHeaderText;
 @property (nonatomic, strong, readonly) NSString *bodyHeaderLink;
 @property (nonatomic, strong, readonly) NSString *bodyFooterText;
