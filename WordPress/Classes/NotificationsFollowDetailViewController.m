@@ -37,15 +37,18 @@ NSString *const WPNotificationFollowRestorationKey = @"WPNotificationFollowResto
 
 @implementation NotificationsFollowDetailViewController
 
-+ (UIViewController *)viewControllerWithRestorationIdentifierPath:(NSArray *)identifierComponents coder:(NSCoder *)coder {
++ (UIViewController *)viewControllerWithRestorationIdentifierPath:(NSArray *)identifierComponents coder:(NSCoder *)coder
+{
     NSString *noteID = [coder decodeObjectForKey:WPNotificationFollowRestorationKey];
-    if (!noteID)
+    if (!noteID) {
         return nil;
+	}
     
     NSManagedObjectContext *context = [[ContextManager sharedInstance] mainContext];
     NSManagedObjectID *objectID = [context.persistentStoreCoordinator managedObjectIDForURIRepresentation:[NSURL URLWithString:noteID]];
-    if (!objectID)
+    if (!objectID) {
         return nil;
+	}
     
     NSError *error = nil;
     Note *restoredNote = (Note *)[context existingObjectWithID:objectID error:&error];
@@ -56,15 +59,18 @@ NSString *const WPNotificationFollowRestorationKey = @"WPNotificationFollowResto
     return [[self alloc] initWithNote:restoredNote];
 }
 
-- (id)initWithNote:(Note *)note
+- (instancetype)initWithNote:(Note *)note
 {
-    self = [super init];
+	NSAssert([note isKindOfClass:[Note class]], @"Invalid Note!");
+
+	self = [super init];
     if (self) {
         _note = note;
         self.title = _note.subject;
         self.restorationIdentifier = NSStringFromClass([self class]);
         self.restorationClass = [self class];
     }
+	
     return self;
 }
 
@@ -120,19 +126,20 @@ NSString *const WPNotificationFollowRestorationKey = @"WPNotificationFollowResto
     [WPStyleGuide configureColorsForView:self.view andTableView:self.tableView];
 }
 
-- (void)viewWillAppear:(BOOL)animated {
-    [super viewWillAppear:animated];
-    [self.tableView deselectRowAtIndexPath:[self.tableView indexPathForSelectedRow] animated:animated];
-}
-
-- (void)didReceiveMemoryWarning
+- (void)viewWillAppear:(BOOL)animated
 {
-    [super didReceiveMemoryWarning];
-    // Dispose of any resources that can be recreated.
+    [super viewWillAppear:animated];
+	
+	NSIndexPath *selectedIndexPath = [self.tableView indexPathForSelectedRow];
+	if (selectedIndexPath) {
+		[self.tableView deselectRowAtIndexPath:selectedIndexPath animated:animated];
+	}
 }
 
-- (void)encodeRestorableStateWithCoder:(NSCoder *)coder {
-    [coder encodeObject:[[self.note.objectID URIRepresentation] absoluteString] forKey:WPNotificationFollowRestorationKey];
+- (void)encodeRestorableStateWithCoder:(NSCoder *)coder
+{
+	NSString *noteURL = [[self.note.objectID URIRepresentation] absoluteString];
+    [coder encodeObject:noteURL forKey:WPNotificationFollowRestorationKey];
     [super encodeRestorableStateWithCoder:coder];
 }
 
@@ -297,13 +304,17 @@ NSString *const WPNotificationFollowRestorationKey = @"WPNotificationFollowResto
     }   
 }
 
-- (IBAction)viewPostTitle:(id)sender {
-    [self loadWebViewWithURL:[[[_note noteData] objectForKey:@"body"] objectForKey:@"header_link"]];
+- (IBAction)viewPostTitle:(id)sender
+{
+    [self loadWebViewWithURL:_note.bodyHeaderLink];
+
 }
 
-- (void)loadWebViewWithURL: (NSString*)url {
-    if (!url)
+- (void)loadWebViewWithURL:(NSString*)url
+{
+    if (!url) {
         return;
+	}
     
     NSURL *webViewURL = [NSURL URLWithString:url];
     if (webViewURL) {
@@ -326,33 +337,25 @@ NSString *const WPNotificationFollowRestorationKey = @"WPNotificationFollowResto
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    if (indexPath.section == 0) {
-        NSDictionary *noteAction = [[_noteData objectAtIndex:indexPath.row] objectForKey:@"action"];
-        NSDictionary *likeDetails;
-        if ([noteAction isKindOfClass:[NSDictionary class]])
-            likeDetails = [noteAction objectForKey:@"params"];
-        if (likeDetails) {
-            NSString *blogURLString = [likeDetails objectForKey:@"blog_url"];
-            NSURL *blogURL = [NSURL URLWithString:blogURLString];
-
-            if (!blogURL) {
-                return;
-            }
-            
+    if (indexPath.section == WPNotificationSectionsFollow) {
+		NoteBodyItem *item = self.filteredBodyItems[indexPath.row];
+		NSURL *blogURL = item.action.blogURL;
+        if (blogURL) {
             WPWebViewController *webViewController = [[WPWebViewController alloc] init];
             if ([blogURL isWordPressDotComUrl]) {
-                [webViewController setUsername:[[WPAccount defaultWordPressComAccount] username]];
-                [webViewController setPassword:[[WPAccount defaultWordPressComAccount] password]];
-                [webViewController setUrl:[blogURL ensureSecureURL]];
+				WPAccount *account			= [WPAccount defaultWordPressComAccount];
+				webViewController.username	= account.username;
+				webViewController.password	= account.password;
+				webViewController.url		= [blogURL ensureSecureURL];
             } else {
-                [webViewController setUrl:blogURL];
+				webViewController.url = blogURL;
             }
             [self.navigationController pushViewController:webViewController animated:YES];
         } else {
             [self.tableView deselectRowAtIndexPath:indexPath animated:NO];
         }
     } else {
-        [self loadWebViewWithURL:[[[_note noteData] objectForKey:@"body"] objectForKey:@"footer_link"]];
+        [self loadWebViewWithURL:_note.bodyFooterLink];
     }
 }
 
