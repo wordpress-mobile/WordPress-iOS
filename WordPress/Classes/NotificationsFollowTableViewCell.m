@@ -65,7 +65,7 @@
         [actionButton setBackgroundImage:[[UIImage imageNamed:@"navbar_button_bg_active"] resizableImageWithCapInsets:UIEdgeInsetsMake(0.0f, 4.0f, 0.0f, 4.0f)] forState:UIControlStateHighlighted];
         [actionButton.titleLabel setShadowColor:[UIColor whiteColor]];
     }
-    CGSize textSize = [_actionButton.titleLabel.text sizeWithAttributes:@{NSFontAttributeName:[_actionButton.titleLabel font]}];
+    CGSize textSize = [actionButton.titleLabel.text sizeWithAttributes:@{NSFontAttributeName:[actionButton.titleLabel font]}];
     CGFloat buttonWidth = MIN ( textSize.width + 40.0f, 180.0f );
 
     [actionButton setFrame:CGRectMake(actionButton.frame.origin.x, actionButton.frame.origin.y, buttonWidth, 30.0f)];
