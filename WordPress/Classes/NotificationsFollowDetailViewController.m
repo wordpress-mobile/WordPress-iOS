@@ -45,6 +45,11 @@ CGFloat const WPNotificationsFollowBottomCellHeight = 60.0f;
 @property (nonatomic, weak) IBOutlet UIImageView *postBlavatar;
 @property (nonatomic, weak) IBOutlet UILabel *postTitleLabel;
 @property (nonatomic, weak) IBOutlet UIButton *postTitleButton;
+@property (nonatomic, strong) Note					*note;
+@property (nonatomic, strong) NSArray				*filteredBodyItems;
+
+typedef void (^NoteToggleFollowBlock)(BOOL success);
+- (void)toggleFollowBlog:(NoteBodyItem *)item block:(NoteToggleFollowBlock)block;
 
 @end
 
@@ -181,11 +186,39 @@ CGFloat const WPNotificationsFollowBottomCellHeight = 60.0f;
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
-    // Return the number of rows in the section.
-    if (section == 0)
-        return [_noteData count];
-    else
+    if (section == WPNotificationSectionsFollow) {
+        return self.filteredBodyItems.count;
+    } else {
         return 1;
+	}
+}
+
+- (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section
+{
+	NSString *subject = [NSString decodeXMLCharactersIn:_note.subject];
+	return [WPTableHeaderViewCell cellHeightForText:subject];
+}
+
+- (UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section
+{
+    if (section != WPNotificationSectionsFollow) {
+		return nil;
+	}
+	
+	UITableViewCell *cell			= [tableView dequeueReusableCellWithIdentifier:WPNotificationHeaderCellIdentifier];
+
+	cell.textLabel.text				= [NSString decodeXMLCharactersIn:_note.subject];
+	cell.textLabel.numberOfLines	= 0;
+	cell.textLabel.textAlignment	= NSTextAlignmentCenter;
+	cell.accessoryType				= UITableViewCellAccessoryDisclosureIndicator;
+    cell.layer.borderColor			= [UIColor lightGrayColor].CGColor;
+    cell.layer.borderWidth			= 1.0 / [[UIScreen mainScreen] scale];
+	
+	// Note that we're using this cell as a section header. Since 'didPressCellAtIndex:' method isn't gonna get called,
+	// let's use a GestureRecognizer!
+	cell.gestureRecognizers			= @[ [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(viewPostTitle:)] ];
+
+	return cell;
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
