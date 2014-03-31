@@ -99,9 +99,4 @@
 	}
 }
 
-+ (CGFloat)cellHeight
-{
-	return 100.0f;
-}
-
 @end
