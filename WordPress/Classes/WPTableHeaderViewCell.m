@@ -10,13 +10,15 @@
 #import "WPStyleGuide.h"
 
 
+static CGFloat const WPTableHeaderTextMaxWidth = 200.0f;
+
 @implementation WPTableHeaderViewCell
 
 - (id)initWithStyle:(UITableViewCellStyle)style reuseIdentifier:(NSString *)reuseIdentifier
 {
     self = [super initWithStyle:style reuseIdentifier:reuseIdentifier];
     if (self) {
-		self.textLabel.font			= [WPStyleGuide tableviewTextFont];
+		self.textLabel.font			= [WPStyleGuide regularTextFont];
 		self.textLabel.textColor	= [WPStyleGuide newKidOnTheBlockBlue];
 		self.backgroundColor		= [WPStyleGuide notificationsLightGrey];
 	}
@@ -43,9 +45,8 @@
 
 + (CGFloat)cellHeightForText:(NSString *)text
 {
-#warning TODO: This should be dynamic
 	NSDictionary *attributes	= @{ NSFontAttributeName: [WPStyleGuide tableviewTextFont] };
-	CGRect rect					= [text boundingRectWithSize:CGSizeMake(200, MAXFLOAT) //CGSizeMake(bounds.size.width, MAXFLOAT)
+	CGRect rect					= [text boundingRectWithSize:CGSizeMake(WPTableHeaderTextMaxWidth, MAXFLOAT)
 										 options:NSStringDrawingUsesLineFragmentOrigin
 									  attributes:attributes
 										 context:nil];
