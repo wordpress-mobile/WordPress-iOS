@@ -37,14 +37,7 @@ CGFloat const WPNotificationsFollowBottomCellHeight = 60.0f;
 
 @interface NotificationsFollowDetailViewController () <UITableViewDelegate, UITableViewDataSource, UIViewControllerRestoration>
 
-@property NSMutableArray *noteData;
-@property BOOL hasFooter;
-@property (nonatomic, strong) Note *note;
-@property (nonatomic, weak) IBOutlet UITableView *tableView;
-@property (nonatomic, weak) IBOutlet UIView *postTitleView;
-@property (nonatomic, weak) IBOutlet UIImageView *postBlavatar;
-@property (nonatomic, weak) IBOutlet UILabel *postTitleLabel;
-@property (nonatomic, weak) IBOutlet UIButton *postTitleButton;
+@property (nonatomic, weak) IBOutlet UITableView	*tableView;
 @property (nonatomic, strong) Note					*note;
 @property (nonatomic, strong) NSArray				*filteredBodyItems;
 
