@@ -8,11 +8,17 @@
 
 #import <UIKit/UIKit.h>
 
+
+
+typedef void (^NotificationsFollowBlock)(id sender);
+
 @interface NotificationsFollowTableViewCell : UITableViewCell
 
-@property (nonatomic, strong) UIButton *actionButton;
+@property (nonatomic, copy)	  NotificationsFollowBlock	onClick;
+@property (nonatomic, strong) UIButton					*actionButton;
+@property (nonatomic, assign) BOOL						following;
 
-- (void)setFollowing: (BOOL)isFollowing;
++ (CGFloat)cellHeight;
 
 @end
 
