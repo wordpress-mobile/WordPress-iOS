@@ -219,7 +219,6 @@ NSString * const RPVCDisplayedNativeFriendFinder = @"DisplayedNativeFriendFinder
     [self configureNoResultsView];
 }
 
-
 #pragma mark - Instance Methods
 
 - (void)resizeTableViewForImagePreloading {

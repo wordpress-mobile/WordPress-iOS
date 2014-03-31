@@ -161,7 +161,6 @@
     return [UIColor colorWithRed:0/255.0f green:116/255.0f blue:162/255.0f alpha:1.0f];
 }
 
-
 + (UIColor *)lightBlue
 {
 	return [UIColor colorWithRed:120/255.0f green:200/255.0f blue:230/255.0f alpha:1.0f];
@@ -348,6 +347,13 @@
     view.backgroundColor = [WPStyleGuide itsEverywhereGrey];
     tableView.backgroundColor = [WPStyleGuide itsEverywhereGrey];
     tableView.separatorColor = [WPStyleGuide readGrey];
+}
+
++ (void)configureColorsForView:(UIView *)view collectionView:(UICollectionView *)collectionView
+{
+    collectionView.backgroundView = nil;
+    collectionView.backgroundColor = [WPStyleGuide itsEverywhereGrey];
+    view.backgroundColor = [WPStyleGuide itsEverywhereGrey];
 }
 
 @end

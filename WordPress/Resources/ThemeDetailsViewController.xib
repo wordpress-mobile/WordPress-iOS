@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="4514" systemVersion="13B42" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none">
+    <dependencies>
+        <deployment defaultVersion="1792" identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="3747"/>
+    </dependencies>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="ThemeDetailsViewController">
+            <connections>
+                <outlet property="activateButton" destination="SpD-xm-1Vb" id="Q0s-cQ-TVS"/>
+                <outlet property="livePreviewButton" destination="7xB-8l-c4O" id="5lg-8a-hQa"/>
+                <outlet property="screenshot" destination="7t5-hU-3n4" id="z29-YN-m05"/>
+                <outlet property="themeControlsContainerView" destination="3CU-sT-LO6" id="L7a-Hc-f78"/>
+                <outlet property="themeControlsView" destination="9MJ-Su-0Bm" id="g1y-ue-0P0"/>
+                <outlet property="themeName" destination="tcq-Ue-RSx" id="uc8-lU-WnH"/>
+                <outlet property="view" destination="1" id="3"/>
+            </connections>
+        </placeholder>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <view contentMode="scaleToFill" id="1" customClass="UIScrollView">
+            <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
+            <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+            <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
+            <simulatedStatusBarMetrics key="simulatedStatusBarMetrics"/>
+            <simulatedScreenMetrics key="simulatedDestinationMetrics" type="retina4"/>
+        </view>
+        <view autoresizesSubviews="NO" contentMode="scaleToFill" id="3CU-sT-LO6" userLabel="Theme controls">
+            <rect key="frame" x="0.0" y="0.0" width="320" height="363"/>
+            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+            <subviews>
+                <view contentMode="scaleToFill" id="9MJ-Su-0Bm">
+                    <rect key="frame" x="0.0" y="0.0" width="320" height="363"/>
+                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                    <subviews>
+                        <label clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="tcq-Ue-RSx" userLabel="Theme name">
+                            <rect key="frame" x="3" y="15" width="307" height="46"/>
+                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                            <color key="backgroundColor" red="0.94901960780000005" green="0.94901960780000005" blue="0.94901960780000005" alpha="1" colorSpace="calibratedRGB"/>
+                            <fontDescription key="fontDescription" type="system" pointSize="20"/>
+                            <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                            <nil key="highlightedColor"/>
+                        </label>
+                        <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" id="7t5-hU-3n4">
+                            <rect key="frame" x="0.0" y="69" width="320" height="240"/>
+                        </imageView>
+                        <button autoresizesSubviews="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" id="7xB-8l-c4O">
+                            <rect key="frame" x="7" y="315" width="148" height="43"/>
+                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                            <fontDescription key="fontDescription" type="system" pointSize="16"/>
+                            <state key="normal" title="Live Preview">
+                                <color key="titleShadowColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                            </state>
+                            <connections>
+                                <action selector="livePreviewPressed:" destination="-1" eventType="touchUpInside" id="sWi-iW-t5H"/>
+                            </connections>
+                        </button>
+                        <button contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" id="SpD-xm-1Vb">
+                            <rect key="frame" x="164" y="315" width="149" height="43"/>
+                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                            <fontDescription key="fontDescription" type="system" pointSize="16"/>
+                            <state key="normal" title="Activate">
+                                <color key="titleShadowColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                            </state>
+                            <connections>
+                                <action selector="activatePressed:" destination="-1" eventType="touchUpInside" id="Tbc-jg-VUH"/>
+                            </connections>
+                        </button>
+                    </subviews>
+                </view>
+            </subviews>
+            <color key="backgroundColor" white="0.94485629562043805" alpha="1" colorSpace="calibratedWhite"/>
+        </view>
+    </objects>
+</document>

@@ -8,7 +8,7 @@
 
 #import "EditPostViewController.h"
 #import "PostSettingsViewController.h"
-#import "PostMediaViewController.h"
+#import "MediaBrowserViewController.h"
 #import "PostPreviewViewController.h"
 #import "AbstractPost.h"
 #import "WPKeyboardToolbarBase.h"
@@ -29,8 +29,6 @@ typedef NS_ENUM(NSUInteger, EditPostViewControllerMode) {
 @interface EditPostViewController () <UIActionSheetDelegate, UITextFieldDelegate, UITextViewDelegate, WPKeyboardToolbarDelegate, UIViewControllerRestoration>
 
 @property (nonatomic, strong) PostSettingsViewController *postSettingsViewController;
-@property (nonatomic, strong) PostMediaViewController *postMediaViewController;
-@property (nonatomic, strong) PostPreviewViewController *postPreviewViewController;
 @property (nonatomic, assign) EditPostViewControllerMode editMode;
 @property (nonatomic, strong) AbstractPost *post;
 @property (readonly) BOOL hasChanges;
