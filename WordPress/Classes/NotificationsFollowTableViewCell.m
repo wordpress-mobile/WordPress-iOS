@@ -10,13 +10,16 @@
 #import "FollowButton.h"
 
 
+
+
 @implementation NotificationsFollowTableViewCell
 
 @synthesize actionButton;
 
 - (id)initWithStyle:(UITableViewCellStyle)style reuseIdentifier:(NSString *)reuseIdentifier
 {
-    self = [super initWithStyle:style reuseIdentifier:reuseIdentifier];
+    // Ignore the style argument, override with subtitle style.
+    self = [super initWithStyle:UITableViewCellStyleSubtitle reuseIdentifier:reuseIdentifier];
     if (self) {
         actionButton = [UIButton buttonWithType:UIButtonTypeCustom];
         [actionButton setContentHorizontalAlignment:UIControlContentHorizontalAlignmentLeft];
@@ -28,6 +31,7 @@
         [actionButton.titleLabel setTextAlignment:NSTextAlignmentLeft];
         [actionButton.titleLabel setLineBreakMode:NSLineBreakByTruncatingTail];
         [actionButton.titleLabel setShadowOffset:CGSizeMake(0.0f, 1.0f)];
+		[actionButton addTarget:self action:@selector(actionButtonPressed:) forControlEvents:UIControlEventTouchUpInside];
         [self addSubview:actionButton];
         
         [self.textLabel setBackgroundColor:[UIColor clearColor]];
@@ -46,7 +50,8 @@
     return self;
 }
 
-- (void)setFollowing:(BOOL)isFollowing {
+- (void)setFollowing:(BOOL)isFollowing
+{
     if (isFollowing) {
         [actionButton setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
         [actionButton setImage:[UIImage imageNamed:@"note_button_icon_following"] forState:UIControlStateNormal];
@@ -60,14 +65,16 @@
         [actionButton setBackgroundImage:[[UIImage imageNamed:@"navbar_button_bg_active"] resizableImageWithCapInsets:UIEdgeInsetsMake(0.0f, 4.0f, 0.0f, 4.0f)] forState:UIControlStateHighlighted];
         [actionButton.titleLabel setShadowColor:[UIColor whiteColor]];
     }
-    CGSize textSize = [[actionButton.titleLabel text] sizeWithAttributes:@{NSFontAttributeName:[actionButton.titleLabel font]}];
-    CGFloat buttonWidth = textSize.width + 40.0f;
-    if (buttonWidth > 180.0f)
-        buttonWidth = 180.0f;
+    CGSize textSize = [_actionButton.titleLabel.text sizeWithAttributes:@{NSFontAttributeName:[_actionButton.titleLabel font]}];
+    CGFloat buttonWidth = MIN ( textSize.width + 40.0f, 180.0f );
+
     [actionButton setFrame:CGRectMake(actionButton.frame.origin.x, actionButton.frame.origin.y, buttonWidth, 30.0f)];
+	
+	_following = isFollowing;
 }
 
-- (void)layoutSubviews {
+- (void)layoutSubviews
+{
     [super layoutSubviews];
     [self.imageView setFrame:CGRectMake(10.0f, 10.0f, 80.0f, 80.0f)];
     [self.textLabel setFrame:CGRectMake(100.0f, 20.0f, 180.0f, 30.0f)];
@@ -83,6 +90,18 @@
 {
     [super setSelected:selected animated:animated];
     actionButton.highlighted = NO;
+}
+
+- (void)actionButtonPressed:(id)sender
+{
+	if (_onClick) {
+		_onClick(self);
+	}
+}
+
++ (CGFloat)cellHeight
+{
+	return 100.0f;
 }
 
 @end
