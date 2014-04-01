@@ -165,6 +165,7 @@
 }
 
 - (void)setupView {
+    [self setupBackground];
     [self setupFormatView];
     [self setupDoneButton];
 }
@@ -223,6 +224,17 @@
     }
     return self;
 }
+
+- (id)initDoneWithFrame:(CGRect)frame {
+    self = [super initWithFrame:frame];
+    if (self) {
+        [self setupBackground];
+        [self setupDoneButton];
+    }
+    return self;
+}
+
+- (void)setupBackground {}
 
 #pragma mark - UIInputViewAudioFeedback
 

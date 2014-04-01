@@ -46,22 +46,36 @@ NSString * const WPImageSourceErrorDomain = @"WPImageSourceErrorDomain";
 
 - (void)downloadImageForURL:(NSURL *)url withSuccess:(void (^)(UIImage *))success failure:(void (^)(NSError *))failure
 {
+    [self downloadImageForURL:url authToken:nil withSuccess:success failure:failure];
+}
+
+- (void)downloadImageForURL:(NSURL *)url authToken:(NSString *)authToken withSuccess:(void (^)(UIImage *))success failure:(void (^)(NSError *))failure {
     NSParameterAssert(url != nil);
-
+    
     [self addCallbackForURL:url withSuccess:success failure:failure];
-
+    
     if (![_urlDownloadsInProgress containsObject:url]) {
         [_urlDownloadsInProgress addObject:url];
-        [self startDownloadForURL:url];
+        [self startDownloadForURL:url authToken:authToken];
     }
 }
 
 #pragma mark - Downloader
 
-- (void)startDownloadForURL:(NSURL *)url
-{
+- (void)startDownloadForURL:(NSURL *)url authToken:(NSString *)authToken {
     dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
-        NSURLRequest *request = [NSURLRequest requestWithURL:url cachePolicy:NSURLRequestReturnCacheDataElseLoad timeoutInterval:60];
+        NSURL *requestURL = url;
+        if (authToken) {
+            if (![url.absoluteString hasPrefix:@"https"]) {
+                NSString *sslUrl = [url.absoluteString stringByReplacingOccurrencesOfString:@"http://" withString:@"https://"];
+                requestURL = [NSURL URLWithString:sslUrl];
+            }
+        }
+        
+        NSMutableURLRequest *request = [NSMutableURLRequest requestWithURL:requestURL cachePolicy:NSURLRequestReturnCacheDataElseLoad timeoutInterval:60];
+        if (authToken) {
+            [request addValue:[NSString stringWithFormat:@"Bearer %@", authToken] forHTTPHeaderField:@"Authorization"];
+        }
         AFImageRequestOperation *operation = [AFImageRequestOperation imageRequestOperationWithRequest:request
                                                                                   imageProcessingBlock:nil success:^(NSURLRequest *request, NSHTTPURLResponse *response, UIImage *image) {
                                                                                       if (!image) {
