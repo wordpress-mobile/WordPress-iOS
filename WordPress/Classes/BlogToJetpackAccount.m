@@ -1,11 +1,3 @@
-//
-//  BlogToJetpackAccount.m
-//  WordPress
-//
-//  Created by Jorge Bernal on 5/14/13.
-//  Copyright (c) 2013 WordPress. All rights reserved.
-//
-
 #import "BlogToJetpackAccount.h"
 #import "SFHFKeychainUtils.h"
 #import "WPAccount.h"
