@@ -279,11 +279,18 @@ typedef void (^NoteToggleFollowBlock)(BOOL success);
     
 	// Hit the Backend
 	WordPressComApi *restApi = [[WPAccount defaultWordPressComAccount] restApi];
-	[restApi followBlog:blogID isFollowing:isFollowing success:^(AFHTTPRequestOperation *operation, id responseObject) {
+	[restApi followBlog:blogID.integerValue isFollowing:isFollowing success:^(AFHTTPRequestOperation *operation, id responseObject) {
+		
 		NSDictionary *followResponse = (NSDictionary *)responseObject;
 		BOOL success = ([followResponse[@"success"] intValue] == 1);
 		if (success) {
-			item.action.following = ([followResponse[@"is_following"] intValue] == 1);
+			BOOL isFollowingNow = ([followResponse[@"is_following"] intValue] == 1);
+			item.action.following = isFollowingNow;
+			
+			// Let's refresh the note: is_following change isn't permanent!
+			[_note refreshNoteDataWithSuccess:nil failure:^(NSError *error) {
+				DDLogVerbose(@"[Rest API] ! %@", [error localizedDescription]);
+			}];
 		}
 		
 		block(success);

@@ -59,6 +59,16 @@
 	return [[self.parameters numberForKey:@"is_following"] boolValue];
 }
 
+- (void)setFollowing:(BOOL)following
+{
+	NSMutableDictionary *updatedAction	= [self.rawAction mutableCopy];
+	NSMutableDictionary *updatedParams	= [self.parameters mutableCopy];
+	updatedParams[@"is_following"]		= @(following);
+	updatedAction[@"params"]			= updatedParams;
+	
+	self.rawAction = updatedAction;
+}
+
 - (NSString *)statsSource
 {
 	return [self.parameters stringForKey:@"stat-source"];
