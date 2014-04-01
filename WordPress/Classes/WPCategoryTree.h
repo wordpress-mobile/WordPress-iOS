@@ -1,9 +1,3 @@
-//
-//  WPCategoryTree.h
-//  WordPress
-//
-//  Created by JanakiRam on 30/01/09.
-
 #import <UIKit/UIKit.h>
 #import "Category.h"
 
