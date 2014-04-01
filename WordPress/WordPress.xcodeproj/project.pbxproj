@@ -779,6 +779,8 @@
 		85ED54FD17CC1A01006564AE /* icon-posts-editor-inspector-active@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 85ED54F117CC1A01006564AE /* icon-posts-editor-inspector-active@2x.png */; };
 		85ED988817DFA00000090D0B /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 85ED988717DFA00000090D0B /* Images.xcassets */; };
 		85EE305E18C00E21000822C5 /* StatsLinkToWebviewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 85EE305D18C00E21000822C5 /* StatsLinkToWebviewCell.m */; };
+		930284B518EAF79500CB0BF4 /* NoteService.m in Sources */ = {isa = PBXBuildFile; fileRef = 930284B418EAF79500CB0BF4 /* NoteService.m */; };
+		930284B918EB078900CB0BF4 /* NoteServiceRemote.m in Sources */ = {isa = PBXBuildFile; fileRef = 930284B818EB078900CB0BF4 /* NoteServiceRemote.m */; };
 		931DF4D618D09A2F00540BDD /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 931DF4D818D09A2F00540BDD /* InfoPlist.strings */; };
 		93598885185C0CF900EB9651 /* icon-navbar-dropdown.png in Resources */ = {isa = PBXBuildFile; fileRef = 93598883185C0CF900EB9651 /* icon-navbar-dropdown.png */; };
 		93598886185C0CF900EB9651 /* icon-navbar-dropdown@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 93598884185C0CF900EB9651 /* icon-navbar-dropdown@2x.png */; };
@@ -1977,6 +1979,11 @@
 		8D1107310486CEB800E47090 /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		93027BB61758332300483FFD /* SupportViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SupportViewController.h; sourceTree = "<group>"; };
 		93027BB71758332300483FFD /* SupportViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SupportViewController.m; sourceTree = "<group>"; };
+		930284B318EAF79500CB0BF4 /* NoteService.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NoteService.h; sourceTree = "<group>"; };
+		930284B418EAF79500CB0BF4 /* NoteService.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NoteService.m; sourceTree = "<group>"; };
+		930284B618EAF7B600CB0BF4 /* BaseLocalService.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = BaseLocalService.h; sourceTree = "<group>"; };
+		930284B718EB078800CB0BF4 /* NoteServiceRemote.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NoteServiceRemote.h; sourceTree = "<group>"; };
+		930284B818EB078900CB0BF4 /* NoteServiceRemote.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NoteServiceRemote.m; sourceTree = "<group>"; };
 		93069F54176237A4000C966D /* ActivityLogViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ActivityLogViewController.h; sourceTree = "<group>"; };
 		93069F55176237A4000C966D /* ActivityLogViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ActivityLogViewController.m; sourceTree = "<group>"; };
 		93069F571762410B000C966D /* ActivityLogDetailViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ActivityLogDetailViewController.h; sourceTree = "<group>"; };
@@ -3490,10 +3497,15 @@
 		93FA59DA18D88BDB001446BC /* Services */ = {
 			isa = PBXGroup;
 			children = (
+				930284B618EAF7B600CB0BF4 /* BaseLocalService.h */,
 				93FA59DB18D88C1C001446BC /* CategoryService.h */,
 				93FA59DC18D88C1C001446BC /* CategoryService.m */,
 				93FA59DE18D8986D001446BC /* CategoryServiceRemote.h */,
 				93FA59DF18D8986D001446BC /* CategoryServiceRemote.m */,
+				930284B318EAF79500CB0BF4 /* NoteService.h */,
+				930284B418EAF79500CB0BF4 /* NoteService.m */,
+				930284B718EB078800CB0BF4 /* NoteServiceRemote.h */,
+				930284B818EB078900CB0BF4 /* NoteServiceRemote.m */,
 			);
 			name = Services;
 			sourceTree = "<group>";
@@ -5442,6 +5454,7 @@
 				834CAE9F122D56B1003DDF49 /* UIImage+Alpha.m in Sources */,
 				834CAEA0122D56B1003DDF49 /* UIImage+RoundedCorner.m in Sources */,
 				83D180FA12329B1A002DCCB0 /* EditPageViewController.m in Sources */,
+				930284B518EAF79500CB0BF4 /* NoteService.m in Sources */,
 				E125445612BF5B3900D87A0A /* Category.m in Sources */,
 				E125451812BF68F900D87A0A /* Page.m in Sources */,
 				FD9A948C12FAEA2300438F94 /* DateUtils.m in Sources */,
@@ -5483,6 +5496,7 @@
 				FD75DDAD15B021C80043F12C /* UIViewController+Rotation.m in Sources */,
 				CC0E20AE15B87DA100D3468B /* WPWebBridge.m in Sources */,
 				5D97C2F315CAF8D8009B44DD /* UINavigationController+KeyboardFix.m in Sources */,
+				930284B918EB078900CB0BF4 /* NoteServiceRemote.m in Sources */,
 				5D1EE80215E7AF3E007F1F02 /* JetpackSettingsViewController.m in Sources */,
 				5D3E334E15EEBB6B005FC6F2 /* ReachabilityUtils.m in Sources */,
 				5D87E10C15F5120C0012C595 /* SettingsPageViewController.m in Sources */,
