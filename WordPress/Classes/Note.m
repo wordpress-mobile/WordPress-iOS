@@ -297,6 +297,10 @@ const NSUInteger NoteKeepCount = 20;
     return title;
 }
 
+- (NSString *)bodyContentHtml {
+    return [[self.noteData objectForKey:@"body"] objectForKey:@"html"];
+}
+
 - (NSString *)authorForDisplay {
     // Annoyingly, not directly available; could try to parse from self.subject
     return nil;
@@ -353,6 +357,22 @@ const NSUInteger NoteKeepCount = 20;
 
 - (BOOL)unreadStatusForDisplay {
     return !self.isRead;
+}
+
+- (WPNoteTemplateType)templateType {
+    NSDictionary *noteBody = [[self noteData] objectForKey:@"body"];
+    if (noteBody) {
+        NSString *noteTypeName = [noteBody objectForKey:@"template"];
+        
+        if ([noteTypeName isEqualToString:@"single-line-list"])
+            return WPNoteTemplateSingleLineList;
+        else if ([noteTypeName isEqualToString:@"multi-line-list"])
+            return WPNoteTemplateMultiLineList;
+        else if ([noteTypeName isEqualToString:@"big-badge"])
+            return WPNoteTemplateBigBadge;
+    }
+    
+    return WPNoteTemplateUnknown;
 }
 
 @end
