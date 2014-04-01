@@ -261,6 +261,18 @@ const NSUInteger NoteKeepCount = 20;
 	return self.noteData[@"body"][@"html"];
 }
 
+- (NSNumber *)metaBlogId {
+    return self.noteData[@"meta"][@"blog_id"];
+}
+
+- (NSString *)metaSiteId {
+    return self.noteData[@"meta"][@"ids"][@"site"];
+}
+
+- (NSString *)metaPostId {
+    return self.noteData[@"meta"][@"ids"][@"post"];
+}
+
 - (WPNoteTemplateType)templateType {
     NSDictionary *noteBody = [[self noteData] objectForKey:@"body"];
     if (noteBody) {
