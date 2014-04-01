@@ -22,6 +22,7 @@
 #import "Note.h"
 #import "NoteBodyItem.h"
 #import "NoteAction.h"
+#import "NoteService.h"
 
 
 
@@ -295,9 +296,10 @@ typedef void (^NoteToggleFollowBlock)(BOOL success);
 			item.action.following = isFollowingNow;
 			
 			// Let's refresh the note: is_following change isn't permanent!
-			[_note refreshNoteDataWithSuccess:nil failure:^(NSError *error) {
-				DDLogVerbose(@"[Rest API] ! %@", [error localizedDescription]);
-			}];
+            NoteService *noteService = [[NoteService alloc] initWithManagedObjectContext:_note.managedObjectContext];
+            [noteService refreshNote:_note success:nil failure:^(NSError *error){
+                DDLogVerbose(@"[Rest API] ! %@", [error localizedDescription]);
+            }];
 		}
 		
 		block(success);
