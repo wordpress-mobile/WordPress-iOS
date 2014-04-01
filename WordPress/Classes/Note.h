@@ -1,11 +1,3 @@
-//
-//  Note.h
-//  WordPress
-//
-//  Created by Beau Collins on 11/18/12.
-//  Copyright (c) 2012 WordPress. All rights reserved.
-//
-
 #import <Foundation/Foundation.h>
 #import "WPAccount.h"
 #import "WPContentViewProvider.h"
