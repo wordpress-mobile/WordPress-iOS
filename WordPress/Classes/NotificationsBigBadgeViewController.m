@@ -41,6 +41,7 @@
     _scrollView = [[UIScrollView alloc] init];
     [_scrollView setTranslatesAutoresizingMaskIntoConstraints:NO];
     [_scrollView setScrollEnabled:YES];
+    [_scrollView setClipsToBounds:NO];
     self.view.backgroundColor = [WPStyleGuide itsEverywhereGrey];
     
     // Create badge view
@@ -72,19 +73,22 @@
      ];
     
     // Set note label from HTML content
-    _noteLabel = [[DTAttributedLabel alloc] initWithFrame:CGRectMake(0.0, 0.0, 260.0f, 0.0f)];
+    _noteLabel = [[DTAttributedLabel alloc] initWithFrame:CGRectMake(0.0, 0.0, IS_IPAD ? 480.0f : 320.0f, 0.0f)];
+    [_noteLabel setClipsToBounds:NO];
     [_noteLabel setTranslatesAutoresizingMaskIntoConstraints:NO];
+    [_noteLabel setLayoutFrameHeightIsConstrainedByBounds:NO];
     _noteLabel.delegate = self;
     [_noteLabel setBackgroundColor:[UIColor clearColor]];
+    [_noteLabel setEdgeInsets:UIEdgeInsetsMake(0.0f, 20.0f, 0.0f, 20.0f)];
     _noteLabel.numberOfLines = 0;
     [_scrollView addSubview:_noteLabel];
     
     NSString *noteBody = _note.bodyHtml;
     if (!noteBody)
         noteBody = _note.titleForDisplay;
-    noteBody = [NSString stringWithFormat:@"<center>%@</center>", noteBody];
     NSAttributedString *noteContentAttributedString = [[NSAttributedString alloc] initWithHTMLData:[noteBody dataUsingEncoding:NSUTF8StringEncoding] options:[WPStyleGuide defaultDTCoreTextOptions] documentAttributes:nil];
     [_noteLabel setAttributedString:noteContentAttributedString];
+    
     
     
     // Adjust height of noteLabel to match height of text content
@@ -110,7 +114,14 @@
     NSDictionary *viewsDictionary = NSDictionaryOfVariableBindings(_scrollView, _badgeImageView, _noteLabel);
     [self.view addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"H:|[_scrollView]|" options:0 metrics:0 views:viewsDictionary]];
     [self.view addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"V:|[_scrollView]|" options:0 metrics:0 views:viewsDictionary]];
-    [_scrollView addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"V:|-(>=20)-[_badgeImageView(==128)]-20-[_noteLabel]|" options:0 metrics:0 views:viewsDictionary]];
+    
+    NSNumber *badgeSize = [NSNumber numberWithInt:128];
+    NSNumber *marginSize = [NSNumber numberWithInt:20];;
+    NSDictionary *metricsDictionary = @{
+                            @"badgeSize" : badgeSize,
+                            @"marginSize" : marginSize
+                            };
+    [_scrollView addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"V:|-(>=marginSize)-[_badgeImageView(==badgeSize)]-marginSize-[_noteLabel]|" options:0 metrics:metricsDictionary views:viewsDictionary]];
     
     [_scrollView addConstraint:[NSLayoutConstraint constraintWithItem:_noteLabel
                                                            attribute:NSLayoutAttributeBottom
@@ -119,8 +130,6 @@
                                                            attribute:NSLayoutAttributeBottom
                                                           multiplier:1.0
                                                             constant:0]];
-    
-
     
     // Center badge image view
     [_scrollView addConstraint:[NSLayoutConstraint constraintWithItem:_badgeImageView
@@ -131,8 +140,9 @@
                                                            multiplier:1.0
                                                              constant:0.0]];
 
-    // Calculate how much to bring the y coordinate up in order to center both the badge and note label
-    int yPositionAdjustment = (44 + _noteLabel.frame.size.height) / 2;
+    // Calculate how far to bring the y coordinate up in order to center both the badge and note label
+    int badgeHeight = badgeSize.intValue / 2 - marginSize.intValue;
+    int yPositionAdjustment = (badgeHeight + _noteLabel.frame.size.height) / 2;
     
     [_scrollView addConstraint:[NSLayoutConstraint constraintWithItem:_badgeImageView
                                                             attribute:NSLayoutAttributeCenterY
