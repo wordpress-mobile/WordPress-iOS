@@ -29,6 +29,12 @@ typedef enum {
 @property (nonatomic, retain) NSString *noteID;
 @property (nonatomic, strong, readonly) NSString *commentText;
 @property (nonatomic, strong, readonly) NSDictionary *noteData;
+@property (nonatomic, strong, readonly) NSArray *bodyItems;		// Array of NoteBodyItem Objects
+@property (nonatomic, strong, readonly) NSString *bodyHeaderText;
+@property (nonatomic, strong, readonly) NSString *bodyHeaderLink;
+@property (nonatomic, strong, readonly) NSString *bodyFooterText;
+@property (nonatomic, strong, readonly) NSString *bodyFooterLink;
+@property (nonatomic, strong, readonly) NSString *bodyHtml;
 @property (nonatomic, retain) WPAccount *account;
 
 - (BOOL)isComment;
@@ -65,6 +71,5 @@ typedef enum {
 - (void)refreshNoteDataWithSuccess:(void (^)())success failure:(void (^)(NSError *error))failure;
 - (void)markAsReadWithSuccess:(void (^)())success failure:(void (^)(NSError *error))failure;
 - (WPNoteTemplateType)templateType;
-- (NSString *)bodyContentHtml;
 
 @end
