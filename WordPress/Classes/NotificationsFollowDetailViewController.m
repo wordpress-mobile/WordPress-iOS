@@ -112,6 +112,7 @@ typedef void (^NoteToggleFollowBlock)(BOOL success);
 	[self.tableView registerClass:[WPTableHeaderViewCell class] forCellReuseIdentifier:WPNotificationHeaderCellIdentifier];
 	[self.tableView registerClass:[NotificationsFollowTableViewCell class] forCellReuseIdentifier:WPNotificationFollowCellIdentifier];
 	[self.tableView registerClass:[UITableViewCell class] forCellReuseIdentifier:WPNotificationFooterCellIdentifier];
+	self.tableView.separatorInset = UIEdgeInsetsZero;
 	
     [self.tableView setDelegate:self];
     [WPStyleGuide configureColorsForView:self.view andTableView:self.tableView];
@@ -157,8 +158,13 @@ typedef void (^NoteToggleFollowBlock)(BOOL success);
 
 - (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section
 {
-	NSString *subject = [NSString decodeXMLCharactersIn:_note.subject];
-	return [WPTableHeaderViewCell cellHeightForText:subject];
+	CGFloat height = 0.0f;
+	if (section == WPNotificationSectionsFollow) {
+		NSString *subject = [NSString decodeXMLCharactersIn:_note.subject];
+		height = [WPTableHeaderViewCell cellHeightForText:subject];
+	}
+	
+	return height;
 }
 
 - (UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section
@@ -255,6 +261,7 @@ typedef void (^NoteToggleFollowBlock)(BOOL success);
         UITableViewCell *cell			= [tableView dequeueReusableCellWithIdentifier:WPNotificationFooterCellIdentifier];
 
 		cell.accessoryType				= UITableViewCellAccessoryDisclosureIndicator;
+        cell.backgroundColor			= [WPStyleGuide itsEverywhereGrey];
 		cell.textLabel.backgroundColor	= [UIColor clearColor];
 		cell.textLabel.textColor		= [WPStyleGuide newKidOnTheBlockBlue];
 		cell.textLabel.font				= [WPStyleGuide regularTextFont];
@@ -308,7 +315,6 @@ typedef void (^NoteToggleFollowBlock)(BOOL success);
 - (IBAction)viewPostTitle:(id)sender
 {
     [self loadWebViewWithURL:_note.bodyHeaderLink];
-
 }
 
 - (void)loadWebViewWithURL:(NSString*)url
