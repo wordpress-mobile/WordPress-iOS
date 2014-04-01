@@ -144,6 +144,22 @@ extern NSString *const WordPressComApiPushAppId;
                success:(WordPressComApiRestSuccessResponseBlock)success
                failure:(WordPressComApiRestSuccessFailureBlock)failure;
 
+///------------------
+/// @name Blog Themes
+///------------------
+
+- (void)fetchThemesForBlogId:(NSString*)blogId
+                     success:(WordPressComApiRestSuccessResponseBlock)success
+                     failure:(WordPressComApiRestSuccessFailureBlock)failure;
+
+- (void)fetchCurrentThemeForBlogId:(NSString*)blogId
+                           success:(WordPressComApiRestSuccessResponseBlock)success
+                           failure:(WordPressComApiRestSuccessFailureBlock)failure;
+
+- (void)activateThemeForBlogId:(NSString*)blogId themeId:(NSString*)themeId
+                       success:(WordPressComApiRestSuccessResponseBlock)success
+                       failure:(WordPressComApiRestSuccessFailureBlock)failure;
+
 ///-----------------
 /// @name OAuth info
 ///-----------------
