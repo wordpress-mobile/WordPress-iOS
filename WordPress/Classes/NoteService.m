@@ -11,6 +11,7 @@
 #import "ContextManager.h"
 #import "Note.h"
 #import "Blog.h"
+#import "NoteServiceRemote.h"
 
 const NSUInteger NoteKeepCount = 20;
 
@@ -161,12 +162,15 @@ const NSUInteger NoteKeepCount = 20;
 - (void)fetchNewNotificationsWithSuccess:(void (^)(BOOL hasNewNotes))success failure:(void (^)(NSError *error))failure {
     NSNumber *timestamp = [self lastNoteTimestamp];
     
-    [[[WPAccount defaultWordPressComAccount] restApi] fetchNotificationsSince:timestamp success:^(NSArray *notes) {
+    WordPressComApi *api = [[WPAccount defaultWordPressComAccount] restApi];
+    NoteServiceRemote *remote = [[NoteServiceRemote alloc] initWithRemoteApi:api];
+    
+    [remote fetchNotificationsSince:timestamp success:^(NSArray *notes) {
         [self mergeNewNotes:notes];
         if (success) {
             success([notes count] > 0);
         }
-    } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+    } failure:^(NSError *error) {
         DDLogVerbose(@"Failed to fetch notifications - %@", [error localizedDescription]);
         if (failure) {
             failure(error);
@@ -184,17 +188,25 @@ const NSUInteger NoteKeepCount = 20;
             [array addObject:note.noteID];
         }
         
-        [[[WPAccount defaultWordPressComAccount] restApi] refreshNotifications:array fields:@"id,unread" success:nil failure:nil];
+        WordPressComApi *api = [[WPAccount defaultWordPressComAccount] restApi];
+        NoteServiceRemote *remote = [[NoteServiceRemote alloc] initWithRemoteApi:api];
+        [remote refreshNotificationIds:array success:nil failure:nil];
     }
 }
 
 - (void)fetchNotificationsBefore:(NSNumber *)timestamp success:(void (^)())success failure:(void (^)(NSError *))failure {
-    [[[WPAccount defaultWordPressComAccount] restApi] fetchNotificationsBefore:timestamp success:^(NSArray *notes) {
-        [self mergeNewNotes:notes];
+    WordPressComApi *api = [[WPAccount defaultWordPressComAccount] restApi];
+    NoteServiceRemote *remote = [[NoteServiceRemote alloc] initWithRemoteApi:api];
+
+    [remote fetchNotificationsBefore:timestamp success:^(NSArray *notes) {
+        [self.managedObjectContext performBlockAndWait:^{
+            [self mergeNewNotes:notes];
+        }];
+        
         if (success) {
             success();
         }
-    } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+    } failure:^(NSError *error) {
         if (failure) {
             failure(error);
         }
@@ -202,12 +214,18 @@ const NSUInteger NoteKeepCount = 20;
 }
 
 - (void)fetchNotificationsSince:(NSNumber *)timestamp success:(void (^)())success failure:(void (^)(NSError *))failure {
-    [[[WPAccount defaultWordPressComAccount] restApi] fetchNotificationsSince:timestamp success:^(NSArray *notes) {
-        [self mergeNewNotes:notes];
+    WordPressComApi *api = [[WPAccount defaultWordPressComAccount] restApi];
+    NoteServiceRemote *remote = [[NoteServiceRemote alloc] initWithRemoteApi:api];
+
+    [remote fetchNotificationsSince:timestamp success:^(NSArray *notes) {
+        [self.managedObjectContext performBlockAndWait:^{
+            [self mergeNewNotes:notes];
+        }];
+        
         if (success) {
             success();
         }
-    } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+    } failure:^(NSError *error) {
         if (failure) {
             failure(error);
         }
@@ -215,31 +233,44 @@ const NSUInteger NoteKeepCount = 20;
 }
 
 - (void)refreshNote:(Note *)note success:(void (^)())success failure:(void (^)(NSError *))failure {
-    [[[WPAccount defaultWordPressComAccount] restApi] refreshNotifications:@[note.noteID] fields:nil success:^(NSArray *updatedNotes){
-        if ([updatedNotes count] > 0 && ![note isDeleted] && self.managedObjectContext) {
-            [note syncAttributes:updatedNotes[0]];
-        }
-        [[ContextManager sharedInstance] saveContext:self.managedObjectContext];
-        if (success) {
-            success();
-        }
-    } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
-        if (failure) {
-            failure(error);
-        }
-    }];
+    WordPressComApi *api = [[WPAccount defaultWordPressComAccount] restApi];
+    NoteServiceRemote *remote = [[NoteServiceRemote alloc] initWithRemoteApi:api];
+    
+    [remote refreshNoteId:note.noteID
+                  success:^(NSArray *notes) {
+                      [self.managedObjectContext performBlockAndWait:^{
+                          if ([notes count] > 0 && ![note isDeleted] && self.managedObjectContext) {
+                              [note syncAttributes:notes[0]];
+                          }
+                          [[ContextManager sharedInstance] saveContext:self.managedObjectContext];
+                      }];
+
+                      if (success) {
+                          success();
+                      }
+                  }
+                  failure:^(NSError *error) {
+                      if (failure) {
+                          failure(error);
+                      }
+                  }
+     ];
 }
 
 - (void)markNoteAsRead:(Note *)note success:(void (^)())success failure:(void (^)(NSError *))failure {
-    [[[WPAccount defaultWordPressComAccount] restApi] markNoteAsRead:note.noteID success:^(AFHTTPRequestOperation *operation, id responseObject) {
-        if (success) {
-            success();
-        }
-    } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
-        if (failure) {
-            failure(error);
-        }
-    }];
+    WordPressComApi *api = [[WPAccount defaultWordPressComAccount] restApi];
+    NoteServiceRemote *remote = [[NoteServiceRemote alloc] initWithRemoteApi:api];
+    
+    [remote markNoteIdAsRead:note.noteID
+                     success:^{
+                         if (success) {
+                             success();
+                         }
+                     } failure:^(NSError *error) {
+                         if (failure) {
+                             failure(error);
+                         }
+                     }];
 }
 
 @end

@@ -33,9 +33,9 @@
 
 - (void)fetchNotificationsBefore:(NSNumber *)timestamp success:(void (^)())success failure:(void (^)(NSError *error))failure;
 
-- (void)refreshNote:(Note *)note success:(void (^)())success failure:(void (^)(NSError *))failure;
+- (void)refreshNote:(Note *)note success:(void (^)())success failure:(void (^)(NSError *error))failure;
 
-- (void)markNoteAsRead:(Note *)note success:(void (^)())success failure:(void (^)(NSError *))failure;
+- (void)markNoteAsRead:(Note *)note success:(void (^)())success failure:(void (^)(NSError *error))failure;
 
 // Attempt to get the right blog for the note's stats event
 - (Blog *)blogForStatsEventNote:(Note *)note;
