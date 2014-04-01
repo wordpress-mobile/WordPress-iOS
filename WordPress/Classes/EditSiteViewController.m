@@ -1,9 +1,3 @@
-//
-//  EditBlogViewController.m
-//  WordPress
-//
-//  Created by Chris Boyd on 7/23/10.
-
 #import <WordPressApi/WordPressApi.h>
 #import "EditSiteViewController.h"
 #import "NSURL+IDN.h"
