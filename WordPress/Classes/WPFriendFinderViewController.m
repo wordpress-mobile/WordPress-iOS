@@ -1,12 +1,3 @@
-/*
- * WPFriendFinderViewController.m
- *
- * Copyright (c) 2013 WordPress. All rights reserved.
- *
- * Licensed under GNU General Public License 2.0.
- * Some rights reserved. See license.txt
- */
-
 #import <AddressBook/AddressBook.h>
 #import <Accounts/Accounts.h>
 #import <Social/Social.h>

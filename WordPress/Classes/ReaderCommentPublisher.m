@@ -1,8 +1,3 @@
-//
-//  ReaderCommentComposer.m
-//  WordPress
-//
-
 #import "ReaderCommentPublisher.h"
 #import "ContextManager.h"
 #import "NSString+Util.h"
