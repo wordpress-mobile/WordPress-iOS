@@ -117,10 +117,7 @@
     
     NSNumber *badgeSize = [NSNumber numberWithInt:128];
     NSNumber *marginSize = [NSNumber numberWithInt:20];;
-    NSDictionary *metricsDictionary = @{
-                                        @"badgeSize" : badgeSize,
-                                        @"marginSize" : marginSize
-                                        };
+    NSDictionary *metricsDictionary = @{@"badgeSize" : badgeSize, @"marginSize" : marginSize};
     [_scrollView addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"V:|-(>=marginSize)-[_badgeImageView(==badgeSize)]-marginSize-[_noteLabel]|" options:0 metrics:metricsDictionary views:viewsDictionary]];
     
     // Set bottom of note label to bottom of scroll view
@@ -196,12 +193,6 @@
     webViewController.url = button.URL;
     
     [self.navigationController pushViewController:webViewController animated:YES];
-}
-
-- (void)didReceiveMemoryWarning
-{
-    [super didReceiveMemoryWarning];
-    // Dispose of any resources that can be recreated.
 }
 
 @end
