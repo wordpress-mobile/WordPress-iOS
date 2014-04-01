@@ -45,33 +45,8 @@ typedef enum {
 - (BOOL)isFollow;
 - (BOOL)isRead;
 - (BOOL)isUnread;
-
-// Attempt to get the right blog for the note's stats event
-- (Blog *)blogForStatsEvent;
 - (BOOL)statsEvent;
 
 - (void)syncAttributes:(NSDictionary *)data;
-
-+ (void)mergeNewNotes:(NSArray *)notesData;
-
-/**
- Remove old notes from Core Data storage
-
- It will keep at least the 40 latest notes
- @param timestamp if not nil, it well keep all notes newer this timestamp.
- @param context The context which contains the notes to delete.
- */
-+ (void)pruneOldNotesBefore:(NSNumber *)timestamp withContext:(NSManagedObjectContext *)context;
-
-@end
-
-@interface Note (WordPressComApi)
-
-+ (void)fetchNewNotificationsWithSuccess:(void (^)(BOOL hasNewNotes))success failure:(void (^)(NSError *error))failure;
-+ (void)refreshUnreadNotesWithContext:(NSManagedObjectContext *)context;
-+ (void)fetchNotificationsSince:(NSNumber *)timestamp success:(void (^)())success failure:(void (^)(NSError *error))failure;
-+ (void)fetchNotificationsBefore:(NSNumber *)timestamp success:(void (^)())success failure:(void (^)(NSError *error))failure;
-- (void)refreshNoteDataWithSuccess:(void (^)())success failure:(void (^)(NSError *error))failure;
-- (void)markAsReadWithSuccess:(void (^)())success failure:(void (^)(NSError *error))failure;
 
 @end
