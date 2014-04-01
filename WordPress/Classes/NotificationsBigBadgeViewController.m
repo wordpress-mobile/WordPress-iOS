@@ -38,12 +38,13 @@
 {
     [super viewDidLoad];
     
+    [self.view setBackgroundColor:[WPStyleGuide itsEverywhereGrey]];
+    
     _scrollView = [[UIScrollView alloc] init];
     [_scrollView setTranslatesAutoresizingMaskIntoConstraints:NO];
     [_scrollView setScrollEnabled:YES];
-    self.view.backgroundColor = [WPStyleGuide itsEverywhereGrey];
     
-    // Create badge view
+    // Create badge image view
     _badgeImageView = [[UIImageView alloc] init];
     [_badgeImageView setTranslatesAutoresizingMaskIntoConstraints:NO];
     [_badgeImageView setContentMode: UIViewContentModeScaleAspectFit];
@@ -71,7 +72,7 @@
                                     failure:nil
      ];
     
-    // Set note label from HTML content
+    // Create note label
     _noteLabel = [[DTAttributedLabel alloc] initWithFrame:CGRectMake(0.0, 0.0, IS_IPAD ? 480.0f : 320.0f, 0.0f)];
     [_noteLabel setClipsToBounds:NO];
     [_noteLabel setTranslatesAutoresizingMaskIntoConstraints:NO];
@@ -83,6 +84,7 @@
     
     [_scrollView addSubview:_noteLabel];
     
+    // Set note label from HTML content
     NSString *noteBody = _note.bodyHtml;
     if (!noteBody)
         noteBody = _note.titleForDisplay;
@@ -105,7 +107,7 @@
 }
 
 /**
- * Add layout constraints to position views 
+ * Adds auto layout constraints to position views 
  */
 - (void)addLayoutConstraints {
     // Match scrollView dimensions to the main view
@@ -121,6 +123,7 @@
                                         };
     [_scrollView addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"V:|-(>=marginSize)-[_badgeImageView(==badgeSize)]-marginSize-[_noteLabel]|" options:0 metrics:metricsDictionary views:viewsDictionary]];
     
+    // Set bottom of note label to bottom of scroll view
     [_scrollView addConstraint:[NSLayoutConstraint constraintWithItem:_noteLabel
                                                             attribute:NSLayoutAttributeBottom
                                                             relatedBy:NSLayoutRelationEqual
@@ -129,19 +132,12 @@
                                                            multiplier:1.0
                                                              constant:0]];
     
-    // Center badge image view
-    [_scrollView addConstraint:[NSLayoutConstraint constraintWithItem:_badgeImageView
-                                                            attribute:NSLayoutAttributeCenterX
-                                                            relatedBy:NSLayoutRelationEqual
-                                                               toItem:_scrollView
-                                                            attribute:NSLayoutAttributeCenterX
-                                                           multiplier:1.0
-                                                             constant:0.0]];
     
     // Calculate how far to bring the y coordinate up in order to center both the badge and note label
     int badgeHeight = badgeSize.intValue / 2 - marginSize.intValue;
     int yPositionAdjustment = (badgeHeight + _noteLabel.frame.size.height) / 2;
     
+    // Apply center constraints
     [_scrollView addConstraint:[NSLayoutConstraint constraintWithItem:_badgeImageView
                                                             attribute:NSLayoutAttributeCenterY
                                                             relatedBy:NSLayoutRelationEqual
@@ -150,7 +146,14 @@
                                                            multiplier:1.0
                                                              constant:-yPositionAdjustment]];
     
-    // Center note label
+    [_scrollView addConstraint:[NSLayoutConstraint constraintWithItem:_badgeImageView
+                                                            attribute:NSLayoutAttributeCenterX
+                                                            relatedBy:NSLayoutRelationEqual
+                                                               toItem:_scrollView
+                                                            attribute:NSLayoutAttributeCenterX
+                                                           multiplier:1.0
+                                                             constant:0.0]];
+    
     [_scrollView addConstraint:[NSLayoutConstraint constraintWithItem:_noteLabel
                                                             attribute:NSLayoutAttributeCenterX
                                                             relatedBy:NSLayoutRelationEqual
