@@ -7,33 +7,20 @@
 //
 
 #import "Note.h"
+#import "NoteBodyItem.h"
 #import "NSString+Helpers.h"
 #import "NSString+XMLExtensions.h"
 #import "WordPressComApi.h"
 #import "ContextManager.h"
+#import "XMLParserCollecter.h"
+
+
 
 const NSUInteger NoteKeepCount = 20;
 
-@interface XMLParserCollecter : NSObject <NSXMLParserDelegate>
-@property (nonatomic, strong) NSMutableString *result;
-@end
-@implementation XMLParserCollecter
-
-- (id)init {
-    if (self = [super init]) {
-        self.result = [[NSMutableString alloc] init];
-    }
-    return self;
-}
-
-- (void)parser:(NSXMLParser *)parser foundCharacters:(NSString *)string {
-    [self.result appendString:string];
-}
-
-@end
-
 @interface Note ()
 
+@property (nonatomic, strong) NSArray *bodyItems;
 @property (nonatomic, strong) NSDictionary *noteData;
 @property (nonatomic, strong) NSString *commentText;
 @property (nonatomic, strong) NSDate *date;
@@ -50,9 +37,10 @@ const NSUInteger NoteKeepCount = 20;
 @dynamic icon;
 @dynamic noteID;
 @dynamic account;
+@synthesize bodyItems	= _bodyItems;
 @synthesize commentText = _commentText;
-@synthesize noteData = _noteData;
-@synthesize date = _date;
+@synthesize noteData	= _noteData;
+@synthesize date		= _date;
 
 
 + (void)mergeNewNotes:(NSArray *)notesData {
@@ -242,6 +230,38 @@ const NSUInteger NoteKeepCount = 20;
     return _noteData;
 }
 
+- (NSArray *)bodyItems {
+	if (_bodyItems) {
+		return _bodyItems;
+	}
+	
+	NSArray *rawItems = [self.noteData[@"body"] arrayForKey:@"items"];
+	if (rawItems.count) {
+		_bodyItems = [NoteBodyItem parseItems:rawItems];
+	}
+	return _bodyItems;
+}
+
+- (NSString *)bodyHeaderText {
+	return self.noteData[@"body"][@"header_text"];
+}
+
+- (NSString *)bodyHeaderLink {
+	return self.noteData[@"body"][@"header_link"];
+}
+
+- (NSString *)bodyFooterText {
+	return self.noteData[@"body"][@"footer_text"];
+}
+
+- (NSString *)bodyFooterLink {
+	return self.noteData[@"body"][@"footer_link"];
+}
+
+- (NSString *)bodyHtml {
+	return self.noteData[@"body"][@"html"];
+}
+
 #pragma mark - NSManagedObject methods
 
 - (void)didTurnIntoFault {
@@ -275,9 +295,7 @@ const NSUInteger NoteKeepCount = 20;
         [parser parse];
         
         self.commentText = collector.result;
-        
     }
-    
 }
 
 
@@ -295,10 +313,6 @@ const NSUInteger NoteKeepCount = 20;
     }
     title = [title stringByDecodingXMLCharacters];
     return title;
-}
-
-- (NSString *)bodyContentHtml {
-    return [[self.noteData objectForKey:@"body"] objectForKey:@"html"];
 }
 
 - (NSString *)authorForDisplay {

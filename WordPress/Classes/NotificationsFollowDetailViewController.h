@@ -12,6 +12,6 @@
 
 @interface NotificationsFollowDetailViewController : UIViewController 
 
-- (id)initWithNote:(Note *)note;
+- (instancetype)initWithNote:(Note *)note;
 
 @end
