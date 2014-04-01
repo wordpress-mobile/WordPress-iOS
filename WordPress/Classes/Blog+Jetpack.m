@@ -14,6 +14,7 @@
 #import "WordPressAppDelegate.h"
 #import "ContextManager.h"
 #import "WordPressComOAuthClient.h"
+#import "NoteService.h"
 
 NSString * const BlogJetpackErrorDomain = @"BlogJetpackError";
 NSString * const BlogJetpackApiBaseUrl = @"https://public-api.wordpress.com/";
@@ -157,7 +158,9 @@ NSString * const BlogJetpackApiPath = @"get-user-blogs/1.0";
                                      
                                      // Sadly we don't care if this succeeds or not
                                      [account syncBlogsWithSuccess:nil failure:nil];
-                                     [Note fetchNewNotificationsWithSuccess:nil failure:nil];
+                                     
+                                     NoteService *noteService = [[NoteService alloc] initWithManagedObjectContext:account.managedObjectContext];
+                                     [noteService fetchNewNotificationsWithSuccess:nil failure:nil];
                                  }
                                  
                                  if (success) {
