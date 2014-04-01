@@ -41,7 +41,7 @@
 
 @dynamic geolocation, tags, postFormat;
 @dynamic categories;
-@synthesize specialType, featuredImageURL;
+@synthesize specialType;
 
 #pragma mark - NSManagedObject subclass methods
 
@@ -49,7 +49,6 @@
     [super didTurnIntoFault];
     
     self.specialType = nil;
-    self.featuredImageURL = nil;
 }
 
 #pragma mark -
@@ -272,20 +271,33 @@
     }
 }
 
-- (void)getFeaturedImageURLWithSuccess:(void (^)())success failure:(void (^)(NSError *error))failure {
-    DDLogMethod();
-    NSArray *parameters = [NSArray arrayWithObjects:self.blog.blogID, self.blog.username, self.blog.password, self.post_thumbnail, nil];
-    [self.blog.api callMethod:@"wp.getMediaItem"
-                   parameters:parameters
-                      success:^(AFHTTPRequestOperation *operation, id responseObject) {
-                          NSDictionary *mediaItem = (NSDictionary *)responseObject;
-                          self.featuredImageURL = [mediaItem stringForKey:@"link"];
-                          if (success) success();
-                      } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
-                          if (failure) {
-                              failure(error);
-                          }
-                      }];
+- (Media *)featuredImage {
+    if (!self.post_thumbnail) {
+        return nil;
+    }
+
+    NSArray *arr = [self.blog.media allObjects];
+    if ([arr count] == 0) {
+        return nil;
+    }
+
+    NSUInteger index = [arr indexOfObjectPassingTest:^BOOL(id obj, NSUInteger idx, BOOL *stop) {
+        if ([((Media *)obj).mediaID isEqualToNumber:self.post_thumbnail] ){
+            stop = YES;
+            return YES;
+        }
+        return NO;
+    }];
+
+    if (index == NSNotFound) {
+        return nil;
+    }
+
+    return [arr objectAtIndex:index];
+}
+
+- (void)setFeaturedImage:(Media *)featuredImage {
+    self.post_thumbnail = featuredImage.mediaID;
 }
 
 @end
