@@ -37,7 +37,8 @@
         [self.textLabel setBackgroundColor:[UIColor clearColor]];
         [self.textLabel setTextColor:[WPStyleGuide littleEddieGrey]];
         [self.textLabel setFont:[WPStyleGuide postTitleFont]];
-        
+        [self.textLabel setFont:[WPStyleGuide tableviewSectionHeaderFont]];
+		
         [self.detailTextLabel setFont:[WPStyleGuide subtitleFont]];
         [self.detailTextLabel setTextColor:[WPStyleGuide baseDarkerBlue]];
         [self.detailTextLabel setBackgroundColor:[UIColor clearColor]];
@@ -47,6 +48,7 @@
         
         self.backgroundColor = [WPStyleGuide itsEverywhereGrey];
     }
+	
     return self;
 }
 
