@@ -1,11 +1,3 @@
-//
-//  NotificationsFollowTableViewCell.m
-//  WordPress
-//
-//  Created by Dan Roundhill on 12/4/12.
-//  Copyright (c) 2012 WordPress. All rights reserved.
-//
-
 #import "NotificationsFollowTableViewCell.h"
 #import "FollowButton.h"
 
