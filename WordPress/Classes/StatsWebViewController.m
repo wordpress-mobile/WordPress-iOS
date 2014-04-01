@@ -1,9 +1,3 @@
-//
-//  StatsWebViewController.m
-//
-//  Created by Eric Johnson on 5/31/12.
-//
-
 #import "StatsWebViewController.h"
 #import "Blog+Jetpack.h"
 #import "WordPressAppDelegate.h"
