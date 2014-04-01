@@ -11,6 +11,13 @@
 #import "WPAccount.h"
 #import "WPContentViewProvider.h"
 
+typedef enum {
+    WPNoteTemplateUnknown,
+    WPNoteTemplateSingleLineList,
+    WPNoteTemplateMultiLineList,
+    WPNoteTemplateBigBadge,
+} WPNoteTemplateType;
+
 @interface Note : NSManagedObject<WPContentViewProvider>
 
 @property (nonatomic, retain) NSNumber *timestamp;
@@ -57,5 +64,7 @@
 + (void)fetchNotificationsBefore:(NSNumber *)timestamp success:(void (^)())success failure:(void (^)(NSError *error))failure;
 - (void)refreshNoteDataWithSuccess:(void (^)())success failure:(void (^)(NSError *error))failure;
 - (void)markAsReadWithSuccess:(void (^)())success failure:(void (^)(NSError *error))failure;
+- (WPNoteTemplateType)templateType;
+- (NSString *)bodyContentHtml;
 
 @end
