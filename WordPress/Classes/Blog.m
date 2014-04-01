@@ -15,6 +15,7 @@
 #import "NSURL+IDN.h"
 #import "NSString+XMLExtensions.h"
 #import "WPError.h"
+#import "Theme.h"
 #import "ContextManager.h"
 #import "WordPressComApi.h"
 #import "CategoryService.h"
@@ -43,12 +44,17 @@ NSString *const LastUsedBlogURLDefaultsKey = @"LastUsedBlogURLDefaultsKey";
 
 @dynamic blogID, blogName, url, xmlrpc, apiKey;
 @dynamic hasOlderPosts, hasOlderPages;
-@dynamic posts, categories, comments; 
+@dynamic posts, categories, comments, themes, media;
+@dynamic currentThemeId;
 @dynamic lastPostsSync, lastStatsSync, lastPagesSync, lastCommentsSync, lastUpdateWarning;
-@synthesize isSyncingPosts, isSyncingPages, isSyncingComments;
 @dynamic geolocationEnabled, options, postFormats, isActivated, visible;
 @dynamic account;
 @dynamic jetpackAccount;
+@synthesize isSyncingPosts;
+@synthesize isSyncingPages;
+@synthesize isSyncingComments;
+@synthesize videoPressEnabled;
+@synthesize isSyncingMedia;
 
 #pragma mark - NSManagedObject subclass methods
 
@@ -345,21 +351,20 @@ NSString *const LastUsedBlogURLDefaultsKey = @"LastUsedBlogURLDefaultsKey";
 
 - (NSDictionary *)getImageResizeDimensions{
     CGSize smallSize, mediumSize, largeSize;
-    NSInteger smallSizeWidth = [[self getOptionValue:@"thumbnail_size_w"] integerValue] > 0 ? [[self getOptionValue:@"thumbnail_size_w"] integerValue] : ImageSizeSmallWidth;
-    NSInteger smallSizeHeight = [[self getOptionValue:@"thumbnail_size_h"] integerValue] > 0 ? [[self getOptionValue:@"thumbnail_size_h"] integerValue] : ImageSizeSmallHeight;
-    NSInteger mediumSizeWidth = [[self getOptionValue:@"medium_size_w"] integerValue] > 0 ? [[self getOptionValue:@"medium_size_w"] integerValue] : ImageSizeMediumWidth;
-    NSInteger mediumSizeHeight = [[self getOptionValue:@"medium_size_h"] integerValue] > 0 ? [[self getOptionValue:@"medium_size_h"] integerValue] : ImageSizeMediumHeight;
-    NSInteger largeSizeWidth = [[self getOptionValue:@"large_size_w"] integerValue] > 0 ? [[self getOptionValue:@"large_size_w"] integerValue] : ImageSizeLargeWidth;
-    NSInteger largeSizeHeight = [[self getOptionValue:@"large_size_h"] integerValue] > 0 ? [[self getOptionValue:@"large_size_h"] integerValue] : ImageSizeLargeHeight;
+    CGFloat smallSizeWidth = [[self getOptionValue:@"thumbnail_size_w"] floatValue] > 0 ? [[self getOptionValue:@"thumbnail_size_w"] floatValue] : ImageSizeSmallWidth;
+    CGFloat smallSizeHeight = [[self getOptionValue:@"thumbnail_size_h"] floatValue] > 0 ? [[self getOptionValue:@"thumbnail_size_h"] floatValue] : ImageSizeSmallHeight;
+    CGFloat mediumSizeWidth = [[self getOptionValue:@"medium_size_w"] floatValue] > 0 ? [[self getOptionValue:@"medium_size_w"] floatValue] : ImageSizeMediumWidth;
+    CGFloat mediumSizeHeight = [[self getOptionValue:@"medium_size_h"] floatValue] > 0 ? [[self getOptionValue:@"medium_size_h"] floatValue] : ImageSizeMediumHeight;
+    CGFloat largeSizeWidth = [[self getOptionValue:@"large_size_w"] floatValue] > 0 ? [[self getOptionValue:@"large_size_w"] floatValue] : ImageSizeLargeWidth;
+    CGFloat largeSizeHeight = [[self getOptionValue:@"large_size_h"] floatValue] > 0 ? [[self getOptionValue:@"large_size_h"] floatValue] : ImageSizeLargeHeight;
     
     smallSize = CGSizeMake(smallSizeWidth, smallSizeHeight);
     mediumSize = CGSizeMake(mediumSizeWidth, mediumSizeHeight);
     largeSize = CGSizeMake(largeSizeWidth, largeSizeHeight);
     
-    return [NSDictionary dictionaryWithObjectsAndKeys: [NSValue valueWithCGSize:smallSize], @"smallSize", 
-            [NSValue valueWithCGSize:mediumSize], @"mediumSize", 
-            [NSValue valueWithCGSize:largeSize], @"largeSize", 
-            nil];
+    return @{@"smallSize": [NSValue valueWithCGSize:smallSize],
+             @"mediumSize": [NSValue valueWithCGSize:mediumSize],
+             @"largeSize": [NSValue valueWithCGSize:largeSize]};
 }
 
 
@@ -548,6 +553,16 @@ NSString *const LastUsedBlogURLDefaultsKey = @"LastUsedBlogURLDefaultsKey";
     [self.api enqueueXMLRPCRequestOperation:operation];
 }
 
+- (void)syncMediaLibraryWithSuccess:(void (^)())success failure:(void (^)(NSError *))failure {
+    if (self.isSyncingMedia) {
+        DDLogWarn(@"Already syncing media. Skip");
+        return;
+    }
+    self.isSyncingMedia = YES;
+    WPXMLRPCRequestOperation *operation = [self operationForMediaLibraryWithSuccess:success failure:failure];
+    [self.api enqueueXMLRPCRequestOperation:operation];
+}
+
 - (void)syncPostFormatsWithSuccess:(void (^)())success failure:(void (^)(NSError *error))failure {
     WPXMLRPCRequestOperation *operation = [self operationForPostFormatsWithSuccess:success failure:failure];
     [self.api enqueueXMLRPCRequestOperation:operation];
@@ -579,6 +594,12 @@ NSString *const LastUsedBlogURLDefaultsKey = @"LastUsedBlogURLDefaultsKey";
         operation = [self operationForPagesWithSuccess:nil failure:nil loadMore:NO];
         [operations addObject:operation];
         self.isSyncingPages = YES;
+    }
+    
+    if (!self.isSyncingMedia) {
+        operation = [self operationForMediaLibraryWithSuccess:nil failure:nil];
+        [operations addObject:operation];
+        self.isSyncingMedia = YES;
     }
 
     AFHTTPRequestOperation *combinedOperation = [self.api combinedHTTPRequestOperationWithOperations:operations success:^(AFHTTPRequestOperation *operation, id responseObject) {
@@ -891,6 +912,27 @@ NSString *const LastUsedBlogURLDefaultsKey = @"LastUsedBlogURLDefaultsKey";
                 failure(error);
             }
         }];
+    }];
+    return operation;
+}
+
+
+- (WPXMLRPCRequestOperation *)operationForMediaLibraryWithSuccess:(void (^)())success failure:(void (^)(NSError *))failure {
+    WPXMLRPCRequest *mediaLibraryRequest = [self.api XMLRPCRequestWithMethod:@"wp.getMediaLibrary" parameters:[self getXMLRPCArgsWithExtra:nil]];
+    WPXMLRPCRequestOperation *operation = [self.api XMLRPCRequestOperationWithRequest:mediaLibraryRequest success:^(AFHTTPRequestOperation *operation, id responseObject) {
+        [Media mergeNewMedia:responseObject forBlog:self];
+        self.isSyncingMedia = NO;
+        if (success) {
+            success();
+        }
+        
+    } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+        DDLogError(@"Error syncing media library: %@", [error localizedDescription]);
+        self.isSyncingMedia = NO;
+        
+        if (failure) {
+            failure(error);
+        }
     }];
     return operation;
 }
