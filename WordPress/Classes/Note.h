@@ -35,6 +35,7 @@ typedef enum {
 @property (nonatomic, strong, readonly) NSString *bodyFooterText;
 @property (nonatomic, strong, readonly) NSString *bodyFooterLink;
 @property (nonatomic, strong, readonly) NSString *bodyHtml;
+@property (nonatomic, readonly) WPNoteTemplateType templateType;
 @property (nonatomic, retain) WPAccount *account;
 
 - (BOOL)isComment;
@@ -70,6 +71,5 @@ typedef enum {
 + (void)fetchNotificationsBefore:(NSNumber *)timestamp success:(void (^)())success failure:(void (^)(NSError *error))failure;
 - (void)refreshNoteDataWithSuccess:(void (^)())success failure:(void (^)(NSError *error))failure;
 - (void)markAsReadWithSuccess:(void (^)())success failure:(void (^)(NSError *error))failure;
-- (WPNoteTemplateType)templateType;
 
 @end
