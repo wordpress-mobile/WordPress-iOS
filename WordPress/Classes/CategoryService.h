@@ -8,12 +8,11 @@
  */
 
 #import <Foundation/Foundation.h>
+#import "BaseLocalService.h"
 
 @class Category;
 
-@interface CategoryService : NSObject
-
-- (id)initWithManagedObjectContext:(NSManagedObjectContext *)context;
+@interface CategoryService : NSObject <BaseLocalService>
 
 - (BOOL)existsName:(NSString *)name forBlogObjectID:(NSManagedObjectID *)blogObjectID withParentId:(NSNumber *)parentId;
 

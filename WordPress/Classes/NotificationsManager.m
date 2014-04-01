@@ -15,6 +15,7 @@
 #import "UIDevice+WordPressIdentifier.h"
 #import <WPXMLRPCClient.h>
 #import "ContextManager.h"
+#import "NoteService.h"
 
 static NSString *const NotificationsDeviceIdKey = @"notification_device_id";
 static NSString *const NotificationsPreferencesKey = @"notification_preferences";
@@ -84,7 +85,8 @@ NSString *const NotificationsDeviceToken = @"apnsDeviceToken";
 
 #pragma mark - Notification handling
 
-+ (void)handleNotification:(NSDictionary *)userInfo forState:(UIApplicationState)state completionHandler:(void (^)(UIBackgroundFetchResult))completionHandler {
++ (void)handleNotification:(NSDictionary *)userInfo forState:(UIApplicationState)state completionHandler:(void (^)(UIBackgroundFetchResult))completionHandler
+{
     DDLogVerbose(@"Received push notification:\nPayload: %@\nCurrent Application state: %d", userInfo, state);
     
     // Try to pull the badge number from the notification object
@@ -113,7 +115,9 @@ NSString *const NotificationsDeviceToken = @"apnsDeviceToken";
             
         case UIApplicationStateBackground:
             if (completionHandler) {
-                [Note fetchNewNotificationsWithSuccess:^(BOOL hasNewNotes) {
+                NoteService *noteService = [[NoteService alloc] initWithManagedObjectContext:[[ContextManager sharedInstance] backgroundContext]];
+                
+                [noteService fetchNewNotificationsWithSuccess:^(BOOL hasNewNotes) {
                     DDLogVerbose(@"notification fetch completion handler completed with new notes: %@", hasNewNotes ? @"YES" : @"NO");
                     if (hasNewNotes) {
                         completionHandler(UIBackgroundFetchResultNewData);
