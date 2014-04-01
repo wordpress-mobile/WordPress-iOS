@@ -7,7 +7,6 @@
 //
 
 #import <Foundation/Foundation.h>
-#import <CoreData/CoreData.h>
 #import "WPAccount.h"
 #import "WPContentViewProvider.h"
 
@@ -27,6 +26,7 @@ typedef enum {
 @property (nonatomic, retain) NSNumber *unread;
 @property (nonatomic, retain) NSString *icon;
 @property (nonatomic, retain) NSString *noteID;
+@property (nonatomic, retain) WPAccount *account;
 @property (nonatomic, strong, readonly) NSString *commentText;
 @property (nonatomic, strong, readonly) NSDictionary *noteData;
 @property (nonatomic, strong, readonly) NSArray *bodyItems;		// Array of NoteBodyItem Objects
@@ -36,7 +36,6 @@ typedef enum {
 @property (nonatomic, strong, readonly) NSString *bodyFooterLink;
 @property (nonatomic, strong, readonly) NSString *bodyHtml;
 @property (nonatomic, readonly) WPNoteTemplateType templateType;
-@property (nonatomic, retain) WPAccount *account;
 
 - (BOOL)isComment;
 - (BOOL)isLike;
