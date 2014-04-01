@@ -71,7 +71,7 @@
      ];
 }
 
-- (void)markNoteAsRead:(NSString *)noteId success:(void (^)())success failure:(void (^)(NSError *))failure
+- (void)markNoteIdAsRead:(NSString *)noteId success:(void (^)())success failure:(void (^)(NSError *))failure
 {
     [self.api markNoteAsRead:noteId
                      success:^(AFHTTPRequestOperation *operation, id responseObject) {
