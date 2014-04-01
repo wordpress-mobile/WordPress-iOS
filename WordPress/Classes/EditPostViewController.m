@@ -1,11 +1,3 @@
-//
-//  EditPostViewController.m
-//  WordPress
-//
-//  Created by ? on ?.
-//  Copyright (c) 2013 WordPress. All rights reserved.
-//
-
 #import "EditPostViewController.h"
 #import "EditPostViewController_Internal.h"
 #import "ContextManager.h"
