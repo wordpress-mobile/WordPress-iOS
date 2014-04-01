@@ -1,11 +1,3 @@
-//
-//  EditCommentViewController.h
-//  WordPress
-//
-//  Created by John Bickerstaff on 1/24/10.
-//  
-//
-
 #import <UIKit/UIKit.h>
 #import "Comment.h"
 
