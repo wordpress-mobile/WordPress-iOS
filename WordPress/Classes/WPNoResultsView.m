@@ -1,11 +1,3 @@
-//
-//  WPNoResultsView.m
-//  WordPress
-//
-//  Created by Eric Johnson on 8/30/12.
-//  Copyright (c) 2012 WordPress. All rights reserved.
-//
-
 #import "WPNoResultsView.h"
 #import <QuartzCore/QuartzCore.h>
 #import "WPStyleGuide.h"

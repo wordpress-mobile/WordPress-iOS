@@ -1,10 +1,3 @@
-//  NewWPWalkthroughOverlayView.m
-//  WordPress
-//
-//  Created by Aaron Douglas on 9/5/2013
-//  Copyright (c) 2013 WordPress. All rights reserved.
-//
-
 #import "WPAlertView.h"
 #import "WPNUXPrimaryButton.h"
 #import "WPNUXSecondaryButton.h"
