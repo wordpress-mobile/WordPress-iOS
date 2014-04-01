@@ -1,9 +1,3 @@
-//
-//  WPWebView.m
-//
-//  Created by Eric Johnson on 5/23/12.
-//
-
 #import "WPWebView.h"
 #import "Reachability.h"
 #import "ReachabilityUtils.h"

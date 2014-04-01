@@ -1,11 +1,3 @@
-//
-//  FollowButton.m
-//  WordPress
-//
-//  Created by Beau Collins on 12/5/12.
-//  Copyright (c) 2012 WordPress. All rights reserved.
-//
-
 #import "FollowButton.h"
 #import "NSString+XMLExtensions.h"
 #import "WPToast.h"
