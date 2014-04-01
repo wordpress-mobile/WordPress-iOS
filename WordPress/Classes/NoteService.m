@@ -1,10 +1,11 @@
-//
-//  NoteService.m
-//  WordPress
-//
-//  Created by Aaron Douglas on 4/1/14.
-//  Copyright (c) 2014 WordPress. All rights reserved.
-//
+/*
+ * NoteService.m
+ *
+ * Copyright (c) 2014 WordPress. All rights reserved.
+ *
+ * Licensed under GNU General Public License 2.0.
+ * Some rights reserved. See license.txt
+ */
 
 #import "NoteService.h"
 #import "ContextManager.h"
