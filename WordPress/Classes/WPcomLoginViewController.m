@@ -1,10 +1,3 @@
-//
-//  WPcomLoginViewController.m
-//  WordPress
-//
-//  Created by Chris Boyd on 7/19/10.
-//
-
 #import "WPcomLoginViewController.h"
 
 #import <WordPressApi/WordPressApi.h>
