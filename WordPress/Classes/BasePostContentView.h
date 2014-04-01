@@ -11,6 +11,8 @@
 
 @class BasePost;
 
+extern NSInteger const MaxNumberOfLinesForTitleForSummary;
+
 @interface BasePostContentView : WPContentView
 
 @property (assign) BOOL showFullContent;

@@ -12,7 +12,7 @@
 #import "UILabel+SuggestSize.h"
 #import "NSString+Helpers.h"
 
-static NSInteger const MaxNumberOfLinesForTitleForSummary = 3;
+NSInteger const MaxNumberOfLinesForTitleForSummary = 3;
 
 @implementation BasePostContentView
 

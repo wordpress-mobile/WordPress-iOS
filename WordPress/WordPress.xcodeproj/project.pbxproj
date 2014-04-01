@@ -505,6 +505,9 @@
 		5D97C2F315CAF8D8009B44DD /* UINavigationController+KeyboardFix.m in Sources */ = {isa = PBXBuildFile; fileRef = 5D97C2F215CAF8D8009B44DD /* UINavigationController+KeyboardFix.m */; };
 		5D9832EC15A77F0700A5E783 /* toolbar_bg.png in Resources */ = {isa = PBXBuildFile; fileRef = 5D9832EA15A77ED900A5E783 /* toolbar_bg.png */; };
 		5D9832ED15A77F0700A5E783 /* toolbar_bg@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 5D9832EB15A77EEF00A5E783 /* toolbar_bg@2x.png */; };
+		5D9E2A7518EA0D43008BA8C9 /* BasePostContentView.m in Sources */ = {isa = PBXBuildFile; fileRef = 5D9E2A7018EA0D43008BA8C9 /* BasePostContentView.m */; };
+		5D9E2A7618EA0D43008BA8C9 /* PostContentView.m in Sources */ = {isa = PBXBuildFile; fileRef = 5D9E2A7218EA0D43008BA8C9 /* PostContentView.m */; };
+		5D9E2A7718EA0D43008BA8C9 /* PostViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 5D9E2A7418EA0D43008BA8C9 /* PostViewController.m */; };
 		5DA1FDB915AB5F72005DC38E /* toolbar_flag_lite.png in Resources */ = {isa = PBXBuildFile; fileRef = 5DA1FDB515AB5F70005DC38E /* toolbar_flag_lite.png */; };
 		5DA1FDBA15AB5F72005DC38E /* toolbar_flag_lite@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 5DA1FDB615AB5F71005DC38E /* toolbar_flag_lite@2x.png */; };
 		5DA1FDBB15AB5F72005DC38E /* toolbar_write_lite.png in Resources */ = {isa = PBXBuildFile; fileRef = 5DA1FDB715AB5F71005DC38E /* toolbar_write_lite.png */; };
@@ -1634,6 +1637,12 @@
 		5D97C2F215CAF8D8009B44DD /* UINavigationController+KeyboardFix.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UINavigationController+KeyboardFix.m"; sourceTree = "<group>"; };
 		5D9832EA15A77ED900A5E783 /* toolbar_bg.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = toolbar_bg.png; path = Resources/Images/toolbar_bg.png; sourceTree = "<group>"; };
 		5D9832EB15A77EEF00A5E783 /* toolbar_bg@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "toolbar_bg@2x.png"; path = "Resources/Images/toolbar_bg@2x.png"; sourceTree = "<group>"; };
+		5D9E2A6F18EA0D43008BA8C9 /* BasePostContentView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BasePostContentView.h; sourceTree = "<group>"; };
+		5D9E2A7018EA0D43008BA8C9 /* BasePostContentView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BasePostContentView.m; sourceTree = "<group>"; };
+		5D9E2A7118EA0D43008BA8C9 /* PostContentView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PostContentView.h; sourceTree = "<group>"; };
+		5D9E2A7218EA0D43008BA8C9 /* PostContentView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PostContentView.m; sourceTree = "<group>"; };
+		5D9E2A7318EA0D43008BA8C9 /* PostViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PostViewController.h; sourceTree = "<group>"; };
+		5D9E2A7418EA0D43008BA8C9 /* PostViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PostViewController.m; sourceTree = "<group>"; };
 		5DA1FDB515AB5F70005DC38E /* toolbar_flag_lite.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = toolbar_flag_lite.png; path = Resources/Images/toolbar_flag_lite.png; sourceTree = "<group>"; };
 		5DA1FDB615AB5F71005DC38E /* toolbar_flag_lite@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "toolbar_flag_lite@2x.png"; path = "Resources/Images/toolbar_flag_lite@2x.png"; sourceTree = "<group>"; };
 		5DA1FDB715AB5F71005DC38E /* toolbar_write_lite.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = toolbar_write_lite.png; path = Resources/Images/toolbar_write_lite.png; sourceTree = "<group>"; };
@@ -3508,6 +3517,12 @@
 		AC3439790E11434600E5D79B /* Post */ = {
 			isa = PBXGroup;
 			children = (
+				5D9E2A6F18EA0D43008BA8C9 /* BasePostContentView.h */,
+				5D9E2A7018EA0D43008BA8C9 /* BasePostContentView.m */,
+				5D9E2A7118EA0D43008BA8C9 /* PostContentView.h */,
+				5D9E2A7218EA0D43008BA8C9 /* PostContentView.m */,
+				5D9E2A7318EA0D43008BA8C9 /* PostViewController.h */,
+				5D9E2A7418EA0D43008BA8C9 /* PostViewController.m */,
 				5D577D301891278D00B964C3 /* Geolocation */,
 				5D1EBF56187C9B95003393F8 /* Categories */,
 				9390B85C1858D0A200BE43FC /* BlogSelectorViewController.h */,
@@ -5395,6 +5410,7 @@
 				5D4AD40F185FE64C00CDEE17 /* WPMainTabBarController.m in Sources */,
 				1D60589B0D05DD56006BFB54 /* main.m in Sources */,
 				5D577D33189127BE00B964C3 /* PostGeolocationViewController.m in Sources */,
+				5D9E2A7718EA0D43008BA8C9 /* PostViewController.m in Sources */,
 				1D3623260D0F684500981E51 /* WordPressAppDelegate.m in Sources */,
 				85EE305E18C00E21000822C5 /* StatsLinkToWebviewCell.m in Sources */,
 				5DB3BA0818D11D8D00F3F3E9 /* PublishDatePickerView.m in Sources */,
@@ -5486,6 +5502,7 @@
 				5D1EE80215E7AF3E007F1F02 /* JetpackSettingsViewController.m in Sources */,
 				5D3E334E15EEBB6B005FC6F2 /* ReachabilityUtils.m in Sources */,
 				5D87E10C15F5120C0012C595 /* SettingsPageViewController.m in Sources */,
+				5D9E2A7518EA0D43008BA8C9 /* BasePostContentView.m in Sources */,
 				5DC3A44D1610B9BC00A890BE /* UINavigationController+Rotation.m in Sources */,
 				E1A0FAE7162F11CF0063B098 /* UIDevice+WordPressIdentifier.m in Sources */,
 				5DA5BF4318E32DCF005F11F9 /* MediaSearchFilterHeaderView.m in Sources */,
@@ -5584,6 +5601,7 @@
 				C56636FE1877011000226AAB /* StatsCounterCell.m in Sources */,
 				E1A03EE217422DCF0085D192 /* BlogToAccount.m in Sources */,
 				E1A03F48174283E10085D192 /* BlogToJetpackAccount.m in Sources */,
+				5D9E2A7618EA0D43008BA8C9 /* PostContentView.m in Sources */,
 				5D119DA3176FBE040073D83A /* UIImageView+AFNetworkingExtra.m in Sources */,
 				5DF59C0B1770AE3A00171208 /* UILabel+SuggestSize.m in Sources */,
 				E1F5A1BC1771C90A00E0495F /* WPTableImageSource.m in Sources */,
