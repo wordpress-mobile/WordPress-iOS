@@ -1,9 +1,3 @@
-//
-//  WPCategoryTree.m
-//  WordPress
-//
-//  Created by JanakiRam on 30/01/09.
-
 #import "WPCategoryTree.h"
 
 @implementation WPCategoryTree
