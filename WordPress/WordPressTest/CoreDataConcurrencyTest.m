@@ -1,10 +1,3 @@
-//
-//  CoreDataConcurrencyTest.m
-//  WordPress
-//
-//  Copyright (c) 2013 WordPress. All rights reserved.
-//
-
 #import <XCTest/XCTest.h>
 #import "CoreDataTestHelper.h"
 #import "Blog.h"
