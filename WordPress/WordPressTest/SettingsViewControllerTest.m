@@ -1,11 +1,3 @@
-//
-//  SettingsViewControllerTest.m
-//  WordPress
-//
-//  Created by Jorge Bernal on 22/11/13.
-//  Copyright (c) 2013 WordPress. All rights reserved.
-//
-
 #import <XCTest/XCTest.h>
 #import "CoreDataTestHelper.h"
 #import "WPAccount.h"
