@@ -1,11 +1,3 @@
-//
-//  UINavigationController+Rotation.m
-//  WordPress
-//
-//  Created by Eric J on 9/19/12.
-//  Copyright (c) 2012 WordPress. All rights reserved.
-//
-
 #import "UINavigationController+Rotation.h"
 #import <objc/runtime.h>
 
