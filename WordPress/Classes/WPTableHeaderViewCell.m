@@ -1,0 +1,57 @@
+//
+//  WPTableHeaderViewCell.m
+//  WordPress
+//
+//  Created by Jorge Leandro Perez on 3/31/14.
+//  Copyright (c) 2014 WordPress. All rights reserved.
+//
+
+#import "WPTableHeaderViewCell.h"
+#import "WPStyleGuide.h"
+
+
+static CGFloat const WPTableHeaderTextMaxWidth = 200.0f;
+
+@implementation WPTableHeaderViewCell
+
+- (id)initWithStyle:(UITableViewCellStyle)style reuseIdentifier:(NSString *)reuseIdentifier
+{
+    self = [super initWithStyle:style reuseIdentifier:reuseIdentifier];
+    if (self) {
+		self.textLabel.font			= [WPStyleGuide regularTextFont];
+		self.textLabel.textColor	= [WPStyleGuide newKidOnTheBlockBlue];
+		self.backgroundColor		= [WPStyleGuide notificationsLightGrey];
+	}
+	
+	return self;
+}
+
+-(void)touchesBegan:(NSSet *)touches withEvent:(UIEvent *)event{
+	[super touchesBegan:touches withEvent:event];
+	self.backgroundColor = [WPStyleGuide notificationsDarkGrey];
+}
+
+- (void)touchesEnded:(NSSet *)touches withEvent:(UIEvent *)event
+{
+	[super touchesEnded:touches withEvent:event];
+	self.backgroundColor = [WPStyleGuide notificationsLightGrey];
+}
+
+- (void)touchesCancelled:(NSSet *)touches withEvent:(UIEvent *)event
+{
+	[super touchesCancelled:touches withEvent:event];
+	self.backgroundColor = [WPStyleGuide notificationsLightGrey];
+}
+
++ (CGFloat)cellHeightForText:(NSString *)text
+{
+	NSDictionary *attributes	= @{ NSFontAttributeName: [WPStyleGuide tableviewTextFont] };
+	CGRect rect					= [text boundingRectWithSize:CGSizeMake(WPTableHeaderTextMaxWidth, MAXFLOAT)
+										 options:NSStringDrawingUsesLineFragmentOrigin
+									  attributes:attributes
+										 context:nil];
+	
+	return ceil(rect.size.height);
+}
+
+@end

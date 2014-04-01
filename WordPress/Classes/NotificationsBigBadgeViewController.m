@@ -78,7 +78,8 @@
     [_noteLabel setBackgroundColor:[UIColor clearColor]];
     _noteLabel.numberOfLines = 0;
     [_scrollView addSubview:_noteLabel];
-    NSString *noteBody = _note.bodyContentHtml;
+    
+    NSString *noteBody = _note.bodyHtml;
     if (!noteBody)
         noteBody = _note.titleForDisplay;
     noteBody = [NSString stringWithFormat:@"<center>%@</center>", noteBody];
