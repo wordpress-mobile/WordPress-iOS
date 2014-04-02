@@ -1,11 +1,3 @@
-//
-//  NotificationsBigBadgeViewController.m
-//  WordPress
-//
-//  Created by Dan Roundhill on 3/28/14.
-//  Copyright (c) 2014 WordPress. All rights reserved.
-//
-
 #import "NotificationsBigBadgeViewController.h"
 #import <DTCoreText/DTCoreText.h>
 #import "WPWebViewController.h"
