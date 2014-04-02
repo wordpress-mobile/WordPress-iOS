@@ -137,9 +137,9 @@
 }
 
 - (WPNoteTemplateType)templateType {
-    NSDictionary *noteBody = [[self noteData] objectForKey:@"body"];
+    NSDictionary *noteBody = self.noteData[@"body"];
     if (noteBody) {
-        NSString *noteTypeName = [noteBody objectForKey:@"template"];
+        NSString *noteTypeName = noteBody[@"template"];
         
         if ([noteTypeName isEqualToString:@"single-line-list"])
             return WPNoteTemplateSingleLineList;
