@@ -15,6 +15,7 @@
 #import "ContextManager.h"
 #import "WordPressComOAuthClient.h"
 #import "NoteService.h"
+#import "AccountService.h"
 
 NSString * const BlogJetpackErrorDomain = @"BlogJetpackError";
 NSString * const BlogJetpackApiBaseUrl = @"https://public-api.wordpress.com/";
@@ -126,12 +127,14 @@ NSString * const BlogJetpackApiPath = @"get-user-blogs/1.0";
     NSAssert(![self isWPcom], @"Blog+Jetpack doesn't support WordPress.com blogs");
 
     // If the associated jetpack account is not used for anything else, remove it
+    AccountService *accountService = [[AccountService alloc] initWithManagedObjectContext:self.managedObjectContext];
+    WPAccount *defaultAccount = [accountService defaultWordPressComAccount];
     WPAccount *jetpackAccount = self.jetpackAccount;
     if (jetpackAccount
         && [jetpackAccount.jetpackBlogs count] == 1
         && [[jetpackAccount.jetpackBlogs anyObject] isEqual:self]
         && [jetpackAccount.visibleBlogs count] == 0
-        && ![[WPAccount defaultWordPressComAccount] isEqual:jetpackAccount]) {
+        && ![defaultAccount isEqual:jetpackAccount]) {
         DDLogWarn(@"Removing jetpack account %@ since the last blog using it is being removed", jetpackAccount.username);
         [self.managedObjectContext deleteObject:jetpackAccount];
     }
@@ -146,18 +149,19 @@ NSString * const BlogJetpackApiPath = @"get-user-blogs/1.0";
     [client authenticateWithUsername:username
                             password:password
                              success:^(NSString *authToken) {
-                                 WPAccount *account = [WPAccount createOrUpdateWordPressComAccountWithUsername:username password:password authToken:authToken context:self.managedObjectContext];
+                                 AccountService *accountService = [[AccountService alloc] initWithManagedObjectContext:self.managedObjectContext];
+                                 WPAccount *account = [accountService createOrUpdateWordPressComAccountWithUsername:username password:password authToken:authToken];
                                  self.jetpackAccount = account;
                                  [account addJetpackBlogsObject:self];
                                  [self dataSave];
 
                                  // If there is no WP.com account on the device, make this the default
-                                 if ([WPAccount defaultWordPressComAccount] == nil) {
-                                     [WPAccount setDefaultWordPressComAccount:account];
+                                 if ([accountService defaultWordPressComAccount] == nil) {
+                                     [accountService setDefaultWordPressComAccount:account];
                                      [self dataSave];
                                      
                                      // Sadly we don't care if this succeeds or not
-                                     [account syncBlogsWithSuccess:nil failure:nil];
+                                     [accountService syncBlogsWithSuccess:nil failure:nil];
                                      
                                      NoteService *noteService = [[NoteService alloc] initWithManagedObjectContext:account.managedObjectContext];
                                      [noteService fetchNewNotificationsWithSuccess:nil failure:nil];
@@ -171,7 +175,8 @@ NSString * const BlogJetpackApiPath = @"get-user-blogs/1.0";
                                  
                                  // OAuth2 login failed - we can still create the WPAccount without the token
                                  // TODO: This is the behavior prior to 3.9 and could get removed
-                                 WPAccount *account = [WPAccount createOrUpdateWordPressComAccountWithUsername:username password:password authToken:nil context:self.managedObjectContext];
+                                 AccountService *accountService = [[AccountService alloc] initWithManagedObjectContext:self.managedObjectContext];
+                                 WPAccount *account = [accountService createOrUpdateWordPressComAccountWithUsername:username password:password authToken:nil];
                                  self.jetpackAccount = account;
                                  [self dataSave];
                                  
