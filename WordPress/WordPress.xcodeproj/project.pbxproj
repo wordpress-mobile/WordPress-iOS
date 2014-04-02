@@ -794,7 +794,7 @@
 		93C486501810442200A24725 /* SupportViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 93027BB71758332300483FFD /* SupportViewController.m */; };
 		93C486511810445D00A24725 /* ActivityLogViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 93069F55176237A4000C966D /* ActivityLogViewController.m */; };
 		93FA59DD18D88C1C001446BC /* CategoryService.m in Sources */ = {isa = PBXBuildFile; fileRef = 93FA59DC18D88C1C001446BC /* CategoryService.m */; };
-		93FA59E018D8986D001446BC /* CategoryServiceRemote.m in Sources */ = {isa = PBXBuildFile; fileRef = 93FA59DF18D8986D001446BC /* CategoryServiceRemote.m */; };
+		93FA59E018D8986D001446BC /* CategoryServiceLegacyRemote.m in Sources */ = {isa = PBXBuildFile; fileRef = 93FA59DF18D8986D001446BC /* CategoryServiceLegacyRemote.m */; };
 		A01C542E0E24E88400D411F2 /* SystemConfiguration.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A01C542D0E24E88400D411F2 /* SystemConfiguration.framework */; };
 		A01C55480E25E0D000D411F2 /* defaultPostTemplate.html in Resources */ = {isa = PBXBuildFile; fileRef = A01C55470E25E0D000D411F2 /* defaultPostTemplate.html */; };
 		A0E293F10E21027E00C6919C /* WPAddCategoryViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A0E293F00E21027E00C6919C /* WPAddCategoryViewController.m */; };
@@ -868,6 +868,7 @@
 		E10B3654158F2D4500419A93 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E10B3653158F2D4500419A93 /* UIKit.framework */; };
 		E10B3655158F2D7800419A93 /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 834CE7371256D0F60046A4A3 /* CoreGraphics.framework */; };
 		E10DB0081771926D00B7A0A3 /* GooglePlusActivity.m in Sources */ = {isa = PBXBuildFile; fileRef = E10DB0071771926D00B7A0A3 /* GooglePlusActivity.m */; };
+		E10F42A018EC1D4F008D64CC /* CategoryServiceRemote.m in Sources */ = {isa = PBXBuildFile; fileRef = E10F429F18EC1D4F008D64CC /* CategoryServiceRemote.m */; };
 		E114D79A153D85A800984182 /* WPError.m in Sources */ = {isa = PBXBuildFile; fileRef = E114D799153D85A800984182 /* WPError.m */; };
 		E11C91D1135771010072A811 /* blockquote.png in Resources */ = {isa = PBXBuildFile; fileRef = E11C91CB135771010072A811 /* blockquote.png */; };
 		E11C91D2135771010072A811 /* blockquote@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = E11C91CC135771010072A811 /* blockquote@2x.png */; };
@@ -2018,8 +2019,8 @@
 		93FA0F0518E451A80007903B /* localize.py */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.script.python; name = localize.py; path = ../localize.py; sourceTree = "<group>"; };
 		93FA59DB18D88C1C001446BC /* CategoryService.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CategoryService.h; sourceTree = "<group>"; };
 		93FA59DC18D88C1C001446BC /* CategoryService.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CategoryService.m; sourceTree = "<group>"; };
-		93FA59DE18D8986D001446BC /* CategoryServiceRemote.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CategoryServiceRemote.h; sourceTree = "<group>"; };
-		93FA59DF18D8986D001446BC /* CategoryServiceRemote.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CategoryServiceRemote.m; sourceTree = "<group>"; };
+		93FA59DE18D8986D001446BC /* CategoryServiceLegacyRemote.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CategoryServiceLegacyRemote.h; sourceTree = "<group>"; };
+		93FA59DF18D8986D001446BC /* CategoryServiceLegacyRemote.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CategoryServiceLegacyRemote.m; sourceTree = "<group>"; };
 		A01C542D0E24E88400D411F2 /* SystemConfiguration.framework */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = wrapper.framework; name = SystemConfiguration.framework; path = System/Library/Frameworks/SystemConfiguration.framework; sourceTree = SDKROOT; };
 		A01C55470E25E0D000D411F2 /* defaultPostTemplate.html */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.html; name = defaultPostTemplate.html; path = Resources/HTML/defaultPostTemplate.html; sourceTree = "<group>"; };
 		A0E293EF0E21027E00C6919C /* WPAddCategoryViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WPAddCategoryViewController.h; sourceTree = "<group>"; };
@@ -2136,6 +2137,8 @@
 		E10B3653158F2D4500419A93 /* UIKit.framework */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = System/Library/Frameworks/UIKit.framework; sourceTree = SDKROOT; };
 		E10DB0061771926D00B7A0A3 /* GooglePlusActivity.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GooglePlusActivity.h; sourceTree = "<group>"; };
 		E10DB0071771926D00B7A0A3 /* GooglePlusActivity.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GooglePlusActivity.m; sourceTree = "<group>"; };
+		E10F429E18EC1D4F008D64CC /* CategoryServiceRemote.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CategoryServiceRemote.h; sourceTree = "<group>"; };
+		E10F429F18EC1D4F008D64CC /* CategoryServiceRemote.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CategoryServiceRemote.m; sourceTree = "<group>"; };
 		E114D798153D85A800984182 /* WPError.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WPError.h; sourceTree = "<group>"; };
 		E114D799153D85A800984182 /* WPError.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WPError.m; sourceTree = "<group>"; };
 		E115F2D116776A2900CCF00D /* WordPress 8.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = "WordPress 8.xcdatamodel"; sourceTree = "<group>"; };
@@ -3500,8 +3503,10 @@
 				930284B618EAF7B600CB0BF4 /* BaseLocalService.h */,
 				93FA59DB18D88C1C001446BC /* CategoryService.h */,
 				93FA59DC18D88C1C001446BC /* CategoryService.m */,
-				93FA59DE18D8986D001446BC /* CategoryServiceRemote.h */,
-				93FA59DF18D8986D001446BC /* CategoryServiceRemote.m */,
+				E10F429E18EC1D4F008D64CC /* CategoryServiceRemote.h */,
+				E10F429F18EC1D4F008D64CC /* CategoryServiceRemote.m */,
+				93FA59DE18D8986D001446BC /* CategoryServiceLegacyRemote.h */,
+				93FA59DF18D8986D001446BC /* CategoryServiceLegacyRemote.m */,
 				930284B318EAF79500CB0BF4 /* NoteService.h */,
 				930284B418EAF79500CB0BF4 /* NoteService.m */,
 				930284B718EB078800CB0BF4 /* NoteServiceRemote.h */,
@@ -5454,6 +5459,7 @@
 				834CAE9F122D56B1003DDF49 /* UIImage+Alpha.m in Sources */,
 				834CAEA0122D56B1003DDF49 /* UIImage+RoundedCorner.m in Sources */,
 				83D180FA12329B1A002DCCB0 /* EditPageViewController.m in Sources */,
+				E10F42A018EC1D4F008D64CC /* CategoryServiceRemote.m in Sources */,
 				930284B518EAF79500CB0BF4 /* NoteService.m in Sources */,
 				E125445612BF5B3900D87A0A /* Category.m in Sources */,
 				E125451812BF68F900D87A0A /* Page.m in Sources */,
@@ -5538,7 +5544,7 @@
 				E15051CB16CA5DDB00D3DDDC /* Blog+Jetpack.m in Sources */,
 				5DA5BF3F18E32DCF005F11F9 /* InputViewButton.m in Sources */,
 				85325A5917BC42E5008E87D1 /* NewPostTableViewCell.m in Sources */,
-				93FA59E018D8986D001446BC /* CategoryServiceRemote.m in Sources */,
+				93FA59E018D8986D001446BC /* CategoryServiceLegacyRemote.m in Sources */,
 				85D8055D171631F10075EEAC /* SelectWPComLanguageViewController.m in Sources */,
 				E23EEC5E185A72C100F4DE2A /* WPContentCell.m in Sources */,
 				8525398B171761D9003F6B32 /* WPComLanguages.m in Sources */,

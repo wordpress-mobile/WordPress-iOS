@@ -12,6 +12,7 @@
 #import "Blog.h"
 #import "ContextManager.h"
 #import "CategoryServiceRemote.h"
+#import "CategoryServiceLegacyRemote.h"
 
 @interface CategoryService ()
 
@@ -96,10 +97,9 @@
 	if (parent.categoryID != nil)
 		category.parentID = parent.categoryID;
     
-    CategoryServiceRemote *remote = [CategoryServiceRemote new];
+    CategoryServiceRemote *remote = [self remoteForBlog:blog];
     [remote createCategoryWithName:name
                   parentCategoryID:parent.categoryID
-                           forBlog:blog
                            success:^(NSNumber *categoryID) {
                                [self.managedObjectContext performBlockAndWait:^{
                                    category.categoryID = categoryID;
@@ -178,6 +178,14 @@
     }
     
     return category;
+}
+
+- (CategoryServiceRemote *)remoteForBlog:(Blog *)blog {
+    if (blog.restApi) {
+        return [[CategoryServiceRemote alloc] initWithBlog:blog];
+    } else {
+        return [[CategoryServiceLegacyRemote alloc] initWithBlog:blog];
+    }
 }
 
 @end
