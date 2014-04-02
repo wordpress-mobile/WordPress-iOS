@@ -85,7 +85,7 @@
  @param blogInfo a dictionary containing `url`, `blogName`, `xmlrpc`, and `blogid`; as returned by `wp.getUsersBlogs`
  @return the newly created blog
  */
-- (Blog *)findOrCreateBlogFromDictionary:(NSDictionary *)blogInfo;
+- (Blog *)findOrCreateBlogFromDictionary:(NSDictionary *)blogInfo withAccount:(WPAccount *)account;
 
 - (void)syncBlogsForAccount:(WPAccount *)account success:(void (^)())success failure:(void (^)(NSError *error))failure;
 

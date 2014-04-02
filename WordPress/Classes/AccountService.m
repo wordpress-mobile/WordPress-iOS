@@ -40,7 +40,10 @@
  */
 - (void)removeDefaultWordPressComAccount
 {
-    
+    // Remove defaults
+    [[NSUserDefaults standardUserDefaults] removeObjectForKey:@"wpcom_users_blogs"];
+    [[NSUserDefaults standardUserDefaults] removeObjectForKey:@"wpcom_users_prefered_blog_id"];
+
 }
 
 ///-----------------------
@@ -64,6 +67,7 @@
                                                     password:(NSString *)password
                                                    authToken:(NSString *)authToken
 {
+//    [self setDefaultWordPressComAccount:account];
     
 }
 
@@ -97,7 +101,7 @@
  @param blogInfo a dictionary containing `url`, `blogName`, `xmlrpc`, and `blogid`; as returned by `wp.getUsersBlogs`
  @return the newly created blog
  */
-- (Blog *)findOrCreateBlogFromDictionary:(NSDictionary *)blogInfo
+- (Blog *)findOrCreateBlogFromDictionary:(NSDictionary *)blogInfo withAccount:(WPAccount *)account
 {
     
 }

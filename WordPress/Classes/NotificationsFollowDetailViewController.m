@@ -19,6 +19,7 @@
 #import "WPAccount.h"
 #import "WPToast.h"
 #import "Note.h"
+#import "AccountService.h"
 
 NSString *const WPNotificationFollowRestorationKey = @"WPNotificationFollowRestorationKey";
 
@@ -271,7 +272,11 @@ NSString *const WPNotificationFollowRestorationKey = @"WPNotificationFollowResto
     
     NSUInteger blogID = [[noteDetails objectForKey:@"site_id"] intValue];
     if (blogID) {
-        [[[WPAccount defaultWordPressComAccount] restApi] followBlog:blogID isFollowing:isFollowing success:^(AFHTTPRequestOperation *operation, id responseObject) {
+        NSManagedObjectContext *context = [[ContextManager sharedInstance] mainContext];
+        AccountService *accountService = [[AccountService alloc] initWithManagedObjectContext:context];
+        WPAccount *defaultAccount = [accountService defaultWordPressComAccount];
+
+        [[defaultAccount restApi] followBlog:blogID isFollowing:isFollowing success:^(AFHTTPRequestOperation *operation, id responseObject) {
             NSDictionary *followResponse = (NSDictionary *)responseObject;
             if (followResponse && [[followResponse objectForKey:@"success"] intValue] == 1) {
                 if ([[followResponse objectForKey:@"is_following"] intValue] == 1) {
@@ -341,8 +346,12 @@ NSString *const WPNotificationFollowRestorationKey = @"WPNotificationFollowResto
             
             WPWebViewController *webViewController = [[WPWebViewController alloc] init];
             if ([blogURL isWordPressDotComUrl]) {
-                [webViewController setUsername:[[WPAccount defaultWordPressComAccount] username]];
-                [webViewController setPassword:[[WPAccount defaultWordPressComAccount] password]];
+                NSManagedObjectContext *context = [[ContextManager sharedInstance] mainContext];
+                AccountService *accountService = [[AccountService alloc] initWithManagedObjectContext:context];
+                WPAccount *defaultAccount = [accountService defaultWordPressComAccount];
+
+                [webViewController setUsername:[defaultAccount username]];
+                [webViewController setPassword:[defaultAccount password]];
                 [webViewController setUrl:[blogURL ensureSecureURL]];
             } else {
                 [webViewController setUrl:blogURL];
