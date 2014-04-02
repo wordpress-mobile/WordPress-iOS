@@ -35,9 +35,6 @@ typedef enum {
 @property (nonatomic, strong, readonly) NSString *bodyFooterText;
 @property (nonatomic, strong, readonly) NSString *bodyFooterLink;
 @property (nonatomic, strong, readonly) NSString *bodyHtml;
-@property (nonatomic, strong, readonly) NSNumber *metaBlogId;
-@property (nonatomic, strong, readonly) NSString *metaSiteId;
-@property (nonatomic, strong, readonly) NSString *metaPostId;
 @property (nonatomic, readonly) WPNoteTemplateType templateType;
 
 - (BOOL)isComment;
