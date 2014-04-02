@@ -16,6 +16,7 @@
 #import "ContextManager.h"
 #import "Blog.h"
 #import "Constants.h"
+#import "AccountService.h"
 
 static BOOL hasRecordedAppOpenedEvent = NO;
 
@@ -265,7 +266,9 @@ NSString *const StatsEventStatsClickedOnWebVersion = @"Stats - Clicked on Web Ve
     NSUInteger sessionCount = [[[[Mixpanel sharedInstance] currentSuperProperties] objectForKey:@"session_count"] intValue];
     sessionCount++;
 
-    WPAccount *account = [WPAccount defaultWordPressComAccount];
+    NSManagedObjectContext *context = [[ContextManager sharedInstance] mainContext];
+    AccountService *accountService = [[AccountService alloc] initWithManagedObjectContext:context];
+    WPAccount *account = [accountService defaultWordPressComAccount];
     NSDictionary *properties = @{
                                  @"platform": @"iOS",
                                  @"session_count": @(sessionCount),
@@ -377,7 +380,11 @@ NSString *const StatsEventStatsClickedOnWebVersion = @"Stats - Clicked on Web Ve
 
 - (BOOL)connectedToWordPressDotCom
 {
-    return [[[WPAccount defaultWordPressComAccount] restApi] hasCredentials];
+    NSManagedObjectContext *context = [[ContextManager sharedInstance] mainContext];
+    AccountService *accountService = [[AccountService alloc] initWithManagedObjectContext:context];
+    WPAccount *defaultAccount = [accountService defaultWordPressComAccount];
+
+    return [[defaultAccount restApi] hasCredentials];
 }
 
 - (void)trackEventForSelfHostedAndWPCom:(NSString *)event

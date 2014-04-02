@@ -12,6 +12,7 @@
 #import "Note.h"
 #import "Blog.h"
 #import "NoteServiceRemote.h"
+#import "AccountService.h"
 
 const NSUInteger NoteKeepCount = 20;
 
@@ -44,7 +45,9 @@ const NSUInteger NoteKeepCount = 20;
         return;
     }
     
-    WPAccount *account = (WPAccount *)[self.managedObjectContext objectWithID:[WPAccount defaultWordPressComAccount].objectID];
+    AccountService *accountService = [[AccountService alloc] initWithManagedObjectContext:self.managedObjectContext];
+    WPAccount *account = [accountService defaultWordPressComAccount];
+    
     [notesData enumerateObjectsUsingBlock:^(NSDictionary *noteData, NSUInteger idx, BOOL *stop) {
         NSNumber *noteID = [noteData objectForKey:@"id"];
         NSArray *results = [existingNotes filteredArrayUsingPredicate:[NSPredicate predicateWithFormat:@"noteID == %@", noteID]];
@@ -162,7 +165,8 @@ const NSUInteger NoteKeepCount = 20;
 - (void)fetchNewNotificationsWithSuccess:(void (^)(BOOL hasNewNotes))success failure:(void (^)(NSError *error))failure {
     NSNumber *timestamp = [self lastNoteTimestamp];
     
-    WordPressComApi *api = [[WPAccount defaultWordPressComAccount] restApi];
+    AccountService *accountService = [[AccountService alloc] initWithManagedObjectContext:self.managedObjectContext];
+    WordPressComApi *api = [[accountService defaultWordPressComAccount] restApi];
     NoteServiceRemote *remote = [[NoteServiceRemote alloc] initWithRemoteApi:api];
     
     [remote fetchNotificationsSince:timestamp success:^(NSArray *notes) {
@@ -188,14 +192,18 @@ const NSUInteger NoteKeepCount = 20;
             [array addObject:note.noteID];
         }
         
-        WordPressComApi *api = [[WPAccount defaultWordPressComAccount] restApi];
+        AccountService *accountService = [[AccountService alloc] initWithManagedObjectContext:self.managedObjectContext];
+        WordPressComApi *api = [[accountService defaultWordPressComAccount] restApi];
+        
         NoteServiceRemote *remote = [[NoteServiceRemote alloc] initWithRemoteApi:api];
         [remote refreshNotificationIds:array success:nil failure:nil];
     }
 }
 
 - (void)fetchNotificationsBefore:(NSNumber *)timestamp success:(void (^)())success failure:(void (^)(NSError *))failure {
-    WordPressComApi *api = [[WPAccount defaultWordPressComAccount] restApi];
+    AccountService *accountService = [[AccountService alloc] initWithManagedObjectContext:self.managedObjectContext];
+    WordPressComApi *api = [[accountService defaultWordPressComAccount] restApi];
+    
     NoteServiceRemote *remote = [[NoteServiceRemote alloc] initWithRemoteApi:api];
 
     [remote fetchNotificationsBefore:timestamp success:^(NSArray *notes) {
@@ -214,7 +222,8 @@ const NSUInteger NoteKeepCount = 20;
 }
 
 - (void)fetchNotificationsSince:(NSNumber *)timestamp success:(void (^)())success failure:(void (^)(NSError *))failure {
-    WordPressComApi *api = [[WPAccount defaultWordPressComAccount] restApi];
+    AccountService *accountService = [[AccountService alloc] initWithManagedObjectContext:self.managedObjectContext];
+    WordPressComApi *api = [[accountService defaultWordPressComAccount] restApi];
     NoteServiceRemote *remote = [[NoteServiceRemote alloc] initWithRemoteApi:api];
 
     [remote fetchNotificationsSince:timestamp success:^(NSArray *notes) {
@@ -233,7 +242,8 @@ const NSUInteger NoteKeepCount = 20;
 }
 
 - (void)refreshNote:(Note *)note success:(void (^)())success failure:(void (^)(NSError *))failure {
-    WordPressComApi *api = [[WPAccount defaultWordPressComAccount] restApi];
+    AccountService *accountService = [[AccountService alloc] initWithManagedObjectContext:self.managedObjectContext];
+    WordPressComApi *api = [[accountService defaultWordPressComAccount] restApi];
     NoteServiceRemote *remote = [[NoteServiceRemote alloc] initWithRemoteApi:api];
     
     [remote refreshNoteId:note.noteID
@@ -258,7 +268,8 @@ const NSUInteger NoteKeepCount = 20;
 }
 
 - (void)markNoteAsRead:(Note *)note success:(void (^)())success failure:(void (^)(NSError *))failure {
-    WordPressComApi *api = [[WPAccount defaultWordPressComAccount] restApi];
+    AccountService *accountService = [[AccountService alloc] initWithManagedObjectContext:self.managedObjectContext];
+    WordPressComApi *api = [[accountService defaultWordPressComAccount] restApi];
     NoteServiceRemote *remote = [[NoteServiceRemote alloc] initWithRemoteApi:api];
     
     [remote markNoteIdAsRead:note.noteID

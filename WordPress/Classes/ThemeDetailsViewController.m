@@ -16,6 +16,8 @@
 #import "Blog.h"
 #import "WordPressComApi.h"
 #import "WordPressAppDelegate.h"
+#import "ContextManager.h"
+#import "AccountService.h"
 
 @interface ThemeDetailsViewController ()
 
@@ -222,9 +224,13 @@
 
 - (IBAction)livePreviewPressed:(id)sender {
     // Live preview URL yields the same result as 'view current site'.
+    NSManagedObjectContext *context = [[ContextManager sharedInstance] mainContext];
+    AccountService *accountService = [[AccountService alloc] initWithManagedObjectContext:context];
+    WPAccount *defaultAccount = [accountService defaultWordPressComAccount];
+
     WPWebViewController *livePreviewController = [[WPWebViewController alloc] init];
-    livePreviewController.username = [WPAccount defaultWordPressComAccount].username;
-    livePreviewController.password = [WPAccount defaultWordPressComAccount].password;
+    livePreviewController.username = defaultAccount.username;
+    livePreviewController.password = defaultAccount.password;
     [livePreviewController setWpLoginURL:[NSURL URLWithString:self.theme.blog.loginUrl]];
     livePreviewController.url = [NSURL URLWithString:self.theme.previewUrl];
     [self.navigationController pushViewController:livePreviewController animated:YES];
