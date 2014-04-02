@@ -22,6 +22,10 @@
 #import "NotificationSettingsViewController.h"
 #import "NoteService.h"
 
+#import "ReaderPost.h"
+#import "ReaderPostDetailViewController.h"
+#import "ContextManager.h"
+
 NSString * const NotificationsLastSyncDateKey       = @"NotificationsLastSyncDate";
 NSString * const NotificationsJetpackInformationURL = @"http://jetpack.me/about/";
 
@@ -31,6 +35,9 @@ NSString * const NotificationsJetpackInformationURL = @"http://jetpack.me/about/
 @property (nonatomic, assign) BOOL  isPushingViewController;
 @property (nonatomic, assign) BOOL  viewHasAppeared;
 @property (nonatomic, assign) BOOL  retrievingNotifications;
+
+typedef void (^NotificationsLoadPostBlock)(BOOL success, ReaderPost *post);
+- (void)loadPostWithId:(NSNumber *)postID fromSite:(NSNumber *)siteID block:(NotificationsLoadPostBlock)block;
 
 @end
 
@@ -276,9 +283,20 @@ NSString * const NotificationsJetpackInformationURL = @"http://jetpack.me/about/
         [WPMobileStats incrementProperty:StatsPropertyNotificationsOpenedDetails forEvent:StatsEventAppClosed];
 
         _isPushingViewController = YES;
+        
         if ([note isComment]) {
             NotificationsCommentDetailViewController *detailViewController = [[NotificationsCommentDetailViewController alloc] initWithNote:note];
             [self.navigationController pushViewController:detailViewController animated:YES];
+        } else if ([note isMatcher] && [note metaPostID] && [note metaSiteID]) {
+            [self loadPostWithId:[note metaPostID] fromSite:[note metaSiteID] block:^(BOOL success, ReaderPost *post) {
+                if (!success) {
+                    [self.tableView deselectRowAtIndexPath:indexPath animated:YES];
+                    return;
+                }
+                
+                ReaderPostDetailViewController *controller = [[ReaderPostDetailViewController alloc] initWithPost:post avatarImageURL:note.avatarURLForDisplay];
+                [self.navigationController pushViewController:controller animated:YES];
+            }];
         } else {
             NotificationsFollowDetailViewController *detailViewController = [[NotificationsFollowDetailViewController alloc] initWithNote:note];
             [self.navigationController pushViewController:detailViewController animated:YES];
@@ -327,6 +345,25 @@ NSString * const NotificationsJetpackInformationURL = @"http://jetpack.me/about/
     }
     
     return NO;
+}
+
+- (void)loadPostWithId:(NSNumber *)postID fromSite:(NSNumber *)siteID block:(NotificationsLoadPostBlock)block
+{
+    NSString *endpoint = [NSString stringWithFormat:@"sites/%@/posts/%@/?meta=site", siteID, postID];
+    
+    WordPressComApiRestSuccessResponseBlock success = ^(AFHTTPRequestOperation *operation, id responseObject) {
+        NSManagedObjectContext *context = [[ContextManager sharedInstance] mainContext];
+        [ReaderPost createOrUpdateWithDictionary:responseObject forEndpoint:endpoint withContext:context];
+        ReaderPost *post = [[ReaderPost fetchPostsForEndpoint:endpoint withContext:context] firstObject];
+        block(YES, post);
+    };
+    
+    WordPressComApiRestSuccessFailureBlock failure = ^(AFHTTPRequestOperation *operation, NSError *error) {
+        DDLogError(@"[RestAPI] %@", error);
+        block(NO, nil);
+    };
+    
+    [ReaderPost getPostsFromEndpoint:endpoint withParameters:nil loadingMore:NO success:success failure:failure];
 }
 
 #pragma mark - WPTableViewController subclass methods
