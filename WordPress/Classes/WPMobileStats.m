@@ -372,6 +372,40 @@ NSString *const StatsEventStatsClickedOnWebVersion = @"Stats - Clicked on Web Ve
     [[self sharedInstance] incrementSuperProperty:property];
 }
 
++ (void)setValue:(id)value forSuperProperty:(NSString *)property
+{
+    [[self sharedInstance] setValue:value forSuperProperty:property];
+}
+
++ (void)flagPeopleProperty:(NSString *)property
+{
+    [[self sharedInstance] flagPeopleProperty:property];
+}
+
++ (void)incrementPeopleProperty:(NSString *)property
+{
+    [[self sharedInstance] incrementPeopleProperty:property];
+}
+
++ (void)setValue:(id)value forPeopleProperty:(NSString *)property
+{
+    [[self sharedInstance] setValue:value forPeopleProperty:property];
+}
+
++ (void)flagPeopleAndSuperProperty:(NSString *)property
+{
+    [[self sharedInstance] flagPeopleAndSuperProperty:property];
+}
+
++ (void)incrementPeopleAndSuperProperty:(NSString *)property
+{
+    [[self sharedInstance] incrementPeopleAndSuperProperty:property];
+}
+
++ (void)setValue:(id)value forPeopleAndSuperProperty:(NSString *)property
+{
+    [[self sharedInstance] setValue:value forPeopleAndSuperProperty:property];
+}
 
 #pragma mark - Private Methods
 
@@ -467,6 +501,57 @@ NSString *const StatsEventStatsClickedOnWebVersion = @"Stats - Clicked on Web Ve
     superProperties[property] = @(++propertyValue);
     [[Mixpanel sharedInstance] registerSuperProperties:superProperties];
 }
+
+- (void)setValue:(id)value forSuperProperty:(NSString *)property
+{
+    NSParameterAssert(value != nil);
+    NSParameterAssert(property != nil);
+    NSMutableDictionary *superProperties = [[NSMutableDictionary alloc] initWithDictionary:[Mixpanel sharedInstance].currentSuperProperties];
+    superProperties[property] = value;
+    [[Mixpanel sharedInstance] registerSuperProperties:superProperties];
+}
+
+- (void)flagPeopleProperty:(NSString *)property
+{
+    NSParameterAssert(property != nil);
+    [[Mixpanel sharedInstance].people setValue:@(YES) forKey:property];
+}
+
+- (void)incrementPeopleProperty:(NSString *)property
+{
+    NSParameterAssert(property != nil);
+    [[Mixpanel sharedInstance].people increment:property by:@(1)];
+}
+
+- (void)setValue:(id)value forPeopleProperty:(NSString *)property
+{
+    NSParameterAssert(value != nil);
+    NSParameterAssert(property != nil);
+    [[Mixpanel sharedInstance].people setValue:value forKey:property];
+}
+
+- (void)flagPeopleAndSuperProperty:(NSString *)property
+{
+    NSParameterAssert(property != nil);
+    [self flagPeopleProperty:property];
+    [self flagSuperProperty:property];
+}
+
+- (void)incrementPeopleAndSuperProperty:(NSString *)property
+{
+    NSParameterAssert(property != nil);
+    [self incrementPeopleProperty:property];
+    [self incrementSuperProperty:property];
+}
+
+- (void)setValue:(id)value forPeopleAndSuperProperty:(NSString *)property
+{
+    NSParameterAssert(value != nil);
+    NSParameterAssert(property != nil);
+    [self setValue:value forPeopleProperty:property];
+    [self setValue:value forSuperProperty:property];
+}
+
 
 - (id)property:(NSString *)property forEvent:(NSString *)event
 {

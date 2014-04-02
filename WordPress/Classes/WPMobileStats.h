@@ -247,7 +247,18 @@ extern NSString *const StatsEventStatsClickedOnWebVersion;
 + (void)setValue:(id)value forProperty:(NSString *)property forEvent:(NSString *)event;
 + (void)flagProperty:(NSString *)property forEvent:(NSString *)event;
 + (void)unflagProperty:(NSString *)property forEvent:(NSString *)event;
+
+
 + (void)flagSuperProperty:(NSString *)property;
 + (void)incrementSuperProperty:(NSString *)property;
++ (void)setValue:(id)value forSuperProperty:(NSString *)property;
+
++ (void)flagPeopleProperty:(NSString *)property;
++ (void)incrementPeopleProperty:(NSString *)property;
++ (void)setValue:(id)value forPeopleProperty:(NSString *)property;
+
++ (void)flagPeopleAndSuperProperty:(NSString *)property;
++ (void)incrementPeopleAndSuperProperty:(NSString *)property;
++ (void)setValue:(id)value forPeopleAndSuperProperty:(NSString *)property;
 
 @end
