@@ -10,12 +10,12 @@
 #import "WPAccount.h"
 #import "WPContentViewProvider.h"
 
-typedef enum {
+typedef NS_ENUM(NSInteger, WPNoteTemplateType) {
     WPNoteTemplateUnknown,
     WPNoteTemplateSingleLineList,
     WPNoteTemplateMultiLineList,
     WPNoteTemplateBigBadge,
-} WPNoteTemplateType;
+};
 
 @interface Note : NSManagedObject<WPContentViewProvider>
 
