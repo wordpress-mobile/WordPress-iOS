@@ -25,6 +25,8 @@
 #import "WPAccount.h"
 #import "Blog.h"
 #import "WordPressComOAuthClient.h"
+#import "AccountService.h"
+#import "ContextManager.h"
 
 @interface CreateAccountAndBlogViewController ()<
     UITextFieldDelegate,
@@ -689,10 +691,13 @@ CGFloat const CreateAccountAndBlogButtonHeight = 40.0;
 
     }];
     WPAsyncBlockOperation *userSignIn = [WPAsyncBlockOperation operationWithBlock:^(WPAsyncBlockOperation *operation){
-        void (^signInSuccess)(NSString *authToken) = ^(NSString *authToken){
-            _account = [WPAccount createOrUpdateWordPressComAccountWithUsername:_usernameField.text password:_passwordField.text authToken:authToken];
-            if (![WPAccount defaultWordPressComAccount]) {
-                [WPAccount setDefaultWordPressComAccount:_account];
+        void (^signInSuccess)(NSString *authToken) = ^(NSString *authToken) {
+            NSManagedObjectContext *context = [[ContextManager sharedInstance] mainContext];
+            AccountService *accountService = [[AccountService alloc] initWithManagedObjectContext:context];
+
+            _account = [accountService createOrUpdateWordPressComAccountWithUsername:_usernameField.text password:_passwordField.text authToken:authToken];
+            if (![accountService defaultWordPressComAccount]) {
+                [accountService setDefaultWordPressComAccount:_account];
             }
             [operation didSucceed];
         };
@@ -723,8 +728,12 @@ CGFloat const CreateAccountAndBlogButtonHeight = 40.0;
                 [blogOptions setObject:[blogOptions objectForKey:@"blogname"] forKey:@"blogName"];
                 [blogOptions removeObjectForKey:@"blogname"];
             }
-            Blog *blog = [_account findOrCreateBlogFromDictionary:blogOptions withContext:_account.managedObjectContext];
-            [blog dataSave];
+
+            NSManagedObjectContext *context = [[ContextManager sharedInstance] mainContext];
+            AccountService *accountService = [[AccountService alloc] initWithManagedObjectContext:context];
+
+            Blog *blog = [accountService findOrCreateBlogFromDictionary:blogOptions];
+
             [blog syncBlogWithSuccess:nil failure:nil];
             [self setAuthenticating:NO];
             [self dismissViewControllerAnimated:YES completion:nil];
