@@ -26,6 +26,7 @@
 #import "WPFixedWidthScrollView.h"
 #import "WPTableViewCell.h"
 #import "WPTableViewController.h"
+#import "NoteService.h"
 
 const CGFloat NotificationsCommentDetailViewControllerReplyTextViewDefaultHeight = 64.f;
 NSString *const WPNotificationCommentRestorationKey = @"WPNotificationCommentRestorationKey";
@@ -337,7 +338,8 @@ NSString *const WPNotificationCommentRestorationKey = @"WPNotificationCommentRes
     [[[WPAccount defaultWordPressComAccount] restApi] postPath:path parameters:[commentAction valueForKeyPath:@"params.rest_body"] success:^(AFHTTPRequestOperation *operation, id responseObject) {
         NSDictionary *response = (NSDictionary *)responseObject;
         if (response) {
-            [_note refreshNoteDataWithSuccess:^{
+            NoteService *noteService = [[NoteService alloc] initWithManagedObjectContext:self.note.managedObjectContext];
+            [noteService refreshNote:self.note success:^{
                 // Buttons are adjusted optimistically, so no need to update UI
             } failure:^(NSError *error) {
                 // Fail silently but force a refresh to revert any optimistic changes
