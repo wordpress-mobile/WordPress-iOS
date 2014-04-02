@@ -4,9 +4,9 @@
 
 @interface NotificationsBigBadgeViewController() <DTAttributedTextContentViewDelegate>
 
-@property (nonatomic, strong) UIScrollView *scrollView;
-@property (nonatomic, strong) UIImageView *badgeImageView;
-@property (nonatomic, strong) DTAttributedLabel *noteLabel;
+@property UIScrollView *scrollView;
+@property UIImageView *badgeImageView;
+@property DTAttributedLabel *noteLabel;
 
 @property Note *note;
 
