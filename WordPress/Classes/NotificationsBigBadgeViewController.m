@@ -18,8 +18,9 @@
     self = [super init];
     if (self) {
         _note = note;
-        if (_note)
+        if (_note) {
             self.title = note.titleForDisplay;
+        }
         self.restorationIdentifier = NSStringFromClass([self class]);
         self.restorationClass = [self class];
     }
@@ -78,8 +79,9 @@
     
     // Set note label from HTML content
     NSString *noteBody = _note.bodyHtml;
-    if (!noteBody)
+    if (!noteBody) {
         noteBody = _note.titleForDisplay;
+    }
     NSAttributedString *noteContentAttributedString = [[NSAttributedString alloc] initWithHTMLData:[noteBody dataUsingEncoding:NSUTF8StringEncoding] options:[WPStyleGuide defaultDTCoreTextOptions] documentAttributes:nil];
     [_noteLabel setAttributedString:noteContentAttributedString];
     
@@ -107,8 +109,8 @@
     [self.view addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"H:|[_scrollView]|" options:0 metrics:0 views:viewsDictionary]];
     [self.view addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"V:|[_scrollView]|" options:0 metrics:0 views:viewsDictionary]];
     
-    NSNumber *badgeSize = [NSNumber numberWithInt:128];
-    NSNumber *marginSize = [NSNumber numberWithInt:20];;
+    NSNumber *badgeSize = @(128);
+    NSNumber *marginSize = @(20);
     NSDictionary *metricsDictionary = @{@"badgeSize" : badgeSize, @"marginSize" : marginSize};
     [_scrollView addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"V:|-(>=marginSize)-[_badgeImageView(==badgeSize)]-marginSize-[_noteLabel]|" options:0 metrics:metricsDictionary views:viewsDictionary]];
     
@@ -178,8 +180,9 @@
 }
 
 - (void)linkAction:(id)sender {
-    if (![sender isKindOfClass:[DTLinkButton class]])
+    if (![sender isKindOfClass:[DTLinkButton class]]) {
         return;
+    }
     DTLinkButton *button = (DTLinkButton *)sender;
     WPWebViewController *webViewController = [[WPWebViewController alloc] init];
     webViewController.url = button.URL;
