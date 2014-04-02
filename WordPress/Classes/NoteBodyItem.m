@@ -53,10 +53,10 @@
 
 - (CGSize)iconSize
 {
-	NSNumber *height = [self.rawItem numberForKey:@"icon_height"];
-	NSNumber *width = [self.rawItem numberForKey:@"icon_width"];
+	NSInteger height = [[self.rawItem numberForKey:@"icon_height"] intValue];
+	NSInteger width  = [[self.rawItem numberForKey:@"icon_width"] intValue];
 	
-	return CGSizeMake(width.intValue, height.intValue);
+	return CGSizeMake(width, height);
 }
 
 - (NoteAction *)action
