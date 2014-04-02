@@ -342,11 +342,11 @@ NSString * const NotificationsJetpackInformationURL = @"http://jetpack.me/about/
     return [[NSUserDefaults standardUserDefaults] objectForKey:NotificationsLastSyncDateKey];
 }
 
-- (NSFetchRequest *)fetchRequest {
-    NSFetchRequest *fetchRequest = [NSFetchRequest fetchRequestWithEntityName:@"Note"];
-    NSSortDescriptor *dateSortDescriptor = [NSSortDescriptor sortDescriptorWithKey:@"timestamp" ascending:NO];
-    fetchRequest.sortDescriptors = @[dateSortDescriptor];
-    fetchRequest.fetchBatchSize = 10;
+- (NSFetchRequest *)fetchRequest
+{
+    NSFetchRequest *fetchRequest    = [NSFetchRequest fetchRequestWithEntityName:@"Note"];
+    fetchRequest.sortDescriptors    = @[ [NSSortDescriptor sortDescriptorWithKey:@"timestamp" ascending:NO] ];
+    fetchRequest.fetchBatchSize     = 10;
     return fetchRequest;
 }
 
