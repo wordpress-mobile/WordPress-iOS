@@ -731,8 +731,9 @@ CGFloat const CreateAccountAndBlogButtonHeight = 40.0;
 
             NSManagedObjectContext *context = [[ContextManager sharedInstance] mainContext];
             AccountService *accountService = [[AccountService alloc] initWithManagedObjectContext:context];
+            WPAccount *defaultAccount = [accountService defaultWordPressComAccount];
 
-            Blog *blog = [accountService findOrCreateBlogFromDictionary:blogOptions];
+            Blog *blog = [accountService findOrCreateBlogFromDictionary:blogOptions withAccount:defaultAccount];
 
             [blog syncBlogWithSuccess:nil failure:nil];
             [self setAuthenticating:NO];

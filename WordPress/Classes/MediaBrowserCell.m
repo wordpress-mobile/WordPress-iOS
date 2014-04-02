@@ -12,6 +12,8 @@
 #import "WPImageSource.h"
 #import "UIImage+Resize.h"
 #import "WPAccount.h"
+#import "AccountService.h"
+#import "ContextManager.h"
 
 @interface WPImageSource (Media)
 
@@ -268,7 +270,10 @@
     }
     
     if (media.blog.isPrivate) {
-        [self downloadImageForURL:[NSURL URLWithString:thumbnailUrl] authToken:[[[WPAccount defaultWordPressComAccount] restApi] authToken] withSuccess:thumbDownloadedSuccess failure:failure];
+        NSManagedObjectContext *context = [[ContextManager sharedInstance] mainContext];
+        AccountService *accountService = [[AccountService alloc] initWithManagedObjectContext:context];
+
+        [self downloadImageForURL:[NSURL URLWithString:thumbnailUrl] authToken:[[[accountService defaultWordPressComAccount] restApi] authToken] withSuccess:thumbDownloadedSuccess failure:failure];
     } else {
         [self downloadImageForURL:[NSURL URLWithString:thumbnailUrl] withSuccess:thumbDownloadedSuccess failure:failure];
     }
