@@ -45,19 +45,19 @@
     
     // Set icon URL and start a wee animation to catch the eye
     NSURLRequest *urlRequest = [[NSURLRequest alloc] initWithURL:[NSURL URLWithString:_note.icon]];
-    __weak UIImageView *badgeImageView_ = _badgeImageView;
+    __weak UIImageView *weakBadgeImageView = _badgeImageView;
     [_badgeImageView setImageWithURLRequest:urlRequest
                            placeholderImage:nil
                                     success:^(NSURLRequest *request, NSHTTPURLResponse *response, UIImage *image) {
-                                        [badgeImageView_ setImage: image];
-                                        badgeImageView_.transform = CGAffineTransformMakeScale(0.0,0.0);
+                                        [weakBadgeImageView setImage: image];
+                                        weakBadgeImageView.transform = CGAffineTransformMakeScale(0.0,0.0);
                                         [UIView animateWithDuration:0.5f
                                                               delay:0.2f
                                              usingSpringWithDamping:0.7f
                                               initialSpringVelocity:0.5f
                                                             options:nil
                                                          animations:^{
-                                                             badgeImageView_.transform = CGAffineTransformMakeScale(1.0,1.0);
+                                                             weakBadgeImageView.transform = CGAffineTransformMakeScale(1.0,1.0);
                                                          }
                                                          completion:nil
                                          ];
@@ -90,7 +90,7 @@
     CGRect maxRect = CGRectMake(0.0f, 0.0f, _noteLabel.frame.size.width, CGFLOAT_HEIGHT_UNKNOWN);
     NSRange entireString = NSMakeRange(0, [noteContentAttributedString length]);
     DTCoreTextLayoutFrame *layoutFrame = [layouter layoutFrameWithRect:maxRect range:entireString];
-    CGSize sizeNeeded = [layoutFrame frame].size;
+    CGSize sizeNeeded = layoutFrame.frame.size;
     CGRect frame = _noteLabel.frame;
     frame.size.height = sizeNeeded.height;
     _noteLabel.frame = frame;
