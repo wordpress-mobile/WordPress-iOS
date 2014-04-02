@@ -1,6 +1,33 @@
 #import "AccountService.h"
+#import "WPAccount.h"
+#import "NotificationsManager.h"
+#import "ContextManager.h"
+#import "Blog.h"
+
+#import "NSString+XMLExtensions.h"
+
+static NSString * const DefaultDotcomAccountDefaultsKey = @"AccountDefaultDotcom";
+
+@interface AccountService ()
+
+@property (nonatomic, strong) NSManagedObjectContext *managedObjectContext;
+
+@end
+
+static WPAccount *_defaultAccount = nil;
+static NSString * const WordPressDotcomXMLRPCKey = @"https://wordpress.com/xmlrpc.php";
+NSString * const WPAccountDefaultWordPressComAccountChangedNotification = @"WPAccountDefaultWordPressComAccountChangedNotification";
 
 @implementation AccountService
+
+- (id)initWithManagedObjectContext:(NSManagedObjectContext *)context {
+    self = [super init];
+    if (self) {
+        _managedObjectContext = context;
+    }
+    
+    return self;
+}
 
 ///------------------------------------
 /// @name Default WordPress.com account
@@ -17,7 +44,29 @@
  */
 - (WPAccount *)defaultWordPressComAccount
 {
+    if (_defaultAccount) {
+        return _defaultAccount;
+    }
+
+    NSURL *accountURL = [[NSUserDefaults standardUserDefaults] URLForKey:DefaultDotcomAccountDefaultsKey];
+    if (!accountURL) {
+        return nil;
+    }
     
+    NSManagedObjectID *objectID = [[self.managedObjectContext persistentStoreCoordinator] managedObjectIDForURIRepresentation:accountURL];
+    if (!objectID) {
+        return nil;
+    }
+    
+    WPAccount *account = (WPAccount *)[self.managedObjectContext existingObjectWithID:objectID error:nil];
+    if (account) {
+        _defaultAccount = account;
+    } else {
+        // The stored Account reference is invalid, so let's remove it to avoid wasting time querying for it
+        [[NSUserDefaults standardUserDefaults] removeObjectForKey:DefaultDotcomAccountDefaultsKey];
+    }
+    
+    return _defaultAccount;
 }
 
 /**
@@ -29,7 +78,23 @@
  */
 - (void)setDefaultWordPressComAccount:(WPAccount *)account
 {
+    NSAssert(account.isWpcom, @"account should be a wordpress.com account");
+    NSAssert(account.authToken.length > 0, @"Account should have an authToken for WP.com");
     
+    // When the account object hasn't been saved yet, its objectID is temporary
+    // If we store a reference to that objectID it will be invalid the next time we launch
+    if ([[account objectID] isTemporaryID]) {
+        [account.managedObjectContext obtainPermanentIDsForObjects:@[account] error:nil];
+    }
+    NSURL *accountURL = [[account objectID] URIRepresentation];
+    [[NSUserDefaults standardUserDefaults] setURL:accountURL forKey:DefaultDotcomAccountDefaultsKey];
+    [[NSUserDefaults standardUserDefaults] synchronize];
+    
+    dispatch_async(dispatch_get_main_queue(), ^{
+        [[NSNotificationCenter defaultCenter] postNotificationName:WPAccountDefaultWordPressComAccountChangedNotification object:nil];
+
+        [NotificationsManager registerForPushNotifications];
+    });
 }
 
 /**
@@ -40,10 +105,25 @@
  */
 - (void)removeDefaultWordPressComAccount
 {
+    [NotificationsManager unregisterDeviceToken];
+
+    dispatch_async(dispatch_get_main_queue(), ^{
+        [[NSNotificationCenter defaultCenter] postNotificationName:WPAccountDefaultWordPressComAccountChangedNotification object:nil];
+    });
+    
+    WPAccount *account = [self defaultWordPressComAccount];
+    [self.managedObjectContext deleteObject:account];
+    _defaultAccount = nil;
+
+    [[ContextManager sharedInstance] saveContext:self.managedObjectContext];
+
     // Remove defaults
+    [[NSUserDefaults standardUserDefaults] removeObjectForKey:DefaultDotcomAccountDefaultsKey];
+    [[NSUserDefaults standardUserDefaults] removeObjectForKey:@"wpcom_username_preference"];
     [[NSUserDefaults standardUserDefaults] removeObjectForKey:@"wpcom_users_blogs"];
     [[NSUserDefaults standardUserDefaults] removeObjectForKey:@"wpcom_users_prefered_blog_id"];
-
+    [[NSUserDefaults standardUserDefaults] synchronize];
+    
 }
 
 ///-----------------------
@@ -67,8 +147,14 @@
                                                     password:(NSString *)password
                                                    authToken:(NSString *)authToken
 {
-//    [self setDefaultWordPressComAccount:account];
+    WPAccount *account = [self createOrUpdateSelfHostedAccountWithXmlrpc:WordPressDotcomXMLRPCKey username:username andPassword:password];
+    account.authToken = authToken;
+    account.isWpcom = YES;
+    [[ContextManager sharedInstance] saveContext:self.managedObjectContext];
+
+    [self setDefaultWordPressComAccount:account];
     
+    return account;
 }
 
 /**
@@ -86,7 +172,26 @@
                                                 username:(NSString *)username
                                              andPassword:(NSString *)password
 {
+    NSFetchRequest *request = [NSFetchRequest fetchRequestWithEntityName:@"Account"];
+    [request setPredicate:[NSPredicate predicateWithFormat:@"xmlrpc like %@ AND username like %@", xmlrpc, username]];
+    [request setIncludesPendingChanges:YES];
     
+    WPAccount *account;
+
+    NSArray *results = [self.managedObjectContext executeFetchRequest:request error:nil];
+    if ([results count] > 0) {
+        account = [results objectAtIndex:0];
+    } else {
+        account = [NSEntityDescription insertNewObjectForEntityForName:@"Account" inManagedObjectContext:self.managedObjectContext];
+        account.xmlrpc = xmlrpc;
+        account.username = username;
+    }
+    account.password = password;
+    
+    [[ContextManager sharedInstance] saveContext:self.managedObjectContext];
+
+    return account;
+
 }
 
 ///--------------------
@@ -103,12 +208,83 @@
  */
 - (Blog *)findOrCreateBlogFromDictionary:(NSDictionary *)blogInfo withAccount:(WPAccount *)account
 {
+    NSSet *foundBlogs = [account.blogs filteredSetUsingPredicate:[NSPredicate predicateWithFormat:@"xmlrpc like %@", [blogInfo stringForKey:@"xmlrpc"]]];
+    if ([foundBlogs count] == 1) {
+        return [foundBlogs anyObject];
+    }
     
+    // If more than one blog matches, return the first and delete the rest
+    if ([foundBlogs count] > 1) {
+        Blog *blogToReturn = [foundBlogs anyObject];
+        for (Blog *b in foundBlogs) {
+            // Choose blogs with URL not starting with https to account for a glitch in the API in early 2014
+            if (!([b.url hasPrefix:@"https://"])) {
+                blogToReturn = b;
+                break;
+            }
+        }
+        
+        for (Blog *b in foundBlogs) {
+            if (!([b isEqual:blogToReturn])) {
+                [self.managedObjectContext deleteObject:b];
+            }
+        }
+        
+        return blogToReturn;
+    }
+    
+    Blog *blog = [NSEntityDescription insertNewObjectForEntityForName:NSStringFromClass([Blog class]) inManagedObjectContext:self.managedObjectContext];
+    blog.account = account;
+    blog.url = [blogInfo stringForKey:@"url"];
+    blog.blogID = [NSNumber numberWithInt:[[blogInfo objectForKey:@"blogid"] intValue]];
+    blog.blogName = [[blogInfo objectForKey:@"blogName"] stringByDecodingXMLCharacters];
+    blog.xmlrpc = [blogInfo objectForKey:@"xmlrpc"];
+    
+    DDLogInfo(@"Created blog: %@", blog);
+    
+    return blog;
 }
 
 - (void)syncBlogsForAccount:(WPAccount *)account success:(void (^)())success failure:(void (^)(NSError *error))failure
 {
+    DDLogMethod();
+    [account.xmlrpcApi getBlogsWithSuccess:^(NSArray *blogs) {
+        [self mergeBlogs:blogs withAccount:account completion:success];
+    } failure:^(NSError *error) {
+        DDLogError(@"Error syncing blogs: %@", error);
+        if (failure) {
+            failure(error);
+        }
+    }];
+}
+
+#pragma mark - Private methods
+
+- (void)mergeBlogs:(NSArray *)blogs withAccount:(WPAccount *)account completion:(void (^)())completion {
+    NSSet *remoteSet = [NSSet setWithArray:[blogs valueForKey:@"xmlrpc"]];
+    NSSet *localSet = [account.blogs valueForKey:@"xmlrpc"];
+    NSMutableSet *toDelete = [localSet mutableCopy];
+    [toDelete minusSet:remoteSet];
     
+    if ([toDelete count] > 0) {
+        for (Blog *blog in account.blogs) {
+            if ([toDelete containsObject:blog.xmlrpc]) {
+                [self.managedObjectContext deleteObject:blog];
+            }
+        }
+    }
+    
+    // Go through each remote incoming blog and make sure we're up to date with titles, etc.
+    // Also adds any blogs we don't have
+    for (NSDictionary *blog in blogs) {
+        [self findOrCreateBlogFromDictionary:blog withAccount:account];
+    }
+    
+    [[ContextManager sharedInstance] saveContext:self.managedObjectContext];
+    
+    if (completion != nil) {
+        dispatch_async(dispatch_get_main_queue(), completion);
+    }
 }
 
 
