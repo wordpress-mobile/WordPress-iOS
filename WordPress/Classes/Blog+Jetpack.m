@@ -161,7 +161,7 @@ NSString * const BlogJetpackApiPath = @"get-user-blogs/1.0";
                                      [self dataSave];
                                      
                                      // Sadly we don't care if this succeeds or not
-                                     [accountService syncBlogsWithSuccess:nil failure:nil];
+                                     [accountService syncBlogsForAccount:account success:nil failure:nil];
                                      
                                      NoteService *noteService = [[NoteService alloc] initWithManagedObjectContext:account.managedObjectContext];
                                      [noteService fetchNewNotificationsWithSuccess:nil failure:nil];

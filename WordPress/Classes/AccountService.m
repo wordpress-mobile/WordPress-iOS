@@ -102,7 +102,7 @@
     
 }
 
-- (void)syncBlogsWithSuccess:(void (^)())success failure:(void (^)(NSError *error))failure
+- (void)syncBlogsForAccount:(WPAccount *)account success:(void (^)())success failure:(void (^)(NSError *error))failure
 {
     
 }
