@@ -17,7 +17,7 @@
 
 static NSString *const WordPressComApiClientEndpointURL = @"https://public-api.wordpress.com/rest/v1/";
 static NSString *const WordPressComApiOauthBaseUrl = @"https://public-api.wordpress.com/oauth2";
-NSString *const WordPressComApiNotificationFields = @"id,type,unread,body,subject,timestamp,meta";
+NSString *const WordPressComApiNotificationFields = @"id,type,unread,body,subject,timestamp";
 static NSString *const WordPressComApiLoginUrl = @"https://wordpress.com/wp-login.php";
 NSString *const WordPressComApiErrorDomain = @"com.wordpress.api";
 NSString *const WordPressComApiErrorCodeKey = @"WordPressComApiErrorCodeKey";
@@ -460,7 +460,6 @@ NSString *const WordPressComApiPushAppId = @"org.wordpress.appstore";
     [requestParameters setObject:WordPressComApiNotificationFields forKey:@"fields"];
     [requestParameters setObject:[NSNumber numberWithInt:20] forKey:@"number"];
     [requestParameters setObject:[NSNumber numberWithInt:20] forKey:@"num_note_items"];
-    [requestParameters setObject:@"site" forKey:@"meta"];
     
     [self getPath:@"notifications/" parameters:requestParameters success:^(AFHTTPRequestOperation *operation, id responseObject){
         if (success) {
