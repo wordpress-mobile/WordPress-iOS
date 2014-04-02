@@ -460,8 +460,12 @@ static NSUInteger const AlertDiscardChanges = 500;
         };
         
         if (_media.blog.isPrivate) {
+            NSManagedObjectContext *context = [[ContextManager sharedInstance] mainContext];
+            AccountService *accountService = [[AccountService alloc] initWithManagedObjectContext:context];
+            WPAccount *defaultAccount = [accountService defaultWordPressComAccount];
+
             [[WPImageSource sharedSource] downloadImageForURL:[NSURL URLWithString:_media.remoteURL]
-                                                    authToken:[[[WPAccount defaultWordPressComAccount] restApi] authToken]
+                                                    authToken:[[defaultAccount restApi] authToken]
                                                   withSuccess:mediaDownloadSuccess failure:mediaDownloadFailure];
         } else {
             [[WPImageSource sharedSource] downloadImageForURL:[NSURL URLWithString:_media.remoteURL]
