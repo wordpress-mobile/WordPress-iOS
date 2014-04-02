@@ -3,6 +3,8 @@
 
 @class WPAccount, Blog;
 
+extern NSString *const WPAccountDefaultWordPressComAccountChangedNotification;
+
 @interface AccountService : NSObject <BaseLocalService>
 
 ///------------------------------------
