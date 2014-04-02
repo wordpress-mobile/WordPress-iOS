@@ -297,10 +297,10 @@ NSString * const NotificationsJetpackInformationURL = @"http://jetpack.me/about/
     }
     
     if(note.isUnread) {
-        note.unread = [NSNumber numberWithInt:0];
-        [self.tableView reloadRowsAtIndexPaths:[NSArray arrayWithObject:indexPath] withRowAnimation:UITableViewRowAnimationNone];
+        note.unread = @(0);
+        [self.tableView reloadRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationNone];
 
-        if(hasDetailsView) {
+        if (hasDetailsView) {
             [self.tableView selectRowAtIndexPath:indexPath animated:NO scrollPosition:UITableViewScrollPositionNone];
         }
         
@@ -308,7 +308,7 @@ NSString * const NotificationsJetpackInformationURL = @"http://jetpack.me/about/
         [noteService markNoteAsRead:note
                             success:nil
                             failure:^(NSError *error) {
-                                note.unread = [NSNumber numberWithInt:1];
+                                note.unread = @(1);
                             }
          ];
     }
@@ -320,11 +320,10 @@ NSString * const NotificationsJetpackInformationURL = @"http://jetpack.me/about/
         return YES;
     }
     
-    NSDictionary *noteBody = [[note noteData] objectForKey:@"body"];
+    NSDictionary *noteBody = [[note noteData] dictionaryForKey:@"body"];
     if (noteBody) {
-        NSString *noteTemplate = [noteBody objectForKey:@"template"];
-        if ([noteTemplate isEqualToString:@"single-line-list"] || [noteTemplate isEqualToString:@"multi-line-list"])
-            return YES;
+        NSString *noteTemplate = [noteBody stringForKey:@"template"];
+        return ([noteTemplate isEqualToString:@"single-line-list"] || [noteTemplate isEqualToString:@"multi-line-list"]);
     }
     
     return NO;
