@@ -19,6 +19,7 @@
 #import <QuartzCore/QuartzCore.h>
 #import "WPAccount.h"
 #import "WPToast.h"
+#import "NoteService.h"
 #import "Note.h"
 #import "NoteBodyItem.h"
 #import "NoteAction.h"
@@ -297,8 +298,8 @@ typedef void (^NoteToggleFollowBlock)(BOOL success);
 			
 			// Let's refresh the note: is_following change isn't permanent!
             NoteService *noteService = [[NoteService alloc] initWithManagedObjectContext:_note.managedObjectContext];
-            [noteService refreshNote:_note success:nil failure:^(NSError *error){
-                DDLogVerbose(@"[Rest API] ! %@", [error localizedDescription]);
+            [noteService refreshNote:_note success:nil failure:^(NSError *error) {
+				DDLogVerbose(@"[Rest API] ! %@", [error localizedDescription]);
             }];
 		}
 		
