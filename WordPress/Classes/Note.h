@@ -22,7 +22,11 @@
 @property (nonatomic, retain) WPAccount *account;
 @property (nonatomic, strong, readonly) NSString *commentText;
 @property (nonatomic, strong, readonly) NSDictionary *noteData;
+@property (nonatomic, strong, readonly) NSDictionary *meta;
+@property (nonatomic, strong, readonly) NSNumber *metaPostID;
+@property (nonatomic, strong, readonly) NSNumber *metaSiteID;
 
+- (BOOL)isMatcher;
 - (BOOL)isComment;
 - (BOOL)isLike;
 - (BOOL)isFollow;
