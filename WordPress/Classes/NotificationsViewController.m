@@ -20,6 +20,7 @@
 #import "Note.h"
 #import "NotificationsManager.h"
 #import "NotificationSettingsViewController.h"
+#import "NoteService.h"
 
 NSString * const NotificationsLastSyncDateKey = @"NotificationsLastSyncDate";
 NSString * const NotificationsJetpackInformationURL = @"http://jetpack.me/about/";
@@ -176,8 +177,10 @@ NSString * const NotificationsJetpackInformationURL = @"http://jetpack.me/about/
     self.navigationController.tabBarItem.badgeValue = countString;
 }
 
-- (void)refreshUnreadNotes {
-    [Note refreshUnreadNotesWithContext:self.resultsController.managedObjectContext];
+- (void)refreshUnreadNotes
+{
+    NoteService *noteService = [[NoteService alloc] initWithManagedObjectContext:self.resultsController.managedObjectContext];
+    [noteService refreshUnreadNotes];
 }
 
 - (void)updateSyncDate {
@@ -211,7 +214,9 @@ NSString * const NotificationsJetpackInformationURL = @"http://jetpack.me/about/
             }
         }
     }
-    [Note pruneOldNotesBefore:pruneBefore withContext:self.resultsController.managedObjectContext];
+
+    NoteService *noteService = [[NoteService alloc] initWithManagedObjectContext:self.resultsController.managedObjectContext];
+    [noteService pruneOldNotesBefore:pruneBefore];
 }
 
 - (void)showNotificationSettings {
@@ -264,7 +269,9 @@ NSString * const NotificationsJetpackInformationURL = @"http://jetpack.me/about/
             [self.navigationController pushViewController:detailViewController animated:YES];
         }
     } else if ([note statsEvent]) {
-        Blog *blog = [note blogForStatsEvent];
+        NoteService *noteService = [[NoteService alloc] initWithManagedObjectContext:note.managedObjectContext];
+        Blog *blog = [noteService blogForStatsEventNote:note];
+        
         if (blog) {
             [[WordPressAppDelegate sharedWordPressApplicationDelegate] showStatsForBlog:blog];
         } else {
@@ -273,6 +280,7 @@ NSString * const NotificationsJetpackInformationURL = @"http://jetpack.me/about/
     } else {
         [self.tableView deselectRowAtIndexPath:indexPath animated:YES];
     }
+    
     if(note.isUnread) {
         note.unread = [NSNumber numberWithInt:0];
         [self.tableView reloadRowsAtIndexPaths:[NSArray arrayWithObject:indexPath] withRowAnimation:UITableViewRowAnimationNone];
@@ -281,9 +289,13 @@ NSString * const NotificationsJetpackInformationURL = @"http://jetpack.me/about/
             [self.tableView selectRowAtIndexPath:indexPath animated:NO scrollPosition:UITableViewScrollPositionNone];
         }
         
-        [note markAsReadWithSuccess:nil failure:^(NSError *error){
-            note.unread = [NSNumber numberWithInt:1];
-        }];
+        NoteService *noteService = [[NoteService alloc] initWithManagedObjectContext:note.managedObjectContext];
+        [noteService markNoteAsRead:note
+                            success:nil
+                            failure:^(NSError *error) {
+                                note.unread = [NSNumber numberWithInt:1];
+                            }
+         ];
     }
 }
 
@@ -354,7 +366,8 @@ NSString * const NotificationsJetpackInformationURL = @"http://jetpack.me/about/
         timestamp = nil;
     }
     
-    [Note fetchNotificationsSince:timestamp success:^{
+    NoteService *noteService = [[NoteService alloc] initWithManagedObjectContext:self.resultsController.managedObjectContext];
+    [noteService fetchNotificationsSince:timestamp success:^{
         [UIApplication sharedApplication].applicationIconBadgeNumber = 0;
 
         [self updateSyncDate];
@@ -384,7 +397,8 @@ NSString * const NotificationsJetpackInformationURL = @"http://jetpack.me/about/
     
     _retrievingNotifications = YES;
     
-    [Note fetchNotificationsBefore:lastNote.timestamp success:^{
+    NoteService *noteService = [[NoteService alloc] initWithManagedObjectContext:self.resultsController.managedObjectContext];
+    [noteService fetchNotificationsBefore:lastNote.timestamp success:^{
         _retrievingNotifications = NO;
         if (success) {
             success();
