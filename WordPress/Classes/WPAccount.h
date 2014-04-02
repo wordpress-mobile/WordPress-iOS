@@ -15,19 +15,17 @@
 
 @class Blog;
 
-extern NSString *const WPAccountDefaultWordPressComAccountChangedNotification;
-
 @interface WPAccount : NSManagedObject
 
 ///-----------------
 /// @name Properties
 ///-----------------
 
-@property (nonatomic, readonly, retain) NSString *xmlrpc;
-@property (nonatomic, readonly, retain) NSString *username;
-@property (nonatomic, readonly) BOOL isWpcom;
-@property (nonatomic, retain) NSSet *blogs;
-@property (nonatomic, retain) NSSet *jetpackBlogs;
+@property (nonatomic, copy) NSString *xmlrpc;
+@property (nonatomic, copy) NSString *username;
+@property (nonatomic) BOOL isWpcom;
+@property (nonatomic, strong) NSSet *blogs;
+@property (nonatomic, strong) NSSet *jetpackBlogs;
 @property (nonatomic, readonly) NSArray *visibleBlogs;
 
 /**
@@ -35,12 +33,12 @@ extern NSString *const WPAccountDefaultWordPressComAccountChangedNotification;
  
  Note that the password is stored using the keychain, not core data
  */
-@property (nonatomic, retain) NSString *password;
+@property (nonatomic, copy) NSString *password;
 
 /**
  The OAuth2 auth token for WordPress.com accounts
  */
-@property (nonatomic, readonly) NSString *authToken;
+@property (nonatomic, copy) NSString *authToken;
 
 
 ///------------------
