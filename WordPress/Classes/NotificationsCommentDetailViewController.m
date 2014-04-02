@@ -103,7 +103,6 @@ NSString *const WPNotificationCommentRestorationKey = @"WPNotificationCommentRes
     [super viewDidLoad];
     self.commentThread = [[NSMutableArray alloc] initWithCapacity:1];
     
-    
     self.commentView = [[CommentView alloc] initWithFrame:self.view.frame];
     self.commentView.contentProvider = self.note;
     self.commentView.delegate = self;
@@ -454,6 +453,12 @@ NSString *const WPNotificationCommentRestorationKey = @"WPNotificationCommentRes
     NoteComment *comment = [self.commentThread objectAtIndex:0];
     NSURL *url = [[NSURL alloc] initWithString:[comment.commentData valueForKeyPath:@"author.URL"]];
     [self pushToURL:url];
+}
+
+- (void)contentView:(WPContentView *)contentView didReceiveLinkAction:(id)sender {
+    WPWebViewController *controller = [[WPWebViewController alloc] init];
+	[controller setUrl:((DTLinkButton *)sender).URL];
+	[self.navigationController pushViewController:controller animated:YES];
 }
 
 
