@@ -140,6 +140,7 @@ NSString * const NotificationsJetpackInformationURL = @"http://jetpack.me/about/
     if (!_viewHasAppeared) {
         _viewHasAppeared = YES;
         [WPMobileStats incrementProperty:StatsPropertyNotificationsOpened forEvent:StatsEventAppClosed];
+        [WPMobileStats incrementPeopleAndSuperProperty:StatsSuperPropertyNumberOfTimesOpenedNotifications];
     }
     
     _isPushingViewController = NO;
