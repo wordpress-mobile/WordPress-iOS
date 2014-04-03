@@ -74,9 +74,7 @@
 }
 
 - (CGFloat)layoutAttributionAt:(CGFloat)yPosition {
-    if (!self.cellImageView.hidden) {
-        yPosition += RPVAuthorPadding;
-    }
+    // We're not showing hte attribution view for posts, so return the yPosition unchanged
     return yPosition;
 }
 

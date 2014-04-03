@@ -16,6 +16,7 @@
 #import "WPImageSource.h"
 #import "ContextManager.h"
 
+CGFloat const WPPostDetailContentPadding = 44.0f;
 NSString *const WPDetailPostRestorationKey = @"WPDetailPostRestorationKey";
 
 @interface PostViewController ()<PostContentViewDelegate, UIActionSheetDelegate, UIPopoverControllerDelegate, UIViewControllerRestoration>
@@ -79,7 +80,13 @@ NSString *const WPDetailPostRestorationKey = @"WPDetailPostRestorationKey";
     CGRect frame = CGRectMake(x, 0.0f, width, CGRectGetHeight(self.view.bounds));
     self.scrollView = [[UIScrollView alloc] initWithFrame:frame];
     self.scrollView.autoresizingMask = mask;
-    
+    UIEdgeInsets contentInset = self.scrollView.contentInset;
+    if (IS_IPAD) {
+        contentInset.top = WPPostDetailContentPadding;
+    }
+    contentInset.bottom = WPPostDetailContentPadding;
+    self.scrollView.contentInset = contentInset;
+
     [self.view addSubview:self.scrollView];
     
     self.postView = [[PostContentView alloc] initWithFrame:CGRectMake(0.0f, 0.0f, width, CGRectGetHeight(self.view.bounds)) showFullContent:YES];
