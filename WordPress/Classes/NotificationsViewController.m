@@ -23,7 +23,6 @@
 #import "NotificationsBigBadgeViewController.h"
 #import "NoteService.h"
 
-NSString * const NotificationsLastSyncDateKey = @"NotificationsLastSyncDate";
 NSString * const NotificationsJetpackInformationURL = @"http://jetpack.me/about/";
 
 @interface NotificationsViewController () {
@@ -184,17 +183,12 @@ NSString * const NotificationsJetpackInformationURL = @"http://jetpack.me/about/
     [noteService refreshUnreadNotes];
 }
 
-- (void)updateSyncDate {
+- (void)updateLastSeenTime {
     // get the most recent note
-    NSArray *notes = self.resultsController.fetchedObjects;
-    if ([notes count] > 0) {
-        Note *note = [notes objectAtIndex:0];
+    Note *note = [self.resultsController.fetchedObjects firstObject];
+    if (note) {
         [[[WPAccount defaultWordPressComAccount] restApi] updateNoteLastSeenTime:note.timestamp success:nil failure:nil];
     }
-
-    NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
-    [defaults setObject:[NSDate date] forKey:NotificationsLastSyncDateKey];
-    [defaults synchronize];
 }
 
 - (void)pruneOldNotes {
@@ -315,12 +309,14 @@ NSString * const NotificationsJetpackInformationURL = @"http://jetpack.me/about/
 
 #pragma mark - WPTableViewController subclass methods
 
-- (NSString *)entityName {
+- (NSString *)entityName
+{
     return @"Note";
 }
 
 - (NSDate *)lastSyncDate {
-    return [[NSUserDefaults standardUserDefaults] objectForKey:NotificationsLastSyncDateKey];
+    // Force sync everytime: this app becomes visible + becomes active!
+    return [NSDate distantPast];
 }
 
 - (NSFetchRequest *)fetchRequest {
@@ -357,20 +353,14 @@ NSString * const NotificationsJetpackInformationURL = @"http://jetpack.me/about/
         [self pruneOldNotes];
     }
     
-    NSNumber *timestamp;
-    NSArray *notes = [self.resultsController fetchedObjects];
-    if (userInteraction == NO && [notes count] > 0) {
-        Note *note = [notes objectAtIndex:0];
-        timestamp = note.timestamp;
-    } else {
-        timestamp = nil;
-    }
+    Note *note = [[self.resultsController fetchedObjects] firstObject];
+    NSNumber *timestamp = note.timestamp ?: nil;
     
     NoteService *noteService = [[NoteService alloc] initWithManagedObjectContext:self.resultsController.managedObjectContext];
     [noteService fetchNotificationsSince:timestamp success:^{
         [UIApplication sharedApplication].applicationIconBadgeNumber = 0;
 
-        [self updateSyncDate];
+        [self updateLastSeenTime];
         if (success) {
             success();
         }
