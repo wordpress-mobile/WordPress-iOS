@@ -11,38 +11,94 @@
 #import "Blog.h"
 
 @implementation CategoryServiceLegacyRemote {
-    Blog *_blog;
+    WPXMLRPCClient *_xmlrpcClient;
+    NSString *_username;
+    NSString *_password;
 }
 
-- (id)initWithBlog:(Blog *)blog {
-    self = [super initWithBlog:blog];
+- (id)initWithApi:(id)api username:(NSString *)username password:(NSString *)password {
+    self = [super init];
     if (self) {
-        _blog = blog;
+        _xmlrpcClient = api;
+        _username = username;
+        _password = password;
     }
     return self;
 }
 
-- (void)createCategoryWithName:(NSString *)name parentCategoryID:(NSNumber *)parentCategoryID success:(void (^)(NSNumber *))success failure:(void (^)(NSError *))failure {
-    NSDictionary *parameters = @{ @"name" : name ?: [NSNull null],
-                                  @"parent_id" : parentCategoryID ?: @0};
-    
-    // TODO - Get the API for a Blog without needing the Blog object
-    [_blog.api callMethod:@"wp.newCategory"
-               parameters:[_blog getXMLRPCArgsWithExtra:parameters]
-                  success:^(AFHTTPRequestOperation *operation, id responseObject) {
-                      NSNumber *categoryID = @([responseObject integerValue]);
-                      int newID = [categoryID intValue];
-                      if (newID > 0) {
+#pragma mark - CategoryServiceRemoteAPI
 
-                          if (success) {
-                              success(categoryID);
+- (void)createCategoryWithName:(NSString *)name parentCategoryID:(NSNumber *)parentCategoryID siteID:(NSNumber *)siteID success:(void (^)(NSNumber *))success failure:(void (^)(NSError *))failure {
+    NSArray *parameters = @[
+                            siteID,
+                            _username,
+                            _password,
+                            @{
+                                @"name" : name ?: [NSNull null],
+                                @"parent_id" : parentCategoryID ?: @0
+                                },
+                            ];
+
+    [_xmlrpcClient callMethod:@"wp.newCategory"
+                   parameters:parameters
+                      success:^(AFHTTPRequestOperation *operation, id responseObject) {
+                          NSNumber *categoryID = @([responseObject integerValue]);
+                          int newID = [categoryID intValue];
+                          if (newID > 0) {
+
+                              if (success) {
+                                  success(categoryID);
+                              }
                           }
-                      }
-                  } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
-                      if (failure) {
-                          failure(error);
-                      }
-                  }];
+                      } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+                          if (failure) {
+                              failure(error);
+                          }
+                      }];
+}
+
+- (void)getCategoriesForSiteWithID:(NSNumber *)siteID success:(void (^)(NSArray *))success failure:(void (^)(NSError *))failure {
+    NSArray *parameters = @[
+                            siteID,
+                            _username,
+                            _password,
+                            ];
+    [_xmlrpcClient callMethod:@"wp.getCategories"
+                   parameters:parameters
+                      success:^(AFHTTPRequestOperation *operation, id responseObject) {
+                          if (success) {
+                              /*
+                               Category response format:
+                               {
+                                   categoryId
+                                   parentId
+                                   description
+                                   categoryDescription
+                                   categoryName
+                                   htmlUrl
+                                   rssUrl
+                               }
+                               */
+                              NSArray *receivedCategories = (NSArray *)responseObject;
+                              if (![receivedCategories isKindOfClass:[NSArray class]]) {
+                                  receivedCategories = @[];
+                              }
+                              NSMutableArray *categories = [NSMutableArray arrayWithCapacity:[receivedCategories count]];
+                              for (NSDictionary *receivedCategory in receivedCategories) {
+                                  NSDictionary *category = @{
+                                                             @"id":     [receivedCategory numberForKey:@"categoryId"],
+                                                             @"name":   [receivedCategory stringForKey:@"categoryName"],
+                                                             @"parent": [receivedCategory numberForKey:@"parentId"],
+                                                             };
+                                  [categories addObject:category];
+                              }
+                              success([categories copy]);
+                          }
+                      } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+                          if (failure) {
+                              failure(error);
+                          }
+                      }];
 }
 
 @end

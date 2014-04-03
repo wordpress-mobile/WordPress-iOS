@@ -11,6 +11,12 @@
 
 #import "CategoryServiceRemote.h"
 
-@interface CategoryServiceLegacyRemote : CategoryServiceRemote
+@class WPXMLRPCClient;
+
+@interface CategoryServiceLegacyRemote : NSObject<CategoryServiceRemoteAPI>
+
+- (id)initWithApi:(WPXMLRPCClient *)api
+         username:(NSString *)username
+         password:(NSString *)password;
 
 @end

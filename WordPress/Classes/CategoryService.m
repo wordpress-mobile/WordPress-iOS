@@ -96,10 +96,15 @@
     category.categoryName = name;
 	if (parent.categoryID != nil)
 		category.parentID = parent.categoryID;
-    
-    CategoryServiceRemote *remote = [self remoteForBlog:blog];
+
+    NSNumber *siteID = blog.dotComID;
+    if (!siteID) {
+        siteID = blog.blogID;
+    }
+    id<CategoryServiceRemoteAPI> remote = [self remoteForBlog:blog];
     [remote createCategoryWithName:name
                   parentCategoryID:parent.categoryID
+                            siteID:siteID
                            success:^(NSNumber *categoryID) {
                                [self.managedObjectContext performBlockAndWait:^{
                                    category.categoryID = categoryID;
@@ -180,11 +185,11 @@
     return category;
 }
 
-- (CategoryServiceRemote *)remoteForBlog:(Blog *)blog {
+- (id<CategoryServiceRemoteAPI>)remoteForBlog:(Blog *)blog {
     if (blog.restApi) {
-        return [[CategoryServiceRemote alloc] initWithBlog:blog];
+        return [[CategoryServiceRemote alloc] initWithApi:blog.restApi];
     } else {
-        return [[CategoryServiceLegacyRemote alloc] initWithBlog:blog];
+        return [[CategoryServiceLegacyRemote alloc] initWithApi:blog.api username:blog.username password:blog.password];
     }
 }
 
