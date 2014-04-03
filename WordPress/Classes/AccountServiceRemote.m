@@ -1,11 +1,3 @@
-//
-//  AccountServiceRemote.m
-//  WordPress
-//
-//  Created by Aaron Douglas on 4/3/14.
-//  Copyright (c) 2014 WordPress. All rights reserved.
-//
-
 #import "AccountServiceRemote.h"
 #import <WordPressApi/WordPressApi.h>
 

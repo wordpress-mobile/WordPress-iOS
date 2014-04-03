@@ -1,12 +1,3 @@
-/*
- * CategoryService.m
- *
- * Copyright (c) 2014 WordPress. All rights reserved.
- *
- * Licensed under GNU General Public License 2.0.
- * Some rights reserved. See license.txt
- */
-
 #import "CategoryService.h"
 #import "Category.h"
 #import "Blog.h"
