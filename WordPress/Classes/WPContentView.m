@@ -275,8 +275,14 @@ const CGFloat RPVControlButtonBorderSize = 0.0f;
     
     // Update own frame
     CGRect ownFrame = self.frame;
-    ownFrame.size.height = yPos;
-    self.frame = ownFrame;
+    if (CGRectGetHeight(self.frame) != yPos) {
+        ownFrame.size.height = yPos;
+        self.frame = ownFrame;
+        
+        if ([self.delegate respondsToSelector:@selector(contentViewHeightDidChange:)]) {
+            [self.delegate contentViewHeightDidChange:self];
+        }
+    }
 }
 
 - (CGFloat)layoutAttributionAt:(CGFloat)yPosition {

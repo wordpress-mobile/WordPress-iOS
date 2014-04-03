@@ -157,7 +157,7 @@
 		return;
 	}
 
-    [self editPost:post];
+    [self showPostDetail:post];
     [tableView deselectRowAtIndexPath:indexPath animated:YES];    
 }
 
@@ -211,6 +211,17 @@
 }
 
 - (void)editPost:(AbstractPost *)apost {
+    EditPostViewController *editPostViewController = [[EditPostViewController alloc] initWithPost:apost];
+    editPostViewController.editorOpenedBy = StatsPropertyPostDetailEditorOpenedOpenedByPostsView;
+    UINavigationController *navController = [[UINavigationController alloc] initWithRootViewController:editPostViewController];
+    [navController setToolbarHidden:NO]; // Fixes incorrect toolbar animation.
+    navController.modalPresentationStyle = UIModalPresentationCurrentContext;
+    navController.restorationIdentifier = WPEditorNavigationRestorationID;
+    navController.restorationClass = [EditPostViewController class];
+    [self.view.window.rootViewController presentViewController:navController animated:YES completion:nil];
+}
+
+- (void)showPostDetail:(AbstractPost *)apost {
     PostViewController *controller = [[PostViewController alloc] initWithPost:apost];
     [self.navigationController pushViewController:controller animated:YES];
 }

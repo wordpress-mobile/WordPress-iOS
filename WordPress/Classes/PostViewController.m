@@ -111,6 +111,9 @@ NSString *const WPDetailPostRestorationKey = @"WPDetailPostRestorationKey";
 - (void)didRotateFromInterfaceOrientation:(UIInterfaceOrientation)fromInterfaceOrientation {
     [super didRotateFromInterfaceOrientation:fromInterfaceOrientation];
 
+    [self.postView refreshMediaLayout]; // Resize media in the post detail to match the width of the new orientation.
+    [self.postView setNeedsLayout];
+    
     [self updateScrollHeight];
 }
 
@@ -143,6 +146,15 @@ NSString *const WPDetailPostRestorationKey = @"WPDetailPostRestorationKey";
 
 
 #pragma mark - PostContentView Delegate Methods
+
+- (void)contentViewDidLoadAllMedia:(WPContentView *)contentView {
+    [self.postView layoutIfNeeded];
+    [self updateScrollHeight];
+}
+
+- (void)contentViewHeightDidChange:(WPContentView *)contentView {
+    [self updateScrollHeight];
+}
 
 - (void)postView:(PostContentView *)postView didReceiveDeleteAction:(id)sender {
     UIActionSheet *actionSheet = [[UIActionSheet alloc] initWithTitle:NSLocalizedString(@"Are you sure you want to delete this post?", @"")
