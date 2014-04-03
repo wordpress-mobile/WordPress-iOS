@@ -254,6 +254,19 @@ NSString *const StatsSuperPropertyNumberOfItemsSentToPocket = @"number_of_items_
 NSString *const StatsSuperPropertyNumberOfItemsSentToInstapaper = @"number_of_items_sent_to_instapaper";
 NSString *const StatsSuperPropertyNumberOfItemsSentToGooglePlus = @"number_of_items_sent_to_google_plus";
 
+// Notifications
+NSString *const StatsSuperPropertyNumberOfTimesOpenedNotificationDetails = @"number_of_times_opened_notification_details";
+NSString *const StatsSuperPropertyNumberOfNotificationsResultingInActions = @"number_of_notifications_resulting_in_actions";
+NSString *const StatsSuperPropertyNumberOfNotificationsRepliedTo = @"number_of_notifications_replied_to";
+NSString *const StatsSuperPropertyNumberOfNotificationsApproved = @"number_of_notifications_approved";
+NSString *const StatsSuperPropertyNumberOfNotificationsUnapproved = @"number_of_notifications_unapproved";
+NSString *const StatsSuperPropertyNumberOfNotificationsTrashed = @"number_of_notifications_trashed";
+NSString *const StatsSuperPropertyNumberOfNotificationsUntrashed = @"number_of_notifications_untrashed";
+NSString *const StatsSuperPropertyNumberOfNotificationsFlaggedAsSpam = @"number_of_notifications_flagged_as_spam";
+NSString *const StatsSuperPropertyNumberOfNotificationsUnflaggedAsSpam = @"number_of_notifications_unflagged_as_spam";
+NSString *const StatsSuperPropertyNumberOfNotificationsResultingInAFollow = @"number_of_notifications_resulting_in_a_follow";
+NSString *const StatsSuperPropertyNumberOfNotificationsResultingInAnUnfollow = @"number_of_notifications_resulting_in_an_unfollow";
+
 
 @interface WPMobileStats() {
     NSMutableDictionary *_aggregatedEventProperties;

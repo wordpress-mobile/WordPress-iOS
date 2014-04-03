@@ -241,6 +241,18 @@ extern NSString *const StatsSuperPropertyNumberOfItemsSentToPocket;
 extern NSString *const StatsSuperPropertyNumberOfItemsSentToInstapaper;
 extern NSString *const StatsSuperPropertyNumberOfItemsSentToGooglePlus;
 
+// Notifications
+extern NSString *const StatsSuperPropertyNumberOfTimesOpenedNotificationDetails;
+extern NSString *const StatsSuperPropertyNumberOfNotificationsResultingInActions;
+extern NSString *const StatsSuperPropertyNumberOfNotificationsRepliedTo;
+extern NSString *const StatsSuperPropertyNumberOfNotificationsApproved;
+extern NSString *const StatsSuperPropertyNumberOfNotificationsUnapproved;
+extern NSString *const StatsSuperPropertyNumberOfNotificationsTrashed;
+extern NSString *const StatsSuperPropertyNumberOfNotificationsUntrashed;
+extern NSString *const StatsSuperPropertyNumberOfNotificationsFlaggedAsSpam;
+extern NSString *const StatsSuperPropertyNumberOfNotificationsUnflaggedAsSpam;
+extern NSString *const StatsSuperPropertyNumberOfNotificationsResultingInAFollow;
+extern NSString *const StatsSuperPropertyNumberOfNotificationsResultingInAnUnfollow;
 
 @interface WPMobileStats : NSObject
 
