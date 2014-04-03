@@ -22,7 +22,6 @@
 #import "NotificationSettingsViewController.h"
 #import "NoteService.h"
 
-NSString * const NotificationsLastSyncDateKey = @"NotificationsLastSyncDate";
 NSString * const NotificationsJetpackInformationURL = @"http://jetpack.me/about/";
 
 @interface NotificationsViewController () {
@@ -183,16 +182,12 @@ NSString * const NotificationsJetpackInformationURL = @"http://jetpack.me/about/
     [noteService refreshUnreadNotes];
 }
 
-- (void)updateSyncDate {
+- (void)updateLastSeenTime {
     // get the most recent note
     Note *note = [self.resultsController.fetchedObjects firstObject];
     if (note) {
         [[[WPAccount defaultWordPressComAccount] restApi] updateNoteLastSeenTime:note.timestamp success:nil failure:nil];
     }
-
-    NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
-    [defaults setObject:[NSDate date] forKey:NotificationsLastSyncDateKey];
-    [defaults synchronize];
 }
 
 - (void)pruneOldNotes {
@@ -320,7 +315,8 @@ NSString * const NotificationsJetpackInformationURL = @"http://jetpack.me/about/
 }
 
 - (NSDate *)lastSyncDate {
-    return [[NSUserDefaults standardUserDefaults] objectForKey:NotificationsLastSyncDateKey];
+    // Force sync everytime: this app becomes visible + becomes active!
+    return [NSDate distantPast];
 }
 
 - (NSFetchRequest *)fetchRequest {
@@ -364,7 +360,7 @@ NSString * const NotificationsJetpackInformationURL = @"http://jetpack.me/about/
     [noteService fetchNotificationsSince:timestamp success:^{
         [UIApplication sharedApplication].applicationIconBadgeNumber = 0;
 
-        [self updateSyncDate];
+        [self updateLastSeenTime];
         if (success) {
             success();
         }
