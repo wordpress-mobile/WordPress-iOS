@@ -282,8 +282,14 @@ typedef void (^NoteToggleFollowBlock)(BOOL success);
     BOOL isFollowing = item.action.following;
 	   
 	// Hit the Tracker
-	NSString *event = (isFollowing) ? StatsEventNotificationsDetailUnfollowBlog : StatsEventNotificationsDetailFollowBlog;
-	[WPMobileStats trackEventForWPCom:event];
+    if (isFollowing) {
+        [WPMobileStats trackEventForSelfHostedAndWPCom:StatsEventNotificationsDetailUnfollowBlog];
+        [WPMobileStats incrementPeopleAndSuperProperty:StatsSuperPropertyNumberOfNotificationsResultingInAnUnfollow];
+    } else {
+        [WPMobileStats trackEventForSelfHostedAndWPCom:StatsEventNotificationsDetailFollowBlog];
+        [WPMobileStats incrementPeopleAndSuperProperty:StatsSuperPropertyNumberOfNotificationsResultingInAFollow];
+    }
+    [WPMobileStats incrementPeopleAndSuperProperty:StatsSuperPropertyNumberOfNotificationsResultingInActions];
     
 	// Hit the Backend
 	WordPressComApi *restApi = [[WPAccount defaultWordPressComAccount] restApi];
