@@ -100,7 +100,7 @@ const CGFloat RPVControlButtonBorderSize = 0.0f;
         
         _headerLabel = [[DTAttributedLabel alloc] initWithFrame:CGRectMake(0.0f, 0.0f, self.frame.size.width, 0.0f)];
         _headerLabel.backgroundColor = [WPStyleGuide itsEverywhereGrey];
-        _headerLabel.edgeInsets = UIEdgeInsetsMake(10.0f, 10.0f, 10.0f, 10.0f);
+        _headerLabel.edgeInsets = UIEdgeInsetsMake(10.0f, RPVHorizontalInnerPadding, 10.0f, RPVHorizontalInnerPadding);
         _headerLabel.numberOfLines = 0;
         [self addSubview:_headerLabel];
 
