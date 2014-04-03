@@ -16,6 +16,7 @@
 #import "Blog.h"
 #import "WPAccount.h"
 #import "WPTableViewSectionHeaderView.h"
+#import "AccountService.h"
 
 static NSString *const BlogCellIdentifier = @"BlogCell";
 
@@ -285,7 +286,11 @@ static NSString *const BlogCellIdentifier = @"BlogCell";
 
 - (NSString *)controller:(NSFetchedResultsController *)controller sectionIndexTitleForSectionName:(NSString *)sectionName {
     if ([sectionName isEqualToString:@"1"]) {
-        return [NSString stringWithFormat:NSLocalizedString(@"%@'s sites", @"Section header for WordPress.com blogs"), [[WPAccount defaultWordPressComAccount] username]];
+        NSManagedObjectContext *context = [[ContextManager sharedInstance] mainContext];
+        AccountService *accountService = [[AccountService alloc] initWithManagedObjectContext:context];
+        WPAccount *defaultAccount = [accountService defaultWordPressComAccount];
+
+        return [NSString stringWithFormat:NSLocalizedString(@"%@'s sites", @"Section header for WordPress.com blogs"), [defaultAccount username]];
     }
     return NSLocalizedString(@"Self Hosted", @"Section header for self hosted blogs");
 }

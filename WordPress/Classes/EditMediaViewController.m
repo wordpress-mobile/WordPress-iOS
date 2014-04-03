@@ -15,6 +15,8 @@
 #import "UIImage+Resize.h"
 #import <MediaPlayer/MediaPlayer.h>
 #import "WPAccount.h"
+#import "AccountService.h"
+#import "ContextManager.h"
 
 static NSUInteger const AlertDiscardChanges = 500;
 
@@ -325,8 +327,12 @@ static NSUInteger const AlertDiscardChanges = 500;
     // Attempt to grab the video with authentication if the blog is private
     if (self.media.blog.isPrivate && !_media.localURL && _media.remoteURL) {
         [self showLoadingSpinner];
+        
+        NSManagedObjectContext *context = [[ContextManager sharedInstance] mainContext];
+        AccountService *accountService = [[AccountService alloc] initWithManagedObjectContext:context];
+
         NSMutableURLRequest *request = [NSMutableURLRequest requestWithURL:[NSURL URLWithString:[_media.remoteURL stringByReplacingOccurrencesOfString:@"http://" withString:@"https://"]]];
-        [request addValue:[@"Bearer " stringByAppendingString:[WPAccount defaultWordPressComAccount].restApi.authToken] forHTTPHeaderField:@"Authorization"];
+        [request addValue:[@"Bearer " stringByAppendingString:[accountService defaultWordPressComAccount].restApi.authToken] forHTTPHeaderField:@"Authorization"];
         AFHTTPRequestOperation *op = [[AFHTTPRequestOperation alloc] initWithRequest:request];
         [op setCompletionBlockWithSuccess:^(AFHTTPRequestOperation *operation, id responseObject) {
             NSData *videoData = (NSData *)responseObject;
@@ -454,8 +460,12 @@ static NSUInteger const AlertDiscardChanges = 500;
         };
         
         if (_media.blog.isPrivate) {
+            NSManagedObjectContext *context = [[ContextManager sharedInstance] mainContext];
+            AccountService *accountService = [[AccountService alloc] initWithManagedObjectContext:context];
+            WPAccount *defaultAccount = [accountService defaultWordPressComAccount];
+
             [[WPImageSource sharedSource] downloadImageForURL:[NSURL URLWithString:_media.remoteURL]
-                                                    authToken:[[[WPAccount defaultWordPressComAccount] restApi] authToken]
+                                                    authToken:[[defaultAccount restApi] authToken]
                                                   withSuccess:mediaDownloadSuccess failure:mediaDownloadFailure];
         } else {
             [[WPImageSource sharedSource] downloadImageForURL:[NSURL URLWithString:_media.remoteURL]

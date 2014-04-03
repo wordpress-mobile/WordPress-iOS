@@ -20,6 +20,8 @@
 #import <SVProgressHUD/SVProgressHUD.h>
 #import <NSDictionary+SafeExpectations.h>
 #import "NotificationsManager.h"
+#import "AccountService.h"
+#import "ContextManager.h"
 
 static NSString *const TextFieldCellIdentifier = @"TextFieldCellIdentifier";
 static NSString *const GeotaggingCellIdentifier = @"GeotaggingCellIdentifier";
@@ -374,9 +376,13 @@ static NSString *const JetpackConnectedCellIdentifier = @"JetpackConnectedCellId
 }
 
 - (BOOL)canTogglePushNotifications {
+    NSManagedObjectContext *context = [[ContextManager sharedInstance] mainContext];
+    AccountService *accountService = [[AccountService alloc] initWithManagedObjectContext:context];
+    WPAccount *defaultAccount = [accountService defaultWordPressComAccount];
+
     return self.blog &&
         ([self.blog isWPcom] || [self.blog hasJetpack]) &&
-        [[[WPAccount defaultWordPressComAccount] restApi] hasCredentials] &&
+        [[defaultAccount restApi] hasCredentials] &&
         [NotificationsManager deviceRegisteredForPushNotifications];
 }
 

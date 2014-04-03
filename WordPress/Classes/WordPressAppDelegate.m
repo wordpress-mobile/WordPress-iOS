@@ -26,6 +26,7 @@
 #import "UIDevice+WordPressIdentifier.h"
 #import "WordPressComApiCredentials.h"
 #import "WPAccount.h"
+#import "AccountService.h"
 
 #import "BlogListViewController.h"
 #import "BlogDetailsViewController.h"
@@ -291,8 +292,12 @@ static NSInteger const IndexForMeTab = 2;
 }
 
 - (BOOL)noBlogsAndNoWordPressDotComAccount {
-    NSInteger blogCount = [Blog countSelfHostedWithContext:[[ContextManager sharedInstance] mainContext]];
-    return blogCount == 0 && ![WPAccount defaultWordPressComAccount];
+    NSManagedObjectContext *context = [[ContextManager sharedInstance] mainContext];
+    AccountService *accountService = [[AccountService alloc] initWithManagedObjectContext:context];
+    WPAccount *defaultAccount = [accountService defaultWordPressComAccount];
+
+    NSInteger blogCount = [Blog countSelfHostedWithContext:context];
+    return blogCount == 0 && !defaultAccount;
 }
 
 - (void)customizeAppearance
@@ -561,7 +566,11 @@ static NSInteger const IndexForMeTab = 2;
 #pragma mark - Notifications
 
 - (void)defaultAccountDidChange:(NSNotification *)notification {
-    [Crashlytics setUserName:[[WPAccount defaultWordPressComAccount] username]];
+    NSManagedObjectContext *context = [[ContextManager sharedInstance] mainContext];
+    AccountService *accountService = [[AccountService alloc] initWithManagedObjectContext:context];
+    WPAccount *defaultAccount = [accountService defaultWordPressComAccount];
+
+    [Crashlytics setUserName:[defaultAccount username]];
     [self setCommonCrashlyticsParameters];
 }
 
@@ -583,11 +592,15 @@ static NSInteger const IndexForMeTab = 2;
     [Crashlytics startWithAPIKey:[WordPressComApiCredentials crashlyticsApiKey]];
     [[Crashlytics sharedInstance] setDelegate:self];
     
-    BOOL hasCredentials = ([WPAccount defaultWordPressComAccount] != nil);
+    NSManagedObjectContext *context = [[ContextManager sharedInstance] mainContext];
+    AccountService *accountService = [[AccountService alloc] initWithManagedObjectContext:context];
+    WPAccount *defaultAccount = [accountService defaultWordPressComAccount];
+
+    BOOL hasCredentials = (defaultAccount != nil);
     [self setCommonCrashlyticsParameters];
     
-    if (hasCredentials && [[WPAccount defaultWordPressComAccount] username] != nil) {
-        [Crashlytics setUserName:[[WPAccount defaultWordPressComAccount] username]];
+    if (hasCredentials && [defaultAccount username] != nil) {
+        [Crashlytics setUserName:[defaultAccount username]];
     }
 
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(defaultAccountDidChange:) name:WPAccountDefaultWordPressComAccountChangedNotification object:nil];
@@ -606,10 +619,14 @@ static NSInteger const IndexForMeTab = 2;
 
 - (void)setCommonCrashlyticsParameters
 {
-    BOOL loggedIn = [WPAccount defaultWordPressComAccount] != nil;
+    NSManagedObjectContext *context = [[ContextManager sharedInstance] mainContext];
+    AccountService *accountService = [[AccountService alloc] initWithManagedObjectContext:context];
+    WPAccount *defaultAccount = [accountService defaultWordPressComAccount];
+
+    BOOL loggedIn = defaultAccount != nil;
     [Crashlytics setObjectValue:@(loggedIn) forKey:@"logged_in"];
     [Crashlytics setObjectValue:@(loggedIn) forKey:@"connected_to_dotcom"];
-    [Crashlytics setObjectValue:@([Blog countWithContext:[[ContextManager sharedInstance] mainContext]]) forKey:@"number_of_blogs"];
+    [Crashlytics setObjectValue:@([Blog countWithContext:context]) forKey:@"number_of_blogs"];
 }
 
 - (void)configureHockeySDK {
@@ -732,9 +749,13 @@ static NSInteger const IndexForMeTab = 2;
 }
 
 - (void)setupSingleSignOn {
-    if ([[WPAccount defaultWordPressComAccount] username]) {
-        [[WPComOAuthController sharedController] setWordPressComUsername:[[WPAccount defaultWordPressComAccount] username]];
-        [[WPComOAuthController sharedController] setWordPressComPassword:[[WPAccount defaultWordPressComAccount] password]];
+    NSManagedObjectContext *context = [[ContextManager sharedInstance] mainContext];
+    AccountService *accountService = [[AccountService alloc] initWithManagedObjectContext:context];
+    WPAccount *defaultAccount = [accountService defaultWordPressComAccount];
+
+    if ([defaultAccount username]) {
+        [[WPComOAuthController sharedController] setWordPressComUsername:[defaultAccount username]];
+        [[WPComOAuthController sharedController] setWordPressComPassword:[defaultAccount password]];
     }
 }
 

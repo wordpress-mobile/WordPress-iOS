@@ -41,6 +41,8 @@
 #import "SupportViewController.h"
 #import "ContextManager.h"
 #import "NotificationsManager.h"
+#import "ContextManager.h"
+#import "AccountService.h"
 
 typedef enum {
     SettingsSectionWpcom = 0,
@@ -165,12 +167,17 @@ CGFloat const blavatarImageViewSize = 43.f;
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
     switch (section) {
-        case SettingsSectionWpcom:
-            if ([WPAccount defaultWordPressComAccount]) {
+        case SettingsSectionWpcom: {
+            NSManagedObjectContext *context = [[ContextManager sharedInstance] mainContext];
+            AccountService *accountService = [[AccountService alloc] initWithManagedObjectContext:context];
+            WPAccount *defaultAccount = [accountService defaultWordPressComAccount];
+    
+            if (defaultAccount) {
                 return [self rowForSignOut] + 1;
             } else {
                 return 1;
             }
+        }
 
         case SettingsSectionMedia:
             return [self.mediaSettingsArray count];
@@ -216,10 +223,14 @@ CGFloat const blavatarImageViewSize = 43.f;
     cell.accessoryView = nil;
 
     if (indexPath.section == SettingsSectionWpcom) {
-        if ([WPAccount defaultWordPressComAccount]) {
+        NSManagedObjectContext *context = [[ContextManager sharedInstance] mainContext];
+        AccountService *accountService = [[AccountService alloc] initWithManagedObjectContext:context];
+        WPAccount *defaultAccount = [accountService defaultWordPressComAccount];
+
+        if (defaultAccount) {
             if (indexPath.row == 0) {
                 cell.textLabel.text = NSLocalizedString(@"Username", @"");
-                cell.detailTextLabel.text = [[WPAccount defaultWordPressComAccount] username];
+                cell.detailTextLabel.text = [defaultAccount username];
                 cell.detailTextLabel.textColor = [UIColor UIColorFromHex:0x888888];
                 cell.selectionStyle = UITableViewCellSelectionStyleNone;
                 cell.accessibilityIdentifier = @"wpcom-username";
@@ -273,8 +284,12 @@ CGFloat const blavatarImageViewSize = 43.f;
     UITableViewCellStyle cellStyle = UITableViewCellStyleDefault;
     
     switch (indexPath.section) {
-        case SettingsSectionWpcom:
-            if ([WPAccount defaultWordPressComAccount] && indexPath.row == 0) {
+        case SettingsSectionWpcom: {
+            NSManagedObjectContext *context = [[ContextManager sharedInstance] mainContext];
+            AccountService *accountService = [[AccountService alloc] initWithManagedObjectContext:context];
+            WPAccount *defaultAccount = [accountService defaultWordPressComAccount];
+
+            if (defaultAccount && indexPath.row == 0) {
                 cellIdentifier = @"WpcomUsernameCell";
                 cellStyle = UITableViewCellStyleValue1;
             } else {
@@ -282,7 +297,7 @@ CGFloat const blavatarImageViewSize = 43.f;
                 cellStyle = UITableViewCellStyleDefault;
             }
             break;
-            
+        }
         case SettingsSectionMedia:
             cellIdentifier = @"Media";
             cellStyle = UITableViewCellStyleValue1;
@@ -306,7 +321,11 @@ CGFloat const blavatarImageViewSize = 43.f;
     [self configureCell:cell atIndexPath:indexPath];
     
     BOOL isSignInCell = NO;
-    if (![[[WPAccount defaultWordPressComAccount] restApi] hasCredentials]) {
+    NSManagedObjectContext *context = [[ContextManager sharedInstance] mainContext];
+    AccountService *accountService = [[AccountService alloc] initWithManagedObjectContext:context];
+    WPAccount *defaultAccount = [accountService defaultWordPressComAccount];
+
+    if (![[defaultAccount restApi] hasCredentials]) {
         isSignInCell = indexPath.section == SettingsSectionWpcom && indexPath.row == 0;
     }
     
@@ -325,13 +344,17 @@ CGFloat const blavatarImageViewSize = 43.f;
     [tableView deselectRowAtIndexPath:indexPath animated:YES];
     
     if (indexPath.section == SettingsSectionWpcom) {
-        if ([WPAccount defaultWordPressComAccount]) {
+        NSManagedObjectContext *context = [[ContextManager sharedInstance] mainContext];
+        AccountService *accountService = [[AccountService alloc] initWithManagedObjectContext:context];
+        WPAccount *defaultAccount = [accountService defaultWordPressComAccount];
+
+        if (defaultAccount) {
             if (indexPath.row == [self rowForSignOut]) {
                 [WPMobileStats trackEventForWPCom:StatsEventSettingsClickedSignOutOfDotCom];
 
                 // Present the Sign out ActionSheet
                 NSString *signOutTitle = NSLocalizedString(@"You are logged in as %@", @"");
-                signOutTitle = [NSString stringWithFormat:signOutTitle, [[WPAccount defaultWordPressComAccount] username]];
+                signOutTitle = [NSString stringWithFormat:signOutTitle, [defaultAccount username]];
                 UIActionSheet *actionSheet;
                 actionSheet = [[UIActionSheet alloc] initWithTitle:signOutTitle 
                                                           delegate:self 
@@ -391,12 +414,12 @@ CGFloat const blavatarImageViewSize = 43.f;
         [WPMobileStats trackEventForWPCom:StatsEventSettingsSignedOutOfDotCom];
         
         // Sign out
-		[WPAccount removeDefaultWordPressComAccount];
-        [self.tableView reloadSections:[NSIndexSet indexSetWithIndex:SettingsSectionWpcom] withRowAnimation:UITableViewRowAnimationFade];
+        NSManagedObjectContext *context = [[ContextManager sharedInstance] mainContext];
+        AccountService *accountService = [[AccountService alloc] initWithManagedObjectContext:context];
+
+		[accountService removeDefaultWordPressComAccount];
         
-        // Remove defaults
-        [[NSUserDefaults standardUserDefaults] removeObjectForKey:@"wpcom_users_blogs"];
-        [[NSUserDefaults standardUserDefaults] removeObjectForKey:@"wpcom_users_prefered_blog_id"];
+        [self.tableView reloadSections:[NSIndexSet indexSetWithIndex:SettingsSectionWpcom] withRowAnimation:UITableViewRowAnimationFade];
     }
 }
 

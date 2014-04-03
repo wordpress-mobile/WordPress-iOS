@@ -22,6 +22,8 @@
 #import "NotificationSettingsViewController.h"
 #import "NotificationsBigBadgeViewController.h"
 #import "NoteService.h"
+#import "AccountService.h"
+#import "ContextManager.h"
 
 NSString * const NotificationsJetpackInformationURL = @"http://jetpack.me/about/";
 
@@ -94,7 +96,11 @@ NSString * const NotificationsJetpackInformationURL = @"http://jetpack.me/about/
 }
 
 - (BOOL)showJetpackConnectMessage {
-    return [WPAccount defaultWordPressComAccount] == nil;
+    NSManagedObjectContext *context = [[ContextManager sharedInstance] mainContext];
+    AccountService *accountService = [[AccountService alloc] initWithManagedObjectContext:context];
+    WPAccount *defaultAccount = [accountService defaultWordPressComAccount];
+
+    return defaultAccount == nil;
 }
 
 - (void)dealloc {
@@ -187,7 +193,10 @@ NSString * const NotificationsJetpackInformationURL = @"http://jetpack.me/about/
     // get the most recent note
     Note *note = [self.resultsController.fetchedObjects firstObject];
     if (note) {
-        [[[WPAccount defaultWordPressComAccount] restApi] updateNoteLastSeenTime:note.timestamp success:nil failure:nil];
+        NSManagedObjectContext *context = [[ContextManager sharedInstance] mainContext];
+        AccountService *accountService = [[AccountService alloc] initWithManagedObjectContext:context];
+        WPAccount *defaultAccount = [accountService defaultWordPressComAccount];
+        [[defaultAccount restApi] updateNoteLastSeenTime:note.timestamp success:nil failure:nil];
     }
 }
 
@@ -345,7 +354,11 @@ NSString * const NotificationsJetpackInformationURL = @"http://jetpack.me/about/
 }
 
 - (BOOL)userCanRefresh {
-    return [WPAccount defaultWordPressComAccount] != nil;
+    NSManagedObjectContext *context = [[ContextManager sharedInstance] mainContext];
+    AccountService *accountService = [[AccountService alloc] initWithManagedObjectContext:context];
+    WPAccount *defaultAccount = [accountService defaultWordPressComAccount];
+
+    return defaultAccount != nil;
 }
 
 - (void)syncItemsViaUserInteraction:(BOOL)userInteraction success:(void (^)())success failure:(void (^)(NSError *error))failure {
