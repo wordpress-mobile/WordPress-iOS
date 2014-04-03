@@ -191,7 +191,7 @@ NSInteger const MaxNumberOfLinesForTitleForSummary = 3;
 - (CGFloat)layoutTitleAt:(CGFloat)yPosition {
     CGFloat innerContentWidth = [self innerContentWidth];
     
-    if (self.cellImageView.hidden) {
+    if (self.cellImageView.hidden && !self.byView.hidden) {
         self.titleBorder.hidden = NO;
         self.titleBorder.frame = CGRectMake(RPVHorizontalInnerPadding, yPosition, innerContentWidth, RPVBorderHeight);
     } else {

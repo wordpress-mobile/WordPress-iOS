@@ -45,5 +45,6 @@
 - (void)updateActionButtons;
 - (void)refreshMediaLayout;
 - (void)reset;
+- (CGFloat)layoutSubviewsFromY:(CGFloat)yPos;
 
 @end

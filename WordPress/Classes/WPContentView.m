@@ -266,13 +266,8 @@ const CGFloat RPVControlButtonBorderSize = 0.0f;
 - (void)layoutSubviews {
     [super layoutSubviews];
 
-    CGFloat yPos = 0.0f;
-    yPos = [self layoutAttributionAt:yPos];
-    yPos = [self layoutFeaturedImageAt:yPos];
-    yPos = [self layoutTitleAt:yPos];
-    yPos = [self layoutTextContentAt:yPos];
-    yPos = [self layoutActionViewAt:yPos];
-    
+    CGFloat yPos = [self layoutSubviewsFromY:0.0f];
+
     // Update own frame
     CGRect ownFrame = self.frame;
     if (CGRectGetHeight(self.frame) != yPos) {
@@ -283,6 +278,15 @@ const CGFloat RPVControlButtonBorderSize = 0.0f;
             [self.delegate contentViewHeightDidChange:self];
         }
     }
+}
+
+- (CGFloat)layoutSubviewsFromY:(CGFloat)yPos {
+    yPos = [self layoutAttributionAt:yPos];
+    yPos = [self layoutFeaturedImageAt:yPos];
+    yPos = [self layoutTitleAt:yPos];
+    yPos = [self layoutTextContentAt:yPos];
+    yPos = [self layoutActionViewAt:yPos];
+    return yPos;
 }
 
 - (CGFloat)layoutAttributionAt:(CGFloat)yPosition {
