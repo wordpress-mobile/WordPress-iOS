@@ -260,6 +260,7 @@ NSString * const NotificationsJetpackInformationURL = @"http://jetpack.me/about/
     BOOL hasDetailsView = [self noteHasDetailView:note];
     if (hasDetailsView) {
         [WPMobileStats incrementProperty:StatsPropertyNotificationsOpenedDetails forEvent:StatsEventAppClosed];
+        [WPMobileStats incrementPeopleAndSuperProperty:StatsSuperPropertyNumberOfTimesOpenedNotificationDetails];
 
         _isPushingViewController = YES;
         if ([note isComment]) {
