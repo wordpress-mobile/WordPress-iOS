@@ -3,6 +3,7 @@
 #import "NotificationsManager.h"
 #import "ContextManager.h"
 #import "Blog.h"
+#import "AccountServiceRemote.h"
 
 #import "NSString+XMLExtensions.h"
 
@@ -248,10 +249,15 @@ NSString * const WPAccountDefaultWordPressComAccountChangedNotification = @"WPAc
 - (void)syncBlogsForAccount:(WPAccount *)account success:(void (^)())success failure:(void (^)(NSError *error))failure
 {
     DDLogMethod();
-    [account.xmlrpcApi getBlogsWithSuccess:^(NSArray *blogs) {
-        [self mergeBlogs:blogs withAccount:account completion:success];
+    
+    AccountServiceRemote *remote = [[AccountServiceRemote alloc] initWithRemoteApi:account.xmlrpcApi];
+    [remote getBlogsWithSuccess:^(NSArray *blogs) {
+        [self.managedObjectContext performBlockAndWait:^{
+            [self mergeBlogs:blogs withAccount:account completion:success];
+        }];
     } failure:^(NSError *error) {
         DDLogError(@"Error syncing blogs: %@", error);
+
         if (failure) {
             failure(error);
         }
