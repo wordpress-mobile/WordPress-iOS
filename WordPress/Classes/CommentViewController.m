@@ -18,6 +18,7 @@
 #import "ContextManager.h"
 #import "WPFixedWidthScrollView.h"
 #import "WPTableViewCell.h"
+#import "DTLinkButton.h"
 
 CGFloat const CommentViewDeletePromptActionSheetTag = 501;
 CGFloat const CommentViewReplyToCommentViewControllerHasChangesActionSheetTag = 401;
@@ -364,6 +365,12 @@ CGFloat const CommentViewUnapproveButtonTag = 701;
 - (void)contentView:(WPContentView *)contentView didReceiveAuthorLinkAction:(id)sender {
     NSURL *url = [NSURL URLWithString:self.comment.author_url];
     [self openInAppWebView:url];
+}
+
+- (void)contentView:(WPContentView *)contentView didReceiveLinkAction:(id)sender {
+    WPWebViewController *controller = [[WPWebViewController alloc] init];
+	[controller setUrl:((DTLinkButton *)sender).URL];
+	[self.navigationController pushViewController:controller animated:YES];
 }
 
 @end

@@ -138,6 +138,8 @@
 
 + (NSDictionary *)defaultDTCoreTextOptions
 {
+    NSString *defaultStyles = @"blockquote {background-color: #EEEEEE; width: 100%; display: block; padding: 8px 0 10px;}";
+    DTCSSStylesheet *cssStylesheet = [[DTCSSStylesheet alloc] initWithStyleBlock:defaultStyles];
     return @{
              DTDefaultFontFamily:@"Open Sans",
              DTDefaultLineHeightMultiplier:(IS_IPAD ? @1.6 : @1.4),
@@ -145,7 +147,8 @@
              DTDefaultTextColor:[WPStyleGuide littleEddieGrey],
              DTDefaultLinkColor:[WPStyleGuide baseLighterBlue],
              DTDefaultLinkHighlightColor:[WPStyleGuide midnightBlue],
-             DTDefaultLinkDecoration:@NO
+             DTDefaultLinkDecoration:@NO,
+             DTDefaultStyleSheet:cssStylesheet
              };
 }
 
