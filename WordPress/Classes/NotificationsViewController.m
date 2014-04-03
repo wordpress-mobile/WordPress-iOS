@@ -20,6 +20,7 @@
 #import "Note.h"
 #import "NotificationsManager.h"
 #import "NotificationSettingsViewController.h"
+#import "NotificationsBigBadgeViewController.h"
 #import "NoteService.h"
 
 NSString * const NotificationsLastSyncDateKey = @"NotificationsLastSyncDate";
@@ -256,17 +257,20 @@ NSString * const NotificationsJetpackInformationURL = @"http://jetpack.me/about/
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
     Note *note = [self.resultsController objectAtIndexPath:indexPath];
     
-    BOOL hasDetailsView = [self noteHasDetailView:note];
-    if (hasDetailsView) {
+    BOOL hasDetailView = [self noteHasDetailView:note];
+    if (hasDetailView) {
         [WPMobileStats incrementProperty:StatsPropertyNotificationsOpenedDetails forEvent:StatsEventAppClosed];
 
         _isPushingViewController = YES;
         if ([note isComment]) {
-            NotificationsCommentDetailViewController *detailViewController = [[NotificationsCommentDetailViewController alloc] initWithNote:note];
-            [self.navigationController pushViewController:detailViewController animated:YES];
-        } else {
+            NotificationsCommentDetailViewController *commentDetailViewController = [[NotificationsCommentDetailViewController alloc] initWithNote:note];
+            [self.navigationController pushViewController:commentDetailViewController animated:YES];
+        } else if ([note templateType] == WPNoteTemplateMultiLineList || [note templateType] == WPNoteTemplateSingleLineList) {
             NotificationsFollowDetailViewController *detailViewController = [[NotificationsFollowDetailViewController alloc] initWithNote:note];
             [self.navigationController pushViewController:detailViewController animated:YES];
+        } else if ([note templateType] == WPNoteTemplateBigBadge) {
+            NotificationsBigBadgeViewController *bigBadgeViewController = [[NotificationsBigBadgeViewController alloc] initWithNote: note];
+            [self.navigationController pushViewController:bigBadgeViewController animated:YES];
         }
     } else if ([note statsEvent]) {
         NoteService *noteService = [[NoteService alloc] initWithManagedObjectContext:note.managedObjectContext];
@@ -285,7 +289,7 @@ NSString * const NotificationsJetpackInformationURL = @"http://jetpack.me/about/
         note.unread = [NSNumber numberWithInt:0];
         [self.tableView reloadRowsAtIndexPaths:[NSArray arrayWithObject:indexPath] withRowAnimation:UITableViewRowAnimationNone];
 
-        if(hasDetailsView) {
+        if(hasDetailView) {
             [self.tableView selectRowAtIndexPath:indexPath animated:NO scrollPosition:UITableViewScrollPositionNone];
         }
         
@@ -303,12 +307,8 @@ NSString * const NotificationsJetpackInformationURL = @"http://jetpack.me/about/
     if ([note isComment])
         return YES;
     
-    NSDictionary *noteBody = [[note noteData] objectForKey:@"body"];
-    if (noteBody) {
-        NSString *noteTemplate = [noteBody objectForKey:@"template"];
-        if ([noteTemplate isEqualToString:@"single-line-list"] || [noteTemplate isEqualToString:@"multi-line-list"])
-            return YES;
-    }
+    if ([note templateType] != WPNoteTemplateUnknown)
+        return YES;
     
     return NO;
 }
