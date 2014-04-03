@@ -15,7 +15,6 @@ static NSString * const DefaultDotcomAccountDefaultsKey = @"AccountDefaultDotcom
 
 @end
 
-static WPAccount *_defaultAccount = nil;
 static NSString * const WordPressDotcomXMLRPCKey = @"https://wordpress.com/xmlrpc.php";
 NSString * const WPAccountDefaultWordPressComAccountChangedNotification = @"WPAccountDefaultWordPressComAccountChangedNotification";
 
@@ -45,10 +44,6 @@ NSString * const WPAccountDefaultWordPressComAccountChangedNotification = @"WPAc
  */
 - (WPAccount *)defaultWordPressComAccount
 {
-    if (_defaultAccount) {
-        return _defaultAccount;
-    }
-
     NSURL *accountURL = [[NSUserDefaults standardUserDefaults] URLForKey:DefaultDotcomAccountDefaultsKey];
     if (!accountURL) {
         return nil;
@@ -60,14 +55,12 @@ NSString * const WPAccountDefaultWordPressComAccountChangedNotification = @"WPAc
     }
     
     WPAccount *account = (WPAccount *)[self.managedObjectContext existingObjectWithID:objectID error:nil];
-    if (account) {
-        _defaultAccount = account;
-    } else {
+    if (!account) {
         // The stored Account reference is invalid, so let's remove it to avoid wasting time querying for it
         [[NSUserDefaults standardUserDefaults] removeObjectForKey:DefaultDotcomAccountDefaultsKey];
     }
     
-    return _defaultAccount;
+    return account;
 }
 
 /**
@@ -114,7 +107,6 @@ NSString * const WPAccountDefaultWordPressComAccountChangedNotification = @"WPAc
     
     WPAccount *account = [self defaultWordPressComAccount];
     [self.managedObjectContext deleteObject:account];
-    _defaultAccount = nil;
 
     [[ContextManager sharedInstance] saveContext:self.managedObjectContext];
 
