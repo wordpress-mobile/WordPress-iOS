@@ -172,20 +172,24 @@
     if ([self isComment]) {
         NSDictionary *bodyItem = [[[self.noteData objectForKey:@"body"] objectForKey:@"items"] lastObject];
         NSString *comment = [bodyItem objectForKey:@"html"];
-        if (comment == (id)[NSNull null] || comment.length == 0 )
+        if (comment == (id)[NSNull null] || comment.length == 0)
             return;
         comment = [comment stringByReplacingHTMLEmoticonsWithEmoji];
         comment = [comment stringByStrippingHTML];
+        comment = [comment stringByDecodingXMLCharacters];
         
-        NSString *xmlString = [NSString stringWithFormat:@"<d>%@</d>", comment];
-        NSData *xml = [xmlString dataUsingEncoding:NSUTF8StringEncoding allowLossyConversion:YES];
-        NSXMLParser *parser = [[NSXMLParser alloc] initWithData:xml];
-        XMLParserCollecter *collector = [[XMLParserCollecter alloc] init];
-        parser.delegate = collector;
-        [parser parse];
-        
-        self.commentText = collector.result;
+        self.commentText = comment;
     }
+}
+
+- (NSString *)commentHtml {
+    if (self.bodyItems) {
+        NoteBodyItem *noteBodyItem = self.bodyItems.lastObject;
+        NSString *commentHtml = noteBodyItem.bodyHtml;
+        return [commentHtml stringByReplacingHTMLEmoticonsWithEmoji];
+    }
+    
+    return nil;
 }
 
 
@@ -235,7 +239,7 @@
 
 - (NSString *)contentForDisplay {
     // Contains a lot of cruft
-    return self.commentText;
+    return self.commentHtml;
 }
 
 - (NSString *)contentPreviewForDisplay {

@@ -456,6 +456,12 @@ NSString *const WPNotificationCommentRestorationKey = @"WPNotificationCommentRes
     [self pushToURL:url];
 }
 
+- (void)contentView:(WPContentView *)contentView didReceiveLinkAction:(id)sender {
+    WPWebViewController *controller = [[WPWebViewController alloc] init];
+	[controller setUrl:((DTLinkButton *)sender).URL];
+	[self.navigationController pushViewController:controller animated:YES];
+}
+
 
 #pragma mark - UIKeyboard notifications
 
