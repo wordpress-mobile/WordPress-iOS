@@ -15,8 +15,6 @@
 #import "ContextManager.h"
 #import "XMLParserCollecter.h"
 
-
-
 @interface Note ()
 
 @property (nonatomic, strong) NSArray *bodyItems;
@@ -132,6 +130,26 @@
 
 - (NSString *)bodyFooterLink {
 	return self.noteData[@"body"][@"footer_link"];
+}
+
+- (NSString *)bodyHtml {
+	return self.noteData[@"body"][@"html"];
+}
+
+- (WPNoteTemplateType)templateType {
+    NSDictionary *noteBody = self.noteData[@"body"];
+    if (noteBody) {
+        NSString *noteTypeName = noteBody[@"template"];
+        
+        if ([noteTypeName isEqualToString:@"single-line-list"])
+            return WPNoteTemplateSingleLineList;
+        else if ([noteTypeName isEqualToString:@"multi-line-list"])
+            return WPNoteTemplateMultiLineList;
+        else if ([noteTypeName isEqualToString:@"big-badge"])
+            return WPNoteTemplateBigBadge;
+    }
+    
+    return WPNoteTemplateUnknown;
 }
 
 #pragma mark - NSManagedObject methods
