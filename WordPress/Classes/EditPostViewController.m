@@ -863,6 +863,12 @@ CGFloat const EPVCTextViewTopPadding = 7.0f;
         event = StatsEventPostDetailClickedUpdate;
     }
     
+    if ([buttonTitle isEqualToString:NSLocalizedString(@"Publish", nil)]) {
+        [WPMobileStats incrementPeopleAndSuperProperty:StatsSuperPropertyNumberOfPostsPublished];
+    } else {
+        [WPMobileStats incrementPeopleAndSuperProperty:StatsSuperPropertyNumberOfPostsUpdated];
+    }
+    
     if (event != nil) {
         [WPMobileStats trackEventForWPCom:[self formattedStatEventString:event]];
     }
@@ -1087,10 +1093,16 @@ CGFloat const EPVCTextViewTopPadding = 7.0f;
 #pragma mark Media Formatting
 
 - (void)insertMediaBelow:(NSNotification *)notification {
-    [WPMobileStats trackEventForWPCom:[self formattedStatEventString:StatsEventPostDetailAddedPhoto]];
     
 	Media *media = (Media *)[notification object];
 	NSString *prefix = @"<br /><br />";
+    
+    if (media.mediaType == MediaTypeImage) {
+        [WPMobileStats trackEventForWPCom:[self formattedStatEventString:StatsEventPostDetailAddedPhoto]];
+        [WPMobileStats incrementPeopleAndSuperProperty:StatsSuperPropertyNumberOfPhotosAddedToPosts];
+    } else if (media.mediaType == MediaTypeVideo) {
+        [WPMobileStats incrementPeopleAndSuperProperty:StatsSuperPropertyNumberOfVideosAddedToPosts];
+    }
 	
 	if(self.post.content == nil || [self.post.content isEqualToString:@""]) {
 		self.post.content = @"";

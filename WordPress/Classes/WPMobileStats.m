@@ -267,6 +267,13 @@ NSString *const StatsSuperPropertyNumberOfNotificationsUnflaggedAsSpam = @"numbe
 NSString *const StatsSuperPropertyNumberOfNotificationsResultingInAFollow = @"number_of_notifications_resulting_in_a_follow";
 NSString *const StatsSuperPropertyNumberOfNotificationsResultingInAnUnfollow = @"number_of_notifications_resulting_in_an_unfollow";
 
+// Posts
+NSString *const StatsSuperPropertyNumberOfPostsPublished = @"number_of_posts_published";
+NSString *const StatsSuperPropertyNumberOfPostsUpdated = @"number_of_posts_updated";
+NSString *const StatsSuperPropertyNumberOfPhotosAddedToPosts = @"number_of_photos_added_to_post";
+NSString *const StatsSuperPropertyNumberOfVideosAddedToPosts = @"number_of_videos_added_to_post";
+NSString *const StatsSuperPropertyNumberOfFeaturedImagesAssignedToPosts = @"number_of_featured_images_assigned_to_post";
+
 
 @interface WPMobileStats() {
     NSMutableDictionary *_aggregatedEventProperties;
