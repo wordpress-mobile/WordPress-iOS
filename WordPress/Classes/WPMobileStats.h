@@ -254,6 +254,13 @@ extern NSString *const StatsSuperPropertyNumberOfNotificationsUnflaggedAsSpam;
 extern NSString *const StatsSuperPropertyNumberOfNotificationsResultingInAFollow;
 extern NSString *const StatsSuperPropertyNumberOfNotificationsResultingInAnUnfollow;
 
+// Posts
+extern NSString *const StatsSuperPropertyNumberOfPostsPublished;
+extern NSString *const StatsSuperPropertyNumberOfPostsUpdated;
+extern NSString *const StatsSuperPropertyNumberOfPhotosAddedToPosts;
+extern NSString *const StatsSuperPropertyNumberOfVideosAddedToPosts;
+extern NSString *const StatsSuperPropertyNumberOfFeaturedImagesAssignedToPosts;
+
 @interface WPMobileStats : NSObject
 
 + (void)initializeStats;
