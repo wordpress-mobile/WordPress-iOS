@@ -14,6 +14,8 @@
 #import "UILabel+SuggestSize.h"
 #import "NSAttributedString+HTML.h"
 #import "NSString+Helpers.h" 
+#import "ContextManager.h"
+#import "AccountService.h"
 
 static NSInteger const MaxNumberOfLinesForTitleForSummary = 3;
 
@@ -277,7 +279,11 @@ static NSInteger const MaxNumberOfLinesForTitleForSummary = 3;
         self.tagButton.hidden = YES;
     }
     
-	if ([[self.post isWPCom] boolValue] && [WPAccount defaultWordPressComAccount] != nil) {
+    NSManagedObjectContext *context = [[ContextManager sharedInstance] mainContext];
+    AccountService *accountService = [[AccountService alloc] initWithManagedObjectContext:context];
+    WPAccount *defaultAccount = [accountService defaultWordPressComAccount];
+
+	if ([[self.post isWPCom] boolValue] && defaultAccount != nil) {
 		self.likeButton.hidden = NO;
 		self.reblogButton.hidden = NO;
         self.commentButton.hidden = NO;
@@ -315,7 +321,11 @@ static NSInteger const MaxNumberOfLinesForTitleForSummary = 3;
 	CGFloat height = 0.0f;
     CGFloat bylineX = RPVAvatarSize + RPVAuthorPadding + RPVHorizontalInnerPadding;
 
-    if ([self.post isFollowable] && [WPAccount defaultWordPressComAccount] != nil) {
+    NSManagedObjectContext *context = [[ContextManager sharedInstance] mainContext];
+    AccountService *accountService = [[AccountService alloc] initWithManagedObjectContext:context];
+    WPAccount *defaultAccount = [accountService defaultWordPressComAccount];
+
+    if ([self.post isFollowable] && defaultAccount != nil) {
         self.followButton.hidden = NO;
         CGFloat followX = bylineX - 4; // Fudge factor for image alignment
         CGFloat followY = RPVAuthorPadding + self.bylineLabel.frame.size.height - 2;

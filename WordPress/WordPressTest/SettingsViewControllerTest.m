@@ -14,6 +14,7 @@
 #import "SettingsViewController.h"
 #import "AsyncTestHelper.h"
 #import "ContextManager.h"
+#import "AccountService.h"
 
 @interface SettingsViewControllerTest : XCTestCase
 
@@ -25,9 +26,13 @@
 {
     [super setUp];
 
-    if ([WPAccount defaultWordPressComAccount]) {
+    NSManagedObjectContext *context = [[ContextManager sharedInstance] mainContext];
+    AccountService *accountService = [[AccountService alloc] initWithManagedObjectContext:context];
+    WPAccount *defaultAccount = [accountService defaultWordPressComAccount];
+
+    if (defaultAccount) {
         ATHStart();
-        [WPAccount removeDefaultWordPressComAccountWithContext:[ContextManager sharedInstance].mainContext];
+        [accountService removeDefaultWordPressComAccount];
         ATHEnd();
     }
 }
@@ -39,8 +44,12 @@
 }
 
 - (void)testWpcomSection
-{    
-    XCTAssertNil([WPAccount defaultWordPressComAccount], @"There should be no default account");
+{
+    NSManagedObjectContext *context = [[ContextManager sharedInstance] mainContext];
+    AccountService *accountService = [[AccountService alloc] initWithManagedObjectContext:context];
+    WPAccount *defaultAccount = [accountService defaultWordPressComAccount];
+
+    XCTAssertNil(defaultAccount, @"There should be no default account");
     
     [[NSUserDefaults standardUserDefaults] removeObjectForKey:NotificationsDeviceToken];
     SettingsViewController *controller = [self settingsViewController];
@@ -60,11 +69,9 @@
 
     // Sign In
     ATHStart();
-    WPAccount *account = [WPAccount createOrUpdateWordPressComAccountWithUsername:@"jacksparrow" password:@"piratesobrave" authToken:@"token" context:[ContextManager sharedInstance].mainContext];
+    WPAccount *account = [accountService createOrUpdateWordPressComAccountWithUsername:@"jacksparrow" password:@"piratesobrave" authToken:@"token"];
     ATHEnd();
     
-    [WPAccount setDefaultWordPressComAccount:account];
-
     /*
      Signed In, Notifications disabled, 1 blog
 
@@ -96,7 +103,7 @@
     XCTAssertEqualObjects(@"wpcom-sign-out", cell.accessibilityIdentifier);
 
     ATHStart();
-    Blog *blog = [account findOrCreateBlogFromDictionary:@{@"url": @"blog1.com", @"xmlrpc": @"http://blog1.com/xmlrpc.php"} withContext:account.managedObjectContext];
+    Blog *blog = [accountService findOrCreateBlogFromDictionary:@{@"url": @"blog1.com", @"xmlrpc": @"http://blog1.com/xmlrpc.php"} withAccount:account];
     [[ContextManager sharedInstance] saveContext:account.managedObjectContext];
     ATHEnd();
     
@@ -118,7 +125,7 @@
     XCTAssertEqualObjects(@"wpcom-sign-out", cell.accessibilityIdentifier);
     
     ATHStart();
-    blog = [account findOrCreateBlogFromDictionary:@{@"url": @"blog2.com", @"xmlrpc": @"http://blog2.com/xmlrpc.php"} withContext:account.managedObjectContext];
+    blog = [accountService findOrCreateBlogFromDictionary:@{@"url": @"blog2.com", @"xmlrpc": @"http://blog2.com/xmlrpc.php"} withAccount:account];
     [[ContextManager sharedInstance] saveContext:account.managedObjectContext];
     ATHEnd();
     
