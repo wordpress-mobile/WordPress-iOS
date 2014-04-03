@@ -865,6 +865,22 @@ CGFloat const EPVCTextViewTopPadding = 7.0f;
     
     if ([buttonTitle isEqualToString:NSLocalizedString(@"Publish", nil)]) {
         [WPMobileStats incrementPeopleAndSuperProperty:StatsSuperPropertyNumberOfPostsPublished];
+        
+        if ([self postHasPhoto]) {
+            [WPMobileStats incrementPeopleAndSuperProperty:StatsSuperPropertyNumberOfPostsWithPhotos];
+        }
+        
+        if ([self postHasVideo]) {
+            [WPMobileStats incrementPeopleAndSuperProperty:StatsSuperPropertyNumberOfPostsWithVideos];
+        }
+        
+        if ([self postHasCategories]) {
+            [WPMobileStats incrementPeopleAndSuperProperty:StatsSuperPropertyNumberOfPostsWithCategories];
+        }
+        
+        if ([self postHasTags]) {
+            [WPMobileStats incrementPeopleAndSuperProperty:StatsSuperPropertyNumberOfPostsWithTags];
+        }
     } else {
         [WPMobileStats incrementPeopleAndSuperProperty:StatsSuperPropertyNumberOfPostsUpdated];
     }
@@ -872,7 +888,7 @@ CGFloat const EPVCTextViewTopPadding = 7.0f;
     if (event != nil) {
         [WPMobileStats trackEventForWPCom:[self formattedStatEventString:event]];
     }
-
+    
     // This word counting algorithm is from : http://stackoverflow.com/a/13367063
     __block NSInteger originalWordCount = 0;
     [self.post.original.content enumerateSubstringsInRange:NSMakeRange(0, [self.post.original.content length])
@@ -892,6 +908,61 @@ CGFloat const EPVCTextViewTopPadding = 7.0f;
     if ([self.post hasRemote]) {
         [WPMobileStats setValue:@(wordCount - originalWordCount) forProperty:StatsPropertyPostDetailWordDiffCount forEvent:[self formattedStatEventString:StatsEventPostDetailClosedEditor]];
     }
+}
+
+- (BOOL)postHasPhoto
+{
+    if ([self.post.media count] == 0)
+        return false;
+    
+    if (self.post.featuredImage != nil)
+        return true;
+    
+    for (Media *media in self.post.media) {
+        if (media.mediaType == MediaTypeImage || media.mediaType == MediaTypeFeatured) {
+            return true;
+        }
+    }
+    
+    return false;
+}
+
+- (BOOL)postHasVideo
+{
+    if ([self.post.media count] == 0)
+        return false;
+    
+    for (Media *media in self.post.media) {
+        if (media.mediaType ==  MediaTypeVideo) {
+            return true;
+        }
+    }
+    
+    return false;
+}
+
+- (BOOL)postHasCategories
+{
+    Post *post = (Post *)self.post;
+    if (post == nil)
+        return false;
+
+    if ([post.categories count] > 0)
+        return true;
+    else
+        return false;
+}
+
+- (BOOL)postHasTags
+{
+    Post *post = (Post *)self.post;
+    if (post == nil)
+        return false;
+    
+    if ([[post.tags trim] length] > 0)
+        return true;
+    else
+        return false;
 }
 
 // Save changes to core data
