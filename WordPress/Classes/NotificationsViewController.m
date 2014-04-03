@@ -185,9 +185,8 @@ NSString * const NotificationsJetpackInformationURL = @"http://jetpack.me/about/
 
 - (void)updateSyncDate {
     // get the most recent note
-    NSArray *notes = self.resultsController.fetchedObjects;
-    if ([notes count] > 0) {
-        Note *note = [notes objectAtIndex:0];
+    Note *note = [self.resultsController.fetchedObjects firstObject];
+    if (note) {
         [[[WPAccount defaultWordPressComAccount] restApi] updateNoteLastSeenTime:note.timestamp success:nil failure:nil];
     }
 
@@ -315,7 +314,8 @@ NSString * const NotificationsJetpackInformationURL = @"http://jetpack.me/about/
 
 #pragma mark - WPTableViewController subclass methods
 
-- (NSString *)entityName {
+- (NSString *)entityName
+{
     return @"Note";
 }
 
@@ -357,14 +357,8 @@ NSString * const NotificationsJetpackInformationURL = @"http://jetpack.me/about/
         [self pruneOldNotes];
     }
     
-    NSNumber *timestamp;
-    NSArray *notes = [self.resultsController fetchedObjects];
-    if (userInteraction == NO && [notes count] > 0) {
-        Note *note = [notes objectAtIndex:0];
-        timestamp = note.timestamp;
-    } else {
-        timestamp = nil;
-    }
+    Note *note = [[self.resultsController fetchedObjects] firstObject];
+    NSNumber *timestamp = note.timestamp ?: nil;
     
     NoteService *noteService = [[NoteService alloc] initWithManagedObjectContext:self.resultsController.managedObjectContext];
     [noteService fetchNotificationsSince:timestamp success:^{
