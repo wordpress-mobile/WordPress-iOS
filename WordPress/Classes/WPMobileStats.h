@@ -230,6 +230,18 @@ extern NSString *const StatsSuperPropertyNumberOfItemsLikedInReader;
 extern NSString *const StatsSuperPropertyNumberOfItemsUnlikedInReader;
 extern NSString *const StatsSuperPropertyNumberOfItemsRebloggedInReader;
 
+// Sharing
+extern NSString *const StatsSuperPropertyNumberOfItemsShared;
+extern NSString *const StatsSuperPropertyNumberOfItemsSharedViaEmail;
+extern NSString *const StatsSuperPropertyNumberOfItemsSharedViaSMS;
+extern NSString *const StatsSuperPropertyNumberOfItemsSharedViaTwitter;
+extern NSString *const StatsSuperPropertyNumberOfItemsSharedViaFacebook;
+extern NSString *const StatsSuperPropertyNumberOfItemsSharedViaWeibo;
+extern NSString *const StatsSuperPropertyNumberOfItemsSentToPocket;
+extern NSString *const StatsSuperPropertyNumberOfItemsSentToInstapaper;
+extern NSString *const StatsSuperPropertyNumberOfItemsSentToGooglePlus;
+
+
 @interface WPMobileStats : NSObject
 
 + (void)initializeStats;

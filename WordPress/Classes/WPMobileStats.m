@@ -243,6 +243,18 @@ NSString *const StatsSuperPropertyNumberOfItemsLikedInReader = @"number_of_items
 NSString *const StatsSuperPropertyNumberOfItemsUnlikedInReader = @"number_of_items_unliked_in_reader";
 NSString *const StatsSuperPropertyNumberOfItemsRebloggedInReader = @"number_of_items_reblogged_in_reader";
 
+// Sharing
+NSString *const StatsSuperPropertyNumberOfItemsShared = @"number_of_items_shared";
+NSString *const StatsSuperPropertyNumberOfItemsSharedViaEmail = @"number_of_items_shared_via_email";
+NSString *const StatsSuperPropertyNumberOfItemsSharedViaSMS = @"number_of_items_shared_via_sms";
+NSString *const StatsSuperPropertyNumberOfItemsSharedViaTwitter = @"number_of_items_shared_via_twitter";
+NSString *const StatsSuperPropertyNumberOfItemsSharedViaFacebook = @"number_of_items_shared_via_facebook";
+NSString *const StatsSuperPropertyNumberOfItemsSharedViaWeibo = @"number_of_items_shared_via_weibo";
+NSString *const StatsSuperPropertyNumberOfItemsSentToPocket = @"number_of_items_sent_to_pocket";
+NSString *const StatsSuperPropertyNumberOfItemsSentToInstapaper = @"number_of_items_sent_to_instapaper";
+NSString *const StatsSuperPropertyNumberOfItemsSentToGooglePlus = @"number_of_items_sent_to_google_plus";
+
+
 @interface WPMobileStats() {
     NSMutableDictionary *_aggregatedEventProperties;
 }
