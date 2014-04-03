@@ -217,10 +217,18 @@ extern NSString *const StatsEventAddBlogsClickedAddSelected;
 extern NSString *const StatsEventStatsClickedOnWebVersion;
 
 // Super Properties
+
+// General
 extern NSString *const StatsSuperPropertyNumberOfTimesOpenedReader;
 extern NSString *const StatsSuperPropertyNumberOfTimesOpenedNotifications;
 extern NSString *const StatsSuperPropertyNumberOfTimesOpenedStats;
 extern NSString *const StatsSuperPropertyNumberOfTimesOpenedViewAdmin;
+
+// Reader
+extern NSString *const StatsSuperPropertyNumberOfItemsOpenedInReader;
+extern NSString *const StatsSuperPropertyNumberOfItemsLikedInReader;
+extern NSString *const StatsSuperPropertyNumberOfItemsUnlikedInReader;
+extern NSString *const StatsSuperPropertyNumberOfItemsRebloggedInReader;
 
 @interface WPMobileStats : NSObject
 

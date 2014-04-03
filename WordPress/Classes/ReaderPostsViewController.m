@@ -378,8 +378,10 @@ NSString * const RPVCDisplayedNativeFriendFinder = @"DisplayedNativeFriendFinder
 	[post toggleLikedWithSuccess:^{
         if ([post.isLiked boolValue]) {
             [WPMobileStats trackEventForWPCom:StatsEventReaderLikedPost];
+            [WPMobileStats incrementPeopleAndSuperProperty:StatsSuperPropertyNumberOfItemsLikedInReader];
         } else {
             [WPMobileStats trackEventForWPCom:StatsEventReaderUnlikedPost];
+            [WPMobileStats incrementPeopleAndSuperProperty:StatsSuperPropertyNumberOfItemsUnlikedInReader];
         }
 	} failure:^(NSError *error) {
 		DDLogError(@"Error Liking Post : %@", [error localizedDescription]);
@@ -862,6 +864,7 @@ NSString * const RPVCDisplayedNativeFriendFinder = @"DisplayedNativeFriendFinder
     [self.navigationController pushViewController:self.detailController animated:YES];
     
     [WPMobileStats trackEventForWPCom:StatsEventReaderOpenedArticleDetails];
+    [WPMobileStats incrementPeopleAndSuperProperty:StatsSuperPropertyNumberOfItemsOpenedInReader];
     [WPMobileStats pingWPComStatsEndpoint:@"details_page"];
 }
 
