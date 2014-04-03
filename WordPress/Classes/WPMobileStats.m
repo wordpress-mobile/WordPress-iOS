@@ -273,7 +273,10 @@ NSString *const StatsSuperPropertyNumberOfPostsUpdated = @"number_of_posts_updat
 NSString *const StatsSuperPropertyNumberOfPhotosAddedToPosts = @"number_of_photos_added_to_post";
 NSString *const StatsSuperPropertyNumberOfVideosAddedToPosts = @"number_of_videos_added_to_post";
 NSString *const StatsSuperPropertyNumberOfFeaturedImagesAssignedToPosts = @"number_of_featured_images_assigned_to_post";
-
+NSString *const StatsSuperPropertyNumberOfPostsWithPhotos = @"number_of_posts_with_photos";
+NSString *const StatsSuperPropertyNumberOfPostsWithVideos = @"number_of_posts_with_videos";
+NSString *const StatsSuperPropertyNumberOfPostsWithCategories = @"number_of_posts_with_categories";
+NSString *const StatsSuperPropertyNumberOfPostsWithTags = @"number_of_posts_with_tags";
 
 @interface WPMobileStats() {
     NSMutableDictionary *_aggregatedEventProperties;
