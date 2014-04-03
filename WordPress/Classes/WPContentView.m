@@ -264,7 +264,7 @@ const CGFloat RPVControlButtonBorderSize = 0.0f;
         CGRect maxRect = CGRectMake(0.0f, 0.0f, self.headerLabel.frame.size.width, CGFLOAT_HEIGHT_UNKNOWN);
         NSRange entireString = NSMakeRange(0, [noteContentAttributedString length]);
         DTCoreTextLayoutFrame *layoutFrame = [layouter layoutFrameWithRect:maxRect range:entireString];
-        CGSize sizeNeeded = [layoutFrame frame].size;
+        CGSize sizeNeeded = layoutFrame.frame.size;
         CGRect frame = self.headerLabel.frame;
         frame.size.height = sizeNeeded.height + 20.0f;
         [self.headerLabel setFrame:frame];
