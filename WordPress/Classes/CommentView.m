@@ -37,17 +37,12 @@
         [self.avatarImageView setImageWithURL:avatarURL placeholderImage:avatarPlaceholderImage];
     }
     
-    NSString *partialHtml = [contentProvider contentForDisplay];
-    NSString *fullHtml;
-    
-    // The comment content is...partly HTML. But not completely. For unknown reasons.
-    if (partialHtml == nil) {
-        fullHtml = [NSString stringWithFormat:@"<html><head></head><body><p>%@</p></body></html>", @"<br />"];
-    } else {
-        fullHtml = [NSString stringWithFormat:@"<html><head></head><body><p>%@</p></body></html>", [[partialHtml trim] stringByReplacingOccurrencesOfString:@"\n" withString:@"<br />"]];
+    NSString *commentHtml = [contentProvider contentForDisplay];
+    if (!commentHtml) {
+        return;
     }
 
-    NSData *data = [fullHtml dataUsingEncoding:NSUTF8StringEncoding];
+    NSData *data = [commentHtml dataUsingEncoding:NSUTF8StringEncoding];
     self.textContentView.attributedString = [[NSAttributedString alloc] initWithHTMLData:data
                                                                                  options:[WPStyleGuide defaultDTCoreTextOptions]
                                                                       documentAttributes:nil];
