@@ -220,15 +220,6 @@ typedef void (^NoteToggleFollowBlock)(BOOL success);
 		
 		// Follow action: anyone?
 		if ([noteItem.action.type isEqualToString:@"follow"]) {
-			NSString *blogTitle = [NSString decodeXMLCharactersIn:noteItem.action.blogTitle];
-			if (blogTitle.length == 0) {
-				blogTitle = noteItem.headerText;
-			}
-			
-			if (blogTitle.length == 0) {
-				blogTitle = NSLocalizedString(@"(No Title)", @"Blog with no title");
-			}
-
 			cell.actionButton.hidden	= NO;
 			cell.following				= noteItem.action.following;
 			
