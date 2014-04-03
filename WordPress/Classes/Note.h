@@ -10,6 +10,8 @@
 #import "WPAccount.h"
 #import "WPContentViewProvider.h"
 
+
+
 @interface Note : NSManagedObject<WPContentViewProvider>
 
 @property (nonatomic, retain) NSNumber *timestamp;
@@ -25,6 +27,11 @@
 @property (nonatomic, strong, readonly) NSDictionary *meta;
 @property (nonatomic, strong, readonly) NSNumber *metaPostID;
 @property (nonatomic, strong, readonly) NSNumber *metaSiteID;
+@property (nonatomic, strong, readonly) NSArray *bodyItems;		// Array of NoteBodyItem Objects
+@property (nonatomic, strong, readonly) NSString *bodyHeaderText;
+@property (nonatomic, strong, readonly) NSString *bodyHeaderLink;
+@property (nonatomic, strong, readonly) NSString *bodyFooterText;
+@property (nonatomic, strong, readonly) NSString *bodyFooterLink;
 
 - (BOOL)isMatcher;
 - (BOOL)isComment;
