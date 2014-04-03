@@ -20,6 +20,7 @@
 #import "Note.h"
 #import "NotificationsManager.h"
 #import "NotificationSettingsViewController.h"
+#import "NotificationsBigBadgeViewController.h"
 #import "NoteService.h"
 
 #import "ReaderPost.h"
@@ -278,15 +279,15 @@ typedef void (^NotificationsLoadPostBlock)(BOOL success, ReaderPost *post);
 {
     Note *note = [self.resultsController objectAtIndexPath:indexPath];
     
-    BOOL hasDetailsView = [self noteHasDetailView:note];
-    if (hasDetailsView) {
+    BOOL hasDetailView = [self noteHasDetailView:note];
+    if (hasDetailView) {
         [WPMobileStats incrementProperty:StatsPropertyNotificationsOpenedDetails forEvent:StatsEventAppClosed];
 
         _isPushingViewController = YES;
         
         if ([note isComment]) {
-            NotificationsCommentDetailViewController *detailViewController = [[NotificationsCommentDetailViewController alloc] initWithNote:note];
-            [self.navigationController pushViewController:detailViewController animated:YES];
+            NotificationsCommentDetailViewController *commentDetailViewController = [[NotificationsCommentDetailViewController alloc] initWithNote:note];
+            [self.navigationController pushViewController:commentDetailViewController animated:YES];
         } else if ([note isMatcher] && [note metaPostID] && [note metaSiteID]) {
             [self loadPostWithId:[note metaPostID] fromSite:[note metaSiteID] block:^(BOOL success, ReaderPost *post) {
                 if (!success) {
@@ -297,9 +298,12 @@ typedef void (^NotificationsLoadPostBlock)(BOOL success, ReaderPost *post);
                 ReaderPostDetailViewController *controller = [[ReaderPostDetailViewController alloc] initWithPost:post avatarImageURL:note.avatarURLForDisplay];
                 [self.navigationController pushViewController:controller animated:YES];
             }];
-        } else {
+        } else if ([note templateType] == WPNoteTemplateMultiLineList || [note templateType] == WPNoteTemplateSingleLineList) {
             NotificationsFollowDetailViewController *detailViewController = [[NotificationsFollowDetailViewController alloc] initWithNote:note];
             [self.navigationController pushViewController:detailViewController animated:YES];
+        } else if ([note templateType] == WPNoteTemplateBigBadge) {
+            NotificationsBigBadgeViewController *bigBadgeViewController = [[NotificationsBigBadgeViewController alloc] initWithNote: note];
+            [self.navigationController pushViewController:bigBadgeViewController animated:YES];
         }
     } else if ([note statsEvent]) {
         NoteService *noteService = [[NoteService alloc] initWithManagedObjectContext:note.managedObjectContext];
@@ -318,7 +322,7 @@ typedef void (^NotificationsLoadPostBlock)(BOOL success, ReaderPost *post);
         note.unread = @(0);
         [self.tableView reloadRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationNone];
 
-        if (hasDetailsView) {
+        if (hasDetailView) {
             [self.tableView selectRowAtIndexPath:indexPath animated:NO scrollPosition:UITableViewScrollPositionNone];
         }
         
@@ -332,17 +336,12 @@ typedef void (^NotificationsLoadPostBlock)(BOOL success, ReaderPost *post);
     }
 }
 
-- (BOOL)noteHasDetailView:(Note *)note
-{
-    if ([note isComment]) {
+- (BOOL)noteHasDetailView:(Note *)note {
+    if ([note isComment])
         return YES;
-    }
     
-    NSDictionary *noteBody = [[note noteData] dictionaryForKey:@"body"];
-    if (noteBody) {
-        NSString *noteTemplate = [noteBody stringForKey:@"template"];
-        return ([noteTemplate isEqualToString:@"single-line-list"] || [noteTemplate isEqualToString:@"multi-line-list"]);
-    }
+    if ([note templateType] != WPNoteTemplateUnknown)
+        return YES;
     
     return NO;
 }

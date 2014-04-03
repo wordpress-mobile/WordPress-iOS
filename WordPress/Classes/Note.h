@@ -10,7 +10,12 @@
 #import "WPAccount.h"
 #import "WPContentViewProvider.h"
 
-
+typedef NS_ENUM(NSInteger, WPNoteTemplateType) {
+    WPNoteTemplateUnknown,
+    WPNoteTemplateSingleLineList,
+    WPNoteTemplateMultiLineList,
+    WPNoteTemplateBigBadge,
+};
 
 @interface Note : NSManagedObject<WPContentViewProvider>
 
@@ -32,6 +37,8 @@
 @property (nonatomic, strong, readonly) NSString *bodyHeaderLink;
 @property (nonatomic, strong, readonly) NSString *bodyFooterText;
 @property (nonatomic, strong, readonly) NSString *bodyFooterLink;
+@property (nonatomic, strong, readonly) NSString *bodyHtml;
+@property (nonatomic, readonly) WPNoteTemplateType templateType;
 
 - (BOOL)isMatcher;
 - (BOOL)isComment;
