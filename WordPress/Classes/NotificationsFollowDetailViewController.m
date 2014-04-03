@@ -21,10 +21,9 @@
 #import "WPToast.h"
 #import "NoteService.h"
 #import "Note.h"
+#import "AccountService.h"
 #import "NoteBodyItem.h"
 #import "NoteAction.h"
-
-
 
 NSString *const WPNotificationFollowRestorationKey = @"WPNotificationFollowRestorationKey";
 NSString *const WPNotificationHeaderCellIdentifier = @"WPNotificationHeaderCellIdentifier";
@@ -286,7 +285,11 @@ typedef void (^NoteToggleFollowBlock)(BOOL success);
 	[WPMobileStats trackEventForWPCom:event];
     
 	// Hit the Backend
-	WordPressComApi *restApi = [[WPAccount defaultWordPressComAccount] restApi];
+    NSManagedObjectContext *context = [[ContextManager sharedInstance] mainContext];
+    AccountService *accountService = [[AccountService alloc] initWithManagedObjectContext:context];
+    WPAccount *defaultAccount = [accountService defaultWordPressComAccount];
+
+	WordPressComApi *restApi = [defaultAccount restApi];
 	[restApi followBlog:blogID.integerValue isFollowing:isFollowing success:^(AFHTTPRequestOperation *operation, id responseObject) {
 		
 		NSDictionary *followResponse = (NSDictionary *)responseObject;
@@ -340,10 +343,13 @@ typedef void (^NoteToggleFollowBlock)(BOOL success);
         if (blogURL) {
             WPWebViewController *webViewController = [[WPWebViewController alloc] init];
             if ([blogURL isWordPressDotComUrl]) {
-				WPAccount *account			= [WPAccount defaultWordPressComAccount];
-				webViewController.username	= account.username;
-				webViewController.password	= account.password;
-				webViewController.url		= [blogURL ensureSecureURL];
+                NSManagedObjectContext *context = [[ContextManager sharedInstance] mainContext];
+                AccountService *accountService = [[AccountService alloc] initWithManagedObjectContext:context];
+                WPAccount *defaultAccount = [accountService defaultWordPressComAccount];
+
+                [webViewController setUsername:[defaultAccount username]];
+                [webViewController setPassword:[defaultAccount password]];
+                [webViewController setUrl:[blogURL ensureSecureURL]];
             } else {
 				webViewController.url = blogURL;
             }
