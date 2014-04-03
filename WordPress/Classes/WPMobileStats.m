@@ -561,7 +561,7 @@ NSString *const StatsSuperPropertyNumberOfFeaturedImagesAssignedToPosts = @"numb
 - (void)flagPeopleProperty:(NSString *)property
 {
     NSParameterAssert(property != nil);
-    [[Mixpanel sharedInstance].people setValue:@(YES) forKey:property];
+    [[Mixpanel sharedInstance].people set:@{ property : @(YES) }];
 }
 
 - (void)incrementPeopleProperty:(NSString *)property
@@ -574,7 +574,7 @@ NSString *const StatsSuperPropertyNumberOfFeaturedImagesAssignedToPosts = @"numb
 {
     NSParameterAssert(value != nil);
     NSParameterAssert(property != nil);
-    [[Mixpanel sharedInstance].people setValue:value forKey:property];
+    [[Mixpanel sharedInstance].people set:@{property: value}];
 }
 
 - (void)flagPeopleAndSuperProperty:(NSString *)property
