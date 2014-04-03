@@ -189,17 +189,8 @@ static NSInteger const MaxNumberOfLinesForTitleForSummary = 3;
         }
 
         _followButton = [ContentActionButton buttonWithType:UIButtonTypeCustom];
-        _followButton.contentHorizontalAlignment = UIControlContentHorizontalAlignmentLeft;
-        _followButton.backgroundColor = [UIColor clearColor];
-        _followButton.titleLabel.font = [UIFont fontWithName:@"OpenSans" size:12.0f];
-        NSString *followString = NSLocalizedString(@"Follow", @"Prompt to follow a blog.");
-        NSString *followedString = NSLocalizedString(@"Following", @"User is following the blog.");
-        [_followButton setTitle:followString forState:UIControlStateNormal];
-        [_followButton setTitle:followedString forState:UIControlStateSelected];
+        [WPStyleGuide configureFollowButton:_followButton];
         [_followButton setTitleEdgeInsets: UIEdgeInsetsMake(0, RPVSmallButtonLeftPadding, 0, 0)];
-        [_followButton setImage:[UIImage imageNamed:@"reader-postaction-follow"] forState:UIControlStateNormal];
-        [_followButton setImage:[UIImage imageNamed:@"reader-postaction-following"] forState:UIControlStateSelected];
-        [_followButton setTitleColor:[UIColor colorWithHexString:@"aaa"] forState:UIControlStateNormal];
         [_followButton addTarget:self action:@selector(followAction:) forControlEvents:UIControlEventTouchUpInside];
         [super.byView addSubview:_followButton];
         

@@ -36,7 +36,7 @@ typedef NS_ENUM(NSInteger, WPNotificationSections) {
 	WPNotificationSectionsCount		= 2
 };
 
-CGFloat const WPNotificationsFollowPersonCellHeight = 100.0f;
+CGFloat const WPNotificationsFollowPersonCellHeight = 80.0f;
 CGFloat const WPNotificationsFollowBottomCellHeight = 60.0f;
 
 
@@ -230,7 +230,6 @@ typedef void (^NoteToggleFollowBlock)(BOOL success);
 			}
 
 			cell.actionButton.hidden	= NO;
-			[cell.actionButton setTitle:blogTitle forState:UIControlStateNormal];
 			cell.following				= noteItem.action.following;
 			
 			if (noteItem.action.blogURL) {
@@ -241,8 +240,9 @@ typedef void (^NoteToggleFollowBlock)(BOOL success);
 		// No action available
 		} else {
 			cell.actionButton.hidden	= YES;
-			cell.textLabel.text			= noteItem.headerText;
 		}
+        
+        cell.textLabel.text = noteItem.headerText;
 
 		// Handle the Icon
 		NSURL *iconURL = noteItem.iconURL;
@@ -290,6 +290,12 @@ typedef void (^NoteToggleFollowBlock)(BOOL success);
     WPAccount *defaultAccount = [accountService defaultWordPressComAccount];
 
 	WordPressComApi *restApi = [defaultAccount restApi];
+    
+    // Instant-gratification toast message
+    NSString *message	= isFollowing ? NSLocalizedString(@"Unfollowed", @"User unfollowed a blog") : NSLocalizedString(@"Followed", @"User followed a blog");
+    NSString *imageName = [NSString stringWithFormat:@"action_icon_%@", (isFollowing) ? @"unfollowed" : @"followed"];
+    [WPToast showToastWithMessage:message andImage:[UIImage imageNamed:imageName]];
+
 	[restApi followBlog:blogID.integerValue isFollowing:isFollowing success:^(AFHTTPRequestOperation *operation, id responseObject) {
 		
 		NSDictionary *followResponse = (NSDictionary *)responseObject;
@@ -306,12 +312,8 @@ typedef void (^NoteToggleFollowBlock)(BOOL success);
 		}
 		
 		block(success);
-		
-		NSString *message	= isFollowing ? NSLocalizedString(@"Unfollowed", @"User unfollowed a blog") : NSLocalizedString(@"Followed", @"User followed a blog");
-		NSString *imageName = [NSString stringWithFormat:@"action_icon_%@", (isFollowing) ? @"unfollowed" : @"followed"];
-		[WPToast showToastWithMessage:message andImage:[UIImage imageNamed:imageName]];
-		
 	} failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+        item.action.following = !isFollowing;
 		DDLogVerbose(@"[Rest API] ! %@", [error localizedDescription]);
 		block(false);
 	}];
