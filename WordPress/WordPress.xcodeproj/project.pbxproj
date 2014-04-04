@@ -3527,6 +3527,8 @@
 				93C1148018EDA42500DAC95C /* AccountServiceRemote.h */,
 				93C1148118EDA42500DAC95C /* AccountServiceRemote.m */,
 				930284B618EAF7B600CB0BF4 /* BaseLocalService.h */,
+				93C1148318EDF6E100DAC95C /* BlogService.h */,
+				93C1148418EDF6E100DAC95C /* BlogService.m */,
 				93FA59DB18D88C1C001446BC /* CategoryService.h */,
 				93FA59DC18D88C1C001446BC /* CategoryService.m */,
 				93FA59DE18D8986D001446BC /* CategoryServiceRemote.h */,
@@ -3535,8 +3537,6 @@
 				930284B418EAF79500CB0BF4 /* NoteService.m */,
 				930284B718EB078800CB0BF4 /* NoteServiceRemote.h */,
 				930284B818EB078900CB0BF4 /* NoteServiceRemote.m */,
-				93C1148318EDF6E100DAC95C /* BlogService.h */,
-				93C1148418EDF6E100DAC95C /* BlogService.m */,
 			);
 			name = Services;
 			sourceTree = "<group>";
