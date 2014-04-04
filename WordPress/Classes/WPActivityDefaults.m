@@ -1,11 +1,3 @@
-//
-//  WPActivityDefaults.m
-//  WordPress
-//
-//  Created by Jorge Bernal on 7/26/13.
-//  Copyright (c) 2013 WordPress. All rights reserved.
-//
-
 #import "WPActivityDefaults.h"
 
 #import "SafariActivity.h"

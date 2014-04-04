@@ -1,11 +1,3 @@
-//
-//  StatsLinkToWebviewCell.h
-//  WordPress
-//
-//  Created by Sendhil Panchadsaram on 2/27/14.
-//  Copyright (c) 2014 WordPress. All rights reserved.
-//
-
 #import "WPTableViewCell.h"
 #import "StatsViewController.h"
 

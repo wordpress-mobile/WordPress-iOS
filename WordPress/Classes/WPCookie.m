@@ -1,11 +1,3 @@
-//
-//  WPCookie.m
-//  WordPress
-//
-//  Created by Jorge Bernal on 6/7/13.
-//  Copyright (c) 2013 WordPress. All rights reserved.
-//
-
 #import "WPCookie.h"
 
 static NSString * const WPCookieName = @"wordpress_logged_in";

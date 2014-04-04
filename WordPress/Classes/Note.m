@@ -1,41 +1,15 @@
-//
-//  Note.m
-//  WordPress
-//
-//  Created by Beau Collins on 11/18/12.
-//  Copyright (c) 2012 WordPress. All rights reserved.
-//
-
 #import "Note.h"
+#import "NoteBodyItem.h"
 #import "NSString+Helpers.h"
 #import "NSString+XMLExtensions.h"
 #import "WordPressComApi.h"
 #import "WPAccount.h"
 #import "ContextManager.h"
-
-
-const NSUInteger NoteKeepCount = 20;
-
-@interface XMLParserCollecter : NSObject <NSXMLParserDelegate>
-@property (nonatomic, strong) NSMutableString *result;
-@end
-@implementation XMLParserCollecter
-
-- (id)init {
-    if (self = [super init]) {
-        self.result = [[NSMutableString alloc] init];
-    }
-    return self;
-}
-
-- (void)parser:(NSXMLParser *)parser foundCharacters:(NSString *)string {
-    [self.result appendString:string];
-}
-
-@end
+#import "XMLParserCollecter.h"
 
 @interface Note ()
 
+@property (nonatomic, strong) NSArray *bodyItems;
 @property (nonatomic, strong) NSDictionary *noteData;
 @property (nonatomic, strong) NSString *commentText;
 @property (nonatomic, strong) NSDate *date;
@@ -52,94 +26,11 @@ const NSUInteger NoteKeepCount = 20;
 @dynamic icon;
 @dynamic noteID;
 @dynamic account;
+@synthesize bodyItems	= _bodyItems;
 @synthesize commentText = _commentText;
-@synthesize noteData = _noteData;
-@synthesize date = _date;
+@synthesize noteData	= _noteData;
+@synthesize date		= _date;
 
-
-+ (void)mergeNewNotes:(NSArray *)notesData {
-    NSManagedObjectContext *context = [[ContextManager sharedInstance] backgroundContext];
-    [context performBlock:^{
-        NSFetchRequest *request = [NSFetchRequest fetchRequestWithEntityName:@"Note"];
-        NSError *error;
-        NSArray *existingNotes = [context executeFetchRequest:request error:&error];
-        if (error){
-            DDLogError(@"Error finding notes: %@", error);
-            return;
-        }
-        
-        WPAccount *account = (WPAccount *)[context objectWithID:[WPAccount defaultWordPressComAccount].objectID];
-        [notesData enumerateObjectsUsingBlock:^(NSDictionary *noteData, NSUInteger idx, BOOL *stop) {
-            NSNumber *noteID = [noteData objectForKey:@"id"];
-            NSArray *results = [existingNotes filteredArrayUsingPredicate:[NSPredicate predicateWithFormat:@"noteID == %@", noteID]];
-            
-            Note *note;
-            if ([results count] != 0) {
-                note = results[0];
-            } else {
-                note = [NSEntityDescription insertNewObjectForEntityForName:NSStringFromClass(self) inManagedObjectContext:context];
-                note.noteID = [noteData objectForKey:@"id"];
-                note.account = account;
-            }
-            [note syncAttributes:noteData];
-        }];
-        
-        [[ContextManager sharedInstance] saveContext:context];
-    }];
-}
-
-+ (void)pruneOldNotesBefore:(NSNumber *)timestamp withContext:(NSManagedObjectContext *)context {
-    NSError *error;
-
-    // For some strange reason, core data objects with changes are ignored when using fetchOffset
-    // Even if you have 20 notes and fetchOffset is 20, any object with uncommitted changes would show up as a result
-    // To avoid that we make sure to commit all changes before doing our request
-    [context save:&error];
-    NSUInteger keepCount = NoteKeepCount;
-    if (timestamp) {
-        NSFetchRequest *countRequest = [NSFetchRequest fetchRequestWithEntityName:@"Note"];
-        countRequest.predicate = [NSPredicate predicateWithFormat:@"timestamp >= %@", timestamp];
-        NSSortDescriptor *dateSortDescriptor = [NSSortDescriptor sortDescriptorWithKey:@"timestamp" ascending:NO];
-        countRequest.sortDescriptors = @[ dateSortDescriptor ];
-        NSError *error;
-        NSUInteger notesCount = [context countForFetchRequest:countRequest error:&error];
-        if (notesCount != NSNotFound) {
-            keepCount = MAX(keepCount, notesCount);
-        }
-    }
-
-    NSFetchRequest *request = [NSFetchRequest fetchRequestWithEntityName:@"Note"];
-    request.fetchOffset = keepCount;
-    NSSortDescriptor *dateSortDescriptor = [NSSortDescriptor sortDescriptorWithKey:@"timestamp" ascending:NO];
-    request.sortDescriptors = @[ dateSortDescriptor ];
-    NSArray *notes = [context executeFetchRequest:request error:&error];
-    if (error) {
-        DDLogError(@"Error pruning old notes: %@", error);
-        return;
-    }
-    for (Note *note in notes) {
-        [context deleteObject:note];
-    }
-    if(![context save:&error]){
-        DDLogError(@"Failed to save after pruning notes: %@", error);
-    }
-    [context save:&error];
-}
-
-+ (NSNumber *)lastNoteTimestampWithContext:(NSManagedObjectContext *)context {
-    NSFetchRequest *request = [NSFetchRequest fetchRequestWithEntityName:@"Note"];
-    request.resultType = NSDictionaryResultType;
-    request.propertiesToFetch = @[@"timestamp"];
-    request.fetchLimit = 1;
-    request.sortDescriptors = @[[NSSortDescriptor sortDescriptorWithKey:@"timestamp" ascending:NO]];
-    NSArray *results = [context executeFetchRequest:request error:nil];
-    NSNumber *timestamp;
-    if ([results count]) {
-        NSDictionary *note = results[0];
-        timestamp = [note objectForKey:@"timestamp"];
-    }
-    return timestamp;
-}
 
 - (void)syncAttributes:(NSDictionary *)noteData {
     self.payload = [NSJSONSerialization dataWithJSONObject:noteData options:0 error:nil];
@@ -191,45 +82,6 @@ const NSUInteger NoteKeepCount = 20;
     return [self.type isEqualToString:@"traffic_surge"];
 }
 
-- (Blog *)blogForStatsEvent {
-    NSScanner *scanner = [NSScanner scannerWithString:self.subject];
-    NSString *blogName;
-    
-    while ([scanner isAtEnd] == NO) {
-        [scanner scanUpToString:@"\"" intoString:NULL];
-        [scanner scanString:@"\"" intoString:NULL];
-        [scanner scanUpToString:@"\"" intoString:&blogName];
-        [scanner scanString:@"\"" intoString:NULL];
-    }
-    
-    if (blogName.length == 0) {
-        return nil;
-    }
-
-    NSPredicate *subjectPredicate = [NSPredicate predicateWithFormat:@"self.blogName CONTAINS[cd] %@", blogName];
-    NSPredicate *wpcomPredicate = [NSPredicate predicateWithFormat:@"self.account.isWpcom == YES"];
-    NSPredicate *jetpackPredicate = [NSPredicate predicateWithFormat:@"self.jetpackAccount != nil"];
-    NSPredicate *statsBlogsPredicate = [NSCompoundPredicate orPredicateWithSubpredicates:@[wpcomPredicate, jetpackPredicate]];
-    NSPredicate *combinedPredicate = [NSCompoundPredicate andPredicateWithSubpredicates:@[subjectPredicate, statsBlogsPredicate]];
-
-    NSFetchRequest *fetchRequest = [NSFetchRequest fetchRequestWithEntityName:@"Blog"];
-    fetchRequest.predicate = combinedPredicate;
-    
-    NSError *error = nil;
-    NSArray *blogs = [self.managedObjectContext executeFetchRequest:fetchRequest error:&error];
-    
-    if (error) {
-        DDLogError(@"Error while retrieving blogs with stats: %@", error);
-        return nil;
-    }
-
-    if (blogs.count > 0) {
-        return [blogs firstObject];
-    }
-    
-    return nil;
-}
-
 - (NSString *)commentText {
     if (_commentText == nil) {
         [self parseComment];
@@ -242,6 +94,54 @@ const NSUInteger NoteKeepCount = 20;
         _noteData = [NSJSONSerialization JSONObjectWithData:self.payload options:NSJSONReadingMutableContainers error:nil];
     }
     return _noteData;
+}
+
+- (NSArray *)bodyItems {
+	if (_bodyItems) {
+		return _bodyItems;
+	}
+	
+	NSArray *rawItems = [self.noteData[@"body"] arrayForKey:@"items"];
+	if (rawItems.count) {
+		_bodyItems = [NoteBodyItem parseItems:rawItems];
+	}
+	return _bodyItems;
+}
+
+- (NSString *)bodyHeaderText {
+	return self.noteData[@"body"][@"header_text"];
+}
+
+- (NSString *)bodyHeaderLink {
+	return self.noteData[@"body"][@"header_link"];
+}
+
+- (NSString *)bodyFooterText {
+	return self.noteData[@"body"][@"footer_text"];
+}
+
+- (NSString *)bodyFooterLink {
+	return self.noteData[@"body"][@"footer_link"];
+}
+
+- (NSString *)bodyHtml {
+	return self.noteData[@"body"][@"html"];
+}
+
+- (WPNoteTemplateType)templateType {
+    NSDictionary *noteBody = self.noteData[@"body"];
+    if (noteBody) {
+        NSString *noteTypeName = noteBody[@"template"];
+        
+        if ([noteTypeName isEqualToString:@"single-line-list"])
+            return WPNoteTemplateSingleLineList;
+        else if ([noteTypeName isEqualToString:@"multi-line-list"])
+            return WPNoteTemplateMultiLineList;
+        else if ([noteTypeName isEqualToString:@"big-badge"])
+            return WPNoteTemplateBigBadge;
+    }
+    
+    return WPNoteTemplateUnknown;
 }
 
 #pragma mark - NSManagedObject methods
@@ -264,22 +164,24 @@ const NSUInteger NoteKeepCount = 20;
     if ([self isComment]) {
         NSDictionary *bodyItem = [[[self.noteData objectForKey:@"body"] objectForKey:@"items"] lastObject];
         NSString *comment = [bodyItem objectForKey:@"html"];
-        if (comment == (id)[NSNull null] || comment.length == 0 )
+        if (comment == (id)[NSNull null] || comment.length == 0)
             return;
         comment = [comment stringByReplacingHTMLEmoticonsWithEmoji];
         comment = [comment stringByStrippingHTML];
+        comment = [comment stringByDecodingXMLCharacters];
         
-        NSString *xmlString = [NSString stringWithFormat:@"<d>%@</d>", comment];
-        NSData *xml = [xmlString dataUsingEncoding:NSUTF8StringEncoding allowLossyConversion:YES];
-        NSXMLParser *parser = [[NSXMLParser alloc] initWithData:xml];
-        XMLParserCollecter *collector = [[XMLParserCollecter alloc] init];
-        parser.delegate = collector;
-        [parser parse];
-        
-        self.commentText = collector.result;
-        
+        self.commentText = comment;
+    }
+}
+
+- (NSString *)commentHtml {
+    if (self.bodyItems) {
+        NoteBodyItem *noteBodyItem = [self.bodyItems lastObject];
+        NSString *commentHtml = noteBodyItem.bodyHtml;
+        return [commentHtml stringByReplacingHTMLEmoticonsWithEmoji];
     }
     
+    return nil;
 }
 
 
@@ -329,7 +231,7 @@ const NSUInteger NoteKeepCount = 20;
 
 - (NSString *)contentForDisplay {
     // Contains a lot of cruft
-    return self.commentText;
+    return self.commentHtml;
 }
 
 - (NSString *)contentPreviewForDisplay {
@@ -359,94 +261,6 @@ const NSUInteger NoteKeepCount = 20;
 
 - (BOOL)unreadStatusForDisplay {
     return !self.isRead;
-}
-
-@end
-
-@implementation Note (WordPressComApi)
-
-+ (void)fetchNewNotificationsWithSuccess:(void (^)(BOOL hasNewNotes))success failure:(void (^)(NSError *error))failure {
-    NSNumber *timestamp = [self lastNoteTimestampWithContext:[ContextManager sharedInstance].backgroundContext];
-    
-    [[[WPAccount defaultWordPressComAccount] restApi] fetchNotificationsSince:timestamp success:^(NSArray *notes) {
-        [Note mergeNewNotes:notes];
-        if (success) {
-            success([notes count] > 0);
-        }
-    } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
-        DDLogVerbose(@"Failed to fetch notifications - %@", [error localizedDescription]);
-        if (failure) {
-            failure(error);
-        }
-    }];
-}
-
-+ (void)refreshUnreadNotesWithContext:(NSManagedObjectContext *)context {
-    NSFetchRequest *request = [[ContextManager sharedInstance].managedObjectModel fetchRequestTemplateForName:@"UnreadNotes"];
-    NSError *error = nil;
-    NSArray *notes = [context executeFetchRequest:request error:&error];
-    if ([notes count] > 0) {
-        NSMutableArray *array = [NSMutableArray arrayWithCapacity:notes.count];
-        for (Note *note in notes) {
-            [array addObject:note.noteID];
-        }
-        
-        [[[WPAccount defaultWordPressComAccount] restApi] refreshNotifications:array fields:@"id,unread" success:nil failure:nil];
-    }
-}
-
-+ (void)fetchNotificationsBefore:(NSNumber *)timestamp success:(void (^)())success failure:(void (^)(NSError *))failure {
-    [[[WPAccount defaultWordPressComAccount] restApi] fetchNotificationsBefore:timestamp success:^(NSArray *notes) {
-        [self mergeNewNotes:notes];
-        if (success) {
-            success();
-        }
-    } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
-        if (failure) {
-            failure(error);
-        }
-    }];
-}
-
-+ (void)fetchNotificationsSince:(NSNumber *)timestamp success:(void (^)())success failure:(void (^)(NSError *))failure {
-    [[[WPAccount defaultWordPressComAccount] restApi] fetchNotificationsSince:timestamp success:^(NSArray *notes) {
-        [self mergeNewNotes:notes];
-        if (success) {
-            success();
-        }
-    } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
-        if (failure) {
-            failure(error);
-        }
-    }];
-}
-
-- (void)refreshNoteDataWithSuccess:(void (^)())success failure:(void (^)(NSError *))failure {
-    [[[WPAccount defaultWordPressComAccount] restApi] refreshNotifications:@[self.noteID] fields:nil success:^(NSArray *updatedNotes){
-            if ([updatedNotes count] > 0 && ![self isDeleted] && self.managedObjectContext) {
-                [self syncAttributes:updatedNotes[0]];
-            }
-            [[ContextManager sharedInstance] saveContext:self.managedObjectContext];
-            if (success) {
-                success();
-            }
-        } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
-            if (failure) {
-                failure(error);
-            }
-        }];
-}
-
-- (void)markAsReadWithSuccess:(void (^)())success failure:(void (^)(NSError *))failure {
-    [[[WPAccount defaultWordPressComAccount] restApi] markNoteAsRead:self.noteID success:^(AFHTTPRequestOperation *operation, id responseObject) {
-        if (success) {
-            success();
-        }
-    } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
-        if (failure) {
-            failure(error);
-        }
-    }];
 }
 
 @end

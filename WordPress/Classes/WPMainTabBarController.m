@@ -1,11 +1,3 @@
-//
-//  WPMainTabBarController.m
-//  WordPress
-//
-//  Created by Eric Johnson on 12/16/13.
-//  Copyright (c) 2013 WordPress. All rights reserved.
-//
-
 #import "WPMainTabBarController.h"
 #import "WordPressAppDelegate.h"
 

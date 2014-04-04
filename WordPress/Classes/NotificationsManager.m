@@ -1,12 +1,3 @@
-/*
- * NotificationsManager.m
- *
- * Copyright (c) 2013 WordPress. All rights reserved.
- *
- * Licensed under GNU General Public License 2.0.
- * Some rights reserved. See license.txt
- */
-
 #import "NotificationsManager.h"
 #import "Note.h"
 #import "WordPressAppDelegate.h"
@@ -15,6 +6,8 @@
 #import "UIDevice+WordPressIdentifier.h"
 #import <WPXMLRPCClient.h>
 #import "ContextManager.h"
+#import "NoteService.h"
+#import "AccountService.h"
 
 static NSString *const NotificationsDeviceIdKey = @"notification_device_id";
 static NSString *const NotificationsPreferencesKey = @"notification_preferences";
@@ -26,7 +19,12 @@ NSString *const NotificationsDeviceToken = @"apnsDeviceToken";
 #if TARGET_IPHONE_SIMULATOR
     return;
 #endif
-    if ([WPAccount defaultWordPressComAccount]) {
+    
+    NSManagedObjectContext *context = [[ContextManager sharedInstance] mainContext];
+    AccountService *accountService = [[AccountService alloc] initWithManagedObjectContext:context];
+    WPAccount *defaultAccount = [accountService defaultWordPressComAccount];
+
+    if (defaultAccount) {
         [[UIApplication sharedApplication]
          registerForRemoteNotificationTypes:(UIRemoteNotificationTypeBadge |
                                              UIRemoteNotificationTypeSound |
@@ -64,18 +62,20 @@ NSString *const NotificationsDeviceToken = @"apnsDeviceToken";
 + (void)unregisterDeviceToken {
     NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
     NSString *deviceId = [defaults stringForKey:NotificationsDeviceIdKey];
-    WPAccount *account = [WPAccount defaultWordPressComAccount];
+    NSManagedObjectContext *context = [[ContextManager sharedInstance] mainContext];
+    AccountService *accountService = [[AccountService alloc] initWithManagedObjectContext:context];
+    WPAccount *defaultAccount = [accountService defaultWordPressComAccount];
     
-    [[account restApi] unregisterForPushNotificationsWithDeviceId:deviceId
-                                                          success:^{
-                                                              NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
-                                                              [defaults removeObjectForKey:NotificationsDeviceToken];
-                                                              [defaults removeObjectForKey:NotificationsDeviceIdKey];
-                                                              [defaults removeObjectForKey:NotificationsPreferencesKey];
-                                                              [defaults synchronize];
-                                                          } failure:^(NSError *error){
-                                                              DDLogError(@"Couldn't unregister push token: %@", [error localizedDescription]);
-                                                          }];
+    [[defaultAccount restApi] unregisterForPushNotificationsWithDeviceId:deviceId
+                                                                 success:^{
+                                                                     NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
+                                                                     [defaults removeObjectForKey:NotificationsDeviceToken];
+                                                                     [defaults removeObjectForKey:NotificationsDeviceIdKey];
+                                                                     [defaults removeObjectForKey:NotificationsPreferencesKey];
+                                                                     [defaults synchronize];
+                                                                 } failure:^(NSError *error){
+                                                                     DDLogError(@"Couldn't unregister push token: %@", [error localizedDescription]);
+                                                                 }];
 }
 
 + (BOOL)deviceRegisteredForPushNotifications {
@@ -84,7 +84,8 @@ NSString *const NotificationsDeviceToken = @"apnsDeviceToken";
 
 #pragma mark - Notification handling
 
-+ (void)handleNotification:(NSDictionary *)userInfo forState:(UIApplicationState)state completionHandler:(void (^)(UIBackgroundFetchResult))completionHandler {
++ (void)handleNotification:(NSDictionary *)userInfo forState:(UIApplicationState)state completionHandler:(void (^)(UIBackgroundFetchResult))completionHandler
+{
     DDLogVerbose(@"Received push notification:\nPayload: %@\nCurrent Application state: %d", userInfo, state);
     
     // Try to pull the badge number from the notification object
@@ -113,7 +114,9 @@ NSString *const NotificationsDeviceToken = @"apnsDeviceToken";
             
         case UIApplicationStateBackground:
             if (completionHandler) {
-                [Note fetchNewNotificationsWithSuccess:^(BOOL hasNewNotes) {
+                NoteService *noteService = [[NoteService alloc] initWithManagedObjectContext:[[ContextManager sharedInstance] backgroundContext]];
+                
+                [noteService fetchNewNotificationsWithSuccess:^(BOOL hasNewNotes) {
                     DDLogVerbose(@"notification fetch completion handler completed with new notes: %@", hasNewNotes ? @"YES" : @"NO");
                     if (hasNewNotes) {
                         completionHandler(UIBackgroundFetchResultNewData);
@@ -145,7 +148,11 @@ NSString *const NotificationsDeviceToken = @"apnsDeviceToken";
 #pragma mark - WordPress.com XML RPC API
 
 + (NSDictionary *)notificationSettingsDictionary {
-    if (![[[WPAccount defaultWordPressComAccount] restApi] hasCredentials]) {
+    NSManagedObjectContext *context = [[ContextManager sharedInstance] mainContext];
+    AccountService *accountService = [[AccountService alloc] initWithManagedObjectContext:context];
+    WPAccount *defaultAccount = [accountService defaultWordPressComAccount];
+
+    if (![[defaultAccount restApi] hasCredentials]) {
         return nil;
     }
     
@@ -196,39 +203,47 @@ NSString *const NotificationsDeviceToken = @"apnsDeviceToken";
 + (void)saveNotificationSettings {
     NSDictionary *settings = [NotificationsManager notificationSettingsDictionary];
     NSString *deviceId = [[NSUserDefaults standardUserDefaults] stringForKey:NotificationsDeviceIdKey];
-    WPAccount *account = [WPAccount defaultWordPressComAccount];
-    [[account restApi] saveNotificationSettings:settings
-                                       deviceId:deviceId
-                                        success:^{
-                                            DDLogInfo(@"Notification settings successfully sent to WP.com\n Settings: %@", settings);
-                                        } failure:^(NSError *error){
-                                            DDLogError(@"Failed to update notification settings on WP.com %@", error.localizedDescription);
-                                        }];
+    NSManagedObjectContext *context = [[ContextManager sharedInstance] mainContext];
+    AccountService *accountService = [[AccountService alloc] initWithManagedObjectContext:context];
+    WPAccount *defaultAccount = [accountService defaultWordPressComAccount];
+
+    [[defaultAccount restApi] saveNotificationSettings:settings
+                                              deviceId:deviceId
+                                               success:^{
+                                                   DDLogInfo(@"Notification settings successfully sent to WP.com\n Settings: %@", settings);
+                                               } failure:^(NSError *error){
+                                                   DDLogError(@"Failed to update notification settings on WP.com %@", error.localizedDescription);
+                                               }];
 }
 
 + (void)fetchNotificationSettingsWithSuccess:(void (^)())success failure:(void (^)(NSError *))failure {
     NSString *deviceId = [[NSUserDefaults standardUserDefaults] stringForKey:NotificationsDeviceIdKey];
+    NSManagedObjectContext *context = [[ContextManager sharedInstance] mainContext];
+    AccountService *accountService = [[AccountService alloc] initWithManagedObjectContext:context];
+    WPAccount *defaultAccount = [accountService defaultWordPressComAccount];
     
-    WPAccount *account = [WPAccount defaultWordPressComAccount];
-    [[account restApi] fetchNotificationSettingsWithDeviceId:deviceId
-                                                     success:^(NSDictionary *settings) {
-                                                         [[NSUserDefaults standardUserDefaults] setObject:settings forKey:NotificationsPreferencesKey];
-                                                         DDLogInfo(@"Received notification settings %@", settings);
-                                                         if (success) {
-                                                             success();
-                                                         }
-                                                     } failure:^(NSError *error) {
-                                                         DDLogError(@"Failed to fetch notification settings %@ with device ID %@", error, deviceId);
-                                                         if (failure) {
-                                                             failure(error);
-                                                         }
-                                                     }];
+    [[defaultAccount restApi] fetchNotificationSettingsWithDeviceId:deviceId
+                                                            success:^(NSDictionary *settings) {
+                                                                [[NSUserDefaults standardUserDefaults] setObject:settings forKey:NotificationsPreferencesKey];
+                                                                DDLogInfo(@"Received notification settings %@", settings);
+                                                                if (success) {
+                                                                    success();
+                                                                }
+                                                            } failure:^(NSError *error) {
+                                                                DDLogError(@"Failed to fetch notification settings %@ with device ID %@", error, deviceId);
+                                                                if (failure) {
+                                                                    failure(error);
+                                                                }
+                                                            }];
 }
 
 + (void)syncPushNotificationInfo {
     NSString *token = [[NSUserDefaults standardUserDefaults] objectForKey:NotificationsDeviceToken];
-    WPAccount *account = [WPAccount defaultWordPressComAccount];
-    WordPressComApi *api = [account restApi];
+    NSManagedObjectContext *context = [[ContextManager sharedInstance] mainContext];
+    AccountService *accountService = [[AccountService alloc] initWithManagedObjectContext:context];
+    WPAccount *defaultAccount = [accountService defaultWordPressComAccount];
+
+    WordPressComApi *api = [defaultAccount restApi];
     [api syncPushNotificationInfoWithDeviceToken:token
                                          success:^(NSString *deviceId, NSDictionary *settings) {
                                              DDLogVerbose(@"Synced push notification token and received device ID %@ with settings:\n %@", deviceId, settings);

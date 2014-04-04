@@ -1,11 +1,3 @@
-//
-//  ReaderPostView.m
-//  WordPress
-//
-//  Created by Michael Johnston on 11/19/13.
-//  Copyright (c) 2013 WordPress. All rights reserved.
-//
-
 #import <QuartzCore/QuartzCore.h>
 #import "ReaderPostView.h"
 #import "WPAccount.h"
@@ -14,6 +6,8 @@
 #import "UILabel+SuggestSize.h"
 #import "NSAttributedString+HTML.h"
 #import "NSString+Helpers.h" 
+#import "ContextManager.h"
+#import "AccountService.h"
 
 @interface ReaderPostView()
 
@@ -42,17 +36,8 @@
         }
 
         _followButton = [ContentActionButton buttonWithType:UIButtonTypeCustom];
-        _followButton.contentHorizontalAlignment = UIControlContentHorizontalAlignmentLeft;
-        _followButton.backgroundColor = [UIColor clearColor];
-        _followButton.titleLabel.font = [UIFont fontWithName:@"OpenSans" size:12.0f];
-        NSString *followString = NSLocalizedString(@"Follow", @"Prompt to follow a blog.");
-        NSString *followedString = NSLocalizedString(@"Following", @"User is following the blog.");
-        [_followButton setTitle:followString forState:UIControlStateNormal];
-        [_followButton setTitle:followedString forState:UIControlStateSelected];
+        [WPStyleGuide configureFollowButton:_followButton];
         [_followButton setTitleEdgeInsets: UIEdgeInsetsMake(0, RPVSmallButtonLeftPadding, 0, 0)];
-        [_followButton setImage:[UIImage imageNamed:@"reader-postaction-follow"] forState:UIControlStateNormal];
-        [_followButton setImage:[UIImage imageNamed:@"reader-postaction-following"] forState:UIControlStateSelected];
-        [_followButton setTitleColor:[UIColor colorWithHexString:@"aaa"] forState:UIControlStateNormal];
         [_followButton addTarget:self action:@selector(followAction:) forControlEvents:UIControlEventTouchUpInside];
         [super.byView addSubview:_followButton];
         
@@ -128,7 +113,11 @@
         self.tagButton.hidden = YES;
     }
     
-	if ([[self.post isWPCom] boolValue] && [WPAccount defaultWordPressComAccount] != nil) {
+    NSManagedObjectContext *context = [[ContextManager sharedInstance] mainContext];
+    AccountService *accountService = [[AccountService alloc] initWithManagedObjectContext:context];
+    WPAccount *defaultAccount = [accountService defaultWordPressComAccount];
+
+	if ([[self.post isWPCom] boolValue] && defaultAccount != nil) {
 		self.likeButton.hidden = NO;
 		self.reblogButton.hidden = NO;
         self.commentButton.hidden = NO;
@@ -159,7 +148,11 @@
     CGFloat innerContentWidth = [self innerContentWidth];
     CGFloat bylineX = RPVAvatarSize + RPVAuthorPadding + RPVHorizontalInnerPadding;
 
-    if ([self.post isFollowable] && [WPAccount defaultWordPressComAccount] != nil) {
+    NSManagedObjectContext *context = [[ContextManager sharedInstance] mainContext];
+    AccountService *accountService = [[AccountService alloc] initWithManagedObjectContext:context];
+    WPAccount *defaultAccount = [accountService defaultWordPressComAccount];
+
+    if ([self.post isFollowable] && defaultAccount != nil) {
         self.followButton.hidden = NO;
         CGFloat followX = bylineX - 4; // Fudge factor for image alignment
         CGFloat followY = RPVAuthorPadding + self.bylineLabel.frame.size.height - 2;

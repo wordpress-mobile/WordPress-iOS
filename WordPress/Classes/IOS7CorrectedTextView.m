@@ -1,12 +1,3 @@
-/*
- * IOS7CorrectedTextView.m
- *
- * Copyright (c) 2013 WordPress. All rights reserved.
- *
- * Licensed under GNU General Public License 2.0.
- * Some rights reserved. See license.txt
- */
-
 // Original Gist https://gist.github.com/agiletortoise/a24ccbf2d33aafb2abc1
 // Discussion: https://devforums.apple.com/message/889840
 

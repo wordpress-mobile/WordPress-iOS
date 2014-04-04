@@ -1,11 +1,3 @@
-//
-//  AbstractComment.m
-//  WordPress
-//
-//  Created by Eric J on 3/25/13.
-//  Copyright (c) 2013 WordPress. All rights reserved.
-//
-
 #import "AbstractComment.h"
 #import "NSString+XMLExtensions.h"
 #import "NSString+HTML.h"
@@ -47,7 +39,14 @@
 }
 
 - (NSString *)contentForDisplay {
-    return [self.content stringByDecodingXMLCharacters];
+    // Unescape HTML characters and add <br /> tags
+    NSString *commentContent = [[self.content stringByDecodingXMLCharacters] trim];
+    // Don't add <br /> tags after an HTML tag, as DTCoreText will handle that spacing for us
+    NSRegularExpression *removeNewlinesAfterHtmlTags = [NSRegularExpression regularExpressionWithPattern:@"(?<=\\>)\n\n" options:0 error:nil];
+    commentContent = [removeNewlinesAfterHtmlTags stringByReplacingMatchesInString:commentContent options:0 range:NSMakeRange(0, [commentContent length]) withTemplate:@""];
+    commentContent = [commentContent stringByReplacingOccurrencesOfString:@"\n" withString:@"<br />"];
+    
+    return commentContent;
 }
 
 - (NSString *)contentPreviewForDisplay {

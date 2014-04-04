@@ -1,11 +1,3 @@
-//
-//  WPContentCell.h
-//  
-//
-//  Created by Tom Witkin on 12/12/13.
-//
-//
-
 #import <UIKit/UIKit.h>
 
 #import "WPTableViewCell.h"

@@ -1,10 +1,3 @@
-//
-//  NSString+Util.m
-//  WordPress
-//
-//  Created by Joshua Bassett on 18/06/09.
-//
-
 #import "NSString+Util.h"
 
 

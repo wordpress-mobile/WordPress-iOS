@@ -1,11 +1,3 @@
-//
-//  CommentView.m
-//  WordPress
-//
-//  Created by Michael Johnston on 12/13/13.
-//  Copyright (c) 2013 WordPress. All rights reserved.
-//
-
 #import "CommentView.h"
 #import "WPContentViewSubclass.h"
 #import "UIImageView+Gravatar.h"
@@ -37,17 +29,12 @@
         [self.avatarImageView setImageWithURL:avatarURL placeholderImage:avatarPlaceholderImage];
     }
     
-    NSString *partialHtml = [contentProvider contentForDisplay];
-    NSString *fullHtml;
-    
-    // The comment content is...partly HTML. But not completely. For unknown reasons.
-    if (partialHtml == nil) {
-        fullHtml = [NSString stringWithFormat:@"<html><head></head><body><p>%@</p></body></html>", @"<br />"];
-    } else {
-        fullHtml = [NSString stringWithFormat:@"<html><head></head><body><p>%@</p></body></html>", [[partialHtml trim] stringByReplacingOccurrencesOfString:@"\n" withString:@"<br />"]];
+    NSString *commentHtml = [contentProvider contentForDisplay];
+    if ([commentHtml length] == 0) {
+        return;
     }
 
-    NSData *data = [fullHtml dataUsingEncoding:NSUTF8StringEncoding];
+    NSData *data = [commentHtml dataUsingEncoding:NSUTF8StringEncoding];
     self.textContentView.attributedString = [[NSAttributedString alloc] initWithHTMLData:data
                                                                                  options:[WPStyleGuide defaultDTCoreTextOptions]
                                                                       documentAttributes:nil];

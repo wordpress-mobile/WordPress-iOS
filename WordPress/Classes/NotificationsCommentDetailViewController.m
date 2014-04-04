@@ -1,11 +1,3 @@
-//
-//  NotificationsDetailViewController.m
-//  WordPress
-//
-//  Created by Beau Collins on 11/20/12.
-//  Copyright (c) 2012 WordPress. All rights reserved.
-//
-
 #import <QuartzCore/QuartzCore.h>
 #import <DTCoreText/DTCoreText.h>
 #import "ContextManager.h"
@@ -19,13 +11,14 @@
 #import "WPToast.h"
 #import "WPAccount.h"
 #import "NoteCommentPostBanner.h"
-#import "FollowButton.h"
 #import "Note.h"
 #import "InlineComposeView.h"
 #import "CommentView.h"
 #import "WPFixedWidthScrollView.h"
 #import "WPTableViewCell.h"
 #import "WPTableViewController.h"
+#import "NoteService.h"
+#import "AccountService.h"
 
 const CGFloat NotificationsCommentDetailViewControllerReplyTextViewDefaultHeight = 64.f;
 NSString *const WPNotificationCommentRestorationKey = @"WPNotificationCommentRestorationKey";
@@ -50,7 +43,6 @@ NSString *const WPNotificationCommentRestorationKey = @"WPNotificationCommentRes
 
 @property (nonatomic, strong) CommentView *commentView;
 @property (nonatomic, weak) IBOutlet NoteCommentPostBanner *postBanner;
-@property (nonatomic, strong) FollowButton *followButton;
 @property (nonatomic, strong) Note *note;
 
 @property (nonatomic, strong) InlineComposeView *inlineComposeView;
@@ -164,26 +156,23 @@ NSString *const WPNotificationCommentRestorationKey = @"WPNotificationCommentRes
 }
 
 - (void)displayNote {
+    NSManagedObjectContext *context = [[ContextManager sharedInstance] mainContext];
+    AccountService *accountService = [[AccountService alloc] initWithManagedObjectContext:context];
+    WPAccount *defaultAccount = [accountService defaultWordPressComAccount];
+
     // get the note's actions
     NSArray *actions = [self.note.noteData valueForKeyPath:@"body.actions"];
     NSDictionary *action = [actions objectAtIndex:0];
-    NSArray *items = [self.note.noteData valueForKeyPath:@"body.items"];
     self.siteID = [action valueForKeyPath:@"params.site_id"];
     
     NoteComment *comment = [[NoteComment alloc] initWithCommentID:[action valueForKeyPath:@"params.comment_id"]];
     [self.commentThread addObject:comment];
     
-    // pull out the follow action and set up the follow button
-    self.followAction = [[items lastObject] valueForKeyPath:@"action"];
-    if (self.followAction && ![self.followAction isEqual:@0]) {
-        self.followButton = [FollowButton buttonFromAction:self.followAction withApi:[[WPAccount defaultWordPressComAccount] restApi]];
-    }
-    
     NSString *postPath = [NSString stringWithFormat:@"sites/%@/posts/%@", [action valueForKeyPath:@"params.site_id"], [action valueForKeyPath:@"params.post_id"]];
     
     // if we don't have post information fetch it from the api
     if (self.post == nil) {
-        [[[WPAccount defaultWordPressComAccount] restApi] getPath:postPath parameters:nil success:^(AFHTTPRequestOperation *operation, id responseObject) {
+        [[defaultAccount restApi] getPath:postPath parameters:nil success:^(AFHTTPRequestOperation *operation, id responseObject) {
             self.post = responseObject;
             NSString *postTitle = [[self.post valueForKeyPath:@"title"] stringByDecodingXMLCharacters];
             if (!postTitle || [postTitle isEqualToString:@""])
@@ -275,8 +264,12 @@ NSString *const WPNotificationCommentRestorationKey = @"WPNotificationCommentRes
     }
     WPWebViewController *webViewController = [[WPWebViewController alloc] initWithNibName:nil bundle:nil];
     if ([url isWordPressDotComUrl]) {
-        [webViewController setUsername:[[WPAccount defaultWordPressComAccount] username]];
-        [webViewController setPassword:[[WPAccount defaultWordPressComAccount] password]];
+        NSManagedObjectContext *context = [[ContextManager sharedInstance] mainContext];
+        AccountService *accountService = [[AccountService alloc] initWithManagedObjectContext:context];
+        WPAccount *defaultAccount = [accountService defaultWordPressComAccount];
+        
+        [webViewController setUsername:[defaultAccount username]];
+        [webViewController setPassword:[defaultAccount password]];
         [webViewController setUrl:[url ensureSecureURL]];
     } else {
         [webViewController setUrl:url];        
@@ -334,10 +327,15 @@ NSString *const WPNotificationCommentRestorationKey = @"WPNotificationCommentRes
 - (void)performCommentAction:(NSDictionary *)commentAction {
     NSString *path = [NSString stringWithFormat:@"/rest/v1%@", [commentAction valueForKeyPath:@"params.rest_path"]];
     
-    [[[WPAccount defaultWordPressComAccount] restApi] postPath:path parameters:[commentAction valueForKeyPath:@"params.rest_body"] success:^(AFHTTPRequestOperation *operation, id responseObject) {
+    NSManagedObjectContext *context = [[ContextManager sharedInstance] mainContext];
+    AccountService *accountService = [[AccountService alloc] initWithManagedObjectContext:context];
+    WPAccount *defaultAccount = [accountService defaultWordPressComAccount];
+
+    [[defaultAccount restApi] postPath:path parameters:[commentAction valueForKeyPath:@"params.rest_body"] success:^(AFHTTPRequestOperation *operation, id responseObject) {
         NSDictionary *response = (NSDictionary *)responseObject;
         if (response) {
-            [_note refreshNoteDataWithSuccess:^{
+            NoteService *noteService = [[NoteService alloc] initWithManagedObjectContext:self.note.managedObjectContext];
+            [noteService refreshNote:self.note success:^{
                 // Buttons are adjusted optimistically, so no need to update UI
             } failure:^(NSError *error) {
                 // Fail silently but force a refresh to revert any optimistic changes
@@ -357,12 +355,15 @@ NSString *const WPNotificationCommentRestorationKey = @"WPNotificationCommentRes
     
     if (action) {
         self.inlineComposeView.enabled = NO;
+        NSManagedObjectContext *context = [[ContextManager sharedInstance] mainContext];
+        AccountService *accountService = [[AccountService alloc] initWithManagedObjectContext:context];
+        WPAccount *defaultAccount = [accountService defaultWordPressComAccount];
 
         NSString *approvePath = [NSString stringWithFormat:@"/rest/v1%@", [action valueForKeyPath:@"params.rest_path"]];
         NSString *replyPath = [NSString stringWithFormat:@"%@/replies/new", approvePath];
         NSDictionary *params = @{@"content" : replyText };
         if ([[action valueForKeyPath:@"params.approve_parent"] isEqualToNumber:@1]) {
-            [[[WPAccount defaultWordPressComAccount] restApi] postPath:approvePath parameters:@{@"status" : @"approved"} success:^(AFHTTPRequestOperation *operation, id responseObject) {
+            [[defaultAccount restApi] postPath:approvePath parameters:@{@"status" : @"approved"} success:^(AFHTTPRequestOperation *operation, id responseObject) {
                 [self displayNote];
             } failure:nil];
         }
@@ -380,7 +381,7 @@ NSString *const WPNotificationCommentRestorationKey = @"WPNotificationCommentRes
             [self.inlineComposeView displayComposer];
         };
 
-        [[[WPAccount defaultWordPressComAccount] restApi] postPath:replyPath parameters:params success:^(AFHTTPRequestOperation *operation, id responseObject) {
+        [[defaultAccount restApi] postPath:replyPath parameters:params success:^(AFHTTPRequestOperation *operation, id responseObject) {
             DDLogVerbose(@"Response: %@", responseObject);
             success();
         } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
@@ -414,7 +415,12 @@ NSString *const WPNotificationCommentRestorationKey = @"WPNotificationCommentRes
     if (comment.needsData) {
         NSString *commentPath = [NSString stringWithFormat:@"sites/%@/comments/%@", self.siteID, comment.commentID];
         comment.loading = YES;
-        [[[WPAccount defaultWordPressComAccount] restApi] getPath:commentPath parameters:nil success:^(AFHTTPRequestOperation *operation, id responseObject) {
+        
+        NSManagedObjectContext *context = [[ContextManager sharedInstance] mainContext];
+        AccountService *accountService = [[AccountService alloc] initWithManagedObjectContext:context];
+        WPAccount *defaultAccount = [accountService defaultWordPressComAccount];
+
+        [[defaultAccount restApi] getPath:commentPath parameters:nil success:^(AFHTTPRequestOperation *operation, id responseObject) {
             comment.commentData = responseObject;
             comment.loading = NO;
 
@@ -435,7 +441,11 @@ NSString *const WPNotificationCommentRestorationKey = @"WPNotificationCommentRes
 - (void)performNoteAction:(NSDictionary *)action success:(WordPressComApiRestSuccessFailureBlock)success failure:(WordPressComApiRestSuccessFailureBlock)failure {
     NSDictionary *params = [action objectForKey:@"params"];
     NSString *path = [NSString stringWithFormat:@"sites/%@/comments/%@", [params objectForKey:@"site_id"], [params objectForKey:@"comment_id"]];
-    [[[WPAccount defaultWordPressComAccount] restApi] postPath:path parameters:[params objectForKey:@"rest_body"] success:success failure:failure];
+    
+    NSManagedObjectContext *context = [[ContextManager sharedInstance] mainContext];
+    AccountService *accountService = [[AccountService alloc] initWithManagedObjectContext:context];
+    WPAccount *defaultAccount = [accountService defaultWordPressComAccount];
+    [[defaultAccount restApi] postPath:path parameters:[params objectForKey:@"rest_body"] success:success failure:failure];
 }
 
 
@@ -452,6 +462,12 @@ NSString *const WPNotificationCommentRestorationKey = @"WPNotificationCommentRes
     NoteComment *comment = [self.commentThread objectAtIndex:0];
     NSURL *url = [[NSURL alloc] initWithString:[comment.commentData valueForKeyPath:@"author.URL"]];
     [self pushToURL:url];
+}
+
+- (void)contentView:(WPContentView *)contentView didReceiveLinkAction:(id)sender {
+    WPWebViewController *controller = [[WPWebViewController alloc] init];
+	[controller setUrl:((DTLinkButton *)sender).URL];
+	[self.navigationController pushViewController:controller animated:YES];
 }
 
 

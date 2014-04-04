@@ -1,11 +1,3 @@
-//
-//  UIDevice+WordPressIdentifier.m
-//  WordPress
-//
-//  Created by Jorge Bernal on 10/17/12.
-//  Copyright (c) 2012 WordPress. All rights reserved.
-//
-
 #import "UIDevice+WordPressIdentifier.h"
 
 static NSString * const WordPressIdentifierDefaultsKey = @"WordPressIdentifier";

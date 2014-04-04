@@ -1,11 +1,3 @@
-//
-//  ReaderPostTableViewCell.m
-//  WordPress
-//
-//  Created by Eric J on 4/4/13.
-//  Copyright (c) 2013 WordPress. All rights reserved.
-//
-
 #import "ReaderPostTableViewCell.h"
 #import "WordPressAppDelegate.h"
 #import "ReaderPost.h"
