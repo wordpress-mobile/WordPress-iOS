@@ -3,6 +3,10 @@
 #import "Blog+Jetpack.h"
 #import "WordPressComApi.h"
 
+NSString *const CategoryServiceRemoteKeyID = @"id";
+NSString *const CategoryServiceRemoteKeyName = @"name";
+NSString *const CategoryServiceRemoteKeyParent = @"parent";
+
 @implementation CategoryServiceRemote {
     WordPressComApi *_restClient;
 }
@@ -39,14 +43,37 @@
 }
 
 - (void)getCategoriesForSiteWithID:(NSNumber *)siteID success:(void (^)(NSArray *))success failure:(void (^)(NSError *))failure {
-    // http://developer.wordpress.com/docs/api/1/post/sites/%24site/categories/
-#warning Categories endpoint doesn't exist yet. Make sure to standardize response format
-    NSString *path = [NSString stringWithFormat:@"sites/%@/categories/new", siteID];
+    // http://developer.wordpress.com/docs/api/1/get/sites/%24site/categories/
+    NSString *path = [NSString stringWithFormat:@"sites/%@/categories", siteID];
     [_restClient getPath:path
               parameters:nil
                  success:^(AFHTTPRequestOperation *operation, id responseObject) {
                      if (success) {
-                         success(responseObject);
+                         NSDictionary *response = (NSDictionary *)responseObject;
+                         if (![response isKindOfClass:[NSDictionary class]]) {
+                             DDLogError(@"sites/$site/categories returned an unexpected object type for categories: %@", responseObject);
+                             response = @{};
+                         }
+                         NSArray *receivedCategories = [response arrayForKey:@"categories"];
+                         if (!receivedCategories) {
+                             DDLogError(@"sites/$site/categories returned an unexpected format: %@", response);
+                             receivedCategories = @[];
+                         }
+                         NSMutableArray *categories = [NSMutableArray arrayWithCapacity:[receivedCategories count]];
+                         for (NSDictionary *receivedCategory in receivedCategories) {
+                             if (![receivedCategory isKindOfClass:[NSDictionary class]]) {
+                                 DDLogError(@"sites/$site/categories includes a category with an unexpected type: %@", receivedCategory);
+                                 continue;
+                             }
+                             NSDictionary *category = @{
+                                                        CategoryServiceRemoteKeyID: [receivedCategory numberForKey:@"ID"],
+                                                        CategoryServiceRemoteKeyName: [receivedCategory stringForKey:@"name"],
+                                                        CategoryServiceRemoteKeyParent: [receivedCategory numberForKey:@"parent"],
+                                                        };
+                             [categories addObject:category];
+                         }
+
+                         success([categories copy]);
                      }
                  } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
                      if (failure) {

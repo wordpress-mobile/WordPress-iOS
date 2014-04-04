@@ -81,14 +81,19 @@
                                */
                               NSArray *receivedCategories = (NSArray *)responseObject;
                               if (![receivedCategories isKindOfClass:[NSArray class]]) {
+                                  DDLogError(@"wp.getCategories returned an unexpected object type: %@", responseObject);
                                   receivedCategories = @[];
                               }
                               NSMutableArray *categories = [NSMutableArray arrayWithCapacity:[receivedCategories count]];
                               for (NSDictionary *receivedCategory in receivedCategories) {
+                                  if (![receivedCategory isKindOfClass:[NSDictionary class]]) {
+                                      DDLogError(@"wp.getCategories included an unexpected category type: %@", receivedCategory);
+                                      continue;
+                                  }
                                   NSDictionary *category = @{
-                                                             @"id":     [receivedCategory numberForKey:@"categoryId"],
-                                                             @"name":   [receivedCategory stringForKey:@"categoryName"],
-                                                             @"parent": [receivedCategory numberForKey:@"parentId"],
+                                                             CategoryServiceRemoteKeyID: [receivedCategory numberForKey:@"categoryId"],
+                                                             CategoryServiceRemoteKeyName: [receivedCategory stringForKey:@"categoryName"],
+                                                             CategoryServiceRemoteKeyParent: [receivedCategory numberForKey:@"parentId"],
                                                              };
                                   [categories addObject:category];
                               }

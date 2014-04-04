@@ -1,5 +1,9 @@
 #import <Foundation/Foundation.h>
 
+extern NSString *const CategoryServiceRemoteKeyID;
+extern NSString *const CategoryServiceRemoteKeyName;
+extern NSString *const CategoryServiceRemoteKeyParent;
+
 @class WordPressComApi;
 
 @protocol CategoryServiceRemoteAPI <NSObject>
