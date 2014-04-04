@@ -1,11 +1,3 @@
-//
-//  PostGeolocationView.m
-//  WordPress
-//
-//  Created by Eric Johnson on 1/23/14.
-//  Copyright (c) 2014 WordPress. All rights reserved.
-//
-
 #import "PostGeolocationView.h"
 #import "PostAnnotation.h"
 

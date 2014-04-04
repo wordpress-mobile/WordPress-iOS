@@ -1,11 +1,3 @@
-//
-//  ReaderPostsViewController.m
-//  WordPress
-//
-//  Created by Eric J on 3/21/13.
-//  Copyright (c) 2013 WordPress. All rights reserved.
-//
-
 #import <DTCoreText/DTCoreText.h>
 #import "DTCoreTextFontDescriptor.h"
 #import "WPTableViewControllerSubclass.h"

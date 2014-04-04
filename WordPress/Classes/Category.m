@@ -1,11 +1,3 @@
-//
-//  Category.m
-//  WordPress
-//
-//  Created by Jorge Bernal on 10/29/10.
-//  Copyright 2010 WordPress. All rights reserved.
-//
-
 #import "Category.h"
 #import "ContextManager.h"
 

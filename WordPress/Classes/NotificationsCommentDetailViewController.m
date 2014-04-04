@@ -1,11 +1,3 @@
-//
-//  NotificationsDetailViewController.m
-//  WordPress
-//
-//  Created by Beau Collins on 11/20/12.
-//  Copyright (c) 2012 WordPress. All rights reserved.
-//
-
 #import <QuartzCore/QuartzCore.h>
 #import <DTCoreText/DTCoreText.h>
 #import "ContextManager.h"
@@ -470,6 +462,12 @@ NSString *const WPNotificationCommentRestorationKey = @"WPNotificationCommentRes
     NoteComment *comment = [self.commentThread objectAtIndex:0];
     NSURL *url = [[NSURL alloc] initWithString:[comment.commentData valueForKeyPath:@"author.URL"]];
     [self pushToURL:url];
+}
+
+- (void)contentView:(WPContentView *)contentView didReceiveLinkAction:(id)sender {
+    WPWebViewController *controller = [[WPWebViewController alloc] init];
+	[controller setUrl:((DTLinkButton *)sender).URL];
+	[self.navigationController pushViewController:controller animated:YES];
 }
 
 

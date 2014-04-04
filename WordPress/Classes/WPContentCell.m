@@ -1,11 +1,3 @@
-//
-//  WPContentCell.m
-//  
-//
-//  Created by Tom Witkin on 12/12/13.
-//
-//
-
 #import "WPContentCell.h"
 #import "WPComLanguages.h"
 #import "UIImageView+Gravatar.h"

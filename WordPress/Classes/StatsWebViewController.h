@@ -1,9 +1,3 @@
-//
-//  StatsWebViewController.h
-//
-//  Created by Eric Johnson on 5/31/12.
-//
-
 #import "WPChromelessWebViewController.h"
 
 @class Blog;

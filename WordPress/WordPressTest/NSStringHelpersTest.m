@@ -1,11 +1,3 @@
-//
-//  NSStringHelpersTest.m
-//  WordPress
-//
-//  Created by Basar Akyelli on 1/25/14.
-//  Copyright (c) 2014 WordPress. All rights reserved.
-//
-
 #import <XCTest/XCTest.h>
 #import "NSString+Helpers.h"
 

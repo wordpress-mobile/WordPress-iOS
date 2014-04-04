@@ -1,11 +1,3 @@
-//
-//  WordPressComOAuthClient.h
-//  WordPress
-//
-//  Created by Jorge Bernal on 19/11/13.
-//  Copyright (c) 2013 WordPress. All rights reserved.
-//
-
 #import "AFHTTPClient.h"
 
 extern NSString * const WordPressComOAuthErrorDomain;

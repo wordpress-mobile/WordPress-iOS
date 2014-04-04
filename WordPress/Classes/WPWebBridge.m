@@ -1,11 +1,3 @@
-//
-//  WPWebBridge.m
-//  WordPress
-//
-//  Created by Beau Collins on 7/19/12.
-//  Copyright (c) 2012 WordPress. All rights reserved.
-//
-
 #import "WPWebBridge.h"
 #import <CommonCrypto/CommonDigest.h>
 #import "UIDevice+WordPressIdentifier.h"

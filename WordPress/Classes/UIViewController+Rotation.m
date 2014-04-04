@@ -1,11 +1,3 @@
-//
-//  UIViewController+Rotation.m
-//  WordPress
-//
-//  Created by Danilo Ercoli on 13/07/12.
-//  Copyright (c) 2012 WordPress. All rights reserved.
-//
-
 #import "UIViewController+Rotation.h"
 #import <objc/runtime.h>
 
