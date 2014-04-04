@@ -1,10 +1,3 @@
-//
-//  Blog.m
-//  WordPress
-//
-//  Created by Gareth Townsend on 24/06/09.
-//
-
 #import "Blog.h"
 #import "Post.h"
 #import "Page.h"

@@ -1,10 +1,3 @@
-//
-//  QuickPhotoButtonView.m
-//  WordPress
-//
-//  Created by Eric Johnson on 6/19/12.
-//
-
 #import "QuickPhotoButtonView.h"
 
 @interface QuickPhotoButtonView () {

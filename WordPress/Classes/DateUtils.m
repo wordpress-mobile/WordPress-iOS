@@ -1,11 +1,3 @@
-//
-//  DateUtils.m
-//  WordPress
-//
-//  Created by Danilo Ercoli on 03/02/11.
-//  Copyright 2011 WordPress. All rights reserved.
-//
-
 #import "DateUtils.h"
 
 

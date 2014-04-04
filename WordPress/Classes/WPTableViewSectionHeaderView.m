@@ -1,11 +1,3 @@
-//
-//  WPTableViewSectionHeaderView.m
-//  WordPress
-//
-//  Created by Sendhil Panchadsaram on 9/5/13.
-//  Copyright (c) 2013 WordPress. All rights reserved.
-//
-
 #import "WPTableViewSectionHeaderView.h"
 #import "WPTableViewCell.h"
 

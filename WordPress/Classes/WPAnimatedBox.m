@@ -1,11 +1,3 @@
-//
-//  WPAnimatedBox.m
-//  WordPress
-//
-//  Created by Tom Witkin on 11/20/13.
-//  Copyright (c) 2013 WordPress. All rights reserved.
-//
-
 #import "WPAnimatedBox.h"
 
 @interface WPAnimatedBox () {

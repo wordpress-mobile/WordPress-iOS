@@ -1,11 +1,3 @@
-//
-//  WPToast.m
-//  WordPress
-//
-//  Created by Sendhil Panchadsaram on 1/8/13.
-//  Copyright (c) 2013 WordPress. All rights reserved.
-//
-
 #import <QuartzCore/QuartzCore.h>
 #import "WPToast.h"
 
