@@ -1,10 +1,3 @@
-//
-//  Post.h
-//  WordPress
-//
-//  Created by Chris Boyd on 8/9/10.
-//
-
 #import <CoreData/CoreData.h>
 #import "WordPressAppDelegate.h"
 #import "Category.h"

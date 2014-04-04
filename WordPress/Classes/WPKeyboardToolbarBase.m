@@ -1,11 +1,3 @@
-//
-//  WPKeyboardToolbar.m
-//  WordPress
-//
-//  Created by Jorge Bernal on 8/11/11.
-//  Copyright 2011 WordPress. All rights reserved.
-//
-
 #import "WPKeyboardToolbarBase.h"
 
 #pragma mark Sizes
