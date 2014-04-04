@@ -1,7 +1,5 @@
 #import <UIKit/UIKit.h>
 
-
-
 typedef void (^NotificationsFollowBlock)(id sender);
 
 @interface NotificationsFollowTableViewCell : UITableViewCell
