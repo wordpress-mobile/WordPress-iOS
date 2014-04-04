@@ -1,10 +1,3 @@
-//
-//  PagesViewController.m
-//  WordPress
-//
-//  Created by Janakiram on 01/11/08.
-//
-
 #import "PagesViewController.h"
 #import "EditPageViewController.h"
 #import "WPTableViewControllerSubclass.h"

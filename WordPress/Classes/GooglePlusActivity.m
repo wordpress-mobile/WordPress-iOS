@@ -1,11 +1,3 @@
-//
-//  GooglePlusActivity.m
-//  WordPress
-//
-//  Created by Jorge Bernal on 6/19/13.
-//  Copyright (c) 2013 WordPress. All rights reserved.
-//
-
 #import <SVProgressHUD/SVProgressHUD.h>
 #import <GooglePlus/GooglePlus.h>
 

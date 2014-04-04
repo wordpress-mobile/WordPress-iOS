@@ -1,11 +1,3 @@
-//
-//  WPTableViewControllerSubclass.h
-//  WordPress
-//
-//  Created by Jorge Bernal on 6/8/12.
-//  Copyright (c) 2012 WordPress. All rights reserved.
-//
-
 #import "WPTableViewController.h"
 
 @interface WPTableViewController (SubclassMethods)

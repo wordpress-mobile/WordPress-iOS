@@ -1,11 +1,3 @@
-//
-//  WPAddCategoryViewController.m
-//  WordPress
-//
-//  Created by ganeshr on 07/24/08
-//  Copyright (c) 2014 WordPress. All rights reserved.
-//
-
 #import "WPAddCategoryViewController.h"
 #import "Blog.h"
 #import "Post.h"

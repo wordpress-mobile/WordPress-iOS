@@ -1,11 +1,3 @@
-//
-//  WPAvatarSource.h
-//  WordPress
-//
-//  Created by Jorge Bernal on 6/20/13.
-//  Copyright (c) 2013 WordPress. All rights reserved.
-//
-
 #import <Foundation/Foundation.h>
 
 typedef NS_ENUM(NSUInteger, WPAvatarSourceType) {

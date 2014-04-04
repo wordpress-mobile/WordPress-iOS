@@ -1,8 +1,3 @@
-//
-//  ReaderCommentComposer.h
-//  WordPress
-//
-
 #import <Foundation/Foundation.h>
 #include "InlineComposeView.h"
 
