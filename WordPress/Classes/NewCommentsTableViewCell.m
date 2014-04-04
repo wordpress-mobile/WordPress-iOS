@@ -1,11 +1,3 @@
-//
-//  NewCommentsTableViewCell.m
-//  WordPress
-//
-//  Created by Sendhil Panchadsaram on 8/20/13.
-//  Copyright (c) 2013 WordPress. All rights reserved.
-//
-
 #import "NewCommentsTableViewCell.h"
 #import "Comment.h"
 #import "NSString+XMLExtensions.h"

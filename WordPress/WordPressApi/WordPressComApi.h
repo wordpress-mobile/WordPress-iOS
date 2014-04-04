@@ -1,11 +1,3 @@
-//
-//  WordPressComApi.h
-//  WordPress
-//
-//  Created by Jorge Bernal on 6/4/12.
-//  Copyright (c) 2012 WordPress. All rights reserved.
-//
-
 #import <AFHTTPClient.h>
 #import <Availability.h>
 

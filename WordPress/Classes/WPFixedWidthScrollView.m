@@ -1,11 +1,3 @@
-//
-//  WPPaddedScrollView.m
-//  WordPress
-//
-//  Created by Tom Witkin on 12/20/13.
-//  Copyright (c) 2013 WordPress. All rights reserved.
-//
-
 #import "WPFixedWidthScrollView.h"
 
 

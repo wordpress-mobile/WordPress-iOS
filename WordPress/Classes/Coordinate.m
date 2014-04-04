@@ -1,11 +1,3 @@
-//
-//  Coordinate.m
-//  WordPress
-//
-//  Created by Jorge Bernal on 2/10/11.
-//  Copyright 2011 WordPress. All rights reserved.
-//
-
 #import "Coordinate.h"
 
 
