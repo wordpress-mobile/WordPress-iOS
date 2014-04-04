@@ -23,6 +23,7 @@ NSString *const WPDetailPostRestorationKey = @"WPDetailPostRestorationKey";
 
 @property (nonatomic, strong) AbstractPost *post;
 @property (nonatomic, strong) UIScrollView *scrollView;
+@property (nonatomic, strong) UIView *contentWrapperView;
 @property (nonatomic, strong) PostContentView *postView;
 @property (nonatomic, strong) UIPopoverController *popover;
 @property (nonatomic, strong) NSURL *featuredImageURL;
@@ -74,7 +75,8 @@ NSString *const WPDetailPostRestorationKey = @"WPDetailPostRestorationKey";
     self.title = self.post.postTitle;
     self.view.backgroundColor = [UIColor whiteColor];
     [self.view addSubview:self.scrollView];
-    [self.scrollView addSubview:self.postView];
+    [self.scrollView addSubview:self.contentWrapperView];
+    [self.contentWrapperView addSubview:self.postView];
 
     UIBarButtonItem *editButton = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemEdit target:self action:@selector(editAction:)];
     editButton.accessibilityLabel = NSLocalizedString(@"Edit comment", @"Spoken accessibility label.");
@@ -138,26 +140,49 @@ NSString *const WPDetailPostRestorationKey = @"WPDetailPostRestorationKey";
 
 - (PostContentView *)postView {
     if (!_postView) {
-        PostContentView *postView = [[PostContentView alloc] initWithFrame:CGRectMake(0.0f, 0.0f, CGRectGetWidth(self.scrollView.frame), CGRectGetHeight(self.view.bounds)) showFullContent:YES];
-        postView.autoresizingMask = UIViewAutoresizingFlexibleWidth;
+        CGFloat width = CGRectGetWidth(self.view.bounds);
+        CGFloat x = 0.0f;
+        UIViewAutoresizing mask = UIViewAutoresizingFlexibleWidth;
+        if (IS_IPAD) {
+            x = (width - WPTableViewFixedWidth) / 2.0f;
+            width = WPTableViewFixedWidth;
+            mask = UIViewAutoresizingFlexibleLeftMargin | UIViewAutoresizingFlexibleRightMargin;
+        }
+        
+        PostContentView *postView = [[PostContentView alloc] initWithFrame:CGRectMake(x, 0.0f, width, CGRectGetHeight(self.view.bounds)) showFullContent:YES];
+        postView.autoresizingMask = mask;
         postView.delegate = self;
         self.postView = postView;
     }
     return _postView;
 }
 
-- (UIScrollView *)scrollView {
-    if (!_scrollView) {
+- (UIView *)contentWrapperView {
+    // The content wrapper is a work around to let a user swipe on the margins to scroll,
+    // and still let the postView calculate width based on its parent view.
+    if (!_contentWrapperView) {
         CGFloat width = CGRectGetWidth(self.view.bounds);
         CGFloat x = 0.0f;
-        UIViewAutoresizing mask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
+        UIViewAutoresizing mask = UIViewAutoresizingFlexibleWidth;
         if (IS_IPAD) {
             x = (width - WPTableViewFixedWidth) / 2.0f;
             width = WPTableViewFixedWidth;
-            mask = UIViewAutoresizingFlexibleLeftMargin | UIViewAutoresizingFlexibleRightMargin | UIViewAutoresizingFlexibleHeight;
+            mask = UIViewAutoresizingFlexibleLeftMargin | UIViewAutoresizingFlexibleRightMargin;
         }
-        UIScrollView *scrollView = [[UIScrollView alloc] initWithFrame:CGRectMake(x, 0.0f, width, CGRectGetHeight(self.view.bounds))];
-        scrollView.autoresizingMask = mask;
+        
+        UIView *contentWrapperView = [[UIView alloc] initWithFrame:CGRectMake(x, 0.0, width, CGRectGetHeight(self.view.bounds))];
+        contentWrapperView.autoresizingMask = mask;
+        
+        self.contentWrapperView = contentWrapperView;
+    }
+    
+    return _contentWrapperView;
+}
+
+- (UIScrollView *)scrollView {
+    if (!_scrollView) {
+        UIScrollView *scrollView = [[UIScrollView alloc] initWithFrame:self.view.bounds];
+        scrollView.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
         
         UIEdgeInsets contentInset = scrollView.contentInset;
         if (IS_IPAD) {
@@ -171,7 +196,10 @@ NSString *const WPDetailPostRestorationKey = @"WPDetailPostRestorationKey";
 }
 
 - (void)updateScrollHeight {
-    [self.scrollView setContentSize:CGSizeMake(CGRectGetWidth(self.postView.frame), CGRectGetHeight(self.postView.frame))];
+    CGRect frame = self.contentWrapperView.frame;
+    frame.size.height = CGRectGetHeight(self.postView.frame);
+    self.contentWrapperView.frame = frame;
+    [self.scrollView setContentSize:CGSizeMake(CGRectGetWidth(self.contentWrapperView.frame), CGRectGetHeight(self.contentWrapperView.frame))];
 }
 
 - (void)postUpdated:(NSNotification *)notification {
@@ -179,7 +207,7 @@ NSString *const WPDetailPostRestorationKey = @"WPDetailPostRestorationKey";
 }
 
 - (void)configurePostView {
-    [self.postView configurePost:self.post withWidth:CGRectGetWidth(self.scrollView.frame)];
+    [self.postView configurePost:self.post withWidth:CGRectGetWidth(self.contentWrapperView.frame)];
     [self fetchFeaturedImage:[self.post featuredImageURLForDisplay]];
 }
 
