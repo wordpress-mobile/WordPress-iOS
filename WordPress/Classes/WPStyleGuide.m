@@ -1,11 +1,3 @@
-//
-//  WPStyleGuide.m
-//  WordPress
-//
-//  Created by Sendhil Panchadsaram on 8/20/13.
-//  Copyright (c) 2013 WordPress. All rights reserved.
-//
-
 #import "WPStyleGuide.h"
 #import "UITableViewTextFieldCell.h"
 #import <DTCoreText/DTCoreText.h>
@@ -138,6 +130,8 @@
 
 + (NSDictionary *)defaultDTCoreTextOptions
 {
+    NSString *defaultStyles = @"blockquote {background-color: #EEEEEE; width: 100%; display: block; padding: 8px 0 10px;}";
+    DTCSSStylesheet *cssStylesheet = [[DTCSSStylesheet alloc] initWithStyleBlock:defaultStyles];
     return @{
              DTDefaultFontFamily:@"Open Sans",
              DTDefaultLineHeightMultiplier:(IS_IPAD ? @1.6 : @1.4),
@@ -145,7 +139,8 @@
              DTDefaultTextColor:[WPStyleGuide littleEddieGrey],
              DTDefaultLinkColor:[WPStyleGuide baseLighterBlue],
              DTDefaultLinkHighlightColor:[WPStyleGuide midnightBlue],
-             DTDefaultLinkDecoration:@NO
+             DTDefaultLinkDecoration:@NO,
+             DTDefaultStyleSheet:cssStylesheet
              };
 }
 
@@ -364,6 +359,19 @@
     collectionView.backgroundView = nil;
     collectionView.backgroundColor = [WPStyleGuide itsEverywhereGrey];
     view.backgroundColor = [WPStyleGuide itsEverywhereGrey];
+}
+
++ (void)configureFollowButton:(UIButton *)followButton {
+    followButton.contentHorizontalAlignment = UIControlContentHorizontalAlignmentLeft;
+    followButton.backgroundColor = [UIColor clearColor];
+    followButton.titleLabel.font = [WPStyleGuide subtitleFont];
+    NSString *followString = NSLocalizedString(@"Follow", @"Prompt to follow a blog.");
+    NSString *followedString = NSLocalizedString(@"Following", @"User is following the blog.");
+    [followButton setTitle:followString forState:UIControlStateNormal];
+    [followButton setTitle:followedString forState:UIControlStateSelected];
+    [followButton setImage:[UIImage imageNamed:@"reader-postaction-follow"] forState:UIControlStateNormal];
+    [followButton setImage:[UIImage imageNamed:@"reader-postaction-following"] forState:UIControlStateSelected];
+    [followButton setTitleColor:[UIColor colorWithHexString:@"aaa"] forState:UIControlStateNormal];
 }
 
 @end

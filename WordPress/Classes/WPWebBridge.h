@@ -1,11 +1,3 @@
-//
-//  WPWebBridge.h
-//  WordPress
-//
-//  Created by Beau Collins on 7/19/12.
-//  Copyright (c) 2012 WordPress. All rights reserved.
-//
-
 #import <Foundation/Foundation.h>
 
 @interface WPWebBridge : NSObject

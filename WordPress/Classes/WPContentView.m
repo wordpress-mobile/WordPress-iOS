@@ -1,12 +1,3 @@
-//
-//  WPContentView.m
-//  WordPress
-//
-//  Created by Michael Johnston on 11/19/13.
-//  Moved from ReaderPostView by Eric J.
-//  Copyright (c) 2013 WordPress. All rights reserved.
-//
-
 #import "WPContentView.h"
 #import "WPContentViewSubclass.h"
 

@@ -1,11 +1,3 @@
-//
-//  WPAvatarSourceTest.m
-//  WordPress
-//
-//  Created by Jorge Bernal on 6/21/13.
-//  Copyright (c) 2013 WordPress. All rights reserved.
-//
-
 #import <XCTest/XCTest.h>
 #import <OHHTTPStubs/OHHTTPStubs.h>
 #import "AsyncTestHelper.h"

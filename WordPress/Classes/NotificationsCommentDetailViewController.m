@@ -1,11 +1,3 @@
-//
-//  NotificationsDetailViewController.m
-//  WordPress
-//
-//  Created by Beau Collins on 11/20/12.
-//  Copyright (c) 2012 WordPress. All rights reserved.
-//
-
 #import <QuartzCore/QuartzCore.h>
 #import <DTCoreText/DTCoreText.h>
 #import "ContextManager.h"
@@ -19,7 +11,6 @@
 #import "WPToast.h"
 #import "WPAccount.h"
 #import "NoteCommentPostBanner.h"
-#import "FollowButton.h"
 #import "Note.h"
 #import "InlineComposeView.h"
 #import "CommentView.h"
@@ -52,7 +43,6 @@ NSString *const WPNotificationCommentRestorationKey = @"WPNotificationCommentRes
 
 @property (nonatomic, strong) CommentView *commentView;
 @property (nonatomic, weak) IBOutlet NoteCommentPostBanner *postBanner;
-@property (nonatomic, strong) FollowButton *followButton;
 @property (nonatomic, strong) Note *note;
 
 @property (nonatomic, strong) InlineComposeView *inlineComposeView;
@@ -173,17 +163,10 @@ NSString *const WPNotificationCommentRestorationKey = @"WPNotificationCommentRes
     // get the note's actions
     NSArray *actions = [self.note.noteData valueForKeyPath:@"body.actions"];
     NSDictionary *action = [actions objectAtIndex:0];
-    NSArray *items = [self.note.noteData valueForKeyPath:@"body.items"];
     self.siteID = [action valueForKeyPath:@"params.site_id"];
     
     NoteComment *comment = [[NoteComment alloc] initWithCommentID:[action valueForKeyPath:@"params.comment_id"]];
     [self.commentThread addObject:comment];
-    
-    // pull out the follow action and set up the follow button
-    self.followAction = [[items lastObject] valueForKeyPath:@"action"];
-    if (self.followAction && ![self.followAction isEqual:@0]) {
-        self.followButton = [FollowButton buttonFromAction:self.followAction withApi:[defaultAccount restApi]];
-    }
     
     NSString *postPath = [NSString stringWithFormat:@"sites/%@/posts/%@", [action valueForKeyPath:@"params.site_id"], [action valueForKeyPath:@"params.post_id"]];
     
@@ -479,6 +462,12 @@ NSString *const WPNotificationCommentRestorationKey = @"WPNotificationCommentRes
     NoteComment *comment = [self.commentThread objectAtIndex:0];
     NSURL *url = [[NSURL alloc] initWithString:[comment.commentData valueForKeyPath:@"author.URL"]];
     [self pushToURL:url];
+}
+
+- (void)contentView:(WPContentView *)contentView didReceiveLinkAction:(id)sender {
+    WPWebViewController *controller = [[WPWebViewController alloc] init];
+	[controller setUrl:((DTLinkButton *)sender).URL];
+	[self.navigationController pushViewController:controller animated:YES];
 }
 
 

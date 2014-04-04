@@ -1,11 +1,3 @@
-// 
-//  Media.m
-//  WordPress
-//
-//  Created by Chris Boyd on 6/23/10.
-//  
-//
-
 #import "Media.h"
 #import "UIImage+Resize.h"
 #import "NSString+Helpers.h"

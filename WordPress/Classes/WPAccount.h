@@ -1,11 +1,3 @@
-//
-//  WPAccount.h
-//  WordPress
-//
-//  Created by Jorge Bernal on 4/23/13.
-//  Copyright (c) 2013 WordPress. All rights reserved.
-//
-
 #import <Foundation/Foundation.h>
 #import <CoreData/CoreData.h>
 
