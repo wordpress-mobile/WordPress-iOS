@@ -89,7 +89,8 @@ const CGFloat RPVControlButtonBorderSize = 0.0f;
         self.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
         self.opaque = YES;
         
-        _headerLabel = [[DTAttributedLabel alloc] initWithFrame:CGRectMake(0.0f, 0.0f, self.frame.size.width, 0.0f)];
+        _headerLabel = [[DTAttributedLabel alloc] initWithFrame:CGRectMake(0.0f, 0.0f, frame.size.width, 0.0f)];
+        _headerLabel.autoresizingMask = UIViewAutoresizingFlexibleWidth;
         _headerLabel.backgroundColor = [WPStyleGuide itsEverywhereGrey];
         _headerLabel.edgeInsets = UIEdgeInsetsMake(10.0f, RPVHorizontalInnerPadding, 10.0f, RPVHorizontalInnerPadding);
         _headerLabel.numberOfLines = 0;
