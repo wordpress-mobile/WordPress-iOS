@@ -1,9 +1,3 @@
-//
-//  InlineComposeView.m
-//  WordPress
-//
-
-
 #import "InlineComposeView.h"
 #import "WPStyleGuide.h"
 

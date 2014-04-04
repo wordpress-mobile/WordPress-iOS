@@ -1,8 +1,3 @@
-//
-//  ReaderCommentComposer.m
-//  WordPress
-//
-
 #import "ReaderCommentPublisher.h"
 #import "ContextManager.h"
 #import "NSString+Util.h"
@@ -10,6 +5,7 @@
 #import "ReaderComment.h"
 #import "WPToast.h"
 #import "WPAccount.h"
+#import "AccountService.h"
 
 
 @interface ReaderCommentPublisher ()
@@ -120,7 +116,11 @@
     self.composeView.enabled = NO;
 	NSDictionary *params = @{@"content":str};
 
-	[[[WPAccount defaultWordPressComAccount] restApi] postPath:[self pathForContext] parameters:params success:^(AFHTTPRequestOperation *operation, id responseObject) {
+    NSManagedObjectContext *context = [[ContextManager sharedInstance] mainContext];
+    AccountService *accountService = [[AccountService alloc] initWithManagedObjectContext:context];
+    WPAccount *defaultAccount = [accountService defaultWordPressComAccount];
+
+	[[defaultAccount restApi] postPath:[self pathForContext] parameters:params success:^(AFHTTPRequestOperation *operation, id responseObject) {
 
         [self.composeView clearText];
         self.composeView.enabled = YES;

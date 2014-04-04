@@ -1,11 +1,3 @@
-//
-//  ActivityLogViewController.m
-//  WordPress
-//
-//  Created by Aaron Douglas on 6/7/13.
-//  Copyright (c) 2013 WordPress. All rights reserved.
-//
-
 #import "ActivityLogViewController.h"
 #import "WordPressAppDelegate.h"
 #import "ActivityLogDetailViewController.h"

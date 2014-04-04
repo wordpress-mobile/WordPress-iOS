@@ -1,11 +1,3 @@
-//
-//  ReaderTextFormView.h
-//  WordPress
-//
-//  Created by Eric J on 6/4/13.
-//  Copyright (c) 2013 WordPress. All rights reserved.
-//
-
 #import <UIKit/UIKit.h>
 
 #define ReaderTextFormFontSize 14.0f

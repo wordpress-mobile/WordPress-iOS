@@ -1,11 +1,3 @@
-//
-//  Note.m
-//  WordPress
-//
-//  Created by Beau Collins on 11/18/12.
-//  Copyright (c) 2012 WordPress. All rights reserved.
-//
-
 #import "Note.h"
 #import "NoteBodyItem.h"
 #import "NSString+Helpers.h"
@@ -14,8 +6,6 @@
 #import "WPAccount.h"
 #import "ContextManager.h"
 #import "XMLParserCollecter.h"
-
-
 
 @interface Note ()
 
@@ -134,6 +124,26 @@
 	return self.noteData[@"body"][@"footer_link"];
 }
 
+- (NSString *)bodyHtml {
+	return self.noteData[@"body"][@"html"];
+}
+
+- (WPNoteTemplateType)templateType {
+    NSDictionary *noteBody = self.noteData[@"body"];
+    if (noteBody) {
+        NSString *noteTypeName = noteBody[@"template"];
+        
+        if ([noteTypeName isEqualToString:@"single-line-list"])
+            return WPNoteTemplateSingleLineList;
+        else if ([noteTypeName isEqualToString:@"multi-line-list"])
+            return WPNoteTemplateMultiLineList;
+        else if ([noteTypeName isEqualToString:@"big-badge"])
+            return WPNoteTemplateBigBadge;
+    }
+    
+    return WPNoteTemplateUnknown;
+}
+
 #pragma mark - NSManagedObject methods
 
 - (void)didTurnIntoFault {
@@ -154,20 +164,24 @@
     if ([self isComment]) {
         NSDictionary *bodyItem = [[[self.noteData objectForKey:@"body"] objectForKey:@"items"] lastObject];
         NSString *comment = [bodyItem objectForKey:@"html"];
-        if (comment == (id)[NSNull null] || comment.length == 0 )
+        if (comment == (id)[NSNull null] || comment.length == 0)
             return;
         comment = [comment stringByReplacingHTMLEmoticonsWithEmoji];
         comment = [comment stringByStrippingHTML];
+        comment = [comment stringByDecodingXMLCharacters];
         
-        NSString *xmlString = [NSString stringWithFormat:@"<d>%@</d>", comment];
-        NSData *xml = [xmlString dataUsingEncoding:NSUTF8StringEncoding allowLossyConversion:YES];
-        NSXMLParser *parser = [[NSXMLParser alloc] initWithData:xml];
-        XMLParserCollecter *collector = [[XMLParserCollecter alloc] init];
-        parser.delegate = collector;
-        [parser parse];
-        
-        self.commentText = collector.result;
+        self.commentText = comment;
     }
+}
+
+- (NSString *)commentHtml {
+    if (self.bodyItems) {
+        NoteBodyItem *noteBodyItem = [self.bodyItems lastObject];
+        NSString *commentHtml = noteBodyItem.bodyHtml;
+        return [commentHtml stringByReplacingHTMLEmoticonsWithEmoji];
+    }
+    
+    return nil;
 }
 
 
@@ -217,7 +231,7 @@
 
 - (NSString *)contentForDisplay {
     // Contains a lot of cruft
-    return self.commentText;
+    return self.commentHtml;
 }
 
 - (NSString *)contentPreviewForDisplay {

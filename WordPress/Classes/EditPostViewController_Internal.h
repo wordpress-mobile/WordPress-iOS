@@ -1,11 +1,3 @@
-//
-//  EditPostViewController_Internal.h
-//  WordPress
-//
-//  Created by Jorge Bernal on 1/24/13.
-//  Copyright (c) 2013 WordPress. All rights reserved.
-//
-
 #import "EditPostViewController.h"
 #import "PostSettingsViewController.h"
 #import "MediaBrowserViewController.h"
