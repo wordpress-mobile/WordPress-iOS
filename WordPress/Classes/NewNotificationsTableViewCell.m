@@ -17,7 +17,7 @@
 {
     // combine author and title
     NSString *title = [contentProvider titleForDisplay];
-    NSString *content = [[contentProvider contentForDisplay] stringByNormalizingWhitespace];
+    NSString *content = [[contentProvider contentPreviewForDisplay] stringByNormalizingWhitespace];
     
     NSMutableAttributedString *attributedPostTitle = [[NSMutableAttributedString alloc] initWithString:title attributes:[[self class] titleAttributes]];
     
