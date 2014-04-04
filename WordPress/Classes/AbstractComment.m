@@ -1,11 +1,3 @@
-//
-//  AbstractComment.m
-//  WordPress
-//
-//  Created by Eric J on 3/25/13.
-//  Copyright (c) 2013 WordPress. All rights reserved.
-//
-
 #import "AbstractComment.h"
 #import "NSString+XMLExtensions.h"
 #import "NSString+HTML.h"

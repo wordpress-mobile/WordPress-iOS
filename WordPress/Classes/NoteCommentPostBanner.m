@@ -1,11 +1,3 @@
-//
-//  NoteCommentPostBanner.m
-//  WordPress
-//
-//  Created by Beau Collins on 12/6/12.
-//  Copyright (c) 2012 WordPress. All rights reserved.
-//
-
 #import "NoteCommentPostBanner.h"
 
 @implementation NoteCommentPostBanner

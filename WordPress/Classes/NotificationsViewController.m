@@ -1,11 +1,3 @@
-//
-//  NotificationsViewController.m
-//  WordPress
-//
-//  Created by Beau Collins on 11/05/12.
-//  Copyright (c) 2012 WordPress. All rights reserved.
-//
-
 #import "NotificationsViewController.h"
 #import "NotificationsCommentDetailViewController.h"
 #import "NotificationsFollowDetailViewController.h"

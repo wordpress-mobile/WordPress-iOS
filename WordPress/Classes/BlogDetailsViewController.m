@@ -1,11 +1,3 @@
-//
-//  BlogDetailsViewController.m
-//  WordPress
-//
-//  Created by Michael Johnston on 11/9/13.
-//  Copyright (c) 2013 WordPress. All rights reserved.
-//
-
 #import "BlogDetailsViewController.h"
 #import "Blog+Jetpack.h"
 #import "EditSiteViewController.h"

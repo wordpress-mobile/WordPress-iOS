@@ -1,9 +1,1 @@
-/* 
-  InfoPlist.strings
-  WordPress
-
-  Created by Aaron Douglas on 3/12/14.
-  Copyright (c) 2014 WordPress. All rights reserved.
-*/
-
 NSLocationUsageDescription = "เวิร์ดเพรสต้องการเพิ่มที่อยู่ของคุณเพื่อเขียนบนเว็บไซต์ที่คุณเปิดใช้งาน geotagging";
