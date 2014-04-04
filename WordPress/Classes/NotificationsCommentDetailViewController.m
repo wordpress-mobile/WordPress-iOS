@@ -464,9 +464,7 @@ NSString *const WPNotificationCommentRestorationKey = @"WPNotificationCommentRes
 }
 
 - (void)contentView:(WPContentView *)contentView didReceiveLinkAction:(id)sender {
-    WPWebViewController *controller = [[WPWebViewController alloc] init];
-	[controller setUrl:((DTLinkButton *)sender).URL];
-	[self.navigationController pushViewController:controller animated:YES];
+    [self pushToURL:((DTLinkButton *)sender).URL];
 }
 
 
