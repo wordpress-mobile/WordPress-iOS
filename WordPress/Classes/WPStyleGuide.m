@@ -130,7 +130,7 @@
 
 + (NSDictionary *)defaultDTCoreTextOptions
 {
-    NSString *defaultStyles = @"blockquote {background-color: #EEEEEE; width: 100%; display: block; padding: 8px 0 10px;}";
+    NSString *defaultStyles = @"p {white-space: pre-wrap;} blockquote {background-color: #EEEEEE; width: 100%; display: block; padding: 8px 0 10px;}";
     DTCSSStylesheet *cssStylesheet = [[DTCSSStylesheet alloc] initWithStyleBlock:defaultStyles];
     return @{
              DTDefaultFontFamily:@"Open Sans",
