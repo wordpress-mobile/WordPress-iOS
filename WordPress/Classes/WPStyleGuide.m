@@ -361,4 +361,17 @@
     view.backgroundColor = [WPStyleGuide itsEverywhereGrey];
 }
 
++ (void)configureFollowButton:(UIButton *)followButton {
+    followButton.contentHorizontalAlignment = UIControlContentHorizontalAlignmentLeft;
+    followButton.backgroundColor = [UIColor clearColor];
+    followButton.titleLabel.font = [WPStyleGuide subtitleFont];
+    NSString *followString = NSLocalizedString(@"Follow", @"Prompt to follow a blog.");
+    NSString *followedString = NSLocalizedString(@"Following", @"User is following the blog.");
+    [followButton setTitle:followString forState:UIControlStateNormal];
+    [followButton setTitle:followedString forState:UIControlStateSelected];
+    [followButton setImage:[UIImage imageNamed:@"reader-postaction-follow"] forState:UIControlStateNormal];
+    [followButton setImage:[UIImage imageNamed:@"reader-postaction-following"] forState:UIControlStateSelected];
+    [followButton setTitleColor:[UIColor colorWithHexString:@"aaa"] forState:UIControlStateNormal];
+}
+
 @end
