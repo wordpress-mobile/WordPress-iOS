@@ -100,6 +100,10 @@ const CGFloat RPVStatusVerticalPadding = 8.0f;
     if ([statusStr length] == 0) {
         return yPosition;
     }
+
+    if (IS_IPHONE) {
+        yPosition += RPVStatusVerticalPadding;
+    }
     
     CGRect frame = self.statusLabel.frame;
     CGSize size = [statusStr boundingRectWithSize:CGSizeMake(CGRectGetWidth(frame), CGFLOAT_MAX) options:NSStringDrawingUsesLineFragmentOrigin attributes:[WPStyleGuide labelAttributes] context:nil].size;
