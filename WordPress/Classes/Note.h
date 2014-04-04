@@ -20,6 +20,7 @@ typedef NS_ENUM(NSInteger, WPNoteTemplateType) {
 @property (nonatomic, retain) NSString *noteID;
 @property (nonatomic, retain) WPAccount *account;
 @property (nonatomic, strong, readonly) NSString *commentText;
+@property (nonatomic, strong, readonly) NSString *commentHtml;
 @property (nonatomic, strong, readonly) NSDictionary *noteData;
 @property (nonatomic, strong, readonly) NSArray *bodyItems;		// Array of NoteBodyItem Objects
 @property (nonatomic, strong, readonly) NSString *bodyHeaderText;
