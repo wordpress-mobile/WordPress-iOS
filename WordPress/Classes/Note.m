@@ -1,11 +1,3 @@
-//
-//  Note.m
-//  WordPress
-//
-//  Created by Beau Collins on 11/18/12.
-//  Copyright (c) 2012 WordPress. All rights reserved.
-//
-
 #import "Note.h"
 #import "NoteBodyItem.h"
 #import "NSString+Helpers.h"

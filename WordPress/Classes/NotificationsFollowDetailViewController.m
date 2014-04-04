@@ -1,11 +1,3 @@
-//
-//  NotificationsLikesDetailViewController.m
-//  WordPress
-//
-//  Created by Dan Roundhill on 11/29/12.
-//  Copyright (c) 2012 WordPress. All rights reserved.
-//
-
 #import "NotificationsFollowDetailViewController.h"
 #import "ContextManager.h"
 #import "UIImageView+AFNetworking.h"

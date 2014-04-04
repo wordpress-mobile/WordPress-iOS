@@ -1,11 +1,3 @@
-//
-//  GeneralWalkthroughViewController.m
-//  WordPress
-//
-//  Created by Sendhil Panchadsaram on 4/30/13.
-//  Copyright (c) 2013 WordPress. All rights reserved.
-//
-
 #import <WPXMLRPC/WPXMLRPC.h>
 #import "LoginViewController.h"
 #import "CreateAccountAndBlogViewController.h"

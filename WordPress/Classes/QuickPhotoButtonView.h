@@ -1,10 +1,3 @@
-//
-//  QuickPhotoButtonView.h
-//  WordPress
-//
-//  Created by Eric Johnson on 6/19/12.
-//
-
 #import <UIKit/UIKit.h>
 
 @protocol QuickPhotoButtonViewDelegate;

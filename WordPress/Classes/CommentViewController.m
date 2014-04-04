@@ -1,11 +1,3 @@
-//
-//  CommentViewController.h
-//  WordPress
-//
-//  Created by Sendhil Panchadsaram on 8/22/13.
-//  Copyright (c) 2013 WordPress. All rights reserved.
-//
-
 #import "CommentViewController.h"
 #import "UIImageView+Gravatar.h"
 #import "NSString+XMLExtensions.h"

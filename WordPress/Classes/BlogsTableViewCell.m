@@ -1,11 +1,3 @@
-//
-//  BlogsTableViewCell.m
-//  WordPress
-//
-//  Created by Dan Roundhill on 3/24/11.
-//  Copyright 2011 WordPress. All rights reserved.
-//
-
 #import "BlogsTableViewCell.h"
 #import "QuartzCore/QuartzCore.h"
 

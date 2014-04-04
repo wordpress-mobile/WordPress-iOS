@@ -1,11 +1,3 @@
-//
-//  ReaderCommentTableViewCell.h
-//  WordPress
-//
-//  Created by Eric J on 5/7/13.
-//  Copyright (c) 2013 WordPress. All rights reserved.
-//
-
 #import <UIKit/UIKit.h>
 #import "ReaderTableViewCell.h"
 #import "ReaderComment.h"

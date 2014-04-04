@@ -1,9 +1,1 @@
-/* 
-  InfoPlist.strings
-  WordPress
-
-  Created by Aaron Douglas on 3/12/14.
-  Copyright (c) 2014 WordPress. All rights reserved.
-*/
-
 NSLocationUsageDescription = "WordPress wil je huidige locatie toevoegen aan berichten op sites waar je geotagging geactiveerd hebt.";

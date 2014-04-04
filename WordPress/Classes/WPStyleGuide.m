@@ -1,11 +1,3 @@
-//
-//  WPStyleGuide.m
-//  WordPress
-//
-//  Created by Sendhil Panchadsaram on 8/20/13.
-//  Copyright (c) 2013 WordPress. All rights reserved.
-//
-
 #import "WPStyleGuide.h"
 #import "UITableViewTextFieldCell.h"
 #import <DTCoreText/DTCoreText.h>
