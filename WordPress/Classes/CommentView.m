@@ -38,7 +38,7 @@
     }
     
     NSString *commentHtml = [contentProvider contentForDisplay];
-    if (!commentHtml) {
+    if ([commentHtml length] == 0) {
         return;
     }
 
