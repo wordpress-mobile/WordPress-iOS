@@ -1,10 +1,3 @@
-//
-//  EditPageViewController.m
-//  WordPress
-//
-//  Created by Chris Boyd on 9/4/10.
-//
-
 #import "EditPageViewController.h"
 #import "EditPostViewController_Internal.h"
 #import "AbstractPost.h"

@@ -1,11 +1,3 @@
-//
-//  QuickPicturePreviewView.m
-//  WordPress
-//
-//  Created by Jorge Bernal on 4/8/11.
-//  Copyright 2011 WordPress. All rights reserved.
-//
-
 #import "QuickPicturePreviewView.h"
 #define QPP_MARGIN 5.0f
 #define QPP_FRAME_WIDTH 5.0f

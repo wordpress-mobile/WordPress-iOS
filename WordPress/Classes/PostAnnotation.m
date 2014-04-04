@@ -1,11 +1,3 @@
-//
-//  PostAnnotation.m
-//  WordPress
-//
-//  Created by Christopher Boyd on 3/8/10.
-//  
-//
-
 #import "PostAnnotation.h"
 
 @implementation PostAnnotation

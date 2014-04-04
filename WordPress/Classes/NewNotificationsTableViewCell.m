@@ -1,11 +1,3 @@
-//
-//  NewNotificationsTableViewCell.m
-//  WordPress
-//
-//  Created by Sendhil Panchadsaram on 8/27/13.
-//  Copyright (c) 2013 WordPress. All rights reserved.
-//
-
 #import "NewNotificationsTableViewCell.h"
 #import "NSString+HTML.h"
 
@@ -25,7 +17,7 @@
 {
     // combine author and title
     NSString *title = [contentProvider titleForDisplay];
-    NSString *content = [[contentProvider contentForDisplay] stringByNormalizingWhitespace];
+    NSString *content = [[contentProvider contentPreviewForDisplay] stringByNormalizingWhitespace];
     
     NSMutableAttributedString *attributedPostTitle = [[NSMutableAttributedString alloc] initWithString:title attributes:[[self class] titleAttributes]];
     
