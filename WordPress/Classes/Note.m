@@ -184,7 +184,7 @@
 
 - (NSString *)commentHtml {
     if (self.bodyItems) {
-        NoteBodyItem *noteBodyItem = self.bodyItems.lastObject;
+        NoteBodyItem *noteBodyItem = [self.bodyItems lastObject];
         NSString *commentHtml = noteBodyItem.bodyHtml;
         return [commentHtml stringByReplacingHTMLEmoticonsWithEmoji];
     }
