@@ -25,7 +25,7 @@ NSString *const WPDetailPostRestorationKey = @"WPDetailPostRestorationKey";
 @property (nonatomic, strong) UIScrollView *scrollView;
 @property (nonatomic, strong) PostContentView *postView;
 @property (nonatomic, strong) UIPopoverController *popover;
-
+@property (nonatomic, strong) NSURL *featuredImageURL;
 @end
 
 @implementation PostViewController
@@ -54,6 +54,10 @@ NSString *const WPDetailPostRestorationKey = @"WPDetailPostRestorationKey";
 
 #pragma mark - Life Cycle Methods
 
+- (void)dealloc {
+    [[NSNotificationCenter defaultCenter] removeObserver:self];
+}
+
 - (id)initWithPost:(AbstractPost *)post {
     self = [super init];
     if (self) {
@@ -69,50 +73,34 @@ NSString *const WPDetailPostRestorationKey = @"WPDetailPostRestorationKey";
 
     self.title = self.post.postTitle;
     self.view.backgroundColor = [UIColor whiteColor];
-    CGFloat width = CGRectGetWidth(self.view.bounds);
-    CGFloat x = 0.0f;
-    UIViewAutoresizing mask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
-    if (IS_IPAD) {
-        x = (width - WPTableViewFixedWidth) / 2.0f;
-        width = WPTableViewFixedWidth;
-        mask = UIViewAutoresizingFlexibleLeftMargin | UIViewAutoresizingFlexibleRightMargin | UIViewAutoresizingFlexibleHeight;
-    }
-    CGRect frame = CGRectMake(x, 0.0f, width, CGRectGetHeight(self.view.bounds));
-    self.scrollView = [[UIScrollView alloc] initWithFrame:frame];
-    self.scrollView.autoresizingMask = mask;
-    UIEdgeInsets contentInset = self.scrollView.contentInset;
-    if (IS_IPAD) {
-        contentInset.top = WPPostDetailContentPadding;
-    }
-    contentInset.bottom = WPPostDetailContentPadding;
-    self.scrollView.contentInset = contentInset;
-
     [self.view addSubview:self.scrollView];
-    
-    self.postView = [[PostContentView alloc] initWithFrame:CGRectMake(0.0f, 0.0f, width, CGRectGetHeight(self.view.bounds)) showFullContent:YES];
-    self.postView.autoresizingMask = UIViewAutoresizingFlexibleWidth;
-    self.postView.delegate = self;
-    [self.postView configurePost:self.post withWidth:width];
     [self.scrollView addSubview:self.postView];
 
     UIBarButtonItem *editButton = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemEdit target:self action:@selector(editAction:)];
     editButton.accessibilityLabel = NSLocalizedString(@"Edit comment", @"Spoken accessibility label.");
     self.navigationItem.rightBarButtonItem = editButton;
-    
-    NSURL *featuredImageURL = [self.post featuredImageURLForDisplay];
-    if (featuredImageURL) {
-        [[WPImageSource sharedSource] downloadImageForURL:featuredImageURL withSuccess:^(UIImage *image) {
-            [self.postView setFeaturedImage:image];
-        } failure:^(NSError *error) {
-            [self.postView setFeaturedImage:nil];
-        }];
-    }
+}
+
+- (void)viewWillAppear:(BOOL)animated {
+    [super viewWillAppear:animated];
+
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(postUpdated:)
+                                                 name:NSManagedObjectContextDidSaveNotification
+                                               object:self.post.managedObjectContext];
+    [self configurePostView];
 }
 
 - (void)viewDidAppear:(BOOL)animated {
     [super viewDidAppear:animated];
     
     [self updateScrollHeight];
+}
+
+- (void)viewWillDisappear:(BOOL)animated {
+    [super viewWillDisappear:animated];
+    
+    [[NSNotificationCenter defaultCenter] removeObserver:self];
 }
 
 - (void)didRotateFromInterfaceOrientation:(UIInterfaceOrientation)fromInterfaceOrientation {
@@ -129,14 +117,71 @@ NSString *const WPDetailPostRestorationKey = @"WPDetailPostRestorationKey";
     [super encodeRestorableStateWithCoder:coder];
 }
 
-
 #pragma mark - Instance Methods
 
-- (void)updateScrollHeight {
+- (void)fetchFeaturedImage:(NSURL *)featuredImageURL {
+    if ([featuredImageURL isEqual:self.featuredImageURL]) {
+        return;
+    }
+    self.featuredImageURL = featuredImageURL;
+    
+    if (featuredImageURL) {
+        [[WPImageSource sharedSource] downloadImageForURL:featuredImageURL withSuccess:^(UIImage *image) {
+            [self.postView setFeaturedImage:image];
+        } failure:^(NSError *error) {
+            [self.postView setFeaturedImage:nil];
+        }];
+    } else {
+        [self.postView setFeaturedImage:nil];
+    }
+}
 
+- (PostContentView *)postView {
+    if (!_postView) {
+        PostContentView *postView = [[PostContentView alloc] initWithFrame:CGRectMake(0.0f, 0.0f, CGRectGetWidth(self.scrollView.frame), CGRectGetHeight(self.view.bounds)) showFullContent:YES];
+        postView.autoresizingMask = UIViewAutoresizingFlexibleWidth;
+        postView.delegate = self;
+        self.postView = postView;
+    }
+    return _postView;
+}
+
+- (UIScrollView *)scrollView {
+    if (!_scrollView) {
+        CGFloat width = CGRectGetWidth(self.view.bounds);
+        CGFloat x = 0.0f;
+        UIViewAutoresizing mask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
+        if (IS_IPAD) {
+            x = (width - WPTableViewFixedWidth) / 2.0f;
+            width = WPTableViewFixedWidth;
+            mask = UIViewAutoresizingFlexibleLeftMargin | UIViewAutoresizingFlexibleRightMargin | UIViewAutoresizingFlexibleHeight;
+        }
+        UIScrollView *scrollView = [[UIScrollView alloc] initWithFrame:CGRectMake(x, 0.0f, width, CGRectGetHeight(self.view.bounds))];
+        scrollView.autoresizingMask = mask;
+        
+        UIEdgeInsets contentInset = scrollView.contentInset;
+        if (IS_IPAD) {
+            contentInset.top = WPPostDetailContentPadding;
+        }
+        contentInset.bottom = WPPostDetailContentPadding;
+        scrollView.contentInset = contentInset;
+        self.scrollView = scrollView;
+    }
+    return _scrollView;
+}
+
+- (void)updateScrollHeight {
     [self.scrollView setContentSize:CGSizeMake(CGRectGetWidth(self.postView.frame), CGRectGetHeight(self.postView.frame))];
 }
 
+- (void)postUpdated:(NSNotification *)notification {
+    [self configurePostView];
+}
+
+- (void)configurePostView {
+    [self.postView configurePost:self.post withWidth:CGRectGetWidth(self.scrollView.frame)];
+    [self fetchFeaturedImage:[self.post featuredImageURLForDisplay]];
+}
 
 #pragma mark - Actions
 

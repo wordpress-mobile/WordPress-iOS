@@ -58,12 +58,13 @@ const CGFloat RPVStatusVerticalPadding = 8.0f;
     self.contentProvider = post;
     self.post = post;
 
-    if ([self.post.status isEqualToString:@"published"]) {
-        self.statusLabel.hidden = YES;
+    NSString *statusStr = [post statusForDisplay];
+    if ([statusStr length] > 0) {
+        self.statusLabel.attributedText = [[NSAttributedString alloc] initWithString:[statusStr uppercaseString] attributes:[WPStyleGuide labelAttributes]];
     } else {
-        self.statusLabel.attributedText = [[NSAttributedString alloc] initWithString:[[post statusForDisplay] uppercaseString] attributes:[WPStyleGuide labelAttributes]];
+        self.statusLabel.hidden = YES;
     }
-    
+
     self.shareButton.hidden = !self.post.hasRemote;
 
     self.byView.hidden = YES;
@@ -105,12 +106,14 @@ const CGFloat RPVStatusVerticalPadding = 8.0f;
 
     frame = CGRectMake(RPVHorizontalInnerPadding, yPosition, [self innerContentWidth], size.height);
     self.statusLabel.frame = frame;
-    
-    return yPosition += RPVStatusVerticalPadding; // Don't add the height since we want to cuddle the title and status label.
+    if (!self.cellImageView.hidden) {
+        yPosition += size.height;
+    }
+    return yPosition += RPVStatusVerticalPadding;
 }
 
 - (CGFloat)layoutAttributionAt:(CGFloat)yPosition {
-    // We're not showing hte attribution view for posts, so return the yPosition unchanged
+    // We're not showing the attribution view for posts, so return the yPosition unchanged
     return yPosition;
 }
 
