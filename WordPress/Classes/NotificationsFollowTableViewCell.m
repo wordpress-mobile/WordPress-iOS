@@ -1,16 +1,4 @@
-//
-//  NotificationsFollowTableViewCell.m
-//  WordPress
-//
-//  Created by Dan Roundhill on 12/4/12.
-//  Copyright (c) 2012 WordPress. All rights reserved.
-//
-
 #import "NotificationsFollowTableViewCell.h"
-#import "FollowButton.h"
-
-
-
 
 @implementation NotificationsFollowTableViewCell
 
@@ -22,15 +10,8 @@
     self = [super initWithStyle:UITableViewCellStyleSubtitle reuseIdentifier:reuseIdentifier];
     if (self) {
         actionButton = [UIButton buttonWithType:UIButtonTypeCustom];
-        [actionButton setContentHorizontalAlignment:UIControlContentHorizontalAlignmentLeft];
-        [actionButton setFrame:CGRectMake(100.0f, 20.0f, 80.0f, 30.0f)];
-        [actionButton setImageEdgeInsets:UIEdgeInsetsMake(0.0f, 6.0f, 0.0f, 0.0f)];
-        [actionButton.titleLabel setFont:[WPStyleGuide tableviewSectionHeaderFont]];
-        [actionButton setTitleEdgeInsets:UIEdgeInsetsMake(0.0f, 9.0f, 0.0f, 2.0f)];
-        [actionButton.imageView setContentMode:UIViewContentModeLeft];
-        [actionButton.titleLabel setTextAlignment:NSTextAlignmentLeft];
-        [actionButton.titleLabel setLineBreakMode:NSLineBreakByTruncatingTail];
-        [actionButton.titleLabel setShadowOffset:CGSizeMake(0.0f, 1.0f)];
+        [WPStyleGuide configureFollowButton:actionButton];
+        [actionButton setTitleEdgeInsets: UIEdgeInsetsMake(0, 2.0f, 0, 0)];
 		[actionButton addTarget:self action:@selector(actionButtonPressed:) forControlEvents:UIControlEventTouchUpInside];
         [self addSubview:actionButton];
         
@@ -45,8 +26,6 @@
         [self.detailTextLabel setNumberOfLines:1];
         [self.detailTextLabel setAdjustsFontSizeToFitWidth:NO];
         [self.detailTextLabel setLineBreakMode:NSLineBreakByTruncatingTail];
-        
-        self.backgroundColor = [WPStyleGuide itsEverywhereGrey];
     }
 	
     return self;
@@ -54,33 +33,17 @@
 
 - (void)setFollowing:(BOOL)isFollowing
 {
-    if (isFollowing) {
-        [actionButton setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
-        [actionButton setImage:[UIImage imageNamed:@"note_button_icon_following"] forState:UIControlStateNormal];
-        [actionButton setBackgroundImage:[[UIImage imageNamed:@"navbar_primary_button_bg"] resizableImageWithCapInsets:UIEdgeInsetsMake(0.0f, 4.0f, 0.0f, 4.0f)] forState:UIControlStateNormal];
-        [actionButton setBackgroundImage:[[UIImage imageNamed:@"navbar_primary_button_bg_active"] resizableImageWithCapInsets:UIEdgeInsetsMake(0.0f, 4.0f, 0.0f, 4.0f)] forState:UIControlStateHighlighted];
-        [actionButton.titleLabel setShadowColor:[UIColor blackColor]];
-    } else {
-        [actionButton setTitleColor:[UIColor UIColorFromHex:0x1A1A1A] forState:UIControlStateNormal];
-        [actionButton setImage:[UIImage imageNamed:@"note_button_icon_follow"] forState:UIControlStateNormal];
-        [actionButton setBackgroundImage:[[UIImage imageNamed:@"navbar_button_bg"] resizableImageWithCapInsets:UIEdgeInsetsMake(0.0f, 4.0f, 0.0f, 4.0f)] forState:UIControlStateNormal];
-        [actionButton setBackgroundImage:[[UIImage imageNamed:@"navbar_button_bg_active"] resizableImageWithCapInsets:UIEdgeInsetsMake(0.0f, 4.0f, 0.0f, 4.0f)] forState:UIControlStateHighlighted];
-        [actionButton.titleLabel setShadowColor:[UIColor whiteColor]];
-    }
-    CGSize textSize = [actionButton.titleLabel.text sizeWithAttributes:@{NSFontAttributeName:[actionButton.titleLabel font]}];
-    CGFloat buttonWidth = MIN ( textSize.width + 40.0f, 180.0f );
-
-    [actionButton setFrame:CGRectMake(actionButton.frame.origin.x, actionButton.frame.origin.y, buttonWidth, 30.0f)];
-	
+    [actionButton setSelected:isFollowing];
 	_following = isFollowing;
 }
 
 - (void)layoutSubviews
 {
     [super layoutSubviews];
-    [self.imageView setFrame:CGRectMake(10.0f, 10.0f, 80.0f, 80.0f)];
-    [self.textLabel setFrame:CGRectMake(100.0f, 20.0f, 180.0f, 30.0f)];
-    [self.detailTextLabel setFrame:CGRectMake(100.0f, 55.0f, self.frame.size.width - 140.0f, 30.0f)];
+    [self.imageView setFrame:CGRectMake(10.0f, 10.0f, 60.0f, 60.0f)];
+    [self.textLabel setFrame:CGRectMake(80.0f, 4.0f, 180.0f, 30.0f)];
+    [self.detailTextLabel setFrame:CGRectMake(80.0f, 44.0f, self.frame.size.width - 140.0f, 30.0f)];
+    [actionButton setFrame:CGRectMake(78.0f, 22.0f, 100.0f, 30.0f)];
 }
 
 - (void)setHighlighted:(BOOL)highlighted animated:(BOOL)animated {

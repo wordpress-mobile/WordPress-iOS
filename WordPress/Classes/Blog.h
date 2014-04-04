@@ -1,10 +1,3 @@
-//
-//  Blog.h
-//  WordPress
-//
-//  Created by Gareth Townsend on 24/06/09.
-//
-
 #import <Foundation/Foundation.h>
 #import <CommonCrypto/CommonDigest.h>
 #import <CoreData/CoreData.h>

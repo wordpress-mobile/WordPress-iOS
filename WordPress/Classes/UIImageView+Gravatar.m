@@ -1,11 +1,3 @@
-//
-//  UIImageView+Gravatar.m
-//  WordPress
-//
-//  Created by Jorge Bernal on 11/4/11.
-//  Copyright (c) 2011 WordPress. All rights reserved.
-//
-
 #import "UIImageView+Gravatar.h"
 #import "UIImageView+AFNetworking.h"
 #import "NSString+Helpers.h"

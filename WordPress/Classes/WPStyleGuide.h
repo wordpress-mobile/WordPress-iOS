@@ -1,11 +1,3 @@
-//
-//  WPStyleGuide.h
-//  WordPress
-//
-//  Created by Sendhil Panchadsaram on 8/20/13.
-//  Copyright (c) 2013 WordPress. All rights reserved.
-//
-
 #import <Foundation/Foundation.h>
 
 @class UITableViewTextFieldCell;
@@ -75,5 +67,6 @@
 + (void)configureTableViewSmallSubtitleCell:(UITableViewCell *)cell;
 + (void)configureColorsForView:(UIView *)view andTableView:(UITableView *)tableView;
 + (void)configureColorsForView:(UIView *)view collectionView:(UICollectionView *)collectionView;
++ (void)configureFollowButton:(UIButton *)followButton;
 
 @end

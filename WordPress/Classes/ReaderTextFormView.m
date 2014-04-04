@@ -1,11 +1,3 @@
-//
-//  ReaderTextFormView.m
-//  WordPress
-//
-//  Created by Eric J on 6/4/13.
-//  Copyright (c) 2013 WordPress. All rights reserved.
-//
-
 #import "ReaderTextFormView.h"
 #import "IOS7CorrectedTextView.h"
 

@@ -1,10 +1,3 @@
-//
-//  WPcomLoginViewController.h
-//  WordPress
-//
-//  Created by Chris Boyd on 7/19/10.
-//
-
 #import <UIKit/UIKit.h>
 
 @protocol WPcomLoginViewControllerDelegate;
