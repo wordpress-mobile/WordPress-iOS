@@ -1,11 +1,3 @@
-//
-//  JetpackSettingsViewController.m
-//  WordPress
-//
-//  Created by Eric Johnson on 8/24/12.
-//  Copyright (c) 2012 WordPress. All rights reserved.
-//
-
 #import "JetpackSettingsViewController.h"
 #import "Blog+Jetpack.h"
 #import "WordPressComApi.h"

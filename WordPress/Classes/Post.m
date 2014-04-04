@@ -1,10 +1,3 @@
-// 
-//  Post.m
-//  WordPress
-//
-//  Created by Chris Boyd on 8/9/10.
-//
-
 #import "Post.h"
 #import "NSMutableDictionary+Helpers.h"
 #import "ContextManager.h"

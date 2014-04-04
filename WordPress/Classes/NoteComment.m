@@ -1,10 +1,3 @@
-//
-//  NoteComment.m
-//  WordPress
-//
-//  Copyright (c) 2012 WordPress. All rights reserved.
-//
-
 #import "NoteComment.h"
 
 @implementation NoteComment

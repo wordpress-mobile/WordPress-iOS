@@ -1,10 +1,3 @@
-//
-//  WPLabel.h
-//  WordPress
-//
-//  Created by Josh Bassett on 15/07/09.
-//
-
 #import <UIKit/UIKit.h>
 
 
