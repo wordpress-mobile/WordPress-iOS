@@ -10,6 +10,7 @@
 #import "UILabel+SuggestSize.h"
 #import "WordPressComOAuthClient.h"
 #import "AccountService.h"
+#import "BlogService.h"
 #import "ContextManager.h"
 
 CGFloat const JetpackiOS7StatusBarOffset = 20.0;
@@ -499,7 +500,10 @@ CGFloat const JetpackSignInButtonHeight = 41.0;
         }
         return;
     }
-    [_blog syncOptionsWithWithSuccess:^{
+    
+    NSManagedObjectContext *context = [[ContextManager sharedInstance] mainContext];
+    BlogService *blogService = [[BlogService alloc] initWithManagedObjectContext:context];
+    [blogService syncOptionsForBlog:_blog success:^{
         if ([_blog hasJetpack]) {
             [self updateMessage];
         }
