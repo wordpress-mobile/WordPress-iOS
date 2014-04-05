@@ -45,7 +45,6 @@ const CGFloat RPVControlButtonBorderSize = 0.0f;
 @property (nonatomic, strong) ReaderMediaQueue *mediaQueue;
 @property (nonatomic, strong) NSMutableArray *actionButtons;
 
-@property (nonatomic, strong) DTAttributedLabel *headerLabel;
 @property (nonatomic, strong) UILabel *titleLabel;
 @property (nonatomic, strong) UILabel *snippetLabel;
 @property (nonatomic, strong) DTAttributedTextContentView *textContentView;
@@ -88,13 +87,6 @@ const CGFloat RPVControlButtonBorderSize = 0.0f;
 
         self.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
         self.opaque = YES;
-        
-        _headerLabel = [[DTAttributedLabel alloc] initWithFrame:CGRectMake(0.0f, 0.0f, frame.size.width, 0.0f)];
-        _headerLabel.autoresizingMask = UIViewAutoresizingFlexibleWidth;
-        _headerLabel.backgroundColor = [WPStyleGuide itsEverywhereGrey];
-        _headerLabel.edgeInsets = UIEdgeInsetsMake(10.0f, RPVHorizontalInnerPadding, 10.0f, RPVHorizontalInnerPadding);
-        _headerLabel.numberOfLines = 0;
-        [self addSubview:_headerLabel];
 
         _cellImageView = [[UIImageView alloc] init];
 		_cellImageView.backgroundColor = [WPStyleGuide readGrey];
@@ -245,23 +237,7 @@ const CGFloat RPVControlButtonBorderSize = 0.0f;
 
 - (void)configureContentView:(id<WPContentViewProvider>)contentProvider {
     self.bylineLabel.text = [contentProvider authorForDisplay];
-    
-    if ([contentProvider headerTextForDisplay]) {
-        [self.headerLabel setDelegate:self];
-        NSAttributedString *noteContentAttributedString = [[NSAttributedString alloc] initWithHTMLData:[[contentProvider headerTextForDisplay] dataUsingEncoding:NSUTF8StringEncoding] options:[WPStyleGuide defaultDTCoreTextOptions] documentAttributes:nil];
-        [self.headerLabel setAttributedString:noteContentAttributedString];
-        
-        // Calculate height of headerLabel frame
-        DTCoreTextLayouter *layouter = [[DTCoreTextLayouter alloc] initWithAttributedString:noteContentAttributedString];
-        CGRect maxRect = CGRectMake(0.0f, 0.0f, self.headerLabel.frame.size.width, CGFLOAT_HEIGHT_UNKNOWN);
-        NSRange entireString = NSMakeRange(0, [noteContentAttributedString length]);
-        DTCoreTextLayoutFrame *layoutFrame = [layouter layoutFrameWithRect:maxRect range:entireString];
-        CGSize sizeNeeded = layoutFrame.frame.size;
-        CGRect frame = self.headerLabel.frame;
-        frame.size.height = sizeNeeded.height + 20.0f;
-        [self.headerLabel setFrame:frame];
-    }
-    
+
     if ([[contentProvider blogNameForDisplay] length] > 0) {
         [self.byButton setEnabled:YES];
         [self.byButton setHidden:NO];
@@ -284,7 +260,7 @@ const CGFloat RPVControlButtonBorderSize = 0.0f;
     
     CGFloat contentWidth = self.frame.size.width;
 
-    self.byView.frame = CGRectMake(0, self.headerLabel.frame.size.height, contentWidth, RPVAuthorViewHeight + RPVAuthorPadding * 2);
+    self.byView.frame = CGRectMake(0, [self topMarginHeight], contentWidth, RPVAuthorViewHeight + RPVAuthorPadding * 2);
     CGFloat bylineX = RPVAvatarSize + RPVAuthorPadding + RPVHorizontalInnerPadding;
     self.bylineLabel.frame = CGRectMake(bylineX, RPVAuthorPadding - 2, contentWidth - bylineX, 18);
     self.byButton.frame = CGRectMake(bylineX, self.bylineLabel.frame.origin.y + 18, contentWidth - bylineX, 18);
@@ -419,6 +395,11 @@ const CGFloat RPVControlButtonBorderSize = 0.0f;
         [self.textContentView relayoutText];
         [self setNeedsLayout];
     }
+}
+
+// Subclasses can override this to provide margin at the top of the view. See CommentView.
+- (CGFloat)topMarginHeight {
+    return 0.0f;
 }
 
 - (BOOL)updateMediaLayout:(ReaderMediaView *)imageView {

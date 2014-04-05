@@ -18,6 +18,7 @@
 #import "WPTableViewCell.h"
 #import "WPTableViewController.h"
 #import "NoteService.h"
+#import "NoteBodyItem.h"
 #import "AccountService.h"
 
 const CGFloat NotificationsCommentDetailViewControllerReplyTextViewDefaultHeight = 64.f;
@@ -97,6 +98,15 @@ NSString *const WPNotificationCommentRestorationKey = @"WPNotificationCommentRes
     self.commentView = [[CommentView alloc] initWithFrame:self.view.frame];
     self.commentView.contentProvider = self.note;
     self.commentView.delegate = self;
+    // If there's one note bodyItem, just use titleForDisplay
+    if ([[self.note bodyItems] count] == 1) {
+        self.commentView.headerText = [self.note titleForDisplay];
+    } else if ([[self.note bodyItems] count] > 1) {
+        NoteBodyItem *noteBodyItem = [[self.note bodyItems] firstObject];
+        if (noteBodyItem && noteBodyItem.headerHtml && noteBodyItem.bodyHtml) {
+            self.commentView.headerText = [NSString stringWithFormat: @"%@:<p>\"%@\"</p>", noteBodyItem.headerHtml, noteBodyItem.bodyHtml];
+        }
+    }
     
     WPFixedWidthScrollView *scrollView = [[WPFixedWidthScrollView alloc] initWithRootView:self.commentView];
     scrollView.alwaysBounceVertical = YES;
