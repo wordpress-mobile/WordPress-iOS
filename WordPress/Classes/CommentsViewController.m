@@ -7,6 +7,8 @@
 #import "UIColor+Helpers.h"
 #import "WPTableViewSectionHeaderView.h"
 #import "Comment.h"
+#import "ContextManager.h"
+#import "BlogService.h"
 
 @interface CommentsViewController ()
 
@@ -188,7 +190,10 @@ CGFloat const CommentsSectionHeaderHeight = 24.0;
 }
 
 - (void)syncItemsViaUserInteraction:(BOOL)userInteraction success:(void (^)())success failure:(void (^)(NSError *))failure {
-    [self.blog syncCommentsWithSuccess:success failure:failure];
+    NSManagedObjectContext *context = [[ContextManager sharedInstance] mainContext];
+    BlogService *blogService = [[BlogService alloc] initWithManagedObjectContext:context];
+    
+    [blogService syncCommentsForBlog:self.blog success:success failure:failure];
 }
 
 - (BOOL)isSyncing {
