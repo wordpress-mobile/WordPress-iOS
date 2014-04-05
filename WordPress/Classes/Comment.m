@@ -433,9 +433,5 @@ NSString * const CommentStatusDraft = @"draft";
     return status;
 }
 
-- (NSString *)headerTextForDisplay {
-    return nil;
-}
-
 
 @end

@@ -255,20 +255,6 @@
     return self.date;
 }
 
-- (NSString *)headerTextForDisplay {
-    // If there's one note bodyItem, just use titleForDisplay
-    if ([self.bodyItems count] == 1) {
-        return self.titleForDisplay;
-    } else if ([self.bodyItems count] > 1) {
-        NoteBodyItem *noteBodyItem = [self.bodyItems firstObject];
-        if (noteBodyItem && noteBodyItem.headerHtml && noteBodyItem.bodyHtml) {
-            return [NSString stringWithFormat: @"%@:<p>\"%@\"</p>", noteBodyItem.headerHtml, noteBodyItem.bodyHtml];
-        }
-    }
-
-    return nil;
-}
-
 - (BOOL)unreadStatusForDisplay {
     return !self.isRead;
 }

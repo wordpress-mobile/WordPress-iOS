@@ -204,10 +204,6 @@
     return [self dateCreated];
 }
 
-- (NSString *)headerTextForDisplay {
-    return nil;
-}
-
 - (NSString *)statusForDisplay {
     if (self.remoteStatus == AbstractPostRemoteStatusSync) {
         if ([self.status isEqualToString:@"pending"]) {

@@ -65,9 +65,5 @@
     return self.dateCreated;
 }
 
-- (NSString *)headerTextForDisplay {
-    return nil;
-}
-
 
 @end
