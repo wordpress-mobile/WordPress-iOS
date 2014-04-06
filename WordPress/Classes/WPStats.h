@@ -30,3 +30,9 @@ typedef NS_ENUM(NSUInteger, WPStat) {
 + (void)track:(WPStat)stat;
 
 @end
+
+@protocol WPStatsClient <NSObject>
+
+- (void)track:(WPStat)stat;
+
+@end
