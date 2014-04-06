@@ -855,10 +855,32 @@ CGFloat const EPVCTextViewTopPadding = 7.0f;
         event = StatsEventPostDetailClickedUpdate;
     }
     
+    if ([buttonTitle isEqualToString:NSLocalizedString(@"Publish", nil)]) {
+        [WPMobileStats incrementPeopleAndSuperProperty:StatsSuperPropertyNumberOfPostsPublished];
+        
+        if ([self.post hasPhoto]) {
+            [WPMobileStats incrementPeopleAndSuperProperty:StatsSuperPropertyNumberOfPostsWithPhotos];
+        }
+        
+        if ([self.post hasVideo]) {
+            [WPMobileStats incrementPeopleAndSuperProperty:StatsSuperPropertyNumberOfPostsWithVideos];
+        }
+        
+        if ([self.post hasCategories]) {
+            [WPMobileStats incrementPeopleAndSuperProperty:StatsSuperPropertyNumberOfPostsWithCategories];
+        }
+        
+        if ([self.post hasTags]) {
+            [WPMobileStats incrementPeopleAndSuperProperty:StatsSuperPropertyNumberOfPostsWithTags];
+        }
+    } else {
+        [WPMobileStats incrementPeopleAndSuperProperty:StatsSuperPropertyNumberOfPostsUpdated];
+    }
+    
     if (event != nil) {
         [WPMobileStats trackEventForWPCom:[self formattedStatEventString:event]];
     }
-
+    
     // This word counting algorithm is from : http://stackoverflow.com/a/13367063
     __block NSInteger originalWordCount = 0;
     [self.post.original.content enumerateSubstringsInRange:NSMakeRange(0, [self.post.original.content length])
@@ -1079,10 +1101,16 @@ CGFloat const EPVCTextViewTopPadding = 7.0f;
 #pragma mark Media Formatting
 
 - (void)insertMediaBelow:(NSNotification *)notification {
-    [WPMobileStats trackEventForWPCom:[self formattedStatEventString:StatsEventPostDetailAddedPhoto]];
     
 	Media *media = (Media *)[notification object];
 	NSString *prefix = @"<br /><br />";
+    
+    if (media.mediaType == MediaTypeImage) {
+        [WPMobileStats trackEventForWPCom:[self formattedStatEventString:StatsEventPostDetailAddedPhoto]];
+        [WPMobileStats incrementPeopleAndSuperProperty:StatsSuperPropertyNumberOfPhotosAddedToPosts];
+    } else if (media.mediaType == MediaTypeVideo) {
+        [WPMobileStats incrementPeopleAndSuperProperty:StatsSuperPropertyNumberOfVideosAddedToPosts];
+    }
 	
 	if(self.post.content == nil || [self.post.content isEqualToString:@""]) {
 		self.post.content = @"";
