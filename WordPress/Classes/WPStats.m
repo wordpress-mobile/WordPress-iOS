@@ -19,4 +19,10 @@
     [[self sharedInstance] track:stat];
 }
 
++ (void)track:(WPStat)stat withProperties:(NSDictionary *)properties
+{
+    NSParameterAssert(properties != nil);
+    [[self sharedInstance] track:stat withProperties:properties];
+}
+
 @end
