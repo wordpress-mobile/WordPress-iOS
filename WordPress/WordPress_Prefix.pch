@@ -21,6 +21,7 @@
     #import "WPError.h"
     #import "UIColor+Helpers.h"
     #import "WPMobileStats.h"
+    #import "WPStats.h"
     #import "WPStyleGuide.h"
 
 #ifndef IS_IPAD
