@@ -188,6 +188,7 @@
 		}
         
         [WPMobileStats trackEventForWPCom:StatsEventReaderReblogged];
+        [WPMobileStats incrementPeopleAndSuperProperty:StatsSuperPropertyNumberOfItemsRebloggedInReader];
 		
 	} failure:^(NSError *error) {
 		DDLogError(@"Error Reblogging Post : %@", [error localizedDescription]);
