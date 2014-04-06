@@ -31,6 +31,10 @@
 - (BOOL)isOriginal;
 - (void)cloneFrom:(AbstractPost *)source;
 - (BOOL)hasSiteSpecificChanges;
+- (BOOL)hasPhoto;
+- (BOOL)hasVideo;
+- (BOOL)hasCategories;
+- (BOOL)hasTags;
 
 + (AbstractPost *)newDraftForBlog:(Blog *)blog;
 + (NSString *const)remoteUniqueIdentifier;
