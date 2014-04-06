@@ -28,11 +28,13 @@ typedef NS_ENUM(NSUInteger, WPStat) {
 @interface WPStats : NSObject
 
 + (void)track:(WPStat)stat;
++ (void)track:(WPStat)stat withProperties:(NSDictionary *)properties;
 
 @end
 
 @protocol WPStatsClient <NSObject>
 
 - (void)track:(WPStat)stat;
+- (void)track:(WPStat)stat withProperties:(NSDictionary *)properties;
 
 @end
