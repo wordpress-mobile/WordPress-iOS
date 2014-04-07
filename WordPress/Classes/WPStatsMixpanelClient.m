@@ -113,6 +113,26 @@
             instructions = [WPStatsMixpanelClientInstructionsForStat initWithMixpanelEventName:@"Stats - Accessed Stats"];
             [instructions setSuperPropertyAndPeoplePropertyToIncrement:@"number_of_times_accessed_stats"];
             break;
+        case WPStatEditorCreatedPost:
+            instructions = [WPStatsMixpanelClientInstructionsForStat initWithMixpanelEventName:@"Editor - Created Post"];
+            [instructions setSuperPropertyAndPeoplePropertyToIncrement:@"number_of_times_editor_created_post"];
+            break;
+        case WPStatEditorAddedPhotoViaLocalLibrary:
+            instructions = [WPStatsMixpanelClientInstructionsForStat initWithMixpanelEventName:@"Editor - Added Photo via Local Library"];
+            [instructions setSuperPropertyAndPeoplePropertyToIncrement:@"number_of_times_added_photo_via_local_library"];
+            break;
+        case WPStatEditorAddedPhotoViaWPMediaLibrary:
+            instructions = [WPStatsMixpanelClientInstructionsForStat initWithMixpanelEventName:@"Editor - Added Photo via WP Media Library"];
+            [instructions setSuperPropertyAndPeoplePropertyToIncrement:@"number_of_times_added_photo_via_wp_media_library"];
+            break;
+        case WPStatEditorPublishedPost:
+            instructions = [WPStatsMixpanelClientInstructionsForStat initWithMixpanelEventName:@"Editor - Published Post"];
+            [instructions setSuperPropertyAndPeoplePropertyToIncrement:@"number_of_times_editor_published_post"];
+            break;
+        case WPStatEditorUpdatedPost:
+            instructions = [WPStatsMixpanelClientInstructionsForStat initWithMixpanelEventName:@"Editor - Updated Post"];
+            [instructions setSuperPropertyAndPeoplePropertyToIncrement:@"number_of_times_editor_updated_post"];
+            break;
         default:
             break;
     }

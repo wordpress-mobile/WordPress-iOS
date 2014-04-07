@@ -202,6 +202,7 @@
 }
 
 - (void)showAddPostView {
+    [WPStats track:WPStatEditorCreatedPost];
     [WPMobileStats trackEventForWPCom:StatsEventPostsClickedNewPost];
 
     _addingNewPost = YES;
