@@ -1,5 +1,5 @@
 #import <Foundation/Foundation.h>
-#import "BaseLocalService.h"
+#import "LocalService.h"
 
 @class Note, Blog;
 
