@@ -177,6 +177,7 @@ NSString * const WPBlogDetailsBlogKey = @"WPBlogDetailsBlogKey";
     } else if (indexPath.row == BlogDetailsRowStats) {
         [WPMobileStats incrementProperty:StatsPropertySidebarSiteClickedStats forEvent:StatsEventAppClosed];
         [WPMobileStats incrementPeopleAndSuperProperty:StatsSuperPropertyNumberOfTimesOpenedStats];
+        [WPStats track:WPStatStatsAccessedStats];
         controllerClass =  [StatsViewController class];
     } else if ([self shouldShowThemesOption] && indexPath.row == BlogDetailsRowThemes) {
         [WPMobileStats incrementProperty:StatsPropertySidebarSiteClickedThemes forEvent:StatsEventAppClosed];

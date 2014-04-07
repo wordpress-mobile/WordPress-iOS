@@ -109,6 +109,10 @@
             instructions = [WPStatsMixpanelClientInstructionsForStat initWithMixpanelEventName:@"Reader - Commented on Article"];
             [instructions setSuperPropertyAndPeoplePropertyToIncrement:@"number_of_times_commented_on_reader_article"];
             break;
+        case WPStatStatsAccessedStats:
+            instructions = [WPStatsMixpanelClientInstructionsForStat initWithMixpanelEventName:@"Stats - Accessed Stats"];
+            [instructions setSuperPropertyAndPeoplePropertyToIncrement:@"number_of_times_accessed_stats"];
+            break;
         default:
             break;
     }
