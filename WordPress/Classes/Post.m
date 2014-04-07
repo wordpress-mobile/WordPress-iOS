@@ -228,6 +228,22 @@
     return NO;
 }
 
+- (BOOL)hasCategories
+{
+    if ([self.categories count] > 0)
+        return true;
+    else
+        return false;
+}
+
+- (BOOL)hasTags
+{
+    if ([[self.tags trim] length] > 0)
+        return true;
+    else
+        return false;
+}
+
 
 #pragma mark - QuickPhoto
 - (void)mediaDidUploadSuccessfully:(NSNotification *)notification {

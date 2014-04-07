@@ -222,6 +222,56 @@ NSString *const StatsEventAddBlogsClickedAddSelected = @"Add Blogs - Clicked Add
 // Stats
 NSString *const StatsEventStatsClickedOnWebVersion = @"Stats - Clicked on Web Version";
 
+
+// Super Properties
+
+// General
+NSString *const StatsSuperPropertyNumberOfTimesOpenedReader = @"number_of_times_opened_reader";
+NSString *const StatsSuperPropertyNumberOfTimesOpenedNotifications = @"number_of_times_opened_notifications";
+NSString *const StatsSuperPropertyNumberOfTimesOpenedStats = @"number_of_times_opened_stats";
+NSString *const StatsSuperPropertyNumberOfTimesOpenedViewAdmin = @"number_of_times_opened_view_admin";
+
+// Reader
+NSString *const StatsSuperPropertyNumberOfItemsOpenedInReader = @"number_of_items_opened_in_reader";
+NSString *const StatsSuperPropertyNumberOfItemsLikedInReader = @"number_of_items_liked_in_reader";
+NSString *const StatsSuperPropertyNumberOfItemsUnlikedInReader = @"number_of_items_unliked_in_reader";
+NSString *const StatsSuperPropertyNumberOfItemsRebloggedInReader = @"number_of_items_reblogged_in_reader";
+
+// Sharing
+NSString *const StatsSuperPropertyNumberOfItemsShared = @"number_of_items_shared";
+NSString *const StatsSuperPropertyNumberOfItemsSharedViaEmail = @"number_of_items_shared_via_email";
+NSString *const StatsSuperPropertyNumberOfItemsSharedViaSMS = @"number_of_items_shared_via_sms";
+NSString *const StatsSuperPropertyNumberOfItemsSharedViaTwitter = @"number_of_items_shared_via_twitter";
+NSString *const StatsSuperPropertyNumberOfItemsSharedViaFacebook = @"number_of_items_shared_via_facebook";
+NSString *const StatsSuperPropertyNumberOfItemsSharedViaWeibo = @"number_of_items_shared_via_weibo";
+NSString *const StatsSuperPropertyNumberOfItemsSentToPocket = @"number_of_items_sent_to_pocket";
+NSString *const StatsSuperPropertyNumberOfItemsSentToInstapaper = @"number_of_items_sent_to_instapaper";
+NSString *const StatsSuperPropertyNumberOfItemsSentToGooglePlus = @"number_of_items_sent_to_google_plus";
+
+// Notifications
+NSString *const StatsSuperPropertyNumberOfTimesOpenedNotificationDetails = @"number_of_times_opened_notification_details";
+NSString *const StatsSuperPropertyNumberOfNotificationsResultingInActions = @"number_of_notifications_resulting_in_actions";
+NSString *const StatsSuperPropertyNumberOfNotificationsRepliedTo = @"number_of_notifications_replied_to";
+NSString *const StatsSuperPropertyNumberOfNotificationsApproved = @"number_of_notifications_approved";
+NSString *const StatsSuperPropertyNumberOfNotificationsUnapproved = @"number_of_notifications_unapproved";
+NSString *const StatsSuperPropertyNumberOfNotificationsTrashed = @"number_of_notifications_trashed";
+NSString *const StatsSuperPropertyNumberOfNotificationsUntrashed = @"number_of_notifications_untrashed";
+NSString *const StatsSuperPropertyNumberOfNotificationsFlaggedAsSpam = @"number_of_notifications_flagged_as_spam";
+NSString *const StatsSuperPropertyNumberOfNotificationsUnflaggedAsSpam = @"number_of_notifications_unflagged_as_spam";
+NSString *const StatsSuperPropertyNumberOfNotificationsResultingInAFollow = @"number_of_notifications_resulting_in_a_follow";
+NSString *const StatsSuperPropertyNumberOfNotificationsResultingInAnUnfollow = @"number_of_notifications_resulting_in_an_unfollow";
+
+// Posts
+NSString *const StatsSuperPropertyNumberOfPostsPublished = @"number_of_posts_published";
+NSString *const StatsSuperPropertyNumberOfPostsUpdated = @"number_of_posts_updated";
+NSString *const StatsSuperPropertyNumberOfPhotosAddedToPosts = @"number_of_photos_added_to_post";
+NSString *const StatsSuperPropertyNumberOfVideosAddedToPosts = @"number_of_videos_added_to_post";
+NSString *const StatsSuperPropertyNumberOfFeaturedImagesAssignedToPosts = @"number_of_featured_images_assigned_to_post";
+NSString *const StatsSuperPropertyNumberOfPostsWithPhotos = @"number_of_posts_with_photos";
+NSString *const StatsSuperPropertyNumberOfPostsWithVideos = @"number_of_posts_with_videos";
+NSString *const StatsSuperPropertyNumberOfPostsWithCategories = @"number_of_posts_with_categories";
+NSString *const StatsSuperPropertyNumberOfPostsWithTags = @"number_of_posts_with_tags";
+
 @interface WPMobileStats() {
     NSMutableDictionary *_aggregatedEventProperties;
 }
@@ -369,6 +419,40 @@ NSString *const StatsEventStatsClickedOnWebVersion = @"Stats - Clicked on Web Ve
     [[self sharedInstance] incrementSuperProperty:property];
 }
 
++ (void)setValue:(id)value forSuperProperty:(NSString *)property
+{
+    [[self sharedInstance] setValue:value forSuperProperty:property];
+}
+
++ (void)flagPeopleProperty:(NSString *)property
+{
+    [[self sharedInstance] flagPeopleProperty:property];
+}
+
++ (void)incrementPeopleProperty:(NSString *)property
+{
+    [[self sharedInstance] incrementPeopleProperty:property];
+}
+
++ (void)setValue:(id)value forPeopleProperty:(NSString *)property
+{
+    [[self sharedInstance] setValue:value forPeopleProperty:property];
+}
+
++ (void)flagPeopleAndSuperProperty:(NSString *)property
+{
+    [[self sharedInstance] flagPeopleAndSuperProperty:property];
+}
+
++ (void)incrementPeopleAndSuperProperty:(NSString *)property
+{
+    [[self sharedInstance] incrementPeopleAndSuperProperty:property];
+}
+
++ (void)setValue:(id)value forPeopleAndSuperProperty:(NSString *)property
+{
+    [[self sharedInstance] setValue:value forPeopleAndSuperProperty:property];
+}
 
 #pragma mark - Private Methods
 
@@ -468,6 +552,57 @@ NSString *const StatsEventStatsClickedOnWebVersion = @"Stats - Clicked on Web Ve
     superProperties[property] = @(++propertyValue);
     [[Mixpanel sharedInstance] registerSuperProperties:superProperties];
 }
+
+- (void)setValue:(id)value forSuperProperty:(NSString *)property
+{
+    NSParameterAssert(value != nil);
+    NSParameterAssert(property != nil);
+    NSMutableDictionary *superProperties = [[NSMutableDictionary alloc] initWithDictionary:[Mixpanel sharedInstance].currentSuperProperties];
+    superProperties[property] = value;
+    [[Mixpanel sharedInstance] registerSuperProperties:superProperties];
+}
+
+- (void)flagPeopleProperty:(NSString *)property
+{
+    NSParameterAssert(property != nil);
+    [[Mixpanel sharedInstance].people set:@{ property : @(YES) }];
+}
+
+- (void)incrementPeopleProperty:(NSString *)property
+{
+    NSParameterAssert(property != nil);
+    [[Mixpanel sharedInstance].people increment:property by:@(1)];
+}
+
+- (void)setValue:(id)value forPeopleProperty:(NSString *)property
+{
+    NSParameterAssert(value != nil);
+    NSParameterAssert(property != nil);
+    [[Mixpanel sharedInstance].people set:@{property: value}];
+}
+
+- (void)flagPeopleAndSuperProperty:(NSString *)property
+{
+    NSParameterAssert(property != nil);
+    [self flagPeopleProperty:property];
+    [self flagSuperProperty:property];
+}
+
+- (void)incrementPeopleAndSuperProperty:(NSString *)property
+{
+    NSParameterAssert(property != nil);
+    [self incrementPeopleProperty:property];
+    [self incrementSuperProperty:property];
+}
+
+- (void)setValue:(id)value forPeopleAndSuperProperty:(NSString *)property
+{
+    NSParameterAssert(value != nil);
+    NSParameterAssert(property != nil);
+    [self setValue:value forPeopleProperty:property];
+    [self setValue:value forSuperProperty:property];
+}
+
 
 - (id)property:(NSString *)property forEvent:(NSString *)event
 {
