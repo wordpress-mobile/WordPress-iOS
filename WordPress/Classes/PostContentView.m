@@ -20,7 +20,6 @@ const CGFloat RPVStatusVerticalPadding = 8.0f;
 
 @property (nonatomic, strong) AbstractPost *post;
 @property (nonatomic, strong) UIButton *shareButton;
-@property (nonatomic, strong) UILabel *statusLabel;
 
 @end
 
@@ -31,12 +30,6 @@ const CGFloat RPVStatusVerticalPadding = 8.0f;
     if (self) {
         UIView *contentView = [self viewForFullContent];
         [self addSubview:contentView];
-
-        self.statusLabel = [[UILabel alloc] initWithFrame:CGRectMake(RPVHorizontalInnerPadding, 0.0f, [self innerContentWidth], 22.0f)];
-        self.statusLabel.backgroundColor = [UIColor clearColor];
-        self.statusLabel.font = [WPStyleGuide labelFont];
-        self.statusLabel.textColor = [WPStyleGuide jazzyOrange];
-        [self addSubview:self.statusLabel];
         
         UIButton *trashButton = [super addActionButtonWithImage:[UIImage imageNamed:@"icon-comments-trash"] selectedImage:[UIImage imageNamed:@"icon-comments-trash-active"]];
         trashButton.accessibilityLabel = NSLocalizedString(@"Move to trash", @"Spoken accessibility label.");
@@ -57,13 +50,6 @@ const CGFloat RPVStatusVerticalPadding = 8.0f;
 - (void)configurePost:(AbstractPost *)post withWidth:(CGFloat)width {
     self.contentProvider = post;
     self.post = post;
-
-    NSString *statusStr = [post statusForDisplay];
-    if ([statusStr length] > 0) {
-        self.statusLabel.attributedText = [[NSAttributedString alloc] initWithString:[statusStr uppercaseString] attributes:[WPStyleGuide labelAttributes]];
-    } else {
-        self.statusLabel.hidden = YES;
-    }
 
     self.shareButton.hidden = !self.post.hasRemote;
 
@@ -88,32 +74,6 @@ const CGFloat RPVStatusVerticalPadding = 8.0f;
                                                                                  options:[WPStyleGuide defaultDTCoreTextOptions]
                                                                       documentAttributes:nil];
     [self.textContentView relayoutText];
-}
-
-- (CGFloat)layoutSubviewsFromY:(CGFloat)yPos {
-    yPos = [self layoutStatusViewAt:yPos];
-    return [super layoutSubviewsFromY:yPos];
-}
-
-- (CGFloat)layoutStatusViewAt:(CGFloat)yPosition {
-    NSString *statusStr = self.statusLabel.text;
-    if ([statusStr length] == 0) {
-        return yPosition;
-    }
-
-    if (IS_IPHONE) {
-        yPosition += RPVStatusVerticalPadding;
-    }
-    
-    CGRect frame = self.statusLabel.frame;
-    CGSize size = [statusStr boundingRectWithSize:CGSizeMake(CGRectGetWidth(frame), CGFLOAT_MAX) options:NSStringDrawingUsesLineFragmentOrigin attributes:[WPStyleGuide labelAttributes] context:nil].size;
-
-    frame = CGRectMake(RPVHorizontalInnerPadding, yPosition, [self innerContentWidth], size.height);
-    self.statusLabel.frame = frame;
-    if (!self.cellImageView.hidden) {
-        yPosition += size.height;
-    }
-    return yPosition += RPVStatusVerticalPadding;
 }
 
 - (CGFloat)layoutAttributionAt:(CGFloat)yPosition {
