@@ -138,6 +138,7 @@ NSString * const NotificationsJetpackInformationURL = @"http://jetpack.me/about/
     if (!_viewHasAppeared) {
         _viewHasAppeared = YES;
         [WPMobileStats incrementProperty:StatsPropertyNotificationsOpened forEvent:StatsEventAppClosed];
+        [WPMobileStats incrementPeopleAndSuperProperty:StatsSuperPropertyNumberOfTimesOpenedNotifications];
     }
     
     _isPushingViewController = NO;
@@ -255,6 +256,7 @@ NSString * const NotificationsJetpackInformationURL = @"http://jetpack.me/about/
     BOOL hasDetailView = [self noteHasDetailView:note];
     if (hasDetailView) {
         [WPMobileStats incrementProperty:StatsPropertyNotificationsOpenedDetails forEvent:StatsEventAppClosed];
+        [WPMobileStats incrementPeopleAndSuperProperty:StatsSuperPropertyNumberOfTimesOpenedNotificationDetails];
 
         _isPushingViewController = YES;
         if ([note isComment]) {
