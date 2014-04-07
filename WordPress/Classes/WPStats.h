@@ -21,8 +21,8 @@ typedef NS_ENUM(NSUInteger, WPStat) {
     WPStatEditorAddedPhotoViaWPMediaLibrary,
     WPStatEditorUpdatedPost,
     WPStatEditorPublishedPost,
-    WPStatNotificationsAccessNotifications,
-    WPStatNotificationsOpenNotificationDetails,
+    WPStatNotificationsAccessedNotifications,
+    WPStatNotificationsOpenedNotificationDetails,
 };
 
 @interface WPStats : NSObject
