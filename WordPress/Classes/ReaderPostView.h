@@ -20,5 +20,6 @@
 - (id)initWithFrame:(CGRect)frame showFullContent:(BOOL)showFullContent;
 - (void)configurePost:(ReaderPost *)post withWidth:(CGFloat)width;
 - (void)setAvatar:(UIImage *)avatar;
+- (void)setAvatarWithURL:(NSURL *)avatarURL;
 
 @end
