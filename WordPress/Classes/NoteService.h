@@ -3,7 +3,7 @@
 
 @class Note, Blog;
 
-@interface NoteService : NSObject <BaseLocalService>
+@interface NoteService : NSObject <LocalService>
 
 - (void)mergeNewNotes:(NSArray *)notesData;
 
