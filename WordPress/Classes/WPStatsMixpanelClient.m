@@ -69,6 +69,46 @@
             instructions = [WPStatsMixpanelClientInstructionsForStat initWithMixpanelEventName:@"Theme - Changed Theme"];
             [instructions setSuperPropertyAndPeoplePropertyToIncrement:@"number_of_times_changed_theme"];
             break;
+        case WPStatReaderAccessedReader:
+            instructions = [WPStatsMixpanelClientInstructionsForStat initWithMixpanelEventName:@"Reader - Accessed Reader"];
+            [instructions setSuperPropertyAndPeoplePropertyToIncrement:@"number_of_times_accessed_reader"];
+            break;
+        case WPStatReaderOpenedArticle:
+            instructions = [WPStatsMixpanelClientInstructionsForStat initWithMixpanelEventName:@"Reader - Opened Article"];
+            [instructions setSuperPropertyAndPeoplePropertyToIncrement:@"number_of_times_opened_article"];
+            break;
+        case WPStatReaderLikedArticle:
+            instructions = [WPStatsMixpanelClientInstructionsForStat initWithMixpanelEventName:@"Reader - Liked Article"];
+            [instructions setSuperPropertyAndPeoplePropertyToIncrement:@"number_of_times_liked_article"];
+            break;
+        case WPStatReaderRebloggedArticle:
+            instructions = [WPStatsMixpanelClientInstructionsForStat initWithMixpanelEventName:@"Reader - Reblogged Article"];
+            [instructions setSuperPropertyAndPeoplePropertyToIncrement:@"number_of_times_reblogged_article"];
+            break;
+        case WPStatReaderInfiniteScroll:
+            instructions = [WPStatsMixpanelClientInstructionsForStat initWithMixpanelEventName:@"Reader - Infinite Scroll"];
+            [instructions setSuperPropertyAndPeoplePropertyToIncrement:@"number_of_times_reader_performed_infinite_scroll"];
+            break;
+        case WPStatReaderFollowedReaderTag:
+            instructions = [WPStatsMixpanelClientInstructionsForStat initWithMixpanelEventName:@"Reader - Followed Reader Tag"];
+            [instructions setSuperPropertyAndPeoplePropertyToIncrement:@"number_of_times_followed_reader_tag"];
+            break;
+        case WPStatReaderUnfollowedReaderTag:
+            instructions = [WPStatsMixpanelClientInstructionsForStat initWithMixpanelEventName:@"Reader - Unfollowed Reader Tag"];
+            [instructions setSuperPropertyAndPeoplePropertyToIncrement:@"number_of_times_unfollowed_reader_tag"];
+            break;
+        case WPStatReaderFilteredByReaderTag:
+            instructions = [WPStatsMixpanelClientInstructionsForStat initWithMixpanelEventName:@"Reader - Filtered By Reader Tag"];
+            [instructions setSuperPropertyAndPeoplePropertyToIncrement:@"number_of_times_filtered_by_reader_tag"];
+            break;
+        case WPStatReaderLoadedFreshlyPressed:
+            instructions = [WPStatsMixpanelClientInstructionsForStat initWithMixpanelEventName:@"Reader - Loaded Freshly Pressed"];
+            [instructions setSuperPropertyAndPeoplePropertyToIncrement:@"number_of_times_loaded_freshly_pressed"];
+            break;
+        case WPStatReaderCommentedOnArticle:
+            instructions = [WPStatsMixpanelClientInstructionsForStat initWithMixpanelEventName:@"Reader - Commented on Article"];
+            [instructions setSuperPropertyAndPeoplePropertyToIncrement:@"number_of_times_commented_on_reader_article"];
+            break;
         default:
             break;
     }
