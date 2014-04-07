@@ -16,6 +16,7 @@
 - (void)contentView:(WPContentView *)contentView didReceiveFeaturedImageAction:(id)sender;
 - (void)contentView:(WPContentView *)contentView didReceiveAuthorLinkAction:(id)sender;
 - (void)contentViewDidLoadAllMedia:(WPContentView *)contentView;
+- (void)contentViewHeightDidChange:(WPContentView *)contentView;
 @end
 
 @interface WPContentView : UIView <DTAttributedTextContentViewDelegate, ReaderMediaQueueDelegate> {
@@ -36,5 +37,6 @@
 - (void)refreshMediaLayout;
 - (CGFloat)topMarginHeight;
 - (void)reset;
+- (CGFloat)layoutSubviewsFromY:(CGFloat)yPos;
 
 @end

@@ -1,5 +1,6 @@
 #import "WPTableViewControllerSubclass.h"
 #import "PostsViewController.h"
+#import "PostViewController.h"
 #import "EditPostViewController.h"
 #import "NewPostTableViewCell.h"
 #import "WordPressAppDelegate.h"
@@ -106,8 +107,7 @@
     [[NSNotificationCenter defaultCenter] removeObserver:self];
 }
 
-- (NSString *)statsPropertyForViewOpening
-{
+- (NSString *)statsPropertyForViewOpening {
     return StatsPropertyPostsOpened;
 }
 
@@ -156,7 +156,7 @@
 		return;
 	}
 
-    [self editPost:post];
+    [self showPostDetail:post];
     [tableView deselectRowAtIndexPath:indexPath animated:YES];    
 }
 
@@ -218,6 +218,11 @@
     navController.restorationIdentifier = WPEditorNavigationRestorationID;
     navController.restorationClass = [EditPostViewController class];
     [self.view.window.rootViewController presentViewController:navController animated:YES completion:nil];
+}
+
+- (void)showPostDetail:(AbstractPost *)apost {
+    PostViewController *controller = [[PostViewController alloc] initWithPost:apost];
+    [self.navigationController pushViewController:controller animated:YES];
 }
 
 - (void)setBlog:(Blog *)blog {

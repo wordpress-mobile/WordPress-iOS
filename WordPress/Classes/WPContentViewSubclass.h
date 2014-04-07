@@ -23,7 +23,11 @@
 - (UIView *)viewForContentPreview;
 - (void)refreshDate;
 - (BOOL)privateContent;
-
+- (CGFloat)layoutAttributionAt:(CGFloat)yPosition;
+- (CGFloat)layoutFeaturedImageAt:(CGFloat)yPosition;
+- (CGFloat)layoutTitleAt:(CGFloat)yPosition;
+- (CGFloat)layoutTextContentAt:(CGFloat)yPosition;
+- (CGFloat)layoutActionViewAt:(CGFloat)yPosition;
 
 extern const CGFloat RPVAuthorPadding;
 extern const CGFloat RPVHorizontalInnerPadding;

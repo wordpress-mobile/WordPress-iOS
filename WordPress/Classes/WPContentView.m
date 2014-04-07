@@ -252,35 +252,75 @@ const CGFloat RPVControlButtonBorderSize = 0.0f;
 	self.cellImageView.hidden = YES;
 	
 	[self updateActionButtons];
-    
 }
 
 - (void)layoutSubviews {
     [super layoutSubviews];
-    
-    CGFloat contentWidth = self.frame.size.width;
 
-    self.byView.frame = CGRectMake(0, [self topMarginHeight], contentWidth, RPVAuthorViewHeight + RPVAuthorPadding * 2);
+    CGFloat yPos = [self layoutSubviewsFromY:0.0f];
+
+    // Update own frame
+    CGRect ownFrame = self.frame;
+    if (CGRectGetHeight(self.frame) != yPos) {
+        ownFrame.size.height = yPos;
+        self.frame = ownFrame;
+        
+        if ([self.delegate respondsToSelector:@selector(contentViewHeightDidChange:)]) {
+            [self.delegate contentViewHeightDidChange:self];
+        }
+    }
+}
+
+- (CGFloat)layoutSubviewsFromY:(CGFloat)yPos {
+    yPos = [self layoutAttributionAt:yPos];
+    yPos = [self layoutFeaturedImageAt:yPos];
+    yPos = [self layoutTitleAt:yPos];
+    yPos = [self layoutTextContentAt:yPos];
+    yPos = [self layoutActionViewAt:yPos];
+    return yPos;
+}
+
+- (CGFloat)layoutAttributionAt:(CGFloat)yPosition {
+    CGFloat contentWidth = CGRectGetWidth(self.frame);
+    self.byView.frame = CGRectMake(0.0f, [self topMarginHeight], contentWidth, RPVAuthorViewHeight + RPVAuthorPadding * 2);
+
+    CGFloat bylineHeight = 18.0f;
+
     CGFloat bylineX = RPVAvatarSize + RPVAuthorPadding + RPVHorizontalInnerPadding;
-    self.bylineLabel.frame = CGRectMake(bylineX, RPVAuthorPadding - 2, contentWidth - bylineX, 18);
-    self.byButton.frame = CGRectMake(bylineX, self.bylineLabel.frame.origin.y + 18, contentWidth - bylineX, 18);
+    self.bylineLabel.frame = CGRectMake(bylineX, RPVAuthorPadding - 2, contentWidth - bylineX, bylineHeight);
+    self.byButton.frame = CGRectMake(bylineX, CGRectGetMinY(self.bylineLabel.frame) + bylineHeight, contentWidth - bylineX, bylineHeight);
+    
+    return CGRectGetMaxY(self.byView.frame);
+}
+
+- (CGFloat)layoutFeaturedImageAt:(CGFloat)yPosition {
+    return yPosition;
+}
+
+- (CGFloat)layoutTitleAt:(CGFloat)yPosition {
+    return yPosition;
+}
+
+- (CGFloat)layoutTextContentAt:(CGFloat)yPosition {
+    CGFloat contentWidth = CGRectGetWidth(self.frame);
     
     [self.textContentView relayoutText];
     CGFloat height = [self.textContentView suggestedFrameSizeToFitEntireStringConstraintedToWidth:contentWidth].height;
-    CGRect textContainerFrame = self.textContentView.frame;
-    textContainerFrame.size.width = contentWidth;
-    textContainerFrame.size.height = height;
-    textContainerFrame.origin.y = self.byView.frame.origin.y + self.byView.frame.size.height;
-    self.textContentView.frame = textContainerFrame;
+    self.textContentView.frame = CGRectMake(0.0f, yPosition, contentWidth, height);
+
+    return CGRectGetMaxY(self.textContentView.frame) + RPVVerticalPadding;
+}
+
+- (CGFloat)layoutActionViewAt:(CGFloat)yPosition {
+    CGFloat contentWidth = CGRectGetWidth(self.frame);
     
     // Position the meta view and its subviews
-    CGFloat bottomY = self.textContentView.frame.origin.y + self.textContentView.frame.size.height + RPVVerticalPadding;
-	self.bottomView.frame = CGRectMake(0, bottomY, contentWidth, RPVMetaViewHeight);
-    self.bottomBorder.frame = CGRectMake(RPVHorizontalInnerPadding, 0, contentWidth - RPVHorizontalInnerPadding * 2, RPVBorderHeight);
+	self.bottomView.frame = CGRectMake(0.0f, yPosition, contentWidth, RPVMetaViewHeight);
+    self.bottomBorder.frame = CGRectMake(RPVHorizontalInnerPadding, 0.0f, contentWidth - RPVHorizontalInnerPadding * 2, RPVBorderHeight);
     
     // Action buttons
     CGFloat buttonWidth = RPVControlButtonWidth;
-    CGFloat buttonX = self.bottomView.frame.size.width - RPVControlButtonWidth;
+    CGFloat buttonX = contentWidth - RPVControlButtonWidth;
     CGFloat buttonY = RPVBorderHeight; // Just below the line
     NSArray* reversedActionButtons = [[self.actionButtons reverseObjectEnumerator] allObjects];
     
@@ -295,11 +335,8 @@ const CGFloat RPVControlButtonBorderSize = 0.0f;
     
     CGFloat timeWidth = contentWidth - buttonX;
     self.timeButton.frame = CGRectMake(RPVHorizontalInnerPadding, RPVBorderHeight, timeWidth, RPVControlButtonHeight);
-    
-    // Update own frame
-    CGRect ownFrame = self.frame;
-    ownFrame.size.height = self.bottomView.frame.origin.y + self.bottomView.frame.size.height;
-    self.frame = ownFrame;
+
+    return CGRectGetMaxY(self.bottomView.frame);
 }
 
 - (UIButton *)addActionButtonWithImage:(UIImage *)buttonImage selectedImage:(UIImage *)selectedButtonImage {

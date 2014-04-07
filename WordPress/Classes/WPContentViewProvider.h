@@ -8,6 +8,7 @@
 - (NSString *)contentForDisplay;
 - (NSString *)contentPreviewForDisplay;
 - (NSURL *)avatarURLForDisplay; // Some providers use a hardcoded URL or blavatar URL
+- (NSURL *)featuredImageURLForDisplay;
 - (NSString *)gravatarEmailForDisplay;
 - (NSDate *)dateForDisplay;
 @optional

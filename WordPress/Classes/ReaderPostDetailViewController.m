@@ -227,12 +227,13 @@ typedef enum {
 }
 
 - (void)buildHeader {
+    CGFloat width = CGRectGetWidth(self.view.frame);
     // The text view in postView needs an initial frame
-    CGFloat postHeight = [ReaderPostView heightForPost:self.post withWidth:self.view.frame.size.width showFullContent:YES];
-    CGRect postFrame = CGRectMake(0.0f, 0.0f, self.tableView.frame.size.width, postHeight);
+    CGFloat postHeight = [ReaderPostView heightForContentViewProvider:self.post withWidth:width showFullContent:YES];
+    CGRect postFrame = CGRectMake(0.0f, 0.0f, width, postHeight);
 	self.postView = [[ReaderPostView alloc] initWithFrame:postFrame showFullContent:YES];
     self.postView.delegate = self;
-    [self.postView configurePost:self.post withWidth:self.view.frame.size.width];
+    [self.postView configurePost:self.post withWidth:width];
     self.postView.backgroundColor = [UIColor whiteColor];
     
     if (self.avatarImage) {

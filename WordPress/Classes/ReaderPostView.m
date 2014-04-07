@@ -9,168 +9,23 @@
 #import "ContextManager.h"
 #import "AccountService.h"
 
-static NSInteger const MaxNumberOfLinesForTitleForSummary = 3;
-
 @interface ReaderPostView()
 
-@property (nonatomic, assign) BOOL showImage;
 @property (nonatomic, strong) UIButton *tagButton;
 @property (nonatomic, strong) UIButton *followButton;
 @property (nonatomic, strong) UIButton *likeButton;
 @property (nonatomic, strong) UIButton *reblogButton;
 @property (nonatomic, strong) UIButton *commentButton;
-@property (assign) BOOL showFullContent;
 
 @end
 
 @implementation ReaderPostView
 
-+ (CGFloat)heightForPost:(ReaderPost *)post withWidth:(CGFloat)width showFullContent:(BOOL)showFullContent {
-	CGFloat desiredHeight = 0.0f;
-    
-    // Margins
-    CGFloat contentWidth = width;
-    if (IS_IPAD) {
-        contentWidth = WPTableViewFixedWidth;
-    }
-    
-    desiredHeight += RPVAuthorPadding;
-    desiredHeight += RPVAuthorViewHeight;
-    desiredHeight += RPVAuthorPadding;
-    
-	// Are we showing an image? What size should it be?
-	if (post.featuredImageURL) {
-		CGFloat height = ceilf((contentWidth * RPVMaxImageHeightPercentage));
-		desiredHeight += height;
-	}
-    
-    // Everything but the image has inner padding
-    contentWidth -= RPVHorizontalInnerPadding * 2;
-    
-    // Title
-    desiredHeight += RPVVerticalPadding;
-    NSAttributedString *postTitle = [self titleAttributedStringForPost:post showFullContent:showFullContent withWidth:contentWidth];
-    desiredHeight += [postTitle boundingRectWithSize:CGSizeMake(contentWidth, CGFLOAT_MAX) options:NSStringDrawingUsesLineFragmentOrigin | NSStringDrawingUsesFontLeading context:nil].size.height;
-    desiredHeight += RPVTitlePaddingBottom;
-    
-    // Post summary
-    if (!showFullContent) {
-        NSAttributedString *postSummary = [self summaryAttributedStringForPost:post];
-        desiredHeight += [postSummary boundingRectWithSize:CGSizeMake(contentWidth, CGFLOAT_MAX) options:NSStringDrawingUsesLineFragmentOrigin | NSStringDrawingUsesFontLeading context:nil].size.height;
-    }
-    desiredHeight += RPVVerticalPadding;
-    
-    // Tag
-    // TODO: reenable tags once a better browsing experience is implemented
-    /*    NSString *tagName = post.primaryTagName;
-     if ([tagName length] > 0) {
-     CGRect tagRect = [tagName boundingRectWithSize:CGSizeMake(contentWidth, CGFLOAT_MAX)
-     options:NSStringDrawingUsesLineFragmentOrigin | NSStringDrawingUsesFontLeading
-     attributes:@{NSFontAttributeName : [self summaryFont]}
-     context:nil];
-     desiredHeight += tagRect.size.height;
-     }
-     */
-    
-    // Padding below the line
-	desiredHeight += RPVVerticalPadding;
-    
-	// Size of the meta view
-    desiredHeight += RPVMetaViewHeight;
-    
-	return ceil(desiredHeight);
-}
-
-+ (NSAttributedString *)titleAttributedStringForPost:(ReaderPost *)post showFullContent:(BOOL)showFullContent withWidth:(CGFloat) width {
-    NSMutableParagraphStyle *style = [[NSMutableParagraphStyle alloc] init];
-    [style setLineHeightMultiple:RPVLineHeightMultiple];
-    NSDictionary *attributes = @{NSParagraphStyleAttributeName : style,
-                                 NSFontAttributeName : [self titleFont]};
-    NSString *postTitle = [post.postTitle trim];
-    if (postTitle == nil) {
-        postTitle = @"";
-    }
-    
-    NSMutableAttributedString *titleString = [[NSMutableAttributedString alloc] initWithString:postTitle
-                                                                                    attributes:attributes];
-    if(!showFullContent) //Ellipsizing long titles
-    {
-        if([postTitle length] > 0)
-        {
-            
-            CGFloat currentHeightOfTitle = [titleString
-                                            boundingRectWithSize:CGSizeMake(width, CGFLOAT_MAX)
-                                            options:NSStringDrawingUsesLineFragmentOrigin | NSStringDrawingUsesFontLeading
-                                            context:nil].size.height;
-            
-            
-            CGFloat heightOfSingleLine = [[titleString attributedSubstringFromRange:NSMakeRange(0,1)]
-                                          boundingRectWithSize:CGSizeMake(width, CGFLOAT_MAX)
-                                          options:NSStringDrawingUsesLineFragmentOrigin | NSStringDrawingUsesFontLeading
-                                          context:nil].size.height;
-            
-            NSInteger numberOfLines = currentHeightOfTitle / heightOfSingleLine;
-            
-            if(numberOfLines > MaxNumberOfLinesForTitleForSummary)
-            {
-                NSInteger newLength = [ReaderPostView calculateTitleLengthWithSingleLineHeight:heightOfSingleLine
-                                                                             currentLineHeight:currentHeightOfTitle
-                                                                                  currentTitle:titleString];
-                
-                
-                titleString = [[NSMutableAttributedString alloc]initWithString:[postTitle stringByEllipsizingWithMaxLength:newLength preserveWords:YES]
-                                                                    attributes:attributes];
-                
-            }
-        }
-    }
-    
-    return titleString;
-}
-
-+ (NSInteger)calculateTitleLengthWithSingleLineHeight:(CGFloat)singleLineHeight currentLineHeight:(CGFloat)currentLineHeight currentTitle:(NSAttributedString *)postTitle
-{
-    CGFloat allowedHeight = singleLineHeight * MaxNumberOfLinesForTitleForSummary;
-    CGFloat overageRatio = allowedHeight / currentLineHeight;
-    return [postTitle length] * overageRatio;
-    
-}
-
-+ (NSAttributedString *)summaryAttributedStringForPost:(ReaderPost *)post {
-    NSString *summary = [post.summary trim];
-    NSInteger newline = [post.summary rangeOfString:@"\n"].location;
-    
-    if (newline != NSNotFound)
-        summary = [post.summary substringToIndex:newline];
-    
-    NSMutableParagraphStyle *style = [[NSMutableParagraphStyle alloc] init];
-    [style setLineHeightMultiple:RPVLineHeightMultiple];
-    NSDictionary *attributes = @{NSParagraphStyleAttributeName : style,
-                                 NSFontAttributeName : [self summaryFont]};
-    NSMutableAttributedString *attributedSummary = [[NSMutableAttributedString alloc] initWithString:summary
-                                                                                          attributes:attributes];
-    
-    NSDictionary *moreContentAttributes = @{NSParagraphStyleAttributeName: style,
-                                            NSFontAttributeName: [self moreContentFont],
-                                            NSForegroundColorAttributeName: [WPStyleGuide baseLighterBlue]};
-    NSAttributedString *moreContent = [[NSAttributedString alloc] initWithString:[@"   " stringByAppendingString:NSLocalizedString(@"more", @"")] attributes:moreContentAttributes];
-    [attributedSummary appendAttributedString:moreContent];
-    
-    return attributedSummary;
-}
-
-- (id)initWithFrame:(CGRect)frame {
-    self = [self initWithFrame:frame showFullContent:NO];
-    
-    return self;
-}
-
 - (id)initWithFrame:(CGRect)frame showFullContent:(BOOL)showFullContent {
-    self = [super initWithFrame:frame];
+    self = [super initWithFrame:frame showFullContent:showFullContent];
     
     if (self) {
-        _showFullContent = showFullContent;
-        UIView *contentView = _showFullContent ? [self viewForFullContent] : [self viewForContentPreview];
+        UIView *contentView = self.showFullContent ? [self viewForFullContent] : [self viewForContentPreview];
         [self addSubview:contentView];
 
         // For the full view, allow the featured image to be tapped
@@ -210,27 +65,25 @@ static NSInteger const MaxNumberOfLinesForTitleForSummary = 3;
     return self;
 }
 
-- (void)configurePost:(ReaderPost *)post withWidth:(CGFloat)width {
+- (void)configurePost:(BasePost *)post withWidth:(CGFloat)width {
    
     // Margins
     CGFloat contentWidth = width;
     if (IS_IPAD) {
         contentWidth = WPTableViewFixedWidth;
     }
-    
     contentWidth -= RPVHorizontalInnerPadding * 2;
     
-    
-    _post = post;
-    self.contentProvider = post;
+    self.post = (ReaderPost *)post;
+    self.contentProvider = self.post;
     
     // This will show the placeholder avatar. Do this here instead of prepareForReuse
     // so avatars show up after a cell is created, and not dequeued.
     [self setAvatar:nil];
     
-	self.titleLabel.attributedText = [[self class] titleAttributedStringForPost:post
-                                                                showFullContent:self.showFullContent
-                                                                      withWidth:contentWidth];
+    self.titleLabel.attributedText = [[self class] titleAttributedStringForTitle:self.post.postTitle
+                                                                 showFullContent:self.showFullContent
+                                                                       withWidth:contentWidth];
     
     if (self.showFullContent) {
         NSData *data = [self.post.content dataUsingEncoding:NSUTF8StringEncoding];
@@ -239,19 +92,17 @@ static NSInteger const MaxNumberOfLinesForTitleForSummary = 3;
                                                                       documentAttributes:nil];
         [self.textContentView relayoutText];
     } else {
-        self.snippetLabel.attributedText = [[self class] summaryAttributedStringForPost:post];
+        self.snippetLabel.attributedText = [[self class] summaryAttributedStringForString:self.post.summary];
     }
     
-    self.bylineLabel.text = [post authorString];
+    self.bylineLabel.text = [self.post authorString];
     [self refreshDate];
     
-	self.showImage = NO;
 	self.cellImageView.hidden = YES;
-    
+
     // If ReaderPostView has a featured image, show it unless you're showing full detail & featured image is in the post already
-	if (post.featuredImageURL &&
-        (self.showFullContent == NO || [self.post.content rangeOfString:[post.featuredImageURL absoluteString]].length == 0)) {
-		self.showImage = YES;
+	if (post.featuredImageURLForDisplay &&
+        (self.showFullContent == NO || [self.post.content rangeOfString:[post.featuredImageURLForDisplay absoluteString]].length == 0)) {
 		self.cellImageView.hidden = NO;
 	}
     
@@ -277,7 +128,7 @@ static NSInteger const MaxNumberOfLinesForTitleForSummary = 3;
 	}
     
     [self.followButton setSelected:[self.post.isFollowing boolValue]];
-	self.reblogButton.userInteractionEnabled = ![post.isReblogged boolValue];
+	self.reblogButton.userInteractionEnabled = ![self.post.isReblogged boolValue];
 	
 	[self updateActionButtons];
 }
@@ -289,19 +140,12 @@ static NSInteger const MaxNumberOfLinesForTitleForSummary = 3;
     self.commentButton.hidden = !commentsOpen;
 
 	[super layoutSubviews];
+}
+
+- (CGFloat)layoutAttributionAt:(CGFloat)yPosition {
+    yPosition = [super layoutAttributionAt:yPosition];
     
-	CGFloat contentWidth;
-    
-    // On iPad, get the width from the cell instead in order to account for margins
-    if (IS_IPHONE) {
-        contentWidth = self.frame.size.width;
-    } else {
-        contentWidth = self.superview.frame.size.width;
-    }
-    
-    CGFloat innerContentWidth = contentWidth - RPVHorizontalInnerPadding * 2;
-	CGFloat nextY = RPVAuthorPadding;
-	CGFloat height = 0.0f;
+    CGFloat innerContentWidth = [self innerContentWidth];
     CGFloat bylineX = RPVAvatarSize + RPVAuthorPadding + RPVHorizontalInnerPadding;
 
     NSManagedObjectContext *context = [[ContextManager sharedInstance] mainContext];
@@ -312,68 +156,20 @@ static NSInteger const MaxNumberOfLinesForTitleForSummary = 3;
         self.followButton.hidden = NO;
         CGFloat followX = bylineX - 4; // Fudge factor for image alignment
         CGFloat followY = RPVAuthorPadding + self.bylineLabel.frame.size.height - 2;
-        height = ceil([self.followButton.titleLabel suggestedSizeForWidth:innerContentWidth].height);
+        CGFloat height = ceil([self.followButton.titleLabel suggestedSizeForWidth:innerContentWidth].height);
         self.followButton.frame = CGRectMake(followX, followY, RPVFollowButtonWidth, height);
     } else {
         self.followButton.hidden = YES;
     }
     
-    nextY += RPVAuthorViewHeight + RPVAuthorPadding;
-    
-	// Are we showing an image? What size should it be?
-	if (_showImage) {
-        self.titleBorder.hidden = YES;
-		height = ceilf(contentWidth * RPVMaxImageHeightPercentage);
-		self.cellImageView.frame = CGRectMake(0, nextY, contentWidth, height);
-		nextY += height;
-    } else {
-        self.titleBorder.hidden = NO;
-        self.titleBorder.frame = CGRectMake(RPVHorizontalInnerPadding, nextY, contentWidth - RPVHorizontalInnerPadding * 2, RPVBorderHeight);
-    }
-    
-	// Position the title
-    nextY += RPVVerticalPadding;
-	height = ceil([self.titleLabel suggestedSizeForWidth:innerContentWidth].height);
-	self.titleLabel.frame = CGRectMake(RPVHorizontalInnerPadding, nextY, innerContentWidth, height);
-	nextY += height + RPVTitlePaddingBottom * (self.showFullContent ? 2.0 : 1.0);
-    
-	// Position the snippet / content
-    height = 0;
-    if (self.showFullContent) {
-        [self.textContentView relayoutText];
-        height = [self.textContentView suggestedFrameSizeToFitEntireStringConstraintedToWidth:contentWidth].height;
-        CGRect textContainerFrame = self.textContentView.frame;
-        textContainerFrame.size.width = contentWidth;
-        textContainerFrame.size.height = height;
-        textContainerFrame.origin.y = nextY;
-        self.textContentView.frame = textContainerFrame;
-    } else if ([self.snippetLabel.text length] > 0) {
-        height = ceil([self.snippetLabel suggestedSizeForWidth:innerContentWidth].height);
-        self.snippetLabel.frame = CGRectMake(RPVHorizontalInnerPadding, nextY, innerContentWidth, height);
-    }
-    nextY += ceilf(height) + RPVVerticalPadding;
-    
-    // Tag
-    // TODO: reenable tags once a better browsing experience is implemented
-    /*    if ([self.post.primaryTagName length] > 0) {
-     height = ceil([self.tagButton.titleLabel suggestedSizeForWidth:innerContentWidth].height);
-     self.tagButton.frame = CGRectMake(RPVHorizontalInnerPadding, nextY, innerContentWidth, height);
-     nextY += height + RPVVerticalPadding;
-     self.tagButton.hidden = NO;
-     } else {
-     self.tagButton.hidden = YES;
-     }
-     */
-    
-	// Position the meta view and its subviews
-	self.bottomView.frame = CGRectMake(0, nextY, contentWidth, RPVMetaViewHeight);
-    self.bottomBorder.frame = CGRectMake(RPVHorizontalInnerPadding, 0, contentWidth - RPVHorizontalInnerPadding * 2, RPVBorderHeight);
+    return yPosition;
+}
 
-    // Update own frame
-    CGRect ownFrame = self.frame;
-    
-    ownFrame.size.height = nextY + RPVMetaViewHeight - 1;
-    self.frame = ownFrame;
+- (CGFloat)layoutTextContentAt:(CGFloat)yPosition {
+    if ([self.post.summary length] == 0) {
+        return yPosition;
+    }
+    return [super layoutTextContentAt:yPosition];
 }
 
 - (void)reset {

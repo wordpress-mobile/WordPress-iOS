@@ -7,11 +7,12 @@ const CGFloat RPTVCHorizontalOuterPadding = 8.0f;
 const CGFloat RPTVCVerticalOuterPadding = 16.0f;
 
 @interface ReaderPostTableViewCell()
+
 @property (nonatomic, strong) UIView *sideBorderView;
+
 @end
 
-@implementation ReaderPostTableViewCell {
-}
+@implementation ReaderPostTableViewCell
 
 + (CGFloat)cellHeightForPost:(ReaderPost *)post withWidth:(CGFloat)width {
     // iPhone has extra padding around each cell
@@ -19,7 +20,7 @@ const CGFloat RPTVCVerticalOuterPadding = 16.0f;
         width = width - 2 * RPTVCHorizontalOuterPadding;
     }
     
-	CGFloat desiredHeight = [ReaderPostView heightForPost:post withWidth:width showFullContent:NO];
+    CGFloat desiredHeight = [ReaderPostView heightForContentViewProvider:post withWidth:width showFullContent:NO];
 
 	return ceil(desiredHeight);
 }

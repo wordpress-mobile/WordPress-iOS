@@ -344,5 +344,8 @@
     return [NSURL URLWithString:self.blog.blavatarUrl];
 }
 
+- (NSURL *)featuredImageURLForDisplay {
+    return [NSURL URLWithString:[[self featuredImage] remoteURL]];
+}
 
 @end
