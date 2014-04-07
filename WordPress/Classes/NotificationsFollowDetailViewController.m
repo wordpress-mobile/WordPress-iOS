@@ -1,11 +1,3 @@
-//
-//  NotificationsLikesDetailViewController.m
-//  WordPress
-//
-//  Created by Dan Roundhill on 11/29/12.
-//  Copyright (c) 2012 WordPress. All rights reserved.
-//
-
 #import "NotificationsFollowDetailViewController.h"
 #import "ContextManager.h"
 #import "UIImageView+AFNetworking.h"
@@ -21,10 +13,9 @@
 #import "WPToast.h"
 #import "NoteService.h"
 #import "Note.h"
+#import "AccountService.h"
 #import "NoteBodyItem.h"
 #import "NoteAction.h"
-
-
 
 NSString *const WPNotificationFollowRestorationKey = @"WPNotificationFollowRestorationKey";
 NSString *const WPNotificationHeaderCellIdentifier = @"WPNotificationHeaderCellIdentifier";
@@ -37,7 +28,7 @@ typedef NS_ENUM(NSInteger, WPNotificationSections) {
 	WPNotificationSectionsCount		= 2
 };
 
-CGFloat const WPNotificationsFollowPersonCellHeight = 100.0f;
+CGFloat const WPNotificationsFollowPersonCellHeight = 80.0f;
 CGFloat const WPNotificationsFollowBottomCellHeight = 60.0f;
 
 
@@ -221,17 +212,7 @@ typedef void (^NoteToggleFollowBlock)(BOOL success);
 		
 		// Follow action: anyone?
 		if ([noteItem.action.type isEqualToString:@"follow"]) {
-			NSString *blogTitle = [NSString decodeXMLCharactersIn:noteItem.action.blogTitle];
-			if (blogTitle.length == 0) {
-				blogTitle = noteItem.headerText;
-			}
-			
-			if (blogTitle.length == 0) {
-				blogTitle = NSLocalizedString(@"(No Title)", @"Blog with no title");
-			}
-
 			cell.actionButton.hidden	= NO;
-			[cell.actionButton setTitle:blogTitle forState:UIControlStateNormal];
 			cell.following				= noteItem.action.following;
 			
 			if (noteItem.action.blogURL) {
@@ -242,8 +223,9 @@ typedef void (^NoteToggleFollowBlock)(BOOL success);
 		// No action available
 		} else {
 			cell.actionButton.hidden	= YES;
-			cell.textLabel.text			= noteItem.headerText;
 		}
+        
+        cell.textLabel.text = noteItem.headerText;
 
 		// Handle the Icon
 		NSURL *iconURL = noteItem.iconURL;
@@ -282,11 +264,27 @@ typedef void (^NoteToggleFollowBlock)(BOOL success);
     BOOL isFollowing = item.action.following;
 	   
 	// Hit the Tracker
-	NSString *event = (isFollowing) ? StatsEventNotificationsDetailUnfollowBlog : StatsEventNotificationsDetailFollowBlog;
-	[WPMobileStats trackEventForWPCom:event];
+    if (isFollowing) {
+        [WPMobileStats trackEventForSelfHostedAndWPCom:StatsEventNotificationsDetailUnfollowBlog];
+        [WPMobileStats incrementPeopleAndSuperProperty:StatsSuperPropertyNumberOfNotificationsResultingInAnUnfollow];
+    } else {
+        [WPMobileStats trackEventForSelfHostedAndWPCom:StatsEventNotificationsDetailFollowBlog];
+        [WPMobileStats incrementPeopleAndSuperProperty:StatsSuperPropertyNumberOfNotificationsResultingInAFollow];
+    }
+    [WPMobileStats incrementPeopleAndSuperProperty:StatsSuperPropertyNumberOfNotificationsResultingInActions];
     
 	// Hit the Backend
-	WordPressComApi *restApi = [[WPAccount defaultWordPressComAccount] restApi];
+    NSManagedObjectContext *context = [[ContextManager sharedInstance] mainContext];
+    AccountService *accountService = [[AccountService alloc] initWithManagedObjectContext:context];
+    WPAccount *defaultAccount = [accountService defaultWordPressComAccount];
+
+	WordPressComApi *restApi = [defaultAccount restApi];
+    
+    // Instant-gratification toast message
+    NSString *message	= isFollowing ? NSLocalizedString(@"Unfollowed", @"User unfollowed a blog") : NSLocalizedString(@"Followed", @"User followed a blog");
+    NSString *imageName = [NSString stringWithFormat:@"action_icon_%@", (isFollowing) ? @"unfollowed" : @"followed"];
+    [WPToast showToastWithMessage:message andImage:[UIImage imageNamed:imageName]];
+
 	[restApi followBlog:blogID.integerValue isFollowing:isFollowing success:^(AFHTTPRequestOperation *operation, id responseObject) {
 		
 		NSDictionary *followResponse = (NSDictionary *)responseObject;
@@ -303,12 +301,8 @@ typedef void (^NoteToggleFollowBlock)(BOOL success);
 		}
 		
 		block(success);
-		
-		NSString *message	= isFollowing ? NSLocalizedString(@"Unfollowed", @"User unfollowed a blog") : NSLocalizedString(@"Followed", @"User followed a blog");
-		NSString *imageName = [NSString stringWithFormat:@"action_icon_%@", (isFollowing) ? @"unfollowed" : @"followed"];
-		[WPToast showToastWithMessage:message andImage:[UIImage imageNamed:imageName]];
-		
 	} failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+        item.action.following = !isFollowing;
 		DDLogVerbose(@"[Rest API] ! %@", [error localizedDescription]);
 		block(false);
 	}];
@@ -340,10 +334,13 @@ typedef void (^NoteToggleFollowBlock)(BOOL success);
         if (blogURL) {
             WPWebViewController *webViewController = [[WPWebViewController alloc] init];
             if ([blogURL isWordPressDotComUrl]) {
-				WPAccount *account			= [WPAccount defaultWordPressComAccount];
-				webViewController.username	= account.username;
-				webViewController.password	= account.password;
-				webViewController.url		= [blogURL ensureSecureURL];
+                NSManagedObjectContext *context = [[ContextManager sharedInstance] mainContext];
+                AccountService *accountService = [[AccountService alloc] initWithManagedObjectContext:context];
+                WPAccount *defaultAccount = [accountService defaultWordPressComAccount];
+
+                [webViewController setUsername:[defaultAccount username]];
+                [webViewController setPassword:[defaultAccount password]];
+                [webViewController setUrl:[blogURL ensureSecureURL]];
             } else {
 				webViewController.url = blogURL;
             }

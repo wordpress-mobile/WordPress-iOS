@@ -1,12 +1,3 @@
-/*
- * ReaderPostDetailViewController.m
- *
- * Copyright (c) 2013 WordPress. All rights reserved.
- *
- * Licensed under GNU General Public License 2.0.
- * Some rights reserved. See license.txt
- */
-
 #import "ReaderPostDetailViewController.h"
 #import "ReaderPostsViewController.h"
 #import <DTCoreText/DTCoreText.h>
@@ -635,8 +626,10 @@ typedef enum {
 	[post toggleLikedWithSuccess:^{
         if ([post.isLiked boolValue]) {
             [WPMobileStats trackEventForWPCom:StatsEventReaderLikedPost];
+            [WPMobileStats incrementPeopleAndSuperProperty:StatsSuperPropertyNumberOfItemsLikedInReader];
         } else {
             [WPMobileStats trackEventForWPCom:StatsEventReaderUnlikedPost];
+            [WPMobileStats incrementPeopleAndSuperProperty:StatsSuperPropertyNumberOfItemsUnlikedInReader];
         }
 	} failure:^(NSError *error) {
 		DDLogError(@"Error Liking Post : %@", [error localizedDescription]);

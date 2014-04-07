@@ -1,11 +1,3 @@
-//
-//  WordPressComApi.m
-//  WordPress
-//
-//  Created by Jorge Bernal on 6/4/12.
-//  Copyright (c) 2012 WordPress. All rights reserved.
-//
-
 #import "WordPressComApi.h"
 #import "WordPressComApiCredentials.h"
 #import "NSString+Helpers.h"
