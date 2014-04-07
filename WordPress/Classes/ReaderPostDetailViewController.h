@@ -8,6 +8,8 @@
 @property (nonatomic, assign) BOOL showInlineActionBar;
 
 - (id)initWithPost:(ReaderPost *)post featuredImage:(UIImage *)image avatarImage:(UIImage *)avatarImage;
+- (id)initWithPost:(ReaderPost *)post avatarImageURL:(NSURL *)avatarImageURL;
+
 - (void)updateFeaturedImage:(UIImage *)image;
 
 @end
