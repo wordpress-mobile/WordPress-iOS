@@ -409,13 +409,18 @@ NSString *const MediaFeaturedImageSelectedNotification = @"MediaFeaturedImageSel
         cell.media.remoteStatus = MediaRemoteStatusPushing;
         [self.collectionView reloadItemsAtIndexPaths:@[indexPath]];
         [cell.media uploadWithSuccess:^{
-            
+            [WPStats track:WPStatEditorAddedPhotoViaLocalLibrary];
         } failure:^(NSError *error) {
             [WPError showAlertWithTitle:NSLocalizedString(@"Upload failed", nil) message:error.localizedDescription];
         }];
     } else if (cell.media.remoteStatus == MediaRemoteStatusProcessing || cell.media.remoteStatus == MediaRemoteStatusPushing) {
         [cell.media cancelUpload];
     } else if (cell.media.remoteStatus == MediaRemoteStatusLocal || cell.media.remoteStatus == MediaRemoteStatusSync) {
+        if (cell.media.remoteStatus == MediaRemoteStatusLocal) {
+            [WPStats track:WPStatEditorAddedPhotoViaLocalLibrary];
+        } else {
+            [WPStats track:WPStatEditorAddedPhotoViaWPMediaLibrary];
+        }
         if (_selectingFeaturedImage) {
             [self.post setFeaturedImage:cell.media];
             [WPMobileStats incrementPeopleAndSuperProperty:StatsSuperPropertyNumberOfFeaturedImagesAssignedToPosts];
@@ -1166,6 +1171,8 @@ NSString *const MediaFeaturedImageSelectedNotification = @"MediaFeaturedImageSel
 }
 
 - (void)useImage:(UIImage *)theImage {
+    [WPStats track:WPStatEditorAddedPhotoViaLocalLibrary];
+
     Media *imageMedia;
     if (self.post) {
         imageMedia = [Media newMediaForPost:self.post];
