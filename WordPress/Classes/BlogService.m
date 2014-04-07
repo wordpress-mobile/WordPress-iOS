@@ -271,11 +271,11 @@ NSString *const LastUsedBlogURLDefaultsKey = @"LastUsedBlogURLDefaultsKey";
     return count;
 }
 
-- (NSUInteger)countForSyncedPostsWithEntityName:(NSString *)entityName {
+- (NSUInteger)countForSyncedPostsWithEntityName:(NSString *)entityName forBlog:(Blog *)blog {
     __block NSUInteger count = 0;
     NSFetchRequest *request = [NSFetchRequest fetchRequestWithEntityName:entityName];
     NSPredicate *predicate = [NSPredicate predicateWithFormat:@"(remoteStatusNumber == %@) AND (postID != NULL) AND (original == NULL) AND (blog == %@)",
-                              [NSNumber numberWithInt:AbstractPostRemoteStatusSync], self];
+                              [NSNumber numberWithInt:AbstractPostRemoteStatusSync], blog];
     [request setPredicate:predicate];
     NSSortDescriptor *sortDescriptor = [[NSSortDescriptor alloc] initWithKey:@"date_created_gmt" ascending:YES];
     [request setSortDescriptors:[NSArray arrayWithObject:sortDescriptor]];
@@ -362,7 +362,7 @@ NSString *const LastUsedBlogURLDefaultsKey = @"LastUsedBlogURLDefaultsKey";
 {
     NSUInteger pageBatchSize = 40;
     NSUInteger pagesToRequest = pageBatchSize;
-    NSUInteger syncCount = [self countForSyncedPostsWithEntityName:@"Page"];
+    NSUInteger syncCount = [self countForSyncedPostsWithEntityName:@"Page" forBlog:blog];
     if (more) {
         pagesToRequest = MAX(syncCount, pageBatchSize);
         if ([blog.hasOlderPages boolValue]) {
