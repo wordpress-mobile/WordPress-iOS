@@ -275,6 +275,47 @@
     return NO;
 }
 
+- (BOOL)hasPhoto
+{
+    if ([self.media count] == 0)
+        return false;
+    
+    if (self.featuredImage != nil)
+        return true;
+    
+    for (Media *media in self.media) {
+        if (media.mediaType == MediaTypeImage || media.mediaType == MediaTypeFeatured) {
+            return true;
+        }
+    }
+    
+    return false;
+}
+
+- (BOOL)hasVideo
+{
+    if ([self.media count] == 0)
+        return false;
+    
+    for (Media *media in self.media) {
+        if (media.mediaType ==  MediaTypeVideo) {
+            return true;
+        }
+    }
+    
+    return false;
+}
+
+- (BOOL)hasCategories
+{
+    return NO;
+}
+
+- (BOOL)hasTags
+{
+    return NO;
+}
+
 - (void)findComments {
     NSSet *comments = [self.blog.comments filteredSetUsingPredicate:
                        [NSPredicate predicateWithFormat:@"(postID == %@) AND (post == NULL)", self.postID]];
