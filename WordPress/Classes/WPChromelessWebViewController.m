@@ -1,9 +1,3 @@
-//
-//  WPChromelessWebViewController.m
-//
-//  Created by Eric Johnson on 5/24/12.
-//
-
 #import "WPChromelessWebViewController.h"
 #import "WordPressAppDelegate.h"
 #import "WPWebViewController.h"

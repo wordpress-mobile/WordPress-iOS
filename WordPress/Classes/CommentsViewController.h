@@ -1,10 +1,3 @@
-//
-//  CommentsViewControllers.h
-//  WordPress
-//
-//  Created by Janakiram on 02/09/08.
-//
-
 #import <Foundation/Foundation.h>
 
 #import "CommentsTableViewDelegate.h"

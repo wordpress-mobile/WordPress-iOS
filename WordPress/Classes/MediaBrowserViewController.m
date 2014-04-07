@@ -1,12 +1,3 @@
-/*
- * MediaBrowserViewController.m
- *
- * Copyright (c) 2013 WordPress. All rights reserved.
- *
- * Licensed under GNU General Public License 2.0.
- * Some rights reserved. See license.txt
- */
-
 #import "MediaBrowserViewController.h"
 #import "Blog.h"
 #import "MediaBrowserCell.h"
@@ -427,6 +418,7 @@ NSString *const MediaFeaturedImageSelectedNotification = @"MediaFeaturedImageSel
     } else if (cell.media.remoteStatus == MediaRemoteStatusLocal || cell.media.remoteStatus == MediaRemoteStatusSync) {
         if (_selectingFeaturedImage) {
             [self.post setFeaturedImage:cell.media];
+            [WPMobileStats incrementPeopleAndSuperProperty:StatsSuperPropertyNumberOfFeaturedImagesAssignedToPosts];
             [[NSNotificationCenter defaultCenter] postNotificationName:MediaFeaturedImageSelectedNotification object:cell.media];
             [self.navigationController popViewControllerAnimated:YES];
         } else if (_selectingMediaForPost) {

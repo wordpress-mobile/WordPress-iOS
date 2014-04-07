@@ -1,8 +1,3 @@
-//
-//  InlineComposeView.h
-//  WordPress
-//
-
 #import <UIKit/UIKit.h>
 
 @class InlineComposeView;

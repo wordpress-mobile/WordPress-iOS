@@ -1,11 +1,3 @@
-//
-//  NotificationsViewController.m
-//  WordPress
-//
-//  Created by Beau Collins on 11/05/12.
-//  Copyright (c) 2012 WordPress. All rights reserved.
-//
-
 #import "NotificationsViewController.h"
 #import "NotificationsCommentDetailViewController.h"
 #import "NotificationsFollowDetailViewController.h"
@@ -22,12 +14,13 @@
 #import "NotificationSettingsViewController.h"
 #import "NotificationsBigBadgeViewController.h"
 #import "NoteService.h"
+#import "AccountService.h"
+#import "ContextManager.h"
 
 #import "ReaderPost.h"
 #import "ReaderPostDetailViewController.h"
 #import "ContextManager.h"
 
-NSString * const NotificationsLastSyncDateKey       = @"NotificationsLastSyncDate";
 NSString * const NotificationsJetpackInformationURL = @"http://jetpack.me/about/";
 
 @interface NotificationsViewController ()
@@ -106,7 +99,11 @@ typedef void (^NotificationsLoadPostBlock)(BOOL success, ReaderPost *post);
 
 - (BOOL)showJetpackConnectMessage
 {
-    return [WPAccount defaultWordPressComAccount] == nil;
+    NSManagedObjectContext *context = [[ContextManager sharedInstance] mainContext];
+    AccountService *accountService = [[AccountService alloc] initWithManagedObjectContext:context];
+    WPAccount *defaultAccount = [accountService defaultWordPressComAccount];
+
+    return defaultAccount == nil;
 }
 
 - (void)dealloc
@@ -155,6 +152,7 @@ typedef void (^NotificationsLoadPostBlock)(BOOL success, ReaderPost *post);
     if (!_viewHasAppeared) {
         _viewHasAppeared = YES;
         [WPMobileStats incrementProperty:StatsPropertyNotificationsOpened forEvent:StatsEventAppClosed];
+        [WPMobileStats incrementPeopleAndSuperProperty:StatsSuperPropertyNumberOfTimesOpenedNotifications];
     }
     
     _isPushingViewController = NO;
@@ -199,18 +197,16 @@ typedef void (^NotificationsLoadPostBlock)(BOOL success, ReaderPost *post);
     [noteService refreshUnreadNotes];
 }
 
-- (void)updateSyncDate
+- (void)updateLastSeenTime
 {
     // get the most recent note
-    NSArray *notes = self.resultsController.fetchedObjects;
-    if ([notes count] > 0) {
-        Note *note = [notes objectAtIndex:0];
-        [[[WPAccount defaultWordPressComAccount] restApi] updateNoteLastSeenTime:note.timestamp success:nil failure:nil];
+    Note *note = [self.resultsController.fetchedObjects firstObject];
+    if (note) {
+        NSManagedObjectContext *context = [[ContextManager sharedInstance] mainContext];
+        AccountService *accountService = [[AccountService alloc] initWithManagedObjectContext:context];
+        WPAccount *defaultAccount = [accountService defaultWordPressComAccount];
+        [[defaultAccount restApi] updateNoteLastSeenTime:note.timestamp success:nil failure:nil];
     }
-
-    NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
-    [defaults setObject:[NSDate date] forKey:NotificationsLastSyncDateKey];
-    [defaults synchronize];
 }
 
 - (void)pruneOldNotes
@@ -282,6 +278,7 @@ typedef void (^NotificationsLoadPostBlock)(BOOL success, ReaderPost *post);
     BOOL hasDetailView = [self noteHasDetailView:note];
     if (hasDetailView) {
         [WPMobileStats incrementProperty:StatsPropertyNotificationsOpenedDetails forEvent:StatsEventAppClosed];
+        [WPMobileStats incrementPeopleAndSuperProperty:StatsSuperPropertyNumberOfTimesOpenedNotificationDetails];
 
         _isPushingViewController = YES;
         
@@ -374,7 +371,8 @@ typedef void (^NotificationsLoadPostBlock)(BOOL success, ReaderPost *post);
 
 - (NSDate *)lastSyncDate
 {
-    return [[NSUserDefaults standardUserDefaults] objectForKey:NotificationsLastSyncDateKey];
+    // Force sync everytime: this app becomes visible + becomes active!
+    return [NSDate distantPast];
 }
 
 - (NSFetchRequest *)fetchRequest
@@ -406,7 +404,11 @@ typedef void (^NotificationsLoadPostBlock)(BOOL success, ReaderPost *post);
 
 - (BOOL)userCanRefresh
 {
-    return [WPAccount defaultWordPressComAccount] != nil;
+    NSManagedObjectContext *context = [[ContextManager sharedInstance] mainContext];
+    AccountService *accountService = [[AccountService alloc] initWithManagedObjectContext:context];
+    WPAccount *defaultAccount = [accountService defaultWordPressComAccount];
+
+    return defaultAccount != nil;
 }
 
 - (void)syncItemsViaUserInteraction:(BOOL)userInteraction success:(void (^)())success failure:(void (^)(NSError *error))failure
@@ -415,20 +417,14 @@ typedef void (^NotificationsLoadPostBlock)(BOOL success, ReaderPost *post);
         [self pruneOldNotes];
     }
     
-    NSNumber *timestamp;
-    NSArray *notes = [self.resultsController fetchedObjects];
-    if (userInteraction == NO && [notes count] > 0) {
-        Note *note = [notes objectAtIndex:0];
-        timestamp = note.timestamp;
-    } else {
-        timestamp = nil;
-    }
+    Note *note = [[self.resultsController fetchedObjects] firstObject];
+    NSNumber *timestamp = note.timestamp ?: nil;
     
     NoteService *noteService = [[NoteService alloc] initWithManagedObjectContext:self.resultsController.managedObjectContext];
     [noteService fetchNotificationsSince:timestamp success:^{
         [UIApplication sharedApplication].applicationIconBadgeNumber = 0;
 
-        [self updateSyncDate];
+        [self updateLastSeenTime];
         if (success) {
             success();
         }

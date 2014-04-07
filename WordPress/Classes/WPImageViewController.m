@@ -1,11 +1,3 @@
-//
-//  WPImageViewController.m
-//  WordPress
-//
-//  Created by Eric J on 5/10/13.
-//  Copyright (c) 2013 WordPress. All rights reserved.
-//
-
 #import "WPImageViewController.h"
 #import "WordPressAppDelegate.h"
 

@@ -1,11 +1,3 @@
-//
-//  WPNoResultsView.h
-//  WordPress
-//
-//  Created by Eric Johnson on 8/30/12.
-//  Copyright (c) 2012 WordPress. All rights reserved.
-//
-
 #import <UIKit/UIKit.h>
 
 @class WPNoResultsView;

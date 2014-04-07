@@ -1,11 +1,3 @@
-//
-//  BlogListViewController.m
-//  WordPress
-//
-//  Created by Michael Johnston on 11/8/13.
-//  Copyright (c) 2013 WordPress. All rights reserved.
-//
-
 #import "BlogListViewController.h"
 #import "WordPressAppDelegate.h"
 #import "UIImageView+Gravatar.h"
@@ -19,6 +11,7 @@
 #import "Blog.h"
 #import "WPAccount.h"
 #import "WPTableViewSectionHeaderView.h"
+#import "AccountService.h"
 
 static NSString *const AddSiteCellIdentifier = @"AddSiteCell";
 static NSString *const BlogCellIdentifier = @"BlogCell";
@@ -104,7 +97,11 @@ CGFloat const blavatarImageSize = 50.f;
 
     // Trigger the blog sync when loading the view, which should more or less be once when the app launches
     // We could do this on the app delegate, but the blogs list feels like a better place for it.
-    [[WPAccount defaultWordPressComAccount] syncBlogsWithSuccess:nil failure:nil];
+    NSManagedObjectContext *context = [[ContextManager sharedInstance] mainContext];
+    AccountService *accountService = [[AccountService alloc] initWithManagedObjectContext:context];
+    WPAccount *defaultAccount = [accountService defaultWordPressComAccount];
+
+    [accountService syncBlogsForAccount:defaultAccount success:nil failure:nil];
 }
 
 - (void)viewWillAppear:(BOOL)animated {
@@ -263,7 +260,11 @@ CGFloat const blavatarImageSize = 50.f;
                 [self setEditing:NO animated:NO];
 
                 // No blogs and  signed out, show NUX
-                if (![WPAccount defaultWordPressComAccount]) {
+                NSManagedObjectContext *context = [[ContextManager sharedInstance] mainContext];
+                AccountService *accountService = [[AccountService alloc] initWithManagedObjectContext:context];
+                WPAccount *defaultAccount = [accountService defaultWordPressComAccount];
+                
+                if (!defaultAccount) {
                     [[WordPressAppDelegate sharedWordPressApplicationDelegate] showWelcomeScreenIfNeededAnimated:YES];
                 }
             });
@@ -368,7 +369,12 @@ CGFloat const blavatarImageSize = 50.f;
         [self setEditing:NO animated:NO];
         [WPMobileStats trackEventForWPCom:StatsEventSettingsClickedAddBlog];
         LoginViewController *loginViewController = [[LoginViewController alloc] init];
-        if (![WPAccount defaultWordPressComAccount]) {
+        
+        NSManagedObjectContext *context = [[ContextManager sharedInstance] mainContext];
+        AccountService *accountService = [[AccountService alloc] initWithManagedObjectContext:context];
+        WPAccount *defaultAccount = [accountService defaultWordPressComAccount];
+
+        if (!defaultAccount) {
             loginViewController.prefersSelfHosted = YES;
         }
         loginViewController.dismissBlock = ^{
@@ -478,7 +484,11 @@ CGFloat const blavatarImageSize = 50.f;
 
 - (NSString *)controller:(NSFetchedResultsController *)controller sectionIndexTitleForSectionName:(NSString *)sectionName {
     if ([sectionName isEqualToString:@"1"]) {
-        return [NSString stringWithFormat:NSLocalizedString(@"%@'s sites", @"Section header for WordPress.com blogs"), [[WPAccount defaultWordPressComAccount] username]];
+        NSManagedObjectContext *context = [[ContextManager sharedInstance] mainContext];
+        AccountService *accountService = [[AccountService alloc] initWithManagedObjectContext:context];
+        WPAccount *defaultAccount = [accountService defaultWordPressComAccount];
+
+        return [NSString stringWithFormat:NSLocalizedString(@"%@'s sites", @"Section header for WordPress.com blogs"), [defaultAccount username]];
     }
     return NSLocalizedString(@"Self Hosted", @"Section header for self hosted blogs");
 }

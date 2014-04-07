@@ -1,11 +1,3 @@
-//
-//  Media.h
-//  WordPress
-//
-//  Created by Chris Boyd on 6/23/10.
-//  
-//
-
 #import <CoreData/CoreData.h>
 #import "Blog.h"
 #import "AbstractPost.h"

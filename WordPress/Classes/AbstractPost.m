@@ -1,11 +1,3 @@
-//
-//  AbstractPost
-//  WordPress
-//
-//  Created by Jorge Bernal on 12/27/10.
-//  Copyright 2010 WordPress. All rights reserved.
-//
-
 #import "AbstractPost.h"
 #import "Media.h"
 #import "ContextManager.h"
@@ -280,6 +272,47 @@
     if (![self.media isEqual:original.media])
         return YES;
 	
+    return NO;
+}
+
+- (BOOL)hasPhoto
+{
+    if ([self.media count] == 0)
+        return false;
+    
+    if (self.featuredImage != nil)
+        return true;
+    
+    for (Media *media in self.media) {
+        if (media.mediaType == MediaTypeImage || media.mediaType == MediaTypeFeatured) {
+            return true;
+        }
+    }
+    
+    return false;
+}
+
+- (BOOL)hasVideo
+{
+    if ([self.media count] == 0)
+        return false;
+    
+    for (Media *media in self.media) {
+        if (media.mediaType ==  MediaTypeVideo) {
+            return true;
+        }
+    }
+    
+    return false;
+}
+
+- (BOOL)hasCategories
+{
+    return NO;
+}
+
+- (BOOL)hasTags
+{
     return NO;
 }
 

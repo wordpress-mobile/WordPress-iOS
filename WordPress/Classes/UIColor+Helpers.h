@@ -1,11 +1,3 @@
-//
-//  UIColor+Helpers.h
-//  WordPress
-//
-//  Created by Danilo Ercoli on 07/06/12.
-//  Copyright (c) 2012 WordPress. All rights reserved.
-//
-
 #import <UIKit/UIKit.h>
 
 @interface UIColor (Helpers)
