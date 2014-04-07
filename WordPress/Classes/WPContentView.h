@@ -35,6 +35,7 @@
 - (void)removeActionButton:(UIButton *)button;
 - (void)updateActionButtons;
 - (void)refreshMediaLayout;
+- (CGFloat)topMarginHeight;
 - (void)reset;
 - (CGFloat)layoutSubviewsFromY:(CGFloat)yPos;
 

@@ -237,7 +237,7 @@ const CGFloat RPVControlButtonBorderSize = 0.0f;
 
 - (void)configureContentView:(id<WPContentViewProvider>)contentProvider {
     self.bylineLabel.text = [contentProvider authorForDisplay];
-    
+
     if ([[contentProvider blogNameForDisplay] length] > 0) {
         [self.byButton setEnabled:YES];
         [self.byButton setHidden:NO];
@@ -282,9 +282,10 @@ const CGFloat RPVControlButtonBorderSize = 0.0f;
 
 - (CGFloat)layoutAttributionAt:(CGFloat)yPosition {
     CGFloat contentWidth = CGRectGetWidth(self.frame);
-    self.byView.frame = CGRectMake(0.0f, 0.0f, contentWidth, RPVAuthorViewHeight + RPVAuthorPadding * 2);
+    self.byView.frame = CGRectMake(0.0f, [self topMarginHeight], contentWidth, RPVAuthorViewHeight + RPVAuthorPadding * 2);
 
     CGFloat bylineHeight = 18.0f;
+
     CGFloat bylineX = RPVAvatarSize + RPVAuthorPadding + RPVHorizontalInnerPadding;
     self.bylineLabel.frame = CGRectMake(bylineX, RPVAuthorPadding - 2, contentWidth - bylineX, bylineHeight);
     self.byButton.frame = CGRectMake(bylineX, CGRectGetMinY(self.bylineLabel.frame) + bylineHeight, contentWidth - bylineX, bylineHeight);
@@ -431,6 +432,11 @@ const CGFloat RPVControlButtonBorderSize = 0.0f;
         [self.textContentView relayoutText];
         [self setNeedsLayout];
     }
+}
+
+// Subclasses can override this to provide margin at the top of the view. See CommentView.
+- (CGFloat)topMarginHeight {
+    return 0.0f;
 }
 
 - (BOOL)updateMediaLayout:(ReaderMediaView *)imageView {

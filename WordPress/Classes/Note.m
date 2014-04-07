@@ -58,6 +58,10 @@
     }
 }
 
+- (BOOL)isMatcher {
+    return [self.type isEqualToString:@"automattcher"];
+}
+
 - (BOOL)isComment {
     return [self.type isEqualToString:@"comment"];
 }
@@ -94,6 +98,18 @@
         _noteData = [NSJSONSerialization JSONObjectWithData:self.payload options:NSJSONReadingMutableContainers error:nil];
     }
     return _noteData;
+}
+
+- (NSDictionary *)meta {
+    return [self.noteData dictionaryForKey:@"meta"];
+}
+
+- (NSNumber *)metaPostID {
+    return [[self.meta dictionaryForKey:@"ids"] numberForKey:@"post"];
+}
+
+- (NSNumber *)metaSiteID {
+    return [[self.meta dictionaryForKey:@"ids"] numberForKey:@"site"];
 }
 
 - (NSArray *)bodyItems {

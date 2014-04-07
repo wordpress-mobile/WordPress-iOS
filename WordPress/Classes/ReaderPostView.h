@@ -15,5 +15,6 @@
 @property (nonatomic, weak) id <ReaderPostViewDelegate> delegate;
 
 - (void)setAvatar:(UIImage *)avatar;
+- (void)setAvatarWithURL:(NSURL *)avatarURL;
 
 @end
