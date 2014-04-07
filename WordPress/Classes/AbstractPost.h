@@ -1,11 +1,3 @@
-//
-//  AbstractPost.h
-//  WordPress
-//
-//  Created by Jorge Bernal on 12/27/10.
-//  Copyright 2010 WordPress. All rights reserved.
-//
-
 #import <Foundation/Foundation.h>
 #import <CoreData/CoreData.h>
 #import "BasePost.h"
@@ -31,6 +23,10 @@
 - (BOOL)isOriginal;
 - (void)cloneFrom:(AbstractPost *)source;
 - (BOOL)hasSiteSpecificChanges;
+- (BOOL)hasPhoto;
+- (BOOL)hasVideo;
+- (BOOL)hasCategories;
+- (BOOL)hasTags;
 
 + (AbstractPost *)newDraftForBlog:(Blog *)blog;
 + (NSString *const)remoteUniqueIdentifier;

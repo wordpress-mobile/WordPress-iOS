@@ -1,11 +1,3 @@
-//
-//  SelectWPComLanguageViewController.m
-//  WordPress
-//
-//  Created by Sendhil Panchadsaram on 4/10/13.
-//  Copyright (c) 2013 WordPress. All rights reserved.
-//
-
 #import "SelectWPComLanguageViewController.h"
 #import "WPComLanguages.h"
 

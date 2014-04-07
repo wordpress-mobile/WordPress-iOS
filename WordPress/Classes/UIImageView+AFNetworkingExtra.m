@@ -1,11 +1,3 @@
-//
-//  UIImageView+AFNetworkingExtra.m
-//  WordPress
-//
-//  Created by Eric J on 6/17/13.
-//  Copyright (c) 2013 WordPress. All rights reserved.
-//
-
 #import "UIImageView+AFNetworkingExtra.h"
 
 @implementation UIImageView (AFNetworkingExtra)

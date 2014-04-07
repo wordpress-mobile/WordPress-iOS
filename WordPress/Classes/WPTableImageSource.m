@@ -1,11 +1,3 @@
-//
-//  WPTableImageSource.m
-//  WordPress
-//
-//  Created by Jorge Bernal on 6/19/13.
-//  Copyright (c) 2013 WordPress. All rights reserved.
-//
-
 #import <MGImageUtilities/UIImage+ProportionalFill.h>
 
 #import "WPTableImageSource.h"

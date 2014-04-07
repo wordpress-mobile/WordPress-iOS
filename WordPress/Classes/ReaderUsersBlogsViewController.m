@@ -1,17 +1,11 @@
-//
-//  ReaderUsersBlogsViewController.m
-//  WordPress
-//
-//  Created by Eric J on 6/6/13.
-//  Copyright (c) 2013 WordPress. All rights reserved.
-//
-
 #import "ReaderUsersBlogsViewController.h"
 #import "AddUsersBlogCell.h"
 #import "WordPressAppDelegate.h"
 #import "WPNUXUtility.h"
 #import "WPAccount.h"
 #import "Blog.h"
+#import "ContextManager.h"
+#import "AccountService.h"
 
 @interface ReaderUsersBlogsViewController ()<UITableViewDataSource, UITableViewDelegate>
 
@@ -30,8 +24,12 @@
 - (id)init {
 	self = [super init];
 	if (self) {
-		self.blogs = [[WPAccount defaultWordPressComAccount] visibleBlogs];
-		self.primaryBlogId = [[NSUserDefaults standardUserDefaults] objectForKey:@"wpcom_users_prefered_blog_id"];
+        NSManagedObjectContext *context = [[ContextManager sharedInstance] mainContext];
+        AccountService *accountService = [[AccountService alloc] initWithManagedObjectContext:context];
+        WPAccount *defaultAccount = [accountService defaultWordPressComAccount];
+
+		_blogs = [defaultAccount visibleBlogs];
+		_primaryBlogId = [[NSUserDefaults standardUserDefaults] objectForKey:@"wpcom_users_prefered_blog_id"];
 	}
 	return self;
 }
