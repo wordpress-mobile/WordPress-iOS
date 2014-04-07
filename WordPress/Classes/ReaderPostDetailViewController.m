@@ -614,6 +614,7 @@ typedef enum {
     ReaderPost *post = postView.post;
 	[post toggleLikedWithSuccess:^{
         if ([post.isLiked boolValue]) {
+            [WPStats track:WPStatReaderLikedArticle];
             [WPMobileStats trackEventForWPCom:StatsEventReaderLikedPost];
             [WPMobileStats incrementPeopleAndSuperProperty:StatsSuperPropertyNumberOfItemsLikedInReader];
         } else {
@@ -1027,6 +1028,7 @@ typedef enum {
 #pragma mark - ReaderCommentPublisherDelegate methods
 
 - (void)commentPublisherDidPublishComment:(ReaderCommentPublisher *)composer {
+    [WPStats track:WPStatReaderCommentedOnArticle];
     [self.inlineComposeView dismissComposer];
     [self syncWithUserInteraction:NO];
 }

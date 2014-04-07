@@ -173,6 +173,7 @@ NSString * const RPVCDisplayedNativeFriendFinder = @"DisplayedNativeFriendFinder
     }
 
     if (!_viewHasAppeared) {
+        [WPStats track:WPStatReaderAccessedReader];
 	    [WPMobileStats trackEventForWPCom:StatsEventReaderOpened properties:[self categoryPropertyForStats]];
 	    [WPMobileStats pingWPComStatsEndpoint:@"home_page"];
         [WPMobileStats incrementPeopleAndSuperProperty:StatsSuperPropertyNumberOfTimesOpenedReader];
@@ -370,6 +371,7 @@ NSString * const RPVCDisplayedNativeFriendFinder = @"DisplayedNativeFriendFinder
     ReaderPost *post = postView.post;
 	[post toggleLikedWithSuccess:^{
         if ([post.isLiked boolValue]) {
+            [WPStats track:WPStatReaderLikedArticle];
             [WPMobileStats trackEventForWPCom:StatsEventReaderLikedPost];
             [WPMobileStats incrementPeopleAndSuperProperty:StatsSuperPropertyNumberOfItemsLikedInReader];
         } else {
@@ -469,6 +471,7 @@ NSString * const RPVCDisplayedNativeFriendFinder = @"DisplayedNativeFriendFinder
 #pragma mark - ReaderCommentPublisherDelegate Methods
 
 - (void)commentPublisherDidPublishComment:(ReaderCommentPublisher *)publisher {
+    [WPStats track:WPStatReaderCommentedOnArticle];
     publisher.post.dateCommentsSynced = nil;
     [self.inlineComposeView dismissComposer];
 }
@@ -781,6 +784,7 @@ NSString * const RPVCDisplayedNativeFriendFinder = @"DisplayedNativeFriendFinder
 								 }
 							 }];
     
+    [WPStats track:WPStatReaderInfiniteScroll withProperties:[self categoryPropertyForStats]];
     [WPMobileStats trackEventForWPCom:StatsEventReaderInfiniteScroll properties:[self categoryPropertyForStats]];
 }
 
@@ -865,6 +869,7 @@ NSString * const RPVCDisplayedNativeFriendFinder = @"DisplayedNativeFriendFinder
     
     [self.navigationController pushViewController:self.detailController animated:YES];
     
+    [WPStats track:WPStatReaderOpenedArticle];
     [WPMobileStats trackEventForWPCom:StatsEventReaderOpenedArticleDetails];
     [WPMobileStats incrementPeopleAndSuperProperty:StatsSuperPropertyNumberOfItemsOpenedInReader];
     [WPMobileStats pingWPComStatsEndpoint:@"details_page"];
@@ -916,6 +921,7 @@ NSString * const RPVCDisplayedNativeFriendFinder = @"DisplayedNativeFriendFinder
     }
 
     if ([self isCurrentCategoryFreshlyPressed]) {
+        [WPStats track:WPStatReaderLoadedFreshlyPressed];
         [WPMobileStats trackEventForWPCom:StatsEventReaderSelectedFreshlyPressedTopic];
         [WPMobileStats pingWPComStatsEndpoint:@"freshly"];
     } else {
@@ -945,7 +951,7 @@ NSString * const RPVCDisplayedNativeFriendFinder = @"DisplayedNativeFriendFinder
 #pragma mark - Utility
 
 - (BOOL)isCurrentCategoryFreshlyPressed {
-    return [[self currentCategory] isEqualToString:@"freshly-pressed"];
+    return [[self currentCategory] rangeOfString:@"freshly-pressed"].location != NSNotFound;
 }
 
 - (NSString *)currentCategory {
