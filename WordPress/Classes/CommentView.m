@@ -4,6 +4,8 @@
 #import "NSAttributedString+HTML.h"
 #import "DTCoreText.h"
 
+const CGFloat CommentViewHeaderLabelVerticalInset = 10.0f;
+
 @interface CommentView()
 
 @property (nonatomic, strong) DTAttributedLabel *headerLabel;
@@ -19,7 +21,7 @@
         _headerLabel = [[DTAttributedLabel alloc] initWithFrame:CGRectMake(0.0f, 0.0f, frame.size.width, 0.0f)];
         _headerLabel.autoresizingMask = UIViewAutoresizingFlexibleWidth;
         _headerLabel.backgroundColor = [WPStyleGuide itsEverywhereGrey];
-        _headerLabel.edgeInsets = UIEdgeInsetsMake(10.0f, RPVHorizontalInnerPadding, 10.0f, RPVHorizontalInnerPadding);
+        _headerLabel.edgeInsets = UIEdgeInsetsMake(CommentViewHeaderLabelVerticalInset, RPVHorizontalInnerPadding, CommentViewHeaderLabelVerticalInset, RPVHorizontalInnerPadding);
         _headerLabel.numberOfLines = 0;
         [self addSubview:_headerLabel];
         
@@ -68,7 +70,7 @@
         DTCoreTextLayoutFrame *layoutFrame = [layouter layoutFrameWithRect:maxRect range:entireString];
         CGSize sizeNeeded = layoutFrame.frame.size;
         CGRect frame = self.headerLabel.frame;
-        frame.size.height = sizeNeeded.height + 20.0f;
+        frame.size.height = sizeNeeded.height + (2 * CommentViewHeaderLabelVerticalInset);
         [self.headerLabel setFrame:frame];
     }
     
