@@ -856,6 +856,7 @@ CGFloat const EPVCTextViewTopPadding = 7.0f;
     }
     
     if ([buttonTitle isEqualToString:NSLocalizedString(@"Publish", nil)]) {
+        [WPStats track:WPStatEditorPublishedPost];
         [WPMobileStats incrementPeopleAndSuperProperty:StatsSuperPropertyNumberOfPostsPublished];
         
         if ([self.post hasPhoto]) {
@@ -874,6 +875,7 @@ CGFloat const EPVCTextViewTopPadding = 7.0f;
             [WPMobileStats incrementPeopleAndSuperProperty:StatsSuperPropertyNumberOfPostsWithTags];
         }
     } else {
+        [WPStats track:WPStatEditorUpdatedPost];
         [WPMobileStats incrementPeopleAndSuperProperty:StatsSuperPropertyNumberOfPostsUpdated];
     }
     
