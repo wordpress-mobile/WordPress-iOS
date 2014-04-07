@@ -16,7 +16,6 @@
 {
     self = [super initWithFrame:frame];
     if (self) {
-        
         _headerLabel = [[DTAttributedLabel alloc] initWithFrame:CGRectMake(0.0f, 0.0f, frame.size.width, 0.0f)];
         _headerLabel.autoresizingMask = UIViewAutoresizingFlexibleWidth;
         _headerLabel.backgroundColor = [WPStyleGuide itsEverywhereGrey];
