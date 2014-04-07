@@ -3,7 +3,7 @@
 
 @class Category;
 
-@interface CategoryService : NSObject <BaseLocalService>
+@interface CategoryService : NSObject <LocalService>
 
 - (BOOL)existsName:(NSString *)name forBlogObjectID:(NSManagedObjectID *)blogObjectID withParentId:(NSNumber *)parentId;
 

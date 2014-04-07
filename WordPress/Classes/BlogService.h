@@ -3,7 +3,7 @@
 
 @class Blog, WPAccount;
 
-@interface BlogService : NSObject <BaseLocalService>
+@interface BlogService : NSObject <LocalService>
 
 
 - (void)flagBlogAsLastUsed:(Blog *)blog;
