@@ -15,7 +15,7 @@ typedef NS_ENUM(NSUInteger, WPStat) {
     WPStatReaderFilteredByReaderTag,
     WPStatReaderLoadedFreshlyPressed,
     WPStatReaderCommentedOnArticle,
-    WPStatStatsAccessStats,
+    WPStatStatsAccessedStats,
     WPStatEditorCreatePost,
     WPStatEditorAddPhotoViaLocalLibrary,
     WPStatEditorAddPhotoViaWPMediaLibrary,
