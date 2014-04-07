@@ -71,7 +71,7 @@ NSString *const LastUsedBlogURLDefaultsKey = @"LastUsedBlogURLDefaultsKey";
     [fetchRequest setPredicate:predicate];
     fetchRequest.sortDescriptors = @[[NSSortDescriptor sortDescriptorWithKey:@"blogName" ascending:YES]];
     NSError *error = nil;
-    NSArray *results = [[[ContextManager sharedInstance] mainContext] executeFetchRequest:fetchRequest error:&error];
+    NSArray *results = [self.managedObjectContext executeFetchRequest:fetchRequest error:&error];
     if (error) {
         DDLogError(@"Couldn't fetch blogs: %@", error);
         return nil;
@@ -112,8 +112,25 @@ NSString *const LastUsedBlogURLDefaultsKey = @"LastUsedBlogURLDefaultsKey";
                          optionsSuccess:[self optionsHandlerWithBlog:blog completionHandler:nil]
                      postFormatsSuccess:[self postFormatsHandlerWithBlog:blog completionHandler:nil]
                            postsSuccess:[self postsHandlerWithBlog:blog loadMore:NO completionHandler:nil]
-                         overallSuccess:success
-                                failure:failure];
+                         overallSuccess:^{
+                             [self.managedObjectContext performBlockAndWait:^{
+                                 [[ContextManager sharedInstance] saveContext:self.managedObjectContext];
+                             }];
+                             
+                             if (success) {
+                                 success();
+                             }
+                         }
+                                failure:^(NSError *error) {
+                                    blog.isSyncingComments = NO;
+                                    blog.isSyncingMedia = NO;
+                                    blog.isSyncingPages = NO;
+                                    blog.isSyncingPosts = NO;
+                                    
+                                    if (failure) {
+                                        failure(error);
+                                    }
+                                }];
 }
 
 - (void)syncPostsForBlog:(Blog *)blog success:(void (^)())success failure:(void (^)(NSError *error))failure loadMore:(BOOL)more
@@ -124,12 +141,28 @@ NSString *const LastUsedBlogURLDefaultsKey = @"LastUsedBlogURLDefaultsKey";
     }
     blog.isSyncingPosts = YES;
     
+    // TODO :: Push batch size into remote since it's not a local constraint and could be remote implementation dependent
+    NSUInteger postBatchSize = 40;
+    NSUInteger postsToRequest = postBatchSize;
+    if (more) {
+        postsToRequest = MAX([blog.posts count], postBatchSize);
+        if ([blog.hasOlderPosts boolValue]) {
+            postsToRequest += postBatchSize;
+        }
+    }
+    
     BlogRemoteService *remote = [[BlogRemoteService alloc] initWithRemoteApi:blog.api];
     [remote syncPostsForBlog:blog
-                   batchSize:40
+                   batchSize:postsToRequest
                     loadMore:more
                      success:[self postsHandlerWithBlog:blog loadMore:more completionHandler:success]
-                     failure:failure];
+                     failure:^(NSError *error) {
+                         blog.isSyncingPosts = NO;
+                         
+                         if (failure) {
+                             failure(error);
+                         }
+                     }];
 }
 
 - (void)syncPagesForBlog:(Blog *)blog success:(void (^)())success failure:(void (^)(NSError *error))failure loadMore:(BOOL)more
@@ -140,12 +173,29 @@ NSString *const LastUsedBlogURLDefaultsKey = @"LastUsedBlogURLDefaultsKey";
     }
     blog.isSyncingPages = YES;
     
+    // TODO :: Push batch size into remote since it's not a local constraint and could be remote implementation dependent
+    NSUInteger pageBatchSize = 40;
+    NSUInteger pagesToRequest = pageBatchSize;
+    NSUInteger syncCount = [self countForSyncedPostsWithEntityName:@"Page" forBlog:blog];
+    if (more) {
+        pagesToRequest = MAX(syncCount, pageBatchSize);
+        if ([blog.hasOlderPages boolValue]) {
+            pagesToRequest += pageBatchSize;
+        }
+    }
+    
     BlogRemoteService *remote = [[BlogRemoteService alloc] initWithRemoteApi:blog.api];
     [remote syncPagesForBlog:blog
-                   batchSize:40
+                   batchSize:pagesToRequest
                     loadMore:more
-                     success:[self pagesHandlerWithBlog:blog loadMore:more completionHandler:success]
-                     failure:failure];
+                     success:[self pagesHandlerWithBlog:blog loadMore:more syncCount:syncCount completionHandler:success]
+                     failure:^(NSError *error) {
+                         blog.isSyncingPages = NO;
+                         
+                         if (failure) {
+                             failure(error);
+                         }
+                     }];
 }
 
 - (void)syncCategoriesForBlog:(Blog *)blog success:(void (^)())success failure:(void (^)(NSError *error))failure
@@ -169,7 +219,15 @@ NSString *const LastUsedBlogURLDefaultsKey = @"LastUsedBlogURLDefaultsKey";
     blog.isSyncingComments = YES;
     
     BlogRemoteService *remote = [[BlogRemoteService alloc] initWithRemoteApi:blog.api];
-    [remote syncCommentsForBlog:blog success:[self commentsHandlerWithBlog:blog completionHandler:success] failure:failure];
+    [remote syncCommentsForBlog:blog
+                        success:[self commentsHandlerWithBlog:blog completionHandler:success]
+                        failure:^(NSError *error) {
+                            blog.isSyncingComments = NO;
+                            
+                            if (failure) {
+                                failure(error);
+                            }
+                        }];
 }
 
 - (void)syncMediaLibraryForBlog:(Blog *)blog success:(void (^)())success failure:(void (^)(NSError *error))failure
@@ -181,7 +239,15 @@ NSString *const LastUsedBlogURLDefaultsKey = @"LastUsedBlogURLDefaultsKey";
     blog.isSyncingMedia = YES;
     
     BlogRemoteService *remote = [[BlogRemoteService alloc] initWithRemoteApi:blog.api];
-    [remote syncMediaLibraryForBlog:blog success:[self mediaHandlerWithBlog:blog completionHandler:success] failure:failure];
+    [remote syncMediaLibraryForBlog:blog
+                            success:[self mediaHandlerWithBlog:blog completionHandler:success]
+                            failure:^(NSError *error) {
+                                blog.isSyncingMedia = NO;
+                                
+                                if (failure) {
+                                    failure(error);
+                                }
+                            }];
 }
 
 - (void)syncPostFormatsForBlog:(Blog *)blog success:(void (^)())success failure:(void (^)(NSError *error))failure
@@ -198,11 +264,28 @@ NSString *const LastUsedBlogURLDefaultsKey = @"LastUsedBlogURLDefaultsKey";
                        commentsSuccess:[self commentsHandlerWithBlog:blog completionHandler:nil]
                           mediaSuccess:[self mediaHandlerWithBlog:blog completionHandler:nil]
                         optionsSuccess:[self optionsHandlerWithBlog:blog completionHandler:nil]
-                          pagesSuccess:[self pagesHandlerWithBlog:blog loadMore:NO completionHandler:nil]
+                          pagesSuccess:[self pagesHandlerWithBlog:blog loadMore:NO syncCount:0 completionHandler:nil]
                     postFormatsSuccess:[self postFormatsHandlerWithBlog:blog completionHandler:nil]
                           postsSuccess:[self postsHandlerWithBlog:blog loadMore:NO completionHandler:nil]
-                        overallSuccess:success
-                               failure:failure];
+                        overallSuccess:^{
+                            [self.managedObjectContext performBlockAndWait:^{
+                                [[ContextManager sharedInstance] saveContext:self.managedObjectContext];
+                            }];
+
+                            if (success) {
+                                success();
+                            }
+                        }
+                               failure:^(NSError *error) {
+                                   blog.isSyncingComments = NO;
+                                   blog.isSyncingMedia = NO;
+                                   blog.isSyncingPages = NO;
+                                   blog.isSyncingPosts = NO;
+                                   
+                                   if (failure) {
+                                       failure(error);
+                                   }
+                               }];
 }
 
 - (void)checkVideoPressEnabledForBlog:(Blog *)blog success:(void (^)(BOOL enabled))success failure:(void (^)(NSError *error))failure
@@ -297,8 +380,10 @@ NSString *const LastUsedBlogURLDefaultsKey = @"LastUsedBlogURLDefaultsKey";
         if ([blog isDeleted] || blog.managedObjectContext == nil)
             return;
         
-        CategoryService *categoryService = [[CategoryService alloc] initWithManagedObjectContext:self.managedObjectContext];
-        [categoryService mergeNewCategories:categories forBlogObjectID:blog.objectID];
+        [self.managedObjectContext performBlockAndWait:^{
+            CategoryService *categoryService = [[CategoryService alloc] initWithManagedObjectContext:self.managedObjectContext];
+            [categoryService mergeNewCategories:categories forBlogObjectID:blog.objectID];
+        }];
 
         if (completion) {
             completion();
@@ -345,12 +430,16 @@ NSString *const LastUsedBlogURLDefaultsKey = @"LastUsedBlogURLDefaultsKey";
         float version = [[blog version] floatValue];
         if (version < [minimumVersion floatValue]) {
             if (blog.lastUpdateWarning == nil || [blog.lastUpdateWarning floatValue] < [minimumVersion floatValue]) {
-                // TODO :: Remove this from service layer
+                // TODO :: Remove UI call from service layer
                 [WPError showAlertWithTitle:NSLocalizedString(@"WordPress version too old", @"")
                                     message:[NSString stringWithFormat:NSLocalizedString(@"The site at %@ uses WordPress %@. We recommend to update to the latest version, or at least %@", @""), [blog hostname], [blog version], minimumVersion]];
                 blog.lastUpdateWarning = minimumVersion;
             }
         }
+        
+        [self.managedObjectContext performBlockAndWait:^{
+            [[ContextManager sharedInstance] saveContext:self.managedObjectContext];
+        }];
 
         if (completion) {
             completion();
@@ -358,18 +447,8 @@ NSString *const LastUsedBlogURLDefaultsKey = @"LastUsedBlogURLDefaultsKey";
     };
 }
 
-- (PagesHandler)pagesHandlerWithBlog:(Blog *)blog loadMore:(BOOL)more completionHandler:(void (^)(void))completion
+- (PagesHandler)pagesHandlerWithBlog:(Blog *)blog loadMore:(BOOL)more syncCount:(NSUInteger)syncCount completionHandler:(void (^)(void))completion
 {
-    NSUInteger pageBatchSize = 40;
-    NSUInteger pagesToRequest = pageBatchSize;
-    NSUInteger syncCount = [self countForSyncedPostsWithEntityName:@"Page" forBlog:blog];
-    if (more) {
-        pagesToRequest = MAX(syncCount, pageBatchSize);
-        if ([blog.hasOlderPages boolValue]) {
-            pagesToRequest += pageBatchSize;
-        }
-    }
-
     return ^void(NSArray *pages) {
         if ([blog isDeleted] || blog.managedObjectContext == nil)
             return;
@@ -423,15 +502,6 @@ NSString *const LastUsedBlogURLDefaultsKey = @"LastUsedBlogURLDefaultsKey";
 
 - (PostsHandler)postsHandlerWithBlog:(Blog *)blog loadMore:(BOOL)more completionHandler:(void (^)(void))completion
 {
-    NSUInteger postBatchSize = 40;
-    NSUInteger postsToRequest = postBatchSize;
-    if (more) {
-        postsToRequest = MAX([blog.posts count], postBatchSize);
-        if ([blog.hasOlderPosts boolValue]) {
-            postsToRequest += postBatchSize;
-        }
-    }
-    
     return ^void(NSArray *posts) {
         if ([blog isDeleted] || blog.managedObjectContext == nil)
             return;
