@@ -281,7 +281,7 @@
         NSAssert([responseObject isKindOfClass:[NSArray class]], @"Response should be an array.");
 
         if (success) {
-            success(success);
+            success(responseObject);
         }
     } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
         DDLogError(@"Error syncing posts (%@): %@", operation.request.URL, error);
