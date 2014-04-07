@@ -1896,7 +1896,7 @@
 		93027BB71758332300483FFD /* SupportViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SupportViewController.m; sourceTree = "<group>"; };
 		930284B318EAF79500CB0BF4 /* NoteService.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NoteService.h; sourceTree = "<group>"; };
 		930284B418EAF79500CB0BF4 /* NoteService.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NoteService.m; sourceTree = "<group>"; };
-		930284B618EAF7B600CB0BF4 /* BaseLocalService.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = BaseLocalService.h; sourceTree = "<group>"; };
+		930284B618EAF7B600CB0BF4 /* LocalService.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = LocalService.h; sourceTree = "<group>"; };
 		930284B718EB078800CB0BF4 /* NoteServiceRemote.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NoteServiceRemote.h; sourceTree = "<group>"; };
 		930284B818EB078900CB0BF4 /* NoteServiceRemote.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NoteServiceRemote.m; sourceTree = "<group>"; };
 		93069F54176237A4000C966D /* ActivityLogViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ActivityLogViewController.h; sourceTree = "<group>"; };
@@ -3373,19 +3373,19 @@
 				93C1147E18EC5DD500DAC95C /* AccountService.m */,
 				93C1148018EDA42500DAC95C /* AccountServiceRemote.h */,
 				93C1148118EDA42500DAC95C /* AccountServiceRemote.m */,
-				930284B618EAF7B600CB0BF4 /* BaseLocalService.h */,
+				93C1148618EF157500DAC95C /* BlogRemoteService.h */,
+				93C1148718EF157500DAC95C /* BlogRemoteService.m */,
 				93C1148318EDF6E100DAC95C /* BlogService.h */,
 				93C1148418EDF6E100DAC95C /* BlogService.m */,
 				93FA59DB18D88C1C001446BC /* CategoryService.h */,
 				93FA59DC18D88C1C001446BC /* CategoryService.m */,
 				93FA59DE18D8986D001446BC /* CategoryServiceRemote.h */,
 				93FA59DF18D8986D001446BC /* CategoryServiceRemote.m */,
+				930284B618EAF7B600CB0BF4 /* LocalService.h */,
 				930284B318EAF79500CB0BF4 /* NoteService.h */,
 				930284B418EAF79500CB0BF4 /* NoteService.m */,
 				930284B718EB078800CB0BF4 /* NoteServiceRemote.h */,
 				930284B818EB078900CB0BF4 /* NoteServiceRemote.m */,
-				93C1148618EF157500DAC95C /* BlogRemoteService.h */,
-				93C1148718EF157500DAC95C /* BlogRemoteService.m */,
 			);
 			name = Services;
 			sourceTree = "<group>";
