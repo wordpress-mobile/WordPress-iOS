@@ -6,6 +6,7 @@
 #import "Reachability.h"
 
 @class WPAccount;
+@class WordPressComApi;
 
 @interface Blog : NSManagedObject
 
@@ -90,6 +91,19 @@
 - (NSUInteger)numberOfPendingComments;
 - (NSDictionary *) getImageResizeDimensions;
 - (BOOL)supportsFeaturedImages;
+
+/**
+ Returns a REST API client if available
+
+ If the blog is a WordPress.com one or it has Jetpack it will return a REST API
+ client. Otherwise, the XML-RPC API should be used.
+
+ @warning this method doesn't know if a Jetpack blog has the JSON API disabled
+
+ @return a WordPressComApi object if available
+ */
+- (WordPressComApi *)restApi;
+- (NSNumber *)dotComID;
 
 #pragma mark - 
 

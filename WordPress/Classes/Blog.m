@@ -472,6 +472,10 @@ NSString *const LastUsedBlogURLDefaultsKey = @"LastUsedBlogURLDefaultsKey";
     return NO;
 }
 
+- (NSNumber *)dotComID {
+    return self.blogID;
+}
+
 #pragma mark -
 #pragma mark Synchronization
 
@@ -669,6 +673,15 @@ NSString *const LastUsedBlogURLDefaultsKey = @"LastUsedBlogURLDefaultsKey";
         }
     }
     return _api;
+}
+
+- (WordPressComApi *)restApi {
+    if ([self isWPcom]) {
+        return self.account.restApi;
+    } else if (self.jetpackAccount) {
+        return self.jetpackAccount.restApi;
+    }
+    return nil;
 }
 
 #pragma mark -
