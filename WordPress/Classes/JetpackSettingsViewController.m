@@ -175,7 +175,6 @@ CGFloat const JetpackSignInButtonHeight = 41.0;
         _passwordField.delegate = self;
         _passwordField.secureTextEntry = YES;
         _passwordField.text = _blog.jetpackPassword;
-        _passwordField.clearsOnBeginEditing = YES;
         _passwordField.showTopLineSeparator = YES;
         [self.view addSubview:_passwordField];
     }
