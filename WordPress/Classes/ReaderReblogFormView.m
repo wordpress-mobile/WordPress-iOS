@@ -187,6 +187,7 @@
 			[self.delegate readerTextFormDidSend:self];
 		}
         
+        [WPStats track:WPStatReaderRebloggedArticle];
         [WPMobileStats trackEventForWPCom:StatsEventReaderReblogged];
         [WPMobileStats incrementPeopleAndSuperProperty:StatsSuperPropertyNumberOfItemsRebloggedInReader];
 		
