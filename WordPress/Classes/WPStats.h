@@ -53,6 +53,7 @@ typedef NS_ENUM(NSUInteger, WPStat) {
 
 @interface WPStats : NSObject
 
++ (void)initialize;
 + (void)track:(WPStat)stat;
 + (void)track:(WPStat)stat withProperties:(NSDictionary *)properties;
 + (void)endSession;
@@ -61,6 +62,7 @@ typedef NS_ENUM(NSUInteger, WPStat) {
 
 @protocol WPStatsClient <NSObject>
 
+- (void)initialize;
 - (void)track:(WPStat)stat;
 - (void)track:(WPStat)stat withProperties:(NSDictionary *)properties;
 - (void)endSession;

@@ -14,6 +14,11 @@
     return sharedInstance;
 }
 
++ (void)initialize
+{
+    [[self sharedInstance] initialize];
+}
+
 + (void)track:(WPStat)stat
 {
     [[self sharedInstance] track:stat];
