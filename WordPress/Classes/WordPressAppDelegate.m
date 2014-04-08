@@ -222,6 +222,7 @@ static NSInteger const IndexForMeTab = 2;
     DDLogInfo(@"%@ %@", self, NSStringFromSelector(_cmd));
     
     [WPMobileStats recordAppOpenedForEvent:StatsEventAppOpened];
+    [WPStats track:WPStatApplicationOpened];
 }
 
 - (BOOL)application:(UIApplication *)application shouldSaveApplicationState:(NSCoder *)coder {
