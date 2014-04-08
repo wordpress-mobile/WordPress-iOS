@@ -30,6 +30,7 @@ typedef NS_ENUM(NSUInteger, WPStat) {
     WPStatOpenedViewAdmin,
     WPStatOpenedMediaLibrary,
     WPStatOpenedSettings,
+    WPStatCreatedAccount,
 };
 
 @interface WPStats : NSObject

@@ -16,68 +16,6 @@ static BOOL hasRecordedAppOpenedEvent = NO;
 NSString *const StatsEventAppClosed = @"Application Closed";
 NSString *const StatsEventAppOpenedDueToPushNotification = @"Application Opened Due to Push Notification";
 
-// Manage Notifications
-NSString *const StatsEventManageNotificationsTurnOn = @"Manage Notifications - Turn On Notifications";
-NSString *const StatsEventManageNotificationsTurnOff = @"Manage Notifications - Turn Off Notifications";
-NSString *const StatsEventManageNotificationsTurnOffForOneHour = @"Manage Notifications - Turn Off Notifications For One Hour";
-NSString *const StatsEventManageNotificationsTurnOffUntil8AM = @"Manage Notifications - Turn Off Notifications Until 8AM";
-NSString *const StatsEventManageNotificationsEnabledFollowNotifications = @"Manage Notifications - Enable Follow Notifications";
-NSString *const StatsEventManageNotificationsDisabledFollowNotifications = @"Manage Notifications - Disabled Follow Notifications";
-NSString *const StatsEventManageNotificationsEnabledAchievementsNotifications = @"Manage Notifications - Enable Achievements Notifications";
-NSString *const StatsEventManageNotificationsDisabledAchievementsNotifications = @"Manage Notifications - Disabled Achievements Notifications";
-NSString *const StatsEventManageNotificationsEnabledCommentNotifications = @"Manage Notifications - Enable Comment Notifications";
-NSString *const StatsEventManageNotificationsDisabledCommentNotifications = @"Manage Notifications - Disabled Comment Notifications";
-NSString *const StatsEventManageNotificationsEnabledReblogNotifications = @"Manage Notifications - Enable Reblog Notifications";
-NSString *const StatsEventManageNotificationsDisabledReblogNotifications = @"Manage Notifications - Disabled Reblog Notifications";
-NSString *const StatsEventManageNotificationsEnabledLikeNotifications = @"Manage Notifications - Enable Like Notifications";
-NSString *const StatsEventManageNotificationsDisabledLikeNotifications = @"Manage Notifications - Disabled Like Notifications";
-NSString *const StatsEventManageNotificationsEnabledBlogNotifications = @"Manage Notifications - Enable Blog Notifications";
-NSString *const StatsEventManageNotificationsDisabledBlogNotifications = @"Manage Notifications - Disabled Blog Notifications";
-
-// Quick Photo
-NSString *const StatsEventQuickPhotoOpened = @"Quick Photo - Opened";
-NSString *const StatsEventQuickPhotoPosted = @"Quick Photo - Posted";
-
-// NUX First Walkthrough 
-NSString *const StatsEventNUXFirstWalkthroughOpened = @"NUX - First Walkthrough - Opened";
-NSString *const StatsEventNUXFirstWalkthroughClickedSkipToCreateAccount = @"NUX - First Walkthrough - Skipped to Create Account";
-NSString *const StatsEventNUXFirstWalkthroughClickedLostPassword = @"NUX - First Walkthrough - Lost Password";
-NSString *const StatsEventNUXFirstWalkthroughClickedInfo = @"NUX - First Walkthrough - Clicked Info";
-NSString *const StatsEventNUXFirstWalkthroughClickedCreateAccount = @"NUX - First Walkthrough - Clicked Create Account";
-NSString *const StatsEventNUXFirstWalkthroughSignedInWithoutUrl = @"NUX - First Walkthrough - Signed In Without URL";
-NSString *const StatsEventNUXFirstWalkthroughSignedInWithUrl = @"NUX - First Walkthrough - Signed In With URL";
-NSString *const StatsEventNUXFirstWalkthroughSignedInForDotCom = @"NUX - First Walkthrough - Signed In For WordPress.com";
-NSString *const StatsEventNUXFirstWalkthroughSignedInForSelfHosted = @"NUX - First Walkthrough - Signed In For Self Hosted Site";
-NSString *const StatsEventNUXFirstWalkthroughClickedEnableXMLRPCServices = @"NUX - First Walkthrough - Clicked Enable XML-RPC Services";
-NSString *const StatsEventNUXFirstWalkthroughClickedNeededHelpOnError = @"NUX - First Walkthrough - Clicked Needed Help on Error";
-NSString *const StatsEventNUXFirstWalkthroughUserSignedInToBlogWithJetpack = @"NUX - First Walkthrough - User Signed In To Blog With Jetpack";
-NSString *const StatsEventNUXFirstWalkthroughUserConnectedToJetpack = @"NUX - First Walkthrough - User Connected to Jetpack";
-NSString *const StatsEventNUXFirstWalkthroughUserSkippedConnectingToJetpack = @"NUX - First Walkthrough - User Skipped Connecting to Jetpack";
-
-
-// NUX Create Account
-NSString *const StatsEventAccountCreationOpenedFromTabBar = @"NUX - Create Account Opened From Tab Bar";
-NSString *const StatsEventNUXCreateAccountOpened = @"NUX - Create Account - Opened";
-NSString *const StatsEventNUXCreateAccountClickedCancel = @"NUX - Create Account - Clicked Cancel";
-NSString *const StatsEventNUXCreateAccountClickedHelp = @"NUX - Create Account - Clicked Help";
-NSString *const StatsEventNUXCreateAccountClickedAccountPageNext = @"NUX - Create Account - Clicked Account Page Next";
-NSString *const StatsEventNUXCreateAccountClickedSitePageNext = @"NUX - Create Account - Clicked Site Page Next";
-NSString *const StatsEventNUXCreateAccountClickedSitePagePrevious = @"NUX - Create Account - Clicked Site Page Previous";
-NSString *const StatsEventNUXCreateAccountCreatedAccount = @"NUX - Create Account - Created Account";
-NSString *const StatsEventNUXCreateAccountClickedReviewPagePrevious = @"NUX - Create Account - Clicked Review Page Previous";
-NSString *const StatsEventNUXCreateAccountClickedViewLanguages = @"NUX - Create Account - Viewed Languages";
-NSString *const StatsEventNUXCreateAccountChangedDefaultURL = @"NUX - Create Account - Changed Default URL";
-
-// Ådd Blogs Screen
-NSString *const StatsEventAddBlogsOpened = @"Add Blogs - Opened";
-NSString *const StatsEventAddBlogsClickedSelectAll = @"Add Blogs - Clicked Select All";
-NSString *const StatsEventAddBlogsClickedDeselectAll = @"Add Blogs - Clicked Deselect All";
-NSString *const StatsEventAddBlogsClickedAddSelected = @"Add Blogs - Clicked Add Selected";
-
-// Stats
-NSString *const StatsEventStatsClickedOnWebVersion = @"Stats - Clicked on Web Version";
-
-
 // Super Properties
 
 // General
