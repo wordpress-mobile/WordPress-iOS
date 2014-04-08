@@ -14,6 +14,7 @@
 + (instancetype)initWithPropertyIncrementor:(NSString *)property forStat:(WPStat)stat;
 + (instancetype)initWithSuperPropertyFlagger:(NSString *)property;
 + (instancetype)initWithSuperPropertyAndPeoplePropertyIncrementor:(NSString *)property;
+
 - (void)setSuperPropertyAndPeoplePropertyToIncrement:(NSString *)property;
 
 @end
