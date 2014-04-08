@@ -71,8 +71,23 @@
     return [NSString stringWithFormat:@"%d", stat];
 }
 
+- (BOOL)connectedToWordPressDotCom
+{
+    NSManagedObjectContext *context = [[ContextManager sharedInstance] mainContext];
+    AccountService *accountService = [[AccountService alloc] initWithManagedObjectContext:context];
+    WPAccount *defaultAccount = [accountService defaultWordPressComAccount];
+    
+    return [[defaultAccount restApi] hasCredentials];
+}
+
 - (void)trackMixpanelDataForInstructions:(WPStatsMixpanelClientInstructionsForStat *)instructions andProperties:(NSDictionary *)properties
 {
+    if (instructions.disableTrackingForSelfHosted) {
+        if (![self connectedToWordPressDotCom]) {
+            return;
+        }
+    }
+    
     if ([instructions.mixpanelEventName length] > 0) {
         NSDictionary *aggregatedPropertiesForEvent = [self propertiesForStat:instructions.stat];
         if (aggregatedPropertiesForEvent != nil) {
