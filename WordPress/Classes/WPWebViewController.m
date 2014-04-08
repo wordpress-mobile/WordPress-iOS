@@ -29,14 +29,6 @@
     return YES;
 }
 
-- (NSString *)statsPrefixForShareActions {
-    if (_statsPrefixForShareActions == nil) {
-        return @"Webview";
-    } else {
-        return _statsPrefixForShareActions;
-    }
-}
-
 - (void)viewDidLoad {
     DDLogInfo(@"%@ %@", self, NSStringFromSelector(_cmd));
     [super viewDidLoad];
@@ -410,7 +402,6 @@
 }
 
 - (void)showLinkOptions{
-    [WPMobileStats trackEventForWPCom:[NSString stringWithFormat:@"%@ - %@", self.statsPrefixForShareActions, StatsEventWebviewClickedShowLinkOptions]];
     NSString* permaLink = [self getDocumentPermalink];
 
     NSString *title = [self getDocumentTitle];
@@ -427,7 +418,7 @@
     activityViewController.completionHandler = ^(NSString *activityType, BOOL completed) {
         if (!completed)
             return;
-        [WPActivityDefaults trackActivityType:activityType withPrefix:self.statsPrefixForShareActions];
+        [WPActivityDefaults trackActivityType:activityType];
     };
     [self presentViewController:activityViewController animated:YES completion:nil];
 }

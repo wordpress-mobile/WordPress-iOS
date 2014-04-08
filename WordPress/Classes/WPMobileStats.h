@@ -4,23 +4,6 @@
 extern NSString *const StatsEventAppClosed;
 extern NSString *const StatsEventAppOpenedDueToPushNotification;
 
-// Reader Detail
-extern NSString *const StatsPropertyReaderDetailClickedPrevious;
-extern NSString *const StatsPropertyReaderDetailClickedNext;
-
-// Web View Sharing
-extern NSString *const StatsEventWebviewClickedShowLinkOptions;
-extern NSString *const StatsEventWebviewSharedArticleViaEmail;
-extern NSString *const StatsEventWebviewSharedArticleViaSMS;
-extern NSString *const StatsEventWebviewSharedArticleViaTwitter;
-extern NSString *const StatsEventWebviewSharedArticleViaFacebook;
-extern NSString *const StatsEventWebviewSharedArticleViaWeibo;
-extern NSString *const StatsEventWebviewCopiedArticleDetails;
-extern NSString *const StatsEventWebviewOpenedArticleInSafari;
-extern NSString *const StatsEventWebviewSentArticleToPocket;
-extern NSString *const StatsEventWebviewSentArticleToInstapaper;
-extern NSString *const StatsEventWebviewSentArticleToGooglePlus;
-
 // Notifications
 extern NSString *const StatsPropertyNotificationsOpened;
 extern NSString *const StatsPropertyNotificationsOpenedDetails;

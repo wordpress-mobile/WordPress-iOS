@@ -442,7 +442,7 @@ typedef enum {
     activityViewController.completionHandler = ^(NSString *activityType, BOOL completed) {
         if (!completed)
             return;
-        [WPActivityDefaults trackActivityType:activityType withPrefix:@"ReaderDetail"];
+        [WPActivityDefaults trackActivityType:activityType];
     };
     if (IS_IPAD) {
         if (_popover) {
