@@ -185,7 +185,6 @@ static NSInteger const IndexForMeTab = 2;
 
     [WPStats track:WPStatApplicationClosed];
     [WPStats endSession];
-    [WPMobileStats trackEventForWPComWithSavedProperties:StatsEventAppClosed];
     [WPMobileStats pauseSession];
     
     // Let the app finish any uploads that are in progress
