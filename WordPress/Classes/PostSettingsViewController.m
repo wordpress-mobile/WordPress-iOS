@@ -71,14 +71,6 @@ static NSString *const TableViewActivityCellIdentifier = @"TableViewActivityCell
     return self;
 }
 
-- (NSString *)statsPrefix {
-    if (_statsPrefix == nil) {
-        return @"Post Detail";
-    } else {
-        return _statsPrefix;
-    }
-}
-
 - (void)viewDidLoad {
     [super viewDidLoad];
     
@@ -373,7 +365,6 @@ static NSString *const TableViewActivityCellIdentifier = @"TableViewActivityCell
         // noop
         
     } else if (cell.tag == PostSettingsRowPublishDate && !self.datePicker) {
-        [WPMobileStats flagProperty:StatsPropertyPostDetailSettingsClickedScheduleFor forEvent:[self formattedStatEventString:StatsEventPostDetailClosedEditor]];
         [self configureAndShowDatePicker];
         
     } else if (cell.tag ==  PostSettingsRowStatus) {
@@ -392,7 +383,6 @@ static NSString *const TableViewActivityCellIdentifier = @"TableViewActivityCell
         [self showFeaturedImageSelector];
         
     } else if (cell.tag == PostSettingsRowFeaturedImageAdd) {
-        [WPMobileStats trackEventForWPCom:[self formattedStatEventString:StatsPropertyPostDetailSettingsClickedSetFeaturedImage]];
         [self showFeaturedImageSelector];
         
     } else if (cell.tag == PostSettingsRowGeolocationAdd || cell.tag == PostSettingsRowGeolocationMap) {
@@ -673,8 +663,6 @@ static NSString *const TableViewActivityCellIdentifier = @"TableViewActivityCell
         return;
     }
     
-    [WPMobileStats flagProperty:StatsPropertyPostDetailSettingsClickedStatus forEvent:[self formattedStatEventString:StatsEventPostDetailClosedEditor]];
-    
     NSMutableArray *titles = [NSMutableArray arrayWithArray:[self.apost availableStatuses]];
     [titles removeObject:NSLocalizedString(@"Private", @"Privacy setting for posts set to 'Private'. Should be the same as in core WP.")];
     
@@ -696,8 +684,6 @@ static NSString *const TableViewActivityCellIdentifier = @"TableViewActivityCell
 }
 
 - (void)showPostVisibilitySelector {
-    [WPMobileStats flagProperty:StatsPropertyPostDetailSettingsClickedVisibility forEvent:[self formattedStatEventString:StatsEventPostDetailClosedEditor]];
-    
     NSArray *titles = @[
                         NSLocalizedString(@"Public", @"Privacy setting for posts set to 'Public' (default). Should be the same as in core WP."),
                         NSLocalizedString(@"Password protected", @"Privacy setting for posts set to 'Password protected'. Should be the same as in core WP."),
@@ -748,8 +734,6 @@ static NSString *const TableViewActivityCellIdentifier = @"TableViewActivityCell
         return;
     }
     
-    [WPMobileStats flagProperty:StatsPropertyPostDetailSettingsClickedPostFormat forEvent:[self formattedStatEventString:StatsEventPostDetailClosedEditor]];
-    
     NSArray *titles = self.post.blog.sortedPostFormatNames;
     NSDictionary *postFormatsDict = @{
                                       @"DefaultValue": titles[0],
@@ -785,13 +769,8 @@ static NSString *const TableViewActivityCellIdentifier = @"TableViewActivityCell
 }
 
 - (void)showCategoriesSelection {
-    [WPMobileStats flagProperty:StatsPropertyPostDetailClickedShowCategories forEvent:[self formattedStatEventString:StatsEventPostDetailClosedEditor]];
     CategoriesViewController *controller = [[CategoriesViewController alloc] initWithPost:[self post] selectionMode:CategoriesSelectionModePost];
     [self.navigationController pushViewController:controller animated:YES];
-}
-
-- (NSString *)formattedStatEventString:(NSString *)event {
-    return [NSString stringWithFormat:@"%@ - %@", self.statsPrefix, event];
 }
 
 - (void)loadFeaturedImage:(NSIndexPath *)indexPath {

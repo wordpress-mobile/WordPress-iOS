@@ -59,8 +59,6 @@
 }
 
 - (void)showAddPostView {
-    [WPMobileStats trackEventForWPCom:StatsEventPagesClickedNewPage];
-    
     Page *post = [Page newDraftForBlog:self.blog];
     [self editPost:post];
 }
@@ -68,12 +66,6 @@
 - (NSString *)tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section {
     return nil;
 }
-
-- (NSString *)statsPropertyForViewOpening
-{
-    return StatsPropertyPagesOpened;
-}
-
 
 #pragma mark -
 #pragma mark Syncs methods
