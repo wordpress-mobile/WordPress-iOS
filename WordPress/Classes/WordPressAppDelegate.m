@@ -508,7 +508,6 @@ static NSInteger const IndexForMeTab = 2;
     if ([tabBarController.viewControllers indexOfObject:viewController] == 3) {
         // Ignore taps on the post tab and instead show the modal.
         if ([Blog countVisibleWithContext:[[ContextManager sharedInstance] mainContext]] == 0) {
-            [WPMobileStats trackEventForWPCom:StatsEventAccountCreationOpenedFromTabBar];
             [self showWelcomeScreenAnimated:YES thenEditor:YES];
         } else {
             [self showPostTab];
