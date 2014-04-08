@@ -370,7 +370,6 @@ NSString * const RPVCDisplayedNativeFriendFinder = @"DisplayedNativeFriendFinder
 	[post toggleLikedWithSuccess:^{
         if ([post.isLiked boolValue]) {
             [WPStats track:WPStatReaderLikedArticle];
-            [WPMobileStats incrementPeopleAndSuperProperty:StatsSuperPropertyNumberOfItemsLikedInReader];
         }
 	} failure:^(NSError *error) {
 		DDLogError(@"Error Liking Post : %@", [error localizedDescription]);
