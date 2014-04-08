@@ -17,21 +17,6 @@ static BOOL hasRecordedAppOpenedEvent = NO;
 NSString *const StatsEventAppClosed = @"Application Closed";
 NSString *const StatsEventAppOpenedDueToPushNotification = @"Application Opened Due to Push Notification";
 
-// Reader
-NSString *const StatsEventReaderOpened = @"Reader - Opened";
-NSString *const StatsEventReaderHomePageRefresh = @"Reader - Home Page Refreshed";
-NSString *const StatsEventReaderInfiniteScroll = @"Reader - Infinite Scroll";
-NSString *const StatsEventReaderSelectedFreshlyPressedTopic = @"Reader - Selected Freshly Pressed Topic";
-NSString *const StatsEventReaderSelectedCategory = @"Reader - Selected Category";
-NSString *const StatsEventReaderOpenedArticleDetails = @"Reader - Opened Article Details";
-NSString *const StatsEventReaderPublishedComment = @"Reader - Published Comment";
-NSString *const StatsEventReaderReblogged = @"Reader - Reblogged";
-NSString *const StatsEventReaderLikedPost = @"Reader - Liked Post";
-NSString *const StatsEventReaderUnlikedPost = @"Reader - Unliked Post";
-NSString *const StatsPropertyReaderOpenedFromExternalURL = @"reader_opened_from_external_url";
-NSString *const StatsPropertyReaderOpenedFromExternalURLCount = @"reader_opened_from_external_url_count";
-NSString *const StatsEventReaderOpenedFromExternalSource = @"Reader - Opened From External Source";
-
 // Reader Detail
 NSString *const StatsPropertyReaderDetailClickedPrevious = @"reader_detail_clicked_previous";
 NSString *const StatsPropertyReaderDetailClickedNext = @"reader_detail_clicked_next";

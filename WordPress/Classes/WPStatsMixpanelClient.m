@@ -66,6 +66,10 @@
     if ([instructions.propertyToIncrement length] > 0) {
         [self incrementProperty:instructions.propertyToIncrement forStat:instructions.statToAttachProperty];
     }
+    
+    if ([instructions.superPropertyToFlag length] > 0) {
+        [self flagSuperProperty:instructions.superPropertyToFlag];
+    }
 }
 
 - (void)incrementPeopleProperty:(NSString *)property
@@ -78,6 +82,13 @@
     NSMutableDictionary *superProperties = [[NSMutableDictionary alloc] initWithDictionary:[Mixpanel sharedInstance].currentSuperProperties];
     NSUInteger propertyValue = [superProperties[property] integerValue];
     superProperties[property] = @(++propertyValue);
+    [[Mixpanel sharedInstance] registerSuperProperties:superProperties];
+}
+
+- (void)flagSuperProperty:(NSString *)property
+{
+    NSMutableDictionary *superProperties = [[NSMutableDictionary alloc] initWithDictionary:[Mixpanel sharedInstance].currentSuperProperties];
+    superProperties[property] = @(YES);
     [[Mixpanel sharedInstance] registerSuperProperties:superProperties];
 }
 
