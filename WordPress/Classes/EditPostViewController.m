@@ -834,26 +834,24 @@ CGFloat const EPVCTextViewTopPadding = 7.0f;
     
     if ([buttonTitle isEqualToString:NSLocalizedString(@"Publish", nil)]) {
         [WPStats track:WPStatEditorPublishedPost withProperties:properties];
-        [WPMobileStats incrementPeopleAndSuperProperty:StatsSuperPropertyNumberOfPostsPublished];
         
         if ([self.post hasPhoto]) {
-            [WPMobileStats incrementPeopleAndSuperProperty:StatsSuperPropertyNumberOfPostsWithPhotos];
+            [WPStats track:WPStatPublishedPostWithPhoto];
         }
         
         if ([self.post hasVideo]) {
-            [WPMobileStats incrementPeopleAndSuperProperty:StatsSuperPropertyNumberOfPostsWithVideos];
+            [WPStats track:WPStatPublishedPostWithVideo];
         }
         
         if ([self.post hasCategories]) {
-            [WPMobileStats incrementPeopleAndSuperProperty:StatsSuperPropertyNumberOfPostsWithCategories];
+            [WPStats track:WPStatPublishedPostWithCategories];
         }
         
         if ([self.post hasTags]) {
-            [WPMobileStats incrementPeopleAndSuperProperty:StatsSuperPropertyNumberOfPostsWithTags];
+            [WPStats track:WPStatPublishedPostWithTags];
         }
     } else {
         [WPStats track:WPStatEditorUpdatedPost withProperties:properties];
-        [WPMobileStats incrementPeopleAndSuperProperty:StatsSuperPropertyNumberOfPostsUpdated];
     }
 }
 
@@ -1060,12 +1058,6 @@ CGFloat const EPVCTextViewTopPadding = 7.0f;
 	Media *media = (Media *)[notification object];
 	NSString *prefix = @"<br /><br />";
     
-    if (media.mediaType == MediaTypeImage) {
-        [WPMobileStats incrementPeopleAndSuperProperty:StatsSuperPropertyNumberOfPhotosAddedToPosts];
-    } else if (media.mediaType == MediaTypeVideo) {
-        [WPMobileStats incrementPeopleAndSuperProperty:StatsSuperPropertyNumberOfVideosAddedToPosts];
-    }
-	
 	if(self.post.content == nil || [self.post.content isEqualToString:@""]) {
 		self.post.content = @"";
 		prefix = @"";

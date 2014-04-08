@@ -423,7 +423,6 @@ NSString *const MediaFeaturedImageSelectedNotification = @"MediaFeaturedImageSel
         }
         if (_selectingFeaturedImage) {
             [self.post setFeaturedImage:cell.media];
-            [WPMobileStats incrementPeopleAndSuperProperty:StatsSuperPropertyNumberOfFeaturedImagesAssignedToPosts];
             [[NSNotificationCenter defaultCenter] postNotificationName:MediaFeaturedImageSelectedNotification object:cell.media];
             [self.navigationController popViewControllerAnimated:YES];
         } else if (_selectingMediaForPost) {
