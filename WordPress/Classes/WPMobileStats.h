@@ -7,10 +7,7 @@ extern NSString *const StatsEventAppOpenedDueToPushNotification;
 // Super Properties
 
 // Reader
-extern NSString *const StatsSuperPropertyNumberOfItemsOpenedInReader;
-extern NSString *const StatsSuperPropertyNumberOfItemsLikedInReader;
 extern NSString *const StatsSuperPropertyNumberOfItemsUnlikedInReader;
-extern NSString *const StatsSuperPropertyNumberOfItemsRebloggedInReader;
 
 // Sharing
 extern NSString *const StatsSuperPropertyNumberOfItemsShared;

@@ -862,7 +862,6 @@ NSString * const RPVCDisplayedNativeFriendFinder = @"DisplayedNativeFriendFinder
     [self.navigationController pushViewController:self.detailController animated:YES];
     
     [WPStats track:WPStatReaderOpenedArticle];
-    [WPMobileStats incrementPeopleAndSuperProperty:StatsSuperPropertyNumberOfItemsOpenedInReader];
     [WPMobileStats pingWPComStatsEndpoint:@"details_page"];
 }
 
