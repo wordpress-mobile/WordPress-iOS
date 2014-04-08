@@ -174,7 +174,6 @@ NSString * const RPVCDisplayedNativeFriendFinder = @"DisplayedNativeFriendFinder
 
     if (!_viewHasAppeared) {
         [WPStats track:WPStatReaderAccessedReader withProperties:[self categoryPropertyForStats]];
-	    [WPMobileStats pingWPComStatsEndpoint:@"home_page"];
         _viewHasAppeared = YES;
     }
 
@@ -741,7 +740,6 @@ NSString * const RPVCDisplayedNativeFriendFinder = @"DisplayedNativeFriendFinder
 									 failure(error);
 								 }
 							 }];
-    [WPMobileStats pingWPComStatsEndpoint:@"home_page_refresh"];
 }
 
 - (void)loadMoreWithSuccess:(void (^)())success failure:(void (^)(NSError *error))failure {
@@ -861,7 +859,6 @@ NSString * const RPVCDisplayedNativeFriendFinder = @"DisplayedNativeFriendFinder
     [self.navigationController pushViewController:self.detailController animated:YES];
     
     [WPStats track:WPStatReaderOpenedArticle];
-    [WPMobileStats pingWPComStatsEndpoint:@"details_page"];
 }
 
 
@@ -911,7 +908,6 @@ NSString * const RPVCDisplayedNativeFriendFinder = @"DisplayedNativeFriendFinder
 
     if ([self isCurrentCategoryFreshlyPressed]) {
         [WPStats track:WPStatReaderLoadedFreshlyPressed];
-        [WPMobileStats pingWPComStatsEndpoint:@"freshly"];
     }
 }
 
