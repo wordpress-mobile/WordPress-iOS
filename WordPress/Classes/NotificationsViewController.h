@@ -3,6 +3,6 @@
 
 @interface NotificationsViewController : WPTableViewController
 
--(void) clearNotificationsBadgeAndSyncItems;
+- (void)clearNotificationsBadgeAndSyncItems;
 
 @end
