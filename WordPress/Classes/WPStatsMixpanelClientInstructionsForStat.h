@@ -9,6 +9,7 @@
 @property (nonatomic, strong) NSString *propertyToIncrement;
 @property (nonatomic, assign) WPStat stat;
 @property (nonatomic, assign) WPStat statToAttachProperty;
+@property (nonatomic, assign) BOOL disableTrackingForSelfHosted;
 
 + (instancetype)initWithMixpanelEventName:(NSString *)eventName;
 + (instancetype)initWithPropertyIncrementor:(NSString *)property forStat:(WPStat)stat;

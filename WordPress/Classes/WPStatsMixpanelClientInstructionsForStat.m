@@ -2,6 +2,14 @@
 
 @implementation WPStatsMixpanelClientInstructionsForStat
 
+- (instancetype)init
+{
+    if (self = [super init]) {
+        self.disableTrackingForSelfHosted = NO;
+    }
+    return self;
+}
+
 + (instancetype)initWithMixpanelEventName:(NSString *)eventName
 {
     WPStatsMixpanelClientInstructionsForStat *instructions = [[WPStatsMixpanelClientInstructionsForStat alloc] init];
