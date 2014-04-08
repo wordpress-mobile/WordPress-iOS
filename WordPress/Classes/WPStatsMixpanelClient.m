@@ -197,6 +197,7 @@
             break;
         case WPStatOpenedViewAdmin:
             instructions = [WPStatsMixpanelClientInstructionsForStat initWithPropertyIncrementor:@"number_of_times_opened_view_admin" forStat:WPStatApplicationClosed];
+            [instructions setSuperPropertyAndPeoplePropertyToIncrement:@"number_of_times_opened_view_admin"];
             break;
         case WPStatOpenedMediaLibrary:
             instructions = [WPStatsMixpanelClientInstructionsForStat initWithPropertyIncrementor:@"number_of_times_opened_media_library" forStat:WPStatApplicationClosed];

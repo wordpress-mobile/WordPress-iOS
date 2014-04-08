@@ -173,7 +173,6 @@ NSString * const WPBlogDetailsBlogKey = @"WPBlogDetailsBlogKey";
         [WPStats track:WPStatOpenedComments];
         controllerClass = [CommentsViewController class];
     } else if (indexPath.row == BlogDetailsRowStats) {
-        [WPMobileStats incrementPeopleAndSuperProperty:StatsSuperPropertyNumberOfTimesOpenedStats];
         [WPStats track:WPStatStatsAccessedStats];
         controllerClass =  [StatsViewController class];
     } else if ([self shouldShowThemesOption] && indexPath.row == BlogDetailsRowThemes) {
@@ -251,7 +250,6 @@ NSString * const WPBlogDetailsBlogKey = @"WPBlogDetailsBlogKey";
 - (void)showViewAdminForBlog:(Blog *)blog
 {
     [WPStats track:WPStatOpenedViewAdmin];
-    [WPMobileStats incrementPeopleAndSuperProperty:StatsSuperPropertyNumberOfTimesOpenedViewAdmin];
     
     NSString *dashboardUrl = [blog.xmlrpc stringByReplacingOccurrencesOfString:@"xmlrpc.php" withString:@"wp-admin/"];
     [[UIApplication sharedApplication] openURL:[NSURL URLWithString:dashboardUrl]];

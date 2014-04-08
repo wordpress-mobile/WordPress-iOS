@@ -175,7 +175,6 @@ NSString * const RPVCDisplayedNativeFriendFinder = @"DisplayedNativeFriendFinder
     if (!_viewHasAppeared) {
         [WPStats track:WPStatReaderAccessedReader withProperties:[self categoryPropertyForStats]];
 	    [WPMobileStats pingWPComStatsEndpoint:@"home_page"];
-        [WPMobileStats incrementPeopleAndSuperProperty:StatsSuperPropertyNumberOfTimesOpenedReader];
         _viewHasAppeared = YES;
     }
 
