@@ -76,7 +76,7 @@ static NSInteger const IndexForMeTab = 2;
     [self removeCredentialsForDebug];
 
     // Stats and feedback
-    [WPStats initializeStats];
+    [WPStats beginSession];
     [[GPPSignIn sharedInstance] setClientID:[WordPressComApiCredentials googlePlusClientId]];
     [SupportViewController checkIfFeedbackShouldBeEnabled];
     
