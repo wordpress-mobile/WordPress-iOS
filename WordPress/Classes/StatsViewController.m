@@ -55,7 +55,7 @@ typedef NS_ENUM(NSInteger, TotalFollowersShareRow) {
     TotalFollowersShareRowTotalRows
 };
 
-@interface StatsViewController () <UITableViewDataSource, UITableViewDelegate, StatsTodayYesterdayButtonCellDelegate, UIViewControllerRestoration>
+@interface StatsViewController () <UITableViewDataSource, UITableViewDelegate, StatsTodayYesterdayButtonCellDelegate, UIViewControllerRestoration, StatsButtonCellDelegate>
 
 @property (nonatomic, strong) StatsApiHelper *statsApiHelper;
 @property (nonatomic, strong) NSMutableDictionary *statModels;
@@ -347,10 +347,11 @@ typedef NS_ENUM(NSInteger, TotalFollowersShareRow) {
                 case VisitorRowGraphUnitButton:
                 {
                     StatsButtonCell *cell = [tableView dequeueReusableCellWithIdentifier:VisitorsUnitButtonCellReuseIdentifier];
-                    [cell addButtonWithTitle:NSLocalizedString(@"Days", nil) target:self action:@selector(daySelected:) section:indexPath.section];
-                    [cell addButtonWithTitle:NSLocalizedString(@"Weeks", nil) target:self action:@selector(weekSelected:) section:indexPath.section];
-                    [cell addButtonWithTitle:NSLocalizedString(@"Months", nil) target:self action:@selector(monthSelected:) section:indexPath.section];
-                    cell.currentActiveButton = _currentViewsVisitorsGraphUnit;
+                    cell.delegate = self;
+                    [cell addSegmentWithTitle:NSLocalizedString(@"Days", nil)];
+                    [cell addSegmentWithTitle:NSLocalizedString(@"Weeks", nil)];
+                    [cell addSegmentWithTitle:NSLocalizedString(@"Months", nil)];
+                    cell.segmentedControl.selectedSegmentIndex = _currentViewsVisitorsGraphUnit;
                     return cell;
                 }
                 case VisitorRowGraph:
@@ -677,16 +678,23 @@ typedef NS_ENUM(NSInteger, TotalFollowersShareRow) {
     [self.tableView reloadSections:[NSIndexSet indexSetWithIndex:StatsSectionVisitors] withRowAnimation:UITableViewRowAnimationNone];
 }
 
-- (void)daySelected:(UIButton *)sender {
-    [self graphUnitSelected:StatsViewsVisitorsUnitDay];
-}
+//- (void)daySelected:(UIButton *)sender {
+//    [self graphUnitSelected:StatsViewsVisitorsUnitDay];
+//}
 
-- (void)weekSelected:(UIButton *)sender {
-    [self graphUnitSelected:StatsViewsVisitorsUnitWeek];
-}
+//- (void)weekSelected:(UIButton *)sender {
+//    [self graphUnitSelected:StatsViewsVisitorsUnitWeek];
+//}
 
-- (void)monthSelected:(UIButton *)sender {
-    [self graphUnitSelected:StatsViewsVisitorsUnitMonth];
+//- (void)monthSelected:(UIButton *)sender {
+//    [self graphUnitSelected:StatsViewsVisitorsUnitMonth];
+//}
+
+#pragma mark - StatsButtonCellDelegate methods
+
+- (void)statsButtonCell:(StatsButtonCell *)statsButtonCell didSelectIndex:(NSUInteger)index {
+    StatsViewsVisitorsUnit unit = (StatsViewsVisitorsUnit)index;
+    [self graphUnitSelected:unit];
 }
 
 @end
