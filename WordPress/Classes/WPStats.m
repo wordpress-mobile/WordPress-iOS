@@ -31,11 +31,11 @@
     }
 }
 
-+ (void)initializeStats
++ (void)beginSession
 {
     for (id<WPStatsClient> client in [self sharedInstances]) {
-        if ([client respondsToSelector:@selector(initializeStats)]) {
-            [client initializeStats];
+        if ([client respondsToSelector:@selector(beginSession)]) {
+            [client beginSession];
         }
     }
 }
