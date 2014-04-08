@@ -208,6 +208,33 @@
         case WPStatCreatedAccount:
             instructions = [WPStatsMixpanelClientInstructionsForStat initWithMixpanelEventName:@"Created Account"];
             break;
+        case WPStatSharedItemViaEmail:
+            instructions = [WPStatsMixpanelClientInstructionsForStat initWithSuperPropertyAndPeoplePropertyIncrementor:@"number_of_items_shared_via_email"];
+            break;
+        case WPStatSharedItemViaSMS:
+            instructions = [WPStatsMixpanelClientInstructionsForStat initWithSuperPropertyAndPeoplePropertyIncrementor:@"number_of_items_shared_via_sms"];
+            break;
+        case WPStatSharedItemViaFacebook:
+            instructions = [WPStatsMixpanelClientInstructionsForStat initWithSuperPropertyAndPeoplePropertyIncrementor:@"number_of_items_shared_via_facebook"];
+            break;
+        case WPStatSharedItemViaTwitter:
+            instructions = [WPStatsMixpanelClientInstructionsForStat initWithSuperPropertyAndPeoplePropertyIncrementor:@"number_of_items_shared_via_twitter"];
+            break;
+        case WPStatSharedItemViaWeibo:
+            instructions = [WPStatsMixpanelClientInstructionsForStat initWithSuperPropertyAndPeoplePropertyIncrementor:@"number_of_items_shared_via_weibo"];
+            break;
+        case WPStatSentItemToInstapaper:
+            instructions = [WPStatsMixpanelClientInstructionsForStat initWithSuperPropertyAndPeoplePropertyIncrementor:@"number_of_items_sent_to_instapaper"];
+            break;
+        case WPStatSentItemToPocket:
+            instructions = [WPStatsMixpanelClientInstructionsForStat initWithSuperPropertyAndPeoplePropertyIncrementor:@"number_of_items_sent_to_pocket"];
+            break;
+        case WPStatSentItemToGooglePlus:
+            instructions = [WPStatsMixpanelClientInstructionsForStat initWithSuperPropertyAndPeoplePropertyIncrementor:@"number_of_items_sent_to_google_plus"];
+            break;
+        case WPStatSharedItem:
+            instructions = [WPStatsMixpanelClientInstructionsForStat initWithSuperPropertyAndPeoplePropertyIncrementor:@"number_of_items_shared"];
+            break;
         default:
             break;
     }

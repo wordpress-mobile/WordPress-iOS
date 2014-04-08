@@ -18,17 +18,6 @@ NSString *const StatsEventAppOpenedDueToPushNotification = @"Application Opened 
 
 // Super Properties
 
-// Sharing
-NSString *const StatsSuperPropertyNumberOfItemsShared = @"number_of_items_shared";
-NSString *const StatsSuperPropertyNumberOfItemsSharedViaEmail = @"number_of_items_shared_via_email";
-NSString *const StatsSuperPropertyNumberOfItemsSharedViaSMS = @"number_of_items_shared_via_sms";
-NSString *const StatsSuperPropertyNumberOfItemsSharedViaTwitter = @"number_of_items_shared_via_twitter";
-NSString *const StatsSuperPropertyNumberOfItemsSharedViaFacebook = @"number_of_items_shared_via_facebook";
-NSString *const StatsSuperPropertyNumberOfItemsSharedViaWeibo = @"number_of_items_shared_via_weibo";
-NSString *const StatsSuperPropertyNumberOfItemsSentToPocket = @"number_of_items_sent_to_pocket";
-NSString *const StatsSuperPropertyNumberOfItemsSentToInstapaper = @"number_of_items_sent_to_instapaper";
-NSString *const StatsSuperPropertyNumberOfItemsSentToGooglePlus = @"number_of_items_sent_to_google_plus";
-
 // Notifications
 NSString *const StatsSuperPropertyNumberOfTimesOpenedNotificationDetails = @"number_of_times_opened_notification_details";
 NSString *const StatsSuperPropertyNumberOfNotificationsResultingInActions = @"number_of_notifications_resulting_in_actions";
