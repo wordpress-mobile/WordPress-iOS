@@ -4,67 +4,6 @@
 extern NSString *const StatsEventAppClosed;
 extern NSString *const StatsEventAppOpenedDueToPushNotification;
 
-// Manage Notifications
-extern NSString *const StatsEventManageNotificationsTurnOn;
-extern NSString *const StatsEventManageNotificationsTurnOff;
-extern NSString *const StatsEventManageNotificationsTurnOffForOneHour;
-extern NSString *const StatsEventManageNotificationsTurnOffUntil8AM;
-extern NSString *const StatsEventManageNotificationsEnabledFollowNotifications;
-extern NSString *const StatsEventManageNotificationsDisabledFollowNotifications;
-extern NSString *const StatsEventManageNotificationsEnabledAchievementsNotifications;
-extern NSString *const StatsEventManageNotificationsDisabledAchievementsNotifications;
-extern NSString *const StatsEventManageNotificationsEnabledCommentNotifications;
-extern NSString *const StatsEventManageNotificationsDisabledCommentNotifications;
-extern NSString *const StatsEventManageNotificationsEnabledReblogNotifications;
-extern NSString *const StatsEventManageNotificationsDisabledReblogNotifications;
-extern NSString *const StatsEventManageNotificationsEnabledLikeNotifications;
-extern NSString *const StatsEventManageNotificationsDisabledLikeNotifications;
-extern NSString *const StatsEventManageNotificationsEnabledBlogNotifications;
-extern NSString *const StatsEventManageNotificationsDisabledBlogNotifications;
-
-// Quick Photo
-extern NSString *const StatsEventQuickPhotoOpened;
-extern NSString *const StatsEventQuickPhotoPosted;
-
-// NUX Related
-extern NSString *const StatsEventNUXFirstWalkthroughOpened;
-extern NSString *const StatsEventNUXFirstWalkthroughClickedSkipToCreateAccount;
-extern NSString *const StatsEventNUXFirstWalkthroughClickedInfo;
-extern NSString *const StatsEventNUXFirstWalkthroughClickedCreateAccount;
-extern NSString *const StatsEventNUXFirstWalkthroughClickedLostPassword;
-extern NSString *const StatsEventNUXFirstWalkthroughSignedInWithoutUrl;
-extern NSString *const StatsEventNUXFirstWalkthroughSignedInWithUrl;
-extern NSString *const StatsEventNUXFirstWalkthroughSignedInForDotCom;
-extern NSString *const StatsEventNUXFirstWalkthroughSignedInForSelfHosted;
-extern NSString *const StatsEventNUXFirstWalkthroughClickedEnableXMLRPCServices;
-extern NSString *const StatsEventNUXFirstWalkthroughClickedNeededHelpOnError;
-extern NSString *const StatsEventNUXFirstWalkthroughUserSignedInToBlogWithJetpack;
-extern NSString *const StatsEventNUXFirstWalkthroughUserConnectedToJetpack;
-extern NSString *const StatsEventNUXFirstWalkthroughUserSkippedConnectingToJetpack;
-
-
-// NUX Create Account
-extern NSString *const StatsEventAccountCreationOpenedFromTabBar;
-extern NSString *const StatsEventNUXCreateAccountOpened;
-extern NSString *const StatsEventNUXCreateAccountClickedCancel;
-extern NSString *const StatsEventNUXCreateAccountClickedHelp;
-extern NSString *const StatsEventNUXCreateAccountClickedAccountPageNext;
-extern NSString *const StatsEventNUXCreateAccountClickedSitePageNext;
-extern NSString *const StatsEventNUXCreateAccountClickedSitePagePrevious;
-extern NSString *const StatsEventNUXCreateAccountCreatedAccount;
-extern NSString *const StatsEventNUXCreateAccountClickedReviewPagePrevious;
-extern NSString *const StatsEventNUXCreateAccountClickedViewLanguages;
-extern NSString *const StatsEventNUXCreateAccountChangedDefaultURL;
-
-// Add Blogs
-extern NSString *const StatsEventAddBlogsOpened;
-extern NSString *const StatsEventAddBlogsClickedSelectAll;
-extern NSString *const StatsEventAddBlogsClickedDeselectAll;
-extern NSString *const StatsEventAddBlogsClickedAddSelected;
-
-// Stats
-extern NSString *const StatsEventStatsClickedOnWebVersion;
-
 // Super Properties
 
 // General

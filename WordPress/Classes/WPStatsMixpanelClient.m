@@ -204,6 +204,9 @@
         case WPStatOpenedSettings:
             instructions = [WPStatsMixpanelClientInstructionsForStat initWithPropertyIncrementor:@"number_of_times_opened_settings" forStat:WPStatApplicationClosed];
             break;
+        case WPStatCreatedAccount:
+            instructions = [WPStatsMixpanelClientInstructionsForStat initWithMixpanelEventName:@"Created Account"];
+            break;
         default:
             break;
     }
