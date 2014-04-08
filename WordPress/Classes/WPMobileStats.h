@@ -4,24 +4,6 @@
 extern NSString *const StatsEventAppClosed;
 extern NSString *const StatsEventAppOpenedDueToPushNotification;
 
-// Super Properties
-
-// Reader
-extern NSString *const StatsSuperPropertyNumberOfItemsUnlikedInReader;
-
-// Posts
-extern NSString *const StatsSuperPropertyNumberOfPostsPublished;
-extern NSString *const StatsSuperPropertyNumberOfPostsUpdated;
-extern NSString *const StatsSuperPropertyNumberOfPhotosAddedToPosts;
-extern NSString *const StatsSuperPropertyNumberOfVideosAddedToPosts;
-extern NSString *const StatsSuperPropertyNumberOfFeaturedImagesAssignedToPosts;
-extern NSString *const StatsSuperPropertyNumberOfPostsWithPhotos;
-extern NSString *const StatsSuperPropertyNumberOfPostsWithVideos;
-extern NSString *const StatsSuperPropertyNumberOfPostsWithCategories;
-extern NSString *const StatsSuperPropertyNumberOfPostsWithTags;
-
-
-
 @interface WPMobileStats : NSObject
 
 + (void)initializeStats;

@@ -250,6 +250,18 @@
         case WPStatNotificationFlaggedAsSpam:
             instructions = [WPStatsMixpanelClientInstructionsForStat initWithSuperPropertyAndPeoplePropertyIncrementor:@"number_of_notifications_flagged_as_spam"];
             break;
+        case WPStatPublishedPostWithPhoto:
+            instructions = [WPStatsMixpanelClientInstructionsForStat initWithSuperPropertyAndPeoplePropertyIncrementor:@"number_of_posts_published_with_photos"];
+            break;
+        case WPStatPublishedPostWithVideo:
+            instructions = [WPStatsMixpanelClientInstructionsForStat initWithSuperPropertyAndPeoplePropertyIncrementor:@"number_of_posts_published_with_videos"];
+            break;
+        case WPStatPublishedPostWithCategories:
+            instructions = [WPStatsMixpanelClientInstructionsForStat initWithSuperPropertyAndPeoplePropertyIncrementor:@"number_of_posts_published_with_categories"];
+            break;
+        case WPStatPublishedPostWithTags:
+            instructions = [WPStatsMixpanelClientInstructionsForStat initWithSuperPropertyAndPeoplePropertyIncrementor:@"number_of_posts_published_with_tags"];
+            break;
         default:
             break;
     }
