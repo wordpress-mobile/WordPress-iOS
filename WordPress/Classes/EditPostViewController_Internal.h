@@ -39,8 +39,6 @@ typedef NS_ENUM(NSUInteger, EditPostViewControllerMode) {
 @property (nonatomic, strong) UIActionSheet *currentActionSheet;
 @property (nonatomic, strong) UIAlertView *failedMediaAlertView;
 
-@property (nonatomic, strong) NSString *statsPrefix;
-
 - (void)didSaveNewPost;
 
 @end
