@@ -13,6 +13,7 @@
 + (instancetype)initWithMixpanelEventName:(NSString *)eventName;
 + (instancetype)initWithPropertyIncrementor:(NSString *)property forStat:(WPStat)stat;
 + (instancetype)initWithSuperPropertyFlagger:(NSString *)property;
-- (void)setSuperPropertyAndPeoplePropertyToIncrement:(NSString *)propertyName;
++ (instancetype)initWithSuperPropertyAndPeoplePropertyIncrementor:(NSString *)property;
+- (void)setSuperPropertyAndPeoplePropertyToIncrement:(NSString *)property;
 
 @end

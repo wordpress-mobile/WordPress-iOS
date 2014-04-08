@@ -31,6 +31,15 @@ typedef NS_ENUM(NSUInteger, WPStat) {
     WPStatOpenedMediaLibrary,
     WPStatOpenedSettings,
     WPStatCreatedAccount,
+    WPStatSharedItem,
+    WPStatSharedItemViaEmail,
+    WPStatSharedItemViaSMS,
+    WPStatSharedItemViaTwitter,
+    WPStatSharedItemViaFacebook,
+    WPStatSharedItemViaWeibo,
+    WPStatSentItemToInstapaper,
+    WPStatSentItemToPocket,
+    WPStatSentItemToGooglePlus,
 };
 
 @interface WPStats : NSObject
