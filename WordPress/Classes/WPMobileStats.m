@@ -17,23 +17,6 @@ static BOOL hasRecordedAppOpenedEvent = NO;
 NSString *const StatsEventAppClosed = @"Application Closed";
 NSString *const StatsEventAppOpenedDueToPushNotification = @"Application Opened Due to Push Notification";
 
-// Notifications
-NSString *const StatsPropertyNotificationsOpened = @"notifications_opened";
-NSString *const StatsPropertyNotificationsOpenedDetails = @"notifications_opened_details";
-NSString *const StatsEventNotificationsClickedManageNotifications = @"Notifications - Manage Button";
-
-// Notifications Detail
-NSString *const StatsEventNotificationsDetailClickedReplyButton = @"Notifications Detail - Clicked Reply Button";
-NSString *const StatsEventNotificationsDetailRepliedToComment = @"Notifications Detail - Replied to Comment";
-NSString *const StatsEventNotificationsDetailApproveComment = @"Notifications Detail - Approve Comment";
-NSString *const StatsEventNotificationsDetailUnapproveComment = @"Notifications Detail - Unapprove Comment";
-NSString *const StatsEventNotificationsDetailTrashComment = @"Notifications Detail - Trash Comment";
-NSString *const StatsEventNotificationsDetailUntrashComment = @"Notifications Detail - Untrash Comment";
-NSString *const StatsEventNotificationsDetailFlagCommentAsSpam = @"Notifications Detail - Flag Comment as Spam";
-NSString *const StatsEventNotificationsDetailUnflagCommentAsSpam = @"Notifications Detail - Unflagged Comment as Spam";
-NSString *const StatsEventNotificationsDetailFollowBlog = @"Notifications Detail - Followed Blog";
-NSString *const StatsEventNotificationsDetailUnfollowBlog = @"Notifications Detail - Unfollowed Blog";
-
 // Posts
 NSString *const StatsPropertyPostsOpened = @"posts_opened";
 NSString *const StatsEventPostsClickedNewPost = @"Posts - Clicked New Post";

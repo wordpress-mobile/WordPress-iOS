@@ -4,23 +4,6 @@
 extern NSString *const StatsEventAppClosed;
 extern NSString *const StatsEventAppOpenedDueToPushNotification;
 
-// Notifications
-extern NSString *const StatsPropertyNotificationsOpened;
-extern NSString *const StatsPropertyNotificationsOpenedDetails;
-extern NSString *const StatsEventNotificationsClickedManageNotifications;
-
-// Notifications Detail
-extern NSString *const StatsEventNotificationsDetailClickedReplyButton;
-extern NSString *const StatsEventNotificationsDetailRepliedToComment;
-extern NSString *const StatsEventNotificationsDetailApproveComment;
-extern NSString *const StatsEventNotificationsDetailUnapproveComment;
-extern NSString *const StatsEventNotificationsDetailTrashComment;
-extern NSString *const StatsEventNotificationsDetailUntrashComment;
-extern NSString *const StatsEventNotificationsDetailFlagCommentAsSpam;
-extern NSString *const StatsEventNotificationsDetailUnflagCommentAsSpam;
-extern NSString *const StatsEventNotificationsDetailFollowBlog;
-extern NSString *const StatsEventNotificationsDetailUnfollowBlog;
-
 // Posts
 extern NSString *const StatsPropertyPostsOpened;
 extern NSString *const StatsEventPostsClickedNewPost;
