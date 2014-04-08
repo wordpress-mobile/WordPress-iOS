@@ -12,10 +12,6 @@
 
 static BOOL hasRecordedAppOpenedEvent = NO;
 
-// General
-NSString *const StatsEventAppClosed = @"Application Closed";
-NSString *const StatsEventAppOpenedDueToPushNotification = @"Application Opened Due to Push Notification";
-
 @interface WPMobileStats() {
     NSMutableDictionary *_aggregatedEventProperties;
 }
