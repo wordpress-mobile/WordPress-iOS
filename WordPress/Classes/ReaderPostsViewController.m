@@ -173,8 +173,7 @@ NSString * const RPVCDisplayedNativeFriendFinder = @"DisplayedNativeFriendFinder
     }
 
     if (!_viewHasAppeared) {
-        [WPStats track:WPStatReaderAccessedReader];
-	    [WPMobileStats trackEventForWPCom:StatsEventReaderOpened properties:[self categoryPropertyForStats]];
+        [WPStats track:WPStatReaderAccessedReader withProperties:[self categoryPropertyForStats]];
 	    [WPMobileStats pingWPComStatsEndpoint:@"home_page"];
         [WPMobileStats incrementPeopleAndSuperProperty:StatsSuperPropertyNumberOfTimesOpenedReader];
         _viewHasAppeared = YES;
@@ -372,11 +371,7 @@ NSString * const RPVCDisplayedNativeFriendFinder = @"DisplayedNativeFriendFinder
 	[post toggleLikedWithSuccess:^{
         if ([post.isLiked boolValue]) {
             [WPStats track:WPStatReaderLikedArticle];
-            [WPMobileStats trackEventForWPCom:StatsEventReaderLikedPost];
             [WPMobileStats incrementPeopleAndSuperProperty:StatsSuperPropertyNumberOfItemsLikedInReader];
-        } else {
-            [WPMobileStats trackEventForWPCom:StatsEventReaderUnlikedPost];
-            [WPMobileStats incrementPeopleAndSuperProperty:StatsSuperPropertyNumberOfItemsUnlikedInReader];
         }
 	} failure:^(NSError *error) {
 		DDLogError(@"Error Liking Post : %@", [error localizedDescription]);
@@ -748,7 +743,6 @@ NSString * const RPVCDisplayedNativeFriendFinder = @"DisplayedNativeFriendFinder
 									 failure(error);
 								 }
 							 }];
-    [WPMobileStats trackEventForWPCom:StatsEventReaderHomePageRefresh];
     [WPMobileStats pingWPComStatsEndpoint:@"home_page_refresh"];
 }
 
@@ -785,7 +779,6 @@ NSString * const RPVCDisplayedNativeFriendFinder = @"DisplayedNativeFriendFinder
 							 }];
     
     [WPStats track:WPStatReaderInfiniteScroll withProperties:[self categoryPropertyForStats]];
-    [WPMobileStats trackEventForWPCom:StatsEventReaderInfiniteScroll properties:[self categoryPropertyForStats]];
 }
 
 - (UITableViewRowAnimation)tableViewRowAnimation {
@@ -870,7 +863,6 @@ NSString * const RPVCDisplayedNativeFriendFinder = @"DisplayedNativeFriendFinder
     [self.navigationController pushViewController:self.detailController animated:YES];
     
     [WPStats track:WPStatReaderOpenedArticle];
-    [WPMobileStats trackEventForWPCom:StatsEventReaderOpenedArticleDetails];
     [WPMobileStats incrementPeopleAndSuperProperty:StatsSuperPropertyNumberOfItemsOpenedInReader];
     [WPMobileStats pingWPComStatsEndpoint:@"details_page"];
 }
@@ -922,10 +914,7 @@ NSString * const RPVCDisplayedNativeFriendFinder = @"DisplayedNativeFriendFinder
 
     if ([self isCurrentCategoryFreshlyPressed]) {
         [WPStats track:WPStatReaderLoadedFreshlyPressed];
-        [WPMobileStats trackEventForWPCom:StatsEventReaderSelectedFreshlyPressedTopic];
         [WPMobileStats pingWPComStatsEndpoint:@"freshly"];
-    } else {
-        [WPMobileStats trackEventForWPCom:StatsEventReaderSelectedCategory properties:[self categoryPropertyForStats]];
     }
 }
 

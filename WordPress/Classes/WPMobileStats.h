@@ -4,21 +4,6 @@
 extern NSString *const StatsEventAppClosed;
 extern NSString *const StatsEventAppOpenedDueToPushNotification;
 
-// Reader
-extern NSString *const StatsEventReaderOpened;
-extern NSString *const StatsEventReaderHomePageRefresh;
-extern NSString *const StatsEventReaderInfiniteScroll;
-extern NSString *const StatsEventReaderSelectedFreshlyPressedTopic;
-extern NSString *const StatsEventReaderSelectedCategory;
-extern NSString *const StatsEventReaderOpenedArticleDetails;
-extern NSString *const StatsEventReaderPublishedComment;
-extern NSString *const StatsEventReaderReblogged;
-extern NSString *const StatsEventReaderLikedPost;
-extern NSString *const StatsEventReaderUnlikedPost;
-extern NSString *const StatsPropertyReaderOpenedFromExternalURL;
-extern NSString *const StatsPropertyReaderOpenedFromExternalURLCount;
-extern NSString *const StatsEventReaderOpenedFromExternalSource;
-
 // Reader Detail
 extern NSString *const StatsPropertyReaderDetailClickedPrevious;
 extern NSString *const StatsPropertyReaderDetailClickedNext;
