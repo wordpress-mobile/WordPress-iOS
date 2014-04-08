@@ -4,34 +4,6 @@
 extern NSString *const StatsEventAppClosed;
 extern NSString *const StatsEventAppOpenedDueToPushNotification;
 
-// Comments
-extern NSString *const StatsEventCommentsViewCommentDetails;
-
-// Comment Detail
-extern NSString *const StatsEventCommentDetailApprove;
-extern NSString *const StatsEventCommentDetailUnapprove;
-extern NSString *const StatsEventCommentDetailDelete;
-extern NSString *const StatsEventCommentDetailFlagAsSpam;
-extern NSString *const StatsEventCommentDetailEditComment;
-extern NSString *const StatsEventCommentDetailClickedReplyToComment;
-extern NSString *const StatsEventCommentDetailRepliedToComment;
-
-
-// Settings
-extern NSString *const StatsEventSettingsRemovedBlog;
-extern NSString *const StatsEventSettingsClickedEditBlog;
-extern NSString *const StatsEventSettingsClickedAddBlog;
-extern NSString *const StatsEventSettingsSignedOutOfDotCom;
-extern NSString *const StatsEventSettingsClickedSignIntoDotCom;
-extern NSString *const StatsEventSettingsClickedSignOutOfDotCom;
-extern NSString *const StatsEventSettingsMediaClickedImageResize;
-extern NSString *const StatsEventSettingsMediaClickedVideoQuality;
-extern NSString *const StatsEventSettingsMediaClickedVideoContent;
-extern NSString *const StatsEventSettingsClickedManageNotifications;
-extern NSString *const StatsEventSettingsEnabledSounds;
-extern NSString *const StatsEventSettingsDisabledSounds;
-extern NSString *const StatsEventSettingsClickedAbout;
-
 // Manage Notifications
 extern NSString *const StatsEventManageNotificationsTurnOn;
 extern NSString *const StatsEventManageNotificationsTurnOff;
