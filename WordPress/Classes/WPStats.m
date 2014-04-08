@@ -25,4 +25,9 @@
     [[self sharedInstance] track:stat withProperties:properties];
 }
 
++ (void)endSession
+{
+    [[self sharedInstance] endSession];
+}
+
 @end

@@ -23,12 +23,20 @@ typedef NS_ENUM(NSUInteger, WPStat) {
     WPStatEditorPublishedPost,
     WPStatNotificationsAccessedNotifications,
     WPStatNotificationsOpenedNotificationDetails,
+    WPStatOpenedPosts,
+    WPStatOpenedPages,
+    WPStatOpenedComments,
+    WPStatOpenedViewSite,
+    WPStatOpenedViewAdmin,
+    WPStatOpenedMediaLibrary,
+    WPStatOpenedSettings,
 };
 
 @interface WPStats : NSObject
 
 + (void)track:(WPStat)stat;
 + (void)track:(WPStat)stat withProperties:(NSDictionary *)properties;
++ (void)endSession;
 
 @end
 
@@ -36,5 +44,6 @@ typedef NS_ENUM(NSUInteger, WPStat) {
 
 - (void)track:(WPStat)stat;
 - (void)track:(WPStat)stat withProperties:(NSDictionary *)properties;
+- (void)endSession;
 
 @end
