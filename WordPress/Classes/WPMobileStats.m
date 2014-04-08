@@ -18,12 +18,6 @@ NSString *const StatsEventAppOpenedDueToPushNotification = @"Application Opened 
 
 // Super Properties
 
-// Reader
-NSString *const StatsSuperPropertyNumberOfItemsOpenedInReader = @"number_of_items_opened_in_reader";
-NSString *const StatsSuperPropertyNumberOfItemsLikedInReader = @"number_of_items_liked_in_reader";
-NSString *const StatsSuperPropertyNumberOfItemsUnlikedInReader = @"number_of_items_unliked_in_reader";
-NSString *const StatsSuperPropertyNumberOfItemsRebloggedInReader = @"number_of_items_reblogged_in_reader";
-
 // Sharing
 NSString *const StatsSuperPropertyNumberOfItemsShared = @"number_of_items_shared";
 NSString *const StatsSuperPropertyNumberOfItemsSharedViaEmail = @"number_of_items_shared_via_email";
