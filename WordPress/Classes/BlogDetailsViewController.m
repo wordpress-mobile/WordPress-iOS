@@ -158,8 +158,6 @@ NSString * const WPBlogDetailsBlogKey = @"WPBlogDetailsBlogKey";
     [tableView deselectRowAtIndexPath:indexPath animated:YES];
     
     if ([self isRowForEditBlog:indexPath.row]) {
-        [WPMobileStats trackEventForWPCom:StatsEventSettingsClickedEditBlog];
-        
         EditSiteViewController *editSiteViewController = [[EditSiteViewController alloc] initWithBlog:self.blog];
         [self.navigationController pushViewController:editSiteViewController animated:YES];
     }

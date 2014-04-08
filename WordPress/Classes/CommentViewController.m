@@ -182,7 +182,6 @@ CGFloat const CommentViewUnapproveButtonTag = 701;
 #pragma mark - Comment moderation
 
 - (void)deleteComment {
-    [WPMobileStats trackEventForWPCom:StatsEventCommentDetailDelete];
     [self.comment remove];
     
     // Note: the parent class of CommentsViewController will pop this as a result of NSFetchedResultsChangeDelete
@@ -209,10 +208,8 @@ CGFloat const CommentViewUnapproveButtonTag = 701;
 - (void)approveOrUnapproveAction:(id)sender {
     UIBarButtonItem *barButton = sender;
     if (barButton.tag == CommentViewApproveButtonTag) {
-        [WPMobileStats trackEventForWPCom:StatsEventCommentDetailApprove];
         [self.comment approve];
     } else {
-        [WPMobileStats trackEventForWPCom:StatsEventCommentDetailUnapprove];
         [self.comment unapprove];
     }
     [self updateApproveButton];
@@ -238,12 +235,10 @@ CGFloat const CommentViewUnapproveButtonTag = 701;
 }
 
 - (void)spamAction:(id)sender {
-    [WPMobileStats trackEventForWPCom:StatsEventCommentDetailFlagAsSpam];
     [self.comment spam];
 }
 
 - (void)editAction:(id)sender {
-    [WPMobileStats trackEventForWPCom:StatsEventCommentDetailEditComment];
 	[self showEditCommentViewWithAnimation:YES];
 }
 
@@ -251,7 +246,6 @@ CGFloat const CommentViewUnapproveButtonTag = 701;
 	if (self.commentsViewController.blog.isSyncingComments) {
 		[self showSyncInProgressAlert];
 	} else {
-        [WPMobileStats trackEventForWPCom:StatsEventCommentDetailClickedReplyToComment];
         self.reply = [self.comment restoreReply];
         self.transientReply = YES;
         self.inlineComposeView.text = self.reply.content;

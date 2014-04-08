@@ -12,38 +12,9 @@
 
 static BOOL hasRecordedAppOpenedEvent = NO;
 
-
 // General
 NSString *const StatsEventAppClosed = @"Application Closed";
 NSString *const StatsEventAppOpenedDueToPushNotification = @"Application Opened Due to Push Notification";
-
-// Comments
-NSString *const StatsEventCommentsViewCommentDetails = @"Comments - View Comment Details";
-
-// Comment Detail
-NSString *const StatsEventCommentDetailApprove = @"Comment Detail - Approve Comment";
-NSString *const StatsEventCommentDetailUnapprove = @"Comment Detail - Unapprove Comment";
-NSString *const StatsEventCommentDetailDelete = @"Comment Detail - Delete Comment";
-NSString *const StatsEventCommentDetailFlagAsSpam = @"Comment Detail - Flag Comment as Spam";
-NSString *const StatsEventCommentDetailEditComment = @"Comment Detail - Edit Comment";
-NSString *const StatsEventCommentDetailClickedReplyToComment = @"Comment Detail - Clicked Reply to Comment";
-NSString *const StatsEventCommentDetailRepliedToComment = @"Comment Detail - Replied to Comment";
-
-
-// Settings
-NSString *const StatsEventSettingsRemovedBlog = @"Settings - Remove Blog";
-NSString *const StatsEventSettingsClickedEditBlog = @"Settings - Clicked Edit Blog";
-NSString *const StatsEventSettingsClickedAddBlog = @"Settings - Clicked Add Blog";
-NSString *const StatsEventSettingsSignedOutOfDotCom = @"Settings - Signed Out of Wordpress.com";
-NSString *const StatsEventSettingsClickedSignIntoDotCom = @"Settings - Clicked Sign Into Wordpress.com";
-NSString *const StatsEventSettingsClickedSignOutOfDotCom = @"Settings - Clicked Sign Out of Wordpress.com";
-NSString *const StatsEventSettingsMediaClickedImageResize = @"Settings - Media - Clicked Image Resize";
-NSString *const StatsEventSettingsMediaClickedVideoQuality = @"Settings - Media - Clicked Video Quality";
-NSString *const StatsEventSettingsMediaClickedVideoContent = @"Settings - Media - Clicked Video Content";
-NSString *const StatsEventSettingsClickedManageNotifications = @"Settings - Clicked Manage Notifications";
-NSString *const StatsEventSettingsEnabledSounds = @"Settings - Enabled Sounds";
-NSString *const StatsEventSettingsDisabledSounds = @"Settings - Disabled Sounds";
-NSString *const StatsEventSettingsClickedAbout = @"Settings - Clicked About";
 
 // Manage Notifications
 NSString *const StatsEventManageNotificationsTurnOn = @"Manage Notifications - Turn On Notifications";
