@@ -187,6 +187,8 @@ static NSInteger const IndexForMeTab = 2;
 - (void)applicationDidEnterBackground:(UIApplication *)application {
     DDLogInfo(@"%@ %@", self, NSStringFromSelector(_cmd));
 
+    [WPStats track:WPStatApplicationClosed];
+    [WPStats endSession];
     [WPMobileStats trackEventForWPComWithSavedProperties:StatsEventAppClosed];
     [WPMobileStats pauseSession];
     
@@ -220,8 +222,6 @@ static NSInteger const IndexForMeTab = 2;
 
 - (void)applicationDidBecomeActive:(UIApplication *)application {
     DDLogInfo(@"%@ %@", self, NSStringFromSelector(_cmd));
-    
-    [WPMobileStats recordAppOpenedForEvent:StatsEventAppOpened];
     [WPStats track:WPStatApplicationOpened];
 }
 
