@@ -40,6 +40,11 @@ typedef NS_ENUM(NSUInteger, WPStat) {
     WPStatSentItemToInstapaper,
     WPStatSentItemToPocket,
     WPStatSentItemToGooglePlus,
+    WPStatNotificationPerformedAction,
+    WPStatNotificationRepliedTo,
+    WPStatNotificationApproved,
+    WPStatNotificationTrashed,
+    WPStatNotificationFlaggedAsSpam,
 };
 
 @interface WPStats : NSObject
