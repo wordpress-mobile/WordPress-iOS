@@ -163,10 +163,6 @@ static NSInteger const IndexForMeTab = 2;
                 NSUInteger blogId = [[params numberForKey:@"blogId"] integerValue];
                 NSUInteger postId = [[params numberForKey:@"postId"] integerValue];
                 
-                [WPMobileStats flagSuperProperty:StatsPropertyReaderOpenedFromExternalURL];
-                [WPMobileStats incrementSuperProperty:StatsPropertyReaderOpenedFromExternalURLCount];
-                [WPMobileStats trackEventForWPCom:StatsEventReaderOpenedFromExternalSource];
-                
                 [self.readerPostsViewController.navigationController popToRootViewControllerAnimated:NO];
                 NSInteger readerTabIndex = [[self.tabBarController viewControllers] indexOfObject:self.readerPostsViewController.navigationController];
                 [self.tabBarController setSelectedIndex:readerTabIndex];

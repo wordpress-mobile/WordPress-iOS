@@ -188,7 +188,6 @@
 		}
         
         [WPStats track:WPStatReaderRebloggedArticle];
-        [WPMobileStats trackEventForWPCom:StatsEventReaderReblogged];
         [WPMobileStats incrementPeopleAndSuperProperty:StatsSuperPropertyNumberOfItemsRebloggedInReader];
 		
 	} failure:^(NSError *error) {

@@ -615,11 +615,7 @@ typedef enum {
 	[post toggleLikedWithSuccess:^{
         if ([post.isLiked boolValue]) {
             [WPStats track:WPStatReaderLikedArticle];
-            [WPMobileStats trackEventForWPCom:StatsEventReaderLikedPost];
             [WPMobileStats incrementPeopleAndSuperProperty:StatsSuperPropertyNumberOfItemsLikedInReader];
-        } else {
-            [WPMobileStats trackEventForWPCom:StatsEventReaderUnlikedPost];
-            [WPMobileStats incrementPeopleAndSuperProperty:StatsSuperPropertyNumberOfItemsUnlikedInReader];
         }
 	} failure:^(NSError *error) {
 		DDLogError(@"Error Liking Post : %@", [error localizedDescription]);
