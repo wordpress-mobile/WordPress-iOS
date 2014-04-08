@@ -18,7 +18,7 @@
     return self;
 }
 
-- (void)initialize
+- (void)initializeStats
 {
     [Mixpanel sharedInstanceWithToken:[WordPressComApiCredentials mixpanelAPIToken]];
     
