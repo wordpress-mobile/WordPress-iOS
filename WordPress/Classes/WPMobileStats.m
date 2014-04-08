@@ -18,12 +18,6 @@ NSString *const StatsEventAppOpenedDueToPushNotification = @"Application Opened 
 
 // Super Properties
 
-// General
-NSString *const StatsSuperPropertyNumberOfTimesOpenedReader = @"number_of_times_opened_reader";
-NSString *const StatsSuperPropertyNumberOfTimesOpenedNotifications = @"number_of_times_opened_notifications";
-NSString *const StatsSuperPropertyNumberOfTimesOpenedStats = @"number_of_times_opened_stats";
-NSString *const StatsSuperPropertyNumberOfTimesOpenedViewAdmin = @"number_of_times_opened_view_admin";
-
 // Reader
 NSString *const StatsSuperPropertyNumberOfItemsOpenedInReader = @"number_of_items_opened_in_reader";
 NSString *const StatsSuperPropertyNumberOfItemsLikedInReader = @"number_of_items_liked_in_reader";
