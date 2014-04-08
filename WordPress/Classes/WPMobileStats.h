@@ -1,9 +1,5 @@
 #import <Foundation/Foundation.h>
 
-// General
-extern NSString *const StatsEventAppClosed;
-extern NSString *const StatsEventAppOpenedDueToPushNotification;
-
 @interface WPMobileStats : NSObject
 
 + (void)initializeStats;
