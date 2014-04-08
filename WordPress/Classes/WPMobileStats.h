@@ -2,11 +2,6 @@
 
 @interface WPMobileStats : NSObject
 
-+ (void)initializeStats;
-
-+ (void)pauseSession;
-
-+ (void)recordAppOpenedForEvent:(NSString *)event;
 + (void)trackEventForSelfHostedAndWPCom:(NSString *)event;
 + (void)trackEventForSelfHostedAndWPCom:(NSString *)event properties:(NSDictionary *)properties;
 + (void)trackEventForSelfHostedAndWPComWithSavedProperties:(NSString *)event;

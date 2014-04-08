@@ -1,6 +1,11 @@
 #import "WPStatsMixpanelClient.h"
 #import <Mixpanel/Mixpanel.h>
 #import "WPStatsMixpanelClientInstructionsForStat.h"
+#import "WordPressComApiCredentials.h"
+#import "AccountService.h"
+#import "WPAccount.h"
+#import "ContextManager.h"
+#import "Blog.h"
 
 @implementation WPStatsMixpanelClient
 
@@ -13,6 +18,31 @@
     return self;
 }
 
+- (void)initialize
+{
+    [Mixpanel sharedInstanceWithToken:[WordPressComApiCredentials mixpanelAPIToken]];
+    
+    // Tracking session count will help us isolate users who just installed the app
+    NSUInteger sessionCount = [[[[Mixpanel sharedInstance] currentSuperProperties] objectForKey:@"session_count"] intValue];
+    sessionCount++;
+    
+    NSManagedObjectContext *context = [[ContextManager sharedInstance] mainContext];
+    AccountService *accountService = [[AccountService alloc] initWithManagedObjectContext:context];
+    WPAccount *account = [accountService defaultWordPressComAccount];
+    NSDictionary *properties = @{
+                                 @"platform": @"iOS",
+                                 @"session_count": @(sessionCount),
+                                 @"connected_to_dotcom": @(account != nil),
+                                 @"number_of_blogs" : @([Blog countWithContext:[[ContextManager sharedInstance] mainContext]]) };
+    [[Mixpanel sharedInstance] registerSuperProperties:properties];
+    
+    NSString *username = account.username;
+    if (account && [username length] > 0) {
+        [[Mixpanel sharedInstance] identify:username];
+        [[Mixpanel sharedInstance].people increment:@"Application Opened" by:@(1)];
+        [[Mixpanel sharedInstance].people set:@{ @"$username": username, @"$first_name" : username }];
+    }
+}
 - (void)track:(WPStat)stat
 {
     [self track:stat withProperties:nil];

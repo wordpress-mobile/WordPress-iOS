@@ -41,45 +41,6 @@ static BOOL hasRecordedAppOpenedEvent = NO;
     return sharedInstance;
 }
 
-+ (void)initializeStats
-{
-    [Mixpanel sharedInstanceWithToken:[WordPressComApiCredentials mixpanelAPIToken]];
-
-    // Tracking session count will help us isolate users who just installed the app
-    NSUInteger sessionCount = [[[[Mixpanel sharedInstance] currentSuperProperties] objectForKey:@"session_count"] intValue];
-    sessionCount++;
-
-    NSManagedObjectContext *context = [[ContextManager sharedInstance] mainContext];
-    AccountService *accountService = [[AccountService alloc] initWithManagedObjectContext:context];
-    WPAccount *account = [accountService defaultWordPressComAccount];
-    NSDictionary *properties = @{
-                                 @"platform": @"iOS",
-                                 @"session_count": @(sessionCount),
-                                 @"connected_to_dotcom": @(account != nil),
-                                 @"number_of_blogs" : @([Blog countWithContext:[[ContextManager sharedInstance] mainContext]]) };
-    [[Mixpanel sharedInstance] registerSuperProperties:properties];
-    
-    NSString *username = account.username;
-    if (account && [username length] > 0) {
-        [[Mixpanel sharedInstance] identify:username];
-        [[Mixpanel sharedInstance].people increment:@"Application Opened" by:@(1)];
-        [[Mixpanel sharedInstance].people set:@{ @"$username": username, @"$first_name" : username }];
-    }
-}
-
-+ (void)pauseSession
-{
-    [self clearPropertiesForAllEvents];
-    hasRecordedAppOpenedEvent = NO;
-}
-
-+ (void)recordAppOpenedForEvent:(NSString *)event {
-    if (!hasRecordedAppOpenedEvent) {
-        [self trackEventForSelfHostedAndWPCom:event];
-    }
-    hasRecordedAppOpenedEvent = YES;
-}
-
 + (void)trackEventForSelfHostedAndWPCom:(NSString *)event
 {
     [[self sharedInstance] trackEventForSelfHostedAndWPCom:event];
