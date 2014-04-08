@@ -24,11 +24,18 @@
     return instructions;
 }
 
-- (void)setSuperPropertyAndPeoplePropertyToIncrement:(NSString *)propertyName
++ (instancetype)initWithSuperPropertyAndPeoplePropertyIncrementor:(NSString *)property
 {
-    NSParameterAssert(propertyName != nil);
-    self.superPropertyToIncrement = propertyName;
-    self.peoplePropertyToIncrement = propertyName;
+    WPStatsMixpanelClientInstructionsForStat *instructions = [[WPStatsMixpanelClientInstructionsForStat alloc] init];
+    [instructions setSuperPropertyAndPeoplePropertyToIncrement:property];
+    return instructions;
+}
+
+- (void)setSuperPropertyAndPeoplePropertyToIncrement:(NSString *)property
+{
+    NSParameterAssert(property != nil);
+    self.superPropertyToIncrement = property;
+    self.peoplePropertyToIncrement = property;
 }
 
 @end

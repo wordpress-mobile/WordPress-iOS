@@ -19,29 +19,32 @@
 
 + (void)trackActivityType:(NSString *)activityType
 {
+    WPStat stat;
     NSString *superProperty;
     if ([activityType isEqualToString:UIActivityTypeMail]) {
-        superProperty = StatsSuperPropertyNumberOfItemsSharedViaEmail;
+        stat = WPStatSharedItemViaEmail;
     } else if ([activityType isEqualToString:UIActivityTypeMessage]) {
-        superProperty = StatsSuperPropertyNumberOfItemsSharedViaSMS;
+        stat = WPStatSharedItemViaSMS;
     } else if ([activityType isEqualToString:UIActivityTypePostToTwitter]) {
-        superProperty = StatsSuperPropertyNumberOfItemsSharedViaTwitter;
+        stat = WPStatSharedItemViaTwitter;
     } else if ([activityType isEqualToString:UIActivityTypePostToFacebook]) {
-        superProperty = StatsSuperPropertyNumberOfItemsSharedViaFacebook;
-    } else if ([activityType isEqualToString:UIActivityTypeCopyToPasteboard]) {
+        stat = WPStatSharedItemViaFacebook;
     } else if ([activityType isEqualToString:UIActivityTypePostToWeibo]) {
-        superProperty = StatsSuperPropertyNumberOfItemsSharedViaWeibo;
+        stat = WPStatSharedItemViaWeibo;
     } else if ([activityType isEqualToString:NSStringFromClass([InstapaperActivity class])]) {
-        superProperty = StatsSuperPropertyNumberOfItemsSentToInstapaper;
+        stat = WPStatSentItemToInstapaper;
     } else if ([activityType isEqualToString:NSStringFromClass([PocketActivity class])]) {
-        superProperty = StatsSuperPropertyNumberOfItemsSentToPocket;
+        stat = WPStatSentItemToPocket;
     } else if ([activityType isEqualToString:NSStringFromClass([GooglePlusActivity class])]) {
-        superProperty = StatsSuperPropertyNumberOfItemsSentToGooglePlus;
+        stat = WPStatSentItemToGooglePlus;
+    } else {
+        [WPStats track:WPStatSharedItem];
+        return;
     }
     
     if (superProperty != nil) {
-        [WPMobileStats incrementPeopleAndSuperProperty:superProperty];
-        [WPMobileStats incrementPeopleAndSuperProperty:StatsSuperPropertyNumberOfItemsShared];
+        [WPStats track:WPStatSharedItem];
+        [WPStats track:stat];
     }
 }
 
