@@ -399,6 +399,10 @@ static NSInteger const MaxNumberOfLinesForTitleForSummary = 3;
     }
 }
 
+- (void)setAvatarWithURL:(NSURL *)avatarURL {
+    [self.avatarImageView setImageWithURL:avatarURL];
+}
+
 - (BOOL)privateContent {
     return self.post.isPrivate;
 }
