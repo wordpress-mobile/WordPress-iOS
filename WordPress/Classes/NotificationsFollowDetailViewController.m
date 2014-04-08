@@ -265,10 +265,8 @@ typedef void (^NoteToggleFollowBlock)(BOOL success);
 	   
 	// Hit the Tracker
     if (isFollowing) {
-        [WPMobileStats trackEventForSelfHostedAndWPCom:StatsEventNotificationsDetailUnfollowBlog];
         [WPMobileStats incrementPeopleAndSuperProperty:StatsSuperPropertyNumberOfNotificationsResultingInAnUnfollow];
     } else {
-        [WPMobileStats trackEventForSelfHostedAndWPCom:StatsEventNotificationsDetailFollowBlog];
         [WPMobileStats incrementPeopleAndSuperProperty:StatsSuperPropertyNumberOfNotificationsResultingInAFollow];
     }
     [WPMobileStats incrementPeopleAndSuperProperty:StatsSuperPropertyNumberOfNotificationsResultingInActions];

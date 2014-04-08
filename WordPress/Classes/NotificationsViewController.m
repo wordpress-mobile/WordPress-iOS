@@ -138,7 +138,6 @@ NSString * const NotificationsJetpackInformationURL = @"http://jetpack.me/about/
     if (!_viewHasAppeared) {
         _viewHasAppeared = YES;
         [WPStats track:WPStatNotificationsAccessedNotifications];
-        [WPMobileStats incrementProperty:StatsPropertyNotificationsOpened forEvent:StatsEventAppClosed];
         [WPMobileStats incrementPeopleAndSuperProperty:StatsSuperPropertyNumberOfTimesOpenedNotifications];
     }
     
@@ -218,8 +217,6 @@ NSString * const NotificationsJetpackInformationURL = @"http://jetpack.me/about/
 }
 
 - (void)showNotificationSettings {
-    [WPMobileStats trackEventForWPCom:StatsEventNotificationsClickedManageNotifications];
-    
     NotificationSettingsViewController *notificationSettingsViewController = [[NotificationSettingsViewController alloc] initWithStyle:UITableViewStyleGrouped];
     UINavigationController *navigationController = [[UINavigationController alloc] initWithRootViewController:notificationSettingsViewController];
     navigationController.navigationBar.translucent = NO;
@@ -257,7 +254,6 @@ NSString * const NotificationsJetpackInformationURL = @"http://jetpack.me/about/
     BOOL hasDetailView = [self noteHasDetailView:note];
     if (hasDetailView) {
         [WPStats track:WPStatNotificationsOpenedNotificationDetails];
-        [WPMobileStats incrementProperty:StatsPropertyNotificationsOpenedDetails forEvent:StatsEventAppClosed];
         [WPMobileStats incrementPeopleAndSuperProperty:StatsSuperPropertyNumberOfTimesOpenedNotificationDetails];
 
         _isPushingViewController = YES;
