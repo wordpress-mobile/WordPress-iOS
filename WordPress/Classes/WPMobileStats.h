@@ -9,19 +9,6 @@ extern NSString *const StatsEventAppOpenedDueToPushNotification;
 // Reader
 extern NSString *const StatsSuperPropertyNumberOfItemsUnlikedInReader;
 
-// Notifications
-extern NSString *const StatsSuperPropertyNumberOfTimesOpenedNotificationDetails;
-extern NSString *const StatsSuperPropertyNumberOfNotificationsResultingInActions;
-extern NSString *const StatsSuperPropertyNumberOfNotificationsRepliedTo;
-extern NSString *const StatsSuperPropertyNumberOfNotificationsApproved;
-extern NSString *const StatsSuperPropertyNumberOfNotificationsUnapproved;
-extern NSString *const StatsSuperPropertyNumberOfNotificationsTrashed;
-extern NSString *const StatsSuperPropertyNumberOfNotificationsUntrashed;
-extern NSString *const StatsSuperPropertyNumberOfNotificationsFlaggedAsSpam;
-extern NSString *const StatsSuperPropertyNumberOfNotificationsUnflaggedAsSpam;
-extern NSString *const StatsSuperPropertyNumberOfNotificationsResultingInAFollow;
-extern NSString *const StatsSuperPropertyNumberOfNotificationsResultingInAnUnfollow;
-
 // Posts
 extern NSString *const StatsSuperPropertyNumberOfPostsPublished;
 extern NSString *const StatsSuperPropertyNumberOfPostsUpdated;

@@ -235,6 +235,21 @@
         case WPStatSharedItem:
             instructions = [WPStatsMixpanelClientInstructionsForStat initWithSuperPropertyAndPeoplePropertyIncrementor:@"number_of_items_shared"];
             break;
+        case WPStatNotificationPerformedAction:
+            instructions = [WPStatsMixpanelClientInstructionsForStat initWithSuperPropertyAndPeoplePropertyIncrementor:@"number_of_notifications_performed_action_against"];
+            break;
+        case WPStatNotificationApproved:
+            instructions = [WPStatsMixpanelClientInstructionsForStat initWithSuperPropertyAndPeoplePropertyIncrementor:@"number_of_notifications_approved"];
+            break;
+        case WPStatNotificationRepliedTo:
+            instructions = [WPStatsMixpanelClientInstructionsForStat initWithSuperPropertyAndPeoplePropertyIncrementor:@"number_of_notifications_replied_to"];
+            break;
+        case WPStatNotificationTrashed:
+            instructions = [WPStatsMixpanelClientInstructionsForStat initWithSuperPropertyAndPeoplePropertyIncrementor:@"number_of_notifications_trashed"];
+            break;
+        case WPStatNotificationFlaggedAsSpam:
+            instructions = [WPStatsMixpanelClientInstructionsForStat initWithSuperPropertyAndPeoplePropertyIncrementor:@"number_of_notifications_flagged_as_spam"];
+            break;
         default:
             break;
     }

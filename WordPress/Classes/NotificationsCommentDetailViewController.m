@@ -284,17 +284,15 @@ NSString *const WPNotificationCommentRestorationKey = @"WPNotificationCommentRes
     if (approveAction) {
         // Pressed approve, so flip button optimistically to unapprove
         [self updateApproveButton:NO];
-        [WPMobileStats incrementPeopleAndSuperProperty:StatsSuperPropertyNumberOfNotificationsApproved];
+        [WPStats track:WPStatNotificationApproved];
         [self performCommentAction:approveAction];
     } else if (unapproveAction) {
         // Pressed unapprove, so flip button optimistically to approve
         [self updateApproveButton:YES];
-        [WPMobileStats incrementPeopleAndSuperProperty:StatsSuperPropertyNumberOfNotificationsUnapproved];
-
         [self performCommentAction:unapproveAction];
     }
     
-    [WPMobileStats incrementPeopleAndSuperProperty:StatsSuperPropertyNumberOfNotificationsResultingInActions];
+    [WPStats track:WPStatNotificationPerformedAction];
 }
 
 - (void)deleteAction:(id)sender {
@@ -302,14 +300,13 @@ NSString *const WPNotificationCommentRestorationKey = @"WPNotificationCommentRes
     NSDictionary *untrashAction = [self.commentActions objectForKey:@"untrash-comment"];
     
     if (trashAction) {
-        [WPMobileStats incrementPeopleAndSuperProperty:StatsSuperPropertyNumberOfNotificationsTrashed];
+        [WPStats track:WPStatNotificationTrashed];
         [self performCommentAction:trashAction];
     } else if (untrashAction) {
-        [WPMobileStats incrementPeopleAndSuperProperty:StatsSuperPropertyNumberOfNotificationsUntrashed];
         [self performCommentAction:untrashAction];
     }
     
-    [WPMobileStats incrementPeopleAndSuperProperty:StatsSuperPropertyNumberOfNotificationsResultingInActions];
+    [WPStats track:WPStatNotificationPerformedAction];
 }
 
 - (void)spamAction:(id)sender {
@@ -317,14 +314,13 @@ NSString *const WPNotificationCommentRestorationKey = @"WPNotificationCommentRes
     NSDictionary *unspamAction = [self.commentActions objectForKey:@"unspam-comment"];
     
     if (spamAction) {
-        [WPMobileStats incrementPeopleAndSuperProperty:StatsSuperPropertyNumberOfNotificationsFlaggedAsSpam];
+        [WPStats track:WPStatNotificationFlaggedAsSpam];
         [self performCommentAction:spamAction];
     } else if (unspamAction) {
-        [WPMobileStats incrementPeopleAndSuperProperty:StatsSuperPropertyNumberOfNotificationsUnflaggedAsSpam];
         [self performCommentAction:unspamAction];
     }
     
-    [WPMobileStats incrementPeopleAndSuperProperty:StatsSuperPropertyNumberOfNotificationsResultingInActions];
+    [WPStats track:WPStatNotificationPerformedAction];
 }
 
 - (void)replyAction:(id)sender {
@@ -388,8 +384,8 @@ NSString *const WPNotificationCommentRestorationKey = @"WPNotificationCommentRes
 
         [[defaultAccount restApi] postPath:replyPath parameters:params success:^(AFHTTPRequestOperation *operation, id responseObject) {
             DDLogVerbose(@"Response: %@", responseObject);
-            [WPMobileStats incrementPeopleAndSuperProperty:StatsSuperPropertyNumberOfNotificationsRepliedTo];
-            [WPMobileStats incrementPeopleAndSuperProperty:StatsSuperPropertyNumberOfNotificationsResultingInActions];
+            [WPStats track:WPStatNotificationRepliedTo];
+            [WPStats track:WPStatNotificationPerformedAction];
             success();
         } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
             DDLogError(@"Failure %@", error);
