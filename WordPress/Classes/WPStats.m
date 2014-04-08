@@ -1,38 +1,52 @@
 #import "WPStats.h"
 #import "WPStatsMixpanelClient.h"
+#import "WPStatsWPComClient.h"
+
 @implementation WPStats
 
-+ (id<WPStatsClient>)sharedInstance
++ (NSArray *)sharedInstances
 {
-    static id<WPStatsClient> sharedInstance = nil;
+    static NSArray *sharedInstances = nil;
     
     static dispatch_once_t predicate;
     dispatch_once(&predicate, ^{
-        sharedInstance = [[WPStatsMixpanelClient alloc] init];
+        sharedInstances = @[[[WPStatsMixpanelClient alloc] init], [[WPStatsWPComClient alloc] init]];
     });
     
-    return sharedInstance;
-}
-
-+ (void)initialize
-{
-    [[self sharedInstance] initialize];
+    return sharedInstances;
 }
 
 + (void)track:(WPStat)stat
 {
-    [[self sharedInstance] track:stat];
+    for (id<WPStatsClient> client in [self sharedInstances]) {
+        [client track:stat];
+    }
 }
 
 + (void)track:(WPStat)stat withProperties:(NSDictionary *)properties
 {
     NSParameterAssert(properties != nil);
-    [[self sharedInstance] track:stat withProperties:properties];
+    for (id<WPStatsClient> client in [self sharedInstances]) {
+        [client track:stat withProperties:properties];
+    }
+}
+
++ (void)initializeStats
+{
+    for (id<WPStatsClient> client in [self sharedInstances]) {
+        if ([client respondsToSelector:@selector(initializeStats)]) {
+            [client initializeStats];
+        }
+    }
 }
 
 + (void)endSession
 {
-    [[self sharedInstance] endSession];
+    for (id<WPStatsClient> client in [self sharedInstances]) {
+        if ([client respondsToSelector:@selector(endSession)]) {
+            [client endSession];
+        }
+    }
 }
 
 @end
