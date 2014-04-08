@@ -9,6 +9,14 @@
     return metadata;
 }
 
++(instancetype)initWithPropertyIncrementor:(NSString *)property forStat:(WPStat)stat
+{
+    WPStatsMixpanelClientInstructionsForStat *metadata = [[WPStatsMixpanelClientInstructionsForStat alloc] init];
+    metadata.statToAttachProperty = stat;
+    metadata.propertyToIncrement = property;
+    return metadata;
+}
+
 - (void)setSuperPropertyAndPeoplePropertyToIncrement:(NSString *)propertyName
 {
     NSParameterAssert(propertyName != nil);

@@ -1,23 +1,8 @@
 #import <Foundation/Foundation.h>
 
 // General
-extern NSString *const StatsEventAppOpened;
 extern NSString *const StatsEventAppClosed;
 extern NSString *const StatsEventAppOpenedDueToPushNotification;
-
-// Top Level Menu Items
-extern NSString *const StatsPropertySidebarClickedReader;
-extern NSString *const StatsPropertySidebarClickedNotifications;
-extern NSString *const StatsPropertySidebarSiteClickedPosts;
-extern NSString *const StatsPropertySidebarSiteClickedPages;
-extern NSString *const StatsPropertySidebarSiteClickedComments;
-extern NSString *const StatsPropertySidebarSiteClickedStats;
-extern NSString *const StatsPropertySidebarSiteClickedViewSite;
-extern NSString *const StatsPropertySidebarSiteClickedViewAdmin;
-extern NSString *const StatsPropertySidebarSiteClickedThemes;
-extern NSString *const StatsPropertySidebarSiteClickedMediaLibrary;
-extern NSString *const StatsPropertySidebarClickedSettings;
-extern NSString *const StatsPropertySidebarClickedQuickPhoto;
 
 // Reader
 extern NSString *const StatsEventReaderOpened;

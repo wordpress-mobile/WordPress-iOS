@@ -4,6 +4,15 @@
 
 @implementation WPStatsMixpanelClient
 
+- (instancetype)init
+{
+    self = [super init];
+    if (self) {
+        _aggregatedStatProperties = [[NSMutableDictionary alloc] init];
+    }
+    return self;
+}
+
 - (void)track:(WPStat)stat
 {
     [self track:stat withProperties:nil];
@@ -20,12 +29,30 @@
     [self callOutToMixpanelWithMetadata:instructions andProperties:properties];
 }
 
-// Private Methods
+- (void)endSession
+{
+    [_aggregatedStatProperties removeAllObjects];
+}
+
+#pragma mark - Private Methods
+
+- (NSString *)convertWPStatToString:(WPStat)stat
+{
+    return [NSString stringWithFormat:@"%d", stat];
+}
 
 - (void)callOutToMixpanelWithMetadata:(WPStatsMixpanelClientInstructionsForStat *)instructions andProperties:(NSDictionary *)properties
 {
     if ([instructions.mixpanelEventName length] > 0) {
-        [[Mixpanel sharedInstance] track:instructions.mixpanelEventName properties:properties];
+        NSDictionary *aggregatedPropertiesForEvent = [self propertiesForStat:instructions.stat];
+        if (aggregatedPropertiesForEvent != nil) {
+            NSMutableDictionary *combinedProperties = [[NSMutableDictionary alloc] init];
+            [combinedProperties addEntriesFromDictionary:aggregatedPropertiesForEvent];
+            [combinedProperties addEntriesFromDictionary:properties];
+            [[Mixpanel sharedInstance] track:instructions.mixpanelEventName properties:combinedProperties];
+        } else {
+            [[Mixpanel sharedInstance] track:instructions.mixpanelEventName properties:properties];
+        }
     }
     
     if ([instructions.superPropertyToIncrement length] > 0) {
@@ -34,6 +61,10 @@
     
     if ([instructions.peoplePropertyToIncrement length] > 0) {
         [self incrementPeopleProperty:instructions.peoplePropertyToIncrement];
+    }
+    
+    if ([instructions.propertyToIncrement length] > 0) {
+        [self incrementProperty:instructions.propertyToIncrement forStat:instructions.statToAttachProperty];
     }
 }
 
@@ -141,11 +172,72 @@
             instructions = [WPStatsMixpanelClientInstructionsForStat initWithMixpanelEventName:@"Notifications - Opened Notification Details"];
             [instructions setSuperPropertyAndPeoplePropertyToIncrement:@"number_of_times_opened_notification_details"];
             break;
+        case WPStatOpenedPosts:
+            instructions = [WPStatsMixpanelClientInstructionsForStat initWithPropertyIncrementor:@"number_of_times_opened_posts" forStat:WPStatApplicationClosed];
+            break;
+        case WPStatOpenedPages:
+            instructions = [WPStatsMixpanelClientInstructionsForStat initWithPropertyIncrementor:@"number_of_times_opened_pages" forStat:WPStatApplicationClosed];
+            break;
+        case WPStatOpenedComments:
+            instructions = [WPStatsMixpanelClientInstructionsForStat initWithPropertyIncrementor:@"number_of_times_opened_comments" forStat:WPStatApplicationClosed];
+            break;
+        case WPStatOpenedViewSite:
+            instructions = [WPStatsMixpanelClientInstructionsForStat initWithPropertyIncrementor:@"number_of_times_opened_view_site" forStat:WPStatApplicationClosed];
+            break;
+        case WPStatOpenedViewAdmin:
+            instructions = [WPStatsMixpanelClientInstructionsForStat initWithPropertyIncrementor:@"number_of_times_opened_view_admin" forStat:WPStatApplicationClosed];
+            break;
+        case WPStatOpenedMediaLibrary:
+            instructions = [WPStatsMixpanelClientInstructionsForStat initWithPropertyIncrementor:@"number_of_times_opened_media_library" forStat:WPStatApplicationClosed];
+            break;
+        case WPStatOpenedSettings:
+            instructions = [WPStatsMixpanelClientInstructionsForStat initWithPropertyIncrementor:@"number_of_times_opened_settings" forStat:WPStatApplicationClosed];
+            break;
         default:
             break;
     }
     
+    instructions.stat = stat;
+    
     return instructions;
+}
+
+#pragma mark - Deferred Property Related Methods
+
+- (id)property:(NSString *)property forStat:(WPStat)stat
+{
+    NSMutableDictionary *properties = [_aggregatedStatProperties objectForKey:[self convertWPStatToString:stat]];
+    return [properties objectForKey:property];
+}
+
+- (void)saveProperty:(NSString *)property withValue:(id)value forStat:(WPStat)stat
+{
+    NSMutableDictionary *properties = [_aggregatedStatProperties objectForKey:[self convertWPStatToString:stat]];
+    if (properties == nil) {
+        properties = [[NSMutableDictionary alloc] init];
+        [_aggregatedStatProperties setValue:properties forKey:[self convertWPStatToString:stat]];
+    }
+    
+    [properties setValue:value forKey:property];
+}
+
+- (NSDictionary *)propertiesForStat:(WPStat)stat
+{
+    return [_aggregatedStatProperties objectForKey:[self convertWPStatToString:stat]];
+}
+
+- (void)incrementProperty:(NSString *)property forStat:(WPStat)stat
+{
+    NSNumber *currentValue = [self property:property forStat:stat];
+    int newValue;
+    if (currentValue == nil) {
+        newValue = 1;
+    } else {
+        newValue = [currentValue intValue];
+        newValue++;
+    }
+    
+    [self saveProperty:property withValue:@(newValue) forStat:stat];
 }
 
 @end
