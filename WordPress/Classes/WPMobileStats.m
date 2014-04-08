@@ -17,23 +17,6 @@ static BOOL hasRecordedAppOpenedEvent = NO;
 NSString *const StatsEventAppClosed = @"Application Closed";
 NSString *const StatsEventAppOpenedDueToPushNotification = @"Application Opened Due to Push Notification";
 
-// Reader Detail
-NSString *const StatsPropertyReaderDetailClickedPrevious = @"reader_detail_clicked_previous";
-NSString *const StatsPropertyReaderDetailClickedNext = @"reader_detail_clicked_next";
-
-// Web View Sharing
-NSString *const StatsEventWebviewClickedShowLinkOptions = @"Clicked Show Link Options";
-NSString *const StatsEventWebviewSharedArticleViaEmail = @"Shared Article via Email";
-NSString *const StatsEventWebviewSharedArticleViaSMS = @"Shared Article via SMS";
-NSString *const StatsEventWebviewSharedArticleViaTwitter = @"Shared Article via Twitter";
-NSString *const StatsEventWebviewSharedArticleViaFacebook = @"Shared Article via Facebook";
-NSString *const StatsEventWebviewSharedArticleViaWeibo = @"Shared Article via Weibo";
-NSString *const StatsEventWebviewCopiedArticleDetails = @"Copied Article Details";
-NSString *const StatsEventWebviewOpenedArticleInSafari = @"Opened Article in Safari";
-NSString *const StatsEventWebviewSentArticleToPocket = @"Sent Article to Pocket";
-NSString *const StatsEventWebviewSentArticleToInstapaper = @"Sent Article to Instapaper";
-NSString *const StatsEventWebviewSentArticleToGooglePlus = @"Sent Article to Google Plus";
-
 // Notifications
 NSString *const StatsPropertyNotificationsOpened = @"notifications_opened";
 NSString *const StatsPropertyNotificationsOpenedDetails = @"notifications_opened_details";
