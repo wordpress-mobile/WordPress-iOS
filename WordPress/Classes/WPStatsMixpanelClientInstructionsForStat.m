@@ -4,17 +4,24 @@
 
 + (instancetype)initWithMixpanelEventName:(NSString *)eventName
 {
-    WPStatsMixpanelClientInstructionsForStat *metadata = [[WPStatsMixpanelClientInstructionsForStat alloc] init];
-    metadata.mixpanelEventName = eventName;
-    return metadata;
+    WPStatsMixpanelClientInstructionsForStat *instructions = [[WPStatsMixpanelClientInstructionsForStat alloc] init];
+    instructions.mixpanelEventName = eventName;
+    return instructions;
 }
 
-+(instancetype)initWithPropertyIncrementor:(NSString *)property forStat:(WPStat)stat
++ (instancetype)initWithPropertyIncrementor:(NSString *)property forStat:(WPStat)stat
 {
-    WPStatsMixpanelClientInstructionsForStat *metadata = [[WPStatsMixpanelClientInstructionsForStat alloc] init];
-    metadata.statToAttachProperty = stat;
-    metadata.propertyToIncrement = property;
-    return metadata;
+    WPStatsMixpanelClientInstructionsForStat *instructions = [[WPStatsMixpanelClientInstructionsForStat alloc] init];
+    instructions.statToAttachProperty = stat;
+    instructions.propertyToIncrement = property;
+    return instructions;
+}
+
++ (instancetype)initWithSuperPropertyFlagger:(NSString *)property
+{
+    WPStatsMixpanelClientInstructionsForStat *instructions = [[WPStatsMixpanelClientInstructionsForStat alloc] init];
+    instructions.superPropertyToFlag = property;
+    return instructions;
 }
 
 - (void)setSuperPropertyAndPeoplePropertyToIncrement:(NSString *)propertyName
