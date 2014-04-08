@@ -76,7 +76,7 @@ static NSInteger const IndexForMeTab = 2;
     [self removeCredentialsForDebug];
 
     // Stats and feedback
-    [WPMobileStats initializeStats];
+    [WPStats initialize];
     [[GPPSignIn sharedInstance] setClientID:[WordPressComApiCredentials googlePlusClientId]];
     [SupportViewController checkIfFeedbackShouldBeEnabled];
     
@@ -185,7 +185,6 @@ static NSInteger const IndexForMeTab = 2;
 
     [WPStats track:WPStatApplicationClosed];
     [WPStats endSession];
-    [WPMobileStats pauseSession];
     
     // Let the app finish any uploads that are in progress
     UIApplication *app = [UIApplication sharedApplication];
@@ -600,7 +599,6 @@ static NSInteger const IndexForMeTab = 2;
     crashCount += 1;
     [defaults setInteger:crashCount forKey:@"crashCount"];
     [defaults synchronize];
-    [WPMobileStats trackEventForSelfHostedAndWPCom:@"Crashed" properties:@{@"crash_id": crash.identifier}];
 }
 
 - (void)setCommonCrashlyticsParameters
