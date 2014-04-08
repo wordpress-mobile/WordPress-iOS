@@ -354,9 +354,7 @@ CGFloat const CommentViewUnapproveButtonTag = 701;
 }
 
 - (void)contentView:(WPContentView *)contentView didReceiveLinkAction:(id)sender {
-    WPWebViewController *controller = [[WPWebViewController alloc] init];
-	[controller setUrl:((DTLinkButton *)sender).URL];
-	[self.navigationController pushViewController:controller animated:YES];
+    [self openInAppWebView:((DTLinkButton *)sender).URL];
 }
 
 @end

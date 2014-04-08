@@ -22,6 +22,9 @@ typedef NS_ENUM(NSInteger, WPNoteTemplateType) {
 @property (nonatomic, strong, readonly) NSString *commentText;
 @property (nonatomic, strong, readonly) NSString *commentHtml;
 @property (nonatomic, strong, readonly) NSDictionary *noteData;
+@property (nonatomic, strong, readonly) NSDictionary *meta;
+@property (nonatomic, strong, readonly) NSNumber *metaPostID;
+@property (nonatomic, strong, readonly) NSNumber *metaSiteID;
 @property (nonatomic, strong, readonly) NSArray *bodyItems;		// Array of NoteBodyItem Objects
 @property (nonatomic, strong, readonly) NSString *bodyHeaderText;
 @property (nonatomic, strong, readonly) NSString *bodyHeaderLink;
@@ -30,6 +33,7 @@ typedef NS_ENUM(NSInteger, WPNoteTemplateType) {
 @property (nonatomic, strong, readonly) NSString *bodyHtml;
 @property (nonatomic, readonly) WPNoteTemplateType templateType;
 
+- (BOOL)isMatcher;
 - (BOOL)isComment;
 - (BOOL)isLike;
 - (BOOL)isFollow;
