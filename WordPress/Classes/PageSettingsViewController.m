@@ -7,14 +7,6 @@
 
 @implementation PageSettingsViewController
 
-- (id)initWithPost:(AbstractPost *)aPost {
-    self = [super initWithPost:aPost];
-    if (self) {
-        self.statsPrefix = @"Page Detail";
-    }
-    return self;
-}
-
 - (void)addPostPropertiesObserver {
     // noop
     // No need to observe properties for page settings

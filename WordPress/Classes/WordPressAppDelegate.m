@@ -433,7 +433,6 @@ static NSInteger const IndexForMeTab = 2;
                                                                        andTags:[options stringForKey:@"tags"]
                                                                       andImage:[options stringForKey:@"image"]];
     }
-    editPostViewController.editorOpenedBy = StatsPropertyPostDetailEditorOpenedOpenedByTabBarButton;
     UINavigationController *navController = [[UINavigationController alloc] initWithRootViewController:editPostViewController];
     navController.modalPresentationStyle = UIModalPresentationCurrentContext;
     navController.navigationBar.translucent = NO;

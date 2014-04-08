@@ -17,57 +17,6 @@ static BOOL hasRecordedAppOpenedEvent = NO;
 NSString *const StatsEventAppClosed = @"Application Closed";
 NSString *const StatsEventAppOpenedDueToPushNotification = @"Application Opened Due to Push Notification";
 
-// Posts
-NSString *const StatsPropertyPostsOpened = @"posts_opened";
-NSString *const StatsEventPostsClickedNewPost = @"Posts - Clicked New Post";
-
-// Post Detail
-NSString *const StatsPropertyPostDetailClickedEdit = @"clicked_edit";
-NSString *const StatsPropertyPostDetailClickedSettings = @"clicked_settings";
-NSString *const StatsPropertyPostDetailClickedMedia = @"clicked_media";
-NSString *const StatsPropertyPostDetailClickedPreview = @"clicked_preview";
-NSString *const StatsPropertyPostDetailClickedMediaOptions = @"clicked_media_options";
-NSString *const StatsPropertyPostDetailClickedAddVideo = @"clicked_add_video";
-NSString *const StatsPropertyPostDetailClickedAddPhoto = @"clicked_add_photo";
-NSString *const StatsPropertyPostDetailClickedShowCategories = @"clicked_show_categories";
-NSString *const StatsEventPostDetailClickedKeyboardToolbarBoldButton = @"clicked_keyboard_toolbar_bold_button";
-NSString *const StatsEventPostDetailClickedKeyboardToolbarItalicButton = @"clicked_keyboard_toolbar_italic_button";
-NSString *const StatsEventPostDetailClickedKeyboardToolbarUnderlineButton = @"clicked_keyboard_toolbar_underline_button";
-NSString *const StatsEventPostDetailClickedKeyboardToolbarLinkButton = @"clicked_keyboard_toolbar_link_button";
-NSString *const StatsEventPostDetailClickedKeyboardToolbarBlockquoteButton = @"clicked_keyboard_toolbar_blockquote_button";
-NSString *const StatsEventPostDetailClickedKeyboardToolbarDelButton = @"clicked_keyboard_toolbar_del_button";
-NSString *const StatsEventPostDetailClickedKeyboardToolbarMoreButton = @"clicked_keyboard_toolbar_more_button";
-NSString *const StatsEventPostDetailAddedPhoto = @"Added Photo";
-NSString *const StatsEventPostDetailRemovedPhoto = @"Removed Photo";
-NSString *const StatsEventPostDetailClickedSchedule = @"Clicked Schedule Button";
-NSString *const StatsEventPostDetailClickedSave = @"Clicked Save Button";
-NSString *const StatsEventPostDetailClickedUpdate = @"Clicked Update Button";
-NSString *const StatsEventPostDetailClickedPublish = @"Clicked Publish Button";
-NSString *const StatsEventPostDetailOpenedEditor = @"Opened Editor";
-NSString *const StatsEventPostDetailClosedEditor = @"Closed Editor";
-NSString *const StatsPropertyPostDetailEditorOpenedBy = @"opened_by";
-NSString *const StatsPropertyPostDetailEditorOpenedOpenedByPostsView = @"posts_view";
-NSString *const StatsPropertyPostDetailEditorOpenedOpenedByTabBarButton = @"tab_bar_button";
-NSString *const StatsPropertyPostDetailClickedBlogSelector = @"clicked_blog_selector";
-NSString *const StatsPropertyPostDetailHasExternalKeyboard = @"has_external_keybord";
-NSString *const StatsPropertyPostDetailWordCount = @"word_count";
-NSString *const StatsPropertyPostDetailWordDiffCount = @"word_diff_count";
-
-// Post Detail - Settings
-NSString *const StatsPropertyPostDetailSettingsClickedStatus = @"settings_clicked_status";
-NSString *const StatsPropertyPostDetailSettingsClickedVisibility = @"settings_clicked_visibility";
-NSString *const StatsPropertyPostDetailSettingsClickedScheduleFor = @"settings_clicked_schedule_for";
-NSString *const StatsPropertyPostDetailSettingsClickedPostFormat = @"settings_clicked_post_format";
-NSString *const StatsPropertyPostDetailSettingsClickedSetFeaturedImage = @"settings_clicked_set_featured_image";
-NSString *const StatsPropertyPostDetailSettingsClickedRemoveFeaturedImage = @"settings_clicked_remove_featured_image";
-NSString *const StatsPropertyPostDetailSettingsClickedAddLocation = @"settings_clicked_add_location";
-NSString *const StatsPropertyPostDetailSettingsClickedUpdateLocation = @"settings_clicked_update_location";
-NSString *const StatsPropertyPostDetailSettingsClickedRemoveLocation = @"settings_clicked_remove_location";
-
-// Pages
-NSString *const StatsPropertyPagesOpened = @"pages_opened";
-NSString *const StatsEventPagesClickedNewPage = @"Pages - Clicked New Page";
-
 // Comments
 NSString *const StatsEventCommentsViewCommentDetails = @"Comments - View Comment Details";
 

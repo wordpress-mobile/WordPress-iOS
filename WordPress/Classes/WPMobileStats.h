@@ -4,57 +4,6 @@
 extern NSString *const StatsEventAppClosed;
 extern NSString *const StatsEventAppOpenedDueToPushNotification;
 
-// Posts
-extern NSString *const StatsPropertyPostsOpened;
-extern NSString *const StatsEventPostsClickedNewPost;
-
-// Post Detail
-extern NSString *const StatsPropertyPostDetailClickedEdit;
-extern NSString *const StatsPropertyPostDetailClickedSettings;
-extern NSString *const StatsPropertyPostDetailClickedMedia;
-extern NSString *const StatsPropertyPostDetailClickedPreview;
-extern NSString *const StatsPropertyPostDetailClickedMediaOptions;
-extern NSString *const StatsPropertyPostDetailClickedAddVideo;
-extern NSString *const StatsPropertyPostDetailClickedAddPhoto;
-extern NSString *const StatsPropertyPostDetailClickedShowCategories;
-extern NSString *const StatsEventPostDetailClickedKeyboardToolbarBoldButton;
-extern NSString *const StatsEventPostDetailClickedKeyboardToolbarItalicButton;
-extern NSString *const StatsEventPostDetailClickedKeyboardToolbarUnderlineButton;
-extern NSString *const StatsEventPostDetailClickedKeyboardToolbarLinkButton;
-extern NSString *const StatsEventPostDetailClickedKeyboardToolbarBlockquoteButton;
-extern NSString *const StatsEventPostDetailClickedKeyboardToolbarDelButton;
-extern NSString *const StatsEventPostDetailClickedKeyboardToolbarMoreButton;
-extern NSString *const StatsEventPostDetailAddedPhoto;
-extern NSString *const StatsEventPostDetailRemovedPhoto;
-extern NSString *const StatsEventPostDetailClickedSchedule;
-extern NSString *const StatsEventPostDetailClickedSave;
-extern NSString *const StatsEventPostDetailClickedUpdate;
-extern NSString *const StatsEventPostDetailClickedPublish;
-extern NSString *const StatsEventPostDetailOpenedEditor;
-extern NSString *const StatsEventPostDetailClosedEditor;
-extern NSString *const StatsPropertyPostDetailEditorOpenedBy;
-extern NSString *const StatsPropertyPostDetailEditorOpenedOpenedByPostsView;
-extern NSString *const StatsPropertyPostDetailEditorOpenedOpenedByTabBarButton;
-extern NSString *const StatsPropertyPostDetailClickedBlogSelector;
-extern NSString *const StatsPropertyPostDetailHasExternalKeyboard;
-extern NSString *const StatsPropertyPostDetailWordCount;
-extern NSString *const StatsPropertyPostDetailWordDiffCount;
-
-// Post Detail - Settings
-extern NSString *const StatsPropertyPostDetailSettingsClickedStatus;
-extern NSString *const StatsPropertyPostDetailSettingsClickedVisibility;
-extern NSString *const StatsPropertyPostDetailSettingsClickedScheduleFor;
-extern NSString *const StatsPropertyPostDetailSettingsClickedPostFormat;
-extern NSString *const StatsPropertyPostDetailSettingsClickedSetFeaturedImage;
-extern NSString *const StatsPropertyPostDetailSettingsClickedRemoveFeaturedImage;
-extern NSString *const StatsPropertyPostDetailSettingsClickedAddLocation;
-extern NSString *const StatsPropertyPostDetailSettingsClickedUpdateLocation;
-extern NSString *const StatsPropertyPostDetailSettingsClickedRemoveLocation;
-
-// Pages
-extern NSString *const StatsPropertyPagesOpened;
-extern NSString *const StatsEventPagesClickedNewPage;
-
 // Comments
 extern NSString *const StatsEventCommentsViewCommentDetails;
 

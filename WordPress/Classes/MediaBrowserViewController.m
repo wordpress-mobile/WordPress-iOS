@@ -698,20 +698,16 @@ NSString *const MediaFeaturedImageSelectedNotification = @"MediaFeaturedImageSel
     NSString *buttonTitle = [actionSheet buttonTitleAtIndex:buttonIndex];
     
     if ([buttonTitle isEqualToString:NSLocalizedString(@"Add Photo From Library", nil)]) {
-        [WPMobileStats flagProperty:StatsPropertyPostDetailClickedAddPhoto forEvent:[self formattedStatEventString:StatsEventPostDetailClosedEditor]];
         [self pickMediaFromLibrary:actionSheet];
     
     } else if ([buttonTitle isEqualToString:NSLocalizedString(@"Take Photo", nil)]) {
-       [WPMobileStats flagProperty:StatsPropertyPostDetailClickedAddPhoto forEvent:[self formattedStatEventString:StatsEventPostDetailClosedEditor]];
        [self pickPhotoFromCamera:nil];
     
     } else if ([buttonTitle isEqualToString:NSLocalizedString(@"Add Video from Library", nil)]) {
-       [WPMobileStats flagProperty:StatsPropertyPostDetailClickedAddVideo forEvent:[self formattedStatEventString:StatsEventPostDetailClosedEditor]];
        actionSheet.tag = MediaTypeActionSheetVideo;
        [self pickMediaFromLibrary:actionSheet];
     
     } else if ([buttonTitle isEqualToString:NSLocalizedString(@"Record Video", nil)]) {
-       [WPMobileStats flagProperty:StatsPropertyPostDetailClickedAddVideo forEvent:[self formattedStatEventString:StatsEventPostDetailClosedEditor]];
        [self pickVideoFromCamera:actionSheet];
     }
 }
@@ -890,10 +886,6 @@ NSString *const MediaFeaturedImageSelectedNotification = @"MediaFeaturedImageSel
             }
         }
 	}
-}
-
-- (NSString *)formattedStatEventString:(NSString *)event {
-    return [NSString stringWithFormat:@"%@ - %@", self.post ? @"Post Media" : @"Media Library", event];
 }
 
 - (UIImagePickerController *)resetImagePicker {

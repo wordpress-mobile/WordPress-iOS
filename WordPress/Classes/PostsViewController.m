@@ -74,8 +74,6 @@
 - (void)viewDidAppear:(BOOL)animated
 {
     [super viewDidAppear:animated];
-
-    [WPMobileStats flagProperty:[self statsPropertyForViewOpening] forEvent:StatsEventAppClosed];
 }
 
 - (void)viewWillAppear:(BOOL)animated {
@@ -105,12 +103,6 @@
 - (void)dealloc {
     [[NSNotificationCenter defaultCenter] removeObserver:self];
 }
-
-- (NSString *)statsPropertyForViewOpening
-{
-    return StatsPropertyPostsOpened;
-}
-
 
 #pragma mark -
 #pragma mark Syncs methods
@@ -203,7 +195,6 @@
 
 - (void)showAddPostView {
     [WPStats track:WPStatEditorCreatedPost];
-    [WPMobileStats trackEventForWPCom:StatsEventPostsClickedNewPost];
 
     _addingNewPost = YES;
     Post *post = [Post newDraftForBlog:self.blog];
@@ -212,7 +203,6 @@
 
 - (void)editPost:(AbstractPost *)apost {
     EditPostViewController *editPostViewController = [[EditPostViewController alloc] initWithPost:apost];
-    editPostViewController.editorOpenedBy = StatsPropertyPostDetailEditorOpenedOpenedByPostsView;
     UINavigationController *navController = [[UINavigationController alloc] initWithRootViewController:editPostViewController];
     [navController setToolbarHidden:NO]; // Fixes incorrect toolbar animation.
     navController.modalPresentationStyle = UIModalPresentationCurrentContext;
