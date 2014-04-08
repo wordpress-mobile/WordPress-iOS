@@ -20,7 +20,6 @@
     #import "NSString+Util.h"
     #import "WPError.h"
     #import "UIColor+Helpers.h"
-    #import "WPMobileStats.h"
     #import "WPStats.h"
     #import "WPStyleGuide.h"
 
