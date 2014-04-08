@@ -52,11 +52,11 @@
 {
     WPStatsMixpanelClientInstructionsForStat *instructions = [self instructionsForStat:stat];
     if (instructions == nil) {
-        NSLog(@"No instructions, do nothing");
+        DDLogInfo(@"No instructions, do nothing");
         return;
     }
     
-    [self callOutToMixpanelWithMetadata:instructions andProperties:properties];
+    [self trackMixpanelDataForInstructions:instructions andProperties:properties];
 }
 
 - (void)endSession
@@ -71,7 +71,7 @@
     return [NSString stringWithFormat:@"%d", stat];
 }
 
-- (void)callOutToMixpanelWithMetadata:(WPStatsMixpanelClientInstructionsForStat *)instructions andProperties:(NSDictionary *)properties
+- (void)trackMixpanelDataForInstructions:(WPStatsMixpanelClientInstructionsForStat *)instructions andProperties:(NSDictionary *)properties
 {
     if ([instructions.mixpanelEventName length] > 0) {
         NSDictionary *aggregatedPropertiesForEvent = [self propertiesForStat:instructions.stat];
@@ -133,8 +133,8 @@
         case WPStatApplicationClosed:
             instructions = [WPStatsMixpanelClientInstructionsForStat initWithMixpanelEventName:@"Application Closed"];
             break;
-        case WPStatThemesAccessThemeBrowser:
-            instructions = [WPStatsMixpanelClientInstructionsForStat initWithMixpanelEventName:@"Theme - Access Theme Browser"];
+        case WPStatThemesAccessedThemeBrowser:
+            instructions = [WPStatsMixpanelClientInstructionsForStat initWithMixpanelEventName:@"Theme - Accessed Theme Browser"];
             [instructions setSuperPropertyAndPeoplePropertyToIncrement:@"number_of_times_accessed_theme_browser"];
             break;
         case WPStatThemesChangedTheme:
