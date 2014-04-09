@@ -10,8 +10,6 @@
 
 + (CGFloat)heightForRow;
 
-//- (void)addButtonWithTitle:(NSString *)title target:(id)target action:(SEL)action section:(StatsSection)section;
-
 - (void)addSegmentWithTitle:(NSString *)title;
 - (void)segmentChanged:(UISegmentedControl *)sender;
 

@@ -2,6 +2,7 @@
 
 @interface StatsTodayYesterdayButtonCell ()
 
+// This overrides the StatsButtonDelegate from the parent class
 @property (nonatomic, weak) id<StatsTodayYesterdayButtonCellDelegate> delegate;
 @property (nonatomic, assign) StatsSection currentSection;
 
