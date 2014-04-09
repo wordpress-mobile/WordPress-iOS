@@ -678,18 +678,6 @@ typedef NS_ENUM(NSInteger, TotalFollowersShareRow) {
     [self.tableView reloadSections:[NSIndexSet indexSetWithIndex:StatsSectionVisitors] withRowAnimation:UITableViewRowAnimationNone];
 }
 
-//- (void)daySelected:(UIButton *)sender {
-//    [self graphUnitSelected:StatsViewsVisitorsUnitDay];
-//}
-
-//- (void)weekSelected:(UIButton *)sender {
-//    [self graphUnitSelected:StatsViewsVisitorsUnitWeek];
-//}
-
-//- (void)monthSelected:(UIButton *)sender {
-//    [self graphUnitSelected:StatsViewsVisitorsUnitMonth];
-//}
-
 #pragma mark - StatsButtonCellDelegate methods
 
 - (void)statsButtonCell:(StatsButtonCell *)statsButtonCell didSelectIndex:(NSUInteger)index {
