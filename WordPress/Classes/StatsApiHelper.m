@@ -24,6 +24,7 @@
     if (self) {
         _statsPathPrefix = [NSString stringWithFormat:@"sites/%@/stats", siteID];
         _formatter = [[NSDateFormatter alloc] init];
+        _formatter.locale = [[NSLocale alloc] initWithLocaleIdentifier:@"en_US_POSIX"];
         _formatter.dateFormat = @"yyyy-MM-dd";
         _account = account;
     }
