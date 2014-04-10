@@ -220,7 +220,7 @@
             instructions = [WPStatsMixpanelClientInstructionsForStat initWithMixpanelEventName:@"Editor - Updated Post"];
             [instructions setSuperPropertyAndPeoplePropertyToIncrement:@"number_of_times_editor_updated_post"];
             break;
-        case WPStatNotificationsAccessedNotifications:
+        case WPStatNotificationsAccessed:
             instructions = [WPStatsMixpanelClientInstructionsForStat initWithMixpanelEventName:@"Notifications - Accessed Notifications"];
             [instructions setSuperPropertyAndPeoplePropertyToIncrement:@"number_of_times_accessed_notifications"];
             break;
