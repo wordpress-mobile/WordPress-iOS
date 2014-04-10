@@ -151,7 +151,7 @@ typedef void (^NotificationsLoadPostBlock)(BOOL success, ReaderPost *post);
 
     if (!_viewHasAppeared) {
         _viewHasAppeared = YES;
-        [WPStats track:WPStatNotificationsAccessedNotifications];
+        [WPStats track:WPStatNotificationsAccessed];
     }
     
     _isPushingViewController = NO;

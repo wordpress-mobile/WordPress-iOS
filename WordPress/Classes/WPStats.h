@@ -25,7 +25,7 @@ typedef NS_ENUM(NSUInteger, WPStat) {
     WPStatPublishedPostWithVideo,
     WPStatPublishedPostWithCategories,
     WPStatPublishedPostWithTags,
-    WPStatNotificationsAccessedNotifications,
+    WPStatNotificationsAccessed,
     WPStatNotificationsOpenedNotificationDetails,
     WPStatOpenedPosts,
     WPStatOpenedPages,
