@@ -873,7 +873,7 @@ static NSString *const TableViewActivityCellIdentifier = @"TableViewActivityCell
     NSDate *startingDate = (NSDate *)self.datePicker.startingValue;
     NSDate *selectedDate = (NSDate *)value;
     NSTimeInterval interval = [startingDate timeIntervalSinceDate:selectedDate];
-    if (abs(interval) < 1.0) {
+    if (fabs(interval) < 1.0) {
         // Nothing changed.
         [self hideDatePicker];
         return;
