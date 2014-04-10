@@ -234,33 +234,33 @@ typedef NS_ENUM(NSInteger, TotalFollowersShareRow) {
         _resultsAvailable = YES;
         [self hideNoResultsView];
         [self.tableView reloadData];
-    } failure:failure];
-    
-    [self.statsApiHelper fetchViewsVisitorsWithSuccess:^(StatsViewsVisitors *viewsVisitors) {
-        _statModels[@(StatsSectionVisitorsGraph)] = viewsVisitors;
-        if (_resultsAvailable) {
-            [self.tableView reloadSections:[NSIndexSet indexSetWithIndex:StatsSectionVisitors] withRowAnimation:UITableViewRowAnimationNone];
-        }
-    } failure:failure];
-
-    [self.statsApiHelper fetchTopPostsWithSuccess:^(NSDictionary *todayAndYesterdayTopPosts) {
-        saveStatsForSection(todayAndYesterdayTopPosts, StatsSectionTopPosts);
-    } failure:failure];
-    
-    [self.statsApiHelper fetchClicksWithSuccess:^(NSDictionary *clicks) {
-        saveStatsForSection(clicks, StatsSectionClicks);
-    } failure:failure];
-    
-    [self.statsApiHelper fetchCountryViewsWithSuccess:^(NSDictionary *views) {
-        saveStatsForSection(views, StatsSectionViewsByCountry);
-    } failure:failure];
-    
-    [self.statsApiHelper fetchReferrerWithSuccess:^(NSDictionary *referrers) {
-        saveStatsForSection(referrers, StatsSectionReferrers);
-    } failure:failure];
-    
-    [self.statsApiHelper fetchSearchTermsWithSuccess:^(NSDictionary *terms) {
-        saveStatsForSection(terms, StatsSectionSearchTerms);
+        
+        [self.statsApiHelper fetchViewsVisitorsWithSuccess:^(StatsViewsVisitors *viewsVisitors) {
+            _statModels[@(StatsSectionVisitorsGraph)] = viewsVisitors;
+            if (_resultsAvailable) {
+                [self.tableView reloadSections:[NSIndexSet indexSetWithIndex:StatsSectionVisitors] withRowAnimation:UITableViewRowAnimationNone];
+            }
+        } failure:failure];
+        
+        [self.statsApiHelper fetchTopPostsWithSuccess:^(NSDictionary *todayAndYesterdayTopPosts) {
+            saveStatsForSection(todayAndYesterdayTopPosts, StatsSectionTopPosts);
+        } failure:failure];
+        
+        [self.statsApiHelper fetchClicksWithSuccess:^(NSDictionary *clicks) {
+            saveStatsForSection(clicks, StatsSectionClicks);
+        } failure:failure];
+        
+        [self.statsApiHelper fetchCountryViewsWithSuccess:^(NSDictionary *views) {
+            saveStatsForSection(views, StatsSectionViewsByCountry);
+        } failure:failure];
+        
+        [self.statsApiHelper fetchReferrerWithSuccess:^(NSDictionary *referrers) {
+            saveStatsForSection(referrers, StatsSectionReferrers);
+        } failure:failure];
+        
+        [self.statsApiHelper fetchSearchTermsWithSuccess:^(NSDictionary *terms) {
+            saveStatsForSection(terms, StatsSectionSearchTerms);
+        } failure:failure];
     } failure:failure];
 }
 
