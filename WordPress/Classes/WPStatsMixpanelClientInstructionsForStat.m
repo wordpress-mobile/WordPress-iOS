@@ -5,7 +5,7 @@
 - (instancetype)init
 {
     if (self = [super init]) {
-        self.disableTrackingForSelfHosted = NO;
+        _disableTrackingForSelfHosted = NO;
     }
     return self;
 }
