@@ -1,7 +1,7 @@
 #import <Foundation/Foundation.h>
 #import "WPStats.h"
 
-@interface WPStatsMixpanelClient : NSObject <WPStatsClient> {
+@interface WPStatsTrackerMixpanel : NSObject <WPStatsTracker> {
     NSMutableDictionary *_aggregatedStatProperties;
 }
 

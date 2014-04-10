@@ -30,8 +30,8 @@
 #import "StatsViewController.h"
 #import "Constants.h"
 
-#import "WPStatsMixpanelClient.h"
-#import "WPStatsWPComClient.h"
+#import "WPStatsTrackerMixpanel.h"
+#import "WPStatsTrackerWPCom.h"
 
 #if DEBUG
 #import "DDTTYLogger.h"
@@ -80,8 +80,8 @@ static NSInteger const IndexForMeTab = 2;
 
     // Stats and feedback
     
-    [WPStats registerClient:[[WPStatsMixpanelClient alloc] init]];
-    [WPStats registerClient:[[WPStatsWPComClient alloc] init]];
+    [WPStats registerTracker:[[WPStatsTrackerMixpanel alloc] init]];
+    [WPStats registerTracker:[[WPStatsTrackerWPCom alloc] init]];
     [WPStats beginSession];
     [[GPPSignIn sharedInstance] setClientID:[WordPressComApiCredentials googlePlusClientId]];
     [SupportViewController checkIfFeedbackShouldBeEnabled];
