@@ -5,7 +5,7 @@ typedef NS_ENUM(NSUInteger, WPStat) {
     WPStatApplicationClosed,
     WPStatThemesAccessedThemeBrowser,
     WPStatThemesChangedTheme,
-    WPStatReaderAccessedReader,
+    WPStatReaderAccessed,
     WPStatReaderOpenedArticle,
     WPStatReaderLikedArticle,
     WPStatReaderRebloggedArticle,
