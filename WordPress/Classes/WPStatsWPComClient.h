@@ -1,5 +1,6 @@
 #import <Foundation/Foundation.h>
+#import "WPStats.h"
 
-@interface WPStatsWPComClient : NSObject
+@interface WPStatsWPComClient : NSObject<WPStatsClient>
 
 @end
