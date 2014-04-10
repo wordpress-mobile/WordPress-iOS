@@ -11,10 +11,10 @@
 @property (nonatomic, assign) WPStat statToAttachProperty;
 @property (nonatomic, assign) BOOL disableTrackingForSelfHosted;
 
-+ (instancetype)initWithMixpanelEventName:(NSString *)eventName;
-+ (instancetype)initWithPropertyIncrementor:(NSString *)property forStat:(WPStat)stat;
-+ (instancetype)initWithSuperPropertyFlagger:(NSString *)property;
-+ (instancetype)initWithSuperPropertyAndPeoplePropertyIncrementor:(NSString *)property;
++ (instancetype)mixpanelInstructionsForEventName:(NSString *)eventName;
++ (instancetype)mixpanelInstructionsWithPropertyIncrementor:(NSString *)property forStat:(WPStat)stat;
++ (instancetype)mixpanelInstructionsWithSuperPropertyFlagger:(NSString *)property;
++ (instancetype)mixpanelInstructionsWithSuperPropertyAndPeoplePropertyIncrementor:(NSString *)property;
 
 - (void)setSuperPropertyAndPeoplePropertyToIncrement:(NSString *)property;
 
