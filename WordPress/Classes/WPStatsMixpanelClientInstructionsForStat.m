@@ -10,14 +10,14 @@
     return self;
 }
 
-+ (instancetype)initWithMixpanelEventName:(NSString *)eventName
++ (instancetype)mixpanelInstructionsForEventName:(NSString *)eventName
 {
     WPStatsMixpanelClientInstructionsForStat *instructions = [[WPStatsMixpanelClientInstructionsForStat alloc] init];
     instructions.mixpanelEventName = eventName;
     return instructions;
 }
 
-+ (instancetype)initWithPropertyIncrementor:(NSString *)property forStat:(WPStat)stat
++ (instancetype)mixpanelInstructionsWithPropertyIncrementor:(NSString *)property forStat:(WPStat)stat
 {
     WPStatsMixpanelClientInstructionsForStat *instructions = [[WPStatsMixpanelClientInstructionsForStat alloc] init];
     instructions.statToAttachProperty = stat;
@@ -25,14 +25,14 @@
     return instructions;
 }
 
-+ (instancetype)initWithSuperPropertyFlagger:(NSString *)property
++ (instancetype)mixpanelInstructionsWithSuperPropertyFlagger:(NSString *)property
 {
     WPStatsMixpanelClientInstructionsForStat *instructions = [[WPStatsMixpanelClientInstructionsForStat alloc] init];
     instructions.superPropertyToFlag = property;
     return instructions;
 }
 
-+ (instancetype)initWithSuperPropertyAndPeoplePropertyIncrementor:(NSString *)property
++ (instancetype)mixpanelInstructionsWithSuperPropertyAndPeoplePropertyIncrementor:(NSString *)property
 {
     WPStatsMixpanelClientInstructionsForStat *instructions = [[WPStatsMixpanelClientInstructionsForStat alloc] init];
     [instructions setSuperPropertyAndPeoplePropertyToIncrement:property];
