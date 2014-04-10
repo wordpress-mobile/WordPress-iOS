@@ -97,7 +97,7 @@ static CGFloat const StatCounterCellHeight = 100.0f;
     if (title.length > 0) {
         self.titleLabel.text = [title uppercaseString];
         self.titleLabel.textAlignment = NSTextAlignmentLeft;
-        self.titleLabel.textColor = [WPStyleGuide newKidOnTheBlockBlue];
+        self.titleLabel.textColor = [WPStyleGuide whisperGrey];
     }
     [self.separatorLines addObject:separator];
     [self addSubview:separator];
