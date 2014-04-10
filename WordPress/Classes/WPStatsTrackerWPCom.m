@@ -1,8 +1,8 @@
-#import "WPStatsWPComClient.h"
+#import "WPStatsTrackerWPCom.h"
 #import "WordPressAppDelegate.h"
 #import "Constants.h"
 
-@implementation WPStatsWPComClient
+@implementation WPStatsTrackerWPCom
 
 - (void)track:(WPStat)stat
 {

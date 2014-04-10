@@ -2,53 +2,53 @@
 
 @implementation WPStats
 
-+ (NSMutableArray *)sharedInstances
++ (NSMutableArray *)trackers
 {
-    static NSMutableArray *sharedInstances = nil;
+    static NSMutableArray *trackers = nil;
     
     static dispatch_once_t predicate;
     dispatch_once(&predicate, ^{
-        sharedInstances = [[NSMutableArray alloc] init];
+        trackers = [[NSMutableArray alloc] init];
     });
     
-    return sharedInstances;
+    return trackers;
 }
 
-+ (void)registerClient:(id<WPStatsClient>)client
++ (void)registerTracker:(id<WPStatsTracker>)tracker
 {
-    NSParameterAssert(client != nil);
-    [[self sharedInstances] addObject:client];
+    NSParameterAssert(tracker != nil);
+    [[self trackers] addObject:tracker];
 }
 
 + (void)track:(WPStat)stat
 {
-    for (id<WPStatsClient> client in [self sharedInstances]) {
-        [client track:stat];
+    for (id<WPStatsTracker> tracker in [self trackers]) {
+        [tracker track:stat];
     }
 }
 
 + (void)track:(WPStat)stat withProperties:(NSDictionary *)properties
 {
     NSParameterAssert(properties != nil);
-    for (id<WPStatsClient> client in [self sharedInstances]) {
-        [client track:stat withProperties:properties];
+    for (id<WPStatsTracker> tracker in [self trackers]) {
+        [tracker track:stat withProperties:properties];
     }
 }
 
 + (void)beginSession
 {
-    for (id<WPStatsClient> client in [self sharedInstances]) {
-        if ([client respondsToSelector:@selector(beginSession)]) {
-            [client beginSession];
+    for (id<WPStatsTracker> tracker in [self trackers]) {
+        if ([tracker respondsToSelector:@selector(beginSession)]) {
+            [tracker beginSession];
         }
     }
 }
 
 + (void)endSession
 {
-    for (id<WPStatsClient> client in [self sharedInstances]) {
-        if ([client respondsToSelector:@selector(endSession)]) {
-            [client endSession];
+    for (id<WPStatsTracker> tracker in [self trackers]) {
+        if ([tracker respondsToSelector:@selector(endSession)]) {
+            [tracker endSession];
         }
     }
 }

@@ -1,4 +1,4 @@
-#import "WPStatsMixpanelClient.h"
+#import "WPStatsTrackerMixpanel.h"
 #import <Mixpanel/Mixpanel.h>
 #import "WPStatsMixpanelClientInstructionsForStat.h"
 #import "WordPressComApiCredentials.h"
@@ -7,7 +7,7 @@
 #import "ContextManager.h"
 #import "Blog.h"
 
-@implementation WPStatsMixpanelClient
+@implementation WPStatsTrackerMixpanel
 
 - (instancetype)init
 {
