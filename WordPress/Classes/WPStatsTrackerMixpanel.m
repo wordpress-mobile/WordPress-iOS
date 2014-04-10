@@ -321,7 +321,7 @@
 - (id)property:(NSString *)property forStat:(WPStat)stat
 {
     NSMutableDictionary *properties = [_aggregatedStatProperties objectForKey:[self convertWPStatToString:stat]];
-    return [properties objectForKey:property];
+    return properties[property];
 }
 
 - (void)saveProperty:(NSString *)property withValue:(id)value forStat:(WPStat)stat
@@ -332,7 +332,7 @@
         [_aggregatedStatProperties setValue:properties forKey:[self convertWPStatToString:stat]];
     }
     
-    [properties setValue:value forKey:property];
+    properties[property] = value;
 }
 
 - (NSDictionary *)propertiesForStat:(WPStat)stat
