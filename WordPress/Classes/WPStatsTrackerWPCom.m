@@ -33,10 +33,8 @@
     NSMutableURLRequest* request = [[NSMutableURLRequest alloc] initWithURL:[NSURL URLWithString:statsURL]];
     WordPressAppDelegate *appDelegate = (WordPressAppDelegate *)[[UIApplication sharedApplication] delegate];
     [request setValue:[appDelegate applicationUserAgent] forHTTPHeaderField:@"User-Agent"];
-    @autoreleasepool {
-        NSURLConnection *conn = [[NSURLConnection alloc] initWithRequest:request delegate:nil];
-        [conn start];
-    }
+    NSURLConnection *conn = [[NSURLConnection alloc] initWithRequest:request delegate:nil];
+    [conn start];
 }
 
 @end
