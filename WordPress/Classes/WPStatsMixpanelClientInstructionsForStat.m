@@ -19,7 +19,6 @@
 
 + (instancetype)mixpanelInstructionsWithPropertyIncrementor:(NSString *)property forStat:(WPStat)stat
 {
-    
     WPStatsMixpanelClientInstructionsForStat *instructions = [[[self class] alloc] init];
     instructions.statToAttachProperty = stat;
     instructions.propertyToIncrement = property;
