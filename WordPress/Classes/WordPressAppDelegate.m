@@ -423,7 +423,7 @@ static NSInteger const IndexForMeTab = 2;
     
     EditPostViewController *editPostViewController;
     if (!options) {
-        [WPStats track:WPStatEditorCreatedPost];
+        [WPStats track:WPStatEditorCreatedPost withProperties:@{ @"click_source": @"tab_bar" }];
         editPostViewController = [[EditPostViewController alloc] initWithDraftForLastUsedBlog];
     } else {
         editPostViewController = [[EditPostViewController alloc] initWithTitle:[options stringForKey:@"title"]
