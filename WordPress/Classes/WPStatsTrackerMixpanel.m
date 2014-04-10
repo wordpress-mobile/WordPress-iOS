@@ -343,10 +343,8 @@
 - (void)incrementProperty:(NSString *)property forStat:(WPStat)stat
 {
     NSNumber *currentValue = [self property:property forStat:stat];
-    int newValue;
-    if (currentValue == nil) {
-        newValue = 1;
-    } else {
+    int newValue = 1;
+    if (currentValue != nil) {
         newValue = [currentValue intValue];
         newValue++;
     }
