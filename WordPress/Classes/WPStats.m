@@ -1,19 +1,23 @@
 #import "WPStats.h"
-#import "WPStatsMixpanelClient.h"
-#import "WPStatsWPComClient.h"
 
 @implementation WPStats
 
-+ (NSArray *)sharedInstances
++ (NSMutableArray *)sharedInstances
 {
-    static NSArray *sharedInstances = nil;
+    static NSMutableArray *sharedInstances = nil;
     
     static dispatch_once_t predicate;
     dispatch_once(&predicate, ^{
-        sharedInstances = @[[[WPStatsMixpanelClient alloc] init], [[WPStatsWPComClient alloc] init]];
+        sharedInstances = [[NSMutableArray alloc] init];
     });
     
     return sharedInstances;
+}
+
++ (void)registerClient:(id<WPStatsClient>)client
+{
+    NSParameterAssert(client != nil);
+    [[self sharedInstances] addObject:client];
 }
 
 + (void)track:(WPStat)stat

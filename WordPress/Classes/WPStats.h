@@ -51,8 +51,10 @@ typedef NS_ENUM(NSUInteger, WPStat) {
     WPStatNotificationFlaggedAsSpam,
 };
 
+@protocol WPStatsClient;
 @interface WPStats : NSObject
 
++ (void)registerClient:(id<WPStatsClient>)client;
 + (void)beginSession;
 + (void)track:(WPStat)stat;
 + (void)track:(WPStat)stat withProperties:(NSDictionary *)properties;
