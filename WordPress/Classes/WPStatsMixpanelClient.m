@@ -156,7 +156,7 @@
             instructions = [WPStatsMixpanelClientInstructionsForStat initWithMixpanelEventName:@"Theme - Changed Theme"];
             [instructions setSuperPropertyAndPeoplePropertyToIncrement:@"number_of_times_changed_theme"];
             break;
-        case WPStatReaderAccessedReader:
+        case WPStatReaderAccessed:
             instructions = [WPStatsMixpanelClientInstructionsForStat initWithMixpanelEventName:@"Reader - Accessed Reader"];
             [instructions setSuperPropertyAndPeoplePropertyToIncrement:@"number_of_times_accessed_reader"];
             break;
