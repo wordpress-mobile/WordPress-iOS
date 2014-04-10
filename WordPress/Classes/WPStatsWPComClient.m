@@ -18,7 +18,7 @@
         case WPStatReaderOpenedArticle:
             [self pingWPComStatsEndpoint:@"details_page"];
             break;
-        case WPStatReaderAccessedReader:
+        case WPStatReaderAccessed:
             [self pingWPComStatsEndpoint:@"home_page"];
             break;
         default:

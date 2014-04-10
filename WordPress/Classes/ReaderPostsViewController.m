@@ -173,7 +173,7 @@ NSString * const RPVCDisplayedNativeFriendFinder = @"DisplayedNativeFriendFinder
     }
 
     if (!_viewHasAppeared) {
-        [WPStats track:WPStatReaderAccessedReader withProperties:[self categoryPropertyForStats]];
+        [WPStats track:WPStatReaderAccessed withProperties:[self categoryPropertyForStats]];
         _viewHasAppeared = YES;
     }
 
