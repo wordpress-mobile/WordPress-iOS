@@ -1,6 +1,6 @@
 #import <Foundation/Foundation.h>
 
-@interface WPStatsMixpanelClientInstructionsForStat : NSObject
+@interface WPStatsTrackerMixpanelInstructionsForStat : NSObject
 
 @property (nonatomic, strong) NSString *mixpanelEventName;
 @property (nonatomic, strong) NSString *superPropertyToIncrement;
