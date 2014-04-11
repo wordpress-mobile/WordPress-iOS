@@ -149,15 +149,15 @@
             instructions = [WPStatsMixpanelClientInstructionsForStat mixpanelInstructionsForEventName:@"Application Closed"];
             break;
         case WPStatThemesAccessedThemeBrowser:
-            instructions = [WPStatsMixpanelClientInstructionsForStat mixpanelInstructionsForEventName:@"Theme - Accessed Theme Browser"];
+            instructions = [WPStatsMixpanelClientInstructionsForStat mixpanelInstructionsForEventName:@"Themes - Accessed Theme Browser"];
             [instructions setSuperPropertyAndPeoplePropertyToIncrement:@"number_of_times_accessed_theme_browser"];
             break;
         case WPStatThemesChangedTheme:
-            instructions = [WPStatsMixpanelClientInstructionsForStat mixpanelInstructionsForEventName:@"Theme - Changed Theme"];
+            instructions = [WPStatsMixpanelClientInstructionsForStat mixpanelInstructionsForEventName:@"Themes - Changed Theme"];
             [instructions setSuperPropertyAndPeoplePropertyToIncrement:@"number_of_times_changed_theme"];
             break;
         case WPStatReaderAccessed:
-            instructions = [WPStatsMixpanelClientInstructionsForStat mixpanelInstructionsForEventName:@"Reader - Accessed Reader"];
+            instructions = [WPStatsMixpanelClientInstructionsForStat mixpanelInstructionsForEventName:@"Reader - Accessed"];
             [instructions setSuperPropertyAndPeoplePropertyToIncrement:@"number_of_times_accessed_reader"];
             break;
         case WPStatReaderOpenedArticle:
@@ -196,8 +196,8 @@
             instructions = [WPStatsMixpanelClientInstructionsForStat mixpanelInstructionsForEventName:@"Reader - Commented on Article"];
             [instructions setSuperPropertyAndPeoplePropertyToIncrement:@"number_of_times_commented_on_reader_article"];
             break;
-        case WPStatStatsAccessedStats:
-            instructions = [WPStatsMixpanelClientInstructionsForStat mixpanelInstructionsForEventName:@"Stats - Accessed Stats"];
+        case WPStatStatsAccessed:
+            instructions = [WPStatsMixpanelClientInstructionsForStat mixpanelInstructionsForEventName:@"Stats - Accessed"];
             [instructions setSuperPropertyAndPeoplePropertyToIncrement:@"number_of_times_accessed_stats"];
             break;
         case WPStatEditorCreatedPost:
@@ -221,7 +221,7 @@
             [instructions setSuperPropertyAndPeoplePropertyToIncrement:@"number_of_times_editor_updated_post"];
             break;
         case WPStatNotificationsAccessed:
-            instructions = [WPStatsMixpanelClientInstructionsForStat mixpanelInstructionsForEventName:@"Notifications - Accessed Notifications"];
+            instructions = [WPStatsMixpanelClientInstructionsForStat mixpanelInstructionsForEventName:@"Notifications - Accessed"];
             [instructions setSuperPropertyAndPeoplePropertyToIncrement:@"number_of_times_accessed_notifications"];
             break;
         case WPStatNotificationsOpenedNotificationDetails:
