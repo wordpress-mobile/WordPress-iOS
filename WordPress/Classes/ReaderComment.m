@@ -138,7 +138,7 @@
 + (void)createOrUpdateWithDictionary:(NSDictionary *)dict forPost:(ReaderPost *)post withContext:(NSManagedObjectContext *)context {
 
 	NSFetchRequest *request = [NSFetchRequest fetchRequestWithEntityName:@"ReaderComment"];
-	request.predicate = [NSPredicate predicateWithFormat:@"(commentID = %@) AND (post.endpoint = %@)", [dict objectForKey:@"ID"], post.endpoint];
+	request.predicate = [NSPredicate predicateWithFormat:@"(commentID = %@) AND (post.endpoint = %@)", [dict numberForKey:@"ID"], post.endpoint];
     request.sortDescriptors = @[[NSSortDescriptor sortDescriptorWithKey:@"dateCreated" ascending:YES]];
     request.fetchLimit = 1;
     
@@ -156,7 +156,7 @@
     } else {
 		comment = (ReaderComment *)[NSEntityDescription insertNewObjectForEntityForName:@"ReaderComment"
 														   inManagedObjectContext:context];
-		comment.commentID = [dict objectForKey:@"ID"];
+		comment.commentID = [dict numberForKey:@"ID"];
 		comment.post = post;
     }
     
