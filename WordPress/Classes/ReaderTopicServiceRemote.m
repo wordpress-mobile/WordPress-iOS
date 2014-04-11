@@ -89,22 +89,22 @@
  @param topicDict The topic `NSDictionary` to normalize.
  @param subscribed Whether the current account subscribes to the topic.
  @param recommended Whether the topic is recommended.
- @return An `NSDictionary` with `ID`, `title`, `URL`, `subscribed`, and `recommended` keys.
+ @return An `NSDictionary` with `topicID`, `title`, `path`, `isSubscribed`, and `isRecommended` keys.
  */
 - (NSDictionary *)normalizeTopicDictionary:(NSDictionary *)topicDict subscribed:(BOOL)subscribed recommended:(BOOL)recommended {
-    NSString *topicID = [topicDict stringForKey:@"ID"];
+    NSNumber *topicID = [topicDict numberForKey:@"ID"];
     if (topicID == nil) {
-        topicID = @"";
+        topicID = @0;
     }
     NSString *title = [topicDict stringForKey:@"title"];
     NSString *url = [topicDict stringForKey:@"URL"];
 
     return @{
-             @"ID":topicID,
+             @"topicID":topicID,
              @"title":title,
-             @"URL":url,
-             @"subscribed":[NSNumber numberWithBool:subscribed],
-             @"recommended": [NSNumber numberWithBool:recommended]
+             @"path":url,
+             @"isSubscribed":[NSNumber numberWithBool:subscribed],
+             @"isRecommended": [NSNumber numberWithBool:recommended]
              };
 }
 
