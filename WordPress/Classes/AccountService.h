@@ -1,11 +1,11 @@
 #import <Foundation/Foundation.h>
-#import "BaseLocalService.h"
+#import "LocalService.h"
 
 @class WPAccount, Blog;
 
 extern NSString *const WPAccountDefaultWordPressComAccountChangedNotification;
 
-@interface AccountService : NSObject <BaseLocalService>
+@interface AccountService : NSObject <LocalService>
 
 ///------------------------------------
 /// @name Default WordPress.com account

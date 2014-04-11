@@ -8,6 +8,7 @@
 #import "WordPressAppDelegate.h"
 #import "CategoryService.h"
 #import "ContextManager.h"
+#import "BlogService.h"
 
 @interface WPAddCategoryViewController ()<CategoriesViewControllerDelegate>
 
@@ -76,7 +77,8 @@
 }
 
 - (void)saveAddCategory:(id)sender {
-    CategoryService *categoryService = [[CategoryService alloc] initWithManagedObjectContext:[[ContextManager sharedInstance] mainContext]];
+    NSManagedObjectContext *context = [[ContextManager sharedInstance] mainContext];
+    CategoryService *categoryService = [[CategoryService alloc] initWithManagedObjectContext:context];
     NSString *catName = [self.createCatNameField.text trim];
     
     if (!catName ||[catName length] == 0) {
@@ -106,7 +108,8 @@
                                         [self.post save];
                                         
                                         //re-syncs categories this is necessary because the server can change the name of the category!!!
-                                        [self.post.blog syncCategoriesWithSuccess:nil failure:nil];
+                                        BlogService *blogService = [[BlogService alloc] initWithManagedObjectContext:context];
+                                        [blogService syncCategoriesForBlog:self.post.blog success:nil failure:nil];
                                         
                                         // Cleanup and dismiss
                                         [self clearUI];
