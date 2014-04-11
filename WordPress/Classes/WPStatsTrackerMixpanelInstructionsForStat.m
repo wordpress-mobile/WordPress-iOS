@@ -1,6 +1,6 @@
-#import "WPStatsMixpanelClientInstructionsForStat.h"
+#import "WPStatsTrackerMixpanelInstructionsForStat.h"
 
-@implementation WPStatsMixpanelClientInstructionsForStat
+@implementation WPStatsTrackerMixpanelInstructionsForStat
 
 - (instancetype)init
 {
@@ -12,14 +12,14 @@
 
 + (instancetype)mixpanelInstructionsForEventName:(NSString *)eventName
 {
-    WPStatsMixpanelClientInstructionsForStat *instructions = [[[self class] alloc] init];
+    WPStatsTrackerMixpanelInstructionsForStat *instructions = [[[self class] alloc] init];
     instructions.mixpanelEventName = eventName;
     return instructions;
 }
 
 + (instancetype)mixpanelInstructionsWithPropertyIncrementor:(NSString *)property forStat:(WPStat)stat
 {
-    WPStatsMixpanelClientInstructionsForStat *instructions = [[[self class] alloc] init];
+    WPStatsTrackerMixpanelInstructionsForStat *instructions = [[[self class] alloc] init];
     instructions.statToAttachProperty = stat;
     instructions.propertyToIncrement = property;
     return instructions;
@@ -27,14 +27,14 @@
 
 + (instancetype)mixpanelInstructionsWithSuperPropertyFlagger:(NSString *)property
 {
-    WPStatsMixpanelClientInstructionsForStat *instructions = [[[self class] alloc] init];
+    WPStatsTrackerMixpanelInstructionsForStat *instructions = [[[self class] alloc] init];
     instructions.superPropertyToFlag = property;
     return instructions;
 }
 
 + (instancetype)mixpanelInstructionsWithSuperPropertyAndPeoplePropertyIncrementor:(NSString *)property
 {
-    WPStatsMixpanelClientInstructionsForStat *instructions = [[[self class] alloc] init];
+    WPStatsTrackerMixpanelInstructionsForStat *instructions = [[[self class] alloc] init];
     [instructions setSuperPropertyAndPeoplePropertyToIncrement:property];
     return instructions;
 }
