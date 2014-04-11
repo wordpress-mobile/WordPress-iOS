@@ -9,6 +9,7 @@
 #import "Blog.h"
 #import "Constants.h"
 #import "AccountService.h"
+#import "BlogService.h"
 
 static BOOL hasRecordedAppOpenedEvent = NO;
 
@@ -310,12 +311,13 @@ NSString *const StatsSuperPropertyNumberOfPostsWithTags = @"number_of_posts_with
 
     NSManagedObjectContext *context = [[ContextManager sharedInstance] mainContext];
     AccountService *accountService = [[AccountService alloc] initWithManagedObjectContext:context];
+    BlogService *blogService = [[BlogService alloc] initWithManagedObjectContext:context];
     WPAccount *account = [accountService defaultWordPressComAccount];
     NSDictionary *properties = @{
                                  @"platform": @"iOS",
                                  @"session_count": @(sessionCount),
                                  @"connected_to_dotcom": @(account != nil),
-                                 @"number_of_blogs" : @([Blog countWithContext:[[ContextManager sharedInstance] mainContext]]) };
+                                 @"number_of_blogs" : @([blogService blogCountForAllAccounts]) };
     [[Mixpanel sharedInstance] registerSuperProperties:properties];
     
     NSString *username = account.username;
