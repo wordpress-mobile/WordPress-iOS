@@ -1,9 +1,9 @@
 #import <Foundation/Foundation.h>
-#import "BaseLocalService.h"
+#import "LocalService.h"
 
 @class ReaderTopic;
 
-@interface ReaderTopicService : NSObject <BaseLocalService>
+@interface ReaderTopicService : NSObject <LocalService>
 
 @property (nonatomic) ReaderTopic *currentTopic;
 
