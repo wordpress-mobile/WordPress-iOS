@@ -235,6 +235,8 @@ NSString * const WPAccountDefaultWordPressComAccountChangedNotification = @"WPAc
     
     DDLogInfo(@"Created blog: %@", blog);
     
+    [[ContextManager sharedInstance] saveContext:self.managedObjectContext];
+    
     return blog;
 }
 
