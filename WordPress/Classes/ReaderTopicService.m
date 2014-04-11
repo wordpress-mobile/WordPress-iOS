@@ -6,6 +6,8 @@
 #import "WPAccount.h"
 #import "WordPressComApi.h"
 
+NSString *const ReaderTopicCurrentTopicURIKey = @"ReaderTopicCurrentTopicURIKey";
+
 @interface ReaderTopicService ()
 
 @property (nonatomic, strong) NSManagedObjectContext *managedObjectContext;
@@ -48,6 +50,55 @@
         }
     }];
 }
+
+- (ReaderTopic *)currentTopic {
+    ReaderTopic *topic;
+    NSString *topicURIString = [[NSUserDefaults standardUserDefaults] stringForKey:ReaderTopicCurrentTopicURIKey];
+    if (topicURIString) {
+        NSURL *topicURI = [NSURL URLWithString:topicURIString];
+        NSManagedObjectID *objectID = [self.managedObjectContext.persistentStoreCoordinator managedObjectIDForURIRepresentation:topicURI];
+        topic = (ReaderTopic *)[self.managedObjectContext existingObjectWithID:objectID error:nil];
+    }
+
+    if (topic == nil) {
+        // Return a default topic
+        NSFetchRequest *request = [NSFetchRequest fetchRequestWithEntityName:@"ReaderTopic"];
+        request.predicate = [NSPredicate predicateWithFormat:@"type == %@", ReaderTopicTypeList];
+        NSSortDescriptor *sortDescriptor = [NSSortDescriptor sortDescriptorWithKey:@"title" ascending:YES];
+        request.sortDescriptors = @[sortDescriptor];
+        NSError *error;
+        NSArray *topics = [self.managedObjectContext executeFetchRequest:request error:&error];
+        if (error) {
+            DDLogError(@"-[ReaderTopicService currentTopic] error fetching topic: %@", error);
+			return nil;
+        }
+        if ([topics count] > 0) {
+            topic = [topics objectAtIndex:0];
+            [self setCurrentTopic:topic];
+        }
+    }
+
+    return topic;
+}
+
+- (void)setCurrentTopic:(ReaderTopic *)topic {
+    NSURL *topicURI = topic.objectID.URIRepresentation;
+    [[NSUserDefaults standardUserDefaults] setObject:[topicURI absoluteString] forKey:ReaderTopicCurrentTopicURIKey];
+    [NSUserDefaults resetStandardUserDefaults];
+}
+
+- (NSUInteger)numberOfSubscribedTopics {
+    NSFetchRequest *request = [NSFetchRequest fetchRequestWithEntityName:@"ReaderTopic"];
+    request.predicate = [NSPredicate predicateWithFormat:@"isSubscribed == YES AND type == %@", ReaderTopicTypeTag];
+    NSError *error;
+    NSUInteger count = [self.managedObjectContext countForFetchRequest:request error:&error];
+    if (error) {
+        DDLogError(@"-[ReaderTopicService numberOfSubscribedTopics] error counting topics: %@", error);
+        return 0;
+    }
+    return count;
+}
+
 
 #pragma mark - Private Methods
 

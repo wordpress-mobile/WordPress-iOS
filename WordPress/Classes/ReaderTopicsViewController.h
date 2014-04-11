@@ -1,5 +1,6 @@
 #import <UIKit/UIKit.h>
+#import "WPTableViewController.h"
 
-@interface ReaderTopicsViewController : UITableViewController
+@interface ReaderTopicsViewController : WPTableViewController
 
 @end
