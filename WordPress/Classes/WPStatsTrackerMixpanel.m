@@ -188,6 +188,9 @@
             instructions = [WPStatsTrackerMixpanelInstructionsForStat mixpanelInstructionsForEventName:@"Reader - Filtered By Reader Tag"];
             [instructions setSuperPropertyAndPeoplePropertyToIncrement:@"number_of_times_filtered_by_reader_tag"];
             break;
+        case WPStatReaderLoadedTag:
+            instructions = [WPStatsTrackerMixpanelInstructionsForStat mixpanelInstructionsForEventName:@"Reader - Loaded Tag"];
+            break;
         case WPStatReaderLoadedFreshlyPressed:
             instructions = [WPStatsTrackerMixpanelInstructionsForStat mixpanelInstructionsForEventName:@"Reader - Loaded Freshly Pressed"];
             [instructions setSuperPropertyAndPeoplePropertyToIncrement:@"number_of_times_loaded_freshly_pressed"];

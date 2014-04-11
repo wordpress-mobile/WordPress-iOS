@@ -173,7 +173,7 @@ NSString * const RPVCDisplayedNativeFriendFinder = @"DisplayedNativeFriendFinder
     }
 
     if (!_viewHasAppeared) {
-        [WPStats track:WPStatReaderAccessed withProperties:[self categoryPropertyForStats]];
+        [WPStats track:WPStatReaderAccessed withProperties:[self tagPropertyForStats]];
         _viewHasAppeared = YES;
     }
 
@@ -774,7 +774,7 @@ NSString * const RPVCDisplayedNativeFriendFinder = @"DisplayedNativeFriendFinder
 								 }
 							 }];
     
-    [WPStats track:WPStatReaderInfiniteScroll withProperties:[self categoryPropertyForStats]];
+    [WPStats track:WPStatReaderInfiniteScroll withProperties:[self tagPropertyForStats]];
 }
 
 - (UITableViewRowAnimation)tableViewRowAnimation {
@@ -905,8 +905,9 @@ NSString * const RPVCDisplayedNativeFriendFinder = @"DisplayedNativeFriendFinder
 		[[NSUserDefaults standardUserDefaults] removeObjectForKey:ReaderLastSyncDateKey];
 		[NSUserDefaults resetStandardUserDefaults];
     }
-
-    if ([self isCurrentCategoryFreshlyPressed]) {
+    
+    [WPStats track:WPStatReaderLoadedTag withProperties:[self tagPropertyForStats]];
+    if ([self isCurrentTagFreshlyPressed]) {
         [WPStats track:WPStatReaderLoadedFreshlyPressed];
     }
 }
@@ -932,29 +933,29 @@ NSString * const RPVCDisplayedNativeFriendFinder = @"DisplayedNativeFriendFinder
 
 #pragma mark - Utility
 
-- (BOOL)isCurrentCategoryFreshlyPressed {
-    return [[self currentCategory] rangeOfString:@"freshly-pressed"].location != NSNotFound;
+- (BOOL)isCurrentTagFreshlyPressed {
+    return [[self currentTag] rangeOfString:@"freshly-pressed"].location != NSNotFound;
 }
 
-- (NSString *)currentCategory {
-    NSDictionary *categoryDetails = [[NSUserDefaults standardUserDefaults] objectForKey:ReaderCurrentTopicKey];
-    NSString *category = [categoryDetails stringForKey:@"endpoint"];
-    if (category == nil) {
+- (NSString *)currentTag {
+    NSDictionary *tagDetails = [[NSUserDefaults standardUserDefaults] objectForKey:ReaderCurrentTopicKey];
+    NSString *tag = [tagDetails stringForKey:@"endpoint"];
+    if (tag == nil) {
         NSManagedObjectContext *context = [[ContextManager sharedInstance] mainContext];
         AccountService *accountService = [[AccountService alloc] initWithManagedObjectContext:context];
         WPAccount *defaultAccount = [accountService defaultWordPressComAccount];
-
+        
         if (defaultAccount != nil) {
             return @"read/following";
         } else {
             return @"freshly-pressed";
         }
     }
-    return category;
+    return tag;
 }
 
-- (NSDictionary *)categoryPropertyForStats {
-    return @{@"category": [self currentCategory]};
+- (NSDictionary *)tagPropertyForStats {
+    return @{@"tag": [self currentTag]};
 }
 
 - (void)fetchBlogsAndPrimaryBlog {
