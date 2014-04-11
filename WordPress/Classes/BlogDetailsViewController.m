@@ -173,7 +173,7 @@ NSString * const WPBlogDetailsBlogKey = @"WPBlogDetailsBlogKey";
         [WPStats track:WPStatOpenedComments];
         controllerClass = [CommentsViewController class];
     } else if (indexPath.row == BlogDetailsRowStats) {
-        [WPStats track:WPStatStatsAccessedStats];
+        [WPStats track:WPStatStatsAccessed];
         controllerClass =  [StatsViewController class];
     } else if ([self shouldShowThemesOption] && indexPath.row == BlogDetailsRowThemes) {
         controllerClass = [ThemeBrowserViewController class];
