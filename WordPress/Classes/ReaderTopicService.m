@@ -59,7 +59,7 @@
  @return A new or updated, but unsaved, ReaderTopic.
  */
 - (ReaderTopic *)createOrReplaceFromDictionary:(NSDictionary *)dict {
-    NSString *path = [dict stringForKey:@"URL"];
+    NSString *path = [dict stringForKey:@"path"];
     
     if (path == nil) {
         return nil;
@@ -76,7 +76,7 @@
                                               inManagedObjectContext:self.managedObjectContext];
     }
     
-    topic.topicID = [dict numberForKey:@"ID"];
+    topic.topicID = [dict numberForKey:@"topicID"];
     topic.type = ([topic.topicID integerValue] == 0) ? ReaderTopicTypeList : ReaderTopicTypeTag;
     topic.title = title;
     topic.path = [path lowercaseString];
