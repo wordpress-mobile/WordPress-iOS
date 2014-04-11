@@ -12,6 +12,7 @@
 #import "WPAccount.h"
 #import "WPTableViewSectionHeaderView.h"
 #import "AccountService.h"
+#import "BlogService.h"
 
 static NSString *const AddSiteCellIdentifier = @"AddSiteCell";
 static NSString *const BlogCellIdentifier = @"BlogCell";
@@ -387,8 +388,11 @@ CGFloat const blavatarImageSize = 50.f;
     }else {
         [WPMobileStats trackEventForWPCom:StatsEventSettingsClickedEditBlog];
         
+        NSManagedObjectContext *context = [[ContextManager sharedInstance] mainContext];
+        BlogService *blogService = [[BlogService alloc] initWithManagedObjectContext:context];
         Blog *blog = [self.resultsController objectAtIndexPath:indexPath];
-        [blog flagAsLastUsed];
+        [blogService flagBlogAsLastUsed:blog];
+        
         BlogDetailsViewController *blogDetailsViewController = [[BlogDetailsViewController alloc] init];
         blogDetailsViewController.blog = blog;
         [self.navigationController pushViewController:blogDetailsViewController animated:YES];
