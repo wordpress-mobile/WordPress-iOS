@@ -1,7 +1,7 @@
 #import "StatsButtonCell.h"
 #import "WPStyleGuide.h"
 
-static CGFloat const StatsButtonHeight = 30.0f;
+static CGFloat const StatsButtonHeight = 50.0f;
 
 @implementation StatsButtonCell
 
@@ -25,7 +25,10 @@ static CGFloat const StatsButtonHeight = 30.0f;
 - (void)layoutSubviews {
     [super layoutSubviews];
     
-    self.segmentedControl.frame = self.bounds;
+    CGRect rect = self.bounds;
+    rect = CGRectInset(rect, 10.0, 10.0);
+    
+    self.segmentedControl.frame = rect;
 }
 
 - (void)addSegmentWithTitle:(NSString *)title
