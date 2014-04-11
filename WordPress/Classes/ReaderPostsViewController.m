@@ -954,8 +954,27 @@ NSString * const RPVCDisplayedNativeFriendFinder = @"DisplayedNativeFriendFinder
     return tag;
 }
 
+- (NSString *)currentTagTitle
+{
+    NSDictionary *tagDetails = [[NSUserDefaults standardUserDefaults] objectForKey:ReaderCurrentTopicKey];
+    NSString *tagTitle = [tagDetails stringForKey:@"title"];
+    if (tagTitle == nil) {
+        NSManagedObjectContext *context = [[ContextManager sharedInstance] mainContext];
+        AccountService *accountService = [[AccountService alloc] initWithManagedObjectContext:context];
+        WPAccount *defaultAccount = [accountService defaultWordPressComAccount];
+        
+        if (defaultAccount != nil) {
+            return @"Blogs I Follow";
+        } else {
+            return @"Freshly Pressed";
+        }
+    } else {
+        return tagTitle;
+    }
+}
+
 - (NSDictionary *)tagPropertyForStats {
-    return @{@"tag": [self currentTag]};
+    return @{@"tag": [self currentTagTitle]};
 }
 
 - (void)fetchBlogsAndPrimaryBlog {
