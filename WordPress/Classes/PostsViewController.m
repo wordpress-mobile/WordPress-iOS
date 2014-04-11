@@ -194,7 +194,7 @@
 }
 
 - (void)showAddPostView {
-    [WPStats track:WPStatEditorCreatedPost withProperties:@{ @"click_source": @"posts_view" }];
+    [WPStats track:WPStatEditorCreatedPost withProperties:@{ @"tap_source": @"posts_view" }];
 
     _addingNewPost = YES;
     Post *post = [Post newDraftForBlog:self.blog];
