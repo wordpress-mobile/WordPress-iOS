@@ -543,20 +543,23 @@ CGFloat const EPVCTextViewTopPadding = 7.0f;
     Post *post = (Post *)self.post;
     PostSettingsViewController *vc = [[[self classForSettingsViewController] alloc] initWithPost:post];
     vc.statsPrefix = self.statsPrefix;
-    self.navigationItem.title = NSLocalizedString(@"Back", nil);
+    UIBarButtonItem *backButton = [[UIBarButtonItem alloc] initWithTitle:NSLocalizedString(@"Back", nil) style:UIBarButtonItemStyleBordered target:nil action:nil];
+    self.navigationItem.backBarButtonItem = backButton;
     [self.navigationController pushViewController:vc animated:YES];
 }
 
 - (void)showPreview {
     [WPMobileStats flagProperty:StatsPropertyPostDetailClickedPreview forEvent:[self formattedStatEventString:StatsEventPostDetailClosedEditor]];
     PostPreviewViewController *vc = [[PostPreviewViewController alloc] initWithPost:self.post];
-    self.navigationItem.title = NSLocalizedString(@"Back", nil);
+    UIBarButtonItem *backButton = [[UIBarButtonItem alloc] initWithTitle:NSLocalizedString(@"Back", nil) style:UIBarButtonItemStyleBordered target:nil action:nil];
+    self.navigationItem.backBarButtonItem = backButton;
     [self.navigationController pushViewController:vc animated:YES];
 }
 
 - (void)showMediaOptions {
     [WPMobileStats flagProperty:StatsPropertyPostDetailClickedMediaOptions forEvent:[self formattedStatEventString:StatsEventPostDetailClosedEditor]];
-    self.navigationItem.title = NSLocalizedString(@"Back", nil);
+    UIBarButtonItem *backButton = [[UIBarButtonItem alloc] initWithTitle:NSLocalizedString(@"Back", nil) style:UIBarButtonItemStyleBordered target:nil action:nil];
+    self.navigationItem.backBarButtonItem = backButton;
     MediaBrowserViewController *vc = [[MediaBrowserViewController alloc] initWithPost:self.post];
     [self.navigationController pushViewController:vc animated:YES];
 }
