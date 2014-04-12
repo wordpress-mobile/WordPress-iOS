@@ -138,10 +138,14 @@ static NSInteger const MaxNumberOfLinesForTitleForSummary = 3;
 
 + (NSAttributedString *)summaryAttributedStringForPost:(ReaderPost *)post {
     NSString *summary = [post.summary trim];
-    NSInteger newline = [post.summary rangeOfString:@"\n"].location;
+    if (summary == nil) {
+        summary = @"";
+    }
+    
+    NSInteger newline = [summary rangeOfString:@"\n"].location;
     
     if (newline != NSNotFound)
-        summary = [post.summary substringToIndex:newline];
+        summary = [summary substringToIndex:newline];
     
     NSMutableParagraphStyle *style = [[NSMutableParagraphStyle alloc] init];
     [style setLineHeightMultiple:RPVLineHeightMultiple];
@@ -149,12 +153,13 @@ static NSInteger const MaxNumberOfLinesForTitleForSummary = 3;
                                  NSFontAttributeName : [self summaryFont]};
     NSMutableAttributedString *attributedSummary = [[NSMutableAttributedString alloc] initWithString:summary
                                                                                           attributes:attributes];
-    
-    NSDictionary *moreContentAttributes = @{NSParagraphStyleAttributeName: style,
-                                            NSFontAttributeName: [self moreContentFont],
-                                            NSForegroundColorAttributeName: [WPStyleGuide baseLighterBlue]};
-    NSAttributedString *moreContent = [[NSAttributedString alloc] initWithString:[@"   " stringByAppendingString:NSLocalizedString(@"more", @"")] attributes:moreContentAttributes];
-    [attributedSummary appendAttributedString:moreContent];
+    if ([summary length] > 0) {
+        NSDictionary *moreContentAttributes = @{NSParagraphStyleAttributeName: style,
+                                                NSFontAttributeName: [self moreContentFont],
+                                                NSForegroundColorAttributeName: [WPStyleGuide baseLighterBlue]};
+        NSAttributedString *moreContent = [[NSAttributedString alloc] initWithString:[@"   " stringByAppendingString:NSLocalizedString(@"more", @"")] attributes:moreContentAttributes];
+        [attributedSummary appendAttributedString:moreContent];
+    }
     
     return attributedSummary;
 }
