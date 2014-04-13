@@ -1,6 +1,7 @@
 #import <Foundation/Foundation.h>
 
 typedef NS_ENUM(NSUInteger, WPStat) {
+    WPStatNoStat, // Since we can't have a nil enum we'll use this to act as the nil
     WPStatApplicationOpened,
     WPStatApplicationClosed,
     WPStatThemesAccessedThemeBrowser,
