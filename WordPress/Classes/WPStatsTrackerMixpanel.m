@@ -240,7 +240,8 @@
             instructions = [WPStatsTrackerMixpanelInstructionsForStat mixpanelInstructionsWithPropertyIncrementor:@"number_of_times_opened_view_site" forStat:WPStatApplicationClosed];
             break;
         case WPStatOpenedViewAdmin:
-            instructions = [WPStatsTrackerMixpanelInstructionsForStat mixpanelInstructionsWithSuperPropertyAndPeoplePropertyIncrementor:@"number_of_times_opened_view_admin"];
+            instructions = [WPStatsTrackerMixpanelInstructionsForStat mixpanelInstructionsWithPropertyIncrementor:@"number_of_times_opened_view_admin" forStat:WPStatApplicationClosed];
+            [instructions setSuperPropertyAndPeoplePropertyToIncrement:@"number_of_times_opened_view_admin"];
             break;
         case WPStatOpenedMediaLibrary:
             instructions = [WPStatsTrackerMixpanelInstructionsForStat mixpanelInstructionsWithPropertyIncrementor:@"number_of_times_opened_media_library" forStat:WPStatApplicationClosed];
