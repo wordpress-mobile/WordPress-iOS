@@ -20,7 +20,6 @@
 + (void)trackActivityType:(NSString *)activityType
 {
     WPStat stat;
-    NSString *superProperty;
     if ([activityType isEqualToString:UIActivityTypeMail]) {
         stat = WPStatSharedItemViaEmail;
     } else if ([activityType isEqualToString:UIActivityTypeMessage]) {
@@ -42,7 +41,7 @@
         return;
     }
     
-    if (superProperty != nil) {
+    if (stat != WPStatNoStat) {
         [WPStats track:WPStatSharedItem];
         [WPStats track:stat];
     }
