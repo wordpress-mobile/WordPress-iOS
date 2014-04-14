@@ -31,6 +31,9 @@
 #import "StatsViewController.h"
 #import "Constants.h"
 
+#import "WPStatsTrackerMixpanel.h"
+#import "WPStatsTrackerWPCom.h"
+
 #if DEBUG
 #import "DDTTYLogger.h"
 #import "DDASLLogger.h"
@@ -77,7 +80,10 @@ static NSInteger const IndexForMeTab = 2;
     [self removeCredentialsForDebug];
 
     // Stats and feedback
-    [WPMobileStats initializeStats];
+    
+    [WPStats registerTracker:[[WPStatsTrackerMixpanel alloc] init]];
+    [WPStats registerTracker:[[WPStatsTrackerWPCom alloc] init]];
+    [WPStats beginSession];
     [[GPPSignIn sharedInstance] setClientID:[WordPressComApiCredentials googlePlusClientId]];
     [SupportViewController checkIfFeedbackShouldBeEnabled];
     
@@ -164,10 +170,6 @@ static NSInteger const IndexForMeTab = 2;
                 NSUInteger blogId = [[params numberForKey:@"blogId"] integerValue];
                 NSUInteger postId = [[params numberForKey:@"postId"] integerValue];
                 
-                [WPMobileStats flagSuperProperty:StatsPropertyReaderOpenedFromExternalURL];
-                [WPMobileStats incrementSuperProperty:StatsPropertyReaderOpenedFromExternalURLCount];
-                [WPMobileStats trackEventForWPCom:StatsEventReaderOpenedFromExternalSource];
-                
                 [self.readerPostsViewController.navigationController popToRootViewControllerAnimated:NO];
                 NSInteger readerTabIndex = [[self.tabBarController viewControllers] indexOfObject:self.readerPostsViewController.navigationController];
                 [self.tabBarController setSelectedIndex:readerTabIndex];
@@ -188,8 +190,8 @@ static NSInteger const IndexForMeTab = 2;
 - (void)applicationDidEnterBackground:(UIApplication *)application {
     DDLogInfo(@"%@ %@", self, NSStringFromSelector(_cmd));
 
-    [WPMobileStats trackEventForWPComWithSavedProperties:StatsEventAppClosed];
-    [WPMobileStats pauseSession];
+    [WPStats track:WPStatApplicationClosed];
+    [WPStats endSession];
     
     // Let the app finish any uploads that are in progress
     UIApplication *app = [UIApplication sharedApplication];
@@ -221,8 +223,7 @@ static NSInteger const IndexForMeTab = 2;
 
 - (void)applicationDidBecomeActive:(UIApplication *)application {
     DDLogInfo(@"%@ %@", self, NSStringFromSelector(_cmd));
-    
-    [WPMobileStats recordAppOpenedForEvent:StatsEventAppOpened];
+    [WPStats track:WPStatApplicationOpened];
 }
 
 - (BOOL)application:(UIApplication *)application shouldSaveApplicationState:(NSCoder *)coder {
@@ -430,6 +431,7 @@ static NSInteger const IndexForMeTab = 2;
     
     EditPostViewController *editPostViewController;
     if (!options) {
+        [WPStats track:WPStatEditorCreatedPost withProperties:@{ @"tap_source": @"tab_bar" }];
         editPostViewController = [[EditPostViewController alloc] initWithDraftForLastUsedBlog];
     } else {
         editPostViewController = [[EditPostViewController alloc] initWithTitle:[options stringForKey:@"title"]
@@ -437,7 +439,6 @@ static NSInteger const IndexForMeTab = 2;
                                                                        andTags:[options stringForKey:@"tags"]
                                                                       andImage:[options stringForKey:@"image"]];
     }
-    editPostViewController.editorOpenedBy = StatsPropertyPostDetailEditorOpenedOpenedByTabBarButton;
     UINavigationController *navController = [[UINavigationController alloc] initWithRootViewController:editPostViewController];
     navController.modalPresentationStyle = UIModalPresentationCurrentContext;
     navController.navigationBar.translucent = NO;
@@ -516,7 +517,6 @@ static NSInteger const IndexForMeTab = 2;
 
         // Ignore taps on the post tab and instead show the modal.
         if ([blogService blogCountVisibleForAllAccounts] == 0) {
-            [WPMobileStats trackEventForWPCom:StatsEventAccountCreationOpenedFromTabBar];
             [self showWelcomeScreenAnimated:YES thenEditor:YES];
         } else {
             [self showPostTab];
@@ -610,7 +610,6 @@ static NSInteger const IndexForMeTab = 2;
     crashCount += 1;
     [defaults setInteger:crashCount forKey:@"crashCount"];
     [defaults synchronize];
-    [WPMobileStats trackEventForSelfHostedAndWPCom:@"Crashed" properties:@{@"crash_id": crash.identifier}];
 }
 
 - (void)setCommonCrashlyticsParameters

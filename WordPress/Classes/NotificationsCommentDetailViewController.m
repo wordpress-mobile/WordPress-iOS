@@ -293,19 +293,15 @@ NSString *const WPNotificationCommentRestorationKey = @"WPNotificationCommentRes
     if (approveAction) {
         // Pressed approve, so flip button optimistically to unapprove
         [self updateApproveButton:NO];
-        [WPMobileStats trackEventForWPCom:StatsEventNotificationsDetailApproveComment];
-        [WPMobileStats incrementPeopleAndSuperProperty:StatsSuperPropertyNumberOfNotificationsApproved];
+        [WPStats track:WPStatNotificationApproved];
         [self performCommentAction:approveAction];
     } else if (unapproveAction) {
         // Pressed unapprove, so flip button optimistically to approve
         [self updateApproveButton:YES];
-        [WPMobileStats trackEventForWPCom:StatsEventNotificationsDetailUnapproveComment];
-        [WPMobileStats incrementPeopleAndSuperProperty:StatsSuperPropertyNumberOfNotificationsUnapproved];
-
         [self performCommentAction:unapproveAction];
     }
     
-    [WPMobileStats incrementPeopleAndSuperProperty:StatsSuperPropertyNumberOfNotificationsResultingInActions];
+    [WPStats track:WPStatNotificationPerformedAction];
 }
 
 - (void)deleteAction:(id)sender {
@@ -313,16 +309,13 @@ NSString *const WPNotificationCommentRestorationKey = @"WPNotificationCommentRes
     NSDictionary *untrashAction = [self.commentActions objectForKey:@"untrash-comment"];
     
     if (trashAction) {
-        [WPMobileStats trackEventForWPCom:StatsEventNotificationsDetailTrashComment];
-        [WPMobileStats incrementPeopleAndSuperProperty:StatsSuperPropertyNumberOfNotificationsTrashed];
+        [WPStats track:WPStatNotificationTrashed];
         [self performCommentAction:trashAction];
     } else if (untrashAction) {
-        [WPMobileStats trackEventForWPCom:StatsEventNotificationsDetailUntrashComment];
-        [WPMobileStats incrementPeopleAndSuperProperty:StatsSuperPropertyNumberOfNotificationsUntrashed];
         [self performCommentAction:untrashAction];
     }
     
-    [WPMobileStats incrementPeopleAndSuperProperty:StatsSuperPropertyNumberOfNotificationsResultingInActions];
+    [WPStats track:WPStatNotificationPerformedAction];
 }
 
 - (void)spamAction:(id)sender {
@@ -330,16 +323,13 @@ NSString *const WPNotificationCommentRestorationKey = @"WPNotificationCommentRes
     NSDictionary *unspamAction = [self.commentActions objectForKey:@"unspam-comment"];
     
     if (spamAction) {
-        [WPMobileStats trackEventForWPCom:StatsEventNotificationsDetailFlagCommentAsSpam];
-        [WPMobileStats incrementPeopleAndSuperProperty:StatsSuperPropertyNumberOfNotificationsFlaggedAsSpam];
+        [WPStats track:WPStatNotificationFlaggedAsSpam];
         [self performCommentAction:spamAction];
     } else if (unspamAction) {
-        [WPMobileStats trackEventForWPCom:StatsEventNotificationsDetailUnflagCommentAsSpam];
-        [WPMobileStats incrementPeopleAndSuperProperty:StatsSuperPropertyNumberOfNotificationsUnflaggedAsSpam];
         [self performCommentAction:unspamAction];
     }
     
-    [WPMobileStats incrementPeopleAndSuperProperty:StatsSuperPropertyNumberOfNotificationsResultingInActions];
+    [WPStats track:WPStatNotificationPerformedAction];
 }
 
 - (void)replyAction:(id)sender {
@@ -371,8 +361,6 @@ NSString *const WPNotificationCommentRestorationKey = @"WPNotificationCommentRes
 }
 
 - (void)publishReply:(NSString *)replyText {
-    [WPMobileStats trackEventForWPCom:StatsEventNotificationsDetailRepliedToComment];
-
     NSDictionary *action = [self.commentActions objectForKey:@"replyto-comment"];
     
     if (action) {
@@ -405,8 +393,8 @@ NSString *const WPNotificationCommentRestorationKey = @"WPNotificationCommentRes
 
         [[defaultAccount restApi] postPath:replyPath parameters:params success:^(AFHTTPRequestOperation *operation, id responseObject) {
             DDLogVerbose(@"Response: %@", responseObject);
-            [WPMobileStats incrementPeopleAndSuperProperty:StatsSuperPropertyNumberOfNotificationsRepliedTo];
-            [WPMobileStats incrementPeopleAndSuperProperty:StatsSuperPropertyNumberOfNotificationsResultingInActions];
+            [WPStats track:WPStatNotificationRepliedTo];
+            [WPStats track:WPStatNotificationPerformedAction];
             success();
         } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
             DDLogError(@"Failure %@", error);

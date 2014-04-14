@@ -187,9 +187,7 @@
 			[self.delegate readerTextFormDidSend:self];
 		}
         
-        [WPMobileStats trackEventForWPCom:StatsEventReaderReblogged];
-        [WPMobileStats incrementPeopleAndSuperProperty:StatsSuperPropertyNumberOfItemsRebloggedInReader];
-		
+        [WPStats track:WPStatReaderRebloggedArticle];
 	} failure:^(NSError *error) {
 		DDLogError(@"Error Reblogging Post : %@", [error localizedDescription]);
 		[self enableForm:YES];

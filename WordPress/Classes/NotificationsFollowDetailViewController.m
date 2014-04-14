@@ -263,15 +263,7 @@ typedef void (^NoteToggleFollowBlock)(BOOL success);
 	
     BOOL isFollowing = item.action.following;
 	   
-	// Hit the Tracker
-    if (isFollowing) {
-        [WPMobileStats trackEventForSelfHostedAndWPCom:StatsEventNotificationsDetailUnfollowBlog];
-        [WPMobileStats incrementPeopleAndSuperProperty:StatsSuperPropertyNumberOfNotificationsResultingInAnUnfollow];
-    } else {
-        [WPMobileStats trackEventForSelfHostedAndWPCom:StatsEventNotificationsDetailFollowBlog];
-        [WPMobileStats incrementPeopleAndSuperProperty:StatsSuperPropertyNumberOfNotificationsResultingInAFollow];
-    }
-    [WPMobileStats incrementPeopleAndSuperProperty:StatsSuperPropertyNumberOfNotificationsResultingInActions];
+    [WPStats track:WPStatNotificationPerformedAction];
     
 	// Hit the Backend
     NSManagedObjectContext *context = [[ContextManager sharedInstance] mainContext];

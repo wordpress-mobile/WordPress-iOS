@@ -165,8 +165,6 @@ BOOL hasChanges;
     hasChanges = YES;
     UISwitch *cellSwitch = (UISwitch *)sender;
     
-    [self trackNotificationEnabledStatusStat:[_notificationPrefArray objectAtIndex:cellSwitch.tag] enabled:cellSwitch.on];
-    
     NSMutableDictionary *updatedPreference = [[_notificationPreferences objectForKey:[_notificationPrefArray objectAtIndex:cellSwitch.tag]] mutableCopy];
     
     [updatedPreference setValue:[NSNumber numberWithBool:cellSwitch.on] forKey:@"value"];
@@ -175,56 +173,9 @@ BOOL hasChanges;
     [[NSUserDefaults standardUserDefaults] setValue:_notificationPreferences forKey:@"notification_preferences"];
 }
 
-- (void)trackNotificationEnabledStatusStat:(NSString *)notificationType enabled:(BOOL)enabled
-{
-    NSString *event;
-    
-    if ([notificationType isEqualToString:@"achievements"]) {
-        if (enabled) {
-            event = StatsEventManageNotificationsEnabledAchievementsNotifications;
-        } else {
-            event = StatsEventManageNotificationsDisabledAchievementsNotifications;
-        }
-    } else if ([notificationType isEqualToString:@"comments"]) {
-        if (enabled) {
-            event = StatsEventManageNotificationsEnabledCommentNotifications;
-        } else {
-            event = StatsEventManageNotificationsDisabledCommentNotifications;
-        }        
-    } else if ([notificationType isEqualToString:@"follows"]) {
-        if (enabled) {
-            event = StatsEventManageNotificationsEnabledFollowNotifications;
-        } else {
-            event = StatsEventManageNotificationsDisabledFollowNotifications;
-        }
-    } else if ([notificationType isEqualToString:@"post_likes"]) {
-        if (enabled) {
-            event = StatsEventManageNotificationsEnabledLikeNotifications;
-        } else {
-            event = StatsEventManageNotificationsDisabledLikeNotifications;
-        }
-    } else if ([notificationType isEqualToString:@"reblogs"]) {
-        if (enabled) {
-            event = StatsEventManageNotificationsEnabledReblogNotifications;
-        } else {
-            event = StatsEventManageNotificationsDisabledReblogNotifications;
-        }
-    }
-    
-    if (event != nil) {
-        [WPMobileStats trackEventForWPCom:event];
-    }
-}
-
 - (void)muteBlogSettingChanged:(id)sender {
     hasChanges = YES;
     UISwitch *cellSwitch = (UISwitch *)sender;
-    
-    if (cellSwitch.on) {
-        [WPMobileStats trackEventForWPCom:StatsEventManageNotificationsEnabledBlogNotifications];
-    } else {
-        [WPMobileStats trackEventForWPCom:StatsEventManageNotificationsDisabledBlogNotifications];
-    }
     
     NSMutableDictionary *updatedPreference = [[_mutedBlogsArray objectAtIndex:cellSwitch.tag] mutableCopy];
     [updatedPreference setValue:[NSNumber numberWithBool:!cellSwitch.on] forKey:@"value"];
@@ -434,8 +385,6 @@ BOOL hasChanges;
         //Notifications were muted.
         //buttonIndex == 0 -> Turn on, cancel otherwise.
         if(buttonIndex == 0) {
-            [WPMobileStats trackEventForWPCom:StatsEventManageNotificationsTurnOn];
-            
             hasChanges = YES;
             muteDictionary = [NSMutableDictionary dictionary];
             [muteDictionary setObject:@"0" forKey:@"value"];
@@ -452,14 +401,10 @@ BOOL hasChanges;
         switch (buttonIndex) {
             case 0:
             {
-                [WPMobileStats trackEventForWPCom:StatsEventManageNotificationsTurnOff];
-                
                 mute_until_value = @"forever";
                 break;
             }
             case 1:{ //Turn off 1hr
-                [WPMobileStats trackEventForWPCom:StatsEventManageNotificationsTurnOffForOneHour];
-                
                 NSDate *currentDate = [NSDate date];
                 NSDateComponents *comps = [[NSDateComponents alloc] init];
                 [comps setHour:+1];
@@ -471,8 +416,6 @@ BOOL hasChanges;
                 break;
             }
             case 2:{ //Turn off until 8am
-                [WPMobileStats trackEventForWPCom:StatsEventManageNotificationsTurnOffUntil8AM];
-                
                 NSDate *currentDate = [NSDate date];
                 NSCalendar *sysCalendar = [NSCalendar currentCalendar];
                 

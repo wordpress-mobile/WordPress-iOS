@@ -92,8 +92,6 @@ CGFloat const GeneralWalkthroughStatusBarOffset = 20.0;
     
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(keyboardWillShow:) name:UIKeyboardWillShowNotification object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(keyboardWillHide:) name:UIKeyboardWillHideNotification object:nil];
-    
-    [WPMobileStats trackEventForSelfHostedAndWPCom:StatsEventNUXFirstWalkthroughOpened];
 }
 
 - (void)viewWillAppear:(BOOL)animated
@@ -190,14 +188,10 @@ CGFloat const GeneralWalkthroughStatusBarOffset = 20.0;
     WPWalkthroughOverlayView *overlayView = [self baseLoginErrorOverlayView:message];
     overlayView.primaryButtonText = NSLocalizedString(@"Enable Now", nil);
     overlayView.secondaryButtonCompletionBlock = ^(WPWalkthroughOverlayView *overlayView){
-        [WPMobileStats trackEventForSelfHostedAndWPCom:StatsEventNUXFirstWalkthroughClickedNeededHelpOnError properties:@{@"error_message": message}];
-        
         [overlayView dismiss];
         [self showHelpViewController:NO];
     };
     overlayView.primaryButtonCompletionBlock = ^(WPWalkthroughOverlayView *overlayView){
-        [WPMobileStats trackEventForSelfHostedAndWPCom:StatsEventNUXFirstWalkthroughClickedEnableXMLRPCServices];
-        
         [overlayView dismiss];
         
         NSString *path = nil;
@@ -227,9 +221,7 @@ CGFloat const GeneralWalkthroughStatusBarOffset = 20.0;
 {
     WPWalkthroughOverlayView *overlayView = [self baseLoginErrorOverlayView:message];
     overlayView.secondaryButtonCompletionBlock = ^(WPWalkthroughOverlayView *overlayView){
-        [WPMobileStats trackEventForSelfHostedAndWPCom:StatsEventNUXFirstWalkthroughClickedNeededHelpOnError properties:@{@"error_message": message}];
-        
-        [overlayView dismiss];  
+        [overlayView dismiss];
         WPWebViewController *webViewController = [[WPWebViewController alloc] init];
         webViewController.url = [NSURL URLWithString:@"http://ios.wordpress.org/faq/#faq_3"];
         [self.navigationController setNavigationBarHidden:NO animated:NO];
@@ -245,8 +237,6 @@ CGFloat const GeneralWalkthroughStatusBarOffset = 20.0;
 {
     WPWalkthroughOverlayView *overlayView = [self baseLoginErrorOverlayView:message];
     overlayView.secondaryButtonCompletionBlock = ^(WPWalkthroughOverlayView *overlayView){
-        [WPMobileStats trackEventForSelfHostedAndWPCom:StatsEventNUXFirstWalkthroughClickedNeededHelpOnError properties:@{@"error_message": message}];
-        
         [overlayView dismiss];
         WPWebViewController *webViewController = [[WPWebViewController alloc] init];
         [webViewController setUrl:[NSURL URLWithString:GenerateApplicationSpecificPasswordUrl]];
@@ -263,8 +253,6 @@ CGFloat const GeneralWalkthroughStatusBarOffset = 20.0;
 {
     WPWalkthroughOverlayView *overlayView = [self baseLoginErrorOverlayView:message];
     overlayView.secondaryButtonCompletionBlock = ^(WPWalkthroughOverlayView *overlayView){
-        [WPMobileStats trackEventForSelfHostedAndWPCom:StatsEventNUXFirstWalkthroughClickedNeededHelpOnError properties:@{@"error_message": message}];
-        
         [overlayView dismiss];
         [self showHelpViewController:NO];
     };
@@ -278,8 +266,6 @@ CGFloat const GeneralWalkthroughStatusBarOffset = 20.0;
 
 - (void)helpButtonAction:(id)sender
 {
-    [WPMobileStats trackEventForSelfHostedAndWPCom:StatsEventNUXFirstWalkthroughClickedInfo];
-
     SupportViewController *supportViewController = [[SupportViewController alloc] init];
     UINavigationController *nc = [[UINavigationController alloc] initWithRootViewController:supportViewController];
     nc.navigationBar.translucent = NO;
@@ -289,7 +275,6 @@ CGFloat const GeneralWalkthroughStatusBarOffset = 20.0;
 
 - (void)skipToCreateAction:(id)sender
 {
-    [WPMobileStats trackEventForSelfHostedAndWPCom:StatsEventNUXFirstWalkthroughClickedCreateAccount];
     [self showCreateAccountView];
 }
 
@@ -335,8 +320,6 @@ CGFloat const GeneralWalkthroughStatusBarOffset = 20.0;
 }
 
 - (void)forgotPassword:(id)sender {
-    [WPMobileStats trackEventForSelfHostedAndWPCom:StatsEventNUXFirstWalkthroughClickedLostPassword];
-
     NSString *baseUrl = ForgotPasswordDotComBaseUrl;
     if (!_userIsDotCom) {
         baseUrl = [self getSiteUrl];
@@ -628,13 +611,6 @@ CGFloat const GeneralWalkthroughStatusBarOffset = 20.0;
     jetpackSettingsViewController.canBeSkipped = YES;
     [jetpackSettingsViewController setCompletionBlock:^(BOOL didAuthenticate) {
         _blogConnectedToJetpack = didAuthenticate;
-        
-        if (_blogConnectedToJetpack) {
-            [WPMobileStats trackEventForSelfHostedAndWPCom:StatsEventNUXFirstWalkthroughUserConnectedToJetpack];
-        } else {
-            [WPMobileStats trackEventForSelfHostedAndWPCom:StatsEventNUXFirstWalkthroughUserSkippedConnectingToJetpack];            
-        }
-
         [self dismiss];
     }];
     [self.navigationController pushViewController:jetpackSettingsViewController animated:YES];
@@ -771,12 +747,9 @@ CGFloat const GeneralWalkthroughStatusBarOffset = 20.0;
     _dotComSiteUrl = nil;
     
     if (_userIsDotCom) {
-        [WPMobileStats trackEventForSelfHostedAndWPCom:StatsEventNUXFirstWalkthroughSignedInWithoutUrl];
         [self signInForWPComForUsername:username andPassword:password];
         return;
     }
-    
-    [WPMobileStats trackEventForSelfHostedAndWPCom:StatsEventNUXFirstWalkthroughSignedInWithUrl];
     
     if ([self isUrlWPCom:_siteUrlText.text]) {
         [self signInForWPComForUsername:username andPassword:password];
@@ -812,8 +785,6 @@ CGFloat const GeneralWalkthroughStatusBarOffset = 20.0;
 
 - (void)signInForWPComForUsername:(NSString *)username andPassword:(NSString *)password
 {
-    [WPMobileStats trackEventForSelfHostedAndWPCom:StatsEventNUXFirstWalkthroughSignedInForDotCom];
-    
     [self setAuthenticating:YES withStatusMessage:NSLocalizedString(@"Connecting to WordPress.com", nil)];
     
     WordPressComOAuthClient *client = [WordPressComOAuthClient client];
@@ -873,7 +844,6 @@ CGFloat const GeneralWalkthroughStatusBarOffset = 20.0;
     _blog = [accountService findOrCreateBlogFromDictionary:blogDetails withAccount:account];
     _blog.options = options;
     [_blog dataSave];
-    [WPMobileStats trackEventForSelfHostedAndWPCom:StatsEventNUXFirstWalkthroughUserSignedInToBlogWithJetpack];
     [blogService syncBlog:_blog success:nil failure:nil];
 
     if ([_blog hasJetpack]) {

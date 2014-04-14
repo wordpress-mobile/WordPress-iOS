@@ -81,8 +81,6 @@ CGFloat const CreateAccountAndBlogButtonHeight = 40.0;
 {
     [super viewDidLoad];
     
-    [WPMobileStats trackEventForSelfHostedAndWPCom:StatsEventNUXCreateAccountOpened];
-
     self.view.backgroundColor = [WPNUXUtility backgroundColor];
         
     [self initializeView];
@@ -432,7 +430,6 @@ CGFloat const CreateAccountAndBlogButtonHeight = 40.0;
 
 - (void)helpButtonAction
 {
-    [WPMobileStats trackEventForSelfHostedAndWPCom:StatsEventNUXCreateAccountClickedHelp];
     SupportViewController *supportViewController = [[SupportViewController alloc] init];
     UINavigationController *nc = [[UINavigationController alloc] initWithRootViewController:supportViewController];
     nc.navigationBar.translucent = NO;
@@ -442,7 +439,6 @@ CGFloat const CreateAccountAndBlogButtonHeight = 40.0;
 
 - (void)cancelButtonAction
 {
-    [WPMobileStats trackEventForSelfHostedAndWPCom:StatsEventNUXCreateAccountClickedCancel];
     [self.navigationController popViewControllerAnimated:YES];
 }
 
@@ -453,19 +449,12 @@ CGFloat const CreateAccountAndBlogButtonHeight = 40.0;
 
 - (void)createAccountButtonAction
 {
-    [WPMobileStats trackEventForSelfHostedAndWPCom:StatsEventNUXCreateAccountClickedAccountPageNext];
-    
     [self.view endEditing:YES];
     
     if (![self fieldsValid]) {
         [self showAllErrors];
         return;
     } else {
-        // Check if user changed default URL and if so track the stat for it.
-        if (![_siteAddressField.text isEqualToString:_defaultSiteUrl]) {
-            [WPMobileStats trackEventForSelfHostedAndWPCom:StatsEventNUXCreateAccountChangedDefaultURL];
-        }
-        
         [self createUserAndSite];
     }
 }
@@ -713,7 +702,7 @@ CGFloat const CreateAccountAndBlogButtonHeight = 40.0;
 
     WPAsyncBlockOperation *blogCreation = [WPAsyncBlockOperation operationWithBlock:^(WPAsyncBlockOperation *operation){
         void (^createBlogSuccess)(id) = ^(id responseObject){
-            [WPMobileStats trackEventForSelfHostedAndWPCom:StatsEventNUXCreateAccountCreatedAccount];
+            [WPStats track:WPStatCreatedAccount];
             [operation didSucceed];
 
             NSMutableDictionary *blogOptions = [[responseObject dictionaryForKey:@"blog_details"] mutableCopy];
