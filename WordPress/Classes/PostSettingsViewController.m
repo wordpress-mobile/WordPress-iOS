@@ -23,7 +23,8 @@
 #import "WPTableImageSource.h"
 
 typedef enum {
-    PostSettingsRowCategories = 1,
+    PostSettingsRowMediaLibrary = 0,
+    PostSettingsRowCategories,
     PostSettingsRowTags,
     PostSettingsRowPublishDate,
     PostSettingsRowStatus,
@@ -246,7 +247,7 @@ static NSString *const TableViewActivityCellIdentifier = @"TableViewActivityCell
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
     NSInteger sec = [[self.sections objectAtIndex:section] integerValue];
     if (sec == PostSettingsSectionTaxonomy) {
-        return 2;
+        return 3;
         
     } else if (sec == PostSettingsSectionMeta) {
         if (self.apost.password) {
@@ -358,7 +359,10 @@ static NSString *const TableViewActivityCellIdentifier = @"TableViewActivityCell
     
     UITableViewCell *cell = [tableView cellForRowAtIndexPath:indexPath];
     
-    if (cell.tag == PostSettingsRowCategories) {
+    if (cell.tag == PostSettingsRowMediaLibrary) {
+        [self showMediaLibrary];
+        
+    } else if (cell.tag == PostSettingsRowCategories) {
         [self showCategoriesSelection];
         
     } else if (cell.tag == PostSettingsRowTags) {
@@ -392,14 +396,20 @@ static NSString *const TableViewActivityCellIdentifier = @"TableViewActivityCell
 
 - (UITableViewCell *)configureTaxonomyCellForIndexPath:(NSIndexPath *)indexPath {
     UITableViewCell *cell;
+    
     if (indexPath.row == 0) {
+        // Media Library
+        cell = [self getWPTableViewCell];
+        cell.textLabel.text = NSLocalizedString(@"Media Library", @"Label for the media library.");
+        cell.tag = PostSettingsRowMediaLibrary;
+    } else if (indexPath.row == 1) {
         // Categories
         cell = [self getWPTableViewCell];
         cell.textLabel.text = NSLocalizedString(@"Categories", @"Label for the categories field. Should be the same as WP core.");
         cell.detailTextLabel.text = [NSString decodeXMLCharactersIn:[self.post categoriesText]];
         cell.tag = PostSettingsRowCategories;
         
-    } else {
+    } else if (indexPath.row == 2) {
         // Tags
         UITableViewTextFieldCell *textCell = [self getTextFieldCell];
         textCell.textLabel.text = NSLocalizedString(@"Tags", @"Label for the tags field. Should be the same as WP core.");
@@ -771,6 +781,12 @@ static NSString *const TableViewActivityCellIdentifier = @"TableViewActivityCell
 - (void)showCategoriesSelection {
     CategoriesViewController *controller = [[CategoriesViewController alloc] initWithPost:[self post] selectionMode:CategoriesSelectionModePost];
     [self.navigationController pushViewController:controller animated:YES];
+}
+
+- (void)showMediaLibrary {
+    self.navigationItem.title = NSLocalizedString(@"Back", nil);
+    MediaBrowserViewController *vc = [[MediaBrowserViewController alloc] initWithPost:self.post];
+    [self.navigationController pushViewController:vc animated:YES];
 }
 
 - (void)loadFeaturedImage:(NSIndexPath *)indexPath {
