@@ -5,6 +5,7 @@
 
 @interface BlogService : NSObject <LocalService>
 
+- (Blog *)blogByBlogId:(NSNumber *)blogId;
 
 - (void)flagBlogAsLastUsed:(Blog *)blog;
 
