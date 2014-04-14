@@ -28,10 +28,10 @@ NSString *const LastUsedBlogURLDefaultsKey = @"LastUsedBlogURLDefaultsKey";
     return self;
 }
 
-- (Blog *)blogByBlogId:(NSNumber *)blogId
+- (Blog *)blogByBlogId:(NSNumber *)blogID
 {
     NSFetchRequest *fetchRequest = [[NSFetchRequest alloc] initWithEntityName:@"Blog"];
-    NSPredicate *predicate = [NSPredicate predicateWithFormat:@"blogID == %@", blogId];
+    NSPredicate *predicate = [NSPredicate predicateWithFormat:@"blogID == %@", blogID];
     
     fetchRequest.predicate = predicate;
     
