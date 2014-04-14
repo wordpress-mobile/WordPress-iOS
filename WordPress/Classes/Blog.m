@@ -382,7 +382,7 @@ static NSInteger const ImageSizeLargeHeight = 480;
             optionValue = nil;
         }
         NSDictionary *currentOption = [self.options objectForKey:name];
-        optionValue = [currentOption objectForKey:@"value"];
+        optionValue = currentOption[@"value"];
     }];
 	return optionValue;
 }

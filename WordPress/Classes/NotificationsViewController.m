@@ -151,8 +151,7 @@ typedef void (^NotificationsLoadPostBlock)(BOOL success, ReaderPost *post);
 
     if (!_viewHasAppeared) {
         _viewHasAppeared = YES;
-        [WPMobileStats incrementProperty:StatsPropertyNotificationsOpened forEvent:StatsEventAppClosed];
-        [WPMobileStats incrementPeopleAndSuperProperty:StatsSuperPropertyNumberOfTimesOpenedNotifications];
+        [WPStats track:WPStatNotificationsAccessed];
     }
     
     _isPushingViewController = NO;
@@ -233,10 +232,7 @@ typedef void (^NotificationsLoadPostBlock)(BOOL success, ReaderPost *post);
     [noteService pruneOldNotesBefore:pruneBefore];
 }
 
-- (void)showNotificationSettings
-{
-    [WPMobileStats trackEventForWPCom:StatsEventNotificationsClickedManageNotifications];
-    
+- (void)showNotificationSettings {
     NotificationSettingsViewController *notificationSettingsViewController = [[NotificationSettingsViewController alloc] initWithStyle:UITableViewStyleGrouped];
     UINavigationController *navigationController = [[UINavigationController alloc] initWithRootViewController:notificationSettingsViewController];
     navigationController.navigationBar.translucent = NO;
@@ -277,8 +273,7 @@ typedef void (^NotificationsLoadPostBlock)(BOOL success, ReaderPost *post);
     
     BOOL hasDetailView = [self noteHasDetailView:note];
     if (hasDetailView) {
-        [WPMobileStats incrementProperty:StatsPropertyNotificationsOpenedDetails forEvent:StatsEventAppClosed];
-        [WPMobileStats incrementPeopleAndSuperProperty:StatsSuperPropertyNumberOfTimesOpenedNotificationDetails];
+        [WPStats track:WPStatNotificationsOpenedNotificationDetails];
 
         _isPushingViewController = YES;
         

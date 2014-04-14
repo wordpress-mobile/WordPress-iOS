@@ -108,7 +108,6 @@ NSString *const NotificationsDeviceToken = @"apnsDeviceToken";
     
     switch (state) {
         case UIApplicationStateInactive:
-            [WPMobileStats recordAppOpenedForEvent:StatsEventAppOpenedDueToPushNotification];
             [[WordPressAppDelegate sharedWordPressApplicationDelegate] showNotificationsTab];
             break;
             
@@ -137,8 +136,6 @@ NSString *const NotificationsDeviceToken = @"apnsDeviceToken";
 + (void)handleNotificationForApplicationLaunch:(NSDictionary *)launchOptions {
     NSDictionary *remoteNotif = [launchOptions objectForKey:UIApplicationLaunchOptionsRemoteNotificationKey];
     if (remoteNotif) {
-        [WPMobileStats recordAppOpenedForEvent:StatsEventAppOpenedDueToPushNotification];
-        
         DDLogVerbose(@"Launched with a remote notification as parameter:  %@", remoteNotif);
         [[WordPressAppDelegate sharedWordPressApplicationDelegate] showNotificationsTab];
     }

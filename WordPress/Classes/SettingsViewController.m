@@ -341,8 +341,6 @@ CGFloat const blavatarImageViewSize = 43.f;
 
         if (defaultAccount) {
             if (indexPath.row == [self rowForSignOut]) {
-                [WPMobileStats trackEventForWPCom:StatsEventSettingsClickedSignOutOfDotCom];
-
                 // Present the Sign out ActionSheet
                 NSString *signOutTitle = NSLocalizedString(@"You are logged in as %@", @"");
                 signOutTitle = [NSString stringWithFormat:signOutTitle, [defaultAccount username]];
@@ -354,14 +352,10 @@ CGFloat const blavatarImageViewSize = 43.f;
                 actionSheet.actionSheetStyle = UIActionSheetStyleDefault;
                 [actionSheet showInView:self.view];
             } else if (indexPath.row == [self rowForNotifications]) {
-                [WPMobileStats trackEventForWPCom:StatsEventSettingsClickedManageNotifications];
-            
                 NotificationSettingsViewController *notificationSettingsViewController = [[NotificationSettingsViewController alloc] initWithStyle:UITableViewStyleGrouped];
                 [self.navigationController pushViewController:notificationSettingsViewController animated:YES];
             }
         } else {
-            [WPMobileStats trackEventForWPCom:StatsEventSettingsClickedSignIntoDotCom];
-
             LoginViewController *loginViewController = [[LoginViewController alloc] init];
             loginViewController.onlyDotComAllowed = YES;
             loginViewController.dismissBlock = ^{
@@ -371,22 +365,12 @@ CGFloat const blavatarImageViewSize = 43.f;
         }
         
     } else if (indexPath.section == SettingsSectionMedia) {
-        if (indexPath.row == 0) {
-            [WPMobileStats trackEventForWPCom:StatsEventSettingsMediaClickedImageResize];
-        } else if (indexPath.row == 1) {
-            [WPMobileStats trackEventForWPCom:StatsEventSettingsMediaClickedVideoQuality];
-        } else if (indexPath.row == 2) {
-            [WPMobileStats trackEventForWPCom:StatsEventSettingsMediaClickedVideoContent];
-        }
-        
         NSDictionary *dict = [self.mediaSettingsArray objectAtIndex:indexPath.row];
         SettingsPageViewController *controller = [[SettingsPageViewController alloc] initWithDictionary:dict];
         [self.navigationController pushViewController:controller animated:YES];
 
     } else if (indexPath.section == SettingsSectionInfo) {
         if (indexPath.row == 0) {
-            [WPMobileStats trackEventForWPCom:StatsEventSettingsClickedAbout];
-            
             AboutViewController *aboutViewController = [[AboutViewController alloc] initWithNibName:@"AboutViewController" bundle:nil];
             [self.navigationController pushViewController:aboutViewController animated:YES];
         } else if (indexPath.row == 1) {
@@ -402,8 +386,6 @@ CGFloat const blavatarImageViewSize = 43.f;
 
 - (void)actionSheet:(UIActionSheet *)actionSheet clickedButtonAtIndex:(NSInteger)buttonIndex {
     if (buttonIndex == 0) {
-        [WPMobileStats trackEventForWPCom:StatsEventSettingsSignedOutOfDotCom];
-        
         // Sign out
         NSManagedObjectContext *context = [[ContextManager sharedInstance] mainContext];
         AccountService *accountService = [[AccountService alloc] initWithManagedObjectContext:context];
