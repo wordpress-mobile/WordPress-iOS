@@ -62,6 +62,8 @@ static NSString *const SearchHeaderIdentifier = @"search_header";
     self.navigationItem.rightBarButtonItem = sortButton;
     
     [self syncThemesAndCurrentTheme];
+    
+    [WPStats track:WPStatThemesAccessedThemeBrowser];
 }
 
 - (void)viewWillAppear:(BOOL)animated {

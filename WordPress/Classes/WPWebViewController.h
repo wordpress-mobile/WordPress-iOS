@@ -6,7 +6,6 @@
 @property (nonatomic, strong) NSURL *wpLoginURL;
 @property (nonatomic, strong) NSString *username;
 @property (nonatomic, strong) NSString *password;
-@property (nonatomic, strong) NSString *statsPrefixForShareActions;
 @property (nonatomic, weak) IBOutlet UIWebView *webView;
 @property (nonatomic, strong) IBOutlet UIToolbar *toolbar;
 @property (nonatomic, strong) IBOutlet UIView *loadingView;

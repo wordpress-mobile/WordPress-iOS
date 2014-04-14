@@ -162,31 +162,27 @@ NSString * const WPBlogDetailsBlogKey = @"WPBlogDetailsBlogKey";
     [tableView deselectRowAtIndexPath:indexPath animated:YES];
     
     if ([self isRowForEditBlog:indexPath.row]) {
-        [WPMobileStats trackEventForWPCom:StatsEventSettingsClickedEditBlog];
-        
         EditSiteViewController *editSiteViewController = [[EditSiteViewController alloc] initWithBlog:self.blog];
         [self.navigationController pushViewController:editSiteViewController animated:YES];
     }
     
     Class controllerClass;
     if (indexPath.row == BlogDetailsRowPosts) {
-        [WPMobileStats incrementProperty:StatsPropertySidebarSiteClickedPosts forEvent:StatsEventAppClosed];
+        [WPStats track:WPStatOpenedPosts];
         controllerClass = [PostsViewController class];
     } else if (indexPath.row == BlogDetailsRowPages) {
-        [WPMobileStats incrementProperty:StatsPropertySidebarSiteClickedPages forEvent:StatsEventAppClosed];
+        [WPStats track:WPStatOpenedPages];
         controllerClass = [PagesViewController class];
     } else if (indexPath.row == BlogDetailsRowComments) {
-        [WPMobileStats incrementProperty:StatsPropertySidebarSiteClickedComments forEvent:StatsEventAppClosed];
+        [WPStats track:WPStatOpenedComments];
         controllerClass = [CommentsViewController class];
     } else if (indexPath.row == BlogDetailsRowStats) {
-        [WPMobileStats incrementProperty:StatsPropertySidebarSiteClickedStats forEvent:StatsEventAppClosed];
-        [WPMobileStats incrementPeopleAndSuperProperty:StatsSuperPropertyNumberOfTimesOpenedStats];
+        [WPStats track:WPStatStatsAccessed];
         controllerClass =  [StatsViewController class];
     } else if ([self shouldShowThemesOption] && indexPath.row == BlogDetailsRowThemes) {
-        [WPMobileStats incrementProperty:StatsPropertySidebarSiteClickedThemes forEvent:StatsEventAppClosed];
         controllerClass = [ThemeBrowserViewController class];
     } else if ([self isRowForMedia:indexPath.row]) {
-        [WPMobileStats incrementProperty:StatsPropertySidebarSiteClickedMediaLibrary forEvent:StatsEventAppClosed];
+        [WPStats track:WPStatOpenedMediaLibrary];
         controllerClass = [MediaBrowserViewController class];
     } else if (indexPath.row == BlogDetailsRowViewSite) {
         [self showViewSiteForBlog:self.blog];
@@ -229,7 +225,7 @@ NSString * const WPBlogDetailsBlogKey = @"WPBlogDetailsBlogKey";
 
 #pragma mark - Private methods
 - (void)showViewSiteForBlog:(Blog *)blog {
-    [WPMobileStats incrementProperty:StatsPropertySidebarSiteClickedViewSite forEvent:StatsEventAppClosed];
+    [WPStats track:WPStatOpenedViewSite];
     
     NSString *blogURL = blog.homeURL;
     if (![blogURL hasPrefix:@"http"]) {
@@ -257,8 +253,7 @@ NSString * const WPBlogDetailsBlogKey = @"WPBlogDetailsBlogKey";
 
 - (void)showViewAdminForBlog:(Blog *)blog
 {
-    [WPMobileStats incrementProperty:StatsPropertySidebarSiteClickedViewAdmin forEvent:StatsEventAppClosed];
-    [WPMobileStats incrementPeopleAndSuperProperty:StatsSuperPropertyNumberOfTimesOpenedViewAdmin];
+    [WPStats track:WPStatOpenedViewAdmin];
     
     NSString *dashboardUrl = [blog.xmlrpc stringByReplacingOccurrencesOfString:@"xmlrpc.php" withString:@"wp-admin/"];
     [[UIApplication sharedApplication] openURL:[NSURL URLWithString:dashboardUrl]];
