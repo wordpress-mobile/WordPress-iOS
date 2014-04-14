@@ -13,6 +13,8 @@
 #import <ImageIO/ImageIO.h>
 #import <AssetsLibrary/AssetsLibrary.h>
 #import <AVFoundation/AVFoundation.h>
+#import "ContextManager.h"
+#import "BlogService.h"
 
 static NSString *const MediaCellIdentifier = @"media_cell";
 static NSUInteger const MediaTypeActionSheetVideo = 1;
@@ -192,7 +194,10 @@ NSString *const MediaFeaturedImageSelectedNotification = @"MediaFeaturedImageSel
 }
 
 - (void)refresh {
-    [self.blog syncMediaLibraryWithSuccess:^{
+    NSManagedObjectContext *context = [[ContextManager sharedInstance] mainContext];
+    BlogService *blogService = [[BlogService alloc] initWithManagedObjectContext:context];
+    
+    [blogService syncMediaLibraryForBlog:self.blog success:^{
         [_refreshHeaderView endRefreshing];
         [self setUploadButtonEnabled:YES];
     } failure:^(NSError *error) {
@@ -631,7 +636,10 @@ NSString *const MediaFeaturedImageSelectedNotification = @"MediaFeaturedImageSel
     // Check IFF the blog doesn't already have it enabled
     // The blog's transient property will last only for an in-memory session
     if (!self.blog.videoPressEnabled) {
-        [self.blog checkVideoPressEnabledWithSuccess:^(BOOL enabled) {
+        NSManagedObjectContext *context = [[ContextManager sharedInstance] mainContext];
+        BlogService *blogService = [[BlogService alloc] initWithManagedObjectContext:context];
+        
+        [blogService checkVideoPressEnabledForBlog:self.blog success:^(BOOL enabled) {
             self.videoPressEnabled = enabled;
             self.blog.videoPressEnabled = enabled;
         } failure:^(NSError *error) {

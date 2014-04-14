@@ -18,6 +18,7 @@
 #import "WordPressComApiCredentials.h"
 #import "WPAccount.h"
 #import "AccountService.h"
+#import "BlogService.h"
 
 #import "BlogListViewController.h"
 #import "BlogDetailsViewController.h"
@@ -286,9 +287,10 @@ static NSInteger const IndexForMeTab = 2;
 - (BOOL)noBlogsAndNoWordPressDotComAccount {
     NSManagedObjectContext *context = [[ContextManager sharedInstance] mainContext];
     AccountService *accountService = [[AccountService alloc] initWithManagedObjectContext:context];
+    BlogService *blogService = [[BlogService alloc] initWithManagedObjectContext:context];
     WPAccount *defaultAccount = [accountService defaultWordPressComAccount];
 
-    NSInteger blogCount = [Blog countSelfHostedWithContext:context];
+    NSInteger blogCount = [blogService blogCountSelfHosted];
     return blogCount == 0 && !defaultAccount;
 }
 
@@ -510,8 +512,11 @@ static NSInteger const IndexForMeTab = 2;
 
 - (BOOL)tabBarController:(UITabBarController *)tabBarController shouldSelectViewController:(UIViewController *)viewController {
     if ([tabBarController.viewControllers indexOfObject:viewController] == 3) {
+        NSManagedObjectContext *context = [[ContextManager sharedInstance] mainContext];
+        BlogService *blogService = [[BlogService alloc] initWithManagedObjectContext:context];
+
         // Ignore taps on the post tab and instead show the modal.
-        if ([Blog countVisibleWithContext:[[ContextManager sharedInstance] mainContext]] == 0) {
+        if ([blogService blogCountVisibleForAllAccounts] == 0) {
             [self showWelcomeScreenAnimated:YES thenEditor:YES];
         } else {
             [self showPostTab];
@@ -611,12 +616,13 @@ static NSInteger const IndexForMeTab = 2;
 {
     NSManagedObjectContext *context = [[ContextManager sharedInstance] mainContext];
     AccountService *accountService = [[AccountService alloc] initWithManagedObjectContext:context];
+    BlogService *blogService = [[BlogService alloc] initWithManagedObjectContext:context];
     WPAccount *defaultAccount = [accountService defaultWordPressComAccount];
 
     BOOL loggedIn = defaultAccount != nil;
     [Crashlytics setObjectValue:@(loggedIn) forKey:@"logged_in"];
     [Crashlytics setObjectValue:@(loggedIn) forKey:@"connected_to_dotcom"];
-    [Crashlytics setObjectValue:@([Blog countWithContext:context]) forKey:@"number_of_blogs"];
+    [Crashlytics setObjectValue:@([blogService blogCountForAllAccounts]) forKey:@"number_of_blogs"];
 }
 
 - (void)configureHockeySDK {

@@ -1,6 +1,8 @@
 #import "PagesViewController.h"
 #import "EditPageViewController.h"
 #import "WPTableViewControllerSubclass.h"
+#import "BlogService.h"
+#import "ContextManager.h"
 
 #define TAG_OFFSET 1010
 
@@ -44,7 +46,17 @@
 }
 
 - (void)syncItemsViaUserInteraction:(BOOL)userInteraction success:(void (^)())success failure:(void (^)(NSError *))failure {
-    [self.blog syncPagesWithSuccess:success failure:failure loadMore: NO];
+    NSManagedObjectContext *context = [[ContextManager sharedInstance] mainContext];
+    __block BlogService *blogService = [[BlogService alloc] initWithManagedObjectContext:context];
+    
+    [blogService syncPagesForBlog:self.blog
+                          success:^{
+                              blogService = nil;
+                          }
+                          failure:^(NSError *error) {
+                              blogService = nil;
+                          }
+                         loadMore:NO];
 }
 
 // For iPhone
@@ -93,7 +105,12 @@
 }
 
 - (void)loadMoreWithSuccess:(void (^)())success failure:(void (^)(NSError *))failure {
-    [self.blog syncPagesWithSuccess:success failure:failure loadMore:YES];
+    NSManagedObjectContext *context = [[ContextManager sharedInstance] mainContext];
+    BlogService *blogService = [[BlogService alloc] initWithManagedObjectContext:context];
+    [blogService syncPagesForBlog:self.blog
+                          success:success
+                          failure:failure
+                         loadMore:YES];
 }
 
 #pragma mark -

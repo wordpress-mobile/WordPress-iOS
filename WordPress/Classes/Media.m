@@ -75,8 +75,8 @@
         Blog *contextBlog = (Blog *)[backgroundMOC objectWithID:blog.objectID];
         NSMutableArray *mediaToKeep = [NSMutableArray array];
         for (NSDictionary *item in media) {
-            Media *media = [Media createOrReplaceMediaFromJSON:item forBlog:contextBlog];
-            [mediaToKeep addObject:media];
+            Media *mediaItem = [Media createOrReplaceMediaFromJSON:item forBlog:contextBlog];
+            [mediaToKeep addObject:mediaItem];
         }
         NSSet *syncedMedia = contextBlog.media;
         if (syncedMedia && (syncedMedia.count > 0)) {
@@ -93,17 +93,17 @@
 }
 
 - (void)updateFromDictionary:(NSDictionary*)json {
-    self.remoteURL = json[@"link"];
-    self.title = json[@"title"];
+    self.remoteURL = [json stringForKey:@"link"];
+    self.title = [json stringForKey:@"title"];
     self.width = [json numberForKeyPath:@"metadata.width"];
     self.height = [json numberForKeyPath:@"metadata.height"];
     self.mediaID = [json numberForKey:@"attachment_id"];
     self.filename = [[json objectForKeyPath:@"metadata.file"] lastPathComponent];
     self.creationDate = json[@"date_created_gmt"];
-    self.caption = json[@"caption"];
-    self.desc = json[@"description"];
+    self.caption = [json stringForKey:@"caption"];
+    self.desc = [json stringForKey:@"description"];
     
-    [self mediaTypeFromUrl:[json[@"link"] pathExtension]];
+    [self mediaTypeFromUrl:[[json stringForKey:@"link"] pathExtension]];
 }
 
 - (NSDictionary*)XMLRPCDictionaryForUpdate {

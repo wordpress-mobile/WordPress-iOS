@@ -18,6 +18,7 @@
 #import "Blog.h"
 #import "WordPressComOAuthClient.h"
 #import "AccountService.h"
+#import "BlogService.h"
 #import "ContextManager.h"
 
 @interface CreateAccountAndBlogViewController ()<
@@ -712,11 +713,12 @@ CGFloat const CreateAccountAndBlogButtonHeight = 40.0;
 
             NSManagedObjectContext *context = [[ContextManager sharedInstance] mainContext];
             AccountService *accountService = [[AccountService alloc] initWithManagedObjectContext:context];
+            BlogService *blogService = [[BlogService alloc] initWithManagedObjectContext:context];
             WPAccount *defaultAccount = [accountService defaultWordPressComAccount];
 
             Blog *blog = [accountService findOrCreateBlogFromDictionary:blogOptions withAccount:defaultAccount];
 
-            [blog syncBlogWithSuccess:nil failure:nil];
+            [blogService syncBlog:blog success:nil failure:nil];
             [self setAuthenticating:NO];
             [self dismissViewControllerAnimated:YES completion:nil];
         };

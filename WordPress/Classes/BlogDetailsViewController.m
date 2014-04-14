@@ -9,6 +9,7 @@
 #import "WPWebViewController.h"
 #import "WPTableViewCell.h"
 #import "ContextManager.h"
+#import "BlogService.h"
 
 static NSString *const BlogDetailsCellIdentifier = @"BlogDetailsCell";
 
@@ -87,7 +88,10 @@ NSString * const WPBlogDetailsBlogKey = @"WPBlogDetailsBlogKey";
     [self.tableView registerClass:[WPTableViewCell class] forCellReuseIdentifier:BlogDetailsCellIdentifier];
     
     if (!_blog.options) {
-        [_blog syncOptionsWithWithSuccess:nil failure:nil];
+        NSManagedObjectContext *context = [[ContextManager sharedInstance] mainContext];
+        BlogService *blogService = [[BlogService alloc] initWithManagedObjectContext:context];
+
+        [blogService syncOptionsForBlog:_blog success:nil failure:nil];
     }
 }
 
