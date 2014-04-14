@@ -9,6 +9,7 @@
 #import "WPAlertView.h"
 #import "UIImage+Util.h"
 #import "LocationService.h"
+#import "BlogService.h"
 
 NSString *const WPEditorNavigationRestorationID = @"WPEditorNavigationRestorationID";
 NSString *const WPAbstractPostRestorationKey = @"WPAbstractPostRestorationKey";
@@ -98,7 +99,10 @@ CGFloat const EPVCTextViewTopPadding = 7.0f;
 }
 
 - (id)initWithDraftForLastUsedBlog {
-    Blog *blog = [Blog lastUsedOrFirstBlog];
+    NSManagedObjectContext *context = [[ContextManager sharedInstance] mainContext];
+    BlogService *blogService = [[BlogService alloc] initWithManagedObjectContext:context];
+
+    Blog *blog = [blogService lastUsedOrFirstBlog];
     return [self initWithPost:[Post newDraftForBlog:blog]];
 }
 
@@ -215,7 +219,8 @@ CGFloat const EPVCTextViewTopPadding = 7.0f;
     // Configure the custom title view, or just set the navigationItem title.
     // Only show the blog selector in the nav title view if we're editing a new post
     NSManagedObjectContext *context = [[ContextManager sharedInstance] mainContext];
-    NSInteger blogCount = [Blog countWithContext:context];
+    BlogService *blogService = [[BlogService alloc] initWithManagedObjectContext:context];
+    NSInteger blogCount = [blogService blogCountForAllAccounts];
     
     if (blogCount <= 1 || self.editMode == EditPostViewControllerModeEditPost || [[WordPressAppDelegate sharedWordPressApplicationDelegate] isNavigatingMeTab]) {
         self.navigationItem.title = [self editorTitle];
@@ -458,7 +463,9 @@ CGFloat const EPVCTextViewTopPadding = 7.0f;
         Blog *blog = (Blog *)[context objectWithID:selectedObjectID];
         
         if (blog) {
-            [blog flagAsLastUsed];
+            BlogService *blogService = [[BlogService alloc] initWithManagedObjectContext:context];
+
+            [blogService flagBlogAsLastUsed:blog];
             AbstractPost *newPost = [[self.post class] newDraftForBlog:blog];
             AbstractPost *oldPost = self.post;
             
@@ -621,7 +628,14 @@ CGFloat const EPVCTextViewTopPadding = 7.0f;
  */
 - (void)syncOptionsIfNecessaryForBlog:(Blog *)blog afterBlogChanged:(BOOL)blogChanged {
     if (blogChanged) {
-        [blog syncBlogWithSuccess:nil failure:nil];
+        NSManagedObjectContext *context = [[ContextManager sharedInstance] mainContext];
+        __block BlogService *blogService = [[BlogService alloc] initWithManagedObjectContext:context];
+
+        [blogService syncBlog:blog success:^{
+            blogService = nil;
+        } failure:^(NSError *error) {
+            blogService = nil;
+        }];
     }
 }
 

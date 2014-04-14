@@ -18,6 +18,7 @@
 #import "ContextManager.h"
 #import "NoteService.h"
 #import "AccountService.h"
+#import "BlogService.h"
 
 static NSString *const ForgotPasswordDotComBaseUrl = @"https://wordpress.com";
 static NSString *const ForgotPasswordRelativeUrl = @"/wp-login.php?action=lostpassword&redirect_to=wordpress%3A%2F%2F";
@@ -825,6 +826,7 @@ CGFloat const GeneralWalkthroughStatusBarOffset = 20.0;
 {
     NSManagedObjectContext *context = [[ContextManager sharedInstance] mainContext];
     AccountService *accountService = [[AccountService alloc] initWithManagedObjectContext:context];
+    BlogService *blogService = [[BlogService alloc] initWithManagedObjectContext:context];
 
     WPAccount *account = [accountService createOrUpdateSelfHostedAccountWithXmlrpc:xmlrpc username:username andPassword:password];
     NSString *blogName = [options stringForKeyPath:@"blog_title.value"];
@@ -842,7 +844,7 @@ CGFloat const GeneralWalkthroughStatusBarOffset = 20.0;
     _blog = [accountService findOrCreateBlogFromDictionary:blogDetails withAccount:account];
     _blog.options = options;
     [_blog dataSave];
-    [_blog syncBlogWithSuccess:nil failure:nil];
+    [blogService syncBlog:_blog success:nil failure:nil];
 
     if ([_blog hasJetpack]) {
         [self showJetpackAuthentication];

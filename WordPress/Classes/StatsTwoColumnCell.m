@@ -125,9 +125,8 @@ static CGFloat const RowIconWidth = 20.0f;
 }
 
 - (UILabel *)createLabelWithTitle:(NSString *)title titleCell:(BOOL)titleCell {
-    UIColor *color = titleCell ? [WPStyleGuide newKidOnTheBlockBlue] : [WPStyleGuide whisperGrey];
     UILabel *titleLabel = [[UILabel alloc] init];
-    titleLabel.textColor = color;
+    titleLabel.textColor = [WPStyleGuide whisperGrey];
     titleLabel.text = title;
     titleLabel.backgroundColor = [UIColor whiteColor];
     titleLabel.opaque = YES;

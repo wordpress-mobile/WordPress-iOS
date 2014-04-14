@@ -1,6 +1,5 @@
 #import <Foundation/Foundation.h>
-
-@class WordPressXMLRPCApi;
+#import <WordPressApi.h>
 
 @interface AccountServiceRemote : NSObject
 
