@@ -544,9 +544,10 @@ CGFloat const EPVCTextViewTopPadding = 7.0f;
 }
 
 - (void)showMediaOptions {
-    self.navigationItem.title = NSLocalizedString(@"Back", nil);
-    MediaBrowserViewController *vc = [[MediaBrowserViewController alloc] initWithPost:self.post];
-    [self.navigationController pushViewController:vc animated:YES];
+    CTAssetsPickerController *picker = [[CTAssetsPickerController alloc] init];
+	picker.delegate = self;
+    [self presentViewController:picker animated:YES completion:nil];
+    picker.navigationBar.translucent = NO;
 }
 
 - (void)cancelEditing {
@@ -1306,6 +1307,12 @@ CGFloat const EPVCTextViewTopPadding = 7.0f;
 - (BOOL)textFieldShouldReturn:(UITextField *)textField {
     [_textView becomeFirstResponder];
     return NO;
+}
+
+#pragma mark - CTAssetsPickerController delegate
+
+- (void)assetsPickerController:(CTAssetsPickerController *)picker didFinishPickingAssets:(NSArray *)assets {
+    [self dismissViewControllerAnimated:YES completion:nil];
 }
 
 #pragma mark - Positioning & Rotation
