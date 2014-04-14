@@ -40,7 +40,7 @@ const NSUInteger NoteKeepCount = 20;
     WPAccount *account = [accountService defaultWordPressComAccount];
     
     [notesData enumerateObjectsUsingBlock:^(NSDictionary *noteData, NSUInteger idx, BOOL *stop) {
-        NSNumber *noteID = [noteData objectForKey:@"id"];
+        NSNumber *noteID = [noteData stringForKey:@"id"];
         NSArray *results = [existingNotes filteredArrayUsingPredicate:[NSPredicate predicateWithFormat:@"noteID == %@", noteID]];
         
         Note *note;
@@ -48,7 +48,7 @@ const NSUInteger NoteKeepCount = 20;
             note = results[0];
         } else {
             note = [NSEntityDescription insertNewObjectForEntityForName:NSStringFromClass([Note class]) inManagedObjectContext:self.managedObjectContext];
-            note.noteID = [noteData objectForKey:@"id"];
+            note.noteID = [noteData stringForKey:@"id"];
             note.account = account;
         }
         
