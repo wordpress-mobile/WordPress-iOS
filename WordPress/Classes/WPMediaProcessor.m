@@ -5,6 +5,9 @@
 #import <AssetsLibrary/AssetsLibrary.h>
 #import <AVFoundation/AVFoundation.h>
 
+NSUInteger const WPMediaThumbnailSize = 75;
+CGFloat const WPMediaJPEGCompressionQuality = 0.9;
+
 // Notifications
 extern NSString *const MediaFeaturedImageSelectedNotification;
 extern NSString *const MediaShouldInsertBelowNotification;
@@ -20,8 +23,8 @@ extern NSString *const MediaShouldInsertBelowNotification;
 }
 
 - (void)processImage:(UIImage *)theImage media:(Media *)imageMedia metadata:(NSDictionary *)metadata {
-	NSData *imageData = UIImageJPEGRepresentation(theImage, 0.90);
-	UIImage *imageThumbnail = [self generateThumbnailFromImage:theImage andSize:CGSizeMake(75, 75)];
+	NSData *imageData = UIImageJPEGRepresentation(theImage, WPMediaJPEGCompressionQuality);
+	UIImage *imageThumbnail = [self generateThumbnailFromImage:theImage andSize:CGSizeMake(WPMediaThumbnailSize, WPMediaThumbnailSize)];
     NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
     dateFormatter.locale = [NSLocale currentLocale];
 	[dateFormatter setDateFormat:@"yyyyMMdd-HHmmss"];
@@ -83,7 +86,7 @@ extern NSString *const MediaShouldInsertBelowNotification;
 //    } else {
         imageMedia.mediaType = MediaTypeImage;
 //    }
-	imageMedia.thumbnail = UIImageJPEGRepresentation(imageThumbnail, 0.90);
+	imageMedia.thumbnail = UIImageJPEGRepresentation(imageThumbnail, WPMediaJPEGCompressionQuality);
 	imageMedia.width = [NSNumber numberWithInt:theImage.size.width];
 	imageMedia.height = [NSNumber numberWithInt:theImage.size.height];
     
@@ -109,7 +112,7 @@ extern NSString *const MediaShouldInsertBelowNotification;
 }
 
 - (UIImage *)generateThumbnailFromImage:(UIImage *)theImage andSize:(CGSize)targetSize {
-    return [theImage thumbnailImage:75 transparentBorder:0 cornerRadius:0 interpolationQuality:kCGInterpolationHigh];
+    return [theImage thumbnailImage:WPMediaThumbnailSize transparentBorder:0 cornerRadius:0 interpolationQuality:kCGInterpolationHigh];
 }
 
 
