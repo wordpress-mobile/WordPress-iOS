@@ -16,6 +16,7 @@
 #import "NoteService.h"
 #import "AccountService.h"
 #import "ContextManager.h"
+#import "StatsViewController.h"
 
 #import "ReaderPost.h"
 #import "ReaderPostDetailViewController.h"
@@ -272,7 +273,8 @@ typedef void (^NotificationsLoadPostBlock)(BOOL success, ReaderPost *post);
     Note *note = [self.resultsController objectAtIndexPath:indexPath];
     
     BOOL hasDetailView = [self noteHasDetailView:note];
-    if (hasDetailView) {
+    BOOL isStatsEvent = [note statsEvent];
+    if (hasDetailView && !isStatsEvent) {
         [WPStats track:WPStatNotificationsOpenedNotificationDetails];
 
         _isPushingViewController = YES;
@@ -297,12 +299,14 @@ typedef void (^NotificationsLoadPostBlock)(BOOL success, ReaderPost *post);
             NotificationsBigBadgeViewController *bigBadgeViewController = [[NotificationsBigBadgeViewController alloc] initWithNote: note];
             [self.navigationController pushViewController:bigBadgeViewController animated:YES];
         }
-    } else if ([note statsEvent]) {
+    } else if (isStatsEvent) {
         NoteService *noteService = [[NoteService alloc] initWithManagedObjectContext:note.managedObjectContext];
         Blog *blog = [noteService blogForStatsEventNote:note];
         
         if (blog) {
-            [[WordPressAppDelegate sharedWordPressApplicationDelegate] showStatsForBlog:blog];
+            StatsViewController *statsVC = [[StatsViewController alloc] init];
+            statsVC.blog = blog;
+            [self.navigationController pushViewController:statsVC animated:YES];
         } else {
             [self.tableView deselectRowAtIndexPath:indexPath animated:YES];
         }
