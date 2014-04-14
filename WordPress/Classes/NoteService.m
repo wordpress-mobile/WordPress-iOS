@@ -40,7 +40,7 @@ const NSUInteger NoteKeepCount = 20;
     WPAccount *account = [accountService defaultWordPressComAccount];
     
     [notesData enumerateObjectsUsingBlock:^(NSDictionary *noteData, NSUInteger idx, BOOL *stop) {
-        NSNumber *noteID = [noteData stringForKey:@"id"];
+        NSString *noteID = [noteData stringForKey:@"id"];
         NSArray *results = [existingNotes filteredArrayUsingPredicate:[NSPredicate predicateWithFormat:@"noteID == %@", noteID]];
         
         Note *note;
