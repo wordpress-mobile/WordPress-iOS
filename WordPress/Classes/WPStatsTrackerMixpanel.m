@@ -6,6 +6,7 @@
 #import "WPAccount.h"
 #import "ContextManager.h"
 #import "Blog.h"
+#import "BlogService.h"
 
 @implementation WPStatsTrackerMixpanel
 
@@ -29,11 +30,12 @@
     NSManagedObjectContext *context = [[ContextManager sharedInstance] mainContext];
     AccountService *accountService = [[AccountService alloc] initWithManagedObjectContext:context];
     WPAccount *account = [accountService defaultWordPressComAccount];
+    BlogService *blogService = [[BlogService alloc] initWithManagedObjectContext:[[ContextManager sharedInstance] mainContext]];
     NSDictionary *properties = @{
                                  @"platform": @"iOS",
                                  @"session_count": @(sessionCount),
                                  @"connected_to_dotcom": @(account != nil),
-                                 @"number_of_blogs" : @([Blog countWithContext:[[ContextManager sharedInstance] mainContext]]) };
+                                 @"number_of_blogs" : @([blogService blogCountForAllAccounts]) };
     [[Mixpanel sharedInstance] registerSuperProperties:properties];
     
     NSString *username = account.username;
