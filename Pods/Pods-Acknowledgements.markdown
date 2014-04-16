@@ -851,6 +851,10 @@ A different license may apply to other ressources included in this package,
 including Joseph Wain's Glyphish Icons. Please consult their 
 respective headers for the terms of their individual licenses.
 
+## Taplytics
+
+See http://taplytics.com/terms
+
 ## UIDeviceIdentifier
 
 Copyright (c) 2012 Paul Williamson
