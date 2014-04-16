@@ -430,6 +430,14 @@ POSSIBILITY OF SUCH DAMAGES.
 		</dict>
 		<dict>
 			<key>FooterText</key>
+			<string>See http://www.helpshift.com/terms/</string>
+			<key>Title</key>
+			<string>Helpshift</string>
+			<key>Type</key>
+			<string>PSGroupSpecifier</string>
+		</dict>
+		<dict>
+			<key>FooterText</key>
 			<string>## Licenses
 
 The Hockey SDK is provided under the following license:
