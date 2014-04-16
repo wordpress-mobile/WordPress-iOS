@@ -1,7 +1,7 @@
 #import <Foundation/Foundation.h>
 #import "WPAnalytics.h"
 
-@interface WPStatsTrackerMixpanel : NSObject <WPAnalyticsTracker> {
+@interface WPAnalyticsTrackerMixpanel : NSObject <WPAnalyticsTracker> {
     NSMutableDictionary *_aggregatedStatProperties;
 }
 
