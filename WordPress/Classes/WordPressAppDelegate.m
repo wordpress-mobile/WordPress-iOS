@@ -31,7 +31,7 @@
 #import "StatsViewController.h"
 #import "Constants.h"
 
-#import "WPStatsTrackerMixpanel.h"
+#import "WPAnalyticsTrackerMixpanel.h"
 #import "WPStatsTrackerWPCom.h"
 
 #if DEBUG
@@ -81,7 +81,7 @@ static NSInteger const IndexForMeTab = 2;
 
     // Stats and feedback
     
-    [WPAnalytics registerTracker:[[WPStatsTrackerMixpanel alloc] init]];
+    [WPAnalytics registerTracker:[[WPAnalyticsTrackerMixpanel alloc] init]];
     [WPAnalytics registerTracker:[[WPStatsTrackerWPCom alloc] init]];
     [WPAnalytics beginSession];
     [[GPPSignIn sharedInstance] setClientID:[WordPressComApiCredentials googlePlusClientId]];
