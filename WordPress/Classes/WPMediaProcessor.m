@@ -155,10 +155,9 @@ extern NSString *const MediaShouldInsertBelowNotification;
 - (UIImage *)resizeImage:(UIImage *)original toSize:(CGSize)newSize
 {
     CGSize originalSize = CGSizeMake(original.size.width, original.size.height);
-	
-	// Resize the image using the selected dimensions
 	UIImage *resizedImage = original;
-    
+
+    // Perform resizing if necessary
     if (!CGSizeEqualToSize(originalSize, newSize)) {
         resizedImage = [original resizedImageWithContentMode:UIViewContentModeScaleAspectFit
                                                       bounds:newSize
@@ -179,7 +178,12 @@ extern NSString *const MediaShouldInsertBelowNotification;
         resizePreferenceNumber = [numberFormatter numberFromString:resizePreferenceString];
     
     NSInteger resizePreferenceIndex = [resizePreferenceNumber integerValue];
-    if (resizePreferenceIndex == 1) {
+    
+    // Need to deal with preference index awkwardly due to the way we're storing preferences
+    if (resizePreferenceIndex == 0) {
+        // We used to support per-image resizing; replace that with large by default
+        return MediaResizeLarge;
+    } else if (resizePreferenceIndex == 1) {
         return MediaResizeSmall;
     } else if (resizePreferenceIndex == 2) {
         return MediaResizeMedium;
@@ -195,5 +199,50 @@ extern NSString *const MediaShouldInsertBelowNotification;
     return [theImage thumbnailImage:WPMediaThumbnailSize transparentBorder:0 cornerRadius:0 interpolationQuality:kCGInterpolationHigh];
 }
 
+/*
+ * Take Asset URL and set imageJPEG property to NSData containing the
+ * associated JPEG, including the metadata we're after.
+ */
+- (NSDictionary *)metadataForAsset:(ALAsset *)asset enableGeolocation:(BOOL)enableGeolocation
+{
+    ALAssetRepresentation *rep = [asset defaultRepresentation];
+   
+   //DDLogWarn(@"getJPEGFromAssetForURL: default asset representation for %@: uti: %@ size: %lld url: %@ orientation: %d scale: %f metadata: %@",
+     //        url, [rep UTI], [rep size], [rep url], [rep orientation],
+     //        [rep scale], [rep metadata]);
+   
+    Byte *buf = malloc([rep size]);  // will be freed automatically when associated NSData is deallocated
+    NSError *err = nil;
+    NSUInteger bytes = [rep getBytes:buf fromOffset:0LL
+                             length:[rep size] error:&err];
+    if (err || bytes == 0) {
+        // Are err and bytes == 0 redundant? Doc says 0 return means
+        // error occurred which presumably means NSError is returned.
+        free(buf); // Free up memory so we don't leak.
+        DDLogError(@"error from getBytes: %@", err);
+       
+        return nil;
+    }
+    NSData *imageJPEG = [NSData dataWithBytesNoCopy:buf length:[rep size]
+                                      freeWhenDone:YES];  // YES means free malloc'ed buf that backs this when deallocated
+   
+    CGImageSourceRef  source ;
+    source = CGImageSourceCreateWithData((__bridge CFDataRef)imageJPEG, NULL);
+   
+    NSDictionary *metadata = (NSDictionary *) CFBridgingRelease(CGImageSourceCopyPropertiesAtIndex(source,0,NULL));
+    CFRelease(source);
+
+    //make the metadata dictionary mutable so we can remove properties to it
+    NSMutableDictionary *metadataAsMutable = [metadata mutableCopy];
+   
+    if (!enableGeolocation) {
+       //we should remove the GPS info if the blog has the geolocation set to off       
+       [metadataAsMutable removeObjectForKey:@"{GPS}"];
+    }
+    [metadataAsMutable removeObjectForKey:@"Orientation"];
+    [metadataAsMutable removeObjectForKey:@"{TIFF}"];
+   
+    return [NSDictionary dictionaryWithDictionary:metadataAsMutable];
+}
 
 @end
