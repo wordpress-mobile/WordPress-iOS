@@ -20,6 +20,7 @@ pod 'MGImageUtilities', :git => 'git://github.com/wordpress-mobile/MGImageUtilit
 pod 'EmailChecker', :podspec => 'https://raw.github.com/wordpress-mobile/EmailChecker/master/ios/EmailChecker.podspec'
 pod 'CrashlyticsLumberjack', '~>1.0.0'
 pod 'HockeySDK', '~>3.5.0'
+pod 'Helpshift', '4.3.1'
 
 target :WordPressTest, :exclusive => true do
   pod 'OHHTTPStubs', '1.1.1'
