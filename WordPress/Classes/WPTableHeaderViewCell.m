@@ -12,7 +12,7 @@ static CGFloat const WPTableHeaderTextMaxWidth = 200.0f;
     if (self) {
 		self.textLabel.font			= [WPStyleGuide regularTextFont];
 		self.textLabel.textColor	= [WPStyleGuide newKidOnTheBlockBlue];
-		self.backgroundColor		= [WPStyleGuide notificationsLightGrey];
+		self.backgroundColor		= [UIColor clearColor];
 	}
 	
 	return self;
@@ -32,7 +32,7 @@ static CGFloat const WPTableHeaderTextMaxWidth = 200.0f;
 - (void)touchesCancelled:(NSSet *)touches withEvent:(UIEvent *)event
 {
 	[super touchesCancelled:touches withEvent:event];
-	self.backgroundColor = [WPStyleGuide notificationsLightGrey];
+	self.backgroundColor = [UIColor clearColor];
 }
 
 + (CGFloat)cellHeightForText:(NSString *)text
