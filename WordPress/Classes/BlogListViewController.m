@@ -160,7 +160,7 @@ CGFloat const blavatarImageSize = 50.f;
 #pragma mark - Actions
 
 - (void)showSettings:(id)sender {
-    [WPAnalytics track:WPStatOpenedSettings];
+    [WPAnalytics track:WPAnalyticsStatOpenedSettings];
     
     SettingsViewController *settingsViewController = [[SettingsViewController alloc] initWithStyle:UITableViewStyleGrouped];
     UINavigationController *aNavigationController = [[UINavigationController alloc] initWithRootViewController:settingsViewController];
