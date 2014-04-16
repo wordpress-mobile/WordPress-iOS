@@ -14,7 +14,8 @@ extern NSString *const MediaShouldInsertBelowNotification;
 
 @implementation WPMediaProcessor
 
-- (id)init {
+- (id)init
+{
     if (self = [super init]) {
         
     }
@@ -22,7 +23,8 @@ extern NSString *const MediaShouldInsertBelowNotification;
     return self;
 }
 
-- (void)processImage:(UIImage *)theImage media:(Media *)imageMedia metadata:(NSDictionary *)metadata {
+- (void)processImage:(UIImage *)theImage media:(Media *)imageMedia metadata:(NSDictionary *)metadata
+{
 	NSData *imageData = UIImageJPEGRepresentation(theImage, WPMediaJPEGCompressionQuality);
 	UIImage *imageThumbnail = [self generateThumbnailFromImage:theImage andSize:CGSizeMake(WPMediaThumbnailSize, WPMediaThumbnailSize)];
     NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
@@ -150,7 +152,8 @@ extern NSString *const MediaShouldInsertBelowNotification;
     return newSize;
 }
 
-- (UIImage *)resizeImage:(UIImage *)original toSize:(CGSize)newSize {
+- (UIImage *)resizeImage:(UIImage *)original toSize:(CGSize)newSize
+{
     CGSize originalSize = CGSizeMake(original.size.width, original.size.height);
 	
 	// Resize the image using the selected dimensions
@@ -165,7 +168,30 @@ extern NSString *const MediaShouldInsertBelowNotification;
     return resizedImage;
 }
 
-- (UIImage *)generateThumbnailFromImage:(UIImage *)theImage andSize:(CGSize)targetSize {
+- (MediaResize)mediaResizePreference
+{
+    NSNumberFormatter *numberFormatter = [[NSNumberFormatter alloc] init];
+    [numberFormatter setNumberStyle:NSNumberFormatterDecimalStyle];
+    NSNumber *resizePreferenceNumber = @(0);
+    NSString *resizePreferenceString = [[NSUserDefaults standardUserDefaults] objectForKey:@"media_resize_preference"];
+    
+    if ([[NSUserDefaults standardUserDefaults] objectForKey:@"media_resize_preference"] != nil)
+        resizePreferenceNumber = [numberFormatter numberFromString:resizePreferenceString];
+    
+    NSInteger resizePreferenceIndex = [resizePreferenceNumber integerValue];
+    if (resizePreferenceIndex == 1) {
+        return MediaResizeSmall;
+    } else if (resizePreferenceIndex == 2) {
+        return MediaResizeMedium;
+    } else if (resizePreferenceIndex == 3) {
+        return MediaResizeLarge;
+    }
+
+    return MediaResizeOriginal;
+}
+
+- (UIImage *)generateThumbnailFromImage:(UIImage *)theImage andSize:(CGSize)targetSize
+{
     return [theImage thumbnailImage:WPMediaThumbnailSize transparentBorder:0 cornerRadius:0 interpolationQuality:kCGInterpolationHigh];
 }
 

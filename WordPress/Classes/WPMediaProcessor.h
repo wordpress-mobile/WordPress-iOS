@@ -8,5 +8,6 @@
            mediaResize:(MediaResize)resize
   blogResizeDimensions:(NSDictionary *)dimensions;
 - (UIImage *)resizeImage:(UIImage *)original toSize:(CGSize)newSize;
+- (MediaResize)mediaResizePreference;
 
 @end
