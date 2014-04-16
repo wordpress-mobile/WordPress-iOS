@@ -10,6 +10,8 @@
 #import "UIImage+Util.h"
 #import "LocationService.h"
 #import "BlogService.h"
+#import "WPMediaProcessor.h"
+#import <AssetsLibrary/AssetsLibrary.h>
 
 NSString *const WPEditorNavigationRestorationID = @"WPEditorNavigationRestorationID";
 NSString *const WPAbstractPostRestorationKey = @"WPAbstractPostRestorationKey";
@@ -1313,6 +1315,27 @@ CGFloat const EPVCTextViewTopPadding = 7.0f;
 
 - (void)assetsPickerController:(CTAssetsPickerController *)picker didFinishPickingAssets:(NSArray *)assets {
     [self dismissViewControllerAnimated:YES completion:nil];
+    
+    Media *imageMedia = [Media newMediaForPost:self.post];
+    WPMediaProcessor *mediaProcessor = [[WPMediaProcessor alloc] init];
+    
+    for (ALAsset *asset in assets) {
+        ALAssetRepresentation *representation = asset.defaultRepresentation;
+        
+        if ([[asset valueForProperty:ALAssetPropertyType] isEqualToString:ALAssetTypeVideo]) {
+            // asset is a video
+        } else if ([[asset valueForProperty:ALAssetPropertyType] isEqualToString:ALAssetTypePhoto]) {
+            UIImage *fullResolutionImage = [UIImage imageWithCGImage:representation.fullResolutionImage
+                                                               scale:1.0f
+                                                         orientation:(UIImageOrientation)representation.orientation];
+            
+            //MediaResize *resize = [mediaProcessor mediaResizePreference];
+            //NSDictionary *dimensions = [self.post.blog getImageResizeDimensions];
+            //CGSize newSize = [mediaProcessor sizeForMediaResize:resize blogResizeDimensions:dimensions];
+            //UIImage *resizedImage = [mediaProcessor resizeImage:fullResolutionImage toSize:newSize];
+            [mediaProcessor processImage:fullResolutionImage media:imageMedia metadata:representation.metadata];
+        }
+    }
 }
 
 #pragma mark - Positioning & Rotation
