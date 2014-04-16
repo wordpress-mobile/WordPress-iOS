@@ -21,28 +21,28 @@
 {
     WPAnalyticsStat stat;
     if ([activityType isEqualToString:UIActivityTypeMail]) {
-        stat = WPStatSharedItemViaEmail;
+        stat = WPAnalyticsStatSharedItemViaEmail;
     } else if ([activityType isEqualToString:UIActivityTypeMessage]) {
-        stat = WPStatSharedItemViaSMS;
+        stat = WPAnalyticsStatSharedItemViaSMS;
     } else if ([activityType isEqualToString:UIActivityTypePostToTwitter]) {
-        stat = WPStatSharedItemViaTwitter;
+        stat = WPAnalyticsStatSharedItemViaTwitter;
     } else if ([activityType isEqualToString:UIActivityTypePostToFacebook]) {
-        stat = WPStatSharedItemViaFacebook;
+        stat = WPAnalyticsStatSharedItemViaFacebook;
     } else if ([activityType isEqualToString:UIActivityTypePostToWeibo]) {
-        stat = WPStatSharedItemViaWeibo;
+        stat = WPAnalyticsStatSharedItemViaWeibo;
     } else if ([activityType isEqualToString:NSStringFromClass([InstapaperActivity class])]) {
-        stat = WPStatSentItemToInstapaper;
+        stat = WPAnalyticsStatSentItemToInstapaper;
     } else if ([activityType isEqualToString:NSStringFromClass([PocketActivity class])]) {
-        stat = WPStatSentItemToPocket;
+        stat = WPAnalyticsStatSentItemToPocket;
     } else if ([activityType isEqualToString:NSStringFromClass([GooglePlusActivity class])]) {
-        stat = WPStatSentItemToGooglePlus;
+        stat = WPAnalyticsStatSentItemToGooglePlus;
     } else {
-        [WPAnalytics track:WPStatSharedItem];
+        [WPAnalytics track:WPAnalyticsStatSharedItem];
         return;
     }
     
-    if (stat != WPStatNoStat) {
-        [WPAnalytics track:WPStatSharedItem];
+    if (stat != WPAnalyticsStatNoStat) {
+        [WPAnalytics track:WPAnalyticsStatSharedItem];
         [WPAnalytics track:stat];
     }
 }

@@ -173,7 +173,7 @@ NSString * const RPVCDisplayedNativeFriendFinder = @"DisplayedNativeFriendFinder
     }
 
     if (!_viewHasAppeared) {
-        [WPAnalytics track:WPStatReaderAccessed withProperties:[self tagPropertyForStats]];
+        [WPAnalytics track:WPAnalyticsStatReaderAccessed withProperties:[self tagPropertyForStats]];
         _viewHasAppeared = YES;
     }
 
@@ -368,7 +368,7 @@ NSString * const RPVCDisplayedNativeFriendFinder = @"DisplayedNativeFriendFinder
     ReaderPost *post = postView.post;
 	[post toggleLikedWithSuccess:^{
         if ([post.isLiked boolValue]) {
-            [WPAnalytics track:WPStatReaderLikedArticle];
+            [WPAnalytics track:WPAnalyticsStatReaderLikedArticle];
         }
 	} failure:^(NSError *error) {
 		DDLogError(@"Error Liking Post : %@", [error localizedDescription]);
@@ -463,7 +463,7 @@ NSString * const RPVCDisplayedNativeFriendFinder = @"DisplayedNativeFriendFinder
 #pragma mark - ReaderCommentPublisherDelegate Methods
 
 - (void)commentPublisherDidPublishComment:(ReaderCommentPublisher *)publisher {
-    [WPAnalytics track:WPStatReaderCommentedOnArticle];
+    [WPAnalytics track:WPAnalyticsStatReaderCommentedOnArticle];
     publisher.post.dateCommentsSynced = nil;
     [self.inlineComposeView dismissComposer];
 }
@@ -774,7 +774,7 @@ NSString * const RPVCDisplayedNativeFriendFinder = @"DisplayedNativeFriendFinder
 								 }
 							 }];
     
-    [WPAnalytics track:WPStatReaderInfiniteScroll withProperties:[self tagPropertyForStats]];
+    [WPAnalytics track:WPAnalyticsStatReaderInfiniteScroll withProperties:[self tagPropertyForStats]];
 }
 
 - (UITableViewRowAnimation)tableViewRowAnimation {
@@ -858,7 +858,7 @@ NSString * const RPVCDisplayedNativeFriendFinder = @"DisplayedNativeFriendFinder
     
     [self.navigationController pushViewController:self.detailController animated:YES];
     
-    [WPAnalytics track:WPStatReaderOpenedArticle];
+    [WPAnalytics track:WPAnalyticsStatReaderOpenedArticle];
 }
 
 
@@ -906,9 +906,9 @@ NSString * const RPVCDisplayedNativeFriendFinder = @"DisplayedNativeFriendFinder
 		[NSUserDefaults resetStandardUserDefaults];
     }
     
-    [WPAnalytics track:WPStatReaderLoadedTag withProperties:[self tagPropertyForStats]];
+    [WPAnalytics track:WPAnalyticsStatReaderLoadedTag withProperties:[self tagPropertyForStats]];
     if ([self isCurrentTagFreshlyPressed]) {
-        [WPAnalytics track:WPStatReaderLoadedFreshlyPressed];
+        [WPAnalytics track:WPAnalyticsStatReaderLoadedFreshlyPressed];
     }
 }
 

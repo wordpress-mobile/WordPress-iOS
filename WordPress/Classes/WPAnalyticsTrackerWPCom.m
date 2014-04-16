@@ -12,13 +12,13 @@
 - (void)track:(WPAnalyticsStat)stat withProperties:(NSDictionary *)properties
 {
     switch (stat) {
-        case WPStatReaderLoadedFreshlyPressed:
+        case WPAnalyticsStatReaderLoadedFreshlyPressed:
             [self pingWPComStatsEndpoint:@"freshly"];
             break;
-        case WPStatReaderOpenedArticle:
+        case WPAnalyticsStatReaderOpenedArticle:
             [self pingWPComStatsEndpoint:@"details_page"];
             break;
-        case WPStatReaderAccessed:
+        case WPAnalyticsStatReaderAccessed:
             [self pingWPComStatsEndpoint:@"home_page"];
             break;
         default:

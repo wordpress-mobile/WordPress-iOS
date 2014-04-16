@@ -190,7 +190,7 @@ static NSInteger const IndexForMeTab = 2;
 - (void)applicationDidEnterBackground:(UIApplication *)application {
     DDLogInfo(@"%@ %@", self, NSStringFromSelector(_cmd));
 
-    [WPAnalytics track:WPStatApplicationClosed];
+    [WPAnalytics track:WPAnalyticsStatApplicationClosed];
     [WPAnalytics endSession];
     
     // Let the app finish any uploads that are in progress
@@ -223,7 +223,7 @@ static NSInteger const IndexForMeTab = 2;
 
 - (void)applicationDidBecomeActive:(UIApplication *)application {
     DDLogInfo(@"%@ %@", self, NSStringFromSelector(_cmd));
-    [WPAnalytics track:WPStatApplicationOpened];
+    [WPAnalytics track:WPAnalyticsStatApplicationOpened];
 }
 
 - (BOOL)application:(UIApplication *)application shouldSaveApplicationState:(NSCoder *)coder {
@@ -431,7 +431,7 @@ static NSInteger const IndexForMeTab = 2;
     
     EditPostViewController *editPostViewController;
     if (!options) {
-        [WPAnalytics track:WPStatEditorCreatedPost withProperties:@{ @"tap_source": @"tab_bar" }];
+        [WPAnalytics track:WPAnalyticsStatEditorCreatedPost withProperties:@{ @"tap_source": @"tab_bar" }];
         editPostViewController = [[EditPostViewController alloc] initWithDraftForLastUsedBlog];
     } else {
         editPostViewController = [[EditPostViewController alloc] initWithTitle:[options stringForKey:@"title"]

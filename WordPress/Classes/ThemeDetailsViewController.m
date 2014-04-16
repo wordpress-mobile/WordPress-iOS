@@ -235,7 +235,7 @@
     [self.activateButton addSubview:loading];
     
     [self.theme activateThemeWithSuccess:^{
-        [WPAnalytics track:WPStatThemesChangedTheme];
+        [WPAnalytics track:WPAnalyticsStatThemesChangedTheme];
         [loading removeFromSuperview];
         [UIView animateWithDuration:0.3 delay:0.2 options:UIViewAnimationOptionBeginFromCurrentState animations:^{
             [self showViewSite];
