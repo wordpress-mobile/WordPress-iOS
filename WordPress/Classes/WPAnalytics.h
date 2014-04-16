@@ -1,6 +1,6 @@
 #import <Foundation/Foundation.h>
 
-typedef NS_ENUM(NSUInteger, WPStat) {
+typedef NS_ENUM(NSUInteger, WPAnalyticsStat) {
     WPStatNoStat, // Since we can't have a nil enum we'll use this to act as the nil
     WPStatApplicationOpened,
     WPStatApplicationClosed,
@@ -57,16 +57,16 @@ typedef NS_ENUM(NSUInteger, WPStat) {
 
 + (void)registerTracker:(id<WPStatsTracker>)tracker;
 + (void)beginSession;
-+ (void)track:(WPStat)stat;
-+ (void)track:(WPStat)stat withProperties:(NSDictionary *)properties;
++ (void)track:(WPAnalyticsStat)stat;
++ (void)track:(WPAnalyticsStat)stat withProperties:(NSDictionary *)properties;
 + (void)endSession;
 
 @end
 
 @protocol WPStatsTracker <NSObject>
 
-- (void)track:(WPStat)stat;
-- (void)track:(WPStat)stat withProperties:(NSDictionary *)properties;
+- (void)track:(WPAnalyticsStat)stat;
+- (void)track:(WPAnalyticsStat)stat withProperties:(NSDictionary *)properties;
 
 @optional
 - (void)beginSession;

@@ -17,7 +17,7 @@
     return instructions;
 }
 
-+ (instancetype)mixpanelInstructionsWithPropertyIncrementor:(NSString *)property forStat:(WPStat)stat
++ (instancetype)mixpanelInstructionsWithPropertyIncrementor:(NSString *)property forStat:(WPAnalyticsStat)stat
 {
     WPStatsTrackerMixpanelInstructionsForStat *instructions = [[[self class] alloc] init];
     instructions.statToAttachProperty = stat;

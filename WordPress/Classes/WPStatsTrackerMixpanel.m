@@ -45,12 +45,12 @@
         [[Mixpanel sharedInstance].people set:@{ @"$username": username, @"$first_name" : username }];
     }
 }
-- (void)track:(WPStat)stat
+- (void)track:(WPAnalyticsStat)stat
 {
     [self track:stat withProperties:nil];
 }
 
-- (void)track:(WPStat)stat withProperties:(NSDictionary *)properties
+- (void)track:(WPAnalyticsStat)stat withProperties:(NSDictionary *)properties
 {
     WPStatsTrackerMixpanelInstructionsForStat *instructions = [self instructionsForStat:stat];
     if (instructions == nil) {
@@ -68,7 +68,7 @@
 
 #pragma mark - Private Methods
 
-- (NSString *)convertWPStatToString:(WPStat)stat
+- (NSString *)convertWPStatToString:(WPAnalyticsStat)stat
 {
     return [NSString stringWithFormat:@"%d", stat];
 }
@@ -139,7 +139,7 @@
     [[Mixpanel sharedInstance] registerSuperProperties:superProperties];
 }
 
-- (WPStatsTrackerMixpanelInstructionsForStat *)instructionsForStat:(WPStat )stat
+- (WPStatsTrackerMixpanelInstructionsForStat *)instructionsForStat:(WPAnalyticsStat )stat
 {
     WPStatsTrackerMixpanelInstructionsForStat *instructions;
     
@@ -319,13 +319,13 @@
 
 #pragma mark - Deferred Property Related Methods
 
-- (id)property:(NSString *)property forStat:(WPStat)stat
+- (id)property:(NSString *)property forStat:(WPAnalyticsStat)stat
 {
     NSMutableDictionary *properties = [_aggregatedStatProperties objectForKey:[self convertWPStatToString:stat]];
     return properties[property];
 }
 
-- (void)saveProperty:(NSString *)property withValue:(id)value forStat:(WPStat)stat
+- (void)saveProperty:(NSString *)property withValue:(id)value forStat:(WPAnalyticsStat)stat
 {
     NSMutableDictionary *properties = [_aggregatedStatProperties objectForKey:[self convertWPStatToString:stat]];
     if (properties == nil) {
@@ -336,12 +336,12 @@
     properties[property] = value;
 }
 
-- (NSDictionary *)propertiesForStat:(WPStat)stat
+- (NSDictionary *)propertiesForStat:(WPAnalyticsStat)stat
 {
     return [_aggregatedStatProperties objectForKey:[self convertWPStatToString:stat]];
 }
 
-- (void)incrementProperty:(NSString *)property forStat:(WPStat)stat
+- (void)incrementProperty:(NSString *)property forStat:(WPAnalyticsStat)stat
 {
     NSNumber *currentValue = [self property:property forStat:stat];
     int newValue = 1;

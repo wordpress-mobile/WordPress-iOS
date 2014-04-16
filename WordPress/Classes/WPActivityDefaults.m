@@ -19,7 +19,7 @@
 
 + (void)trackActivityType:(NSString *)activityType
 {
-    WPStat stat;
+    WPAnalyticsStat stat;
     if ([activityType isEqualToString:UIActivityTypeMail]) {
         stat = WPStatSharedItemViaEmail;
     } else if ([activityType isEqualToString:UIActivityTypeMessage]) {
