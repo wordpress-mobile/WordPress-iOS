@@ -31,6 +31,7 @@ PODS:
   - OHHTTPStubs (1.1.1)
   - Reachability (3.1.1)
   - SVProgressHUD (1.0)
+  - Taplytics (1.2.46)
   - UIDeviceIdentifier (0.4)
   - WordPressApi (0.0.1):
     - AFNetworking (>= 1.0)
@@ -54,6 +55,7 @@ DEPENDENCIES:
   - OHHTTPStubs (= 1.1.1)
   - Reachability (= 3.1.1)
   - SVProgressHUD (~> 1.0)
+  - Taplytics (= 1.2.46)
   - UIDeviceIdentifier (~> 0.1)
   - WordPressApi (from `https://github.com/koke/WordPressApi.git`)
   - wpxmlrpc (~> 0.4.1)
@@ -89,6 +91,7 @@ SPEC CHECKSUMS:
   OHHTTPStubs: 41c382f87edb51e7c7c2553aee06da5a6d318a12
   Reachability: be4883bb93f31e38266ae3365e5600a317aae735
   SVProgressHUD: 5e10939a296debf5fe5a5895eda9539b8b2114f1
+  Taplytics: b5a58fefa10340e700a9766bd5c133fd3356e0f2
   UIDeviceIdentifier: eb3d34699982f02350acf544516a4b8f9a9fcaad
   WordPressApi: 6c7ab5320344fbec850f0baba4b0ec2bfd03587d
   wpxmlrpc: 63b5b10d5925fb030f8266215bc955366354a2b8
