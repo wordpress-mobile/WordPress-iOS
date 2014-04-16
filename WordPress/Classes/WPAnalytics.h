@@ -52,10 +52,10 @@ typedef NS_ENUM(NSUInteger, WPAnalyticsStat) {
     WPStatNotificationFlaggedAsSpam,
 };
 
-@protocol WPStatsTracker;
+@protocol WPAnalyticsTracker;
 @interface WPAnalytics : NSObject
 
-+ (void)registerTracker:(id<WPStatsTracker>)tracker;
++ (void)registerTracker:(id<WPAnalyticsTracker>)tracker;
 + (void)beginSession;
 + (void)track:(WPAnalyticsStat)stat;
 + (void)track:(WPAnalyticsStat)stat withProperties:(NSDictionary *)properties;
@@ -63,7 +63,7 @@ typedef NS_ENUM(NSUInteger, WPAnalyticsStat) {
 
 @end
 
-@protocol WPStatsTracker <NSObject>
+@protocol WPAnalyticsTracker <NSObject>
 
 - (void)track:(WPAnalyticsStat)stat;
 - (void)track:(WPAnalyticsStat)stat withProperties:(NSDictionary *)properties;
