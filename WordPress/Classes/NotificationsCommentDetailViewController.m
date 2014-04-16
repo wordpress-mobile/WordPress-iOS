@@ -293,7 +293,7 @@ NSString *const WPNotificationCommentRestorationKey = @"WPNotificationCommentRes
     if (approveAction) {
         // Pressed approve, so flip button optimistically to unapprove
         [self updateApproveButton:NO];
-        [WPStats track:WPStatNotificationApproved];
+        [WPAnalytics track:WPStatNotificationApproved];
         [self performCommentAction:approveAction];
     } else if (unapproveAction) {
         // Pressed unapprove, so flip button optimistically to approve
@@ -301,7 +301,7 @@ NSString *const WPNotificationCommentRestorationKey = @"WPNotificationCommentRes
         [self performCommentAction:unapproveAction];
     }
     
-    [WPStats track:WPStatNotificationPerformedAction];
+    [WPAnalytics track:WPStatNotificationPerformedAction];
 }
 
 - (void)deleteAction:(id)sender {
@@ -309,13 +309,13 @@ NSString *const WPNotificationCommentRestorationKey = @"WPNotificationCommentRes
     NSDictionary *untrashAction = [self.commentActions objectForKey:@"untrash-comment"];
     
     if (trashAction) {
-        [WPStats track:WPStatNotificationTrashed];
+        [WPAnalytics track:WPStatNotificationTrashed];
         [self performCommentAction:trashAction];
     } else if (untrashAction) {
         [self performCommentAction:untrashAction];
     }
     
-    [WPStats track:WPStatNotificationPerformedAction];
+    [WPAnalytics track:WPStatNotificationPerformedAction];
 }
 
 - (void)spamAction:(id)sender {
@@ -323,13 +323,13 @@ NSString *const WPNotificationCommentRestorationKey = @"WPNotificationCommentRes
     NSDictionary *unspamAction = [self.commentActions objectForKey:@"unspam-comment"];
     
     if (spamAction) {
-        [WPStats track:WPStatNotificationFlaggedAsSpam];
+        [WPAnalytics track:WPStatNotificationFlaggedAsSpam];
         [self performCommentAction:spamAction];
     } else if (unspamAction) {
         [self performCommentAction:unspamAction];
     }
     
-    [WPStats track:WPStatNotificationPerformedAction];
+    [WPAnalytics track:WPStatNotificationPerformedAction];
 }
 
 - (void)replyAction:(id)sender {
@@ -393,8 +393,8 @@ NSString *const WPNotificationCommentRestorationKey = @"WPNotificationCommentRes
 
         [[defaultAccount restApi] postPath:replyPath parameters:params success:^(AFHTTPRequestOperation *operation, id responseObject) {
             DDLogVerbose(@"Response: %@", responseObject);
-            [WPStats track:WPStatNotificationRepliedTo];
-            [WPStats track:WPStatNotificationPerformedAction];
+            [WPAnalytics track:WPStatNotificationRepliedTo];
+            [WPAnalytics track:WPStatNotificationPerformedAction];
             success();
         } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
             DDLogError(@"Failure %@", error);

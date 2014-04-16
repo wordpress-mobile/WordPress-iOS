@@ -1,6 +1,6 @@
-#import "WPStats.h"
+#import "WPAnalytics.h"
 
-@implementation WPStats
+@implementation WPAnalytics
 
 + (NSMutableArray *)trackers
 {

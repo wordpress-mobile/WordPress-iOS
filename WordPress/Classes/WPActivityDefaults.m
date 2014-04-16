@@ -37,13 +37,13 @@
     } else if ([activityType isEqualToString:NSStringFromClass([GooglePlusActivity class])]) {
         stat = WPStatSentItemToGooglePlus;
     } else {
-        [WPStats track:WPStatSharedItem];
+        [WPAnalytics track:WPStatSharedItem];
         return;
     }
     
     if (stat != WPStatNoStat) {
-        [WPStats track:WPStatSharedItem];
-        [WPStats track:stat];
+        [WPAnalytics track:WPStatSharedItem];
+        [WPAnalytics track:stat];
     }
 }
 

@@ -53,7 +53,7 @@ typedef NS_ENUM(NSUInteger, WPStat) {
 };
 
 @protocol WPStatsTracker;
-@interface WPStats : NSObject
+@interface WPAnalytics : NSObject
 
 + (void)registerTracker:(id<WPStatsTracker>)tracker;
 + (void)beginSession;

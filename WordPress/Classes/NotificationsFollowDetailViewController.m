@@ -263,7 +263,7 @@ typedef void (^NoteToggleFollowBlock)(BOOL success);
 	
     BOOL isFollowing = item.action.following;
 	   
-    [WPStats track:WPStatNotificationPerformedAction];
+    [WPAnalytics track:WPStatNotificationPerformedAction];
     
 	// Hit the Backend
     NSManagedObjectContext *context = [[ContextManager sharedInstance] mainContext];

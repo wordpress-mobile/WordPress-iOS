@@ -1,5 +1,5 @@
 #import <Foundation/Foundation.h>
-#import "WPStats.h"
+#import "WPAnalytics.h"
 
 @interface WPStatsTrackerWPCom : NSObject<WPStatsTracker>
 
