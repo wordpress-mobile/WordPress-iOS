@@ -1318,6 +1318,7 @@ CGFloat const EPVCTextViewTopPadding = 7.0f;
     
     Media *imageMedia = [Media newMediaForPost:self.post];
     WPMediaProcessor *mediaProcessor = [[WPMediaProcessor alloc] init];
+    BOOL gelocationEnabled = self.post.blog.geolocationEnabled;
     
     for (ALAsset *asset in assets) {
         ALAssetRepresentation *representation = asset.defaultRepresentation;
@@ -1333,7 +1334,8 @@ CGFloat const EPVCTextViewTopPadding = 7.0f;
             NSDictionary *dimensions = [self.post.blog getImageResizeDimensions];
             CGSize newSize = [mediaProcessor sizeForImage:fullResolutionImage mediaResize:resize blogResizeDimensions:dimensions];
             UIImage *resizedImage = [mediaProcessor resizeImage:fullResolutionImage toSize:newSize];
-            [mediaProcessor processImage:resizedImage media:imageMedia metadata:representation.metadata];
+            NSDictionary *assetMetadata = [mediaProcessor metadataForAsset:asset enableGeolocation:gelocationEnabled];
+            [mediaProcessor processImage:resizedImage media:imageMedia metadata:assetMetadata];
         }
     }
 }
