@@ -1329,11 +1329,11 @@ CGFloat const EPVCTextViewTopPadding = 7.0f;
                                                                scale:1.0f
                                                          orientation:(UIImageOrientation)representation.orientation];
             
-            //MediaResize *resize = [mediaProcessor mediaResizePreference];
-            //NSDictionary *dimensions = [self.post.blog getImageResizeDimensions];
-            //CGSize newSize = [mediaProcessor sizeForMediaResize:resize blogResizeDimensions:dimensions];
-            //UIImage *resizedImage = [mediaProcessor resizeImage:fullResolutionImage toSize:newSize];
-            [mediaProcessor processImage:fullResolutionImage media:imageMedia metadata:representation.metadata];
+            MediaResize *resize = [mediaProcessor mediaResizePreference];
+            NSDictionary *dimensions = [self.post.blog getImageResizeDimensions];
+            CGSize newSize = [mediaProcessor sizeForImage:fullResolutionImage mediaResize:resize blogResizeDimensions:dimensions];
+            UIImage *resizedImage = [mediaProcessor resizeImage:fullResolutionImage toSize:newSize];
+            [mediaProcessor processImage:resizedImage media:imageMedia metadata:representation.metadata];
         }
     }
 }
