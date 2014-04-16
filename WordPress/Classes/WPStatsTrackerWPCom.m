@@ -4,12 +4,12 @@
 
 @implementation WPStatsTrackerWPCom
 
-- (void)track:(WPStat)stat
+- (void)track:(WPAnalyticsStat)stat
 {
     [self track:stat withProperties:nil];
 }
 
-- (void)track:(WPStat)stat withProperties:(NSDictionary *)properties
+- (void)track:(WPAnalyticsStat)stat withProperties:(NSDictionary *)properties
 {
     switch (stat) {
         case WPStatReaderLoadedFreshlyPressed:

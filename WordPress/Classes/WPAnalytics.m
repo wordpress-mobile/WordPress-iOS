@@ -20,14 +20,14 @@
     [[self trackers] addObject:tracker];
 }
 
-+ (void)track:(WPStat)stat
++ (void)track:(WPAnalyticsStat)stat
 {
     for (id<WPStatsTracker> tracker in [self trackers]) {
         [tracker track:stat];
     }
 }
 
-+ (void)track:(WPStat)stat withProperties:(NSDictionary *)properties
++ (void)track:(WPAnalyticsStat)stat withProperties:(NSDictionary *)properties
 {
     NSParameterAssert(properties != nil);
     for (id<WPStatsTracker> tracker in [self trackers]) {
