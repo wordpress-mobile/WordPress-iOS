@@ -111,6 +111,60 @@ extern NSString *const MediaShouldInsertBelowNotification;
     }];
 }
 
+- (CGSize)sizeForImage:(UIImage *)image
+           mediaResize:(MediaResize)resize
+  blogResizeDimensions:(NSDictionary *)dimensions
+{
+    CGSize smallSize =  [[dimensions objectForKey: @"smallSize"] CGSizeValue];
+    CGSize mediumSize = [[dimensions objectForKey: @"mediumSize"] CGSizeValue];
+    CGSize largeSize =  [[dimensions objectForKey: @"largeSize"] CGSizeValue];
+    CGSize originalSize = CGSizeMake(image.size.width, image.size.height);
+	
+	// Resize the image using the selected dimensions
+	CGSize newSize = originalSize;
+    
+    switch (image.imageOrientation) {
+        case UIImageOrientationLeft:
+        case UIImageOrientationLeftMirrored:
+        case UIImageOrientationRight:
+        case UIImageOrientationRightMirrored:
+            smallSize = CGSizeMake(smallSize.height, smallSize.width);
+            mediumSize = CGSizeMake(mediumSize.height, mediumSize.width);
+            largeSize = CGSizeMake(largeSize.height, largeSize.width);
+            break;
+        default:
+            break;
+    }
+    
+    if (resize == MediaResizeSmall &&
+        (image.size.width > smallSize.width || image.size.height > smallSize.height)) {
+        newSize = smallSize;
+    } else if (resize == MediaResizeMedium &&
+               (image.size.width > mediumSize.width || image.size.height > mediumSize.height)) {
+        newSize = mediumSize;
+    } else if (resize == MediaResizeLarge &&
+               (image.size.width > largeSize.width || image.size.height > largeSize.height)) {
+        newSize = largeSize;
+    }
+
+    return newSize;
+}
+
+- (UIImage *)resizeImage:(UIImage *)original toSize:(CGSize)newSize {
+    CGSize originalSize = CGSizeMake(original.size.width, original.size.height);
+	
+	// Resize the image using the selected dimensions
+	UIImage *resizedImage = original;
+    
+    if (!CGSizeEqualToSize(originalSize, newSize)) {
+        resizedImage = [original resizedImageWithContentMode:UIViewContentModeScaleAspectFit
+                                                      bounds:newSize
+                                        interpolationQuality:kCGInterpolationHigh];
+    }
+    
+    return resizedImage;
+}
+
 - (UIImage *)generateThumbnailFromImage:(UIImage *)theImage andSize:(CGSize)targetSize {
     return [theImage thumbnailImage:WPMediaThumbnailSize transparentBorder:0 cornerRadius:0 interpolationQuality:kCGInterpolationHigh];
 }
