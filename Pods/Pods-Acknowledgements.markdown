@@ -393,6 +393,10 @@ POSSIBILITY OF SUCH DAMAGES.
 		     END OF TERMS AND CONDITIONS
 
 
+## Helpshift
+
+See http://www.helpshift.com/terms/
+
 ## HockeySDK
 
 ## Licenses
