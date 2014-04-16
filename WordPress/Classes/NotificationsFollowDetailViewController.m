@@ -103,10 +103,10 @@ typedef void (^NoteToggleFollowBlock)(BOOL success);
 	
 	[self.tableView registerClass:[WPTableHeaderViewCell class] forCellReuseIdentifier:WPNotificationHeaderCellIdentifier];
 	[self.tableView registerClass:[NotificationsFollowTableViewCell class] forCellReuseIdentifier:WPNotificationFollowCellIdentifier];
-	[self.tableView registerClass:[UITableViewCell class] forCellReuseIdentifier:WPNotificationFooterCellIdentifier];
-	self.tableView.separatorInset = UIEdgeInsetsZero;
-	
+	[self.tableView registerClass:[WPTableViewCell class] forCellReuseIdentifier:WPNotificationFooterCellIdentifier];
+    self.tableView.separatorInset = UIEdgeInsetsZero;
     [self.tableView setDelegate:self];
+
     [WPStyleGuide configureColorsForView:self.view andTableView:self.tableView];
 }
 
