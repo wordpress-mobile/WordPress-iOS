@@ -23,9 +23,10 @@ NSString *const WPNotificationFollowCellIdentifier = @"WPNotificationFollowCellI
 NSString *const WPNotificationFooterCellIdentifier = @"WPNotificationFooterCellIdentifier";
 
 typedef NS_ENUM(NSInteger, WPNotificationSections) {
-	WPNotificationSectionsFollow	= 0,
-	WPNotificationSectionsFooter	= 1,
-	WPNotificationSectionsCount		= 2
+	WPNotificationSectionsHeader	= 0,
+	WPNotificationSectionsFollow	= 1,
+	WPNotificationSectionsFooter	= 2,
+	WPNotificationSectionsCount		= 3
 };
 
 CGFloat const WPNotificationsFollowPersonCellHeight = 80.0f;
@@ -103,10 +104,10 @@ typedef void (^NoteToggleFollowBlock)(BOOL success);
 	
 	[self.tableView registerClass:[WPTableHeaderViewCell class] forCellReuseIdentifier:WPNotificationHeaderCellIdentifier];
 	[self.tableView registerClass:[NotificationsFollowTableViewCell class] forCellReuseIdentifier:WPNotificationFollowCellIdentifier];
-	[self.tableView registerClass:[UITableViewCell class] forCellReuseIdentifier:WPNotificationFooterCellIdentifier];
-	self.tableView.separatorInset = UIEdgeInsetsZero;
-	
+	[self.tableView registerClass:[WPTableViewCell class] forCellReuseIdentifier:WPNotificationFooterCellIdentifier];
+    self.tableView.separatorInset = UIEdgeInsetsZero;
     [self.tableView setDelegate:self];
+
     [WPStyleGuide configureColorsForView:self.view andTableView:self.tableView];
 }
 
@@ -148,42 +149,12 @@ typedef void (^NoteToggleFollowBlock)(BOOL success);
 	}
 }
 
-- (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section
-{
-	CGFloat height = 0.0f;
-	if (section == WPNotificationSectionsFollow) {
-		NSString *subject = [NSString decodeXMLCharactersIn:_note.subject];
-		height = [WPTableHeaderViewCell cellHeightForText:subject];
-	}
-	
-	return height;
-}
-
-- (UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section
-{
-    if (section != WPNotificationSectionsFollow) {
-		return nil;
-	}
-	
-	UITableViewCell *cell			= [tableView dequeueReusableCellWithIdentifier:WPNotificationHeaderCellIdentifier];
-
-	cell.textLabel.text				= [NSString decodeXMLCharactersIn:_note.subject];
-	cell.textLabel.numberOfLines	= 0;
-	cell.textLabel.textAlignment	= NSTextAlignmentCenter;
-	cell.accessoryType				= UITableViewCellAccessoryDisclosureIndicator;
-    cell.layer.borderColor			= [UIColor lightGrayColor].CGColor;
-    cell.layer.borderWidth			= 1.0 / [[UIScreen mainScreen] scale];
-	
-	// Note that we're using this cell as a section header. Since 'didPressCellAtIndex:' method isn't gonna get called,
-	// let's use a GestureRecognizer!
-	cell.gestureRecognizers			= @[ [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(viewPostTitle:)] ];
-
-	return cell;
-}
-
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    if (indexPath.section == WPNotificationSectionsFollow) {
+    if (indexPath.section == WPNotificationSectionsHeader) {
+		NSString *subject = [NSString decodeXMLCharactersIn:_note.subject];
+		return [WPTableHeaderViewCell cellHeightForText:subject];
+    } else if (indexPath.section == WPNotificationSectionsFollow) {
         return WPNotificationsFollowPersonCellHeight;
     } else {
         return WPNotificationsFollowBottomCellHeight;
@@ -192,7 +163,23 @@ typedef void (^NoteToggleFollowBlock)(BOOL success);
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    if (indexPath.section == WPNotificationSectionsFollow) {
+    if (indexPath.section == WPNotificationSectionsHeader) {
+
+        UITableViewCell *cell			= [tableView dequeueReusableCellWithIdentifier:WPNotificationHeaderCellIdentifier];
+        
+        cell.textLabel.text				= [NSString decodeXMLCharactersIn:_note.subject];
+        cell.textLabel.numberOfLines	= 0;
+        cell.textLabel.textAlignment	= NSTextAlignmentCenter;
+        cell.accessoryType				= UITableViewCellAccessoryDisclosureIndicator;
+        
+        // Note that we're using this cell as a section header. Since 'didPressCellAtIndex:' method isn't gonna get called,
+        // let's use a GestureRecognizer!
+        cell.gestureRecognizers			= @[ [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(viewPostTitle:)] ];
+        
+        return cell;
+        
+    } else if (indexPath.section == WPNotificationSectionsFollow) {
+        
         NotificationsFollowTableViewCell *cell	= [tableView dequeueReusableCellWithIdentifier:WPNotificationFollowCellIdentifier];
         NoteBodyItem *noteItem					= self.filteredBodyItems[indexPath.row];
 		__weak __typeof(self) weakSelf			= self;
