@@ -847,25 +847,25 @@ CGFloat const EPVCTextViewTopPadding = 7.0f;
     }
     
     if ([buttonTitle isEqualToString:NSLocalizedString(@"Publish", nil)]) {
-        [WPStats track:WPStatEditorPublishedPost withProperties:properties];
+        [WPAnalytics track:WPStatEditorPublishedPost withProperties:properties];
         
         if ([self.post hasPhoto]) {
-            [WPStats track:WPStatPublishedPostWithPhoto];
+            [WPAnalytics track:WPStatPublishedPostWithPhoto];
         }
         
         if ([self.post hasVideo]) {
-            [WPStats track:WPStatPublishedPostWithVideo];
+            [WPAnalytics track:WPStatPublishedPostWithVideo];
         }
         
         if ([self.post hasCategories]) {
-            [WPStats track:WPStatPublishedPostWithCategories];
+            [WPAnalytics track:WPStatPublishedPostWithCategories];
         }
         
         if ([self.post hasTags]) {
-            [WPStats track:WPStatPublishedPostWithTags];
+            [WPAnalytics track:WPStatPublishedPostWithTags];
         }
     } else {
-        [WPStats track:WPStatEditorUpdatedPost withProperties:properties];
+        [WPAnalytics track:WPStatEditorUpdatedPost withProperties:properties];
     }
 }
 

@@ -715,7 +715,7 @@
 		85C9172817CECAA6001ECEC3 /* icon-reader-topics.png in Resources */ = {isa = PBXBuildFile; fileRef = 85C9172417CECAA6001ECEC3 /* icon-reader-topics.png */; };
 		85C9172917CECAA6001ECEC3 /* icon-reader-topics@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 85C9172517CECAA6001ECEC3 /* icon-reader-topics@2x.png */; };
 		85D08A7117342ECE00E2BBCA /* AddUsersBlogCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 85D08A7017342ECE00E2BBCA /* AddUsersBlogCell.m */; };
-		85D2275618F1E5E7001DA8DA /* WPStats.m in Sources */ = {isa = PBXBuildFile; fileRef = 85D2275518F1E5E7001DA8DA /* WPStats.m */; };
+		85D2275618F1E5E7001DA8DA /* WPAnalytics.m in Sources */ = {isa = PBXBuildFile; fileRef = 85D2275518F1E5E7001DA8DA /* WPAnalytics.m */; };
 		85D2275918F1EB8A001DA8DA /* WPStatsTrackerMixpanel.m in Sources */ = {isa = PBXBuildFile; fileRef = 85D2275818F1EB8A001DA8DA /* WPStatsTrackerMixpanel.m */; };
 		85D80558171630B30075EEAC /* DotCom-Languages.plist in Resources */ = {isa = PBXBuildFile; fileRef = 85D80557171630B30075EEAC /* DotCom-Languages.plist */; };
 		85D8055D171631F10075EEAC /* SelectWPComLanguageViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 85D8055C171631F10075EEAC /* SelectWPComLanguageViewController.m */; };
@@ -1871,8 +1871,8 @@
 		85C9172517CECAA6001ECEC3 /* icon-reader-topics@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "icon-reader-topics@2x.png"; sourceTree = "<group>"; };
 		85D08A6F17342ECE00E2BBCA /* AddUsersBlogCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AddUsersBlogCell.h; sourceTree = "<group>"; };
 		85D08A7017342ECE00E2BBCA /* AddUsersBlogCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AddUsersBlogCell.m; sourceTree = "<group>"; };
-		85D2275418F1E5E7001DA8DA /* WPStats.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WPStats.h; sourceTree = "<group>"; };
-		85D2275518F1E5E7001DA8DA /* WPStats.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WPStats.m; sourceTree = "<group>"; };
+		85D2275418F1E5E7001DA8DA /* WPAnalytics.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WPAnalytics.h; sourceTree = "<group>"; };
+		85D2275518F1E5E7001DA8DA /* WPAnalytics.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WPAnalytics.m; sourceTree = "<group>"; };
 		85D2275718F1EB8A001DA8DA /* WPStatsTrackerMixpanel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WPStatsTrackerMixpanel.h; sourceTree = "<group>"; };
 		85D2275818F1EB8A001DA8DA /* WPStatsTrackerMixpanel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WPStatsTrackerMixpanel.m; sourceTree = "<group>"; };
 		85D80557171630B30075EEAC /* DotCom-Languages.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "DotCom-Languages.plist"; sourceTree = "<group>"; };
@@ -3240,10 +3240,10 @@
 		85A1B6721742E7DB00BA5E35 /* Stats */ = {
 			isa = PBXGroup;
 			children = (
-				85D2275418F1E5E7001DA8DA /* WPStats.h */,
+				85D2275418F1E5E7001DA8DA /* WPAnalytics.h */,
 				85D2275718F1EB8A001DA8DA /* WPStatsTrackerMixpanel.h */,
 				85D2275818F1EB8A001DA8DA /* WPStatsTrackerMixpanel.m */,
-				85D2275518F1E5E7001DA8DA /* WPStats.m */,
+				85D2275518F1E5E7001DA8DA /* WPAnalytics.m */,
 				859F761B18F2159800EF8D5D /* WPStatsTrackerMixpanelInstructionsForStat.h */,
 				859F761C18F2159800EF8D5D /* WPStatsTrackerMixpanelInstructionsForStat.m */,
 				85DA8C4218F3F29A0074C8A4 /* WPStatsTrackerWPCom.h */,
@@ -5438,7 +5438,7 @@
 				5D42A3F8175E75EE005CFF05 /* ReaderImageView.m in Sources */,
 				5DA5BF4718E32DCF005F11F9 /* ThemeDetailsViewController.m in Sources */,
 				E1D062D4177C685C00644185 /* ContentActionButton.m in Sources */,
-				85D2275618F1E5E7001DA8DA /* WPStats.m in Sources */,
+				85D2275618F1E5E7001DA8DA /* WPAnalytics.m in Sources */,
 				5D0077A7182AE9DF00F865DB /* ReaderMediaQueue.m in Sources */,
 				462F4E0B18369F0B0028D2F8 /* BlogListViewController.m in Sources */,
 				5D42A3F9175E75EE005CFF05 /* ReaderMediaView.m in Sources */,

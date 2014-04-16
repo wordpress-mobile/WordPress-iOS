@@ -173,7 +173,7 @@ NSString * const RPVCDisplayedNativeFriendFinder = @"DisplayedNativeFriendFinder
     }
 
     if (!_viewHasAppeared) {
-        [WPStats track:WPStatReaderAccessed withProperties:[self tagPropertyForStats]];
+        [WPAnalytics track:WPStatReaderAccessed withProperties:[self tagPropertyForStats]];
         _viewHasAppeared = YES;
     }
 
@@ -368,7 +368,7 @@ NSString * const RPVCDisplayedNativeFriendFinder = @"DisplayedNativeFriendFinder
     ReaderPost *post = postView.post;
 	[post toggleLikedWithSuccess:^{
         if ([post.isLiked boolValue]) {
-            [WPStats track:WPStatReaderLikedArticle];
+            [WPAnalytics track:WPStatReaderLikedArticle];
         }
 	} failure:^(NSError *error) {
 		DDLogError(@"Error Liking Post : %@", [error localizedDescription]);
@@ -463,7 +463,7 @@ NSString * const RPVCDisplayedNativeFriendFinder = @"DisplayedNativeFriendFinder
 #pragma mark - ReaderCommentPublisherDelegate Methods
 
 - (void)commentPublisherDidPublishComment:(ReaderCommentPublisher *)publisher {
-    [WPStats track:WPStatReaderCommentedOnArticle];
+    [WPAnalytics track:WPStatReaderCommentedOnArticle];
     publisher.post.dateCommentsSynced = nil;
     [self.inlineComposeView dismissComposer];
 }
@@ -774,7 +774,7 @@ NSString * const RPVCDisplayedNativeFriendFinder = @"DisplayedNativeFriendFinder
 								 }
 							 }];
     
-    [WPStats track:WPStatReaderInfiniteScroll withProperties:[self tagPropertyForStats]];
+    [WPAnalytics track:WPStatReaderInfiniteScroll withProperties:[self tagPropertyForStats]];
 }
 
 - (UITableViewRowAnimation)tableViewRowAnimation {
@@ -858,7 +858,7 @@ NSString * const RPVCDisplayedNativeFriendFinder = @"DisplayedNativeFriendFinder
     
     [self.navigationController pushViewController:self.detailController animated:YES];
     
-    [WPStats track:WPStatReaderOpenedArticle];
+    [WPAnalytics track:WPStatReaderOpenedArticle];
 }
 
 
@@ -906,9 +906,9 @@ NSString * const RPVCDisplayedNativeFriendFinder = @"DisplayedNativeFriendFinder
 		[NSUserDefaults resetStandardUserDefaults];
     }
     
-    [WPStats track:WPStatReaderLoadedTag withProperties:[self tagPropertyForStats]];
+    [WPAnalytics track:WPStatReaderLoadedTag withProperties:[self tagPropertyForStats]];
     if ([self isCurrentTagFreshlyPressed]) {
-        [WPStats track:WPStatReaderLoadedFreshlyPressed];
+        [WPAnalytics track:WPStatReaderLoadedFreshlyPressed];
     }
 }
 

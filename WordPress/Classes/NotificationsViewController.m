@@ -151,7 +151,7 @@ typedef void (^NotificationsLoadPostBlock)(BOOL success, ReaderPost *post);
 
     if (!_viewHasAppeared) {
         _viewHasAppeared = YES;
-        [WPStats track:WPStatNotificationsAccessed];
+        [WPAnalytics track:WPStatNotificationsAccessed];
     }
     
     _isPushingViewController = NO;
@@ -273,7 +273,7 @@ typedef void (^NotificationsLoadPostBlock)(BOOL success, ReaderPost *post);
     
     BOOL hasDetailView = [self noteHasDetailView:note];
     if (hasDetailView) {
-        [WPStats track:WPStatNotificationsOpenedNotificationDetails];
+        [WPAnalytics track:WPStatNotificationsOpenedNotificationDetails];
 
         _isPushingViewController = YES;
         
