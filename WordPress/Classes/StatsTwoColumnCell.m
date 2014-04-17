@@ -89,6 +89,8 @@ static CGFloat const RowIconWidth = 20.0f;
 }
 
 - (void)setLinkEnabled:(BOOL)linkEnabled {
+    _linkEnabled = linkEnabled;
+    
     UIColor *color = linkEnabled ? [WPStyleGuide baseDarkerBlue] : [WPStyleGuide whisperGrey];
     [self titleLabel].textColor = color;
 }
@@ -170,5 +172,17 @@ static CGFloat const RowIconWidth = 20.0f;
 - (CGFloat)yValueToCenterViewVertically:(UIView *)view {
     return ([self.class heightForRow] - view.frame.size.height)/2;
 }
+
+#pragma mark - UIAccessibility items
+
+- (UIAccessibilityTraits)accessibilityTraits
+{
+    if (self.linkEnabled) {
+        return UIAccessibilityTraitLink;
+    }
+    
+    return [super accessibilityTraits];
+}
+
 
 @end
