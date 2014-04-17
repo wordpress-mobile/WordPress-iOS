@@ -208,6 +208,28 @@ CGFloat heightFromRangeToRange(NSUInteger height, CGFloat maxOldRange, CGFloat m
     return label;
 }
 
+#pragma mark - UIAccessibilityTraits
+
+- (BOOL)isAccessibilityElement
+{
+    return YES;
+}
+
+- (NSString *)accessibilityLabel
+{
+    return NSLocalizedString(@"Visitors and Views Graph", @"Accessibility label for visitors and views graph view");
+}
+
+- (UIAccessibilityTraits)accessibilityTraits
+{
+    return UIAccessibilityTraitImage | UIAccessibilityTraitSummaryElement;
+}
+
+- (NSString *)accessibilityHint
+{
+    return [super accessibilityHint];
+}
+
 @end
 
 @interface StatsViewsVisitorsBarGraphCell ()
