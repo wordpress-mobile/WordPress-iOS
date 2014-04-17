@@ -140,26 +140,31 @@ static CGFloat const RowIconWidth = 20.0f;
     UILabel *label = [self createLabelWithTitle:title titleCell:titleCell];
     [view addSubview:label];
     
-    if (imageUrl != nil) {
+    if (!titleCell) {
         UIImageView *imageView = [[UIImageView alloc] initWithFrame:CGRectMake(0, 0, RowIconWidth, RowIconWidth)];
         imageView.backgroundColor = [WPStyleGuide readGrey];
-        [[WPImageSource sharedSource] downloadImageForURL:imageUrl withSuccess:^(UIImage *image) {
-            imageView.image = image;
-            imageView.backgroundColor = [UIColor clearColor];
-        } failure:^(NSError *error) {
-            DDLogWarn(@"Unable to download icon %@", error);
-        }];
         [view addSubview:imageView];
+
         label.frame = (CGRect) {
             .origin = CGPointMake(RowIconWidth + PaddingImageText, 0),
             .size = label.frame.size
         };
+
+        if (imageUrl != nil) {
+            [[WPImageSource sharedSource] downloadImageForURL:imageUrl withSuccess:^(UIImage *image) {
+                imageView.image = image;
+                imageView.backgroundColor = [UIColor clearColor];
+            } failure:^(NSError *error) {
+                DDLogWarn(@"Unable to download icon %@", error);
+            }];
+        }
     }
 
     view.frame = (CGRect) {
         .origin = view.frame.origin,
         .size = CGSizeMake(CGRectGetMaxX(label.frame), 20)
     };
+    
     return view;
 }
 
