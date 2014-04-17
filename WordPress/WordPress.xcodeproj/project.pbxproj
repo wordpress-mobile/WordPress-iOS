@@ -2468,7 +2468,7 @@
 				E159D1011309AAF200F498E2 /* Migrations */,
 				2F706A870DFB229B00B43086 /* Models */,
 				93FA59DA18D88BDB001446BC /* Services */,
-				85A1B6721742E7DB00BA5E35 /* Stats */,
+				85A1B6721742E7DB00BA5E35 /* Analytics */,
 				031662E60FFB14C60045D052 /* Views */,
 				2F970F970DF929B8006BD934 /* Constants.h */,
 				C545E0A01811B9880020844C /* ContextManager.h */,
@@ -3237,7 +3237,7 @@
 			name = Fonts;
 			sourceTree = "<group>";
 		};
-		85A1B6721742E7DB00BA5E35 /* Stats */ = {
+		85A1B6721742E7DB00BA5E35 /* Analytics */ = {
 			isa = PBXGroup;
 			children = (
 				85D2275418F1E5E7001DA8DA /* WPAnalytics.h */,
@@ -3249,7 +3249,7 @@
 				85DA8C4218F3F29A0074C8A4 /* WPAnalyticsTrackerWPCom.h */,
 				85DA8C4318F3F29A0074C8A4 /* WPAnalyticsTrackerWPCom.m */,
 			);
-			name = Stats;
+			name = Analytics;
 			sourceTree = "<group>";
 		};
 		85AD6AB2173CA756002CB896 /* Buttons */ = {
