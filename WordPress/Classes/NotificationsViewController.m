@@ -92,6 +92,7 @@ typedef void (^NotificationsLoadPostBlock)(BOOL success, ReaderPost *post);
 - (void)didTapNoResultsView:(WPNoResultsView *)noResultsView
 {
     // Show Jetpack information screen
+    [WPAnalytics track:WPAnalyticsStatSelectedLearnMoreInConnectToJetpackScreen withProperties:@{@"source": @"notifications"}];
     WPWebViewController *webViewController = [[WPWebViewController alloc] init];
     [webViewController setUrl:[NSURL URLWithString:NotificationsJetpackInformationURL]];
     [self.navigationController pushViewController:webViewController animated:YES];
