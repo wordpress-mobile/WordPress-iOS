@@ -476,34 +476,6 @@ static NSInteger const IndexForMeTab = 2;
     [blogListNavController setViewControllers:@[blogListViewController, blogDetailsViewController, postsViewController]];
 }
 
-- (void)showStatsForBlog:(Blog *)blog {
-    UINavigationController *blogListNav = self.tabBarController.viewControllers[IndexForMeTab];
-    StatsViewController *statsViewController;
-    BlogDetailsViewController *blogDetailsViewController;
-    
-    if ([blogListNav.topViewController isKindOfClass:[StatsViewController class]] &&
-        [[(StatsViewController *)blogListNav.topViewController blog] isEqual:blog]) {
-        // If we're already showing stats for the blog, just go there
-        [self showMeTab];
-        return;
-    } else {
-        statsViewController = [[StatsViewController alloc] init];
-        statsViewController.blog = blog;
-    }
-    
-    if ([blogListNav.topViewController isKindOfClass:[BlogDetailsViewController class]] &&
-        [((BlogDetailsViewController *)blogListNav.topViewController).blog isEqual:blog]) {
-        // Use the current blog details view controller
-        blogDetailsViewController = (BlogDetailsViewController *)blogListNav.topViewController;
-    } else {
-        blogDetailsViewController = [[BlogDetailsViewController alloc] init];
-        blogDetailsViewController.blog = blog;
-    }
-    
-    blogListNav.viewControllers = @[self.blogListViewController, blogDetailsViewController, statsViewController];
-    [self showMeTab];
-}
-
 - (BOOL)isNavigatingMeTab {
     return (self.tabBarController.selectedIndex == IndexForMeTab && [self.blogListViewController.navigationController.viewControllers count] > 1);
 }

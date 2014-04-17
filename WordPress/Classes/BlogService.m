@@ -28,6 +28,24 @@ NSString *const LastUsedBlogURLDefaultsKey = @"LastUsedBlogURLDefaultsKey";
     return self;
 }
 
+- (Blog *)blogByBlogId:(NSNumber *)blogID
+{
+    NSFetchRequest *fetchRequest = [[NSFetchRequest alloc] initWithEntityName:@"Blog"];
+    NSPredicate *predicate = [NSPredicate predicateWithFormat:@"blogID == %@", blogID];
+    
+    fetchRequest.predicate = predicate;
+    
+    NSError *error = nil;
+    NSArray *results = [self.managedObjectContext executeFetchRequest:fetchRequest error:&error];
+    
+    if (error) {
+        DDLogError(@"Error while fetching Blog by blogID: %@", error);
+        return nil;
+    }
+    
+    return [results firstObject];
+}
+
 - (void)flagBlogAsLastUsed:(Blog *)blog {
     NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
     [defaults setObject:blog.url forKey:LastUsedBlogURLDefaultsKey];
