@@ -114,8 +114,10 @@
         [self incrementProperty:instructions.propertyToIncrement forStat:instructions.statToAttachProperty];
     }
     
-    if ([instructions.superPropertyToFlag length] > 0) {
-        [self flagSuperProperty:instructions.superPropertyToFlag];
+    if ([instructions.superPropertiesToFlag count] > 0) {
+        for (NSString *superPropertyToFlag in instructions.superPropertiesToFlag) {
+            [self flagSuperProperty:superPropertyToFlag];
+        }
     }
 }
 
