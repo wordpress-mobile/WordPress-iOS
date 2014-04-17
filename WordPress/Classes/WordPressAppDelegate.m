@@ -6,6 +6,7 @@
 #import <GooglePlus/GooglePlus.h>
 #import <HockeySDK/HockeySDK.h>
 #import <UIDeviceIdentifier/UIDeviceHardware.h>
+#import <Helpshift/Helpshift.h>
 
 #import "WordPressAppDelegate.h"
 #import "ContextManager.h"
@@ -126,6 +127,8 @@ static NSInteger const IndexForMeTab = 2;
     
     [self showWelcomeScreenIfNeededAnimated:NO];
 
+    [Helpshift installForApiKey:[WordPressComApiCredentials helpshiftAPIKey] domainName:[WordPressComApiCredentials helpshiftDomainName] appID:[WordPressComApiCredentials helpshiftAppId]];
+    
     return YES;
 }
 
