@@ -493,7 +493,7 @@ typedef NS_ENUM(NSInteger, TotalFollowersShareRow) {
         case StatsDataRowTitle:
         {
             cell = [self.tableView dequeueReusableCellWithIdentifier:ResultRowCellIdentifier];
-            [(StatsTwoColumnCell *)cell setLeft:dataTitleRowLeft.uppercaseString withImageUrl:nil right:dataTitleRowRight.uppercaseString titleCell:YES];
+            [(StatsTwoColumnCell *)cell setLeft:[dataTitleRowLeft uppercaseStringWithLocale:[NSLocale currentLocale]] withImageUrl:nil right:[dataTitleRowRight uppercaseStringWithLocale:[NSLocale currentLocale]] titleCell:YES];
             break;
         }
         default:

@@ -95,7 +95,7 @@ static CGFloat const StatCounterCellHeight = 100.0f;
 - (void)setTitle:(NSString *)title {
     UIView *separator = [[UIView alloc] init];
     if (title.length > 0) {
-        self.titleLabel.text = [title uppercaseString];
+        self.titleLabel.text = [title uppercaseStringWithLocale:[NSLocale currentLocale]];
         self.titleLabel.textAlignment = NSTextAlignmentLeft;
         self.titleLabel.textColor = [WPStyleGuide whisperGrey];
     }
