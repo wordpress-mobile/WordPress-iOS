@@ -4,6 +4,7 @@
 #import "Blog.h"
 #import "NoteServiceRemote.h"
 #import "AccountService.h"
+#import "BlogService.h"
 
 const NSUInteger NoteKeepCount = 20;
 
@@ -115,6 +116,13 @@ const NSUInteger NoteKeepCount = 20;
 
 - (Blog *)blogForStatsEventNote:(Note *)note
 {
+    BlogService *blogService = [[BlogService alloc] initWithManagedObjectContext:self.managedObjectContext];
+    Blog *blog = [blogService blogByBlogId:note.metaSiteID];
+    
+    if (blog) {
+        return blog;
+    }
+    
     NSScanner *scanner = [NSScanner scannerWithString:note.subject];
     NSString *blogName;
     

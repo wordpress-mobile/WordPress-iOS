@@ -16,6 +16,7 @@
 #import "NoteService.h"
 #import "AccountService.h"
 #import "ContextManager.h"
+#import "StatsViewController.h"
 
 #import "ReaderPost.h"
 #import "ReaderPostDetailViewController.h"
@@ -297,15 +298,6 @@ typedef void (^NotificationsLoadPostBlock)(BOOL success, ReaderPost *post);
             NotificationsBigBadgeViewController *bigBadgeViewController = [[NotificationsBigBadgeViewController alloc] initWithNote: note];
             [self.navigationController pushViewController:bigBadgeViewController animated:YES];
         }
-    } else if ([note statsEvent]) {
-        NoteService *noteService = [[NoteService alloc] initWithManagedObjectContext:note.managedObjectContext];
-        Blog *blog = [noteService blogForStatsEventNote:note];
-        
-        if (blog) {
-            [[WordPressAppDelegate sharedWordPressApplicationDelegate] showStatsForBlog:blog];
-        } else {
-            [self.tableView deselectRowAtIndexPath:indexPath animated:YES];
-        }
     } else {
         [self.tableView deselectRowAtIndexPath:indexPath animated:YES];
     }
@@ -389,9 +381,8 @@ typedef void (^NotificationsLoadPostBlock)(BOOL success, ReaderPost *post);
     
     Note *note = [self.resultsController objectAtIndexPath:indexPath];
     BOOL hasDetailsView = [self noteHasDetailView:note];
-    BOOL isStatsNote = [note statsEvent];
     
-    if (!hasDetailsView && !isStatsNote) {
+    if (!hasDetailsView) {
         cell.accessoryType = UITableViewCellAccessoryNone;
         cell.selectionStyle = UITableViewCellSelectionStyleNone;
     }
