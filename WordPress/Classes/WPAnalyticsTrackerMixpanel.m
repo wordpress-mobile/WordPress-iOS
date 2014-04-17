@@ -308,6 +308,27 @@
         case WPAnalyticsStatPublishedPostWithTags:
             instructions = [WPAnalyticsTrackerMixpanelInstructionsForStat mixpanelInstructionsWithSuperPropertyAndPeoplePropertyIncrementor:@"number_of_posts_published_with_tags"];
             break;
+        case WPAnalyticsStatAddedSelfHostedSiteWithoutJetpack:
+            instructions = [WPAnalyticsTrackerMixpanelInstructionsForStat mixpanelInstructionsForEventName:@"Added Self Hosted Site Without Jetpack"];
+            break;
+        case WPAnalyticsStatAddedSelfHostedSiteButJetpackNotConnectedToWPCom:
+            instructions = [WPAnalyticsTrackerMixpanelInstructionsForStat mixpanelInstructionsForEventName:@"Added Self Hosted Site Not Connected to Wordpress.com"];
+            break;
+        case WPAnalyticsStatAddedSelfHostedSiteButSkippedConnectingToJetpack:
+            instructions = [WPAnalyticsTrackerMixpanelInstructionsForStat mixpanelInstructionsForEventName:@"Added Self Hosted Site and Skipped Connecting to Jetpack"];
+            break;
+        case WPAnalyticsStatAddedSelfHostedSiteAndSignedInToJetpack:
+            instructions = [WPAnalyticsTrackerMixpanelInstructionsForStat mixpanelInstructionsForEventName:@"Added Self Hosted Site and Signed into Jetpack"];
+            break;
+        case WPAnalyticsStatSelectedLearnMoreInConnectToJetpackScreen:
+            instructions = [WPAnalyticsTrackerMixpanelInstructionsForStat mixpanelInstructionsForEventName:@"Selected Learn More in Connect to Jetpack Screen"];
+            break;
+        case WPAnalyticsStatPerformJetpackSignInFromStatsScreen:
+            instructions = [WPAnalyticsTrackerMixpanelInstructionsForStat mixpanelInstructionsForEventName:@"Signed into Jetpack from Stats Screen"];
+            break;
+        case WPAnalyticsStatSelectedInstallJetpack:
+            instructions = [WPAnalyticsTrackerMixpanelInstructionsForStat mixpanelInstructionsForEventName:@"Selected Install Jetpack"];
+            break;
         default:
             break;
     }

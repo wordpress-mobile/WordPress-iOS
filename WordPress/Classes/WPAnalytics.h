@@ -50,6 +50,13 @@ typedef NS_ENUM(NSUInteger, WPAnalyticsStat) {
     WPAnalyticsStatNotificationApproved,
     WPAnalyticsStatNotificationTrashed,
     WPAnalyticsStatNotificationFlaggedAsSpam,
+    WPAnalyticsStatAddedSelfHostedSiteWithoutJetpack,
+    WPAnalyticsStatAddedSelfHostedSiteButJetpackNotConnectedToWPCom,
+    WPAnalyticsStatAddedSelfHostedSiteButSkippedConnectingToJetpack,
+    WPAnalyticsStatAddedSelfHostedSiteAndSignedInToJetpack,
+    WPAnalyticsStatSelectedLearnMoreInConnectToJetpackScreen,
+    WPAnalyticsStatPerformJetpackSignInFromStatsScreen,
+    WPAnalyticsStatSelectedInstallJetpack,
 };
 
 @protocol WPAnalyticsTracker;
