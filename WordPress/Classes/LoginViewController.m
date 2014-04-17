@@ -610,6 +610,11 @@ CGFloat const GeneralWalkthroughStatusBarOffset = 20.0;
     JetpackSettingsViewController *jetpackSettingsViewController = [[JetpackSettingsViewController alloc] initWithBlog:_blog];
     jetpackSettingsViewController.canBeSkipped = YES;
     [jetpackSettingsViewController setCompletionBlock:^(BOOL didAuthenticate) {
+        if (didAuthenticate) {
+            [WPAnalytics track:WPAnalyticsStatAddedSelfHostedSiteAndSignedInToJetpack];
+        } else {
+            [WPAnalytics track:WPAnalyticsStatAddedSelfHostedSiteButSkippedConnectingToJetpack];
+        }
         _blogConnectedToJetpack = didAuthenticate;
         [self dismiss];
     }];
@@ -847,8 +852,14 @@ CGFloat const GeneralWalkthroughStatusBarOffset = 20.0;
     [blogService syncBlog:_blog success:nil failure:nil];
 
     if ([_blog hasJetpack]) {
-        [self showJetpackAuthentication];
+        if ([_blog hasJetpackAndIsConnectedToWPCom]) {
+            [self showJetpackAuthentication];
+        } else {
+            [WPAnalytics track:WPAnalyticsStatAddedSelfHostedSiteButJetpackNotConnectedToWPCom];
+            [self dismiss];
+        }
     } else {
+        [WPAnalytics track:WPAnalyticsStatAddedSelfHostedSiteWithoutJetpack];
         [self dismiss];
     }
 }
