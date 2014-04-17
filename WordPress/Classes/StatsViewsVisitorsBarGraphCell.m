@@ -208,7 +208,7 @@ CGFloat heightFromRangeToRange(NSUInteger height, CGFloat maxOldRange, CGFloat m
     return label;
 }
 
-#pragma mark - UIAccessibilityTraits
+#pragma mark - UIAccessibility methods
 
 - (BOOL)isAccessibilityElement
 {
