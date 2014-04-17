@@ -31,10 +31,20 @@
     AccountService *accountService = [[AccountService alloc] initWithManagedObjectContext:context];
     WPAccount *account = [accountService defaultWordPressComAccount];
     BlogService *blogService = [[BlogService alloc] initWithManagedObjectContext:[[ContextManager sharedInstance] mainContext]];
+    
+    BOOL dotcom_user, jetpack_user;
+    if (account != nil) {
+        dotcom_user = true;
+        if ([[account jetpackBlogs] count] > 0) {
+            jetpack_user = true;
+        }
+    }
+    
     NSDictionary *properties = @{
                                  @"platform": @"iOS",
                                  @"session_count": @(sessionCount),
-                                 @"connected_to_dotcom": @(account != nil),
+                                 @"dotcom_user": @(dotcom_user),
+                                 @"jetpack_user": @(jetpack_user),
                                  @"number_of_blogs" : @([blogService blogCountForAllAccounts]) };
     [[Mixpanel sharedInstance] registerSuperProperties:properties];
     
@@ -321,6 +331,8 @@
             break;
         case WPAnalyticsStatAddedSelfHostedSiteAndSignedInToJetpack:
             instructions = [WPAnalyticsTrackerMixpanelInstructionsForStat mixpanelInstructionsForEventName:@"Added Self Hosted Site and Signed into Jetpack"];
+            [instructions addSuperPropertyToFlag:@"jetpack_user"];
+            [instructions addSuperPropertyToFlag:@"dotcom_user"];
             break;
         case WPAnalyticsStatSelectedLearnMoreInConnectToJetpackScreen:
             instructions = [WPAnalyticsTrackerMixpanelInstructionsForStat mixpanelInstructionsForEventName:@"Selected Learn More in Connect to Jetpack Screen"];
