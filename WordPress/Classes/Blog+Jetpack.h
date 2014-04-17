@@ -37,6 +37,13 @@ typedef NS_ENUM(NSInteger, BlogJetpackErrorCode) {
 - (BOOL)hasJetpack;
 
 /**
+ Returns a Boolean value indicating whether the blog has Jetpack installed AND is connected to WordPress.com
+ 
+ @return YES if the receiver blog has Jetpack installed and is connected to WordPress.com
+*/
+- (BOOL)hasJetpackAndIsConnectedToWPCom;
+
+/**
  Returns the jetpack version installed in the blog
  
  @return the jetpack version installed in the blog
