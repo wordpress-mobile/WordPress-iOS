@@ -337,7 +337,7 @@
         case WPAnalyticsStatSelectedLearnMoreInConnectToJetpackScreen:
             instructions = [WPAnalyticsTrackerMixpanelInstructionsForStat mixpanelInstructionsForEventName:@"Selected Learn More in Connect to Jetpack Screen"];
             break;
-        case WPAnalyticsStatPerformJetpackSignInFromStatsScreen:
+        case WPAnalyticsStatPerformedJetpackSignInFromStatsScreen:
             instructions = [WPAnalyticsTrackerMixpanelInstructionsForStat mixpanelInstructionsForEventName:@"Signed into Jetpack from Stats Screen"];
             break;
         case WPAnalyticsStatSelectedInstallJetpack:
