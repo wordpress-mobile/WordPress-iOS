@@ -31,10 +31,20 @@
     AccountService *accountService = [[AccountService alloc] initWithManagedObjectContext:context];
     WPAccount *account = [accountService defaultWordPressComAccount];
     BlogService *blogService = [[BlogService alloc] initWithManagedObjectContext:[[ContextManager sharedInstance] mainContext]];
+    
+    BOOL dotcom_user, jetpack_user;
+    if (account != nil) {
+        dotcom_user = true;
+        if ([[account jetpackBlogs] count] > 0) {
+            jetpack_user = true;
+        }
+    }
+    
     NSDictionary *properties = @{
                                  @"platform": @"iOS",
                                  @"session_count": @(sessionCount),
-                                 @"connected_to_dotcom": @(account != nil),
+                                 @"dotcom_user": @(dotcom_user),
+                                 @"jetpack_user": @(jetpack_user),
                                  @"number_of_blogs" : @([blogService blogCountForAllAccounts]) };
     [[Mixpanel sharedInstance] registerSuperProperties:properties];
     
@@ -114,8 +124,10 @@
         [self incrementProperty:instructions.propertyToIncrement forStat:instructions.statToAttachProperty];
     }
     
-    if ([instructions.superPropertyToFlag length] > 0) {
-        [self flagSuperProperty:instructions.superPropertyToFlag];
+    if ([instructions.superPropertiesToFlag count] > 0) {
+        for (NSString *superPropertyToFlag in instructions.superPropertiesToFlag) {
+            [self flagSuperProperty:superPropertyToFlag];
+        }
     }
 }
 
@@ -307,6 +319,31 @@
             break;
         case WPAnalyticsStatPublishedPostWithTags:
             instructions = [WPAnalyticsTrackerMixpanelInstructionsForStat mixpanelInstructionsWithSuperPropertyAndPeoplePropertyIncrementor:@"number_of_posts_published_with_tags"];
+            break;
+        case WPAnalyticsStatAddedSelfHostedSiteWithoutJetpack:
+            instructions = [WPAnalyticsTrackerMixpanelInstructionsForStat mixpanelInstructionsForEventName:@"Added Self Hosted Site Without Jetpack"];
+            break;
+        case WPAnalyticsStatAddedSelfHostedSiteButJetpackNotConnectedToWPCom:
+            instructions = [WPAnalyticsTrackerMixpanelInstructionsForStat mixpanelInstructionsForEventName:@"Added Self Hosted Site Not Connected to Wordpress.com"];
+            break;
+        case WPAnalyticsStatAddedSelfHostedSiteButSkippedConnectingToJetpack:
+            instructions = [WPAnalyticsTrackerMixpanelInstructionsForStat mixpanelInstructionsForEventName:@"Added Self Hosted Site and Skipped Connecting to Jetpack"];
+            break;
+        case WPAnalyticsStatAddedSelfHostedSiteAndSignedInToJetpack:
+            instructions = [WPAnalyticsTrackerMixpanelInstructionsForStat mixpanelInstructionsForEventName:@"Added Self Hosted Site and Signed into Jetpack"];
+            [instructions addSuperPropertyToFlag:@"jetpack_user"];
+            [instructions addSuperPropertyToFlag:@"dotcom_user"];
+            break;
+        case WPAnalyticsStatSelectedLearnMoreInConnectToJetpackScreen:
+            instructions = [WPAnalyticsTrackerMixpanelInstructionsForStat mixpanelInstructionsForEventName:@"Selected Learn More in Connect to Jetpack Screen"];
+            break;
+        case WPAnalyticsStatPerformedJetpackSignInFromStatsScreen:
+            instructions = [WPAnalyticsTrackerMixpanelInstructionsForStat mixpanelInstructionsForEventName:@"Signed into Jetpack from Stats Screen"];
+            [instructions addSuperPropertyToFlag:@"jetpack_user"];
+            [instructions addSuperPropertyToFlag:@"dotcom_user"];
+            break;
+        case WPAnalyticsStatSelectedInstallJetpack:
+            instructions = [WPAnalyticsTrackerMixpanelInstructionsForStat mixpanelInstructionsForEventName:@"Selected Install Jetpack"];
             break;
         default:
             break;
