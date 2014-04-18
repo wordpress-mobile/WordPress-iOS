@@ -339,6 +339,8 @@
             break;
         case WPAnalyticsStatPerformedJetpackSignInFromStatsScreen:
             instructions = [WPAnalyticsTrackerMixpanelInstructionsForStat mixpanelInstructionsForEventName:@"Signed into Jetpack from Stats Screen"];
+            [instructions addSuperPropertyToFlag:@"jetpack_user"];
+            [instructions addSuperPropertyToFlag:@"dotcom_user"];
             break;
         case WPAnalyticsStatSelectedInstallJetpack:
             instructions = [WPAnalyticsTrackerMixpanelInstructionsForStat mixpanelInstructionsForEventName:@"Selected Install Jetpack"];
