@@ -34,6 +34,7 @@
     DDLogMethod();
 	[super viewDidLoad];
     
+    self.title = NSLocalizedString(@"Add Category", @"The title on the add category screen");
     self.tableView.sectionFooterHeight = 0.0f;
 
     self.saveButtonItem = [[UIBarButtonItem alloc] initWithTitle:NSLocalizedString(@"Save", @"Save button label (saving content, ex: Post, Page, Comment, Category).")
