@@ -857,6 +857,8 @@ static NSInteger const IndexForMeTab = 2;
     NSArray *languages = [[NSUserDefaults standardUserDefaults] objectForKey:@"AppleLanguages"];
     NSString *currentLanguage = [languages objectAtIndex:0];
     BOOL extraDebug = [[NSUserDefaults standardUserDefaults] boolForKey:@"extra_debug"];
+    BlogService *blogService = [[BlogService alloc] initWithManagedObjectContext:[[ContextManager sharedInstance] mainContext]];
+    NSArray *blogs = [blogService blogsForAllAccounts];
     
     DDLogInfo(@"===========================================================================");
 	DDLogInfo(@"Launching WordPress for iOS %@...", [[NSBundle mainBundle] objectForInfoDictionaryKey:@"CFBundleVersion"]);
@@ -873,6 +875,16 @@ static NSInteger const IndexForMeTab = 2;
     DDLogInfo(@"UDID:      %@", [device wordpressIdentifier]);
     DDLogInfo(@"APN token: %@", [[NSUserDefaults standardUserDefaults] objectForKey:NotificationsDeviceToken]);
     DDLogInfo(@"Launch options: %@", launchOptions);
+    
+    if (blogs.count > 0) {
+        DDLogInfo(@"All blogs on device:");
+        for (Blog *blog in blogs) {
+            DDLogInfo(@"Name: %@ URL: %@ XML-RPC: %@ isWpCom: %@ blogId: %@ jetpackAccount: %@", blog.blogName, blog.url, blog.xmlrpc, blog.account.isWpcom ? @"YES" : @"NO", blog.blogID, !!blog.jetpackAccount ? @"PRESENT" : @"NONE");
+        }
+    } else {
+        DDLogInfo(@"No blogs configured on device.");
+    }
+    
     DDLogInfo(@"===========================================================================");
 }
 
