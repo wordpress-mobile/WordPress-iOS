@@ -1,5 +1,11 @@
 #import "WPAnalyticsTrackerMixpanelInstructionsForStat.h"
 
+@interface WPAnalyticsTrackerMixpanelInstructionsForStat () {
+    NSMutableArray *_superPropertiesToFlag;
+}
+
+@end
+
 @implementation WPAnalyticsTrackerMixpanelInstructionsForStat
 
 - (instancetype)init
@@ -46,6 +52,11 @@
     WPAnalyticsTrackerMixpanelInstructionsForStat *instructions = [[[self class] alloc] init];
     [instructions setSuperPropertyAndPeoplePropertyToIncrement:property];
     return instructions;
+}
+
+- (NSMutableArray *)superPropertiesToFlag
+{
+    return [_superPropertiesToFlag copy];
 }
 
 - (void)setSuperPropertyAndPeoplePropertyToIncrement:(NSString *)property
