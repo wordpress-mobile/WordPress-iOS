@@ -511,7 +511,25 @@ static NSInteger const IndexForMeTab = 2;
             }
         }
     }
+    
+    // If the current view controller is selected already and it's at its root then scroll to the top
+    if (tabBarController.selectedViewController == viewController) {
+        if ([viewController isKindOfClass:[UINavigationController class]]) {
+            UINavigationController *navController = (UINavigationController *)viewController;
+            if ([navController topViewController] == [[navController viewControllers] firstObject] &&
+                [[[navController topViewController] view] isKindOfClass:[UITableView class]]) {
+                UITableView *tableView = (UITableView *)[[navController topViewController] view];
+                [tableView scrollToRowAtIndexPath:[NSIndexPath indexPathForRow:0 inSection:0] atScrollPosition:UITableViewScrollPositionTop animated:YES];
+            }
+        }
+    }
+    
     return YES;
+}
+
+- (void)tabBarController:(UITabBarController *)tabBarController didSelectViewController:(UIViewController *)viewController
+{
+    
 }
 
 
