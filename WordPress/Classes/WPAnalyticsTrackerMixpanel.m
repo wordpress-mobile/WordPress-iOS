@@ -51,7 +51,6 @@
     NSString *username = account.username;
     if (account && [username length] > 0) {
         [[Mixpanel sharedInstance] identify:username];
-        [[Mixpanel sharedInstance].people increment:@"Application Opened" by:@(1)];
         [[Mixpanel sharedInstance].people set:@{ @"$username": username, @"$first_name" : username }];
     }
 }
@@ -158,6 +157,7 @@
     switch (stat) {
         case WPAnalyticsStatApplicationOpened:
             instructions = [WPAnalyticsTrackerMixpanelInstructionsForStat mixpanelInstructionsForEventName:@"Application Opened"];
+            [instructions setPeoplePropertyToIncrement:@"Application Opened"];
             break;
         case WPAnalyticsStatApplicationClosed:
             instructions = [WPAnalyticsTrackerMixpanelInstructionsForStat mixpanelInstructionsForEventName:@"Application Closed"];
