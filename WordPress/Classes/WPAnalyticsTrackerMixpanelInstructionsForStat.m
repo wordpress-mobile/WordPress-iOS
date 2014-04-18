@@ -2,6 +2,7 @@
 
 @interface WPAnalyticsTrackerMixpanelInstructionsForStat () {
     NSMutableArray *_superPropertiesToFlag;
+    NSMutableDictionary *_peoplePropertiesToAssign;
 }
 
 @end
@@ -13,6 +14,7 @@
     if (self = [super init]) {
         _disableTrackingForSelfHosted = NO;
         _superPropertiesToFlag = [[NSMutableArray alloc] init];
+        _peoplePropertiesToAssign = [[NSMutableDictionary alloc] init];
     }
     return self;
 }
@@ -65,5 +67,17 @@
     [self addSuperPropertyToFlag:property];
     self.peoplePropertyToIncrement = property;
 }
+
+- (void)setPeoplePropertyWithCurrentDate:(NSString *)property{
+    [self setPeopleProperty:property toValue:[NSDate date]];
+}
+
+- (void)setPeopleProperty:(NSString *)property toValue:(id)value
+{
+    NSParameterAssert(property != nil);
+    NSParameterAssert(value != nil);
+    _peoplePropertiesToAssign[property] = value;
+}
+
 
 @end
