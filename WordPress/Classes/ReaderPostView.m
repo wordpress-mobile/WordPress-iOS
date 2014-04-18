@@ -144,8 +144,9 @@ static NSInteger const MaxNumberOfLinesForTitleForSummary = 3;
     
     NSInteger newline = [summary rangeOfString:@"\n"].location;
     
-    if (newline != NSNotFound)
+    if (newline != NSNotFound) {
         summary = [summary substringToIndex:newline];
+    }
     
     NSMutableParagraphStyle *style = [[NSMutableParagraphStyle alloc] init];
     [style setLineHeightMultiple:RPVLineHeightMultiple];
