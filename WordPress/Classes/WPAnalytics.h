@@ -55,7 +55,7 @@ typedef NS_ENUM(NSUInteger, WPAnalyticsStat) {
     WPAnalyticsStatAddedSelfHostedSiteButSkippedConnectingToJetpack,
     WPAnalyticsStatAddedSelfHostedSiteAndSignedInToJetpack,
     WPAnalyticsStatSelectedLearnMoreInConnectToJetpackScreen,
-    WPAnalyticsStatPerformJetpackSignInFromStatsScreen,
+    WPAnalyticsStatPerformedJetpackSignInFromStatsScreen,
     WPAnalyticsStatSelectedInstallJetpack,
 };
 
