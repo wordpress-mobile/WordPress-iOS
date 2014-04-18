@@ -124,11 +124,13 @@
         [self incrementProperty:instructions.propertyToIncrement forStat:instructions.statToAttachProperty];
     }
     
-    if ([instructions.superPropertiesToFlag count] > 0) {
-        for (NSString *superPropertyToFlag in instructions.superPropertiesToFlag) {
-            [self flagSuperProperty:superPropertyToFlag];
-        }
-    }
+    [instructions.superPropertiesToFlag enumerateObjectsUsingBlock:^(id obj, NSUInteger idx, BOOL *stop) {
+        [self flagSuperProperty:obj];
+    }];
+    
+    [instructions.peoplePropertiesToAssign enumerateKeysAndObjectsUsingBlock:^(id key, id obj, BOOL *stop) {
+        [self setPeopleProperty:key toValue:obj];
+    }];
 }
 
 - (void)incrementPeopleProperty:(NSString *)property
@@ -149,6 +151,11 @@
     NSMutableDictionary *superProperties = [[NSMutableDictionary alloc] initWithDictionary:[Mixpanel sharedInstance].currentSuperProperties];
     superProperties[property] = @(YES);
     [[Mixpanel sharedInstance] registerSuperProperties:superProperties];
+}
+
+- (void)setPeopleProperty:(NSString *)property toValue:(id)value
+{
+    [[Mixpanel sharedInstance].people set:@{ property : value } ];
 }
 
 - (WPAnalyticsTrackerMixpanelInstructionsForStat *)instructionsForStat:(WPAnalyticsStat )stat
