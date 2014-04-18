@@ -527,12 +527,6 @@ static NSInteger const IndexForMeTab = 2;
     return YES;
 }
 
-- (void)tabBarController:(UITabBarController *)tabBarController didSelectViewController:(UIViewController *)viewController
-{
-    
-}
-
-
 #pragma mark - Application directories
 
 - (void)changeCurrentDirectory {
