@@ -19,6 +19,6 @@
 
 - (void)setSuperPropertyAndPeoplePropertyToIncrement:(NSString *)property;
 - (void)addSuperPropertyToFlag:(NSString *)property;
-- (void)setPeoplePropertyWithCurrentDate:(NSString *)property;
+- (void)setCurrentDateForPeopleProperty:(NSString *)property;
 
 @end
