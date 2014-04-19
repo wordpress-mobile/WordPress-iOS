@@ -129,7 +129,7 @@
     }];
     
     [instructions.peoplePropertiesToAssign enumerateKeysAndObjectsUsingBlock:^(id key, id obj, BOOL *stop) {
-        [self setPeopleProperty:key toValue:obj];
+        [self setValue:obj forPeopleProperty:key];
     }];
 }
 
@@ -153,7 +153,7 @@
     [[Mixpanel sharedInstance] registerSuperProperties:superProperties];
 }
 
-- (void)setPeopleProperty:(NSString *)property toValue:(id)value
+- (void)setValue:(id)value forPeopleProperty:(NSString *)property
 {
     [[Mixpanel sharedInstance].people set:@{ property : value } ];
 }
