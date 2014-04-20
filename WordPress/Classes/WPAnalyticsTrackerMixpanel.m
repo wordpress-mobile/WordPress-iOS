@@ -124,11 +124,13 @@
         [self incrementProperty:instructions.propertyToIncrement forStat:instructions.statToAttachProperty];
     }
     
-    if ([instructions.superPropertiesToFlag count] > 0) {
-        for (NSString *superPropertyToFlag in instructions.superPropertiesToFlag) {
-            [self flagSuperProperty:superPropertyToFlag];
-        }
-    }
+    [instructions.superPropertiesToFlag enumerateObjectsUsingBlock:^(id obj, NSUInteger idx, BOOL *stop) {
+        [self flagSuperProperty:obj];
+    }];
+    
+    [instructions.peoplePropertiesToAssign enumerateKeysAndObjectsUsingBlock:^(id key, id obj, BOOL *stop) {
+        [self setValue:obj forPeopleProperty:key];
+    }];
 }
 
 - (void)incrementPeopleProperty:(NSString *)property
@@ -151,6 +153,11 @@
     [[Mixpanel sharedInstance] registerSuperProperties:superProperties];
 }
 
+- (void)setValue:(id)value forPeopleProperty:(NSString *)property
+{
+    [[Mixpanel sharedInstance].people set:@{ property : value } ];
+}
+
 - (WPAnalyticsTrackerMixpanelInstructionsForStat *)instructionsForStat:(WPAnalyticsStat )stat
 {
     WPAnalyticsTrackerMixpanelInstructionsForStat *instructions;
@@ -165,6 +172,7 @@
         case WPAnalyticsStatThemesAccessedThemeBrowser:
             instructions = [WPAnalyticsTrackerMixpanelInstructionsForStat mixpanelInstructionsForEventName:@"Themes - Accessed Theme Browser"];
             [instructions setSuperPropertyAndPeoplePropertyToIncrement:@"number_of_times_accessed_theme_browser"];
+            [instructions setCurrentDateForPeopleProperty:@"last_time_accessed_theme_browser"];
             break;
         case WPAnalyticsStatThemesChangedTheme:
             instructions = [WPAnalyticsTrackerMixpanelInstructionsForStat mixpanelInstructionsForEventName:@"Themes - Changed Theme"];
@@ -173,6 +181,7 @@
         case WPAnalyticsStatReaderAccessed:
             instructions = [WPAnalyticsTrackerMixpanelInstructionsForStat mixpanelInstructionsForEventName:@"Reader - Accessed"];
             [instructions setSuperPropertyAndPeoplePropertyToIncrement:@"number_of_times_accessed_reader"];
+            [instructions setCurrentDateForPeopleProperty:@"last_time_accessed_reader"];
             break;
         case WPAnalyticsStatReaderOpenedArticle:
             instructions = [WPAnalyticsTrackerMixpanelInstructionsForStat mixpanelInstructionsForEventName:@"Reader - Opened Article"];
@@ -181,10 +190,12 @@
         case WPAnalyticsStatReaderLikedArticle:
             instructions = [WPAnalyticsTrackerMixpanelInstructionsForStat mixpanelInstructionsForEventName:@"Reader - Liked Article"];
             [instructions setSuperPropertyAndPeoplePropertyToIncrement:@"number_of_times_liked_article"];
+            [instructions setCurrentDateForPeopleProperty:@"last_time_liked_reader_article"];
             break;
         case WPAnalyticsStatReaderRebloggedArticle:
             instructions = [WPAnalyticsTrackerMixpanelInstructionsForStat mixpanelInstructionsForEventName:@"Reader - Reblogged Article"];
             [instructions setSuperPropertyAndPeoplePropertyToIncrement:@"number_of_times_reblogged_article"];
+            [instructions setCurrentDateForPeopleProperty:@"last_time_reblogged_article"];
             break;
         case WPAnalyticsStatReaderInfiniteScroll:
             instructions = [WPAnalyticsTrackerMixpanelInstructionsForStat mixpanelInstructionsForEventName:@"Reader - Infinite Scroll"];
@@ -204,14 +215,17 @@
         case WPAnalyticsStatReaderLoadedFreshlyPressed:
             instructions = [WPAnalyticsTrackerMixpanelInstructionsForStat mixpanelInstructionsForEventName:@"Reader - Loaded Freshly Pressed"];
             [instructions setSuperPropertyAndPeoplePropertyToIncrement:@"number_of_times_loaded_freshly_pressed"];
+            [instructions setCurrentDateForPeopleProperty:@"last_time_loaded_freshly_pressed"];
             break;
         case WPAnalyticsStatReaderCommentedOnArticle:
             instructions = [WPAnalyticsTrackerMixpanelInstructionsForStat mixpanelInstructionsForEventName:@"Reader - Commented on Article"];
             [instructions setSuperPropertyAndPeoplePropertyToIncrement:@"number_of_times_commented_on_reader_article"];
+            [instructions setCurrentDateForPeopleProperty:@"last_time_commented_on_article"];
             break;
         case WPAnalyticsStatStatsAccessed:
             instructions = [WPAnalyticsTrackerMixpanelInstructionsForStat mixpanelInstructionsForEventName:@"Stats - Accessed"];
             [instructions setSuperPropertyAndPeoplePropertyToIncrement:@"number_of_times_accessed_stats"];
+            [instructions setCurrentDateForPeopleProperty:@"last_time_accessed_stats"];
             break;
         case WPAnalyticsStatEditorCreatedPost:
             instructions = [WPAnalyticsTrackerMixpanelInstructionsForStat mixpanelInstructionsForEventName:@"Editor - Created Post"];
@@ -228,6 +242,7 @@
         case WPAnalyticsStatEditorPublishedPost:
             instructions = [WPAnalyticsTrackerMixpanelInstructionsForStat mixpanelInstructionsForEventName:@"Editor - Published Post"];
             [instructions setSuperPropertyAndPeoplePropertyToIncrement:@"number_of_times_editor_published_post"];
+            [instructions setCurrentDateForPeopleProperty:@"last_time_published_post"];
             break;
         case WPAnalyticsStatEditorUpdatedPost:
             instructions = [WPAnalyticsTrackerMixpanelInstructionsForStat mixpanelInstructionsForEventName:@"Editor - Updated Post"];
@@ -236,6 +251,7 @@
         case WPAnalyticsStatNotificationsAccessed:
             instructions = [WPAnalyticsTrackerMixpanelInstructionsForStat mixpanelInstructionsForEventName:@"Notifications - Accessed"];
             [instructions setSuperPropertyAndPeoplePropertyToIncrement:@"number_of_times_accessed_notifications"];
+            [instructions setCurrentDateForPeopleProperty:@"last_time_accessed_notifications"];
             break;
         case WPAnalyticsStatNotificationsOpenedNotificationDetails:
             instructions = [WPAnalyticsTrackerMixpanelInstructionsForStat mixpanelInstructionsForEventName:@"Notifications - Opened Notification Details"];
@@ -265,6 +281,7 @@
             break;
         case WPAnalyticsStatCreatedAccount:
             instructions = [WPAnalyticsTrackerMixpanelInstructionsForStat mixpanelInstructionsForEventName:@"Created Account"];
+            [instructions setCurrentDateForPeopleProperty:@"$created"];
             break;
         case WPAnalyticsStatSharedItemViaEmail:
             instructions = [WPAnalyticsTrackerMixpanelInstructionsForStat mixpanelInstructionsWithSuperPropertyAndPeoplePropertyIncrementor:@"number_of_items_shared_via_email"];
@@ -292,6 +309,7 @@
             break;
         case WPAnalyticsStatSharedItem:
             instructions = [WPAnalyticsTrackerMixpanelInstructionsForStat mixpanelInstructionsWithSuperPropertyAndPeoplePropertyIncrementor:@"number_of_items_shared"];
+            [instructions setCurrentDateForPeopleProperty:@"last_time_shared_article"];
             break;
         case WPAnalyticsStatNotificationPerformedAction:
             instructions = [WPAnalyticsTrackerMixpanelInstructionsForStat mixpanelInstructionsWithSuperPropertyAndPeoplePropertyIncrementor:@"number_of_notifications_performed_action_against"];
