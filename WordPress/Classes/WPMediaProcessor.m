@@ -57,14 +57,14 @@ extern NSString *const MediaShouldInsertBelowNotification;
                 //It will return false if something goes wrong
                 success = CGImageDestinationFinalize(destination);
             } else {
-                DDLogWarn(@"***Could not create image destination ***");
+                DDLogWarn(@"Media processor could not create image destination");
             }
         } else {
-            DDLogWarn(@"***Could not create image source ***");
+            DDLogWarn(@"Media processor could not create image source");
         }
 		
 		if(!success) {
-            DDLogWarn(@"***Could not create data from image destination ***");
+            DDLogWarn(@"Media processor could not create data from image destination");
 			//write the data without EXIF to disk
 			NSFileManager *fileManager = [NSFileManager defaultManager];
 			[fileManager createFileAtPath:filepath contents:imageData attributes:nil];
@@ -94,7 +94,7 @@ extern NSString *const MediaShouldInsertBelowNotification;
     
     [imageMedia uploadWithSuccess:^{
         if ([imageMedia isDeleted]) {
-            NSLog(@"Media deleted while uploading (%@)", imageMedia);
+            DDLogWarn(@"Media processor found deleted media while uploading (%@)", imageMedia);
             return;
         }
 //        if (_selectingFeaturedImage) {
@@ -106,6 +106,7 @@ extern NSString *const MediaShouldInsertBelowNotification;
         [imageMedia save];
     } failure:^(NSError *error) {
         if (error.domain == NSURLErrorDomain && error.code == NSURLErrorCancelled) {
+            DDLogWarn(@"Media processor failed with cancelled upload: %@", error.localizedDescription);
             return;
         }
         
