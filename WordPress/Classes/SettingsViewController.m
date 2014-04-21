@@ -97,7 +97,7 @@ CGFloat const blavatarImageViewSize = 43.f;
     // Our settings bundle stored numeric values as strings so we use strings here for backward compatibility.
     NSDictionary *imageResizeDict = [NSDictionary dictionaryWithObjectsAndKeys:@"0", @"DefaultValue", 
                                      @"media_resize_preference", @"Key", 
-                                     NSLocalizedString(@"Image Quality", @""), @"Title",
+                                     NSLocalizedString(@"Image Dimensions", @""), @"Title",
                                      [NSArray arrayWithObjects:NSLocalizedString(@"Always Ask", @"Always Ask (ask for size on every upload) - Image Quality setting"),
                                       NSLocalizedString(@"Small", @"Small - Image Quality setting"),
                                       NSLocalizedString(@"Medium", @"Medium - Image Quality setting"),
