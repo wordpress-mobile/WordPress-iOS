@@ -23,8 +23,4 @@
     [self.sections addObject:[NSNumber numberWithInteger:PostSettingsSectionMeta]];
 }
 
-- (NSInteger)getMetaIndexSection {
-    return 0;
-}
-
 @end
