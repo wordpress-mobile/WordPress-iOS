@@ -513,7 +513,7 @@ typedef NS_ENUM(NSInteger, TotalFollowersShareRow) {
 
 - (BOOL)tableView:(UITableView *)tableView shouldHighlightRowAtIndexPath:(NSIndexPath *)indexPath {
     StatsTitleCountItem *item = [self itemSelectedAtIndexPath:indexPath];
-    return [item isKindOfClass:[StatsGroup class]] || item.URL != nil;
+    return [item isKindOfClass:[StatsGroup class]] || item.URL != nil || indexPath.section == StatsSectionLinkToWebview;
 }
 
 - (StatsTitleCountItem *)itemSelectedAtIndexPath:(NSIndexPath *)indexPath {
@@ -574,6 +574,8 @@ typedef NS_ENUM(NSInteger, TotalFollowersShareRow) {
 }
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
+    [tableView deselectRowAtIndexPath:indexPath animated:YES];
+    
     StatsTitleCountItem *item = [self itemSelectedAtIndexPath:indexPath];
     if ([item isKindOfClass:[StatsGroup class]]) {
         [self toggleGroupExpanded:indexPath childCount:[(StatsGroup *)item children].count];
