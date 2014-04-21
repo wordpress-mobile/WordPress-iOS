@@ -564,7 +564,13 @@ typedef NS_ENUM(NSInteger, TotalFollowersShareRow) {
         // Outside and above the expanded group
         // or there was no expanded group to worry about!
     }
-    return sectionResults[indexPath.row-offset];
+    NSInteger index = indexPath.row - offset;
+    
+    if (index < 0) {
+        return nil;
+    }
+    
+    return sectionResults[index];
 }
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
