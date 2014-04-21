@@ -190,7 +190,7 @@
     cell = (WPTableViewCell *)[self.tableView dequeueReusableCellWithIdentifier:parentCategoryCellIdentifier];
     if (!cell) {
         cell = [[WPTableViewCell alloc] initWithStyle:UITableViewCellStyleValue1 reuseIdentifier:parentCategoryCellIdentifier];
-        cell.textLabel.font = [WPStyleGuide tableviewSectionHeaderFont];
+        cell.textLabel.font = [WPStyleGuide tableviewTextFont];
         cell.textLabel.textColor = [WPStyleGuide whisperGrey];
         cell.textLabel.text = NSLocalizedString(@"Parent Category", @"Placeholder to set a parent category for a new category.");
         
