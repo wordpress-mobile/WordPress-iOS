@@ -305,11 +305,13 @@ static NSString *const TableViewActivityCellIdentifier = @"TableViewActivityCell
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
     CGFloat width = IS_IPAD ? WPTableViewFixedWidth : CGRectGetWidth(self.tableView.frame);
-    if (indexPath.section == PostSettingsSectionGeolocation && [self post].geolocation) {
+    NSInteger sectionId = [[self.sections objectAtIndex:indexPath.section] integerValue];
+    
+    if (sectionId == PostSettingsSectionGeolocation && [self post].geolocation) {
         return ceilf(width * 0.75f);
     }
     
-    if (indexPath.section == PostSettingsSectionFeaturedImage) {
+    if (sectionId == PostSettingsSectionFeaturedImage) {
         if (self.featuredImage) {
             CGFloat cellMargins = (2 * PostFeaturedImageCellMargin);
             CGFloat imageWidth = self.featuredImage.size.width;
@@ -320,7 +322,7 @@ static NSString *const TableViewActivityCellIdentifier = @"TableViewActivityCell
         }
     }
     
-    if (indexPath.section == [self.sections indexOfObject:[NSNumber numberWithInteger:PostSettingsSectionMeta]]) {
+    if (sectionId == PostSettingsSectionMeta) {
         if (indexPath.row == RowIndexForDatePicker && self.datePicker) {
             return CGRectGetHeight(self.datePicker.frame);
         }
