@@ -236,11 +236,6 @@ static NSString *const TableViewActivityCellIdentifier = @"TableViewActivityCell
     }
 }
 
-// This is overridden in PageSettingsViewController
-- (NSInteger)getMetaIndexSection {
-    return PostSettingsSectionMeta;
-}
-
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
     if (!self.sections) {
         [self configureSections];
@@ -325,7 +320,7 @@ static NSString *const TableViewActivityCellIdentifier = @"TableViewActivityCell
         }
     }
     
-    if (indexPath.section == PostSettingsSectionMeta) {
+    if (indexPath.section == [self.sections indexOfObject:[NSNumber numberWithInteger:PostSettingsSectionMeta]]) {
         if (indexPath.row == RowIndexForDatePicker && self.datePicker) {
             return CGRectGetHeight(self.datePicker.frame);
         }
@@ -659,7 +654,8 @@ static NSString *const TableViewActivityCellIdentifier = @"TableViewActivityCell
     }
     self.datePicker.frame = frame;
     
-    NSIndexPath *indexPath = [NSIndexPath indexPathForRow:RowIndexForDatePicker inSection:[self getMetaIndexSection]];
+    NSUInteger sec = [self.sections indexOfObject:[NSNumber numberWithInteger:PostSettingsSectionMeta]];
+    NSIndexPath *indexPath = [NSIndexPath indexPathForRow:RowIndexForDatePicker inSection:sec];
     [self.tableView reloadRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationFade];
 }
 
