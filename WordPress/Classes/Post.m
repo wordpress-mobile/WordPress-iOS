@@ -482,7 +482,6 @@
 }
 
 - (void)deletePostWithSuccess:(void (^)())success failure:(void (^)(NSError *error))failure {
-    DDLogMethod();
     BOOL remote = [self hasRemote];
     if (remote) {
         NSArray *parameters = [NSArray arrayWithObjects:@"unused", self.postID, self.blog.username, self.blog.password, nil];
