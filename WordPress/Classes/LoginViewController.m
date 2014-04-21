@@ -611,9 +611,9 @@ CGFloat const GeneralWalkthroughStatusBarOffset = 20.0;
     jetpackSettingsViewController.canBeSkipped = YES;
     [jetpackSettingsViewController setCompletionBlock:^(BOOL didAuthenticate) {
         if (didAuthenticate) {
-            [WPAnalytics track:WPAnalyticsStatAddedSelfHostedSiteAndSignedInToJetpack];
+            [WPAnalytics track:WPAnalyticsStatSignedInToJetpack];
         } else {
-            [WPAnalytics track:WPAnalyticsStatAddedSelfHostedSiteButSkippedConnectingToJetpack];
+            [WPAnalytics track:WPAnalyticsStatSkippedConnectingToJetpack];
         }
         _blogConnectedToJetpack = didAuthenticate;
         [self dismiss];
@@ -829,6 +829,7 @@ CGFloat const GeneralWalkthroughStatusBarOffset = 20.0;
 
 - (void)createSelfHostedAccountAndBlogWithUsername:(NSString *)username password:(NSString *)password xmlrpc:(NSString *)xmlrpc options:(NSDictionary *)options
 {
+    [WPAnalytics track:WPAnalyticsStatAddedSelfHostedSite];
     NSManagedObjectContext *context = [[ContextManager sharedInstance] mainContext];
     AccountService *accountService = [[AccountService alloc] initWithManagedObjectContext:context];
     BlogService *blogService = [[BlogService alloc] initWithManagedObjectContext:context];
@@ -859,7 +860,6 @@ CGFloat const GeneralWalkthroughStatusBarOffset = 20.0;
             [self dismiss];
         }
     } else {
-        [WPAnalytics track:WPAnalyticsStatAddedSelfHostedSiteWithoutJetpack];
         [self dismiss];
     }
 }
