@@ -32,20 +32,20 @@ extern NSString *const MediaShouldInsertBelowNotification;
 		CGImageSourceRef  source = NULL;
         CGImageDestinationRef destination = NULL;
 		BOOL success = NO;
-        //this will be the data CGImageDestinationRef will write into
-        NSMutableData *dest_data = [NSMutableData data];
+        // This will be the data CGImageDestinationRef will write into
+        NSMutableData *imageData = [NSMutableData data];
         
 		source = CGImageSourceCreateWithData((__bridge CFDataRef)imageData, NULL);
         if (source) {
             CFStringRef UTI = CGImageSourceGetType(source); //this is the type of image (e.g., public.jpeg)
-            destination = CGImageDestinationCreateWithData((__bridge CFMutableDataRef)dest_data,UTI,1,NULL);
+            destination = CGImageDestinationCreateWithData((__bridge CFMutableDataRef)imageData,UTI,1,NULL);
             
             if(destination) {
-                //add the image contained in the image source to the destination, copying the old metadata
-                CGImageDestinationAddImageFromSource(destination,source,0, (__bridge CFDictionaryRef) metadata);
+                // Add the image contained in the image source to the destination, copying the old metadata
+                CGImageDestinationAddImageFromSource(destination, source,0, (__bridge CFDictionaryRef) metadata);
                 
-                //tell the destination to write the image data and metadata into our data object.
-                //It will return false if something goes wrong
+                // Tell the destination to write the image data and metadata into our data object
+                // It will return false if something goes wrong
                 success = CGImageDestinationFinalize(destination);
             } else {
                 DDLogWarn(@"Media processor could not create image destination");
@@ -54,14 +54,13 @@ extern NSString *const MediaShouldInsertBelowNotification;
             DDLogWarn(@"Media processor could not create image source");
         }
 		
-		if(!success) {
+		if (!success) {
             DDLogWarn(@"Media processor could not create data from image destination");
-			//write the data without EXIF to disk
+			// Write the data without EXIF to disk
 			NSFileManager *fileManager = [NSFileManager defaultManager];
 			[fileManager createFileAtPath:filepath contents:imageData attributes:nil];
 		} else {
-			//write it to disk
-			[dest_data writeToFile:filepath atomically:YES];
+			[imageData writeToFile:filepath atomically:YES];
 		}
     } else {
 		NSFileManager *fileManager = [NSFileManager defaultManager];
@@ -215,8 +214,9 @@ extern NSString *const MediaShouldInsertBelowNotification;
        
         return nil;
     }
-    NSData *imageJPEG = [NSData dataWithBytesNoCopy:buf length:[rep size]
-                                      freeWhenDone:YES];  // YES means free malloc'ed buf that backs this when deallocated
+    NSData *imageJPEG = [NSData dataWithBytesNoCopy:buf
+                                             length:[rep size]
+                                       freeWhenDone:YES];  // YES means free malloc'ed buf that backs this when deallocated
    
     CGImageSourceRef  source ;
     source = CGImageSourceCreateWithData((__bridge CFDataRef)imageJPEG, NULL);
@@ -224,11 +224,11 @@ extern NSString *const MediaShouldInsertBelowNotification;
     NSDictionary *metadata = (NSDictionary *) CFBridgingRelease(CGImageSourceCopyPropertiesAtIndex(source,0,NULL));
     CFRelease(source);
 
-    //make the metadata dictionary mutable so we can remove properties to it
+    // Make the metadata dictionary mutable so we can remove properties from it
     NSMutableDictionary *metadataAsMutable = [metadata mutableCopy];
    
     if (!enableGeolocation) {
-       //we should remove the GPS info if the blog has the geolocation set to off       
+       // We should remove the GPS info if the blog has the geolocation set to off       
        [metadataAsMutable removeObjectForKey:@"{GPS}"];
     }
     [metadataAsMutable removeObjectForKey:@"Orientation"];
