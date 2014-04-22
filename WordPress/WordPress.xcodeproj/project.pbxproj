@@ -275,6 +275,7 @@
 		462F4E0B18369F0B0028D2F8 /* BlogListViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 462F4E0918369F0B0028D2F8 /* BlogListViewController.m */; };
 		462F4E0E18369F300028D2F8 /* WPTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 462F4E0D18369F300028D2F8 /* WPTableViewCell.m */; };
 		462F4E10183867AE0028D2F8 /* Merriweather-Bold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 462F4E0F183867AE0028D2F8 /* Merriweather-Bold.ttf */; };
+		4673E8C718FC5ED800F14EDE /* WPMediaProcessor.m in Sources */ = {isa = PBXBuildFile; fileRef = 4673E8C618FC5ED800F14EDE /* WPMediaProcessor.m */; };
 		46E4792C185BD2B8007AA76F /* CommentView.m in Sources */ = {isa = PBXBuildFile; fileRef = 46E4792B185BD2B8007AA76F /* CommentView.m */; };
 		46F84611185A6E98009D0DA5 /* WPContentView.m in Sources */ = {isa = PBXBuildFile; fileRef = 46F84610185A6E98009D0DA5 /* WPContentView.m */; };
 		46F8714B1838BB4E00BC149B /* reader-postaction-tag.png in Resources */ = {isa = PBXBuildFile; fileRef = 46F871491838BB4E00BC149B /* reader-postaction-tag.png */; };
@@ -1326,6 +1327,8 @@
 		462F4E0C18369F300028D2F8 /* WPTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WPTableViewCell.h; sourceTree = "<group>"; };
 		462F4E0D18369F300028D2F8 /* WPTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WPTableViewCell.m; sourceTree = "<group>"; };
 		462F4E0F183867AE0028D2F8 /* Merriweather-Bold.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Merriweather-Bold.ttf"; sourceTree = "<group>"; };
+		4673E8C518FC5ED800F14EDE /* WPMediaProcessor.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WPMediaProcessor.h; sourceTree = "<group>"; };
+		4673E8C618FC5ED800F14EDE /* WPMediaProcessor.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WPMediaProcessor.m; sourceTree = "<group>"; };
 		46E4792A185BD2B8007AA76F /* CommentView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CommentView.h; sourceTree = "<group>"; };
 		46E4792B185BD2B8007AA76F /* CommentView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CommentView.m; sourceTree = "<group>"; };
 		46F8460F185A6E98009D0DA5 /* WPContentView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WPContentView.h; sourceTree = "<group>"; };
@@ -2915,6 +2918,8 @@
 		5DA5BF4A18E32DE2005F11F9 /* Media */ = {
 			isa = PBXGroup;
 			children = (
+				4673E8C518FC5ED800F14EDE /* WPMediaProcessor.h */,
+				4673E8C618FC5ED800F14EDE /* WPMediaProcessor.m */,
 				5DA5BF2718E32DCF005F11F9 /* EditMediaViewController.h */,
 				5DA5BF2818E32DCF005F11F9 /* EditMediaViewController.m */,
 				5DA5BF2918E32DCF005F11F9 /* EditMediaViewController.xib */,
@@ -5409,6 +5414,7 @@
 				E15051CB16CA5DDB00D3DDDC /* Blog+Jetpack.m in Sources */,
 				5DA5BF3F18E32DCF005F11F9 /* InputViewButton.m in Sources */,
 				85325A5917BC42E5008E87D1 /* NewPostTableViewCell.m in Sources */,
+				4673E8C718FC5ED800F14EDE /* WPMediaProcessor.m in Sources */,
 				93FA59E018D8986D001446BC /* CategoryServiceRemote.m in Sources */,
 				85D8055D171631F10075EEAC /* SelectWPComLanguageViewController.m in Sources */,
 				E23EEC5E185A72C100F4DE2A /* WPContentCell.m in Sources */,
