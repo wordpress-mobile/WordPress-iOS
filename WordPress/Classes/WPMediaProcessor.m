@@ -16,26 +16,26 @@ extern NSString *const MediaShouldInsertBelowNotification;
 
 - (void)processImage:(UIImage *)theImage media:(Media *)imageMedia metadata:(NSDictionary *)metadata
 {
-	NSData *imageData = UIImageJPEGRepresentation(theImage, WPMediaJPEGCompressionQuality);
-	UIImage *imageThumbnail = [self generateThumbnailFromImage:theImage andSize:CGSizeMake(WPMediaThumbnailSize, WPMediaThumbnailSize)];
+    NSData *imageData = UIImageJPEGRepresentation(theImage, WPMediaJPEGCompressionQuality);
+    UIImage *imageThumbnail = [self generateThumbnailFromImage:theImage andSize:CGSizeMake(WPMediaThumbnailSize, WPMediaThumbnailSize)];
     NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
     dateFormatter.locale = [NSLocale currentLocale];
-	[dateFormatter setDateFormat:@"yyyyMMdd-HHmmss"];
+    [dateFormatter setDateFormat:@"yyyyMMdd-HHmmss"];
     
-	NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
-	NSString *documentsDirectory = [paths objectAtIndex:0];
-	NSString *filename = [NSString stringWithFormat:@"%@.jpg", [dateFormatter stringFromDate:[NSDate date]]];
-	NSString *filepath = [documentsDirectory stringByAppendingPathComponent:filename];
+    NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
+    NSString *documentsDirectory = [paths objectAtIndex:0];
+    NSString *filename = [NSString stringWithFormat:@"%@.jpg", [dateFormatter stringFromDate:[NSDate date]]];
+    NSString *filepath = [documentsDirectory stringByAppendingPathComponent:filename];
     
-	if (metadata != nil) {
-		// Write the EXIF data with the image data to disk
-		CGImageSourceRef  source = NULL;
+    if (metadata != nil) {
+        // Write the EXIF data with the image data to disk
+        CGImageSourceRef  source = NULL;
         CGImageDestinationRef destination = NULL;
-		BOOL success = NO;
+        BOOL success = NO;
         // This will be the data CGImageDestinationRef will write into
         NSMutableData *destinationData = [NSMutableData data];
         
-		source = CGImageSourceCreateWithData((__bridge CFDataRef)imageData, NULL);
+        source = CGImageSourceCreateWithData((__bridge CFDataRef)imageData, NULL);
         if (source) {
             CFStringRef UTI = CGImageSourceGetType(source); // this is the type of image (e.g., public.jpeg)
             destination = CGImageDestinationCreateWithData((__bridge CFMutableDataRef)destinationData,UTI,1,NULL);
@@ -56,30 +56,30 @@ extern NSString *const MediaShouldInsertBelowNotification;
         } else {
             DDLogWarn(@"Media processor could not create image source");
         }
-		
-		if (!success) {
+        
+        if (!success) {
             DDLogWarn(@"Media processor could not create data from image destination");
-			// Write the data without EXIF to disk
-			NSFileManager *fileManager = [NSFileManager defaultManager];
-			[fileManager createFileAtPath:filepath contents:imageData attributes:nil];
-		} else {
-			[destinationData writeToFile:filepath atomically:YES];
-		}
+            // Write the data without EXIF to disk
+            NSFileManager *fileManager = [NSFileManager defaultManager];
+            [fileManager createFileAtPath:filepath contents:imageData attributes:nil];
+        } else {
+            [destinationData writeToFile:filepath atomically:YES];
+        }
     } else {
-		NSFileManager *fileManager = [NSFileManager defaultManager];
-		[fileManager createFileAtPath:filepath contents:imageData attributes:nil];
-	}
+        NSFileManager *fileManager = [NSFileManager defaultManager];
+        [fileManager createFileAtPath:filepath contents:imageData attributes:nil];
+    }
     
     UIDeviceOrientation currentOrientation = [UIDevice currentDevice].orientation;
     imageMedia.orientation = UIDeviceOrientationIsLandscape(currentOrientation) ? @"landscape" : @"portrait";
-	imageMedia.creationDate = [NSDate date];
-	imageMedia.filename = filename;
-	imageMedia.localURL = filepath;
-	imageMedia.filesize = @(imageData.length/1024);
+    imageMedia.creationDate = [NSDate date];
+    imageMedia.filename = filename;
+    imageMedia.localURL = filepath;
+    imageMedia.filesize = @(imageData.length/1024);
     imageMedia.mediaType = MediaTypeImage;
-	imageMedia.thumbnail = UIImageJPEGRepresentation(imageThumbnail, WPMediaJPEGCompressionQuality);
-	imageMedia.width = @(theImage.size.width);
-	imageMedia.height = @(theImage.size.height);
+    imageMedia.thumbnail = UIImageJPEGRepresentation(imageThumbnail, WPMediaJPEGCompressionQuality);
+    imageMedia.width = @(theImage.size.width);
+    imageMedia.height = @(theImage.size.height);
     
     [imageMedia uploadWithSuccess:^{
         if ([imageMedia isDeleted]) {
@@ -106,9 +106,9 @@ extern NSString *const MediaShouldInsertBelowNotification;
     CGSize mediumSize = [dimensions[@"mediumSize"] CGSizeValue];
     CGSize largeSize =  [dimensions[@"largeSize"] CGSizeValue];
     CGSize originalSize = CGSizeMake(image.size.width, image.size.height);
-	
-	// Resize the image using the selected dimensions
-	CGSize newSize = originalSize;
+    
+    // Resize the image using the selected dimensions
+    CGSize newSize = originalSize;
     
     switch (image.imageOrientation) {
         case UIImageOrientationLeft:
@@ -140,7 +140,7 @@ extern NSString *const MediaShouldInsertBelowNotification;
 - (UIImage *)resizeImage:(UIImage *)original toSize:(CGSize)newSize
 {
     CGSize originalSize = CGSizeMake(original.size.width, original.size.height);
-	UIImage *resizedImage = original;
+    UIImage *resizedImage = original;
 
     // Perform resizing if necessary
     if (!CGSizeEqualToSize(originalSize, newSize)) {
