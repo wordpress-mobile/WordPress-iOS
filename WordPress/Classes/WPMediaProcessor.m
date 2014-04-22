@@ -47,9 +47,12 @@ extern NSString *const MediaShouldInsertBelowNotification;
                 // Tell the destination to write the image data and metadata into our data object
                 // It will return false if something goes wrong
                 success = CGImageDestinationFinalize(destination);
+                CFRelease(destination);
             } else {
                 DDLogWarn(@"Media processor could not create image destination");
             }
+            
+            CFRelease(source);
         } else {
             DDLogWarn(@"Media processor could not create image source");
         }
