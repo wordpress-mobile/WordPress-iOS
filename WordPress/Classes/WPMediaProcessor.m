@@ -37,7 +37,7 @@ extern NSString *const MediaShouldInsertBelowNotification;
         
 		source = CGImageSourceCreateWithData((__bridge CFDataRef)imageData, NULL);
         if (source) {
-            CFStringRef UTI = CGImageSourceGetType(source); //this is the type of image (e.g., public.jpeg)
+            CFStringRef UTI = CGImageSourceGetType(source); // this is the type of image (e.g., public.jpeg)
             destination = CGImageDestinationCreateWithData((__bridge CFMutableDataRef)imageData,UTI,1,NULL);
             
             if(destination) {
@@ -73,11 +73,7 @@ extern NSString *const MediaShouldInsertBelowNotification;
 	imageMedia.filename = filename;
 	imageMedia.localURL = filepath;
 	imageMedia.filesize = @(imageData.length/1024);
-//    if (_selectingFeaturedImage) {
-//        imageMedia.featured = YES;
-//    } else {
-        imageMedia.mediaType = MediaTypeImage;
-//    }
+    imageMedia.mediaType = MediaTypeImage;
 	imageMedia.thumbnail = UIImageJPEGRepresentation(imageThumbnail, WPMediaJPEGCompressionQuality);
 	imageMedia.width = [NSNumber numberWithInt:theImage.size.width];
 	imageMedia.height = [NSNumber numberWithInt:theImage.size.height];
@@ -87,12 +83,7 @@ extern NSString *const MediaShouldInsertBelowNotification;
             DDLogWarn(@"Media processor found deleted media while uploading (%@)", imageMedia);
             return;
         }
-//        if (_selectingFeaturedImage) {
-//            [self.post setFeaturedImage:imageMedia];
-//            [[NSNotificationCenter defaultCenter] postNotificationName:MediaFeaturedImageSelectedNotification object:imageMedia];
-//        } else {
-            [[NSNotificationCenter defaultCenter] postNotificationName:MediaShouldInsertBelowNotification object:imageMedia];
-//        }
+        [[NSNotificationCenter defaultCenter] postNotificationName:MediaShouldInsertBelowNotification object:imageMedia];
         [imageMedia save];
     } failure:^(NSError *error) {
         if (error.domain == NSURLErrorDomain && error.code == NSURLErrorCancelled) {
@@ -190,18 +181,10 @@ extern NSString *const MediaShouldInsertBelowNotification;
     return [theImage thumbnailImage:WPMediaThumbnailSize transparentBorder:0 cornerRadius:0 interpolationQuality:kCGInterpolationHigh];
 }
 
-/*
- * Take Asset URL and set imageJPEG property to NSData containing the
- * associated JPEG, including the metadata we're after.
- */
 - (NSDictionary *)metadataForAsset:(ALAsset *)asset enableGeolocation:(BOOL)enableGeolocation
 {
     ALAssetRepresentation *rep = [asset defaultRepresentation];
-   
-   //DDLogWarn(@"getJPEGFromAssetForURL: default asset representation for %@: uti: %@ size: %lld url: %@ orientation: %d scale: %f metadata: %@",
-     //        url, [rep UTI], [rep size], [rep url], [rep orientation],
-     //        [rep scale], [rep metadata]);
-   
+
     Byte *buf = malloc([rep size]);  // will be freed automatically when associated NSData is deallocated
     NSError *err = nil;
     NSUInteger bytes = [rep getBytes:buf fromOffset:0LL
@@ -228,7 +211,7 @@ extern NSString *const MediaShouldInsertBelowNotification;
     NSMutableDictionary *metadataAsMutable = [metadata mutableCopy];
    
     if (!enableGeolocation) {
-       // We should remove the GPS info if the blog has the geolocation set to off       
+       // We should remove the GPS info if the blog has the geolocation set to off
        [metadataAsMutable removeObjectForKey:@"{GPS}"];
     }
     [metadataAsMutable removeObjectForKey:@"Orientation"];
