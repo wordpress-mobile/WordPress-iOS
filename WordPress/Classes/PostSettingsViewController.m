@@ -192,10 +192,16 @@ static NSString *const TableViewActivityCellIdentifier = @"TableViewActivityCell
 - (void)datePickerChanged:(NSDate *)date {
     self.apost.dateCreated = date;
 
-    if ([self.apost.dateCreated compare:[NSDate date]] == NSOrderedDescending && [self.apost.status isEqualToString:@"draft"]) {
+    // Try to match behavior in wp-admin.
+    // A nil value for date means "publish immediately", so also change status to publish.
+    // If a draft post is given a future date, change its status to publish.
+    // This approximates the behavior of wp-admin with only a single button to save vs a button
+    // to save as a draft, and a button to update/schedule/publish
+    if ((date == nil) ||
+        ([self.apost.dateCreated compare:[NSDate date]] == NSOrderedDescending && [self.apost.status isEqualToString:@"draft"])) {
         self.apost.status = @"publish";
     }
-    
+
     [self hideDatePicker];
 }
 
@@ -846,8 +852,7 @@ static NSString *const TableViewActivityCellIdentifier = @"TableViewActivityCell
 - (void)pickerView:(WPPickerView *)pickerView didFinishWithValue:(id)value {
     if (value == nil) {
         // Publish Immediately
-        self.apost.dateCreated = nil;
-        [self hideDatePicker];
+        [self datePickerChanged:nil];
         return;
     }
     
