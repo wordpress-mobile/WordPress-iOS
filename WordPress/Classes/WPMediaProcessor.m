@@ -14,15 +14,6 @@ extern NSString *const MediaShouldInsertBelowNotification;
 
 @implementation WPMediaProcessor
 
-- (id)init
-{
-    if (self = [super init]) {
-        
-    }
-    
-    return self;
-}
-
 - (void)processImage:(UIImage *)theImage media:(Media *)imageMedia metadata:(NSDictionary *)metadata
 {
 	NSData *imageData = UIImageJPEGRepresentation(theImage, WPMediaJPEGCompressionQuality);
