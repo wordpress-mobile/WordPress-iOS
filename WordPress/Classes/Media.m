@@ -223,15 +223,6 @@
     }
 }
 
-#pragma mark - NSManagedObject subclass methods
-
-- (void)didTurnIntoFault {
-    [super didTurnIntoFault];
-    
-    [_uploadOperation cancel];
-    _uploadOperation = nil;
-}
-
 #pragma mark -
 
 - (CGFloat)progress {
