@@ -33,12 +33,12 @@ extern NSString *const MediaShouldInsertBelowNotification;
         CGImageDestinationRef destination = NULL;
 		BOOL success = NO;
         // This will be the data CGImageDestinationRef will write into
-        NSMutableData *imageData = [NSMutableData data];
+        NSMutableData *destinationData = [NSMutableData data];
         
 		source = CGImageSourceCreateWithData((__bridge CFDataRef)imageData, NULL);
         if (source) {
             CFStringRef UTI = CGImageSourceGetType(source); // this is the type of image (e.g., public.jpeg)
-            destination = CGImageDestinationCreateWithData((__bridge CFMutableDataRef)imageData,UTI,1,NULL);
+            destination = CGImageDestinationCreateWithData((__bridge CFMutableDataRef)destinationData,UTI,1,NULL);
             
             if(destination) {
                 // Add the image contained in the image source to the destination, copying the old metadata
@@ -60,7 +60,7 @@ extern NSString *const MediaShouldInsertBelowNotification;
 			NSFileManager *fileManager = [NSFileManager defaultManager];
 			[fileManager createFileAtPath:filepath contents:imageData attributes:nil];
 		} else {
-			[imageData writeToFile:filepath atomically:YES];
+			[destinationData writeToFile:filepath atomically:YES];
 		}
     } else {
 		NSFileManager *fileManager = [NSFileManager defaultManager];
