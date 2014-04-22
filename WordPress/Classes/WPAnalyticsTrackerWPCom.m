@@ -1,24 +1,24 @@
-#import "WPStatsTrackerWPCom.h"
+#import "WPAnalyticsTrackerWPCom.h"
 #import "WordPressAppDelegate.h"
 #import "Constants.h"
 
-@implementation WPStatsTrackerWPCom
+@implementation WPAnalyticsTrackerWPCom
 
-- (void)track:(WPStat)stat
+- (void)track:(WPAnalyticsStat)stat
 {
     [self track:stat withProperties:nil];
 }
 
-- (void)track:(WPStat)stat withProperties:(NSDictionary *)properties
+- (void)track:(WPAnalyticsStat)stat withProperties:(NSDictionary *)properties
 {
     switch (stat) {
-        case WPStatReaderLoadedFreshlyPressed:
+        case WPAnalyticsStatReaderLoadedFreshlyPressed:
             [self pingWPComStatsEndpoint:@"freshly"];
             break;
-        case WPStatReaderOpenedArticle:
+        case WPAnalyticsStatReaderOpenedArticle:
             [self pingWPComStatsEndpoint:@"details_page"];
             break;
-        case WPStatReaderAccessed:
+        case WPAnalyticsStatReaderAccessed:
             [self pingWPComStatsEndpoint:@"home_page"];
             break;
         default:

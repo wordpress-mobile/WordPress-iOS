@@ -702,7 +702,7 @@ CGFloat const CreateAccountAndBlogButtonHeight = 40.0;
 
     WPAsyncBlockOperation *blogCreation = [WPAsyncBlockOperation operationWithBlock:^(WPAsyncBlockOperation *operation){
         void (^createBlogSuccess)(id) = ^(id responseObject){
-            [WPStats track:WPStatCreatedAccount];
+            [WPAnalytics track:WPAnalyticsStatCreatedAccount];
             [operation didSucceed];
 
             NSMutableDictionary *blogOptions = [[responseObject dictionaryForKey:@"blog_details"] mutableCopy];

@@ -83,7 +83,9 @@
 }
 
 - (BOOL)statsEvent {
-    return [self.type isEqualToString:@"traffic_surge"];
+    BOOL statsEvent = [self.type rangeOfString:@"_milestone_"].length > 0 || [self.type hasPrefix:@"traffic_"] || [self.type hasPrefix:@"best_"] || [self.type hasPrefix:@"most_"] ;
+    
+    return statsEvent;
 }
 
 - (NSString *)commentText {

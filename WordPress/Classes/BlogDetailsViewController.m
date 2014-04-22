@@ -18,7 +18,6 @@ typedef enum {
     BlogDetailsRowPages,
     BlogDetailsRowComments,
     BlogDetailsRowStats,
-    BlogDetailsRowThemes,
     BlogDetailsRowMedia,
     BlogDetailsRowViewSite,
     BlogDetailsRowViewAdmin,
@@ -111,7 +110,7 @@ NSString * const WPBlogDetailsBlogKey = @"WPBlogDetailsBlogKey";
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
-    return [self shouldShowThemesOption] ? BlogDetailsRowCount : BlogDetailsRowCount - 1;
+    return BlogDetailsRowCount;
 }
 
 - (void)configureCell:(UITableViewCell *)cell atIndexPath:(NSIndexPath *)indexPath {
@@ -131,9 +130,6 @@ NSString * const WPBlogDetailsBlogKey = @"WPBlogDetailsBlogKey";
     } else if (indexPath.row == BlogDetailsRowStats) {
         cell.textLabel.text = NSLocalizedString(@"Stats", nil);
         cell.imageView.image = [UIImage imageNamed:@"icon-menu-stats"];
-    } else if ([self shouldShowThemesOption] && indexPath.row == BlogDetailsRowThemes) {
-        cell.textLabel.text = NSLocalizedString(@"Themes", nil);
-        cell.imageView.image = [UIImage imageNamed:@"icon-menu-themes"];
     } else if ([self isRowForMedia:indexPath.row]) {
         cell.textLabel.text = NSLocalizedString(@"Media", nil);
         cell.imageView.image = [UIImage imageNamed:@"icon-menu-media"];
@@ -168,21 +164,19 @@ NSString * const WPBlogDetailsBlogKey = @"WPBlogDetailsBlogKey";
     
     Class controllerClass;
     if (indexPath.row == BlogDetailsRowPosts) {
-        [WPStats track:WPStatOpenedPosts];
+        [WPAnalytics track:WPAnalyticsStatOpenedPosts];
         controllerClass = [PostsViewController class];
     } else if (indexPath.row == BlogDetailsRowPages) {
-        [WPStats track:WPStatOpenedPages];
+        [WPAnalytics track:WPAnalyticsStatOpenedPages];
         controllerClass = [PagesViewController class];
     } else if (indexPath.row == BlogDetailsRowComments) {
-        [WPStats track:WPStatOpenedComments];
+        [WPAnalytics track:WPAnalyticsStatOpenedComments];
         controllerClass = [CommentsViewController class];
     } else if (indexPath.row == BlogDetailsRowStats) {
-        [WPStats track:WPStatStatsAccessed];
+        [WPAnalytics track:WPAnalyticsStatStatsAccessed];
         controllerClass =  [StatsViewController class];
-    } else if ([self shouldShowThemesOption] && indexPath.row == BlogDetailsRowThemes) {
-        controllerClass = [ThemeBrowserViewController class];
     } else if ([self isRowForMedia:indexPath.row]) {
-        [WPStats track:WPStatOpenedMediaLibrary];
+        [WPAnalytics track:WPAnalyticsStatOpenedMediaLibrary];
         controllerClass = [MediaBrowserViewController class];
     } else if (indexPath.row == BlogDetailsRowViewSite) {
         [self showViewSiteForBlog:self.blog];
@@ -225,7 +219,7 @@ NSString * const WPBlogDetailsBlogKey = @"WPBlogDetailsBlogKey";
 
 #pragma mark - Private methods
 - (void)showViewSiteForBlog:(Blog *)blog {
-    [WPStats track:WPStatOpenedViewSite];
+    [WPAnalytics track:WPAnalyticsStatOpenedViewSite];
     
     NSString *blogURL = blog.homeURL;
     if (![blogURL hasPrefix:@"http"]) {
@@ -253,30 +247,26 @@ NSString * const WPBlogDetailsBlogKey = @"WPBlogDetailsBlogKey";
 
 - (void)showViewAdminForBlog:(Blog *)blog
 {
-    [WPStats track:WPStatOpenedViewAdmin];
+    [WPAnalytics track:WPAnalyticsStatOpenedViewAdmin];
     
     NSString *dashboardUrl = [blog.xmlrpc stringByReplacingOccurrencesOfString:@"xmlrpc.php" withString:@"wp-admin/"];
     [[UIApplication sharedApplication] openURL:[NSURL URLWithString:dashboardUrl]];
 }
 
 - (BOOL)isRowForMedia:(NSUInteger)index {
-    return index == ([self shouldShowThemesOption] ? BlogDetailsRowMedia : BlogDetailsRowMedia - 1);
+    return index == BlogDetailsRowMedia;
 }
 
 - (BOOL)isRowForViewSite:(NSUInteger)index {
-    return index == ([self shouldShowThemesOption] ? BlogDetailsRowViewSite : BlogDetailsRowViewSite - 1);
+    return index == BlogDetailsRowViewSite;
 }
 
 - (BOOL)isRowForViewAdmin:(NSUInteger)index {
-    return index == ([self shouldShowThemesOption] ? BlogDetailsRowViewAdmin : BlogDetailsRowViewAdmin - 1);
+    return index == BlogDetailsRowViewAdmin;
 }
 
 - (BOOL)isRowForEditBlog:(NSUInteger)index {
-    return index == ([self shouldShowThemesOption] ? BlogDetailsRowEdit : BlogDetailsRowEdit - 1);
-}
-
-- (BOOL)shouldShowThemesOption {
-    return self.blog.isWPcom;
+    return index == BlogDetailsRowEdit;
 }
 
 /*
