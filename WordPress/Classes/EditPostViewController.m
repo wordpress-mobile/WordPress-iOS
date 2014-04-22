@@ -1316,11 +1316,11 @@ CGFloat const EPVCTextViewTopPadding = 7.0f;
 - (void)assetsPickerController:(CTAssetsPickerController *)picker didFinishPickingAssets:(NSArray *)assets {
     [self dismissViewControllerAnimated:YES completion:nil];
     
-    Media *imageMedia = [Media newMediaForPost:self.post];
     WPMediaProcessor *mediaProcessor = [[WPMediaProcessor alloc] init];
     BOOL gelocationEnabled = self.post.blog.geolocationEnabled;
     
     for (ALAsset *asset in assets) {
+        Media *imageMedia = [Media newMediaForPost:self.post];
         ALAssetRepresentation *representation = asset.defaultRepresentation;
         
         if ([[asset valueForProperty:ALAssetPropertyType] isEqualToString:ALAssetTypeVideo]) {
