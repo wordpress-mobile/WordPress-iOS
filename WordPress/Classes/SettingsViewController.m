@@ -107,25 +107,7 @@ CGFloat const blavatarImageViewSize = 43.f;
                                      NSLocalizedString(@"Set which size images should be uploaded in.", @""), @"Info",
                                      nil];
         
-    NSDictionary *videoQualityDict = [NSDictionary dictionaryWithObjectsAndKeys:@"1", @"DefaultValue", 
-                                      @"video_quality_preference", @"Key", 
-                                      NSLocalizedString(@"Video Quality", @""), @"Title", 
-                                      [NSArray arrayWithObjects:NSLocalizedString(@"Original Size", @"Video quality - uncompressed original size for the device"),
-                                      NSLocalizedString(@"Medium (480p)", @"Video quality - medium quality, 480p"),
-                                      NSLocalizedString(@"Default (360p)", @"Video quality - default size, 360p"),
-                                      NSLocalizedString(@"Low (144p)", @"Video quality - low quality, 144p"), nil], @"Titles",
-                                      [NSArray arrayWithObjects:@"0", @"3", @"1", @"2", nil], @"Values",
-                                      NSLocalizedString(@"Choose the quality at which video should be uploaded.", @""), @"Info",                                      
-                                      nil];
-    
-    NSDictionary *videoContentDict = [NSDictionary dictionaryWithObjectsAndKeys:@"0", @"DefaultValue", 
-                                      @"video_html_preference", @"Key", 
-                                      NSLocalizedString(@"Video Content", @""), @"Title", 
-                                      [NSArray arrayWithObjects:@"HTML 5",@"HTML 4", nil ], @"Titles", 
-                                      [NSArray arrayWithObjects:@"0", @"1", nil], @"Values",
-                                      NSLocalizedString(@"Set which HTML standard video should conform to when added to a post.", @""), @"Info",
-                                      nil];
-    _mediaSettingsArray = [NSArray arrayWithObjects:imageResizeDict, videoQualityDict, videoContentDict, nil];
+    _mediaSettingsArray = [NSArray arrayWithObjects:imageResizeDict, nil];
     return _mediaSettingsArray;
 }
 
