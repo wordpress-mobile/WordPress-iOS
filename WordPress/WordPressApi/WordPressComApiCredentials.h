@@ -11,4 +11,5 @@
 + (NSString *)helpshiftAPIKey;
 + (NSString *)helpshiftDomainName;
 + (NSString *)helpshiftAppId;
++ (NSString *)taplyticsAPIKey;
 @end
