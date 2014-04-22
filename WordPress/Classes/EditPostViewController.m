@@ -10,6 +10,8 @@
 #import "UIImage+Util.h"
 #import "LocationService.h"
 #import "BlogService.h"
+#import "WPMediaProcessor.h"
+#import <AssetsLibrary/AssetsLibrary.h>
 
 NSString *const WPEditorNavigationRestorationID = @"WPEditorNavigationRestorationID";
 NSString *const WPAbstractPostRestorationKey = @"WPAbstractPostRestorationKey";
@@ -546,10 +548,14 @@ CGFloat const EPVCTextViewTopPadding = 7.0f;
 }
 
 - (void)showMediaOptions {
-    UIBarButtonItem *backButton = [[UIBarButtonItem alloc] initWithTitle:NSLocalizedString(@"Back", nil) style:UIBarButtonItemStyleBordered target:nil action:nil];
-    self.navigationItem.backBarButtonItem = backButton;
-    MediaBrowserViewController *vc = [[MediaBrowserViewController alloc] initWithPost:self.post];
-    [self.navigationController pushViewController:vc animated:YES];
+    CTAssetsPickerController *picker = [[CTAssetsPickerController alloc] init];
+	picker.delegate = self;
+    
+    // Only show photos for now (not videos)
+    picker.assetsFilter = [ALAssetsFilter allPhotos];
+    
+    [self presentViewController:picker animated:YES completion:nil];
+    picker.navigationBar.translucent = NO;
 }
 
 - (void)cancelEditing {
@@ -1309,6 +1315,35 @@ CGFloat const EPVCTextViewTopPadding = 7.0f;
 - (BOOL)textFieldShouldReturn:(UITextField *)textField {
     [_textView becomeFirstResponder];
     return NO;
+}
+
+#pragma mark - CTAssetsPickerController delegate
+
+- (void)assetsPickerController:(CTAssetsPickerController *)picker didFinishPickingAssets:(NSArray *)assets {
+    [self dismissViewControllerAnimated:YES completion:nil];
+    
+    WPMediaProcessor *mediaProcessor = [[WPMediaProcessor alloc] init];
+    BOOL gelocationEnabled = self.post.blog.geolocationEnabled;
+    
+    for (ALAsset *asset in assets) {
+        Media *imageMedia = [Media newMediaForPost:self.post];
+        ALAssetRepresentation *representation = asset.defaultRepresentation;
+        
+        if ([[asset valueForProperty:ALAssetPropertyType] isEqualToString:ALAssetTypeVideo]) {
+            // Could handle videos here
+        } else if ([[asset valueForProperty:ALAssetPropertyType] isEqualToString:ALAssetTypePhoto]) {
+            UIImage *fullResolutionImage = [UIImage imageWithCGImage:representation.fullResolutionImage
+                                                               scale:1.0f
+                                                         orientation:(UIImageOrientation)representation.orientation];
+            
+            MediaResize *resize = [mediaProcessor mediaResizePreference];
+            NSDictionary *dimensions = [self.post.blog getImageResizeDimensions];
+            CGSize newSize = [mediaProcessor sizeForImage:fullResolutionImage mediaResize:resize blogResizeDimensions:dimensions];
+            UIImage *resizedImage = [mediaProcessor resizeImage:fullResolutionImage toSize:newSize];
+            NSDictionary *assetMetadata = [mediaProcessor metadataForAsset:asset enableGeolocation:gelocationEnabled];
+            [mediaProcessor processImage:resizedImage media:imageMedia metadata:assetMetadata];
+        }
+    }
 }
 
 #pragma mark - Positioning & Rotation

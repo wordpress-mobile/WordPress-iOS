@@ -23,7 +23,7 @@
 #import "WPTableImageSource.h"
 
 typedef enum {
-    PostSettingsRowCategories = 1,
+    PostSettingsRowCategories = 0,
     PostSettingsRowTags,
     PostSettingsRowPublishDate,
     PostSettingsRowStatus,
@@ -394,14 +394,15 @@ static NSString *const TableViewActivityCellIdentifier = @"TableViewActivityCell
 
 - (UITableViewCell *)configureTaxonomyCellForIndexPath:(NSIndexPath *)indexPath {
     UITableViewCell *cell;
-    if (indexPath.row == 0) {
+    
+    if (indexPath.row == PostSettingsRowCategories) {
         // Categories
         cell = [self getWPTableViewCell];
         cell.textLabel.text = NSLocalizedString(@"Categories", @"Label for the categories field. Should be the same as WP core.");
         cell.detailTextLabel.text = [NSString decodeXMLCharactersIn:[self.post categoriesText]];
         cell.tag = PostSettingsRowCategories;
         
-    } else {
+    } else if (indexPath.row == PostSettingsRowTags) {
         // Tags
         UITableViewTextFieldCell *textCell = [self getTextFieldCell];
         textCell.textLabel.text = NSLocalizedString(@"Tags", @"Label for the tags field. Should be the same as WP core.");
@@ -774,6 +775,12 @@ static NSString *const TableViewActivityCellIdentifier = @"TableViewActivityCell
 - (void)showCategoriesSelection {
     CategoriesViewController *controller = [[CategoriesViewController alloc] initWithPost:[self post] selectionMode:CategoriesSelectionModePost];
     [self.navigationController pushViewController:controller animated:YES];
+}
+
+- (void)showMediaLibrary {
+    self.navigationItem.title = NSLocalizedString(@"Back", nil);
+    MediaBrowserViewController *vc = [[MediaBrowserViewController alloc] initWithPost:self.post];
+    [self.navigationController pushViewController:vc animated:YES];
 }
 
 - (void)loadFeaturedImage:(NSIndexPath *)indexPath {
