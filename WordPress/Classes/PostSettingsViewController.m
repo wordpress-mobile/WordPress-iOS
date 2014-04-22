@@ -23,8 +23,7 @@
 #import "WPTableImageSource.h"
 
 typedef enum {
-    PostSettingsRowMediaLibrary = 0,
-    PostSettingsRowCategories,
+    PostSettingsRowCategories = 0,
     PostSettingsRowTags,
     PostSettingsRowPublishDate,
     PostSettingsRowStatus,
@@ -247,7 +246,7 @@ static NSString *const TableViewActivityCellIdentifier = @"TableViewActivityCell
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
     NSInteger sec = [[self.sections objectAtIndex:section] integerValue];
     if (sec == PostSettingsSectionTaxonomy) {
-        return 3;
+        return 2;
         
     } else if (sec == PostSettingsSectionMeta) {
         if (self.apost.password) {
@@ -359,10 +358,7 @@ static NSString *const TableViewActivityCellIdentifier = @"TableViewActivityCell
     
     UITableViewCell *cell = [tableView cellForRowAtIndexPath:indexPath];
     
-    if (cell.tag == PostSettingsRowMediaLibrary) {
-        [self showMediaLibrary];
-        
-    } else if (cell.tag == PostSettingsRowCategories) {
+    if (cell.tag == PostSettingsRowCategories) {
         [self showCategoriesSelection];
         
     } else if (cell.tag == PostSettingsRowTags) {
@@ -397,19 +393,14 @@ static NSString *const TableViewActivityCellIdentifier = @"TableViewActivityCell
 - (UITableViewCell *)configureTaxonomyCellForIndexPath:(NSIndexPath *)indexPath {
     UITableViewCell *cell;
     
-    if (indexPath.row == 0) {
-        // Media Library
-        cell = [self getWPTableViewCell];
-        cell.textLabel.text = NSLocalizedString(@"Media Library", @"Label for the media library.");
-        cell.tag = PostSettingsRowMediaLibrary;
-    } else if (indexPath.row == 1) {
+    if (indexPath.row == PostSettingsRowCategories) {
         // Categories
         cell = [self getWPTableViewCell];
         cell.textLabel.text = NSLocalizedString(@"Categories", @"Label for the categories field. Should be the same as WP core.");
         cell.detailTextLabel.text = [NSString decodeXMLCharactersIn:[self.post categoriesText]];
         cell.tag = PostSettingsRowCategories;
         
-    } else if (indexPath.row == 2) {
+    } else if (indexPath.row == PostSettingsRowTags) {
         // Tags
         UITableViewTextFieldCell *textCell = [self getTextFieldCell];
         textCell.textLabel.text = NSLocalizedString(@"Tags", @"Label for the tags field. Should be the same as WP core.");
