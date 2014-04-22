@@ -19,7 +19,7 @@ static CGFloat const LabelVerticalOffset = 2.0f;
 {
     self = [super initWithStyle:style reuseIdentifier:reuseIdentifier];
     if (self) {
-        self.selectionStyle = UITableViewCellSelectionStyleNone;
+        self.selectionStyle = UITableViewCellSelectionStyleDefault;
         self.contentView.userInteractionEnabled = YES;
     }
     return self;
