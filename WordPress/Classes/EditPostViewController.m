@@ -548,6 +548,10 @@ CGFloat const EPVCTextViewTopPadding = 7.0f;
 - (void)showMediaOptions {
     CTAssetsPickerController *picker = [[CTAssetsPickerController alloc] init];
 	picker.delegate = self;
+    
+    // Only show photos for now (not videos)
+    picker.assetsFilter = [ALAssetsFilter allPhotos];
+    
     [self presentViewController:picker animated:YES completion:nil];
     picker.navigationBar.translucent = NO;
 }
@@ -1324,7 +1328,7 @@ CGFloat const EPVCTextViewTopPadding = 7.0f;
         ALAssetRepresentation *representation = asset.defaultRepresentation;
         
         if ([[asset valueForProperty:ALAssetPropertyType] isEqualToString:ALAssetTypeVideo]) {
-            // asset is a video
+            // Could handle videos here
         } else if ([[asset valueForProperty:ALAssetPropertyType] isEqualToString:ALAssetTypePhoto]) {
             UIImage *fullResolutionImage = [UIImage imageWithCGImage:representation.fullResolutionImage
                                                                scale:1.0f
