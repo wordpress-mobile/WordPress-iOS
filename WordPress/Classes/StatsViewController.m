@@ -188,6 +188,7 @@ typedef NS_ENUM(NSInteger, TotalFollowersShareRow) {
     __weak JetpackSettingsViewController *safeController = controller;
     [controller setCompletionBlock:^(BOOL didAuthenticate) {
         if (didAuthenticate) {
+            [WPAnalytics track:WPAnalyticsStatSignedInToJetpack];
             [WPAnalytics track:WPAnalyticsStatPerformedJetpackSignInFromStatsScreen];
             [safeController.view removeFromSuperview];
             [safeController removeFromParentViewController];

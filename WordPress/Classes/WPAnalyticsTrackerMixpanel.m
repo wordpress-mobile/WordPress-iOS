@@ -338,17 +338,17 @@
         case WPAnalyticsStatPublishedPostWithTags:
             instructions = [WPAnalyticsTrackerMixpanelInstructionsForStat mixpanelInstructionsWithSuperPropertyAndPeoplePropertyIncrementor:@"number_of_posts_published_with_tags"];
             break;
-        case WPAnalyticsStatAddedSelfHostedSiteWithoutJetpack:
-            instructions = [WPAnalyticsTrackerMixpanelInstructionsForStat mixpanelInstructionsForEventName:@"Added Self Hosted Site Without Jetpack"];
+        case WPAnalyticsStatAddedSelfHostedSite:
+            instructions = [WPAnalyticsTrackerMixpanelInstructionsForStat mixpanelInstructionsForEventName:@"Added Self Hosted Site"];
             break;
         case WPAnalyticsStatAddedSelfHostedSiteButJetpackNotConnectedToWPCom:
             instructions = [WPAnalyticsTrackerMixpanelInstructionsForStat mixpanelInstructionsForEventName:@"Added Self Hosted Site Not Connected to Wordpress.com"];
             break;
-        case WPAnalyticsStatAddedSelfHostedSiteButSkippedConnectingToJetpack:
-            instructions = [WPAnalyticsTrackerMixpanelInstructionsForStat mixpanelInstructionsForEventName:@"Added Self Hosted Site and Skipped Connecting to Jetpack"];
+        case WPAnalyticsStatSkippedConnectingToJetpack:
+            instructions = [WPAnalyticsTrackerMixpanelInstructionsForStat mixpanelInstructionsForEventName:@"Skipped Connecting to Jetpack"];
             break;
-        case WPAnalyticsStatAddedSelfHostedSiteAndSignedInToJetpack:
-            instructions = [WPAnalyticsTrackerMixpanelInstructionsForStat mixpanelInstructionsForEventName:@"Added Self Hosted Site and Signed into Jetpack"];
+        case WPAnalyticsStatSignedInToJetpack:
+            instructions = [WPAnalyticsTrackerMixpanelInstructionsForStat mixpanelInstructionsForEventName:@"Signed into Jetpack"];
             [instructions addSuperPropertyToFlag:@"jetpack_user"];
             [instructions addSuperPropertyToFlag:@"dotcom_user"];
             break;
@@ -357,8 +357,6 @@
             break;
         case WPAnalyticsStatPerformedJetpackSignInFromStatsScreen:
             instructions = [WPAnalyticsTrackerMixpanelInstructionsForStat mixpanelInstructionsForEventName:@"Signed into Jetpack from Stats Screen"];
-            [instructions addSuperPropertyToFlag:@"jetpack_user"];
-            [instructions addSuperPropertyToFlag:@"dotcom_user"];
             break;
         case WPAnalyticsStatSelectedInstallJetpack:
             instructions = [WPAnalyticsTrackerMixpanelInstructionsForStat mixpanelInstructionsForEventName:@"Selected Install Jetpack"];
