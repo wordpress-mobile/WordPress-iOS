@@ -80,9 +80,9 @@ static NSInteger const IndexForMeTab = 2;
     [self printDebugLaunchInfoWithLaunchOptions:launchOptions];
     [self toggleExtraDebuggingIfNeeded];
     [self removeCredentialsForDebug];
-
-    // Stats and feedback
     
+    // Stats and feedback
+    [Taplytics startTaplyticsAPIKey:[WordPressComApiCredentials taplyticsAPIKey]];
     [WPStats registerTracker:[[WPStatsTrackerMixpanel alloc] init]];
     [WPStats registerTracker:[[WPStatsTrackerWPCom alloc] init]];
     [WPStats beginSession];
@@ -127,10 +127,9 @@ static NSInteger const IndexForMeTab = 2;
     [self.window makeKeyAndVisible];
     
     [self showWelcomeScreenIfNeededAnimated:NO];
-
-    [Taplytics startTaplyticsAPIKey:[WordPressComApiCredentials taplyticsAPIKey]];
     
     [Helpshift installForApiKey:[WordPressComApiCredentials helpshiftAPIKey] domainName:[WordPressComApiCredentials helpshiftDomainName] appID:[WordPressComApiCredentials helpshiftAppId]];
+    [SupportViewController checkIfHelpshiftShouldBeEnabled];
     
     return YES;
 }
