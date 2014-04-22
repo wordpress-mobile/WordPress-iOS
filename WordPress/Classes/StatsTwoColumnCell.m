@@ -80,6 +80,7 @@ static CGFloat const RowIconWidth = 20.0f;
     if ([cellData isKindOfClass:[StatsViewByCountry class]]) {
         [self setLeft:left withImageUrl:[(StatsViewByCountry *)cellData imageUrl] right:right titleCell:NO];
     } else if ([cellData isKindOfClass:[StatsGroup class]]) {
+        self.selectionStyle = UITableViewCellSelectionStyleDefault;
         [self setLeft:left withImageUrl:[(StatsGroup *)cellData iconUrl] right:right titleCell:NO];
     } else {
         [self setLeft:left withImageUrl:nil right:right titleCell:NO];
@@ -92,6 +93,11 @@ static CGFloat const RowIconWidth = 20.0f;
     _linkEnabled = linkEnabled;
     
     UIColor *color = linkEnabled ? [WPStyleGuide baseDarkerBlue] : [WPStyleGuide whisperGrey];
+    
+    if (_linkEnabled) {
+        self.selectionStyle = UITableViewCellSelectionStyleDefault;
+    }
+    
     [self titleLabel].textColor = color;
 }
 
