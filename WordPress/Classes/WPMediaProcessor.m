@@ -75,8 +75,8 @@ extern NSString *const MediaShouldInsertBelowNotification;
 	imageMedia.filesize = @(imageData.length/1024);
     imageMedia.mediaType = MediaTypeImage;
 	imageMedia.thumbnail = UIImageJPEGRepresentation(imageThumbnail, WPMediaJPEGCompressionQuality);
-	imageMedia.width = [NSNumber numberWithInt:theImage.size.width];
-	imageMedia.height = [NSNumber numberWithInt:theImage.size.height];
+	imageMedia.width = @(theImage.size.width);
+	imageMedia.height = @(theImage.size.height);
     
     [imageMedia uploadWithSuccess:^{
         if ([imageMedia isDeleted]) {
@@ -99,9 +99,9 @@ extern NSString *const MediaShouldInsertBelowNotification;
            mediaResize:(MediaResize)resize
   blogResizeDimensions:(NSDictionary *)dimensions
 {
-    CGSize smallSize =  [[dimensions objectForKey: @"smallSize"] CGSizeValue];
-    CGSize mediumSize = [[dimensions objectForKey: @"mediumSize"] CGSizeValue];
-    CGSize largeSize =  [[dimensions objectForKey: @"largeSize"] CGSizeValue];
+    CGSize smallSize =  [dimensions[@"smallSize"] CGSizeValue];
+    CGSize mediumSize = [dimensions[@"mediumSize"] CGSizeValue];
+    CGSize largeSize =  [dimensions[@"largeSize"] CGSizeValue];
     CGSize originalSize = CGSizeMake(image.size.width, image.size.height);
 	
 	// Resize the image using the selected dimensions
@@ -187,8 +187,7 @@ extern NSString *const MediaShouldInsertBelowNotification;
 
     Byte *buf = malloc([rep size]);  // will be freed automatically when associated NSData is deallocated
     NSError *err = nil;
-    NSUInteger bytes = [rep getBytes:buf fromOffset:0LL
-                             length:[rep size] error:&err];
+    NSUInteger bytes = [rep getBytes:buf fromOffset:0LL length:[rep size] error:&err];
     if (err || bytes == 0) {
         // Are err and bytes == 0 redundant? Doc says 0 return means
         // error occurred which presumably means NSError is returned.
