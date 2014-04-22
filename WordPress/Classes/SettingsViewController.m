@@ -95,15 +95,15 @@ CGFloat const blavatarImageViewSize = 43.f;
     // Construct the media data to mimick how it would appear if a settings bundle plist was loaded
     // into an NSDictionary
     // Our settings bundle stored numeric values as strings so we use strings here for backward compatibility.
-    NSDictionary *imageResizeDict = [NSDictionary dictionaryWithObjectsAndKeys:@"0", @"DefaultValue", 
+    NSDictionary *imageResizeDict = [NSDictionary dictionaryWithObjectsAndKeys:@"3", @"DefaultValue",
                                      @"media_resize_preference", @"Key", 
                                      NSLocalizedString(@"Image Quality", @""), @"Title",
-                                     [NSArray arrayWithObjects:NSLocalizedString(@"Always Ask", @"Always Ask (ask for size on every upload) - Image Quality setting"),
+                                     [NSArray arrayWithObjects:
                                       NSLocalizedString(@"Small", @"Small - Image Quality setting"),
                                       NSLocalizedString(@"Medium", @"Medium - Image Quality setting"),
                                       NSLocalizedString(@"Large", @"Large - Image Quality setting"),
                                       NSLocalizedString(@"Original Size", @"Original (uncompressed)  - Image Quality setting"), nil], @"Titles",
-                                     [NSArray arrayWithObjects:@"0",@"1",@"2",@"3",@"4", nil], @"Values",
+                                     [NSArray arrayWithObjects:@"1",@"2",@"3",@"4", nil], @"Values",
                                      NSLocalizedString(@"Set which size images should be uploaded in.", @""), @"Info",
                                      nil];
         
@@ -230,7 +230,9 @@ CGFloat const blavatarImageViewSize = 43.f;
         cell.textLabel.text = dict[@"Title"];
         NSString *key = dict[@"Key"];
         NSString *currentVal = [[NSUserDefaults standardUserDefaults] objectForKey:key];
-        if (currentVal == nil) {
+        
+        // If setting doesn't exist yet, or if it was set to "0" (which was removed) set it to default
+        if (currentVal == nil || [currentVal isEqualToString:@"0"]) {
             currentVal = dict[@"DefaultValue"];
         }
         
