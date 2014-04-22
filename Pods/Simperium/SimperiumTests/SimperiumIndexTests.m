@@ -66,14 +66,17 @@
 - (void)testLargerIndex
 {
     NSLog(@"%@ start", self.name);
-    [self createAndStartFarms];
-
     // Leader sends an object to followers, but make followers get it from the index
-    Farm *leader = self.farms[0];
+    Farm *leader    = [self createFarm:@"leader"];
+    Farm *follower  = [self createFarm:@"follower"];
+    
+    self.farms      = @[ leader, follower ];
+    
+    [leader start];
     [leader connect];
     [self waitFor:5.0];
     
-    NSNumber *refWarpSpeed = [NSNumber numberWithInt:2];
+    NSNumber *refWarpSpeed = @(2);
     int numObjects = 2;
     for (int i=0; i<numObjects; i++) {
         leader.config = [[leader.simperium bucketForName:[Config entityName]] insertNewObject];
@@ -81,7 +84,8 @@
     }
     [leader.simperium save];
     leader.expectedAcknowledgments = numObjects;
-    XCTAssertTrue([self waitForCompletion], @"timed out");
+    
+    XCTAssertTrue([self waitForCompletion:3.0 farmArray:@[ leader ]], @"timed out");
     
 	// Set the new expectations, before connecting
     [self resetExpectations:self.farms];
@@ -92,6 +96,7 @@
         if (farm == leader) {
             continue;
 		}
+        [farm start];
         [farm connect];
     }
     

@@ -7,9 +7,10 @@
 //
 
 #import "SPAuthenticationWindowController.h"
-#import <Simperium-OSX/Simperium.h>
-#import <Simperium-OSX/NSString+Simperium.h>
+#import "Simperium.h"
+#import "NSString+Simperium.h"
 #import <QuartzCore/CoreAnimation.h>
+#import "SPAuthenticator.h"
 #import "SPAuthenticationWindow.h"
 #import "SPAuthenticationView.h"
 #import "SPAuthenticationTextField.h"

@@ -72,6 +72,14 @@ static SPLogLevels logLevel	= SPLogLevelsError;
 	return objects;
 }
 
+- (NSSet *)copyInnerSet {
+	__block NSSet *objects = nil;
+	dispatch_sync(self.setQueue, ^{
+		objects = [self.contents copy];
+	});
+	return objects;
+}
+
 - (NSUInteger)count {
 	__block NSUInteger count;
 	dispatch_sync(self.setQueue, ^{
@@ -99,6 +107,20 @@ static SPLogLevels logLevel	= SPLogLevelsError;
 		[self.contents removeAllObjects];
 		self.needsSave = YES;
 	});
+}
+
+
+#pragma mark ====================================================================================
+#pragma mark NSFastEnumeration
+#pragma mark ====================================================================================
+
+- (NSUInteger)countByEnumeratingWithState:(NSFastEnumerationState *)state objects:(id __unsafe_unretained [])buffer count:(NSUInteger)len  {
+    __block NSUInteger count;
+	dispatch_sync(self.setQueue, ^{
+        count = [self.contents countByEnumeratingWithState:state objects:buffer count:len];
+    });
+    
+    return count;
 }
 
 

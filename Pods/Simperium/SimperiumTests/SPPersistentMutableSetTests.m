@@ -91,4 +91,21 @@ static NSUInteger const SPDeleteCount = 500;
 	XCTAssert(second.count == 0, @"Namespaces Issue");
 }
 
+- (void)testFastEnumeration {
+    
+    NSMutableSet *control = [NSMutableSet set];
+	SPPersistentMutableSet *first = [SPPersistentMutableSet loadSetWithLabel:@"first"];
+	for (NSInteger i = 0; ++i <= SPInsertCount; ) {
+		[first addObject:@(i)];
+        [control addObject:@(i)];
+	}
+    
+    for (NSNumber *number in first) {
+        XCTAssert([control containsObject:number], @"Enumeration Issue");
+        [control removeObject:number];
+    }
+    
+    XCTAssert(control.count == 0, @"Enumeration missed an object");
+}
+
 @end

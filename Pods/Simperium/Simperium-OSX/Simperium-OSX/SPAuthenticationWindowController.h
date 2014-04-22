@@ -7,8 +7,9 @@
 //
 
 #import <Cocoa/Cocoa.h>
-#import <Simperium-OSX/SPAuthenticator.h>
 
+
+@class SPAuthenticator;
 @class SPAuthenticationTextField;
 @class SPAuthenticationValidator;
 

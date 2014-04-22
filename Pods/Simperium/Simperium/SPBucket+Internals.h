@@ -39,7 +39,8 @@ typedef void (^SPBucketForceSyncCompletion)(void);
 	networkInterface:(id<SPNetworkInterface>)netInterface
 relationshipResolver:(SPRelationshipResolver *)resolver
                label:(NSString *)label
-		  remoteName:(NSString *)remoteName;
+		  remoteName:(NSString *)remoteName
+            clientID:(NSString *)clientID;
 - (void)validateObjects;
 - (void)unloadAllObjects;
 - (void)resolvePendingRelationshipsToKeys:(NSSet *)keys;

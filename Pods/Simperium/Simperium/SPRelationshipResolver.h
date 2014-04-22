@@ -15,9 +15,7 @@
 #pragma mark SPRelationshipResolver
 #pragma mark ====================================================================================
 
-@interface SPRelationshipResolver : NSObject {
-    NSMutableDictionary *pendingRelationships;
-}
+@interface SPRelationshipResolver : NSObject
 
 - (void)loadPendingRelationships:(id<SPStorageProvider>)storage;
 - (void)addPendingRelationshipToKey:(NSString *)key fromKey:(NSString *)fromKey bucketName:(NSString *)bucketName

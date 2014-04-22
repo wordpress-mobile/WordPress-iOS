@@ -166,6 +166,8 @@
 		B59C751F186DAB0E003A1C8D /* DeletionCascadeTest.m in Sources */ = {isa = PBXBuildFile; fileRef = B59C751E186DAB0E003A1C8D /* DeletionCascadeTest.m */; };
 		B59C7523186DAB42003A1C8D /* DiffMatchPatchTest.m in Sources */ = {isa = PBXBuildFile; fileRef = B59C7522186DAB42003A1C8D /* DiffMatchPatchTest.m */; };
 		B59C7525186DAB70003A1C8D /* SPBucket+Internals.h in Headers */ = {isa = PBXBuildFile; fileRef = B59C7524186DAB70003A1C8D /* SPBucket+Internals.h */; };
+		B5C18F6A18FD7BC500D51D1F /* NSError+Simperium.h in Headers */ = {isa = PBXBuildFile; fileRef = B5C18F6818FD7BC500D51D1F /* NSError+Simperium.h */; };
+		B5C18F6B18FD7BC500D51D1F /* NSError+Simperium.m in Sources */ = {isa = PBXBuildFile; fileRef = B5C18F6918FD7BC500D51D1F /* NSError+Simperium.m */; };
 		B5D581BF183565A700B08996 /* XCTest.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B5D581BE183565A700B08996 /* XCTest.framework */; };
 		B5D581C5183565A700B08996 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = B5D581C3183565A700B08996 /* InfoPlist.strings */; };
 		B5D581D0183565C500B08996 /* XCTestCase+Simperium.m in Sources */ = {isa = PBXBuildFile; fileRef = B5D581CF183565C500B08996 /* XCTestCase+Simperium.m */; };
@@ -356,6 +358,8 @@
 		B59C751E186DAB0E003A1C8D /* DeletionCascadeTest.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = DeletionCascadeTest.m; path = ../../SimperiumTests/DeletionCascadeTest.m; sourceTree = "<group>"; };
 		B59C7522186DAB42003A1C8D /* DiffMatchPatchTest.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = DiffMatchPatchTest.m; path = ../../SimperiumTests/DiffMatchPatchTest.m; sourceTree = "<group>"; };
 		B59C7524186DAB70003A1C8D /* SPBucket+Internals.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "SPBucket+Internals.h"; path = "../../Simperium/SPBucket+Internals.h"; sourceTree = "<group>"; };
+		B5C18F6818FD7BC500D51D1F /* NSError+Simperium.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "NSError+Simperium.h"; path = "../../Simperium/NSError+Simperium.h"; sourceTree = "<group>"; };
+		B5C18F6918FD7BC500D51D1F /* NSError+Simperium.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = "NSError+Simperium.m"; path = "../../Simperium/NSError+Simperium.m"; sourceTree = "<group>"; };
 		B5D581BD183565A700B08996 /* UnitTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = UnitTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		B5D581BE183565A700B08996 /* XCTest.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = XCTest.framework; path = Library/Frameworks/XCTest.framework; sourceTree = DEVELOPER_DIR; };
 		B5D581C2183565A700B08996 /* Simperium-OSX Tests-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "Simperium-OSX Tests-Info.plist"; sourceTree = "<group>"; };
@@ -737,6 +741,8 @@
 				268EDEE5155F089C006B566F /* NSDate+Simperium.m */,
 				268EDEE6155F089C006B566F /* NSString+Simperium.h */,
 				268EDEE7155F089C006B566F /* NSString+Simperium.m */,
+				B5C18F6818FD7BC500D51D1F /* NSError+Simperium.h */,
+				B5C18F6918FD7BC500D51D1F /* NSError+Simperium.m */,
 			);
 			name = Extensions;
 			sourceTree = "<group>";
@@ -774,6 +780,7 @@
 				268EDF60155F08A2006B566F /* SPMemberInt.h in Headers */,
 				268EDF62155F08A2006B566F /* SPMemberList.h in Headers */,
 				268EDF64155F08A2006B566F /* SPMemberText.h in Headers */,
+				B5C18F6A18FD7BC500D51D1F /* NSError+Simperium.h in Headers */,
 				B5008F5818B55D5100AC0337 /* SPMemberJSON.h in Headers */,
 				268EDF70155F08A2006B566F /* SPStorage.h in Headers */,
 				268EDF72155F08A2006B566F /* SPStorageObserver.h in Headers */,
@@ -936,6 +943,7 @@
 				268EDF47155F08A2006B566F /* SPEnvironment.m in Sources */,
 				B51CB9F718AD8E55009FF0DE /* SPLogger.m in Sources */,
 				268EDF49155F08A2006B566F /* SPGhost.m in Sources */,
+				B5C18F6B18FD7BC500D51D1F /* NSError+Simperium.m in Sources */,
 				268EDF4D155F08A2006B566F /* SPIndexProcessor.m in Sources */,
 				268EDF51155F08A2006B566F /* SPManagedObject.m in Sources */,
 				268EDF53155F08A2006B566F /* SPMember.m in Sources */,

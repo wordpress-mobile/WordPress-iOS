@@ -60,7 +60,7 @@
 - (SPWebSocketChannel*)loadChannelForBucket:(SPBucket*)bucket {
 	SPWebSocketChannel* channel = [super loadChannelForBucket:bucket];
 	channel.webSocketManager = self;
-	channel.started = YES;
+	channel.authenticated = YES;
 	return channel;
 }
 

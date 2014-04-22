@@ -9,7 +9,7 @@
 #import <Foundation/Foundation.h>
 
 
-@interface SPPersistentMutableSet : NSObject
+@interface SPPersistentMutableSet : NSObject <NSFastEnumeration>
 
 @property (nonatomic, strong, readonly) NSString *label;
 
@@ -18,6 +18,7 @@
 
 - (NSArray *)allObjects;
 - (NSUInteger)count;
+- (NSSet *)copyInnerSet;
 
 - (void)addObjectsFromArray:(NSArray *)array;
 - (void)minusSet:(NSSet *)otherSet;

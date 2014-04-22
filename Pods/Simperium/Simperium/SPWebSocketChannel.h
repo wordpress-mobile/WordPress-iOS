@@ -28,7 +28,7 @@
 @property (nonatomic,   copy) NSString				*name;
 @property (nonatomic,   copy) NSString				*remoteName;
 @property (nonatomic, assign) int					number;
-@property (nonatomic, assign) BOOL					started;
+@property (nonatomic, assign) BOOL					authenticated;
 
 // Object Versions
 - (void)requestVersions:(int)numVersions object:(id<SPDiffable>)object;
@@ -38,6 +38,8 @@
 - (void)sendObjectDeletion:(id<SPDiffable>)object;
 - (void)sendObjectChanges:(id<SPDiffable>)object;
 - (void)shareObject:(id<SPDiffable>)object withEmail:(NSString *)email;
+
+// Bucket Helpers
 - (void)removeAllBucketObjects:(SPBucket *)bucket;
 
 // Response Handlers
