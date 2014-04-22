@@ -41,6 +41,14 @@ install_resource()
       ;;
   esac
 }
+install_resource "CTAssetsPickerController/CTAssetsPickerController/Images.xcassets/CTAssetsPickerChecked.imageset/CTAssetsPickerChecked.png"
+install_resource "CTAssetsPickerController/CTAssetsPickerController/Images.xcassets/CTAssetsPickerChecked.imageset/CTAssetsPickerChecked@2x.png"
+install_resource "CTAssetsPickerController/CTAssetsPickerController/Images.xcassets/CTAssetsPickerEmpty.imageset/CTAssetsPickerEmpty.png"
+install_resource "CTAssetsPickerController/CTAssetsPickerController/Images.xcassets/CTAssetsPickerEmpty.imageset/CTAssetsPickerEmpty@2x.png"
+install_resource "CTAssetsPickerController/CTAssetsPickerController/Images.xcassets/CTAssetsPickerLocked.imageset/CTAssetsPickerLocked.png"
+install_resource "CTAssetsPickerController/CTAssetsPickerController/Images.xcassets/CTAssetsPickerLocked.imageset/CTAssetsPickerLocked@2x.png"
+install_resource "CTAssetsPickerController/CTAssetsPickerController/Images.xcassets/CTAssetsPickerVideo.imageset/CTAssetsPickerVideo.png"
+install_resource "CTAssetsPickerController/CTAssetsPickerController/Images.xcassets/CTAssetsPickerVideo.imageset/CTAssetsPickerVideo@2x.png"
 install_resource "Mixpanel/Mixpanel/MPArrowLeft.png"
 install_resource "Mixpanel/Mixpanel/MPArrowLeft@2x.png"
 install_resource "Mixpanel/Mixpanel/MPArrowRight.png"
