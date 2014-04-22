@@ -1,6 +1,6 @@
-#import "WPStats.h"
+#import "WPAnalytics.h"
 
-@implementation WPStats
+@implementation WPAnalytics
 
 + (NSMutableArray *)trackers
 {
@@ -14,30 +14,30 @@
     return trackers;
 }
 
-+ (void)registerTracker:(id<WPStatsTracker>)tracker
++ (void)registerTracker:(id<WPAnalyticsTracker>)tracker
 {
     NSParameterAssert(tracker != nil);
     [[self trackers] addObject:tracker];
 }
 
-+ (void)track:(WPStat)stat
++ (void)track:(WPAnalyticsStat)stat
 {
-    for (id<WPStatsTracker> tracker in [self trackers]) {
+    for (id<WPAnalyticsTracker> tracker in [self trackers]) {
         [tracker track:stat];
     }
 }
 
-+ (void)track:(WPStat)stat withProperties:(NSDictionary *)properties
++ (void)track:(WPAnalyticsStat)stat withProperties:(NSDictionary *)properties
 {
     NSParameterAssert(properties != nil);
-    for (id<WPStatsTracker> tracker in [self trackers]) {
+    for (id<WPAnalyticsTracker> tracker in [self trackers]) {
         [tracker track:stat withProperties:properties];
     }
 }
 
 + (void)beginSession
 {
-    for (id<WPStatsTracker> tracker in [self trackers]) {
+    for (id<WPAnalyticsTracker> tracker in [self trackers]) {
         if ([tracker respondsToSelector:@selector(beginSession)]) {
             [tracker beginSession];
         }
@@ -46,7 +46,7 @@
 
 + (void)endSession
 {
-    for (id<WPStatsTracker> tracker in [self trackers]) {
+    for (id<WPAnalyticsTracker> tracker in [self trackers]) {
         if ([tracker respondsToSelector:@selector(endSession)]) {
             [tracker endSession];
         }

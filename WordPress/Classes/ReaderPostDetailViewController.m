@@ -625,7 +625,7 @@ typedef enum {
     ReaderPost *post = postView.post;
 	[post toggleLikedWithSuccess:^{
         if ([post.isLiked boolValue]) {
-            [WPStats track:WPStatReaderLikedArticle];
+            [WPAnalytics track:WPAnalyticsStatReaderLikedArticle];
         }
 	} failure:^(NSError *error) {
 		DDLogError(@"Error Liking Post : %@", [error localizedDescription]);
@@ -1034,7 +1034,7 @@ typedef enum {
 #pragma mark - ReaderCommentPublisherDelegate methods
 
 - (void)commentPublisherDidPublishComment:(ReaderCommentPublisher *)composer {
-    [WPStats track:WPStatReaderCommentedOnArticle];
+    [WPAnalytics track:WPAnalyticsStatReaderCommentedOnArticle];
     [self.inlineComposeView dismissComposer];
     [self syncWithUserInteraction:NO];
 }

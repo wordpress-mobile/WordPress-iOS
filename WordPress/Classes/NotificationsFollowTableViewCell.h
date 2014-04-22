@@ -1,8 +1,9 @@
 #import <UIKit/UIKit.h>
+#import "WPTableViewCell.h"
 
 typedef void (^NotificationsFollowBlock)(id sender);
 
-@interface NotificationsFollowTableViewCell : UITableViewCell
+@interface NotificationsFollowTableViewCell : WPTableViewCell
 
 @property (nonatomic, copy)	  NotificationsFollowBlock	onClick;
 @property (nonatomic, strong) UIButton					*actionButton;

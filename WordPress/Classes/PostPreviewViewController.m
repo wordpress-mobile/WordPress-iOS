@@ -225,7 +225,7 @@
 #pragma mark Webkit View Delegate Methods
 
 - (void)refreshWebView {
-	BOOL edited = [self.apost hasChanges];
+	BOOL edited = [self.apost hasChanged];
     self.loadingView.hidden = NO;
 
 	if (edited) {
