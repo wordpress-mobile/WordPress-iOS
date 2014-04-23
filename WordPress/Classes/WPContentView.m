@@ -1,12 +1,3 @@
-//
-//  WPContentView.m
-//  WordPress
-//
-//  Created by Michael Johnston on 11/19/13.
-//  Moved from ReaderPostView by Eric J.
-//  Copyright (c) 2013 WordPress. All rights reserved.
-//
-
 #import "WPContentView.h"
 #import "WPContentViewSubclass.h"
 
@@ -246,7 +237,7 @@ const CGFloat RPVControlButtonBorderSize = 0.0f;
 
 - (void)configureContentView:(id<WPContentViewProvider>)contentProvider {
     self.bylineLabel.text = [contentProvider authorForDisplay];
-    
+
     if ([[contentProvider blogNameForDisplay] length] > 0) {
         [self.byButton setEnabled:YES];
         [self.byButton setHidden:NO];
@@ -269,7 +260,7 @@ const CGFloat RPVControlButtonBorderSize = 0.0f;
     
     CGFloat contentWidth = self.frame.size.width;
 
-    self.byView.frame = CGRectMake(0, 0, contentWidth, RPVAuthorViewHeight + RPVAuthorPadding * 2);
+    self.byView.frame = CGRectMake(0, [self topMarginHeight], contentWidth, RPVAuthorViewHeight + RPVAuthorPadding * 2);
     CGFloat bylineX = RPVAvatarSize + RPVAuthorPadding + RPVHorizontalInnerPadding;
     self.bylineLabel.frame = CGRectMake(bylineX, RPVAuthorPadding - 2, contentWidth - bylineX, 18);
     self.byButton.frame = CGRectMake(bylineX, self.bylineLabel.frame.origin.y + 18, contentWidth - bylineX, 18);
@@ -404,6 +395,11 @@ const CGFloat RPVControlButtonBorderSize = 0.0f;
         [self.textContentView relayoutText];
         [self setNeedsLayout];
     }
+}
+
+// Subclasses can override this to provide margin at the top of the view. See CommentView.
+- (CGFloat)topMarginHeight {
+    return 0.0f;
 }
 
 - (BOOL)updateMediaLayout:(ReaderMediaView *)imageView {

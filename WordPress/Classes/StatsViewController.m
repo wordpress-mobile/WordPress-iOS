@@ -1,12 +1,3 @@
-/*
- * StatsViewController.m
- *
- * Copyright (c) 2014 WordPress. All rights reserved.
- *
- * Licensed under GNU General Public License 2.0.
- * Some rights reserved. See license.txt
- */
-
 #import "StatsViewController.h"
 #import "Blog+Jetpack.h"
 #import "WordPressAppDelegate.h"
@@ -64,7 +55,7 @@ typedef NS_ENUM(NSInteger, TotalFollowersShareRow) {
     TotalFollowersShareRowTotalRows
 };
 
-@interface StatsViewController () <UITableViewDataSource, UITableViewDelegate, StatsTodayYesterdayButtonCellDelegate, UIViewControllerRestoration>
+@interface StatsViewController () <UITableViewDataSource, UITableViewDelegate, StatsTodayYesterdayButtonCellDelegate, UIViewControllerRestoration, StatsButtonCellDelegate>
 
 @property (nonatomic, strong) StatsApiHelper *statsApiHelper;
 @property (nonatomic, strong) NSMutableDictionary *statModels;
@@ -197,6 +188,8 @@ typedef NS_ENUM(NSInteger, TotalFollowersShareRow) {
     __weak JetpackSettingsViewController *safeController = controller;
     [controller setCompletionBlock:^(BOOL didAuthenticate) {
         if (didAuthenticate) {
+            [WPAnalytics track:WPAnalyticsStatSignedInToJetpack];
+            [WPAnalytics track:WPAnalyticsStatPerformedJetpackSignInFromStatsScreen];
             [safeController.view removeFromSuperview];
             [safeController removeFromParentViewController];
             self.tableView.scrollEnabled = YES;
@@ -243,33 +236,33 @@ typedef NS_ENUM(NSInteger, TotalFollowersShareRow) {
         _resultsAvailable = YES;
         [self hideNoResultsView];
         [self.tableView reloadData];
-    } failure:failure];
-    
-    [self.statsApiHelper fetchViewsVisitorsWithSuccess:^(StatsViewsVisitors *viewsVisitors) {
-        _statModels[@(StatsSectionVisitorsGraph)] = viewsVisitors;
-        if (_resultsAvailable) {
-            [self.tableView reloadSections:[NSIndexSet indexSetWithIndex:StatsSectionVisitors] withRowAnimation:UITableViewRowAnimationNone];
-        }
-    } failure:failure];
-
-    [self.statsApiHelper fetchTopPostsWithSuccess:^(NSDictionary *todayAndYesterdayTopPosts) {
-        saveStatsForSection(todayAndYesterdayTopPosts, StatsSectionTopPosts);
-    } failure:failure];
-    
-    [self.statsApiHelper fetchClicksWithSuccess:^(NSDictionary *clicks) {
-        saveStatsForSection(clicks, StatsSectionClicks);
-    } failure:failure];
-    
-    [self.statsApiHelper fetchCountryViewsWithSuccess:^(NSDictionary *views) {
-        saveStatsForSection(views, StatsSectionViewsByCountry);
-    } failure:failure];
-    
-    [self.statsApiHelper fetchReferrerWithSuccess:^(NSDictionary *referrers) {
-        saveStatsForSection(referrers, StatsSectionReferrers);
-    } failure:failure];
-    
-    [self.statsApiHelper fetchSearchTermsWithSuccess:^(NSDictionary *terms) {
-        saveStatsForSection(terms, StatsSectionSearchTerms);
+        
+        [self.statsApiHelper fetchViewsVisitorsWithSuccess:^(StatsViewsVisitors *viewsVisitors) {
+            _statModels[@(StatsSectionVisitorsGraph)] = viewsVisitors;
+            if (_resultsAvailable) {
+                [self.tableView reloadSections:[NSIndexSet indexSetWithIndex:StatsSectionVisitors] withRowAnimation:UITableViewRowAnimationNone];
+            }
+        } failure:failure];
+        
+        [self.statsApiHelper fetchTopPostsWithSuccess:^(NSDictionary *todayAndYesterdayTopPosts) {
+            saveStatsForSection(todayAndYesterdayTopPosts, StatsSectionTopPosts);
+        } failure:failure];
+        
+        [self.statsApiHelper fetchClicksWithSuccess:^(NSDictionary *clicks) {
+            saveStatsForSection(clicks, StatsSectionClicks);
+        } failure:failure];
+        
+        [self.statsApiHelper fetchCountryViewsWithSuccess:^(NSDictionary *views) {
+            saveStatsForSection(views, StatsSectionViewsByCountry);
+        } failure:failure];
+        
+        [self.statsApiHelper fetchReferrerWithSuccess:^(NSDictionary *referrers) {
+            saveStatsForSection(referrers, StatsSectionReferrers);
+        } failure:failure];
+        
+        [self.statsApiHelper fetchSearchTermsWithSuccess:^(NSDictionary *terms) {
+            saveStatsForSection(terms, StatsSectionSearchTerms);
+        } failure:failure];
     } failure:failure];
 }
 
@@ -338,7 +331,7 @@ typedef NS_ENUM(NSInteger, TotalFollowersShareRow) {
                 case StatsDataRowButtons:
                     return [StatsButtonCell heightForRow];
                 case StatsDataRowTitle:
-                    return [StatsTwoColumnCell heightForRow];
+                    return [self resultsForSection:indexPath.section].count > 0 ? [StatsTwoColumnCell heightForRow] : 0.0;
                 default:
                     return [self resultsForSection:indexPath.section].count > 0 ? [StatsTwoColumnCell heightForRow] : [StatsNoResultsCell heightForRowForSection:(StatsSection)indexPath.section withWidth:CGRectGetWidth(self.view.bounds)];
             }
@@ -356,10 +349,11 @@ typedef NS_ENUM(NSInteger, TotalFollowersShareRow) {
                 case VisitorRowGraphUnitButton:
                 {
                     StatsButtonCell *cell = [tableView dequeueReusableCellWithIdentifier:VisitorsUnitButtonCellReuseIdentifier];
-                    [cell addButtonWithTitle:NSLocalizedString(@"Days", nil) target:self action:@selector(daySelected:) section:indexPath.section];
-                    [cell addButtonWithTitle:NSLocalizedString(@"Weeks", nil) target:self action:@selector(weekSelected:) section:indexPath.section];
-                    [cell addButtonWithTitle:NSLocalizedString(@"Months", nil) target:self action:@selector(monthSelected:) section:indexPath.section];
-                    cell.currentActiveButton = _currentViewsVisitorsGraphUnit;
+                    cell.delegate = self;
+                    [cell addSegmentWithTitle:NSLocalizedString(@"Days", nil)];
+                    [cell addSegmentWithTitle:NSLocalizedString(@"Weeks", nil)];
+                    [cell addSegmentWithTitle:NSLocalizedString(@"Months", nil)];
+                    cell.segmentedControl.selectedSegmentIndex = _currentViewsVisitorsGraphUnit;
                     return cell;
                 }
                 case VisitorRowGraph:
@@ -413,7 +407,6 @@ typedef NS_ENUM(NSInteger, TotalFollowersShareRow) {
             [cell configureForSection:StatsSectionLinkToWebview];
             cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
             cell.onTappedLinkToWebview = ^{
-                [WPMobileStats trackEventForWPCom:StatsEventStatsClickedOnWebVersion];
                 StatsWebViewController *vc = [[StatsWebViewController alloc] init];
                 vc.blog = self.blog;
                 [self.navigationController pushViewController:vc animated:YES];
@@ -502,7 +495,7 @@ typedef NS_ENUM(NSInteger, TotalFollowersShareRow) {
         case StatsDataRowTitle:
         {
             cell = [self.tableView dequeueReusableCellWithIdentifier:ResultRowCellIdentifier];
-            [(StatsTwoColumnCell *)cell setLeft:dataTitleRowLeft.uppercaseString withImageUrl:nil right:dataTitleRowRight.uppercaseString titleCell:YES];
+            [(StatsTwoColumnCell *)cell setLeft:[dataTitleRowLeft uppercaseStringWithLocale:[NSLocale currentLocale]] withImageUrl:nil right:[dataTitleRowRight uppercaseStringWithLocale:[NSLocale currentLocale]] titleCell:YES];
             break;
         }
         default:
@@ -521,7 +514,7 @@ typedef NS_ENUM(NSInteger, TotalFollowersShareRow) {
 
 - (BOOL)tableView:(UITableView *)tableView shouldHighlightRowAtIndexPath:(NSIndexPath *)indexPath {
     StatsTitleCountItem *item = [self itemSelectedAtIndexPath:indexPath];
-    return [item isKindOfClass:[StatsGroup class]] || item.URL != nil;
+    return [item isKindOfClass:[StatsGroup class]] || item.URL != nil || indexPath.section == StatsSectionLinkToWebview;
 }
 
 - (StatsTitleCountItem *)itemSelectedAtIndexPath:(NSIndexPath *)indexPath {
@@ -572,10 +565,18 @@ typedef NS_ENUM(NSInteger, TotalFollowersShareRow) {
         // Outside and above the expanded group
         // or there was no expanded group to worry about!
     }
-    return sectionResults[indexPath.row-offset];
+    NSInteger index = indexPath.row - offset;
+    
+    if (index < 0) {
+        return nil;
+    }
+    
+    return sectionResults[index];
 }
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
+    [tableView deselectRowAtIndexPath:indexPath animated:YES];
+    
     StatsTitleCountItem *item = [self itemSelectedAtIndexPath:indexPath];
     if ([item isKindOfClass:[StatsGroup class]]) {
         [self toggleGroupExpanded:indexPath childCount:[(StatsGroup *)item children].count];
@@ -686,16 +687,11 @@ typedef NS_ENUM(NSInteger, TotalFollowersShareRow) {
     [self.tableView reloadSections:[NSIndexSet indexSetWithIndex:StatsSectionVisitors] withRowAnimation:UITableViewRowAnimationNone];
 }
 
-- (void)daySelected:(UIButton *)sender {
-    [self graphUnitSelected:StatsViewsVisitorsUnitDay];
-}
+#pragma mark - StatsButtonCellDelegate methods
 
-- (void)weekSelected:(UIButton *)sender {
-    [self graphUnitSelected:StatsViewsVisitorsUnitWeek];
-}
-
-- (void)monthSelected:(UIButton *)sender {
-    [self graphUnitSelected:StatsViewsVisitorsUnitMonth];
+- (void)statsButtonCell:(StatsButtonCell *)statsButtonCell didSelectIndex:(NSUInteger)index {
+    StatsViewsVisitorsUnit unit = (StatsViewsVisitorsUnit)index;
+    [self graphUnitSelected:unit];
 }
 
 @end

@@ -1,57 +1,55 @@
-//
-//  Note.h
-//  WordPress
-//
-//  Created by Beau Collins on 11/18/12.
-//  Copyright (c) 2012 WordPress. All rights reserved.
-//
-
 #import <Foundation/Foundation.h>
 #import <CoreData/CoreData.h>
 #import <Simperium/SPManagedObject.h>
 #import "WPAccount.h"
 #import "WPContentViewProvider.h"
 
+
+typedef NS_ENUM(NSInteger, WPNoteTemplateType) {
+    WPNoteTemplateUnknown,
+    WPNoteTemplateSingleLineList,
+    WPNoteTemplateMultiLineList,
+    WPNoteTemplateBigBadge,
+};
+
 @interface Note : SPManagedObject<WPContentViewProvider>
 
-@property (nonatomic, strong,  readonly) NSString		*noteID;
-@property (nonatomic, strong,  readonly) NSNumber		*timestamp;
-@property (nonatomic, strong,  readonly) NSString		*type;
-@property (nonatomic, strong, readwrite) NSString		*unread;	// Yes. This should be a number instead.
-@property (nonatomic, retain,  readonly) NSDictionary	*subject;
-@property (nonatomic, retain,  readonly) NSDictionary	*body;
+@property (nonatomic, readonly) NSString            *noteID;
+@property (nonatomic, readonly) NSNumber            *timestamp;
+@property (nonatomic, readonly) NSString            *type;
+@property (nonatomic, readwrite) NSString           *unread;            // Yes. This should be a number instead.
+@property (nonatomic, readonly) NSDictionary        *subject;
+@property (nonatomic, readonly) NSDictionary        *body;
 
 // Derived attributes from the Subject and Body collections.
 // Ref: http://developer.wordpress.com/docs/api/1/get/notifications/
 //
-@property (nonatomic, strong,  readonly) NSString		*subjectText;
-@property (nonatomic, strong,  readonly) NSString		*subjectIcon;
-@property (nonatomic, strong,  readonly) NSArray		*bodyItems;
-@property (nonatomic, strong,  readonly) NSArray		*bodyActions;
-@property (nonatomic, strong,  readonly) NSString		*bodyTemplate;
-@property (nonatomic, strong,  readonly) NSString		*bodyHeaderText;
-@property (nonatomic, strong,  readonly) NSString		*bodyHeaderLink;
-@property (nonatomic, strong,  readonly) NSString		*bodyFooterText;
-@property (nonatomic, strong,  readonly) NSString		*bodyFooterLink;
-@property (nonatomic, strong,  readonly) NSString		*bodyCommentText;
+@property (nonatomic, readonly) NSString            *subjectText;
+@property (nonatomic, readonly) NSString            *subjectIcon;
+@property (nonatomic, readonly) NSArray             *bodyItems;         // Array of NoteBodyItem Objects
+@property (nonatomic, readonly) NSArray             *bodyActions;
+@property (nonatomic, readonly) NSString            *bodyTemplate;
+@property (nonatomic, readonly) NSString            *bodyHeaderText;
+@property (nonatomic, readonly) NSString            *bodyHeaderLink;
+@property (nonatomic, readonly) NSString            *bodyFooterText;
+@property (nonatomic, readonly) NSString            *bodyFooterLink;
+@property (nonatomic, readonly) NSString            *bodyCommentText;
 
+@property (nonatomic, readonly) NSString            *commentText;
+@property (nonatomic, readonly) NSString            *commentHtml;
 
+@property (nonatomic, readonly) NSDictionary        *meta;
+@property (nonatomic, readonly) NSNumber            *metaPostID;
+@property (nonatomic, readonly) NSNumber            *metaSiteID;
+
+@property (nonatomic, readonly) WPNoteTemplateType  templateType;
+
+- (BOOL)isMatcher;
 - (BOOL)isComment;
 - (BOOL)isLike;
 - (BOOL)isFollow;
 - (BOOL)isRead;
-
-// Attempt to get the right blog for the note's stats event
-- (Blog *)blogForStatsEvent;
-- (BOOL)isStatsEvent;
-
-/**
- Remove old notes from Core Data storage
-
- It will keep at least the 40 latest notes
- @param timestamp if not nil, it well keep all notes newer this timestamp.
- @param context The context which contains the notes to delete.
- */
-+ (void)pruneOldNotesBefore:(NSNumber *)timestamp withContext:(NSManagedObjectContext *)context;
+- (BOOL)isUnread;
+- (BOOL)statsEvent;
 
 @end

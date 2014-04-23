@@ -1,12 +1,3 @@
-/*
- * WPWebViewController.h
- *
- * Copyright (c) 2013 WordPress. All rights reserved.
- *
- * Licensed under GNU General Public License 2.0.
- * Some rights reserved. See license.txt
- */
-
 #import <MessageUI/MFMailComposeViewController.h>
 
 @interface WPWebViewController : UIViewController <MFMailComposeViewControllerDelegate>
@@ -15,7 +6,6 @@
 @property (nonatomic, strong) NSURL *wpLoginURL;
 @property (nonatomic, strong) NSString *username;
 @property (nonatomic, strong) NSString *password;
-@property (nonatomic, strong) NSString *statsPrefixForShareActions;
 @property (nonatomic, weak) IBOutlet UIWebView *webView;
 @property (nonatomic, strong) IBOutlet UIToolbar *toolbar;
 @property (nonatomic, strong) IBOutlet UIView *loadingView;

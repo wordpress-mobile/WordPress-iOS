@@ -12,6 +12,12 @@
 #define COCOAPODS_VERSION_MINOR_AFNetworking 2
 #define COCOAPODS_VERSION_PATCH_AFNetworking 0
 
+// CTAssetsPickerController
+#define COCOAPODS_POD_AVAILABLE_CTAssetsPickerController
+#define COCOAPODS_VERSION_MAJOR_CTAssetsPickerController 2
+#define COCOAPODS_VERSION_MINOR_CTAssetsPickerController 2
+#define COCOAPODS_VERSION_PATCH_CTAssetsPickerController 0
+
 // CocoaLumberjack
 #define COCOAPODS_POD_AVAILABLE_CocoaLumberjack
 #define COCOAPODS_VERSION_MAJOR_CocoaLumberjack 1
@@ -76,7 +82,7 @@
 #define COCOAPODS_POD_AVAILABLE_HockeySDK
 #define COCOAPODS_VERSION_MAJOR_HockeySDK 3
 #define COCOAPODS_VERSION_MINOR_HockeySDK 5
-#define COCOAPODS_VERSION_PATCH_HockeySDK 3
+#define COCOAPODS_VERSION_PATCH_HockeySDK 5
 
 // JRSwizzle
 #define COCOAPODS_POD_AVAILABLE_JRSwizzle
@@ -135,14 +141,14 @@
 // Simperium
 #define COCOAPODS_POD_AVAILABLE_Simperium
 #define COCOAPODS_VERSION_MAJOR_Simperium 0
-#define COCOAPODS_VERSION_MINOR_Simperium 7
-#define COCOAPODS_VERSION_PATCH_Simperium 0
+#define COCOAPODS_VERSION_MINOR_Simperium 6
+#define COCOAPODS_VERSION_PATCH_Simperium 5
 
 // Simperium/STKeychain
 #define COCOAPODS_POD_AVAILABLE_Simperium_STKeychain
 #define COCOAPODS_VERSION_MAJOR_Simperium_STKeychain 0
-#define COCOAPODS_VERSION_MINOR_Simperium_STKeychain 7
-#define COCOAPODS_VERSION_PATCH_Simperium_STKeychain 0
+#define COCOAPODS_VERSION_MINOR_Simperium_STKeychain 6
+#define COCOAPODS_VERSION_PATCH_Simperium_STKeychain 5
 
 // SocketRocket
 #define COCOAPODS_POD_AVAILABLE_SocketRocket
@@ -153,7 +159,7 @@
 // UIDeviceIdentifier
 #define COCOAPODS_POD_AVAILABLE_UIDeviceIdentifier
 #define COCOAPODS_VERSION_MAJOR_UIDeviceIdentifier 0
-#define COCOAPODS_VERSION_MINOR_UIDeviceIdentifier 1
+#define COCOAPODS_VERSION_MINOR_UIDeviceIdentifier 4
 #define COCOAPODS_VERSION_PATCH_UIDeviceIdentifier 0
 
 // WordPressApi
@@ -166,7 +172,7 @@
 #define COCOAPODS_POD_AVAILABLE_google_plus_ios_sdk
 #define COCOAPODS_VERSION_MAJOR_google_plus_ios_sdk 1
 #define COCOAPODS_VERSION_MINOR_google_plus_ios_sdk 5
-#define COCOAPODS_VERSION_PATCH_google_plus_ios_sdk 0
+#define COCOAPODS_VERSION_PATCH_google_plus_ios_sdk 1
 
 // wpxmlrpc
 #define COCOAPODS_POD_AVAILABLE_wpxmlrpc

@@ -1,20 +1,15 @@
-//
-//  BlogDetailsViewController.m
-//  WordPress
-//
-//  Created by Michael Johnston on 11/9/13.
-//  Copyright (c) 2013 WordPress. All rights reserved.
-//
-
 #import "BlogDetailsViewController.h"
 #import "Blog+Jetpack.h"
 #import "EditSiteViewController.h"
 #import "PagesViewController.h"
 #import "CommentsViewController.h"
+#import "ThemeBrowserViewController.h"
+#import "MediaBrowserViewController.h"
 #import "StatsViewController.h"
 #import "WPWebViewController.h"
 #import "WPTableViewCell.h"
 #import "ContextManager.h"
+#import "BlogService.h"
 
 static NSString *const BlogDetailsCellIdentifier = @"BlogDetailsCell";
 
@@ -89,6 +84,13 @@ NSString * const WPBlogDetailsBlogKey = @"WPBlogDetailsBlogKey";
     }
     
     [self.tableView registerClass:[WPTableViewCell class] forCellReuseIdentifier:BlogDetailsCellIdentifier];
+    
+    if (!_blog.options) {
+        NSManagedObjectContext *context = [[ContextManager sharedInstance] mainContext];
+        BlogService *blogService = [[BlogService alloc] initWithManagedObjectContext:context];
+
+        [blogService syncOptionsForBlog:_blog success:nil failure:nil];
+    }
 }
 
 - (void)viewWillAppear:(BOOL)animated {
@@ -107,7 +109,6 @@ NSString * const WPBlogDetailsBlogKey = @"WPBlogDetailsBlogKey";
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
-    // Return the number of rows in the section.
     return BlogDetailsRowCount;
 }
 
@@ -128,10 +129,10 @@ NSString * const WPBlogDetailsBlogKey = @"WPBlogDetailsBlogKey";
     } else if (indexPath.row == BlogDetailsRowStats) {
         cell.textLabel.text = NSLocalizedString(@"Stats", nil);
         cell.imageView.image = [UIImage imageNamed:@"icon-menu-stats"];
-    } else if (indexPath.row == BlogDetailsRowViewSite) {
+    } else if ([self isRowForViewSite:indexPath.row]) {
         cell.textLabel.text = NSLocalizedString(@"View Site", nil);
         cell.imageView.image = [UIImage imageNamed:@"icon-menu-viewsite"];
-    } else if (indexPath.row == BlogDetailsRowViewAdmin) {
+    } else if ([self isRowForViewAdmin:indexPath.row]) {
         cell.textLabel.text = NSLocalizedString(@"View Admin", nil);
         cell.imageView.image = [UIImage imageNamed:@"icon-menu-viewadmin"];
     } else if (indexPath.row == BlogDetailsRowEdit) {
@@ -152,32 +153,30 @@ NSString * const WPBlogDetailsBlogKey = @"WPBlogDetailsBlogKey";
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
     [tableView deselectRowAtIndexPath:indexPath animated:YES];
     
-    if (indexPath.row == BlogDetailsRowEdit) {
-        [WPMobileStats trackEventForWPCom:StatsEventSettingsClickedEditBlog];
-        
+    if ([self isRowForEditBlog:indexPath.row]) {
         EditSiteViewController *editSiteViewController = [[EditSiteViewController alloc] initWithBlog:self.blog];
         [self.navigationController pushViewController:editSiteViewController animated:YES];
     }
     
     Class controllerClass;
     if (indexPath.row == BlogDetailsRowPosts) {
-        [WPMobileStats incrementProperty:StatsPropertySidebarSiteClickedPosts forEvent:StatsEventAppClosed];
+        [WPAnalytics track:WPAnalyticsStatOpenedPosts];
         controllerClass = [PostsViewController class];
     } else if (indexPath.row == BlogDetailsRowPages) {
-        [WPMobileStats incrementProperty:StatsPropertySidebarSiteClickedPages forEvent:StatsEventAppClosed];
+        [WPAnalytics track:WPAnalyticsStatOpenedPages];
         controllerClass = [PagesViewController class];
     } else if (indexPath.row == BlogDetailsRowComments) {
-        [WPMobileStats incrementProperty:StatsPropertySidebarSiteClickedComments forEvent:StatsEventAppClosed];
+        [WPAnalytics track:WPAnalyticsStatOpenedComments];
         controllerClass = [CommentsViewController class];
     } else if (indexPath.row == BlogDetailsRowStats) {
-        [WPMobileStats incrementProperty:StatsPropertySidebarSiteClickedStats forEvent:StatsEventAppClosed];
+        [WPAnalytics track:WPAnalyticsStatStatsAccessed];
         controllerClass =  [StatsViewController class];
     } else if (indexPath.row == BlogDetailsRowViewSite) {
         [self showViewSiteForBlog:self.blog];
-    } else if (indexPath.row == BlogDetailsRowViewAdmin) {
+    } else if ([self isRowForViewAdmin:indexPath.row]) {
         [self showViewAdminForBlog:self.blog];
     }
-        
+  
     // Check if the controller is already on the screen
     if ([self.navigationController.visibleViewController isMemberOfClass:controllerClass]) {
         if ([self.navigationController.visibleViewController respondsToSelector:@selector(setBlog:)]) {
@@ -213,7 +212,7 @@ NSString * const WPBlogDetailsBlogKey = @"WPBlogDetailsBlogKey";
 
 #pragma mark - Private methods
 - (void)showViewSiteForBlog:(Blog *)blog {
-    [WPMobileStats incrementProperty:StatsPropertySidebarSiteClickedViewSite forEvent:StatsEventAppClosed];
+    [WPAnalytics track:WPAnalyticsStatOpenedViewSite];
     
     NSString *blogURL = blog.homeURL;
     if (![blogURL hasPrefix:@"http"]) {
@@ -241,12 +240,23 @@ NSString * const WPBlogDetailsBlogKey = @"WPBlogDetailsBlogKey";
 
 - (void)showViewAdminForBlog:(Blog *)blog
 {
-    [WPMobileStats incrementProperty:StatsPropertySidebarSiteClickedViewAdmin forEvent:StatsEventAppClosed];
+    [WPAnalytics track:WPAnalyticsStatOpenedViewAdmin];
     
     NSString *dashboardUrl = [blog.xmlrpc stringByReplacingOccurrencesOfString:@"xmlrpc.php" withString:@"wp-admin/"];
     [[UIApplication sharedApplication] openURL:[NSURL URLWithString:dashboardUrl]];
 }
 
+- (BOOL)isRowForViewSite:(NSUInteger)index {
+    return index == BlogDetailsRowViewSite;
+}
+
+- (BOOL)isRowForViewAdmin:(NSUInteger)index {
+    return index == BlogDetailsRowViewAdmin;
+}
+
+- (BOOL)isRowForEditBlog:(NSUInteger)index {
+    return index == BlogDetailsRowEdit;
+}
 
 /*
 // Override to support conditional editing of the table view.

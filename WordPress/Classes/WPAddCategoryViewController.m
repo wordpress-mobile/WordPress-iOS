@@ -1,11 +1,3 @@
-//
-//  WPAddCategoryViewController.m
-//  WordPress
-//
-//  Created by ganeshr on 07/24/08
-//  Copyright (c) 2014 WordPress. All rights reserved.
-//
-
 #import "WPAddCategoryViewController.h"
 #import "Blog.h"
 #import "Post.h"
@@ -16,6 +8,7 @@
 #import "WordPressAppDelegate.h"
 #import "CategoryService.h"
 #import "ContextManager.h"
+#import "BlogService.h"
 
 @interface WPAddCategoryViewController ()<CategoriesViewControllerDelegate>
 
@@ -41,6 +34,7 @@
     DDLogMethod();
 	[super viewDidLoad];
     
+    self.title = NSLocalizedString(@"Add Category", @"The title on the add category screen");
     self.tableView.sectionFooterHeight = 0.0f;
 
     self.saveButtonItem = [[UIBarButtonItem alloc] initWithTitle:NSLocalizedString(@"Save", @"Save button label (saving content, ex: Post, Page, Comment, Category).")
@@ -84,7 +78,8 @@
 }
 
 - (void)saveAddCategory:(id)sender {
-    CategoryService *categoryService = [[CategoryService alloc] initWithManagedObjectContext:[[ContextManager sharedInstance] mainContext]];
+    NSManagedObjectContext *context = [[ContextManager sharedInstance] mainContext];
+    CategoryService *categoryService = [[CategoryService alloc] initWithManagedObjectContext:context];
     NSString *catName = [self.createCatNameField.text trim];
     
     if (!catName ||[catName length] == 0) {
@@ -114,7 +109,8 @@
                                         [self.post save];
                                         
                                         //re-syncs categories this is necessary because the server can change the name of the category!!!
-                                        [self.post.blog syncCategoriesWithSuccess:nil failure:nil];
+                                        BlogService *blogService = [[BlogService alloc] initWithManagedObjectContext:context];
+                                        [blogService syncCategoriesForBlog:self.post.blog success:nil failure:nil];
                                         
                                         // Cleanup and dismiss
                                         [self clearUI];
@@ -195,7 +191,7 @@
     cell = (WPTableViewCell *)[self.tableView dequeueReusableCellWithIdentifier:parentCategoryCellIdentifier];
     if (!cell) {
         cell = [[WPTableViewCell alloc] initWithStyle:UITableViewCellStyleValue1 reuseIdentifier:parentCategoryCellIdentifier];
-        cell.textLabel.font = [WPStyleGuide tableviewSectionHeaderFont];
+        cell.textLabel.font = [WPStyleGuide tableviewTextFont];
         cell.textLabel.textColor = [WPStyleGuide whisperGrey];
         cell.textLabel.text = NSLocalizedString(@"Parent Category", @"Placeholder to set a parent category for a new category.");
         

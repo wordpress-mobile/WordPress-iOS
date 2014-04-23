@@ -1,11 +1,3 @@
-//
-//  JetpackSettingsViewController.m
-//  WordPress
-//
-//  Created by Eric Johnson on 8/24/12.
-//  Copyright (c) 2012 WordPress. All rights reserved.
-//
-
 #import "JetpackSettingsViewController.h"
 #import "Blog+Jetpack.h"
 #import "WordPressComApi.h"
@@ -17,6 +9,9 @@
 #import "WPNUXSecondaryButton.h"
 #import "UILabel+SuggestSize.h"
 #import "WordPressComOAuthClient.h"
+#import "AccountService.h"
+#import "BlogService.h"
+#import "ContextManager.h"
 
 CGFloat const JetpackiOS7StatusBarOffset = 20.0;
 CGFloat const JetpackStandardOffset = 16;
@@ -316,10 +311,17 @@ CGFloat const JetpackSignInButtonHeight = 41.0;
     [_blog validateJetpackUsername:_usernameField.text
                           password:_passwordField.text
                            success:^{
-                               if (![[[WPAccount defaultWordPressComAccount] restApi] hasCredentials]) {
+                               NSManagedObjectContext *context = [[ContextManager sharedInstance] mainContext];
+                               AccountService *accountService = [[AccountService alloc] initWithManagedObjectContext:context];
+                               WPAccount *defaultAccount = [accountService defaultWordPressComAccount];
+
+                               if (![[defaultAccount restApi] hasCredentials]) {
                                    [[WordPressComOAuthClient client] authenticateWithUsername:_usernameField.text password:_passwordField.text success:^(NSString *authToken) {
-                                       WPAccount *account = [WPAccount createOrUpdateWordPressComAccountWithUsername:_usernameField.text password:_passwordField.text authToken:authToken];
-                                       [WPAccount setDefaultWordPressComAccount:account];
+                                       NSManagedObjectContext *context = [[ContextManager sharedInstance] mainContext];
+                                       AccountService *accountService = [[AccountService alloc] initWithManagedObjectContext:context];
+
+                                       WPAccount *account = [accountService createOrUpdateWordPressComAccountWithUsername:_usernameField.text password:_passwordField.text authToken:authToken];
+                                       [accountService setDefaultWordPressComAccount:account];
                                        finishedBlock(YES);
                                    } failure:failureBlock];
                                } else {
@@ -439,6 +441,7 @@ CGFloat const JetpackSignInButtonHeight = 41.0;
 #pragma mark - Browser
 
 - (void)openInstallJetpackURL {
+    [WPAnalytics track:WPAnalyticsStatSelectedInstallJetpack];
     [self openURL:[NSURL URLWithString:[_blog adminUrlWithPath:@"plugin-install.php?tab=plugin-information&plugin=jetpack"]] withUsername:_blog.username password:_blog.password wpLoginURL:[NSURL URLWithString:_blog.loginUrl]];
 }
 
@@ -488,13 +491,20 @@ CGFloat const JetpackSignInButtonHeight = 41.0;
 - (void)checkForJetpack {
     if ([_blog hasJetpack]) {
         if (!_blog.jetpackUsername || !_blog.jetpackPassword) {
-            _usernameField.text = [[WPAccount defaultWordPressComAccount] username];
-            _passwordField.text = [[WPAccount defaultWordPressComAccount] password];
+            NSManagedObjectContext *context = [[ContextManager sharedInstance] mainContext];
+            AccountService *accountService = [[AccountService alloc] initWithManagedObjectContext:context];
+            WPAccount *defaultAccount = [accountService defaultWordPressComAccount];
+
+            _usernameField.text = [defaultAccount username];
+            _passwordField.text = [defaultAccount password];
             [self updateSaveButton];
         }
         return;
     }
-    [_blog syncOptionsWithWithSuccess:^{
+    
+    NSManagedObjectContext *context = [[ContextManager sharedInstance] mainContext];
+    BlogService *blogService = [[BlogService alloc] initWithManagedObjectContext:context];
+    [blogService syncOptionsForBlog:_blog success:^{
         if ([_blog hasJetpack]) {
             [self updateMessage];
         }

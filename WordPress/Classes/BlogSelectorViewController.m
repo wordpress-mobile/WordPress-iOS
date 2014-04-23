@@ -1,12 +1,3 @@
-/*
- * BlogSelectorViewController.h
- *
- * Copyright (c) 2013 WordPress. All rights reserved.
- *
- * Licensed under GNU General Public License 2.0.
- * Some rights reserved. See license.txt
- */
-
 #import "BlogSelectorViewController.h"
 #import "UIImageView+Gravatar.h"
 #import "WordPressComApi.h"
@@ -16,6 +7,7 @@
 #import "Blog.h"
 #import "WPAccount.h"
 #import "WPTableViewSectionHeaderView.h"
+#import "AccountService.h"
 
 static NSString *const BlogCellIdentifier = @"BlogCell";
 
@@ -284,7 +276,11 @@ static NSString *const BlogCellIdentifier = @"BlogCell";
 
 - (NSString *)controller:(NSFetchedResultsController *)controller sectionIndexTitleForSectionName:(NSString *)sectionName {
     if ([sectionName isEqualToString:@"1"]) {
-        return [NSString stringWithFormat:NSLocalizedString(@"%@'s sites", @"Section header for WordPress.com blogs"), [[WPAccount defaultWordPressComAccount] username]];
+        NSManagedObjectContext *context = [[ContextManager sharedInstance] mainContext];
+        AccountService *accountService = [[AccountService alloc] initWithManagedObjectContext:context];
+        WPAccount *defaultAccount = [accountService defaultWordPressComAccount];
+
+        return [NSString stringWithFormat:NSLocalizedString(@"%@'s sites", @"Section header for WordPress.com blogs"), [defaultAccount username]];
     }
     return NSLocalizedString(@"Self Hosted", @"Section header for self hosted blogs");
 }

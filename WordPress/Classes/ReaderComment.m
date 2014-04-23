@@ -1,11 +1,3 @@
-//
-//  ReaderComment.m
-//  WordPress
-//
-//  Created by Eric J on 3/25/13.
-//  Copyright (c) 2013 WordPress. All rights reserved.
-//
-
 #import "ReaderComment.h"
 #import "NSString+XMLExtensions.h"
 
@@ -138,7 +130,7 @@
 + (void)createOrUpdateWithDictionary:(NSDictionary *)dict forPost:(ReaderPost *)post withContext:(NSManagedObjectContext *)context {
 
 	NSFetchRequest *request = [NSFetchRequest fetchRequestWithEntityName:@"ReaderComment"];
-	request.predicate = [NSPredicate predicateWithFormat:@"(commentID = %@) AND (post.endpoint = %@)", [dict objectForKey:@"ID"], post.endpoint];
+	request.predicate = [NSPredicate predicateWithFormat:@"(commentID = %@) AND (post.endpoint = %@)", [dict numberForKey:@"ID"], post.endpoint];
     request.sortDescriptors = @[[NSSortDescriptor sortDescriptorWithKey:@"dateCreated" ascending:YES]];
     request.fetchLimit = 1;
     
@@ -153,7 +145,7 @@
     if (!results) {
 		comment = (ReaderComment *)[NSEntityDescription insertNewObjectForEntityForName:@"ReaderComment"
 														   inManagedObjectContext:context];
-		comment.commentID = [dict objectForKey:@"ID"];
+		comment.commentID = [dict numberForKey:@"ID"];
 		comment.post = post;
     }
     

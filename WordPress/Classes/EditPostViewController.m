@@ -1,11 +1,3 @@
-//
-//  EditPostViewController.m
-//  WordPress
-//
-//  Created by ? on ?.
-//  Copyright (c) 2013 WordPress. All rights reserved.
-//
-
 #import "EditPostViewController.h"
 #import "EditPostViewController_Internal.h"
 #import "ContextManager.h"
@@ -14,8 +6,12 @@
 #import "WPTableViewCell.h"
 #import "BlogSelectorViewController.h"
 #import "WPBlogSelectorButton.h"
+#import "WPAlertView.h"
 #import "UIImage+Util.h"
 #import "LocationService.h"
+#import "BlogService.h"
+#import "WPMediaProcessor.h"
+#import <AssetsLibrary/AssetsLibrary.h>
 
 NSString *const WPEditorNavigationRestorationID = @"WPEditorNavigationRestorationID";
 NSString *const WPAbstractPostRestorationKey = @"WPAbstractPostRestorationKey";
@@ -105,7 +101,10 @@ CGFloat const EPVCTextViewTopPadding = 7.0f;
 }
 
 - (id)initWithDraftForLastUsedBlog {
-    Blog *blog = [Blog lastUsedOrFirstBlog];
+    NSManagedObjectContext *context = [[ContextManager sharedInstance] mainContext];
+    BlogService *blogService = [[BlogService alloc] initWithManagedObjectContext:context];
+
+    Blog *blog = [blogService lastUsedOrFirstBlog];
     return [self initWithPost:[Post newDraftForBlog:blog]];
 }
 
@@ -143,15 +142,8 @@ CGFloat const EPVCTextViewTopPadding = 7.0f;
     [self createRevisionOfPost];
     
     [[NSNotificationCenter defaultCenter] removeObserver:self];
-	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(insertMediaAbove:) name:@"ShouldInsertMediaAbove" object:nil];
-	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(insertMediaBelow:) name:@"ShouldInsertMediaBelow" object:nil];
+	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(insertMediaBelow:) name:MediaShouldInsertBelowNotification object:nil];
 	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(removeMedia:) name:@"ShouldRemoveMedia" object:nil];
-    
-    if (self.editorOpenedBy) {
-        [WPMobileStats trackEventForWPCom:[self formattedStatEventString:StatsEventPostDetailOpenedEditor] properties:@{StatsPropertyPostDetailEditorOpenedBy : self.editorOpenedBy }];
-    } else {
-        [WPMobileStats trackEventForWPCom:[self formattedStatEventString:StatsEventPostDetailOpenedEditor]];
-    }
     
     [self geotagNewPost];
 }
@@ -229,7 +221,8 @@ CGFloat const EPVCTextViewTopPadding = 7.0f;
     // Configure the custom title view, or just set the navigationItem title.
     // Only show the blog selector in the nav title view if we're editing a new post
     NSManagedObjectContext *context = [[ContextManager sharedInstance] mainContext];
-    NSInteger blogCount = [Blog countWithContext:context];
+    BlogService *blogService = [[BlogService alloc] initWithManagedObjectContext:context];
+    NSInteger blogCount = [blogService blogCountForAllAccounts];
     
     if (blogCount <= 1 || self.editMode == EditPostViewControllerModeEditPost || [[WordPressAppDelegate sharedWordPressApplicationDelegate] isNavigatingMeTab]) {
         self.navigationItem.title = [self editorTitle];
@@ -284,7 +277,7 @@ CGFloat const EPVCTextViewTopPadding = 7.0f;
         mask = UIViewAutoresizingFlexibleLeftMargin | UIViewAutoresizingFlexibleRightMargin | UIViewAutoresizingFlexibleHeight;
     }
     CGRect frame = CGRectMake(x, 0.0f, width, CGRectGetHeight(self.view.frame) - EPVCOptionsHeight);
-    
+
     // Content text field.
     // Shows the post body.
     // Height should never be smaller than what is required to display its text.
@@ -453,8 +446,6 @@ CGFloat const EPVCTextViewTopPadding = 7.0f;
 }
 
 - (void)showBlogSelector {
-    [WPMobileStats incrementProperty:StatsPropertyPostDetailClickedBlogSelector forEvent:[self formattedStatEventString:StatsEventPostDetailClosedEditor]];
-
     if (IS_IPAD && self.blogSelectorPopover.isPopoverVisible) {
         [self.blogSelectorPopover dismissPopoverAnimated:YES];
         self.blogSelectorPopover = nil;
@@ -474,7 +465,9 @@ CGFloat const EPVCTextViewTopPadding = 7.0f;
         Blog *blog = (Blog *)[context objectWithID:selectedObjectID];
         
         if (blog) {
-            [blog flagAsLastUsed];
+            BlogService *blogService = [[BlogService alloc] initWithManagedObjectContext:context];
+
+            [blogService flagBlogAsLastUsed:blog];
             AbstractPost *newPost = [[self.post class] newDraftForBlog:blog];
             AbstractPost *oldPost = self.post;
             
@@ -540,26 +533,29 @@ CGFloat const EPVCTextViewTopPadding = 7.0f;
 }
 
 - (void)showSettings {
-    [WPMobileStats flagProperty:StatsPropertyPostDetailClickedSettings forEvent:[self formattedStatEventString:StatsEventPostDetailClosedEditor]];
     Post *post = (Post *)self.post;
     PostSettingsViewController *vc = [[[self classForSettingsViewController] alloc] initWithPost:post];
-    vc.statsPrefix = self.statsPrefix;
-    self.navigationItem.title = NSLocalizedString(@"Back", nil);
+    UIBarButtonItem *backButton = [[UIBarButtonItem alloc] initWithTitle:NSLocalizedString(@"Back", nil) style:UIBarButtonItemStyleBordered target:nil action:nil];
+    self.navigationItem.backBarButtonItem = backButton;
     [self.navigationController pushViewController:vc animated:YES];
 }
 
 - (void)showPreview {
-    [WPMobileStats flagProperty:StatsPropertyPostDetailClickedPreview forEvent:[self formattedStatEventString:StatsEventPostDetailClosedEditor]];
     PostPreviewViewController *vc = [[PostPreviewViewController alloc] initWithPost:self.post];
-    self.navigationItem.title = NSLocalizedString(@"Back", nil);
+    UIBarButtonItem *backButton = [[UIBarButtonItem alloc] initWithTitle:NSLocalizedString(@"Back", nil) style:UIBarButtonItemStyleBordered target:nil action:nil];
+    self.navigationItem.backBarButtonItem = backButton;
     [self.navigationController pushViewController:vc animated:YES];
 }
 
 - (void)showMediaOptions {
-    [WPMobileStats flagProperty:StatsPropertyPostDetailClickedMediaOptions forEvent:[self formattedStatEventString:StatsEventPostDetailClosedEditor]];
-    PostMediaViewController *vc = [[PostMediaViewController alloc] initWithPost:self.post];
-    self.navigationItem.title = NSLocalizedString(@"Back", nil);
-    [self.navigationController pushViewController:vc animated:YES];
+    CTAssetsPickerController *picker = [[CTAssetsPickerController alloc] init];
+	picker.delegate = self;
+    
+    // Only show photos for now (not videos)
+    picker.assetsFilter = [ALAssetsFilter allPhotos];
+    
+    [self presentViewController:picker animated:YES completion:nil];
+    picker.navigationBar.translucent = NO;
 }
 
 - (void)cancelEditing {
@@ -575,7 +571,6 @@ CGFloat const EPVCTextViewTopPadding = 7.0f;
 	}
     
     if (![self hasChanges]) {
-        [WPMobileStats trackEventForWPComWithSavedProperties:[self formattedStatEventString:StatsEventPostDetailClosedEditor]];
         [self discardChangesAndDismiss];
         return;
     }
@@ -634,14 +629,6 @@ CGFloat const EPVCTextViewTopPadding = 7.0f;
     }
 }
 
-- (void)setEditorOpenedBy:(NSString *)editorOpenedBy {
-    if ([_editorOpenedBy isEqualToString:editorOpenedBy]) {
-        return;
-    }
-    _editorOpenedBy = editorOpenedBy;
-    [self syncOptionsIfNecessaryForBlog:_post.blog afterBlogChanged:NO];
-}
-
 /*
  Sync the blog if desired info is missing.
  
@@ -649,8 +636,15 @@ CGFloat const EPVCTextViewTopPadding = 7.0f;
  only sync for new posts when launched from the post tab vs the posts list.
  */
 - (void)syncOptionsIfNecessaryForBlog:(Blog *)blog afterBlogChanged:(BOOL)blogChanged {
-    if (blogChanged || [self.editorOpenedBy isEqualToString:StatsPropertyPostDetailEditorOpenedOpenedByTabBarButton]) {
-        [blog syncBlogWithSuccess:nil failure:nil];
+    if (blogChanged) {
+        NSManagedObjectContext *context = [[ContextManager sharedInstance] mainContext];
+        __block BlogService *blogService = [[BlogService alloc] initWithManagedObjectContext:context];
+
+        [blogService syncBlog:blog success:^{
+            blogService = nil;
+        } failure:^(NSError *error) {
+            blogService = nil;
+        }];
     }
 }
 
@@ -666,17 +660,6 @@ CGFloat const EPVCTextViewTopPadding = 7.0f;
         }
     }
     return title;
-}
-
-- (NSString *)statsPrefix {
-    if (_statsPrefix == nil) {
-        return @"Post Detail";
-    }
-    return _statsPrefix;
-}
-
-- (NSString *)formattedStatEventString:(NSString *)event {
-    return [NSString stringWithFormat:@"%@ - %@", self.statsPrefix, event];
 }
 
 - (BOOL)hasChanges {
@@ -823,8 +806,6 @@ CGFloat const EPVCTextViewTopPadding = 7.0f;
     DDLogMethod();
     [self logSavePostStats];
 
-    [WPMobileStats trackEventForWPComWithSavedProperties:[self formattedStatEventString:StatsEventPostDetailClosedEditor]];
-    
     [self.view endEditing:YES];
     
     [self.post.original applyRevision];
@@ -852,39 +833,48 @@ CGFloat const EPVCTextViewTopPadding = 7.0f;
 
 - (void)logSavePostStats {
     NSString *buttonTitle = self.navigationItem.rightBarButtonItem.title;
-    NSString *event;
-    if ([buttonTitle isEqualToString:NSLocalizedString(@"Schedule", nil)]) {
-        event = StatsEventPostDetailClickedSchedule;
-    } else if ([buttonTitle isEqualToString:NSLocalizedString(@"Publish", nil)]) {
-        event = StatsEventPostDetailClickedPublish;
-    } else if ([buttonTitle isEqualToString:NSLocalizedString(@"Save", nil)]) {
-        event = StatsEventPostDetailClickedSave;
-    } else if ([buttonTitle isEqualToString:NSLocalizedString(@"Update", nil)]) {
-        event = StatsEventPostDetailClickedUpdate;
-    }
     
-    if (event != nil) {
-        [WPMobileStats trackEventForWPCom:[self formattedStatEventString:event]];
-    }
-
     // This word counting algorithm is from : http://stackoverflow.com/a/13367063
     __block NSInteger originalWordCount = 0;
     [self.post.original.content enumerateSubstringsInRange:NSMakeRange(0, [self.post.original.content length])
-                               options:NSStringEnumerationByWords | NSStringEnumerationLocalized
-                            usingBlock:^(NSString *substring, NSRange substringRange, NSRange enclosingRange, BOOL *stop){
-                                originalWordCount++;
-                            }];
+                                                   options:NSStringEnumerationByWords | NSStringEnumerationLocalized
+                                                usingBlock:^(NSString *substring, NSRange substringRange, NSRange enclosingRange, BOOL *stop){
+                                                    originalWordCount++;
+                                                }];
     
     __block NSInteger wordCount = 0;
     [self.post.content enumerateSubstringsInRange:NSMakeRange(0, [self.post.content length])
-                               options:NSStringEnumerationByWords | NSStringEnumerationLocalized
-                            usingBlock:^(NSString *substring, NSRange substringRange, NSRange enclosingRange, BOOL *stop){
-                                wordCount++;
-                            }];
-
-    [WPMobileStats setValue:@(wordCount) forProperty:StatsPropertyPostDetailWordCount forEvent:[self formattedStatEventString:StatsEventPostDetailClosedEditor]];
+                                          options:NSStringEnumerationByWords | NSStringEnumerationLocalized
+                                       usingBlock:^(NSString *substring, NSRange substringRange, NSRange enclosingRange, BOOL *stop){
+                                           wordCount++;
+                                       }];
+    
+    NSMutableDictionary *properties = [[NSMutableDictionary alloc] initWithCapacity:2];
+    properties[@"word_count"] = @(wordCount);
     if ([self.post hasRemote]) {
-        [WPMobileStats setValue:@(wordCount - originalWordCount) forProperty:StatsPropertyPostDetailWordDiffCount forEvent:[self formattedStatEventString:StatsEventPostDetailClosedEditor]];
+        properties[@"word_diff_count"] = @(wordCount - originalWordCount);
+    }
+    
+    if ([buttonTitle isEqualToString:NSLocalizedString(@"Publish", nil)]) {
+        [WPAnalytics track:WPAnalyticsStatEditorPublishedPost withProperties:properties];
+        
+        if ([self.post hasPhoto]) {
+            [WPAnalytics track:WPAnalyticsStatPublishedPostWithPhoto];
+        }
+        
+        if ([self.post hasVideo]) {
+            [WPAnalytics track:WPAnalyticsStatPublishedPostWithVideo];
+        }
+        
+        if ([self.post hasCategories]) {
+            [WPAnalytics track:WPAnalyticsStatPublishedPostWithCategories];
+        }
+        
+        if ([self.post hasTags]) {
+            [WPAnalytics track:WPAnalyticsStatPublishedPostWithTags];
+        }
+    } else {
+        [WPAnalytics track:WPAnalyticsStatEditorUpdatedPost withProperties:properties];
     }
 }
 
@@ -1086,49 +1076,11 @@ CGFloat const EPVCTextViewTopPadding = 7.0f;
 
 #pragma mark Media Formatting
 
-- (void)insertMediaAbove:(NSNotification *)notification {
-    [WPMobileStats trackEventForWPCom:[self formattedStatEventString:StatsEventPostDetailAddedPhoto]];
-    
-	Media *media = (Media *)[notification object];
-	NSString *prefix = @"<br /><br />";
-	
-	if(self.post.content == nil || [self.post.content isEqualToString:@""]) {
-		self.post.content = @"";
-		prefix = @"";
-	}
-	
-	NSMutableString *content = [[NSMutableString alloc] initWithString:media.html];
-	NSRange imgHTML = [_textView.text rangeOfString: content];
-	
-	NSRange imgHTMLPre = [_textView.text rangeOfString:[NSString stringWithFormat:@"%@%@", @"<br /><br />", content]];
- 	NSRange imgHTMLPost = [_textView.text rangeOfString:[NSString stringWithFormat:@"%@%@", content, @"<br /><br />"]];
-	
-	if (imgHTMLPre.location == NSNotFound && imgHTMLPost.location == NSNotFound && imgHTML.location == NSNotFound) {
-		[content appendString:[NSString stringWithFormat:@"%@%@", prefix, self.post.content]];
-        self.post.content = content;
-	}
-	else {
-		NSMutableString *processedText = [[NSMutableString alloc] initWithString:_textView.text];
-		if (imgHTMLPre.location != NSNotFound)
-			[processedText replaceCharactersInRange:imgHTMLPre withString:@""];
-		else if (imgHTMLPost.location != NSNotFound)
-			[processedText replaceCharactersInRange:imgHTMLPost withString:@""];
-		else
-			[processedText replaceCharactersInRange:imgHTML withString:@""];
-        
-		[content appendString:[NSString stringWithFormat:@"<br /><br />%@", processedText]];
-		self.post.content = content;
-	}
-    [self refreshUIForCurrentPost];
-    [self.post save];
-}
-
 - (void)insertMediaBelow:(NSNotification *)notification {
-    [WPMobileStats trackEventForWPCom:[self formattedStatEventString:StatsEventPostDetailAddedPhoto]];
     
 	Media *media = (Media *)[notification object];
 	NSString *prefix = @"<br /><br />";
-	
+    
 	if(self.post.content == nil || [self.post.content isEqualToString:@""]) {
 		self.post.content = @"";
 		prefix = @"";
@@ -1159,8 +1111,6 @@ CGFloat const EPVCTextViewTopPadding = 7.0f;
 }
 
 - (void)removeMedia:(NSNotification *)notification {
-    [WPMobileStats trackEventForWPCom:[self formattedStatEventString:StatsEventPostDetailRemovedPhoto]];
-    
 	//remove the html string for the media object
 	Media *media = (Media *)[notification object];
     _textView.text = [self removeMedia:media fromString:_textView.text];
@@ -1242,7 +1192,6 @@ CGFloat const EPVCTextViewTopPadding = 7.0f;
 
 - (void)keyboardToolbarButtonItemPressed:(WPKeyboardToolbarButtonItem *)buttonItem {
     DDLogMethod();
-    [self logWPKeyboardToolbarButtonStat:buttonItem];
     if ([buttonItem.actionTag isEqualToString:@"link"]) {
         [self showLinkView];
     } else if ([buttonItem.actionTag isEqualToString:@"done"]) {
@@ -1258,30 +1207,6 @@ CGFloat const EPVCTextViewTopPadding = 7.0f;
         [self wrapSelectionWithTag:buttonItem.actionTag];
         [[_textView.undoManager prepareWithInvocationTarget:self] restoreText:oldText withRange:oldRange];
         [_textView.undoManager setActionName:buttonItem.actionName];
-    }
-}
-
-- (void)logWPKeyboardToolbarButtonStat:(WPKeyboardToolbarButtonItem *)buttonItem {
-    NSString *actionTag = buttonItem.actionTag;
-    NSString *property;
-    if ([actionTag isEqualToString:@"strong"]) {
-        property = StatsEventPostDetailClickedKeyboardToolbarBoldButton;
-    } else if ([actionTag isEqualToString:@"em"]) {
-        property = StatsEventPostDetailClickedKeyboardToolbarItalicButton;
-    } else if ([actionTag isEqualToString:@"u"]) {
-        property = StatsEventPostDetailClickedKeyboardToolbarUnderlineButton;
-    } else if ([actionTag isEqualToString:@"link"]) {
-        property = StatsEventPostDetailClickedKeyboardToolbarLinkButton;
-    } else if ([actionTag isEqualToString:@"blockquote"]) {
-        property = StatsEventPostDetailClickedKeyboardToolbarBlockquoteButton;
-    } else if ([actionTag isEqualToString:@"del"]) {
-        property = StatsEventPostDetailClickedKeyboardToolbarDelButton;
-    } else if ([actionTag isEqualToString:@"more"]) {
-        property = StatsEventPostDetailClickedKeyboardToolbarMoreButton;
-    }
-    
-    if (property != nil) {
-        [WPMobileStats flagProperty:property forEvent:[self formattedStatEventString:StatsEventPostDetailClosedEditor]];
     }
 }
 
@@ -1330,20 +1255,16 @@ CGFloat const EPVCTextViewTopPadding = 7.0f;
     if ([actionSheet tag] == 201) {
         // Discard
         if (buttonIndex == 0) {
-            [WPMobileStats trackEventForWPComWithSavedProperties:[self formattedStatEventString:StatsEventPostDetailClosedEditor]];
             [self discardChangesAndDismiss];
         }
         
         if (buttonIndex == 1) {
             // Cancel / Keep editing
 			if ([actionSheet numberOfButtons] == 2) {
-                [WPMobileStats trackEventForWPComWithSavedProperties:[self formattedStatEventString:StatsEventPostDetailClosedEditor]];
                 
 				[actionSheet dismissWithClickedButtonIndex:0 animated:YES];
                 // Save draft
 			} else {
-                [WPMobileStats trackEventForWPComWithSavedProperties:[self formattedStatEventString:StatsEventPostDetailClosedEditor]];
-                
                 // If you tapped on a button labeled "Save Draft", you probably expect the post to be saved as a draft
                 if (![self.post hasRemote] && [self.post.status isEqualToString:@"publish"]) {
                     self.post.status = @"draft";
@@ -1394,6 +1315,35 @@ CGFloat const EPVCTextViewTopPadding = 7.0f;
 - (BOOL)textFieldShouldReturn:(UITextField *)textField {
     [_textView becomeFirstResponder];
     return NO;
+}
+
+#pragma mark - CTAssetsPickerController delegate
+
+- (void)assetsPickerController:(CTAssetsPickerController *)picker didFinishPickingAssets:(NSArray *)assets {
+    [self dismissViewControllerAnimated:YES completion:nil];
+    
+    WPMediaProcessor *mediaProcessor = [[WPMediaProcessor alloc] init];
+    BOOL gelocationEnabled = self.post.blog.geolocationEnabled;
+    
+    for (ALAsset *asset in assets) {
+        Media *imageMedia = [Media newMediaForPost:self.post];
+        ALAssetRepresentation *representation = asset.defaultRepresentation;
+        
+        if ([[asset valueForProperty:ALAssetPropertyType] isEqualToString:ALAssetTypeVideo]) {
+            // Could handle videos here
+        } else if ([[asset valueForProperty:ALAssetPropertyType] isEqualToString:ALAssetTypePhoto]) {
+            UIImage *fullResolutionImage = [UIImage imageWithCGImage:representation.fullResolutionImage
+                                                               scale:1.0f
+                                                         orientation:(UIImageOrientation)representation.orientation];
+            
+            MediaResize *resize = [mediaProcessor mediaResizePreference];
+            NSDictionary *dimensions = [self.post.blog getImageResizeDimensions];
+            CGSize newSize = [mediaProcessor sizeForImage:fullResolutionImage mediaResize:resize blogResizeDimensions:dimensions];
+            UIImage *resizedImage = [mediaProcessor resizeImage:fullResolutionImage toSize:newSize];
+            NSDictionary *assetMetadata = [mediaProcessor metadataForAsset:asset enableGeolocation:gelocationEnabled];
+            [mediaProcessor processImage:resizedImage media:imageMedia metadata:assetMetadata];
+        }
+    }
 }
 
 #pragma mark - Positioning & Rotation
@@ -1449,16 +1399,6 @@ CGFloat const EPVCTextViewTopPadding = 7.0f;
 - (void)keyboardWillShow:(NSNotification *)notification {
     DDLogMethod();
 	_isShowingKeyboard = YES;
-    
-    CGRect originalKeyboardFrame = [[[notification userInfo] objectForKey:UIKeyboardFrameEndUserInfoKey] CGRectValue];
-    CGRect keyboardFrame = [self.view convertRect:[self.view.window convertRect:originalKeyboardFrame fromWindow:nil] fromView:nil];
-    _isExternalKeyboard = keyboardFrame.origin.y > self.view.frame.size.height;
-    
-    if (_isExternalKeyboard) {
-        [WPMobileStats flagProperty:StatsPropertyPostDetailHasExternalKeyboard forEvent:[self formattedStatEventString:StatsEventPostDetailClosedEditor]];
-    } else {
-        [WPMobileStats unflagProperty:StatsPropertyPostDetailHasExternalKeyboard forEvent:[self formattedStatEventString:StatsEventPostDetailClosedEditor]];
-    }
     
     if ([self shouldHideToolbarsWhileTyping]) {
         [[UIApplication sharedApplication] setStatusBarHidden:YES withAnimation:UIStatusBarAnimationFade];

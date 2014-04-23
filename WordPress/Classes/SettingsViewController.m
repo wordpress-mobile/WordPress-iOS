@@ -1,13 +1,4 @@
 /*
- * SettingsViewController.m
- *
- * Copyright (c) 2013 WordPress. All rights reserved.
- *
- * Licensed under GNU General Public License 2.0.
- * Some rights reserved. See license.txt
- */
-
-/*
  
  Settings contents:
  
@@ -41,6 +32,8 @@
 #import "SupportViewController.h"
 #import "ContextManager.h"
 #import "NotificationsManager.h"
+#import "ContextManager.h"
+#import "AccountService.h"
 
 typedef enum {
     SettingsSectionWpcom = 0,
@@ -104,37 +97,19 @@ CGFloat const blavatarImageViewSize = 43.f;
     // Construct the media data to mimick how it would appear if a settings bundle plist was loaded
     // into an NSDictionary
     // Our settings bundle stored numeric values as strings so we use strings here for backward compatibility.
-    NSDictionary *imageResizeDict = [NSDictionary dictionaryWithObjectsAndKeys:@"0", @"DefaultValue", 
+    NSDictionary *imageResizeDict = [NSDictionary dictionaryWithObjectsAndKeys:@"3", @"DefaultValue",
                                      @"media_resize_preference", @"Key", 
                                      NSLocalizedString(@"Image Quality", @""), @"Title",
-                                     [NSArray arrayWithObjects:NSLocalizedString(@"Always Ask", @"Always Ask (ask for size on every upload) - Image Quality setting"),
+                                     [NSArray arrayWithObjects:
                                       NSLocalizedString(@"Small", @"Small - Image Quality setting"),
                                       NSLocalizedString(@"Medium", @"Medium - Image Quality setting"),
                                       NSLocalizedString(@"Large", @"Large - Image Quality setting"),
                                       NSLocalizedString(@"Original Size", @"Original (uncompressed)  - Image Quality setting"), nil], @"Titles",
-                                     [NSArray arrayWithObjects:@"0",@"1",@"2",@"3",@"4", nil], @"Values",
+                                     [NSArray arrayWithObjects:@"1",@"2",@"3",@"4", nil], @"Values",
                                      NSLocalizedString(@"Set which size images should be uploaded in.", @""), @"Info",
                                      nil];
         
-    NSDictionary *videoQualityDict = [NSDictionary dictionaryWithObjectsAndKeys:@"1", @"DefaultValue", 
-                                      @"video_quality_preference", @"Key", 
-                                      NSLocalizedString(@"Video Quality", @""), @"Title", 
-                                      [NSArray arrayWithObjects:NSLocalizedString(@"Original Size", @"Video quality - uncompressed original size for the device"),
-                                      NSLocalizedString(@"Medium (480p)", @"Video quality - medium quality, 480p"),
-                                      NSLocalizedString(@"Default (360p)", @"Video quality - default size, 360p"),
-                                      NSLocalizedString(@"Low (144p)", @"Video quality - low quality, 144p"), nil], @"Titles",
-                                      [NSArray arrayWithObjects:@"0", @"3", @"1", @"2", nil], @"Values",
-                                      NSLocalizedString(@"Choose the quality at which video should be uploaded.", @""), @"Info",                                      
-                                      nil];
-    
-    NSDictionary *videoContentDict = [NSDictionary dictionaryWithObjectsAndKeys:@"0", @"DefaultValue", 
-                                      @"video_html_preference", @"Key", 
-                                      NSLocalizedString(@"Video Content", @""), @"Title", 
-                                      [NSArray arrayWithObjects:@"HTML 5",@"HTML 4", nil ], @"Titles", 
-                                      [NSArray arrayWithObjects:@"0", @"1", nil], @"Values",
-                                      NSLocalizedString(@"Set which HTML standard video should conform to when added to a post.", @""), @"Info",
-                                      nil];
-    _mediaSettingsArray = [NSArray arrayWithObjects:imageResizeDict, videoQualityDict, videoContentDict, nil];
+    _mediaSettingsArray = [NSArray arrayWithObjects:imageResizeDict, nil];
     return _mediaSettingsArray;
 }
 
@@ -167,12 +142,17 @@ CGFloat const blavatarImageViewSize = 43.f;
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
     switch (section) {
-        case SettingsSectionWpcom:
-            if ([WPAccount defaultWordPressComAccount]) {
+        case SettingsSectionWpcom: {
+            NSManagedObjectContext *context = [[ContextManager sharedInstance] mainContext];
+            AccountService *accountService = [[AccountService alloc] initWithManagedObjectContext:context];
+            WPAccount *defaultAccount = [accountService defaultWordPressComAccount];
+    
+            if (defaultAccount) {
                 return [self rowForSignOut] + 1;
             } else {
                 return 1;
             }
+        }
 
         case SettingsSectionMedia:
             return [self.mediaSettingsArray count];
@@ -218,10 +198,14 @@ CGFloat const blavatarImageViewSize = 43.f;
     cell.accessoryView = nil;
 
     if (indexPath.section == SettingsSectionWpcom) {
-        if ([WPAccount defaultWordPressComAccount]) {
+        NSManagedObjectContext *context = [[ContextManager sharedInstance] mainContext];
+        AccountService *accountService = [[AccountService alloc] initWithManagedObjectContext:context];
+        WPAccount *defaultAccount = [accountService defaultWordPressComAccount];
+
+        if (defaultAccount) {
             if (indexPath.row == 0) {
                 cell.textLabel.text = NSLocalizedString(@"Username", @"");
-                cell.detailTextLabel.text = [[WPAccount defaultWordPressComAccount] username];
+                cell.detailTextLabel.text = [defaultAccount username];
                 cell.detailTextLabel.textColor = [UIColor UIColorFromHex:0x888888];
                 cell.selectionStyle = UITableViewCellSelectionStyleNone;
                 cell.accessibilityIdentifier = @"wpcom-username";
@@ -248,7 +232,9 @@ CGFloat const blavatarImageViewSize = 43.f;
         cell.textLabel.text = dict[@"Title"];
         NSString *key = dict[@"Key"];
         NSString *currentVal = [[NSUserDefaults standardUserDefaults] objectForKey:key];
-        if (currentVal == nil) {
+        
+        // If setting doesn't exist yet, or if it was set to "0" (which was removed) set it to default
+        if (currentVal == nil || [currentVal isEqualToString:@"0"]) {
             currentVal = dict[@"DefaultValue"];
         }
         
@@ -275,8 +261,12 @@ CGFloat const blavatarImageViewSize = 43.f;
     UITableViewCellStyle cellStyle = UITableViewCellStyleDefault;
     
     switch (indexPath.section) {
-        case SettingsSectionWpcom:
-            if ([WPAccount defaultWordPressComAccount] && indexPath.row == 0) {
+        case SettingsSectionWpcom: {
+            NSManagedObjectContext *context = [[ContextManager sharedInstance] mainContext];
+            AccountService *accountService = [[AccountService alloc] initWithManagedObjectContext:context];
+            WPAccount *defaultAccount = [accountService defaultWordPressComAccount];
+
+            if (defaultAccount && indexPath.row == 0) {
                 cellIdentifier = @"WpcomUsernameCell";
                 cellStyle = UITableViewCellStyleValue1;
             } else {
@@ -284,7 +274,7 @@ CGFloat const blavatarImageViewSize = 43.f;
                 cellStyle = UITableViewCellStyleDefault;
             }
             break;
-            
+        }
         case SettingsSectionMedia:
             cellIdentifier = @"Media";
             cellStyle = UITableViewCellStyleValue1;
@@ -308,7 +298,11 @@ CGFloat const blavatarImageViewSize = 43.f;
     [self configureCell:cell atIndexPath:indexPath];
     
     BOOL isSignInCell = NO;
-    if (![[[WPAccount defaultWordPressComAccount] restApi] hasCredentials]) {
+    NSManagedObjectContext *context = [[ContextManager sharedInstance] mainContext];
+    AccountService *accountService = [[AccountService alloc] initWithManagedObjectContext:context];
+    WPAccount *defaultAccount = [accountService defaultWordPressComAccount];
+
+    if (![[defaultAccount restApi] hasCredentials]) {
         isSignInCell = indexPath.section == SettingsSectionWpcom && indexPath.row == 0;
     }
     
@@ -327,13 +321,15 @@ CGFloat const blavatarImageViewSize = 43.f;
     [tableView deselectRowAtIndexPath:indexPath animated:YES];
     
     if (indexPath.section == SettingsSectionWpcom) {
-        if ([WPAccount defaultWordPressComAccount]) {
-            if (indexPath.row == [self rowForSignOut]) {
-                [WPMobileStats trackEventForWPCom:StatsEventSettingsClickedSignOutOfDotCom];
+        NSManagedObjectContext *context = [[ContextManager sharedInstance] mainContext];
+        AccountService *accountService = [[AccountService alloc] initWithManagedObjectContext:context];
+        WPAccount *defaultAccount = [accountService defaultWordPressComAccount];
 
+        if (defaultAccount) {
+            if (indexPath.row == [self rowForSignOut]) {
                 // Present the Sign out ActionSheet
                 NSString *signOutTitle = NSLocalizedString(@"You are logged in as %@", @"");
-                signOutTitle = [NSString stringWithFormat:signOutTitle, [[WPAccount defaultWordPressComAccount] username]];
+                signOutTitle = [NSString stringWithFormat:signOutTitle, [defaultAccount username]];
                 UIActionSheet *actionSheet;
                 actionSheet = [[UIActionSheet alloc] initWithTitle:signOutTitle 
                                                           delegate:self 
@@ -342,14 +338,10 @@ CGFloat const blavatarImageViewSize = 43.f;
                 actionSheet.actionSheetStyle = UIActionSheetStyleDefault;
                 [actionSheet showInView:self.view];
             } else if (indexPath.row == [self rowForNotifications]) {
-                [WPMobileStats trackEventForWPCom:StatsEventSettingsClickedManageNotifications];
-            
                 NotificationSettingsViewController *notificationSettingsViewController = [[NotificationSettingsViewController alloc] initWithStyle:UITableViewStyleGrouped];
                 [self.navigationController pushViewController:notificationSettingsViewController animated:YES];
             }
         } else {
-            [WPMobileStats trackEventForWPCom:StatsEventSettingsClickedSignIntoDotCom];
-
             LoginViewController *loginViewController = [[LoginViewController alloc] init];
             loginViewController.onlyDotComAllowed = YES;
             loginViewController.dismissBlock = ^{
@@ -359,22 +351,12 @@ CGFloat const blavatarImageViewSize = 43.f;
         }
         
     } else if (indexPath.section == SettingsSectionMedia) {
-        if (indexPath.row == 0) {
-            [WPMobileStats trackEventForWPCom:StatsEventSettingsMediaClickedImageResize];
-        } else if (indexPath.row == 1) {
-            [WPMobileStats trackEventForWPCom:StatsEventSettingsMediaClickedVideoQuality];
-        } else if (indexPath.row == 2) {
-            [WPMobileStats trackEventForWPCom:StatsEventSettingsMediaClickedVideoContent];
-        }
-        
         NSDictionary *dict = [self.mediaSettingsArray objectAtIndex:indexPath.row];
         SettingsPageViewController *controller = [[SettingsPageViewController alloc] initWithDictionary:dict];
         [self.navigationController pushViewController:controller animated:YES];
 
     } else if (indexPath.section == SettingsSectionInfo) {
         if (indexPath.row == 0) {
-            [WPMobileStats trackEventForWPCom:StatsEventSettingsClickedAbout];
-            
             AboutViewController *aboutViewController = [[AboutViewController alloc] initWithNibName:@"AboutViewController" bundle:nil];
             [self.navigationController pushViewController:aboutViewController animated:YES];
         } else if (indexPath.row == 1) {
@@ -390,15 +372,13 @@ CGFloat const blavatarImageViewSize = 43.f;
 
 - (void)actionSheet:(UIActionSheet *)actionSheet clickedButtonAtIndex:(NSInteger)buttonIndex {
     if (buttonIndex == 0) {
-        [WPMobileStats trackEventForWPCom:StatsEventSettingsSignedOutOfDotCom];
-        
         // Sign out
-		[WPAccount removeDefaultWordPressComAccount];
-        [self.tableView reloadSections:[NSIndexSet indexSetWithIndex:SettingsSectionWpcom] withRowAnimation:UITableViewRowAnimationFade];
+        NSManagedObjectContext *context = [[ContextManager sharedInstance] mainContext];
+        AccountService *accountService = [[AccountService alloc] initWithManagedObjectContext:context];
+
+		[accountService removeDefaultWordPressComAccount];
         
-        // Remove defaults
-        [[NSUserDefaults standardUserDefaults] removeObjectForKey:@"wpcom_users_blogs"];
-        [[NSUserDefaults standardUserDefaults] removeObjectForKey:@"wpcom_users_prefered_blog_id"];
+        [self.tableView reloadSections:[NSIndexSet indexSetWithIndex:SettingsSectionWpcom] withRowAnimation:UITableViewRowAnimationFade];
     }
 }
 

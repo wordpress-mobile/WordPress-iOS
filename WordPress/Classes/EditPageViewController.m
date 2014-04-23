@@ -1,25 +1,9 @@
-//
-//  EditPageViewController.m
-//  WordPress
-//
-//  Created by Chris Boyd on 9/4/10.
-//
-
 #import "EditPageViewController.h"
 #import "EditPostViewController_Internal.h"
 #import "AbstractPost.h"
 #import "PageSettingsViewController.h"
 
 @implementation EditPageViewController
-
-- (id)initWithPost:(AbstractPost *)aPost
-{
-    self = [super initWithPost:aPost];
-    if (self) {
-        self.statsPrefix = @"Page Detail";
-    }
-    return self;
-}
 
 - (NSString *)editorTitle {
     NSString *title = @"";

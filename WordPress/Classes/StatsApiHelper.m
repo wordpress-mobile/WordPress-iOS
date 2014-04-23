@@ -1,12 +1,3 @@
-/*
- * StatsApiHelper.m
- *
- * Copyright (c) 2014 WordPress. All rights reserved.
- *
- * Licensed under GNU General Public License 2.0.
- * Some rights reserved. See license.txt
- */
-
 #import "StatsApiHelper.h"
 #import "WordPressComApi.h"
 #import "WPAccount.h"
@@ -33,6 +24,7 @@
     if (self) {
         _statsPathPrefix = [NSString stringWithFormat:@"sites/%@/stats", siteID];
         _formatter = [[NSDateFormatter alloc] init];
+        _formatter.locale = [[NSLocale alloc] initWithLocaleIdentifier:@"en_US_POSIX"];
         _formatter.dateFormat = @"yyyy-MM-dd";
         _account = account;
     }

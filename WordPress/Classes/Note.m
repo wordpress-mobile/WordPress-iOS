@@ -1,22 +1,21 @@
-//
-//  Note.m
-//  WordPress
-//
-//  Created by Beau Collins on 11/18/12.
-//  Copyright (c) 2012 WordPress. All rights reserved.
-//
-
 #import "Note.h"
+#import "NoteBodyItem.h"
 #import "NSString+Helpers.h"
 #import "NSString+XMLExtensions.h"
 #import "WordPressComApi.h"
+#import "WPAccount.h"
 #import "ContextManager.h"
 #import "XMLParserCollecter.h"
 
 
-
 const NSUInteger WPNoteKeepCount = 20;
 
+@interface Note ()
+@property (nonatomic, strong) NSArray *bodyItems;
+@property (nonatomic, strong) NSDictionary *noteData;
+@property (nonatomic, strong) NSString *commentText;
+@property (nonatomic, strong) NSDate *date;
+@end
 
 
 @implementation Note
@@ -24,9 +23,13 @@ const NSUInteger WPNoteKeepCount = 20;
 @dynamic noteID;
 @dynamic timestamp;
 @dynamic type;
-@dynamic unread;
 @dynamic subject;
 @dynamic body;
+@dynamic unread;
+@synthesize bodyItems	= _bodyItems;
+@synthesize commentText = _commentText;
+@synthesize noteData	= _noteData;
+@synthesize date		= _date;
 
 
 #pragma mark - Derived Properties from subject / body dictionaries
@@ -40,32 +43,12 @@ const NSUInteger WPNoteKeepCount = 20;
 	return [self.subject stringForKey:@"icon"];
 }
 
-- (NSArray *)bodyItems {
-	return [self.body arrayForKey:@"items"];
-}
-
 - (NSArray *)bodyActions {
 	return [self.body arrayForKey:@"actions"];
 }
 
 - (NSString *)bodyTemplate {
 	return [self.body stringForKey:@"template"];	
-}
-
-- (NSString *)bodyHeaderText {
-	return [self.body stringForKey:@"header_text"];
-}
-
-- (NSString *)bodyHeaderLink {
-	return [self.body stringForKey:@"header_link"];
-}
-
-- (NSString *)bodyFooterText {
-	return [self.body stringForKey:@"footer_text"];
-}
-
-- (NSString *)bodyFooterLink {
-	return [self.body stringForKey:@"footer_link"];
 }
 
 - (NSString *)bodyCommentText {
@@ -103,6 +86,10 @@ const NSUInteger WPNoteKeepCount = 20;
 
 #pragma mark - Public Methods
 
+- (BOOL)isMatcher {
+    return [self.type isEqualToString:@"automattcher"];
+}
+
 - (BOOL)isComment {
     return [self.type isEqualToString:@"comment"];
 }
@@ -119,87 +106,76 @@ const NSUInteger WPNoteKeepCount = 20;
     return ![self.unread boolValue];
 }
 
-- (BOOL)isStatsEvent {
-    return [self.type isEqualToString:@"traffic_surge"];
-}
-
-- (Blog *)blogForStatsEvent {
-    NSScanner *scanner = [NSScanner scannerWithString:self.subjectText];
-    NSString *blogName;
+- (BOOL)statsEvent {
+    BOOL statsEvent = [self.type rangeOfString:@"_milestone_"].length > 0 || [self.type hasPrefix:@"traffic_"] || [self.type hasPrefix:@"best_"] || [self.type hasPrefix:@"most_"] ;
     
-    while ([scanner isAtEnd] == NO) {
-        [scanner scanUpToString:@"\"" intoString:NULL];
-        [scanner scanString:@"\"" intoString:NULL];
-        [scanner scanUpToString:@"\"" intoString:&blogName];
-        [scanner scanString:@"\"" intoString:NULL];
-    }
-    
-    if (blogName.length == 0) {
-        return nil;
-    }
-
-    NSPredicate *subjectPredicate = [NSPredicate predicateWithFormat:@"self.blogName CONTAINS[cd] %@", blogName];
-    NSPredicate *wpcomPredicate = [NSPredicate predicateWithFormat:@"self.account.isWpcom == YES"];
-    NSPredicate *jetpackPredicate = [NSPredicate predicateWithFormat:@"self.jetpackAccount != nil"];
-    NSPredicate *statsBlogsPredicate = [NSCompoundPredicate orPredicateWithSubpredicates:@[wpcomPredicate, jetpackPredicate]];
-    NSPredicate *combinedPredicate = [NSCompoundPredicate andPredicateWithSubpredicates:@[subjectPredicate, statsBlogsPredicate]];
-
-    NSFetchRequest *fetchRequest = [NSFetchRequest fetchRequestWithEntityName:@"Blog"];
-    fetchRequest.predicate = combinedPredicate;
-    
-    NSError *error = nil;
-    NSArray *blogs = [self.managedObjectContext executeFetchRequest:fetchRequest error:&error];
-    
-    if (error) {
-        DDLogError(@"Error while retrieving blogs with stats: %@", error);
-        return nil;
-    }
-
-    if (blogs.count > 0) {
-        return [blogs firstObject];
-    }
-    
-    return nil;
+    return statsEvent;
 }
 
 
 #pragma mark - CoreData Helpers
 
-+ (void)pruneOldNotesBefore:(NSNumber *)timestamp withContext:(NSManagedObjectContext *)context {
-    NSError *error;
-
-    // For some strange reason, core data objects with changes are ignored when using fetchOffset
-    // Even if you have 20 notes and fetchOffset is 20, any object with uncommitted changes would show up as a result
-    // To avoid that we make sure to commit all changes before doing our request
-    [context save:&error];
-    NSUInteger keepCount = WPNoteKeepCount;
-    if (timestamp) {
-        NSFetchRequest *countRequest	= [NSFetchRequest fetchRequestWithEntityName:@"Note"];
-        countRequest.predicate			= [NSPredicate predicateWithFormat:@"timestamp >= %@", timestamp];
-        countRequest.sortDescriptors	= @[ [NSSortDescriptor sortDescriptorWithKey:@"timestamp" ascending:NO] ];
-		
-        NSError *error;
-        NSUInteger notesCount = [context countForFetchRequest:countRequest error:&error];
-        if (notesCount != NSNotFound) {
-            keepCount = MAX(keepCount, notesCount);
-        }
-    }
-
-    NSFetchRequest *request		= [NSFetchRequest fetchRequestWithEntityName:@"Note"];
-    request.fetchOffset			= keepCount;
-    request.sortDescriptors		= @[ [NSSortDescriptor sortDescriptorWithKey:@"timestamp" ascending:NO] ];
-    NSArray *notes				= [context executeFetchRequest:request error:&error];
-    if (error) {
-        DDLogError(@"Error pruning old notes: %@", error);
-        return;
-    }
-    for (Note *note in notes) {
-        [context deleteObject:note];
-    }
-    if(![context save:&error]){
-        DDLogError(@"Failed to save after pruning notes: %@", error);
-    }
+- (NSDictionary *)meta {
+    return [self.noteData dictionaryForKey:@"meta"];
 }
+
+- (NSNumber *)metaPostID {
+    return [[self.meta dictionaryForKey:@"ids"] numberForKey:@"post"];
+}
+
+- (NSNumber *)metaSiteID {
+    return [[self.meta dictionaryForKey:@"ids"] numberForKey:@"site"];
+}
+
+- (NSArray *)bodyItems {
+	if (_bodyItems) {
+		return _bodyItems;
+	}
+	
+	NSArray *rawItems = [self.noteData[@"body"] arrayForKey:@"items"];
+	if (rawItems.count) {
+		_bodyItems = [NoteBodyItem parseItems:rawItems];
+	}
+	return _bodyItems;
+}
+
+- (NSString *)bodyHeaderText {
+	return self.noteData[@"body"][@"header_text"];
+}
+
+- (NSString *)bodyHeaderLink {
+	return self.noteData[@"body"][@"header_link"];
+}
+
+- (NSString *)bodyFooterText {
+	return self.noteData[@"body"][@"footer_text"];
+}
+
+- (NSString *)bodyFooterLink {
+	return self.noteData[@"body"][@"footer_link"];
+}
+
+- (NSString *)bodyHtml {
+	return self.noteData[@"body"][@"html"];
+}
+
+- (WPNoteTemplateType)templateType {
+    NSDictionary *noteBody = self.noteData[@"body"];
+    if (noteBody) {
+        NSString *noteTypeName = noteBody[@"template"];
+        
+        if ([noteTypeName isEqualToString:@"single-line-list"])
+            return WPNoteTemplateSingleLineList;
+        else if ([noteTypeName isEqualToString:@"multi-line-list"])
+            return WPNoteTemplateMultiLineList;
+        else if ([noteTypeName isEqualToString:@"big-badge"])
+            return WPNoteTemplateBigBadge;
+    }
+    
+    return WPNoteTemplateUnknown;
+}
+
+#pragma mark - NSManagedObject methods
 
 + (NSNumber *)lastNoteTimestampWithContext:(NSManagedObjectContext *)context {
     NSFetchRequest *request		= [NSFetchRequest fetchRequestWithEntityName:@"Note"];
@@ -214,6 +190,33 @@ const NSUInteger WPNoteKeepCount = 20;
         timestamp = note[@"timestamp"];
     }
     return timestamp;
+}
+
+/*
+ * Strips HTML Tags and converts html entites
+ */
+//- (void)parseComment {
+//    if ([self isComment]) {
+//        NSDictionary *bodyItem = [[[self.noteData objectForKey:@"body"] objectForKey:@"items"] lastObject];
+//        NSString *comment = [bodyItem objectForKey:@"html"];
+//        if (comment == (id)[NSNull null] || comment.length == 0)
+//            return;
+//        comment = [comment stringByReplacingHTMLEmoticonsWithEmoji];
+//        comment = [comment stringByStrippingHTML];
+//        comment = [comment stringByDecodingXMLCharacters];
+//        
+//        self.commentText = comment;
+//    }
+//}
+
+- (NSString *)commentHtml {
+    if (self.bodyItems) {
+        NoteBodyItem *noteBodyItem = [self.bodyItems lastObject];
+        NSString *commentHtml = noteBodyItem.bodyHtml;
+        return [commentHtml stringByReplacingHTMLEmoticonsWithEmoji];
+    }
+    
+    return nil;
 }
 
 
@@ -287,4 +290,3 @@ const NSUInteger WPNoteKeepCount = 20;
 }
 
 @end
-

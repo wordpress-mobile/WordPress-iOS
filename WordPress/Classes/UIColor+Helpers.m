@@ -1,11 +1,3 @@
-//
-//  UIColor+Helpers.m
-//  WordPress
-//
-//  Created by Danilo Ercoli on 07/06/12.
-//  Copyright (c) 2012 WordPress. All rights reserved.
-//
-
 #import "UIColor+Helpers.h"
 #import "NSString+HTML.h"
 

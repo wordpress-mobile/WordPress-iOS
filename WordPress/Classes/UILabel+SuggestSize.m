@@ -1,11 +1,3 @@
-//
-//  UILabel+SuggestSize.m
-//  WordPress
-//
-//  Created by Eric J on 6/18/13.
-//  Copyright (c) 2013 WordPress. All rights reserved.
-//
-
 #import "UILabel+SuggestSize.h"
 
 @implementation UILabel (SuggestSize)

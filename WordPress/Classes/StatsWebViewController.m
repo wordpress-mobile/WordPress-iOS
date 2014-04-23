@@ -1,9 +1,3 @@
-//
-//  StatsWebViewController.m
-//
-//  Created by Eric Johnson on 5/31/12.
-//
-
 #import "StatsWebViewController.h"
 #import "Blog+Jetpack.h"
 #import "WordPressAppDelegate.h"
@@ -16,6 +10,7 @@
 #import "ReachabilityUtils.h"
 #import "NSString+Helpers.h"
 #import "ContextManager.h"
+#import "AccountService.h"
 
 NSString * const WPStatsWebBlogKey = @"WPStatsWebBlogKey";
 
@@ -66,7 +61,11 @@ static NSString *_lastAuthedName = nil;
 }
 
 + (void)handleAccountChangeNotification:(NSNotification *)notification {
-    [self setLastAuthedName:[WPAccount defaultWordPressComAccount].username];
+    NSManagedObjectContext *context = [[ContextManager sharedInstance] mainContext];
+    AccountService *accountService = [[AccountService alloc] initWithManagedObjectContext:context];
+    WPAccount *defaultAccount = [accountService defaultWordPressComAccount];
+
+    [self setLastAuthedName:[defaultAccount username]];
 }
 
 + (NSString *)lastAuthedName {

@@ -1,12 +1,6 @@
-//
-//  XMLParserCollecter.m
-//  WordPress
-//
-//  Created by Jorge Leandro Perez on 2/14/14.
-//  Copyright (c) 2014 WordPress. All rights reserved.
-//
-
 #import "XMLParserCollecter.h"
+
+
 
 @implementation XMLParserCollecter
 

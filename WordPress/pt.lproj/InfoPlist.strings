@@ -1,9 +1,1 @@
-/* 
-  InfoPlist.strings
-  WordPress
-
-  Created by Aaron Douglas on 3/12/14.
-  Copyright (c) 2014 WordPress. All rights reserved.
-*/
-
 NSLocationUsageDescription = "O WordPress gostaria de adicionar a sua localização a artigos dos seus sites que tenham a geo-localização activada.";

@@ -41,6 +41,14 @@ install_resource()
       ;;
   esac
 }
+install_resource "CTAssetsPickerController/CTAssetsPickerController/Images.xcassets/CTAssetsPickerChecked.imageset/CTAssetsPickerChecked.png"
+install_resource "CTAssetsPickerController/CTAssetsPickerController/Images.xcassets/CTAssetsPickerChecked.imageset/CTAssetsPickerChecked@2x.png"
+install_resource "CTAssetsPickerController/CTAssetsPickerController/Images.xcassets/CTAssetsPickerEmpty.imageset/CTAssetsPickerEmpty.png"
+install_resource "CTAssetsPickerController/CTAssetsPickerController/Images.xcassets/CTAssetsPickerEmpty.imageset/CTAssetsPickerEmpty@2x.png"
+install_resource "CTAssetsPickerController/CTAssetsPickerController/Images.xcassets/CTAssetsPickerLocked.imageset/CTAssetsPickerLocked.png"
+install_resource "CTAssetsPickerController/CTAssetsPickerController/Images.xcassets/CTAssetsPickerLocked.imageset/CTAssetsPickerLocked@2x.png"
+install_resource "CTAssetsPickerController/CTAssetsPickerController/Images.xcassets/CTAssetsPickerVideo.imageset/CTAssetsPickerVideo.png"
+install_resource "CTAssetsPickerController/CTAssetsPickerController/Images.xcassets/CTAssetsPickerVideo.imageset/CTAssetsPickerVideo@2x.png"
 install_resource "Mixpanel/Mixpanel/MPArrowLeft.png"
 install_resource "Mixpanel/Mixpanel/MPArrowLeft@2x.png"
 install_resource "Mixpanel/Mixpanel/MPArrowRight.png"
@@ -56,7 +64,7 @@ install_resource "Mixpanel/Mixpanel/MPLogo@2x.png"
 install_resource "Mixpanel/Mixpanel/MPNotification.storyboard"
 install_resource "Mixpanel/Mixpanel/MPSurvey.storyboard"
 install_resource "SVProgressHUD/SVProgressHUD/SVProgressHUD.bundle"
-install_resource "google-plus-ios-sdk/google-plus-ios-sdk-1.5.0/GooglePlus.bundle"
+install_resource "google-plus-ios-sdk/google-plus-ios-sdk-1.5.1/GooglePlus.bundle"
 install_resource "${BUILT_PRODUCTS_DIR}/HockeySDKResources.bundle"
 
 rsync -avr --copy-links --no-relative --exclude '*/.svn/*' --files-from="$RESOURCES_TO_COPY" / "${CONFIGURATION_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}"

@@ -1,11 +1,3 @@
-//
-//  WPAsyncOperation.m
-//  WordPress
-//
-//  Created by Sendhil Panchadsaram on 4/16/13.
-//  Copyright (c) 2013 WordPress. All rights reserved.
-//
-
 #import "WPAsyncBlockOperation.h"
 
 typedef void (^ExecutionBlock)(WPAsyncBlockOperation *);

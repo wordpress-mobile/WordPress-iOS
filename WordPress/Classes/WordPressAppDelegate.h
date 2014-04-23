@@ -1,13 +1,3 @@
-/*
- * WordPressAppDelegate.h
- *
- * Copyright (c) 2013 WordPress. All rights reserved.
- *
- * Licensed under GNU General Public License 2.0.
- * Some rights reserved. See license.txt
- */
-
-
 @class Reachability;
 @class DDFileLogger;
 @class ReaderPostsViewController;
@@ -50,16 +40,6 @@
 - (void)showPostTab;
 - (void)switchTabToPostsListForPost:(AbstractPost *)post;
 - (BOOL)isNavigatingMeTab;
-
-/*
- * Navigates to the StatsViewController for the given blog
- *
- * @discussion Used for internal deep link for stats notifications
- *
- * @param blog The blog to open stats for
- *
- */
-- (void)showStatsForBlog:(Blog *)blog;
 
 ///-----------
 /// @name NUX
