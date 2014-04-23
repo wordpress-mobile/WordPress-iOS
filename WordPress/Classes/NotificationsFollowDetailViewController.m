@@ -155,7 +155,7 @@ typedef void (^NoteToggleFollowBlock)(BOOL success);
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
 {
     if (indexPath.section == WPNotificationSectionsHeader) {
-		NSString *subject = [NSString decodeXMLCharactersIn:_note.subject];
+		NSString *subject = [NSString decodeXMLCharactersIn:_note.subjectText];
 		return [WPTableHeaderViewCell cellHeightForText:subject];
     } else if (indexPath.section == WPNotificationSectionsFollow) {
         return WPNotificationsFollowPersonCellHeight;
@@ -170,7 +170,7 @@ typedef void (^NoteToggleFollowBlock)(BOOL success);
 
         UITableViewCell *cell			= [tableView dequeueReusableCellWithIdentifier:WPNotificationHeaderCellIdentifier];
         
-        cell.textLabel.text				= [NSString decodeXMLCharactersIn:_note.subject];
+        cell.textLabel.text				= [NSString decodeXMLCharactersIn:_note.subjectText];
         cell.textLabel.numberOfLines	= 0;
         cell.textLabel.textAlignment	= NSTextAlignmentCenter;
         cell.accessoryType				= UITableViewCellAccessoryDisclosureIndicator;
@@ -272,14 +272,9 @@ typedef void (^NoteToggleFollowBlock)(BOOL success);
 		NSDictionary *followResponse = (NSDictionary *)responseObject;
 		BOOL success = ([followResponse[@"success"] intValue] == 1);
 		if (success) {
+            // Simperium will eventually update the Notification Object, thus, making this change permanent
 			BOOL isFollowingNow = ([followResponse[@"is_following"] intValue] == 1);
 			item.action.following = isFollowingNow;
-#warning TODO: REFRESH NOTE?
-			// Let's refresh the note: is_following change isn't permanent!
-//            NoteService *noteService = [[NoteService alloc] initWithManagedObjectContext:_note.managedObjectContext];
-//            [noteService refreshNote:_note success:nil failure:^(NSError *error) {
-//				DDLogVerbose(@"[Rest API] ! %@", [error localizedDescription]);
-//            }];
 		}
 		
 		block(success);
