@@ -177,7 +177,6 @@ NSString * const BlogJetpackApiPath = @"get-user-blogs/1.0";
                                  AccountService *accountService = [[AccountService alloc] initWithManagedObjectContext:self.managedObjectContext];
                                  WPAccount *account = [accountService createOrUpdateWordPressComAccountWithUsername:username password:password authToken:nil];
                                  self.jetpackAccount = account;
-                                 
                                  [self dataSave];
                                  
                                  // If the default 3.9 behavior is removed above, this should call the failure block, not success

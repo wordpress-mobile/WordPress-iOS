@@ -833,7 +833,6 @@ CGFloat const GeneralWalkthroughStatusBarOffset = 20.0;
     BlogService *blogService = [[BlogService alloc] initWithManagedObjectContext:context];
 
     WPAccount *account = [accountService createOrUpdateSelfHostedAccountWithXmlrpc:xmlrpc username:username andPassword:password];
-
     NSString *blogName = [options stringForKeyPath:@"blog_title.value"];
     NSString *url = [options stringForKeyPath:@"home_url.value"];
     if (!url) {
