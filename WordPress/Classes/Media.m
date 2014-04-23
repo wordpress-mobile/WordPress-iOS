@@ -70,7 +70,7 @@
     if ([blog isDeleted] || blog.managedObjectContext == nil)
         return;
     
-    NSManagedObjectContext *backgroundMOC = [[ContextManager sharedInstance] backgroundContext];
+    NSManagedObjectContext *backgroundMOC = [[ContextManager sharedInstance] newDerivedContext];
     [backgroundMOC performBlock:^{
         Blog *contextBlog = (Blog *)[backgroundMOC objectWithID:blog.objectID];
         NSMutableArray *mediaToKeep = [NSMutableArray array];
@@ -88,7 +88,7 @@
             }
         }
         
-        [[ContextManager sharedInstance] saveContext:backgroundMOC];
+        [[ContextManager sharedInstance] saveDerivedContext:backgroundMOC];
     }];
 }
 
