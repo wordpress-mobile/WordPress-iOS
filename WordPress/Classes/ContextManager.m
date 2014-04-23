@@ -8,7 +8,7 @@ static ContextManager *instance;
 @property (nonatomic, strong) NSPersistentStoreCoordinator *persistentStoreCoordinator;
 @property (nonatomic, strong) NSManagedObjectModel *managedObjectModel;
 @property (nonatomic, strong) NSManagedObjectContext *mainContext;
-@property (nonatomic, strong) NSManagedObjectContext *backgroundContext;
+@property (nonatomic, strong) NSManagedObjectContext *rootContext;
 
 @end
 
@@ -41,40 +41,31 @@ static ContextManager *instance;
         return _mainContext;
     }
     _mainContext = [[NSManagedObjectContext alloc] initWithConcurrencyType:NSMainQueueConcurrencyType];
-    _mainContext.parentContext = self.backgroundContext;
+    _mainContext.parentContext = self.rootContext;
     _mainContext.mergePolicy = NSMergeByPropertyObjectTrumpMergePolicy;
     
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(mergeChangesIntoBackgroundContext:) name:NSManagedObjectContextDidSaveNotification object:_mainContext];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(saveChangesInRootContext:) name:NSManagedObjectContextDidSaveNotification object:_mainContext];
     return _mainContext;
 }
 
-- (NSManagedObjectContext *const)backgroundContext {
-    if (_backgroundContext) {
-        return _backgroundContext;
+- (NSManagedObjectContext *const)rootContext {
+    if (_rootContext) {
+        return _rootContext;
     }
-    _backgroundContext = [[NSManagedObjectContext alloc] initWithConcurrencyType:NSPrivateQueueConcurrencyType];
-    _backgroundContext.persistentStoreCoordinator = self.persistentStoreCoordinator;
-    _backgroundContext.mergePolicy = NSMergeByPropertyObjectTrumpMergePolicy;
+    _rootContext = [[NSManagedObjectContext alloc] initWithConcurrencyType:NSPrivateQueueConcurrencyType];
+    _rootContext.persistentStoreCoordinator = self.persistentStoreCoordinator;
+    _rootContext.mergePolicy = NSMergeByPropertyObjectTrumpMergePolicy;
 
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(mergeChangesIntoMainContext:)
-                                                 name:NSManagedObjectContextDidSaveNotification object:_backgroundContext];
-    return _backgroundContext;
+    return _rootContext;
 }
 
-- (void)mergeChangesIntoMainContext:(NSNotification *)notification {
-    [self.mainContext performBlock:^{
-        DDLogVerbose(@"Merging changes into main context");
-        [self.mainContext mergeChangesFromContextDidSaveNotification:notification];
-    }];
-}
-
-- (void)mergeChangesIntoBackgroundContext:(NSNotification *)notification {
-    [self.backgroundContext performBlock:^{
-        DDLogVerbose(@"Merging changes into background context");
-        [self.backgroundContext mergeChangesFromContextDidSaveNotification:notification];
+- (void)saveChangesInRootContext:(NSNotification *)notification {
+    [self.rootContext performBlock:^{
+        DDLogVerbose(@"Saving changes in root context");
+        [self.rootContext processPendingChanges];
         
         // Changes are not saved out to the persistent store coordinator until the root context is saved
-        [self saveContext:self.backgroundContext];
+        [self saveContext:self.rootContext];
     }];
 }
 
