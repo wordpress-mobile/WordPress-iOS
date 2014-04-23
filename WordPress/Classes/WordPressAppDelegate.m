@@ -59,18 +59,21 @@ static NSInteger const IndexForMeTab = 2;
 
 @implementation WordPressAppDelegate
 
-+ (WordPressAppDelegate *)sharedWordPressApplicationDelegate {
++ (WordPressAppDelegate *)sharedWordPressApplicationDelegate
+{
     return (WordPressAppDelegate *)[[UIApplication sharedApplication] delegate];
 }
 
-- (void)dealloc {
+- (void)dealloc
+{
     [[NSNotificationCenter defaultCenter] removeObserver:self];
 }
 
 
 #pragma mark - UIApplicationDelegate
 
-- (BOOL)application:(UIApplication *)application willFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
+- (BOOL)application:(UIApplication *)application willFinishLaunchingWithOptions:(NSDictionary *)launchOptions
+{
     [WordPressAppDelegate fixKeychainAccess];
 	
 	// Simperium Setup
@@ -120,7 +123,8 @@ static NSInteger const IndexForMeTab = 2;
     return YES;
 }
 
-- (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
+- (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
+{
     DDLogVerbose(@"didFinishLaunchingWithOptions state: %d", application.applicationState);
     
     // Launched by tapping a notification
@@ -135,7 +139,8 @@ static NSInteger const IndexForMeTab = 2;
     return YES;
 }
 
-- (BOOL)application:(UIApplication *)application openURL:(NSURL *)url sourceApplication:(NSString *)sourceApplication annotation:(id)annotation {
+- (BOOL)application:(UIApplication *)application openURL:(NSURL *)url sourceApplication:(NSString *)sourceApplication annotation:(id)annotation
+{
     BOOL returnValue = NO;
     
     if ([[BITHockeyManager sharedHockeyManager].authenticator handleOpenURL:url
@@ -189,11 +194,13 @@ static NSInteger const IndexForMeTab = 2;
     return returnValue;
 }
 
-- (void)applicationWillTerminate:(UIApplication *)application {
+- (void)applicationWillTerminate:(UIApplication *)application
+{
     DDLogInfo(@"%@ %@", self, NSStringFromSelector(_cmd));
 }
 
-- (void)applicationDidEnterBackground:(UIApplication *)application {
+- (void)applicationDidEnterBackground:(UIApplication *)application
+{
     DDLogInfo(@"%@ %@", self, NSStringFromSelector(_cmd));
 
     [WPAnalytics track:WPAnalyticsStatApplicationClosed];
@@ -219,44 +226,53 @@ static NSInteger const IndexForMeTab = 2;
     }];
 }
 
-- (void)applicationWillEnterForeground:(UIApplication *)application {
+- (void)applicationWillEnterForeground:(UIApplication *)application
+{
     DDLogInfo(@"%@ %@", self, NSStringFromSelector(_cmd));
 }
 
-- (void)applicationWillResignActive:(UIApplication *)application {
+- (void)applicationWillResignActive:(UIApplication *)application
+{
     DDLogInfo(@"%@ %@", self, NSStringFromSelector(_cmd));
 }
 
-- (void)applicationDidBecomeActive:(UIApplication *)application {
+- (void)applicationDidBecomeActive:(UIApplication *)application
+{
     DDLogInfo(@"%@ %@", self, NSStringFromSelector(_cmd));
     [WPAnalytics track:WPAnalyticsStatApplicationOpened];
 }
 
-- (BOOL)application:(UIApplication *)application shouldSaveApplicationState:(NSCoder *)coder {
+- (BOOL)application:(UIApplication *)application shouldSaveApplicationState:(NSCoder *)coder
+{
     return YES;
 }
 
-- (BOOL)application:(UIApplication *)application shouldRestoreApplicationState:(NSCoder *)coder {
+- (BOOL)application:(UIApplication *)application shouldRestoreApplicationState:(NSCoder *)coder
+{
     return YES;
 }
 
 #pragma mark - Push Notification delegate
 
-- (void)application:(UIApplication *)application didRegisterForRemoteNotificationsWithDeviceToken:(NSData *)deviceToken {
+- (void)application:(UIApplication *)application didRegisterForRemoteNotificationsWithDeviceToken:(NSData *)deviceToken
+{
 	[NotificationsManager registerDeviceToken:deviceToken];
 }
 
-- (void)application:(UIApplication *)application didFailToRegisterForRemoteNotificationsWithError:(NSError *)error {
+- (void)application:(UIApplication *)application didFailToRegisterForRemoteNotificationsWithError:(NSError *)error
+{
 	[NotificationsManager registrationDidFail:error];
 }
 
-- (void)application:(UIApplication *)application didReceiveRemoteNotification:(NSDictionary *)userInfo {
+- (void)application:(UIApplication *)application didReceiveRemoteNotification:(NSDictionary *)userInfo
+{
     DDLogMethod();
     
     [NotificationsManager handleNotification:userInfo forState:application.applicationState completionHandler:nil];
 }
 
-- (void)application:(UIApplication *)application didReceiveRemoteNotification:(NSDictionary *)userInfo fetchCompletionHandler:(void (^)(UIBackgroundFetchResult))completionHandler {
+- (void)application:(UIApplication *)application didReceiveRemoteNotification:(NSDictionary *)userInfo fetchCompletionHandler:(void (^)(UIBackgroundFetchResult))completionHandler
+{
     DDLogMethod();
     
     [NotificationsManager handleNotification:userInfo forState:[UIApplication sharedApplication].applicationState completionHandler:completionHandler];
@@ -264,7 +280,8 @@ static NSInteger const IndexForMeTab = 2;
 
 #pragma mark - Custom methods
 
-- (void)showWelcomeScreenIfNeededAnimated:(BOOL)animated {
+- (void)showWelcomeScreenIfNeededAnimated:(BOOL)animated
+{
     if ([self noBlogsAndNoWordPressDotComAccount]) {
         UIViewController *presenter = self.window.rootViewController;
         if (presenter.presentedViewController) {
@@ -275,7 +292,8 @@ static NSInteger const IndexForMeTab = 2;
     }
 }
 
-- (void)showWelcomeScreenAnimated:(BOOL)animated thenEditor:(BOOL)thenEditor {
+- (void)showWelcomeScreenAnimated:(BOOL)animated thenEditor:(BOOL)thenEditor
+{
     LoginViewController *loginViewController = [[LoginViewController alloc] init];
     if (thenEditor) {
         loginViewController.dismissBlock = ^{
@@ -290,7 +308,8 @@ static NSInteger const IndexForMeTab = 2;
     [self.window.rootViewController presentViewController:navigationController animated:animated completion:nil];
 }
 
-- (BOOL)noBlogsAndNoWordPressDotComAccount {
+- (BOOL)noBlogsAndNoWordPressDotComAccount
+{
     NSManagedObjectContext *context = [[ContextManager sharedInstance] mainContext];
     AccountService *accountService = [[AccountService alloc] initWithManagedObjectContext:context];
     BlogService *blogService = [[BlogService alloc] initWithManagedObjectContext:context];
@@ -300,7 +319,8 @@ static NSInteger const IndexForMeTab = 2;
     return blogCount == 0 && !defaultAccount;
 }
 
-- (void)customizeAppearance {
+- (void)customizeAppearance
+{
     UIColor *defaultTintColor = self.window.tintColor;
     self.window.tintColor = [WPStyleGuide newKidOnTheBlockBlue];
     
@@ -325,7 +345,8 @@ static NSInteger const IndexForMeTab = 2;
 
 #pragma mark - Tab bar methods
 
-- (UITabBarController *)tabBarController {
+- (UITabBarController *)tabBarController
+{
     if (_tabBarController) {
         return _tabBarController;
     }
@@ -405,30 +426,36 @@ static NSInteger const IndexForMeTab = 2;
     return _tabBarController;
 }
 
-- (void)showNotificationsTab {
+- (void)showNotificationsTab
+{
     NSInteger notificationsTabIndex = [[self.tabBarController viewControllers] indexOfObject:self.notificationsViewController.navigationController];
     [self.tabBarController setSelectedIndex:notificationsTabIndex];
 }
 
-- (void)showReaderTab {
+- (void)showReaderTab
+{
     NSInteger readerTabIndex = [[self.tabBarController viewControllers] indexOfObject:self.readerPostsViewController.navigationController];
     [self.tabBarController setSelectedIndex:readerTabIndex];
 }
 
-- (void)showBlogListTab {
+- (void)showBlogListTab
+{
     NSInteger blogListTabIndex = [[self.tabBarController viewControllers] indexOfObject:self.blogListViewController.navigationController];
     [self.tabBarController setSelectedIndex:blogListTabIndex];
 }
 
-- (void)showMeTab {
+- (void)showMeTab
+{
     [self.tabBarController setSelectedIndex:IndexForMeTab];
 }
 
-- (void)showPostTab {
+- (void)showPostTab
+{
     [self showPostTabWithOptions:nil];
 }
 
-- (void)showPostTabWithOptions:(NSDictionary *)options {
+- (void)showPostTabWithOptions:(NSDictionary *)options
+{
     UIViewController *presenter = self.window.rootViewController;
     if (presenter.presentedViewController) {
         [presenter dismissViewControllerAnimated:NO completion:nil];
@@ -453,7 +480,8 @@ static NSInteger const IndexForMeTab = 2;
     [self.window.rootViewController presentViewController:navController animated:YES completion:nil];
 }
 
-- (void)switchTabToPostsListForPost:(AbstractPost *)post {
+- (void)switchTabToPostsListForPost:(AbstractPost *)post
+{
     // Make sure the desired tab is selected.
     [self showMeTab];
 
@@ -481,13 +509,15 @@ static NSInteger const IndexForMeTab = 2;
     [blogListNavController setViewControllers:@[blogListViewController, blogDetailsViewController, postsViewController]];
 }
 
-- (BOOL)isNavigatingMeTab {
+- (BOOL)isNavigatingMeTab
+{
     return (self.tabBarController.selectedIndex == IndexForMeTab && [self.blogListViewController.navigationController.viewControllers count] > 1);
 }
 
 #pragma mark - UITabBarControllerDelegate methods.
 
-- (BOOL)tabBarController:(UITabBarController *)tabBarController shouldSelectViewController:(UIViewController *)viewController {
+- (BOOL)tabBarController:(UITabBarController *)tabBarController shouldSelectViewController:(UIViewController *)viewController
+{
     if ([tabBarController.viewControllers indexOfObject:viewController] == 3) {
         NSManagedObjectContext *context = [[ContextManager sharedInstance] mainContext];
         BlogService *blogService = [[BlogService alloc] initWithManagedObjectContext:context];
@@ -534,7 +564,8 @@ static NSInteger const IndexForMeTab = 2;
 
 #pragma mark - Application directories
 
-- (void)changeCurrentDirectory {
+- (void)changeCurrentDirectory
+{
     // Set current directory for WordPress app
 	NSFileManager *fileManager = [NSFileManager defaultManager];
 	NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
@@ -550,7 +581,8 @@ static NSInteger const IndexForMeTab = 2;
 
 #pragma mark - Notifications
 
-- (void)defaultAccountDidChange:(NSNotification *)notification {
+- (void)defaultAccountDidChange:(NSNotification *)notification
+{
     NSManagedObjectContext *context = [[ContextManager sharedInstance] mainContext];
     AccountService *accountService = [[AccountService alloc] initWithManagedObjectContext:context];
     WPAccount *defaultAccount = [accountService defaultWordPressComAccount];
@@ -562,7 +594,8 @@ static NSInteger const IndexForMeTab = 2;
 
 #pragma mark - Crash reporting
 
-- (void)configureCrashlytics {
+- (void)configureCrashlytics
+{
 #if DEBUG
     return;
 #endif
@@ -591,7 +624,8 @@ static NSInteger const IndexForMeTab = 2;
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(defaultAccountDidChange:) name:WPAccountDefaultWordPressComAccountChangedNotification object:nil];
 }
 
-- (void)crashlytics:(Crashlytics *)crashlytics didDetectCrashDuringPreviousExecution:(id<CLSCrashReport>)crash {
+- (void)crashlytics:(Crashlytics *)crashlytics didDetectCrashDuringPreviousExecution:(id<CLSCrashReport>)crash
+{
     DDLogMethod();
     NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
     NSInteger crashCount = [defaults integerForKey:@"crashCount"];
@@ -600,7 +634,8 @@ static NSInteger const IndexForMeTab = 2;
     [defaults synchronize];
 }
 
-- (void)setCommonCrashlyticsParameters {
+- (void)setCommonCrashlyticsParameters
+{
     NSManagedObjectContext *context = [[ContextManager sharedInstance] mainContext];
     AccountService *accountService = [[AccountService alloc] initWithManagedObjectContext:context];
     BlogService *blogService = [[BlogService alloc] initWithManagedObjectContext:context];
@@ -612,7 +647,8 @@ static NSInteger const IndexForMeTab = 2;
     [Crashlytics setObjectValue:@([blogService blogCountForAllAccounts]) forKey:@"number_of_blogs"];
 }
 
-- (void)configureHockeySDK {
+- (void)configureHockeySDK
+{
 #ifndef INTERNAL_BUILD
     return;
 #endif
@@ -625,7 +661,8 @@ static NSInteger const IndexForMeTab = 2;
 
 #pragma mark - BITCrashManagerDelegate
 
-- (NSString *)applicationLogForCrashManager:(BITCrashManager *)crashManager {
+- (NSString *)applicationLogForCrashManager:(BITCrashManager *)crashManager
+{
     NSString *description = [self getLogFilesContentWithMaxSize:5000]; // 5000 bytes should be enough!
     if ([description length] == 0) {
         return nil;
@@ -636,7 +673,8 @@ static NSInteger const IndexForMeTab = 2;
 
 #pragma mark - Media cleanup
 
-- (void)cleanUnusedMediaFileFromTmpDir {
+- (void)cleanUnusedMediaFileFromTmpDir
+{
     DDLogInfo(@"%@ %@", self, NSStringFromSelector(_cmd));
 
     NSManagedObjectContext *context = [[ContextManager sharedInstance] newDerivedContext];
@@ -693,7 +731,8 @@ static NSInteger const IndexForMeTab = 2;
 
 #pragma mark - Networking setup, User agents
 
-- (void)setupUserAgent {
+- (void)setupUserAgent
+{
     // Keep a copy of the original userAgent for use with certain webviews in the app.
     UIWebView *webView = [[UIWebView alloc] init];
     NSString *defaultUA = [webView stringByEvaluatingJavaScriptFromString:@"navigator.userAgent"];
@@ -710,7 +749,8 @@ static NSInteger const IndexForMeTab = 2;
     [[NSUserDefaults standardUserDefaults] registerDefaults:dictionary];
 }
 
-- (void)useDefaultUserAgent {
+- (void)useDefaultUserAgent
+{
     NSString *ua = [[NSUserDefaults standardUserDefaults] stringForKey:@"DefaultUserAgent"];
     NSDictionary *dictionary = [[NSDictionary alloc] initWithObjectsAndKeys:ua, @"UserAgent", nil];
     // We have to call registerDefaults else the change isn't picked up by UIWebViews.
@@ -718,7 +758,8 @@ static NSInteger const IndexForMeTab = 2;
     DDLogVerbose(@"User-Agent set to: %@", ua);
 }
 
-- (void)useAppUserAgent {
+- (void)useAppUserAgent
+{
     NSString *ua = [[NSUserDefaults standardUserDefaults] stringForKey:@"AppUserAgent"];
     NSDictionary *dictionary = [[NSDictionary alloc] initWithObjectsAndKeys:ua, @"UserAgent", nil];
     // We have to call registerDefaults else the change isn't picked up by UIWebViews.
@@ -727,11 +768,13 @@ static NSInteger const IndexForMeTab = 2;
     DDLogVerbose(@"User-Agent set to: %@", ua);
 }
 
-- (NSString *)applicationUserAgent {
+- (NSString *)applicationUserAgent
+{
     return [[NSUserDefaults standardUserDefaults] objectForKey:@"UserAgent"];
 }
 
-- (void)setupSingleSignOn {
+- (void)setupSingleSignOn
+{
     NSManagedObjectContext *context = [[ContextManager sharedInstance] mainContext];
     AccountService *accountService = [[AccountService alloc] initWithManagedObjectContext:context];
     WPAccount *defaultAccount = [accountService defaultWordPressComAccount];
@@ -742,7 +785,8 @@ static NSInteger const IndexForMeTab = 2;
     }
 }
 
-- (void)setupReachability {
+- (void)setupReachability
+{
 #pragma clang diagnostic push
 #pragma clang diagnostic ignored "-Warc-retain-cycles"
     // Set the wpcom availability to YES to avoid issues with lazy reachibility notifier
@@ -799,7 +843,8 @@ static NSInteger const IndexForMeTab = 2;
 
 #pragma mark - Simperium
 
-- (void)setupSimperium {
+- (void)setupSimperium
+{
 	ContextManager* manager = [ContextManager sharedInstance];
 	self.simperium = [[Simperium alloc] initWithModel:manager.managedObjectModel
 											  context:manager.mainContext
@@ -808,7 +853,8 @@ static NSInteger const IndexForMeTab = 2;
 	self.simperium.verboseLoggingEnabled = YES;
 }
 
-- (void)loginSimperium {
+- (void)loginSimperium
+{
     NSManagedObjectContext *context = [[ContextManager sharedInstance] mainContext];
     AccountService *accountService  = [[AccountService alloc] initWithManagedObjectContext:context];
 	WPAccount *account              = [accountService defaultWordPressComAccount];
@@ -823,14 +869,16 @@ static NSInteger const IndexForMeTab = 2;
 	[self.simperium authenticateWithAppID:simperiumAppID token:simperiumToken];
 }
 
-- (void)logoutSimperiumAndResetNotifications {
+- (void)logoutSimperiumAndResetNotifications
+{
 	[self.simperium signOutAndRemoveLocalData:YES completion:nil];
 }
 
 
 #pragma mark - Keychain
 
-+ (void)fixKeychainAccess {
++ (void)fixKeychainAccess
+{
 	NSDictionary *query = @{
                             (__bridge id)kSecClass: (__bridge id)kSecClassGenericPassword,
                             (__bridge id)kSecAttrAccessible: (__bridge id)kSecAttrAccessibleWhenUnlocked,
@@ -884,7 +932,8 @@ static NSInteger const IndexForMeTab = 2;
 
 #pragma mark - Debugging and logging
 
-- (void)printDebugLaunchInfoWithLaunchOptions:(NSDictionary *)launchOptions {
+- (void)printDebugLaunchInfoWithLaunchOptions:(NSDictionary *)launchOptions
+{
     UIDevice *device = [UIDevice currentDevice];
     NSInteger crashCount = [[NSUserDefaults standardUserDefaults] integerForKey:@"crashCount"];
     NSArray *languages = [[NSUserDefaults standardUserDefaults] objectForKey:@"AppleLanguages"];
@@ -921,7 +970,8 @@ static NSInteger const IndexForMeTab = 2;
     DDLogInfo(@"===========================================================================");
 }
 
-- (void)removeCredentialsForDebug {
+- (void)removeCredentialsForDebug
+{
 #if DEBUG
     /*
      A dictionary containing the credentials for all available protection spaces.
@@ -967,7 +1017,8 @@ static NSInteger const IndexForMeTab = 2;
     }
 }
 
-- (DDFileLogger *)fileLogger {
+- (DDFileLogger *)fileLogger
+{
     if (_fileLogger) {
         return _fileLogger;
     }
@@ -979,7 +1030,8 @@ static NSInteger const IndexForMeTab = 2;
 }
 
 // get the log content with a maximum byte size
-- (NSString *)getLogFilesContentWithMaxSize:(NSInteger)maxSize {
+- (NSString *)getLogFilesContentWithMaxSize:(NSInteger)maxSize
+{
     NSMutableString *description = [NSMutableString string];
     
     NSArray *sortedLogFileInfos = [[self.fileLogger logFileManager] sortedLogFileInfos];
@@ -1006,7 +1058,8 @@ static NSInteger const IndexForMeTab = 2;
     return description;
 }
 
-- (void)toggleExtraDebuggingIfNeeded {
+- (void)toggleExtraDebuggingIfNeeded
+{
     if (!_listeningForBlogChanges) {
         _listeningForBlogChanges = YES;
         [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(handleDefaultAccountChangedNotification:) name:WPAccountDefaultWordPressComAccountChangedNotification object:nil];
@@ -1044,7 +1097,8 @@ static NSInteger const IndexForMeTab = 2;
 
 #pragma mark - Notifications
 
-- (void)handleDefaultAccountChangedNotification:(NSNotification *)notification {
+- (void)handleDefaultAccountChangedNotification:(NSNotification *)notification
+{
 	[self toggleExtraDebuggingIfNeeded];
     
     // If the notification object is not nil, then it's a login
