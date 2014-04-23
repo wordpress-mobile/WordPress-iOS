@@ -49,7 +49,6 @@ typedef NS_ENUM(NSInteger, WPNoteTemplateType) {
 - (BOOL)isLike;
 - (BOOL)isFollow;
 - (BOOL)isRead;
-- (BOOL)isUnread;
 - (BOOL)statsEvent;
 
 @end

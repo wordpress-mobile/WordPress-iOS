@@ -1049,8 +1049,8 @@ static NSInteger const IndexForMeTab = 2;
     
     // If the notification object is not nil, then it's a login
     if (notification.object) {
-        [ReaderPost fetchPostsWithCompletionHandler:nil];
         [self loginSimperium];
+        [ReaderPost fetchPostsWithCompletionHandler:nil];
     } else {
         // No need to check for welcome screen unless we are signing out
         [self logoutSimperiumAndResetNotifications];

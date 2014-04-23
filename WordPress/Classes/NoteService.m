@@ -90,7 +90,7 @@ const NSUInteger NoteKeepCount = 20;
         return blog;
     }
     
-    NSScanner *scanner = [NSScanner scannerWithString:note.subject];
+    NSScanner *scanner = [NSScanner scannerWithString:note.subjectText];
     NSString *blogName;
     
     while ([scanner isAtEnd] == NO) {

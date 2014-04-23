@@ -344,16 +344,7 @@ NSString *const WPNotificationCommentRestorationKey = @"WPNotificationCommentRes
     WPAccount *defaultAccount = [accountService defaultWordPressComAccount];
 
     [[defaultAccount restApi] postPath:path parameters:[commentAction valueForKeyPath:@"params.rest_body"] success:^(AFHTTPRequestOperation *operation, id responseObject) {
-        NSDictionary *response = (NSDictionary *)responseObject;
-        if (response) {
-            NoteService *noteService = [[NoteService alloc] initWithManagedObjectContext:self.note.managedObjectContext];
-            [noteService refreshNote:self.note success:^{
-                // Buttons are adjusted optimistically, so no need to update UI
-            } failure:^(NSError *error) {
-                // Fail silently but force a refresh to revert any optimistic changes
-                [self displayNote];
-            }];
-        }
+        // The Note will be automatically updated by Simperium
     } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
         DDLogVerbose(@"[Rest API] ! %@", [error localizedDescription]);
     }];
