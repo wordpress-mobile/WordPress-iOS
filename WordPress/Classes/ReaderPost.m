@@ -154,6 +154,7 @@ NSString * const ReaderPostStoredCommentTextKey = @"comment";
                 [derivedMOC deleteObject:post];
             }
         }
+
         [[ContextManager sharedInstance] saveDerivedContext:derivedMOC];
     }];
 }

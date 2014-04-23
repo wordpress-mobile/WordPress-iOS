@@ -5,11 +5,6 @@
 ///----------------------------------------------
 ///@name Persistent Contexts
 ///
-/// The backgroundContext has concurrency type
-/// NSPrivateQueueConcurrencyType and should be
-/// used for any background tasks. Its parent is
-/// the persistentStoreCoordinator.
-///
 /// The mainContext has concurrency type
 /// NSMainQueueConcurrencyType and should be used
 /// for UI elements and fetched results controllers.
@@ -41,7 +36,9 @@
 ///--------------------------
 
 /**
- For usage as a 'scratch pad' context
+ For usage as a 'scratch pad' context or for doing background work.
+ 
+ Make sure to save using saveDerivedContext:
  
  @return a new MOC with NSPrivateQueueConcurrencyType, 
  with the parent context as the main context

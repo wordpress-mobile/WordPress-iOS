@@ -67,8 +67,9 @@
 }
 
 + (void)mergeNewMedia:(NSArray *)media forBlog:(Blog *)blog {
-    if ([blog isDeleted] || blog.managedObjectContext == nil)
+    if ([blog isDeleted] || blog.managedObjectContext == nil) {
         return;
+    }
     
     NSManagedObjectContext *derivedMOC = [[ContextManager sharedInstance] newDerivedContext];
     [derivedMOC performBlock:^{

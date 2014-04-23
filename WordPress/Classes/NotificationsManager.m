@@ -114,7 +114,7 @@ NSString *const NotificationsDeviceToken = @"apnsDeviceToken";
         case UIApplicationStateBackground:
 #warning TODO: FIXME
             if (completionHandler) {
-//                NoteService *noteService = [[NoteService alloc] initWithManagedObjectContext:[[ContextManager sharedInstance] backgroundContext]];
+//                NoteService *noteService = [[NoteService alloc] initWithManagedObjectContext:[[ContextManager sharedInstance] mainContext]];
 //                
 //                [noteService fetchNewNotificationsWithSuccess:^(BOOL hasNewNotes) {
 //                    DDLogVerbose(@"notification fetch completion handler completed with new notes: %@", hasNewNotes ? @"YES" : @"NO");
