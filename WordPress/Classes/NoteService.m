@@ -2,7 +2,6 @@
 #import "ContextManager.h"
 #import "Note.h"
 #import "Blog.h"
-#import "NoteServiceRemote.h"
 #import "AccountService.h"
 #import "BlogService.h"
 
@@ -65,22 +64,6 @@ const NSUInteger NoteKeepCount = 20;
     [[ContextManager sharedInstance] saveContext:self.managedObjectContext];
 }
 
-- (NSNumber *)lastNoteTimestamp
-{
-    NSFetchRequest *request = [NSFetchRequest fetchRequestWithEntityName:@"Note"];
-    request.resultType = NSDictionaryResultType;
-    request.propertiesToFetch = @[@"timestamp"];
-    request.fetchLimit = 1;
-    request.sortDescriptors = @[[NSSortDescriptor sortDescriptorWithKey:@"timestamp" ascending:NO]];
-    NSArray *results = [self.managedObjectContext executeFetchRequest:request error:nil];
-    NSNumber *timestamp;
-    if ([results count]) {
-        NSDictionary *note = results[0];
-        timestamp = [note objectForKey:@"timestamp"];
-    }
-    return timestamp;
-}
-
 - (Blog *)blogForStatsEventNote:(Note *)note
 {
     BlogService *blogService = [[BlogService alloc] initWithManagedObjectContext:self.managedObjectContext];
@@ -126,41 +109,6 @@ const NSUInteger NoteKeepCount = 20;
     }
     
     return nil;
-}
-
-- (void)refreshUnreadNotes {
-    NSFetchRequest *request = [[ContextManager sharedInstance].managedObjectModel fetchRequestTemplateForName:@"UnreadNotes"];
-    NSError *error = nil;
-    NSArray *notes = [self.managedObjectContext executeFetchRequest:request error:&error];
-    if ([notes count] > 0) {
-        NSMutableArray *array = [NSMutableArray arrayWithCapacity:notes.count];
-        for (Note *note in notes) {
-            [array addObject:note.noteID];
-        }
-        
-        AccountService *accountService = [[AccountService alloc] initWithManagedObjectContext:self.managedObjectContext];
-        WordPressComApi *api = [[accountService defaultWordPressComAccount] restApi];
-        
-        NoteServiceRemote *remote = [[NoteServiceRemote alloc] initWithRemoteApi:api];
-        [remote refreshNotificationIds:array success:nil failure:nil];
-    }
-}
-
-- (void)markNoteAsRead:(Note *)note success:(void (^)())success failure:(void (^)(NSError *))failure {
-    AccountService *accountService = [[AccountService alloc] initWithManagedObjectContext:self.managedObjectContext];
-    WordPressComApi *api = [[accountService defaultWordPressComAccount] restApi];
-    NoteServiceRemote *remote = [[NoteServiceRemote alloc] initWithRemoteApi:api];
-    
-    [remote markNoteIdAsRead:note.noteID
-                     success:^{
-                         if (success) {
-                             success();
-                         }
-                     } failure:^(NSError *error) {
-                         if (failure) {
-                             failure(error);
-                         }
-                     }];
 }
 
 @end

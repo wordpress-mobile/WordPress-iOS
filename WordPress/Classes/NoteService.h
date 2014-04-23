@@ -14,10 +14,6 @@
  */
 - (void)pruneOldNotesBefore:(NSNumber *)timestamp;
 
-- (void)refreshUnreadNotes;
-
-- (void)markNoteAsRead:(Note *)note success:(void (^)())success failure:(void (^)(NSError *error))failure;
-
 // Attempt to get the right blog for the note's stats event
 - (Blog *)blogForStatsEventNote:(Note *)note;
 
