@@ -45,9 +45,10 @@ static NSString *const BlogCellIdentifier = @"BlogCell";
 - (void)viewDidLoad {
     [super viewDidLoad];
     
-	NSNotificationCenter *nc = [NSNotificationCenter defaultCenter];
-    [nc addObserver:self selector:@selector(defaultAccountDidChange:) name:WPAccountWordPressComAccountWasAddedNotification object:nil];
-    [nc addObserver:self selector:@selector(defaultAccountDidChange:) name:WPAccountWordPressComAccountWasRemovedNotification object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(wordPressComAccountChanged:)
+                                                 name:WPAccountDefaultWordPressComAccountChangedNotification
+                                               object:nil];
     
     if (IS_IPHONE) {
         // Remove one-pixel gap resulting from a top-aligned grouped table view
@@ -98,7 +99,7 @@ static NSString *const BlogCellIdentifier = @"BlogCell";
 
 #pragma mark - Notifications
 
-- (void)defaultAccountDidChange:(NSNotification *)note {
+- (void)wordPressComAccountChanged:(NSNotification *)note {
     [self.tableView reloadSections:[NSIndexSet indexSetWithIndex:0] withRowAnimation:UITableViewRowAnimationFade];
 }
 

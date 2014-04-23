@@ -274,12 +274,12 @@ typedef void (^NoteToggleFollowBlock)(BOOL success);
 		if (success) {
 			BOOL isFollowingNow = ([followResponse[@"is_following"] intValue] == 1);
 			item.action.following = isFollowingNow;
-			
+#warning TODO: REFRESH NOTE?
 			// Let's refresh the note: is_following change isn't permanent!
-            NoteService *noteService = [[NoteService alloc] initWithManagedObjectContext:_note.managedObjectContext];
-            [noteService refreshNote:_note success:nil failure:^(NSError *error) {
-				DDLogVerbose(@"[Rest API] ! %@", [error localizedDescription]);
-            }];
+//            NoteService *noteService = [[NoteService alloc] initWithManagedObjectContext:_note.managedObjectContext];
+//            [noteService refreshNote:_note success:nil failure:^(NSError *error) {
+//				DDLogVerbose(@"[Rest API] ! %@", [error localizedDescription]);
+//            }];
 		}
 		
 		block(success);

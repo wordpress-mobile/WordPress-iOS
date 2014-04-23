@@ -25,8 +25,6 @@
 #import "ContextManager.h"
 
 
-NSString * const NotificationsJetpackInformationURL = @"http://jetpack.me/about/";
-
 @interface NotificationsViewController ()
 
 @property (nonatomic, strong) id    authListener;

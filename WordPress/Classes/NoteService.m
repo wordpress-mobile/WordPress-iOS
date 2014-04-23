@@ -26,39 +26,6 @@ const NSUInteger NoteKeepCount = 20;
     return self;
 }
 
-
-- (void)mergeNewNotes:(NSArray *)notesData
-{
-    NSFetchRequest *request = [NSFetchRequest fetchRequestWithEntityName:@"Note"];
-    NSError *error;
-    NSArray *existingNotes = [self.managedObjectContext executeFetchRequest:request error:&error];
-    if (error) {
-        DDLogError(@"Error finding notes: %@", error);
-        return;
-    }
-    
-    AccountService *accountService = [[AccountService alloc] initWithManagedObjectContext:self.managedObjectContext];
-    WPAccount *account = [accountService defaultWordPressComAccount];
-    
-    [notesData enumerateObjectsUsingBlock:^(NSDictionary *noteData, NSUInteger idx, BOOL *stop) {
-        NSString *noteID = [noteData stringForKey:@"id"];
-        NSArray *results = [existingNotes filteredArrayUsingPredicate:[NSPredicate predicateWithFormat:@"noteID == %@", noteID]];
-        
-        Note *note;
-        if ([results count] != 0) {
-            note = results[0];
-        } else {
-            note = [NSEntityDescription insertNewObjectForEntityForName:NSStringFromClass([Note class]) inManagedObjectContext:self.managedObjectContext];
-            note.noteID = [noteData stringForKey:@"id"];
-            note.account = account;
-        }
-        
-        [note syncAttributes:noteData];
-    }];
-    
-    [[ContextManager sharedInstance] saveContext:self.managedObjectContext];
-}
-
 - (void)pruneOldNotesBefore:(NSNumber *)timestamp
 {
     NSError *error;
@@ -161,26 +128,6 @@ const NSUInteger NoteKeepCount = 20;
     return nil;
 }
 
-- (void)fetchNewNotificationsWithSuccess:(void (^)(BOOL hasNewNotes))success failure:(void (^)(NSError *error))failure {
-    NSNumber *timestamp = [self lastNoteTimestamp];
-    
-    AccountService *accountService = [[AccountService alloc] initWithManagedObjectContext:self.managedObjectContext];
-    WordPressComApi *api = [[accountService defaultWordPressComAccount] restApi];
-    NoteServiceRemote *remote = [[NoteServiceRemote alloc] initWithRemoteApi:api];
-    
-    [remote fetchNotificationsSince:timestamp success:^(NSArray *notes) {
-        [self mergeNewNotes:notes];
-        if (success) {
-            success([notes count] > 0);
-        }
-    } failure:^(NSError *error) {
-        DDLogVerbose(@"Failed to fetch notifications - %@", [error localizedDescription]);
-        if (failure) {
-            failure(error);
-        }
-    }];
-}
-
 - (void)refreshUnreadNotes {
     NSFetchRequest *request = [[ContextManager sharedInstance].managedObjectModel fetchRequestTemplateForName:@"UnreadNotes"];
     NSError *error = nil;
@@ -197,73 +144,6 @@ const NSUInteger NoteKeepCount = 20;
         NoteServiceRemote *remote = [[NoteServiceRemote alloc] initWithRemoteApi:api];
         [remote refreshNotificationIds:array success:nil failure:nil];
     }
-}
-
-- (void)fetchNotificationsBefore:(NSNumber *)timestamp success:(void (^)())success failure:(void (^)(NSError *))failure {
-    AccountService *accountService = [[AccountService alloc] initWithManagedObjectContext:self.managedObjectContext];
-    WordPressComApi *api = [[accountService defaultWordPressComAccount] restApi];
-    
-    NoteServiceRemote *remote = [[NoteServiceRemote alloc] initWithRemoteApi:api];
-
-    [remote fetchNotificationsBefore:timestamp success:^(NSArray *notes) {
-        [self.managedObjectContext performBlockAndWait:^{
-            [self mergeNewNotes:notes];
-        }];
-        
-        if (success) {
-            success();
-        }
-    } failure:^(NSError *error) {
-        if (failure) {
-            failure(error);
-        }
-    }];
-}
-
-- (void)fetchNotificationsSince:(NSNumber *)timestamp success:(void (^)())success failure:(void (^)(NSError *))failure {
-    AccountService *accountService = [[AccountService alloc] initWithManagedObjectContext:self.managedObjectContext];
-    WordPressComApi *api = [[accountService defaultWordPressComAccount] restApi];
-    NoteServiceRemote *remote = [[NoteServiceRemote alloc] initWithRemoteApi:api];
-
-    [remote fetchNotificationsSince:timestamp success:^(NSArray *notes) {
-        [self.managedObjectContext performBlockAndWait:^{
-            [self mergeNewNotes:notes];
-        }];
-        
-        if (success) {
-            success();
-        }
-    } failure:^(NSError *error) {
-        if (failure) {
-            failure(error);
-        }
-    }];
-}
-
-- (void)refreshNote:(Note *)note success:(void (^)())success failure:(void (^)(NSError *))failure {
-    AccountService *accountService = [[AccountService alloc] initWithManagedObjectContext:self.managedObjectContext];
-    WordPressComApi *api = [[accountService defaultWordPressComAccount] restApi];
-    NoteServiceRemote *remote = [[NoteServiceRemote alloc] initWithRemoteApi:api];
-    
-    [remote refreshNoteId:note.noteID
-                  success:^(NSArray *notes) {
-                      [self.managedObjectContext performBlockAndWait:^{
-                          if ([notes count] > 0 && ![note isDeleted] && self.managedObjectContext) {
-                              [note syncAttributes:notes[0]];
-                          }
-                          [[ContextManager sharedInstance] saveContext:self.managedObjectContext];
-                      }];
-
-                      if (success) {
-                          success();
-                      }
-                  }
-                  failure:^(NSError *error) {
-                      if (failure) {
-                          failure(error);
-                      }
-                  }
-     ];
 }
 
 - (void)markNoteAsRead:(Note *)note success:(void (^)())success failure:(void (^)(NSError *))failure {

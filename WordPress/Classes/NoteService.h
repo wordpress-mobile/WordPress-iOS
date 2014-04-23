@@ -5,8 +5,6 @@
 
 @interface NoteService : NSObject <LocalService>
 
-- (void)mergeNewNotes:(NSArray *)notesData;
-
 /**
  Remove old notes from Core Data storage
  
@@ -16,15 +14,7 @@
  */
 - (void)pruneOldNotesBefore:(NSNumber *)timestamp;
 
-- (void)fetchNewNotificationsWithSuccess:(void (^)(BOOL hasNewNotes))success failure:(void (^)(NSError *error))failure;
-
 - (void)refreshUnreadNotes;
-
-- (void)fetchNotificationsSince:(NSNumber *)timestamp success:(void (^)())success failure:(void (^)(NSError *error))failure;
-
-- (void)fetchNotificationsBefore:(NSNumber *)timestamp success:(void (^)())success failure:(void (^)(NSError *error))failure;
-
-- (void)refreshNote:(Note *)note success:(void (^)())success failure:(void (^)(NSError *error))failure;
 
 - (void)markNoteAsRead:(Note *)note success:(void (^)())success failure:(void (^)(NSError *error))failure;
 

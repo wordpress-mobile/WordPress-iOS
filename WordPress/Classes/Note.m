@@ -8,8 +8,6 @@
 #import "XMLParserCollecter.h"
 
 
-const NSUInteger WPNoteKeepCount = 20;
-
 @interface Note ()
 @property (nonatomic, strong) NSArray *bodyItems;
 @property (nonatomic, strong) NSDictionary *noteData;
@@ -176,22 +174,6 @@ const NSUInteger WPNoteKeepCount = 20;
 }
 
 #pragma mark - NSManagedObject methods
-
-+ (NSNumber *)lastNoteTimestampWithContext:(NSManagedObjectContext *)context {
-    NSFetchRequest *request		= [NSFetchRequest fetchRequestWithEntityName:@"Note"];
-    request.resultType			= NSDictionaryResultType;
-    request.propertiesToFetch	= @[@"timestamp"];
-    request.fetchLimit			= 1;
-    request.sortDescriptors		= @[[NSSortDescriptor sortDescriptorWithKey:@"timestamp" ascending:NO]];
-    NSArray *results			= [context executeFetchRequest:request error:nil];
-    NSNumber *timestamp			= nil;
-    if (results.count) {
-        NSDictionary *note = [results firstObject];
-        timestamp = note[@"timestamp"];
-    }
-    return timestamp;
-}
-
 /*
  * Strips HTML Tags and converts html entites
  */

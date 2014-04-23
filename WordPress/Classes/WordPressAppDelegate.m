@@ -76,9 +76,6 @@ static NSInteger const IndexForMeTab = 2;
 	[self setupSimperium];
 	[self loginSimperium];
 	
-	// Listen for WPAccount changes
-	[self hookAccountNotifications];
-	
     // Crash reporting, logging, debugging
     [self configureLogging];
     [self configureHockeySDK];
@@ -602,8 +599,7 @@ static NSInteger const IndexForMeTab = 2;
     [defaults synchronize];
 }
 
-- (void)setCommonCrashlyticsParameters
-{
+- (void)setCommonCrashlyticsParameters {
     NSManagedObjectContext *context = [[ContextManager sharedInstance] mainContext];
     AccountService *accountService = [[AccountService alloc] initWithManagedObjectContext:context];
     BlogService *blogService = [[BlogService alloc] initWithManagedObjectContext:context];
@@ -800,39 +796,6 @@ static NSInteger const IndexForMeTab = 2;
 #pragma clang diagnostic pop
 }
 
-// TODO :: Eliminate this check or at least move it to WordPressComApi (or WPAccount)
-- (void)checkWPcomAuthentication {
-    // Temporarily set the is authenticated flag based upon if we have a WP.com OAuth2 token
-    // TODO :: Move this BOOL to a method on the WordPressComApi along with checkWPcomAuthentication
-    BOOL tempIsAuthenticated = [[[WPAccount defaultWordPressComAccount] restApi] authToken].length > 0;
-    self.isWPcomAuthenticated = tempIsAuthenticated;
-    
-	NSString *authURL = @"https://wordpress.com/xmlrpc.php";
-
-    WPAccount *account = [WPAccount defaultWordPressComAccount];
-	if (account) {
-        WPXMLRPCClient *client = [WPXMLRPCClient clientWithXMLRPCEndpoint:[NSURL URLWithString:authURL]];
-        [client setAuthorizationHeaderWithToken:[[[WPAccount defaultWordPressComAccount] restApi] authToken]];
-        [client callMethod:@"wp.getUsersBlogs"
-                parameters:[NSArray arrayWithObjects:account.username, account.password, nil]
-                   success:^(AFHTTPRequestOperation *operation, id responseObject) {
-                       self.isWPcomAuthenticated = YES;
-                       DDLogInfo(@"Logged in to WordPress.com as %@", account.username);
-                   } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
-                       if ([error.domain isEqualToString:@"WPXMLRPCFaultError"] ||
-                           ([error.domain isEqualToString:@"XMLRPC"] && error.code == 403)) {
-                           self.isWPcomAuthenticated = NO;
-                           [[[WPAccount defaultWordPressComAccount] restApi] invalidateOAuth2Token];
-                       }
-                       
-                       DDLogError(@"Error authenticating %@ with WordPress.com: %@", account.username, [error description]);
-                   }];
-	} else {
-		self.isWPcomAuthenticated = NO;
-	}
-}
-
-
 #pragma mark - Simperium
 
 - (void)setupSimperium {
@@ -845,8 +808,10 @@ static NSInteger const IndexForMeTab = 2;
 }
 
 - (void)loginSimperium {
-	WPAccount *account = [WPAccount defaultWordPressComAccount];
-	NSString *apiKey = [WordPressComApiCredentials simperiumAPIKey];
+    NSManagedObjectContext *context = [[ContextManager sharedInstance] mainContext];
+    AccountService *accountService  = [[AccountService alloc] initWithManagedObjectContext:context];
+	WPAccount *account              = [accountService defaultWordPressComAccount];
+	NSString *apiKey                = [WordPressComApiCredentials simperiumAPIKey];
 
 	if (!account.authToken.length || !apiKey.length) {
 		return;
@@ -1041,6 +1006,10 @@ static NSInteger const IndexForMeTab = 2;
 }
 
 - (void)toggleExtraDebuggingIfNeeded {
+    if (!_listeningForBlogChanges) {
+        _listeningForBlogChanges = YES;
+        [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(handleDefaultAccountChangedNotification:) name:WPAccountDefaultWordPressComAccountChangedNotification object:nil];
+    }
     
 	if ([self noBlogsAndNoWordPressDotComAccount]) {
 		// When there are no blogs in the app the settings screen is unavailable.
@@ -1074,29 +1043,18 @@ static NSInteger const IndexForMeTab = 2;
 
 #pragma mark - Notifications
 
-- (void)hookAccountNotifications {
-	NSNotificationCenter *nc = [NSNotificationCenter defaultCenter];
-    [nc addObserver:self selector:@selector(defaultWordPressAccountWasAdded:) name:WPAccountWordPressComAccountWasAddedNotification object:nil];
-    [nc addObserver:self selector:@selector(defaultWordPressAccountWasRemoved:) name:WPAccountWordPressComAccountWasRemovedNotification object:nil];
-}
-
-- (void)defaultWordPressAccountWasAdded:(NSNotification *)notification {
-    [self setCommonCrashlyticsParameters];
+- (void)handleDefaultAccountChangedNotification:(NSNotification *)notification {
 	[self toggleExtraDebuggingIfNeeded];
-	
-	[NotificationsManager registerForPushNotifications];
-	[self loginSimperium];
-	[ReaderPost fetchPostsWithCompletionHandler:nil];
-}
-
-- (void)defaultWordPressAccountWasRemoved:(NSNotification *)notification {
-    self.isWPcomAuthenticated = NO;
-    [self setCommonCrashlyticsParameters];
-	[self toggleExtraDebuggingIfNeeded];
-	
-	[NotificationsManager unregisterDeviceToken];
-	[self logoutSimperiumAndResetNotifications];
-	[self showWelcomeScreenIfNeededAnimated:NO];
+    
+    // If the notification object is not nil, then it's a login
+    if (notification.object) {
+        [ReaderPost fetchPostsWithCompletionHandler:nil];
+        [self loginSimperium];
+    } else {
+        // No need to check for welcome screen unless we are signing out
+        [self logoutSimperiumAndResetNotifications];
+        [self showWelcomeScreenIfNeededAnimated:NO];
+    }
 }
 
 @end

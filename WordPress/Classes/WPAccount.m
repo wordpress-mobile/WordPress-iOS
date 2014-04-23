@@ -1,21 +1,7 @@
 #import "WPAccount.h"
 #import "SFHFKeychainUtils.h"
 #import "WordPressComOAuthClient.h"
-#import "Constants.h"
 
-
-static WPAccount *__defaultDotcomAccount = nil;
-
-NSString * const WPAccountWordPressComAccountWasAddedNotification	= @"WPAccountWordPressComAccountWasAddedNotification";
-NSString * const WPAccountWordPressComAccountWasRemovedNotification	= @"WPAccountWordPressComAccountWasRemovedNotification";
-
-
-@interface WPAccount ()
-@property (nonatomic, strong, readwrite) NSString	*xmlrpc;
-@property (nonatomic, strong, readwrite) NSString	*username;
-@property (nonatomic, copy,   readwrite) NSString	*authToken;
-@property (nonatomic, assign, readwrite) BOOL		isWpcom;
-@end
 
 @implementation WPAccount {
     WordPressComApi *_restApi;

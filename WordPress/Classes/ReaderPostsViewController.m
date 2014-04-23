@@ -84,7 +84,7 @@ NSString * const RPVCDisplayedNativeFriendFinder = @"DisplayedNativeFriendFinder
         self.incrementalLoadingSupported = YES;
         
         [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(readerTopicDidChange:) name:ReaderTopicDidChangeNotification object:nil];
-        [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(fetchBlogsAndPrimaryBlog) name:WPAccountWordPressComAccountWasAddedNotification object:nil];
+        [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(fetchBlogsAndPrimaryBlog) name:WPAccountDefaultWordPressComAccountChangedNotification object:nil];
 	}
 	return self;
 }
@@ -137,10 +137,7 @@ NSString * const RPVCDisplayedNativeFriendFinder = @"DisplayedNativeFriendFinder
 	}
 
     // Sync content as soon as login or creation occurs
-	
-	NSNotificationCenter *nc = [NSNotificationCenter defaultCenter];
-    [nc addObserver:self selector:@selector(defaultWordPressAccountWasAdded:) name:WPAccountWordPressComAccountWasAddedNotification object:nil];
-    [nc addObserver:self selector:@selector(defaultWordPressAccountWasRemoved:) name:WPAccountWordPressComAccountWasRemovedNotification object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(didChangeAccount:) name:WPAccountDefaultWordPressComAccountChangedNotification object:nil];
 
     self.inlineComposeView = [[InlineComposeView alloc] initWithFrame:CGRectZero];
     [self.inlineComposeView setButtonTitle:NSLocalizedString(@"Post", nil)];
@@ -929,24 +926,12 @@ NSString * const RPVCDisplayedNativeFriendFinder = @"DisplayedNativeFriendFinder
     NSManagedObjectContext *context = [[ContextManager sharedInstance] mainContext];
     AccountService *accountService = [[AccountService alloc] initWithManagedObjectContext:context];
     WPAccount *defaultAccount = [accountService defaultWordPressComAccount];
-
+    
     if (defaultAccount && [self isViewLoaded]) {
         [self syncItems];
     }
 }
 
-- (void)defaultWordPressAccountWasRemoved:(NSNotification *)notification {
-	[[NSUserDefaults standardUserDefaults] removeObjectForKey:ReaderLastSyncDateKey];
-	[NSUserDefaults resetStandardUserDefaults];
-	[self reload];
-}
-
-#warning TODO: Check me
-- (void)reload {
-	[self resetResultsController];
-	[self.tableView reloadData];
-	[self.navigationController popToViewController:self animated:NO];
-}
 
 #pragma mark - Utility
 

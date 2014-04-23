@@ -7,9 +7,6 @@
 
 @class Blog;
 
-extern NSString *const WPAccountWordPressComAccountWasAddedNotification;
-extern NSString *const WPAccountWordPressComAccountWasRemovedNotification;
-
 
 
 @interface WPAccount : NSManagedObject
@@ -18,12 +15,12 @@ extern NSString *const WPAccountWordPressComAccountWasRemovedNotification;
 /// @name Properties
 ///-----------------
 
-@property (nonatomic, readonly, strong) NSString *xmlrpc;
-@property (nonatomic, readonly, strong) NSString *username;
-@property (nonatomic, readonly, strong) NSArray *visibleBlogs;
-@property (nonatomic, readonly, assign) BOOL isWpcom;
-@property (nonatomic, strong) NSSet *blogs;
-@property (nonatomic, strong) NSSet *jetpackBlogs;
+@property (nonatomic, copy)     NSString    *xmlrpc;
+@property (nonatomic, copy)     NSString    *username;
+@property (nonatomic, assign)   BOOL        isWpcom;
+@property (nonatomic, strong)   NSSet       *blogs;
+@property (nonatomic, strong)   NSSet       *jetpackBlogs;
+@property (nonatomic, readonly) NSArray     *visibleBlogs;
 
 
 /**
@@ -36,7 +33,8 @@ extern NSString *const WPAccountWordPressComAccountWasRemovedNotification;
 /**
  The OAuth2 auth token for WordPress.com accounts
  */
-@property (nonatomic, copy, readonly) NSString *authToken;
+@property (nonatomic, copy) NSString *authToken;
+
 
 
 ///------------------

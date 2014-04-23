@@ -44,7 +44,6 @@ NSString *const WPNotificationCommentRestorationKey = @"WPNotificationCommentRes
 
 @property (nonatomic, weak) IBOutlet NoteCommentPostBanner *postBanner;
 @property (nonatomic, strong) CommentView		*commentView;
-@property (nonatomic, strong) FollowButton		*followButton;
 @property (nonatomic, strong) Note				*note;
 
 @property (nonatomic, strong) InlineComposeView *inlineComposeView;
@@ -172,7 +171,7 @@ NSString *const WPNotificationCommentRestorationKey = @"WPNotificationCommentRes
 
     // get the note's actions
     NSArray *actions = self.note.bodyActions;
-    NSDictionary *action = actions[0];
+    NSDictionary *action = [actions firstObject];
     self.siteID = [action valueForKeyPath:@"params.site_id"];
     
     NoteComment *comment = [[NoteComment alloc] initWithCommentID:[action valueForKeyPath:@"params.comment_id"]];

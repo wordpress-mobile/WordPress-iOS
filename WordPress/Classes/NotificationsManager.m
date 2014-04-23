@@ -2,7 +2,6 @@
 #import "Note.h"
 #import "WordPressAppDelegate.h"
 #import "WPAccount.h"
-#import "WPMobileStats.h"
 #import "WordPressComApi.h"
 #import "UIDevice+WordPressIdentifier.h"
 #import <WPXMLRPCClient.h>
