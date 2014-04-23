@@ -233,7 +233,8 @@ typedef void (^NotificationsLoadPostBlock)(BOOL success, ReaderPost *post);
     [noteService pruneOldNotesBefore:pruneBefore];
 }
 
-- (void)showNotificationSettings {
+- (void)showNotificationSettings
+{
     NotificationSettingsViewController *notificationSettingsViewController = [[NotificationSettingsViewController alloc] initWithStyle:UITableViewStyleGrouped];
     UINavigationController *navigationController = [[UINavigationController alloc] initWithRootViewController:notificationSettingsViewController];
     navigationController.navigationBar.translucent = NO;
@@ -305,7 +306,8 @@ typedef void (^NotificationsLoadPostBlock)(BOOL success, ReaderPost *post);
     }
 }
 
-- (BOOL)noteHasDetailView:(Note *)note {
+- (BOOL)noteHasDetailView:(Note *)note
+{
     if (note.isComment) {
         return YES;
 	}
@@ -337,11 +339,13 @@ typedef void (^NotificationsLoadPostBlock)(BOOL success, ReaderPost *post);
 
 #pragma mark - WPTableViewController subclass methods
 
-- (NSString *)entityName {
+- (NSString *)entityName
+{
     return NSStringFromClass([Note class]);
 }
 
-- (NSDate *)lastSyncDate {
+- (NSDate *)lastSyncDate
+{
     return [NSDate date];
 }
 
@@ -370,7 +374,8 @@ typedef void (^NotificationsLoadPostBlock)(BOOL success, ReaderPost *post);
     }
 }
 
-- (void)syncItems {
+- (void)syncItems
+{
 	// No-Op. Handled by Simperium!
 }
 
