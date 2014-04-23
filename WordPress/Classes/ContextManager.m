@@ -100,6 +100,14 @@ static ContextManager *instance;
 }
 
 - (void)saveContext:(NSManagedObjectContext *)context {
+    // Save derived contexts a little differently
+    // TODO - When the service refactor is complete, remove this - calling methods to Services should know what kind of context
+    //        it is and call the saveDerivedContext at the end of the work
+    if (context.parentContext == self.mainContext) {
+        [self saveDerivedContext:context];
+        return;
+    }
+    
     [context performBlock:^{
         NSError *error;
         if (![context obtainPermanentIDsForObjects:context.insertedObjects.allObjects error:&error]) {
