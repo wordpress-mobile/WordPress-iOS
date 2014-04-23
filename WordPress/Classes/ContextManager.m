@@ -100,6 +100,12 @@ static ContextManager *instance;
 }
 
 - (void)saveContext:(NSManagedObjectContext *)context {
+    // Save derived contexts a little differently
+    if (context.parentContext == self.mainContext) {
+        [self saveDerivedContext:context];
+        return;
+    }
+    
     [context performBlock:^{
         NSError *error;
         if (![context obtainPermanentIDsForObjects:context.insertedObjects.allObjects error:&error]) {
