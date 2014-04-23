@@ -5,7 +5,6 @@
 #   Source: https://github.com/jonreid/XcodeCoverage
 #
 
-DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
-source ${DIR}/envcov.sh
+source envcov.sh
 
 "${LCOV}" --zerocounters -d "${OBJ_DIR}"

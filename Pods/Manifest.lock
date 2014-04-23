@@ -20,7 +20,7 @@ PODS:
   - EmailChecker (0.1)
   - Google-Diff-Match-Patch (0.0.1)
   - google-plus-ios-sdk (1.5.1)
-  - HockeySDK (3.5.5)
+  - HockeySDK (3.5.4)
   - JRSwizzle (1.0)
   - MGImageUtilities (0.0.1)
   - Mixpanel (2.3.1)
@@ -95,7 +95,7 @@ SPEC CHECKSUMS:
   EmailChecker: e909e6d113fac7ad5e3c304fabce30fc4a79c80e
   Google-Diff-Match-Patch: 63f4950ecbd0bf3f7ccae48987e958fc825041d3
   google-plus-ios-sdk: e02124b8a12631e76f78f5e3eb2a02a44b82c871
-  HockeySDK: 350ef1cf18d2fc9a13801ad077c307cece8c6c64
+  HockeySDK: aa28abb106de7804d31acf515f2c9aa4e6481fd0
   JRSwizzle: 6242ff38485d870fc2636899048ee1ab883ae587
   MGImageUtilities: ab3580f2161b10f8a41331baea87aaafbd688950
   Mixpanel: 8d189c58bcaac429de9cb4f18a54621df99b7e38

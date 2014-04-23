@@ -5,8 +5,7 @@
 #   Source: https://github.com/jonreid/XcodeCoverage
 #
 
-DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
-source ${DIR}/envcov.sh
+source envcov.sh
 
 remove_old_report()
 {

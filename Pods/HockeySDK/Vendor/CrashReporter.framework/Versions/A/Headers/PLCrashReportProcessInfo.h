@@ -32,7 +32,7 @@
 
 @interface PLCrashReportProcessInfo : NSObject {
 @private
-    /** Process name, or nil if unavailable. */
+    /** Process name */
     NSString *_processName;
     
     /** Process ID */
@@ -45,7 +45,7 @@
      * will be nil. */
     NSDate *_processStartTime;
 
-    /** Parent process name, or nil if unavailable.  */
+    /** Parent process name */
     NSString *_parentProcessName;
     
     /** Parent process ID */
