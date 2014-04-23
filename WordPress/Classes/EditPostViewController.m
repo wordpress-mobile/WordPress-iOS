@@ -873,6 +873,8 @@ CGFloat const EPVCTextViewTopPadding = 7.0f;
         if ([self.post hasTags]) {
             [WPAnalytics track:WPAnalyticsStatPublishedPostWithTags];
         }
+    } else if ([buttonTitle isEqualToString:NSLocalizedString(@"Schedule", nil)]) {
+        [WPAnalytics track:WPAnalyticsStatEditorScheduledPost withProperties:properties];
     } else {
         [WPAnalytics track:WPAnalyticsStatEditorUpdatedPost withProperties:properties];
     }
