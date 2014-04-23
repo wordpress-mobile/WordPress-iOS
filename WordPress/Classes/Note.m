@@ -9,10 +9,8 @@
 
 
 @interface Note ()
-@property (nonatomic, strong) NSArray *bodyItems;
-@property (nonatomic, strong) NSDictionary *noteData;
-@property (nonatomic, strong) NSString *commentText;
-@property (nonatomic, strong) NSDate *date;
+@property (nonatomic, strong) NSArray   *bodyItems;
+@property (nonatomic, strong) NSDate    *date;
 @end
 
 
@@ -21,40 +19,76 @@
 @dynamic noteID;
 @dynamic timestamp;
 @dynamic type;
-@dynamic subject;
-@dynamic body;
 @dynamic unread;
+@dynamic subject; 
+@dynamic body;
 @synthesize bodyItems	= _bodyItems;
-@synthesize commentText = _commentText;
-@synthesize noteData	= _noteData;
 @synthesize date		= _date;
 
 
 #pragma mark - Derived Properties from subject / body dictionaries
 
-- (NSString *)subjectText {
+- (NSString *)subjectText
+{
 	NSString *subject = [self.subject stringForKey:@"text"] ?: [self.subject stringForKey:@"html"];
 	return [subject trim];
 }
 
-- (NSString *)subjectIcon {
+- (NSString *)subjectIcon
+{
 	return [self.subject stringForKey:@"icon"];
 }
 
-- (NSArray *)bodyActions {
+- (NSString *)bodyHtml
+{
+	return [self.body stringForKey:@"html"];
+}
+
+- (NSArray *)bodyItems
+{
+	if (_bodyItems) {
+		return _bodyItems;
+	}
+	
+	NSArray *rawItems = [self.body arrayForKey:@"items"];
+	if (rawItems.count) {
+		_bodyItems = [NoteBodyItem parseItems:rawItems];
+	}
+	return _bodyItems;
+}
+
+- (NSArray *)bodyActions
+{
 	return [self.body arrayForKey:@"actions"];
 }
 
-- (NSString *)bodyTemplate {
+- (NSString *)bodyTemplate
+{
 	return [self.body stringForKey:@"template"];	
 }
 
-- (NSString *)bodyCommentText {
-	return [self parseBodyComments];
+- (NSString *)bodyHeaderText
+{
+	return [self.body stringForKey:@"header_text"];
 }
 
-- (NSString *)parseBodyComments {
-    
+- (NSString *)bodyHeaderLink
+{
+	return [self.body stringForKey:@"header_link"];
+}
+
+- (NSString *)bodyFooterText
+{
+	return [self.body stringForKey:@"footer_text"];
+}
+
+- (NSString *)bodyFooterLink
+{
+	return [self.body stringForKey:@"footer_link"];
+}
+
+- (NSString *)bodyCommentText
+{
     if (self.isComment == NO) {
 		return nil;
 	}
@@ -81,84 +115,36 @@
 	return collector.result;
 }
 
-
-#pragma mark - Public Methods
-
-- (BOOL)isMatcher {
-    return [self.type isEqualToString:@"automattcher"];
-}
-
-- (BOOL)isComment {
-    return [self.type isEqualToString:@"comment"];
-}
-
-- (BOOL)isFollow {
-    return [self.type isEqualToString:@"follow"];
-}
-
-- (BOOL)isLike {
-    return [self.type isEqualToString:@"like"];
-}
-
-- (BOOL)isRead {
-    return ![self.unread boolValue];
-}
-
-- (BOOL)statsEvent {
-    BOOL statsEvent = [self.type rangeOfString:@"_milestone_"].length > 0 || [self.type hasPrefix:@"traffic_"] || [self.type hasPrefix:@"best_"] || [self.type hasPrefix:@"most_"] ;
+- (NSString *)bodyCommentHtml
+{
+    NoteBodyItem *noteBodyItem  = [self.bodyItems lastObject];
+    NSString *commentHtml       = nil;
     
-    return statsEvent;
+    if (noteBodyItem) {
+        commentHtml = [noteBodyItem.bodyHtml stringByReplacingHTMLEmoticonsWithEmoji];
+    }
+    
+    return commentHtml;
 }
 
-
-#pragma mark - CoreData Helpers
-
-- (NSDictionary *)meta {
-    return [self.noteData dictionaryForKey:@"meta"];
+- (NSDictionary *)meta
+{
+    return [self.body dictionaryForKey:@"meta"];
 }
 
-- (NSNumber *)metaPostID {
+- (NSNumber *)metaPostID
+{
     return [[self.meta dictionaryForKey:@"ids"] numberForKey:@"post"];
 }
 
-- (NSNumber *)metaSiteID {
+- (NSNumber *)metaSiteID
+{
     return [[self.meta dictionaryForKey:@"ids"] numberForKey:@"site"];
 }
 
-- (NSArray *)bodyItems {
-	if (_bodyItems) {
-		return _bodyItems;
-	}
-	
-	NSArray *rawItems = [self.noteData[@"body"] arrayForKey:@"items"];
-	if (rawItems.count) {
-		_bodyItems = [NoteBodyItem parseItems:rawItems];
-	}
-	return _bodyItems;
-}
-
-- (NSString *)bodyHeaderText {
-	return self.noteData[@"body"][@"header_text"];
-}
-
-- (NSString *)bodyHeaderLink {
-	return self.noteData[@"body"][@"header_link"];
-}
-
-- (NSString *)bodyFooterText {
-	return self.noteData[@"body"][@"footer_text"];
-}
-
-- (NSString *)bodyFooterLink {
-	return self.noteData[@"body"][@"footer_link"];
-}
-
-- (NSString *)bodyHtml {
-	return self.noteData[@"body"][@"html"];
-}
-
-- (WPNoteTemplateType)templateType {
-    NSDictionary *noteBody = self.noteData[@"body"];
+- (WPNoteTemplateType)templateType
+{
+    NSDictionary *noteBody = self.body;
     if (noteBody) {
         NSString *noteTypeName = noteBody[@"template"];
         
@@ -173,38 +159,55 @@
     return WPNoteTemplateUnknown;
 }
 
-#pragma mark - NSManagedObject methods
-/*
- * Strips HTML Tags and converts html entites
- */
-//- (void)parseComment {
-//    if ([self isComment]) {
-//        NSDictionary *bodyItem = [[[self.noteData objectForKey:@"body"] objectForKey:@"items"] lastObject];
-//        NSString *comment = [bodyItem objectForKey:@"html"];
-//        if (comment == (id)[NSNull null] || comment.length == 0)
-//            return;
-//        comment = [comment stringByReplacingHTMLEmoticonsWithEmoji];
-//        comment = [comment stringByStrippingHTML];
-//        comment = [comment stringByDecodingXMLCharacters];
-//        
-//        self.commentText = comment;
-//    }
-//}
+#pragma mark - Public Methods
 
-- (NSString *)commentHtml {
-    if (self.bodyItems) {
-        NoteBodyItem *noteBodyItem = [self.bodyItems lastObject];
-        NSString *commentHtml = noteBodyItem.bodyHtml;
-        return [commentHtml stringByReplacingHTMLEmoticonsWithEmoji];
-    }
+- (BOOL)isMatcher
+{
+    return [self.type isEqualToString:@"automattcher"];
+}
+
+- (BOOL)isComment
+{
+    return [self.type isEqualToString:@"comment"];
+}
+
+- (BOOL)isFollow
+{
+    return [self.type isEqualToString:@"follow"];
+}
+
+- (BOOL)isLike
+{
+    return [self.type isEqualToString:@"like"];
+}
+
+- (BOOL)isRead
+{
+    return ![self.unread boolValue];
+}
+
+- (BOOL)statsEvent
+{
+    BOOL statsEvent = [self.type rangeOfString:@"_milestone_"].length > 0 || [self.type hasPrefix:@"traffic_"] || [self.type hasPrefix:@"best_"] || [self.type hasPrefix:@"most_"] ;
     
-    return nil;
+    return statsEvent;
+}
+
+
+#pragma mark - NSManagedObject methods
+
+- (void)didTurnIntoFault {
+    [super didTurnIntoFault];
+    
+    self.date = nil;
+    self.bodyItems = nil;
 }
 
 
 #pragma mark - WPContentViewProvider protocol
 
-- (NSString *)titleForDisplay {
+- (NSString *)titleForDisplay
+{
     NSString *title = [self.subjectText trim];
     if (title.length > 0 && [title hasPrefix:@"["]) {
         // Find location of trailing bracket
@@ -217,17 +220,19 @@
 	return [title stringByDecodingXMLCharacters] ?: @"";
 }
 
-- (NSString *)authorForDisplay {
+- (NSString *)authorForDisplay
+{
     // Annoyingly, not directly available; could try to parse from self.subject
     return nil;
 }
 
-- (NSString *)blogNameForDisplay {
+- (NSString *)blogNameForDisplay
+{
     return nil;
 }
 
-- (NSString *)statusForDisplay {
-    
+- (NSString *)statusForDisplay
+{
     // This is clearly an error prone method of isolating the status,
     // but is necessary due to the current API. This should be changed
     // if/when the API is improved.
@@ -245,29 +250,39 @@
     return status;
 }
 
-- (NSString *)contentForDisplay {
+- (NSString *)contentForDisplay
+{
     // Contains a lot of cruft
+    return self.bodyCommentHtml;
+}
+
+- (NSString *)contentPreviewForDisplay
+{
     return self.bodyCommentText;
 }
 
-- (NSString *)contentPreviewForDisplay {
-    return self.bodyCommentText;
-}
-
-- (NSString *)gravatarEmailForDisplay {
+- (NSString *)gravatarEmailForDisplay
+{
     return nil;
 }
 
-- (NSURL *)avatarURLForDisplay {
+- (NSURL *)avatarURLForDisplay
+{
     return [NSURL URLWithString:self.subjectIcon];
 }
 
-- (NSDate *)dateForDisplay {
-	NSTimeInterval timeInterval = [self.timestamp doubleValue];
-	return [NSDate dateWithTimeIntervalSince1970:timeInterval];
+- (NSDate *)dateForDisplay
+{
+    if (!_date) {
+        NSTimeInterval timeInterval = [self.timestamp doubleValue];
+        _date = [NSDate dateWithTimeIntervalSince1970:timeInterval];
+    }
+    
+    return _date;
 }
 
-- (BOOL)unreadStatusForDisplay {
+- (BOOL)unreadStatusForDisplay
+{
     return !self.isRead;
 }
 

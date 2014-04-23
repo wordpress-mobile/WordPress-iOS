@@ -46,7 +46,7 @@
     [_scrollView addSubview:_badgeImageView];
     
     // Set icon URL and start a wee animation to catch the eye
-    NSURLRequest *urlRequest = [[NSURLRequest alloc] initWithURL:[NSURL URLWithString:_note.icon]];
+    NSURLRequest *urlRequest = [[NSURLRequest alloc] initWithURL:[NSURL URLWithString:_note.subjectIcon]];
     __weak UIImageView *weakBadgeImageView = _badgeImageView;
     [_badgeImageView setImageWithURLRequest:urlRequest
                            placeholderImage:nil
