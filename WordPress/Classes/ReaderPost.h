@@ -1,6 +1,7 @@
 #import <Foundation/Foundation.h>
 #import <CoreData/CoreData.h>
 #import "BasePost.h"
+#import "ReaderTopic.h"
 #import "WordPressComApi.h"
 
 extern NSInteger const ReaderTopicEndpointIndex;
@@ -47,6 +48,8 @@ extern NSString * const ReaderPostStoredCommentTextKey;
 @property (nonatomic, strong) NSString *primaryTagName;
 @property (nonatomic, strong) NSString *primaryTagSlug;
 @property (nonatomic, strong) NSString *tags;
+@property (nonatomic, strong) ReaderTopic *topic;
+@property (nonatomic, strong) NSString *globalID;
 
 /**
  An array of dictionaries representing available REST API endpoints to retrieve posts for the Reader.

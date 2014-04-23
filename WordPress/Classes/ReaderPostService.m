@@ -1,0 +1,456 @@
+#import "ReaderPostService.h"
+#import "ReaderPostServiceRemote.h"
+#import "WordPressComApi.h"
+#import "ReaderPost.h"
+#import "ReaderTopic.h"
+#import "WPAccount.h"
+#import "AccountService.h"
+#import "DateUtils.h"
+#import "ContextManager.h"
+#import "NSString+Helpers.h"
+#import "NSString+XMLExtensions.h"
+
+NSInteger const ReaderPostServiceNumberToSync = 20;
+NSInteger const ReaderPostServiceSummaryLength = 150;
+NSInteger const ReaderPostServiceTitleLength = 30;
+NSInteger const ReaderPostServiceMaxPosts = 200;
+
+@interface ReaderPostService()
+
+@property (nonatomic, strong) NSManagedObjectContext *managedObjectContext;
+
+@end
+
+@implementation ReaderPostService
+
+- (id)initWithManagedObjectContext:(NSManagedObjectContext *)context {
+    self = [super init];
+    if (self) {
+        _managedObjectContext = context;
+    }
+
+    return self;
+}
+
+- (void)fetchPostsForTopic:(ReaderTopic *)topic earlierThan:(NSDate *)date keepExisting:(BOOL)keepExisting success:(void (^)())success failure:(void (^)(NSError *error))failure {
+    NSManagedObjectID *topicObjectID = topic.objectID;
+
+    ReaderPostServiceRemote *remoteService = [[ReaderPostServiceRemote alloc] initWithRemoteApi:[self apiForRequest]];
+    [remoteService fetchPostsFromEndpoint:[NSURL URLWithString:topic.path]
+                                    count:ReaderPostServiceNumberToSync
+                                   before:date
+                                  success:^(NSArray *posts) {
+                                      [self.managedObjectContext performBlockAndWait:^{
+                                          [self mergePosts:posts keepExisting:keepExisting forTopic:topicObjectID];
+                                      }];
+                                  } failure:^(NSError *error) {
+                                      if (failure) {
+                                          failure(error);
+                                      }
+                                  }];
+}
+
+- (void)fetchPostsForTopic:(ReaderTopic *)topic success:(void (^)())success failure:(void (^)(NSError *error))failure {
+    [self fetchPostsForTopic:topic earlierThan:[NSDate date] keepExisting:NO success:success failure:failure];
+}
+
+#pragma mark - Private Methods
+
+/**
+ Get the api to use for the request.
+ */
+- (WordPressComApi *)apiForRequest {
+    AccountService *accountService = [[AccountService alloc] initWithManagedObjectContext:self.managedObjectContext];
+    WPAccount *defaultAccount = [accountService defaultWordPressComAccount];
+    WordPressComApi *api = [defaultAccount restApi];
+    if (![api hasCredentials]) {
+        api = [WordPressComApi anonymousApi];
+    }
+    return api;
+}
+
+/**
+ Merge a freshly fetched batch of posts into the existing set of posts for the specified topic and either discard or retain existing posts.
+ Saves the managed object context. 
+
+ @param posts An array of NSDictionaries representing ReaderPosts objects
+ @param keepExisting Set to YES if the topic's existing posts should be kept. 
+ @param topicObjectID The ObjectID of the ReaderTopic to assign to the newly created posts.
+ */
+- (void)mergePosts:(NSArray *)posts keepExisting:(BOOL)keepExisting forTopic:(NSManagedObjectID *)topicObjectID {
+    NSError *error;
+    ReaderTopic *readerTopic = (ReaderTopic *)[self.managedObjectContext existingObjectWithID:topicObjectID error:&error];
+
+    if (error) {
+        DDLogError(@"-[ReaderPostService mergePosts:forTopic:] error retrieving existing topic from NSManagedObjectID: %@", error);
+        return;
+    }
+
+    NSMutableArray *newPosts = [self makeNewPostsFromDictionaries:posts forTopic:readerTopic];
+
+    if (keepExisting) {
+        [self deletePostsForTopic:readerTopic missingFromBatch:newPosts];
+        [self deletePostsInExcessOfMaxAllowedForTopic:readerTopic];
+    } else {
+        [self deleteExistingPostsForTopic:readerTopic keepingOnlyNewPosts:newPosts];
+    }
+
+    readerTopic.lastSynced = [NSDate date];
+
+    [[ContextManager sharedInstance] saveContext:self.managedObjectContext];
+}
+
+/**
+ Delete all posts for the specified topic that are not included in the passed array of posts.
+ The managed object context is not saved.
+ 
+ @param newPosts The array of ReaderPosts objects to keep.
+ */
+- (void)deleteExistingPostsForTopic:(ReaderTopic *)topic keepingOnlyNewPosts:(NSArray *)newPosts {
+    // Don't trust the relationships on the topic to be current or correct.
+    NSError *error;
+    NSFetchRequest *fetchRequest = [[NSFetchRequest alloc] initWithEntityName:@"ReaderPost"];
+    NSPredicate *pred = [NSPredicate predicateWithFormat:@"ANY topic == %@", topic];
+    [fetchRequest setPredicate:pred];
+
+    NSArray *currentPosts = [self.managedObjectContext executeFetchRequest:fetchRequest error:&error];
+    if (error) {
+        DDLogError(@"-[ReaderPostService deleteExistingPostsForTopic:keepingOnlyNewPosts:] error fetching posts: %@", error);
+        return;
+    }
+
+    for (ReaderPost *post in currentPosts) {
+        if (![newPosts containsObject:post]) {
+            DDLogInfo(@"Deleting ReaderPost: %@", post);
+            [self.managedObjectContext deleteObject:post];
+        }
+    }
+}
+
+/**
+ Using an array of post as a filter, deletes any existing post whose sortDate falls
+ within the range of the filter posts, but is not included in the filter posts.
+
+ This let's us remove unliked posts from /read/liked, posts from blogs that are 
+ unfollowed from /read/following, or posts that were otherwise removed.
+ 
+ The managed object context is not saved.
+ 
+ @param topic The ReaderTopic to delete posts from.
+ @param posts The batch of posts to use as a filter.
+ */
+- (void)deletePostsForTopic:(ReaderTopic *)topic missingFromBatch:(NSArray *)posts {
+
+    NSDate *newestDate = ((ReaderPost *)[posts firstObject]).sortDate;
+    NSDate *oldestDate = ((ReaderPost *)[posts lastObject]).sortDate;
+
+    // Don't trust the relationships on the topic to be current or correct.
+    NSError *error;
+    NSFetchRequest *fetchRequest = [[NSFetchRequest alloc] initWithEntityName:@"ReaderPost"];
+
+    NSPredicate *pred = [NSPredicate predicateWithFormat:@"ANY topic == %@ AND sortDate >= %@ AND sortDate <= %@", topic, oldestDate, newestDate];
+    [fetchRequest setPredicate:pred];
+
+    NSSortDescriptor *sortDescriptor = [NSSortDescriptor sortDescriptorWithKey:@"sortDate" ascending:NO];
+    [fetchRequest setSortDescriptors:@[sortDescriptor]];
+
+    NSArray *currentPosts = [self.managedObjectContext executeFetchRequest:fetchRequest error:&error];
+    if (error) {
+        DDLogError(@"-[ReaderPostService deletePostsForTopic:missingFromBatch:] error fetching posts: %@", error);
+        return;
+    }
+
+    for (ReaderPost *post in currentPosts) {
+        if (![posts containsObject:post]) {
+            DDLogInfo(@"Deleting ReaderPost: %@", post);
+            [self.managedObjectContext deleteObject:post];
+        }
+    }
+}
+
+/**
+ Delete all ReaderPosts beyond the max number to be retained.
+
+ The managed object context is not saved.
+ 
+ @param topic the ReaderTopic to delete posts from.
+ */
+- (void)deletePostsInExcessOfMaxAllowedForTopic:(ReaderTopic *)topic {
+    // Don't trust the relationships on the topic to be current or correct.
+    NSError *error;
+    NSFetchRequest *fetchRequest = [[NSFetchRequest alloc] initWithEntityName:@"ReaderPost"];
+    [fetchRequest setFetchOffset:ReaderPostServiceMaxPosts];
+
+    NSPredicate *pred = [NSPredicate predicateWithFormat:@"ANY topic == %@", topic];
+    [fetchRequest setPredicate:pred];
+
+    NSSortDescriptor *sortDescriptor = [NSSortDescriptor sortDescriptorWithKey:@"sortDate" ascending:NO];
+    [fetchRequest setSortDescriptors:@[sortDescriptor]];
+
+    NSArray *posts = [self.managedObjectContext executeFetchRequest:fetchRequest error:&error];
+    if (error) {
+        DDLogError(@"-[ReaderPostService deletePostsInExcessOfMaxAllowedForTopic:] error fetching posts: %@", error);
+        return;
+    }
+
+    for (ReaderPost *post in posts) {
+        DDLogInfo(@"Deleting ReaderPost: %@", post);
+        [self.managedObjectContext deleteObject:post];
+    }
+}
+
+/**
+ Accepts an array of dictionaries representing ReaderPosts and creates model objects
+ for each one.
+ 
+ @param posts An array of dictionaries representing ReaderPost objects.
+ @param topic The ReaderTopic to assign to the created posts.
+ @return An array of ReaderPost objects
+ */
+- (NSMutableArray *)makeNewPostsFromDictionaries:(NSArray *)posts forTopic:(ReaderTopic *)topic {
+    NSMutableArray *newPosts = [NSMutableArray array];
+    for (NSDictionary *dict in posts) {
+        ReaderPost *newPost = [self createOrReplaceFromDictionary:dict forTopic:topic];
+        if (newPost != nil) {
+            [newPosts addObject:newPost];
+        } else {
+            DDLogInfo(@"-[ReaderPostService makeNewPostsFromDictionaries:forTopic:] returned a nil post: %@", dict);
+        }
+    }
+    return newPosts;
+}
+
+/**
+ Create a ReaderPost model object from the specified dictionary.
+ 
+ @param dict A dictionary representing a ReaderPost
+ @param topic The ReaderTopic to assign to the created post.
+ @return A ReaderPost model object whose properties are populated with the values from the passed dictionary.
+ */
+- (ReaderPost *)createOrReplaceFromDictionary:(NSDictionary * )dict forTopic:(ReaderTopic *)topic {
+
+    // find an existing post or create a new one.
+    ReaderPost *post;
+    if (post == nil) {
+        post = [NSEntityDescription insertNewObjectForEntityForName:@"ReaderPost"
+                                             inManagedObjectContext:self.managedObjectContext];
+    }
+
+    post.author = [dict stringForKey:@"author"];
+    post.authorAvatarURL = [dict stringForKey:@"authorAvatarURL"];
+    post.authorDisplayName = [dict stringForKey:@"authorDisplayName"];
+    post.authorEmail = [dict stringForKey:@"authorEmail"];
+    post.authorURL = [dict stringForKey:@"authorURL"];
+    post.blogName = [dict stringForKey:@"blogName"];
+    post.blogURL = [dict stringForKey:@"blogURL"];
+    post.commentCount = [dict numberForKey:@"commentCount"];
+    post.commentsOpen = [dict numberForKey:@"commentsOpen"];
+    post.content = [self formatContent:[dict stringForKey:@"content"]];
+    post.date_created_gmt = [DateUtils dateFromISOString:[dict stringForKey:@"date_created_gmt"]];
+    post.featuredImage = [dict stringForKey:@"featuredImage"];
+    post.isBlogPrivate = [dict numberForKey:@"isBlogPrivate"];
+    post.isFollowing = [dict numberForKey:@"isFollowing"];
+    post.isLiked = [dict numberForKey:@"isLiked"];
+    post.isReblogged = [dict numberForKey:@"isReblogged"];
+    post.isWPCom = [dict numberForKey:@"isWPCom"];
+    post.likeCount = [dict numberForKey:@"likeCount"];
+    post.permaLink = [dict stringForKey:@"permalink"];
+    post.postID = [dict numberForKey:@"postID"];
+    post.postTitle = [dict stringForKey:@"postTitle"];
+    post.siteID = [dict numberForKey:@"siteID"];
+    post.sortDate = [DateUtils dateFromISOString:[dict stringForKey:@"sortDate"]];
+    post.status = [dict stringForKey:@"status"];
+    post.tags = [dict stringForKey:@"tags"];
+    post.globalID = [dict stringForKey:@"globalID"];
+
+    // Construct a summary if necessary.
+    NSString *summary = [self formatSummary:[dict stringForKey:@"summary"]];
+    if (!summary) {
+        summary = [self createSummaryFromContent:post.content];
+    }
+    post.summary = summary;
+
+    // Construct a title if necessary.
+    if ([post.postTitle length] == 0 && [post.summary length] > 0) {
+        post.postTitle = [self titleFromSummary:post.summary];
+    }
+
+    // assign the topic last.
+    post.topic = topic;
+
+    return post;
+}
+
+/**
+ Formats the post content.  
+ Removes transforms videopress markup into video tags, strips inline styles and tidys up paragraphs.
+ 
+ @param content The post content as a string. 
+ @return The formatted content.
+ */
+- (NSString *)formatContent:(NSString *)content {
+    if ([self containsVideoPress:content]) {
+        content = [self formatVideoPress:content];
+    }
+    content = [self normalizeParagraphs:content];
+    content = [self removeInlineStyles:content];
+
+    return content;
+}
+
+/** 
+ Formats a post's summary.  The excerpts provided by the REST API contain HTML and have some extra content appened to the end.
+ HTML is stripped and the extra bit is removed.
+ 
+ @param string The summary to format. 
+ @return The formatted summary.
+ */
+- (NSString *)formatSummary:(NSString *)summary {
+    summary = [self makePlainText:summary];
+    NSRange rng = [summary rangeOfCharacterFromSet:[NSCharacterSet characterSetWithCharactersInString:@".?!"] options:NSBackwardsSearch];
+    if (rng.location == NSNotFound || rng.location < ReaderPostServiceSummaryLength) {
+        return summary;
+    }
+    return [summary substringToIndex:(rng.location + 1)];
+}
+
+/**
+ Create a summary for the post based on the post's content.
+ 
+ @param string The post's content string. This should be the formatted content string. 
+ @return A summary for the post.
+ */
+- (NSString *)createSummaryFromContent:(NSString *)string {
+    string = [self makePlainText:string];
+    string = [string stringByTrimmingCharactersInSet:[NSCharacterSet characterSetWithCharactersInString:@"\n"]];
+    return [string stringByEllipsizingWithMaxLength:ReaderPostServiceSummaryLength preserveWords:YES];
+}
+
+/**
+ Transforms the spcified string to plain text.  HTML markup is removed and HTML entities are decoded. 
+ 
+ @param string The string to transform.
+ @return The transformed string.
+ */
+- (NSString *)makePlainText:(NSString *)string {
+    return [[[string stringByRemovingScriptsAndStrippingHTML] stringByDecodingXMLCharacters] trim];
+}
+
+/**
+ Clean up paragraphs and in an HTML string. Removes duplicate paragraph tags and unnecessary DIVs.
+ 
+ @param string The string to normalize.
+ @return A string with normalized paragraphs.
+ */
+- (NSString *)normalizeParagraphs:(NSString *)string {
+    if (!string) {
+        return @"";
+    }
+
+    NSError *error;
+
+    // Convert div tags to p tags
+    NSRegularExpression *regex = [NSRegularExpression regularExpressionWithPattern:@"<div[^>]*>" options:NSRegularExpressionCaseInsensitive error:&error];
+    string = [regex stringByReplacingMatchesInString:string options:NSMatchingReportCompletion range:NSMakeRange(0, [string length]) withTemplate:@"<p>"];
+
+    regex = [NSRegularExpression regularExpressionWithPattern:@"</div>" options:NSRegularExpressionCaseInsensitive error:&error];
+    string = [regex stringByReplacingMatchesInString:string options:NSMatchingReportCompletion range:NSMakeRange(0, [string length]) withTemplate:@"</p>"];
+
+    // Remove duplicate p tags.
+    regex = [NSRegularExpression regularExpressionWithPattern:@"<p[^>]*>\\s*<p[^>]*>" options:NSRegularExpressionCaseInsensitive error:&error];
+    string = [regex stringByReplacingMatchesInString:string options:NSMatchingReportCompletion range:NSMakeRange(0, [string length]) withTemplate:@"<p>"];
+
+    regex = [NSRegularExpression regularExpressionWithPattern:@"</p>\\s*</p>" options:NSRegularExpressionCaseInsensitive error:&error];
+    string = [regex stringByReplacingMatchesInString:string options:NSMatchingReportCompletion range:NSMakeRange(0, [string length]) withTemplate:@"</p>"];
+
+    return string;
+}
+
+/**
+ Strip inline styles from the passed HTML sting.
+
+ @param string An HTML string to sanitize.
+ @return A string with inline styles removed.
+ */
+- (NSString *)removeInlineStyles:(NSString *)string {
+    if (!string) {
+        return @"";
+    }
+
+    NSError *error;
+    // Remove inline styles.
+    NSRegularExpression *regex = [NSRegularExpression regularExpressionWithPattern:@"style=\"[^\"]*\"" options:NSRegularExpressionCaseInsensitive error:&error];
+    string = [regex stringByReplacingMatchesInString:string options:NSMatchingReportCompletion range:NSMakeRange(0, [string length]) withTemplate:@""];
+
+    return string;
+}
+
+/**
+ Check the specified string for occrances of videopress videos.
+ 
+ @param string The string to search.
+ @return YES if a match was found, else returns NO.
+ */
+
+- (BOOL)containsVideoPress:(NSString *)string {
+    return [string rangeOfString:@"class=\"videopress-placeholder"].location != NSNotFound;
+}
+
+/**
+ Replace occurances of videopress markup with video tags int he passed HTML string.
+
+ @param string An HTML string.
+ @return The HTML string with videopress markup replaced with in image tag.
+ */
+- (NSString *)formatVideoPress:(NSString *)string {
+    NSMutableString *mstr = [string mutableCopy];
+    NSError *error;
+
+    // Find instances of VideoPress markup.
+    NSRegularExpression *regex = [NSRegularExpression regularExpressionWithPattern:@"<div[\\S\\s]+?<div.*class=\"videopress-placeholder[\\s\\S]*?</noscript>" options:NSRegularExpressionCaseInsensitive error:&error];
+    NSArray *matches = [regex matchesInString:mstr options:NSRegularExpressionCaseInsensitive range:NSMakeRange(0, [mstr length])];
+    for (NSTextCheckingResult *match in [matches reverseObjectEnumerator]) {
+        // compose videopress string
+
+        // Find the mp4 in the markup.
+        NSRegularExpression *mp4Regex = [NSRegularExpression regularExpressionWithPattern:@"mp4[\\s\\S]+?mp4" options:NSRegularExpressionCaseInsensitive error:&error];
+        NSRange mp4Match = [mp4Regex rangeOfFirstMatchInString:mstr options:NSRegularExpressionCaseInsensitive range:match.range];
+        if (mp4Match.location == NSNotFound) {
+            DDLogError(@"%@ failed to match mp4 JSON string while formatting video press markup: %@", self, [mstr substringWithRange:match.range]);
+            [mstr replaceCharactersInRange:match.range withString:@""];
+            continue;
+        }
+        NSString *mp4 = [mstr substringWithRange:mp4Match];
+
+        // Get the mp4 url.
+        NSRegularExpression *srcRegex = [NSRegularExpression regularExpressionWithPattern:@"http\\S+mp4" options:NSRegularExpressionCaseInsensitive error:&error];
+        NSRange srcMatch = [srcRegex rangeOfFirstMatchInString:mp4 options:NSRegularExpressionCaseInsensitive range:NSMakeRange(0, [mp4 length])];
+        if (srcMatch.location == NSNotFound) {
+            DDLogError(@"%@ failed to match mp4 src when formatting video press markup: %@", self, mp4);
+            [mstr replaceCharactersInRange:match.range withString:@""];
+            continue;
+        }
+        NSString *src = [mp4 substringWithRange:srcMatch];
+        src = [src stringByReplacingOccurrencesOfString:@"\\/" withString:@"/"];
+
+        // Compose a video tag to replace the default markup.
+        NSString *fmt = @"<video src=\"%@\"><source src=\"%@\" type=\"video/mp4\"></video>";
+        NSString *vid = [NSString stringWithFormat:fmt, src, src];
+
+        [mstr replaceCharactersInRange:match.range withString:vid];
+    }
+
+    return mstr;
+}
+
+/**
+ Createa a title for the post from the post's summary.
+ 
+ @param summary The already formatted post summary.
+ @return A title for the post that is a snippet of the summary.
+ */
+- (NSString *)titleFromSummary:(NSString *)summary {
+    return [summary stringByEllipsizingWithMaxLength:ReaderPostServiceTitleLength preserveWords:YES];
+}
+
+@end
