@@ -45,7 +45,6 @@ typedef void (^NoteToggleFollowBlock)(BOOL success);
 @end
 
 
-//#warning TODO: Verify this class
 
 @implementation NotificationsFollowDetailViewController
 

@@ -38,9 +38,6 @@ typedef void (^NotificationsLoadPostBlock)(BOOL success, ReaderPost *post);
 @end
 
 
-//#warning TODO: Verify this class
-
-
 @implementation NotificationsViewController
 
 + (UIViewController *)viewControllerWithRestorationIdentifierPath:(NSArray *)identifierComponents coder:(NSCoder *)coder
