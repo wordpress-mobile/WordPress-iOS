@@ -53,6 +53,8 @@ NSString * const ReaderPostStoredCommentTextKey = @"comment";
 @dynamic primaryTagName;
 @dynamic primaryTagSlug;
 @dynamic tags;
+@dynamic topic;
+@dynamic globalID;
 
 + (NSArray *)readerEndpoints {
 
