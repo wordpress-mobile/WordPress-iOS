@@ -118,7 +118,7 @@ NSString * const ReaderPostStoredCommentTextKey = @"comment";
         return;
     }
     
-    NSManagedObjectContext *backgroundMOC = [[ContextManager sharedInstance] backgroundContext];
+    NSManagedObjectContext *backgroundMOC = [[ContextManager sharedInstance] newDerivedContext];
     [backgroundMOC performBlock:^{
         for (NSDictionary *postData in arr) {
             if (![postData isKindOfClass:[NSDictionary class]]) {
@@ -127,7 +127,7 @@ NSString * const ReaderPostStoredCommentTextKey = @"comment";
             [self createOrUpdateWithDictionary:postData forEndpoint:endpoint withContext:backgroundMOC];
         }
         
-        [[ContextManager sharedInstance] saveContext:backgroundMOC];
+        [[ContextManager sharedInstance] saveDerivedContext:backgroundMOC];
         if (success) {
             dispatch_async(dispatch_get_main_queue(), success);
         }
@@ -137,7 +137,7 @@ NSString * const ReaderPostStoredCommentTextKey = @"comment";
 
 + (void)deletePostsSyncedEarlierThan:(NSDate *)syncedDate {
     DDLogMethod();
-    NSManagedObjectContext *context = [[ContextManager sharedInstance] backgroundContext];
+    NSManagedObjectContext *context = [[ContextManager sharedInstance] newDerivedContext];
     [context performBlock:^{
         NSFetchRequest *request = [[NSFetchRequest alloc] init];
         [request setEntity:[NSEntityDescription entityForName:@"ReaderPost" inManagedObjectContext:context]];
@@ -154,7 +154,7 @@ NSString * const ReaderPostStoredCommentTextKey = @"comment";
                 [context deleteObject:post];
             }
         }
-        [[ContextManager sharedInstance] saveContext:context];
+        [[ContextManager sharedInstance] saveDerivedContext:context];
     }];
 }
 

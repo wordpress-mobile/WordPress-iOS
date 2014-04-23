@@ -636,7 +636,7 @@ static NSInteger const IndexForMeTab = 2;
 - (void)cleanUnusedMediaFileFromTmpDir {
     DDLogInfo(@"%@ %@", self, NSStringFromSelector(_cmd));
 
-    NSManagedObjectContext *context = [[ContextManager sharedInstance] backgroundContext];
+    NSManagedObjectContext *context = [[ContextManager sharedInstance] mainContext];
     [context performBlock:^{
         NSError *error;
         NSMutableArray *mediaToKeep = [NSMutableArray array];
