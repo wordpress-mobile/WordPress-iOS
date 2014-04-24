@@ -7,7 +7,6 @@
 @interface ContextManager (TestHelper)
 
 @property (nonatomic, strong) NSManagedObjectContext *mainContext;
-@property (nonatomic, strong) NSManagedObjectContext *backgroundContext;
 @property (nonatomic, strong) NSPersistentStoreCoordinator *persistentStoreCoordinator;
 
 + (NSURL *)storeURL;
@@ -35,7 +34,6 @@
 - (void)setModelName:(NSString *)modelName {
     _managedObjectModel = [self modelWithName:modelName];
     [ContextManager sharedInstance].mainContext = nil;
-    [ContextManager sharedInstance].backgroundContext = nil;
     [ContextManager sharedInstance].persistentStoreCoordinator = nil;
 }
 
@@ -93,8 +91,8 @@
     return [NSEntityDescription insertNewObjectForEntityForName:entityName inManagedObjectContext:[ContextManager sharedInstance].mainContext];
 }
 
-- (NSManagedObject *)insertEntityIntoBackgroundContextWithName:(NSString *)entityName {
-    return [NSEntityDescription insertNewObjectForEntityForName:entityName inManagedObjectContext:[ContextManager sharedInstance].backgroundContext];
+- (NSManagedObject *)insertEntityWithName:(NSString *)entityName intoContext:(NSManagedObjectContext*)context {
+    return [NSEntityDescription insertNewObjectForEntityForName:entityName inManagedObjectContext:context];
 }
 
 - (NSArray *)allObjectsInMainContextForEntityName:(NSString *)entityName {
@@ -102,16 +100,14 @@
     return [[ContextManager sharedInstance].mainContext executeFetchRequest:request error:nil];
 }
 
-- (NSArray *)allObjectsInBackgroundContextForEntityName:(NSString *)entityName {
+- (NSArray *)allObjectsInContext:(NSManagedObjectContext *)context forEntityName:(NSString *)entityName {
     NSFetchRequest *request = [NSFetchRequest fetchRequestWithEntityName:entityName];
-    return [[ContextManager sharedInstance].backgroundContext executeFetchRequest:request error:nil];
+    return [context executeFetchRequest:request error:nil];
 }
 
 - (void)reset {
     [[ContextManager sharedInstance].mainContext reset];
-    [[ContextManager sharedInstance].backgroundContext reset];
     [ContextManager sharedInstance].mainContext = nil;
-    [ContextManager sharedInstance].backgroundContext = nil;
     [ContextManager sharedInstance].persistentStoreCoordinator = nil;
     
     [[NSFileManager defaultManager] removeItemAtURL:[ContextManager storeURL] error:nil];
@@ -130,7 +126,7 @@
 
 @implementation ContextManager (TestHelper)
 
-@dynamic mainContext, backgroundContext;
+@dynamic mainContext;
 
 static void *const testPSCKey = "testPSCKey";
 
@@ -161,33 +157,20 @@ static void *const testPSCKey = "testPSCKey";
 }
 
 
-#pragma mark - Swizzle merge methods 
+#pragma mark - Swizzle save methods
 
 + (void)load {
-    Method originalMainToBg = class_getInstanceMethod([ContextManager class], @selector(mergeChangesIntoBackgroundContext:));
-    Method testMainToBg = class_getInstanceMethod([ContextManager class], @selector(testMergeChangesIntoBackgroundContext:));
-    Method originalBgToMain = class_getInstanceMethod([ContextManager class], @selector(mergeChangesIntoMainContext:));
-    Method testBgToMain = class_getInstanceMethod([ContextManager class], @selector(testMergeChangesIntoMainContext:));
-    
-    method_exchangeImplementations(originalMainToBg, testMainToBg);
-    method_exchangeImplementations(originalBgToMain, testBgToMain);
+    Method originalSaveChangesInRootContext = class_getInstanceMethod([ContextManager class], @selector(saveChangesInRootContext:));
+    Method testSaveChangesInRootContext = class_getInstanceMethod([ContextManager class], @selector(testSaveChangesInRootContext:));
+    method_exchangeImplementations(originalSaveChangesInRootContext, testSaveChangesInRootContext);
 }
 
-- (void)testMergeChangesIntoBackgroundContext:(NSNotification *)notification {
-    [[[ContextManager sharedInstance] backgroundContext] mergeChangesFromContextDidSaveNotification:notification];
+- (void)testSaveChangesInRootContext:(NSNotification *)notification {
+    [self testSaveChangesInRootContext:notification];
     if (ATHSemaphore) {
         ATHNotify();
     } else {
         NSLog(@"No semaphore present for notify");
-    }
-}
-
-- (void)testMergeChangesIntoMainContext:(NSNotification *)notification {
-    [[[ContextManager sharedInstance] mainContext] mergeChangesFromContextDidSaveNotification:notification];
-    if (ATHSemaphore) {
-        ATHNotify();
-    } else {
-        NSLog(@"No semaphore present for notify for main");
     }
 }
 
