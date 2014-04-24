@@ -141,7 +141,7 @@
     
     ATHStart();
     NSManagedObjectID *accountID = [service defaultWordPressComAccount].objectID;
-    [mainContext performBlock:^{
+    [mainContext performBlockAndWait:^{
         [service removeDefaultWordPressComAccount];
     }];
     ATHEnd();
@@ -149,9 +149,9 @@
     // Ensure object deleted in background context as well
     ATHStart();
     NSManagedObjectContext *derivedContext = [[ContextManager sharedInstance] newDerivedContext];
-    [derivedContext performBlock:^{
-        WPAccount *backgroundAccount = (WPAccount *)[derivedContext objectWithID:accountID];
-        XCTAssertTrue(backgroundAccount.isDeleted, @"Account should be considered deleted");
+    [derivedContext performBlockAndWait:^{
+        WPAccount *backgroundAccount = (WPAccount *)[derivedContext existingObjectWithID:accountID error:nil];
+        XCTAssertTrue(backgroundAccount == nil || backgroundAccount.isDeleted, @"Account should be considered deleted");
         ATHNotify();
     }];
     ATHEnd();
