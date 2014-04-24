@@ -108,10 +108,10 @@
 }
 
 - (void)reset {
-    [[ContextManager sharedInstance].mainContext reset];
-    [ContextManager sharedInstance].mainContext = nil;
     [[ContextManager sharedInstance].rootContext reset];
     [ContextManager sharedInstance].rootContext = nil;
+    [[ContextManager sharedInstance].mainContext reset];
+    [ContextManager sharedInstance].mainContext = nil;
     [ContextManager sharedInstance].persistentStoreCoordinator = nil;
     
     [[NSFileManager defaultManager] removeItemAtURL:[ContextManager storeURL] error:nil];
