@@ -171,11 +171,9 @@ static void *const testPSCKey = "testPSCKey";
 
 - (void)testSaveChangesInRootContext:(NSNotification *)notification {
     NSManagedObjectContext *context = [[ContextManager sharedInstance] rootContext];
-    if (notification.object == context) {
-        [context performBlockAndWait:^{
-            [context save:nil];
-        }];
-    }
+    [context performBlockAndWait:^{
+        [context save:nil];
+    }];
 
     if (ATHSemaphore) {
         ATHNotify();
