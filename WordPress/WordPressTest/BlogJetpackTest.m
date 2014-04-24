@@ -17,6 +17,8 @@
 @implementation BlogJetpackTest
 
 - (void)setUp {
+    [super setUp];
+    
     ATHStart();
     AccountService *accountService = [[AccountService alloc] initWithManagedObjectContext:[ContextManager sharedInstance].mainContext];
     _account = [accountService createOrUpdateSelfHostedAccountWithXmlrpc:@"http://blog1.com/xmlrpc.php" username:@"admin" andPassword:@"password!"];
@@ -40,6 +42,9 @@
 }
 
 - (void)tearDown {
+    [super tearDown];
+    
+    _account = nil;
     _blog = nil;
     [OHHTTPStubs removeAllRequestHandlers];
     

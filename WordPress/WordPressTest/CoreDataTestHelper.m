@@ -22,7 +22,7 @@
 
 @implementation CoreDataTestHelper
 
-+ (id)sharedHelper {
++ (instancetype)sharedHelper {
     static CoreDataTestHelper *_sharedHelper = nil;
     static dispatch_once_t oncePredicate;
     dispatch_once(&oncePredicate, ^{
@@ -170,7 +170,13 @@ static void *const testPSCKey = "testPSCKey";
 }
 
 - (void)testSaveChangesInRootContext:(NSNotification *)notification {
-    [self testSaveChangesInRootContext:notification];
+    NSManagedObjectContext *context = [[ContextManager sharedInstance] rootContext];
+    if (notification.object == context) {
+        [context performBlockAndWait:^{
+            [context save:nil];
+        }];
+    }
+
     if (ATHSemaphore) {
         ATHNotify();
     } else {
