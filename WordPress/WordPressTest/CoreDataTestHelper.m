@@ -6,6 +6,7 @@
 
 @interface ContextManager (TestHelper)
 
+@property (nonatomic, strong) NSManagedObjectContext *rootContext;
 @property (nonatomic, strong) NSManagedObjectContext *mainContext;
 @property (nonatomic, strong) NSPersistentStoreCoordinator *persistentStoreCoordinator;
 
@@ -33,6 +34,7 @@
 
 - (void)setModelName:(NSString *)modelName {
     _managedObjectModel = [self modelWithName:modelName];
+    [ContextManager sharedInstance].rootContext = nil;
     [ContextManager sharedInstance].mainContext = nil;
     [ContextManager sharedInstance].persistentStoreCoordinator = nil;
 }
@@ -108,6 +110,8 @@
 - (void)reset {
     [[ContextManager sharedInstance].mainContext reset];
     [ContextManager sharedInstance].mainContext = nil;
+    [[ContextManager sharedInstance].rootContext reset];
+    [ContextManager sharedInstance].rootContext = nil;
     [ContextManager sharedInstance].persistentStoreCoordinator = nil;
     
     [[NSFileManager defaultManager] removeItemAtURL:[ContextManager storeURL] error:nil];
@@ -126,7 +130,7 @@
 
 @implementation ContextManager (TestHelper)
 
-@dynamic mainContext;
+@dynamic mainContext, rootContext;
 
 static void *const testPSCKey = "testPSCKey";
 
