@@ -5,6 +5,7 @@
 #import "Blog+Jetpack.h"
 #import "WPAccount.h"
 #import "ContextManager.h"
+#import "AccountService.h"
 
 @interface BlogJetpackTest ()
 
@@ -16,10 +17,13 @@
 @implementation BlogJetpackTest
 
 - (void)setUp {
-    ATHStart();
-    _account = [WPAccount createOrUpdateSelfHostedAccountWithXmlrpc:@"http://blog1.com/xmlrpc.php" username:@"admin" andPassword:@"password!" withContext:[ContextManager sharedInstance].mainContext];
-    ATHEnd();
+    [super setUp];
     
+    ATHStart();
+    AccountService *accountService = [[AccountService alloc] initWithManagedObjectContext:[ContextManager sharedInstance].mainContext];
+    _account = [accountService createOrUpdateSelfHostedAccountWithXmlrpc:@"http://blog1.com/xmlrpc.php" username:@"admin" andPassword:@"password!"];
+    ATHEnd();
+
     _blog = (Blog *)[[CoreDataTestHelper sharedHelper] insertEntityIntoMainContextWithName:@"Blog"];
     _blog.xmlrpc = @"http://test.blog/xmlrpc.php";
     _blog.url = @"http://test.blog/";
@@ -38,6 +42,9 @@
 }
 
 - (void)tearDown {
+    [super tearDown];
+    
+    _account = nil;
     _blog = nil;
     [OHHTTPStubs removeAllRequestHandlers];
     
@@ -46,9 +53,10 @@
 
 - (void)testAssertionsOnWPcom {
     ATHStart();
-    WPAccount *wpComAccount = [WPAccount createOrUpdateWordPressComAccountWithUsername:@"user" password:@"pass" authToken:nil context:[ContextManager sharedInstance].mainContext];
+    AccountService *accountService = [[AccountService alloc] initWithManagedObjectContext:[ContextManager sharedInstance].mainContext];
+    WPAccount *wpComAccount = [accountService createOrUpdateWordPressComAccountWithUsername:@"user" password:@"pass" authToken:@"token"];
     ATHEnd();
-    
+
     _blog = (Blog *)[[CoreDataTestHelper sharedHelper] insertEntityIntoMainContextWithName:@"Blog"];
     _blog.xmlrpc = @"http://test.wordpress.com/xmlrpc.php";
     _blog.url = @"http://test.wordpress.com/";
@@ -99,7 +107,13 @@
     } withStubResponse:^OHHTTPStubsResponse *(NSURLRequest *request) {
         return [OHHTTPStubsResponse responseWithFile:@"get-user-blogs_has-blog.json" contentType:@"application/json" responseTime:OHHTTPStubsDownloadSpeedWifi];
     }];
-
+    
+    [OHHTTPStubs shouldStubRequestsPassingTest:^BOOL(NSURLRequest *request) {
+        return [[request.URL absoluteString] isEqualToString:@"https://public-api.wordpress.com/oauth2/token"];
+    } withStubResponse:^OHHTTPStubsResponse *(NSURLRequest *request) {
+        return [OHHTTPStubsResponse responseWithFile:@"authtoken.json" contentType:@"application/json" responseTime:OHHTTPStubsDownloadSpeedWifi];
+    }];
+    
     ATHStart();
     [_blog validateJetpackUsername:@"test1" password:@"test1" success:^{
         XCTFail(@"User test1 shouldn't have access to test.blog");
