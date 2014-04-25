@@ -17,48 +17,33 @@
     return @[safariActivity, instapaperActivity, pocketActivity, googlePlusActivity];
 }
 
-+ (void)trackActivityType:(NSString *)activityType withPrefix:(NSString *)prefix
++ (void)trackActivityType:(NSString *)activityType
 {
-    NSString *event;
-    NSString *superProperty;
+    WPAnalyticsStat stat;
     if ([activityType isEqualToString:UIActivityTypeMail]) {
-        event = StatsEventWebviewSharedArticleViaEmail;
-        superProperty = StatsSuperPropertyNumberOfItemsSharedViaEmail;
+        stat = WPAnalyticsStatSharedItemViaEmail;
     } else if ([activityType isEqualToString:UIActivityTypeMessage]) {
-        event = StatsEventWebviewSharedArticleViaSMS;
-        superProperty = StatsSuperPropertyNumberOfItemsSharedViaSMS;
+        stat = WPAnalyticsStatSharedItemViaSMS;
     } else if ([activityType isEqualToString:UIActivityTypePostToTwitter]) {
-        event = StatsEventWebviewSharedArticleViaTwitter;
-        superProperty = StatsSuperPropertyNumberOfItemsSharedViaTwitter;
+        stat = WPAnalyticsStatSharedItemViaTwitter;
     } else if ([activityType isEqualToString:UIActivityTypePostToFacebook]) {
-        event = StatsEventWebviewSharedArticleViaFacebook;
-        superProperty = StatsSuperPropertyNumberOfItemsSharedViaFacebook;
-    } else if ([activityType isEqualToString:UIActivityTypeCopyToPasteboard]) {
-        event = StatsEventWebviewCopiedArticleDetails;
+        stat = WPAnalyticsStatSharedItemViaFacebook;
     } else if ([activityType isEqualToString:UIActivityTypePostToWeibo]) {
-        event = StatsEventWebviewSharedArticleViaWeibo;
-        superProperty = StatsSuperPropertyNumberOfItemsSharedViaWeibo;
-    } else if ([activityType isEqualToString:NSStringFromClass([SafariActivity class])]) {
-        event = StatsEventWebviewOpenedArticleInSafari;
+        stat = WPAnalyticsStatSharedItemViaWeibo;
     } else if ([activityType isEqualToString:NSStringFromClass([InstapaperActivity class])]) {
-        event = StatsEventWebviewSentArticleToInstapaper;
-        superProperty = StatsSuperPropertyNumberOfItemsSentToInstapaper;
+        stat = WPAnalyticsStatSentItemToInstapaper;
     } else if ([activityType isEqualToString:NSStringFromClass([PocketActivity class])]) {
-        event = StatsEventWebviewSentArticleToPocket;
-        superProperty = StatsSuperPropertyNumberOfItemsSentToPocket;
+        stat = WPAnalyticsStatSentItemToPocket;
     } else if ([activityType isEqualToString:NSStringFromClass([GooglePlusActivity class])]) {
-        event = StatsEventWebviewSentArticleToGooglePlus;
-        superProperty = StatsSuperPropertyNumberOfItemsSentToGooglePlus;
-    }
-
-    if (event != nil) {
-        event = [NSString stringWithFormat:@"%@ - %@", prefix, event];
-        [WPMobileStats trackEventForWPCom:event];
+        stat = WPAnalyticsStatSentItemToGooglePlus;
+    } else {
+        [WPAnalytics track:WPAnalyticsStatSharedItem];
+        return;
     }
     
-    if (superProperty != nil) {
-        [WPMobileStats incrementPeopleAndSuperProperty:superProperty];
-        [WPMobileStats incrementPeopleAndSuperProperty:StatsSuperPropertyNumberOfItemsShared];
+    if (stat != WPAnalyticsStatNoStat) {
+        [WPAnalytics track:WPAnalyticsStatSharedItem];
+        [WPAnalytics track:stat];
     }
 }
 

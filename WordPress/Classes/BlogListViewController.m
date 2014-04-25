@@ -160,7 +160,7 @@ CGFloat const blavatarImageSize = 50.f;
 #pragma mark - Actions
 
 - (void)showSettings:(id)sender {
-    [WPMobileStats incrementProperty:StatsPropertySidebarClickedSettings forEvent:StatsEventAppClosed];
+    [WPAnalytics track:WPAnalyticsStatOpenedSettings];
     
     SettingsViewController *settingsViewController = [[SettingsViewController alloc] initWithStyle:UITableViewStyleGrouped];
     UINavigationController *aNavigationController = [[UINavigationController alloc] initWithRootViewController:settingsViewController];
@@ -242,8 +242,6 @@ CGFloat const blavatarImageSize = 50.f;
 
 - (void)tableView:(UITableView *)tableView commitEditingStyle:(UITableViewCellEditingStyle)editingStyle forRowAtIndexPath:(NSIndexPath *)indexPath {
     if (editingStyle == UITableViewCellEditingStyleDelete) {
-        [WPMobileStats trackEventForWPCom:StatsEventSettingsRemovedBlog];
-        
         Blog *blog = [self.resultsController objectAtIndexPath:indexPath];
         if (blog.isWPcom) {
             DDLogWarn(@"Tried to remove a WordPress.com blog. This shouldn't happen but just in case, let's hide it");
@@ -368,7 +366,6 @@ CGFloat const blavatarImageSize = 50.f;
     
     if ([indexPath isEqual:[self indexPathForAddSite]]) {
         [self setEditing:NO animated:NO];
-        [WPMobileStats trackEventForWPCom:StatsEventSettingsClickedAddBlog];
         LoginViewController *loginViewController = [[LoginViewController alloc] init];
         
         NSManagedObjectContext *context = [[ContextManager sharedInstance] mainContext];
@@ -386,8 +383,6 @@ CGFloat const blavatarImageSize = 50.f;
     } else if (self.tableView.isEditing) {
         return;
     }else {
-        [WPMobileStats trackEventForWPCom:StatsEventSettingsClickedEditBlog];
-        
         NSManagedObjectContext *context = [[ContextManager sharedInstance] mainContext];
         BlogService *blogService = [[BlogService alloc] initWithManagedObjectContext:context];
         Blog *blog = [self.resultsController objectAtIndexPath:indexPath];

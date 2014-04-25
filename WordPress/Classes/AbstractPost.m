@@ -67,7 +67,7 @@
 }
 
 + (void)mergeNewPosts:(NSArray *)newObjects forBlog:(Blog *)blog {
-    NSManagedObjectContext *backgroundContext = [[ContextManager sharedInstance] backgroundContext];
+    NSManagedObjectContext *backgroundContext = [[ContextManager sharedInstance] newDerivedContext];
     [backgroundContext performBlock:^{
         NSMutableArray *objectsToKeep = [NSMutableArray array];
         Blog *contextBlog = (Blog *)[backgroundContext existingObjectWithID:blog.objectID error:nil];
@@ -115,7 +115,7 @@
             }
         }
         
-        [[ContextManager sharedInstance] saveContext:backgroundContext];
+        [[ContextManager sharedInstance] saveDerivedContext:backgroundContext];
     }];
 }
 

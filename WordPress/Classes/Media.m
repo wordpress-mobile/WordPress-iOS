@@ -70,7 +70,7 @@
     if ([blog isDeleted] || blog.managedObjectContext == nil)
         return;
     
-    NSManagedObjectContext *backgroundMOC = [[ContextManager sharedInstance] backgroundContext];
+    NSManagedObjectContext *backgroundMOC = [[ContextManager sharedInstance] newDerivedContext];
     [backgroundMOC performBlock:^{
         Blog *contextBlog = (Blog *)[backgroundMOC objectWithID:blog.objectID];
         NSMutableArray *mediaToKeep = [NSMutableArray array];
@@ -88,7 +88,7 @@
             }
         }
         
-        [[ContextManager sharedInstance] saveContext:backgroundMOC];
+        [[ContextManager sharedInstance] saveDerivedContext:backgroundMOC];
     }];
 }
 
@@ -221,23 +221,6 @@
             }
         }];
     }
-}
-
-#pragma mark - NSManagedObject subclass methods
-- (void)awakeFromFetch {
-    [super awakeFromFetch];
-	if ((self.remoteStatus == MediaRemoteStatusPushing && _uploadOperation == nil) || (self.remoteStatus == MediaRemoteStatusProcessing) || self.remoteStatus == MediaRemoteStatusFailed) {
-        self.remoteStatus = MediaRemoteStatusFailed;
-    } else {
-        self.remoteStatus = MediaRemoteStatusSync;
-    }
-}
-
-- (void)didTurnIntoFault {
-    [super didTurnIntoFault];
-    
-    [_uploadOperation cancel];
-    _uploadOperation = nil;
 }
 
 #pragma mark -

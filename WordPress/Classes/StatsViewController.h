@@ -10,7 +10,7 @@ typedef NS_ENUM(NSInteger, StatsSection) {
     StatsSectionSearchTerms,
     StatsSectionLinkToWebview,
     StatsSectionTotalCount,
-    StatsSectionVisitorsGraph
+    StatsSectionVisitorsGraph   // Not a real section!
 };
 
 @class Blog;

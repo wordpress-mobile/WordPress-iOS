@@ -108,13 +108,12 @@ NSString *const NotificationsDeviceToken = @"apnsDeviceToken";
     
     switch (state) {
         case UIApplicationStateInactive:
-            [WPMobileStats recordAppOpenedForEvent:StatsEventAppOpenedDueToPushNotification];
             [[WordPressAppDelegate sharedWordPressApplicationDelegate] showNotificationsTab];
             break;
             
         case UIApplicationStateBackground:
             if (completionHandler) {
-                NoteService *noteService = [[NoteService alloc] initWithManagedObjectContext:[[ContextManager sharedInstance] backgroundContext]];
+                NoteService *noteService = [[NoteService alloc] initWithManagedObjectContext:[[ContextManager sharedInstance] mainContext]];
                 
                 [noteService fetchNewNotificationsWithSuccess:^(BOOL hasNewNotes) {
                     DDLogVerbose(@"notification fetch completion handler completed with new notes: %@", hasNewNotes ? @"YES" : @"NO");
@@ -137,8 +136,6 @@ NSString *const NotificationsDeviceToken = @"apnsDeviceToken";
 + (void)handleNotificationForApplicationLaunch:(NSDictionary *)launchOptions {
     NSDictionary *remoteNotif = [launchOptions objectForKey:UIApplicationLaunchOptionsRemoteNotificationKey];
     if (remoteNotif) {
-        [WPMobileStats recordAppOpenedForEvent:StatsEventAppOpenedDueToPushNotification];
-        
         DDLogVerbose(@"Launched with a remote notification as parameter:  %@", remoteNotif);
         [[WordPressAppDelegate sharedWordPressApplicationDelegate] showNotificationsTab];
     }
