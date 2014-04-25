@@ -319,6 +319,12 @@
     [postParams setValueIfNotNil:self.postFormat forKey:@"wp_post_format"];
     [postParams setValueIfNotNil:self.tags forKey:@"mt_keywords"];
 
+    if ([self hasRemote] && self.dateCreated == nil) {
+        // Change the date of an already published post to the current date/time. (publish immediately)
+        // Pass the current date so the post is updated correctly
+        [postParams setValue:[NSDate date] forKeyPath:@"date_created_gmt"];
+    }
+
     if ([self valueForKey:@"categories"] != nil) {
         NSMutableSet *categories = [self mutableSetValueForKey:@"categories"];
         NSMutableArray *categoryNames = [NSMutableArray arrayWithCapacity:[categories count]];
@@ -482,7 +488,6 @@
 }
 
 - (void)deletePostWithSuccess:(void (^)())success failure:(void (^)(NSError *error))failure {
-    DDLogMethod();
     BOOL remote = [self hasRemote];
     if (remote) {
         NSArray *parameters = [NSArray arrayWithObjects:@"unused", self.postID, self.blog.username, self.blog.password, nil];

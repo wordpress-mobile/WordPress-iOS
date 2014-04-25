@@ -2,5 +2,5 @@
 
 @interface WPActivityDefaults : NSObject
 + (NSArray *)defaultActivities;
-+ (void)trackActivityType:(NSString *)activityType withPrefix:(NSString *)prefix;
++ (void)trackActivityType:(NSString *)activityType;
 @end

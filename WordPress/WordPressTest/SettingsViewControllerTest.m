@@ -63,7 +63,7 @@
     ATHStart();
     WPAccount *account = [accountService createOrUpdateWordPressComAccountWithUsername:@"jacksparrow" password:@"piratesobrave" authToken:@"token"];
     ATHEnd();
-    
+
     /*
      Signed In, Notifications disabled, 1 blog
 
@@ -98,7 +98,7 @@
     Blog *blog = [accountService findOrCreateBlogFromDictionary:@{@"url": @"blog1.com", @"xmlrpc": @"http://blog1.com/xmlrpc.php"} withAccount:account];
     [[ContextManager sharedInstance] saveContext:account.managedObjectContext];
     ATHEnd();
-    
+
     [table reloadData];
 
     /*
@@ -120,7 +120,7 @@
     blog = [accountService findOrCreateBlogFromDictionary:@{@"url": @"blog2.com", @"xmlrpc": @"http://blog2.com/xmlrpc.php"} withAccount:account];
     [[ContextManager sharedInstance] saveContext:account.managedObjectContext];
     ATHEnd();
-    
+
     [table reloadData];
 
     /*

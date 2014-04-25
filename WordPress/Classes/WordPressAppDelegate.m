@@ -31,6 +31,9 @@
 #import "StatsViewController.h"
 #import "Constants.h"
 
+#import "WPAnalyticsTrackerMixpanel.h"
+#import "WPAnalyticsTrackerWPCom.h"
+
 #if DEBUG
 #import "DDTTYLogger.h"
 #import "DDASLLogger.h"
@@ -77,7 +80,10 @@ static NSInteger const IndexForMeTab = 2;
     [self removeCredentialsForDebug];
 
     // Stats and feedback
-    [WPMobileStats initializeStats];
+    
+    [WPAnalytics registerTracker:[[WPAnalyticsTrackerMixpanel alloc] init]];
+    [WPAnalytics registerTracker:[[WPAnalyticsTrackerWPCom alloc] init]];
+    [WPAnalytics beginSession];
     [[GPPSignIn sharedInstance] setClientID:[WordPressComApiCredentials googlePlusClientId]];
     [SupportViewController checkIfFeedbackShouldBeEnabled];
     
@@ -164,10 +170,6 @@ static NSInteger const IndexForMeTab = 2;
                 NSUInteger blogId = [[params numberForKey:@"blogId"] integerValue];
                 NSUInteger postId = [[params numberForKey:@"postId"] integerValue];
                 
-                [WPMobileStats flagSuperProperty:StatsPropertyReaderOpenedFromExternalURL];
-                [WPMobileStats incrementSuperProperty:StatsPropertyReaderOpenedFromExternalURLCount];
-                [WPMobileStats trackEventForWPCom:StatsEventReaderOpenedFromExternalSource];
-                
                 [self.readerPostsViewController.navigationController popToRootViewControllerAnimated:NO];
                 NSInteger readerTabIndex = [[self.tabBarController viewControllers] indexOfObject:self.readerPostsViewController.navigationController];
                 [self.tabBarController setSelectedIndex:readerTabIndex];
@@ -188,8 +190,8 @@ static NSInteger const IndexForMeTab = 2;
 - (void)applicationDidEnterBackground:(UIApplication *)application {
     DDLogInfo(@"%@ %@", self, NSStringFromSelector(_cmd));
 
-    [WPMobileStats trackEventForWPComWithSavedProperties:StatsEventAppClosed];
-    [WPMobileStats pauseSession];
+    [WPAnalytics track:WPAnalyticsStatApplicationClosed];
+    [WPAnalytics endSession];
     
     // Let the app finish any uploads that are in progress
     UIApplication *app = [UIApplication sharedApplication];
@@ -221,8 +223,7 @@ static NSInteger const IndexForMeTab = 2;
 
 - (void)applicationDidBecomeActive:(UIApplication *)application {
     DDLogInfo(@"%@ %@", self, NSStringFromSelector(_cmd));
-    
-    [WPMobileStats recordAppOpenedForEvent:StatsEventAppOpened];
+    [WPAnalytics track:WPAnalyticsStatApplicationOpened];
 }
 
 - (BOOL)application:(UIApplication *)application shouldSaveApplicationState:(NSCoder *)coder {
@@ -430,6 +431,7 @@ static NSInteger const IndexForMeTab = 2;
     
     EditPostViewController *editPostViewController;
     if (!options) {
+        [WPAnalytics track:WPAnalyticsStatEditorCreatedPost withProperties:@{ @"tap_source": @"tab_bar" }];
         editPostViewController = [[EditPostViewController alloc] initWithDraftForLastUsedBlog];
     } else {
         editPostViewController = [[EditPostViewController alloc] initWithTitle:[options stringForKey:@"title"]
@@ -437,7 +439,6 @@ static NSInteger const IndexForMeTab = 2;
                                                                        andTags:[options stringForKey:@"tags"]
                                                                       andImage:[options stringForKey:@"image"]];
     }
-    editPostViewController.editorOpenedBy = StatsPropertyPostDetailEditorOpenedOpenedByTabBarButton;
     UINavigationController *navController = [[UINavigationController alloc] initWithRootViewController:editPostViewController];
     navController.modalPresentationStyle = UIModalPresentationCurrentContext;
     navController.navigationBar.translucent = NO;
@@ -475,34 +476,6 @@ static NSInteger const IndexForMeTab = 2;
     [blogListNavController setViewControllers:@[blogListViewController, blogDetailsViewController, postsViewController]];
 }
 
-- (void)showStatsForBlog:(Blog *)blog {
-    UINavigationController *blogListNav = self.tabBarController.viewControllers[IndexForMeTab];
-    StatsViewController *statsViewController;
-    BlogDetailsViewController *blogDetailsViewController;
-    
-    if ([blogListNav.topViewController isKindOfClass:[StatsViewController class]] &&
-        [[(StatsViewController *)blogListNav.topViewController blog] isEqual:blog]) {
-        // If we're already showing stats for the blog, just go there
-        [self showMeTab];
-        return;
-    } else {
-        statsViewController = [[StatsViewController alloc] init];
-        statsViewController.blog = blog;
-    }
-    
-    if ([blogListNav.topViewController isKindOfClass:[BlogDetailsViewController class]] &&
-        [((BlogDetailsViewController *)blogListNav.topViewController).blog isEqual:blog]) {
-        // Use the current blog details view controller
-        blogDetailsViewController = (BlogDetailsViewController *)blogListNav.topViewController;
-    } else {
-        blogDetailsViewController = [[BlogDetailsViewController alloc] init];
-        blogDetailsViewController.blog = blog;
-    }
-    
-    blogListNav.viewControllers = @[self.blogListViewController, blogDetailsViewController, statsViewController];
-    [self showMeTab];
-}
-
 - (BOOL)isNavigatingMeTab {
     return (self.tabBarController.selectedIndex == IndexForMeTab && [self.blogListViewController.navigationController.viewControllers count] > 1);
 }
@@ -516,7 +489,6 @@ static NSInteger const IndexForMeTab = 2;
 
         // Ignore taps on the post tab and instead show the modal.
         if ([blogService blogCountVisibleForAllAccounts] == 0) {
-            [WPMobileStats trackEventForWPCom:StatsEventAccountCreationOpenedFromTabBar];
             [self showWelcomeScreenAnimated:YES thenEditor:YES];
         } else {
             [self showPostTab];
@@ -539,9 +511,21 @@ static NSInteger const IndexForMeTab = 2;
             }
         }
     }
+    
+    // If the current view controller is selected already and it's at its root then scroll to the top
+    if (tabBarController.selectedViewController == viewController) {
+        if ([viewController isKindOfClass:[UINavigationController class]]) {
+            UINavigationController *navController = (UINavigationController *)viewController;
+            if ([navController topViewController] == [[navController viewControllers] firstObject] &&
+                [[[navController topViewController] view] isKindOfClass:[UITableView class]]) {
+                UITableView *tableView = (UITableView *)[[navController topViewController] view];
+                [tableView scrollToRowAtIndexPath:[NSIndexPath indexPathForRow:0 inSection:0] atScrollPosition:UITableViewScrollPositionTop animated:YES];
+            }
+        }
+    }
+    
     return YES;
 }
-
 
 #pragma mark - Application directories
 
@@ -610,7 +594,6 @@ static NSInteger const IndexForMeTab = 2;
     crashCount += 1;
     [defaults setInteger:crashCount forKey:@"crashCount"];
     [defaults synchronize];
-    [WPMobileStats trackEventForSelfHostedAndWPCom:@"Crashed" properties:@{@"crash_id": crash.identifier}];
 }
 
 - (void)setCommonCrashlyticsParameters
@@ -653,7 +636,7 @@ static NSInteger const IndexForMeTab = 2;
 - (void)cleanUnusedMediaFileFromTmpDir {
     DDLogInfo(@"%@ %@", self, NSStringFromSelector(_cmd));
 
-    NSManagedObjectContext *context = [[ContextManager sharedInstance] backgroundContext];
+    NSManagedObjectContext *context = [[ContextManager sharedInstance] mainContext];
     [context performBlock:^{
         NSError *error;
         NSMutableArray *mediaToKeep = [NSMutableArray array];
@@ -874,6 +857,8 @@ static NSInteger const IndexForMeTab = 2;
     NSArray *languages = [[NSUserDefaults standardUserDefaults] objectForKey:@"AppleLanguages"];
     NSString *currentLanguage = [languages objectAtIndex:0];
     BOOL extraDebug = [[NSUserDefaults standardUserDefaults] boolForKey:@"extra_debug"];
+    BlogService *blogService = [[BlogService alloc] initWithManagedObjectContext:[[ContextManager sharedInstance] mainContext]];
+    NSArray *blogs = [blogService blogsForAllAccounts];
     
     DDLogInfo(@"===========================================================================");
 	DDLogInfo(@"Launching WordPress for iOS %@...", [[NSBundle mainBundle] objectForInfoDictionaryKey:@"CFBundleVersion"]);
@@ -890,6 +875,16 @@ static NSInteger const IndexForMeTab = 2;
     DDLogInfo(@"UDID:      %@", [device wordpressIdentifier]);
     DDLogInfo(@"APN token: %@", [[NSUserDefaults standardUserDefaults] objectForKey:NotificationsDeviceToken]);
     DDLogInfo(@"Launch options: %@", launchOptions);
+    
+    if (blogs.count > 0) {
+        DDLogInfo(@"All blogs on device:");
+        for (Blog *blog in blogs) {
+            DDLogInfo(@"Name: %@ URL: %@ XML-RPC: %@ isWpCom: %@ blogId: %@ jetpackAccount: %@", blog.blogName, blog.url, blog.xmlrpc, blog.account.isWpcom ? @"YES" : @"NO", blog.blogID, !!blog.jetpackAccount ? @"PRESENT" : @"NONE");
+        }
+    } else {
+        DDLogInfo(@"No blogs configured on device.");
+    }
+    
     DDLogInfo(@"===========================================================================");
 }
 

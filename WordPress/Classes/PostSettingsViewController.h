@@ -3,8 +3,6 @@
 
 @interface PostSettingsViewController : UITableViewController
 
-@property (nonatomic, strong) NSString *statsPrefix;
-
 - (id)initWithPost:(AbstractPost *)aPost;
 - (void)endEditingAction:(id)sender;
 
