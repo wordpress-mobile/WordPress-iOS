@@ -755,6 +755,7 @@
 		93C4864F181043D700A24725 /* ActivityLogDetailViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 93069F581762410B000C966D /* ActivityLogDetailViewController.m */; };
 		93C486501810442200A24725 /* SupportViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 93027BB71758332300483FFD /* SupportViewController.m */; };
 		93C486511810445D00A24725 /* ActivityLogViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 93069F55176237A4000C966D /* ActivityLogViewController.m */; };
+		93CD939319099BE70049096E /* authtoken.json in Resources */ = {isa = PBXBuildFile; fileRef = 93CD939219099BE70049096E /* authtoken.json */; };
 		93FA59DD18D88C1C001446BC /* CategoryService.m in Sources */ = {isa = PBXBuildFile; fileRef = 93FA59DC18D88C1C001446BC /* CategoryService.m */; };
 		93FA59E018D8986D001446BC /* CategoryServiceRemote.m in Sources */ = {isa = PBXBuildFile; fileRef = 93FA59DF18D8986D001446BC /* CategoryServiceRemote.m */; };
 		A01C542E0E24E88400D411F2 /* SystemConfiguration.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A01C542D0E24E88400D411F2 /* SystemConfiguration.framework */; };
@@ -1946,6 +1947,7 @@
 		93C1148418EDF6E100DAC95C /* BlogService.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BlogService.m; sourceTree = "<group>"; };
 		93C1148618EF157500DAC95C /* BlogRemoteService.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BlogRemoteService.h; sourceTree = "<group>"; };
 		93C1148718EF157500DAC95C /* BlogRemoteService.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BlogRemoteService.m; sourceTree = "<group>"; };
+		93CD939219099BE70049096E /* authtoken.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = authtoken.json; sourceTree = "<group>"; };
 		93FA0F0118E451A80007903B /* LICENSE */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = LICENSE; path = ../LICENSE; sourceTree = "<group>"; };
 		93FA0F0218E451A80007903B /* README.md */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = README.md; path = ../README.md; sourceTree = "<group>"; };
 		93FA0F0318E451A80007903B /* update-translations.rb */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.script.ruby; name = "update-translations.rb"; path = "../update-translations.rb"; sourceTree = "<group>"; };
@@ -4244,12 +4246,13 @@
 		E16AB94414D9A13A0047A2E5 /* Test Data */ = {
 			isa = PBXGroup;
 			children = (
+				93CD939219099BE70049096E /* authtoken.json */,
+				E131CB5716CACFB4004B0314 /* get-user-blogs_doesnt-have-blog.json */,
+				E131CB5516CACF1E004B0314 /* get-user-blogs_has-blog.json */,
 				E1E4CE0E1774531500430844 /* misteryman.jpg */,
 				E1E4CE0517739FAB00430844 /* test-image.jpg */,
-				E131CB5516CACF1E004B0314 /* get-user-blogs_has-blog.json */,
-				E131CB5716CACFB4004B0314 /* get-user-blogs_doesnt-have-blog.json */,
-				E15618FE16DBA983006532C4 /* xmlrpc-response-newpost.xml */,
 				E156190016DBABDE006532C4 /* xmlrpc-response-getpost.xml */,
+				E15618FE16DBA983006532C4 /* xmlrpc-response-newpost.xml */,
 			);
 			path = "Test Data";
 			sourceTree = "<group>";
@@ -5181,6 +5184,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				E16AB93414D978240047A2E5 /* InfoPlist.strings in Resources */,
+				93CD939319099BE70049096E /* authtoken.json in Resources */,
 				E1E4CE0F1774563F00430844 /* misteryman.jpg in Resources */,
 				E1E4CE0617739FAB00430844 /* test-image.jpg in Resources */,
 				E131CB5616CACF1E004B0314 /* get-user-blogs_has-blog.json in Resources */,
