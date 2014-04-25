@@ -80,6 +80,7 @@ static CGFloat const RowIconWidth = 20.0f;
     if ([cellData isKindOfClass:[StatsViewByCountry class]]) {
         [self setLeft:left withImageUrl:[(StatsViewByCountry *)cellData imageUrl] right:right titleCell:NO];
     } else if ([cellData isKindOfClass:[StatsGroup class]]) {
+        self.selectionStyle = UITableViewCellSelectionStyleDefault;
         [self setLeft:left withImageUrl:[(StatsGroup *)cellData iconUrl] right:right titleCell:NO];
     } else {
         [self setLeft:left withImageUrl:nil right:right titleCell:NO];
@@ -89,7 +90,14 @@ static CGFloat const RowIconWidth = 20.0f;
 }
 
 - (void)setLinkEnabled:(BOOL)linkEnabled {
+    _linkEnabled = linkEnabled;
+    
     UIColor *color = linkEnabled ? [WPStyleGuide baseDarkerBlue] : [WPStyleGuide whisperGrey];
+    
+    if (_linkEnabled) {
+        self.selectionStyle = UITableViewCellSelectionStyleDefault;
+    }
+    
     [self titleLabel].textColor = color;
 }
 
@@ -140,26 +148,31 @@ static CGFloat const RowIconWidth = 20.0f;
     UILabel *label = [self createLabelWithTitle:title titleCell:titleCell];
     [view addSubview:label];
     
-    if (imageUrl != nil) {
+    if (!titleCell) {
         UIImageView *imageView = [[UIImageView alloc] initWithFrame:CGRectMake(0, 0, RowIconWidth, RowIconWidth)];
         imageView.backgroundColor = [WPStyleGuide readGrey];
-        [[WPImageSource sharedSource] downloadImageForURL:imageUrl withSuccess:^(UIImage *image) {
-            imageView.image = image;
-            imageView.backgroundColor = [UIColor clearColor];
-        } failure:^(NSError *error) {
-            DDLogWarn(@"Unable to download icon %@", error);
-        }];
         [view addSubview:imageView];
+
         label.frame = (CGRect) {
             .origin = CGPointMake(RowIconWidth + PaddingImageText, 0),
             .size = label.frame.size
         };
+
+        if (imageUrl != nil) {
+            [[WPImageSource sharedSource] downloadImageForURL:imageUrl withSuccess:^(UIImage *image) {
+                imageView.image = image;
+                imageView.backgroundColor = [UIColor clearColor];
+            } failure:^(NSError *error) {
+                DDLogWarn(@"Unable to download icon %@", error);
+            }];
+        }
     }
 
     view.frame = (CGRect) {
         .origin = view.frame.origin,
         .size = CGSizeMake(CGRectGetMaxX(label.frame), 20)
     };
+    
     return view;
 }
 
@@ -170,5 +183,17 @@ static CGFloat const RowIconWidth = 20.0f;
 - (CGFloat)yValueToCenterViewVertically:(UIView *)view {
     return ([self.class heightForRow] - view.frame.size.height)/2;
 }
+
+#pragma mark - UIAccessibility items
+
+- (UIAccessibilityTraits)accessibilityTraits
+{
+    if (self.linkEnabled) {
+        return UIAccessibilityTraitLink;
+    }
+    
+    return [super accessibilityTraits];
+}
+
 
 @end

@@ -28,6 +28,24 @@ NSString *const LastUsedBlogURLDefaultsKey = @"LastUsedBlogURLDefaultsKey";
     return self;
 }
 
+- (Blog *)blogByBlogId:(NSNumber *)blogID
+{
+    NSFetchRequest *fetchRequest = [[NSFetchRequest alloc] initWithEntityName:@"Blog"];
+    NSPredicate *predicate = [NSPredicate predicateWithFormat:@"blogID == %@", blogID];
+    
+    fetchRequest.predicate = predicate;
+    
+    NSError *error = nil;
+    NSArray *results = [self.managedObjectContext executeFetchRequest:fetchRequest error:&error];
+    
+    if (error) {
+        DDLogError(@"Error while fetching Blog by blogID: %@", error);
+        return nil;
+    }
+    
+    return [results firstObject];
+}
+
 - (void)flagBlogAsLastUsed:(Blog *)blog {
     NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
     [defaults setObject:blog.url forKey:LastUsedBlogURLDefaultsKey];
@@ -332,6 +350,25 @@ NSString *const LastUsedBlogURLDefaultsKey = @"LastUsedBlogURLDefaultsKey";
 {
     NSPredicate *predicate = [NSPredicate predicateWithFormat:@"visible = %@" argumentArray:@[@(YES)]];
     return [self blogCountWithPredicate:predicate];
+}
+
+- (NSArray *)blogsForAllAccounts
+{
+    NSSortDescriptor *sortDescriptor = [NSSortDescriptor sortDescriptorWithKey:@"blogName" ascending:YES];
+    
+    NSFetchRequest *request = [[NSFetchRequest alloc] init];
+    [request setEntity:[NSEntityDescription entityForName:@"Blog" inManagedObjectContext:self.managedObjectContext]];
+    [request setSortDescriptors:@[sortDescriptor]];
+    
+    NSError *error;
+    NSArray *blogs = [self.managedObjectContext executeFetchRequest:request error:&error];
+
+    if (error) {
+        DDLogError(@"Error while retrieving all blogs");
+        return nil;
+    }
+    
+    return blogs;
 }
 
 #pragma mark - Private methods

@@ -16,6 +16,7 @@
 #import "NoteService.h"
 #import "AccountService.h"
 #import "ContextManager.h"
+#import "StatsViewController.h"
 
 #import "ReaderPost.h"
 #import "ReaderPostDetailViewController.h"
@@ -92,6 +93,7 @@ typedef void (^NotificationsLoadPostBlock)(BOOL success, ReaderPost *post);
 - (void)didTapNoResultsView:(WPNoResultsView *)noResultsView
 {
     // Show Jetpack information screen
+    [WPAnalytics track:WPAnalyticsStatSelectedLearnMoreInConnectToJetpackScreen withProperties:@{@"source": @"notifications"}];
     WPWebViewController *webViewController = [[WPWebViewController alloc] init];
     [webViewController setUrl:[NSURL URLWithString:NotificationsJetpackInformationURL]];
     [self.navigationController pushViewController:webViewController animated:YES];
@@ -151,8 +153,7 @@ typedef void (^NotificationsLoadPostBlock)(BOOL success, ReaderPost *post);
 
     if (!_viewHasAppeared) {
         _viewHasAppeared = YES;
-        [WPMobileStats incrementProperty:StatsPropertyNotificationsOpened forEvent:StatsEventAppClosed];
-        [WPMobileStats incrementPeopleAndSuperProperty:StatsSuperPropertyNumberOfTimesOpenedNotifications];
+        [WPAnalytics track:WPAnalyticsStatNotificationsAccessed];
     }
     
     _isPushingViewController = NO;
@@ -233,10 +234,7 @@ typedef void (^NotificationsLoadPostBlock)(BOOL success, ReaderPost *post);
     [noteService pruneOldNotesBefore:pruneBefore];
 }
 
-- (void)showNotificationSettings
-{
-    [WPMobileStats trackEventForWPCom:StatsEventNotificationsClickedManageNotifications];
-    
+- (void)showNotificationSettings {
     NotificationSettingsViewController *notificationSettingsViewController = [[NotificationSettingsViewController alloc] initWithStyle:UITableViewStyleGrouped];
     UINavigationController *navigationController = [[UINavigationController alloc] initWithRootViewController:notificationSettingsViewController];
     navigationController.navigationBar.translucent = NO;
@@ -277,8 +275,7 @@ typedef void (^NotificationsLoadPostBlock)(BOOL success, ReaderPost *post);
     
     BOOL hasDetailView = [self noteHasDetailView:note];
     if (hasDetailView) {
-        [WPMobileStats incrementProperty:StatsPropertyNotificationsOpenedDetails forEvent:StatsEventAppClosed];
-        [WPMobileStats incrementPeopleAndSuperProperty:StatsSuperPropertyNumberOfTimesOpenedNotificationDetails];
+        [WPAnalytics track:WPAnalyticsStatNotificationsOpenedNotificationDetails];
 
         _isPushingViewController = YES;
         
@@ -301,15 +298,6 @@ typedef void (^NotificationsLoadPostBlock)(BOOL success, ReaderPost *post);
         } else if ([note templateType] == WPNoteTemplateBigBadge) {
             NotificationsBigBadgeViewController *bigBadgeViewController = [[NotificationsBigBadgeViewController alloc] initWithNote: note];
             [self.navigationController pushViewController:bigBadgeViewController animated:YES];
-        }
-    } else if ([note statsEvent]) {
-        NoteService *noteService = [[NoteService alloc] initWithManagedObjectContext:note.managedObjectContext];
-        Blog *blog = [noteService blogForStatsEventNote:note];
-        
-        if (blog) {
-            [[WordPressAppDelegate sharedWordPressApplicationDelegate] showStatsForBlog:blog];
-        } else {
-            [self.tableView deselectRowAtIndexPath:indexPath animated:YES];
         }
     } else {
         [self.tableView deselectRowAtIndexPath:indexPath animated:YES];
@@ -394,9 +382,8 @@ typedef void (^NotificationsLoadPostBlock)(BOOL success, ReaderPost *post);
     
     Note *note = [self.resultsController objectAtIndexPath:indexPath];
     BOOL hasDetailsView = [self noteHasDetailView:note];
-    BOOL isStatsNote = [note statsEvent];
     
-    if (!hasDetailsView && !isStatsNote) {
+    if (!hasDetailsView) {
         cell.accessoryType = UITableViewCellAccessoryNone;
         cell.selectionStyle = UITableViewCellSelectionStyleNone;
     }

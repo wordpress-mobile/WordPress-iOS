@@ -453,7 +453,7 @@ typedef enum {
     activityViewController.completionHandler = ^(NSString *activityType, BOOL completed) {
         if (!completed)
             return;
-        [WPActivityDefaults trackActivityType:activityType withPrefix:@"ReaderDetail"];
+        [WPActivityDefaults trackActivityType:activityType];
     };
     if (IS_IPAD) {
         if (_popover) {
@@ -625,11 +625,7 @@ typedef enum {
     ReaderPost *post = postView.post;
 	[post toggleLikedWithSuccess:^{
         if ([post.isLiked boolValue]) {
-            [WPMobileStats trackEventForWPCom:StatsEventReaderLikedPost];
-            [WPMobileStats incrementPeopleAndSuperProperty:StatsSuperPropertyNumberOfItemsLikedInReader];
-        } else {
-            [WPMobileStats trackEventForWPCom:StatsEventReaderUnlikedPost];
-            [WPMobileStats incrementPeopleAndSuperProperty:StatsSuperPropertyNumberOfItemsUnlikedInReader];
+            [WPAnalytics track:WPAnalyticsStatReaderLikedArticle];
         }
 	} failure:^(NSError *error) {
 		DDLogError(@"Error Liking Post : %@", [error localizedDescription]);
@@ -1038,6 +1034,7 @@ typedef enum {
 #pragma mark - ReaderCommentPublisherDelegate methods
 
 - (void)commentPublisherDidPublishComment:(ReaderCommentPublisher *)composer {
+    [WPAnalytics track:WPAnalyticsStatReaderCommentedOnArticle];
     [self.inlineComposeView dismissComposer];
     [self syncWithUserInteraction:NO];
 }

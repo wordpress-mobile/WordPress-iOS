@@ -5,15 +5,6 @@
 
 @implementation EditPageViewController
 
-- (id)initWithPost:(AbstractPost *)aPost
-{
-    self = [super initWithPost:aPost];
-    if (self) {
-        self.statsPrefix = @"Page Detail";
-    }
-    return self;
-}
-
 - (NSString *)editorTitle {
     NSString *title = @"";
     if (self.editMode == EditPostViewControllerModeNewPost) {

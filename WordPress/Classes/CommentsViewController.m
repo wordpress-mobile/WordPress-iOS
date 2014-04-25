@@ -103,8 +103,6 @@ CGFloat const CommentsSectionHeaderHeight = 24.0;
     }
     
 	if(comment) {
-        [WPMobileStats trackEventForWPCom:StatsEventCommentsViewCommentDetails];
-        
         self.currentIndexPath = indexPath;
         self.lastSelectedCommentID = comment.commentID; //store the latest user selection
         

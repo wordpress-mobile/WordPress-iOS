@@ -173,9 +173,7 @@ NSString * const RPVCDisplayedNativeFriendFinder = @"DisplayedNativeFriendFinder
     }
 
     if (!_viewHasAppeared) {
-	    [WPMobileStats trackEventForWPCom:StatsEventReaderOpened properties:[self categoryPropertyForStats]];
-	    [WPMobileStats pingWPComStatsEndpoint:@"home_page"];
-        [WPMobileStats incrementPeopleAndSuperProperty:StatsSuperPropertyNumberOfTimesOpenedReader];
+        [WPAnalytics track:WPAnalyticsStatReaderAccessed withProperties:[self tagPropertyForStats]];
         _viewHasAppeared = YES;
     }
 
@@ -370,11 +368,7 @@ NSString * const RPVCDisplayedNativeFriendFinder = @"DisplayedNativeFriendFinder
     ReaderPost *post = postView.post;
 	[post toggleLikedWithSuccess:^{
         if ([post.isLiked boolValue]) {
-            [WPMobileStats trackEventForWPCom:StatsEventReaderLikedPost];
-            [WPMobileStats incrementPeopleAndSuperProperty:StatsSuperPropertyNumberOfItemsLikedInReader];
-        } else {
-            [WPMobileStats trackEventForWPCom:StatsEventReaderUnlikedPost];
-            [WPMobileStats incrementPeopleAndSuperProperty:StatsSuperPropertyNumberOfItemsUnlikedInReader];
+            [WPAnalytics track:WPAnalyticsStatReaderLikedArticle];
         }
 	} failure:^(NSError *error) {
 		DDLogError(@"Error Liking Post : %@", [error localizedDescription]);
@@ -469,6 +463,7 @@ NSString * const RPVCDisplayedNativeFriendFinder = @"DisplayedNativeFriendFinder
 #pragma mark - ReaderCommentPublisherDelegate Methods
 
 - (void)commentPublisherDidPublishComment:(ReaderCommentPublisher *)publisher {
+    [WPAnalytics track:WPAnalyticsStatReaderCommentedOnArticle];
     publisher.post.dateCommentsSynced = nil;
     [self.inlineComposeView dismissComposer];
 }
@@ -745,8 +740,6 @@ NSString * const RPVCDisplayedNativeFriendFinder = @"DisplayedNativeFriendFinder
 									 failure(error);
 								 }
 							 }];
-    [WPMobileStats trackEventForWPCom:StatsEventReaderHomePageRefresh];
-    [WPMobileStats pingWPComStatsEndpoint:@"home_page_refresh"];
 }
 
 - (void)loadMoreWithSuccess:(void (^)())success failure:(void (^)(NSError *error))failure {
@@ -781,7 +774,7 @@ NSString * const RPVCDisplayedNativeFriendFinder = @"DisplayedNativeFriendFinder
 								 }
 							 }];
     
-    [WPMobileStats trackEventForWPCom:StatsEventReaderInfiniteScroll properties:[self categoryPropertyForStats]];
+    [WPAnalytics track:WPAnalyticsStatReaderInfiniteScroll withProperties:[self tagPropertyForStats]];
 }
 
 - (UITableViewRowAnimation)tableViewRowAnimation {
@@ -865,9 +858,7 @@ NSString * const RPVCDisplayedNativeFriendFinder = @"DisplayedNativeFriendFinder
     
     [self.navigationController pushViewController:self.detailController animated:YES];
     
-    [WPMobileStats trackEventForWPCom:StatsEventReaderOpenedArticleDetails];
-    [WPMobileStats incrementPeopleAndSuperProperty:StatsSuperPropertyNumberOfItemsOpenedInReader];
-    [WPMobileStats pingWPComStatsEndpoint:@"details_page"];
+    [WPAnalytics track:WPAnalyticsStatReaderOpenedArticle];
 }
 
 
@@ -914,12 +905,10 @@ NSString * const RPVCDisplayedNativeFriendFinder = @"DisplayedNativeFriendFinder
 		[[NSUserDefaults standardUserDefaults] removeObjectForKey:ReaderLastSyncDateKey];
 		[NSUserDefaults resetStandardUserDefaults];
     }
-
-    if ([self isCurrentCategoryFreshlyPressed]) {
-        [WPMobileStats trackEventForWPCom:StatsEventReaderSelectedFreshlyPressedTopic];
-        [WPMobileStats pingWPComStatsEndpoint:@"freshly"];
-    } else {
-        [WPMobileStats trackEventForWPCom:StatsEventReaderSelectedCategory properties:[self categoryPropertyForStats]];
+    
+    [WPAnalytics track:WPAnalyticsStatReaderLoadedTag withProperties:[self tagPropertyForStats]];
+    if ([self isCurrentTagFreshlyPressed]) {
+        [WPAnalytics track:WPAnalyticsStatReaderLoadedFreshlyPressed];
     }
 }
 
@@ -944,29 +933,48 @@ NSString * const RPVCDisplayedNativeFriendFinder = @"DisplayedNativeFriendFinder
 
 #pragma mark - Utility
 
-- (BOOL)isCurrentCategoryFreshlyPressed {
-    return [[self currentCategory] isEqualToString:@"freshly-pressed"];
+- (BOOL)isCurrentTagFreshlyPressed {
+    return [[self currentTag] rangeOfString:@"freshly-pressed"].location != NSNotFound;
 }
 
-- (NSString *)currentCategory {
-    NSDictionary *categoryDetails = [[NSUserDefaults standardUserDefaults] objectForKey:ReaderCurrentTopicKey];
-    NSString *category = [categoryDetails stringForKey:@"endpoint"];
-    if (category == nil) {
+- (NSString *)currentTag {
+    NSDictionary *tagDetails = [[NSUserDefaults standardUserDefaults] objectForKey:ReaderCurrentTopicKey];
+    NSString *tag = [tagDetails stringForKey:@"endpoint"];
+    if (tag == nil) {
         NSManagedObjectContext *context = [[ContextManager sharedInstance] mainContext];
         AccountService *accountService = [[AccountService alloc] initWithManagedObjectContext:context];
         WPAccount *defaultAccount = [accountService defaultWordPressComAccount];
-
+        
         if (defaultAccount != nil) {
             return @"read/following";
         } else {
             return @"freshly-pressed";
         }
     }
-    return category;
+    return tag;
 }
 
-- (NSDictionary *)categoryPropertyForStats {
-    return @{@"category": [self currentCategory]};
+- (NSString *)currentTagTitle
+{
+    NSDictionary *tagDetails = [[NSUserDefaults standardUserDefaults] objectForKey:ReaderCurrentTopicKey];
+    NSString *tagTitle = [tagDetails stringForKey:@"title"];
+    if (tagTitle == nil) {
+        NSManagedObjectContext *context = [[ContextManager sharedInstance] mainContext];
+        AccountService *accountService = [[AccountService alloc] initWithManagedObjectContext:context];
+        WPAccount *defaultAccount = [accountService defaultWordPressComAccount];
+        
+        if (defaultAccount != nil) {
+            return @"Blogs I Follow";
+        } else {
+            return @"Freshly Pressed";
+        }
+    } else {
+        return tagTitle;
+    }
+}
+
+- (NSDictionary *)tagPropertyForStats {
+    return @{@"tag": [self currentTagTitle]};
 }
 
 - (void)fetchBlogsAndPrimaryBlog {
