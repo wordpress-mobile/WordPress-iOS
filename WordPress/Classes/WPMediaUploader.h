@@ -3,6 +3,12 @@
 @class Media;
 @interface WPMediaUploader : NSObject
 
-+ (void)uploadMedia:(Media *)media;
+@property (nonatomic, copy) void (^uploadProgressBlock)(NSUInteger numberOfImagesProcessed, NSUInteger numberOfImagesToUpload);
+@property (nonatomic, copy) void (^uploadsCompletedBlock)(void);
+
+- (void)uploadMediaObjects:(NSArray *)mediaObjects;
+- (void)cancelAllUploads;
+- (void)cancelUploadForMedia:(Media *)media;
+
 
 @end

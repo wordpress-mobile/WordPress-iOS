@@ -27,7 +27,9 @@ CGFloat const EPVCTextViewOffset = 10.0;
 CGFloat const EPVCTextViewBottomPadding = 50.0f;
 CGFloat const EPVCTextViewTopPadding = 7.0f;
 
-@interface EditPostViewController ()<UIPopoverControllerDelegate>
+@interface EditPostViewController ()<UIPopoverControllerDelegate> {
+    WPMediaUploader *_mediaUploader;
+}
 
 @property (nonatomic, strong) UIButton *titleBarButton;
 @property (nonatomic, strong) WPAlertView *linkHelperAlertView;
@@ -117,6 +119,7 @@ CGFloat const EPVCTextViewTopPadding = 7.0f;
         self.restorationIdentifier = NSStringFromClass([self class]);
         self.restorationClass = [self class];
         _post = post;
+        [self configureMediaUploader];
         
         if (_post.remoteStatus == AbstractPostRemoteStatusLocal) {
             _editMode = EditPostViewControllerModeNewPost;
@@ -125,6 +128,17 @@ CGFloat const EPVCTextViewTopPadding = 7.0f;
         }
     }
     return self;
+}
+
+- (void)configureMediaUploader
+{
+    _mediaUploader = [[WPMediaUploader alloc] init];
+    _mediaUploader.uploadProgressBlock = ^(NSUInteger numberOfCurrentImageUploading, NSUInteger numberOfImagesToUpload) {
+        NSLog(@"%d/%d", numberOfCurrentImageUploading, numberOfImagesToUpload);
+    };
+    _mediaUploader.uploadsCompletedBlock = ^{
+        NSLog(@"Uploads completed!");
+    };
 }
 
 - (void)viewDidLoad {
@@ -1328,7 +1342,7 @@ CGFloat const EPVCTextViewTopPadding = 7.0f;
     [self dismissViewControllerAnimated:YES completion:nil];
     
     BOOL gelocationEnabled = self.post.blog.geolocationEnabled;
-    
+    NSMutableArray *mediaToUpload = [[NSMutableArray alloc] initWithCapacity:[assets count]];
     for (ALAsset *asset in assets) {
         Media *imageMedia = [Media newMediaForPost:self.post];
         ALAssetRepresentation *representation = asset.defaultRepresentation;
@@ -1342,9 +1356,10 @@ CGFloat const EPVCTextViewTopPadding = 7.0f;
             UIImage *resizedImage = [self correctlySizedImage:fullResolutionImage];
             NSDictionary *assetMetadata = [WPMediaMetadataExtractor metadataForAsset:asset enableGeolocation:gelocationEnabled];
             [WPMediaPersister saveMedia:imageMedia withImage:resizedImage andMetadata:assetMetadata];
-            [WPMediaUploader uploadMedia:imageMedia];
+            [mediaToUpload addObject:imageMedia];
         }
     }
+    [_mediaUploader uploadMediaObjects:mediaToUpload];
 }
 
 - (UIImage *)correctlySizedImage:(UIImage *)fullResolutionImage
