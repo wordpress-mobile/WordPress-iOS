@@ -14,7 +14,7 @@ CGFloat const WPMediaPersisterJPEGCompressionQuality = 0.9;
     UIImage *imageThumbnail = [self generateThumbnailFromImage:image andSize:CGSizeMake(WPMediaPersisterThumbnailSize, WPMediaPersisterThumbnailSize)];
     NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
     dateFormatter.locale = [NSLocale currentLocale];
-    [dateFormatter setDateFormat:@"yyyyMMdd-HHmmss"];
+    [dateFormatter setDateFormat:@"yyyyMMdd-HHmmss-A"];
 
     NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
     NSString *documentsDirectory = [paths objectAtIndex:0];
