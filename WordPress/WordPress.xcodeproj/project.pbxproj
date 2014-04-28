@@ -598,6 +598,7 @@
 		850DE07117CDAF92003A1057 /* icon-comments-approve-active.png in Resources */ = {isa = PBXBuildFile; fileRef = 850DE06917CDAF92003A1057 /* icon-comments-approve-active.png */; };
 		85149741171E13DF00B87F3F /* WPAsyncBlockOperation.m in Sources */ = {isa = PBXBuildFile; fileRef = 85149740171E13DF00B87F3F /* WPAsyncBlockOperation.m */; };
 		8514DDA7190E2AB3009B6421 /* WPMediaMetadataExtractor.m in Sources */ = {isa = PBXBuildFile; fileRef = 8514DDA6190E2AB3009B6421 /* WPMediaMetadataExtractor.m */; };
+		8514DDAA190E2D42009B6421 /* WPMediaPersister.m in Sources */ = {isa = PBXBuildFile; fileRef = 8514DDA9190E2D42009B6421 /* WPMediaPersister.m */; };
 		8516972C169D42F4006C5DED /* WPToast.m in Sources */ = {isa = PBXBuildFile; fileRef = 8516972B169D42F4006C5DED /* WPToast.m */; };
 		851734431798C64700A30E27 /* NSURL+Util.m in Sources */ = {isa = PBXBuildFile; fileRef = 851734421798C64700A30E27 /* NSURL+Util.m */; };
 		8524551717DE4DBE00D22F98 /* icon-chevron.png in Resources */ = {isa = PBXBuildFile; fileRef = 8524551517DE4DBE00D22F98 /* icon-chevron.png */; };
@@ -1739,6 +1740,8 @@
 		85149740171E13DF00B87F3F /* WPAsyncBlockOperation.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WPAsyncBlockOperation.m; sourceTree = "<group>"; };
 		8514DDA5190E2AB3009B6421 /* WPMediaMetadataExtractor.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WPMediaMetadataExtractor.h; sourceTree = "<group>"; };
 		8514DDA6190E2AB3009B6421 /* WPMediaMetadataExtractor.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WPMediaMetadataExtractor.m; sourceTree = "<group>"; };
+		8514DDA8190E2D42009B6421 /* WPMediaPersister.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WPMediaPersister.h; sourceTree = "<group>"; };
+		8514DDA9190E2D42009B6421 /* WPMediaPersister.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WPMediaPersister.m; sourceTree = "<group>"; };
 		8516972A169D42F4006C5DED /* WPToast.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WPToast.h; sourceTree = "<group>"; };
 		8516972B169D42F4006C5DED /* WPToast.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WPToast.m; sourceTree = "<group>"; };
 		851734411798C64700A30E27 /* NSURL+Util.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSURL+Util.h"; sourceTree = "<group>"; };
@@ -2944,6 +2947,8 @@
 				852CD8AC190E0BC4006C9AED /* WPMediaSizing.m */,
 				8514DDA5190E2AB3009B6421 /* WPMediaMetadataExtractor.h */,
 				8514DDA6190E2AB3009B6421 /* WPMediaMetadataExtractor.m */,
+				8514DDA8190E2D42009B6421 /* WPMediaPersister.h */,
+				8514DDA9190E2D42009B6421 /* WPMediaPersister.m */,
 			);
 			name = Media;
 			sourceTree = "<group>";
@@ -5401,6 +5406,7 @@
 				5D1EE80215E7AF3E007F1F02 /* JetpackSettingsViewController.m in Sources */,
 				5D3E334E15EEBB6B005FC6F2 /* ReachabilityUtils.m in Sources */,
 				5D87E10C15F5120C0012C595 /* SettingsPageViewController.m in Sources */,
+				8514DDAA190E2D42009B6421 /* WPMediaPersister.m in Sources */,
 				5DC3A44D1610B9BC00A890BE /* UINavigationController+Rotation.m in Sources */,
 				E1A0FAE7162F11CF0063B098 /* UIDevice+WordPressIdentifier.m in Sources */,
 				5DA5BF4318E32DCF005F11F9 /* MediaSearchFilterHeaderView.m in Sources */,
