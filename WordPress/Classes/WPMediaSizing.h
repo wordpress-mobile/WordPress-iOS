@@ -7,5 +7,6 @@
 + (CGSize)sizeForImage:(UIImage *)image
            mediaResize:(MediaResize)resize
   blogResizeDimensions:(NSDictionary *)dimensions;
++ (UIImage *)resizeImage:(UIImage *)original toSize:(CGSize)newSize;
 
 @end
