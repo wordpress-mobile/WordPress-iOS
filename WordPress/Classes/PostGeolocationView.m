@@ -88,10 +88,10 @@ const CGFloat GeoViewMinHeight = 130.0f;
     CLLocationDegrees longitude = self.coordinate.longitude;
     
     if (latitude != 0 && longitude !=0 ) {
-        int latD = trunc(fabs(latitude));
-        int latM = trunc((fabs(latitude) - latD) * 60);
-        int lonD = trunc(fabs(longitude));
-        int lonM = trunc((fabs(longitude) - lonD) * 60);
+        NSInteger latD = trunc(fabs(latitude));
+        NSInteger latM = trunc((fabs(latitude) - latD) * 60);
+        NSInteger lonD = trunc(fabs(longitude));
+        NSInteger lonM = trunc((fabs(longitude) - lonD) * 60);
         NSString *latDir = (latitude > 0) ? NSLocalizedString(@"North", @"Used for Geo-tagging posts by latitude and longitude. Basic form.") : NSLocalizedString(@"South", @"Used for Geo-tagging posts by latitude and longitude. Basic form.");
         NSString *lonDir = (longitude > 0) ? NSLocalizedString(@"East", @"Used for Geo-tagging posts by latitude and longitude. Basic form.") : NSLocalizedString(@"West", @"Used for Geo-tagging posts by latitude and longitude. Basic form.");
         if (latitude == 0.0) latDir = @"";
