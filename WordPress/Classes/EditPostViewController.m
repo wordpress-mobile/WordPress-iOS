@@ -1342,7 +1342,7 @@ CGFloat const EPVCTextViewTopPadding = 7.0f;
             MediaResize *resize = [WPMediaSizing mediaResizePreference];
             NSDictionary *dimensions = [self.post.blog getImageResizeDimensions];
             CGSize newSize = [WPMediaSizing sizeForImage:fullResolutionImage mediaResize:resize blogResizeDimensions:dimensions];
-            UIImage *resizedImage = [mediaProcessor resizeImage:fullResolutionImage toSize:newSize];
+            UIImage *resizedImage = [WPMediaSizing resizeImage:fullResolutionImage toSize:newSize];
             NSDictionary *assetMetadata = [mediaProcessor metadataForAsset:asset enableGeolocation:gelocationEnabled];
             [mediaProcessor processImage:resizedImage media:imageMedia metadata:assetMetadata];
         }

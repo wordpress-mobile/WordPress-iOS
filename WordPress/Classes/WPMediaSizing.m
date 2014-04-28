@@ -1,4 +1,5 @@
 #import "WPMediaSizing.h"
+#import "UIImage+Resize.h"
 
 @implementation WPMediaSizing
 
@@ -67,6 +68,21 @@
     }
 
     return newSize;
+}
+
++ (UIImage *)resizeImage:(UIImage *)original toSize:(CGSize)newSize
+{
+    CGSize originalSize = CGSizeMake(original.size.width, original.size.height);
+    UIImage *resizedImage = original;
+    
+    // Perform resizing if necessary
+    if (!CGSizeEqualToSize(originalSize, newSize)) {
+        resizedImage = [original resizedImageWithContentMode:UIViewContentModeScaleAspectFit
+                                                      bounds:newSize
+                                        interpolationQuality:kCGInterpolationHigh];
+    }
+    
+    return resizedImage;
 }
 
 
