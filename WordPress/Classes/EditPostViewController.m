@@ -11,6 +11,7 @@
 #import "LocationService.h"
 #import "BlogService.h"
 #import "WPMediaProcessor.h"
+#import "WPMediaSizing.h"
 #import <AssetsLibrary/AssetsLibrary.h>
 
 NSString *const WPEditorNavigationRestorationID = @"WPEditorNavigationRestorationID";
@@ -1338,7 +1339,7 @@ CGFloat const EPVCTextViewTopPadding = 7.0f;
                                                                scale:1.0f
                                                          orientation:(UIImageOrientation)representation.orientation];
             
-            MediaResize *resize = [mediaProcessor mediaResizePreference];
+            MediaResize *resize = [WPMediaSizing mediaResizePreference];
             NSDictionary *dimensions = [self.post.blog getImageResizeDimensions];
             CGSize newSize = [mediaProcessor sizeForImage:fullResolutionImage mediaResize:resize blogResizeDimensions:dimensions];
             UIImage *resizedImage = [mediaProcessor resizeImage:fullResolutionImage toSize:newSize];
