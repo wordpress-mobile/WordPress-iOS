@@ -5,6 +5,7 @@
 
 @property (nonatomic, copy) void (^uploadProgressBlock)(NSUInteger numberOfImagesProcessed, NSUInteger numberOfImagesToUpload);
 @property (nonatomic, copy) void (^uploadsCompletedBlock)(void);
+@property (nonatomic, assign) BOOL isUploadingMedia;
 
 - (void)uploadMediaObjects:(NSArray *)mediaObjects;
 - (void)cancelAllUploads;

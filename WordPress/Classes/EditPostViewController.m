@@ -32,6 +32,7 @@ CGFloat const EPVCTextViewTopPadding = 7.0f;
 }
 
 @property (nonatomic, strong) UIButton *titleBarButton;
+@property (nonatomic, strong) UIButton *uploadMediaButton;
 @property (nonatomic, strong) WPAlertView *linkHelperAlertView;
 @property (nonatomic, strong) UIPopoverController *blogSelectorPopover;
 @property (nonatomic) BOOL dismissingBlogPicker;
@@ -132,12 +133,10 @@ CGFloat const EPVCTextViewTopPadding = 7.0f;
 
 - (void)configureMediaUploader
 {
+    __weak EditPostViewController *weakSelf = self;
     _mediaUploader = [[WPMediaUploader alloc] init];
-    _mediaUploader.uploadProgressBlock = ^(NSUInteger numberOfCurrentImageUploading, NSUInteger numberOfImagesToUpload) {
-        NSLog(@"%d/%d", numberOfCurrentImageUploading, numberOfImagesToUpload);
-    };
     _mediaUploader.uploadsCompletedBlock = ^{
-        NSLog(@"Uploads completed!");
+        [weakSelf setupNavbar];
     };
 }
 
@@ -241,10 +240,25 @@ CGFloat const EPVCTextViewTopPadding = 7.0f;
     BlogService *blogService = [[BlogService alloc] initWithManagedObjectContext:context];
     NSInteger blogCount = [blogService blogCountForAllAccounts];
     
-    if (blogCount <= 1 || self.editMode == EditPostViewControllerModeEditPost || [[WordPressAppDelegate sharedWordPressApplicationDelegate] isNavigatingMeTab]) {
+    if (_mediaUploader.isUploadingMedia) {
+        UIButton *titleButton = self.uploadMediaButton;
+        self.navigationItem.titleView = titleButton;
+        NSMutableAttributedString *titleText = [[NSMutableAttributedString alloc] initWithString:[NSString stringWithFormat:@"%@\n", [self editorTitle]]
+                                                                                      attributes:@{ NSFontAttributeName : [UIFont fontWithName:@"OpenSans-Bold" size:14.0] }];
+
+        NSString *subtext = NSLocalizedString(@"Uploading Media...", @"This text appears at the top of the editor when images are being uploaded");
+        NSDictionary *subtextAttributes = @{ NSFontAttributeName: [UIFont fontWithName:@"OpenSans" size:10.0] };
+        NSMutableAttributedString *titleSubtext = [[NSMutableAttributedString alloc] initWithString:subtext
+                                                                                         attributes:subtextAttributes];
+        [titleText appendAttributedString:titleSubtext];
+        [titleButton setAttributedTitle:titleText forState:UIControlStateNormal];
+
+        [titleButton sizeToFit];
+    } else if(blogCount <= 1 || self.editMode == EditPostViewControllerModeEditPost || [[WordPressAppDelegate sharedWordPressApplicationDelegate] isNavigatingMeTab]) {
         self.navigationItem.title = [self editorTitle];
     } else {
         UIButton *titleButton = self.titleBarButton;
+        self.navigationItem.titleView = titleButton;
         NSMutableAttributedString *titleText = [[NSMutableAttributedString alloc] initWithString:[NSString stringWithFormat:@"%@\n", [self editorTitle]]
                                                                                       attributes:@{ NSFontAttributeName : [UIFont fontWithName:@"OpenSans-Bold" size:14.0] }];
 
@@ -549,6 +563,19 @@ CGFloat const EPVCTextViewTopPadding = 7.0f;
     return [PostSettingsViewController class];
 }
 
+- (void)showCancelMediaUploadPrompt
+{
+    UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"Cancel Media Uploads", nil) message:NSLocalizedString(@"This will stop the current media uploads in progress, are you sure you want to proceed?", @"This is displayed if the user taps the uploading text in the post editor") delegate:self cancelButtonTitle:NSLocalizedString(@"Cancel", nil) otherButtonTitles:NSLocalizedString(@"Ok", nil), nil];
+    alertView.tag = EditPostViewControllerAlertCancelMediaUpload;
+    [alertView show];
+}
+
+- (void)cancelMediaUploads
+{
+    [_mediaUploader cancelAllUploads];
+    [self setupNavbar];
+}
+
 - (void)showSettings {
     Post *post = (Post *)self.post;
     PostSettingsViewController *vc = [[[self classForSettingsViewController] alloc] initWithPost:post];
@@ -765,9 +792,29 @@ CGFloat const EPVCTextViewTopPadding = 7.0f;
     [titleButton setAccessibilityHint:NSLocalizedString(@"Tap to select which blog to post to", nil)];
 
     _titleBarButton = titleButton;
-    self.navigationItem.titleView = titleButton;
     
     return _titleBarButton;
+}
+
+- (UIButton *)uploadMediaButton {
+    if (_uploadMediaButton) {
+        return _uploadMediaButton;
+    }
+    
+    UIButton *uploadMediaButton = [WPBlogSelectorButton buttonWithType:UIButtonTypeSystem];
+    uploadMediaButton.frame = CGRectMake(0.0f, 0.0f, 200.0f, 33.0f);
+    uploadMediaButton.titleLabel.numberOfLines = 2;
+    uploadMediaButton.titleLabel.textColor = [UIColor whiteColor];
+    uploadMediaButton.titleLabel.textAlignment = NSTextAlignmentCenter;
+    uploadMediaButton.autoresizingMask = UIViewAutoresizingFlexibleLeftMargin | UIViewAutoresizingFlexibleRightMargin | UIViewAutoresizingFlexibleTopMargin | UIViewAutoresizingFlexibleBottomMargin;
+    [uploadMediaButton addTarget:self action:@selector(showCancelMediaUploadPrompt) forControlEvents:UIControlEventTouchUpInside];
+    [uploadMediaButton setImageEdgeInsets:UIEdgeInsetsMake(0, 0, 0, 10)];
+    [uploadMediaButton setTitleEdgeInsets:UIEdgeInsetsMake(0, 10, 0, 0)];
+    [uploadMediaButton setAccessibilityHint:NSLocalizedString(@"Tap to select which blog to post to", nil)];
+    
+    _uploadMediaButton = uploadMediaButton;
+    
+    return _uploadMediaButton;
 }
 
 # pragma mark - Model State Methods
@@ -1255,6 +1302,10 @@ CGFloat const EPVCTextViewTopPadding = 7.0f;
         if (buttonIndex == 1) {
             [self showBlogSelector];
         }
+    } else if (alertView.tag == EditPostViewControllerAlertCancelMediaUpload) {
+        if (buttonIndex == 1) {
+            [self cancelMediaUploads];
+        }
     }
     return;
 }
@@ -1360,6 +1411,7 @@ CGFloat const EPVCTextViewTopPadding = 7.0f;
         }
     }
     [_mediaUploader uploadMediaObjects:mediaToUpload];
+    [self setupNavbar];
 }
 
 - (UIImage *)correctlySizedImage:(UIImage *)fullResolutionImage
