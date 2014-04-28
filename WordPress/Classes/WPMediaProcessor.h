@@ -6,6 +6,5 @@
 @interface WPMediaProcessor : NSObject
 
 - (void)processImage:(UIImage *)theImage media:(Media *)imageMedia metadata:(NSDictionary *)metadata;
-- (NSDictionary *)metadataForAsset:(ALAsset *)asset enableGeolocation:(BOOL)enableGeolocation;
 
 @end
