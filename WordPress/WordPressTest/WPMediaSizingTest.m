@@ -122,6 +122,22 @@
     }];
 }
 
+- (void)testResizeImage
+{
+    CGSize size = CGSizeMake(5, 5);
+    UIImage *image = [self generateTestImageOfSize:size];
+    UIImage *resizedImage;
+    
+    resizedImage = [WPMediaSizing resizeImage:image toSize:size];
+    XCTAssertTrue(CGSizeEqualToSize(resizedImage.size, size));
+    XCTAssertEqual(image, resizedImage, @"Method should not resize the image if it's the same size and should return the same image");
+    
+    size = CGSizeMake(4, 4);
+    resizedImage = [WPMediaSizing resizeImage:image toSize:size];
+    XCTAssertTrue(CGSizeEqualToSize(resizedImage.size, size));
+    XCTAssertNotEqual(image, resizedImage, @"Method should resize the image if it's the same size and as such should return a different image");
+}
+
 
 #pragma mark - Helper Methods
 
