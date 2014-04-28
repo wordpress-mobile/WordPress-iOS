@@ -12,6 +12,7 @@
 #import "BlogService.h"
 #import "WPMediaProcessor.h"
 #import "WPMediaSizing.h"
+#import "WPMediaMetadataExtractor.h"
 #import <AssetsLibrary/AssetsLibrary.h>
 
 NSString *const WPEditorNavigationRestorationID = @"WPEditorNavigationRestorationID";
@@ -1339,7 +1340,7 @@ CGFloat const EPVCTextViewTopPadding = 7.0f;
                                                                scale:1.0f
                                                          orientation:(UIImageOrientation)representation.orientation];
             UIImage *resizedImage = [self correctlySizedImage:fullResolutionImage];
-            NSDictionary *assetMetadata = [mediaProcessor metadataForAsset:asset enableGeolocation:gelocationEnabled];
+            NSDictionary *assetMetadata = [WPMediaMetadataExtractor metadataForAsset:asset enableGeolocation:gelocationEnabled];
             [mediaProcessor processImage:resizedImage media:imageMedia metadata:assetMetadata];
         }
     }
