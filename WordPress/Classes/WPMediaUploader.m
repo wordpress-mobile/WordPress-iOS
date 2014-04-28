@@ -27,6 +27,11 @@ NSString *const WPMediaUploaderUploadOperation = @"upload_operation";
 
 - (void)uploadMediaObjects:(NSArray *)mediaObjects
 {
+    if ([mediaObjects count] == 0)
+        return;
+    
+    self.isUploadingMedia = YES;
+    
     _numberOfImagesToUpload += [mediaObjects count];
     for (Media *media in mediaObjects) {
         [self uploadMedia:media];
@@ -37,14 +42,14 @@ NSString *const WPMediaUploaderUploadOperation = @"upload_operation";
 {
     [self uploadMedia:media withSuccess:^{
         if ([media isDeleted]) {
-            DDLogWarn(@"Media processor found deleted media while uploading (%@)", media);
+            DDLogWarn(@"Media uplaoder found deleted media while uploading (%@)", media);
             return;
         }
         [[NSNotificationCenter defaultCenter] postNotificationName:MediaShouldInsertBelowNotification object:media];
         [media save];
     } failure:^(NSError *error){
         if (error.domain == NSURLErrorDomain && error.code == NSURLErrorCancelled) {
-            DDLogWarn(@"Media processor failed with cancelled upload: %@", error.localizedDescription);
+            DDLogWarn(@"Media uploader failed with cancelled upload: %@", error.localizedDescription);
             return;
         }
         
@@ -60,6 +65,7 @@ NSString *const WPMediaUploaderUploadOperation = @"upload_operation";
         [operation cancel];
     }
     [_mediaUploads removeAllObjects];
+    self.isUploadingMedia = NO;
 }
 
 - (void)cancelUploadForMedia:(Media *)media
@@ -154,6 +160,7 @@ NSString *const WPMediaUploaderUploadOperation = @"upload_operation";
     }
     
     if (_numberOfImagesProcessed == _numberOfImagesToUpload && self.uploadsCompletedBlock) {
+        self.isUploadingMedia = NO;
         self.uploadsCompletedBlock();
     }
 }
