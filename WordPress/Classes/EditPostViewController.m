@@ -10,9 +10,10 @@
 #import "UIImage+Util.h"
 #import "LocationService.h"
 #import "BlogService.h"
-#import "WPMediaProcessor.h"
+#import "WPMediaPersister.h"
 #import "WPMediaSizing.h"
 #import "WPMediaMetadataExtractor.h"
+#import "WPMediaUploader.h"
 #import <AssetsLibrary/AssetsLibrary.h>
 
 NSString *const WPEditorNavigationRestorationID = @"WPEditorNavigationRestorationID";
@@ -1326,7 +1327,6 @@ CGFloat const EPVCTextViewTopPadding = 7.0f;
 - (void)assetsPickerController:(CTAssetsPickerController *)picker didFinishPickingAssets:(NSArray *)assets {
     [self dismissViewControllerAnimated:YES completion:nil];
     
-    WPMediaProcessor *mediaProcessor = [[WPMediaProcessor alloc] init];
     BOOL gelocationEnabled = self.post.blog.geolocationEnabled;
     
     for (ALAsset *asset in assets) {
@@ -1341,7 +1341,8 @@ CGFloat const EPVCTextViewTopPadding = 7.0f;
                                                          orientation:(UIImageOrientation)representation.orientation];
             UIImage *resizedImage = [self correctlySizedImage:fullResolutionImage];
             NSDictionary *assetMetadata = [WPMediaMetadataExtractor metadataForAsset:asset enableGeolocation:gelocationEnabled];
-            [mediaProcessor processImage:resizedImage media:imageMedia metadata:assetMetadata];
+            [WPMediaPersister saveMedia:imageMedia withImage:resizedImage andMetadata:assetMetadata];
+            [WPMediaUploader uploadMedia:imageMedia];
         }
     }
 }
