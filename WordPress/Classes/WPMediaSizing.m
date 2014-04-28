@@ -30,4 +30,44 @@
 }
 
 
++ (CGSize)sizeForImage:(UIImage *)image
+           mediaResize:(MediaResize)resize
+  blogResizeDimensions:(NSDictionary *)dimensions
+{
+    CGSize smallSize =  [dimensions[@"smallSize"] CGSizeValue];
+    CGSize mediumSize = [dimensions[@"mediumSize"] CGSizeValue];
+    CGSize largeSize =  [dimensions[@"largeSize"] CGSizeValue];
+    CGSize originalSize = CGSizeMake(image.size.width, image.size.height);
+    
+    // Resize the image using the selected dimensions
+    CGSize newSize = originalSize;
+    
+    switch (image.imageOrientation) {
+        case UIImageOrientationLeft:
+        case UIImageOrientationLeftMirrored:
+        case UIImageOrientationRight:
+        case UIImageOrientationRightMirrored:
+            smallSize = CGSizeMake(smallSize.height, smallSize.width);
+            mediumSize = CGSizeMake(mediumSize.height, mediumSize.width);
+            largeSize = CGSizeMake(largeSize.height, largeSize.width);
+            break;
+        default:
+            break;
+    }
+    
+    if (resize == MediaResizeSmall &&
+        (image.size.width > smallSize.width || image.size.height > smallSize.height)) {
+        newSize = smallSize;
+    } else if (resize == MediaResizeMedium &&
+               (image.size.width > mediumSize.width || image.size.height > mediumSize.height)) {
+        newSize = mediumSize;
+    } else if (resize == MediaResizeLarge &&
+               (image.size.width > largeSize.width || image.size.height > largeSize.height)) {
+        newSize = largeSize;
+    }
+
+    return newSize;
+}
+
+
 @end
