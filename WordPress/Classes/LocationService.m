@@ -58,6 +58,8 @@ NSString *const LocationServiceErrorDomain = @"LocationServiceErrorDomain";
     if (completionBlock) {
         [self.completionBlocks addObject:completionBlock];
     }
+    self.lastGeocodedAddress = nil;
+    self.lastGeocodedLocation = nil;
     [self startUpdatingLocation];
 }
 
@@ -109,6 +111,7 @@ NSString *const LocationServiceErrorDomain = @"LocationServiceErrorDomain";
         LocationServiceCompletionBlock block = [self.completionBlocks objectAtIndex:i];
         block(location, address, error);
     }
+
     [self.completionBlocks removeAllObjects];
 }
 
