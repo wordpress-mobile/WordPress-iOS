@@ -4,5 +4,8 @@
 @interface WPMediaSizing : NSObject
 
 + (MediaResize)mediaResizePreference;
++ (CGSize)sizeForImage:(UIImage *)image
+           mediaResize:(MediaResize)resize
+  blogResizeDimensions:(NSDictionary *)dimensions;
 
 @end
