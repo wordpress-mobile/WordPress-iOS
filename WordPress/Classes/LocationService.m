@@ -58,6 +58,8 @@ NSString *const LocationServiceErrorDomain = @"LocationServiceErrorDomain";
     if (completionBlock) {
         [self.completionBlocks addObject:completionBlock];
     }
+    self.lastGeocodedAddress = nil;
+    self.lastGeocodedLocation = nil;
     [self startUpdatingLocation];
 }
 
@@ -79,10 +81,11 @@ NSString *const LocationServiceErrorDomain = @"LocationServiceErrorDomain";
         NSString *address;
         if (placemarks) {
             CLPlacemark *placemark = [placemarks objectAtIndex:0];
-            if (placemark.subLocality) {
-                address = [NSString stringWithFormat:@"%@, %@, %@", placemark.subLocality, placemark.locality, placemark.country];
+            if (placemark.addressDictionary) {
+                address = [[placemark.addressDictionary arrayForKey:@"FormattedAddressLines"] componentsJoinedByString:@", "];
             } else {
-                address = [NSString stringWithFormat:@"%@, %@, %@", placemark.locality, placemark.administrativeArea, placemark.country];
+                // Fallback, just in case.
+                address = placemark.name;
             }
         } else {
             DDLogError(@"Reverse geocoder failed for coordinate (%.6f, %.6f): %@",
@@ -118,6 +121,7 @@ NSString *const LocationServiceErrorDomain = @"LocationServiceErrorDomain";
         LocationServiceCompletionBlock block = [self.completionBlocks objectAtIndex:i];
         block(location, address, error);
     }
+
     [self.completionBlocks removeAllObjects];
 }
 
