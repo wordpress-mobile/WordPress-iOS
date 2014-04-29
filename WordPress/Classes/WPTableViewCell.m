@@ -12,6 +12,14 @@ CGFloat const WPTableViewFixedWidth = 600;
 
 @implementation WPTableViewCell
 
+- (id)initWithStyle:(UITableViewCellStyle)style reuseIdentifier:(NSString *)reuseIdentifier {
+    self = [super initWithStyle:style reuseIdentifier:reuseIdentifier];
+    if (self) {
+        [self setClipsToBounds:YES];
+    }
+    return self;
+}
+
 - (void)setFrame:(CGRect)frame {
     CGFloat width = self.superview.frame.size.width;
     // On iPad, add a margin around tables

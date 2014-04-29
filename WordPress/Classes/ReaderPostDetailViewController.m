@@ -131,6 +131,7 @@ typedef enum {
 	[self prepareComments];
 
     self.inlineComposeView = [[InlineComposeView alloc] initWithFrame:CGRectZero];
+    [self.inlineComposeView setButtonTitle:NSLocalizedString(@"Post", nil)];
 
     _tapOffKeyboardGesture = [[UITapGestureRecognizer alloc] initWithTarget:self
                                                                      action:@selector(dismissKeyboard:)];
@@ -257,8 +258,9 @@ typedef enum {
     [button setImage:image forState:UIControlStateNormal];
     [button addTarget:self action:@selector(handleShareButtonTapped:) forControlEvents:UIControlEventTouchUpInside];
     _shareButton = [[UIBarButtonItem alloc] initWithCustomView:button];
+    _shareButton.accessibilityLabel = NSLocalizedString(@"Share", @"Spoken accessibility label");
 
-        return _shareButton;
+    return _shareButton;
 }
 
 - (void)buildActionBar {
@@ -268,6 +270,7 @@ typedef enum {
 	commentBtn.frame = CGRectMake(0.0f, 0.0f, 40.0f, 40.0f);
 	[commentBtn addTarget:self action:@selector(handleCommentButtonTapped:) forControlEvents:UIControlEventTouchUpInside];
 	self.commentButton = [[UIBarButtonItem alloc] initWithCustomView:commentBtn];
+    self.commentButton.accessibilityLabel = NSLocalizedString(@"Comment", @"");
 	
 	UIButton *likeBtn = [UIButton buttonWithType:UIButtonTypeCustom];
 	[likeBtn.titleLabel setFont:[UIFont fontWithName:@"OpenSans-Bold" size:10.0f]];
@@ -280,6 +283,7 @@ typedef enum {
 	likeBtn.autoresizingMask = UIViewAutoresizingFlexibleLeftMargin | UIViewAutoresizingFlexibleRightMargin;
 	[likeBtn addTarget:self action:@selector(handleLikeButtonTapped:) forControlEvents:UIControlEventTouchUpInside];
 	self.likeButton = [[UIBarButtonItem alloc] initWithCustomView:likeBtn];
+    self.likeButton.accessibilityLabel = NSLocalizedString(@"Like", @"");
 	
 	UIButton *reblogBtn = [UIButton buttonWithType:UIButtonTypeCustom];
     [reblogBtn setImage:[UIImage imageNamed:@"reader-postaction-reblog"] forState:UIControlStateNormal];
@@ -289,6 +293,7 @@ typedef enum {
 	reblogBtn.autoresizingMask = UIViewAutoresizingFlexibleLeftMargin;
 	[reblogBtn addTarget:self action:@selector(handleReblogButtonTapped:) forControlEvents:UIControlEventTouchUpInside];
 	self.reblogButton = [[UIBarButtonItem alloc] initWithCustomView:reblogBtn];
+    self.reblogButton.accessibilityLabel = NSLocalizedString(@"Reblog", @"");
 	
 	[self updateActionBar];
 }

@@ -107,8 +107,6 @@ NSString * const WPAccountDefaultWordPressComAccountChangedNotification = @"WPAc
     [[NSUserDefaults standardUserDefaults] removeObjectForKey:DefaultDotcomAccountDefaultsKey];
     NSManagedObjectID *accountObjectID = __defaultDotcomAccount.objectID;
     __defaultDotcomAccount = nil;
-
-    [WordPressAppDelegate sharedWordPressApplicationDelegate].isWPcomAuthenticated = NO;
     
     [[NSUserDefaults standardUserDefaults] removeObjectForKey:@"wpcom_username_preference"];
     [[NSUserDefaults standardUserDefaults] synchronize];
@@ -123,6 +121,8 @@ NSString * const WPAccountDefaultWordPressComAccountChangedNotification = @"WPAc
         [[ContextManager sharedInstance] saveContext:context];
     }];
 }
+
+#pragma mark - NSManagedObject subclass methods
 
 - (void)prepareForDeletion {
     // Only do these deletions in the primary context (no parent)
@@ -139,6 +139,13 @@ NSString * const WPAccountDefaultWordPressComAccountChangedNotification = @"WPAc
     [SFHFKeychainUtils deleteItemForUsername:self.username andServiceName:WordPressComOAuthKeychainServiceName error:&error];
     self.password = nil;
     self.authToken = nil;
+}
+
+- (void)didTurnIntoFault {
+    [super didTurnIntoFault];
+    
+    _restApi = nil;
+    _xmlrpcApi = nil;
 }
 
 #pragma mark - Account creation

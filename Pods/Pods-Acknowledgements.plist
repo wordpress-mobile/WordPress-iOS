@@ -787,7 +787,7 @@ limitations under the License.
 			<key>FooterText</key>
 			<string>BSD license follows (http://www.opensource.org/licenses/bsd-license.php)
 
-Copyright (c) 2010-2011, Florent Pillet All rights reserved.
+Copyright (c) 2010-2013, Florent Pillet All rights reserved.
 
 Redistribution and use in source and binary forms, with or without modification, are
 permitted provided that the following conditions are met:
@@ -807,7 +807,8 @@ CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE 
 OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED
 AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
 (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
-SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.</string>
+SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+</string>
 			<key>Title</key>
 			<string>NSLogger</string>
 			<key>Type</key>
@@ -855,17 +856,6 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 </string>
 			<key>Title</key>
 			<string>NSObject-SafeExpectations</string>
-			<key>Type</key>
-			<string>PSGroupSpecifier</string>
-		</dict>
-		<dict>
-			<key>FooterText</key>
-			<string>Copyright 2012 Quantcast Corp.
-
-This software is licensed under the Quantcast Mobile App Measurement Terms of Service https://www.quantcast.com/learning-center/quantcast-terms/mobile-app-measurement-tos (the “License”). You may not use this file unless (1) you sign up for an account at https://www.quantcast.com and click your agreement to the License and (2) are in compliance with the License. See the License for the specific language governing permissions and limitations under the License.
-</string>
-			<key>Title</key>
-			<string>Quantcast-Measure</string>
 			<key>Type</key>
 			<string>PSGroupSpecifier</string>
 		</dict>

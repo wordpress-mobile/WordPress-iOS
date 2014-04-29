@@ -251,10 +251,25 @@
 }
 
 + (UIColor *)keyboardColor {
+    // Pre iOS 7.1 uses a the lighter keyboard background.
+    // There doesn't seem to be a good way to get the keyboard background color
+    // programatically so we'll rely on checking the OS version.
+    // Approach based on http://stackoverflow.com/a/5337804
+    NSString *versionStr = [[UIDevice currentDevice] systemVersion];
+    BOOL hasLighterKeyboard = [versionStr compare:@"7.1" options:NSNumericSearch] == NSOrderedAscending;
+    
+    if (hasLighterKeyboard) {
+        if (IS_IPAD) {
+            return [UIColor colorWithRed:207.0f/255.0f green:210.0f/255.0f blue:213.0f/255.0f alpha:1.0];
+        } else {
+            return [UIColor colorWithRed:220.0f/255.0f green:223.0f/255.0f blue:226.0f/255.0f alpha:1.0];
+        }
+    }
+    
     if (IS_IPAD) {
-        return [UIColor colorWithRed:207.0f/255.0f green:210.0f/255.0f blue:213.0f/255.0f alpha:1.0];
+        return [UIColor colorWithRed:217.0f/255.0f green:220.0f/255.0f blue:223.0f/255.0f alpha:1.0];
     } else {
-        return [UIColor colorWithRed:220.0f/255.0f green:223.0f/255.0f blue:226.0f/255.0f alpha:1.0];
+        return [UIColor colorWithRed:204.0f/255.0f green:208.0f/255.0f blue:214.0f/255.0f alpha:1.0];
     }
 }
 

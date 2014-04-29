@@ -44,4 +44,9 @@
 - (Class)classForSettingsViewController {
     return [PageSettingsViewController class];
 }
+
+- (void)geotagNewPost {
+    // Noop. Pages do not support geolocation.
+}
+
 @end

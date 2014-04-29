@@ -61,6 +61,11 @@ NSString *const StatsPointCountKey = @"count";
 }
 
 - (NSString *)nicePointName:(NSString *)name forUnit:(StatsViewsVisitorsUnit)unit {
+    if (name.length == 0) {
+        DDLogWarn(@"Invalid date/name passed into nicePointName for unit: %i", unit);
+        return @"";
+    }
+    
     switch (unit) {
         case StatsViewsVisitorsUnitDay:
         {
