@@ -40,7 +40,7 @@ NSString *const LocationServiceErrorDomain = @"LocationServiceErrorDomain";
         self.geocoder = [[CLGeocoder alloc] init];
         self.completionBlocks = [NSMutableArray array];
     }
-    
+
     return self;
 }
 
@@ -65,13 +65,13 @@ NSString *const LocationServiceErrorDomain = @"LocationServiceErrorDomain";
     if (completionBlock) {
         [self.completionBlocks addObject:completionBlock];
     }
-    
+
     // Skip the address lookup if this is not a new location
-    if (self.lastGeocodedAddress && ([self.lastGeocodedLocation distanceFromLocation:location] <= LocationHorizontalAccuracyThreshold)) {
+    if ([self hasAddressForLocation:location]) {
         [self addressUpdated:self.lastGeocodedAddress forLocation:self.lastGeocodedLocation error:nil];
         return;
     }
-    
+
     self.locationServiceRunning = YES;
     self.lastGeocodedAddress = nil;
     self.lastGeocodedLocation = nil;
@@ -89,12 +89,21 @@ NSString *const LocationServiceErrorDomain = @"LocationServiceErrorDomain";
                        location.coordinate.latitude,
                        location.coordinate.longitude,
                        [error localizedDescription]);
-            
+
             address = [NSString stringWithString:NSLocalizedString(@"Location unknown", @"Used when geo-tagging posts, if the geo-tagging failed.")];
         }
         [self addressUpdated:address forLocation:location error:error];
     }];
 }
+
+- (BOOL)hasAddressForLocation:(CLLocation *)location {
+    if (self.lastGeocodedAddress != nil && [self.lastGeocodedLocation distanceFromLocation:location] <= LocationHorizontalAccuracyThreshold) {
+        return YES;
+    }
+    return NO;
+}
+
+#pragma mark - Private Methods
 
 - (void)getAddressForLocation:(CLLocation *)location {
     [self getAddressForLocation:location completion:nil];
@@ -104,7 +113,7 @@ NSString *const LocationServiceErrorDomain = @"LocationServiceErrorDomain";
     self.locationServiceRunning = NO;
     self.lastGeocodedAddress = address;
     self.lastGeocodedLocation = location;
-    
+
     for (NSInteger i = 0; i < [self.completionBlocks count]; i++) {
         LocationServiceCompletionBlock block = [self.completionBlocks objectAtIndex:i];
         block(location, address, error);
@@ -166,7 +175,7 @@ NSString *const LocationServiceErrorDomain = @"LocationServiceErrorDomain";
 
 - (void)locationManager:(CLLocationManager *)manager didUpdateLocations:(NSArray *)locations {
     CLLocation *location = [locations lastObject]; // The last item is the most recent.
-    
+
 #if TARGET_IPHONE_SIMULATOR
     [self stopUpdatingLocation];
     [self getAddressForLocation:location];
