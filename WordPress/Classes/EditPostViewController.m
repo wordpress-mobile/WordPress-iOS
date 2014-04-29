@@ -14,6 +14,7 @@
 #import "WPMediaSizing.h"
 #import "WPMediaMetadataExtractor.h"
 #import "WPMediaUploader.h"
+#import "WPUploadStatusView.h"
 #import <AssetsLibrary/AssetsLibrary.h>
 
 NSString *const WPEditorNavigationRestorationID = @"WPEditorNavigationRestorationID";
@@ -32,7 +33,7 @@ CGFloat const EPVCTextViewTopPadding = 7.0f;
 }
 
 @property (nonatomic, strong) UIButton *titleBarButton;
-@property (nonatomic, strong) UIButton *uploadMediaButton;
+@property (nonatomic, strong) UIView *uploadStatusView;
 @property (nonatomic, strong) WPAlertView *linkHelperAlertView;
 @property (nonatomic, strong) UIPopoverController *blogSelectorPopover;
 @property (nonatomic) BOOL dismissingBlogPicker;
@@ -241,19 +242,7 @@ CGFloat const EPVCTextViewTopPadding = 7.0f;
     NSInteger blogCount = [blogService blogCountForAllAccounts];
     
     if (_mediaUploader.isUploadingMedia) {
-        UIButton *titleButton = self.uploadMediaButton;
-        self.navigationItem.titleView = titleButton;
-        NSMutableAttributedString *titleText = [[NSMutableAttributedString alloc] initWithString:[NSString stringWithFormat:@"%@\n", [self editorTitle]]
-                                                                                      attributes:@{ NSFontAttributeName : [UIFont fontWithName:@"OpenSans-Bold" size:14.0] }];
-
-        NSString *subtext = NSLocalizedString(@"Uploading Media...", @"This text appears at the top of the editor when images are being uploaded");
-        NSDictionary *subtextAttributes = @{ NSFontAttributeName: [UIFont fontWithName:@"OpenSans" size:10.0] };
-        NSMutableAttributedString *titleSubtext = [[NSMutableAttributedString alloc] initWithString:subtext
-                                                                                         attributes:subtextAttributes];
-        [titleText appendAttributedString:titleSubtext];
-        [titleButton setAttributedTitle:titleText forState:UIControlStateNormal];
-
-        [titleButton sizeToFit];
+        self.navigationItem.titleView = self.uploadStatusView;
     } else if(blogCount <= 1 || self.editMode == EditPostViewControllerModeEditPost || [[WordPressAppDelegate sharedWordPressApplicationDelegate] isNavigatingMeTab]) {
         self.navigationItem.title = [self editorTitle];
     } else {
@@ -796,25 +785,16 @@ CGFloat const EPVCTextViewTopPadding = 7.0f;
     return _titleBarButton;
 }
 
-- (UIButton *)uploadMediaButton {
-    if (_uploadMediaButton) {
-        return _uploadMediaButton;
+- (UIView *)uploadStatusView {
+    if (_uploadStatusView) {
+        return _uploadStatusView;
     }
-    
-    UIButton *uploadMediaButton = [WPBlogSelectorButton buttonWithType:UIButtonTypeSystem];
-    uploadMediaButton.frame = CGRectMake(0.0f, 0.0f, 200.0f, 33.0f);
-    uploadMediaButton.titleLabel.numberOfLines = 2;
-    uploadMediaButton.titleLabel.textColor = [UIColor whiteColor];
-    uploadMediaButton.titleLabel.textAlignment = NSTextAlignmentCenter;
-    uploadMediaButton.autoresizingMask = UIViewAutoresizingFlexibleLeftMargin | UIViewAutoresizingFlexibleRightMargin | UIViewAutoresizingFlexibleTopMargin | UIViewAutoresizingFlexibleBottomMargin;
-    [uploadMediaButton addTarget:self action:@selector(showCancelMediaUploadPrompt) forControlEvents:UIControlEventTouchUpInside];
-    [uploadMediaButton setImageEdgeInsets:UIEdgeInsetsMake(0, 0, 0, 10)];
-    [uploadMediaButton setTitleEdgeInsets:UIEdgeInsetsMake(0, 10, 0, 0)];
-    [uploadMediaButton setAccessibilityHint:NSLocalizedString(@"Tap to select which blog to post to", nil)];
-    
-    _uploadMediaButton = uploadMediaButton;
-    
-    return _uploadMediaButton;
+    WPUploadStatusView *uploadStatusView = [[WPUploadStatusView alloc] initWithFrame:CGRectMake(0.0, 0.0, 200.0, 33.0)];
+    uploadStatusView.tappedView = ^{
+        [self showCancelMediaUploadPrompt];
+    };
+    _uploadStatusView = uploadStatusView;
+    return _uploadStatusView;
 }
 
 # pragma mark - Model State Methods
