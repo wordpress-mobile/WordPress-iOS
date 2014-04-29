@@ -6,8 +6,6 @@
 //  Copyright (c) 2012 Cocoanetics. All rights reserved.
 //
 
-#import <Foundation/Foundation.h>
-
 /**
  Constant used by DTCustomColoredAccessory to specify the type of accessory.
  */
@@ -31,7 +29,13 @@ typedef NS_ENUM(NSUInteger, DTCustomColoredAccessoryType)
 	/**
 	 An accessoring pointing downwards
 	 */
-	DTCustomColoredAccessoryTypeDown
+	DTCustomColoredAccessoryTypeDown,
+    
+    /**
+     A front square drawn on top of a back square with the back square offset up and to the right
+     */
+    DTCustomColoredAccessoryTypeSquare
+
 };
 
 /**
@@ -58,6 +62,13 @@ typedef NS_ENUM(NSUInteger, DTCustomColoredAccessoryType)
  */
 + (DTCustomColoredAccessory *)accessoryWithColor:(UIColor *)color type:(DTCustomColoredAccessoryType)type;
 
+/**
+ Creates a custom-colored square on top of a square with offset
+ @param color The color to use
+ @param backgroundColor The backgroundColor to use
+ */
++ (DTCustomColoredAccessory *)squareAccessoryWithColor:(UIColor *)color backgroundColor:(UIColor *)backgroundColor;
+
 /**-------------------------------------------------------------------------------------
  @name Properties
  ---------------------------------------------------------------------------------------
@@ -72,6 +83,14 @@ typedef NS_ENUM(NSUInteger, DTCustomColoredAccessoryType)
  The color to draw the accessory in while highlighted
  */
 @property (nonatomic, retain) UIColor *highlightedColor;
+/**
+ The color to draw the front square of the square accessory in while not highlighted
+ */
+@property (nonatomic, retain) UIColor *frontSquareAccessoryColor;
+/**
+ The color to draw the back square of the square accessory in while not highlighted
+ */
+@property (nonatomic, retain) UIColor *backSquareAccessoryColor;
 
 /**
  The DTCustomColoredAccessoryType of the accessory.

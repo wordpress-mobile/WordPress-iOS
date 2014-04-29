@@ -68,7 +68,7 @@ const NSUInteger NoteKeepCount = 20;
         
         WPAccount *account = (WPAccount *)[context objectWithID:[WPAccount defaultWordPressComAccount].objectID];
         [notesData enumerateObjectsUsingBlock:^(NSDictionary *noteData, NSUInteger idx, BOOL *stop) {
-            NSNumber *noteID = [noteData objectForKey:@"id"];
+            NSString *noteID = [noteData stringForKey:@"id"];
             NSArray *results = [existingNotes filteredArrayUsingPredicate:[NSPredicate predicateWithFormat:@"noteID == %@", noteID]];
             
             Note *note;
@@ -76,7 +76,7 @@ const NSUInteger NoteKeepCount = 20;
                 note = results[0];
             } else {
                 note = [NSEntityDescription insertNewObjectForEntityForName:NSStringFromClass(self) inManagedObjectContext:context];
-                note.noteID = [noteData objectForKey:@"id"];
+                note.noteID = [noteData stringForKey:@"id"];
                 note.account = account;
             }
             [note syncAttributes:noteData];
@@ -199,6 +199,10 @@ const NSUInteger NoteKeepCount = 20;
         [scanner scanUpToString:@"\"" intoString:&blogName];
         [scanner scanString:@"\"" intoString:NULL];
     }
+    
+    if (blogName.length == 0) {
+        return nil;
+    }
 
     NSPredicate *subjectPredicate = [NSPredicate predicateWithFormat:@"self.blogName CONTAINS[cd] %@", blogName];
     NSPredicate *wpcomPredicate = [NSPredicate predicateWithFormat:@"self.account.isWpcom == YES"];
@@ -241,7 +245,11 @@ const NSUInteger NoteKeepCount = 20;
 #pragma mark - NSManagedObject methods
 
 - (void)didTurnIntoFault {
-    _noteData = nil;
+    [super didTurnIntoFault];
+    
+    self.noteData = nil;
+    self.date = nil;
+    self.commentText = nil;
 }
 
 #pragma mark - Comment HTML parsing

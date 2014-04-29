@@ -217,11 +217,8 @@ extern NSString *const StatsEventStatsClickedOnWebVersion;
 @interface WPMobileStats : NSObject
 
 + (void)initializeStats;
-+ (void)updateUserIDForStats:(NSString *)userID;
 
 + (void)pauseSession;
-+ (void)endSession;
-+ (void)resumeSession;
 
 + (void)recordAppOpenedForEvent:(NSString *)event;
 + (void)trackEventForSelfHostedAndWPCom:(NSString *)event;
@@ -231,7 +228,6 @@ extern NSString *const StatsEventStatsClickedOnWebVersion;
 + (void)trackEventForWPCom:(NSString *)event properties:(NSDictionary *)properties;
 + (void)trackEventForWPComWithSavedProperties:(NSString *)event;
 + (void)pingWPComStatsEndpoint:(NSString *)statName;
-+ (void)logQuantcastEvent:(NSString *)quantcast;
 
 /*
     Mixpanel has both properties and super properties which should be used differently depending on the

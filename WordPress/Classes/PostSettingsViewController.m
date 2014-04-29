@@ -21,15 +21,17 @@
 #import "PostGeolocationCell.h"
 #import "PostGeolocationViewController.h"
 #import "PostSettingsSelectionViewController.h"
+#import "PublishDatePickerView.h"
 #import "UITableViewTextFieldCell.h"
 #import "WordPressAppDelegate.h"
 #import "WPAlertView.h"
+#import "WPTableViewController.h"
 #import "WPTableViewActivityCell.h"
 #import "WPTableViewSectionHeaderView.h"
 #import "WPTableImageSource.h"
 
 typedef enum {
-    PostSettingsRowCategories = 0,
+    PostSettingsRowCategories = 1,
     PostSettingsRowTags,
     PostSettingsRowPublishDate,
     PostSettingsRowStatus,
@@ -43,24 +45,21 @@ typedef enum {
 } PostSettingsRow;
 
 static CGFloat CellHeight = 44.0f;
+static NSInteger RowIndexForDatePicker = 0;
 
 static NSString *const TableViewActivityCellIdentifier = @"TableViewActivityCellIdentifier";
 
-@interface PostSettingsViewController () <UIPopoverControllerDelegate, UIPickerViewDelegate, UIPickerViewDataSource, UITextFieldDelegate, UIActionSheetDelegate, WPTableImageSourceDelegate>
+@interface PostSettingsViewController () <UITextFieldDelegate, WPTableImageSourceDelegate, WPPickerViewDelegate>
 
 @property (nonatomic, strong) AbstractPost *apost;
-
 @property (nonatomic, strong) UITextField *passwordTextField;
 @property (nonatomic, strong) UITextField *tagsTextField;
 @property (nonatomic, strong) NSArray *statusList;
 @property (nonatomic, strong) NSArray *visibilityList;
 @property (nonatomic, strong) NSArray *formatsList;
-@property (nonatomic, strong) UIActionSheet *actionSheet;
-@property (nonatomic, strong) UIDatePicker *datePickerView;
-@property (nonatomic, strong) UIPopoverController *popover;
-@property (nonatomic, assign) BOOL isShowingKeyboard;
 @property (nonatomic, strong) WPTableImageSource *imageSource;
 @property (nonatomic, strong) UIImage *featuredImage;
+@property (nonatomic, strong) PublishDatePickerView *datePicker;
 
 @end
 
@@ -95,9 +94,6 @@ static NSString *const TableViewActivityCellIdentifier = @"TableViewActivityCell
 
     DDLogInfo(@"%@ %@", self, NSStringFromSelector(_cmd));
 
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(keyboardWillShow:) name:UIKeyboardWillShowNotification object:nil];
-	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(keyboardWillHide:) name:UIKeyboardWillHideNotification object:nil];
-
     [WPStyleGuide configureColorsForView:self.view andTableView:self.tableView];
 
     NSMutableArray *allStatuses = [NSMutableArray arrayWithArray:[self.apost availableStatuses]];
@@ -108,19 +104,6 @@ static NSString *const TableViewActivityCellIdentifier = @"TableViewActivityCell
                            NSLocalizedString(@"Private", @"Privacy setting for posts set to 'Private'. Should be the same as in core WP.")];
     self.formatsList = self.post.blog.sortedPostFormatNames;
 
-    self.isShowingKeyboard = NO;
-
-    CGRect pickerFrame;
-	if (IS_IPAD) {
-		pickerFrame = CGRectMake(0.0f, 0.0f, 320.0f, 216.0f);
-    } else {
-		pickerFrame = CGRectMake(0.0f, 44.0f, 320.0f, 216.0f);
-    }
-
-    self.datePickerView = [[UIDatePicker alloc] initWithFrame:pickerFrame];
-    self.datePickerView.minuteInterval = 5;
-    [self.datePickerView addTarget:self action:@selector(datePickerChanged) forControlEvents:UIControlEventValueChanged];
-
     UITapGestureRecognizer *gestureRecognizer = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(dismissTagsKeyboardIfAppropriate:)];
     gestureRecognizer.cancelsTouchesInView = NO;
     gestureRecognizer.numberOfTapsRequired = 1;
@@ -128,7 +111,7 @@ static NSString *const TableViewActivityCellIdentifier = @"TableViewActivityCell
 
     [self.tableView registerNib:[UINib nibWithNibName:@"WPTableViewActivityCell" bundle:nil] forCellReuseIdentifier:TableViewActivityCellIdentifier];
     
-    self.tableView.tableFooterView = [[UIView alloc] initWithFrame:CGRectZero];
+    self.tableView.tableFooterView = [[UIView alloc] initWithFrame:CGRectMake(0.0, 0.0, 0.0, 44.0)]; // add some vertical padding
 }
 
 - (void)viewWillAppear:(BOOL)animated {
@@ -144,6 +127,8 @@ static NSString *const TableViewActivityCellIdentifier = @"TableViewActivityCell
     [self.apost.managedObjectContext performBlock:^{
         [self.apost.managedObjectContext save:nil];
     }];
+    
+    [self hideDatePicker];
 }
 
 - (void)didReceiveMemoryWarning {
@@ -219,14 +204,14 @@ static NSString *const TableViewActivityCellIdentifier = @"TableViewActivityCell
     [self.tableView reloadData];
 }
 
-- (void)datePickerChanged {
-    self.apost.dateCreated = self.datePickerView.date;
-    
+- (void)datePickerChanged:(NSDate *)date {
+    self.apost.dateCreated = date;
+
     if ([self.apost.dateCreated compare:[NSDate date]] == NSOrderedDescending && [self.apost.status isEqualToString:@"draft"]) {
         self.apost.status = @"publish";
     }
     
-    [self.tableView reloadData];
+    [self hideDatePicker];
 }
 
 #pragma mark - TextField Delegate Methods
@@ -292,8 +277,8 @@ static NSString *const TableViewActivityCellIdentifier = @"TableViewActivityCell
         
     } else if (sec == PostSettingsSectionGeolocation) {
         return 1;
-        
     }
+    
     return 0;
 }
 
@@ -326,6 +311,9 @@ static NSString *const TableViewActivityCellIdentifier = @"TableViewActivityCell
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section {
+    if (IS_IPAD && section == 0) {
+        return WPTableViewTopMargin;
+    }
     NSString *title = [self titleForHeaderInSection:section];
     return [WPTableViewSectionHeaderView heightForTitle:title andWidth:CGRectGetWidth(self.view.bounds)];
 }
@@ -344,6 +332,12 @@ static NSString *const TableViewActivityCellIdentifier = @"TableViewActivityCell
             width = width - cellMargins;
             CGFloat height = ceilf((width / imageWidth) * imageHeight);
             return height + cellMargins;
+        }
+    }
+    
+    if (indexPath.section == PostSettingsSectionMeta) {
+        if (indexPath.row == RowIndexForDatePicker && self.datePicker) {
+            return CGRectGetHeight(self.datePicker.frame);
         }
     }
     
@@ -385,7 +379,7 @@ static NSString *const TableViewActivityCellIdentifier = @"TableViewActivityCell
     } else if (cell.tag == PostSettingsRowTags) {
         // noop
         
-    } else if (cell.tag == PostSettingsRowPublishDate) {
+    } else if (cell.tag == PostSettingsRowPublishDate && !self.datePicker) {
         [WPMobileStats flagProperty:StatsPropertyPostDetailSettingsClickedScheduleFor forEvent:[self formattedStatEventString:StatsEventPostDetailClosedEditor]];
         [self configureAndShowDatePicker];
         
@@ -441,7 +435,7 @@ static NSString *const TableViewActivityCellIdentifier = @"TableViewActivityCell
 
 - (UITableViewCell *)configureMetaPostMetaCellForIndexPath:(NSIndexPath *)indexPath {
     UITableViewCell *cell;
-    if (indexPath.row == 0) {
+    if (indexPath.row == 0 && !self.datePicker) {
         // Publish date
         cell = [self getWPTableViewCell];
         if (self.apost.dateCreated) {
@@ -460,6 +454,11 @@ static NSString *const TableViewActivityCellIdentifier = @"TableViewActivityCell
             cell.detailTextLabel.text = NSLocalizedString(@"Immediately", @"");
         }
         cell.tag = PostSettingsRowPublishDate;
+
+    } else if (indexPath.row == 0 && self.datePicker) {
+        // Date picker
+        cell = [self getWPTableViewDatePickerCell];
+        [cell.contentView addSubview:self.datePicker];
         
     } else if(indexPath.row == 1) {
         // Publish Status
@@ -530,6 +529,7 @@ static NSString *const TableViewActivityCellIdentifier = @"TableViewActivityCell
         PostFeaturedImageCell *featuredImageCell = [self.tableView dequeueReusableCellWithIdentifier:FeaturedImageCellIdentifier];
         if (!cell) {
             featuredImageCell = [[PostFeaturedImageCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:FeaturedImageCellIdentifier];
+            [WPStyleGuide configureTableViewCell:featuredImageCell];
         }
         
         if (self.featuredImage) {
@@ -603,6 +603,19 @@ static NSString *const TableViewActivityCellIdentifier = @"TableViewActivityCell
     return cell;
 }
 
+- (WPTableViewCell *)getWPTableViewDatePickerCell {
+    static NSString *wpTableViewCellIdentifier = @"wpTableViewDatePickerCellIdentifier";
+    WPTableViewCell *cell = [self.tableView dequeueReusableCellWithIdentifier:wpTableViewCellIdentifier];
+    if (!cell) {
+        cell = [[WPTableViewCell alloc] initWithStyle:UITableViewCellStyleValue1 reuseIdentifier:wpTableViewCellIdentifier];
+        cell.accessoryType = UITableViewCellAccessoryNone;
+        [WPStyleGuide configureTableViewCell:cell];
+    }
+    [[cell.contentView subviews] makeObjectsPerformSelector:@selector(removeFromSuperview)];
+    cell.tag = 0;
+    return cell;
+}
+
 - (WPTableViewActivityCell *)getWPActivityTableViewCell {
     WPTableViewActivityCell *cell = [self.tableView dequeueReusableCellWithIdentifier:TableViewActivityCellIdentifier];
     cell.accessoryType = UITableViewCellAccessoryNone;
@@ -621,18 +634,44 @@ static NSString *const TableViewActivityCellIdentifier = @"TableViewActivityCell
         cell.textField.returnKeyType = UIReturnKeyDone;
         cell.textField.delegate = self;
         [WPStyleGuide configureTableViewTextCell:cell];
+        cell.textField.textAlignment = NSTextAlignmentRight;
     }
     cell.tag = 0;
     return cell;
 }
 
-- (void)configureAndShowDatePicker {
-    if (self.apost.dateCreated) {
-        self.datePickerView.date = self.apost.dateCreated;
-    } else {
-        self.datePickerView.date = [NSDate date];
+- (void)hideDatePicker {
+    if (!self.datePicker) {
+        return;
     }
-    [self showPicker:self.datePickerView];
+    self.datePicker = nil;
+
+    // Reload the whole section since other rows might be affected by any change.
+    NSIndexSet *sections = [NSIndexSet indexSetWithIndex:[self.sections indexOfObject:[NSNumber numberWithInteger:PostSettingsSectionMeta]]];
+    [self.tableView reloadSections:sections withRowAnimation:UITableViewRowAnimationFade];
+}
+
+- (void)configureAndShowDatePicker {
+    NSDate *date;
+    if (self.apost.dateCreated) {
+        date = self.apost.dateCreated;
+    } else {
+        date = [NSDate date];
+    }
+    
+    self.datePicker = [[PublishDatePickerView alloc] initWithDate:date];
+    self.datePicker.delegate = self;
+    CGRect frame = self.datePicker.frame;
+    if (IS_IPAD) {
+        frame.size.width = WPTableViewFixedWidth;
+    } else {
+        frame.size.width = CGRectGetWidth(self.tableView.bounds);
+        self.datePicker.autoresizingMask = UIViewAutoresizingFlexibleWidth;
+    }
+    self.datePicker.frame = frame;
+    
+    NSIndexPath *indexPath = [NSIndexPath indexPathForRow:RowIndexForDatePicker inSection:PostSettingsSectionMeta];
+    [self.tableView reloadRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationFade];
 }
 
 - (void)showPostStatusSelector {
@@ -785,7 +824,11 @@ static NSString *const TableViewActivityCellIdentifier = @"TableViewActivityCell
 
 - (WPTableImageSource *)imageSource {
     if (!_imageSource) {
-        CGFloat max = MAX(self.view.frame.size.width, self.view.frame.size.height);
+        CGFloat width = CGRectGetWidth(self.view.frame);
+        if (IS_IPAD) {
+            width = WPTableViewFixedWidth;
+        }
+        CGFloat max = MAX(width, CGRectGetHeight(self.view.frame));
         CGSize maxSize = CGSizeMake(max, max);
         _imageSource = [[WPTableImageSource alloc] initWithMaxSize:maxSize];
         _imageSource.resizesImagesSynchronously = YES;
@@ -808,141 +851,6 @@ static NSString *const TableViewActivityCellIdentifier = @"TableViewActivityCell
     cell.textLabel.text = NSLocalizedString(@"Featured Image did not load", @"");
 }
 
-#pragma mark - UIPickerViewDataSource
-
-- (NSInteger)numberOfComponentsInPickerView:(UIPickerView *)pickerView {
-    return 1;
-}
-
-- (NSInteger)pickerView:(UIPickerView *)aPickerView numberOfRowsInComponent:(NSInteger)component {
-    return 0;
-}
-
-#pragma mark - UIPickerViewDelegate
-
-- (NSString *)pickerView:(UIPickerView *)aPickerView titleForRow:(NSInteger)row forComponent:(NSInteger)component {
-    return @"";
-}
-
-- (void)pickerView:(UIPickerView *)aPickerView didSelectRow:(NSInteger)row inComponent:(NSInteger)component {
-    [self.tableView reloadData];
-}
-
-#pragma mark - Pickers and keyboard animations
-
-- (void)showPicker:(UIView *)picker {
-    if (self.isShowingKeyboard) {
-        [self.passwordTextField resignFirstResponder];
-    }
-
-    if (IS_IPAD) {
-        UIViewController *fakeController = [[UIViewController alloc] init];
-        
-        fakeController.preferredContentSize = CGSizeMake(320.0f, 256.0f);
-
-        UIButton *button = [[UIButton alloc] init];
-        [button addTarget:self action:@selector(removeDate) forControlEvents:UIControlEventTouchUpInside];
-        [button setBackgroundImage:[[UIImage imageNamed:@"keyboardButton-ios7"] stretchableImageWithLeftCapWidth:5.0f topCapHeight:0.0f] forState:UIControlStateNormal];
-        [button setBackgroundImage:[[UIImage imageNamed:@"keyboardButtonHighlighted-ios7"] stretchableImageWithLeftCapWidth:5.0f topCapHeight:0.0f] forState:UIControlStateNormal];
-        [button setTitle:[NSString stringWithFormat:@" %@ ", NSLocalizedString(@"Publish Immediately", @"Post publishing status in the Post Editor/Settings area (compare with WP core translations).")] forState:UIControlStateNormal];            [button sizeToFit];
-        CGPoint buttonCenter = button.center;
-        buttonCenter.x = CGRectGetMidX(picker.frame);
-        button.center = buttonCenter;
-
-        [fakeController.view addSubview:button];
-        CGRect pickerFrame = picker.frame;
-        pickerFrame.origin.y = CGRectGetMaxY(button.frame);
-        picker.frame = pickerFrame;
-
-        [fakeController.view addSubview:picker];
-        self.popover = [[UIPopoverController alloc] initWithContentViewController:fakeController];
-        
-        CGRect popoverRect = [self.view viewWithTag:PostSettingsRowPublishDate].frame;
-        [self.popover presentPopoverFromRect:popoverRect inView:self.view permittedArrowDirections:UIPopoverArrowDirectionAny animated:YES];
-    } else {
-        CGFloat width = self.view.frame.size.width;
-        CGFloat height = 0.0;
-        
-        // Refactor this class to not use UIActionSheets for display. See trac #1509.
-        // <rant>Shoehorning a UIPicker inside a UIActionSheet is just madness.</rant>
-        // For now, hardcoding height values for the iPhone so we don't get
-        // a funky gap at the bottom of the screen on the iPhone 5.
-        if(self.view.frame.size.height <= 416.0f) {
-            height = 490.0f;
-        } else {
-            height = 500.0f;
-        }
-        if(UIInterfaceOrientationIsLandscape(self.interfaceOrientation)){
-            height = 460.0f; // Show most of the actionsheet but keep the top of the view visible.
-        }
-        
-        UIView *pickerWrapperView = [[UIView alloc] initWithFrame:CGRectMake(0.0f, 0.0f, width, 260.0f)]; // 216 + 44 (height of the picker and the "tooblar")
-        pickerWrapperView.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleTopMargin;
-        [pickerWrapperView addSubview:picker];
-                
-        CGRect pickerFrame = picker.frame;
-        pickerFrame.size.width = width;
-        picker.frame = pickerFrame;
-        
-        self.actionSheet = [[UIActionSheet alloc] initWithTitle:nil delegate:nil cancelButtonTitle:nil destructiveButtonTitle:nil otherButtonTitles:nil];
-        [self.actionSheet setActionSheetStyle:UIActionSheetStyleAutomatic];
-        [self.actionSheet setBounds:CGRectMake(0.0f, 0.0f, width, height)];
-        [self.actionSheet addSubview:pickerWrapperView];
-        
-        UIButton *button = [[UIButton alloc] init];
-        [button addTarget:self action:@selector(hidePicker) forControlEvents:UIControlEventTouchUpInside];
-        [button setBackgroundImage:[[UIImage imageNamed:@"keyboardButton-ios7"] stretchableImageWithLeftCapWidth:5.0f topCapHeight:0.0f] forState:UIControlStateNormal];
-        [button setBackgroundImage:[[UIImage imageNamed:@"keyboardButtonHighlighted-ios7"] stretchableImageWithLeftCapWidth:5.0f topCapHeight:0.0f] forState:UIControlStateNormal];
-        [button setTitle:[NSString stringWithFormat:@" %@ ", NSLocalizedString(@"Done", @"Default main action button for closing/finishing a work flow in the app (used in Comments>Edit, Comment edits and replies, post editor body text, etc, to dismiss keyboard).")] forState:UIControlStateNormal];
-        [button sizeToFit];
-        CGRect frame = button.frame;
-        frame.origin.x = CGRectGetWidth(self.view.frame) - CGRectGetWidth(button.frame) - 10;
-        frame.origin.y = 7;
-        button.frame = frame;
-        [pickerWrapperView addSubview:button];
-        
-        button = [[UIButton alloc] init];
-        [button setTintColor:[WPStyleGuide newKidOnTheBlockBlue]];
-        [button addTarget:self action:@selector(removeDate) forControlEvents:UIControlEventTouchUpInside];
-        [button setBackgroundImage:[[UIImage imageNamed:@"keyboardButton-ios7"] stretchableImageWithLeftCapWidth:5.0f topCapHeight:0.0f] forState:UIControlStateNormal];
-        [button setBackgroundImage:[[UIImage imageNamed:@"keyboardButtonHighlighted-ios7"] stretchableImageWithLeftCapWidth:5.0f topCapHeight:0.0f] forState:UIControlStateNormal];
-        [button setTitle:[NSString stringWithFormat:@" %@ ", NSLocalizedString(@"Publish Immediately", @"Post publishing status in the Post Editor/Settings area (compare with WP core translations).")] forState:UIControlStateNormal];
-        [button sizeToFit];
-        frame = button.frame;
-        frame.origin.x = 10;
-        frame.origin.y = 7;
-        button.frame = frame;
-        [pickerWrapperView addSubview:button];
-
-        [self.actionSheet showInView:self.view];
-        [self.actionSheet setBounds:CGRectMake(0.0f, 0.0f, width, height)]; // Update the bounds again now that its in the view else it won't draw correctly.
-    }
-}
-
-- (void)hidePicker {
-    [self.actionSheet dismissWithClickedButtonIndex:0 animated:YES];
-     self.actionSheet = nil;
-}
-
-- (void)removeDate {
-    self.datePickerView.date = [NSDate date];
-    self.apost.dateCreated = nil;
-    [self.tableView reloadData];
-    if (IS_IPAD) {
-        [self.popover dismissPopoverAnimated:YES];
-    } else {
-        [self hidePicker];
-    }
-}
-
-- (void)keyboardWillShow:(NSNotification *)keyboardInfo {
-    self.isShowingKeyboard = YES;
-}
-
-- (void)keyboardWillHide:(NSNotification *)keyboardInfo {
-    self.isShowingKeyboard = NO;
-}
-
 - (NSString *)titleForVisibility {
     if (self.apost.password) {
         return NSLocalizedString(@"Password protected", @"Privacy setting for posts set to 'Password protected'. Should be the same as in core WP.");
@@ -953,16 +861,34 @@ static NSString *const TableViewActivityCellIdentifier = @"TableViewActivityCell
     }
 }
 
-- (void)popoverControllerDidDismissPopover:(UIPopoverController *)popoverController{
-    // On iOS7 Beta 6 the image picker seems to override our preferred setting so we force the status bar color back.
-    [[UIApplication sharedApplication] setStatusBarStyle:UIStatusBarStyleLightContent];
-}
-
 - (void)dismissTagsKeyboardIfAppropriate:(UITapGestureRecognizer *)gestureRecognizer {
     CGPoint touchPoint = [gestureRecognizer locationInView:self.tableView];
     if (!CGRectContainsPoint(self.tagsTextField.frame, touchPoint) && [self.tagsTextField isFirstResponder]) {
         [self.tagsTextField resignFirstResponder];
     }
+}
+
+#pragma mark - WPPickerView Delegate
+
+- (void)pickerView:(WPPickerView *)pickerView didFinishWithValue:(id)value {
+    if (value == nil) {
+        // Publish Immediately
+        self.apost.dateCreated = nil;
+        [self hideDatePicker];
+        return;
+    }
+    
+    // Compare via timeIntervalSinceDate to let us ignore subsecond variation.
+    NSDate *startingDate = (NSDate *)self.datePicker.startingValue;
+    NSDate *selectedDate = (NSDate *)value;
+    NSTimeInterval interval = [startingDate timeIntervalSinceDate:selectedDate];
+    if (fabs(interval) < 1.0) {
+        // Nothing changed.
+        [self hideDatePicker];
+        return;
+    }
+    
+    [self datePickerChanged:selectedDate];
 }
 
 @end

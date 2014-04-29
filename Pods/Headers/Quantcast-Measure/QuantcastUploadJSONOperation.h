@@ -1,1 +1,0 @@
-../../Quantcast-Measure/Quantcast-iOS-Measurement/QuantcastUploadJSONOperation.h

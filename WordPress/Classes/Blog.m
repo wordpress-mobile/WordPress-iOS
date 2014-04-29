@@ -17,6 +17,7 @@
 #import "WPError.h"
 #import "ContextManager.h"
 #import "WordPressComApi.h"
+#import "CategoryService.h"
 
 static NSInteger const ImageSizeSmallWidth = 240;
 static NSInteger const ImageSizeSmallHeight = 180;
@@ -24,6 +25,7 @@ static NSInteger const ImageSizeMediumWidth = 480;
 static NSInteger const ImageSizeMediumHeight = 360;
 static NSInteger const ImageSizeLargeWidth = 640;
 static NSInteger const ImageSizeLargeHeight = 480;
+NSString *const LastUsedBlogURLDefaultsKey = @"LastUsedBlogURLDefaultsKey";
 
 @interface Blog (PrivateMethods)
 
@@ -51,6 +53,8 @@ static NSInteger const ImageSizeLargeHeight = 480;
 #pragma mark - NSManagedObject subclass methods
 
 - (void)didTurnIntoFault {
+    [super didTurnIntoFault];
+    
     // Clean up instance variables
     _blavatarUrl = nil;
     _api = nil;
@@ -58,6 +62,14 @@ static NSInteger const ImageSizeLargeHeight = 480;
     _reachability = nil;
     
     [[NSNotificationCenter defaultCenter] removeObserver:self];
+}
+
+- (void)awakeFromFetch {
+    [super awakeFromFetch];
+    
+    if (!self.isDeleted) {
+        [self reachability];
+    }
 }
 
 #pragma mark -
@@ -82,6 +94,73 @@ static NSInteger const ImageSizeLargeHeight = 480;
 
 #pragma mark -
 #pragma mark Custom methods
+
++ (Blog *)lastUsedOrFirstBlog {
+    Blog *blog = [self lastUsedBlog];
+
+    if (!blog) {
+        blog = [self firstBlog];
+    }
+
+    return blog;
+}
+
++ (Blog *)lastUsedBlog {
+    // Try to get the last used blog, if there is one.
+    NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
+    NSString *url = [defaults stringForKey:LastUsedBlogURLDefaultsKey];
+    if (!url) {
+        // Check for the old key and migrate the value if it exists.
+        // TODO: We can probably discard this in the 4.2 release.
+        NSString *oldKey = @"EditPostViewControllerLastUsedBlogURL";
+        url = [defaults stringForKey:oldKey];
+        if (url) {
+            [defaults setObject:url forKey:LastUsedBlogURLDefaultsKey];
+            [defaults removeObjectForKey:oldKey];
+            [defaults synchronize];
+        }
+    }
+
+    if (!url) {
+        return nil;
+    }
+
+    NSFetchRequest *fetchRequest = [NSFetchRequest fetchRequestWithEntityName:@"Blog"];
+    NSPredicate *predicate = [NSPredicate predicateWithFormat:@"visible = YES AND url = %@", url];
+    [fetchRequest setPredicate:predicate];
+    fetchRequest.sortDescriptors = @[[NSSortDescriptor sortDescriptorWithKey:@"blogName" ascending:YES]];
+    NSError *error = nil;
+    NSArray *results = [[[ContextManager sharedInstance] mainContext] executeFetchRequest:fetchRequest error:&error];
+    if (error) {
+        DDLogError(@"Couldn't fetch blogs: %@", error);
+        return nil;
+    }
+
+    if([results count] == 0) {
+        // Blog might have been removed from the app. Clear the key.
+        [defaults removeObjectForKey:LastUsedBlogURLDefaultsKey];
+        [defaults synchronize];
+        return nil;
+    }
+
+    return [results firstObject];
+}
+
++ (Blog *)firstBlog {
+    NSPredicate *predicate = [NSPredicate predicateWithFormat:@"visible = YES"];
+    NSFetchRequest *fetchRequest = [NSFetchRequest fetchRequestWithEntityName:@"Blog"];
+    [fetchRequest setPredicate:predicate];
+    fetchRequest.sortDescriptors = @[[NSSortDescriptor sortDescriptorWithKey:@"blogName" ascending:YES]];
+    NSError *error = nil;
+    NSArray *results = [[[ContextManager sharedInstance] mainContext] executeFetchRequest:fetchRequest error:&error];
+
+    if (error) {
+        DDLogError(@"Couldn't fetch blogs: %@", error);
+        return nil;
+    }
+
+    return [results firstObject];
+}
 
 + (NSInteger)countVisibleWithContext:(NSManagedObjectContext *)moc {
     NSPredicate *predicate = [NSPredicate predicateWithFormat:@"visible = %@" argumentArray:@[@(YES)]];
@@ -112,6 +191,12 @@ static NSInteger const ImageSizeLargeHeight = 480;
         count = 0;
     }
     return count;
+}
+
+- (void)flagAsLastUsed {
+    NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
+    [defaults setObject:self.url forKey:LastUsedBlogURLDefaultsKey];
+    [defaults synchronize];
 }
 
 - (NSString *)blavatarUrl {
@@ -277,11 +362,6 @@ static NSInteger const ImageSizeLargeHeight = 480;
             nil];
 }
 
-- (void)awakeFromFetch {
-    if (!self.isDeleted) {
-        [self reachability];
-    }
-}
 
 - (void)dataSave {
     [[ContextManager sharedInstance] saveContext:self.managedObjectContext];
@@ -294,7 +374,16 @@ static NSInteger const ImageSizeLargeHeight = 480;
     _reachability.unreachableBlock = nil;
     [_reachability stopNotifier];
     [self.managedObjectContext performBlock:^{
-        [[self managedObjectContext] deleteObject:self];
+        WPAccount *account = self.account;
+
+        NSManagedObjectContext *context = [self managedObjectContext];
+        [context deleteObject:self];
+        // For self hosted blogs, remove account unless there are other associated blogs
+        if (account && !account.isWpcom) {
+            if ([account.blogs count] == 1 && [[account.blogs anyObject] isEqual:self]) {
+                [context deleteObject:account];
+            }
+        }
         [self dataSave];
     }];
 }
@@ -580,7 +669,7 @@ static NSInteger const ImageSizeLargeHeight = 480;
                 return;
             
             self.options = [NSDictionary dictionaryWithDictionary:(NSDictionary *)responseObject];
-            NSString *minimumVersion = @"3.5";
+            NSString *minimumVersion = @"3.6";
             float version = [[self version] floatValue];
             if (version < [minimumVersion floatValue]) {
                 if (self.lastUpdateWarning == nil || [self.lastUpdateWarning floatValue] < [minimumVersion floatValue]) {
@@ -682,7 +771,8 @@ static NSInteger const ImageSizeLargeHeight = 480;
             if ([self isDeleted] || self.managedObjectContext == nil)
                 return;
             
-            [Category mergeNewCategories:responseObject forBlog:self];
+            CategoryService *categoryService = [[CategoryService alloc] initWithManagedObjectContext:self.managedObjectContext];
+            [categoryService mergeNewCategories:responseObject forBlogObjectID:self.objectID];
             
             if (success) {
                 success();

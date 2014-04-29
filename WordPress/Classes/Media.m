@@ -52,11 +52,24 @@ NSString *const VideoUploadFailedNotification = @"VideoUploadFailed";
     return media;
 }
 
+#pragma mark - NSManagedObject subclass methods
+
 - (void)awakeFromFetch {
+    [super awakeFromFetch];
+    
     if ((self.remoteStatus == MediaRemoteStatusPushing && _uploadOperation == nil) || (self.remoteStatus == MediaRemoteStatusProcessing)) {
         self.remoteStatus = MediaRemoteStatusFailed;
     }
 }
+
+- (void)didTurnIntoFault {
+    [super didTurnIntoFault];
+    
+    [_uploadOperation cancel];
+    _uploadOperation = nil;
+}
+
+#pragma mark -
 
 - (float)progress {
     [self willAccessValueForKey:@"progress"];
@@ -170,7 +183,7 @@ NSString *const VideoUploadFailedNotification = @"VideoUploadFailed";
                 NSDictionary *response = (NSDictionary *)responseObject;
 
                 if (![response isKindOfClass:[NSDictionary class]]) {
-                    NSError *error = [NSError errorWithDomain:NSURLErrorDomain code:NSURLErrorBadServerResponse userInfo:@{NSLocalizedDescriptionKey: NSLocalizedString(@"The server returned an empty response. This usually means you need to increase the memory limit in your blog", @"")}];
+                    NSError *error = [NSError errorWithDomain:NSURLErrorDomain code:NSURLErrorBadServerResponse userInfo:@{NSLocalizedDescriptionKey: NSLocalizedString(@"The server returned an empty response. This usually means you need to increase the memory limit for your site.", @"")}];
                     failureBlock(operation, error);
                     return;
                 }

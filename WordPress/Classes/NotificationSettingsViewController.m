@@ -130,7 +130,7 @@ BOOL hasChanges;
     
     if( toolbarVisible == YES ) {
         
-        NSString *buttonLabel = muteAvailable ? NSLocalizedString(@"Mute all blogs", @"") : NSLocalizedString(@"Unmute all blogs", @"");
+        NSString *buttonLabel = muteAvailable ? NSLocalizedString(@"Mute all sites", @"") : NSLocalizedString(@"Unmute all sites", @"");
 
         self.muteUnmuteBarButton = [[UIBarButtonItem alloc] initWithTitle:buttonLabel
                                                                     style:[WPStyleGuide barButtonStyleForBordered]
@@ -270,13 +270,21 @@ BOOL hasChanges;
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
 {
     // Return the number of sections.
-    if (_notificationPrefArray && _mutedBlogsArray)
-        return 3;
-    else if (_notificationPrefArray)
-        return 2;
-    else
+    if (_notificationPrefArray) {
+        NSString *mute_value = [_notificationMutePreferences objectForKey:@"value"];
+        if (mute_value && ![mute_value isEqualToString:@"0"]){
+            return 1;
+        } else {
+            if (_mutedBlogsArray) {
+                return 3;
+            } else {
+                return 2;
+            }
+        }
+    } else {
         return 0;
-} 
+    }
+}
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
@@ -411,8 +419,8 @@ BOOL hasChanges;
             actionSheet = [[UIActionSheet alloc] initWithTitle:NSLocalizedString(@"Notifications", @"")
                                                       delegate:self
                                              cancelButtonTitle:NSLocalizedString(@"Cancel", @"")
-                                        destructiveButtonTitle:NSLocalizedString(@"Turn Off", @"")
-                                             otherButtonTitles:NSLocalizedString(@"Turn Off for 1hr", @""), NSLocalizedString(@"Turn Off Until 8am", @""), nil ];
+                                        destructiveButtonTitle:nil
+                                             otherButtonTitles:NSLocalizedString(@"Turn Off", @""), NSLocalizedString(@"Turn Off for 1hr", @""), NSLocalizedString(@"Turn Off Until 8am", @""), nil ];
             actionSheet.tag = 101;
             
         }

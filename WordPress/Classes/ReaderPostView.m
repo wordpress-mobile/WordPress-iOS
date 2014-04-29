@@ -315,7 +315,7 @@ static NSInteger const MaxNumberOfLinesForTitleForSummary = 3;
 	CGFloat height = 0.0f;
     CGFloat bylineX = RPVAvatarSize + RPVAuthorPadding + RPVHorizontalInnerPadding;
 
-    if ([self.post isFollowable]) {
+    if ([self.post isFollowable] && [WPAccount defaultWordPressComAccount] != nil) {
         self.followButton.hidden = NO;
         CGFloat followX = bylineX - 4; // Fudge factor for image alignment
         CGFloat followY = RPVAuthorPadding + self.bylineLabel.frame.size.height - 2;

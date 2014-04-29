@@ -87,11 +87,8 @@ CGFloat const JetpackSignInButtonHeight = 41.0;
     
     [self initializeView];
     
-    if (!IS_IPAD) {
-        // We don't need to shift the controls up on the iPad as there's enough space.
-        [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(keyboardWillShow:) name:UIKeyboardWillShowNotification object:nil];
-        [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(keyboardWillHide:) name:UIKeyboardWillHideNotification object:nil];
-    }
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(keyboardWillShow:) name:UIKeyboardWillShowNotification object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(keyboardWillHide:) name:UIKeyboardWillHideNotification object:nil];
 
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(textFieldDidChangeNotificationReceived:) name:UITextFieldTextDidChangeNotification object:_usernameField];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(textFieldDidChangeNotificationReceived:) name:UITextFieldTextDidChangeNotification object:_passwordField];
@@ -352,41 +349,65 @@ CGFloat const JetpackSignInButtonHeight = 41.0;
     CGFloat animationDuration = [[keyboardInfo objectForKey:UIKeyboardAnimationDurationUserInfoKey] floatValue];
     CGRect keyboardFrame = [[[notification userInfo] objectForKey:UIKeyboardFrameEndUserInfoKey] CGRectValue];
     keyboardFrame = [self.view convertRect:keyboardFrame fromView:nil];
+    CGFloat newKeyboardOffset = (CGRectGetMaxY(_signInButton.frame) - CGRectGetMinY(keyboardFrame)) + JetpackStandardOffset;
 
-    _keyboardOffset = (CGRectGetMaxY(_signInButton.frame) - CGRectGetMinY(keyboardFrame)) + CGRectGetHeight(_signInButton.frame);
-    
+    if (newKeyboardOffset < 0) {
+        newKeyboardOffset = 0;
+        return;
+    }
+
     [UIView animateWithDuration:animationDuration animations:^{
-        NSArray *controlsToMove = @[_usernameField, _passwordField, _signInButton];
-        NSArray *controlsToHide = @[_icon, _description];
-
-        for (UIControl *control in controlsToMove) {
+        for (UIControl *control in [self controlsToMoveForTextEntry]) {
             CGRect frame = control.frame;
-            frame.origin.y -= _keyboardOffset;
+            frame.origin.y -= newKeyboardOffset;
             control.frame = frame;
         }
-        
-        for (UIControl *control in controlsToHide) {
+
+        for (UIControl *control in [self controlsToHideForTextEntry]) {
             control.alpha = 0.0;
+        }
+    } completion:^(BOOL finished) {
+
+        _keyboardOffset += newKeyboardOffset;
+    }];
+}
+
+- (void)keyboardWillHide:(NSNotification *)notification
+{
+    NSDictionary *keyboardInfo = notification.userInfo;
+    CGFloat animationDuration = [[keyboardInfo objectForKey:UIKeyboardAnimationDurationUserInfoKey] floatValue];
+
+    CGFloat currentKeyboardOffset = _keyboardOffset;
+    _keyboardOffset = 0;
+
+    [UIView animateWithDuration:animationDuration animations:^{
+        for (UIControl *control in [self controlsToMoveForTextEntry]) {
+            CGRect frame = control.frame;
+            frame.origin.y += currentKeyboardOffset;
+            control.frame = frame;
+        }
+
+        for (UIControl *control in [self controlsToHideForTextEntry]) {
+            control.alpha = 1.0;
         }
     }];
 }
 
-- (void)keyboardWillHide:(NSNotification *)notification {
-    NSDictionary *keyboardInfo = notification.userInfo;
-    CGFloat animationDuration = [[keyboardInfo objectForKey:UIKeyboardAnimationDurationUserInfoKey] floatValue];
-    [UIView animateWithDuration:animationDuration animations:^{
-        NSArray *controlsToMove = @[_usernameField, _passwordField, _signInButton];
-        NSArray *controlsToHide = @[_icon, _description];
+- (NSArray *)controlsToMoveForTextEntry {
 
-        for (UIControl *control in controlsToMove) {
-            CGRect frame = control.frame;
-            frame.origin.y += _keyboardOffset;
-            control.frame = frame;
-        }
-        for (UIControl *control in controlsToHide) {
-            control.alpha = 1.0;
-        }
-    }];
+    return @[_usernameField, _passwordField, _signInButton, _icon, _description];
+}
+- (NSArray *)controlsToHideForTextEntry {
+
+    NSArray *controlsToHide = @[];
+
+    // Hide the
+    BOOL isSmallScreen = !(CGRectGetHeight(self.view.bounds) > 480.0);
+    if (isSmallScreen) {
+        controlsToHide = [controlsToHide arrayByAddingObject:_icon];
+        controlsToHide = [controlsToHide arrayByAddingObject:_description];
+    }
+    return controlsToHide;
 }
 
 #pragma mark - Custom methods
@@ -455,7 +476,7 @@ CGFloat const JetpackSignInButtonHeight = 41.0;
 
 - (void)updateMessage {
     if ([_blog hasJetpack]) {
-        _description.text = NSLocalizedString(@"Looks like you have Jetpack set up on your blog. Congrats!\nSign in with your WordPress.com credentials below to enable Stats and Notifications.", @"");
+        _description.text = NSLocalizedString(@"Looks like you have Jetpack set up on your site. Congrats!\nSign in with your WordPress.com credentials below to enable Stats and Notifications.", @"");
     } else {
         _description.text = NSLocalizedString(@"Jetpack 1.8.2 or later is required for stats. Do you want to install Jetpack?", @"");
     }
