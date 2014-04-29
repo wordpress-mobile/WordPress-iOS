@@ -63,7 +63,7 @@ NSString * const BlogJetpackApiPath = @"get-user-blogs/1.0";
 }
 
 - (void)validateJetpackUsername:(NSString *)username password:(NSString *)password success:(void (^)())success failure:(void (^)(NSError *))failure {
-    NSAssert(![self isWPcom], @"Can't validate credentials for a WordPress.com blog");
+    NSAssert(![self isWPcom], @"Can't validate credentials for a WordPress.com site");
     NSAssert(username != nil, @"Can't validate with a nil username");
     NSAssert(password != nil, @"Can't validate with a nil password");
 
@@ -85,7 +85,7 @@ NSString * const BlogJetpackApiPath = @"get-user-blogs/1.0";
                 NSArray *blogs = [responseObject arrayForKeyPath:@"userinfo.blog"];
                 NSNumber *searchID = [self jetpackBlogID];
                 NSString *searchURL = self.url;
-                DDLogInfo(@"Available wp.com/jetpack blogs for %@: %@", username, blogs);
+                DDLogInfo(@"Available wp.com/jetpack sites for %@: %@", username, blogs);
                 NSArray *foundBlogs = [blogs filteredArrayUsingPredicate:[NSPredicate predicateWithBlock:^BOOL(id evaluatedObject, NSDictionary *bindings) {
                     BOOL valid = NO;
                     if (searchID && [[evaluatedObject numberForKey:@"id"] isEqualToNumber:searchID]) {
@@ -104,7 +104,7 @@ NSString * const BlogJetpackApiPath = @"get-user-blogs/1.0";
                 } else {
                     NSError *error = [NSError errorWithDomain:BlogJetpackErrorDomain
                                                          code:BlogJetpackErrorCodeNoRecordForBlog
-                                                     userInfo:@{NSLocalizedDescriptionKey: NSLocalizedString(@"This blog is not connected to that WordPress.com username", @"")}];
+                                                     userInfo:@{NSLocalizedDescriptionKey: NSLocalizedString(@"This site is not connected to that WordPress.com username", @"")}];
                     if (failure) failure(error);
                 }
             } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
@@ -124,7 +124,16 @@ NSString * const BlogJetpackApiPath = @"get-user-blogs/1.0";
 - (void)removeJetpackCredentials {
     NSAssert(![self isWPcom], @"Blog+Jetpack doesn't support WordPress.com blogs");
 
-    self.account = nil;
+    // If the associated jetpack account is not used for anything else, remove it
+    WPAccount *jetpackAccount = self.jetpackAccount;
+    if (jetpackAccount
+        && [jetpackAccount.jetpackBlogs count] == 1
+        && [[jetpackAccount.jetpackBlogs anyObject] isEqual:self]
+        && [jetpackAccount.visibleBlogs count] == 0
+        && ![[WPAccount defaultWordPressComAccount] isEqual:jetpackAccount]) {
+        DDLogWarn(@"Removing jetpack account %@ since the last blog using it is being removed", jetpackAccount.username);
+        [self.managedObjectContext deleteObject:jetpackAccount];
+    }
 }
 
 #pragma mark - Private methods

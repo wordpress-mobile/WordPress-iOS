@@ -8,6 +8,7 @@
 
 #import <QuartzCore/QuartzCore.h>
 #import <DTCoreText/DTCoreText.h>
+#import "ContextManager.h"
 #import "NotificationsCommentDetailViewController.h"
 #import "WordPressAppDelegate.h"
 #import "WPWebViewController.h"
@@ -27,8 +28,9 @@
 #import "WPTableViewController.h"
 
 const CGFloat NotificationsCommentDetailViewControllerReplyTextViewDefaultHeight = 64.f;
+NSString *const WPNotificationCommentRestorationKey = @"WPNotificationCommentRestorationKey";
 
-@interface NotificationsCommentDetailViewController () <InlineComposeViewDelegate, WPContentViewDelegate>
+@interface NotificationsCommentDetailViewController () <InlineComposeViewDelegate, WPContentViewDelegate, UIViewControllerRestoration>
 
 @property NSUInteger followBlogID;
 @property NSDictionary *commentActions;
@@ -57,20 +59,42 @@ const CGFloat NotificationsCommentDetailViewControllerReplyTextViewDefaultHeight
 
 @implementation NotificationsCommentDetailViewController
 
-- (id)initWithNote:(Note *)note {
-    self = [super init];
-    if (self) {
-        self.title = NSLocalizedString(@"Notification", @"Title for notification detail view");
-        _hasScrollBackView = NO;
-        _note = note;
+
++ (UIViewController *)viewControllerWithRestorationIdentifierPath:(NSArray *)identifierComponents coder:(NSCoder *)coder {
+    NSString *noteID = [coder decodeObjectForKey:WPNotificationCommentRestorationKey];
+    if (!noteID)
+        return nil;
+    
+    NSManagedObjectContext *context = [[ContextManager sharedInstance] mainContext];
+    NSManagedObjectID *objectID = [context.persistentStoreCoordinator managedObjectIDForURIRepresentation:[NSURL URLWithString:noteID]];
+    if (!objectID)
+        return nil;
+    
+    NSError *error = nil;
+    Note *restoredNote = (Note *)[context existingObjectWithID:objectID error:&error];
+    if (error || !restoredNote) {
+        return nil;
     }
-    return self;
+    
+    return [[self alloc] initWithNote:restoredNote];
 }
 
 - (void)dealloc {
     _inlineComposeView.delegate = nil;
     _inlineComposeView = nil;
     [[NSNotificationCenter defaultCenter] removeObserver:self];
+}
+
+- (id)initWithNote:(Note *)note {
+    self = [super init];
+    if (self) {
+        self.title = NSLocalizedString(@"Notification", @"Title for notification detail view");
+        _hasScrollBackView = NO;
+        _note = note;
+        self.restorationIdentifier = NSStringFromClass([self class]);
+        self.restorationClass = [self class];
+    }
+    return self;
 }
 
 - (void)viewDidLoad
@@ -93,15 +117,19 @@ const CGFloat NotificationsCommentDetailViewControllerReplyTextViewDefaultHeight
     self.view.backgroundColor = [UIColor whiteColor];
     
     self.trashButton = [self.commentView addActionButtonWithImage:[UIImage imageNamed:@"icon-comments-trash"] selectedImage:[UIImage imageNamed:@"icon-comments-trash-active"]];
+    self.trashButton.accessibilityLabel = NSLocalizedString(@"Move to trash", @"Spoken accessibility label.");
     [self.trashButton addTarget:self action:@selector(deleteAction:) forControlEvents:UIControlEventTouchUpInside];
     
     self.approveButton = [self.commentView addActionButtonWithImage:[UIImage imageNamed:@"icon-comments-approve"] selectedImage:[UIImage imageNamed:@"icon-comments-approve-active"]];
+    self.approveButton.accessibilityLabel = NSLocalizedString(@"Toggle approve or unapprove", @"Spoken accessibility label.");
     [self.approveButton addTarget:self action:@selector(approveOrUnapproveAction:) forControlEvents:UIControlEventTouchUpInside];
     
     self.spamButton = [self.commentView addActionButtonWithImage:[UIImage imageNamed:@"icon-comments-flag"] selectedImage:[UIImage imageNamed:@"icon-comments-flag-active"]];
+    self.spamButton.accessibilityLabel = NSLocalizedString(@"Mark as spam", @"Spoken accessibility label.");
     [self.spamButton addTarget:self action:@selector(spamAction:) forControlEvents:UIControlEventTouchUpInside];
 
     self.replyButton = [self.commentView addActionButtonWithImage:[UIImage imageNamed:@"reader-postaction-comment-blue"] selectedImage:[UIImage imageNamed:@"reader-postaction-comment-active"]];
+    self.replyButton.accessibilityLabel = NSLocalizedString(@"Reply", @"Spoken accessibility label.");
     [self.replyButton addTarget:self action:@selector(replyAction:) forControlEvents:UIControlEventTouchUpInside];
 
     [self.view addSubview:self.commentView];
@@ -128,6 +156,11 @@ const CGFloat NotificationsCommentDetailViewControllerReplyTextViewDefaultHeight
                                                  name:UIKeyboardWillHideNotification
                                                object:nil];
 
+}
+
+- (void)encodeRestorableStateWithCoder:(NSCoder *)coder {
+    [coder encodeObject:[[self.note.objectID URIRepresentation] absoluteString] forKey:WPNotificationCommentRestorationKey];
+    [super encodeRestorableStateWithCoder:coder];
 }
 
 - (void)displayNote {
@@ -221,9 +254,11 @@ const CGFloat NotificationsCommentDetailViewControllerReplyTextViewDefaultHeight
     if (canBeApproved) {
         [self.approveButton setImage:[UIImage imageNamed:@"icon-comments-approve"] forState:UIControlStateNormal];
         [self.approveButton setImage:[UIImage imageNamed:@"icon-comments-approve-active"] forState:UIControlStateSelected];
+        self.approveButton.accessibilityLabel = NSLocalizedString(@"Approve", @"Spoken accessibility label.");
     } else {
         [self.approveButton setImage:[UIImage imageNamed:@"icon-comments-unapprove"] forState:UIControlStateNormal];
         [self.approveButton setImage:[UIImage imageNamed:@"icon-comments-unapprove-active"] forState:UIControlStateSelected];
+        self.approveButton.accessibilityLabel = NSLocalizedString(@"Unapprove", @"Spoken accessibility label.");
     }
 }
 
@@ -331,20 +366,31 @@ const CGFloat NotificationsCommentDetailViewControllerReplyTextViewDefaultHeight
                 [self displayNote];
             } failure:nil];
         }
-        
-        [[[WPAccount defaultWordPressComAccount] restApi] postPath:replyPath parameters:params success:^(AFHTTPRequestOperation *operation, id responseObject) {
-            DDLogVerbose(@"Response: %@", responseObject);
+
+        void (^success)() = ^{
             [self.inlineComposeView clearText];
             self.inlineComposeView.enabled = YES;
             [self.inlineComposeView dismissComposer];
             [WPToast showToastWithMessage:NSLocalizedString(@"Replied", @"User replied to a comment")
                                  andImage:[UIImage imageNamed:@"action_icon_replied"]];
+        };
 
-        } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
-            DDLogError(@"Failure %@", error);
+        void (^failure)() = ^{
             self.inlineComposeView.enabled = YES;
             [self.inlineComposeView displayComposer];
-            DDLogVerbose(@"[Rest API] ! %@", [error localizedDescription]);
+        };
+
+        [[[WPAccount defaultWordPressComAccount] restApi] postPath:replyPath parameters:params success:^(AFHTTPRequestOperation *operation, id responseObject) {
+            DDLogVerbose(@"Response: %@", responseObject);
+            success();
+        } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+            DDLogError(@"Failure %@", error);
+            if ([error.userInfo[WordPressComApiErrorCodeKey] isEqual:@"comment_duplicate"]) {
+                // If it's a duplicate comment, fake success since an identical comment is published
+                success();
+            } else {
+                failure();
+            }
         }];
     }
 
@@ -373,6 +419,9 @@ const CGFloat NotificationsCommentDetailViewControllerReplyTextViewDefaultHeight
             comment.loading = NO;
 
             NSString *author = [comment.commentData valueForKeyPath:@"author.name"];
+            if ([[author trim] length] == 0) {
+                author = NSLocalizedString(@"Someone", @"Identifies the author of a comment that chose to be anonymous. Should match the wpcom translation for 'Someone' who left a comment, as opposed to an 'anonymous' author.");
+            }
             NSString *authorLink = [comment.commentData valueForKeyPath:@"author.URL"];
             [self.commentView setAuthorDisplayName:author authorLink:authorLink];
 
