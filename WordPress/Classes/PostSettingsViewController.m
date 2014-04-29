@@ -563,10 +563,9 @@ static NSString *const TableViewActivityCellIdentifier = @"TableViewActivityCell
         }
         
         Coordinate *coordinate = self.post.geolocation;
-        CLLocation *lastLocation = [LocationService sharedService].lastGeocodedLocation;
         CLLocation *postLocation = [[CLLocation alloc] initWithLatitude:coordinate.latitude longitude:coordinate.longitude];
         NSString *address;
-        if(lastLocation && [lastLocation distanceFromLocation:postLocation] == 0) {
+        if([[LocationService sharedService] hasAddressForLocation:postLocation]) {
             address = [LocationService sharedService].lastGeocodedAddress;
         } else {
             address = NSLocalizedString(@"Looking up address...", @"Used with posts that are geo-tagged. Let's the user know the the app is looking up the address for the coordinates tagging the post.");
