@@ -68,13 +68,6 @@ NSString *const WPMediaUploaderUploadOperation = @"upload_operation";
     self.isUploadingMedia = NO;
 }
 
-- (void)cancelUploadForMedia:(Media *)media
-{
-    NSDictionary *uploadInformation = [_mediaUploads objectForKey:media];
-    AFHTTPRequestOperation *operation = [uploadInformation objectForKey:WPMediaUploaderUploadOperation];
-    [operation cancel];
-}
-
 - (void)uploadMedia:(Media *)media withSuccess:(void (^)())success failure:(void (^)(NSError *error))failure {
     NSString *mimeType = (media.mediaType == MediaTypeVideo) ? @"video/mp4" : @"image/jpeg";
     NSDictionary *object = [NSDictionary dictionaryWithObjectsAndKeys:

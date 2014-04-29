@@ -9,7 +9,5 @@
 
 - (void)uploadMediaObjects:(NSArray *)mediaObjects;
 - (void)cancelAllUploads;
-- (void)cancelUploadForMedia:(Media *)media;
-
 
 @end
