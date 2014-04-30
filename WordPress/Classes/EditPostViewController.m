@@ -1384,7 +1384,7 @@ CGFloat const EPVCTextViewTopPadding = 7.0f;
             UIImage *fullResolutionImage = [UIImage imageWithCGImage:representation.fullResolutionImage
                                                                scale:1.0f
                                                          orientation:(UIImageOrientation)representation.orientation];
-            UIImage *resizedImage = [self correctlySizedImage:fullResolutionImage];
+            UIImage *resizedImage = [WPMediaSizing correctlySizedImage:fullResolutionImage forBlogDimensions:[self.post.blog getImageResizeDimensions]];
             NSDictionary *assetMetadata = [WPMediaMetadataExtractor metadataForAsset:asset enableGeolocation:gelocationEnabled];
             [WPMediaPersister saveMedia:imageMedia withImage:resizedImage andMetadata:assetMetadata];
             [mediaToUpload addObject:imageMedia];
@@ -1392,14 +1392,6 @@ CGFloat const EPVCTextViewTopPadding = 7.0f;
     }
     [_mediaUploader uploadMediaObjects:mediaToUpload];
     [self setupNavbar];
-}
-
-- (UIImage *)correctlySizedImage:(UIImage *)fullResolutionImage
-{
-    MediaResize *resize = [WPMediaSizing mediaResizePreference];
-    NSDictionary *dimensions = [self.post.blog getImageResizeDimensions];
-    CGSize newSize = [WPMediaSizing sizeForImage:fullResolutionImage mediaResize:resize blogResizeDimensions:dimensions];
-    return [WPMediaSizing resizeImage:fullResolutionImage toSize:newSize];
 }
 
 #pragma mark - Positioning & Rotation

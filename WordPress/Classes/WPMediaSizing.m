@@ -85,5 +85,11 @@
     return resizedImage;
 }
 
++ (UIImage *)correctlySizedImage:(UIImage *)fullResolutionImage forBlogDimensions:(NSDictionary *)dimensions
+{
+    MediaResize *resize = [self mediaResizePreference];
+    CGSize newSize = [self sizeForImage:fullResolutionImage mediaResize:resize blogResizeDimensions:dimensions];
+    return [self resizeImage:fullResolutionImage toSize:newSize];
+}
 
 @end
