@@ -835,9 +835,15 @@ NSString * const RPVCDisplayedNativeFriendFinder = @"DisplayedNativeFriendFinder
 }
 
 - (void)didChangeAccount:(NSNotification *)notification {
+    self.currentTopic = nil;
     [self resetResultsController];
     [self.tableView reloadData];
     [self.navigationController popToViewController:self animated:NO];
+
+NSFetchRequest *fetchRequest = [[NSFetchRequest alloc] initWithEntityName:@"ReaderTopic"];
+NSManagedObjectContext *context = [[ContextManager sharedInstance] mainContext];
+NSArray *topics = [context executeFetchRequest:fetchRequest error:nil];
+NSLog(@"Remaining topics after changing account: %@", topics);
 
     if ([self isViewLoaded]) {
         [self syncItems];

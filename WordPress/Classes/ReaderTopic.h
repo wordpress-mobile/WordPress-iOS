@@ -3,8 +3,11 @@
 extern NSString *const ReaderTopicTypeList;
 extern NSString *const ReaderTopicTypeTag;
 
+@class WPAccount;
+
 @interface ReaderTopic : NSManagedObject
 
+@property (nonatomic, strong) WPAccount *account;
 @property (nonatomic) BOOL isRecommended;
 @property (nonatomic) BOOL isSubscribed;
 @property (nonatomic, strong) NSDate *lastSynced;

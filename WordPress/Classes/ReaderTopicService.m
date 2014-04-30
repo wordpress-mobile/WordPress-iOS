@@ -36,7 +36,7 @@ NSString *const ReaderTopicCurrentTopicURIKey = @"ReaderTopicCurrentTopicURIKey"
     
     ReaderTopicServiceRemote *remoteService = [[ReaderTopicServiceRemote alloc] initWithRemoteApi:api];
     [remoteService fetchReaderMenuWithSuccess:^(NSArray *topics) {
-        [self mergeTopics:topics];
+        [self mergeTopics:topics forAccount:defaultAccount];
         [self.managedObjectContext performBlockAndWait:^{
             [[ContextManager sharedInstance] saveContext:self.managedObjectContext];
         }];
@@ -59,15 +59,12 @@ NSString *const ReaderTopicCurrentTopicURIKey = @"ReaderTopicCurrentTopicURIKey"
         NSURL *topicURI = [NSURL URLWithString:topicURIString];
         NSManagedObjectID *objectID = [self.managedObjectContext.persistentStoreCoordinator managedObjectIDForURIRepresentation:topicURI];
         if (objectID) {
-            NSError *error;
-            topic = (ReaderTopic *)[self.managedObjectContext existingObjectWithID:objectID error:&error];
-            if (error) {
-                DDLogError(@"Error retriving current topic from topicURI : %@", [error localizedDescription]);
-            }
+            topic = (ReaderTopic *)[self.managedObjectContext objectRegisteredForID:objectID];
         }
     }
 
     if (topic == nil) {
+        [self setCurrentTopic:nil];
         // Return a default topic
         NSFetchRequest *request = [NSFetchRequest fetchRequestWithEntityName:@"ReaderTopic"];
         request.predicate = [NSPredicate predicateWithFormat:@"type == %@", ReaderTopicTypeList];
@@ -89,6 +86,13 @@ NSString *const ReaderTopicCurrentTopicURIKey = @"ReaderTopicCurrentTopicURIKey"
 }
 
 - (void)setCurrentTopic:(ReaderTopic *)topic {
+    NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
+    if (!topic) {
+        [defaults removeObjectForKey:ReaderTopicCurrentTopicURIKey];
+        [defaults synchronize];
+        return;
+    }
+
     NSURL *topicURI = topic.objectID.URIRepresentation;
     [[NSUserDefaults standardUserDefaults] setObject:[topicURI absoluteString] forKey:ReaderTopicCurrentTopicURIKey];
     [NSUserDefaults resetStandardUserDefaults];
@@ -150,12 +154,13 @@ NSString *const ReaderTopicCurrentTopicURIKey = @"ReaderTopicCurrentTopicURIKey"
  
  @param topics An array of `ReaderTopics` to save.
  */
-- (void)mergeTopics:(NSArray *)topics {
+- (void)mergeTopics:(NSArray *)topics forAccount:(WPAccount *)account {
     NSArray *currentTopics = [self allTopics];
     NSMutableArray *topicsToKeep = [NSMutableArray array];
     
     for (NSDictionary *dict in topics) {
         ReaderTopic *newTopic = [self createOrReplaceFromDictionary:dict];
+        newTopic.account = account;
         if (newTopic != nil) {
             [topicsToKeep addObject:newTopic];
         } else {

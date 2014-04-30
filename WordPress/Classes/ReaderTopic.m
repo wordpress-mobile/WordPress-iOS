@@ -5,6 +5,7 @@ NSString *const ReaderTopicTypeTag = @"tag";
 
 @implementation ReaderTopic
 
+@dynamic account;
 @dynamic isRecommended;
 @dynamic isSubscribed;
 @dynamic lastSynced;

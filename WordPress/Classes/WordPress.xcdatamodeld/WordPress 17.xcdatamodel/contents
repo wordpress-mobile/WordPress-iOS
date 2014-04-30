@@ -57,7 +57,7 @@
         <relationship name="blogs" optional="YES" toMany="YES" deletionRule="Cascade" destinationEntity="Blog" inverseName="account" inverseEntity="Blog" indexed="YES" syncable="YES"/>
         <relationship name="jetpackBlogs" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="Blog" inverseName="jetpackAccount" inverseEntity="Blog" indexed="YES" syncable="YES"/>
         <relationship name="notes" optional="YES" toMany="YES" deletionRule="Cascade" destinationEntity="Note" inverseName="account" inverseEntity="Note" syncable="YES"/>
-        <relationship name="readerPosts" optional="YES" toMany="YES" deletionRule="Cascade" destinationEntity="ReaderPost" inverseName="account" inverseEntity="ReaderPost" syncable="YES"/>
+        <relationship name="readerTopics" optional="YES" toMany="YES" deletionRule="Cascade" destinationEntity="ReaderTopic" inverseName="account" inverseEntity="ReaderTopic" syncable="YES"/>
     </entity>
     <entity name="BasePost" representedClassName="BasePost" isAbstract="YES">
         <attribute name="author" optional="YES" attributeType="String">
@@ -325,7 +325,7 @@
         <attribute name="storedComment" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="summary" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="tags" optional="YES" attributeType="String" syncable="YES"/>
-        <relationship name="account" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="Account" inverseName="readerPosts" inverseEntity="Account" syncable="YES"/>
+        <relationship name="account" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="Account" syncable="YES"/>
         <relationship name="comments" optional="YES" toMany="YES" deletionRule="Cascade" destinationEntity="ReaderComment" inverseName="post" inverseEntity="ReaderComment" indexed="YES" syncable="YES"/>
         <relationship name="topic" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="ReaderTopic" inverseName="posts" inverseEntity="ReaderTopic" syncable="YES"/>
     </entity>
@@ -337,6 +337,7 @@
         <attribute name="title" attributeType="String" syncable="YES"/>
         <attribute name="topicID" optional="YES" attributeType="Integer 32" defaultValueString="0" syncable="YES"/>
         <attribute name="type" attributeType="String" indexed="YES" syncable="YES"/>
+        <relationship name="account" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="Account" inverseName="readerTopics" inverseEntity="Account" syncable="YES"/>
         <relationship name="posts" optional="YES" toMany="YES" deletionRule="Nullify" ordered="YES" destinationEntity="ReaderPost" inverseName="topic" inverseEntity="ReaderPost" syncable="YES"/>
     </entity>
     <entity name="Theme" representedClassName="Theme" syncable="YES">
@@ -357,7 +358,7 @@
     <elements>
         <element name="AbstractComment" positionX="0" positionY="0" width="128" height="240"/>
         <element name="AbstractPost" positionX="0" positionY="0" width="128" height="120"/>
-        <element name="Account" positionX="0" positionY="0" width="128" height="150"/>
+        <element name="Account" positionX="0" positionY="0" width="128" height="148"/>
         <element name="BasePost" positionX="0" positionY="0" width="128" height="240"/>
         <element name="Blog" positionX="0" positionY="0" width="128" height="450"/>
         <element name="Category" positionX="0" positionY="0" width="128" height="120"/>
@@ -368,7 +369,7 @@
         <element name="Post" positionX="0" positionY="0" width="128" height="150"/>
         <element name="ReaderComment" positionX="0" positionY="0" width="128" height="120"/>
         <element name="ReaderPost" positionX="0" positionY="0" width="128" height="450"/>
-        <element name="ReaderTopic" positionX="18" positionY="162" width="128" height="163"/>
+        <element name="ReaderTopic" positionX="18" positionY="162" width="128" height="178"/>
         <element name="Theme" positionX="9" positionY="153" width="128" height="225"/>
     </elements>
 </model>
