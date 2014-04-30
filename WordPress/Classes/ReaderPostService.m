@@ -10,10 +10,10 @@
 #import "NSString+Helpers.h"
 #import "NSString+XMLExtensions.h"
 
-NSInteger const ReaderPostServiceNumberToSync = 20;
-NSInteger const ReaderPostServiceSummaryLength = 150;
-NSInteger const ReaderPostServiceTitleLength = 30;
-NSInteger const ReaderPostServiceMaxPosts = 200;
+NSUInteger const ReaderPostServiceNumberToSync = 20;
+NSUInteger const ReaderPostServiceSummaryLength = 150;
+NSUInteger const ReaderPostServiceTitleLength = 30;
+NSUInteger const ReaderPostServiceMaxPosts = 200;
 
 @interface ReaderPostService()
 
@@ -349,7 +349,6 @@ NSInteger const ReaderPostServiceMaxPosts = 200;
     // Don't trust the relationships on the topic to be current or correct.
     NSError *error;
     NSFetchRequest *fetchRequest = [[NSFetchRequest alloc] initWithEntityName:@"ReaderPost"];
-    [fetchRequest setFetchOffset:ReaderPostServiceMaxPosts];
 
     NSPredicate *pred = [NSPredicate predicateWithFormat:@"topic == %@", topic];
     [fetchRequest setPredicate:pred];
@@ -357,10 +356,22 @@ NSInteger const ReaderPostServiceMaxPosts = 200;
     NSSortDescriptor *sortDescriptor = [NSSortDescriptor sortDescriptorWithKey:@"sortDate" ascending:NO];
     [fetchRequest setSortDescriptors:@[sortDescriptor]];
 
+    // Specifying a fetchOffset to just get the posts in range doesn't seem to work very well.
+    // Just perform the fetch and remove the excess.
+    NSUInteger count = [self.managedObjectContext countForFetchRequest:fetchRequest error:&error];
+    if (count < ReaderPostServiceMaxPosts) {
+        return;
+    }
+
     NSArray *posts = [self.managedObjectContext executeFetchRequest:fetchRequest error:&error];
     if (error) {
         DDLogError(@"-[ReaderPostService deletePostsInExcessOfMaxAllowedForTopic:] error fetching posts: %@", error);
         return;
+    }
+
+    for (NSUInteger i = ReaderPostServiceMaxPosts; i < count; i++) {
+        ReaderPost *post = [posts objectAtIndex:i];
+        [self.managedObjectContext deleteObject:post];
     }
 
     for (ReaderPost *post in posts) {
