@@ -19,6 +19,7 @@
 #import "WPTableViewController.h"
 #import "InlineComposeView.h"
 #import "ReaderCommentPublisher.h"
+#import "ReaderPostService.h"
 
 static NSInteger const ReaderCommentsToSync = 100;
 static NSTimeInterval const ReaderPostDetailViewControllerRefreshTimeout = 300; // 5 minutes
@@ -623,15 +624,17 @@ typedef enum {
 
 - (void)postView:(ReaderPostView *)postView didReceiveLikeAction:(id)sender {
     ReaderPost *post = postView.post;
-	[post toggleLikedWithSuccess:^{
+    NSManagedObjectContext *context = [[ContextManager sharedInstance] newDerivedContext];
+    ReaderPostService *service = [[ReaderPostService alloc] initWithManagedObjectContext:context];
+    [service toggleLikedForPost:post success:^{
         if ([post.isLiked boolValue]) {
             [WPAnalytics track:WPAnalyticsStatReaderLikedArticle];
         }
-	} failure:^(NSError *error) {
+    } failure:^(NSError *error) {
 		DDLogError(@"Error Liking Post : %@", [error localizedDescription]);
 		[postView updateActionButtons];
-	}];
-	
+    }];
+
 	[postView updateActionButtons];
 }
 
@@ -643,11 +646,15 @@ typedef enum {
         return;
     
     followButton.selected = ![post.isFollowing boolValue]; // Set it optimistically
-	[post toggleFollowingWithSuccess:^{
-	} failure:^(NSError *error) {
+
+    NSManagedObjectContext *context = [[ContextManager sharedInstance] newDerivedContext];
+    ReaderPostService *service = [[ReaderPostService alloc] initWithManagedObjectContext:context];
+    [service toggleFollowingForPost:post success:^{
+        //noop
+    } failure:^(NSError *error) {
 		DDLogError(@"Error Following Blog : %@", [error localizedDescription]);
 		[followButton setSelected:[post.isFollowing boolValue]];
-	}];
+    }];
 }
 
 - (void)postView:(ReaderPostView *)postView didReceiveCommentAction:(id)sender {
@@ -725,20 +732,6 @@ typedef enum {
 		navController.title = (videoView.title != nil) ? videoView.title : @"Video";
         [self.navigationController presentViewController:navController animated:YES completion:nil];
 	}
-}
-
-- (void)postView:(ReaderPostView *)postView didReceiveTagAction:(id)sender {
-    ReaderPost *post = postView.post;
-    
-    NSString *endpoint = [NSString stringWithFormat:@"read/tags/%@/posts", post.primaryTagSlug];
-    NSDictionary *dict = @{@"endpoint" : endpoint,
-                           @"title" : post.primaryTagName};
-    
-	[[NSUserDefaults standardUserDefaults] setObject:dict forKey:ReaderCurrentTopicKey];
-	[[NSUserDefaults standardUserDefaults] synchronize];
-    
-    [self.navigationController popViewControllerAnimated:YES];
-    [[NSNotificationCenter defaultCenter] postNotificationName:ReaderTopicDidChangeNotification object:self];
 }
 
 - (void)postView:(ReaderPostView *)postView didReceiveFeaturedImageAction:(id)sender {

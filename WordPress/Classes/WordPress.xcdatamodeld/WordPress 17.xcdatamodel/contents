@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
-<model userDefinedModelVersionIdentifier="" type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="5064" systemVersion="13C64" minimumToolsVersion="Automatic" macOSVersion="Automatic" iOSVersion="Automatic">
+<model userDefinedModelVersionIdentifier="" type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="5064" systemVersion="13C1021" minimumToolsVersion="Automatic" macOSVersion="Automatic" iOSVersion="Automatic">
     <entity name="AbstractComment" representedClassName="AbstractComment" isAbstract="YES">
         <attribute name="author" optional="YES" attributeType="String">
             <userInfo/>
@@ -306,15 +306,13 @@
         <attribute name="authorEmail" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="authorURL" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="blogName" optional="YES" attributeType="String" syncable="YES"/>
-        <attribute name="blogSiteID" optional="YES" attributeType="Integer 64" defaultValueString="0" syncable="YES"/>
         <attribute name="blogURL" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="commentCount" optional="YES" attributeType="Integer 16" defaultValueString="0" syncable="YES"/>
         <attribute name="commentsOpen" optional="YES" attributeType="Boolean" syncable="YES"/>
         <attribute name="dateCommentsSynced" optional="YES" attributeType="Date" syncable="YES"/>
         <attribute name="dateSynced" optional="YES" attributeType="Date" indexed="YES" syncable="YES"/>
-        <attribute name="endpoint" attributeType="String" indexed="YES" syncable="YES"/>
         <attribute name="featuredImage" optional="YES" attributeType="String" syncable="YES"/>
-        <attribute name="globalID" optional="YES" attributeType="String" indexed="YES" syncable="YES"/>
+        <attribute name="globalID" attributeType="String" indexed="YES" syncable="YES"/>
         <attribute name="isBlogPrivate" optional="YES" attributeType="Boolean" syncable="YES"/>
         <attribute name="isFollowing" optional="YES" attributeType="Boolean" syncable="YES"/>
         <attribute name="isLiked" optional="YES" attributeType="Boolean" syncable="YES"/>
@@ -322,8 +320,6 @@
         <attribute name="isWPCom" optional="YES" attributeType="Boolean" syncable="YES"/>
         <attribute name="likeCount" optional="YES" attributeType="Integer 16" defaultValueString="0" syncable="YES"/>
         <attribute name="postAvatar" optional="YES" attributeType="String" syncable="YES"/>
-        <attribute name="primaryTagName" optional="YES" attributeType="String" syncable="YES"/>
-        <attribute name="primaryTagSlug" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="siteID" optional="YES" attributeType="Integer 64" defaultValueString="0" indexed="YES" syncable="YES"/>
         <attribute name="sortDate" optional="YES" attributeType="Date" indexed="YES" syncable="YES"/>
         <attribute name="storedComment" optional="YES" attributeType="String" syncable="YES"/>
@@ -341,7 +337,7 @@
         <attribute name="title" attributeType="String" syncable="YES"/>
         <attribute name="topicID" optional="YES" attributeType="Integer 32" defaultValueString="0" syncable="YES"/>
         <attribute name="type" attributeType="String" indexed="YES" syncable="YES"/>
-        <relationship name="posts" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="ReaderPost" inverseName="topic" inverseEntity="ReaderPost" syncable="YES"/>
+        <relationship name="posts" optional="YES" toMany="YES" deletionRule="Nullify" ordered="YES" destinationEntity="ReaderPost" inverseName="topic" inverseEntity="ReaderPost" syncable="YES"/>
     </entity>
     <entity name="Theme" representedClassName="Theme" syncable="YES">
         <attribute name="details" optional="YES" attributeType="String" syncable="YES"/>
@@ -371,8 +367,8 @@
         <element name="Page" positionX="0" positionY="0" width="128" height="60"/>
         <element name="Post" positionX="0" positionY="0" width="128" height="150"/>
         <element name="ReaderComment" positionX="0" positionY="0" width="128" height="120"/>
-        <element name="ReaderPost" positionX="0" positionY="0" width="128" height="508"/>
-        <element name="ReaderTopic" positionX="18" positionY="162" width="128" height="165"/>
+        <element name="ReaderPost" positionX="0" positionY="0" width="128" height="450"/>
+        <element name="ReaderTopic" positionX="18" positionY="162" width="128" height="163"/>
         <element name="Theme" positionX="9" positionY="153" width="128" height="225"/>
     </elements>
 </model>
