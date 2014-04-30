@@ -8,6 +8,8 @@
 #import "ContextManager.h"
 #import "WPTableViewCell.h"
 
+NSString * const ReaderTopicDidChangeNotification = @"ReaderTopicDidChangeNotification";
+
 @interface ReaderTopicsViewController ()<NSFetchedResultsControllerDelegate>
 
 @property (nonatomic, strong) ReaderTopic *currentTopic;
@@ -73,8 +75,7 @@
     return header;
 }
 
-- (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section
-{
+- (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section {
     NSString *title = [self titleForHeaderInSection:section];
     return [WPTableViewSectionHeaderView heightForTitle:title andWidth:CGRectGetWidth(self.view.bounds)];
 }
@@ -99,6 +100,7 @@
     ReaderTopicService *service = [[ReaderTopicService alloc] initWithManagedObjectContext:[[ContextManager sharedInstance] mainContext]];
     service.currentTopic = topic;
 
+    [[NSNotificationCenter defaultCenter] postNotificationName:ReaderTopicDidChangeNotification object:nil];
     [self dismissViewControllerAnimated:YES completion:nil];
 }
 

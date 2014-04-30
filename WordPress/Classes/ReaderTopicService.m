@@ -57,7 +57,13 @@ NSString *const ReaderTopicCurrentTopicURIKey = @"ReaderTopicCurrentTopicURIKey"
     if (topicURIString) {
         NSURL *topicURI = [NSURL URLWithString:topicURIString];
         NSManagedObjectID *objectID = [self.managedObjectContext.persistentStoreCoordinator managedObjectIDForURIRepresentation:topicURI];
-        topic = (ReaderTopic *)[self.managedObjectContext existingObjectWithID:objectID error:nil];
+        if (objectID) {
+            NSError *error;
+            topic = (ReaderTopic *)[self.managedObjectContext existingObjectWithID:objectID error:&error];
+            if (error) {
+                DDLogError(@"Error retriving current topic from topicURI : %@", [error localizedDescription]);
+            }
+        }
     }
 
     if (topic == nil) {
