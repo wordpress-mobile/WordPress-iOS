@@ -40,8 +40,10 @@ NSUInteger const ReaderPostServiceMaxPosts = 200;
                                     count:ReaderPostServiceNumberToSync
                                    before:date
                                   success:^(NSArray *posts) {
+                                      [self mergePosts:posts keepExisting:keepExisting forTopic:topicObjectID];
+
                                       [self.managedObjectContext performBlockAndWait:^{
-                                          [self mergePosts:posts keepExisting:keepExisting forTopic:topicObjectID];
+                                          [[ContextManager sharedInstance] saveContext:self.managedObjectContext];
                                       }];
 
                                       if (success) {
@@ -248,14 +250,7 @@ NSUInteger const ReaderPostServiceMaxPosts = 200;
  @param topicObjectID The ObjectID of the ReaderTopic to assign to the newly created posts.
  */
 - (void)mergePosts:(NSArray *)posts keepExisting:(BOOL)keepExisting forTopic:(NSManagedObjectID *)topicObjectID {
-    NSError *error;
-    ReaderTopic *readerTopic = (ReaderTopic *)[self.managedObjectContext existingObjectWithID:topicObjectID error:&error];
-
-    if (error) {
-        DDLogError(@"-[ReaderPostService mergePosts:forTopic:] error retrieving existing topic from NSManagedObjectID: %@", error);
-        return;
-    }
-
+    ReaderTopic *readerTopic = (ReaderTopic *)[self.managedObjectContext objectWithID:topicObjectID];
     NSMutableArray *newPosts = [self makeNewPostsFromDictionaries:posts forTopic:readerTopic];
 
     if (keepExisting) {
@@ -266,8 +261,6 @@ NSUInteger const ReaderPostServiceMaxPosts = 200;
     }
 
     readerTopic.lastSynced = [NSDate date];
-
-    [[ContextManager sharedInstance] saveContext:self.managedObjectContext];
 }
 
 /**
