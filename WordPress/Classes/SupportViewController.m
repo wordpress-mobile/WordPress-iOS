@@ -140,7 +140,7 @@ typedef NS_ENUM(NSInteger, SettingsViewControllerSections)
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
     if (section == SettingsSectionFAQForums) {
-        return self.helpshiftEnabled ? 1 : 2;
+        return 1;
     }
     
     if (section == SettingsSectionActivityLog) {
@@ -190,9 +190,6 @@ typedef NS_ENUM(NSInteger, SettingsViewControllerSections)
 
     if (indexPath.section == SettingsSectionFAQForums && !self.helpshiftEnabled && indexPath.row == 0) {
         cell.textLabel.text = NSLocalizedString(@"WordPress Help Center", @"");
-        cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
-    } else if (indexPath.section == SettingsSectionFAQForums && !self.helpshiftEnabled && indexPath.row == 1) {
-        cell.textLabel.text = NSLocalizedString(@"WordPress Forums", @"");
         cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
     } else if (indexPath.section == SettingsSectionFAQForums && self.helpshiftEnabled && indexPath.row == 0) {
         cell.textLabel.text = NSLocalizedString(@"Contact Us", nil);
@@ -256,8 +253,6 @@ typedef NS_ENUM(NSInteger, SettingsViewControllerSections)
 
     if (indexPath.section == SettingsSectionFAQForums && !self.helpshiftEnabled && indexPath.row == 0) {
         [[Helpshift sharedInstance] showFAQs:self withOptions:nil];
-    } else if (indexPath.section == SettingsSectionFAQForums && !self.helpshiftEnabled && indexPath.row == 1) {
-        [[UIApplication sharedApplication] openURL:[NSURL URLWithString:@"http://ios.forums.wordpress.org"]];
     } else if (indexPath.section == SettingsSectionFAQForums && self.helpshiftEnabled && indexPath.row == 0) {
         [Taplytics goalAchieved:@"Helpshift opened"];
         [[Helpshift sharedInstance] showConversation:self withOptions:nil];
