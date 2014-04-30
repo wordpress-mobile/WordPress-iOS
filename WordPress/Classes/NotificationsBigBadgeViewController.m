@@ -1,6 +1,8 @@
 #import "NotificationsBigBadgeViewController.h"
 #import <DTCoreText/DTCoreText.h>
 #import "WPWebViewController.h"
+#import "NoteService.h"
+#import "StatsViewController.h"
 
 @interface NotificationsBigBadgeViewController() <DTAttributedTextContentViewDelegate>
 
@@ -183,11 +185,29 @@
     if (![sender isKindOfClass:[DTLinkButton class]]) {
         return;
     }
-    DTLinkButton *button = (DTLinkButton *)sender;
-    WPWebViewController *webViewController = [[WPWebViewController alloc] init];
-    webViewController.url = button.URL;
     
-    [self.navigationController pushViewController:webViewController animated:YES];
+    id viewController;
+    
+    if ([self.note statsEvent]) {
+        NoteService *noteService = [[NoteService alloc] initWithManagedObjectContext:self.note.managedObjectContext];
+        Blog *blog = [noteService blogForStatsEventNote:self.note];
+        
+        if (blog) {
+            StatsViewController *statsVC = [[StatsViewController alloc] init];
+            statsVC.blog = blog;
+            viewController = statsVC;
+        }
+    }
+    
+    if (!viewController) {
+        DTLinkButton *button = (DTLinkButton *)sender;
+        WPWebViewController *webViewController = [[WPWebViewController alloc] init];
+        webViewController.url = button.URL;
+
+        viewController = webViewController;
+    }
+    
+    [self.navigationController pushViewController:viewController animated:YES];
 }
 
 @end

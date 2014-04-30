@@ -168,21 +168,21 @@ NSString * const WPBlogDetailsBlogKey = @"WPBlogDetailsBlogKey";
     
     Class controllerClass;
     if (indexPath.row == BlogDetailsRowPosts) {
-        [WPStats track:WPStatOpenedPosts];
+        [WPAnalytics track:WPAnalyticsStatOpenedPosts];
         controllerClass = [PostsViewController class];
     } else if (indexPath.row == BlogDetailsRowPages) {
-        [WPStats track:WPStatOpenedPages];
+        [WPAnalytics track:WPAnalyticsStatOpenedPages];
         controllerClass = [PagesViewController class];
     } else if (indexPath.row == BlogDetailsRowComments) {
-        [WPStats track:WPStatOpenedComments];
+        [WPAnalytics track:WPAnalyticsStatOpenedComments];
         controllerClass = [CommentsViewController class];
     } else if (indexPath.row == BlogDetailsRowStats) {
-        [WPStats track:WPStatStatsAccessed];
+        [WPAnalytics track:WPAnalyticsStatStatsAccessed];
         controllerClass =  [StatsViewController class];
     } else if ([self shouldShowThemesOption] && indexPath.row == BlogDetailsRowThemes) {
         controllerClass = [ThemeBrowserViewController class];
     } else if ([self isRowForMedia:indexPath.row]) {
-        [WPStats track:WPStatOpenedMediaLibrary];
+        [WPAnalytics track:WPAnalyticsStatOpenedMediaLibrary];
         controllerClass = [MediaBrowserViewController class];
     } else if (indexPath.row == BlogDetailsRowViewSite) {
         [self showViewSiteForBlog:self.blog];
@@ -225,7 +225,7 @@ NSString * const WPBlogDetailsBlogKey = @"WPBlogDetailsBlogKey";
 
 #pragma mark - Private methods
 - (void)showViewSiteForBlog:(Blog *)blog {
-    [WPStats track:WPStatOpenedViewSite];
+    [WPAnalytics track:WPAnalyticsStatOpenedViewSite];
     
     NSString *blogURL = blog.homeURL;
     if (![blogURL hasPrefix:@"http"]) {
@@ -253,7 +253,7 @@ NSString * const WPBlogDetailsBlogKey = @"WPBlogDetailsBlogKey";
 
 - (void)showViewAdminForBlog:(Blog *)blog
 {
-    [WPStats track:WPStatOpenedViewAdmin];
+    [WPAnalytics track:WPAnalyticsStatOpenedViewAdmin];
     
     NSString *dashboardUrl = [blog.xmlrpc stringByReplacingOccurrencesOfString:@"xmlrpc.php" withString:@"wp-admin/"];
     [[UIApplication sharedApplication] openURL:[NSURL URLWithString:dashboardUrl]];
