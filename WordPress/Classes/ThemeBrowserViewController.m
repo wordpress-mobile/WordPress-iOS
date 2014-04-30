@@ -63,7 +63,7 @@ static NSString *const SearchHeaderIdentifier = @"search_header";
     
     [self syncThemesAndCurrentTheme];
     
-    [WPStats track:WPStatThemesAccessedThemeBrowser];
+    [WPAnalytics track:WPAnalyticsStatThemesAccessedThemeBrowser];
 }
 
 - (void)viewWillAppear:(BOOL)animated {

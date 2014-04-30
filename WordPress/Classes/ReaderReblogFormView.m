@@ -187,7 +187,7 @@
 			[self.delegate readerTextFormDidSend:self];
 		}
         
-        [WPStats track:WPStatReaderRebloggedArticle];
+        [WPAnalytics track:WPAnalyticsStatReaderRebloggedArticle];
 	} failure:^(NSError *error) {
 		DDLogError(@"Error Reblogging Post : %@", [error localizedDescription]);
 		[self enableForm:YES];
