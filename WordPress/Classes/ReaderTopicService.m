@@ -36,8 +36,9 @@ NSString *const ReaderTopicCurrentTopicURIKey = @"ReaderTopicCurrentTopicURIKey"
     
     ReaderTopicServiceRemote *remoteService = [[ReaderTopicServiceRemote alloc] initWithRemoteApi:api];
     [remoteService fetchReaderMenuWithSuccess:^(NSArray *topics) {
+        [self mergeTopics:topics];
         [self.managedObjectContext performBlockAndWait:^{
-            [self mergeTopics:topics];
+            [[ContextManager sharedInstance] saveContext:self.managedObjectContext];
         }];
         
         if (success) {
@@ -170,8 +171,6 @@ NSString *const ReaderTopicCurrentTopicURIKey = @"ReaderTopicCurrentTopicURIKey"
             }
         }
     }
-
-    [[ContextManager sharedInstance] saveContext:self.managedObjectContext];
 }
 
 
