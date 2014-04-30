@@ -1386,7 +1386,7 @@ CGFloat const EPVCTextViewTopPadding = 7.0f;
                                                          orientation:(UIImageOrientation)representation.orientation];
             UIImage *resizedImage = [WPMediaSizing correctlySizedImage:fullResolutionImage forBlogDimensions:[self.post.blog getImageResizeDimensions]];
             NSDictionary *assetMetadata = [WPMediaMetadataExtractor metadataForAsset:asset enableGeolocation:gelocationEnabled];
-            [WPMediaPersister saveMedia:imageMedia withImage:resizedImage andMetadata:assetMetadata];
+            [WPMediaPersister saveMedia:imageMedia withImage:resizedImage metadata:assetMetadata featured:NO];
             [mediaToUpload addObject:imageMedia];
         }
     }
