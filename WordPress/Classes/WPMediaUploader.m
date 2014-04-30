@@ -42,7 +42,7 @@ NSString *const WPMediaUploaderUploadOperation = @"upload_operation";
 {
     [self uploadMedia:media withSuccess:^{
         if ([media isDeleted]) {
-            DDLogWarn(@"Media uplaoder found deleted media while uploading (%@)", media);
+            DDLogWarn(@"Media uploader found deleted media while uploading (%@)", media);
             return;
         }
         [[NSNotificationCenter defaultCenter] postNotificationName:MediaShouldInsertBelowNotification object:media];
