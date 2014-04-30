@@ -8,7 +8,7 @@
 NSUInteger const WPMediaPersisterThumbnailSize = 75;
 CGFloat const WPMediaPersisterJPEGCompressionQuality = 0.9;
 
-+ (void)saveMedia:(Media *)imageMedia withImage:(UIImage *)image andMetadata:(NSDictionary *)metadata
++ (void)saveMedia:(Media *)imageMedia withImage:(UIImage *)image metadata:(NSDictionary *)metadata featured:(BOOL)isFeatured
 {
     NSData *imageData = UIImageJPEGRepresentation(image, WPMediaPersisterJPEGCompressionQuality);
     UIImage *imageThumbnail = [self generateThumbnailFromImage:image andSize:CGSizeMake(WPMediaPersisterThumbnailSize, WPMediaPersisterThumbnailSize)];
@@ -74,6 +74,9 @@ CGFloat const WPMediaPersisterJPEGCompressionQuality = 0.9;
     imageMedia.thumbnail = UIImageJPEGRepresentation(imageThumbnail, WPMediaPersisterJPEGCompressionQuality);
     imageMedia.width = @(image.size.width);
     imageMedia.height = @(image.size.height);
+    if (isFeatured) {
+        imageMedia.mediaType = @"featured";
+    }
     [imageMedia save];
 }
 
