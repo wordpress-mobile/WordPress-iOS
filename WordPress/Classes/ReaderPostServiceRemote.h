@@ -47,4 +47,83 @@
                        success:(void (^)(NSArray *posts))success
                        failure:(void (^)(NSError *error))failure;
 
+/**
+ Fetches a specific post from the specified remote site
+
+ @param postID the ID of the post to fetch
+ @param siteID the ID of the site the post belongs to
+ @param success block called on a successful fetch.
+ @param failure block called if there is any error. `error` can be any underlying network error.
+ */
+- (void)fetchPost:(NSUInteger)postID
+         fromSite:(NSUInteger)siteID
+          success:(void (^)(NSDictionary *post))success
+          failure:(void (^)(NSError *error))failure;
+
+/**
+ Mark a post as liked by the user.
+
+ @param postID The ID of the post.
+ @param siteID The ID of the site.
+ @param success block called on a successful fetch.
+ @param failure block called if there is any error. `error` can be any underlying network error.
+ */
+- (void)likePost:(NSUInteger)postID
+         forSite:(NSUInteger)siteID
+         success:(void (^)())success
+         failure:(void (^)(NSError *error))failure;
+
+/**
+ Mark a post as unliked by the user.
+
+ @param postID The ID of the post.
+ @param siteID The ID of the site.
+ @param success block called on a successful fetch.
+ @param failure block called if there is any error. `error` can be any underlying network error.
+ */
+- (void)unlikePost:(NSUInteger)postID
+           forSite:(NSUInteger)siteID
+           success:(void (^)())success
+           failure:(void (^)(NSError *error))failure;
+
+/**
+ Follow a blog.
+
+ @param siteID The ID of the site.
+ @param success block called on a successful fetch.
+ @param failure block called if there is any error. `error` can be any underlying network error.
+ */
+- (void)followSite:(NSUInteger)siteID
+           success:(void (^)())success
+           failure:(void(^)(NSError *error))failure;
+
+/**
+ Unfollow a blog
+
+ @param siteID The ID of the site.
+ @param success block called on a successful fetch.
+ @param failure block called if there is any error. `error` can be any underlying network error.
+ */
+- (void)unfollowSite:(NSUInteger)siteID
+             success:(void (^)())success
+             failure:(void(^)(NSError *error))failure;
+
+/**
+ Reblog a post from one site to another
+ 
+ @param postID The ID of the post to reblog.
+ @param siteID The ID of the origin site.
+ @param targetSiteID The ID of the destination site.
+ @param note A short note about the reblog.
+ @param success block called on a successful fetch.
+ @param failure block called if there is any error. `error` can be any underlying network error.
+ */
+- (void)reblogPost:(NSUInteger)postID
+          fromSite:(NSUInteger)siteID
+            toSite:(NSUInteger)targetSiteID
+              note:(NSString *)note
+           success:(void (^)(BOOL isReblogged))success
+           failure:(void (^)(NSError *error))failure;
+
+
 @end

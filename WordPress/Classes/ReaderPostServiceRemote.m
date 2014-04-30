@@ -46,7 +46,6 @@
     [self fetchPostsFromEndpoint:endpoint withParameters:params success:success failure:failure];
 }
 
-
 - (void)fetchPostsFromEndpoint:(NSURL *)endpoint
                          count:(NSUInteger)count
                         before:(NSDate *)date
@@ -60,6 +59,102 @@
                              };
 
     [self fetchPostsFromEndpoint:endpoint withParameters:params success:success failure:failure];
+}
+
+- (void)fetchPost:(NSUInteger)postID
+         fromSite:(NSUInteger)siteID
+          success:(void (^)(NSDictionary *post))success
+          failure:(void (^)(NSError *error))failure {
+
+    NSString *path = [NSString stringWithFormat:@"sites/%@/posts/%@/?meta=site", siteID, postID];
+    [self.api getPath:path
+           parameters:nil
+              success:^(AFHTTPRequestOperation *operation, id responseObject) {
+                  if (!success) {
+                      return;
+                  }
+
+                  NSDictionary *dict = [self formatPostDictionary:(NSDictionary *)responseObject];
+                  success(dict);
+
+              } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+                  if (failure) {
+                      failure(error);
+                  }
+              }];
+}
+
+- (void)likePost:(NSUInteger)postID forSite:(NSUInteger)siteID success:(void (^)())success failure:(void (^)(NSError *error))failure {
+    NSString *path = [NSString stringWithFormat:@"sites/%d/posts/%d/likes/new", siteID, postID];
+    [self.api postPath:path parameters:nil success:^(AFHTTPRequestOperation *operation, id responseObject) {
+        if (success) {
+            success();
+        }
+    } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+        if (failure) {
+            failure(error);
+        }
+    }];
+}
+
+- (void)unlikePost:(NSUInteger)postID forSite:(NSUInteger)siteID success:(void (^)())success failure:(void (^)(NSError *error))failure {
+    NSString *path = [NSString stringWithFormat:@"sites/%@/posts/%@/likes/mine/delete", siteID, postID];
+    [self.api postPath:path parameters:nil success:^(AFHTTPRequestOperation *operation, id responseObject) {
+        if (success) {
+            success();
+        }
+    } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+        if (failure) {
+            failure(error);
+        }
+    }];
+}
+
+- (void)followSite:(NSUInteger)siteID success:(void (^)())success failure:(void(^)(NSError *error))failure {
+    NSString *path = [NSString stringWithFormat:@"sites/%d/follows/new", siteID];
+    [self.api postPath:path parameters:nil success:^(AFHTTPRequestOperation *operation, id responseObject) {
+        if (success) {
+            success();
+        }
+    } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+        if (failure) {
+            failure(error);
+        }
+    }];
+}
+
+- (void)unfollowSite:(NSUInteger)siteID success:(void (^)())success failure:(void(^)(NSError *error))failure {
+    NSString *path = [NSString stringWithFormat:@"sites/%d/follows/mine/delete", siteID];
+    [self.api postPath:path parameters:nil success:^(AFHTTPRequestOperation *operation, id responseObject) {
+        if (success) {
+            success();
+        }
+    } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+        if (failure) {
+            failure(error);
+        }
+    }];
+}
+
+- (void)reblogPost:(NSUInteger)postID fromSite:(NSUInteger)siteID toSite:(NSUInteger)targetSiteID note:(NSString *)note success:(void (^)(BOOL isReblogged))success failure:(void (^)(NSError *error))failure {
+    NSMutableDictionary *params = [NSMutableDictionary dictionaryWithObject:[NSNumber numberWithInteger:targetSiteID] forKey:@"destination_site_id"];
+
+    if ([note length] > 0) {
+        [params setObject:note forKey:@"note"];
+    }
+
+    NSString *path = [NSString stringWithFormat:@"sites/%d/posts/%d/reblogs/new", siteID, postID];
+    [self.api postPath:path parameters:nil success:^(AFHTTPRequestOperation *operation, id responseObject) {
+        if (success) {
+            NSDictionary *dict = (NSDictionary *)responseObject;
+            BOOL isReblogged = [[dict numberForKey:@"is_reblogged"] boolValue];
+            success(isReblogged);
+        }
+    } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+        if (failure) {
+            failure(error);
+        }
+    }];
 }
 
 #pragma mark - Private Methods
@@ -112,7 +207,7 @@
     [post setObject:[self stringOrEmptyString:[authorDict stringForKey:@"nice_name"]] forKey:@"author"]; // typically the author's screen name
     [post setObject:[self stringOrEmptyString:[authorDict stringForKey:@"avatar_URL"]] forKey:@"authorAvatarURL"];
     [post setObject:[self stringOrEmptyString:[authorDict stringForKey:@"name"]] forKey:@"authorDisplayName"]; // Typically the author's given name
-    [post setObject:[self stringOrEmptyString:[authorDict stringForKey:@"email"]] forKey:@"authorEmail"];
+    [post setObject:[self authorEmailFromAuthorDictionary:authorDict] forKey:@"authorEmail"];
     [post setObject:[self stringOrEmptyString:[authorDict stringForKey:@"URL"]] forKey:@"authorURL"];
     [post setObject:[self siteNameFromPostDictionary:dict] forKey:@"blogName"];
     [post setObject:[self siteURLFromPostDictionary:dict] forKey:@"blogURL"];
@@ -121,11 +216,12 @@
     [post setObject:[self stringOrEmptyString:[dict stringForKey:@"content"]] forKey:@"content"];
     [post setObject:[self stringOrEmptyString:[dict stringForKey:@"date"]] forKey:@"date_created_gmt"];
     [post setObject:[self featuredImageFromPostDictionary:dict] forKey:@"featuredImage"];
+    [post setObject:[self stringOrEmptyString:[dict stringForKey:@"global_ID"]] forKey:@"globalID"];
     [post setObject:[self siteIsPrivateFromPostDictionary:dict] forKey:@"isBlogPrivate"];
     [post setObject:[dict numberForKey:@"is_following"] forKey:@"isFollowing"];
     [post setObject:[dict numberForKey:@"i_like"] forKey:@"isLiked"];
     [post setObject:[dict numberForKey:@"is_reblogged"] forKey:@"isReblogged"];
-    [post setObject:[dict numberForKey:@"is_external"] forKey:@"isWPCom"];
+    [post setObject:[self isWPComFromPostDictionary:dict] forKey:@"isWPCom"];
     [post setObject:[dict numberForKey:@"like_count"] forKey:@"likeCount"];
     [post setObject:[self stringOrEmptyString:[dict stringForKey:@"URL"]] forKey:@"permaLink"];
     [post setObject:[dict numberForKey:@"ID"] forKey:@"postID"];
@@ -135,9 +231,6 @@
     [post setObject:[self stringOrEmptyString:[dict stringForKey:@"status"]] forKey:@"status"];
     [post setObject:[self stringOrEmptyString:[dict stringForKey:@"excerpt"]] forKey:@"summary"];
     [post setObject:[self tagsFromPostDictionary:dict] forKey:@"tags"];
-
-    [post setObject:[self stringOrEmptyString:[dict stringForKey:@"global_ID"]] forKey:@"globalID"];
-
 
     return post;
 }
@@ -209,6 +302,35 @@
 }
 
 #pragma mark - Data sanitization methods
+
+/**
+ The v1 API result is inconsistent in that it will return a 0 when there is no author email.
+ 
+ @param dict The author dictionary.
+ @return The author's email address or an empty string.
+ */
+- (NSString *)authorEmailFromAuthorDictionary:(NSDictionary *)dict {
+    NSString *authorEmail = [dict stringForKey:@"email"];
+
+    // if 0 or less than minimum email length. a@a.aa
+    if([authorEmail isEqualToString:@"0"] || [authorEmail length] < 6) {
+        authorEmail = @"";
+    }
+
+    return authorEmail;
+}
+
+/**
+ Parse whether the post belongs to a wpcom blog.
+
+ @param A dictionary representing a post object from the REST API
+ @return @1 if the post belongs to a wpcom blog, else @0
+ */
+- (NSNumber *)isWPComFromPostDictionary:(NSDictionary *)dict {
+    NSNumber *isExternal = [dict numberForKey:@"is_external"];
+    BOOL isWPCom = ![isExternal boolValue];
+    return [NSNumber numberWithBool:isWPCom];
+}
 
 /**
  Get the tags assigned to a post and return them as a comma separated string.

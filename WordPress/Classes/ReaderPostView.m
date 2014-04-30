@@ -60,18 +60,6 @@ static NSInteger const MaxNumberOfLinesForTitleForSummary = 3;
     }
     desiredHeight += RPVVerticalPadding;
     
-    // Tag
-    // TODO: reenable tags once a better browsing experience is implemented
-    /*    NSString *tagName = post.primaryTagName;
-     if ([tagName length] > 0) {
-     CGRect tagRect = [tagName boundingRectWithSize:CGSizeMake(contentWidth, CGFLOAT_MAX)
-     options:NSStringDrawingUsesLineFragmentOrigin | NSStringDrawingUsesFontLeading
-     attributes:@{NSFontAttributeName : [self summaryFont]}
-     context:nil];
-     desiredHeight += tagRect.size.height;
-     }
-     */
-    
     // Padding below the line
 	desiredHeight += RPVVerticalPadding;
     
@@ -261,13 +249,6 @@ static NSInteger const MaxNumberOfLinesForTitleForSummary = 3;
 		self.cellImageView.hidden = NO;
 	}
     
-    if ([self.post.primaryTagName length] > 0) {
-        self.tagButton.hidden = NO;
-        [self.tagButton setTitle:self.post.primaryTagName forState:UIControlStateNormal];
-    } else {
-        self.tagButton.hidden = YES;
-    }
-    
     NSManagedObjectContext *context = [[ContextManager sharedInstance] mainContext];
     AccountService *accountService = [[AccountService alloc] initWithManagedObjectContext:context];
     WPAccount *defaultAccount = [accountService defaultWordPressComAccount];
@@ -358,18 +339,6 @@ static NSInteger const MaxNumberOfLinesForTitleForSummary = 3;
         self.snippetLabel.frame = CGRectMake(RPVHorizontalInnerPadding, nextY, innerContentWidth, height);
     }
     nextY += ceilf(height) + RPVVerticalPadding;
-    
-    // Tag
-    // TODO: reenable tags once a better browsing experience is implemented
-    /*    if ([self.post.primaryTagName length] > 0) {
-     height = ceil([self.tagButton.titleLabel suggestedSizeForWidth:innerContentWidth].height);
-     self.tagButton.frame = CGRectMake(RPVHorizontalInnerPadding, nextY, innerContentWidth, height);
-     nextY += height + RPVVerticalPadding;
-     self.tagButton.hidden = NO;
-     } else {
-     self.tagButton.hidden = YES;
-     }
-     */
     
 	// Position the meta view and its subviews
 	self.bottomView.frame = CGRectMake(0, nextY, contentWidth, RPVMetaViewHeight);

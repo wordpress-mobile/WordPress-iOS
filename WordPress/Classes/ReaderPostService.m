@@ -32,7 +32,7 @@ NSInteger const ReaderPostServiceMaxPosts = 200;
     return self;
 }
 
-- (void)fetchPostsForTopic:(ReaderTopic *)topic earlierThan:(NSDate *)date keepExisting:(BOOL)keepExisting success:(void (^)())success failure:(void (^)(NSError *error))failure {
+- (void)fetchPostsForTopic:(ReaderTopic *)topic earlierThan:(NSDate *)date keepExisting:(BOOL)keepExisting success:(void (^)(NSUInteger count))success failure:(void (^)(NSError *error))failure {
     NSManagedObjectID *topicObjectID = topic.objectID;
 
     ReaderPostServiceRemote *remoteService = [[ReaderPostServiceRemote alloc] initWithRemoteApi:[self apiForRequest]];
@@ -43,6 +43,11 @@ NSInteger const ReaderPostServiceMaxPosts = 200;
                                       [self.managedObjectContext performBlockAndWait:^{
                                           [self mergePosts:posts keepExisting:keepExisting forTopic:topicObjectID];
                                       }];
+
+                                      if (success) {
+                                          success([posts count]);
+                                      }
+
                                   } failure:^(NSError *error) {
                                       if (failure) {
                                           failure(error);
@@ -50,8 +55,173 @@ NSInteger const ReaderPostServiceMaxPosts = 200;
                                   }];
 }
 
-- (void)fetchPostsForTopic:(ReaderTopic *)topic success:(void (^)())success failure:(void (^)(NSError *error))failure {
+- (void)fetchPostsForTopic:(ReaderTopic *)topic success:(void (^)(NSUInteger count))success failure:(void (^)(NSError *error))failure {
     [self fetchPostsForTopic:topic earlierThan:[NSDate date] keepExisting:NO success:success failure:failure];
+}
+
+- (void)fetchPost:(NSUInteger)postID forSite:(NSUInteger)siteID success:(void (^)(ReaderPost *post))success failure:(void (^)(NSError *error))failure {
+
+    //TODO: Make sure we can do this without a topic
+    ReaderPostServiceRemote *remoteService = [[ReaderPostServiceRemote alloc] initWithRemoteApi:[self apiForRequest]];
+    [remoteService fetchPost:postID fromSite:siteID success:^(NSDictionary *dict) {
+        if (!success) {
+            return;
+        }
+
+        ReaderPost *post = [self createOrReplaceFromDictionary:dict forTopic:nil];
+        success(post);
+
+    } failure:^(NSError *error) {
+        if (failure) {
+            failure(error);
+        }
+    }];
+}
+
+- (void)toggleLikedForPost:(ReaderPost *)post success:(void (^)())success failure:(void (^)(NSError *error))failure {
+    // Get a the post in our own context
+    NSError *error;
+    ReaderPost *readerPost = (ReaderPost *)[self.managedObjectContext existingObjectWithID:post.objectID error:&error];
+    if (error) {
+        if (failure) {
+            failure(error);
+        }
+        return;
+    }
+
+    // Keep previous values in case of failure
+    BOOL oldValue = readerPost.isLiked.boolValue;
+    BOOL like = !oldValue;
+    NSNumber *oldCount = [readerPost.likeCount copy];
+
+    // Optimistically update
+    readerPost.isLiked = [NSNumber numberWithBool:like];
+    if (like) {
+        readerPost.likeCount = [NSNumber numberWithInteger:([readerPost.likeCount integerValue] + 1)];
+    } else {
+        readerPost.likeCount = [NSNumber numberWithInteger:([readerPost.likeCount integerValue] - 1)];
+    }
+    [self.managedObjectContext performBlockAndWait:^{
+        [[ContextManager sharedInstance] saveContext:self.managedObjectContext];
+    }];
+
+    // Define success block
+    void (^successBlock)() = ^void() {
+        if (success) {
+            success();
+        }
+    };
+
+    // Define failure block
+    void (^failureBlock)(NSError *error) = ^void(NSError *error) {
+        // Revert changes on failure
+        readerPost.isLiked = [NSNumber numberWithBool:oldValue];
+        readerPost.likeCount = oldCount;
+        [self.managedObjectContext performBlockAndWait:^{
+            [[ContextManager sharedInstance] saveContext:self.managedObjectContext];
+        }];
+        if (failure) {
+            failure(error);
+        }
+    };
+
+    // Call the remote service
+    ReaderPostServiceRemote *remoteService = [[ReaderPostServiceRemote alloc] initWithRemoteApi:[self apiForRequest]];
+    if (like) {
+        [remoteService likePost:[readerPost.postID integerValue] forSite:[readerPost.siteID integerValue] success:successBlock failure:failureBlock];
+    } else {
+        [remoteService unlikePost:[post.postID integerValue] forSite:[post.siteID integerValue] success:successBlock failure:failureBlock];
+    }
+}
+
+- (void)toggleFollowingForPost:(ReaderPost *)post success:(void (^)())success failure:(void (^)(NSError *error))failure {
+    // Get a the post in our own context
+    NSError *error;
+    ReaderPost *readerPost = (ReaderPost *)[self.managedObjectContext existingObjectWithID:post.objectID error:&error];
+    if (error) {
+        if (failure) {
+            failure(error);
+        }
+        return;
+    }
+
+    // Keep previous values in case of failure
+    BOOL oldValue = [readerPost.isFollowing boolValue];
+    BOOL follow = !oldValue;
+
+    // Optimistically update
+    readerPost.isFollowing = [NSNumber numberWithBool:follow];
+    [self.managedObjectContext performBlockAndWait:^{
+        [[ContextManager sharedInstance] saveContext:self.managedObjectContext];
+    }];
+
+    // Define success block
+    void (^successBlock)() = ^void() {
+        if (success) {
+            success();
+        }
+    };
+
+    // Define failure block
+    void (^failureBlock)(NSError *error) = ^void(NSError *error) {
+        // Revert changes on failure
+        readerPost.isFollowing = [NSNumber numberWithBool:oldValue];
+        [self.managedObjectContext performBlockAndWait:^{
+            [[ContextManager sharedInstance] saveContext:self.managedObjectContext];
+        }];
+        if (failure) {
+            failure(error);
+        }
+    };
+
+    ReaderPostServiceRemote *remoteService = [[ReaderPostServiceRemote alloc] initWithRemoteApi:[self apiForRequest]];
+    if (follow) {
+        [remoteService followSite:[post.siteID integerValue] success:successBlock failure:failureBlock];
+    } else {
+        [remoteService unfollowSite:[post.siteID integerValue] success:successBlock failure:failureBlock];
+    }
+}
+
+- (void)reblogPost:(ReaderPost *)post toSite:(NSUInteger)siteID note:(NSString *)note success:(void (^)())success failure:(void (^)(NSError *error))failure {
+    // Get a the post in our own context
+    NSError *error;
+    ReaderPost *readerPost = (ReaderPost *)[self.managedObjectContext existingObjectWithID:post.objectID error:&error];
+    if (error) {
+        if (failure) {
+            failure(error);
+        }
+        return;
+    }
+
+    // Optimisitically save
+    readerPost.isReblogged = @1;
+    [self.managedObjectContext performBlockAndWait:^{
+        [[ContextManager sharedInstance] saveContext:self.managedObjectContext];
+    }];
+
+    NSMutableDictionary *params = [NSMutableDictionary dictionaryWithObject:[NSNumber numberWithInteger:siteID] forKey:@"destination_site_id"];
+    if ([note length] > 0) {
+        [params setObject:note forKey:@"note"];
+    }
+
+    ReaderPostServiceRemote *remoteService = [[ReaderPostServiceRemote alloc] initWithRemoteApi:[self apiForRequest]];
+    [remoteService reblogPost:[NSNumber numberWithInteger:readerPost.postID]
+                     fromSite:[NSNumber numberWithInteger:readerPost.siteID]
+                       toSite:siteID
+                         note:note
+                      success:^(BOOL isReblogged) {
+                          if(success) {
+                              success();
+                          }
+                      } failure:^(NSError *error) {
+                          readerPost.isReblogged = @0;
+                          [self.managedObjectContext performBlockAndWait:^{
+                              [[ContextManager sharedInstance] saveContext:self.managedObjectContext];
+                          }];
+                          if(failure) {
+                              failure(error);
+                          }
+                      }];
 }
 
 #pragma mark - Private Methods
@@ -110,7 +280,7 @@ NSInteger const ReaderPostServiceMaxPosts = 200;
     // Don't trust the relationships on the topic to be current or correct.
     NSError *error;
     NSFetchRequest *fetchRequest = [[NSFetchRequest alloc] initWithEntityName:@"ReaderPost"];
-    NSPredicate *pred = [NSPredicate predicateWithFormat:@"ANY topic == %@", topic];
+    NSPredicate *pred = [NSPredicate predicateWithFormat:@"topic == %@", topic];
     [fetchRequest setPredicate:pred];
 
     NSArray *currentPosts = [self.managedObjectContext executeFetchRequest:fetchRequest error:&error];
@@ -148,7 +318,7 @@ NSInteger const ReaderPostServiceMaxPosts = 200;
     NSError *error;
     NSFetchRequest *fetchRequest = [[NSFetchRequest alloc] initWithEntityName:@"ReaderPost"];
 
-    NSPredicate *pred = [NSPredicate predicateWithFormat:@"ANY topic == %@ AND sortDate >= %@ AND sortDate <= %@", topic, oldestDate, newestDate];
+    NSPredicate *pred = [NSPredicate predicateWithFormat:@"topic == %@ AND sortDate >= %@ AND sortDate <= %@", topic, oldestDate, newestDate];
     [fetchRequest setPredicate:pred];
 
     NSSortDescriptor *sortDescriptor = [NSSortDescriptor sortDescriptorWithKey:@"sortDate" ascending:NO];
@@ -181,7 +351,7 @@ NSInteger const ReaderPostServiceMaxPosts = 200;
     NSFetchRequest *fetchRequest = [[NSFetchRequest alloc] initWithEntityName:@"ReaderPost"];
     [fetchRequest setFetchOffset:ReaderPostServiceMaxPosts];
 
-    NSPredicate *pred = [NSPredicate predicateWithFormat:@"ANY topic == %@", topic];
+    NSPredicate *pred = [NSPredicate predicateWithFormat:@"topic == %@", topic];
     [fetchRequest setPredicate:pred];
 
     NSSortDescriptor *sortDescriptor = [NSSortDescriptor sortDescriptorWithKey:@"sortDate" ascending:NO];
@@ -194,7 +364,7 @@ NSInteger const ReaderPostServiceMaxPosts = 200;
     }
 
     for (ReaderPost *post in posts) {
-        DDLogInfo(@"Deleting ReaderPost: %@", post);
+        DDLogInfo(@"Deleting ReaderPost: %@", post.postTitle);
         [self.managedObjectContext deleteObject:post];
     }
 }
@@ -228,10 +398,18 @@ NSInteger const ReaderPostServiceMaxPosts = 200;
  @return A ReaderPost model object whose properties are populated with the values from the passed dictionary.
  */
 - (ReaderPost *)createOrReplaceFromDictionary:(NSDictionary * )dict forTopic:(ReaderTopic *)topic {
-
-    // find an existing post or create a new one.
+    NSError *error;
     ReaderPost *post;
-    if (post == nil) {
+    NSString *globalID = [dict stringForKey:@"globalID"];
+    NSFetchRequest *fetchRequest = [[NSFetchRequest alloc] initWithEntityName:@"ReaderPost"];
+    fetchRequest.predicate = [NSPredicate predicateWithFormat:@"globalID = %@", globalID];
+    NSArray *arr = [self.managedObjectContext executeFetchRequest:fetchRequest error:&error];
+
+    if (error) {
+        DDLogError(@"Error fetching an existing reader post. - %@", error);
+    } else if ([arr count] > 0) {
+        post = (ReaderPost *)[arr objectAtIndex:0];
+    } else {
         post = [NSEntityDescription insertNewObjectForEntityForName:@"ReaderPost"
                                              inManagedObjectContext:self.managedObjectContext];
     }
@@ -256,7 +434,7 @@ NSInteger const ReaderPostServiceMaxPosts = 200;
     post.likeCount = [dict numberForKey:@"likeCount"];
     post.permaLink = [dict stringForKey:@"permalink"];
     post.postID = [dict numberForKey:@"postID"];
-    post.postTitle = [dict stringForKey:@"postTitle"];
+    post.postTitle = [self makePlainText:[dict stringForKey:@"postTitle"]];
     post.siteID = [dict numberForKey:@"siteID"];
     post.sortDate = [DateUtils dateFromISOString:[dict stringForKey:@"sortDate"]];
     post.status = [dict stringForKey:@"status"];
