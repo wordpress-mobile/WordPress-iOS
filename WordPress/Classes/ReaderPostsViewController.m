@@ -658,6 +658,8 @@ NSString * const RPVCDisplayedNativeFriendFinder = @"DisplayedNativeFriendFinder
         ReaderTopicService *topicService = [[ReaderTopicService alloc] initWithManagedObjectContext:context];
         [topicService fetchReaderMenuWithSuccess:^{
             self.currentTopic = [[[ReaderTopicService alloc] initWithManagedObjectContext:context] currentTopic];
+            // Changing the topic means we need to also change the fetch request.
+            [self resetResultsController];
             [self updateTitle];
             [self syncReaderItemsWithSuccess:success failure:failure];
         } failure:^(NSError *error) {
@@ -672,7 +674,7 @@ NSString * const RPVCDisplayedNativeFriendFinder = @"DisplayedNativeFriendFinder
 - (void)syncReaderItemsWithSuccess:(void (^)())success failure:(void (^)(NSError *))failure {
     DDLogMethod();
 
-    NSManagedObjectContext *context = [[ContextManager sharedInstance] mainContext];
+    NSManagedObjectContext *context = [[ContextManager sharedInstance] newDerivedContext];
     ReaderPostService *service = [[ReaderPostService alloc] initWithManagedObjectContext:context];
     [service fetchPostsForTopic:self.currentTopic earlierThan:[NSDate date] keepExisting:_loadingMore success:^(NSUInteger count) {
         if (success) {
@@ -696,7 +698,7 @@ NSString * const RPVCDisplayedNativeFriendFinder = @"DisplayedNativeFriendFinder
 	_loadingMore = YES;
 
 	ReaderPost *post = self.resultsController.fetchedObjects.lastObject;
-    NSManagedObjectContext *context = [[ContextManager sharedInstance] mainContext];
+    NSManagedObjectContext *context = [[ContextManager sharedInstance] newDerivedContext];
 
     ReaderPostService *service = [[ReaderPostService alloc] initWithManagedObjectContext:context];
     [service fetchPostsForTopic:self.currentTopic earlierThan:post.sortDate keepExisting:YES success:^(NSUInteger count){
