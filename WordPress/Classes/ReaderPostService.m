@@ -35,21 +35,26 @@ NSUInteger const ReaderPostServiceMaxPosts = 200;
 - (void)fetchPostsForTopic:(ReaderTopic *)topic earlierThan:(NSDate *)date keepExisting:(BOOL)keepExisting success:(void (^)(NSUInteger count))success failure:(void (^)(NSError *error))failure {
     NSManagedObjectID *topicObjectID = topic.objectID;
 
+
     ReaderPostServiceRemote *remoteService = [[ReaderPostServiceRemote alloc] initWithRemoteApi:[self apiForRequest]];
     [remoteService fetchPostsFromEndpoint:[NSURL URLWithString:topic.path]
                                     count:ReaderPostServiceNumberToSync
                                    before:date
                                   success:^(NSArray *posts) {
-                                      [self mergePosts:posts keepExisting:keepExisting forTopic:topicObjectID];
+                                      // Use a performBlock here so the work to merge does not block the main thread.
+                                      [self.managedObjectContext performBlock:^{
 
-                                      [self.managedObjectContext performBlockAndWait:^{
-                                          [[ContextManager sharedInstance] saveContext:self.managedObjectContext];
+                                          [self mergePosts:posts keepExisting:keepExisting forTopic:topicObjectID];
+
+                                          // performBlockAndWait here so we know our objects are saved before we call success.
+                                          [self.managedObjectContext performBlockAndWait:^{
+                                              [[ContextManager sharedInstance] saveContext:self.managedObjectContext];
+                                          }];
+
+                                          if (success) {
+                                              success([posts count]);
+                                          }
                                       }];
-
-                                      if (success) {
-                                          success([posts count]);
-                                      }
-
                                   } failure:^(NSError *error) {
                                       if (failure) {
                                           failure(error);
