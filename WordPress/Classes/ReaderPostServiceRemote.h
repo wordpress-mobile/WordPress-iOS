@@ -1,6 +1,7 @@
 #import <Foundation/Foundation.h>
 
 @class WordPressComApi;
+@class RemoteReaderPost;
 
 @interface ReaderPostServiceRemote : NSObject
 
@@ -57,7 +58,7 @@
  */
 - (void)fetchPost:(NSUInteger)postID
          fromSite:(NSUInteger)siteID
-          success:(void (^)(NSDictionary *post))success
+          success:(void (^)(RemoteReaderPost *post))success
           failure:(void (^)(NSError *error))failure;
 
 /**

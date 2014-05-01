@@ -1,6 +1,7 @@
 #import "ReaderPostServiceRemote.h"
 #import "WordPressComApi.h"
 #import "DateUtils.h"
+#import "RemoteReaderPost.h"
 
 @interface ReaderPostServiceRemote ()
 
@@ -63,7 +64,7 @@
 
 - (void)fetchPost:(NSUInteger)postID
          fromSite:(NSUInteger)siteID
-          success:(void (^)(NSDictionary *post))success
+          success:(void (^)(RemoteReaderPost *post))success
           failure:(void (^)(NSError *error))failure {
 
     NSString *path = [NSString stringWithFormat:@"sites/%@/posts/%@/?meta=site", siteID, postID];
@@ -74,8 +75,8 @@
                       return;
                   }
 
-                  NSDictionary *dict = [self formatPostDictionary:(NSDictionary *)responseObject];
-                  success(dict);
+                  RemoteReaderPost *post = [self formatPostDictionary:(NSDictionary *)responseObject];
+                  success(post);
 
               } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
                   if (failure) {
@@ -199,38 +200,39 @@
  @param dict A dictionary representing a post object from the REST API
  @return A dictionary with keys matching what is expected by the LocalService
  */
-- (NSDictionary *)formatPostDictionary:(NSDictionary *)dict {
+- (RemoteReaderPost *)formatPostDictionary:(NSDictionary *)dict {
 
-    NSMutableDictionary *post = [NSMutableDictionary dictionary];
+    RemoteReaderPost *post = [[RemoteReaderPost alloc] init];
+
     NSDictionary *authorDict = [dict dictionaryForKey:@"author"];
 
-    [post setObject:[self stringOrEmptyString:[authorDict stringForKey:@"nice_name"]] forKey:@"author"]; // typically the author's screen name
-    [post setObject:[self stringOrEmptyString:[authorDict stringForKey:@"avatar_URL"]] forKey:@"authorAvatarURL"];
-    [post setObject:[self stringOrEmptyString:[authorDict stringForKey:@"name"]] forKey:@"authorDisplayName"]; // Typically the author's given name
-    [post setObject:[self authorEmailFromAuthorDictionary:authorDict] forKey:@"authorEmail"];
-    [post setObject:[self stringOrEmptyString:[authorDict stringForKey:@"URL"]] forKey:@"authorURL"];
-    [post setObject:[self siteNameFromPostDictionary:dict] forKey:@"blogName"];
-    [post setObject:[self siteURLFromPostDictionary:dict] forKey:@"blogURL"];
-    [post setObject:[dict numberForKey:@"comment_count"] forKey:@"commentCount"];
-    [post setObject:[dict numberForKey:@"comments_open"] forKey:@"commentsOpen"];
-    [post setObject:[self stringOrEmptyString:[dict stringForKey:@"content"]] forKey:@"content"];
-    [post setObject:[self stringOrEmptyString:[dict stringForKey:@"date"]] forKey:@"date_created_gmt"];
-    [post setObject:[self featuredImageFromPostDictionary:dict] forKey:@"featuredImage"];
-    [post setObject:[self stringOrEmptyString:[dict stringForKey:@"global_ID"]] forKey:@"globalID"];
-    [post setObject:[self siteIsPrivateFromPostDictionary:dict] forKey:@"isBlogPrivate"];
-    [post setObject:[dict numberForKey:@"is_following"] forKey:@"isFollowing"];
-    [post setObject:[dict numberForKey:@"i_like"] forKey:@"isLiked"];
-    [post setObject:[dict numberForKey:@"is_reblogged"] forKey:@"isReblogged"];
-    [post setObject:[self isWPComFromPostDictionary:dict] forKey:@"isWPCom"];
-    [post setObject:[dict numberForKey:@"like_count"] forKey:@"likeCount"];
-    [post setObject:[self stringOrEmptyString:[dict stringForKey:@"URL"]] forKey:@"permaLink"];
-    [post setObject:[dict numberForKey:@"ID"] forKey:@"postID"];
-    [post setObject:[self stringOrEmptyString:[dict stringForKey:@"title"]] forKey:@"postTitle"];
-    [post setObject:[dict numberForKey:@"site_ID"] forKey:@"siteID"];
-    [post setObject:[self sortDateFromPostDictionary:dict] forKey:@"sortDate"];
-    [post setObject:[self stringOrEmptyString:[dict stringForKey:@"status"]] forKey:@"status"];
-    [post setObject:[self stringOrEmptyString:[dict stringForKey:@"excerpt"]] forKey:@"summary"];
-    [post setObject:[self tagsFromPostDictionary:dict] forKey:@"tags"];
+    post.author = [self stringOrEmptyString:[authorDict stringForKey:@"nice_name"]]; // typically the author's screen name
+    post.authorAvatarURL = [self stringOrEmptyString:[authorDict stringForKey:@"avatar_URL"]];
+    post.authorDisplayName = [self stringOrEmptyString:[authorDict stringForKey:@"name"]]; // Typically the author's given name
+    post.authorEmail = [self authorEmailFromAuthorDictionary:authorDict];
+    post.authorURL = [self stringOrEmptyString:[authorDict stringForKey:@"URL"]];
+    post.blogName = [self siteNameFromPostDictionary:dict];
+    post.blogURL = [self siteURLFromPostDictionary:dict];
+    post.commentCount = [dict numberForKey:@"comment_count"];
+    post.commentsOpen = [[dict numberForKey:@"comments_open"] boolValue];
+    post.content = [self stringOrEmptyString:[dict stringForKey:@"content"]];
+    post.date_created_gmt = [self stringOrEmptyString:[dict stringForKey:@"date"]];
+    post.featuredImage = [self featuredImageFromPostDictionary:dict];
+    post.globalID = [self stringOrEmptyString:[dict stringForKey:@"global_ID"]];
+    post.isBlogPrivate = [self siteIsPrivateFromPostDictionary:dict];
+    post.isFollowing = [[dict numberForKey:@"is_following"] boolValue];
+    post.isLiked = [[dict numberForKey:@"i_like"] boolValue];
+    post.isReblogged = [[dict numberForKey:@"is_reblogged"] boolValue];
+    post.isWPCom = [self isWPComFromPostDictionary:dict];
+    post.likeCount = [dict numberForKey:@"like_count"];
+    post.permalink = [self stringOrEmptyString:[dict stringForKey:@"URL"]];
+    post.postID = [dict numberForKey:@"ID"];
+    post.postTitle = [self stringOrEmptyString:[dict stringForKey:@"title"]];
+    post.siteID = [dict numberForKey:@"site_ID"];
+    post.sortDate = [self sortDateFromPostDictionary:dict];
+    post.status = [self stringOrEmptyString:[dict stringForKey:@"status"]];
+    post.summary = [self stringOrEmptyString:[dict stringForKey:@"excerpt"]];
+    post.tags = [self tagsFromPostDictionary:dict];
 
     return post;
 }
@@ -324,12 +326,11 @@
  Parse whether the post belongs to a wpcom blog.
 
  @param A dictionary representing a post object from the REST API
- @return @1 if the post belongs to a wpcom blog, else @0
+ @return YES if the post belongs to a wpcom blog, else NO
  */
-- (NSNumber *)isWPComFromPostDictionary:(NSDictionary *)dict {
+- (BOOL)isWPComFromPostDictionary:(NSDictionary *)dict {
     NSNumber *isExternal = [dict numberForKey:@"is_external"];
-    BOOL isWPCom = ![isExternal boolValue];
-    return [NSNumber numberWithBool:isWPCom];
+    return ![isExternal boolValue];
 }
 
 /**
@@ -443,9 +444,9 @@
  Retrives the privacy preference for the post's site.
 
  @param dict A dictionary representing a post object from the REST API.
- @return An NSNumber representing a boolean value of whether the site is or is not private.
+ @return YES if the site is private.
  */
-- (NSNumber *)siteIsPrivateFromPostDictionary:(NSDictionary *)dict {
+- (BOOL)siteIsPrivateFromPostDictionary:(NSDictionary *)dict {
     NSNumber *isPrivate = [dict numberForKey:@"site_is_private"];
 
     NSNumber *metaIsPrivate = [dict numberForKeyPath:@"meta.data.site.is_private"];
@@ -453,7 +454,7 @@
         isPrivate = metaIsPrivate;
     }
 
-    return isPrivate;
+    return [isPrivate boolValue];
 }
 
 @end

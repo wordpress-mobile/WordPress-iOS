@@ -3,6 +3,7 @@
 #import "ContextManager.h"
 #import "ReaderTopic.h"
 #import "ReaderTopicServiceRemote.h"
+#import "RemoteReaderTopic.h"
 #import "WPAccount.h"
 #import "WordPressComApi.h"
 
@@ -114,21 +115,20 @@ NSString *const ReaderTopicCurrentTopicURIKey = @"ReaderTopicCurrentTopicURIKey"
 #pragma mark - Private Methods
 
 /**
- Create a new ReaderTopic or update an existing ReaderTopic.
+ Create a new `ReaderTopic` or update an existing `ReaderTopic`.
  
- @param dict A dictionary representing a ReaderTopic. Expects the following keys:
- `ID`, `title`, `URL`, `isSubscribed`, `isRecommended`.
- @return A new or updated, but unsaved, ReaderTopic.
+ @param dict A `RemoteReaderTopic` object.
+ @return A new or updated, but unsaved, `ReaderTopic`.
  */
-- (ReaderTopic *)createOrReplaceFromDictionary:(NSDictionary *)dict {
-    NSString *path = [dict stringForKey:@"path"];
+- (ReaderTopic *)createOrReplaceFromRemoteTopic:(RemoteReaderTopic *)remoteTopic {
+    NSString *path = remoteTopic.path;
     
-    if (path == nil) {
+    if (path == nil || path.length == 0) {
         return nil;
     }
 
-    NSString *title = [dict stringForKey:@"title"];
-    if (title == nil) {
+    NSString *title = remoteTopic.title;
+    if (title == nil || title.length == 0) {
         return nil;
     }
     
@@ -138,12 +138,12 @@ NSString *const ReaderTopicCurrentTopicURIKey = @"ReaderTopicCurrentTopicURIKey"
                                               inManagedObjectContext:self.managedObjectContext];
     }
     
-    topic.topicID = [dict numberForKey:@"topicID"];
+    topic.topicID = remoteTopic.topicID;
     topic.type = ([topic.topicID integerValue] == 0) ? ReaderTopicTypeList : ReaderTopicTypeTag;
     topic.title = title;
     topic.path = [path lowercaseString];
-    topic.isSubscribed = [[dict numberForKey:@"isSubscribed"] boolValue];
-    topic.isRecommended = [[dict numberForKey:@"isRecommended"] boolValue];
+    topic.isSubscribed = remoteTopic.isSubscribed;
+    topic.isRecommended = remoteTopic.isRecommended;
     
     return topic;
 }
@@ -158,13 +158,13 @@ NSString *const ReaderTopicCurrentTopicURIKey = @"ReaderTopicCurrentTopicURIKey"
     NSArray *currentTopics = [self allTopics];
     NSMutableArray *topicsToKeep = [NSMutableArray array];
     
-    for (NSDictionary *dict in topics) {
-        ReaderTopic *newTopic = [self createOrReplaceFromDictionary:dict];
+    for (RemoteReaderTopic *remoteTopic in topics) {
+        ReaderTopic *newTopic = [self createOrReplaceFromRemoteTopic:remoteTopic];
         newTopic.account = account;
         if (newTopic != nil) {
             [topicsToKeep addObject:newTopic];
         } else {
-            DDLogInfo(@"-[ReaderTopic createOrReplaceFromDictionary:] returned a nil topic: %@", dict);
+            DDLogInfo(@"-[ReaderTopic createOrReplaceFromRemoteTopic:] returned a nil topic: %@", remoteTopic);
         }
     }
     
