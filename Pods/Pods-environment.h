@@ -12,6 +12,12 @@
 #define COCOAPODS_VERSION_MINOR_AFNetworking 2
 #define COCOAPODS_VERSION_PATCH_AFNetworking 0
 
+// CTAssetsPickerController
+#define COCOAPODS_POD_AVAILABLE_CTAssetsPickerController
+#define COCOAPODS_VERSION_MAJOR_CTAssetsPickerController 2
+#define COCOAPODS_VERSION_MINOR_CTAssetsPickerController 2
+#define COCOAPODS_VERSION_PATCH_CTAssetsPickerController 0
+
 // CocoaLumberjack
 #define COCOAPODS_POD_AVAILABLE_CocoaLumberjack
 #define COCOAPODS_VERSION_MAJOR_CocoaLumberjack 1

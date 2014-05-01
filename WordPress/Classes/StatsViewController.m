@@ -188,6 +188,8 @@ typedef NS_ENUM(NSInteger, TotalFollowersShareRow) {
     __weak JetpackSettingsViewController *safeController = controller;
     [controller setCompletionBlock:^(BOOL didAuthenticate) {
         if (didAuthenticate) {
+            [WPAnalytics track:WPAnalyticsStatSignedInToJetpack];
+            [WPAnalytics track:WPAnalyticsStatPerformedJetpackSignInFromStatsScreen];
             [safeController.view removeFromSuperview];
             [safeController removeFromParentViewController];
             self.tableView.scrollEnabled = YES;
@@ -512,7 +514,7 @@ typedef NS_ENUM(NSInteger, TotalFollowersShareRow) {
 
 - (BOOL)tableView:(UITableView *)tableView shouldHighlightRowAtIndexPath:(NSIndexPath *)indexPath {
     StatsTitleCountItem *item = [self itemSelectedAtIndexPath:indexPath];
-    return [item isKindOfClass:[StatsGroup class]] || item.URL != nil;
+    return [item isKindOfClass:[StatsGroup class]] || item.URL != nil || indexPath.section == StatsSectionLinkToWebview;
 }
 
 - (StatsTitleCountItem *)itemSelectedAtIndexPath:(NSIndexPath *)indexPath {
@@ -563,10 +565,18 @@ typedef NS_ENUM(NSInteger, TotalFollowersShareRow) {
         // Outside and above the expanded group
         // or there was no expanded group to worry about!
     }
-    return sectionResults[indexPath.row-offset];
+    NSInteger index = indexPath.row - offset;
+    
+    if (index < 0) {
+        return nil;
+    }
+    
+    return sectionResults[index];
 }
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
+    [tableView deselectRowAtIndexPath:indexPath animated:YES];
+    
     StatsTitleCountItem *item = [self itemSelectedAtIndexPath:indexPath];
     if ([item isKindOfClass:[StatsGroup class]]) {
         [self toggleGroupExpanded:indexPath childCount:[(StatsGroup *)item children].count];

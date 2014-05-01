@@ -352,6 +352,25 @@ NSString *const LastUsedBlogURLDefaultsKey = @"LastUsedBlogURLDefaultsKey";
     return [self blogCountWithPredicate:predicate];
 }
 
+- (NSArray *)blogsForAllAccounts
+{
+    NSSortDescriptor *sortDescriptor = [NSSortDescriptor sortDescriptorWithKey:@"blogName" ascending:YES];
+    
+    NSFetchRequest *request = [[NSFetchRequest alloc] init];
+    [request setEntity:[NSEntityDescription entityForName:@"Blog" inManagedObjectContext:self.managedObjectContext]];
+    [request setSortDescriptors:@[sortDescriptor]];
+    
+    NSError *error;
+    NSArray *blogs = [self.managedObjectContext executeFetchRequest:request error:&error];
+
+    if (error) {
+        DDLogError(@"Error while retrieving all blogs");
+        return nil;
+    }
+    
+    return blogs;
+}
+
 #pragma mark - Private methods
 
 - (NSInteger)blogCountWithPredicate:(NSPredicate *)predicate

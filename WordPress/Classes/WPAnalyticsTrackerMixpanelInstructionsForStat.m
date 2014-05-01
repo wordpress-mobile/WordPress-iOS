@@ -1,13 +1,30 @@
 #import "WPAnalyticsTrackerMixpanelInstructionsForStat.h"
 
+@interface WPAnalyticsTrackerMixpanelInstructionsForStat () {
+    NSMutableArray *_superPropertiesToFlag;
+    NSMutableDictionary *_peoplePropertiesToAssign;
+}
+
+@end
+
 @implementation WPAnalyticsTrackerMixpanelInstructionsForStat
 
 - (instancetype)init
 {
     if (self = [super init]) {
         _disableTrackingForSelfHosted = NO;
+        _superPropertiesToFlag = [[NSMutableArray alloc] init];
+        _peoplePropertiesToAssign = [[NSMutableDictionary alloc] init];
     }
     return self;
+}
+
+- (void)addSuperPropertyToFlag:(NSString *)property
+{
+    if ([_superPropertiesToFlag containsObject:property])
+        return;
+    
+    [_superPropertiesToFlag addObject:property];
 }
 
 + (instancetype)mixpanelInstructionsForEventName:(NSString *)eventName
@@ -28,7 +45,7 @@
 + (instancetype)mixpanelInstructionsWithSuperPropertyFlagger:(NSString *)property
 {
     WPAnalyticsTrackerMixpanelInstructionsForStat *instructions = [[[self class] alloc] init];
-    instructions.superPropertyToFlag = property;
+    [instructions addSuperPropertyToFlag:property];
     return instructions;
 }
 
@@ -39,11 +56,28 @@
     return instructions;
 }
 
+- (NSMutableArray *)superPropertiesToFlag
+{
+    return [_superPropertiesToFlag copy];
+}
+
 - (void)setSuperPropertyAndPeoplePropertyToIncrement:(NSString *)property
 {
     NSParameterAssert(property != nil);
-    self.superPropertyToIncrement = property;
+    [self addSuperPropertyToFlag:property];
     self.peoplePropertyToIncrement = property;
 }
+
+- (void)setCurrentDateForPeopleProperty:(NSString *)property{
+    [self setPeopleProperty:property toValue:[NSDate date]];
+}
+
+- (void)setPeopleProperty:(NSString *)property toValue:(id)value
+{
+    NSParameterAssert(property != nil);
+    NSParameterAssert(value != nil);
+    _peoplePropertiesToAssign[property] = value;
+}
+
 
 @end

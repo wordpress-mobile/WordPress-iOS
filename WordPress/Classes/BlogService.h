@@ -59,12 +59,13 @@
 
 - (void)checkVideoPressEnabledForBlog:(Blog *)blog success:(void (^)(BOOL enabled))success failure:(void (^)(NSError *error))failure;
 
-#pragma mark -
-#pragma mark Class methods
 - (NSInteger)blogCountForAllAccounts;
+
 - (NSInteger)blogCountSelfHosted;
+
 - (NSInteger)blogCountVisibleForAllAccounts;
 
+- (NSArray *)blogsForAllAccounts;
 
 
 @end
