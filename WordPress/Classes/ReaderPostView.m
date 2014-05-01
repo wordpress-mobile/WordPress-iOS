@@ -253,7 +253,7 @@ static NSInteger const MaxNumberOfLinesForTitleForSummary = 3;
     AccountService *accountService = [[AccountService alloc] initWithManagedObjectContext:context];
     WPAccount *defaultAccount = [accountService defaultWordPressComAccount];
 
-	if ([[self.post isWPCom] boolValue] && defaultAccount != nil) {
+	if (self.post.isWPCom && defaultAccount != nil) {
 		self.likeButton.hidden = NO;
 		self.reblogButton.hidden = NO;
         self.commentButton.hidden = NO;
@@ -263,8 +263,8 @@ static NSInteger const MaxNumberOfLinesForTitleForSummary = 3;
         self.commentButton.hidden = YES;
 	}
     
-    [self.followButton setSelected:[self.post.isFollowing boolValue]];
-	self.reblogButton.userInteractionEnabled = ![post.isReblogged boolValue];
+    [self.followButton setSelected:self.post.isFollowing];
+	self.reblogButton.userInteractionEnabled = !post.isReblogged;
 	
 	[self updateActionButtons];
 }
@@ -272,7 +272,7 @@ static NSInteger const MaxNumberOfLinesForTitleForSummary = 3;
 - (void)layoutSubviews {
 
     // Determine button visibility before parent lays them out
-    BOOL commentsOpen = [[self.post commentsOpen] boolValue] && [[self.post isWPCom] boolValue];
+    BOOL commentsOpen = self.post.commentsOpen && self.post.isWPCom;
     self.commentButton.hidden = !commentsOpen;
 
 	[super layoutSubviews];
@@ -359,15 +359,15 @@ static NSInteger const MaxNumberOfLinesForTitleForSummary = 3;
 
 - (void)updateActionButtons {
     [super updateActionButtons];
-    self.likeButton.selected = self.post.isLiked.boolValue;
-    self.reblogButton.selected = self.post.isReblogged.boolValue;
+    self.likeButton.selected = self.post.isLiked;
+    self.reblogButton.selected = self.post.isReblogged;
 	self.reblogButton.userInteractionEnabled = !self.reblogButton.selected;
 }
 
 - (void)setAvatar:(UIImage *)avatar {
     if (avatar) {
         self.avatarImageView.image = avatar;
-    } else if ([[self.post isWPCom] boolValue]) {
+    } else if (self.post.isWPCom) {
         self.avatarImageView.image = [UIImage imageNamed:@"wpcom_blavatar"];
     } else {
         self.avatarImageView.image = [UIImage imageNamed:@"gravatar-reader"];

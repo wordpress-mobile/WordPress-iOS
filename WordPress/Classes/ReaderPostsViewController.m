@@ -383,7 +383,7 @@ NSString * const RPVCDisplayedNativeFriendFinder = @"DisplayedNativeFriendFinder
     NSManagedObjectContext *context = [[ContextManager sharedInstance] newDerivedContext];
     ReaderPostService *service = [[ReaderPostService alloc] initWithManagedObjectContext:context];
     [service toggleLikedForPost:post success:^{
-        if ([post.isLiked boolValue]) {
+        if (post.isLiked) {
             [WPAnalytics track:WPAnalyticsStatReaderLikedArticle];
         }
     } failure:^(NSError *error) {
@@ -402,7 +402,7 @@ NSString * const RPVCDisplayedNativeFriendFinder = @"DisplayedNativeFriendFinder
     if (![post isFollowable])
         return;
 
-    followButton.selected = ![post.isFollowing boolValue]; // Set it optimistically
+    followButton.selected = !post.isFollowing; // Set it optimistically
 	[cell setNeedsLayout];
 
     NSManagedObjectContext *context = [[ContextManager sharedInstance] newDerivedContext];
@@ -411,7 +411,7 @@ NSString * const RPVCDisplayedNativeFriendFinder = @"DisplayedNativeFriendFinder
         //noop
     } failure:^(NSError *error) {
 		DDLogError(@"Error Following Blog : %@", [error localizedDescription]);
-		[followButton setSelected:[post.isFollowing boolValue]];
+		[followButton setSelected:post.isFollowing];
 		[cell setNeedsLayout];
     }];
 }

@@ -97,7 +97,7 @@ NSUInteger const ReaderPostServiceMaxPosts = 200;
     }
 
     // Keep previous values in case of failure
-    BOOL oldValue = readerPost.isLiked.boolValue;
+    BOOL oldValue = readerPost.isLiked;
     BOOL like = !oldValue;
     NSNumber *oldCount = [readerPost.likeCount copy];
 
@@ -153,7 +153,7 @@ NSUInteger const ReaderPostServiceMaxPosts = 200;
     }
 
     // Keep previous values in case of failure
-    BOOL oldValue = [readerPost.isFollowing boolValue];
+    BOOL oldValue = readerPost.isFollowing;
     BOOL follow = !oldValue;
 
     // Optimistically update
@@ -431,15 +431,15 @@ NSUInteger const ReaderPostServiceMaxPosts = 200;
     post.blogName = [self makePlainText:[dict stringForKey:@"blogName"]];
     post.blogURL = [dict stringForKey:@"blogURL"];
     post.commentCount = [dict numberForKey:@"commentCount"];
-    post.commentsOpen = [dict numberForKey:@"commentsOpen"];
+    post.commentsOpen = [[dict numberForKey:@"commentsOpen"] boolValue];
     post.content = [self formatContent:[dict stringForKey:@"content"]];
     post.date_created_gmt = [DateUtils dateFromISOString:[dict stringForKey:@"date_created_gmt"]];
     post.featuredImage = [dict stringForKey:@"featuredImage"];
-    post.isBlogPrivate = [dict numberForKey:@"isBlogPrivate"];
-    post.isFollowing = [dict numberForKey:@"isFollowing"];
-    post.isLiked = [dict numberForKey:@"isLiked"];
-    post.isReblogged = [dict numberForKey:@"isReblogged"];
-    post.isWPCom = [dict numberForKey:@"isWPCom"];
+    post.isBlogPrivate = [[dict numberForKey:@"isBlogPrivate"] boolValue];
+    post.isFollowing = [[dict numberForKey:@"isFollowing"] boolValue];
+    post.isLiked = [[dict numberForKey:@"isLiked"] boolValue];
+    post.isReblogged = [[dict numberForKey:@"isReblogged"] boolValue];
+    post.isWPCom = [[dict numberForKey:@"isWPCom"] boolValue];
     post.likeCount = [dict numberForKey:@"likeCount"];
     post.permaLink = [dict stringForKey:@"permalink"];
     post.postID = [dict numberForKey:@"postID"];
