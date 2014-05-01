@@ -44,17 +44,16 @@ NSString * const ReaderPostStoredCommentTextKey = @"comment";
 
 - (BOOL)isFollowable {
     // TODO: We can improve this check. Make sure that this includes jetpack blogs but not feedbag blogs
-    return [self isWPCom];
+    return self.isWPCom;
 }
 
 - (BOOL)isPrivate {
-    return [self.isBlogPrivate boolValue];
+    return self.isBlogPrivate;
 }
 
 - (void)storeComment:(NSNumber *)commentID comment:(NSString *)comment {
     self.storedComment = [NSString stringWithFormat:@"%i|storedcomment|%@", [commentID integerValue], comment];
 }
-
 
 - (NSDictionary *)getStoredComment {
     if (!self.storedComment) {
