@@ -176,7 +176,7 @@ typedef enum {
         return;
 	
     NSDate *lastSynced = [self lastSyncDate];
-    if ((lastSynced == nil || ABS([lastSynced timeIntervalSinceNow]) > ReaderPostDetailViewControllerRefreshTimeout) && [[_post isWPCom] boolValue]) {
+    if ((lastSynced == nil || ABS([lastSynced timeIntervalSinceNow]) > ReaderPostDetailViewControllerRefreshTimeout) && _post.isWPCom) {
 		[self syncWithUserInteraction:NO];
     }
     
@@ -306,13 +306,13 @@ typedef enum {
         return;
 	
 	UIButton *btn = (UIButton *)_likeButton.customView;
-	[btn setSelected:[self.post.isLiked boolValue]];
+	[btn setSelected:self.post.isLiked];
 	NSString *str = ([self.post.likeCount integerValue] > 0) ? [self.post.likeCount stringValue] : nil;
 	[btn setTitle:str forState:UIControlStateNormal];
 	_likeButton.customView = btn;
 	
 	btn = (UIButton *)_reblogButton.customView;
-	[btn setSelected:[self.post.isReblogged boolValue]];
+	[btn setSelected:self.post.isReblogged];
 	btn.userInteractionEnabled = !btn.selected;
 	_reblogButton.customView = btn;
 	
@@ -322,7 +322,7 @@ typedef enum {
 		[items addObjectsFromArray:@[_commentButton, placeholder]];
 	}
 	
-	if ([[self.post isWPCom] boolValue]) {
+	if (self.post.isWPCom) {
 		[items addObjectsFromArray:@[_likeButton, placeholder, _reblogButton]];
 	}
 	
@@ -363,7 +363,7 @@ typedef enum {
 #pragma mark - Comments
 
 - (BOOL)canComment {
-	return [self.post.commentsOpen boolValue];
+	return self.post.commentsOpen;
 }
 
 - (void)prepareComments {
@@ -411,13 +411,13 @@ typedef enum {
         return;
 	
 	UIButton *btn = (UIButton *)_likeButton.customView;
-	[btn setSelected:[self.post.isLiked boolValue]];
+	[btn setSelected:self.post.isLiked];
 	NSString *str = ([self.post.likeCount integerValue] > 0) ? [self.post.likeCount stringValue] : nil;
 	[btn setTitle:str forState:UIControlStateNormal];
 	_likeButton.customView = btn;
 	
 	btn = (UIButton *)_reblogButton.customView;
-	[btn setSelected:[self.post.isReblogged boolValue]];
+	[btn setSelected:self.post.isReblogged];
 	btn.userInteractionEnabled = !btn.selected;
 	_reblogButton.customView = btn;
 	
@@ -427,7 +427,7 @@ typedef enum {
 		[items addObjectsFromArray:@[_commentButton, placeholder]];
 	}
 	
-	if ([[self.post isWPCom] boolValue]) {
+	if (self.post.isWPCom) {
 		[items addObjectsFromArray:@[_likeButton, placeholder, _reblogButton]];
 	}
 	
@@ -627,7 +627,7 @@ typedef enum {
     NSManagedObjectContext *context = [[ContextManager sharedInstance] newDerivedContext];
     ReaderPostService *service = [[ReaderPostService alloc] initWithManagedObjectContext:context];
     [service toggleLikedForPost:post success:^{
-        if ([post.isLiked boolValue]) {
+        if (post.isLiked) {
             [WPAnalytics track:WPAnalyticsStatReaderLikedArticle];
         }
     } failure:^(NSError *error) {
@@ -645,7 +645,7 @@ typedef enum {
     if (![post isFollowable])
         return;
     
-    followButton.selected = ![post.isFollowing boolValue]; // Set it optimistically
+    followButton.selected = !post.isFollowing; // Set it optimistically
 
     NSManagedObjectContext *context = [[ContextManager sharedInstance] newDerivedContext];
     ReaderPostService *service = [[ReaderPostService alloc] initWithManagedObjectContext:context];
@@ -653,7 +653,7 @@ typedef enum {
         //noop
     } failure:^(NSError *error) {
 		DDLogError(@"Error Following Blog : %@", [error localizedDescription]);
-		[followButton setSelected:[post.isFollowing boolValue]];
+		[followButton setSelected:post.isFollowing];
     }];
 }
 
