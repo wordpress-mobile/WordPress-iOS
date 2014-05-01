@@ -32,6 +32,14 @@ NSString * const BlogJetpackApiPath = @"get-user-blogs/1.0";
     return (nil != [self jetpackVersion]);
 }
 
+- (BOOL)hasJetpackAndIsConnectedToWPCom
+{
+    BOOL hasJetpack = [self hasJetpack];
+    BOOL connectedToWPCom = [[self jetpackBlogID] doubleValue] > 0.0;
+    
+    return hasJetpack && connectedToWPCom;
+}
+
 - (NSString *)jetpackVersion {
     NSAssert(![self isWPcom], @"Blog+Jetpack doesn't support WordPress.com blogs");
 

@@ -21,6 +21,7 @@ typedef NS_ENUM(NSUInteger, WPAnalyticsStat) {
     WPAnalyticsStatEditorAddedPhotoViaLocalLibrary,
     WPAnalyticsStatEditorAddedPhotoViaWPMediaLibrary,
     WPAnalyticsStatEditorUpdatedPost,
+    WPAnalyticsStatEditorScheduledPost,
     WPAnalyticsStatEditorPublishedPost,
     WPAnalyticsStatPublishedPostWithPhoto,
     WPAnalyticsStatPublishedPostWithVideo,
@@ -50,6 +51,13 @@ typedef NS_ENUM(NSUInteger, WPAnalyticsStat) {
     WPAnalyticsStatNotificationApproved,
     WPAnalyticsStatNotificationTrashed,
     WPAnalyticsStatNotificationFlaggedAsSpam,
+    WPAnalyticsStatAddedSelfHostedSite,
+    WPAnalyticsStatAddedSelfHostedSiteButJetpackNotConnectedToWPCom,
+    WPAnalyticsStatSkippedConnectingToJetpack,
+    WPAnalyticsStatSignedInToJetpack,
+    WPAnalyticsStatSelectedLearnMoreInConnectToJetpackScreen,
+    WPAnalyticsStatPerformedJetpackSignInFromStatsScreen,
+    WPAnalyticsStatSelectedInstallJetpack,
 };
 
 @protocol WPAnalyticsTracker;

@@ -1,10 +1,11 @@
 #import <UIKit/UIKit.h>
+#import "CTAssetsPickerController.h"
 
 @class AbstractPost;
 
 extern NSString *const WPEditorNavigationRestorationID;
 
-@interface EditPostViewController : UIViewController
+@interface EditPostViewController : UIViewController <UINavigationControllerDelegate, CTAssetsPickerControllerDelegate>
 
 /*
  Initialize the editor with the specified post.

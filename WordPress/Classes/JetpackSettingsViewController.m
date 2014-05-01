@@ -441,6 +441,7 @@ CGFloat const JetpackSignInButtonHeight = 41.0;
 #pragma mark - Browser
 
 - (void)openInstallJetpackURL {
+    [WPAnalytics track:WPAnalyticsStatSelectedInstallJetpack];
     [self openURL:[NSURL URLWithString:[_blog adminUrlWithPath:@"plugin-install.php?tab=plugin-information&plugin=jetpack"]] withUsername:_blog.username password:_blog.password wpLoginURL:[NSURL URLWithString:_blog.loginUrl]];
 }
 

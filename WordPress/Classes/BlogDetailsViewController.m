@@ -18,8 +18,6 @@ typedef enum {
     BlogDetailsRowPages,
     BlogDetailsRowComments,
     BlogDetailsRowStats,
-    BlogDetailsRowThemes,
-    BlogDetailsRowMedia,
     BlogDetailsRowViewSite,
     BlogDetailsRowViewAdmin,
     BlogDetailsRowEdit,
@@ -111,7 +109,7 @@ NSString * const WPBlogDetailsBlogKey = @"WPBlogDetailsBlogKey";
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
-    return [self shouldShowThemesOption] ? BlogDetailsRowCount : BlogDetailsRowCount - 1;
+    return BlogDetailsRowCount;
 }
 
 - (void)configureCell:(UITableViewCell *)cell atIndexPath:(NSIndexPath *)indexPath {
@@ -131,12 +129,6 @@ NSString * const WPBlogDetailsBlogKey = @"WPBlogDetailsBlogKey";
     } else if (indexPath.row == BlogDetailsRowStats) {
         cell.textLabel.text = NSLocalizedString(@"Stats", nil);
         cell.imageView.image = [UIImage imageNamed:@"icon-menu-stats"];
-    } else if ([self shouldShowThemesOption] && indexPath.row == BlogDetailsRowThemes) {
-        cell.textLabel.text = NSLocalizedString(@"Themes", nil);
-        cell.imageView.image = [UIImage imageNamed:@"icon-menu-themes"];
-    } else if ([self isRowForMedia:indexPath.row]) {
-        cell.textLabel.text = NSLocalizedString(@"Media", nil);
-        cell.imageView.image = [UIImage imageNamed:@"icon-menu-media"];
     } else if ([self isRowForViewSite:indexPath.row]) {
         cell.textLabel.text = NSLocalizedString(@"View Site", nil);
         cell.imageView.image = [UIImage imageNamed:@"icon-menu-viewsite"];
@@ -179,11 +171,6 @@ NSString * const WPBlogDetailsBlogKey = @"WPBlogDetailsBlogKey";
     } else if (indexPath.row == BlogDetailsRowStats) {
         [WPAnalytics track:WPAnalyticsStatStatsAccessed];
         controllerClass =  [StatsViewController class];
-    } else if ([self shouldShowThemesOption] && indexPath.row == BlogDetailsRowThemes) {
-        controllerClass = [ThemeBrowserViewController class];
-    } else if ([self isRowForMedia:indexPath.row]) {
-        [WPAnalytics track:WPAnalyticsStatOpenedMediaLibrary];
-        controllerClass = [MediaBrowserViewController class];
     } else if (indexPath.row == BlogDetailsRowViewSite) {
         [self showViewSiteForBlog:self.blog];
     } else if ([self isRowForViewAdmin:indexPath.row]) {
@@ -259,24 +246,16 @@ NSString * const WPBlogDetailsBlogKey = @"WPBlogDetailsBlogKey";
     [[UIApplication sharedApplication] openURL:[NSURL URLWithString:dashboardUrl]];
 }
 
-- (BOOL)isRowForMedia:(NSUInteger)index {
-    return index == ([self shouldShowThemesOption] ? BlogDetailsRowMedia : BlogDetailsRowMedia - 1);
-}
-
 - (BOOL)isRowForViewSite:(NSUInteger)index {
-    return index == ([self shouldShowThemesOption] ? BlogDetailsRowViewSite : BlogDetailsRowViewSite - 1);
+    return index == BlogDetailsRowViewSite;
 }
 
 - (BOOL)isRowForViewAdmin:(NSUInteger)index {
-    return index == ([self shouldShowThemesOption] ? BlogDetailsRowViewAdmin : BlogDetailsRowViewAdmin - 1);
+    return index == BlogDetailsRowViewAdmin;
 }
 
 - (BOOL)isRowForEditBlog:(NSUInteger)index {
-    return index == ([self shouldShowThemesOption] ? BlogDetailsRowEdit : BlogDetailsRowEdit - 1);
-}
-
-- (BOOL)shouldShowThemesOption {
-    return self.blog.isWPcom;
+    return index == BlogDetailsRowEdit;
 }
 
 /*

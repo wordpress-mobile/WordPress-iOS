@@ -31,17 +31,26 @@
     AccountService *accountService = [[AccountService alloc] initWithManagedObjectContext:context];
     WPAccount *account = [accountService defaultWordPressComAccount];
     BlogService *blogService = [[BlogService alloc] initWithManagedObjectContext:[[ContextManager sharedInstance] mainContext]];
+    
+    BOOL dotcom_user, jetpack_user;
+    if (account != nil) {
+        dotcom_user = true;
+        if ([[account jetpackBlogs] count] > 0) {
+            jetpack_user = true;
+        }
+    }
+    
     NSDictionary *properties = @{
                                  @"platform": @"iOS",
                                  @"session_count": @(sessionCount),
-                                 @"connected_to_dotcom": @(account != nil),
+                                 @"dotcom_user": @(dotcom_user),
+                                 @"jetpack_user": @(jetpack_user),
                                  @"number_of_blogs" : @([blogService blogCountForAllAccounts]) };
     [[Mixpanel sharedInstance] registerSuperProperties:properties];
     
     NSString *username = account.username;
     if (account && [username length] > 0) {
         [[Mixpanel sharedInstance] identify:username];
-        [[Mixpanel sharedInstance].people increment:@"Application Opened" by:@(1)];
         [[Mixpanel sharedInstance].people set:@{ @"$username": username, @"$first_name" : username }];
     }
 }
@@ -114,9 +123,13 @@
         [self incrementProperty:instructions.propertyToIncrement forStat:instructions.statToAttachProperty];
     }
     
-    if ([instructions.superPropertyToFlag length] > 0) {
-        [self flagSuperProperty:instructions.superPropertyToFlag];
-    }
+    [instructions.superPropertiesToFlag enumerateObjectsUsingBlock:^(id obj, NSUInteger idx, BOOL *stop) {
+        [self flagSuperProperty:obj];
+    }];
+    
+    [instructions.peoplePropertiesToAssign enumerateKeysAndObjectsUsingBlock:^(id key, id obj, BOOL *stop) {
+        [self setValue:obj forPeopleProperty:key];
+    }];
 }
 
 - (void)incrementPeopleProperty:(NSString *)property
@@ -139,6 +152,11 @@
     [[Mixpanel sharedInstance] registerSuperProperties:superProperties];
 }
 
+- (void)setValue:(id)value forPeopleProperty:(NSString *)property
+{
+    [[Mixpanel sharedInstance].people set:@{ property : value } ];
+}
+
 - (WPAnalyticsTrackerMixpanelInstructionsForStat *)instructionsForStat:(WPAnalyticsStat )stat
 {
     WPAnalyticsTrackerMixpanelInstructionsForStat *instructions;
@@ -146,6 +164,7 @@
     switch (stat) {
         case WPAnalyticsStatApplicationOpened:
             instructions = [WPAnalyticsTrackerMixpanelInstructionsForStat mixpanelInstructionsForEventName:@"Application Opened"];
+            [instructions setPeoplePropertyToIncrement:@"Application Opened"];
             break;
         case WPAnalyticsStatApplicationClosed:
             instructions = [WPAnalyticsTrackerMixpanelInstructionsForStat mixpanelInstructionsForEventName:@"Application Closed"];
@@ -153,6 +172,7 @@
         case WPAnalyticsStatThemesAccessedThemeBrowser:
             instructions = [WPAnalyticsTrackerMixpanelInstructionsForStat mixpanelInstructionsForEventName:@"Themes - Accessed Theme Browser"];
             [instructions setSuperPropertyAndPeoplePropertyToIncrement:@"number_of_times_accessed_theme_browser"];
+            [instructions setCurrentDateForPeopleProperty:@"last_time_accessed_theme_browser"];
             break;
         case WPAnalyticsStatThemesChangedTheme:
             instructions = [WPAnalyticsTrackerMixpanelInstructionsForStat mixpanelInstructionsForEventName:@"Themes - Changed Theme"];
@@ -161,6 +181,7 @@
         case WPAnalyticsStatReaderAccessed:
             instructions = [WPAnalyticsTrackerMixpanelInstructionsForStat mixpanelInstructionsForEventName:@"Reader - Accessed"];
             [instructions setSuperPropertyAndPeoplePropertyToIncrement:@"number_of_times_accessed_reader"];
+            [instructions setCurrentDateForPeopleProperty:@"last_time_accessed_reader"];
             break;
         case WPAnalyticsStatReaderOpenedArticle:
             instructions = [WPAnalyticsTrackerMixpanelInstructionsForStat mixpanelInstructionsForEventName:@"Reader - Opened Article"];
@@ -169,10 +190,12 @@
         case WPAnalyticsStatReaderLikedArticle:
             instructions = [WPAnalyticsTrackerMixpanelInstructionsForStat mixpanelInstructionsForEventName:@"Reader - Liked Article"];
             [instructions setSuperPropertyAndPeoplePropertyToIncrement:@"number_of_times_liked_article"];
+            [instructions setCurrentDateForPeopleProperty:@"last_time_liked_reader_article"];
             break;
         case WPAnalyticsStatReaderRebloggedArticle:
             instructions = [WPAnalyticsTrackerMixpanelInstructionsForStat mixpanelInstructionsForEventName:@"Reader - Reblogged Article"];
             [instructions setSuperPropertyAndPeoplePropertyToIncrement:@"number_of_times_reblogged_article"];
+            [instructions setCurrentDateForPeopleProperty:@"last_time_reblogged_article"];
             break;
         case WPAnalyticsStatReaderInfiniteScroll:
             instructions = [WPAnalyticsTrackerMixpanelInstructionsForStat mixpanelInstructionsForEventName:@"Reader - Infinite Scroll"];
@@ -192,14 +215,17 @@
         case WPAnalyticsStatReaderLoadedFreshlyPressed:
             instructions = [WPAnalyticsTrackerMixpanelInstructionsForStat mixpanelInstructionsForEventName:@"Reader - Loaded Freshly Pressed"];
             [instructions setSuperPropertyAndPeoplePropertyToIncrement:@"number_of_times_loaded_freshly_pressed"];
+            [instructions setCurrentDateForPeopleProperty:@"last_time_loaded_freshly_pressed"];
             break;
         case WPAnalyticsStatReaderCommentedOnArticle:
             instructions = [WPAnalyticsTrackerMixpanelInstructionsForStat mixpanelInstructionsForEventName:@"Reader - Commented on Article"];
             [instructions setSuperPropertyAndPeoplePropertyToIncrement:@"number_of_times_commented_on_reader_article"];
+            [instructions setCurrentDateForPeopleProperty:@"last_time_commented_on_article"];
             break;
         case WPAnalyticsStatStatsAccessed:
             instructions = [WPAnalyticsTrackerMixpanelInstructionsForStat mixpanelInstructionsForEventName:@"Stats - Accessed"];
             [instructions setSuperPropertyAndPeoplePropertyToIncrement:@"number_of_times_accessed_stats"];
+            [instructions setCurrentDateForPeopleProperty:@"last_time_accessed_stats"];
             break;
         case WPAnalyticsStatEditorCreatedPost:
             instructions = [WPAnalyticsTrackerMixpanelInstructionsForStat mixpanelInstructionsForEventName:@"Editor - Created Post"];
@@ -216,14 +242,20 @@
         case WPAnalyticsStatEditorPublishedPost:
             instructions = [WPAnalyticsTrackerMixpanelInstructionsForStat mixpanelInstructionsForEventName:@"Editor - Published Post"];
             [instructions setSuperPropertyAndPeoplePropertyToIncrement:@"number_of_times_editor_published_post"];
+            [instructions setCurrentDateForPeopleProperty:@"last_time_published_post"];
             break;
         case WPAnalyticsStatEditorUpdatedPost:
             instructions = [WPAnalyticsTrackerMixpanelInstructionsForStat mixpanelInstructionsForEventName:@"Editor - Updated Post"];
             [instructions setSuperPropertyAndPeoplePropertyToIncrement:@"number_of_times_editor_updated_post"];
             break;
+        case WPAnalyticsStatEditorScheduledPost:
+            instructions = [WPAnalyticsTrackerMixpanelInstructionsForStat mixpanelInstructionsForEventName:@"Editor - Scheduled Post"];
+            [instructions setSuperPropertyAndPeoplePropertyToIncrement:@"number_of_times_editor_scheduled_post"];
+            break;
         case WPAnalyticsStatNotificationsAccessed:
             instructions = [WPAnalyticsTrackerMixpanelInstructionsForStat mixpanelInstructionsForEventName:@"Notifications - Accessed"];
             [instructions setSuperPropertyAndPeoplePropertyToIncrement:@"number_of_times_accessed_notifications"];
+            [instructions setCurrentDateForPeopleProperty:@"last_time_accessed_notifications"];
             break;
         case WPAnalyticsStatNotificationsOpenedNotificationDetails:
             instructions = [WPAnalyticsTrackerMixpanelInstructionsForStat mixpanelInstructionsForEventName:@"Notifications - Opened Notification Details"];
@@ -253,6 +285,7 @@
             break;
         case WPAnalyticsStatCreatedAccount:
             instructions = [WPAnalyticsTrackerMixpanelInstructionsForStat mixpanelInstructionsForEventName:@"Created Account"];
+            [instructions setCurrentDateForPeopleProperty:@"$created"];
             break;
         case WPAnalyticsStatSharedItemViaEmail:
             instructions = [WPAnalyticsTrackerMixpanelInstructionsForStat mixpanelInstructionsWithSuperPropertyAndPeoplePropertyIncrementor:@"number_of_items_shared_via_email"];
@@ -280,6 +313,7 @@
             break;
         case WPAnalyticsStatSharedItem:
             instructions = [WPAnalyticsTrackerMixpanelInstructionsForStat mixpanelInstructionsWithSuperPropertyAndPeoplePropertyIncrementor:@"number_of_items_shared"];
+            [instructions setCurrentDateForPeopleProperty:@"last_time_shared_article"];
             break;
         case WPAnalyticsStatNotificationPerformedAction:
             instructions = [WPAnalyticsTrackerMixpanelInstructionsForStat mixpanelInstructionsWithSuperPropertyAndPeoplePropertyIncrementor:@"number_of_notifications_performed_action_against"];
@@ -307,6 +341,29 @@
             break;
         case WPAnalyticsStatPublishedPostWithTags:
             instructions = [WPAnalyticsTrackerMixpanelInstructionsForStat mixpanelInstructionsWithSuperPropertyAndPeoplePropertyIncrementor:@"number_of_posts_published_with_tags"];
+            break;
+        case WPAnalyticsStatAddedSelfHostedSite:
+            instructions = [WPAnalyticsTrackerMixpanelInstructionsForStat mixpanelInstructionsForEventName:@"Added Self Hosted Site"];
+            break;
+        case WPAnalyticsStatAddedSelfHostedSiteButJetpackNotConnectedToWPCom:
+            instructions = [WPAnalyticsTrackerMixpanelInstructionsForStat mixpanelInstructionsForEventName:@"Added Self Hosted Site Not Connected to Wordpress.com"];
+            break;
+        case WPAnalyticsStatSkippedConnectingToJetpack:
+            instructions = [WPAnalyticsTrackerMixpanelInstructionsForStat mixpanelInstructionsForEventName:@"Skipped Connecting to Jetpack"];
+            break;
+        case WPAnalyticsStatSignedInToJetpack:
+            instructions = [WPAnalyticsTrackerMixpanelInstructionsForStat mixpanelInstructionsForEventName:@"Signed into Jetpack"];
+            [instructions addSuperPropertyToFlag:@"jetpack_user"];
+            [instructions addSuperPropertyToFlag:@"dotcom_user"];
+            break;
+        case WPAnalyticsStatSelectedLearnMoreInConnectToJetpackScreen:
+            instructions = [WPAnalyticsTrackerMixpanelInstructionsForStat mixpanelInstructionsForEventName:@"Selected Learn More in Connect to Jetpack Screen"];
+            break;
+        case WPAnalyticsStatPerformedJetpackSignInFromStatsScreen:
+            instructions = [WPAnalyticsTrackerMixpanelInstructionsForStat mixpanelInstructionsForEventName:@"Signed into Jetpack from Stats Screen"];
+            break;
+        case WPAnalyticsStatSelectedInstallJetpack:
+            instructions = [WPAnalyticsTrackerMixpanelInstructionsForStat mixpanelInstructionsForEventName:@"Selected Install Jetpack"];
             break;
         default:
             break;
