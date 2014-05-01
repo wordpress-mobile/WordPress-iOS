@@ -3,6 +3,7 @@
 #import "WordPressComApi.h"
 #import "ReaderPost.h"
 #import "ReaderTopic.h"
+#import "RemoteReaderPost.h"
 #import "WPAccount.h"
 #import "AccountService.h"
 #import "DateUtils.h"
@@ -70,12 +71,12 @@ NSUInteger const ReaderPostServiceMaxPosts = 200;
 
     //TODO: Make sure we can do this without a topic
     ReaderPostServiceRemote *remoteService = [[ReaderPostServiceRemote alloc] initWithRemoteApi:[self apiForRequest]];
-    [remoteService fetchPost:postID fromSite:siteID success:^(NSDictionary *dict) {
+    [remoteService fetchPost:postID fromSite:siteID success:^(RemoteReaderPost *remotePost) {
         if (!success) {
             return;
         }
 
-        ReaderPost *post = [self createOrReplaceFromDictionary:dict forTopic:nil];
+        ReaderPost *post = [self createOrReplaceFromRemotePost:remotePost forTopic:nil];
         success(post);
 
     } failure:^(NSError *error) {
@@ -250,13 +251,13 @@ NSUInteger const ReaderPostServiceMaxPosts = 200;
  Merge a freshly fetched batch of posts into the existing set of posts for the specified topic and either discard or retain existing posts.
  Saves the managed object context. 
 
- @param posts An array of NSDictionaries representing ReaderPosts objects
+ @param posts An array of RemoteReaderPost objects
  @param keepExisting Set to YES if the topic's existing posts should be kept. 
  @param topicObjectID The ObjectID of the ReaderTopic to assign to the newly created posts.
  */
 - (void)mergePosts:(NSArray *)posts keepExisting:(BOOL)keepExisting forTopic:(NSManagedObjectID *)topicObjectID {
     ReaderTopic *readerTopic = (ReaderTopic *)[self.managedObjectContext objectWithID:topicObjectID];
-    NSMutableArray *newPosts = [self makeNewPostsFromDictionaries:posts forTopic:readerTopic];
+    NSMutableArray *newPosts = [self makeNewPostsFromRemotePosts:posts forTopic:readerTopic];
 
     if (keepExisting) {
         [self deletePostsForTopic:readerTopic missingFromBatch:newPosts];
@@ -337,11 +338,11 @@ NSUInteger const ReaderPostServiceMaxPosts = 200;
 }
 
 /**
- Delete all ReaderPosts beyond the max number to be retained.
+ Delete all `ReaderPosts` beyond the max number to be retained.
 
  The managed object context is not saved.
  
- @param topic the ReaderTopic to delete posts from.
+ @param topic the `ReaderTopic` to delete posts from.
  */
 - (void)deletePostsInExcessOfMaxAllowedForTopic:(ReaderTopic *)topic {
     // Don't trust the relationships on the topic to be current or correct.
@@ -379,37 +380,37 @@ NSUInteger const ReaderPostServiceMaxPosts = 200;
 }
 
 /**
- Accepts an array of dictionaries representing ReaderPosts and creates model objects
+ Accepts an array of `RemoteReaderPost` objects and creates model objects
  for each one.
  
- @param posts An array of dictionaries representing ReaderPost objects.
- @param topic The ReaderTopic to assign to the created posts.
- @return An array of ReaderPost objects
+ @param posts An array of `RemoteReaderPost` objects.
+ @param topic The `ReaderTopic` to assign to the created posts.
+ @return An array of `ReaderPost` objects
  */
-- (NSMutableArray *)makeNewPostsFromDictionaries:(NSArray *)posts forTopic:(ReaderTopic *)topic {
+- (NSMutableArray *)makeNewPostsFromRemotePosts:(NSArray *)posts forTopic:(ReaderTopic *)topic {
     NSMutableArray *newPosts = [NSMutableArray array];
-    for (NSDictionary *dict in posts) {
-        ReaderPost *newPost = [self createOrReplaceFromDictionary:dict forTopic:topic];
+    for (RemoteReaderPost *post in posts) {
+        ReaderPost *newPost = [self createOrReplaceFromRemotePost:post forTopic:topic];
         if (newPost != nil) {
             [newPosts addObject:newPost];
         } else {
-            DDLogInfo(@"-[ReaderPostService makeNewPostsFromDictionaries:forTopic:] returned a nil post: %@", dict);
+            DDLogInfo(@"-[ReaderPostService makeNewPostsFromRemotePosts:forTopic:] returned a nil post: %@", post);
         }
     }
     return newPosts;
 }
 
 /**
- Create a ReaderPost model object from the specified dictionary.
+ Create a `ReaderPost` model object from the specified dictionary.
  
- @param dict A dictionary representing a ReaderPost
- @param topic The ReaderTopic to assign to the created post.
- @return A ReaderPost model object whose properties are populated with the values from the passed dictionary.
+ @param dict A `RemoteReaderPost` object.
+ @param topic The `ReaderTopic` to assign to the created post.
+ @return A `ReaderPost` model object whose properties are populated with the values from the passed dictionary.
  */
-- (ReaderPost *)createOrReplaceFromDictionary:(NSDictionary * )dict forTopic:(ReaderTopic *)topic {
+- (ReaderPost *)createOrReplaceFromRemotePost:(RemoteReaderPost *)remotePost forTopic:(ReaderTopic *)topic {
     NSError *error;
     ReaderPost *post;
-    NSString *globalID = [dict stringForKey:@"globalID"];
+    NSString *globalID = remotePost.globalID;
     NSFetchRequest *fetchRequest = [[NSFetchRequest alloc] initWithEntityName:@"ReaderPost"];
     fetchRequest.predicate = [NSPredicate predicateWithFormat:@"globalID = %@", globalID];
     NSArray *arr = [self.managedObjectContext executeFetchRequest:fetchRequest error:&error];
@@ -423,35 +424,35 @@ NSUInteger const ReaderPostServiceMaxPosts = 200;
                                              inManagedObjectContext:self.managedObjectContext];
     }
 
-    post.author = [dict stringForKey:@"author"];
-    post.authorAvatarURL = [dict stringForKey:@"authorAvatarURL"];
-    post.authorDisplayName = [dict stringForKey:@"authorDisplayName"];
-    post.authorEmail = [dict stringForKey:@"authorEmail"];
-    post.authorURL = [dict stringForKey:@"authorURL"];
-    post.blogName = [self makePlainText:[dict stringForKey:@"blogName"]];
-    post.blogURL = [dict stringForKey:@"blogURL"];
-    post.commentCount = [dict numberForKey:@"commentCount"];
-    post.commentsOpen = [[dict numberForKey:@"commentsOpen"] boolValue];
-    post.content = [self formatContent:[dict stringForKey:@"content"]];
-    post.date_created_gmt = [DateUtils dateFromISOString:[dict stringForKey:@"date_created_gmt"]];
-    post.featuredImage = [dict stringForKey:@"featuredImage"];
-    post.isBlogPrivate = [[dict numberForKey:@"isBlogPrivate"] boolValue];
-    post.isFollowing = [[dict numberForKey:@"isFollowing"] boolValue];
-    post.isLiked = [[dict numberForKey:@"isLiked"] boolValue];
-    post.isReblogged = [[dict numberForKey:@"isReblogged"] boolValue];
-    post.isWPCom = [[dict numberForKey:@"isWPCom"] boolValue];
-    post.likeCount = [dict numberForKey:@"likeCount"];
-    post.permaLink = [dict stringForKey:@"permalink"];
-    post.postID = [dict numberForKey:@"postID"];
-    post.postTitle = [self makePlainText:[dict stringForKey:@"postTitle"]];
-    post.siteID = [dict numberForKey:@"siteID"];
-    post.sortDate = [DateUtils dateFromISOString:[dict stringForKey:@"sortDate"]];
-    post.status = [dict stringForKey:@"status"];
-    post.tags = [dict stringForKey:@"tags"];
-    post.globalID = [dict stringForKey:@"globalID"];
+    post.author = remotePost.author;
+    post.authorAvatarURL = remotePost.authorAvatarURL;
+    post.authorDisplayName = remotePost.authorDisplayName;
+    post.authorEmail = remotePost.authorEmail;
+    post.authorURL = remotePost.authorURL;
+    post.blogName = [self makePlainText:remotePost.blogName];
+    post.blogURL = remotePost.blogURL;
+    post.commentCount = remotePost.commentCount;
+    post.commentsOpen = remotePost.commentsOpen;
+    post.content = [self formatContent:remotePost.content];
+    post.date_created_gmt = [DateUtils dateFromISOString:remotePost.date_created_gmt];
+    post.featuredImage = remotePost.featuredImage;
+    post.globalID = remotePost.globalID;
+    post.isBlogPrivate = remotePost.isBlogPrivate;
+    post.isFollowing = remotePost.isFollowing;
+    post.isLiked = remotePost.isLiked;
+    post.isReblogged = remotePost.isReblogged;
+    post.isWPCom = remotePost.isWPCom;
+    post.likeCount = remotePost.likeCount;
+    post.permaLink = remotePost.permalink;
+    post.postID = remotePost.postID;
+    post.postTitle = [self makePlainText:remotePost.postTitle];
+    post.siteID = remotePost.siteID;
+    post.sortDate = [DateUtils dateFromISOString:remotePost.sortDate];
+    post.status = remotePost.status;
+    post.tags = remotePost.tags;
 
     // Construct a summary if necessary.
-    NSString *summary = [self formatSummary:[dict stringForKey:@"summary"]];
+    NSString *summary = [self formatSummary:remotePost.summary];
     if (!summary) {
         summary = [self createSummaryFromContent:post.content];
     }
