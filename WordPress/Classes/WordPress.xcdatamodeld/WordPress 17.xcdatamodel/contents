@@ -325,7 +325,6 @@
         <attribute name="storedComment" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="summary" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="tags" optional="YES" attributeType="String" syncable="YES"/>
-        <relationship name="account" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="Account" syncable="YES"/>
         <relationship name="comments" optional="YES" toMany="YES" deletionRule="Cascade" destinationEntity="ReaderComment" inverseName="post" inverseEntity="ReaderComment" indexed="YES" syncable="YES"/>
         <relationship name="topic" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="ReaderTopic" inverseName="posts" inverseEntity="ReaderTopic" syncable="YES"/>
     </entity>
@@ -368,7 +367,7 @@
         <element name="Page" positionX="0" positionY="0" width="128" height="60"/>
         <element name="Post" positionX="0" positionY="0" width="128" height="150"/>
         <element name="ReaderComment" positionX="0" positionY="0" width="128" height="120"/>
-        <element name="ReaderPost" positionX="0" positionY="0" width="128" height="450"/>
+        <element name="ReaderPost" positionX="0" positionY="0" width="128" height="433"/>
         <element name="ReaderTopic" positionX="18" positionY="162" width="128" height="178"/>
         <element name="Theme" positionX="9" positionY="153" width="128" height="225"/>
     </elements>

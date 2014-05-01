@@ -1,5 +1,6 @@
 #import "ReaderTopicServiceRemote.h"
 #import "WordPressComApi.h"
+#import "RemoteReaderTopic.h"
 
 @interface ReaderTopicServiceRemote ()
 
@@ -89,9 +90,9 @@
  @param topicDict The topic `NSDictionary` to normalize.
  @param subscribed Whether the current account subscribes to the topic.
  @param recommended Whether the topic is recommended.
- @return An `NSDictionary` with `topicID`, `title`, `path`, `isSubscribed`, and `isRecommended` keys.
+ @return A RemoteReaderTopic instance.
  */
-- (NSDictionary *)normalizeTopicDictionary:(NSDictionary *)topicDict subscribed:(BOOL)subscribed recommended:(BOOL)recommended {
+- (RemoteReaderTopic *)normalizeTopicDictionary:(NSDictionary *)topicDict subscribed:(BOOL)subscribed recommended:(BOOL)recommended {
     NSNumber *topicID = [topicDict numberForKey:@"ID"];
     if (topicID == nil) {
         topicID = @0;
@@ -99,13 +100,13 @@
     NSString *title = [topicDict stringForKey:@"title"];
     NSString *url = [topicDict stringForKey:@"URL"];
 
-    return @{
-             @"topicID":topicID,
-             @"title":title,
-             @"path":url,
-             @"isSubscribed":[NSNumber numberWithBool:subscribed],
-             @"isRecommended": [NSNumber numberWithBool:recommended]
-             };
+    RemoteReaderTopic *topic = [[RemoteReaderTopic alloc] init];
+    topic.topicID = topicID;
+    topic.title = title;
+    topic.path = url;
+    topic.isSubscribed = subscribed;
+    topic.isRecommended = recommended;
+    return topic;
 }
 
 @end
