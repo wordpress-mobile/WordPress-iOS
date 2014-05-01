@@ -72,7 +72,7 @@ static NSDateFormatter *dateFormatter;
     WPAccount *defaultAccount = [accountService defaultWordPressComAccount];
 
     [[defaultAccount restApi] fetchThemesForBlogId:blog.blogID.stringValue success:^(AFHTTPRequestOperation *operation, id responseObject) {
-        NSManagedObjectContext *backgroundMOC = [[ContextManager sharedInstance] backgroundContext];
+        NSManagedObjectContext *backgroundMOC = [[ContextManager sharedInstance] newDerivedContext];
         [backgroundMOC performBlock:^{
             NSMutableArray *themesToKeep = [NSMutableArray array];
             for (NSDictionary *t in responseObject[@"themes"]) {
@@ -87,7 +87,7 @@ static NSDateFormatter *dateFormatter;
                 }
             }
             
-            [[ContextManager sharedInstance] saveContext:backgroundMOC];
+            [[ContextManager sharedInstance] saveDerivedContext:backgroundMOC];
             
             dateFormatter = nil;
             

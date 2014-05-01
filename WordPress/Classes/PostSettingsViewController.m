@@ -23,7 +23,7 @@
 #import "WPTableImageSource.h"
 
 typedef enum {
-    PostSettingsRowCategories = 1,
+    PostSettingsRowCategories = 0,
     PostSettingsRowTags,
     PostSettingsRowPublishDate,
     PostSettingsRowStatus,
@@ -192,10 +192,16 @@ static NSString *const TableViewActivityCellIdentifier = @"TableViewActivityCell
 - (void)datePickerChanged:(NSDate *)date {
     self.apost.dateCreated = date;
 
-    if ([self.apost.dateCreated compare:[NSDate date]] == NSOrderedDescending && [self.apost.status isEqualToString:@"draft"]) {
+    // Try to match behavior in wp-admin.
+    // A nil value for date means "publish immediately", so also change status to publish.
+    // If a draft post is given a future date, change its status to publish.
+    // This approximates the behavior of wp-admin with only a single button to save vs a button
+    // to save as a draft, and a button to update/schedule/publish
+    if ((date == nil) ||
+        ([self.apost.dateCreated compare:[NSDate date]] == NSOrderedDescending && [self.apost.status isEqualToString:@"draft"])) {
         self.apost.status = @"publish";
     }
-    
+
     [self hideDatePicker];
 }
 
@@ -305,11 +311,13 @@ static NSString *const TableViewActivityCellIdentifier = @"TableViewActivityCell
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
     CGFloat width = IS_IPAD ? WPTableViewFixedWidth : CGRectGetWidth(self.tableView.frame);
-    if (indexPath.section == PostSettingsSectionGeolocation && [self post].geolocation) {
+    NSInteger sectionId = [[self.sections objectAtIndex:indexPath.section] integerValue];
+    
+    if (sectionId == PostSettingsSectionGeolocation && [self post].geolocation) {
         return ceilf(width * 0.75f);
     }
     
-    if (indexPath.section == PostSettingsSectionFeaturedImage) {
+    if (sectionId == PostSettingsSectionFeaturedImage) {
         if (self.featuredImage) {
             CGFloat cellMargins = (2 * PostFeaturedImageCellMargin);
             CGFloat imageWidth = self.featuredImage.size.width;
@@ -320,7 +328,7 @@ static NSString *const TableViewActivityCellIdentifier = @"TableViewActivityCell
         }
     }
     
-    if (indexPath.section == PostSettingsSectionMeta) {
+    if (sectionId == PostSettingsSectionMeta) {
         if (indexPath.row == RowIndexForDatePicker && self.datePicker) {
             return CGRectGetHeight(self.datePicker.frame);
         }
@@ -392,14 +400,15 @@ static NSString *const TableViewActivityCellIdentifier = @"TableViewActivityCell
 
 - (UITableViewCell *)configureTaxonomyCellForIndexPath:(NSIndexPath *)indexPath {
     UITableViewCell *cell;
-    if (indexPath.row == 0) {
+    
+    if (indexPath.row == PostSettingsRowCategories) {
         // Categories
         cell = [self getWPTableViewCell];
         cell.textLabel.text = NSLocalizedString(@"Categories", @"Label for the categories field. Should be the same as WP core.");
         cell.detailTextLabel.text = [NSString decodeXMLCharactersIn:[self.post categoriesText]];
         cell.tag = PostSettingsRowCategories;
         
-    } else {
+    } else if (indexPath.row == PostSettingsRowTags) {
         // Tags
         UITableViewTextFieldCell *textCell = [self getTextFieldCell];
         textCell.textLabel.text = NSLocalizedString(@"Tags", @"Label for the tags field. Should be the same as WP core.");
@@ -554,10 +563,9 @@ static NSString *const TableViewActivityCellIdentifier = @"TableViewActivityCell
         }
         
         Coordinate *coordinate = self.post.geolocation;
-        CLLocation *lastLocation = [LocationService sharedService].lastGeocodedLocation;
         CLLocation *postLocation = [[CLLocation alloc] initWithLatitude:coordinate.latitude longitude:coordinate.longitude];
         NSString *address;
-        if(lastLocation && [lastLocation distanceFromLocation:postLocation] == 0) {
+        if([[LocationService sharedService] hasAddressForLocation:postLocation]) {
             address = [LocationService sharedService].lastGeocodedAddress;
         } else {
             address = NSLocalizedString(@"Looking up address...", @"Used with posts that are geo-tagged. Let's the user know the the app is looking up the address for the coordinates tagging the post.");
@@ -654,7 +662,8 @@ static NSString *const TableViewActivityCellIdentifier = @"TableViewActivityCell
     }
     self.datePicker.frame = frame;
     
-    NSIndexPath *indexPath = [NSIndexPath indexPathForRow:RowIndexForDatePicker inSection:PostSettingsSectionMeta];
+    NSUInteger sec = [self.sections indexOfObject:[NSNumber numberWithInteger:PostSettingsSectionMeta]];
+    NSIndexPath *indexPath = [NSIndexPath indexPathForRow:RowIndexForDatePicker inSection:sec];
     [self.tableView reloadRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationFade];
 }
 
@@ -773,6 +782,12 @@ static NSString *const TableViewActivityCellIdentifier = @"TableViewActivityCell
     [self.navigationController pushViewController:controller animated:YES];
 }
 
+- (void)showMediaLibrary {
+    self.navigationItem.title = NSLocalizedString(@"Back", nil);
+    MediaBrowserViewController *vc = [[MediaBrowserViewController alloc] initWithPost:self.post];
+    [self.navigationController pushViewController:vc animated:YES];
+}
+
 - (void)loadFeaturedImage:(NSIndexPath *)indexPath {
     NSURL *url = [NSURL URLWithString:self.post.featuredImage.remoteURL];
     if (url) {
@@ -843,8 +858,7 @@ static NSString *const TableViewActivityCellIdentifier = @"TableViewActivityCell
 - (void)pickerView:(WPPickerView *)pickerView didFinishWithValue:(id)value {
     if (value == nil) {
         // Publish Immediately
-        self.apost.dateCreated = nil;
-        [self hideDatePicker];
+        [self datePickerChanged:nil];
         return;
     }
     

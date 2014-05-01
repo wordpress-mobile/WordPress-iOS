@@ -610,6 +610,11 @@ CGFloat const GeneralWalkthroughStatusBarOffset = 20.0;
     JetpackSettingsViewController *jetpackSettingsViewController = [[JetpackSettingsViewController alloc] initWithBlog:_blog];
     jetpackSettingsViewController.canBeSkipped = YES;
     [jetpackSettingsViewController setCompletionBlock:^(BOOL didAuthenticate) {
+        if (didAuthenticate) {
+            [WPAnalytics track:WPAnalyticsStatSignedInToJetpack];
+        } else {
+            [WPAnalytics track:WPAnalyticsStatSkippedConnectingToJetpack];
+        }
         _blogConnectedToJetpack = didAuthenticate;
         [self dismiss];
     }];
@@ -824,6 +829,7 @@ CGFloat const GeneralWalkthroughStatusBarOffset = 20.0;
 
 - (void)createSelfHostedAccountAndBlogWithUsername:(NSString *)username password:(NSString *)password xmlrpc:(NSString *)xmlrpc options:(NSDictionary *)options
 {
+    [WPAnalytics track:WPAnalyticsStatAddedSelfHostedSite];
     NSManagedObjectContext *context = [[ContextManager sharedInstance] mainContext];
     AccountService *accountService = [[AccountService alloc] initWithManagedObjectContext:context];
     BlogService *blogService = [[BlogService alloc] initWithManagedObjectContext:context];
@@ -847,7 +853,12 @@ CGFloat const GeneralWalkthroughStatusBarOffset = 20.0;
     [blogService syncBlog:_blog success:nil failure:nil];
 
     if ([_blog hasJetpack]) {
-        [self showJetpackAuthentication];
+        if ([_blog hasJetpackAndIsConnectedToWPCom]) {
+            [self showJetpackAuthentication];
+        } else {
+            [WPAnalytics track:WPAnalyticsStatAddedSelfHostedSiteButJetpackNotConnectedToWPCom];
+            [self dismiss];
+        }
     } else {
         [self dismiss];
     }
