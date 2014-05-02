@@ -10,7 +10,6 @@
 #import "UIImage+Util.h"
 #import "LocationService.h"
 #import "BlogService.h"
-#import "WPMediaPersister.h"
 #import "WPMediaSizing.h"
 #import "WPMediaMetadataExtractor.h"
 #import "WPMediaUploader.h"
@@ -1375,7 +1374,6 @@ CGFloat const EPVCTextViewTopPadding = 7.0f;
     BOOL gelocationEnabled = self.post.blog.geolocationEnabled;
     NSMutableArray *mediaToUpload = [[NSMutableArray alloc] initWithCapacity:[assets count]];
     for (ALAsset *asset in assets) {
-        Media *imageMedia = [Media newMediaForPost:self.post];
         ALAssetRepresentation *representation = asset.defaultRepresentation;
         
         if ([[asset valueForProperty:ALAssetPropertyType] isEqualToString:ALAssetTypeVideo]) {
@@ -1386,7 +1384,7 @@ CGFloat const EPVCTextViewTopPadding = 7.0f;
                                                          orientation:(UIImageOrientation)representation.orientation];
             UIImage *resizedImage = [WPMediaSizing correctlySizedImage:fullResolutionImage forBlogDimensions:[self.post.blog getImageResizeDimensions]];
             NSDictionary *assetMetadata = [WPMediaMetadataExtractor metadataForAsset:asset enableGeolocation:gelocationEnabled];
-            [WPMediaPersister saveMedia:imageMedia withImage:resizedImage metadata:assetMetadata featured:NO];
+            Media *imageMedia = [Media newMediaForPost:self.post withImage:resizedImage andMetadata:assetMetadata];
             [mediaToUpload addObject:imageMedia];
         }
     }

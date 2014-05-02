@@ -23,7 +23,6 @@
 #import "WPTableImageSource.h"
 #import "WPMediaMetadataExtractor.h"
 #import "WPMediaSizing.h"
-#import "WPMediaPersister.h"
 #import "WPMediaUploader.h"
 #import <AssetsLibrary/AssetsLibrary.h>
 
@@ -908,10 +907,10 @@ static NSString *const TableViewActivityCellIdentifier = @"TableViewActivityCell
     NSURL *assetURL = [info objectForKey:UIImagePickerControllerReferenceURL];
     ALAssetsLibrary *assetsLibrary = [[ALAssetsLibrary alloc] init];
     [assetsLibrary assetForURL:assetURL resultBlock:^(ALAsset *asset){
-        Media *imageMedia = [Media newMediaForPost:self.post];
         UIImage *resizedImage = [WPMediaSizing correctlySizedImage:image forBlogDimensions:[self.post.blog getImageResizeDimensions]];
         NSDictionary *assetMetadata = [WPMediaMetadataExtractor metadataForAsset:asset enableGeolocation:self.post.blog.geolocationEnabled];
-        [WPMediaPersister saveMedia:imageMedia withImage:resizedImage metadata:assetMetadata featured:YES];
+        Media *imageMedia = [Media newMediaForPost:self.post withImage:resizedImage andMetadata:assetMetadata];
+        imageMedia.mediaType = MediaTypeFeatured;
         __weak PostSettingsViewController *weakSelf = self;
         _mediaUploader = [[WPMediaUploader alloc] init];
         _mediaUploader.uploadsCompletedBlock = ^{
