@@ -156,6 +156,7 @@ CGFloat const EPVCTextViewTopPadding = 7.0f;
     [self setupOptionsView];
     
     [self createRevisionOfPost];
+    [self removeIncompletelyUploadedMediaFilesAsAResultOfACrash];
     
     [[NSNotificationCenter defaultCenter] removeObserver:self];
 	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(insertMediaBelow:) name:MediaShouldInsertBelowNotification object:nil];
@@ -810,6 +811,25 @@ CGFloat const EPVCTextViewTopPadding = 7.0f;
         [self refreshUIForCurrentPost];
     }];
 }
+
+// This will remove any media objects that are in the uploading status. The reason we do this is because if the editor crashes during an image upload the app
+// will have an image stuck in the uploading state and the user will be unable to quit out of the app unless they remove the image by hand. In the absence of a media
+// browser to see a users attached images we should remove this image from the post.
+// NOTE: This is a temporary fix, long term we should explore other options such as automatically retrying after a crash
+- (void)removeIncompletelyUploadedMediaFilesAsAResultOfACrash
+{
+    [self.post.managedObjectContext performBlock:^{
+        NSMutableArray *mediaToRemove = [[NSMutableArray alloc] init];
+        for (Media *media in self.post.media) {
+            if (media.remoteStatus == MediaRemoteStatusPushing) {
+                [mediaToRemove addObject:media];
+            }
+        }
+        [mediaToRemove makeObjectsPerformSelector:@selector(remove)];
+    }];
+}
+
+
 
 - (void)discardChangesAndDismiss {
     [self.post.original deleteRevision];
