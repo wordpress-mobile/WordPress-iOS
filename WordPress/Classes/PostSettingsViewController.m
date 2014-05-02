@@ -47,6 +47,7 @@ static NSString *const TableViewActivityCellIdentifier = @"TableViewActivityCell
 
 @interface PostSettingsViewController () <UITextFieldDelegate, WPTableImageSourceDelegate, WPPickerViewDelegate, UIImagePickerControllerDelegate, UINavigationControllerDelegate> {
     WPMediaUploader *_mediaUploader;
+    UIPopoverController *_popover;
 }
 
 @property (nonatomic, strong) AbstractPost *apost;
@@ -796,7 +797,14 @@ static NSString *const TableViewActivityCellIdentifier = @"TableViewActivityCell
     picker.navigationBar.translucent = NO;
     picker.modalPresentationStyle = UIModalPresentationCurrentContext;
     picker.navigationBar.barStyle = UIBarStyleBlack;
-    [self.navigationController presentViewController:picker animated:YES completion:nil];
+    
+    if (IS_IPAD) {
+        _popover = [[UIPopoverController alloc] initWithContentViewController:picker];
+        CGRect frame = [self.tableView rectForRowAtIndexPath:[NSIndexPath indexPathForRow:0 inSection:PostSettingsSectionFeaturedImage]];
+        [_popover presentPopoverFromRect:frame inView:self.view permittedArrowDirections:UIPopoverArrowDirectionAny animated:YES];
+    } else {
+        [self.navigationController presentViewController:picker animated:YES completion:nil];
+    }
 }
 
 - (void)showCategoriesSelection {
@@ -919,11 +927,16 @@ static NSString *const TableViewActivityCellIdentifier = @"TableViewActivityCell
             [weakSelf.tableView reloadData];
         };
         [_mediaUploader uploadMediaObjects:@[imageMedia]];
-        [self.navigationController dismissViewControllerAnimated:YES completion:nil];
+        if (IS_IPAD) {
+            [_popover dismissPopoverAnimated:YES];
+        } else {
+            [self.navigationController dismissViewControllerAnimated:YES completion:nil];
+        }
+        // Reload the featured image row so that way the activity indicator will be displayed.
+        [self.tableView reloadRowsAtIndexPaths:@[[NSIndexPath indexPathForRow:0 inSection:PostSettingsSectionFeaturedImage]] withRowAnimation:UITableViewRowAnimationFade];
     } failureBlock:^(NSError *error){
         DDLogError(@"can't get asset %@: %@", assetURL, [error localizedDescription]);
     }];
-
 }
 
 @end
