@@ -8,4 +8,8 @@
 + (NSString *)crashlyticsApiKey;
 + (NSString *)hockeyappAppId;
 + (NSString *)googlePlusClientId;
++ (NSString *)helpshiftAPIKey;
++ (NSString *)helpshiftDomainName;
++ (NSString *)helpshiftAppId;
++ (NSString *)taplyticsAPIKey;
 @end
