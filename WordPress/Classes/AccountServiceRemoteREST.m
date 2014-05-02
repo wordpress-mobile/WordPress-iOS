@@ -38,7 +38,10 @@
 {
     NSMutableArray *remoteBlogs = [NSMutableArray arrayWithCapacity:[jsonBlogs count]];
     for (NSDictionary *jsonBlog in jsonBlogs) {
-        [remoteBlogs addObject:[self remoteBlogFromJSONDictionary:jsonBlog]];
+        BOOL isJetpack = [jsonBlog[@"jetpack"] boolValue];
+        if (!isJetpack) {
+            [remoteBlogs addObject:[self remoteBlogFromJSONDictionary:jsonBlog]];
+        }
     }
     return [NSArray arrayWithArray:remoteBlogs];
 }
