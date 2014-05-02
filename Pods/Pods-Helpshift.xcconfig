@@ -1,0 +1,2 @@
+PODS_HELPSHIFT_LIBRARY_SEARCH_PATHS = "$(PODS_ROOT)/Helpshift/helpshift-ios-4.3.1"
+PODS_HELPSHIFT_OTHER_LDFLAGS = -lHelpshift -lsqlite3.0 -lz -framework CoreGraphics -framework CoreTelephony -framework CoreText -framework Foundation -framework QuartzCore -framework SystemConfiguration -framework UIKit
