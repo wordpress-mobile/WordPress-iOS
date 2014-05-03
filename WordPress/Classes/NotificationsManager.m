@@ -9,6 +9,7 @@
 #import "NoteService.h"
 #import "AccountService.h"
 #import <Helpshift/Helpshift.h>
+#import <Mixpanel/Mixpanel.h>
 
 static NSString *const NotificationsDeviceIdKey = @"notification_device_id";
 static NSString *const NotificationsPreferencesKey = @"notification_preferences";
@@ -34,6 +35,8 @@ NSString *const NotificationsDeviceToken = @"apnsDeviceToken";
     // We want to register Helpshift regardless so that way if a user isn't logged in
     // they can still get push notifications that we replied to their support ticket.
     [[Helpshift sharedInstance] registerDeviceToken:deviceToken];
+    
+    [[Mixpanel sharedInstance].people addPushDeviceToken:deviceToken];
 
     // Don't bother registering for WordPress anything if the user isn't logged in
     NSManagedObjectContext *context = [[ContextManager sharedInstance] mainContext];
