@@ -72,6 +72,12 @@
 #define COCOAPODS_VERSION_MINOR_EmailChecker 1
 #define COCOAPODS_VERSION_PATCH_EmailChecker 0
 
+// Helpshift
+#define COCOAPODS_POD_AVAILABLE_Helpshift
+#define COCOAPODS_VERSION_MAJOR_Helpshift 4
+#define COCOAPODS_VERSION_MINOR_Helpshift 3
+#define COCOAPODS_VERSION_PATCH_Helpshift 1
+
 // HockeySDK
 #define COCOAPODS_POD_AVAILABLE_HockeySDK
 #define COCOAPODS_VERSION_MAJOR_HockeySDK 3
@@ -125,6 +131,12 @@
 #define COCOAPODS_VERSION_MAJOR_SVProgressHUD 1
 #define COCOAPODS_VERSION_MINOR_SVProgressHUD 0
 #define COCOAPODS_VERSION_PATCH_SVProgressHUD 0
+
+// Taplytics
+#define COCOAPODS_POD_AVAILABLE_Taplytics
+#define COCOAPODS_VERSION_MAJOR_Taplytics 1
+#define COCOAPODS_VERSION_MINOR_Taplytics 2
+#define COCOAPODS_VERSION_PATCH_Taplytics 46
 
 // UIDeviceIdentifier
 #define COCOAPODS_POD_AVAILABLE_UIDeviceIdentifier

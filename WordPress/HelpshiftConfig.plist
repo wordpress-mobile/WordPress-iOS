@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>Global Attributes</key>
+	<dict>
+		<key>Font name</key>
+		<string></string>
+		<key>Bold font name</key>
+		<string></string>
+		<key>Background color</key>
+		<string>eeeeee</string>
+		<key>Background image</key>
+		<string></string>
+		<key>Content background color</key>
+		<string>eeeeee</string>
+		<key>Separator line color</key>
+		<string>404040</string>
+		<key>Text color</key>
+		<string>000000</string>
+		<key>Contact us button color</key>
+		<string>3396ff</string>
+	</dict>
+	<key>Navigation Bar</key>
+	<dict>
+		<key>Font name</key>
+		<string></string>
+		<key>Font size</key>
+		<string></string>
+		<key>Title color</key>
+		<string>ffffff</string>
+		<key>Bar button text color</key>
+		<string>fffefd</string>
+		<key>Background color</key>
+		<string>24a1cf</string>
+		<key>Text shadow color (iOS 6)</key>
+		<string></string>
+		<key>Background image (iOS 6)</key>
+		<string></string>
+		<key>Background image landscape (iOS 6)</key>
+		<string></string>
+	</dict>
+	<key>Search Bar</key>
+	<dict>
+		<key>Background color</key>
+		<string>000000</string>
+		<key>Button text color (iOS 6)</key>
+		<string>fafafa</string>
+	</dict>
+	<key>Table Section Header</key>
+	<dict>
+		<key>Font name</key>
+		<string></string>
+		<key>Font size</key>
+		<string></string>
+		<key>Text color</key>
+		<string>b2b2b2</string>
+	</dict>
+	<key>FAQ and Chat Footer</key>
+	<dict>
+		<key>Chat send button color</key>
+		<string>3396ff</string>
+		<key>FAQ yes button color</key>
+		<string>3396ff</string>
+		<key>FAQ no button color</key>
+		<string>cca300</string>
+	</dict>
+	<key>Message Retry Badge</key>
+	<dict>
+		<key>Text color</key>
+		<string>000000</string>
+		<key>Border color (iOS 6)</key>
+		<string></string>
+		<key>Background color</key>
+		<string>ffcc00</string>
+	</dict>
+</dict>
+</plist>
