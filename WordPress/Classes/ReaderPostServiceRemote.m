@@ -198,7 +198,7 @@
  Sanitizes a post object from the REST API.
  
  @param dict A dictionary representing a post object from the REST API
- @return A dictionary with keys matching what is expected by the LocalService
+ @return A `RemoteReaderPost` object
  */
 - (RemoteReaderPost *)formatPostDictionary:(NSDictionary *)dict {
 
