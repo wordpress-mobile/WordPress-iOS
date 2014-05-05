@@ -86,14 +86,46 @@ EOF
 end
 
 def print_googleplus(googleplus)
-  print <<-EOF
+print <<-EOF
 + (NSString *)googlePlusClientId {
-  return @"#{googleplus}";
+    return @"#{googleplus}";
 }
 EOF
 end
 
-def print_class(client, secret, pocket, mixpanel_dev, mixpanel_prod, crashlytics, hockeyapp, googleplus)
+def print_helpshift_api_key(helpshift_api_key)
+print <<-EOF
++ (NSString *)helpshiftAPIKey {
+    return @"#{helpshift_api_key}";
+}
+EOF
+end
+
+def print_helpshift_domain_name(helpshift_domain_name)
+print <<-EOF
++ (NSString *)helpshiftDomainName {
+    return @"#{helpshift_domain_name}";
+}
+EOF
+end
+
+def print_helpshift_app_id(helpshift_app_id)
+print <<-EOF
++ (NSString *)helpshiftAppId {
+    return @"#{helpshift_app_id}";
+}
+EOF
+end
+
+def print_taplytics_api_key(taplytics_api_key)
+print <<-EOF
++ (NSString *)taplyticsAPIKey {
+    return @"#{taplytics_api_key}";
+}
+EOF
+end
+
+def print_class(client, secret, pocket, mixpanel_dev, mixpanel_prod, crashlytics, hockeyapp, googleplus, helpshift_api_key, helpshift_domain_name, helpshift_app_id, taplytics_api_key)
   print <<-EOF
 #import "WordPressComApiCredentials.h"
 @implementation WordPressComApiCredentials
@@ -105,6 +137,10 @@ EOF
   print_crashlytics(crashlytics)
   print_hockeyapp(hockeyapp)
   print_googleplus(googleplus)
+  print_helpshift_api_key(helpshift_api_key)
+  print_helpshift_domain_name(helpshift_domain_name)
+  print_helpshift_app_id(helpshift_app_id)
+  print_taplytics_api_key(taplytics_api_key)
   printf("@end\n")
 end
 
@@ -128,6 +164,10 @@ mixpanel_prod = nil
 crashlytics = nil
 hockeyapp = nil
 googleplus = nil
+helpshift_api_key = nil
+helpshift_domain_name = nil
+helpshift_app_id = nil
+taplytics_api_key = nil
 File.open(path) do |f|
   f.each_line do |l|
     (k,v) = l.split("=")
@@ -147,6 +187,14 @@ File.open(path) do |f|
       hockeyapp = v.chomp
     elsif k == "GOOGLE_PLUS_CLIENT_ID"
       googleplus = v.chomp
+    elsif k == "HELPSHIFT_API_KEY"
+      helpshift_api_key = v.chomp
+    elsif k == "HELPSHIFT_DOMAIN_NAME"
+      helpshift_domain_name = v.chomp
+    elsif k == "HELPSHIFT_APP_ID"
+      helpshift_app_id = v.chomp
+    elsif k == "TAPLYTICS_API_KEY"
+      taplytics_api_key = v.chomp
     else
       $stderr.puts "warning: Unknown key #{k}"
     end
@@ -163,4 +211,4 @@ if secret.nil?
   exit 3
 end
 
-print_class(client, secret, pocket, mixpanel_dev, mixpanel_prod, crashlytics, hockeyapp, googleplus)
+print_class(client, secret, pocket, mixpanel_dev, mixpanel_prod, crashlytics, hockeyapp, googleplus, helpshift_api_key, helpshift_domain_name, helpshift_app_id, taplytics_api_key)
