@@ -458,6 +458,14 @@ POSSIBILITY OF SUCH DAMAGES.
 		</dict>
 		<dict>
 			<key>FooterText</key>
+			<string>See http://www.helpshift.com/terms/</string>
+			<key>Title</key>
+			<string>Helpshift</string>
+			<key>Type</key>
+			<string>PSGroupSpecifier</string>
+		</dict>
+		<dict>
+			<key>FooterText</key>
 			<string>## Licenses
 
 The Hockey SDK is provided under the following license:
@@ -935,6 +943,14 @@ including Joseph Wain's Glyphish Icons. Please consult their
 respective headers for the terms of their individual licenses.</string>
 			<key>Title</key>
 			<string>SVProgressHUD</string>
+			<key>Type</key>
+			<string>PSGroupSpecifier</string>
+		</dict>
+		<dict>
+			<key>FooterText</key>
+			<string>See http://taplytics.com/terms</string>
+			<key>Title</key>
+			<string>Taplytics</string>
 			<key>Type</key>
 			<string>PSGroupSpecifier</string>
 		</dict>
