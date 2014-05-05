@@ -193,7 +193,7 @@ NSString *const ReaderTopicCurrentTopicURIKey = @"ReaderTopicCurrentTopicURIKey"
         DDLogError(@"-[ReaderTopic allTopics] error executing fetch request: %@", error);
         return nil;
     }
-    
+
     return results;
 }
 
