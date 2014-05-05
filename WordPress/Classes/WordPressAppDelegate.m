@@ -525,7 +525,10 @@ static NSInteger const IndexForMeTab = 2;
             if ([navController topViewController] == [[navController viewControllers] firstObject] &&
                 [[[navController topViewController] view] isKindOfClass:[UITableView class]]) {
                 UITableView *tableView = (UITableView *)[[navController topViewController] view];
-                [tableView scrollToRowAtIndexPath:[NSIndexPath indexPathForRow:0 inSection:0] atScrollPosition:UITableViewScrollPositionTop animated:YES];
+                
+                if ([tableView numberOfSections] > 0 && [tableView numberOfRowsInSection:0] > 0) {
+                    [tableView scrollToRowAtIndexPath:[NSIndexPath indexPathForRow:0 inSection:0] atScrollPosition:UITableViewScrollPositionTop animated:YES];
+                }
             }
         }
     }
