@@ -78,6 +78,12 @@
 #define COCOAPODS_VERSION_MINOR_Google_Diff_Match_Patch 0
 #define COCOAPODS_VERSION_PATCH_Google_Diff_Match_Patch 1
 
+// Helpshift
+#define COCOAPODS_POD_AVAILABLE_Helpshift
+#define COCOAPODS_VERSION_MAJOR_Helpshift 4
+#define COCOAPODS_VERSION_MINOR_Helpshift 3
+#define COCOAPODS_VERSION_PATCH_Helpshift 1
+
 // HockeySDK
 #define COCOAPODS_POD_AVAILABLE_HockeySDK
 #define COCOAPODS_VERSION_MAJOR_HockeySDK 3
@@ -155,6 +161,12 @@
 #define COCOAPODS_VERSION_MAJOR_SocketRocket 0
 #define COCOAPODS_VERSION_MINOR_SocketRocket 3
 #define COCOAPODS_VERSION_PATCH_SocketRocket 1
+
+// Taplytics
+#define COCOAPODS_POD_AVAILABLE_Taplytics
+#define COCOAPODS_VERSION_MAJOR_Taplytics 1
+#define COCOAPODS_VERSION_MINOR_Taplytics 2
+#define COCOAPODS_VERSION_PATCH_Taplytics 46
 
 // UIDeviceIdentifier
 #define COCOAPODS_POD_AVAILABLE_UIDeviceIdentifier

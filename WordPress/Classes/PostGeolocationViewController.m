@@ -114,8 +114,15 @@
         if (location) {
             Coordinate *coord = [[Coordinate alloc] initWithCoordinate:location.coordinate];
             self.post.geolocation = coord;
+            [self refreshView];
+        } else if (error) {
+            [self refreshView];
+            NSString *message = NSLocalizedString(@"There was a problem findind your current location.", @"Generic message explaining there was a problem finding the user's current location.");
+            message = [NSString stringWithFormat:@"%@ %@", message, [error localizedDescription]];
+            [WPError showAlertWithTitle:NSLocalizedString(@"Location Unavailable", @"Title of an alert view stating that the user's location is unavailable.")
+                                message:message
+                      withSupportButton:NO];
         }
-        [self refreshView];
     }];
 
     [self refreshView];

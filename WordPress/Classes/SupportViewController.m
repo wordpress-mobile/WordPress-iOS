@@ -5,13 +5,17 @@
 #import "WordPressAppDelegate.h"
 #import <DDFileLogger.h>
 #import "WPTableViewSectionFooterView.h"
+#import <Helpshift/Helpshift.h>
+#import <Taplytics/Taplytics.h>
 
 static NSString *const UserDefaultsFeedbackEnabled = @"wp_feedback_enabled";
+static NSString *const UserDefaultsHelpshiftEnabled = @"wp_helpshift_enabled";
 static NSString *const FeedbackCheckUrl = @"http://api.wordpress.org/iphoneapp/feedback-check/1.0/";
 
 @interface SupportViewController ()
 
 @property (nonatomic, assign) BOOL feedbackEnabled;
+@property (nonatomic, assign) BOOL helpshiftEnabled;
 
 @end
 
@@ -50,6 +54,24 @@ typedef NS_ENUM(NSInteger, SettingsViewControllerSections)
     [operation start];
 }
 
++ (void)checkIfHelpshiftShouldBeEnabled {
+    [[NSUserDefaults standardUserDefaults] registerDefaults:@{UserDefaultsHelpshiftEnabled:@NO}];
+    
+    [Taplytics runCodeExperiment:@"Helpshift Distribution" withBaseline:^(NSDictionary *variables) {
+        DDLogInfo(@"Taplytics: Helpshift Experiment - Baseline Enabled");
+        
+        NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
+        [defaults setBool:NO forKey:UserDefaultsHelpshiftEnabled];
+        [defaults synchronize];
+    } variations:@{@"Helpshift Enabled": ^(NSDictionary *variables) {
+        DDLogInfo(@"Taplytics: Helpshift Experiment - Helpshift Enabled");
+        
+        NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
+        [defaults setBool:YES forKey:UserDefaultsHelpshiftEnabled];
+        [defaults synchronize];
+    }}];
+}
+
 + (void)showFromTabBar {
     SupportViewController *supportViewController = [[SupportViewController alloc] init];
     UINavigationController *aNavigationController = [[UINavigationController alloc] initWithRootViewController:supportViewController];
@@ -73,6 +95,7 @@ typedef NS_ENUM(NSInteger, SettingsViewControllerSections)
     if (self) {
         self.title = NSLocalizedString(@"Support", @"");
         _feedbackEnabled = YES;
+        _helpshiftEnabled = NO;
     }
 
     return self;
@@ -94,6 +117,13 @@ typedef NS_ENUM(NSInteger, SettingsViewControllerSections)
     }
 }
 
+- (void)viewWillAppear:(BOOL)animated {
+    [super viewWillAppear:animated];
+    
+    NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
+    _helpshiftEnabled = [defaults boolForKey:UserDefaultsHelpshiftEnabled];
+}
+
 - (void)didReceiveMemoryWarning
 {
     [super didReceiveMemoryWarning];
@@ -109,8 +139,9 @@ typedef NS_ENUM(NSInteger, SettingsViewControllerSections)
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
-    if (section == SettingsSectionFAQForums)
-        return 2;
+    if (section == SettingsSectionFAQForums) {
+        return 1;
+    }
     
     if (section == SettingsSectionActivityLog) {
         return 3;
@@ -157,11 +188,11 @@ typedef NS_ENUM(NSInteger, SettingsViewControllerSections)
     cell.textLabel.textAlignment = NSTextAlignmentLeft;
     [WPStyleGuide configureTableViewCell:cell];
 
-    if (indexPath.section == SettingsSectionFAQForums && indexPath.row == 0) {
+    if (indexPath.section == SettingsSectionFAQForums && !self.helpshiftEnabled && indexPath.row == 0) {
         cell.textLabel.text = NSLocalizedString(@"WordPress Help Center", @"");
         cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
-    } else if (indexPath.section == SettingsSectionFAQForums && indexPath.row == 1) {
-        cell.textLabel.text = NSLocalizedString(@"WordPress Forums", @"");
+    } else if (indexPath.section == SettingsSectionFAQForums && self.helpshiftEnabled && indexPath.row == 0) {
+        cell.textLabel.text = NSLocalizedString(@"Contact Us", nil);
         cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
     } else if (indexPath.section == SettingsSectionFeedback) {
         cell.textLabel.text = NSLocalizedString(@"E-mail Support", @"");
@@ -220,10 +251,11 @@ typedef NS_ENUM(NSInteger, SettingsViewControllerSections)
 {
     [tableView deselectRowAtIndexPath:indexPath animated:YES];
 
-    if (indexPath.section == SettingsSectionFAQForums && indexPath.row == 0) {
-        [[UIApplication sharedApplication] openURL:[NSURL URLWithString:@"http://ios.wordpress.org/faq"]];
-    } else if (indexPath.section == SettingsSectionFAQForums && indexPath.row == 1) {
-        [[UIApplication sharedApplication] openURL:[NSURL URLWithString:@"http://ios.forums.wordpress.org"]];
+    if (indexPath.section == SettingsSectionFAQForums && !self.helpshiftEnabled && indexPath.row == 0) {
+        [[Helpshift sharedInstance] showFAQs:self withOptions:nil];
+    } else if (indexPath.section == SettingsSectionFAQForums && self.helpshiftEnabled && indexPath.row == 0) {
+        [Taplytics goalAchieved:@"Helpshift opened"];
+        [[Helpshift sharedInstance] showConversation:self withOptions:nil];
     } else if (indexPath.section == SettingsSectionFeedback) {
         if ([MFMailComposeViewController canSendMail]) {
             MFMailComposeViewController *mailComposeViewController = [self feedbackMailViewController];

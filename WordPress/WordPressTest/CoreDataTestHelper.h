@@ -10,6 +10,8 @@
 - (void)setModelName:(NSString *)modelName;
 
 - (NSManagedObject *)insertEntityIntoMainContextWithName:(NSString *)entityName;
+- (NSManagedObject *)insertEntityWithName:(NSString *)entityName intoContext:(NSManagedObjectContext*)context;
 - (NSArray *)allObjectsInMainContextForEntityName:(NSString *)entityName;
+- (NSArray *)allObjectsInContext:(NSManagedObjectContext *)context forEntityName:(NSString *)entityName;
 
 @end

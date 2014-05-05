@@ -6,6 +6,7 @@
 
 @interface ContextManager (TestHelper)
 
+@property (nonatomic, strong) NSManagedObjectContext *rootContext;
 @property (nonatomic, strong) NSManagedObjectContext *mainContext;
 @property (nonatomic, strong) NSPersistentStoreCoordinator *persistentStoreCoordinator;
 
@@ -31,6 +32,7 @@
 
 - (void)setModelName:(NSString *)modelName {
     _managedObjectModel = [self modelWithName:modelName];
+    [ContextManager sharedInstance].rootContext = nil;
     [ContextManager sharedInstance].mainContext = nil;
     [ContextManager sharedInstance].persistentStoreCoordinator = nil;
 }
@@ -44,28 +46,30 @@
     return [NSEntityDescription insertNewObjectForEntityForName:entityName inManagedObjectContext:[ContextManager sharedInstance].mainContext];
 }
 
+- (NSManagedObject *)insertEntityWithName:(NSString *)entityName intoContext:(NSManagedObjectContext*)context {
+    return [NSEntityDescription insertNewObjectForEntityForName:entityName inManagedObjectContext:context];
+}
+
 - (NSArray *)allObjectsInMainContextForEntityName:(NSString *)entityName {
     NSFetchRequest *request = [NSFetchRequest fetchRequestWithEntityName:entityName];
     return [[ContextManager sharedInstance].mainContext executeFetchRequest:request error:nil];
 }
 
+- (NSArray *)allObjectsInContext:(NSManagedObjectContext *)context forEntityName:(NSString *)entityName {
+    NSFetchRequest *request = [NSFetchRequest fetchRequestWithEntityName:entityName];
+    return [context executeFetchRequest:request error:nil];
+}
+
 - (void)reset {
-	NSManagedObjectContext *context = [[ContextManager sharedInstance] mainContext];
-	NSPersistentStoreCoordinator *coordinator = [[ContextManager sharedInstance] persistentStoreCoordinator];
-	
-	[context lock];
-    [context reset];
-	
-	NSError *error = nil;
-	for (NSPersistentStore *store in coordinator.persistentStores) {
-		BOOL success = [coordinator removePersistentStore:store error:&error];
-		NSAssert(success, @"Error removing PSC: %@", error);
-	}
-	
-    [coordinator addPersistentStoreWithType:NSInMemoryStoreType configuration:nil URL:nil options:nil error:&error];
-	NSAssert(error == nil, @"Error adding PSC: %@", error);
-	
-	[context unlock];
+    [[ContextManager sharedInstance].rootContext reset];
+    [ContextManager sharedInstance].rootContext = nil;
+    [[ContextManager sharedInstance].mainContext reset];
+    [ContextManager sharedInstance].mainContext = nil;
+    [ContextManager sharedInstance].persistentStoreCoordinator = nil;
+    
+    [[NSNotificationCenter defaultCenter] removeObserver:[ContextManager sharedInstance]];
+    
+    [[NSFileManager defaultManager] removeItemAtURL:[ContextManager storeURL] error:nil];
 }
 
 - (NSManagedObjectModel *)managedObjectModel {
@@ -80,9 +84,10 @@
 
 @implementation ContextManager (TestHelper)
 
-static void *const testPSCKey = "testPSCKey";
-
 @dynamic mainContext;
+@dynamic rootContext;
+
+static void *const testPSCKey = "testPSCKey";
 
 #pragma mark - Override persistent store coordinator
 
@@ -104,6 +109,32 @@ static void *const testPSCKey = "testPSCKey";
 
 - (void)setPersistentStoreCoordinator:(NSPersistentStoreCoordinator *)persistentStoreCoordinator {
     objc_setAssociatedObject(self, testPSCKey, persistentStoreCoordinator, OBJC_ASSOCIATION_RETAIN);
+}
+
++ (NSURL *)storeURL {
+    return [NSURL fileURLWithPath:[[NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES) lastObject] stringByAppendingPathComponent:@"WordPressTest.sqlite"]];
+}
+
+
+#pragma mark - Swizzle save methods
+
++ (void)load {
+    Method originalSaveChangesInRootContext = class_getInstanceMethod([ContextManager class], @selector(saveChangesInRootContext:));
+    Method testSaveChangesInRootContext = class_getInstanceMethod([ContextManager class], @selector(testSaveChangesInRootContext:));
+    method_exchangeImplementations(originalSaveChangesInRootContext, testSaveChangesInRootContext);
+}
+
+- (void)testSaveChangesInRootContext:(NSNotification *)notification {
+    NSManagedObjectContext *context = [[ContextManager sharedInstance] rootContext];
+    [context performBlockAndWait:^{
+        [context save:nil];
+    }];
+
+    if (ATHSemaphore) {
+        ATHNotify();
+    } else {
+        NSLog(@"No semaphore present for notify");
+    }
 }
 
 @end

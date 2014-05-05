@@ -598,6 +598,10 @@ POSSIBILITY OF SUCH DAMAGES.
    END OF TERMS AND CONDITIONS
 
 
+## Helpshift
+
+See http://www.helpshift.com/terms/
+
 ## HockeySDK
 
 ## Licenses
@@ -1080,6 +1084,10 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
    limitations under the License.
 
 
+
+## Taplytics
+
+See http://taplytics.com/terms
 
 ## UIDeviceIdentifier
 

@@ -49,6 +49,7 @@ const NSUInteger NoteKeepCount = 20;
     
     NSFetchRequest *request = [NSFetchRequest fetchRequestWithEntityName:@"Note"];
     request.fetchOffset = keepCount;
+    request.includesPendingChanges = NO;
     NSSortDescriptor *dateSortDescriptor = [NSSortDescriptor sortDescriptorWithKey:@"timestamp" ascending:NO];
     request.sortDescriptors = @[ dateSortDescriptor ];
     NSArray *notes = [self.managedObjectContext executeFetchRequest:request error:&error];

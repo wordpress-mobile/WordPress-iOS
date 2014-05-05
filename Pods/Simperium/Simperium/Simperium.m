@@ -516,7 +516,13 @@ static SPLogLevels logLevel						= SPLogLevelsInfo;
 
 - (void)signOutAndRemoveLocalData:(BOOL)remove completion:(SimperiumSignoutCompletion)completion {
 	
+    // Don't proceed, if the user isn't logged in
+    if (!self.user.authenticated) {
+        return;
+    }
+    
     SPLogInfo(@"Simperium logging out...");
+    
     // Reset Simperium: Don't start network managers again; expect app to handle that
     [self stopNetworking];
     

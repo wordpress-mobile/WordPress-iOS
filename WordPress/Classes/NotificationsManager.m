@@ -8,6 +8,7 @@
 #import "ContextManager.h"
 #import "NoteService.h"
 #import "AccountService.h"
+#import <Helpshift/Helpshift.h>
 
 static NSString *const NotificationsDeviceIdKey = @"notification_device_id";
 static NSString *const NotificationsPreferencesKey = @"notification_preferences";
@@ -20,22 +21,27 @@ NSString *const NotificationsDeviceToken = @"apnsDeviceToken";
     return;
 #endif
     
-    NSManagedObjectContext *context = [[ContextManager sharedInstance] mainContext];
-    AccountService *accountService = [[AccountService alloc] initWithManagedObjectContext:context];
-    WPAccount *defaultAccount = [accountService defaultWordPressComAccount];
-
-    if (defaultAccount) {
-        [[UIApplication sharedApplication]
-         registerForRemoteNotificationTypes:(UIRemoteNotificationTypeBadge |
-                                             UIRemoteNotificationTypeSound |
-                                             UIRemoteNotificationTypeAlert)];
-    }
+    [[UIApplication sharedApplication]
+     registerForRemoteNotificationTypes:(UIRemoteNotificationTypeBadge |
+                                         UIRemoteNotificationTypeSound |
+                                         UIRemoteNotificationTypeAlert)];
 }
 
 
 #pragma mark - Device token registration
 
 + (void)registerDeviceToken:(NSData *)deviceToken {
+    // We want to register Helpshift regardless so that way if a user isn't logged in
+    // they can still get push notifications that we replied to their support ticket.
+    [[Helpshift sharedInstance] registerDeviceToken:deviceToken];
+
+    // Don't bother registering for WordPress anything if the user isn't logged in
+    NSManagedObjectContext *context = [[ContextManager sharedInstance] mainContext];
+    AccountService *accountService = [[AccountService alloc] initWithManagedObjectContext:context];
+    if (![accountService defaultWordPressComAccount]) {
+        return;
+    }
+    
     NSString *newToken = [[[[deviceToken description]
                            stringByReplacingOccurrencesOfString: @"<" withString: @""]
                           stringByReplacingOccurrencesOfString: @">" withString: @""]
@@ -104,6 +110,11 @@ NSString *const NotificationsDeviceToken = @"apnsDeviceToken";
         if ([notificationType isEqualToString:@"badge-reset"]) {
             return;
         }
+    }
+    
+    if ([[userInfo objectForKey:@"origin"] isEqualToString:@"helpshift"]) {
+        [[Helpshift sharedInstance] handleRemoteNotification:userInfo withController:[[UIApplication sharedApplication] keyWindow].rootViewController];
+        return;
     }
     
     switch (state) {

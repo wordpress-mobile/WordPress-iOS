@@ -10,4 +10,8 @@
 + (NSString *)googlePlusClientId;
 + (NSString *)simperiumAppId;
 + (NSString *)simperiumAPIKey;
++ (NSString *)helpshiftAPIKey;
++ (NSString *)helpshiftDomainName;
++ (NSString *)helpshiftAppId;
++ (NSString *)taplyticsAPIKey;
 @end
