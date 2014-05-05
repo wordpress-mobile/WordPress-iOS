@@ -56,6 +56,7 @@
         <attribute name="xmlrpc" attributeType="String" indexed="YES" syncable="YES"/>
         <relationship name="blogs" optional="YES" toMany="YES" deletionRule="Cascade" destinationEntity="Blog" inverseName="account" inverseEntity="Blog" indexed="YES" syncable="YES"/>
         <relationship name="jetpackBlogs" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="Blog" inverseName="jetpackAccount" inverseEntity="Blog" indexed="YES" syncable="YES"/>
+        <relationship name="notes" optional="YES" toMany="YES" deletionRule="Cascade" destinationEntity="Note" inverseName="account" inverseEntity="Note" syncable="YES"/>
         <relationship name="readerPosts" optional="YES" toMany="YES" deletionRule="Cascade" destinationEntity="ReaderPost" inverseName="account" inverseEntity="ReaderPost" syncable="YES"/>
     </entity>
     <entity name="BasePost" representedClassName="BasePost" isAbstract="YES">
@@ -108,6 +109,7 @@
         <attribute name="blogName" optional="YES" attributeType="String">
             <userInfo/>
         </attribute>
+        <attribute name="currentThemeId" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="geolocationEnabled" attributeType="Boolean" defaultValueString="NO">
             <userInfo/>
         </attribute>
@@ -118,6 +120,7 @@
             <userInfo/>
         </attribute>
         <attribute name="isActivated" optional="YES" attributeType="Boolean" syncable="YES"/>
+        <attribute name="isAdmin" optional="YES" attributeType="Boolean" syncable="YES"/>
         <attribute name="lastCommentsSync" optional="YES" attributeType="Date">
             <userInfo/>
         </attribute>
@@ -161,9 +164,10 @@
         <relationship name="posts" optional="YES" toMany="YES" deletionRule="Cascade" destinationEntity="AbstractPost" inverseName="blog" inverseEntity="AbstractPost" indexed="YES">
             <userInfo/>
         </relationship>
+        <relationship name="themes" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="Theme" inverseName="blog" inverseEntity="Theme" syncable="YES"/>
         <userInfo/>
     </entity>
-    <entity name="Category" representedClassName="Cateogry">
+    <entity name="Category" representedClassName="Category">
         <attribute name="categoryID" optional="YES" attributeType="Integer 32" defaultValueString="-1">
             <userInfo/>
         </attribute>
@@ -190,9 +194,11 @@
         </relationship>
     </entity>
     <entity name="Media" representedClassName="Media">
+        <attribute name="caption" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="creationDate" optional="YES" attributeType="Date">
             <userInfo/>
         </attribute>
+        <attribute name="desc" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="filename" optional="YES" attributeType="String">
             <userInfo/>
         </attribute>
@@ -211,7 +217,7 @@
         <attribute name="mediaID" optional="YES" attributeType="Integer 32">
             <userInfo/>
         </attribute>
-        <attribute name="mediaType" optional="YES" attributeType="String">
+        <attribute name="mediaTypeString" optional="YES" attributeType="String">
             <userInfo/>
         </attribute>
         <attribute name="orientation" optional="YES" attributeType="String" defaultValueString="portrait">
@@ -246,13 +252,15 @@
         </relationship>
         <userInfo/>
     </entity>
-    <entity name="Note" representedClassName="Note" parentEntity="SPManagedObject" syncable="YES">
-        <attribute name="body" optional="YES" attributeType="Transformable" syncable="YES"/>
-        <attribute name="noteID" optional="YES" attributeType="String" syncable="YES"/>
-        <attribute name="subject" optional="YES" attributeType="Transformable" syncable="YES"/>
+    <entity name="Note" representedClassName="Note" syncable="YES">
+        <attribute name="icon" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="noteID" attributeType="String" syncable="YES"/>
+        <attribute name="payload" attributeType="Binary" syncable="YES"/>
+        <attribute name="subject" attributeType="String" syncable="YES"/>
         <attribute name="timestamp" attributeType="Integer 32" defaultValueString="0" syncable="YES"/>
         <attribute name="type" attributeType="String" syncable="YES"/>
-        <attribute name="unread" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="unread" optional="YES" attributeType="Integer 16" defaultValueString="0" syncable="YES"/>
+        <relationship name="account" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="Account" inverseName="notes" inverseEntity="Account" syncable="YES"/>
     </entity>
     <entity name="Page" representedClassName="Page" parentEntity="AbstractPost">
         <attribute name="parentID" optional="YES" attributeType="Integer 32" defaultValueString="0">
@@ -323,25 +331,35 @@
         <relationship name="account" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="Account" inverseName="readerPosts" inverseEntity="Account" syncable="YES"/>
         <relationship name="comments" optional="YES" toMany="YES" deletionRule="Cascade" destinationEntity="ReaderComment" inverseName="post" inverseEntity="ReaderComment" indexed="YES" syncable="YES"/>
     </entity>
-    <entity name="SPManagedObject" representedClassName="SPManagedObject" syncable="YES">
-        <attribute name="ghostData" optional="YES" attributeType="String" syncable="YES"/>
-        <attribute name="simperiumKey" optional="YES" attributeType="String" syncable="YES"/>
+    <entity name="Theme" representedClassName="Theme" syncable="YES">
+        <attribute name="details" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="launchDate" optional="YES" attributeType="Date" syncable="YES"/>
+        <attribute name="name" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="popularityRank" optional="YES" attributeType="Integer 32" defaultValueString="0" syncable="YES"/>
+        <attribute name="premium" optional="YES" attributeType="Boolean" syncable="YES"/>
+        <attribute name="previewUrl" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="screenshotUrl" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="tags" optional="YES" attributeType="Transformable" syncable="YES"/>
+        <attribute name="themeId" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="trendingRank" optional="YES" attributeType="Integer 32" defaultValueString="0" syncable="YES"/>
+        <attribute name="version" optional="YES" attributeType="String" syncable="YES"/>
+        <relationship name="blog" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="Blog" inverseName="themes" inverseEntity="Blog" syncable="YES"/>
     </entity>
     <fetchRequest name="UnreadNotes" entity="Note" predicateString="unread == 1"/>
     <elements>
         <element name="AbstractComment" positionX="0" positionY="0" width="128" height="240"/>
         <element name="AbstractPost" positionX="0" positionY="0" width="128" height="120"/>
-        <element name="Account" positionX="0" positionY="0" width="128" height="135"/>
+        <element name="Account" positionX="0" positionY="0" width="128" height="150"/>
         <element name="BasePost" positionX="0" positionY="0" width="128" height="240"/>
-        <element name="Blog" positionX="0" positionY="0" width="128" height="405"/>
+        <element name="Blog" positionX="0" positionY="0" width="128" height="450"/>
         <element name="Category" positionX="0" positionY="0" width="128" height="120"/>
         <element name="Comment" positionX="0" positionY="0" width="128" height="75"/>
-        <element name="Media" positionX="0" positionY="0" width="128" height="315"/>
-        <element name="Note" positionX="0" positionY="0" width="128" height="135"/>
+        <element name="Media" positionX="0" positionY="0" width="128" height="345"/>
+        <element name="Note" positionX="0" positionY="0" width="128" height="165"/>
         <element name="Page" positionX="0" positionY="0" width="128" height="60"/>
         <element name="Post" positionX="0" positionY="0" width="128" height="150"/>
         <element name="ReaderComment" positionX="0" positionY="0" width="128" height="120"/>
         <element name="ReaderPost" positionX="0" positionY="0" width="128" height="480"/>
-        <element name="SPManagedObject" positionX="9" positionY="153" width="128" height="75"/>
+        <element name="Theme" positionX="9" positionY="153" width="128" height="225"/>
     </elements>
 </model>
