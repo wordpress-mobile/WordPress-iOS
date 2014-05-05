@@ -142,7 +142,7 @@
     }
 
 	ReaderComment *comment = [results firstObject];
-    if (!results) {
+    if (!comment) {
 		comment = (ReaderComment *)[NSEntityDescription insertNewObjectForEntityForName:@"ReaderComment"
 														   inManagedObjectContext:context];
 		comment.commentID = [dict numberForKey:@"ID"];

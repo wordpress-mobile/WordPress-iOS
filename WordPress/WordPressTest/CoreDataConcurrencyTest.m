@@ -117,7 +117,7 @@
     Blog *blog = (Blog *)[[CoreDataTestHelper sharedHelper] insertEntityIntoMainContextWithName:@"Blog"];
     blog.xmlrpc = @"http://test.wordpress.com/xmlrpc.php";
     blog.url = @"http://test.wordpress.com/";
-    blog.account = account;
+    blog.account = mainAccount;
     
     // Check that the save completes
     ATHStart();
@@ -129,6 +129,9 @@
     ATHEnd();
     
     XCTAssertFalse(blog.objectID.isTemporaryID, @"Blog object ID should be permanent");
+    Blog *backgroundBlog = (Blog *)[derivedContext existingObjectWithID:blog.objectID error:nil];
+    
+    XCTAssertNotNil(backgroundBlog, @"Blog should exist in background context");
 }
 
 - (void)testCrossContextDeletion {
