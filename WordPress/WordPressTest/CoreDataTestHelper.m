@@ -6,9 +6,10 @@
 
 @interface ContextManager (TestHelper)
 
-@property (nonatomic, strong) NSManagedObjectContext *rootContext;
 @property (nonatomic, strong) NSManagedObjectContext *mainContext;
 @property (nonatomic, strong) NSPersistentStoreCoordinator *persistentStoreCoordinator;
+
++ (NSURL *)storeURL;
 
 @end
 
@@ -32,7 +33,6 @@
 
 - (void)setModelName:(NSString *)modelName {
     _managedObjectModel = [self modelWithName:modelName];
-    [ContextManager sharedInstance].rootContext = nil;
     [ContextManager sharedInstance].mainContext = nil;
     [ContextManager sharedInstance].persistentStoreCoordinator = nil;
 }
@@ -61,8 +61,6 @@
 }
 
 - (void)reset {
-    [[ContextManager sharedInstance].rootContext reset];
-    [ContextManager sharedInstance].rootContext = nil;
     [[ContextManager sharedInstance].mainContext reset];
     [ContextManager sharedInstance].mainContext = nil;
     [ContextManager sharedInstance].persistentStoreCoordinator = nil;
@@ -85,7 +83,6 @@
 @implementation ContextManager (TestHelper)
 
 @dynamic mainContext;
-@dynamic rootContext;
 
 static void *const testPSCKey = "testPSCKey";
 
@@ -113,28 +110,6 @@ static void *const testPSCKey = "testPSCKey";
 
 + (NSURL *)storeURL {
     return [NSURL fileURLWithPath:[[NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES) lastObject] stringByAppendingPathComponent:@"WordPressTest.sqlite"]];
-}
-
-
-#pragma mark - Swizzle save methods
-
-+ (void)load {
-    Method originalSaveChangesInRootContext = class_getInstanceMethod([ContextManager class], @selector(saveChangesInRootContext:));
-    Method testSaveChangesInRootContext = class_getInstanceMethod([ContextManager class], @selector(testSaveChangesInRootContext:));
-    method_exchangeImplementations(originalSaveChangesInRootContext, testSaveChangesInRootContext);
-}
-
-- (void)testSaveChangesInRootContext:(NSNotification *)notification {
-    NSManagedObjectContext *context = [[ContextManager sharedInstance] rootContext];
-    [context performBlockAndWait:^{
-        [context save:nil];
-    }];
-
-    if (ATHSemaphore) {
-        ATHNotify();
-    } else {
-        NSLog(@"No semaphore present for notify");
-    }
 }
 
 @end

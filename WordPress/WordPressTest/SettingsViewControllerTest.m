@@ -95,7 +95,7 @@
     XCTAssertEqualObjects(@"wpcom-sign-out", cell.accessibilityIdentifier);
 
     ATHStart();
-    Blog *blog = [account findOrCreateBlogFromDictionary:@{@"url": @"blog1.com", @"xmlrpc": @"http://blog1.com/xmlrpc.php"} withContext:account.managedObjectContext];
+    Blog *blog = [accountService findOrCreateBlogFromDictionary:@{@"url": @"blog1.com", @"xmlrpc": @"http://blog1.com/xmlrpc.php"} withAccount:account];
     [[ContextManager sharedInstance] saveContext:account.managedObjectContext withCompletionBlock:^{
 		ATHNotify();
 	}];
