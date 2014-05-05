@@ -9,7 +9,7 @@
 /// NSMainQueueConcurrencyType and should be used
 /// for UI elements and fetched results controllers.
 /// During Simperium startup, a backgroundWriterContext
-///  will be created.
+/// will be created.
 ///----------------------------------------------
 @property (nonatomic, readonly, strong) NSManagedObjectContext *mainContext;
 

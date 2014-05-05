@@ -291,8 +291,7 @@ typedef void (^NotificationsLoadPostBlock)(BOOL success, ReaderPost *post);
     }
 	
     if(!note.isRead) {
-		// God forgive me: The backend needs this to be a string.
-        note.unread = @"0";
+        note.unread = @(0);
 		[[ContextManager sharedInstance] saveContext:note.managedObjectContext];
 
         [self.tableView reloadRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationNone];

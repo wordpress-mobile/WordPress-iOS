@@ -16,7 +16,7 @@ typedef NS_ENUM(NSInteger, WPNoteTemplateType) {
 
 @property (nonatomic,  readonly) NSNumber           *timestamp;
 @property (nonatomic,  readonly) NSString           *type;
-@property (nonatomic, readwrite) NSString           *unread;            // Yes. This should be a number instead.
+@property (nonatomic, readwrite) NSNumber           *unread;
 @property (nonatomic,  readonly) NSDictionary       *subject;
 @property (nonatomic,  readonly) NSDictionary       *body;
 
