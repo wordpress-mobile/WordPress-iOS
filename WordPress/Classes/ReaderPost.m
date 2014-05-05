@@ -312,7 +312,9 @@ NSString * const ReaderPostStoredCommentTextKey = @"comment";
         NSDictionary *meta_data = [meta_root objectForKey:@"data"];
         NSDictionary *meta_site = [meta_data objectForKey:@"site"];
         
-        self.blogName = [[meta_site stringForKey:@"name"] stringByDecodingXMLCharacters];
+        if(self.blogName == nil) {
+            self.blogName = [[meta_site stringForKey:@"name"] stringByDecodingXMLCharacters];
+        }
     };
     
     NSDictionary *author = [dict objectForKey:@"author"];
@@ -656,13 +658,16 @@ NSString * const ReaderPostStoredCommentTextKey = @"comment";
 }
 
 - (NSString *)authorString {
-    if ([self.blogName length] > 0) {
-        return self.blogName;
-    } else if ([self.authorDisplayName length] > 0) {
+    if ([self.authorDisplayName length] > 0) {
         return self.authorDisplayName;
-    } else {
+    }
+    if([self.author length] > 0) {
         return self.author;
     }
+    if ([self.blogName length] > 0) {
+        return self.blogName;
+    }
+    return @"";
 }
 
 - (NSString *)avatar {
@@ -895,6 +900,10 @@ NSString * const ReaderPostStoredCommentTextKey = @"comment";
     }
     
     return [self dateCreated];
+}
+
+- (NSString *)blogNameForDisplay {
+    return self.blogName;
 }
 
 
