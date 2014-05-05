@@ -14,7 +14,6 @@ typedef NS_ENUM(NSInteger, WPNoteTemplateType) {
 
 @interface Note : SPManagedObject<WPContentViewProvider>
 
-@property (nonatomic,  readonly) NSString           *noteID;
 @property (nonatomic,  readonly) NSNumber           *timestamp;
 @property (nonatomic,  readonly) NSString           *type;
 @property (nonatomic, readwrite) NSString           *unread;            // Yes. This should be a number instead.

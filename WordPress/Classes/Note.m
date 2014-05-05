@@ -16,7 +16,6 @@
 
 @implementation Note
 
-@dynamic noteID;
 @dynamic timestamp;
 @dynamic type;
 @dynamic unread;
@@ -93,8 +92,8 @@
 		return nil;
 	}
 	
-	NSDictionary *bodyItem	= [self.bodyItems lastObject];
-	NSString *comment		= [bodyItem stringForKey:@"html"];
+	NoteBodyItem *bodyItem	= [self.bodyItems lastObject];
+	NSString *comment		= bodyItem.bodyHtml;
 	if (comment == (id)[NSNull null] || comment.length == 0 ) {
 		return nil;
 	}
