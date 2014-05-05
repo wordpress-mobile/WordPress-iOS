@@ -235,7 +235,7 @@ NSString * const WPAccountDefaultWordPressComAccountChangedNotification = @"WPAc
     
     id<AccountServiceRemote> remote = [self remoteForAccount:account];
     [remote getBlogsWithSuccess:^(NSArray *blogs) {
-        [self.managedObjectContext performBlockAndWait:^{
+        [self.managedObjectContext performBlock:^{
             [self mergeBlogs:blogs withAccount:account completion:success];
         }];
     } failure:^(NSError *error) {
