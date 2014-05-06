@@ -82,7 +82,9 @@ static NSInteger const IndexForMeTab = 2;
     [self removeCredentialsForDebug];
     
     // Stats and feedback
-    [Taplytics startTaplyticsAPIKey:[WordPressComApiCredentials taplyticsAPIKey]];
+    [Taplytics startTaplyticsAPIKey:[WordPressComApiCredentials taplyticsAPIKey]
+                            options:@{@"shakeMenu":@NO}];
+
     [WPAnalytics registerTracker:[[WPAnalyticsTrackerMixpanel alloc] init]];
     [WPAnalytics registerTracker:[[WPAnalyticsTrackerWPCom alloc] init]];
     [WPAnalytics beginSession];
