@@ -1916,7 +1916,7 @@
 		93027BB71758332300483FFD /* SupportViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SupportViewController.m; sourceTree = "<group>"; };
 		930284B318EAF79500CB0BF4 /* NoteService.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NoteService.h; sourceTree = "<group>"; };
 		930284B418EAF79500CB0BF4 /* NoteService.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NoteService.m; sourceTree = "<group>"; };
-		930284B618EAF7B600CB0BF4 /* LocalService.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = LocalService.h; sourceTree = "<group>"; };
+		930284B618EAF7B600CB0BF4 /* LocalCoreDataService.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = LocalCoreDataService.h; sourceTree = "<group>"; };
 		930284B718EB078800CB0BF4 /* NoteServiceRemote.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NoteServiceRemote.h; sourceTree = "<group>"; };
 		930284B818EB078900CB0BF4 /* NoteServiceRemote.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NoteServiceRemote.m; sourceTree = "<group>"; };
 		93069F54176237A4000C966D /* ActivityLogViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ActivityLogViewController.h; sourceTree = "<group>"; };
@@ -3412,7 +3412,7 @@
 				93FA59DC18D88C1C001446BC /* CategoryService.m */,
 				93FA59DE18D8986D001446BC /* CategoryServiceRemote.h */,
 				93FA59DF18D8986D001446BC /* CategoryServiceRemote.m */,
-				930284B618EAF7B600CB0BF4 /* LocalService.h */,
+				930284B618EAF7B600CB0BF4 /* LocalCoreDataService.h */,
 				930284B318EAF79500CB0BF4 /* NoteService.h */,
 				930284B418EAF79500CB0BF4 /* NoteService.m */,
 				930284B718EB078800CB0BF4 /* NoteServiceRemote.h */,

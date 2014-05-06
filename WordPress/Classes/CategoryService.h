@@ -1,9 +1,9 @@
 #import <Foundation/Foundation.h>
-#import "LocalService.h"
+#import "LocalCoreDataService.h"
 
 @class Category;
 
-@interface CategoryService : NSObject <LocalService>
+@interface CategoryService : NSObject <LocalCoreDataService>
 
 - (BOOL)existsName:(NSString *)name forBlogObjectID:(NSManagedObjectID *)blogObjectID withParentId:(NSNumber *)parentId;
 
