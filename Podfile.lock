@@ -33,12 +33,12 @@ PODS:
   - NSURL+IDN (0.1)
   - OHHTTPStubs (1.1.1)
   - Reachability (3.1.1)
-  - Simperium (0.6.5):
+  - Simperium (0.6.6):
     - Google-Diff-Match-Patch
     - JRSwizzle
     - Simperium/STKeychain
     - SocketRocket
-  - Simperium/STKeychain (0.6.5):
+  - Simperium/STKeychain (0.6.6):
     - Google-Diff-Match-Patch
     - JRSwizzle
     - SocketRocket
@@ -68,7 +68,8 @@ DEPENDENCIES:
   - NSURL+IDN (from `https://raw.github.com/koke/NSURL-IDN/master/Podfile`)
   - OHHTTPStubs (= 1.1.1)
   - Reachability (= 3.1.1)
-  - Simperium (from `https://github.com/Simperium/simperium-ios.git`)
+  - Simperium (from `https://raw.github.com/Simperium/simperium-ios/develop/Simperium.podspec`)
+  - SocketRocket (from `https://github.com/jleandroperez/SocketRocket.git`)
   - SVProgressHUD (~> 1.0)
   - Taplytics (= 1.2.46)
   - UIDeviceIdentifier (~> 0.1)
@@ -85,7 +86,9 @@ EXTERNAL SOURCES:
   NSURL+IDN:
     :podspec: https://raw.github.com/koke/NSURL-IDN/master/Podfile
   Simperium:
-    :git: https://github.com/Simperium/simperium-ios.git
+    :podspec: https://raw.github.com/Simperium/simperium-ios/develop/Simperium.podspec
+  SocketRocket:
+    :git: https://github.com/jleandroperez/SocketRocket.git
   WordPressApi:
     :git: https://github.com/koke/WordPressApi.git
 
@@ -110,8 +113,8 @@ SPEC CHECKSUMS:
   NSURL+IDN: 22633c0149b86d6391f32f23776bc0e6ecc532e2
   OHHTTPStubs: cb1cef742f2fba18b192fb92ede52a69cf3a04d5
   Reachability: be4883bb93f31e38266ae3365e5600a317aae735
-  Simperium: aeb203760cda2fd795d9a0e57d72b5afe1385c0c
-  SocketRocket: 7ac946bcce46287a791dfff3c1f8daa692821dae
+  Simperium: 1d77ba174fd2e8d030380c27a9db8412f8da1335
+  SocketRocket: 9cbe08469513356cddc0afcab1ff160bd190296a
   SVProgressHUD: 5e10939a296debf5fe5a5895eda9539b8b2114f1
   Taplytics: b5a58fefa10340e700a9766bd5c133fd3356e0f2
   UIDeviceIdentifier: eb3d34699982f02350acf544516a4b8f9a9fcaad

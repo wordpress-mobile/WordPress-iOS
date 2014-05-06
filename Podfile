@@ -23,7 +23,8 @@ pod 'HockeySDK', '~>3.5.0'
 pod 'Helpshift', '4.3.1'
 pod 'Taplytics', '1.2.46'
 pod 'CTAssetsPickerController', '~> 2.2.0'
-pod 'Simperium', :git => 'https://github.com/Simperium/simperium-ios.git'
+pod 'SocketRocket', :git => 'https://github.com/jleandroperez/SocketRocket.git'
+pod 'Simperium', :podspec => 'https://raw.github.com/Simperium/simperium-ios/develop/Simperium.podspec'
 
 target :WordPressTest, :exclusive => true do
   pod 'OHHTTPStubs', '1.1.1'
