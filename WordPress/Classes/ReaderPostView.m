@@ -339,8 +339,7 @@ static NSInteger const MaxNumberOfLinesForTitleForSummary = 3;
     
 	// Position the title
     nextY += RPVVerticalPadding;
-    NSAttributedString *postTitle = [[self class] titleAttributedStringForPost:self.post showFullContent:self.showFullContent withWidth:innerContentWidth];
-    height = ceil([postTitle boundingRectWithSize:CGSizeMake(innerContentWidth, CGFLOAT_MAX) options:NSStringDrawingUsesLineFragmentOrigin | NSStringDrawingUsesFontLeading context:nil].size.height);
+	height = ceil([self.titleLabel suggestedSizeForWidth:innerContentWidth].height);
 	self.titleLabel.frame = CGRectMake(RPVHorizontalInnerPadding, nextY, innerContentWidth, height);
 	nextY += height + RPVTitlePaddingBottom * (self.showFullContent ? 2.0 : 1.0);
     
