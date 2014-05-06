@@ -232,7 +232,7 @@ typedef enum {
     CGRect postFrame = CGRectMake(0.0f, 0.0f, self.tableView.frame.size.width, postHeight);
 	self.postView = [[ReaderPostView alloc] initWithFrame:postFrame showFullContent:YES];
     self.postView.delegate = self;
-    [self.postView configurePost:self.post withWidth:self.view.frame.size.width];
+    [self.postView configurePost:self.post];
     self.postView.backgroundColor = [UIColor whiteColor];
     
     if (self.avatarImage) {
