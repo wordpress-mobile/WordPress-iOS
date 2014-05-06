@@ -50,7 +50,7 @@ static NSInteger const MaxNumberOfLinesForTitleForSummary = 3;
     // Title
     desiredHeight += RPVVerticalPadding;
     NSAttributedString *postTitle = [self titleAttributedStringForPost:post showFullContent:showFullContent withWidth:contentWidth];
-    desiredHeight += [postTitle boundingRectWithSize:CGSizeMake(contentWidth, CGFLOAT_MAX) options:NSStringDrawingUsesLineFragmentOrigin | NSStringDrawingUsesFontLeading context:nil].size.height;
+    desiredHeight += ceil([postTitle boundingRectWithSize:CGSizeMake(contentWidth, CGFLOAT_MAX) options:NSStringDrawingUsesLineFragmentOrigin | NSStringDrawingUsesFontLeading context:nil].size.height);
     desiredHeight += RPVTitlePaddingBottom;
     
     // Post summary
