@@ -624,7 +624,7 @@ NSString * const RPVCDisplayedNativeFriendFinder = @"DisplayedNativeFriendFinder
 	
 	ReaderPost *post = (ReaderPost *)[self.resultsController objectAtIndexPath:indexPath];
 
-	[cell configureCell:post withWidth:self.tableView.bounds.size.width];
+	[cell configureCell:post withWidth:cell.postView.frame.size.width];
     [self setImageForPost:post forCell:cell indexPath:indexPath];
     [self setAvatarForPost:post forCell:cell indexPath:indexPath];
     
