@@ -1,12 +1,10 @@
 #import "FeaturedImageViewController.h"
 
-#import "MediaBrowserViewController.h"
 #import "Post.h"
 #import "Media.h"
 
 @interface FeaturedImageViewController () <UIActionSheetDelegate>
 
-@property (nonatomic, strong) UIBarButtonItem *photoButton;
 @property (nonatomic, strong) UIBarButtonItem *deleteButton;
 @property (nonatomic, strong) Post *post;
 @property (nonatomic, strong) UIBarButtonItem *activityItem;
@@ -87,10 +85,8 @@
     }
     
     self.deleteButton = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"icon-comments-trash"] style:UIBarButtonItemStylePlain target:self action:@selector(removeFeaturedImage)];
-    self.photoButton = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"icon-posts-editor-media"] style:UIBarButtonItemStylePlain target:self action:@selector(showPhotoPicker)];
     
     self.deleteButton.tintColor = [WPStyleGuide readGrey];
-    self.photoButton.tintColor = [WPStyleGuide readGrey];
  
     UIActivityIndicatorView *activityView = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleWhite];
     [activityView startAnimating];
@@ -128,19 +124,14 @@
     leftFixedSpacer.width = -2.0f;
     rightFixedSpacer.width = -5.0f;
     
-    if (show){
+    if (show) {
         self.toolbarItems = @[leftFixedSpacer, self.deleteButton, centerFlexSpacer, self.activityItem, rightFixedSpacer];
     } else {
-        self.toolbarItems = @[leftFixedSpacer, self.deleteButton, centerFlexSpacer, self.photoButton, rightFixedSpacer];
+        self.toolbarItems = @[leftFixedSpacer, self.deleteButton];
     }
 }
 
 #pragma mark - Action Methods
-
-- (void)showPhotoPicker {
-    MediaBrowserViewController *controller = [[MediaBrowserViewController alloc] initWithPost:self.post selectingFeaturedImage:YES];
-    [self.navigationController pushViewController:controller animated:YES];
-}
 
 - (void)handleImageTapped:(UITapGestureRecognizer *)tgr {
     BOOL hide = !self.navigationController.navigationBarHidden;
