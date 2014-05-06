@@ -216,10 +216,10 @@ static NSInteger const MaxNumberOfLinesForTitleForSummary = 3;
     return self;
 }
 
-- (void)configurePost:(ReaderPost *)post withWidth:(CGFloat)width {
+- (void)configurePost:(ReaderPost *)post {
    
     // Margins
-    CGFloat contentWidth = width;
+    CGFloat contentWidth = self.frame.size.width;
     if (IS_IPAD) {
         contentWidth = WPTableViewFixedWidth;
     }
