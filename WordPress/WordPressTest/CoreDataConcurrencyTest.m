@@ -7,7 +7,13 @@
 #import "ContextManager.h"
 #import <objc/runtime.h>
 
+@implementation WPAccount (CoreDataFakeApi)
 
+- (WordPressComApi *)restApi {
+    return nil;
+}
+
+@end
 
 @interface CoreDataConcurrencyTest : XCTestCase
 @end
@@ -42,20 +48,18 @@
 
 - (void)testObjectPermanence {
     ATHStart();
-    
-    NSManagedObjectContext *mainMOC = [[ContextManager sharedInstance] mainContext];
-    Blog *blog = [self createTestBlogWithContext:mainMOC];
-    [[ContextManager sharedInstance] saveContext:mainMOC withCompletionBlock:^{
-		ATHNotify();
-	}];
-    
-    // Wait on the save operation to be completed
+
+    NSManagedObjectContext *derivedContext = [[ContextManager sharedInstance] newDerivedContext];
+    Blog *blog = [self createTestBlogWithContext:derivedContext];
+    [[ContextManager sharedInstance] saveDerivedContext:derivedContext];
+
+    // Wait on the merge to be completed
     ATHEnd();
     
     XCTAssertFalse(blog.objectID.isTemporaryID, @"Object ID should be permanent");
 }
 
-- (void)testObjectExistenceInDerivedFromMainSave
+- (void)testObjectExistenceInBackgroundFromMainSave
 {
     ATHStart();
     
@@ -75,14 +79,12 @@
     XCTAssertEqualObjects(blog.objectID, bgBlog.objectID, @"Main context objectID and background context object ID differ");
 }
 
-- (void)testObjectExistenceInMainFromDerivedSave {
+- (void)testObjectExistenceInMainFromBackgroundSave {
     ATHStart();
-    
-    NSManagedObjectContext *derivedMOC = [[ContextManager sharedInstance] newDerivedContext];
-    Blog *blog = [self createTestBlogWithContext:derivedMOC];
-    [[ContextManager sharedInstance] saveDerivedContext:derivedMOC withCompletionBlock:^{
-		ATHNotify();
-	}];
+
+    NSManagedObjectContext *derivedContext = [[ContextManager sharedInstance] newDerivedContext];
+    Blog *blog = [self createTestBlogWithContext:derivedContext];
+    [[ContextManager sharedInstance] saveDerivedContext:derivedContext];
     
     // Wait on the merge to be completed
     ATHEnd();
@@ -120,17 +122,13 @@
     blog.account = mainAccount;
     
     // Check that the save completes
-    ATHStart();
-
-    XCTAssertNoThrow([[ContextManager sharedInstance] saveContext:mainContext withCompletionBlock:^{
-		ATHNotify();
-	}], @"Saving should be successful");
+    XCTAssertNoThrow([[ContextManager sharedInstance] saveContext:mainContext], @"Saving should be successful");
     
     ATHEnd();
     
     XCTAssertFalse(blog.objectID.isTemporaryID, @"Blog object ID should be permanent");
     Blog *backgroundBlog = (Blog *)[derivedContext existingObjectWithID:blog.objectID error:nil];
-    
+
     XCTAssertNotNil(backgroundBlog, @"Blog should exist in background context");
 }
 
@@ -178,7 +176,6 @@
             
             Blog *mainContextBlog =  (Blog *)[[ContextManager sharedInstance].mainContext existingObjectWithID:newBlog.objectID error:nil];
             XCTAssertNotNil(mainContextBlog, @"The new blog should exist in the main (parent) context");
-			ATHNotify();
         }];
     }];
     ATHEnd();

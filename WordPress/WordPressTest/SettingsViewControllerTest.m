@@ -96,9 +96,7 @@
 
     ATHStart();
     Blog *blog = [accountService findOrCreateBlogFromDictionary:@{@"url": @"blog1.com", @"xmlrpc": @"http://blog1.com/xmlrpc.php"} withAccount:account];
-    [[ContextManager sharedInstance] saveContext:account.managedObjectContext withCompletionBlock:^{
-		ATHNotify();
-	}];
+    [[ContextManager sharedInstance] saveContext:account.managedObjectContext];
     ATHEnd();
 
     [table reloadData];
@@ -120,9 +118,7 @@
     
     ATHStart();
     blog = [accountService findOrCreateBlogFromDictionary:@{@"url": @"blog2.com", @"xmlrpc": @"http://blog2.com/xmlrpc.php"} withAccount:account];
-    [[ContextManager sharedInstance] saveContext:account.managedObjectContext withCompletionBlock:^{
-		ATHNotify();
-	}];
+    [[ContextManager sharedInstance] saveContext:account.managedObjectContext];
     ATHEnd();
 
     [table reloadData];
