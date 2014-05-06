@@ -642,6 +642,10 @@ typedef enum {
     if (![post isFollowable])
         return;
     
+    if (![post.isFollowing boolValue]) {
+        [WPAnalytics track:WPAnalyticsStatReaderFollowedSite];
+    }
+    
     followButton.selected = ![post.isFollowing boolValue]; // Set it optimistically
 	[post toggleFollowingWithSuccess:^{
 	} failure:^(NSError *error) {
