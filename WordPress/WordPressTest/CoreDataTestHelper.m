@@ -107,12 +107,6 @@
 
 - (void)reset {
     [[ContextManager sharedInstance].mainContext reset];
-//    [ContextManager sharedInstance].mainContext = nil;
-//    [ContextManager sharedInstance].persistentStoreCoordinator = nil;
-//    
-//    [[NSNotificationCenter defaultCenter] removeObserver:[ContextManager sharedInstance]];
-//    
-//    [[NSFileManager defaultManager] removeItemAtURL:[ContextManager storeURL] error:nil];
 }
 
 - (NSManagedObjectModel *)managedObjectModel {
