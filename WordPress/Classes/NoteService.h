@@ -1,9 +1,9 @@
 #import <Foundation/Foundation.h>
-#import "LocalService.h"
+#import "LocalCoreDataService.h"
 
 @class Note, Blog;
 
-@interface NoteService : NSObject <LocalService>
+@interface NoteService : NSObject <LocalCoreDataService>
 
 - (void)mergeNewNotes:(NSArray *)notesData;
 
