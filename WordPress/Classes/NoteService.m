@@ -2,10 +2,8 @@
 #import "ContextManager.h"
 #import "Note.h"
 #import "Blog.h"
-#import "AccountService.h"
 #import "BlogService.h"
 
-const NSUInteger NoteKeepCount = 20;
 
 @interface NoteService ()
 
@@ -23,46 +21,6 @@ const NSUInteger NoteKeepCount = 20;
     }
     
     return self;
-}
-
-- (void)pruneOldNotesBefore:(NSNumber *)timestamp
-{
-    NSError *error;
-    
-    // For some strange reason, core data objects with changes are ignored when using fetchOffset
-    // Even if you have 20 notes and fetchOffset is 20, any object with uncommitted changes would show up as a result
-    // To avoid that we make sure to commit all changes before doing our request
-    [[ContextManager sharedInstance] saveContext:self.managedObjectContext];
-    
-    NSUInteger keepCount = NoteKeepCount;
-    if (timestamp) {
-        NSFetchRequest *countRequest = [NSFetchRequest fetchRequestWithEntityName:@"Note"];
-        countRequest.predicate = [NSPredicate predicateWithFormat:@"timestamp >= %@", timestamp];
-        NSSortDescriptor *dateSortDescriptor = [NSSortDescriptor sortDescriptorWithKey:@"timestamp" ascending:NO];
-        countRequest.sortDescriptors = @[ dateSortDescriptor ];
-        NSError *error;
-        NSUInteger notesCount = [self.managedObjectContext countForFetchRequest:countRequest error:&error];
-        if (notesCount != NSNotFound) {
-            keepCount = MAX(keepCount, notesCount);
-        }
-    }
-    
-    NSFetchRequest *request = [NSFetchRequest fetchRequestWithEntityName:@"Note"];
-    request.fetchOffset = keepCount;
-    request.includesPendingChanges = NO;
-    NSSortDescriptor *dateSortDescriptor = [NSSortDescriptor sortDescriptorWithKey:@"timestamp" ascending:NO];
-    request.sortDescriptors = @[ dateSortDescriptor ];
-    NSArray *notes = [self.managedObjectContext executeFetchRequest:request error:&error];
-    if (error) {
-        DDLogError(@"Error pruning old notes: %@", error);
-        return;
-    }
-    
-    for (Note *note in notes) {
-        [self.managedObjectContext deleteObject:note];
-    }
-    
-    [[ContextManager sharedInstance] saveContext:self.managedObjectContext];
 }
 
 - (Blog *)blogForStatsEventNote:(Note *)note
@@ -94,7 +52,7 @@ const NSUInteger NoteKeepCount = 20;
     NSPredicate *statsBlogsPredicate = [NSCompoundPredicate orPredicateWithSubpredicates:@[wpcomPredicate, jetpackPredicate]];
     NSPredicate *combinedPredicate = [NSCompoundPredicate andPredicateWithSubpredicates:@[subjectPredicate, statsBlogsPredicate]];
     
-    NSFetchRequest *fetchRequest = [NSFetchRequest fetchRequestWithEntityName:@"Blog"];
+    NSFetchRequest *fetchRequest = [NSFetchRequest fetchRequestWithEntityName:NSStringFromClass([Blog class])];
     fetchRequest.predicate = combinedPredicate;
     
     NSError *error = nil;
@@ -105,11 +63,7 @@ const NSUInteger NoteKeepCount = 20;
         return nil;
     }
     
-    if (blogs.count > 0) {
-        return [blogs firstObject];
-    }
-    
-    return nil;
+    return [blogs firstObject];
 }
 
 @end

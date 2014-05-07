@@ -30,7 +30,6 @@
 @interface NotificationsViewController ()
 
 @property (nonatomic, strong) id    authListener;
-@property (nonatomic, assign) BOOL  isPushingViewController;
 @property (nonatomic, assign) BOOL  viewHasAppeared;
 @property (nonatomic, assign) BOOL  retrievingNotifications;
 
@@ -160,23 +159,9 @@ typedef void (^NotificationsLoadPostBlock)(BOOL success, ReaderPost *post);
         [WPAnalytics track:WPAnalyticsStatNotificationsAccessed];
     }
     
-    _isPushingViewController = NO;
-    
-    // If table is at the top (i.e. freshly opened), do some extra work
-    if (self.tableView.contentOffset.y == 0) {
-        [self pruneOldNotes];
-    }
-    
     [self updateLastSeenTime];
 }
 
-- (void)viewDidDisappear:(BOOL)animated
-{
-    [super viewDidDisappear:animated];
-    if (!_isPushingViewController) {
-        [self pruneOldNotes];
-    }
-}
 
 #pragma mark - NSObject(NSKeyValueObserving) methods
 
@@ -217,30 +202,6 @@ typedef void (^NotificationsLoadPostBlock)(BOOL success, ReaderPost *post);
     [simperium save];
 }
 
-- (void)pruneOldNotes
-{
-    NSNumber *pruneBefore;
-    Note *lastVisibleNote = (Note *)[[[self.tableView visibleCells] lastObject] contentProvider];
-    if (lastVisibleNote) {
-        pruneBefore = lastVisibleNote.timestamp;
-    }
-
-    NSIndexPath *selectedIndexPath = [self.tableView indexPathForSelectedRow];
-    if (selectedIndexPath) {
-        Note *selectedNote = [self.resultsController objectAtIndexPath:selectedIndexPath];
-        if (selectedNote) {
-            // NSOrderedSame could mean either same timestamp, or lastVisibleNote is nil
-            // so we overwrite the value
-            if ([pruneBefore compare:selectedNote.timestamp] != NSOrderedAscending) {
-                pruneBefore = selectedNote.timestamp;
-            }
-        }
-    }
-
-    NoteService *noteService = [[NoteService alloc] initWithManagedObjectContext:self.resultsController.managedObjectContext];
-    [noteService pruneOldNotesBefore:pruneBefore];
-}
-
 - (void)showNotificationSettings
 {
     NotificationSettingsViewController *notificationSettingsViewController = [[NotificationSettingsViewController alloc] initWithStyle:UITableViewStyleGrouped];
@@ -274,8 +235,6 @@ typedef void (^NotificationsLoadPostBlock)(BOOL success, ReaderPost *post);
     BOOL hasDetailView = [self noteHasDetailView:note];
     if (hasDetailView) {
         [WPAnalytics track:WPAnalyticsStatNotificationsOpenedNotificationDetails];
-
-        _isPushingViewController = YES;
         
         if ([note isComment]) {
             NotificationsCommentDetailViewController *commentDetailViewController = [[NotificationsCommentDetailViewController alloc] initWithNote:note];
