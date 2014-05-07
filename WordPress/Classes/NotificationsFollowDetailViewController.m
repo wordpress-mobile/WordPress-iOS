@@ -11,7 +11,6 @@
 #import <QuartzCore/QuartzCore.h>
 #import "WPAccount.h"
 #import "WPToast.h"
-#import "NoteService.h"
 #import "Note.h"
 #import "AccountService.h"
 #import "NoteBodyItem.h"

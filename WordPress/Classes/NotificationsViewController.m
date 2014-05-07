@@ -17,7 +17,6 @@
 #import "NotificationsManager.h"
 #import "NotificationSettingsViewController.h"
 #import "NotificationsBigBadgeViewController.h"
-#import "NoteService.h"
 #import "AccountService.h"
 #import "ContextManager.h"
 #import "StatsViewController.h"

@@ -17,7 +17,6 @@
 #import "WPFixedWidthScrollView.h"
 #import "WPTableViewCell.h"
 #import "WPTableViewController.h"
-#import "NoteService.h"
 #import "NoteBodyItem.h"
 #import "AccountService.h"
 

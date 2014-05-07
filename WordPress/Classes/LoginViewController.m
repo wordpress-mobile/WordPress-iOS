@@ -16,7 +16,6 @@
 #import "WPAccount.h"
 #import "Note.h"
 #import "ContextManager.h"
-#import "NoteService.h"
 #import "AccountService.h"
 #import "BlogService.h"
 

@@ -1,8 +1,9 @@
 #import "NotificationsBigBadgeViewController.h"
 #import <DTCoreText/DTCoreText.h>
 #import "WPWebViewController.h"
-#import "NoteService.h"
 #import "StatsViewController.h"
+#import "BlogService.h"
+#import "NSScanner+Helpers.h"
 
 @interface NotificationsBigBadgeViewController() <DTAttributedTextContentViewDelegate>
 
@@ -189,9 +190,16 @@
     id viewController;
     
     if ([self.note statsEvent]) {
-        NoteService *noteService = [[NoteService alloc] initWithManagedObjectContext:self.note.managedObjectContext];
-        Blog *blog = [noteService blogForStatsEventNote:self.note];
+        BlogService *blogService = [[BlogService alloc] initWithManagedObjectContext:self.note.managedObjectContext];
+        Blog *blog = [blogService blogByBlogId:self.note.metaSiteID];
+
+        // Attempt to load the blog by its name
+        if (!blog) {
+            NSString *blogName = [[NSScanner scannerWithString:self.note.subjectText] scanQuotedText];
+            blog = [blogService blogByBlogName:blogName];
+        }
         
+        // On success, push the Stats VC
         if (blog) {
             StatsViewController *statsVC = [[StatsViewController alloc] init];
             statsVC.blog = blog;

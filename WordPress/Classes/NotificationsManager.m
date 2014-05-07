@@ -6,7 +6,6 @@
 #import "UIDevice+WordPressIdentifier.h"
 #import <WPXMLRPCClient.h>
 #import "ContextManager.h"
-#import "NoteService.h"
 #import "AccountService.h"
 #import <Helpshift/Helpshift.h>
 

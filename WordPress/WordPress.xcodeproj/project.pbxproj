@@ -741,7 +741,6 @@
 		85ED54FD17CC1A01006564AE /* icon-posts-editor-inspector-active@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 85ED54F117CC1A01006564AE /* icon-posts-editor-inspector-active@2x.png */; };
 		85ED988817DFA00000090D0B /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 85ED988717DFA00000090D0B /* Images.xcassets */; };
 		85EE305E18C00E21000822C5 /* StatsLinkToWebviewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 85EE305D18C00E21000822C5 /* StatsLinkToWebviewCell.m */; };
-		930284B518EAF79500CB0BF4 /* NoteService.m in Sources */ = {isa = PBXBuildFile; fileRef = 930284B418EAF79500CB0BF4 /* NoteService.m */; };
 		931DF4D618D09A2F00540BDD /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 931DF4D818D09A2F00540BDD /* InfoPlist.strings */; };
 		93598885185C0CF900EB9651 /* icon-navbar-dropdown.png in Resources */ = {isa = PBXBuildFile; fileRef = 93598883185C0CF900EB9651 /* icon-navbar-dropdown.png */; };
 		93598886185C0CF900EB9651 /* icon-navbar-dropdown@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 93598884185C0CF900EB9651 /* icon-navbar-dropdown@2x.png */; };
@@ -780,6 +779,7 @@
 		B545186318E9E06500AC3A54 /* NoteAction.m in Sources */ = {isa = PBXBuildFile; fileRef = B545186218E9E06500AC3A54 /* NoteAction.m */; };
 		B545186618E9E07900AC3A54 /* NoteBodyItem.m in Sources */ = {isa = PBXBuildFile; fileRef = B545186518E9E07900AC3A54 /* NoteBodyItem.m */; };
 		B5832041191A6FDB00158FA8 /* Meta.m in Sources */ = {isa = PBXBuildFile; fileRef = B5832040191A6FDB00158FA8 /* Meta.m */; };
+		B5832044191ABD4700158FA8 /* NSScanner+Helpers.m in Sources */ = {isa = PBXBuildFile; fileRef = B5832043191ABD4700158FA8 /* NSScanner+Helpers.m */; };
 		B5CDDC5819086144005577AA /* XMLParserCollecter.m in Sources */ = {isa = PBXBuildFile; fileRef = B545186918E9E10C00AC3A54 /* XMLParserCollecter.m */; };
 		B5F4FE6A18A3E6AF006F50C5 /* Constants.m in Sources */ = {isa = PBXBuildFile; fileRef = B5F4FE6918A3E6AF006F50C5 /* Constants.m */; };
 		C52C783418771F7100FB1D2D /* StatsTwoColumnCell.m in Sources */ = {isa = PBXBuildFile; fileRef = C52C783318771F7100FB1D2D /* StatsTwoColumnCell.m */; };
@@ -1919,8 +1919,6 @@
 		8D1107310486CEB800E47090 /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		93027BB61758332300483FFD /* SupportViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SupportViewController.h; sourceTree = "<group>"; };
 		93027BB71758332300483FFD /* SupportViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SupportViewController.m; sourceTree = "<group>"; };
-		930284B318EAF79500CB0BF4 /* NoteService.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NoteService.h; sourceTree = "<group>"; };
-		930284B418EAF79500CB0BF4 /* NoteService.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NoteService.m; sourceTree = "<group>"; };
 		930284B618EAF7B600CB0BF4 /* LocalService.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = LocalService.h; sourceTree = "<group>"; };
 		93069F54176237A4000C966D /* ActivityLogViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ActivityLogViewController.h; sourceTree = "<group>"; };
 		93069F55176237A4000C966D /* ActivityLogViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ActivityLogViewController.m; sourceTree = "<group>"; };
@@ -1999,6 +1997,8 @@
 		B583203C191820E100158FA8 /* WordPress 17.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = "WordPress 17.xcdatamodel"; sourceTree = "<group>"; };
 		B583203F191A6FDB00158FA8 /* Meta.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Meta.h; sourceTree = "<group>"; };
 		B5832040191A6FDB00158FA8 /* Meta.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Meta.m; sourceTree = "<group>"; };
+		B5832042191ABD4700158FA8 /* NSScanner+Helpers.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSScanner+Helpers.h"; sourceTree = "<group>"; };
+		B5832043191ABD4700158FA8 /* NSScanner+Helpers.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSScanner+Helpers.m"; sourceTree = "<group>"; };
 		B5A0D84218DA3C9600114796 /* WordPress 16.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = "WordPress 16.xcdatamodel"; sourceTree = "<group>"; };
 		B5F4FE6918A3E6AF006F50C5 /* Constants.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; lineEnding = 0; path = Constants.m; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objc; };
 		BB0E95DCE0724D3696D9F222 /* Pods-WordPressTest.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-WordPressTest.xcconfig"; path = "../Pods/Pods-WordPressTest.xcconfig"; sourceTree = SOURCE_ROOT; };
@@ -3435,8 +3435,6 @@
 				93FA59DE18D8986D001446BC /* CategoryServiceRemote.h */,
 				93FA59DF18D8986D001446BC /* CategoryServiceRemote.m */,
 				930284B618EAF7B600CB0BF4 /* LocalService.h */,
-				930284B318EAF79500CB0BF4 /* NoteService.h */,
-				930284B418EAF79500CB0BF4 /* NoteService.m */,
 			);
 			name = Services;
 			sourceTree = "<group>";
@@ -4059,6 +4057,8 @@
 				46F8714E1838C41600BC149B /* NSDate+StringFormatting.m */,
 				E2AA87A318523E5300886693 /* UIView+Subviews.h */,
 				E2AA87A418523E5300886693 /* UIView+Subviews.m */,
+				B5832042191ABD4700158FA8 /* NSScanner+Helpers.h */,
+				B5832043191ABD4700158FA8 /* NSScanner+Helpers.m */,
 			);
 			name = Categories;
 			sourceTree = "<group>";
@@ -5339,6 +5339,7 @@
 				ACBAB5FE0E121C7300F38795 /* PostSettingsViewController.m in Sources */,
 				B5F4FE6A18A3E6AF006F50C5 /* Constants.m in Sources */,
 				9390B8601858D17200BE43FC /* BlogSelectorViewController.m in Sources */,
+				B5832044191ABD4700158FA8 /* NSScanner+Helpers.m in Sources */,
 				ACBAB6860E1247F700F38795 /* PostPreviewViewController.m in Sources */,
 				C58349C51806F95100B64089 /* IOS7CorrectedTextView.m in Sources */,
 				C56636E91868D0CE00226AAB /* StatsViewController.m in Sources */,
@@ -5375,7 +5376,6 @@
 				834CAE9F122D56B1003DDF49 /* UIImage+Alpha.m in Sources */,
 				834CAEA0122D56B1003DDF49 /* UIImage+RoundedCorner.m in Sources */,
 				83D180FA12329B1A002DCCB0 /* EditPageViewController.m in Sources */,
-				930284B518EAF79500CB0BF4 /* NoteService.m in Sources */,
 				E125445612BF5B3900D87A0A /* Category.m in Sources */,
 				E125451812BF68F900D87A0A /* Page.m in Sources */,
 				FD9A948C12FAEA2300438F94 /* DateUtils.m in Sources */,

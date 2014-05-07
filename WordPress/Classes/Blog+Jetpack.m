@@ -6,7 +6,6 @@
 #import "WordPressAppDelegate.h"
 #import "ContextManager.h"
 #import "WordPressComOAuthClient.h"
-#import "NoteService.h"
 #import "AccountService.h"
 
 NSString * const BlogJetpackErrorDomain = @"BlogJetpackError";
