@@ -18,6 +18,7 @@
 #import "WPTableViewSectionHeaderView.h"
 #import "StatsGroup.h"
 #import "WPNoResultsView.h"
+#import "WPStatsService.h"
 
 static NSString *const VisitorsUnitButtonCellReuseIdentifier = @"VisitorsUnitButtonCellReuseIdentifier";
 static NSString *const TodayYesterdayButtonCellReuseIdentifier = @"TodayYesterdayButtonCellReuseIdentifier";
@@ -214,6 +215,11 @@ typedef NS_ENUM(NSInteger, TotalFollowersShareRow) {
 }
 
 - (void)loadStats {
+    WPStatsService *statsService = [[WPStatsService alloc] initWithSiteId:self.blog.blogID];
+    [statsService retrieveStatsWithCompletionHandler:^(StatsSummary *summary, NSDictionary *topPosts, NSDictionary *clicks, NSDictionary *countryViews, NSDictionary *referrers, NSDictionary *searchTerms, StatsViewsVisitors *viewsVisitors) {
+
+    }];
+
     void (^saveStatsForSection)(id stats, StatsSection section) = ^(id stats, StatsSection section) {
         [_statModels setObject:stats forKey:@(section)];
         if (_resultsAvailable) {
