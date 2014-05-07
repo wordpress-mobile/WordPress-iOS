@@ -10,6 +10,8 @@
 #import "WPAccount.h"
 #import "WPWebViewController.h"
 #import "Note.h"
+#import "Meta.h"
+#import <Simperium/Simperium.h>
 #import "ContextManager.h"
 #import "Constants.h"
 #import "NotificationsManager.h"
@@ -164,6 +166,8 @@ typedef void (^NotificationsLoadPostBlock)(BOOL success, ReaderPost *post);
     if (self.tableView.contentOffset.y == 0) {
         [self pruneOldNotes];
     }
+    
+    [self updateLastSeenTime];
 }
 
 - (void)viewDidDisappear:(BOOL)animated
@@ -198,12 +202,19 @@ typedef void (^NotificationsLoadPostBlock)(BOOL success, ReaderPost *post);
 {
     // get the most recent note
     Note *note = [self.resultsController.fetchedObjects firstObject];
-    if (note) {
-        NSManagedObjectContext *context = [[ContextManager sharedInstance] mainContext];
-        AccountService *accountService = [[AccountService alloc] initWithManagedObjectContext:context];
-        WPAccount *defaultAccount = [accountService defaultWordPressComAccount];
-        [[defaultAccount restApi] updateNoteLastSeenTime:note.timestamp success:nil failure:nil];
+    if (!note) {
+        return;
     }
+    
+    NSString *bucketName    = NSStringFromClass([Meta class]);
+    Simperium *simperium    = [[WordPressAppDelegate sharedWordPressApplicationDelegate] simperium];
+    Meta *metadata          = [[simperium bucketForName:bucketName] objectForKey:[bucketName lowercaseString]];
+    if (!metadata) {
+        return;
+    }
+    
+    metadata.last_seen      = note.timestamp;
+    [simperium save];
 }
 
 - (void)pruneOldNotes
@@ -304,14 +315,7 @@ typedef void (^NotificationsLoadPostBlock)(BOOL success, ReaderPost *post);
 
 - (BOOL)noteHasDetailView:(Note *)note
 {
-    if (note.isComment) {
-        return YES;
-	}
-    
-    if ([note templateType] != WPNoteTemplateUnknown)
-        return YES;
-    
-    return NO;
+    return ((note.isComment) || ([note templateType] != WPNoteTemplateUnknown));
 }
 
 - (void)loadPostWithId:(NSNumber *)postID fromSite:(NSNumber *)siteID block:(NotificationsLoadPostBlock)block
@@ -345,7 +349,8 @@ typedef void (^NotificationsLoadPostBlock)(BOOL success, ReaderPost *post);
     return [NSDate date];
 }
 
-- (NSFetchRequest *)fetchRequest {
+- (NSFetchRequest *)fetchRequest
+{
     NSFetchRequest *fetchRequest = [NSFetchRequest fetchRequestWithEntityName:[self entityName]];
     fetchRequest.sortDescriptors = @[ [NSSortDescriptor sortDescriptorWithKey:@"timestamp" ascending:NO] ];
     fetchRequest.fetchBatchSize = 10;

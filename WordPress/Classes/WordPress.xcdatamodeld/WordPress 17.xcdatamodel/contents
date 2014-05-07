@@ -251,6 +251,12 @@
         </relationship>
         <userInfo/>
     </entity>
+    <entity name="Meta" representedClassName="Meta" syncable="YES">
+        <attribute name="ghostData" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="last_seen" optional="YES" attributeType="Integer 64" defaultValueString="0" syncable="YES"/>
+        <attribute name="latest_note_time" optional="YES" attributeType="Integer 64" defaultValueString="0" syncable="YES"/>
+        <attribute name="simperiumKey" optional="YES" attributeType="String" syncable="YES"/>
+    </entity>
     <entity name="Note" representedClassName="Note" syncable="YES">
         <attribute name="body" optional="YES" attributeType="Transformable" syncable="YES"/>
         <attribute name="ghostData" optional="YES" attributeType="String" syncable="YES"/>
@@ -359,5 +365,6 @@
         <element name="ReaderComment" positionX="0" positionY="0" width="128" height="120"/>
         <element name="ReaderPost" positionX="0" positionY="0" width="128" height="480"/>
         <element name="Theme" positionX="9" positionY="153" width="128" height="225"/>
+        <element name="Meta" positionX="9" positionY="153" width="128" height="103"/>
     </elements>
 </model>
