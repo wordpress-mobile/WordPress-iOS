@@ -159,24 +159,29 @@
 
 - (void)testDerivedContext {
     // Create a new derived context, which the mainContext is the parent
-    ATHStart();
     NSManagedObjectContext *derived = [[ContextManager sharedInstance] newDerivedContext];
     __block NSManagedObjectID *blogObjectID;
     __block Blog *newBlog;
     __block AccountService *service;
+    
+    // Note: Find or Create Blog will trigger a Context-Save call, which will, in turn, call ATHNotify
+    ATHStart();
     [derived performBlock:^{
         service = [[AccountService alloc] initWithManagedObjectContext:derived];
         WPAccount *derivedAccount = (WPAccount *)[derived objectWithID:[service defaultWordPressComAccount].objectID];
         XCTAssertNoThrow(derivedAccount.username, @"Should be able to access properties from this context");
 
         newBlog = [service findOrCreateBlogFromDictionary:@{@"xmlrpc": @"http://blog.com/xmlrpc.php", @"url": @"blog.com"} withAccount:derivedAccount];
-        [[ContextManager sharedInstance] saveDerivedContext:derived withCompletionBlock:^{
-            // object exists in main context after derived's save
-            // don't notify, wait for main's save ATHNotify()
-            
-            Blog *mainContextBlog =  (Blog *)[[ContextManager sharedInstance].mainContext existingObjectWithID:newBlog.objectID error:nil];
-            XCTAssertNotNil(mainContextBlog, @"The new blog should exist in the main (parent) context");
-        }];
+    }];
+    ATHEnd();
+    
+    ATHStart();
+    [[ContextManager sharedInstance] saveDerivedContext:derived withCompletionBlock:^{
+        // object exists in main context after derived's save
+        // don't notify, wait for main's save ATHNotify()
+        
+        Blog *mainContextBlog =  (Blog *)[[ContextManager sharedInstance].mainContext existingObjectWithID:newBlog.objectID error:nil];
+        XCTAssertNotNil(mainContextBlog, @"The new blog should exist in the main (parent) context");
     }];
     ATHEnd();
     
