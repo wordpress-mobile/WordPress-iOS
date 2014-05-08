@@ -12,7 +12,7 @@ static CGFloat CompressionQuality = 0.7;
     CGImageRef sourceImage = [self imageFromAssetRepresentation:representation];
     NSDictionary *metadata = representation.metadata;
     NSString *type = representation.UTI;
-    NSData *optimizedData = [self dataWithImage:sourceImage type:type andMetadata:metadata];
+    NSData *optimizedData = [self dataWithImage:sourceImage compressionQuality:1.0  type:type andMetadata:metadata];
     return optimizedData;
 }
 
@@ -21,7 +21,7 @@ static CGFloat CompressionQuality = 0.7;
     CGImageRef resizedImage = [self resizedImageWithImage:sourceImage];
     NSDictionary *metadata = representation.metadata;
     NSString *type = representation.UTI;
-    NSData *optimizedData = [self dataWithImage:resizedImage type:type andMetadata:metadata];
+    NSData *optimizedData = [self dataWithImage:resizedImage compressionQuality:CompressionQuality type:type andMetadata:metadata];
     return optimizedData;
 }
 
@@ -70,10 +70,10 @@ static CGFloat CompressionQuality = 0.7;
     return CGSizeMake(round(ratio * originalSize.width), round(ratio * originalSize.height));
 }
 
-- (NSData *)dataWithImage:(CGImageRef)image type:(NSString *)type andMetadata:(NSDictionary *)metadata {
+- (NSData *)dataWithImage:(CGImageRef)image compressionQuality:(CGFloat)quality type:(NSString *)type andMetadata:(NSDictionary *)metadata {
     NSMutableData *destinationData = [NSMutableData data];
 
-    NSDictionary *properties = @{(__bridge NSString *)kCGImageDestinationLossyCompressionQuality: @(CompressionQuality)};
+    NSDictionary *properties = @{(__bridge NSString *)kCGImageDestinationLossyCompressionQuality: @(quality)};
 
     CGImageDestinationRef destination = CGImageDestinationCreateWithData((__bridge CFMutableDataRef)destinationData, (__bridge CFStringRef)type, 1, NULL);
     CGImageDestinationSetProperties(destination, (__bridge CFDictionaryRef)properties);
