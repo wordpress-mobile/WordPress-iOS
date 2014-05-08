@@ -9,6 +9,8 @@
 @interface WPStatsService ()
 
 @property (nonatomic, strong) NSNumber *siteId;
+@property (nonatomic, strong) WPAccount *account;
+@property (nonatomic, strong) WPStatsServiceRemote *remote;
 
 @end
 
@@ -17,10 +19,11 @@
 
 }
 
-- (instancetype)initWithSiteId:(NSNumber *)siteId {
+- (instancetype)initWithSiteId:(NSNumber *)siteId andAccount:(WPAccount *)account {
     self = [super init];
     if (self) {
         _siteId = siteId;
+        _account = account;
     }
 
     return self;
@@ -36,24 +39,18 @@
         }
     };
 
-    NSManagedObjectContext *context = [[ContextManager sharedInstance] mainContext];
-    BlogService *blogService = [[BlogService alloc] initWithManagedObjectContext:context];
-    WPAccount *account = nil;
+    [self.remote fetchStatsForSiteId:self.siteId
+              withCompletionHandler:completion
+                     failureHandler:failure];
+}
 
-    // Find blog by ID if it's set up on this device
-    Blog *blog = [blogService blogByBlogId:self.siteId];
-    if (blog) {
-        account = blog.account;
-    } else {
-        // Otherwise use default WP.com account for authentication of remote stats data
-        AccountService *accountService = [[AccountService alloc] initWithManagedObjectContext:context];
-        account = [accountService defaultWordPressComAccount];
+- (WPStatsServiceRemote *)remote
+{
+    if (!_remote) {
+        _remote = [[WPStatsServiceRemote alloc] initWithRemoteApi:self.account.restApi andSiteId:self.siteId];
     }
 
-    WPStatsServiceRemote *remote = [[WPStatsServiceRemote alloc] initWithRemoteApi:account.restApi andSiteId:self.siteId];
-    [remote fetchStatsForSiteId:self.siteId
-          withCompletionHandler:completion
-                 failureHandler:failure];
+    return _remote;
 }
 
 @end
