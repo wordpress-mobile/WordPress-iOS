@@ -1228,11 +1228,6 @@ NSString *const MediaFeaturedImageSelectedNotification = @"MediaFeaturedImageSel
 		[fileManager createFileAtPath:filepath contents:imageData attributes:nil];
 	}
     
-	if(self.currentOrientation == MediaOrientationLandscape) {
-		imageMedia.orientation = @"landscape";
-	} else {
-		imageMedia.orientation = @"portrait";
-    }
 	imageMedia.creationDate = [NSDate date];
 	imageMedia.filename = filename;
 	imageMedia.localURL = filepath;
@@ -1319,11 +1314,6 @@ NSString *const MediaFeaturedImageSelectedNotification = @"MediaFeaturedImageSel
 	if(copySuccess) {
 		videoMedia = [Media newMediaForBlog:self.blog];
 		
-		if(_currentOrientation == MediaOrientationLandscape) {
-			videoMedia.orientation = @"landscape";
-        } else {
-			videoMedia.orientation = @"portrait";
-        }
 		videoMedia.creationDate = [NSDate date];
 		[videoMedia setFilename:filename];
 		[videoMedia setLocalURL:filepath];
