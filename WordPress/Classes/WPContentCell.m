@@ -25,7 +25,7 @@ CGFloat const WPContentCellImageWidth                       = 70.0;
 CGFloat const WPContentCellTitleNumberOfLines               = 3;
 CGFloat const WPContentCellUnreadViewSide                   = 8.0;
 CGFloat const WPContentCellDateImageSide                    = 16.0;
-CGFloat const WPContentCellDefaultOrigin                    = 15.0f
+CGFloat const WPContentCellDefaultOrigin                    = 15.0f;
 
 - (id)initWithStyle:(UITableViewCellStyle)style reuseIdentifier:(NSString *)reuseIdentifier
 {
