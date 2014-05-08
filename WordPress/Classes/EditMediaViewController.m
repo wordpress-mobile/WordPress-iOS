@@ -325,6 +325,8 @@ static NSUInteger const AlertDiscardChanges = 500;
 
         NSMutableURLRequest *request = [NSMutableURLRequest requestWithURL:[NSURL URLWithString:[_media.remoteURL stringByReplacingOccurrencesOfString:@"http://" withString:@"https://"]]];
         [request addValue:[@"Bearer " stringByAppendingString:[accountService defaultWordPressComAccount].restApi.authToken] forHTTPHeaderField:@"Authorization"];
+		// AFMIG: replaced by the code below
+		/*
         AFHTTPRequestOperation *op = [[AFHTTPRequestOperation alloc] initWithRequest:request];
         [op setCompletionBlockWithSuccess:^(AFHTTPRequestOperation *operation, id responseObject) {
             NSData *videoData = (NSData *)responseObject;
@@ -340,6 +342,23 @@ static NSUInteger const AlertDiscardChanges = 500;
             [self showDownloadError];
         }];
         [([[AFHTTPClient alloc] initWithBaseURL:[NSURL URLWithString:@""]]) enqueueHTTPRequestOperation:op];
+		 */
+		AFHTTPRequestOperationManager* operationManager = [[AFHTTPRequestOperationManager alloc] initWithBaseURL:[NSURL URLWithString:@"" ]];
+		[operationManager HTTPRequestOperationWithRequest:request
+												  success:^(AFHTTPRequestOperation *operation, id responseObject)
+		{
+			NSData *videoData = (NSData *)responseObject;
+			NSFileManager *f = [NSFileManager defaultManager];
+			// Save to a temporary file
+			NSString *path = [NSTemporaryDirectory() stringByAppendingFormat:@"%@.mov", _media.mediaID.stringValue];
+			[f createFileAtPath:path contents:videoData attributes:nil];
+			_media.localURL = path;
+			[self.videoPlayer prepareToPlay];
+		} failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+            DDLogError(@"Authenticated media video failed to download: %@", error);
+            [self hideLoadingSpinner];
+            [self showDownloadError];
+        }];
     } else {
         [self.videoPlayer prepareToPlay];
     }

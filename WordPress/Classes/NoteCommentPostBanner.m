@@ -1,5 +1,7 @@
 #import "NoteCommentPostBanner.h"
 
+#import <AFNetworking/UIImageView+AFNetworking.h>
+
 @implementation NoteCommentPostBanner
 
 - (id)initWithFrame:(CGRect)frame

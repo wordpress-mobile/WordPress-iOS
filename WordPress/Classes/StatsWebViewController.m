@@ -2,8 +2,6 @@
 #import "Blog+Jetpack.h"
 #import "WordPressAppDelegate.h"
 #import "WPAccount.h"
-#import "AFHTTPClient.h"
-#import "AFHTTPRequestOperation.h"
 #import "WPWebViewController.h"
 #import "JetpackSettingsViewController.h"
 #import "EditSiteViewController.h"

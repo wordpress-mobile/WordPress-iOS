@@ -3,14 +3,14 @@ xcodeproj 'WordPress/WordPress.xcodeproj'
 inhibit_all_warnings!
 
 platform :ios, '7.0'
-pod 'AFNetworking',	'1.2.0'
+pod 'AFNetworking',	'2.2.3'
 pod 'Reachability',	'3.1.1'
 pod 'NSURL+IDN', :podspec => 'https://raw.github.com/koke/NSURL-IDN/master/Podfile'
 pod 'DTCoreText',   '1.6.9'
 pod 'UIDeviceIdentifier', '~> 0.1'
 pod 'SVProgressHUD', '~> 1.0'
 pod 'wpxmlrpc', '~> 0.4.1'
-pod 'WordPressApi', :git => 'https://github.com/koke/WordPressApi.git'
+pod 'WordPressApi', :git => 'https://github.com/diegoreymendez/WordPressApi.git', :commit => "0185623c777cbdcfe6ebeb9b357717d24446b9cd"
 pod 'NSObject-SafeExpectations', :podspec => 'https://raw.github.com/koke/NSObject-SafeExpectations/master/NSObject-SafeExpectations.podspec'
 pod 'Mixpanel', '2.3.1'
 pod 'CocoaLumberjack', '~>1.8.1'

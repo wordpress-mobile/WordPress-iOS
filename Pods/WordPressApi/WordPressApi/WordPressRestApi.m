@@ -11,6 +11,7 @@
 
 #import "WordPressRestApi.h"
 #import "WordPressRestApiJSONRequestOperation.h"
+#import "WordPressRestApiJSONRequestOperationManager.h"
 #import "WPComOAuthController.h"
 
 NSString *const WordPressRestApiEndpointURL = @"https://public-api.wordpress.com/rest/v1/";
@@ -20,7 +21,7 @@ NSString *const WordPressRestApiErrorCodeKey = @"WordPressRestApiErrorCodeKey";
 @implementation WordPressRestApi {
     NSString *_token;
     NSString *_siteId;
-    AFHTTPClient *_client;
+    AFHTTPRequestOperationManager *_operationManager;
 }
 
 static NSString *WordPressRestApiClient = nil;
@@ -44,13 +45,22 @@ static NSString *WordPressRestApiRedirectUrl = nil;
 
 - (id<WordPressBaseApi>)initWithOauthToken:(NSString *)authToken siteId:(NSString *)siteId {
     self = [super init];
-    if (self) {
+    
+	if (self) {
+		NSURL* baseURL = [NSURL URLWithString:WordPressRestApiEndpointURL];
+		
         _token = authToken;
         _siteId = siteId;
-        _client = [AFHTTPClient clientWithBaseURL:[NSURL URLWithString:WordPressRestApiEndpointURL]];
-        [_client registerHTTPOperationClass:[WordPressRestApiJSONRequestOperation class]];
-        [_client setDefaultHeader:@"Authorization" value:[NSString stringWithFormat:@"Bearer %@", _token]];
+		
+        _operationManager = [[WordPressRestApiJSONRequestOperationManager alloc] initWithBaseURL:baseURL
+																						   token:_token];
+		
+        //AFMIG: replaced with override to AFHTTPRequestOperationManager
+		// [_operationManager registerHTTPOperationClass:[WordPressRestApiJSONRequestOperation class]];
+        //AFMIG: replaced with init override in AFHTTPRequestOperationManager
+		// TODO:[_operationManager setDefaultHeader:@"Authorization" value:[NSString stringWithFormat:@"Bearer %@", _token]];
     }
+	
     return self;
 }
 
@@ -80,15 +90,16 @@ static NSString *WordPressRestApiRedirectUrl = nil;
                                  @"title": title,
                                  @"content": content
                                  };
-    [_client postPath:[self sitePath:@"posts/new"]
-           parameters:parameters
-              success:^(AFHTTPRequestOperation *operation, id responseObject) {
-                  NSUInteger postId = [[responseObject objectForKey:@"ID"] unsignedIntegerValue];
-                  NSURL *permalink = [NSURL URLWithString:[responseObject objectForKey:@"URL"]];
-                  success(postId, permalink);
-              } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
-                  failure(error);
-              }];
+    [_operationManager POST:[self sitePath:@"posts/new"]
+				 parameters:parameters
+					success:^(AFHTTPRequestOperation *operation, id responseObject)
+	{
+		NSUInteger postId = [[responseObject objectForKey:@"ID"] unsignedIntegerValue];
+		NSURL *permalink = [NSURL URLWithString:[responseObject objectForKey:@"URL"]];
+		success(postId, permalink);
+	} failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+		failure(error);
+	}];
 }
 
 - (void)publishPostWithImage:(UIImage *)image description:(NSString *)content title:(NSString *)title success:(void (^)(NSUInteger postId, NSURL *permalink))success failure:(void (^)(NSError *error))failure {
@@ -104,37 +115,50 @@ static NSString *WordPressRestApiRedirectUrl = nil;
         [self publishPostWithText:content title:title success:success failure:failure];
     }
 
+	void(^contructionBlock)(id<AFMultipartFormData>) = ^(id<AFMultipartFormData> formData)
+	{
+		[images enumerateObjectsUsingBlock:^(id obj, NSUInteger idx, BOOL *stop) {
+			NSData *imageData = UIImageJPEGRepresentation(obj, 1.f);
+			[formData appendPartWithFileData:imageData name:@"media[]"
+									fileName:[NSString stringWithFormat:@"image-%tu.jpg", idx]
+									mimeType:@"image/jpeg"];
+		}];
+	};
+	
+	void(^successBlock)(AFHTTPRequestOperation* operation, id responseObject) = ^(AFHTTPRequestOperation *operation,
+																				  id responseObject)
+	{
+		NSUInteger postId = [[responseObject objectForKey:@"ID"] unsignedIntegerValue];
+		NSURL *permalink = [NSURL URLWithString:[responseObject objectForKey:@"URL"]];
+		success(postId, permalink);
+	};
+	
+	void(^failureBlock)(AFHTTPRequestOperation *operation, NSError *error) = ^(AFHTTPRequestOperation *operation,
+																			   NSError *error)
+	{
+        failure(error);
+    };
+	
     NSDictionary *parameters = @{
                                  @"title": title,
                                  @"content": content
                                  };
-    NSURLRequest *request = [_client multipartFormRequestWithMethod:@"POST"
-                                                               path:[self sitePath:@"posts/new"]
-                                                         parameters:parameters
-                                          constructingBodyWithBlock:^(id<AFMultipartFormData> formData) {
-                                              [images enumerateObjectsUsingBlock:^(id obj, NSUInteger idx, BOOL *stop) {
-                                                  NSData *imageData = UIImageJPEGRepresentation(obj, 1.f);
-                                                  [formData appendPartWithFileData:imageData name:@"media[]" fileName:[NSString stringWithFormat:@"image-%d.jpg", idx] mimeType:@"image/jpeg"];
-                                              }];
-                                          }];
-    AFHTTPRequestOperation *operation = [_client HTTPRequestOperationWithRequest:request success:^(AFHTTPRequestOperation *operation, id responseObject) {
-        NSUInteger postId = [[responseObject objectForKey:@"ID"] unsignedIntegerValue];
-        NSURL *permalink = [NSURL URLWithString:[responseObject objectForKey:@"URL"]];
-        success(postId, permalink);
-    } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
-        failure(error);
-    }];
-    [_client enqueueHTTPRequestOperation:operation];
+	[_operationManager POST:[self sitePath:@"posts/new"]
+				 parameters:parameters
+  constructingBodyWithBlock:contructionBlock
+					success:successBlock
+					failure:failureBlock];
 }
 
 - (void)getPosts:(NSUInteger)count success:(void (^)(NSArray *posts))success failure:(void (^)(NSError *error))failure {
-    [_client getPath:[self sitePath:@"posts"]
-          parameters:nil
-             success:^(AFHTTPRequestOperation *operation, id responseObject) {
-                 success([responseObject objectForKey:@"posts"]);
-             } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
-                 failure(error);
-             }];
+    [_operationManager GET:[self sitePath:@"posts"]
+				parameters:nil
+				   success:^(AFHTTPRequestOperation *operation, id responseObject)
+	{
+		success([responseObject objectForKey:@"posts"]);
+	} failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+		failure(error);
+	}];
 }
 
 #pragma mark - API Helpers
