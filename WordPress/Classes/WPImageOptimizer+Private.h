@@ -33,11 +33,12 @@
  Returns data combining the provided image and metadata.
  
  @param image the image to include in the data.
+ @param quality the desired compression quality. See kCGImageDestinationLossyCompressionQuality
  @param type the uniform type identifier (UTI) of the resulting image. See [ALAssetRepresentation UTI]
  @param metadata a dictionary including properties defined in [CGImageProperties Reference][//apple_ref/doc/uid/TP40005103]
  @return data with the combined image and metadata.
  */
-- (NSData *)dataWithImage:(CGImageRef)image type:(NSString *)type andMetadata:(NSDictionary *)metadata;
+- (NSData *)dataWithImage:(CGImageRef)image compressionQuality:(CGFloat)quality type:(NSString *)type andMetadata:(NSDictionary *)metadata;
 
 
 @end
