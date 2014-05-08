@@ -1076,7 +1076,7 @@ NSString *const MediaFeaturedImageSelectedNotification = @"MediaFeaturedImageSel
 		NSNumber *resizePreference = [NSNumber numberWithInt:-1];
 		if([[NSUserDefaults standardUserDefaults] objectForKey:@"media_resize_preference"] != nil)
 			resizePreference = [nf numberFromString:[[NSUserDefaults standardUserDefaults] objectForKey:@"media_resize_preference"]];
-		BOOL showResizeActionSheet;
+		BOOL showResizeActionSheet = NO;
 		switch ([resizePreference intValue]) {
 			case 0:
             {

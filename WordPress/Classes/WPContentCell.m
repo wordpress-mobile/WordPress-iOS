@@ -16,15 +16,16 @@
 
 @implementation WPContentCell
 
-CGFloat const WPContentCellStandardOffset = 10.0;
-CGFloat const WPContentCellVerticalPadding = 10.0;
-CGFloat const WPContentCellTitleAndDateVerticalOffset = 3.0;
-CGFloat const WPContentCellLabelAndTitleHorizontalOffset = -0.5;
-CGFloat const WPContentCellAccessoryViewOffset = 25.0;
-CGFloat const WPContentCellImageWidth = 70.0;
-CGFloat const WPContentCellTitleNumberOfLines = 3;
-CGFloat const WPContentCellUnreadViewSide = 8.0;
-CGFloat const WPContentCellDateImageSide = 16.0;
+CGFloat const WPContentCellStandardOffset                   = 10.0;
+CGFloat const WPContentCellVerticalPadding                  = 10.0;
+CGFloat const WPContentCellTitleAndDateVerticalOffset       = 3.0;
+CGFloat const WPContentCellLabelAndTitleHorizontalOffset    = -0.5;
+CGFloat const WPContentCellAccessoryViewOffset              = 25.0;
+CGFloat const WPContentCellImageWidth                       = 70.0;
+CGFloat const WPContentCellTitleNumberOfLines               = 3;
+CGFloat const WPContentCellUnreadViewSide                   = 8.0;
+CGFloat const WPContentCellDateImageSide                    = 16.0;
+CGFloat const WPContentCellDefaultOrigin                    = 15.0f
 
 - (id)initWithStyle:(UITableViewCellStyle)style reuseIdentifier:(NSString *)reuseIdentifier
 {
@@ -300,9 +301,11 @@ CGFloat const WPContentCellDateImageSide = 16.0;
 }
 
 + (CGFloat)textXOrigin {
-    CGFloat x = [[self class] contentXOrigin];
-    x = [[self class] showGravatarImage] ? [[self class] gravatarXOrigin] + WPContentCellImageWidth + WPContentCellStandardOffset : 15.0;
-    return x;
+    if ([[self class] showGravatarImage]) {
+        return ([[self class] gravatarXOrigin] + WPContentCellImageWidth + WPContentCellStandardOffset);
+    } else {
+        return WPContentCellDefaultOrigin;
+    }
 }
 
 + (CGFloat)gravatarXOrigin {
