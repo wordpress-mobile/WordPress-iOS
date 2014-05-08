@@ -1,16 +1,15 @@
 #import "WPStatsService.h"
-#import "WPStatsServiceRemote.h"
 #import "AccountService.h"
 #import "BlogService.h"
 #import "ContextManager.h"
 #import "WPAccount.h"
 #import "Blog.h"
+#import "WPStatsServiceRemote.h"
 
 @interface WPStatsService ()
 
 @property (nonatomic, strong) NSNumber *siteId;
 @property (nonatomic, strong) WPAccount *account;
-@property (nonatomic, strong) WPStatsServiceRemote *remote;
 
 @end
 
@@ -40,8 +39,8 @@
     };
 
     [self.remote fetchStatsForSiteId:self.siteId
-              withCompletionHandler:completion
-                     failureHandler:failure];
+               withCompletionHandler:completion
+                      failureHandler:failure];
 }
 
 - (WPStatsServiceRemote *)remote
