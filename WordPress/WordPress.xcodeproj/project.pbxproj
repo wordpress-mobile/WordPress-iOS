@@ -5626,6 +5626,7 @@
 				PRODUCT_NAME = WordPress;
 				PROVISIONING_PROFILE = "1F764D01-F465-4642-A8F1-3329FA64642A";
 				TARGETED_DEVICE_FAMILY = "1,2";
+				USER_HEADER_SEARCH_PATHS = "\"${PROJECT_DIR}/../Pods\"/**";
 				WPCOM_CONFIG = $HOME/.wpcom_app_credentials;
 			};
 			name = Debug;
@@ -5664,6 +5665,7 @@
 				PRODUCT_NAME = WordPress;
 				PROVISIONING_PROFILE = "A5A51EB7-2E4D-4D01-A0E9-6E1C7BEC4951";
 				TARGETED_DEVICE_FAMILY = "1,2";
+				USER_HEADER_SEARCH_PATHS = "\"${PROJECT_DIR}/../Pods\"/**";
 				WPCOM_CONFIG = $HOME/.wpcom_app_credentials;
 			};
 			name = Release;
@@ -5720,6 +5722,7 @@
 				PROVISIONING_PROFILE = "A5A51EB7-2E4D-4D01-A0E9-6E1C7BEC4951";
 				STRIP_INSTALLED_PRODUCT = NO;
 				TARGETED_DEVICE_FAMILY = "1,2";
+				USER_HEADER_SEARCH_PATHS = "\"${PROJECT_DIR}/../Pods\"/**";
 				WPCOM_CONFIG = $HOME/.wpcom_app_credentials;
 			};
 			name = Distribution;
@@ -5778,6 +5781,7 @@
 				PRODUCT_NAME = WordPress;
 				PROVISIONING_PROFILE = "74FADB78-88AD-4CB2-9225-24AA1D4D5319";
 				TARGETED_DEVICE_FAMILY = "1,2";
+				USER_HEADER_SEARCH_PATHS = "\"${PROJECT_DIR}/../Pods\"/**";
 				WPCOM_CONFIG = $HOME/.wpcom_internal_app_credentials;
 			};
 			name = "Release-Internal";
