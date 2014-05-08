@@ -126,11 +126,6 @@
     return commentHtml;
 }
 
-- (NSDictionary *)meta
-{
-    return [self.body dictionaryForKey:@"meta"];
-}
-
 - (NSNumber *)metaPostID
 {
     return [[self.meta dictionaryForKey:@"ids"] numberForKey:@"post"];

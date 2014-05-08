@@ -19,6 +19,7 @@ typedef NS_ENUM(NSInteger, WPNoteTemplateType) {
 @property (nonatomic, readwrite) NSNumber           *unread;
 @property (nonatomic,  readonly) NSDictionary       *subject;
 @property (nonatomic,  readonly) NSDictionary       *body;
+@property (nonatomic,  readonly) NSDictionary       *meta;
 
 // Derived attributes from Subject + Body collections.
 // Ref: http://developer.wordpress.com/docs/api/1/get/notifications/
@@ -37,7 +38,6 @@ typedef NS_ENUM(NSInteger, WPNoteTemplateType) {
 @property (nonatomic,  readonly) NSString           *bodyCommentText;
 @property (nonatomic,  readonly) NSString           *bodyCommentHtml;
 
-@property (nonatomic,  readonly) NSDictionary       *meta;
 @property (nonatomic,  readonly) NSNumber           *metaPostID;
 @property (nonatomic,  readonly) NSNumber           *metaSiteID;
 
