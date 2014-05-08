@@ -4,9 +4,11 @@
 
 typedef void (^StatsCompletion)(StatsSummary *summary, NSDictionary *topPosts, NSDictionary *clicks, NSDictionary *countryViews, NSDictionary *referrers, NSDictionary *searchTerms, StatsViewsVisitors *viewsVisitors);
 
-@class WPAccount;
+@class WPAccount, WPStatsServiceRemote;
 
 @interface WPStatsService : NSObject
+
+@property (nonatomic, strong) WPStatsServiceRemote *remote;
 
 - (instancetype)initWithSiteId:(NSNumber *)siteId andAccount:(WPAccount *)account;
 
