@@ -8,6 +8,6 @@ typedef void (^StatsCompletion)(StatsSummary *summary, NSDictionary *topPosts, N
 
 - (instancetype)initWithSiteId:(NSNumber *)siteId;
 
-- (void)retrieveStatsWithCompletionHandler:(StatsCompletion)completion;
+- (void)retrieveStatsWithCompletionHandler:(StatsCompletion)completion failureHandler:(void (^)(NSError *error))failureHandler;
 
 @end

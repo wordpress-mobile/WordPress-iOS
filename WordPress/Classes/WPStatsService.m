@@ -26,13 +26,13 @@
     return self;
 }
 
-- (void)retrieveStatsWithCompletionHandler:(StatsCompletion)completion
+- (void)retrieveStatsWithCompletionHandler:(StatsCompletion)completion failureHandler:(void (^)(NSError *error))failureHandler
 {
     void (^failure)(NSError *error) = ^void (NSError *error) {
         DDLogError(@"Error while retrieving stats: %@", error);
 
-        if (completion) {
-            completion(nil, nil, nil, nil, nil, nil, nil);
+        if (failureHandler) {
+            failureHandler(error);
         }
     };
 
