@@ -15,7 +15,7 @@
 /**
  *	@brief		This method is not supported by this class.  Use initWithBaseUrl:token: instead.
  */
-- (id)initWithBaseURL:(NSURL *)url
+- (id)initWithBaseURL:(NSURL*)url
 {
 	[self doesNotRecognizeSelector:_cmd];
 	self = nil;
@@ -40,7 +40,6 @@
 	return self;
 }
 
-// AFMIG: override
 - (AFHTTPRequestOperation *)HTTPRequestOperationWithRequest:(NSURLRequest *)request
                                                     success:(void (^)(AFHTTPRequestOperation *operation, id responseObject))success
                                                     failure:(void (^)(AFHTTPRequestOperation *operation, NSError *error))failure

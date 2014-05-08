@@ -12,11 +12,10 @@ static NSString * const WordPressComOAuthRedirectUrl = @"https://wordpress.com/"
 
 + (WordPressComOAuthClient *)client {
     WordPressComOAuthClient *client = [[WordPressComOAuthClient alloc] initWithBaseURL:[NSURL URLWithString:WordPressComOAuthBaseUrl]];
-    // AFMIG: replaced with method below
-	//[client registerHTTPOperationClass:[AFJSONRequestOperation class]];
-    // AFMIG: replaced below
-	//[client setDefaultHeader:@"Accept" value:@"application/json"];
+
+	client.responseSerializer = [[AFJSONResponseSerializer alloc] init];
 	[client.requestSerializer setValue:@"application/json" forHTTPHeaderField:@"Accept"];
+	
     return client;
 }
 
@@ -50,15 +49,8 @@ static NSString * const WordPressComOAuthRedirectUrl = @"https://wordpress.com/"
 - (NSError *)processError:(NSError *)error forOperation:(AFHTTPRequestOperation *)operation {
     if (operation.response.statusCode >= 400 && operation.response.statusCode < 500) {
         // Bad request, look for errors in the JSON response
-		// AFMIG:
 		NSDictionary* response = operation.responseObject;
-		/*
-		 NSDictionary *response = nil;
-        if ([operation isKindOfClass:[AFJSONRequestOperation class]]) {
-            AFJSONRequestOperation *jsonOperation = (AFJSONRequestOperation *)operation;
-            response = jsonOperation.responseJSON;
-        }
-		 */
+
         if (response) {
             NSString *errorCode = [response stringForKey:@"error"];
             NSString *errorDescription = [response stringForKey:@"error_description"];
@@ -82,24 +74,6 @@ static NSString * const WordPressComOAuthRedirectUrl = @"https://wordpress.com/"
         }
     }
     return error;
-}
-
-#pragma mark - AFHTTPRequestOperationManager overloads
-
-- (AFHTTPRequestOperation *)HTTPRequestOperationWithRequest:(NSURLRequest *)request
-                                                    success:(void (^)(AFHTTPRequestOperation *operation, id responseObject))success
-                                                    failure:(void (^)(AFHTTPRequestOperation *operation, NSError *error))failure
-{
-    AFHTTPRequestOperation *operation = [[AFHTTPRequestOperation alloc] initWithRequest:request];
-	
-	operation.responseSerializer = [[AFJSONResponseSerializer alloc] init];
-    operation.shouldUseCredentialStorage = self.shouldUseCredentialStorage;
-    operation.credential = self.credential;
-    operation.securityPolicy = self.securityPolicy;
-	
-    [operation setCompletionBlockWithSuccess:success failure:failure];
-	
-    return operation;
 }
 
 @end

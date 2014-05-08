@@ -60,9 +60,6 @@ NSString * const RPVCDisplayedNativeFriendFinder = @"DisplayedNativeFriendFinder
 	// (at least for the first time). We'll have DTCoreText prime its font cache here so things are ready
 	// for the detail view, and avoid a perceived lag. 
 	[DTCoreTextFontDescriptor fontDescriptorWithFontAttributes:nil];
-    
-	// AFMIG: moved to WPImageSource.m
-    //[AFImageRequestOperation addAcceptableContentTypes:[NSSet setWithObject:@"image/jpg"]];
 }
 
 
