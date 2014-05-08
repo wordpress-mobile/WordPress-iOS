@@ -4,7 +4,6 @@
 #import "JetpackSettingsViewController.h"
 #import "StatsWebViewController.h"
 #import "WPAccount.h"
-#import "StatsApiHelper.h"
 #import "ContextManager.h"
 #import "StatsButtonCell.h"
 #import "StatsCounterCell.h"
@@ -58,7 +57,7 @@ typedef NS_ENUM(NSInteger, TotalFollowersShareRow) {
 
 @interface StatsViewController () <UITableViewDataSource, UITableViewDelegate, StatsTodayYesterdayButtonCellDelegate, UIViewControllerRestoration, StatsButtonCellDelegate>
 
-@property (nonatomic, strong) StatsApiHelper *statsApiHelper;
+@property (nonatomic, strong) WPStatsService *statsService;
 @property (nonatomic, strong) NSMutableDictionary *statModels;
 @property (nonatomic, strong) NSMutableDictionary *showingToday;
 @property (nonatomic, assign) StatsViewsVisitorsUnit currentViewsVisitorsGraphUnit;
@@ -168,7 +167,7 @@ typedef NS_ENUM(NSInteger, TotalFollowersShareRow) {
 
 - (void)initStats {
     if (self.blog.isWPcom) {
-        self.statsApiHelper = [[StatsApiHelper alloc] initWithSiteID:self.blog.blogID andAccount:self.blog.account];
+        self.statsService = [[WPStatsService alloc] initWithSiteId:self.blog.blogID andAccount:self.blog.account];
         [self loadStats];
         return;
     }
@@ -176,7 +175,7 @@ typedef NS_ENUM(NSInteger, TotalFollowersShareRow) {
     // Jetpack
     BOOL needsJetpackLogin = ![self.blog.jetpackAccount.restApi hasCredentials];
     if (!needsJetpackLogin && self.blog.jetpackBlogID && self.blog.jetpackAccount) {
-        self.statsApiHelper = [[StatsApiHelper alloc] initWithSiteID:self.blog.jetpackBlogID andAccount:self.blog.jetpackAccount];
+        self.statsService = [[WPStatsService alloc] initWithSiteId:self.blog.jetpackBlogID andAccount:self.blog.jetpackAccount];
         [self loadStats];
     } else {
         [self promptForJetpackCredentials];
@@ -224,8 +223,7 @@ typedef NS_ENUM(NSInteger, TotalFollowersShareRow) {
         DDLogError(@"Stats: Error fetching stats %@", error);
     };
 
-    WPStatsService *statsService = [[WPStatsService alloc] initWithSiteId:self.blog.blogID];
-    [statsService retrieveStatsWithCompletionHandler:^(StatsSummary *summary, NSDictionary *topPosts, NSDictionary *clicks, NSDictionary *countryViews, NSDictionary *referrers, NSDictionary *searchTerms, StatsViewsVisitors *viewsVisitors) {
+    [self.statsService retrieveStatsWithCompletionHandler:^(StatsSummary *summary, NSDictionary *topPosts, NSDictionary *clicks, NSDictionary *countryViews, NSDictionary *referrers, NSDictionary *searchTerms, StatsViewsVisitors *viewsVisitors) {
         self.statModels[@(StatsSectionVisitors)] = summary;
         self.statModels[@(StatsSectionVisitorsGraph)] = viewsVisitors;
         self.statModels[@(StatsSectionTopPosts)] = topPosts;
