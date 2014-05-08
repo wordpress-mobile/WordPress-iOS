@@ -6,15 +6,21 @@ NSString * const WordPressComOAuthKeychainServiceName = @"public-api.wordpress.c
 static NSString * const WordPressComOAuthBaseUrl = @"https://public-api.wordpress.com/oauth2";
 static NSString * const WordPressComOAuthRedirectUrl = @"https://wordpress.com/";
 
-
 @implementation WordPressComOAuthClient
+
+#pragma mark - Conveniece constructors
 
 + (WordPressComOAuthClient *)client {
     WordPressComOAuthClient *client = [[WordPressComOAuthClient alloc] initWithBaseURL:[NSURL URLWithString:WordPressComOAuthBaseUrl]];
-    [client registerHTTPOperationClass:[AFJSONRequestOperation class]];
-    [client setDefaultHeader:@"Accept" value:@"application/json"];
+    // AFMIG: replaced with method below
+	//[client registerHTTPOperationClass:[AFJSONRequestOperation class]];
+    // AFMIG: replaced below
+	//[client setDefaultHeader:@"Accept" value:@"application/json"];
+	[client.requestSerializer setValue:@"application/json" forHTTPHeaderField:@"Accept"];
     return client;
 }
+
+#pragma mark - Misc
 
 - (void)authenticateWithUsername:(NSString *)username password:(NSString *)password success:(void (^)(NSString *authToken))success failure:(void (^)(NSError *error))failure {
     NSDictionary *parameters = @{
@@ -24,9 +30,9 @@ static NSString * const WordPressComOAuthRedirectUrl = @"https://wordpress.com/"
                                  @"client_id": [WordPressComApiCredentials client],
                                  @"client_secret": [WordPressComApiCredentials secret],
                                  };
-    [self postPath:@"token"
-        parameters:parameters
-           success:^(AFHTTPRequestOperation *operation, id responseObject) {
+    [self POST:@"token"
+	parameters:parameters
+	   success:^(AFHTTPRequestOperation *operation, id responseObject) {
                DDLogVerbose(@"Received OAuth2 response: %@", responseObject);
                NSString *authToken = [responseObject stringForKey:@"access_token"];
                if (success) {
@@ -44,11 +50,15 @@ static NSString * const WordPressComOAuthRedirectUrl = @"https://wordpress.com/"
 - (NSError *)processError:(NSError *)error forOperation:(AFHTTPRequestOperation *)operation {
     if (operation.response.statusCode >= 400 && operation.response.statusCode < 500) {
         // Bad request, look for errors in the JSON response
-        NSDictionary *response = nil;
+		// AFMIG:
+		NSDictionary* response = operation.responseObject;
+		/*
+		 NSDictionary *response = nil;
         if ([operation isKindOfClass:[AFJSONRequestOperation class]]) {
             AFJSONRequestOperation *jsonOperation = (AFJSONRequestOperation *)operation;
             response = jsonOperation.responseJSON;
         }
+		 */
         if (response) {
             NSString *errorCode = [response stringForKey:@"error"];
             NSString *errorDescription = [response stringForKey:@"error_description"];
@@ -72,6 +82,24 @@ static NSString * const WordPressComOAuthRedirectUrl = @"https://wordpress.com/"
         }
     }
     return error;
+}
+
+#pragma mark - AFHTTPRequestOperationManager overloads
+
+- (AFHTTPRequestOperation *)HTTPRequestOperationWithRequest:(NSURLRequest *)request
+                                                    success:(void (^)(AFHTTPRequestOperation *operation, id responseObject))success
+                                                    failure:(void (^)(AFHTTPRequestOperation *operation, NSError *error))failure
+{
+    AFHTTPRequestOperation *operation = [[AFHTTPRequestOperation alloc] initWithRequest:request];
+	
+	operation.responseSerializer = [[AFJSONResponseSerializer alloc] init];
+    operation.shouldUseCredentialStorage = self.shouldUseCredentialStorage;
+    operation.credential = self.credential;
+    operation.securityPolicy = self.securityPolicy;
+	
+    [operation setCompletionBlockWithSuccess:success failure:failure];
+	
+    return operation;
 }
 
 @end

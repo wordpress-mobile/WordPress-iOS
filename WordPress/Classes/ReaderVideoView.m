@@ -11,31 +11,31 @@
     UIImageView *_playView;
 }
 
-+ (AFHTTPClient *)sharedYoutubeClient {
-	static AFHTTPClient *_sharedClient = nil;
++ (AFHTTPRequestOperationManager *)sharedYoutubeClient {
+	static AFHTTPRequestOperationManager *_sharedClient = nil;
     static dispatch_once_t oncePredicate;
     dispatch_once(&oncePredicate, ^{
-		_sharedClient = [AFHTTPClient clientWithBaseURL:[NSURL URLWithString:@"http://gdata.youtube.com"]];
+		_sharedClient = [[AFHTTPRequestOperationManager alloc] initWithBaseURL:[NSURL URLWithString:@"http://gdata.youtube.com"]];
 	});
 	return _sharedClient;
 }
 
 
-+ (AFHTTPClient *)sharedVimeoClient {
-	static AFHTTPClient *_sharedClient = nil;
++ (AFHTTPRequestOperationManager *)sharedVimeoClient {
+	static AFHTTPRequestOperationManager *_sharedClient = nil;
     static dispatch_once_t oncePredicate;
     dispatch_once(&oncePredicate, ^{
-		_sharedClient = [AFHTTPClient clientWithBaseURL:[NSURL URLWithString:@"http://vimeo.com"]];
+		_sharedClient = [[AFHTTPRequestOperationManager alloc] initWithBaseURL:[NSURL URLWithString:@"http://vimeo.com"]];
 	});
 	return _sharedClient;
 }
 
 
-+ (AFHTTPClient *)sharedDailyMotionClient {
-	static AFHTTPClient *_sharedClient = nil;
++ (AFHTTPRequestOperationManager *)sharedDailyMotionClient {
+	static AFHTTPRequestOperationManager *_sharedClient = nil;
     static dispatch_once_t oncePredicate;
     dispatch_once(&oncePredicate, ^{
-		_sharedClient = [AFHTTPClient clientWithBaseURL:[NSURL URLWithString:@"http://api.dailymotion.com"]];
+		_sharedClient = [[AFHTTPRequestOperationManager alloc] initWithBaseURL:[NSURL URLWithString:@"http://api.dailymotion.com"]];
 	});
 	return _sharedClient;
 }
@@ -109,7 +109,7 @@
 	
 	__weak ReaderVideoView *selfRef = self;
 	NSString *path = [NSString stringWithFormat:@"/feeds/api/videos/%@?v=2&alt=json", vidId];
-	[[ReaderVideoView sharedYoutubeClient] getPath:path
+	[[ReaderVideoView sharedYoutubeClient] GET:path
 										parameters:nil
 										   success:^(AFHTTPRequestOperation *operation, id responseObject) {
 											   
@@ -155,7 +155,7 @@
 
 	__weak ReaderVideoView *selfRef = self;
 	NSString *path = [NSString stringWithFormat:@"/api/v2/video/%@.json", vidId];
-	[[ReaderVideoView sharedVimeoClient] getPath:path
+	[[ReaderVideoView sharedVimeoClient] GET:path
 									  parameters:nil
 										 success:^(AFHTTPRequestOperation *operation, id responseObject) {
 											 
@@ -182,7 +182,7 @@
 	
 	__weak ReaderVideoView *selfRef = self;
 	NSString *path = [NSString stringWithFormat:@"/video/%@?fields=thumbnail_large_url", vidId];
-	[[ReaderVideoView sharedDailyMotionClient] getPath:path
+	[[ReaderVideoView sharedDailyMotionClient] GET:path
 											parameters:nil
 											   success:^(AFHTTPRequestOperation *operation, id responseObject) {
 												   

@@ -1,3 +1,4 @@
+#import <AFNetworking/AFNetworking.h>
 #import <DTCoreText/DTCoreText.h>
 #import "DTCoreTextFontDescriptor.h"
 #import "WPTableViewControllerSubclass.h"
@@ -60,7 +61,8 @@ NSString * const RPVCDisplayedNativeFriendFinder = @"DisplayedNativeFriendFinder
 	// for the detail view, and avoid a perceived lag. 
 	[DTCoreTextFontDescriptor fontDescriptorWithFontAttributes:nil];
     
-    [AFImageRequestOperation addAcceptableContentTypes:[NSSet setWithObject:@"image/jpg"]];
+	// AFMIG: moved to WPImageSource.m
+    //[AFImageRequestOperation addAcceptableContentTypes:[NSSet setWithObject:@"image/jpg"]];
 }
 
 
@@ -1014,7 +1016,7 @@ NSString * const RPVCDisplayedNativeFriendFinder = @"DisplayedNativeFriendFinder
                 AccountService *accountService = [[AccountService alloc] initWithManagedObjectContext:context];
                 WPAccount *defaultAccount = [accountService defaultWordPressComAccount];
 
-                [[defaultAccount restApi] getPath:@"me"
+                [[defaultAccount restApi] GET:@"me"
                                        parameters:nil
                                           success:^(AFHTTPRequestOperation *operation, id responseObject) {
                                               if ([usersBlogs count] < 1)
