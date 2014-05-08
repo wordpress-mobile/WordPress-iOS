@@ -32,6 +32,8 @@ typedef NS_ENUM(NSInteger, SettingsViewControllerSections)
     [[NSUserDefaults standardUserDefaults] registerDefaults:@{UserDefaultsFeedbackEnabled: @YES}];
     NSURL *url = [NSURL URLWithString:FeedbackCheckUrl];
     NSURLRequest *request = [[NSURLRequest alloc] initWithURL:url];
+	// AFMIG: TODO:
+	/*
     AFJSONRequestOperation *operation = [AFJSONRequestOperation JSONRequestOperationWithRequest:request success:^(NSURLRequest *request, NSHTTPURLResponse *response, id JSON) {
         DDLogVerbose(@"Feedback response received: %@", JSON);
         NSNumber *feedbackEnabled = JSON[@"feedback-enabled"];
@@ -51,7 +53,7 @@ typedef NS_ENUM(NSInteger, SettingsViewControllerSections)
         [defaults synchronize];
     }];
     
-    [operation start];
+    [operation start];*/
 }
 
 + (void)checkIfHelpshiftShouldBeEnabled {

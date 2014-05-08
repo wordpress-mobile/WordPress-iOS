@@ -5,14 +5,14 @@ Pod::Spec.new do |s|
   s.homepage     = "https://github.com/koke/WordPressApi"
   s.license      = { :type => 'MIT', :file => 'LICENSE.md' }
   s.author       = "WordPress"
-  s.source       = { :git => "https://github.com/koke/WordPressApi.git" }
+  s.source       = { :git => "https://github.com/diegoreymendez/WordPressApi.git", :tag => "HEAD" }
   s.source_files = 'WordPressApi'
   s.requires_arc = true
-  s.dependency 'AFNetworking', '>= 1.0'
+  s.dependency 'AFNetworking', '2.2.3'
   s.dependency 'wpxmlrpc', '~> 0.1'
 
-  s.ios.deployment_target = '5.0'
-  s.osx.deployment_target = '10.7'
+  s.platform = :ios, '6.0'
+  s.ios.deployment_target = '6.0'
   s.frameworks = 'Foundation', 'UIKit', 'Security'
 
   s.documentation = {

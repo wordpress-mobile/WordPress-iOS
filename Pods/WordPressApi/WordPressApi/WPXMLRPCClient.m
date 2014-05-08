@@ -106,7 +106,7 @@ static NSUInteger const WPXMLRPCClientDefaultMaxConcurrentOperationCount = 4;
 
     WPXMLRPCEncoder *encoder = [[WPXMLRPCEncoder alloc] initWithMethod:method andParameters:parameters];
     [request setHTTPBodyStream:encoder.bodyStream];
-    [request setValue:[NSString stringWithFormat:@"%d", encoder.contentLength] forHTTPHeaderField:@"Content-Length"];
+    [request setValue:[NSString stringWithFormat:@"%tu", encoder.contentLength] forHTTPHeaderField:@"Content-Length"];
 
     return request;
 }
@@ -170,6 +170,8 @@ static NSUInteger const WPXMLRPCClientDefaultMaxConcurrentOperationCount = 4;
         }
     };
     [operation setCompletionBlockWithSuccess:xmlrpcSuccess failure:xmlrpcFailure];
+	// AFMIG: moved to WordPressRestApiJSONRequestOperation
+	/*
     [operation setAuthenticationChallengeBlock:^(NSURLConnection *connection, NSURLAuthenticationChallenge *challenge) {
         if ([challenge.protectionSpace.authenticationMethod isEqualToString:NSURLAuthenticationMethodServerTrust]) {
             // Handle invalid certificates
@@ -200,6 +202,7 @@ static NSUInteger const WPXMLRPCClientDefaultMaxConcurrentOperationCount = 4;
         // We can handle any authentication available except Client Certificates
         return ![protectionSpace.authenticationMethod isEqualToString:NSURLAuthenticationMethodClientCertificate];
     }];
+	 */
 
     if ( extra_debug_on == YES ) {
         NSString *requestString = [[NSString alloc] initWithData:[request HTTPBody] encoding:NSUTF8StringEncoding];
