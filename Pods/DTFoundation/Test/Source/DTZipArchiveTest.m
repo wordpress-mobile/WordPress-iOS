@@ -48,17 +48,17 @@
         {
             case 0:
             {
-                STAssertTrue([fileName isEqualToString:@"zipFiles"], @"node uncompressed is not as expected");
+                XCTAssertTrue([fileName isEqualToString:@"zipFiles"], @"node uncompressed is not as expected");
                 break;
             }
             case 1:
             {
-                STAssertTrue([fileName isEqualToString:@"zipFiles/plist"], @"node uncompressed is not as expected");
+                XCTAssertTrue([fileName isEqualToString:@"zipFiles/plist"], @"node uncompressed is not as expected");
                 break;
             }
             case 2:
             {
-                STAssertTrue([fileName isEqualToString:@"zipFiles/screenshot.png"], @"node uncompressed is not as expected");
+                XCTAssertTrue([fileName isEqualToString:@"zipFiles/screenshot.png"], @"node uncompressed is not as expected");
                 break;
             }
             case 3:
@@ -66,22 +66,22 @@
             case 5:
             {
                 // ignore __MACOSX/ stuff
-                //STAssertTrue([fileName isEqualToString:@"__MACOSX/"], @"node uncompressed is not as expected");
+                //XCTAssertTrue([fileName isEqualToString:@"__MACOSX/"], @"node uncompressed is not as expected");
                 break;
             }
             case 6:
             {
-                STAssertTrue([fileName isEqualToString:@"zipFiles/text"], @"node uncompressed is not as expected");
+                XCTAssertTrue([fileName isEqualToString:@"zipFiles/text"], @"node uncompressed is not as expected");
                 break;
             }
             case 7:
             {
-                STAssertTrue([fileName isEqualToString:@"zipFiles/text/Andere"], @"node uncompressed is not as expected");
+                XCTAssertTrue([fileName isEqualToString:@"zipFiles/text/Andere"], @"node uncompressed is not as expected");
                 break;
             }
             case 8:
             {
-                STAssertTrue([fileName isEqualToString:@"zipFiles/text/Andere/Franz.txt"], @"node uncompressed is not as expected");
+                XCTAssertTrue([fileName isEqualToString:@"zipFiles/text/Andere/Franz.txt"], @"node uncompressed is not as expected");
                 NSString *originalFilePath = [[testBundle bundlePath] stringByAppendingPathComponent:@"Franz.txt"];
                 [self _compareOriginalFile:originalFilePath withUncompressedFileData:data uncompressedFileName:fileName];
                 
@@ -89,7 +89,7 @@
             }
             case 9:
             {
-                STAssertTrue([fileName isEqualToString:@"zipFiles/text/Oliver.txt"], @"node uncompressed is not as expected");
+                XCTAssertTrue([fileName isEqualToString:@"zipFiles/text/Oliver.txt"], @"node uncompressed is not as expected");
                 NSString *originalFilePath = [[testBundle bundlePath] stringByAppendingPathComponent:@"Oliver.txt"];
                 [self _compareOriginalFile:originalFilePath withUncompressedFileData:data uncompressedFileName:fileName];
                 
@@ -97,7 +97,7 @@
             }
             case 10:
             {
-                STAssertTrue([fileName isEqualToString:@"zipFiles/text/Rene"], @"node uncompressed is not as expected");
+                XCTAssertTrue([fileName isEqualToString:@"zipFiles/text/Rene"], @"node uncompressed is not as expected");
                 NSString *originalFilePath = [[testBundle bundlePath] stringByAppendingPathComponent:@"Rene"];
                 [self _compareOriginalFile:originalFilePath withUncompressedFileData:data uncompressedFileName:fileName];
                 
@@ -105,7 +105,7 @@
             }
             case 11:
             {
-                STAssertTrue([fileName isEqualToString:@"zipFiles/text/Stefan.txt"], @"node uncompressed is not as expected");
+                XCTAssertTrue([fileName isEqualToString:@"zipFiles/text/Stefan.txt"], @"node uncompressed is not as expected");
                 NSString *originalFilePath = [[testBundle bundlePath] stringByAppendingPathComponent:@"Stefan.txt"];
                 [self _compareOriginalFile:originalFilePath withUncompressedFileData:data uncompressedFileName:fileName];
                 
@@ -113,22 +113,22 @@
             }
             case 12:
             {
-                STAssertTrue([fileName isEqualToString:@"zipFiles/text/test"], @"node uncompressed is not as expected");
+                XCTAssertTrue([fileName isEqualToString:@"zipFiles/text/test"], @"node uncompressed is not as expected");
                 break;
             }
             case 13:
             {
-                STAssertTrue([fileName isEqualToString:@"zipFiles/UnitTests-Info.plist"], @"node uncompressed is not as expected");
+                XCTAssertTrue([fileName isEqualToString:@"zipFiles/UnitTests-Info.plist"], @"node uncompressed is not as expected");
                 break;
             }
             case 14:
             {
-                STAssertTrue([fileName isEqualToString:@"zipFiles/UnitTests-Prefix.pch"], @"node uncompressed is not as expected");
+                XCTAssertTrue([fileName isEqualToString:@"zipFiles/UnitTests-Prefix.pch"], @"node uncompressed is not as expected");
                 break;
             }
 
             default:
-                STFail(@"Something went wrong");
+                XCTFail(@"Something went wrong");
         }
 
         iteration ++;
@@ -155,7 +155,7 @@
         {
             case 0:
             {
-                STAssertTrue([fileName isEqualToString:@"zipFiles"], @"node uncompressed is not as expected");
+                XCTAssertTrue([fileName isEqualToString:@"zipFiles"], @"node uncompressed is not as expected");
 
                 // explicit stop -> no other iterations have to follow!
                 *stop = YES;
@@ -164,7 +164,7 @@
             }
 
             default:
-                STFail(@"Stopping DTZipArchive failed");
+                XCTFail(@"Stopping DTZipArchive failed");
         }
 
         iteration ++;
@@ -183,55 +183,55 @@
 
     [zipArchive uncompressToPath:[testBundle bundlePath] completion:^(NSError *error) {
 
-        STAssertNil(error, @"Error occured when uncompressing");
+        XCTAssertNil(error, @"Error occured when uncompressing");
 
         NSFileManager *fileManager = [NSFileManager defaultManager];
 
         NSString *unzippedFilePath = [[testBundle bundlePath] stringByAppendingPathComponent:@"zipFiles/"];
-        STAssertTrue([fileManager fileExistsAtPath:unzippedFilePath], @"node uncompressed is not as expected: %@", unzippedFilePath);
+        XCTAssertTrue([fileManager fileExistsAtPath:unzippedFilePath], @"node uncompressed is not as expected: %@", unzippedFilePath);
 
         unzippedFilePath = [[testBundle bundlePath] stringByAppendingPathComponent:@"zipFiles/plist/"];
-        STAssertTrue([fileManager fileExistsAtPath:unzippedFilePath], @"node uncompressed is not as expected: %@", unzippedFilePath);
+        XCTAssertTrue([fileManager fileExistsAtPath:unzippedFilePath], @"node uncompressed is not as expected: %@", unzippedFilePath);
 
         unzippedFilePath = [[testBundle bundlePath] stringByAppendingPathComponent:@"zipFiles/text/"];
-        STAssertTrue([fileManager fileExistsAtPath:unzippedFilePath], @"node uncompressed is not as expected: %@", unzippedFilePath);
+        XCTAssertTrue([fileManager fileExistsAtPath:unzippedFilePath], @"node uncompressed is not as expected: %@", unzippedFilePath);
 
         unzippedFilePath = [[testBundle bundlePath] stringByAppendingPathComponent:@"zipFiles/text/Andere/"];
-        STAssertTrue([fileManager fileExistsAtPath:unzippedFilePath], @"node uncompressed is not as expected: %@", unzippedFilePath);
+        XCTAssertTrue([fileManager fileExistsAtPath:unzippedFilePath], @"node uncompressed is not as expected: %@", unzippedFilePath);
 
         unzippedFilePath = [[testBundle bundlePath] stringByAppendingPathComponent:@"zipFiles/text/Andere/Franz.txt"];
         NSString *originalFilePath = [[testBundle bundlePath] stringByAppendingPathComponent:@"Franz.txt"];
-        STAssertTrue([fileManager fileExistsAtPath:unzippedFilePath], @"node uncompressed is not as expected: %@", unzippedFilePath);
+        XCTAssertTrue([fileManager fileExistsAtPath:unzippedFilePath], @"node uncompressed is not as expected: %@", unzippedFilePath);
         [self _compareOriginalFile:originalFilePath withUncompressedFile:unzippedFilePath];
 
         unzippedFilePath = [[testBundle bundlePath] stringByAppendingPathComponent:@"zipFiles/text/Oliver.txt"];
         originalFilePath = [[testBundle bundlePath] stringByAppendingPathComponent:@"Oliver.txt"];
-        STAssertTrue([fileManager fileExistsAtPath:unzippedFilePath], @"node uncompressed is not as expected: %@", unzippedFilePath);
+        XCTAssertTrue([fileManager fileExistsAtPath:unzippedFilePath], @"node uncompressed is not as expected: %@", unzippedFilePath);
         [self _compareOriginalFile:originalFilePath withUncompressedFile:unzippedFilePath];
 
         unzippedFilePath = [[testBundle bundlePath] stringByAppendingPathComponent:@"zipFiles/text/Rene"];
         originalFilePath = [[testBundle bundlePath] stringByAppendingPathComponent:@"Rene"];
-        STAssertTrue([fileManager fileExistsAtPath:unzippedFilePath], @"node uncompressed is not as expected");
+        XCTAssertTrue([fileManager fileExistsAtPath:unzippedFilePath], @"node uncompressed is not as expected");
         [self _compareOriginalFile:originalFilePath withUncompressedFile:unzippedFilePath];
 
         unzippedFilePath = [[testBundle bundlePath] stringByAppendingPathComponent:@"zipFiles/text/Stefan.txt"];
         originalFilePath = [[testBundle bundlePath] stringByAppendingPathComponent:@"Stefan.txt"];
-        STAssertTrue([fileManager fileExistsAtPath:unzippedFilePath], @"node uncompressed is not as expected: %@", unzippedFilePath);
+        XCTAssertTrue([fileManager fileExistsAtPath:unzippedFilePath], @"node uncompressed is not as expected: %@", unzippedFilePath);
         [self _compareOriginalFile:originalFilePath withUncompressedFile:unzippedFilePath];
 
         unzippedFilePath = [[testBundle bundlePath] stringByAppendingPathComponent:@"zipFiles/text/test/"];
-        STAssertTrue([fileManager fileExistsAtPath:unzippedFilePath], @"node uncompressed is not as expected: %@", unzippedFilePath);
+        XCTAssertTrue([fileManager fileExistsAtPath:unzippedFilePath], @"node uncompressed is not as expected: %@", unzippedFilePath);
 
         unzippedFilePath = [[testBundle bundlePath] stringByAppendingPathComponent:@"zipFiles/UnitTests-Info.plist"];
-        STAssertTrue([fileManager fileExistsAtPath:unzippedFilePath], @"node uncompressed is not as expected: %@", unzippedFilePath);
+        XCTAssertTrue([fileManager fileExistsAtPath:unzippedFilePath], @"node uncompressed is not as expected: %@", unzippedFilePath);
 
         unzippedFilePath = [[testBundle bundlePath] stringByAppendingPathComponent:@"zipFiles/UnitTests-Prefix.pch"];
-        STAssertTrue([fileManager fileExistsAtPath:unzippedFilePath], @"node uncompressed is not as expected: %@", unzippedFilePath);
+        XCTAssertTrue([fileManager fileExistsAtPath:unzippedFilePath], @"node uncompressed is not as expected: %@", unzippedFilePath);
         
         // test a file larger than 4K
         unzippedFilePath = [[testBundle bundlePath] stringByAppendingPathComponent:@"zipFiles/screenshot.png"];
         originalFilePath = [[testBundle bundlePath] stringByAppendingPathComponent:@"screenshot.png"];
-        STAssertTrue([fileManager fileExistsAtPath:unzippedFilePath], @"node uncompressed is not as expected: %@", unzippedFilePath);
+        XCTAssertTrue([fileManager fileExistsAtPath:unzippedFilePath], @"node uncompressed is not as expected: %@", unzippedFilePath);
         [self _compareOriginalFile:originalFilePath withUncompressedFile:unzippedFilePath];
 
     }];
@@ -249,7 +249,7 @@
 {
     NSData *originalFileData = [NSData dataWithContentsOfFile:originalFilePath];
     
-    STAssertTrue([originalFileData isEqualToData:uncompressedFileData], @"Uncompressed file: %@ does not match original file: %@", uncompressedFileName, originalFilePath);
+    XCTAssertTrue([originalFileData isEqualToData:uncompressedFileData], @"Uncompressed file: %@ does not match original file: %@", uncompressedFileName, originalFilePath);
 }
 
 /**
@@ -263,7 +263,7 @@
     NSData *originalFileData = [NSData dataWithContentsOfFile:originalFilePath];
     NSData *uncompressedFileData = [NSData dataWithContentsOfFile:uncompressedFilePath];
 
-    STAssertTrue([originalFileData isEqualToData:uncompressedFileData], @"Uncompressed file: %@ does not match original file: %@", uncompressedFilePath, originalFilePath);
+    XCTAssertTrue([originalFileData isEqualToData:uncompressedFileData], @"Uncompressed file: %@ does not match original file: %@", uncompressedFilePath, originalFilePath);
 }
 
 /**
@@ -280,7 +280,7 @@
 
     [zipArchive uncompressToPath:@"ILLEGAL PATH!!!" completion:^(NSError *error) {
 
-        STAssertNotNil(error, @"No error with illegal path");
+        XCTAssertNotNil(error, @"No error with illegal path");
     }];
 }
 
@@ -308,7 +308,7 @@
 
 	[zipArchive uncompressZipArchiveNode:franzTxt toDataWithCompletion:^(NSData *data, NSError *error) {
 
-		STAssertNil(error, @"Error occured when uncompressing one single file: %@", [error localizedDescription]);
+		XCTAssertNil(error, @"Error occured when uncompressing one single file: %@", [error localizedDescription]);
 
 		// TODO compare data
 		dispatch_semaphore_signal(semaphore);
@@ -316,7 +316,10 @@
 	}];
 
 	dispatch_semaphore_wait(semaphore, DISPATCH_TIME_FOREVER);
+   
+#if !OS_OBJECT_USE_OBJC
 	dispatch_release(semaphore);
+#endif
 }
 
 /**
@@ -338,14 +341,17 @@
 
 	[zipArchive uncompressZipArchiveNode:rootDirectoryNode toDataWithCompletion:^(NSData *data, NSError *error) {
 
-		STAssertNotNil(error, @"No error raised when uncompressing directory", nil);
-		STAssertTrueNoThrow(error.code == 6, @"Wrong error raised. Error should be 6: %@", [error localizedDescription]);
+		XCTAssertNotNil(error, @"No error raised when uncompressing directory", nil);
+		XCTAssertTrue(error.code == 6, @"Wrong error raised. Error should be 6: %@", [error localizedDescription]);
 
 		dispatch_semaphore_signal(semaphore);
 	}];
 
 	dispatch_semaphore_wait(semaphore, DISPATCH_TIME_FOREVER);
+   
+#if !OS_OBJECT_USE_OBJC
 	dispatch_release(semaphore);
+#endif
 }
 
 
@@ -373,12 +379,12 @@
 		
 		if (node.isDirectory)
 		{
-			STAssertNotNil(error, @"No error raised when uncompressing directory", nil);
-			STAssertTrueNoThrow(error.code == 6, @"Wrong error raised. Error should be 6: %@", [error localizedDescription]);
+			XCTAssertNotNil(error, @"No error raised when uncompressing directory", nil);
+			XCTAssertTrue(error.code == 6, @"Wrong error raised. Error should be 6: %@", [error localizedDescription]);
 		}
 		else
 		{
-			STAssertNil(error, @"Error raised when uncompressing node", nil);
+			XCTAssertNil(error, @"Error raised when uncompressing node", nil);
 		}
 	}
 }
@@ -393,7 +399,7 @@
 			
 	[zipArchive uncompressToPath:[testBundle bundlePath] completion:^(NSError *error) {
 		
-		STFail(@"Should not complete uncompressing after cancel was called");
+		XCTFail(@"Should not complete uncompressing after cancel was called");
 	}];
 	
 	[zipArchive cancelAllUncompressing];
@@ -411,7 +417,7 @@
 		
 	[zipArchive uncompressToPath:[testBundle bundlePath] completion:^(NSError *error) {
 		
-		STFail(@"Should not complete uncompressing after cancel was called");
+		XCTFail(@"Should not complete uncompressing after cancel was called");
 	}];
 	
 	[NSThread sleepForTimeInterval:0.0001f];
@@ -444,14 +450,17 @@
 
 	[zipArchive uncompressZipArchiveNode:wrongNode toDataWithCompletion:^(NSData *data, NSError *error) {
 
-		STAssertNotNil(error, @"No error raised when uncompressing wrong node", nil);
-		STAssertTrueNoThrow(error.code == 7, @"Wrong error raised. Error should be 7: %@", [error localizedDescription]);
+		XCTAssertNotNil(error, @"No error raised when uncompressing wrong node", nil);
+		XCTAssertTrue(error.code == 7, @"Wrong error raised. Error should be 7: %@", [error localizedDescription]);
 
 		dispatch_semaphore_signal(semaphore);
 	}];
 
 	dispatch_semaphore_wait(semaphore, DISPATCH_TIME_FOREVER);
+
+#if !OS_OBJECT_USE_OBJC
 	dispatch_release(semaphore);
+#endif
 }
 
 
@@ -470,7 +479,7 @@
 
     [zipArchive enumerateUncompressedFilesAsDataUsingBlock:^(NSString *fileName, NSData *data, BOOL *stop) {
 
-        STAssertTrue([fileName isEqualToString:@"gzip_sample.txt"], @"Wrong file got when uncompressing");
+        XCTAssertTrue([fileName isEqualToString:@"gzip_sample.txt"], @"Wrong file got when uncompressing");
 
     }];
 }
@@ -492,23 +501,26 @@
 	
     [zipArchive uncompressToPath:[testBundle bundlePath] completion:^(NSError *error) {
 
-        STAssertNil(error, @"Error occured when uncompressing");
+        XCTAssertNil(error, @"Error occured when uncompressing");
 
         NSFileManager *fileManager = [NSFileManager defaultManager];
 
         NSString *filePath = [[testBundle bundlePath] stringByAppendingPathComponent:@"gzip_sample.txt"];
-        STAssertTrue([fileManager fileExistsAtPath:filePath], @"node uncompressed is not as expected: %@", filePath);
+        XCTAssertTrue([fileManager fileExistsAtPath:filePath], @"node uncompressed is not as expected: %@", filePath);
 
         NSData *originalFileData = [NSData dataWithContentsOfFile:[testBundle pathForResource:@"gzip_sample.txt" ofType:@"original"]];
         NSData *uncompressedFileData = [NSData dataWithContentsOfFile:filePath];
 
-        STAssertTrue([originalFileData isEqualToData:uncompressedFileData], @"Uncompressed file does not match original file");
+        XCTAssertTrue([originalFileData isEqualToData:uncompressedFileData], @"Uncompressed file does not match original file");
 		 
 		 dispatch_semaphore_signal(semaphore);
     }];
 	
 	dispatch_semaphore_wait(semaphore, DISPATCH_TIME_FOREVER);
+   
+#if !OS_OBJECT_USE_OBJC
 	dispatch_release(semaphore);
+#endif
 }
 
 
@@ -524,23 +536,26 @@
 	
 	[zipArchive uncompressToPath:[testBundle bundlePath] completion:^(NSError *error) {
 		
-		STAssertNil(error, @"Error occured when uncompressing");
+		XCTAssertNil(error, @"Error occured when uncompressing");
 		
 		NSFileManager *fileManager = [NSFileManager defaultManager];
 		
 		NSString *filePath = [[testBundle bundlePath] stringByAppendingPathComponent:@"gzip_sample.txt"];
-		STAssertTrue([fileManager fileExistsAtPath:filePath], @"node uncompressed is not as expected: %@", filePath);
+		XCTAssertTrue([fileManager fileExistsAtPath:filePath], @"node uncompressed is not as expected: %@", filePath);
 		
 		NSData *originalFileData = [NSData dataWithContentsOfFile:[testBundle pathForResource:@"gzip_sample.txt" ofType:@"original"]];
 		NSData *uncompressedFileData = [NSData dataWithContentsOfFile:filePath];
 		
-		STAssertTrue([originalFileData isEqualToData:uncompressedFileData], @"Uncompressed file does not match original file");
+		XCTAssertTrue([originalFileData isEqualToData:uncompressedFileData], @"Uncompressed file does not match original file");
 		
 		dispatch_semaphore_signal(semaphore);
 	}];
 	
 	dispatch_semaphore_wait(semaphore, DISPATCH_TIME_FOREVER);
+   
+#if !OS_OBJECT_USE_OBJC
 	dispatch_release(semaphore);
+#endif
 	
 	__block BOOL didReceiveNotification = NO;
 	__block BOOL didGetZeroPercent = NO;
@@ -564,15 +579,15 @@
 			didGetHundredPercent = YES;
 		}
 		
-		STAssertTrue(currentPercent>=previousPercent, @"progress notification percent should only increase");
+		XCTAssertTrue(currentPercent>=previousPercent, @"progress notification percent should only increase");
 		previousPercent = currentPercent;
 	}];
 	
 	[[NSRunLoop mainRunLoop] runUntilDate:[NSDate dateWithTimeIntervalSinceNow:1]];
 	
-	STAssertTrue(didGetZeroPercent, @"Should have received zero percent progress");
-	STAssertTrue(didReceiveNotification, @"Should have received progress notification");
-	STAssertTrue(didGetHundredPercent, @"Should have received hundred percent progress");
+	XCTAssertTrue(didGetZeroPercent, @"Should have received zero percent progress");
+	XCTAssertTrue(didReceiveNotification, @"Should have received progress notification");
+	XCTAssertTrue(didGetHundredPercent, @"Should have received hundred percent progress");
 }
 
 /**
@@ -588,7 +603,7 @@
 
     [zipArchive uncompressToPath:@"ILLEGAL PATH!!!" completion:^(NSError *error) {
 
-        STAssertNotNil(error, @"No error with illegal path");
+        XCTAssertNotNil(error, @"No error with illegal path");
     }];
 }
 
@@ -605,7 +620,7 @@
 	
 	[zipArchive uncompressToPath:[testBundle bundlePath] completion:^(NSError *error) {
 		
-		STFail(@"Should not complete uncompressing after cancel was called");
+		XCTFail(@"Should not complete uncompressing after cancel was called");
 	}];
 	
 	// resume
@@ -626,7 +641,7 @@
 	
 	[zipArchive uncompressToPath:[testBundle bundlePath] completion:^(NSError *error) {
 		
-		STFail(@"Should not complete uncompressing after cancel was called");
+		XCTFail(@"Should not complete uncompressing after cancel was called");
 	}];
 	
 	[NSThread sleepForTimeInterval:0.0001];
@@ -648,23 +663,26 @@
 	
 	[zipArchive uncompressToPath:[testBundle bundlePath] completion:^(NSError *error) {
 		
-		STAssertNil(error, @"Error occured when uncompressing");
+		XCTAssertNil(error, @"Error occured when uncompressing");
 		
 		NSFileManager *fileManager = [NSFileManager defaultManager];
 		
 		NSString *filePath = [[testBundle bundlePath] stringByAppendingPathComponent:@"gzip_sample.txt"];
-		STAssertTrue([fileManager fileExistsAtPath:filePath], @"node uncompressed is not as expected: %@", filePath);
+		XCTAssertTrue([fileManager fileExistsAtPath:filePath], @"node uncompressed is not as expected: %@", filePath);
 		
 		NSData *originalFileData = [NSData dataWithContentsOfFile:[testBundle pathForResource:@"gzip_sample.txt" ofType:@"original"]];
 		NSData *uncompressedFileData = [NSData dataWithContentsOfFile:filePath];
 		
-		STAssertTrue([originalFileData isEqualToData:uncompressedFileData], @"Uncompressed file does not match original file");
+		XCTAssertTrue([originalFileData isEqualToData:uncompressedFileData], @"Uncompressed file does not match original file");
 		
 		dispatch_semaphore_signal(semaphore);
 	}];
 	
 	dispatch_semaphore_wait(semaphore, DISPATCH_TIME_FOREVER);
+   
+#if !OS_OBJECT_USE_OBJC
 	dispatch_release(semaphore);
+#endif
 }
 
 - (void)testGZipFilenameWithDashZ
@@ -679,23 +697,26 @@
 	
 	[zipArchive uncompressToPath:[testBundle bundlePath] completion:^(NSError *error) {
 		
-		STAssertNil(error, @"Error occured when uncompressing");
+		XCTAssertNil(error, @"Error occured when uncompressing");
 		
 		NSFileManager *fileManager = [NSFileManager defaultManager];
 		
 		NSString *filePath = [[testBundle bundlePath] stringByAppendingPathComponent:@"gzip_sample.txt"];
-		STAssertTrue([fileManager fileExistsAtPath:filePath], @"node uncompressed is not as expected: %@", filePath);
+		XCTAssertTrue([fileManager fileExistsAtPath:filePath], @"node uncompressed is not as expected: %@", filePath);
 		
 		NSData *originalFileData = [NSData dataWithContentsOfFile:[testBundle pathForResource:@"gzip_sample.txt" ofType:@"original"]];
 		NSData *uncompressedFileData = [NSData dataWithContentsOfFile:filePath];
 		
-		STAssertTrue([originalFileData isEqualToData:uncompressedFileData], @"Uncompressed file does not match original file");
+		XCTAssertTrue([originalFileData isEqualToData:uncompressedFileData], @"Uncompressed file does not match original file");
 		
 		dispatch_semaphore_signal(semaphore);
 	}];
 	
 	dispatch_semaphore_wait(semaphore, DISPATCH_TIME_FOREVER);
+
+#if !OS_OBJECT_USE_OBJC
 	dispatch_release(semaphore);
+#endif
 }
 
 - (void)testGzipInvalidFilename
@@ -706,7 +727,7 @@
 	
 	DTZipArchive *zipArchive = [DTZipArchive archiveAtPath:sampleZipPath];
 	
-	STAssertNil(zipArchive, @"Should not work to instantiate for invalid file name");
+	XCTAssertNil(zipArchive, @"Should not work to instantiate for invalid file name");
 }
 
 - (void)testGzipInvalidFile
@@ -717,11 +738,11 @@
 	
 	DTZipArchive *zipArchive = [DTZipArchive archiveAtPath:sampleZipPath];
 	
-	STAssertNotNil(zipArchive, @"Should be able to instantiate zip archive");
+	XCTAssertNotNil(zipArchive, @"Should be able to instantiate zip archive");
 	
 	[zipArchive uncompressToPath:[NSString temporaryPath] completion:^(NSError *error) {
 		
-		STAssertNotNil(error, @"No error with illegal path");
+		XCTAssertNotNil(error, @"No error with illegal path");
 	}];
 }
 
@@ -729,10 +750,10 @@
 {
 	DTZipArchiveGZip *zipArchive = [[DTZipArchiveGZip alloc] init];
 	
-	STAssertNotNil(zipArchive, @"Should be able to instantiate zip archive");
+	XCTAssertNotNil(zipArchive, @"Should be able to instantiate zip archive");
 	
 	[zipArchive enumerateUncompressedFilesAsDataUsingBlock:^(NSString *fileName, NSData *data, BOOL *stop) {
-		STFail(@"Should never get here");
+		XCTFail(@"Should never get here");
 	}];
 }
 
@@ -745,7 +766,7 @@
 {
     DTZipArchive *zipArchive = [[DTZipArchive alloc] init];
 
-    STAssertThrowsSpecificNamed([zipArchive enumerateUncompressedFilesAsDataUsingBlock:^(NSString *fileName, NSData *data, BOOL *stop) {
+    XCTAssertThrowsSpecificNamed([zipArchive enumerateUncompressedFilesAsDataUsingBlock:^(NSString *fileName, NSData *data, BOOL *stop) {
 
     }] , NSException, @"DTAbstractClassException", @"Calling this method on [[DTZipArchive alloc] init] object should cause exception");
 
@@ -765,7 +786,7 @@
 	NSError *error = nil;
 	[zipArchive uncompressZipArchiveNode:rootNode withError:&error];
 	
-	STAssertNil(error, @"Error occured when uncompressing");
+	XCTAssertNil(error, @"Error occured when uncompressing");
 	
 }
 
@@ -790,13 +811,16 @@
 	
 	[zipArchive uncompressToPath:[NSString temporaryPath] completion:^(NSError *error) {
 			
-		STAssertNil(error, @"Error occured when uncompressing same file twice to same location");
+		XCTAssertNil(error, @"Error occured when uncompressing same file twice to same location");
 		
 		dispatch_semaphore_signal(semaphore);
 	}];
 	
 	dispatch_semaphore_wait(semaphore, DISPATCH_TIME_FOREVER);
+   
+#if !OS_OBJECT_USE_OBJC
 	dispatch_release(semaphore);
+#endif
 }
 
 - (void)testUncompressGZipToTargetPathWithMissingPermissions
@@ -816,20 +840,23 @@
 	NSDictionary *attributes = @{NSFilePosixPermissions: @(555)};
 	
 	BOOL createFolderWithoutWritePermission = [fileManager createDirectoryAtURL:pathURL withIntermediateDirectories:NO attributes:attributes error:NULL];
-	STAssertTrue(createFolderWithoutWritePermission, @"Cannot create tmp folder with 555");
+	XCTAssertTrue(createFolderWithoutWritePermission, @"Cannot create tmp folder with 555");
 	
 	// Uncompress to folder with permission denied
 	[zipArchive uncompressToPath:tmpDirPath completion:^(NSError *error) {
 			
 		dispatch_semaphore_signal(semaphore);
 		
-		STAssertNotNil(error, @"No error raised when uncompressing to target path where permission is denied", nil);
-		STAssertTrueNoThrow(error.code == 2, @"Wrong error raised. Error should be 2: %@", [error localizedDescription]);
+		XCTAssertNotNil(error, @"No error raised when uncompressing to target path where permission is denied", nil);
+		XCTAssertTrue(error.code == 2, @"Wrong error raised. Error should be 2: %@", [error localizedDescription]);
 		
 	}];
 	
 	dispatch_semaphore_wait(semaphore, DISPATCH_TIME_FOREVER);
+   
+#if !OS_OBJECT_USE_OBJC
 	dispatch_release(semaphore);
+#endif
 }
 
 - (void)testSuccessfulUncompressZipArchiveNodeToDataGZip
@@ -842,7 +869,7 @@
 	
 	[zipArchive uncompressZipArchiveNode:zipArchive.nodes[0] toDataWithCompletion:^(NSData *data, NSError *error) {
 		
-		STAssertNil(error, @"Error raised when uncompressing node to data");
+		XCTAssertNil(error, @"Error raised when uncompressing node to data");
 		
 	}];
 }
@@ -857,8 +884,8 @@
 	
 	[zipArchive uncompressZipArchiveNode:nil toDataWithCompletion:^(NSData *data, NSError *error) {
 		
-		STAssertNotNil(error, @"No error raised when uncompressing to target path where permission is denied", nil);
-		STAssertTrueNoThrow(error.code == 7, @"Wrong error raised. Error should be 7: %@", [error localizedDescription]);
+		XCTAssertNotNil(error, @"No error raised when uncompressing to target path where permission is denied", nil);
+		XCTAssertTrue(error.code == 7, @"Wrong error raised. Error should be 7: %@", [error localizedDescription]);
 		
 	}];
 }
@@ -877,9 +904,9 @@
 	
 	NSData *data = [zipArchive uncompressZipArchiveNode:invalidNode withError:&error];
 	
-	STAssertNil(data, @"No data should be returned when trying to uncompress invalid node");
-	STAssertNotNil(error, @"No error raised when uncompressing to target path where permission is denied", nil);
-	STAssertTrueNoThrow(error.code == 7, @"Wrong error raised. Error should be 7: %@", [error localizedDescription]);
+	XCTAssertNil(data, @"No data should be returned when trying to uncompress invalid node");
+	XCTAssertNotNil(error, @"No error raised when uncompressing to target path where permission is denied", nil);
+	XCTAssertTrue(error.code == 7, @"Wrong error raised. Error should be 7: %@", [error localizedDescription]);
 
 }
 

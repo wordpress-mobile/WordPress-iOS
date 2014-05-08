@@ -6,8 +6,8 @@
 //  Copyright (c) 2013 Cocoanetics. All rights reserved.
 //
 
-#import <SenTestingKit/SenTestingKit.h>
+#import <XCTest/XCTest.h>
 
-@interface DTBlockFunctionsTest : SenTestCase
+@interface DTBlockFunctionsTest : XCTestCase
 
 @end

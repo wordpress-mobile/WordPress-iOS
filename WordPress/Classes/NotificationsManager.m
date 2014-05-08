@@ -122,7 +122,7 @@ NSString *const NotificationsDeviceToken = @"apnsDeviceToken";
             break;
             
         case UIApplicationStateBackground:
-#warning TODO: FIXME
+// TODO: FIXME
             if (completionHandler) {
 //                NoteService *noteService = [[NoteService alloc] initWithManagedObjectContext:[[ContextManager sharedInstance] mainContext]];
 //                

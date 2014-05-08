@@ -35,7 +35,7 @@
 		dispatch_semaphore_signal(sema);
 	});
 	
-	STAssertFalse(changed1, @"dispatch_async should not get executed in time");
+	XCTAssertFalse(changed1, @"dispatch_async should not get executed in time");
 	
 
 	// now test functionality of the function
@@ -46,12 +46,12 @@
 	});
 
 	
-	STAssertTrue(changed2, @"DTBlockPerformSyncIfOnMainThreadElseAsync did not get executed inline");
+	XCTAssertTrue(changed2, @"DTBlockPerformSyncIfOnMainThreadElseAsync did not get executed inline");
 	
 	// wait until first background queue operation is done
 	dispatch_semaphore_wait(sema, DISPATCH_TIME_FOREVER);
 	
-	STAssertFalse(changed3, @"perform should have been dispatched asynchronously");
+	XCTAssertFalse(changed3, @"perform should have been dispatched asynchronously");
 }
 
 @end

@@ -21,8 +21,8 @@
 	
 	id object = [DTASN1Serialization objectWithData:data];
 	
-	STAssertNotNil(object, @"Should be able to decode as array");
-	STAssertTrue([object isKindOfClass:[NSArray class]], @"Decoded object should be an array");
+	XCTAssertNotNil(object, @"Should be able to decode as array");
+	XCTAssertTrue([object isKindOfClass:[NSArray class]], @"Decoded object should be an array");
 }
 
 - (void)testBitString
@@ -33,7 +33,7 @@
 	DTASN1BitString *bitString = [DTASN1Serialization objectWithData:data];
 	
 	NSString *asString = [bitString stringWithBits];
-	STAssertTrue([@"101" isEqualToString:asString], @"Result should be 101");
+	XCTAssertTrue([@"101" isEqualToString:asString], @"Result should be 101");
 }
 
 - (void)testUTF8String
@@ -43,7 +43,7 @@
     
 	NSString *decodedString = [DTASN1Serialization objectWithData:data];
 	
-	STAssertTrue([@"Some-State" isEqualToString:decodedString], @"Result is not 'Some-State'");
+	XCTAssertTrue([@"Some-State" isEqualToString:decodedString], @"Result is not 'Some-State'");
 }
 
 // a sequence with no contents should still be returned as array
@@ -54,8 +54,8 @@
 	
 	id object = [DTASN1Serialization objectWithData:data];
 	
-	STAssertNotNil(object, @"Should be able to decode as array");
-	STAssertTrue([object isKindOfClass:[NSArray class]], @"Decoded object should be an array");
+	XCTAssertNotNil(object, @"Should be able to decode as array");
+	XCTAssertTrue([object isKindOfClass:[NSArray class]], @"Decoded object should be an array");
 }
 
 - (void)testCertificateDecoding
@@ -65,10 +65,10 @@
     
     id object = [DTASN1Serialization objectWithData:data];
     
-	STAssertNotNil(object, @"Should be able to decode certificate");
+	XCTAssertNotNil(object, @"Should be able to decode certificate");
     
-    STAssertTrue([object isKindOfClass:[NSArray class]], @"Certficate should be decoded as NSArray");
-    STAssertEquals([object count], (NSUInteger)3, @"Certificate should have 3 sections");
+    XCTAssertTrue([object isKindOfClass:[NSArray class]], @"Certficate should be decoded as NSArray");
+    XCTAssertEqual([object count], (NSUInteger)3, @"Certificate should have 3 sections");
 }
 
 @end

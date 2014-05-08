@@ -3,6 +3,14 @@ Change Log
 
 This is the history of version updates.
 
+<<<<<<< HEAD
+=======
+**Version 1.6.3**
+
+- FIXED: DTFolderMonitor might cause exception if monitoring is started and stopped quickly in succession
+- CHANGED: Migrated unit testing to XCTest
+
+>>>>>>> release-1.6.3
 **Version 1.6.2**
 
 - ADDED: DTCustomColoredAccessory gains DTCustomColoredAccessoryTypeSquare

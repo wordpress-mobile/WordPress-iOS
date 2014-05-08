@@ -29,8 +29,8 @@
     NSArray *array = [NSArray arrayWithContentsOfData:plistData error:&error];
    
     // do checks
-    STAssertNil(array, @"Array has content but should be nil");
-    STAssertNotNil(error, @"No error occured with invalid Plist data");
+    XCTAssertNil(array, @"Array has content but should be nil");
+    XCTAssertNotNil(error, @"No error occured with invalid Plist data");
 }
 
 /**
@@ -49,8 +49,8 @@
     NSArray *array =[NSArray arrayWithContentsOfData:plistData error:&error];
     
     // do checks
-    STAssertNil(error, @"Error occured during parsing of valid Plist data");
-    STAssertTrue(3 == [array count], @"Wrong count of objects in array");
+    XCTAssertNil(error, @"Error occured during parsing of valid Plist data");
+    XCTAssertTrue(3 == [array count], @"Wrong count of objects in array");
 }
 
 @end

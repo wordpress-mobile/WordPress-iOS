@@ -29,8 +29,8 @@
     NSDictionary *dictionary = [NSDictionary dictionaryWithContentsOfData:plistData error:&error];
     
     // do checks
-    STAssertNil(dictionary, @"Dictionary has content but should be nil");
-    STAssertNotNil(error, @"No error occured with invalid Plist data");
+    XCTAssertNil(dictionary, @"Dictionary has content but should be nil");
+    XCTAssertNotNil(error, @"No error occured with invalid Plist data");
 }
 
 /**
@@ -49,8 +49,8 @@
     NSDictionary *dictionary = [NSDictionary dictionaryWithContentsOfData:plistData error:&error];
     
     // do checks
-    STAssertNil(error, @"Error occured during parsing of valid Plist data");
-    STAssertTrue(4 == [[dictionary allValues] count], @"Wrong count of objects in dictionary");
+    XCTAssertNil(error, @"Error occured during parsing of valid Plist data");
+    XCTAssertTrue(4 == [[dictionary allValues] count], @"Wrong count of objects in dictionary");
 }
 
 @end

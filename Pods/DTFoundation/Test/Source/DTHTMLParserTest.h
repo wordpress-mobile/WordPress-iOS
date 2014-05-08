@@ -6,9 +6,9 @@
 //  Copyright (c) 2012 Cocoanetics. All rights reserved.
 //
 
-#import <SenTestingKit/SenTestingKit.h>
+#import <XCTest/XCTest.h>
 
-@interface DTHTMLParserTest : SenTestCase
+@interface DTHTMLParserTest : XCTestCase
 
 - (void)testNilData;
 - (void)testPlainFile;

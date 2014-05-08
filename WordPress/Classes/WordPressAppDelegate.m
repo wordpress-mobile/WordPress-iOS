@@ -655,7 +655,7 @@ static NSInteger const IndexForMeTab = 2;
 
 - (void)configureHockeySDK
 {
-#ifndef INTERNAL_BUILD
+#ifdef INTERNAL_BUILD
     return;
 #endif
     [[BITHockeyManager sharedHockeyManager] configureWithIdentifier:[WordPressComApiCredentials hockeyappAppId]

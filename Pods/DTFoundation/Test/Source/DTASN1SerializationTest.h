@@ -6,8 +6,8 @@
 //  Copyright (c) 2013 Cocoanetics. All rights reserved.
 //
 
-#import <SenTestingKit/SenTestingKit.h>
+#import <XCTest/XCTest.h>
 
-@interface DTASN1SerializationTest : SenTestCase
+@interface DTASN1SerializationTest : XCTestCase
 
 @end

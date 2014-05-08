@@ -32,8 +32,8 @@
             skipped = "NO">
             <BuildableReference
                BuildableIdentifier = "primary"
-               BlueprintIdentifier = "A7D60FCE15D3B0BC00AEDD1B"
-               BuildableName = "UnitTests.octest"
+               BlueprintIdentifier = "A7917C76191A312600964D63"
+               BuildableName = "Unit Tests.xctest"
                BlueprintName = "Unit Tests"
                ReferencedContainer = "container:DTFoundation.xcodeproj">
             </BuildableReference>

@@ -21,7 +21,7 @@
     
     NSString *expectedOutput = @"VGhpcyBpcyBhIHRlc3Qgb2YgdGhlIGVuY29kaW5nLg==";
     
-    STAssertTrue([expectedOutput isEqualToString:encodedString], @"Expected output and encoded string don't match");
+    XCTAssertTrue([expectedOutput isEqualToString:encodedString], @"Expected output and encoded string don't match");
 }
 
 - (void)testDecoding
@@ -30,11 +30,11 @@
     
     NSData *data = [DTBase64Coding dataByDecodingString:string];
     
-    STAssertEquals([data length], (NSUInteger)106, @"Decoded result should be 106 Bytes");
+    XCTAssertEqual([data length], (NSUInteger)106, @"Decoded result should be 106 Bytes");
     
     UIImage *image = [UIImage imageWithData:data];
     
-    STAssertNotNil(image, @"Should be a valid image");
+    XCTAssertNotNil(image, @"Should be a valid image");
     
     NSString *path = [[NSString documentsPath] stringByAppendingPathComponent:@"TestImage.png"];
     

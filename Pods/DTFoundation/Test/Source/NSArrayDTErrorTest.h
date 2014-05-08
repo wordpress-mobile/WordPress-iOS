@@ -6,8 +6,8 @@
 //  Copyright (c) 2012 Cocoanetics. All rights reserved.
 //
 
-#import <SenTestingKit/SenTestingKit.h>
+#import <XCTest/XCTest.h>
 
-@interface NSArrayDTErrorTest : SenTestCase
+@interface NSArrayDTErrorTest : XCTestCase
 
 @end

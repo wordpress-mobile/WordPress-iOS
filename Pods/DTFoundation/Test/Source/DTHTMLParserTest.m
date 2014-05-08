@@ -21,7 +21,7 @@
 	DTHTMLParser *parser = [[DTHTMLParser alloc] initWithData:nil encoding:NSUTF8StringEncoding];
 	
 	// make sure that this is nil
-	STAssertNil(parser, @"Parser Object should be nil");
+	XCTAssertNil(parser, @"Parser Object should be nil");
 }
 
 
@@ -34,8 +34,8 @@
     DTHTMLParser *parser = [[DTHTMLParser alloc] initWithData:data encoding:NSUTF8StringEncoding];
 	parser.delegate = self;
 	
-    STAssertTrue([parser parse], @"Cannnot parse");
-	STAssertNil(parser.parserError, @"There should be no error");
+    XCTAssertTrue([parser parse], @"Cannnot parse");
+	XCTAssertNil(parser.parserError, @"There should be no error");
 }
 
 - (void)testProcessingInstruction
@@ -47,8 +47,8 @@
 	parser.delegate = self;
     [parser parse];
 	
-    STAssertTrue([parser parse], @"Cannnot parse");
-	STAssertNil(parser.parserError, @"There should be no error");
+    XCTAssertTrue([parser parse], @"Cannnot parse");
+	XCTAssertNil(parser.parserError, @"There should be no error");
 }
 
 #pragma mark DTHTMLParserDelegate

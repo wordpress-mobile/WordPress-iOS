@@ -24,13 +24,13 @@
 
 	if (expectSuccess)
 	{
-		STAssertNotNil(variable, @"Should be able to parse '%@'", text);
-		STAssertTrue(result, @"Parse result should be true");
+		XCTAssertNotNil(variable, @"Should be able to parse '%@'", text);
+		XCTAssertTrue(result, @"Parse result should be true");
 	}
 	else
 	{
-		STAssertNil(variable, @"Should not be able to parse '%@'", text);
-		STAssertFalse(result, @"Parse result should be false");
+		XCTAssertNil(variable, @"Should not be able to parse '%@'", text);
+		XCTAssertFalse(result, @"Parse result should be false");
 	}
 }
 
@@ -55,12 +55,12 @@
 
 	if (expectSuccess)
 	{
-		STAssertNotNil(expression, @"Should be able to parse '%@'", text);
-		STAssertEquals(parameters, [expression.parameters count], @"Number of parameters should be %d in expression '%@'", parameters, text);
+		XCTAssertNotNil(expression, @"Should be able to parse '%@'", text);
+		XCTAssertEqual(parameters, [expression.parameters count], @"Number of parameters should be %lu in expression '%@'", (unsigned long)parameters, text);
 	}
 	else
 	{
-		STAssertNil(expression, @"Should not be able to parse '%@'", text);
+		XCTAssertNil(expression, @"Should not be able to parse '%@'", text);
 	}
 }
 
