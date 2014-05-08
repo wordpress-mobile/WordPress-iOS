@@ -46,18 +46,6 @@ NSString *const WordPressComApiPushAppId = @"org.wordpress.appstore";
 	return self;
 }
 
-+(BOOL)canProcessRequest:(NSURLRequest *)urlRequest {
-    NSURL *testURL = [NSURL URLWithString:WordPressComApiOauthBaseUrl];
-    if ([urlRequest.URL.host isEqualToString:testURL.host] && [urlRequest.URL.path rangeOfString:testURL.path].location == 0)
-        return YES;
-
-    testURL = [NSURL URLWithString:WordPressComApiClientEndpointURL];
-    if ([urlRequest.URL.host isEqualToString:testURL.host] && [urlRequest.URL.path rangeOfString:testURL.path].location == 0)
-        return YES;
-
-    return NO;
-}
-
 - (NSError *)error {
     if (self.response.statusCode >= 400) {
         NSString *errorMessage = [self.responseObject objectForKey:@"message"];
