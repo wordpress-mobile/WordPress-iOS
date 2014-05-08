@@ -22,8 +22,6 @@
         return;
     }
     
-	// AFMIG:
-	// [[self restApi] cancelAllHTTPOperationsWithMethod:nil path:nil];
 	[[[self restApi] operationQueue] cancelAllOperations];
     [[self restApi] reset];
 

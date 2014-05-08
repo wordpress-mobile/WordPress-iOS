@@ -54,11 +54,6 @@ static NSString *WordPressRestApiRedirectUrl = nil;
 		
         _operationManager = [[WordPressRestApiJSONRequestOperationManager alloc] initWithBaseURL:baseURL
 																						   token:_token];
-		
-        //AFMIG: replaced with override to AFHTTPRequestOperationManager
-		// [_operationManager registerHTTPOperationClass:[WordPressRestApiJSONRequestOperation class]];
-        //AFMIG: replaced with init override in AFHTTPRequestOperationManager
-		// TODO:[_operationManager setDefaultHeader:@"Authorization" value:[NSString stringWithFormat:@"Bearer %@", _token]];
     }
 	
     return self;
