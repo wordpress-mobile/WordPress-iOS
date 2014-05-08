@@ -15,7 +15,7 @@
 /**
  *	@brief		This method is not supported by this class.  Use initWithBaseUrl:token: instead.
  */
-- (id)initWithBaseURL:(NSURL*)url
+- (id)initWithBaseURL:(NSURL *)url
 {
 	[self doesNotRecognizeSelector:_cmd];
 	self = nil;

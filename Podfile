@@ -10,7 +10,7 @@ pod 'DTCoreText',   '1.6.9'
 pod 'UIDeviceIdentifier', '~> 0.1'
 pod 'SVProgressHUD', '~> 1.0'
 pod 'wpxmlrpc', '~> 0.4.1'
-pod 'WordPressApi', :git => 'https://github.com/diegoreymendez/WordPressApi.git', :commit => "0185623c777cbdcfe6ebeb9b357717d24446b9cd"
+pod 'WordPressApi', :git => 'https://github.com/koke/WordPressApi.git', :branch => 'afnetworking2'
 pod 'NSObject-SafeExpectations', :podspec => 'https://raw.github.com/koke/NSObject-SafeExpectations/master/NSObject-SafeExpectations.podspec'
 pod 'Mixpanel', '2.3.1'
 pod 'CocoaLumberjack', '~>1.8.1'
