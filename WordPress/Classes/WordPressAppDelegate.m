@@ -856,7 +856,7 @@ static NSInteger const IndexForMeTab = 2;
 											  context:manager.mainContext
 										  coordinator:manager.persistentStoreCoordinator];
 	
-	self.simperium.verboseLoggingEnabled = YES;
+	self.simperium.verboseLoggingEnabled = NO;
 }
 
 - (void)loginSimperium
