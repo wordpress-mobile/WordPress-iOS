@@ -32,11 +32,14 @@ typedef NS_ENUM(NSInteger, SettingsViewControllerSections)
     [[NSUserDefaults standardUserDefaults] registerDefaults:@{UserDefaultsFeedbackEnabled: @YES}];
     NSURL *url = [NSURL URLWithString:FeedbackCheckUrl];
     NSURLRequest *request = [[NSURLRequest alloc] initWithURL:url];
-	// AFMIG: TODO:
-	/*
-    AFJSONRequestOperation *operation = [AFJSONRequestOperation JSONRequestOperationWithRequest:request success:^(NSURLRequest *request, NSHTTPURLResponse *response, id JSON) {
-        DDLogVerbose(@"Feedback response received: %@", JSON);
-        NSNumber *feedbackEnabled = JSON[@"feedback-enabled"];
+	
+	AFHTTPRequestOperation* operation = [[AFHTTPRequestOperation alloc] initWithRequest:request];
+	operation.responseSerializer = [[AFJSONResponseSerializer alloc] init];
+	
+	[operation setCompletionBlockWithSuccess:^(AFHTTPRequestOperation *operation, id responseObject)
+	{
+        DDLogVerbose(@"Feedback response received: %@", responseObject);
+        NSNumber *feedbackEnabled = responseObject[@"feedback-enabled"];
         if (feedbackEnabled == nil) {
             feedbackEnabled = @YES;
         }
@@ -44,7 +47,7 @@ typedef NS_ENUM(NSInteger, SettingsViewControllerSections)
         NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
         [defaults setBool:feedbackEnabled.boolValue forKey:UserDefaultsFeedbackEnabled];
         [defaults synchronize];
-    } failure:^(NSURLRequest *request, NSHTTPURLResponse *response, NSError *error, id JSON) {
+    } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
         DDLogError(@"Error received while checking feedback enabled status: %@", error);
         
         // Lets be optimistic and turn on feedback by default if this call doesn't work
@@ -52,8 +55,8 @@ typedef NS_ENUM(NSInteger, SettingsViewControllerSections)
         [defaults setBool:YES forKey:UserDefaultsFeedbackEnabled];
         [defaults synchronize];
     }];
-    
-    [operation start];*/
+	
+	[operation start];
 }
 
 + (void)checkIfHelpshiftShouldBeEnabled {

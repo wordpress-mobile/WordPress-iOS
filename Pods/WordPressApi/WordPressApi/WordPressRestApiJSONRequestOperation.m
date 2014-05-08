@@ -38,7 +38,8 @@
     return [super error];
 }
 
-// AFMIG: added
+#pragma mark - NSURLConnectionDelegate
+
 - (BOOL)connection:(NSURLConnection *)connection canAuthenticateAgainstProtectionSpace:(NSURLProtectionSpace *)protectionSpace
 {
 	return ![protectionSpace.authenticationMethod isEqualToString:NSURLAuthenticationMethodClientCertificate];

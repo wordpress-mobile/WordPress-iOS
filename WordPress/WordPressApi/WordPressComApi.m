@@ -29,12 +29,11 @@ NSString *const WordPressComApiPushAppId = @"org.wordpress.appstore";
 
 // AFJSONRequestOperation requires that a URI end with .json in order to match
 // This will match all public-api.wordpress.com/rest/v1/ URI's and parse them as JSON
-// AFMIG: replaced by the line below
-//@interface WPJSONRequestOperation : AFJSONRequestOperation
+
 @interface WPJSONRequestOperation : AFHTTPRequestOperation
 @end
 @implementation WPJSONRequestOperation
-// AFMIG: added...
+
 -(id)initWithRequest:(NSURLRequest *)urlRequest
 {
 	self = [super initWithRequest:urlRequest];
@@ -111,7 +110,6 @@ NSString *const WordPressComApiPushAppId = @"org.wordpress.appstore";
 	return self;
 }
 
-// AFMIG: override
 - (AFHTTPRequestOperation *)HTTPRequestOperationWithRequest:(NSURLRequest *)request
                                                     success:(void (^)(AFHTTPRequestOperation *operation, id responseObject))success
                                                     failure:(void (^)(AFHTTPRequestOperation *operation, NSError *error))failure
@@ -133,15 +131,20 @@ NSString *const WordPressComApiPushAppId = @"org.wordpress.appstore";
     dispatch_once(&oncePredicate, ^{
         DDLogVerbose(@"Initializing anonymous API");
         _anonymousApi = [[self alloc] initWithBaseURL:[NSURL URLWithString:WordPressComApiClientEndpointURL] ];
-        // AFMIG: see above initWithBaseURL and HTTPRequestOperationWithRequest
-		//[_anonymousApi registerHTTPOperationClass:[WPJSONRequestOperation class]];
-        //[_anonymousApi setDefaultHeader:@"User-Agent" value:[[WordPressAppDelegate sharedWordPressApplicationDelegate] applicationUserAgent]];
+
+		NSString* userAgent = [[WordPressAppDelegate sharedWordPressApplicationDelegate] applicationUserAgent];
+		[_anonymousApi.requestSerializer setValue:userAgent forHTTPHeaderField:@"User-Agent"];
     });
 
     return _anonymousApi;
 }
 
 #pragma mark - Account management
+
+- (void)clearAuthorizationHeader
+{
+	[self.requestSerializer setValue:nil forHTTPHeaderField:@"Authorization"];
+}
 
 - (void)reset {
     DDLogMethod();
@@ -151,8 +154,7 @@ NSString *const WordPressComApiPushAppId = @"org.wordpress.appstore";
     self.password = nil;
  
     [self clearWpcomCookies];
-	// AFMIG: not needed, since it's set up on each request operation...
-    //[self clearAuthorizationHeader];
+    [self clearAuthorizationHeader];
 }
 
 - (BOOL)hasCredentials {
@@ -596,8 +598,6 @@ NSString *const WordPressComApiPushAppId = @"org.wordpress.appstore";
 }
 
 - (void)setAuthorizationHeaderWithToken:(NSString *)token {
-	// AFMIG:
-    //[self setDefaultHeader:@"Authorization" value:[NSString stringWithFormat:@"Bearer %@", token]];
 	[self.requestSerializer setValue:[NSString stringWithFormat:@"Bearer %@", token]
 				  forHTTPHeaderField:@"Authorization"];
 }
