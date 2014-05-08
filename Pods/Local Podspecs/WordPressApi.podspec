@@ -5,7 +5,7 @@ Pod::Spec.new do |s|
   s.homepage     = "https://github.com/koke/WordPressApi"
   s.license      = { :type => 'MIT', :file => 'LICENSE.md' }
   s.author       = "WordPress"
-  s.source       = { :git => "https://github.com/diegoreymendez/WordPressApi.git", :tag => "HEAD" }
+  s.source       = { :git => "https://github.com/koke/WordPressApi.git" }
   s.source_files = 'WordPressApi'
   s.requires_arc = true
   s.dependency 'AFNetworking', '2.2.3'

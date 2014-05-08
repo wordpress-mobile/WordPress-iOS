@@ -38,8 +38,6 @@
     return [super error];
 }
 
-#pragma mark - NSURLConnectionDelegate
-
 - (BOOL)connection:(NSURLConnection *)connection canAuthenticateAgainstProtectionSpace:(NSURLProtectionSpace *)protectionSpace
 {
 	return ![protectionSpace.authenticationMethod isEqualToString:NSURLAuthenticationMethodClientCertificate];
