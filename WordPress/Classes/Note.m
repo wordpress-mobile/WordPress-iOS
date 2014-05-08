@@ -21,6 +21,7 @@
 @dynamic unread;
 @dynamic subject; 
 @dynamic body;
+@dynamic meta;
 @synthesize bodyItems	= _bodyItems;
 @synthesize date		= _date;
 
