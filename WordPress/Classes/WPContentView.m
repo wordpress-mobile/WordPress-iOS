@@ -279,8 +279,8 @@ const CGFloat RPVControlButtonBorderSize = 0.0f;
     self.bottomBorder.frame = CGRectMake(RPVHorizontalInnerPadding, 0, contentWidth - RPVHorizontalInnerPadding * 2, RPVBorderHeight);
     
     // Action buttons
-    CGFloat buttonWidth = RPVControlButtonWidth;
-    CGFloat buttonX = self.bottomView.frame.size.width - RPVControlButtonWidth;
+    CGFloat buttonWidth = 0.0f;
+    CGFloat buttonX = self.bottomView.frame.size.width - (RPVHorizontalInnerPadding - 2.0f); // minus two px so button text aligns
     CGFloat buttonY = RPVBorderHeight; // Just below the line
     NSArray* reversedActionButtons = [[self.actionButtons reverseObjectEnumerator] allObjects];
     
@@ -288,11 +288,14 @@ const CGFloat RPVControlButtonBorderSize = 0.0f;
         // Button order from right-to-left, ignoring hidden buttons
         if (actionButton.hidden)
             continue;
-        
+
+        [actionButton sizeToFit];
+        buttonWidth = CGRectGetWidth(actionButton.frame);
+        buttonX -= buttonWidth;
         actionButton.frame = CGRectMake(buttonX, buttonY, buttonWidth, RPVControlButtonHeight);
-        buttonX -= buttonWidth + RPVControlButtonSpacing;
+        buttonX -= RPVControlButtonSpacing; // add the padding for the next button in advance.
     }
-    
+
     CGFloat timeWidth = contentWidth - buttonX;
     self.timeButton.frame = CGRectMake(RPVHorizontalInnerPadding, RPVBorderHeight, timeWidth, RPVControlButtonHeight);
     
@@ -305,9 +308,13 @@ const CGFloat RPVControlButtonBorderSize = 0.0f;
 - (UIButton *)addActionButtonWithImage:(UIImage *)buttonImage selectedImage:(UIImage *)selectedButtonImage {
     ContentActionButton *button = [ContentActionButton buttonWithType:UIButtonTypeCustom];
     button.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleLeftMargin;
-    button.backgroundColor = [UIColor clearColor];
+    button.contentHorizontalAlignment = UIControlContentHorizontalAlignmentLeft;
     [button setImage:buttonImage forState:UIControlStateNormal];
     [button setImage:selectedButtonImage forState:UIControlStateSelected];
+    [button.titleLabel setFont:[WPStyleGuide labelFontNormal]];
+    [button setTitleColor:[WPStyleGuide newKidOnTheBlockBlue] forState:UIControlStateNormal];
+    button.titleEdgeInsets = UIEdgeInsetsMake(0.0f, 2.0f, 0.0f, -2.0f);
+    button.drawsTitleBubble = YES;
     [self.bottomView addSubview:button];
     [self.actionButtons addObject:button];
 
