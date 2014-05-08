@@ -66,7 +66,6 @@
            parameters:@{ @"urls" : urls}
               success:^void (AFHTTPRequestOperation *operation, id responseObject)
             {
-                NSLog(@"Response: %@", responseObject);
                 if (![responseObject isKindOfClass:[NSDictionary class]]) {
                     if (failureHandler) {
                         NSError *error = [NSError errorWithDomain:NSURLErrorDomain
@@ -175,6 +174,9 @@
             {
                 NSLog(@"Error: %@", error);
 
+                if (failureHandler) {
+                    failureHandler(error);
+                }
             }
     ];
 
