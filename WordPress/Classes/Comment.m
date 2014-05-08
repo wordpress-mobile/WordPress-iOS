@@ -289,7 +289,7 @@ NSString * const CommentStatusDraft = @"draft";
 	
 	if(self.postID) {
         NSSet *posts = [contextBlog.posts filteredSetUsingPredicate:[NSPredicate predicateWithFormat:@"postID == %@", self.postID]];
-        contextPost = [posts anyObject];
+        self.post = [posts anyObject];
 	}
 }
 
