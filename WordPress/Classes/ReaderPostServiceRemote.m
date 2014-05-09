@@ -25,7 +25,7 @@
                        success:(void (^)(NSArray *posts))success
                        failure:(void (^)(NSError *error))failure {
 
-    NSNumber *numberToFetch = [NSNumber numberWithInteger:count];
+    NSNumber *numberToFetch = @(count);
     NSDictionary *params = @{@"number":numberToFetch};
 
     [self fetchPostsFromEndpoint:endpoint withParameters:params success:success failure:failure];
@@ -38,7 +38,7 @@
                        success:(void (^)(NSArray *posts))success
                        failure:(void (^)(NSError *error))failure {
 
-    NSNumber *numberToFetch = [NSNumber numberWithInteger:count];
+    NSNumber *numberToFetch = @(count);
     NSDictionary *params = @{@"number":numberToFetch,
                              @"after": [DateUtils isoStringFromDate:date],
                              @"order": @"ASC"
@@ -53,7 +53,7 @@
                        success:(void (^)(NSArray *posts))success
                        failure:(void (^)(NSError *error))failure {
 
-    NSNumber *numberToFetch = [NSNumber numberWithInteger:count];
+    NSNumber *numberToFetch = @(count);
     NSDictionary *params = @{@"number":numberToFetch,
                              @"before": [DateUtils isoStringFromDate:date],
                              @"order": @"DESC"
@@ -138,7 +138,7 @@
 }
 
 - (void)reblogPost:(NSUInteger)postID fromSite:(NSUInteger)siteID toSite:(NSUInteger)targetSiteID note:(NSString *)note success:(void (^)(BOOL isReblogged))success failure:(void (^)(NSError *error))failure {
-    NSMutableDictionary *params = [NSMutableDictionary dictionaryWithObject:[NSNumber numberWithInteger:targetSiteID] forKey:@"destination_site_id"];
+    NSMutableDictionary *params = [NSMutableDictionary dictionaryWithObject:@(targetSiteID) forKey:@"destination_site_id"];
 
     if ([note length] > 0) {
         [params setObject:note forKey:@"note"];
