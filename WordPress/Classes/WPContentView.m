@@ -2,12 +2,12 @@
 #import "WPContentViewSubclass.h"
 
 #import <DTCoreText/DTCoreText.h>
+#import <AFNetworking/UIImageView+AFNetworking.h>
 #import "UIImageView+Gravatar.h"
 #import "WordPressAppDelegate.h"
 #import "WPWebViewController.h"
 #import "UIImageView+AFNetworkingExtra.h"
 #import "UILabel+SuggestSize.h"
-#import "WPAvatarSource.h"
 #import "ContentActionButton.h"
 #import "NSDate+StringFormatting.h"
 #import "UIColor+Helpers.h"

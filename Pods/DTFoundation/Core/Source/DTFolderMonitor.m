@@ -35,15 +35,6 @@
 	{
 		_URL = URL;
 		_block = [block copy];
-		
-		NSString *path = [_URL path];
-		_fileDescriptor = open([path fileSystemRepresentation], O_EVTONLY);
-		
-		if (!_fileDescriptor)
-		{
-			return nil;
-		}
-		
 		_queue = dispatch_queue_create("DTFolderMonitor Queue", 0);
 	}
 	
@@ -68,6 +59,12 @@
 			return;
 		}
 		
+		_fileDescriptor = open([_URL.path fileSystemRepresentation], O_EVTONLY);
+		
+		if (!_fileDescriptor) {
+			return;
+		}
+        
 		// watch the file descriptor for writes
 		_source = dispatch_source_create(DISPATCH_SOURCE_TYPE_VNODE, _fileDescriptor, DISPATCH_VNODE_WRITE, _queue);
 		

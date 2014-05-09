@@ -1,3 +1,4 @@
+#import <AFNetworking/AFNetworking.h>
 #import <DTCoreText/DTCoreText.h>
 #import "DTCoreTextFontDescriptor.h"
 #import "WPTableViewControllerSubclass.h"
@@ -59,8 +60,6 @@ NSString * const RPVCDisplayedNativeFriendFinder = @"DisplayedNativeFriendFinder
 	// (at least for the first time). We'll have DTCoreText prime its font cache here so things are ready
 	// for the detail view, and avoid a perceived lag. 
 	[DTCoreTextFontDescriptor fontDescriptorWithFontAttributes:nil];
-    
-    [AFImageRequestOperation addAcceptableContentTypes:[NSSet setWithObject:@"image/jpg"]];
 }
 
 
@@ -96,7 +95,7 @@ NSString * const RPVCDisplayedNativeFriendFinder = @"DisplayedNativeFriendFinder
 
     [self fetchBlogsAndPrimaryBlog];
 
-    CGFloat maxWidth = self.tableView.bounds.size.width;
+    CGFloat maxWidth;
     if (IS_IPHONE) {
         maxWidth = MAX(self.tableView.bounds.size.width, self.tableView.bounds.size.height);
     } else {
@@ -385,6 +384,10 @@ NSString * const RPVCDisplayedNativeFriendFinder = @"DisplayedNativeFriendFinder
     
     if (![post isFollowable])
         return;
+    
+    if (![post.isFollowing boolValue]) {
+        [WPAnalytics track:WPAnalyticsStatReaderFollowedSite];
+    }
 
     followButton.selected = ![post.isFollowing boolValue]; // Set it optimistically
 	[cell setNeedsLayout];
@@ -1014,7 +1017,7 @@ NSString * const RPVCDisplayedNativeFriendFinder = @"DisplayedNativeFriendFinder
                 AccountService *accountService = [[AccountService alloc] initWithManagedObjectContext:context];
                 WPAccount *defaultAccount = [accountService defaultWordPressComAccount];
 
-                [[defaultAccount restApi] getPath:@"me"
+                [[defaultAccount restApi] GET:@"me"
                                        parameters:nil
                                           success:^(AFHTTPRequestOperation *operation, id responseObject) {
                                               if ([usersBlogs count] < 1)
