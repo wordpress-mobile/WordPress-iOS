@@ -515,7 +515,7 @@ NSUInteger const ReaderPostServiceMaxPosts = 200;
 }
 
 /**
- Transforms the spcified string to plain text.  HTML markup is removed and HTML entities are decoded. 
+ Transforms the specified string to plain text.  HTML markup is removed and HTML entities are decoded.
  
  @param string The string to transform.
  @return The transformed string.
@@ -574,7 +574,7 @@ NSUInteger const ReaderPostServiceMaxPosts = 200;
 }
 
 /**
- Check the specified string for occrances of videopress videos.
+ Check the specified string for occurances of videopress videos.
  
  @param string The string to search.
  @return YES if a match was found, else returns NO.
@@ -632,7 +632,7 @@ NSUInteger const ReaderPostServiceMaxPosts = 200;
 }
 
 /**
- Createa a title for the post from the post's summary.
+ Creates a title for the post from the post's summary.
  
  @param summary The already formatted post summary.
  @return A title for the post that is a snippet of the summary.
