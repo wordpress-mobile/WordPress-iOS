@@ -29,7 +29,7 @@
     remoteApi = nil;
 }
 
-- (void)testExample
+- (void)testMarshallingMappingHappens
 {
     __block BOOL completionCalled = NO;
     ATHStart();
