@@ -292,7 +292,7 @@
 
     NSUInteger index = [arr indexOfObjectPassingTest:^BOOL(id obj, NSUInteger idx, BOOL *stop) {
         if ([((Media *)obj).mediaID isEqualToNumber:self.post_thumbnail] ){
-            stop = YES;
+            *stop = YES;
             return YES;
         }
         return NO;
