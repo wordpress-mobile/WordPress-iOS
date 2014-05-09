@@ -558,7 +558,6 @@ CGFloat const GeneralWalkthroughStatusBarOffset = 20.0;
     _forgotPassword.frame = CGRectIntegral(CGRectMake(x, y, GeneralWalkthroughButtonWidth, forgotPasswordHeight));
 
     // Layout Skip to Create Account Button
-    x = GeneralWalkthroughStandardOffset;
     x = (viewWidth - GeneralWalkthroughButtonWidth)/2.0;
     y = viewHeight - GeneralWalkthroughStandardOffset - GeneralWalkthroughSecondaryButtonHeight;
     _skipToCreateAccount.frame = CGRectIntegral(CGRectMake(x, y, GeneralWalkthroughButtonWidth, GeneralWalkthroughSecondaryButtonHeight));
@@ -926,7 +925,6 @@ CGFloat const GeneralWalkthroughStatusBarOffset = 20.0;
     CGFloat newKeyboardOffset = (CGRectGetMaxY(_signInButton.frame) - CGRectGetMinY(keyboardFrame)) + GeneralWalkthroughStandardOffset;
 
     if (newKeyboardOffset < 0) {
-        newKeyboardOffset = 0;
         return;
     }
     
