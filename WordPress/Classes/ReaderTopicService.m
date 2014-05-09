@@ -1,6 +1,7 @@
 #import "ReaderTopicService.h"
 #import "AccountService.h"
 #import "ContextManager.h"
+#import "NSString+XMLExtensions.h"
 #import "ReaderTopic.h"
 #import "ReaderTopicServiceRemote.h"
 #import "RemoteReaderTopic.h"
@@ -140,7 +141,7 @@ NSString *const ReaderTopicCurrentTopicURIKey = @"ReaderTopicCurrentTopicURIKey"
     
     topic.topicID = remoteTopic.topicID;
     topic.type = ([topic.topicID integerValue] == 0) ? ReaderTopicTypeList : ReaderTopicTypeTag;
-    topic.title = title;
+    topic.title = [title stringByDecodingXMLCharacters];
     topic.path = [path lowercaseString];
     topic.isSubscribed = remoteTopic.isSubscribed;
     topic.isRecommended = remoteTopic.isRecommended;
