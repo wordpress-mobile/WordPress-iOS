@@ -281,7 +281,23 @@ static NSInteger const MaxNumberOfLinesForTitleForSummary = 3;
 		self.reblogButton.hidden = YES;
         self.commentButton.hidden = YES;
 	}
-    
+
+    if ([self.post.likeCount integerValue] > 0) {
+        [self.likeButton setTitle:[self.post.likeCount stringValue] forState:UIControlStateNormal];
+        [self.likeButton setTitle:[self.post.likeCount stringValue] forState:UIControlStateSelected];
+    } else {
+        [self.likeButton setTitle:@"" forState:UIControlStateNormal];
+        [self.likeButton setTitle:@"" forState:UIControlStateSelected];
+    }
+
+    if ([self.post.commentCount integerValue] > 0) {
+        [self.commentButton setTitle:[self.post.commentCount stringValue] forState:UIControlStateNormal];
+        [self.commentButton setTitle:[self.post.commentCount stringValue] forState:UIControlStateSelected];
+    } else {
+        [self.commentButton setTitle:@"" forState:UIControlStateNormal];
+        [self.commentButton setTitle:@"" forState:UIControlStateSelected];
+    }
+
     [self.followButton setSelected:[self.post.isFollowing boolValue]];
 	self.reblogButton.userInteractionEnabled = ![post.isReblogged boolValue];
 	
