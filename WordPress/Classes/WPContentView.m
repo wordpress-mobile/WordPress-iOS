@@ -8,7 +8,6 @@
 #import "WPWebViewController.h"
 #import "UIImageView+AFNetworkingExtra.h"
 #import "UILabel+SuggestSize.h"
-#import "WPAvatarSource.h"
 #import "ContentActionButton.h"
 #import "NSDate+StringFormatting.h"
 #import "UIColor+Helpers.h"
