@@ -478,7 +478,6 @@ CGFloat const CreateAccountAndBlogButtonHeight = 40.0;
     
     // make sure keyboard offset is greater than 0, otherwise do not move controls
     if (newKeyboardOffset < 0) {
-        newKeyboardOffset = 0;
         return;
     }
 
