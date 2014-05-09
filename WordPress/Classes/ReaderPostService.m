@@ -284,7 +284,7 @@ NSUInteger const ReaderPostServiceMaxPosts = 200;
 
     NSArray *currentPosts = [self.managedObjectContext executeFetchRequest:fetchRequest error:&error];
     if (error) {
-        DDLogError(@"-[ReaderPostService deleteExistingPostsForTopic:keepingOnlyNewPosts:] error fetching posts: %@", error);
+        DDLogError(@"%@, error fetching posts: %@", NSStringFromSelector(_cmd), error);
         return;
     }
 
@@ -325,7 +325,7 @@ NSUInteger const ReaderPostServiceMaxPosts = 200;
 
     NSArray *currentPosts = [self.managedObjectContext executeFetchRequest:fetchRequest error:&error];
     if (error) {
-        DDLogError(@"-[ReaderPostService deletePostsForTopic:missingFromBatch:] error fetching posts: %@", error);
+        DDLogError(@"%@ error fetching posts: %@", NSStringFromSelector(_cmd), error);
         return;
     }
 
@@ -364,7 +364,7 @@ NSUInteger const ReaderPostServiceMaxPosts = 200;
 
     NSArray *posts = [self.managedObjectContext executeFetchRequest:fetchRequest error:&error];
     if (error) {
-        DDLogError(@"-[ReaderPostService deletePostsInExcessOfMaxAllowedForTopic:] error fetching posts: %@", error);
+        DDLogError(@"%@ error fetching posts: %@", NSStringFromSelector(_cmd), error);
         return;
     }
 
@@ -394,7 +394,7 @@ NSUInteger const ReaderPostServiceMaxPosts = 200;
         if (newPost != nil) {
             [newPosts addObject:newPost];
         } else {
-            DDLogInfo(@"-[ReaderPostService makeNewPostsFromRemotePosts:forTopic:] returned a nil post: %@", post);
+            DDLogInfo(@"%@ returned a nil post: %@", NSStringFromSelector(_cmd), post);
         }
     }
     return newPosts;
@@ -604,7 +604,7 @@ NSUInteger const ReaderPostServiceMaxPosts = 200;
         NSRegularExpression *mp4Regex = [NSRegularExpression regularExpressionWithPattern:@"mp4[\\s\\S]+?mp4" options:NSRegularExpressionCaseInsensitive error:&error];
         NSRange mp4Match = [mp4Regex rangeOfFirstMatchInString:mstr options:NSRegularExpressionCaseInsensitive range:match.range];
         if (mp4Match.location == NSNotFound) {
-            DDLogError(@"%@ failed to match mp4 JSON string while formatting video press markup: %@", self, [mstr substringWithRange:match.range]);
+            DDLogError(@"%@ failed to match mp4 JSON string while formatting video press markup: %@", NSStringFromSelector(_cmd), [mstr substringWithRange:match.range]);
             [mstr replaceCharactersInRange:match.range withString:@""];
             continue;
         }
@@ -614,7 +614,7 @@ NSUInteger const ReaderPostServiceMaxPosts = 200;
         NSRegularExpression *srcRegex = [NSRegularExpression regularExpressionWithPattern:@"http\\S+mp4" options:NSRegularExpressionCaseInsensitive error:&error];
         NSRange srcMatch = [srcRegex rangeOfFirstMatchInString:mp4 options:NSRegularExpressionCaseInsensitive range:NSMakeRange(0, [mp4 length])];
         if (srcMatch.location == NSNotFound) {
-            DDLogError(@"%@ failed to match mp4 src when formatting video press markup: %@", self, mp4);
+            DDLogError(@"%@ failed to match mp4 src when formatting video press markup: %@", NSStringFromSelector(_cmd), mp4);
             [mstr replaceCharactersInRange:match.range withString:@""];
             continue;
         }
