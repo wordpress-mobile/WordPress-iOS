@@ -402,7 +402,7 @@ NSString * const RPVCDisplayedNativeFriendFinder = @"DisplayedNativeFriendFinder
     if (![post isFollowable])
         return;
     
-    if (![post.isFollowing boolValue]) {
+    if (!post.isFollowing) {
         [WPAnalytics track:WPAnalyticsStatReaderFollowedSite];
     }
 
