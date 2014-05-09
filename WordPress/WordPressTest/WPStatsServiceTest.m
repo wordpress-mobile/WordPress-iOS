@@ -33,7 +33,7 @@
     self.remoteMock = nil;
 }
 
-- (void)testExample
+- (void)testRemoteCalled
 {
     void (^failure)(NSError *error) = ^void(NSError *error) {
     };
@@ -46,7 +46,25 @@
     [self.statsService retrieveStatsWithCompletionHandler:completion failureHandler:failure];
     
     [self.remoteMock verify];
+}
 
+- (void)testDatesPassedAreTodayAndYesterday
+{
+    NSDate *today = [NSDate date];
+    NSDateComponents *dateComponents = [[NSDateComponents alloc] init];
+    [dateComponents setDay:-1];
+    NSCalendar *calendar = [NSCalendar currentCalendar];
+    NSDate *yesterday = [calendar dateByAddingComponents:dateComponents toDate:today options:NSCalendarUnitDay];
+    
+    [[self.remoteMock expect] fetchStatsForTodayDate:[OCMArg checkWithBlock:^BOOL(id obj) {
+        return [today timeIntervalSinceDate:obj] < 1000;
+    }] andYesterdayDate:[OCMArg checkWithBlock:^BOOL(id obj) {
+        return [yesterday timeIntervalSinceDate:obj] < 1000;
+    }] withCompletionHandler:[OCMArg isNil] failureHandler:[OCMArg isNotNil]];
+    
+    [self.statsService retrieveStatsWithCompletionHandler:nil failureHandler:nil];
+    
+    [self.remoteMock verify];
 }
 
 @end
