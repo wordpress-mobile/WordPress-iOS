@@ -38,9 +38,16 @@
         }
     };
 
-    [self.remote fetchStatsForSiteId:self.siteId
-               withCompletionHandler:completion
-                      failureHandler:failure];
+    NSDate *today = [NSDate date];
+    NSDateComponents *dateComponents = [[NSDateComponents alloc] init];
+    [dateComponents setDay:-1];
+    NSCalendar *calendar = [NSCalendar currentCalendar];
+    NSDate *yesterday = [calendar dateByAddingComponents:dateComponents toDate:today options:NSCalendarUnitDay];
+
+    [self.remote fetchStatsForTodayDate:today
+                       andYesterdayDate:yesterday
+                  withCompletionHandler:completion
+                         failureHandler:failure];
 }
 
 - (WPStatsServiceRemote *)remote

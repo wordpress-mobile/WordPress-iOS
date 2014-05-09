@@ -6,6 +6,6 @@
 
 - (instancetype)initWithRemoteApi:(WordPressComApi *)api andSiteId:(NSNumber *)siteId;
 
-- (void)fetchStatsForSiteId:(NSNumber *)siteId withCompletionHandler:(StatsCompletion)completionHandler failureHandler:(void (^)(NSError *error))failureHandler;
+- (void)fetchStatsForTodayDate:(NSDate *)today andYesterdayDate:(NSDate *)yesterday withCompletionHandler:(StatsCompletion)completionHandler failureHandler:(void (^)(NSError *error))failureHandler;
 
 @end

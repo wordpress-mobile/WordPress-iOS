@@ -30,19 +30,13 @@
     return self;
 }
 
-- (void)fetchStatsForSiteId:(NSNumber *)siteId withCompletionHandler:(StatsCompletion)completionHandler failureHandler:(void (^)(NSError *error))failureHandler
+- (void)fetchStatsForTodayDate:(NSDate *)today andYesterdayDate:(NSDate *)yesterday withCompletionHandler:(StatsCompletion)completionHandler failureHandler:(void (^)(NSError *error))failureHandler
 {
     NSDateFormatter *formatter = [[NSDateFormatter alloc] init];
     formatter.locale = [[NSLocale alloc] initWithLocaleIdentifier:@"en_US_POSIX"];
     formatter.dateFormat = @"yyyy-MM-dd";
 
-    NSDate *today = [NSDate date];
     NSString *todayString = [formatter stringFromDate:today];
-
-    NSDateComponents *dateComponents = [[NSDateComponents alloc] init];
-    [dateComponents setDay:-1];
-    NSCalendar *calendar = [NSCalendar currentCalendar];
-    NSDate *yesterday = [calendar dateByAddingComponents:dateComponents toDate:today options:NSCalendarUnitDay];
     NSString *yesterdayString = [formatter stringFromDate:yesterday];
 
     NSArray *urls = @[
