@@ -87,6 +87,10 @@
 
 #pragma mark - Lifecycle Methods
 
+- (void)dealloc {
+    self.delegate = nil;
+}
+
 - (id)initWithStyle:(UITableViewCellStyle)style reuseIdentifier:(NSString *)reuseIdentifier {
     self = [super initWithStyle:style reuseIdentifier:reuseIdentifier];
     if (self) {
@@ -97,35 +101,35 @@
 		self.cellImageView.autoresizingMask = UIViewAutoresizingFlexibleRightMargin;
 		
 		self.textContentView = [[DTAttributedTextContentView alloc] initWithFrame:CGRectMake(0.0f, 0.0f, self.frame.size.width, 44.0f)];
-		_textContentView.autoresizingMask = UIViewAutoresizingFlexibleWidth;
-		_textContentView.backgroundColor = [UIColor clearColor];
-		_textContentView.edgeInsets = UIEdgeInsetsMake(0.0f, 10.0f, 0.0f, 10.0f);
-		_textContentView.delegate = self;
-		_textContentView.shouldDrawImages = NO;
-		_textContentView.shouldLayoutCustomSubviews = YES;
-		[self.contentView addSubview:_textContentView];
+		self.textContentView.autoresizingMask = UIViewAutoresizingFlexibleWidth;
+		self.textContentView.backgroundColor = [UIColor clearColor];
+		self.textContentView.edgeInsets = UIEdgeInsetsMake(0.0f, 10.0f, 0.0f, 10.0f);
+		self.textContentView.delegate = self;
+		self.textContentView.shouldDrawImages = NO;
+		self.textContentView.shouldLayoutCustomSubviews = YES;
+		[self.contentView addSubview:self.textContentView];
 		
 		self.dateLabel = [[UILabel alloc] initWithFrame:CGRectMake(width - (10.0f + 40.0f), 10.0f, 40.0f, 20.0f)];
-		[_dateLabel setFont:[WPStyleGuide subtitleFont]];
-		_dateLabel.textColor = [WPStyleGuide littleEddieGrey];
-		_dateLabel.textAlignment = NSTextAlignmentRight;
-		_dateLabel.autoresizingMask = UIViewAutoresizingFlexibleLeftMargin;
-		_dateLabel.backgroundColor = [UIColor clearColor];
-		[self.contentView addSubview:_dateLabel];
+		[self.dateLabel setFont:[WPStyleGuide subtitleFont]];
+		self.dateLabel.textColor = [WPStyleGuide littleEddieGrey];
+		self.dateLabel.textAlignment = NSTextAlignmentRight;
+		self.dateLabel.autoresizingMask = UIViewAutoresizingFlexibleLeftMargin;
+		self.dateLabel.backgroundColor = [UIColor clearColor];
+		[self.contentView addSubview:self.dateLabel];
 		
-		self.authorLabel = [[UILabel alloc] initWithFrame:CGRectMake(10.0f, 10.0f, (_dateLabel.frame.origin.x - 50.0f), 20.0f)];
-		[_authorLabel setFont:[WPStyleGuide subtitleFont]];
-		_authorLabel.textColor = [WPStyleGuide littleEddieGrey];
-		_authorLabel.autoresizingMask = UIViewAutoresizingFlexibleWidth;
-		_authorLabel.backgroundColor = [UIColor clearColor];
-		[self.contentView addSubview:_authorLabel];
+		self.authorLabel = [[UILabel alloc] initWithFrame:CGRectMake(10.0f, 10.0f, (self.dateLabel.frame.origin.x - 50.0f), 20.0f)];
+		[self.authorLabel setFont:[WPStyleGuide subtitleFont]];
+		self.authorLabel.textColor = [WPStyleGuide littleEddieGrey];
+		self.authorLabel.autoresizingMask = UIViewAutoresizingFlexibleWidth;
+		self.authorLabel.backgroundColor = [UIColor clearColor];
+		[self.contentView addSubview:self.authorLabel];
 		
 		UIImageView *separatorImageView = [[UIImageView alloc] initWithFrame:CGRectMake(self.indentationWidth, 0.0f, width - self.indentationWidth, 1.0f)];
 		separatorImageView.backgroundColor = [UIColor colorWithHexString:@"e5e5e5"];
 		separatorImageView.autoresizingMask = UIViewAutoresizingFlexibleWidth;
 		[self.contentView addSubview:separatorImageView];
 		
-		self.textContentView.frame = CGRectMake(0.0f, _authorLabel.frame.size.height + 10.0f, width, 44.0f);
+		self.textContentView.frame = CGRectMake(0.0f, self.authorLabel.frame.size.height + 10.0f, width, 44.0f);
 		
 		UIView *view = [[UIView alloc] initWithFrame:self.frame];
 		view.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
@@ -135,10 +139,6 @@
     }
 	
     return self;
-}
-
-- (void)dealloc {
-    _delegate = nil;
 }
 
 - (void)layoutSubviews {
@@ -156,17 +156,16 @@
 	CGFloat width = self.contentView.frame.size.width;
 	CGFloat height = [self.textContentView suggestedFrameSizeToFitEntireStringConstraintedToWidth:width].height;
 
-	self.textContentView.frame = CGRectMake(0.0f, _authorLabel.frame.size.height + 10.0f, width, height);
+	self.textContentView.frame = CGRectMake(0.0f, self.authorLabel.frame.size.height + 10.0f, width, height);
 	[self.textContentView setNeedsLayout];
 }
-
 
 - (void)prepareForReuse {
 	[super prepareForReuse];
 	
-	_textContentView.attributedString = nil;
-	_authorLabel.text = @"";
-	_dateLabel.text = @"";
+	self.textContentView.attributedString = nil;
+	self.authorLabel.text = @"";
+	self.dateLabel.text = @"";
 }
 
 
@@ -180,8 +179,8 @@
 	
 	[self.contentView addSubview:self.cellImageView];
 	
-	_dateLabel.text = [comment.dateCreated shortString];
-	_authorLabel.text = comment.author;
+	self.dateLabel.text = [comment.dateCreated shortString];
+	self.authorLabel.text = comment.author;
 	[self.cellImageView setImageWithURL:[NSURL URLWithString:comment.authorAvatarURL] placeholderImage:[UIImage imageNamed:@"blavatar-wpcom.png"]];
 
 	if (!comment.attributedContent) {
@@ -189,7 +188,6 @@
 	}
 	self.textContentView.attributedString = comment.attributedContent;
 }
-
 
 - (void)handleLinkTapped:(id)sender {
     NSURL *url = ((DTLinkButton *)sender).URL;
@@ -212,7 +210,7 @@
 	
 	DTLinkButton *button = [[DTLinkButton alloc] initWithFrame:frame];
 	button.URL = URL;
-	button.minimumHitSize = CGSizeMake(25, 25); // adjusts it's bounds so that button is always large enough
+	button.minimumHitSize = CGSizeMake(25.0, 25.0); // adjusts it's bounds so that button is always large enough
 	button.GUID = identifier;
 	
 	// get image with normal link text
@@ -228,6 +226,5 @@
 	
 	return button;
 }
-
 
 @end
