@@ -99,7 +99,7 @@ NSString * const RPVCDisplayedNativeFriendFinder = @"DisplayedNativeFriendFinder
 
     [self fetchBlogsAndPrimaryBlog];
 
-    CGFloat maxWidth = self.tableView.bounds.size.width;
+    CGFloat maxWidth;
     if (IS_IPHONE) {
         maxWidth = MAX(self.tableView.bounds.size.width, self.tableView.bounds.size.height);
     } else {
@@ -401,6 +401,10 @@ NSString * const RPVCDisplayedNativeFriendFinder = @"DisplayedNativeFriendFinder
     
     if (![post isFollowable])
         return;
+    
+    if (![post.isFollowing boolValue]) {
+        [WPAnalytics track:WPAnalyticsStatReaderFollowedSite];
+    }
 
     followButton.selected = !post.isFollowing; // Set it optimistically
 	[cell setNeedsLayout];
