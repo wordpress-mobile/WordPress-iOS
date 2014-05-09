@@ -61,6 +61,7 @@ typedef NS_ENUM(NSUInteger, MediaOrientation) {
 
 + (Media *)newMediaForPost:(AbstractPost *)post;
 + (Media *)newMediaForBlog:(Blog *)blog;
++ (Media *)newMediaForPost:(AbstractPost *)post withImage:(UIImage *)image andMetadata:(NSDictionary *)metadata;
 + (NSString *)mediaTypeForFeaturedImage;
 
 + (Media *)createOrReplaceMediaFromJSON:(NSDictionary*)json forBlog:(Blog *)blog;
