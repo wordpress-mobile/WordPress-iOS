@@ -155,7 +155,7 @@ NSString *const LocationServiceErrorDomain = @"LocationServiceErrorDomain";
 }
 
 - (void)timeoutUpdatingLocation {
-    CLLocation *lastLocation = self.lastUpdatedLocation;
+    CLLocation *lastLocation;
     [self stopUpdatingLocation];
 #if TARGET_IPHONE_SIMULATOR
     lastLocation = self.locationManager.location;
