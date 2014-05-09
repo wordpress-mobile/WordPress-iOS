@@ -353,7 +353,7 @@ static NSInteger const MaxNumberOfLinesForTitleForSummary = 3;
         textContainerFrame.size.height = height;
         textContainerFrame.origin.y = nextY;
         self.textContentView.frame = textContainerFrame;
-    } else if ([self.snippetLabel.text length] > 0) {
+    } else {
         height = ceil([self.snippetLabel suggestedSizeForWidth:innerContentWidth].height);
         self.snippetLabel.frame = CGRectMake(RPVHorizontalInnerPadding, nextY, innerContentWidth, height);
     }
