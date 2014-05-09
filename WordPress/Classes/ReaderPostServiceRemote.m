@@ -172,7 +172,6 @@
                            success:(void (^)(NSArray *posts))success
                            failure:(void (^)(NSError *))failure {
 
-
     [self.api getPath:[endpoint absoluteString]
            parameters:params
               success:^(AFHTTPRequestOperation *operation, id responseObject) {
@@ -201,7 +200,6 @@
  @return A `RemoteReaderPost` object
  */
 - (RemoteReaderPost *)formatPostDictionary:(NSDictionary *)dict {
-
     RemoteReaderPost *post = [[RemoteReaderPost alloc] init];
 
     NSDictionary *authorDict = [dict dictionaryForKey:@"author"];
@@ -259,7 +257,6 @@
  @return A sanitized URL.
  */
 - (NSString *)sanitizeFeaturedImageString:(NSString *)img {
-
     NSRange rng = [img rangeOfString:@"mshots/"];
     if (NSNotFound != rng.location) {
         // MShots are sceen caps of the actual site. There URLs look like this:
@@ -381,7 +378,6 @@
  @return The url path for the featured iamge or an empty string.
  */
 - (NSString *)featuredImageFromPostDictionary:(NSDictionary *)dict {
-
     NSString *featuredImage = @"";
 
     NSDictionary *featured_media = [dict dictionaryForKey:@"featured_media"];
