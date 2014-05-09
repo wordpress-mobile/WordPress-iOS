@@ -7,11 +7,11 @@
 
 #import "UIImage+ProportionalFill.h"
 
+
 @implementation UIImage (MGProportionalFill)
 
-- (UIImage *)imageToFitSize:(CGSize)fitSize
-					 method:(MGImageResizingMethod)resizeMethod
-				ignoreAlpha:(BOOL)opaque
+
+- (UIImage *)imageToFitSize:(CGSize)fitSize method:(MGImageResizingMethod)resizeMethod ignoreAlpha:(BOOL)opaque
 {
 	float imageScaleFactor = 1.0;
 #if __IPHONE_OS_VERSION_MAX_ALLOWED >= __IPHONE_4_0
@@ -80,21 +80,17 @@
 				destY = round((scaledHeight - targetHeight) / 2.0);
 			}
 		}
-		sourceRect = CGRectMake(destX / scaleFactor,
-								destY / scaleFactor,
-								targetWidth / scaleFactor,
-								targetHeight / scaleFactor);
+		sourceRect = CGRectMake(destX / scaleFactor, destY / scaleFactor, 
+								targetWidth / scaleFactor, targetHeight / scaleFactor);
 	} else {
 		sourceRect = CGRectMake(0, 0, sourceWidth, sourceHeight);
 		destRect = CGRectMake(0, 0, scaledWidth, scaledHeight);
 	}
 	
-	// Takes care of our private image modification sequence.
-	//
 	UIImage* (^privateModifyImageWithRect)(UIImage* image, CGRect srcRect, CGRect dstRect)
-		= ^UIImage* (UIImage* image,
-					 CGRect srcRect,
-					 CGRect dstRect)
+	= ^UIImage* (UIImage* image,
+				 CGRect srcRect,
+				 CGRect dstRect)
 	{
 		NSParameterAssert([image isKindOfClass:[UIImage class]]);
 		
@@ -110,12 +106,9 @@
 	static const CGFloat kScaleForDevicesMainScreen = 0.f;
 	UIGraphicsBeginImageContextWithOptions(destRect.size, opaque, kScaleForDevicesMainScreen);
 	
-	if (!isAnimatedImage)
-	{
+	if (!isAnimatedImage) {
 		finalImage = privateModifyImageWithRect(self, sourceRect, destRect);
-	}
-	else
-	{
+	} else {
 		NSMutableArray* modifiedImages = [NSMutableArray arrayWithCapacity:[self.images count]];
 		
 		for (UIImage* image in self.images)
@@ -132,6 +125,7 @@
 	UIGraphicsEndImageContext();
 	
 	return finalImage;
+
 }
 
 - (UIImage *)imageToFitSize:(CGSize)size method:(MGImageResizingMethod)resizeMethod
@@ -158,6 +152,7 @@
 {
     return [self imageScaledToFitSize:fitSize ignoreAlpha:NO];
 }
+
 
 #pragma mark - ImageContext operations
 
@@ -198,6 +193,5 @@
 	
 	return image;
 }
-
 
 @end
