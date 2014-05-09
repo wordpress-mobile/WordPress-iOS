@@ -86,9 +86,9 @@ typedef NS_ENUM(NSInteger, SPSimperiumErrors) {
 // (you can also just save your context and Simperium will see the changes).
 - (BOOL)save;
 
-// Force Simperium to sync all its buckets. Success return value will be false if the timeout is reached, and the sync wasn't completed.
-typedef void (^SimperiumForceSyncCompletion)(BOOL success);
-- (void)forceSyncWithTimeout:(NSTimeInterval)timeoutSeconds completion:(SimperiumForceSyncCompletion)completion;
+// Support for iOS Background Fetch. 'syncedNewData' flag will be True if new data was effectively retrieved.
+typedef void (^SimperiumBackgroundFetchCompletion)(BOOL syncedNewData);
+- (void)backgroundFetchWithCompletion:(SimperiumBackgroundFetchCompletion)completion;
 
 // Get a particular bucket (which, for Core Data, corresponds to a particular Entity name in your model).
 // Once you have a bucket instance, you can set a SPBucketDelegate to react to changes.

@@ -256,15 +256,27 @@ relationshipResolver:(SPRelationshipResolver *)resolver label:(NSString *)label 
 }
 
 - (void)forceSyncWithCompletion:(SPBucketForceSyncCompletion)completion {
-	self.forceSyncCompletion = completion;
+	self.forceSyncCompletion    = completion;
+    self.forceSyncSignature     = self.lastChangeSignature;
 	[self.network forceSyncBucket:self];
 }
 
-- (void)bucketDidSync {
-	if (self.forceSyncCompletion && self.changeProcessor.numChangesPending == 0) {
-		self.forceSyncCompletion();
-		self.forceSyncCompletion = nil;
-	}
+- (BOOL)isForceSyncPending {
+    return self.forceSyncCompletion != nil;
+}
+
+- (void)signalForceSyncComplete {
+	if (!self.forceSyncCompletion) {
+        return;
+    }
+    
+    // New Data: Did the signature change?
+    BOOL signatureUpdated = ![self.lastChangeSignature isEqualToString:self.forceSyncSignature];
+    self.forceSyncCompletion(signatureUpdated);
+    
+    // Cleanup
+    self.forceSyncCompletion    = nil;
+    self.forceSyncSignature     = nil;
 }
 
 - (NSDictionary*)exportStatus {

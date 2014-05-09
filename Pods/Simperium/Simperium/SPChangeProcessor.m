@@ -484,10 +484,14 @@ static int const SPChangeProcessorMaxPendingChanges	= 200;
     
         [self.changesPending save];
         
-        // Signal that the bucket was sync'ed. We need this, in case the sync was manually triggered
-        if (self.changesPending.count == 0) {
-            [bucket bucketDidSync];
+        // Signal that synthe bucket has been sync'ed (If Needed!)
+        if (![bucket isForceSyncPending] || self.changesPending.count) {
+            return;
         }
+        
+        dispatch_async(dispatch_get_main_queue(), ^{
+            [bucket signalForceSyncComplete];
+        });
     }
 }
 

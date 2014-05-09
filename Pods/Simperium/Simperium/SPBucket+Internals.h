@@ -10,7 +10,7 @@
 
 
 
-typedef void (^SPBucketForceSyncCompletion)(void);
+typedef void (^SPBucketForceSyncCompletion)(BOOL signatureUpdated);
 
 #pragma mark ====================================================================================
 #pragma mark SPBucket: Private Methods
@@ -33,6 +33,7 @@ typedef void (^SPBucketForceSyncCompletion)(void);
 @property (nonatomic, strong) SPIndexProcessor				*indexProcessor;
 @property (nonatomic, strong) dispatch_queue_t				processorQueue;
 @property (nonatomic,   copy) SPBucketForceSyncCompletion	forceSyncCompletion;
+@property (nonatomic,   copy) NSString						*forceSyncSignature;
 
 - (id)initWithSchema:(SPSchema *)aSchema
              storage:(id<SPStorageProvider>)aStorage
@@ -45,7 +46,8 @@ relationshipResolver:(SPRelationshipResolver *)resolver
 - (void)unloadAllObjects;
 - (void)resolvePendingRelationshipsToKeys:(NSSet *)keys;
 - (void)forceSyncWithCompletion:(SPBucketForceSyncCompletion)completion;
-- (void)bucketDidSync;
+- (BOOL)isForceSyncPending;
+- (void)signalForceSyncComplete;
 - (NSDictionary*)exportStatus;
 
 @end
