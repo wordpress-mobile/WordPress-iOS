@@ -75,7 +75,7 @@ NSString *const ReaderTopicCurrentTopicURIKey = @"ReaderTopicCurrentTopicURIKey"
         NSError *error;
         NSArray *topics = [self.managedObjectContext executeFetchRequest:request error:&error];
         if (error) {
-            DDLogError(@"-[ReaderTopicService currentTopic] error fetching topic: %@", error);
+            DDLogError(@"%@ error fetching topic: %@", NSStringFromSelector(_cmd), error);
 			return nil;
         }
         if ([topics count] > 0) {
@@ -106,7 +106,7 @@ NSString *const ReaderTopicCurrentTopicURIKey = @"ReaderTopicCurrentTopicURIKey"
     NSError *error;
     NSUInteger count = [self.managedObjectContext countForFetchRequest:request error:&error];
     if (error) {
-        DDLogError(@"-[ReaderTopicService numberOfSubscribedTopics] error counting topics: %@", error);
+        DDLogError(@"%@ error counting topics: %@", NSStringFromSelector(_cmd), error);
         return 0;
     }
     return count;
@@ -165,7 +165,7 @@ NSString *const ReaderTopicCurrentTopicURIKey = @"ReaderTopicCurrentTopicURIKey"
         if (newTopic != nil) {
             [topicsToKeep addObject:newTopic];
         } else {
-            DDLogInfo(@"-[ReaderTopic createOrReplaceFromRemoteTopic:] returned a nil topic: %@", remoteTopic);
+            DDLogInfo(@"%@ returned a nil topic: %@", NSStringFromSelector(_cmd), remoteTopic);
         }
     }
     
@@ -191,7 +191,7 @@ NSString *const ReaderTopicCurrentTopicURIKey = @"ReaderTopicCurrentTopicURIKey"
     NSError *error;
     NSArray *results = [self.managedObjectContext executeFetchRequest:request error:&error];
     if (error) {
-        DDLogError(@"-[ReaderTopic allTopics] error executing fetch request: %@", error);
+        DDLogError(@"%@ error executing fetch request: %@", NSStringFromSelector(_cmd), error);
         return nil;
     }
 
@@ -206,10 +206,7 @@ NSString *const ReaderTopicCurrentTopicURIKey = @"ReaderTopicCurrentTopicURIKey"
  */
 - (ReaderTopic *)findWithPath:(NSString *)path {
     NSArray *results = [[self allTopics] filteredArrayUsingPredicate:[NSPredicate predicateWithFormat:@"path == %@", [path lowercaseString]]];
-    if (results && [results count] > 0) {
-        return [results objectAtIndex:0];
-    }
-    return nil;
+    return [results firstObject];
 }
 
 @end
