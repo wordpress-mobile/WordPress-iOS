@@ -279,22 +279,47 @@ const CGFloat RPVControlButtonBorderSize = 0.0f;
     self.bottomBorder.frame = CGRectMake(RPVHorizontalInnerPadding, 0, contentWidth - RPVHorizontalInnerPadding * 2, RPVBorderHeight);
     
     // Action buttons
-    CGFloat buttonWidth = 0.0f;
-    CGFloat buttonX = self.bottomView.frame.size.width - (RPVHorizontalInnerPadding + 2.0f); // minus two px so button text aligns
+    CGFloat buttonX = self.bottomView.frame.size.width - RPVHorizontalInnerPadding; // minus two px so button text aligns
     CGFloat buttonY = RPVBorderHeight; // Just below the line
     NSArray* reversedActionButtons = [[self.actionButtons reverseObjectEnumerator] allObjects];
-    
+
+    CGFloat lastImageWidth = 0.0f;
+    CGFloat buttonWidth = 0.0f;
     for (UIButton *actionButton in reversedActionButtons) {
         // Button order from right-to-left, ignoring hidden buttons
         if (actionButton.hidden)
             continue;
 
-        [actionButton sizeToFit];
-        buttonWidth = CGRectGetWidth(actionButton.frame);
+        // Left most visible button needs a different size to aligh properly
+        if (buttonWidth == 0.0f) {
+            [actionButton sizeToFit];
+            buttonWidth = CGRectGetWidth(actionButton.frame);
+        } else {
+            buttonWidth = RPVControlButtonWidth;
+        }
+
+        // The x value needs to be adjusted to account for differences in the width between
+        // the current button's image, and the previous image. Otherwise, even though the
+        // UIButtons are spaced equally based on their frame, the difference in image size will
+        // make things look visually askew.
+        // Add the difference between the current button's image with, and previous
+        // button's width to correct things visually.
+        if (lastImageWidth != 0.0f) {
+            CGFloat width = actionButton.imageView.image.size.width;
+            CGFloat diff = width - lastImageWidth;
+            buttonX -= diff;
+        }
+
         buttonX -= buttonWidth;
         actionButton.frame = CGRectMake(buttonX, buttonY, buttonWidth, RPVControlButtonHeight);
         buttonX -= RPVControlButtonSpacing; // add the padding for the next button in advance.
+
+        lastImageWidth = actionButton.imageView.image.size.width;
     }
+
+
+
+
 
     CGFloat timeWidth = contentWidth - buttonX;
     self.timeButton.frame = CGRectMake(RPVHorizontalInnerPadding, RPVBorderHeight, timeWidth, RPVControlButtonHeight);
@@ -308,7 +333,6 @@ const CGFloat RPVControlButtonBorderSize = 0.0f;
 - (UIButton *)addActionButtonWithImage:(UIImage *)buttonImage selectedImage:(UIImage *)selectedButtonImage {
     ContentActionButton *button = [ContentActionButton buttonWithType:UIButtonTypeCustom];
     button.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleLeftMargin;
-    button.contentHorizontalAlignment = UIControlContentHorizontalAlignmentLeft;
     [button setImage:buttonImage forState:UIControlStateNormal];
     [button setImage:selectedButtonImage forState:UIControlStateSelected];
     [button.titleLabel setFont:[WPStyleGuide labelFontNormal]];
