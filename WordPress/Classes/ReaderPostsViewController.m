@@ -95,7 +95,7 @@ NSString * const RPVCDisplayedNativeFriendFinder = @"DisplayedNativeFriendFinder
 
     [self fetchBlogsAndPrimaryBlog];
 
-    CGFloat maxWidth = self.tableView.bounds.size.width;
+    CGFloat maxWidth;
     if (IS_IPHONE) {
         maxWidth = MAX(self.tableView.bounds.size.width, self.tableView.bounds.size.height);
     } else {
