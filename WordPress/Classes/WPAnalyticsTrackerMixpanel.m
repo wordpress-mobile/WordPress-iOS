@@ -209,6 +209,10 @@
             instructions = [WPAnalyticsTrackerMixpanelInstructionsForStat mixpanelInstructionsForEventName:@"Reader - Unfollowed Reader Tag"];
             [instructions setSuperPropertyAndPeoplePropertyToIncrement:@"number_of_times_unfollowed_reader_tag"];
             break;
+        case WPAnalyticsStatReaderFollowedSite:
+            instructions = [WPAnalyticsTrackerMixpanelInstructionsForStat mixpanelInstructionsForEventName:@"Reader - Followed Site"];
+            [instructions setSuperPropertyAndPeoplePropertyToIncrement:@"number_of_times_followed_site"];
+            break;
         case WPAnalyticsStatReaderLoadedTag:
             instructions = [WPAnalyticsTrackerMixpanelInstructionsForStat mixpanelInstructionsForEventName:@"Reader - Loaded Tag"];
             break;

@@ -645,6 +645,10 @@ typedef enum {
     if (![post isFollowable])
         return;
     
+    if (!post.isFollowing) {
+        [WPAnalytics track:WPAnalyticsStatReaderFollowedSite];
+    }
+
     followButton.selected = !post.isFollowing; // Set it optimistically
 
     NSManagedObjectContext *context = [[ContextManager sharedInstance] newDerivedContext];

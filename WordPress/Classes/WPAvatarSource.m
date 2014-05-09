@@ -262,7 +262,7 @@ static NSString *const GravatarBaseUrl = @"http://gravatar.com";
             break;
     }
 
-    url = [url stringByAppendingFormat:@"%@?s=%d&d=404", hash, (int)(size.width * [[UIScreen mainScreen] scale])];
+    url = [url stringByAppendingFormat:@"%@?s=%d&d=identicon", hash, (int)(size.width * [[UIScreen mainScreen] scale])];
     return [NSURL URLWithString:url];
 }
 
