@@ -41,7 +41,7 @@
     StatsCompletion completion = ^(StatsSummary *summary, NSDictionary *topPosts, NSDictionary *clicks, NSDictionary *countryViews, NSDictionary *referrers, NSDictionary *searchTerms, StatsViewsVisitors *viewsVisitors) {
     };
 
-    [[self.remoteMock expect] fetchStatsForSiteId:@2 withCompletionHandler:completion failureHandler:[OCMArg isNotNil]];
+    [[self.remoteMock expect] fetchStatsForTodayDate:[OCMArg any] andYesterdayDate:[OCMArg any] withCompletionHandler:completion failureHandler:[OCMArg isNotNil]];
 
     [self.statsService retrieveStatsWithCompletionHandler:completion failureHandler:failure];
     
