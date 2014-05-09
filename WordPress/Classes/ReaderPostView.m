@@ -10,6 +10,7 @@
 #import "AccountService.h"
 
 static NSInteger const MaxNumberOfLinesForTitleForSummary = 3;
+NSString * const ReaderPostViewDidFinishLayoutNotification = @"ReaderPostViewDidFinishLayoutNotification";
 
 @interface ReaderPostView()
 
@@ -380,6 +381,11 @@ static NSInteger const MaxNumberOfLinesForTitleForSummary = 3;
     
     ownFrame.size.height = nextY + RPVMetaViewHeight - 1;
     self.frame = ownFrame;
+    
+    // Notify others that our layout has changed.
+    // This is needed because the layout would change after a containing tableViewCell's height was determined based on old values
+    NSDictionary *userInfo = [NSDictionary dictionaryWithObject:[NSValue valueWithCGRect:ownFrame] forKey:@"OptimalFrame"];
+    [[NSNotificationCenter defaultCenter] postNotificationName:ReaderPostViewDidFinishLayoutNotification object:self userInfo:userInfo];
 }
 
 - (void)reset {

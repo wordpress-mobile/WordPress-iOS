@@ -57,6 +57,9 @@ typedef enum {
 @property (nonatomic) BOOL isSyncing;
 @property (nonatomic, strong) InlineComposeView *inlineComposeView;
 @property (nonatomic, strong) ReaderCommentPublisher *commentPublisher;
+@property (nonatomic, strong) WPTableViewCell *postContentCell;
+@property (nonatomic) CGFloat cachedContentHeight;
+@property (nonatomic) CGFloat cachedContentWidth;
 
 @end
 
@@ -80,6 +83,7 @@ typedef enum {
     self.inlineComposeView = nil;
     self.commentPublisher.delegate = nil;
     self.commentPublisher = nil;
+    self.postContentCell = nil;
 	
     [[NSNotificationCenter defaultCenter] removeObserver:self];
 }
@@ -106,7 +110,9 @@ typedef enum {
 
 - (void)viewDidLoad {
 	[super viewDidLoad];
-
+    self.postContentCell = nil;
+    self.cachedContentHeight = 0;
+    self.cachedContentWidth = 0;
     self.tableView.keyboardDismissMode = UIScrollViewKeyboardDismissModeInteractive;
 
 	if (self.infiniteScrollEnabled) {
@@ -158,7 +164,9 @@ typedef enum {
 	
 	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(handleKeyboardDidShow:) name:UIKeyboardWillShowNotification object:nil];
 	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(handleKeyboardWillHide:) name:UIKeyboardWillHideNotification object:nil];
-
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(handleRPVContentLayoutUpdate:) name:ReaderPostViewDidFinishLayoutNotification object:nil];
+    
+    
 	UIToolbar *toolbar = self.navigationController.toolbar;
     toolbar.barTintColor = [WPStyleGuide littleEddieGrey];
     toolbar.tintColor = [UIColor whiteColor];
@@ -193,6 +201,7 @@ typedef enum {
 
     [[NSNotificationCenter defaultCenter] removeObserver:self name:UIKeyboardWillShowNotification object:nil];
 	[[NSNotificationCenter defaultCenter] removeObserver:self name:UIKeyboardWillHideNotification object:nil];
+    [[NSNotificationCenter defaultCenter] removeObserver:self name:ReaderPostViewDidFinishLayoutNotification object:nil];
 }
 
 - (void)didRotateFromInterfaceOrientation:(UIInterfaceOrientation)fromInterfaceOrientation {
@@ -870,6 +879,30 @@ typedef enum {
     return SectionHeaderHeight;
 }
 
+
+- (WPTableViewCell *)preparedCellForPostContent
+{
+    if(self.postContentCell) {
+        return self.postContentCell;
+    }
+    
+    WPTableViewCell *postCell = [[WPTableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:@"PostCell"];
+    
+    postCell.selectionStyle = UITableViewCellSelectionStyleNone;
+    [postCell.contentView addSubview:self.postView];
+
+    // Make the postView matches the width of its cell.
+    // When the postView is first created it matches the width of the tableView
+    // which may or may not be the same width as the cells when we get to this point.
+    // On the iPhone, when viewing in landscape orientation, there can be a 20px difference.
+    CGRect frame = self.postView.frame;
+    frame.size.width = postCell.frame.size.width;
+    self.postView.frame = frame;
+    self.postContentCell = postCell;
+    return postCell;
+
+}
+
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
     if (indexPath.section == ReaderDetailContentSection) {
         return self.postView.frame.size.height;
@@ -902,19 +935,7 @@ typedef enum {
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
     if (indexPath.section == ReaderDetailContentSection) {
-        UITableViewCell *postCell = [self.tableView dequeueReusableCellWithIdentifier:@"PostCell"];
-        postCell.selectionStyle = UITableViewCellSelectionStyleNone;
-        [postCell.contentView addSubview:self.postView];
-        
-        // Make the postView matches the width of its cell.
-        // When the postView is first created it matches the width of the tableView
-        // which may or may not be the same width as the cells when we get to this point.
-        // On the iPhone, when viewing in landscape orientation, there can be a 20px difference.
-        CGRect frame = self.postView.frame;
-        frame.size.width = postCell.frame.size.width;
-        self.postView.frame = frame;
-        
-        return postCell;
+        return [self preparedCellForPostContent];
     }
     
 	NSString *cellIdentifier = @"ReaderCommentCell";
@@ -1138,6 +1159,32 @@ typedef enum {
     
     //field not found in this view.
     return NO;
+}
+
+#pragma mark - ReaderPostViewDidFinishLayoutNotification Handlers
+
+- (void)handleRPVContentLayoutUpdate:(NSNotification *)notification
+{
+    if(notification.object != self.postView) {
+        return;
+    }
+    // The notification sends the new frame
+    CGRect contentFrame = [[[notification userInfo] objectForKey:@"OptimalFrame"] CGRectValue];
+
+    // If the postContentCell is off screen during rotation, the width of the contained media could be off, so we need to refresh it
+    // This can result in a little hiccup while scrolling the cell back on, but it was better than having the media be bigger than the screen
+    if(self.cachedContentWidth != contentFrame.size.width) {
+        self.cachedContentWidth = contentFrame.size.width;
+        [self.postView refreshMediaLayout];
+    }
+    
+    // The frame height could be changed after determining the cell height, causing weird layout. Detect that here.
+    CGFloat height = contentFrame.size.height;
+    if(height != self.cachedContentHeight) {
+        self.cachedContentHeight = height;
+        [self.postContentCell setNeedsLayout];
+        [self.tableView reloadData];
+    }
 }
 
 @end
