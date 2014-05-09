@@ -22,7 +22,7 @@ CGFloat const BackingLayerHorizontalPadding = 4.0f;
 
 - (CGSize)sizeThatFits:(CGSize)size {
     CGSize newSize = [super sizeThatFits:size];
-    if (self.textLabelBackingLayer) {
+    if (self.textLabelBackingLayer && CGRectGetWidth(self.textLabelBackingLayer.frame) > 0) {
         CGFloat width = newSize.width;
         newSize.width = width + (BackingLayerHorizontalPadding * 2);
     }
@@ -36,23 +36,15 @@ CGFloat const BackingLayerHorizontalPadding = 4.0f;
         return;
     }
 
-    if ([self.titleLabel.text length] > 0) {
-        [self layoutBackingLabel];
-    } else {
-        [self.textLabelBackingLayer removeFromSuperlayer];
-        self.textLabelBackingLayer = nil;
-    }
+    [self layoutBackingLabel];
 }
 
 - (void)layoutBackingLabel
 {
-    if(!self.textLabelBackingLayer) {
-        CALayer *layer = [[CALayer alloc] init];
-        layer.zPosition = -1;
-        layer.cornerRadius = BackingLayerCornerRadius;
-        layer.backgroundColor = [[WPStyleGuide itsEverywhereGrey] CGColor];
-        self.textLabelBackingLayer = layer;
-        [self.layer addSublayer:self.textLabelBackingLayer];
+    NSString *str = [self titleForState:UIControlStateNormal];
+    if ([str length] == 0) {
+        self.textLabelBackingLayer.frame = CGRectZero;
+        return;
     }
 
     CGRect frame = self.titleLabel.frame;
@@ -61,6 +53,46 @@ CGFloat const BackingLayerHorizontalPadding = 4.0f;
     CGFloat w = CGRectGetWidth(frame) + BackingLayerHorizontalPadding * 2.0f;
     CGFloat h = CGRectGetHeight(frame) + BackingLayerVerticalPadding * 2.0f;
     self.textLabelBackingLayer.frame = CGRectMake(x, y, w, h);
+}
+
+- (void)setDrawsTitleBubble:(BOOL)drawsTitleBubble
+{
+    if (_drawsTitleBubble == drawsTitleBubble) {
+        return;
+    }
+
+    _drawsTitleBubble = drawsTitleBubble;
+
+    if (!_drawsTitleBubble) {
+        self.textLabelBackingLayer = nil;
+    } else {
+        CALayer *layer = [[CALayer alloc] init];
+        layer.zPosition = -1;
+        layer.cornerRadius = BackingLayerCornerRadius;
+        layer.backgroundColor = [[WPStyleGuide itsEverywhereGrey] CGColor];
+        self.textLabelBackingLayer = layer;
+    }
+}
+
+- (void)setTextLabelBackingLayer:(CALayer *)textLabelBackingLayer
+{
+    if (_textLabelBackingLayer == textLabelBackingLayer) {
+        return;
+    }
+
+    if (_textLabelBackingLayer) {
+        [_textLabelBackingLayer removeFromSuperlayer];
+    }
+
+    if (textLabelBackingLayer) {
+        self.contentHorizontalAlignment = UIControlContentHorizontalAlignmentLeft;
+        _textLabelBackingLayer = textLabelBackingLayer;
+        [self.layer addSublayer:_textLabelBackingLayer];
+        [self setNeedsLayout];
+    } else {
+        self.contentHorizontalAlignment = UIControlContentHorizontalAlignmentCenter;
+        _textLabelBackingLayer = nil;
+    }
 }
 
 @end
