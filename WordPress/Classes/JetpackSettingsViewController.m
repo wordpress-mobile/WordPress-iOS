@@ -354,7 +354,6 @@ CGFloat const JetpackSignInButtonHeight = 41.0;
     CGFloat newKeyboardOffset = (CGRectGetMaxY(_signInButton.frame) - CGRectGetMinY(keyboardFrame)) + JetpackStandardOffset;
 
     if (newKeyboardOffset < 0) {
-        newKeyboardOffset = 0;
         return;
     }
 
