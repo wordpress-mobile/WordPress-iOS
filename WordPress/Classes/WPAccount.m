@@ -22,7 +22,7 @@
         return;
     }
     
-    [[self restApi] cancelAllHTTPOperationsWithMethod:nil path:nil];
+	[[[self restApi] operationQueue] cancelAllOperations];
     [[self restApi] reset];
 
     // Clear keychain entries

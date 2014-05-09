@@ -544,7 +544,7 @@ NSString * const ReaderPostStoredCommentTextKey = @"comment";
     AccountService *accountService = [[AccountService alloc] initWithManagedObjectContext:self.managedObjectContext];
     WPAccount *defaultAccount = [accountService defaultWordPressComAccount];
 
-    [[defaultAccount restApi] postPath:path parameters:nil success:^(AFHTTPRequestOperation *operation, id responseObject) {
+    [[defaultAccount restApi] POST:path parameters:nil success:^(AFHTTPRequestOperation *operation, id responseObject) {
         [self save];
         
         if(success) {
@@ -578,7 +578,7 @@ NSString * const ReaderPostStoredCommentTextKey = @"comment";
     AccountService *accountService = [[AccountService alloc] initWithManagedObjectContext:self.managedObjectContext];
     WPAccount *defaultAccount = [accountService defaultWordPressComAccount];
 
-    [[defaultAccount restApi] postPath:path parameters:nil success:^(AFHTTPRequestOperation *operation, id responseObject) {
+    [[defaultAccount restApi] POST:path parameters:nil success:^(AFHTTPRequestOperation *operation, id responseObject) {
         [self save];
         
         if(success) {
@@ -606,7 +606,7 @@ NSString * const ReaderPostStoredCommentTextKey = @"comment";
     AccountService *accountService = [[AccountService alloc] initWithManagedObjectContext:self.managedObjectContext];
     WPAccount *defaultAccount = [accountService defaultWordPressComAccount];
 
-    [[defaultAccount restApi] postPath:path parameters:params success:^(AFHTTPRequestOperation *operation, id responseObject) {
+    [[defaultAccount restApi] POST:path parameters:params success:^(AFHTTPRequestOperation *operation, id responseObject) {
         NSDictionary *dict = (NSDictionary *)responseObject;
         self.isReblogged = [dict numberForKey:@"is_reblogged"];
 
@@ -784,9 +784,9 @@ NSString * const ReaderPostStoredCommentTextKey = @"comment";
     
     // There should probably be a better check here
     if ([api hasCredentials]) {
-        [api getPath:path parameters:nil success:success failure:failure];
+        [api GET:path parameters:nil success:success failure:failure];
     } else {
-        [[WordPressComApi anonymousApi] getPath:path parameters:nil success:success failure:failure];
+        [[WordPressComApi anonymousApi] GET:path parameters:nil success:success failure:failure];
     }
 }
 
@@ -804,9 +804,9 @@ NSString * const ReaderPostStoredCommentTextKey = @"comment";
     WPAccount *defaultAccount = [accountService defaultWordPressComAccount];
 
     if ([defaultAccount restApi].authToken) {
-        [[defaultAccount restApi] getPath:path parameters:params success:success failure:failure];
+        [[defaultAccount restApi] GET:path parameters:params success:success failure:failure];
     } else {
-        [[WordPressComApi anonymousApi] getPath:path parameters:params success:success failure:failure];
+        [[WordPressComApi anonymousApi] GET:path parameters:params success:success failure:failure];
     }
 }
 
@@ -829,7 +829,7 @@ NSString * const ReaderPostStoredCommentTextKey = @"comment";
         api = [WordPressComApi anonymousApi];
     }
     
-    [api getPath:path
+    [api GET:path
       parameters:params
          success:^(AFHTTPRequestOperation *operation, id responseObject) {
                      NSArray *postsArr = [responseObject arrayForKey:@"posts"];
