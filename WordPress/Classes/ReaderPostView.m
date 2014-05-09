@@ -56,7 +56,9 @@ static NSInteger const MaxNumberOfLinesForTitleForSummary = 3;
     // Post summary
     if (!showFullContent) {
         NSAttributedString *postSummary = [self summaryAttributedStringForPost:post];
-        desiredHeight += [postSummary boundingRectWithSize:CGSizeMake(contentWidth, CGFLOAT_MAX) options:NSStringDrawingUsesLineFragmentOrigin | NSStringDrawingUsesFontLeading context:nil].size.height;
+        if([postSummary length] > 0) {
+            desiredHeight += [postSummary boundingRectWithSize:CGSizeMake(contentWidth, CGFLOAT_MAX) options:NSStringDrawingUsesLineFragmentOrigin | NSStringDrawingUsesFontLeading context:nil].size.height;
+        }
     }
     desiredHeight += RPVVerticalPadding;
     
@@ -353,7 +355,7 @@ static NSInteger const MaxNumberOfLinesForTitleForSummary = 3;
         textContainerFrame.size.height = height;
         textContainerFrame.origin.y = nextY;
         self.textContentView.frame = textContainerFrame;
-    } else {
+    } else if ([self.snippetLabel.attributedText length] > 0) {
         height = ceil([self.snippetLabel suggestedSizeForWidth:innerContentWidth].height);
         self.snippetLabel.frame = CGRectMake(RPVHorizontalInnerPadding, nextY, innerContentWidth, height);
     }
