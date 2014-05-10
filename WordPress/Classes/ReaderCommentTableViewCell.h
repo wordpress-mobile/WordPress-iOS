@@ -25,4 +25,6 @@
 
 - (void)configureCell:(ReaderComment *)comment;
 
+- (void)setAvatar:(UIImage *)image;
+
 @end
