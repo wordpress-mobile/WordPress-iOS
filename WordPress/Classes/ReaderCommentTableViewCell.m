@@ -234,8 +234,6 @@
 	self.indentationWidth = RCTVCIndentationWidth;
 	self.indentationLevel = [comment.depth integerValue];
 
-	[self.avatarImageView setImageWithURL:[NSURL URLWithString:comment.authorAvatarURL] placeholderImage:[UIImage imageNamed:@"gravatar"]];
-
     [self.timeButton setTitle:[comment.dateCreated shortString] forState:UIControlStateNormal];
     [self.timeButton sizeToFit];
 
@@ -267,6 +265,10 @@
         return;
     }
     [self.delegate readerCommentTableViewCell:self didTapURL:url];
+}
+
+- (void)setAvatar:(UIImage *)image {
+    self.avatarImageView.image = image;
 }
 
 #pragma mark - DTAttributedTextContentView Delegate Methods
