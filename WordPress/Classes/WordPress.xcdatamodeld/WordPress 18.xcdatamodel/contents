@@ -56,7 +56,6 @@
         <attribute name="xmlrpc" attributeType="String" indexed="YES" syncable="YES"/>
         <relationship name="blogs" optional="YES" toMany="YES" deletionRule="Cascade" destinationEntity="Blog" inverseName="account" inverseEntity="Blog" indexed="YES" syncable="YES"/>
         <relationship name="jetpackBlogs" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="Blog" inverseName="jetpackAccount" inverseEntity="Blog" indexed="YES" syncable="YES"/>
-        <relationship name="notes" optional="YES" toMany="YES" deletionRule="Cascade" destinationEntity="Note" inverseName="account" inverseEntity="Note" syncable="YES"/>
         <relationship name="readerTopics" optional="YES" toMany="YES" deletionRule="Cascade" destinationEntity="ReaderTopic" inverseName="account" inverseEntity="ReaderTopic" syncable="YES"/>
     </entity>
     <entity name="BasePost" representedClassName="BasePost" isAbstract="YES">
@@ -252,15 +251,21 @@
         </relationship>
         <userInfo/>
     </entity>
+    <entity name="Meta" representedClassName="Meta" syncable="YES">
+        <attribute name="ghostData" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="last_seen" optional="YES" attributeType="Integer 32" defaultValueString="0" syncable="YES"/>
+        <attribute name="latest_note_time" optional="YES" attributeType="Integer 32" defaultValueString="0" syncable="YES"/>
+        <attribute name="simperiumKey" optional="YES" attributeType="String" syncable="YES"/>
+    </entity>
     <entity name="Note" representedClassName="Note" syncable="YES">
-        <attribute name="icon" optional="YES" attributeType="String" syncable="YES"/>
-        <attribute name="noteID" attributeType="String" syncable="YES"/>
-        <attribute name="payload" attributeType="Binary" syncable="YES"/>
-        <attribute name="subject" attributeType="String" syncable="YES"/>
+        <attribute name="body" optional="YES" attributeType="Transformable" syncable="YES"/>
+        <attribute name="ghostData" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="meta" optional="YES" attributeType="Transformable" syncable="YES"/>
+        <attribute name="simperiumKey" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="subject" optional="YES" attributeType="Transformable" syncable="YES"/>
         <attribute name="timestamp" attributeType="Integer 32" defaultValueString="0" syncable="YES"/>
         <attribute name="type" attributeType="String" syncable="YES"/>
         <attribute name="unread" optional="YES" attributeType="Integer 16" defaultValueString="0" syncable="YES"/>
-        <relationship name="account" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="Account" inverseName="notes" inverseEntity="Account" syncable="YES"/>
     </entity>
     <entity name="Page" representedClassName="Page" parentEntity="AbstractPost">
         <attribute name="parentID" optional="YES" attributeType="Integer 32" defaultValueString="0">
@@ -357,18 +362,19 @@
     <elements>
         <element name="AbstractComment" positionX="0" positionY="0" width="128" height="240"/>
         <element name="AbstractPost" positionX="0" positionY="0" width="128" height="120"/>
-        <element name="Account" positionX="0" positionY="0" width="128" height="148"/>
+        <element name="Account" positionX="0" positionY="0" width="128" height="135"/>
         <element name="BasePost" positionX="0" positionY="0" width="128" height="240"/>
         <element name="Blog" positionX="0" positionY="0" width="128" height="450"/>
         <element name="Category" positionX="0" positionY="0" width="128" height="120"/>
         <element name="Comment" positionX="0" positionY="0" width="128" height="75"/>
         <element name="Media" positionX="0" positionY="0" width="128" height="345"/>
-        <element name="Note" positionX="0" positionY="0" width="128" height="165"/>
+        <element name="Note" positionX="0" positionY="0" width="128" height="163"/>
         <element name="Page" positionX="0" positionY="0" width="128" height="60"/>
         <element name="Post" positionX="0" positionY="0" width="128" height="150"/>
         <element name="ReaderComment" positionX="0" positionY="0" width="128" height="120"/>
         <element name="ReaderPost" positionX="0" positionY="0" width="128" height="433"/>
         <element name="ReaderTopic" positionX="18" positionY="162" width="128" height="178"/>
         <element name="Theme" positionX="9" positionY="153" width="128" height="225"/>
+        <element name="Meta" positionX="9" positionY="153" width="128" height="103"/>
     </elements>
 </model>
