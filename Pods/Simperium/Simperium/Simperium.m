@@ -453,16 +453,18 @@ static SPLogLevels logLevel						= SPLogLevelsInfo;
     return result;
 }
 
+#if defined(__IPHONE_7_0) && (__IPHONE_OS_VERSION_MAX_ALLOWED >= __IPHONE_7_0)
+
 - (void)backgroundFetchWithCompletion:(SimperiumBackgroundFetchCompletion)completion {
-	dispatch_group_t group  = dispatch_group_create();
-    __block BOOL newData    = NO;
-	
+    __block UIBackgroundFetchResult result  = UIBackgroundFetchResultNoData;
+	dispatch_group_t group                  = dispatch_group_create();
+    
 	// Sync every bucket
 	for (SPBucket* bucket in self.buckets.allValues) {
 		dispatch_group_enter(group);
 		[bucket forceSyncWithCompletion:^(BOOL signatureUpdated) {
             if (signatureUpdated) {
-                newData = YES;
+                result = UIBackgroundFetchResultNewData;
             }
 			dispatch_group_leave(group);
 		}];
@@ -476,7 +478,7 @@ static SPLogLevels logLevel						= SPLogLevelsInfo;
     dispatch_time_t timeout = dispatch_time(DISPATCH_TIME_NOW, SPBackgroundSyncTimeout * NSEC_PER_SEC);
     dispatch_block_t block  = ^{
 		if (!notified) {
-			completion(newData);
+			completion(result);
 			notified = YES;
 		}
 	};
@@ -484,6 +486,9 @@ static SPLogLevels logLevel						= SPLogLevelsInfo;
 	dispatch_group_notify(group, dispatch_get_main_queue(), block);
     dispatch_after(timeout, dispatch_get_main_queue(), block);
 }
+
+#endif
+
 
 #if !TARGET_OS_IPHONE
 
