@@ -600,9 +600,6 @@ NSUInteger const ReaderPostServiceMaxPosts = 200;
  */
 - (NSString *)formatVideoPress:(NSString *)string {
     NSMutableString *mstr = [string mutableCopy];
-    NSError *error;
-
-
 
     static NSRegularExpression *regexVideoPress;
     static NSRegularExpression *regexMp4;
