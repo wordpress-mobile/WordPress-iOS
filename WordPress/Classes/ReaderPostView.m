@@ -50,13 +50,15 @@ static NSInteger const MaxNumberOfLinesForTitleForSummary = 3;
     // Title
     desiredHeight += RPVVerticalPadding;
     NSAttributedString *postTitle = [self titleAttributedStringForPost:post showFullContent:showFullContent withWidth:contentWidth];
-    desiredHeight += [postTitle boundingRectWithSize:CGSizeMake(contentWidth, CGFLOAT_MAX) options:NSStringDrawingUsesLineFragmentOrigin | NSStringDrawingUsesFontLeading context:nil].size.height;
+    desiredHeight += ceil([postTitle boundingRectWithSize:CGSizeMake(contentWidth, CGFLOAT_MAX) options:NSStringDrawingUsesLineFragmentOrigin | NSStringDrawingUsesFontLeading context:nil].size.height);
     desiredHeight += RPVTitlePaddingBottom;
     
     // Post summary
     if (!showFullContent) {
         NSAttributedString *postSummary = [self summaryAttributedStringForPost:post];
-        desiredHeight += [postSummary boundingRectWithSize:CGSizeMake(contentWidth, CGFLOAT_MAX) options:NSStringDrawingUsesLineFragmentOrigin | NSStringDrawingUsesFontLeading context:nil].size.height;
+        if([postSummary length] > 0) {
+            desiredHeight += [postSummary boundingRectWithSize:CGSizeMake(contentWidth, CGFLOAT_MAX) options:NSStringDrawingUsesLineFragmentOrigin | NSStringDrawingUsesFontLeading context:nil].size.height;
+        }
     }
     desiredHeight += RPVVerticalPadding;
     
@@ -204,10 +206,10 @@ static NSInteger const MaxNumberOfLinesForTitleForSummary = 3;
     return self;
 }
 
-- (void)configurePost:(ReaderPost *)post withWidth:(CGFloat)width {
+- (void)configurePost:(ReaderPost *)post {
    
     // Margins
-    CGFloat contentWidth = width;
+    CGFloat contentWidth = self.frame.size.width;
     if (IS_IPAD) {
         contentWidth = WPTableViewFixedWidth;
     }
@@ -262,7 +264,23 @@ static NSInteger const MaxNumberOfLinesForTitleForSummary = 3;
 		self.reblogButton.hidden = YES;
         self.commentButton.hidden = YES;
 	}
-    
+
+    if ([self.post.likeCount integerValue] > 0) {
+        [self.likeButton setTitle:[self.post.likeCount stringValue] forState:UIControlStateNormal];
+        [self.likeButton setTitle:[self.post.likeCount stringValue] forState:UIControlStateSelected];
+    } else {
+        [self.likeButton setTitle:@"" forState:UIControlStateNormal];
+        [self.likeButton setTitle:@"" forState:UIControlStateSelected];
+    }
+
+    if ([self.post.commentCount integerValue] > 0) {
+        [self.commentButton setTitle:[self.post.commentCount stringValue] forState:UIControlStateNormal];
+        [self.commentButton setTitle:[self.post.commentCount stringValue] forState:UIControlStateSelected];
+    } else {
+        [self.commentButton setTitle:@"" forState:UIControlStateNormal];
+        [self.commentButton setTitle:@"" forState:UIControlStateSelected];
+    }
+
     [self.followButton setSelected:self.post.isFollowing];
 	self.reblogButton.userInteractionEnabled = !post.isReblogged;
 	
@@ -334,7 +352,7 @@ static NSInteger const MaxNumberOfLinesForTitleForSummary = 3;
         textContainerFrame.size.height = height;
         textContainerFrame.origin.y = nextY;
         self.textContentView.frame = textContainerFrame;
-    } else if ([self.snippetLabel.text length] > 0) {
+    } else if ([self.snippetLabel.attributedText length] > 0) {
         height = ceil([self.snippetLabel suggestedSizeForWidth:innerContentWidth].height);
         self.snippetLabel.frame = CGRectMake(RPVHorizontalInnerPadding, nextY, innerContentWidth, height);
     }
