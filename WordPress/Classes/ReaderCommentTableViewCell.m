@@ -8,19 +8,18 @@
 #import "NSString+Helpers.h"
 
 #define RCTVCVerticalPadding 10.0f
-#define RCTVCIndentationWidth 15.0f
-#define RCTVCReplyButtonHeight 24.0f
-#define RCTVCCommentTextTopMargin 4.0f
+#define RCTVCIndentationWidth 40.0f
+#define RCTVCCommentTextTopMargin 25.0f
+#define RCTVCLeftMargin 40.0f
+#define RCTVCMaxIndentationLevel 3
 
 @interface ReaderCommentTableViewCell()<DTAttributedTextContentViewDelegate>
 
 @property (nonatomic, strong) ReaderComment *comment;
 @property (nonatomic, strong) DTAttributedTextContentView *textContentView;
 @property (nonatomic, strong) UIImageView *avatarImageView;
-@property (nonatomic, strong) UILabel *bylineLabel;
-@property (nonatomic, strong) UIButton *byButton;
+@property (nonatomic, strong) UIButton *bylineButton;
 @property (nonatomic, strong) UIButton *timeButton;
-@property (nonatomic, strong) UIButton *replyButton;
 
 - (void)handleLinkTapped:(id)sender;
 
@@ -34,7 +33,7 @@
 	dispatch_once(&onceToken, ^{
 		textContentView = [[DTAttributedTextContentView alloc] initWithFrame:CGRectMake(0.0f, 0.0f, 100.0f, 44.0f)]; // arbitrary starting frame
 		textContentView.autoresizingMask = UIViewAutoresizingFlexibleWidth;
-		textContentView.edgeInsets = UIEdgeInsetsMake(0.0f, RPVHorizontalInnerPadding, 0.0f, RPVHorizontalInnerPadding);
+		textContentView.edgeInsets = UIEdgeInsetsMake(0.0f, RPVHorizontalInnerPadding + RCTVCLeftMargin, 0.0f, RPVHorizontalInnerPadding);
 		textContentView.shouldDrawImages = NO;
 		textContentView.shouldLayoutCustomSubviews = YES;
 	});
@@ -42,7 +41,7 @@
 	textContentView.attributedString = [self convertHTMLToAttributedString:comment.content withOptions:nil];
 
     // Everything but the height of the comment content.
-    CGFloat desiredHeight = (RCTVCVerticalPadding * 2) + RPVAvatarSize + RCTVCCommentTextTopMargin + RCTVCReplyButtonHeight;
+    CGFloat desiredHeight = (RCTVCVerticalPadding * 2) + RCTVCCommentTextTopMargin;
 
     // Do the math. We can't trust the cell's contentView's frame because
 	// its not updated at a useful time during rotation.
@@ -67,7 +66,7 @@
 	}
 
 	// Cell indentation
-	CGFloat indentationLevel = [comment.depth integerValue];
+	CGFloat indentationLevel = MIN(RCTVCMaxIndentationLevel, [comment.depth integerValue]);
 	contentWidth -= (indentationLevel * RCTVCIndentationWidth);
 
 	desiredHeight += [textContentView suggestedFrameSizeToFitEntireStringConstraintedToWidth:contentWidth].height;
@@ -127,38 +126,26 @@
         [self.timeButton setEnabled:NO];
         [self.contentView addSubview:self.timeButton];
 
-		self.bylineLabel = [[UILabel alloc] init];
-		[self.bylineLabel setFont:[WPStyleGuide subtitleFont]];
-		self.bylineLabel.textColor = [WPStyleGuide whisperGrey];
-        self.bylineLabel.backgroundColor = [WPStyleGuide itsEverywhereGrey];
-		self.bylineLabel.autoresizingMask = UIViewAutoresizingFlexibleWidth;
-		[self.contentView addSubview:self.bylineLabel];
-
-        self.byButton = [UIButton buttonWithType:UIButtonTypeCustom];
-        self.byButton.backgroundColor = [WPStyleGuide itsEverywhereGrey];
-        self.byButton.contentHorizontalAlignment = UIControlContentHorizontalAlignmentLeft;
-        self.byButton.titleLabel.font = [WPStyleGuide subtitleFont];
-        [self.byButton addTarget:self action:@selector(handleAuthorBlogTapped:) forControlEvents:UIControlEventTouchUpInside];
-        [self.byButton setTitleColor:[WPStyleGuide buttonActionColor] forState:UIControlStateNormal];
-        [self.contentView addSubview:self.byButton];
+        self.bylineButton = [UIButton buttonWithType:UIButtonTypeCustom];
+        self.bylineButton.backgroundColor = [WPStyleGuide itsEverywhereGrey];
+        self.bylineButton.contentHorizontalAlignment = UIControlContentHorizontalAlignmentLeft;
+        self.bylineButton.titleLabel.font = [WPStyleGuide subtitleFont];
+        [self.bylineButton addTarget:self action:@selector(handleAuthorBlogTapped:) forControlEvents:UIControlEventTouchUpInside];
+        [self.bylineButton setTitleColor:[WPStyleGuide buttonActionColor] forState:UIControlStateNormal];
+        [self.bylineButton setTitleColor:[WPStyleGuide whisperGrey] forState:UIControlStateDisabled];
+        [self.contentView addSubview:self.bylineButton];
 
 		self.textContentView = [[DTAttributedTextContentView alloc] initWithFrame:CGRectMake(0.0f, 0.0f, width, 44.0f)];
         self.textContentView.backgroundColor = [WPStyleGuide itsEverywhereGrey];
 		self.textContentView.autoresizingMask = UIViewAutoresizingFlexibleWidth;
-		self.textContentView.edgeInsets = UIEdgeInsetsMake(0.0f, RPVHorizontalInnerPadding, 0.0f, RPVHorizontalInnerPadding);
+		self.textContentView.edgeInsets = UIEdgeInsetsMake(0.0f, RPVHorizontalInnerPadding + RCTVCLeftMargin, 0.0f, RPVHorizontalInnerPadding);
 		self.textContentView.delegate = self;
 		self.textContentView.shouldDrawImages = NO;
 		self.textContentView.shouldLayoutCustomSubviews = YES;
 		[self.contentView addSubview:self.textContentView];
 
-        self.replyButton = [UIButton buttonWithType:UIButtonTypeCustom];
-        self.replyButton.backgroundColor = [WPStyleGuide itsEverywhereGrey];
-        [self.replyButton addTarget:self action:@selector(handleReplyTapped:) forControlEvents:UIControlEventTouchUpInside];
-        [self.replyButton setTitle:NSLocalizedString(@"Reply", @"") forState:UIControlStateNormal];
-        [self.replyButton setTitleColor:[WPStyleGuide whisperGrey] forState:UIControlStateNormal];
-        self.replyButton.titleLabel.font = [WPStyleGuide subtitleFont];
-        [self.replyButton sizeToFit];
-        [self.contentView addSubview:self.replyButton];
+        // Make sure the text view doesn't overlap any of the other views.
+        [self.contentView sendSubviewToBack:self.textContentView];
     }
 	
     return self;
@@ -177,50 +164,37 @@
     CGFloat width = CGRectGetWidth(self.contentView.frame);
 
     // Avatar
-	self.avatarImageView.frame = CGRectMake(RPVHorizontalInnerPadding, RCTVCVerticalPadding, RPVAvatarSize, RPVAvatarSize);
+	self.avatarImageView.frame = CGRectMake(RPVHorizontalInnerPadding, RCTVCVerticalPadding + 1.0f, RPVAvatarSize, RPVAvatarSize);
 
     // Date button
     frame = self.timeButton.frame;
     frame.origin.x = width - (CGRectGetWidth(frame) + RPVHorizontalInnerPadding + 1.0); // +1 pixel correction
-    frame.origin.y = RCTVCVerticalPadding;
+    frame.origin.y = RCTVCVerticalPadding - 2.0f;
     self.timeButton.frame = frame;
 
     // Byline Label
-    frame = self.bylineLabel.frame;
+    frame = self.bylineButton.frame;
     frame.size.width = CGRectGetMinX(self.timeButton.frame) - (CGRectGetMaxX(self.avatarImageView.frame) + RPVAuthorPadding);
     frame.origin.x = CGRectGetMaxX(self.avatarImageView.frame) + RPVAuthorPadding;
-    frame.origin.y = RCTVCVerticalPadding;
+    frame.origin.y = RCTVCVerticalPadding - 2.0f;
     frame.size.height = RPVAvatarSize / 2.0;
-    self.bylineLabel.frame = frame;
-
-    // Author's blog
-    frame = self.bylineLabel.frame;
-    frame.origin.y = CGRectGetMaxY(self.bylineLabel.frame);
-    self.byButton.frame = frame;
+    self.bylineButton.frame = frame;
 
     // Comment text view
     CGFloat height = [self.textContentView suggestedFrameSizeToFitEntireStringConstraintedToWidth:width].height;
     frame = self.textContentView.frame;
     frame.size.height = height;
-    frame.origin.y = CGRectGetMaxY(self.byButton.frame) + RCTVCCommentTextTopMargin;
+    frame.origin.y = RCTVCCommentTextTopMargin;
     self.textContentView.frame = frame;
 	[self.textContentView setNeedsLayout];
-
-    // Reply button
-    frame = self.replyButton.frame;
-    frame.origin.x = RPVHorizontalInnerPadding;
-    frame.origin.y = CGRectGetMaxY(self.textContentView.frame);
-    frame.size.height = RCTVCReplyButtonHeight;
-    self.replyButton.frame = frame;
 }
 
 - (void)prepareForReuse {
 	[super prepareForReuse];
 	
 	self.textContentView.attributedString = nil;
-	self.bylineLabel.text = @"";
-    [self.byButton setTitle:@"" forState:UIControlStateNormal];
-    [self.byButton setTitle:@"" forState:UIControlStateSelected];
+    [self.bylineButton setTitle:@"" forState:UIControlStateNormal];
+    [self.bylineButton setTitle:@"" forState:UIControlStateSelected];
     [self.timeButton setTitle:@"" forState:UIControlStateNormal];
     [self.timeButton setTitle:@"" forState:UIControlStateSelected];
 }
@@ -232,16 +206,14 @@
 	self.comment = comment;
 	
 	self.indentationWidth = RCTVCIndentationWidth;
-	self.indentationLevel = [comment.depth integerValue];
+	self.indentationLevel = MIN(RCTVCMaxIndentationLevel, [comment.depth integerValue]);
 
     [self.timeButton setTitle:[comment.dateCreated shortString] forState:UIControlStateNormal];
     [self.timeButton sizeToFit];
 
-	self.bylineLabel.text = comment.author;
-
+	[self.bylineButton setTitle:[comment authorForDisplay] forState:UIControlStateNormal];
     NSString *authorUrl = comment.author_url;
-    [self.byButton setTitle:authorUrl forState:UIControlStateNormal];
-    self.byButton.enabled = ([authorUrl length] > 0);
+    self.bylineButton.enabled = ([authorUrl length] > 0);
 
 	if (!comment.attributedContent) {
 		comment.attributedContent = [[self class] convertHTMLToAttributedString:comment.content withOptions:nil];
