@@ -6,14 +6,12 @@
 #import "ReaderTopicsViewController.h"
 #import "ReaderPostDetailViewController.h"
 #import "ReaderPost.h"
-#import "WordPressComApi.h"
 #import "WordPressAppDelegate.h"
 #import "NSString+XMLExtensions.h"
 #import "WPFriendFinderViewController.h"
 #import "WPAccount.h"
 #import "WPTableImageSource.h"
 #import "WPNoResultsView.h"
-#import "WPCookie.h"
 #import "NSString+Helpers.h"
 #import "IOS7CorrectedTextView.h"
 #import "WPAnimatedBox.h"
@@ -22,12 +20,13 @@
 #import "ContextManager.h"
 #import "AccountService.h"
 #import "RebloggingViewController.h"
+#import "ReaderTopicService.h"
+#import "ReaderPostService.h"
 
 static CGFloat const RPVCHeaderHeightPhone = 10.f;
 static CGFloat const RPVCMaxImageHeightPercentage = 0.58f;
 static CGFloat const RPVCExtraTableViewHeightPercentage = 2.0f;
 
-NSString * const ReaderTopicDidChangeNotification = @"ReaderTopicDidChangeNotification";
 NSString * const RPVCDisplayedNativeFriendFinder = @"DisplayedNativeFriendFinder";
 
 @interface ReaderPostsViewController ()<WPTableImageSourceDelegate, ReaderCommentPublisherDelegate> {
@@ -46,6 +45,7 @@ NSString * const RPVCDisplayedNativeFriendFinder = @"DisplayedNativeFriendFinder
 @property (nonatomic, strong) UINavigationBar *navBar;
 @property (nonatomic, strong) InlineComposeView *inlineComposeView;
 @property (nonatomic, strong) ReaderCommentPublisher *commentPublisher;
+@property (nonatomic, strong) ReaderTopic *currentTopic;
 
 @end
 
@@ -81,6 +81,9 @@ NSString * const RPVCDisplayedNativeFriendFinder = @"DisplayedNativeFriendFinder
         
         [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(readerTopicDidChange:) name:ReaderTopicDidChangeNotification object:nil];
         [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(fetchBlogsAndPrimaryBlog) name:WPAccountDefaultWordPressComAccountChangedNotification object:nil];
+
+        NSManagedObjectContext *context = [[ContextManager sharedInstance] mainContext];
+        self.currentTopic = [[[ReaderTopicService alloc] initWithManagedObjectContext:context] currentTopic];
 	}
 	return self;
 }
@@ -139,9 +142,9 @@ NSString * const RPVCDisplayedNativeFriendFinder = @"DisplayedNativeFriendFinder
 
 - (void)viewWillAppear:(BOOL)animated {
 	[super viewWillAppear:animated];
-	   
-	self.title = [[[ReaderPost currentTopic] objectForKey:@"title"] capitalizedString];
-	
+
+    [self updateTitle];
+
 	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(handleKeyboardDidShow:) name:UIKeyboardWillShowNotification object:nil];
 	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(handleKeyboardWillHide:) name:UIKeyboardWillHideNotification object:nil];
     
@@ -159,7 +162,9 @@ NSString * const RPVCDisplayedNativeFriendFinder = @"DisplayedNativeFriendFinder
     }
 
     if (!_viewHasAppeared) {
-        [WPAnalytics track:WPAnalyticsStatReaderAccessed withProperties:[self tagPropertyForStats]];
+        if (self.currentTopic) {
+            [WPAnalytics track:WPAnalyticsStatReaderAccessed withProperties:[self tagPropertyForStats]];
+        }
         _viewHasAppeared = YES;
     }
 
@@ -198,6 +203,14 @@ NSString * const RPVCDisplayedNativeFriendFinder = @"DisplayedNativeFriendFinder
 }
 
 #pragma mark - Instance Methods
+
+- (void)updateTitle {
+    if (self.currentTopic) {
+        self.title = [self.currentTopic.title capitalizedString];
+    } else {
+        self.title = NSLocalizedString(@"Reader", @"Default title for the reader before topics are loaded the first time.");
+    }
+}
 
 - (void)resizeTableViewForImagePreloading {
     
@@ -301,15 +314,18 @@ NSString * const RPVCDisplayedNativeFriendFinder = @"DisplayedNativeFriendFinder
 
 - (void)postView:(ReaderPostView *)postView didReceiveLikeAction:(id)sender {
     ReaderPost *post = postView.post;
-	[post toggleLikedWithSuccess:^{
-        if ([post.isLiked boolValue]) {
+
+    NSManagedObjectContext *context = [[ContextManager sharedInstance] newDerivedContext];
+    ReaderPostService *service = [[ReaderPostService alloc] initWithManagedObjectContext:context];
+    [service toggleLikedForPost:post success:^{
+        if (post.isLiked) {
             [WPAnalytics track:WPAnalyticsStatReaderLikedArticle];
         }
-	} failure:^(NSError *error) {
+    } failure:^(NSError *error) {
 		DDLogError(@"Error Liking Post : %@", [error localizedDescription]);
 		[postView updateActionButtons];
-	}];
-	
+    }];
+
 	[postView updateActionButtons];
 }
 
@@ -321,18 +337,22 @@ NSString * const RPVCDisplayedNativeFriendFinder = @"DisplayedNativeFriendFinder
     if (![post isFollowable])
         return;
     
-    if (![post.isFollowing boolValue]) {
+    if (!post.isFollowing) {
         [WPAnalytics track:WPAnalyticsStatReaderFollowedSite];
     }
 
-    followButton.selected = ![post.isFollowing boolValue]; // Set it optimistically
+    followButton.selected = !post.isFollowing; // Set it optimistically
 	[cell setNeedsLayout];
-	[post toggleFollowingWithSuccess:^{
-	} failure:^(NSError *error) {
+
+    NSManagedObjectContext *context = [[ContextManager sharedInstance] newDerivedContext];
+    ReaderPostService *service = [[ReaderPostService alloc] initWithManagedObjectContext:context];
+    [service toggleFollowingForPost:post success:^{
+        //noop
+    } failure:^(NSError *error) {
 		DDLogError(@"Error Following Blog : %@", [error localizedDescription]);
-		[followButton setSelected:[post.isFollowing boolValue]];
+		[followButton setSelected:post.isFollowing];
 		[cell setNeedsLayout];
-	}];
+    }];
 }
 
 - (void)postView:(ReaderPostView *)postView didReceiveCommentAction:(id)sender {
@@ -353,18 +373,6 @@ NSString * const RPVCDisplayedNativeFriendFinder = @"DisplayedNativeFriendFinder
                           atScrollPosition:UITableViewScrollPositionTop
                                   animated:YES];
 
-}
-
-- (void)postView:(ReaderPostView *)postView didReceiveTagAction:(id)sender {
-    ReaderPost *post = postView.post;
-
-    NSString *endpoint = [NSString stringWithFormat:@"read/tags/%@/posts", post.primaryTagSlug];
-    NSDictionary *dict = @{@"endpoint" : endpoint,
-                           @"title" : post.primaryTagName};
-    
-	[[NSUserDefaults standardUserDefaults] setObject:dict forKey:ReaderCurrentTopicKey];
-	[[NSUserDefaults standardUserDefaults] synchronize];
-    [self readerTopicDidChange:nil];
 }
 
 
@@ -408,74 +416,34 @@ NSString * const RPVCDisplayedNativeFriendFinder = @"DisplayedNativeFriendFinder
 }
 
 - (void)openPost:(NSUInteger *)postId onBlog:(NSUInteger)blogId {
-    NSString *endpoint = [NSString stringWithFormat:@"sites/%i/posts/%i/?meta=site", blogId, postId];
-    
-    [ReaderPost getPostsFromEndpoint:endpoint
-                      withParameters:nil
-                         loadingMore:NO
-                             success:^(AFHTTPRequestOperation *operation, id responseObject) {
-                                 [ReaderPost createOrUpdateWithDictionary:responseObject
-                                                              forEndpoint:endpoint
-                                                              withContext:[[ContextManager sharedInstance] mainContext]];
-                                 NSArray *posts = [ReaderPost fetchPostsForEndpoint:endpoint
-                                                                        withContext:[[ContextManager sharedInstance] mainContext]];
-                                 
-                                 ReaderPostDetailViewController *controller = [[ReaderPostDetailViewController alloc] initWithPost:[posts objectAtIndex:0]
-                                                                                                                     featuredImage:nil
-                                                                                                                       avatarImage:nil];
-                                 
-                                 [self.navigationController pushViewController:controller animated:YES];
-                             }
-                             failure:nil];
 
+    NSManagedObjectContext *context = [[ContextManager sharedInstance] mainContext];
+    ReaderPostService *service = [[ReaderPostService alloc] initWithManagedObjectContext:context];
+    [service fetchPost:postId forSite:blogId success:^(ReaderPost *post) {
+        ReaderPostDetailViewController *controller = [[ReaderPostDetailViewController alloc] initWithPost:post
+                                                                                            featuredImage:nil
+                                                                                              avatarImage:nil];
+
+        [self.navigationController pushViewController:controller animated:YES];
+    } failure:^(NSError *error) {
+        // noop
+    }];
 }
 
 #pragma mark - WPTableViewSublass methods
 
 - (NSString *)noResultsTitleText {
-	NSString *prompt = NSLocalizedString(@"Sorry. No posts yet.", @"");
-    
-    NSManagedObjectContext *context = [[ContextManager sharedInstance] mainContext];
-    AccountService *accountService = [[AccountService alloc] initWithManagedObjectContext:context];
-    WPAccount *defaultAccount = [accountService defaultWordPressComAccount];
-
-    if (defaultAccount == nil) {
-        return prompt; // un-authed endpoints do not include likes or follows
+    NSRange range = [self.currentTopic.path rangeOfString:@"following"];
+    if (range.location != NSNotFound) {
+        return NSLocalizedString(@"You're not following any sites yet.", @"");
     }
-    
-	NSString *endpoint = [ReaderPost currentEndpoint];
-	NSArray *endpoints = [ReaderPost readerEndpoints];
 
-	NSInteger idx = [endpoints indexOfObjectPassingTest:^BOOL(id obj, NSUInteger idx, BOOL *stop) {
-		BOOL match = NO;
-		
-		if ([endpoint isEqualToString:[obj objectForKey:@"endpoint"]]) {
-			match = YES;
-			*stop = YES;
-		}
-				
-		return match;
-	}];
-    
-	// TODO: need a smarter way to check here since the menu should not be hard coded.
-	switch (idx) {
-		case 0:
-			// Blogs I follow
-			prompt = NSLocalizedString(@"You're not following any sites yet.", @"");
-			break;
-			
-		case 2:
-			// Posts I like
-			prompt = NSLocalizedString(@"You have not liked any posts.", @"");
-			break;
-			
-		default:
-			// Topics // freshly pressed.
-			break;
-			
+    range = [self.currentTopic.path rangeOfString:@"liked"];
+    if (range.location != NSNotFound) {
+        return NSLocalizedString(@"You have not liked any posts.", @"");
+    }
 
-	}
-	return prompt;
+    return NSLocalizedString(@"Sorry. No posts yet.", @"");
 }
 
 
@@ -495,16 +463,15 @@ NSString * const RPVCDisplayedNativeFriendFinder = @"DisplayedNativeFriendFinder
 }
 
 - (NSDate *)lastSyncDate {
-	return (NSDate *)[[NSUserDefaults standardUserDefaults] objectForKey:ReaderLastSyncDateKey];
+    return self.currentTopic.lastSynced;
 }
 
 - (NSFetchRequest *)fetchRequest {
-	NSString *endpoint = [ReaderPost currentEndpoint];
     NSFetchRequest *fetchRequest = [NSFetchRequest fetchRequestWithEntityName:[self entityName]];
-    fetchRequest.predicate = [NSPredicate predicateWithFormat:@"(endpoint == %@)", endpoint];
+    fetchRequest.predicate = [NSPredicate predicateWithFormat:@"(topic == %@)", self.currentTopic];
     NSSortDescriptor *sortDescriptorDate = [NSSortDescriptor sortDescriptorWithKey:@"sortDate" ascending:NO];
     fetchRequest.sortDescriptors = @[sortDescriptorDate];
-	fetchRequest.fetchBatchSize = 10;
+	fetchRequest.fetchBatchSize = 20;
 	return fetchRequest;
 }
 
@@ -586,62 +553,40 @@ NSString * const RPVCDisplayedNativeFriendFinder = @"DisplayedNativeFriendFinder
 
 - (void)syncItemsViaUserInteraction:(BOOL)userInteraction success:(void (^)())success failure:(void (^)(NSError *))failure {
     DDLogMethod();
-    NSManagedObjectContext *context = [[ContextManager sharedInstance] mainContext];
-    AccountService *accountService = [[AccountService alloc] initWithManagedObjectContext:context];
-    WPAccount *defaultAccount = [accountService defaultWordPressComAccount];
 
-    // if needs auth.
-    if ([WPCookie hasCookieForURL:[NSURL URLWithString:@"https://wordpress.com"] andUsername:[defaultAccount username]]) {
-       [self syncReaderItemsWithSuccess:success failure:failure];
+    NSManagedObjectContext *context = [[ContextManager sharedInstance] mainContext];
+
+    if(!self.currentTopic) {
+        ReaderTopicService *topicService = [[ReaderTopicService alloc] initWithManagedObjectContext:context];
+        [topicService fetchReaderMenuWithSuccess:^{
+            self.currentTopic = [[[ReaderTopicService alloc] initWithManagedObjectContext:context] currentTopic];
+            // Changing the topic means we need to also change the fetch request.
+            [self resetResultsController];
+            [self updateTitle];
+            [self syncReaderItemsWithSuccess:success failure:failure];
+        } failure:^(NSError *error) {
+            failure(error);
+        }];
         return;
     }
 
-    [[WordPressAppDelegate sharedWordPressApplicationDelegate] useDefaultUserAgent];
-    NSString *username = [defaultAccount username];
-    NSString *password = [defaultAccount password];
-    NSMutableURLRequest *mRequest = [[NSMutableURLRequest alloc] init];
-    NSString *requestBody = [NSString stringWithFormat:@"log=%@&pwd=%@&redirect_to=https://wordpress.com",
-                             [username stringByUrlEncoding],
-                             [password stringByUrlEncoding]];
-    
-    [mRequest setURL:[NSURL URLWithString:@"https://wordpress.com/wp-login.php"]];
-    [mRequest setHTTPBody:[requestBody dataUsingEncoding:NSUTF8StringEncoding]];
-    [mRequest setValue:[NSString stringWithFormat:@"%d", [requestBody length]] forHTTPHeaderField:@"Content-Length"];
-    [mRequest addValue:@"*/*" forHTTPHeaderField:@"Accept"];
-    [mRequest setHTTPMethod:@"POST"];
-    
-    
-    AFHTTPRequestOperation *authRequest = [[AFHTTPRequestOperation alloc] initWithRequest:mRequest];
-    [authRequest setCompletionBlockWithSuccess:^(AFHTTPRequestOperation *operation, id responseObject) {
-        [[WordPressAppDelegate sharedWordPressApplicationDelegate] useAppUserAgent];
-        [self syncReaderItemsWithSuccess:success failure:failure];
-    } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
-        [[WordPressAppDelegate sharedWordPressApplicationDelegate] useAppUserAgent];
-        [self syncReaderItemsWithSuccess:success failure:failure];
-    }];
-    
-    [authRequest start];    
+    [self syncReaderItemsWithSuccess:success failure:failure];
 }
 
 - (void)syncReaderItemsWithSuccess:(void (^)())success failure:(void (^)(NSError *))failure {
     DDLogMethod();
-	NSString *endpoint = [ReaderPost currentEndpoint];
-	NSNumber *numberToSync = [NSNumber numberWithInteger:ReaderPostsToSync];
-	NSDictionary *params = @{@"number":numberToSync, @"per_page":numberToSync};
-	[ReaderPost getPostsFromEndpoint:endpoint
-					  withParameters:params
-						 loadingMore:_loadingMore
-							 success:^(AFHTTPRequestOperation *operation, id responseObject) {
-								 if (success) {
-									success();
-								 }
-								 [self onSyncSuccess:operation response:responseObject];
-							 }
-							 failure:^(AFHTTPRequestOperation *operation, NSError *error) {
-								 if (failure) {
-									 failure(error);
-								 }
-							 }];
+
+    NSManagedObjectContext *context = [[ContextManager sharedInstance] newDerivedContext];
+    ReaderPostService *service = [[ReaderPostService alloc] initWithManagedObjectContext:context];
+    [service fetchPostsForTopic:self.currentTopic earlierThan:[NSDate date] keepExisting:_loadingMore success:^(NSUInteger count) {
+        if (success) {
+            success();
+        }
+    } failure:^(NSError *error) {
+        if(failure) {
+            failure(error);
+        }
+    }];
 }
 
 - (void)loadMoreWithSuccess:(void (^)())success failure:(void (^)(NSError *error))failure {
@@ -653,28 +598,21 @@ NSString * const RPVCDisplayedNativeFriendFinder = @"DisplayedNativeFriendFinder
         return;
     
 	_loadingMore = YES;
-	
+
 	ReaderPost *post = self.resultsController.fetchedObjects.lastObject;
-	NSNumber *numberToSync = [NSNumber numberWithInteger:ReaderPostsToSync];
-	NSString *endpoint = [ReaderPost currentEndpoint];
-	id before = [DateUtils isoStringFromDate:post.date_created_gmt];
+    NSManagedObjectContext *context = [[ContextManager sharedInstance] newDerivedContext];
 
-	NSDictionary *params = @{@"before":before, @"number":numberToSync, @"per_page":numberToSync};
-
-	[ReaderPost getPostsFromEndpoint:endpoint
-					  withParameters:params
-						 loadingMore:_loadingMore
-							 success:^(AFHTTPRequestOperation *operation, id responseObject) {
-								 if (success) {
-									 success();
-								 }
-								 [self onSyncSuccess:operation response:responseObject];
-							 }
-							 failure:^(AFHTTPRequestOperation *operation, NSError *error) {
-								 if (failure) {
-									 failure(error);
-								 }
-							 }];
+    ReaderPostService *service = [[ReaderPostService alloc] initWithManagedObjectContext:context];
+    [service fetchPostsForTopic:self.currentTopic earlierThan:post.sortDate keepExisting:YES success:^(NSUInteger count){
+        if (success) {
+            success();
+        }
+        [self onSyncSuccess:count];
+    } failure:^(NSError *error) {
+        if (failure) {
+            failure(error);
+        }
+    }];
     
     [WPAnalytics track:WPAnalyticsStatReaderInfiniteScroll withProperties:[self tagPropertyForStats]];
 }
@@ -683,25 +621,12 @@ NSString * const RPVCDisplayedNativeFriendFinder = @"DisplayedNativeFriendFinder
 	return UITableViewRowAnimationNone;
 }
 
-- (void)onSyncSuccess:(AFHTTPRequestOperation *)operation response:(id)responseObject {
+- (void)onSyncSuccess:(NSUInteger)count {
     DDLogMethod();
-	BOOL wasLoadingMore = _loadingMore;
-	_loadingMore = NO;
-	
-	NSDictionary *resp = (NSDictionary *)responseObject;
-	NSArray *postsArr = [resp arrayForKey:@"posts"];
-	
-	if (!postsArr) {
-		if (wasLoadingMore) {
-			_hasMoreContent = NO;
-		}
-		return;
-	}
-	
-	// if # of results is less than # requested then no more content.
-	if ([postsArr count] < ReaderPostsToSync && wasLoadingMore) {
-		_hasMoreContent = NO;
-	}
+    _loadingMore = NO;
+    if (count == 0) {
+        _hasMoreContent = NO;
+    }
 }
 
 
@@ -773,7 +698,11 @@ NSString * const RPVCDisplayedNativeFriendFinder = @"DisplayedNativeFriendFinder
 	if (IS_IPAD){
         [self dismissPopover];
 	}
-	
+
+    NSManagedObjectContext *context = [[ContextManager sharedInstance] mainContext];
+    self.currentTopic = [[[ReaderTopicService alloc] initWithManagedObjectContext:context] currentTopic];
+    [self updateTitle];
+
 	_loadingMore = NO;
 	_hasMoreContent = YES;
 	[(WPNoResultsView *)self.noResultsView setTitleText:[self noResultsTitleText]];
@@ -783,14 +712,7 @@ NSString * const RPVCDisplayedNativeFriendFinder = @"DisplayedNativeFriendFinder
 	[self.tableView reloadData];
     [self syncItems];
 	[self configureNoResultsView];
-    
-	self.title = [[[ReaderPost currentTopic] stringForKey:@"title"] capitalizedString];
 
-    if ([WordPressAppDelegate sharedWordPressApplicationDelegate].connectionAvailable == YES && ![self isSyncing] ) {
-		[[NSUserDefaults standardUserDefaults] removeObjectForKey:ReaderLastSyncDateKey];
-		[NSUserDefaults resetStandardUserDefaults];
-    }
-    
     [WPAnalytics track:WPAnalyticsStatReaderLoadedTag withProperties:[self tagPropertyForStats]];
     if ([self isCurrentTagFreshlyPressed]) {
         [WPAnalytics track:WPAnalyticsStatReaderLoadedFreshlyPressed];
@@ -798,19 +720,12 @@ NSString * const RPVCDisplayedNativeFriendFinder = @"DisplayedNativeFriendFinder
 }
 
 - (void)didChangeAccount:(NSNotification *)notification {
-    NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
-    [defaults removeObjectForKey:ReaderCurrentTopicKey];
-    [defaults removeObjectForKey:ReaderLastSyncDateKey];
-    [NSUserDefaults resetStandardUserDefaults];
+    self.currentTopic = nil;
     [self resetResultsController];
     [self.tableView reloadData];
     [self.navigationController popToViewController:self animated:NO];
-    
-    NSManagedObjectContext *context = [[ContextManager sharedInstance] mainContext];
-    AccountService *accountService = [[AccountService alloc] initWithManagedObjectContext:context];
-    WPAccount *defaultAccount = [accountService defaultWordPressComAccount];
 
-    if (defaultAccount && [self isViewLoaded]) {
+    if ([self isViewLoaded]) {
         [self syncItems];
     }
 }
@@ -819,47 +734,11 @@ NSString * const RPVCDisplayedNativeFriendFinder = @"DisplayedNativeFriendFinder
 #pragma mark - Utility
 
 - (BOOL)isCurrentTagFreshlyPressed {
-    return [[self currentTag] rangeOfString:@"freshly-pressed"].location != NSNotFound;
-}
-
-- (NSString *)currentTag {
-    NSDictionary *tagDetails = [[NSUserDefaults standardUserDefaults] objectForKey:ReaderCurrentTopicKey];
-    NSString *tag = [tagDetails stringForKey:@"endpoint"];
-    if (tag == nil) {
-        NSManagedObjectContext *context = [[ContextManager sharedInstance] mainContext];
-        AccountService *accountService = [[AccountService alloc] initWithManagedObjectContext:context];
-        WPAccount *defaultAccount = [accountService defaultWordPressComAccount];
-        
-        if (defaultAccount != nil) {
-            return @"read/following";
-        } else {
-            return @"freshly-pressed";
-        }
-    }
-    return tag;
-}
-
-- (NSString *)currentTagTitle
-{
-    NSDictionary *tagDetails = [[NSUserDefaults standardUserDefaults] objectForKey:ReaderCurrentTopicKey];
-    NSString *tagTitle = [tagDetails stringForKey:@"title"];
-    if (tagTitle == nil) {
-        NSManagedObjectContext *context = [[ContextManager sharedInstance] mainContext];
-        AccountService *accountService = [[AccountService alloc] initWithManagedObjectContext:context];
-        WPAccount *defaultAccount = [accountService defaultWordPressComAccount];
-        
-        if (defaultAccount != nil) {
-            return @"Blogs I Follow";
-        } else {
-            return @"Freshly Pressed";
-        }
-    } else {
-        return tagTitle;
-    }
+    return [self.currentTopic.title rangeOfString:@"freshly-pressed"].location != NSNotFound;
 }
 
 - (NSDictionary *)tagPropertyForStats {
-    return @{@"tag": [self currentTagTitle]};
+    return @{@"tag": self.currentTopic.title};
 }
 
 - (void)fetchBlogsAndPrimaryBlog {
