@@ -9,7 +9,6 @@
 #import "WordPressComApi.h"
 #import "WordPressAppDelegate.h"
 #import "NSString+XMLExtensions.h"
-#import "ReaderReblogFormView.h"
 #import "WPFriendFinderViewController.h"
 #import "WPAccount.h"
 #import "WPTableImageSource.h"
@@ -22,6 +21,7 @@
 #import "ReaderCommentPublisher.h"
 #import "ContextManager.h"
 #import "AccountService.h"
+#import "RebloggingViewController.h"
 
 static CGFloat const RPVCHeaderHeightPhone = 10.f;
 static CGFloat const RPVCMaxImageHeightPercentage = 0.58f;
@@ -30,7 +30,7 @@ static CGFloat const RPVCExtraTableViewHeightPercentage = 2.0f;
 NSString * const ReaderTopicDidChangeNotification = @"ReaderTopicDidChangeNotification";
 NSString * const RPVCDisplayedNativeFriendFinder = @"DisplayedNativeFriendFinder";
 
-@interface ReaderPostsViewController ()<ReaderTextFormDelegate, WPTableImageSourceDelegate, ReaderCommentPublisherDelegate> {
+@interface ReaderPostsViewController ()<WPTableImageSourceDelegate, ReaderCommentPublisherDelegate> {
 	BOOL _hasMoreContent;
 	BOOL _loadingMore;
     BOOL _viewHasAppeared;
@@ -42,10 +42,8 @@ NSString * const RPVCDisplayedNativeFriendFinder = @"DisplayedNativeFriendFinder
     UIGestureRecognizer *_tapOffKeyboardGesture;
 }
 
-@property (nonatomic, strong) ReaderReblogFormView *readerReblogFormView;
 @property (nonatomic, strong) ReaderPostDetailViewController *detailController;
 @property (nonatomic, strong) UINavigationBar *navBar;
-@property (nonatomic) BOOL isShowingReblogForm;
 @property (nonatomic, strong) InlineComposeView *inlineComposeView;
 @property (nonatomic, strong) ReaderCommentPublisher *commentPublisher;
 
@@ -68,7 +66,6 @@ NSString * const RPVCDisplayedNativeFriendFinder = @"DisplayedNativeFriendFinder
 
 - (void)dealloc {
     _featuredImageSource.delegate = nil;
-	self.readerReblogFormView = nil;
     self.inlineComposeView.delegate = nil;
     self.inlineComposeView = nil;
     self.commentPublisher = nil;
@@ -78,7 +75,6 @@ NSString * const RPVCDisplayedNativeFriendFinder = @"DisplayedNativeFriendFinder
 - (id)init {
 	self = [super init];
 	if (self) {
-		// This is a convenient place to check for the user's blogs and primary blog for reblogging.
 		_hasMoreContent = YES;
 		self.infiniteScrollEnabled = YES;
         self.incrementalLoadingSupported = YES;
@@ -122,19 +118,9 @@ NSString * const RPVCDisplayedNativeFriendFinder = @"DisplayedNativeFriendFinder
     button = [[UIBarButtonItem alloc] initWithCustomView:topicsButton];
     [button setAccessibilityLabel:NSLocalizedString(@"Browse", @"")];
     self.navigationItem.rightBarButtonItem = button;
-    
-	CGRect frame = CGRectMake(0.0f, self.view.bounds.size.height, self.view.bounds.size.width, [ReaderReblogFormView desiredHeight]);
-	self.readerReblogFormView = [[ReaderReblogFormView alloc] initWithFrame:frame];
-	_readerReblogFormView.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleTopMargin;
-	_readerReblogFormView.navigationItem = self.navigationItem;
-	_readerReblogFormView.delegate = self;
-	
+
     _tapOffKeyboardGesture = [[UITapGestureRecognizer alloc] initWithTarget:self
                                                                      action:@selector(dismissKeyboard:)];
-    
-	if (_isShowingReblogForm) {
-		[self showReblogForm];
-	}
 
     // Sync content as soon as login or creation occurs
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(didChangeAccount:) name:WPAccountDefaultWordPressComAccountChangedNotification object:nil];
@@ -303,65 +289,14 @@ NSString * const RPVCDisplayedNativeFriendFinder = @"DisplayedNativeFriendFinder
 	view.frame = frame;
 }
 
-- (void)showReblogForm {
-	if (_readerReblogFormView.superview != nil)
-		return;
-	
-	NSIndexPath *path = [self.tableView indexPathForSelectedRow];
-	_readerReblogFormView.post = (ReaderPost *)[self.resultsController objectAtIndexPath:path];
-	
-	CGFloat reblogHeight = [ReaderReblogFormView desiredHeight];
-	CGRect tableFrame = self.tableView.frame;
-    CGRect superviewFrame = self.view.superview.frame;
-    
-    // The table's frame is artifically tall due to resizeTableViewForImagePreloading, so effectively undo that
-	tableFrame.size.height = superviewFrame.size.height - tableFrame.origin.y - reblogHeight - [self tabBarSize].height;
-	self.tableView.frame = tableFrame;
-	
-	CGFloat y = tableFrame.origin.y + tableFrame.size.height;
-	_readerReblogFormView.frame = CGRectMake(0.0f, y, self.view.bounds.size.width, reblogHeight);
-	[self.view.superview addSubview:_readerReblogFormView];
-	self.isShowingReblogForm = YES;
-	[_readerReblogFormView.textView becomeFirstResponder];
-}
-
-- (void)hideReblogForm {
-	if (_readerReblogFormView.superview == nil)
-		return;
-	
-	[self.tableView deselectRowAtIndexPath:[self.tableView indexPathForSelectedRow] animated:NO];
-	
-	CGRect tableFrame = self.tableView.frame;
-	tableFrame.size.height = self.tableView.frame.size.height + _readerReblogFormView.frame.size.height;
-	
-	self.tableView.frame = tableFrame;
-    [self resizeTableViewForImagePreloading];
-	[_readerReblogFormView removeFromSuperview];
-	self.isShowingReblogForm = NO;
-	[self.view endEditing:YES];
-}
-
-
 #pragma mark - ReaderPostView delegate methods
 
 - (void)postView:(ReaderPostView *)postView didReceiveReblogAction:(id)sender {
-    NSIndexPath *selectedPath = [self.tableView indexPathForSelectedRow];
-	UITableViewCell *cell = [ReaderPostTableViewCell cellForSubview:sender];
-	NSIndexPath *path = [self.tableView indexPathForCell:cell];
-	
-	// if not showing form, show the form.
-	if (!selectedPath) {
-		[self.tableView selectRowAtIndexPath:path animated:NO scrollPosition:UITableViewScrollPositionNone];
-		[self showReblogForm];
-		return;
-	}
-	
-	// if showing form && same cell as before, dismiss the form.
-	if ([selectedPath compare:path] == NSOrderedSame) {
-		[self hideReblogForm];
-	} else {
-		[self.tableView selectRowAtIndexPath:path animated:NO scrollPosition:UITableViewScrollPositionNone];
-	}
+    RebloggingViewController *controller = [[RebloggingViewController alloc] initWithPost:postView.post];
+    UINavigationController *navController = [[UINavigationController alloc] initWithRootViewController:controller];
+    navController.modalPresentationStyle = UIModalPresentationPageSheet;
+    navController.modalTransitionStyle = UIModalTransitionStyleCoverVertical;
+    [self presentViewController:navController animated:YES completion:nil];
 }
 
 - (void)postView:(ReaderPostView *)postView didReceiveLikeAction:(id)sender {
@@ -494,43 +429,6 @@ NSString * const RPVCDisplayedNativeFriendFinder = @"DisplayedNativeFriendFinder
                              failure:nil];
 
 }
-
-#pragma mark - ReaderTextForm Delegate Methods
-
-- (void)readerTextFormDidSend:(ReaderTextFormView *)readerTextForm {
-	[self hideReblogForm];
-}
-
-
-- (void)readerTextFormDidCancel:(ReaderTextFormView *)readerTextForm {
-	[self hideReblogForm];
-}
-
-
-#pragma mark - UIScrollView Delegate Methods
-
-- (void)scrollViewDidEndDecelerating:(UIScrollView *)scrollView {
-    [super scrollViewDidEndDecelerating:scrollView];
-
-	NSIndexPath *selectedIndexPath = [self.tableView indexPathForSelectedRow];
-	if (!selectedIndexPath)
-		return;
-
-	__block BOOL found = NO;
-	[[self.tableView indexPathsForVisibleRows] enumerateObjectsUsingBlock:^(id obj, NSUInteger idx, BOOL *stop) {
-		NSIndexPath *objPath = (NSIndexPath *)obj;
-		if ([objPath compare:selectedIndexPath] == NSOrderedSame) {
-			found = YES;
-		}
-		*stop = YES;
-	}];
-	
-	if (found)
-        return;
-	
-	[self hideReblogForm];
-}
-
 
 #pragma mark - WPTableViewSublass methods
 
@@ -827,23 +725,6 @@ NSString * const RPVCDisplayedNativeFriendFinder = @"DisplayedNativeFriendFinder
         return RPVCHeaderHeightPhone;
     
     return [super tableView:tableView heightForHeaderInSection:section];
-}
-
-- (NSIndexPath *)tableView:(UITableView *)tableView willSelectRowAtIndexPath:(NSIndexPath *)indexPath {
-	if (_readerReblogFormView.superview != nil) {
-		[self hideReblogForm];
-		return nil;
-	}
-	
-	UITableViewCell *cell = [tableView cellForRowAtIndexPath:indexPath];
-	if ([cell isSelected]) {
-		_readerReblogFormView.post = nil;
-		[tableView deselectRowAtIndexPath:indexPath animated:NO];
-		[self hideReblogForm];
-		return nil;
-	}
-	
-	return indexPath;
 }
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
