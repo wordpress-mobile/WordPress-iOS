@@ -62,18 +62,6 @@ static NSInteger const MaxNumberOfLinesForTitleForSummary = 3;
     }
     desiredHeight += RPVVerticalPadding;
     
-    // Tag
-    // TODO: reenable tags once a better browsing experience is implemented
-    /*    NSString *tagName = post.primaryTagName;
-     if ([tagName length] > 0) {
-     CGRect tagRect = [tagName boundingRectWithSize:CGSizeMake(contentWidth, CGFLOAT_MAX)
-     options:NSStringDrawingUsesLineFragmentOrigin | NSStringDrawingUsesFontLeading
-     attributes:@{NSFontAttributeName : [self summaryFont]}
-     context:nil];
-     desiredHeight += tagRect.size.height;
-     }
-     */
-    
     // Padding below the line
 	desiredHeight += RPVVerticalPadding;
     
@@ -263,18 +251,11 @@ static NSInteger const MaxNumberOfLinesForTitleForSummary = 3;
 		self.cellImageView.hidden = NO;
 	}
     
-    if ([self.post.primaryTagName length] > 0) {
-        self.tagButton.hidden = NO;
-        [self.tagButton setTitle:self.post.primaryTagName forState:UIControlStateNormal];
-    } else {
-        self.tagButton.hidden = YES;
-    }
-    
     NSManagedObjectContext *context = [[ContextManager sharedInstance] mainContext];
     AccountService *accountService = [[AccountService alloc] initWithManagedObjectContext:context];
     WPAccount *defaultAccount = [accountService defaultWordPressComAccount];
 
-	if ([[self.post isWPCom] boolValue] && defaultAccount != nil) {
+	if (self.post.isWPCom && defaultAccount != nil) {
 		self.likeButton.hidden = NO;
 		self.reblogButton.hidden = NO;
         self.commentButton.hidden = NO;
@@ -300,8 +281,8 @@ static NSInteger const MaxNumberOfLinesForTitleForSummary = 3;
         [self.commentButton setTitle:@"" forState:UIControlStateSelected];
     }
 
-    [self.followButton setSelected:[self.post.isFollowing boolValue]];
-	self.reblogButton.userInteractionEnabled = ![post.isReblogged boolValue];
+    [self.followButton setSelected:self.post.isFollowing];
+	self.reblogButton.userInteractionEnabled = !post.isReblogged;
 	
 	[self updateActionButtons];
 }
@@ -309,7 +290,7 @@ static NSInteger const MaxNumberOfLinesForTitleForSummary = 3;
 - (void)layoutSubviews {
 
     // Determine button visibility before parent lays them out
-    BOOL commentsOpen = [[self.post commentsOpen] boolValue] && [[self.post isWPCom] boolValue];
+    BOOL commentsOpen = self.post.commentsOpen && self.post.isWPCom;
     self.commentButton.hidden = !commentsOpen;
 
 	[super layoutSubviews];
@@ -377,18 +358,6 @@ static NSInteger const MaxNumberOfLinesForTitleForSummary = 3;
     }
     nextY += ceilf(height) + RPVVerticalPadding;
     
-    // Tag
-    // TODO: reenable tags once a better browsing experience is implemented
-    /*    if ([self.post.primaryTagName length] > 0) {
-     height = ceil([self.tagButton.titleLabel suggestedSizeForWidth:innerContentWidth].height);
-     self.tagButton.frame = CGRectMake(RPVHorizontalInnerPadding, nextY, innerContentWidth, height);
-     nextY += height + RPVVerticalPadding;
-     self.tagButton.hidden = NO;
-     } else {
-     self.tagButton.hidden = YES;
-     }
-     */
-    
 	// Position the meta view and its subviews
 	self.bottomView.frame = CGRectMake(0, nextY, contentWidth, RPVMetaViewHeight);
     self.bottomBorder.frame = CGRectMake(RPVHorizontalInnerPadding, 0, contentWidth - RPVHorizontalInnerPadding * 2, RPVBorderHeight);
@@ -408,15 +377,15 @@ static NSInteger const MaxNumberOfLinesForTitleForSummary = 3;
 
 - (void)updateActionButtons {
     [super updateActionButtons];
-    self.likeButton.selected = self.post.isLiked.boolValue;
-    self.reblogButton.selected = self.post.isReblogged.boolValue;
+    self.likeButton.selected = self.post.isLiked;
+    self.reblogButton.selected = self.post.isReblogged;
 	self.reblogButton.userInteractionEnabled = !self.reblogButton.selected;
 }
 
 - (void)setAvatar:(UIImage *)avatar {
     if (avatar) {
         self.avatarImageView.image = avatar;
-    } else if ([[self.post isWPCom] boolValue]) {
+    } else if (self.post.isWPCom) {
         self.avatarImageView.image = [UIImage imageNamed:@"wpcom_blavatar"];
     } else {
         self.avatarImageView.image = [UIImage imageNamed:@"gravatar-reader"];
