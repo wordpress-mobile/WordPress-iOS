@@ -18,7 +18,7 @@
 
 + (CGFloat)heightForPost:(ReaderPost *)post withWidth:(CGFloat)width showFullContent:(BOOL)showFullContent;
 - (id)initWithFrame:(CGRect)frame showFullContent:(BOOL)showFullContent;
-- (void)configurePost:(ReaderPost *)post withWidth:(CGFloat)width;
+- (void)configurePost:(ReaderPost *)post;
 - (void)setAvatar:(UIImage *)avatar;
 - (void)setAvatarWithURL:(NSURL *)avatarURL;
 

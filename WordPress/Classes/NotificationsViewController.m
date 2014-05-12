@@ -18,6 +18,7 @@
 #import "NotificationSettingsViewController.h"
 #import "NotificationsBigBadgeViewController.h"
 #import "AccountService.h"
+#import "ReaderPostService.h"
 #import "ContextManager.h"
 #import "StatsViewController.h"
 
@@ -278,21 +279,15 @@ typedef void (^NotificationsLoadPostBlock)(BOOL success, ReaderPost *post);
 
 - (void)loadPostWithId:(NSNumber *)postID fromSite:(NSNumber *)siteID block:(NotificationsLoadPostBlock)block
 {
-    NSString *endpoint = [NSString stringWithFormat:@"sites/%@/posts/%@/?meta=site", siteID, postID];
-    
-    WordPressComApiRestSuccessResponseBlock success = ^(AFHTTPRequestOperation *operation, id responseObject) {
-        NSManagedObjectContext *context = [[ContextManager sharedInstance] mainContext];
-        [ReaderPost createOrUpdateWithDictionary:responseObject forEndpoint:endpoint withContext:context];
-        ReaderPost *post = [[ReaderPost fetchPostsForEndpoint:endpoint withContext:context] firstObject];
+    NSManagedObjectContext *context = [[ContextManager sharedInstance] newDerivedContext];
+    ReaderPostService *service = [[ReaderPostService alloc] initWithManagedObjectContext:context];
+    [service fetchPost:[postID integerValue] forSite:[siteID integerValue] success:^(ReaderPost *post) {
         block(YES, post);
-    };
-    
-    WordPressComApiRestSuccessFailureBlock failure = ^(AFHTTPRequestOperation *operation, NSError *error) {
+    } failure:^(NSError *error) {
         DDLogError(@"[RestAPI] %@", error);
         block(NO, nil);
-    };
-    
-    [ReaderPost getPostsFromEndpoint:endpoint withParameters:nil loadingMore:NO success:success failure:failure];
+    }];
+
 }
 
 #pragma mark - WPTableViewController subclass methods

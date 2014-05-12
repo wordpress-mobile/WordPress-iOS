@@ -22,6 +22,8 @@
 #import "WPAccount.h"
 #import "AccountService.h"
 #import "BlogService.h"
+#import "ReaderPostService.h"
+#import "ReaderTopicService.h"
 
 #import "BlogListViewController.h"
 #import "BlogDetailsViewController.h"
@@ -1110,7 +1112,14 @@ static NSInteger const IndexForMeTab = 2;
     // If the notification object is not nil, then it's a login
     if (notification.object) {
         [self loginSimperium];
-        [ReaderPost fetchPostsWithCompletionHandler:nil];
+
+        NSManagedObjectContext *context = [[ContextManager sharedInstance] newDerivedContext];
+        ReaderTopicService *topicService = [[ReaderTopicService alloc] initWithManagedObjectContext:context];
+        ReaderTopic *topic = topicService.currentTopic;
+        if (topic) {
+            ReaderPostService *service = [[ReaderPostService alloc] initWithManagedObjectContext:context];
+            [service fetchPostsForTopic:topic success:nil failure:nil];
+        }
     } else {
         // No need to check for welcome screen unless we are signing out
         [self logoutSimperiumAndResetNotifications];
