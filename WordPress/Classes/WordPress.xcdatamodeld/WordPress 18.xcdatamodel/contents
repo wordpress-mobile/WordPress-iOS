@@ -260,6 +260,7 @@
     <entity name="Note" representedClassName="Note" syncable="YES">
         <attribute name="body" optional="YES" attributeType="Transformable" syncable="YES"/>
         <attribute name="ghostData" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="id" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="meta" optional="YES" attributeType="Transformable" syncable="YES"/>
         <attribute name="simperiumKey" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="subject" optional="YES" attributeType="Transformable" syncable="YES"/>
@@ -368,7 +369,7 @@
         <element name="Category" positionX="0" positionY="0" width="128" height="120"/>
         <element name="Comment" positionX="0" positionY="0" width="128" height="75"/>
         <element name="Media" positionX="0" positionY="0" width="128" height="345"/>
-        <element name="Note" positionX="0" positionY="0" width="128" height="163"/>
+        <element name="Note" positionX="0" positionY="0" width="128" height="178"/>
         <element name="Page" positionX="0" positionY="0" width="128" height="60"/>
         <element name="Post" positionX="0" positionY="0" width="128" height="150"/>
         <element name="ReaderComment" positionX="0" positionY="0" width="128" height="120"/>
