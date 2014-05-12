@@ -97,8 +97,15 @@ CGFloat const GeneralWalkthroughStatusBarOffset = 20.0;
 - (void)viewWillAppear:(BOOL)animated
 {
     [super viewWillAppear:animated];
-    [self.navigationController setNavigationBarHidden:YES animated:animated];
-    [self layoutControls];
+    /* 
+     * Only in the case of iPad, we may need to re-adjust the UI controls but not on iPhone.
+     * Because iPhone only support UIInterfaceOrientationMaskPortrait orientation.
+     */
+    if (IS_IPAD) {
+        [self.navigationController setNavigationBarHidden:YES animated:animated];
+        [self layoutControls];
+    }
+
 }
 
 - (NSUInteger)supportedInterfaceOrientations {
