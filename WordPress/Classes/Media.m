@@ -1,6 +1,7 @@
 #import "Media.h"
 #import "UIImage+Resize.h"
 #import "NSString+Helpers.h"
+#import "NSString+Util.h"
 #import "AFHTTPRequestOperation.h"
 #import "ContextManager.h"
 #import <ImageIO/ImageIO.h>
@@ -139,6 +140,11 @@ CGFloat const MediaDefaultJPEGCompressionQuality = 0.9;
         self.mediaTypeString = @"powerpoint";
     } else {
         self.mediaTypeString = @"document";
+    }
+    
+    if (fileUTI) {
+        CFRelease(fileUTI);
+        fileUTI = nil;
     }
 }
 

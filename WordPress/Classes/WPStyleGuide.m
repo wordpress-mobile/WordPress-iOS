@@ -87,6 +87,11 @@
     return [UIFont fontWithName:@"OpenSans-Bold" size:10.0];
 }
 
++ (UIFont *)labelFontNormal
+{
+    return [UIFont fontWithName:@"OpenSans" size:10.0];
+}
+
 + (NSDictionary *)labelAttributes
 {
     NSMutableParagraphStyle *paragraphStyle = [[NSMutableParagraphStyle alloc] init];

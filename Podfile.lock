@@ -12,10 +12,10 @@ PODS:
     - DTFoundation/Core (~> 1.6.0)
     - DTFoundation/DTHTMLParser (~> 1.6.0)
     - DTFoundation/UIKit (~> 1.6.0)
-  - DTFoundation/Core (1.6.2)
-  - DTFoundation/DTHTMLParser (1.6.2):
+  - DTFoundation/Core (1.6.3)
+  - DTFoundation/DTHTMLParser (1.6.3):
     - DTFoundation/Core
-  - DTFoundation/UIKit (1.6.2):
+  - DTFoundation/UIKit (1.6.3):
     - DTFoundation/Core
   - EmailChecker (0.1)
   - google-plus-ios-sdk (1.5.1)
@@ -80,7 +80,7 @@ SPEC CHECKSUMS:
   CrashlyticsLumberjack: 8ee2adbd0f815d8b111e5f72cd82d39b08430ebc
   CTAssetsPickerController: 85cc8be0ce86a3b13626379d16d3996c9d4c559b
   DTCoreText: e48c1526945272133b8c935c40da3f3e79836f1b
-  DTFoundation: 7c69990fa3cb7655cafa95ab59c3fcea014460f0
+  DTFoundation: 42939bcb968b331673ae4992289bf0f761b588a4
   EmailChecker: e909e6d113fac7ad5e3c304fabce30fc4a79c80e
   google-plus-ios-sdk: e02124b8a12631e76f78f5e3eb2a02a44b82c871
   Helpshift: b4a99c03fd56860e0efb52e84cc5049a735e3d97
