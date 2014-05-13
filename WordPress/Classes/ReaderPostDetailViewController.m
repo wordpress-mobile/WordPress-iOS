@@ -502,6 +502,7 @@ typedef enum {
 
 - (void)postView:(ReaderPostView *)postView didReceiveReblogAction:(id)sender {
     RebloggingViewController *controller = [[RebloggingViewController alloc] initWithPost:self.post featuredImage:self.featuredImage avatarImage:self.avatarImage];
+    controller.delegate = self;
     UINavigationController *navController = [[UINavigationController alloc] initWithRootViewController:controller];
     navController.modalPresentationStyle = UIModalPresentationFormSheet;
     navController.modalTransitionStyle = UIModalTransitionStyleCoverVertical;
@@ -643,7 +644,7 @@ typedef enum {
 #pragma mark - RebloggingViewController Delegate Methods
 
 - (void)postWasReblogged:(ReaderPost *)post {
-    [self.postView setNeedsLayout];
+    [self.postView configurePost:self.post];
 }
 
 
