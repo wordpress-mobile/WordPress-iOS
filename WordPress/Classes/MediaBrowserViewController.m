@@ -1076,7 +1076,7 @@ NSString *const MediaFeaturedImageSelectedNotification = @"MediaFeaturedImageSel
 		NSNumber *resizePreference = [NSNumber numberWithInt:-1];
 		if([[NSUserDefaults standardUserDefaults] objectForKey:@"media_resize_preference"] != nil)
 			resizePreference = [nf numberFromString:[[NSUserDefaults standardUserDefaults] objectForKey:@"media_resize_preference"]];
-		BOOL showResizeActionSheet;
+		BOOL showResizeActionSheet = NO;
 		switch ([resizePreference intValue]) {
 			case 0:
             {
@@ -1188,17 +1188,17 @@ NSString *const MediaFeaturedImageSelectedNotification = @"MediaFeaturedImageSel
 	NSString *filepath = [documentsDirectory stringByAppendingPathComponent:filename];
     
 	if (self.currentImageMetadata != nil) {
-		// Write the EXIF data with the image data to disk
-		CGImageSourceRef  source = NULL;
-        CGImageDestinationRef destination = NULL;
 		BOOL success = NO;
-        //this will be the data CGImageDestinationRef will write into
+        
+        // This will be the data CGImageDestinationRef will write into
         NSMutableData *dest_data = [NSMutableData data];
         
-		source = CGImageSourceCreateWithData((__bridge CFDataRef)imageData, NULL);
+		// Write the EXIF data with the image data to disk
+        CGImageSourceRef source = CGImageSourceCreateWithData((__bridge CFDataRef)imageData, NULL);
+        
         if (source) {
             CFStringRef UTI = CGImageSourceGetType(source); //this is the type of image (e.g., public.jpeg)
-            destination = CGImageDestinationCreateWithData((__bridge CFMutableDataRef)dest_data,UTI,1,NULL);
+            CGImageDestinationRef destination = CGImageDestinationCreateWithData((__bridge CFMutableDataRef)dest_data,UTI,1,NULL);
             
             if(destination) {
                 //add the image contained in the image source to the destination, copying the old metadata
@@ -1207,9 +1207,17 @@ NSString *const MediaFeaturedImageSelectedNotification = @"MediaFeaturedImageSel
                 //tell the destination to write the image data and metadata into our data object.
                 //It will return false if something goes wrong
                 success = CGImageDestinationFinalize(destination);
+
+                // Cleanup
+                CFRelease(destination);
+                destination = nil;
             } else {
                 DDLogWarn(@"***Could not create image destination ***");
             }
+            
+            // Cleanup
+            CFRelease(source);
+            source = nil;
         } else {
             DDLogWarn(@"***Could not create image source ***");
         }
@@ -1228,11 +1236,6 @@ NSString *const MediaFeaturedImageSelectedNotification = @"MediaFeaturedImageSel
 		[fileManager createFileAtPath:filepath contents:imageData attributes:nil];
 	}
     
-	if(self.currentOrientation == MediaOrientationLandscape) {
-		imageMedia.orientation = @"landscape";
-	} else {
-		imageMedia.orientation = @"portrait";
-    }
 	imageMedia.creationDate = [NSDate date];
 	imageMedia.filename = filename;
 	imageMedia.localURL = filepath;
@@ -1319,11 +1322,6 @@ NSString *const MediaFeaturedImageSelectedNotification = @"MediaFeaturedImageSel
 	if(copySuccess) {
 		videoMedia = [Media newMediaForBlog:self.blog];
 		
-		if(_currentOrientation == MediaOrientationLandscape) {
-			videoMedia.orientation = @"landscape";
-        } else {
-			videoMedia.orientation = @"portrait";
-        }
 		videoMedia.creationDate = [NSDate date];
 		[videoMedia setFilename:filename];
 		[videoMedia setLocalURL:filepath];
