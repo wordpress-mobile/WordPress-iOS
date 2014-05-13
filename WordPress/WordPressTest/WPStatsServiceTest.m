@@ -54,7 +54,7 @@
     NSDateComponents *dateComponents = [[NSDateComponents alloc] init];
     [dateComponents setDay:-1];
     NSCalendar *calendar = [NSCalendar currentCalendar];
-    NSDate *yesterday = [calendar dateByAddingComponents:dateComponents toDate:today options:NSCalendarUnitDay];
+    NSDate *yesterday = [calendar dateByAddingComponents:dateComponents toDate:today options:0];
     
     [[self.remoteMock expect] fetchStatsForTodayDate:[OCMArg checkWithBlock:^BOOL(id obj) {
         return [today timeIntervalSinceDate:obj] < 1000;
