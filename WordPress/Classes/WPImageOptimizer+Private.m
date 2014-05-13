@@ -3,8 +3,8 @@
 
 #import <ImageIO/ImageIO.h>
 
-static CGSize SizeLimit = { 2048, 2048 };
-static CGFloat CompressionQuality = 0.7;
+static const CGSize SizeLimit = { 2048, 2048 };
+static const CGFloat CompressionQuality = 0.7;
 
 @implementation WPImageOptimizer (Private)
 
