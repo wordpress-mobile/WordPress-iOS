@@ -20,6 +20,7 @@ static NSInteger const MaxNumberOfLinesForTitleForSummary = 3;
 @property (nonatomic, strong) UIButton *reblogButton;
 @property (nonatomic, strong) UIButton *commentButton;
 @property (assign) BOOL showFullContent;
+@property (nonatomic) BOOL isSimpleSummary;
 
 @end
 
@@ -30,7 +31,7 @@ static NSInteger const MaxNumberOfLinesForTitleForSummary = 3;
     
     // Margins
     CGFloat contentWidth = width;
-    if (IS_IPAD) {
+    if (IS_IPAD && contentWidth > WPTableViewFixedWidth) {
         contentWidth = WPTableViewFixedWidth;
     }
     
@@ -69,6 +70,12 @@ static NSInteger const MaxNumberOfLinesForTitleForSummary = 3;
     desiredHeight += RPVMetaViewHeight;
     
 	return ceil(desiredHeight);
+}
+
++ (CGFloat)heightForPost:(ReaderPost *)post forSimpleSummaryWithWidth:(CGFloat)width {
+    CGFloat height = [self heightForPost:post withWidth:width showFullContent:NO];
+    height = height - (RPVVerticalPadding + RPVMetaViewHeight);
+    return height;
 }
 
 + (NSAttributedString *)titleAttributedStringForPost:(ReaderPost *)post showFullContent:(BOOL)showFullContent withWidth:(CGFloat) width {
@@ -161,6 +168,14 @@ static NSInteger const MaxNumberOfLinesForTitleForSummary = 3;
     return self;
 }
 
+- (id)initWithFrameForSimpleSummary:(CGRect)frame {
+    self = [self initWithFrame:frame showFullContent:NO];
+    if (self) {
+        self.isSimpleSummary = YES;
+    }
+    return self;
+}
+
 - (id)initWithFrame:(CGRect)frame showFullContent:(BOOL)showFullContent {
     self = [super initWithFrame:frame];
     
@@ -210,7 +225,7 @@ static NSInteger const MaxNumberOfLinesForTitleForSummary = 3;
    
     // Margins
     CGFloat contentWidth = self.frame.size.width;
-    if (IS_IPAD) {
+    if (IS_IPAD && contentWidth > WPTableViewFixedWidth) {
         contentWidth = WPTableViewFixedWidth;
     }
     
@@ -285,6 +300,12 @@ static NSInteger const MaxNumberOfLinesForTitleForSummary = 3;
 	self.reblogButton.userInteractionEnabled = !post.isReblogged;
 	
 	[self updateActionButtons];
+
+    if (self.isSimpleSummary) {
+        self.followButton.hidden = YES;
+        self.bottomView.hidden = YES;
+        self.bottomBorder.hidden = YES;
+    }
 }
 
 - (void)layoutSubviews {
@@ -313,7 +334,9 @@ static NSInteger const MaxNumberOfLinesForTitleForSummary = 3;
     AccountService *accountService = [[AccountService alloc] initWithManagedObjectContext:context];
     WPAccount *defaultAccount = [accountService defaultWordPressComAccount];
 
-    if ([self.post isFollowable] && defaultAccount != nil) {
+    if (self.isSimpleSummary) {
+        self.followButton.hidden = YES;
+    } else if ([self.post isFollowable] && defaultAccount != nil) {
         self.followButton.hidden = NO;
         CGFloat followX = bylineX - 4; // Fudge factor for image alignment
         CGFloat followY = RPVAuthorPadding + self.bylineLabel.frame.size.height - 2;
@@ -364,8 +387,11 @@ static NSInteger const MaxNumberOfLinesForTitleForSummary = 3;
 
     // Update own frame
     CGRect ownFrame = self.frame;
-    
-    ownFrame.size.height = nextY + RPVMetaViewHeight - 1;
+    if (!self.isSimpleSummary) {
+        ownFrame.size.height = nextY + RPVMetaViewHeight - 1;
+    } else {
+        ownFrame.size.height = nextY;
+    }
     self.frame = ownFrame;
 }
 

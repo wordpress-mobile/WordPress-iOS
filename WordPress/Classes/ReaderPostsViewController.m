@@ -29,7 +29,7 @@ static CGFloat const RPVCExtraTableViewHeightPercentage = 2.0f;
 
 NSString * const RPVCDisplayedNativeFriendFinder = @"DisplayedNativeFriendFinder";
 
-@interface ReaderPostsViewController ()<WPTableImageSourceDelegate, ReaderCommentPublisherDelegate> {
+@interface ReaderPostsViewController ()<WPTableImageSourceDelegate, ReaderCommentPublisherDelegate, RebloggingViewControllerDelegate> {
 	BOOL _hasMoreContent;
 	BOOL _loadingMore;
     BOOL _viewHasAppeared;
@@ -305,9 +305,15 @@ NSString * const RPVCDisplayedNativeFriendFinder = @"DisplayedNativeFriendFinder
 #pragma mark - ReaderPostView delegate methods
 
 - (void)postView:(ReaderPostView *)postView didReceiveReblogAction:(id)sender {
-    RebloggingViewController *controller = [[RebloggingViewController alloc] initWithPost:postView.post];
+    // Pass the image forward
+	ReaderPost *post = postView.post;
+    CGSize imageSize = postView.cellImageView.image.size;
+    UIImage *image = [_featuredImageSource imageForURL:post.featuredImageURL withSize:imageSize];
+    UIImage *avatarImage = postView.avatarImageView.image;
+
+    RebloggingViewController *controller = [[RebloggingViewController alloc] initWithPost:post featuredImage:image avatarImage:avatarImage];
     UINavigationController *navController = [[UINavigationController alloc] initWithRootViewController:controller];
-    navController.modalPresentationStyle = UIModalPresentationPageSheet;
+    navController.modalPresentationStyle = UIModalPresentationFormSheet;
     navController.modalTransitionStyle = UIModalTransitionStyleCoverVertical;
     [self presentViewController:navController animated:YES completion:nil];
 }
@@ -373,6 +379,13 @@ NSString * const RPVCDisplayedNativeFriendFinder = @"DisplayedNativeFriendFinder
                           atScrollPosition:UITableViewScrollPositionTop
                                   animated:YES];
 
+}
+
+
+#pragma mark - RebloggingViewController Delegate Methods
+
+- (void)postWasReblogged:(ReaderPost *)post {
+    [self.tableView reloadData];
 }
 
 
