@@ -213,8 +213,8 @@ NSUInteger const ReaderPostServiceMaxPosts = 200;
     }
 
     ReaderPostServiceRemote *remoteService = [[ReaderPostServiceRemote alloc] initWithRemoteApi:[self apiForRequest]];
-    [remoteService reblogPost:[NSNumber numberWithInteger:readerPost.postID]
-                     fromSite:[NSNumber numberWithInteger:readerPost.siteID]
+    [remoteService reblogPost:[readerPost.postID integerValue]
+                     fromSite:[readerPost.siteID integerValue]
                        toSite:siteID
                          note:note
                       success:^(BOOL isReblogged) {
