@@ -32,7 +32,7 @@ typedef enum {
 } ReaderDetailSection;
 
 
-@interface ReaderPostDetailViewController ()<UIActionSheetDelegate, MFMailComposeViewControllerDelegate, UIPopoverControllerDelegate, ReaderCommentPublisherDelegate> {
+@interface ReaderPostDetailViewController ()<UIActionSheetDelegate, MFMailComposeViewControllerDelegate, UIPopoverControllerDelegate, ReaderCommentPublisherDelegate, RebloggingViewControllerDelegate> {
     UIPopoverController *_popover;
     UIGestureRecognizer *_tapOffKeyboardGesture;
 }
@@ -501,9 +501,9 @@ typedef enum {
 #pragma mark - ReaderPostView delegate methods
 
 - (void)postView:(ReaderPostView *)postView didReceiveReblogAction:(id)sender {
-    RebloggingViewController *controller = [[RebloggingViewController alloc] initWithPost:self.post];
+    RebloggingViewController *controller = [[RebloggingViewController alloc] initWithPost:self.post featuredImage:self.featuredImage avatarImage:self.avatarImage];
     UINavigationController *navController = [[UINavigationController alloc] initWithRootViewController:controller];
-    navController.modalPresentationStyle = UIModalPresentationPageSheet;
+    navController.modalPresentationStyle = UIModalPresentationFormSheet;
     navController.modalTransitionStyle = UIModalTransitionStyleCoverVertical;
     [self presentViewController:navController animated:YES completion:nil];
 }
@@ -637,6 +637,13 @@ typedef enum {
 - (void)contentViewDidLoadAllMedia:(WPContentView *)contentView {
     [self.postView layoutIfNeeded];
     [self.tableView reloadData];
+}
+
+
+#pragma mark - RebloggingViewController Delegate Methods
+
+- (void)postWasReblogged:(ReaderPost *)post {
+    [self.postView setNeedsLayout];
 }
 
 
