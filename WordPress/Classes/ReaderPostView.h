@@ -1,5 +1,11 @@
 #import "WPContentView.h"
 
+typedef NS_ENUM(NSUInteger, ReaderPostContentMode) {
+    ReaderPostContentModeFullContent,
+    ReaderPostContentModeSummary,
+    ReaderPostContentModeSimpleSummary
+};
+
 @class ReaderPostView;
 
 @protocol ReaderPostViewDelegate <WPContentViewDelegate>
@@ -9,18 +15,14 @@
 @end
 
 
-@interface ReaderPostView : WPContentView {
-    
-}
+@interface ReaderPostView : WPContentView 
 
 @property (nonatomic, strong) ReaderPost *post;
 @property (nonatomic, weak) id <ReaderPostViewDelegate> delegate;
 
-+ (CGFloat)heightForPost:(ReaderPost *)post withWidth:(CGFloat)width showFullContent:(BOOL)showFullContent;
-+ (CGFloat)heightForPost:(ReaderPost *)post forSimpleSummaryWithWidth:(CGFloat)width;
++ (CGFloat)heightForPost:(ReaderPost *)post withWidth:(CGFloat)width forContentMode:(ReaderPostContentMode)contentMode;
 
-- (id)initWithFrame:(CGRect)frame showFullContent:(BOOL)showFullContent;
-- (id)initWithFrameForSimpleSummary:(CGRect)frame;
+- (id)initWithFrame:(CGRect)frame contentMode:(ReaderPostContentMode)contentMode;
 - (void)configurePost:(ReaderPost *)post;
 - (void)setAvatar:(UIImage *)avatar;
 - (void)setAvatarWithURL:(NSURL *)avatarURL;
