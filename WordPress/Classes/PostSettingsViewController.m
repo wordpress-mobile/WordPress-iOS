@@ -747,26 +747,29 @@ static NSString *const TableViewActivityCellIdentifier = @"TableViewActivityCell
 }
 
 - (void)showPostFormatSelector {
-    if( [self.formatsList count] == 0 ) {
+    Post *post      = self.post;
+    NSArray *titles = post.blog.sortedPostFormatNames;
+    
+    if (post == nil || titles.count == 0 || post.postFormatText == nil || self.formatsList.count == 0) {
         return;
     }
     
-    NSArray *titles = self.post.blog.sortedPostFormatNames;
     NSDictionary *postFormatsDict = @{
-                                      @"DefaultValue": titles[0],
-                                      @"Title" : NSLocalizedString(@"Post Format", nil),
-                                      @"Titles" : titles,
-                                      @"Values" : titles,
-                                      @"CurrentValue" : self.post.postFormatText
-                                      };
+        @"DefaultValue"   : [titles firstObject],
+        @"Title"          : NSLocalizedString(@"Post Format", nil),
+        @"Titles"         : titles,
+        @"Values"         : titles,
+        @"CurrentValue"   : post.postFormatText
+    };
     
     PostSettingsSelectionViewController *vc = [[PostSettingsSelectionViewController alloc] initWithDictionary:postFormatsDict];
     __weak PostSettingsSelectionViewController *weakVc = vc;
     vc.onItemSelected = ^(NSString *status) {
-        self.post.postFormatText = status;
+        post.postFormatText = status;
         [weakVc dismiss];
         [self.tableView reloadData];
     };
+    
     [self.navigationController pushViewController:vc animated:YES];
 }
 
