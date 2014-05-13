@@ -79,15 +79,17 @@ static NSInteger const IndexForMeTab = 2;
 - (BOOL)application:(UIApplication *)application willFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {
     [WordPressAppDelegate fixKeychainAccess];
-	
-	// Simperium Setup
-	[self setupSimperium];
-	[self loginSimperium];
-	
-    // Crash reporting, logging, debugging
+		
+    // Crash reporting, logging
     [self configureLogging];
     [self configureHockeySDK];
     [self configureCrashlytics];
+    
+	// Simperium Setup
+	[self setupSimperium];
+	[self loginSimperium];
+
+    // Debugging
     [self printDebugLaunchInfoWithLaunchOptions:launchOptions];
     [self toggleExtraDebuggingIfNeeded];
     [self removeCredentialsForDebug];
