@@ -200,7 +200,7 @@ CGFloat const ReblogViewTextBottomInset = 30;
         return _postView;
     }
 
-    self.postView = [[ReaderPostView alloc] initWithFrameForSimpleSummary:self.view.bounds];
+    self.postView = [[ReaderPostView alloc] initWithFrame:self.view.bounds contentMode:ReaderPostContentModeSimpleSummary];
     _postView.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
     _postView.backgroundColor = [UIColor whiteColor];
     [_postView configurePost:self.post];
@@ -238,7 +238,7 @@ CGFloat const ReblogViewTextBottomInset = 30;
     }
 
     CGFloat width = CGRectGetWidth(self.view.bounds) - (horizontalMargin * 2);
-    CGFloat height = [ReaderPostView heightForPost:self.post forSimpleSummaryWithWidth:width];
+    CGFloat height = [ReaderPostView heightForPost:self.post withWidth:width forContentMode:ReaderPostContentModeSimpleSummary];
     CGRect frame = CGRectMake(horizontalMargin, verticleMargin, width, height);
     CGFloat top = CGRectGetMaxY(frame) + (verticleMargin * 2);
     self.postViewWrapper.frame = frame;
