@@ -7,6 +7,8 @@
 #import "UIImageView+Gravatar.h"
 #import "NSString+Helpers.h"
 #import "IOS7CorrectedTextView.h"
+#import "ReaderPostService.h"
+#import "ContextManager.h"
 
 @interface ReaderReblogFormView()<ReaderUsersBlogsDelegate>
 
@@ -174,21 +176,22 @@
 	[self enableForm:NO];
 	[self.activityView startAnimating];
 
-	[self.post reblogPostToSite:_siteId note:[[self text] trim] success:^{
-		
-		[WPToast showToastWithMessage:NSLocalizedString(@"Reblogged", @"User reblogged a post.")
+    NSManagedObjectContext *context = [[ContextManager sharedInstance] newDerivedContext];
+    ReaderPostService *service = [[ReaderPostService alloc] initWithManagedObjectContext:context];
+    [service reblogPost:self.post toSite:[_siteId integerValue] note:[[self text] trim] success:^{
+        [WPToast showToastWithMessage:NSLocalizedString(@"Reblogged", @"User reblogged a post.")
 							 andImage:[UIImage imageNamed:@"action_icon_replied"]];
-		
+
 		[self enableForm:YES];
 		[self.activityView stopAnimating];
 		[self setText:@""];
-		
+
 		if ([self.delegate respondsToSelector:@selector(readerTextFormDidSend:)]) {
 			[self.delegate readerTextFormDidSend:self];
 		}
-        
+
         [WPAnalytics track:WPAnalyticsStatReaderRebloggedArticle];
-	} failure:^(NSError *error) {
+    } failure:^(NSError *error) {
 		DDLogError(@"Error Reblogging Post : %@", [error localizedDescription]);
 		[self enableForm:YES];
 		[self.activityView stopAnimating];
@@ -196,8 +199,8 @@
 
 		// TODO: Failure reason.
         [WPError showAlertWithTitle:NSLocalizedString(@"Reblog failed", nil) message:NSLocalizedString(@"There was a problem reblogging. Please try again.", nil)];
-	}];
 
+    }];
 }
 
 

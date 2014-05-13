@@ -10,8 +10,7 @@
 #import "UIImage+Util.h"
 #import "LocationService.h"
 #import "BlogService.h"
-#import "WPMediaSizing.h"
-#import "WPMediaMetadataExtractor.h"
+#import "MediaService.h"
 #import "WPMediaUploader.h"
 #import "WPUploadStatusView.h"
 #import <AssetsLibrary/AssetsLibrary.h>
@@ -1371,24 +1370,16 @@ CGFloat const EPVCTextViewTopPadding = 7.0f;
 - (void)assetsPickerController:(CTAssetsPickerController *)picker didFinishPickingAssets:(NSArray *)assets {
     [self dismissViewControllerAnimated:YES completion:nil];
     
-    BOOL gelocationEnabled = self.post.blog.geolocationEnabled;
-    NSMutableArray *mediaToUpload = [[NSMutableArray alloc] initWithCapacity:[assets count]];
     for (ALAsset *asset in assets) {
-        ALAssetRepresentation *representation = asset.defaultRepresentation;
-        
         if ([[asset valueForProperty:ALAssetPropertyType] isEqualToString:ALAssetTypeVideo]) {
             // Could handle videos here
         } else if ([[asset valueForProperty:ALAssetPropertyType] isEqualToString:ALAssetTypePhoto]) {
-            UIImage *fullResolutionImage = [UIImage imageWithCGImage:representation.fullResolutionImage
-                                                               scale:1.0f
-                                                         orientation:(UIImageOrientation)representation.orientation];
-            UIImage *resizedImage = [WPMediaSizing correctlySizedImage:fullResolutionImage forBlogDimensions:[self.post.blog getImageResizeDimensions]];
-            NSDictionary *assetMetadata = [WPMediaMetadataExtractor metadataForAsset:asset enableGeolocation:gelocationEnabled];
-            Media *imageMedia = [Media newMediaForPost:self.post withImage:resizedImage andMetadata:assetMetadata];
-            [mediaToUpload addObject:imageMedia];
+            MediaService *mediaService = [[MediaService alloc] initWithManagedObjectContext:[[ContextManager sharedInstance] mainContext]];
+            [mediaService createMediaWithAsset:asset forPostObjectID:self.post.objectID completion:^(Media *media) {
+                [_mediaUploader uploadMediaObjects:@[media]];
+            }];
         }
     }
-    [_mediaUploader uploadMediaObjects:mediaToUpload];
     [self setupNavbar];
 }
 

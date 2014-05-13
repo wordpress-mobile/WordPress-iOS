@@ -1,6 +1,7 @@
 #import "Media.h"
 #import "UIImage+Resize.h"
 #import "NSString+Helpers.h"
+#import "NSString+Util.h"
 #import "AFHTTPRequestOperation.h"
 #import "ContextManager.h"
 #import <ImageIO/ImageIO.h>
@@ -54,78 +55,6 @@ CGFloat const MediaDefaultJPEGCompressionQuality = 0.9;
     Media *media = [NSEntityDescription insertNewObjectForEntityForName:@"Media" inManagedObjectContext:blog.managedObjectContext];
     media.blog = blog;
     media.mediaID = @0;
-    return media;
-}
-
-+ (Media *)newMediaForPost:(AbstractPost *)post withImage:(UIImage *)image andMetadata:(NSDictionary *)metadata
-{
-    NSData *imageData = UIImageJPEGRepresentation(image, MediaDefaultJPEGCompressionQuality);
-    UIImage *imageThumbnail = [self generateThumbnailFromImage:image andSize:CGSizeMake(MediaDefaultThumbnailSize, MediaDefaultThumbnailSize)];
-    NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
-    dateFormatter.locale = [NSLocale currentLocale];
-    [dateFormatter setDateFormat:@"yyyyMMdd-HHmmss-A"];
-
-    NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
-    NSString *documentsDirectory = [paths objectAtIndex:0];
-    NSString *filename = [NSString stringWithFormat:@"%@.jpg", [dateFormatter stringFromDate:[NSDate date]]];
-    NSString *filepath = [documentsDirectory stringByAppendingPathComponent:filename];
-
-    if (metadata != nil) {
-        // Write the EXIF data with the image data to disk
-        CGImageSourceRef source = NULL;
-        CGImageDestinationRef destination = NULL;
-        BOOL success = NO;
-        // This will be the data CGImageDestinationRef will write into
-        NSMutableData *destinationData = [NSMutableData data];
-
-        source = CGImageSourceCreateWithData((__bridge CFDataRef)imageData, NULL);
-        if (source) {
-            CFStringRef UTI = CGImageSourceGetType(source); // this is the type of image (e.g., public.jpeg)
-            destination = CGImageDestinationCreateWithData((__bridge CFMutableDataRef)destinationData,UTI,1,NULL);
-
-            if(destination) {
-                // Add the image contained in the image source to the destination, copying the old metadata
-                CGImageDestinationAddImageFromSource(destination, source,0, (__bridge CFDictionaryRef) metadata);
-
-                // Tell the destination to write the image data and metadata into our data object
-                // It will return false if something goes wrong
-                success = CGImageDestinationFinalize(destination);
-                CFRelease(destination);
-            } else {
-                DDLogWarn(@"Media processor could not create image destination");
-            }
-
-            CFRelease(source);
-        } else {
-            DDLogWarn(@"Media processor could not create image source");
-        }
-
-        if (!success) {
-            DDLogWarn(@"Media processor could not create data from image destination");
-            // Write the data without EXIF to disk
-            NSFileManager *fileManager = [NSFileManager defaultManager];
-            [fileManager createFileAtPath:filepath contents:imageData attributes:nil];
-        } else {
-            [destinationData writeToFile:filepath atomically:YES];
-        }
-    } else {
-        NSFileManager *fileManager = [NSFileManager defaultManager];
-        [fileManager createFileAtPath:filepath contents:imageData attributes:nil];
-    }
-
-    UIDeviceOrientation currentOrientation = [UIDevice currentDevice].orientation;
-    Media *media = [self newMediaForPost:post];
-    media.orientation = UIDeviceOrientationIsLandscape(currentOrientation) ? @"landscape" : @"portrait";
-    media.creationDate = [NSDate date];
-    media.filename = filename;
-    media.localURL = filepath;
-    media.filesize = @(imageData.length/1024);
-    media.mediaType = MediaTypeImage;
-    media.thumbnail = UIImageJPEGRepresentation(imageThumbnail, MediaDefaultJPEGCompressionQuality);
-    media.width = @(image.size.width);
-    media.height = @(image.size.height);
-    [media save];
-    
     return media;
 }
 
@@ -211,6 +140,11 @@ CGFloat const MediaDefaultJPEGCompressionQuality = 0.9;
         self.mediaTypeString = @"powerpoint";
     } else {
         self.mediaTypeString = @"document";
+    }
+    
+    if (fileUTI) {
+        CFRelease(fileUTI);
+        fileUTI = nil;
     }
 }
 
@@ -567,96 +501,6 @@ CGFloat const MediaDefaultJPEGCompressionQuality = 0.9;
         }
     }
 	return result;
-}
-
-- (void)setImage:(UIImage *)image withSize:(MediaResize)size {
-    //Read the predefined resizeDimensions and fix them by using the image orietation
-    NSDictionary* predefDim = [self.blog getImageResizeDimensions];
-    CGSize smallSize =  [[predefDim objectForKey: @"smallSize"] CGSizeValue];
-    CGSize mediumSize = [[predefDim objectForKey: @"mediumSize"] CGSizeValue];
-    CGSize largeSize =  [[predefDim objectForKey: @"largeSize"] CGSizeValue];
-    switch (image.imageOrientation) { 
-        case UIImageOrientationLeft:
-        case UIImageOrientationLeftMirrored:
-        case UIImageOrientationRight:
-        case UIImageOrientationRightMirrored:
-            smallSize = CGSizeMake(smallSize.height, smallSize.width);
-            mediumSize = CGSizeMake(mediumSize.height, mediumSize.width);
-            largeSize = CGSizeMake(largeSize.height, largeSize.width);
-            break;
-        default:
-            break;
-    }
-    
-    CGSize newSize;
-    switch (size) {
-        case MediaResizeSmall:
-			newSize = smallSize;
-            break;
-        case MediaResizeMedium:
-            newSize = mediumSize;
-            break;
-        case MediaResizeLarge:
-            newSize = largeSize;
-            break;
-        default:
-            newSize = image.size;
-            break;
-    }
-    
-    switch (image.imageOrientation) { 
-        case UIImageOrientationUp: 
-        case UIImageOrientationUpMirrored:
-        case UIImageOrientationDown: 
-        case UIImageOrientationDownMirrored:
-            self.orientation = @"landscape";
-            break;
-        case UIImageOrientationLeft:
-        case UIImageOrientationLeftMirrored:
-        case UIImageOrientationRight:
-        case UIImageOrientationRightMirrored:
-            self.orientation = @"portrait";
-            break;
-        default:
-            self.orientation = @"portrait";
-    }
-    
-
-    
-    //The dimensions of the image, taking orientation into account.
-    CGSize originalSize = CGSizeMake(image.size.width, image.size.height);
-
-    UIImage *resizedImage = image;
-    if(image.size.width > newSize.width || image.size.height > newSize.height)
-        resizedImage = [image resizedImageWithContentMode:UIViewContentModeScaleAspectFit
-                                                   bounds:newSize
-                                     interpolationQuality:kCGInterpolationHigh];
-    else  
-        resizedImage = [image resizedImageWithContentMode:UIViewContentModeScaleAspectFit
-                                                   bounds:originalSize
-                                     interpolationQuality:kCGInterpolationHigh];
-
-    NSData *imageData = UIImageJPEGRepresentation(resizedImage, 0.90);
-	UIImage *imageThumbnail = [resizedImage thumbnailImage:75 transparentBorder:0 cornerRadius:0 interpolationQuality:kCGInterpolationHigh];
-	NSDateFormatter *formatter = [[NSDateFormatter alloc] init];
-	[formatter setDateFormat:@"yyyyMMdd-HHmmss"];
-    
-	NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
-	NSString *documentsDirectory = [paths objectAtIndex:0];
-	NSString *filename = [NSString stringWithFormat:@"%@.jpg", [formatter stringFromDate:[NSDate date]]];
-	NSString *filepath = [documentsDirectory stringByAppendingPathComponent:filename];
-    NSFileManager *fileManager = [NSFileManager defaultManager];
-    [fileManager createFileAtPath:filepath contents:imageData attributes:nil];
-    
-
-	self.creationDate = [NSDate date];
-	self.filename = filename;
-	self.localURL = filepath;
-	self.filesize = [NSNumber numberWithUnsignedInteger:(imageData.length/1024)];
-	self.mediaType = @"image";
-	self.thumbnail = UIImageJPEGRepresentation(imageThumbnail, 0.90);
-	self.width = [NSNumber numberWithInt:resizedImage.size.width];
-	self.height = [NSNumber numberWithInt:resizedImage.size.height];
 }
 
 @end
