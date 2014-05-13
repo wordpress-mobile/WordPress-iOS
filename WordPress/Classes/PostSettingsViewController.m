@@ -21,8 +21,8 @@
 #import "WPTableViewActivityCell.h"
 #import "WPTableViewSectionHeaderView.h"
 #import "WPTableImageSource.h"
-#import "WPMediaMetadataExtractor.h"
-#import "WPMediaSizing.h"
+#import "ContextManager.h"
+#import "MediaService.h"
 #import "WPMediaUploader.h"
 #import <AssetsLibrary/AssetsLibrary.h>
 
@@ -747,26 +747,29 @@ static NSString *const TableViewActivityCellIdentifier = @"TableViewActivityCell
 }
 
 - (void)showPostFormatSelector {
-    if( [self.formatsList count] == 0 ) {
+    Post *post      = self.post;
+    NSArray *titles = post.blog.sortedPostFormatNames;
+    
+    if (post == nil || titles.count == 0 || post.postFormatText == nil || self.formatsList.count == 0) {
         return;
     }
     
-    NSArray *titles = self.post.blog.sortedPostFormatNames;
     NSDictionary *postFormatsDict = @{
-                                      @"DefaultValue": titles[0],
-                                      @"Title" : NSLocalizedString(@"Post Format", nil),
-                                      @"Titles" : titles,
-                                      @"Values" : titles,
-                                      @"CurrentValue" : self.post.postFormatText
-                                      };
+        @"DefaultValue"   : [titles firstObject],
+        @"Title"          : NSLocalizedString(@"Post Format", nil),
+        @"Titles"         : titles,
+        @"Values"         : titles,
+        @"CurrentValue"   : post.postFormatText
+    };
     
     PostSettingsSelectionViewController *vc = [[PostSettingsSelectionViewController alloc] initWithDictionary:postFormatsDict];
     __weak PostSettingsSelectionViewController *weakVc = vc;
     vc.onItemSelected = ^(NSString *status) {
-        self.post.postFormatText = status;
+        post.postFormatText = status;
         [weakVc dismiss];
         [self.tableView reloadData];
     };
+    
     [self.navigationController pushViewController:vc animated:YES];
 }
 
@@ -910,22 +913,22 @@ static NSString *const TableViewActivityCellIdentifier = @"TableViewActivityCell
 {
     // On iOS7 the image picker seems to override our preferred setting so we force the status bar color back.
     [[UIApplication sharedApplication] setStatusBarStyle:UIStatusBarStyleLightContent];
-    UIImage *image = [info valueForKey:@"UIImagePickerControllerOriginalImage"];
     NSURL *assetURL = [info objectForKey:UIImagePickerControllerReferenceURL];
     ALAssetsLibrary *assetsLibrary = [[ALAssetsLibrary alloc] init];
     [assetsLibrary assetForURL:assetURL resultBlock:^(ALAsset *asset){
-        UIImage *resizedImage = [WPMediaSizing correctlySizedImage:image forBlogDimensions:[self.post.blog getImageResizeDimensions]];
-        NSDictionary *assetMetadata = [WPMediaMetadataExtractor metadataForAsset:asset enableGeolocation:self.post.blog.geolocationEnabled];
-        Media *imageMedia = [Media newMediaForPost:self.post withImage:resizedImage andMetadata:assetMetadata];
-        imageMedia.mediaType = MediaTypeFeatured;
-        __weak PostSettingsViewController *weakSelf = self;
-        _mediaUploader = [[WPMediaUploader alloc] init];
-        _mediaUploader.uploadsCompletedBlock = ^{
-            Post *post = (Post *)weakSelf.apost;
-            post.featuredImage = imageMedia;
-            [weakSelf.tableView reloadData];
-        };
-        [_mediaUploader uploadMediaObjects:@[imageMedia]];
+        MediaService *mediaService = [[MediaService alloc] initWithManagedObjectContext:[[ContextManager sharedInstance] mainContext]];
+        [mediaService createMediaWithAsset:asset forPostObjectID:self.post.objectID completion:^(Media *media) {
+            media.mediaType = MediaTypeFeatured;
+            __weak PostSettingsViewController *weakSelf = self;
+            _mediaUploader = [[WPMediaUploader alloc] init];
+            _mediaUploader.uploadsCompletedBlock = ^{
+                Post *post = (Post *)weakSelf.apost;
+                post.featuredImage = media;
+                [weakSelf.tableView reloadData];
+            };
+            [_mediaUploader uploadMediaObjects:@[media]];
+        }];
+
         if (IS_IPAD) {
             [_popover dismissPopoverAnimated:YES];
         } else {

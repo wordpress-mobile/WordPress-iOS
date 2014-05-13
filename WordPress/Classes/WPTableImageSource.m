@@ -72,11 +72,10 @@
     NSDictionary *receiver = @{@"size": NSStringFromCGSize(size), @"indexPath": indexPath, @"date": [NSDate date]};
     void (^successBlock)(UIImage *) = ^(UIImage *image) {
         NSDictionary *_receiver = receiver;
-        CGSize receiverSize = size;
         if (size.height == 0) {
             CGFloat ratio = image.size.width / image.size.height;
             CGFloat height = round(size.width / ratio);
-            receiverSize = CGSizeMake(size.width, height);
+            CGSize receiverSize = CGSizeMake(size.width, height);
             
             NSMutableDictionary *dict = [_receiver mutableCopy];
             [dict setObject:NSStringFromCGSize(receiverSize) forKey:@"size"];
@@ -171,7 +170,7 @@
  */
 - (UIImage *)resizeImage:(UIImage *)image toSize:(CGSize)size
 {
-    return [image imageCroppedToFitSize:size ignoreAlpha:YES];
+    return [image imageCroppedToFitSize:size ignoreAlpha:NO];
 }
 
 - (void)setCachedImage:(UIImage *)image forURL:(NSURL *)url withSize:(CGSize)size
