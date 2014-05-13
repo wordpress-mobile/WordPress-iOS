@@ -969,6 +969,7 @@
 		E1F7B987191932C500230371 /* WPImageOptimizer.m in Sources */ = {isa = PBXBuildFile; fileRef = E1F7B986191932C500230371 /* WPImageOptimizer.m */; };
 		E1F7B98C191A2DC900230371 /* WPImageOptimizer+Private.m in Sources */ = {isa = PBXBuildFile; fileRef = E1F7B98B191A2DC900230371 /* WPImageOptimizer+Private.m */; };
 		E1F7B98F191A3C8300230371 /* MediaService.m in Sources */ = {isa = PBXBuildFile; fileRef = E1F7B98E191A3C8300230371 /* MediaService.m */; };
+		E1F7BA1E191CE55800230371 /* WPImageOptimizerTest.m in Sources */ = {isa = PBXBuildFile; fileRef = E1F7BA1D191CE55800230371 /* WPImageOptimizerTest.m */; };
 		E1F80825146420B000726BC7 /* UIImageView+Gravatar.m in Sources */ = {isa = PBXBuildFile; fileRef = E1F80824146420B000726BC7 /* UIImageView+Gravatar.m */; };
 		E1FC3DB413C7788700F6B60F /* WPWebViewController~ipad.xib in Resources */ = {isa = PBXBuildFile; fileRef = E1FC3DB313C7788700F6B60F /* WPWebViewController~ipad.xib */; };
 		E2013EA91863689500AB537F /* animatedBoxBack.png in Resources */ = {isa = PBXBuildFile; fileRef = E2013EA71863689500AB537F /* animatedBoxBack.png */; };
@@ -2271,6 +2272,7 @@
 		E1F7B98B191A2DC900230371 /* WPImageOptimizer+Private.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "WPImageOptimizer+Private.m"; sourceTree = "<group>"; };
 		E1F7B98D191A3C8300230371 /* MediaService.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MediaService.h; sourceTree = "<group>"; };
 		E1F7B98E191A3C8300230371 /* MediaService.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MediaService.m; sourceTree = "<group>"; };
+		E1F7BA1D191CE55800230371 /* WPImageOptimizerTest.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WPImageOptimizerTest.m; sourceTree = "<group>"; };
 		E1F80823146420B000726BC7 /* UIImageView+Gravatar.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIImageView+Gravatar.h"; sourceTree = "<group>"; };
 		E1F80824146420B000726BC7 /* UIImageView+Gravatar.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIImageView+Gravatar.m"; sourceTree = "<group>"; };
 		E1FC3DB313C7788700F6B60F /* WPWebViewController~ipad.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = "WPWebViewController~ipad.xib"; path = "Resources-iPad/WPWebViewController~ipad.xib"; sourceTree = "<group>"; };
@@ -3144,6 +3146,7 @@
 		852CD8AE190E0D04006C9AED /* Media */ = {
 			isa = PBXGroup;
 			children = (
+				E1F7BA1D191CE55800230371 /* WPImageOptimizerTest.m */,
 			);
 			name = Media;
 			sourceTree = "<group>";
@@ -5541,6 +5544,7 @@
 				E10675C8183F82E900E5CE5C /* SettingsViewControllerTest.m in Sources */,
 				F1564E5B18946087009F8F97 /* NSStringHelpersTest.m in Sources */,
 				E131CB5E16CAD659004B0314 /* AsyncTestHelper.m in Sources */,
+				E1F7BA1E191CE55800230371 /* WPImageOptimizerTest.m in Sources */,
 				E15618FD16DB8677006532C4 /* UIKitTestHelper.m in Sources */,
 				E1E4CE0D177439D100430844 /* WPAvatarSourceTest.m in Sources */,
 				E1E4CE0417739E3300430844 /* WPImageSourceTest.m in Sources */,
