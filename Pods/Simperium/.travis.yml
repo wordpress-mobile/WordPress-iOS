@@ -1,3 +1,0 @@
-language: objective-c
-xcode_project: Simperium.xcodeproj
-xcode_scheme: Framework

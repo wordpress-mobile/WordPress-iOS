@@ -1,8 +1,0 @@
-//
-// Prefix header for all source files of the 'Simperium-OSX' target in the 'Simperium-OSX' project
-//
-
-#ifdef __OBJC__
-    #import <Cocoa/Cocoa.h>
-    #import <CoreData/CoreData.h>
-#endif

@@ -21,7 +21,7 @@ PODS:
   - Google-Diff-Match-Patch (0.0.1)
   - google-plus-ios-sdk (1.5.1)
   - Helpshift (4.3.1)
-  - HockeySDK (3.5.4)
+  - HockeySDK (3.5.5)
   - JRSwizzle (1.0)
   - MGImageUtilities (0.0.1)
   - Mixpanel (2.3.1)
@@ -58,6 +58,7 @@ DEPENDENCIES:
   - CTAssetsPickerController (~> 2.2.0)
   - DTCoreText (= 1.6.9)
   - EmailChecker (from `https://raw.github.com/wordpress-mobile/EmailChecker/master/ios/EmailChecker.podspec`)
+  - Google-Diff-Match-Patch
   - google-plus-ios-sdk (~> 1.5)
   - Helpshift (= 4.3.1)
   - HockeySDK (~> 3.5.0)
@@ -103,9 +104,9 @@ SPEC CHECKSUMS:
   Google-Diff-Match-Patch: 63f4950ecbd0bf3f7ccae48987e958fc825041d3
   google-plus-ios-sdk: e02124b8a12631e76f78f5e3eb2a02a44b82c871
   Helpshift: b4a99c03fd56860e0efb52e84cc5049a735e3d97
-  HockeySDK: aa28abb106de7804d31acf515f2c9aa4e6481fd0
+  HockeySDK: 350ef1cf18d2fc9a13801ad077c307cece8c6c64
   JRSwizzle: 6242ff38485d870fc2636899048ee1ab883ae587
-  MGImageUtilities: ab3580f2161b10f8a41331baea87aaafbd688950
+  MGImageUtilities: 92d2aa6612a336b98106fbdac52996caf7714208
   Mixpanel: 8d189c58bcaac429de9cb4f18a54621df99b7e38
   NSLogger: 9607fdeafd0b09922c69615f99f127de45971b8f
   NSLogger-CocoaLumberjack-connector: da77800fec7415c1d378dfd93465031a58c5a9a8

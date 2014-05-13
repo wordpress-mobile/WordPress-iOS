@@ -24,6 +24,7 @@ pod 'Helpshift', '4.3.1'
 pod 'Taplytics', '1.2.46'
 pod 'CTAssetsPickerController', '~> 2.2.0'
 pod 'SocketRocket', :git => 'https://github.com/jleandroperez/SocketRocket.git'
+pod 'Google-Diff-Match-Patch'
 pod 'Simperium', :podspec => 'https://raw.github.com/Simperium/simperium-ios/develop/Simperium.podspec'
 
 target :WordPressTest, :exclusive => true do
