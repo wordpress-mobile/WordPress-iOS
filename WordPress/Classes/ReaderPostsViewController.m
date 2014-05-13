@@ -312,6 +312,7 @@ NSString * const RPVCDisplayedNativeFriendFinder = @"DisplayedNativeFriendFinder
     UIImage *avatarImage = postView.avatarImageView.image;
 
     RebloggingViewController *controller = [[RebloggingViewController alloc] initWithPost:post featuredImage:image avatarImage:avatarImage];
+    controller.delegate = self;
     UINavigationController *navController = [[UINavigationController alloc] initWithRootViewController:controller];
     navController.modalPresentationStyle = UIModalPresentationFormSheet;
     navController.modalTransitionStyle = UIModalTransitionStyleCoverVertical;
@@ -385,7 +386,12 @@ NSString * const RPVCDisplayedNativeFriendFinder = @"DisplayedNativeFriendFinder
 #pragma mark - RebloggingViewController Delegate Methods
 
 - (void)postWasReblogged:(ReaderPost *)post {
-    [self.tableView reloadData];
+    NSIndexPath *indexPath = [self.resultsController indexPathForObject:post];
+    if (!indexPath) {
+        return;
+    }
+    ReaderPostTableViewCell *cell = (ReaderPostTableViewCell *)[self.tableView cellForRowAtIndexPath:indexPath];
+    [cell configureCell:post];
 }
 
 

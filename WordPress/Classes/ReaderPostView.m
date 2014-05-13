@@ -298,7 +298,7 @@ static NSInteger const MaxNumberOfLinesForTitleForSummary = 3;
 
     [self.followButton setSelected:self.post.isFollowing];
 	self.reblogButton.userInteractionEnabled = !post.isReblogged;
-	
+
 	[self updateActionButtons];
 
     if (self.isSimpleSummary) {
@@ -403,8 +403,8 @@ static NSInteger const MaxNumberOfLinesForTitleForSummary = 3;
 
 - (void)updateActionButtons {
     [super updateActionButtons];
-    self.likeButton.selected = self.post.isLiked;
-    self.reblogButton.selected = self.post.isReblogged;
+    [self.likeButton setSelected:self.post.isLiked];
+    [self.reblogButton setSelected:self.post.isReblogged];
 	self.reblogButton.userInteractionEnabled = !self.reblogButton.selected;
 }
 

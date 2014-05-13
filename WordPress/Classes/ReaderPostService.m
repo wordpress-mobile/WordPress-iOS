@@ -202,7 +202,7 @@ NSUInteger const ReaderPostServiceMaxPosts = 200;
     }
 
     // Optimisitically save
-    readerPost.isReblogged = @1;
+    readerPost.isReblogged = YES;
     [self.managedObjectContext performBlockAndWait:^{
         [[ContextManager sharedInstance] saveContext:self.managedObjectContext];
     }];
@@ -222,7 +222,7 @@ NSUInteger const ReaderPostServiceMaxPosts = 200;
                               success();
                           }
                       } failure:^(NSError *error) {
-                          readerPost.isReblogged = @0;
+                          readerPost.isReblogged = NO;
                           [self.managedObjectContext performBlockAndWait:^{
                               [[ContextManager sharedInstance] saveContext:self.managedObjectContext];
                           }];

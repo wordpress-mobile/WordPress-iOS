@@ -38,6 +38,7 @@ CGFloat const ReblogViewTextBottomInset = 30;
 #pragma mark - Lifecycle Methods
 
 - (void)dealloc {
+    self.delegate = nil;
     [[NSNotificationCenter defaultCenter] removeObserver:self];
 }
 
