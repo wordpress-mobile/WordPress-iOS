@@ -17,6 +17,7 @@
 + (UIFont *)subtitleFontBold;
 + (NSDictionary *)subtitleAttributesBold;
 + (UIFont *)labelFont;
++ (UIFont *)labelFontNormal;
 + (NSDictionary *)labelAttributes;
 + (UIFont *)regularTextFont;
 + (UIFont *)regularTextFontBold;
