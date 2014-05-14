@@ -950,10 +950,16 @@ NSString * const RPVCDisplayedNativeFriendFinder = @"DisplayedNativeFriendFinder
     
     // Don't do anything if the cell is out of view or out of range
     // (this is a safety check in case the Reader doesn't properly kill image requests when changing topics)
-    if (cell == nil)
+    if (cell == nil) {
         return;
+    }
 
     [cell.postView setFeaturedImage:image];
+    
+    // Failsafe: If the topic has changed, fetchedObject count might be zero
+    if (self.resultsController.fetchedObjects.count == 0) {
+        return;
+    }
     
     // Update the detail view if it's open and applicable
     ReaderPost *post = [self.resultsController objectAtIndexPath:indexPath];
