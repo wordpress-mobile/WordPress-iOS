@@ -13,6 +13,7 @@
 #import "WordPressAppDelegate.h"
 #import "ContextManager.h"
 #import "Media.h"
+#import "Note.h"
 #import "NotificationsManager.h"
 #import "NSString+Helpers.h"
 #import "PocketAPI.h"
@@ -87,7 +88,9 @@ static NSInteger const IndexForMeTab = 2;
     
 	// Simperium Setup
 	[self setupSimperium];
-	[self loginSimperium];
+    [self nukeLegacyNotificationsIfNeeded:^() {
+        [self loginSimperium];
+    }];
 
     // Debugging
     [self printDebugLaunchInfoWithLaunchOptions:launchOptions];
@@ -884,6 +887,41 @@ static NSInteger const IndexForMeTab = 2;
 	[self.simperium signOutAndRemoveLocalData:YES completion:nil];
 }
 
+- (void)nukeLegacyNotificationsIfNeeded:(void (^)(void))completion
+{
+    // First, check if we haven't already completed this step
+    NSString *WPLegacyNotificationsNukedKey = @"WPLegacyNotificationsNukedKey";
+    NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
+    
+    if ([defaults boolForKey:WPLegacyNotificationsNukedKey]) {
+        completion();
+        return;
+    }
+    
+    // Let's nuke all of the legacy notifications
+    NSManagedObjectContext *context = [[ContextManager sharedInstance] newDerivedContext];
+    
+    [context performBlock:^{
+        NSString *entityName    = NSStringFromClass([Note class]);
+        NSFetchRequest *request = [[NSFetchRequest alloc] init];
+        request.entity			= [NSEntityDescription entityForName:entityName inManagedObjectContext:context];
+        request.predicate       = [NSPredicate predicateWithFormat:@"simperiumKey == nil"];
+        
+        NSArray *legacyNotes    = [context executeFetchRequest:request error:nil];
+        for (Note *legacyNote in legacyNotes) {
+            [context deleteObject:legacyNote];
+        }
+        
+        [[ContextManager sharedInstance] saveDerivedContext:context withCompletionBlock:^(){
+            // No need to do this, ever again
+            [defaults setBool:YES forKey:WPLegacyNotificationsNukedKey];
+            [defaults synchronize];
+            
+            // Ready!
+            completion();
+        }];
+    }];
+}
 
 #pragma mark - Keychain
 
