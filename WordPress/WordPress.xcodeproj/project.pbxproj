@@ -2956,7 +2956,7 @@
 				5DA5BF3918E32DCF005F11F9 /* ThemeDetailsViewController.h */,
 				5DA5BF3A18E32DCF005F11F9 /* ThemeDetailsViewController.m */,
 			);
-			name = Themes;
+			path = Themes;
 			sourceTree = "<group>";
 		};
 		5DA5BF4A18E32DE2005F11F9 /* Media */ = {
