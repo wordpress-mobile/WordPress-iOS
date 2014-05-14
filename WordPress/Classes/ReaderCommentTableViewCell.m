@@ -1,4 +1,6 @@
 #import "ReaderCommentTableViewCell.h"
+
+#import <AFNetworking/UIKit+AFNetworking.h>
 #import <DTCoreText/DTCoreText.h>
 #import "UIImageView+Gravatar.h"
 #import "WordPressAppDelegate.h"

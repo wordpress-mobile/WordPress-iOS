@@ -68,16 +68,27 @@ NSString * const WPImageSourceErrorDomain = @"WPImageSourceErrorDomain";
         if (authToken) {
             [request addValue:[NSString stringWithFormat:@"Bearer %@", authToken] forHTTPHeaderField:@"Authorization"];
         }
-        AFImageRequestOperation *operation = [AFImageRequestOperation imageRequestOperationWithRequest:request
-                                                                                  imageProcessingBlock:nil success:^(NSURLRequest *request, NSHTTPURLResponse *response, UIImage *image) {
-                                                                                      if (!image) {
-                                                                                          [self downloadSucceededWithNilImageForURL:url response:response];
-                                                                                          return;
-                                                                                      }
-                                                                                      [self downloadedImage:image forURL:url];
-                                                                                  } failure:^(NSURLRequest *request, NSHTTPURLResponse *response, NSError *error) {
-                                                                                      [self downloadFailedWithError:error forURL:url];
-                                                                                  }];
+
+		AFHTTPRequestOperation *operation = [[AFHTTPRequestOperation alloc] initWithRequest:request];
+		
+		operation.responseSerializer = [[AFImageResponseSerializer alloc] init];
+		operation.responseSerializer.acceptableContentTypes
+			= [operation.responseSerializer.acceptableContentTypes setByAddingObject:@"image/jpg"];
+		
+		[operation setCompletionBlockWithSuccess:^(AFHTTPRequestOperation *operation, id responseObject)
+		{
+			UIImage* image = (UIImage*)responseObject;
+			
+			if (!image) {
+				[self downloadSucceededWithNilImageForURL:url response:operation.response];
+				return;
+			}
+			[self downloadedImage:image forURL:url];
+		} failure:^(AFHTTPRequestOperation *operation, NSError *error)
+		{
+			[self downloadFailedWithError:error forURL:url];
+		}];
+		
         [_downloadingQueue addOperation:operation];
     });
 }
