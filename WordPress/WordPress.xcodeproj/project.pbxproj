@@ -2916,7 +2916,7 @@
 				5D577D341891360900B964C3 /* PostGeolocationView.h */,
 				5D577D351891360900B964C3 /* PostGeolocationView.m */,
 			);
-			name = Geolocation;
+			path = Geolocation;
 			sourceTree = "<group>";
 		};
 		5D6651461637324000EBDA7D /* Sounds */ = {
