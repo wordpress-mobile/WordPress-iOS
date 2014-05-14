@@ -170,7 +170,7 @@
  */
 - (UIImage *)resizeImage:(UIImage *)image toSize:(CGSize)size
 {
-    return [image imageCroppedToFitSize:size ignoreAlpha:YES];
+    return [image imageCroppedToFitSize:size ignoreAlpha:NO];
 }
 
 - (void)setCachedImage:(UIImage *)image forURL:(NSURL *)url withSize:(CGSize)size

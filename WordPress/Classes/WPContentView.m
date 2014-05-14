@@ -317,11 +317,7 @@ const CGFloat RPVControlButtonBorderSize = 0.0f;
         lastImageWidth = actionButton.imageView.image.size.width;
     }
 
-
-
-
-
-    CGFloat timeWidth = contentWidth - buttonX;
+    CGFloat timeWidth = buttonX - RPVHorizontalInnerPadding;
     self.timeButton.frame = CGRectMake(RPVHorizontalInnerPadding, RPVBorderHeight, timeWidth, RPVControlButtonHeight);
     
     // Update own frame
