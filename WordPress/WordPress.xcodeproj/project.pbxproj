@@ -3096,7 +3096,7 @@
 				5D839AA9187F0D8000811F4A /* PostGeolocationCell.h */,
 				5D839AAA187F0D8000811F4A /* PostGeolocationCell.m */,
 			);
-			name = Cells;
+			path = Cells;
 			sourceTree = "<group>";
 		};
 		8320B5D711FCA4EE00607422 /* Cells */ = {
