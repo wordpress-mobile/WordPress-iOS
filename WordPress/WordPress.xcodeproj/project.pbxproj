@@ -3538,7 +3538,7 @@
 				85435BE8190F837500E868D0 /* WPUploadStatusView.h */,
 				85435BE9190F837500E868D0 /* WPUploadStatusView.m */,
 			);
-			name = Post;
+			path = Post;
 			sourceTree = "<group>";
 		};
 		AC34397A0E11435A00E5D79B /* Controllers */ = {
