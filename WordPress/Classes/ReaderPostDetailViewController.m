@@ -645,6 +645,7 @@ typedef enum {
 
 - (void)postWasReblogged:(ReaderPost *)post {
     [self.postView configurePost:self.post];
+    [self.postView setAvatar:self.avatarImage];
 }
 
 

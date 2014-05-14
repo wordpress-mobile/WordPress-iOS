@@ -392,6 +392,7 @@ NSString * const RPVCDisplayedNativeFriendFinder = @"DisplayedNativeFriendFinder
     }
     ReaderPostTableViewCell *cell = (ReaderPostTableViewCell *)[self.tableView cellForRowAtIndexPath:indexPath];
     [cell configureCell:post];
+    [self setAvatarForPost:post forCell:cell indexPath:indexPath];
 }
 
 
