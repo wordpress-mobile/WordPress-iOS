@@ -23,7 +23,7 @@
     
     NSString *path = @"read/menu";
     
-    [self.api getPath:path parameters:nil success:^(AFHTTPRequestOperation *operation, id responseObject) {
+    [self.api GET:path parameters:nil success:^(AFHTTPRequestOperation *operation, id responseObject) {
 
         if (!success) {
             return;
