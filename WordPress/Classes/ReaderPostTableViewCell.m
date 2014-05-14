@@ -140,9 +140,9 @@ const CGFloat RPTVCVerticalOuterPadding = 16.0f;
     self.sideBorderView.frame = CGRectMake(sideBorderX, 1, self.frame.size.width - sideBorderX * 2, sideBorderHeight);
 }
 
-- (void)configureCell:(ReaderPost *)post withWidth:(CGFloat)width{
+- (void)configureCell:(ReaderPost *)post {
 	self.post = post;
-    [self.postView configurePost:post withWidth:width];
+    [self.postView configurePost:post];
 }
 
 @end
