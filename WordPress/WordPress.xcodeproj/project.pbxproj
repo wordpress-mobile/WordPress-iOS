@@ -336,7 +336,6 @@
 		5D27718E15A33A8500F4DCAA /* toolbar_unapprove@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 5D27717E15A33A8500F4DCAA /* toolbar_unapprove@2x.png */; };
 		5D27719115A3527200F4DCAA /* toolbar_write.png in Resources */ = {isa = PBXBuildFile; fileRef = 5D27718F15A3527000F4DCAA /* toolbar_write.png */; };
 		5D27719215A3527200F4DCAA /* toolbar_write@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 5D27719015A3527100F4DCAA /* toolbar_write@2x.png */; };
-		5D2A8FF2175EC15800263144 /* ReaderTextFormView.m in Sources */ = {isa = PBXBuildFile; fileRef = 5D2A8FF1175EC15800263144 /* ReaderTextFormView.m */; };
 		5D2B80D11592447200161F6E /* QuickPhotoButtonView.m in Sources */ = {isa = PBXBuildFile; fileRef = 5D2B80D01592447200161F6E /* QuickPhotoButtonView.m */; };
 		5D358D6517723DB500739AA4 /* OpenSans-Bold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 5D358D6417723DB500739AA4 /* OpenSans-Bold.ttf */; };
 		5D37941B19216B1300E26CA4 /* RebloggingViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 5D37941A19216B1300E26CA4 /* RebloggingViewController.m */; };
@@ -371,7 +370,6 @@
 		5D570F6E1785EAF0008F2C27 /* reader-postaction-reblog-done@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 5D570F6C1785EAF0008F2C27 /* reader-postaction-reblog-done@2x.png */; };
 		5D577D33189127BE00B964C3 /* PostGeolocationViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 5D577D32189127BE00B964C3 /* PostGeolocationViewController.m */; };
 		5D577D361891360900B964C3 /* PostGeolocationView.m in Sources */ = {isa = PBXBuildFile; fileRef = 5D577D351891360900B964C3 /* PostGeolocationView.m */; };
-		5D5A953B1760DDE0000F7A1E /* ReaderReblogFormView.m in Sources */ = {isa = PBXBuildFile; fileRef = 5D5A953A1760DDDF000F7A1E /* ReaderReblogFormView.m */; };
 		5D5D0027187DA9D30027CEF6 /* CategoriesViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 5D5D0026187DA9D30027CEF6 /* CategoriesViewController.m */; };
 		5D62BAD718AA88210044E5F7 /* PageSettingsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 5D62BAD618AA88210044E5F7 /* PageSettingsViewController.m */; };
 		5D69DBC4165428CA00A2D1F7 /* n.caf in Resources */ = {isa = PBXBuildFile; fileRef = 5D69DBC3165428CA00A2D1F7 /* n.caf */; };
@@ -1412,8 +1410,6 @@
 		5D27717E15A33A8500F4DCAA /* toolbar_unapprove@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "toolbar_unapprove@2x.png"; path = "Resources/Images/toolbar_unapprove@2x.png"; sourceTree = "<group>"; };
 		5D27718F15A3527000F4DCAA /* toolbar_write.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = toolbar_write.png; path = Resources/Images/toolbar_write.png; sourceTree = "<group>"; };
 		5D27719015A3527100F4DCAA /* toolbar_write@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "toolbar_write@2x.png"; path = "Resources/Images/toolbar_write@2x.png"; sourceTree = "<group>"; };
-		5D2A8FF0175EC15800263144 /* ReaderTextFormView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ReaderTextFormView.h; sourceTree = "<group>"; };
-		5D2A8FF1175EC15800263144 /* ReaderTextFormView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ReaderTextFormView.m; sourceTree = "<group>"; };
 		5D2B043515E83800007E3422 /* SettingsViewControllerDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SettingsViewControllerDelegate.h; sourceTree = "<group>"; };
 		5D2B80CF1592447200161F6E /* QuickPhotoButtonView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = QuickPhotoButtonView.h; sourceTree = "<group>"; };
 		5D2B80D01592447200161F6E /* QuickPhotoButtonView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = QuickPhotoButtonView.m; sourceTree = "<group>"; };
@@ -1475,8 +1471,6 @@
 		5D577D32189127BE00B964C3 /* PostGeolocationViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PostGeolocationViewController.m; sourceTree = "<group>"; };
 		5D577D341891360900B964C3 /* PostGeolocationView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PostGeolocationView.h; sourceTree = "<group>"; };
 		5D577D351891360900B964C3 /* PostGeolocationView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PostGeolocationView.m; sourceTree = "<group>"; };
-		5D5A95391760DDDF000F7A1E /* ReaderReblogFormView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ReaderReblogFormView.h; sourceTree = "<group>"; };
-		5D5A953A1760DDDF000F7A1E /* ReaderReblogFormView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ReaderReblogFormView.m; sourceTree = "<group>"; };
 		5D5D0025187DA9D30027CEF6 /* CategoriesViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CategoriesViewController.h; sourceTree = "<group>"; };
 		5D5D0026187DA9D30027CEF6 /* CategoriesViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CategoriesViewController.m; sourceTree = "<group>"; };
 		5D62BAD518AA88210044E5F7 /* PageSettingsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PageSettingsViewController.h; sourceTree = "<group>"; };
@@ -4156,10 +4150,6 @@
 				5D42A402175E76A2005CFF05 /* WPImageViewController.m */,
 				5D42A403175E76A4005CFF05 /* WPWebVideoViewController.h */,
 				5D42A404175E76A5005CFF05 /* WPWebVideoViewController.m */,
-				5D2A8FF0175EC15800263144 /* ReaderTextFormView.h */,
-				5D2A8FF1175EC15800263144 /* ReaderTextFormView.m */,
-				5D5A95391760DDDF000F7A1E /* ReaderReblogFormView.h */,
-				5D5A953A1760DDDF000F7A1E /* ReaderReblogFormView.m */,
 				5D8572B817611B36004CC20D /* ReaderUsersBlogsViewController.h */,
 				5D8572B917611B36004CC20D /* ReaderUsersBlogsViewController.m */,
 				E1D062D2177C685700644185 /* ContentActionButton.h */,
@@ -5554,8 +5544,6 @@
 				5D42A405175E76A7005CFF05 /* WPImageViewController.m in Sources */,
 				93C1148818EF157500DAC95C /* BlogRemoteService.m in Sources */,
 				5D42A406175E76A7005CFF05 /* WPWebVideoViewController.m in Sources */,
-				5D2A8FF2175EC15800263144 /* ReaderTextFormView.m in Sources */,
-				5D5A953B1760DDE0000F7A1E /* ReaderReblogFormView.m in Sources */,
 				5D839AA8187F0D6B00811F4A /* PostFeaturedImageCell.m in Sources */,
 				857F961817D95F530071D9D1 /* WPTableViewSectionFooterView.m in Sources */,
 				5DA5BF4818E32DCF005F11F9 /* WPLoadingView.m in Sources */,
