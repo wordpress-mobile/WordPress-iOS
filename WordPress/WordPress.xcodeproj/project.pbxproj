@@ -3568,7 +3568,7 @@
 				85D8055B171631F10075EEAC /* SelectWPComLanguageViewController.h */,
 				85D8055C171631F10075EEAC /* SelectWPComLanguageViewController.m */,
 			);
-			name = Blog;
+			path = Blog;
 			sourceTree = "<group>";
 		};
 		AC512F790E20D25E00B7DA32 /* Images */ = {
