@@ -1,5 +1,23 @@
 PODS:
-  - AFNetworking (1.2.0)
+  - AFNetworking (2.2.3):
+    - AFNetworking/NSURLConnection
+    - AFNetworking/NSURLSession
+    - AFNetworking/Reachability
+    - AFNetworking/Security
+    - AFNetworking/Serialization
+    - AFNetworking/UIKit
+  - AFNetworking/NSURLConnection (2.2.3):
+    - AFNetworking/Reachability
+    - AFNetworking/Security
+    - AFNetworking/Serialization
+  - AFNetworking/NSURLSession (2.2.3):
+    - AFNetworking/NSURLConnection
+  - AFNetworking/Reachability (2.2.3)
+  - AFNetworking/Security (2.2.3)
+  - AFNetworking/Serialization (2.2.3)
+  - AFNetworking/UIKit (2.2.3):
+    - AFNetworking/NSURLConnection
+    - AFNetworking/NSURLSession
   - CocoaLumberjack (1.8.1):
     - CocoaLumberjack/Extensions
   - CocoaLumberjack/Core (1.8.1)
@@ -47,12 +65,12 @@ PODS:
   - Taplytics (1.2.46)
   - UIDeviceIdentifier (0.4)
   - WordPressApi (0.0.1):
-    - AFNetworking (>= 1.0)
+    - AFNetworking (= 2.2.3)
     - wpxmlrpc (~> 0.1)
   - wpxmlrpc (0.4.1)
 
 DEPENDENCIES:
-  - AFNetworking (= 1.2.0)
+  - AFNetworking (= 2.2.3)
   - CocoaLumberjack (~> 1.8.1)
   - CrashlyticsLumberjack (~> 1.0.0)
   - CTAssetsPickerController (~> 2.2.0)
@@ -74,7 +92,7 @@ DEPENDENCIES:
   - SVProgressHUD (~> 1.0)
   - Taplytics (= 1.2.46)
   - UIDeviceIdentifier (~> 0.1)
-  - WordPressApi (from `https://github.com/koke/WordPressApi.git`)
+  - WordPressApi (from `https://github.com/koke/WordPressApi.git`, branch `afnetworking2`)
   - wpxmlrpc (~> 0.4.1)
 
 EXTERNAL SOURCES:
@@ -91,10 +109,11 @@ EXTERNAL SOURCES:
   SocketRocket:
     :git: https://github.com/jleandroperez/SocketRocket.git
   WordPressApi:
+    :branch: afnetworking2
     :git: https://github.com/koke/WordPressApi.git
 
 SPEC CHECKSUMS:
-  AFNetworking: 3cbae45f61a9f995cdbd56bd571223910d7f4e44
+  AFNetworking: ae513199cca79e9d7af2708ccabe2ed075550c42
   CocoaLumberjack: 020378ec400d658923bf5887178394f65f052c90
   CrashlyticsLumberjack: 8ee2adbd0f815d8b111e5f72cd82d39b08430ebc
   CTAssetsPickerController: 85cc8be0ce86a3b13626379d16d3996c9d4c559b
@@ -119,7 +138,7 @@ SPEC CHECKSUMS:
   SVProgressHUD: 5e10939a296debf5fe5a5895eda9539b8b2114f1
   Taplytics: b5a58fefa10340e700a9766bd5c133fd3356e0f2
   UIDeviceIdentifier: eb3d34699982f02350acf544516a4b8f9a9fcaad
-  WordPressApi: 6c7ab5320344fbec850f0baba4b0ec2bfd03587d
+  WordPressApi: 8c5fb633aeb7c89d72ed0c753c135bdfd7887896
   wpxmlrpc: 63b5b10d5925fb030f8266215bc955366354a2b8
 
 COCOAPODS: 0.32.1

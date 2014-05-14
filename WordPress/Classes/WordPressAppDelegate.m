@@ -1,3 +1,4 @@
+#import <AFNetworking/UIKit+AFNetworking.h>
 #import <CoreTelephony/CTTelephonyNetworkInfo.h>
 #import <CoreTelephony/CTCarrier.h>
 #import <Crashlytics/Crashlytics.h>

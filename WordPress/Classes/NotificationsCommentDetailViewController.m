@@ -180,7 +180,7 @@ NSString *const WPNotificationCommentRestorationKey = @"WPNotificationCommentRes
     
     // if we don't have post information fetch it from the api
     if (self.post == nil) {
-        [[defaultAccount restApi] getPath:postPath parameters:nil success:^(AFHTTPRequestOperation *operation, id responseObject) {
+        [[defaultAccount restApi] GET:postPath parameters:nil success:^(AFHTTPRequestOperation *operation, id responseObject) {
             self.post = responseObject;
             NSString *postTitle = [[self.post valueForKeyPath:@"title"] stringByDecodingXMLCharacters];
             if (!postTitle || [postTitle isEqualToString:@""])
@@ -342,7 +342,7 @@ NSString *const WPNotificationCommentRestorationKey = @"WPNotificationCommentRes
     AccountService *accountService = [[AccountService alloc] initWithManagedObjectContext:context];
     WPAccount *defaultAccount = [accountService defaultWordPressComAccount];
 
-    [[defaultAccount restApi] postPath:path parameters:[commentAction valueForKeyPath:@"params.rest_body"] success:^(AFHTTPRequestOperation *operation, id responseObject) {
+    [[defaultAccount restApi] POST:path parameters:[commentAction valueForKeyPath:@"params.rest_body"] success:^(AFHTTPRequestOperation *operation, id responseObject) {
         // The Note will be automatically updated by Simperium
     } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
         DDLogVerbose(@"[Rest API] ! %@", [error localizedDescription]);
@@ -363,7 +363,7 @@ NSString *const WPNotificationCommentRestorationKey = @"WPNotificationCommentRes
         NSString *replyPath = [NSString stringWithFormat:@"%@/replies/new", approvePath];
         NSDictionary *params = @{@"content" : replyText };
         if ([[action valueForKeyPath:@"params.approve_parent"] isEqualToNumber:@1]) {
-            [[defaultAccount restApi] postPath:approvePath parameters:@{@"status" : @"approved"} success:^(AFHTTPRequestOperation *operation, id responseObject) {
+            [[defaultAccount restApi] POST:approvePath parameters:@{@"status" : @"approved"} success:^(AFHTTPRequestOperation *operation, id responseObject) {
                 [self displayNote];
             } failure:nil];
         }
@@ -381,7 +381,7 @@ NSString *const WPNotificationCommentRestorationKey = @"WPNotificationCommentRes
             [self.inlineComposeView displayComposer];
         };
 
-        [[defaultAccount restApi] postPath:replyPath parameters:params success:^(AFHTTPRequestOperation *operation, id responseObject) {
+        [[defaultAccount restApi] POST:replyPath parameters:params success:^(AFHTTPRequestOperation *operation, id responseObject) {
             DDLogVerbose(@"Response: %@", responseObject);
             [WPAnalytics track:WPAnalyticsStatNotificationRepliedTo];
             [WPAnalytics track:WPAnalyticsStatNotificationPerformedAction];
@@ -422,7 +422,7 @@ NSString *const WPNotificationCommentRestorationKey = @"WPNotificationCommentRes
         AccountService *accountService = [[AccountService alloc] initWithManagedObjectContext:context];
         WPAccount *defaultAccount = [accountService defaultWordPressComAccount];
 
-        [[defaultAccount restApi] getPath:commentPath parameters:nil success:^(AFHTTPRequestOperation *operation, id responseObject) {
+        [[defaultAccount restApi] GET:commentPath parameters:nil success:^(AFHTTPRequestOperation *operation, id responseObject) {
             comment.commentData = responseObject;
             comment.loading = NO;
 
@@ -447,7 +447,7 @@ NSString *const WPNotificationCommentRestorationKey = @"WPNotificationCommentRes
     NSManagedObjectContext *context = [[ContextManager sharedInstance] mainContext];
     AccountService *accountService = [[AccountService alloc] initWithManagedObjectContext:context];
     WPAccount *defaultAccount = [accountService defaultWordPressComAccount];
-    [[defaultAccount restApi] postPath:path parameters:[params objectForKey:@"rest_body"] success:success failure:failure];
+    [[defaultAccount restApi] POST:path parameters:[params objectForKey:@"rest_body"] success:success failure:failure];
 }
 
 
