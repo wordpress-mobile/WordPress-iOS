@@ -3184,7 +3184,7 @@
 				85C720AF1730CEFA00460645 /* WPWalkthroughTextField.h */,
 				85C720B01730CEFA00460645 /* WPWalkthroughTextField.m */,
 			);
-			name = NUX;
+			path = NUX;
 			sourceTree = "<group>";
 		};
 		852CD8AE190E0D04006C9AED /* Media */ = {
