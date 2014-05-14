@@ -2856,7 +2856,7 @@
 				5D5D0025187DA9D30027CEF6 /* CategoriesViewController.h */,
 				5D5D0026187DA9D30027CEF6 /* CategoriesViewController.m */,
 			);
-			name = Categories;
+			path = Categories;
 			sourceTree = "<group>";
 		};
 		5D27716D15A33A6200F4DCAA /* editing */ = {
