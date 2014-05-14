@@ -4434,7 +4434,7 @@
 				5D62BAD518AA88210044E5F7 /* PageSettingsViewController.h */,
 				5D62BAD618AA88210044E5F7 /* PageSettingsViewController.m */,
 			);
-			name = Pages;
+			path = Pages;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
