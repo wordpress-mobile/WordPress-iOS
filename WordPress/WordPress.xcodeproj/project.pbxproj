@@ -2757,7 +2757,7 @@
 				857610D418C0377300EDF406 /* StatsWebViewController.h */,
 				857610D518C0377300EDF406 /* StatsWebViewController.m */,
 			);
-			name = Stats;
+			path = Stats;
 			sourceTree = "<group>";
 		};
 		37F66E24167FB1D10043E8CA /* Notifications */ = {
